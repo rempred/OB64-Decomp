@@ -54,3 +54,11 @@ Before decomp work, read:
 - Update docs when a function name, struct field, segment boundary, or overlay
   mapping becomes durable.
 
+## No-Gap Decomp Rule
+
+The repo may have incomplete C and imperfect function boundaries, but every byte
+in a configured segment must remain represented by source. The current
+`tools/extract_original_mips.js` first pass preserves the Rev 0 code region by
+emitting every 4-byte word as `.word` plus a decode comment into ignored
+`build/original-mips/rev0/`. Promote generated original MIPS into
+`asm/original/` only after the split/link/compare policy is stable.

@@ -57,3 +57,13 @@ scratch/       local experiments, ignored
 4. Add a minimal linker/compare loop.
 5. Begin replacing matched functions with C under `src/`.
 
+## Current First-Pass Tools
+
+```powershell
+node tools/verify_baserom.js
+node tools/extract_original_mips.js
+```
+
+The extractor currently writes generated, ignored no-gap MIPS reference output
+under `build/original-mips/rev0/`. Once the split/link/compare policy is stable,
+curated original MIPS can be promoted into `asm/original/`.
