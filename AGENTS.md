@@ -1,5 +1,9 @@
 # OB64 Decomp - Agent Guide
 
+This file is this repo's local memory gate. Read it first, then read
+`docs/PLATFORM.md` for the current platform snapshot and `docs/NEXT_STEPS.md`
+for the active work queue.
+
 This repository is the dedicated decompilation workspace for Ogre Battle 64:
 Person of Lordly Caliber, US Rev 0 only.
 
@@ -30,10 +34,18 @@ or artifact path in the relevant note.
 Before decomp work, read:
 
 1. Parent `AGENTS.md`.
-2. Parent `docs/mips-decomp-workflow-plan.md`.
-3. Parent `docs/mips-decode.md`.
-4. Parent `docs/overlay-system.md`.
-5. The relevant subsystem doc in the parent `docs/` folder.
+2. Local `docs/PLATFORM.md`.
+3. Local `docs/REV0_SCOPE.md`.
+4. Local `docs/WORKFLOW.md`.
+5. Local `docs/NEXT_STEPS.md`.
+6. Parent `docs/mips-decomp-workflow-plan.md`.
+7. Parent `docs/mips-decode.md`.
+8. Parent `docs/overlay-system.md`.
+9. The relevant subsystem doc in the parent `docs/` folder.
+
+When a durable fact changes, update this file and the relevant local doc before
+committing. If the fact came from parent-workspace research, include the parent
+source path in the note.
 
 ## Address Rules
 

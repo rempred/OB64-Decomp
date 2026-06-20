@@ -3,6 +3,14 @@
 Dedicated decompilation repo for Ogre Battle 64: Person of Lordly Caliber, US
 Rev 0.
 
+Start here for future sessions:
+
+- `AGENTS.md` - local rules and durable memory gate.
+- `docs/PLATFORM.md` - current repo state, invariants, and command snapshot.
+- `docs/REV0_SCOPE.md` - Rev 0 identity and structural coverage snapshot.
+- `docs/WORKFLOW.md` - decomp loop and evidence rules.
+- `docs/NEXT_STEPS.md` - immediate task queue.
+
 The goal is to produce a reproducible source tree for the ROM:
 
 - `src/` - C source for decompiled functions and systems.
