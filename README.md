@@ -94,3 +94,14 @@ that future C and assembly replacement work must preserve.
 
 Current status: 1,059 ledger spans rebuild to a byte-identical Rev 0 ROM with
 SHA256 `571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A`.
+
+```powershell
+node tools/assemble_original_mips.js
+node tools/rebuild_rom.js --assembled-code build/assembled/rev0/code.bin --out dist/rebuilt.us_rev0.assembled-code.z64 --report build/rebuild/rev0-assembled-code-rebuild-report.json
+```
+
+Assembles the generated no-gap `.word` MIPS reference into an ignored code blob
+and substitutes it for the raw code segment during rebuild. Current assembled
+code-region SHA256:
+`40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`; full ROM
+rebuild remains byte-identical.

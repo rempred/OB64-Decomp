@@ -115,3 +115,30 @@ Current exact rebuild result:
   `571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A`.
 - Exact match: pass.
 - First diff: none.
+
+## Assembly-Backed Code Rebuild
+
+`tools/assemble_original_mips.js` assembles the generated no-gap `.word`
+reference under `build/original-mips/rev0/` into ignored
+`build/assembled/rev0/code.bin`. This is intentionally a minimal `.word`
+assembler first, not a full mnemonic assembler. It proves that source text can
+reproduce the configured Rev 0 code-region bytes before function splitting.
+
+Current result:
+
+- Assembled code region: `0x00001000..0x0063676C`.
+- Bytes: 6,510,444.
+- Code-region SHA256:
+  `40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`.
+- Code-region match against baserom: pass.
+- Assembled-code ROM rebuild command:
+
+```powershell
+node tools/assemble_original_mips.js
+node tools/rebuild_rom.js --assembled-code build/assembled/rev0/code.bin --out dist/rebuilt.us_rev0.assembled-code.z64 --report build/rebuild/rev0-assembled-code-rebuild-report.json
+```
+
+The assembled-code rebuild currently preserves the full ROM SHA256
+`571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A` exactly.
+Next source-layout work should move this from ignored generated `.word` chunks
+toward tracked `asm/original/` inputs without losing the exact rebuild gate.

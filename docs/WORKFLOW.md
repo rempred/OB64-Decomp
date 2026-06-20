@@ -67,3 +67,16 @@ node tools/rebuild_rom.js
 This is the first exact rebuild loop. It extracts the ledger's non-overlapping
 spans as raw files, concatenates them back into `dist/rebuilt.us_rev0.z64`, and
 fails unless the rebuilt ROM is byte-identical to `build/baserom.us_rev0.z64`.
+
+Then run the assembly-backed code-region gate:
+
+```powershell
+node tools/assemble_original_mips.js
+node tools/rebuild_rom.js --assembled-code build/assembled/rev0/code.bin --out dist/rebuilt.us_rev0.assembled-code.z64 --report build/rebuild/rev0-assembled-code-rebuild-report.json
+```
+
+This assembles the generated `.word` MIPS reference into a binary code-region
+blob and substitutes it for the raw code span. Current expected result: the
+assembled code-region SHA256 is
+`40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`, and the
+full rebuilt ROM remains byte-identical to the normalized Rev 0 baserom.

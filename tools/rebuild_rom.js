@@ -4,16 +4,18 @@ const path = require('path');
 const {
   ROOT,
   ensureDir,
+  firstDiff,
   hashBuffer,
   hex,
   loadAndVerifyRom,
+  loadProfile,
   parseHexOrNumber,
   readJson,
   writeJson,
 } = require('./lib/rom');
 
 function usage() {
-  console.log(`Usage: node tools/rebuild_rom.js [--manifest <json>] [--reference <z64>] [--out <z64>] [--report <json>]\n\nRebuilds Rev 0 from extracted raw span segments and byte-compares it against the normalized baserom.`);
+  console.log(`Usage: node tools/rebuild_rom.js [--manifest <json>] [--reference <z64>] [--out <z64>] [--report <json>] [--assembled-code <bin>]\n\nRebuilds Rev 0 from extracted span segments and byte-compares it against the normalized baserom. If --assembled-code is provided, that blob replaces the configured code-region span during rebuild.`);
 }
 
 function parseArgs(argv) {
@@ -22,6 +24,7 @@ function parseArgs(argv) {
     reference: path.join(ROOT, 'build', 'baserom.us_rev0.z64'),
     out: path.join(ROOT, 'dist', 'rebuilt.us_rev0.z64'),
     report: path.join(ROOT, 'build', 'rebuild', 'rev0-rebuild-report.json'),
+    assembledCode: null,
   };
   for (let i = 0; i < argv.length; i += 1) {
     const arg = argv[i];
@@ -36,22 +39,13 @@ function parseArgs(argv) {
       args.out = path.resolve(argv[++i]);
     } else if (arg === '--report') {
       args.report = path.resolve(argv[++i]);
+    } else if (arg === '--assembled-code') {
+      args.assembledCode = path.resolve(argv[++i]);
     } else {
       throw new Error(`Unknown argument: ${arg}`);
     }
   }
   return args;
-}
-
-function firstDiff(a, b) {
-  const len = Math.min(a.length, b.length);
-  for (let i = 0; i < len; i += 1) {
-    if (a[i] !== b[i]) return { offset: i, expected: a[i], actual: b[i] };
-  }
-  if (a.length !== b.length) {
-    return { offset: len, expected: a.length > b.length ? a[len] : null, actual: b.length > a.length ? b[len] : null };
-  }
-  return null;
 }
 
 function loadReference(referencePath) {
@@ -82,6 +76,29 @@ function main() {
   }
 
   const manifestDir = path.dirname(args.manifest);
+  const profile = loadProfile();
+  const codeRegion = {
+    start: parseHexOrNumber(profile.codeRegion.start),
+    end: parseHexOrNumber(profile.codeRegion.endExclusive),
+  };
+  let assembledCode = null;
+  if (args.assembledCode) {
+    if (!fs.existsSync(args.assembledCode)) {
+      throw new Error(`Assembled code blob not found: ${args.assembledCode}\nRun: node tools/assemble_original_mips.js`);
+    }
+    const bytes = fs.readFileSync(args.assembledCode);
+    const expectedBytes = codeRegion.end - codeRegion.start;
+    if (bytes.length !== expectedBytes) {
+      throw new Error(`Assembled code length ${bytes.length} != configured code region length ${expectedBytes}`);
+    }
+    assembledCode = {
+      path: args.assembledCode,
+      bytes,
+      sha256: hashBuffer(bytes, 'sha256'),
+      used: false,
+    };
+  }
+
   const buffers = [];
   let cursor = 0;
   const segmentChecks = [];
@@ -94,19 +111,36 @@ function main() {
     if (!fs.existsSync(filePath)) throw new Error(`Segment file missing: ${filePath}`);
     const bytes = fs.readFileSync(filePath);
     const sha256 = hashBuffer(bytes, 'sha256');
-    const ok = bytes.length === segment.bytes && bytes.length === end - start && sha256 === segment.sha256;
+    const rawOk = bytes.length === segment.bytes && bytes.length === end - start && sha256 === segment.sha256;
+    let outputBytes = bytes;
+    let source = 'raw-segment';
+    if (assembledCode && start === codeRegion.start && end === codeRegion.end) {
+      outputBytes = assembledCode.bytes;
+      assembledCode.used = true;
+      source = 'assembled-code';
+    }
+    if (outputBytes.length !== end - start) {
+      throw new Error(`Output source for segment ${segment.index} has ${outputBytes.length} bytes, expected ${end - start}`);
+    }
+    const outputSha256 = hashBuffer(outputBytes, 'sha256');
     segmentChecks.push({
       index: segment.index,
       file: segment.file,
-      ok,
+      source,
+      ok: rawOk,
       expectedBytes: segment.bytes,
       actualBytes: bytes.length,
       expectedSha256: segment.sha256,
       actualSha256: sha256,
+      outputBytes: outputBytes.length,
+      outputSha256,
     });
-    if (!ok) throw new Error(`Segment ${segment.index} failed manifest verification: ${segment.file}`);
-    buffers.push(bytes);
+    if (!rawOk) throw new Error(`Segment ${segment.index} failed manifest verification: ${segment.file}`);
+    buffers.push(outputBytes);
     cursor = end;
+  }
+  if (assembledCode && !assembledCode.used) {
+    throw new Error(`Assembled code was not used; no manifest segment exactly matched ${hex(codeRegion.start)}..${hex(codeRegion.end)}`);
   }
 
   const rebuilt = Buffer.concat(buffers);
@@ -130,6 +164,19 @@ function main() {
     outputPath: path.relative(ROOT, args.out).replace(/\\/g, '/'),
     referencePath: reference.path,
     segmentCount: manifest.segments.length,
+    replacements: assembledCode
+      ? [
+          {
+            type: 'assembled-code',
+            path: args.assembledCode,
+            start: hex(codeRegion.start),
+            endExclusive: hex(codeRegion.end),
+            bytes: assembledCode.bytes.length,
+            sha256: assembledCode.sha256,
+            used: assembledCode.used,
+          },
+        ]
+      : [],
     rebuilt: {
       bytes: rebuilt.length,
       sha256: rebuiltSha256,

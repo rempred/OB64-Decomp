@@ -3,52 +3,59 @@
 This is the immediate work queue for the Rev 0 decomp repo. Keep it short and
 update it when a task becomes durable, blocked, or complete.
 
+## Completed Gate
+
+The repo can now move from a raw-span exact rebuild to an assembly-backed exact
+rebuild while preserving the no-gap rule.
+
+Current passing commands:
+
+```powershell
+node tools/assemble_original_mips.js
+node tools/rebuild_rom.js --assembled-code build/assembled/rev0/code.bin --out dist/rebuilt.us_rev0.assembled-code.z64 --report build/rebuild/rev0-assembled-code-rebuild-report.json
+```
+
+The assembled code-region SHA256 is
+`40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`; the full
+ROM rebuild SHA256 remains
+`571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A`.
+
 ## Active Goal
 
-Move from a raw-span exact rebuild to an assembly-backed exact rebuild while
-preserving the no-gap rule.
+Move the assembly-backed proof from ignored generated chunks toward tracked
+`asm/original/` source without losing exact rebuild coverage.
 
 ## Ordered Work
 
-1. Pick and document the local MIPS assembler/linker path.
+1. Decide the tracked source promotion strategy.
 
-   Requirements: MIPS III, big-endian, no unintended relaxation, stable binary
-   extraction, and scripted compare output. A `.word`-only first pass is
-   acceptable because the goal is byte preservation before readability.
+   The current generated `.word` source is ignored under
+   `build/original-mips/rev0/`. Choose whether to promote all chunks to
+   `asm/original/rev0/` now or start with a manifest-driven subset while the
+   rest remains generated.
 
-2. Add an assembler smoke test.
+2. Add a tracked-source input mode to `tools/assemble_original_mips.js`.
 
-   Assemble a tiny known byte sequence, extract the binary output, and verify it
-   matches the expected bytes. Commit the test before depending on the toolchain
-   for the ROM.
+   The build should prefer tracked source when present and fail loudly if a
+   configured chunk is missing, wrong-sized, or not contiguous.
 
-3. Assemble the current no-gap code region.
+3. Preserve the exact assembled-code rebuild.
 
-   Use the generated original MIPS reference as the source of truth at first.
-   The first assembled output can still be `.word` lines plus comments; the key
-   milestone is that the assembler can reproduce
-   `0x00001000..0x0063676C` exactly.
-
-4. Teach the rebuild loop to substitute assembled code bytes for the raw
-   code-region span.
-
-   Keep raw spans for all other regions until their own source forms are ready.
-   `tools/rebuild_rom.js` must fail loudly on size mismatch or byte mismatch.
-
-5. Re-run the full current pipeline.
+   Re-run:
 
    ```powershell
    node tools/verify_baserom.js
    node tools/build_rom_coverage_ledger.js
    node tools/extract_original_mips.js
+   node tools/assemble_original_mips.js
    node tools/extract_rom_segments.js
    node tools/rebuild_rom.js
+   node tools/rebuild_rom.js --assembled-code build/assembled/rev0/code.bin --out dist/rebuilt.us_rev0.assembled-code.z64 --report build/rebuild/rev0-assembled-code-rebuild-report.json
    ```
 
-   Required result: exact byte match with SHA256
-   `571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A`.
+   Required result: both rebuilds are exact byte matches.
 
-6. Begin function/data splitting only after the assembly-backed rebuild is
+4. Begin function/data splitting only after the tracked-source rebuild is
    exact.
 
    Start with low-risk boundaries already supported by parent workspace symbol

@@ -42,7 +42,8 @@ the same commit.
 
 The repo has a Rev 0-only scaffold, verified baserom normalization, no-gap
 original MIPS extraction for the configured code region, a whole-ROM structural
-coverage ledger, raw span extraction, and an exact byte-for-byte raw ROM rebuild.
+coverage ledger, raw span extraction, an exact byte-for-byte raw ROM rebuild,
+and an assembly-backed code-region rebuild using the generated `.word` source.
 
 Current known-good pipeline:
 
@@ -50,8 +51,10 @@ Current known-good pipeline:
 node tools/verify_baserom.js
 node tools/build_rom_coverage_ledger.js
 node tools/extract_original_mips.js
+node tools/assemble_original_mips.js
 node tools/extract_rom_segments.js
 node tools/rebuild_rom.js
+node tools/rebuild_rom.js --assembled-code build/assembled/rev0/code.bin --out dist/rebuilt.us_rev0.assembled-code.z64 --report build/rebuild/rev0-assembled-code-rebuild-report.json
 ```
 
 Expected current results:
@@ -66,6 +69,11 @@ Expected current results:
 - `extract_rom_segments.js` emits 1,059 non-overlapping raw spans.
 - `rebuild_rom.js` produces `dist/rebuilt.us_rev0.z64` and confirms an exact
   byte match against `build/baserom.us_rev0.z64`.
+- `assemble_original_mips.js` emits `build/assembled/rev0/code.bin`, matching
+  baserom code-region SHA256
+  `40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`.
+- `rebuild_rom.js --assembled-code ...` substitutes that assembled code blob for
+  the raw code segment and still confirms the same full-ROM SHA256.
 
 Current rebuilt/reference SHA256:
 
@@ -117,6 +125,8 @@ These outputs are useful but ignored:
 - `build/original-mips/rev0-report.json`
 - `build/coverage/rev0-rom-coverage-ledger.json`
 - `build/coverage/rev0-rom-coverage-ledger.md`
+- `build/assembled/rev0/code.bin`
+- `build/assembled/rev0-report.json`
 - `build/segments/rev0/manifest.json`
 - `build/segments/rev0/raw/`
 - `build/rebuild/rev0-rebuild-report.json`
@@ -148,17 +158,22 @@ These outputs are useful but ignored:
 - `tools/extract_rom_segments.js` extracts the ledger's non-overlapping spans as
   raw rebuild inputs.
 - `tools/rebuild_rom.js` rebuilds from the segment manifest and fails on any
-  byte mismatch.
+  byte mismatch. With `--assembled-code`, it substitutes an assembled code blob
+  for the configured code-region span.
+- `tools/assemble_original_mips.js` assembles the generated no-gap `.word`
+  chunks into one code-region binary.
+- `tests/word_asm_smoke.js` verifies the minimal `.word` assembler used by the
+  first assembly-backed rebuild.
 
 ## Next Best Work
 
-The next decomp step is to create an assembly-backed rebuild path that still
-passes exact comparison:
+The assembly-backed rebuild path exists and passes exact comparison. The next
+decomp step is to turn that proof into the tracked source layout:
 
-1. Choose the assembler/linker approach for MIPS III big-endian output.
-2. Assemble the current no-gap `.word` code-region reference into bytes.
-3. Replace the raw code-region span in the rebuild with assembled output.
-4. Confirm `rebuild_rom.js` still reports an exact byte match.
-5. Only then start splitting code into functions, rodata, jump tables, and C.
+1. Decide how much generated no-gap `.word` source should be promoted from
+   ignored `build/original-mips/rev0/` into tracked `asm/original/`.
+2. Add the tracked assembly source path to `assemble_original_mips.js`.
+3. Keep `rebuild_rom.js --assembled-code ...` exact after the source move.
+4. Then start splitting code into functions, rodata, jump tables, and C.
 
 See `docs/NEXT_STEPS.md` for the active task queue.

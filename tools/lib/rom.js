@@ -31,6 +31,17 @@ function hashBuffer(buffer, algorithm) {
   return crypto.createHash(algorithm).update(buffer).digest('hex').toUpperCase();
 }
 
+function firstDiff(a, b) {
+  const len = Math.min(a.length, b.length);
+  for (let i = 0; i < len; i += 1) {
+    if (a[i] !== b[i]) return { offset: i, expected: a[i], actual: b[i] };
+  }
+  if (a.length !== b.length) {
+    return { offset: len, expected: a.length > b.length ? a[len] : null, actual: b.length > a.length ? b[len] : null };
+  }
+  return null;
+}
+
 function detectByteOrder(buffer) {
   if (buffer.length < 4) return 'unknown';
   const magic = buffer.subarray(0, 4).toString('hex').toUpperCase();
@@ -206,6 +217,7 @@ module.exports = {
   defaultInputCandidates,
   detectByteOrder,
   ensureDir,
+  firstDiff,
   hashBuffer,
   headerInfo,
   hex,
