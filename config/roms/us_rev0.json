@@ -1,0 +1,30 @@
+{
+  "id": "us-rev0",
+  "game": "Ogre Battle 64: Person of Lordly Caliber",
+  "region": "USA",
+  "revision": 0,
+  "gameId": "NOBE",
+  "country": "C:45",
+  "cic": "6102",
+  "sizeBytes": 41943040,
+  "preferredInputByteOrder": "v64",
+  "canonicalByteOrder": "z64",
+  "project64Crc1": "E6419BC5",
+  "project64Crc2": "69011DE3",
+  "project64StockN64Md5": "96263551AD85189E8C9970E6439FF508",
+  "romOffsetConvention": "z64",
+  "codeRegion": {
+    "start": "0x00001000",
+    "endExclusive": "0x0063676C"
+  },
+  "bootLinearMapping": {
+    "ramBase": "0x8006FC00",
+    "romEndApprox": "0x0002F000",
+    "note": "Only early boot code follows RAM = ROM + 0x8006FC00. Later code is overlay-loaded."
+  },
+  "crcWindow": {
+    "algorithm": "n64-cic-6102",
+    "start": "0x00001000",
+    "endInclusive": "0x00100FFF"
+  }
+}

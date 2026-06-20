@@ -1,0 +1,58 @@
+# Rev 0 decomp segment scaffold.
+# Offsets are z64 offsets. This file starts conservative and should become the
+# linker/extraction source of truth as segments are proven.
+
+rom:
+  profile: us-rev0
+  size: 0x02800000
+
+segments:
+  - name: header
+    type: header
+    rom_start: 0x00000000
+    rom_end: 0x00001000
+
+  - name: boot_and_code
+    type: code
+    rom_start: 0x00001000
+    rom_end: 0x0063676C
+    notes:
+      - "Only early boot code below roughly 0x0002F000 is linearly mapped."
+      - "Most later functions are runtime overlays and need overlay-aware RAM mapping."
+
+  - name: archive_cluster_1
+    type: archive
+    rom_start: null
+    rom_end: null
+    source: "parent scripts/ob64_archive_catalog.json"
+
+  - name: audio
+    type: data
+    rom_start: 0x00925483
+    rom_end: 0x01C4801C
+
+  - name: archive_cluster_2
+    type: archive
+    rom_start: null
+    rom_end: null
+    source: "parent scripts/ob64_archive_catalog.json"
+
+  - name: lzss_region
+    type: data
+    rom_start: 0x020248C2
+    rom_end: 0x026FF9F0
+
+  - name: archive_cluster_3
+    type: archive
+    rom_start: null
+    rom_end: null
+    source: "parent scripts/ob64_archive_catalog.json"
+
+  - name: tail_padding
+    type: padding
+    rom_start: 0x02700000
+    rom_end: 0x02800000
+    notes:
+      - "Parent patch tooling uses this region for emulator-only mod modules."
+      - "Decomp matching should preserve original padding unless explicitly building a modded ROM."
+

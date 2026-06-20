@@ -1,0 +1,39 @@
+# Local ROM inputs. Track hashes/profiles, never ROM binaries.
+baserom/*
+!baserom/README.md
+
+# Build and generated outputs.
+build/*
+!build/README.md
+dist/*
+!dist/README.md
+
+# Scratch work and bulky temporary artifacts.
+scratch/*
+!scratch/README.md
+
+# Common generated binary/object files.
+*.o
+*.obj
+*.elf
+*.map
+*.bin
+*.v64
+*.z64
+*.n64
+*.rom
+*.sra
+*.pj
+*.pj.zip
+
+# Tool/runtime caches.
+.cache/
+node_modules/
+__pycache__/
+*.pyc
+
+# OS/editor noise.
+.DS_Store
+Thumbs.db
+*.swp
+*.tmp
