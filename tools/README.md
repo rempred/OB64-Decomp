@@ -42,3 +42,14 @@ structural ranges and all LHA archives, classifies untagged spans as padding or
 unknown, and gives unknown spans a small MIPS-risk summary. It also performs an
 independent LHA scan and reports all rejected method-like signatures so a missed
 archive section is visible.
+
+```powershell
+node tools/extract_rom_segments.js
+node tools/rebuild_rom.js
+```
+
+Extracts each coverage-ledger span to `build/segments/rev0/raw/`, writes
+`build/segments/rev0/manifest.json`, rebuilds `dist/rebuilt.us_rev0.z64`, and
+byte-compares it against `build/baserom.us_rev0.z64`.
+
+The rebuild report is written to `build/rebuild/rev0-rebuild-report.json`.

@@ -56,3 +56,14 @@ Because prior archive scans missed whole sections, this ledger must not trust th
 parent archive catalog by itself. It performs an independent LHA header scan,
 compares count and offsets against the parent catalog, records rejected
 method-like signatures, and reports overlaps rather than hiding them.
+
+Then run:
+
+```powershell
+node tools/extract_rom_segments.js
+node tools/rebuild_rom.js
+```
+
+This is the first exact rebuild loop. It extracts the ledger's non-overlapping
+spans as raw files, concatenates them back into `dist/rebuilt.us_rev0.z64`, and
+fails unless the rebuilt ROM is byte-identical to `build/baserom.us_rev0.z64`.

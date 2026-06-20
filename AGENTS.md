@@ -80,3 +80,26 @@ Current Rev 0 result:
 - Archive-gap bytes: 2,429,124.
 - Tail data: `0x0275415B..0x0275DD40`.
 - Clean trailing `0xFF` padding: `0x0275DD40..0x02800000`.
+
+## Exact Rebuild Rule
+
+Before replacing raw bytes with assembly or C, preserve the exact-rebuild loop:
+
+```powershell
+node tools/verify_baserom.js
+node tools/build_rom_coverage_ledger.js
+node tools/extract_rom_segments.js
+node tools/rebuild_rom.js
+```
+
+`rebuild_rom.js` must report an exact byte match against the normalized Rev 0
+baserom before source replacement work is considered safe.
+
+Current exact rebuild result:
+
+- Segment count: 1,059.
+- Total bytes: 41,943,040.
+- Rebuilt/reference SHA256:
+  `571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A`.
+- Exact match: pass.
+- First diff: none.
