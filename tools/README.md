@@ -31,3 +31,14 @@ Emits a no-gap original MIPS reference for the configured Rev 0 code region into
 Each 4-byte word is emitted as `.word` with a decode comment. This preserves the
 bytes even where function detection, labels, or code/data classification are not
 yet perfect.
+
+```powershell
+node tools/build_rom_coverage_ledger.js
+```
+
+Builds a whole-ROM Rev 0 byte coverage ledger at
+`build/coverage/rev0-rom-coverage-ledger.json` and `.md`. The ledger tags known
+structural ranges and all LHA archives, classifies untagged spans as padding or
+unknown, and gives unknown spans a small MIPS-risk summary. It also performs an
+independent LHA scan and reports all rejected method-like signatures so a missed
+archive section is visible.

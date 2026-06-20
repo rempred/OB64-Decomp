@@ -67,3 +67,11 @@ node tools/extract_original_mips.js
 The extractor currently writes generated, ignored no-gap MIPS reference output
 under `build/original-mips/rev0/`. Once the split/link/compare policy is stable,
 curated original MIPS can be promoted into `asm/original/`.
+
+```powershell
+node tools/build_rom_coverage_ledger.js
+```
+
+Builds the whole-ROM structural ledger. The current Rev 0 pass independently
+finds 825 valid LHA archives, matches the parent catalog offsets, reports zero
+unknown bytes, and keeps the `archive/audio` boundary overlap visible.

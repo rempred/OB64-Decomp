@@ -41,3 +41,18 @@ Expected first-pass result:
 - `build/original-mips/rev0/` contains chunked original assembly reference.
 - `build/original-mips/rev0-report.json` reports 100% coverage for
   `config/roms/us_rev0.json` `codeRegion`.
+
+Then run:
+
+```powershell
+node tools/build_rom_coverage_ledger.js
+```
+
+The coverage ledger is the whole-ROM safety check. It does not prove every byte's
+semantics, but it proves every byte is at least structurally tagged or called out
+as padding/unknown before we build a linker plan.
+
+Because prior archive scans missed whole sections, this ledger must not trust the
+parent archive catalog by itself. It performs an independent LHA header scan,
+compares count and offsets against the parent catalog, records rejected
+method-like signatures, and reports overlaps rather than hiding them.

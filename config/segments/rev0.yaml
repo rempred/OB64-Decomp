@@ -20,6 +20,13 @@ segments:
       - "Only early boot code below roughly 0x0002F000 is linearly mapped."
       - "Most later functions are runtime overlays and need overlay-aware RAM mapping."
 
+  - name: code_to_first_archive_gap
+    type: gap
+    rom_start: 0x0063676C
+    rom_end: 0x00636784
+    notes:
+      - "24-byte structural gap between configured code-region end and first LHA archive header."
+
   - name: archive_cluster_1
     type: archive
     rom_start: null
@@ -48,11 +55,18 @@ segments:
     rom_end: null
     source: "parent scripts/ob64_archive_catalog.json"
 
+  - name: cluster_3_tail_data
+    type: data
+    rom_start: 0x0275415B
+    rom_end: 0x0275DD40
+    notes:
+      - "Structured non-FF tail bytes after the last LHA archive; exact semantics pending."
+
   - name: tail_padding
     type: padding
-    rom_start: 0x02700000
+    rom_start: 0x0275DD40
     rom_end: 0x02800000
     notes:
+      - "Start is the first byte of the clean trailing 0xFF padding run found by the Rev 0 coverage ledger."
       - "Parent patch tooling uses this region for emulator-only mod modules."
       - "Decomp matching should preserve original padding unless explicitly building a modded ROM."
-

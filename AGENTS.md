@@ -62,3 +62,21 @@ in a configured segment must remain represented by source. The current
 emitting every 4-byte word as `.word` plus a decode comment into ignored
 `build/original-mips/rev0/`. Promote generated original MIPS into
 `asm/original/` only after the split/link/compare policy is stable.
+
+## Current Rev 0 Coverage Ledger
+
+`tools/build_rom_coverage_ledger.js` is the whole-ROM structural safety check.
+It independently scans LHA headers instead of trusting the parent archive
+catalog alone, compares count and offsets with the parent catalog, records
+rejected method-like signatures, and reports overlaps.
+
+Current Rev 0 result:
+
+- Valid parsed LHA archives: 825.
+- Parent catalog offsets match: yes.
+- Method-like signatures: 837 total, 12 rejected/unparsed, none in unknown
+  space.
+- Unknown bytes: 0.
+- Archive-gap bytes: 2,429,124.
+- Tail data: `0x0275415B..0x0275DD40`.
+- Clean trailing `0xFF` padding: `0x0275DD40..0x02800000`.
