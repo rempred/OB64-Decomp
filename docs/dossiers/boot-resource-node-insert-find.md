@@ -10,7 +10,7 @@ helper immediately after the payload materialize helper:
 | Source | ROM range | RAM range | Notes |
 | --- | --- | --- | --- |
 | `asm/original/rev0/boot/boot_resource_node_insert_find.s` | `0x00009CAC..0x00009D50` | `0x800798AC..0x80079950` | Recursive node insert/find helper for key-like field `+0x00`. |
-| `asm/original/rev0/code_00009D50_00011000.s` | `0x00009D50..0x00011000` | `0x80079950..0x80080C00` | Current tracked remainder; starts with a larger resource-loader/context helper. |
+| `asm/original/rev0/code_00009D50_00011000.s` | `0x00009D50..0x00011000` | `0x80079950..0x80080C00` | Historical remainder at this checkpoint; superseded by `boot_resource_node_context_materialize.s`. |
 
 The source name is conservative. It describes the static tree insertion/search
 shape, not a verified runtime API contract.
@@ -51,7 +51,8 @@ shape, not a verified runtime API contract.
 - The split includes the normal return at `0x9D48` and the branch delay-slot
   stack restore at `0x9D4C`.
 - The next family begins cleanly at `0x00009D50`; do not include that word in
-  this source file.
+  this source file. It is now promoted separately as
+  `boot_resource_node_context_materialize.s`.
 - Parent data labels `0x9D50` as `dma/resource::resource loader`, with frame
   size `0x50`, high-confidence callers from the command-stream family, callees
   to DMA/cache and allocation helpers plus `0xB29C`, `0x9CAC`, and `0xB0B0`,

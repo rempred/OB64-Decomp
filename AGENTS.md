@@ -2136,7 +2136,8 @@ helper immediately after the payload materialize helper:
 
 - `asm/original/rev0/boot/boot_resource_node_insert_find.s`
   `0x00009CAC..0x00009D50` / RAM `0x800798AC..0x80079950`.
-- Current remainder:
+- Remainder at this split, now superseded by the context materialize split
+  below:
   `asm/original/rev0/code_00009D50_00011000.s`.
 
 Static evidence: parent data reports `0x9CAC` as a 164-byte recursive prologue
@@ -2165,6 +2166,43 @@ reads/writes around `0x800AF0C4` and `0x800C4BC0`.
 Static dossier:
 `docs/dossiers/boot-resource-node-insert-find.md`.
 
+## Boot Resource Node Context Materialize Split
+
+The next tracked Rev 0 original-MIPS split promotes the larger resource-loader
+context helper immediately after the recursive node insert/find helper:
+
+- `asm/original/rev0/boot/boot_resource_node_context_materialize.s`
+  `0x00009D50..0x00009EFC` / RAM `0x80079950..0x80079AFC`.
+- Current remainder:
+  `asm/original/rev0/code_00009EFC_00011000.s`.
+
+Static evidence: parent data reports `0x9D50` as a 428-byte prologue helper
+with frame size `0x50`, fixed in all seven named states and all 21 snapshots.
+Parent symbols label it `dma/resource::resource loader`. High-confidence
+callers are `0x978C` and `0x97A8`; high-confidence callees are `0x2DEF4` /
+RAM `0x8009DAF4`, `resource_alloc` `0x1330`, `0x2DFB8` / RAM `0x8009DBB8`,
+`0xB29C` / RAM `0x8007AE9C`, node helper RAM `0x80079CB4`, and `0xB0B0` /
+RAM `0x8007ACB0`. Parent xrefs show reads/writes around context fields at
+`0x800AF0C4`, `0x800AF0C8`, and `0x800AF0CC`, plus a write to `0x800C4BC0`.
+
+Static shape: the helper accepts a node-like pointer in `a0` and an
+index/mode-like value in `a1`, has a special `-0x16` path that can materialize
+missing node payload data and walk a range reported by `0x8007AE9C`, calls the
+node insert/find helper through RAM `0x80079CB4` for each selected index,
+updates `[node+0x0C]`, fills shared context fields `+0x04`, `+0x08`, and
+`+0x0C = 1` via `0x8007ACB0` when the context payload is empty, and mirrors
+context field `+0x08` to global `0x800C4BC0`.
+
+Boundary rule: the promoted source includes the `0x9EF4` return and `0x9EF8`
+delay-slot stack restore. The next family starts cleanly at `0x9EFC`; parent
+labels it `dma/resource::resource loader`, with frame size `0x18`,
+command-stream callers, callees to the node helper, DMA/cache helper,
+allocator/copy helpers, LZSS decompressor `0xA510`, and unresolved RAM helper
+`0x8007A7E0`, and reads/writes around `0x800AF0C4` and `0x800C4BC0`.
+
+Static dossier:
+`docs/dossiers/boot-resource-node-context-materialize.md`.
+
 ## Setup Complete Gate
 
 The setup phase is complete when `node tools/verify_setup.js` passes. Current
@@ -2179,7 +2217,7 @@ setup-complete state:
 - Assembler: GNU Binutils 2.39 `mips64-elf-as.exe` with `-EB -mips3 -32`.
 - Setup verifier: `tools/verify_setup.js`.
 - Current verifier result: PASS; 825 archives, 0 unknown bytes, 108 overlap
-  bytes visible, 1 tracked composite real-asm chunk made from 88 tracked source
+  bytes visible, 1 tracked composite real-asm chunk made from 89 tracked source
   files, 99 generated fallback chunks, full-source manifest 1,059 entries with
   2,469,141 ambiguous bytes preserved explicitly, 3 tracked non-code
   source-owner files / 44,029 bytes, 1,055 generated non-code fallback files /
@@ -2188,8 +2226,8 @@ setup-complete state:
   `571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A`.
 
 Next phase is either promoting another small non-code owner batch or continuing
-tracked original-MIPS splits from `asm/original/rev0/code_00009D50_00011000.s`.
-The next MIPS frontier starts with `0x9D50`, a larger frame-`0x50`
-resource-loader/context helper with a clean boundary at `0x9EFC`; keep
-`0x9D50..0x9EFC` together unless stronger boundary evidence appears. Do not
+tracked original-MIPS splits from `asm/original/rev0/code_00009EFC_00011000.s`.
+The next MIPS frontier starts with `0x9EFC`, a 220-byte frame-`0x18`
+resource-loader helper with a clean boundary at `0x9FD8`; keep
+`0x9EFC..0x9FD8` together unless stronger boundary evidence appears. Do not
 begin semantic C decomp unless the setup verifier is green.

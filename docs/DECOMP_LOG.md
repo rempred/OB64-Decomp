@@ -18,7 +18,7 @@ and replace the active log with a compact current-state summary.
 - Whole-ROM coverage still independently scans for LHA headers; do not trust the
   parent archive catalog by itself.
 - Current tracked code source mix: one composite real-assembler chunk
-  `0x00001000..0x00011000` made from 88 tracked source files, plus 99 generated
+  `0x00001000..0x00011000` made from 89 tracked source files, plus 99 generated
   fallback code chunks.
 - Current tracked non-code source-owner mix: 3 tracked files / 44,029 bytes,
   plus 1,055 generated fallback owner files / 35,388,567 bytes.
@@ -61,8 +61,9 @@ Current named sequence:
 - Resource probe helpers through
   `boot_resource_probe_record_checksum_signature.s` `0x4AC8..0x5FC0`.
 - State/slot, resource-handle, transform-record, and command/resource-node
-  helpers through `boot_resource_node_insert_find.s` `0x5FC0..0x9D50`.
-- Current remainder: `code_00009D50_00011000.s`.
+  helpers through `boot_resource_node_context_materialize.s`
+  `0x5FC0..0x9EFC`.
+- Current remainder: `code_00009EFC_00011000.s`.
 
 Static dossiers live under `docs/dossiers/` and are the durable evidence notes
 for each promoted source-layout split.
@@ -1110,8 +1111,6 @@ Verification for the split:
 - Static dossier:
   `docs/dossiers/boot-resource-node-payload-materialize.md`.
 
-## Next Frontier
-
 ## 2026-06-21 - Boot Resource Node Insert/Find Split
 
 Baseline before the split:
@@ -1167,13 +1166,69 @@ Verification for the split:
 - Static dossier:
   `docs/dossiers/boot-resource-node-insert-find.md`.
 
+## 2026-06-21 - Boot Resource Node Context Materialize Split
+
+Baseline before the split:
+
+- `git status --short` was clean at commit
+  `ecfe3ea Split Rev 0 boot resource node insert find`.
+- `node tools\verify_setup.js` passed with 825 archives, zero unknown bytes, 108
+  visible overlap bytes, 88 tracked source files, 99 generated fallback chunks,
+  and unchanged code/ROM hashes.
+
+Promoted
+`asm/original/rev0/boot/boot_resource_node_context_materialize.s` covering ROM
+`0x00009D50..0x00009EFC` / RAM `0x80079950..0x80079AFC`. The old
+`asm/original/rev0/code_00009D50_00011000.s` remainder was removed and replaced
+by `asm/original/rev0/code_00009EFC_00011000.s`.
+
+Static evidence from parent function/symbol/callgraph/xref data, parent
+`docs/rom-layout.md`, and local source:
+
+- `0x9D50` is a 428-byte prologue helper with frame size `0x50`, fixed in all
+  seven named states and all 21 snapshots.
+- Parent symbols label it `dma/resource::resource loader`.
+- High-confidence callers are `0x978C` and `0x97A8`.
+- High-confidence callees are `0x2DEF4` / RAM `0x8009DAF4`, `resource_alloc`
+  `0x1330`, `0x2DFB8` / RAM `0x8009DBB8`, `0xB29C` / RAM `0x8007AE9C`,
+  node helper RAM `0x80079CB4`, and `0xB0B0` / RAM `0x8007ACB0`.
+- Parent xrefs show reads/writes around context fields at `0x800AF0C4`,
+  `0x800AF0C8`, and `0x800AF0CC`, plus a write to `0x800C4BC0`.
+
+Static shape:
+
+- Accepts a node-like pointer in `a0` and an index/mode-like value in `a1`.
+- Has a special `-0x16` path that can materialize a missing node payload, calls
+  `0x8007AE9C`, and walks a returned index range; otherwise it handles one
+  index.
+- Calls the node insert/find helper through RAM `0x80079CB4` with field
+  `+0x0C` and the current index, storing the returned node back to `+0x0C`.
+- If the shared context payload field is empty, calls `0x8007ACB0` with
+  stack-backed descriptors, then writes context fields `+0x04`, `+0x08`, and
+  status `+0x0C = 1`.
+- Mirrors context field `+0x08` to global `0x800C4BC0` before returning.
+- The split includes the `0x9EF4` return and `0x9EF8` delay-slot stack restore;
+  the next family starts at `0x9EFC`.
+
+Verification for the split:
+
+- `node tests\binutils_smoke.js` passed.
+- `node tools\assemble_original_mips.js` passed.
+- Full `node tools\verify_setup.js` passed after docs were updated.
+- Source mix is now 1 tracked composite real-asm chunk made from 89 tracked
+  source files, plus 99 generated fallback chunks.
+- Static dossier:
+  `docs/dossiers/boot-resource-node-context-materialize.md`.
+
 ## Next Frontier
 
-Continue from `asm/original/rev0/code_00009D50_00011000.s`. The first target is
-`0x9D50`, a larger frame-`0x50` resource-loader/context helper. Parent evidence
-labels it `dma/resource::resource loader`, reports command-stream callers,
-callees to the DMA/cache and allocation helpers plus `0xB29C`, `0x9CAC`, and
-`0xB0B0`, and reads/writes around `0x800AF0C4` and `0x800C4BC0`. Local source
-shows a special `-0x16` path, node payload materialization, calls to
-`0x8007AE9C` and `0x8007ACB0`, and updates to the current context global; keep
-`0x9D50..0x9EFC` together.
+Continue from `asm/original/rev0/code_00009EFC_00011000.s`. The first target is
+`0x9EFC`, a 220-byte frame-`0x18` resource-loader helper that resembles the
+`0x9FD8` sibling. Parent evidence labels it `dma/resource::resource loader`,
+reports command-stream callers, callees to the node helper, DMA/cache helper,
+allocator/copy helpers, LZSS decompressor `0xA510`, and unresolved RAM helper
+`0x8007A7E0`, plus reads/writes around `0x800AF0C4` and `0x800C4BC0`. Local
+source calls node helper RAM `0x80079CB4` with index `0`, materializes a missing
+payload, allocates a decompressed destination, calls `0x8007A110`, sets context
+status `+0x0C = 2`, and mirrors context field `+0x08` to `0x800C4BC0`; keep
+`0x9EFC..0x9FD8` together.
