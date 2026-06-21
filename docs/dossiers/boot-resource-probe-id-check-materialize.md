@@ -52,10 +52,10 @@ final behavior or API semantics.
   `boot_resource_probe_global_buffer_dual_callback_apply.s`.
 - The routine ends after the `jr ra` delay slot at `0x5818`.
 - Follow-up splits now cover through
-  `boot_resource_probe_large_record_check.s` (`0x00005978..0x00005A88`);
-  current active remainder starts at `0x00005A88`.
-- The next parent boundary is `0x00005A88`; parent data reports it as another
-  overlapping leaf/prologue small-record check helper family.
+  `boot_resource_probe_small_record_check.s` (`0x00005A88..0x00005B8C`);
+  current active remainder starts at `0x00005B8C`.
+- The next parent boundary is `0x00005B8C`; parent data reports it as an
+  indexed-record copy/flag helper.
 
 ## Verification
 

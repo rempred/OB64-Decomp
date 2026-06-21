@@ -469,17 +469,26 @@
           "sha256": "37CBFAF6EE948DB98C0B1CDC95E07C32FE524E873706F55F002F7C57503D7BB3"
         },
         {
-          "name": "code_00005A88_00011000_remainder",
-          "file": "asm/original/rev0/code_00005A88_00011000.s",
+          "name": "boot_resource_probe_small_record_check",
+          "file": "asm/original/rev0/boot/boot_resource_probe_small_record_check.s",
           "romStart": "0x00005A88",
+          "romEndExclusive": "0x00005B8C",
+          "bytes": 260,
+          "textBytes": 5397,
+          "sha256": "13AE11A2930FDD51B518D2DB97A25DCB2A913F5F331AE70838F0997F9238C8F3"
+        },
+        {
+          "name": "code_00005B8C_00011000_remainder",
+          "file": "asm/original/rev0/code_00005B8C_00011000.s",
+          "romStart": "0x00005B8C",
           "romEndExclusive": "0x00011000",
-          "bytes": 46456,
-          "textBytes": 896473,
-          "sha256": "C192A0A4CB5096B9559C74897E710925FE6C9A22F7672579F1929F8D935C5D5E"
+          "bytes": 46196,
+          "textBytes": 891334,
+          "sha256": "9FA783C5099DD8FE19702688ADEF84FD1809C3EBB998FE398A72AE3299CF6699"
         }
       ],
-      "textBytes": 1277711,
-      "sha256": "5F828E8B13426ECA3DAD71659760DDF9DD21D82ED0BAB916F66C62241ACB3C6F"
+      "textBytes": 1277969,
+      "sha256": "168590B8E2FEAC5F01491118E2997D0CA2C4648FD31E45680C45E3E72849DCF1"
     }
   ]
 }

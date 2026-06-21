@@ -173,7 +173,7 @@ Current result:
   `40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`.
 - Code-region match against baserom: pass.
 - Tracked real-assembler original-MIPS chunks: 1 composite
-  (`0x00001000..0x00011000`) made from 51 real-assembler source files.
+  (`0x00001000..0x00011000`) made from 52 real-assembler source files.
 - Generated fallback chunks: 99.
 - Assembled-code ROM rebuild command:
 
@@ -1166,7 +1166,7 @@ called by the dispatch result builder and the ID check/materialize wrapper:
 - `asm/original/rev0/boot/boot_resource_probe_large_record_check.s`
   `0x00005978..0x00005A88`; parent reports a leaf entry at `0x5978` that falls
   into the `0x5980` prologue body with frame size `0x28`.
-- Remainder:
+- Remainder after this split, now superseded by the small-record split below:
   `asm/original/rev0/code_00005A88_00011000.s`.
 
 Static evidence: parent function/symbol/callgraph data reports callers `0x4ED4`
@@ -1191,9 +1191,43 @@ names.
 
 Static dossier:
 `docs/dossiers/boot-resource-probe-large-record-check.md`.
-Next source split should start at `asm/original/rev0/code_00005A88_00011000.s`;
-the next target is the overlapping `0x5A88/0x5A90` small-record check helper
-pair.
+
+## Boot Resource Probe Small Record Check Split
+
+The next tracked Rev 0 original-MIPS split separates the overlapping sibling
+helper pair after the large-record check:
+
+- `asm/original/rev0/boot/boot_resource_probe_small_record_check.s`
+  `0x00005A88..0x00005B8C`; parent reports a leaf entry at `0x5A88` that falls
+  into the `0x5A90` prologue body with frame size `0x28`.
+- Remainder:
+  `asm/original/rev0/code_00005B8C_00011000.s`.
+
+Static evidence: parent function/symbol/callgraph data reports the pair as the
+same permanent sibling family seen by the previous wrapper target
+`0x80075688`, with primary RAM `0x80075578/0x80075580` and matching code at
+`0x80075688/0x80075690` across all seven named states / all 21 parent RAM
+snapshots. High-confidence callees are `resource_alloc` (`0x1330`),
+`0x1A4F0` / RAM `0x8008A0F0`, `0x23460` / RAM `0x80093060`, and `0x23350` /
+RAM `0x80092F50`; unresolved RAM calls remain `0x80075A84` and `0x80075B00`;
+global traffic reads/writes `0x800A83B8`.
+
+Static shape: the `0x5A88` prefix loads shared global buffer pointer
+`0x800A83B8`, then the `0x5A90` prologue body ensures the shared buffer exists
+by allocating `0x8000` and filling it in `0x100`-byte chunks through
+`0x8008A0F0`. It copies `0x10` bytes from shared-buffer offset `0` into caller
+scratch through `0x80093060`, compares `scratch + 4` against the 8-byte base at
+`0x800A8240`, and returns zero on mismatch. It then checks two
+halfword-return helpers over `scratch + 0x0C` / length `4` / source offset `0`
+against the first two scratch header halfwords. The name is conservative and
+records the static small-record check shape, not verified runtime semantics or
+final checksum names.
+
+Static dossier:
+`docs/dossiers/boot-resource-probe-small-record-check.md`.
+Next source split should start at `asm/original/rev0/code_00005B8C_00011000.s`;
+the next target is the `0x5B8C` indexed-record copy/flag helper called by the
+dispatch prepare and ID materialize helpers.
 
 ## Setup Complete Gate
 
@@ -1209,7 +1243,7 @@ setup-complete state:
 - Assembler: GNU Binutils 2.39 `mips64-elf-as.exe` with `-EB -mips3 -32`.
 - Setup verifier: `tools/verify_setup.js`.
 - Current verifier result: PASS; 825 archives, 0 unknown bytes, 108 overlap
-  bytes visible, 1 tracked composite real-asm chunk made from 51 tracked source
+  bytes visible, 1 tracked composite real-asm chunk made from 52 tracked source
   files, 99 generated fallback chunks, full-source manifest 1,059 entries with
   2,469,141 ambiguous bytes preserved explicitly, 3 tracked non-code
   source-owner files / 44,029 bytes, 1,055 generated non-code fallback files /
@@ -1218,5 +1252,5 @@ setup-complete state:
   `571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A`.
 
 Next phase is either promoting another small non-code owner batch or continuing
-tracked original-MIPS splits from `asm/original/rev0/code_00005A88_00011000.s`.
+tracked original-MIPS splits from `asm/original/rev0/code_00005B8C_00011000.s`.
 Do not begin semantic C decomp unless the setup verifier is green.
