@@ -30,10 +30,11 @@ For decomp work, use this order:
 1. `../AGENTS.md`
 2. `docs/PLATFORM.md`
 3. `docs/REV0_SCOPE.md`
-4. `docs/WORKFLOW.md`
-5. `docs/NEXT_STEPS.md`
-6. Parent `docs/mips-decomp-workflow-plan.md`
-7. Parent subsystem docs and trace artifacts as cited by the local note
+4. `docs/TOOLCHAIN.md`
+5. `docs/WORKFLOW.md`
+6. `docs/NEXT_STEPS.md`
+7. Parent `docs/mips-decomp-workflow-plan.md`
+8. Parent subsystem docs and trace artifacts as cited by the local note
 
 When a durable fact changes, update `AGENTS.md` and the relevant `docs/` file in
 the same commit.
@@ -43,20 +44,14 @@ the same commit.
 The repo has a Rev 0-only scaffold, verified baserom normalization, no-gap
 original MIPS extraction for the configured code region, a whole-ROM structural
 coverage ledger, raw span extraction, an exact byte-for-byte raw ROM rebuild,
-and an assembly-backed code-region rebuild. The assembler now prefers tracked
-chunks under `asm/original/rev0/` and falls back to generated chunks under
-`build/original-mips/rev0/`.
+and an assembly-backed code-region rebuild. Setup is complete: a project-local
+GNU MIPS binutils toolchain is configured, tracked source chunks assemble through
+real `mips64-elf-as`, and `node tools/verify_setup.js` verifies the whole setup.
 
 Current known-good pipeline:
 
 ```powershell
-node tools/verify_baserom.js
-node tools/build_rom_coverage_ledger.js
-node tools/extract_original_mips.js
-node tools/assemble_original_mips.js
-node tools/extract_rom_segments.js
-node tools/rebuild_rom.js
-node tools/rebuild_rom.js --assembled-code build/assembled/rev0/code.bin --out dist/rebuilt.us_rev0.assembled-code.z64 --report build/rebuild/rev0-assembled-code-rebuild-report.json
+node tools/verify_setup.js
 ```
 
 Expected current results:
@@ -74,10 +69,12 @@ Expected current results:
 - `assemble_original_mips.js` emits `build/assembled/rev0/code.bin`, matching
   baserom code-region SHA256
   `40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`.
-- `assemble_original_mips.js` currently uses 1 tracked source chunk
-  (`0x00001000..0x00011000`) and 99 generated fallback chunks.
+- `assemble_original_mips.js` currently uses 1 tracked real-assembler source
+  chunk (`0x00001000..0x00011000`) and 99 generated fallback chunks.
 - `rebuild_rom.js --assembled-code ...` substitutes that assembled code blob for
   the raw code segment and still confirms the same full-ROM SHA256.
+- `tests/binutils_smoke.js` proves `.word`, real instruction, `.set noreorder`,
+  and first tracked chunk real-assembler behavior.
 
 Current rebuilt/reference SHA256:
 
@@ -117,6 +114,7 @@ tests/         parser, extraction, compare, and regression tests
 build/         generated intermediates, ignored
 dist/          rebuilt ROMs and reports, ignored
 scratch/       local experiments, ignored
+.toolchains/   local toolchains, ignored
 ```
 
 ## Generated Artifacts
@@ -134,6 +132,8 @@ These outputs are useful but ignored:
 - `build/segments/rev0/manifest.json`
 - `build/segments/rev0/raw/`
 - `build/rebuild/rev0-rebuild-report.json`
+- `build/setup/verify-setup-report.json`
+- `build/toolchain-smoke/binutils-smoke-report.json`
 - `dist/rebuilt.us_rev0.z64`
 
 ## Structural Snapshot
@@ -164,25 +164,44 @@ These outputs are useful but ignored:
 - `tools/rebuild_rom.js` rebuilds from the segment manifest and fails on any
   byte mismatch. With `--assembled-code`, it substitutes an assembled code blob
   for the configured code-region span.
-- `tools/assemble_original_mips.js` assembles tracked/generated no-gap `.word`
-  chunks into one code-region binary.
+- `tools/assemble_original_mips.js` assembles tracked/generated source chunks
+  into one code-region binary. Tracked chunks use GNU `mips64-elf-as`; generated
+  fallback chunks use the minimal `.word` assembler.
 - `tools/promote_original_mips.js` promotes generated chunks into tracked
   `asm/original/rev0/` source in deliberate batches.
+- `tools/verify_setup.js` is the canonical setup verification command.
+- `tests/binutils_smoke.js` verifies the GNU MIPS binutils path.
 - `tests/word_asm_smoke.js` verifies the minimal `.word` assembler used by the
-  first assembly-backed rebuild.
+  generated fallback path.
+
+## Setup Complete
+
+Setup is complete when:
+
+```powershell
+node tools/verify_setup.js
+```
+
+prints PASS. Current PASS summary:
+
+- Baserom Rev 0 verified.
+- Coverage ledger: 825 archives, zero unknown bytes, 108 overlap bytes visible.
+- Toolchain: `n64-tools-gcc-toolchain-mips64-win64`, GNU Binutils 2.39.
+- Binutils smoke tests: `.word`, real instructions, `.set noreorder`, and first
+  tracked chunk real assembly all pass.
+- Source mix: 1 tracked real-asm chunk and 99 generated fallback chunks.
+- Code SHA256:
+  `40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`.
+- Full ROM SHA256:
+  `571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A`.
 
 ## Next Best Work
 
-The assembly-backed rebuild path exists and passes exact comparison. The first
-chunk is now tracked. The next decomp step is to continue turning that proof into
-the tracked source layout:
+The setup phase is complete. The next phase is real decomp preparation:
 
-1. Promote the next batch of chunks with `tools/promote_original_mips.js`, or
-   start splitting the tracked boot chunk into more readable source.
-2. Keep `rebuild_rom.js --assembled-code ...` exact after every promotion or
-   split.
-3. Use `--strict-tracked` only once every configured code chunk has a tracked
-   source file.
-4. Then start replacing well-bounded functions with C.
+1. Split the first tracked chunk into cleaner chunk/function/data files.
+2. Begin function naming from existing parent symbols and trace evidence.
+3. Keep `node tools/verify_setup.js` green after every source-layout change.
+4. Start C conversion only after the split/compare loop is comfortable.
 
 See `docs/NEXT_STEPS.md` for the active task queue.

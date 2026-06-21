@@ -28,6 +28,7 @@ scratch/*
 
 # Tool/runtime caches.
 .cache/
+.toolchains/
 node_modules/
 __pycache__/
 *.pyc

@@ -1,0 +1,15 @@
+{
+  "id": "n64-tools-gcc-toolchain-mips64-win64",
+  "kind": "gnu-binutils",
+  "sourceUrl": "https://github.com/n64-tools/gcc-toolchain-mips64/releases/download/latest/gcc-toolchain-mips64-win64.zip",
+  "sourceProject": "https://github.com/n64-tools/gcc-toolchain-mips64",
+  "archiveSha256": "7EE3598AC151C0A728DCFD916E3DF615793D2ED0A28CDC0CCAFA31EEF76526BB",
+  "localRoot": ".toolchains/gcc-toolchain-mips64-win64",
+  "assembler": "bin/mips64-elf-as.exe",
+  "objcopy": "bin/mips64-elf-objcopy.exe",
+  "assemblerVersion": "GNU assembler (GNU Binutils) 2.39",
+  "objcopyVersion": "GNU objcopy (GNU Binutils) 2.39",
+  "assemblerFlags": ["-EB", "-mips3", "-32"],
+  "objcopyFlags": ["-O", "binary", "-j", ".text"],
+  "note": "Project-local N64 MIPS64 GNU binutils toolchain. Keep the archive and extracted tools under .toolchains/; do not commit them."
+}

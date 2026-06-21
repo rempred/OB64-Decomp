@@ -15,6 +15,13 @@ Tools should be deterministic and should not require ROM binaries to be tracked.
 ## Current Tools
 
 ```powershell
+node tools/verify_setup.js
+```
+
+Canonical setup-complete verifier. Runs the full setup gate and writes
+`build/setup/verify-setup-report.json`.
+
+```powershell
 node tools/verify_baserom.js
 ```
 
@@ -53,3 +60,12 @@ Extracts each coverage-ledger span to `build/segments/rev0/raw/`, writes
 byte-compares it against `build/baserom.us_rev0.z64`.
 
 The rebuild report is written to `build/rebuild/rev0-rebuild-report.json`.
+
+```powershell
+node tests/binutils_smoke.js
+```
+
+Verifies the project-local GNU MIPS binutils toolchain configured in
+`config/toolchain.json`: `.word` big-endian output, real MIPS instruction output,
+`.set noreorder` delay-slot behavior, and the first tracked chunk through
+`mips64-elf-as`.

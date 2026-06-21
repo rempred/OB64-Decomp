@@ -13,9 +13,10 @@ const {
   writeJson,
 } = require('./lib/rom');
 const { assembleWordAsmFile } = require('./lib/word_asm');
+const { assembleFileToBinary, loadToolchainConfig } = require('./lib/real_mips_toolchain');
 
 function usage() {
-  console.log(`Usage: node tools/assemble_original_mips.js [--source-report <json>] [--tracked-dir <dir>] [--strict-tracked] [--no-tracked] [--out <bin>] [--report <json>] [--reference <z64>]\n\nAssembles the no-gap .word MIPS reference for the Rev 0 code region into a binary blob and verifies it against the normalized baserom code bytes. Tracked source chunks under asm/original/rev0 are preferred when present; generated build chunks remain the fallback unless --strict-tracked is used.`);
+  console.log(`Usage: node tools/assemble_original_mips.js [--source-report <json>] [--tracked-dir <dir>] [--real-asm-out <dir>] [--strict-tracked] [--no-tracked] [--no-real-asm] [--out <bin>] [--report <json>] [--reference <z64>]\n\nAssembles the no-gap MIPS reference for the Rev 0 code region into a binary blob and verifies it against the normalized baserom code bytes. Tracked source chunks under asm/original/rev0 are preferred when present and normally use the real GNU MIPS assembler; generated build chunks remain the .word fallback unless --strict-tracked is used.`);
 }
 
 function parseArgs(argv) {
@@ -25,7 +26,9 @@ function parseArgs(argv) {
     report: path.join(ROOT, 'build', 'assembled', 'rev0-report.json'),
     reference: path.join(ROOT, 'build', 'baserom.us_rev0.z64'),
     trackedDir: path.join(ROOT, 'asm', 'original', 'rev0'),
+    realAsmOutDir: path.join(ROOT, 'build', 'real-asm', 'rev0', 'chunks'),
     useTracked: true,
+    useRealAsmForTracked: true,
     strictTracked: false,
   };
   for (let i = 0; i < argv.length; i += 1) {
@@ -43,6 +46,10 @@ function parseArgs(argv) {
       args.reference = path.resolve(argv[++i]);
     } else if (arg === '--tracked-dir') {
       args.trackedDir = path.resolve(argv[++i]);
+    } else if (arg === '--real-asm-out') {
+      args.realAsmOutDir = path.resolve(argv[++i]);
+    } else if (arg === '--no-real-asm') {
+      args.useRealAsmForTracked = false;
     } else if (arg === '--strict-tracked') {
       args.strictTracked = true;
     } else if (arg === '--no-tracked') {
@@ -87,9 +94,11 @@ function main() {
   const chunkReports = [];
   let totalWords = 0;
   const sourceCounts = {
-    tracked: 0,
+    trackedRealAsm: 0,
+    trackedWordAsm: 0,
     generated: 0,
   };
+  const toolchainConfig = args.useRealAsmForTracked ? loadToolchainConfig() : null;
 
   for (const chunk of chunks) {
     const start = parseHexOrNumber(chunk.romStart);
@@ -98,7 +107,21 @@ function main() {
     const selected = selectChunkSource(chunk, args);
     const filePath = selected.path;
     if (!fs.existsSync(filePath)) throw new Error(`Assembly chunk missing: ${filePath}`);
-    const assembled = assembleWordAsmFile(filePath);
+    let assembled;
+    let sourceKind = selected.kind;
+    let tool = 'word-asm';
+    if (selected.kind === 'tracked' && args.useRealAsmForTracked) {
+      const outBin = path.join(args.realAsmOutDir, `${path.basename(filePath, '.s')}.bin`);
+      const outObj = path.join(args.realAsmOutDir, `${path.basename(filePath, '.s')}.o`);
+      assembleFileToBinary({ source: filePath, outBin, outObj, config: toolchainConfig });
+      const bytes = fs.readFileSync(outBin);
+      assembled = { bytes, words: bytes.length / 4, outBin, outObj };
+      sourceKind = 'tracked-real-asm';
+      tool = toolchainConfig.id;
+    } else {
+      assembled = assembleWordAsmFile(filePath);
+      if (selected.kind === 'tracked') sourceKind = 'tracked-word-asm';
+    }
     if (assembled.bytes.length !== end - start || assembled.bytes.length !== chunk.bytes) {
       throw new Error(`Assembled chunk size mismatch for ${chunk.file}: got ${assembled.bytes.length}, expected ${chunk.bytes}`);
     }
@@ -106,14 +129,18 @@ function main() {
     totalWords += assembled.words;
     chunkReports.push({
       file: path.relative(ROOT, filePath).replace(/\\/g, '/'),
-      source: selected.kind,
+      source: sourceKind,
+      tool,
+      toolOutput: assembled.outBin ? path.relative(ROOT, assembled.outBin).replace(/\\/g, '/') : null,
       romStart: hex(start),
       romEndExclusive: hex(end),
       bytes: assembled.bytes.length,
       words: assembled.words,
       sha256: hashBuffer(assembled.bytes, 'sha256'),
     });
-    sourceCounts[selected.kind] += 1;
+    if (sourceKind === 'tracked-real-asm') sourceCounts.trackedRealAsm += 1;
+    else if (sourceKind === 'tracked-word-asm') sourceCounts.trackedWordAsm += 1;
+    else sourceCounts.generated += 1;
     cursor = end;
   }
   if (cursor !== codeEnd) throw new Error(`Chunks end at ${hex(cursor)}, expected ${hex(codeEnd)}`);
@@ -144,8 +171,10 @@ function main() {
     chunkCount: chunkReports.length,
     sources: {
       trackedDir: path.relative(ROOT, args.trackedDir).replace(/\\/g, '/'),
-      trackedChunks: sourceCounts.tracked,
+      trackedRealAsmChunks: sourceCounts.trackedRealAsm,
+      trackedWordAsmChunks: sourceCounts.trackedWordAsm,
       generatedChunks: sourceCounts.generated,
+      realAsmForTracked: args.useRealAsmForTracked,
       strictTracked: args.strictTracked,
     },
     words: totalWords,

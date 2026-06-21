@@ -8,6 +8,7 @@ Start here for future sessions:
 - `AGENTS.md` - local rules and durable memory gate.
 - `docs/PLATFORM.md` - current repo state, invariants, and command snapshot.
 - `docs/REV0_SCOPE.md` - Rev 0 identity and structural coverage snapshot.
+- `docs/TOOLCHAIN.md` - local MIPS binutils setup and smoke-test expectations.
 - `docs/WORKFLOW.md` - decomp loop and evidence rules.
 - `docs/NEXT_STEPS.md` - immediate task queue.
 
@@ -67,6 +68,16 @@ scratch/       local experiments, ignored
 
 ## Current First-Pass Tools
 
+Canonical setup verification:
+
+```powershell
+node tools/verify_setup.js
+```
+
+Current result: setup complete. The command verifies the Rev 0 baserom, coverage
+ledger, real MIPS binutils smoke tests, tracked-chunk real assembly, raw rebuild,
+and assembled-code rebuild.
+
 ```powershell
 node tools/verify_baserom.js
 node tools/extract_original_mips.js
@@ -102,9 +113,9 @@ node tools/rebuild_rom.js --assembled-code build/assembled/rev0/code.bin --out d
 
 Assembles the generated no-gap `.word` MIPS reference into an ignored code blob
 and substitutes it for the raw code segment during rebuild. The assembler
-prefers promoted chunks under `asm/original/rev0/` and falls back to ignored
-generated chunks for ranges not promoted yet. Current assembled code-region
-SHA256:
+prefers promoted chunks under `asm/original/rev0/` and assembles them with GNU
+`mips64-elf-as`; it falls back to ignored generated chunks for ranges not
+promoted yet. Current assembled code-region SHA256:
 `40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`; full ROM
 rebuild remains byte-identical.
 

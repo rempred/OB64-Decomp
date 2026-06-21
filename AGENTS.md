@@ -36,12 +36,13 @@ Before decomp work, read:
 1. Parent `AGENTS.md`.
 2. Local `docs/PLATFORM.md`.
 3. Local `docs/REV0_SCOPE.md`.
-4. Local `docs/WORKFLOW.md`.
-5. Local `docs/NEXT_STEPS.md`.
-6. Parent `docs/mips-decomp-workflow-plan.md`.
-7. Parent `docs/mips-decode.md`.
-8. Parent `docs/overlay-system.md`.
-9. The relevant subsystem doc in the parent `docs/` folder.
+4. Local `docs/TOOLCHAIN.md`.
+5. Local `docs/WORKFLOW.md`.
+6. Local `docs/NEXT_STEPS.md`.
+7. Parent `docs/mips-decomp-workflow-plan.md`.
+8. Parent `docs/mips-decode.md`.
+9. Parent `docs/overlay-system.md`.
+10. The relevant subsystem doc in the parent `docs/` folder.
 
 When a durable fact changes, update this file and the relevant local doc before
 committing. If the fact came from parent-workspace research, include the parent
@@ -98,14 +99,12 @@ Current Rev 0 result:
 Before replacing raw bytes with assembly or C, preserve the exact-rebuild loop:
 
 ```powershell
-node tools/verify_baserom.js
-node tools/build_rom_coverage_ledger.js
-node tools/extract_rom_segments.js
-node tools/rebuild_rom.js
+node tools/verify_setup.js
 ```
 
-`rebuild_rom.js` must report an exact byte match against the normalized Rev 0
-baserom before source replacement work is considered safe.
+`verify_setup.js` runs baserom verification, whole-ROM coverage, MIPS extraction,
+binutils smoke tests, raw rebuild, and assembled-code rebuild. It must report
+PASS before source replacement work is considered safe.
 
 Current exact rebuild result:
 
@@ -121,10 +120,9 @@ Current exact rebuild result:
 `tools/assemble_original_mips.js` assembles the generated no-gap `.word`
 reference into ignored `build/assembled/rev0/code.bin`. It prefers tracked
 chunks under `asm/original/rev0/` when present and falls back to generated chunks
-under `build/original-mips/rev0/` for ranges not yet promoted. This is
-intentionally a minimal `.word` assembler first, not a full mnemonic assembler.
-It proves that source text can reproduce the configured Rev 0 code-region bytes
-before function splitting.
+under `build/original-mips/rev0/` for ranges not yet promoted. Tracked chunks go
+through the real GNU MIPS assembler configured in `config/toolchain.json`;
+generated fallback chunks still use the minimal `.word` path until promoted.
 
 Current result:
 
@@ -133,7 +131,7 @@ Current result:
 - Code-region SHA256:
   `40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`.
 - Code-region match against baserom: pass.
-- Tracked original-MIPS chunks: 1 (`0x00001000..0x00011000`).
+- Tracked real-assembler original-MIPS chunks: 1 (`0x00001000..0x00011000`).
 - Generated fallback chunks: 99.
 - Assembled-code ROM rebuild command:
 
@@ -148,3 +146,23 @@ Next source-layout work should continue promoting/splitting tracked
 `asm/original/` inputs without losing the exact rebuild gate. Use
 `tools/promote_original_mips.js` for chunk promotion and `--strict-tracked` only
 after every configured code chunk is tracked.
+
+## Setup Complete Gate
+
+The setup phase is complete when `node tools/verify_setup.js` passes. Current
+setup-complete state:
+
+- Local toolchain: `n64-tools-gcc-toolchain-mips64-win64`.
+- Toolchain source:
+  `https://github.com/n64-tools/gcc-toolchain-mips64/releases/download/latest/gcc-toolchain-mips64-win64.zip`.
+- Archive SHA256:
+  `7EE3598AC151C0A728DCFD916E3DF615793D2ED0A28CDC0CCAFA31EEF76526BB`.
+- Installed under ignored `.toolchains/gcc-toolchain-mips64-win64/`.
+- Assembler: GNU Binutils 2.39 `mips64-elf-as.exe` with `-EB -mips3 -32`.
+- Setup verifier: `tools/verify_setup.js`.
+- Current verifier result: PASS; 825 archives, 0 unknown bytes, 108 overlap
+  bytes visible, 1 tracked real-asm chunk, 99 generated fallback chunks, full ROM
+  SHA256 `571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A`.
+
+Next phase is chunk splitting and function naming. Do not begin semantic C
+decomp unless the setup verifier is green.

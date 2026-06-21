@@ -13,6 +13,18 @@ The working loop is:
 The parent workspace document `docs/mips-decomp-workflow-plan.md` is the
 canonical process reference until this repo has its own full toolchain.
 
+## Setup Gate
+
+Before function splitting or C conversion, run:
+
+```powershell
+node tools/verify_setup.js
+```
+
+This is the canonical setup gate. It verifies Rev 0 identity, whole-ROM coverage,
+GNU MIPS binutils smoke tests, first tracked chunk real assembly, raw rebuild,
+and assembled-code rebuild.
+
 ## No-Gap Rule
 
 The decomp can tolerate incomplete names, incomplete C, and imperfect function
@@ -75,9 +87,10 @@ node tools/assemble_original_mips.js
 node tools/rebuild_rom.js --assembled-code build/assembled/rev0/code.bin --out dist/rebuilt.us_rev0.assembled-code.z64 --report build/rebuild/rev0-assembled-code-rebuild-report.json
 ```
 
-This assembles tracked `.word` MIPS chunks where present, falls back to generated
-chunks for ranges not yet promoted, and substitutes the resulting binary blob
-for the raw code span. Current expected result: 1 tracked chunk and 99 generated
-fallback chunks; the assembled code-region SHA256 is
+This assembles tracked MIPS chunks with GNU `mips64-elf-as`, falls back to
+generated `.word` chunks for ranges not yet promoted, and substitutes the
+resulting binary blob for the raw code span. Current expected result: 1 tracked
+real-asm chunk and 99 generated fallback chunks; the assembled code-region
+SHA256 is
 `40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`, and the
 full rebuilt ROM remains byte-identical to the normalized Rev 0 baserom.
