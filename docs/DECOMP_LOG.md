@@ -21,7 +21,9 @@ and replace the active log with a compact current-state summary.
 - The configured code region `0x00001000..0x0063676C` is conservative. Executable
   MIPS only occupies `0x00001000..0x002B89B4`; the trailing 3,661,240 bytes
   (56.24%) have zero `jr $ra` and are non-code data still emitted as `.word`
-  `original_mips`. Audit: `tools/audit_code_region.js` / `docs/CODE_REGION_AUDIT.md`.
+  `original_mips`. A static control-flow audit found no credible code edge into
+  the tail (0 branch targets, 0 J/JAL to a known function). Audit:
+  `tools/audit_code_region.js` / `docs/CODE_REGION_AUDIT.md`.
 - Current tracked code source mix: one composite real-assembler chunk
   `0x00001000..0x00011000` made from 102 tracked source files, plus 99 generated
   fallback code chunks.
@@ -632,6 +634,38 @@ Next: refine the exact code/data boundary near `0x002B89B4`, then reclassify the
 tail from code to a data source form (config/segments + ledger + full-ROM source
 manifest) while keeping the byte-exact gate green; later wire the audit into a
 coverage gate.
+
+## 2026-06-21 - Code-Region Audit Review Follow-up
+
+Addressed the review of the code-region extent audit (no rebuild-breaking issue
+found; tool + docs accepted). Changes, all in `tools/audit_code_region.js` + docs,
+no rebuild-path or config change:
+
+- Added a static control-flow edge audit. It scans every instruction word in the
+  valid detected functions of the executable extent and reports direct
+  branch/J/JAL targets landing in the tail `0x002B89B4..0x0063676C`. Result:
+  **0 PC-relative branch targets** (overlay-immune, authoritative) and
+  **0 J/JAL targets resolving to a known function**. The 7 raw J/JAL-into-tail
+  hits all originate from function `0x001A42A4` and target non-functions
+  (`targetKnownFn=false`) in the zero-`jr $ra` tail; they are a data ramp table
+  embedded in that function (`0F0F0F0F`, `0C0D0E0F`, … near `0x1A4560`) decoding
+  as `jal`. Verdict `no-credible-code-edge-into-tail`. Credibility is gated on the
+  target resolving to a known function start (overlay-robust); "code-like source"
+  alone is insufficient because real functions can embed data tables.
+- Hardened missing-input behavior for gate readiness: parent JSON is required by
+  default (missing or corrupt = hard error); `--allow-missing-parent-db`
+  downgrades a *missing* file to intrinsic-only mode (corrupt always fails loud).
+  Replaces the old silent `loadOptionalJson`.
+- Surfaced returnless (no `jr $ra`) detected "functions" as data mis-detected as
+  functions, and added per-hit `targetKnownFn` to the report.
+- Mirrored the durable finding into parent `docs/rom-layout.md` (review item 4).
+- A typo (template literal closed with `'` instead of a backtick) was caught and
+  fixed during testing; `node --check` and a `${}`-aware lexer now pass.
+
+Verification: `node tools/audit_code_region.js` runs clean (verdict above);
+`node tools/verify_setup.js` PASS with code/ROM SHA256 unchanged;
+`git diff --check` clean. Reclassification still gated on pinning the exact
+boundary — not done.
 
 ## Current Dossier Set
 

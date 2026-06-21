@@ -253,7 +253,10 @@ These outputs are useful but ignored:
 - `tools/audit_code_region.js` is a read-only code-region audit: it unions the
   parent valid-function intervals and an intrinsic per-window `jr $ra`/opcode/
   pointer/zero/ASCII scan to report the executable extent versus non-code data
-  inside the configured code region. Reports go to ignored
+  inside the configured code region, and runs a static control-flow edge audit
+  (direct branch/J/JAL targets into the suspected data tail). Parent JSON is
+  required by default (missing/corrupt = hard error; `--allow-missing-parent-db`
+  for intrinsic-only). Reports go to ignored
   `build/coverage/rev0-code-region-audit.json/.md`; it does not touch the rebuild
   path. See `docs/CODE_REGION_AUDIT.md`.
 - `tools/verify_setup.js` is the canonical setup verification command.

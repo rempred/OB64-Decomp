@@ -50,6 +50,15 @@ region `0x00001000..0x0063676C` is conservative: executable MIPS only occupies
 (3,661,240 bytes, 56.24%) has zero `jr $ra` and is non-code data emitted as
 `.word` `original_mips`. Evidence and method: `docs/CODE_REGION_AUDIT.md`.
 
+Review follow-up (2026-06-21): `audit_code_region.js` now also runs a static
+control-flow edge audit and found **no credible code edge into the tail** (0
+PC-relative branch targets, 0 J/JAL targets resolving to a known function; the 7
+raw J/JAL-into-tail hits are an embedded data ramp table at `0x001A42A4`). The
+tool also hardened parent-input handling (missing/corrupt parent DB is a hard
+error unless `--allow-missing-parent-db`). The control-flow prerequisite for
+reclassification is satisfied; the exact boundary is still unpinned, so do NOT
+reclassify yet.
+
 Next on this track (each step must keep `node tools/verify_setup.js` green):
 
 1. Refine the exact code/data boundary near `0x002B89B4` (first/last `jr $ra`,

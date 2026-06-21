@@ -22,6 +22,12 @@ Generated reports (ignored):
 The audit is read-only: it changes nothing in the rebuild path, so the
 byte-exact rebuild and `node tools/verify_setup.js` gate are unaffected.
 
+Parent JSON inputs (`scripts/ob64_functions.json`,
+`ram_snapshots/overlay_sources.json`) are **required by default**: a missing or
+corrupt parent file is a hard error, so the tool is safe to wire into a gate.
+Pass `--allow-missing-parent-db` to downgrade a *missing* parent file to
+intrinsic-only mode (a corrupt/unreadable file always fails loudly).
+
 ## Headline Finding (2026-06-21)
 
 The configured code region is conservative. Executable code occupies only the
@@ -55,6 +61,33 @@ This is consistent with the parent function scan masking 32 data ranges inside
 the code region and with the 9 `-lz*-`/`-lh*-` rejected "method-like" string hits
 at `0x0003E460` (embedded LHA method-name rodata inside the executable extent).
 
+## Control-Flow Edge Audit (2026-06-21)
+
+Density alone does not prove the tail is unreachable, so the audit scans every
+instruction word inside the valid detected functions of the executable extent for
+direct control-flow targets that land in the tail `0x002B89B4..0x0063676C`:
+
+- **PC-relative branch targets into tail: 0.** Branch targets are position-
+  independent in ROM space (overlay-immune), so this is the authoritative signal:
+  no real branch edge enters the tail.
+- **J/JAL targets into tail (linear mapping): 7, none credible.** J/JAL are
+  region-absolute and resolved here under the linear `RAM = ROM + 0x8006FC00`
+  mapping, which is unreliable for overlay-relocated code. All 7 hits come from a
+  single source (`0x001A42A4`), have `targetKnownFn=false` (they do not resolve
+  to any known function start), and point into the zero-`jr $ra` tail — so they
+  are not real calls. They are bytes of a **data table embedded inside that
+  function** (a ramp table near `0x1A4560`: `0F0F0F0F`, `0C0D0E0F`, …) that
+  happen to decode as `jal`. This is also why "code-like source" is not a
+  sufficient filter — a real function can embed data; the robust credibility test
+  is whether the *target* resolves to a known function.
+- **Verdict: `no-credible-code-edge-into-tail`** (0 branch edges, 0 J/JAL edges to
+  a known function).
+
+J/JAL static resolution through overlays is inherently not authoritative, so this
+is strong evidence, not absolute proof — it removes the "code edge into the tail"
+risk for the reliable (branch) signal and shows the J/JAL hits are explainable
+false positives. The exact boundary must still be pinned before reclassifying.
+
 ## Method
 
 - **Detected-function coverage**: union of valid parent function
@@ -81,9 +114,13 @@ reclassification is a separate, gated step.
 
 ## Next Step
 
+The control-flow prerequisite is satisfied (no credible code edge enters the
+tail). Remaining before reclassification:
+
 1. Refine the exact code/data boundary near `0x002B89B4` with a finer-grained
    scan (look for the first/last `jr $ra`, alignment padding, and any structural
-   marker just past the last detected function).
+   marker just past the last detected function). The boundary byte is still
+   unproven.
 2. Reclassify `0x002B89B4..0x0063676C` from `code`/`original_mips` to a data
    source form across `config/segments/rev0.yaml`, the coverage ledger, and the
    full-ROM source manifest, keeping the byte-exact rebuild and `verify_setup`

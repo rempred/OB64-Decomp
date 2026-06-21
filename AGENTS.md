@@ -150,6 +150,15 @@ Durable rules from this:
   re-owns the tail as data. Preserve bytes; classify with evidence first.
 - The parent function DB's max `end_rom` `0x00598A9C` is a single `valid:false`
   false positive inside the data tail; the valid boundary is `0x002B89B4`.
+- A static control-flow edge audit (part of `audit_code_region.js`) found no
+  credible code edge into the tail: 0 PC-relative branch targets (overlay-immune)
+  and 0 J/JAL targets resolving to a known function. The 7 raw J/JAL-into-tail
+  hits are a data ramp table embedded in function `0x001A42A4` decoding as `jal`,
+  not real edges. Strong evidence, not absolute proof (J/JAL through overlays is
+  not authoritative) — pin the exact boundary before reclassifying.
+- `audit_code_region.js` requires the parent function DB by default (missing or
+  corrupt = hard error); `--allow-missing-parent-db` downgrades a missing file to
+  intrinsic-only mode.
 
 Evidence and next step: `docs/CODE_REGION_AUDIT.md`.
 
