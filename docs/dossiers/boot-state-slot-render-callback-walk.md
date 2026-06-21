@@ -10,7 +10,8 @@ immediately after the boot state slot callback dispatch helper:
 | Source | ROM range | RAM range | Notes |
 | --- | --- | --- | --- |
 | `asm/original/rev0/boot/boot_state_slot_render_callback_walk.s` | `0x00006EE8..0x000071C8` | `0x80076AE8..0x80076DC8` | Leaf prefix at `0x6EE8` plus `0x6EF0` prologue body; reverse-walks queued slots, emits display-list packets, and dispatches a working-record callback. |
-| `asm/original/rev0/code_000071C8_00011000.s` | `0x000071C8..0x00011000` | `0x80076DC8..0x80080C00` | Current tracked remainder. |
+| `asm/original/rev0/code_000071C8_00011000.s` | `0x000071C8..0x00011000` | `0x80076DC8..0x80080C00` | Remainder at this split; now superseded by the boot state slot queue service gate split. |
+| `asm/original/rev0/code_00007200_00011000.s` | `0x00007200..0x00011000` | `0x80076E00..0x80080C00` | Current tracked remainder after the boot state slot queue service gate split. |
 
 The name is conservative. It records the static slot/render/callback walk shape,
 not runtime-verified state-machine or graphics semantics.

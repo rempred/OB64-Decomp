@@ -568,17 +568,26 @@
           "sha256": "0C6E2CAE7FBF47A4C1F0EF35E38E54631648674D49000584DDED8DB2E8D83438"
         },
         {
-          "name": "code_000071C8_00011000_remainder",
-          "file": "asm/original/rev0/code_000071C8_00011000.s",
+          "name": "boot_state_slot_queue_service_gate",
+          "file": "asm/original/rev0/boot/boot_state_slot_queue_service_gate.s",
           "romStart": "0x000071C8",
+          "romEndExclusive": "0x00007200",
+          "bytes": 56,
+          "textBytes": 1451,
+          "sha256": "544476389ADA9DFDBA7F52947C72F2FE09D7456917F12D5153E7B9E0D054B414"
+        },
+        {
+          "name": "code_00007200_00011000_remainder",
+          "file": "asm/original/rev0/code_00007200_00011000.s",
+          "romStart": "0x00007200",
           "romEndExclusive": "0x00011000",
-          "bytes": 40504,
-          "textBytes": 781778,
-          "sha256": "270F23433B55FAEA6A6359599B9CCE663EE96261C8B9A2AC1ACE001A17A2BCF4"
+          "bytes": 40448,
+          "textBytes": 780585,
+          "sha256": "9CED43455EC751E969FED2FA4CCE12C1AE4C3BFFCB4D1A52CE16DD2FE5E9EB69"
         }
       ],
-      "textBytes": 1280549,
-      "sha256": "36911BBC085C5C24C3BD35D27F107EA2E355EFB64BDE6938521E5954ACF276E0"
+      "textBytes": 1280807,
+      "sha256": "24B8454A556C6F898BB6683D562DA99CC99A6B3D41543347282E8E2FA9AD3C7B"
     }
   ]
 }

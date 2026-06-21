@@ -13,7 +13,8 @@ helper cluster immediately after the accumulator seed wrapper:
 | `asm/original/rev0/code_000068E0_00011000.s` | `0x000068E0..0x00011000` | `0x800764E0..0x80080C00` | Remainder at this split; now superseded by the boot state global reset split. |
 | `asm/original/rev0/code_000069D8_00011000.s` | `0x000069D8..0x00011000` | `0x800765D8..0x80080C00` | Remainder after the boot state global reset split; now superseded by the boot state slot callback dispatch split. |
 | `asm/original/rev0/code_00006EE8_00011000.s` | `0x00006EE8..0x00011000` | `0x80076AE8..0x80080C00` | Remainder after the boot state slot callback dispatch split; now superseded by the boot state slot render callback walk split. |
-| `asm/original/rev0/code_000071C8_00011000.s` | `0x000071C8..0x00011000` | `0x80076DC8..0x80080C00` | Current tracked remainder after the boot state slot render callback walk split. |
+| `asm/original/rev0/code_000071C8_00011000.s` | `0x000071C8..0x00011000` | `0x80076DC8..0x80080C00` | Remainder after the boot state slot render callback walk split; now superseded by the boot state slot queue service gate split. |
+| `asm/original/rev0/code_00007200_00011000.s` | `0x00007200..0x00011000` | `0x80076E00..0x80080C00` | Current tracked remainder after the boot state slot queue service gate split. |
 
 The name is conservative. It records the static table/mask/resource-range
 shape, not verified runtime resource semantics.

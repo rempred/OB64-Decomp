@@ -173,7 +173,7 @@ Current result:
   `40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`.
 - Code-region match against baserom: pass.
 - Tracked real-assembler original-MIPS chunks: 1 composite
-  (`0x00001000..0x00011000`) made from 62 real-assembler source files.
+  (`0x00001000..0x00011000`) made from 63 real-assembler source files.
 - Generated fallback chunks: 99.
 - Assembled-code ROM rebuild command:
 
@@ -1505,7 +1505,8 @@ the slot callback dispatch helper:
 - `asm/original/rev0/boot/boot_state_slot_render_callback_walk.s`
   `0x00006EE8..0x000071C8`; contains the `0x6EE8` leaf prefix and `0x6EF0`
   prologue body.
-- Current remainder:
+- Remainder at this split, now superseded by the boot state slot queue service
+  gate split:
   `asm/original/rev0/code_000071C8_00011000.s`.
 
 Static evidence: parent function data reports `0x6EE8` as a 736-byte valid
@@ -1531,9 +1532,36 @@ slot/render/callback walk shape, not runtime-verified state-machine or graphics
 semantics.
 
 Static dossier: `docs/dossiers/boot-state-slot-render-callback-walk.md`.
-Next source split should start at `asm/original/rev0/code_000071C8_00011000.s`;
-the next target is the compact `0x71C8` leaf / `0x71D0` prologue gate called by
-`0x27A0`.
+
+## Boot State Slot Queue Service Gate Split
+
+The next tracked Rev 0 original-MIPS split promotes the compact gate after the
+slot render/callback walk helper:
+
+- `asm/original/rev0/boot/boot_state_slot_queue_service_gate.s`
+  `0x000071C8..0x00007200`; contains the `0x71C8` leaf prefix and `0x71D0`
+  prologue body.
+- Current remainder:
+  `asm/original/rev0/code_00007200_00011000.s`.
+
+Static evidence: parent function data reports `0x71C8` as a 56-byte leaf entry
+that falls into the `0x71D0` 48-byte prologue body with frame size `0x18` and
+clean end `0x7200`. Fixed runtime evidence places the pair at RAM
+`0x80076DC8/0x80076DD0` in all seven named states and all 21 parent snapshots.
+High-confidence caller for `0x71C8` is `0x27A0`. High-confidence callees are
+`0x79EC` / RAM `0x800775EC` and `0x859C` / RAM `0x8007819C`; unresolved RAM
+target is `0x80077BF8`.
+
+Static shape: the leaf prefix reads halfword global `0x800C49D0`. The body saves
+`ra`, returns immediately when the halfword is zero, otherwise calls
+`0x800775EC`, unresolved `0x80077BF8`, and `0x8007819C`, then restores `ra` and
+returns. The name is conservative and records a static queue/service gate shape,
+not runtime-verified scheduler semantics.
+
+Static dossier: `docs/dossiers/boot-state-slot-queue-service-gate.md`.
+Next source split should start at `asm/original/rev0/code_00007200_00011000.s`;
+the next target is the compact `0x7200` leaf / `0x7208` prologue utility called
+by `0x4EBCC`, `0x4EC3C`, and `0x1CF960`.
 
 ## Setup Complete Gate
 
@@ -1549,7 +1577,7 @@ setup-complete state:
 - Assembler: GNU Binutils 2.39 `mips64-elf-as.exe` with `-EB -mips3 -32`.
 - Setup verifier: `tools/verify_setup.js`.
 - Current verifier result: PASS; 825 archives, 0 unknown bytes, 108 overlap
-  bytes visible, 1 tracked composite real-asm chunk made from 62 tracked source
+  bytes visible, 1 tracked composite real-asm chunk made from 63 tracked source
   files, 99 generated fallback chunks, full-source manifest 1,059 entries with
   2,469,141 ambiguous bytes preserved explicitly, 3 tracked non-code
   source-owner files / 44,029 bytes, 1,055 generated non-code fallback files /
@@ -1558,5 +1586,5 @@ setup-complete state:
   `571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A`.
 
 Next phase is either promoting another small non-code owner batch or continuing
-tracked original-MIPS splits from `asm/original/rev0/code_000071C8_00011000.s`.
+tracked original-MIPS splits from `asm/original/rev0/code_00007200_00011000.s`.
 Do not begin semantic C decomp unless the setup verifier is green.
