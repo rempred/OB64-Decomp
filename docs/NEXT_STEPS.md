@@ -16,7 +16,7 @@ node tools/verify_setup.js
 ```
 
 Current source mix: 1 tracked composite real-assembler chunk
-(`0x00001000..0x00011000`) made from 92 tracked source files, plus 99 generated
+(`0x00001000..0x00011000`) made from 93 tracked source files, plus 99 generated
 fallback chunks.
 
 The assembled code-region SHA256 is
@@ -97,12 +97,13 @@ coverage or overclassifying data as MIPS.
    command stream resource-node dispatch split, resource-node payload
    materialize split, resource-node insert/find split, resource-node context
    materialize split, resource-node LZSS context materialize split,
-   resource-node overlay context materialize split, and resource-node recursive
-   insert/slot-search split are done. Continue from
-   `asm/original/rev0/code_0000A198_00011000.s`, beginning with `0xA198`.
-   Parent evidence reports a recursive node cleanup/free helper with frame size
-   `0x18`, three self-recursive child calls, a call to `0xA29C`, and two
-   `resource_free` calls; keep `0xA198..0xA1F8` together.
+   resource-node overlay context materialize split, resource-node recursive
+   insert/slot-search split, and resource-node recursive cleanup/free split are
+   done. Continue from `asm/original/rev0/code_0000A1F8_00011000.s`, beginning
+   with `0xA1F8`. Parent evidence reports a recursive child/payload clear
+   helper with frame size `0x18`, three self-recursive child calls, and one
+   `resource_free` call; local source checks `+0x0C`, frees `+0x04`, and clears
+   `+0x04`; keep `0xA1F8..0xA250` together.
 
 4. Keep the setup gate green.
 

@@ -10,7 +10,7 @@ immediately after the overlay-context materialize helper:
 | Source | ROM range | RAM range | Notes |
 | --- | --- | --- | --- |
 | `asm/original/rev0/boot/boot_resource_node_recursive_insert_slot_search.s` | `0x0000A0B4..0x0000A198` | `0x80079CB4..0x80079D98` | Recursive `0x18`-byte node insert/find helper plus secondary slot-search entry. |
-| `asm/original/rev0/code_0000A198_00011000.s` | `0x0000A198..0x00011000` | `0x80079D98..0x80080C00` | Current tracked remainder; starts with a recursive node cleanup/free helper. |
+| `asm/original/rev0/code_0000A198_00011000.s` | `0x0000A198..0x00011000` | `0x80079D98..0x80080C00` | Remainder produced by this split; now superseded by the cleanup/free split. |
 
 The source name is conservative. It describes the static pointer/key/tree shape
 and secondary slot return behavior; runtime ownership and final C API names are
@@ -62,8 +62,8 @@ not verified.
   `0xA15C`.
 - The secondary entry begins at `0xA160` and returns at `0xA190` with delay-slot
   `move v0, a0` at `0xA194`.
-- The next function starts cleanly at `0x0000A198`; keep it separate as the
-  next recursive cleanup/free helper.
+- The next function starts cleanly at `0x0000A198`; it is split separately in
+  `boot-resource-node-recursive-cleanup-free.md`.
 
 ## Verification
 
