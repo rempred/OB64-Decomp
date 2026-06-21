@@ -24,8 +24,8 @@ The names are conservative source-layout labels, not final C API names.
   `0x80072740`, so this split keeps both entries in one file.
 - `boot_mode_message_select.s` reads `0x80000300`, compares that value and the
   incoming `a0` against `1`, `2`, and `9`, selects one of four pointer tables
-  at `0x800BB960`, `0x800BB9B0`, `0x800BBA00`, or `0x800BBA50`, then calls
-  `0x800955C0`.
+  at computed addresses `0x800AB960`, `0x800AB9B0`, `0x800ABA00`, or
+  `0x800ABA50`, then calls `0x800955C0`.
 - `boot_flag_table_reset.s` clears four rows of 16 halfwords at `0x800BEE90`
   and `0x800BEF10`, then clears `0x18` bytes at `0x800BEE78` through common
   helper `0x80093380`.
@@ -54,4 +54,3 @@ After the split:
 - `node tools\assemble_original_mips.js` passed.
 - Full `node tools\verify_setup.js` should remain the required gate before
   committing source-layout work.
-

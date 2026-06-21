@@ -217,17 +217,26 @@
           "sha256": "451769C28F2222D5EF52EA7C35D113B4249EC1575281F75C1018565E4A55B43C"
         },
         {
-          "name": "code_0000347C_00011000_remainder",
-          "file": "asm/original/rev0/code_0000347C_00011000.s",
+          "name": "boot_mode_message_accumulator_update",
+          "file": "asm/original/rev0/boot/boot_mode_message_accumulator_update.s",
           "romStart": "0x0000347C",
+          "romEndExclusive": "0x0000368C",
+          "bytes": 528,
+          "textBytes": 10323,
+          "sha256": "BBC16B43A9E489DCCAA8304EA544468EE832D6FDC928BD55967B4BE768250568"
+        },
+        {
+          "name": "code_0000368C_00011000_remainder",
+          "file": "asm/original/rev0/code_0000368C_00011000.s",
+          "romStart": "0x0000368C",
           "romEndExclusive": "0x00011000",
-          "bytes": 56196,
-          "textBytes": 1085182,
-          "sha256": "50FFE1ACAE33B8A349C26551EC2070341AF3DEA40B1DAA60910AE21C38401B37"
+          "bytes": 55668,
+          "textBytes": 1075117,
+          "sha256": "5348ABDA04CC2350677FE9C413212D9895F90FF489656B29423DCDF40E343A4C"
         }
       ],
-      "textBytes": 1270487,
-      "sha256": "1778C546C4FA96CD4E77CD78EEE7BF248B56271C3269246CD939A356447BD06F"
+      "textBytes": 1270745,
+      "sha256": "1033F5380E4861625608B0866D2C7B1446D380900EF4231E87BA7FAE97B4C842"
     }
   ]
 }

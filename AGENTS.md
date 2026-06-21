@@ -173,7 +173,7 @@ Current result:
   `40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`.
 - Code-region match against baserom: pass.
 - Tracked real-assembler original-MIPS chunks: 1 composite
-  (`0x00001000..0x00011000`) made from 23 real-assembler source files.
+  (`0x00001000..0x00011000`) made from 24 real-assembler source files.
 - Generated fallback chunks: 99.
 - Assembled-code ROM rebuild command:
 
@@ -310,7 +310,7 @@ after the early boot state loop:
 
 - `asm/original/rev0/boot/boot_mode_message_select.s`
   `0x00002B38..0x00002BD8`; keeps overlapping scanner entries
-  `0x2B38/0x2B40` together and selects one of four `0x800B B9xx/BAxx` pointer
+  `0x2B38/0x2B40` together and selects one of four `0x800A_B9xx/BAxx` pointer
   tables before calling `0x800955C0`.
 - `asm/original/rev0/boot/boot_flag_table_reset.s`
   `0x00002BD8..0x00002CBC`; clears two 4x16 halfword tables around
@@ -349,9 +349,32 @@ state tables around `0x800C47F0`, `0x800BEE90`, `0x800BEF10`,
 `0x800E79B0`, `0x800E79BC`, and `0x800F8100`, and clamps signed record bytes at
 offsets `+2/+3` to `-0x3D..0x3D`.
 
-Static dossier: `docs/dossiers/boot-table-mask-reconcile.md`. The next source
-split should start at `0x0000347C`; keep the `0x347C..0x368C` routine and its
-secondary entry at `0x3564` together unless stronger evidence splits it safely.
+Static dossier: `docs/dossiers/boot-table-mask-reconcile.md`. That target has
+since been superseded by the boot mode/message accumulator split below.
+
+## Boot Mode/Message Accumulator Split
+
+The next tracked Rev 0 original-MIPS split separates the permanent helper after
+the table/mask reconcile routine:
+
+- `asm/original/rev0/boot/boot_mode_message_accumulator_update.s`
+  `0x0000347C..0x0000368C`; parent reports a 528-byte prologue function, frame
+  size `0x20`, and secondary entry `0x3564`.
+- Remainder:
+  `asm/original/rev0/code_0000368C_00011000.s`.
+
+Static evidence: the primary entry stores `a0+0xC` to `0x800C4BB8`, calls an
+unresolved overlay-aware target at RAM `0x8016CD3C`, uses its low byte together
+with `0x80000300` to select one of four `0x800A_B9xx/BAxx` pointer tables, then
+calls `0x800955C0`, optional `0x80095610(0x5A)`, and `0x800957D0`. The `0x3564`
+secondary entry either overwrites or accumulates six halfword globals
+(`0x800C4C08`, `0x800E7D68`, `0x800C4A18`, `0x800E7A1C`, `0x800C4BCA`,
+`0x800C4AD8`) and writes mode flag `0x800AEE72 = 2`.
+
+Static dossier: `docs/dossiers/boot-mode-message-accumulator-update.md`. The
+next source split should start at `0x0000368C`; keep the `0x368C..0x3798`
+routine and secondary entries `0x377C/0x378C` together unless stronger evidence
+splits them safely.
 
 ## Setup Complete Gate
 
@@ -367,7 +390,7 @@ setup-complete state:
 - Assembler: GNU Binutils 2.39 `mips64-elf-as.exe` with `-EB -mips3 -32`.
 - Setup verifier: `tools/verify_setup.js`.
 - Current verifier result: PASS; 825 archives, 0 unknown bytes, 108 overlap
-  bytes visible, 1 tracked composite real-asm chunk made from 23 tracked source
+  bytes visible, 1 tracked composite real-asm chunk made from 24 tracked source
   files, 99 generated fallback chunks, full-source manifest 1,059 entries with
   2,469,141 ambiguous bytes preserved explicitly, 3 tracked non-code
   source-owner files / 44,029 bytes, 1,055 generated non-code fallback files /
@@ -376,5 +399,5 @@ setup-complete state:
   `571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A`.
 
 Next phase is either promoting another small non-code owner batch or continuing
-tracked original-MIPS splits from `asm/original/rev0/code_0000347C_00011000.s`.
+tracked original-MIPS splits from `asm/original/rev0/code_0000368C_00011000.s`.
 Do not begin semantic C decomp unless the setup verifier is green.

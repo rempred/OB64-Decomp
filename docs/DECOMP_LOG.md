@@ -540,7 +540,7 @@ Evidence:
   calls target `0x80072738`, while no direct call target was found for
   `0x80072740`, so both entries stay in `boot_mode_message_select.s`.
 - `boot_mode_message_select.s` reads `0x80000300`, selects one of four
-  `0x800B B960/B9B0/BA00/BA50` pointer tables based on that mode value and
+  computed `0x800A_B960/B9B0/BA00/BA50` pointer tables based on that mode value and
   incoming `a0` values `2` or `9`, then calls `0x800955C0`.
 - `boot_flag_table_reset.s` clears two 4x16 halfword table groups at
   `0x800BEE90` and `0x800BEF10`, clears `0x18` bytes at `0x800BEE78` through
@@ -629,4 +629,73 @@ Next recommended target:
 
 - Continue from `asm/original/rev0/code_0000347C_00011000.s`, beginning with
   the `0x347C..0x368C` routine and keeping secondary entry `0x3564` together,
-  or promote another small tracked non-code owner batch.
+  or promote another small tracked non-code owner batch. This target has since
+  been completed by the boot mode/message accumulator split below.
+
+## 2026-06-21 - Boot Mode/Message Accumulator Split
+
+Target:
+
+- Continue source-layout cleanup inside the first tracked original-MIPS chunk.
+- Split the `0x347C..0x368C` routine after the table/mask reconcile routine
+  while keeping its secondary entry at `0x3564` in the same file.
+
+Baseline:
+
+- `node tools\verify_setup.js` passed before edits.
+- Baseline source mix: 1 tracked composite real-asm chunk made from 23 tracked
+  files, plus 99 generated fallback chunks.
+- Baseline code-region SHA256:
+  `40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`.
+- Baseline full ROM SHA256:
+  `571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A`.
+
+Source-layout change:
+
+- Removed superseded
+  `asm/original/rev0/code_0000347C_00011000.s`.
+- Added `asm/original/rev0/boot/boot_mode_message_accumulator_update.s`,
+  `0x0000347C..0x0000368C`, 528 bytes.
+- Added remainder `asm/original/rev0/code_0000368C_00011000.s`,
+  `0x0000368C..0x00011000`, 55,668 bytes.
+- Static dossier: `docs/dossiers/boot-mode-message-accumulator-update.md`.
+
+Evidence:
+
+- Parent `../scripts/ob64_functions.json` reports `0x347C` as a 528-byte
+  prologue, frame size `0x20`, no indirect jumps, and secondary entry `0x3564`.
+  The parent end marker is `0x3688`; the delay slot at `0x3688` means the
+  source split ends at exclusive `0x368C`.
+- Parent `../scripts/ob64_callgraph_v2.json` reports no direct static callers,
+  high-confidence callees `0x800955C0` (`ROM 0x259C0`), `0x80095610`
+  (`ROM 0x25A10`), and `0x800957D0` (`ROM 0x25BD0`), plus one unresolved JAL
+  target at RAM `0x8016CD3C`.
+- Parent `../scripts/ob64_symbols_v2.json` locates the routine at fixed RAM
+  `0x8007307C` in all seven named states.
+- Static code shape: primary entry stores `[a0+0xC]` to `0x800C4BB8`, calls the
+  unresolved `0x8016CD3C`, uses the low return byte together with
+  `0x80000300` to choose one of four computed `0x800A_B9xx/BAxx` pointer
+  tables, then calls `0x800955C0`, optional `0x80095610(0x5A)`, and
+  `0x800957D0`.
+- Secondary entry `0x3564` either overwrites or accumulates six halfword globals
+  (`0x800C4C08`, `0x800E7D68`, `0x800C4A18`, `0x800E7A1C`, `0x800C4BCA`,
+  `0x800C4AD8`) from `a1/a2/a3/sp+0x10/sp+0x14/sp+0x18`, then writes flag
+  `0x800AEE72 = 2`.
+
+Verification:
+
+- `node tests\binutils_smoke.js` passed after the split.
+- `node tools\assemble_original_mips.js` passed after the split.
+- Full `node tools\verify_setup.js` passed after the split.
+- Assembled report now shows 1 tracked composite real-asm chunk made from 24
+  tracked source files, plus 99 generated fallback chunks.
+- Code-region SHA256 remains:
+  `40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`.
+- Full ROM SHA256 remains:
+  `571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A`.
+
+Next recommended target:
+
+- Continue from `asm/original/rev0/code_0000368C_00011000.s`, beginning with
+  the `0x368C..0x3798` routine and keeping secondary entries `0x377C/0x378C`
+  together, or promote another small tracked non-code owner batch.
