@@ -18,7 +18,7 @@ and replace the active log with a compact current-state summary.
 - Whole-ROM coverage still independently scans for LHA headers; do not trust the
   parent archive catalog by itself.
 - Current tracked code source mix: one composite real-assembler chunk
-  `0x00001000..0x00011000` made from 59 tracked source files, plus 99 generated
+  `0x00001000..0x00011000` made from 60 tracked source files, plus 99 generated
   fallback code chunks.
 - Current tracked non-code source-owner mix: 3 tracked files / 44,029 bytes,
   plus 1,055 generated fallback owner files / 35,388,567 bytes.
@@ -83,7 +83,8 @@ Current named sequence:
 - `boot_state_dispatch_loop_init.s` `0x5FC0..0x65A4`.
 - `boot_mode_message_accumulator_seed_wrapper.s` `0x65A4..0x65E4`.
 - `boot_resource_table_mask_apply.s` `0x65E4..0x68E0`.
-- Current remainder: `code_000068E0_00011000.s`.
+- `boot_state_global_reset.s` `0x68E0..0x69D8`.
+- Current remainder: `code_000069D8_00011000.s`.
 
 Static dossiers live under `docs/dossiers/` and are the durable evidence notes
 for each promoted source-layout split.
@@ -1214,20 +1215,72 @@ Verification for the split:
 - Source mix is now 1 tracked composite real-asm chunk made from 59 tracked
   source files, plus 99 generated fallback chunks.
 
+## 2026-06-21 - Boot State Global Reset Split
+
+Baseline before the split:
+
+- `git status --short` was clean at commit
+  `dd96509 Split Rev 0 resource table mask apply cluster`.
+- `node tools\verify_setup.js` passed with 825 archives, zero unknown bytes, 108
+  visible overlap bytes, 59 tracked source files, and unchanged code/ROM hashes.
+- The compact decomp log was still below the prune/archive threshold.
+
+Promoted `asm/original/rev0/boot/boot_state_global_reset.s` covering ROM
+`0x000068E0..0x000069D8` / RAM `0x800764E0..0x800765D8`. The old
+`code_000068E0_00011000.s` remainder was removed and replaced by
+`asm/original/rev0/code_000069D8_00011000.s`.
+
+Static evidence from parent `../scripts/ob64_functions.json`,
+`../scripts/ob64_symbols_v2.json`, `../scripts/ob64_callgraph_v2.json`,
+`../scripts/ob64_xrefs.json`, and local source inspection:
+
+- `0x68E0` is a 248-byte valid prologue helper with frame size `0x18`,
+  epilogue, no indirect jumps, and next clean prologue boundary `0x69D8`.
+- Fixed runtime evidence places it at RAM `0x800764E0` in all seven named
+  states.
+- High-confidence caller is `0x22B0`.
+- High-confidence callees are `0x25090` / RAM `0x80094C90` twice,
+  `0x23780` / RAM `0x80093380` twice, `0x49A60` / RAM `0x80173B60`, and
+  `0x859C` / RAM `0x8007819C`.
+- Parent callgraph reports one unresolved RAM target, `0x8009C7C0`.
+- Parent xrefs expose writes to `0x800C4C20`, `0x800E79A0`,
+  `0x800C49D0`, `0x800BF0B0`, and bytes around `0x800BF0A2..0x800BF0A4`;
+  local source also shows the memclear bases and four-slot pointer loop.
+
+Static shape:
+
+- Calls `0x80094C90`, clears `0x800F82C8` length `0x3F0` through
+  `0x80093380`, clears `0x800C4C10` length `0x0C`, then sets
+  `0x800C4C20 = 1` and `0x800E79A0 = 8`.
+- Clears halfword/global state around `0x800C49D0` and
+  `0x800BF0A0..0x800BF0B0`.
+- Initializes four slots by clearing halfwords at `0x800BF0A6 + 2*i` and
+  storing pointer `0x800BF0A0` into words at `0x800BF090 + 4*i`.
+- Calls unresolved `0x8009C7C0`, then calls `0x80173B60([0x800BF0B0])` and
+  stores its return back to `0x800BF0B0` before calling `0x8007819C`.
+- The name is conservative and records a static reset/init shape, not
+  runtime-verified system semantics.
+
+Verification for the split:
+
+- `node tests\binutils_smoke.js` passed.
+- `node tools\assemble_original_mips.js` passed.
+- `node tools\verify_setup.js` passed after the docs update.
+- Source mix is now 1 tracked composite real-asm chunk made from 60 tracked
+  source files, plus 99 generated fallback chunks.
+
 ## Next Frontier
 
-Continue from `asm/original/rev0/code_000068E0_00011000.s`.
+Continue from `asm/original/rev0/code_000069D8_00011000.s`.
 
 Parent/local evidence for the next target:
 
-- `0x68E0` is a 248-byte prologue helper with frame size `0x18`, fixed RAM
-  `0x800764E0`, and high-confidence caller `0x22B0`.
-- High-confidence callees are `0x25090` / RAM `0x80094C90` twice, `0x23780` /
-  RAM `0x80093380` twice, `0x49A60` / RAM `0x80173B60`, and `0x859C` / RAM
-  `0x8007819C`; unresolved callgraph target is RAM `0x8009C7C0`.
-- Static source clears `0x800F82C8` length `0x3F0`, clears `0x800C4C10`
-  length `0x0C`, sets `0x800C4C20 = 1` and `0x800E79A0 = 8`, clears several
-  globals around `0x800BF0A0..0x800BF0B0`, initializes four pointer/halfword
-  slots at `0x800BF090/0x800BF0A6`, then calls the unresolved `0x8009C7C0`,
-  `0x80173B60`, and `0x8007819C`.
-- Next parent prologue boundary after it is `0x69D8`.
+- `0x69D8` is a 1,296-byte prologue helper with frame size `0x30`, fixed RAM
+  `0x800765D8`, high-confidence caller `0x27A0`, and `jalr` present.
+- High-confidence callees include `0x23460` count 4, `0x49A60`, `0x84D4`
+  count 2, `0x8388` count 2, `0x859C` count 2, `0x8564`, `0x49C14`,
+  `0x49C4C`, `0x2CBCC`, and `0x7688`.
+- Unresolved RAM targets are `0x80077494` and `0x8017C29C`.
+- Next parent boundaries include the `0x6EE8` leaf / `0x6EF0` prologue sibling,
+  then smaller starts around `0x71C8`, `0x71D0`, `0x7200`, `0x7208`,
+  `0x722C`, and `0x7234`.

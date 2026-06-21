@@ -173,7 +173,7 @@ Current result:
   `40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`.
 - Code-region match against baserom: pass.
 - Tracked real-assembler original-MIPS chunks: 1 composite
-  (`0x00001000..0x00011000`) made from 59 real-assembler source files.
+  (`0x00001000..0x00011000`) made from 60 real-assembler source files.
 - Generated fallback chunks: 99.
 - Assembled-code ROM rebuild command:
 
@@ -1410,7 +1410,7 @@ cluster together:
   `0x000065E4..0x000068E0`; contains prologue helpers at `0x65E4` and
   `0x6724`, the shared local selector leaf at `0x6830`, and padding through the
   next clean prologue boundary.
-- Current remainder:
+- Remainder at this split, now superseded by the boot state global reset split:
   `asm/original/rev0/code_000068E0_00011000.s`.
 
 Static evidence: parent symbol data places `0x65E4` and `0x6724` at fixed RAM
@@ -1432,9 +1432,36 @@ same selected list and registers gaps up to per-ID/end bounds and final
 source-layout labels, not runtime-verified resource semantics.
 
 Static dossier: `docs/dossiers/boot-resource-table-mask-apply.md`.
-Next source split should start at `asm/original/rev0/code_000068E0_00011000.s`;
-the next target is the `0x68E0` boot state/global reset-style helper called by
-early boot init.
+
+## Boot State Global Reset Split
+
+The next tracked Rev 0 original-MIPS split promotes the compact boot
+state/global reset-style helper immediately after the table/mask cluster:
+
+- `asm/original/rev0/boot/boot_state_global_reset.s`
+  `0x000068E0..0x000069D8`; contains the 248-byte prologue helper at `0x68E0`.
+- Current remainder:
+  `asm/original/rev0/code_000069D8_00011000.s`.
+
+Static evidence: parent function data reports `0x68E0` as a 248-byte valid
+prologue helper with frame size `0x18`, epilogue, no indirect jumps, fixed RAM
+`0x800764E0` in all seven named states, and high-confidence caller `0x22B0`.
+High-confidence callees are `0x25090` / RAM `0x80094C90` twice, `0x23780` /
+RAM `0x80093380` twice, `0x49A60` / RAM `0x80173B60`, and `0x859C` / RAM
+`0x8007819C`; the one unresolved callgraph target is RAM `0x8009C7C0`.
+
+Static shape: the helper calls `0x80094C90`, clears `0x800F82C8` length
+`0x3F0`, clears `0x800C4C10` length `0x0C`, sets `0x800C4C20 = 1` and
+`0x800E79A0 = 8`, clears halfword/global state around `0x800C49D0` and
+`0x800BF0A0..0x800BF0B0`, initializes four pointer/halfword slots at
+`0x800BF090/0x800BF0A6`, then calls unresolved `0x8009C7C0`,
+`0x80173B60([0x800BF0B0])`, and `0x8007819C`. The name is conservative and
+records a static reset/init shape, not runtime-verified system semantics.
+
+Static dossier: `docs/dossiers/boot-state-global-reset.md`.
+Next source split should start at `asm/original/rev0/code_000069D8_00011000.s`;
+the next target is the large `0x69D8` state update/slot-processing helper
+called by `0x27A0`.
 
 ## Setup Complete Gate
 
@@ -1450,7 +1477,7 @@ setup-complete state:
 - Assembler: GNU Binutils 2.39 `mips64-elf-as.exe` with `-EB -mips3 -32`.
 - Setup verifier: `tools/verify_setup.js`.
 - Current verifier result: PASS; 825 archives, 0 unknown bytes, 108 overlap
-  bytes visible, 1 tracked composite real-asm chunk made from 59 tracked source
+  bytes visible, 1 tracked composite real-asm chunk made from 60 tracked source
   files, 99 generated fallback chunks, full-source manifest 1,059 entries with
   2,469,141 ambiguous bytes preserved explicitly, 3 tracked non-code
   source-owner files / 44,029 bytes, 1,055 generated non-code fallback files /
@@ -1459,5 +1486,5 @@ setup-complete state:
   `571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A`.
 
 Next phase is either promoting another small non-code owner batch or continuing
-tracked original-MIPS splits from `asm/original/rev0/code_000068E0_00011000.s`.
+tracked original-MIPS splits from `asm/original/rev0/code_000069D8_00011000.s`.
 Do not begin semantic C decomp unless the setup verifier is green.

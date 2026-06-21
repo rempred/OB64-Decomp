@@ -541,17 +541,26 @@
           "sha256": "59C9C72EF37287D5B2814AF55636FB803B1041342A2A006EBF8EA38F2E1FF33D"
         },
         {
-          "name": "code_000068E0_00011000_remainder",
-          "file": "asm/original/rev0/code_000068E0_00011000.s",
+          "name": "boot_state_global_reset",
+          "file": "asm/original/rev0/boot/boot_state_global_reset.s",
           "romStart": "0x000068E0",
+          "romEndExclusive": "0x000069D8",
+          "bytes": 248,
+          "textBytes": 5065,
+          "sha256": "EF3AFF2F8C43625F9F9C35617658720048816D9E27B8834050B982793138B1CC"
+        },
+        {
+          "name": "code_000069D8_00011000_remainder",
+          "file": "asm/original/rev0/code_000069D8_00011000.s",
+          "romStart": "0x000069D8",
           "romEndExclusive": "0x00011000",
-          "bytes": 42784,
-          "textBytes": 825504,
-          "sha256": "859983B29D5B729A6A99077D241D1D5B4F435709E57015DA7508F6D524AE0C38"
+          "bytes": 42536,
+          "textBytes": 820697,
+          "sha256": "85CF433444081F35EB5DE81C5C3AD9AF0FF9F53628FD51EAAF4D666931502721"
         }
       ],
-      "textBytes": 1279775,
-      "sha256": "5A0A260548EE71538188ECEB0BC03A2FA6D8A2442B59E0A170DEA003B05A813A"
+      "textBytes": 1280033,
+      "sha256": "766F7691C0F5C08CBBE798BCA48122C84BAFEF2E51F3CFF276AF0D10C0A87EA9"
     }
   ]
 }
