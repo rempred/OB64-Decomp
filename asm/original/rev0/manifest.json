@@ -730,17 +730,26 @@
           "sha256": "8C2694A5E077FF121EA940F474CE4C80DFD7237CE4D813781533EB5506373C3F"
         },
         {
-          "name": "code_00008D6C_00011000_remainder",
-          "file": "asm/original/rev0/code_00008D6C_00011000.s",
+          "name": "boot_display_list_flagged_rect_packet_emit",
+          "file": "asm/original/rev0/boot/boot_display_list_flagged_rect_packet_emit.s",
           "romStart": "0x00008D6C",
+          "romEndExclusive": "0x0000906C",
+          "bytes": 768,
+          "textBytes": 15084,
+          "sha256": "76109CF66B335891B892C18166D210B606D78D36CEB24ADAA932E9AA8BDA2D89"
+        },
+        {
+          "name": "code_0000906C_00011000_remainder",
+          "file": "asm/original/rev0/code_0000906C_00011000.s",
+          "romStart": "0x0000906C",
           "romEndExclusive": "0x00011000",
-          "bytes": 33428,
-          "textBytes": 645473,
-          "sha256": "61C63BE83EE8D02D3F36622664B9DF7E279220AC00F6A41E9161929B6ADBDC77"
+          "bytes": 32660,
+          "textBytes": 630647,
+          "sha256": "4CE08C00A06069D61B0620D134D553254285308F1DC46F0511B7465985977922"
         }
       ],
-      "textBytes": 1285198,
-      "sha256": "AFA6C74E26B715406955AEEA1FB829495AAD95961BC727DD98FC1D307D163EAE"
+      "textBytes": 1285456,
+      "sha256": "2A8BD1F2D567FAAB50AFF51359E6FE5428F7C90AFE35B8605817F1BE71318D3D"
     }
   ]
 }

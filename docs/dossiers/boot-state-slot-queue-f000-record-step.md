@@ -61,7 +61,7 @@ the `0xF000` record-mask gate, not runtime-verified scheduler semantics.
 - The next tracked remainder starts at `0x8388`, the next parent prologue
   boundary and the callee used by this unit and earlier slot helpers. That
   range is now promoted, and the active remainder starts at
-  `code_00008D6C_00011000.s`.
+  `code_0000906C_00011000.s`.
 
 ## Verification
 

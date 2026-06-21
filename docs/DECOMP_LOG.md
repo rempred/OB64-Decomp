@@ -18,7 +18,7 @@ and replace the active log with a compact current-state summary.
 - Whole-ROM coverage still independently scans for LHA headers; do not trust the
   parent archive catalog by itself.
 - Current tracked code source mix: one composite real-assembler chunk
-  `0x00001000..0x00011000` made from 80 tracked source files, plus 99 generated
+  `0x00001000..0x00011000` made from 81 tracked source files, plus 99 generated
   fallback code chunks.
 - Current tracked non-code source-owner mix: 3 tracked files / 44,029 bytes,
   plus 1,055 generated fallback owner files / 35,388,567 bytes.
@@ -61,8 +61,8 @@ Current named sequence:
 - Resource probe helpers through
   `boot_resource_probe_record_checksum_signature.s` `0x4AC8..0x5FC0`.
 - State/slot, resource-handle, and transform-record helpers through
-  `boot_display_list_transform_wrapper_clamped_rect_emit.s` `0x5FC0..0x8D6C`.
-- Current remainder: `code_00008D6C_00011000.s`.
+  `boot_display_list_flagged_rect_packet_emit.s` `0x5FC0..0x906C`.
+- Current remainder: `code_0000906C_00011000.s`.
 
 Static dossiers live under `docs/dossiers/` and are the durable evidence notes
 for each promoted source-layout split.
@@ -754,14 +754,63 @@ Verification for the split:
 - Static dossier:
   `docs/dossiers/boot-display-list-transform-wrapper-clamped-rect-emit.md`.
 
+## 2026-06-21 - Boot Display-List Flagged Rect Packet Emit Split
+
+Baseline before the split:
+
+- `git status --short` was clean at commit
+  `e28f734 Split Rev 0 boot display-list clamped rect emit`.
+- `node tools\verify_setup.js` passed with 825 archives, zero unknown bytes, 108
+  visible overlap bytes, 80 tracked source files, 99 generated fallback chunks,
+  and unchanged code/ROM hashes.
+
+Promoted
+`asm/original/rev0/boot/boot_display_list_flagged_rect_packet_emit.s` covering
+ROM `0x00008D6C..0x0000906C` / RAM `0x8007896C..0x80078C6C`. The old
+`asm/original/rev0/code_00008D6C_00011000.s` remainder was removed and replaced
+by `asm/original/rev0/code_0000906C_00011000.s`.
+
+Static evidence from parent function/symbol/callgraph/xref data and local
+source:
+
+- `0x8D6C` is a valid 768-byte prologue helper fixed in all seven named states
+  and all 21 snapshots, with frame size `0x28`.
+- Parent callgraph data reports high-confidence caller `0x16DAEC`.
+- The only unresolved v2 target is RAM `0x8007338C`; local earlier source
+  identifies it as the `0x378C` secondary entry inside
+  `boot_resource_buffer_reset_flags.s`.
+- Parent top constants are `320` and `240`.
+- Local source reads display-list pointer global `0x800E9BA0`, reads
+  `0x800C4B20` and `0x800E8210`, and writes a fixed packet run through offsets
+  up to `+0xA4`.
+
+Static shape:
+
+- The helper gates on the `0x378C` flag/read helper and returns without emitting
+  packets when that helper returns zero.
+- It clamps four coordinate-like arguments to `0..0x13F` and `0..0xEF`.
+- It emits display-list-style words through `0x800E9BA0`, including repeated
+  `E700` syncs plus `E200001C`, `E3000A01`, `FE00`, `F700`, and `F600` command
+  words.
+
+Verification for the split:
+
+- `node tests\binutils_smoke.js` passed.
+- `node tools\assemble_original_mips.js` passed.
+- Full `node tools\verify_setup.js` passed after docs were updated.
+- Source mix is now 1 tracked composite real-asm chunk made from 81 tracked
+  source files, plus 99 generated fallback chunks.
+- Static dossier:
+  `docs/dossiers/boot-display-list-flagged-rect-packet-emit.md`.
+
 ## Next Frontier
 
-Continue from `asm/original/rev0/code_00008D6C_00011000.s`. The first target is
-the `0x8D6C` prologue helper at RAM `0x8007896C`. Parent function data reports
-size `0x300`, frame size `0x28`, all-state residency, high-confidence caller
-`0x16DAEC`, and top constants `320` and `240`. The v2 callgraph leaves target
-`0x8007338C` unresolved, but local earlier source identifies that as the
-`0x378C` secondary entry inside `boot_resource_buffer_reset_flags.s`. The local
-shape appears related to the following `0x906C` display-list helper family, so
-keep the first split conservative until the boundary and packet shape are
-analyzed.
+Continue from `asm/original/rev0/code_0000906C_00011000.s`. The first target is
+the `0x906C` prologue helper at RAM `0x80078C6C`. Parent function data reports
+size `0x3BC`, frame size `0x30`, callers `0xEE8E0` and `0xFAFAC`, and top
+constants `320` and `240`. The v2 callgraph leaves target `0x8007338C`
+unresolved, but local earlier source identifies that as the `0x378C` secondary
+entry inside `boot_resource_buffer_reset_flags.s`. The helper appears related to
+the just-split display-list packet family but has extra arguments and a larger
+packet path, so keep the next split conservative until its boundary and packet
+shape are analyzed.

@@ -55,8 +55,8 @@ display-list packet shape, but it does not assert final renderer semantics.
 - The split ends at `0x00008A58`, where the next parent function begins. Local
   source shows `0x8A58` is a wrapper that calls `0x874C`, with a secondary entry
   at `0x8A74`. That family is now promoted as
-  `boot_display_list_transform_wrapper_clamped_rect_emit.s`, leaving
-  `code_00008D6C_00011000.s` as the active remainder.
+  `boot_display_list_transform_wrapper_clamped_rect_emit.s`; follow-up splits
+  now leave `code_0000906C_00011000.s` as the active remainder.
 
 ## Verification
 

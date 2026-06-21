@@ -16,7 +16,7 @@ node tools/verify_setup.js
 ```
 
 Current source mix: 1 tracked composite real-assembler chunk
-(`0x00001000..0x00011000`) made from 80 tracked source files, plus 99 generated
+(`0x00001000..0x00011000`) made from 81 tracked source files, plus 99 generated
 fallback chunks.
 
 The assembled code-region SHA256 is
@@ -91,11 +91,11 @@ coverage or overclassifying data as MIPS.
    no-op return-tail split, slot record release/payload helper split, queue
    priority rebuild helper split, render no-op tail split, and `0x58` record
    copy leaf split, display-list transform record emit split, and
-   transform-wrapper/clamped-rect emit split are done. Continue from
-   `asm/original/rev0/code_00008D6C_00011000.s`, beginning with the `0x8D6C`
-   prologue helper. Parent evidence reports size `0x300`, frame size `0x28`,
-   all-state residency, high-confidence caller `0x16DAEC`, constants `320` and
-   `240`, and unresolved v2 target `0x8007338C`, which local earlier source
+   transform-wrapper/clamped-rect emit split, and flagged rect packet emit split
+   are done. Continue from `asm/original/rev0/code_0000906C_00011000.s`,
+   beginning with the `0x906C` prologue helper. Parent evidence reports size
+   `0x3BC`, frame size `0x30`, callers `0xEE8E0` and `0xFAFAC`, constants `320`
+   and `240`, and unresolved v2 target `0x8007338C`, which local earlier source
    resolves as the `0x378C` secondary entry inside
    `boot_resource_buffer_reset_flags.s`.
 
