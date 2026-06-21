@@ -173,7 +173,7 @@ Current result:
   `40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`.
 - Code-region match against baserom: pass.
 - Tracked real-assembler original-MIPS chunks: 1 composite
-  (`0x00001000..0x00011000`) made from 66 real-assembler source files.
+  (`0x00001000..0x00011000`) made from 67 real-assembler source files.
 - Generated fallback chunks: 99.
 - Assembled-code ROM rebuild command:
 
@@ -1625,7 +1625,8 @@ the global-handle slot record prepare helper:
 - `asm/original/rev0/boot/boot_state_slot_current_peer_record_flag_mark.s`
   `0x00007560..0x00007600`; contains the `0x7560` leaf prefix and `0x7568`
   prologue body.
-- Current remainder:
+- Remainder at this split, now superseded by the boot state slot target peer
+  record dispatch split:
   `asm/original/rev0/code_00007600_00011000.s`.
 
 Static evidence: parent function data reports `0x7568` as a 152-byte prologue
@@ -1643,6 +1644,30 @@ and flag-mark shape, not runtime-verified scheduler semantics.
 Static dossier:
 `docs/dossiers/boot-state-slot-current-peer-record-flag-mark.md`.
 
+## Boot State Slot Target Peer Record Dispatch Split
+
+The next tracked Rev 0 original-MIPS split promotes the target-slot sibling
+helper after the current peer-record flag mark helper:
+
+- `asm/original/rev0/boot/boot_state_slot_target_peer_record_dispatch.s`
+  `0x00007600..0x00007688`; contains the `0x7600` prologue helper.
+- Current remainder:
+  `asm/original/rev0/code_00007688_00011000.s`.
+
+Static evidence: parent function data reports `0x7600` as a 136-byte prologue
+helper with frame size `0x20`, fixed RAM `0x80077200`, no direct v2 callers,
+and high-confidence callee `0x8388` / RAM `0x80077F88`. Static shape: saves the
+incoming target slot in `s2`, returns immediately when that target is negative,
+scans six 0xA8-byte slot records rooted at corrected signed address
+`0x800E82C8`, skips the target slot, requires record flag bit `0x8000`,
+requires signed record field `+0xA2` to equal the target slot, and calls
+`0x80077F88(slot)` for matching peer records. The name is conservative and
+records the static target-slot peer-record dispatch shape, not runtime-verified
+scheduler semantics.
+
+Static dossier:
+`docs/dossiers/boot-state-slot-target-peer-record-dispatch.md`.
+
 ## Setup Complete Gate
 
 The setup phase is complete when `node tools/verify_setup.js` passes. Current
@@ -1657,7 +1682,7 @@ setup-complete state:
 - Assembler: GNU Binutils 2.39 `mips64-elf-as.exe` with `-EB -mips3 -32`.
 - Setup verifier: `tools/verify_setup.js`.
 - Current verifier result: PASS; 825 archives, 0 unknown bytes, 108 overlap
-  bytes visible, 1 tracked composite real-asm chunk made from 66 tracked source
+  bytes visible, 1 tracked composite real-asm chunk made from 67 tracked source
   files, 99 generated fallback chunks, full-source manifest 1,059 entries with
   2,469,141 ambiguous bytes preserved explicitly, 3 tracked non-code
   source-owner files / 44,029 bytes, 1,055 generated non-code fallback files /
@@ -1666,5 +1691,5 @@ setup-complete state:
   `571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A`.
 
 Next phase is either promoting another small non-code owner batch or continuing
-tracked original-MIPS splits from `asm/original/rev0/code_00007600_00011000.s`.
+tracked original-MIPS splits from `asm/original/rev0/code_00007688_00011000.s`.
 Do not begin semantic C decomp unless the setup verifier is green.
