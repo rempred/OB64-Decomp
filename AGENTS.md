@@ -173,7 +173,7 @@ Current result:
   `40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`.
 - Code-region match against baserom: pass.
 - Tracked real-assembler original-MIPS chunks: 1 composite
-  (`0x00001000..0x00011000`) made from 24 real-assembler source files.
+  (`0x00001000..0x00011000`) made from 25 real-assembler source files.
 - Generated fallback chunks: 99.
 - Assembled-code ROM rebuild command:
 
@@ -372,9 +372,35 @@ secondary entry either overwrites or accumulates six halfword globals
 `0x800C4AD8`) and writes mode flag `0x800AEE72 = 2`.
 
 Static dossier: `docs/dossiers/boot-mode-message-accumulator-update.md`. The
-next source split should start at `0x0000368C`; keep the `0x368C..0x3798`
-routine and secondary entries `0x377C/0x378C` together unless stronger evidence
-splits them safely.
+`0x368C` target has since been superseded by the resource-buffer reset split
+below.
+
+## Boot Resource-Buffer Reset/Flag Split
+
+The next tracked Rev 0 original-MIPS split separates the permanent helper after
+the mode/message accumulator update:
+
+- `asm/original/rev0/boot/boot_resource_buffer_reset_flags.s`
+  `0x0000368C..0x00003798`; parent reports a 268-byte prologue function, frame
+  size `0x20`, and secondary entries `0x377C/0x378C`.
+- Remainder:
+  `asm/original/rev0/code_00003798_00011000.s`.
+
+Static evidence: the primary entry walks two `0x18`-byte resource-buffer rows
+starting at computed base `0x800A81C0`, uses six static `resource_free` call
+sites (`0x800712C4`) against row pointer fields, clears the six accumulator
+halfwords (`0x800C4C08`, `0x800E7D68`, `0x800C4A18`, `0x800E7A1C`,
+`0x800C4BCA`, `0x800C4AD8`), writes mode flag `0x800AEE72 = 2`, calls
+`0x80093380(0x800A81C0, 0x30)`, and clears byte `0x800A81F0`. The `0x377C`
+secondary entry writes byte flag `0x800A8213 = 1`; `0x378C` returns that flag.
+Parent `docs/enemy-system.md` has used the `0x800A81C0+` row as a lead but also
+retracts EDAT-specific conclusions for shared slot `0x800A81C8`, so this split
+does not promote an EDAT-specific semantic name.
+
+Static dossier: `docs/dossiers/boot-resource-buffer-reset-flags.md`. The next
+source split should start at `0x00003798`; the immediate function is
+`0x3798..0x37F8`, followed by an overlapping `0x37F8/0x3808` cluster that should
+stay together unless stronger evidence separates it safely.
 
 ## Setup Complete Gate
 
@@ -390,7 +416,7 @@ setup-complete state:
 - Assembler: GNU Binutils 2.39 `mips64-elf-as.exe` with `-EB -mips3 -32`.
 - Setup verifier: `tools/verify_setup.js`.
 - Current verifier result: PASS; 825 archives, 0 unknown bytes, 108 overlap
-  bytes visible, 1 tracked composite real-asm chunk made from 24 tracked source
+  bytes visible, 1 tracked composite real-asm chunk made from 25 tracked source
   files, 99 generated fallback chunks, full-source manifest 1,059 entries with
   2,469,141 ambiguous bytes preserved explicitly, 3 tracked non-code
   source-owner files / 44,029 bytes, 1,055 generated non-code fallback files /
@@ -399,5 +425,5 @@ setup-complete state:
   `571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A`.
 
 Next phase is either promoting another small non-code owner batch or continuing
-tracked original-MIPS splits from `asm/original/rev0/code_0000368C_00011000.s`.
+tracked original-MIPS splits from `asm/original/rev0/code_00003798_00011000.s`.
 Do not begin semantic C decomp unless the setup verifier is green.

@@ -698,4 +698,78 @@ Next recommended target:
 
 - Continue from `asm/original/rev0/code_0000368C_00011000.s`, beginning with
   the `0x368C..0x3798` routine and keeping secondary entries `0x377C/0x378C`
-  together, or promote another small tracked non-code owner batch.
+  together, or promote another small tracked non-code owner batch. This target
+  has since been completed by the resource-buffer reset/flag split below.
+
+## 2026-06-21 - Boot Resource-Buffer Reset/Flag Split
+
+Target:
+
+- Continue source-layout cleanup inside the first tracked original-MIPS chunk.
+- Split the `0x368C..0x3798` routine after the boot mode/message accumulator
+  update while keeping secondary entries `0x377C/0x378C` in the same file.
+
+Baseline and coverage audit:
+
+- `node tools\verify_setup.js` passed before edits.
+- Baseline source mix: 1 tracked composite real-asm chunk made from 24 tracked
+  files, plus 99 generated fallback chunks.
+- Full-source manifest audit passed: 1,059 entries, zero unknown bytes,
+  independent archive scan still 825 archives, and original MIPS still covers
+  configured code region `0x00001000..0x0063676C`.
+- Baseline code-region SHA256:
+  `40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`.
+- Baseline full ROM SHA256:
+  `571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A`.
+
+Source-layout change:
+
+- Removed superseded
+  `asm/original/rev0/code_0000368C_00011000.s`.
+- Added `asm/original/rev0/boot/boot_resource_buffer_reset_flags.s`,
+  `0x0000368C..0x00003798`, 268 bytes.
+- Added remainder `asm/original/rev0/code_00003798_00011000.s`,
+  `0x00003798..0x00011000`, 55,400 bytes.
+- Static dossier: `docs/dossiers/boot-resource-buffer-reset-flags.md`.
+
+Evidence:
+
+- Parent `../scripts/ob64_functions.json` reports `0x368C` as a 268-byte
+  prologue, frame size `0x20`, no indirect jumps, and secondary entries
+  `0x377C/0x378C`. The parent end marker is `0x3794`; the delay slot at
+  `0x3794` means the source split ends at exclusive `0x3798`.
+- Parent `../scripts/ob64_callgraph_v2.json` reports caller `0x3798`,
+  high-confidence static callee sites to `resource_free` (`0x800712C4`, ROM
+  `0x16C4`, six call sites) and helper `0x80093380` (`ROM 0x23780`).
+- Parent `../scripts/ob64_symbols_v2.json` locates the routine at fixed RAM
+  `0x8007328C` in all seven named states.
+- Static code shape: primary entry walks two `0x18`-byte rows starting at
+  computed base `0x800A81C0`, frees six pointer fields per row loop, clears the
+  six accumulator halfwords also touched by `0x3564`, writes
+  `0x800AEE72 = 2`, calls `0x80093380(0x800A81C0, 0x30)`, and clears
+  `0x800A81F0`.
+- Secondary entry `0x377C` writes byte flag `0x800A8213 = 1`; secondary entry
+  `0x378C` returns that flag.
+- Parent `docs/enemy-system.md` mentions `0x800A81C0+` as a resource-buffer row
+  lead, but also retracts EDAT-specific conclusions for shared slot
+  `0x800A81C8`; therefore this split keeps a resource-buffer/flag source-layout
+  name rather than an EDAT-specific semantic name.
+
+Verification:
+
+- `node tests\binutils_smoke.js` passed after the split.
+- `node tools\assemble_original_mips.js` passed after the split.
+- Full `node tools\verify_setup.js` passed after the split.
+- Assembled report now shows 1 tracked composite real-asm chunk made from 25
+  tracked source files, plus 99 generated fallback chunks.
+- Code-region SHA256 remains:
+  `40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`.
+- Full ROM SHA256 remains:
+  `571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A`.
+
+Next recommended target:
+
+- Continue from `asm/original/rev0/code_00003798_00011000.s`, beginning with
+  the `0x3798..0x37F8` routine, or promote another small tracked non-code owner
+  batch. The following `0x37F8/0x3808` overlap cluster should stay together
+  unless stronger evidence separates it safely.

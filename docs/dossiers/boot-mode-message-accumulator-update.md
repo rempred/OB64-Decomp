@@ -10,7 +10,7 @@ code after the table/mask reconcile routine:
 | Source | ROM range | RAM range | Notes |
 | --- | --- | --- | --- |
 | `asm/original/rev0/boot/boot_mode_message_accumulator_update.s` | `0x0000347C..0x0000368C` | `0x8007307C..0x8007328C` | Keeps parent secondary entry `0x3564` with the primary entry. |
-| `asm/original/rev0/code_0000368C_00011000.s` | `0x0000368C..0x00011000` | `0x8007328C..0x80080C00` | Next tracked remainder. |
+| `asm/original/rev0/code_0000368C_00011000.s` | `0x0000368C..0x00011000` | `0x8007328C..0x80080C00` | Superseded by the resource-buffer reset split. |
 
 The name is a conservative source-layout label, not a final C API name.
 
@@ -47,8 +47,8 @@ The name is a conservative source-layout label, not a final C API name.
 - The parent end marker is `0x00003688`; the branch delay slot at `0x3688`
   belongs to this routine, so the source split ends at exclusive `0x0000368C`.
 - The next routine starts at `0x0000368C`, has secondary entries at `0x377C` and
-  `0x378C`, and should stay together in the next split unless stronger evidence
-  proves a safer cut.
+  `0x378C`, and was later split intact as
+  `boot_resource_buffer_reset_flags.s`.
 
 ## Verification
 

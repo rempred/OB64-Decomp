@@ -226,17 +226,26 @@
           "sha256": "BBC16B43A9E489DCCAA8304EA544468EE832D6FDC928BD55967B4BE768250568"
         },
         {
-          "name": "code_0000368C_00011000_remainder",
-          "file": "asm/original/rev0/code_0000368C_00011000.s",
+          "name": "boot_resource_buffer_reset_flags",
+          "file": "asm/original/rev0/boot/boot_resource_buffer_reset_flags.s",
           "romStart": "0x0000368C",
+          "romEndExclusive": "0x00003798",
+          "bytes": 268,
+          "textBytes": 5452,
+          "sha256": "B6E629BF209FBE63EA4A1B647925C512AA4F918FAB3BC623AC7D1B32AAA57926"
+        },
+        {
+          "name": "code_00003798_00011000_remainder",
+          "file": "asm/original/rev0/code_00003798_00011000.s",
+          "romStart": "0x00003798",
           "romEndExclusive": "0x00011000",
-          "bytes": 55668,
-          "textBytes": 1075117,
-          "sha256": "5348ABDA04CC2350677FE9C413212D9895F90FF489656B29423DCDF40E343A4C"
+          "bytes": 55400,
+          "textBytes": 1069923,
+          "sha256": "8DB9DC3F3A852F49D28FAB22D99016FA662AAC2EED57D450B3CD39FB6643621F"
         }
       ],
-      "textBytes": 1270745,
-      "sha256": "1033F5380E4861625608B0866D2C7B1446D380900EF4231E87BA7FAE97B4C842"
+      "textBytes": 1271003,
+      "sha256": "5964CC60BD848767E120078763FD32355A9DD01F0B053D447DA91151FCA1078A"
     }
   ]
 }
