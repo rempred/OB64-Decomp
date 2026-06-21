@@ -10,7 +10,7 @@ code after the resource-window cache helper:
 | Source | ROM range | RAM range | Notes |
 | --- | --- | --- | --- |
 | `asm/original/rev0/boot/boot_bitstream_cursor_helpers.s` | `0x000043D4..0x000046F4` | `0x80073FD4..0x800742F4` | 800-byte prologue routine plus compact local bit cursor helpers. |
-| `asm/original/rev0/code_000046F4_00011000.s` | `0x000046F4..0x00011000` | `0x800742F4..0x80080C00` | Next tracked remainder. |
+| `asm/original/rev0/code_000046F4_00011000.s` | `0x000046F4..0x00011000` | `0x800742F4..0x80080C00` | Historical next tracked remainder; superseded by `boot_bitstream_descriptor_decode.s` plus `code_00004894_00011000.s`. |
 
 The name is a conservative source-layout label. The code clearly manages a
 shared bit cursor / bitstream state, but this is not yet a verified runtime API
@@ -55,6 +55,8 @@ name.
 - Parent data reports `0x46F4` as a separate 416-byte prologue function with
   high-confidence callers `0x42DC4` and `0x42F68`; that is the next active
   source split target.
+- Follow-up split `boot_bitstream_descriptor_decode.s` now covers
+  `0x000046F4..0x00004894`; the active remainder starts at `0x00004894`.
 
 ## Verification
 
