@@ -10,7 +10,7 @@ code after the display-list state emit helper:
 | Source | ROM range | RAM range | Notes |
 | --- | --- | --- | --- |
 | `asm/original/rev0/boot/boot_display_list_finalize_flip.s` | `0x00003EE4..0x00003FD0` | `0x80073AE4..0x80073BD0` | 236-byte prologue routine called by the early boot state loop. |
-| `asm/original/rev0/code_00003FD0_00011000.s` | `0x00003FD0..0x00011000` | `0x80073BD0..0x80080C00` | Next tracked remainder. |
+| `asm/original/rev0/code_00003FD0_00011000.s` | `0x00003FD0..0x00011000` | `0x80073BD0..0x80080C00` | Former next tracked remainder; superseded by the display-list sync/modes split. |
 
 The name is a conservative source-layout label based on static display-list
 finalization and active-buffer flag toggling, not a verified renderer API name.
@@ -63,3 +63,10 @@ After the split:
   `40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`.
 - The rebuilt full-ROM SHA256 remains
   `571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A`.
+
+Follow-up split:
+
+- `asm/original/rev0/code_00003FD0_00011000.s` was later split into
+  `asm/original/rev0/boot/boot_display_list_sync_modes.s`
+  (`0x00003FD0..0x00004048`) and
+  `asm/original/rev0/code_00004048_00011000.s`.

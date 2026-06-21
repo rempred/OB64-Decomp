@@ -1033,3 +1033,62 @@ Next recommended target:
 - Continue from `asm/original/rev0/code_00003FD0_00011000.s`, beginning with
   the `0x00003FD0` 120-byte prologue routine. Parent callgraph data reports
   caller `0x27A0` and callee `0x80095610`.
+
+## 2026-06-21 - Boot Display-List Sync/Modes Split
+
+### Baseline
+
+- `git status --short` was clean before edits.
+- Last commit before the split was `c69811e Split Rev 0 display-list finalize
+  flip`.
+- `node tools\verify_setup.js` passed before the split with 1 tracked composite
+  real-asm chunk made from 29 tracked source files and 99 generated fallback
+  chunks.
+- The decomp log was 43,831 characters, 4,774 words, and 1,036 lines, below the
+  prune threshold.
+
+### Source Change
+
+- Split `asm/original/rev0/code_00003FD0_00011000.s`.
+- Added `asm/original/rev0/boot/boot_display_list_sync_modes.s`,
+  `0x00003FD0..0x00004048`, 120 bytes.
+- Added remainder `asm/original/rev0/code_00004048_00011000.s`,
+  `0x00004048..0x00011000`, 53,176 bytes.
+
+### Static Evidence
+
+- Parent `../scripts/ob64_functions.json` reports `0x3FD0` as a 120-byte
+  prologue function with frame size `0x18`, no secondary entries, and the next
+  parent candidate at `0x4048`.
+- Parent `../scripts/ob64_callgraph_v2.json` reports high-confidence caller
+  `0x27A0` and high-confidence callee `0x80095610` (`0x25A10`).
+- Parent `../scripts/ob64_symbols_v2.json` locates the routine at fixed RAM
+  `0x80073BD0` in all seven named states and all 21 parent RAM snapshots.
+- Xref scan shows read/write traffic through shared display-list cursor
+  `0x800E9BA0`/`0x800F9BA0` and writes to packet words
+  `0x800F0000..0x800F0014`.
+- Static code shape: call `0x80095610` with `a0=0x5A`, then append three packet
+  slots through the display-list cursor: `E700 00000000`, `E3001801 00000000`,
+  and `E3001A01 00000030`.
+- The name `boot_display_list_sync_modes` is conservative. It records
+  display-list sync/mode command emission only, not a verified renderer API.
+
+### Verification
+
+- `node tests\binutils_smoke.js` passed.
+- `node tools\assemble_original_mips.js` passed and produced the same
+  code-region SHA256:
+  `40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`.
+- Full `node tools\verify_setup.js` passed after docs/source updates.
+- The setup verifier now reports 1 tracked composite real-asm chunk made from
+  30 tracked source files, 99 generated fallback chunks, full-source manifest
+  1,059 entries, 0 unknown bytes, and the same full ROM SHA256:
+  `571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A`.
+
+### Next
+
+- Continue from `asm/original/rev0/code_00004048_00011000.s`, beginning with
+  the overlapping `0x00004048` leaf entry / `0x00004050` prologue shape.
+  Parent callgraph data reports caller `0x3EE4` to `0x4048`, no direct callers
+  to `0x4050`, and callee `0x40B0` from both entries; keep them together until
+  their relationship is documented.
