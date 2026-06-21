@@ -16,7 +16,7 @@ node tools/verify_setup.js
 ```
 
 Current source mix: 1 tracked composite real-assembler chunk
-(`0x00001000..0x00011000`) made from 72 tracked source files, plus 99 generated
+(`0x00001000..0x00011000`) made from 78 tracked source files, plus 99 generated
 fallback chunks.
 
 The assembled code-region SHA256 is
@@ -88,11 +88,13 @@ coverage or overclassifying data as MIPS.
    slot target peer record dispatch split, boot state slot flagged
    dispatch/lookup split, boot state slot pool/table helper split, boot state
    slot queue record-step split, boot state slot queue F000 record-step split,
-   and no-op return-tail split are done. Continue from
-   `asm/original/rev0/code_00008388_00011000.s`, beginning with the `0x8388`
-   prologue helper. Parent evidence reports frame size `0x20`, callers
-   `0x69D8`, `0x7568`, `0x7600`, `0x7688`, `0x8000`, and itself, and callees
-   `0x8388`, `0x16C4`, and `0x23780`.
+   no-op return-tail split, slot record release/payload helper split, queue
+   priority rebuild helper split, render no-op tail split, and `0x58` record
+   copy leaf split are done. Continue from
+   `asm/original/rev0/code_0000874C_00011000.s`, beginning with the overlapping
+   `0x874C` leaf / `0x8754` prologue routine. Parent evidence reports active
+   all-state residency, callers `0x8A58` and `0xEE8E0` for the `0x874C` leaf,
+   and high-confidence callees `0x228D0`, `0x210C0`, and `0x21DD4`.
 
 4. Keep the setup gate green.
 

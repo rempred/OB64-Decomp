@@ -11,7 +11,7 @@ immediately after the queue record-step helper:
 | --- | --- | --- | --- |
 | `asm/original/rev0/boot/boot_state_slot_queue_f000_record_step.s` | `0x00007FF8..0x00008380` | `0x80077BF8..0x80077F80` | Queue-service callable `0x7FF8` prefix plus the `0x8000` prologue helper with frame size `0x30`; normal return at `0x8370..0x837C`. |
 | `asm/original/rev0/boot/boot_state_slot_noop_return_tail.s` | `0x00008380..0x00008388` | `0x80077F80..0x80077F88` | Two-instruction `jr ra; nop` tail, matching a previously unresolved RAM call target. |
-| `asm/original/rev0/code_00008388_00011000.s` | `0x00008388..0x00011000` | `0x80077F88..0x80080C00` | Current tracked remainder; starts at the `0x8388` prologue helper. |
+| `asm/original/rev0/code_00008388_00011000.s` | `0x00008388..0x00011000` | `0x80077F88..0x80080C00` | Remainder at this split; now superseded by `code_0000874C_00011000.s` after the slot record release cluster split. |
 
 The name is conservative. It records the static queue-record update shape and
 the `0xF000` record-mask gate, not runtime-verified scheduler semantics.
@@ -59,7 +59,9 @@ the `0xF000` record-mask gate, not runtime-verified scheduler semantics.
 - `0x8380..0x8388` is a separate no-op return tail and not part of the
   preceding prologue helper's normal epilogue.
 - The next tracked remainder starts at `0x8388`, the next parent prologue
-  boundary and the callee used by this unit and earlier slot helpers.
+  boundary and the callee used by this unit and earlier slot helpers. That
+  range is now promoted, and the active remainder starts at
+  `code_0000874C_00011000.s`.
 
 ## Verification
 

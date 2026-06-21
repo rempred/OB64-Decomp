@@ -33,7 +33,9 @@ not runtime-verified state-machine or graphics semantics.
 - High-confidence callees are `0x23460` / RAM `0x80093060` count 2,
   `0x8564` / RAM `0x80078164`, `0x49C84` / RAM `0x80173D84`,
   `0x49CBC` / RAM `0x80173DBC`, and `0x84D4` / RAM `0x800780D4`.
-- Parent callgraph leaves unresolved RAM target `0x800782EC`.
+- Parent callgraph leaves unresolved RAM target `0x800782EC`; later source
+  splitting resolves it to `boot_state_slot_render_noop_tail.s`, a no-op return
+  target at ROM `0x86EC..0x8700`.
 - Parent/local xrefs show reads/writes to display-list pointer global
   `0x800E9BA0`, writes to active slot global `0x800C4C20`, reads from queue
   count/list globals `0x800C49D0` and `0x800C4C10`, source slot records rooted
@@ -54,8 +56,8 @@ not runtime-verified state-machine or graphics semantics.
 - Emits another `DE00` packet before calling the working-record callback pointer
   at local `s3 + 0x18` / `0x800E7A48` through `jalr`.
 - Emits an `E700` sync packet after the callback.
-- When local flags permit, calls unresolved helper `0x800782EC` with
-  halfword-like fields from the working record.
+- When local flags permit, calls `0x800782EC` with halfword-like fields from the
+  working record; local source now shows that target returns immediately.
 - Calls helper `0x800780D4`, copies the working record back to the source slot,
   then continues the reverse walk.
 - On exit, stores `0x800C4C20 = -1` and returns.

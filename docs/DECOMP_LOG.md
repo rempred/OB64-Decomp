@@ -18,7 +18,7 @@ and replace the active log with a compact current-state summary.
 - Whole-ROM coverage still independently scans for LHA headers; do not trust the
   parent archive catalog by itself.
 - Current tracked code source mix: one composite real-assembler chunk
-  `0x00001000..0x00011000` made from 72 tracked source files, plus 99 generated
+  `0x00001000..0x00011000` made from 78 tracked source files, plus 99 generated
   fallback code chunks.
 - Current tracked non-code source-owner mix: 3 tracked files / 44,029 bytes,
   plus 1,055 generated fallback owner files / 35,388,567 bytes.
@@ -61,8 +61,8 @@ Current named sequence:
 - Resource probe helpers through
   `boot_resource_probe_record_checksum_signature.s` `0x4AC8..0x5FC0`.
 - State/slot and resource-handle helpers through
-  `boot_state_slot_noop_return_tail.s` `0x5FC0..0x8388`.
-- Current remainder: `code_00008388_00011000.s`.
+  `boot_state_record_copy_58_leaf.s` `0x5FC0..0x874C`.
+- Current remainder: `code_0000874C_00011000.s`.
 
 Static dossiers live under `docs/dossiers/` and are the durable evidence notes
 for each promoted source-layout split.
@@ -601,11 +601,62 @@ Verification for the split:
   source files, plus 99 generated fallback chunks.
 - Static dossier: `docs/dossiers/boot-state-slot-queue-f000-record-step.md`.
 
+## 2026-06-21 - Boot State Slot Record Release / Payload / Queue Rebuild Cluster Split
+
+Baseline before the split:
+
+- `git status --short` was clean at commit
+  `dfb9373 Split Rev 0 boot state slot queue F000 step`.
+- `node tools\verify_setup.js` passed with 825 archives, zero unknown bytes, 108
+  visible overlap bytes, 72 tracked source files, 99 generated fallback chunks,
+  and unchanged code/ROM hashes.
+
+Promoted six source parts from
+`asm/original/rev0/code_00008388_00011000.s`:
+
+- `boot_state_slot_record_release_recursive.s` `0x00008388..0x000084D4`.
+- `boot_state_slot_payload_alloc_copy.s` `0x000084D4..0x00008564`.
+- `boot_state_slot_payload_copy_free.s` `0x00008564..0x0000859C`.
+- `boot_state_slot_queue_rebuild_priority_order.s`
+  `0x0000859C..0x000086EC`.
+- `boot_state_slot_render_noop_tail.s` `0x000086EC..0x00008700`.
+- `boot_state_record_copy_58_leaf.s` `0x00008700..0x0000874C`.
+
+The old remainder was replaced by
+`asm/original/rev0/code_0000874C_00011000.s`.
+
+Static evidence from parent symbols/callgraph/xrefs and local source:
+
+- `0x8388`, `0x84D4`, `0x8564`, and `0x859C` are permanent all-state helpers in
+  all 21 snapshots.
+- `0x8388` has high-confidence callers `0x69D8`, `0x7568`, `0x7600`,
+  `0x7688`, `0x8000`, and itself; callees are itself, `resource_free`
+  (`0x16C4`), and `0x23780`.
+- `0x84D4` allocates `length + 6`, stores a small header, and copies payload
+  bytes through `0x23460`; `0x8564` copies payload bytes back out and frees the
+  buffer.
+- `0x859C` clears/rebuilds queue globals `0x800C49D0` and `0x800C4C10` from
+  active `0x800E82C8` records using halfword field `+0x0E` / `0x800E82D6`.
+- `0x86EC` resolves the render callback walk's previous unresolved target
+  `0x800782EC` to a no-op return target plus trailing nop padding.
+- `0x8700` is a no-prologue leaf that copies `0x58` bytes from `a1` to `a0`.
+
+Verification for the split:
+
+- `node tests\binutils_smoke.js` passed.
+- `node tools\assemble_original_mips.js` passed.
+- Full `node tools\verify_setup.js` passed after docs were updated.
+- Source mix is now 1 tracked composite real-asm chunk made from 78 tracked
+  source files, plus 99 generated fallback chunks.
+- Static dossier: `docs/dossiers/boot-state-slot-record-release-cluster.md`.
+
 ## Next Frontier
 
-Continue from `asm/original/rev0/code_00008388_00011000.s`. The first target is
-the `0x8388` prologue helper at RAM `0x80077F88`, frame size `0x20`. Parent
-evidence reports callers `0x69D8`, `0x7568`, `0x7600`, `0x7688`, `0x8000`, and
-itself, and callees `0x8388`, `resource_free` (`0x16C4` twice), and `0x23780`.
-Keep recursion/no-op-tail behavior explicit until a narrower semantic name is
-proved.
+Continue from `asm/original/rev0/code_0000874C_00011000.s`. The first target is
+the overlapping `0x874C` leaf / `0x8754` prologue body at RAM
+`0x8007834C/0x80078354`, active in all seven states and all 21 snapshots.
+Parent evidence gives high-confidence callers `0x8A58` and `0xEE8E0` for the
+`0x874C` leaf and high-confidence callees `0x228D0`, `0x210C0`, and `0x21DD4`.
+Local source shows display-list-style constants and globals around
+`0x800F9BA0/0x800F9BE0`, so keep the overlapping leaf/prologue together until
+the boundary and render shape are analyzed.
