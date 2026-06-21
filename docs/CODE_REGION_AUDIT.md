@@ -1,0 +1,94 @@
+# Rev 0 Code-Region Audit
+
+`tools/audit_code_region.js` is a read-only audit of the configured Rev 0 code
+region. The configured region `0x00001000..0x0063676C`
+(`config/roms/us_rev0.json` `codeRegion`) is currently emitted in full as
+byte-exact `.word` `original_mips` source. That preserves every byte but does not
+prove every word is executable. This audit produces repeatable evidence for where
+executable MIPS actually lives versus where the configured region holds non-code
+data emitted as instructions.
+
+Run:
+
+```powershell
+node tools/audit_code_region.js
+```
+
+Generated reports (ignored):
+
+- `build/coverage/rev0-code-region-audit.json`
+- `build/coverage/rev0-code-region-audit.md`
+
+The audit is read-only: it changes nothing in the rebuild path, so the
+byte-exact rebuild and `node tools/verify_setup.js` gate are unaffected.
+
+## Headline Finding (2026-06-21)
+
+The configured code region is conservative. Executable code occupies only the
+first ~44% of it:
+
+| Region | Range (z64) | Bytes | Verdict |
+|---|---|---:|---|
+| Executable extent | `0x00001000..0x002B89B4` | 2,849,204 | code-evidenced |
+| Suspected non-code tail | `0x002B89B4..0x0063676C` | 3,661,240 (56.24%) | data-evidenced |
+
+Evidence:
+
+- **Executable extent** `0x00001000..0x002B89B4`: 96.75% common-opcode words,
+  5,065 `jr $ra` returns (1.82/KB), and all 13 parent overlay anchors
+  (`ram_snapshots/overlay_sources.json`) contained inside it. It still holds
+  545,844 bytes (19.16%) of interleaved gap/rodata between detected functions
+  (alignment, embedded tables, indirect-only leaves), so "executable extent"
+  means code-bearing, not 100% code.
+- **Suspected non-code tail** `0x002B89B4..0x0063676C`: **zero `jr $ra` across
+  915,310 words**, ~52–64% opcode-word density (≈ chance for random/data),
+  ~35% ASCII byte density, near-zero RAM-pointer density. Real MIPS cannot span
+  3.66 MB with no function return, so this region is non-code data currently
+  emitted as `.word` `original_mips`.
+- The last valid parent-detected function ends at `0x002B89B4`; no valid
+  function starts beyond it. The parent function DB contains a single
+  `valid:false` false-positive reaching `0x00598A9C` inside this tail; it is
+  excluded from the executable extent (and explains why the raw max `end_rom` of
+  the DB exceeds the valid boundary).
+
+This is consistent with the parent function scan masking 32 data ranges inside
+the code region and with the 9 `-lz*-`/`-lh*-` rejected "method-like" string hits
+at `0x0003E460` (embedded LHA method-name rodata inside the executable extent).
+
+## Method
+
+- **Detected-function coverage**: union of valid parent function
+  `[start_rom,end_rom)` intervals (`scripts/ob64_functions.json`) inside the
+  configured code region.
+- **Intrinsic evidence per 256 KiB window**: `jr $ra` (`0x03E00008`) density,
+  common-opcode density, RAM-pointer-word density (`0x80000000..0x80800000`),
+  zero-word density, and ASCII byte density.
+- **Verdict**: `code-evidenced` if a window has any detected coverage or
+  >= 0.25 `jr $ra`/KB; `data-evidenced` if it has zero `jr $ra`, zero detected
+  coverage, and < 75% opcode words; otherwise `unproven`. Thresholds are
+  conservative; the verdict is evidence, not proof.
+
+The window table that demonstrates the clean transition at `0x002B89B4` is in the
+generated `build/coverage/rev0-code-region-audit.md`.
+
+## Why this is not yet reclassified
+
+Per the repo no-gap and evidence rules, an ambiguous region is preserved
+byte-exactly and classified explicitly with repeatable scanner evidence before
+being promoted as code or data. This audit is that evidence step. The tail
+remains byte-exact `original_mips` and rebuilds identically for now;
+reclassification is a separate, gated step.
+
+## Next Step
+
+1. Refine the exact code/data boundary near `0x002B89B4` with a finer-grained
+   scan (look for the first/last `jr $ra`, alignment padding, and any structural
+   marker just past the last detected function).
+2. Reclassify `0x002B89B4..0x0063676C` from `code`/`original_mips` to a data
+   source form across `config/segments/rev0.yaml`, the coverage ledger, and the
+   full-ROM source manifest, keeping the byte-exact rebuild and `verify_setup`
+   gate green. The original-MIPS extraction/assembly range would then shrink to
+   the executable extent and the tail would become a tracked/generated data
+   owner.
+3. Once the boundary is final, wire `audit_code_region.js` into a coverage gate
+   so the executable extent and "no code outside it" stay enforced.

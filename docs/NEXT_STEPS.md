@@ -41,6 +41,34 @@ Current full-ROM source manifest:
 Expand toward full-ROM no-gap source representation without losing exact rebuild
 coverage or overclassifying data as MIPS.
 
+## Full-ROM Coverage Track: Code/Data Boundary (opened 2026-06-21)
+
+`tools/audit_code_region.js` (read-only; reports under
+`build/coverage/rev0-code-region-audit.json/.md`) found that the configured code
+region `0x00001000..0x0063676C` is conservative: executable MIPS only occupies
+`0x00001000..0x002B89B4`, and the trailing `0x002B89B4..0x0063676C`
+(3,661,240 bytes, 56.24%) has zero `jr $ra` and is non-code data emitted as
+`.word` `original_mips`. Evidence and method: `docs/CODE_REGION_AUDIT.md`.
+
+Next on this track (each step must keep `node tools/verify_setup.js` green):
+
+1. Refine the exact code/data boundary near `0x002B89B4` (first/last `jr $ra`,
+   alignment padding, any structural marker just past the last detected
+   function). Treat the boundary byte as unproven until pinned.
+2. Reclassify `0x002B89B4..0x0063676C` from `code`/`original_mips` to a data
+   source form across `config/segments/rev0.yaml`, the coverage ledger, and the
+   full-ROM source manifest. The original-MIPS extraction/assembly range shrinks
+   to the executable extent; the tail becomes a data owner. The rebuilt ROM
+   SHA256 must stay `571E8339...CC67A`.
+3. Once the boundary is final, wire `audit_code_region.js` into a coverage gate
+   so "no proven code outside the executable extent" stays enforced.
+
+Run anytime:
+
+```powershell
+node tools/audit_code_region.js
+```
+
 ## Ordered Work
 
 1. Promote the next curated tracked non-code source-owner batch.

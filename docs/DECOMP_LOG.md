@@ -18,6 +18,10 @@ and replace the active log with a compact current-state summary.
   currently covers all 41,943,040 bytes with zero unknown bytes.
 - Whole-ROM coverage still independently scans for LHA headers; do not trust the
   parent archive catalog by itself.
+- The configured code region `0x00001000..0x0063676C` is conservative. Executable
+  MIPS only occupies `0x00001000..0x002B89B4`; the trailing 3,661,240 bytes
+  (56.24%) have zero `jr $ra` and are non-code data still emitted as `.word`
+  `original_mips`. Audit: `tools/audit_code_region.js` / `docs/CODE_REGION_AUDIT.md`.
 - Current tracked code source mix: one composite real-assembler chunk
   `0x00001000..0x00011000` made from 102 tracked source files, plus 99 generated
   fallback code chunks.
@@ -585,6 +589,50 @@ Verification for the split:
 - Static dossier:
   `docs/dossiers/boot-resource-loader-callback-register.md`.
 
+## 2026-06-21 - Code-Region Extent Audit (Full-ROM Coverage Phase)
+
+Baseline before the step:
+
+- `git status --short` was clean at commit
+  `9652795 Split Rev 0 boot resource loader callback register`.
+- `node tools\verify_setup.js` passed with 825 archives, zero unknown bytes, 108
+  visible overlap bytes, 102 tracked source files, 99 generated fallback chunks,
+  code SHA256 `40D4E787...B409`, ROM SHA256 `571E8339...CC67A`.
+
+Opened the full-ROM coverage phase by auditing whether the configured code
+region is actually all code. Added read-only tool `tools/audit_code_region.js`
+and tracked doc `docs/CODE_REGION_AUDIT.md`. The tool writes only gitignored
+reports (`build/coverage/rev0-code-region-audit.json/.md`) and does not touch the
+rebuild path, so the exact-rebuild/`verify_setup` gate is unchanged.
+
+Finding (evidence, not yet reclassified):
+
+- Executable extent `0x00001000..0x002B89B4` (2,849,204 bytes): 96.75% opcode
+  words, 5,065 `jr $ra` (1.82/KB), all 13 parent overlay anchors inside it;
+  545,844 bytes (19.16%) interleaved gap/rodata between detected functions.
+- Suspected non-code tail `0x002B89B4..0x0063676C` (3,661,240 bytes, 56.24% of
+  the configured region): ZERO `jr $ra` across 915,310 words, ~52-64% opcode-word
+  density, ~35% ASCII density, near-zero RAM-pointer density. Conclusion:
+  non-code data currently emitted as `.word` `original_mips`.
+- Last valid parent-detected function ends at `0x002B89B4`; no valid function
+  starts beyond it. The parent DB's max `end_rom` `0x00598A9C` is one
+  `valid:false` false positive inside the tail and is excluded.
+
+Method: union of valid parent function `[start_rom,end_rom)` intervals plus
+per-256 KiB intrinsic scan (`jr $ra`, opcode, pointer, zero, ASCII density);
+conservative verdicts (`code-evidenced` / `data-evidenced` / `unproven`).
+
+Verification for the step:
+
+- `node tools\audit_code_region.js` runs clean and reports the extent/tail above.
+- `node tools\verify_setup.js` still PASS after adding the tool and docs; code and
+  ROM SHA256 unchanged.
+
+Next: refine the exact code/data boundary near `0x002B89B4`, then reclassify the
+tail from code to a data source form (config/segments + ledger + full-ROM source
+manifest) while keeping the byte-exact gate green; later wire the audit into a
+coverage gate.
+
 ## Current Dossier Set
 
 The current boot/source-layout dossier list is long; use `docs/PLATFORM.md` for
@@ -618,3 +666,10 @@ decompressor RAM `0x8007A110`, RAM `0x80093810`, and unresolved RAM helper
 record byte `+0x08 == 1`, and otherwise calls the unresolved helper with
 `0x800AE038`; keep final API names cautious until that list/record shape is
 better proven.
+
+There are now two active tracks. The boot function-split track continues at
+`0xB030` as above. The full-ROM coverage track (opened 2026-06-21) next refines
+the exact code/data boundary near `0x002B89B4` and reclassifies the non-code tail
+`0x002B89B4..0x0063676C` from `original_mips` to a data source form, shrinking the
+configured code region to the executable extent while keeping the exact rebuild
+gate green. See `docs/CODE_REGION_AUDIT.md` and `docs/NEXT_STEPS.md`.

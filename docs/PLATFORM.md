@@ -201,6 +201,11 @@ These outputs are useful but ignored:
 - ROM size: 41,943,040 bytes.
 - Code region currently extracted as original MIPS:
   `0x00001000..0x0063676C`.
+- Executable extent (evidence, `tools/audit_code_region.js`):
+  `0x00001000..0x002B89B4`. The trailing `0x002B89B4..0x0063676C` (3,661,240
+  bytes, 56.24%) has zero `jr $ra` and is non-code data still emitted as `.word`
+  `original_mips`; reclassification is the next full-ROM-coverage step. See
+  `docs/CODE_REGION_AUDIT.md`.
 - Valid parsed LHA archives: 825.
 - Parent archive catalog count and offsets match the independent scan.
 - Method-like signatures: 837 total, 12 rejected or unparsed, none in unknown
@@ -245,6 +250,12 @@ These outputs are useful but ignored:
   assembled in order for named source splits.
 - `tools/promote_original_mips.js` promotes generated chunks into tracked
   `asm/original/rev0/` source in deliberate batches.
+- `tools/audit_code_region.js` is a read-only code-region audit: it unions the
+  parent valid-function intervals and an intrinsic per-window `jr $ra`/opcode/
+  pointer/zero/ASCII scan to report the executable extent versus non-code data
+  inside the configured code region. Reports go to ignored
+  `build/coverage/rev0-code-region-audit.json/.md`; it does not touch the rebuild
+  path. See `docs/CODE_REGION_AUDIT.md`.
 - `tools/verify_setup.js` is the canonical setup verification command.
 - `tests/binutils_smoke.js` verifies the GNU MIPS binutils path.
 - `tests/word_asm_smoke.js` verifies the minimal `.word` assembler used by the

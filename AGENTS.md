@@ -131,6 +131,28 @@ Current source-owner mix: 3 tracked files / 44,029 bytes, plus 1,055 generated
 fallback files / 35,388,567 bytes. Total non-code source ownership remains
 1,058 files / 35,432,596 bytes.
 
+## Code Region Extent (Code vs Data)
+
+The configured code region `0x00001000..0x0063676C` is conservative and is NOT
+all executable. `tools/audit_code_region.js` (read-only) shows executable MIPS
+occupies only `0x00001000..0x002B89B4` (2,849,204 bytes): 96.75% opcode words,
+5,065 `jr $ra` returns, and all 13 parent overlay anchors contained inside it.
+The trailing `0x002B89B4..0x0063676C` (3,661,240 bytes, 56.24% of the configured
+region) has ZERO `jr $ra` across 915,310 words and ~35% ASCII density, so it is
+non-code data currently emitted as `.word` `original_mips`.
+
+Durable rules from this:
+
+- Do not treat the whole configured code region as proven code. The executable
+  extent ends near `0x002B89B4`; everything past it is unproven-as-code.
+- The region still rebuilds byte-exactly and stays `original_mips` until a gated
+  reclassification step shrinks the code region to the executable extent and
+  re-owns the tail as data. Preserve bytes; classify with evidence first.
+- The parent function DB's max `end_rom` `0x00598A9C` is a single `valid:false`
+  false positive inside the data tail; the valid boundary is `0x002B89B4`.
+
+Evidence and next step: `docs/CODE_REGION_AUDIT.md`.
+
 ## Exact Rebuild Rule
 
 Before replacing raw bytes with assembly or C, preserve the exact-rebuild loop:
