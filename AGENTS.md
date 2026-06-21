@@ -173,7 +173,7 @@ Current result:
   `40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`.
 - Code-region match against baserom: pass.
 - Tracked real-assembler original-MIPS chunks: 1 composite
-  (`0x00001000..0x00011000`) made from 38 real-assembler source files.
+  (`0x00001000..0x00011000`) made from 39 real-assembler source files.
 - Generated fallback chunks: 99.
 - Assembled-code ROM rebuild command:
 
@@ -746,6 +746,8 @@ the resource probe init helper:
   routine with frame size `0x18`.
 - Remainder:
   `asm/original/rev0/code_00004C5C_00011000.s`.
+  That file has since been superseded by the resource probe dispatch-prepare
+  split below.
 
 Static evidence: parent callgraph/symbol data reports high-confidence caller
 `0x1E0024`, high-confidence callees `0x539C` and `0x4FF0`, no unresolved calls,
@@ -757,10 +759,45 @@ then calls `0x4FF0` with magic value `0x37081383` before returning. The name is
 conservative and records the static resource/probe finalizer-wrapper shape, not
 a verified runtime API.
 
-Static dossier: `docs/dossiers/boot-resource-probe-finalize.md`. Next source
-split should start at `asm/original/rev0/code_00004C5C_00011000.s`, a 356-byte
-prologue routine with multiple callers/callees, two unresolved calls, one
-`jalr`, and reads from `0x800A8254/0x800A8258`.
+Static dossier: `docs/dossiers/boot-resource-probe-finalize.md`. The
+`0x00004C5C` target has since been superseded by the resource probe
+dispatch-prepare split below.
+
+## Boot Resource Probe Dispatch Prepare Split
+
+The next tracked Rev 0 original-MIPS split separates the 356-byte helper after
+the compact resource probe finalizer wrapper:
+
+- `asm/original/rev0/boot/boot_resource_probe_dispatch_prepare.s`
+  `0x00004C5C..0x00004DC0`; parent reports a JAL-target prologue routine with
+  frame size `0x28` and one `jalr`.
+- Remainder:
+  `asm/original/rev0/code_00004DC0_00011000.s`.
+
+Static evidence: parent callgraph/symbol data reports high-confidence callers
+`0x4DF6C`, `0x79E84`, `0xEC6D4`, and `0x1E05B4`, medium-confidence caller
+`0x24AF04`, high-confidence callees `0x553C`, `resource_alloc` (`0x1330`),
+`0x23780`, `0x5D9C`, `0x5C58` through an overlay-ambiguous target RAM
+`0x800758FC`, `resource_free` (`0x16C4`), `0x5B8C`, and `0x4FF0`, unresolved
+RAM call targets `0x8016CDF4` and `0x80093540`, one indirect `jalr`, reads from
+`0x800A8254/0x800A8258`, and fixed RAM `0x8007485C` in all seven named states
+and all 21 snapshots.
+
+Static shape: the routine dispatches on incoming ID. ID `0x0F` calls helper
+`0x553C` then finalizes. ID `0x0E` allocates and clears a 0x10-byte record,
+calls unresolved RAM `0x8016CDF4` on record `+0x0C`, then runs local helper/free
+cleanup. IDs `0` and `1` allocate a 0x1850-byte record, increment word `+0x0C`
+with zero wrapping to `-1`, walk 13 stride-`0x1C` callback-table entries read
+from `0x800A8254/0x800A8258`, invoke nonzero callbacks through `jalr`, then run
+local helper/free cleanup. Other IDs call unresolved diagnostic-looking
+`0x80093540(0x800ADF08, id)` and enter an infinite loop. Valid paths converge on
+`0x4FF0(0x37081383)`. The name is conservative and records a static
+resource/probe dispatch-prepare shape, not a verified runtime API.
+
+Static dossier: `docs/dossiers/boot-resource-probe-dispatch-prepare.md`. Next
+source split should start at `asm/original/rev0/code_00004DC0_00011000.s`, a
+276-byte prologue routine with frame size `0x20`, one `jalr`, unresolved RAM
+call target `0x8016CDCC`, and reads from `0x800A8258/0x800A8250`.
 
 ## Setup Complete Gate
 
@@ -776,7 +813,7 @@ setup-complete state:
 - Assembler: GNU Binutils 2.39 `mips64-elf-as.exe` with `-EB -mips3 -32`.
 - Setup verifier: `tools/verify_setup.js`.
 - Current verifier result: PASS; 825 archives, 0 unknown bytes, 108 overlap
-  bytes visible, 1 tracked composite real-asm chunk made from 38 tracked source
+  bytes visible, 1 tracked composite real-asm chunk made from 39 tracked source
   files, 99 generated fallback chunks, full-source manifest 1,059 entries with
   2,469,141 ambiguous bytes preserved explicitly, 3 tracked non-code
   source-owner files / 44,029 bytes, 1,055 generated non-code fallback files /
@@ -785,5 +822,5 @@ setup-complete state:
   `571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A`.
 
 Next phase is either promoting another small non-code owner batch or continuing
-tracked original-MIPS splits from `asm/original/rev0/code_00004C5C_00011000.s`.
+tracked original-MIPS splits from `asm/original/rev0/code_00004DC0_00011000.s`.
 Do not begin semantic C decomp unless the setup verifier is green.

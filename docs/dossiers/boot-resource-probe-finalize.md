@@ -10,7 +10,8 @@ boot-code wrapper after the resource probe init helper:
 | Source | ROM range | RAM range | Notes |
 | --- | --- | --- | --- |
 | `asm/original/rev0/boot/boot_resource_probe_finalize.s` | `0x00004C34..0x00004C5C` | `0x80074834..0x8007485C` | JAL-target prologue called from `0x1E0024`. |
-| `asm/original/rev0/code_00004C5C_00011000.s` | `0x00004C5C..0x00011000` | `0x8007485C..0x80080C00` | Current tracked remainder. |
+| `asm/original/rev0/code_00004C5C_00011000.s` | `0x00004C5C..0x00011000` | `0x8007485C..0x80080C00` | Historical remainder; superseded by the dispatch-prepare split. |
+| `asm/original/rev0/code_00004DC0_00011000.s` | `0x00004DC0..0x00011000` | `0x800749C0..0x80080C00` | Current tracked remainder. |
 
 The name is conservative. The routine has a static finalizer-wrapper shape in
 the nearby resource/probe helper family, but no runtime trace or controlled
@@ -39,8 +40,8 @@ mutation has verified final behavior.
 - The next parent prologue boundary is `0x00004C5C`; parent data reports it as a
   separate 356-byte JAL-target prologue with frame size `0x28`.
 - The `0x4C5C` routine has multiple callers/callees, two unresolved calls, one
-  `jalr`, and reads from `0x800A8254/0x800A8258`, so it remains the next
-  dedicated evidence pass instead of being merged into this wrapper.
+  `jalr`, and reads from `0x800A8254/0x800A8258`; it is now documented
+  separately in `docs/dossiers/boot-resource-probe-dispatch-prepare.md`.
 
 ## Verification
 
