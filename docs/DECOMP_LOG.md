@@ -533,14 +533,14 @@ FIRST: continue the chunk-3 straddler. `func_00040f88_chunk3head` `[0x40F88,
 `[0x41000, 0x41098)` (name it `func_00040f88_chunk4tail` or fold per the proven
 straddler pattern). It is overlay-relocated code (RAM `0x8016AF90+`), RAM-suspect.
 
-Then classify chunk 4. Determine its code/data mix FIRST (use the parent overlay
-map as the code/data oracle, as for chunk 3, plus `dump_function_context --start
-0x41000 --end 0x51000`). If it is mostly overlay code, use the function-split
-pipeline (conservative `func_*` for overlay-relocated code; real RAM in
-`ob64_overlay_map.json`); if data-dominant, use the chunk-3 data-classification
-pass (`build/plan_chunk3_final.js` + `classify`/`enrich`/`final_index` helpers are
-generalizable). The 10% evidenced-executable target `0x000468F8` is inside chunk 4
-(chunks 0–3 already cover 9.20% of the 2,849,204-byte executable extent).
+Chunk 4 is **CODE-DOMINANT** (recon done): the parent overlay map shows **164
+loaded functions** in `0x41000..0x51000` (first `0x41098`→RAM `0x8016B198`, last
+`0x50F98`) — overlay-relocated code, so RAM/globals/callees are suspect; use the
+function-split pipeline (`plan_chunk.js`/`slice_chunk.js`/`integrate_chunk.js`
+swarm) with **conservative `func_*`** by default (real RAM in
+`ob64_overlay_map.json`). The 10% evidenced-executable target `0x000468F8` is just
+**22,776 bytes** into chunk 4 (chunks 0–3 cover 9.20% of the 2,849,204-byte
+executable extent; reaching `0x468F8` = 10.00%).
 
 There are now two active tracks. The library source-ownership track continues at
 `0x41000` (chunk 4) as above. The full-ROM coverage track (opened 2026-06-21) next refines
