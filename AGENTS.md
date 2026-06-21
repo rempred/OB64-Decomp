@@ -173,7 +173,7 @@ Current result:
   `40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`.
 - Code-region match against baserom: pass.
 - Tracked real-assembler original-MIPS chunks: 1 composite
-  (`0x00001000..0x00011000`) made from 56 real-assembler source files.
+  (`0x00001000..0x00011000`) made from 57 real-assembler source files.
 - Generated fallback chunks: 99.
 - Assembled-code ROM rebuild command:
 
@@ -1320,7 +1320,7 @@ checksum/signature helper cluster after the small-record copy/flag helper:
 - `asm/original/rev0/boot/boot_resource_probe_record_checksum_signature.s`
   `0x00005D9C..0x00005FC0`; parent reports a 544-byte prologue at `0x5D9C`
   with frame size `0x20` and secondary entries at `0x5E84` and `0x5F00`.
-- Current remainder:
+- Remainder at that step, now superseded by the state dispatch loop init split:
   `asm/original/rev0/code_00005FC0_00011000.s`.
 
 Static evidence: parent symbol data places `0x5D9C` at fixed RAM
@@ -1340,8 +1340,39 @@ checksum/signature shape, not verified runtime semantics.
 
 Static dossier:
 `docs/dossiers/boot-resource-probe-record-checksum-signature.md`.
-Next source split should start at `asm/original/rev0/code_00005FC0_00011000.s`;
-the next target is the `0x5FC0` large boot init/table setup routine.
+
+## Boot State Dispatch Loop Init Split
+
+The next tracked Rev 0 original-MIPS split separates the large boot/state
+dispatch loop and its local selector helper:
+
+- `asm/original/rev0/boot/boot_state_dispatch_loop_init.s`
+  `0x00005FC0..0x000065A4`; parent reports a 1508-byte prologue at `0x5FC0`
+  with frame size `0x28` and a secondary entry at `0x6550`.
+- Current remainder:
+  `asm/original/rev0/code_000065A4_00011000.s`.
+
+Static evidence: parent symbol data places `0x5FC0` at fixed RAM
+`0x80075BC0` in all seven named states / all 21 snapshots. The high-confidence
+caller is `0x22B0`; parent also reports three indirect calls and unresolved
+targets that local source inspection resolves in part as the internal secondary
+entry `0x80076150` (`0x6550`). High-confidence callees include `0x23780`,
+`0x25A10`, `0x65E4`, `0x6724`, `0x19D90`, `0x1120`, `0x2D44`, `0x19FC0`,
+`0x19E30`, and `0x3798`.
+
+Static shape: initializes a callback/function-pointer table at
+`0x800AF028..0x800AF088`, manages the task stack/head at `0x800C4BBC`, status
+halfword `0x800C4C26`, depth byte `0x800AF020`, selected callback index
+`0x800E810E`, and callback return pointer `0x800E8294`, then loops through
+state callbacks and scheduler/status transitions. The local `0x6550` secondary
+entry dispatches through the jump table at `0x800ADF30` and can write
+`0xFFFE` to `0x800C4C26`. The name is conservative and records the static
+dispatch-loop/table-init shape, not a complete runtime state-machine model.
+
+Static dossier:
+`docs/dossiers/boot-state-dispatch-loop-init.md`.
+Next source split should start at `asm/original/rev0/code_000065A4_00011000.s`;
+the next target is the small `0x65A4` setup wrapper around `0x80073164`.
 
 ## Setup Complete Gate
 
@@ -1357,7 +1388,7 @@ setup-complete state:
 - Assembler: GNU Binutils 2.39 `mips64-elf-as.exe` with `-EB -mips3 -32`.
 - Setup verifier: `tools/verify_setup.js`.
 - Current verifier result: PASS; 825 archives, 0 unknown bytes, 108 overlap
-  bytes visible, 1 tracked composite real-asm chunk made from 56 tracked source
+  bytes visible, 1 tracked composite real-asm chunk made from 57 tracked source
   files, 99 generated fallback chunks, full-source manifest 1,059 entries with
   2,469,141 ambiguous bytes preserved explicitly, 3 tracked non-code
   source-owner files / 44,029 bytes, 1,055 generated non-code fallback files /
@@ -1366,5 +1397,5 @@ setup-complete state:
   `571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A`.
 
 Next phase is either promoting another small non-code owner batch or continuing
-tracked original-MIPS splits from `asm/original/rev0/code_00005FC0_00011000.s`.
+tracked original-MIPS splits from `asm/original/rev0/code_000065A4_00011000.s`.
 Do not begin semantic C decomp unless the setup verifier is green.

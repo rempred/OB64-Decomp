@@ -10,7 +10,8 @@ boot-code helper immediately after the small-record copy/flag helper:
 | Source | ROM range | RAM range | Notes |
 | --- | --- | --- | --- |
 | `asm/original/rev0/boot/boot_resource_probe_record_checksum_signature.s` | `0x00005D9C..0x00005FC0` | `0x8007599C..0x80075BC0` | Prologue helper cluster that writes record header halfwords and copies the base signature into the record. |
-| `asm/original/rev0/code_00005FC0_00011000.s` | `0x00005FC0..0x00011000` | `0x80075BC0..0x80080C00` | Current tracked remainder. |
+| `asm/original/rev0/boot/boot_state_dispatch_loop_init.s` | `0x00005FC0..0x000065A4` | `0x80075BC0..0x800761A4` | Follow-up split documented separately. |
+| `asm/original/rev0/code_000065A4_00011000.s` | `0x000065A4..0x00011000` | `0x800761A4..0x80080C00` | Current tracked remainder. |
 
 The name is conservative. The static checksum/signature shape is clear, but no
 runtime trace or controlled mutation has verified final behavior or record
@@ -61,8 +62,9 @@ semantics.
   into this local helper cluster and the entries share the same checksum/count
   role.
 - The padding `nop` at `0x5FBC` remains in this file.
-- The next parent prologue boundary is `0x00005FC0`, a much larger boot
-  init/table setup routine.
+- The next parent prologue boundary `0x00005FC0` is now split separately as
+  `boot_state_dispatch_loop_init.s`; the current active remainder starts at
+  `0x000065A4`.
 
 ## Verification
 

@@ -11,7 +11,8 @@ boot-code helper immediately after the large-record copy/flag helper:
 | --- | --- | --- | --- |
 | `asm/original/rev0/boot/boot_resource_probe_small_record_copy_flag.s` | `0x00005CFC..0x00005D9C` | `0x800758FC..0x8007599C` | Overlapping `0x5CFC` leaf / `0x5D04` prologue helper that copies the `0x10`-byte record at shared-buffer offset `0` into caller scratch and marks the buffer dirty/valid byte. |
 | `asm/original/rev0/boot/boot_resource_probe_record_checksum_signature.s` | `0x00005D9C..0x00005FC0` | `0x8007599C..0x80075BC0` | Follow-up split documented separately. |
-| `asm/original/rev0/code_00005FC0_00011000.s` | `0x00005FC0..0x00011000` | `0x80075BC0..0x80080C00` | Current tracked remainder. |
+| `asm/original/rev0/boot/boot_state_dispatch_loop_init.s` | `0x00005FC0..0x000065A4` | `0x80075BC0..0x800761A4` | Follow-up split documented separately. |
+| `asm/original/rev0/code_000065A4_00011000.s` | `0x000065A4..0x00011000` | `0x800761A4..0x80080C00` | Current tracked remainder. |
 
 The name is conservative. The static copy/flag shape is clear, but no runtime
 trace or controlled mutation has verified final behavior or record semantics.
@@ -55,8 +56,9 @@ trace or controlled mutation has verified final behavior or record semantics.
 - The next parent boundary was `0x00005D9C`; the follow-up
   `boot_resource_probe_record_checksum_signature.s` split now covers
   `0x00005D9C..0x00005FC0`.
-- The current active remainder starts at `0x00005FC0`, a larger boot
-  init/table setup routine.
+- The follow-up `boot_state_dispatch_loop_init.s` split now covers
+  `0x00005FC0..0x000065A4`; the current active remainder starts at
+  `0x000065A4`.
 
 ## Verification
 

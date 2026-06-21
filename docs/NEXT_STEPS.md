@@ -16,7 +16,7 @@ node tools/verify_setup.js
 ```
 
 Current source mix: 1 tracked composite real-assembler chunk
-(`0x00001000..0x00011000`) made from 56 tracked source files, plus 99 generated
+(`0x00001000..0x00011000`) made from 57 tracked source files, plus 99 generated
 fallback chunks.
 
 The assembled code-region SHA256 is
@@ -78,10 +78,10 @@ coverage or overclassifying data as MIPS.
    indexed-record check split, resource probe large-record check split, and
    resource probe small-record check split, and resource probe indexed-record
    copy/flag split, resource probe large-record copy/flag split, resource probe
-   small-record copy/flag split, and resource probe record checksum/signature
-   split are done. Continue from
-   `asm/original/rev0/code_00005FC0_00011000.s`, beginning with the `0x5FC0`
-   large boot init/table setup routine.
+   small-record copy/flag split, resource probe record checksum/signature
+   split, and boot state dispatch loop init split are done. Continue from
+   `asm/original/rev0/code_000065A4_00011000.s`, beginning with the small
+   `0x65A4` setup wrapper around `0x80073164`.
 
 4. Keep the setup gate green.
 

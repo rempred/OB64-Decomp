@@ -18,7 +18,7 @@ and replace the active log with a compact current-state summary.
 - Whole-ROM coverage still independently scans for LHA headers; do not trust the
   parent archive catalog by itself.
 - Current tracked code source mix: one composite real-assembler chunk
-  `0x00001000..0x00011000` made from 56 tracked source files, plus 99 generated
+  `0x00001000..0x00011000` made from 57 tracked source files, plus 99 generated
   fallback code chunks.
 - Current tracked non-code source-owner mix: 3 tracked files / 44,029 bytes,
   plus 1,055 generated fallback owner files / 35,388,567 bytes.
@@ -80,7 +80,8 @@ Current named sequence:
 - `boot_resource_probe_large_record_copy_flag.s` `0x5C58..0x5CFC`.
 - `boot_resource_probe_small_record_copy_flag.s` `0x5CFC..0x5D9C`.
 - `boot_resource_probe_record_checksum_signature.s` `0x5D9C..0x5FC0`.
-- Current remainder: `code_00005FC0_00011000.s`.
+- `boot_state_dispatch_loop_init.s` `0x5FC0..0x65A4`.
+- Current remainder: `code_000065A4_00011000.s`.
 
 Static dossiers live under `docs/dossiers/` and are the durable evidence notes
 for each promoted source-layout split.
@@ -1027,18 +1028,85 @@ Verification for the split:
 - Source mix is now 1 tracked composite real-asm chunk made from 56 tracked
   source files, plus 99 generated fallback chunks.
 
+## 2026-06-21 - Boot State Dispatch Loop Init Split
+
+Baseline before the split:
+
+- `git status --short` was clean at commit
+  `1aedde5 Split Rev 0 resource probe record checksum signature helper`.
+- `node tools\verify_setup.js` passed with 825 archives, zero unknown bytes, 108
+  visible overlap bytes, 56 tracked source files, and unchanged code/ROM hashes.
+- The compact decomp log was 853 lines / 6,184 words, so no prune/archive pass
+  was needed.
+
+Promoted `asm/original/rev0/boot/boot_state_dispatch_loop_init.s` covering ROM
+`0x00005FC0..0x000065A4` / RAM `0x80075BC0..0x800761A4`. The old
+`code_00005FC0_00011000.s` remainder was removed and replaced by
+`asm/original/rev0/code_000065A4_00011000.s`.
+
+Static evidence from parent `../scripts/ob64_symbols_v2.json`,
+`../scripts/ob64_callgraph_v2.json`, `../scripts/ob64_functions.json`,
+`../scripts/ob64_xrefs.json`, and local source inspection:
+
+- `0x5FC0` is a 1508-byte prologue helper with frame size `0x28`, epilogue,
+  `jalr`, indirect jump, and a parent-reported secondary entry at `0x6550`.
+- Fixed runtime evidence places the helper at `0x80075BC0` in all seven named
+  states and all 21 snapshots.
+- The high-confidence caller is `0x22B0`; the old parent caller list also shows
+  a self-family edge.
+- High-confidence callees include `0x23780`, `0x25A10`, `0x65E4`, `0x6724`,
+  `0x19D90`, `0x1120`, `0x2D44`, `0x19FC0`, `0x19E30`, and `0x3798`.
+- Parent reports three indirect calls and unresolved RAM targets
+  `0x80089A10`, `0x80089C50`, and `0x80070F14`.
+- Parent unresolved target `0x80076150` is the local secondary entry `0x6550`
+  inside this same split.
+- Local/source xrefs touch callback table globals `0x800AF028..0x800AF088`,
+  task/current globals `0x800AF020` and `0x800C4BBC`, scheduler/status global
+  `0x800C4C26`, selected index `0x800E810E`, callback return pointer
+  `0x800E8294`, and jump table `0x800ADF30`.
+
+Static shape:
+
+- Initializes a 25-entry callback/function-pointer table at
+  `0x800AF028..0x800AF088`.
+- Initializes the current task record at `0x800AEFE0`, stores the current task
+  head at `0x800C4BBC`, and tracks task depth in byte `0x800AF020`.
+- Main loop refreshes task state from `0x800E8214`, calls scheduler/service
+  helpers, clamps the selected callback index to zero when it is outside
+  `0..0x1E`, writes the selected index to `0x800E810E`, and calls through the
+  callback table with `jalr`.
+- Stores the callback result to `0x800E8294`, then uses local helper `0x6550`
+  and neighboring helpers `0x65E4/0x6724` to drive follow-up status handling.
+- Clears `0x800C4808`, writes wait/status values through `0x800C4C26`, polls
+  while the status is `0xFFFF` or `0xFFFD`, and handles `0xFFFE` by popping the
+  current task from the task stack.
+- Handles high-bit status by clearing bit `0x8000` and copying the status into
+  the current task record; otherwise pushes a new 8-byte task record and loops.
+- The local `0x6550` secondary entry subtracts `3` from the selected index,
+  dispatches through jump table `0x800ADF30`, returns `0`, `1`, or
+  `0x800A872C` in local cases, and one case writes `0xFFFE` to `0x800C4C26`.
+- The name is conservative and records the static dispatch-loop/table-init
+  shape, not a completed runtime state-machine semantic model.
+
+Verification for the split:
+
+- `node tests\binutils_smoke.js` passed.
+- `node tools\assemble_original_mips.js` passed.
+- `node tools\verify_setup.js` passed after the docs update.
+- Source mix is now 1 tracked composite real-asm chunk made from 57 tracked
+  source files, plus 99 generated fallback chunks.
+
 ## Next Frontier
 
-Continue from `asm/original/rev0/code_00005FC0_00011000.s`.
+Continue from `asm/original/rev0/code_000065A4_00011000.s`.
 
-Parent evidence for the next target:
+Parent/local evidence for the next target:
 
-- `0x5FC0` is a 1508-byte prologue helper with frame size `0x28` and fixed RAM
-  `0x80075BC0`.
-- Parent evidence shows caller `0x22B0` plus self/family calls.
-- Local source begins by writing a long table of RAM function/data pointers under
-  the `0x800Bxxxx` global area, so treat it as a large boot init/table setup
-  routine until deeper evidence narrows the name.
-- The function is substantially larger than the recent probe helper leaves and
-  should be split only after reading its full local control flow, callees, and
-  global writes.
+- `0x65A4` is a 64-byte prologue helper with frame size `0x28` and fixed RAM
+  `0x800761A4`.
+- Parent symbol data reports no direct callers for `0x65A4` yet.
+- Local source calls unresolved `0x80073164` with register arguments
+  `a0=0`, `a1=1`, `a2=1`, `a3=0x80`, and stack arguments `1`, `0x100`, and
+  `0x2000`.
+- The wrapper is small enough to split next, but avoid assigning a semantic name
+  until surrounding callers or runtime traces explain the setup role.

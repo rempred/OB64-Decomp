@@ -13,7 +13,8 @@ boot-code helper immediately after the small-record check helper:
 | `asm/original/rev0/boot/boot_resource_probe_large_record_copy_flag.s` | `0x00005C58..0x00005CFC` | `0x80075858..0x800758FC` | Follow-up split documented separately. |
 | `asm/original/rev0/boot/boot_resource_probe_small_record_copy_flag.s` | `0x00005CFC..0x00005D9C` | `0x800758FC..0x8007599C` | Follow-up split documented separately. |
 | `asm/original/rev0/boot/boot_resource_probe_record_checksum_signature.s` | `0x00005D9C..0x00005FC0` | `0x8007599C..0x80075BC0` | Follow-up split documented separately. |
-| `asm/original/rev0/code_00005FC0_00011000.s` | `0x00005FC0..0x00011000` | `0x80075BC0..0x80080C00` | Current tracked remainder. |
+| `asm/original/rev0/boot/boot_state_dispatch_loop_init.s` | `0x00005FC0..0x000065A4` | `0x80075BC0..0x800761A4` | Follow-up split documented separately. |
+| `asm/original/rev0/code_000065A4_00011000.s` | `0x000065A4..0x00011000` | `0x800761A4..0x80080C00` | Current tracked remainder. |
 
 The name is conservative. The static copy/flag shape is clear, but no runtime
 trace or controlled mutation has verified final behavior or record semantics.
@@ -46,8 +47,9 @@ trace or controlled mutation has verified final behavior or record semantics.
 - The routine ends after the `jr ra` delay slot at `0x5C54`.
 - The next parent boundary was `0x00005C58`; follow-up splits now cover
   `0x00005C58..0x00005FC0`.
-- The active remainder starts at `0x00005FC0`, after the documented record
-  checksum/signature helper family.
+- Follow-up splits now cover through `boot_state_dispatch_loop_init.s`
+  (`0x00005FC0..0x000065A4`); the current active remainder starts at
+  `0x000065A4`.
 
 ## Verification
 
