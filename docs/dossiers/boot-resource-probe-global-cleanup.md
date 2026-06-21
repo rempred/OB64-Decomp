@@ -15,7 +15,8 @@ result-builder:
 | `asm/original/rev0/boot/boot_resource_probe_chunk_callback_walk.s` | `0x00005058..0x000050F0` | `0x80074C58..0x80074CF0` | Follow-up split documented separately. |
 | `asm/original/rev0/code_000050F0_00011000.s` | `0x000050F0..0x00011000` | `0x80074CF0..0x80080C00` | Historical remainder; superseded by the global buffer copy split. |
 | `asm/original/rev0/boot/boot_resource_probe_global_buffer_copy.s` | `0x000050F0..0x000051A0` | `0x80074CF0..0x80074DA0` | Follow-up split documented separately. |
-| `asm/original/rev0/code_000051A0_00011000.s` | `0x000051A0..0x00011000` | `0x80074DA0..0x80080C00` | Current tracked remainder. |
+| `asm/original/rev0/boot/boot_resource_probe_global_buffer_signature_check.s` | `0x000051A0..0x0000539C` | `0x80074DA0..0x80074F9C` | Follow-up split documented separately. |
+| `asm/original/rev0/code_0000539C_00011000.s` | `0x0000539C..0x00011000` | `0x80074F9C..0x80080C00` | Current tracked remainder. |
 
 The name is conservative. The routine has a clear static clear/free shape around
 resource-probe globals, but no runtime trace or controlled mutation has verified

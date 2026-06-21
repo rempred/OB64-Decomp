@@ -18,7 +18,7 @@ and replace the active log with a compact current-state summary.
 - Whole-ROM coverage still independently scans for LHA headers; do not trust the
   parent archive catalog by itself.
 - Current tracked code source mix: one composite real-assembler chunk
-  `0x00001000..0x00011000` made from 44 tracked source files, plus 99 generated
+  `0x00001000..0x00011000` made from 45 tracked source files, plus 99 generated
   fallback code chunks.
 - Current tracked non-code source-owner mix: 3 tracked files / 44,029 bytes,
   plus 1,055 generated fallback owner files / 35,388,567 bytes.
@@ -67,7 +67,8 @@ Current named sequence:
 - `boot_resource_probe_global_cleanup.s` `0x4FF0..0x5058`.
 - `boot_resource_probe_chunk_callback_walk.s` `0x5058..0x50F0`.
 - `boot_resource_probe_global_buffer_copy.s` `0x50F0..0x51A0`.
-- Current remainder: `code_000051A0_00011000.s`.
+- `boot_resource_probe_global_buffer_signature_check.s` `0x51A0..0x539C`.
+- Current remainder: `code_0000539C_00011000.s`.
 
 Static dossiers live under `docs/dossiers/` and are the durable evidence notes
 for each promoted source-layout split.
@@ -368,13 +369,29 @@ Verification for the split:
 - Source mix is now 1 tracked composite real-asm chunk made from 44 tracked
   source files, plus 99 generated fallback chunks.
 
-## Next Frontier
+## 2026-06-21 - Boot Resource Probe Global Buffer Signature Check Split
 
-Continue from `asm/original/rev0/code_000051A0_00011000.s`.
+Baseline before the split:
 
-Parent evidence for the next target:
+- `git status --short` was clean at commit
+  `5cd3b60 Split Rev 0 resource probe global buffer copy`.
+- `node tools\verify_setup.js` passed with 825 archives, zero unknown bytes, 108
+  visible overlap bytes, 44 tracked source files, and unchanged code/ROM hashes.
+- Coverage/source audit reports still lined up: full-ROM source manifest has
+  1,059 entries, zero unknown bytes, and 2,469,141 ambiguous bytes preserved
+  explicitly.
 
-- `0x51A0` is a 508-byte valid JAL-target prologue with frame size `0x38`.
+Promoted
+`asm/original/rev0/boot/boot_resource_probe_global_buffer_signature_check.s`
+covering ROM `0x000051A0..0x0000539C` / RAM
+`0x80074DA0..0x80074F9C`. The old `code_000051A0_00011000.s` remainder was
+removed and replaced by `asm/original/rev0/code_0000539C_00011000.s`.
+
+Static evidence from parent `../scripts/ob64_symbols_v2.json`,
+`../scripts/ob64_callgraph_v2.json`, and `../scripts/ob64_xrefs.json`:
+
+- `0x51A0` is a 508-byte valid JAL-target prologue with frame size `0x38`,
+  epilogue, no `jalr`, and next function boundary `0x539C`.
 - Fixed RAM is `0x80074DA0` in all seven named states and all 21 snapshots.
 - Caller to `0x51A0`: `0x4AC8`.
 - High-confidence callees: `resource_alloc` (`0x1330`), `0x1A4F0` / RAM
@@ -382,3 +399,43 @@ Parent evidence for the next target:
   `0x80092F50`.
 - No unresolved RAM calls.
 - Global traffic: reads/writes `0x800A83B8`.
+
+Static shape:
+
+- The helper ensures shared global buffer `0x800A83B8` exists, allocating
+  `0x8000` bytes and filling it in `0x100`-byte chunks through
+  `0x8008A0F0(offset, global + offset, 0x100, 0)` when absent.
+- It copies 8-byte records from global-buffer offsets `0x14`, `0x1864`,
+  `0x30B4`, and `0x0004` into stack scratch through `0x80093060`.
+- It compares each scratch record against the 8-byte base at `0x800A8240`
+  through `0x80092F50`.
+- Equal comparison returns zero through the early-exit path. If all required
+  comparisons are nonzero, the final compare return is normalized with
+  `sltu v0, zero, v0`.
+- The name is conservative and records a static resource-probe record/signature
+  check shape, not a verified runtime API.
+
+Verification for the split:
+
+- `node tests\binutils_smoke.js` passed.
+- `node tools\assemble_original_mips.js` passed.
+- `node tools\verify_setup.js` passed after the docs update.
+- Source mix is now 1 tracked composite real-asm chunk made from 45 tracked
+  source files, plus 99 generated fallback chunks.
+
+## Next Frontier
+
+Continue from `asm/original/rev0/code_0000539C_00011000.s`.
+
+Parent evidence for the next target:
+
+- `0x539C` is a 416-byte valid prologue with frame size `0x38`.
+- Fixed RAM is `0x80074F9C` in all seven named states and all 21 snapshots.
+- Callers to `0x539C`: `0x4AC8`, `0x4C34`, and `0x5760`.
+- High-confidence callees: `resource_alloc` (`0x1330`), `0x23780` / RAM
+  `0x80093380`, `0x5D9C`, `0x5C58`, `0x23460`, `0x1A4F0`, `0x5B8C`, and
+  `resource_free` (`0x16C4`).
+- One unresolved target is reported: `0x8016CD90`.
+- The function has one `jalr`.
+- Global traffic: reads/writes `0x800A83B8`, writes `0x800A83BC`, and reads
+  `0x800A8258/0x800A824C`.

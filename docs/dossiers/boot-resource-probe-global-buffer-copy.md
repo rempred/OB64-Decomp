@@ -11,7 +11,9 @@ callback-walk helper:
 | Source | ROM range | RAM range | Notes |
 | --- | --- | --- | --- |
 | `asm/original/rev0/boot/boot_resource_probe_global_buffer_copy.s` | `0x000050F0..0x000051A0` | `0x80074CF0..0x80074DA0` | Overlapping `0x50F0` leaf entry plus `0x50F8` prologue body. |
-| `asm/original/rev0/code_000051A0_00011000.s` | `0x000051A0..0x00011000` | `0x80074DA0..0x80080C00` | Current tracked remainder. |
+| `asm/original/rev0/code_000051A0_00011000.s` | `0x000051A0..0x00011000` | `0x80074DA0..0x80080C00` | Historical remainder; superseded by the signature-check split. |
+| `asm/original/rev0/boot/boot_resource_probe_global_buffer_signature_check.s` | `0x000051A0..0x0000539C` | `0x80074DA0..0x80074F9C` | Follow-up split documented separately. |
+| `asm/original/rev0/code_0000539C_00011000.s` | `0x0000539C..0x00011000` | `0x80074F9C..0x80080C00` | Current tracked remainder. |
 
 The name is conservative. The routine has a clear static shape around a shared
 resource-probe buffer and a caller-provided copy, but no runtime trace or
@@ -57,8 +59,9 @@ controlled mutation has verified final behavior or API semantics.
   separate 508-byte JAL-target prologue with frame size `0x38`, caller `0x4AC8`,
   callees `resource_alloc`, `0x1A4F0`, `0x23460`, and `0x23350`, and the same
   `0x800A83B8` global-buffer traffic.
-- Keep the `0x51A0` helper as the next dedicated evidence pass instead of
-  merging it into this global-buffer copy helper.
+- The `0x51A0` helper is now documented separately in
+  `docs/dossiers/boot-resource-probe-global-buffer-signature-check.md`, and the
+  active remainder starts at `0x0000539C`.
 
 ## Verification
 
