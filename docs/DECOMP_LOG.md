@@ -18,7 +18,7 @@ and replace the active log with a compact current-state summary.
 - Whole-ROM coverage still independently scans for LHA headers; do not trust the
   parent archive catalog by itself.
 - Current tracked code source mix: one composite real-assembler chunk
-  `0x00001000..0x00011000` made from 48 tracked source files, plus 99 generated
+  `0x00001000..0x00011000` made from 49 tracked source files, plus 99 generated
   fallback code chunks.
 - Current tracked non-code source-owner mix: 3 tracked files / 44,029 bytes,
   plus 1,055 generated fallback owner files / 35,388,567 bytes.
@@ -72,7 +72,8 @@ Current named sequence:
 - `boot_resource_probe_dual_callback_materialize.s` `0x553C..0x5624`.
 - `boot_resource_probe_global_buffer_dual_callback_apply.s`
   `0x5624..0x5760`.
-- Current remainder: `code_00005760_00011000.s`.
+- `boot_resource_probe_id_check_materialize.s` `0x5760..0x581C`.
+- Current remainder: `code_0000581C_00011000.s`.
 
 Static dossiers live under `docs/dossiers/` and are the durable evidence notes
 for each promoted source-layout split.
@@ -590,20 +591,75 @@ Verification for the split:
 - Source mix is now 1 tracked composite real-asm chunk made from 48 tracked
   source files, plus 99 generated fallback chunks.
 
-## Next Frontier
+## 2026-06-21 - Boot Resource Probe ID Check Materialize Split
 
-Continue from `asm/original/rev0/code_00005760_00011000.s`.
+Baseline before the split:
 
-Parent evidence for the next target:
+- `git status --short` was clean at commit
+  `121f097 Split Rev 0 resource probe global buffer dual callback apply helper`.
+- `node tools\verify_setup.js` passed with 825 archives, zero unknown bytes, 108
+  visible overlap bytes, 48 tracked source files, and unchanged code/ROM hashes.
+- The active compact decomp log was 498 lines / 3,536 words, so no archive/prune
+  pass was needed.
 
-- `0x5760` is a 188-byte valid prologue with frame size `0x20`.
+Promoted `asm/original/rev0/boot/boot_resource_probe_id_check_materialize.s`
+covering ROM `0x00005760..0x0000581C` / RAM
+`0x80075360..0x8007541C`. The old `code_00005760_00011000.s` remainder was
+removed and replaced by `asm/original/rev0/code_0000581C_00011000.s`.
+
+Static evidence from parent `../scripts/ob64_symbols_v2.json` and
+`../scripts/ob64_callgraph_v2.json`:
+
+- `0x5760` is a 188-byte valid prologue with frame size `0x20`, epilogue, no
+  indirect calls, and next function boundary `0x581C`.
 - Fixed RAM is `0x80075360` in all seven named states and all 21 snapshots.
 - Caller to `0x5760`: `0x4AC8`.
 - High-confidence callees: `resource_alloc` (`0x1330`, count 3), `0x5978` via
-  RAM `0x80075688` and `0x80075578` overlay candidates, `0x581C`,
-  `resource_free` (`0x16C4`), and `0x539C`.
+  RAM targets `0x80075688` and `0x80075578`, `0x581C`, `resource_free`
+  (`0x16C4`), and `0x539C`.
 - No unresolved RAM calls are reported.
-- The function has no indirect calls.
-- Static shape: dispatches on incoming ID `0x0E`, `0x0F`, or other, allocates
-  scratch sizes `0x10`, `0x4AE8`, or `0x1850`, calls nearby materialize/apply
-  helpers, frees the scratch, and calls `0x539C(id)` if the result is false.
+- No global xrefs are reported.
+
+Static shape:
+
+- Dispatches on incoming ID.
+- ID `0x0E` allocates a 0x10-byte scratch record and calls target RAM
+  `0x80075688`.
+- ID `0x0F` allocates a 0x4AE8-byte scratch record and calls target RAM
+  `0x80075578`.
+- Other IDs allocate a 0x1850-byte scratch record and call `0x581C(id,
+  scratch)`.
+- All paths convert the helper return to a boolean, free the scratch record, and
+  return `1` if the helper was nonzero.
+- On a zero helper result, the routine calls `0x539C(id)` and returns `0`.
+- The name is conservative and records a static ID-check/fallback-materialize
+  shape, not a verified runtime API.
+
+Verification for the split:
+
+- `node tests\binutils_smoke.js` passed.
+- `node tools\assemble_original_mips.js` passed.
+- `node tools\verify_setup.js` passed after the docs update.
+- Source mix is now 1 tracked composite real-asm chunk made from 49 tracked
+  source files, plus 99 generated fallback chunks.
+
+## Next Frontier
+
+Continue from `asm/original/rev0/code_0000581C_00011000.s`.
+
+Parent evidence for the next target:
+
+- `0x581C` is a 348-byte valid prologue with frame size `0x30`.
+- Fixed RAM is `0x8007541C` in all seven named states and all 21 snapshots.
+- Callers to `0x581C`: `0x4ED4` and `0x5760`.
+- High-confidence callees: `resource_alloc` (`0x1330`), `0x1A4F0` / RAM
+  `0x8008A0F0`, `0x23460` / RAM `0x80093060`, and `0x23350` / RAM
+  `0x80092F50`.
+- Unresolved RAM calls are reported for `0x80075A84` and `0x80075B00`.
+- The function has secondary entry `0x588C` / RAM `0x8007548C`.
+- Global traffic: reads/writes `0x800A83B8`.
+- Static shape: computes `id * 0x1850 + 0x10`, ensures the shared global buffer,
+  copies 0x1850 bytes into caller scratch, compares the record against
+  `0x800A8240`, then calls two unresolved checksum-like helpers over
+  `scratch + 0x0C` / length `0x1844` and compares their halfword returns
+  against scratch header halfwords.

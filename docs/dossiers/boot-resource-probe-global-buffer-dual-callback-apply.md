@@ -11,7 +11,8 @@ helper:
 | Source | ROM range | RAM range | Notes |
 | --- | --- | --- | --- |
 | `asm/original/rev0/boot/boot_resource_probe_global_buffer_dual_callback_apply.s` | `0x00005624..0x00005760` | `0x80075224..0x80075360` | 316-byte prologue helper with two indirect `jalr` callback calls. |
-| `asm/original/rev0/code_00005760_00011000.s` | `0x00005760..0x00011000` | `0x80075360..0x80080C00` | Current tracked remainder. |
+| `asm/original/rev0/boot/boot_resource_probe_id_check_materialize.s` | `0x00005760..0x0000581C` | `0x80075360..0x8007541C` | Follow-up split documented separately. |
+| `asm/original/rev0/code_0000581C_00011000.s` | `0x0000581C..0x00011000` | `0x8007541C..0x80080C00` | Current tracked remainder. |
 
 The name is conservative. The routine has a clear static shape around ensuring
 a shared global buffer, copying a `0x4AE8` record from that buffer, and applying
@@ -56,12 +57,9 @@ final behavior or API semantics.
 - The split starts at parent prologue boundary `0x00005624`, immediately after
   `boot_resource_probe_dual_callback_materialize.s`.
 - The routine ends after the `jr ra` delay slot at `0x575C`.
-- The next parent boundary is `0x00005760`; parent data reports it as a
-  separate 188-byte prologue helper with frame size `0x20`, caller `0x4AC8`, no
-  indirect calls, no unresolved calls, and high-confidence callees
-  `resource_alloc`, `0x5978`, `0x581C`, `resource_free`, and `0x539C`.
-- Keep the `0x5760` helper as the next dedicated evidence pass instead of
-  merging it into this global-buffer dual-callback apply helper.
+- The `0x5760` helper is now documented separately in
+  `docs/dossiers/boot-resource-probe-id-check-materialize.md`.
+- Current active remainder starts at `0x0000581C`.
 
 ## Verification
 

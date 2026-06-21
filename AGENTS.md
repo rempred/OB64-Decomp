@@ -173,7 +173,7 @@ Current result:
   `40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`.
 - Code-region match against baserom: pass.
 - Tracked real-assembler original-MIPS chunks: 1 composite
-  (`0x00001000..0x00011000`) made from 47 real-assembler source files.
+  (`0x00001000..0x00011000`) made from 49 real-assembler source files.
 - Generated fallback chunks: 99.
 - Assembled-code ROM rebuild command:
 
@@ -1072,8 +1072,9 @@ by resource probe dispatch apply:
 - `asm/original/rev0/boot/boot_resource_probe_global_buffer_dual_callback_apply.s`
   `0x00005624..0x00005760`; parent reports a prologue with frame size `0x20`,
   two indirect `jalr` calls, and no unresolved RAM calls.
-- Remainder:
-  `asm/original/rev0/code_00005760_00011000.s`.
+- Historical remainder at that step:
+  `asm/original/rev0/code_00005760_00011000.s`, now superseded by the
+  ID check/materialize split below.
 
 Static evidence: parent function/symbol/callgraph data reports high-confidence
 caller `0x4DC0`; high-confidence callees `resource_alloc` (`0x1330`, called
@@ -1095,8 +1096,38 @@ verified runtime semantics.
 
 Static dossier:
 `docs/dossiers/boot-resource-probe-global-buffer-dual-callback-apply.md`.
-Next source split should start at `asm/original/rev0/code_00005760_00011000.s`,
-the 188-byte `0x5760` prologue helper called by `0x4AC8`.
+
+## Boot Resource Probe ID Check Materialize Split
+
+The next tracked Rev 0 original-MIPS split separates the 188-byte helper called
+by resource probe init:
+
+- `asm/original/rev0/boot/boot_resource_probe_id_check_materialize.s`
+  `0x00005760..0x0000581C`; parent reports a prologue with frame size `0x20`,
+  no indirect calls, and no unresolved RAM calls.
+- Remainder:
+  `asm/original/rev0/code_0000581C_00011000.s`.
+
+Static evidence: parent function/symbol/callgraph data reports high-confidence
+caller `0x4AC8`; high-confidence callees `resource_alloc` (`0x1330`, called
+three times), `0x5978` via RAM targets `0x80075688` and `0x80075578`, `0x581C`,
+`resource_free` (`0x16C4`), and `0x539C`; fixed RAM `0x80075360` in all seven
+named states and all 21 snapshots; no global xrefs; and no unresolved RAM
+targets.
+
+Static shape: the routine dispatches on incoming ID. ID `0x0E` allocates a
+0x10-byte scratch record and calls nearby checker target RAM `0x80075688`.
+ID `0x0F` allocates a 0x4AE8-byte scratch record and calls target RAM
+`0x80075578`. All other IDs allocate a 0x1850-byte scratch record and call
+`0x581C(id, scratch)`. It records whether the checker returned nonzero, frees
+the scratch record, returns `1` on success, and calls `0x539C(id)` before
+returning `0` on failure. The name is conservative and records the static
+ID-check/fallback-materialize shape, not verified runtime semantics.
+
+Static dossier:
+`docs/dossiers/boot-resource-probe-id-check-materialize.md`.
+Next source split should start at `asm/original/rev0/code_0000581C_00011000.s`,
+the 348-byte `0x581C` prologue helper called by `0x4ED4` and `0x5760`.
 
 ## Setup Complete Gate
 
@@ -1112,7 +1143,7 @@ setup-complete state:
 - Assembler: GNU Binutils 2.39 `mips64-elf-as.exe` with `-EB -mips3 -32`.
 - Setup verifier: `tools/verify_setup.js`.
 - Current verifier result: PASS; 825 archives, 0 unknown bytes, 108 overlap
-  bytes visible, 1 tracked composite real-asm chunk made from 48 tracked source
+  bytes visible, 1 tracked composite real-asm chunk made from 49 tracked source
   files, 99 generated fallback chunks, full-source manifest 1,059 entries with
   2,469,141 ambiguous bytes preserved explicitly, 3 tracked non-code
   source-owner files / 44,029 bytes, 1,055 generated non-code fallback files /
@@ -1121,5 +1152,5 @@ setup-complete state:
   `571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A`.
 
 Next phase is either promoting another small non-code owner batch or continuing
-tracked original-MIPS splits from `asm/original/rev0/code_00005760_00011000.s`.
+tracked original-MIPS splits from `asm/original/rev0/code_0000581C_00011000.s`.
 Do not begin semantic C decomp unless the setup verifier is green.

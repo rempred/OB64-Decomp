@@ -16,7 +16,7 @@ node tools/verify_setup.js
 ```
 
 Current source mix: 1 tracked composite real-assembler chunk
-(`0x00001000..0x00011000`) made from 48 tracked source files, plus 99 generated
+(`0x00001000..0x00011000`) made from 49 tracked source files, plus 99 generated
 fallback chunks.
 
 The assembled code-region SHA256 is
@@ -74,9 +74,9 @@ coverage or overclassifying data as MIPS.
    global buffer copy split, resource probe global buffer signature-check
    split, resource probe ID materialize split, resource probe dual callback
    materialize split, and resource probe global-buffer dual-callback apply
-   split are done. Continue from
-   `asm/original/rev0/code_00005760_00011000.s`, beginning with the 188-byte
-   `0x00005760` prologue helper.
+   split, and resource probe ID check/materialize split are done. Continue from
+   `asm/original/rev0/code_0000581C_00011000.s`, beginning with the 348-byte
+   `0x0000581C` prologue helper.
 
 4. Keep the setup gate green.
 

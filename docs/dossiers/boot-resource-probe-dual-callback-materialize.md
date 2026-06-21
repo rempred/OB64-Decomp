@@ -11,7 +11,8 @@ boot-code helper immediately after the resource probe ID materialize helper:
 | --- | --- | --- | --- |
 | `asm/original/rev0/boot/boot_resource_probe_dual_callback_materialize.s` | `0x0000553C..0x00005624` | `0x8007513C..0x80075224` | 232-byte prologue helper with two indirect `jalr` callback calls. |
 | `asm/original/rev0/boot/boot_resource_probe_global_buffer_dual_callback_apply.s` | `0x00005624..0x00005760` | `0x80075224..0x80075360` | Follow-up split documented separately. |
-| `asm/original/rev0/code_00005760_00011000.s` | `0x00005760..0x00011000` | `0x80075360..0x80080C00` | Current tracked remainder. |
+| `asm/original/rev0/boot/boot_resource_probe_id_check_materialize.s` | `0x00005760..0x0000581C` | `0x80075360..0x8007541C` | Follow-up split documented separately. |
+| `asm/original/rev0/code_0000581C_00011000.s` | `0x0000581C..0x00011000` | `0x8007541C..0x80080C00` | Current tracked remainder. |
 
 The name is conservative. The routine has a clear static shape around two
 13-entry callback-table walks and an ID `0x0F` materialization/finalization
@@ -53,7 +54,8 @@ API semantics.
 - The routine ends after the `jr ra` delay slot at `0x5620`.
 - The `0x5624` helper is now documented separately in
   `docs/dossiers/boot-resource-probe-global-buffer-dual-callback-apply.md`.
-- Current active remainder starts at `0x00005760`.
+- Follow-up splits now cover through `0x0000581C`; current active remainder
+  starts at `0x0000581C`.
 
 ## Verification
 
