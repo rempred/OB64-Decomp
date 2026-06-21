@@ -8,7 +8,7 @@
 .set noreorder
 .text
 
-/* True entry 0x0002E450 (read-before-write preamble; the parent-DB boundary label appears below inside the body). */
+/* Data region (not executable host code): RSP microcode binary (continues into chunk 3); see docs/dossiers/lib-chunk2-21000-31000.md. */
 data_0002E450_rsp_ucode:
 /* 0x0002E450 0x8009E050 0x40055800 */ .word 0x40055800 # mfc0 $a1, $11
 /* 0x0002E454 0x8009E054 0x8C3C0030 */ .word 0x8C3C0030 # lw $gp, 0x30($at)

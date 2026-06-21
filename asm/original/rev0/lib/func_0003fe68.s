@@ -1,0 +1,31 @@
+/*
+ * Original Rev 0 MIPS reference split.
+ * Parent source: asm/original/rev0/code_00031000_00041000.s
+ * z64 range: 0x0003FE68..0x0003FEB4 exclusive
+ * Decode comments are aids, not proof of semantic function boundaries.
+ */
+.set noat
+.set noreorder
+.text
+
+/* True entry 0x0003FE68 (read-before-write preamble; the parent-DB boundary label appears below inside the body). */
+func_0003fe68:
+/* 0x0003FE68 0x800AFA68 0x00000000 */ .word 0x00000000 # nop
+/* 0x0003FE6C 0x800AFA6C 0x00000000 */ .word 0x00000000 # nop
+/* 0x0003FE70 0x800AFA70 0x24020078 */ .word 0x24020078 # addiu $v0, $zero, 0x78
+/* 0x0003FE74 0x800AFA74 0x3C01800F */ .word 0x3C01800F # lui $at, 0x800F
+/* 0x0003FE78 0x800AFA78 0x00220821 */ .word 0x00220821 # addu $at, $at, $v0
+/* 0x0003FE7C 0x800AFA7C 0xA020B8F0 */ .word 0xA020B8F0 # sb $zero, -0x4710($at)
+/* 0x0003FE80 0x800AFA80 0x2442FFF8 */ .word 0x2442FFF8 # addiu $v0, $v0, -0x8
+/* 0x0003FE84 0x800AFA84 0x0441FFFB */ .word 0x0441FFFB # bgez $v0, 0x800AFA74
+/* 0x0003FE88 0x800AFA88 0x00000000 */ .word 0x00000000 # nop
+/* 0x0003FE8C 0x800AFA8C 0x24020078 */ .word 0x24020078 # addiu $v0, $zero, 0x78
+/* 0x0003FE90 0x800AFA90 0x3C01800F */ .word 0x3C01800F # lui $at, 0x800F
+/* 0x0003FE94 0x800AFA94 0x00220821 */ .word 0x00220821 # addu $at, $at, $v0
+/* 0x0003FE98 0x800AFA98 0xA020B970 */ .word 0xA020B970 # sb $zero, -0x4690($at)
+/* 0x0003FE9C 0x800AFA9C 0x2442FFF8 */ .word 0x2442FFF8 # addiu $v0, $v0, -0x8
+/* 0x0003FEA0 0x800AFAA0 0x0441FFFB */ .word 0x0441FFFB # bgez $v0, 0x800AFA90
+/* 0x0003FEA4 0x800AFAA4 0x00000000 */ .word 0x00000000 # nop
+/* 0x0003FEA8 0x800AFAA8 0x3C01800F */ .word 0x3C01800F # lui $at, 0x800F
+/* 0x0003FEAC 0x800AFAAC 0x03E00008 */ .word 0x03E00008 # jr $ra
+/* 0x0003FEB0 0x800AFAB0 0xAC20BAF0 */ .word 0xAC20BAF0 # sw $zero, -0x4510($at)

@@ -8,7 +8,7 @@
 .set noreorder
 .text
 
-/* True entry 0x000283C4 (read-before-write preamble; the parent-DB boundary label appears below inside the body). */
+/* Data region (not executable host code): embedded data table (zero/scalar); see docs/dossiers/lib-chunk2-21000-31000.md. */
 data_000283C4:
 /* 0x000283C4 0x80097FC4 0x00000000 */ .word 0x00000000 # nop
 /* 0x000283C8 0x80097FC8 0x00000000 */ .word 0x00000000 # nop

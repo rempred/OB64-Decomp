@@ -26,11 +26,12 @@ and replace the active log with a compact current-state summary.
   `tools/audit_code_region.js` / `docs/CODE_REGION_AUDIT.md`.
 - Current tracked code source mix: three composite real-assembler chunks
   `0x00001000..0x00011000` (177 files, `boot/`), `0x00011000..0x00021000`
-  (350 files, `lib/`), and `0x00021000..0x00031000` (216 files, `lib/`) = **743
-  tracked source files**, plus 97 generated fallback code chunks. **Chunks 0, 1
-  AND 2 are now fully split into named functions** (`0x00001000..0x00031000`);
-  next is chunk 3 (`0x00031000`, still a generated fallback chunk, and
-  DATA-DOMINANT — see Next Frontier). The promote-tool merge blocker is FIXED.
+  (350 files, `lib/`), `0x00021000..0x00031000` (216 files, `lib/`), and
+  `0x00031000..0x00041000` (66 files, `lib/`) = **809 tracked source files**, plus
+  96 generated fallback code chunks. **Chunks 0, 1, 2 AND 3 are now fully
+  source-owned as named code/data parts** (chunk 2: 2 data parts; chunk 3: 44 data
+  + 22 code parts) (`0x00001000..0x00041000`); next is chunk 4 (`0x00041000`, still
+  a generated fallback chunk). The promote-tool merge blocker is FIXED.
 - The parent boundary DB has TWO recurring defects, both fixed when splitting:
   (1) `end_rom` is INCLUSIVE (exclusive end = `end_rom + 4`; do NOT treat the
   delay slot as a gap — `tools/dump_function_context.js` now enforces this with a
@@ -102,8 +103,12 @@ Current named sequence:
   compiler 64-bit runtime (`udivmod_u64`/`divmod_s64`/…), MMIO register accessors,
   and an embedded **RSP microcode** data block). Dossier:
   `docs/dossiers/lib-chunk2-21000-31000.md`. **Chunk 2 complete.**
-- Current remainder: none in chunks 0–2 (`0x1000..0x31000` fully split). Next is
-  chunk 3 generated fallback `0x00031000..0x00041000` (DATA-DOMINANT).
+- Chunk 3 source-ownership `0x00031000..0x00041000` (66 parts: a bundle of N64
+  RSP microcodes + text-VM jump table + zero-fill/rodata data, and a 22-function
+  overlay-relocated code tail). Dossier: `docs/dossiers/lib-chunk3-31000-41000.md`.
+  **Chunk 3 source-owned.**
+- Current remainder: none in chunks 0–3 (`0x1000..0x41000` fully source-owned).
+  Next is chunk 4 generated fallback `0x00041000..0x00051000`.
 
 Static dossiers live under `docs/dossiers/` and are the durable evidence notes
 for each promoted source-layout split.
@@ -446,11 +451,55 @@ Promoted and fully split the third 64 KiB chunk — the most recognizable code y
   97 fallback); `node tools/audit_code_region.js` OK; `git diff --check` clean.
 - Next frontier: `0x00031000` (chunk 3) — DATA-DOMINANT (see Next Frontier).
 
+## 2026-06-21 - Chunk 3 Source-Ownership (0x31000..0x41000); DATA-DOMINANT
+
+Handled chunk 3 as a data/code classification pass (not a blind function split).
+
+- Range: ROM `0x00031000..0x00041000` (**66 parts**: 22 code `func_*` + 44 data),
+  all in `asm/original/rev0/lib/`. Previous frontier `0x00031000`; new frontier
+  `0x00041000`. Tracked source files 743 -> **809**; generated fallback chunks
+  97 -> 96. Byte-exact preserved (code SHA `40D4E787...B409`, ROM SHA
+  `571E8339...CC67A`). Dossier: `docs/dossiers/lib-chunk3-31000-41000.md` (full
+  data/code index table); machine-readable `build/chunk3_index.json`.
+- Opening corrections this run: (1) splitter now emits **data-specific headers**
+  for `kind:'data'` parts (no "true entry/read-before-write" wording); fixed the
+  two chunk-2 data files (`data_000283C4.s`, `data_0002E450_rsp_ucode.s`) +
+  resynced manifest. (2) Doc wording "fully split into named functions" ->
+  "fully source-owned as named code/data parts" (chunk 2 has data parts).
+  (3) Re-audited all 743 prior parts (manifest integrity) — no mistakes.
+- Code/data oracle = the parent **overlay map** (real RAM snapshots): it has 0
+  loaded functions in `0x31000..0x3F1B0` and real functions only at
+  `0x3F1B0..0x40638` + `0x40E90..0x41098`. Resolved the BSS/overlay question: the
+  tail functions are overlay-relocated (`0x3F1B0`->RAM `0x800E9C20`,
+  `0x40E90`->RAM `0x8016AF90`), NOT at the linear `0x800AEDB0` BSS base — so they
+  are real code, RAM-suspect, kept conservative `func_*`. Three signals confirm
+  `0x31000..0x3F1B0` is data (overlay map 0 fns; context 0 fns; 0 prologue+jr-ra).
+- Data classification (hard evidence): a **bundle of N64 RSP microcodes** (name
+  strings `RSP Gfx ucode F3DEX/F3DEX.NoN/F3DEX.Rej/F3DLX.Rej/L3DEX/S2DEX/S2DEXD …
+  Yoshitaka Yasumoto 1999 Nintendo`), the **text-VM jump table** (`0x39CB0` ->
+  RAM `0x800A98B0`, 306 ptr words + glyph charset), zero-fill blocks, and a few
+  `data_*` "mixed — needs follow-up" spans. Bytes by class: rsp_ucode 26,160;
+  text-VM table 14,656; mixed data 12,888; zero-fill 6,208; code 5,624.
+- Adversarial swarm (3 agents) CONFIRMED the classification with ONE correction:
+  `0x3FE68..0x3FEB4` is a frameless leaf function (true entry `0x3FE70`), not data
+  — reclassified to `func_0003fe68` (the prologue scanner missed it; no frame).
+  The 21 parent + 1 recovered = 22 code funcs all verified real (0 fragments).
+- Straddler: `func_00040f88_chunk3head` `[0x40F88,0x41000)` continues to `0x41098`
+  in chunk 4 (handle the chunk-4 tail when chunk 4 is done).
+- Tooling: data-header support in `split_original_mips_part.js`; gitignored
+  `build/` helpers `plan_chunk3_final.js`, `classify_chunk3.js`,
+  `enrich_chunk3_index.js`, `final_index_chunk3.js`, `resync_manifest.js`.
+- Verification: manifest integrity (809 parts) PASS; fragment check 0 code
+  fragments; `node tools/assemble_original_mips.js` byte-exact;
+  `node tools/verify_setup.js` PASS (4 composite chunks / 809 files / 96 fallback);
+  `node tools/audit_code_region.js` OK; `git diff --check` clean.
+
 ## Current Dossier Set
 
 The current boot/source-layout dossier list is long; use `docs/PLATFORM.md` for
 the full quick index. The newest dossiers are:
 
+- `docs/dossiers/lib-chunk3-31000-41000.md` (66-part chunk-3: RSP microcode bundle + text-VM tables + overlay code tail; data-dominant)
 - `docs/dossiers/lib-chunk2-21000-31000.md` (216-file chunk-2 libultra/libc/gu library; chunk 2 done)
 - `docs/dossiers/lib-chunk1-11000-21000.md` (350-function chunk-1 library; chunk 1 done)
 - `docs/dossiers/boot-codec-libc-vec3-F22C-11000.md` (47-function tranche; chunk 0 done)
@@ -475,37 +524,26 @@ the full quick index. The newest dossiers are:
 
 ## Next Frontier
 
-Chunks 0, 1 and 2 (`0x00001000..0x00031000`) are fully split into named functions.
-The next frontier is **`0x00031000` (chunk 3)** — but chunk 3 is **DATA-DOMINANT,
-not a function chunk**, so it needs a data-classification pass, not the
-function-naming swarm.
+Chunks 0, 1, 2 and 3 (`0x00001000..0x00041000`) are fully source-owned as named
+code/data parts (chunk 2: 2 data parts; chunk 3: 44 data + 22 code parts).
+The next frontier is **`0x00041000` (chunk 4)**.
 
-Chunk 3 shape (from `dump_function_context --start 0x31000 --end 0x41000` +
-disasm sampling): only ~21 parent-detected functions, ALL at
-`0x3F1B0..0x41098` (which spill into chunk 4). The region `0x31000..~0x3F1B0`
-(~57 KB) is data:
-- `0x31000..?` — continuation of chunk 2's `data_0002E450_rsp_ucode` (RSP
-  microcode; `op_0x12`/COP2 words).
-- zero-fill blocks (e.g. `0x34000`).
-- small-integer data tables (e.g. `0x3A000`: `0x1388`=5000, `0x0FA0`=4000).
+FIRST: continue the chunk-3 straddler. `func_00040f88_chunk3head` `[0x40F88,
+0x41000)` continues to `0x41098` in chunk 4 — the chunk-4 first file is its tail
+`[0x41000, 0x41098)` (name it `func_00040f88_chunk4tail` or fold per the proven
+straddler pattern). It is overlay-relocated code (RAM `0x8016AF90+`), RAM-suspect.
 
-OPEN QUESTION / hazard to resolve BEFORE naming the tail functions: `0x3F1B0`
-maps (linearly) to RAM `0x800AEDB0`, which is the **BSS-clear start** from the
-boot entry (`boot_entry_clear_bss` clears `0x3AE70` bytes from `0x800AEDB0`).
-Real functions at the BSS base would be zeroed at boot under the linear map, so
-either these are overlay-relocated (linear RAM wrong here) or this is an
-initialized-data/rodata section, not `.text`. Verify against the overlay map /
-parent symbol RAM before committing names.
+Then classify chunk 4. Determine its code/data mix FIRST (use the parent overlay
+map as the code/data oracle, as for chunk 3, plus `dump_function_context --start
+0x41000 --end 0x51000`). If it is mostly overlay code, use the function-split
+pipeline (conservative `func_*` for overlay-relocated code; real RAM in
+`ob64_overlay_map.json`); if data-dominant, use the chunk-3 data-classification
+pass (`build/plan_chunk3_final.js` + `classify`/`enrich`/`final_index` helpers are
+generalizable). The 10% evidenced-executable target `0x000468F8` is inside chunk 4
+(chunks 0–3 already cover 9.20% of the 2,849,204-byte executable extent).
 
-Recommended chunk-3 path: promote (`code_00031000_00041000.s`), then classify the
-data regions explicitly into `data_`/`rodata_`/`bss_zero_` files (preserve
-no-gap, byte-exact), carry the RSP-ucode continuation as the first file, and split
-the `0x3F1B0+` tail functions only after resolving the RAM/BSS question (likely a
-small targeted swarm rather than the 10-slice function pipeline). The chunk-3
-straddler is a DATA straddler (ucode), not a function tail.
-
-There are now two active tracks. The library function-split track continues at
-`0x31000` (chunk 3, data-dominant) as above. The full-ROM coverage track (opened 2026-06-21) next refines
+There are now two active tracks. The library source-ownership track continues at
+`0x41000` (chunk 4) as above. The full-ROM coverage track (opened 2026-06-21) next refines
 the exact code/data boundary near `0x002B89B4` and reclassifies the non-code tail
 `0x002B89B4..0x0063676C` from `original_mips` to a data source form, shrinking the
 configured code region to the executable extent while keeping the exact rebuild

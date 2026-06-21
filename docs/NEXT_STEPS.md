@@ -15,12 +15,13 @@ Current passing commands:
 node tools/verify_setup.js
 ```
 
-Current source mix: 3 tracked composite real-assembler chunks
-(`0x00001000..0x00011000` 177 files in `boot/`; `0x00011000..0x00021000` 350
-files and `0x00021000..0x00031000` 216 files in `lib/`) = 743 tracked source
-files, plus 97 generated fallback chunks. **Chunks 0, 1 and 2 are fully split
-into named functions** (`0x00001000..0x00031000`); next is chunk 3 (`0x00031000`,
-DATA-DOMINANT).
+Current source mix: 4 tracked composite real-assembler chunks
+(`0x00001000..0x00011000` 177 files in `boot/`; `0x00011000..0x00021000` 350,
+`0x00021000..0x00031000` 216, `0x00031000..0x00041000` 66 files in `lib/`) = 809
+tracked source files, plus 96 generated fallback chunks. **Chunks 0, 1, 2 and 3
+are fully source-owned as named code/data parts** (`0x00001000..0x00041000`;
+chunk 2: 2 data parts; chunk 3: 44 data + 22 code parts); next is chunk 4
+(`0x00041000`).
 
 The assembled code-region SHA256 is
 `40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`; the full
@@ -97,23 +98,23 @@ node tools/audit_code_region.js
    generates fallback owners for the rest. Keep `node tools/verify_setup.js`
    green after every promotion.
 
-3. Handle chunk 3 (DATA-DOMINANT).
+3. Continue into chunk 4.
 
-   Chunks 0, 1 and 2 (`0x00001000..0x00031000`) are fully split into named
-   functions: chunk 0 boot/resource/codec/libc/vec3 in `boot/`; chunk 1 in `lib/`
-   (graphics/unit-script + math + libc + libultra library, dossier
-   `lib-chunk1-11000-21000.md`); chunk 2 in `lib/` (libultra/libc/runtime/`gu`
-   library, dossier `lib-chunk2-21000-31000.md`).
+   Chunks 0–3 (`0x00001000..0x00041000`) are fully source-owned as named code/data
+   parts: chunk 0 in `boot/`; chunks 1–3 in `lib/` (dossiers `lib-chunk1-…`,
+   `lib-chunk2-…`, `lib-chunk3-…`). Chunk 3 was a DATA-DOMINANT classification pass
+   (RSP microcode bundle + text-VM table + zero-fill/rodata + a 22-function
+   overlay-relocated code tail).
 
-   **Next frontier: `0x00031000` (chunk 3) — but it is DATA-DOMINANT, not a
-   function chunk.** Only ~21 parent functions, all at `0x3F1B0..0x41098` (spill
-   into chunk 4); `0x31000..~0x3F1B0` (~57 KB) is the RSP-ucode continuation +
-   zero-fill + small data tables. HAZARD: `0x3F1B0` maps to RAM `0x800AEDB0` (the
-   BSS-clear start) — resolve whether the tail functions are overlay-relocated or
-   an initialized-data section before naming them. Promote with the fixed tool,
-   then classify data explicitly into `data_`/`rodata_`/`bss_zero_` files and split
-   only the tail functions (a small targeted pass, not the 10-slice swarm). See
-   the DECOMP_LOG "Next Frontier" and `docs/dossiers/lib-chunk2-21000-31000.md`.
+   **Next frontier: `0x00041000` (chunk 4).** FIRST continue the chunk-3 straddler:
+   `func_00040f88_chunk3head` `[0x40F88,0x41000)` continues to `0x41098` (chunk-4
+   head; overlay code, RAM-suspect). Then determine chunk 4's code/data mix using
+   the parent overlay map as the code/data oracle (as for chunk 3) +
+   `dump_function_context --start 0x41000 --end 0x51000`; pick the function-split
+   pipeline if overlay-code-dominant, or the chunk-3 data-classification pass if
+   data-dominant. The 10% executable target `0x000468F8` is inside chunk 4
+   (chunks 0–3 cover 9.20% of the executable extent). See the DECOMP_LOG "Next
+   Frontier" and `docs/dossiers/lib-chunk3-31000-41000.md`.
 
 4. Keep the setup gate green.
 

@@ -59,6 +59,10 @@ function parseArgs(argv) {
           end: parseHexOrNumber(s.end),
           file: String(s.file).replace(/\\/g, '/'),
           label: s.label || null,
+          // kind 'data' emits a data-region header (no "true entry" wording);
+          // note is a free-text classification shown in the header.
+          kind: s.kind || null,
+          note: s.note || null,
         });
       }
       if (!Array.isArray(sf) && sf.remainder) {
@@ -178,7 +182,11 @@ function writeSplitFile({ split, sourcePart, lines }) {
     '.text',
     '',
   ];
-  if (split.label) {
+  if (split.kind === 'data') {
+    // Data region (not executable code) — no "true entry" wording.
+    headerLines.push(`/* Data region (not executable host code): ${split.note || 'classified as data; see chunk dossier'}. */`);
+    if (split.label) headerLines.push(`${split.label}:`);
+  } else if (split.label) {
     headerLines.push(`/* True entry ${hex(split.start)} (read-before-write preamble; the parent-DB boundary label appears below inside the body). */`);
     headerLines.push(`${split.label}:`);
   }
