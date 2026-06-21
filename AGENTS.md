@@ -1906,7 +1906,7 @@ packet helper:
 - `asm/original/rev0/boot/boot_display_list_flagged_rect_packet_emit.s`
   `0x00008D6C..0x0000906C`; single prologue helper with frame size `0x28` and
   clean return at `0x9064..0x9068`.
-- Current remainder:
+- Remainder after this split, now superseded by the color rect packet split:
   `asm/original/rev0/code_0000906C_00011000.s`.
 
 Static evidence: parent function/symbol data reports `0x8D6C` as a valid
@@ -1926,6 +1926,43 @@ command words, writing through offsets up to `+0xA4`.
 Static dossier:
 `docs/dossiers/boot-display-list-flagged-rect-packet-emit.md`.
 
+## Boot Display-List Color Rect Packet Emit Split
+
+The next tracked Rev 0 original-MIPS split promotes the `0x906C` display-list
+packet helper:
+
+- `asm/original/rev0/boot/boot_display_list_color_rect_packet_emit.s`
+  `0x0000906C..0x00009428`; single prologue helper with frame size `0x30` and
+  clean return at `0x9420..0x9424`.
+- Current remainder:
+  `asm/original/rev0/code_00009428_00011000.s`.
+
+Static evidence: parent function/symbol data reports `0x906C` as a valid
+956-byte prologue helper, fixed in all seven named states and all 21 snapshots,
+with no secondary entries, no `jalr`, old/static callers `0xEE8E0` and
+`0xFAFAC`, and top constants `320` and `240`. Parent old callee data reports
+`0x368C`, while the v2 callgraph leaves RAM target `0x8007338C` unresolved;
+local earlier source identifies that target as the `0x378C` secondary entry
+inside `boot_resource_buffer_reset_flags.s`.
+
+Static shape: the helper clamps coordinate-like arguments to `0..0x13F` and
+`0..0xEF`, using an extra stack argument for the fourth clamp. It saves incoming
+`a0` as a color/fill-like word duplicated into both halfwords, emits
+display-list-style packet runs through pointer global `0x800E9BA0`, reads
+`0x800C4B20` and `0x800E8210`, writes packet offsets from `0x800F0000` through
+`0x800F0044`, and uses command words including `E700`, `E200001C`,
+`E3000A01`, `FE00`, `F700`, and `F600`.
+
+Next frontier: `asm/original/rev0/code_00009428_00011000.s` starts with a
+292-byte helper at `0x9428` / RAM `0x80079028`, frame size `0x40`. Parent data
+marks it as orphaned from v2 callers and records secondary entries at `0x9488`
+and `0x953C`; older data lists caller `0x112650` and unresolved callees RAM
+`0x80098450` and `0x800907E0`. Keep the whole `0x9428` family together until
+its secondary entries and tail prefix before `0x954C` are understood.
+
+Static dossier:
+`docs/dossiers/boot-display-list-color-rect-packet-emit.md`.
+
 ## Setup Complete Gate
 
 The setup phase is complete when `node tools/verify_setup.js` passes. Current
@@ -1940,7 +1977,7 @@ setup-complete state:
 - Assembler: GNU Binutils 2.39 `mips64-elf-as.exe` with `-EB -mips3 -32`.
 - Setup verifier: `tools/verify_setup.js`.
 - Current verifier result: PASS; 825 archives, 0 unknown bytes, 108 overlap
-  bytes visible, 1 tracked composite real-asm chunk made from 81 tracked source
+  bytes visible, 1 tracked composite real-asm chunk made from 82 tracked source
   files, 99 generated fallback chunks, full-source manifest 1,059 entries with
   2,469,141 ambiguous bytes preserved explicitly, 3 tracked non-code
   source-owner files / 44,029 bytes, 1,055 generated non-code fallback files /
@@ -1949,12 +1986,11 @@ setup-complete state:
   `571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A`.
 
 Next phase is either promoting another small non-code owner batch or continuing
-tracked original-MIPS splits from `asm/original/rev0/code_0000906C_00011000.s`.
-The next MIPS frontier starts with the `0x906C` prologue helper; parent evidence
-reports size `0x3BC`, frame size `0x30`, callers `0xEE8E0` and `0xFAFAC`, top
-constants `320` and `240`, and unresolved v2 target `0x8007338C`, which local
-earlier source identifies as the `0x378C` secondary entry inside
-`boot_resource_buffer_reset_flags.s`. It shares the display-list coordinate
-clamp/packet-emission shape of the prior helper but has extra arguments and a
-larger packet path, so keep the next split conservative. Do not begin semantic C
-decomp unless the setup verifier is green.
+tracked original-MIPS splits from `asm/original/rev0/code_00009428_00011000.s`.
+The next MIPS frontier starts with the `0x9428` prologue helper; parent evidence
+reports size `0x124`, frame size `0x40`, secondary entries `0x9488` and
+`0x953C`, older caller `0x112650`, unresolved callees RAM `0x80098450` and
+`0x800907E0`, and xrefs reading `0x800E9BE0` and `0x800C4C24`. Keep the full
+`0x9428` family together until its secondary-entry control flow and tail prefix
+before `0x954C` are understood. Do not begin semantic C decomp unless the setup
+verifier is green.

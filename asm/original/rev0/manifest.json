@@ -739,17 +739,26 @@
           "sha256": "76109CF66B335891B892C18166D210B606D78D36CEB24ADAA932E9AA8BDA2D89"
         },
         {
-          "name": "code_0000906C_00011000_remainder",
-          "file": "asm/original/rev0/code_0000906C_00011000.s",
+          "name": "boot_display_list_color_rect_packet_emit",
+          "file": "asm/original/rev0/boot/boot_display_list_color_rect_packet_emit.s",
           "romStart": "0x0000906C",
+          "romEndExclusive": "0x00009428",
+          "bytes": 956,
+          "textBytes": 18677,
+          "sha256": "10EF13A45D33ED7F194EA470A27901CF85A5E5ECC99E4C5EDD9E1829F97B446A"
+        },
+        {
+          "name": "code_00009428_00011000_remainder",
+          "file": "asm/original/rev0/code_00009428_00011000.s",
+          "romStart": "0x00009428",
           "romEndExclusive": "0x00011000",
-          "bytes": 32660,
-          "textBytes": 630647,
-          "sha256": "4CE08C00A06069D61B0620D134D553254285308F1DC46F0511B7465985977922"
+          "bytes": 31704,
+          "textBytes": 612228,
+          "sha256": "928169A82D0F696A1D130FED1B708E5E33359D6C8C1D7C14CB19459EF44FCC90"
         }
       ],
-      "textBytes": 1285456,
-      "sha256": "2A8BD1F2D567FAAB50AFF51359E6FE5428F7C90AFE35B8605817F1BE71318D3D"
+      "textBytes": 1285714,
+      "sha256": "E71EB3C5169EB16378A6E947FCDD0B408689FBBC753D440A4F51FEBD08F01B71"
     }
   ]
 }

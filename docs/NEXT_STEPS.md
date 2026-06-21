@@ -16,7 +16,7 @@ node tools/verify_setup.js
 ```
 
 Current source mix: 1 tracked composite real-assembler chunk
-(`0x00001000..0x00011000`) made from 81 tracked source files, plus 99 generated
+(`0x00001000..0x00011000`) made from 82 tracked source files, plus 99 generated
 fallback chunks.
 
 The assembled code-region SHA256 is
@@ -91,13 +91,15 @@ coverage or overclassifying data as MIPS.
    no-op return-tail split, slot record release/payload helper split, queue
    priority rebuild helper split, render no-op tail split, and `0x58` record
    copy leaf split, display-list transform record emit split, and
-   transform-wrapper/clamped-rect emit split, and flagged rect packet emit split
-   are done. Continue from `asm/original/rev0/code_0000906C_00011000.s`,
-   beginning with the `0x906C` prologue helper. Parent evidence reports size
-   `0x3BC`, frame size `0x30`, callers `0xEE8E0` and `0xFAFAC`, constants `320`
-   and `240`, and unresolved v2 target `0x8007338C`, which local earlier source
-   resolves as the `0x378C` secondary entry inside
-   `boot_resource_buffer_reset_flags.s`.
+   transform-wrapper/clamped-rect emit split, flagged rect packet emit split,
+   and color rect packet emit split are done. Continue from
+   `asm/original/rev0/code_00009428_00011000.s`, beginning with the `0x9428`
+   prologue helper. Parent evidence reports size `0x124`, frame size `0x40`,
+   secondary entries `0x9488` and `0x953C`, older caller `0x112650`,
+   unresolved callees RAM `0x80098450` and `0x800907E0`, and xrefs reading
+   `0x800E9BE0` and `0x800C4C24`. Keep the whole `0x9428` family together until
+   its secondary-entry control flow and tail prefix before `0x954C` are
+   understood.
 
 4. Keep the setup gate green.
 
