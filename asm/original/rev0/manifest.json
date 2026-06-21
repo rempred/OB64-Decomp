@@ -334,17 +334,26 @@
           "sha256": "C7934F8897549A5DDBBF619F5A7C459621B1E6AE68FC08E0758611393B866A28"
         },
         {
-          "name": "code_00004AC8_00011000_remainder",
-          "file": "asm/original/rev0/code_00004AC8_00011000.s",
+          "name": "boot_resource_probe_init",
+          "file": "asm/original/rev0/boot/boot_resource_probe_init.s",
           "romStart": "0x00004AC8",
+          "romEndExclusive": "0x00004C34",
+          "bytes": 364,
+          "textBytes": 7316,
+          "sha256": "A367DD3490808AF5855A49EFDB66BD97166074854C8F89DB8C37824A39345AAC"
+        },
+        {
+          "name": "code_00004C34_00011000_remainder",
+          "file": "asm/original/rev0/code_00004C34_00011000.s",
+          "romStart": "0x00004C34",
           "romEndExclusive": "0x00011000",
-          "bytes": 50488,
-          "textBytes": 974768,
-          "sha256": "3C30675507D4BA05C19F6BC75CBA501D7AF2818006CAD1DCEF55FBA7BEE6D9D4"
+          "bytes": 50124,
+          "textBytes": 967710,
+          "sha256": "6880164D155441F737961907F01E97AD326738623CD0FEE5A53F20472648412E"
         }
       ],
-      "textBytes": 1273841,
-      "sha256": "E5E449CF405051F3DDA60E70441440B22086F875D58619DA03A2EA3675833950"
+      "textBytes": 1274099,
+      "sha256": "27788C07C791F7088163193EFF89787D9F1A045F4370A389C82E47993193588E"
     }
   ]
 }

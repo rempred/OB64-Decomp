@@ -1473,3 +1473,70 @@ Next recommended target:
   high-confidence caller `0x22B0`, callees `0x51A0`, `0x539C`, `0x5760`, and
   `0x4FF0`, unresolved helper RAM `0x80093540`, and writes to
   `0x800A83B8/83BC` and `0x800AEFD0/EFD2`.
+
+## 2026-06-21 - Boot Resource Probe Init Split
+
+### Baseline
+
+- `git status --short` was clean before edits.
+- Last commit before the split was `695823f Split Rev 0 bitstream descriptor
+  encode`.
+- `node tools\verify_setup.js` passed before the split with 1 tracked composite
+  real-asm chunk made from 36 tracked source files and 99 generated fallback
+  chunks.
+- The decomp log was 64,465 characters, 7,273 words, and 1,476 lines, below the
+  prune threshold.
+
+### Source Change
+
+- Split `asm/original/rev0/code_00004AC8_00011000.s`.
+- Added `asm/original/rev0/boot/boot_resource_probe_init.s`,
+  `0x00004AC8..0x00004C34`, 364 bytes.
+- Added remainder `asm/original/rev0/code_00004C34_00011000.s`,
+  `0x00004C34..0x00011000`, 50,124 bytes.
+
+### Static Evidence
+
+- Parent `../scripts/ob64_functions.json` reports `0x4AC8` as a 364-byte valid
+  JAL-target prologue routine with frame size `0x20`; safe exclusive split end
+  is after the `jr ra` delay slot at `0x4C30`, so the next file starts at
+  `0x4C34`.
+- Parent `../scripts/ob64_symbols_v2.json` locates `0x4AC8` at fixed RAM
+  `0x800746C8` in all seven named states and all 21 RAM snapshots.
+- Parent callgraph/symbol data reports high-confidence caller `0x22B0`,
+  high-confidence callees `0x51A0`, `0x539C`, `0x5760`, and `0x4FF0`, and four
+  unresolved calls to RAM `0x80093540`.
+- Xref evidence shows writes to `0x800A83B8`, `0x800A83BC`, `0x800AEFD0`, and
+  `0x800AEFD2`; current xrefs list `0x800AEFD0` and `0x800AEFD2` as only written
+  by `0x4AC8`.
+- Static code shape: entry clears `0x800A83B8/83BC`, initializes three bytes at
+  `0x800AEFD0..0x800AEFD2` to `0xFF`, then calls `0x51A0`.
+- If `0x51A0` returns nonzero, the routine calls unresolved `0x80093540` with a
+  pointer near `0x800ADE78`, probes IDs `0`, `1`, `0x0F`, and `0x0E` through
+  `0x539C`, and jumps to the finalizer.
+- If `0x51A0` returns zero, the routine tests IDs `0` and `1` through `0x5760`,
+  records missing IDs into the `0x800AEFD0` byte list, optionally records
+  missing IDs `0x0F` and `0x0E`, and emits unresolved diagnostic-looking calls
+  near `0x800ADEA4`, `0x800ADEC8`, and `0x800ADEE8`.
+- Both paths call `0x4FF0` with magic value `0x37081383`; return is zero when no
+  missing IDs were recorded, otherwise pointer `0x800AEFD0`.
+- The name `boot_resource_probe_init` is conservative. It records the static
+  resource/probe initialization shape, not a verified runtime API.
+
+### Verification
+
+- `node tests\binutils_smoke.js` passed.
+- `node tools\assemble_original_mips.js` passed and produced the same
+  code-region SHA256:
+  `40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`.
+- Full `node tools\verify_setup.js` passed after docs/source updates.
+- The setup verifier now reports 1 tracked composite real-asm chunk made from
+  37 tracked source files, 99 generated fallback chunks, full-source manifest
+  1,059 entries, 0 unknown bytes, and the same full ROM SHA256:
+  `571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A`.
+
+### Next
+
+- Continue from `asm/original/rev0/code_00004C34_00011000.s`, beginning with
+  the `0x00004C34` 40-byte prologue routine. Parent data reports caller
+  `0x1E0024`, callees `0x539C` and `0x4FF0`, and the next boundary at `0x4C5C`.

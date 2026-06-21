@@ -686,6 +686,8 @@ helper pair together:
   leaf and `0x48C8` as an overlapping 496-byte prologue with frame size `0x8`.
 - Remainder:
   `asm/original/rev0/code_00004AC8_00011000.s`.
+  That file has since been superseded by the boot resource probe init split
+  below.
 
 Static evidence: `0x48C8` is the branch delay slot for the `0x48C4` branch in
 the `0x4894` prefix, so those entries must stay in one source file. Parent
@@ -698,9 +700,39 @@ variable-width values into the shared bit cursor, and flushes the final partial
 byte. The no-target `0x4AB8..0x4AC4` nop/nop/return/nop shape stays with this
 file so the active remainder begins at the next scanner prologue `0x4AC8`.
 
-Static dossier: `docs/dossiers/boot-bitstream-descriptor-encode.md`. Next
-source split should start at `asm/original/rev0/code_00004AC8_00011000.s`, a
-364-byte prologue routine at `0x4AC8` called from `0x22B0`.
+Static dossier: `docs/dossiers/boot-bitstream-descriptor-encode.md`. The
+`0x00004AC8` target has since been superseded by the boot resource probe init
+split below.
+
+## Boot Resource Probe Init Split
+
+The next tracked Rev 0 original-MIPS split separates the first helper after the
+bitstream descriptor pair:
+
+- `asm/original/rev0/boot/boot_resource_probe_init.s`
+  `0x00004AC8..0x00004C34`; parent reports a 364-byte JAL-target prologue
+  routine with frame size `0x20`.
+- Remainder:
+  `asm/original/rev0/code_00004C34_00011000.s`.
+
+Static evidence: parent callgraph/symbol data reports high-confidence caller
+`0x22B0`, high-confidence callees `0x51A0`, `0x539C`, `0x5760`, and `0x4FF0`,
+four unresolved calls to RAM `0x80093540`, and fixed RAM `0x800746C8` in all
+seven named states and all 21 snapshots. Static xrefs show `0x4AC8` writes
+shared globals `0x800A83B8` and `0x800A83BC`, and is the only current xref writer
+for `0x800AEFD0` and `0x800AEFD2`.
+
+Static shape: the routine clears `0x800A83B8/83BC`, initializes three bytes at
+`0x800AEFD0..0x800AEFD2` to `0xFF`, probes/checks IDs `0`, `1`, `0x0F`, and
+`0x0E` through nearby helpers, records missing IDs into the `0x800AEFD0` byte
+list, emits diagnostic-looking calls through unresolved RAM `0x80093540`, calls
+`0x4FF0` with magic value `0x37081383`, and returns either zero or the
+`0x800AEFD0` list pointer. The name is conservative and records a static
+resource/probe initialization shape, not a verified runtime API.
+
+Static dossier: `docs/dossiers/boot-resource-probe-init.md`. Next source split
+should start at `asm/original/rev0/code_00004C34_00011000.s`, a 40-byte
+prologue routine at `0x4C34` called from `0x1E0024`.
 
 ## Setup Complete Gate
 
@@ -716,7 +748,7 @@ setup-complete state:
 - Assembler: GNU Binutils 2.39 `mips64-elf-as.exe` with `-EB -mips3 -32`.
 - Setup verifier: `tools/verify_setup.js`.
 - Current verifier result: PASS; 825 archives, 0 unknown bytes, 108 overlap
-  bytes visible, 1 tracked composite real-asm chunk made from 36 tracked source
+  bytes visible, 1 tracked composite real-asm chunk made from 37 tracked source
   files, 99 generated fallback chunks, full-source manifest 1,059 entries with
   2,469,141 ambiguous bytes preserved explicitly, 3 tracked non-code
   source-owner files / 44,029 bytes, 1,055 generated non-code fallback files /
@@ -725,5 +757,5 @@ setup-complete state:
   `571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A`.
 
 Next phase is either promoting another small non-code owner batch or continuing
-tracked original-MIPS splits from `asm/original/rev0/code_00004AC8_00011000.s`.
+tracked original-MIPS splits from `asm/original/rev0/code_00004C34_00011000.s`.
 Do not begin semantic C decomp unless the setup verifier is green.
