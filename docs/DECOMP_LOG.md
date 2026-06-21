@@ -18,7 +18,7 @@ and replace the active log with a compact current-state summary.
 - Whole-ROM coverage still independently scans for LHA headers; do not trust the
   parent archive catalog by itself.
 - Current tracked code source mix: one composite real-assembler chunk
-  `0x00001000..0x00011000` made from 85 tracked source files, plus 99 generated
+  `0x00001000..0x00011000` made from 86 tracked source files, plus 99 generated
   fallback code chunks.
 - Current tracked non-code source-owner mix: 3 tracked files / 44,029 bytes,
   plus 1,055 generated fallback owner files / 35,388,567 bytes.
@@ -61,9 +61,9 @@ Current named sequence:
 - Resource probe helpers through
   `boot_resource_probe_record_checksum_signature.s` `0x4AC8..0x5FC0`.
 - State/slot, resource-handle, and transform-record helpers through
-  `boot_command_stream_dispatch.s`
-  `0x5FC0..0x9A18`.
-- Current remainder: `code_00009A18_00011000.s`.
+  `boot_command_stream_resource_node_dispatch.s`
+  `0x5FC0..0x9C50`.
+- Current remainder: `code_00009C50_00011000.s`.
 
 Static dossiers live under `docs/dossiers/` and are the durable evidence notes
 for each promoted source-layout split.
@@ -1010,11 +1010,62 @@ Verification for the split:
 - Static dossier:
   `docs/dossiers/boot-command-stream-dispatch.md`.
 
+## 2026-06-21 - Boot Command Stream Resource Node Dispatch Split
+
+Baseline before the split:
+
+- `git status --short` was clean at commit
+  `11dbfa9 Split Rev 0 boot command stream dispatch`.
+- `node tools\verify_setup.js` passed with 825 archives, zero unknown bytes, 108
+  visible overlap bytes, 85 tracked source files, 99 generated fallback chunks,
+  and unchanged code/ROM hashes.
+
+Promoted
+`asm/original/rev0/boot/boot_command_stream_resource_node_dispatch.s` covering
+ROM `0x00009A18..0x00009C50` / RAM `0x80079618..0x80079850`. The old
+`asm/original/rev0/code_00009A18_00011000.s` remainder was removed and replaced
+by `asm/original/rev0/code_00009C50_00011000.s`.
+
+Static evidence from parent function/symbol/callgraph/xref data and local
+source:
+
+- `0x9A18` is a 568-byte JAL-target leaf/prefix helper fixed in all seven named
+  states and all 21 snapshots, with 30 callers.
+- `0x9A28` is the actual prologue body with frame size `0x20`, no direct
+  callers, no indirect jump, and a normal epilogue at `0x9C48..0x9C4C`.
+- High-confidence resolved callees are `0xA198`, `0xA1F8`, `0xA250`,
+  `0xA29C`, `resource_free` `0x16C4`, and `0xA2F4`.
+- The unresolved RAM target is `0x80079D60`, which maps to ROM `0xA160` under
+  the simple boot mapping.
+- Parent/local xrefs show writes to `0x800A8740`.
+
+Static shape:
+
+- The `0x9A18` prefix stores incoming arguments to stack slots, then falls into
+  the `0x9A28` body.
+- The body dispatches negative opcode-like values `-0x11..-0x14`, walks aligned
+  command/stream words, and reads/writes current context global `0x800A8740`.
+- It follows the table/pointer at `[node + 4]` for nested stream entries,
+  manipulates node-like fields at `+0x14` and `+0x18`, calls the helper/free
+  family, updates pointer slots, and clears or frees nodes.
+- The split includes the `0x9C48` return and `0x9C4C` delay-slot stack restore;
+  the next family starts at `0x9C50`.
+
+Verification for the split:
+
+- `node tests\binutils_smoke.js` passed.
+- `node tools\assemble_original_mips.js` passed.
+- Full `node tools\verify_setup.js` passed after docs were updated.
+- Source mix is now 1 tracked composite real-asm chunk made from 86 tracked
+  source files, plus 99 generated fallback chunks.
+- Static dossier:
+  `docs/dossiers/boot-command-stream-resource-node-dispatch.md`.
+
 ## Next Frontier
 
-Continue from `asm/original/rev0/code_00009A18_00011000.s`. The first target is
-the `0x9A18` leaf/prefix family and `0x9A28` frame-`0x20` prologue body. Parent
-function data reports 30 callers, indirect-jump behavior, the same helper
-family as callees, and one unresolved v2 target. Local source shows its epilogue
-at `0x9C48..0x9C4C` and the next clean boundary at `0x9C50`; keep
-`0x9A18..0x9C50` together unless jump-table evidence proves a safer split.
+Continue from `asm/original/rev0/code_00009C50_00011000.s`. The first target is
+`0x9C50`, parent-labeled `dma/resource::resource loader`, size `0x5C`, frame
+size `0x18`, JAL target, fixed in all states, with two callers and callees
+`0x2DEF4`, `resource_alloc` `0x1330`, and `0x2DFB8`. Local source shows its
+epilogue at `0x9C9C..0x9CA8` and the next clean boundary at `0x9CAC`; keep
+`0x9C50..0x9CAC` together.

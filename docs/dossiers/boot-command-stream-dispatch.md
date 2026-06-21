@@ -10,7 +10,7 @@ the display-list transform coefficients / sum-clear split:
 | Source | ROM range | RAM range | Notes |
 | --- | --- | --- | --- |
 | `asm/original/rev0/boot/boot_command_stream_dispatch.s` | `0x0000978C..0x00009A18` | `0x8007938C..0x80079618` | `0x978C` leaf/prefix plus the `0x97A8` prologue body and jump-table dispatches. |
-| `asm/original/rev0/code_00009A18_00011000.s` | `0x00009A18..0x00011000` | `0x80079618..0x80080C00` | Current tracked remainder; starts with the next leaf/prefix family. |
+| `asm/original/rev0/code_00009A18_00011000.s` | `0x00009A18..0x00011000` | `0x80079618..0x80080C00` | Remainder at this split; now superseded by `code_00009C50_00011000.s` after the resource-node dispatch split. |
 
 The source name is conservative. It captures the observed command/stream-like
 static shape and jump-table dispatches, not verified runtime semantics.
@@ -48,12 +48,9 @@ static shape and jump-table dispatches, not verified runtime semantics.
   stack restore at `0x9A14`.
 - The next family begins at `0x00009A18`; do not include that word in this
   source file.
-- Parent data reports the next `0x9A18` family as a JAL-target leaf/prefix with
-  actual prologue body at `0x9A28`, frame size `0x20`, 30 callers, indirect-jump
-  behavior, the same helper family as callees, and one unresolved v2 target.
-  Local source shows its epilogue at `0x9C48..0x9C4C` and the next clean
-  boundary at `0x9C50`, so keep `0x9A18..0x9C50` together unless jump-table
-  evidence proves a safer split.
+- Follow-up source-layout work now owns `0x9A18..0x9C50` as
+  `boot_command_stream_resource_node_dispatch.s`, leaving
+  `code_00009C50_00011000.s` as the active remainder.
 
 ## Verification
 

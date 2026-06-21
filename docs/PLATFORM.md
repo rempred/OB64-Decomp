@@ -110,7 +110,7 @@ Expected current results:
   baserom code-region SHA256
   `40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`.
 - `assemble_original_mips.js` currently uses 1 tracked composite
-  real-assembler chunk (`0x00001000..0x00011000`) made from 85 tracked source
+  real-assembler chunk (`0x00001000..0x00011000`) made from 86 tracked source
   files, plus 99 generated fallback chunks.
 - `rebuild_rom.js --assembled-code ...` substitutes that assembled code blob for
   the raw code segment and still confirms the same full-ROM SHA256.
@@ -256,7 +256,7 @@ prints PASS. Current PASS summary:
 - Toolchain: `n64-tools-gcc-toolchain-mips64-win64`, GNU Binutils 2.39.
 - Binutils smoke tests: `.word`, real instructions, `.set noreorder`, and first
   tracked chunk real assembly all pass.
-- Source mix: 1 tracked composite real-asm chunk made from 85 tracked source
+- Source mix: 1 tracked composite real-asm chunk made from 86 tracked source
   files, plus 99 generated fallback chunks.
 - Source manifest: 1,059 entries, zero unknown bytes, 2,469,141 ambiguous bytes
   preserved explicitly.
@@ -336,6 +336,7 @@ docs:
 - `docs/dossiers/boot-display-list-vector-distance-and-transform-prefix.md`
 - `docs/dossiers/boot-display-list-transform-coefficients-sum-clear.md`
 - `docs/dossiers/boot-command-stream-dispatch.md`
+- `docs/dossiers/boot-command-stream-resource-node-dispatch.md`
 - `docs/DECOMP_LOG.md`
 - `docs/FULL_ROM_SOURCE_MANIFEST.md`
 
@@ -344,12 +345,12 @@ The next phase remains full-ROM source preparation:
 1. Promote/curate the next tracked non-code owner batch under `data/` or
    `assets/`.
 2. Continue splitting original MIPS into cleaner function/data files, starting
-   from `asm/original/rev0/code_00009A18_00011000.s`. The next target is the
-   `0x9A18` leaf/prefix family and `0x9A28` frame-`0x20` prologue body. Parent
-   evidence reports 30 callers, indirect-jump behavior, the same helper family
-   as callees, and one unresolved v2 target. Local source shows its epilogue at
-   `0x9C48..0x9C4C` and the next clean boundary at `0x9C50`; keep
-   `0x9A18..0x9C50` together unless jump-table evidence proves a safer split.
+   from `asm/original/rev0/code_00009C50_00011000.s`. The next target is
+   `0x9C50`, parent-labeled `dma/resource::resource loader`, size `0x5C`, frame
+   size `0x18`, JAL target, fixed in all states, with two callers and callees
+   `0x2DEF4`, `resource_alloc` `0x1330`, and `0x2DFB8`. Local source shows its
+   epilogue at `0x9C9C..0x9CA8` and the next clean boundary at `0x9CAC`; keep
+   `0x9C50..0x9CAC` together.
 3. Keep `node tools/verify_setup.js` green after every source-layout change.
 
 See `docs/NEXT_STEPS.md` for the active task queue.

@@ -16,7 +16,7 @@ node tools/verify_setup.js
 ```
 
 Current source mix: 1 tracked composite real-assembler chunk
-(`0x00001000..0x00011000`) made from 85 tracked source files, plus 99 generated
+(`0x00001000..0x00011000`) made from 86 tracked source files, plus 99 generated
 fallback chunks.
 
 The assembled code-region SHA256 is
@@ -92,15 +92,15 @@ coverage or overclassifying data as MIPS.
    priority rebuild helper split, render no-op tail split, and `0x58` record
    copy leaf split, display-list transform record emit split, and
    transform-wrapper/clamped-rect emit split, flagged rect packet emit split,
-   color rect packet emit split, vector distance/transform-prefix split, and
-   transform coefficients/sum-clear split, and command stream dispatch split
-   are done. Continue from `asm/original/rev0/code_00009A18_00011000.s`,
-   beginning with the `0x9A18` leaf/prefix family and `0x9A28` frame-`0x20`
-   prologue body. Parent evidence reports 30 callers, indirect-jump behavior,
-   the same helper family as callees, and one unresolved v2 target. Local source
-   shows its epilogue at `0x9C48..0x9C4C` and the next clean boundary at
-   `0x9C50`; keep `0x9A18..0x9C50` together unless jump-table evidence proves a
-   safer split.
+   color rect packet emit split, vector distance/transform-prefix split,
+   transform coefficients/sum-clear split, command stream dispatch split, and
+   command stream resource-node dispatch split are done. Continue from
+   `asm/original/rev0/code_00009C50_00011000.s`, beginning with `0x9C50`.
+   Parent evidence labels it `dma/resource::resource loader`, size `0x5C`,
+   frame size `0x18`, JAL target, fixed in all states, with two callers and
+   callees `0x2DEF4`, `resource_alloc` `0x1330`, and `0x2DFB8`. Local source
+   shows its epilogue at `0x9C9C..0x9CA8` and the next clean boundary at
+   `0x9CAC`; keep `0x9C50..0x9CAC` together.
 
 4. Keep the setup gate green.
 
