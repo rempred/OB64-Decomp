@@ -16,7 +16,7 @@ node tools/verify_setup.js
 ```
 
 Current source mix: 1 tracked composite real-assembler chunk
-(`0x00001000..0x00011000`) made from 101 tracked source files, plus 99 generated
+(`0x00001000..0x00011000`) made from 102 tracked source files, plus 99 generated
 fallback chunks.
 
 The assembled code-region SHA256 is
@@ -102,13 +102,13 @@ coverage or overclassifying data as MIPS.
    resource-node recursive payload-clear split, resource-node recursive
    field-`+0x0C` rewrite split, resource-node recursive child/free split,
    resource-node recursive key/field clear split, byte copy/fill aligned leaf
-   split, parent-labeled LZSS decompressor split, and resource-record
-   mark-ready split are done. Continue from
-   `asm/original/rev0/code_0000AFAC_00011000.s`, beginning with `0xAFAC`.
-   Parent data lists this next no-name helper as `func_0000AFAC`: size `0x84`
-   / 132 bytes, frame size `0x28`, RAM `0x8007ABAC`, fixed in all states, and
-   with high-confidence calls to RAM `0x80093570`, `0x80094860`, and
-   `0x80094A20`. Keep the adjacent `0xB030` helper nearby for context.
+   split, parent-labeled LZSS decompressor split, resource-record mark-ready
+   split, and resource-loader callback-register split are done. Continue from
+   `asm/original/rev0/code_0000B030_00011000.s`, beginning with `0xB030`.
+   Parent data labels this next helper as a resource-loader routine: size
+   `0x80` / 128 bytes, frame size `0x20`, RAM `0x8007AC30`, fixed in all
+   states, with calls to RAM `0x800936E0`, LZSS decompressor RAM
+   `0x8007A110`, RAM `0x80093810`, and unresolved RAM helper `0x80093540`.
 
 4. Keep the setup gate green.
 

@@ -19,7 +19,7 @@ and replace the active log with a compact current-state summary.
 - Whole-ROM coverage still independently scans for LHA headers; do not trust the
   parent archive catalog by itself.
 - Current tracked code source mix: one composite real-assembler chunk
-  `0x00001000..0x00011000` made from 101 tracked source files, plus 99 generated
+  `0x00001000..0x00011000` made from 102 tracked source files, plus 99 generated
   fallback code chunks.
 - Current tracked non-code source-owner mix: 3 tracked files / 44,029 bytes,
   plus 1,055 generated fallback owner files / 35,388,567 bytes.
@@ -61,8 +61,8 @@ Current named sequence:
   `boot_resource_probe_record_checksum_signature.s` `0x4AC8..0x5FC0`.
 - State/slot, resource-handle, transform-record, command/resource-node, and
   resource-node context/recursive helpers through
-  `boot_resource_record_mark_ready.s` `0x5FC0..0xAFAC`.
-- Current remainder: `code_0000AFAC_00011000.s`.
+  `boot_resource_loader_callback_register.s` `0x5FC0..0xB030`.
+- Current remainder: `code_0000B030_00011000.s`.
 
 Static dossiers live under `docs/dossiers/` and are the durable evidence notes
 for each promoted source-layout split.
@@ -537,6 +537,54 @@ Verification for the split:
 - Static dossier:
   `docs/dossiers/boot-resource-record-mark-ready.md`.
 
+## 2026-06-21 - Boot Resource Loader Callback Register Split
+
+Baseline before the split:
+
+- `git status --short` was clean at commit
+  `d721603 Split Rev 0 boot resource record mark helper`.
+- `node tools\verify_setup.js` passed with 825 archives, zero unknown bytes, 108
+  visible overlap bytes, 101 tracked source files, 99 generated fallback chunks,
+  and unchanged code/ROM hashes.
+
+Promoted
+`asm/original/rev0/boot/boot_resource_loader_callback_register.s`, covering ROM
+`0x0000AFAC..0x0000B030` / RAM `0x8007ABAC..0x8007AC30`. The old
+`asm/original/rev0/code_0000AFAC_00011000.s` remainder was removed and replaced
+by `asm/original/rev0/code_0000B030_00011000.s`.
+
+Static evidence from parent function/callgraph data, parent
+`docs/overlay-system.md`, and local source:
+
+- `0xAFAC` is a 132-byte prologue helper with frame size `0x28`, fixed at RAM
+  `0x8007ABAC` in all seven named states and all 21 snapshots.
+- Parent data has no v2 callers for this helper.
+- High-confidence JAL targets are RAM `0x80093570`, `0x80094860`, and
+  `0x80094A20`.
+- The adjacent `0xB030` helper is parent-labeled as a resource-loader/LZSS
+  caller and is passed as the callback-like function pointer loaded into `a2`
+  before the `0x80094860` call.
+
+Static shape:
+
+- Calls `0x80093570(0x800AF320, 0x800AF300, 8)`.
+- Loads global/context pointer `0x800AF0D0` into `s0`.
+- Calls `0x80094860(0x800AF0D0, incoming_a0, 0x8007AC30, 0, 0x800AF300,
+  incoming_a1)` with the last two values passed on the stack.
+- Calls `0x80094A20(0x800AF0D0)`, then returns.
+- The `callback_register` name is a conservative source-layout label for the
+  observed registration shape, not verified task/list API semantics.
+
+Verification for the split:
+
+- `node tests\binutils_smoke.js` passed.
+- `node tools\assemble_original_mips.js` passed.
+- Full `node tools\verify_setup.js` passed after the split.
+- Source mix is now 1 tracked composite real-asm chunk made from 102 tracked
+  source files, plus 99 generated fallback chunks.
+- Static dossier:
+  `docs/dossiers/boot-resource-loader-callback-register.md`.
+
 ## Current Dossier Set
 
 The current boot/source-layout dossier list is long; use `docs/PLATFORM.md` for
@@ -558,12 +606,15 @@ the full quick index. The newest dossiers are:
 - `docs/dossiers/boot-byte-copy-fill-aligned-leaves.md`
 - `docs/dossiers/boot-lzss-decompress.md`
 - `docs/dossiers/boot-resource-record-mark-ready.md`
+- `docs/dossiers/boot-resource-loader-callback-register.md`
 
 ## Next Frontier
 
-Continue from `asm/original/rev0/code_0000AFAC_00011000.s`. The next target is
-the no-name `func_0000AFAC` helper at `0xAFAC..0xB030`, frame size `0x28`,
-fixed RAM `0x8007ABAC`, with high-confidence calls to RAM `0x80093570`,
-`0x80094860`, and `0x80094A20`. Keep adjacent helper `0xB030` in view because
-it is another parent-labeled resource-loader/LZSS caller, but do not assign
-final semantics without better evidence.
+Continue from `asm/original/rev0/code_0000B030_00011000.s`. The next target is
+the parent-labeled resource-loader helper at `0xB030..0xB0B0`, frame size
+`0x20`, fixed RAM `0x8007AC30`, with calls to RAM `0x800936E0`, LZSS
+decompressor RAM `0x8007A110`, RAM `0x80093810`, and unresolved RAM helper
+`0x80093540`. Its local source walks records from `0x800AF320`, calls LZSS when
+record byte `+0x08 == 1`, and otherwise calls the unresolved helper with
+`0x800AE038`; keep final API names cautious until that list/record shape is
+better proven.

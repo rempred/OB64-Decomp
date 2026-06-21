@@ -173,7 +173,7 @@ Current result:
   `40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`.
 - Code-region match against baserom: pass.
 - Tracked real-assembler original-MIPS chunks: 1 composite
-  (`0x00001000..0x00011000`) made from 101 real-assembler source files.
+  (`0x00001000..0x00011000`) made from 102 real-assembler source files.
 - Generated fallback chunks: 99.
 - Assembled-code ROM rebuild command:
 
@@ -2530,7 +2530,8 @@ immediately after the LZSS decompressor:
 
 - `asm/original/rev0/boot/boot_resource_record_mark_ready.s`
   `0x0000AF7C..0x0000AFAC` / RAM `0x8007AB7C..0x8007ABAC`.
-- Current remainder:
+- Remainder after this split, now superseded by the callback-register split
+  below:
   `asm/original/rev0/code_0000AFAC_00011000.s`.
 
 Static evidence: parent function/symbol/callgraph data lists `0xAF7C` as a
@@ -2550,6 +2551,31 @@ mark-ready/source-layout label rather than verified queue semantics.
 Static dossier:
 `docs/dossiers/boot-resource-record-mark-ready.md`.
 
+## Boot Resource Loader Callback Register Split
+
+The next tracked Rev 0 original-MIPS split promotes the compact no-name helper
+between the record mark-ready helper and the parent-labeled resource loader:
+
+- `asm/original/rev0/boot/boot_resource_loader_callback_register.s`
+  `0x0000AFAC..0x0000B030` / RAM `0x8007ABAC..0x8007AC30`.
+- Current remainder:
+  `asm/original/rev0/code_0000B030_00011000.s`.
+
+Static evidence: parent function/callgraph data lists `0xAFAC` as a 132-byte
+prologue helper with frame size `0x28`, fixed at RAM `0x8007ABAC` in all seven
+named states and all 21 snapshots. It calls RAM `0x80093570`, `0x80094860`, and
+`0x80094A20`. Local source first calls the `0x80093570` helper with
+`a0 = 0x800AF320`, `a1 = 0x800AF300`, and `a2 = 8`, then registers/passes the
+adjacent `0x8007AC30` helper as a callback-like argument through the
+`0x80094860` call using global context `0x800AF0D0`, stack argument
+`0x800AF300`, and incoming `a0/a1` preserved in `s1/s2`. The final call to
+`0x80094A20(0x800AF0D0)` follows immediately. The file name is a conservative
+source-layout label for that static registration shape, not a verified API
+claim.
+
+Static dossier:
+`docs/dossiers/boot-resource-loader-callback-register.md`.
+
 ## Setup Complete Gate
 
 The setup phase is complete when `node tools/verify_setup.js` passes. Current
@@ -2564,7 +2590,7 @@ setup-complete state:
 - Assembler: GNU Binutils 2.39 `mips64-elf-as.exe` with `-EB -mips3 -32`.
 - Setup verifier: `tools/verify_setup.js`.
 - Current verifier result: PASS; 825 archives, 0 unknown bytes, 108 overlap
-  bytes visible, 1 tracked composite real-asm chunk made from 101 tracked source
+  bytes visible, 1 tracked composite real-asm chunk made from 102 tracked source
   files, 99 generated fallback chunks, full-source manifest 1,059 entries with
   2,469,141 ambiguous bytes preserved explicitly, 3 tracked non-code
   source-owner files / 44,029 bytes, 1,055 generated non-code fallback files /
@@ -2573,8 +2599,9 @@ setup-complete state:
   `571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A`.
 
 Next phase is either promoting another small non-code owner batch or continuing
-tracked original-MIPS splits from `asm/original/rev0/code_0000AFAC_00011000.s`.
-The next MIPS frontier starts with the no-name `func_0000AFAC` helper (132
-bytes, frame size `0x28`, RAM `0x8007ABAC`), followed by the parent-labeled
-resource-loader helper at `0xB030`. Do not begin semantic C decomp unless the
+tracked original-MIPS splits from `asm/original/rev0/code_0000B030_00011000.s`.
+The next MIPS frontier starts with the parent-labeled `0xB030` resource-loader
+helper (128 bytes, frame size `0x20`, RAM `0x8007AC30`), which calls the LZSS
+decompressor at `0x8007A110`, RAM `0x800936E0`, RAM `0x80093810`, and
+unresolved RAM helper `0x80093540`. Do not begin semantic C decomp unless the
 setup verifier is green.

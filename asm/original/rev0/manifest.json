@@ -919,17 +919,26 @@
           "sha256": "B1B2CCAEA9E422F5E1C56A754DA9111C86D0D1C6430F61F3492BAD33A9810804"
         },
         {
-          "name": "code_0000AFAC_00011000_remainder",
-          "file": "asm/original/rev0/code_0000AFAC_00011000.s",
+          "name": "boot_resource_loader_callback_register",
+          "file": "asm/original/rev0/boot/boot_resource_loader_callback_register.s",
           "romStart": "0x0000AFAC",
+          "romEndExclusive": "0x0000B030",
+          "bytes": 132,
+          "textBytes": 2841,
+          "sha256": "3CF312C7B3FCFD25122D91E45628F2570B805EA4343B12B5B949C1A44F7CCD82"
+        },
+        {
+          "name": "code_0000B030_00011000_remainder",
+          "file": "asm/original/rev0/code_0000B030_00011000.s",
+          "romStart": "0x0000B030",
           "romEndExclusive": "0x00011000",
-          "bytes": 24660,
-          "textBytes": 476054,
-          "sha256": "A5ADDDC2474DBB95E99904D0A0C58F5389E927CC50DF72BD317F0A0C592F0952"
+          "bytes": 24528,
+          "textBytes": 473471,
+          "sha256": "774DB8F2753A8E7D900E027A965C1EC13E09B7B664B1391216F16A380AE10909"
         }
       ],
-      "textBytes": 1290618,
-      "sha256": "11EE0CFAAED37D56E16C993C0D7F6B0F0400B7D6C5444B8818ABDDFC738E4366"
+      "textBytes": 1290876,
+      "sha256": "55FA0665B37058F6B9506EFF7A02C700CEC44D6C4E356FE85132F04FCC457945"
     }
   ]
 }

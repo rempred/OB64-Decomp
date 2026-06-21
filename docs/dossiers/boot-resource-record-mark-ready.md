@@ -10,7 +10,8 @@ the parent-labeled LZSS decompressor:
 | Source | ROM range | RAM range | Notes |
 | --- | --- | --- | --- |
 | `asm/original/rev0/boot/boot_resource_record_mark_ready.s` | `0x0000AF7C..0x0000AFAC` | `0x8007AB7C..0x8007ABAC` | Small record flag helper; conservative source-layout name. |
-| `asm/original/rev0/code_0000AFAC_00011000.s` | `0x0000AFAC..0x00011000` | `0x8007ABAC..0x80080C00` | Current tracked remainder. |
+| `asm/original/rev0/boot/boot_resource_loader_callback_register.s` | `0x0000AFAC..0x0000B030` | `0x8007ABAC..0x8007AC30` | Follow-up split; supersedes the old AFAC remainder for this range. |
+| `asm/original/rev0/code_0000B030_00011000.s` | `0x0000B030..0x00011000` | `0x8007AC30..0x80080C00` | Current tracked remainder. |
 
 The file name describes the visible static action only. Runtime evidence is
 still needed before treating this as a finalized queue/list API.
@@ -47,7 +48,9 @@ still needed before treating this as a finalized queue/list API.
   `boot_lzss_decompress.s` range.
 - The helper return is at `0xAFA4` with stack restore in the delay slot at
   `0xAFA8`.
-- The next formal prologue starts at `0x0000AFAC`.
+- The next formal prologue starts at `0x0000AFAC`; that range is now split out
+  as `boot_resource_loader_callback_register.s`, and the current remainder
+  starts at `0x0000B030`.
 
 ## Verification
 
