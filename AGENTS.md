@@ -173,7 +173,7 @@ Current result:
   `40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`.
 - Code-region match against baserom: pass.
 - Tracked real-assembler original-MIPS chunks: 1 composite
-  (`0x00001000..0x00011000`) made from 41 real-assembler source files.
+  (`0x00001000..0x00011000`) made from 42 real-assembler source files.
 - Generated fallback chunks: 99.
 - Assembled-code ROM rebuild command:
 
@@ -845,6 +845,8 @@ the resource probe dispatch-apply helper:
   frame size `0x28`, no `jalr`, and no unresolved targets.
 - Remainder:
   `asm/original/rev0/code_00004FF0_00011000.s`.
+  That file has since been superseded by the resource probe global cleanup
+  split below.
 
 Static evidence: parent callgraph/symbol data reports high-confidence callers
 `0x79E84` and `0x1DF5F4`, medium-confidence callers `0x1D17E0` and
@@ -867,8 +869,40 @@ The name is conservative and records a static resource/probe dispatch-result
 build shape, not a verified runtime API.
 
 Static dossier: `docs/dossiers/boot-resource-probe-dispatch-result-build.md`.
-Next source split should start at `asm/original/rev0/code_00004FF0_00011000.s`,
-the overlapping `0x4FF0/0x4FF8` finalizer/free helper pair.
+The `0x00004FF0` target has since been superseded by the resource probe global
+cleanup split below.
+
+## Boot Resource Probe Global Cleanup Split
+
+The next tracked Rev 0 original-MIPS split separates the overlapping
+`0x4FF0/0x4FF8` helper pair after the resource probe dispatch result-builder:
+
+- `asm/original/rev0/boot/boot_resource_probe_global_cleanup.s`
+  `0x00004FF0..0x00005058`; parent reports `0x4FF0` as a 104-byte JAL-target
+  leaf entry and `0x4FF8` as a 96-byte overlapping prologue body sharing the
+  same return.
+- Remainder:
+  `asm/original/rev0/code_00005058_00011000.s`.
+
+Static evidence: parent function/symbol/callgraph data reports high-confidence
+callers to `0x4FF0` from `0x4AC8`, `0x4C34`, `0x4C5C`, `0x4DC0`, and `0x4ED4`;
+no direct callers to `0x4FF8`; high-confidence callees `0x5058` and
+`resource_free` (`0x16C4`); fixed RAM `0x80074BF0/0x80074BF8` in all seven
+named states and all 21 snapshots; and reads/writes of `0x800A83B8` and
+`0x800A83BC`. No unresolved call targets were reported.
+
+Static shape: `0x4FF0` reads the byte at `0x800A83BC` and falls into the
+`0x4FF8` prologue body. If that byte is `1` and incoming `a0` equals
+`0x37081383`, the routine calls helper `0x5058` with the word at
+`0x800A83B8`. It then clears `0x800A83BC`, frees the pointer stored at
+`0x800A83B8` via `resource_free` when nonzero, clears `0x800A83B8`, and
+returns. The name is conservative and records a static global cleanup/free
+shape in the resource-probe family, not a verified runtime API.
+
+Static dossier: `docs/dossiers/boot-resource-probe-global-cleanup.md`. Next
+source split should start at `asm/original/rev0/code_00005058_00011000.s`, a
+152-byte prologue helper with one indirect `jalr`, callers from `0x4FF0/0x4FF8`,
+callees `resource_alloc`/`resource_free`, and a read from `0x800C4800`.
 
 ## Setup Complete Gate
 
@@ -884,7 +918,7 @@ setup-complete state:
 - Assembler: GNU Binutils 2.39 `mips64-elf-as.exe` with `-EB -mips3 -32`.
 - Setup verifier: `tools/verify_setup.js`.
 - Current verifier result: PASS; 825 archives, 0 unknown bytes, 108 overlap
-  bytes visible, 1 tracked composite real-asm chunk made from 41 tracked source
+  bytes visible, 1 tracked composite real-asm chunk made from 42 tracked source
   files, 99 generated fallback chunks, full-source manifest 1,059 entries with
   2,469,141 ambiguous bytes preserved explicitly, 3 tracked non-code
   source-owner files / 44,029 bytes, 1,055 generated non-code fallback files /
@@ -893,5 +927,5 @@ setup-complete state:
   `571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A`.
 
 Next phase is either promoting another small non-code owner batch or continuing
-tracked original-MIPS splits from `asm/original/rev0/code_00004FF0_00011000.s`.
+tracked original-MIPS splits from `asm/original/rev0/code_00005058_00011000.s`.
 Do not begin semantic C decomp unless the setup verifier is green.

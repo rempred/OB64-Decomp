@@ -1,44 +1,12 @@
 /*
  * Original Rev 0 MIPS reference split.
- * Parent source: asm/original/rev0/code_00004ED4_00011000.s
- * z64 range: 0x00004FF0..0x00011000 exclusive
+ * Parent source: asm/original/rev0/code_00004FF0_00011000.s
+ * z64 range: 0x00005058..0x00011000 exclusive
  * Decode comments are aids, not proof of semantic function boundaries.
  */
 .set noat
 .set noreorder
 .text
-
-/* function boundary candidate: func_00004FF0, size=104, kind=leaf */
-func_00004FF0:
-/* 0x00004FF0 0x80074BF0 0x3C03800B */ .word 0x3C03800B # lui $v1, 0x800B
-/* 0x00004FF4 0x80074BF4 0x906383BC */ .word 0x906383BC # lbu $v1, -0x7C44($v1)
-
-/* function boundary candidate: func_00004FF8, size=96, kind=prologue */
-func_00004FF8:
-/* 0x00004FF8 0x80074BF8 0x27BDFFE8 */ .word 0x27BDFFE8 # addiu $sp, $sp, -0x18
-/* 0x00004FFC 0x80074BFC 0x24020001 */ .word 0x24020001 # addiu $v0, $zero, 0x1
-/* 0x00005000 0x80074C00 0x1462000A */ .word 0x1462000A # bne $v1, $v0, 0x80074C2C
-/* 0x00005004 0x80074C04 0xAFBF0010 */ .word 0xAFBF0010 # sw $ra, 0x10($sp)
-/* 0x00005008 0x80074C08 0x3C023708 */ .word 0x3C023708 # lui $v0, 0x3708
-/* 0x0000500C 0x80074C0C 0x34421383 */ .word 0x34421383 # ori $v0, $v0, 0x1383
-/* 0x00005010 0x80074C10 0x14820004 */ .word 0x14820004 # bne $a0, $v0, 0x80074C24
-/* 0x00005014 0x80074C14 0x00000000 */ .word 0x00000000 # nop
-/* 0x00005018 0x80074C18 0x3C04800B */ .word 0x3C04800B # lui $a0, 0x800B
-/* 0x0000501C 0x80074C1C 0x0C01D316 */ .word 0x0C01D316 # jal 0x80074C58
-/* 0x00005020 0x80074C20 0x8C8483B8 */ .word 0x8C8483B8 # lw $a0, -0x7C48($a0)
-/* 0x00005024 0x80074C24 0x3C01800B */ .word 0x3C01800B # lui $at, 0x800B
-/* 0x00005028 0x80074C28 0xA02083BC */ .word 0xA02083BC # sb $zero, -0x7C44($at)
-/* 0x0000502C 0x80074C2C 0x3C04800B */ .word 0x3C04800B # lui $a0, 0x800B
-/* 0x00005030 0x80074C30 0x8C8483B8 */ .word 0x8C8483B8 # lw $a0, -0x7C48($a0)
-/* 0x00005034 0x80074C34 0x10800005 */ .word 0x10800005 # beq $a0, $zero, 0x80074C4C
-/* 0x00005038 0x80074C38 0x00000000 */ .word 0x00000000 # nop
-/* 0x0000503C 0x80074C3C 0x0C01C4B1 */ .word 0x0C01C4B1 # jal 0x800712C4
-/* 0x00005040 0x80074C40 0x00000000 */ .word 0x00000000 # nop
-/* 0x00005044 0x80074C44 0x3C01800B */ .word 0x3C01800B # lui $at, 0x800B
-/* 0x00005048 0x80074C48 0xAC2083B8 */ .word 0xAC2083B8 # sw $zero, -0x7C48($at)
-/* 0x0000504C 0x80074C4C 0x8FBF0010 */ .word 0x8FBF0010 # lw $ra, 0x10($sp)
-/* 0x00005050 0x80074C50 0x03E00008 */ .word 0x03E00008 # jr $ra
-/* 0x00005054 0x80074C54 0x27BD0018 */ .word 0x27BD0018 # addiu $sp, $sp, 0x18
 
 /* function boundary candidate: func_00005058, size=152, kind=prologue */
 func_00005058:

@@ -10,7 +10,9 @@ code after the resource probe dispatch-apply helper:
 | Source | ROM range | RAM range | Notes |
 | --- | --- | --- | --- |
 | `asm/original/rev0/boot/boot_resource_probe_dispatch_result_build.s` | `0x00004ED4..0x00004FF0` | `0x80074AD4..0x80074BF0` | 284-byte JAL-target prologue with no indirect calls. |
-| `asm/original/rev0/code_00004FF0_00011000.s` | `0x00004FF0..0x00011000` | `0x80074BF0..0x80080C00` | Current tracked remainder. |
+| `asm/original/rev0/code_00004FF0_00011000.s` | `0x00004FF0..0x00011000` | `0x80074BF0..0x80080C00` | Historical remainder; superseded by the global cleanup split. |
+| `asm/original/rev0/boot/boot_resource_probe_global_cleanup.s` | `0x00004FF0..0x00005058` | `0x80074BF0..0x80074C58` | Follow-up split documented separately. |
+| `asm/original/rev0/code_00005058_00011000.s` | `0x00005058..0x00011000` | `0x80074C58..0x80080C00` | Current tracked remainder. |
 
 The name is conservative. The routine appears to build or extract a small
 result buffer after dispatching resource/probe records, but no runtime trace or
@@ -51,8 +53,8 @@ controlled mutation has verified final behavior.
 - The routine ends after the `jr ra` delay slot at `0x4FEC`.
 - The next parent boundary is `0x00004FF0`; parent data reports it as a
   104-byte JAL-target leaf entry with overlapping prologue body `0x4FF8`.
-- The `0x4FF0/0x4FF8` helper pair remains the next dedicated evidence pass
-  instead of being merged into this dispatch-result helper.
+- The `0x4FF0/0x4FF8` helper pair is now documented separately in
+  `docs/dossiers/boot-resource-probe-global-cleanup.md`.
 
 ## Verification
 
