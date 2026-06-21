@@ -173,7 +173,7 @@ Current result:
   `40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`.
 - Code-region match against baserom: pass.
 - Tracked real-assembler original-MIPS chunks: 1 composite
-  (`0x00001000..0x00011000`) made from 57 real-assembler source files.
+  (`0x00001000..0x00011000`) made from 58 real-assembler source files.
 - Generated fallback chunks: 99.
 - Assembled-code ROM rebuild command:
 
@@ -1349,7 +1349,7 @@ dispatch loop and its local selector helper:
 - `asm/original/rev0/boot/boot_state_dispatch_loop_init.s`
   `0x00005FC0..0x000065A4`; parent reports a 1508-byte prologue at `0x5FC0`
   with frame size `0x28` and a secondary entry at `0x6550`.
-- Current remainder:
+- Remainder at that step, now superseded by the accumulator seed wrapper split:
   `asm/original/rev0/code_000065A4_00011000.s`.
 
 Static evidence: parent symbol data places `0x5FC0` at fixed RAM
@@ -1371,8 +1371,37 @@ dispatch-loop/table-init shape, not a complete runtime state-machine model.
 
 Static dossier:
 `docs/dossiers/boot-state-dispatch-loop-init.md`.
-Next source split should start at `asm/original/rev0/code_000065A4_00011000.s`;
-the next target is the small `0x65A4` setup wrapper around `0x80073164`.
+
+## Boot Mode/Message Accumulator Seed Wrapper Split
+
+The next tracked Rev 0 original-MIPS split separates the small wrapper after the
+state dispatch loop:
+
+- `asm/original/rev0/boot/boot_mode_message_accumulator_seed_wrapper.s`
+  `0x000065A4..0x000065E4`; parent reports a 64-byte prologue at `0x65A4`
+  with frame size `0x28`.
+- Current remainder:
+  `asm/original/rev0/code_000065E4_00011000.s`.
+
+Static evidence: parent symbol data places `0x65A4` at fixed RAM
+`0x800761A4` in all seven named states / all 21 snapshots, with no v2 direct
+callers. The local `jal 0x80073164` maps linearly to ROM `0x3564`, the
+secondary entry inside `boot_mode_message_accumulator_update.s`. Parent old
+symbol data folds that edge to `0x347C`; v2 leaves the secondary-entry target
+unresolved.
+
+Static shape: the wrapper calls the accumulator secondary in mode `a0 = 0` with
+values `1`, `1`, `0x80`, `1`, `0x100`, and `0x2000` in
+`a1/a2/a3/sp+0x10/sp+0x14/sp+0x18`, then returns. The callee's mode-zero path
+overwrites six halfword-like accumulator globals and writes byte flag
+`0x800AEE72 = 2`. The name is conservative and records a static seed/default
+wrapper relationship, not runtime semantic proof.
+
+Static dossier:
+`docs/dossiers/boot-mode-message-accumulator-seed-wrapper.md`.
+Next source split should start at `asm/original/rev0/code_000065E4_00011000.s`;
+the next target is the `0x65E4` resource-loader-style helper called by the state
+dispatch loop.
 
 ## Setup Complete Gate
 
@@ -1388,7 +1417,7 @@ setup-complete state:
 - Assembler: GNU Binutils 2.39 `mips64-elf-as.exe` with `-EB -mips3 -32`.
 - Setup verifier: `tools/verify_setup.js`.
 - Current verifier result: PASS; 825 archives, 0 unknown bytes, 108 overlap
-  bytes visible, 1 tracked composite real-asm chunk made from 57 tracked source
+  bytes visible, 1 tracked composite real-asm chunk made from 58 tracked source
   files, 99 generated fallback chunks, full-source manifest 1,059 entries with
   2,469,141 ambiguous bytes preserved explicitly, 3 tracked non-code
   source-owner files / 44,029 bytes, 1,055 generated non-code fallback files /
@@ -1397,5 +1426,5 @@ setup-complete state:
   `571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A`.
 
 Next phase is either promoting another small non-code owner batch or continuing
-tracked original-MIPS splits from `asm/original/rev0/code_000065A4_00011000.s`.
+tracked original-MIPS splits from `asm/original/rev0/code_000065E4_00011000.s`.
 Do not begin semantic C decomp unless the setup verifier is green.

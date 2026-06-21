@@ -11,7 +11,8 @@ cluster:
 | Source | ROM range | RAM range | Notes |
 | --- | --- | --- | --- |
 | `asm/original/rev0/boot/boot_state_dispatch_loop_init.s` | `0x00005FC0..0x000065A4` | `0x80075BC0..0x800761A4` | Large dispatch loop/table initializer with local secondary entry `0x6550`. |
-| `asm/original/rev0/code_000065A4_00011000.s` | `0x000065A4..0x00011000` | `0x800761A4..0x80080C00` | Current tracked remainder. |
+| `asm/original/rev0/code_000065A4_00011000.s` | `0x000065A4..0x00011000` | `0x800761A4..0x80080C00` | Remainder at this split; now superseded by the accumulator seed wrapper split. |
+| `asm/original/rev0/code_000065E4_00011000.s` | `0x000065E4..0x00011000` | `0x800761E4..0x80080C00` | Current tracked remainder after the next split. |
 
 The name is conservative. The static dispatch-loop and task/status shape is
 clear, but no controlled runtime trace in this dossier verifies a complete
@@ -76,8 +77,10 @@ state-machine model or final gameplay semantics.
 - The parent-reported `0x6550` secondary entry stays in this file because the
   main loop calls it directly and it uses the same dispatch/status globals.
 - The split ends at the next parent prologue boundary `0x000065A4`.
-- The current active remainder starts at `0x000065A4` with a small setup wrapper
-  around unresolved callee `0x80073164`.
+- The `0x000065A4` follow-up wrapper has since been split as
+  `boot_mode_message_accumulator_seed_wrapper.s`.
+- The current active remainder starts at `0x000065E4` with a
+  resource-loader-style helper called by the state dispatch loop.
 
 ## Verification
 

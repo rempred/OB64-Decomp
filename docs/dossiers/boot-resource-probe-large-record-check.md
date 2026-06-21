@@ -16,7 +16,7 @@ boot-code helper immediately after the indexed record check helper:
 | `asm/original/rev0/boot/boot_resource_probe_small_record_copy_flag.s` | `0x00005CFC..0x00005D9C` | `0x800758FC..0x8007599C` | Follow-up split documented separately. |
 | `asm/original/rev0/boot/boot_resource_probe_record_checksum_signature.s` | `0x00005D9C..0x00005FC0` | `0x8007599C..0x80075BC0` | Follow-up split documented separately. |
 | `asm/original/rev0/boot/boot_state_dispatch_loop_init.s` | `0x00005FC0..0x000065A4` | `0x80075BC0..0x800761A4` | Follow-up split documented separately. |
-| `asm/original/rev0/code_000065A4_00011000.s` | `0x000065A4..0x00011000` | `0x800761A4..0x80080C00` | Current tracked remainder. |
+| `asm/original/rev0/code_000065A4_00011000.s` | `0x000065A4..0x00011000` | `0x800761A4..0x80080C00` | Later remainder at this split; now superseded by later source splits. |
 
 The name is conservative. The routine has a clear static large-record check
 shape, but no runtime trace or controlled mutation has verified final behavior

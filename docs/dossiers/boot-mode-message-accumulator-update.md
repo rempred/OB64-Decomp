@@ -40,6 +40,10 @@ The name is a conservative source-layout label, not a final C API name.
 - The six halfword globals are `0x800C4C08`, `0x800E7D68`, `0x800C4A18`,
   `0x800E7A1C`, `0x800C4BCA`, and `0x800C4AD8`; both paths finish by writing
   byte flag `0x800AEE72 = 2`.
+- The later `0x65A4` seed wrapper is now split separately as
+  `boot_mode_message_accumulator_seed_wrapper.s`; it calls this `0x3564`
+  secondary with mode `0` and constants `1`, `1`, `0x80`, `1`, `0x100`, and
+  `0x2000`.
 
 ## Boundaries
 

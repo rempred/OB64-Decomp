@@ -18,7 +18,7 @@ and replace the active log with a compact current-state summary.
 - Whole-ROM coverage still independently scans for LHA headers; do not trust the
   parent archive catalog by itself.
 - Current tracked code source mix: one composite real-assembler chunk
-  `0x00001000..0x00011000` made from 57 tracked source files, plus 99 generated
+  `0x00001000..0x00011000` made from 58 tracked source files, plus 99 generated
   fallback code chunks.
 - Current tracked non-code source-owner mix: 3 tracked files / 44,029 bytes,
   plus 1,055 generated fallback owner files / 35,388,567 bytes.
@@ -81,7 +81,8 @@ Current named sequence:
 - `boot_resource_probe_small_record_copy_flag.s` `0x5CFC..0x5D9C`.
 - `boot_resource_probe_record_checksum_signature.s` `0x5D9C..0x5FC0`.
 - `boot_state_dispatch_loop_init.s` `0x5FC0..0x65A4`.
-- Current remainder: `code_000065A4_00011000.s`.
+- `boot_mode_message_accumulator_seed_wrapper.s` `0x65A4..0x65E4`.
+- Current remainder: `code_000065E4_00011000.s`.
 
 Static dossiers live under `docs/dossiers/` and are the durable evidence notes
 for each promoted source-layout split.
@@ -1096,17 +1097,77 @@ Verification for the split:
 - Source mix is now 1 tracked composite real-asm chunk made from 57 tracked
   source files, plus 99 generated fallback chunks.
 
+## 2026-06-21 - Boot Mode/Message Accumulator Seed Wrapper Split
+
+Baseline before the split:
+
+- `git status --short` was clean at commit
+  `ea267f3 Split Rev 0 boot state dispatch loop init`.
+- `node tools\verify_setup.js` passed with 825 archives, zero unknown bytes, 108
+  visible overlap bytes, 57 tracked source files, and unchanged code/ROM hashes.
+- The compact decomp log was 911 lines / 6,634 words, so no prune/archive pass
+  was needed.
+
+Promoted
+`asm/original/rev0/boot/boot_mode_message_accumulator_seed_wrapper.s` covering
+ROM `0x000065A4..0x000065E4` / RAM `0x800761A4..0x800761E4`. The old
+`code_000065A4_00011000.s` remainder was removed and replaced by
+`asm/original/rev0/code_000065E4_00011000.s`.
+
+Static evidence from parent `../scripts/ob64_symbols_v2.json`,
+`../scripts/ob64_functions.json`, older parent symbol/callee data, the previous
+accumulator dossier, and local source inspection:
+
+- `0x65A4` is a 64-byte prologue helper with frame size `0x28`, epilogue, no
+  indirect calls, and no direct v2 callers.
+- Fixed runtime evidence places the helper at `0x800761A4` in all seven named
+  states and all 21 snapshots.
+- The local source calls `0x80073164`, which maps linearly to ROM `0x3564`.
+- ROM `0x3564` is the secondary entry inside
+  `boot_mode_message_accumulator_update.s` (`0x347C..0x368C`).
+- Older parent symbol data folds this callee to primary target `0x347C`; v2
+  leaves the literal `0x80073164` target unresolved because it is a secondary
+  entry.
+- The `0x3564` secondary accepts a mode plus six halfword-like values from
+  `a1/a2/a3/sp+0x10/sp+0x14/sp+0x18`. Mode zero overwrites six accumulator
+  globals and writes byte flag `0x800AEE72 = 2`.
+
+Static shape:
+
+- Sets stack arguments `sp+0x10 = 1`, `sp+0x14 = 0x100`, and
+  `sp+0x18 = 0x2000`.
+- Sets register arguments `a0 = 0`, `a1 = 1`, `a2 = 1`, and `a3 = 0x80`.
+- Calls the accumulator secondary entry and returns directly.
+- The name is conservative and records a static seed/default wrapper
+  relationship, not verified runtime semantics for the accumulator values.
+
+Verification for the split:
+
+- `node tests\binutils_smoke.js` passed.
+- `node tools\assemble_original_mips.js` passed.
+- `node tools\verify_setup.js` passed after the docs update.
+- Source mix is now 1 tracked composite real-asm chunk made from 58 tracked
+  source files, plus 99 generated fallback chunks.
+
 ## Next Frontier
 
-Continue from `asm/original/rev0/code_000065A4_00011000.s`.
+Continue from `asm/original/rev0/code_000065E4_00011000.s`.
 
 Parent/local evidence for the next target:
 
-- `0x65A4` is a 64-byte prologue helper with frame size `0x28` and fixed RAM
-  `0x800761A4`.
-- Parent symbol data reports no direct callers for `0x65A4` yet.
-- Local source calls unresolved `0x80073164` with register arguments
-  `a0=0`, `a1=1`, `a2=1`, `a3=0x80`, and stack arguments `1`, `0x100`, and
-  `0x2000`.
-- The wrapper is small enough to split next, but avoid assigning a semantic name
-  until surrounding callers or runtime traces explain the setup role.
+- `0x65E4` is a 320-byte prologue helper with frame size `0x28` and fixed RAM
+  `0x800761E4`.
+- Parent caller evidence includes high-confidence caller `0x5FC0`, the state
+  dispatch loop init helper.
+- Parent old label/rule hints classify this neighborhood as
+  `dma/resource::resource loader`; keep any name conservative until stronger
+  local evidence is written.
+- High-confidence callees include `0x204C0` / RAM `0x800900C0`, `0x20410` /
+  RAM `0x80090010`, `0x2DE50` / RAM `0x8009DA50`, and `0x23780` / RAM
+  `0x80093380`.
+- The unresolved local target `0x80076430` maps to ROM `0x6830`, a local helper
+  inside the current remainder. It is also reached from `0x6724`, so split
+  boundaries need a careful local read before cutting.
+- Static source shape starts by calling `0x6830`, uses pointer table
+  `0x800B86FC`, reads table pointers around `0x800B83C0..0x800B83E4`, and calls
+  helpers to process/copy/reset resource ranges.
