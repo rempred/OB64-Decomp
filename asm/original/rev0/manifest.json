@@ -244,17 +244,26 @@
           "sha256": "5024C973F005D3297EFA12B011FD7DD09D886DE0970A7C40A0A21A20DBC20CFE"
         },
         {
-          "name": "code_000037F8_00011000_remainder",
-          "file": "asm/original/rev0/code_000037F8_00011000.s",
+          "name": "boot_resource_display_list_update",
+          "file": "asm/original/rev0/boot/boot_resource_display_list_update.s",
           "romStart": "0x000037F8",
+          "romEndExclusive": "0x00003C2C",
+          "bytes": 1076,
+          "textBytes": 20883,
+          "sha256": "704F88D86EB1E9014187611FA31DA01653C5DF32679BF091FC0289344B837199"
+        },
+        {
+          "name": "code_00003C2C_00011000_remainder",
+          "file": "asm/original/rev0/code_00003C2C_00011000.s",
+          "romStart": "0x00003C2C",
           "romEndExclusive": "0x00011000",
-          "bytes": 55304,
-          "textBytes": 1068035,
-          "sha256": "087269E9CB8107ABD6B1DBC5FFCB6B04CA7338DF2EBD347CB36E2E691C53FF90"
+          "bytes": 54228,
+          "textBytes": 1047410,
+          "sha256": "7756EF5FE49E4167E0086883D16C1C923B875BC14CAF63D3ED3B451AB0C3AD7B"
         }
       ],
-      "textBytes": 1271261,
-      "sha256": "4A73F862B28447E08678E2AC623EAAFAC386E90FAA8976ADC43B14FAB1ACDED4"
+      "textBytes": 1271519,
+      "sha256": "AF3DA15A2887FE503F2D02B3ECB5C25FE5A3AEA2D5FC678348A1DAB3EAD81C0B"
     }
   ]
 }

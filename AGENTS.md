@@ -173,7 +173,7 @@ Current result:
   `40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`.
 - Code-region match against baserom: pass.
 - Tracked real-assembler original-MIPS chunks: 1 composite
-  (`0x00001000..0x00011000`) made from 26 real-assembler source files.
+  (`0x00001000..0x00011000`) made from 27 real-assembler source files.
 - Generated fallback chunks: 99.
 - Assembled-code ROM rebuild command:
 
@@ -422,10 +422,39 @@ callers at `0x1CF960/0x1CF9C0`, and fixed RAM `0x80073398` in all seven named
 states. The unresolved helper keeps this a conservative source-layout label
 rather than a final C API name.
 
-Static dossier: `docs/dossiers/boot-resource-state-reset.md`. Next source
-split should start at `0x000037F8`; the immediate `0x37F8/0x3808` overlapping
-cluster should stay together, likely through exclusive `0x00003C2C`, unless
-stronger evidence separates it safely.
+Static dossier: `docs/dossiers/boot-resource-state-reset.md`. The next source
+split at `0x000037F8` has since been superseded by the resource/display-list
+update split below.
+
+## Boot Resource Display-List Update Split
+
+The next tracked Rev 0 original-MIPS split separates the overlapping
+resource/display-list update cluster after the resource state reset helper:
+
+- `asm/original/rev0/boot/boot_resource_display_list_update.s`
+  `0x000037F8..0x00003C2C`; parent reports `0x37F8` as a 936-byte leaf entry
+  and `0x3808` as a 1,060-byte prologue function with frame size `0x40` and
+  secondary entry `0x3BA0`.
+- Remainder:
+  `asm/original/rev0/code_00003C2C_00011000.s`.
+
+Static evidence: the four-instruction `0x37F8` prefix reads
+`0x800A81F0/0x800AEE72` and falls into the `0x3808` prologue, so it stays with
+the parent cluster. The routine selects a `0x18`-byte row from base
+`0x800A81C0`, stores it to `0x800F9BE0`, refreshes row pointers with repeated
+`resource_free` and `resource_alloc_mode1_wrapper` calls, touches flag bytes
+`0x800A8210..0x800A8215`, conditionally allocates/frees the large pointer global
+`0x800AEF9C` and aligned base `0x800C4B20`, and emits F3DEX-style display-list
+command words through the heavily used display-list pointer global
+`0x800E9BA0`/`0x800F9BA0`. Parent callgraph data reports high-confidence callee
+edges to `resource_free`, `resource_alloc_mode1_wrapper`, `0x00003C2C`,
+`0x000228D0`, and `0x000210C0`; the call to RAM `0x800737A0` is the included
+`0x3BA0` secondary helper. The cluster is fixed at RAM `0x800733F8/0x80073408`
+in all seven named states.
+
+Static dossier: `docs/dossiers/boot-resource-display-list-update.md`. Next
+source split should start at `0x00003C2C`, a separate 696-byte prologue routine
+called by this cluster.
 
 ## Setup Complete Gate
 
@@ -441,7 +470,7 @@ setup-complete state:
 - Assembler: GNU Binutils 2.39 `mips64-elf-as.exe` with `-EB -mips3 -32`.
 - Setup verifier: `tools/verify_setup.js`.
 - Current verifier result: PASS; 825 archives, 0 unknown bytes, 108 overlap
-  bytes visible, 1 tracked composite real-asm chunk made from 26 tracked source
+  bytes visible, 1 tracked composite real-asm chunk made from 27 tracked source
   files, 99 generated fallback chunks, full-source manifest 1,059 entries with
   2,469,141 ambiguous bytes preserved explicitly, 3 tracked non-code
   source-owner files / 44,029 bytes, 1,055 generated non-code fallback files /
@@ -450,5 +479,5 @@ setup-complete state:
   `571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A`.
 
 Next phase is either promoting another small non-code owner batch or continuing
-tracked original-MIPS splits from `asm/original/rev0/code_000037F8_00011000.s`.
+tracked original-MIPS splits from `asm/original/rev0/code_00003C2C_00011000.s`.
 Do not begin semantic C decomp unless the setup verifier is green.

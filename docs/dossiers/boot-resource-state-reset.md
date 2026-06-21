@@ -10,7 +10,7 @@ code after the resource-buffer reset/flag helper:
 | Source | ROM range | RAM range | Notes |
 | --- | --- | --- | --- |
 | `asm/original/rev0/boot/boot_resource_state_reset.s` | `0x00003798..0x000037F8` | `0x80073398..0x800733F8` | Compact 96-byte prologue wrapper. |
-| `asm/original/rev0/code_000037F8_00011000.s` | `0x000037F8..0x00011000` | `0x800733F8..0x80080C00` | Next tracked remainder. |
+| `asm/original/rev0/code_000037F8_00011000.s` | `0x000037F8..0x00011000` | `0x800733F8..0x80080C00` | Superseded by the later resource/display-list update split. |
 
 The name is a conservative source-layout label, not a final C API name.
 
@@ -41,8 +41,8 @@ The name is a conservative source-layout label, not a final C API name.
 - The parent end marker is `0x000037F4`; the branch delay slot at `0x37F4`
   belongs to this routine, so the source split ends at exclusive `0x000037F8`.
 - The next tracked cluster starts at `0x000037F8`; parent symbols report an
-  overlapping `0x37F8/0x3808` cluster. Keep that cluster together, likely
-  through exclusive `0x00003C2C`, unless stronger evidence proves a safer split.
+  overlapping `0x37F8/0x3808` cluster. That cluster was later split as
+  `boot_resource_display_list_update.s`.
 
 ## Verification
 

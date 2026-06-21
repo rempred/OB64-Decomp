@@ -841,4 +841,79 @@ Next recommended target:
 
 - Continue from `asm/original/rev0/code_000037F8_00011000.s`, beginning with
   the overlapping `0x37F8/0x3808` cluster. Keep it together, likely through
-  exclusive `0x00003C2C`, unless stronger evidence separates it safely.
+  exclusive `0x00003C2C`, unless stronger evidence separates it safely. This
+  target has since been completed by the resource/display-list update split
+  below.
+
+## 2026-06-21 - Boot Resource Display-List Update Split
+
+Target:
+
+- Continue source-layout cleanup inside the first tracked original-MIPS chunk.
+- Split the overlapping `0x37F8/0x3808` cluster while keeping the `0x37F8`
+  prefix, `0x3808` prologue, and `0x3BA0` secondary helper together.
+
+Baseline and coverage audit:
+
+- `node tools\verify_setup.js` passed before edits.
+- Baseline source mix: 1 tracked composite real-asm chunk made from 26 tracked
+  files, plus 99 generated fallback chunks.
+- Full-source manifest audit passed: 1,059 entries, zero unknown bytes,
+  independent archive scan still 825 archives, and original MIPS still covers
+  configured code region `0x00001000..0x0063676C`.
+- Baseline code-region SHA256:
+  `40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`.
+- Baseline full ROM SHA256:
+  `571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A`.
+
+Source-layout change:
+
+- Removed superseded
+  `asm/original/rev0/code_000037F8_00011000.s`.
+- Added `asm/original/rev0/boot/boot_resource_display_list_update.s`,
+  `0x000037F8..0x00003C2C`, 1,076 bytes.
+- Added remainder `asm/original/rev0/code_00003C2C_00011000.s`,
+  `0x00003C2C..0x00011000`, 54,228 bytes.
+- Static dossier: `docs/dossiers/boot-resource-display-list-update.md`.
+
+Evidence:
+
+- Parent `../scripts/ob64_functions.json` reports `0x37F8` as a 936-byte leaf
+  entry and `0x3808` as a 1,060-byte prologue, frame size `0x40`, with
+  secondary entry `0x3BA0`. The `0x3808` parent end marker is `0x3C28`; the
+  delay slot at `0x3C28` means the safe source split ends at exclusive
+  `0x3C2C`.
+- The `0x37F8` prefix reads `0x800A81F0/0x800AEE72` and falls through into the
+  `0x3808` prologue, so the prefix and prologue stay in the same source file.
+- Parent `../scripts/ob64_symbols_v2.json` locates `0x37F8` and `0x3808` at
+  fixed RAM `0x800733F8/0x80073408` in all seven named states.
+- Parent `../scripts/ob64_callgraph_v2.json` reports high-confidence callee
+  edges to `resource_free` (`0x16C4`), `resource_alloc_mode1_wrapper`
+  (`0x1688`), `0x3C2C`, `0x228D0`, and `0x210C0`; the unresolved target
+  `0x800737A0` is the included `0x3BA0` secondary helper.
+- Static code shape: choose a `0x18`-byte row from `0x800A81C0`, store it to
+  `0x800F9BE0`, refresh row pointers with repeated free/alloc calls, touch flag
+  bytes `0x800A8210..0x800A8215`, conditionally allocate/free
+  `0x800AEF9C`, and maintain aligned base `0x800C4B20`.
+- The cluster writes display-list command words through the heavily used
+  display-list pointer global `0x800E9BA0`/`0x800F9BA0`, including constants
+  shaped like F3DEX commands (`E700`, `DB06`, `DE00`, `DC08`, `DA38`, `DB0E`).
+  This supports the conservative display-list source-layout name, not a final
+  semantic C API.
+
+Verification:
+
+- `node tests\binutils_smoke.js` passed after the split.
+- `node tools\assemble_original_mips.js` passed after the split.
+- Full `node tools\verify_setup.js` passed after the split.
+- Assembled report now shows 1 tracked composite real-asm chunk made from 27
+  tracked source files, plus 99 generated fallback chunks.
+- Code-region SHA256 remains:
+  `40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`.
+- Full ROM SHA256 remains:
+  `571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A`.
+
+Next recommended target:
+
+- Continue from `asm/original/rev0/code_00003C2C_00011000.s`, beginning with
+  the `0x00003C2C` prologue routine.
