@@ -1405,3 +1405,71 @@ Next recommended target:
   callers to `0x48C8`, shared cursor globals, and the following prologue at
   `0x4AC8`; keep the pair and trailing `0x4AB8..0x4AC4` return/padding shape
   together until documented.
+
+## 2026-06-21 - Boot Bitstream Descriptor Encode Split
+
+### Baseline
+
+- `git status --short` was clean before edits.
+- Last commit before the split was `7f5a52b Split Rev 0 bitstream descriptor
+  decode`.
+- `node tools\verify_setup.js` passed before the split with 1 tracked composite
+  real-asm chunk made from 35 tracked source files and 99 generated fallback
+  chunks.
+- The decomp log was 61,178 characters, 6,872 words, and 1,408 lines, below the
+  prune threshold.
+
+### Source Change
+
+- Split `asm/original/rev0/code_00004894_00011000.s`.
+- Added `asm/original/rev0/boot/boot_bitstream_descriptor_encode.s`,
+  `0x00004894..0x00004AC8`, 564 bytes.
+- Added remainder `asm/original/rev0/code_00004AC8_00011000.s`,
+  `0x00004AC8..0x00011000`, 50,488 bytes.
+
+### Static Evidence
+
+- Parent `../scripts/ob64_functions.json` reports `0x4894` as a 548-byte valid
+  JAL-target leaf and `0x48C8` as an overlapping 496-byte valid prologue with
+  frame size `0x8`; the next parent prologue boundary is `0x4AC8`.
+- Parent `../scripts/ob64_callgraph_v2.json` reports high-confidence callers
+  `0x42E64` and `0x43000` to `0x4894`, no direct callers to `0x48C8`, no
+  callees, and no unresolved targets for the pair.
+- Parent `../scripts/ob64_symbols_v2.json` locates `0x4894` / `0x48C8` at fixed
+  RAM `0x80074494` / `0x800744C8` in all seven named states and all 21 RAM
+  snapshots.
+- Xref evidence shows reads/writes to shared bit cursor globals
+  `0x800AEFB0`, `0x800AEFB4`, `0x800AEFB8`, `0x800AEFBC`, and `0x800AEFC0`.
+- Static code shape: the `0x4894` prefix initializes the shared cursor from
+  `a0`, then the overlapping `0x48C8` body walks descriptor rows from `a1`,
+  reads source bytes from row-base plus descriptor offsets, packs variable-width
+  fields into the cursor byte, and flushes complete bytes to
+  `[0x800AEFB0 + 0x800AEFB4]`.
+- Boundary rationale: `0x48C8` is both scanner prologue and the delay slot for
+  the branch at `0x48C4`, so splitting at `0x48C8` would hide real executable
+  branch-delay behavior.
+- No parent function, symbol, or callgraph evidence reported a direct target to
+  `0x4AC0`; the trailing `0x4AB8..0x4AC4` nop/nop/return/nop shape stays with
+  this file as local return/padding.
+- The name `boot_bitstream_descriptor_encode` is conservative. It records the
+  descriptor-driven bit packing shape, not a verified compression format.
+
+### Verification
+
+- `node tests\binutils_smoke.js` passed.
+- `node tools\assemble_original_mips.js` passed and produced the same
+  code-region SHA256:
+  `40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`.
+- Full `node tools\verify_setup.js` passed after docs/source updates.
+- The setup verifier now reports 1 tracked composite real-asm chunk made from
+  36 tracked source files, 99 generated fallback chunks, full-source manifest
+  1,059 entries, 0 unknown bytes, and the same full ROM SHA256:
+  `571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A`.
+
+### Next
+
+- Continue from `asm/original/rev0/code_00004AC8_00011000.s`, beginning with
+  the `0x00004AC8` 364-byte prologue routine. Parent data reports
+  high-confidence caller `0x22B0`, callees `0x51A0`, `0x539C`, `0x5760`, and
+  `0x4FF0`, unresolved helper RAM `0x80093540`, and writes to
+  `0x800A83B8/83BC` and `0x800AEFD0/EFD2`.

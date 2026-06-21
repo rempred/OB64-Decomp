@@ -10,7 +10,7 @@ code after the bitstream cursor helper cluster:
 | Source | ROM range | RAM range | Notes |
 | --- | --- | --- | --- |
 | `asm/original/rev0/boot/boot_bitstream_descriptor_decode.s` | `0x000046F4..0x00004894` | `0x800742F4..0x80074494` | 416-byte prologue routine that decodes descriptor-driven bitstream fields. |
-| `asm/original/rev0/code_00004894_00011000.s` | `0x00004894..0x00011000` | `0x80074494..0x80080C00` | Next tracked remainder. |
+| `asm/original/rev0/code_00004894_00011000.s` | `0x00004894..0x00011000` | `0x80074494..0x80080C00` | Historical next tracked remainder; superseded by `boot_bitstream_descriptor_encode.s` plus `code_00004AC8_00011000.s`. |
 
 The name is conservative. The routine uses the shared bit cursor globals and
 descriptor-like rows, but the exact compression/data format is not yet verified.
@@ -49,6 +49,8 @@ descriptor-like rows, but the exact compression/data format is not yet verified.
   should stay together in the next split.
 - The next audit should also account for the trailing `0x4AB8..0x4AC4`
   return/padding shape before the following `0x4AC8` prologue boundary.
+- Follow-up split `boot_bitstream_descriptor_encode.s` now covers
+  `0x00004894..0x00004AC8`; the active remainder starts at `0x00004AC8`.
 
 ## Verification
 

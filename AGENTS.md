@@ -173,7 +173,7 @@ Current result:
   `40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`.
 - Code-region match against baserom: pass.
 - Tracked real-assembler original-MIPS chunks: 1 composite
-  (`0x00001000..0x00011000`) made from 35 real-assembler source files.
+  (`0x00001000..0x00011000`) made from 36 real-assembler source files.
 - Generated fallback chunks: 99.
 - Assembled-code ROM rebuild command:
 
@@ -659,6 +659,8 @@ cluster:
   routine with frame size `0x10`.
 - Remainder:
   `asm/original/rev0/code_00004894_00011000.s`.
+  That file has since been superseded by the bitstream descriptor encode split
+  below.
 
 Static evidence: parent callgraph/symbol data reports high-confidence callers
 `0x42DC4` and `0x42F68`, no callees, fixed RAM `0x800742F4` in all seven named
@@ -670,10 +672,35 @@ field, and the inner loop consumes bit-width records to write decoded bytes at
 row-base plus record offsets. The name is conservative and records a bitstream
 descriptor decode shape, not a verified compression format.
 
-Static dossier: `docs/dossiers/boot-bitstream-descriptor-decode.md`. Next
-source split should start at `asm/original/rev0/code_00004894_00011000.s`, with
-the overlapping `0x4894` leaf / `0x48C8` prologue pair kept together until the
-trailing `0x4AB8..0x4AC4` return/padding shape is documented.
+Static dossier: `docs/dossiers/boot-bitstream-descriptor-decode.md`. The
+`0x00004894` target has since been superseded by the bitstream descriptor encode
+split below.
+
+## Boot Bitstream Descriptor Encode Split
+
+The next tracked Rev 0 original-MIPS split keeps the overlapping bitstream
+helper pair together:
+
+- `asm/original/rev0/boot/boot_bitstream_descriptor_encode.s`
+  `0x00004894..0x00004AC8`; parent reports `0x4894` as a 548-byte JAL-target
+  leaf and `0x48C8` as an overlapping 496-byte prologue with frame size `0x8`.
+- Remainder:
+  `asm/original/rev0/code_00004AC8_00011000.s`.
+
+Static evidence: `0x48C8` is the branch delay slot for the `0x48C4` branch in
+the `0x4894` prefix, so those entries must stay in one source file. Parent
+callgraph/symbol data reports callers `0x42E64` and `0x43000` to `0x4894`, no
+direct callers to `0x48C8`, no callees, fixed RAM `0x80074494/0x800744C8` in
+all seven named states and all 21 snapshots, and shared bit cursor global
+accesses. Static shape: entry initializes the cursor from `a0`, walks descriptor
+rows from `a1`, reads source bytes from row-base plus descriptor offsets, packs
+variable-width values into the shared bit cursor, and flushes the final partial
+byte. The no-target `0x4AB8..0x4AC4` nop/nop/return/nop shape stays with this
+file so the active remainder begins at the next scanner prologue `0x4AC8`.
+
+Static dossier: `docs/dossiers/boot-bitstream-descriptor-encode.md`. Next
+source split should start at `asm/original/rev0/code_00004AC8_00011000.s`, a
+364-byte prologue routine at `0x4AC8` called from `0x22B0`.
 
 ## Setup Complete Gate
 
@@ -689,7 +716,7 @@ setup-complete state:
 - Assembler: GNU Binutils 2.39 `mips64-elf-as.exe` with `-EB -mips3 -32`.
 - Setup verifier: `tools/verify_setup.js`.
 - Current verifier result: PASS; 825 archives, 0 unknown bytes, 108 overlap
-  bytes visible, 1 tracked composite real-asm chunk made from 35 tracked source
+  bytes visible, 1 tracked composite real-asm chunk made from 36 tracked source
   files, 99 generated fallback chunks, full-source manifest 1,059 entries with
   2,469,141 ambiguous bytes preserved explicitly, 3 tracked non-code
   source-owner files / 44,029 bytes, 1,055 generated non-code fallback files /
@@ -698,5 +725,5 @@ setup-complete state:
   `571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A`.
 
 Next phase is either promoting another small non-code owner batch or continuing
-tracked original-MIPS splits from `asm/original/rev0/code_00004894_00011000.s`.
+tracked original-MIPS splits from `asm/original/rev0/code_00004AC8_00011000.s`.
 Do not begin semantic C decomp unless the setup verifier is green.
