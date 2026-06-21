@@ -119,7 +119,7 @@ Expected current results:
   baserom code-region SHA256
   `40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`.
 - `assemble_original_mips.js` currently uses 1 tracked composite
-  real-assembler chunk (`0x00001000..0x00011000`) made from 102 tracked source
+  real-assembler chunk (`0x00001000..0x00011000`) made from 131 tracked source
   files, plus 99 generated fallback chunks.
 - `rebuild_rom.js --assembled-code ...` substitutes that assembled code blob for
   the raw code segment and still confirms the same full-ROM SHA256.
@@ -201,6 +201,11 @@ These outputs are useful but ignored:
 - ROM size: 41,943,040 bytes.
 - Code region currently extracted as original MIPS:
   `0x00001000..0x0063676C`.
+- Named-function split coverage of chunk 0: `0x00001000..0x0000F22C` (131 tracked
+  source files); current split frontier `0x0000F22C` (remainder
+  `code_0000F22C_00011000.s`). `0xB030..0xF22C` is the resource-archive loader +
+  decompressor subsystem (dossier
+  `docs/dossiers/boot-resource-decode-subsystem-B030-F22C.md`).
 - Executable extent (evidence, `tools/audit_code_region.js`):
   `0x00001000..0x002B89B4`. The trailing `0x002B89B4..0x0063676C` (3,661,240
   bytes, 56.24%) has zero `jr $ra` and is non-code data still emitted as `.word`
@@ -259,6 +264,13 @@ These outputs are useful but ignored:
   for intrinsic-only). Reports go to ignored
   `build/coverage/rev0-code-region-audit.json/.md`; it does not touch the rebuild
   path. See `docs/CODE_REGION_AUDIT.md`.
+- `tools/dump_function_context.js` is a read-only analysis aid for split passes:
+  for a ROM range it joins parent function boundaries, the `symbols_v2` callgraph
+  (callees/callers with names), accessed globals, top constants, secondary
+  entries, and flags into a per-function context report under ignored
+  `build/context/`. Parent JSON required by default (`--allow-missing-parent-db`).
+- `tools/split_original_mips_part.js` splits one tracked manifest part into named
+  sub-parts (contiguous, no-gap-validated), preserving exact `.word` lines.
 - `tools/verify_setup.js` is the canonical setup verification command.
 - `tests/binutils_smoke.js` verifies the GNU MIPS binutils path.
 - `tests/word_asm_smoke.js` verifies the minimal `.word` assembler used by the
@@ -279,7 +291,7 @@ prints PASS. Current PASS summary:
 - Toolchain: `n64-tools-gcc-toolchain-mips64-win64`, GNU Binutils 2.39.
 - Binutils smoke tests: `.word`, real instructions, `.set noreorder`, and first
   tracked chunk real assembly all pass.
-- Source mix: 1 tracked composite real-asm chunk made from 102 tracked source
+- Source mix: 1 tracked composite real-asm chunk made from 131 tracked source
   files, plus 99 generated fallback chunks.
 - Source manifest: 1,059 entries, zero unknown bytes, 2,469,141 ambiguous bytes
   preserved explicitly.

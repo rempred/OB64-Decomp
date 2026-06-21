@@ -96,56 +96,23 @@ node tools/audit_code_region.js
 
 3. Continue splitting the first tracked chunk into smaller source files.
 
-   The boot entry, first resource/arena split, allocator/free split,
-   validation/realloc/tree-helper split, early loader/state-loop split, boot
-   mode/flag-helper split, table/mask reconcile split, boot mode/message
-   accumulator split, resource-buffer reset/flag split, resource state reset
-   split, resource/display-list update split, display-list state emit split,
-   display-list finalize/flip split, display-list sync/modes split, and
-   display-list counter-step/counter packet emit splits, resource window cache
-   update split, bitstream cursor helper split, bitstream descriptor decode and
-   encode splits, resource probe init split, resource probe finalize split, and
-   resource probe dispatch-prepare split, resource probe dispatch-apply split,
-   resource probe dispatch result-build split, and resource probe global
-   cleanup split, resource probe chunk callback-walk split, and resource probe
-   global buffer copy split, resource probe global buffer signature-check
-   split, resource probe ID materialize split, resource probe dual callback
-   materialize split, and resource probe global-buffer dual-callback apply
-   split, resource probe ID check/materialize split, and resource probe
-   indexed-record check split, resource probe large-record check split, and
-   resource probe small-record check split, and resource probe indexed-record
-   copy/flag split, resource probe large-record copy/flag split, resource probe
-   small-record copy/flag split, resource probe record checksum/signature
-   split, boot state dispatch loop init split, boot mode/message accumulator
-   seed wrapper split, boot resource table/mask apply split, boot state global
-   reset split, boot state slot callback dispatch split, boot state slot render
-   callback walk split, boot state slot queue service gate split, boot resource
-   global handle release split, boot resource global handle slot record prepare
-   split, boot state slot current peer record flag mark split, boot state
-   slot target peer record dispatch split, boot state slot flagged
-   dispatch/lookup split, boot state slot pool/table helper split, boot state
-   slot queue record-step split, boot state slot queue F000 record-step split,
-   no-op return-tail split, slot record release/payload helper split, queue
-   priority rebuild helper split, render no-op tail split, and `0x58` record
-   copy leaf split, display-list transform record emit split, and
-   transform-wrapper/clamped-rect emit split, flagged rect packet emit split,
-   color rect packet emit split, vector distance/transform-prefix split,
-   transform coefficients/sum-clear split, command stream dispatch split,
-   command stream resource-node dispatch split, resource-node payload
-   materialize split, resource-node insert/find split, resource-node context
-   materialize split, resource-node LZSS context materialize split,
-   resource-node overlay context materialize split, resource-node recursive
-   insert/slot-search split, resource-node recursive cleanup/free split,
-   resource-node recursive payload-clear split, resource-node recursive
-   field-`+0x0C` rewrite split, resource-node recursive child/free split,
-   resource-node recursive key/field clear split, byte copy/fill aligned leaf
-   split, parent-labeled LZSS decompressor split, resource-record mark-ready
-   split, and resource-loader callback-register split are done. Continue from
-   `asm/original/rev0/code_0000B030_00011000.s`, beginning with `0xB030`.
-   Parent data labels this next helper as a resource-loader routine: size
-   `0x80` / 128 bytes, frame size `0x20`, RAM `0x8007AC30`, fixed in all
-   states, with calls to RAM `0x800936E0`, LZSS decompressor RAM
-   `0x8007A110`, RAM `0x80093810`, and unresolved RAM helper `0x80093540`.
+   Chunk 0 (`0x00001000..0x00011000`) is split into named functions through
+   `0x0000F22C`: the boot/resource/display-list/probe/state-slot/command-stream
+   helpers (`0x1000..0xB030`, see Source Promotion History in `DECOMP_LOG.md` +
+   the archived full log), then the resource-archive loader + custom decompressor
+   subsystem `0xB030..0xF22C` (29 functions; dossier
+   `docs/dossiers/boot-resource-decode-subsystem-B030-F22C.md`).
+
+   **Continue from `asm/original/rev0/code_0000F22C_00011000.s`**, starting at the
+   corrected true entry `0x0000F22C` (parent labels it `0xF23C`; a 4-word
+   read-before-write preamble precedes it). It is another canonical-Huffman
+   read/decode worker; past it the region continues into the codec workers and the
+   low-level stream I/O (`func_0000F970` fread-like, `F9D8` fwrite-like). Seed each
+   pass with `node tools/dump_function_context.js --start 0xF22C --end <next>` and
+   expect the preamble-orphan boundary idiom (true entry precedes the labeled
+   `func_` start) on essentially every function here. High-value side quest:
+   decode the runtime dispatch tables `0x800AE128` (85) / `0x800AE2E8` (9) to map
+   opcodes → handlers and upgrade the `func_*`/hypothesis names in the subsystem.
 
 4. Keep the setup gate green.
 

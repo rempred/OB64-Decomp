@@ -928,17 +928,278 @@
           "sha256": "3CF312C7B3FCFD25122D91E45628F2570B805EA4343B12B5B949C1A44F7CCD82"
         },
         {
-          "name": "code_0000B030_00011000_remainder",
-          "file": "asm/original/rev0/code_0000B030_00011000.s",
+          "name": "boot_resource_lzss_load_entry",
+          "file": "asm/original/rev0/boot/boot_resource_lzss_load_entry.s",
           "romStart": "0x0000B030",
+          "romEndExclusive": "0x0000B0B0",
+          "bytes": 128,
+          "textBytes": 2741,
+          "sha256": "69A3216B70E4352A8593118AC43A85D9C5F2B2D8445A66D9264EFF27F24A7F77"
+        },
+        {
+          "name": "boot_resource_archive_load_many",
+          "file": "asm/original/rev0/boot/boot_resource_archive_load_many.s",
+          "romStart": "0x0000B0B0",
+          "romEndExclusive": "0x0000B29C",
+          "bytes": 492,
+          "textBytes": 9740,
+          "sha256": "5FA98B5E29974C6EC0713E9D28853E985067C3242C8C0F46DDCF5CF04F3F8530"
+        },
+        {
+          "name": "boot_resource_archive_load_one",
+          "file": "asm/original/rev0/boot/boot_resource_archive_load_one.s",
+          "romStart": "0x0000B29C",
+          "romEndExclusive": "0x0000B33C",
+          "bytes": 160,
+          "textBytes": 3364,
+          "sha256": "A118AA162446DDE6330A2ED466B7500FB590BE9CC627A625B5597B76BD96D2FF"
+        },
+        {
+          "name": "boot_resource_pool_acquire_release",
+          "file": "asm/original/rev0/boot/boot_resource_pool_acquire_release.s",
+          "romStart": "0x0000B33C",
+          "romEndExclusive": "0x0000B3E4",
+          "bytes": 168,
+          "textBytes": 3524,
+          "sha256": "52E6438AB303533F47BF54079AD3F95822B9904EC356CA4B31E156C85B84108C"
+        },
+        {
+          "name": "boot_resource_tag_record_decode",
+          "file": "asm/original/rev0/boot/boot_resource_tag_record_decode.s",
+          "romStart": "0x0000B3E4",
+          "romEndExclusive": "0x0000BC8C",
+          "bytes": 2216,
+          "textBytes": 42509,
+          "sha256": "B3E6461505502CAE81A3CECA989E979B2E6751669FABC4ED7716CB92CF944EE3"
+        },
+        {
+          "name": "boot_resource_record_resolve_load",
+          "file": "asm/original/rev0/boot/boot_resource_record_resolve_load.s",
+          "romStart": "0x0000BC8C",
+          "romEndExclusive": "0x0000BE98",
+          "bytes": 524,
+          "textBytes": 10325,
+          "sha256": "B77775732A4D474596FCEB6369CF286A784ED86AC2A1442B1D60B94BCC9DB04E"
+        },
+        {
+          "name": "boot_resource_op_dispatch",
+          "file": "asm/original/rev0/boot/boot_resource_op_dispatch.s",
+          "romStart": "0x0000BE98",
+          "romEndExclusive": "0x0000BF90",
+          "bytes": 248,
+          "textBytes": 5003,
+          "sha256": "34F4050DDE0AB4EE36036DD944E81522BBE11FBD50D3009AB97FC9BF127339DC"
+        },
+        {
+          "name": "func_0000BF90",
+          "file": "asm/original/rev0/boot/func_0000BF90.s",
+          "romStart": "0x0000BF90",
+          "romEndExclusive": "0x0000BFC0",
+          "bytes": 48,
+          "textBytes": 1252,
+          "sha256": "BB2683AD652A2DD66C326A534305370691252FF889E33AE37E5905FE649E6CEE"
+        },
+        {
+          "name": "func_0000BFC0",
+          "file": "asm/original/rev0/boot/func_0000BFC0.s",
+          "romStart": "0x0000BFC0",
+          "romEndExclusive": "0x0000BFF4",
+          "bytes": 52,
+          "textBytes": 1336,
+          "sha256": "A32594CCF71F72D422452C3A8AA85F1CEFCB7E5D84D28C648F664F087BD52B4B"
+        },
+        {
+          "name": "func_0000BFF4",
+          "file": "asm/original/rev0/boot/func_0000BFF4.s",
+          "romStart": "0x0000BFF4",
+          "romEndExclusive": "0x0000C024",
+          "bytes": 48,
+          "textBytes": 1252,
+          "sha256": "2F87D4A8FF3CE69907650C7B992892AE325824C95B2A09E1B4EC40AFB23D8292"
+        },
+        {
+          "name": "boot_decode_build_huffman_table",
+          "file": "asm/original/rev0/boot/boot_decode_build_huffman_table.s",
+          "romStart": "0x0000C024",
+          "romEndExclusive": "0x0000C310",
+          "bytes": 748,
+          "textBytes": 14741,
+          "sha256": "8AEA3A0925CD22AB025CEFB7BC0E1AAAED297CA693D759567FDF66B6C11E7138"
+        },
+        {
+          "name": "boot_decode_driver",
+          "file": "asm/original/rev0/boot/boot_decode_driver.s",
+          "romStart": "0x0000C310",
+          "romEndExclusive": "0x0000C778",
+          "bytes": 1128,
+          "textBytes": 21862,
+          "sha256": "C0CDC252C6BC8493DCF7BF84C8199CCFCB7E29241675EABCD2B34196BB8D31DC"
+        },
+        {
+          "name": "func_0000C778",
+          "file": "asm/original/rev0/boot/func_0000C778.s",
+          "romStart": "0x0000C778",
+          "romEndExclusive": "0x0000C990",
+          "bytes": 536,
+          "textBytes": 10645,
+          "sha256": "B6D378B3802B40ABAACEEBAE08CE9283C71EC36024C801DF9FBDBF3BC11F42E0"
+        },
+        {
+          "name": "func_0000C990",
+          "file": "asm/original/rev0/boot/func_0000C990.s",
+          "romStart": "0x0000C990",
+          "romEndExclusive": "0x0000CB4C",
+          "bytes": 444,
+          "textBytes": 8822,
+          "sha256": "127B95A02C409B30DAE05DB3783C247AAB54624EC288D25465FCF4E1D038A118"
+        },
+        {
+          "name": "func_0000CB4C",
+          "file": "asm/original/rev0/boot/func_0000CB4C.s",
+          "romStart": "0x0000CB4C",
+          "romEndExclusive": "0x0000CEB8",
+          "bytes": 876,
+          "textBytes": 17043,
+          "sha256": "1B92CC0200E429A4826F9E0C085F73F879791F47E8459A48B602B66AC3F69132"
+        },
+        {
+          "name": "func_0000CEB8",
+          "file": "asm/original/rev0/boot/func_0000CEB8.s",
+          "romStart": "0x0000CEB8",
+          "romEndExclusive": "0x0000D248",
+          "bytes": 912,
+          "textBytes": 17725,
+          "sha256": "9D7CB71E1B45528A1B4B9E81F0C38EE6EAA4912795043BEC9AE6BFF588BA1895"
+        },
+        {
+          "name": "func_0000D248",
+          "file": "asm/original/rev0/boot/func_0000D248.s",
+          "romStart": "0x0000D248",
+          "romEndExclusive": "0x0000D600",
+          "bytes": 952,
+          "textBytes": 18635,
+          "sha256": "2EE29C7AA9C716B270CFAC4CB96008C17AAF80574E6BB873DB5DB953AACD627C"
+        },
+        {
+          "name": "func_0000D600",
+          "file": "asm/original/rev0/boot/func_0000D600.s",
+          "romStart": "0x0000D600",
+          "romEndExclusive": "0x0000D994",
+          "bytes": 916,
+          "textBytes": 17964,
+          "sha256": "AEE0B3D57D1C3429D3941784DC5811B014AA01C11FBF4771A58CBED78D2B6E1C"
+        },
+        {
+          "name": "boot_decode_huffman_reset_state",
+          "file": "asm/original/rev0/boot/boot_decode_huffman_reset_state.s",
+          "romStart": "0x0000D994",
+          "romEndExclusive": "0x0000D9B8",
+          "bytes": 36,
+          "textBytes": 1012,
+          "sha256": "EA2179878E82D0DE763C6D2934FAF5D451B210A99BE63A0C9CB3273700B16443"
+        },
+        {
+          "name": "boot_decode_huffman_tree_reconstruct",
+          "file": "asm/original/rev0/boot/boot_decode_huffman_tree_reconstruct.s",
+          "romStart": "0x0000D9B8",
+          "romEndExclusive": "0x0000DBBC",
+          "bytes": 516,
+          "textBytes": 10213,
+          "sha256": "DEFFC8C384F5A028162A89CB436C4B2799EFCBC46D9754D727230CA07FFE35AD"
+        },
+        {
+          "name": "boot_decode_huffman_tree_init",
+          "file": "asm/original/rev0/boot/boot_decode_huffman_tree_init.s",
+          "romStart": "0x0000DBBC",
+          "romEndExclusive": "0x0000DCA8",
+          "bytes": 236,
+          "textBytes": 4859,
+          "sha256": "BBD4FF1FFAD7AE499B5F459950A6DF2E282CF8CB44A1EF3C93036173FC92D5E4"
+        },
+        {
+          "name": "boot_decode_huffman_tree_update",
+          "file": "asm/original/rev0/boot/boot_decode_huffman_tree_update.s",
+          "romStart": "0x0000DCA8",
+          "romEndExclusive": "0x0000E1F0",
+          "bytes": 1352,
+          "textBytes": 26105,
+          "sha256": "DBB4B3667B80471B6DAE14F1F8EF93718A5823F039E475FB6F781CFD711A4316"
+        },
+        {
+          "name": "boot_decode_huffman_tree_update_entry",
+          "file": "asm/original/rev0/boot/boot_decode_huffman_tree_update_entry.s",
+          "romStart": "0x0000E1F0",
+          "romEndExclusive": "0x0000E3F0",
+          "bytes": 512,
+          "textBytes": 10192,
+          "sha256": "3602FB5CA19271A15D60F7CF9023915A5561911809B4E6714A69D54FA705467E"
+        },
+        {
+          "name": "boot_decode_huffman_symbol",
+          "file": "asm/original/rev0/boot/boot_decode_huffman_symbol.s",
+          "romStart": "0x0000E3F0",
+          "romEndExclusive": "0x0000E708",
+          "bytes": 792,
+          "textBytes": 15541,
+          "sha256": "84EFFB36F5685A26166D303E6ECAE9F348F287CAD37C1933152A457B8263257E"
+        },
+        {
+          "name": "func_0000E708",
+          "file": "asm/original/rev0/boot/func_0000E708.s",
+          "romStart": "0x0000E708",
+          "romEndExclusive": "0x0000EA98",
+          "bytes": 912,
+          "textBytes": 17830,
+          "sha256": "C5E0880005A4A87A2932338F9A5E769CBE39DCD01D6AE23BEF7C76224611D452"
+        },
+        {
+          "name": "boot_decode_huffman_init",
+          "file": "asm/original/rev0/boot/boot_decode_huffman_init.s",
+          "romStart": "0x0000EA98",
+          "romEndExclusive": "0x0000EADC",
+          "bytes": 68,
+          "textBytes": 1651,
+          "sha256": "AE447CE3E20F31F18031E5ABFE1B4F499DE805D1DDBAEFD8DFA08D013EF3F3D4"
+        },
+        {
+          "name": "boot_decode_huffman_build_litlen_table",
+          "file": "asm/original/rev0/boot/boot_decode_huffman_build_litlen_table.s",
+          "romStart": "0x0000EADC",
+          "romEndExclusive": "0x0000EC00",
+          "bytes": 292,
+          "textBytes": 5944,
+          "sha256": "23FDA6B170F8E12EA6C62B20F4FE8F383C0505B89CE21CA9B3A3143DAB416864"
+        },
+        {
+          "name": "boot_decode_huffman_build_dist_table",
+          "file": "asm/original/rev0/boot/boot_decode_huffman_build_dist_table.s",
+          "romStart": "0x0000EC00",
+          "romEndExclusive": "0x0000ECF0",
+          "bytes": 240,
+          "textBytes": 4947,
+          "sha256": "6A7C4CB048108ABDE580045A15F39F5EA03CB2EEBBBB4C1E661E2F0D3ED91696"
+        },
+        {
+          "name": "boot_decode_huffman_codelengths",
+          "file": "asm/original/rev0/boot/boot_decode_huffman_codelengths.s",
+          "romStart": "0x0000ECF0",
+          "romEndExclusive": "0x0000F22C",
+          "bytes": 1340,
+          "textBytes": 26093,
+          "sha256": "F6DF8B35C14CDD704ADD7E6BDA9872316BB18C3087A31DBDFA239B41D02EAD8D"
+        },
+        {
+          "name": "code_0000F22C_00011000",
+          "file": "asm/original/rev0/code_0000F22C_00011000.s",
+          "romStart": "0x0000F22C",
           "romEndExclusive": "0x00011000",
-          "bytes": 24528,
-          "textBytes": 473471,
-          "sha256": "774DB8F2753A8E7D900E027A965C1EC13E09B7B664B1391216F16A380AE10909"
+          "bytes": 7636,
+          "textBytes": 148087,
+          "sha256": "504D77EC58054B94C3D95E89CF844F7FC6372B34CB2039D5DAB64BD18A9B6D4F"
         }
       ],
-      "textBytes": 1290876,
-      "sha256": "55FA0665B37058F6B9506EFF7A02C700CEC44D6C4E356FE85132F04FCC457945"
+      "textBytes": 1298362,
+      "sha256": "F9F61D8F71FEFF472C7FDC89E18530CEFDCAA3FA0FA0E7C72769FFFF2786431B"
     }
   ]
 }

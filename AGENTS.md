@@ -204,7 +204,9 @@ Current result:
   `40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`.
 - Code-region match against baserom: pass.
 - Tracked real-assembler original-MIPS chunks: 1 composite
-  (`0x00001000..0x00011000`) made from 102 real-assembler source files.
+  (`0x00001000..0x00011000`) made from 131 real-assembler source files.
+  Named-function coverage of chunk 0 runs `0x00001000..0x0000F22C`; current
+  remainder `code_0000F22C_00011000.s`.
 - Generated fallback chunks: 99.
 - Assembled-code ROM rebuild command:
 
@@ -219,6 +221,17 @@ Next source-layout work should continue promoting/splitting tracked
 `asm/original/` inputs without losing the exact rebuild gate. Use
 `tools/promote_original_mips.js` for chunk promotion and `--strict-tracked` only
 after every configured code chunk is tracked.
+
+`0x00001000..0x0000F22C` is split into named functions. `0xB030..0xF22C` is a
+resource-archive loader + custom decompressor (Huffman/DEFLATE + adaptive-Huffman
++ CRC16, runtime dispatch tables `0x800AE128`/`0x800AE2E8`), dossier
+`docs/dossiers/boot-resource-decode-subsystem-B030-F22C.md`. Next frontier is
+`0x0000F22C` (continues the codec). Use `tools/dump_function_context.js
+--start <s> --end <e>` to seed a split pass (read-only join of parent
+boundaries + symbols_v2 callgraph + accessed globals + flags). Heads-up: the
+parent boundary DB orphans a 2–4 word read-before-write load preamble onto the
+previous function's tail, so the true entry can precede the labeled `func_` start
+(corrected at `0xD248/0xD600/0xECF0/0xF22C`) — verify when splitting.
 
 ## First Decomp Loop: Boot Entry
 
