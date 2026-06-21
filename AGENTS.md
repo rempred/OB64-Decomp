@@ -173,7 +173,7 @@ Current result:
   `40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`.
 - Code-region match against baserom: pass.
 - Tracked real-assembler original-MIPS chunks: 1 composite
-  (`0x00001000..0x00011000`) made from 27 real-assembler source files.
+  (`0x00001000..0x00011000`) made from 29 real-assembler source files.
 - Generated fallback chunks: 99.
 - Assembled-code ROM rebuild command:
 
@@ -469,6 +469,8 @@ cluster:
   size `0x20`, and no secondary entries.
 - Remainder:
   `asm/original/rev0/code_00003EE4_00011000.s`.
+  That file has since been superseded by the display-list finalize/flip split
+  below.
 
 Static evidence: parent callgraph data reports high-confidence callers at
 `0x37F8` and `0x3808`, a high-confidence callee edge to `0x80090780`, and one
@@ -482,9 +484,34 @@ emits F3DEX-style command words through the shared display-list cursor
 cluster is fixed at RAM `0x8007382C` in all seven named states and all 21
 parent RAM snapshots.
 
-Static dossier: `docs/dossiers/boot-display-list-state-emit.md`. Next source
-split should start at `0x00003EE4`, a separate 236-byte prologue routine called
-by the early boot state loop.
+Static dossier: `docs/dossiers/boot-display-list-state-emit.md`. The next
+source split at `0x00003EE4` has since been superseded by the display-list
+finalize/flip split below.
+
+## Boot Display-List Finalize/Flip Split
+
+The next tracked Rev 0 original-MIPS split separates the compact display-list
+finalize/flip helper called by the early boot state loop:
+
+- `asm/original/rev0/boot/boot_display_list_finalize_flip.s`
+  `0x00003EE4..0x00003FD0`; parent reports a 236-byte prologue function, frame
+  size `0x18`, and no secondary entries.
+- Remainder:
+  `asm/original/rev0/code_00003FD0_00011000.s`.
+
+Static evidence: parent callgraph data reports high-confidence caller `0x27A0`
+and high-confidence callee edges to `0x4048` and `0x19C04`. The routine calls
+the local `0x4048/0x4050` helper first, then appends two `DE00` display-list
+links to `0x801869C8` and `0x80186E70`, plus `E700`, `E900`, and `DF00`
+commands, through the shared display-list cursor `0x800E9BA0`/`0x800F9BA0`.
+It reads the selected row pointer at `0x800E9BE0`, reads byte `0x800C4808`,
+passes the emitted span length to helper `0x80089804`, clears byte flag
+`0x800A8213`, and toggles byte `0x800A81F0`. The routine is fixed at RAM
+`0x80073AE4` in all seven named states and all 21 parent RAM snapshots.
+
+Static dossier: `docs/dossiers/boot-display-list-finalize-flip.md`. Next
+source split should start at `0x00003FD0`, a separate 120-byte prologue routine
+called by the early boot state loop.
 
 ## Setup Complete Gate
 
@@ -500,7 +527,7 @@ setup-complete state:
 - Assembler: GNU Binutils 2.39 `mips64-elf-as.exe` with `-EB -mips3 -32`.
 - Setup verifier: `tools/verify_setup.js`.
 - Current verifier result: PASS; 825 archives, 0 unknown bytes, 108 overlap
-  bytes visible, 1 tracked composite real-asm chunk made from 28 tracked source
+  bytes visible, 1 tracked composite real-asm chunk made from 29 tracked source
   files, 99 generated fallback chunks, full-source manifest 1,059 entries with
   2,469,141 ambiguous bytes preserved explicitly, 3 tracked non-code
   source-owner files / 44,029 bytes, 1,055 generated non-code fallback files /
@@ -509,5 +536,5 @@ setup-complete state:
   `571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A`.
 
 Next phase is either promoting another small non-code owner batch or continuing
-tracked original-MIPS splits from `asm/original/rev0/code_00003EE4_00011000.s`.
+tracked original-MIPS splits from `asm/original/rev0/code_00003FD0_00011000.s`.
 Do not begin semantic C decomp unless the setup verifier is green.

@@ -56,8 +56,8 @@ display-list command writes, not a final C API name.
   prologue. Parent data reports `0x3C2C` as a separate 696-byte prologue routine,
   frame size `0x20`, called by this cluster.
 - Later source-layout work split that `0x3C2C` target into
-  `asm/original/rev0/boot/boot_display_list_state_emit.s`, leaving
-  `asm/original/rev0/code_00003EE4_00011000.s` as the next remainder.
+  `asm/original/rev0/boot/boot_display_list_state_emit.s`. That remainder has
+  since been superseded again by the display-list finalize/flip split.
 
 ## Verification
 

@@ -10,7 +10,7 @@ code after the resource/display-list update cluster:
 | Source | ROM range | RAM range | Notes |
 | --- | --- | --- | --- |
 | `asm/original/rev0/boot/boot_display_list_state_emit.s` | `0x00003C2C..0x00003EE4` | `0x8007382C..0x80073AE4` | 696-byte prologue routine called by the preceding resource/display-list update cluster. |
-| `asm/original/rev0/code_00003EE4_00011000.s` | `0x00003EE4..0x00011000` | `0x80073AE4..0x80080C00` | Next tracked remainder. |
+| `asm/original/rev0/code_00003EE4_00011000.s` | `0x00003EE4..0x00011000` | `0x80073AE4..0x80080C00` | Former next tracked remainder, now superseded by `boot_display_list_finalize_flip.s`. |
 
 The name is a conservative source-layout label based on static display-list
 command emission and state/global reads, not a final renderer API name.
@@ -50,6 +50,9 @@ command emission and state/global reads, not a final renderer API name.
   function called by `0x27A0`.
 - No secondary entries were reported inside `0x3C2C..0x3EE4`, and the only
   branch targets observed in this routine stay inside the range.
+- Later source-layout work split that `0x3EE4` target into
+  `asm/original/rev0/boot/boot_display_list_finalize_flip.s`, leaving
+  `asm/original/rev0/code_00003FD0_00011000.s` as the next remainder.
 
 ## Verification
 

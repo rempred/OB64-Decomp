@@ -262,17 +262,26 @@
           "sha256": "6AB5C8D802EF9941E682364359E21B910C45FDA005AC9AEC2513187B27C446BF"
         },
         {
-          "name": "code_00003EE4_00011000_remainder",
-          "file": "asm/original/rev0/code_00003EE4_00011000.s",
+          "name": "boot_display_list_finalize_flip",
+          "file": "asm/original/rev0/boot/boot_display_list_finalize_flip.s",
           "romStart": "0x00003EE4",
+          "romEndExclusive": "0x00003FD0",
+          "bytes": 236,
+          "textBytes": 4841,
+          "sha256": "B674F08A3F76AE6FEF9E3D4FF1C26F3A9A0B6D0B3A100D849966C7CE78328D27"
+        },
+        {
+          "name": "code_00003FD0_00011000_remainder",
+          "file": "asm/original/rev0/code_00003FD0_00011000.s",
+          "romStart": "0x00003FD0",
           "romEndExclusive": "0x00011000",
-          "bytes": 53532,
-          "textBytes": 1033989,
-          "sha256": "205380034C54FC6A8FF77F46058C97E92C247F6CBB113C029AC9077498A78CC4"
+          "bytes": 53296,
+          "textBytes": 1029406,
+          "sha256": "C69878717ABB504DE0D0C2FFEF1F0A4720CB48F6271A18258A728303C1D71D24"
         }
       ],
-      "textBytes": 1271777,
-      "sha256": "57347E08A8DBD5910783F7F7E8416B7577F8E10CA27600D3E74015C23AE6D82C"
+      "textBytes": 1272035,
+      "sha256": "3C7704584D924BEE46EEA10C97D4F2AD9550832CAB96C2EADB2C4E267E3F4814"
     }
   ]
 }

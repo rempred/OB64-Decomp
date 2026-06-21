@@ -974,3 +974,62 @@ Next recommended target:
 - Continue from `asm/original/rev0/code_00003EE4_00011000.s`, beginning with
   the `0x00003EE4` 236-byte prologue routine. Parent callgraph data reports
   caller `0x27A0` and callees `0x4048` and `0x19C04`.
+
+## 2026-06-21 - Boot Display-List Finalize/Flip Split
+
+### Baseline
+
+- `git status --short` was clean before edits.
+- `node tools\verify_setup.js` passed before the split with 1 tracked composite
+  real-asm chunk made from 28 tracked source files and 99 generated fallback
+  chunks.
+- The decomp log was 41,095 characters, 4,461 words, and 977 lines, below the
+  prune threshold.
+
+### Source Change
+
+- Split `asm/original/rev0/code_00003EE4_00011000.s`.
+- Added `asm/original/rev0/boot/boot_display_list_finalize_flip.s`,
+  `0x00003EE4..0x00003FD0`, 236 bytes.
+- Added remainder `asm/original/rev0/code_00003FD0_00011000.s`,
+  `0x00003FD0..0x00011000`, 53,296 bytes.
+
+### Static Evidence
+
+- Parent `../scripts/ob64_functions.json` reports `0x3EE4` as a 236-byte
+  prologue function with frame size `0x18`, no secondary entries, and the next
+  prologue at `0x3FD0`.
+- Parent `../scripts/ob64_callgraph_v2.json` reports high-confidence caller
+  `0x27A0`, high-confidence callee `0x4048`, and high-confidence callee
+  `0x80089804` (`0x19C04`).
+- Parent `../scripts/ob64_symbols_v2.json` locates the routine at fixed RAM
+  `0x80073AE4` in all seven named states and all 21 parent RAM snapshots.
+- Xref scan shows read/write access to byte `0x800A81F0`, write access to byte
+  `0x800A8213`, reads from `0x800C4808` and `0x800E9BE0`, and read/write
+  traffic through shared display-list cursor `0x800E9BA0`/`0x800F9BA0`.
+- Static code shape: call local helper `0x4048`; append two `DE00`
+  display-list links to `0x801869C8` and `0x80186E70`; append `E700`, `E900`,
+  and `DF00` commands; compute the emitted byte span from selected-row field
+  `+0x14` to the updated cursor; call `0x80089804(a0=start, a1=span,
+  a2=0x800C4808, a3=1)`; clear `0x800A8213`; and toggle `0x800A81F0`.
+- The name `boot_display_list_finalize_flip` is conservative. It records
+  display-list finalization and active-buffer flag toggling only, not a verified
+  renderer API.
+
+### Verification
+
+- `node tests\binutils_smoke.js` passed.
+- `node tools\assemble_original_mips.js` passed and produced the same code-region
+  SHA256:
+  `40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`.
+- Full `node tools\verify_setup.js` passed after docs/source updates.
+- The setup verifier now reports 1 tracked composite real-asm chunk made from
+  29 tracked source files, 99 generated fallback chunks, full-source manifest
+  1,059 entries, 0 unknown bytes, and the same full ROM SHA256:
+  `571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A`.
+
+### Next
+
+- Continue from `asm/original/rev0/code_00003FD0_00011000.s`, beginning with
+  the `0x00003FD0` 120-byte prologue routine. Parent callgraph data reports
+  caller `0x27A0` and callee `0x80095610`.
