@@ -13,7 +13,9 @@ result-builder:
 | `asm/original/rev0/boot/boot_resource_probe_global_cleanup.s` | `0x00004FF0..0x00005058` | `0x80074BF0..0x80074C58` | Overlapping `0x4FF0` leaf entry plus `0x4FF8` prologue body. |
 | `asm/original/rev0/code_00005058_00011000.s` | `0x00005058..0x00011000` | `0x80074C58..0x80080C00` | Historical remainder; superseded by the chunk callback-walk split. |
 | `asm/original/rev0/boot/boot_resource_probe_chunk_callback_walk.s` | `0x00005058..0x000050F0` | `0x80074C58..0x80074CF0` | Follow-up split documented separately. |
-| `asm/original/rev0/code_000050F0_00011000.s` | `0x000050F0..0x00011000` | `0x80074CF0..0x80080C00` | Current tracked remainder. |
+| `asm/original/rev0/code_000050F0_00011000.s` | `0x000050F0..0x00011000` | `0x80074CF0..0x80080C00` | Historical remainder; superseded by the global buffer copy split. |
+| `asm/original/rev0/boot/boot_resource_probe_global_buffer_copy.s` | `0x000050F0..0x000051A0` | `0x80074CF0..0x80074DA0` | Follow-up split documented separately. |
+| `asm/original/rev0/code_000051A0_00011000.s` | `0x000051A0..0x00011000` | `0x80074DA0..0x80080C00` | Current tracked remainder. |
 
 The name is conservative. The routine has a clear static clear/free shape around
 resource-probe globals, but no runtime trace or controlled mutation has verified
@@ -54,6 +56,8 @@ final behavior or API semantics.
   `resource_free`, and a read from `0x800C4800`.
 - The `0x5058` helper is now documented separately in
   `docs/dossiers/boot-resource-probe-chunk-callback-walk.md`.
+- The `0x50F0/0x50F8` helper pair is now documented separately in
+  `docs/dossiers/boot-resource-probe-global-buffer-copy.md`.
 
 ## Verification
 

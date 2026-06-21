@@ -173,7 +173,7 @@ Current result:
   `40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`.
 - Code-region match against baserom: pass.
 - Tracked real-assembler original-MIPS chunks: 1 composite
-  (`0x00001000..0x00011000`) made from 43 real-assembler source files.
+  (`0x00001000..0x00011000`) made from 44 real-assembler source files.
 - Generated fallback chunks: 99.
 - Assembled-code ROM rebuild command:
 
@@ -915,6 +915,8 @@ by the resource probe global cleanup helper:
   size `0x28`, one indirect `jalr`, and no unresolved calls.
 - Remainder:
   `asm/original/rev0/code_000050F0_00011000.s`.
+  That file has since been superseded by the resource probe global buffer copy
+  split below.
 
 Static evidence: parent function/symbol/callgraph data reports high-confidence
 callers from `0x4FF0` and `0x4FF8`, high-confidence callees `resource_alloc`
@@ -931,9 +933,39 @@ returns. The name is conservative and records the static chunk-callback shape,
 not a verified runtime API.
 
 Static dossier: `docs/dossiers/boot-resource-probe-chunk-callback-walk.md`.
-Next source split should start at `asm/original/rev0/code_000050F0_00011000.s`,
-the overlapping `0x50F0/0x50F8` helper pair with callers from `0x4DC0` and
-`0x4ED4`.
+The `0x000050F0` target has since been superseded by the resource probe global
+buffer copy split below.
+
+## Boot Resource Probe Global Buffer Copy Split
+
+The next tracked Rev 0 original-MIPS split keeps the overlapping
+`0x50F0/0x50F8` helper pair together:
+
+- `asm/original/rev0/boot/boot_resource_probe_global_buffer_copy.s`
+  `0x000050F0..0x000051A0`; parent reports `0x50F0` as a 176-byte leaf entry
+  and `0x50F8` as an overlapping 168-byte prologue body with frame size
+  `0x28`.
+- Remainder:
+  `asm/original/rev0/code_000051A0_00011000.s`.
+
+Static evidence: parent function/symbol/callgraph data reports high-confidence
+callers to `0x50F0` from `0x4DC0` and `0x4ED4`; no direct callers to `0x50F8`;
+high-confidence callees `resource_alloc` (`0x1330`), `0x1A4F0` / RAM
+`0x8008A0F0`, and `0x23460` / RAM `0x80093060`; no unresolved targets; fixed
+RAM `0x80074CF0/0x80074CF8` in all seven named states and all 21 snapshots; and
+reads/writes of `0x800A83B8`.
+
+Static shape: `0x50F0` loads global pointer `0x800A83B8` and falls into the
+`0x50F8` stack-frame body. If the global is zero, the body allocates `0x8000`
+bytes, stores the pointer back to `0x800A83B8`, and populates the span in
+`0x100`-byte chunks by calling `0x8008A0F0(offset, global + offset, 0x100, 0)`.
+It then copies the caller-provided source/length into `0x800A83B8 + offset`
+through `0x80093060(global + a1, a0, a2)`. The name is conservative and records
+the static global-buffer materialize/copy shape, not a verified runtime API.
+
+Static dossier: `docs/dossiers/boot-resource-probe-global-buffer-copy.md`.
+Next source split should start at `asm/original/rev0/code_000051A0_00011000.s`,
+the 508-byte `0x51A0` prologue helper called by `0x4AC8`.
 
 ## Setup Complete Gate
 
@@ -949,7 +981,7 @@ setup-complete state:
 - Assembler: GNU Binutils 2.39 `mips64-elf-as.exe` with `-EB -mips3 -32`.
 - Setup verifier: `tools/verify_setup.js`.
 - Current verifier result: PASS; 825 archives, 0 unknown bytes, 108 overlap
-  bytes visible, 1 tracked composite real-asm chunk made from 43 tracked source
+  bytes visible, 1 tracked composite real-asm chunk made from 44 tracked source
   files, 99 generated fallback chunks, full-source manifest 1,059 entries with
   2,469,141 ambiguous bytes preserved explicitly, 3 tracked non-code
   source-owner files / 44,029 bytes, 1,055 generated non-code fallback files /
@@ -958,5 +990,5 @@ setup-complete state:
   `571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A`.
 
 Next phase is either promoting another small non-code owner batch or continuing
-tracked original-MIPS splits from `asm/original/rev0/code_000050F0_00011000.s`.
+tracked original-MIPS splits from `asm/original/rev0/code_000051A0_00011000.s`.
 Do not begin semantic C decomp unless the setup verifier is green.

@@ -60,7 +60,8 @@ helper, bitstream cursor helper cluster, bitstream descriptor decode helper, and
 bitstream descriptor encode helper, resource probe init helper, resource probe
 finalize wrapper, resource probe dispatch-prepare helper, and resource probe
 dispatch-apply helper, resource probe dispatch result-build helper, resource
-probe global cleanup helper, and resource probe chunk callback-walk helper into
+probe global cleanup helper, resource probe chunk callback-walk helper, and
+resource probe global buffer copy helper into
 named tracked parts while
 preserving the exact rebuild gate. The current setup gate also builds a
 full-ROM source ownership manifest so non-code bytes are represented as
@@ -89,7 +90,7 @@ Expected current results:
   baserom code-region SHA256
   `40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`.
 - `assemble_original_mips.js` currently uses 1 tracked composite
-  real-assembler chunk (`0x00001000..0x00011000`) made from 43 tracked source
+  real-assembler chunk (`0x00001000..0x00011000`) made from 44 tracked source
   files, plus 99 generated fallback chunks.
 - `rebuild_rom.js --assembled-code ...` substitutes that assembled code blob for
   the raw code segment and still confirms the same full-ROM SHA256.
@@ -235,7 +236,7 @@ prints PASS. Current PASS summary:
 - Toolchain: `n64-tools-gcc-toolchain-mips64-win64`, GNU Binutils 2.39.
 - Binutils smoke tests: `.word`, real instructions, `.set noreorder`, and first
   tracked chunk real assembly all pass.
-- Source mix: 1 tracked composite real-asm chunk made from 43 tracked source
+- Source mix: 1 tracked composite real-asm chunk made from 44 tracked source
   files, plus 99 generated fallback chunks.
 - Source manifest: 1,059 entries, zero unknown bytes, 2,469,141 ambiguous bytes
   preserved explicitly.
@@ -279,6 +280,7 @@ docs:
 - `docs/dossiers/boot-resource-probe-dispatch-result-build.md`
 - `docs/dossiers/boot-resource-probe-global-cleanup.md`
 - `docs/dossiers/boot-resource-probe-chunk-callback-walk.md`
+- `docs/dossiers/boot-resource-probe-global-buffer-copy.md`
 - `docs/DECOMP_LOG.md`
 - `docs/FULL_ROM_SOURCE_MANIFEST.md`
 
@@ -287,8 +289,8 @@ The next phase remains full-ROM source preparation:
 1. Promote/curate the next tracked non-code owner batch under `data/` or
    `assets/`.
 2. Continue splitting original MIPS into cleaner function/data files, starting
-   from `asm/original/rev0/code_000050F0_00011000.s`. The next target is the
-   overlapping `0x50F0/0x50F8` helper pair.
+   from `asm/original/rev0/code_000051A0_00011000.s`. The next target is the
+   508-byte `0x51A0` prologue helper.
 3. Keep `node tools/verify_setup.js` green after every source-layout change.
 
 See `docs/NEXT_STEPS.md` for the active task queue.

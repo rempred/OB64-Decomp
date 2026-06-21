@@ -397,17 +397,26 @@
           "sha256": "A7D5219A738B8A540FD34493B134946FA61E16A8F74B8E6E6482B9F8950F3E7F"
         },
         {
-          "name": "code_000050F0_00011000_remainder",
-          "file": "asm/original/rev0/code_000050F0_00011000.s",
+          "name": "boot_resource_probe_global_buffer_copy",
+          "file": "asm/original/rev0/boot/boot_resource_probe_global_buffer_copy.s",
           "romStart": "0x000050F0",
+          "romEndExclusive": "0x000051A0",
+          "bytes": 176,
+          "textBytes": 3769,
+          "sha256": "17F6EC132AED558D637814AC3902B0557A77A11387BDF484CB560DB6EE6B787B"
+        },
+        {
+          "name": "code_000051A0_00011000_remainder",
+          "file": "asm/original/rev0/code_000051A0_00011000.s",
+          "romStart": "0x000051A0",
           "romEndExclusive": "0x00011000",
-          "bytes": 48912,
-          "textBytes": 944244,
-          "sha256": "FFD3784C21A8D7441A95CDA346FD2E1DE1B30A26B84279F9E1E38EBA43DED0A9"
+          "bytes": 48736,
+          "textBytes": 940733,
+          "sha256": "B05D2F0B6F2FD71EBE9433F3DA52E2C92DC56B1CA5505E1E260A723FA83E9109"
         }
       ],
-      "textBytes": 1275647,
-      "sha256": "DFD3F0E0C7A1BADC63AF57D2CEDA6E2AFFAF30DD5ABEA672E8D973323995E3E6"
+      "textBytes": 1275905,
+      "sha256": "A86372DF01DF8F7156B6552A87453DD36671D7A6410E582945F96EE9FFA2FB20"
     }
   ]
 }
