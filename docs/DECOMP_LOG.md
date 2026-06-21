@@ -19,7 +19,7 @@ and replace the active log with a compact current-state summary.
 - Whole-ROM coverage still independently scans for LHA headers; do not trust the
   parent archive catalog by itself.
 - Current tracked code source mix: one composite real-assembler chunk
-  `0x00001000..0x00011000` made from 96 tracked source files, plus 99 generated
+  `0x00001000..0x00011000` made from 97 tracked source files, plus 99 generated
   fallback code chunks.
 - Current tracked non-code source-owner mix: 3 tracked files / 44,029 bytes,
   plus 1,055 generated fallback owner files / 35,388,567 bytes.
@@ -61,8 +61,8 @@ Current named sequence:
   `boot_resource_probe_record_checksum_signature.s` `0x4AC8..0x5FC0`.
 - State/slot, resource-handle, transform-record, command/resource-node, and
   resource-node context/recursive helpers through
-  `boot_resource_node_recursive_child_free.s` `0x5FC0..0xA2F4`.
-- Current remainder: `code_0000A2F4_00011000.s`.
+  `boot_resource_node_recursive_key_field_clear.s` `0x5FC0..0xA370`.
+- Current remainder: `code_0000A370_00011000.s`.
 
 Static dossiers live under `docs/dossiers/` and are the durable evidence notes
 for each promoted source-layout split.
@@ -347,6 +347,48 @@ Verification for the split:
 - Static dossier:
   `docs/dossiers/boot-resource-node-recursive-child-free.md`.
 
+## 2026-06-21 - Boot Resource Node Recursive Key/Field Clear Split
+
+Baseline before the split:
+
+- `git status --short` was clean at commit
+  `4b446c2 Split Rev 0 boot resource node recursive child free`.
+- `node tools\verify_setup.js` passed with 825 archives, zero unknown bytes, 108
+  visible overlap bytes, 96 tracked source files, 99 generated fallback chunks,
+  and unchanged code/ROM hashes.
+
+Promoted
+`asm/original/rev0/boot/boot_resource_node_recursive_key_field_clear.s`
+covering ROM `0x0000A2F4..0x0000A370` / RAM
+`0x80079EF4..0x80079F70`. The old
+`asm/original/rev0/code_0000A2F4_00011000.s` remainder was removed and replaced
+by `asm/original/rev0/code_0000A370_00011000.s`.
+
+Static evidence from parent function/symbol/callgraph data and local source:
+
+- `0xA2F4` is a 116-byte recursive prologue helper with frame size `0x18`,
+  fixed in all seven named states and all 21 snapshots.
+- Parent callers are `0x9A18`, `0x9A28`, and self-recursion.
+- Parent callees are two self-recursive calls and one call to `resource_free`
+  `0x16C4` / RAM `0x800712C4`.
+- Local source compares incoming `a1` with node field `+0x00`, recursing
+  through field `+0x10` when `a1 < key` and field `+0x14` when `key < a1`.
+- On equality, local source frees field `+0x04` and clears fields
+  `+0x04/+0x08/+0x0C`.
+- Parent function data ends at `0xA368`; the split deliberately includes the
+  two zero padding words at `0xA368..0xA370` so the next real helper starts at
+  `0xA370`.
+
+Verification for the split:
+
+- `node tests\binutils_smoke.js` passed.
+- `node tools\assemble_original_mips.js` passed.
+- Full `node tools\verify_setup.js` passed after the split.
+- Source mix is now 1 tracked composite real-asm chunk made from 97 tracked
+  source files, plus 99 generated fallback chunks.
+- Static dossier:
+  `docs/dossiers/boot-resource-node-recursive-key-field-clear.md`.
+
 ## Current Dossier Set
 
 The current boot/source-layout dossier list is long; use `docs/PLATFORM.md` for
@@ -364,16 +406,14 @@ the full quick index. The newest dossiers are:
 - `docs/dossiers/boot-resource-node-recursive-payload-clear.md`
 - `docs/dossiers/boot-resource-node-recursive-field0c-rewrite.md`
 - `docs/dossiers/boot-resource-node-recursive-child-free.md`
+- `docs/dossiers/boot-resource-node-recursive-key-field-clear.md`
 
 ## Next Frontier
 
-Continue from `asm/original/rev0/code_0000A2F4_00011000.s`. The first target is
-`0xA2F4`, a 116-byte recursive key/field clear helper with frame size `0x18`.
-Parent evidence reports callers from `0x9A18`, `0x9A28`, and self-recursion,
-two self-recursive calls, and one call to `resource_free` `0x16C4` / RAM
-`0x800712C4`. Local source compares key field `+0x00` against incoming `a1`,
-recurses through field `+0x10` when `a1 < key` or field `+0x14` when
-`key < a1`, and on equality frees field `+0x04` then clears
-`+0x04/+0x08/+0x0C`. The parent function body ends at `0xA368`; two zero
-padding words at `0xA368..0xA370` sit before the next copy-like leaf, so choose
-the next split boundary deliberately.
+Continue from `asm/original/rev0/code_0000A370_00011000.s`. The next target is
+the copy-like no-frame leaf at `0xA370..0xA470`. Parent function data does not
+currently list a formal function start at `0xA370`; local source shows it
+copies words/bytes from `a1` to `a0`, returns the original `a0`, and ends before
+the fill/set-like helper at `0xA470..0xA510`. The parent LZSS decompressor starts
+at `0xA510`, so keep `0xA370..0xA470` and `0xA470..0xA510` boundary decisions
+strictly source/layout based unless stronger parent evidence appears.

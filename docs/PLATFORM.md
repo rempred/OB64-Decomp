@@ -116,7 +116,7 @@ Expected current results:
   baserom code-region SHA256
   `40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`.
 - `assemble_original_mips.js` currently uses 1 tracked composite
-  real-assembler chunk (`0x00001000..0x00011000`) made from 96 tracked source
+  real-assembler chunk (`0x00001000..0x00011000`) made from 97 tracked source
   files, plus 99 generated fallback chunks.
 - `rebuild_rom.js --assembled-code ...` substitutes that assembled code blob for
   the raw code segment and still confirms the same full-ROM SHA256.
@@ -262,7 +262,7 @@ prints PASS. Current PASS summary:
 - Toolchain: `n64-tools-gcc-toolchain-mips64-win64`, GNU Binutils 2.39.
 - Binutils smoke tests: `.word`, real instructions, `.set noreorder`, and first
   tracked chunk real assembly all pass.
-- Source mix: 1 tracked composite real-asm chunk made from 96 tracked source
+- Source mix: 1 tracked composite real-asm chunk made from 97 tracked source
   files, plus 99 generated fallback chunks.
 - Source manifest: 1,059 entries, zero unknown bytes, 2,469,141 ambiguous bytes
   preserved explicitly.
@@ -353,6 +353,7 @@ docs:
 - `docs/dossiers/boot-resource-node-recursive-payload-clear.md`
 - `docs/dossiers/boot-resource-node-recursive-field0c-rewrite.md`
 - `docs/dossiers/boot-resource-node-recursive-child-free.md`
+- `docs/dossiers/boot-resource-node-recursive-key-field-clear.md`
 - `docs/DECOMP_LOG.md`
 - `docs/FULL_ROM_SOURCE_MANIFEST.md`
 
@@ -361,13 +362,12 @@ The next phase remains full-ROM source preparation:
 1. Promote/curate the next tracked non-code owner batch under `data/` or
    `assets/`.
 2. Continue splitting original MIPS into cleaner function/data files, starting
-   from `asm/original/rev0/code_0000A2F4_00011000.s`. The next target is
-   `0xA2F4`, a 116-byte recursive key/field clear helper with two
-   self-recursive calls, one call to `resource_free`, and a body boundary at
-   `0xA368`; local source compares incoming `a1` with field `+0x00`, recurses
-   through `+0x10/+0x14`, and on equality frees `+0x04` then clears
-   `+0x04/+0x08/+0x0C`. Account deliberately for the two zero padding words at
-   `0xA368..0xA370`.
+   from `asm/original/rev0/code_0000A370_00011000.s`. The next target is the
+   copy-like no-frame leaf at `0xA370..0xA470`; parent function data does not
+   currently list a formal function start there, but local source copies from
+   `a1` to `a0` and returns the original `a0`. The next local helper at
+   `0xA470..0xA510` is fill/set-like, and the parent LZSS decompressor starts
+   at `0xA510`, so keep the next boundary decision source/layout based.
 3. Keep `node tools/verify_setup.js` green after every source-layout change.
 
 See `docs/NEXT_STEPS.md` for the active task queue.

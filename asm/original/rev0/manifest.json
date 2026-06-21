@@ -874,17 +874,26 @@
           "sha256": "AEC4D2579AEDA2DAF1BAC83737AE198B984B6AB8191A645647A329CA7AD52860"
         },
         {
-          "name": "code_0000A2F4_00011000_remainder",
-          "file": "asm/original/rev0/code_0000A2F4_00011000.s",
+          "name": "boot_resource_node_recursive_key_field_clear",
+          "file": "asm/original/rev0/boot/boot_resource_node_recursive_key_field_clear.s",
           "romStart": "0x0000A2F4",
+          "romEndExclusive": "0x0000A370",
+          "bytes": 124,
+          "textBytes": 2623,
+          "sha256": "755AC7FC3B6BDF5B6ADBE2D34A88636841391D6B4B1C423990961DEF20F16890"
+        },
+        {
+          "name": "code_0000A370_00011000_remainder",
+          "file": "asm/original/rev0/code_0000A370_00011000.s",
+          "romStart": "0x0000A370",
           "romEndExclusive": "0x00011000",
-          "bytes": 27916,
-          "textBytes": 539391,
-          "sha256": "BE95BAC926C9FF20F62CEA9C624795177F779FC1C2BAE0F29EA0A5EC262AFA11"
+          "bytes": 27792,
+          "textBytes": 537027,
+          "sha256": "93286F0F95CAC0B48CF71B36A6BC25A27D61659C69587FFE4F0072AE32773DED"
         }
       ],
-      "textBytes": 1289326,
-      "sha256": "0A36D68D4FA6E628DA0DBDAE43A64EBB3326B713DDEC52076D18EC0D1BA87AAA"
+      "textBytes": 1289585,
+      "sha256": "C50CC367348C79F895766FA17EDFB553767BA56FB91E7198B48EC6C14594902E"
     }
   ]
 }

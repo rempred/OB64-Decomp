@@ -10,7 +10,7 @@ helper immediately after the field-`+0x0C` rewrite helper:
 | Source | ROM range | RAM range | Notes |
 | --- | --- | --- | --- |
 | `asm/original/rev0/boot/boot_resource_node_recursive_child_free.s` | `0x0000A29C..0x0000A2F4` | `0x80079E9C..0x80079EF4` | Recursive child cleanup that frees field `+0x04`, frees the node, and returns zero. |
-| `asm/original/rev0/code_0000A2F4_00011000.s` | `0x0000A2F4..0x00011000` | `0x80079EF4..0x80080C00` | Current tracked remainder; starts with a 116-byte recursive key/field clear helper. |
+| `asm/original/rev0/code_0000A2F4_00011000.s` | `0x0000A2F4..0x00011000` | `0x80079EF4..0x80080C00` | Remainder at this split; now superseded by `code_0000A370_00011000.s` after the key/field-clear split. |
 
 The source name is conservative. It describes the static recursive/free shape;
 runtime ownership and final C API names are not verified.
@@ -47,9 +47,10 @@ runtime ownership and final C API names are not verified.
   rewrite helper's delay-slot stack restore at `0xA298`.
 - The promoted helper includes the return at `0xA2EC` and delay-slot stack
   restore at `0xA2F0`.
-- The next function starts cleanly at `0x0000A2F4`. Parent function data ends
-  that body at `0xA368`; two zero padding words at `0xA368..0xA370` sit before
-  the next copy-like leaf, so account for them deliberately in the next split.
+- Follow-up split
+  `docs/dossiers/boot-resource-node-recursive-key-field-clear.md` now owns
+  `0x0000A2F4..0x0000A370`, including the two zero padding words at
+  `0xA368..0xA370`.
 
 ## Verification
 

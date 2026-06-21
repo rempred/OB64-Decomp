@@ -16,7 +16,7 @@ node tools/verify_setup.js
 ```
 
 Current source mix: 1 tracked composite real-assembler chunk
-(`0x00001000..0x00011000`) made from 96 tracked source files, plus 99 generated
+(`0x00001000..0x00011000`) made from 97 tracked source files, plus 99 generated
 fallback chunks.
 
 The assembled code-region SHA256 is
@@ -100,16 +100,15 @@ coverage or overclassifying data as MIPS.
    resource-node overlay context materialize split, resource-node recursive
    insert/slot-search split, resource-node recursive cleanup/free split,
    resource-node recursive payload-clear split, resource-node recursive
-   field-`+0x0C` rewrite split, and resource-node recursive child/free split
-   are done. Continue from
-   `asm/original/rev0/code_0000A2F4_00011000.s`, beginning with `0xA2F4`.
-   Parent evidence reports a 116-byte recursive key/field clear helper with
-   frame size `0x18`, callers from `0x9A18`, `0x9A28`, and itself, two
-   self-recursive calls, and one call to `resource_free`; local source compares
-   incoming `a1` with field `+0x00`, recurses through `+0x10/+0x14`, and on
-   equality frees `+0x04` then clears `+0x04/+0x08/+0x0C`. The parent body ends
-   at `0xA368`; account deliberately for the two zero padding words at
-   `0xA368..0xA370`.
+   field-`+0x0C` rewrite split, resource-node recursive child/free split, and
+   resource-node recursive key/field clear split are done. Continue from
+   `asm/original/rev0/code_0000A370_00011000.s`, beginning with `0xA370`.
+   Parent function data does not currently list a formal function start at
+   `0xA370`; local source shows a copy-like no-frame leaf at
+   `0xA370..0xA470` that copies from `a1` to `a0` and returns the original
+   `a0`. The next local helper at `0xA470..0xA510` is fill/set-like, and the
+   parent LZSS decompressor starts at `0xA510`, so keep these boundary decisions
+   strict and source/layout based.
 
 4. Keep the setup gate green.
 
