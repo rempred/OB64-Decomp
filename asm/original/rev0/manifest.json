@@ -280,17 +280,26 @@
           "sha256": "2FEDFA5FBFC758BB420EE56E2A3CB7584F19E09AFF5B372AF54FAF3E2D22CA41"
         },
         {
-          "name": "code_00004048_00011000_remainder",
-          "file": "asm/original/rev0/code_00004048_00011000.s",
+          "name": "boot_display_list_counter_step",
+          "file": "asm/original/rev0/boot/boot_display_list_counter_step.s",
           "romStart": "0x00004048",
+          "romEndExclusive": "0x000040B0",
+          "bytes": 104,
+          "textBytes": 2420,
+          "sha256": "AFBC8FDA52A2D116BBDF0517BB36EBD9E55FAF053A4510571A30E4595B9158A5"
+        },
+        {
+          "name": "code_000040B0_00011000_remainder",
+          "file": "asm/original/rev0/code_000040B0_00011000.s",
+          "romStart": "0x000040B0",
           "romEndExclusive": "0x00011000",
-          "bytes": 53176,
-          "textBytes": 1027021,
-          "sha256": "D5772715C7D5200730EE29D1EF0D0BFFE6C10033B9C4FD088233A10AA5686FD3"
+          "bytes": 53072,
+          "textBytes": 1024859,
+          "sha256": "27E3C2784064D2EDC09748D7525969B5096A63AD6E820FE8C8667910026D040C"
         }
       ],
-      "textBytes": 1272293,
-      "sha256": "A76D4674A856CD5E2E237FAD335B6F738A48C2F0CA660481C1A0985231DBC018"
+      "textBytes": 1272551,
+      "sha256": "27F76426F56F07A5CB8B4D1689FCC25E2B3CF0E6B1C7BC9A2DEE336050B0B7AD"
     }
   ]
 }

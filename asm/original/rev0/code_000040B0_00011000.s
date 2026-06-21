@@ -1,44 +1,12 @@
 /*
  * Original Rev 0 MIPS reference split.
- * Parent source: asm/original/rev0/code_00003FD0_00011000.s
- * z64 range: 0x00004048..0x00011000 exclusive
+ * Parent source: asm/original/rev0/code_00004048_00011000.s
+ * z64 range: 0x000040B0..0x00011000 exclusive
  * Decode comments are aids, not proof of semantic function boundaries.
  */
 .set noat
 .set noreorder
 .text
-
-/* function boundary candidate: func_00004048, size=104, kind=leaf */
-func_00004048:
-/* 0x00004048 0x80073C48 0x3C02800B */ .word 0x3C02800B # lui $v0, 0x800B
-/* 0x0000404C 0x80073C4C 0x9042EF99 */ .word 0x9042EF99 # lbu $v0, -0x1067($v0)
-
-/* function boundary candidate: func_00004050, size=96, kind=prologue */
-func_00004050:
-/* 0x00004050 0x80073C50 0x27BDFFE8 */ .word 0x27BDFFE8 # addiu $sp, $sp, -0x18
-/* 0x00004054 0x80073C54 0x10400013 */ .word 0x10400013 # beq $v0, $zero, 0x80073CA4
-/* 0x00004058 0x80073C58 0xAFBF0010 */ .word 0xAFBF0010 # sw $ra, 0x10($sp)
-/* 0x0000405C 0x80073C5C 0x2C42000D */ .word 0x2C42000D # sltiu $v0, $v0, 0xD
-/* 0x00004060 0x80073C60 0x14400003 */ .word 0x14400003 # bne $v0, $zero, 0x80073C70
-/* 0x00004064 0x80073C64 0x2402000C */ .word 0x2402000C # addiu $v0, $zero, 0xC
-/* 0x00004068 0x80073C68 0x3C01800B */ .word 0x3C01800B # lui $at, 0x800B
-/* 0x0000406C 0x80073C6C 0xA022EF99 */ .word 0xA022EF99 # sb $v0, -0x1067($at)
-/* 0x00004070 0x80073C70 0x3C03800B */ .word 0x3C03800B # lui $v1, 0x800B
-/* 0x00004074 0x80073C74 0x9063EF99 */ .word 0x9063EF99 # lbu $v1, -0x1067($v1)
-/* 0x00004078 0x80073C78 0x3C042AAA */ .word 0x3C042AAA # lui $a0, 0x2AAA
-/* 0x0000407C 0x80073C7C 0x3484AAAB */ .word 0x3484AAAB # ori $a0, $a0, 0xAAAB
-/* 0x00004080 0x80073C80 0x00031200 */ .word 0x00031200 # sll $v0, $v1, 8
-/* 0x00004084 0x80073C84 0x00431023 */ .word 0x00431023 # subu $v0, $v0, $v1
-/* 0x00004088 0x80073C88 0x00440018 */ .word 0x00440018 # mult $v0, $a0
-/* 0x0000408C 0x80073C8C 0x000217C3 */ .word 0x000217C3 # sra $v0, $v0, 31
-/* 0x00004090 0x80073C90 0x00002810 */ .word 0x00002810 # mfhi $a1
-/* 0x00004094 0x80073C94 0x00052043 */ .word 0x00052043 # sra $a0, $a1, 1
-/* 0x00004098 0x80073C98 0x00822023 */ .word 0x00822023 # subu $a0, $a0, $v0
-/* 0x0000409C 0x80073C9C 0x0C01CF2C */ .word 0x0C01CF2C # jal 0x80073CB0
-/* 0x000040A0 0x80073CA0 0x308400FF */ .word 0x308400FF # andi $a0, $a0, 0x00FF
-/* 0x000040A4 0x80073CA4 0x8FBF0010 */ .word 0x8FBF0010 # lw $ra, 0x10($sp)
-/* 0x000040A8 0x80073CA8 0x03E00008 */ .word 0x03E00008 # jr $ra
-/* 0x000040AC 0x80073CAC 0x27BD0018 */ .word 0x27BD0018 # addiu $sp, $sp, 0x18
 
 /* function boundary candidate: func_000040B0, size=552, kind=prologue */
 func_000040B0:
