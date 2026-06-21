@@ -11,7 +11,8 @@ boot-code helper immediately after the small-record check helper:
 | --- | --- | --- | --- |
 | `asm/original/rev0/boot/boot_resource_probe_indexed_record_copy_flag.s` | `0x00005B8C..0x00005C58` | `0x8007578C..0x80075858` | Prologue helper that copies one `0x1850`-byte indexed record from the shared probe buffer into caller scratch and marks the buffer dirty/valid byte. |
 | `asm/original/rev0/boot/boot_resource_probe_large_record_copy_flag.s` | `0x00005C58..0x00005CFC` | `0x80075858..0x800758FC` | Follow-up split documented separately. |
-| `asm/original/rev0/code_00005CFC_00011000.s` | `0x00005CFC..0x00011000` | `0x800758FC..0x80080C00` | Current tracked remainder. |
+| `asm/original/rev0/boot/boot_resource_probe_small_record_copy_flag.s` | `0x00005CFC..0x00005D9C` | `0x800758FC..0x8007599C` | Follow-up split documented separately. |
+| `asm/original/rev0/code_00005D9C_00011000.s` | `0x00005D9C..0x00011000` | `0x8007599C..0x80080C00` | Current tracked remainder. |
 
 The name is conservative. The static copy/flag shape is clear, but no runtime
 trace or controlled mutation has verified final behavior or record semantics.
@@ -42,11 +43,10 @@ trace or controlled mutation has verified final behavior or record semantics.
 - The split starts at parent prologue boundary `0x00005B8C`, immediately after
   `boot_resource_probe_small_record_check.s`.
 - The routine ends after the `jr ra` delay slot at `0x5C54`.
-- The next parent boundary was `0x00005C58`; the follow-up split now covers
-  `0x00005C58..0x00005CFC`.
-- The active remainder starts at `0x00005CFC`, another overlapping leaf/prologue
-  helper family with the same shared-buffer ensure/fill pattern and a `0x10`
-  copy from offset `0`.
+- The next parent boundary was `0x00005C58`; follow-up splits now cover
+  `0x00005C58..0x00005D9C`.
+- The active remainder starts at `0x00005D9C`, the record checksum/signature
+  helper family with secondary entries at `0x5E84` and `0x5F00`.
 
 ## Verification
 

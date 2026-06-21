@@ -14,7 +14,7 @@ helper:
 | `asm/original/rev0/boot/boot_resource_probe_id_check_materialize.s` | `0x00005760..0x0000581C` | `0x80075360..0x8007541C` | Follow-up split documented separately. |
 | `asm/original/rev0/boot/boot_resource_probe_indexed_record_check.s` | `0x0000581C..0x00005978` | `0x8007541C..0x80075578` | Follow-up split documented separately. |
 | `asm/original/rev0/boot/boot_resource_probe_large_record_check.s` | `0x00005978..0x00005A88` | `0x80075578..0x80075688` | Follow-up split documented separately. |
-| `asm/original/rev0/code_00005A88_00011000.s` | `0x00005A88..0x00011000` | `0x80075688..0x80080C00` | Current tracked remainder. |
+| `asm/original/rev0/code_00005A88_00011000.s` | `0x00005A88..0x00011000` | `0x80075688..0x80080C00` | Historical remainder at this step; later splits supersede it. |
 
 The name is conservative. The routine has a clear static shape around ensuring
 a shared global buffer, copying a `0x4AE8` record from that buffer, and applying
