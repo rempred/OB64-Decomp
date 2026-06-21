@@ -72,6 +72,17 @@ region bytes, or raw/header/archive/audio/LZSS/tail/padding source ownership for
 non-code bytes. Ambiguous archive gaps remain explicitly ambiguous.
 
 ```powershell
+node tools/extract_non_code_sources.js
+node tools/rebuild_from_source_manifest.js
+```
+
+Writes byte-exact non-code source-owner files under
+`build/source-owners/rev0/`, then rebuilds
+`dist/rebuilt.us_rev0.source-manifest.z64` from assembled original MIPS plus
+those owner files. This proves non-code bytes participate in the rebuild path
+without being treated as decoded MIPS.
+
+```powershell
 node tests/binutils_smoke.js
 ```
 

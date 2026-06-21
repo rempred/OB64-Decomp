@@ -31,6 +31,8 @@ Current full-ROM source manifest:
 - 6,510,444 `original_mips` bytes.
 - 35,432,596 non-code/raw/data/archive source bytes.
 - 2,469,141 ambiguous bytes preserved explicitly.
+- 1,058 ignored generated non-code source-owner files.
+- Source-manifest rebuild exact.
 
 ## Active Goal
 
@@ -39,18 +41,17 @@ coverage or overclassifying data as MIPS.
 
 ## Ordered Work
 
-1. Generate tracked non-code source owners.
+1. Promote curated tracked non-code source owners.
 
-   Start with a deterministic binary-include/source-owner layout under
-   `data/bin/`, `data/archives/`, or `assets/` that mirrors the source forms in
-   `build/source-manifest/rev0-full-source-manifest.json`. Keep archive gaps
-   raw and explicitly ambiguous.
+   The generated proof lives under `build/source-owners/rev0/`. Next, choose a
+   deliberate tracked layout under `data/bin/`, `data/archives/`, or `assets/`
+   and promote source-owner groups in batches. Keep archive gaps raw and
+   explicitly ambiguous.
 
-2. Teach rebuilds to consume the source manifest.
+2. Point the source-owner manifest at tracked owners where appropriate.
 
-   The current rebuild still consumes `build/segments/rev0/raw/`. Next, add a
-   manifest-driven rebuild path that can mix assembled MIPS with tracked raw/data
-   source owners.
+   The source-manifest rebuild path is now exact with generated owners. Next,
+   allow promoted tracked owners to replace selected generated owner files.
 
 3. Continue splitting the first tracked chunk into smaller source files.
 

@@ -21,6 +21,16 @@ The command is also part of:
 node tools\verify_setup.js
 ```
 
+The setup gate now also generates non-code source-owner files and proves a
+source-manifest rebuild:
+
+```powershell
+node tools\extract_non_code_sources.js
+node tools\rebuild_from_source_manifest.js
+```
+
+Generated owner files are ignored under `build/source-owners/rev0/`.
+
 ## Current Result
 
 Current status: PASS.
@@ -31,6 +41,8 @@ Current status: PASS.
 - Confirmed original-MIPS source bytes: 6,510,444.
 - Non-code/raw/data/archive source bytes: 35,432,596.
 - Ambiguous bytes preserved explicitly: 2,469,141.
+- Generated non-code source-owner files: 1,058.
+- Generated non-code source-owner bytes: 35,432,596.
 
 Current source-form byte totals:
 
@@ -73,6 +85,7 @@ sections before, so the independent LHA scan stays in the default gate.
 
 ## Next Step
 
-Add a non-code source generator that writes curated binary-include owners under
-`data/bin/`, `data/archives/`, or `assets/`, then teach the rebuild path to
-consume the full source manifest instead of only `build/segments/rev0/raw/`.
+Promote/curate tracked non-code owners under `data/bin/`, `data/archives/`, or
+`assets/` in deliberate batches. The generated owner/rebuild path is already
+byte-exact, but generated bulk proof files remain ignored until the tracked
+source layout is chosen intentionally.

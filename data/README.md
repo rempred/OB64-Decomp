@@ -9,3 +9,7 @@ Suggested layout:
 - `rodata/` - read-only data split from code segments.
 - `bin/` - binary includes that are not yet decoded.
 
+Current generated proof owners live under ignored `build/source-owners/rev0/`.
+Promote those into tracked `data/` only in deliberate batches, with docs saying
+whether each owner is decoded data, raw ambiguous bytes, or archive/compressed
+payload source.

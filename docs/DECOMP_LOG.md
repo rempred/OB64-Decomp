@@ -132,3 +132,61 @@ Next recommended target:
 - Add a non-code source generator under `data/bin/`, `data/archives/`, or
   `assets/`, then teach the rebuild path to consume the full source manifest
   rather than only `build/segments/rev0/raw/`.
+
+## 2026-06-21 - Phase 3, Non-Code Source Owners
+
+Target:
+
+- Move from a full-ROM source ownership audit to a rebuild path that actually
+  consumes source-owner files for every non-code span.
+- Keep generated owner files ignored for now; do not commit 35 MB of bulk raw
+  bytes until the tracked `data/`/`assets/` layout is deliberately chosen.
+
+Baseline:
+
+- `node tools\verify_setup.js` passed before edits.
+- Full-ROM source manifest already had 1,059 entries, 0 unknown bytes, and
+  2,469,141 ambiguous bytes preserved explicitly.
+
+Tooling change:
+
+- Added `tools/extract_non_code_sources.js`.
+- Added `tools/rebuild_from_source_manifest.js`.
+- `tools/verify_setup.js` now requires:
+  - `nonCodeSourceOwnersExact`
+  - `sourceManifestRebuildExact`
+
+Generated source-owner result:
+
+- Manifest: `build/source-owners/rev0/manifest.json`.
+- Owner files: 1,058 generated non-code files under ignored
+  `build/source-owners/rev0/`.
+- Non-code owner bytes: 35,432,596.
+- Ambiguous bytes preserved: 2,469,141.
+- Raw segment hashes all matched the source-owner bytes.
+
+Generated owner distribution:
+
+- `lha_archive`: 528 files / 5,041,336 bytes.
+- `raw_archive_gap`: 524 files / 2,429,124 bytes.
+- `raw_audio_data`: 1 file / 20,065,069 bytes.
+- `raw_lzss_region`: 1 file / 7,188,782 bytes.
+- `raw_header`: 1 file / 4,096 bytes.
+- `raw_structural_gap`: 1 file / 24 bytes.
+- `raw_tail_data`: 1 file / 39,909 bytes.
+- `padding_ff`: 1 file / 664,256 bytes.
+
+Rebuild proof:
+
+- `node tools\rebuild_from_source_manifest.js` rebuilt from
+  `build/assembled/rev0/code.bin` plus the generated source-owner files.
+- Output: `dist/rebuilt.us_rev0.source-manifest.z64`.
+- SHA256:
+  `571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A`.
+- Exact byte match: PASS.
+
+Next recommended target:
+
+- Promote/curate a tracked non-code source layout under `data/` or `assets/` in
+  deliberate batches, then let the source-owner manifest point to tracked source
+  where appropriate while keeping bulky generated proof outputs ignored.

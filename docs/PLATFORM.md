@@ -145,6 +145,8 @@ These outputs are useful but ignored:
 - `build/rebuild/rev0-rebuild-report.json`
 - `build/source-manifest/rev0-full-source-manifest.json`
 - `build/source-manifest/rev0-full-source-manifest.md`
+- `build/source-owners/rev0/`
+- `build/rebuild/rev0-source-manifest-rebuild-report.json`
 - `build/setup/verify-setup-report.json`
 - `build/toolchain-smoke/binutils-smoke-report.json`
 - `dist/rebuilt.us_rev0.z64`
@@ -167,6 +169,8 @@ These outputs are useful but ignored:
 - Full-ROM source manifest: 1,059 contiguous entries; 6,510,444 bytes
   `original_mips`; 35,432,596 bytes non-code/raw/data/archive source forms;
   2,469,141 ambiguous bytes preserved explicitly; 0 unknown bytes.
+- Source-owner rebuild: 1,058 generated non-code owner files under
+  `build/source-owners/rev0/`; source-manifest rebuild exact.
 
 ## Current Tool Roles
 
@@ -182,6 +186,10 @@ These outputs are useful but ignored:
   for the configured code-region span.
 - `tools/build_full_source_manifest.js` assigns every ROM byte to a source
   strategy and audits ledger/segment/original-MIPS consistency.
+- `tools/extract_non_code_sources.js` writes ignored byte-exact source-owner
+  files for every non-code manifest entry.
+- `tools/rebuild_from_source_manifest.js` rebuilds from assembled original MIPS
+  plus source-owner files and byte-compares against the baserom.
 - `tools/assemble_original_mips.js` assembles tracked/generated source chunks
   into one code-region binary. Tracked chunks use GNU `mips64-elf-as`; generated
   fallback chunks use the minimal `.word` assembler. Manifest chunk `parts` are
@@ -212,6 +220,7 @@ prints PASS. Current PASS summary:
   files, plus 99 generated fallback chunks.
 - Source manifest: 1,059 entries, zero unknown bytes, 2,469,141 ambiguous bytes
   preserved explicitly.
+- Source owners: 1,058 generated non-code files, 35,432,596 bytes.
 - Code SHA256:
   `40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`.
 - Full ROM SHA256:
@@ -229,9 +238,9 @@ docs:
 
 The next phase remains full-ROM source preparation:
 
-1. Generate tracked non-code source owners under `data/` or `assets/`.
-2. Teach the rebuild path to consume the full source manifest.
-3. Continue splitting original MIPS into cleaner function/data files.
-4. Keep `node tools/verify_setup.js` green after every source-layout change.
+1. Promote/curate tracked non-code owners under `data/` or `assets/` in
+   deliberate batches.
+2. Continue splitting original MIPS into cleaner function/data files.
+3. Keep `node tools/verify_setup.js` green after every source-layout change.
 
 See `docs/NEXT_STEPS.md` for the active task queue.

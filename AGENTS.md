@@ -123,9 +123,9 @@ node tools/verify_setup.js
 ```
 
 `verify_setup.js` runs baserom verification, whole-ROM coverage, MIPS extraction,
-binutils smoke tests, raw rebuild, full-ROM source-manifest audit, and
-assembled-code rebuild. It must report PASS before source replacement work is
-considered safe.
+binutils smoke tests, raw rebuild, full-ROM source-manifest audit, non-code
+source-owner extraction, source-manifest rebuild, and assembled-code rebuild. It
+must report PASS before source replacement work is considered safe.
 
 Current exact rebuild result:
 
@@ -202,9 +202,11 @@ setup-complete state:
 - Current verifier result: PASS; 825 archives, 0 unknown bytes, 108 overlap
   bytes visible, 1 tracked composite real-asm chunk made from 2 tracked source
   files, 99 generated fallback chunks, full-source manifest 1,059 entries with
-  2,469,141 ambiguous bytes preserved explicitly, full ROM SHA256
+  2,469,141 ambiguous bytes preserved explicitly, 1,058 generated non-code
+  source-owner files / 35,432,596 bytes, source-manifest rebuild exact, full ROM
+  SHA256
   `571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A`.
 
-Next phase is generating tracked non-code source owners under `data/` or
-`assets/` and teaching rebuilds to consume the full source manifest. Do not begin
-semantic C decomp unless the setup verifier is green.
+Next phase is promoting/curating tracked non-code source owners under `data/` or
+`assets/` in deliberate batches. Do not begin semantic C decomp unless the setup
+verifier is green.

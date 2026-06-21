@@ -37,6 +37,8 @@ function main() {
     ['tools/extract_rom_segments.js'],
     ['tools/rebuild_rom.js'],
     ['tools/build_full_source_manifest.js'],
+    ['tools/extract_non_code_sources.js'],
+    ['tools/rebuild_from_source_manifest.js'],
     [
       'tools/rebuild_rom.js',
       '--assembled-code',
@@ -60,6 +62,8 @@ function main() {
   const assembled = readJson(path.join(ROOT, 'build', 'assembled', 'rev0-report.json'));
   const rawRebuild = readJson(path.join(ROOT, 'build', 'rebuild', 'rev0-rebuild-report.json'));
   const sourceManifest = readJson(path.join(ROOT, 'build', 'source-manifest', 'rev0-full-source-manifest.json'));
+  const sourceOwners = readJson(path.join(ROOT, 'build', 'source-owners', 'rev0', 'manifest.json'));
+  const sourceManifestRebuild = readJson(path.join(ROOT, 'build', 'rebuild', 'rev0-source-manifest-rebuild-report.json'));
   const asmRebuild = readJson(path.join(ROOT, 'build', 'rebuild', 'rev0-assembled-code-rebuild-report.json'));
 
   const checks = [
@@ -79,6 +83,8 @@ function main() {
     check('rawRebuildExact', rawRebuild.exact, { sha256: rawRebuild.rebuilt.sha256 }),
     check('fullSourceManifestNoGap', sourceManifest.ok, { summary: sourceManifest.summary }),
     check('fullSourceManifestNoUnknownBytes', sourceManifest.summary.unknownBytes === 0, { unknownBytes: sourceManifest.summary.unknownBytes }),
+    check('nonCodeSourceOwnersExact', sourceOwners.ok, { summary: sourceOwners.summary }),
+    check('sourceManifestRebuildExact', sourceManifestRebuild.exact, { sha256: sourceManifestRebuild.rebuilt.sha256 }),
     check('assembledCodeRebuildExact', asmRebuild.exact, { sha256: asmRebuild.rebuilt.sha256 }),
   ];
   const ok = checks.every((item) => item.ok);
@@ -100,6 +106,8 @@ function main() {
       generatedChunks: assembled.sources.generatedChunks,
       sourceManifestEntries: sourceManifest.summary.entries,
       sourceManifestAmbiguousBytes: sourceManifest.summary.ambiguousBytes,
+      sourceOwnerFiles: sourceOwners.summary.nonCodeEntries,
+      sourceOwnerBytes: sourceOwners.summary.nonCodeBytes,
       codeSha256: assembled.assembled.sha256,
       romSha256: asmRebuild.rebuilt.sha256,
     },
@@ -119,6 +127,10 @@ function main() {
   console.log(
     `Source manifest: ${report.summary.sourceManifestEntries} entries; ` +
       `${report.summary.sourceManifestAmbiguousBytes} ambiguous byte(s) preserved explicitly`,
+  );
+  console.log(
+    `Source owners: ${report.summary.sourceOwnerFiles} non-code file(s); ` +
+      `${report.summary.sourceOwnerBytes} byte(s)`,
   );
   console.log(`Code SHA256: ${report.summary.codeSha256}`);
   console.log(`ROM SHA256:  ${report.summary.romSha256}`);
