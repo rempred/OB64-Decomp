@@ -299,8 +299,36 @@ boot-init routines:
 
 Static dossier: `docs/dossiers/boot-early-loader-state-loop.md`. The
 `boot_state_service_loop` name is a conservative source-layout label based on
-static state-byte/check-loop shape, not a verified C API. Next source split
-should start with the overlapping `0x2B38/0x2B40` helper.
+static state-byte/check-loop shape, not a verified C API. The
+`code_00002B38_00011000.s` remainder has since been superseded by the
+boot-mode/flag-helper split below.
+
+## Boot Mode/Flag Helper Split
+
+The next tracked Rev 0 original-MIPS split separates the compact helper cluster
+after the early boot state loop:
+
+- `asm/original/rev0/boot/boot_mode_message_select.s`
+  `0x00002B38..0x00002BD8`; keeps overlapping scanner entries
+  `0x2B38/0x2B40` together and selects one of four `0x800B B9xx/BAxx` pointer
+  tables before calling `0x800955C0`.
+- `asm/original/rev0/boot/boot_flag_table_reset.s`
+  `0x00002BD8..0x00002CBC`; clears two 4x16 halfword tables around
+  `0x800BEE90/0x800BEF10`, clears `0x800BEE78..+0x18`, and keeps the adjacent
+  no-label `0x2C4C` status-byte adjust block.
+- `asm/original/rev0/boot/boot_status_flag_set.s`
+  `0x00002CBC..0x00002D00`; sets bit `0x01` in byte `0x800BEF9A`.
+- `asm/original/rev0/boot/boot_status_flag_clear.s`
+  `0x00002D00..0x00002D44`; masks byte `0x800BEF9A` with `0xFA`.
+- `asm/original/rev0/boot/boot_status_flag_test.s`
+  `0x00002D44..0x00002D7C`; returns bit `0x04` from byte `0x800BEF9A`.
+- Remainder:
+  `asm/original/rev0/code_00002D7C_00011000.s`.
+
+Static dossier: `docs/dossiers/boot-mode-flag-helpers.md`. The flag-helper
+names are conservative static labels. Next source split should start at
+`0x00002D7C`, the large table/bitmask routine called by both the early loader
+and the state loop.
 
 ## Setup Complete Gate
 
@@ -316,7 +344,7 @@ setup-complete state:
 - Assembler: GNU Binutils 2.39 `mips64-elf-as.exe` with `-EB -mips3 -32`.
 - Setup verifier: `tools/verify_setup.js`.
 - Current verifier result: PASS; 825 archives, 0 unknown bytes, 108 overlap
-  bytes visible, 1 tracked composite real-asm chunk made from 17 tracked source
+  bytes visible, 1 tracked composite real-asm chunk made from 22 tracked source
   files, 99 generated fallback chunks, full-source manifest 1,059 entries with
   2,469,141 ambiguous bytes preserved explicitly, 3 tracked non-code
   source-owner files / 44,029 bytes, 1,055 generated non-code fallback files /
@@ -325,5 +353,5 @@ setup-complete state:
   `571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A`.
 
 Next phase is either promoting another small non-code owner batch or continuing
-tracked original-MIPS splits from `asm/original/rev0/code_00002B38_00011000.s`.
+tracked original-MIPS splits from `asm/original/rev0/code_00002D7C_00011000.s`.
 Do not begin semantic C decomp unless the setup verifier is green.

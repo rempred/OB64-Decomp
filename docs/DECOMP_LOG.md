@@ -497,3 +497,74 @@ Next recommended target:
 - Continue from `asm/original/rev0/code_00002B38_00011000.s`, beginning with
   the overlapping `0x2B38/0x2B40` helper, or promote another small tracked
   non-code owner batch.
+
+## 2026-06-21 - Boot Mode/Flag Helper Split
+
+Target:
+
+- Continue source-layout cleanup inside the first tracked original-MIPS chunk.
+- Split the compact helper cluster after the early boot state loop, while
+  keeping overlapping or no-label scanner regions together.
+
+Baseline:
+
+- `node tools\verify_setup.js` passed before edits.
+- Baseline source mix: 1 tracked composite real-asm chunk made from 17 tracked
+  files, plus 99 generated fallback chunks.
+- Baseline code-region SHA256:
+  `40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`.
+- Baseline full ROM SHA256:
+  `571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A`.
+
+Source-layout change:
+
+- Removed superseded
+  `asm/original/rev0/code_00002B38_00011000.s`.
+- Added `asm/original/rev0/boot/boot_mode_message_select.s`,
+  `0x00002B38..0x00002BD8`, 160 bytes.
+- Added `asm/original/rev0/boot/boot_flag_table_reset.s`,
+  `0x00002BD8..0x00002CBC`, 228 bytes.
+- Added `asm/original/rev0/boot/boot_status_flag_set.s`,
+  `0x00002CBC..0x00002D00`, 68 bytes.
+- Added `asm/original/rev0/boot/boot_status_flag_clear.s`,
+  `0x00002D00..0x00002D44`, 68 bytes.
+- Added `asm/original/rev0/boot/boot_status_flag_test.s`,
+  `0x00002D44..0x00002D7C`, 56 bytes.
+- Added remainder `asm/original/rev0/code_00002D7C_00011000.s`,
+  `0x00002D7C..0x00011000`, 57,988 bytes.
+- Static dossier: `docs/dossiers/boot-mode-flag-helpers.md`.
+
+Evidence:
+
+- Parent scanner reports overlapping entries at `0x2B38` and `0x2B40`. Direct
+  calls target `0x80072738`, while no direct call target was found for
+  `0x80072740`, so both entries stay in `boot_mode_message_select.s`.
+- `boot_mode_message_select.s` reads `0x80000300`, selects one of four
+  `0x800B B960/B9B0/BA00/BA50` pointer tables based on that mode value and
+  incoming `a0` values `2` or `9`, then calls `0x800955C0`.
+- `boot_flag_table_reset.s` clears two 4x16 halfword table groups at
+  `0x800BEE90` and `0x800BEF10`, clears `0x18` bytes at `0x800BEE78` through
+  common helper `0x80093380`, and keeps the no-label `0x2C4C` flag-adjust
+  block inside the parent `0x2BD8` range.
+- The status flag set/clear/test wrappers all call `0x8008B820` around access
+  to byte `0x800BEF9A`; the helper semantics remain unnamed pending runtime
+  evidence.
+
+Verification:
+
+- `node tests\binutils_smoke.js` passed after the split.
+- `node tools\assemble_original_mips.js` passed after the split.
+- Full `node tools\verify_setup.js` passed after the split.
+- Assembled report now shows 1 tracked composite real-asm chunk made from 22
+  tracked source files, plus 99 generated fallback chunks.
+- Code-region SHA256 remains:
+  `40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`.
+- Full ROM SHA256 remains:
+  `571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A`.
+
+Next recommended target:
+
+- Continue from `asm/original/rev0/code_00002D7C_00011000.s`, beginning with
+  the large `0x2D7C..0x347C` table/bitmask routine called by both the early
+  loader and the state loop, or promote another small tracked non-code owner
+  batch.

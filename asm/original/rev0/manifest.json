@@ -163,17 +163,62 @@
           "sha256": "9259B3969244E333D0F8A9CCD3B3B257EB48BB5087CD1A0374F2D5C444E77831"
         },
         {
-          "name": "code_00002B38_00011000_remainder",
-          "file": "asm/original/rev0/code_00002B38_00011000.s",
+          "name": "boot_mode_message_select",
+          "file": "asm/original/rev0/boot/boot_mode_message_select.s",
           "romStart": "0x00002B38",
+          "romEndExclusive": "0x00002BD8",
+          "bytes": 160,
+          "textBytes": 3416,
+          "sha256": "1278EF0CAA3CB2CA7EDF17552752C0B262F076D7665720F8A00F21157AD3A9BA"
+        },
+        {
+          "name": "boot_flag_table_reset",
+          "file": "asm/original/rev0/boot/boot_flag_table_reset.s",
+          "romStart": "0x00002BD8",
+          "romEndExclusive": "0x00002CBC",
+          "bytes": 228,
+          "textBytes": 4737,
+          "sha256": "32575FFFE5A1857E32D077F72144EE004A408E480DB4A53115ADC78480630A17"
+        },
+        {
+          "name": "boot_status_flag_set",
+          "file": "asm/original/rev0/boot/boot_status_flag_set.s",
+          "romStart": "0x00002CBC",
+          "romEndExclusive": "0x00002D00",
+          "bytes": 68,
+          "textBytes": 1631,
+          "sha256": "97D43BF9E02502464DDAADC9E27693739022DD3631AD22763D923A04A0573D64"
+        },
+        {
+          "name": "boot_status_flag_clear",
+          "file": "asm/original/rev0/boot/boot_status_flag_clear.s",
+          "romStart": "0x00002D00",
+          "romEndExclusive": "0x00002D44",
+          "bytes": 68,
+          "textBytes": 1632,
+          "sha256": "C6939B0F9D3602E11EC8C26551D1C349986DE99EC43FC3225691DA04E6A5B92A"
+        },
+        {
+          "name": "boot_status_flag_test",
+          "file": "asm/original/rev0/boot/boot_status_flag_test.s",
+          "romStart": "0x00002D44",
+          "romEndExclusive": "0x00002D7C",
+          "bytes": 56,
+          "textBytes": 1407,
+          "sha256": "B5C7E7F834B1A666E3A37F106B6105AF2DDBB2C6144774690417F6ADE537881A"
+        },
+        {
+          "name": "code_00002D7C_00011000_remainder",
+          "file": "asm/original/rev0/code_00002D7C_00011000.s",
+          "romStart": "0x00002D7C",
           "romEndExclusive": "0x00011000",
-          "bytes": 58568,
-          "textBytes": 1131237,
-          "sha256": "4776129BDC98FCAF31CFE0ED74FF9E5236A2BE1341083F309094C9EEECE2BF45"
+          "bytes": 57988,
+          "textBytes": 1119704,
+          "sha256": "A1CDDB54B64B792774C95C7D96B4D187B4EBBB263841779FAC1526F35FA018DF"
         }
       ],
-      "textBytes": 1268939,
-      "sha256": "A396F6BC3A180CA869BD3F3624C1E17FA4B5889A1CCB28055C29B608B06F3C21"
+      "textBytes": 1270229,
+      "sha256": "E84EA9EFDB1F32882FE86097622BB43CCA20659B90BFA8B6EF9617B4D0B9C60B"
     }
   ]
 }
