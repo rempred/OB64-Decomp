@@ -31,7 +31,8 @@ runtime-verified scheduler semantics.
   `0x8007819C`.
 - Parent callgraph leaves RAM target `0x80077BF8` unresolved at this split.
   Later local source splitting preserves that target as the `0x7FF8` two-word
-  prefix into the next `0x8000` prologue body.
+  prefix into the next `0x8000` prologue body; it is now promoted as
+  `boot_state_slot_queue_f000_record_step.s`.
 - Parent/local xrefs show the only direct global access in this split is a read
   of halfword `0x800C49D0`.
 
@@ -41,7 +42,8 @@ runtime-verified scheduler semantics.
 - The body saves `ra` and returns immediately when the halfword is zero.
 - If nonzero, it calls `0x800775EC`, `0x80077BF8`, and `0x8007819C`, each with
   an explicit `nop` delay slot. The `0x80077BF8` target is kept with the next
-  source unit as a callable prefix into the `0x8000` body.
+  source unit as a callable prefix into the `0x8000` body and is now named
+  `boot_state_slot_queue_f000_record_step.s`.
 - The epilogue restores `ra` from `sp + 0x10` and returns.
 
 ## Boundaries

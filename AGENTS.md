@@ -173,7 +173,7 @@ Current result:
   `40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`.
 - Code-region match against baserom: pass.
 - Tracked real-assembler original-MIPS chunks: 1 composite
-  (`0x00001000..0x00011000`) made from 69 real-assembler source files.
+  (`0x00001000..0x00011000`) made from 72 real-assembler source files.
 - Generated fallback chunks: 99.
 - Assembled-code ROM rebuild command:
 
@@ -1742,8 +1742,9 @@ step helper after the pool/table helper cluster:
 - `asm/original/rev0/boot/boot_state_slot_queue_record_step.s`
   `0x000079EC..0x00007FF8`; contains the `0x79EC` prologue helper with frame
   size `0x68` and normal epilogue at `0x7FEC..0x7FF4`.
-- Current remainder:
-  `asm/original/rev0/code_00007FF8_00011000.s`.
+- Remainder at this split:
+  `asm/original/rev0/code_00007FF8_00011000.s`; now superseded by the
+  boot state slot queue F000 record-step split below.
 
 Static evidence: parent symbol/function data reports `0x79EC` as a permanent
 helper at RAM `0x800775EC`, active in all seven named states and all 21
@@ -1764,6 +1765,41 @@ axes against bounds `0x140` and `0xF0`, writes a packed halfword to record
 Static dossier:
 `docs/dossiers/boot-state-slot-queue-record-step.md`.
 
+## Boot State Slot Queue F000 Record-Step / No-op Tail Split
+
+The next tracked Rev 0 original-MIPS split keeps the `0x7FF8` executable prefix
+with the `0x8000` prologue body and peels off the tiny no-op tail immediately
+before the `0x8388` helper:
+
+- `asm/original/rev0/boot/boot_state_slot_queue_f000_record_step.s`
+  `0x00007FF8..0x00008380`; starts with the two-word prefix called by the queue
+  service gate at RAM `0x80077BF8`, then contains the `0x8000` prologue helper
+  with frame size `0x30` and normal epilogue at `0x8370..0x837C`.
+- `asm/original/rev0/boot/boot_state_slot_noop_return_tail.s`
+  `0x00008380..0x00008388`; a two-instruction `jr ra; nop` target that parent
+  v2 previously left as unresolved RAM target `0x80077F80`.
+- Current remainder:
+  `asm/original/rev0/code_00008388_00011000.s`.
+
+Static evidence: parent symbol/function data reports `0x8000` as a permanent
+prologue helper at RAM `0x80077C00`, frame size `0x30`, size 904, active in all
+seven named states and all 21 snapshots, with high-confidence callee `0x8388`
+and secondary entries at `0x8090` and `0x8380`. The prior queue-service gate
+calls RAM `0x80077BF8`, so local source keeps the `0x7FF8..0x8000` prefix with
+this body. Local source confirms `0x8380..0x8388` is only `jr ra; nop`, matching
+the unresolved no-op tail noted by the flagged dispatch/lookup dossier.
+
+Static shape: reads queue count `0x800C49D0`, walks queued slot IDs from
+`0x800C4C10`, computes 0xA8-byte records under corrected base `0x800E82C8`,
+filters for record flags whose high nibble is `0xF000` plus byte `+0x03 & 0x02
+== 0`, uses global `0x800E79A0` as a bound/span value, calls `0x8388(slot)` for
+terminal endpoint cases, and otherwise initializes/updates fixed-point
+position/fraction fields around record offsets `+0x04`, `+0x06..+0x0C`, and
+`+0x28..+0x2E`.
+
+Static dossier:
+`docs/dossiers/boot-state-slot-queue-f000-record-step.md`.
+
 ## Setup Complete Gate
 
 The setup phase is complete when `node tools/verify_setup.js` passes. Current
@@ -1778,7 +1814,7 @@ setup-complete state:
 - Assembler: GNU Binutils 2.39 `mips64-elf-as.exe` with `-EB -mips3 -32`.
 - Setup verifier: `tools/verify_setup.js`.
 - Current verifier result: PASS; 825 archives, 0 unknown bytes, 108 overlap
-  bytes visible, 1 tracked composite real-asm chunk made from 70 tracked source
+  bytes visible, 1 tracked composite real-asm chunk made from 72 tracked source
   files, 99 generated fallback chunks, full-source manifest 1,059 entries with
   2,469,141 ambiguous bytes preserved explicitly, 3 tracked non-code
   source-owner files / 44,029 bytes, 1,055 generated non-code fallback files /
@@ -1787,5 +1823,5 @@ setup-complete state:
   `571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A`.
 
 Next phase is either promoting another small non-code owner batch or continuing
-tracked original-MIPS splits from `asm/original/rev0/code_00007FF8_00011000.s`.
+tracked original-MIPS splits from `asm/original/rev0/code_00008388_00011000.s`.
 Do not begin semantic C decomp unless the setup verifier is green.

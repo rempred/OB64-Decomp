@@ -16,7 +16,7 @@ node tools/verify_setup.js
 ```
 
 Current source mix: 1 tracked composite real-assembler chunk
-(`0x00001000..0x00011000`) made from 70 tracked source files, plus 99 generated
+(`0x00001000..0x00011000`) made from 72 tracked source files, plus 99 generated
 fallback chunks.
 
 The assembled code-region SHA256 is
@@ -86,13 +86,13 @@ coverage or overclassifying data as MIPS.
    global handle release split, boot resource global handle slot record prepare
    split, boot state slot current peer record flag mark split, boot state
    slot target peer record dispatch split, boot state slot flagged
-   dispatch/lookup split, boot state slot pool/table helper split, and boot
-   state slot queue record-step split are done. Continue from
-   `asm/original/rev0/code_00007FF8_00011000.s`, beginning with the executable
-   `0x7FF8` prefix that loads queue count `0x800C49D0` into `v0` before the
-   `0x8000` prologue body. That prefix matches the queue service gate's
-   unresolved RAM call target `0x80077BF8`; keep it with the next body unless
-   stronger evidence proves otherwise.
+   dispatch/lookup split, boot state slot pool/table helper split, boot state
+   slot queue record-step split, boot state slot queue F000 record-step split,
+   and no-op return-tail split are done. Continue from
+   `asm/original/rev0/code_00008388_00011000.s`, beginning with the `0x8388`
+   prologue helper. Parent evidence reports frame size `0x20`, callers
+   `0x69D8`, `0x7568`, `0x7600`, `0x7688`, `0x8000`, and itself, and callees
+   `0x8388`, `0x16C4`, and `0x23780`.
 
 4. Keep the setup gate green.
 

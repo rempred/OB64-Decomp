@@ -10,7 +10,7 @@ immediately after the slot pool/table helper cluster:
 | Source | ROM range | RAM range | Notes |
 | --- | --- | --- | --- |
 | `asm/original/rev0/boot/boot_state_slot_queue_record_step.s` | `0x000079EC..0x00007FF8` | `0x800775EC..0x80077BF8` | `0x79EC` prologue helper with frame size `0x68`; normal return at `0x7FEC..0x7FF4`. |
-| `asm/original/rev0/code_00007FF8_00011000.s` | `0x00007FF8..0x00011000` | `0x80077BF8..0x80080C00` | Current tracked remainder; starts with the two-word prefix called by the queue service gate before `func_00008000`. |
+| `asm/original/rev0/code_00007FF8_00011000.s` | `0x00007FF8..0x00011000` | `0x80077BF8..0x80080C00` | Remainder at this split; now superseded by `code_00008388_00011000.s` after the queue F000 record-step and no-op tail split. |
 
 The name is conservative. It records the static queue-record update shape, not
 runtime-verified scheduler semantics.
@@ -28,7 +28,8 @@ runtime-verified scheduler semantics.
 - The queue service gate also calls RAM `0x80077BF8`. Local source shows ROM
   `0x7FF8..0x8000` is an executable prefix that loads queue count
   `0x800C49D0` into `v0` before the `0x8000` prologue body, so this split leaves
-  that prefix in the next remainder.
+  that prefix in the next remainder. It is now promoted as
+  `boot_state_slot_queue_f000_record_step.s`.
 
 ## Static Shape
 
@@ -57,7 +58,8 @@ runtime-verified scheduler semantics.
 - The helper returns through `0x7FEC..0x7FF4`.
 - The next tracked remainder starts at `0x7FF8` because the queue service gate
   calls RAM `0x80077BF8`; those two prefix instructions feed the `0x8000`
-  prologue body.
+  prologue body. That range is now promoted, and the active remainder starts at
+  `code_00008388_00011000.s`.
 
 ## Verification
 

@@ -27,7 +27,8 @@ and record lookup shape, not runtime-verified scheduler semantics.
 - High-confidence callee is `0x8388` / RAM `0x80077F88`.
 - Parent v2 leaves call target `0x80077F80` unresolved. Local source inspection
   resolves it to ROM `0x8380..0x8388`, a two-instruction `jr ra; nop` secondary
-  tail immediately before the `0x8388` prologue helper.
+  tail immediately before the `0x8388` prologue helper. It is now promoted as
+  `boot_state_slot_noop_return_tail.s`.
 - Parent/local xrefs show reads of status halfword `0x800C4C26`, slot-record
   halfword `0x800E82C8`, slot-record byte `0x800E82CB`, and slot-record word
   `0x800E82D8`.
@@ -60,7 +61,7 @@ and record lookup shape, not runtime-verified scheduler semantics.
 - The clean exclusive end is `0x7768`, the next parent prologue boundary.
 - The next source frontier at that time was the `0x7768` prologue helper. It is
   now promoted as `boot_state_slot_pool_table_helpers.s`, and the active
-  remainder starts at `code_000079EC_00011000.s`.
+  remainder starts at `code_00008388_00011000.s`.
 
 ## Verification
 

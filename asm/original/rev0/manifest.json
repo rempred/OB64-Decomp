@@ -640,17 +640,35 @@
           "sha256": "C69202E80D825DA5A5BC9FA9344BBFF5B22979684AEEF3312683B89EFA774654"
         },
         {
-          "name": "code_00007FF8_00011000_remainder",
-          "file": "asm/original/rev0/code_00007FF8_00011000.s",
+          "name": "boot_state_slot_queue_f000_record_step",
+          "file": "asm/original/rev0/boot/boot_state_slot_queue_f000_record_step.s",
           "romStart": "0x00007FF8",
+          "romEndExclusive": "0x00008380",
+          "bytes": 904,
+          "textBytes": 17563,
+          "sha256": "ED0F1622A3A884D13E8C956DB70833145752AF82CA93A8B99CD0F44E96FEA41B"
+        },
+        {
+          "name": "boot_state_slot_noop_return_tail",
+          "file": "asm/original/rev0/boot/boot_state_slot_noop_return_tail.s",
+          "romStart": "0x00008380",
+          "romEndExclusive": "0x00008388",
+          "bytes": 8,
+          "textBytes": 386,
+          "sha256": "C18690C712524CF2D8DCEFFC14EFDA60508E722E69FDCBA65B598A89BB845BDE"
+        },
+        {
+          "name": "code_00008388_00011000_remainder",
+          "file": "asm/original/rev0/code_00008388_00011000.s",
+          "romStart": "0x00008388",
           "romEndExclusive": "0x00011000",
-          "bytes": 36872,
-          "textBytes": 711525,
-          "sha256": "99A4526470484BB9AAC8834CBCA8DC66E29447C27D1769EB2595FD2B332364E0"
+          "bytes": 35960,
+          "textBytes": 694093,
+          "sha256": "007419271918C516566D640B5396EAAF504684AE50A933892DCAA556D2227F76"
         }
       ],
-      "textBytes": 1282615,
-      "sha256": "CA8E0D7B90CE289F0F1801EADC14DA000AA4B25B89F8B3E4255A27A279E81F77"
+      "textBytes": 1283132,
+      "sha256": "3F3BA7E9C10A735B1C9166185A3F76716D77BAB3960AEA55086E957735713CFB"
     }
   ]
 }

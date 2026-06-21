@@ -10,7 +10,7 @@ cluster immediately after the status-gated slot dispatch/lookup helper:
 | Source | ROM range | RAM range | Notes |
 | --- | --- | --- | --- |
 | `asm/original/rev0/boot/boot_state_slot_pool_table_helpers.s` | `0x00007768..0x000079EC` | `0x80077368..0x800775EC` | `0x7768` prologue helper, ten-entry pool scan leaves, pointer-table install helper, and final delay slot at `0x79E8`. |
-| `asm/original/rev0/code_000079EC_00011000.s` | `0x000079EC..0x00011000` | `0x800775EC..0x80080C00` | Remainder at this split; superseded by `code_00007FF8_00011000.s`. |
+| `asm/original/rev0/code_000079EC_00011000.s` | `0x000079EC..0x00011000` | `0x800775EC..0x80080C00` | Remainder at this split; now superseded by `code_00008388_00011000.s`. |
 
 The name is conservative. It records the static ten-entry slot-pool scans and
 pointer-table install shape, not runtime-verified scheduler semantics.
