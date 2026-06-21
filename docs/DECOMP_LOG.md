@@ -18,7 +18,7 @@ and replace the active log with a compact current-state summary.
 - Whole-ROM coverage still independently scans for LHA headers; do not trust the
   parent archive catalog by itself.
 - Current tracked code source mix: one composite real-assembler chunk
-  `0x00001000..0x00011000` made from 40 tracked source files, plus 99 generated
+  `0x00001000..0x00011000` made from 41 tracked source files, plus 99 generated
   fallback code chunks.
 - Current tracked non-code source-owner mix: 3 tracked files / 44,029 bytes,
   plus 1,055 generated fallback owner files / 35,388,567 bytes.
@@ -63,7 +63,8 @@ Current named sequence:
 - `boot_resource_probe_finalize.s` `0x4C34..0x4C5C`.
 - `boot_resource_probe_dispatch_prepare.s` `0x4C5C..0x4DC0`.
 - `boot_resource_probe_dispatch_apply.s` `0x4DC0..0x4ED4`.
-- Current remainder: `code_00004ED4_00011000.s`.
+- `boot_resource_probe_dispatch_result_build.s` `0x4ED4..0x4FF0`.
+- Current remainder: `code_00004FF0_00011000.s`.
 
 Static dossiers live under `docs/dossiers/` and are the durable evidence notes
 for each promoted source-layout split.
@@ -109,8 +110,6 @@ Verification for the split:
 - `node tools\verify_setup.js` passed after the docs update.
 - Source mix is now 1 tracked composite real-asm chunk made from 39 tracked
   source files, plus 99 generated fallback chunks.
-
-## Next Frontier
 
 ## 2026-06-21 - Boot Resource Probe Dispatch Apply Split
 
@@ -163,11 +162,26 @@ Verification for the split:
 - Source mix is now 1 tracked composite real-asm chunk made from 40 tracked
   source files, plus 99 generated fallback chunks.
 
-## Next Frontier
+## 2026-06-21 - Boot Resource Probe Dispatch Result Build Split
 
-Continue from `asm/original/rev0/code_00004ED4_00011000.s`.
+Baseline before the split:
 
-Parent evidence for the next target:
+- `git status --short` was clean at commit
+  `ac03f12 Split Rev 0 resource probe dispatch apply`.
+- `node tools\verify_setup.js` passed with 825 archives, zero unknown bytes, 108
+  visible overlap bytes, 40 tracked source files, and unchanged code/ROM hashes.
+- Coverage/source audit reports still lined up: coverage ledger spans classify
+  all 41,943,040 ROM bytes with zero unknown bytes; original-MIPS covers
+  configured code region `0x00001000..0x0063676C`; source-owner rebuild remains
+  exact with ambiguous archive-gap/tail bytes preserved explicitly.
+
+Promoted `asm/original/rev0/boot/boot_resource_probe_dispatch_result_build.s`
+covering ROM `0x00004ED4..0x00004FF0` / RAM
+`0x80074AD4..0x80074BF0`. The old `code_00004ED4_00011000.s` remainder was
+removed and replaced by `asm/original/rev0/code_00004FF0_00011000.s`.
+
+Static evidence from parent `../scripts/ob64_functions.json`,
+`../scripts/ob64_symbols_v2.json`, and `../scripts/ob64_callgraph_v2.json`:
 
 - `0x4ED4` is a 284-byte valid JAL-target prologue with frame size `0x28`,
   epilogue, no `jalr`, and next function boundary `0x4FF0`.
@@ -178,3 +192,39 @@ Parent evidence for the next target:
   `0x581C`, `0x4FF0`, `0x23460`, and `resource_free` (`0x16C4`).
 - No unresolved RAM calls.
 - Global read: `0x800A8258`.
+
+Static shape:
+
+- ID `0x0F` allocates a 0x4AE8-byte scratch record, calls helper `0x5978`,
+  materializes data through `0x50F0(record, 0x30B0, 0x4AE8)`, and uses the
+  first scratch word as an optional marker.
+- Other IDs allocate a 0x1850-byte scratch record, call `0x581C(id, record)`,
+  materialize data through `0x50F0(record, id * 0x1850 + 0x10, 0x1850)`, and
+  use scratch word `+0x0C` as an optional marker.
+- If the marker is nonzero, the routine reads offset data from `0x800A8258`,
+  allocates a 0x1A-byte output buffer, copies 0x1A bytes from the scratch record
+  through `0x23460`, frees the scratch record, and returns the output buffer.
+  Otherwise it still calls `0x4FF0(0x37081383)`, frees the scratch record, and
+  returns zero.
+
+Verification for the split:
+
+- `node tests\binutils_smoke.js` passed.
+- `node tools\assemble_original_mips.js` passed.
+- `node tools\verify_setup.js` passed after the docs update.
+- Source mix is now 1 tracked composite real-asm chunk made from 41 tracked
+  source files, plus 99 generated fallback chunks.
+
+## Next Frontier
+
+Continue from `asm/original/rev0/code_00004FF0_00011000.s`.
+
+Parent evidence for the next target:
+
+- `0x4FF0` is a 104-byte JAL-target leaf entry, and `0x4FF8` is an overlapping
+  96-byte prologue body that shares the same return at `0x5054`.
+- Fixed RAM is `0x80074BF0/0x80074BF8` in all seven named states and all 21
+  snapshots.
+- Callers to `0x4FF0`: `0x4AC8`, `0x4C34`, `0x4C5C`, `0x4DC0`, and `0x4ED4`.
+- High-confidence callees: `0x5058` and `resource_free` (`0x16C4`).
+- Global traffic: reads/writes `0x800A83B8` and `0x800A83BC`.

@@ -10,7 +10,9 @@ code after the resource probe dispatch-prepare helper:
 | Source | ROM range | RAM range | Notes |
 | --- | --- | --- | --- |
 | `asm/original/rev0/boot/boot_resource_probe_dispatch_apply.s` | `0x00004DC0..0x00004ED4` | `0x800749C0..0x80074AD4` | 276-byte JAL-target prologue with one indirect `jalr`. |
-| `asm/original/rev0/code_00004ED4_00011000.s` | `0x00004ED4..0x00011000` | `0x80074AD4..0x80080C00` | Current tracked remainder. |
+| `asm/original/rev0/code_00004ED4_00011000.s` | `0x00004ED4..0x00011000` | `0x80074AD4..0x80080C00` | Historical next tracked remainder; superseded by the result-build split. |
+| `asm/original/rev0/boot/boot_resource_probe_dispatch_result_build.s` | `0x00004ED4..0x00004FF0` | `0x80074AD4..0x80074BF0` | Follow-up split documented separately. |
+| `asm/original/rev0/code_00004FF0_00011000.s` | `0x00004FF0..0x00011000` | `0x80074BF0..0x80080C00` | Current tracked remainder. |
 
 The name is conservative. The routine appears to materialize a resource/probe
 record and apply callback-table handlers for selected IDs, but no runtime trace
@@ -51,8 +53,8 @@ or controlled mutation has verified final behavior.
 - The next parent prologue boundary is `0x00004ED4`; parent data reports it as
   a separate 284-byte JAL-target prologue with frame size `0x28`, no `jalr`, no
   unresolved targets, and a read from `0x800A8258`.
-- The `0x4ED4` routine remains the next dedicated evidence pass instead of
-  being merged into this dispatch-apply helper.
+- The `0x4ED4` routine is now documented separately in
+  `boot-resource-probe-dispatch-result-build.md`.
 
 ## Verification
 

@@ -13,7 +13,7 @@ code after the bitstream descriptor encode helper:
 | `asm/original/rev0/code_00004C34_00011000.s` | `0x00004C34..0x00011000` | `0x80074834..0x80080C00` | Historical remainder; superseded by the resource probe finalize split. |
 | `asm/original/rev0/code_00004C5C_00011000.s` | `0x00004C5C..0x00011000` | `0x8007485C..0x80080C00` | Historical remainder; superseded by the resource probe dispatch-prepare split. |
 | `asm/original/rev0/code_00004DC0_00011000.s` | `0x00004DC0..0x00011000` | `0x800749C0..0x80080C00` | Historical remainder; superseded by the dispatch-apply split. |
-| `asm/original/rev0/code_00004ED4_00011000.s` | `0x00004ED4..0x00011000` | `0x80074AD4..0x80080C00` | Current tracked remainder after the dispatch-apply split. |
+| `asm/original/rev0/code_00004FF0_00011000.s` | `0x00004FF0..0x00011000` | `0x80074BF0..0x80080C00` | Current tracked remainder after the dispatch result-build split. |
 
 The name is conservative. The routine has a static resource/probe initialization
 shape, but no runtime trace or controlled mutation has verified final behavior.
