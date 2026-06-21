@@ -28,17 +28,44 @@
           "sha256": "FB25B68987CAF6D816DC75F2F7334784CF2EA39B4D75E5241C0281FF9BE3D7DA"
         },
         {
-          "name": "code_00001060_00011000_remainder",
-          "file": "asm/original/rev0/code_00001060_00011000.s",
+          "name": "resource_arena_init",
+          "file": "asm/original/rev0/boot/resource_arena_init.s",
           "romStart": "0x00001060",
+          "romEndExclusive": "0x00001120",
+          "bytes": 192,
+          "textBytes": 4018,
+          "sha256": "2037C31959F8CED7DAEE5C15A452487295B811E94D4FE79504B00B102A65F991"
+        },
+        {
+          "name": "resource_arena_register",
+          "file": "asm/original/rev0/boot/resource_arena_register.s",
+          "romStart": "0x00001120",
+          "romEndExclusive": "0x00001330",
+          "bytes": 528,
+          "textBytes": 10516,
+          "sha256": "CE01811BE28559AEA3A0DAC897E91603E20DEEA6FA759056370068090FB77141"
+        },
+        {
+          "name": "resource_alloc",
+          "file": "asm/original/rev0/boot/resource_alloc.s",
+          "romStart": "0x00001330",
+          "romEndExclusive": "0x000014DC",
+          "bytes": 428,
+          "textBytes": 8520,
+          "sha256": "0A864A475FDE83BBEFC80E9E1C145DADBC154E2812A70CAF76219A90A20BB467"
+        },
+        {
+          "name": "code_000014DC_00011000_remainder",
+          "file": "asm/original/rev0/code_000014DC_00011000.s",
+          "romStart": "0x000014DC",
           "romEndExclusive": "0x00011000",
-          "bytes": 65440,
-          "textBytes": 1279894,
-          "sha256": "8AFB155EB76509639FEBB0FD65A6BCCC818D3BA17A622BBB6F3C99E1493901AB"
+          "bytes": 64292,
+          "textBytes": 1240668,
+          "sha256": "A3D973BCDEB8503F99971A1121923D6DA876CE22E8190675517038D7BDA3EAAF"
         }
       ],
-      "textBytes": 1282013,
-      "sha256": "E267AD499867F3720EB7050F252C5FC7E937D3887BFED1D1E5DF2A16DA8D2CD6"
+      "textBytes": 1265841,
+      "sha256": "3C14D48AA34735693F4C29C5AB9CF6901759D9B6A37B7496F17F09A9D2ADC66F"
     }
   ]
 }

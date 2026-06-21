@@ -236,3 +236,67 @@ Next recommended target:
 
 - Promote the next deliberate non-code source-owner batch or return to splitting
   tracked original-MIPS source, keeping the full verifier green.
+
+## 2026-06-21 - Phase 5, Boot Resource Arena Split
+
+Target:
+
+- Continue source-layout cleanup inside the first tracked original-MIPS chunk.
+- Split permanent boot/resource code after the entry stub while preserving
+  no-gap coverage and exact assembled bytes.
+
+Baseline:
+
+- `node tools\verify_setup.js` passed before edits.
+- Baseline source mix: 1 tracked composite real-asm chunk made from 2 tracked
+  files, plus 99 generated fallback chunks.
+- Baseline code-region SHA256:
+  `40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`.
+- Baseline full ROM SHA256:
+  `571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A`.
+
+Tooling change:
+
+- Added `tools/split_original_mips_part.js`.
+- The splitter replaces one tracked manifest part with smaller contiguous parts,
+  preserving the original `.word` lines and decode comments for each z64 range.
+
+Source-layout change:
+
+- Removed superseded
+  `asm/original/rev0/code_00001060_00011000.s`.
+- Added `asm/original/rev0/boot/resource_arena_init.s`,
+  `0x00001060..0x00001120`, 192 bytes.
+- Added `asm/original/rev0/boot/resource_arena_register.s`,
+  `0x00001120..0x00001330`, 528 bytes.
+- Added `asm/original/rev0/boot/resource_alloc.s`,
+  `0x00001330..0x000014DC`, 428 bytes.
+- Added remainder `asm/original/rev0/code_000014DC_00011000.s`,
+  `0x000014DC..0x00011000`, 64,292 bytes.
+- Static dossier: `docs/dossiers/boot-resource-arena-and-alloc.md`.
+
+Evidence:
+
+- Parent `../scripts/ob64_symbols_v2.json` locates `0x1060`, `0x1120`,
+  `0x1128`, and `0x1330` in all 21 RAM snapshots and all seven known states.
+- Parent seed label for `0x00001330` is `resource_alloc`; it has 314 parent
+  callers.
+- `0x1120` and `0x1128` are overlapping scanner entries and stay in the same
+  source file; `0x1128` has a secondary entry at `0x1314`.
+
+Verification:
+
+- `node tests\binutils_smoke.js` passed after the split.
+- `node tools\assemble_original_mips.js` passed after the split.
+- Full `node tools\verify_setup.js` passed after the split.
+- Assembled report now shows 1 tracked composite real-asm chunk made from 5
+  tracked source files, plus 99 generated fallback chunks.
+- Code-region SHA256 remains:
+  `40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`.
+- Full ROM SHA256 remains:
+  `571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A`.
+
+Next recommended target:
+
+- Continue from `asm/original/rev0/code_000014DC_00011000.s`, likely around
+  `func_000014DC`, or promote another small tracked non-code owner batch.

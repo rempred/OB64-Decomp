@@ -173,7 +173,7 @@ Current result:
   `40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`.
 - Code-region match against baserom: pass.
 - Tracked real-assembler original-MIPS chunks: 1 composite
-  (`0x00001000..0x00011000`) made from 2 real-assembler source files.
+  (`0x00001000..0x00011000`) made from 5 real-assembler source files.
 - Generated fallback chunks: 99.
 - Assembled-code ROM rebuild command:
 
@@ -203,6 +203,27 @@ It clears `0x3AE70` bytes from `0x800AEDB0` through exclusive end
 Treat the `clear_bss` name as a conservative static label for the observed boot
 RAM clear span, not as a fully mapped linker section.
 
+## Boot Resource Arena Split
+
+The next tracked Rev 0 original-MIPS split covers the permanent boot/resource
+block after the entry stub:
+
+- `asm/original/rev0/boot/resource_arena_init.s`
+  `0x00001060..0x00001120`.
+- `asm/original/rev0/boot/resource_arena_register.s`
+  `0x00001120..0x00001330`.
+- `asm/original/rev0/boot/resource_alloc.s`
+  `0x00001330..0x000014DC`; parent seed label `resource_alloc`.
+- Remainder:
+  `asm/original/rev0/code_000014DC_00011000.s`.
+
+Static dossier: `docs/dossiers/boot-resource-arena-and-alloc.md`.
+`tools/split_original_mips_part.js` is the reusable manifest-part splitter used
+for this source-layout change. The simple boot ROM-to-RAM mapping applies to
+these ranges, and parent symbols locate the split functions in all 21 RAM
+snapshots. Treat the arena/global names as conservative source-layout labels
+until runtime or controlled mutation evidence proves exact allocator semantics.
+
 ## Setup Complete Gate
 
 The setup phase is complete when `node tools/verify_setup.js` passes. Current
@@ -217,7 +238,7 @@ setup-complete state:
 - Assembler: GNU Binutils 2.39 `mips64-elf-as.exe` with `-EB -mips3 -32`.
 - Setup verifier: `tools/verify_setup.js`.
 - Current verifier result: PASS; 825 archives, 0 unknown bytes, 108 overlap
-  bytes visible, 1 tracked composite real-asm chunk made from 2 tracked source
+  bytes visible, 1 tracked composite real-asm chunk made from 5 tracked source
   files, 99 generated fallback chunks, full-source manifest 1,059 entries with
   2,469,141 ambiguous bytes preserved explicitly, 3 tracked non-code
   source-owner files / 44,029 bytes, 1,055 generated non-code fallback files /

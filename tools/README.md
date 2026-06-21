@@ -95,6 +95,15 @@ default batch: `raw_header`, `raw_structural_gap`, and `raw_tail_data`. Use
 `node tools/verify_setup.js`.
 
 ```powershell
+node tools/split_original_mips_part.js --part <asm-file> --split <name>:<start>:<end>:<out-file> --remainder <name>:<out-file>
+```
+
+Splits one tracked `asm/original/rev0/manifest.json` part into smaller
+contiguous source files while preserving the original `.word` lines and decode
+comments for each z64 range. Use this for source-layout cleanup after a chunk has
+already been promoted into tracked original MIPS.
+
+```powershell
 node tests/binutils_smoke.js
 ```
 
