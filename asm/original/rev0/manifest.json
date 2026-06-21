@@ -208,17 +208,26 @@
           "sha256": "B5C7E7F834B1A666E3A37F106B6105AF2DDBB2C6144774690417F6ADE537881A"
         },
         {
-          "name": "code_00002D7C_00011000_remainder",
-          "file": "asm/original/rev0/code_00002D7C_00011000.s",
+          "name": "boot_table_mask_reconcile",
+          "file": "asm/original/rev0/boot/boot_table_mask_reconcile.s",
           "romStart": "0x00002D7C",
+          "romEndExclusive": "0x0000347C",
+          "bytes": 1792,
+          "textBytes": 34780,
+          "sha256": "451769C28F2222D5EF52EA7C35D113B4249EC1575281F75C1018565E4A55B43C"
+        },
+        {
+          "name": "code_0000347C_00011000_remainder",
+          "file": "asm/original/rev0/code_0000347C_00011000.s",
+          "romStart": "0x0000347C",
           "romEndExclusive": "0x00011000",
-          "bytes": 57988,
-          "textBytes": 1119704,
-          "sha256": "A1CDDB54B64B792774C95C7D96B4D187B4EBBB263841779FAC1526F35FA018DF"
+          "bytes": 56196,
+          "textBytes": 1085182,
+          "sha256": "50FFE1ACAE33B8A349C26551EC2070341AF3DEA40B1DAA60910AE21C38401B37"
         }
       ],
-      "textBytes": 1270229,
-      "sha256": "E84EA9EFDB1F32882FE86097622BB43CCA20659B90BFA8B6EF9617B4D0B9C60B"
+      "textBytes": 1270487,
+      "sha256": "1778C546C4FA96CD4E77CD78EEE7BF248B56271C3269246CD939A356447BD06F"
     }
   ]
 }

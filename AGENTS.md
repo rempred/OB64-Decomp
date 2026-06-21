@@ -173,7 +173,7 @@ Current result:
   `40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`.
 - Code-region match against baserom: pass.
 - Tracked real-assembler original-MIPS chunks: 1 composite
-  (`0x00001000..0x00011000`) made from 17 real-assembler source files.
+  (`0x00001000..0x00011000`) made from 23 real-assembler source files.
 - Generated fallback chunks: 99.
 - Assembled-code ROM rebuild command:
 
@@ -328,7 +328,30 @@ after the early boot state loop:
 Static dossier: `docs/dossiers/boot-mode-flag-helpers.md`. The flag-helper
 names are conservative static labels. Next source split should start at
 `0x00002D7C`, the large table/bitmask routine called by both the early loader
-and the state loop.
+and the state loop. That target has since been superseded by the table/mask
+reconcile split below.
+
+## Boot Table/Mask Reconcile Split
+
+The next tracked Rev 0 original-MIPS split separates the large permanent
+table/mask routine after the boot mode/flag helpers:
+
+- `asm/original/rev0/boot/boot_table_mask_reconcile.s`
+  `0x00002D7C..0x0000347C`; parent reports a 1,792-byte prologue function,
+  frame size `0x58`, high-confidence callers `0x22B0` and `0x27A0`, and callee
+  `0x8008A600`.
+- Remainder:
+  `asm/original/rev0/code_0000347C_00011000.s`.
+
+Static evidence: the routine is present at RAM `0x8007297C` in all seven named
+states and all 21 parent RAM snapshots. It updates halfword masks and mirrored
+state tables around `0x800C47F0`, `0x800BEE90`, `0x800BEF10`,
+`0x800E79B0`, `0x800E79BC`, and `0x800F8100`, and clamps signed record bytes at
+offsets `+2/+3` to `-0x3D..0x3D`.
+
+Static dossier: `docs/dossiers/boot-table-mask-reconcile.md`. The next source
+split should start at `0x0000347C`; keep the `0x347C..0x368C` routine and its
+secondary entry at `0x3564` together unless stronger evidence splits it safely.
 
 ## Setup Complete Gate
 
@@ -344,7 +367,7 @@ setup-complete state:
 - Assembler: GNU Binutils 2.39 `mips64-elf-as.exe` with `-EB -mips3 -32`.
 - Setup verifier: `tools/verify_setup.js`.
 - Current verifier result: PASS; 825 archives, 0 unknown bytes, 108 overlap
-  bytes visible, 1 tracked composite real-asm chunk made from 22 tracked source
+  bytes visible, 1 tracked composite real-asm chunk made from 23 tracked source
   files, 99 generated fallback chunks, full-source manifest 1,059 entries with
   2,469,141 ambiguous bytes preserved explicitly, 3 tracked non-code
   source-owner files / 44,029 bytes, 1,055 generated non-code fallback files /
@@ -353,5 +376,5 @@ setup-complete state:
   `571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A`.
 
 Next phase is either promoting another small non-code owner batch or continuing
-tracked original-MIPS splits from `asm/original/rev0/code_00002D7C_00011000.s`.
+tracked original-MIPS splits from `asm/original/rev0/code_0000347C_00011000.s`.
 Do not begin semantic C decomp unless the setup verifier is green.

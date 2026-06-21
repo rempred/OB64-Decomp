@@ -568,3 +568,65 @@ Next recommended target:
   the large `0x2D7C..0x347C` table/bitmask routine called by both the early
   loader and the state loop, or promote another small tracked non-code owner
   batch.
+
+## 2026-06-21 - Boot Table/Mask Reconcile Split
+
+Target:
+
+- Continue source-layout cleanup inside the first tracked original-MIPS chunk.
+- Split the large `0x2D7C..0x347C` table/mask routine after the boot mode/flag
+  helpers.
+
+Baseline:
+
+- `node tools\verify_setup.js` passed before edits.
+- Baseline source mix: 1 tracked composite real-asm chunk made from 22 tracked
+  files, plus 99 generated fallback chunks.
+- Baseline code-region SHA256:
+  `40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`.
+- Baseline full ROM SHA256:
+  `571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A`.
+
+Source-layout change:
+
+- Removed superseded
+  `asm/original/rev0/code_00002D7C_00011000.s`.
+- Added `asm/original/rev0/boot/boot_table_mask_reconcile.s`,
+  `0x00002D7C..0x0000347C`, 1,792 bytes.
+- Added remainder `asm/original/rev0/code_0000347C_00011000.s`,
+  `0x0000347C..0x00011000`, 56,196 bytes.
+- Static dossier: `docs/dossiers/boot-table-mask-reconcile.md`.
+
+Evidence:
+
+- Parent `../scripts/ob64_functions.json` reports `0x2D7C` as a 1,792-byte
+  prologue, frame size `0x58`, no indirect jumps, and end `0x3478`; the delay
+  slot at `0x3478` means the source split ends at exclusive `0x347C`.
+- Parent `../scripts/ob64_callgraph_v2.json` reports high-confidence callers
+  `0x22B0` and `0x27A0`, and one high-confidence callee `0x8008A600`
+  (`ROM 0x1AA00`).
+- Parent `../scripts/ob64_function_states.json` and
+  `../scripts/ob64_overlay_map.json` locate the routine at RAM `0x8007297C` in
+  all seven named states and all 21 RAM snapshots.
+- Static code shape updates halfword masks and mirrored tables around
+  `0x800C47F0`, `0x800BEE90`, `0x800BEF10`, `0x800E79B0`, `0x800E79BC`, and
+  `0x800F8100`, and clamps signed record bytes at offsets `+2/+3` to
+  `-0x3D..0x3D`.
+
+Verification:
+
+- `node tests\binutils_smoke.js` passed after the split.
+- `node tools\assemble_original_mips.js` passed after the split.
+- Full `node tools\verify_setup.js` passed after the split.
+- Assembled report now shows 1 tracked composite real-asm chunk made from 23
+  tracked source files, plus 99 generated fallback chunks.
+- Code-region SHA256 remains:
+  `40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`.
+- Full ROM SHA256 remains:
+  `571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A`.
+
+Next recommended target:
+
+- Continue from `asm/original/rev0/code_0000347C_00011000.s`, beginning with
+  the `0x347C..0x368C` routine and keeping secondary entry `0x3564` together,
+  or promote another small tracked non-code owner batch.
