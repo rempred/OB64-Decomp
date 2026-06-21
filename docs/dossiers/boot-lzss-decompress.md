@@ -10,7 +10,7 @@ decompressor:
 | Source | ROM range | RAM range | Notes |
 | --- | --- | --- | --- |
 | `asm/original/rev0/boot/boot_lzss_decompress.s` | `0x0000A510..0x0000AF7C` | `0x8007A110..0x8007AB7C` | Parent `seed::lzss_decompress`; includes secondary/internal helper-like regions kept by parent boundary evidence. |
-| `asm/original/rev0/code_0000AF7C_00011000.s` | `0x0000AF7C..0x00011000` | `0x8007AB7C..0x80080C00` | Current tracked remainder. |
+| `asm/original/rev0/code_0000AF7C_00011000.s` | `0x0000AF7C..0x00011000` | `0x8007AB7C..0x80080C00` | Remainder at this split; now superseded by `boot_resource_record_mark_ready.s` and `code_0000AFAC_00011000.s`. |
 
 The file name is a conservative source-layout label inherited from parent seed
 symbols and token-format research. It should not be treated as a finalized C
@@ -65,8 +65,8 @@ API signature.
 - The secondary length-reader helper at `0xABE0..0xAC08` stays in this file.
 - The helper-like tail includes `jr ra` returns at `0xAF28..0xAF2C` and
   `0xAF74..0xAF78`.
-- The next formal prologue starts at `0x0000AF7C`; this is the current
-  remainder frontier.
+- The next formal prologue starts at `0x0000AF7C`; that former remainder
+  frontier has since been split into `boot_resource_record_mark_ready.s`.
 
 ## Verification
 
