@@ -173,7 +173,7 @@ Current result:
   `40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`.
 - Code-region match against baserom: pass.
 - Tracked real-assembler original-MIPS chunks: 1 composite
-  (`0x00001000..0x00011000`) made from 87 real-assembler source files.
+  (`0x00001000..0x00011000`) made from 88 real-assembler source files.
 - Generated fallback chunks: 99.
 - Assembled-code ROM rebuild command:
 
@@ -2105,7 +2105,8 @@ helper immediately after the command-stream resource-node dispatch family:
 
 - `asm/original/rev0/boot/boot_resource_node_payload_materialize.s`
   `0x00009C50..0x00009CAC` / RAM `0x80079850..0x800798AC`.
-- Current remainder:
+- Remainder at this split, now superseded by the resource-node insert/find
+  split below:
   `asm/original/rev0/code_00009CAC_00011000.s`.
 
 Static evidence: parent data labels `0x9C50` as `dma/resource::resource loader`,
@@ -2122,15 +2123,47 @@ field `+0x08`, allocates a payload buffer of that size, stores the allocation
 to field `+0x04`, and calls `0x2DFB8` with the allocation plus source key.
 
 Boundary rule: the promoted source includes the `0x9CA4` return and `0x9CA8`
-delay-slot stack restore. The next family starts cleanly at `0x9CAC`; parent
-reports a 164-byte recursive prologue helper with frame size `0x20`, fixed in
-all states, callers from the command-stream family and later loader helpers,
-callees to itself, `0x1688`, and `0x23780`, and writes to `0x800AF0C0`. Local
-source shows `0x1C`-byte node allocation and child fields at `+0x14/+0x18`, so
-keep `0x9CAC..0x9D50` together next.
+delay-slot stack restore. Follow-up source-layout work now owns
+`0x9CAC..0x9D50` as the resource-node insert/find split below.
 
 Static dossier:
 `docs/dossiers/boot-resource-node-payload-materialize.md`.
+
+## Boot Resource Node Insert/Find Split
+
+The next tracked Rev 0 original-MIPS split promotes the recursive node/tree
+helper immediately after the payload materialize helper:
+
+- `asm/original/rev0/boot/boot_resource_node_insert_find.s`
+  `0x00009CAC..0x00009D50` / RAM `0x800798AC..0x80079950`.
+- Current remainder:
+  `asm/original/rev0/code_00009D50_00011000.s`.
+
+Static evidence: parent data reports `0x9CAC` as a 164-byte recursive prologue
+helper with frame size `0x20`, primary runtime RAM `0x800798AC`, fixed in all
+seven named states and all 21 snapshots, and no unresolved v2 targets.
+High-confidence callers are `0x978C`, `0x97A8`, `0x9CAC`, `0x9D50`, `0x9EFC`,
+`0x9FD8`, and `0xA0B4`. High-confidence callees are itself, the
+resource-alloc mode-1 wrapper `0x1688`, and common helper `0x23780`. Parent
+xrefs show this helper is the writer of `0x800AF0C0`.
+
+Static shape: the helper accepts a root/node pointer in `a0` and key/source
+value in `a1`. If the current node exists and its key field `+0x00` matches, it
+stores the node to global `0x800AF0C0` and returns it. Otherwise it compares the
+key and recurses through child fields `+0x14` or `+0x18`, updating the chosen
+child pointer with the returned node. If the current node is null, it allocates
+and clears a `0x1C`-byte node via `0x1688` and `0x23780`, stores it to
+`0x800AF0C0`, writes the key to field `+0x00`, and returns the new node.
+
+Boundary rule: the promoted source includes the `0x9D48` return and `0x9D4C`
+delay-slot stack restore. The next family starts cleanly at `0x9D50`; parent
+labels it `dma/resource::resource loader`, with frame size `0x50`,
+high-confidence callers from the command-stream family, callees to the
+DMA/cache and allocation helpers plus `0xB29C`, `0x9CAC`, and `0xB0B0`, and
+reads/writes around `0x800AF0C4` and `0x800C4BC0`.
+
+Static dossier:
+`docs/dossiers/boot-resource-node-insert-find.md`.
 
 ## Setup Complete Gate
 
@@ -2146,7 +2179,7 @@ setup-complete state:
 - Assembler: GNU Binutils 2.39 `mips64-elf-as.exe` with `-EB -mips3 -32`.
 - Setup verifier: `tools/verify_setup.js`.
 - Current verifier result: PASS; 825 archives, 0 unknown bytes, 108 overlap
-  bytes visible, 1 tracked composite real-asm chunk made from 87 tracked source
+  bytes visible, 1 tracked composite real-asm chunk made from 88 tracked source
   files, 99 generated fallback chunks, full-source manifest 1,059 entries with
   2,469,141 ambiguous bytes preserved explicitly, 3 tracked non-code
   source-owner files / 44,029 bytes, 1,055 generated non-code fallback files /
@@ -2155,9 +2188,8 @@ setup-complete state:
   `571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A`.
 
 Next phase is either promoting another small non-code owner batch or continuing
-tracked original-MIPS splits from `asm/original/rev0/code_00009CAC_00011000.s`.
-The next MIPS frontier starts with `0x9CAC`, a recursive frame-`0x20` node/tree
-helper with parent callers from the command-stream family and later loader
-helpers, callees to itself, `0x1688`, and `0x23780`, and a clean boundary at
-`0x9D50`; keep `0x9CAC..0x9D50` together. Do not begin semantic C decomp unless
-the setup verifier is green.
+tracked original-MIPS splits from `asm/original/rev0/code_00009D50_00011000.s`.
+The next MIPS frontier starts with `0x9D50`, a larger frame-`0x50`
+resource-loader/context helper with a clean boundary at `0x9EFC`; keep
+`0x9D50..0x9EFC` together unless stronger boundary evidence appears. Do not
+begin semantic C decomp unless the setup verifier is green.

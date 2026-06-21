@@ -793,17 +793,26 @@
           "sha256": "A59D5EFC832745B3A7CA8FA972B82299A70EEA1112FC23D78DCC8563E1405BD4"
         },
         {
-          "name": "code_00009CAC_00011000_remainder",
-          "file": "asm/original/rev0/code_00009CAC_00011000.s",
+          "name": "boot_resource_node_insert_find",
+          "file": "asm/original/rev0/boot/boot_resource_node_insert_find.s",
           "romStart": "0x00009CAC",
+          "romEndExclusive": "0x00009D50",
+          "bytes": 164,
+          "textBytes": 3421,
+          "sha256": "4ED4A4B574A8B54A1242803DA5D1CEF51E362FBA7540B657DE98A4DFB17B6CB7"
+        },
+        {
+          "name": "code_00009D50_00011000_remainder",
+          "file": "asm/original/rev0/code_00009D50_00011000.s",
+          "romStart": "0x00009D50",
           "romEndExclusive": "0x00011000",
-          "bytes": 29524,
-          "textBytes": 570359,
-          "sha256": "D647ABFF57CF12878A4B49D01CAA27EB88B148FFC9B80B75758E1FEEC2BC48E9"
+          "bytes": 29360,
+          "textBytes": 567196,
+          "sha256": "C240115EC55F7D582142425B6B563A46326E1917DD95C41A9DDF0480FBCDC18F"
         }
       ],
-      "textBytes": 1287004,
-      "sha256": "4B5397C3FAC7295AD3825C04E5F8768A4401E5FD7A8D5F402A43C3B4E21D5197"
+      "textBytes": 1287262,
+      "sha256": "5E679C7A959503E5F373870061FB1D41F370BC056DE110DFAC0911AC26C2BAE1"
     }
   ]
 }

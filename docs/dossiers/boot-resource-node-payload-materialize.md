@@ -10,7 +10,7 @@ helper following the command-stream resource-node dispatch family:
 | Source | ROM range | RAM range | Notes |
 | --- | --- | --- | --- |
 | `asm/original/rev0/boot/boot_resource_node_payload_materialize.s` | `0x00009C50..0x00009CAC` | `0x80079850..0x800798AC` | Parent-labeled resource-loader helper that fills a node payload pointer when needed. |
-| `asm/original/rev0/code_00009CAC_00011000.s` | `0x00009CAC..0x00011000` | `0x800798AC..0x80080C00` | Current tracked remainder; starts with the recursive node/tree helper. |
+| `asm/original/rev0/code_00009CAC_00011000.s` | `0x00009CAC..0x00011000` | `0x800798AC..0x80080C00` | Remainder at this checkpoint; superseded by the insert/find split. |
 
 The source name is conservative. It describes the static pointer/materialize
 shape, not a verified runtime API contract.
@@ -52,7 +52,8 @@ shape, not a verified runtime API contract.
   `0x23780`.
 - Local source shows `0x9CAC` allocates and clears `0x1C`-byte nodes, compares
   keys, writes global `0x800AF0C0`, and recurses through child fields
-  `+0x14/+0x18`, so keep `0x9CAC..0x9D50` together next.
+  `+0x14/+0x18`; that follow-up is now promoted as
+  `boot_resource_node_insert_find.s`.
 
 ## Verification
 
@@ -61,8 +62,8 @@ After the split:
 - `node tests\binutils_smoke.js` passed.
 - `node tools\assemble_original_mips.js` passed.
 - Full `node tools\verify_setup.js` passed after docs were updated.
-- The assembled report shows 1 tracked composite real-asm chunk made from 87
-  tracked source files, plus 99 generated fallback chunks.
+- At this checkpoint, the assembled report showed 1 tracked composite real-asm
+  chunk using 87 tracked source files, plus 99 generated fallback chunks.
 - The assembled code-region SHA256 remains
   `40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`.
 - The rebuilt full-ROM SHA256 remains

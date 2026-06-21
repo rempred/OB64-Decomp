@@ -16,7 +16,7 @@ node tools/verify_setup.js
 ```
 
 Current source mix: 1 tracked composite real-assembler chunk
-(`0x00001000..0x00011000`) made from 87 tracked source files, plus 99 generated
+(`0x00001000..0x00011000`) made from 88 tracked source files, plus 99 generated
 fallback chunks.
 
 The assembled code-region SHA256 is
@@ -94,14 +94,13 @@ coverage or overclassifying data as MIPS.
    transform-wrapper/clamped-rect emit split, flagged rect packet emit split,
    color rect packet emit split, vector distance/transform-prefix split,
    transform coefficients/sum-clear split, command stream dispatch split,
-   command stream resource-node dispatch split, and resource-node payload
-   materialize split are done. Continue from
-   `asm/original/rev0/code_00009CAC_00011000.s`, beginning with `0x9CAC`.
-   Parent evidence reports a recursive frame-`0x20` helper fixed in all states,
-   callers from the command-stream family and later loader helpers, callees to
-   itself, `0x1688`, and `0x23780`, and writes to `0x800AF0C0`. Local source
-   shows `0x1C`-byte node allocation, key compare/insert behavior, and child
-   fields at `+0x14/+0x18`; keep `0x9CAC..0x9D50` together.
+   command stream resource-node dispatch split, resource-node payload
+   materialize split, and resource-node insert/find split are done. Continue
+   from `asm/original/rev0/code_00009D50_00011000.s`, beginning with `0x9D50`.
+   Parent evidence labels it `dma/resource::resource loader`, with frame size
+   `0x50`, command-stream callers, callees to the DMA/cache and allocation
+   helpers plus `0xB29C`, `0x9CAC`, and `0xB0B0`, and reads/writes around
+   `0x800AF0C4` and `0x800C4BC0`; keep `0x9D50..0x9EFC` together.
 
 4. Keep the setup gate green.
 

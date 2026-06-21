@@ -18,7 +18,7 @@ and replace the active log with a compact current-state summary.
 - Whole-ROM coverage still independently scans for LHA headers; do not trust the
   parent archive catalog by itself.
 - Current tracked code source mix: one composite real-assembler chunk
-  `0x00001000..0x00011000` made from 87 tracked source files, plus 99 generated
+  `0x00001000..0x00011000` made from 88 tracked source files, plus 99 generated
   fallback code chunks.
 - Current tracked non-code source-owner mix: 3 tracked files / 44,029 bytes,
   plus 1,055 generated fallback owner files / 35,388,567 bytes.
@@ -60,10 +60,9 @@ Current named sequence:
   `boot_bitstream_descriptor_encode.s` `0x43D4..0x4AC8`.
 - Resource probe helpers through
   `boot_resource_probe_record_checksum_signature.s` `0x4AC8..0x5FC0`.
-- State/slot, resource-handle, and transform-record helpers through
-  `boot_resource_node_payload_materialize.s`
-  `0x5FC0..0x9CAC`.
-- Current remainder: `code_00009CAC_00011000.s`.
+- State/slot, resource-handle, transform-record, and command/resource-node
+  helpers through `boot_resource_node_insert_find.s` `0x5FC0..0x9D50`.
+- Current remainder: `code_00009D50_00011000.s`.
 
 Static dossiers live under `docs/dossiers/` and are the durable evidence notes
 for each promoted source-layout split.
@@ -1106,16 +1105,75 @@ Verification for the split:
 - `node tests\binutils_smoke.js` passed.
 - `node tools\assemble_original_mips.js` passed.
 - Full `node tools\verify_setup.js` passed after docs were updated.
-- Source mix is now 1 tracked composite real-asm chunk made from 87 tracked
-  source files, plus 99 generated fallback chunks.
+- At this checkpoint the source mix was 1 tracked composite real-asm chunk
+  using 87 tracked source files, plus 99 generated fallback chunks.
 - Static dossier:
   `docs/dossiers/boot-resource-node-payload-materialize.md`.
 
 ## Next Frontier
 
-Continue from `asm/original/rev0/code_00009CAC_00011000.s`. The first target is
-`0x9CAC`, a recursive frame-`0x20` helper fixed in all states. Parent evidence
-reports callers from the command-stream family and later loader helpers, callees
-to itself, `0x1688`, and `0x23780`, and writes to `0x800AF0C0`. Local source
-shows `0x1C`-byte node allocation, key compare/insert behavior, and child
-fields at `+0x14/+0x18`; keep `0x9CAC..0x9D50` together.
+## 2026-06-21 - Boot Resource Node Insert/Find Split
+
+Baseline before the split:
+
+- `git status --short` was clean at commit
+  `0339dee Split Rev 0 boot resource node payload materialize`.
+- `node tools\verify_setup.js` passed with 825 archives, zero unknown bytes, 108
+  visible overlap bytes, 87 tracked source files, 99 generated fallback chunks,
+  and unchanged code/ROM hashes.
+
+Promoted `asm/original/rev0/boot/boot_resource_node_insert_find.s` covering ROM
+`0x00009CAC..0x00009D50` / RAM `0x800798AC..0x80079950`. The old
+`asm/original/rev0/code_00009CAC_00011000.s` remainder was removed and replaced
+by `asm/original/rev0/code_00009D50_00011000.s`.
+
+Static evidence from parent function/symbol/callgraph/xref data and local
+source:
+
+- `0x9CAC` is a 164-byte recursive prologue helper with frame size `0x20` and
+  no unresolved v2 targets.
+- Parent symbols report primary runtime RAM `0x800798AC`, fixed in all seven
+  named states and all 21 snapshots. The parent signature map also lists a
+  second same-state candidate at RAM `0x80079CB4`, so use the primary address
+  for this boot-linear source split and avoid semantic uniqueness claims.
+- High-confidence callers are `0x978C`, `0x97A8`, `0x9CAC`, `0x9D50`,
+  `0x9EFC`, `0x9FD8`, and `0xA0B4`.
+- High-confidence callees are itself, the resource-alloc mode-1 wrapper
+  `0x1688` / RAM `0x80071288`, and common helper `0x23780` / RAM
+  `0x80093380`.
+- Parent xrefs show `0x800AF0C0` has readers in the command-stream dispatch
+  family and this helper as its writer.
+
+Static shape:
+
+- Accepts a root/node pointer in `a0` and key/source value in `a1`.
+- If the node exists and field `+0x00` equals the key, stores the node to
+  global `0x800AF0C0` and returns it.
+- Otherwise compares the key and recurses through child fields `+0x14` or
+  `+0x18`, updating the chosen child pointer with the recursive return value.
+- If the node is null, allocates and clears a `0x1C`-byte node through `0x1688`
+  and `0x23780`, stores it to `0x800AF0C0`, writes the key to field `+0x00`,
+  and returns the new node.
+- The split includes the `0x9D48` return and `0x9D4C` delay-slot stack restore;
+  the next family starts at `0x9D50`.
+
+Verification for the split:
+
+- `node tests\binutils_smoke.js` passed.
+- `node tools\assemble_original_mips.js` passed.
+- Full `node tools\verify_setup.js` passed after docs were updated.
+- Source mix is now 1 tracked composite real-asm chunk made from 88 tracked
+  source files, plus 99 generated fallback chunks.
+- Static dossier:
+  `docs/dossiers/boot-resource-node-insert-find.md`.
+
+## Next Frontier
+
+Continue from `asm/original/rev0/code_00009D50_00011000.s`. The first target is
+`0x9D50`, a larger frame-`0x50` resource-loader/context helper. Parent evidence
+labels it `dma/resource::resource loader`, reports command-stream callers,
+callees to the DMA/cache and allocation helpers plus `0xB29C`, `0x9CAC`, and
+`0xB0B0`, and reads/writes around `0x800AF0C4` and `0x800C4BC0`. Local source
+shows a special `-0x16` path, node payload materialization, calls to
+`0x8007AE9C` and `0x8007ACB0`, and updates to the current context global; keep
+`0x9D50..0x9EFC` together.
