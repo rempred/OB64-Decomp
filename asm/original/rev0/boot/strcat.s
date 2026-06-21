@@ -1,0 +1,30 @@
+/*
+ * Original Rev 0 MIPS reference split.
+ * Parent source: asm/original/rev0/code_0000F22C_00011000.s
+ * z64 range: 0x0000F808..0x0000F850 exclusive
+ * Decode comments are aids, not proof of semantic function boundaries.
+ */
+.set noat
+.set noreorder
+.text
+
+/* True entry 0x0000F808 (read-before-write preamble; the parent-DB boundary label appears below inside the body). */
+strcat:
+/* 0x0000F808 0x8007F408 0x90820000 */ .word 0x90820000 # lbu $v0, 0x0($a0)
+/* 0x0000F80C 0x8007F40C 0x10400005 */ .word 0x10400005 # beq $v0, $zero, 0x8007F424
+/* 0x0000F810 0x8007F410 0x00801821 */ .word 0x00801821 # move $v1, $a0
+/* 0x0000F814 0x8007F414 0x24630001 */ .word 0x24630001 # addiu $v1, $v1, 0x1
+/* 0x0000F818 0x8007F418 0x90620000 */ .word 0x90620000 # lbu $v0, 0x0($v1)
+/* 0x0000F81C 0x8007F41C 0x5440FFFE */ .word 0x5440FFFE # bnel $v0, $zero, 0x8007F418
+/* 0x0000F820 0x8007F420 0x24630001 */ .word 0x24630001 # addiu $v1, $v1, 0x1
+/* 0x0000F824 0x8007F424 0x90A20000 */ .word 0x90A20000 # lbu $v0, 0x0($a1)
+/* 0x0000F828 0x8007F428 0x50400007 */ .word 0x50400007 # beql $v0, $zero, 0x8007F448
+/* 0x0000F82C 0x8007F42C 0xA0600000 */ .word 0xA0600000 # sb $zero, 0x0($v1)
+/* 0x0000F830 0x8007F430 0x24A50001 */ .word 0x24A50001 # addiu $a1, $a1, 0x1
+/* 0x0000F834 0x8007F434 0xA0620000 */ .word 0xA0620000 # sb $v0, 0x0($v1)
+/* 0x0000F838 0x8007F438 0x90A20000 */ .word 0x90A20000 # lbu $v0, 0x0($a1)
+/* 0x0000F83C 0x8007F43C 0x1440FFFC */ .word 0x1440FFFC # bne $v0, $zero, 0x8007F430
+/* 0x0000F840 0x8007F440 0x24630001 */ .word 0x24630001 # addiu $v1, $v1, 0x1
+/* 0x0000F844 0x8007F444 0xA0600000 */ .word 0xA0600000 # sb $zero, 0x0($v1)
+/* 0x0000F848 0x8007F448 0x03E00008 */ .word 0x03E00008 # jr $ra
+/* 0x0000F84C 0x8007F44C 0x00801021 */ .word 0x00801021 # move $v0, $a0

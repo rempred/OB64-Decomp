@@ -164,9 +164,15 @@ Spurious secondary entries flagged (do NOT split): `0xBBB8` (mid-loop label in
 
 ## Open questions / next frontier
 
-- The 85-entry table `0x800AE128` and 9-entry table `0x800AE2E8` are runtime DATA
-  (likely registered by an init routine outside this tranche); decoding them maps
-  opcodes → handlers and would let many `func_*` here be named precisely.
+- The 85-entry table `0x800AE128` and 9-entry table `0x800AE2E8` are **RESOLVED**
+  (2026-06-21, see `docs/dossiers/boot-codec-libc-vec3-F22C-11000.md`): they are
+  **static ROM data** (z64 `0x3E528` / `0x3E6E8`), NOT runtime-registered (xref
+  scan found zero writers). Opcode→handler map for `0x800AE128`: op1→`0xB888`,
+  op2→`0xB8D0`, op64→`0xB92C`, op80→`0xB964`, op81→`0xB980`, op84→`0xB9A4`,
+  default (79 ops)→`0xB9C0` (all inside `boot_resource_tag_record_decode`). The
+  codec source vtable is RAM `0x800A876C` / ROM `0x38B6C` (`0x800AF3B4` is the
+  per-call working copy). Those table/vtable bytes are data inside a not-yet-split
+  generated chunk — flag for data-vs-code reclassification when reached.
 - The codec is hypothesis-grade Huffman/LZHUF/DEFLATE; runtime proof (or matching
   to a known algorithm) would upgrade the `boot_decode_huffman_*` names.
 - **Next frontier `0x0000F22C`** (corrected from `0xF23C`): continues this same

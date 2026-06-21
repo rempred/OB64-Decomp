@@ -16,8 +16,9 @@ node tools/verify_setup.js
 ```
 
 Current source mix: 1 tracked composite real-assembler chunk
-(`0x00001000..0x00011000`) made from 102 tracked source files, plus 99 generated
-fallback chunks.
+(`0x00001000..0x00011000`) made from 177 tracked source files, plus 99 generated
+fallback chunks. **Chunk 0 is fully split into named functions**
+(`0x00001000..0x00011000`); next is chunk 1.
 
 The assembled code-region SHA256 is
 `40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`; the full
@@ -94,25 +95,26 @@ node tools/audit_code_region.js
    generates fallback owners for the rest. Keep `node tools/verify_setup.js`
    green after every promotion.
 
-3. Continue splitting the first tracked chunk into smaller source files.
+3. Continue splitting into chunk 1.
 
-   Chunk 0 (`0x00001000..0x00011000`) is split into named functions through
-   `0x0000F22C`: the boot/resource/display-list/probe/state-slot/command-stream
-   helpers (`0x1000..0xB030`, see Source Promotion History in `DECOMP_LOG.md` +
-   the archived full log), then the resource-archive loader + custom decompressor
-   subsystem `0xB030..0xF22C` (29 functions; dossier
-   `docs/dossiers/boot-resource-decode-subsystem-B030-F22C.md`).
+   Chunk 0 (`0x00001000..0x00011000`) is fully split into named functions: boot/
+   resource/display-list/probe/state-slot/command-stream helpers (`0x1000..0xB030`),
+   the resource-archive loader + custom decompressor (`0xB030..0xF22C`, dossier
+   `boot-resource-decode-subsystem-B030-F22C.md`), and codec/libc/vec3/text/IO
+   (`0xF22C..0x11000`, dossier `boot-codec-libc-vec3-F22C-11000.md`).
 
-   **Continue from `asm/original/rev0/code_0000F22C_00011000.s`**, starting at the
-   corrected true entry `0x0000F22C` (parent labels it `0xF23C`; a 4-word
-   read-before-write preamble precedes it). It is another canonical-Huffman
-   read/decode worker; past it the region continues into the codec workers and the
-   low-level stream I/O (`func_0000F970` fread-like, `F9D8` fwrite-like). Seed each
-   pass with `node tools/dump_function_context.js --start 0xF22C --end <next>` and
-   expect the preamble-orphan boundary idiom (true entry precedes the labeled
-   `func_` start) on essentially every function here. High-value side quest:
-   decode the runtime dispatch tables `0x800AE128` (85) / `0x800AE2E8` (9) to map
-   opcodes → handlers and upgrade the `func_*`/hypothesis names in the subsystem.
+   **Next frontier: `0x00011000` (chunk 1).** BLOCKER to clear first:
+   `tools/promote_original_mips.js` overwrites `asm/original/rev0/manifest.json`
+   with ONLY the newly-promoted chunk, so it would clobber chunk 0's 177-part
+   composite. Fix it to MERGE (load existing manifest, append new chunk by range,
+   refuse overwrite unless `--force`); then promote chunk 1
+   (`code_00011000_00021000.s`) and split with `split_original_mips_part.js`.
+   Note the chunk-boundary straddler `euler_to_matrix_full` `0x10FE0..0x11168`:
+   its tail `[0x11000,0x11168)` is the head of chunk 1's first file. Reaching the
+   4% target `0x0001CD34` is ~201 chunk-1 functions (25 preamble-orphans + 26
+   dual/secondary entries per the boundary planner) — budget heavy boundary
+   validation; seed with `node tools/dump_function_context.js --start 0x11000
+   --end <next>` (exclusive ends now correct).
 
 4. Keep the setup gate green.
 

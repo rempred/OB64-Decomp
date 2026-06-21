@@ -104,21 +104,43 @@ function main() {
   const fnArr = (functionsDb && functionsDb.functions) || [];
   const symFns = (symbolsDb && symbolsDb.functions) || null;
 
+  // Parent `end_rom` is the address of the LAST instruction word (INCLUSIVE), so
+  // the exclusive end is end_rom + 4 (size == end_rom + 4 - start_rom). Using
+  // end_rom directly produced phantom 4-byte "gaps" (the return delay slot).
+  const endExclusive = (f) => f.end_rom + 4;
+  // Regression guard: fail loudly if this semantics assumption ever breaks, so
+  // the off-by-4 cannot silently return.
+  for (const f of fnArr) {
+    if (f.valid === false) continue;
+    if (typeof f.size === 'number' && typeof f.start_rom === 'number' && typeof f.end_rom === 'number') {
+      if (endExclusive(f) - f.start_rom !== f.size) {
+        throw new Error(
+          `Parent end_rom semantics check failed at ${hex(f.start_rom)}: end_rom+4-start_rom=${endExclusive(f) - f.start_rom} != size ${f.size}. ` +
+          'The function DB may have changed end_rom semantics; review dump_function_context.js.',
+        );
+      }
+    }
+  }
+
   const inRange = fnArr
     .filter((f) => f.valid !== false && typeof f.start_rom === 'number' && f.start_rom >= args.start && f.start_rom < args.end)
     .sort((a, b) => a.start_rom - b.start_rom);
 
   const startSet = new Set(inRange.map((f) => f.start_rom));
 
-  // Boundary anomalies: gaps and overlaps between consecutive functions.
+  // Boundary anomalies between consecutive functions, using the EXCLUSIVE end.
+  // A real gap (gap bytes > 0) is usually a preamble-orphan (read-before-write
+  // load words that belong to the next function) or alignment padding, not a
+  // delay-slot artifact.
   const boundaryNotes = [];
   for (let i = 0; i < inRange.length - 1; i += 1) {
     const cur = inRange[i];
     const next = inRange[i + 1];
-    if (cur.end_rom < next.start_rom) {
-      boundaryNotes.push({ kind: 'gap', after: hex(cur.start_rom), from: hex(cur.end_rom), to: hex(next.start_rom), bytes: next.start_rom - cur.end_rom });
-    } else if (cur.end_rom > next.start_rom) {
-      boundaryNotes.push({ kind: 'overlap', a: hex(cur.start_rom), b: hex(next.start_rom), aEnd: hex(cur.end_rom) });
+    const curEnd = endExclusive(cur);
+    if (curEnd < next.start_rom) {
+      boundaryNotes.push({ kind: 'gap', after: hex(cur.start_rom), from: hex(curEnd), to: hex(next.start_rom), bytes: next.start_rom - curEnd, note: 'likely preamble-orphan or alignment; check whether the gap words load globals consumed read-before-write by the next function' });
+    } else if (curEnd > next.start_rom) {
+      boundaryNotes.push({ kind: 'overlap', a: hex(cur.start_rom), b: hex(next.start_rom), aEnd: hex(curEnd), note: 'dual/secondary entry' });
     }
   }
 
@@ -150,9 +172,9 @@ function main() {
     });
     return {
       rom: hex(f.start_rom),
-      romEndExclusive: hex(f.end_rom),
+      romEndExclusive: hex(endExclusive(f)),
       ram: sym && sym.ram ? sym.ram : hex(f.start_ram),
-      bytes: f.end_rom - f.start_rom,
+      bytes: endExclusive(f) - f.start_rom,
       kind: f.kind,
       frameSize: f.frame_size,
       name: (sym && sym.name) || null,

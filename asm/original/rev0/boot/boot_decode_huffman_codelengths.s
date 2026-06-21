@@ -8,6 +8,8 @@
 .set noreorder
 .text
 
+/* True entry 0x0000ECF0 (read-before-write preamble loads 0x800AF3C6, consumed at 0x0000ED08; the parent-DB boundary func_0000ECF8 below is NOT the true start). */
+boot_decode_huffman_codelengths:
 /* 0x0000ECF0 0x8007E8F0 0x3C02800B */ .word 0x3C02800B # lui $v0, 0x800B
 /* 0x0000ECF4 0x8007E8F4 0x9442F3C6 */ .word 0x9442F3C6 # lhu $v0, -0xC3A($v0)
 

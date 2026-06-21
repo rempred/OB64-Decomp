@@ -53,14 +53,18 @@ function parseArgs(argv) {
 
 function parseSplit(value) {
   const pieces = value.split(':');
-  if (pieces.length !== 4) {
-    throw new Error(`Invalid --split value "${value}"; expected name:start:end:out-file`);
+  if (pieces.length !== 4 && pieces.length !== 5) {
+    throw new Error(`Invalid --split value "${value}"; expected name:start:end:out-file[:true-entry-label]`);
   }
   return {
     name: pieces[0],
     start: parseHexOrNumber(pieces[1]),
     end: parseHexOrNumber(pieces[2]),
     file: pieces[3].replace(/\\/g, '/'),
+    // Optional 5th field: a label emitted at the file's true entry (split.start).
+    // Use for preamble-orphan splits whose true entry precedes the parent-DB
+    // boundary label that appears inside the body.
+    label: pieces[4] || null,
   };
 }
 
@@ -136,7 +140,7 @@ function writeSplitFile({ split, sourcePart, lines }) {
   const outPath = repoPath(split.file);
   ensureDir(path.dirname(outPath));
   const body = extractRange(lines, split.start, split.end);
-  const text = [
+  const headerLines = [
     '/*',
     ' * Original Rev 0 MIPS reference split.',
     ` * Parent source: ${sourcePart.file}`,
@@ -147,9 +151,12 @@ function writeSplitFile({ split, sourcePart, lines }) {
     '.set noreorder',
     '.text',
     '',
-    ...body,
-    '',
-  ].join('\n');
+  ];
+  if (split.label) {
+    headerLines.push(`/* True entry ${hex(split.start)} (read-before-write preamble; the parent-DB boundary label appears below inside the body). */`);
+    headerLines.push(`${split.label}:`);
+  }
+  const text = [...headerLines, ...body, ''].join('\n');
   fs.writeFileSync(outPath, text);
   return {
     name: split.name,

@@ -1,0 +1,35 @@
+/*
+ * Original Rev 0 MIPS reference split.
+ * Parent source: asm/original/rev0/code_0000F22C_00011000.s
+ * z64 range: 0x00010C94..0x00010CF0 exclusive
+ * Decode comments are aids, not proof of semantic function boundaries.
+ */
+.set noat
+.set noreorder
+.text
+
+/* True entry 0x00010C94 (read-before-write preamble; the parent-DB boundary label appears below inside the body). */
+parse_decimal_inline:
+/* 0x00010C94 0x80080894 0x8C820000 */ .word 0x8C820000 # lw $v0, 0x0($a0)
+/* 0x00010C98 0x80080898 0x90430000 */ .word 0x90430000 # lbu $v1, 0x0($v0)
+/* 0x00010C9C 0x8008089C 0x1060000F */ .word 0x1060000F # beq $v1, $zero, 0x800808DC
+/* 0x00010CA0 0x800808A0 0x00002821 */ .word 0x00002821 # move $a1, $zero
+/* 0x00010CA4 0x800808A4 0x24460001 */ .word 0x24460001 # addiu $a2, $v0, 0x1
+/* 0x00010CA8 0x800808A8 0x00403821 */ .word 0x00403821 # move $a3, $v0
+/* 0x00010CAC 0x800808AC 0x2462FFD0 */ .word 0x2462FFD0 # addiu $v0, $v1, -0x30
+/* 0x00010CB0 0x800808B0 0x2C42000A */ .word 0x2C42000A # sltiu $v0, $v0, 0xA
+/* 0x00010CB4 0x800808B4 0x10400009 */ .word 0x10400009 # beq $v0, $zero, 0x800808DC
+/* 0x00010CB8 0x800808B8 0xAC860000 */ .word 0xAC860000 # sw $a2, 0x0($a0)
+/* 0x00010CBC 0x800808BC 0x00051080 */ .word 0x00051080 # sll $v0, $a1, 2
+/* 0x00010CC0 0x800808C0 0x00451021 */ .word 0x00451021 # addu $v0, $v0, $a1
+/* 0x00010CC4 0x800808C4 0x00021040 */ .word 0x00021040 # sll $v0, $v0, 1
+/* 0x00010CC8 0x800808C8 0x2442FFD0 */ .word 0x2442FFD0 # addiu $v0, $v0, -0x30
+/* 0x00010CCC 0x800808CC 0x00622821 */ .word 0x00622821 # addu $a1, $v1, $v0
+/* 0x00010CD0 0x800808D0 0x90E30001 */ .word 0x90E30001 # lbu $v1, 0x1($a3)
+/* 0x00010CD4 0x800808D4 0x1460FFF3 */ .word 0x1460FFF3 # bne $v1, $zero, 0x800808A4
+/* 0x00010CD8 0x800808D8 0x00C01021 */ .word 0x00C01021 # move $v0, $a2
+/* 0x00010CDC 0x800808DC 0x03E00008 */ .word 0x03E00008 # jr $ra
+/* 0x00010CE0 0x800808E0 0x00A01021 */ .word 0x00A01021 # move $v0, $a1
+/* 0x00010CE4 0x800808E4 0x00000000 */ .word 0x00000000 # nop
+/* 0x00010CE8 0x800808E8 0x00000000 */ .word 0x00000000 # nop
+/* 0x00010CEC 0x800808EC 0x00000000 */ .word 0x00000000 # nop

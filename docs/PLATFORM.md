@@ -119,7 +119,7 @@ Expected current results:
   baserom code-region SHA256
   `40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`.
 - `assemble_original_mips.js` currently uses 1 tracked composite
-  real-assembler chunk (`0x00001000..0x00011000`) made from 131 tracked source
+  real-assembler chunk (`0x00001000..0x00011000`) made from 177 tracked source
   files, plus 99 generated fallback chunks.
 - `rebuild_rom.js --assembled-code ...` substitutes that assembled code blob for
   the raw code segment and still confirms the same full-ROM SHA256.
@@ -201,11 +201,12 @@ These outputs are useful but ignored:
 - ROM size: 41,943,040 bytes.
 - Code region currently extracted as original MIPS:
   `0x00001000..0x0063676C`.
-- Named-function split coverage of chunk 0: `0x00001000..0x0000F22C` (131 tracked
-  source files); current split frontier `0x0000F22C` (remainder
-  `code_0000F22C_00011000.s`). `0xB030..0xF22C` is the resource-archive loader +
-  decompressor subsystem (dossier
-  `docs/dossiers/boot-resource-decode-subsystem-B030-F22C.md`).
+- Chunk 0 (`0x00001000..0x00011000`) is fully split into named functions (177
+  tracked source files); current split frontier `0x00011000` (chunk 1, still a
+  generated fallback chunk). `0xB030..0xF22C` is the resource-archive loader +
+  decompressor subsystem; `0xF22C..0x11000` is codec/libc/vec3/text/IO (dossiers
+  `docs/dossiers/boot-resource-decode-subsystem-B030-F22C.md`,
+  `docs/dossiers/boot-codec-libc-vec3-F22C-11000.md`).
 - Executable extent (evidence, `tools/audit_code_region.js`):
   `0x00001000..0x002B89B4`. The trailing `0x002B89B4..0x0063676C` (3,661,240
   bytes, 56.24%) has zero `jr $ra` and is non-code data still emitted as `.word`
@@ -291,7 +292,7 @@ prints PASS. Current PASS summary:
 - Toolchain: `n64-tools-gcc-toolchain-mips64-win64`, GNU Binutils 2.39.
 - Binutils smoke tests: `.word`, real instructions, `.set noreorder`, and first
   tracked chunk real assembly all pass.
-- Source mix: 1 tracked composite real-asm chunk made from 131 tracked source
+- Source mix: 1 tracked composite real-asm chunk made from 177 tracked source
   files, plus 99 generated fallback chunks.
 - Source manifest: 1,059 entries, zero unknown bytes, 2,469,141 ambiguous bytes
   preserved explicitly.

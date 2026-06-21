@@ -8,6 +8,8 @@
 .set noreorder
 .text
 
+/* True entry 0x0000D600 (read-before-write preamble loads 0x800AF3C2/0x800AF410, consumed at 0x0000D61C/0x0000D624; the parent-DB boundary func_0000D610 below is NOT the true start). */
+func_0000D600:
 /* 0x0000D600 0x8007D200 0x3C02800B */ .word 0x3C02800B # lui $v0, 0x800B
 /* 0x0000D604 0x8007D204 0x9442F3C2 */ .word 0x9442F3C2 # lhu $v0, -0xC3E($v0)
 /* 0x0000D608 0x8007D208 0x3C03800B */ .word 0x3C03800B # lui $v1, 0x800B

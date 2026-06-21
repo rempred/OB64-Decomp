@@ -25,12 +25,19 @@ and replace the active log with a compact current-state summary.
   the tail (0 branch targets, 0 J/JAL to a known function). Audit:
   `tools/audit_code_region.js` / `docs/CODE_REGION_AUDIT.md`.
 - Current tracked code source mix: one composite real-assembler chunk
-  `0x00001000..0x00011000` made from 131 tracked source files, plus 99 generated
-  fallback code chunks. Named-function coverage of chunk 0 now runs
-  `0x00001000..0x0000F22C`; current remainder `code_0000F22C_00011000.s`.
-- The parent boundary DB orphans a 2–4 word read-before-write load preamble onto
-  the previous function's tail; true entries precede the labeled `func_` start
-  (seen at `0xD248/0xD600/0xECF0/0xF22C`). Always check for this when splitting.
+  `0x00001000..0x00011000` made from 177 tracked source files, plus 99 generated
+  fallback code chunks. **Chunk 0 is now fully split into named functions**
+  (`0x00001000..0x00011000`); next is chunk 1 (`0x00011000`, still a generated
+  fallback chunk — see Next Frontier for the promote-tool blocker).
+- The parent boundary DB has TWO recurring defects, both fixed when splitting:
+  (1) `end_rom` is INCLUSIVE (exclusive end = `end_rom + 4`; do NOT treat the
+  delay slot as a gap — `tools/dump_function_context.js` now enforces this with a
+  regression guard); (2) it both over-merges (multiple real functions in one
+  record with spurious "secondary entries", e.g. `0xF734` = 4 functions incl.
+  libc `strcat/strcpy/strcmp`) and orphans a read-before-write load preamble onto
+  the previous function's tail (true entry precedes the labeled `func_` start;
+  seen at `0xD248/0xD600/0xECF0/0xF22C/0xFDB8/0x1054C/0x10E70/0x10FE0`). Always
+  validate boundaries from disasm, not the parent record alone.
 - Current tracked non-code source-owner mix: 3 tracked files / 44,029 bytes,
   plus 1,055 generated fallback owner files / 35,388,567 bytes.
 - Current code-region SHA256:
@@ -76,7 +83,12 @@ Current named sequence:
   `boot_resource_lzss_load_entry` … `boot_resource_huffman_codelengths`; 10 left
   as `func_0000XXXX`). Dossier:
   `docs/dossiers/boot-resource-decode-subsystem-B030-F22C.md`.
-- Current remainder: `code_0000F22C_00011000.s`.
+- Codec / libc / vec3 tranche `0x0000F22C..0x00011000` (47 named parts: codec
+  workers, libc `strcat/strcpy/strcmp/memset/memcpy`, `boot_io_*` stream I/O, a
+  `vec3_*` float math library, text renderer, RNG). Dossier:
+  `docs/dossiers/boot-codec-libc-vec3-F22C-11000.md`. **Chunk 0 complete.**
+- Current remainder: none in chunk 0 (`0x1000..0x11000` fully named). Next is
+  chunk 1 generated fallback `0x00011000..0x00021000`.
 
 Static dossiers live under `docs/dossiers/` and are the durable evidence notes
 for each promoted source-layout split.
@@ -257,14 +269,71 @@ corrected entry `0x0000F22C` (a canonical-Huffman read/decode worker), then
 continue the codec and the low-level stream I/O (`func_0000F970` fread-like,
 `F9D8` fwrite-like, referenced from this tranche). Expect the preamble-orphan
 boundary idiom on every function. A high-value side quest: decode the runtime
-dispatch tables `0x800AE128`/`0x800AE2E8` (registered elsewhere) to map opcodes
-to handlers and upgrade the `func_*`/hypothesis names.
+dispatch tables `0x800AE128`/`0x800AE2E8` to map opcodes to handlers. (RESOLVED
+in the 2026-06-21 codec/libc/vec3 entry below: they are static ROM data, not
+runtime-registered.)
+
+## 2026-06-21 - Codec / libc / vec3 Split (0xF22C..0x11000); chunk 0 complete
+
+Finished chunk 0's named coverage and fixed the review-flagged tooling/labels.
+
+- Range: ROM `0x0000F22C..0x00011000` (**47 functions**). Previous frontier
+  `0x0000F22C`; new frontier `0x00011000` (chunk 0 fully named). Tracked source
+  files 131 -> 177. Byte-exact preserved (code SHA `40D4E787...B409`, ROM SHA
+  `571E8339...CC67A`). Dossier: `docs/dossiers/boot-codec-libc-vec3-F22C-11000.md`.
+- Method: fixed `dump_function_context.js` (end_rom inclusive -> exclusive
+  +4; regression guard added), regenerated context, ran a 6-agent swarm
+  (4 cluster + dispatch + adversarial review), integrated names + boundaries.
+- Prerequisite fixes (from the prior review):
+  - `dump_function_context.js`: `romEndExclusive`/`bytes`/boundary-notes now use
+    `end_rom + 4`; phantom 4-byte delay-slot "gaps" eliminated; in-tool assertion
+    fails loudly if `end_rom+4-start_rom != size`.
+  - True-entry labels: `func_0000D248.s`, `func_0000D600.s`,
+    `boot_decode_huffman_codelengths.s` now expose the true entry as the primary
+    label (parent-DB boundary annotated); manifest part hashes resynced.
+    `split_original_mips_part.js` gained an optional `:label` 5th field for new
+    preamble-orphan splits.
+  - Stale-doc fixes: `NEXT_STEPS.md`, `WORKFLOW.md`, `AGENTS.md` setup section
+    (`102 -> 131 -> 177`, frontier `0xB030 -> 0x11000`).
+- Boundary corrections (verified from disasm): parent UNDER-merges un-split —
+  `0xF734` = `boot_decode_init_mtf_tables` + libc `strcat`/`strcpy`/`strcmp`;
+  `0xF8B0` = `memset` + `boot_io_open_stream`; `0x10B98` = 3 (flagged wrapper +
+  `char_to_glyph_index` + `parse_decimal_inline`); `0x10CF0` = `rand_unit_double`
+  + `memcpy_bytewise`. Preamble-orphans `0xF22C/0xFDB8/0x1054C/0x10E70/0x10FE0`.
+  Dual-entry fallthroughs merged `0x10500`/`0x10528`, `0x107B8`/`0x107C0`.
+  Chunk-boundary straddler `euler_to_matrix_full` `0x10FE0..0x11168` (head only in
+  chunk 0; tail starts chunk 1).
+- New names (47): high-confidence libc (`strcat/strcpy/strcmp/memset/`
+  `memcpy_bytewise/memcpy_aligned`), `boot_io_open_stream/fread/fwrite`, codec
+  workers (`boot_decode_canonical_huffman_symbol` — renamed to avoid collision
+  with the adaptive `boot_decode_huffman_symbol` @0xE3F0 — `read_block_header`,
+  `read_packed_code`, `init_mtf_tables`), a `vec3_*` math library (copy, cross,
+  dot, normalize x2, sub/add/scale x2, magnitude, weighted_blend), and a text
+  renderer (`text_render_begin*`, `text_draw_string*`, `char_to_glyph_index`,
+  `parse_decimal_inline`). Medium/hypothesis (kept descriptive, marked in
+  dossier): `ui_set_scroll_window`, `fade_channel_*`, `emit_rdp_setup_displaylist`,
+  `rand_*`, `euler_to_matrix*`. One awkward medium name kept conservative as
+  `func_0000FC80` (thread-create-like; accesses `0x800BF440`).
+- Dispatch tables RESOLVED (updates prior tranche): `0x800AE128` (85-entry) and
+  `0x800AE2E8` (9-entry) are STATIC ROM data (z64 `0x3E528` / `0x3E6E8`), no
+  runtime writers; opcode→handler map extracted (op1→`0xB888` … default→`0xB9C0`
+  inside `0xB3E4`). The codec vtable: `0x800AF3B4` is the per-call working copy;
+  the TRUE source vtable is RAM `0x800A876C` / ROM `0x38B6C`.
+- False leads: parent "secondary entries" in the over-merged records are spurious;
+  `0x10334` is a pad-then-leaf (alignment nops), not a strict preamble-orphan.
+- Verification: `node --check tools/dump_function_context.js`;
+  `node tools/dump_function_context.js --start 0xF22C --end 0x11000`;
+  `node tools/assemble_original_mips.js`; `node tools/verify_setup.js` PASS;
+  `node tools/audit_code_region.js` OK; `git diff --check` clean.
+- Next frontier: `0x00011000` (chunk 1). See Next Frontier for the
+  `promote_original_mips.js` merge blocker.
 
 ## Current Dossier Set
 
 The current boot/source-layout dossier list is long; use `docs/PLATFORM.md` for
 the full quick index. The newest dossiers are:
 
+- `docs/dossiers/boot-codec-libc-vec3-F22C-11000.md` (47-function tranche; chunk 0 done)
 - `docs/dossiers/boot-resource-decode-subsystem-B030-F22C.md` (29-function tranche)
 - `docs/dossiers/boot-command-stream-dispatch.md`
 - `docs/dossiers/boot-command-stream-resource-node-dispatch.md`
@@ -286,23 +355,32 @@ the full quick index. The newest dossiers are:
 
 ## Next Frontier
 
-Continue from `asm/original/rev0/code_0000F22C_00011000.s`. The next function's
-TRUE entry is `0x0000F22C` (parent labels it `0xF23C`; the 4 preamble words
-`0xF22C..0xF238` load `0x800AF3C2`/`0x800AF410`, consumed read-before-write at
-`0xF248/0xF250`). It is another canonical-Huffman read/decode worker in the same
-codec (end-of-block symbol `0x11D`=285; calls bit-reader `0xC65C`). Past it the
-label list continues into the low-level stream I/O this tranche calls out to
-(`func_0000F970` fread-like, `F9D8` fwrite-like) plus remaining codec workers.
-Expect the preamble-orphan boundary idiom (true entry precedes the labeled
-`func_` start) on essentially every function in this region. Use
-`tools/dump_function_context.js --start 0xF22C --end <next>` to seed the next
-pass, and resolve `jal 0x8007C25C`->`0xC65C` / `jal 0x8007C438`->`0xC838` /
-`jal 0x8007BC24`->`0xC024` to their real/secondary entries rather than trusting
-static call degree. Subsystem context + globals:
+Chunk 0 (`0x00001000..0x00011000`) is fully split into named functions. The next
+frontier is **`0x00011000` (chunk 1)**, but first clear the BLOCKER below.
+
+BLOCKER for chunk 1 (must fix before promoting it): `tools/promote_original_mips.js`
+**overwrites** `asm/original/rev0/manifest.json` with ONLY the newly-promoted
+chunk (it builds `manifest.chunks = promoted` and writes), so running it for
+chunk 1 would clobber chunk 0's 177-part composite. Multi-chunk promotion was
+never implemented. Fix: make it MERGE (load the existing manifest, append new
+chunks by range, refuse to overwrite an existing chunk unless `--force`). Then
+`node tools/promote_original_mips.js --chunk <chunk1 file>` and split with
+`tools/split_original_mips_part.js`.
+
+Chunk-boundary straddler: `euler_to_matrix_full` is `0x10FE0..0x11168`; its head
+`[0x10FE0,0x11000)` is the last chunk-0 file, and the tail `[0x11000,0x11168)`
+is the head of chunk 1's first file (name it as the straddler continuation).
+
+Reaching the 4% target `0x0001CD34` needs ~201 chunk-1 functions; the boundary
+planner shows 25 preamble-orphans + 26 dual/secondary entries in chunk 1, so
+budget for heavy boundary validation. Seed with
+`node tools/dump_function_context.js --start 0x11000 --end <next>` (now correct
+exclusive ends). Subsystem/globals context:
+`docs/dossiers/boot-codec-libc-vec3-F22C-11000.md` and
 `docs/dossiers/boot-resource-decode-subsystem-B030-F22C.md`.
 
 There are now two active tracks. The boot function-split track continues at
-`0xF22C` as above. The full-ROM coverage track (opened 2026-06-21) next refines
+`0x11000` (chunk 1) as above. The full-ROM coverage track (opened 2026-06-21) next refines
 the exact code/data boundary near `0x002B89B4` and reclassifies the non-code tail
 `0x002B89B4..0x0063676C` from `original_mips` to a data source form, shrinking the
 configured code region to the executable extent while keeping the exact rebuild

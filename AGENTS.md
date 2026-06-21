@@ -204,9 +204,9 @@ Current result:
   `40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`.
 - Code-region match against baserom: pass.
 - Tracked real-assembler original-MIPS chunks: 1 composite
-  (`0x00001000..0x00011000`) made from 131 real-assembler source files.
-  Named-function coverage of chunk 0 runs `0x00001000..0x0000F22C`; current
-  remainder `code_0000F22C_00011000.s`.
+  (`0x00001000..0x00011000`) made from 177 real-assembler source files.
+  Chunk 0 (`0x00001000..0x00011000`) is now fully split into named functions;
+  next is chunk 1 (`0x00011000`, still a generated fallback chunk).
 - Generated fallback chunks: 99.
 - Assembled-code ROM rebuild command:
 
@@ -222,16 +222,22 @@ Next source-layout work should continue promoting/splitting tracked
 `tools/promote_original_mips.js` for chunk promotion and `--strict-tracked` only
 after every configured code chunk is tracked.
 
-`0x00001000..0x0000F22C` is split into named functions. `0xB030..0xF22C` is a
-resource-archive loader + custom decompressor (Huffman/DEFLATE + adaptive-Huffman
-+ CRC16, runtime dispatch tables `0x800AE128`/`0x800AE2E8`), dossier
-`docs/dossiers/boot-resource-decode-subsystem-B030-F22C.md`. Next frontier is
-`0x0000F22C` (continues the codec). Use `tools/dump_function_context.js
---start <s> --end <e>` to seed a split pass (read-only join of parent
-boundaries + symbols_v2 callgraph + accessed globals + flags). Heads-up: the
-parent boundary DB orphans a 2–4 word read-before-write load preamble onto the
-previous function's tail, so the true entry can precede the labeled `func_` start
-(corrected at `0xD248/0xD600/0xECF0/0xF22C`) — verify when splitting.
+Chunk 0 `0x00001000..0x00011000` is fully split into named functions.
+`0xB030..0xF22C` is a resource-archive loader + custom decompressor
+(Huffman/DEFLATE + adaptive-Huffman + CRC16); `0xF22C..0x11000` continues the
+codec then adds shared libc (`strcat/strcpy/strcmp/memset/memcpy`), `boot_io_*`
+stream I/O, a `vec3_*` float math library, and a text renderer (dossiers
+`boot-resource-decode-subsystem-B030-F22C.md`, `boot-codec-libc-vec3-F22C-11000.md`).
+The dispatch tables `0x800AE128` (85) / `0x800AE2E8` (9) are **static ROM data**
+(z64 `0x3E528`/`0x3E6E8`, no runtime registration; opcode→handler map resolved);
+the codec source vtable is RAM `0x800A876C` / ROM `0x38B6C`.
+Next frontier is **`0x00011000` (chunk 1)** — first fix the
+`promote_original_mips.js` manifest-clobber blocker (see `docs/NEXT_STEPS.md`).
+Use `tools/dump_function_context.js --start <s> --end <e>` to seed a split pass
+(correct exclusive ends = parent `end_rom + 4`). Heads-up: the parent boundary DB
+both over-merges real functions (spurious "secondary entries", e.g. `0xF734` = 4
+funcs) and orphans a read-before-write load preamble onto the previous function's
+tail (true entry precedes the labeled `func_` start) — validate from disasm.
 
 ## First Decomp Loop: Boot Entry
 
@@ -2634,8 +2640,9 @@ setup-complete state:
 - Assembler: GNU Binutils 2.39 `mips64-elf-as.exe` with `-EB -mips3 -32`.
 - Setup verifier: `tools/verify_setup.js`.
 - Current verifier result: PASS; 825 archives, 0 unknown bytes, 108 overlap
-  bytes visible, 1 tracked composite real-asm chunk made from 102 tracked source
-  files, 99 generated fallback chunks, full-source manifest 1,059 entries with
+  bytes visible, 1 tracked composite real-asm chunk made from 177 tracked source
+  files (chunk 0 fully named, `0x00001000..0x00011000`), 99 generated fallback
+  chunks, full-source manifest 1,059 entries with
   2,469,141 ambiguous bytes preserved explicitly, 3 tracked non-code
   source-owner files / 44,029 bytes, 1,055 generated non-code fallback files /
   35,388,567 bytes, source-manifest rebuild exact, full ROM
@@ -2643,9 +2650,8 @@ setup-complete state:
   `571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A`.
 
 Next phase is either promoting another small non-code owner batch or continuing
-tracked original-MIPS splits from `asm/original/rev0/code_0000B030_00011000.s`.
-The next MIPS frontier starts with the parent-labeled `0xB030` resource-loader
-helper (128 bytes, frame size `0x20`, RAM `0x8007AC30`), which calls the LZSS
-decompressor at `0x8007A110`, RAM `0x800936E0`, RAM `0x80093810`, and
-unresolved RAM helper `0x80093540`. Do not begin semantic C decomp unless the
+tracked original-MIPS splits into **chunk 1** (`0x00011000`). Chunk 0 is fully
+named. Before promoting chunk 1, fix `tools/promote_original_mips.js` (it
+overwrites `manifest.json` with only the newly-promoted chunk, clobbering chunk
+0's parts — needs a merge). Do not begin semantic C decomp unless the
 setup verifier is green.
