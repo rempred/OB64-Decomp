@@ -145,17 +145,35 @@
           "sha256": "7946AFB724A4931AD7C02EE994184B2AB3F2B567A6F063C09823CFA06DC0D1AB"
         },
         {
-          "name": "code_000022B0_00011000_remainder",
-          "file": "asm/original/rev0/code_000022B0_00011000.s",
+          "name": "early_boot_resource_loader",
+          "file": "asm/original/rev0/boot/early_boot_resource_loader.s",
           "romStart": "0x000022B0",
+          "romEndExclusive": "0x00002798",
+          "bytes": 1256,
+          "textBytes": 23879,
+          "sha256": "0CF6703A6A0F641D3A4D04FDA623AD751A820EF67323D5B0403F21EE7FC39BDF"
+        },
+        {
+          "name": "boot_state_service_loop",
+          "file": "asm/original/rev0/boot/boot_state_service_loop.s",
+          "romStart": "0x00002798",
+          "romEndExclusive": "0x00002B38",
+          "bytes": 928,
+          "textBytes": 17825,
+          "sha256": "9259B3969244E333D0F8A9CCD3B3B257EB48BB5087CD1A0374F2D5C444E77831"
+        },
+        {
+          "name": "code_00002B38_00011000_remainder",
+          "file": "asm/original/rev0/code_00002B38_00011000.s",
+          "romStart": "0x00002B38",
           "romEndExclusive": "0x00011000",
-          "bytes": 60752,
-          "textBytes": 1172424,
-          "sha256": "12D07B9FCBF42C5B1CDC118CF5E5BC7559B8282AF9C622E10AD98AE6CED455CA"
+          "bytes": 58568,
+          "textBytes": 1131237,
+          "sha256": "4776129BDC98FCAF31CFE0ED74FF9E5236A2BE1341083F309094C9EEECE2BF45"
         }
       ],
-      "textBytes": 1268422,
-      "sha256": "11CAF4AE1CF0589719E7A08925B4760A06A6220D4BB0D40BEFA3DC3EEFDA0CAF"
+      "textBytes": 1268939,
+      "sha256": "A396F6BC3A180CA869BD3F3624C1E17FA4B5889A1CCB28055C29B608B06F3C21"
     }
   ]
 }

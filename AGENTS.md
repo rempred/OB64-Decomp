@@ -173,7 +173,7 @@ Current result:
   `40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`.
 - Code-region match against baserom: pass.
 - Tracked real-assembler original-MIPS chunks: 1 composite
-  (`0x00001000..0x00011000`) made from 9 real-assembler source files.
+  (`0x00001000..0x00011000`) made from 17 real-assembler source files.
 - Generated fallback chunks: 99.
 - Assembled-code ROM rebuild command:
 
@@ -274,12 +274,33 @@ helper cluster through the early boot-init boundary:
 - `asm/original/rev0/boot/resource_alloc_tree_scan.s`
   `0x00002004..0x000022B0`; parent reports 27 callers and secondary helper
   entry `0x2274`.
-- Remainder:
+- Remainder after this split was
   `asm/original/rev0/code_000022B0_00011000.s`.
+  That file has since been superseded by the early loader/state-loop split
+  below.
 
 Static dossier: `docs/dossiers/boot-resource-validation-realloc-trees.md`. The
 names in this group are source-layout names inferred from static allocator
 table/list behavior unless later runtime or mutation proof upgrades them.
+
+## Early Boot Resource Loader/State Loop Split
+
+The next tracked Rev 0 original-MIPS split separates the first post-allocator
+boot-init routines:
+
+- `asm/original/rev0/boot/early_boot_resource_loader.s`
+  `0x000022B0..0x00002798`; parent labels `0x22B0` as
+  `dma/resource::resource loader` and `dispatcher/state-machine`.
+- `asm/original/rev0/boot/boot_state_service_loop.s`
+  `0x00002798..0x00002B38`; keeps the two-word `0x2798` prefix with scanner
+  prologue `func_000027A0`, and keeps secondary halt/check code at `0x2B10`.
+- Remainder:
+  `asm/original/rev0/code_00002B38_00011000.s`.
+
+Static dossier: `docs/dossiers/boot-early-loader-state-loop.md`. The
+`boot_state_service_loop` name is a conservative source-layout label based on
+static state-byte/check-loop shape, not a verified C API. Next source split
+should start with the overlapping `0x2B38/0x2B40` helper.
 
 ## Setup Complete Gate
 
@@ -295,7 +316,7 @@ setup-complete state:
 - Assembler: GNU Binutils 2.39 `mips64-elf-as.exe` with `-EB -mips3 -32`.
 - Setup verifier: `tools/verify_setup.js`.
 - Current verifier result: PASS; 825 archives, 0 unknown bytes, 108 overlap
-  bytes visible, 1 tracked composite real-asm chunk made from 15 tracked source
+  bytes visible, 1 tracked composite real-asm chunk made from 17 tracked source
   files, 99 generated fallback chunks, full-source manifest 1,059 entries with
   2,469,141 ambiguous bytes preserved explicitly, 3 tracked non-code
   source-owner files / 44,029 bytes, 1,055 generated non-code fallback files /
@@ -304,5 +325,5 @@ setup-complete state:
   `571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A`.
 
 Next phase is either promoting another small non-code owner batch or continuing
-tracked original-MIPS splits. Do not begin semantic C decomp unless the setup
-verifier is green.
+tracked original-MIPS splits from `asm/original/rev0/code_00002B38_00011000.s`.
+Do not begin semantic C decomp unless the setup verifier is green.

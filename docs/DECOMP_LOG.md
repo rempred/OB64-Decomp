@@ -435,3 +435,65 @@ Next recommended target:
 - Continue from `asm/original/rev0/code_000022B0_00011000.s`, beginning with
   parent-labeled early boot/resource loader `func_000022B0`, or promote another
   small tracked non-code owner batch.
+
+## 2026-06-21 - Phase 8, Early Boot Resource Loader/State Loop Split
+
+Target:
+
+- Continue source-layout cleanup inside the first tracked original-MIPS chunk.
+- Split the parent-labeled early boot/resource loader and the adjacent
+  prefix-bearing boot state service loop.
+
+Baseline:
+
+- `node tools\verify_setup.js` passed before edits.
+- Baseline source mix: 1 tracked composite real-asm chunk made from 15 tracked
+  files, plus 99 generated fallback chunks.
+- Baseline code-region SHA256:
+  `40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`.
+- Baseline full ROM SHA256:
+  `571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A`.
+
+Source-layout change:
+
+- Removed superseded
+  `asm/original/rev0/code_000022B0_00011000.s`.
+- Added `asm/original/rev0/boot/early_boot_resource_loader.s`,
+  `0x000022B0..0x00002798`, 1,256 bytes.
+- Added `asm/original/rev0/boot/boot_state_service_loop.s`,
+  `0x00002798..0x00002B38`, 928 bytes.
+- Added remainder `asm/original/rev0/code_00002B38_00011000.s`,
+  `0x00002B38..0x00011000`, 58,568 bytes.
+- Static dossier: `docs/dossiers/boot-early-loader-state-loop.md`.
+
+Evidence:
+
+- Parent `../scripts/ob64_symbols_v2.json` labels `0x22B0` as
+  `dma/resource::resource loader` and `dispatcher/state-machine`, with 40
+  callees, no indirect-call edges, and residency in all seven captured states.
+- `0x22B0` parent size is 1,256 bytes, so its range ends at `0x2798`.
+- The two words at `0x2798..0x27A0` are executable prefix instructions that
+  load `0x800C4800` into `v1` before scanner prologue `0x27A0`; they are not
+  padding and stay with `boot_state_service_loop.s`.
+- Parent marks `0x27A0` as a 920-byte prologue function with frame size `0x20`
+  and secondary entry `0x2B10`.
+- The next remainder starts at `0x2B38`, where the scanner reports overlapping
+  entries `0x2B38` leaf and `0x2B40` prologue. Keep them together next pass.
+
+Verification:
+
+- `node tests\binutils_smoke.js` passed after the split.
+- `node tools\assemble_original_mips.js` passed after the split.
+- Full `node tools\verify_setup.js` passed after the split.
+- Assembled report now shows 1 tracked composite real-asm chunk made from 17
+  tracked source files, plus 99 generated fallback chunks.
+- Code-region SHA256 remains:
+  `40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`.
+- Full ROM SHA256 remains:
+  `571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A`.
+
+Next recommended target:
+
+- Continue from `asm/original/rev0/code_00002B38_00011000.s`, beginning with
+  the overlapping `0x2B38/0x2B40` helper, or promote another small tracked
+  non-code owner batch.
