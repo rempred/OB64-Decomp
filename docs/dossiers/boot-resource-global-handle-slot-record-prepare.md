@@ -10,7 +10,8 @@ helper family immediately after the boot resource global handle release helper:
 | Source | ROM range | RAM range | Notes |
 | --- | --- | --- | --- |
 | `asm/original/rev0/boot/boot_resource_global_handle_slot_record_prepare.s` | `0x0000722C..0x00007560` | `0x80076E2C..0x80077160` | Leaf prefix at `0x722C`, `0x7234` prologue body, secondary entries `0x735C` and `0x745C`, and final delay slot at `0x755C`. |
-| `asm/original/rev0/code_00007560_00011000.s` | `0x00007560..0x00011000` | `0x80077160..0x80080C00` | Current tracked remainder. |
+| `asm/original/rev0/code_00007560_00011000.s` | `0x00007560..0x00011000` | `0x80077160..0x80080C00` | Remainder at this split; now superseded by the current-peer-record flag mark split. |
+| `asm/original/rev0/code_00007600_00011000.s` | `0x00007600..0x00011000` | `0x80077200..0x80080C00` | Current tracked remainder after the current-peer-record flag mark split. |
 
 The name is conservative. It records a static global-handle refresh plus
 slot-record preparation/insertion shape, not runtime-verified ownership or
@@ -63,9 +64,10 @@ scheduler semantics.
 - The previous active log's "clean end at `0x7558`" wording is corrected:
   `0x7558` is `jr ra`, `0x755C` is the delay-slot store, and the clean
   exclusive end is `0x7560`.
-- The next source frontier is the `0x7560` two-word prefix plus `0x7568`
-  prologue body, which scans the same corrected-base slot-record array and
-  calls `0x80077F88`.
+- The old `0x7560` frontier is now split into
+  `boot_state_slot_current_peer_record_flag_mark.s`; the next source frontier is
+  the `0x7600` prologue helper, which scans the same corrected-base slot-record
+  array and calls `0x80077F88`.
 
 ## Verification
 

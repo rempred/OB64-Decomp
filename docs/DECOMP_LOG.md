@@ -18,7 +18,7 @@ and replace the active log with a compact current-state summary.
 - Whole-ROM coverage still independently scans for LHA headers; do not trust the
   parent archive catalog by itself.
 - Current tracked code source mix: one composite real-assembler chunk
-  `0x00001000..0x00011000` made from 65 tracked source files, plus 99 generated
+  `0x00001000..0x00011000` made from 66 tracked source files, plus 99 generated
   fallback code chunks.
 - Current tracked non-code source-owner mix: 3 tracked files / 44,029 bytes,
   plus 1,055 generated fallback owner files / 35,388,567 bytes.
@@ -61,8 +61,8 @@ Current named sequence:
 - Resource probe helpers through
   `boot_resource_probe_record_checksum_signature.s` `0x4AC8..0x5FC0`.
 - State/slot and resource-handle helpers through
-  `boot_resource_global_handle_slot_record_prepare.s` `0x5FC0..0x7560`.
-- Current remainder: `code_00007560_00011000.s`.
+  `boot_state_slot_current_peer_record_flag_mark.s` `0x5FC0..0x7600`.
+- Current remainder: `code_00007600_00011000.s`.
 
 Static dossiers live under `docs/dossiers/` and are the durable evidence notes
 for each promoted source-layout split.
@@ -285,18 +285,67 @@ Verification for the split:
 - Full ROM SHA256 remains
   `571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A`.
 
+## 2026-06-21 - Boot State Slot Current Peer Record Flag Mark Split
+
+Baseline before the split:
+
+- `git status --short` was clean at commit
+  `1c0fe44 Split Rev 0 boot resource global handle slot record prepare`.
+- `node tools\verify_setup.js` passed with 825 archives, zero unknown bytes, 108
+  visible overlap bytes, 65 tracked source files, 99 generated fallback chunks,
+  and unchanged code/ROM hashes.
+
+Promoted
+`asm/original/rev0/boot/boot_state_slot_current_peer_record_flag_mark.s`
+covering ROM `0x00007560..0x00007600` / RAM
+`0x80077160..0x80077200`. The old
+`asm/original/rev0/code_00007560_00011000.s` remainder was removed and replaced
+by `asm/original/rev0/code_00007600_00011000.s`.
+
+Static evidence from parent function/symbol/callgraph/xref data and local
+source inspection:
+
+- `0x7560` is a two-word leaf prefix that reads active-slot global
+  `0x800C4C20` and falls into the `0x7568` body.
+- `0x7568` is a 152-byte prologue helper with frame size `0x20`, fixed RAM
+  `0x80077168`, no direct v2 callers, and high-confidence callee `0x8388` /
+  RAM `0x80077F88`.
+- Parent/local xrefs show reads of `0x800C4C20`, slot-record halfword
+  `0x800E82C8`, signed record field `0x800E836A`, and read/write access to
+  working-record byte `0x800E7A32`.
+
+Static shape:
+
+- Returns immediately when active slot `0x800C4C20` is negative.
+- Scans six 0xA8-byte records rooted at corrected signed address `0x800E82C8`.
+- Skips the current active slot, requires flag bit `0x8000`, and requires
+  record `+0xA2` to equal the active-slot global.
+- Calls `0x80077F88(slot)` for each matching peer record.
+- Sets bit `0x02` in working-record byte `0x800E7A32` after the scan.
+
+Verification for the split:
+
+- `node tests\binutils_smoke.js` passed.
+- `node tools\assemble_original_mips.js` passed.
+- Full `node tools\verify_setup.js` passed after docs were updated.
+- Source mix is now 1 tracked composite real-asm chunk made from 66 tracked
+  source files, plus 99 generated fallback chunks.
+- Code-region SHA256 remains
+  `40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`.
+- Full ROM SHA256 remains
+  `571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A`.
+
 ## Next Frontier
 
-Continue from `asm/original/rev0/code_00007560_00011000.s`.
+Continue from `asm/original/rev0/code_00007600_00011000.s`.
 
 Parent/local evidence for the next target:
 
-- `0x7560` is a two-word leaf prefix that reads active-slot global
-  `0x800C4C20` and falls into the `0x7568` prologue body.
-- Parent function data reports `0x7568` as a 152-byte prologue helper with
-  frame size `0x20`, fixed RAM `0x80077168`, and high-confidence callee
+- Parent function data reports `0x7600` as a 136-byte prologue helper with
+  frame size `0x20`, fixed RAM `0x80077200`, and high-confidence callee
   `0x8388` / RAM `0x80077F88`.
-- Static shape scans six corrected-base `0x800E82C8` slot records, skips the
-  current active slot, checks flag bit `0x8000` and record `+0xA2`, calls
-  `0x80077F88(slot)`, then sets bit `0x02` in working-record byte
-  `0x800E7A32`.
+- Static shape takes a target slot in `a0`, returns immediately if it is
+  negative, scans six corrected-base `0x800E82C8` slot records, skips the
+  target slot, checks flag bit `0x8000` and record `+0xA2`, and calls
+  `0x80077F88(slot)` for matches.
+- Clean next boundary appears to be `0x7688`, the next parent prologue helper.

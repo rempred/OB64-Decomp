@@ -595,17 +595,26 @@
           "sha256": "F43CF9F4B631FF825B622F2379DAB784D9ED53BF5AD19FF9858FB7813A1D2520"
         },
         {
-          "name": "code_00007560_00011000_remainder",
-          "file": "asm/original/rev0/code_00007560_00011000.s",
+          "name": "boot_state_slot_current_peer_record_flag_mark",
+          "file": "asm/original/rev0/boot/boot_state_slot_current_peer_record_flag_mark.s",
           "romStart": "0x00007560",
+          "romEndExclusive": "0x00007600",
+          "bytes": 160,
+          "textBytes": 3438,
+          "sha256": "EDDD8D21BFDD21EA9DDB071B52351FC049E13A147372CCA98AEABA8685176897"
+        },
+        {
+          "name": "code_00007600_00011000_remainder",
+          "file": "asm/original/rev0/code_00007600_00011000.s",
+          "romStart": "0x00007600",
           "romEndExclusive": "0x00011000",
-          "bytes": 39584,
-          "textBytes": 763874,
-          "sha256": "3334322C6A4512D742C00C7403F4F2EFDA70C081EBF1680536663AEEA0BE3B61"
+          "bytes": 39424,
+          "textBytes": 760694,
+          "sha256": "2B121173510FBBDB9BE59C715F9F3DDEE6977849CDDD1417805CCC6532297197"
         }
       ],
-      "textBytes": 1281324,
-      "sha256": "720A6A4D870EDC460AFCB8E40E614DCBD5972BB3C80FCAB8D9ED14C41D8612C1"
+      "textBytes": 1281582,
+      "sha256": "C78691A5DA4256E172B52CBDF9732E8FCAF93A1DF79C84BC2D1513EC1A509325"
     }
   ]
 }
