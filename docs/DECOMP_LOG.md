@@ -18,7 +18,7 @@ and replace the active log with a compact current-state summary.
 - Whole-ROM coverage still independently scans for LHA headers; do not trust the
   parent archive catalog by itself.
 - Current tracked code source mix: one composite real-assembler chunk
-  `0x00001000..0x00011000` made from 67 tracked source files, plus 99 generated
+  `0x00001000..0x00011000` made from 68 tracked source files, plus 99 generated
   fallback code chunks.
 - Current tracked non-code source-owner mix: 3 tracked files / 44,029 bytes,
   plus 1,055 generated fallback owner files / 35,388,567 bytes.
@@ -61,8 +61,8 @@ Current named sequence:
 - Resource probe helpers through
   `boot_resource_probe_record_checksum_signature.s` `0x4AC8..0x5FC0`.
 - State/slot and resource-handle helpers through
-  `boot_state_slot_target_peer_record_dispatch.s` `0x5FC0..0x7688`.
-- Current remainder: `code_00007688_00011000.s`.
+  `boot_state_slot_flagged_dispatch_lookup.s` `0x5FC0..0x7768`.
+- Current remainder: `code_00007768_00011000.s`.
 
 Static dossiers live under `docs/dossiers/` and are the durable evidence notes
 for each promoted source-layout split.
@@ -385,20 +385,76 @@ Verification for the split:
 - Full ROM SHA256 remains
   `571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A`.
 
+## 2026-06-21 - Boot State Slot Flagged Dispatch/Lookup Split
+
+Baseline before the split:
+
+- `git status --short` was clean at commit
+  `edb6187 Split Rev 0 boot state slot target peer dispatch`.
+- `node tools\verify_setup.js` passed with 825 archives, zero unknown bytes, 108
+  visible overlap bytes, 67 tracked source files, 99 generated fallback chunks,
+  and unchanged code/ROM hashes.
+
+Promoted
+`asm/original/rev0/boot/boot_state_slot_flagged_dispatch_lookup.s` covering ROM
+`0x00007688..0x00007768` / RAM `0x80077288..0x80077368`. The old
+`asm/original/rev0/code_00007688_00011000.s` remainder was removed and replaced
+by `asm/original/rev0/code_00007768_00011000.s`.
+
+Static evidence from parent function/symbol/callgraph/xref data and local
+source inspection:
+
+- `0x7688` is a 224-byte prologue helper with frame size `0x20`, fixed RAM
+  `0x80077288` in all seven named states and all 21 parent snapshots, and clean
+  end at `0x7768`.
+- High-confidence caller is `0x69D8`; high-confidence callee is `0x8388` /
+  RAM `0x80077F88`.
+- Parent v2 leaves call target `0x80077F80` unresolved; local source resolves it
+  to the two-instruction `jr ra; nop` secondary tail at ROM `0x8380..0x8388`
+  immediately before the `0x8388` helper.
+- Parent records secondary entry `0x7714`; local search found no direct local
+  source call to that leaf.
+- Parent/local xrefs show reads of status halfword `0x800C4C26`, slot-record
+  halfword `0x800E82C8`, slot-record byte `0x800E82CB`, and slot-record word
+  `0x800E82D8`.
+
+Static shape:
+
+- The primary entry calls the no-op-style `0x80077F80` secondary tail, then
+  returns without scanning when status `0x800C4C26 == 0xFFFF`.
+- Otherwise it scans six 0xA8-byte records rooted at corrected signed address
+  `0x800E82C8`.
+- For each record, it requires flag bit `0x8000` and byte field `+0x03 & 0x04`
+  before calling `0x80077F88(slot)`.
+- The `0x7714` secondary leaf scans the same six records for word field
+  `+0x10` matching incoming `a0`, returning the matching slot index or `-1`.
+
+Verification for the split:
+
+- `node tests\binutils_smoke.js` passed.
+- `node tools\assemble_original_mips.js` passed.
+- Full `node tools\verify_setup.js` passed after docs were updated.
+- Source mix is now 1 tracked composite real-asm chunk made from 68 tracked
+  source files, plus 99 generated fallback chunks.
+- Code-region SHA256 remains
+  `40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`.
+- Full ROM SHA256 remains
+  `571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A`.
+
 ## Next Frontier
 
-Continue from `asm/original/rev0/code_00007688_00011000.s`.
+Continue from `asm/original/rev0/code_00007768_00011000.s`.
 
 Parent/local evidence for the next target:
 
-- Parent function data reports `0x7688` as a 224-byte prologue helper with
-  frame size `0x20`, fixed RAM `0x80077288`, high-confidence caller `0x69D8`,
-  high-confidence callee `0x8388` / RAM `0x80077F88`, and secondary entry
-  `0x7714`.
-- Static shape first calls `0x80077F80`, checks status halfword `0x800C4C26`,
-  then scans six corrected-base `0x800E82C8` slot records for flag bit
-  `0x8000` plus byte flag `+0x03 & 0x04`, calling `0x80077F88(slot)` for
-  matches.
-- The helper includes a secondary leaf at `0x7714` that scans six records for a
-  word field at `+0x10` matching incoming `a0` and returns the slot index or
-  `-1`; likely clean exclusive end is `0x7768`.
+- Parent function data reports `0x7768` as a 644-byte prologue helper with
+  frame size `0x18`, fixed RAM `0x80077368`, active in all seven named states
+  and all 21 parent snapshots.
+- Parent records secondary entries at `0x77D4`, `0x789C`, and `0x7924`.
+- Parent static callers include `0x69D8`, `0xEBBC0`, and `0xED530` in the older
+  linear call list, while v2 leaves this helper without resolved overlay-aware
+  callers and leaves `0x80093540` as the unresolved call target.
+- Local source shows ten-slot scans around working globals `0x800E7A68` and
+  slot records under `0x800E82C8`, plus writes around `0x800E7Axx` and
+  `0x800E82xx`; analyze this larger helper before choosing a split end beyond
+  the parent-reported `0x79EC` boundary.

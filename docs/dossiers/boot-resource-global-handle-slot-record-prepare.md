@@ -12,6 +12,7 @@ helper family immediately after the boot resource global handle release helper:
 | `asm/original/rev0/boot/boot_resource_global_handle_slot_record_prepare.s` | `0x0000722C..0x00007560` | `0x80076E2C..0x80077160` | Leaf prefix at `0x722C`, `0x7234` prologue body, secondary entries `0x735C` and `0x745C`, and final delay slot at `0x755C`. |
 | `asm/original/rev0/code_00007560_00011000.s` | `0x00007560..0x00011000` | `0x80077160..0x80080C00` | Remainder at this split; now superseded by the current-peer-record flag mark split. |
 | `asm/original/rev0/code_00007600_00011000.s` | `0x00007600..0x00011000` | `0x80077200..0x80080C00` | Remainder after the current-peer-record flag mark split; now superseded by the target peer-record dispatch split. |
+| `asm/original/rev0/code_00007768_00011000.s` | `0x00007768..0x00011000` | `0x80077368..0x80080C00` | Current tracked remainder after the flagged dispatch/lookup split. |
 
 The name is conservative. It records a static global-handle refresh plus
 slot-record preparation/insertion shape, not runtime-verified ownership or
