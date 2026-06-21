@@ -10,7 +10,8 @@ helper immediately after the boot state global reset helper:
 | Source | ROM range | RAM range | Notes |
 | --- | --- | --- | --- |
 | `asm/original/rev0/boot/boot_state_slot_callback_dispatch.s` | `0x000069D8..0x00006EE8` | `0x800765D8..0x80076AE8` | 1,296-byte prologue helper that processes six 0xA8-byte state records and dispatches working-record callbacks. |
-| `asm/original/rev0/code_00006EE8_00011000.s` | `0x00006EE8..0x00011000` | `0x80076AE8..0x80080C00` | Current tracked remainder. |
+| `asm/original/rev0/code_00006EE8_00011000.s` | `0x00006EE8..0x00011000` | `0x80076AE8..0x80080C00` | Remainder at this split; now superseded by the boot state slot render callback walk split. |
+| `asm/original/rev0/code_000071C8_00011000.s` | `0x000071C8..0x00011000` | `0x80076DC8..0x80080C00` | Current tracked remainder after the boot state slot render callback walk split. |
 
 The name is conservative. It records the static slot/callback dispatch shape,
 not runtime-verified state-machine semantics.
@@ -63,9 +64,9 @@ not runtime-verified state-machine semantics.
   `boot_state_global_reset.s`.
 - The helper has a normal epilogue at `0x6ECC..0x6EE4`.
 - The next clean boundary is `0x00006EE8`.
-- The next target is a related but distinct `0x6EE8` leaf / `0x6EF0` prologue
-  sibling with different caller evidence: `0x6EE8` is called by `0x27A0`, while
-  `0x6EF0` is called by `0x102FA8`.
+- The `0x6EE8` leaf / `0x6EF0` prologue sibling has since been split as
+  `boot_state_slot_render_callback_walk.s`.
+- The current active remainder starts at `0x000071C8`.
 
 ## Verification
 

@@ -173,7 +173,7 @@ Current result:
   `40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`.
 - Code-region match against baserom: pass.
 - Tracked real-assembler original-MIPS chunks: 1 composite
-  (`0x00001000..0x00011000`) made from 61 real-assembler source files.
+  (`0x00001000..0x00011000`) made from 62 real-assembler source files.
 - Generated fallback chunks: 99.
 - Assembled-code ROM rebuild command:
 
@@ -1469,7 +1469,8 @@ called by the early boot state service loop:
 - `asm/original/rev0/boot/boot_state_slot_callback_dispatch.s`
   `0x000069D8..0x00006EE8`; contains the 1,296-byte prologue helper at
   `0x69D8`.
-- Current remainder:
+- Remainder at this split, now superseded by the boot state slot render
+  callback walk split:
   `asm/original/rev0/code_00006EE8_00011000.s`.
 
 Static evidence: parent function data reports `0x69D8` as a valid 1,296-byte
@@ -1495,9 +1496,44 @@ records back to their source slots, then sets `0x800C4C20 = -1` and calls
 dispatch shape, not runtime-verified state-machine semantics.
 
 Static dossier: `docs/dossiers/boot-state-slot-callback-dispatch.md`.
-Next source split should start at `asm/original/rev0/code_00006EE8_00011000.s`;
-the next target is the related `0x6EE8` leaf / `0x6EF0` prologue sibling called
-by `0x27A0` and `0x102FA8`.
+
+## Boot State Slot Render Callback Walk Split
+
+The next tracked Rev 0 original-MIPS split promotes the related helper after
+the slot callback dispatch helper:
+
+- `asm/original/rev0/boot/boot_state_slot_render_callback_walk.s`
+  `0x00006EE8..0x000071C8`; contains the `0x6EE8` leaf prefix and `0x6EF0`
+  prologue body.
+- Current remainder:
+  `asm/original/rev0/code_000071C8_00011000.s`.
+
+Static evidence: parent function data reports `0x6EE8` as a 736-byte valid
+JAL-target leaf entry with `jr $ra`, `jalr`, and end `0x71C8`; `0x6EF0` is the
+728-byte prologue body with frame size `0x38`, epilogue, `jalr`, and the same
+end. Fixed runtime evidence places the helper at RAM `0x80076AE8/0x80076AF0`
+in all seven named states and all 21 parent snapshots. High-confidence caller
+for `0x6EE8` is `0x27A0`; parent v2 also reports high-confidence caller
+`0x102FA8` for the `0x6EF0` body. High-confidence callees are `0x23460` /
+RAM `0x80093060` count 2, `0x8564` / RAM `0x80078164`, `0x49C84` /
+RAM `0x80173D84`, `0x49CBC` / RAM `0x80173DBC`, and `0x84D4` /
+RAM `0x800780D4`; unresolved target is `0x800782EC`.
+
+Static shape: starts from `0x800C49D0 - 1`, walks queued slot list
+`0x800C4C10` backwards, copies selected 0xA8-byte records from `0x800F82C8`
+into working record `0x800E7A30`, writes active slot `0x800C4C20`, emits
+display-list `DE00`/`E700` packets through `0x800E9BA0`, calls helpers
+`0x80173D84`/`0x80173DBC`, dispatches working-record callback pointer
+`0x800E7A48` through `jalr`, optionally calls unresolved `0x800782EC`, calls
+`0x800780D4`, restores the working record to the source slot, and exits with
+`0x800C4C20 = -1`. The name is conservative and records a static
+slot/render/callback walk shape, not runtime-verified state-machine or graphics
+semantics.
+
+Static dossier: `docs/dossiers/boot-state-slot-render-callback-walk.md`.
+Next source split should start at `asm/original/rev0/code_000071C8_00011000.s`;
+the next target is the compact `0x71C8` leaf / `0x71D0` prologue gate called by
+`0x27A0`.
 
 ## Setup Complete Gate
 
@@ -1513,7 +1549,7 @@ setup-complete state:
 - Assembler: GNU Binutils 2.39 `mips64-elf-as.exe` with `-EB -mips3 -32`.
 - Setup verifier: `tools/verify_setup.js`.
 - Current verifier result: PASS; 825 archives, 0 unknown bytes, 108 overlap
-  bytes visible, 1 tracked composite real-asm chunk made from 61 tracked source
+  bytes visible, 1 tracked composite real-asm chunk made from 62 tracked source
   files, 99 generated fallback chunks, full-source manifest 1,059 entries with
   2,469,141 ambiguous bytes preserved explicitly, 3 tracked non-code
   source-owner files / 44,029 bytes, 1,055 generated non-code fallback files /
@@ -1522,5 +1558,5 @@ setup-complete state:
   `571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A`.
 
 Next phase is either promoting another small non-code owner batch or continuing
-tracked original-MIPS splits from `asm/original/rev0/code_00006EE8_00011000.s`.
+tracked original-MIPS splits from `asm/original/rev0/code_000071C8_00011000.s`.
 Do not begin semantic C decomp unless the setup verifier is green.
