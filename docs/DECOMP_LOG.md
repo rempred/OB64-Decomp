@@ -18,7 +18,7 @@ and replace the active log with a compact current-state summary.
 - Whole-ROM coverage still independently scans for LHA headers; do not trust the
   parent archive catalog by itself.
 - Current tracked code source mix: one composite real-assembler chunk
-  `0x00001000..0x00011000` made from 79 tracked source files, plus 99 generated
+  `0x00001000..0x00011000` made from 80 tracked source files, plus 99 generated
   fallback code chunks.
 - Current tracked non-code source-owner mix: 3 tracked files / 44,029 bytes,
   plus 1,055 generated fallback owner files / 35,388,567 bytes.
@@ -61,8 +61,8 @@ Current named sequence:
 - Resource probe helpers through
   `boot_resource_probe_record_checksum_signature.s` `0x4AC8..0x5FC0`.
 - State/slot, resource-handle, and transform-record helpers through
-  `boot_display_list_transform_record_emit.s` `0x5FC0..0x8A58`.
-- Current remainder: `code_00008A58_00011000.s`.
+  `boot_display_list_transform_wrapper_clamped_rect_emit.s` `0x5FC0..0x8D6C`.
+- Current remainder: `code_00008D6C_00011000.s`.
 
 Static dossiers live under `docs/dossiers/` and are the durable evidence notes
 for each promoted source-layout split.
@@ -665,7 +665,8 @@ Promoted `asm/original/rev0/boot/boot_display_list_transform_record_emit.s`
 covering ROM `0x0000874C..0x00008A58` / RAM
 `0x8007834C..0x80078658`. The old
 `asm/original/rev0/code_0000874C_00011000.s` remainder was removed and replaced
-by `asm/original/rev0/code_00008A58_00011000.s`.
+by `asm/original/rev0/code_00008A58_00011000.s`; that remainder is now
+superseded by the transform-wrapper/clamped-rect split below.
 
 Static evidence from parent symbols/callgraph/xrefs and local source:
 
@@ -699,14 +700,68 @@ Verification for the split:
   source files, plus 99 generated fallback chunks.
 - Static dossier: `docs/dossiers/boot-display-list-transform-record-emit.md`.
 
+## 2026-06-21 - Boot Display-List Transform Wrapper / Clamped Rect Emit Split
+
+Baseline before the split:
+
+- `git status --short` was clean at commit
+  `94efc58 Split Rev 0 boot display-list transform record emit`.
+- `node tools\verify_setup.js` passed with 825 archives, zero unknown bytes, 108
+  visible overlap bytes, 79 tracked source files, 99 generated fallback chunks,
+  and unchanged code/ROM hashes.
+
+Promoted
+`asm/original/rev0/boot/boot_display_list_transform_wrapper_clamped_rect_emit.s`
+covering ROM `0x00008A58..0x00008D6C` / RAM
+`0x80078658..0x8007896C`. The old
+`asm/original/rev0/code_00008A58_00011000.s` remainder was removed and replaced
+by `asm/original/rev0/code_00008D6C_00011000.s`.
+
+Static evidence from parent function/symbol/callgraph/xref data and local
+source:
+
+- `0x8A58` is a valid 788-byte helper fixed in all seven named states and all
+  21 snapshots, with frame size `0x18`.
+- Parent data records secondary entry `0x8A74`; local source shows the wrapper
+  at `0x8A58..0x8A70` returns before that no-stack secondary body.
+- The only high-confidence callee is prior helper `0x874C` / RAM `0x8007834C`.
+- Parent symbols list older static callers `0xE65FC`, `0xE6D98` count 2,
+  `0xEC598`, `0xEE8E0`, `0xF82DC`, `0xFAFAC`, and `0x2825BC`; v2 callgraph
+  does not resolve overlay-aware callers for this helper.
+- Local source reads/writes display-list pointer global `0x800E9BA0`, reads
+  descriptor/base global `0x800E9BE0`, and updates counter-like global
+  `0x800C4BE4`.
+
+Static shape:
+
+- The `0x8A58` wrapper saves `ra`, calls `0x8007834C(a0)`, restores `ra`, and
+  returns.
+- The `0x8A74` secondary entry clamps four coordinate-like arguments to
+  `0..0x13F` and `0..0xEF`.
+- It writes a 64-byte descriptor record through `0x800E9BE0 + 8`, indexed by
+  `0x800C4BE4`, then increments the counter.
+- It emits display-list-style `E700`, `DC080008`, and `ED00` packet words
+  through `0x800E9BA0`, using a `* 4.0`, truncate, and `0x0FFF` packing path for
+  the coordinate fields.
+
+Verification for the split:
+
+- `node tests\binutils_smoke.js` passed.
+- `node tools\assemble_original_mips.js` passed.
+- Full `node tools\verify_setup.js` passed after docs were updated.
+- Source mix is now 1 tracked composite real-asm chunk made from 80 tracked
+  source files, plus 99 generated fallback chunks.
+- Static dossier:
+  `docs/dossiers/boot-display-list-transform-wrapper-clamped-rect-emit.md`.
+
 ## Next Frontier
 
-Continue from `asm/original/rev0/code_00008A58_00011000.s`. The first target is
-the `0x8A58` wrapper / `0x8A74` secondary-entry family at RAM
-`0x80078658/0x80078674`. Parent function data reports size 788, frame size
-`0x18`, constants `320` and `240`, and a wrapper call to `0x874C`. Parent symbol
-data lists static callers `0xE65FC`, `0xE6D98` (count 2), `0xEC598`,
-`0xEE8E0`, `0xF82DC`, `0xFAFAC`, and `0x2825BC`; the v2 callgraph does not
-resolve overlay-aware callers for `0x8A58`, so keep caller confidence cautious
-until local and overlay evidence agree. Keep the wrapper and secondary entry
-together until the boundary and display-list/render shape are analyzed.
+Continue from `asm/original/rev0/code_00008D6C_00011000.s`. The first target is
+the `0x8D6C` prologue helper at RAM `0x8007896C`. Parent function data reports
+size `0x300`, frame size `0x28`, all-state residency, high-confidence caller
+`0x16DAEC`, and top constants `320` and `240`. The v2 callgraph leaves target
+`0x8007338C` unresolved, but local earlier source identifies that as the
+`0x378C` secondary entry inside `boot_resource_buffer_reset_flags.s`. The local
+shape appears related to the following `0x906C` display-list helper family, so
+keep the first split conservative until the boundary and packet shape are
+analyzed.

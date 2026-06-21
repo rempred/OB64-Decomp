@@ -173,7 +173,7 @@ Current result:
   `40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`.
 - Code-region match against baserom: pass.
 - Tracked real-assembler original-MIPS chunks: 1 composite
-  (`0x00001000..0x00011000`) made from 79 real-assembler source files.
+  (`0x00001000..0x00011000`) made from 80 real-assembler source files.
 - Generated fallback chunks: 99.
 - Assembled-code ROM rebuild command:
 
@@ -1845,7 +1845,8 @@ The next tracked Rev 0 original-MIPS split promotes the overlapping
 - `asm/original/rev0/boot/boot_display_list_transform_record_emit.s`
   `0x0000874C..0x00008A58`; contains the two-word `0x874C` prefix and the
   `0x8754` prologue body with frame size `0x60`.
-- Current remainder:
+- Remainder at this split, now superseded by the transform-wrapper/clamped-rect
+  split below:
   `asm/original/rev0/code_00008A58_00011000.s`.
 
 Static evidence: parent function/symbol/callgraph data reports `0x874C` as a
@@ -1868,6 +1869,35 @@ The zero-vector path calls `0x80090CC0`; the nonzero transform path calls
 Static dossier:
 `docs/dossiers/boot-display-list-transform-record-emit.md`.
 
+## Boot Display-List Transform Wrapper / Clamped Rect Emit Split
+
+The next tracked Rev 0 original-MIPS split promotes the `0x8A58` wrapper and
+its `0x8A74` secondary entry as one conservative source file:
+
+- `asm/original/rev0/boot/boot_display_list_transform_wrapper_clamped_rect_emit.s`
+  `0x00008A58..0x00008D6C`; contains the wrapper call to `0x874C` plus the
+  no-stack secondary body beginning at `0x8A74`.
+- Current remainder:
+  `asm/original/rev0/code_00008D6C_00011000.s`.
+
+Static evidence: parent function/symbol data reports `0x8A58` as a valid
+788-byte helper with frame size `0x18`, fixed in all seven named states and all
+21 snapshots, with secondary entry `0x8A74`. Parent symbols list older static
+callers `0xE65FC`, `0xE6D98` count 2, `0xEC598`, `0xEE8E0`, `0xF82DC`,
+`0xFAFAC`, and `0x2825BC`; v2 callgraph does not resolve overlay-aware callers
+for this helper. The only high-confidence callee is `0x874C` / RAM
+`0x8007834C`, and no unresolved v2 targets remain in the split.
+
+Static shape: the `0x8A58` wrapper saves `ra`, calls the prior transform-record
+emitter, and returns. The `0x8A74` secondary body clamps four coordinate-like
+arguments to `0..0x13F` and `0..0xEF`, writes a 64-byte descriptor record through
+base global `0x800E9BE0` and counter global `0x800C4BE4`, increments the
+counter, and emits display-list-style `E700`, `DC080008`, and `ED00` packet
+words through `0x800E9BA0`.
+
+Static dossier:
+`docs/dossiers/boot-display-list-transform-wrapper-clamped-rect-emit.md`.
+
 ## Setup Complete Gate
 
 The setup phase is complete when `node tools/verify_setup.js` passes. Current
@@ -1882,7 +1912,7 @@ setup-complete state:
 - Assembler: GNU Binutils 2.39 `mips64-elf-as.exe` with `-EB -mips3 -32`.
 - Setup verifier: `tools/verify_setup.js`.
 - Current verifier result: PASS; 825 archives, 0 unknown bytes, 108 overlap
-  bytes visible, 1 tracked composite real-asm chunk made from 79 tracked source
+  bytes visible, 1 tracked composite real-asm chunk made from 80 tracked source
   files, 99 generated fallback chunks, full-source manifest 1,059 entries with
   2,469,141 ambiguous bytes preserved explicitly, 3 tracked non-code
   source-owner files / 44,029 bytes, 1,055 generated non-code fallback files /
@@ -1891,11 +1921,10 @@ setup-complete state:
   `571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A`.
 
 Next phase is either promoting another small non-code owner batch or continuing
-tracked original-MIPS splits from `asm/original/rev0/code_00008A58_00011000.s`.
-The next MIPS frontier starts with the `0x8A58` wrapper / `0x8A74` secondary-entry
-family; parent evidence reports constants `320` and `240`, wrapper call to
-`0x874C`, static callers `0xE65FC`, `0xE6D98`, `0xEC598`, `0xEE8E0`,
-`0xF82DC`, `0xFAFAC`, and `0x2825BC`, while the v2 callgraph does not resolve
-overlay-aware callers for `0x8A58`. Keep that wrapper/secondary-entry family
-together until the boundary is clear. Do not begin semantic C decomp unless the
-setup verifier is green.
+tracked original-MIPS splits from `asm/original/rev0/code_00008D6C_00011000.s`.
+The next MIPS frontier starts with the `0x8D6C` prologue helper; parent evidence
+reports size `0x300`, frame size `0x28`, all-state residency, high-confidence
+caller `0x16DAEC`, top constants `320` and `240`, and unresolved v2 target
+`0x8007338C`, which local earlier source identifies as the `0x378C` secondary
+entry inside `boot_resource_buffer_reset_flags.s`. Do not begin semantic C
+decomp unless the setup verifier is green.

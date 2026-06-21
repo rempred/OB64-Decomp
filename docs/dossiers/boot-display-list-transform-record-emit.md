@@ -10,7 +10,7 @@ the `0x58` record copy leaf:
 | Source | ROM range | RAM range | Notes |
 | --- | --- | --- | --- |
 | `asm/original/rev0/boot/boot_display_list_transform_record_emit.s` | `0x0000874C..0x00008A58` | `0x8007834C..0x80078658` | Two-word `0x874C` leaf prefix plus `0x8754` prologue body, frame size `0x60`, clean epilogue through `0x8A54`. |
-| `asm/original/rev0/code_00008A58_00011000.s` | `0x00008A58..0x00011000` | `0x80078658..0x80080C00` | Current tracked remainder; starts at the `0x8A58` wrapper / `0x8A74` secondary-entry family. |
+| `asm/original/rev0/code_00008A58_00011000.s` | `0x00008A58..0x00011000` | `0x80078658..0x80080C00` | Remainder at this split; now superseded by `code_00008D6C_00011000.s` after the transform-wrapper/clamped-rect split. |
 
 The source name is conservative. It captures the local transform-record and
 display-list packet shape, but it does not assert final renderer semantics.
@@ -54,7 +54,9 @@ display-list packet shape, but it does not assert final renderer semantics.
   falls directly into it and both entries share the same return.
 - The split ends at `0x00008A58`, where the next parent function begins. Local
   source shows `0x8A58` is a wrapper that calls `0x874C`, with a secondary entry
-  at `0x8A74`; keep that family together for the next split.
+  at `0x8A74`. That family is now promoted as
+  `boot_display_list_transform_wrapper_clamped_rect_emit.s`, leaving
+  `code_00008D6C_00011000.s` as the active remainder.
 
 ## Verification
 
