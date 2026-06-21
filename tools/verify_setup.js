@@ -108,6 +108,10 @@ function main() {
       sourceManifestAmbiguousBytes: sourceManifest.summary.ambiguousBytes,
       sourceOwnerFiles: sourceOwners.summary.nonCodeEntries,
       sourceOwnerBytes: sourceOwners.summary.nonCodeBytes,
+      trackedSourceOwnerFiles: sourceOwners.summary.trackedOwnerEntries || 0,
+      trackedSourceOwnerBytes: sourceOwners.summary.trackedOwnerBytes || 0,
+      generatedSourceOwnerFiles: sourceOwners.summary.generatedOwnerEntries ?? sourceOwners.summary.nonCodeEntries,
+      generatedSourceOwnerBytes: sourceOwners.summary.generatedOwnerBytes ?? sourceOwners.summary.nonCodeBytes,
       codeSha256: assembled.assembled.sha256,
       romSha256: asmRebuild.rebuilt.sha256,
     },
@@ -131,6 +135,11 @@ function main() {
   console.log(
     `Source owners: ${report.summary.sourceOwnerFiles} non-code file(s); ` +
       `${report.summary.sourceOwnerBytes} byte(s)`,
+  );
+  console.log(
+    `Tracked source owners: ${report.summary.trackedSourceOwnerFiles} file(s); ` +
+      `${report.summary.trackedSourceOwnerBytes} byte(s); generated fallback: ` +
+      `${report.summary.generatedSourceOwnerFiles} file(s); ${report.summary.generatedSourceOwnerBytes} byte(s)`,
   );
   console.log(`Code SHA256: ${report.summary.codeSha256}`);
   console.log(`ROM SHA256:  ${report.summary.romSha256}`);

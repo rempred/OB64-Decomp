@@ -31,7 +31,9 @@ Current full-ROM source manifest:
 - 6,510,444 `original_mips` bytes.
 - 35,432,596 non-code/raw/data/archive source bytes.
 - 2,469,141 ambiguous bytes preserved explicitly.
-- 1,058 ignored generated non-code source-owner files.
+- 3 tracked non-code source-owner files / 44,029 bytes.
+- 1,055 ignored generated non-code source-owner fallback files / 35,388,567
+  bytes.
 - Source-manifest rebuild exact.
 
 ## Active Goal
@@ -41,17 +43,19 @@ coverage or overclassifying data as MIPS.
 
 ## Ordered Work
 
-1. Promote curated tracked non-code source owners.
+1. Promote the next curated tracked non-code source-owner batch.
 
-   The generated proof lives under `build/source-owners/rev0/`. Next, choose a
-   deliberate tracked layout under `data/bin/`, `data/archives/`, or `assets/`
-   and promote source-owner groups in batches. Keep archive gaps raw and
-   explicitly ambiguous.
+   The first tracked batch is done under `data/source-owners/rev0/`:
+   `raw_header`, `raw_structural_gap`, and ambiguous `raw_tail_data`. Next,
+   choose another small batch under `data/` or `assets/`. Keep archive gaps raw
+   and explicitly ambiguous unless repeatable scanner evidence improves the
+   classification.
 
-2. Point the source-owner manifest at tracked owners where appropriate.
+2. Keep tracked-owner verification wired into the rebuild path.
 
-   The source-manifest rebuild path is now exact with generated owners. Next,
-   allow promoted tracked owners to replace selected generated owner files.
+   `tools/extract_non_code_sources.js` now prefers verified tracked owners and
+   generates fallback owners for the rest. Keep `node tools/verify_setup.js`
+   green after every promotion.
 
 3. Continue splitting the first tracked chunk into smaller source files.
 

@@ -114,6 +114,23 @@ Current result:
 The generated manifest lives under ignored `build/source-manifest/`. Durable
 policy and current numbers are in `docs/FULL_ROM_SOURCE_MANIFEST.md`.
 
+Tracked non-code source owners now begin under `data/source-owners/rev0/`.
+`tools/promote_non_code_sources.js` promotes selected non-code source-manifest
+entries into tracked `.srcbin` files and writes
+`data/source-owners/rev0/manifest.json`. `tools/extract_non_code_sources.js`
+verifies that tracked manifest and prefers matching tracked files while still
+generating ignored fallback owners for every unpromoted non-code span.
+
+Current tracked batch:
+
+- `raw_header` `0x00000000..0x00001000` (4,096 bytes).
+- `raw_structural_gap` `0x0063676C..0x00636784` (24 bytes).
+- `raw_tail_data` `0x0275415B..0x0275DD40` (39,909 bytes, ambiguous).
+
+Current source-owner mix: 3 tracked files / 44,029 bytes, plus 1,055 generated
+fallback files / 35,388,567 bytes. Total non-code source ownership remains
+1,058 files / 35,432,596 bytes.
+
 ## Exact Rebuild Rule
 
 Before replacing raw bytes with assembly or C, preserve the exact-rebuild loop:
@@ -202,11 +219,12 @@ setup-complete state:
 - Current verifier result: PASS; 825 archives, 0 unknown bytes, 108 overlap
   bytes visible, 1 tracked composite real-asm chunk made from 2 tracked source
   files, 99 generated fallback chunks, full-source manifest 1,059 entries with
-  2,469,141 ambiguous bytes preserved explicitly, 1,058 generated non-code
-  source-owner files / 35,432,596 bytes, source-manifest rebuild exact, full ROM
+  2,469,141 ambiguous bytes preserved explicitly, 3 tracked non-code
+  source-owner files / 44,029 bytes, 1,055 generated non-code fallback files /
+  35,388,567 bytes, source-manifest rebuild exact, full ROM
   SHA256
   `571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A`.
 
-Next phase is promoting/curating tracked non-code source owners under `data/` or
-`assets/` in deliberate batches. Do not begin semantic C decomp unless the setup
+Next phase is either promoting another small non-code owner batch or continuing
+tracked original-MIPS splits. Do not begin semantic C decomp unless the setup
 verifier is green.

@@ -30,6 +30,8 @@ node tools\rebuild_from_source_manifest.js
 ```
 
 Generated owner files are ignored under `build/source-owners/rev0/`.
+Tracked curated owners live under `data/source-owners/rev0/` and are preferred
+by `tools/extract_non_code_sources.js` after byte/range/SHA verification.
 
 ## Current Result
 
@@ -41,8 +43,20 @@ Current status: PASS.
 - Confirmed original-MIPS source bytes: 6,510,444.
 - Non-code/raw/data/archive source bytes: 35,432,596.
 - Ambiguous bytes preserved explicitly: 2,469,141.
-- Generated non-code source-owner files: 1,058.
-- Generated non-code source-owner bytes: 35,432,596.
+- Total non-code source-owner files: 1,058.
+- Total non-code source-owner bytes: 35,432,596.
+- Tracked non-code source-owner files: 3.
+- Tracked non-code source-owner bytes: 44,029.
+- Generated fallback non-code source-owner files: 1,055.
+- Generated fallback non-code source-owner bytes: 35,388,567.
+
+Tracked source-owner batch:
+
+| Source form | Range | Bytes | Note |
+|---|---:|---:|---|
+| `raw_header` | `0x00000000..0x00001000` | 4,096 | N64 header source bytes. |
+| `raw_structural_gap` | `0x0063676C..0x00636784` | 24 | Gap after configured code region. |
+| `raw_tail_data` | `0x0275415B..0x0275DD40` | 39,909 | Still ambiguous; preserved byte-exactly. |
 
 Current source-form byte totals:
 
@@ -83,9 +97,29 @@ Do not promote archive-gap bytes as archives, code, or padding until a repeatabl
 scanner proves the classification. The parent archive catalog has missed whole
 sections before, so the independent LHA scan stays in the default gate.
 
+## Tracked Owner Workflow
+
+Promote another curated batch with:
+
+```powershell
+node tools\promote_non_code_sources.js --source-form <form>
+```
+
+With no explicit selection, the tool promotes only the current small default
+batch: `raw_header`, `raw_structural_gap`, and `raw_tail_data`.
+
+Then run:
+
+```powershell
+node tools\verify_setup.js
+```
+
+The setup report should show tracked owner counts while the total non-code byte
+count and rebuilt ROM SHA256 stay unchanged.
+
 ## Next Step
 
-Promote/curate tracked non-code owners under `data/bin/`, `data/archives/`, or
-`assets/` in deliberate batches. The generated owner/rebuild path is already
-byte-exact, but generated bulk proof files remain ignored until the tracked
-source layout is chosen intentionally.
+Promote/curate additional non-code owners under `data/bin/`,
+`data/archives/`, or `assets/` in deliberate batches. The generated
+owner/rebuild path remains byte-exact for unpromoted spans, and generated bulk
+proof files remain ignored.

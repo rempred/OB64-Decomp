@@ -15,7 +15,7 @@ const {
 } = require('./lib/rom');
 
 function usage() {
-  console.log(`Usage: node tools/rebuild_from_source_manifest.js [--source-manifest <json>] [--owners <json>] [--assembled-code <bin>] [--reference <z64>] [--out <z64>] [--report <json>]\n\nRebuilds Rev 0 from the full source manifest: original MIPS/assembled code for code spans and generated source-owner files for non-code spans.`);
+  console.log(`Usage: node tools/rebuild_from_source_manifest.js [--source-manifest <json>] [--owners <json>] [--assembled-code <bin>] [--reference <z64>] [--out <z64>] [--report <json>]\n\nRebuilds Rev 0 from the full source manifest: original MIPS/assembled code for code spans and source-owner files for non-code spans.`);
 }
 
 function parseArgs(argv) {

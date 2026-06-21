@@ -123,10 +123,11 @@ node tools/extract_non_code_sources.js
 node tools/rebuild_from_source_manifest.js
 ```
 
-This writes ignored non-code owner files under `build/source-owners/rev0/`, then
-rebuilds the ROM from assembled original MIPS plus those owners. It is the
-current proof path that non-code bytes are in the rebuild without being labeled
-as understood MIPS.
+This verifies tracked non-code owner files under `data/source-owners/rev0/`,
+writes ignored fallback owners under `build/source-owners/rev0/` for unpromoted
+spans, then rebuilds the ROM from assembled original MIPS plus those owners. It
+is the current proof path that non-code bytes are in the rebuild without being
+labeled as understood MIPS.
 
 After each loop, update `docs/DECOMP_LOG.md`. If that log approaches roughly
 10,000 tokens, condense it and archive the previous full version under

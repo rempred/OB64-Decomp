@@ -190,3 +190,49 @@ Next recommended target:
 - Promote/curate a tracked non-code source layout under `data/` or `assets/` in
   deliberate batches, then let the source-owner manifest point to tracked source
   where appropriate while keeping bulky generated proof outputs ignored.
+
+## 2026-06-21 - Phase 4, Initial Tracked Non-Code Owners
+
+Target:
+
+- Promote a small, low-risk non-code owner batch into tracked `data/` source.
+- Keep unpromoted non-code bytes covered by generated fallback owners.
+
+Baseline:
+
+- `node tools\verify_setup.js` passed before edits.
+- Baseline source owners: 1,058 generated non-code files / 35,432,596 bytes.
+- Baseline full ROM SHA256:
+  `571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A`.
+
+Tooling change:
+
+- Added `tools/promote_non_code_sources.js`.
+- `tools/extract_non_code_sources.js` now accepts a tracked source-owner
+  manifest, verifies each tracked owner by range, source form, length, and
+  SHA256, and prefers tracked files over generated `build/` owners.
+- `tools/verify_setup.js` now reports tracked vs generated non-code owner counts.
+
+Tracked source-owner batch:
+
+- `data/source-owners/rev0/raw_header/0000_raw_header_00000000_00001000.srcbin`
+  covers `0x00000000..0x00001000`, 4,096 bytes.
+- `data/source-owners/rev0/raw_structural_gap/0002_raw_structural_gap_0063676C_00636784.srcbin`
+  covers `0x0063676C..0x00636784`, 24 bytes.
+- `data/source-owners/rev0/raw_tail_data/1057_raw_tail_data_0275415B_0275DD40.srcbin`
+  covers `0x0275415B..0x0275DD40`, 39,909 bytes, still explicitly ambiguous.
+- Tracked manifest: `data/source-owners/rev0/manifest.json`.
+
+Verification:
+
+- `node tools\extract_non_code_sources.js` passed with 3 tracked owner files /
+  44,029 bytes and 1,055 generated fallback files / 35,388,567 bytes.
+- `node tools\rebuild_from_source_manifest.js` rebuilt exact.
+- Full `node tools\verify_setup.js` passed after the promotion.
+- Final source-manifest rebuild SHA256:
+  `571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A`.
+
+Next recommended target:
+
+- Promote the next deliberate non-code source-owner batch or return to splitting
+  tracked original-MIPS source, keeping the full verifier green.

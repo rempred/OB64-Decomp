@@ -76,11 +76,23 @@ node tools/extract_non_code_sources.js
 node tools/rebuild_from_source_manifest.js
 ```
 
-Writes byte-exact non-code source-owner files under
-`build/source-owners/rev0/`, then rebuilds
+Verifies tracked non-code source-owner files under
+`data/source-owners/rev0/`, writes byte-exact generated fallback owners under
+`build/source-owners/rev0/` for unpromoted spans, then rebuilds
 `dist/rebuilt.us_rev0.source-manifest.z64` from assembled original MIPS plus
 those owner files. This proves non-code bytes participate in the rebuild path
 without being treated as decoded MIPS.
+
+```powershell
+node tools/promote_non_code_sources.js
+```
+
+Promotes selected non-code source-manifest entries into tracked
+`data/source-owners/rev0/` files and updates
+`data/source-owners/rev0/manifest.json`. With no arguments it promotes the small
+default batch: `raw_header`, `raw_structural_gap`, and `raw_tail_data`. Use
+`--source-form <form>` or `--index <n>` for later deliberate batches, then run
+`node tools/verify_setup.js`.
 
 ```powershell
 node tests/binutils_smoke.js

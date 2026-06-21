@@ -1,0 +1,77 @@
+{
+  "tool": "promote_non_code_sources",
+  "profile": "us-rev0",
+  "policy": "Tracked source owners are curated replacements for generated build/source-owners entries. Unpromoted non-code spans remain generated proof owners.",
+  "source": {
+    "byteOrder": "v64",
+    "z64Sha256": "571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A",
+    "crc1": "E6419BC5",
+    "crc2": "69011DE3",
+    "sizeBytes": 41943040
+  },
+  "sourceManifest": {
+    "path": "build/source-manifest/rev0-full-source-manifest.json",
+    "entries": 1059,
+    "sha256": "38B99DA55023B6BE5560EB02BB6865669EC979D4A6CA8ED944B0D14A6CF737B9"
+  },
+  "outputDir": "data/source-owners/rev0",
+  "selection": {
+    "sourceForms": [
+      "raw_header",
+      "raw_structural_gap",
+      "raw_tail_data"
+    ],
+    "indexes": []
+  },
+  "summary": {
+    "trackedOwnerEntries": 3,
+    "trackedOwnerBytes": 44029,
+    "ambiguousBytes": 39909,
+    "bySourceForm": {
+      "raw_header": 4096,
+      "raw_structural_gap": 24,
+      "raw_tail_data": 39909
+    }
+  },
+  "entries": [
+    {
+      "index": 0,
+      "sourceForm": "raw_header",
+      "ledgerCategory": "header",
+      "ambiguous": false,
+      "romStart": "0x00000000",
+      "romEndExclusive": "0x00001000",
+      "bytes": 4096,
+      "kind": "tracked_source_owner",
+      "ownerFile": "data/source-owners/rev0/raw_header/0000_raw_header_00000000_00001000.srcbin",
+      "sha256": "AC11C6D6A7A4EFAB4817612268A7EA9CE418677418B299B15CD908B09B621A84",
+      "note": "Curated tracked source owner; still byte-exact source until decoded further."
+    },
+    {
+      "index": 2,
+      "sourceForm": "raw_structural_gap",
+      "ledgerCategory": "structural_gap",
+      "ambiguous": false,
+      "romStart": "0x0063676C",
+      "romEndExclusive": "0x00636784",
+      "bytes": 24,
+      "kind": "tracked_source_owner",
+      "ownerFile": "data/source-owners/rev0/raw_structural_gap/0002_raw_structural_gap_0063676C_00636784.srcbin",
+      "sha256": "675531377887B079C0AD9236C6D74A7827C71C9DE71EE1ED4E3B5F0C4D3911CC",
+      "note": "Curated tracked source owner; still byte-exact source until decoded further."
+    },
+    {
+      "index": 1057,
+      "sourceForm": "raw_tail_data",
+      "ledgerCategory": "tail_data",
+      "ambiguous": true,
+      "romStart": "0x0275415B",
+      "romEndExclusive": "0x0275DD40",
+      "bytes": 39909,
+      "kind": "tracked_source_owner",
+      "ownerFile": "data/source-owners/rev0/raw_tail_data/1057_raw_tail_data_0275415B_0275DD40.srcbin",
+      "sha256": "F2FC2BE4C6BD562720E586DBF6467ACA1011DA320F79FE691940D2A8FE062421",
+      "note": "Curated tracked source owner; still byte-exact source until decoded further."
+    }
+  ]
+}
