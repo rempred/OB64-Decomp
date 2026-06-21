@@ -766,17 +766,26 @@
           "sha256": "28E22714410B8B96C243572BF792FBF7391FDAA1A36E0F305E53E0082EC63FA6"
         },
         {
-          "name": "code_0000978C_00011000_remainder",
-          "file": "asm/original/rev0/code_0000978C_00011000.s",
+          "name": "boot_command_stream_dispatch",
+          "file": "asm/original/rev0/boot/boot_command_stream_dispatch.s",
           "romStart": "0x0000978C",
+          "romEndExclusive": "0x00009A18",
+          "bytes": 652,
+          "textBytes": 12599,
+          "sha256": "6C652CF126ACDB6991288764890D1EE7739D8AC6BAD1959BCE95612F34183CDA"
+        },
+        {
+          "name": "code_00009A18_00011000_remainder",
+          "file": "asm/original/rev0/code_00009A18_00011000.s",
+          "romStart": "0x00009A18",
           "romEndExclusive": "0x00011000",
-          "bytes": 30836,
-          "textBytes": 595399,
-          "sha256": "EF64AF0C2BCAF0208B0601A5088FEB8FAC8661A089F4DDFC1A22A16831BD9064"
+          "bytes": 30184,
+          "textBytes": 583058,
+          "sha256": "4CB8D8D617E9E8CDB7A9262059A6D47A801ACD96D5474E50ECC22840D8E3D9FD"
         }
       ],
-      "textBytes": 1286230,
-      "sha256": "4EAE61E992EE16EEDEF82B0ED14D9B55574BF36562348547A6879C3B39022DBA"
+      "textBytes": 1286488,
+      "sha256": "DCBE5E34D3BC22C3B8587D2BBDB7D3DABDD654E02B894CA9DA1AF305E1B20B27"
     }
   ]
 }

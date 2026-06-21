@@ -10,7 +10,7 @@ the vector distance / transform-prefix split:
 | Source | ROM range | RAM range | Notes |
 | --- | --- | --- | --- |
 | `asm/original/rev0/boot/boot_display_list_transform_coefficients_sum_clear.s` | `0x0000954C..0x0000978C` | `0x8007914C..0x8007938C` | `0x954C` prologue helper plus the adjacent 16-word sum leaf and global-clear tail. |
-| `asm/original/rev0/code_0000978C_00011000.s` | `0x0000978C..0x00011000` | `0x8007938C..0x80080C00` | Current tracked remainder; starts with the `0x978C` leaf/prefix family. |
+| `asm/original/rev0/code_0000978C_00011000.s` | `0x0000978C..0x00011000` | `0x8007938C..0x80080C00` | Remainder at this split; now superseded by `code_00009A18_00011000.s` after the command-stream dispatch split. |
 
 The source name is conservative. It records the observed static float
 coefficient/transform-like shape plus the neighboring compact leaves, not final
@@ -56,13 +56,11 @@ renderer semantics.
 - The compact sum leaf has its own `jr ra` at `0x9778..0x977C`.
 - The global-clear tail is exactly `0x9780..0x978C`; the store at `0x9788` is a
   branch delay slot and must not be separated from the tail.
-- The next tracked remainder starts at `0x0000978C`, the next parent boundary.
-- Parent data reports the `0x978C` family as size `0x28C`, with actual prologue
-  body at `0x97A8`, fixed in all seven named states and all 21 snapshots, many
-  callers, JAL-target and indirect-jump behavior, high-confidence callees
-  `0x9CAC`, `0x9C50`, `0x9D50`, `0x9EFC`, `0x9FD8`, and `resource_free`
-  `0x16C4`, with no unresolved v2 targets. Keep the next `0x978C..0x9A18`
-  family together until the jump/table shape is split safely.
+- The next tracked remainder at this split started at `0x0000978C`, the next
+  parent boundary.
+- Follow-up source-layout work now owns `0x978C..0x9A18` as
+  `boot_command_stream_dispatch.s`, leaving `code_00009A18_00011000.s` as the
+  current tracked remainder.
 
 ## Verification
 

@@ -10,7 +10,7 @@ the flagged rect packet emitter:
 | Source | ROM range | RAM range | Notes |
 | --- | --- | --- | --- |
 | `asm/original/rev0/boot/boot_display_list_color_rect_packet_emit.s` | `0x0000906C..0x00009428` | `0x80078C6C..0x80079028` | Single `0x906C` prologue helper, frame size `0x30`, clean return at `0x9420..0x9424`. |
-| `asm/original/rev0/code_00009428_00011000.s` | `0x00009428..0x00011000` | `0x80079028..0x80080C00` | Remainder at this split; now superseded by `code_0000978C_00011000.s` after the vector distance and transform coefficients splits. |
+| `asm/original/rev0/code_00009428_00011000.s` | `0x00009428..0x00011000` | `0x80079028..0x80080C00` | Remainder at this split; now superseded by `code_00009A18_00011000.s` after later display-list and command-stream splits. |
 
 The source name is conservative. It records the observed static coordinate clamp
 and display-list packet shape, plus a color/fill-like incoming word, not final
@@ -60,7 +60,8 @@ renderer semantics.
   `0x112650` and unresolved callees RAM `0x80098450` and `0x800907E0`.
 - The `0x9428..0x954C` family is now promoted as
   `boot_display_list_vector_distance_and_transform_prefix.s`; later transform
-  coefficients work leaves `code_0000978C_00011000.s` as the active remainder.
+  coefficients and command-stream work leave `code_00009A18_00011000.s` as the
+  active remainder.
 
 ## Verification
 

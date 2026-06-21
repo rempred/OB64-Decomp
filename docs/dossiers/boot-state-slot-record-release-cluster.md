@@ -88,8 +88,8 @@ known utility calls; they do not prove runtime scheduler or renderer semantics.
   data records an overlapping `0x874C` leaf and `0x8754` prologue body. That
   leaf/body pair is now promoted as
   `asm/original/rev0/boot/boot_display_list_transform_record_emit.s`;
-  subsequent display-list splits now leave `code_0000978C_00011000.s` as the
-  active remainder.
+  subsequent display-list and command-stream splits now leave
+  `code_00009A18_00011000.s` as the active remainder.
 
 ## Verification
 

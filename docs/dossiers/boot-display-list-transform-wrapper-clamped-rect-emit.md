@@ -10,7 +10,7 @@ after the transform-record emitter:
 | Source | ROM range | RAM range | Notes |
 | --- | --- | --- | --- |
 | `asm/original/rev0/boot/boot_display_list_transform_wrapper_clamped_rect_emit.s` | `0x00008A58..0x00008D6C` | `0x80078658..0x8007896C` | `0x8A58` wrapper plus `0x8A74` secondary leaf/body, frame size `0x18` on the wrapper, clean return at `0x8D64..0x8D68`. |
-| `asm/original/rev0/code_00008D6C_00011000.s` | `0x00008D6C..0x00011000` | `0x8007896C..0x80080C00` | Remainder at this split; now superseded by `code_0000978C_00011000.s` after the later display-list helper splits. |
+| `asm/original/rev0/code_00008D6C_00011000.s` | `0x00008D6C..0x00011000` | `0x8007896C..0x80080C00` | Remainder at this split; now superseded by `code_00009A18_00011000.s` after later display-list and command-stream splits. |
 
 The source name is conservative. It records a static wrapper plus clamped
 rectangle/display-list record shape, not final renderer semantics.
@@ -60,7 +60,8 @@ rectangle/display-list record shape, not final renderer semantics.
   `boot_resource_buffer_reset_flags.s`. That helper is now promoted as
   `boot_display_list_flagged_rect_packet_emit.s`; follow-up color rect, vector
   distance, and transform coefficients splits now leave
-  `code_0000978C_00011000.s` as the active remainder.
+  `code_00009A18_00011000.s` as the active remainder after the command-stream
+  split.
 
 ## Verification
 

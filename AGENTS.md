@@ -173,7 +173,7 @@ Current result:
   `40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`.
 - Code-region match against baserom: pass.
 - Tracked real-assembler original-MIPS chunks: 1 composite
-  (`0x00001000..0x00011000`) made from 84 real-assembler source files.
+  (`0x00001000..0x00011000`) made from 85 real-assembler source files.
 - Generated fallback chunks: 99.
 - Assembled-code ROM rebuild command:
 
@@ -2003,8 +2003,9 @@ adjacent compact leaves:
 
 - `asm/original/rev0/boot/boot_display_list_transform_coefficients_sum_clear.s`
   `0x0000954C..0x0000978C` / RAM `0x8007914C..0x8007938C`.
-- Current remainder:
-  `asm/original/rev0/code_0000978C_00011000.s`.
+- Remainder at this split:
+  `asm/original/rev0/code_0000978C_00011000.s`; now superseded by the
+  command-stream dispatch split below.
 
 Static evidence: parent data reports `0x954C` as a valid 576-byte (`0x240`)
 prologue helper with frame size `0xA8`, fixed in all seven named states and all
@@ -2023,16 +2024,50 @@ float, and returns converted value plus `0x3FE0`. The same source includes a
 compact `0x9758..0x9780` 16-word sum leaf and a `0x9780..0x978C` tail that
 clears word global `0x800A8740`.
 
-Next frontier: `asm/original/rev0/code_0000978C_00011000.s` starts with the
-`0x978C` leaf/prefix family at RAM `0x8007938C`. Parent data reports size
-`0x28C`, actual prologue body at `0x97A8`, fixed in all seven named states and
-all 21 snapshots, many callers, JAL-target and indirect-jump behavior,
-high-confidence callees `0x9CAC`, `0x9C50`, `0x9D50`, `0x9EFC`, `0x9FD8`, and
-`resource_free` `0x16C4`, with no unresolved v2 targets. Keep the next
-`0x978C..0x9A18` family together until the jump/table shape is split safely.
+Follow-up: `0x978C..0x9A18` is now promoted as
+`boot_command_stream_dispatch.s`, leaving current remainder
+`asm/original/rev0/code_00009A18_00011000.s`.
 
 Static dossier:
 `docs/dossiers/boot-display-list-transform-coefficients-sum-clear.md`.
+
+## Boot Command Stream Dispatch Split
+
+The next tracked Rev 0 original-MIPS split promotes the command/stream
+dispatcher-like family after the display-list transform helpers:
+
+- `asm/original/rev0/boot/boot_command_stream_dispatch.s`
+  `0x0000978C..0x00009A18` / RAM `0x8007938C..0x80079618`.
+- Current remainder:
+  `asm/original/rev0/code_00009A18_00011000.s`.
+
+Static evidence: parent data reports `0x978C` as a 652-byte JAL-target
+leaf/prefix helper fixed in all seven named states and all 21 snapshots, with
+46 callers, indirect-jump behavior, actual prologue body at `0x97A8` with frame
+size `0x38`, and no unresolved v2 targets. High-confidence callees are
+`0x9CAC`, `0x9C50`, `0x9D50`, `0x9EFC`, `0x9FD8`, and `resource_free`
+`0x16C4`.
+
+Static shape: the prefix stores incoming arguments to stack slots, loads the
+current context/global from `0x800A8740`, then falls into the `0x97A8` prologue
+body. The body iterates aligned command/stream words from the saved
+argument/stack area, dispatches through jump tables rooted near globals
+`0x800ADFA8`, `0x800ADFE0`, and `0x800AE008`, uses context globals
+`0x800AF0C0` and `0x800AF0C4`, calls the helper family above plus
+`resource_free`, and writes globals including `0x800A8740` and `0x800C4BC0`.
+
+Boundary rule: the promoted source includes the `0x9A10` return and `0x9A14`
+delay-slot stack restore. The next family begins at `0x9A18`.
+
+Next frontier: `asm/original/rev0/code_00009A18_00011000.s` starts with the
+`0x9A18` leaf/prefix family and `0x9A28` frame-`0x20` prologue body. Parent
+data reports 30 callers, indirect-jump behavior, the same helper family as
+callees, and one unresolved v2 target. Local source shows its epilogue at
+`0x9C48..0x9C4C` and the next clean boundary at `0x9C50`; keep
+`0x9A18..0x9C50` together unless jump-table evidence proves a safer split.
+
+Static dossier:
+`docs/dossiers/boot-command-stream-dispatch.md`.
 
 ## Setup Complete Gate
 
@@ -2048,7 +2083,7 @@ setup-complete state:
 - Assembler: GNU Binutils 2.39 `mips64-elf-as.exe` with `-EB -mips3 -32`.
 - Setup verifier: `tools/verify_setup.js`.
 - Current verifier result: PASS; 825 archives, 0 unknown bytes, 108 overlap
-  bytes visible, 1 tracked composite real-asm chunk made from 84 tracked source
+  bytes visible, 1 tracked composite real-asm chunk made from 85 tracked source
   files, 99 generated fallback chunks, full-source manifest 1,059 entries with
   2,469,141 ambiguous bytes preserved explicitly, 3 tracked non-code
   source-owner files / 44,029 bytes, 1,055 generated non-code fallback files /
@@ -2057,11 +2092,10 @@ setup-complete state:
   `571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A`.
 
 Next phase is either promoting another small non-code owner batch or continuing
-tracked original-MIPS splits from `asm/original/rev0/code_0000978C_00011000.s`.
-The next MIPS frontier starts with the `0x978C` leaf/prefix family and the
-`0x97A8` prologue body. Parent evidence reports size `0x28C`, many callers,
-JAL-target and indirect-jump behavior, high-confidence callees `0x9CAC`,
-`0x9C50`, `0x9D50`, `0x9EFC`, `0x9FD8`, and `resource_free` `0x16C4`, with no
-unresolved v2 targets. Keep the next `0x978C..0x9A18` family together until the
-jump/table shape is split safely. Do not begin semantic C decomp unless the
-setup verifier is green.
+tracked original-MIPS splits from `asm/original/rev0/code_00009A18_00011000.s`.
+The next MIPS frontier starts with the `0x9A18` leaf/prefix family and the
+`0x9A28` prologue body. Parent evidence reports 30 callers, indirect-jump
+behavior, the same helper family as callees, and one unresolved v2 target.
+Local source shows its epilogue at `0x9C48..0x9C4C` and the next clean boundary
+at `0x9C50`; keep `0x9A18..0x9C50` together unless jump-table evidence proves a
+safer split. Do not begin semantic C decomp unless the setup verifier is green.

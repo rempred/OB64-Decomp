@@ -18,7 +18,7 @@ and replace the active log with a compact current-state summary.
 - Whole-ROM coverage still independently scans for LHA headers; do not trust the
   parent archive catalog by itself.
 - Current tracked code source mix: one composite real-assembler chunk
-  `0x00001000..0x00011000` made from 84 tracked source files, plus 99 generated
+  `0x00001000..0x00011000` made from 85 tracked source files, plus 99 generated
   fallback code chunks.
 - Current tracked non-code source-owner mix: 3 tracked files / 44,029 bytes,
   plus 1,055 generated fallback owner files / 35,388,567 bytes.
@@ -61,9 +61,9 @@ Current named sequence:
 - Resource probe helpers through
   `boot_resource_probe_record_checksum_signature.s` `0x4AC8..0x5FC0`.
 - State/slot, resource-handle, and transform-record helpers through
-  `boot_display_list_transform_coefficients_sum_clear.s`
-  `0x5FC0..0x978C`.
-- Current remainder: `code_0000978C_00011000.s`.
+  `boot_command_stream_dispatch.s`
+  `0x5FC0..0x9A18`.
+- Current remainder: `code_00009A18_00011000.s`.
 
 Static dossiers live under `docs/dossiers/` and are the durable evidence notes
 for each promoted source-layout split.
@@ -959,13 +959,62 @@ Verification for the split:
 - Static dossier:
   `docs/dossiers/boot-display-list-transform-coefficients-sum-clear.md`.
 
+## 2026-06-21 - Boot Command Stream Dispatch Split
+
+Baseline before the split:
+
+- `git status --short` was clean at commit
+  `def1759 Split Rev 0 boot display-list transform coefficients`.
+- `node tools\verify_setup.js` passed with 825 archives, zero unknown bytes, 108
+  visible overlap bytes, 84 tracked source files, 99 generated fallback chunks,
+  and unchanged code/ROM hashes.
+
+Promoted `asm/original/rev0/boot/boot_command_stream_dispatch.s` covering ROM
+`0x0000978C..0x00009A18` / RAM `0x8007938C..0x80079618`. The old
+`asm/original/rev0/code_0000978C_00011000.s` remainder was removed and replaced
+by `asm/original/rev0/code_00009A18_00011000.s`.
+
+Static evidence from parent function/symbol/callgraph data and local source:
+
+- `0x978C` is a 652-byte (`0x28C`) JAL-target leaf/prefix helper fixed in all
+  seven named states and all 21 snapshots.
+- Parent data reports 46 callers, indirect-jump behavior, no secondary entries,
+  and no unresolved v2 targets.
+- The actual prologue body starts at `0x97A8`, uses frame size `0x38`, and
+  shares the same end at `0x9A18`.
+- High-confidence callees are `0x9CAC`, `0x9C50`, `0x9D50`, `0x9EFC`,
+  `0x9FD8`, and `resource_free` `0x16C4`.
+- Local source shows three indirect `jr v0` dispatch sites at `0x986C`,
+  `0x9950`, and `0x99D8`, with jump-table roots loaded from globals around
+  `0x800ADFA8`, `0x800ADFE0`, and `0x800AE008`.
+
+Static shape:
+
+- The prefix stores incoming arguments to stack slots, loads the current
+  context/global from `0x800A8740`, then falls into the `0x97A8` body.
+- The body iterates aligned command/stream words from the saved argument/stack
+  area, checks negative opcode-like values, and dispatches through jump tables.
+- It uses context globals `0x800AF0C0` and `0x800AF0C4`, calls the helper
+  family plus `resource_free`, and writes globals including `0x800A8740` and
+  `0x800C4BC0`.
+- The split includes the `0x9A10` return and `0x9A14` delay-slot stack restore;
+  the next family starts at `0x9A18`.
+
+Verification for the split:
+
+- `node tests\binutils_smoke.js` passed.
+- `node tools\assemble_original_mips.js` passed.
+- Full `node tools\verify_setup.js` passed after docs were updated.
+- Source mix is now 1 tracked composite real-asm chunk made from 85 tracked
+  source files, plus 99 generated fallback chunks.
+- Static dossier:
+  `docs/dossiers/boot-command-stream-dispatch.md`.
+
 ## Next Frontier
 
-Continue from `asm/original/rev0/code_0000978C_00011000.s`. The first target is
-the `0x978C` leaf/prefix family at RAM `0x8007938C`. Parent function data
-reports size `0x28C`, actual prologue body at `0x97A8`, fixed in all seven
-named states and all 21 snapshots, many callers, JAL-target and indirect-jump
-behavior, high-confidence callees `0x9CAC`, `0x9C50`, `0x9D50`, `0x9EFC`,
-`0x9FD8`, and `resource_free` `0x16C4`, with no unresolved v2 targets. Keep the
-next `0x978C..0x9A18` family together until the jump/table shape is split
-safely.
+Continue from `asm/original/rev0/code_00009A18_00011000.s`. The first target is
+the `0x9A18` leaf/prefix family and `0x9A28` frame-`0x20` prologue body. Parent
+function data reports 30 callers, indirect-jump behavior, the same helper
+family as callees, and one unresolved v2 target. Local source shows its epilogue
+at `0x9C48..0x9C4C` and the next clean boundary at `0x9C50`; keep
+`0x9A18..0x9C50` together unless jump-table evidence proves a safer split.

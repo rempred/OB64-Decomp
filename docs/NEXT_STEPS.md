@@ -16,7 +16,7 @@ node tools/verify_setup.js
 ```
 
 Current source mix: 1 tracked composite real-assembler chunk
-(`0x00001000..0x00011000`) made from 84 tracked source files, plus 99 generated
+(`0x00001000..0x00011000`) made from 85 tracked source files, plus 99 generated
 fallback chunks.
 
 The assembled code-region SHA256 is
@@ -93,13 +93,14 @@ coverage or overclassifying data as MIPS.
    copy leaf split, display-list transform record emit split, and
    transform-wrapper/clamped-rect emit split, flagged rect packet emit split,
    color rect packet emit split, vector distance/transform-prefix split, and
-   transform coefficients/sum-clear split are done. Continue from
-   `asm/original/rev0/code_0000978C_00011000.s`, beginning with the `0x978C`
-   leaf/prefix family and `0x97A8` prologue body. Parent evidence reports size
-   `0x28C`, many callers, JAL-target and indirect-jump behavior,
-   high-confidence callees `0x9CAC`, `0x9C50`, `0x9D50`, `0x9EFC`, `0x9FD8`,
-   and `resource_free` `0x16C4`, with no unresolved v2 targets. Keep the next
-   `0x978C..0x9A18` family together until the jump/table shape is split safely.
+   transform coefficients/sum-clear split, and command stream dispatch split
+   are done. Continue from `asm/original/rev0/code_00009A18_00011000.s`,
+   beginning with the `0x9A18` leaf/prefix family and `0x9A28` frame-`0x20`
+   prologue body. Parent evidence reports 30 callers, indirect-jump behavior,
+   the same helper family as callees, and one unresolved v2 target. Local source
+   shows its epilogue at `0x9C48..0x9C4C` and the next clean boundary at
+   `0x9C50`; keep `0x9A18..0x9C50` together unless jump-table evidence proves a
+   safer split.
 
 4. Keep the setup gate green.
 
