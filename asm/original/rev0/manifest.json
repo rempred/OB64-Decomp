@@ -586,17 +586,26 @@
           "sha256": "B65830E8B7BCF2F2B84664B92F0A359B9129E1108253C082C2390D1D6F46F17D"
         },
         {
-          "name": "code_0000722C_00011000_remainder",
-          "file": "asm/original/rev0/code_0000722C_00011000.s",
+          "name": "boot_resource_global_handle_slot_record_prepare",
+          "file": "asm/original/rev0/boot/boot_resource_global_handle_slot_record_prepare.s",
           "romStart": "0x0000722C",
+          "romEndExclusive": "0x00007560",
+          "bytes": 820,
+          "textBytes": 15979,
+          "sha256": "F43CF9F4B631FF825B622F2379DAB784D9ED53BF5AD19FF9858FB7813A1D2520"
+        },
+        {
+          "name": "code_00007560_00011000_remainder",
+          "file": "asm/original/rev0/code_00007560_00011000.s",
+          "romStart": "0x00007560",
           "romEndExclusive": "0x00011000",
-          "bytes": 40404,
-          "textBytes": 779594,
-          "sha256": "F57B2EDECD3B39385C8E2D6C92BC327D4C2488B1F2BF609DC90AEF4975F4A3A1"
+          "bytes": 39584,
+          "textBytes": 763874,
+          "sha256": "3334322C6A4512D742C00C7403F4F2EFDA70C081EBF1680536663AEEA0BE3B61"
         }
       ],
-      "textBytes": 1281065,
-      "sha256": "808581D9747116DFB813F7A58271ADE6B4A0F84A7AF0C3239229A51D13C8B998"
+      "textBytes": 1281324,
+      "sha256": "720A6A4D870EDC460AFCB8E40E614DCBD5972BB3C80FCAB8D9ED14C41D8612C1"
     }
   ]
 }

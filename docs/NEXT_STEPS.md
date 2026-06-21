@@ -16,7 +16,7 @@ node tools/verify_setup.js
 ```
 
 Current source mix: 1 tracked composite real-assembler chunk
-(`0x00001000..0x00011000`) made from 64 tracked source files, plus 99 generated
+(`0x00001000..0x00011000`) made from 65 tracked source files, plus 99 generated
 fallback chunks.
 
 The assembled code-region SHA256 is
@@ -83,10 +83,11 @@ coverage or overclassifying data as MIPS.
    seed wrapper split, boot resource table/mask apply split, boot state global
    reset split, boot state slot callback dispatch split, boot state slot render
    callback walk split, boot state slot queue service gate split, and boot
-   resource global handle release split are done. Continue from
-   `asm/original/rev0/code_0000722C_00011000.s`, beginning with the larger
-   `0x722C` leaf / `0x7234` prologue helper with secondary entries at `0x735C`
-   and `0x745C`.
+   resource global handle release split, and boot resource global handle slot
+   record prepare split are done. Continue from
+   `asm/original/rev0/code_00007560_00011000.s`, beginning with the `0x7560`
+   leaf prefix / `0x7568` prologue helper that scans the corrected
+   `0x800E82C8` slot-record array and calls `0x80077F88`.
 
 4. Keep the setup gate green.
 

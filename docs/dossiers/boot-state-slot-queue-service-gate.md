@@ -11,7 +11,8 @@ helper immediately after the boot state slot render callback walk helper:
 | --- | --- | --- | --- |
 | `asm/original/rev0/boot/boot_state_slot_queue_service_gate.s` | `0x000071C8..0x00007200` | `0x80076DC8..0x80076E00` | Leaf prefix at `0x71C8` plus `0x71D0` prologue body; gates a three-call service chain on halfword global `0x800C49D0`. |
 | `asm/original/rev0/code_00007200_00011000.s` | `0x00007200..0x00011000` | `0x80076E00..0x80080C00` | Remainder at this split; now superseded by the boot resource global handle release split. |
-| `asm/original/rev0/code_0000722C_00011000.s` | `0x0000722C..0x00011000` | `0x80076E2C..0x80080C00` | Current tracked remainder after the boot resource global handle release split. |
+| `asm/original/rev0/code_0000722C_00011000.s` | `0x0000722C..0x00011000` | `0x80076E2C..0x80080C00` | Remainder after the boot resource global handle release split; now superseded by the boot resource global handle slot record prepare split. |
+| `asm/original/rev0/code_00007560_00011000.s` | `0x00007560..0x00011000` | `0x80077160..0x80080C00` | Current tracked remainder after the boot resource global handle slot record prepare split. |
 
 The name is conservative. It records the static queue/service gate shape, not
 runtime-verified scheduler semantics.

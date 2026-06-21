@@ -14,7 +14,8 @@ helper immediately after the resource table/mask apply cluster:
 | `asm/original/rev0/code_00006EE8_00011000.s` | `0x00006EE8..0x00011000` | `0x80076AE8..0x80080C00` | Remainder after the boot state slot callback dispatch split; now superseded by the boot state slot render callback walk split. |
 | `asm/original/rev0/code_000071C8_00011000.s` | `0x000071C8..0x00011000` | `0x80076DC8..0x80080C00` | Remainder after the boot state slot render callback walk split; now superseded by the boot state slot queue service gate split. |
 | `asm/original/rev0/code_00007200_00011000.s` | `0x00007200..0x00011000` | `0x80076E00..0x80080C00` | Remainder after the boot state slot queue service gate split; now superseded by the boot resource global handle release split. |
-| `asm/original/rev0/code_0000722C_00011000.s` | `0x0000722C..0x00011000` | `0x80076E2C..0x80080C00` | Current tracked remainder after the boot resource global handle release split. |
+| `asm/original/rev0/code_0000722C_00011000.s` | `0x0000722C..0x00011000` | `0x80076E2C..0x80080C00` | Remainder after the boot resource global handle release split; now superseded by the boot resource global handle slot record prepare split. |
+| `asm/original/rev0/code_00007560_00011000.s` | `0x00007560..0x00011000` | `0x80077160..0x80080C00` | Current tracked remainder after the boot resource global handle slot record prepare split. |
 
 The name is conservative. It records the static global reset/init shape, not
 runtime-verified system semantics.
@@ -34,14 +35,14 @@ runtime-verified system semantics.
 - Parent xrefs expose writes to `0x800C4C20`, `0x800E79A0`,
   `0x800C49D0`, `0x800BF0B0`, and byte writes around
   `0x800BF0A2..0x800BF0A4`.
-- Local source inspection also shows memclear bases at `0x800F82C8` and
+- Local source inspection also shows memclear bases at `0x800E82C8` and
   `0x800C4C10`, plus four-slot initialization around
   `0x800BF090/0x800BF0A6`.
 
 ## Static Shape
 
 - Calls `0x80094C90`.
-- Clears `0x800F82C8` length `0x3F0` through `0x80093380`.
+- Clears `0x800E82C8` length `0x3F0` through `0x80093380`.
 - Clears `0x800C4C10` length `0x0C` through `0x80093380`.
 - Sets `0x800C4C20 = 1` and `0x800E79A0 = 8`.
 - Clears halfword `0x800C49D0`, word `0x800BF0B0`, halfword `0x800BF0A0`,

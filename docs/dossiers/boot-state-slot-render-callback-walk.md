@@ -12,7 +12,8 @@ immediately after the boot state slot callback dispatch helper:
 | `asm/original/rev0/boot/boot_state_slot_render_callback_walk.s` | `0x00006EE8..0x000071C8` | `0x80076AE8..0x80076DC8` | Leaf prefix at `0x6EE8` plus `0x6EF0` prologue body; reverse-walks queued slots, emits display-list packets, and dispatches a working-record callback. |
 | `asm/original/rev0/code_000071C8_00011000.s` | `0x000071C8..0x00011000` | `0x80076DC8..0x80080C00` | Remainder at this split; now superseded by the boot state slot queue service gate split. |
 | `asm/original/rev0/code_00007200_00011000.s` | `0x00007200..0x00011000` | `0x80076E00..0x80080C00` | Remainder after the boot state slot queue service gate split; now superseded by the boot resource global handle release split. |
-| `asm/original/rev0/code_0000722C_00011000.s` | `0x0000722C..0x00011000` | `0x80076E2C..0x80080C00` | Current tracked remainder after the boot resource global handle release split. |
+| `asm/original/rev0/code_0000722C_00011000.s` | `0x0000722C..0x00011000` | `0x80076E2C..0x80080C00` | Remainder after the boot resource global handle release split; now superseded by the boot resource global handle slot record prepare split. |
+| `asm/original/rev0/code_00007560_00011000.s` | `0x00007560..0x00011000` | `0x80077160..0x80080C00` | Current tracked remainder after the boot resource global handle slot record prepare split. |
 
 The name is conservative. It records the static slot/render/callback walk shape,
 not runtime-verified state-machine or graphics semantics.
@@ -36,14 +37,14 @@ not runtime-verified state-machine or graphics semantics.
 - Parent/local xrefs show reads/writes to display-list pointer global
   `0x800E9BA0`, writes to active slot global `0x800C4C20`, reads from queue
   count/list globals `0x800C49D0` and `0x800C4C10`, source slot records rooted
-  at `0x800F82C8`, and working record fields around `0x800E7A30..0x800E7AD0`.
+  at `0x800E82C8`, and working record fields around `0x800E7A30..0x800E7AD0`.
 
 ## Static Shape
 
 - The leaf prefix reads `0x800C49D0`, and the body starts with
   `s1 = count - 1`; negative count exits immediately.
 - Walks the `0x800C4C10` queued slot list backwards, using each slot index to
-  compute a 0xA8-byte source record under `0x800F82C8`.
+  compute a 0xA8-byte source record under `0x800E82C8`.
 - Stores the current slot index to `0x800C4C20`.
 - Skips records that lack the expected flag/pointer state, otherwise copies the
   record into working record `0x800E7A30` through `0x80093060`.

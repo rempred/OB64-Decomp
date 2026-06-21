@@ -173,7 +173,7 @@ Current result:
   `40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`.
 - Code-region match against baserom: pass.
 - Tracked real-assembler original-MIPS chunks: 1 composite
-  (`0x00001000..0x00011000`) made from 64 real-assembler source files.
+  (`0x00001000..0x00011000`) made from 65 real-assembler source files.
 - Generated fallback chunks: 99.
 - Assembled-code ROM rebuild command:
 
@@ -1451,7 +1451,7 @@ High-confidence callees are `0x25090` / RAM `0x80094C90` twice, `0x23780` /
 RAM `0x80093380` twice, `0x49A60` / RAM `0x80173B60`, and `0x859C` / RAM
 `0x8007819C`; the one unresolved callgraph target is RAM `0x8009C7C0`.
 
-Static shape: the helper calls `0x80094C90`, clears `0x800F82C8` length
+Static shape: the helper calls `0x80094C90`, clears `0x800E82C8` length
 `0x3F0`, clears `0x800C4C10` length `0x0C`, sets `0x800C4C20 = 1` and
 `0x800E79A0 = 8`, clears halfword/global state around `0x800C49D0` and
 `0x800BF0A0..0x800BF0B0`, initializes four pointer/halfword slots at
@@ -1486,7 +1486,7 @@ RAM `0x80173D14`, `0x49C4C` / RAM `0x80173D4C`, `0x2CBCC` / RAM
 `0x80077494` and `0x8017C29C`.
 
 Static shape: the helper processes six 0xA8-byte records rooted at
-`0x800F82C8`, uses `0x800E7A30` as a working record copy, writes current slot
+`0x800E82C8`, uses `0x800E7A30` as a working record copy, writes current slot
 global `0x800C4C20`, dispatches through working-record callback pointers at
 `0x800E7A40` and `0x800E7A44`, updates flags/geometry-like halfwords around
 `0x800E7A32..0x800E7A3C`, handles pointer/list state at `0x800E7AC8` and
@@ -1521,7 +1521,7 @@ RAM `0x80173D84`, `0x49CBC` / RAM `0x80173DBC`, and `0x84D4` /
 RAM `0x800780D4`; unresolved target is `0x800782EC`.
 
 Static shape: starts from `0x800C49D0 - 1`, walks queued slot list
-`0x800C4C10` backwards, copies selected 0xA8-byte records from `0x800F82C8`
+`0x800C4C10` backwards, copies selected 0xA8-byte records from `0x800E82C8`
 into working record `0x800E7A30`, writes active slot `0x800C4C20`, emits
 display-list `DE00`/`E700` packets through `0x800E9BA0`, calls helpers
 `0x80173D84`/`0x80173DBC`, dispatches working-record callback pointer
@@ -1569,7 +1569,8 @@ the queue service gate:
 - `asm/original/rev0/boot/boot_resource_global_handle_release.s`
   `0x00007200..0x0000722C`; contains the `0x7200` leaf prefix and `0x7208`
   prologue body.
-- Current remainder:
+- Remainder at this split, now superseded by the boot resource global handle
+  slot record prepare split:
   `asm/original/rev0/code_0000722C_00011000.s`.
 
 Static evidence: parent function data reports `0x7200` as a 44-byte leaf entry
@@ -1587,9 +1588,33 @@ its return value back to `0x800AF0B0`, so the release-style name is a cautious
 static pairing label, not runtime-verified ownership semantics.
 
 Static dossier: `docs/dossiers/boot-resource-global-handle-release.md`.
-Next source split should start at `asm/original/rev0/code_0000722C_00011000.s`;
-the next target is the larger `0x722C` leaf / `0x7234` prologue helper with
-secondary entries at `0x735C` and `0x745C`.
+
+## Boot Resource Global Handle Slot Record Prepare Split
+
+The next tracked Rev 0 original-MIPS split promotes the larger sibling helper
+family after the global-handle release helper:
+
+- `asm/original/rev0/boot/boot_resource_global_handle_slot_record_prepare.s`
+  `0x0000722C..0x00007560`; contains the `0x722C` leaf prefix, `0x7234`
+  prologue body, secondary entries `0x735C` and `0x745C`, and the final delay
+  slot at `0x755C`.
+- Current remainder:
+  `asm/original/rev0/code_00007560_00011000.s`.
+
+Static evidence: parent function data reports `0x722C` as a 44-byte leaf entry
+that falls into the `0x7234` 812-byte prologue helper with frame size `0x18`,
+fixed RAM `0x80076E2C/0x80076E34` in all seven named states and all 21 parent
+snapshots, secondary entries at `0x735C` and `0x745C`, high-confidence callers
+`0x4EC10` and `0x4EC3C`, medium-confidence caller `0x1CF9C0`, and
+high-confidence callee `0x49A60` / RAM `0x80173B60`. Static shape: refreshes
+global handle `0x800AF0B0` through helper `0x80173B60`, then scans or writes
+six 0xA8-byte slot records rooted at corrected signed address `0x800E82C8`
+(not stale `0x800F82C8`), writing fields at `+0x00`, `+0x06..+0x10`,
+`+0xA2`, and `+0xA4` from call arguments and current-slot globals
+`0x800C4C20` / `0x800E810E`. Local source inspection confirms the clean
+exclusive end is `0x7560`: `0x7558` is `jr ra` and `0x755C` is its delay slot.
+Static dossier:
+`docs/dossiers/boot-resource-global-handle-slot-record-prepare.md`.
 
 ## Setup Complete Gate
 
@@ -1605,7 +1630,7 @@ setup-complete state:
 - Assembler: GNU Binutils 2.39 `mips64-elf-as.exe` with `-EB -mips3 -32`.
 - Setup verifier: `tools/verify_setup.js`.
 - Current verifier result: PASS; 825 archives, 0 unknown bytes, 108 overlap
-  bytes visible, 1 tracked composite real-asm chunk made from 64 tracked source
+  bytes visible, 1 tracked composite real-asm chunk made from 65 tracked source
   files, 99 generated fallback chunks, full-source manifest 1,059 entries with
   2,469,141 ambiguous bytes preserved explicitly, 3 tracked non-code
   source-owner files / 44,029 bytes, 1,055 generated non-code fallback files /
@@ -1614,5 +1639,5 @@ setup-complete state:
   `571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A`.
 
 Next phase is either promoting another small non-code owner batch or continuing
-tracked original-MIPS splits from `asm/original/rev0/code_0000722C_00011000.s`.
+tracked original-MIPS splits from `asm/original/rev0/code_00007560_00011000.s`.
 Do not begin semantic C decomp unless the setup verifier is green.
