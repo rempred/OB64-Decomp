@@ -10,7 +10,8 @@ code after the bitstream descriptor encode helper:
 | Source | ROM range | RAM range | Notes |
 | --- | --- | --- | --- |
 | `asm/original/rev0/boot/boot_resource_probe_init.s` | `0x00004AC8..0x00004C34` | `0x800746C8..0x80074834` | JAL-target prologue called by the early boot resource loader. |
-| `asm/original/rev0/code_00004C34_00011000.s` | `0x00004C34..0x00011000` | `0x80074834..0x80080C00` | Next tracked remainder. |
+| `asm/original/rev0/code_00004C34_00011000.s` | `0x00004C34..0x00011000` | `0x80074834..0x80080C00` | Historical remainder; superseded by the resource probe finalize split. |
+| `asm/original/rev0/code_00004C5C_00011000.s` | `0x00004C5C..0x00011000` | `0x8007485C..0x80080C00` | Current tracked remainder after the finalize split. |
 
 The name is conservative. The routine has a static resource/probe initialization
 shape, but no runtime trace or controlled mutation has verified final behavior.
@@ -47,7 +48,8 @@ shape, but no runtime trace or controlled mutation has verified final behavior.
   the descriptor encode helper's trailing return/padding shape.
 - The routine ends after the `jr ra` delay slot at `0x4C30`.
 - The next parent prologue boundary is `0x00004C34`; parent data reports it as a
-  separate 40-byte JAL-target prologue with frame size `0x18`.
+  separate 40-byte JAL-target prologue with frame size `0x18`. That routine is
+  now documented separately in `docs/dossiers/boot-resource-probe-finalize.md`.
 
 ## Verification
 

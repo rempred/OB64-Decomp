@@ -1540,3 +1540,58 @@ Next recommended target:
 - Continue from `asm/original/rev0/code_00004C34_00011000.s`, beginning with
   the `0x00004C34` 40-byte prologue routine. Parent data reports caller
   `0x1E0024`, callees `0x539C` and `0x4FF0`, and the next boundary at `0x4C5C`.
+
+## 2026-06-21 - Boot Resource Probe Finalize Split
+
+### Baseline
+
+- `git status --short` was clean before edits.
+- Last commit before the split was `f1e84ae Split Rev 0 resource probe init`.
+- `node tools\verify_setup.js` passed before the split with 1 tracked composite
+  real-asm chunk made from 37 tracked source files and 99 generated fallback
+  chunks.
+- The decomp log was 67,710 characters, 7,678 words, and 1,543 lines, below the
+  prune threshold.
+
+### Source Change
+
+- Split `asm/original/rev0/code_00004C34_00011000.s`.
+- Added `asm/original/rev0/boot/boot_resource_probe_finalize.s`,
+  `0x00004C34..0x00004C5C`, 40 bytes.
+- Added remainder `asm/original/rev0/code_00004C5C_00011000.s`,
+  `0x00004C5C..0x00011000`, 50,084 bytes.
+
+### Static Evidence
+
+- Parent `../scripts/ob64_functions.json` reports `0x4C34` as a 40-byte valid
+  JAL-target prologue routine with frame size `0x18`, epilogue, no `jalr`, and
+  no indirect jump.
+- Parent `../scripts/ob64_symbols_v2.json` locates `0x4C34` at fixed RAM
+  `0x80074834` in all seven named states and all 21 RAM snapshots.
+- Parent callgraph/symbol data reports high-confidence caller `0x1E0024`,
+  high-confidence callees `0x539C` and `0x4FF0`, no unresolved calls, and no
+  global xrefs.
+- Static code shape: entry saves `ra`, calls `0x539C` with the incoming `a0`,
+  then calls `0x4FF0` with magic value `0x37081383` before restoring `ra` and
+  returning.
+- The name `boot_resource_probe_finalize` is conservative. It records the static
+  nearby resource/probe finalizer-wrapper shape, not a verified runtime API.
+
+### Verification
+
+- `node tests\binutils_smoke.js` passed.
+- `node tools\assemble_original_mips.js` passed and produced the same
+  code-region SHA256:
+  `40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`.
+- Full `node tools\verify_setup.js` passed after docs/source updates.
+- The setup verifier now reports 1 tracked composite real-asm chunk made from
+  38 tracked source files, 99 generated fallback chunks, full-source manifest
+  1,059 entries, 0 unknown bytes, and the same full ROM SHA256:
+  `571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A`.
+
+### Next
+
+- Continue from `asm/original/rev0/code_00004C5C_00011000.s`, beginning with
+  the `0x00004C5C` 356-byte prologue routine. Parent data reports multiple
+  callers/callees, two unresolved calls, one `jalr`, reads from
+  `0x800A8254/0x800A8258`, and the next boundary at `0x4DC0`.
