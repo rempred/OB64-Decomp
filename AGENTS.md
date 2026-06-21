@@ -173,7 +173,7 @@ Current result:
   `40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`.
 - Code-region match against baserom: pass.
 - Tracked real-assembler original-MIPS chunks: 1 composite
-  (`0x00001000..0x00011000`) made from 25 real-assembler source files.
+  (`0x00001000..0x00011000`) made from 26 real-assembler source files.
 - Generated fallback chunks: 99.
 - Assembled-code ROM rebuild command:
 
@@ -398,9 +398,34 @@ retracts EDAT-specific conclusions for shared slot `0x800A81C8`, so this split
 does not promote an EDAT-specific semantic name.
 
 Static dossier: `docs/dossiers/boot-resource-buffer-reset-flags.md`. The next
-source split should start at `0x00003798`; the immediate function is
-`0x3798..0x37F8`, followed by an overlapping `0x37F8/0x3808` cluster that should
-stay together unless stronger evidence separates it safely.
+source split at `0x00003798` has since been superseded by the resource state
+reset split below.
+
+## Boot Resource State Reset Split
+
+The next tracked Rev 0 original-MIPS split separates the compact wrapper after
+the resource-buffer reset helper:
+
+- `asm/original/rev0/boot/boot_resource_state_reset.s`
+  `0x00003798..0x000037F8`; parent reports a 96-byte prologue function, frame
+  size `0x18`, and no secondary entries.
+- Remainder:
+  `asm/original/rev0/code_000037F8_00011000.s`.
+
+Static evidence: the routine calls unresolved helper `0x80089A10`, calls the
+previous `boot_resource_buffer_reset_flags` routine at `0x8007328C`, clears
+bytes `0x800A8210..0x800A8213`, frees the pointer stored at `0x800AEF9C` via
+`resource_free` (`0x800712C4`), writes the returned pointer back to
+`0x800AEF9C`, and clears word `0x800C4B20`. Parent callgraph data reports
+high-confidence callers at ROM `0x5FC0` and `0x4EBCC`, medium-confidence
+callers at `0x1CF960/0x1CF9C0`, and fixed RAM `0x80073398` in all seven named
+states. The unresolved helper keeps this a conservative source-layout label
+rather than a final C API name.
+
+Static dossier: `docs/dossiers/boot-resource-state-reset.md`. Next source
+split should start at `0x000037F8`; the immediate `0x37F8/0x3808` overlapping
+cluster should stay together, likely through exclusive `0x00003C2C`, unless
+stronger evidence separates it safely.
 
 ## Setup Complete Gate
 
@@ -416,7 +441,7 @@ setup-complete state:
 - Assembler: GNU Binutils 2.39 `mips64-elf-as.exe` with `-EB -mips3 -32`.
 - Setup verifier: `tools/verify_setup.js`.
 - Current verifier result: PASS; 825 archives, 0 unknown bytes, 108 overlap
-  bytes visible, 1 tracked composite real-asm chunk made from 25 tracked source
+  bytes visible, 1 tracked composite real-asm chunk made from 26 tracked source
   files, 99 generated fallback chunks, full-source manifest 1,059 entries with
   2,469,141 ambiguous bytes preserved explicitly, 3 tracked non-code
   source-owner files / 44,029 bytes, 1,055 generated non-code fallback files /
@@ -425,5 +450,5 @@ setup-complete state:
   `571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A`.
 
 Next phase is either promoting another small non-code owner batch or continuing
-tracked original-MIPS splits from `asm/original/rev0/code_00003798_00011000.s`.
+tracked original-MIPS splits from `asm/original/rev0/code_000037F8_00011000.s`.
 Do not begin semantic C decomp unless the setup verifier is green.

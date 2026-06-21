@@ -10,7 +10,7 @@ code after the boot mode/message accumulator update:
 | Source | ROM range | RAM range | Notes |
 | --- | --- | --- | --- |
 | `asm/original/rev0/boot/boot_resource_buffer_reset_flags.s` | `0x0000368C..0x00003798` | `0x8007328C..0x80073398` | Keeps secondary entries `0x377C/0x378C` with the parent routine. |
-| `asm/original/rev0/code_00003798_00011000.s` | `0x00003798..0x00011000` | `0x80073398..0x80080C00` | Next tracked remainder. |
+| `asm/original/rev0/code_00003798_00011000.s` | `0x00003798..0x00011000` | `0x80073398..0x80080C00` | Superseded by the later resource state reset split. |
 
 The name is a conservative source-layout label, not a final C API name.
 
@@ -50,10 +50,10 @@ EDAT-specific semantic name.
 - The split starts at parent function boundary `0x0000368C`.
 - The parent end marker is `0x00003794`; the branch delay slot at `0x3794`
   belongs to this routine, so the source split ends at exclusive `0x00003798`.
-- The next routine starts at `0x00003798` and is a compact 96-byte prologue
-  wrapper. After that, parent symbols report an overlapping `0x37F8/0x3808`
-  cluster that should stay together unless stronger evidence proves a safer
-  split.
+- The next routine starts at `0x00003798`; it was later split as
+  `boot_resource_state_reset.s`.
+- After that, parent symbols report an overlapping `0x37F8/0x3808` cluster that
+  should stay together unless stronger evidence proves a safer split.
 
 ## Verification
 

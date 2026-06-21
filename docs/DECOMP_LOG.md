@@ -772,4 +772,73 @@ Next recommended target:
 - Continue from `asm/original/rev0/code_00003798_00011000.s`, beginning with
   the `0x3798..0x37F8` routine, or promote another small tracked non-code owner
   batch. The following `0x37F8/0x3808` overlap cluster should stay together
-  unless stronger evidence separates it safely.
+  unless stronger evidence separates it safely. This target has since been
+  completed by the resource state reset split below.
+
+## 2026-06-21 - Boot Resource State Reset Split
+
+Target:
+
+- Continue source-layout cleanup inside the first tracked original-MIPS chunk.
+- Split the compact `0x3798..0x37F8` routine after the resource-buffer
+  reset/flag helper.
+
+Baseline and coverage audit:
+
+- `node tools\verify_setup.js` passed before edits.
+- Baseline source mix: 1 tracked composite real-asm chunk made from 25 tracked
+  files, plus 99 generated fallback chunks.
+- Full-source manifest audit passed: 1,059 entries, zero unknown bytes,
+  independent archive scan still 825 archives, and original MIPS still covers
+  configured code region `0x00001000..0x0063676C`.
+- Baseline code-region SHA256:
+  `40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`.
+- Baseline full ROM SHA256:
+  `571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A`.
+
+Source-layout change:
+
+- Removed superseded
+  `asm/original/rev0/code_00003798_00011000.s`.
+- Added `asm/original/rev0/boot/boot_resource_state_reset.s`,
+  `0x00003798..0x000037F8`, 96 bytes.
+- Added remainder `asm/original/rev0/code_000037F8_00011000.s`,
+  `0x000037F8..0x00011000`, 55,304 bytes.
+- Static dossier: `docs/dossiers/boot-resource-state-reset.md`.
+
+Evidence:
+
+- Parent `../scripts/ob64_functions.json` reports `0x3798` as a 96-byte
+  prologue, frame size `0x18`, no indirect jumps, and no secondary entries. The
+  parent end marker is `0x37F4`; the delay slot at `0x37F4` means the source
+  split ends at exclusive `0x37F8`.
+- Parent `../scripts/ob64_callgraph_v2.json` reports high-confidence callers at
+  ROM `0x5FC0` and `0x4EBCC`, medium-confidence callers at `0x1CF960` and
+  `0x1CF9C0`, high-confidence callees `0x8007328C` (previous reset helper) and
+  `0x800712C4` (`resource_free`), and unresolved callee `0x80089A10`.
+- Parent `../scripts/ob64_symbols_v2.json` locates the routine at fixed RAM
+  `0x80073398` in all seven named states.
+- Static code shape: call unresolved `0x80089A10`, call the previous
+  resource-buffer reset helper, clear bytes `0x800A8210..0x800A8213`, free the
+  pointer loaded from `0x800AEF9C`, write the returned pointer back to
+  `0x800AEF9C`, and clear word `0x800C4B20`.
+- Because `0x80089A10` remains unresolved, the source name stays a conservative
+  resource state reset label instead of a final semantic API name.
+
+Verification:
+
+- `node tests\binutils_smoke.js` passed after the split.
+- `node tools\assemble_original_mips.js` passed after the split.
+- Full `node tools\verify_setup.js` passed after the split.
+- Assembled report now shows 1 tracked composite real-asm chunk made from 26
+  tracked source files, plus 99 generated fallback chunks.
+- Code-region SHA256 remains:
+  `40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`.
+- Full ROM SHA256 remains:
+  `571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A`.
+
+Next recommended target:
+
+- Continue from `asm/original/rev0/code_000037F8_00011000.s`, beginning with
+  the overlapping `0x37F8/0x3808` cluster. Keep it together, likely through
+  exclusive `0x00003C2C`, unless stronger evidence separates it safely.
