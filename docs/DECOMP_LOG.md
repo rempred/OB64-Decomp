@@ -18,7 +18,7 @@ and replace the active log with a compact current-state summary.
 - Whole-ROM coverage still independently scans for LHA headers; do not trust the
   parent archive catalog by itself.
 - Current tracked code source mix: one composite real-assembler chunk
-  `0x00001000..0x00011000` made from 42 tracked source files, plus 99 generated
+  `0x00001000..0x00011000` made from 43 tracked source files, plus 99 generated
   fallback code chunks.
 - Current tracked non-code source-owner mix: 3 tracked files / 44,029 bytes,
   plus 1,055 generated fallback owner files / 35,388,567 bytes.
@@ -65,7 +65,8 @@ Current named sequence:
 - `boot_resource_probe_dispatch_apply.s` `0x4DC0..0x4ED4`.
 - `boot_resource_probe_dispatch_result_build.s` `0x4ED4..0x4FF0`.
 - `boot_resource_probe_global_cleanup.s` `0x4FF0..0x5058`.
-- Current remainder: `code_00005058_00011000.s`.
+- `boot_resource_probe_chunk_callback_walk.s` `0x5058..0x50F0`.
+- Current remainder: `code_000050F0_00011000.s`.
 
 Static dossiers live under `docs/dossiers/` and are the durable evidence notes
 for each promoted source-layout split.
@@ -265,16 +266,68 @@ Verification for the split:
 - Source mix is now 1 tracked composite real-asm chunk made from 42 tracked
   source files, plus 99 generated fallback chunks.
 
-## Next Frontier
+## 2026-06-21 - Boot Resource Probe Chunk Callback Walk Split
 
-Continue from `asm/original/rev0/code_00005058_00011000.s`.
+Baseline before the split:
 
-Parent evidence for the next target:
+- `git status --short` was clean at commit
+  `963422b Split Rev 0 resource probe global cleanup`.
+- `node tools\verify_setup.js` passed with 825 archives, zero unknown bytes, 108
+  visible overlap bytes, 42 tracked source files, and unchanged code/ROM hashes.
+- Coverage/source audit reports still lined up: coverage ledger spans classify
+  all 41,943,040 ROM bytes with zero unknown bytes; the source manifest has
+  1,059 entries and preserves 2,469,141 ambiguous bytes explicitly.
 
-- `0x5058` is a 152-byte JAL-target prologue with frame size `0x28`, epilogue,
-  and one indirect `jalr`.
+Promoted `asm/original/rev0/boot/boot_resource_probe_chunk_callback_walk.s`
+covering ROM `0x00005058..0x000050F0` / RAM
+`0x80074C58..0x80074CF0`. The old `code_00005058_00011000.s` remainder was
+removed and replaced by `asm/original/rev0/code_000050F0_00011000.s`.
+
+Static evidence from parent `../scripts/ob64_symbols_v2.json`,
+`../scripts/ob64_callgraph_v2.json`, and `../scripts/ob64_xrefs.json`:
+
+- `0x5058` is a 152-byte valid JAL-target prologue with frame size `0x28`,
+  epilogue, one `jalr`, and next function boundary `0x50F0`.
 - Fixed RAM is `0x80074C58` in all seven named states and all 21 snapshots.
 - Callers: `0x4FF0` and `0x4FF8`.
 - High-confidence callees: `resource_alloc` (`0x1330`) and `resource_free`
   (`0x16C4`).
+- No unresolved RAM calls.
 - Global traffic: read from `0x800C4800`.
+
+Static shape:
+
+- The routine allocates a 0x10-byte scratch record and stores callback pointer
+  `0x8008A0F0` into scratch word `+0x00`.
+- It reads byte `0x800C4800`; when that byte is nonzero, it skips the chunk
+  callback loop and just frees the scratch record.
+- When the byte is zero, it walks an 0x8000-byte incoming buffer in 0x100-byte
+  chunks and calls the scratch callback through `jalr` with
+  `(offset, buffer + offset, 0x100, 1)`.
+- It frees the scratch record with `resource_free` and returns.
+- The name is conservative and records a static chunk-callback walk shape, not a
+  verified runtime API.
+
+Verification for the split:
+
+- `node tests\binutils_smoke.js` passed.
+- `node tools\assemble_original_mips.js` passed.
+- `node tools\verify_setup.js` passed after the docs update.
+- Source mix is now 1 tracked composite real-asm chunk made from 43 tracked
+  source files, plus 99 generated fallback chunks.
+
+## Next Frontier
+
+Continue from `asm/original/rev0/code_000050F0_00011000.s`.
+
+Parent evidence for the next target:
+
+- `0x50F0` is a 176-byte JAL-target leaf entry; `0x50F8` is an overlapping
+  168-byte prologue body with frame size `0x28` and no direct callers reported.
+- Fixed RAM is `0x80074CF0/0x80074CF8` in all seven named states and all 21
+  snapshots.
+- Callers to `0x50F0`: `0x4DC0` and `0x4ED4`.
+- High-confidence callees: `resource_alloc` (`0x1330`), `0x1A4F0` / RAM
+  `0x8008A0F0`, and `0x23460` / RAM `0x80093060`.
+- No unresolved RAM calls.
+- Global traffic: reads/writes `0x800A83B8`.

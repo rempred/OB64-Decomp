@@ -13,7 +13,8 @@ boot-code wrapper after the resource probe init helper:
 | `asm/original/rev0/code_00004C5C_00011000.s` | `0x00004C5C..0x00011000` | `0x8007485C..0x80080C00` | Historical remainder; superseded by the dispatch-prepare split. |
 | `asm/original/rev0/code_00004DC0_00011000.s` | `0x00004DC0..0x00011000` | `0x800749C0..0x80080C00` | Historical remainder; superseded by the dispatch-apply split. |
 | `asm/original/rev0/boot/boot_resource_probe_global_cleanup.s` | `0x00004FF0..0x00005058` | `0x80074BF0..0x80074C58` | Follow-up split documented separately. |
-| `asm/original/rev0/code_00005058_00011000.s` | `0x00005058..0x00011000` | `0x80074C58..0x80080C00` | Current tracked remainder after the global cleanup split. |
+| `asm/original/rev0/boot/boot_resource_probe_chunk_callback_walk.s` | `0x00005058..0x000050F0` | `0x80074C58..0x80074CF0` | Follow-up split documented separately. |
+| `asm/original/rev0/code_000050F0_00011000.s` | `0x000050F0..0x00011000` | `0x80074CF0..0x80080C00` | Current tracked remainder after the chunk callback-walk split. |
 
 The name is conservative. The routine has a static finalizer-wrapper shape in
 the nearby resource/probe helper family, but no runtime trace or controlled
