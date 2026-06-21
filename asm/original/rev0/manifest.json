@@ -577,17 +577,26 @@
           "sha256": "544476389ADA9DFDBA7F52947C72F2FE09D7456917F12D5153E7B9E0D054B414"
         },
         {
-          "name": "code_00007200_00011000_remainder",
-          "file": "asm/original/rev0/code_00007200_00011000.s",
+          "name": "boot_resource_global_handle_release",
+          "file": "asm/original/rev0/boot/boot_resource_global_handle_release.s",
           "romStart": "0x00007200",
+          "romEndExclusive": "0x0000722C",
+          "bytes": 44,
+          "textBytes": 1249,
+          "sha256": "B65830E8B7BCF2F2B84664B92F0A359B9129E1108253C082C2390D1D6F46F17D"
+        },
+        {
+          "name": "code_0000722C_00011000_remainder",
+          "file": "asm/original/rev0/code_0000722C_00011000.s",
+          "romStart": "0x0000722C",
           "romEndExclusive": "0x00011000",
-          "bytes": 40448,
-          "textBytes": 780585,
-          "sha256": "9CED43455EC751E969FED2FA4CCE12C1AE4C3BFFCB4D1A52CE16DD2FE5E9EB69"
+          "bytes": 40404,
+          "textBytes": 779594,
+          "sha256": "F57B2EDECD3B39385C8E2D6C92BC327D4C2488B1F2BF609DC90AEF4975F4A3A1"
         }
       ],
-      "textBytes": 1280807,
-      "sha256": "24B8454A556C6F898BB6683D562DA99CC99A6B3D41543347282E8E2FA9AD3C7B"
+      "textBytes": 1281065,
+      "sha256": "808581D9747116DFB813F7A58271ADE6B4A0F84A7AF0C3239229A51D13C8B998"
     }
   ]
 }

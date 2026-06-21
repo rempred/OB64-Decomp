@@ -17,7 +17,8 @@ cluster:
 | `asm/original/rev0/code_000069D8_00011000.s` | `0x000069D8..0x00011000` | `0x800765D8..0x80080C00` | Remainder after the boot state global reset split; now superseded by the boot state slot callback dispatch split. |
 | `asm/original/rev0/code_00006EE8_00011000.s` | `0x00006EE8..0x00011000` | `0x80076AE8..0x80080C00` | Remainder after the boot state slot callback dispatch split; now superseded by the boot state slot render callback walk split. |
 | `asm/original/rev0/code_000071C8_00011000.s` | `0x000071C8..0x00011000` | `0x80076DC8..0x80080C00` | Remainder after the boot state slot render callback walk split; now superseded by the boot state slot queue service gate split. |
-| `asm/original/rev0/code_00007200_00011000.s` | `0x00007200..0x00011000` | `0x80076E00..0x80080C00` | Current tracked remainder after the boot state slot queue service gate split. |
+| `asm/original/rev0/code_00007200_00011000.s` | `0x00007200..0x00011000` | `0x80076E00..0x80080C00` | Remainder after the boot state slot queue service gate split; now superseded by the boot resource global handle release split. |
+| `asm/original/rev0/code_0000722C_00011000.s` | `0x0000722C..0x00011000` | `0x80076E2C..0x80080C00` | Current tracked remainder after the boot resource global handle release split. |
 
 The name is conservative. The static dispatch-loop and task/status shape is
 clear, but no controlled runtime trace in this dossier verifies a complete

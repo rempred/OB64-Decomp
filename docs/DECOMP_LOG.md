@@ -18,7 +18,7 @@ and replace the active log with a compact current-state summary.
 - Whole-ROM coverage still independently scans for LHA headers; do not trust the
   parent archive catalog by itself.
 - Current tracked code source mix: one composite real-assembler chunk
-  `0x00001000..0x00011000` made from 63 tracked source files, plus 99 generated
+  `0x00001000..0x00011000` made from 64 tracked source files, plus 99 generated
   fallback code chunks.
 - Current tracked non-code source-owner mix: 3 tracked files / 44,029 bytes,
   plus 1,055 generated fallback owner files / 35,388,567 bytes.
@@ -60,9 +60,9 @@ Current named sequence:
   `boot_bitstream_descriptor_encode.s` `0x43D4..0x4AC8`.
 - Resource probe helpers through
   `boot_resource_probe_record_checksum_signature.s` `0x4AC8..0x5FC0`.
-- State/slot helpers through `boot_state_slot_queue_service_gate.s`
-  `0x5FC0..0x7200`.
-- Current remainder: `code_00007200_00011000.s`.
+- State/slot and resource-handle helpers through
+  `boot_resource_global_handle_release.s` `0x5FC0..0x722C`.
+- Current remainder: `code_0000722C_00011000.s`.
 
 Static dossiers live under `docs/dossiers/` and are the durable evidence notes
 for each promoted source-layout split.
@@ -180,18 +180,67 @@ Verification for the split:
 - Full ROM SHA256 remains
   `571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A`.
 
-## Next Frontier
+## 2026-06-21 - Boot Resource Global Handle Release Split
 
-Continue from `asm/original/rev0/code_00007200_00011000.s`.
+Baseline before the split:
 
-Parent/local evidence for the next target:
+- `git status --short` was clean at commit
+  `5cfe5ac Split Rev 0 boot state slot queue service gate`.
+- `node tools\verify_setup.js` passed with 825 archives, zero unknown bytes, 108
+  visible overlap bytes, 63 tracked source files, 99 generated fallback chunks,
+  and unchanged code/ROM hashes.
 
-- `0x7200` is a 44-byte leaf entry that falls into the `0x7208` 36-byte
-  prologue body with frame size `0x18`, fixed RAM `0x80076E00/0x80076E08`,
-  and clean end at `0x722C`.
+Promoted `asm/original/rev0/boot/boot_resource_global_handle_release.s`
+covering ROM `0x00007200..0x0000722C` / RAM
+`0x80076E00..0x80076E2C`. The old
+`asm/original/rev0/code_00007200_00011000.s` remainder was removed and replaced
+by `asm/original/rev0/code_0000722C_00011000.s`.
+
+Static evidence from parent function/symbol/callgraph data, sibling source, and
+local source inspection:
+
+- `0x7200` is a 44-byte leaf entry that reads word global `0x800AF0B0` and
+  falls into the `0x7208` body.
+- `0x7208` is a 36-byte prologue body with frame size `0x18` and clean end at
+  `0x722C`.
+- Fixed runtime evidence places the pair at RAM `0x80076E00/0x80076E08` in all
+  seven named states and all 21 parent snapshots.
 - High-confidence callers for `0x7200` are `0x4EBCC` and `0x4EC3C`;
   medium-confidence caller is `0x1CF960`.
 - High-confidence callee is `0x49AA0` / RAM `0x80173BA0`.
-- Local source reads word global `0x800AF0B0`, calls `0x80173BA0`, clears
+- Local source calls `0x80173BA0(a0)` with `a0 = [0x800AF0B0]`, clears
   `0x800AF0B0`, and returns.
-- The following parent boundaries are `0x722C` leaf / `0x7234` prologue.
+- The sibling `0x722C` entry calls paired helper `0x80173B60` and stores its
+  return value to `0x800AF0B0`, supporting a cautious release/acquire-style
+  source-layout pair without proving ownership semantics.
+
+Verification for the split:
+
+- `node tests\binutils_smoke.js` passed.
+- `node tools\assemble_original_mips.js` passed.
+- Full `node tools\verify_setup.js` passed after docs were updated.
+- Source mix is now 1 tracked composite real-asm chunk made from 64 tracked
+  source files, plus 99 generated fallback chunks.
+- Code-region SHA256 remains
+  `40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`.
+- Full ROM SHA256 remains
+  `571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A`.
+
+## Next Frontier
+
+Continue from `asm/original/rev0/code_0000722C_00011000.s`.
+
+Parent/local evidence for the next target:
+
+- `0x722C` is a 44-byte leaf entry that falls into the `0x7234` 812-byte
+  prologue body with frame size `0x18`, fixed RAM `0x80076E2C/0x80076E34`,
+  and clean end at `0x7558`.
+- Parent reports secondary entries at `0x735C` and `0x745C`.
+- High-confidence callers for `0x722C` are `0x4EC10` and `0x4EC3C`;
+  medium-confidence caller is `0x1CF9C0`.
+- High-confidence callee is `0x49A60` / RAM `0x80173B60`.
+- Local source first reads `0x800AF0B0`, calls `0x80173B60`, stores the return
+  to `0x800AF0B0`, then scans/modifies six 0xA8-byte records rooted at
+  `0x800F82C8`.
+- The following parent boundary is `0x7560` leaf prefix / `0x7568` prologue
+  body.

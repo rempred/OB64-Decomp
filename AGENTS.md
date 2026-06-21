@@ -173,7 +173,7 @@ Current result:
   `40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`.
 - Code-region match against baserom: pass.
 - Tracked real-assembler original-MIPS chunks: 1 composite
-  (`0x00001000..0x00011000`) made from 63 real-assembler source files.
+  (`0x00001000..0x00011000`) made from 64 real-assembler source files.
 - Generated fallback chunks: 99.
 - Assembled-code ROM rebuild command:
 
@@ -1541,7 +1541,8 @@ slot render/callback walk helper:
 - `asm/original/rev0/boot/boot_state_slot_queue_service_gate.s`
   `0x000071C8..0x00007200`; contains the `0x71C8` leaf prefix and `0x71D0`
   prologue body.
-- Current remainder:
+- Remainder at this split, now superseded by the boot resource global handle
+  release split:
   `asm/original/rev0/code_00007200_00011000.s`.
 
 Static evidence: parent function data reports `0x71C8` as a 56-byte leaf entry
@@ -1559,9 +1560,36 @@ returns. The name is conservative and records a static queue/service gate shape,
 not runtime-verified scheduler semantics.
 
 Static dossier: `docs/dossiers/boot-state-slot-queue-service-gate.md`.
-Next source split should start at `asm/original/rev0/code_00007200_00011000.s`;
-the next target is the compact `0x7200` leaf / `0x7208` prologue utility called
-by `0x4EBCC`, `0x4EC3C`, and `0x1CF960`.
+
+## Boot Resource Global Handle Release Split
+
+The next tracked Rev 0 original-MIPS split promotes the compact utility after
+the queue service gate:
+
+- `asm/original/rev0/boot/boot_resource_global_handle_release.s`
+  `0x00007200..0x0000722C`; contains the `0x7200` leaf prefix and `0x7208`
+  prologue body.
+- Current remainder:
+  `asm/original/rev0/code_0000722C_00011000.s`.
+
+Static evidence: parent function data reports `0x7200` as a 44-byte leaf entry
+that falls into the `0x7208` 36-byte prologue body with frame size `0x18` and
+clean end `0x722C`. Fixed runtime evidence places the pair at RAM
+`0x80076E00/0x80076E08` in all seven named states and all 21 parent snapshots.
+High-confidence callers for `0x7200` are `0x4EBCC` and `0x4EC3C`;
+medium-confidence caller is `0x1CF960`. High-confidence callee is `0x49AA0` /
+RAM `0x80173BA0`.
+
+Static shape: the leaf prefix reads word global `0x800AF0B0` into `a0`. The body
+saves `ra`, calls `0x80173BA0(a0)`, clears `0x800AF0B0`, restores `ra`, and
+returns. The nearby sibling `0x722C` calls paired helper `0x80173B60` and stores
+its return value back to `0x800AF0B0`, so the release-style name is a cautious
+static pairing label, not runtime-verified ownership semantics.
+
+Static dossier: `docs/dossiers/boot-resource-global-handle-release.md`.
+Next source split should start at `asm/original/rev0/code_0000722C_00011000.s`;
+the next target is the larger `0x722C` leaf / `0x7234` prologue helper with
+secondary entries at `0x735C` and `0x745C`.
 
 ## Setup Complete Gate
 
@@ -1577,7 +1605,7 @@ setup-complete state:
 - Assembler: GNU Binutils 2.39 `mips64-elf-as.exe` with `-EB -mips3 -32`.
 - Setup verifier: `tools/verify_setup.js`.
 - Current verifier result: PASS; 825 archives, 0 unknown bytes, 108 overlap
-  bytes visible, 1 tracked composite real-asm chunk made from 63 tracked source
+  bytes visible, 1 tracked composite real-asm chunk made from 64 tracked source
   files, 99 generated fallback chunks, full-source manifest 1,059 entries with
   2,469,141 ambiguous bytes preserved explicitly, 3 tracked non-code
   source-owner files / 44,029 bytes, 1,055 generated non-code fallback files /
@@ -1586,5 +1614,5 @@ setup-complete state:
   `571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A`.
 
 Next phase is either promoting another small non-code owner batch or continuing
-tracked original-MIPS splits from `asm/original/rev0/code_00007200_00011000.s`.
+tracked original-MIPS splits from `asm/original/rev0/code_0000722C_00011000.s`.
 Do not begin semantic C decomp unless the setup verifier is green.
