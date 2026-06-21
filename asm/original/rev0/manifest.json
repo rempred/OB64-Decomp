@@ -865,17 +865,26 @@
           "sha256": "7B822B9A393F9CFB2246FBA55BE5184B5D1225A22B5203740BC784649D78D826"
         },
         {
-          "name": "code_0000A29C_00011000_remainder",
-          "file": "asm/original/rev0/code_0000A29C_00011000.s",
+          "name": "boot_resource_node_recursive_child_free",
+          "file": "asm/original/rev0/boot/boot_resource_node_recursive_child_free.s",
           "romStart": "0x0000A29C",
+          "romEndExclusive": "0x0000A2F4",
+          "bytes": 88,
+          "textBytes": 1983,
+          "sha256": "AEC4D2579AEDA2DAF1BAC83737AE198B984B6AB8191A645647A329CA7AD52860"
+        },
+        {
+          "name": "code_0000A2F4_00011000_remainder",
+          "file": "asm/original/rev0/code_0000A2F4_00011000.s",
+          "romStart": "0x0000A2F4",
           "romEndExclusive": "0x00011000",
-          "bytes": 28004,
-          "textBytes": 541116,
-          "sha256": "FEDE2E0116CEE64FDC57AD7F1E70E554CDB2864D7A1E409A34718196DC878A05"
+          "bytes": 27916,
+          "textBytes": 539391,
+          "sha256": "BE95BAC926C9FF20F62CEA9C624795177F779FC1C2BAE0F29EA0A5EC262AFA11"
         }
       ],
-      "textBytes": 1289068,
-      "sha256": "D6E5624D8A07992CFCA8A67F12F14F3728A1D3E7962415573831EFC418A01ED0"
+      "textBytes": 1289326,
+      "sha256": "0A36D68D4FA6E628DA0DBDAE43A64EBB3326B713DDEC52076D18EC0D1BA87AAA"
     }
   ]
 }

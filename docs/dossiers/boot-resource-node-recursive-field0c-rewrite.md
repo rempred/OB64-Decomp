@@ -10,7 +10,7 @@ rewrites node field `+0x0C` through the following `0xA29C` helper:
 | Source | ROM range | RAM range | Notes |
 | --- | --- | --- | --- |
 | `asm/original/rev0/boot/boot_resource_node_recursive_field0c_rewrite.s` | `0x0000A250..0x0000A29C` | `0x80079E50..0x80079E9C` | Recursive child walk that rewrites field `+0x0C` with the result from `0xA29C`. |
-| `asm/original/rev0/code_0000A29C_00011000.s` | `0x0000A29C..0x00011000` | `0x80079E9C..0x80080C00` | Current tracked remainder; starts with an 88-byte recursive child/free helper. |
+| `asm/original/rev0/code_0000A29C_00011000.s` | `0x0000A29C..0x00011000` | `0x80079E9C..0x80080C00` | Historical remainder after this split; superseded by `boot_resource_node_recursive_child_free.s`. |
 
 The source name is conservative. It describes the static field rewrite shape;
 runtime ownership and final C API names are not verified.
@@ -45,8 +45,8 @@ runtime ownership and final C API names are not verified.
   delay-slot stack restore at `0xA24C`.
 - The promoted helper includes the return at `0xA294` and delay-slot stack
   restore at `0xA298`.
-- The next function starts cleanly at `0x0000A29C`; keep `0xA29C..0xA2F4`
-  together as the next recursive child/free helper.
+- The next function starts cleanly at `0x0000A29C`; it is now split separately
+  as `boot_resource_node_recursive_child_free.s`.
 
 ## Verification
 
