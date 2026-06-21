@@ -173,7 +173,7 @@ Current result:
   `40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`.
 - Code-region match against baserom: pass.
 - Tracked real-assembler original-MIPS chunks: 1 composite
-  (`0x00001000..0x00011000`) made from 78 real-assembler source files.
+  (`0x00001000..0x00011000`) made from 79 real-assembler source files.
 - Generated fallback chunks: 99.
 - Assembled-code ROM rebuild command:
 
@@ -1819,7 +1819,8 @@ cluster immediately after the `0x8388` frontier:
   `0x800782EC` to `jr ra; nop` plus trailing nop padding.
 - `asm/original/rev0/boot/boot_state_record_copy_58_leaf.s`
   `0x00008700..0x0000874C`; compact no-prologue leaf that copies `0x58` bytes.
-- Current remainder:
+- Remainder at this split, now superseded by the display-list transform record
+  emit split below:
   `asm/original/rev0/code_0000874C_00011000.s`.
 
 Static evidence: parent symbol/callgraph data reports `0x8388`, `0x84D4`,
@@ -1836,6 +1837,37 @@ is a clean copy leaf before the larger `0x874C/0x8754` routine.
 Static dossier:
 `docs/dossiers/boot-state-slot-record-release-cluster.md`.
 
+## Boot Display-List Transform Record Emit Split
+
+The next tracked Rev 0 original-MIPS split promotes the overlapping
+`0x874C` leaf prefix and `0x8754` prologue body as one conservative source file:
+
+- `asm/original/rev0/boot/boot_display_list_transform_record_emit.s`
+  `0x0000874C..0x00008A58`; contains the two-word `0x874C` prefix and the
+  `0x8754` prologue body with frame size `0x60`.
+- Current remainder:
+  `asm/original/rev0/code_00008A58_00011000.s`.
+
+Static evidence: parent function/symbol/callgraph data reports `0x874C` as a
+JAL-target leaf prefix fixed in all seven named states and all 21 snapshots, with
+high-confidence callers `0x8A58` and `0xEE8E0`. The `0x8754` body has no direct
+caller entry but shares the same body and clean epilogue through `0x8A54`.
+High-confidence callees are `0x228D0` / RAM `0x800924D0`, `0x210C0` / RAM
+`0x80090CC0`, and `0x21DD4` / RAM `0x800919D4`; no unresolved targets remain in
+the split.
+
+Static shape: the helper treats incoming `a0` as a `0x58`-byte
+transform/record-like source, copies float/word fields into stack/helper
+arguments, reads descriptor/base global `0x800F9BE0`, reads/writes display-list
+pointer global `0x800E9BA0`, updates counter-like globals `0x800C4BE4` and
+`0x800C4C48`, and writes `0x800E7A0E` plus `0x800C4C24`. It emits
+display-list-style packet words including `DB0E`, `DA38`, `DC08`, and `E700`.
+The zero-vector path calls `0x80090CC0`; the nonzero transform path calls
+`0x800919D4` and emits the larger packet sequence.
+
+Static dossier:
+`docs/dossiers/boot-display-list-transform-record-emit.md`.
+
 ## Setup Complete Gate
 
 The setup phase is complete when `node tools/verify_setup.js` passes. Current
@@ -1850,7 +1882,7 @@ setup-complete state:
 - Assembler: GNU Binutils 2.39 `mips64-elf-as.exe` with `-EB -mips3 -32`.
 - Setup verifier: `tools/verify_setup.js`.
 - Current verifier result: PASS; 825 archives, 0 unknown bytes, 108 overlap
-  bytes visible, 1 tracked composite real-asm chunk made from 78 tracked source
+  bytes visible, 1 tracked composite real-asm chunk made from 79 tracked source
   files, 99 generated fallback chunks, full-source manifest 1,059 entries with
   2,469,141 ambiguous bytes preserved explicitly, 3 tracked non-code
   source-owner files / 44,029 bytes, 1,055 generated non-code fallback files /
@@ -1859,5 +1891,11 @@ setup-complete state:
   `571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A`.
 
 Next phase is either promoting another small non-code owner batch or continuing
-tracked original-MIPS splits from `asm/original/rev0/code_0000874C_00011000.s`.
-Do not begin semantic C decomp unless the setup verifier is green.
+tracked original-MIPS splits from `asm/original/rev0/code_00008A58_00011000.s`.
+The next MIPS frontier starts with the `0x8A58` wrapper / `0x8A74` secondary-entry
+family; parent evidence reports constants `320` and `240`, wrapper call to
+`0x874C`, static callers `0xE65FC`, `0xE6D98`, `0xEC598`, `0xEE8E0`,
+`0xF82DC`, `0xFAFAC`, and `0x2825BC`, while the v2 callgraph does not resolve
+overlay-aware callers for `0x8A58`. Keep that wrapper/secondary-entry family
+together until the boundary is clear. Do not begin semantic C decomp unless the
+setup verifier is green.

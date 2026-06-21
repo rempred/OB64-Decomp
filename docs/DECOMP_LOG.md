@@ -18,7 +18,7 @@ and replace the active log with a compact current-state summary.
 - Whole-ROM coverage still independently scans for LHA headers; do not trust the
   parent archive catalog by itself.
 - Current tracked code source mix: one composite real-assembler chunk
-  `0x00001000..0x00011000` made from 78 tracked source files, plus 99 generated
+  `0x00001000..0x00011000` made from 79 tracked source files, plus 99 generated
   fallback code chunks.
 - Current tracked non-code source-owner mix: 3 tracked files / 44,029 bytes,
   plus 1,055 generated fallback owner files / 35,388,567 bytes.
@@ -60,9 +60,9 @@ Current named sequence:
   `boot_bitstream_descriptor_encode.s` `0x43D4..0x4AC8`.
 - Resource probe helpers through
   `boot_resource_probe_record_checksum_signature.s` `0x4AC8..0x5FC0`.
-- State/slot and resource-handle helpers through
-  `boot_state_record_copy_58_leaf.s` `0x5FC0..0x874C`.
-- Current remainder: `code_0000874C_00011000.s`.
+- State/slot, resource-handle, and transform-record helpers through
+  `boot_display_list_transform_record_emit.s` `0x5FC0..0x8A58`.
+- Current remainder: `code_00008A58_00011000.s`.
 
 Static dossiers live under `docs/dossiers/` and are the durable evidence notes
 for each promoted source-layout split.
@@ -623,7 +623,8 @@ Promoted six source parts from
 - `boot_state_record_copy_58_leaf.s` `0x00008700..0x0000874C`.
 
 The old remainder was replaced by
-`asm/original/rev0/code_0000874C_00011000.s`.
+`asm/original/rev0/code_0000874C_00011000.s`; that remainder is now superseded
+by the transform-record split below.
 
 Static evidence from parent symbols/callgraph/xrefs and local source:
 
@@ -650,13 +651,62 @@ Verification for the split:
   source files, plus 99 generated fallback chunks.
 - Static dossier: `docs/dossiers/boot-state-slot-record-release-cluster.md`.
 
+## 2026-06-21 - Boot Display-List Transform Record Emit Split
+
+Baseline before the split:
+
+- `git status --short` was clean at commit
+  `53e89f8 Split Rev 0 boot state slot record release cluster`.
+- `node tools\verify_setup.js` passed with 825 archives, zero unknown bytes, 108
+  visible overlap bytes, 78 tracked source files, 99 generated fallback chunks,
+  and unchanged code/ROM hashes.
+
+Promoted `asm/original/rev0/boot/boot_display_list_transform_record_emit.s`
+covering ROM `0x0000874C..0x00008A58` / RAM
+`0x8007834C..0x80078658`. The old
+`asm/original/rev0/code_0000874C_00011000.s` remainder was removed and replaced
+by `asm/original/rev0/code_00008A58_00011000.s`.
+
+Static evidence from parent symbols/callgraph/xrefs and local source:
+
+- `0x874C` is a two-word JAL-target leaf prefix, fixed in all seven named states
+  and all 21 snapshots, that reads global `0x800F9BE0` and falls into the
+  `0x8754` body.
+- `0x8754` is the shared prologue body with frame size `0x60` and clean return
+  at `0x8A48..0x8A54`.
+- High-confidence callers for `0x874C` are `0x8A58` and `0xEE8E0`.
+- High-confidence callees are `0x228D0` / RAM `0x800924D0`, `0x210C0` / RAM
+  `0x80090CC0`, and `0x21DD4` / RAM `0x800919D4`.
+- Local source reads/writes display-list pointer global `0x800E9BA0`, reads
+  descriptor/base global `0x800F9BE0`, updates `0x800C4BE4` and `0x800C4C48`,
+  and writes `0x800E7A0E` plus `0x800C4C24`.
+
+Static shape:
+
+- Incoming `a0` is treated as a `0x58`-byte transform/record-like source.
+- The helper copies float/word fields from that source into stack/helper
+  arguments, then emits display-list-style packet words including `DB0E`,
+  `DA38`, `DC08`, and `E700`.
+- The zero-vector path calls `0x80090CC0`; the nonzero transform path calls
+  `0x800919D4` and emits the larger packet sequence.
+
+Verification for the split:
+
+- `node tests\binutils_smoke.js` passed.
+- `node tools\assemble_original_mips.js` passed.
+- Full `node tools\verify_setup.js` passed after docs were updated.
+- Source mix is now 1 tracked composite real-asm chunk made from 79 tracked
+  source files, plus 99 generated fallback chunks.
+- Static dossier: `docs/dossiers/boot-display-list-transform-record-emit.md`.
+
 ## Next Frontier
 
-Continue from `asm/original/rev0/code_0000874C_00011000.s`. The first target is
-the overlapping `0x874C` leaf / `0x8754` prologue body at RAM
-`0x8007834C/0x80078354`, active in all seven states and all 21 snapshots.
-Parent evidence gives high-confidence callers `0x8A58` and `0xEE8E0` for the
-`0x874C` leaf and high-confidence callees `0x228D0`, `0x210C0`, and `0x21DD4`.
-Local source shows display-list-style constants and globals around
-`0x800F9BA0/0x800F9BE0`, so keep the overlapping leaf/prologue together until
-the boundary and render shape are analyzed.
+Continue from `asm/original/rev0/code_00008A58_00011000.s`. The first target is
+the `0x8A58` wrapper / `0x8A74` secondary-entry family at RAM
+`0x80078658/0x80078674`. Parent function data reports size 788, frame size
+`0x18`, constants `320` and `240`, and a wrapper call to `0x874C`. Parent symbol
+data lists static callers `0xE65FC`, `0xE6D98` (count 2), `0xEC598`,
+`0xEE8E0`, `0xF82DC`, `0xFAFAC`, and `0x2825BC`; the v2 callgraph does not
+resolve overlay-aware callers for `0x8A58`, so keep caller confidence cautious
+until local and overlay evidence agree. Keep the wrapper and secondary entry
+together until the boundary and display-list/render shape are analyzed.

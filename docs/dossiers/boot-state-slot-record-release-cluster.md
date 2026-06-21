@@ -15,7 +15,7 @@ cluster immediately after the queue F000 record-step helper:
 | `asm/original/rev0/boot/boot_state_slot_queue_rebuild_priority_order.s` | `0x0000859C..0x000086EC` | `0x8007819C..0x800782EC` | `0x859C` prologue helper, rebuilds queue globals from active slot records by a halfword order field. |
 | `asm/original/rev0/boot/boot_state_slot_render_noop_tail.s` | `0x000086EC..0x00008700` | `0x800782EC..0x80078300` | `jr ra; nop` target plus trailing nop padding; resolves prior render-walk unresolved target `0x800782EC`. |
 | `asm/original/rev0/boot/boot_state_record_copy_58_leaf.s` | `0x00008700..0x0000874C` | `0x80078300..0x8007834C` | No-prologue leaf that copies `0x58` bytes from `a1` to `a0`. |
-| `asm/original/rev0/code_0000874C_00011000.s` | `0x0000874C..0x00011000` | `0x8007834C..0x80080C00` | Current tracked remainder; starts at the overlapping `0x874C` leaf / `0x8754` prologue routine. |
+| `asm/original/rev0/code_0000874C_00011000.s` | `0x0000874C..0x00011000` | `0x8007834C..0x80080C00` | Remainder at this split; now superseded by `code_00008A58_00011000.s` after the transform-record split. |
 
 Names are conservative static labels. They describe local source shape and
 known utility calls; they do not prove runtime scheduler or renderer semantics.
@@ -84,9 +84,11 @@ known utility calls; they do not prove runtime scheduler or renderer semantics.
   `0x800782EC` directly.
 - `0x8700` is split separately because it is a compact self-contained copy leaf
   before the next parent boundary.
-- The next tracked remainder starts at `0x874C`, where parent data records an
-  overlapping `0x874C` leaf and `0x8754` prologue body. Keep those together
-  until the display-list/render shape is analyzed.
+- The next tracked remainder at this split started at `0x874C`, where parent
+  data records an overlapping `0x874C` leaf and `0x8754` prologue body. That
+  leaf/body pair is now promoted as
+  `asm/original/rev0/boot/boot_display_list_transform_record_emit.s`, leaving
+  `code_00008A58_00011000.s` as the active remainder.
 
 ## Verification
 
