@@ -11,7 +11,7 @@ helper:
 | Source | ROM range | RAM range | Notes |
 | --- | --- | --- | --- |
 | `asm/original/rev0/boot/boot_resource_node_context_materialize.s` | `0x00009D50..0x00009EFC` | `0x80079950..0x80079AFC` | Static resource-node context materialize/update helper. |
-| `asm/original/rev0/code_00009EFC_00011000.s` | `0x00009EFC..0x00011000` | `0x80079AFC..0x80080C00` | Current tracked remainder; starts with the related LZSS-backed loader helper. |
+| `asm/original/rev0/code_00009EFC_00011000.s` | `0x00009EFC..0x00011000` | `0x80079AFC..0x80080C00` | Historical remainder after this split; superseded by `boot_resource_node_lzss_context_materialize.s` and `code_00009FD8_00011000.s`. |
 
 The source name is conservative. It describes the local control-flow shape and
 shared context writes, not a verified runtime API contract.

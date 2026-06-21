@@ -16,7 +16,7 @@ node tools/verify_setup.js
 ```
 
 Current source mix: 1 tracked composite real-assembler chunk
-(`0x00001000..0x00011000`) made from 89 tracked source files, plus 99 generated
+(`0x00001000..0x00011000`) made from 90 tracked source files, plus 99 generated
 fallback chunks.
 
 The assembled code-region SHA256 is
@@ -95,14 +95,14 @@ coverage or overclassifying data as MIPS.
    color rect packet emit split, vector distance/transform-prefix split,
    transform coefficients/sum-clear split, command stream dispatch split,
    command stream resource-node dispatch split, resource-node payload
-   materialize split, resource-node insert/find split, and resource-node
-   context materialize split are done. Continue from
-   `asm/original/rev0/code_00009EFC_00011000.s`, beginning with `0x9EFC`.
-   Parent evidence labels it `dma/resource::resource loader`, with frame size
-   `0x18`, command-stream callers, callees to the node helper, DMA/cache helper,
-   allocator/copy helpers, LZSS decompressor `0xA510`, and unresolved RAM helper
-   `0x8007A7E0`, plus reads/writes around `0x800AF0C4` and `0x800C4BC0`; keep
-   `0x9EFC..0x9FD8` together.
+   materialize split, resource-node insert/find split, resource-node context
+   materialize split, and resource-node LZSS context materialize split are done.
+   Continue from `asm/original/rev0/code_00009FD8_00011000.s`, beginning with
+   `0x9FD8`. Parent evidence labels it `dma/resource::resource loader`, with
+   frame size `0x18`; static leads include unresolved RAM helper `0x801AB720`,
+   resolved target `0x000F84AC` / RAM `0x801AB74C`, context status
+   `+0x0C = 3`, and a mirror write to `0x800C4BC0`; keep `0x9FD8..0xA0B4`
+   together.
 
 4. Keep the setup gate green.
 
