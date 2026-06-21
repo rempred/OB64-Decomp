@@ -173,7 +173,7 @@ Current result:
   `40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`.
 - Code-region match against baserom: pass.
 - Tracked real-assembler original-MIPS chunks: 1 composite
-  (`0x00001000..0x00011000`) made from 58 real-assembler source files.
+  (`0x00001000..0x00011000`) made from 59 real-assembler source files.
 - Generated fallback chunks: 99.
 - Assembled-code ROM rebuild command:
 
@@ -1380,7 +1380,8 @@ state dispatch loop:
 - `asm/original/rev0/boot/boot_mode_message_accumulator_seed_wrapper.s`
   `0x000065A4..0x000065E4`; parent reports a 64-byte prologue at `0x65A4`
   with frame size `0x28`.
-- Current remainder:
+- Remainder at that step, now superseded by the resource table/mask apply
+  split:
   `asm/original/rev0/code_000065E4_00011000.s`.
 
 Static evidence: parent symbol data places `0x65A4` at fixed RAM
@@ -1399,9 +1400,41 @@ wrapper relationship, not runtime semantic proof.
 
 Static dossier:
 `docs/dossiers/boot-mode-message-accumulator-seed-wrapper.md`.
-Next source split should start at `asm/original/rev0/code_000065E4_00011000.s`;
-the next target is the `0x65E4` resource-loader-style helper called by the state
-dispatch loop.
+
+## Boot Resource Table/Mask Apply Split
+
+The next tracked Rev 0 original-MIPS split keeps the related table/mask helper
+cluster together:
+
+- `asm/original/rev0/boot/boot_resource_table_mask_apply.s`
+  `0x000065E4..0x000068E0`; contains prologue helpers at `0x65E4` and
+  `0x6724`, the shared local selector leaf at `0x6830`, and padding through the
+  next clean prologue boundary.
+- Current remainder:
+  `asm/original/rev0/code_000068E0_00011000.s`.
+
+Static evidence: parent symbol data places `0x65E4` and `0x6724` at fixed RAM
+`0x800761E4` and `0x80076324` in all seven named states / all 21 snapshots, both
+with high-confidence caller `0x5FC0`. Parent labels `0x65E4` as
+`dma/resource::resource loader` and reports high-confidence callees
+`0x204C0`, `0x20410`, `0x2DE50`, and `0x23780`; `0x6724` calls
+`resource_arena_register` (`0x1120`) twice. Parent callgraph leaves
+`0x80076430` unresolved for both helpers; local source resolves that target to
+the in-range selector leaf at `0x6830`.
+
+Static shape: `0x6830` scans pointer table `0x800B86FC` and chooses a table
+slot whose listed bit IDs are not already masked by the incoming value.
+`0x65E4` then walks that selected `0xFF`-terminated byte list and, for selected
+IDs, applies table ranges around `0x800B83C0..0x800B83E4` through helpers
+`0x800900C0`, `0x80090010`, `0x8009DA50`, and `0x80093380`. `0x6724` walks the
+same selected list and registers gaps up to per-ID/end bounds and final
+`0x80243DB0` through `resource_arena_register`. Names remain conservative
+source-layout labels, not runtime-verified resource semantics.
+
+Static dossier: `docs/dossiers/boot-resource-table-mask-apply.md`.
+Next source split should start at `asm/original/rev0/code_000068E0_00011000.s`;
+the next target is the `0x68E0` boot state/global reset-style helper called by
+early boot init.
 
 ## Setup Complete Gate
 
@@ -1417,7 +1450,7 @@ setup-complete state:
 - Assembler: GNU Binutils 2.39 `mips64-elf-as.exe` with `-EB -mips3 -32`.
 - Setup verifier: `tools/verify_setup.js`.
 - Current verifier result: PASS; 825 archives, 0 unknown bytes, 108 overlap
-  bytes visible, 1 tracked composite real-asm chunk made from 58 tracked source
+  bytes visible, 1 tracked composite real-asm chunk made from 59 tracked source
   files, 99 generated fallback chunks, full-source manifest 1,059 entries with
   2,469,141 ambiguous bytes preserved explicitly, 3 tracked non-code
   source-owner files / 44,029 bytes, 1,055 generated non-code fallback files /
@@ -1426,5 +1459,5 @@ setup-complete state:
   `571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A`.
 
 Next phase is either promoting another small non-code owner batch or continuing
-tracked original-MIPS splits from `asm/original/rev0/code_000065E4_00011000.s`.
+tracked original-MIPS splits from `asm/original/rev0/code_000068E0_00011000.s`.
 Do not begin semantic C decomp unless the setup verifier is green.

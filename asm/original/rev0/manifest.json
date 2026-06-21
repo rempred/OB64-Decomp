@@ -532,17 +532,26 @@
           "sha256": "279A0A9016F829BE692ECF86199364C8CA9253C6DEBA739F288239E26A876F0B"
         },
         {
-          "name": "code_000065E4_00011000_remainder",
-          "file": "asm/original/rev0/code_000065E4_00011000.s",
+          "name": "boot_resource_table_mask_apply",
+          "file": "asm/original/rev0/boot/boot_resource_table_mask_apply.s",
           "romStart": "0x000065E4",
+          "romEndExclusive": "0x000068E0",
+          "bytes": 764,
+          "textBytes": 15018,
+          "sha256": "59C9C72EF37287D5B2814AF55636FB803B1041342A2A006EBF8EA38F2E1FF33D"
+        },
+        {
+          "name": "code_000068E0_00011000_remainder",
+          "file": "asm/original/rev0/code_000068E0_00011000.s",
+          "romStart": "0x000068E0",
           "romEndExclusive": "0x00011000",
-          "bytes": 43548,
-          "textBytes": 840264,
-          "sha256": "F051FF9EFF441743ABC5C4757F0A8EE1FC07FA6607922515E8BC0957F5A46A0D"
+          "bytes": 42784,
+          "textBytes": 825504,
+          "sha256": "859983B29D5B729A6A99077D241D1D5B4F435709E57015DA7508F6D524AE0C38"
         }
       ],
-      "textBytes": 1279517,
-      "sha256": "8D8C52AE89604A0F4C2839C583B656A8522CC04BA083634861C3152468114EC9"
+      "textBytes": 1279775,
+      "sha256": "5A0A260548EE71538188ECEB0BC03A2FA6D8A2442B59E0A170DEA003B05A813A"
     }
   ]
 }

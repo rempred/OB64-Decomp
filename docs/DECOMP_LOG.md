@@ -18,7 +18,7 @@ and replace the active log with a compact current-state summary.
 - Whole-ROM coverage still independently scans for LHA headers; do not trust the
   parent archive catalog by itself.
 - Current tracked code source mix: one composite real-assembler chunk
-  `0x00001000..0x00011000` made from 58 tracked source files, plus 99 generated
+  `0x00001000..0x00011000` made from 59 tracked source files, plus 99 generated
   fallback code chunks.
 - Current tracked non-code source-owner mix: 3 tracked files / 44,029 bytes,
   plus 1,055 generated fallback owner files / 35,388,567 bytes.
@@ -82,7 +82,8 @@ Current named sequence:
 - `boot_resource_probe_record_checksum_signature.s` `0x5D9C..0x5FC0`.
 - `boot_state_dispatch_loop_init.s` `0x5FC0..0x65A4`.
 - `boot_mode_message_accumulator_seed_wrapper.s` `0x65A4..0x65E4`.
-- Current remainder: `code_000065E4_00011000.s`.
+- `boot_resource_table_mask_apply.s` `0x65E4..0x68E0`.
+- Current remainder: `code_000068E0_00011000.s`.
 
 Static dossiers live under `docs/dossiers/` and are the durable evidence notes
 for each promoted source-layout split.
@@ -1149,25 +1150,84 @@ Verification for the split:
 - Source mix is now 1 tracked composite real-asm chunk made from 58 tracked
   source files, plus 99 generated fallback chunks.
 
+## 2026-06-21 - Boot Resource Table/Mask Apply Split
+
+Baseline before the split:
+
+- `git status --short` was clean at commit
+  `1b6ee6e Split Rev 0 mode message accumulator seed wrapper`.
+- `node tools\verify_setup.js` passed with 825 archives, zero unknown bytes, 108
+  visible overlap bytes, 58 tracked source files, and unchanged code/ROM hashes.
+- The compact decomp log was 962 lines / 7,013 words, so no prune/archive pass
+  was needed.
+
+Promoted `asm/original/rev0/boot/boot_resource_table_mask_apply.s` covering ROM
+`0x000065E4..0x000068E0` / RAM `0x800761E4..0x800764E0`. The old
+`code_000065E4_00011000.s` remainder was removed and replaced by
+`asm/original/rev0/code_000068E0_00011000.s`.
+
+Static evidence from parent `../scripts/ob64_functions.json`,
+`../scripts/ob64_symbols_v2.json`, `../scripts/ob64_callgraph_v2.json`, and
+local source inspection:
+
+- `0x65E4` is a 320-byte prologue helper with frame size `0x28`; parent labels
+  it `dma/resource::resource loader`.
+- `0x6724` is a 436-byte prologue helper with frame size `0x30` and secondary
+  entry `0x6830`.
+- Fixed runtime evidence places both helpers at RAM `0x800761E4` and
+  `0x80076324` in all seven named states and all 21 snapshots.
+- Both helpers have high-confidence caller `0x5FC0`, the state dispatch loop
+  init helper.
+- `0x65E4` has high-confidence callees `0x204C0` / RAM `0x800900C0`,
+  `0x20410` / RAM `0x80090010`, `0x2DE50` / RAM `0x8009DA50`, and `0x23780` /
+  RAM `0x80093380`.
+- `0x6724` has high-confidence callee `resource_arena_register` (`0x1120`) with
+  count 2.
+- Parent callgraph reports unresolved RAM target `0x80076430` from both
+  `0x65E4` and `0x6724`; local source resolves it as the in-range selector leaf
+  at ROM `0x6830`.
+- The split keeps padding nops at `0x68D8` and `0x68DC`; the next clean prologue
+  starts at `0x68E0`.
+
+Static shape:
+
+- The local `0x6830` selector masks the incoming value with `0x3FFFFFFF`, scans
+  the pointer table at `0x800B86FC`, and returns the first slot index whose
+  listed bit IDs are not already covered by the incoming mask.
+- `0x65E4` calls the selector, indexes `0x800B86FC`, walks the selected
+  `0xFF`-terminated byte list, and for each selected bit ID computes
+  `id * 0x28`.
+- For selected IDs, `0x65E4` applies table ranges around
+  `0x800B83C0..0x800B83E4` through helpers `0x800900C0`, `0x80090010`,
+  `0x8009DA50`, and `0x80093380`.
+- `0x6724` calls the same selector/table, walks the same selected byte list,
+  and registers gaps through `resource_arena_register` when the running pointer
+  is below the per-ID start pointer and again up to final bound `0x80243DB0`.
+- The name is conservative and records the static table/mask/resource-range
+  shape, not verified runtime resource semantics.
+
+Verification for the split:
+
+- `node tests\binutils_smoke.js` passed.
+- `node tools\assemble_original_mips.js` passed.
+- `node tools\verify_setup.js` passed after the docs update.
+- Source mix is now 1 tracked composite real-asm chunk made from 59 tracked
+  source files, plus 99 generated fallback chunks.
+
 ## Next Frontier
 
-Continue from `asm/original/rev0/code_000065E4_00011000.s`.
+Continue from `asm/original/rev0/code_000068E0_00011000.s`.
 
 Parent/local evidence for the next target:
 
-- `0x65E4` is a 320-byte prologue helper with frame size `0x28` and fixed RAM
-  `0x800761E4`.
-- Parent caller evidence includes high-confidence caller `0x5FC0`, the state
-  dispatch loop init helper.
-- Parent old label/rule hints classify this neighborhood as
-  `dma/resource::resource loader`; keep any name conservative until stronger
-  local evidence is written.
-- High-confidence callees include `0x204C0` / RAM `0x800900C0`, `0x20410` /
-  RAM `0x80090010`, `0x2DE50` / RAM `0x8009DA50`, and `0x23780` / RAM
-  `0x80093380`.
-- The unresolved local target `0x80076430` maps to ROM `0x6830`, a local helper
-  inside the current remainder. It is also reached from `0x6724`, so split
-  boundaries need a careful local read before cutting.
-- Static source shape starts by calling `0x6830`, uses pointer table
-  `0x800B86FC`, reads table pointers around `0x800B83C0..0x800B83E4`, and calls
-  helpers to process/copy/reset resource ranges.
+- `0x68E0` is a 248-byte prologue helper with frame size `0x18`, fixed RAM
+  `0x800764E0`, and high-confidence caller `0x22B0`.
+- High-confidence callees are `0x25090` / RAM `0x80094C90` twice, `0x23780` /
+  RAM `0x80093380` twice, `0x49A60` / RAM `0x80173B60`, and `0x859C` / RAM
+  `0x8007819C`; unresolved callgraph target is RAM `0x8009C7C0`.
+- Static source clears `0x800F82C8` length `0x3F0`, clears `0x800C4C10`
+  length `0x0C`, sets `0x800C4C20 = 1` and `0x800E79A0 = 8`, clears several
+  globals around `0x800BF0A0..0x800BF0B0`, initializes four pointer/halfword
+  slots at `0x800BF090/0x800BF0A6`, then calls the unresolved `0x8009C7C0`,
+  `0x80173B60`, and `0x8007819C`.
+- Next parent prologue boundary after it is `0x69D8`.

@@ -10,7 +10,8 @@ helper immediately after the state dispatch loop:
 | Source | ROM range | RAM range | Notes |
 | --- | --- | --- | --- |
 | `asm/original/rev0/boot/boot_mode_message_accumulator_seed_wrapper.s` | `0x000065A4..0x000065E4` | `0x800761A4..0x800761E4` | Small wrapper around the `0x3564` accumulator secondary entry. |
-| `asm/original/rev0/code_000065E4_00011000.s` | `0x000065E4..0x00011000` | `0x800761E4..0x80080C00` | Current tracked remainder. |
+| `asm/original/rev0/code_000065E4_00011000.s` | `0x000065E4..0x00011000` | `0x800761E4..0x80080C00` | Remainder at this split; now superseded by the resource table/mask apply split. |
+| `asm/original/rev0/code_000068E0_00011000.s` | `0x000068E0..0x00011000` | `0x800764E0..0x80080C00` | Current tracked remainder after the next split. |
 
 The name is conservative. It records the static relationship to the existing
 mode/message accumulator helper, not verified runtime semantics for the values
@@ -53,8 +54,10 @@ being seeded.
 - The split starts at parent prologue boundary `0x000065A4`, immediately after
   `boot_state_dispatch_loop_init.s`.
 - The split ends at the next parent prologue boundary `0x000065E4`.
-- The current active remainder starts at `0x000065E4` with a larger
-  resource-loader-style helper called by the state dispatch loop.
+- The `0x000065E4` follow-up cluster has since been split as
+  `boot_resource_table_mask_apply.s`.
+- The current active remainder starts at `0x000068E0` with a
+  boot state/global reset-style helper called by early boot init.
 
 ## Verification
 

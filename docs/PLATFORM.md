@@ -69,8 +69,8 @@ indexed-record check helper, resource probe large-record check helper, and
 resource probe small-record check helper, resource probe indexed-record
 copy/flag helper, resource probe large-record copy/flag helper, and resource
 probe record checksum/signature helper, boot state dispatch loop init helper,
-and boot mode/message accumulator seed wrapper into named tracked parts while
-preserving the exact rebuild gate. The current
+boot mode/message accumulator seed wrapper, and boot resource table/mask apply
+cluster into named tracked parts while preserving the exact rebuild gate. The current
 setup gate also builds a
 full-ROM source ownership manifest so non-code bytes are represented as
 raw/archive/audio/LZSS/tail/padding source forms instead of being misclassified
@@ -98,7 +98,7 @@ Expected current results:
   baserom code-region SHA256
   `40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`.
 - `assemble_original_mips.js` currently uses 1 tracked composite
-  real-assembler chunk (`0x00001000..0x00011000`) made from 58 tracked source
+  real-assembler chunk (`0x00001000..0x00011000`) made from 59 tracked source
   files, plus 99 generated fallback chunks.
 - `rebuild_rom.js --assembled-code ...` substitutes that assembled code blob for
   the raw code segment and still confirms the same full-ROM SHA256.
@@ -244,7 +244,7 @@ prints PASS. Current PASS summary:
 - Toolchain: `n64-tools-gcc-toolchain-mips64-win64`, GNU Binutils 2.39.
 - Binutils smoke tests: `.word`, real instructions, `.set noreorder`, and first
   tracked chunk real assembly all pass.
-- Source mix: 1 tracked composite real-asm chunk made from 58 tracked source
+- Source mix: 1 tracked composite real-asm chunk made from 59 tracked source
   files, plus 99 generated fallback chunks.
 - Source manifest: 1,059 entries, zero unknown bytes, 2,469,141 ambiguous bytes
   preserved explicitly.
@@ -303,6 +303,7 @@ docs:
 - `docs/dossiers/boot-resource-probe-record-checksum-signature.md`
 - `docs/dossiers/boot-state-dispatch-loop-init.md`
 - `docs/dossiers/boot-mode-message-accumulator-seed-wrapper.md`
+- `docs/dossiers/boot-resource-table-mask-apply.md`
 - `docs/DECOMP_LOG.md`
 - `docs/FULL_ROM_SOURCE_MANIFEST.md`
 
@@ -311,8 +312,8 @@ The next phase remains full-ROM source preparation:
 1. Promote/curate the next tracked non-code owner batch under `data/` or
    `assets/`.
 2. Continue splitting original MIPS into cleaner function/data files, starting
-   from `asm/original/rev0/code_000065E4_00011000.s`. The next target is the
-   `0x65E4` resource-loader-style helper called by the state dispatch loop.
+   from `asm/original/rev0/code_000068E0_00011000.s`. The next target is the
+   `0x68E0` boot state/global reset-style helper called by early boot init.
 3. Keep `node tools/verify_setup.js` green after every source-layout change.
 
 See `docs/NEXT_STEPS.md` for the active task queue.
