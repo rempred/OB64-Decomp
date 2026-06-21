@@ -10,7 +10,7 @@ the transform-wrapper/clamped-rect emitter:
 | Source | ROM range | RAM range | Notes |
 | --- | --- | --- | --- |
 | `asm/original/rev0/boot/boot_display_list_flagged_rect_packet_emit.s` | `0x00008D6C..0x0000906C` | `0x8007896C..0x80078C6C` | Single `0x8D6C` prologue helper, frame size `0x28`, clean return at `0x9064..0x9068`. |
-| `asm/original/rev0/code_0000906C_00011000.s` | `0x0000906C..0x00011000` | `0x80078C6C..0x80080C00` | Remainder at this split; now superseded by `code_00009428_00011000.s` after the color rect packet split. |
+| `asm/original/rev0/code_0000906C_00011000.s` | `0x0000906C..0x00011000` | `0x80078C6C..0x80080C00` | Remainder at this split; now superseded by `code_0000954C_00011000.s` after the color rect and vector distance/transform-prefix splits. |
 
 The source name is conservative. It records the observed static gate,
 coordinate clamp, and display-list packet emission shape, not final renderer
@@ -56,8 +56,9 @@ semantics.
 - The next parent boundary at `0x0000906C` begins a separate 956-byte prologue
   helper with frame size `0x30`, callers `0xEE8E0` and `0xFAFAC`, and the same
   unresolved RAM target `0x8007338C`. That helper is now promoted as
-  `boot_display_list_color_rect_packet_emit.s`, leaving
-  `code_00009428_00011000.s` as the active remainder.
+  `boot_display_list_color_rect_packet_emit.s`; the follow-up vector
+  distance/transform-prefix split now leaves `code_0000954C_00011000.s` as the
+  active remainder.
 
 ## Verification
 

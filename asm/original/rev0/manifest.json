@@ -748,17 +748,26 @@
           "sha256": "10EF13A45D33ED7F194EA470A27901CF85A5E5ECC99E4C5EDD9E1829F97B446A"
         },
         {
-          "name": "code_00009428_00011000_remainder",
-          "file": "asm/original/rev0/code_00009428_00011000.s",
+          "name": "boot_display_list_vector_distance_and_transform_prefix",
+          "file": "asm/original/rev0/boot/boot_display_list_vector_distance_and_transform_prefix.s",
           "romStart": "0x00009428",
+          "romEndExclusive": "0x0000954C",
+          "bytes": 292,
+          "textBytes": 5786,
+          "sha256": "14A0D7DDD5088941FC57C23A0D1BE3EBC9D007086C2FDCA9BFD32B4EB64C914D"
+        },
+        {
+          "name": "code_0000954C_00011000_remainder",
+          "file": "asm/original/rev0/code_0000954C_00011000.s",
+          "romStart": "0x0000954C",
           "romEndExclusive": "0x00011000",
-          "bytes": 31704,
-          "textBytes": 612228,
-          "sha256": "928169A82D0F696A1D130FED1B708E5E33359D6C8C1D7C14CB19459EF44FCC90"
+          "bytes": 31412,
+          "textBytes": 606700,
+          "sha256": "7AF544C1F55F7F83C04DAD6D01A9A04CB870B3DF8C0BA56D334CAA4368C37E92"
         }
       ],
-      "textBytes": 1285714,
-      "sha256": "E71EB3C5169EB16378A6E947FCDD0B408689FBBC753D440A4F51FEBD08F01B71"
+      "textBytes": 1285972,
+      "sha256": "D9B1F40CD087FFCC002411920EA4B9C02D3FD71467F533B9C864D74F3E9A9688"
     }
   ]
 }

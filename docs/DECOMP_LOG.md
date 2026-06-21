@@ -18,7 +18,7 @@ and replace the active log with a compact current-state summary.
 - Whole-ROM coverage still independently scans for LHA headers; do not trust the
   parent archive catalog by itself.
 - Current tracked code source mix: one composite real-assembler chunk
-  `0x00001000..0x00011000` made from 82 tracked source files, plus 99 generated
+  `0x00001000..0x00011000` made from 83 tracked source files, plus 99 generated
   fallback code chunks.
 - Current tracked non-code source-owner mix: 3 tracked files / 44,029 bytes,
   plus 1,055 generated fallback owner files / 35,388,567 bytes.
@@ -61,8 +61,9 @@ Current named sequence:
 - Resource probe helpers through
   `boot_resource_probe_record_checksum_signature.s` `0x4AC8..0x5FC0`.
 - State/slot, resource-handle, and transform-record helpers through
-  `boot_display_list_color_rect_packet_emit.s` `0x5FC0..0x9428`.
-- Current remainder: `code_00009428_00011000.s`.
+  `boot_display_list_vector_distance_and_transform_prefix.s`
+  `0x5FC0..0x954C`.
+- Current remainder: `code_0000954C_00011000.s`.
 
 Static dossiers live under `docs/dossiers/` and are the durable evidence notes
 for each promoted source-layout split.
@@ -854,12 +855,65 @@ Verification for the split:
 - Static dossier:
   `docs/dossiers/boot-display-list-color-rect-packet-emit.md`.
 
+## 2026-06-21 - Boot Display-List Vector Distance / Transform Prefix Split
+
+Baseline before the split:
+
+- `git status --short` was clean at commit
+  `6860e90 Split Rev 0 boot display-list color rect packet emit`.
+- `node tools\verify_setup.js` passed with 825 archives, zero unknown bytes, 108
+  visible overlap bytes, 82 tracked source files, 99 generated fallback chunks,
+  and unchanged code/ROM hashes.
+
+Promoted
+`asm/original/rev0/boot/boot_display_list_vector_distance_and_transform_prefix.s`
+covering ROM `0x00009428..0x0000954C` / RAM
+`0x80079028..0x8007914C`. The old
+`asm/original/rev0/code_00009428_00011000.s` remainder was removed and replaced
+by `asm/original/rev0/code_0000954C_00011000.s`.
+
+Static evidence from parent function/symbol/callgraph/xref data and local
+source:
+
+- `0x9428` is a valid 292-byte (`0x124`) prologue helper fixed in all seven
+  named states and all 21 snapshots, with frame size `0x40`.
+- Parent data reports no `jalr`, no indirect jump, no resolved v2 callers,
+  older caller `0x112650`, and secondary entries `0x9488` and `0x953C`.
+- The v2 callgraph leaves RAM targets `0x80098450` and `0x800907E0`
+  unresolved.
+- Parent/local xrefs read globals `0x800E9BE0` and `0x800C4C24`.
+- Local source shows `0x953C..0x9548` reads those globals and falls through
+  into the next `0x954C` body, so the prefix stays with this split to preserve
+  the parent secondary entry.
+
+Static shape:
+
+- The helper calls RAM `0x80098450` with zeroed float arguments and stack output
+  pointers.
+- It reads vector-like float fields at `[a1+0/4/8]`, subtracts the returned
+  output floats, squares and sums the components, and runs `sqrt.s`.
+- The alternate sqrt path calls RAM `0x800907E0`.
+- The result is divided by incoming `a2` saved as `f20`, scaled with float
+  constant `0x477FFE00`, converted through the signed float-to-int boundary
+  case, and returned as a 16-bit inverted value.
+
+Verification for the split:
+
+- `node tests\binutils_smoke.js` passed.
+- `node tools\assemble_original_mips.js` passed.
+- Full `node tools\verify_setup.js` passed after docs were updated.
+- Source mix is now 1 tracked composite real-asm chunk made from 83 tracked
+  source files, plus 99 generated fallback chunks.
+- Static dossier:
+  `docs/dossiers/boot-display-list-vector-distance-and-transform-prefix.md`.
+
 ## Next Frontier
 
-Continue from `asm/original/rev0/code_00009428_00011000.s`. The first target is
-the `0x9428` prologue helper at RAM `0x80079028`. Parent function data reports
-size `0x124`, frame size `0x40`, an orphaned v2 caller state, and secondary
-entries at `0x9488` and `0x953C`; older data lists caller `0x112650` and
-unresolved callees RAM `0x80098450` and `0x800907E0`. Parent/local xrefs read
-`0x800E9BE0` and `0x800C4C24`. Keep the full `0x9428` family together until its
-secondary-entry control flow and tail prefix before `0x954C` are understood.
+Continue from `asm/original/rev0/code_0000954C_00011000.s`. The first target is
+the `0x954C` prologue helper at RAM `0x8007914C`. Parent function data reports
+size `0x240`, frame size `0xA8`, fixed in all seven named states and all 21
+snapshots, older caller `0x22B0`, high-confidence callee `0x28D20` / RAM
+`0x80098920`, and secondary entry `0x9780`. Local source shows a compact
+unparented 16-word sum leaf at `0x9758..0x9780` and a `0x9780..0x978C`
+global-clear tail before the next parent boundary. Keep the `0x954C..0x978C`
+cluster together next.
