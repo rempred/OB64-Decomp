@@ -119,10 +119,12 @@ Current exact rebuild result:
 ## Assembly-Backed Code Rebuild
 
 `tools/assemble_original_mips.js` assembles the generated no-gap `.word`
-reference under `build/original-mips/rev0/` into ignored
-`build/assembled/rev0/code.bin`. This is intentionally a minimal `.word`
-assembler first, not a full mnemonic assembler. It proves that source text can
-reproduce the configured Rev 0 code-region bytes before function splitting.
+reference into ignored `build/assembled/rev0/code.bin`. It prefers tracked
+chunks under `asm/original/rev0/` when present and falls back to generated chunks
+under `build/original-mips/rev0/` for ranges not yet promoted. This is
+intentionally a minimal `.word` assembler first, not a full mnemonic assembler.
+It proves that source text can reproduce the configured Rev 0 code-region bytes
+before function splitting.
 
 Current result:
 
@@ -131,6 +133,8 @@ Current result:
 - Code-region SHA256:
   `40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`.
 - Code-region match against baserom: pass.
+- Tracked original-MIPS chunks: 1 (`0x00001000..0x00011000`).
+- Generated fallback chunks: 99.
 - Assembled-code ROM rebuild command:
 
 ```powershell
@@ -140,5 +144,7 @@ node tools/rebuild_rom.js --assembled-code build/assembled/rev0/code.bin --out d
 
 The assembled-code rebuild currently preserves the full ROM SHA256
 `571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A` exactly.
-Next source-layout work should move this from ignored generated `.word` chunks
-toward tracked `asm/original/` inputs without losing the exact rebuild gate.
+Next source-layout work should continue promoting/splitting tracked
+`asm/original/` inputs without losing the exact rebuild gate. Use
+`tools/promote_original_mips.js` for chunk promotion and `--strict-tracked` only
+after every configured code chunk is tracked.

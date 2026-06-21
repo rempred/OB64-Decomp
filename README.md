@@ -101,7 +101,18 @@ node tools/rebuild_rom.js --assembled-code build/assembled/rev0/code.bin --out d
 ```
 
 Assembles the generated no-gap `.word` MIPS reference into an ignored code blob
-and substitutes it for the raw code segment during rebuild. Current assembled
-code-region SHA256:
+and substitutes it for the raw code segment during rebuild. The assembler
+prefers promoted chunks under `asm/original/rev0/` and falls back to ignored
+generated chunks for ranges not promoted yet. Current assembled code-region
+SHA256:
 `40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`; full ROM
 rebuild remains byte-identical.
+
+```powershell
+node tools/promote_original_mips.js --count 1
+```
+
+Promotes generated no-gap MIPS chunks into tracked `asm/original/rev0/` source.
+Current tracked source coverage is the first chunk,
+`0x00001000..0x00011000`. Promotion refuses to overwrite existing tracked chunks
+unless `--force` is supplied.

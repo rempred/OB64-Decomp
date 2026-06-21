@@ -15,7 +15,7 @@ const {
 const { assembleWordAsmFile } = require('./lib/word_asm');
 
 function usage() {
-  console.log(`Usage: node tools/assemble_original_mips.js [--source-report <json>] [--out <bin>] [--report <json>] [--reference <z64>]\n\nAssembles the generated no-gap .word MIPS reference for the Rev 0 code region into a binary blob and verifies it against the normalized baserom code bytes.`);
+  console.log(`Usage: node tools/assemble_original_mips.js [--source-report <json>] [--tracked-dir <dir>] [--strict-tracked] [--no-tracked] [--out <bin>] [--report <json>] [--reference <z64>]\n\nAssembles the no-gap .word MIPS reference for the Rev 0 code region into a binary blob and verifies it against the normalized baserom code bytes. Tracked source chunks under asm/original/rev0 are preferred when present; generated build chunks remain the fallback unless --strict-tracked is used.`);
 }
 
 function parseArgs(argv) {
@@ -24,6 +24,9 @@ function parseArgs(argv) {
     out: path.join(ROOT, 'build', 'assembled', 'rev0', 'code.bin'),
     report: path.join(ROOT, 'build', 'assembled', 'rev0-report.json'),
     reference: path.join(ROOT, 'build', 'baserom.us_rev0.z64'),
+    trackedDir: path.join(ROOT, 'asm', 'original', 'rev0'),
+    useTracked: true,
+    strictTracked: false,
   };
   for (let i = 0; i < argv.length; i += 1) {
     const arg = argv[i];
@@ -38,6 +41,12 @@ function parseArgs(argv) {
       args.report = path.resolve(argv[++i]);
     } else if (arg === '--reference') {
       args.reference = path.resolve(argv[++i]);
+    } else if (arg === '--tracked-dir') {
+      args.trackedDir = path.resolve(argv[++i]);
+    } else if (arg === '--strict-tracked') {
+      args.strictTracked = true;
+    } else if (arg === '--no-tracked') {
+      args.useTracked = false;
     } else {
       throw new Error(`Unknown argument: ${arg}`);
     }
@@ -48,6 +57,18 @@ function parseArgs(argv) {
 function loadReference(referencePath) {
   if (fs.existsSync(referencePath)) return fs.readFileSync(referencePath);
   return loadAndVerifyRom().z64;
+}
+
+function selectChunkSource(chunk, args) {
+  const generatedPath = path.resolve(ROOT, chunk.file);
+  const trackedPath = path.join(args.trackedDir, path.basename(chunk.file));
+  if (args.useTracked && fs.existsSync(trackedPath)) {
+    return { path: trackedPath, kind: 'tracked' };
+  }
+  if (args.strictTracked) {
+    throw new Error(`Tracked assembly chunk missing: ${trackedPath}`);
+  }
+  return { path: generatedPath, kind: 'generated' };
 }
 
 function main() {
@@ -65,12 +86,17 @@ function main() {
   const buffers = [];
   const chunkReports = [];
   let totalWords = 0;
+  const sourceCounts = {
+    tracked: 0,
+    generated: 0,
+  };
 
   for (const chunk of chunks) {
     const start = parseHexOrNumber(chunk.romStart);
     const end = parseHexOrNumber(chunk.romEndExclusive);
     if (start !== cursor) throw new Error(`Chunk ${chunk.file} starts at ${hex(start)}, expected ${hex(cursor)}`);
-    const filePath = path.resolve(ROOT, chunk.file);
+    const selected = selectChunkSource(chunk, args);
+    const filePath = selected.path;
     if (!fs.existsSync(filePath)) throw new Error(`Assembly chunk missing: ${filePath}`);
     const assembled = assembleWordAsmFile(filePath);
     if (assembled.bytes.length !== end - start || assembled.bytes.length !== chunk.bytes) {
@@ -79,13 +105,15 @@ function main() {
     buffers.push(assembled.bytes);
     totalWords += assembled.words;
     chunkReports.push({
-      file: chunk.file,
+      file: path.relative(ROOT, filePath).replace(/\\/g, '/'),
+      source: selected.kind,
       romStart: hex(start),
       romEndExclusive: hex(end),
       bytes: assembled.bytes.length,
       words: assembled.words,
       sha256: hashBuffer(assembled.bytes, 'sha256'),
     });
+    sourceCounts[selected.kind] += 1;
     cursor = end;
   }
   if (cursor !== codeEnd) throw new Error(`Chunks end at ${hex(cursor)}, expected ${hex(codeEnd)}`);
@@ -113,8 +141,15 @@ function main() {
       endExclusive: hex(codeEnd),
       bytes: assembledCode.length,
     },
-    chunks: chunkReports.length,
+    chunkCount: chunkReports.length,
+    sources: {
+      trackedDir: path.relative(ROOT, args.trackedDir).replace(/\\/g, '/'),
+      trackedChunks: sourceCounts.tracked,
+      generatedChunks: sourceCounts.generated,
+      strictTracked: args.strictTracked,
+    },
     words: totalWords,
+    chunks: chunkReports,
     assembled: {
       sha256: hashBuffer(assembledCode, 'sha256'),
     },

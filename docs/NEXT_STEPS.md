@@ -6,7 +6,9 @@ update it when a task becomes durable, blocked, or complete.
 ## Completed Gate
 
 The repo can now move from a raw-span exact rebuild to an assembly-backed exact
-rebuild while preserving the no-gap rule.
+rebuild while preserving the no-gap rule. The first original-MIPS source chunk
+is tracked under `asm/original/rev0/`; the remaining chunks still use generated
+fallback source.
 
 Current passing commands:
 
@@ -15,6 +17,9 @@ node tools/assemble_original_mips.js
 node tools/rebuild_rom.js --assembled-code build/assembled/rev0/code.bin --out dist/rebuilt.us_rev0.assembled-code.z64 --report build/rebuild/rev0-assembled-code-rebuild-report.json
 ```
 
+Current source mix: 1 tracked chunk (`0x00001000..0x00011000`) and 99 generated
+fallback chunks.
+
 The assembled code-region SHA256 is
 `40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`; the full
 ROM rebuild SHA256 remains
@@ -22,22 +27,20 @@ ROM rebuild SHA256 remains
 
 ## Active Goal
 
-Move the assembly-backed proof from ignored generated chunks toward tracked
-`asm/original/` source without losing exact rebuild coverage.
+Continue moving the assembly-backed proof from ignored generated chunks toward
+tracked `asm/original/` source without losing exact rebuild coverage.
 
 ## Ordered Work
 
-1. Decide the tracked source promotion strategy.
+1. Choose the next tracked-source batch.
 
-   The current generated `.word` source is ignored under
-   `build/original-mips/rev0/`. Choose whether to promote all chunks to
-   `asm/original/rev0/` now or start with a manifest-driven subset while the
-   rest remains generated.
+   Default to small batches or subsystem-relevant chunks instead of committing
+   the full 125 MB generated source set at once.
 
-2. Add a tracked-source input mode to `tools/assemble_original_mips.js`.
+2. Promote chunks with `tools/promote_original_mips.js`.
 
-   The build should prefer tracked source when present and fail loudly if a
-   configured chunk is missing, wrong-sized, or not contiguous.
+   The assembler prefers promoted chunks and records the tracked/generated mix in
+   `build/assembled/rev0-report.json`.
 
 3. Preserve the exact assembled-code rebuild.
 

@@ -43,7 +43,9 @@ the same commit.
 The repo has a Rev 0-only scaffold, verified baserom normalization, no-gap
 original MIPS extraction for the configured code region, a whole-ROM structural
 coverage ledger, raw span extraction, an exact byte-for-byte raw ROM rebuild,
-and an assembly-backed code-region rebuild using the generated `.word` source.
+and an assembly-backed code-region rebuild. The assembler now prefers tracked
+chunks under `asm/original/rev0/` and falls back to generated chunks under
+`build/original-mips/rev0/`.
 
 Current known-good pipeline:
 
@@ -72,6 +74,8 @@ Expected current results:
 - `assemble_original_mips.js` emits `build/assembled/rev0/code.bin`, matching
   baserom code-region SHA256
   `40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`.
+- `assemble_original_mips.js` currently uses 1 tracked source chunk
+  (`0x00001000..0x00011000`) and 99 generated fallback chunks.
 - `rebuild_rom.js --assembled-code ...` substitutes that assembled code blob for
   the raw code segment and still confirms the same full-ROM SHA256.
 
@@ -160,20 +164,25 @@ These outputs are useful but ignored:
 - `tools/rebuild_rom.js` rebuilds from the segment manifest and fails on any
   byte mismatch. With `--assembled-code`, it substitutes an assembled code blob
   for the configured code-region span.
-- `tools/assemble_original_mips.js` assembles the generated no-gap `.word`
+- `tools/assemble_original_mips.js` assembles tracked/generated no-gap `.word`
   chunks into one code-region binary.
+- `tools/promote_original_mips.js` promotes generated chunks into tracked
+  `asm/original/rev0/` source in deliberate batches.
 - `tests/word_asm_smoke.js` verifies the minimal `.word` assembler used by the
   first assembly-backed rebuild.
 
 ## Next Best Work
 
-The assembly-backed rebuild path exists and passes exact comparison. The next
-decomp step is to turn that proof into the tracked source layout:
+The assembly-backed rebuild path exists and passes exact comparison. The first
+chunk is now tracked. The next decomp step is to continue turning that proof into
+the tracked source layout:
 
-1. Decide how much generated no-gap `.word` source should be promoted from
-   ignored `build/original-mips/rev0/` into tracked `asm/original/`.
-2. Add the tracked assembly source path to `assemble_original_mips.js`.
-3. Keep `rebuild_rom.js --assembled-code ...` exact after the source move.
-4. Then start splitting code into functions, rodata, jump tables, and C.
+1. Promote the next batch of chunks with `tools/promote_original_mips.js`, or
+   start splitting the tracked boot chunk into more readable source.
+2. Keep `rebuild_rom.js --assembled-code ...` exact after every promotion or
+   split.
+3. Use `--strict-tracked` only once every configured code chunk has a tracked
+   source file.
+4. Then start replacing well-bounded functions with C.
 
 See `docs/NEXT_STEPS.md` for the active task queue.

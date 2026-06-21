@@ -1,0 +1,24 @@
+{
+  "tool": "promote_original_mips",
+  "profile": "us-rev0",
+  "sourceReportPath": "build/original-mips/rev0-report.json",
+  "outputDir": "asm/original/rev0",
+  "promotedChunks": 1,
+  "codeRegion": {
+    "start": "0x00001000",
+    "endExclusive": "0x0063676C",
+    "bytes": 6510444,
+    "wordAligned": true
+  },
+  "chunks": [
+    {
+      "file": "asm/original/rev0/code_00001000_00011000.s",
+      "romStart": "0x00001000",
+      "romEndExclusive": "0x00011000",
+      "bytes": 65536,
+      "sourceReportFile": "build/original-mips/rev0/code_00001000_00011000.s",
+      "textBytes": 1264676,
+      "sha256": "0B5C19D884E9CAA80BD4B9BD8F8C4C30B89A59432061943B8FFD50C6EB4637CF"
+    }
+  ]
+}

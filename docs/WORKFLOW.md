@@ -75,8 +75,9 @@ node tools/assemble_original_mips.js
 node tools/rebuild_rom.js --assembled-code build/assembled/rev0/code.bin --out dist/rebuilt.us_rev0.assembled-code.z64 --report build/rebuild/rev0-assembled-code-rebuild-report.json
 ```
 
-This assembles the generated `.word` MIPS reference into a binary code-region
-blob and substitutes it for the raw code span. Current expected result: the
-assembled code-region SHA256 is
+This assembles tracked `.word` MIPS chunks where present, falls back to generated
+chunks for ranges not yet promoted, and substitutes the resulting binary blob
+for the raw code span. Current expected result: 1 tracked chunk and 99 generated
+fallback chunks; the assembled code-region SHA256 is
 `40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`, and the
 full rebuilt ROM remains byte-identical to the normalized Rev 0 baserom.
