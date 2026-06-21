@@ -9,7 +9,8 @@ Read order for future agents:
 3. `REV0_SCOPE.md`
 4. `TOOLCHAIN.md`
 5. `WORKFLOW.md`
-6. `NEXT_STEPS.md`
+6. `DECOMP_LOG.md`
+7. `NEXT_STEPS.md`
 
 Use `dossiers/` for stable function dossiers and `subsystems/` for notes that
 have graduated from parent-workspace experiments into decomp knowledge.
@@ -22,4 +23,6 @@ have graduated from parent-workspace experiments into decomp knowledge.
   snapshot.
 - `TOOLCHAIN.md` - project-local MIPS binutils setup and verification.
 - `WORKFLOW.md` - source-replacement and evidence loop.
+- `DECOMP_LOG.md` - compact running memory for completed decomp loops and
+  context-compaction handoff.
 - `NEXT_STEPS.md` - ordered work queue for the next decomp pass.

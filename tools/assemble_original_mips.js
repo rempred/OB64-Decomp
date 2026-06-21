@@ -66,7 +66,45 @@ function loadReference(referencePath) {
   return loadAndVerifyRom().z64;
 }
 
-function selectChunkSource(chunk, args) {
+function resolveRepoPath(filePath) {
+  return path.isAbsolute(filePath) ? filePath : path.resolve(ROOT, filePath);
+}
+
+function sameRange(left, right) {
+  return (
+    parseHexOrNumber(left.romStart) === parseHexOrNumber(right.romStart) &&
+    parseHexOrNumber(left.romEndExclusive) === parseHexOrNumber(right.romEndExclusive)
+  );
+}
+
+function loadTrackedManifest(trackedDir) {
+  const manifestPath = path.join(trackedDir, 'manifest.json');
+  if (!fs.existsSync(manifestPath)) return null;
+  return readJson(manifestPath);
+}
+
+function findTrackedManifestChunk(trackedManifest, chunk) {
+  if (!trackedManifest || !Array.isArray(trackedManifest.chunks)) return null;
+  return trackedManifest.chunks.find((trackedChunk) => sameRange(trackedChunk, chunk)) || null;
+}
+
+function selectChunkSource(chunk, args, trackedManifest) {
+  const manifestChunk = args.useTracked ? findTrackedManifestChunk(trackedManifest, chunk) : null;
+  if (manifestChunk && Array.isArray(manifestChunk.parts) && manifestChunk.parts.length > 0) {
+    return {
+      kind: 'tracked-parts',
+      file: manifestChunk.file || chunk.file,
+      parts: manifestChunk.parts.map((part) => ({
+        ...part,
+        path: resolveRepoPath(part.file),
+      })),
+    };
+  }
+  if (manifestChunk && manifestChunk.file) {
+    const manifestPath = resolveRepoPath(manifestChunk.file);
+    if (fs.existsSync(manifestPath)) return { path: manifestPath, kind: 'tracked' };
+    if (args.strictTracked) throw new Error(`Tracked assembly chunk missing: ${manifestPath}`);
+  }
   const generatedPath = path.resolve(ROOT, chunk.file);
   const trackedPath = path.join(args.trackedDir, path.basename(chunk.file));
   if (args.useTracked && fs.existsSync(trackedPath)) {
@@ -78,12 +116,34 @@ function selectChunkSource(chunk, args) {
   return { path: generatedPath, kind: 'generated' };
 }
 
+function assembleSelectedFile({ filePath, selectedKind, args, toolchainConfig }) {
+  if (!fs.existsSync(filePath)) throw new Error(`Assembly chunk missing: ${filePath}`);
+  let assembled;
+  let sourceKind = selectedKind;
+  let tool = 'word-asm';
+  if (selectedKind === 'tracked' && args.useRealAsmForTracked) {
+    const stem = path.basename(filePath, '.s');
+    const outBin = path.join(args.realAsmOutDir, `${stem}.bin`);
+    const outObj = path.join(args.realAsmOutDir, `${stem}.o`);
+    assembleFileToBinary({ source: filePath, outBin, outObj, config: toolchainConfig });
+    const bytes = fs.readFileSync(outBin);
+    assembled = { bytes, words: bytes.length / 4, outBin, outObj };
+    sourceKind = 'tracked-real-asm';
+    tool = toolchainConfig.id;
+  } else {
+    assembled = assembleWordAsmFile(filePath);
+    if (selectedKind === 'tracked') sourceKind = 'tracked-word-asm';
+  }
+  return { assembled, sourceKind, tool };
+}
+
 function main() {
   const args = parseArgs(process.argv.slice(2));
   if (!fs.existsSync(args.sourceReport)) {
     throw new Error(`Original MIPS source report not found: ${args.sourceReport}\nRun: node tools/extract_original_mips.js`);
   }
   const sourceReport = readJson(args.sourceReport);
+  const trackedManifest = args.useTracked ? loadTrackedManifest(args.trackedDir) : null;
   const chunks = sourceReport.chunks || [];
   if (!chunks.length) throw new Error(`Source report has no chunks: ${args.sourceReport}`);
 
@@ -96,6 +156,9 @@ function main() {
   const sourceCounts = {
     trackedRealAsm: 0,
     trackedWordAsm: 0,
+    trackedComposite: 0,
+    trackedRealAsmFiles: 0,
+    trackedWordAsmFiles: 0,
     generated: 0,
   };
   const toolchainConfig = args.useRealAsmForTracked ? loadToolchainConfig() : null;
@@ -104,24 +167,85 @@ function main() {
     const start = parseHexOrNumber(chunk.romStart);
     const end = parseHexOrNumber(chunk.romEndExclusive);
     if (start !== cursor) throw new Error(`Chunk ${chunk.file} starts at ${hex(start)}, expected ${hex(cursor)}`);
-    const selected = selectChunkSource(chunk, args);
-    const filePath = selected.path;
-    if (!fs.existsSync(filePath)) throw new Error(`Assembly chunk missing: ${filePath}`);
-    let assembled;
-    let sourceKind = selected.kind;
-    let tool = 'word-asm';
-    if (selected.kind === 'tracked' && args.useRealAsmForTracked) {
-      const outBin = path.join(args.realAsmOutDir, `${path.basename(filePath, '.s')}.bin`);
-      const outObj = path.join(args.realAsmOutDir, `${path.basename(filePath, '.s')}.o`);
-      assembleFileToBinary({ source: filePath, outBin, outObj, config: toolchainConfig });
-      const bytes = fs.readFileSync(outBin);
-      assembled = { bytes, words: bytes.length / 4, outBin, outObj };
-      sourceKind = 'tracked-real-asm';
-      tool = toolchainConfig.id;
-    } else {
-      assembled = assembleWordAsmFile(filePath);
-      if (selected.kind === 'tracked') sourceKind = 'tracked-word-asm';
+    const selected = selectChunkSource(chunk, args, trackedManifest);
+    if (selected.kind === 'tracked-parts') {
+      let partCursor = start;
+      let partWords = 0;
+      const partBuffers = [];
+      const partReports = [];
+      const partSources = new Set();
+      for (const part of selected.parts) {
+        const partStart = parseHexOrNumber(part.romStart);
+        const partEnd = parseHexOrNumber(part.romEndExclusive);
+        if (partStart !== partCursor) {
+          throw new Error(`Tracked part ${part.file} starts at ${hex(partStart)}, expected ${hex(partCursor)}`);
+        }
+        if (partEnd > end) {
+          throw new Error(`Tracked part ${part.file} ends at ${hex(partEnd)}, past parent chunk end ${hex(end)}`);
+        }
+        const { assembled, sourceKind, tool } = assembleSelectedFile({
+          filePath: part.path,
+          selectedKind: 'tracked',
+          args,
+          toolchainConfig,
+        });
+        if (assembled.bytes.length !== partEnd - partStart || assembled.bytes.length !== part.bytes) {
+          throw new Error(`Assembled part size mismatch for ${part.file}: got ${assembled.bytes.length}, expected ${part.bytes}`);
+        }
+        partBuffers.push(assembled.bytes);
+        partWords += assembled.words;
+        partSources.add(sourceKind);
+        if (sourceKind === 'tracked-real-asm') sourceCounts.trackedRealAsmFiles += 1;
+        else if (sourceKind === 'tracked-word-asm') sourceCounts.trackedWordAsmFiles += 1;
+        partReports.push({
+          name: part.name || null,
+          file: path.relative(ROOT, part.path).replace(/\\/g, '/'),
+          source: sourceKind,
+          tool,
+          toolOutput: assembled.outBin ? path.relative(ROOT, assembled.outBin).replace(/\\/g, '/') : null,
+          romStart: hex(partStart),
+          romEndExclusive: hex(partEnd),
+          bytes: assembled.bytes.length,
+          words: assembled.words,
+          sha256: hashBuffer(assembled.bytes, 'sha256'),
+        });
+        partCursor = partEnd;
+      }
+      if (partCursor !== end) throw new Error(`Tracked parts end at ${hex(partCursor)}, expected ${hex(end)}`);
+      const assembledBytes = Buffer.concat(partBuffers);
+      let sourceKind = 'tracked-parts-mixed';
+      if (partSources.size === 1 && partSources.has('tracked-real-asm')) sourceKind = 'tracked-parts-real-asm';
+      else if (partSources.size === 1 && partSources.has('tracked-word-asm')) sourceKind = 'tracked-parts-word-asm';
+      if (assembledBytes.length !== end - start || assembledBytes.length !== chunk.bytes) {
+        throw new Error(`Assembled chunk size mismatch for ${chunk.file}: got ${assembledBytes.length}, expected ${chunk.bytes}`);
+      }
+      buffers.push(assembledBytes);
+      totalWords += partWords;
+      chunkReports.push({
+        file: selected.file,
+        source: sourceKind,
+        tool: sourceKind === 'tracked-parts-real-asm' ? toolchainConfig.id : 'mixed',
+        toolOutput: null,
+        romStart: hex(start),
+        romEndExclusive: hex(end),
+        bytes: assembledBytes.length,
+        words: partWords,
+        sha256: hashBuffer(assembledBytes, 'sha256'),
+        parts: partReports,
+      });
+      sourceCounts.trackedComposite += 1;
+      if (sourceKind === 'tracked-parts-real-asm') sourceCounts.trackedRealAsm += 1;
+      else if (sourceKind === 'tracked-parts-word-asm') sourceCounts.trackedWordAsm += 1;
+      cursor = end;
+      continue;
     }
+    const filePath = selected.path;
+    const { assembled, sourceKind, tool } = assembleSelectedFile({
+      filePath,
+      selectedKind: selected.kind,
+      args,
+      toolchainConfig,
+    });
     if (assembled.bytes.length !== end - start || assembled.bytes.length !== chunk.bytes) {
       throw new Error(`Assembled chunk size mismatch for ${chunk.file}: got ${assembled.bytes.length}, expected ${chunk.bytes}`);
     }
@@ -173,6 +297,9 @@ function main() {
       trackedDir: path.relative(ROOT, args.trackedDir).replace(/\\/g, '/'),
       trackedRealAsmChunks: sourceCounts.trackedRealAsm,
       trackedWordAsmChunks: sourceCounts.trackedWordAsm,
+      trackedCompositeChunks: sourceCounts.trackedComposite,
+      trackedRealAsmFiles: sourceCounts.trackedRealAsmFiles,
+      trackedWordAsmFiles: sourceCounts.trackedWordAsmFiles,
       generatedChunks: sourceCounts.generated,
       realAsmForTracked: args.useRealAsmForTracked,
       strictTracked: args.strictTracked,

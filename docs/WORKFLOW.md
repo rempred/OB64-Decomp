@@ -13,6 +13,13 @@ The working loop is:
 The parent workspace document `docs/mips-decomp-workflow-plan.md` is the
 canonical process reference until this repo has its own full toolchain.
 
+For the current Rev 0 decomp loop, prefer static/offline evidence first:
+ROM/disassembly/archive/savestate-file analysis, xrefs, call graphs, function
+boundaries, jump-table scans, and exact rebuild checks. Use Project64 only when a
+precise savestate already reaches the target, Joe is actively driving and asks
+for passive watch/log support, or the task is specifically to create/catalog a
+new savestate for later proof.
+
 ## Setup Gate
 
 Before function splitting or C conversion, run:
@@ -89,8 +96,14 @@ node tools/rebuild_rom.js --assembled-code build/assembled/rev0/code.bin --out d
 
 This assembles tracked MIPS chunks with GNU `mips64-elf-as`, falls back to
 generated `.word` chunks for ranges not yet promoted, and substitutes the
-resulting binary blob for the raw code span. Current expected result: 1 tracked
-real-asm chunk and 99 generated fallback chunks; the assembled code-region
-SHA256 is
+resulting binary blob for the raw code span. Manifest chunk `parts` are assembled
+in order, so a promoted no-gap chunk can be split into named files without losing
+coverage. Current expected result: 1 tracked composite real-asm chunk made from 2
+tracked source files, plus 99 generated fallback chunks; the assembled
+code-region SHA256 is
 `40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`, and the
 full rebuilt ROM remains byte-identical to the normalized Rev 0 baserom.
+
+After each loop, update `docs/DECOMP_LOG.md`. If that log approaches roughly
+10,000 tokens, condense it and archive the previous full version under
+`docs/archive/`.

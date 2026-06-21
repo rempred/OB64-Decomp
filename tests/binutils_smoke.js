@@ -8,6 +8,7 @@ const {
   hashBuffer,
   hex,
   loadAndVerifyRom,
+  parseHexOrNumber,
   readJson,
   writeJson,
 } = require('../tools/lib/rom');
@@ -107,15 +108,42 @@ nop
 
   const manifest = readJson(path.join(ROOT, 'asm', 'original', 'rev0', 'manifest.json'));
   const first = manifest.chunks[0];
-  const firstSource = path.join(ROOT, first.file);
   const firstDir = path.join(ROOT, 'build', 'toolchain-smoke', 'first_tracked_chunk');
-  const firstBin = path.join(firstDir, 'code_00001000_00011000.bin');
-  const firstObj = path.join(firstDir, 'code_00001000_00011000.o');
-  assembleFileToBinary({ source: firstSource, outBin: firstBin, outObj: firstObj, config });
-  const firstBytes = fs.readFileSync(firstBin);
   const reference = loadReference();
-  const start = Number.parseInt(first.romStart, 16);
-  const end = Number.parseInt(first.romEndExclusive, 16);
+  const start = parseHexOrNumber(first.romStart);
+  const end = parseHexOrNumber(first.romEndExclusive);
+  const firstParts = Array.isArray(first.parts) && first.parts.length > 0 ? first.parts : [first];
+  let partCursor = start;
+  const partReports = [];
+  const partBuffers = [];
+  for (const part of firstParts) {
+    const partStart = parseHexOrNumber(part.romStart);
+    const partEnd = parseHexOrNumber(part.romEndExclusive);
+    if (partStart !== partCursor) throw new Error(`First tracked part starts at ${hex(partStart)}, expected ${hex(partCursor)}`);
+    const partSource = path.join(ROOT, part.file);
+    const stem = path.basename(part.file, '.s');
+    const partBin = path.join(firstDir, `${stem}.bin`);
+    const partObj = path.join(firstDir, `${stem}.o`);
+    assembleFileToBinary({ source: partSource, outBin: partBin, outObj: partObj, config });
+    const partBytes = fs.readFileSync(partBin);
+    const partReferenceSlice = reference.subarray(partStart, partEnd);
+    const partDiff = firstDiff(partReferenceSlice, partBytes);
+    if (partDiff || partBytes.length !== partEnd - partStart) {
+      throw new Error(`First tracked part real-assembler mismatch at ${partDiff ? hex(partStart + partDiff.offset) : 'size'}`);
+    }
+    partReports.push({
+      name: part.name || null,
+      file: part.file,
+      romStart: part.romStart,
+      romEndExclusive: part.romEndExclusive,
+      bytes: partBytes.length,
+      sha256: hashBuffer(partBytes, 'sha256'),
+    });
+    partBuffers.push(partBytes);
+    partCursor = partEnd;
+  }
+  if (partCursor !== end) throw new Error(`First tracked parts end at ${hex(partCursor)}, expected ${hex(end)}`);
+  const firstBytes = Buffer.concat(partBuffers);
   const referenceSlice = reference.subarray(start, end);
   const diff = firstDiff(referenceSlice, firstBytes);
   if (diff || firstBytes.length !== end - start) {
@@ -129,6 +157,7 @@ nop
     romEndExclusive: first.romEndExclusive,
     bytes: firstBytes.length,
     sha256: hashBuffer(firstBytes, 'sha256'),
+    parts: partReports,
   });
 
   const report = {

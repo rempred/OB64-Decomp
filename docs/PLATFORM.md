@@ -32,9 +32,10 @@ For decomp work, use this order:
 3. `docs/REV0_SCOPE.md`
 4. `docs/TOOLCHAIN.md`
 5. `docs/WORKFLOW.md`
-6. `docs/NEXT_STEPS.md`
-7. Parent `docs/mips-decomp-workflow-plan.md`
-8. Parent subsystem docs and trace artifacts as cited by the local note
+6. `docs/DECOMP_LOG.md`
+7. `docs/NEXT_STEPS.md`
+8. Parent `docs/mips-decomp-workflow-plan.md`
+9. Parent subsystem docs and trace artifacts as cited by the local note
 
 When a durable fact changes, update `AGENTS.md` and the relevant `docs/` file in
 the same commit.
@@ -47,6 +48,8 @@ coverage ledger, raw span extraction, an exact byte-for-byte raw ROM rebuild,
 and an assembly-backed code-region rebuild. Setup is complete: a project-local
 GNU MIPS binutils toolchain is configured, tracked source chunks assemble through
 real `mips64-elf-as`, and `node tools/verify_setup.js` verifies the whole setup.
+The first source-layout loop has split the boot entry stub into a named tracked
+part while preserving the exact rebuild gate.
 
 Current known-good pipeline:
 
@@ -69,8 +72,9 @@ Expected current results:
 - `assemble_original_mips.js` emits `build/assembled/rev0/code.bin`, matching
   baserom code-region SHA256
   `40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`.
-- `assemble_original_mips.js` currently uses 1 tracked real-assembler source
-  chunk (`0x00001000..0x00011000`) and 99 generated fallback chunks.
+- `assemble_original_mips.js` currently uses 1 tracked composite
+  real-assembler chunk (`0x00001000..0x00011000`) made from 2 tracked source
+  files, plus 99 generated fallback chunks.
 - `rebuild_rom.js --assembled-code ...` substitutes that assembled code blob for
   the raw code segment and still confirms the same full-ROM SHA256.
 - `tests/binutils_smoke.js` proves `.word`, real instruction, `.set noreorder`,
@@ -109,7 +113,7 @@ data/          tables, rodata, archive manifests, binary data source forms
 assets/        extracted art/audio/model source artifacts
 tools/         extraction, disassembly, coverage, rebuild, and compare tools
 docs/          curated decomp notes and subsystem docs
-wiki/          regenerated reports and function dossiers
+wiki/          regenerated reports and imported function dossiers
 tests/         parser, extraction, compare, and regression tests
 build/         generated intermediates, ignored
 dist/          rebuilt ROMs and reports, ignored
@@ -166,7 +170,8 @@ These outputs are useful but ignored:
   for the configured code-region span.
 - `tools/assemble_original_mips.js` assembles tracked/generated source chunks
   into one code-region binary. Tracked chunks use GNU `mips64-elf-as`; generated
-  fallback chunks use the minimal `.word` assembler.
+  fallback chunks use the minimal `.word` assembler. Manifest chunk `parts` are
+  assembled in order for named source splits.
 - `tools/promote_original_mips.js` promotes generated chunks into tracked
   `asm/original/rev0/` source in deliberate batches.
 - `tools/verify_setup.js` is the canonical setup verification command.
@@ -189,7 +194,8 @@ prints PASS. Current PASS summary:
 - Toolchain: `n64-tools-gcc-toolchain-mips64-win64`, GNU Binutils 2.39.
 - Binutils smoke tests: `.word`, real instructions, `.set noreorder`, and first
   tracked chunk real assembly all pass.
-- Source mix: 1 tracked real-asm chunk and 99 generated fallback chunks.
+- Source mix: 1 tracked composite real-asm chunk made from 2 tracked source
+  files, plus 99 generated fallback chunks.
 - Code SHA256:
   `40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`.
 - Full ROM SHA256:
@@ -197,9 +203,16 @@ prints PASS. Current PASS summary:
 
 ## Next Best Work
 
-The setup phase is complete. The next phase is real decomp preparation:
+The setup phase is complete and the first source split is committed to local
+docs:
 
-1. Split the first tracked chunk into cleaner chunk/function/data files.
+- `asm/original/rev0/boot/boot_entry_clear_bss.s`
+- `docs/dossiers/boot-entry-clear-bss.md`
+- `docs/DECOMP_LOG.md`
+
+The next phase remains real decomp preparation:
+
+1. Continue splitting the first tracked chunk into cleaner function/data files.
 2. Begin function naming from existing parent symbols and trace evidence.
 3. Keep `node tools/verify_setup.js` green after every source-layout change.
 4. Start C conversion only after the split/compare loop is comfortable.

@@ -1,37 +1,12 @@
 /*
- * Generated original MIPS reference for OB64 US Rev 0.
- * Every word is emitted as .word to preserve bytes exactly.
+ * Original Rev 0 MIPS reference chunk remainder.
+ * Split from code_00001000_00011000.s after the named boot entry stub.
  * Decode comments are aids, not proof of semantic function boundaries.
- * z64 range: 0x00001000..0x00011000 exclusive
+ * z64 range: 0x00001060..0x00011000 exclusive
  */
 .set noat
 .set noreorder
-
-rev0_code_00001000:
-/* 0x00001000 0x80070C00 0x3C08800B */ .word 0x3C08800B # lui $t0, 0x800B
-/* 0x00001004 0x80070C04 0x2508EDB0 */ .word 0x2508EDB0 # addiu $t0, $t0, -0x1250
-/* 0x00001008 0x80070C08 0x3C090004 */ .word 0x3C090004 # lui $t1, 0x0004
-/* 0x0000100C 0x80070C0C 0x2529AE70 */ .word 0x2529AE70 # addiu $t1, $t1, -0x5190
-/* 0x00001010 0x80070C10 0xAD000000 */ .word 0xAD000000 # sw $zero, 0x0($t0)
-/* 0x00001014 0x80070C14 0xAD000004 */ .word 0xAD000004 # sw $zero, 0x4($t0)
-/* 0x00001018 0x80070C18 0x21080008 */ .word 0x21080008 # addi $t0, $t0, 0x8
-/* 0x0000101C 0x80070C1C 0x2129FFF8 */ .word 0x2129FFF8 # addi $t1, $t1, -0x8
-/* 0x00001020 0x80070C20 0x1520FFFB */ .word 0x1520FFFB # bne $t1, $zero, 0x80070C10
-/* 0x00001024 0x80070C24 0x00000000 */ .word 0x00000000 # nop
-/* 0x00001028 0x80070C28 0x3C0A8008 */ .word 0x3C0A8008 # lui $t2, 0x8008
-/* 0x0000102C 0x80070C2C 0x254AF880 */ .word 0x254AF880 # addiu $t2, $t2, -0x780
-/* 0x00001030 0x80070C30 0x3C1D800C */ .word 0x3C1D800C # lui $sp, 0x800C
-/* 0x00001034 0x80070C34 0x01400008 */ .word 0x01400008 # jr $t2
-/* 0x00001038 0x80070C38 0x27BD6D60 */ .word 0x27BD6D60 # addiu $sp, $sp, 0x6D60
-/* 0x0000103C 0x80070C3C 0x00000000 */ .word 0x00000000 # nop
-/* 0x00001040 0x80070C40 0x00000000 */ .word 0x00000000 # nop
-/* 0x00001044 0x80070C44 0x00000000 */ .word 0x00000000 # nop
-/* 0x00001048 0x80070C48 0x00000000 */ .word 0x00000000 # nop
-/* 0x0000104C 0x80070C4C 0x00000000 */ .word 0x00000000 # nop
-/* 0x00001050 0x80070C50 0x00000000 */ .word 0x00000000 # nop
-/* 0x00001054 0x80070C54 0x00000000 */ .word 0x00000000 # nop
-/* 0x00001058 0x80070C58 0x00000000 */ .word 0x00000000 # nop
-/* 0x0000105C 0x80070C5C 0x00000000 */ .word 0x00000000 # nop
+.text
 
 /* function boundary candidate: func_00001060, size=192, kind=prologue */
 func_00001060:

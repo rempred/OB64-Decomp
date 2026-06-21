@@ -38,11 +38,12 @@ Before decomp work, read:
 3. Local `docs/REV0_SCOPE.md`.
 4. Local `docs/TOOLCHAIN.md`.
 5. Local `docs/WORKFLOW.md`.
-6. Local `docs/NEXT_STEPS.md`.
-7. Parent `docs/mips-decomp-workflow-plan.md`.
-8. Parent `docs/mips-decode.md`.
-9. Parent `docs/overlay-system.md`.
-10. The relevant subsystem doc in the parent `docs/` folder.
+6. Local `docs/DECOMP_LOG.md`.
+7. Local `docs/NEXT_STEPS.md`.
+8. Parent `docs/mips-decomp-workflow-plan.md`.
+9. Parent `docs/mips-decode.md`.
+10. Parent `docs/overlay-system.md`.
+11. The relevant subsystem doc in the parent `docs/` folder.
 
 When a durable fact changes, update this file and the relevant local doc before
 committing. If the fact came from parent-workspace research, include the parent
@@ -123,6 +124,9 @@ chunks under `asm/original/rev0/` when present and falls back to generated chunk
 under `build/original-mips/rev0/` for ranges not yet promoted. Tracked chunks go
 through the real GNU MIPS assembler configured in `config/toolchain.json`;
 generated fallback chunks still use the minimal `.word` path until promoted.
+Tracked manifest chunks may now contain ordered `parts`, allowing a promoted
+64 KiB chunk to be split into named source files while still rebuilding as one
+no-gap source range.
 
 Current result:
 
@@ -131,7 +135,8 @@ Current result:
 - Code-region SHA256:
   `40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`.
 - Code-region match against baserom: pass.
-- Tracked real-assembler original-MIPS chunks: 1 (`0x00001000..0x00011000`).
+- Tracked real-assembler original-MIPS chunks: 1 composite
+  (`0x00001000..0x00011000`) made from 2 real-assembler source files.
 - Generated fallback chunks: 99.
 - Assembled-code ROM rebuild command:
 
@@ -147,6 +152,20 @@ Next source-layout work should continue promoting/splitting tracked
 `tools/promote_original_mips.js` for chunk promotion and `--strict-tracked` only
 after every configured code chunk is tracked.
 
+## First Decomp Loop: Boot Entry
+
+The first named Rev 0 original-MIPS split is
+`asm/original/rev0/boot/boot_entry_clear_bss.s`, covering ROM
+`0x00001000..0x00001060` / RAM `0x80070C00..0x80070C60`. The static dossier is
+`docs/dossiers/boot-entry-clear-bss.md`, and the running memory entry is in
+`docs/DECOMP_LOG.md`.
+
+Static finding: the ROM header entry point enters this stub at `0x80070C00`.
+It clears `0x3AE70` bytes from `0x800AEDB0` through exclusive end
+`0x800E9C20`, initializes `sp = 0x800C6D60`, then jumps to `0x8007F880`.
+Treat the `clear_bss` name as a conservative static label for the observed boot
+RAM clear span, not as a fully mapped linker section.
+
 ## Setup Complete Gate
 
 The setup phase is complete when `node tools/verify_setup.js` passes. Current
@@ -161,8 +180,9 @@ setup-complete state:
 - Assembler: GNU Binutils 2.39 `mips64-elf-as.exe` with `-EB -mips3 -32`.
 - Setup verifier: `tools/verify_setup.js`.
 - Current verifier result: PASS; 825 archives, 0 unknown bytes, 108 overlap
-  bytes visible, 1 tracked real-asm chunk, 99 generated fallback chunks, full ROM
-  SHA256 `571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A`.
+  bytes visible, 1 tracked composite real-asm chunk made from 2 tracked source
+  files, 99 generated fallback chunks, full ROM SHA256
+  `571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A`.
 
-Next phase is chunk splitting and function naming. Do not begin semantic C
-decomp unless the setup verifier is green.
+Next phase is continuing small source splits and function naming. Do not begin
+semantic C decomp unless the setup verifier is green.

@@ -17,8 +17,28 @@
       "romEndExclusive": "0x00011000",
       "bytes": 65536,
       "sourceReportFile": "build/original-mips/rev0/code_00001000_00011000.s",
-      "textBytes": 1264676,
-      "sha256": "0B5C19D884E9CAA80BD4B9BD8F8C4C30B89A59432061943B8FFD50C6EB4637CF"
+      "parts": [
+        {
+          "name": "boot_entry_clear_bss_and_jump",
+          "file": "asm/original/rev0/boot/boot_entry_clear_bss.s",
+          "romStart": "0x00001000",
+          "romEndExclusive": "0x00001060",
+          "bytes": 96,
+          "textBytes": 2119,
+          "sha256": "FB25B68987CAF6D816DC75F2F7334784CF2EA39B4D75E5241C0281FF9BE3D7DA"
+        },
+        {
+          "name": "code_00001060_00011000_remainder",
+          "file": "asm/original/rev0/code_00001060_00011000.s",
+          "romStart": "0x00001060",
+          "romEndExclusive": "0x00011000",
+          "bytes": 65440,
+          "textBytes": 1279894,
+          "sha256": "8AFB155EB76509639FEBB0FD65A6BCCC818D3BA17A622BBB6F3C99E1493901AB"
+        }
+      ],
+      "textBytes": 1282013,
+      "sha256": "E267AD499867F3720EB7050F252C5FC7E937D3887BFED1D1E5DF2A16DA8D2CD6"
     }
   ]
 }

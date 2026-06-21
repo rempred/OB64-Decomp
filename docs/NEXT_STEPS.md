@@ -15,8 +15,9 @@ Current passing commands:
 node tools/verify_setup.js
 ```
 
-Current source mix: 1 tracked real-assembler chunk
-(`0x00001000..0x00011000`) and 99 generated fallback chunks.
+Current source mix: 1 tracked composite real-assembler chunk
+(`0x00001000..0x00011000`) made from 2 tracked source files, plus 99 generated
+fallback chunks.
 
 The assembled code-region SHA256 is
 `40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`; the full
@@ -25,15 +26,17 @@ ROM rebuild SHA256 remains
 
 ## Active Goal
 
-Begin real decomp preparation by splitting and naming code, without losing exact
-rebuild coverage.
+Continue real decomp preparation by splitting and naming code, without losing
+exact rebuild coverage.
 
 ## Ordered Work
 
-1. Split the first tracked chunk into smaller source files.
+1. Continue splitting the first tracked chunk into smaller source files.
 
-   Start with `asm/original/rev0/code_00001000_00011000.s`. Preserve every word
-   and keep labels/data conservative.
+   The boot entry split is done:
+   `asm/original/rev0/boot/boot_entry_clear_bss.s` covers
+   `0x00001000..0x00001060`. Next, continue from the remainder file
+   `asm/original/rev0/code_00001060_00011000.s`.
 
 2. Keep the setup gate green.
 

@@ -91,6 +91,8 @@ function main() {
       overlapBytes: ledger.summary.overlapBytes,
       toolchain: toolchain.toolchain.id,
       trackedRealAsmChunks: assembled.sources.trackedRealAsmChunks,
+      trackedCompositeChunks: assembled.sources.trackedCompositeChunks || 0,
+      trackedRealAsmFiles: assembled.sources.trackedRealAsmFiles || assembled.sources.trackedRealAsmChunks,
       generatedChunks: assembled.sources.generatedChunks,
       codeSha256: assembled.assembled.sha256,
       romSha256: asmRebuild.rebuilt.sha256,
@@ -103,7 +105,11 @@ function main() {
   for (const item of checks) console.log(`${item.ok ? 'PASS' : 'FAIL'} ${item.name}`);
   console.log(`Toolchain: ${report.summary.toolchain}`);
   console.log(`Archives: ${report.summary.archiveCount}; unknown bytes: ${report.summary.unknownBytes}; overlap bytes: ${report.summary.overlapBytes}`);
-  console.log(`Source mix: ${report.summary.trackedRealAsmChunks} tracked real-asm chunk(s), ${report.summary.generatedChunks} generated fallback chunk(s)`);
+  console.log(
+    `Source mix: ${report.summary.trackedRealAsmChunks} tracked real-asm chunk(s)` +
+      ` (${report.summary.trackedCompositeChunks} composite, ${report.summary.trackedRealAsmFiles} tracked file(s)),` +
+      ` ${report.summary.generatedChunks} generated fallback chunk(s)`,
+  );
   console.log(`Code SHA256: ${report.summary.codeSha256}`);
   console.log(`ROM SHA256:  ${report.summary.romSha256}`);
   console.log(`Report: ${reportPath}`);
