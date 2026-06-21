@@ -10,7 +10,7 @@ helper immediately after the recursive insert/slot-search helper:
 | Source | ROM range | RAM range | Notes |
 | --- | --- | --- | --- |
 | `asm/original/rev0/boot/boot_resource_node_recursive_cleanup_free.s` | `0x0000A198..0x0000A1F8` | `0x80079D98..0x80079DF8` | Recursive node cleanup/free helper. |
-| `asm/original/rev0/code_0000A1F8_00011000.s` | `0x0000A1F8..0x00011000` | `0x80079DF8..0x80080C00` | Current tracked remainder; starts with an 88-byte recursive child/payload clear helper. |
+| `asm/original/rev0/code_0000A1F8_00011000.s` | `0x0000A1F8..0x00011000` | `0x80079DF8..0x80080C00` | Remainder produced by this split; now superseded by the payload-clear split. |
 
 The source name is conservative. It describes the static recursive/free shape;
 runtime ownership and final C API names are not verified.
@@ -27,7 +27,8 @@ runtime ownership and final C API names are not verified.
 - Local source shows a null-safe recursive walk through child fields `+0x10`,
   `+0x14`, and `+0x18`, followed by substructure cleanup and two frees.
 - The next helper at `0xA1F8` is a separate 88-byte prologue helper with frame
-  size `0x18`, three self-recursive calls, and one `resource_free` call.
+  size `0x18`, three self-recursive calls, and one `resource_free` call; it is
+  split separately in `boot-resource-node-recursive-payload-clear.md`.
 
 ## Static Shape
 
@@ -45,8 +46,8 @@ runtime ownership and final C API names are not verified.
   insert/slot-search secondary-entry delay slot at `0xA194`.
 - The promoted helper includes the return at `0xA1F0` and delay-slot stack
   restore at `0xA1F4`.
-- The next function starts cleanly at `0x0000A1F8`; keep `0xA1F8..0xA250`
-  together as the next recursive child/payload clear helper.
+- The next function starts cleanly at `0x0000A1F8`; it is split separately in
+  `boot-resource-node-recursive-payload-clear.md`.
 
 ## Verification
 

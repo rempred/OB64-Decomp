@@ -19,7 +19,7 @@ and replace the active log with a compact current-state summary.
 - Whole-ROM coverage still independently scans for LHA headers; do not trust the
   parent archive catalog by itself.
 - Current tracked code source mix: one composite real-assembler chunk
-  `0x00001000..0x00011000` made from 93 tracked source files, plus 99 generated
+  `0x00001000..0x00011000` made from 94 tracked source files, plus 99 generated
   fallback code chunks.
 - Current tracked non-code source-owner mix: 3 tracked files / 44,029 bytes,
   plus 1,055 generated fallback owner files / 35,388,567 bytes.
@@ -61,8 +61,8 @@ Current named sequence:
   `boot_resource_probe_record_checksum_signature.s` `0x4AC8..0x5FC0`.
 - State/slot, resource-handle, transform-record, command/resource-node, and
   resource-node context/recursive helpers through
-  `boot_resource_node_recursive_cleanup_free.s` `0x5FC0..0xA1F8`.
-- Current remainder: `code_0000A1F8_00011000.s`.
+  `boot_resource_node_recursive_payload_clear.s` `0x5FC0..0xA250`.
+- Current remainder: `code_0000A250_00011000.s`.
 
 Static dossiers live under `docs/dossiers/` and are the durable evidence notes
 for each promoted source-layout split.
@@ -227,6 +227,46 @@ Verification for the split:
 - Static dossier:
   `docs/dossiers/boot-resource-node-recursive-cleanup-free.md`.
 
+## 2026-06-21 - Boot Resource Node Recursive Payload Clear Split
+
+Baseline before the split:
+
+- `git status --short` was clean at commit
+  `fdf00df Split Rev 0 boot resource node recursive cleanup free`.
+- `node tools\verify_setup.js` passed with 825 archives, zero unknown bytes, 108
+  visible overlap bytes, 93 tracked source files, 99 generated fallback chunks,
+  and unchanged code/ROM hashes.
+
+Promoted
+`asm/original/rev0/boot/boot_resource_node_recursive_payload_clear.s`
+covering ROM `0x0000A1F8..0x0000A250` / RAM
+`0x80079DF8..0x80079E50`. The old
+`asm/original/rev0/code_0000A1F8_00011000.s` remainder was removed and replaced
+by `asm/original/rev0/code_0000A250_00011000.s`.
+
+Static evidence from parent function/symbol/callgraph data and local source:
+
+- `0xA1F8` is an 88-byte recursive prologue helper with frame size `0x18`,
+  fixed in all seven named states and all 21 snapshots.
+- Parent callers are `0x9A18`, `0x9A28`, and self-recursion.
+- Parent callees are three self-recursive calls and one call to `resource_free`
+  `0x16C4` / RAM `0x800712C4`.
+- Local source recurses through fields `+0x10`, `+0x14`, and `+0x18`, checks
+  field `+0x0C`, and when that field is nonzero frees field `+0x04` and clears
+  `+0x04`.
+- The split includes the return at `0xA248` and delay-slot stack restore at
+  `0xA24C`; the next helper starts cleanly at `0xA250`.
+
+Verification for the split:
+
+- `node tests\binutils_smoke.js` passed.
+- `node tools\assemble_original_mips.js` passed.
+- Full `node tools\verify_setup.js` passed after the split and doc updates.
+- Source mix is now 1 tracked composite real-asm chunk made from 94 tracked
+  source files, plus 99 generated fallback chunks.
+- Static dossier:
+  `docs/dossiers/boot-resource-node-recursive-payload-clear.md`.
+
 ## Current Dossier Set
 
 The current boot/source-layout dossier list is long; use `docs/PLATFORM.md` for
@@ -241,13 +281,14 @@ the full quick index. The newest dossiers are:
 - `docs/dossiers/boot-resource-node-overlay-context-materialize.md`
 - `docs/dossiers/boot-resource-node-recursive-insert-slot-search.md`
 - `docs/dossiers/boot-resource-node-recursive-cleanup-free.md`
+- `docs/dossiers/boot-resource-node-recursive-payload-clear.md`
 
 ## Next Frontier
 
-Continue from `asm/original/rev0/code_0000A1F8_00011000.s`. The first target is
-`0xA1F8`, an 88-byte recursive child/payload clear helper with frame size
-`0x18`. Parent evidence reports callers from the command/resource-node dispatch
-family and itself, three self-recursive calls, and one call to `resource_free`
-`0x16C4` / RAM `0x800712C4`. Local source walks child fields `+0x10`, `+0x14`,
-and `+0x18`, checks field `+0x0C`, and if that field is nonzero frees field
-`+0x04` and clears `+0x04`; keep `0xA1F8..0xA250` together.
+Continue from `asm/original/rev0/code_0000A250_00011000.s`. The first target is
+`0xA250`, a 76-byte recursive field-`+0x0C` rewrite/clear helper with frame
+size `0x18`. Parent evidence reports callers from the command/resource-node
+dispatch family and itself, three self-recursive calls, and one call to
+`0xA29C` / RAM `0x80079E9C`. Local source walks child fields `+0x10`, `+0x14`,
+and `+0x18`, calls `0xA29C` on field `+0x0C`, and stores the returned value back
+to `+0x0C`; keep `0xA250..0xA29C` together.

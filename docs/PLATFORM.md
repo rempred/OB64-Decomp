@@ -85,9 +85,9 @@ coefficients/sum-clear helper, command stream dispatch helper, command stream
 resource-node dispatch helper, resource-node payload materialize helper, and
 resource-node insert/find helper, resource-node context materialize helper,
 resource-node LZSS context materialize helper, resource-node overlay context
-materialize helper, resource-node recursive insert/slot-search helper, and
-resource-node recursive cleanup/free helper into named tracked parts while
-preserving the exact
+materialize helper, resource-node recursive insert/slot-search helper,
+resource-node recursive cleanup/free helper, and resource-node recursive
+payload-clear helper into named tracked parts while preserving the exact
 rebuild gate. The
 current setup gate also builds a
 full-ROM source ownership manifest so non-code bytes are represented as
@@ -116,7 +116,7 @@ Expected current results:
   baserom code-region SHA256
   `40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`.
 - `assemble_original_mips.js` currently uses 1 tracked composite
-  real-assembler chunk (`0x00001000..0x00011000`) made from 93 tracked source
+  real-assembler chunk (`0x00001000..0x00011000`) made from 94 tracked source
   files, plus 99 generated fallback chunks.
 - `rebuild_rom.js --assembled-code ...` substitutes that assembled code blob for
   the raw code segment and still confirms the same full-ROM SHA256.
@@ -262,7 +262,7 @@ prints PASS. Current PASS summary:
 - Toolchain: `n64-tools-gcc-toolchain-mips64-win64`, GNU Binutils 2.39.
 - Binutils smoke tests: `.word`, real instructions, `.set noreorder`, and first
   tracked chunk real assembly all pass.
-- Source mix: 1 tracked composite real-asm chunk made from 93 tracked source
+- Source mix: 1 tracked composite real-asm chunk made from 94 tracked source
   files, plus 99 generated fallback chunks.
 - Source manifest: 1,059 entries, zero unknown bytes, 2,469,141 ambiguous bytes
   preserved explicitly.
@@ -350,6 +350,7 @@ docs:
 - `docs/dossiers/boot-resource-node-overlay-context-materialize.md`
 - `docs/dossiers/boot-resource-node-recursive-insert-slot-search.md`
 - `docs/dossiers/boot-resource-node-recursive-cleanup-free.md`
+- `docs/dossiers/boot-resource-node-recursive-payload-clear.md`
 - `docs/DECOMP_LOG.md`
 - `docs/FULL_ROM_SOURCE_MANIFEST.md`
 
@@ -358,11 +359,11 @@ The next phase remains full-ROM source preparation:
 1. Promote/curate the next tracked non-code owner batch under `data/` or
    `assets/`.
 2. Continue splitting original MIPS into cleaner function/data files, starting
-   from `asm/original/rev0/code_0000A1F8_00011000.s`. The next target is
-   `0xA1F8`, a recursive child/payload clear helper with three self-recursive
-   child calls, one `resource_free` call, and a clean boundary at `0xA250`;
-   local source checks `+0x0C`, frees `+0x04`, and clears `+0x04`. Keep
-   `0xA1F8..0xA250` together.
+   from `asm/original/rev0/code_0000A250_00011000.s`. The next target is
+   `0xA250`, a recursive field-`+0x0C` rewrite/clear helper with three
+   self-recursive child calls, one call to `0xA29C`, and a clean boundary at
+   `0xA29C`; local source calls `0xA29C` on `+0x0C` and stores the returned
+   value back to `+0x0C`. Keep `0xA250..0xA29C` together.
 3. Keep `node tools/verify_setup.js` green after every source-layout change.
 
 See `docs/NEXT_STEPS.md` for the active task queue.

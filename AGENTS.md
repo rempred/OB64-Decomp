@@ -173,7 +173,7 @@ Current result:
   `40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`.
 - Code-region match against baserom: pass.
 - Tracked real-assembler original-MIPS chunks: 1 composite
-  (`0x00001000..0x00011000`) made from 93 real-assembler source files.
+  (`0x00001000..0x00011000`) made from 94 real-assembler source files.
 - Generated fallback chunks: 99.
 - Assembled-code ROM rebuild command:
 
@@ -2316,7 +2316,7 @@ helper immediately after the recursive insert/slot-search helper:
 
 - `asm/original/rev0/boot/boot_resource_node_recursive_cleanup_free.s`
   `0x0000A198..0x0000A1F8` / RAM `0x80079D98..0x80079DF8`.
-- Current remainder:
+- Remainder after this split, now superseded by the payload-clear split below:
   `asm/original/rev0/code_0000A1F8_00011000.s`.
 
 Static evidence: parent data reports `0xA198` as a 96-byte recursive prologue
@@ -2332,11 +2332,39 @@ normal cleanup path.
 
 Boundary rule: the promoted source includes the return at `0xA1F0` and the
 delay-slot stack restore at `0xA1F4`. The next helper starts cleanly at
-`0xA1F8`; it is an 88-byte recursive child/payload clear helper and should be
-the next source split target.
+`0xA1F8` and is now split separately below.
 
 Static dossier:
 `docs/dossiers/boot-resource-node-recursive-cleanup-free.md`.
+
+## Boot Resource Node Recursive Payload Clear Split
+
+The next tracked Rev 0 original-MIPS split promotes the recursive payload-clear
+helper immediately after the recursive cleanup/free helper:
+
+- `asm/original/rev0/boot/boot_resource_node_recursive_payload_clear.s`
+  `0x0000A1F8..0x0000A250` / RAM `0x80079DF8..0x80079E50`.
+- Current remainder:
+  `asm/original/rev0/code_0000A250_00011000.s`.
+
+Static evidence: parent data reports `0xA1F8` as an 88-byte recursive prologue
+helper with frame size `0x18`, fixed in all seven named states and all 21
+snapshots. Parent callers are `0x9A18`, `0x9A28`, and self-recursion. Parent
+callee data reports three self-recursive calls and one call to `resource_free`
+`0x16C4` / RAM `0x800712C4`.
+
+Static shape: the helper accepts a node pointer in `a0`, returns without writes
+for null, recurses through child fields `+0x10/+0x14/+0x18`, checks field
+`+0x0C`, and when that field is nonzero frees field `+0x04` and clears
+`+0x04`.
+
+Boundary rule: the promoted source includes the return at `0xA248` and the
+delay-slot stack restore at `0xA24C`. The next helper starts cleanly at
+`0xA250`; it is a 76-byte recursive field-`+0x0C` rewrite/clear helper and
+should be the next source split target.
+
+Static dossier:
+`docs/dossiers/boot-resource-node-recursive-payload-clear.md`.
 
 ## Setup Complete Gate
 
@@ -2352,7 +2380,7 @@ setup-complete state:
 - Assembler: GNU Binutils 2.39 `mips64-elf-as.exe` with `-EB -mips3 -32`.
 - Setup verifier: `tools/verify_setup.js`.
 - Current verifier result: PASS; 825 archives, 0 unknown bytes, 108 overlap
-  bytes visible, 1 tracked composite real-asm chunk made from 93 tracked source
+  bytes visible, 1 tracked composite real-asm chunk made from 94 tracked source
   files, 99 generated fallback chunks, full-source manifest 1,059 entries with
   2,469,141 ambiguous bytes preserved explicitly, 3 tracked non-code
   source-owner files / 44,029 bytes, 1,055 generated non-code fallback files /
@@ -2361,8 +2389,9 @@ setup-complete state:
   `571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A`.
 
 Next phase is either promoting another small non-code owner batch or continuing
-tracked original-MIPS splits from `asm/original/rev0/code_0000A1F8_00011000.s`.
-The next MIPS frontier starts with `0xA1F8`, an 88-byte recursive child/payload
-clear helper with frame size `0x18`, three self-recursive child calls, and one
-`resource_free` call; local source checks `+0x0C`, frees `+0x04`, and clears
-`+0x04`. Do not begin semantic C decomp unless the setup verifier is green.
+tracked original-MIPS splits from `asm/original/rev0/code_0000A250_00011000.s`.
+The next MIPS frontier starts with `0xA250`, a 76-byte recursive field-`+0x0C`
+rewrite/clear helper with frame size `0x18`, three self-recursive child calls,
+and one call to `0xA29C`; local source recurses through `+0x10/+0x14/+0x18`,
+calls `0xA29C` on field `+0x0C`, and stores the returned value back to
+`+0x0C`. Do not begin semantic C decomp unless the setup verifier is green.
