@@ -10,7 +10,7 @@ helper immediately after the recursive cleanup/free helper:
 | Source | ROM range | RAM range | Notes |
 | --- | --- | --- | --- |
 | `asm/original/rev0/boot/boot_resource_node_recursive_payload_clear.s` | `0x0000A1F8..0x0000A250` | `0x80079DF8..0x80079E50` | Recursive child walk that conditionally frees/clears field `+0x04`. |
-| `asm/original/rev0/code_0000A250_00011000.s` | `0x0000A250..0x00011000` | `0x80079E50..0x80080C00` | Current tracked remainder; starts with a 76-byte recursive helper that rewrites field `+0x0C` through `0xA29C`. |
+| `asm/original/rev0/code_0000A250_00011000.s` | `0x0000A250..0x00011000` | `0x80079E50..0x80080C00` | Historical remainder after this split; superseded by `boot_resource_node_recursive_field0c_rewrite.s`. |
 
 The source name is conservative. It describes the static recursive/free-and-clear
 shape; runtime ownership and final C API names are not verified.
@@ -45,8 +45,8 @@ shape; runtime ownership and final C API names are not verified.
   cleanup/free delay-slot stack restore at `0xA1F4`.
 - The promoted helper includes the return at `0xA248` and delay-slot stack
   restore at `0xA24C`.
-- The next function starts cleanly at `0x0000A250`; keep `0xA250..0xA29C`
-  together as the next recursive field-`+0x0C` rewrite/clear helper.
+- The next function starts cleanly at `0x0000A250`; it is now split separately
+  as `boot_resource_node_recursive_field0c_rewrite.s`.
 
 ## Verification
 
