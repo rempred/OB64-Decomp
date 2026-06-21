@@ -55,17 +55,53 @@
           "sha256": "0A864A475FDE83BBEFC80E9E1C145DADBC154E2812A70CAF76219A90A20BB467"
         },
         {
-          "name": "code_000014DC_00011000_remainder",
-          "file": "asm/original/rev0/code_000014DC_00011000.s",
+          "name": "resource_alloc_alt_scan",
+          "file": "asm/original/rev0/boot/resource_alloc_alt_scan.s",
           "romStart": "0x000014DC",
+          "romEndExclusive": "0x00001688",
+          "bytes": 428,
+          "textBytes": 8523,
+          "sha256": "291C5992FB6F5336CD0DBB855E8B12F8009FC97710B0EA3A1FABC1C3EC7DEB71"
+        },
+        {
+          "name": "resource_alloc_mode1_wrapper",
+          "file": "asm/original/rev0/boot/resource_alloc_mode1_wrapper.s",
+          "romStart": "0x00001688",
+          "romEndExclusive": "0x000016C4",
+          "bytes": 60,
+          "textBytes": 1488,
+          "sha256": "3C82A6F921A552017135987C966EB35EE38A64FC28A265A3BC1ED1C7E7E6BEEB"
+        },
+        {
+          "name": "resource_free",
+          "file": "asm/original/rev0/boot/resource_free.s",
+          "romStart": "0x000016C4",
+          "romEndExclusive": "0x000017EC",
+          "bytes": 296,
+          "textBytes": 5964,
+          "sha256": "3BF2414612A583B34B884F9724EDF7DCAC867E649F3DD4043BE6FC241E1998C9"
+        },
+        {
+          "name": "resource_largest_free_block",
+          "file": "asm/original/rev0/boot/resource_largest_free_block.s",
+          "romStart": "0x000017EC",
+          "romEndExclusive": "0x000018D4",
+          "bytes": 232,
+          "textBytes": 4768,
+          "sha256": "C84A403723096A26F93997AB50ECAF4954DC45A1D9C4B76FB34404184B83ADE9"
+        },
+        {
+          "name": "code_000018D4_00011000_remainder",
+          "file": "asm/original/rev0/code_000018D4_00011000.s",
+          "romStart": "0x000018D4",
           "romEndExclusive": "0x00011000",
-          "bytes": 64292,
-          "textBytes": 1240668,
-          "sha256": "A3D973BCDEB8503F99971A1121923D6DA876CE22E8190675517038D7BDA3EAAF"
+          "bytes": 63276,
+          "textBytes": 1220958,
+          "sha256": "19A71113ED925B4F9B71AE6BC7107BDFE6E6D00751A703AA1222CCD533C02606"
         }
       ],
-      "textBytes": 1265841,
-      "sha256": "3C14D48AA34735693F4C29C5AB9CF6901759D9B6A37B7496F17F09A9D2ADC66F"
+      "textBytes": 1266874,
+      "sha256": "0FB4CD15365AB3E48C952F32AD33BA0AD5793B6ADB55E8C77A75C26BFD59A509"
     }
   ]
 }

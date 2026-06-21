@@ -300,3 +300,68 @@ Next recommended target:
 
 - Continue from `asm/original/rev0/code_000014DC_00011000.s`, likely around
   `func_000014DC`, or promote another small tracked non-code owner batch.
+
+## 2026-06-21 - Phase 6, Boot Resource Alloc/Free Split
+
+Target:
+
+- Continue source-layout cleanup inside the first tracked original-MIPS chunk.
+- Split the allocator/free family immediately after parent seed
+  `resource_alloc`, preserving the exact assembled-code rebuild.
+
+Baseline:
+
+- `node tools\verify_setup.js` passed before edits.
+- Baseline source mix: 1 tracked composite real-asm chunk made from 5 tracked
+  files, plus 99 generated fallback chunks.
+- Baseline code-region SHA256:
+  `40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`.
+- Baseline full ROM SHA256:
+  `571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A`.
+
+Source-layout change:
+
+- Removed superseded
+  `asm/original/rev0/code_000014DC_00011000.s`.
+- Added `asm/original/rev0/boot/resource_alloc_alt_scan.s`,
+  `0x000014DC..0x00001688`, 428 bytes.
+- Added `asm/original/rev0/boot/resource_alloc_mode1_wrapper.s`,
+  `0x00001688..0x000016C4`, 60 bytes.
+- Added `asm/original/rev0/boot/resource_free.s`,
+  `0x000016C4..0x000017EC`, 296 bytes.
+- Added `asm/original/rev0/boot/resource_largest_free_block.s`,
+  `0x000017EC..0x000018D4`, 232 bytes, keeping the `0x17EC/0x17F0`
+  prefix with `func_000017F4`.
+- Added remainder `asm/original/rev0/code_000018D4_00011000.s`,
+  `0x000018D4..0x00011000`, 63,276 bytes.
+- Static dossier: `docs/dossiers/boot-resource-alloc-free.md`.
+
+Evidence:
+
+- Parent `../scripts/ob64_symbols_v2.json` locates `0x14DC`, `0x1688`,
+  `0x16C4`, `0x17F4`, and `0x18D4` in all 21 RAM snapshots and all seven
+  known states.
+- Parent seed label for `0x000016C4` is `resource_free`; it has 427 parent
+  callers.
+- `0x1688` has 15 parent callers and wraps seed `resource_alloc` at
+  `0x80070F30` while forcing `0x800BEDE2 = 1`.
+- `0x17EC/0x17F4` scans arena free-list nodes rooted at `0x800BEDB8` and
+  returns the maximum observed node `+0x18` field.
+
+Verification:
+
+- `node tests\binutils_smoke.js` passed after the split.
+- `node tools\assemble_original_mips.js` passed after the split.
+- Full `node tools\verify_setup.js` passed after the split.
+- Assembled report now shows 1 tracked composite real-asm chunk made from 9
+  tracked source files, plus 99 generated fallback chunks.
+- Code-region SHA256 remains:
+  `40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`.
+- Full ROM SHA256 remains:
+  `571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A`.
+
+Next recommended target:
+
+- Continue from `asm/original/rev0/code_000018D4_00011000.s`, likely with the
+  allocator pointer-validation/assert helper at `func_000018D4`, or promote
+  another small tracked non-code owner batch.
