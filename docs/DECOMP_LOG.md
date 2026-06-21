@@ -1214,3 +1214,68 @@ Next recommended target:
   the overlapping `0x000042D8` leaf entry / `0x000042E0` prologue pair. Parent
   data reports caller `0x27A0` to `0x42D8`, callee `0x11D08`, and secondary
   entry `0x4358`; keep the pair together until its relationship is documented.
+
+## 2026-06-21 - Boot Resource Window Cache Update Split
+
+### Baseline
+
+- `git status --short` was clean before edits.
+- Last commit before the split was `e634cd7 Split Rev 0 display-list counter
+  packet`.
+- `node tools\verify_setup.js` passed before the split with 1 tracked composite
+  real-asm chunk made from 32 tracked source files and 99 generated fallback
+  chunks.
+- The decomp log was 52,175 characters, 5,774 words, and 1,217 lines, below the
+  prune threshold.
+
+### Source Change
+
+- Split `asm/original/rev0/code_000042D8_00011000.s`.
+- Added `asm/original/rev0/boot/boot_resource_window_cache_update.s`,
+  `0x000042D8..0x000043D4`, 252 bytes.
+- Added remainder `asm/original/rev0/code_000043D4_00011000.s`,
+  `0x000043D4..0x00011000`, 52,268 bytes.
+
+### Static Evidence
+
+- Parent `../scripts/ob64_functions.json` reports `0x42D8` as a 128-byte valid
+  JAL-target leaf entry and `0x42E0` as a 244-byte valid prologue body with
+  frame size `0x18` and secondary entry `0x4358`.
+- Parent `../scripts/ob64_callgraph_v2.json` reports high-confidence caller
+  `0x27A0` to `0x42D8`; both `0x42D8` and `0x42E0` call permanent helper
+  `0x11D08` / RAM `0x80081908`.
+- Parent `../scripts/ob64_symbols_v2.json` locates both entries at fixed RAM
+  `0x80073ED8` / `0x80073EE0` in all seven named states and all 21 RAM
+  snapshots.
+- Xref evidence shows reads/writes to `0x800A81F4`, writes/reads to
+  `0x800A81F8`, reads of `0x800C4BCC`, and writes to stride-`0x50` words
+  `0x800EB0DC..0x800EB2BC`.
+- Static code shape: the `0x42D8` prefix loads `0x800A81F4` into `v0`, then
+  falls into the `0x42E0` body. If that state word is zero, the body clears the
+  seven stride-`0x50` words, calls `0x80081908(a0=3, a1=0x0C)`, reads
+  `0x800C4BCC`, stores `0x800A81F4 = 0x0C`, and stores that pointer to
+  `0x800A81F8`.
+- The `0x4358` secondary entry compares cached `0x800A81F8` plus a `0x3C`
+  window against current `0x800C4BCC`, may clear `0x800A81F4`, and returns the
+  current `0x800A81F4` value.
+- The name `boot_resource_window_cache_update` is conservative. It records
+  nearby resource/window cache state only, not a verified runtime API.
+
+### Verification
+
+- `node tests\binutils_smoke.js` passed.
+- `node tools\assemble_original_mips.js` passed and produced the same
+  code-region SHA256:
+  `40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`.
+- Full `node tools\verify_setup.js` passed after docs/source updates.
+- The setup verifier now reports 1 tracked composite real-asm chunk made from
+  33 tracked source files, 99 generated fallback chunks, full-source manifest
+  1,059 entries, 0 unknown bytes, and the same full ROM SHA256:
+  `571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A`.
+
+### Next
+
+- Continue from `asm/original/rev0/code_000043D4_00011000.s`, beginning with
+  the `0x000043D4` 800-byte prologue routine. Parent data reports high-confidence
+  caller `0x22B0`, unresolved callee RAM `0x8008B820`, and the next boundary at
+  `0x46F4`.

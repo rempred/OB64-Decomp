@@ -10,7 +10,7 @@ code after the display-list counter-step helper:
 | Source | ROM range | RAM range | Notes |
 | --- | --- | --- | --- |
 | `asm/original/rev0/boot/boot_display_list_counter_packet_emit.s` | `0x000040B0..0x000042D8` | `0x80073CB0..0x80073ED8` | 552-byte prologue helper with secondary epilogue entry `0x42C4`. |
-| `asm/original/rev0/code_000042D8_00011000.s` | `0x000042D8..0x00011000` | `0x80073ED8..0x80080C00` | Next tracked remainder; begins with overlapping `0x42D8` leaf / `0x42E0` prologue pair. |
+| `asm/original/rev0/code_000042D8_00011000.s` | `0x000042D8..0x00011000` | `0x80073ED8..0x80080C00` | Former tracked remainder; superseded by the resource window cache update split. |
 
 The name is a conservative source-layout label based on packet emission through
 the shared display-list cursor, not a verified renderer API name.
@@ -46,6 +46,11 @@ the shared display-list cursor, not a verified renderer API name.
   boundary. Parent data reports `0x42D8` as a leaf entry and `0x42E0` as an
   overlapping prologue entry, so the next pass should keep that pair together
   unless new evidence proves a safer separation.
+
+Follow-up split note: `asm/original/rev0/code_000042D8_00011000.s` has since
+been split into `asm/original/rev0/boot/boot_resource_window_cache_update.s`
+(`0x000042D8..0x000043D4`) and
+`asm/original/rev0/code_000043D4_00011000.s`.
 
 ## Verification
 
