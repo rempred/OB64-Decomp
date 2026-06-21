@@ -10,7 +10,7 @@ code after the bitstream descriptor decode helper:
 | Source | ROM range | RAM range | Notes |
 | --- | --- | --- | --- |
 | `asm/original/rev0/boot/boot_bitstream_descriptor_encode.s` | `0x00004894..0x00004AC8` | `0x80074494..0x800746C8` | Overlapping `0x4894` leaf / `0x48C8` prologue pair plus trailing no-target return stub. |
-| `asm/original/rev0/code_00004AC8_00011000.s` | `0x00004AC8..0x00011000` | `0x800746C8..0x80080C00` | Historical next tracked remainder; superseded by the resource-probe splits through `boot_resource_probe_id_materialize.s` and `code_0000553C_00011000.s`. |
+| `asm/original/rev0/code_00004AC8_00011000.s` | `0x00004AC8..0x00011000` | `0x800746C8..0x80080C00` | Historical next tracked remainder; superseded by the resource-probe splits through `boot_resource_probe_dual_callback_materialize.s` and `code_00005624_00011000.s`. |
 
 The name is conservative. The routine appears to pack descriptor-selected bytes
 into a shared bit cursor, but the exact data format is not yet verified.
@@ -50,8 +50,8 @@ into a shared bit cursor, but the exact data format is not yet verified.
   `0x4AC0`. The trailing `0x4AB8..0x4AC4` nop/nop/return/nop shape is kept with
   this file as local return/padding until stronger evidence says otherwise.
 - The active remainder at this step started at the next parent prologue boundary
-  `0x00004AC8`; follow-up splits now cover `0x00004AC8..0x0000553C`, so the
-  active remainder starts at `0x0000553C`.
+  `0x00004AC8`; follow-up splits now cover `0x00004AC8..0x00005624`, so the
+  active remainder starts at `0x00005624`.
 
 ## Verification
 

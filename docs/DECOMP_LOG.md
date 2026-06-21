@@ -18,7 +18,7 @@ and replace the active log with a compact current-state summary.
 - Whole-ROM coverage still independently scans for LHA headers; do not trust the
   parent archive catalog by itself.
 - Current tracked code source mix: one composite real-assembler chunk
-  `0x00001000..0x00011000` made from 46 tracked source files, plus 99 generated
+  `0x00001000..0x00011000` made from 47 tracked source files, plus 99 generated
   fallback code chunks.
 - Current tracked non-code source-owner mix: 3 tracked files / 44,029 bytes,
   plus 1,055 generated fallback owner files / 35,388,567 bytes.
@@ -69,7 +69,8 @@ Current named sequence:
 - `boot_resource_probe_global_buffer_copy.s` `0x50F0..0x51A0`.
 - `boot_resource_probe_global_buffer_signature_check.s` `0x51A0..0x539C`.
 - `boot_resource_probe_id_materialize.s` `0x539C..0x553C`.
-- Current remainder: `code_0000553C_00011000.s`.
+- `boot_resource_probe_dual_callback_materialize.s` `0x553C..0x5624`.
+- Current remainder: `code_00005624_00011000.s`.
 
 Static dossiers live under `docs/dossiers/` and are the durable evidence notes
 for each promoted source-layout split.
@@ -483,17 +484,69 @@ Verification for the split:
 - Source mix is now 1 tracked composite real-asm chunk made from 46 tracked
   source files, plus 99 generated fallback chunks.
 
-## Next Frontier
+## 2026-06-21 - Boot Resource Probe Dual Callback Materialize Split
 
-Continue from `asm/original/rev0/code_0000553C_00011000.s`.
+Baseline before the split:
 
-Parent evidence for the next target:
+- `git status --short` was clean at commit
+  `0d7a392 Split Rev 0 resource probe ID materialize helper`.
+- `node tools\verify_setup.js` passed with 825 archives, zero unknown bytes, 108
+  visible overlap bytes, 46 tracked source files, and unchanged code/ROM hashes.
+- The active compact decomp log was 408 lines / 2,881 words, so no archive/prune
+  pass was needed.
 
-- `0x553C` is a 232-byte valid prologue with frame size `0x20`.
+Promoted
+`asm/original/rev0/boot/boot_resource_probe_dual_callback_materialize.s`
+covering ROM `0x0000553C..0x00005624` / RAM
+`0x8007513C..0x80075224`. The old `code_0000553C_00011000.s` remainder was
+removed and replaced by `asm/original/rev0/code_00005624_00011000.s`.
+
+Static evidence from parent `../scripts/ob64_symbols_v2.json`,
+`../scripts/ob64_callgraph_v2.json`, and `../scripts/ob64_xrefs.json`:
+
+- `0x553C` is a 232-byte valid prologue with frame size `0x20`, epilogue, two
+  indirect `jalr` calls, and next function boundary `0x5624`.
 - Fixed RAM is `0x8007513C` in all seven named states and all 21 snapshots.
 - Caller to `0x553C`: `0x4C5C`.
 - High-confidence callees: `resource_alloc` (`0x1330`), `0x23780` / RAM
-  `0x80093380`, `0x5D9C`, `0x5C58`, and `resource_free` (`0x16C4`).
+  `0x80093380`, `0x5D9C` / RAM `0x8007599C`, `0x5C58` / RAM `0x80075858`, and
+  `resource_free` (`0x16C4`).
+- No unresolved RAM calls are reported.
+- Global reads: `0x800A8254`, `0x800A8258`, `0x800A8260`, and `0x800A8264`.
+
+Static shape:
+
+- Allocates and clears a 0x4AE8-byte scratch record.
+- Walks 13 stride-`0x1C` callback entries from `0x800A8254/8258`, calling
+  nonzero function pointers through `jalr` with `scratch + offset + 0x0C`.
+- Walks 13 stride-`0x1C` callback entries from `0x800A8260/8264`, calling
+  nonzero function pointers through `jalr` with `scratch + offset + 0x1850`.
+- Calls nearby helpers `0x5D9C(0x0F, scratch)` and `0x5C58(scratch)`, frees the
+  scratch record, and returns.
+- The name is conservative and records a static dual-callback materialize
+  shape, not a verified runtime API.
+
+Verification for the split:
+
+- `node tests\binutils_smoke.js` passed.
+- `node tools\assemble_original_mips.js` passed.
+- `node tools\verify_setup.js` passed after the docs update.
+- Source mix is now 1 tracked composite real-asm chunk made from 47 tracked
+  source files, plus 99 generated fallback chunks.
+
+## Next Frontier
+
+Continue from `asm/original/rev0/code_00005624_00011000.s`.
+
+Parent evidence for the next target:
+
+- `0x5624` is a 316-byte valid prologue with frame size `0x20`.
+- Fixed RAM is `0x80075224` in all seven named states and all 21 snapshots.
+- Caller to `0x5624`: `0x4DC0`.
+- High-confidence callees: `resource_alloc` (`0x1330`), `0x1A4F0` / RAM
+  `0x8008A0F0`, `0x23460` / RAM `0x80093060`, and `resource_free`
+  (`0x16C4`).
 - No unresolved RAM calls are reported.
 - The function has two `jalr` calls.
-- Global reads: `0x800A8254`, `0x800A8258`, `0x800A8260`, and `0x800A8264`.
+- Global traffic: reads/writes `0x800A83B8` and reads
+  `0x800A8258/8250/8264/825C`.

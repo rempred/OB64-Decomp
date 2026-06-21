@@ -173,7 +173,7 @@ Current result:
   `40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`.
 - Code-region match against baserom: pass.
 - Tracked real-assembler original-MIPS chunks: 1 composite
-  (`0x00001000..0x00011000`) made from 46 real-assembler source files.
+  (`0x00001000..0x00011000`) made from 47 real-assembler source files.
 - Generated fallback chunks: 99.
 - Assembled-code ROM rebuild command:
 
@@ -1007,8 +1007,9 @@ by resource probe init, the finalize wrapper, and the `0x5760` helper:
 - `asm/original/rev0/boot/boot_resource_probe_id_materialize.s`
   `0x0000539C..0x0000553C`; parent reports a prologue with frame size `0x38`,
   one indirect `jalr`, and one unresolved RAM call.
-- Remainder:
-  `asm/original/rev0/code_0000553C_00011000.s`.
+- Historical remainder at that step:
+  `asm/original/rev0/code_0000553C_00011000.s`, now superseded by the
+  dual-callback materialize split below.
 
 Static evidence: parent function/symbol/callgraph data reports high-confidence
 callers `0x4AC8`, `0x4C34`, and `0x5760`; high-confidence callees
@@ -1032,8 +1033,37 @@ is conservative and records the static ID dispatch/materialize shape, not
 verified runtime semantics.
 
 Static dossier: `docs/dossiers/boot-resource-probe-id-materialize.md`.
-Next source split should start at `asm/original/rev0/code_0000553C_00011000.s`,
-the 232-byte `0x553C` prologue helper called by `0x4C5C`.
+
+## Boot Resource Probe Dual Callback Materialize Split
+
+The next tracked Rev 0 original-MIPS split separates the 232-byte helper called
+by resource probe dispatch prepare:
+
+- `asm/original/rev0/boot/boot_resource_probe_dual_callback_materialize.s`
+  `0x0000553C..0x00005624`; parent reports a prologue with frame size `0x20`,
+  two indirect `jalr` calls, and no unresolved RAM calls.
+- Remainder:
+  `asm/original/rev0/code_00005624_00011000.s`.
+
+Static evidence: parent function/symbol/callgraph data reports high-confidence
+caller `0x4C5C`; high-confidence callees `resource_alloc` (`0x1330`),
+`0x23780` / RAM `0x80093380`, `0x5D9C` / RAM `0x8007599C`, `0x5C58` / RAM
+`0x80075858`, and `resource_free` (`0x16C4`); fixed RAM `0x8007513C` in all
+seven named states and all 21 snapshots; and reads from
+`0x800A8254/8258/8260/8264`.
+
+Static shape: the routine allocates and clears a 0x4AE8-byte scratch record,
+walks 13 stride-`0x1C` callback slots from `0x800A8254/8258` with callback
+arguments at `scratch + offset + 0x0C`, walks 13 more slots from
+`0x800A8260/8264` with arguments at `scratch + offset + 0x1850`, calls nearby
+helpers `0x5D9C(0x0F, scratch)` and `0x5C58(scratch)`, frees the scratch
+record, and returns. The name is conservative and records the static
+dual-callback materialize shape, not verified runtime semantics.
+
+Static dossier:
+`docs/dossiers/boot-resource-probe-dual-callback-materialize.md`.
+Next source split should start at `asm/original/rev0/code_00005624_00011000.s`,
+the 316-byte `0x5624` prologue helper called by `0x4DC0`.
 
 ## Setup Complete Gate
 
@@ -1049,7 +1079,7 @@ setup-complete state:
 - Assembler: GNU Binutils 2.39 `mips64-elf-as.exe` with `-EB -mips3 -32`.
 - Setup verifier: `tools/verify_setup.js`.
 - Current verifier result: PASS; 825 archives, 0 unknown bytes, 108 overlap
-  bytes visible, 1 tracked composite real-asm chunk made from 46 tracked source
+  bytes visible, 1 tracked composite real-asm chunk made from 47 tracked source
   files, 99 generated fallback chunks, full-source manifest 1,059 entries with
   2,469,141 ambiguous bytes preserved explicitly, 3 tracked non-code
   source-owner files / 44,029 bytes, 1,055 generated non-code fallback files /
@@ -1058,5 +1088,5 @@ setup-complete state:
   `571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A`.
 
 Next phase is either promoting another small non-code owner batch or continuing
-tracked original-MIPS splits from `asm/original/rev0/code_0000553C_00011000.s`.
+tracked original-MIPS splits from `asm/original/rev0/code_00005624_00011000.s`.
 Do not begin semantic C decomp unless the setup verifier is green.

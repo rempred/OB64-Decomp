@@ -14,7 +14,7 @@ callback-walk helper:
 | `asm/original/rev0/code_000051A0_00011000.s` | `0x000051A0..0x00011000` | `0x80074DA0..0x80080C00` | Historical remainder; superseded by the signature-check split. |
 | `asm/original/rev0/boot/boot_resource_probe_global_buffer_signature_check.s` | `0x000051A0..0x0000539C` | `0x80074DA0..0x80074F9C` | Follow-up split documented separately. |
 | `asm/original/rev0/boot/boot_resource_probe_id_materialize.s` | `0x0000539C..0x0000553C` | `0x80074F9C..0x8007513C` | Follow-up split documented separately. |
-| `asm/original/rev0/code_0000553C_00011000.s` | `0x0000553C..0x00011000` | `0x8007513C..0x80080C00` | Current tracked remainder. |
+| `asm/original/rev0/code_0000553C_00011000.s` | `0x0000553C..0x00011000` | `0x8007513C..0x80080C00` | Historical remainder; superseded by the dual-callback materialize split. |
 
 The name is conservative. The routine has a clear static shape around a shared
 resource-probe buffer and a caller-provided copy, but no runtime trace or
@@ -63,8 +63,10 @@ controlled mutation has verified final behavior or API semantics.
 - The `0x51A0` helper is now documented separately in
   `docs/dossiers/boot-resource-probe-global-buffer-signature-check.md`, and the
   follow-up `0x539C` helper is documented in
-  `docs/dossiers/boot-resource-probe-id-materialize.md`; the active remainder
-  starts at `0x0000553C`.
+  `docs/dossiers/boot-resource-probe-id-materialize.md`; the follow-up
+  `0x553C` helper is documented in
+  `docs/dossiers/boot-resource-probe-dual-callback-materialize.md`; the active
+  remainder starts at `0x00005624`.
 
 ## Verification
 
