@@ -19,7 +19,7 @@ and replace the active log with a compact current-state summary.
 - Whole-ROM coverage still independently scans for LHA headers; do not trust the
   parent archive catalog by itself.
 - Current tracked code source mix: one composite real-assembler chunk
-  `0x00001000..0x00011000` made from 97 tracked source files, plus 99 generated
+  `0x00001000..0x00011000` made from 99 tracked source files, plus 99 generated
   fallback code chunks.
 - Current tracked non-code source-owner mix: 3 tracked files / 44,029 bytes,
   plus 1,055 generated fallback owner files / 35,388,567 bytes.
@@ -61,8 +61,8 @@ Current named sequence:
   `boot_resource_probe_record_checksum_signature.s` `0x4AC8..0x5FC0`.
 - State/slot, resource-handle, transform-record, command/resource-node, and
   resource-node context/recursive helpers through
-  `boot_resource_node_recursive_key_field_clear.s` `0x5FC0..0xA370`.
-- Current remainder: `code_0000A370_00011000.s`.
+  `boot_byte_fill_aligned_leaf.s` `0x5FC0..0xA510`.
+- Current remainder: `code_0000A510_00011000.s`.
 
 Static dossiers live under `docs/dossiers/` and are the durable evidence notes
 for each promoted source-layout split.
@@ -389,6 +389,52 @@ Verification for the split:
 - Static dossier:
   `docs/dossiers/boot-resource-node-recursive-key-field-clear.md`.
 
+## 2026-06-21 - Boot Byte Copy/Fill Aligned Leaves Split
+
+Baseline before the split:
+
+- `git status --short` was clean at commit
+  `7880114 Split Rev 0 boot resource node recursive key field clear`.
+- `node tools\verify_setup.js` passed with 825 archives, zero unknown bytes, 108
+  visible overlap bytes, 97 tracked source files, 99 generated fallback chunks,
+  and unchanged code/ROM hashes.
+
+Promoted two no-frame utility leaves out of
+`asm/original/rev0/code_0000A370_00011000.s`:
+
+- `asm/original/rev0/boot/boot_byte_copy_aligned_leaf.s`, covering ROM
+  `0x0000A370..0x0000A470` / RAM `0x80079F70..0x8007A070`.
+- `asm/original/rev0/boot/boot_byte_fill_aligned_leaf.s`, covering ROM
+  `0x0000A470..0x0000A510` / RAM `0x8007A070..0x8007A110`.
+
+The old `asm/original/rev0/code_0000A370_00011000.s` remainder was removed and
+replaced by `asm/original/rev0/code_0000A510_00011000.s`.
+
+Static evidence from parent function/symbol/callgraph data and local source:
+
+- Parent function/symbol data does not list formal starts at `0xA370` or
+  `0xA470`.
+- Local source shows both helpers are standalone leaves with no stack frame, no
+  calls, no external branches, and `jr ra` returns with original `a0` moved to
+  `v0` in the delay slot.
+- The first helper copies `a2` bytes from `a1` to `a0`, handling unaligned
+  leading/trailing byte and halfword cases around a word-copy loop.
+- The second helper masks incoming fill byte `a1`, expands it across a word,
+  writes leading/trailing alignment fragments, and loops on word stores.
+- Parent data marks the next formal function at `0xA510` as
+  `seed::lzss_decompress`, a 2,668-byte prologue helper with frame size `0x28`
+  and RAM `0x8007A110`.
+
+Verification for the split:
+
+- `node tests\binutils_smoke.js` passed.
+- `node tools\assemble_original_mips.js` passed.
+- Full `node tools\verify_setup.js` passed after the split.
+- Source mix is now 1 tracked composite real-asm chunk made from 99 tracked
+  source files, plus 99 generated fallback chunks.
+- Static dossier:
+  `docs/dossiers/boot-byte-copy-fill-aligned-leaves.md`.
+
 ## Current Dossier Set
 
 The current boot/source-layout dossier list is long; use `docs/PLATFORM.md` for
@@ -407,13 +453,14 @@ the full quick index. The newest dossiers are:
 - `docs/dossiers/boot-resource-node-recursive-field0c-rewrite.md`
 - `docs/dossiers/boot-resource-node-recursive-child-free.md`
 - `docs/dossiers/boot-resource-node-recursive-key-field-clear.md`
+- `docs/dossiers/boot-byte-copy-fill-aligned-leaves.md`
 
 ## Next Frontier
 
-Continue from `asm/original/rev0/code_0000A370_00011000.s`. The next target is
-the copy-like no-frame leaf at `0xA370..0xA470`. Parent function data does not
-currently list a formal function start at `0xA370`; local source shows it
-copies words/bytes from `a1` to `a0`, returns the original `a0`, and ends before
-the fill/set-like helper at `0xA470..0xA510`. The parent LZSS decompressor starts
-at `0xA510`, so keep `0xA370..0xA470` and `0xA470..0xA510` boundary decisions
-strictly source/layout based unless stronger parent evidence appears.
+Continue from `asm/original/rev0/code_0000A510_00011000.s`. The next target is
+the parent-labeled `seed::lzss_decompress` helper at `0xA510..0xAF7C`, frame
+size `0x28`, fixed RAM `0x8007A110`, and a secondary entry at `0xABE0`.
+Parent docs `docs/rom-layout.md` and `docs/archive/REPORT.md` already record
+the LZSS token format from this function, so the next split should keep the
+full parent range together and use those docs as semantic leads while preserving
+source-layout naming discipline.

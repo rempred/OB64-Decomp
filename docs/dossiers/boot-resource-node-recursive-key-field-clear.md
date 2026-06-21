@@ -10,7 +10,7 @@ clear helper immediately after the recursive child/free helper:
 | Source | ROM range | RAM range | Notes |
 | --- | --- | --- | --- |
 | `asm/original/rev0/boot/boot_resource_node_recursive_key_field_clear.s` | `0x0000A2F4..0x0000A370` | `0x80079EF4..0x80079F70` | Recursive key compare helper that clears node payload fields on a matching key; includes two padding words after the parent body. |
-| `asm/original/rev0/code_0000A370_00011000.s` | `0x0000A370..0x00011000` | `0x80079F70..0x80080C00` | Current tracked remainder; starts with a copy-like no-frame leaf not currently represented as a formal parent function start. |
+| `asm/original/rev0/code_0000A370_00011000.s` | `0x0000A370..0x00011000` | `0x80079F70..0x80080C00` | Remainder at this split; now superseded by `code_0000A510_00011000.s` after the byte copy/fill leaf split. |
 
 The source name is conservative. It describes the static recursive key/field
 clear shape; runtime ownership and final C API names are not verified.
@@ -51,10 +51,10 @@ clear shape; runtime ownership and final C API names are not verified.
   at `0xA364`.
 - The promoted source deliberately includes the two zero padding words at
   `0xA368..0xA370`.
-- The next real helper starts at `0x0000A370`. Parent function data does not
-  currently list a formal function start at `0xA370`; local source shows a
-  copy-like no-frame leaf at `0xA370..0xA470`, followed by a fill/set-like
-  helper at `0xA470..0xA510` and parent LZSS decompressor at `0xA510`.
+- Follow-up split `docs/dossiers/boot-byte-copy-fill-aligned-leaves.md` now
+  owns the copy-like no-frame leaf at `0xA370..0xA470` and the fill-like
+  no-frame leaf at `0xA470..0xA510`. Parent function data marks the next formal
+  helper at `0xA510`.
 
 ## Verification
 

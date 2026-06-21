@@ -173,7 +173,7 @@ Current result:
   `40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`.
 - Code-region match against baserom: pass.
 - Tracked real-assembler original-MIPS chunks: 1 composite
-  (`0x00001000..0x00011000`) made from 97 real-assembler source files.
+  (`0x00001000..0x00011000`) made from 99 real-assembler source files.
 - Generated fallback chunks: 99.
 - Assembled-code ROM rebuild command:
 
@@ -2431,8 +2431,9 @@ clear helper immediately after the recursive child/free helper:
 
 - `asm/original/rev0/boot/boot_resource_node_recursive_key_field_clear.s`
   `0x0000A2F4..0x0000A370` / RAM `0x80079EF4..0x80079F70`.
-- Current remainder:
+- Remainder after this split was:
   `asm/original/rev0/code_0000A370_00011000.s`.
+  That file has since been superseded by the byte copy/fill leaf split below.
 
 Static evidence: parent data reports `0xA2F4` as a 116-byte recursive prologue
 helper with frame size `0x18`, fixed in all seven named states and all 21
@@ -2456,6 +2457,34 @@ target.
 Static dossier:
 `docs/dossiers/boot-resource-node-recursive-key-field-clear.md`.
 
+## Boot Byte Copy/Fill Aligned Leaves Split
+
+The next tracked Rev 0 original-MIPS split promotes the two small no-frame
+memory utility leaves immediately before the parent-labeled LZSS decompressor:
+
+- `asm/original/rev0/boot/boot_byte_copy_aligned_leaf.s`
+  `0x0000A370..0x0000A470` / RAM `0x80079F70..0x8007A070`.
+- `asm/original/rev0/boot/boot_byte_fill_aligned_leaf.s`
+  `0x0000A470..0x0000A510` / RAM `0x8007A070..0x8007A110`.
+- Current remainder:
+  `asm/original/rev0/code_0000A510_00011000.s`.
+
+Static evidence: parent function and symbol data do not list formal starts at
+`0xA370` or `0xA470`; local source shows both are standalone leaf helpers with
+no frame, no calls, no external branches, and `jr ra` returns that move
+original `a0` to `v0`. Parent data marks `0xA510` as the next formal function,
+`seed::lzss_decompress`, a 2,668-byte prologue helper with frame size `0x28`,
+fixed at RAM `0x8007A110` in all states.
+
+Static shape: `0xA370..0xA470` copies `a2` bytes from `a1` to `a0`, handling
+misalignment first with byte/halfword stores before a word-copy loop, and
+returns original `a0`. `0xA470..0xA510` masks incoming fill byte `a1`, expands
+it across a word, writes byte/halfword alignment fragments, loops on word
+stores, finishes any trailing halfword/byte, and returns original `a0`.
+
+Static dossier:
+`docs/dossiers/boot-byte-copy-fill-aligned-leaves.md`.
+
 ## Setup Complete Gate
 
 The setup phase is complete when `node tools/verify_setup.js` passes. Current
@@ -2470,7 +2499,7 @@ setup-complete state:
 - Assembler: GNU Binutils 2.39 `mips64-elf-as.exe` with `-EB -mips3 -32`.
 - Setup verifier: `tools/verify_setup.js`.
 - Current verifier result: PASS; 825 archives, 0 unknown bytes, 108 overlap
-  bytes visible, 1 tracked composite real-asm chunk made from 97 tracked source
+  bytes visible, 1 tracked composite real-asm chunk made from 99 tracked source
   files, 99 generated fallback chunks, full-source manifest 1,059 entries with
   2,469,141 ambiguous bytes preserved explicitly, 3 tracked non-code
   source-owner files / 44,029 bytes, 1,055 generated non-code fallback files /
@@ -2479,9 +2508,8 @@ setup-complete state:
   `571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A`.
 
 Next phase is either promoting another small non-code owner batch or continuing
-tracked original-MIPS splits from `asm/original/rev0/code_0000A370_00011000.s`.
-The next MIPS frontier starts with `0xA370`, a copy-like no-frame leaf that runs
-to `0xA470` and returns original `a0`; parent function DB does not mark it as a
-formal function start, so rely on local control-flow shape and keep
-`0xA370..0xA470` together. Do not begin semantic C decomp unless the setup
-verifier is green.
+tracked original-MIPS splits from `asm/original/rev0/code_0000A510_00011000.s`.
+The next MIPS frontier starts with `0xA510`, the parent-labeled
+`seed::lzss_decompress` helper (2,668 bytes, frame size `0x28`, RAM
+`0x8007A110`). Do not begin semantic C decomp unless the setup verifier is
+green.
