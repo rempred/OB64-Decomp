@@ -19,7 +19,7 @@ and replace the active log with a compact current-state summary.
 - Whole-ROM coverage still independently scans for LHA headers; do not trust the
   parent archive catalog by itself.
 - Current tracked code source mix: one composite real-assembler chunk
-  `0x00001000..0x00011000` made from 99 tracked source files, plus 99 generated
+  `0x00001000..0x00011000` made from 100 tracked source files, plus 99 generated
   fallback code chunks.
 - Current tracked non-code source-owner mix: 3 tracked files / 44,029 bytes,
   plus 1,055 generated fallback owner files / 35,388,567 bytes.
@@ -61,8 +61,8 @@ Current named sequence:
   `boot_resource_probe_record_checksum_signature.s` `0x4AC8..0x5FC0`.
 - State/slot, resource-handle, transform-record, command/resource-node, and
   resource-node context/recursive helpers through
-  `boot_byte_fill_aligned_leaf.s` `0x5FC0..0xA510`.
-- Current remainder: `code_0000A510_00011000.s`.
+  `boot_lzss_decompress.s` `0x5FC0..0xAF7C`.
+- Current remainder: `code_0000AF7C_00011000.s`.
 
 Static dossiers live under `docs/dossiers/` and are the durable evidence notes
 for each promoted source-layout split.
@@ -435,6 +435,60 @@ Verification for the split:
 - Static dossier:
   `docs/dossiers/boot-byte-copy-fill-aligned-leaves.md`.
 
+## 2026-06-21 - Boot LZSS Decompress Split
+
+Baseline before the split:
+
+- `git status --short` was clean at commit
+  `845bcaf Split Rev 0 boot byte copy fill leaves`.
+- `node tools\verify_setup.js` passed with 825 archives, zero unknown bytes, 108
+  visible overlap bytes, 99 tracked source files, 99 generated fallback chunks,
+  and unchanged code/ROM hashes.
+
+Promoted `asm/original/rev0/boot/boot_lzss_decompress.s`, covering ROM
+`0x0000A510..0x0000AF7C` / RAM `0x8007A110..0x8007AB7C`. The old
+`asm/original/rev0/code_0000A510_00011000.s` remainder was removed and replaced
+by `asm/original/rev0/code_0000AF7C_00011000.s`.
+
+Static evidence from parent function/symbol data, parent `docs/rom-layout.md`,
+parent `docs/overlay-system.md`, and local source:
+
+- Parent labels `0xA510` as `seed::lzss_decompress`, size `0xA6C` / 2,668
+  bytes, frame size `0x28`, fixed at RAM `0x8007A110` in all seven named states
+  and all 21 snapshots.
+- Parent records secondary entry `0xABE0` / RAM `0x8007A7E0`.
+- High-confidence callers include the resource-node LZSS context materialize
+  helper at `0x9EFC`, resource-loader helper `0xB030`, and many later
+  overlay/resource callers.
+- Parent `docs/overlay-system.md` confirms the simple boot mapping is valid for
+  this permanent decompressor.
+- Parent `docs/rom-layout.md` records the LZSS token format from this function.
+
+Static shape:
+
+- The primary entry reads a 4-byte decompressed length from the source header by
+  calling the `0xABE0` secondary entry, advances the source pointer by four
+  bytes, and decodes until the produced byte count reaches that length.
+- Token branches cover short back-references, literal runs, zero-fill runs,
+  extended and super back-references, `0xFF` fill, `0x00` fill, and skip/NOP
+  opcodes matching parent `docs/rom-layout.md`.
+- Local source also contains helper-like internal regions after the main
+  epilogue at `0xAB28..0xABDC`, including a final helper-like return at
+  `0xAF74..0xAF78`. Because parent function data sizes `0xA510` through
+  `0xAF7C`, keep the full range together until a finer boundary has stronger
+  evidence.
+- The next formal prologue starts cleanly at `0xAF7C`.
+
+Verification for the split:
+
+- `node tests\binutils_smoke.js` passed.
+- `node tools\assemble_original_mips.js` passed.
+- Full `node tools\verify_setup.js` passed after the split and doc updates.
+- Source mix is now 1 tracked composite real-asm chunk made from 100 tracked
+  source files, plus 99 generated fallback chunks.
+- Static dossier:
+  `docs/dossiers/boot-lzss-decompress.md`.
+
 ## Current Dossier Set
 
 The current boot/source-layout dossier list is long; use `docs/PLATFORM.md` for
@@ -454,13 +508,13 @@ the full quick index. The newest dossiers are:
 - `docs/dossiers/boot-resource-node-recursive-child-free.md`
 - `docs/dossiers/boot-resource-node-recursive-key-field-clear.md`
 - `docs/dossiers/boot-byte-copy-fill-aligned-leaves.md`
+- `docs/dossiers/boot-lzss-decompress.md`
 
 ## Next Frontier
 
-Continue from `asm/original/rev0/code_0000A510_00011000.s`. The next target is
-the parent-labeled `seed::lzss_decompress` helper at `0xA510..0xAF7C`, frame
-size `0x28`, fixed RAM `0x8007A110`, and a secondary entry at `0xABE0`.
-Parent docs `docs/rom-layout.md` and `docs/archive/REPORT.md` already record
-the LZSS token format from this function, so the next split should keep the
-full parent range together and use those docs as semantic leads while preserving
-source-layout naming discipline.
+Continue from `asm/original/rev0/code_0000AF7C_00011000.s`. The next target is
+the no-name `func_0000AF7C` helper at `0xAF7C..0xAFAC`, frame size `0x18`,
+fixed RAM `0x8007AB7C`, with one high-confidence call to RAM `0x80093810`.
+Keep adjacent helpers `0xAFAC` and `0xB030` in view because `0xB030` is another
+parent-labeled resource-loader/LZSS caller, but do not assign final semantics
+without better evidence.

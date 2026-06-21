@@ -11,7 +11,7 @@ utility leaves immediately before the parent-labeled LZSS decompressor:
 | --- | --- | --- | --- |
 | `asm/original/rev0/boot/boot_byte_copy_aligned_leaf.s` | `0x0000A370..0x0000A470` | `0x80079F70..0x8007A070` | Copy-like leaf that returns original `a0`. |
 | `asm/original/rev0/boot/boot_byte_fill_aligned_leaf.s` | `0x0000A470..0x0000A510` | `0x8007A070..0x8007A110` | Fill-like leaf that returns original `a0`. |
-| `asm/original/rev0/code_0000A510_00011000.s` | `0x0000A510..0x00011000` | `0x8007A110..0x80080C00` | Current tracked remainder; starts with parent `seed::lzss_decompress`. |
+| `asm/original/rev0/code_0000A510_00011000.s` | `0x0000A510..0x00011000` | `0x8007A110..0x80080C00` | Remainder at this split; now superseded by `boot_lzss_decompress.s` and `code_0000AF7C_00011000.s`. |
 
 The names are conservative source-layout labels. They describe static copy/fill
 shape only; final C library/API names are not verified.
@@ -54,7 +54,8 @@ shape only; final C library/API names are not verified.
 - The fill-like leaf starts at `0x0000A470`, includes its `jr ra` at `0xA508`
   and delay-slot return value move at `0xA50C`.
 - The next helper starts at `0x0000A510` and is the parent-labeled LZSS
-  decompressor. Keep that full parent range together in the next source split.
+  decompressor. That full parent range is now split separately in
+  `docs/dossiers/boot-lzss-decompress.md`.
 
 ## Verification
 

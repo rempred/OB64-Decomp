@@ -16,7 +16,7 @@ node tools/verify_setup.js
 ```
 
 Current source mix: 1 tracked composite real-assembler chunk
-(`0x00001000..0x00011000`) made from 99 tracked source files, plus 99 generated
+(`0x00001000..0x00011000`) made from 100 tracked source files, plus 99 generated
 fallback chunks.
 
 The assembled code-region SHA256 is
@@ -101,14 +101,13 @@ coverage or overclassifying data as MIPS.
    insert/slot-search split, resource-node recursive cleanup/free split,
    resource-node recursive payload-clear split, resource-node recursive
    field-`+0x0C` rewrite split, resource-node recursive child/free split,
-   resource-node recursive key/field clear split, and byte copy/fill aligned
-   leaf split are done. Continue from
-   `asm/original/rev0/code_0000A510_00011000.s`, beginning with `0xA510`.
-   Parent data labels this next helper `seed::lzss_decompress`: size `0xA6C`
-   / 2,668 bytes, frame size `0x28`, RAM `0x8007A110`, secondary entry
-   `0xABE0`, and many high-confidence callers. Parent `docs/rom-layout.md`
-   records the LZSS token format from this function; keep the full
-   `0xA510..0xAF7C` parent range together for the next source split.
+   resource-node recursive key/field clear split, byte copy/fill aligned leaf
+   split, and parent-labeled LZSS decompressor split are done. Continue from
+   `asm/original/rev0/code_0000AF7C_00011000.s`, beginning with `0xAF7C`.
+   Parent data lists this next no-name helper as `func_0000AF7C`: size `0x30`
+   / 48 bytes, frame size `0x18`, RAM `0x8007AB7C`, fixed in all states, and
+   with one high-confidence call to RAM `0x80093810`. Keep the adjacent
+   `0xAFAC` and `0xB030` helpers nearby for context.
 
 4. Keep the setup gate green.
 

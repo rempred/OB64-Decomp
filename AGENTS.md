@@ -173,7 +173,7 @@ Current result:
   `40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`.
 - Code-region match against baserom: pass.
 - Tracked real-assembler original-MIPS chunks: 1 composite
-  (`0x00001000..0x00011000`) made from 99 real-assembler source files.
+  (`0x00001000..0x00011000`) made from 100 real-assembler source files.
 - Generated fallback chunks: 99.
 - Assembled-code ROM rebuild command:
 
@@ -2466,7 +2466,8 @@ memory utility leaves immediately before the parent-labeled LZSS decompressor:
   `0x0000A370..0x0000A470` / RAM `0x80079F70..0x8007A070`.
 - `asm/original/rev0/boot/boot_byte_fill_aligned_leaf.s`
   `0x0000A470..0x0000A510` / RAM `0x8007A070..0x8007A110`.
-- Current remainder:
+- Remainder after this split, now superseded by the LZSS decompressor split
+  below:
   `asm/original/rev0/code_0000A510_00011000.s`.
 
 Static evidence: parent function and symbol data do not list formal starts at
@@ -2485,6 +2486,42 @@ stores, finishes any trailing halfword/byte, and returns original `a0`.
 Static dossier:
 `docs/dossiers/boot-byte-copy-fill-aligned-leaves.md`.
 
+## Boot LZSS Decompress Split
+
+The next tracked Rev 0 original-MIPS split promotes the parent-labeled LZSS
+decompressor immediately after the byte copy/fill leaves:
+
+- `asm/original/rev0/boot/boot_lzss_decompress.s`
+  `0x0000A510..0x0000AF7C` / RAM `0x8007A110..0x8007AB7C`.
+- Current remainder:
+  `asm/original/rev0/code_0000AF7C_00011000.s`.
+
+Static evidence: parent function/symbol data labels `0xA510` as
+`seed::lzss_decompress`, size `0xA6C` / 2,668 bytes, frame size `0x28`, fixed
+at RAM `0x8007A110` in all seven named states and all 21 snapshots. Parent data
+records secondary entry `0xABE0` / RAM `0x8007A7E0`, high-confidence callers
+from the resource-node LZSS context materialize helper at `0x9EFC`, the
+resource-loader helper at `0xB030`, and many later overlay/resource callers.
+Parent `docs/overlay-system.md` confirms the simple boot mapping is valid for
+the LZSS decompressor, and parent `docs/rom-layout.md` records the token format
+from this MIPS range.
+
+Static shape: the primary entry reads a 4-byte decompressed length from the
+compressed source header via the `0xABE0` secondary entry, then decodes from
+`source+4` into the destination using literal runs, zero-fill runs, `0xFF` fill
+runs, and short/extended/super back-references. Local source also contains
+helper-like internal regions after the main epilogue at `0xAB28..0xABDC`; keep
+the entire parent-sized `0xA510..0xAF7C` range together until later evidence
+justifies a finer split.
+
+Boundary rule: the promoted source includes the secondary entry at `0xABE0`,
+the main return at `0xABD8..0xABDC`, the helper-like return at
+`0xAF28..0xAF2C`, and the final helper-like return at `0xAF74..0xAF78`. The next
+formal prologue starts cleanly at `0xAF7C`.
+
+Static dossier:
+`docs/dossiers/boot-lzss-decompress.md`.
+
 ## Setup Complete Gate
 
 The setup phase is complete when `node tools/verify_setup.js` passes. Current
@@ -2499,7 +2536,7 @@ setup-complete state:
 - Assembler: GNU Binutils 2.39 `mips64-elf-as.exe` with `-EB -mips3 -32`.
 - Setup verifier: `tools/verify_setup.js`.
 - Current verifier result: PASS; 825 archives, 0 unknown bytes, 108 overlap
-  bytes visible, 1 tracked composite real-asm chunk made from 99 tracked source
+  bytes visible, 1 tracked composite real-asm chunk made from 100 tracked source
   files, 99 generated fallback chunks, full-source manifest 1,059 entries with
   2,469,141 ambiguous bytes preserved explicitly, 3 tracked non-code
   source-owner files / 44,029 bytes, 1,055 generated non-code fallback files /
@@ -2508,8 +2545,8 @@ setup-complete state:
   `571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A`.
 
 Next phase is either promoting another small non-code owner batch or continuing
-tracked original-MIPS splits from `asm/original/rev0/code_0000A510_00011000.s`.
-The next MIPS frontier starts with `0xA510`, the parent-labeled
-`seed::lzss_decompress` helper (2,668 bytes, frame size `0x28`, RAM
-`0x8007A110`). Do not begin semantic C decomp unless the setup verifier is
-green.
+tracked original-MIPS splits from `asm/original/rev0/code_0000AF7C_00011000.s`.
+The next MIPS frontier starts with the small no-name `func_0000AF7C` helper
+(48 bytes, frame size `0x18`, RAM `0x8007AB7C`), followed by adjacent
+resource-loader helpers at `0xAFAC` and `0xB030`. Do not begin semantic C
+decomp unless the setup verifier is green.
