@@ -50,8 +50,8 @@ into a shared bit cursor, but the exact data format is not yet verified.
   `0x4AC0`. The trailing `0x4AB8..0x4AC4` nop/nop/return/nop shape is kept with
   this file as local return/padding until stronger evidence says otherwise.
 - The active remainder at this step started at the next parent prologue boundary
-  `0x00004AC8`; follow-up splits now cover `0x00004AC8..0x00005B8C`, so the
-  active remainder starts at `0x00005B8C`.
+  `0x00004AC8`; follow-up splits now cover `0x00004AC8..0x00005C58`, so the
+  active remainder starts at `0x00005C58`.
 
 ## Verification
 

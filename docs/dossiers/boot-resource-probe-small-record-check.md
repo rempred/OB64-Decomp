@@ -10,7 +10,8 @@ boot-code helper immediately after the large-record check helper:
 | Source | ROM range | RAM range | Notes |
 | --- | --- | --- | --- |
 | `asm/original/rev0/boot/boot_resource_probe_small_record_check.s` | `0x00005A88..0x00005B8C` | `0x80075688..0x8007578C` | Overlapping `0x5A88` leaf / `0x5A90` prologue helper that checks the 16-byte record at shared-buffer offset `0`. |
-| `asm/original/rev0/code_00005B8C_00011000.s` | `0x00005B8C..0x00011000` | `0x8007578C..0x80080C00` | Current tracked remainder. |
+| `asm/original/rev0/boot/boot_resource_probe_indexed_record_copy_flag.s` | `0x00005B8C..0x00005C58` | `0x8007578C..0x80075858` | Follow-up split documented separately. |
+| `asm/original/rev0/code_00005C58_00011000.s` | `0x00005C58..0x00011000` | `0x80075858..0x80080C00` | Current tracked remainder. |
 
 The name is conservative. The routine has a clear static small-record check
 shape, but no runtime trace or controlled mutation has verified final behavior
@@ -58,9 +59,10 @@ or the exact role of the unresolved halfword-return helpers.
 - The file keeps `0x5A88` and `0x5A90` together because the leaf prefix loads
   the shared global pointer used by the prologue body's first branch.
 - The routine ends after the `jr ra` delay slot at `0x5B88`.
-- The next parent boundary is `0x00005B8C`; parent data reports it as a
-  separate 204-byte prologue helper with frame size `0x28`, callers `0x4C5C`
-  and `0x539C`, and no unresolved calls.
+- The next parent boundary was `0x00005B8C`; the follow-up split now covers
+  `0x00005B8C..0x00005C58`.
+- The active remainder starts at `0x00005C58`, an overlapping leaf/prologue
+  helper family that should be inspected before the next split.
 
 ## Verification
 
