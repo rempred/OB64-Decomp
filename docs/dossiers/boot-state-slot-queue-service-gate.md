@@ -29,7 +29,9 @@ runtime-verified scheduler semantics.
   entry.
 - High-confidence callees are `0x79EC` / RAM `0x800775EC` and `0x859C` / RAM
   `0x8007819C`.
-- Parent callgraph leaves unresolved RAM target `0x80077BF8`.
+- Parent callgraph leaves RAM target `0x80077BF8` unresolved at this split.
+  Later local source splitting preserves that target as the `0x7FF8` two-word
+  prefix into the next `0x8000` prologue body.
 - Parent/local xrefs show the only direct global access in this split is a read
   of halfword `0x800C49D0`.
 
@@ -37,8 +39,9 @@ runtime-verified scheduler semantics.
 
 - The leaf prefix loads `lhu [0x800C49D0]` into `v0`.
 - The body saves `ra` and returns immediately when the halfword is zero.
-- If nonzero, it calls `0x800775EC`, unresolved `0x80077BF8`, and
-  `0x8007819C`, each with an explicit `nop` delay slot.
+- If nonzero, it calls `0x800775EC`, `0x80077BF8`, and `0x8007819C`, each with
+  an explicit `nop` delay slot. The `0x80077BF8` target is kept with the next
+  source unit as a callable prefix into the `0x8000` body.
 - The epilogue restores `ra` from `sp + 0x10` and returns.
 
 ## Boundaries

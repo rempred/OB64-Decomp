@@ -1710,8 +1710,9 @@ helper:
   `0x00007768..0x000079EC`; contains the `0x7768` prologue helper, secondary
   scan leaves at `0x77D4`, `0x780C`, `0x785C`, and the pointer-table install
   helper starting at local `0x7894`.
-- Current remainder:
-  `asm/original/rev0/code_000079EC_00011000.s`.
+- Remainder at this split:
+  `asm/original/rev0/code_000079EC_00011000.s`; superseded by the queue-record
+  step split below.
 
 Static evidence: parent function/symbol data reports `0x7768` as a 644-byte
 prologue helper with frame size `0x18`, fixed RAM `0x80077368` in all seven
@@ -1733,6 +1734,36 @@ clean exclusive end is the next prologue at `0x79EC`.
 Static dossier:
 `docs/dossiers/boot-state-slot-pool-table-helpers.md`.
 
+## Boot State Slot Queue Record Step Split
+
+The next tracked Rev 0 original-MIPS split promotes the `0x79EC` queue-record
+step helper after the pool/table helper cluster:
+
+- `asm/original/rev0/boot/boot_state_slot_queue_record_step.s`
+  `0x000079EC..0x00007FF8`; contains the `0x79EC` prologue helper with frame
+  size `0x68` and normal epilogue at `0x7FEC..0x7FF4`.
+- Current remainder:
+  `asm/original/rev0/code_00007FF8_00011000.s`.
+
+Static evidence: parent symbol/function data reports `0x79EC` as a permanent
+helper at RAM `0x800775EC`, active in all seven named states and all 21
+snapshots, called by the `0x71C8/0x71D0` queue service gate. Parent data records
+secondary entries at `0x7F2C` and `0x7FF8`, but local source shows `0x7F2C` is
+an internal branch target and the clean return is `0x7FEC..0x7FF4`. The
+queue-service gate also calls RAM `0x80077BF8`, and local source preserves ROM
+`0x7FF8..0x8000` as a two-word executable prefix feeding the next `0x8000`
+prologue body rather than folding it into the returned `0x79EC` helper.
+
+Static shape: reads queue count `0x800C49D0`, walks queued slot IDs from
+`0x800C4C10`, computes 0xA8-byte records under corrected base `0x800E82C8`,
+requires record flags `0xE800` and byte `+0x03 & 0x02 == 0`, sets record flag
+`0x0400` when entering the update path, clamps/wraps two signed position-like
+axes against bounds `0x140` and `0xF0`, writes a packed halfword to record
+`+0x2C`, and clears record flag bits with mask `0xF3FF` when both axes complete.
+
+Static dossier:
+`docs/dossiers/boot-state-slot-queue-record-step.md`.
+
 ## Setup Complete Gate
 
 The setup phase is complete when `node tools/verify_setup.js` passes. Current
@@ -1747,7 +1778,7 @@ setup-complete state:
 - Assembler: GNU Binutils 2.39 `mips64-elf-as.exe` with `-EB -mips3 -32`.
 - Setup verifier: `tools/verify_setup.js`.
 - Current verifier result: PASS; 825 archives, 0 unknown bytes, 108 overlap
-  bytes visible, 1 tracked composite real-asm chunk made from 69 tracked source
+  bytes visible, 1 tracked composite real-asm chunk made from 70 tracked source
   files, 99 generated fallback chunks, full-source manifest 1,059 entries with
   2,469,141 ambiguous bytes preserved explicitly, 3 tracked non-code
   source-owner files / 44,029 bytes, 1,055 generated non-code fallback files /
@@ -1756,5 +1787,5 @@ setup-complete state:
   `571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A`.
 
 Next phase is either promoting another small non-code owner batch or continuing
-tracked original-MIPS splits from `asm/original/rev0/code_000079EC_00011000.s`.
+tracked original-MIPS splits from `asm/original/rev0/code_00007FF8_00011000.s`.
 Do not begin semantic C decomp unless the setup verifier is green.

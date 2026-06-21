@@ -18,7 +18,7 @@ and replace the active log with a compact current-state summary.
 - Whole-ROM coverage still independently scans for LHA headers; do not trust the
   parent archive catalog by itself.
 - Current tracked code source mix: one composite real-assembler chunk
-  `0x00001000..0x00011000` made from 69 tracked source files, plus 99 generated
+  `0x00001000..0x00011000` made from 70 tracked source files, plus 99 generated
   fallback code chunks.
 - Current tracked non-code source-owner mix: 3 tracked files / 44,029 bytes,
   plus 1,055 generated fallback owner files / 35,388,567 bytes.
@@ -61,8 +61,8 @@ Current named sequence:
 - Resource probe helpers through
   `boot_resource_probe_record_checksum_signature.s` `0x4AC8..0x5FC0`.
 - State/slot and resource-handle helpers through
-  `boot_state_slot_pool_table_helpers.s` `0x5FC0..0x79EC`.
-- Current remainder: `code_000079EC_00011000.s`.
+  `boot_state_slot_queue_record_step.s` `0x5FC0..0x7FF8`.
+- Current remainder: `code_00007FF8_00011000.s`.
 
 Static dossiers live under `docs/dossiers/` and are the durable evidence notes
 for each promoted source-layout split.
@@ -503,7 +503,60 @@ Verification for the split:
 
 ## Next Frontier
 
-Continue from `asm/original/rev0/code_000079EC_00011000.s`.
+## 2026-06-21 - Boot State Slot Queue Record Step Split
+
+Baseline before the split:
+
+- `node tools\verify_setup.js` passed with 825 archives, zero unknown bytes, 108
+  visible overlap bytes, 69 tracked source files, 99 generated fallback chunks,
+  and unchanged code/ROM hashes.
+
+Promoted `asm/original/rev0/boot/boot_state_slot_queue_record_step.s` covering
+ROM `0x000079EC..0x00007FF8` / RAM `0x800775EC..0x80077BF8`. The old
+`asm/original/rev0/code_000079EC_00011000.s` remainder was removed and replaced
+by `asm/original/rev0/code_00007FF8_00011000.s`.
+
+Static evidence from parent `../scripts/ob64_functions.json`,
+`../scripts/ob64_symbols_v2.json`, `../scripts/ob64_callgraph_v2.json`, and
+local source inspection:
+
+- `0x79EC` is a prologue helper with frame size `0x68`, fixed RAM
+  `0x800775EC` in all seven named states and all 21 parent snapshots.
+- Parent evidence reports the `0x71C8/0x71D0` queue service gate as a caller.
+- Parent data reports secondary entries at `0x7F2C` and `0x7FF8`; local source
+  shows `0x7F2C` is an internal branch target, while `0x7FF8` is a separate
+  executable prefix called by the queue service gate as RAM `0x80077BF8`.
+- The clean helper epilogue is `0x7FEC..0x7FF4`, so the split stops before
+  `0x7FF8` instead of folding the prefix into the returned helper.
+
+Static shape:
+
+- Reads queue count `0x800C49D0` and walks queued slot IDs from
+  `0x800C4C10`.
+- Computes record addresses under corrected 0xA8-byte slot-record base
+  `0x800E82C8`.
+- Filters for record flag mask `0xE800` and byte `+0x03 & 0x02 == 0`.
+- Sets record flag bit `0x0400` on the update path, adjusts two signed
+  position-like axes against bounds `0x140` and `0xF0`, writes a packed
+  halfword to record `+0x2C`, and clears bits with mask `0xF3FF` when both axes
+  complete.
+
+Verification for the split:
+
+- `node tests\binutils_smoke.js` passed.
+- `node tools\assemble_original_mips.js` passed.
+- Full `node tools\verify_setup.js` is the required final gate before commit.
+- Source mix is now 1 tracked composite real-asm chunk made from 70 tracked
+  source files, plus 99 generated fallback chunks.
+- Static dossier: `docs/dossiers/boot-state-slot-queue-record-step.md`.
+
+## Next Frontier
+
+Continue from `asm/original/rev0/code_00007FF8_00011000.s`. The first two words
+at ROM `0x7FF8..0x8000` load queue count `0x800C49D0` into `v0` and feed the
+`0x8000` prologue body, matching the queue service gate's unresolved
+`0x80077BF8` call edge. Keep that prefix with the next body unless later
+evidence proves a different call/return shape.
 
 Parent/local evidence for the next target:
 
