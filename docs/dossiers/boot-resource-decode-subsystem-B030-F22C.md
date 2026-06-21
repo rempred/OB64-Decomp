@@ -175,7 +175,12 @@ Spurious secondary entries flagged (do NOT split): `0xBBB8` (mid-loop label in
   generated chunk — flag for data-vs-code reclassification when reached.
 - The codec is hypothesis-grade Huffman/LZHUF/DEFLATE; runtime proof (or matching
   to a known algorithm) would upgrade the `boot_decode_huffman_*` names.
-- **Next frontier `0x0000F22C`** (corrected from `0xF23C`): continues this same
-  codec (canonical-Huffman read/decode workers, then the low-level fread/fwrite
-  stream I/O at `func_0000F970`/`F9D8` referenced here). Expect the preamble-
-  orphan boundary idiom on every function.
+- **Next frontier — SUPERSEDED.** This dossier originally pointed at
+  `0x0000F22C`; that tranche is done (see
+  `docs/dossiers/boot-codec-libc-vec3-F22C-11000.md`, codec/libc/vec3/text
+  `0xF22C..0x11000`) and **chunk 0 is fully split**. The current frontier is
+  **`0x00011000` (chunk 1)**. See `docs/NEXT_STEPS.md` / `docs/DECOMP_LOG.md`.
+  Historical note: the `0xF22C` continuation covered the canonical-Huffman
+  read/decode workers and the low-level fread/fwrite stream I/O at
+  `func_0000F970`/`F9D8` referenced here; the preamble-orphan boundary idiom
+  recurred on most functions, as predicted.

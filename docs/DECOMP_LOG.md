@@ -24,11 +24,12 @@ and replace the active log with a compact current-state summary.
   `original_mips`. A static control-flow audit found no credible code edge into
   the tail (0 branch targets, 0 J/JAL to a known function). Audit:
   `tools/audit_code_region.js` / `docs/CODE_REGION_AUDIT.md`.
-- Current tracked code source mix: one composite real-assembler chunk
-  `0x00001000..0x00011000` made from 177 tracked source files, plus 99 generated
-  fallback code chunks. **Chunk 0 is now fully split into named functions**
-  (`0x00001000..0x00011000`); next is chunk 1 (`0x00011000`, still a generated
-  fallback chunk — see Next Frontier for the promote-tool blocker).
+- Current tracked code source mix: two composite real-assembler chunks
+  `0x00001000..0x00011000` (177 files, `boot/`) and `0x00011000..0x00021000`
+  (350 files, `lib/`) = **527 tracked source files**, plus 98 generated fallback
+  code chunks. **Chunks 0 AND 1 are now fully split into named functions**
+  (`0x00001000..0x00021000`); next is chunk 2 (`0x00021000`, still a generated
+  fallback chunk). The promote-tool merge blocker is FIXED (see the chunk-1 entry).
 - The parent boundary DB has TWO recurring defects, both fixed when splitting:
   (1) `end_rom` is INCLUSIVE (exclusive end = `end_rom + 4`; do NOT treat the
   delay slot as a gap — `tools/dump_function_context.js` now enforces this with a
@@ -87,8 +88,14 @@ Current named sequence:
   workers, libc `strcat/strcpy/strcmp/memset/memcpy`, `boot_io_*` stream I/O, a
   `vec3_*` float math library, text renderer, RNG). Dossier:
   `docs/dossiers/boot-codec-libc-vec3-F22C-11000.md`. **Chunk 0 complete.**
-- Current remainder: none in chunk 0 (`0x1000..0x11000` fully named). Next is
-  chunk 1 generated fallback `0x00011000..0x00021000`.
+- Chunk 1 library tranche `0x00011000..0x00021000` (350 named parts in `lib/`:
+  unit/character-record subsystem, tagged script/command interpreter, float math
+  (trig/sqrt/ldexp), libc (`memset`/`memmove`/byte-copy), allocators/free-lists,
+  glyph⇄ASCII text encoding, and libultra OS primitives — cache ops, AI audio,
+  CPU interrupt mask, virtual→physical). Dossier:
+  `docs/dossiers/lib-chunk1-11000-21000.md`. **Chunk 1 complete.**
+- Current remainder: none in chunks 0–1 (`0x1000..0x21000` fully split). Next is
+  chunk 2 generated fallback `0x00021000..0x00031000`.
 
 Static dossiers live under `docs/dossiers/` and are the durable evidence notes
 for each promoted source-layout split.
@@ -328,11 +335,69 @@ Finished chunk 0's named coverage and fixed the review-flagged tooling/labels.
 - Next frontier: `0x00011000` (chunk 1). See Next Frontier for the
   `promote_original_mips.js` merge blocker.
 
+## 2026-06-21 - Chunk 1 Library Split (0x11000..0x21000); chunk 1 complete
+
+Promoted and fully split the second 64 KiB code chunk. Largest source-layout
+advance so far.
+
+- Range: ROM `0x00011000..0x00021000` (**350 functions**, `asm/original/rev0/lib/`).
+  Previous frontier `0x00011000`; new frontier `0x00021000`. Tracked source files
+  177 -> **527**. Byte-exact preserved (code SHA `40D4E787...B409`, ROM SHA
+  `571E8339...CC67A`). Dossier: `docs/dossiers/lib-chunk1-11000-21000.md`.
+- **Promote-tool blocker FIXED.** `tools/promote_original_mips.js` now MERGES into
+  the existing manifest (chunk 0's 177-part composite preserved), seeds each new
+  chunk with a single whole-chunk part so the splitter can act on it immediately,
+  and refuses same-range re-promote without `--force` (partial range overlap is
+  always refused). `tools/split_original_mips_part.js` gained `--splits-file
+  <json>` to avoid a 350-arg command line.
+- Opening doc corrections: `boot-resource-decode-subsystem-B030-F22C.md` next
+  frontier marked SUPERSEDED (now `0x11000`->`0x21000`);
+  `boot-codec-libc-vec3-F22C-11000.md` typo `0xF10B98`->`0x10B98`. A full manifest
+  integrity audit (contiguity + range-vs-decode-comment + sha256 + textBytes +
+  duplicate-name) over all prior parts found NO mistakes.
+- Method: `dump_function_context.js --start 0x11000 --end 0x21000` (277 parent
+  records) -> deterministic base partition (252 files) -> 9-slice swarm
+  (analyze -> adversarial review per slice; 2 slices re-run after transient API
+  errors). Reviewers **un-merged** functions the parent DB hid in trailing bytes,
+  **folded** read-before-write preamble-orphans forward, kept genuine dual-entries
+  as one file, and demanded hard evidence for names. Net **350 files** (parent DB
+  had only 277 records, incl. 26 secondaries).
+- Boundary corrections (verified from disasm): parent DB hid many tiny
+  jal-reachable accessor/leaf functions — e.g. `0x12400..0x12444` is SEVEN tiny
+  `jr $ra` getters/setters, the `0x14338`/`0x145A8` block is ~40 jump-table
+  opcode handlers, plus 6-/4-/3-/5-way un-merges at `0x130B8`/`0x1353C`/`0x18C40`/
+  `0x18E4C`/`0x19050`/`0x1989C`/`0x1FFEC`/`0x20234`/`0x20BE0`. Preamble-orphans
+  folded forward at `0x11168/0x17990/0x18380/0x183C4/0x15D08/0x1A87C/0x1FBA0/`
+  `0x1FBCC/0x20870`. 20 genuine dual-entries kept as one file each. Straddler tail
+  `euler_to_matrix_full_tail` `[0x11000,0x11168)` is the first file.
+- Names: **21 descriptive, evidence-backed** (`memset`, `memmove`, `mem_byte_copy`,
+  `sqrtf`, `sin_cos_approx`, `float_ldexp_d`, `list_insert_head`, `list_unlink`,
+  `bump_alloc`, `cpu_set_int_mask`, `ai_get_len/ai_get_status/ai_set_next_buffer`,
+  `os_inval_dcache/os_inval_icache/os_writeback_dcache/os_writeback_dcache_all`,
+  `os_virtual_to_physical`, `encode_ascii_to_glyph/decode_glyph_to_ascii`,
+  `set_byte_800f918d/get_byte_800f918c`) — recognizable libc / libultra / N64
+  idioms. The other 328 are conservative `func_XXXXXXXX` (fabrication-averse);
+  several identified-but-unproven subsystems are listed in the dossier for a
+  future naming pass (unit-record interpreter, opcode-handler table, LCG random,
+  allocator, free-list pairs, ~100 accessors).
+- Data note: every jump table / float pool referenced here (`0x800B98B0`,
+  `0x800BE690`, `0x800AE6C8/E700/E7F8/E820`, `0x800BE4xx`) is RAM data beyond
+  `0x21000`, NOT embedded in this code chunk — no in-chunk data files were needed.
+- Verification: `node --check` on both touched tools; manifest integrity audit
+  (527 parts) PASS; an adversarial fragment check (every function contains a
+  return/tail) found 0 fragments; `node tools/assemble_original_mips.js` byte-exact;
+  `node tools/verify_setup.js` PASS; `node tools/audit_code_region.js` OK;
+  `git diff --check` clean.
+- Next frontier: `0x00021000` (chunk 2). No blocker (promote tool fixed). Stretch
+  not attempted this run to keep chunk-1 boundary review thorough and the commit
+  coherent.
+
 ## Current Dossier Set
 
 The current boot/source-layout dossier list is long; use `docs/PLATFORM.md` for
 the full quick index. The newest dossiers are:
 
+- `docs/dossiers/lib-chunk1-11000-21000.md` (350-function chunk-1 library; chunk 1 done)
 - `docs/dossiers/boot-codec-libc-vec3-F22C-11000.md` (47-function tranche; chunk 0 done)
 - `docs/dossiers/boot-resource-decode-subsystem-B030-F22C.md` (29-function tranche)
 - `docs/dossiers/boot-command-stream-dispatch.md`
@@ -355,29 +420,27 @@ the full quick index. The newest dossiers are:
 
 ## Next Frontier
 
-Chunk 0 (`0x00001000..0x00011000`) is fully split into named functions. The next
-frontier is **`0x00011000` (chunk 1)**, but first clear the BLOCKER below.
+Chunks 0 and 1 (`0x00001000..0x00021000`) are fully split into named functions.
+The next frontier is **`0x00021000` (chunk 2)**. No tool blocker remains — the
+`promote_original_mips.js` merge fix is done and proven on chunk 1.
 
-BLOCKER for chunk 1 (must fix before promoting it): `tools/promote_original_mips.js`
-**overwrites** `asm/original/rev0/manifest.json` with ONLY the newly-promoted
-chunk (it builds `manifest.chunks = promoted` and writes), so running it for
-chunk 1 would clobber chunk 0's 177-part composite. Multi-chunk promotion was
-never implemented. Fix: make it MERGE (load the existing manifest, append new
-chunks by range, refuse to overwrite an existing chunk unless `--force`). Then
-`node tools/promote_original_mips.js --chunk <chunk1 file>` and split with
-`tools/split_original_mips_part.js`.
+Recommended path for chunk 2 (same pipeline that worked for chunk 1):
+1. `node tools/promote_original_mips.js --chunk code_00021000_00031000.s`
+   (merges + seeds a splittable single part; chunk 0/1 untouched).
+2. `node tools/dump_function_context.js --start 0x21000 --end 0x31000` to seed.
+3. Build a base partition, slice it, run the analyze→adversarial-review swarm,
+   integrate into a `--splits-file` JSON, then
+   `node tools/split_original_mips_part.js --part <chunk2 file> --splits-file
+   <json> --remove-source`.
+4. Validate: manifest integrity audit, fragment check (every function has a
+   return/tail), `node tools/assemble_original_mips.js`, `node tools/verify_setup.js`,
+   `node tools/audit_code_region.js`, `git diff --check`.
 
-Chunk-boundary straddler: `euler_to_matrix_full` is `0x10FE0..0x11168`; its head
-`[0x10FE0,0x11000)` is the last chunk-0 file, and the tail `[0x11000,0x11168)`
-is the head of chunk 1's first file (name it as the straddler continuation).
-
-Reaching the 4% target `0x0001CD34` needs ~201 chunk-1 functions; the boundary
-planner shows 25 preamble-orphans + 26 dual/secondary entries in chunk 1, so
-budget for heavy boundary validation. Seed with
-`node tools/dump_function_context.js --start 0x11000 --end <next>` (now correct
-exclusive ends). Subsystem/globals context:
-`docs/dossiers/boot-codec-libc-vec3-F22C-11000.md` and
-`docs/dossiers/boot-resource-decode-subsystem-B030-F22C.md`.
+Expect the same parent-DB defects as chunk 1: hidden tiny jal-reachable
+accessor/leaf functions inside larger records, read-before-write preamble-orphans,
+and genuine dual-entries. Validate every boundary from disasm; default names to
+`func_XXXXXXXX` unless evidence is hard. Subsystem/globals context:
+`docs/dossiers/lib-chunk1-11000-21000.md`.
 
 There are now two active tracks. The boot function-split track continues at
 `0x11000` (chunk 1) as above. The full-ROM coverage track (opened 2026-06-21) next refines

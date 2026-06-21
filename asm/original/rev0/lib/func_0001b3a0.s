@@ -1,0 +1,28 @@
+/*
+ * Original Rev 0 MIPS reference split.
+ * Parent source: asm/original/rev0/code_00011000_00021000.s
+ * z64 range: 0x0001B3A0..0x0001B3E0 exclusive
+ * Decode comments are aids, not proof of semantic function boundaries.
+ */
+.set noat
+.set noreorder
+.text
+
+/* function boundary candidate: func_0001B3A0, size=56, kind=prologue */
+func_0001B3A0:
+/* 0x0001B3A0 0x8008AFA0 0x27BDFFE8 */ .word 0x27BDFFE8 # addiu $sp, $sp, -0x18
+/* 0x0001B3A4 0x8008AFA4 0xAFB00010 */ .word 0xAFB00010 # sw $s0, 0x10($sp)
+/* 0x0001B3A8 0x8008AFA8 0x00808021 */ .word 0x00808021 # move $s0, $a0
+/* 0x0001B3AC 0x8008AFAC 0xAFBF0014 */ .word 0xAFBF0014 # sw $ra, 0x14($sp)
+/* 0x0001B3B0 0x8008AFB0 0x0C022E08 */ .word 0x0C022E08 # jal 0x8008B820
+/* 0x0001B3B4 0x8008AFB4 0x24040001 */ .word 0x24040001 # addiu $a0, $zero, 0x1
+/* 0x0001B3B8 0x8008AFB8 0x3C01800B */ .word 0x3C01800B # lui $at, 0x800B
+/* 0x0001B3BC 0x8008AFBC 0xAC309E8C */ .word 0xAC309E8C # sw $s0, -0x6174($at)
+/* 0x0001B3C0 0x8008AFC0 0x0C022E08 */ .word 0x0C022E08 # jal 0x8008B820
+/* 0x0001B3C4 0x8008AFC4 0x00402021 */ .word 0x00402021 # move $a0, $v0
+/* 0x0001B3C8 0x8008AFC8 0x8FBF0014 */ .word 0x8FBF0014 # lw $ra, 0x14($sp)
+/* 0x0001B3CC 0x8008AFCC 0x8FB00010 */ .word 0x8FB00010 # lw $s0, 0x10($sp)
+/* 0x0001B3D0 0x8008AFD0 0x03E00008 */ .word 0x03E00008 # jr $ra
+/* 0x0001B3D4 0x8008AFD4 0x27BD0018 */ .word 0x27BD0018 # addiu $sp, $sp, 0x18
+/* 0x0001B3D8 0x8008AFD8 0x00000000 */ .word 0x00000000 # nop
+/* 0x0001B3DC 0x8008AFDC 0x00000000 */ .word 0x00000000 # nop

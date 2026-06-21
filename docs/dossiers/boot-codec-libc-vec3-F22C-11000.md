@@ -27,7 +27,7 @@ disasm:
   **`strcmp`** (`0xF87C`).
 - `0xF8B0..0xF970` is **2**: **`memset`** (`0xF8B0..0xF8E4`) +
   `boot_io_open_stream` (`0xF8E4`).
-- `0x10B98..0x10CE4` is **3**: `text_draw_string_flagged` (`0xF10B98..0x10BDC`) +
+- `0x10B98..0x10CE4` is **3**: `text_draw_string_flagged` (`0x10B98..0x10BDC`) +
   `char_to_glyph_index` (`0x10BDC`) + `parse_decimal_inline` (`0x10C94`).
 - `0x10CF0..0x10D98` is **2**: `rand_unit_double` (`0x10CF0..0x10D70`) +
   `memcpy_bytewise` (`0x10D70`).

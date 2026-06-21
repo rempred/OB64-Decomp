@@ -15,10 +15,11 @@ Current passing commands:
 node tools/verify_setup.js
 ```
 
-Current source mix: 1 tracked composite real-assembler chunk
-(`0x00001000..0x00011000`) made from 177 tracked source files, plus 99 generated
-fallback chunks. **Chunk 0 is fully split into named functions**
-(`0x00001000..0x00011000`); next is chunk 1.
+Current source mix: 2 tracked composite real-assembler chunks
+(`0x00001000..0x00011000` from 177 files in `boot/`; `0x00011000..0x00021000`
+from 350 files in `lib/`) = 527 tracked source files, plus 98 generated fallback
+chunks. **Chunks 0 and 1 are fully split into named functions**
+(`0x00001000..0x00021000`); next is chunk 2 (`0x00021000`).
 
 The assembled code-region SHA256 is
 `40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`; the full
@@ -95,26 +96,25 @@ node tools/audit_code_region.js
    generates fallback owners for the rest. Keep `node tools/verify_setup.js`
    green after every promotion.
 
-3. Continue splitting into chunk 1.
+3. Continue splitting into chunk 2.
 
-   Chunk 0 (`0x00001000..0x00011000`) is fully split into named functions: boot/
-   resource/display-list/probe/state-slot/command-stream helpers (`0x1000..0xB030`),
-   the resource-archive loader + custom decompressor (`0xB030..0xF22C`, dossier
-   `boot-resource-decode-subsystem-B030-F22C.md`), and codec/libc/vec3/text/IO
-   (`0xF22C..0x11000`, dossier `boot-codec-libc-vec3-F22C-11000.md`).
+   Chunks 0 and 1 (`0x00001000..0x00021000`) are fully split into named functions:
+   chunk 0 boot/resource/codec/libc/vec3 in `boot/` (dossiers
+   `boot-resource-decode-subsystem-B030-F22C.md`, `boot-codec-libc-vec3-F22C-11000.md`),
+   and chunk 1 in `lib/` — a graphics/unit-script + math + libc + libultra-OS
+   library (dossier `lib-chunk1-11000-21000.md`).
 
-   **Next frontier: `0x00011000` (chunk 1).** BLOCKER to clear first:
-   `tools/promote_original_mips.js` overwrites `asm/original/rev0/manifest.json`
-   with ONLY the newly-promoted chunk, so it would clobber chunk 0's 177-part
-   composite. Fix it to MERGE (load existing manifest, append new chunk by range,
-   refuse overwrite unless `--force`); then promote chunk 1
-   (`code_00011000_00021000.s`) and split with `split_original_mips_part.js`.
-   Note the chunk-boundary straddler `euler_to_matrix_full` `0x10FE0..0x11168`:
-   its tail `[0x11000,0x11168)` is the head of chunk 1's first file. Reaching the
-   4% target `0x0001CD34` is ~201 chunk-1 functions (25 preamble-orphans + 26
-   dual/secondary entries per the boundary planner) — budget heavy boundary
-   validation; seed with `node tools/dump_function_context.js --start 0x11000
-   --end <next>` (exclusive ends now correct).
+   **Next frontier: `0x00021000` (chunk 2).** No blocker — the
+   `promote_original_mips.js` merge fix is done and proven. Pipeline:
+   `node tools/promote_original_mips.js --chunk code_00021000_00031000.s`
+   (merges + seeds a splittable part), then
+   `node tools/dump_function_context.js --start 0x21000 --end <next>`, build a
+   base partition, run the analyze→adversarial-review swarm, integrate into a
+   `--splits-file` JSON, and `node tools/split_original_mips_part.js --part <chunk2
+   file> --splits-file <json> --remove-source`. Expect the same parent-DB defects
+   (hidden tiny jal-reachable leaves, preamble-orphans, dual-entries) — validate
+   every boundary from disasm; default names to `func_XXXXXXXX` unless evidence is
+   hard.
 
 4. Keep the setup gate green.
 

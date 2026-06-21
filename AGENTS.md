@@ -203,11 +203,12 @@ Current result:
 - Code-region SHA256:
   `40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`.
 - Code-region match against baserom: pass.
-- Tracked real-assembler original-MIPS chunks: 1 composite
-  (`0x00001000..0x00011000`) made from 177 real-assembler source files.
-  Chunk 0 (`0x00001000..0x00011000`) is now fully split into named functions;
-  next is chunk 1 (`0x00011000`, still a generated fallback chunk).
-- Generated fallback chunks: 99.
+- Tracked real-assembler original-MIPS chunks: 2 composites
+  (`0x00001000..0x00011000` from 177 files in `boot/`; `0x00011000..0x00021000`
+  from 350 files in `lib/`) = 527 real-assembler source files. Chunks 0 and 1
+  (`0x00001000..0x00021000`) are now fully split into named functions; next is
+  chunk 2 (`0x00021000`, still a generated fallback chunk).
+- Generated fallback chunks: 98.
 - Assembled-code ROM rebuild command:
 
 ```powershell
@@ -222,22 +223,27 @@ Next source-layout work should continue promoting/splitting tracked
 `tools/promote_original_mips.js` for chunk promotion and `--strict-tracked` only
 after every configured code chunk is tracked.
 
-Chunk 0 `0x00001000..0x00011000` is fully split into named functions.
-`0xB030..0xF22C` is a resource-archive loader + custom decompressor
-(Huffman/DEFLATE + adaptive-Huffman + CRC16); `0xF22C..0x11000` continues the
-codec then adds shared libc (`strcat/strcpy/strcmp/memset/memcpy`), `boot_io_*`
-stream I/O, a `vec3_*` float math library, and a text renderer (dossiers
-`boot-resource-decode-subsystem-B030-F22C.md`, `boot-codec-libc-vec3-F22C-11000.md`).
+Chunks 0 and 1 `0x00001000..0x00021000` are fully split into named functions.
+Chunk 0 (`boot/`): `0xB030..0xF22C` is a resource-archive loader + custom
+decompressor (Huffman/DEFLATE + adaptive-Huffman + CRC16); `0xF22C..0x11000`
+continues the codec then adds shared libc, `boot_io_*` stream I/O, a `vec3_*`
+float math library, and a text renderer. Chunk 1 (`lib/`, `0x11000..0x21000`) is
+a graphics/unit-script + math (trig/sqrt/ldexp) + libc (`memset/memmove`) +
+libultra-OS (cache ops, AI audio, CPU interrupt mask, virtual→physical) library
+(dossiers `boot-resource-decode-subsystem-B030-F22C.md`,
+`boot-codec-libc-vec3-F22C-11000.md`, `lib-chunk1-11000-21000.md`).
 The dispatch tables `0x800AE128` (85) / `0x800AE2E8` (9) are **static ROM data**
 (z64 `0x3E528`/`0x3E6E8`, no runtime registration; opcode→handler map resolved);
 the codec source vtable is RAM `0x800A876C` / ROM `0x38B6C`.
-Next frontier is **`0x00011000` (chunk 1)** — first fix the
-`promote_original_mips.js` manifest-clobber blocker (see `docs/NEXT_STEPS.md`).
-Use `tools/dump_function_context.js --start <s> --end <e>` to seed a split pass
-(correct exclusive ends = parent `end_rom + 4`). Heads-up: the parent boundary DB
-both over-merges real functions (spurious "secondary entries", e.g. `0xF734` = 4
-funcs) and orphans a read-before-write load preamble onto the previous function's
-tail (true entry precedes the labeled `func_` start) — validate from disasm.
+Next frontier is **`0x00021000` (chunk 2)** — no blocker (the
+`promote_original_mips.js` merge fix is done and proven; `split_original_mips_part.js`
+has `--splits-file` for large splits). Use `tools/dump_function_context.js --start
+<s> --end <e>` to seed a split pass (correct exclusive ends = parent
+`end_rom + 4`). Heads-up: the parent boundary DB both over-merges real functions
+(spurious "secondary entries") AND hides many tiny jal-reachable accessor/leaf
+functions inside the trailing bytes of larger records, and orphans read-before-write
+load preambles onto the previous function's tail — validate every boundary from
+disasm.
 
 ## First Decomp Loop: Boot Entry
 

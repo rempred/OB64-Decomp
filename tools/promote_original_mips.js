@@ -5,12 +5,14 @@ const {
   ROOT,
   ensureDir,
   hashBuffer,
+  hex,
+  parseHexOrNumber,
   readJson,
   writeJson,
 } = require('./lib/rom');
 
 function usage() {
-  console.log(`Usage: node tools/promote_original_mips.js [--source-report <json>] [--out <dir>] [--count <n> | --all | --chunk <file> ...] [--force]\n\nCopies generated no-gap original MIPS chunks into tracked asm/original/rev0 source. Use small batches so generated proof artifacts become curated source deliberately. Existing tracked chunks are not overwritten unless --force is supplied.`);
+  console.log(`Usage: node tools/promote_original_mips.js [--source-report <json>] [--out <dir>] [--count <n> | --all | --chunk <file> ...] [--force]\n\nCopies generated no-gap original MIPS chunks into tracked asm/original/rev0 source\nand MERGES them into the existing asm/original/rev0/manifest.json (it never\nreplaces the manifest, so already-promoted/split chunks such as the chunk 0\ncomposite are preserved). Each newly promoted chunk is seeded with a single\nwhole-chunk part so it can be split immediately with split_original_mips_part.js.\nUse small batches so generated proof artifacts become curated source\ndeliberately. A chunk whose ROM range already exists in the manifest is refused\nunless --force is supplied; a partial range overlap is always refused.`);
 }
 
 function parseArgs(argv) {
@@ -64,6 +66,71 @@ function selectChunks(report, args) {
   return chunks.slice(0, args.count);
 }
 
+function loadOrInitManifest(manifestPath, report, args) {
+  if (fs.existsSync(manifestPath)) {
+    const existing = readJson(manifestPath);
+    if (!Array.isArray(existing.chunks)) existing.chunks = [];
+    return { manifest: existing, fresh: false };
+  }
+  return {
+    manifest: {
+      tool: 'promote_original_mips',
+      profile: report.profile,
+      sourceReportPath: path.relative(ROOT, args.sourceReport).replace(/\\/g, '/'),
+      outputDir: path.relative(ROOT, args.outDir).replace(/\\/g, '/'),
+      promotedChunks: 0,
+      codeRegion: report.codeRegion,
+      chunks: [],
+    },
+    fresh: true,
+  };
+}
+
+function rangesExactlyEqual(a, b) {
+  return (
+    parseHexOrNumber(a.romStart) === parseHexOrNumber(b.romStart) &&
+    parseHexOrNumber(a.romEndExclusive) === parseHexOrNumber(b.romEndExclusive)
+  );
+}
+
+function rangesOverlap(a, b) {
+  const aStart = parseHexOrNumber(a.romStart);
+  const aEnd = parseHexOrNumber(a.romEndExclusive);
+  const bStart = parseHexOrNumber(b.romStart);
+  const bEnd = parseHexOrNumber(b.romEndExclusive);
+  return aStart < bEnd && bStart < aEnd;
+}
+
+// A freshly promoted chunk has no named parts yet. Seed it with a single
+// whole-chunk part so split_original_mips_part.js (which only searches
+// chunk.parts) can immediately split it. textBytes/sha256 follow the same
+// convention the splitter maintains (chunk.sha256 = hash of part shas joined
+// by '\n'), so re-splitting stays consistent.
+function buildSeededChunk(chunk, dest) {
+  const fileRel = path.relative(ROOT, dest).replace(/\\/g, '/');
+  const text = fs.readFileSync(dest);
+  const stem = path.basename(dest, '.s');
+  const part = {
+    name: stem,
+    file: fileRel,
+    romStart: chunk.romStart,
+    romEndExclusive: chunk.romEndExclusive,
+    bytes: chunk.bytes,
+    textBytes: text.length,
+    sha256: hashBuffer(text, 'sha256'),
+  };
+  return {
+    file: fileRel,
+    romStart: chunk.romStart,
+    romEndExclusive: chunk.romEndExclusive,
+    bytes: chunk.bytes,
+    sourceReportFile: chunk.file,
+    parts: [part],
+    textBytes: part.textBytes,
+    sha256: hashBuffer(Buffer.from([part.sha256].join('\n')), 'sha256'),
+  };
+}
+
 function main() {
   const args = parseArgs(process.argv.slice(2));
   if (!fs.existsSync(args.sourceReport)) {
@@ -73,40 +140,57 @@ function main() {
   const selected = selectChunks(report, args);
   ensureDir(args.outDir);
 
+  const manifestPath = path.join(args.outDir, 'manifest.json');
+  const { manifest } = loadOrInitManifest(manifestPath, report, args);
+
   const promoted = [];
   for (const chunk of selected) {
     const source = path.resolve(ROOT, chunk.file);
     if (!fs.existsSync(source)) throw new Error(`Generated source chunk missing: ${source}`);
+
+    // Range-overwrite guards: a partial overlap is never safe; an exact-range
+    // re-promote requires --force (it would discard any existing splits).
+    const existingIndex = manifest.chunks.findIndex((tracked) => rangesExactlyEqual(tracked, chunk));
+    for (const tracked of manifest.chunks) {
+      if (rangesExactlyEqual(tracked, chunk)) continue;
+      if (rangesOverlap(tracked, chunk)) {
+        throw new Error(
+          `Refusing to promote ${path.basename(chunk.file)} (${chunk.romStart}..${chunk.romEndExclusive}): ` +
+            `it partially overlaps tracked chunk ${tracked.file} (${tracked.romStart}..${tracked.romEndExclusive}). ` +
+            `Partial range overlaps are never auto-resolved.`,
+        );
+      }
+    }
+    if (existingIndex !== -1 && !args.force) {
+      throw new Error(
+        `Tracked chunk for range ${chunk.romStart}..${chunk.romEndExclusive} already exists ` +
+          `(${manifest.chunks[existingIndex].file}). Use --force only when intentionally replacing it ` +
+          `(this discards any splits already made on that chunk).`,
+      );
+    }
+
     const dest = path.join(args.outDir, path.basename(chunk.file));
-    if (fs.existsSync(dest) && !args.force) {
-      throw new Error(`Tracked chunk already exists: ${dest}\nUse --force only when intentionally replacing tracked source from generated output.`);
+    if (fs.existsSync(dest) && existingIndex === -1 && !args.force) {
+      throw new Error(`Tracked chunk file already exists but is not in the manifest: ${dest}\nResolve manually or use --force.`);
+    }
+    if (existingIndex !== -1 && args.force) {
+      console.warn(`--force: replacing tracked chunk ${manifest.chunks[existingIndex].file} (range ${chunk.romStart}..${chunk.romEndExclusive}); any existing splits for it are discarded.`);
     }
     fs.copyFileSync(source, dest);
-    const bytes = fs.readFileSync(dest);
-    promoted.push({
-      file: path.relative(ROOT, dest).replace(/\\/g, '/'),
-      romStart: chunk.romStart,
-      romEndExclusive: chunk.romEndExclusive,
-      bytes: chunk.bytes,
-      sourceReportFile: chunk.file,
-      textBytes: bytes.length,
-      sha256: hashBuffer(bytes, 'sha256'),
-    });
+
+    const seeded = buildSeededChunk(chunk, dest);
+    if (existingIndex !== -1) manifest.chunks.splice(existingIndex, 1, seeded);
+    else manifest.chunks.push(seeded);
+    promoted.push(seeded);
   }
 
-  const manifest = {
-    tool: 'promote_original_mips',
-    profile: report.profile,
-    sourceReportPath: path.relative(ROOT, args.sourceReport).replace(/\\/g, '/'),
-    outputDir: path.relative(ROOT, args.outDir).replace(/\\/g, '/'),
-    promotedChunks: promoted.length,
-    codeRegion: report.codeRegion,
-    chunks: promoted,
-  };
-  const manifestPath = path.join(args.outDir, 'manifest.json');
+  // Keep tracked chunks ordered by ROM start so the manifest reads contiguously.
+  manifest.chunks.sort((a, b) => parseHexOrNumber(a.romStart) - parseHexOrNumber(b.romStart));
+  manifest.promotedChunks = manifest.chunks.length;
+
   writeJson(manifestPath, manifest);
-  console.log(`Promoted ${promoted.length} original MIPS chunk(s) to ${args.outDir}`);
-  for (const chunk of promoted) console.log(`  ${chunk.file} ${chunk.romStart}..${chunk.romEndExclusive}`);
+  console.log(`Promoted ${promoted.length} original MIPS chunk(s) to ${args.outDir}; manifest now tracks ${manifest.chunks.length} chunk(s).`);
+  for (const chunk of promoted) console.log(`  ${chunk.file} ${chunk.romStart}..${chunk.romEndExclusive} (seeded single part ${hex(parseHexOrNumber(chunk.romStart))}..${hex(parseHexOrNumber(chunk.romEndExclusive))})`);
   console.log(`Manifest: ${manifestPath}`);
 }
 

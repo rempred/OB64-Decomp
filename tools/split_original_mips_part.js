@@ -13,10 +13,16 @@ const {
 
 function usage() {
   console.log(`Usage: node tools/split_original_mips_part.js --part <asm-file> --split <name>:<start>:<end>:<out-file> [--split ...] --remainder <name>:<out-file> [--manifest <json>] [--remove-source]
+       node tools/split_original_mips_part.js --part <asm-file> --splits-file <json> [--manifest <json>] [--remove-source]
 
 Splits one tracked asm/original manifest part into smaller contiguous parts.
 Ranges are z64 offsets; generated output preserves the original .word lines
-and decode comments exactly for each selected ROM range.`);
+and decode comments exactly for each selected ROM range.
+
+--splits-file <json> avoids long command lines for large splits. The JSON is
+either an array of {name,start,end,file,label?} entries, or an object
+{splits:[...], remainder?:{name,file}}. start/end accept hex strings or numbers;
+label (optional) emits a true-entry label for preamble-orphan splits.`);
 }
 
 function parseArgs(argv) {
@@ -38,6 +44,26 @@ function parseArgs(argv) {
       args.partFile = argv[++i].replace(/\\/g, '/');
     } else if (arg === '--split') {
       args.splits.push(parseSplit(argv[++i]));
+    } else if (arg === '--splits-file') {
+      const sfPath = path.resolve(argv[++i]);
+      const sf = JSON.parse(fs.readFileSync(sfPath, 'utf8'));
+      const list = Array.isArray(sf) ? sf : sf.splits;
+      if (!Array.isArray(list)) throw new Error(`--splits-file ${sfPath} must be an array or have a splits array`);
+      for (const s of list) {
+        if (s.name == null || s.start == null || s.end == null || s.file == null) {
+          throw new Error(`--splits-file entry missing name/start/end/file: ${JSON.stringify(s)}`);
+        }
+        args.splits.push({
+          name: s.name,
+          start: parseHexOrNumber(s.start),
+          end: parseHexOrNumber(s.end),
+          file: String(s.file).replace(/\\/g, '/'),
+          label: s.label || null,
+        });
+      }
+      if (!Array.isArray(sf) && sf.remainder) {
+        args.remainder = { name: sf.remainder.name, file: String(sf.remainder.file).replace(/\\/g, '/') };
+      }
     } else if (arg === '--remainder') {
       args.remainder = parseRemainder(argv[++i]);
     } else if (arg === '--remove-source') {

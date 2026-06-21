@@ -1,0 +1,45 @@
+/*
+ * Original Rev 0 MIPS reference split.
+ * Parent source: asm/original/rev0/code_00011000_00021000.s
+ * z64 range: 0x0001EA6C..0x0001EAF0 exclusive
+ * Decode comments are aids, not proof of semantic function boundaries.
+ */
+.set noat
+.set noreorder
+.text
+
+/* True entry 0x0001EA6C (read-before-write preamble; the parent-DB boundary label appears below inside the body). */
+func_0001ea6c:
+/* 0x0001EA6C 0x8008E66C 0x000528C3 */ .word 0x000528C3 # sra $a1, $a1, 3
+/* 0x0001EA70 0x8008E670 0x14A00003 */ .word 0x14A00003 # bne $a1, $zero, 0x8008E680
+/* 0x0001EA74 0x8008E674 0x00061400 */ .word 0x00061400 # sll $v0, $a2, 16
+/* 0x0001EA78 0x8008E678 0x080239BA */ .word 0x080239BA # j 0x8008E6E8
+/* 0x0001EA7C 0x8008E67C 0x46006006 */ .word 0x46006006 # mov.s $f0, $f12
+/* 0x0001EA80 0x8008E680 0x44821000 */ .word 0x44821000 # mtc1 $v0, $f2
+/* 0x0001EA84 0x8008E684 0x00000000 */ .word 0x00000000 # nop
+/* 0x0001EA88 0x8008E688 0x468010A0 */ .word 0x468010A0 # cvt.s.w $f2, $f2
+/* 0x0001EA8C 0x8008E68C 0x30E2FFFF */ .word 0x30E2FFFF # andi $v0, $a3, 0xFFFF
+/* 0x0001EA90 0x8008E690 0x44820000 */ .word 0x44820000 # mtc1 $v0, $f0
+/* 0x0001EA94 0x8008E694 0x00000000 */ .word 0x00000000 # nop
+/* 0x0001EA98 0x8008E698 0x46800020 */ .word 0x46800020 # cvt.s.w $f0, $f0
+/* 0x0001EA9C 0x8008E69C 0x46001080 */ .word 0x46001080 # add.s $f2, $f2, $f0
+/* 0x0001EAA0 0x8008E6A0 0x3C014780 */ .word 0x3C014780 # lui $at, 0x4780
+/* 0x0001EAA4 0x8008E6A4 0x44810000 */ .word 0x44810000 # mtc1 $at, $f0
+/* 0x0001EAA8 0x8008E6A8 0x3C013F80 */ .word 0x3C013F80 # lui $at, 0x3F80
+/* 0x0001EAAC 0x8008E6AC 0x44812000 */ .word 0x44812000 # mtc1 $at, $f4
+/* 0x0001EAB0 0x8008E6B0 0x00001821 */ .word 0x00001821 # move $v1, $zero
+/* 0x0001EAB4 0x8008E6B4 0x46001083 */ .word 0x46001083 # div.s $f2, $f2, $f0
+/* 0x0001EAB8 0x8008E6B8 0x30A20001 */ .word 0x30A20001 # andi $v0, $a1, 0x0001
+/* 0x0001EABC 0x8008E6BC 0x54400001 */ .word 0x54400001 # bnel $v0, $zero, 0x8008E6C4
+/* 0x0001EAC0 0x8008E6C0 0x46022102 */ .word 0x46022102 # mul.s $f4, $f4, $f2
+/* 0x0001EAC4 0x8008E6C4 0x00052843 */ .word 0x00052843 # sra $a1, $a1, 1
+/* 0x0001EAC8 0x8008E6C8 0x50A00007 */ .word 0x50A00007 # beql $a1, $zero, 0x8008E6E8
+/* 0x0001EACC 0x8008E6CC 0x46046002 */ .word 0x46046002 # mul.s $f0, $f12, $f4
+/* 0x0001EAD0 0x8008E6D0 0x24630001 */ .word 0x24630001 # addiu $v1, $v1, 0x1
+/* 0x0001EAD4 0x8008E6D4 0x28620020 */ .word 0x28620020 # slti $v0, $v1, 0x20
+/* 0x0001EAD8 0x8008E6D8 0x1440FFF7 */ .word 0x1440FFF7 # bne $v0, $zero, 0x8008E6B8
+/* 0x0001EADC 0x8008E6DC 0x46021082 */ .word 0x46021082 # mul.s $f2, $f2, $f2
+/* 0x0001EAE0 0x8008E6E0 0x00000000 */ .word 0x00000000 # nop
+/* 0x0001EAE4 0x8008E6E4 0x46046002 */ .word 0x46046002 # mul.s $f0, $f12, $f4
+/* 0x0001EAE8 0x8008E6E8 0x03E00008 */ .word 0x03E00008 # jr $ra
+/* 0x0001EAEC 0x8008E6EC 0x00000000 */ .word 0x00000000 # nop
