@@ -10,7 +10,7 @@ code after the display-list sync/modes helper:
 | Source | ROM range | RAM range | Notes |
 | --- | --- | --- | --- |
 | `asm/original/rev0/boot/boot_display_list_counter_step.s` | `0x00004048..0x000040B0` | `0x80073C48..0x80073CB0` | Overlapping 104-byte leaf entry at `0x4048` plus 96-byte prologue entry at `0x4050`. |
-| `asm/original/rev0/code_000040B0_00011000.s` | `0x000040B0..0x00011000` | `0x80073CB0..0x80080C00` | Next tracked remainder. |
+| `asm/original/rev0/code_000040B0_00011000.s` | `0x000040B0..0x00011000` | `0x80073CB0..0x80080C00` | Former tracked remainder; superseded by the counter packet emit split. |
 
 The name is a conservative source-layout label based on a small byte counter
 feeding a display-list helper, not a verified renderer API name.
@@ -45,6 +45,11 @@ feeding a display-list helper, not a verified renderer API name.
 - The split ends at exclusive `0x000040B0`, immediately before the next parent
   prologue. Parent data reports `0x40B0` as a separate 552-byte helper with
   secondary entry `0x42C4` and one unresolved call to RAM `0x8016CD30`.
+
+Follow-up split note: `asm/original/rev0/code_000040B0_00011000.s` has since
+been split into `asm/original/rev0/boot/boot_display_list_counter_packet_emit.s`
+(`0x000040B0..0x000042D8`) and
+`asm/original/rev0/code_000042D8_00011000.s`.
 
 ## Verification
 

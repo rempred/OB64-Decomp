@@ -289,17 +289,26 @@
           "sha256": "AFBC8FDA52A2D116BBDF0517BB36EBD9E55FAF053A4510571A30E4595B9158A5"
         },
         {
-          "name": "code_000040B0_00011000_remainder",
-          "file": "asm/original/rev0/code_000040B0_00011000.s",
+          "name": "boot_display_list_counter_packet_emit",
+          "file": "asm/original/rev0/boot/boot_display_list_counter_packet_emit.s",
           "romStart": "0x000040B0",
+          "romEndExclusive": "0x000042D8",
+          "bytes": 552,
+          "textBytes": 10933,
+          "sha256": "15433B5F5FD46B6ACEAE4E9B1B5982C5E6587BAEB488B3FEDC0E82A0C012C028"
+        },
+        {
+          "name": "code_000042D8_00011000_remainder",
+          "file": "asm/original/rev0/code_000042D8_00011000.s",
+          "romStart": "0x000042D8",
           "romEndExclusive": "0x00011000",
-          "bytes": 53072,
-          "textBytes": 1024859,
-          "sha256": "27E3C2784064D2EDC09748D7525969B5096A63AD6E820FE8C8667910026D040C"
+          "bytes": 52520,
+          "textBytes": 1014184,
+          "sha256": "2AA7806DDC2EDB6A2D63EFFD44692C8F3E93C86F471E3E307FDE08174C809092"
         }
       ],
-      "textBytes": 1272551,
-      "sha256": "27F76426F56F07A5CB8B4D1689FCC25E2B3CF0E6B1C7BC9A2DEE336050B0B7AD"
+      "textBytes": 1272809,
+      "sha256": "E256B4C261617AA1958CDE0627E6C1472A0E170E828217ECEB1851A98138C1ED"
     }
   ]
 }

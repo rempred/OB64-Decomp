@@ -1152,3 +1152,65 @@ Next recommended target:
   the `0x000040B0` 552-byte prologue helper. Parent data reports secondary entry
   `0x42C4`, callers from `0x4048` and `0x4050`, and one unresolved call to RAM
   `0x8016CD30`.
+
+## 2026-06-21 - Boot Display-List Counter Packet Emit Split
+
+### Baseline
+
+- `git status --short` was clean before edits.
+- Last commit before the split was `0d968fc Split Rev 0 display-list counter
+  step`.
+- `node tools\verify_setup.js` passed before the split with 1 tracked composite
+  real-asm chunk made from 31 tracked source files and 99 generated fallback
+  chunks.
+- The decomp log was 49,243 characters, 5,423 words, and 1,155 lines, below the
+  prune threshold.
+
+### Source Change
+
+- Split `asm/original/rev0/code_000040B0_00011000.s`.
+- Added `asm/original/rev0/boot/boot_display_list_counter_packet_emit.s`,
+  `0x000040B0..0x000042D8`, 552 bytes.
+- Added remainder `asm/original/rev0/code_000042D8_00011000.s`,
+  `0x000042D8..0x00011000`, 52,520 bytes.
+
+### Static Evidence
+
+- Parent `../scripts/ob64_functions.json` reports `0x40B0` as a 552-byte
+  prologue function with frame size `0x20`, valid boundary data, and secondary
+  entry `0x42C4`.
+- Parent `../scripts/ob64_callgraph_v2.json` reports high-confidence callers
+  from `0x4048` and `0x4050`, plus one unresolved JAL target at RAM
+  `0x8016CD30`.
+- Parent `../scripts/ob64_symbols_v2.json` locates the routine at fixed RAM
+  `0x80073CB0` in all seven named states and all 21 parent RAM snapshots.
+- Xref evidence shows read/write traffic through the shared display-list cursor
+  `0x800E9BA0` and packet writes through `0x800F0000..0x800F0048`.
+- Static code shape: return through the `0x42C4` epilogue if the incoming low
+  byte is zero; otherwise append display-list command packets using constants
+  including `E3000A01`, `FCFFFFFF`, `FFFDF6FB`, `E200001C`, `00504340`, `D900`,
+  `FA00`, and `E700`. After the unresolved helper returns, emit either an
+  `E450/E100/F100` branch packet or two `DE00` links to `0x80186358` and
+  `0x80186610`, then append a trailing `E700 00000000`.
+- The name `boot_display_list_counter_packet_emit` is conservative. It records
+  display-list packet emission fed by the counter step only, not a verified
+  renderer API.
+
+### Verification
+
+- `node tests\binutils_smoke.js` passed.
+- `node tools\assemble_original_mips.js` passed and produced the same
+  code-region SHA256:
+  `40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`.
+- Full `node tools\verify_setup.js` passed after docs/source updates.
+- The setup verifier now reports 1 tracked composite real-asm chunk made from
+  32 tracked source files, 99 generated fallback chunks, full-source manifest
+  1,059 entries, 0 unknown bytes, and the same full ROM SHA256:
+  `571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A`.
+
+### Next
+
+- Continue from `asm/original/rev0/code_000042D8_00011000.s`, beginning with
+  the overlapping `0x000042D8` leaf entry / `0x000042E0` prologue pair. Parent
+  data reports caller `0x27A0` to `0x42D8`, callee `0x11D08`, and secondary
+  entry `0x4358`; keep the pair together until its relationship is documented.

@@ -173,7 +173,7 @@ Current result:
   `40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`.
 - Code-region match against baserom: pass.
 - Tracked real-assembler original-MIPS chunks: 1 composite
-  (`0x00001000..0x00011000`) made from 31 real-assembler source files.
+  (`0x00001000..0x00011000`) made from 32 real-assembler source files.
 - Generated fallback chunks: 99.
 - Assembled-code ROM rebuild command:
 
@@ -549,6 +549,8 @@ step helper called by the display-list finalize/flip routine:
   and an overlapping 96-byte prologue entry at `0x4050`.
 - Remainder:
   `asm/original/rev0/code_000040B0_00011000.s`.
+  That file has since been superseded by the display-list counter packet emit
+  split below.
 
 Static evidence: parent callgraph data reports high-confidence caller `0x3EE4`
 to the `0x4048` entry, no direct callers to the `0x4050` prologue entry, and a
@@ -559,9 +561,35 @@ scaled 8-bit argument from the byte via `(value * 0xFF) / 6`-style multiply-high
 math, and calls `0x40B0(a0=scaled)`. Xref data shows `0x800AEF99` is touched
 only by the early boot state loop and this helper pair.
 
-Static dossier: `docs/dossiers/boot-display-list-counter-step.md`. Next source
-split should start at `0x000040B0`, a separate 552-byte prologue helper with
-secondary entry `0x42C4` and an unresolved call to RAM `0x8016CD30`.
+Static dossier: `docs/dossiers/boot-display-list-counter-step.md`. The
+`0x000040B0` target has since been superseded by the display-list counter packet
+emit split below.
+
+## Boot Display-List Counter Packet Emit Split
+
+The next tracked Rev 0 original-MIPS split separates the display-list packet
+helper called by the counter-step helper:
+
+- `asm/original/rev0/boot/boot_display_list_counter_packet_emit.s`
+  `0x000040B0..0x000042D8`; parent reports a 552-byte prologue function, frame
+  size `0x20`, callers `0x4048/0x4050`, and secondary epilogue entry `0x42C4`.
+- Remainder:
+  `asm/original/rev0/code_000042D8_00011000.s`.
+
+Static evidence: parent callgraph data reports high-confidence callers from the
+counter-step helper entries and one unresolved call to RAM `0x8016CD30`. The
+routine returns early when the incoming low byte is zero. Otherwise it advances
+the shared display-list cursor `0x800E9BA0` through packet words, writes links
+to `0x801869C8`, `0x80186358`, and `0x80186610`, emits `E700`, `D900`,
+`FA00`, `E450`, `E100`, `F100`, and `DE00` style command words, and always
+appends a trailing `E700 00000000` before returning through the `0x42C4`
+epilogue. The routine is fixed at RAM `0x80073CB0` in all seven named states
+and all 21 parent RAM snapshots.
+
+Static dossier: `docs/dossiers/boot-display-list-counter-packet-emit.md`. Next
+source split should start at `asm/original/rev0/code_000042D8_00011000.s`, an
+overlapping pair with leaf entry `0x42D8` and prologue entry `0x42E0`; keep that
+pair together unless a later dossier proves a safer split.
 
 ## Setup Complete Gate
 
@@ -577,7 +605,7 @@ setup-complete state:
 - Assembler: GNU Binutils 2.39 `mips64-elf-as.exe` with `-EB -mips3 -32`.
 - Setup verifier: `tools/verify_setup.js`.
 - Current verifier result: PASS; 825 archives, 0 unknown bytes, 108 overlap
-  bytes visible, 1 tracked composite real-asm chunk made from 31 tracked source
+  bytes visible, 1 tracked composite real-asm chunk made from 32 tracked source
   files, 99 generated fallback chunks, full-source manifest 1,059 entries with
   2,469,141 ambiguous bytes preserved explicitly, 3 tracked non-code
   source-owner files / 44,029 bytes, 1,055 generated non-code fallback files /
@@ -586,5 +614,5 @@ setup-complete state:
   `571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A`.
 
 Next phase is either promoting another small non-code owner batch or continuing
-tracked original-MIPS splits from `asm/original/rev0/code_000040B0_00011000.s`.
+tracked original-MIPS splits from `asm/original/rev0/code_000042D8_00011000.s`.
 Do not begin semantic C decomp unless the setup verifier is green.
