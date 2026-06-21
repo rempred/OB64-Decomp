@@ -437,6 +437,8 @@ resource/display-list update cluster after the resource state reset helper:
   secondary entry `0x3BA0`.
 - Remainder:
   `asm/original/rev0/code_00003C2C_00011000.s`.
+  That file has since been superseded by the display-list state emit split
+  below.
 
 Static evidence: the four-instruction `0x37F8` prefix reads
 `0x800A81F0/0x800AEE72` and falls into the `0x3808` prologue, so it stays with
@@ -452,9 +454,37 @@ edges to `resource_free`, `resource_alloc_mode1_wrapper`, `0x00003C2C`,
 `0x3BA0` secondary helper. The cluster is fixed at RAM `0x800733F8/0x80073408`
 in all seven named states.
 
-Static dossier: `docs/dossiers/boot-resource-display-list-update.md`. Next
-source split should start at `0x00003C2C`, a separate 696-byte prologue routine
-called by this cluster.
+Static dossier: `docs/dossiers/boot-resource-display-list-update.md`. The next
+source split at `0x00003C2C` has since been superseded by the display-list
+state emit split below.
+
+## Boot Display-List State Emit Split
+
+The next tracked Rev 0 original-MIPS split separates the standalone
+display-list/state emission helper called by the resource/display-list update
+cluster:
+
+- `asm/original/rev0/boot/boot_display_list_state_emit.s`
+  `0x00003C2C..0x00003EE4`; parent reports a 696-byte prologue function, frame
+  size `0x20`, and no secondary entries.
+- Remainder:
+  `asm/original/rev0/code_00003EE4_00011000.s`.
+
+Static evidence: parent callgraph data reports high-confidence callers at
+`0x37F8` and `0x3808`, a high-confidence callee edge to `0x80090780`, and one
+unresolved target at RAM `0x8016CD30`. The routine exits early when the
+unresolved helper returns a nonzero low byte. Otherwise it reads flag byte
+`0x800A8213`, reads pointer/state globals `0x800C4B20` and `0x800E8210`, and
+emits F3DEX-style command words through the shared display-list cursor
+`0x800E9BA0`/`0x800F9BA0`. The optional flag-controlled block writes a larger
+`FE00/E700/E300/E200/F700` style packet and the always-run block calls
+`0x80090780` before emitting a `DE00` command pointing at `0x801869C8`. The
+cluster is fixed at RAM `0x8007382C` in all seven named states and all 21
+parent RAM snapshots.
+
+Static dossier: `docs/dossiers/boot-display-list-state-emit.md`. Next source
+split should start at `0x00003EE4`, a separate 236-byte prologue routine called
+by the early boot state loop.
 
 ## Setup Complete Gate
 
@@ -470,7 +500,7 @@ setup-complete state:
 - Assembler: GNU Binutils 2.39 `mips64-elf-as.exe` with `-EB -mips3 -32`.
 - Setup verifier: `tools/verify_setup.js`.
 - Current verifier result: PASS; 825 archives, 0 unknown bytes, 108 overlap
-  bytes visible, 1 tracked composite real-asm chunk made from 27 tracked source
+  bytes visible, 1 tracked composite real-asm chunk made from 28 tracked source
   files, 99 generated fallback chunks, full-source manifest 1,059 entries with
   2,469,141 ambiguous bytes preserved explicitly, 3 tracked non-code
   source-owner files / 44,029 bytes, 1,055 generated non-code fallback files /
@@ -479,5 +509,5 @@ setup-complete state:
   `571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A`.
 
 Next phase is either promoting another small non-code owner batch or continuing
-tracked original-MIPS splits from `asm/original/rev0/code_00003C2C_00011000.s`.
+tracked original-MIPS splits from `asm/original/rev0/code_00003EE4_00011000.s`.
 Do not begin semantic C decomp unless the setup verifier is green.

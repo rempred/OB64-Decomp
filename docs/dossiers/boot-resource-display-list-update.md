@@ -10,7 +10,7 @@ code after the resource state reset wrapper:
 | Source | ROM range | RAM range | Notes |
 | --- | --- | --- | --- |
 | `asm/original/rev0/boot/boot_resource_display_list_update.s` | `0x000037F8..0x00003C2C` | `0x800733F8..0x8007382C` | Keeps the `0x37F8` prefix, `0x3808` prologue, and `0x3BA0` secondary entry together. |
-| `asm/original/rev0/code_00003C2C_00011000.s` | `0x00003C2C..0x00011000` | `0x8007382C..0x80080C00` | Next tracked remainder. |
+| `asm/original/rev0/code_00003C2C_00011000.s` | `0x00003C2C..0x00011000` | `0x8007382C..0x80080C00` | Former next tracked remainder, now superseded by `boot_display_list_state_emit.s`. |
 
 The name is a conservative source-layout label based on static resource and
 display-list command writes, not a final C API name.
@@ -55,6 +55,9 @@ display-list command writes, not a final C API name.
 - The split ends at exclusive `0x00003C2C`, immediately before the next parent
   prologue. Parent data reports `0x3C2C` as a separate 696-byte prologue routine,
   frame size `0x20`, called by this cluster.
+- Later source-layout work split that `0x3C2C` target into
+  `asm/original/rev0/boot/boot_display_list_state_emit.s`, leaving
+  `asm/original/rev0/code_00003EE4_00011000.s` as the next remainder.
 
 ## Verification
 
