@@ -18,7 +18,7 @@ and replace the active log with a compact current-state summary.
 - Whole-ROM coverage still independently scans for LHA headers; do not trust the
   parent archive catalog by itself.
 - Current tracked code source mix: one composite real-assembler chunk
-  `0x00001000..0x00011000` made from 83 tracked source files, plus 99 generated
+  `0x00001000..0x00011000` made from 84 tracked source files, plus 99 generated
   fallback code chunks.
 - Current tracked non-code source-owner mix: 3 tracked files / 44,029 bytes,
   plus 1,055 generated fallback owner files / 35,388,567 bytes.
@@ -61,9 +61,9 @@ Current named sequence:
 - Resource probe helpers through
   `boot_resource_probe_record_checksum_signature.s` `0x4AC8..0x5FC0`.
 - State/slot, resource-handle, and transform-record helpers through
-  `boot_display_list_vector_distance_and_transform_prefix.s`
-  `0x5FC0..0x954C`.
-- Current remainder: `code_0000954C_00011000.s`.
+  `boot_display_list_transform_coefficients_sum_clear.s`
+  `0x5FC0..0x978C`.
+- Current remainder: `code_0000978C_00011000.s`.
 
 Static dossiers live under `docs/dossiers/` and are the durable evidence notes
 for each promoted source-layout split.
@@ -907,13 +907,65 @@ Verification for the split:
 - Static dossier:
   `docs/dossiers/boot-display-list-vector-distance-and-transform-prefix.md`.
 
+## 2026-06-21 - Boot Display-List Transform Coefficients / Sum Clear Split
+
+Baseline before the split:
+
+- `git status --short` was clean at commit
+  `b26f5d0 Split Rev 0 boot display-list vector distance prefix`.
+- `node tools\verify_setup.js` passed with 825 archives, zero unknown bytes, 108
+  visible overlap bytes, 83 tracked source files, 99 generated fallback chunks,
+  and unchanged code/ROM hashes.
+
+Promoted
+`asm/original/rev0/boot/boot_display_list_transform_coefficients_sum_clear.s`
+covering ROM `0x0000954C..0x0000978C` / RAM
+`0x8007914C..0x8007938C`. The old
+`asm/original/rev0/code_0000954C_00011000.s` remainder was removed and replaced
+by `asm/original/rev0/code_0000978C_00011000.s`.
+
+Static evidence from parent function/symbol/callgraph/xref data and local
+source:
+
+- `0x954C` is a valid 576-byte (`0x240`) prologue helper fixed in all seven
+  named states and all 21 snapshots, with frame size `0xA8`.
+- Parent data reports older caller `0x22B0`, high-confidence callee `0x28D20` /
+  RAM `0x80098920` called twice, no unresolved v2 targets, and secondary entry
+  `0x9780`.
+- Parent xrefs read globals `0x800F0008`, `0x800E9BE0`, and `0x800E7A0E`, and
+  write `0x800A8740`.
+- Local source corrects the exclusive boundary: parent function data ends at
+  `0x9788`, but `0x9788` is the delay-slot store for the `0x9784` `jr ra`, so
+  the promoted source must include through `0x978C`.
+
+Static shape:
+
+- The main helper calls RAM `0x80098920` twice, uses incoming `f12`, `f14`, and
+  `a2` as float coefficients, reads descriptor/global `0x800E9BE0` plus
+  halfword `0x800E7A0E`, and writes intermediate stack floats at
+  `sp+0x60..0x6C`.
+- It scales with float constant `0x467F8000`, truncates the divided float, and
+  returns converted value plus `0x3FE0`.
+- The promoted block also includes a compact `0x9758..0x9780` 16-word sum leaf
+  and a `0x9780..0x978C` tail that clears word global `0x800A8740`.
+
+Verification for the split:
+
+- `node tests\binutils_smoke.js` passed.
+- `node tools\assemble_original_mips.js` passed.
+- Full `node tools\verify_setup.js` passed after docs were updated.
+- Source mix is now 1 tracked composite real-asm chunk made from 84 tracked
+  source files, plus 99 generated fallback chunks.
+- Static dossier:
+  `docs/dossiers/boot-display-list-transform-coefficients-sum-clear.md`.
+
 ## Next Frontier
 
-Continue from `asm/original/rev0/code_0000954C_00011000.s`. The first target is
-the `0x954C` prologue helper at RAM `0x8007914C`. Parent function data reports
-size `0x240`, frame size `0xA8`, fixed in all seven named states and all 21
-snapshots, older caller `0x22B0`, high-confidence callee `0x28D20` / RAM
-`0x80098920`, and secondary entry `0x9780`. Local source shows a compact
-unparented 16-word sum leaf at `0x9758..0x9780` and a `0x9780..0x978C`
-global-clear tail before the next parent boundary. Keep the `0x954C..0x978C`
-cluster together next.
+Continue from `asm/original/rev0/code_0000978C_00011000.s`. The first target is
+the `0x978C` leaf/prefix family at RAM `0x8007938C`. Parent function data
+reports size `0x28C`, actual prologue body at `0x97A8`, fixed in all seven
+named states and all 21 snapshots, many callers, JAL-target and indirect-jump
+behavior, high-confidence callees `0x9CAC`, `0x9C50`, `0x9D50`, `0x9EFC`,
+`0x9FD8`, and `resource_free` `0x16C4`, with no unresolved v2 targets. Keep the
+next `0x978C..0x9A18` family together until the jump/table shape is split
+safely.

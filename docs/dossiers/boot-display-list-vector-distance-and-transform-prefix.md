@@ -10,7 +10,7 @@ the color rect packet emitter:
 | Source | ROM range | RAM range | Notes |
 | --- | --- | --- | --- |
 | `asm/original/rev0/boot/boot_display_list_vector_distance_and_transform_prefix.s` | `0x00009428..0x0000954C` | `0x80079028..0x8007914C` | `0x9428` prologue helper plus the parent-recorded `0x953C` fallthrough prefix. |
-| `asm/original/rev0/code_0000954C_00011000.s` | `0x0000954C..0x00011000` | `0x8007914C..0x80080C00` | Current tracked remainder; starts at a large prologue helper. |
+| `asm/original/rev0/code_0000954C_00011000.s` | `0x0000954C..0x00011000` | `0x8007914C..0x80080C00` | Remainder at this split; now superseded by `code_0000978C_00011000.s` after the transform coefficients / sum-clear split. |
 
 The source name is conservative. It records the observed static vector-distance
 shape plus the adjacent transform-like prefix, not final renderer semantics.
@@ -52,14 +52,16 @@ shape plus the adjacent transform-like prefix, not final renderer semantics.
 - The parent-recorded secondary entry at `0x953C` is immediately after that
   epilogue. It is executable fallthrough setup for the next body, so this source
   owns it rather than starting the next remainder there.
-- The next tracked remainder starts at `0x0000954C`, a clean prologue boundary.
+- The next tracked remainder at this split started at `0x0000954C`, a clean
+  prologue boundary. It is now superseded by
+  `asm/original/rev0/code_0000978C_00011000.s`.
 - Parent data reports the `0x954C` helper as size `0x240`, frame size `0xA8`,
   fixed in all seven states and all 21 snapshots, with older caller `0x22B0`,
   high-confidence callee `0x28D20` / RAM `0x80098920`, and secondary entry
   `0x9780`.
-- Local source shows an unparented compact 16-word sum leaf at `0x9758..0x9780`
-  and a `0x9780..0x978C` global-clear tail before the next parent boundary, so
-  keep the `0x954C..0x978C` cluster together next.
+- Follow-up split `boot_display_list_transform_coefficients_sum_clear.s` now
+  owns `0x954C..0x978C`; it kept the unparented compact 16-word sum leaf at
+  `0x9758..0x9780` and the `0x9780..0x978C` global-clear tail together.
 
 ## Verification
 

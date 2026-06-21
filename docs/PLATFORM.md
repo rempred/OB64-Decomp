@@ -80,8 +80,9 @@ named tracked parts, then queue record-step, queue F000 record-step, slot record
 release/payload helpers, queue priority rebuild helper, no-op tails, and compact
 record-copy leaf, display-list transform record emit helper, and transform
 wrapper/clamped-rect emit helper, flagged rect packet emit helper, color rect
-packet emit helper, and vector distance/transform-prefix helper into named
-tracked parts while preserving the exact rebuild gate. The
+packet emit helper, vector distance/transform-prefix helper, and transform
+coefficients/sum-clear helper into named tracked parts while preserving the
+exact rebuild gate. The
 current setup gate also builds a
 full-ROM source ownership manifest so non-code bytes are represented as
 raw/archive/audio/LZSS/tail/padding source forms instead of being misclassified
@@ -109,7 +110,7 @@ Expected current results:
   baserom code-region SHA256
   `40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`.
 - `assemble_original_mips.js` currently uses 1 tracked composite
-  real-assembler chunk (`0x00001000..0x00011000`) made from 83 tracked source
+  real-assembler chunk (`0x00001000..0x00011000`) made from 84 tracked source
   files, plus 99 generated fallback chunks.
 - `rebuild_rom.js --assembled-code ...` substitutes that assembled code blob for
   the raw code segment and still confirms the same full-ROM SHA256.
@@ -255,7 +256,7 @@ prints PASS. Current PASS summary:
 - Toolchain: `n64-tools-gcc-toolchain-mips64-win64`, GNU Binutils 2.39.
 - Binutils smoke tests: `.word`, real instructions, `.set noreorder`, and first
   tracked chunk real assembly all pass.
-- Source mix: 1 tracked composite real-asm chunk made from 83 tracked source
+- Source mix: 1 tracked composite real-asm chunk made from 84 tracked source
   files, plus 99 generated fallback chunks.
 - Source manifest: 1,059 entries, zero unknown bytes, 2,469,141 ambiguous bytes
   preserved explicitly.
@@ -333,6 +334,7 @@ docs:
 - `docs/dossiers/boot-display-list-flagged-rect-packet-emit.md`
 - `docs/dossiers/boot-display-list-color-rect-packet-emit.md`
 - `docs/dossiers/boot-display-list-vector-distance-and-transform-prefix.md`
+- `docs/dossiers/boot-display-list-transform-coefficients-sum-clear.md`
 - `docs/DECOMP_LOG.md`
 - `docs/FULL_ROM_SOURCE_MANIFEST.md`
 
@@ -341,13 +343,12 @@ The next phase remains full-ROM source preparation:
 1. Promote/curate the next tracked non-code owner batch under `data/` or
    `assets/`.
 2. Continue splitting original MIPS into cleaner function/data files, starting
-   from `asm/original/rev0/code_0000954C_00011000.s`. The next target is the
-   `0x954C` prologue helper; parent evidence reports size `0x240`, frame size
-   `0xA8`, older caller `0x22B0`, high-confidence callee `0x28D20` / RAM
-   `0x80098920`, and secondary entry `0x9780`. Keep the `0x954C..0x978C`
-   cluster together because local source shows an unparented `0x9758..0x9780`
-   16-word sum leaf and a `0x9780..0x978C` global-clear tail before the next
-   parent boundary.
+   from `asm/original/rev0/code_0000978C_00011000.s`. The next target is the
+   `0x978C` leaf/prefix family and `0x97A8` prologue body; parent evidence
+   reports size `0x28C`, many callers, JAL-target and indirect-jump behavior,
+   high-confidence callees `0x9CAC`, `0x9C50`, `0x9D50`, `0x9EFC`, `0x9FD8`,
+   and `resource_free` `0x16C4`, with no unresolved v2 targets. Keep the next
+   `0x978C..0x9A18` family together until the jump/table shape is split safely.
 3. Keep `node tools/verify_setup.js` green after every source-layout change.
 
 See `docs/NEXT_STEPS.md` for the active task queue.

@@ -16,7 +16,7 @@ node tools/verify_setup.js
 ```
 
 Current source mix: 1 tracked composite real-assembler chunk
-(`0x00001000..0x00011000`) made from 83 tracked source files, plus 99 generated
+(`0x00001000..0x00011000`) made from 84 tracked source files, plus 99 generated
 fallback chunks.
 
 The assembled code-region SHA256 is
@@ -92,14 +92,14 @@ coverage or overclassifying data as MIPS.
    priority rebuild helper split, render no-op tail split, and `0x58` record
    copy leaf split, display-list transform record emit split, and
    transform-wrapper/clamped-rect emit split, flagged rect packet emit split,
-   color rect packet emit split, and vector distance/transform-prefix split are
-   done. Continue from `asm/original/rev0/code_0000954C_00011000.s`, beginning
-   with the `0x954C` prologue helper. Parent evidence reports size `0x240`,
-   frame size `0xA8`, older caller `0x22B0`, high-confidence callee `0x28D20` /
-   RAM `0x80098920`, and secondary entry `0x9780`. Keep the `0x954C..0x978C`
-   cluster together because local source shows an unparented `0x9758..0x9780`
-   16-word sum leaf and a `0x9780..0x978C` global-clear tail before the next
-   parent boundary.
+   color rect packet emit split, vector distance/transform-prefix split, and
+   transform coefficients/sum-clear split are done. Continue from
+   `asm/original/rev0/code_0000978C_00011000.s`, beginning with the `0x978C`
+   leaf/prefix family and `0x97A8` prologue body. Parent evidence reports size
+   `0x28C`, many callers, JAL-target and indirect-jump behavior,
+   high-confidence callees `0x9CAC`, `0x9C50`, `0x9D50`, `0x9EFC`, `0x9FD8`,
+   and `resource_free` `0x16C4`, with no unresolved v2 targets. Keep the next
+   `0x978C..0x9A18` family together until the jump/table shape is split safely.
 
 4. Keep the setup gate green.
 

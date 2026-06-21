@@ -173,7 +173,7 @@ Current result:
   `40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`.
 - Code-region match against baserom: pass.
 - Tracked real-assembler original-MIPS chunks: 1 composite
-  (`0x00001000..0x00011000`) made from 83 real-assembler source files.
+  (`0x00001000..0x00011000`) made from 84 real-assembler source files.
 - Generated fallback chunks: 99.
 - Assembled-code ROM rebuild command:
 
@@ -1955,8 +1955,9 @@ display-list-style packet runs through pointer global `0x800E9BA0`, reads
 `E3000A01`, `FE00`, `F700`, and `F600`.
 
 Follow-up: `0x9428..0x954C` is now promoted as
-`boot_display_list_vector_distance_and_transform_prefix.s`, leaving current
-remainder `asm/original/rev0/code_0000954C_00011000.s`.
+`boot_display_list_vector_distance_and_transform_prefix.s`, leaving
+`asm/original/rev0/code_0000954C_00011000.s` at that step. That remainder is
+now superseded by the transform coefficients / sum-clear split below.
 
 Static dossier:
 `docs/dossiers/boot-display-list-color-rect-packet-emit.md`.
@@ -1968,7 +1969,8 @@ the parent-recorded `0x953C` fallthrough prefix:
 
 - `asm/original/rev0/boot/boot_display_list_vector_distance_and_transform_prefix.s`
   `0x00009428..0x0000954C` / RAM `0x80079028..0x8007914C`.
-- Current remainder:
+- Remainder after this split, now superseded by the transform coefficients /
+  sum-clear split:
   `asm/original/rev0/code_0000954C_00011000.s`.
 
 Static evidence: parent data reports `0x9428` as a valid 292-byte (`0x124`)
@@ -1987,16 +1989,50 @@ through RAM `0x800907E0` on the alternate sqrt path, divides by incoming `a2`
 saved as `f20`, scales with float constant `0x477FFE00`, converts through the
 signed float-to-int boundary case, and returns a 16-bit inverted value.
 
-Next frontier: `asm/original/rev0/code_0000954C_00011000.s` starts with a
-`0x954C` prologue helper at RAM `0x8007914C`, size `0x240`, frame size `0xA8`,
-fixed in all seven named states and all 21 snapshots. Parent data lists older
-caller `0x22B0`, high-confidence callee `0x28D20` / RAM `0x80098920`, and
-secondary entry `0x9780`. Local source shows a compact unparented 16-word sum
-leaf at `0x9758..0x9780` and a `0x9780..0x978C` global-clear tail before the
-next parent boundary, so keep the `0x954C..0x978C` cluster together next.
+Follow-up: `0x954C..0x978C` is now promoted as
+`boot_display_list_transform_coefficients_sum_clear.s`, leaving current
+remainder `asm/original/rev0/code_0000978C_00011000.s`.
 
 Static dossier:
 `docs/dossiers/boot-display-list-vector-distance-and-transform-prefix.md`.
+
+## Boot Display-List Transform Coefficients / Sum Clear Split
+
+The next tracked Rev 0 original-MIPS split promotes the `0x954C` helper plus two
+adjacent compact leaves:
+
+- `asm/original/rev0/boot/boot_display_list_transform_coefficients_sum_clear.s`
+  `0x0000954C..0x0000978C` / RAM `0x8007914C..0x8007938C`.
+- Current remainder:
+  `asm/original/rev0/code_0000978C_00011000.s`.
+
+Static evidence: parent data reports `0x954C` as a valid 576-byte (`0x240`)
+prologue helper with frame size `0xA8`, fixed in all seven named states and all
+21 snapshots, older caller `0x22B0`, high-confidence callee `0x28D20` / RAM
+`0x80098920` called twice, and secondary entry `0x9780`. Parent xrefs read
+`0x800F0008`, `0x800E9BE0`, and `0x800E7A0E`, and write `0x800A8740`. Local
+source corrects the exclusive range: parent function data ends at `0x9788`, but
+`0x9788` is the delay-slot store for the `0x9784` `jr ra`, so the source split
+must include through `0x978C`.
+
+Static shape: the main helper calls RAM `0x80098920` twice, uses incoming
+`f12`, `f14`, and `a2` as float coefficients, reads descriptor/global
+`0x800E9BE0` plus halfword `0x800E7A0E`, writes intermediate stack floats at
+`sp+0x60..0x6C`, scales with float constant `0x467F8000`, truncates the divided
+float, and returns converted value plus `0x3FE0`. The same source includes a
+compact `0x9758..0x9780` 16-word sum leaf and a `0x9780..0x978C` tail that
+clears word global `0x800A8740`.
+
+Next frontier: `asm/original/rev0/code_0000978C_00011000.s` starts with the
+`0x978C` leaf/prefix family at RAM `0x8007938C`. Parent data reports size
+`0x28C`, actual prologue body at `0x97A8`, fixed in all seven named states and
+all 21 snapshots, many callers, JAL-target and indirect-jump behavior,
+high-confidence callees `0x9CAC`, `0x9C50`, `0x9D50`, `0x9EFC`, `0x9FD8`, and
+`resource_free` `0x16C4`, with no unresolved v2 targets. Keep the next
+`0x978C..0x9A18` family together until the jump/table shape is split safely.
+
+Static dossier:
+`docs/dossiers/boot-display-list-transform-coefficients-sum-clear.md`.
 
 ## Setup Complete Gate
 
@@ -2012,7 +2048,7 @@ setup-complete state:
 - Assembler: GNU Binutils 2.39 `mips64-elf-as.exe` with `-EB -mips3 -32`.
 - Setup verifier: `tools/verify_setup.js`.
 - Current verifier result: PASS; 825 archives, 0 unknown bytes, 108 overlap
-  bytes visible, 1 tracked composite real-asm chunk made from 83 tracked source
+  bytes visible, 1 tracked composite real-asm chunk made from 84 tracked source
   files, 99 generated fallback chunks, full-source manifest 1,059 entries with
   2,469,141 ambiguous bytes preserved explicitly, 3 tracked non-code
   source-owner files / 44,029 bytes, 1,055 generated non-code fallback files /
@@ -2021,11 +2057,11 @@ setup-complete state:
   `571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A`.
 
 Next phase is either promoting another small non-code owner batch or continuing
-tracked original-MIPS splits from `asm/original/rev0/code_0000954C_00011000.s`.
-The next MIPS frontier starts with the `0x954C` prologue helper; parent evidence
-reports size `0x240`, frame size `0xA8`, older caller `0x22B0`,
-high-confidence callee `0x28D20` / RAM `0x80098920`, and secondary entry
-`0x9780`. Keep the `0x954C..0x978C` cluster together because local source shows
-the `0x9758..0x9780` 16-word sum leaf and `0x9780..0x978C` global-clear tail
-before the next parent boundary. Do not begin semantic C decomp unless the setup
-verifier is green.
+tracked original-MIPS splits from `asm/original/rev0/code_0000978C_00011000.s`.
+The next MIPS frontier starts with the `0x978C` leaf/prefix family and the
+`0x97A8` prologue body. Parent evidence reports size `0x28C`, many callers,
+JAL-target and indirect-jump behavior, high-confidence callees `0x9CAC`,
+`0x9C50`, `0x9D50`, `0x9EFC`, `0x9FD8`, and `resource_free` `0x16C4`, with no
+unresolved v2 targets. Keep the next `0x978C..0x9A18` family together until the
+jump/table shape is split safely. Do not begin semantic C decomp unless the
+setup verifier is green.

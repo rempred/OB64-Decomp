@@ -10,7 +10,7 @@ after the transform-record emitter:
 | Source | ROM range | RAM range | Notes |
 | --- | --- | --- | --- |
 | `asm/original/rev0/boot/boot_display_list_transform_wrapper_clamped_rect_emit.s` | `0x00008A58..0x00008D6C` | `0x80078658..0x8007896C` | `0x8A58` wrapper plus `0x8A74` secondary leaf/body, frame size `0x18` on the wrapper, clean return at `0x8D64..0x8D68`. |
-| `asm/original/rev0/code_00008D6C_00011000.s` | `0x00008D6C..0x00011000` | `0x8007896C..0x80080C00` | Remainder at this split; now superseded by `code_0000954C_00011000.s` after the flagged rect, color rect, and vector distance/transform-prefix splits. |
+| `asm/original/rev0/code_00008D6C_00011000.s` | `0x00008D6C..0x00011000` | `0x8007896C..0x80080C00` | Remainder at this split; now superseded by `code_0000978C_00011000.s` after the later display-list helper splits. |
 
 The source name is conservative. It records a static wrapper plus clamped
 rectangle/display-list record shape, not final renderer semantics.
@@ -58,9 +58,9 @@ rectangle/display-list record shape, not final renderer semantics.
   prologue function. That next helper calls RAM `0x8007338C`, which local
   earlier source identifies as the `0x378C` secondary entry inside
   `boot_resource_buffer_reset_flags.s`. That helper is now promoted as
-  `boot_display_list_flagged_rect_packet_emit.s`; the follow-up color rect
-  packet split and follow-up vector distance/transform-prefix split now leave
-  `code_0000954C_00011000.s` as the active remainder.
+  `boot_display_list_flagged_rect_packet_emit.s`; follow-up color rect, vector
+  distance, and transform coefficients splits now leave
+  `code_0000978C_00011000.s` as the active remainder.
 
 ## Verification
 

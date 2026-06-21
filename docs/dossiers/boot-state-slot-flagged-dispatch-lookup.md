@@ -61,7 +61,7 @@ and record lookup shape, not runtime-verified scheduler semantics.
 - The clean exclusive end is `0x7768`, the next parent prologue boundary.
 - The next source frontier at that time was the `0x7768` prologue helper. It is
   now promoted as `boot_state_slot_pool_table_helpers.s`; subsequent splits have
-  advanced the active remainder to `code_0000954C_00011000.s`.
+  advanced the active remainder to `code_0000978C_00011000.s`.
 
 ## Verification
 
