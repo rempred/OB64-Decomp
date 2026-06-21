@@ -10,7 +10,8 @@ boot-code helper immediately after the large-record copy/flag helper:
 | Source | ROM range | RAM range | Notes |
 | --- | --- | --- | --- |
 | `asm/original/rev0/boot/boot_resource_probe_small_record_copy_flag.s` | `0x00005CFC..0x00005D9C` | `0x800758FC..0x8007599C` | Overlapping `0x5CFC` leaf / `0x5D04` prologue helper that copies the `0x10`-byte record at shared-buffer offset `0` into caller scratch and marks the buffer dirty/valid byte. |
-| `asm/original/rev0/code_00005D9C_00011000.s` | `0x00005D9C..0x00011000` | `0x8007599C..0x80080C00` | Current tracked remainder. |
+| `asm/original/rev0/boot/boot_resource_probe_record_checksum_signature.s` | `0x00005D9C..0x00005FC0` | `0x8007599C..0x80075BC0` | Follow-up split documented separately. |
+| `asm/original/rev0/code_00005FC0_00011000.s` | `0x00005FC0..0x00011000` | `0x80075BC0..0x80080C00` | Current tracked remainder. |
 
 The name is conservative. The static copy/flag shape is clear, but no runtime
 trace or controlled mutation has verified final behavior or record semantics.
@@ -51,10 +52,11 @@ trace or controlled mutation has verified final behavior or record semantics.
 - The file keeps `0x5CFC` and `0x5D04` together because the leaf prefix loads
   the shared global pointer used by the prologue body's first branch.
 - The routine ends after the `jr ra` delay slot at `0x5D98`.
-- The next parent boundary is `0x00005D9C`. Parent data reports a 544-byte
-  prologue helper with secondary entries at `0x5E84` and `0x5F00`; its static
-  shape writes record header halfwords, copies the base signature at
-  `0x800A8240`, and contains local byte-sum/bit-count helpers.
+- The next parent boundary was `0x00005D9C`; the follow-up
+  `boot_resource_probe_record_checksum_signature.s` split now covers
+  `0x00005D9C..0x00005FC0`.
+- The current active remainder starts at `0x00005FC0`, a larger boot
+  init/table setup routine.
 
 ## Verification
 

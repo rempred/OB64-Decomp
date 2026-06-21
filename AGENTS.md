@@ -173,7 +173,7 @@ Current result:
   `40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`.
 - Code-region match against baserom: pass.
 - Tracked real-assembler original-MIPS chunks: 1 composite
-  (`0x00001000..0x00011000`) made from 55 real-assembler source files.
+  (`0x00001000..0x00011000`) made from 56 real-assembler source files.
 - Generated fallback chunks: 99.
 - Assembled-code ROM rebuild command:
 
@@ -1291,7 +1291,7 @@ helper after the large-record copy/flag helper:
 - `asm/original/rev0/boot/boot_resource_probe_small_record_copy_flag.s`
   `0x00005CFC..0x00005D9C`; parent reports a leaf entry at `0x5CFC` that falls
   into the `0x5D04` prologue body with frame size `0x20`.
-- Remainder:
+- Remainder at that step, now superseded by the record checksum/signature split:
   `asm/original/rev0/code_00005D9C_00011000.s`.
 
 Static evidence: parent symbol/callgraph data places the helper at sibling RAM
@@ -1311,9 +1311,37 @@ runtime semantics.
 
 Static dossier:
 `docs/dossiers/boot-resource-probe-small-record-copy-flag.md`.
-Next source split should start at `asm/original/rev0/code_00005D9C_00011000.s`;
-the next target is the `0x5D9C` record checksum/signature helper with secondary
-entries at `0x5E84` and `0x5F00`.
+
+## Boot Resource Probe Record Checksum/Signature Split
+
+The next tracked Rev 0 original-MIPS split separates the record header
+checksum/signature helper cluster after the small-record copy/flag helper:
+
+- `asm/original/rev0/boot/boot_resource_probe_record_checksum_signature.s`
+  `0x00005D9C..0x00005FC0`; parent reports a 544-byte prologue at `0x5D9C`
+  with frame size `0x20` and secondary entries at `0x5E84` and `0x5F00`.
+- Current remainder:
+  `asm/original/rev0/code_00005FC0_00011000.s`.
+
+Static evidence: parent symbol data places `0x5D9C` at fixed RAM
+`0x8007599C` in all seven named states / all 21 snapshots. Static callers are
+`0x4C5C`, `0x539C`, and `0x553C`, with adjacent record-check helpers also
+calling the secondary entry targets. The only high-confidence external callee is
+`0x23460` / RAM `0x80093060`; local direct calls to `0x80075A84` and
+`0x80075B00` are internal secondary entries in the same split.
+
+Static shape: dispatches on ID `0x0E`, `0x0F`, or indexed IDs, computes two
+low-halfword helper values over the record payload, writes them to record
+header halfwords, and copies the 8-byte base signature from `0x800A8240` to
+record `+4`. The file also keeps local zero-seed byte-sum and bit-count sibling
+entries at `0x5EC4` and `0x5F60` with the parent-reported secondary entries at
+`0x5E84` and `0x5F00`. The name is conservative and records the static
+checksum/signature shape, not verified runtime semantics.
+
+Static dossier:
+`docs/dossiers/boot-resource-probe-record-checksum-signature.md`.
+Next source split should start at `asm/original/rev0/code_00005FC0_00011000.s`;
+the next target is the `0x5FC0` large boot init/table setup routine.
 
 ## Setup Complete Gate
 
@@ -1329,7 +1357,7 @@ setup-complete state:
 - Assembler: GNU Binutils 2.39 `mips64-elf-as.exe` with `-EB -mips3 -32`.
 - Setup verifier: `tools/verify_setup.js`.
 - Current verifier result: PASS; 825 archives, 0 unknown bytes, 108 overlap
-  bytes visible, 1 tracked composite real-asm chunk made from 55 tracked source
+  bytes visible, 1 tracked composite real-asm chunk made from 56 tracked source
   files, 99 generated fallback chunks, full-source manifest 1,059 entries with
   2,469,141 ambiguous bytes preserved explicitly, 3 tracked non-code
   source-owner files / 44,029 bytes, 1,055 generated non-code fallback files /
@@ -1338,5 +1366,5 @@ setup-complete state:
   `571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A`.
 
 Next phase is either promoting another small non-code owner batch or continuing
-tracked original-MIPS splits from `asm/original/rev0/code_00005D9C_00011000.s`.
+tracked original-MIPS splits from `asm/original/rev0/code_00005FC0_00011000.s`.
 Do not begin semantic C decomp unless the setup verifier is green.

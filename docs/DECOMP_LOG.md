@@ -18,7 +18,7 @@ and replace the active log with a compact current-state summary.
 - Whole-ROM coverage still independently scans for LHA headers; do not trust the
   parent archive catalog by itself.
 - Current tracked code source mix: one composite real-assembler chunk
-  `0x00001000..0x00011000` made from 55 tracked source files, plus 99 generated
+  `0x00001000..0x00011000` made from 56 tracked source files, plus 99 generated
   fallback code chunks.
 - Current tracked non-code source-owner mix: 3 tracked files / 44,029 bytes,
   plus 1,055 generated fallback owner files / 35,388,567 bytes.
@@ -79,7 +79,8 @@ Current named sequence:
 - `boot_resource_probe_indexed_record_copy_flag.s` `0x5B8C..0x5C58`.
 - `boot_resource_probe_large_record_copy_flag.s` `0x5C58..0x5CFC`.
 - `boot_resource_probe_small_record_copy_flag.s` `0x5CFC..0x5D9C`.
-- Current remainder: `code_00005D9C_00011000.s`.
+- `boot_resource_probe_record_checksum_signature.s` `0x5D9C..0x5FC0`.
+- Current remainder: `code_00005FC0_00011000.s`.
 
 Static dossiers live under `docs/dossiers/` and are the durable evidence notes
 for each promoted source-layout split.
@@ -964,19 +965,80 @@ Verification for the split:
 - Source mix is now 1 tracked composite real-asm chunk made from 55 tracked
   source files, plus 99 generated fallback chunks.
 
+## 2026-06-21 - Boot Resource Probe Record Checksum/Signature Split
+
+Baseline before the split:
+
+- `git status --short` was clean at commit
+  `bc19698 Split Rev 0 resource probe small record copy flag helper`.
+- `node tools\verify_setup.js` passed with 825 archives, zero unknown bytes, 108
+  visible overlap bytes, 55 tracked source files, and unchanged code/ROM hashes.
+- The compact decomp log was 801 lines / 5,809 words, so no prune/archive pass
+  was needed.
+
+Promoted
+`asm/original/rev0/boot/boot_resource_probe_record_checksum_signature.s`
+covering ROM `0x00005D9C..0x00005FC0` / RAM
+`0x8007599C..0x80075BC0`. The old `code_00005D9C_00011000.s` remainder was
+removed and replaced by `asm/original/rev0/code_00005FC0_00011000.s`.
+
+Static evidence from parent `../scripts/ob64_symbols_v2.json`,
+`../scripts/ob64_callgraph_v2.json`, `../scripts/ob64_xrefs.json`, and local
+source inspection:
+
+- `0x5D9C` is a 544-byte prologue helper with frame size `0x20`, fixed RAM
+  `0x8007599C`, and parent-reported secondary entries at `0x5E84` and
+  `0x5F00`.
+- Fixed runtime evidence places the helper at `0x8007599C` in all seven named
+  states and all 21 snapshots.
+- Static callers include `0x4C5C`, `0x539C`, and `0x553C`; the neighboring
+  record-check helpers also call into secondary entries inside this range.
+- The only high-confidence external callee is `0x23460` / RAM `0x80093060`.
+- Parent callgraph unresolved targets `0x80075A84` and `0x80075B00` are local
+  secondary entries in this same split, not outside code.
+- Parent symbol data names secondary entries at `0x5E84` and `0x5F00`; local
+  source inspection also keeps sibling zero-seed entries at `0x5EC4` and
+  `0x5F60` in the same file.
+- Local source inspection shows an 8-byte copy from base signature
+  `0x800A8240` to record `+4` through `0x80093060`.
+
+Static shape:
+
+- Dispatches on ID `0x0E`, `0x0F`, or indexed IDs.
+- ID `0x0E` hashes/counts the 4-byte payload at record `+0x0C` with seed/offset
+  `0`.
+- ID `0x0F` hashes/counts the `0x4ADC`-byte payload at record `+0x0C` with
+  seed/offset `0x30B0`.
+- Other IDs compute `id * 0x1850 + 0x10` and hash/count a `0x1844`-byte payload
+  at record `+0x0C`.
+- Writes the first helper's low-halfword return to record `+0`, the second
+  helper's low-halfword return to record `+2`, and copies the 8-byte base
+  signature to record `+4`.
+- Contains byte-sum helper entries at `0x5E84` and `0x5EC4`, plus bit-count
+  helper entries at `0x5F00` and `0x5F60`.
+- The padding `nop` at `0x5FBC` stays with this split; the next prologue starts
+  cleanly at `0x5FC0`.
+
+Verification for the split:
+
+- `node tests\binutils_smoke.js` passed.
+- `node tools\assemble_original_mips.js` passed.
+- `node tools\verify_setup.js` passed after the docs update.
+- Source mix is now 1 tracked composite real-asm chunk made from 56 tracked
+  source files, plus 99 generated fallback chunks.
+
 ## Next Frontier
 
-Continue from `asm/original/rev0/code_00005D9C_00011000.s`.
+Continue from `asm/original/rev0/code_00005FC0_00011000.s`.
 
 Parent evidence for the next target:
 
-- `0x5D9C` is a 544-byte prologue helper with frame size `0x20`, fixed RAM
-  `0x8007599C`, and secondary entries at `0x5E84` and `0x5F00`.
-- Static callers include `0x4C5C`, `0x539C`, and `0x553C`; the adjacent
-  check helpers also branch/call into secondary entries inside this range.
-- High-confidence callee is `0x23460` / RAM `0x80093060`; the helper also calls
-  local unresolved/direct RAM targets `0x80075A84` and `0x80075B00`, which are
-  the secondary checksum/count helpers inside the same source range.
-- Static shape: dispatches on ID `0x0E`, `0x0F`, or indexed IDs, writes two
-  header halfwords from helper returns, copies the 8-byte base signature from
-  `0x800A8240`, and contains the two local byte-sum/bit-count helper families.
+- `0x5FC0` is a 1508-byte prologue helper with frame size `0x28` and fixed RAM
+  `0x80075BC0`.
+- Parent evidence shows caller `0x22B0` plus self/family calls.
+- Local source begins by writing a long table of RAM function/data pointers under
+  the `0x800Bxxxx` global area, so treat it as a large boot init/table setup
+  routine until deeper evidence narrows the name.
+- The function is substantially larger than the recent probe helper leaves and
+  should be split only after reading its full local control flow, callees, and
+  global writes.

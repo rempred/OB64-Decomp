@@ -52,10 +52,9 @@ final behavior or API semantics.
   `boot_resource_probe_global_buffer_dual_callback_apply.s`.
 - The routine ends after the `jr ra` delay slot at `0x5818`.
 - Follow-up splits now cover through
-  `boot_resource_probe_small_record_copy_flag.s`
-  (`0x00005CFC..0x00005D9C`); current active remainder starts at `0x00005D9C`.
-- The next parent boundary is `0x00005D9C`, the record checksum/signature helper
-  family with secondary entries at `0x5E84` and `0x5F00`.
+  `boot_resource_probe_record_checksum_signature.s`
+  (`0x00005D9C..0x00005FC0`); current active remainder starts at
+  `0x00005FC0`.
 
 ## Verification
 
