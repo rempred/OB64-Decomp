@@ -1042,8 +1042,9 @@ by resource probe dispatch prepare:
 - `asm/original/rev0/boot/boot_resource_probe_dual_callback_materialize.s`
   `0x0000553C..0x00005624`; parent reports a prologue with frame size `0x20`,
   two indirect `jalr` calls, and no unresolved RAM calls.
-- Remainder:
-  `asm/original/rev0/code_00005624_00011000.s`.
+- Historical remainder at that step:
+  `asm/original/rev0/code_00005624_00011000.s`, now superseded by the
+  global-buffer dual-callback apply split below.
 
 Static evidence: parent function/symbol/callgraph data reports high-confidence
 caller `0x4C5C`; high-confidence callees `resource_alloc` (`0x1330`),
@@ -1062,8 +1063,40 @@ dual-callback materialize shape, not verified runtime semantics.
 
 Static dossier:
 `docs/dossiers/boot-resource-probe-dual-callback-materialize.md`.
-Next source split should start at `asm/original/rev0/code_00005624_00011000.s`,
-the 316-byte `0x5624` prologue helper called by `0x4DC0`.
+
+## Boot Resource Probe Global Buffer Dual Callback Apply Split
+
+The next tracked Rev 0 original-MIPS split separates the 316-byte helper called
+by resource probe dispatch apply:
+
+- `asm/original/rev0/boot/boot_resource_probe_global_buffer_dual_callback_apply.s`
+  `0x00005624..0x00005760`; parent reports a prologue with frame size `0x20`,
+  two indirect `jalr` calls, and no unresolved RAM calls.
+- Remainder:
+  `asm/original/rev0/code_00005760_00011000.s`.
+
+Static evidence: parent function/symbol/callgraph data reports high-confidence
+caller `0x4DC0`; high-confidence callees `resource_alloc` (`0x1330`, called
+twice), `0x1A4F0` / RAM `0x8008A0F0`, `0x23460` / RAM `0x80093060`, and
+`resource_free` (`0x16C4`); fixed RAM `0x80075224` in all seven named states
+and all 21 snapshots; reads/writes `0x800A83B8`; and reads from
+`0x800A8250/8258/825C/8264`.
+
+Static shape: the routine allocates a `0x4AE8` scratch record, ensures shared
+global buffer `0x800A83B8` exists by allocating `0x8000` and filling it in
+`0x100`-byte chunks through `0x8008A0F0`, copies `0x4AE8` bytes from buffer
+offset `0x30B0` into scratch through `0x80093060`, skips callbacks if scratch
+word `+0x00` is zero, otherwise walks 13 stride-`0x1C` callback slots from
+`0x800A8250/8258` with arguments at `scratch + offset + 0x0C`, walks 13 more
+slots from `0x800A825C/8264` with arguments at
+`scratch + offset + 0x1850`, frees the scratch record, and returns. The name is
+conservative and records the static global-buffer/callback apply shape, not
+verified runtime semantics.
+
+Static dossier:
+`docs/dossiers/boot-resource-probe-global-buffer-dual-callback-apply.md`.
+Next source split should start at `asm/original/rev0/code_00005760_00011000.s`,
+the 188-byte `0x5760` prologue helper called by `0x4AC8`.
 
 ## Setup Complete Gate
 
@@ -1079,7 +1112,7 @@ setup-complete state:
 - Assembler: GNU Binutils 2.39 `mips64-elf-as.exe` with `-EB -mips3 -32`.
 - Setup verifier: `tools/verify_setup.js`.
 - Current verifier result: PASS; 825 archives, 0 unknown bytes, 108 overlap
-  bytes visible, 1 tracked composite real-asm chunk made from 47 tracked source
+  bytes visible, 1 tracked composite real-asm chunk made from 48 tracked source
   files, 99 generated fallback chunks, full-source manifest 1,059 entries with
   2,469,141 ambiguous bytes preserved explicitly, 3 tracked non-code
   source-owner files / 44,029 bytes, 1,055 generated non-code fallback files /
@@ -1088,5 +1121,5 @@ setup-complete state:
   `571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A`.
 
 Next phase is either promoting another small non-code owner batch or continuing
-tracked original-MIPS splits from `asm/original/rev0/code_00005624_00011000.s`.
+tracked original-MIPS splits from `asm/original/rev0/code_00005760_00011000.s`.
 Do not begin semantic C decomp unless the setup verifier is green.

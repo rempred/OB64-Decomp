@@ -65,8 +65,10 @@ controlled mutation has verified final behavior or API semantics.
   follow-up `0x539C` helper is documented in
   `docs/dossiers/boot-resource-probe-id-materialize.md`; the follow-up
   `0x553C` helper is documented in
-  `docs/dossiers/boot-resource-probe-dual-callback-materialize.md`; the active
-  remainder starts at `0x00005624`.
+  `docs/dossiers/boot-resource-probe-dual-callback-materialize.md`; the
+  follow-up `0x5624` helper is documented in
+  `docs/dossiers/boot-resource-probe-global-buffer-dual-callback-apply.md`;
+  the active remainder starts at `0x00005760`.
 
 ## Verification
 

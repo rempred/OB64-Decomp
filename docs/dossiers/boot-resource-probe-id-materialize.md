@@ -12,7 +12,8 @@ check helper:
 | --- | --- | --- | --- |
 | `asm/original/rev0/boot/boot_resource_probe_id_materialize.s` | `0x0000539C..0x0000553C` | `0x80074F9C..0x8007513C` | 416-byte prologue helper with one indirect `jalr`. |
 | `asm/original/rev0/boot/boot_resource_probe_dual_callback_materialize.s` | `0x0000553C..0x00005624` | `0x8007513C..0x80075224` | Follow-up split documented separately. |
-| `asm/original/rev0/code_00005624_00011000.s` | `0x00005624..0x00011000` | `0x80075224..0x80080C00` | Current tracked remainder. |
+| `asm/original/rev0/boot/boot_resource_probe_global_buffer_dual_callback_apply.s` | `0x00005624..0x00005760` | `0x80075224..0x80075360` | Follow-up split documented separately. |
+| `asm/original/rev0/code_00005760_00011000.s` | `0x00005760..0x00011000` | `0x80075360..0x80080C00` | Current tracked remainder. |
 
 The name is conservative. The routine has a clear static shape around an
 incoming resource/probe ID, special cases for IDs `0x0E` and `0x0F`, scratch
@@ -63,7 +64,8 @@ mutation has verified final behavior or API semantics.
   `0x800A8254/8258/8260/8264`.
 - The `0x553C` helper is now documented separately in
   `docs/dossiers/boot-resource-probe-dual-callback-materialize.md`.
-- Current active remainder starts at `0x00005624`.
+- Follow-up splits now cover through `0x00005760`; current active remainder
+  starts at `0x00005760`.
 
 ## Verification
 
