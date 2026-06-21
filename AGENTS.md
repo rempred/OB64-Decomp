@@ -242,12 +242,44 @@ boot/resource block:
   `0x000017EC..0x000018D4`; keeps the `0x17EC/0x17F0` flag-load prefix with
   `func_000017F4` and scans arena free-list nodes for the largest `+0x18`
   free-size field.
-- Remainder:
-  `asm/original/rev0/code_000018D4_00011000.s`.
+- Remainder after this split was
+  `asm/original/rev0/code_000018D4_00011000.s`; that file has since been
+  superseded by the validation/realloc/tree-helper split below.
 
 Static dossier: `docs/dossiers/boot-resource-alloc-free.md`. The
 `resource_alloc_alt_scan` and `resource_largest_free_block` names are
 conservative static/source-layout names, not final C API claims.
+
+## Boot Resource Validation/Realloc/Tree Split
+
+The next tracked Rev 0 original-MIPS split continues the same boot/resource
+helper cluster through the early boot-init boundary:
+
+- `asm/original/rev0/boot/resource_ptr_validate.s`
+  `0x000018D4..0x00001A44`; validates allocator header/link fields and has
+  small secondary return helpers at `0x1A34` and `0x1A3C`.
+- `asm/original/rev0/boot/resource_realloc.s`
+  `0x00001A44..0x00001DE8`; realloc-like static behavior, including null-ptr
+  allocation, zero-size free, grow/copy/free, shrink/split, and secondary
+  tree/list unlink entry `0x1D50`.
+- `asm/original/rev0/boot/resource_tree_insert_find.s`
+  `0x00001DE8..0x00001E74`; keeps recursive insert entry `0x1DE8` and
+  search/fit helper `0x1E3C` together.
+- `asm/original/rev0/boot/resource_rebuild_free_trees.s`
+  `0x00001E74..0x00001F9C`; keeps the `0x1E74` flag-load prefix with
+  `func_00001E7C`.
+- `asm/original/rev0/boot/resource_find_arena_index.s`
+  `0x00001F9C..0x00002004`; keeps the `0x1F9C` count-load prefix with
+  `func_00001FA4`.
+- `asm/original/rev0/boot/resource_alloc_tree_scan.s`
+  `0x00002004..0x000022B0`; parent reports 27 callers and secondary helper
+  entry `0x2274`.
+- Remainder:
+  `asm/original/rev0/code_000022B0_00011000.s`.
+
+Static dossier: `docs/dossiers/boot-resource-validation-realloc-trees.md`. The
+names in this group are source-layout names inferred from static allocator
+table/list behavior unless later runtime or mutation proof upgrades them.
 
 ## Setup Complete Gate
 
@@ -263,7 +295,7 @@ setup-complete state:
 - Assembler: GNU Binutils 2.39 `mips64-elf-as.exe` with `-EB -mips3 -32`.
 - Setup verifier: `tools/verify_setup.js`.
 - Current verifier result: PASS; 825 archives, 0 unknown bytes, 108 overlap
-  bytes visible, 1 tracked composite real-asm chunk made from 9 tracked source
+  bytes visible, 1 tracked composite real-asm chunk made from 15 tracked source
   files, 99 generated fallback chunks, full-source manifest 1,059 entries with
   2,469,141 ambiguous bytes preserved explicitly, 3 tracked non-code
   source-owner files / 44,029 bytes, 1,055 generated non-code fallback files /

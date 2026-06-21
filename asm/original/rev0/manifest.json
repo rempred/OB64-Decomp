@@ -91,17 +91,71 @@
           "sha256": "C84A403723096A26F93997AB50ECAF4954DC45A1D9C4B76FB34404184B83ADE9"
         },
         {
-          "name": "code_000018D4_00011000_remainder",
-          "file": "asm/original/rev0/code_000018D4_00011000.s",
+          "name": "resource_ptr_validate",
+          "file": "asm/original/rev0/boot/resource_ptr_validate.s",
           "romStart": "0x000018D4",
+          "romEndExclusive": "0x00001A44",
+          "bytes": 368,
+          "textBytes": 7374,
+          "sha256": "685AB9FA8FBE96C5F5732C20A14199E4E4C53CFD7295D066F282BF74ACEE81CC"
+        },
+        {
+          "name": "resource_realloc",
+          "file": "asm/original/rev0/boot/resource_realloc.s",
+          "romStart": "0x00001A44",
+          "romEndExclusive": "0x00001DE8",
+          "bytes": 932,
+          "textBytes": 17905,
+          "sha256": "3CC279F2D305908237A797B96A5346B9A24F6B2DCD4958ADF2BF997D01DC6ACF"
+        },
+        {
+          "name": "resource_tree_insert_find",
+          "file": "asm/original/rev0/boot/resource_tree_insert_find.s",
+          "romStart": "0x00001DE8",
+          "romEndExclusive": "0x00001E74",
+          "bytes": 140,
+          "textBytes": 2966,
+          "sha256": "FFE15815807DBAF58EB3435E90FCB8287D8A5B430F85B98136B4595327E5283E"
+        },
+        {
+          "name": "resource_rebuild_free_trees",
+          "file": "asm/original/rev0/boot/resource_rebuild_free_trees.s",
+          "romStart": "0x00001E74",
+          "romEndExclusive": "0x00001F9C",
+          "bytes": 296,
+          "textBytes": 6090,
+          "sha256": "9CB6E40E653394CA66A9B4C5BCC9EC0C94DE859B4866C1CE3909C4F698D15EF5"
+        },
+        {
+          "name": "resource_find_arena_index",
+          "file": "asm/original/rev0/boot/resource_find_arena_index.s",
+          "romStart": "0x00001F9C",
+          "romEndExclusive": "0x00002004",
+          "bytes": 104,
+          "textBytes": 2432,
+          "sha256": "980EC51029DE347CBB63FCE4E590094EEC8969AF5B3330B2490B43A74E2E1E36"
+        },
+        {
+          "name": "resource_alloc_tree_scan",
+          "file": "asm/original/rev0/boot/resource_alloc_tree_scan.s",
+          "romStart": "0x00002004",
+          "romEndExclusive": "0x000022B0",
+          "bytes": 684,
+          "textBytes": 13315,
+          "sha256": "7946AFB724A4931AD7C02EE994184B2AB3F2B567A6F063C09823CFA06DC0D1AB"
+        },
+        {
+          "name": "code_000022B0_00011000_remainder",
+          "file": "asm/original/rev0/code_000022B0_00011000.s",
+          "romStart": "0x000022B0",
           "romEndExclusive": "0x00011000",
-          "bytes": 63276,
-          "textBytes": 1220958,
-          "sha256": "19A71113ED925B4F9B71AE6BC7107BDFE6E6D00751A703AA1222CCD533C02606"
+          "bytes": 60752,
+          "textBytes": 1172424,
+          "sha256": "12D07B9FCBF42C5B1CDC118CF5E5BC7559B8282AF9C622E10AD98AE6CED455CA"
         }
       ],
-      "textBytes": 1266874,
-      "sha256": "0FB4CD15365AB3E48C952F32AD33BA0AD5793B6ADB55E8C77A75C26BFD59A509"
+      "textBytes": 1268422,
+      "sha256": "11CAF4AE1CF0589719E7A08925B4760A06A6220D4BB0D40BEFA3DC3EEFDA0CAF"
     }
   ]
 }

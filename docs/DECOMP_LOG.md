@@ -365,3 +365,73 @@ Next recommended target:
 - Continue from `asm/original/rev0/code_000018D4_00011000.s`, likely with the
   allocator pointer-validation/assert helper at `func_000018D4`, or promote
   another small tracked non-code owner batch.
+
+## 2026-06-21 - Phase 7, Boot Resource Validation/Realloc/Tree Split
+
+Target:
+
+- Continue source-layout cleanup inside the first tracked original-MIPS chunk.
+- Split the allocator validation, realloc-like, tree, and arena-index helpers
+  before the early boot init dispatcher at `0x000022B0`.
+
+Baseline:
+
+- `node tools\verify_setup.js` passed before edits.
+- Baseline source mix: 1 tracked composite real-asm chunk made from 9 tracked
+  files, plus 99 generated fallback chunks.
+- Baseline code-region SHA256:
+  `40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`.
+- Baseline full ROM SHA256:
+  `571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A`.
+
+Source-layout change:
+
+- Removed superseded
+  `asm/original/rev0/code_000018D4_00011000.s`.
+- Added `asm/original/rev0/boot/resource_ptr_validate.s`,
+  `0x000018D4..0x00001A44`, 368 bytes.
+- Added `asm/original/rev0/boot/resource_realloc.s`,
+  `0x00001A44..0x00001DE8`, 932 bytes.
+- Added `asm/original/rev0/boot/resource_tree_insert_find.s`,
+  `0x00001DE8..0x00001E74`, 140 bytes.
+- Added `asm/original/rev0/boot/resource_rebuild_free_trees.s`,
+  `0x00001E74..0x00001F9C`, 296 bytes.
+- Added `asm/original/rev0/boot/resource_find_arena_index.s`,
+  `0x00001F9C..0x00002004`, 104 bytes.
+- Added `asm/original/rev0/boot/resource_alloc_tree_scan.s`,
+  `0x00002004..0x000022B0`, 684 bytes.
+- Added remainder `asm/original/rev0/code_000022B0_00011000.s`,
+  `0x000022B0..0x00011000`, 60,752 bytes.
+- Static dossier: `docs/dossiers/boot-resource-validation-realloc-trees.md`.
+
+Evidence:
+
+- Parent `../scripts/ob64_symbols_v2.json` locates `0x18D4`, `0x1A44`,
+  `0x1DE8`, `0x1E74`, `0x1F9C`, `0x2004`, and `0x22B0` in all 21 RAM
+  snapshots and all seven known states.
+- `0x1A44` carries a secondary entry at `0x1D50`, the unlink helper reached by
+  earlier allocator/free code at RAM `0x80071950`; the split keeps it in
+  `resource_realloc.s`.
+- `0x1DE8` carries secondary entry `0x1E3C`, and `0x2004` carries secondary
+  entry `0x2274`; both secondary entries stay with their parent source files.
+- Parent reports 27 callers for `0x2004` and 11 callers for `0x1DE8`.
+- Next boundary `0x22B0` is parent-labeled `dma/resource::resource loader` and
+  `dispatcher/state-machine`; it remains the next split target.
+
+Verification:
+
+- `node tests\binutils_smoke.js` passed after the split.
+- `node tools\assemble_original_mips.js` passed after the split.
+- Full `node tools\verify_setup.js` passed after the split.
+- Assembled report now shows 1 tracked composite real-asm chunk made from 15
+  tracked source files, plus 99 generated fallback chunks.
+- Code-region SHA256 remains:
+  `40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`.
+- Full ROM SHA256 remains:
+  `571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A`.
+
+Next recommended target:
+
+- Continue from `asm/original/rev0/code_000022B0_00011000.s`, beginning with
+  parent-labeled early boot/resource loader `func_000022B0`, or promote another
+  small tracked non-code owner batch.
