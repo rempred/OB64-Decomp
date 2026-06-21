@@ -361,17 +361,26 @@
           "sha256": "303BD734CB65A36D4D6542EE324289FE911C7A64F522A6F01486BE4786D88913"
         },
         {
-          "name": "code_00004DC0_00011000_remainder",
-          "file": "asm/original/rev0/code_00004DC0_00011000.s",
+          "name": "boot_resource_probe_dispatch_apply",
+          "file": "asm/original/rev0/boot/boot_resource_probe_dispatch_apply.s",
           "romStart": "0x00004DC0",
+          "romEndExclusive": "0x00004ED4",
+          "bytes": 276,
+          "textBytes": 5548,
+          "sha256": "D91F99E66597D1121D0D789F2FDF536BFC64D3A3D7607E6D15BBB154FC3E708E"
+        },
+        {
+          "name": "code_00004ED4_00011000_remainder",
+          "file": "asm/original/rev0/code_00004ED4_00011000.s",
+          "romStart": "0x00004ED4",
           "romEndExclusive": "0x00011000",
-          "bytes": 49728,
-          "textBytes": 960097,
-          "sha256": "A87B82CED60C2C891E725640763E042A25067D3F9F8D95FDADFAFE63954A5395"
+          "bytes": 49452,
+          "textBytes": 954807,
+          "sha256": "F2534F970DF63E0B398192017655ECE23666C4C568EA1BAF6B3C2CAC09CF1793"
         }
       ],
-      "textBytes": 1274615,
-      "sha256": "125320F48EC27364740BD0D6899434C06469878EDF4B6126F0AA986A401EA422"
+      "textBytes": 1274873,
+      "sha256": "0ECE3E49341A61979C1E3ADD8E55EE63D3F5D2159E130183A882D22D145460C8"
     }
   ]
 }

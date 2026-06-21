@@ -10,7 +10,8 @@ code after the compact resource probe finalizer wrapper:
 | Source | ROM range | RAM range | Notes |
 | --- | --- | --- | --- |
 | `asm/original/rev0/boot/boot_resource_probe_dispatch_prepare.s` | `0x00004C5C..0x00004DC0` | `0x8007485C..0x800749C0` | 356-byte JAL-target prologue with one indirect `jalr`. |
-| `asm/original/rev0/code_00004DC0_00011000.s` | `0x00004DC0..0x00011000` | `0x800749C0..0x80080C00` | Current tracked remainder. |
+| `asm/original/rev0/code_00004DC0_00011000.s` | `0x00004DC0..0x00011000` | `0x800749C0..0x80080C00` | Historical remainder; superseded by the dispatch-apply split. |
+| `asm/original/rev0/code_00004ED4_00011000.s` | `0x00004ED4..0x00011000` | `0x80074AD4..0x80080C00` | Current tracked remainder. |
 
 The name is conservative. The routine prepares resource/probe records and
 dispatches through a small callback table in static code, but no runtime trace
@@ -54,8 +55,8 @@ or controlled mutation has verified final behavior.
 - The next parent prologue boundary is `0x00004DC0`; parent data reports it as
   a separate 276-byte JAL-target prologue with frame size `0x20`, one `jalr`,
   unresolved RAM target `0x8016CDCC`, and reads from `0x800A8258/0x800A8250`.
-- The `0x4DC0` routine remains the next dedicated evidence pass instead of
-  being merged into this dispatch-prepare helper.
+- The `0x4DC0` routine is now documented separately in
+  `docs/dossiers/boot-resource-probe-dispatch-apply.md`.
 
 ## Verification
 

@@ -18,7 +18,7 @@ and replace the active log with a compact current-state summary.
 - Whole-ROM coverage still independently scans for LHA headers; do not trust the
   parent archive catalog by itself.
 - Current tracked code source mix: one composite real-assembler chunk
-  `0x00001000..0x00011000` made from 39 tracked source files, plus 99 generated
+  `0x00001000..0x00011000` made from 40 tracked source files, plus 99 generated
   fallback code chunks.
 - Current tracked non-code source-owner mix: 3 tracked files / 44,029 bytes,
   plus 1,055 generated fallback owner files / 35,388,567 bytes.
@@ -62,7 +62,8 @@ Current named sequence:
 - `boot_resource_probe_init.s` `0x4AC8..0x4C34`.
 - `boot_resource_probe_finalize.s` `0x4C34..0x4C5C`.
 - `boot_resource_probe_dispatch_prepare.s` `0x4C5C..0x4DC0`.
-- Current remainder: `code_00004DC0_00011000.s`.
+- `boot_resource_probe_dispatch_apply.s` `0x4DC0..0x4ED4`.
+- Current remainder: `code_00004ED4_00011000.s`.
 
 Static dossiers live under `docs/dossiers/` and are the durable evidence notes
 for each promoted source-layout split.
@@ -111,12 +112,30 @@ Verification for the split:
 
 ## Next Frontier
 
-Continue from `asm/original/rev0/code_00004DC0_00011000.s`.
+## 2026-06-21 - Boot Resource Probe Dispatch Apply Split
 
-Parent evidence for the next target:
+Baseline before the split:
+
+- `git status --short` was clean at commit
+  `a066efe Split Rev 0 resource probe dispatch`.
+- `node tools\verify_setup.js` passed with 825 archives, zero unknown bytes, 108
+  visible overlap bytes, 39 tracked source files, and unchanged code/ROM hashes.
+- Coverage/source audit reports still lined up: coverage ledger spans classify
+  all 41,943,040 ROM bytes with zero unknown bytes; segment/source manifest
+  checks pass; original-MIPS covers configured code region
+  `0x00001000..0x0063676C`; non-code bytes remain represented as raw/archive/
+  audio/LZSS/tail/padding source forms.
+
+Promoted `asm/original/rev0/boot/boot_resource_probe_dispatch_apply.s` covering
+ROM `0x00004DC0..0x00004ED4` / RAM `0x800749C0..0x80074AD4`. The old
+`code_00004DC0_00011000.s` remainder was removed and replaced by
+`asm/original/rev0/code_00004ED4_00011000.s`.
+
+Static evidence from parent `../scripts/ob64_functions.json` and
+`../scripts/ob64_symbols_v2.json`:
 
 - `0x4DC0` is a 276-byte valid JAL-target prologue with frame size `0x20`,
-  epilogue, one `jalr`, and no indirect jump.
+  epilogue, one `jalr`, and next function boundary `0x4ED4`.
 - Fixed RAM is `0x800749C0` in all seven named states and all 21 snapshots.
 - Callers: `0x22B0`, `0x79E84`, `0x1DF788`, `0x1E0024`, and medium-confidence
   `0x24AE88`.
@@ -124,3 +143,38 @@ Parent evidence for the next target:
   `resource_free` (`0x16C4`), and `0x4FF0`.
 - Unresolved RAM call: `0x8016CDCC`.
 - Global reads: `0x800A8258` and `0x800A8250`.
+
+Static shape:
+
+- ID `0x0F` calls helper `0x5624`, then common finalizer `0x4FF0(0x37081383)`.
+- ID `0x0E` allocates a 0x10-byte scratch record, calls `0x50F0` with
+  `(record, 0, 0x10)`, calls unresolved `0x8016CDCC` on record `+0x0C`, frees
+  the record, and finalizes.
+- Other IDs allocate a 0x1850-byte scratch record, compute slot offset
+  `id * 0x1850 + 0x10`, call `0x50F0` with `(record, offset, 0x1850)`, walk 13
+  stride-`0x1C` callback-table entries read from `0x800A8250/0x800A8258`, call
+  nonzero callbacks through `jalr`, free the record, and finalize.
+
+Verification for the split:
+
+- `node tests\binutils_smoke.js` passed.
+- `node tools\assemble_original_mips.js` passed.
+- `node tools\verify_setup.js` passed after the docs update.
+- Source mix is now 1 tracked composite real-asm chunk made from 40 tracked
+  source files, plus 99 generated fallback chunks.
+
+## Next Frontier
+
+Continue from `asm/original/rev0/code_00004ED4_00011000.s`.
+
+Parent evidence for the next target:
+
+- `0x4ED4` is a 284-byte valid JAL-target prologue with frame size `0x28`,
+  epilogue, no `jalr`, and next function boundary `0x4FF0`.
+- Fixed RAM is `0x80074AD4` in all seven named states and all 21 snapshots.
+- Callers: `0x79E84`, `0x1DF5F4`, and medium-confidence `0x1D17E0` and
+  `0x24AE88`.
+- High-confidence callees: `resource_alloc` (`0x1330`), `0x5978`, `0x50F0`,
+  `0x581C`, `0x4FF0`, `0x23460`, and `resource_free` (`0x16C4`).
+- No unresolved RAM calls.
+- Global read: `0x800A8258`.
