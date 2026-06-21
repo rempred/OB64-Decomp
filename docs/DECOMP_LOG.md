@@ -18,7 +18,7 @@ and replace the active log with a compact current-state summary.
 - Whole-ROM coverage still independently scans for LHA headers; do not trust the
   parent archive catalog by itself.
 - Current tracked code source mix: one composite real-assembler chunk
-  `0x00001000..0x00011000` made from 50 tracked source files, plus 99 generated
+  `0x00001000..0x00011000` made from 51 tracked source files, plus 99 generated
   fallback code chunks.
 - Current tracked non-code source-owner mix: 3 tracked files / 44,029 bytes,
   plus 1,055 generated fallback owner files / 35,388,567 bytes.
@@ -74,7 +74,8 @@ Current named sequence:
   `0x5624..0x5760`.
 - `boot_resource_probe_id_check_materialize.s` `0x5760..0x581C`.
 - `boot_resource_probe_indexed_record_check.s` `0x581C..0x5978`.
-- Current remainder: `code_00005978_00011000.s`.
+- `boot_resource_probe_large_record_check.s` `0x5978..0x5A88`.
+- Current remainder: `code_00005A88_00011000.s`.
 
 Static dossiers live under `docs/dossiers/` and are the durable evidence notes
 for each promoted source-layout split.
@@ -694,22 +695,79 @@ Verification for the split:
 - Source mix is now 1 tracked composite real-asm chunk made from 50 tracked
   source files, plus 99 generated fallback chunks.
 
-## Next Frontier
+## 2026-06-21 - Boot Resource Probe Large Record Check Split
 
-Continue from `asm/original/rev0/code_00005978_00011000.s`.
+Baseline before the split:
 
-Parent evidence for the next target:
+- `git status --short` was clean at commit
+  `58bd85b Split Rev 0 resource probe indexed record check helper`.
+- `node tools\verify_setup.js` passed with 825 archives, zero unknown bytes, 108
+  visible overlap bytes, 50 tracked source files, and unchanged code/ROM hashes.
+
+Promoted `asm/original/rev0/boot/boot_resource_probe_large_record_check.s`
+covering ROM `0x00005978..0x00005A88` / RAM
+`0x80075578..0x80075688`. The old `code_00005978_00011000.s` remainder was
+removed and replaced by `asm/original/rev0/code_00005A88_00011000.s`.
+
+Static evidence from parent `../scripts/ob64_symbols_v2.json`,
+`../scripts/ob64_callgraph_v2.json`, and `../scripts/ob64_xrefs.json`:
 
 - `0x5978` is a 272-byte leaf entry that reads `0x800A83B8` before falling into
   the `0x5980` 264-byte prologue body with frame size `0x28`.
 - Fixed runtime evidence shows primary RAM `0x80075578`, with matching code
   also appearing at `0x80075688` in all seven named states and all 21 snapshots.
-- Callers include `0x4ED4` and `0x5760`; `0x5760` reaches both RAM targets
+- Callers: `0x4ED4` and `0x5760`; `0x5760` reaches both RAM targets
   `0x80075578` and `0x80075688`.
-- High-confidence callees mirror the `0x581C` helper:
+- High-confidence callees: `resource_alloc` (`0x1330`), `0x1A4F0` /
+  RAM `0x8008A0F0`, `0x23460` /
+  RAM `0x80093060`, and `0x23350` / RAM `0x80092F50`.
+- Unresolved RAM calls are reported for `0x80075A84` and `0x80075B00`.
+- Global traffic: reads/writes `0x800A83B8`.
+
+Static shape:
+
+- The `0x5978` prefix loads shared global buffer pointer `0x800A83B8`, then the
+  `0x5980` stack-frame body uses that loaded pointer.
+- If the pointer is zero, the routine allocates `0x8000` bytes, stores it to
+  `0x800A83B8`, and fills the span in `0x100`-byte chunks through
+  `0x8008A0F0`.
+- Copies `0x4AE8` bytes from shared-buffer offset `0x30B0` into caller scratch
+  through `0x80093060`.
+- Compares `scratch + 4` against the 8-byte base at `0x800A8240` through
+  `0x80092F50`; mismatch returns zero.
+- If scratch word `+0x00` is zero, returns `1`.
+- Otherwise calls unresolved `0x80075A84(scratch + 0x0C, 0x4ADC, 0x30B0)` and
+  compares the low halfword return against `lhu scratch+0`.
+- Calls unresolved `0x80075B00(scratch + 0x0C, 0x4ADC, 0x30B0)` and compares
+  the low halfword return against `lhu scratch+2`.
+- Returns `1` only if the signature and required halfword checks match.
+
+Verification for the split:
+
+- `node tests\binutils_smoke.js` passed.
+- `node tools\assemble_original_mips.js` passed.
+- `node tools\verify_setup.js` passed after the docs update.
+- Source mix is now 1 tracked composite real-asm chunk made from 51 tracked
+  source files, plus 99 generated fallback chunks.
+
+## Next Frontier
+
+Continue from `asm/original/rev0/code_00005A88_00011000.s`.
+
+Parent evidence for the next target:
+
+- `0x5A88` is a 260-byte leaf entry that reads `0x800A83B8` before falling into
+  the `0x5A90` 252-byte prologue body with frame size `0x28`.
+- Fixed runtime evidence aliases the sibling family with primary RAM
+  `0x80075578/0x80075580` plus code also appearing at `0x80075688/0x80075690`
+  in all seven named states and all 21 snapshots.
+- Static caller evidence includes the ID check/materialize wrapper `0x5760`
+  for the `0x80075688` target, while v2 callgraph folds the family into the
+  nearby `0x5978` entry.
+- High-confidence callees mirror the record-check family:
   `resource_alloc` (`0x1330`), `0x1A4F0` / RAM `0x8008A0F0`, `0x23460` /
   RAM `0x80093060`, and `0x23350` / RAM `0x80092F50`.
 - Unresolved RAM calls are reported for `0x80075A84` and `0x80075B00`.
 - Global traffic: reads/writes `0x800A83B8`.
-- Keep the `0x5978/0x5980` overlapping leaf/prologue pair together in the next
+- Keep the `0x5A88/0x5A90` overlapping leaf/prologue pair together in the next
   source-layout pass unless stronger evidence separates the prefix safely.
