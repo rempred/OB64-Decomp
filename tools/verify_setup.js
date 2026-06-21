@@ -36,6 +36,7 @@ function main() {
     ['tools/assemble_original_mips.js'],
     ['tools/extract_rom_segments.js'],
     ['tools/rebuild_rom.js'],
+    ['tools/build_full_source_manifest.js'],
     [
       'tools/rebuild_rom.js',
       '--assembled-code',
@@ -58,6 +59,7 @@ function main() {
   const toolchain = readJson(path.join(ROOT, 'build', 'toolchain-smoke', 'binutils-smoke-report.json'));
   const assembled = readJson(path.join(ROOT, 'build', 'assembled', 'rev0-report.json'));
   const rawRebuild = readJson(path.join(ROOT, 'build', 'rebuild', 'rev0-rebuild-report.json'));
+  const sourceManifest = readJson(path.join(ROOT, 'build', 'source-manifest', 'rev0-full-source-manifest.json'));
   const asmRebuild = readJson(path.join(ROOT, 'build', 'rebuild', 'rev0-assembled-code-rebuild-report.json'));
 
   const checks = [
@@ -75,6 +77,8 @@ function main() {
     check('firstTrackedChunkRealAssembler', toolchain.checks.some((item) => item.name === 'firstTrackedChunkRealAssembler' && item.ok)),
     check('assembledCodeRegionExact', assembled.exactToReference, { sha256: assembled.assembled.sha256, sources: assembled.sources }),
     check('rawRebuildExact', rawRebuild.exact, { sha256: rawRebuild.rebuilt.sha256 }),
+    check('fullSourceManifestNoGap', sourceManifest.ok, { summary: sourceManifest.summary }),
+    check('fullSourceManifestNoUnknownBytes', sourceManifest.summary.unknownBytes === 0, { unknownBytes: sourceManifest.summary.unknownBytes }),
     check('assembledCodeRebuildExact', asmRebuild.exact, { sha256: asmRebuild.rebuilt.sha256 }),
   ];
   const ok = checks.every((item) => item.ok);
@@ -94,6 +98,8 @@ function main() {
       trackedCompositeChunks: assembled.sources.trackedCompositeChunks || 0,
       trackedRealAsmFiles: assembled.sources.trackedRealAsmFiles || assembled.sources.trackedRealAsmChunks,
       generatedChunks: assembled.sources.generatedChunks,
+      sourceManifestEntries: sourceManifest.summary.entries,
+      sourceManifestAmbiguousBytes: sourceManifest.summary.ambiguousBytes,
       codeSha256: assembled.assembled.sha256,
       romSha256: asmRebuild.rebuilt.sha256,
     },
@@ -109,6 +115,10 @@ function main() {
     `Source mix: ${report.summary.trackedRealAsmChunks} tracked real-asm chunk(s)` +
       ` (${report.summary.trackedCompositeChunks} composite, ${report.summary.trackedRealAsmFiles} tracked file(s)),` +
       ` ${report.summary.generatedChunks} generated fallback chunk(s)`,
+  );
+  console.log(
+    `Source manifest: ${report.summary.sourceManifestEntries} entries; ` +
+      `${report.summary.sourceManifestAmbiguousBytes} ambiguous byte(s) preserved explicitly`,
   );
   console.log(`Code SHA256: ${report.summary.codeSha256}`);
   console.log(`ROM SHA256:  ${report.summary.romSha256}`);

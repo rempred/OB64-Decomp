@@ -104,6 +104,18 @@ code-region SHA256 is
 `40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`, and the
 full rebuilt ROM remains byte-identical to the normalized Rev 0 baserom.
 
+Then run the full-ROM source ownership audit:
+
+```powershell
+node tools/build_full_source_manifest.js
+```
+
+This verifies that the coverage ledger, segment manifest, original-MIPS report,
+and assembled-code report agree. It assigns every ROM byte to one current source
+strategy: `original_mips` for confirmed code-region bytes, or raw/header/archive/
+audio/LZSS/tail/padding source ownership for non-code bytes. Archive gaps and
+tail data remain explicitly ambiguous until repeatable scanners decode them.
+
 After each loop, update `docs/DECOMP_LOG.md`. If that log approaches roughly
 10,000 tokens, condense it and archive the previous full version under
 `docs/archive/`.

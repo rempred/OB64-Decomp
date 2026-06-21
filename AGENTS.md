@@ -39,11 +39,12 @@ Before decomp work, read:
 4. Local `docs/TOOLCHAIN.md`.
 5. Local `docs/WORKFLOW.md`.
 6. Local `docs/DECOMP_LOG.md`.
-7. Local `docs/NEXT_STEPS.md`.
-8. Parent `docs/mips-decomp-workflow-plan.md`.
-9. Parent `docs/mips-decode.md`.
-10. Parent `docs/overlay-system.md`.
-11. The relevant subsystem doc in the parent `docs/` folder.
+7. Local `docs/FULL_ROM_SOURCE_MANIFEST.md`.
+8. Local `docs/NEXT_STEPS.md`.
+9. Parent `docs/mips-decomp-workflow-plan.md`.
+10. Parent `docs/mips-decode.md`.
+11. Parent `docs/overlay-system.md`.
+12. The relevant subsystem doc in the parent `docs/` folder.
 
 When a durable fact changes, update this file and the relevant local doc before
 committing. If the fact came from parent-workspace research, include the parent
@@ -95,6 +96,24 @@ Current Rev 0 result:
 - Tail data: `0x0275415B..0x0275DD40`.
 - Clean trailing `0xFF` padding: `0x0275DD40..0x02800000`.
 
+## Full-ROM Source Manifest
+
+`tools/build_full_source_manifest.js` audits the coverage ledger, raw segment
+manifest, original-MIPS report, and assembled-code report into a full-ROM source
+ownership manifest. It is part of `node tools/verify_setup.js`.
+
+Current result:
+
+- Entries: 1,059 contiguous ROM spans.
+- ROM bytes covered: 41,943,040 / 41,943,040.
+- Unknown bytes: 0.
+- Original-MIPS source bytes: 6,510,444.
+- Non-code/raw/data/archive source bytes: 35,432,596.
+- Ambiguous bytes preserved explicitly: 2,469,141.
+
+The generated manifest lives under ignored `build/source-manifest/`. Durable
+policy and current numbers are in `docs/FULL_ROM_SOURCE_MANIFEST.md`.
+
 ## Exact Rebuild Rule
 
 Before replacing raw bytes with assembly or C, preserve the exact-rebuild loop:
@@ -104,8 +123,9 @@ node tools/verify_setup.js
 ```
 
 `verify_setup.js` runs baserom verification, whole-ROM coverage, MIPS extraction,
-binutils smoke tests, raw rebuild, and assembled-code rebuild. It must report
-PASS before source replacement work is considered safe.
+binutils smoke tests, raw rebuild, full-ROM source-manifest audit, and
+assembled-code rebuild. It must report PASS before source replacement work is
+considered safe.
 
 Current exact rebuild result:
 
@@ -181,8 +201,10 @@ setup-complete state:
 - Setup verifier: `tools/verify_setup.js`.
 - Current verifier result: PASS; 825 archives, 0 unknown bytes, 108 overlap
   bytes visible, 1 tracked composite real-asm chunk made from 2 tracked source
-  files, 99 generated fallback chunks, full ROM SHA256
+  files, 99 generated fallback chunks, full-source manifest 1,059 entries with
+  2,469,141 ambiguous bytes preserved explicitly, full ROM SHA256
   `571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A`.
 
-Next phase is continuing small source splits and function naming. Do not begin
+Next phase is generating tracked non-code source owners under `data/` or
+`assets/` and teaching rebuilds to consume the full source manifest. Do not begin
 semantic C decomp unless the setup verifier is green.

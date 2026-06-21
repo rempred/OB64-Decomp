@@ -64,3 +64,71 @@ Verification:
   `40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`.
 - Final full-ROM SHA256:
   `571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A`.
+
+## 2026-06-21 - Phase 2, Full-ROM Source Manifest
+
+Target:
+
+- Expand from code-region original-MIPS proof toward full-ROM no-gap source
+  ownership.
+- Keep non-code bytes represented as raw/archive/compressed/audio/padding source
+  strategies instead of disassembling data as instructions.
+
+Baseline:
+
+- `node tools\verify_setup.js` passed before edits.
+- Baseline source mix stayed 1 tracked composite real-asm chunk, 2 tracked source
+  files, and 99 generated fallback chunks.
+- Baseline code SHA256:
+  `40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`.
+- Baseline full-ROM SHA256:
+  `571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A`.
+
+Tooling change:
+
+- Added `tools/build_full_source_manifest.js`.
+- `tools/verify_setup.js` now runs that tool and requires
+  `fullSourceManifestNoGap` plus `fullSourceManifestNoUnknownBytes`.
+- Generated reports are ignored:
+  `build/source-manifest/rev0-full-source-manifest.json/.md`.
+
+Current source ownership:
+
+- Entries: 1,059 contiguous ROM spans.
+- ROM bytes covered: 41,943,040 / 41,943,040.
+- Unknown bytes: 0.
+- `original_mips`: 6,510,444 bytes.
+- Non-code/raw/data/archive source forms: 35,432,596 bytes.
+- Ambiguous bytes preserved explicitly: 2,469,141.
+
+Source-form byte totals:
+
+- `raw_header`: 4,096.
+- `original_mips`: 6,510,444.
+- `raw_structural_gap`: 24.
+- `lha_archive`: 5,041,336.
+- `raw_archive_gap`: 2,429,124.
+- `raw_audio_data`: 20,065,069.
+- `raw_lzss_region`: 7,188,782.
+- `raw_tail_data`: 39,909.
+- `padding_ff`: 664,256.
+
+Code-bearing evidence:
+
+- Configured code region remains `0x00001000..0x0063676C`.
+- Parent function DB count: 3,683.
+- Parent overlay source hints from `../ram_snapshots/overlay_sources.json` are
+  recorded in the generated manifest and all sit inside the configured code
+  region.
+
+Open ambiguities:
+
+- 524 `raw_archive_gap` spans / 2,429,124 bytes.
+- Known 108-byte archive/audio overlap.
+- `raw_tail_data` at `0x0275415B..0x0275DD40`.
+
+Next recommended target:
+
+- Add a non-code source generator under `data/bin/`, `data/archives/`, or
+  `assets/`, then teach the rebuild path to consume the full source manifest
+  rather than only `build/segments/rev0/raw/`.

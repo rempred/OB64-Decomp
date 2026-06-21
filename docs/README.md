@@ -10,7 +10,8 @@ Read order for future agents:
 4. `TOOLCHAIN.md`
 5. `WORKFLOW.md`
 6. `DECOMP_LOG.md`
-7. `NEXT_STEPS.md`
+7. `FULL_ROM_SOURCE_MANIFEST.md`
+8. `NEXT_STEPS.md`
 
 Use `dossiers/` for stable function dossiers and `subsystems/` for notes that
 have graduated from parent-workspace experiments into decomp knowledge.
@@ -25,4 +26,6 @@ have graduated from parent-workspace experiments into decomp knowledge.
 - `WORKFLOW.md` - source-replacement and evidence loop.
 - `DECOMP_LOG.md` - compact running memory for completed decomp loops and
   context-compaction handoff.
+- `FULL_ROM_SOURCE_MANIFEST.md` - full-ROM source ownership policy and current
+  generated-manifest summary.
 - `NEXT_STEPS.md` - ordered work queue for the next decomp pass.

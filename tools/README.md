@@ -62,6 +62,16 @@ byte-compares it against `build/baserom.us_rev0.z64`.
 The rebuild report is written to `build/rebuild/rev0-rebuild-report.json`.
 
 ```powershell
+node tools/build_full_source_manifest.js
+```
+
+Builds `build/source-manifest/rev0-full-source-manifest.json` and `.md`. This
+audits the coverage ledger against the segment manifest and original-MIPS report,
+then assigns every ROM byte a source strategy: original MIPS for confirmed code
+region bytes, or raw/header/archive/audio/LZSS/tail/padding source ownership for
+non-code bytes. Ambiguous archive gaps remain explicitly ambiguous.
+
+```powershell
 node tests/binutils_smoke.js
 ```
 

@@ -33,9 +33,10 @@ For decomp work, use this order:
 4. `docs/TOOLCHAIN.md`
 5. `docs/WORKFLOW.md`
 6. `docs/DECOMP_LOG.md`
-7. `docs/NEXT_STEPS.md`
-8. Parent `docs/mips-decomp-workflow-plan.md`
-9. Parent subsystem docs and trace artifacts as cited by the local note
+7. `docs/FULL_ROM_SOURCE_MANIFEST.md`
+8. `docs/NEXT_STEPS.md`
+9. Parent `docs/mips-decomp-workflow-plan.md`
+10. Parent subsystem docs and trace artifacts as cited by the local note
 
 When a durable fact changes, update `AGENTS.md` and the relevant `docs/` file in
 the same commit.
@@ -49,7 +50,10 @@ and an assembly-backed code-region rebuild. Setup is complete: a project-local
 GNU MIPS binutils toolchain is configured, tracked source chunks assemble through
 real `mips64-elf-as`, and `node tools/verify_setup.js` verifies the whole setup.
 The first source-layout loop has split the boot entry stub into a named tracked
-part while preserving the exact rebuild gate.
+part while preserving the exact rebuild gate. The current setup gate also builds
+a full-ROM source ownership manifest so non-code bytes are represented as
+raw/archive/audio/LZSS/tail/padding source forms instead of being misclassified
+as MIPS.
 
 Current known-good pipeline:
 
@@ -77,6 +81,9 @@ Expected current results:
   files, plus 99 generated fallback chunks.
 - `rebuild_rom.js --assembled-code ...` substitutes that assembled code blob for
   the raw code segment and still confirms the same full-ROM SHA256.
+- `build_full_source_manifest.js` emits a 1,059-entry full-ROM source ownership
+  manifest with zero unknown bytes and 2,469,141 ambiguous bytes preserved
+  explicitly.
 - `tests/binutils_smoke.js` proves `.word`, real instruction, `.set noreorder`,
   and first tracked chunk real-assembler behavior.
 
@@ -136,6 +143,8 @@ These outputs are useful but ignored:
 - `build/segments/rev0/manifest.json`
 - `build/segments/rev0/raw/`
 - `build/rebuild/rev0-rebuild-report.json`
+- `build/source-manifest/rev0-full-source-manifest.json`
+- `build/source-manifest/rev0-full-source-manifest.md`
 - `build/setup/verify-setup-report.json`
 - `build/toolchain-smoke/binutils-smoke-report.json`
 - `dist/rebuilt.us_rev0.z64`
@@ -155,6 +164,9 @@ These outputs are useful but ignored:
 - Clean trailing `0xFF` padding: `0x0275DD40..0x02800000`.
 - Known visible archive/audio overlap:
   `0x00925483..0x009254EF` (108 bytes).
+- Full-ROM source manifest: 1,059 contiguous entries; 6,510,444 bytes
+  `original_mips`; 35,432,596 bytes non-code/raw/data/archive source forms;
+  2,469,141 ambiguous bytes preserved explicitly; 0 unknown bytes.
 
 ## Current Tool Roles
 
@@ -168,6 +180,8 @@ These outputs are useful but ignored:
 - `tools/rebuild_rom.js` rebuilds from the segment manifest and fails on any
   byte mismatch. With `--assembled-code`, it substitutes an assembled code blob
   for the configured code-region span.
+- `tools/build_full_source_manifest.js` assigns every ROM byte to a source
+  strategy and audits ledger/segment/original-MIPS consistency.
 - `tools/assemble_original_mips.js` assembles tracked/generated source chunks
   into one code-region binary. Tracked chunks use GNU `mips64-elf-as`; generated
   fallback chunks use the minimal `.word` assembler. Manifest chunk `parts` are
@@ -196,6 +210,8 @@ prints PASS. Current PASS summary:
   tracked chunk real assembly all pass.
 - Source mix: 1 tracked composite real-asm chunk made from 2 tracked source
   files, plus 99 generated fallback chunks.
+- Source manifest: 1,059 entries, zero unknown bytes, 2,469,141 ambiguous bytes
+  preserved explicitly.
 - Code SHA256:
   `40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`.
 - Full ROM SHA256:
@@ -209,12 +225,13 @@ docs:
 - `asm/original/rev0/boot/boot_entry_clear_bss.s`
 - `docs/dossiers/boot-entry-clear-bss.md`
 - `docs/DECOMP_LOG.md`
+- `docs/FULL_ROM_SOURCE_MANIFEST.md`
 
-The next phase remains real decomp preparation:
+The next phase remains full-ROM source preparation:
 
-1. Continue splitting the first tracked chunk into cleaner function/data files.
-2. Begin function naming from existing parent symbols and trace evidence.
-3. Keep `node tools/verify_setup.js` green after every source-layout change.
-4. Start C conversion only after the split/compare loop is comfortable.
+1. Generate tracked non-code source owners under `data/` or `assets/`.
+2. Teach the rebuild path to consume the full source manifest.
+3. Continue splitting original MIPS into cleaner function/data files.
+4. Keep `node tools/verify_setup.js` green after every source-layout change.
 
 See `docs/NEXT_STEPS.md` for the active task queue.

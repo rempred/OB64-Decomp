@@ -7,7 +7,7 @@ update it when a task becomes durable, blocked, or complete.
 
 The setup phase is complete. The repo can verify Rev 0 identity, whole-ROM
 coverage, real GNU MIPS binutils, first tracked chunk real assembly, raw rebuild,
-and assembled-code rebuild with one command.
+full-ROM source-manifest audit, and assembled-code rebuild with one command.
 
 Current passing commands:
 
@@ -24,31 +24,51 @@ The assembled code-region SHA256 is
 ROM rebuild SHA256 remains
 `571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A`.
 
+Current full-ROM source manifest:
+
+- 1,059 entries.
+- 0 unknown bytes.
+- 6,510,444 `original_mips` bytes.
+- 35,432,596 non-code/raw/data/archive source bytes.
+- 2,469,141 ambiguous bytes preserved explicitly.
+
 ## Active Goal
 
-Continue real decomp preparation by splitting and naming code, without losing
-exact rebuild coverage.
+Expand toward full-ROM no-gap source representation without losing exact rebuild
+coverage or overclassifying data as MIPS.
 
 ## Ordered Work
 
-1. Continue splitting the first tracked chunk into smaller source files.
+1. Generate tracked non-code source owners.
 
-   The boot entry split is done:
-   `asm/original/rev0/boot/boot_entry_clear_bss.s` covers
-   `0x00001000..0x00001060`. Next, continue from the remainder file
-   `asm/original/rev0/code_00001060_00011000.s`.
+   Start with a deterministic binary-include/source-owner layout under
+   `data/bin/`, `data/archives/`, or `assets/` that mirrors the source forms in
+   `build/source-manifest/rev0-full-source-manifest.json`. Keep archive gaps
+   raw and explicitly ambiguous.
 
-2. Keep the setup gate green.
+2. Teach rebuilds to consume the source manifest.
+
+   The current rebuild still consumes `build/segments/rev0/raw/`. Next, add a
+   manifest-driven rebuild path that can mix assembled MIPS with tracked raw/data
+   source owners.
+
+3. Continue splitting the first tracked chunk into smaller source files.
+
+   The boot entry split is done. Continue from
+   `asm/original/rev0/code_00001060_00011000.s` when the full-ROM source
+   ownership path is stable.
+
+4. Keep the setup gate green.
 
    Re-run `node tools/verify_setup.js` after each split/promotion. Required
    result: PASS.
 
-3. Name functions only from evidence.
+5. Name functions only from evidence.
 
    Use parent symbols, trace docs, and clear local labels. Avoid semantic naming
    unless runtime/controlled evidence supports it.
 
-4. Promote more chunks deliberately.
+6. Promote more chunks deliberately.
 
    Use `tools/promote_original_mips.js` in small batches or when a subsystem
    needs that chunk. Do not commit the full generated 125 MB source set at once.
