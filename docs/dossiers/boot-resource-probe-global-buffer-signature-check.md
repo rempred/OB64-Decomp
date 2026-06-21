@@ -10,7 +10,9 @@ boot-code helper immediately after the resource probe global buffer copy helper:
 | Source | ROM range | RAM range | Notes |
 | --- | --- | --- | --- |
 | `asm/original/rev0/boot/boot_resource_probe_global_buffer_signature_check.s` | `0x000051A0..0x0000539C` | `0x80074DA0..0x80074F9C` | 508-byte prologue helper called by resource probe init. |
-| `asm/original/rev0/code_0000539C_00011000.s` | `0x0000539C..0x00011000` | `0x80074F9C..0x80080C00` | Current tracked remainder. |
+| `asm/original/rev0/code_0000539C_00011000.s` | `0x0000539C..0x00011000` | `0x80074F9C..0x80080C00` | Historical remainder; superseded by the ID materialize split. |
+| `asm/original/rev0/boot/boot_resource_probe_id_materialize.s` | `0x0000539C..0x0000553C` | `0x80074F9C..0x8007513C` | Follow-up split documented separately. |
+| `asm/original/rev0/code_0000553C_00011000.s` | `0x0000553C..0x00011000` | `0x8007513C..0x80080C00` | Current tracked remainder. |
 
 The name is conservative. The routine has a clear static shape around checking
 8-byte records copied from the shared resource-probe buffer against an 8-byte
@@ -55,8 +57,9 @@ final behavior or API semantics.
   separate 416-byte prologue helper with frame size `0x38`, callers `0x4AC8`,
   `0x4C34`, and `0x5760`, one `jalr`, unresolved target `0x8016CD90`, and
   shared `0x800A83B8/83BC` global-buffer traffic.
-- Keep the `0x539C` helper as the next dedicated evidence pass instead of
-  merging it into this signature-check helper.
+- The `0x539C` helper is now documented separately in
+  `docs/dossiers/boot-resource-probe-id-materialize.md`, and the active
+  remainder starts at `0x0000553C`.
 
 ## Verification
 

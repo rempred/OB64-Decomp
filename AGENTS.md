@@ -173,7 +173,7 @@ Current result:
   `40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`.
 - Code-region match against baserom: pass.
 - Tracked real-assembler original-MIPS chunks: 1 composite
-  (`0x00001000..0x00011000`) made from 45 real-assembler source files.
+  (`0x00001000..0x00011000`) made from 46 real-assembler source files.
 - Generated fallback chunks: 99.
 - Assembled-code ROM rebuild command:
 
@@ -977,6 +977,8 @@ by resource probe init:
   size `0x38`, no unresolved calls, and no indirect jump.
 - Remainder:
   `asm/original/rev0/code_0000539C_00011000.s`.
+  That file has since been superseded by the resource probe ID materialize
+  split below.
 
 Static evidence: parent function/symbol/callgraph data reports high-confidence
 caller `0x4AC8`, high-confidence callees `resource_alloc` (`0x1330`),
@@ -996,9 +998,42 @@ shape, not verified runtime semantics.
 
 Static dossier:
 `docs/dossiers/boot-resource-probe-global-buffer-signature-check.md`.
-Next source split should start at `asm/original/rev0/code_0000539C_00011000.s`,
-the 416-byte `0x539C` prologue helper called by `0x4AC8`, `0x4C34`, and
-`0x5760`.
+
+## Boot Resource Probe ID Materialize Split
+
+The next tracked Rev 0 original-MIPS split separates the 416-byte helper called
+by resource probe init, the finalize wrapper, and the `0x5760` helper:
+
+- `asm/original/rev0/boot/boot_resource_probe_id_materialize.s`
+  `0x0000539C..0x0000553C`; parent reports a prologue with frame size `0x38`,
+  one indirect `jalr`, and one unresolved RAM call.
+- Remainder:
+  `asm/original/rev0/code_0000553C_00011000.s`.
+
+Static evidence: parent function/symbol/callgraph data reports high-confidence
+callers `0x4AC8`, `0x4C34`, and `0x5760`; high-confidence callees
+`resource_alloc` (`0x1330`), `0x23780` / RAM `0x80093380`, `0x5D9C`,
+`0x5C58` via RAM target `0x800758FC`, `0x23460` / RAM `0x80093060`,
+`0x1A4F0` / RAM `0x8008A0F0`, `0x5B8C`, and `resource_free` (`0x16C4`);
+unresolved target `0x8016CD90`; fixed RAM `0x80074F9C` in all seven named
+states and all 21 snapshots; and traffic on `0x800A83B8/83BC` plus reads from
+`0x800A824C/8258`.
+
+Static shape: input ID `0x0E` allocates and clears a 0x10-byte record, calls the
+unresolved `0x8016CD90` on record `+0x0C`, then calls nearby helpers before
+freeing the record. Input ID `0x0F` clears stack scratch, copies 8 bytes from
+`0x800A8240` into stack scratch, ensures shared global buffer `0x800A83B8`
+exists, copies 12 bytes from global-buffer offset `0x30B0`, sets byte
+`0x800A83BC` to `1`, and returns without heap scratch. Other IDs allocate and
+clear a 0x1850-byte scratch record, walk 13 stride-`0x1C` callback entries read
+from `0x800A824C/8258`, call nonzero callbacks through `jalr`, run nearby
+helpers with the ID and scratch record, free the scratch, and return. The name
+is conservative and records the static ID dispatch/materialize shape, not
+verified runtime semantics.
+
+Static dossier: `docs/dossiers/boot-resource-probe-id-materialize.md`.
+Next source split should start at `asm/original/rev0/code_0000553C_00011000.s`,
+the 232-byte `0x553C` prologue helper called by `0x4C5C`.
 
 ## Setup Complete Gate
 
@@ -1014,7 +1049,7 @@ setup-complete state:
 - Assembler: GNU Binutils 2.39 `mips64-elf-as.exe` with `-EB -mips3 -32`.
 - Setup verifier: `tools/verify_setup.js`.
 - Current verifier result: PASS; 825 archives, 0 unknown bytes, 108 overlap
-  bytes visible, 1 tracked composite real-asm chunk made from 45 tracked source
+  bytes visible, 1 tracked composite real-asm chunk made from 46 tracked source
   files, 99 generated fallback chunks, full-source manifest 1,059 entries with
   2,469,141 ambiguous bytes preserved explicitly, 3 tracked non-code
   source-owner files / 44,029 bytes, 1,055 generated non-code fallback files /
@@ -1023,5 +1058,5 @@ setup-complete state:
   `571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A`.
 
 Next phase is either promoting another small non-code owner batch or continuing
-tracked original-MIPS splits from `asm/original/rev0/code_0000539C_00011000.s`.
+tracked original-MIPS splits from `asm/original/rev0/code_0000553C_00011000.s`.
 Do not begin semantic C decomp unless the setup verifier is green.

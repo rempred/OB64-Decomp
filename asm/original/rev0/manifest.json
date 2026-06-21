@@ -415,17 +415,26 @@
           "sha256": "E42E1FF4558D1C7CBAF872B2FF263EC87882606C1CD130173DA0D1C411FE05C9"
         },
         {
-          "name": "code_0000539C_00011000_remainder",
-          "file": "asm/original/rev0/code_0000539C_00011000.s",
+          "name": "boot_resource_probe_id_materialize",
+          "file": "asm/original/rev0/boot/boot_resource_probe_id_materialize.s",
           "romStart": "0x0000539C",
+          "romEndExclusive": "0x0000553C",
+          "bytes": 416,
+          "textBytes": 8254,
+          "sha256": "8C9437A5D05056381537407E1536C68E18F4CD3F10273C73CAF0FE68FC8D1A44"
+        },
+        {
+          "name": "code_0000553C_00011000_remainder",
+          "file": "asm/original/rev0/code_0000553C_00011000.s",
+          "romStart": "0x0000553C",
           "romEndExclusive": "0x00011000",
-          "bytes": 48228,
-          "textBytes": 930870,
-          "sha256": "CE90FE5548009E46BFCC5EA47DA575F88BA0695B3845A989D71DAFA153450175"
+          "bytes": 47812,
+          "textBytes": 922874,
+          "sha256": "C2315A5EDCAD077B75B4AFEFEA0C5B5406564FAB4311F0552C038206063E9CC1"
         }
       ],
-      "textBytes": 1276163,
-      "sha256": "32BFE582381079B9D512D8A0AC247F54EB8B2589EE5CF969A58026BA78A29229"
+      "textBytes": 1276421,
+      "sha256": "497789B541E9AA9DBD482ACB9AE0F686591D22D78B0109BCDDF0BF4C0CA75C46"
     }
   ]
 }
