@@ -11,7 +11,7 @@ materialize helper:
 | Source | ROM range | RAM range | Notes |
 | --- | --- | --- | --- |
 | `asm/original/rev0/boot/boot_resource_node_lzss_context_materialize.s` | `0x00009EFC..0x00009FD8` | `0x80079AFC..0x80079BD8` | Static resource-node context materialize helper that allocates a destination and calls the boot LZSS decompressor. |
-| `asm/original/rev0/code_00009FD8_00011000.s` | `0x00009FD8..0x00011000` | `0x80079BD8..0x80080C00` | Current tracked remainder; starts with the sibling resource-loader helper. |
+| `asm/original/rev0/code_00009FD8_00011000.s` | `0x00009FD8..0x00011000` | `0x80079BD8..0x80080C00` | Historical remainder after this split; superseded by `boot_resource_node_overlay_context_materialize.s` and `code_0000A0B4_00011000.s`. |
 
 The source name is conservative. It reflects the observed call to the LZSS
 decompressor and shared context writes, not a proven runtime API contract.
@@ -57,8 +57,8 @@ decompressor and shared context writes, not a proven runtime API contract.
 - The split includes the normal return at `0x9FD0` and the branch delay-slot
   stack restore at `0x9FD4`.
 - The next function starts cleanly at `0x00009FD8`; do not include that word in
-  this source file. Parent evidence suggests the next sibling should stay
-  together as `0x9FD8..0xA0B4` until stronger boundary evidence appears.
+  this source file. That sibling is now promoted as
+  `boot_resource_node_overlay_context_materialize.s`.
 
 ## Verification
 

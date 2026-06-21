@@ -173,7 +173,7 @@ Current result:
   `40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`.
 - Code-region match against baserom: pass.
 - Tracked real-assembler original-MIPS chunks: 1 composite
-  (`0x00001000..0x00011000`) made from 90 real-assembler source files.
+  (`0x00001000..0x00011000`) made from 91 real-assembler source files.
 - Generated fallback chunks: 99.
 - Assembled-code ROM rebuild command:
 
@@ -2208,8 +2208,9 @@ resource-loader context helper immediately after the context materialize helper:
 
 - `asm/original/rev0/boot/boot_resource_node_lzss_context_materialize.s`
   `0x00009EFC..0x00009FD8` / RAM `0x80079AFC..0x80079BD8`.
-- Current remainder:
-  `asm/original/rev0/code_00009FD8_00011000.s`.
+- Remainder after this split was
+  `asm/original/rev0/code_00009FD8_00011000.s`; that file has since been
+  superseded by the overlay context materialize split below.
 
 Static evidence: parent data reports `0x9EFC` as a 220-byte prologue helper
 with frame size `0x18`, fixed in all seven named states and all 21 snapshots.
@@ -2231,11 +2232,48 @@ size/length-like value. It allocates a destination, stores it to context field
 context field `+0x08` to global `0x800C4BC0`.
 
 Boundary rule: the promoted source includes the `0x9FD0` return and `0x9FD4`
-delay-slot stack restore. The next sibling helper starts cleanly at `0x9FD8`
-and should be kept through `0xA0B4` unless stronger boundary evidence appears.
+delay-slot stack restore. The sibling overlay-context helper starts cleanly at
+`0x9FD8` and is now split separately below.
 
 Static dossier:
 `docs/dossiers/boot-resource-node-lzss-context-materialize.md`.
+
+## Boot Resource Node Overlay Context Materialize Split
+
+The next tracked Rev 0 original-MIPS split promotes the related
+overlay-helper-backed resource-loader context helper immediately after the
+LZSS-backed context materialize helper:
+
+- `asm/original/rev0/boot/boot_resource_node_overlay_context_materialize.s`
+  `0x00009FD8..0x0000A0B4` / RAM `0x80079BD8..0x80079CB4`.
+- Current remainder:
+  `asm/original/rev0/code_0000A0B4_00011000.s`.
+
+Static evidence: parent data reports `0x9FD8` as a 220-byte prologue helper
+with frame size `0x18`, fixed in all seven named states and all 21 snapshots.
+Parent symbols label it `dma/resource::resource loader`. Parent v2 callee
+evidence includes the node helper at RAM `0x80079CB4`, DMA/cache helper
+`0x2DEF4` / RAM `0x8009DAF4`, `resource_alloc` `0x1330`, copy helper
+`0x2DFB8` / RAM `0x8009DBB8`, resolved overlay target `0x000F84AC` / RAM
+`0x801AB74C`, and unresolved RAM helper `0x801AB720`. Parent xrefs show
+`0x9FD8` reads shared context base `0x800AF0C4` and writes `0x800C4BC0`.
+
+Static shape: the helper accepts a node-like pointer in `a0`, refreshes
+`[node+0x0C]` through the RAM `0x80079CB4` node helper with index `0`,
+materializes a missing payload through the DMA/cache, allocator, and copy
+helpers when `[node+0x04]` is empty, otherwise calls unresolved RAM helper
+`0x801AB720(payload)` for a size/length-like value. It allocates a destination,
+stores it to context field `+0x04`, writes context field `+0x08`, calls
+overlay target `0x801AB74C(dest, [node+0x04])`, sets context status
+`+0x0C = 3`, and mirrors context field `+0x08` to global `0x800C4BC0`.
+
+Boundary rule: the promoted source includes the `0xA0AC` return and `0xA0B0`
+delay-slot stack restore. The next recursive node helper starts cleanly at
+`0xA0B4`; keep `0xA0B4..0xA198` together unless stronger boundary evidence
+appears.
+
+Static dossier:
+`docs/dossiers/boot-resource-node-overlay-context-materialize.md`.
 
 ## Setup Complete Gate
 
@@ -2251,7 +2289,7 @@ setup-complete state:
 - Assembler: GNU Binutils 2.39 `mips64-elf-as.exe` with `-EB -mips3 -32`.
 - Setup verifier: `tools/verify_setup.js`.
 - Current verifier result: PASS; 825 archives, 0 unknown bytes, 108 overlap
-  bytes visible, 1 tracked composite real-asm chunk made from 90 tracked source
+  bytes visible, 1 tracked composite real-asm chunk made from 91 tracked source
   files, 99 generated fallback chunks, full-source manifest 1,059 entries with
   2,469,141 ambiguous bytes preserved explicitly, 3 tracked non-code
   source-owner files / 44,029 bytes, 1,055 generated non-code fallback files /
@@ -2260,8 +2298,8 @@ setup-complete state:
   `571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A`.
 
 Next phase is either promoting another small non-code owner batch or continuing
-tracked original-MIPS splits from `asm/original/rev0/code_00009FD8_00011000.s`.
-The next MIPS frontier starts with `0x9FD8`, a 220-byte frame-`0x18`
-resource-loader sibling with a clean boundary at `0xA0B4`; keep
-`0x9FD8..0xA0B4` together unless stronger boundary evidence appears. Do not
+tracked original-MIPS splits from `asm/original/rev0/code_0000A0B4_00011000.s`.
+The next MIPS frontier starts with `0xA0B4`, a recursive node helper with a
+secondary linear-search entry at `0xA160` and a clean boundary at `0xA198`; keep
+`0xA0B4..0xA198` together unless stronger boundary evidence appears. Do not
 begin semantic C decomp unless the setup verifier is green.
