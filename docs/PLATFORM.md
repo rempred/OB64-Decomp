@@ -118,10 +118,10 @@ Expected current results:
 - `assemble_original_mips.js` emits `build/assembled/rev0/code.bin`, matching
   baserom code-region SHA256
   `40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`.
-- `assemble_original_mips.js` currently uses 2 tracked composite
+- `assemble_original_mips.js` currently uses 3 tracked composite
   real-assembler chunks (`0x00001000..0x00011000` from 177 files;
-  `0x00011000..0x00021000` from 350 files = 527 tracked source files total),
-  plus 98 generated fallback chunks.
+  `0x00011000..0x00021000` from 350 files; `0x00021000..0x00031000` from 216
+  files = 743 tracked source files total), plus 97 generated fallback chunks.
 - `rebuild_rom.js --assembled-code ...` substitutes that assembled code blob for
   the raw code segment and still confirms the same full-ROM SHA256.
 - `build_full_source_manifest.js` emits a 1,059-entry full-ROM source ownership
@@ -202,15 +202,17 @@ These outputs are useful but ignored:
 - ROM size: 41,943,040 bytes.
 - Code region currently extracted as original MIPS:
   `0x00001000..0x0063676C`.
-- Chunks 0 and 1 (`0x00001000..0x00021000`) are fully split into named functions
-  (527 tracked source files: 177 in `boot/` + 350 in `lib/`); current split
-  frontier `0x00021000` (chunk 2, still a generated fallback chunk). `0xB030..0xF22C`
-  is the resource-archive loader + decompressor subsystem; `0xF22C..0x11000` is
-  codec/libc/vec3/text/IO; chunk 1 `0x11000..0x21000` is a graphics/unit-script/
-  audio/libc/libultra library (dossiers
+- Chunks 0, 1 and 2 (`0x00001000..0x00031000`) are fully split into named
+  functions (743 tracked source files: 177 in `boot/` + 566 in `lib/`); current
+  split frontier `0x00031000` (chunk 3, DATA-DOMINANT, still a generated fallback
+  chunk). `0xB030..0xF22C` is the resource-archive loader + decompressor; chunk 1
+  `0x11000..0x21000` is a graphics/unit-script/math/libc/libultra library; chunk 2
+  `0x21000..0x31000` is the statically-linked libultra (N64 SDK) + libc + 64-bit
+  runtime + `gu` matrix library + an embedded RSP-microcode data block (dossiers
   `docs/dossiers/boot-resource-decode-subsystem-B030-F22C.md`,
   `docs/dossiers/boot-codec-libc-vec3-F22C-11000.md`,
-  `docs/dossiers/lib-chunk1-11000-21000.md`).
+  `docs/dossiers/lib-chunk1-11000-21000.md`,
+  `docs/dossiers/lib-chunk2-21000-31000.md`).
 - Executable extent (evidence, `tools/audit_code_region.js`):
   `0x00001000..0x002B89B4`. The trailing `0x002B89B4..0x0063676C` (3,661,240
   bytes, 56.24%) has zero `jr $ra` and is non-code data still emitted as `.word`
@@ -296,8 +298,8 @@ prints PASS. Current PASS summary:
 - Toolchain: `n64-tools-gcc-toolchain-mips64-win64`, GNU Binutils 2.39.
 - Binutils smoke tests: `.word`, real instructions, `.set noreorder`, and first
   tracked chunk real assembly all pass.
-- Source mix: 2 tracked composite real-asm chunks made from 527 tracked source
-  files, plus 98 generated fallback chunks.
+- Source mix: 3 tracked composite real-asm chunks made from 743 tracked source
+  files, plus 97 generated fallback chunks.
 - Source manifest: 1,059 entries, zero unknown bytes, 2,469,141 ambiguous bytes
   preserved explicitly.
 - Source owners: 3 tracked non-code files / 44,029 bytes plus 1,055 generated

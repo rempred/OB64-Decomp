@@ -1,0 +1,36 @@
+/*
+ * Original Rev 0 MIPS reference split.
+ * Parent source: asm/original/rev0/code_00021000_00031000.s
+ * z64 range: 0x0002AEA0..0x0002AF00 exclusive
+ * Decode comments are aids, not proof of semantic function boundaries.
+ */
+.set noat
+.set noreorder
+.text
+
+/* True entry 0x0002AEA0 (read-before-write preamble; the parent-DB boundary label appears below inside the body). */
+osMapTLBRdb:
+/* 0x0002AEA0 0x8009AAA0 0x40085000 */ .word 0x40085000 # mfc0 $t0, $10
+/* 0x0002AEA4 0x8009AAA4 0x2409001F */ .word 0x2409001F # addiu $t1, $zero, 0x1F
+/* 0x0002AEA8 0x8009AAA8 0x40890000 */ .word 0x40890000 # mtc0 $t1, $0
+/* 0x0002AEAC 0x8009AAAC 0x40802800 */ .word 0x40802800 # mtc0 $zero, $5
+/* 0x0002AEB0 0x8009AAB0 0x240A0017 */ .word 0x240A0017 # addiu $t2, $zero, 0x17
+/* 0x0002AEB4 0x8009AAB4 0x3C09C000 */ .word 0x3C09C000 # lui $t1, 0xC000
+/* 0x0002AEB8 0x8009AAB8 0x40895000 */ .word 0x40895000 # mtc0 $t1, $10
+/* 0x0002AEBC 0x8009AABC 0x3C098000 */ .word 0x3C098000 # lui $t1, 0x8000
+/* 0x0002AEC0 0x8009AAC0 0x00095982 */ .word 0x00095982 # srl $t3, $t1, 6
+/* 0x0002AEC4 0x8009AAC4 0x016A5825 */ .word 0x016A5825 # or $t3, $t3, $t2
+/* 0x0002AEC8 0x8009AAC8 0x408B1000 */ .word 0x408B1000 # mtc0 $t3, $2
+/* 0x0002AECC 0x8009AACC 0x24090001 */ .word 0x24090001 # addiu $t1, $zero, 0x1
+/* 0x0002AED0 0x8009AAD0 0x40891800 */ .word 0x40891800 # mtc0 $t1, $3
+/* 0x0002AED4 0x8009AAD4 0x00000000 */ .word 0x00000000 # nop
+/* 0x0002AED8 0x8009AAD8 0x42000002 */ .word 0x42000002 # cop0_0x10
+/* 0x0002AEDC 0x8009AADC 0x00000000 */ .word 0x00000000 # nop
+/* 0x0002AEE0 0x8009AAE0 0x00000000 */ .word 0x00000000 # nop
+/* 0x0002AEE4 0x8009AAE4 0x00000000 */ .word 0x00000000 # nop
+/* 0x0002AEE8 0x8009AAE8 0x00000000 */ .word 0x00000000 # nop
+/* 0x0002AEEC 0x8009AAEC 0x40885000 */ .word 0x40885000 # mtc0 $t0, $10
+/* 0x0002AEF0 0x8009AAF0 0x03E00008 */ .word 0x03E00008 # jr $ra
+/* 0x0002AEF4 0x8009AAF4 0x00000000 */ .word 0x00000000 # nop
+/* 0x0002AEF8 0x8009AAF8 0x00000000 */ .word 0x00000000 # nop
+/* 0x0002AEFC 0x8009AAFC 0x00000000 */ .word 0x00000000 # nop

@@ -127,11 +127,9 @@ for the data-vs-code reclassification work when those chunks are reached.
   ROM SHA `571E8339…CC67A` unchanged; 177 tracked source files).
 - `node tools/audit_code_region.js` → unchanged executable-extent finding.
 
-## Next frontier
+## Next frontier — SUPERSEDED
 
-`0x00011000` (chunk 1). The straddler tail `[0x11000,0x11168)` is the head of
-chunk 1's first file. Reaching the 4% target `0x0001CD34` requires ~201 more
-functions across chunk 1 and a fix to `tools/promote_original_mips.js` (it
-currently overwrites `manifest.json` with only the newly-promoted chunk, which
-would clobber chunk 0's parts — multi-chunk promotion needs a merge). See
-`docs/NEXT_STEPS.md`.
+Chunk 1 is done: the straddler tail `[0x11000,0x11168)` became the first file of
+the chunk-1 split (`docs/dossiers/lib-chunk1-11000-21000.md`, 350 files), and the
+`tools/promote_original_mips.js` merge fix is complete. The current frontier is
+**`0x00021000` (chunk 2)**. See `docs/NEXT_STEPS.md` / `docs/DECOMP_LOG.md`.

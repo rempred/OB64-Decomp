@@ -98,8 +98,8 @@ This assembles tracked MIPS chunks with GNU `mips64-elf-as`, falls back to
 generated `.word` chunks for ranges not yet promoted, and substitutes the
 resulting binary blob for the raw code span. Manifest chunk `parts` are assembled
 in order, so a promoted no-gap chunk can be split into named files without losing
-coverage. Current expected result: 1 tracked composite real-asm chunk made from
-177 tracked source files (chunk 0 fully named, `0x00001000..0x00011000`), plus 99
+coverage. Current expected result: 3 tracked composite real-asm chunks made from
+743 tracked source files (chunks 0, 1 and 2 fully named, `0x00001000..0x00031000`), plus 97
 generated fallback chunks; the assembled
 code-region SHA256 is
 `40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`, and the

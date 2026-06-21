@@ -15,11 +15,12 @@ Current passing commands:
 node tools/verify_setup.js
 ```
 
-Current source mix: 2 tracked composite real-assembler chunks
-(`0x00001000..0x00011000` from 177 files in `boot/`; `0x00011000..0x00021000`
-from 350 files in `lib/`) = 527 tracked source files, plus 98 generated fallback
-chunks. **Chunks 0 and 1 are fully split into named functions**
-(`0x00001000..0x00021000`); next is chunk 2 (`0x00021000`).
+Current source mix: 3 tracked composite real-assembler chunks
+(`0x00001000..0x00011000` 177 files in `boot/`; `0x00011000..0x00021000` 350
+files and `0x00021000..0x00031000` 216 files in `lib/`) = 743 tracked source
+files, plus 97 generated fallback chunks. **Chunks 0, 1 and 2 are fully split
+into named functions** (`0x00001000..0x00031000`); next is chunk 3 (`0x00031000`,
+DATA-DOMINANT).
 
 The assembled code-region SHA256 is
 `40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`; the full
@@ -96,25 +97,23 @@ node tools/audit_code_region.js
    generates fallback owners for the rest. Keep `node tools/verify_setup.js`
    green after every promotion.
 
-3. Continue splitting into chunk 2.
+3. Handle chunk 3 (DATA-DOMINANT).
 
-   Chunks 0 and 1 (`0x00001000..0x00021000`) are fully split into named functions:
-   chunk 0 boot/resource/codec/libc/vec3 in `boot/` (dossiers
-   `boot-resource-decode-subsystem-B030-F22C.md`, `boot-codec-libc-vec3-F22C-11000.md`),
-   and chunk 1 in `lib/` — a graphics/unit-script + math + libc + libultra-OS
-   library (dossier `lib-chunk1-11000-21000.md`).
+   Chunks 0, 1 and 2 (`0x00001000..0x00031000`) are fully split into named
+   functions: chunk 0 boot/resource/codec/libc/vec3 in `boot/`; chunk 1 in `lib/`
+   (graphics/unit-script + math + libc + libultra library, dossier
+   `lib-chunk1-11000-21000.md`); chunk 2 in `lib/` (libultra/libc/runtime/`gu`
+   library, dossier `lib-chunk2-21000-31000.md`).
 
-   **Next frontier: `0x00021000` (chunk 2).** No blocker — the
-   `promote_original_mips.js` merge fix is done and proven. Pipeline:
-   `node tools/promote_original_mips.js --chunk code_00021000_00031000.s`
-   (merges + seeds a splittable part), then
-   `node tools/dump_function_context.js --start 0x21000 --end <next>`, build a
-   base partition, run the analyze→adversarial-review swarm, integrate into a
-   `--splits-file` JSON, and `node tools/split_original_mips_part.js --part <chunk2
-   file> --splits-file <json> --remove-source`. Expect the same parent-DB defects
-   (hidden tiny jal-reachable leaves, preamble-orphans, dual-entries) — validate
-   every boundary from disasm; default names to `func_XXXXXXXX` unless evidence is
-   hard.
+   **Next frontier: `0x00031000` (chunk 3) — but it is DATA-DOMINANT, not a
+   function chunk.** Only ~21 parent functions, all at `0x3F1B0..0x41098` (spill
+   into chunk 4); `0x31000..~0x3F1B0` (~57 KB) is the RSP-ucode continuation +
+   zero-fill + small data tables. HAZARD: `0x3F1B0` maps to RAM `0x800AEDB0` (the
+   BSS-clear start) — resolve whether the tail functions are overlay-relocated or
+   an initialized-data section before naming them. Promote with the fixed tool,
+   then classify data explicitly into `data_`/`rodata_`/`bss_zero_` files and split
+   only the tail functions (a small targeted pass, not the 10-slice swarm). See
+   the DECOMP_LOG "Next Frontier" and `docs/dossiers/lib-chunk2-21000-31000.md`.
 
 4. Keep the setup gate green.
 

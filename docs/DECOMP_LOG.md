@@ -24,12 +24,13 @@ and replace the active log with a compact current-state summary.
   `original_mips`. A static control-flow audit found no credible code edge into
   the tail (0 branch targets, 0 J/JAL to a known function). Audit:
   `tools/audit_code_region.js` / `docs/CODE_REGION_AUDIT.md`.
-- Current tracked code source mix: two composite real-assembler chunks
-  `0x00001000..0x00011000` (177 files, `boot/`) and `0x00011000..0x00021000`
-  (350 files, `lib/`) = **527 tracked source files**, plus 98 generated fallback
-  code chunks. **Chunks 0 AND 1 are now fully split into named functions**
-  (`0x00001000..0x00021000`); next is chunk 2 (`0x00021000`, still a generated
-  fallback chunk). The promote-tool merge blocker is FIXED (see the chunk-1 entry).
+- Current tracked code source mix: three composite real-assembler chunks
+  `0x00001000..0x00011000` (177 files, `boot/`), `0x00011000..0x00021000`
+  (350 files, `lib/`), and `0x00021000..0x00031000` (216 files, `lib/`) = **743
+  tracked source files**, plus 97 generated fallback code chunks. **Chunks 0, 1
+  AND 2 are now fully split into named functions** (`0x00001000..0x00031000`);
+  next is chunk 3 (`0x00031000`, still a generated fallback chunk, and
+  DATA-DOMINANT — see Next Frontier). The promote-tool merge blocker is FIXED.
 - The parent boundary DB has TWO recurring defects, both fixed when splitting:
   (1) `end_rom` is INCLUSIVE (exclusive end = `end_rom + 4`; do NOT treat the
   delay slot as a gap — `tools/dump_function_context.js` now enforces this with a
@@ -94,8 +95,15 @@ Current named sequence:
   glyph⇄ASCII text encoding, and libultra OS primitives — cache ops, AI audio,
   CPU interrupt mask, virtual→physical). Dossier:
   `docs/dossiers/lib-chunk1-11000-21000.md`. **Chunk 1 complete.**
-- Current remainder: none in chunks 0–1 (`0x1000..0x21000` fully split). Next is
-  chunk 2 generated fallback `0x00021000..0x00031000`.
+- Chunk 2 library tranche `0x00021000..0x00031000` (216 named parts in `lib/`:
+  the Nintendo SDK **libultra** OS core — exception/scheduler/threads, message
+  queues, EPI DMA, CP0 access, RSP control, TLB — plus libc (`mem*`/`str*`/
+  `sprintf`/`_Printf`), the `gu` matrix library, math (`sin`/`cos`/`sqrt`/…), the
+  compiler 64-bit runtime (`udivmod_u64`/`divmod_s64`/…), MMIO register accessors,
+  and an embedded **RSP microcode** data block). Dossier:
+  `docs/dossiers/lib-chunk2-21000-31000.md`. **Chunk 2 complete.**
+- Current remainder: none in chunks 0–2 (`0x1000..0x31000` fully split). Next is
+  chunk 3 generated fallback `0x00031000..0x00041000` (DATA-DOMINANT).
 
 Static dossiers live under `docs/dossiers/` and are the durable evidence notes
 for each promoted source-layout split.
@@ -392,11 +400,58 @@ advance so far.
   not attempted this run to keep chunk-1 boundary review thorough and the commit
   coherent.
 
+## 2026-06-21 - Chunk 2 Library Split (0x21000..0x31000); chunk 2 complete
+
+Promoted and fully split the third 64 KiB chunk — the most recognizable code yet.
+
+- Range: ROM `0x00021000..0x00031000` (**216 files**, `asm/original/rev0/lib/`).
+  Previous frontier `0x00021000`; new frontier `0x00031000`. Tracked source files
+  527 -> **743**; generated fallback chunks 98 -> 97. Byte-exact preserved (code
+  SHA `40D4E787...B409`, ROM SHA `571E8339...CC67A`). Dossier:
+  `docs/dossiers/lib-chunk2-21000-31000.md`.
+- Opening doc corrections this run: AGENTS.md bottom setup-state and the
+  Assembly-Backed section, `docs/WORKFLOW.md` source mix, and the stale frontiers
+  in both older dossiers (`boot-resource-decode-subsystem-B030-F22C.md`,
+  `boot-codec-libc-vec3-F22C-11000.md`) were updated (`527`->`743`, `2`->`3`
+  composites, `98`->`97`, frontier `0x21000`->`0x31000`). Full 527-part manifest
+  re-audit found no prior `.s` mistakes.
+- Method: same proven pipeline (`dump_function_context` 193 parent records ->
+  base partition 180 files -> 10-slice analyze->adversarial-review swarm ->
+  integrate -> split). All 10 slices succeeded (no API retries). Net 216 files.
+- Composition (**88 descriptive, 126 `func_*`, 2 data**): this chunk is the
+  statically-linked **libultra (N64 SDK) + libc + compiler 64-bit runtime + `gu`
+  matrix library**. Named exactly where the idiom is unambiguous: libultra OS
+  (`osException`/`__osDispatchThread`/`osSendMesg`/`osEPiRawStartDma`/`__osGetSR`/
+  `__osSpRawStartDma`/`osMapTLBRdb`/…, 28), `gu` matrix (`guRotate`/`guMtxCatF`/
+  `guTranslateF`/…, 12), libc (`memcpy`/`strcpy`/`sprintf`/`_Printf`/…, 17), math
+  (`sin`/`cos`/`tan`/`sqrt_f64`/`hypotf`/`rand`/…, 12), 64-bit runtime
+  (`udivmod_u64`/`divmod_s64`/…, 7), MMIO accessors (7), list helpers (3).
+- Undetected-code recovery: the parent DB only detects standard `addiu $sp`
+  prologues, so it missed the libultra exception/thread/CP0 handlers (use
+  `k0`/`k1`, `mtc0`/`mfc0`, `jr $k0`); the swarm recovered them as the named OS
+  functions. Straddler tail `func_00020d40_tail` `[0x21000,0x210C0)`.
+- Data handled explicitly (NOT named as functions): `data_000283C4` (108 B table)
+  and `data_0002E450_rsp_ucode` (`0x2E450..0x31000`, 11,184 B **RSP microcode**;
+  continues into chunk 3). Cross-chunk duplicate libc/libultra symbols (static
+  linking) are address-suffixed (`strcpy_0002c950`, `os_virtual_to_physical_000254e0`,
+  …) to keep labels unique.
+- Tooling: generalized the chunk helpers to parameterized `build/plan_chunk.js`,
+  `slice_chunk.js`, `integrate_chunk.js`, `check_splits.js` (gitignored). Relaxed
+  the integrator name filter to allow libultra/libc camelCase + `__`-prefixed SDK
+  symbols (asm labels permit `[A-Za-z_][A-Za-z0-9_]*`) and to dedupe by address
+  suffix instead of dropping to `func_`.
+- Verification: manifest integrity (743 parts) PASS; fragment check (every
+  function has a return/tail) 0 fragments; `node tools/assemble_original_mips.js`
+  byte-exact; `node tools/verify_setup.js` PASS (3 composite chunks / 743 files /
+  97 fallback); `node tools/audit_code_region.js` OK; `git diff --check` clean.
+- Next frontier: `0x00031000` (chunk 3) — DATA-DOMINANT (see Next Frontier).
+
 ## Current Dossier Set
 
 The current boot/source-layout dossier list is long; use `docs/PLATFORM.md` for
 the full quick index. The newest dossiers are:
 
+- `docs/dossiers/lib-chunk2-21000-31000.md` (216-file chunk-2 libultra/libc/gu library; chunk 2 done)
 - `docs/dossiers/lib-chunk1-11000-21000.md` (350-function chunk-1 library; chunk 1 done)
 - `docs/dossiers/boot-codec-libc-vec3-F22C-11000.md` (47-function tranche; chunk 0 done)
 - `docs/dossiers/boot-resource-decode-subsystem-B030-F22C.md` (29-function tranche)
@@ -420,30 +475,37 @@ the full quick index. The newest dossiers are:
 
 ## Next Frontier
 
-Chunks 0 and 1 (`0x00001000..0x00021000`) are fully split into named functions.
-The next frontier is **`0x00021000` (chunk 2)**. No tool blocker remains — the
-`promote_original_mips.js` merge fix is done and proven on chunk 1.
+Chunks 0, 1 and 2 (`0x00001000..0x00031000`) are fully split into named functions.
+The next frontier is **`0x00031000` (chunk 3)** — but chunk 3 is **DATA-DOMINANT,
+not a function chunk**, so it needs a data-classification pass, not the
+function-naming swarm.
 
-Recommended path for chunk 2 (same pipeline that worked for chunk 1):
-1. `node tools/promote_original_mips.js --chunk code_00021000_00031000.s`
-   (merges + seeds a splittable single part; chunk 0/1 untouched).
-2. `node tools/dump_function_context.js --start 0x21000 --end 0x31000` to seed.
-3. Build a base partition, slice it, run the analyze→adversarial-review swarm,
-   integrate into a `--splits-file` JSON, then
-   `node tools/split_original_mips_part.js --part <chunk2 file> --splits-file
-   <json> --remove-source`.
-4. Validate: manifest integrity audit, fragment check (every function has a
-   return/tail), `node tools/assemble_original_mips.js`, `node tools/verify_setup.js`,
-   `node tools/audit_code_region.js`, `git diff --check`.
+Chunk 3 shape (from `dump_function_context --start 0x31000 --end 0x41000` +
+disasm sampling): only ~21 parent-detected functions, ALL at
+`0x3F1B0..0x41098` (which spill into chunk 4). The region `0x31000..~0x3F1B0`
+(~57 KB) is data:
+- `0x31000..?` — continuation of chunk 2's `data_0002E450_rsp_ucode` (RSP
+  microcode; `op_0x12`/COP2 words).
+- zero-fill blocks (e.g. `0x34000`).
+- small-integer data tables (e.g. `0x3A000`: `0x1388`=5000, `0x0FA0`=4000).
 
-Expect the same parent-DB defects as chunk 1: hidden tiny jal-reachable
-accessor/leaf functions inside larger records, read-before-write preamble-orphans,
-and genuine dual-entries. Validate every boundary from disasm; default names to
-`func_XXXXXXXX` unless evidence is hard. Subsystem/globals context:
-`docs/dossiers/lib-chunk1-11000-21000.md`.
+OPEN QUESTION / hazard to resolve BEFORE naming the tail functions: `0x3F1B0`
+maps (linearly) to RAM `0x800AEDB0`, which is the **BSS-clear start** from the
+boot entry (`boot_entry_clear_bss` clears `0x3AE70` bytes from `0x800AEDB0`).
+Real functions at the BSS base would be zeroed at boot under the linear map, so
+either these are overlay-relocated (linear RAM wrong here) or this is an
+initialized-data/rodata section, not `.text`. Verify against the overlay map /
+parent symbol RAM before committing names.
 
-There are now two active tracks. The boot function-split track continues at
-`0x11000` (chunk 1) as above. The full-ROM coverage track (opened 2026-06-21) next refines
+Recommended chunk-3 path: promote (`code_00031000_00041000.s`), then classify the
+data regions explicitly into `data_`/`rodata_`/`bss_zero_` files (preserve
+no-gap, byte-exact), carry the RSP-ucode continuation as the first file, and split
+the `0x3F1B0+` tail functions only after resolving the RAM/BSS question (likely a
+small targeted swarm rather than the 10-slice function pipeline). The chunk-3
+straddler is a DATA straddler (ucode), not a function tail.
+
+There are now two active tracks. The library function-split track continues at
+`0x31000` (chunk 3, data-dominant) as above. The full-ROM coverage track (opened 2026-06-21) next refines
 the exact code/data boundary near `0x002B89B4` and reclassifies the non-code tail
 `0x002B89B4..0x0063676C` from `original_mips` to a data source form, shrinking the
 configured code region to the executable extent while keeping the exact rebuild

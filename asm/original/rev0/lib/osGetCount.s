@@ -1,0 +1,18 @@
+/*
+ * Original Rev 0 MIPS reference split.
+ * Parent source: asm/original/rev0/code_00021000_00031000.s
+ * z64 range: 0x0002AAE0..0x0002AAF0 exclusive
+ * Decode comments are aids, not proof of semantic function boundaries.
+ */
+.set noat
+.set noreorder
+.text
+
+/* True entry 0x0002AAE0 (read-before-write preamble; the parent-DB boundary label appears below inside the body). */
+osGetCount:
+/* function boundary candidate: func_0002AAE0, size=12, kind=leaf */
+func_0002AAE0:
+/* 0x0002AAE0 0x8009A6E0 0x40024800 */ .word 0x40024800 # mfc0 $v0, $9
+/* 0x0002AAE4 0x8009A6E4 0x03E00008 */ .word 0x03E00008 # jr $ra
+/* 0x0002AAE8 0x8009A6E8 0x00000000 */ .word 0x00000000 # nop
+/* 0x0002AAEC 0x8009A6EC 0x00000000 */ .word 0x00000000 # nop

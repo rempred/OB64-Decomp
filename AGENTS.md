@@ -203,11 +203,12 @@ Current result:
 - Code-region SHA256:
   `40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`.
 - Code-region match against baserom: pass.
-- Tracked real-assembler original-MIPS chunks: 2 composites
-  (`0x00001000..0x00011000` from 177 files in `boot/`; `0x00011000..0x00021000`
-  from 350 files in `lib/`) = 527 real-assembler source files. Chunks 0 and 1
-  (`0x00001000..0x00021000`) are now fully split into named functions; next is
-  chunk 2 (`0x00021000`, still a generated fallback chunk).
+- Tracked real-assembler original-MIPS chunks: 3 composites
+  (`0x00001000..0x00011000` 177 files in `boot/`; `0x00011000..0x00021000` 350
+  files and `0x00021000..0x00031000` 216 files in `lib/`) = 743 real-assembler
+  source files. Chunks 0, 1 and 2 (`0x00001000..0x00031000`) are now fully split
+  into named functions; next is chunk 3 (`0x00031000`, DATA-DOMINANT, still a
+  generated fallback chunk).
 - Generated fallback chunks: 98.
 - Assembled-code ROM rebuild command:
 
@@ -223,21 +224,25 @@ Next source-layout work should continue promoting/splitting tracked
 `tools/promote_original_mips.js` for chunk promotion and `--strict-tracked` only
 after every configured code chunk is tracked.
 
-Chunks 0 and 1 `0x00001000..0x00021000` are fully split into named functions.
+Chunks 0, 1 and 2 `0x00001000..0x00031000` are fully split into named functions.
 Chunk 0 (`boot/`): `0xB030..0xF22C` is a resource-archive loader + custom
-decompressor (Huffman/DEFLATE + adaptive-Huffman + CRC16); `0xF22C..0x11000`
-continues the codec then adds shared libc, `boot_io_*` stream I/O, a `vec3_*`
-float math library, and a text renderer. Chunk 1 (`lib/`, `0x11000..0x21000`) is
-a graphics/unit-script + math (trig/sqrt/ldexp) + libc (`memset/memmove`) +
-libultra-OS (cache ops, AI audio, CPU interrupt mask, virtual→physical) library
-(dossiers `boot-resource-decode-subsystem-B030-F22C.md`,
-`boot-codec-libc-vec3-F22C-11000.md`, `lib-chunk1-11000-21000.md`).
+decompressor; `0xF22C..0x11000` continues the codec then adds shared libc,
+`boot_io_*` stream I/O, a `vec3_*` math library, and a text renderer. Chunk 1
+(`lib/`, `0x11000..0x21000`) is a graphics/unit-script + math + libc + libultra
+library. Chunk 2 (`lib/`, `0x21000..0x31000`) is the statically-linked libultra
+(N64 SDK) OS core + libc + compiler 64-bit runtime + `gu` matrix library, plus an
+embedded RSP-microcode data block (dossiers
+`boot-resource-decode-subsystem-B030-F22C.md`,
+`boot-codec-libc-vec3-F22C-11000.md`, `lib-chunk1-11000-21000.md`,
+`lib-chunk2-21000-31000.md`).
 The dispatch tables `0x800AE128` (85) / `0x800AE2E8` (9) are **static ROM data**
 (z64 `0x3E528`/`0x3E6E8`, no runtime registration; opcode→handler map resolved);
 the codec source vtable is RAM `0x800A876C` / ROM `0x38B6C`.
-Next frontier is **`0x00021000` (chunk 2)** — no blocker (the
-`promote_original_mips.js` merge fix is done and proven; `split_original_mips_part.js`
-has `--splits-file` for large splits). Use `tools/dump_function_context.js --start
+Next frontier is **`0x00031000` (chunk 3)** — DATA-DOMINANT (RSP-ucode
+continuation + zero-fill + data tables; only ~21 functions at `0x3F1B0+`, where
+RAM `0x800AEDB0` = the BSS-clear start is an open code/data/overlay question). Use
+a data-classification pass, not the function swarm. `split_original_mips_part.js`
+has `--splits-file` for large splits. Use `tools/dump_function_context.js --start
 <s> --end <e>` to seed a split pass (correct exclusive ends = parent
 `end_rom + 4`). Heads-up: the parent boundary DB both over-merges real functions
 (spurious "secondary entries") AND hides many tiny jal-reachable accessor/leaf
@@ -2646,9 +2651,9 @@ setup-complete state:
 - Assembler: GNU Binutils 2.39 `mips64-elf-as.exe` with `-EB -mips3 -32`.
 - Setup verifier: `tools/verify_setup.js`.
 - Current verifier result: PASS; 825 archives, 0 unknown bytes, 108 overlap
-  bytes visible, 1 tracked composite real-asm chunk made from 177 tracked source
-  files (chunk 0 fully named, `0x00001000..0x00011000`), 99 generated fallback
-  chunks, full-source manifest 1,059 entries with
+  bytes visible, 3 tracked composite real-asm chunks made from 743 tracked source
+  files (chunks 0, 1 and 2 fully named, `0x00001000..0x00031000`), 97 generated
+  fallback chunks, full-source manifest 1,059 entries with
   2,469,141 ambiguous bytes preserved explicitly, 3 tracked non-code
   source-owner files / 44,029 bytes, 1,055 generated non-code fallback files /
   35,388,567 bytes, source-manifest rebuild exact, full ROM
@@ -2656,8 +2661,8 @@ setup-complete state:
   `571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A`.
 
 Next phase is either promoting another small non-code owner batch or continuing
-tracked original-MIPS splits into **chunk 1** (`0x00011000`). Chunk 0 is fully
-named. Before promoting chunk 1, fix `tools/promote_original_mips.js` (it
-overwrites `manifest.json` with only the newly-promoted chunk, clobbering chunk
-0's parts — needs a merge). Do not begin semantic C decomp unless the
-setup verifier is green.
+tracked original-MIPS splits into **chunk 3** (`0x00031000`, DATA-DOMINANT — needs
+a data-classification pass, not the function swarm; resolve the `0x3F1B0`/RAM
+`0x800AEDB0` BSS-clear code/data/overlay question first). Chunks 0, 1 and 2 are
+fully named. There is no tooling blocker. Do not begin semantic C decomp unless
+the setup verifier is green.

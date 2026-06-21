@@ -178,8 +178,9 @@ Spurious secondary entries flagged (do NOT split): `0xBBB8` (mid-loop label in
 - **Next frontier — SUPERSEDED.** This dossier originally pointed at
   `0x0000F22C`; that tranche is done (see
   `docs/dossiers/boot-codec-libc-vec3-F22C-11000.md`, codec/libc/vec3/text
-  `0xF22C..0x11000`) and **chunk 0 is fully split**. The current frontier is
-  **`0x00011000` (chunk 1)**. See `docs/NEXT_STEPS.md` / `docs/DECOMP_LOG.md`.
+  `0xF22C..0x11000`) and **chunks 0 and 1 are fully split** (chunk 1:
+  `docs/dossiers/lib-chunk1-11000-21000.md`). The current frontier is
+  **`0x00021000` (chunk 2)**. See `docs/NEXT_STEPS.md` / `docs/DECOMP_LOG.md`.
   Historical note: the `0xF22C` continuation covered the canonical-Huffman
   read/decode workers and the low-level fread/fwrite stream I/O at
   `func_0000F970`/`F9D8` referenced here; the preamble-orphan boundary idiom
