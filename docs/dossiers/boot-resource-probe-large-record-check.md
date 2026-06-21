@@ -12,7 +12,8 @@ boot-code helper immediately after the indexed record check helper:
 | `asm/original/rev0/boot/boot_resource_probe_large_record_check.s` | `0x00005978..0x00005A88` | `0x80075578..0x80075688` | Overlapping `0x5978` leaf / `0x5980` prologue helper that checks the 0x4AE8-byte record at shared-buffer offset `0x30B0`. |
 | `asm/original/rev0/boot/boot_resource_probe_small_record_check.s` | `0x00005A88..0x00005B8C` | `0x80075688..0x8007578C` | Follow-up split documented separately. |
 | `asm/original/rev0/boot/boot_resource_probe_indexed_record_copy_flag.s` | `0x00005B8C..0x00005C58` | `0x8007578C..0x80075858` | Follow-up split documented separately. |
-| `asm/original/rev0/code_00005C58_00011000.s` | `0x00005C58..0x00011000` | `0x80075858..0x80080C00` | Current tracked remainder. |
+| `asm/original/rev0/boot/boot_resource_probe_large_record_copy_flag.s` | `0x00005C58..0x00005CFC` | `0x80075858..0x800758FC` | Follow-up split documented separately. |
+| `asm/original/rev0/code_00005CFC_00011000.s` | `0x00005CFC..0x00011000` | `0x800758FC..0x80080C00` | Current tracked remainder. |
 
 The name is conservative. The routine has a clear static large-record check
 shape, but no runtime trace or controlled mutation has verified final behavior

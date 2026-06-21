@@ -487,17 +487,26 @@
           "sha256": "99A90B70B94CD83AC31441BB6532DAE3FC77FF1A966B5AFAB72FBB8FC04F4D3C"
         },
         {
-          "name": "code_00005C58_00011000_remainder",
-          "file": "asm/original/rev0/code_00005C58_00011000.s",
+          "name": "boot_resource_probe_large_record_copy_flag",
+          "file": "asm/original/rev0/boot/boot_resource_probe_large_record_copy_flag.s",
           "romStart": "0x00005C58",
+          "romEndExclusive": "0x00005CFC",
+          "bytes": 164,
+          "textBytes": 3569,
+          "sha256": "983DE9A1584B9E27C199ACF9E0801AF6C495636DB522D5EB45509493762C5ABC"
+        },
+        {
+          "name": "code_00005CFC_00011000_remainder",
+          "file": "asm/original/rev0/code_00005CFC_00011000.s",
+          "romStart": "0x00005CFC",
           "romEndExclusive": "0x00011000",
-          "bytes": 45992,
-          "textBytes": 887355,
-          "sha256": "7902AFF2F736319B9F5D38704DA108E91E7085BA91DC59E8D4C6180C7B9EC79C"
+          "bytes": 45828,
+          "textBytes": 884044,
+          "sha256": "C80A2CA36028CABCCF913CCF5CDA284C209E7CB37B8097A5818F2F189A0F3D58"
         }
       ],
-      "textBytes": 1278227,
-      "sha256": "03ECB847F26F4AAD0D3C82CA1D717AAB299D55B498EBCA329635EB687C961C62"
+      "textBytes": 1278485,
+      "sha256": "4159D38BD284B7985F7529131F8A163697AADA479979007A04BF88A6D9ED1169"
     }
   ]
 }

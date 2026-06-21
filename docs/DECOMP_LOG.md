@@ -18,7 +18,7 @@ and replace the active log with a compact current-state summary.
 - Whole-ROM coverage still independently scans for LHA headers; do not trust the
   parent archive catalog by itself.
 - Current tracked code source mix: one composite real-assembler chunk
-  `0x00001000..0x00011000` made from 53 tracked source files, plus 99 generated
+  `0x00001000..0x00011000` made from 54 tracked source files, plus 99 generated
   fallback code chunks.
 - Current tracked non-code source-owner mix: 3 tracked files / 44,029 bytes,
   plus 1,055 generated fallback owner files / 35,388,567 bytes.
@@ -77,7 +77,8 @@ Current named sequence:
 - `boot_resource_probe_large_record_check.s` `0x5978..0x5A88`.
 - `boot_resource_probe_small_record_check.s` `0x5A88..0x5B8C`.
 - `boot_resource_probe_indexed_record_copy_flag.s` `0x5B8C..0x5C58`.
-- Current remainder: `code_00005C58_00011000.s`.
+- `boot_resource_probe_large_record_copy_flag.s` `0x5C58..0x5CFC`.
+- Current remainder: `code_00005CFC_00011000.s`.
 
 Static dossiers live under `docs/dossiers/` and are the durable evidence notes
 for each promoted source-layout split.
@@ -855,23 +856,72 @@ Verification for the split:
 - Source mix is now 1 tracked composite real-asm chunk made from 53 tracked
   source files, plus 99 generated fallback chunks.
 
+## 2026-06-21 - Boot Resource Probe Large Record Copy/Flag Split
+
+Baseline before the split:
+
+- `git status --short` was clean at commit
+  `6654c03 Split Rev 0 resource probe indexed record copy flag helper`.
+- `node tools\verify_setup.js` passed with 825 archives, zero unknown bytes, 108
+  visible overlap bytes, 53 tracked source files, and unchanged code/ROM hashes.
+- The compact decomp log was 716 lines / 5,148 words, so no prune/archive pass
+  was needed.
+
+Promoted `asm/original/rev0/boot/boot_resource_probe_large_record_copy_flag.s`
+covering ROM `0x00005C58..0x00005CFC` / RAM
+`0x80075858..0x800758FC`. The old `code_00005C58_00011000.s` remainder was
+removed and replaced by `asm/original/rev0/code_00005CFC_00011000.s`.
+
+Static evidence from parent `../scripts/ob64_symbols_v2.json`,
+`../scripts/ob64_callgraph_v2.json`, and local source inspection:
+
+- `0x5C58` is a 164-byte leaf entry that reads `0x800A83B8` before falling into
+  the `0x5C60` 156-byte prologue body with frame size `0x20`.
+- Fixed runtime evidence places the exact pair at RAM `0x80075858/0x80075860`
+  in all seven named states and all 21 snapshots.
+- Direct exact caller evidence is `0x553C`; parent callgraph aliases sibling
+  targets from `0x4C5C` and `0x539C` into this family, but those direct source
+  calls target RAM `0x800758FC`, the next sibling.
+- High-confidence callees are `resource_alloc` (`0x1330`), `0x1A4F0` /
+  RAM `0x8008A0F0`, and `0x23460` / RAM `0x80093060`; no unresolved calls were
+  reported for this helper.
+- Global traffic reads/writes `0x800A83B8` and writes byte `0x800A83BC`.
+
+Static shape:
+
+- The `0x5C58` prefix loads shared buffer pointer `0x800A83B8`; the `0x5C60`
+  stack-frame body branches on that loaded pointer.
+- If the pointer is zero, the routine allocates `0x8000`, stores it globally,
+  and fills the span in `0x100`-byte chunks through `0x8008A0F0`.
+- Copies `0x4AE8` bytes from shared-buffer offset `0x30B0` into caller scratch
+  through `0x80093060`.
+- Stores byte `1` to `0x800A83BC`.
+- Restores saved registers and returns; no signature/halfword validation is
+  present in this helper.
+
+Verification for the split:
+
+- `node tests\binutils_smoke.js` passed.
+- `node tools\assemble_original_mips.js` passed.
+- `node tools\verify_setup.js` passed after the docs update.
+- Source mix is now 1 tracked composite real-asm chunk made from 54 tracked
+  source files, plus 99 generated fallback chunks.
+
 ## Next Frontier
 
-Continue from `asm/original/rev0/code_00005C58_00011000.s`.
+Continue from `asm/original/rev0/code_00005CFC_00011000.s`.
 
 Parent evidence for the next target:
 
-- `0x5C58` is a leaf entry that reads `0x800A83B8` before falling into the
-  `0x5C60` prologue helper with frame size `0x20`.
-- Fixed runtime evidence places the family at RAM `0x80075858/0x80075860` in
-  all seven named states and all 21 snapshots; parent data also aliases sibling
-  targets at `0x800758FC/0x80075904`, so inspect the overlap carefully before
-  splitting.
-- Static callers include `0x553C`; parent callgraph also folds `0x4C5C` and
-  `0x539C` into the same `0x5C58` family through the alias.
+- `0x5CFC` is a leaf entry that reads `0x800A83B8` before falling into the
+  `0x5D04` prologue helper with frame size `0x20`.
+- Fixed runtime evidence aliases it with the same family as `0x5C58`, with
+  direct RAM targets `0x800758FC/0x80075904` in all seven named states and all
+  21 snapshots.
+- Static direct callers are `0x4C5C` and `0x539C`.
 - High-confidence callees are `resource_alloc` (`0x1330`), `0x1A4F0` /
   RAM `0x8008A0F0`, and `0x23460` / RAM `0x80093060`.
 - It reads/writes `0x800A83B8` and writes byte `0x800A83BC`.
-- Static shape: ensures the shared buffer exists, copies `0x4AE8` bytes from
-  shared-buffer offset `0x30B0` into caller scratch, sets `0x800A83BC = 1`, and
+- Static shape: ensures the shared buffer exists, copies `0x10` bytes from
+  shared-buffer offset `0` into caller scratch, sets `0x800A83BC = 1`, and
   returns.

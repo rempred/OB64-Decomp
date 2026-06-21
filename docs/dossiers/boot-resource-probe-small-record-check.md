@@ -11,7 +11,8 @@ boot-code helper immediately after the large-record check helper:
 | --- | --- | --- | --- |
 | `asm/original/rev0/boot/boot_resource_probe_small_record_check.s` | `0x00005A88..0x00005B8C` | `0x80075688..0x8007578C` | Overlapping `0x5A88` leaf / `0x5A90` prologue helper that checks the 16-byte record at shared-buffer offset `0`. |
 | `asm/original/rev0/boot/boot_resource_probe_indexed_record_copy_flag.s` | `0x00005B8C..0x00005C58` | `0x8007578C..0x80075858` | Follow-up split documented separately. |
-| `asm/original/rev0/code_00005C58_00011000.s` | `0x00005C58..0x00011000` | `0x80075858..0x80080C00` | Current tracked remainder. |
+| `asm/original/rev0/boot/boot_resource_probe_large_record_copy_flag.s` | `0x00005C58..0x00005CFC` | `0x80075858..0x800758FC` | Follow-up split documented separately. |
+| `asm/original/rev0/code_00005CFC_00011000.s` | `0x00005CFC..0x00011000` | `0x800758FC..0x80080C00` | Current tracked remainder. |
 
 The name is conservative. The routine has a clear static small-record check
 shape, but no runtime trace or controlled mutation has verified final behavior
@@ -61,8 +62,9 @@ or the exact role of the unresolved halfword-return helpers.
 - The routine ends after the `jr ra` delay slot at `0x5B88`.
 - The next parent boundary was `0x00005B8C`; the follow-up split now covers
   `0x00005B8C..0x00005C58`.
-- The active remainder starts at `0x00005C58`, an overlapping leaf/prologue
-  helper family that should be inspected before the next split.
+- Follow-up splits now cover through
+  `boot_resource_probe_large_record_copy_flag.s` (`0x00005C58..0x00005CFC`);
+  the active remainder starts at `0x00005CFC`.
 
 ## Verification
 

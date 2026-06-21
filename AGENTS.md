@@ -173,7 +173,7 @@ Current result:
   `40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`.
 - Code-region match against baserom: pass.
 - Tracked real-assembler original-MIPS chunks: 1 composite
-  (`0x00001000..0x00011000`) made from 53 real-assembler source files.
+  (`0x00001000..0x00011000`) made from 54 real-assembler source files.
 - Generated fallback chunks: 99.
 - Assembled-code ROM rebuild command:
 
@@ -1234,7 +1234,7 @@ materialize helper after the small-record check:
 - `asm/original/rev0/boot/boot_resource_probe_indexed_record_copy_flag.s`
   `0x00005B8C..0x00005C58`; parent reports a 204-byte prologue helper with
   frame size `0x28`.
-- Remainder:
+- Remainder at that step, now superseded by the large-record copy/flag split:
   `asm/original/rev0/code_00005C58_00011000.s`.
 
 Static evidence: parent symbol/callgraph data places the helper at fixed RAM
@@ -1252,9 +1252,39 @@ copy/flag shape, not verified runtime semantics.
 
 Static dossier:
 `docs/dossiers/boot-resource-probe-indexed-record-copy-flag.md`.
-Next source split should start at `asm/original/rev0/code_00005C58_00011000.s`;
-the next target is the overlapping `0x5C58/0x5C60` large-record copy/flag
-helper family.
+
+## Boot Resource Probe Large Record Copy/Flag Split
+
+The next tracked Rev 0 original-MIPS split separates the large-record copy/flag
+helper after the indexed-record copy/flag helper:
+
+- `asm/original/rev0/boot/boot_resource_probe_large_record_copy_flag.s`
+  `0x00005C58..0x00005CFC`; parent reports a leaf entry at `0x5C58` that falls
+  into the `0x5C60` prologue body with frame size `0x20`.
+- Remainder:
+  `asm/original/rev0/code_00005CFC_00011000.s`.
+
+Static evidence: parent symbol data places the exact helper at fixed RAM
+`0x80075858/0x80075860` in all seven named states / all 21 snapshots. Direct
+caller evidence for the exact entry is `0x553C`; parent callgraph aliases
+nearby sibling targets from `0x4C5C` and `0x539C` into the same family, so keep
+the `0x5CFC/0x5D04` sibling separate for the next split. High-confidence
+callees are `resource_alloc` (`0x1330`), `0x1A4F0` / RAM `0x8008A0F0`, and
+`0x23460` / RAM `0x80093060`; there are no unresolved RAM calls. Global traffic
+reads/writes `0x800A83B8` and writes byte `0x800A83BC`.
+
+Static shape: the `0x5C58` prefix loads shared buffer pointer `0x800A83B8`, then
+the `0x5C60` prologue body ensures that buffer exists by allocating/filling
+`0x8000` bytes when needed, copies `0x4AE8` bytes from shared-buffer offset
+`0x30B0` into caller scratch, sets `0x800A83BC = 1`, and returns. The name is
+conservative and records the static large-record copy/flag shape, not verified
+runtime semantics.
+
+Static dossier:
+`docs/dossiers/boot-resource-probe-large-record-copy-flag.md`.
+Next source split should start at `asm/original/rev0/code_00005CFC_00011000.s`;
+the next target is the overlapping `0x5CFC/0x5D04` small-record copy/flag helper
+family.
 
 ## Setup Complete Gate
 
@@ -1270,7 +1300,7 @@ setup-complete state:
 - Assembler: GNU Binutils 2.39 `mips64-elf-as.exe` with `-EB -mips3 -32`.
 - Setup verifier: `tools/verify_setup.js`.
 - Current verifier result: PASS; 825 archives, 0 unknown bytes, 108 overlap
-  bytes visible, 1 tracked composite real-asm chunk made from 53 tracked source
+  bytes visible, 1 tracked composite real-asm chunk made from 54 tracked source
   files, 99 generated fallback chunks, full-source manifest 1,059 entries with
   2,469,141 ambiguous bytes preserved explicitly, 3 tracked non-code
   source-owner files / 44,029 bytes, 1,055 generated non-code fallback files /
@@ -1279,5 +1309,5 @@ setup-complete state:
   `571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A`.
 
 Next phase is either promoting another small non-code owner batch or continuing
-tracked original-MIPS splits from `asm/original/rev0/code_00005C58_00011000.s`.
+tracked original-MIPS splits from `asm/original/rev0/code_00005CFC_00011000.s`.
 Do not begin semantic C decomp unless the setup verifier is green.
