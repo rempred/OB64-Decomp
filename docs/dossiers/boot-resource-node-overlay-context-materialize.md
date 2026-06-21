@@ -11,7 +11,7 @@ materialize helper:
 | Source | ROM range | RAM range | Notes |
 | --- | --- | --- | --- |
 | `asm/original/rev0/boot/boot_resource_node_overlay_context_materialize.s` | `0x00009FD8..0x0000A0B4` | `0x80079BD8..0x80079CB4` | Static resource-node context materialize helper that allocates a destination and calls overlay-resident helpers. |
-| `asm/original/rev0/code_0000A0B4_00011000.s` | `0x0000A0B4..0x00011000` | `0x80079CB4..0x80080C00` | Current tracked remainder; starts with the recursive node helper. |
+| `asm/original/rev0/code_0000A0B4_00011000.s` | `0x0000A0B4..0x00011000` | `0x80079CB4..0x80080C00` | Remainder at this split; now superseded by `boot_resource_node_recursive_insert_slot_search.s`. |
 
 The source name is conservative. "Overlay" reflects the observed RAM helper
 targets outside the permanent boot-linear range, not a verified runtime API
@@ -59,8 +59,9 @@ contract.
   stack restore at `0xA0B0`.
 - The next function starts cleanly at `0x0000A0B4`; do not include that word in
   this source file.
-- Parent evidence for `0xA0B4` includes a secondary entry at `0xA160`; keep
-  `0xA0B4..0xA198` together until the recursive node/helper shape is documented.
+- Parent evidence for `0xA0B4` includes a secondary entry at `0xA160`; that
+  range is now documented in
+  `docs/dossiers/boot-resource-node-recursive-insert-slot-search.md`.
 
 ## Verification
 

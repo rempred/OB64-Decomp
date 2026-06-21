@@ -19,7 +19,7 @@ and replace the active log with a compact current-state summary.
 - Whole-ROM coverage still independently scans for LHA headers; do not trust the
   parent archive catalog by itself.
 - Current tracked code source mix: one composite real-assembler chunk
-  `0x00001000..0x00011000` made from 91 tracked source files, plus 99 generated
+  `0x00001000..0x00011000` made from 92 tracked source files, plus 99 generated
   fallback code chunks.
 - Current tracked non-code source-owner mix: 3 tracked files / 44,029 bytes,
   plus 1,055 generated fallback owner files / 35,388,567 bytes.
@@ -60,9 +60,9 @@ Current named sequence:
 - Resource probe helpers through
   `boot_resource_probe_record_checksum_signature.s` `0x4AC8..0x5FC0`.
 - State/slot, resource-handle, transform-record, command/resource-node, and
-  resource-node context helpers through
-  `boot_resource_node_overlay_context_materialize.s` `0x5FC0..0xA0B4`.
-- Current remainder: `code_0000A0B4_00011000.s`.
+  resource-node context/recursive helpers through
+  `boot_resource_node_recursive_insert_slot_search.s` `0x5FC0..0xA198`.
+- Current remainder: `code_0000A198_00011000.s`.
 
 Static dossiers live under `docs/dossiers/` and are the durable evidence notes
 for each promoted source-layout split.
@@ -130,6 +130,62 @@ Verification for the split:
 - Static dossier:
   `docs/dossiers/boot-resource-node-overlay-context-materialize.md`.
 
+## 2026-06-21 - Boot Resource Node Recursive Insert/Slot Search Split
+
+Baseline before the split:
+
+- `git status --short` was clean at commit
+  `e2f84ba Split Rev 0 boot resource node overlay context materialize`.
+- `node tools\verify_setup.js` passed with 825 archives, zero unknown bytes, 108
+  visible overlap bytes, 91 tracked source files, 99 generated fallback chunks,
+  and unchanged code/ROM hashes.
+
+Promoted
+`asm/original/rev0/boot/boot_resource_node_recursive_insert_slot_search.s`
+covering ROM `0x0000A0B4..0x0000A198` / RAM
+`0x80079CB4..0x80079D98`. The old
+`asm/original/rev0/code_0000A0B4_00011000.s` remainder was removed and replaced
+by `asm/original/rev0/code_0000A198_00011000.s`.
+
+Static evidence from parent function/symbol/callgraph/xref data and local
+source:
+
+- `0xA0B4` is a 228-byte recursive prologue helper with frame size `0x20`,
+  fixed in all seven named states and all 21 snapshots.
+- Parent function data records a secondary entry at ROM `0xA160` / RAM
+  `0x80079D60`.
+- Parent old callees are two recursive calls and one call to
+  `resource_alloc_mode1_wrapper` `0x1688` / RAM `0x80071288`.
+- Parent v2 resolves RAM `0x80079CB4` to the earlier `0x9CAC` same-state
+  candidate; keep this as an aliasing caveat while local source owns the actual
+  `0xA0B4` body.
+- Parent xrefs show `0xA0B4` is the only writer of shared context base
+  `0x800AF0C4`.
+
+Static shape:
+
+- The primary entry accepts a node/root pointer in `a0` and key/source value in
+  `a1`.
+- It returns matching nodes by comparing field `+0x00`, recurses through child
+  fields `+0x10/+0x14`, and allocates/clears a `0x18`-byte node when the input
+  node is null.
+- Both matching and newly allocated nodes are stored to `0x800AF0C4`.
+- The secondary `0xA160` entry walks a pointer-to-node slot and returns the slot
+  pointer where the key is found or should be inserted, advancing through
+  `node+0x18` or `node+0x14`.
+- The split includes the primary return at `0xA158..0xA15C` and the secondary
+  return at `0xA190..0xA194`; the next helper starts at `0xA198`.
+
+Verification for the split:
+
+- `node tests\binutils_smoke.js` passed.
+- `node tools\assemble_original_mips.js` passed.
+- Full `node tools\verify_setup.js` passed after the split and doc updates.
+- Source mix is now 1 tracked composite real-asm chunk made from 92 tracked
+  source files, plus 99 generated fallback chunks.
+- Static dossier:
+  `docs/dossiers/boot-resource-node-recursive-insert-slot-search.md`.
+
 ## Current Dossier Set
 
 The current boot/source-layout dossier list is long; use `docs/PLATFORM.md` for
@@ -142,14 +198,14 @@ the full quick index. The newest dossiers are:
 - `docs/dossiers/boot-resource-node-context-materialize.md`
 - `docs/dossiers/boot-resource-node-lzss-context-materialize.md`
 - `docs/dossiers/boot-resource-node-overlay-context-materialize.md`
+- `docs/dossiers/boot-resource-node-recursive-insert-slot-search.md`
 
 ## Next Frontier
 
-Continue from `asm/original/rev0/code_0000A0B4_00011000.s`. The first target is
-`0xA0B4`, a recursive node helper with frame size `0x20`. Parent evidence
-reports callers from the command/resource-node family (`0x9A18`, `0x9D50`,
-`0x9EFC`, `0x9FD8`, and itself), two recursive calls to RAM `0x80079CB4`, an
-allocation call to `0x1688` / RAM `0x80071288`, a write to shared context base
-`0x800AF0C4`, and a secondary linear-search entry at `0xA160`. Local source
-shows an allocation size of `0x18` and child fields at `+0x10/+0x14`, so keep
-`0xA0B4..0xA198` together unless stronger boundary evidence appears.
+Continue from `asm/original/rev0/code_0000A198_00011000.s`. The first target is
+`0xA198`, a 96-byte recursive node cleanup/free helper with frame size `0x18`.
+Parent evidence reports callers from the command/resource-node dispatch family
+and itself, three self-recursive calls, one call to `0xA29C`, and two calls to
+`resource_free` `0x16C4` / RAM `0x800712C4`. Local source walks child fields
+`+0x10`, `+0x14`, and `+0x18`, calls `0xA29C` on field `+0x0C`, frees field
+`+0x04`, frees the node, and returns zero; keep `0xA198..0xA1F8` together.
