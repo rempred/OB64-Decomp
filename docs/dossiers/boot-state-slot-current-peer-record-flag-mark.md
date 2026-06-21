@@ -13,7 +13,7 @@ prepare helper:
 | `asm/original/rev0/boot/boot_state_slot_current_peer_record_flag_mark.s` | `0x00007560..0x00007600` | `0x80077160..0x80077200` | Leaf prefix at `0x7560`, `0x7568` prologue body, and final delay slot at `0x75FC`. |
 | `asm/original/rev0/code_00007600_00011000.s` | `0x00007600..0x00011000` | `0x80077200..0x80080C00` | Remainder at this split; now superseded by the target peer-record dispatch split. |
 | `asm/original/rev0/code_00007688_00011000.s` | `0x00007688..0x00011000` | `0x80077288..0x80080C00` | Remainder after the target peer-record dispatch split; now superseded by the flagged dispatch/lookup split. |
-| `asm/original/rev0/code_00007768_00011000.s` | `0x00007768..0x00011000` | `0x80077368..0x80080C00` | Current tracked remainder after the flagged dispatch/lookup split. |
+| `asm/original/rev0/code_00007768_00011000.s` | `0x00007768..0x00011000` | `0x80077368..0x80080C00` | Later remainder after the flagged dispatch/lookup split; superseded by `code_000079EC_00011000.s`. |
 
 The name is conservative. It records the static current-slot peer-record scan
 and working-record flag mark, not runtime-verified scheduler semantics.

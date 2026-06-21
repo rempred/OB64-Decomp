@@ -18,7 +18,7 @@ and replace the active log with a compact current-state summary.
 - Whole-ROM coverage still independently scans for LHA headers; do not trust the
   parent archive catalog by itself.
 - Current tracked code source mix: one composite real-assembler chunk
-  `0x00001000..0x00011000` made from 68 tracked source files, plus 99 generated
+  `0x00001000..0x00011000` made from 69 tracked source files, plus 99 generated
   fallback code chunks.
 - Current tracked non-code source-owner mix: 3 tracked files / 44,029 bytes,
   plus 1,055 generated fallback owner files / 35,388,567 bytes.
@@ -61,8 +61,8 @@ Current named sequence:
 - Resource probe helpers through
   `boot_resource_probe_record_checksum_signature.s` `0x4AC8..0x5FC0`.
 - State/slot and resource-handle helpers through
-  `boot_state_slot_flagged_dispatch_lookup.s` `0x5FC0..0x7768`.
-- Current remainder: `code_00007768_00011000.s`.
+  `boot_state_slot_pool_table_helpers.s` `0x5FC0..0x79EC`.
+- Current remainder: `code_000079EC_00011000.s`.
 
 Static dossiers live under `docs/dossiers/` and are the durable evidence notes
 for each promoted source-layout split.
@@ -441,20 +441,79 @@ Verification for the split:
 - Full ROM SHA256 remains
   `571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A`.
 
+## 2026-06-21 - Boot State Slot Pool/Table Helpers Split
+
+Baseline before the split:
+
+- `git status --short` was clean at commit
+  `b45509d Split Rev 0 boot state slot flagged dispatch lookup`.
+- `node tools\verify_setup.js` passed with 825 archives, zero unknown bytes, 108
+  visible overlap bytes, 68 tracked source files, 99 generated fallback chunks,
+  and unchanged code/ROM hashes.
+
+Promoted
+`asm/original/rev0/boot/boot_state_slot_pool_table_helpers.s` covering ROM
+`0x00007768..0x000079EC` / RAM `0x80077368..0x800775EC`. The old
+`asm/original/rev0/code_00007768_00011000.s` remainder was removed and replaced
+by `asm/original/rev0/code_000079EC_00011000.s`.
+
+Static evidence from parent function/symbol/callgraph data and local source
+inspection:
+
+- Parent function data reports `0x7768` as a 644-byte prologue helper with
+  frame size `0x18`, fixed RAM `0x80077368` in all seven named states and all
+  21 parent snapshots.
+- Parent records secondary entries at `0x77D4`, `0x789C`, and `0x7924`; local
+  source also exposes two clean ten-entry scan leaves starting at `0x780C` and
+  `0x785C`, plus the pointer-table install helper entry shape beginning at
+  `0x7894`.
+- Old linear parent callers are `0x69D8`, `0xEBBC0`, and `0xED530`; v2 has no
+  resolved overlay-aware callers for this helper.
+- Parent v2 leaves literal call target `0x80093540` unresolved. Local source
+  shows this is an interior entry inside the shared diagnostic/assert helper
+  whose parent prologue starts at ROM `0x23908` / RAM `0x80093508`.
+- Parent `functions.json` reports the boundary awkwardly around `0x79E8`, but
+  local source confirms `0x79E8` is the delay-slot store for the `jr ra` at
+  `0x79E4`; the clean exclusive end is the next prologue at `0x79EC`.
+
+Static shape:
+
+- The `0x7768` primary entry computes `a0 * 0xA8`, scans ten words beginning at
+  computed base `0x800E8300`, returns the first zero index, and calls
+  `0x80093540(0x800ADF88)` before parking if none is free.
+- The `0x77D4`, `0x780C`, and `0x785C` scan leaves return the first empty index
+  or `-1` for ten-entry word pools rooted at `0x800E7A68`,
+  `0x800E8328 + a0 * 0xA8`, and `0x800E7A90`.
+- The trailing helper compares incoming `a0` against halfword global
+  `0x800C4C10`, then installs one of two pointer-table sets into globals around
+  `0x800C48xx..0x800C4Cxx`, `0x800E79xx..0x800E7Dxx`, and
+  `0x800F81xx..0x800F9Bxx`.
+
+Verification for the split:
+
+- `node tests\binutils_smoke.js` passed.
+- `node tools\assemble_original_mips.js` passed.
+- Full `node tools\verify_setup.js` passed after docs were updated.
+- Source mix is now 1 tracked composite real-asm chunk made from 69 tracked
+  source files, plus 99 generated fallback chunks.
+- Code-region SHA256 remains
+  `40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`.
+- Full ROM SHA256 remains
+  `571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A`.
+
 ## Next Frontier
 
-Continue from `asm/original/rev0/code_00007768_00011000.s`.
+Continue from `asm/original/rev0/code_000079EC_00011000.s`.
 
 Parent/local evidence for the next target:
 
-- Parent function data reports `0x7768` as a 644-byte prologue helper with
-  frame size `0x18`, fixed RAM `0x80077368`, active in all seven named states
+- Parent function data reports `0x79EC` as a 1,556-byte prologue helper with
+  frame size `0x68`, fixed RAM `0x800775EC`, active in all seven named states
   and all 21 parent snapshots.
-- Parent records secondary entries at `0x77D4`, `0x789C`, and `0x7924`.
-- Parent static callers include `0x69D8`, `0xEBBC0`, and `0xED530` in the older
-  linear call list, while v2 leaves this helper without resolved overlay-aware
-  callers and leaves `0x80093540` as the unresolved call target.
-- Local source shows ten-slot scans around working globals `0x800E7A68` and
-  slot records under `0x800E82C8`, plus writes around `0x800E7Axx` and
-  `0x800E82xx`; analyze this larger helper before choosing a split end beyond
-  the parent-reported `0x79EC` boundary.
+- The `0x71C8/0x71D0` queue service gate already calls this helper before
+  unresolved `0x80077BF8` and `0x8007819C`.
+- Local source starts by reading halfword count/global `0x800C49D0`, walking
+  queued slot IDs from `0x800C4C10`, checking flags in 0xA8-byte records rooted
+  at corrected signed base `0x800E82C8`, and performing larger record/status
+  updates through the helper body. Analyze the whole parent-reported
+  `0x79EC..0x7FFC` span before choosing the next split end.

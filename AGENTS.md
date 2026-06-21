@@ -173,7 +173,7 @@ Current result:
   `40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`.
 - Code-region match against baserom: pass.
 - Tracked real-assembler original-MIPS chunks: 1 composite
-  (`0x00001000..0x00011000`) made from 68 real-assembler source files.
+  (`0x00001000..0x00011000`) made from 69 real-assembler source files.
 - Generated fallback chunks: 99.
 - Assembled-code ROM rebuild command:
 
@@ -1678,7 +1678,8 @@ helper:
 - `asm/original/rev0/boot/boot_state_slot_flagged_dispatch_lookup.s`
   `0x00007688..0x00007768`; contains the `0x7688` prologue helper and
   secondary entry `0x7714`.
-- Current remainder:
+- Remainder at this split, now superseded by the boot state slot pool/table
+  helper split:
   `asm/original/rev0/code_00007768_00011000.s`.
 
 Static evidence: parent function/symbol data reports `0x7688` as a 224-byte
@@ -1699,6 +1700,39 @@ semantics.
 Static dossier:
 `docs/dossiers/boot-state-slot-flagged-dispatch-lookup.md`.
 
+## Boot State Slot Pool/Table Helpers Split
+
+The next tracked Rev 0 original-MIPS split promotes the ten-entry slot pool
+scanner and pointer-table install helper after the flagged dispatch/lookup
+helper:
+
+- `asm/original/rev0/boot/boot_state_slot_pool_table_helpers.s`
+  `0x00007768..0x000079EC`; contains the `0x7768` prologue helper, secondary
+  scan leaves at `0x77D4`, `0x780C`, `0x785C`, and the pointer-table install
+  helper starting at local `0x7894`.
+- Current remainder:
+  `asm/original/rev0/code_000079EC_00011000.s`.
+
+Static evidence: parent function/symbol data reports `0x7768` as a 644-byte
+prologue helper with frame size `0x18`, fixed RAM `0x80077368` in all seven
+named states and all 21 snapshots, old static callers `0x69D8`, `0xEBBC0`, and
+`0xED530`, and a callee folded to `0x23908`. Parent v2 leaves literal target
+`0x80093540` unresolved; local source shows that address is an in-function
+entry inside the shared diagnostic/assert helper at ROM `0x23908..0x23964`.
+Static shape: the first leaves scan ten-entry word pools rooted around
+`0x800E8300`, `0x800E7A68`, `0x800E8328`, and `0x800E7A90`, returning an empty
+index or `-1`; the first scan calls `0x80093540(0x800ADF88)` and parks if the
+computed record has no free ten-entry word. The trailing helper compares
+incoming `a0` against halfword global `0x800C4C10`, then installs one of two
+pointer-table sets into globals around `0x800C48xx..0x800C4Cxx`,
+`0x800E79xx..0x800E7Dxx`, and `0x800F81xx..0x800F9Bxx`. Parent
+`functions.json` reports the boundary awkwardly around `0x79E8`, but local
+source confirms the delay-slot store at `0x79E8` belongs to this unit and the
+clean exclusive end is the next prologue at `0x79EC`.
+
+Static dossier:
+`docs/dossiers/boot-state-slot-pool-table-helpers.md`.
+
 ## Setup Complete Gate
 
 The setup phase is complete when `node tools/verify_setup.js` passes. Current
@@ -1713,7 +1747,7 @@ setup-complete state:
 - Assembler: GNU Binutils 2.39 `mips64-elf-as.exe` with `-EB -mips3 -32`.
 - Setup verifier: `tools/verify_setup.js`.
 - Current verifier result: PASS; 825 archives, 0 unknown bytes, 108 overlap
-  bytes visible, 1 tracked composite real-asm chunk made from 68 tracked source
+  bytes visible, 1 tracked composite real-asm chunk made from 69 tracked source
   files, 99 generated fallback chunks, full-source manifest 1,059 entries with
   2,469,141 ambiguous bytes preserved explicitly, 3 tracked non-code
   source-owner files / 44,029 bytes, 1,055 generated non-code fallback files /
@@ -1722,5 +1756,5 @@ setup-complete state:
   `571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A`.
 
 Next phase is either promoting another small non-code owner batch or continuing
-tracked original-MIPS splits from `asm/original/rev0/code_00007768_00011000.s`.
+tracked original-MIPS splits from `asm/original/rev0/code_000079EC_00011000.s`.
 Do not begin semantic C decomp unless the setup verifier is green.

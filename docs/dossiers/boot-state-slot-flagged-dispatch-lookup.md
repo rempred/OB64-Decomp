@@ -10,7 +10,7 @@ immediately after the target peer-record dispatch helper:
 | Source | ROM range | RAM range | Notes |
 | --- | --- | --- | --- |
 | `asm/original/rev0/boot/boot_state_slot_flagged_dispatch_lookup.s` | `0x00007688..0x00007768` | `0x80077288..0x80077368` | `0x7688` prologue helper, secondary entry `0x7714`, and final delay slot at `0x7764`. |
-| `asm/original/rev0/code_00007768_00011000.s` | `0x00007768..0x00011000` | `0x80077368..0x80080C00` | Current tracked remainder. |
+| `asm/original/rev0/code_00007768_00011000.s` | `0x00007768..0x00011000` | `0x80077368..0x80080C00` | Remainder at this split; superseded by `code_000079EC_00011000.s`. |
 
 The name is conservative. It records the static status-gated slot flag dispatch
 and record lookup shape, not runtime-verified scheduler semantics.
@@ -58,10 +58,9 @@ and record lookup shape, not runtime-verified scheduler semantics.
 - The `0x7714` secondary leaf has a normal `jr ra` at `0x7760` with delay-slot
   `nop` at `0x7764`.
 - The clean exclusive end is `0x7768`, the next parent prologue boundary.
-- The next source frontier is the `0x7768` prologue helper. Parent evidence
-  reports a 644-byte helper with frame size `0x18`, secondary entries at
-  `0x77D4`, `0x789C`, and `0x7924`, unresolved call target `0x80093540`,
-  ten-slot scans, and writes around `0x800E7Axx`/`0x800E82xx`.
+- The next source frontier at that time was the `0x7768` prologue helper. It is
+  now promoted as `boot_state_slot_pool_table_helpers.s`, and the active
+  remainder starts at `code_000079EC_00011000.s`.
 
 ## Verification
 
