@@ -70,7 +70,7 @@ controlled mutation has verified final behavior or API semantics.
   `docs/dossiers/boot-resource-probe-global-buffer-dual-callback-apply.md`;
   the follow-up `0x5760` helper is documented in
   `docs/dossiers/boot-resource-probe-id-check-materialize.md`; the active
-  remainder starts at `0x0000581C`.
+  remainder starts at `0x00005978`.
 
 ## Verification
 

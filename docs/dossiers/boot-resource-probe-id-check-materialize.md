@@ -11,7 +11,8 @@ dual-callback apply helper:
 | Source | ROM range | RAM range | Notes |
 | --- | --- | --- | --- |
 | `asm/original/rev0/boot/boot_resource_probe_id_check_materialize.s` | `0x00005760..0x0000581C` | `0x80075360..0x8007541C` | 188-byte prologue helper with ID-specific scratch allocation and fallback materialize call. |
-| `asm/original/rev0/code_0000581C_00011000.s` | `0x0000581C..0x00011000` | `0x8007541C..0x80080C00` | Current tracked remainder. |
+| `asm/original/rev0/boot/boot_resource_probe_indexed_record_check.s` | `0x0000581C..0x00005978` | `0x8007541C..0x80075578` | Follow-up split documented separately. |
+| `asm/original/rev0/code_00005978_00011000.s` | `0x00005978..0x00011000` | `0x80075578..0x80080C00` | Current tracked remainder. |
 
 The name is conservative. The routine has a clear static shape around checking
 one resource/probe ID path and falling back to the `0x539C` materialize helper
@@ -49,12 +50,10 @@ final behavior or API semantics.
 - The split starts at parent prologue boundary `0x00005760`, immediately after
   `boot_resource_probe_global_buffer_dual_callback_apply.s`.
 - The routine ends after the `jr ra` delay slot at `0x5818`.
-- The next parent boundary is `0x0000581C`; parent data reports it as a
-  separate 348-byte prologue helper with frame size `0x30`, callers `0x4ED4`
-  and `0x5760`, secondary entry `0x588C`, reads/writes `0x800A83B8`, and
-  unresolved RAM calls to `0x80075A84` and `0x80075B00`.
-- Keep the `0x581C` helper as the next dedicated evidence pass instead of
-  merging it into this ID check/materialize wrapper.
+- Follow-up split `boot_resource_probe_indexed_record_check.s` now covers
+  `0x0000581C..0x00005978`; current active remainder starts at `0x00005978`.
+- The next parent boundary is `0x00005978`; parent data reports it as an
+  overlapping leaf/prologue record-check helper family (`0x5978/0x5980`).
 
 ## Verification
 

@@ -173,7 +173,7 @@ Current result:
   `40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`.
 - Code-region match against baserom: pass.
 - Tracked real-assembler original-MIPS chunks: 1 composite
-  (`0x00001000..0x00011000`) made from 49 real-assembler source files.
+  (`0x00001000..0x00011000`) made from 50 real-assembler source files.
 - Generated fallback chunks: 99.
 - Assembled-code ROM rebuild command:
 
@@ -1105,7 +1105,7 @@ by resource probe init:
 - `asm/original/rev0/boot/boot_resource_probe_id_check_materialize.s`
   `0x00005760..0x0000581C`; parent reports a prologue with frame size `0x20`,
   no indirect calls, and no unresolved RAM calls.
-- Remainder:
+- Remainder after this split:
   `asm/original/rev0/code_0000581C_00011000.s`.
 
 Static evidence: parent function/symbol/callgraph data reports high-confidence
@@ -1126,8 +1126,40 @@ ID-check/fallback-materialize shape, not verified runtime semantics.
 
 Static dossier:
 `docs/dossiers/boot-resource-probe-id-check-materialize.md`.
-Next source split should start at `asm/original/rev0/code_0000581C_00011000.s`,
-the 348-byte `0x581C` prologue helper called by `0x4ED4` and `0x5760`.
+
+## Boot Resource Probe Indexed Record Check Split
+
+The next tracked Rev 0 original-MIPS split separates the 348-byte helper called
+by the dispatch result builder and the ID check/materialize wrapper:
+
+- `asm/original/rev0/boot/boot_resource_probe_indexed_record_check.s`
+  `0x0000581C..0x00005978`; parent reports a prologue with frame size `0x30`,
+  fixed RAM `0x8007541C`, and secondary entry `0x588C`.
+- Remainder:
+  `asm/original/rev0/code_00005978_00011000.s`.
+
+Static evidence: parent function/symbol/callgraph data reports callers `0x4ED4`
+and `0x5760`; high-confidence callees `resource_alloc` (`0x1330`),
+`0x1A4F0` / RAM `0x8008A0F0`, `0x23460` / RAM `0x80093060`, and `0x23350` /
+RAM `0x80092F50`; unresolved RAM calls to `0x80075A84` and `0x80075B00`;
+reads/writes `0x800A83B8`; and fixed residency in all seven named states / all
+21 parent RAM snapshots.
+
+Static shape: the routine computes `id * 0x1850 + 0x10`, ensures the shared
+global buffer `0x800A83B8` exists by allocating `0x8000` and filling it in
+`0x100`-byte chunks through `0x8008A0F0`, copies `0x1850` bytes from the shared
+buffer into caller scratch through `0x80093060`, compares `scratch + 4` against
+the 8-byte base at `0x800A8240` through `0x80092F50`, then calls unresolved
+halfword-return helpers over `scratch + 0x0C` / length `0x1844` and compares
+their low halfwords against the first two scratch header halfwords. The name is
+conservative and records the static indexed-record check shape, not verified
+runtime semantics or final checksum names.
+
+Static dossier:
+`docs/dossiers/boot-resource-probe-indexed-record-check.md`.
+Next source split should start at `asm/original/rev0/code_00005978_00011000.s`;
+the next target is the overlapping `0x5978/0x5980` resource-probe record check
+helper pair.
 
 ## Setup Complete Gate
 
@@ -1143,7 +1175,7 @@ setup-complete state:
 - Assembler: GNU Binutils 2.39 `mips64-elf-as.exe` with `-EB -mips3 -32`.
 - Setup verifier: `tools/verify_setup.js`.
 - Current verifier result: PASS; 825 archives, 0 unknown bytes, 108 overlap
-  bytes visible, 1 tracked composite real-asm chunk made from 49 tracked source
+  bytes visible, 1 tracked composite real-asm chunk made from 50 tracked source
   files, 99 generated fallback chunks, full-source manifest 1,059 entries with
   2,469,141 ambiguous bytes preserved explicitly, 3 tracked non-code
   source-owner files / 44,029 bytes, 1,055 generated non-code fallback files /
@@ -1152,5 +1184,5 @@ setup-complete state:
   `571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A`.
 
 Next phase is either promoting another small non-code owner batch or continuing
-tracked original-MIPS splits from `asm/original/rev0/code_0000581C_00011000.s`.
+tracked original-MIPS splits from `asm/original/rev0/code_00005978_00011000.s`.
 Do not begin semantic C decomp unless the setup verifier is green.
