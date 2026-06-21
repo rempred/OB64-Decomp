@@ -1279,3 +1279,63 @@ Next recommended target:
   the `0x000043D4` 800-byte prologue routine. Parent data reports high-confidence
   caller `0x22B0`, unresolved callee RAM `0x8008B820`, and the next boundary at
   `0x46F4`.
+
+## 2026-06-21 - Boot Bitstream Cursor Helpers Split
+
+### Baseline
+
+- `git status --short` was clean before edits.
+- Last commit before the split was `480c217 Split Rev 0 resource window cache`.
+- `node tools\verify_setup.js` passed before the split with 1 tracked composite
+  real-asm chunk made from 33 tracked source files and 99 generated fallback
+  chunks.
+- The decomp log was 55,161 characters, 6,134 words, and 1,282 lines, below the
+  prune threshold.
+
+### Source Change
+
+- Split `asm/original/rev0/code_000043D4_00011000.s`.
+- Added `asm/original/rev0/boot/boot_bitstream_cursor_helpers.s`,
+  `0x000043D4..0x000046F4`, 800 bytes.
+- Added remainder `asm/original/rev0/code_000046F4_00011000.s`,
+  `0x000046F4..0x00011000`, 51,468 bytes.
+
+### Static Evidence
+
+- Parent `../scripts/ob64_functions.json` reports `0x43D4` as an 800-byte valid
+  JAL-target prologue routine with frame size `0x18`; safe exclusive split end
+  is the next boundary at `0x46F4`.
+- Parent `../scripts/ob64_callgraph_v2.json` reports high-confidence caller
+  `0x22B0` to `0x43D4` and two unresolved calls to RAM `0x8008B820`.
+- Parent `../scripts/ob64_symbols_v2.json` locates `0x43D4` at fixed RAM
+  `0x80073FD4` in all seven named states and all 21 RAM snapshots.
+- Xref evidence shows reads from pointer table `0x800A8218` and shared bit
+  cursor globals `0x800AEFB0`, `0x800AEFB4`, `0x800AEFB8`, `0x800AEFBC`, and
+  `0x800AEFC0`.
+- Static code shape: the `0x43D4` prologue calls `0x8008B820(a0=1)`, clears
+  seven pointer-table records at offsets `+0x2C`, `+0x30`, `+0x34`, `+0x38`,
+  `+0x3C`, `+0x40`, and `+0x4C`, then calls the unresolved helper again.
+- The following compact local helpers initialize a cursor buffer, read one bit,
+  read multiple bits, write one bit, and write multiple bits using the
+  `0x800AEFB0..0x800AEFC0` globals.
+- The name `boot_bitstream_cursor_helpers` is conservative. It records the
+  static bit cursor helper cluster, not a verified runtime compression API.
+
+### Verification
+
+- `node tests\binutils_smoke.js` passed.
+- `node tools\assemble_original_mips.js` passed and produced the same
+  code-region SHA256:
+  `40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`.
+- Full `node tools\verify_setup.js` passed after docs/source updates.
+- The setup verifier now reports 1 tracked composite real-asm chunk made from
+  34 tracked source files, 99 generated fallback chunks, full-source manifest
+  1,059 entries, 0 unknown bytes, and the same full ROM SHA256:
+  `571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A`.
+
+### Next
+
+- Continue from `asm/original/rev0/code_000046F4_00011000.s`, beginning with
+  the `0x000046F4` 416-byte prologue routine. Parent data reports
+  high-confidence callers `0x42DC4` and `0x42F68`, shared bit cursor globals,
+  and the next boundary at `0x4894`.

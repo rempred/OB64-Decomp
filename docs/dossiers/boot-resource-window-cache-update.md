@@ -10,7 +10,7 @@ code after the display-list counter packet emitter:
 | Source | ROM range | RAM range | Notes |
 | --- | --- | --- | --- |
 | `asm/original/rev0/boot/boot_resource_window_cache_update.s` | `0x000042D8..0x000043D4` | `0x80073ED8..0x80073FD4` | Overlapping `0x42D8` leaf entry, `0x42E0` prologue body, and secondary entry `0x4358`. |
-| `asm/original/rev0/code_000043D4_00011000.s` | `0x000043D4..0x00011000` | `0x80073FD4..0x80080C00` | Next tracked remainder. |
+| `asm/original/rev0/code_000043D4_00011000.s` | `0x000043D4..0x00011000` | `0x80073FD4..0x80080C00` | Historical next tracked remainder; superseded by `boot_bitstream_cursor_helpers.s` plus `code_000046F4_00011000.s`. |
 
 The name is a conservative source-layout label for nearby resource/window cache
 state. It is not a final semantic API name.
@@ -51,6 +51,8 @@ state. It is not a final semantic API name.
 - The split ends at exclusive `0x000043D4`, immediately before the next parent
   prologue. Parent data reports `0x43D4` as a separate 800-byte prologue
   routine.
+- Follow-up split `boot_bitstream_cursor_helpers.s` now covers
+  `0x000043D4..0x000046F4`; the active remainder starts at `0x000046F4`.
 
 ## Verification
 

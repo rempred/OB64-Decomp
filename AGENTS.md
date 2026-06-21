@@ -603,6 +603,8 @@ resource-window/cache helper after the counter packet emitter:
   entry `0x4358`.
 - Remainder:
   `asm/original/rev0/code_000043D4_00011000.s`.
+  That file has since been superseded by the bitstream cursor helper split
+  below.
 
 Static evidence: parent callgraph/symbol data reports caller `0x27A0` to the
 `0x42D8` entry, callee `0x11D08`, and fixed RAM `0x80073ED8/0x80073EE0` in all
@@ -615,10 +617,34 @@ state word is zero, the body clears seven stride-`0x50` words from
 against the current `0x800C4BCC` pointer and may clear `0x800A81F4` before
 returning it.
 
-Static dossier: `docs/dossiers/boot-resource-window-cache-update.md`. Next
-source split should start at `asm/original/rev0/code_000043D4_00011000.s`, a
-separate 800-byte prologue routine at `0x43D4` before the next boundary
-`0x46F4`.
+Static dossier: `docs/dossiers/boot-resource-window-cache-update.md`. The
+`0x000043D4` target has since been superseded by the bitstream cursor helper
+split below.
+
+## Boot Bitstream Cursor Helpers Split
+
+The next tracked Rev 0 original-MIPS split separates the bit cursor / bitstream
+helper cluster after the resource-window cache helper:
+
+- `asm/original/rev0/boot/boot_bitstream_cursor_helpers.s`
+  `0x000043D4..0x000046F4`; parent reports an 800-byte JAL-target prologue
+  routine at `0x43D4`, high-confidence caller `0x22B0`, and unresolved calls to
+  RAM `0x8008B820`.
+- Remainder:
+  `asm/original/rev0/code_000046F4_00011000.s`.
+
+Static evidence: the `0x43D4` prologue calls `0x8008B820(a0=1)`, clears seven
+pointer-table records reached through `0x800A8218`, calls the unresolved helper
+again, then returns before a compact set of local cursor helpers. The leaf
+helpers initialize, read, and write bits using globals `0x800AEFB0`,
+`0x800AEFB4`, `0x800AEFB8`, `0x800AEFBC`, and `0x800AEFC0`; xref data shows
+those globals continue into the next helper family at `0x46F4`, `0x4894`, and
+`0x48C8`. The split keeps the delay slot at `0x46F0` with this cluster and
+starts the next source file at the following prologue boundary `0x46F4`.
+
+Static dossier: `docs/dossiers/boot-bitstream-cursor-helpers.md`. Next source
+split should start at `asm/original/rev0/code_000046F4_00011000.s`, a 416-byte
+prologue routine at `0x46F4`.
 
 ## Setup Complete Gate
 
@@ -634,7 +660,7 @@ setup-complete state:
 - Assembler: GNU Binutils 2.39 `mips64-elf-as.exe` with `-EB -mips3 -32`.
 - Setup verifier: `tools/verify_setup.js`.
 - Current verifier result: PASS; 825 archives, 0 unknown bytes, 108 overlap
-  bytes visible, 1 tracked composite real-asm chunk made from 33 tracked source
+  bytes visible, 1 tracked composite real-asm chunk made from 34 tracked source
   files, 99 generated fallback chunks, full-source manifest 1,059 entries with
   2,469,141 ambiguous bytes preserved explicitly, 3 tracked non-code
   source-owner files / 44,029 bytes, 1,055 generated non-code fallback files /
@@ -643,5 +669,5 @@ setup-complete state:
   `571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A`.
 
 Next phase is either promoting another small non-code owner batch or continuing
-tracked original-MIPS splits from `asm/original/rev0/code_000043D4_00011000.s`.
+tracked original-MIPS splits from `asm/original/rev0/code_000046F4_00011000.s`.
 Do not begin semantic C decomp unless the setup verifier is green.
