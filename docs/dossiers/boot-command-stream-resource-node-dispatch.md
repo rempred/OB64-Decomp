@@ -10,7 +10,7 @@ the boot command stream dispatch split:
 | Source | ROM range | RAM range | Notes |
 | --- | --- | --- | --- |
 | `asm/original/rev0/boot/boot_command_stream_resource_node_dispatch.s` | `0x00009A18..0x00009C50` | `0x80079618..0x80079850` | `0x9A18` leaf/prefix plus the `0x9A28` prologue body. |
-| `asm/original/rev0/code_00009C50_00011000.s` | `0x00009C50..0x00011000` | `0x80079850..0x80080C00` | Current tracked remainder; starts with the next resource-loader-labeled family. |
+| `asm/original/rev0/code_00009C50_00011000.s` | `0x00009C50..0x00011000` | `0x80079850..0x80080C00` | Remainder at this split; now superseded by `code_00009CAC_00011000.s` after the payload materialize split. |
 
 The source name is conservative. It captures the observed command/stream
 dispatch and node-like pointer/free shape, not verified runtime semantics.
@@ -48,11 +48,9 @@ dispatch and node-like pointer/free shape, not verified runtime semantics.
   stack restore at `0x9C4C`.
 - The next family begins cleanly at `0x00009C50`; do not include that word in
   this source file.
-- Parent labels `0x9C50` as `dma/resource::resource loader`, with size `0x5C`,
-  frame size `0x18`, two callers, and callees `0x2DEF4`, `resource_alloc`
-  `0x1330`, and `0x2DFB8`.
-- Local source shows the next `0x9C50` family epilogue at `0x9C9C..0x9CA8` and
-  the next clean boundary at `0x9CAC`, so keep `0x9C50..0x9CAC` together next.
+- Follow-up source-layout work now owns `0x9C50..0x9CAC` as
+  `boot_resource_node_payload_materialize.s`, leaving
+  `code_00009CAC_00011000.s` as the active remainder.
 
 ## Verification
 
@@ -61,8 +59,9 @@ After the split:
 - `node tests\binutils_smoke.js` passed.
 - `node tools\assemble_original_mips.js` passed.
 - Full `node tools\verify_setup.js` passed after docs were updated.
-- The assembled report shows 1 tracked composite real-asm chunk made from 86
-  tracked source files, plus 99 generated fallback chunks.
+- At this command-stream checkpoint, the assembled report showed 1 tracked
+  composite real-asm chunk using 86 tracked source files, plus 99 generated
+  fallback chunks.
 - The assembled code-region SHA256 remains
   `40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`.
 - The rebuilt full-ROM SHA256 remains

@@ -1,38 +1,12 @@
 /*
  * Original Rev 0 MIPS reference split.
- * Parent source: asm/original/rev0/code_00009A18_00011000.s
- * z64 range: 0x00009C50..0x00011000 exclusive
+ * Parent source: asm/original/rev0/code_00009C50_00011000.s
+ * z64 range: 0x00009CAC..0x00011000 exclusive
  * Decode comments are aids, not proof of semantic function boundaries.
  */
 .set noat
 .set noreorder
 .text
-
-/* function boundary candidate: func_00009C50, size=92, kind=prologue */
-func_00009C50:
-/* 0x00009C50 0x80079850 0x27BDFFE8 */ .word 0x27BDFFE8 # addiu $sp, $sp, -0x18
-/* 0x00009C54 0x80079854 0xAFB00010 */ .word 0xAFB00010 # sw $s0, 0x10($sp)
-/* 0x00009C58 0x80079858 0x00808021 */ .word 0x00808021 # move $s0, $a0
-/* 0x00009C5C 0x8007985C 0xAFBF0014 */ .word 0xAFBF0014 # sw $ra, 0x14($sp)
-/* 0x00009C60 0x80079860 0x8E020004 */ .word 0x8E020004 # lw $v0, 0x4($s0)
-/* 0x00009C64 0x80079864 0x1440000D */ .word 0x1440000D # bne $v0, $zero, 0x8007989C
-/* 0x00009C68 0x80079868 0x02001021 */ .word 0x02001021 # move $v0, $s0
-/* 0x00009C6C 0x8007986C 0x8E040000 */ .word 0x8E040000 # lw $a0, 0x0($s0)
-/* 0x00009C70 0x80079870 0x0C0276BD */ .word 0x0C0276BD # jal 0x8009DAF4
-/* 0x00009C74 0x80079874 0x00000000 */ .word 0x00000000 # nop
-/* 0x00009C78 0x80079878 0x10400007 */ .word 0x10400007 # beq $v0, $zero, 0x80079898
-/* 0x00009C7C 0x8007987C 0xAE020008 */ .word 0xAE020008 # sw $v0, 0x8($s0)
-/* 0x00009C80 0x80079880 0x0C01C3CC */ .word 0x0C01C3CC # jal 0x80070F30
-/* 0x00009C84 0x80079884 0x00402021 */ .word 0x00402021 # move $a0, $v0
-/* 0x00009C88 0x80079888 0x8E050000 */ .word 0x8E050000 # lw $a1, 0x0($s0)
-/* 0x00009C8C 0x8007988C 0x00402021 */ .word 0x00402021 # move $a0, $v0
-/* 0x00009C90 0x80079890 0x0C0276EE */ .word 0x0C0276EE # jal 0x8009DBB8
-/* 0x00009C94 0x80079894 0xAE040004 */ .word 0xAE040004 # sw $a0, 0x4($s0)
-/* 0x00009C98 0x80079898 0x02001021 */ .word 0x02001021 # move $v0, $s0
-/* 0x00009C9C 0x8007989C 0x8FBF0014 */ .word 0x8FBF0014 # lw $ra, 0x14($sp)
-/* 0x00009CA0 0x800798A0 0x8FB00010 */ .word 0x8FB00010 # lw $s0, 0x10($sp)
-/* 0x00009CA4 0x800798A4 0x03E00008 */ .word 0x03E00008 # jr $ra
-/* 0x00009CA8 0x800798A8 0x27BD0018 */ .word 0x27BD0018 # addiu $sp, $sp, 0x18
 
 /* function boundary candidate: func_00009CAC, size=164, kind=prologue */
 func_00009CAC:

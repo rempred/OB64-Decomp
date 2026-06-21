@@ -18,7 +18,7 @@ and replace the active log with a compact current-state summary.
 - Whole-ROM coverage still independently scans for LHA headers; do not trust the
   parent archive catalog by itself.
 - Current tracked code source mix: one composite real-assembler chunk
-  `0x00001000..0x00011000` made from 86 tracked source files, plus 99 generated
+  `0x00001000..0x00011000` made from 87 tracked source files, plus 99 generated
   fallback code chunks.
 - Current tracked non-code source-owner mix: 3 tracked files / 44,029 bytes,
   plus 1,055 generated fallback owner files / 35,388,567 bytes.
@@ -61,9 +61,9 @@ Current named sequence:
 - Resource probe helpers through
   `boot_resource_probe_record_checksum_signature.s` `0x4AC8..0x5FC0`.
 - State/slot, resource-handle, and transform-record helpers through
-  `boot_command_stream_resource_node_dispatch.s`
-  `0x5FC0..0x9C50`.
-- Current remainder: `code_00009C50_00011000.s`.
+  `boot_resource_node_payload_materialize.s`
+  `0x5FC0..0x9CAC`.
+- Current remainder: `code_00009CAC_00011000.s`.
 
 Static dossiers live under `docs/dossiers/` and are the durable evidence notes
 for each promoted source-layout split.
@@ -1056,16 +1056,66 @@ Verification for the split:
 - `node tests\binutils_smoke.js` passed.
 - `node tools\assemble_original_mips.js` passed.
 - Full `node tools\verify_setup.js` passed after docs were updated.
-- Source mix is now 1 tracked composite real-asm chunk made from 86 tracked
-  source files, plus 99 generated fallback chunks.
+- At this checkpoint the source mix was 1 tracked composite real-asm chunk
+  using 86 tracked source files, plus 99 generated fallback chunks.
 - Static dossier:
   `docs/dossiers/boot-command-stream-resource-node-dispatch.md`.
 
+## 2026-06-21 - Boot Resource Node Payload Materialize Split
+
+Baseline before the split:
+
+- `git status --short` was clean at commit
+  `f7ad9be Split Rev 0 boot command stream resource node dispatch`.
+- `node tools\verify_setup.js` passed with 825 archives, zero unknown bytes, 108
+  visible overlap bytes, 86 tracked source files, 99 generated fallback chunks,
+  and unchanged code/ROM hashes.
+
+Promoted `asm/original/rev0/boot/boot_resource_node_payload_materialize.s`
+covering ROM `0x00009C50..0x00009CAC` / RAM
+`0x80079850..0x800798AC`. The old
+`asm/original/rev0/code_00009C50_00011000.s` remainder was removed and replaced
+by `asm/original/rev0/code_00009CAC_00011000.s`.
+
+Static evidence from parent function/symbol/callgraph data, parent
+`docs/rom-layout.md`, and local source:
+
+- Parent labels `0x9C50` as `dma/resource::resource loader`, fixed in all
+  seven named states and all 21 snapshots.
+- The helper is size `0x5C`, has frame size `0x18`, has two high-confidence
+  callers from the `0x978C/0x97A8` command-stream dispatch family, and has no
+  unresolved targets.
+- High-confidence callees are `0x2DEF4` / RAM `0x8009DAF4`, `resource_alloc`
+  `0x1330`, and `0x2DFB8` / RAM `0x8009DBB8`.
+- Parent `docs/rom-layout.md` names `0x2DEF4` as DMA with cache.
+
+Static shape:
+
+- Accepts a node-like pointer in `a0`.
+- Returns the same node pointer immediately when field `+0x04` is already
+  populated.
+- Otherwise reads source/key field `+0x00`, calls the DMA/cache helper, stores
+  the returned size/result to field `+0x08`, allocates a payload buffer of that
+  size, stores the allocation to field `+0x04`, and calls `0x2DFB8` with the
+  allocation plus source key.
+- The split includes the `0x9CA4` return and `0x9CA8` delay-slot stack restore;
+  the next family starts at `0x9CAC`.
+
+Verification for the split:
+
+- `node tests\binutils_smoke.js` passed.
+- `node tools\assemble_original_mips.js` passed.
+- Full `node tools\verify_setup.js` passed after docs were updated.
+- Source mix is now 1 tracked composite real-asm chunk made from 87 tracked
+  source files, plus 99 generated fallback chunks.
+- Static dossier:
+  `docs/dossiers/boot-resource-node-payload-materialize.md`.
+
 ## Next Frontier
 
-Continue from `asm/original/rev0/code_00009C50_00011000.s`. The first target is
-`0x9C50`, parent-labeled `dma/resource::resource loader`, size `0x5C`, frame
-size `0x18`, JAL target, fixed in all states, with two callers and callees
-`0x2DEF4`, `resource_alloc` `0x1330`, and `0x2DFB8`. Local source shows its
-epilogue at `0x9C9C..0x9CA8` and the next clean boundary at `0x9CAC`; keep
-`0x9C50..0x9CAC` together.
+Continue from `asm/original/rev0/code_00009CAC_00011000.s`. The first target is
+`0x9CAC`, a recursive frame-`0x20` helper fixed in all states. Parent evidence
+reports callers from the command-stream family and later loader helpers, callees
+to itself, `0x1688`, and `0x23780`, and writes to `0x800AF0C0`. Local source
+shows `0x1C`-byte node allocation, key compare/insert behavior, and child
+fields at `+0x14/+0x18`; keep `0x9CAC..0x9D50` together.
