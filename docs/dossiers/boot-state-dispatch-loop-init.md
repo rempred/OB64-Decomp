@@ -14,7 +14,8 @@ cluster:
 | `asm/original/rev0/code_000065A4_00011000.s` | `0x000065A4..0x00011000` | `0x800761A4..0x80080C00` | Remainder at this split; now superseded by the accumulator seed wrapper split. |
 | `asm/original/rev0/code_000065E4_00011000.s` | `0x000065E4..0x00011000` | `0x800761E4..0x80080C00` | Remainder after the accumulator seed wrapper split; now superseded by the resource table/mask apply split. |
 | `asm/original/rev0/code_000068E0_00011000.s` | `0x000068E0..0x00011000` | `0x800764E0..0x80080C00` | Remainder after the table/mask split; now superseded by the boot state global reset split. |
-| `asm/original/rev0/code_000069D8_00011000.s` | `0x000069D8..0x00011000` | `0x800765D8..0x80080C00` | Current tracked remainder after the boot state global reset split. |
+| `asm/original/rev0/code_000069D8_00011000.s` | `0x000069D8..0x00011000` | `0x800765D8..0x80080C00` | Remainder after the boot state global reset split; now superseded by the boot state slot callback dispatch split. |
+| `asm/original/rev0/code_00006EE8_00011000.s` | `0x00006EE8..0x00011000` | `0x80076AE8..0x80080C00` | Current tracked remainder after the boot state slot callback dispatch split. |
 
 The name is conservative. The static dispatch-loop and task/status shape is
 clear, but no controlled runtime trace in this dossier verifies a complete

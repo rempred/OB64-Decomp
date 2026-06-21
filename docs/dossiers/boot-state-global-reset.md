@@ -10,7 +10,8 @@ helper immediately after the resource table/mask apply cluster:
 | Source | ROM range | RAM range | Notes |
 | --- | --- | --- | --- |
 | `asm/original/rev0/boot/boot_state_global_reset.s` | `0x000068E0..0x000069D8` | `0x800764E0..0x800765D8` | 248-byte prologue helper with a global reset/init shape. |
-| `asm/original/rev0/code_000069D8_00011000.s` | `0x000069D8..0x00011000` | `0x800765D8..0x80080C00` | Current tracked remainder. |
+| `asm/original/rev0/code_000069D8_00011000.s` | `0x000069D8..0x00011000` | `0x800765D8..0x80080C00` | Remainder at this split; now superseded by the boot state slot callback dispatch split. |
+| `asm/original/rev0/code_00006EE8_00011000.s` | `0x00006EE8..0x00011000` | `0x80076AE8..0x80080C00` | Current tracked remainder after the boot state slot callback dispatch split. |
 
 The name is conservative. It records the static global reset/init shape, not
 runtime-verified system semantics.
@@ -55,10 +56,9 @@ runtime-verified system semantics.
 - The split starts at parent prologue boundary `0x000068E0`, immediately after
   `boot_resource_table_mask_apply.s`.
 - The helper has a normal epilogue at `0x69D0..0x69D4`.
-- The next clean prologue boundary is `0x000069D8`.
-- The next target is larger and distinct: `0x69D8` is a 1,296-byte prologue
-  helper with frame size `0x30`, high-confidence caller `0x27A0`, `jalr`
-  present, and unresolved RAM targets `0x80077494` and `0x8017C29C`.
+- The next clean prologue boundary `0x000069D8` is now split into
+  `boot_state_slot_callback_dispatch.s`; the current active remainder starts at
+  `0x00006EE8`.
 
 ## Verification
 

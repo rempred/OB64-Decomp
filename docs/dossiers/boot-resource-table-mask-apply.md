@@ -11,7 +11,8 @@ helper cluster immediately after the accumulator seed wrapper:
 | --- | --- | --- | --- |
 | `asm/original/rev0/boot/boot_resource_table_mask_apply.s` | `0x000065E4..0x000068E0` | `0x800761E4..0x800764E0` | Contains the `0x65E4` table/range apply helper, the `0x6724` gap-register helper, and shared local selector leaf `0x6830`. |
 | `asm/original/rev0/code_000068E0_00011000.s` | `0x000068E0..0x00011000` | `0x800764E0..0x80080C00` | Remainder at this split; now superseded by the boot state global reset split. |
-| `asm/original/rev0/code_000069D8_00011000.s` | `0x000069D8..0x00011000` | `0x800765D8..0x80080C00` | Current tracked remainder after the boot state global reset split. |
+| `asm/original/rev0/code_000069D8_00011000.s` | `0x000069D8..0x00011000` | `0x800765D8..0x80080C00` | Remainder after the boot state global reset split; now superseded by the boot state slot callback dispatch split. |
+| `asm/original/rev0/code_00006EE8_00011000.s` | `0x00006EE8..0x00011000` | `0x80076AE8..0x80080C00` | Current tracked remainder after the boot state slot callback dispatch split. |
 
 The name is conservative. It records the static table/mask/resource-range
 shape, not verified runtime resource semantics.
@@ -72,8 +73,9 @@ shape, not verified runtime resource semantics.
   the two prologue helpers share the same selector and table vocabulary.
 - The padding nops at `0x68D8` and `0x68DC` remain in this split.
 - The next parent prologue boundary `0x000068E0` is now split into
-  `boot_state_global_reset.s`; the current active remainder starts at
-  `0x000069D8`.
+  `boot_state_global_reset.s`, and `0x000069D8` is now split into
+  `boot_state_slot_callback_dispatch.s`; the current active remainder starts at
+  `0x00006EE8`.
 
 ## Verification
 
