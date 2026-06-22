@@ -28,7 +28,7 @@ Review Handoff — Chunk 8 Source-Ownership, ROM z64 `0x00081000..0x00091000`
 ## 3. Commits (this run, newest first)
 | Hash | Category | Purpose |
 |---|---|---|
-| _(this doc)_ | review handoff | Add chunk 8 review handoff doc (final commit) |
+| `da2dd9c` | review handoff | Add chunk 8 review handoff doc (this file, final commit) |
 | `1dbe673` | source + docs | Source-own chunk 8 (87 parts); dossier `lib-chunk8` + AGENTS/DECOMP_LOG/NEXT_STEPS/PLATFORM/WORKFLOW count updates |
 
 No opening-cleanup commit this run (root tree was already clean; no stale-count or

@@ -108,7 +108,7 @@ node tools/audit_code_region.js
 
    **Next frontier: `0x00091000` (chunk 9).** FIRST continue the function straddler:
    `func_00090e54_chunk8head` `[0x90E54,0x91000)` continues to `0x912F4` (chunk-9
-   head `func_00090e54_chunk9tail` `[0x91000,0x912F4)`, true entry 0x90E54). Chunk 9
+   tail file `func_00090e54_chunk9tail` `[0x91000,0x912F4)`, true entry 0x90E54). Chunk 9
    should remain largely **PARENT-DETECTED**, so `plan_chunk`+`dump_function_context`
    should seed most of it; use `scan_functions` for parent-undetected sub-regions.
    Content-scan for data regions FIRST (chunks 5–8 each had interior data). Pipeline:

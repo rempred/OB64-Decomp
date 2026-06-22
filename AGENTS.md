@@ -268,8 +268,8 @@ The dispatch tables `0x800AE128` (85) / `0x800AE2E8` (9) are **static ROM data**
 (z64 `0x3E528`/`0x3E6E8`, no runtime registration; opcode→handler map resolved);
 the codec source vtable is RAM `0x800A876C` / ROM `0x38B6C`.
 Next frontier is **`0x00091000` (chunk 9)** — FIRST continue the function
-straddler: `func_00090e54_chunk8head` `[0x90E54,0x91000)` → `0x912F4` (chunk-9 head
-`func_00090e54_chunk9tail` `[0x91000,0x912F4)`, true entry 0x90E54). Chunk 9 should
+straddler: `func_00090e54_chunk8head` `[0x90E54,0x91000)` → `0x912F4` (chunk-9 tail
+file `func_00090e54_chunk9tail` `[0x91000,0x912F4)`, true entry 0x90E54). Chunk 9 should
 remain largely **PARENT-DETECTED**, so `plan_chunk`+`dump_function_context` should
 seed most of it; use `scan_functions` for parent-undetected sub-regions. Content-
 scan for data regions FIRST (chunks 5–8 each had interior data). Coverage now
@@ -2702,7 +2702,7 @@ setup-complete state:
 Next phase is either promoting another small non-code owner batch or continuing
 tracked original-MIPS source-ownership into **chunk 9** (`0x00091000`) — FIRST
 continue the function straddler `func_00090e54_chunk8head` `[0x90E54,0x91000)` →
-`0x912F4` (chunk-9 head `func_00090e54_chunk9tail` `[0x91000,0x912F4)`). Chunk 9
+`0x912F4` (chunk-9 tail file `func_00090e54_chunk9tail` `[0x91000,0x912F4)`). Chunk 9
 should remain largely PARENT-DETECTED, so `plan_chunk`+`dump_function_context` seed
 most of it; content-scan for data regions first. Chunks 0–8 are fully source-owned.
 There is no tooling blocker. Do not begin semantic C decomp unless the setup
