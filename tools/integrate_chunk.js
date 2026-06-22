@@ -25,8 +25,12 @@ const LIBDIR = A.libdir || 'asm/original/rev0/lib';
 const tag = `${CHUNK_START.toString(16).padStart(8, '0')}-${CHUNK_END.toString(16).padStart(8, '0')}`;
 const chunkFile = `asm/original/rev0/code_${CHUNK_START.toString(16).padStart(8, '0')}_${CHUNK_END.toString(16).padStart(8, '0')}.s`;
 
-const ctx = JSON.parse(fs.readFileSync(path.join(ROOT, `build/context/rev0-function-context-${tag}.json`), 'utf8'));
-const embedded = new Set(ctx.functions.map((f) => P(f.rom)));
+// Context is the parent-DB function set; absent for PARENT-UNDETECTED code
+// regions (scan_functions seeds). `embedded` only decides whether a func_<start>
+// name needs an explicit label (non-embedded starts do) — an empty set is safe.
+const ctxPath = path.join(ROOT, `build/context/rev0-function-context-${tag}.json`);
+const ctx = fs.existsSync(ctxPath) ? JSON.parse(fs.readFileSync(ctxPath, 'utf8')) : { functions: [] };
+const embedded = new Set((ctx.functions || []).map((f) => P(f.rom)));
 const manifest = JSON.parse(fs.readFileSync(path.join(ROOT, 'asm/original/rev0/manifest.json'), 'utf8'));
 const existingNames = new Set();
 for (const c of manifest.chunks) for (const p of c.parts || []) if (p.name) existingNames.add(p.name.toLowerCase());

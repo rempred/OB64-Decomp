@@ -1,0 +1,33 @@
+/*
+ * Original Rev 0 MIPS reference split.
+ * Parent source: asm/original/rev0/code_00061000_00071000.s
+ * z64 range: 0x00066DB8..0x00066E10 exclusive
+ * Decode comments are aids, not proof of semantic function boundaries.
+ */
+.set noat
+.set noreorder
+.text
+
+/* Data region (not executable host code): Byte-index/lookup table followed by start of next string pool (continues past region end). 0x66DB8..0x66DF8: small-byte index values (00 01 02 03 04 05 .. 0F 0F patterns, e.g. 0x00010203,0x04050001,0x02030405,0x0F0F0001) = a per-entry index/level lookup. 0x66DFC..0x66E08: ASCII 'Blue Knights' string begins ('Blue','Kni','ghts') and continues into the next region; trailing zeros at 0x66E08.. */
+/* 0x00066DB8 0x800D69B8 0x00010203 */ .word 0x00010203 # sra $zero, $at, 8
+/* 0x00066DBC 0x800D69BC 0x04050001 */ .word 0x04050001 # regimm_0x05 $zero, 0x800D69C4
+/* 0x00066DC0 0x800D69C0 0x02030405 */ .word 0x02030405 # special_0x05
+/* 0x00066DC4 0x800D69C4 0x02030405 */ .word 0x02030405 # special_0x05
+/* 0x00066DC8 0x800D69C8 0x0F0F0001 */ .word 0x0F0F0001 # jal 0x8C3C0004
+/* 0x00066DCC 0x800D69CC 0x02030405 */ .word 0x02030405 # special_0x05
+/* 0x00066DD0 0x800D69D0 0x00010203 */ .word 0x00010203 # sra $zero, $at, 8
+/* 0x00066DD4 0x800D69D4 0x04050203 */ .word 0x04050203 # regimm_0x05 $zero, 0x800D71E4
+/* 0x00066DD8 0x800D69D8 0x04050F0F */ .word 0x04050F0F # regimm_0x05 $zero, 0x800DA618
+/* 0x00066DDC 0x800D69DC 0x00030405 */ .word 0x00030405 # special_0x05
+/* 0x00066DE0 0x800D69E0 0x0F0F0003 */ .word 0x0F0F0003 # jal 0x8C3C000C
+/* 0x00066DE4 0x800D69E4 0x04050F0F */ .word 0x04050F0F # regimm_0x05 $zero, 0x800DA624
+/* 0x00066DE8 0x800D69E8 0x00020304 */ .word 0x00020304 # sllv $zero, $v0, $zero
+/* 0x00066DEC 0x800D69EC 0x0F0F0002 */ .word 0x0F0F0002 # jal 0x8C3C0008
+/* 0x00066DF0 0x800D69F0 0x03040501 */ .word 0x03040501 # special_0x01
+/* 0x00066DF4 0x800D69F4 0x00070609 */ .word 0x00070609 # jalr $zero, $zero
+/* 0x00066DF8 0x800D69F8 0x08010000 */ .word 0x08010000 # j 0x80040000
+/* 0x00066DFC 0x800D69FC 0x426C7565 */ .word 0x426C7565 # cop0_0x13
+/* 0x00066E00 0x800D6A00 0x204B6E69 */ .word 0x204B6E69 # addi $t3, $v0, 0x6E69
+/* 0x00066E04 0x800D6A04 0x67687473 */ .word 0x67687473 # daddiu $t0, $k1, 0x7473
+/* 0x00066E08 0x800D6A08 0x00000000 */ .word 0x00000000 # nop
+/* 0x00066E0C 0x800D6A0C 0x00000000 */ .word 0x00000000 # nop

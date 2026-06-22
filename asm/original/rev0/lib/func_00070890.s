@@ -1,0 +1,24 @@
+/*
+ * Original Rev 0 MIPS reference split.
+ * Parent source: asm/original/rev0/code_00061000_00071000.s
+ * z64 range: 0x00070890..0x000708C0 exclusive
+ * Decode comments are aids, not proof of semantic function boundaries.
+ */
+.set noat
+.set noreorder
+.text
+
+/* Prologue addiu $sp,-0x28 at 0x70890 (loads arg=1 variant); epilogue jr $ra at 0x708B8 + delay addiu $sp,0x28 at 0x708BC. Next prologue at 0x708C0. */
+func_00070890:
+/* 0x00070890 0x800E0490 0x27BDFFD8 */ .word 0x27BDFFD8 # addiu $sp, $sp, -0x28
+/* 0x00070894 0x800E0494 0x8FA20038 */ .word 0x8FA20038 # lw $v0, 0x38($sp)
+/* 0x00070898 0x800E0498 0x8FA8003C */ .word 0x8FA8003C # lw $t0, 0x3C($sp)
+/* 0x0007089C 0x800E049C 0x24030001 */ .word 0x24030001 # addiu $v1, $zero, 0x1
+/* 0x000708A0 0x800E04A0 0xAFBF0020 */ .word 0xAFBF0020 # sw $ra, 0x20($sp)
+/* 0x000708A4 0x800E04A4 0xAFA30018 */ .word 0xAFA30018 # sw $v1, 0x18($sp)
+/* 0x000708A8 0x800E04A8 0xAFA20010 */ .word 0xAFA20010 # sw $v0, 0x10($sp)
+/* 0x000708AC 0x800E04AC 0x0C0665F4 */ .word 0x0C0665F4 # jal 0x801997D0
+/* 0x000708B0 0x800E04B0 0xAFA80014 */ .word 0xAFA80014 # sw $t0, 0x14($sp)
+/* 0x000708B4 0x800E04B4 0x8FBF0020 */ .word 0x8FBF0020 # lw $ra, 0x20($sp)
+/* 0x000708B8 0x800E04B8 0x03E00008 */ .word 0x03E00008 # jr $ra
+/* 0x000708BC 0x800E04BC 0x27BD0028 */ .word 0x27BD0028 # addiu $sp, $sp, 0x28

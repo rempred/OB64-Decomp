@@ -118,11 +118,12 @@ Expected current results:
 - `assemble_original_mips.js` emits `build/assembled/rev0/code.bin`, matching
   baserom code-region SHA256
   `40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`.
-- `assemble_original_mips.js` currently uses 6 tracked composite
+- `assemble_original_mips.js` currently uses 7 tracked composite
   real-assembler chunks (`0x00001000..0x00011000` 177; `0x00011000..0x00021000`
   350; `0x00021000..0x00031000` 216; `0x00031000..0x00041000` 67;
-  `0x00041000..0x00051000` 376; `0x00051000..0x00061000` 88 files = 1,274 tracked
-  source files total), plus 94 generated fallback chunks.
+  `0x00041000..0x00051000` 376; `0x00051000..0x00061000` 88;
+  `0x00061000..0x00071000` 78 files = 1,352 tracked source files total), plus 93
+  generated fallback chunks.
 - `rebuild_rom.js --assembled-code ...` substitutes that assembled code blob for
   the raw code segment and still confirms the same full-ROM SHA256.
 - `build_full_source_manifest.js` emits a 1,059-entry full-ROM source ownership
@@ -203,11 +204,11 @@ These outputs are useful but ignored:
 - ROM size: 41,943,040 bytes.
 - Code region currently extracted as original MIPS:
   `0x00001000..0x0063676C`.
-- Chunks 0–5 (`0x00001000..0x00061000`) are fully source-owned as named
-  code/data parts (1,274 tracked source files: 177 in `boot/` + 1,097 in `lib/`;
-  chunk 2: 2 data; chunk 3: 23 code + 44 data; chunk 4: 374 code `func_` + 2
-  straddler; chunk 5: 76 code `func_` + 1 straddler-tail + 11 data); current split
-  frontier `0x00061000` (chunk 6, still a generated fallback chunk). chunk 1
+- Chunks 0–6 (`0x00001000..0x00071000`) are fully source-owned as named
+  code/data parts (1,352 tracked source files: 177 in `boot/` + 1,175 in `lib/`;
+  chunk 3: 23 code + 44 data; chunk 4: 374 code + 2 straddler; chunk 5: 76 code + 1
+  straddler-tail + 11 data; chunk 6: 60 code + 18 data); current split frontier
+  `0x00071000` (chunk 7, still a generated fallback chunk). chunk 1
   `0x11000..0x21000` is a graphics/unit-script/math/libc/libultra library; chunk 2
   `0x21000..0x31000` is the statically-linked libultra (N64 SDK) + libc + 64-bit
   runtime + `gu` matrix library + RSP-microcode data; chunk 3 `0x31000..0x41000`
@@ -217,14 +218,18 @@ These outputs are useful but ignored:
   code (RAM `0x8016B198+`), all conservative `func_*`; chunk 5 `0x51000..0x61000`
   (MIXED) is overlay code `0x5148C..0x5C208` + a ~20 KB game-data tail
   `0x5C208..0x61000` (F3DEX2 GBI display-list image, AI/element/attack name string
-  pools, pointer/descriptor/order tables, two fixed-stride record tables) (dossiers
+  pools, pointer/descriptor/order tables, two fixed-stride record tables); chunk 6
+  `0x61000..0x71000` (MIXED + PARENT-UNDETECTED) is item/equipment data
+  (`0x61000..0x66E10`) + parent-undetected overlay code (`0x66E10..0x70E70`) + a
+  data tail (`0x70E70..0x71000`, straddles into chunk 7) (dossiers
   `docs/dossiers/boot-resource-decode-subsystem-B030-F22C.md`,
   `docs/dossiers/boot-codec-libc-vec3-F22C-11000.md`,
   `docs/dossiers/lib-chunk1-11000-21000.md`,
   `docs/dossiers/lib-chunk2-21000-31000.md`,
   `docs/dossiers/lib-chunk3-31000-41000.md`,
   `docs/dossiers/lib-chunk4-41000-51000.md`,
-  `docs/dossiers/lib-chunk5-51000-61000.md`).
+  `docs/dossiers/lib-chunk5-51000-61000.md`,
+  `docs/dossiers/lib-chunk6-61000-71000.md`).
 - Executable extent (evidence, `tools/audit_code_region.js`):
   `0x00001000..0x002B89B4`. The trailing `0x002B89B4..0x0063676C` (3,661,240
   bytes, 56.24%) has zero `jr $ra` and is non-code data still emitted as `.word`
@@ -308,6 +313,12 @@ These outputs are useful but ignored:
   delay-slot leak, straddler-position sanity) plus a data-island warning. Used
   every chunk alongside `check_splits.js`. `slice_chunk.js` takes `--disasm` to
   slice a code sub-region of a MIXED chunk from the full-chunk disasm.
+- `tools/scan_functions.js` seeds the chunk-split pipeline for PARENT-UNDETECTED
+  code regions (where `ob64_functions.json`/overlay map have 0 entries, e.g.
+  chunks 6–7): framed-function starts = range start + every `addiu $sp,-N`
+  prologue; the analysis swarm then recovers frameless leaves. Emits a
+  `slice_chunk`-compatible plan. `integrate_chunk.js` treats the context as
+  optional so these regions integrate without a parent-DB context file.
 - `tools/verify_setup.js` is the canonical setup verification command.
 - `tests/binutils_smoke.js` verifies the GNU MIPS binutils path.
 - `tests/word_asm_smoke.js` verifies the minimal `.word` assembler used by the
@@ -328,8 +339,8 @@ prints PASS. Current PASS summary:
 - Toolchain: `n64-tools-gcc-toolchain-mips64-win64`, GNU Binutils 2.39.
 - Binutils smoke tests: `.word`, real instructions, `.set noreorder`, and first
   tracked chunk real assembly all pass.
-- Source mix: 6 tracked composite real-asm chunks made from 1,274 tracked source
-  files, plus 94 generated fallback chunks.
+- Source mix: 7 tracked composite real-asm chunks made from 1,352 tracked source
+  files, plus 93 generated fallback chunks.
 - Source manifest: 1,059 entries, zero unknown bytes, 2,469,141 ambiguous bytes
   preserved explicitly.
 - Source owners: 3 tracked non-code files / 44,029 bytes plus 1,055 generated

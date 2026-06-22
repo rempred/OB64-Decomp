@@ -1,0 +1,31 @@
+/*
+ * Original Rev 0 MIPS reference split.
+ * Parent source: asm/original/rev0/code_00061000_00071000.s
+ * z64 range: 0x0006DF34..0x0006DF80 exclusive
+ * Decode comments are aids, not proof of semantic function boundaries.
+ */
+.set noat
+.set noreorder
+.text
+
+/* Parent file 39 head: the only real function in the 1844-byte parent record. Frame addiu $sp,-0x18; jr $ra at 0x0006DF70 + delay 0x0006DF74; two trailing alignment nops (0x0006DF78/DF7C) attach here. Everything after 0x0006DF80 is non-code data, not part of this function. */
+func_0006df34:
+/* 0x0006DF34 0x800DDB34 0x27BDFFE8 */ .word 0x27BDFFE8 # addiu $sp, $sp, -0x18
+/* 0x0006DF38 0x800DDB38 0xAFBF0010 */ .word 0xAFBF0010 # sw $ra, 0x10($sp)
+/* 0x0006DF3C 0x800DDB3C 0x0C066D90 */ .word 0x0C066D90 # jal 0x8019B640
+/* 0x0006DF40 0x800DDB40 0x00000000 */ .word 0x00000000 # nop
+/* 0x0006DF44 0x800DDB44 0x3C048019 */ .word 0x3C048019 # lui $a0, 0x8019
+/* 0x0006DF48 0x800DDB48 0x24846A58 */ .word 0x24846A58 # addiu $a0, $a0, 0x6A58
+/* 0x0006DF4C 0x800DDB4C 0x3C05801A */ .word 0x3C05801A # lui $a1, 0x801A
+/* 0x0006DF50 0x800DDB50 0x0C027154 */ .word 0x0C027154 # jal 0x8009C550
+/* 0x0006DF54 0x800DDB54 0x24A5C510 */ .word 0x24A5C510 # addiu $a1, $a1, -0x3AF0
+/* 0x0006DF58 0x800DDB58 0x240203E8 */ .word 0x240203E8 # addiu $v0, $zero, 0x3E8
+/* 0x0006DF5C 0x800DDB5C 0x3C018019 */ .word 0x3C018019 # lui $at, 0x8019
+/* 0x0006DF60 0x800DDB60 0xAC226A6C */ .word 0xAC226A6C # sw $v0, 0x6A6C($at)
+/* 0x0006DF64 0x800DDB64 0x3C018019 */ .word 0x3C018019 # lui $at, 0x8019
+/* 0x0006DF68 0x800DDB68 0xA0206AE9 */ .word 0xA0206AE9 # sb $zero, 0x6AE9($at)
+/* 0x0006DF6C 0x800DDB6C 0x8FBF0010 */ .word 0x8FBF0010 # lw $ra, 0x10($sp)
+/* 0x0006DF70 0x800DDB70 0x03E00008 */ .word 0x03E00008 # jr $ra
+/* 0x0006DF74 0x800DDB74 0x27BD0018 */ .word 0x27BD0018 # addiu $sp, $sp, 0x18
+/* 0x0006DF78 0x800DDB78 0x00000000 */ .word 0x00000000 # nop
+/* 0x0006DF7C 0x800DDB7C 0x00000000 */ .word 0x00000000 # nop
