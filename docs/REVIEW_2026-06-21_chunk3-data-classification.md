@@ -1,5 +1,14 @@
 # Review Handoff: Chunk 3 Source-Ownership / Data Classification (`0x31000..0x41000`)
 
+> **Superseded by the chunk-4 run (2026-06-21).** Three updates to the snapshot
+> below: (1) the chunk-3 straddler was a parent-DB over-merge — `func_00040F88`
+> `[0x40F88,0x40FF4)` is a COMPLETE leaf and the real straddler is `func_00040FF4`
+> (head `func_00040ff4_chunk3head`, tail `func_00040ff4_chunk4tail`). Chunk 3 is
+> now **67 parts (23 code + 44 data)**, not 66/22+44. (2) `build/check_manifest.js`
+> was promoted to tracked **`tools/check_manifest.js`**. (3) §7 "next steps"
+> (chunk 4) is DONE — see `docs/dossiers/lib-chunk4-41000-51000.md`. The historical
+> 743→809 / 66-part figures below describe the original chunk-3 commit.
+
 For the next decomp agent / reviewer. Two commits (`0441406` chunk 3, `0a2d412`
 chunk-4 recon), static/offline, byte-exact rebuild preserved. Chunk 3 was handled
 as a **data/code classification pass**, not a blind function split.

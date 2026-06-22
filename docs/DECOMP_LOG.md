@@ -24,14 +24,16 @@ and replace the active log with a compact current-state summary.
   `original_mips`. A static control-flow audit found no credible code edge into
   the tail (0 branch targets, 0 J/JAL to a known function). Audit:
   `tools/audit_code_region.js` / `docs/CODE_REGION_AUDIT.md`.
-- Current tracked code source mix: three composite real-assembler chunks
+- Current tracked code source mix: five composite real-assembler chunks
   `0x00001000..0x00011000` (177 files, `boot/`), `0x00011000..0x00021000`
-  (350 files, `lib/`), `0x00021000..0x00031000` (216 files, `lib/`), and
-  `0x00031000..0x00041000` (66 files, `lib/`) = **809 tracked source files**, plus
-  96 generated fallback code chunks. **Chunks 0, 1, 2 AND 3 are now fully
-  source-owned as named code/data parts** (chunk 2: 2 data parts; chunk 3: 44 data
-  + 22 code parts) (`0x00001000..0x00041000`); next is chunk 4 (`0x00041000`, still
-  a generated fallback chunk). The promote-tool merge blocker is FIXED.
+  (350 files, `lib/`), `0x00021000..0x00031000` (216 files, `lib/`),
+  `0x00031000..0x00041000` (67 files, `lib/`), and `0x00041000..0x00051000`
+  (376 files, `lib/`) = **1,186 tracked source files**, plus 95 generated fallback
+  code chunks. **Chunks 0–4 (`0x00001000..0x00051000`) are now fully source-owned
+  as named code/data parts** (chunk 2: 2 data parts; chunk 3: 23 code + 44 data
+  parts; chunk 4: 374 code `func_` + 2 straddler markers, 0 data); next is chunk 5
+  (`0x00051000`, still a generated fallback chunk). The promote-tool merge blocker
+  is FIXED.
 - The parent boundary DB has TWO recurring defects, both fixed when splitting:
   (1) `end_rom` is INCLUSIVE (exclusive end = `end_rom + 4`; do NOT treat the
   delay slot as a gap — `tools/dump_function_context.js` now enforces this with a
@@ -103,12 +105,16 @@ Current named sequence:
   compiler 64-bit runtime (`udivmod_u64`/`divmod_s64`/…), MMIO register accessors,
   and an embedded **RSP microcode** data block). Dossier:
   `docs/dossiers/lib-chunk2-21000-31000.md`. **Chunk 2 complete.**
-- Chunk 3 source-ownership `0x00031000..0x00041000` (66 parts: a bundle of N64
-  RSP microcodes + text-VM jump table + zero-fill/rodata data, and a 22-function
-  overlay-relocated code tail). Dossier: `docs/dossiers/lib-chunk3-31000-41000.md`.
-  **Chunk 3 source-owned.**
-- Current remainder: none in chunks 0–3 (`0x1000..0x41000` fully source-owned).
-  Next is chunk 4 generated fallback `0x00041000..0x00051000`.
+- Chunk 3 source-ownership `0x00031000..0x00041000` (67 parts: a bundle of N64
+  RSP microcodes + text-VM jump table + zero-fill/rodata data, and a 23-function
+  overlay-relocated code tail; +1 from the chunk-4-run straddler correction).
+  Dossier: `docs/dossiers/lib-chunk3-31000-41000.md`. **Chunk 3 source-owned.**
+- Chunk 4 source-ownership `0x00041000..0x00051000` (376 parts: 374 conservative
+  code `func_*` + 2 straddler markers, 0 data; overlay-relocated,
+  frameless-leaf-dense; ~211 frameless leaves recovered). Dossier:
+  `docs/dossiers/lib-chunk4-41000-51000.md`. **Chunk 4 source-owned.**
+- Current remainder: none in chunks 0–4 (`0x1000..0x51000` fully source-owned).
+  Next is chunk 5 generated fallback `0x00051000..0x00061000`.
 
 Static dossiers live under `docs/dossiers/` and are the durable evidence notes
 for each promoted source-layout split.
@@ -494,12 +500,71 @@ Handled chunk 3 as a data/code classification pass (not a blind function split).
   `node tools/verify_setup.js` PASS (4 composite chunks / 809 files / 96 fallback);
   `node tools/audit_code_region.js` OK; `git diff --check` clean.
 
+## 2026-06-21 - Chunk 4 Split (0x41000..0x51000); chunk 4 complete
+
+Promoted and fully split the fifth 64 KiB chunk — overlay-relocated,
+frameless-leaf-dense. Largest function-count chunk so far.
+
+- Range: ROM `0x00041000..0x00051000` (**376 parts**: 374 code `func_` + 2
+  straddler markers, 0 data), all in `asm/original/rev0/lib/`. Previous frontier
+  `0x00041000`; new frontier `0x00051000`. Tracked source files 810 -> **1,186**;
+  generated fallback chunks 96 -> 95. Byte-exact preserved (code SHA
+  `40D4E787…B409`, ROM SHA `571E8339…CC67A`). Dossier:
+  `docs/dossiers/lib-chunk4-41000-51000.md`. Coverage `0x1000..0x51000` = 327,680 B
+  = **11.50 %** of the 2,849,204-byte executable extent — the 10 % target
+  `0x000468F8` is **surpassed**.
+- Opening corrections this run (all byte-exact preserved): AGENTS.md fallback
+  count `98`->`96`. `split_original_mips_part.js` help documents `--splits-file`
+  `kind`/`note`; gained honest `straddler-head`/`straddler-tail` header kinds; a
+  code `note` now takes precedence over the preamble-orphan boilerplate (fixes
+  stale "read-before-write preamble" wording on recovered leaves). Promoted the
+  chunk-split pipeline to tracked tools: `tools/plan_chunk.js`,
+  `tools/slice_chunk.js`, `tools/integrate_chunk.js`, `tools/check_splits.js`,
+  `tools/check_manifest.js` (chunk-specific indexers stay gitignored scratch;
+  dossier wording no longer claims `build/chunk3_index.json` is durable).
+- CHUNK-3 STRADDLER FIX: the old `func_00040f88_chunk3head` `[0x40F88,0x41000)`
+  was a parent-DB OVER-MERGE. Disasm proves `func_00040F88` `[0x40F88,0x40FF4)`
+  is a COMPLETE leaf (jr $ra 0x40FEC); a SEPARATE function `func_00040FF4`
+  `[0x40FF4,0x41098)` is the real straddler. Re-split chunk 3 into `func_00040f88`
+  + `func_00040ff4_chunk3head`. Chunk 3 is now **67 parts (23 code + 44 data)**.
+- Overlay code (RAM `0x8016B198`+): chunk 4 is overlay-relocated, so the linear
+  decode-comment RAM column is WRONG and all callee/global identity is suspect ->
+  **all names conservative `func_<addr>`**. 0 inline data islands (jump tables for
+  the 4 indirect-`jr` dispatches live in relocated RAM).
+- Frameless-leaf recovery was the dominant work: parent DB found only 165 base
+  files (164 fns + tail); final **376** (~211 recovered functions). Four
+  base-partition "gaps" were frameless-leaf CLUSTERS, not data
+  (`0x420C8..`, `0x430F4..0x43FD8` 3812 B, `0x4555C..`, `0x45CA8..`).
+- Straddlers both ends: head from chunk 3 `func_00040ff4_chunk4tail`
+  `[0x41000,0x41098)`; head into chunk 5 `func_00050f98_chunk4head`
+  `[0x50F98,0x51000)` (func_00050F98 ends 0x5148C — tail is the chunk-5 head file).
+- Method: tracked pipeline `dump_function_context` -> `plan_chunk` (165) ->
+  `slice_chunk` (12) -> 12-agent analysis swarm (validate+retry) ->
+  `integrate_chunk` (376) -> `check_splits` -> 8-region adversarial swarm ->
+  `split_original_mips_part`.
+- Boundary verification (deterministic, overlay-immune where noted): **0
+  fragments**, **0 prologue-after-return under-splits**, **0 cross-boundary
+  PC-relative branches** across all 376 parts, **0 true delay-slot leaks**, **0
+  inline pointer-table data islands**. Adversarial swarm: 7/8 regions clean, **1
+  real fix** — delay-slot mis-cut at `0x484B4` (excluded its `jr $ra` delay slot
+  `0x484BC`; next part started on the orphan instead of true entry `0x484C0`);
+  corrected `func_000484b4`->`0x484C0` and renamed next part
+  `func_000484bc`->`func_000484c0`.
+- Verification: `node tools/check_manifest.js` ALL PASS (1,186 parts);
+  `node tools/assemble_original_mips.js` byte-exact; `node tools/verify_setup.js`
+  PASS (5 composite chunks / 1,186 files / 95 fallback);
+  `node tools/audit_code_region.js` OK; `git diff --check` clean.
+- Next frontier: `0x00051000` (chunk 5). FIRST continue the straddler
+  `func_00050f98_chunk4head` -> `0x5148C` (chunk-5 head `func_00050f98_chunk5tail`
+  `[0x51000,0x5148C)`).
+
 ## Current Dossier Set
 
 The current boot/source-layout dossier list is long; use `docs/PLATFORM.md` for
 the full quick index. The newest dossiers are:
 
-- `docs/dossiers/lib-chunk3-31000-41000.md` (66-part chunk-3: RSP microcode bundle + text-VM tables + overlay code tail; data-dominant)
+- `docs/dossiers/lib-chunk4-41000-51000.md` (376-part chunk-4: overlay-relocated, frameless-leaf-dense code; all conservative `func_*`; chunk 4 done)
+- `docs/dossiers/lib-chunk3-31000-41000.md` (67-part chunk-3: RSP microcode bundle + text-VM tables + overlay code tail; data-dominant)
 - `docs/dossiers/lib-chunk2-21000-31000.md` (216-file chunk-2 libultra/libc/gu library; chunk 2 done)
 - `docs/dossiers/lib-chunk1-11000-21000.md` (350-function chunk-1 library; chunk 1 done)
 - `docs/dossiers/boot-codec-libc-vec3-F22C-11000.md` (47-function tranche; chunk 0 done)
@@ -524,26 +589,26 @@ the full quick index. The newest dossiers are:
 
 ## Next Frontier
 
-Chunks 0, 1, 2 and 3 (`0x00001000..0x00041000`) are fully source-owned as named
-code/data parts (chunk 2: 2 data parts; chunk 3: 44 data + 22 code parts).
-The next frontier is **`0x00041000` (chunk 4)**.
+Chunks 0–4 (`0x00001000..0x00051000`) are fully source-owned as named code/data
+parts (chunk 2: 2 data parts; chunk 3: 23 code + 44 data parts; chunk 4: 374 code
+`func_` + 2 straddler markers, 0 data). The next frontier is **`0x00051000`
+(chunk 5)**. Coverage `0x1000..0x51000` = 11.50% of the 2,849,204-byte executable
+extent; the 10% target `0x000468F8` is surpassed.
 
-FIRST: continue the chunk-3 straddler. `func_00040f88_chunk3head` `[0x40F88,
-0x41000)` continues to `0x41098` in chunk 4 — the chunk-4 first file is its tail
-`[0x41000, 0x41098)` (name it `func_00040f88_chunk4tail` or fold per the proven
-straddler pattern). It is overlay-relocated code (RAM `0x8016AF90+`), RAM-suspect.
+FIRST: continue the chunk-4→chunk-5 straddler. `func_00050f98_chunk4head`
+`[0x50F98,0x51000)` is the head of `func_00050F98` (parent size 1268 → ends
+`0x5148C`); the chunk-5 first file is its tail `func_00050f98_chunk5tail`
+`[0x51000,0x5148C)`. It is overlay-relocated code, RAM-suspect.
 
-Chunk 4 is **CODE-DOMINANT** (recon done): the parent overlay map shows **164
-loaded functions** in `0x41000..0x51000` (first `0x41098`→RAM `0x8016B198`, last
-`0x50F98`) — overlay-relocated code, so RAM/globals/callees are suspect; use the
-function-split pipeline (`plan_chunk.js`/`slice_chunk.js`/`integrate_chunk.js`
-swarm) with **conservative `func_*`** by default (real RAM in
-`ob64_overlay_map.json`). The 10% evidenced-executable target `0x000468F8` is just
-**22,776 bytes** into chunk 4 (chunks 0–3 cover 9.20% of the 2,849,204-byte
-executable extent; reaching `0x468F8` = 10.00%).
+Then classify chunk 5's code/data mix via the parent overlay map
+(`scripts/ob64_overlay_map.json`) + `dump_function_context --start 0x51000 --end
+0x61000` before choosing the function-split (tracked
+`plan_chunk`/`slice_chunk`/`integrate_chunk`/`check_splits` pipeline + analysis &
+adversarial swarms) vs data-classification pipeline. Default to **conservative
+`func_*`** for overlay-relocated code.
 
 There are now two active tracks. The library source-ownership track continues at
-`0x41000` (chunk 4) as above. The full-ROM coverage track (opened 2026-06-21) next refines
+`0x51000` (chunk 5) as above. The full-ROM coverage track (opened 2026-06-21) next refines
 the exact code/data boundary near `0x002B89B4` and reclassifies the non-code tail
 `0x002B89B4..0x0063676C` from `original_mips` to a data source form, shrinking the
 configured code region to the executable extent while keeping the exact rebuild

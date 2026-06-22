@@ -1,15 +1,14 @@
 /*
  * Original Rev 0 MIPS reference split.
- * Parent source: asm/original/rev0/code_00031000_00041000.s
- * z64 range: 0x00040F88..0x00041000 exclusive
+ * Parent source: asm/original/rev0/lib/func_00040f88_chunk3head.s
+ * z64 range: 0x00040F88..0x00040FF4 exclusive
  * Decode comments are aids, not proof of semantic function boundaries.
  */
 .set noat
 .set noreorder
 .text
 
-/* True entry 0x00040F88 (read-before-write preamble; the parent-DB boundary label appears below inside the body). */
-func_00040f88_chunk3head:
+/* func_00040F88 [0x40F88,0x40FF4): complete frameless-prologue leaf (returns jr $ra at 0x40FEC, epilogue addiu $sp,$sp,8 at 0x40FF0). The parent DB over-merged this with the next function into one size=272 record; the in-body 'size=272' boundary-candidate comment reflects that over-merge, not this 108-byte function. */
 /* function boundary candidate: func_00040F88, size=272, kind=prologue */
 func_00040F88:
 /* 0x00040F88 0x800B0B88 0x27BDFFF8 */ .word 0x27BDFFF8 # addiu $sp, $sp, -0x8
@@ -39,6 +38,3 @@ func_00040F88:
 /* 0x00040FE8 0x800B0BE8 0x24020007 */ .word 0x24020007 # addiu $v0, $zero, 0x7
 /* 0x00040FEC 0x800B0BEC 0x03E00008 */ .word 0x03E00008 # jr $ra
 /* 0x00040FF0 0x800B0BF0 0x27BD0008 */ .word 0x27BD0008 # addiu $sp, $sp, 0x8
-/* 0x00040FF4 0x800B0BF4 0x308400FF */ .word 0x308400FF # andi $a0, $a0, 0x00FF
-/* 0x00040FF8 0x800B0BF8 0x1080000C */ .word 0x1080000C # beq $a0, $zero, 0x800B0C2C
-/* 0x00040FFC 0x800B0BFC 0x00000000 */ .word 0x00000000 # nop

@@ -1,0 +1,33 @@
+/*
+ * Original Rev 0 MIPS reference split.
+ * Parent source: asm/original/rev0/code_00041000_00051000.s
+ * z64 range: 0x000433F4..0x00043448 exclusive
+ * Decode comments are aids, not proof of semantic function boundaries.
+ */
+.set noat
+.set noreorder
+.text
+
+/* frameless leaf, jr $ra at 0x43440 */
+func_000433f4:
+/* 0x000433F4 0x800B2FF4 0x308400FF */ .word 0x308400FF # andi $a0, $a0, 0x00FF
+/* 0x000433F8 0x800B2FF8 0x000410C0 */ .word 0x000410C0 # sll $v0, $a0, 3
+/* 0x000433FC 0x800B2FFC 0x00441021 */ .word 0x00441021 # addu $v0, $v0, $a0
+/* 0x00043400 0x800B3000 0x000218C0 */ .word 0x000218C0 # sll $v1, $v0, 3
+/* 0x00043404 0x800B3004 0x3C028018 */ .word 0x3C028018 # lui $v0, 0x8018
+/* 0x00043408 0x800B3008 0x00431021 */ .word 0x00431021 # addu $v0, $v0, $v1
+/* 0x0004340C 0x800B300C 0x90427C59 */ .word 0x90427C59 # lbu $v0, 0x7C59($v0)
+/* 0x00043410 0x800B3010 0x30A500FF */ .word 0x30A500FF # andi $a1, $a1, 0x00FF
+/* 0x00043414 0x800B3014 0x10450007 */ .word 0x10450007 # beq $v0, $a1, 0x800B3034
+/* 0x00043418 0x800B3018 0x000510C0 */ .word 0x000510C0 # sll $v0, $a1, 3
+/* 0x0004341C 0x800B301C 0x00451021 */ .word 0x00451021 # addu $v0, $v0, $a1
+/* 0x00043420 0x800B3020 0x000210C0 */ .word 0x000210C0 # sll $v0, $v0, 3
+/* 0x00043424 0x800B3024 0x3C018018 */ .word 0x3C018018 # lui $at, 0x8018
+/* 0x00043428 0x800B3028 0x00220821 */ .word 0x00220821 # addu $at, $at, $v0
+/* 0x0004342C 0x800B302C 0x0805B550 */ .word 0x0805B550 # j 0x8016D540
+/* 0x00043430 0x800B3030 0x94227C20 */ .word 0x94227C20 # lhu $v0, 0x7C20($at)
+/* 0x00043434 0x800B3034 0x3C028018 */ .word 0x3C028018 # lui $v0, 0x8018
+/* 0x00043438 0x800B3038 0x00431021 */ .word 0x00431021 # addu $v0, $v0, $v1
+/* 0x0004343C 0x800B303C 0x94427C20 */ .word 0x94427C20 # lhu $v0, 0x7C20($v0)
+/* 0x00043440 0x800B3040 0x03E00008 */ .word 0x03E00008 # jr $ra
+/* 0x00043444 0x800B3044 0x00000000 */ .word 0x00000000 # nop

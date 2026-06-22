@@ -98,8 +98,8 @@ This assembles tracked MIPS chunks with GNU `mips64-elf-as`, falls back to
 generated `.word` chunks for ranges not yet promoted, and substitutes the
 resulting binary blob for the raw code span. Manifest chunk `parts` are assembled
 in order, so a promoted no-gap chunk can be split into named files without losing
-coverage. Current expected result: 4 tracked composite real-asm chunks made from
-809 tracked source files (chunks 0–3 fully source-owned, `0x00001000..0x00041000`), plus 96
+coverage. Current expected result: 5 tracked composite real-asm chunks made from
+1,186 tracked source files (chunks 0–4 fully source-owned, `0x00001000..0x00051000`), plus 95
 generated fallback chunks; the assembled
 code-region SHA256 is
 `40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`, and the
@@ -129,6 +129,40 @@ writes ignored fallback owners under `build/source-owners/rev0/` for unpromoted
 spans, then rebuilds the ROM from assembled original MIPS plus those owners. It
 is the current proof path that non-code bytes are in the rebuild without being
 labeled as understood MIPS.
+
+## Chunk Split Pipeline (code chunks)
+
+To source-own a promoted 64 KiB code chunk as named function/data parts, use the
+tracked chunk-split pipeline (it writes only gitignored `build/` artifacts until
+the final split):
+
+1. `node tools/dump_function_context.js --start <s> --end <e>` — parent
+   boundaries + callgraph + globals + hazards (exclusive ends = parent
+   `end_rom + 4`).
+2. `node tools/plan_chunk.js --start <s> --end <e> --tail-end <t> --tail-name <n>`
+   — base partition (parent function starts; straddler tail forced as file 0).
+3. `node tools/slice_chunk.js --start <s> --end <e> --nslices <N>` — per-slice
+   `.s` + plan for the analysis swarm.
+4. Analysis swarm (one agent per slice) refines boundaries — un-merge over-merged
+   parents, recover FRAMELESS leaves the parent DB misses (no `addiu $sp`
+   prologue), fold preamble-orphans, classify data islands — writing
+   `build/chunk_<tag>_slices/slice<K>_final.json` (`{functions:[{start,end,name,
+   kind,note}]}`). Use **conservative `func_*`** for overlay-relocated chunks.
+5. `node tools/integrate_chunk.js ...` — merge + validate into a `--splits-file`.
+6. `node tools/check_splits.js --splits <json> --disasm <chunk.s>` — adversarial
+   fragment check. Also run an 8-region adversarial review swarm and the
+   deterministic boundary invariants (0 cross-boundary PC-relative branches, 0
+   prologue-after-return under-splits, 0 last-word-is-a-return delay-slot leaks).
+7. `node tools/split_original_mips_part.js --part <chunk.s> --splits-file <json>
+   --remove-source` — write the named parts + update the manifest.
+8. `node tools/check_manifest.js` + `node tools/assemble_original_mips.js` +
+   `node tools/verify_setup.js` — integrity + byte-exact gate.
+
+Honest headers: `split_original_mips_part.js` emits data headers for
+`kind:"data"`, cross-chunk continuation headers for
+`kind:"straddler-head"/"straddler-tail"`, and a code part's `note` as its header
+(preferred over the preamble-orphan boilerplate, which only applies when the true
+entry precedes a parent-DB label inside the body).
 
 After each loop, update `docs/DECOMP_LOG.md`. If that log approaches roughly
 10,000 tokens, condense it and archive the previous full version under

@@ -1,0 +1,32 @@
+/*
+ * Original Rev 0 MIPS reference split.
+ * Parent source: asm/original/rev0/code_00041000_00051000.s
+ * z64 range: 0x0004555C..0x000455AC exclusive
+ * Decode comments are aids, not proof of semantic function boundaries.
+ */
+.set noat
+.set noreorder
+.text
+
+/* frameless leaf; coincides with bogus parent leadingGap 0x4555C; jr $ra at 0x455A4 */
+func_0004555c:
+/* 0x0004555C 0x800B515C 0x3084FFFF */ .word 0x3084FFFF # andi $a0, $a0, 0xFFFF
+/* 0x00045560 0x800B5160 0x24020084 */ .word 0x24020084 # addiu $v0, $zero, 0x84
+/* 0x00045564 0x800B5164 0x5482000B */ .word 0x5482000B # bnel $a0, $v0, 0x800B5194
+/* 0x00045568 0x800B5168 0x00041140 */ .word 0x00041140 # sll $v0, $a0, 5
+/* 0x0004556C 0x800B516C 0x3C038019 */ .word 0x3C038019 # lui $v1, 0x8019
+/* 0x00045570 0x800B5170 0x94633C14 */ .word 0x94633C14 # lhu $v1, 0x3C14($v1)
+/* 0x00045574 0x800B5174 0x3C02CCCC */ .word 0x3C02CCCC # lui $v0, 0xCCCC
+/* 0x00045578 0x800B5178 0x3442CCCD */ .word 0x3442CCCD # ori $v0, $v0, 0xCCCD
+/* 0x0004557C 0x800B517C 0x00620019 */ .word 0x00620019 # multu $v1, $v0
+/* 0x00045580 0x800B5180 0x00002810 */ .word 0x00002810 # mfhi $a1
+/* 0x00045584 0x800B5184 0x00000000 */ .word 0x00000000 # nop
+/* 0x00045588 0x800B5188 0x00000000 */ .word 0x00000000 # nop
+/* 0x0004558C 0x800B518C 0x0805BDA8 */ .word 0x0805BDA8 # j 0x8016F6A0
+/* 0x00045590 0x800B5190 0x00051102 */ .word 0x00051102 # srl $v0, $a1, 4
+/* 0x00045594 0x800B5194 0x3C018019 */ .word 0x3C018019 # lui $at, 0x8019
+/* 0x00045598 0x800B5198 0x00220821 */ .word 0x00220821 # addu $at, $at, $v0
+/* 0x0004559C 0x800B519C 0x9022C416 */ .word 0x9022C416 # lbu $v0, -0x3BEA($at)
+/* 0x000455A0 0x800B51A0 0x00021600 */ .word 0x00021600 # sll $v0, $v0, 24
+/* 0x000455A4 0x800B51A4 0x03E00008 */ .word 0x03E00008 # jr $ra
+/* 0x000455A8 0x800B51A8 0x00021603 */ .word 0x00021603 # sra $v0, $v0, 24

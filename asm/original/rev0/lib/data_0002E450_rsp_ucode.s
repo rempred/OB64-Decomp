@@ -1785,8 +1785,9 @@ data_0002E450_rsp_ucode:
 /* 0x00030000 0x8009FC00 0xE919147C */ .word 0xE919147C # swc2 $25, 0x147C($t0)
 /* 0x00030004 0x8009FC04 0x4B7FCEE3 */ .word 0x4B7FCEE3 # op_0x12
 
-/* function boundary candidate: func_00030008, size=108, kind=leaf */
-func_00030008:
+/* Parent-DB false positive at 0x30008 (decodes as a 108-byte "leaf"): this is RSP
+   microcode data, NOT executable host code — see docs/dossiers/lib-chunk2-21000-31000.md.
+   The spurious function label/boundary is suppressed. */
 /* 0x00030008 0x8009FC08 0xE9F91072 */ .word 0xE9F91072 # swc2 $25, 0x1072($t7)
 /* 0x0003000C 0x8009FC0C 0xE91A0E7B */ .word 0xE91A0E7B # swc2 $26, 0xE7B($t0)
 /* 0x00030010 0x8009FC10 0xE9FA0A67 */ .word 0xE9FA0A67 # swc2 $26, 0xA67($t7)

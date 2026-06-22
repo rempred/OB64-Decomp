@@ -1,0 +1,34 @@
+/*
+ * Original Rev 0 MIPS reference split.
+ * Parent source: asm/original/rev0/code_00041000_00051000.s
+ * z64 range: 0x0004DC20..0x0004DC74 exclusive
+ * Decode comments are aids, not proof of semantic function boundaries.
+ */
+.set noat
+.set noreorder
+.text
+
+/* prologue fn, jr $ra at 0x0004DC6C + delay 0x0004DC70; trailing accessor un-merged at 0x0004DC74 */
+/* function boundary candidate: func_0004DC20, size=96, kind=prologue */
+func_0004DC20:
+/* 0x0004DC20 0x800BD820 0x27BDFFE8 */ .word 0x27BDFFE8 # addiu $sp, $sp, -0x18
+/* 0x0004DC24 0x800BD824 0xAFBF0010 */ .word 0xAFBF0010 # sw $ra, 0x10($sp)
+/* 0x0004DC28 0x800BD828 0x0C07B920 */ .word 0x0C07B920 # jal 0x801EE480
+/* 0x0004DC2C 0x800BD82C 0x00000000 */ .word 0x00000000 # nop
+/* 0x0004DC30 0x800BD830 0x3C048019 */ .word 0x3C048019 # lui $a0, 0x8019
+/* 0x0004DC34 0x800BD834 0x8C84FB4C */ .word 0x8C84FB4C # lw $a0, -0x4B4($a0)
+/* 0x0004DC38 0x800BD838 0x3C025555 */ .word 0x3C025555 # lui $v0, 0x5555
+/* 0x0004DC3C 0x800BD83C 0x34425556 */ .word 0x34425556 # ori $v0, $v0, 0x5556
+/* 0x0004DC40 0x800BD840 0x24840001 */ .word 0x24840001 # addiu $a0, $a0, 0x1
+/* 0x0004DC44 0x800BD844 0x00820018 */ .word 0x00820018 # mult $a0, $v0
+/* 0x0004DC48 0x800BD848 0x00041FC3 */ .word 0x00041FC3 # sra $v1, $a0, 31
+/* 0x0004DC4C 0x800BD84C 0x00002810 */ .word 0x00002810 # mfhi $a1
+/* 0x0004DC50 0x800BD850 0x00A31823 */ .word 0x00A31823 # subu $v1, $a1, $v1
+/* 0x0004DC54 0x800BD854 0x00031040 */ .word 0x00031040 # sll $v0, $v1, 1
+/* 0x0004DC58 0x800BD858 0x00431021 */ .word 0x00431021 # addu $v0, $v0, $v1
+/* 0x0004DC5C 0x800BD85C 0x00822023 */ .word 0x00822023 # subu $a0, $a0, $v0
+/* 0x0004DC60 0x800BD860 0x3C018019 */ .word 0x3C018019 # lui $at, 0x8019
+/* 0x0004DC64 0x800BD864 0xAC24FB4C */ .word 0xAC24FB4C # sw $a0, -0x4B4($at)
+/* 0x0004DC68 0x800BD868 0x8FBF0010 */ .word 0x8FBF0010 # lw $ra, 0x10($sp)
+/* 0x0004DC6C 0x800BD86C 0x03E00008 */ .word 0x03E00008 # jr $ra
+/* 0x0004DC70 0x800BD870 0x27BD0018 */ .word 0x27BD0018 # addiu $sp, $sp, 0x18

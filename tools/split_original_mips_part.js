@@ -12,7 +12,7 @@ const {
 } = require('./lib/rom');
 
 function usage() {
-  console.log(`Usage: node tools/split_original_mips_part.js --part <asm-file> --split <name>:<start>:<end>:<out-file> [--split ...] --remainder <name>:<out-file> [--manifest <json>] [--remove-source]
+  console.log(`Usage: node tools/split_original_mips_part.js --part <asm-file> --split <name>:<start>:<end>:<out-file>[:<true-entry-label>] [--split ...] --remainder <name>:<out-file> [--manifest <json>] [--remove-source]
        node tools/split_original_mips_part.js --part <asm-file> --splits-file <json> [--manifest <json>] [--remove-source]
 
 Splits one tracked asm/original manifest part into smaller contiguous parts.
@@ -20,9 +20,26 @@ Ranges are z64 offsets; generated output preserves the original .word lines
 and decode comments exactly for each selected ROM range.
 
 --splits-file <json> avoids long command lines for large splits. The JSON is
-either an array of {name,start,end,file,label?} entries, or an object
-{splits:[...], remainder?:{name,file}}. start/end accept hex strings or numbers;
-label (optional) emits a true-entry label for preamble-orphan splits.`);
+either an array of split entries, or an object {splits:[...], remainder?:{name,file}}.
+Each split entry is {name, start, end, file, label?, kind?, note?}:
+  name   manifest part name / identifier.
+  start  z64 start offset (hex string or number).
+  end    z64 exclusive end offset (hex string or number).
+  file   output .s path (repo-relative; backslashes normalized).
+  label  (optional) emit this label at the file's true entry. Use for
+         preamble-orphan code splits whose true entry precedes the parent-DB
+         boundary label that appears inside the body (header notes the
+         read-before-write preamble).
+  kind   (optional) header style. Omit or "code" for a normal code part.
+         "data" emits a data-region header (no "true entry" wording) for
+         non-executable bytes. "straddler-head" / "straddler-tail" emit an
+         honest cross-chunk continuation header for a function that spans a
+         64 KiB chunk boundary (head in the earlier chunk, tail in the next).
+  note   (optional) free-text classification/justification shown in the header.
+         Used by kind:"data", the straddler kinds, and code parts to annotate a
+         recovered/corrected boundary. For a code part a note takes precedence
+         over the preamble-orphan boilerplate (the note is the accurate
+         description); the entry label, if any, is still emitted below it.`);
 }
 
 function parseArgs(argv) {
@@ -186,7 +203,22 @@ function writeSplitFile({ split, sourcePart, lines }) {
     // Data region (not executable code) — no "true entry" wording.
     headerLines.push(`/* Data region (not executable host code): ${split.note || 'classified as data; see chunk dossier'}. */`);
     if (split.label) headerLines.push(`${split.label}:`);
+  } else if (split.kind === 'straddler-head' || split.kind === 'straddler-tail') {
+    // Cross-chunk continuation — honest head/tail wording (NOT an independent function).
+    const lead = split.kind === 'straddler-head'
+      ? 'Straddler head: this function begins here and continues into the next 64 KiB chunk.'
+      : 'Straddler tail: continuation of a function whose entry is in the previous 64 KiB chunk.';
+    headerLines.push(`/* ${lead}${split.note ? ` ${split.note}` : ''} */`);
+    if (split.label) headerLines.push(`${split.label}:`);
+  } else if (split.note) {
+    // Code part with an explicit boundary annotation (the accurate description).
+    // Use it verbatim instead of the preamble-orphan boilerplate, which only
+    // applies when the true entry precedes a parent-DB label inside the body.
+    headerLines.push(`/* ${split.note} */`);
+    if (split.label) headerLines.push(`${split.label}:`);
   } else if (split.label) {
+    // Legacy preamble-orphan: true entry precedes the parent-DB boundary label
+    // that appears below inside the body (no note supplied).
     headerLines.push(`/* True entry ${hex(split.start)} (read-before-write preamble; the parent-DB boundary label appears below inside the body). */`);
     headerLines.push(`${split.label}:`);
   }
