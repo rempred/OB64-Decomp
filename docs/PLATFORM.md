@@ -118,12 +118,12 @@ Expected current results:
 - `assemble_original_mips.js` emits `build/assembled/rev0/code.bin`, matching
   baserom code-region SHA256
   `40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`.
-- `assemble_original_mips.js` currently uses 7 tracked composite
+- `assemble_original_mips.js` currently uses 8 tracked composite
   real-assembler chunks (`0x00001000..0x00011000` 177; `0x00011000..0x00021000`
   350; `0x00021000..0x00031000` 216; `0x00031000..0x00041000` 67;
   `0x00041000..0x00051000` 376; `0x00051000..0x00061000` 88;
-  `0x00061000..0x00071000` 78 files = 1,352 tracked source files total), plus 93
-  generated fallback chunks.
+  `0x00061000..0x00071000` 78; `0x00071000..0x00081000` 103 files = 1,455 tracked
+  source files total), plus 92 generated fallback chunks.
 - `rebuild_rom.js --assembled-code ...` substitutes that assembled code blob for
   the raw code segment and still confirms the same full-ROM SHA256.
 - `build_full_source_manifest.js` emits a 1,059-entry full-ROM source ownership
@@ -204,11 +204,12 @@ These outputs are useful but ignored:
 - ROM size: 41,943,040 bytes.
 - Code region currently extracted as original MIPS:
   `0x00001000..0x0063676C`.
-- Chunks 0–6 (`0x00001000..0x00071000`) are fully source-owned as named
-  code/data parts (1,352 tracked source files: 177 in `boot/` + 1,175 in `lib/`;
-  chunk 3: 23 code + 44 data; chunk 4: 374 code + 2 straddler; chunk 5: 76 code + 1
-  straddler-tail + 11 data; chunk 6: 60 code + 18 data); current split frontier
-  `0x00071000` (chunk 7, still a generated fallback chunk). chunk 1
+- Chunks 0–7 (`0x00001000..0x00081000`) are fully source-owned as named
+  code/data parts (1,455 tracked source files: 177 in `boot/` + 1,278 in `lib/`;
+  chunk 4: 374 code + 2 straddler; chunk 5: 76 code + 1 straddler-tail + 11 data;
+  chunk 6: 60 code + 18 data; chunk 7: 80 code + 1 straddler-head + 22 data);
+  current split frontier `0x00081000` (chunk 8, still a generated fallback chunk).
+  chunk 1
   `0x11000..0x21000` is a graphics/unit-script/math/libc/libultra library; chunk 2
   `0x21000..0x31000` is the statically-linked libultra (N64 SDK) + libc + 64-bit
   runtime + `gu` matrix library + RSP-microcode data; chunk 3 `0x31000..0x41000`
@@ -221,7 +222,11 @@ These outputs are useful but ignored:
   pools, pointer/descriptor/order tables, two fixed-stride record tables); chunk 6
   `0x61000..0x71000` (MIXED + PARENT-UNDETECTED) is item/equipment data
   (`0x61000..0x66E10`) + parent-undetected overlay code (`0x66E10..0x70E70`) + a
-  data tail (`0x70E70..0x71000`, straddles into chunk 7) (dossiers
+  data tail (`0x70E70..0x71000`, straddles into chunk 7); chunk 7 `0x71000..0x81000`
+  (MIXED 4-region) is a blob continuation + parent-undetected code
+  (`0x71280..0x783A0`) + Controller-Pak/save-data menu data (`0x783A0..0x79730`) +
+  parent-detected code (`0x79730..0x81000`, with an 11 KB switch-dispatcher and a
+  chunk-8 straddler) (dossiers
   `docs/dossiers/boot-resource-decode-subsystem-B030-F22C.md`,
   `docs/dossiers/boot-codec-libc-vec3-F22C-11000.md`,
   `docs/dossiers/lib-chunk1-11000-21000.md`,
@@ -229,7 +234,8 @@ These outputs are useful but ignored:
   `docs/dossiers/lib-chunk3-31000-41000.md`,
   `docs/dossiers/lib-chunk4-41000-51000.md`,
   `docs/dossiers/lib-chunk5-51000-61000.md`,
-  `docs/dossiers/lib-chunk6-61000-71000.md`).
+  `docs/dossiers/lib-chunk6-61000-71000.md`,
+  `docs/dossiers/lib-chunk7-71000-81000.md`).
 - Executable extent (evidence, `tools/audit_code_region.js`):
   `0x00001000..0x002B89B4`. The trailing `0x002B89B4..0x0063676C` (3,661,240
   bytes, 56.24%) has zero `jr $ra` and is non-code data still emitted as `.word`
@@ -339,8 +345,8 @@ prints PASS. Current PASS summary:
 - Toolchain: `n64-tools-gcc-toolchain-mips64-win64`, GNU Binutils 2.39.
 - Binutils smoke tests: `.word`, real instructions, `.set noreorder`, and first
   tracked chunk real assembly all pass.
-- Source mix: 7 tracked composite real-asm chunks made from 1,352 tracked source
-  files, plus 93 generated fallback chunks.
+- Source mix: 8 tracked composite real-asm chunks made from 1,455 tracked source
+  files, plus 92 generated fallback chunks.
 - Source manifest: 1,059 entries, zero unknown bytes, 2,469,141 ambiguous bytes
   preserved explicitly.
 - Source owners: 3 tracked non-code files / 44,029 bytes plus 1,055 generated

@@ -24,14 +24,14 @@ and replace the active log with a compact current-state summary.
   `original_mips`. A static control-flow audit found no credible code edge into
   the tail (0 branch targets, 0 J/JAL to a known function). Audit:
   `tools/audit_code_region.js` / `docs/CODE_REGION_AUDIT.md`.
-- Current tracked code source mix: seven composite real-assembler chunks
-  (chunk 0 177 `boot/`; chunks 1–6 in `lib/`: 350, 216, 67, 376, 88, 78) = **1,352
-  tracked source files**, plus 93 generated fallback code chunks. **Chunks 0–6
-  (`0x00001000..0x00071000`) are now fully source-owned as named code/data parts**
-  (chunk 2: 2 data; chunk 3: 23 code + 44 data; chunk 4: 374 code `func_` + 2
-  straddler; chunk 5: 76 code + 1 straddler-tail + 11 data; chunk 6: 60 code + 18
-  data); next is chunk 7 (`0x00071000`, still a generated fallback chunk). The
-  promote-tool merge blocker is FIXED.
+- Current tracked code source mix: eight composite real-assembler chunks
+  (chunk 0 177 `boot/`; chunks 1–7 in `lib/`: 350, 216, 67, 376, 88, 78, 103) =
+  **1,455 tracked source files**, plus 92 generated fallback code chunks. **Chunks
+  0–7 (`0x00001000..0x00081000`) are now fully source-owned as named code/data
+  parts** (chunk 3: 23 code + 44 data; chunk 4: 374 code + 2 straddler; chunk 5: 76
+  code + 1 straddler-tail + 11 data; chunk 6: 60 code + 18 data; chunk 7: 80 code +
+  1 straddler-head + 22 data); next is chunk 8 (`0x00081000`, still a generated
+  fallback chunk). The promote-tool merge blocker is FIXED.
 - The parent boundary DB has TWO recurring defects, both fixed when splitting:
   (1) `end_rom` is INCLUSIVE (exclusive end = `end_rom + 4`; do NOT treat the
   delay slot as a gap — `tools/dump_function_context.js` now enforces this with a
@@ -117,8 +117,12 @@ Current named sequence:
 - Chunk 6 source-ownership `0x00061000..0x00071000` (78 parts: 60 code `func_*` +
   18 data; MIXED — item/equipment data + PARENT-UNDETECTED code + data tail).
   Dossier: `docs/dossiers/lib-chunk6-61000-71000.md`. **Chunk 6 source-owned.**
-- Current remainder: none in chunks 0–6 (`0x1000..0x71000` fully source-owned).
-  Next is chunk 7 generated fallback `0x00071000..0x00081000`.
+- Chunk 7 source-ownership `0x00071000..0x00081000` (103 parts: 80 code `func_*` +
+  1 straddler-head + 22 data; MIXED 4-region — blob continuation + parent-undetected
+  code + Controller-Pak menu data + parent-detected code).
+  Dossier: `docs/dossiers/lib-chunk7-71000-81000.md`. **Chunk 7 source-owned.**
+- Current remainder: none in chunks 0–7 (`0x1000..0x81000` fully source-owned).
+  Next is chunk 8 generated fallback `0x00081000..0x00091000`.
 
 Static dossiers live under `docs/dossiers/` and are the durable evidence notes
 for each promoted source-layout split.
@@ -621,11 +625,55 @@ undetected**. **78 parts: 60 code `func_*` + 18 data.** Tracked files 1,274 ->
   preamble mislabels deterministically. Gates: check_manifest/check_boundaries/
   assemble byte-exact/verify_setup (7 chunks/1,352/93)/audit all PASS.
 
+## 2026-06-22 - Chunk 7 Split (0x71000..0x81000); chunk 7 complete — MIXED 4-region + cleanup
+
+CLEANUP DONE (commit `5c3e12e`): removed unreferenced root scratch dumps
+`regB.json`/`regionA.txt` (swept in by `git add -A` in chunk 5); fixed stale
+`docs/WORKFLOW.md` counts (5/1,186/95 → 7/1,352/93); fixed the chunks 5–6 run
+handoff "clean at f05b535" wording. Verified 0 data files carry function wording.
+
+CHUNK 7 `0x71000..0x81000` promoted (manifest now 8 chunks, seeded as 1 part).
+**4-region map** (recon, deterministic):
+- DATA1 `0x71000..0x71280` (640 B): chunk-6 `data_00070e70` packed blob
+  continuation + a 10-word RAM-pointer table at `0x71258`.
+- CODE1 `0x71280..0x783A0` (28,960 B): PARENT-UNDETECTED code (frameless
+  string-search fns + framed fns); seeded with `scan_functions` (33 framed fns),
+  5 slices.
+- DATA2 `0x783A0..0x79730` (5,008 B): small byte index table + LARGE pointer
+  tables (~618 ptr words) + ASCII string pools (UI/menu/name strings).
+- CODE2 `0x79730..0x81000` (30,928 B): PARENT-DETECTED code (27 fns, incl. the
+  giant 11 KB `func_00079E84` `[0x79E84,0x7CA04)` — verified one real function);
+  `plan_chunk` (27 fns), 5 slices.
+- STRADDLER-IN (data): DATA1 continues chunk 6's blob. STRADDLER-OUT (function):
+  parent fn `0x7FFB4` `[0x7FFB4,0x810DC)` continues into chunk 8 — its chunk-7
+  head is `[0x7FFB4,0x81000)`.
+- Boundaries verified from disasm: blob→code 0x71280 (frameless fn starts);
+  code→data 0x783A0 (fn ends 0x78394 jr_ra, data `001F1C1F` at 0x783A0);
+  data→code 0x79730 (first parent fn); code tail straddles at 0x7FFB4.
+
+DONE: **103 parts (80 code `func_*` + 1 straddler-head + 22 data)**. Tracked files
+1,352 → **1,455**; fallback 93 → 92. Byte-exact (code SHA `40D4E787…B409`, ROM
+`571E8339…CC67A`). Coverage `0x1000..0x81000` = **18.40 %** (code-only ≈ 14.04 %).
+DATA2 = Controller-Pak / save-data menu data (chapter labels, glyph/charset, month
+abbrevs, element names, UI/menu strings, `NOBE`/`EB` save magic, pointer tables).
+STRADDLER-OUT: `func_0007ffac_chunk7head` `[0x7FFAC,0x81000)` (true entry 0x7FFAC,
+2-word preamble; parent labeled 0x7FFB4) → continues to `0x810DC` in chunk 8;
+chunk-8 head is `func_0007ffac_chunk8tail` `[0x81000,0x810DC)`.
+Fixes: 1 delay-slot leak, 3 slice-seam preamble straddler-head mislabels, 1
+adversarial preamble fold (`0x7E148`). TOOL FIX: `split_original_mips_part.js` now
+sanitizes `*/`/`/*` in note/label text (a charset note `+-*/=` broke the assembler);
+chunk re-split after the fix (source restored from the `build/` generated chunk).
+Gates: check_manifest/check_boundaries/check_splits/assemble byte-exact/verify_setup
+(8 chunks/1,455/92)/audit all PASS; 0 data files with function wording.
+Dossier `docs/dossiers/lib-chunk7-71000-81000.md`; review
+`docs/REVIEW_2026-06-22_chunk07-data-code-data-code.md`.
+
 ## Current Dossier Set
 
 The current boot/source-layout dossier list is long; use `docs/PLATFORM.md` for
 the full quick index. The newest dossiers are:
 
+- `docs/dossiers/lib-chunk7-71000-81000.md` (103-part chunk-7: MIXED 4-region — blob + parent-undetected code + Controller-Pak menu data + parent-detected code; chunk 7 done)
 - `docs/dossiers/lib-chunk6-61000-71000.md` (78-part chunk-6: MIXED — item/equipment data + PARENT-UNDETECTED code + data tail; chunk 6 done)
 - `docs/dossiers/lib-chunk5-51000-61000.md` (88-part chunk-5: MIXED — overlay code + game-data tail (display-list/string-pools/record-tables); chunk 5 done)
 - `docs/dossiers/lib-chunk4-41000-51000.md` (376-part chunk-4: overlay-relocated, frameless-leaf-dense code; all conservative `func_*`; chunk 4 done)
@@ -654,27 +702,27 @@ the full quick index. The newest dossiers are:
 
 ## Next Frontier
 
-Chunks 0–6 (`0x00001000..0x00071000`) are fully source-owned as named code/data
-parts (chunk 3: 23 code + 44 data; chunk 4: 374 code + 2 straddler; chunk 5: 76
-code + 1 straddler-tail + 11 data; chunk 6: 60 code + 18 data). The next frontier
-is **`0x00071000` (chunk 7)**. Coverage `0x1000..0x71000` = 16.10% of the
-2,849,204-byte executable extent.
+Chunks 0–7 (`0x00001000..0x00081000`) are fully source-owned as named code/data
+parts (chunk 4: 374 code + 2 straddler; chunk 5: 76 code + 1 straddler-tail + 11
+data; chunk 6: 60 code + 18 data; chunk 7: 80 code + 1 straddler-head + 22 data).
+The next frontier is **`0x00081000` (chunk 8)**. Coverage `0x1000..0x81000` =
+18.40% of the 2,849,204-byte executable extent (code-only ≈ 14.04%).
 
-FIRST: chunk 6's last DATA part `data_00070e70` (a packed F2/F3 record / offset
-blob) **straddles** into chunk 7 — verify whether `0x71000+` continues that data
-blob (→ a `data_00071000` continuation) or transitions to code, before planning.
+FIRST: continue the chunk-7→chunk-8 function straddler. `func_0007ffac_chunk7head`
+`[0x7FFAC,0x81000)` continues to `0x810DC`; chunk 8's first file is its tail
+`func_0007ffac_chunk8tail` `[0x81000,0x810DC)`.
 
-IMPORTANT: chunks 6–7 are **PARENT-UNDETECTED** (the parent DB's next function is
-`0x79730` in chunk 8). For chunk 7's code region(s), use `tools/scan_functions.js`
-(prologue seed) instead of `plan_chunk`/`dump_function_context` (which return 0
-functions here), then the analysis swarm for frameless-leaf recovery. Classify
-data vs code via content scan (0 jr_ra + 0 prologues + pointer/ASCII density =
-data). Pipeline tools: `scan_functions`/`slice_chunk --disasm`/`integrate_chunk`
-(context optional)/`check_splits`/`check_boundaries` + swarms `build/wf_*.js`.
-Default to **conservative `func_*`** for overlay-relocated code.
+Then classify chunk 8's code/data mix. Chunk 8 is the first largely
+**PARENT-DETECTED** chunk in a while (the parent DB's `0x79730`+ run continues into
+it — `0x79730` etc. were chunk 7; the run extends past `0x81000`), so `plan_chunk`
+(+`dump_function_context`) should seed most of it; use `scan_functions` only for
+any parent-undetected sub-regions. Content-scan for data regions FIRST (chunks 5–7
+each had interior data). Pipeline tools: `scan_functions` or `plan_chunk`/
+`slice_chunk --disasm`/`integrate_chunk` (context optional)/`check_splits`/
+`check_boundaries` + swarms `build/wf_*.js`. Default **conservative `func_*`**.
 
 There are now two active tracks. The library source-ownership track continues at
-`0x71000` (chunk 7) as above. The full-ROM coverage track (opened 2026-06-21) next refines
+`0x81000` (chunk 8) as above. The full-ROM coverage track (opened 2026-06-21) next refines
 the exact code/data boundary near `0x002B89B4` and reclassifies the non-code tail
 `0x002B89B4..0x0063676C` from `original_mips` to a data source form, shrinking the
 configured code region to the executable extent while keeping the exact rebuild

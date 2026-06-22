@@ -18,8 +18,10 @@ with no args — was previously crashing on a bare call).
 
 Run end state: **7 tracked chunks / 1,352 files / 93 fallback**; coverage
 `0x1000..0x71000` = **16.10 %** of the 2,849,204-byte executable extent; code SHA
-`40D4E787…B409` and full ROM SHA `571E8339…CC67A` unchanged; `verify_setup` PASS;
-working tree clean at `f05b535`.
+`40D4E787…B409` and full ROM SHA `571E8339…CC67A` unchanged; `verify_setup` PASS.
+The working tree is clean and fully committed (chunk 5 = `8a3eaa7`, chunk 6 =
+`f05b535`, with this run-handoff and a follow-up cleanup commit on top — check
+`git log` for the current HEAD).
 
 ## Work completed (per chunk)
 
@@ -107,7 +109,8 @@ with function/true-entry wording.
   Chunk 7 is parent-undetected → use `scan_functions.js`.
 - **18 chunks remain (7–24)** to reach the run's target frontier `0x00191000`.
 - Resumption is fully documented in `AGENTS.md`, `DECOMP_LOG.md` (Next Frontier),
-  `NEXT_STEPS.md`, and the latest dossier/review; the repo is clean at `f05b535`.
+  `NEXT_STEPS.md`, and the latest dossier/review; the working tree is clean and
+  fully committed (chunk 6 = `f05b535`; see `git log` for the current HEAD).
 
 ## Unresolved caveats
 

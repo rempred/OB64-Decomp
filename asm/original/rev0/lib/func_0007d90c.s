@@ -1,0 +1,33 @@
+/*
+ * Original Rev 0 MIPS reference split.
+ * Parent source: asm/original/rev0/code_00071000_00081000.s
+ * z64 range: 0x0007D90C..0x0007D960 exclusive
+ * Decode comments are aids, not proof of semantic function boundaries.
+ */
+.set noat
+.set noreorder
+.text
+
+/* Un-merged frameless leaf. andi a0; lui 0x8019 bit-table at 0x6A81, sllv mask write. jr $ra at 0x0007D958 + delay slot 0x0007D95C (sb 0x6A81). */
+func_0007d90c:
+/* 0x0007D90C 0x800ED50C 0x308400FF */ .word 0x308400FF # andi $a0, $a0, 0x00FF
+/* 0x0007D910 0x800ED510 0x2486FFFF */ .word 0x2486FFFF # addiu $a2, $a0, -0x1
+/* 0x0007D914 0x800ED514 0x04C10002 */ .word 0x04C10002 # bgez $a2, 0x800ED520
+/* 0x0007D918 0x800ED518 0x00C01021 */ .word 0x00C01021 # move $v0, $a2
+/* 0x0007D91C 0x800ED51C 0x24820006 */ .word 0x24820006 # addiu $v0, $a0, 0x6
+/* 0x0007D920 0x800ED520 0x000238C3 */ .word 0x000238C3 # sra $a3, $v0, 3
+/* 0x0007D924 0x800ED524 0x3C038019 */ .word 0x3C038019 # lui $v1, 0x8019
+/* 0x0007D928 0x800ED528 0x00671821 */ .word 0x00671821 # addu $v1, $v1, $a3
+/* 0x0007D92C 0x800ED52C 0x90636A81 */ .word 0x90636A81 # lbu $v1, 0x6A81($v1)
+/* 0x0007D930 0x800ED530 0x30C40007 */ .word 0x30C40007 # andi $a0, $a2, 0x0007
+/* 0x0007D934 0x800ED534 0x24020001 */ .word 0x24020001 # addiu $v0, $zero, 0x1
+/* 0x0007D938 0x800ED538 0x00821004 */ .word 0x00821004 # sllv $v0, $v0, $a0
+/* 0x0007D93C 0x800ED53C 0x00021027 */ .word 0x00021027 # nor $v0, $zero, $v0
+/* 0x0007D940 0x800ED540 0x00621824 */ .word 0x00621824 # and $v1, $v1, $v0
+/* 0x0007D944 0x800ED544 0x30A200FF */ .word 0x30A200FF # andi $v0, $a1, 0x00FF
+/* 0x0007D948 0x800ED548 0x00821004 */ .word 0x00821004 # sllv $v0, $v0, $a0
+/* 0x0007D94C 0x800ED54C 0x00621025 */ .word 0x00621025 # or $v0, $v1, $v0
+/* 0x0007D950 0x800ED550 0x3C018019 */ .word 0x3C018019 # lui $at, 0x8019
+/* 0x0007D954 0x800ED554 0x00270821 */ .word 0x00270821 # addu $at, $at, $a3
+/* 0x0007D958 0x800ED558 0x03E00008 */ .word 0x03E00008 # jr $ra
+/* 0x0007D95C 0x800ED55C 0xA0226A81 */ .word 0xA0226A81 # sb $v0, 0x6A81($at)

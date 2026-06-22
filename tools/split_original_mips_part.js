@@ -183,9 +183,18 @@ function extractRange(lines, start, end) {
   return out;
 }
 
+// A note/comment may contain `*/` or `/*` (e.g. a charset string like "+-*/=")
+// which would prematurely close/open the C-style header comment and break the
+// assembler. Neutralize those sequences without changing the emitted .word bytes.
+function sanitizeComment(text) {
+  return String(text).replace(/\*\//g, '* /').replace(/\/\*/g, '/ *');
+}
+
 function writeSplitFile({ split, sourcePart, lines }) {
   const outPath = repoPath(split.file);
   ensureDir(path.dirname(outPath));
+  if (split.note) split.note = sanitizeComment(split.note);
+  if (split.label) split.label = sanitizeComment(split.label);
   const body = extractRange(lines, split.start, split.end);
   const headerLines = [
     '/*',

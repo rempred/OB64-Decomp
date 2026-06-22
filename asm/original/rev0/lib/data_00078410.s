@@ -1,0 +1,49 @@
+/*
+ * Original Rev 0 MIPS reference split.
+ * Parent source: asm/original/rev0/code_00071000_00081000.s
+ * z64 range: 0x00078410..0x000784A8 exclusive
+ * Decode comments are aids, not proof of semantic function boundaries.
+ */
+.set noat
+.set noreorder
+.text
+
+/* Data region (not executable host code): Binary record/struct block (152 bytes). Contains signed 16-bit coordinate/extent pairs (FF60FF88, 00A00078, 6FC053C0, 0x3F constants, FFFFFFFF sentinels) and packed half-word pairs (00080008,0006000C,0012000C,0016000C,002D0008 etc.) - apparent UI layout/rectangle records, ~stride 0x14-0x18. Mixed, not fully typed; no RAM pointers.. */
+/* 0x00078410 0x800E8010 0xFF60FF88 */ .word 0xFF60FF88 # sd $zero, -0x78($k1)
+/* 0x00078414 0x800E8014 0x00000000 */ .word 0x00000000 # nop
+/* 0x00078418 0x800E8018 0x6FC053C0 */ .word 0x6FC053C0 # ldr $zero, 0x53C0($s8)
+/* 0x0007841C 0x800E801C 0x0000003F */ .word 0x0000003F # dsra32 $zero, $zero, 0
+/* 0x00078420 0x800E8020 0xFF600078 */ .word 0xFF600078 # sd $zero, 0x78($k1)
+/* 0x00078424 0x800E8024 0x00000000 */ .word 0x00000000 # nop
+/* 0x00078428 0x800E8028 0x6FC00000 */ .word 0x6FC00000 # ldr $zero, 0x0($s8)
+/* 0x0007842C 0x800E802C 0xFFFFFFFF */ .word 0xFFFFFFFF # sd $ra, -0x1($ra)
+/* 0x00078430 0x800E8030 0x00A00078 */ .word 0x00A00078 # dsll $zero, $zero, 1
+/* 0x00078434 0x800E8034 0x00000000 */ .word 0x00000000 # nop
+/* 0x00078438 0x800E8038 0x00000000 */ .word 0x00000000 # nop
+/* 0x0007843C 0x800E803C 0xFFFFFFFF */ .word 0xFFFFFFFF # sd $ra, -0x1($ra)
+/* 0x00078440 0x800E8040 0x00A0FF88 */ .word 0x00A0FF88 # jr $a1
+/* 0x00078444 0x800E8044 0x00000000 */ .word 0x00000000 # nop
+/* 0x00078448 0x800E8048 0x000053C0 */ .word 0x000053C0 # sll $t2, $zero, 15
+/* 0x0007844C 0x800E804C 0x0000003F */ .word 0x0000003F # dsra32 $zero, $zero, 0
+/* 0x00078450 0x800E8050 0x00080008 */ .word 0x00080008 # jr $zero
+/* 0x00078454 0x800E8054 0x00000000 */ .word 0x00000000 # nop
+/* 0x00078458 0x800E8058 0x00080008 */ .word 0x00080008 # jr $zero
+/* 0x0007845C 0x800E805C 0x00080000 */ .word 0x00080000 # sll $zero, $t0, 0
+/* 0x00078460 0x800E8060 0x0006000C */ .word 0x0006000C # syscall 0x01800
+/* 0x00078464 0x800E8064 0x00000000 */ .word 0x00000000 # nop
+/* 0x00078468 0x800E8068 0x0006000C */ .word 0x0006000C # syscall 0x01800
+/* 0x0007846C 0x800E806C 0x00070000 */ .word 0x00070000 # sll $zero, $a3, 0
+/* 0x00078470 0x800E8070 0x0012000C */ .word 0x0012000C # syscall 0x04800
+/* 0x00078474 0x800E8074 0x000E0000 */ .word 0x000E0000 # sll $zero, $t6, 0
+/* 0x00078478 0x800E8078 0x000E000C */ .word 0x000E000C # syscall 0x03800
+/* 0x0007847C 0x800E807C 0x00320000 */ .word 0x00320000 # sll $zero, $s2, 0
+/* 0x00078480 0x800E8080 0x0012000C */ .word 0x0012000C # syscall 0x04800
+/* 0x00078484 0x800E8084 0x00200000 */ .word 0x00200000 # sll $zero, $zero, 0
+/* 0x00078488 0x800E8088 0x0016000C */ .word 0x0016000C # syscall 0x05800
+/* 0x0007848C 0x800E808C 0x00400000 */ .word 0x00400000 # sll $zero, $zero, 0
+/* 0x00078490 0x800E8090 0x00160008 */ .word 0x00160008 # jr $zero
+/* 0x00078494 0x800E8094 0x00000000 */ .word 0x00000000 # nop
+/* 0x00078498 0x800E8098 0x00160008 */ .word 0x00160008 # jr $zero
+/* 0x0007849C 0x800E809C 0x00160000 */ .word 0x00160000 # sll $zero, $s6, 0
+/* 0x000784A0 0x800E80A0 0x002D0008 */ .word 0x002D0008 # jr $at
+/* 0x000784A4 0x800E80A4 0x00000000 */ .word 0x00000000 # nop
