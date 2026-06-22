@@ -14,6 +14,27 @@ const ROOT = path.resolve(__dirname, '..');
 const A = {}; const av = process.argv.slice(2);
 for (let i = 0; i < av.length; i += 2) A[av[i].replace(/^--/, '')] = av[i + 1];
 const P = (v) => parseInt(v, 16);
+
+function usage(msg) {
+  if (msg) console.error(`Error: ${msg}\n`);
+  console.log(`Usage: node tools/check_splits.js --splits <splits.json> --disasm <chunk.s>
+
+Adversarial fragment check (read-only): flags any code part with NO return and
+NO j/jal (likely a boundary fragment) and lists very small files. Both arguments
+are REQUIRED:
+  --splits  integrated splits JSON ({splits:[{name,start,end,kind?}]}).
+  --disasm  the chunk disassembly .s (decode-comment lines).
+Example:
+  node tools/check_splits.js \\
+    --splits build/chunk_00051000-00061000_splits.json \\
+    --disasm build/original-mips/rev0/code_00051000_00061000.s`);
+}
+if (av.includes('--help') || av.includes('-h')) { usage(); process.exit(0); }
+if (!A.splits || !A.disasm) { usage('both --splits and --disasm are required'); process.exit(2); }
+for (const [k, label] of [['splits', '--splits'], ['disasm', '--disasm']]) {
+  if (!fs.existsSync(path.resolve(ROOT, A[k]))) { usage(`${label} file not found: ${A[k]}`); process.exit(2); }
+}
+
 const splits = JSON.parse(fs.readFileSync(path.resolve(ROOT, A.splits), 'utf8')).splits;
 const disasm = fs.readFileSync(path.resolve(ROOT, A.disasm), 'utf8').replace(/\r\n/g, '\n').split('\n');
 const word = new Map();
