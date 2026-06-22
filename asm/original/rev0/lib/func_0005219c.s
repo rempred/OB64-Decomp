@@ -1,0 +1,36 @@
+/*
+ * Original Rev 0 MIPS reference split.
+ * Parent source: asm/original/rev0/code_00051000_00061000.s
+ * z64 range: 0x0005219C..0x000521FC exclusive
+ * Decode comments are aids, not proof of semantic function boundaries.
+ */
+.set noat
+.set noreorder
+.text
+
+/* Hidden frameless leaf: move $v0,$a0; sign-extends a1..a3 and stack arg, stores into struct. jr $ra at 0x521F4 + delay 0x521F8. Split from over-merged parent. */
+func_0005219c:
+/* 0x0005219C 0x800C1D9C 0x00801021 */ .word 0x00801021 # move $v0, $a0
+/* 0x000521A0 0x800C1DA0 0x00052C00 */ .word 0x00052C00 # sll $a1, $a1, 16
+/* 0x000521A4 0x800C1DA4 0x00052C03 */ .word 0x00052C03 # sra $a1, $a1, 16
+/* 0x000521A8 0x800C1DA8 0x00063400 */ .word 0x00063400 # sll $a2, $a2, 16
+/* 0x000521AC 0x800C1DAC 0x00063403 */ .word 0x00063403 # sra $a2, $a2, 16
+/* 0x000521B0 0x800C1DB0 0xAC45002C */ .word 0xAC45002C # sw $a1, 0x2C($v0)
+/* 0x000521B4 0x800C1DB4 0xAC45003C */ .word 0xAC45003C # sw $a1, 0x3C($v0)
+/* 0x000521B8 0x800C1DB8 0xAC460030 */ .word 0xAC460030 # sw $a2, 0x30($v0)
+/* 0x000521BC 0x800C1DBC 0xAC460040 */ .word 0xAC460040 # sw $a2, 0x40($v0)
+/* 0x000521C0 0x800C1DC0 0x8FA40010 */ .word 0x8FA40010 # lw $a0, 0x10($sp)
+/* 0x000521C4 0x800C1DC4 0x00073C00 */ .word 0x00073C00 # sll $a3, $a3, 16
+/* 0x000521C8 0x800C1DC8 0x00073C03 */ .word 0x00073C03 # sra $a3, $a3, 16
+/* 0x000521CC 0x800C1DCC 0x240300FF */ .word 0x240300FF # addiu $v1, $zero, 0xFF
+/* 0x000521D0 0x800C1DD0 0xA4430018 */ .word 0xA4430018 # sh $v1, 0x18($v0)
+/* 0x000521D4 0x800C1DD4 0x34038004 */ .word 0x34038004 # ori $v1, $zero, 0x8004
+/* 0x000521D8 0x800C1DD8 0xAC470034 */ .word 0xAC470034 # sw $a3, 0x34($v0)
+/* 0x000521DC 0x800C1DDC 0xAC470044 */ .word 0xAC470044 # sw $a3, 0x44($v0)
+/* 0x000521E0 0x800C1DE0 0xA4400028 */ .word 0xA4400028 # sh $zero, 0x28($v0)
+/* 0x000521E4 0x800C1DE4 0xA4430026 */ .word 0xA4430026 # sh $v1, 0x26($v0)
+/* 0x000521E8 0x800C1DE8 0x00042400 */ .word 0x00042400 # sll $a0, $a0, 16
+/* 0x000521EC 0x800C1DEC 0x00042403 */ .word 0x00042403 # sra $a0, $a0, 16
+/* 0x000521F0 0x800C1DF0 0xAC440038 */ .word 0xAC440038 # sw $a0, 0x38($v0)
+/* 0x000521F4 0x800C1DF4 0x03E00008 */ .word 0x03E00008 # jr $ra
+/* 0x000521F8 0x800C1DF8 0xAC440048 */ .word 0xAC440048 # sw $a0, 0x48($v0)

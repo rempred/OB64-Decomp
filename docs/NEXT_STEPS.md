@@ -15,14 +15,14 @@ Current passing commands:
 node tools/verify_setup.js
 ```
 
-Current source mix: 5 tracked composite real-assembler chunks
-(`0x00001000..0x00011000` 177 files in `boot/`; `0x00011000..0x00021000` 350,
+Current source mix: 6 tracked composite real-assembler chunks
+(`0x00001000..0x00011000` 177 `boot/`; `0x00011000..0x00021000` 350,
 `0x00021000..0x00031000` 216, `0x00031000..0x00041000` 67, `0x00041000..0x00051000`
-376 files in `lib/`) = 1,186 tracked source files, plus 95 generated fallback
-chunks. **Chunks 0–4 are fully source-owned as named code/data parts**
-(`0x00001000..0x00051000`; chunk 2: 2 data parts; chunk 3: 23 code + 44 data parts;
-chunk 4: 374 code `func_` + 2 straddler markers, 0 data); next is chunk 5
-(`0x00051000`).
+376, `0x00051000..0x00061000` 88 in `lib/`) = 1,274 tracked source files, plus 94
+generated fallback chunks. **Chunks 0–5 are fully source-owned as named code/data
+parts** (`0x00001000..0x00061000`; chunk 2: 2 data; chunk 3: 23 code + 44 data;
+chunk 4: 374 code `func_` + 2 straddler; chunk 5: 76 code `func_` + 1
+straddler-tail + 11 data); next is chunk 6 (`0x00061000`).
 
 The assembled code-region SHA256 is
 `40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`; the full
@@ -99,25 +99,24 @@ node tools/audit_code_region.js
    generates fallback owners for the rest. Keep `node tools/verify_setup.js`
    green after every promotion.
 
-3. Continue into chunk 5.
+3. Continue into chunk 6.
 
-   Chunks 0–4 (`0x00001000..0x00051000`) are fully source-owned as named code/data
-   parts: chunk 0 in `boot/`; chunks 1–4 in `lib/` (dossiers `lib-chunk1-…` …
-   `lib-chunk4-…`). Chunk 4 was an overlay-relocated, frameless-leaf-dense
-   function split (376 parts: 374 conservative `func_*` + 2 straddler markers;
-   ~211 frameless leaves recovered that the parent DB missed).
+   Chunks 0–5 (`0x00001000..0x00061000`) are fully source-owned as named code/data
+   parts: chunk 0 in `boot/`; chunks 1–5 in `lib/` (dossiers `lib-chunk1-…` …
+   `lib-chunk5-…`). Chunk 5 was MIXED: overlay code + a ~20 KB game-data tail
+   (88 parts: 76 code `func_*` + 1 straddler-tail + 11 data).
 
-   **Next frontier: `0x00051000` (chunk 5).** FIRST continue the chunk-4 straddler:
-   `func_00050f98_chunk4head` `[0x50F98,0x51000)` continues to `0x5148C` (chunk-5
-   head file `func_00050f98_chunk5tail` `[0x51000,0x5148C)`; overlay code,
-   RAM-suspect). Then determine chunk 5's code/data mix using the parent overlay
-   map as the code/data oracle + `dump_function_context --start 0x51000 --end
-   0x61000`; pick the function-split pipeline (tracked
-   `plan_chunk`/`slice_chunk`/`integrate_chunk`/`check_splits` + analysis &
-   adversarial swarms) if overlay-code-dominant, or the data-classification pass if
-   data-dominant. The 10% executable target `0x000468F8` is surpassed (coverage now
-   11.50%). See the DECOMP_LOG "Next Frontier" and
-   `docs/dossiers/lib-chunk4-41000-51000.md`.
+   **Next frontier: `0x00061000` (chunk 6).** Chunk 5 has no function
+   straddler-out, but its last data part `data_00060980` (a 0x10-stride record
+   table) straddles into chunk 6 (record at `0x60FFC` incomplete) — verify whether
+   `0x61000+` continues that table before assuming code. Then determine chunk 6's
+   code/data mix using the parent overlay map as the code/data oracle +
+   `dump_function_context --start 0x61000 --end 0x71000`; pick the function-split
+   pipeline (tracked `plan_chunk`/`slice_chunk`/`integrate_chunk`/`check_splits`/
+   `check_boundaries` + analysis & adversarial swarms `build/wf_*.js`) if
+   overlay-code-dominant, or the data-classification pass if data-dominant. The 10%
+   executable target `0x000468F8` is surpassed (coverage now 13.80%). See the
+   DECOMP_LOG "Next Frontier" and `docs/dossiers/lib-chunk5-51000-61000.md`.
 
 4. Keep the setup gate green.
 

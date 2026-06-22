@@ -1,0 +1,28 @@
+/*
+ * Original Rev 0 MIPS reference split.
+ * Parent source: asm/original/rev0/code_00051000_00061000.s
+ * z64 range: 0x0005DAD4..0x0005DB18 exclusive
+ * Decode comments are aids, not proof of semantic function boundaries.
+ */
+.set noat
+.set noreorder
+.text
+
+/* Data region (not executable host code): Pointer table, 18 words, all RAM pointers (0x80xxxxxx). Ascending cluster 0x80187660,0x8018766C,0x80187674,0x80187684...0x801876F0 (16 entries, ~+8/+0xC stride, indexing into a string/record block around 0x80187660), then 0x8018FEB8 and 0x80190370. No code; pure 0x80xxxxxx pointer values.. */
+/* 0x0005DAD4 0x800CD6D4 0x80187660 */ .word 0x80187660 # lb $t8, 0x7660($zero)
+/* 0x0005DAD8 0x800CD6D8 0x8018766C */ .word 0x8018766C # lb $t8, 0x766C($zero)
+/* 0x0005DADC 0x800CD6DC 0x80187674 */ .word 0x80187674 # lb $t8, 0x7674($zero)
+/* 0x0005DAE0 0x800CD6E0 0x8018767C */ .word 0x8018767C # lb $t8, 0x767C($zero)
+/* 0x0005DAE4 0x800CD6E4 0x80187684 */ .word 0x80187684 # lb $t8, 0x7684($zero)
+/* 0x0005DAE8 0x800CD6E8 0x8018768C */ .word 0x8018768C # lb $t8, 0x768C($zero)
+/* 0x0005DAEC 0x800CD6EC 0x80187694 */ .word 0x80187694 # lb $t8, 0x7694($zero)
+/* 0x0005DAF0 0x800CD6F0 0x8018769C */ .word 0x8018769C # lb $t8, 0x769C($zero)
+/* 0x0005DAF4 0x800CD6F4 0x801876A8 */ .word 0x801876A8 # lb $t8, 0x76A8($zero)
+/* 0x0005DAF8 0x800CD6F8 0x801876B4 */ .word 0x801876B4 # lb $t8, 0x76B4($zero)
+/* 0x0005DAFC 0x800CD6FC 0x801876C0 */ .word 0x801876C0 # lb $t8, 0x76C0($zero)
+/* 0x0005DB00 0x800CD700 0x801876CC */ .word 0x801876CC # lb $t8, 0x76CC($zero)
+/* 0x0005DB04 0x800CD704 0x801876D8 */ .word 0x801876D8 # lb $t8, 0x76D8($zero)
+/* 0x0005DB08 0x800CD708 0x801876E4 */ .word 0x801876E4 # lb $t8, 0x76E4($zero)
+/* 0x0005DB0C 0x800CD70C 0x801876F0 */ .word 0x801876F0 # lb $t8, 0x76F0($zero)
+/* 0x0005DB10 0x800CD710 0x8018FEB8 */ .word 0x8018FEB8 # lb $t8, -0x148($zero)
+/* 0x0005DB14 0x800CD714 0x80190370 */ .word 0x80190370 # lb $t9, 0x370($zero)

@@ -149,14 +149,26 @@ the final split):
    `build/chunk_<tag>_slices/slice<K>_final.json` (`{functions:[{start,end,name,
    kind,note}]}`). Use **conservative `func_*`** for overlay-relocated chunks.
 5. `node tools/integrate_chunk.js ...` — merge + validate into a `--splits-file`.
-6. `node tools/check_splits.js --splits <json> --disasm <chunk.s>` — adversarial
-   fragment check. Also run an 8-region adversarial review swarm and the
-   deterministic boundary invariants (0 cross-boundary PC-relative branches, 0
-   prologue-after-return under-splits, 0 last-word-is-a-return delay-slot leaks).
+6. `node tools/check_boundaries.js --splits <json> --disasm <chunk.s>` —
+   deterministic boundary gate (fragment / cross-boundary PC-relative branch /
+   prologue-after-return under-split / delay-slot leak / straddler-position /
+   data-island). `node tools/check_splits.js --splits <json> --disasm <chunk.s>`
+   is the standalone fragment check. Then run an adversarial review swarm
+   (`build/wf_adversarial.js`) and apply its fixes.
 7. `node tools/split_original_mips_part.js --part <chunk.s> --splits-file <json>
    --remove-source` — write the named parts + update the manifest.
 8. `node tools/check_manifest.js` + `node tools/assemble_original_mips.js` +
    `node tools/verify_setup.js` — integrity + byte-exact gate.
+
+MIXED chunks (code + data): handle the code sub-region with steps 2–6 using a
+narrower `--end` (the code/data boundary) and `slice_chunk --disasm <full chunk.s>`
+(the chunk file is wider than the analyzed range). Classify the data region
+separately (overlay map = 0 loaded fns + 0 `jr $ra`/prologues + pointer/ASCII
+density ⇒ data) into `kind:"data"` parts (`zero_fill_`/`data_`/`rodata_`/`table_`/
+`jumptable_`/`rsp_ucode_`) with a data-classification swarm (`build/wf_data.js`),
+then concatenate code + data splits into one full-chunk splits JSON before step 7.
+The reusable swarm scripts live under gitignored `build/wf_analyze.js` /
+`build/wf_data.js` / `build/wf_adversarial.js` (edit the per-chunk DATA BLOCK).
 
 Honest headers: `split_original_mips_part.js` emits data headers for
 `kind:"data"`, cross-chunk continuation headers for

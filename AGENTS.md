@@ -203,15 +203,16 @@ Current result:
 - Code-region SHA256:
   `40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`.
 - Code-region match against baserom: pass.
-- Tracked real-assembler original-MIPS chunks: 5 composites
-  (`0x00001000..0x00011000` 177 files in `boot/`; `0x00011000..0x00021000` 350,
+- Tracked real-assembler original-MIPS chunks: 6 composites
+  (`0x00001000..0x00011000` 177 `boot/`; `0x00011000..0x00021000` 350,
   `0x00021000..0x00031000` 216, `0x00031000..0x00041000` 67,
-  `0x00041000..0x00051000` 376 files in `lib/`) = 1,186 real-assembler source
-  files. Chunks 0–4 (`0x00001000..0x00051000`) are now fully source-owned as named
-  code/data parts (chunk 2: 2 data parts; chunk 3: 23 code + 44 data parts; chunk
-  4: 374 code `func_` + 2 straddler markers, 0 data); next is chunk 5
-  (`0x00051000`, still a generated fallback chunk).
-- Generated fallback chunks: 95.
+  `0x00041000..0x00051000` 376, `0x00051000..0x00061000` 88 in `lib/`) = 1,274
+  real-assembler source files. Chunks 0–5 (`0x00001000..0x00061000`) are now fully
+  source-owned as named code/data parts (chunk 2: 2 data; chunk 3: 23 code + 44
+  data; chunk 4: 374 code `func_` + 2 straddler; chunk 5: 76 code `func_` + 1
+  straddler-tail + 11 data); next is chunk 6 (`0x00061000`, still a generated
+  fallback chunk).
+- Generated fallback chunks: 94.
 - Assembled-code ROM rebuild command:
 
 ```powershell
@@ -226,9 +227,9 @@ Next source-layout work should continue promoting/splitting tracked
 `tools/promote_original_mips.js` for chunk promotion and `--strict-tracked` only
 after every configured code chunk is tracked.
 
-Chunks 0–4 `0x00001000..0x00051000` are fully source-owned as named
-code/data parts (chunk 2: 2 data parts; chunk 3: 23 code + 44 data parts; chunk 4:
-374 code `func_` + 2 straddler markers, 0 data).
+Chunks 0–5 `0x00001000..0x00061000` are fully source-owned as named
+code/data parts (chunk 2: 2 data; chunk 3: 23 code + 44 data; chunk 4: 374 code
+`func_` + 2 straddler; chunk 5: 76 code `func_` + 1 straddler-tail + 11 data).
 Chunk 0 (`boot/`): resource-archive loader + decompressor, codec, libc, `vec3_*`,
 text renderer. Chunk 1 (`lib/`, `0x11000..0x21000`): graphics/unit-script + math
 + libc + libultra library. Chunk 2 (`lib/`, `0x21000..0x31000`): statically-linked
@@ -243,21 +244,28 @@ CODE-DOMINANT): overlay-relocated code (RAM `0x8016B198+`), frameless-leaf-dense
 `boot-resource-decode-subsystem-B030-F22C.md`,
 `boot-codec-libc-vec3-F22C-11000.md`, `lib-chunk1-11000-21000.md`,
 `lib-chunk2-21000-31000.md`, `lib-chunk3-31000-41000.md`,
-`lib-chunk4-41000-51000.md`.
+`lib-chunk4-41000-51000.md`. Chunk 5 (`lib/`, `0x51000..0x61000`, MIXED):
+overlay code `0x5148C..0x5C208` (frameless-leaf-dense) + a ~20 KB game-data tail
+`0x5C208..0x61000` (F3DEX2 GBI display-list image, AI/element/attack name string
+pools, pointer/descriptor/order tables, two fixed-stride record tables); 76 code
+`func_*` + 1 straddler-tail + 11 data. Dossier `lib-chunk5-51000-61000.md`.
 The dispatch tables `0x800AE128` (85) / `0x800AE2E8` (9) are **static ROM data**
 (z64 `0x3E528`/`0x3E6E8`, no runtime registration; opcode→handler map resolved);
 the codec source vtable is RAM `0x800A876C` / ROM `0x38B6C`.
-Next frontier is **`0x00051000` (chunk 5)** — first continue the straddler
-(`func_00050f98_chunk4head` `[0x50F98,0x51000)` continues to `0x5148C`; chunk-5
-head file is its tail `func_00050f98_chunk5tail` `[0x51000,0x5148C)`), then classify
-chunk 5's code/data mix via the parent overlay map (code/data oracle) before
-choosing the function-split vs data-classification pipeline. The 10% executable
-target `0x000468F8` is surpassed (coverage now 11.50%). The chunk-split pipeline is
+Next frontier is **`0x00061000` (chunk 6)** — chunk 5 has no function
+straddler-out, but its last data part `data_00060980` (0x10-stride record table)
+**straddles** into chunk 6 (record at `0x60FFC` incomplete); verify whether
+`0x61000+` continues that data table before assuming code. Then classify chunk 6's
+code/data mix via the parent overlay map (code/data oracle). The 10% executable
+target `0x000468F8` is surpassed (coverage now 13.80%). The chunk-split pipeline is
 tracked: `tools/dump_function_context.js` → `tools/plan_chunk.js` →
-`tools/slice_chunk.js` → analysis swarm → `tools/integrate_chunk.js` →
-`tools/check_splits.js` → adversarial swarm → `tools/split_original_mips_part.js`
-(`--splits-file` with `kind` data/straddler-head/straddler-tail + `note`);
-`tools/check_manifest.js` audits integrity. Heads-up: the parent boundary DB both
+`tools/slice_chunk.js` (`--disasm` for mixed chunks) → analysis swarm →
+`tools/integrate_chunk.js` → `tools/check_splits.js` + `tools/check_boundaries.js`
+→ adversarial swarm → `tools/split_original_mips_part.js` (`--splits-file` with
+`kind` data/straddler-head/straddler-tail + `note`); `tools/check_manifest.js`
+audits integrity. Data regions: classify with the overlay map + content scan and
+emit `kind:"data"` parts (`zero_fill_`/`data_`/`rodata_`/`table_`/`jumptable_`/
+`rsp_ucode_`). Heads-up: the parent boundary DB both
 over-merges real functions (spurious "secondary entries") AND hides many
 jal-reachable accessor/leaf functions (especially FRAMELESS leaves with no
 `addiu $sp` prologue — chunk 4 had ~211), and orphans read-before-write load
@@ -2664,9 +2672,9 @@ setup-complete state:
 - Assembler: GNU Binutils 2.39 `mips64-elf-as.exe` with `-EB -mips3 -32`.
 - Setup verifier: `tools/verify_setup.js`.
 - Current verifier result: PASS; 825 archives, 0 unknown bytes, 108 overlap
-  bytes visible, 5 tracked composite real-asm chunks made from 1,186 tracked source
-  files (chunks 0–4 fully source-owned as code/data parts, `0x00001000..0x00051000`),
-  95 generated fallback chunks, full-source manifest 1,059 entries with
+  bytes visible, 6 tracked composite real-asm chunks made from 1,274 tracked source
+  files (chunks 0–5 fully source-owned as code/data parts, `0x00001000..0x00061000`),
+  94 generated fallback chunks, full-source manifest 1,059 entries with
   2,469,141 ambiguous bytes preserved explicitly, 3 tracked non-code
   source-owner files / 44,029 bytes, 1,055 generated non-code fallback files /
   35,388,567 bytes, source-manifest rebuild exact, full ROM
@@ -2674,9 +2682,10 @@ setup-complete state:
   `571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A`.
 
 Next phase is either promoting another small non-code owner batch or continuing
-tracked original-MIPS source-ownership into **chunk 5** (`0x00051000`) — first
-continue the chunk-4 straddler (`func_00050f98_chunk4head` `[0x50F98,0x51000)` →
-`0x5148C`; chunk-5 head file `func_00050f98_chunk5tail` `[0x51000,0x5148C)`), then
-classify chunk 5's code/data mix via the parent overlay map before choosing the
-pipeline. Chunks 0–4 are fully source-owned. There is no tooling blocker. Do not
+tracked original-MIPS source-ownership into **chunk 6** (`0x00061000`) — chunk 5
+has no function straddler-out, but its last data part `data_00060980` (0x10-stride
+record table) straddles into chunk 6 (record at `0x60FFC` incomplete); verify
+whether `0x61000+` continues that table before assuming code, then classify
+chunk 6's code/data mix via the parent overlay map before choosing the pipeline.
+Chunks 0–5 are fully source-owned. There is no tooling blocker. Do not
 begin semantic C decomp unless the setup verifier is green.

@@ -20,7 +20,14 @@ const CHUNK_START = P(A.start), CHUNK_END = P(A.end);
 const NSL = parseInt(A.nslices || '10', 10);
 const tag = `${CHUNK_START.toString(16).padStart(8, '0')}-${CHUNK_END.toString(16).padStart(8, '0')}`;
 const plan = JSON.parse(fs.readFileSync(path.join(ROOT, `build/chunk_${tag}_plan_base.json`), 'utf8'));
-const disasm = fs.readFileSync(path.join(ROOT, `build/original-mips/rev0/code_${CHUNK_START.toString(16).padStart(8, '0')}_${CHUNK_END.toString(16).padStart(8, '0')}.s`), 'utf8').replace(/\r\n/g, '\n').split('\n');
+// --disasm overrides the default chunk-file path. Needed for a MIXED chunk where
+// the analyzed sub-range (e.g. the code region) is narrower than the 64 KiB chunk
+// disasm file; slice_chunk only emits words inside the plan ranges, so a wider
+// disasm is fine.
+const disasmPath = A.disasm
+  ? path.resolve(ROOT, A.disasm)
+  : path.join(ROOT, `build/original-mips/rev0/code_${CHUNK_START.toString(16).padStart(8, '0')}_${CHUNK_END.toString(16).padStart(8, '0')}.s`);
+const disasm = fs.readFileSync(disasmPath, 'utf8').replace(/\r\n/g, '\n').split('\n');
 const wordRom = (l) => { const m = l.match(/\/\*\s+0x([0-9A-Fa-f]{8})\s+/); return m ? parseInt(m[1], 16) : null; };
 
 const part = plan.partition, N = part.length;
