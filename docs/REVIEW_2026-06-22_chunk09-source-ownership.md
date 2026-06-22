@@ -26,7 +26,7 @@ Review Handoff — Chunk 9 Source-Ownership, ROM z64 `0x00091000..0x000A1000`
 ## 3. Commits (this run, newest first)
 | Hash | Category | Purpose |
 |---|---|---|
-| _(this doc's commit)_ | review handoff | Add chunk 9 review handoff doc (final commit) |
+| `b162bfd` | review handoff | Add chunk 9 review handoff doc (this file, final commit) |
 | `3bc5e2b` | source + docs | Source-own chunk 9 (34 parts); dossier `lib-chunk9` + AGENTS/DECOMP_LOG/NEXT_STEPS/PLATFORM/WORKFLOW count updates |
 | `d86e9f5` | doc fixes | Chunk-8 review nits: placeholder `_(this doc)_`→`da2dd9c`; "chunk-9 head"→"chunk-9 tail file" wording (AGENTS×2, NEXT_STEPS, lib-chunk8) |
 
