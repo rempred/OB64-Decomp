@@ -1,0 +1,42 @@
+/*
+ * Original Rev 0 MIPS reference split.
+ * Parent source: asm/original/rev0/code_00081000_00091000.s
+ * z64 range: 0x000858E4..0x00085960 exclusive
+ * Decode comments are aids, not proof of semantic function boundaries.
+ */
+.set noat
+.set noreorder
+.text
+
+/* Data region (not executable host code): Second packed blob. Opens with an ascending small-byte run (0x02030304,0x030B0407,...,0x23240809) like the 0x85820 blob, followed by paired 16-bit small values (0x01DE01DD,0x01E001DF,0x01DF01E0,0x01DD01DE,...) and trailing small scalars (0x01000200,0x06000000) then 0x854..0x8595C three zero words. Values are small offsets/indices, not RAM pointers, not code. 31 words ending with interior zero pad before the string pool.. */
+/* 0x000858E4 0x800F54E4 0x02030304 */ .word 0x02030304 # sllv $zero, $v1, $s0
+/* 0x000858E8 0x800F54E8 0x030B0407 */ .word 0x030B0407 # srav $zero, $t3, $t8
+/* 0x000858EC 0x800F54EC 0x06070609 */ .word 0x06070609 # regimm_0x07 $s0, 0x800F6D14
+/* 0x000858F0 0x800F54F0 0x0708080C */ .word 0x0708080C # tgei $t8, 0x80C
+/* 0x000858F4 0x800F54F4 0x0B180C10 */ .word 0x0B180C10 # j 0x8C603040
+/* 0x000858F8 0x800F54F8 0x0C270E10 */ .word 0x0C270E10 # jal 0x809C3840
+/* 0x000858FC 0x800F54FC 0x0E151012 */ .word 0x0E151012 # jal 0x88544048
+/* 0x00085900 0x800F5500 0x10211114 */ .word 0x10211114 # beq $at, $at, 0x800F9954
+/* 0x00085904 0x800F5504 0x11151214 */ .word 0x11151214 # beq $t0, $s5, 0x800F9D58
+/* 0x00085908 0x800F5508 0x14151618 */ .word 0x14151618 # bne $zero, $s5, 0x800FAD6C
+/* 0x0008590C 0x800F550C 0x16191718 */ .word 0x16191718 # bne $s0, $t9, 0x800FB170
+/* 0x00085910 0x800F5510 0x1819191A */ .word 0x1819191A # blez $zero, 0x800FB97C
+/* 0x00085914 0x800F5514 0x191C1A1B */ .word 0x191C1A1B # blez $t0, 0x800FBD84
+/* 0x00085918 0x800F5518 0x1B1C1B22 */ .word 0x1B1C1B22 # blez $t8, 0x800FC1A4
+/* 0x0008591C 0x800F551C 0x1E1F1E23 */ .word 0x1E1F1E23 # bgtz $s0, 0x800FCDAC
+/* 0x00085920 0x800F5520 0x1F231F26 */ .word 0x1F231F26 # bgtz $t9, 0x800FD1BC
+/* 0x00085924 0x800F5524 0x22242325 */ .word 0x22242325 # addi $a0, $s1, 0x2325
+/* 0x00085928 0x800F5528 0x24252527 */ .word 0x24252527 # addiu $a1, $at, 0x2527
+/* 0x0008592C 0x800F552C 0x26270406 */ .word 0x26270406 # addiu $a3, $s1, 0x406
+/* 0x00085930 0x800F5530 0x23240809 */ .word 0x23240809 # addi $a0, $t9, 0x809
+/* 0x00085934 0x800F5534 0x01DE01DD */ .word 0x01DE01DD # dmultu $t6, $s8
+/* 0x00085938 0x800F5538 0x01E001DF */ .word 0x01E001DF # ddivu $t7, $zero
+/* 0x0008593C 0x800F553C 0x01DF01E0 */ .word 0x01DF01E0 # add $zero, $t6, $ra
+/* 0x00085940 0x800F5540 0x01DD01DE */ .word 0x01DD01DE # ddiv $t6, $sp
+/* 0x00085944 0x800F5544 0x01E001DF */ .word 0x01E001DF # ddivu $t7, $zero
+/* 0x00085948 0x800F5548 0x01DE01DD */ .word 0x01DE01DD # dmultu $t6, $s8
+/* 0x0008594C 0x800F554C 0x01000200 */ .word 0x01000200 # sll $zero, $zero, 8
+/* 0x00085950 0x800F5550 0x06000000 */ .word 0x06000000 # bltz $s0, 0x800F5554
+/* 0x00085954 0x800F5554 0x00000000 */ .word 0x00000000 # nop
+/* 0x00085958 0x800F5558 0x00000000 */ .word 0x00000000 # nop
+/* 0x0008595C 0x800F555C 0x00000000 */ .word 0x00000000 # nop

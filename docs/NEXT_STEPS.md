@@ -15,13 +15,13 @@ Current passing commands:
 node tools/verify_setup.js
 ```
 
-Current source mix: 8 tracked composite real-assembler chunks (chunk 0 177
-`boot/`; chunks 1–7 in `lib/`: 350, 216, 67, 376, 88, 78, 103) = 1,455 tracked
-source files, plus 92 generated fallback chunks. **Chunks 0–7 are fully
-source-owned as named code/data parts** (`0x00001000..0x00081000`; chunk 4: 374
-code + 2 straddler; chunk 5: 76 code + 1 straddler-tail + 11 data; chunk 6: 60 code
-+ 18 data; chunk 7: 80 code + 1 straddler-head + 22 data); next is chunk 8
-(`0x00081000`).
+Current source mix: 9 tracked composite real-assembler chunks (chunk 0 177
+`boot/`; chunks 1–8 in `lib/`: 350, 216, 67, 376, 88, 78, 103, 87) = 1,542 tracked
+source files, plus 91 generated fallback chunks. **Chunks 0–8 are fully
+source-owned as named code/data parts** (`0x00001000..0x00091000`; chunk 5: 76 code
++ 1 straddler-tail + 11 data; chunk 6: 60 code + 18 data; chunk 7: 80 code + 1
+straddler-head + 22 data; chunk 8: 61 code + 2 straddler + 24 data); next is chunk
+9 (`0x00091000`).
 
 The assembled code-region SHA256 is
 `40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`; the full
@@ -98,25 +98,25 @@ node tools/audit_code_region.js
    generates fallback owners for the rest. Keep `node tools/verify_setup.js`
    green after every promotion.
 
-3. Continue into chunk 8.
+3. Continue into chunk 9.
 
-   Chunks 0–7 (`0x00001000..0x00081000`) are fully source-owned as named code/data
-   parts: chunk 0 in `boot/`; chunks 1–7 in `lib/` (dossiers `lib-chunk1-…` …
-   `lib-chunk7-…`). Chunk 7 was MIXED 4-region: blob continuation + parent-undetected
-   code + Controller-Pak menu data + parent-detected code (103 parts: 80 code + 1
-   straddler-head + 22 data).
+   Chunks 0–8 (`0x00001000..0x00091000`) are fully source-owned as named code/data
+   parts: chunk 0 in `boot/`; chunks 1–8 in `lib/` (dossiers `lib-chunk1-…` …
+   `lib-chunk8-…`). Chunk 8 was MIXED 3-region: straddler tail + code + game data
+   (mission-name/options-menu pools) + code (87 parts: 61 code + 2 straddler + 24
+   data); the adversarial pass was 6/6 clean.
 
-   **Next frontier: `0x00081000` (chunk 8).** FIRST continue the function straddler:
-   `func_0007ffac_chunk7head` `[0x7FFAC,0x81000)` continues to `0x810DC` (chunk-8
-   head `func_0007ffac_chunk8tail` `[0x81000,0x810DC)`). Chunk 8 is the first largely
-   **PARENT-DETECTED** chunk in a while (the `0x79730`+ parent run extends past
-   `0x81000`), so `plan_chunk`+`dump_function_context` should seed most of it; use
-   `scan_functions` only for parent-undetected sub-regions. Content-scan for data
-   regions FIRST (chunks 5–7 each had interior data). Pipeline: `scan_functions` or
-   `plan_chunk`/`slice_chunk --disasm`/`integrate_chunk` (context optional)/
-   `check_splits`/`check_boundaries` + swarms `build/wf_*.js`. The 10% executable
-   target `0x000468F8` is surpassed (coverage now 18.40%, code-only ≈ 14.04%). See
-   the DECOMP_LOG "Next Frontier" and `docs/dossiers/lib-chunk7-71000-81000.md`.
+   **Next frontier: `0x00091000` (chunk 9).** FIRST continue the function straddler:
+   `func_00090e54_chunk8head` `[0x90E54,0x91000)` continues to `0x912F4` (chunk-9
+   head `func_00090e54_chunk9tail` `[0x91000,0x912F4)`, true entry 0x90E54). Chunk 9
+   should remain largely **PARENT-DETECTED**, so `plan_chunk`+`dump_function_context`
+   should seed most of it; use `scan_functions` for parent-undetected sub-regions.
+   Content-scan for data regions FIRST (chunks 5–8 each had interior data). Pipeline:
+   `scan_functions` or `plan_chunk`/`slice_chunk --disasm`/`integrate_chunk` (context
+   optional)/`check_splits`/`check_boundaries` + swarms `build/wf_*.js`. The 10%
+   executable target `0x000468F8` is surpassed (coverage now 20.70%, code-only ≈
+   16.11%). See the DECOMP_LOG "Next Frontier" and
+   `docs/dossiers/lib-chunk8-81000-91000.md`.
 
 4. Keep the setup gate green.
 
