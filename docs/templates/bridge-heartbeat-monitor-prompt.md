@@ -14,8 +14,8 @@ For each new event:
      status/log plus current docs: `AGENTS.md`, `docs/DECOMP_LOG.md`,
      `docs/NEXT_STEPS.md`, `docs/WORKFLOW.md`, and `docs/PLATFORM.md`.
    - Tailor `docs/templates/chunk-source-ownership-run-prompt.md` for the next
-     chunk/frontier, including known issues from the review, current counts,
-     incoming straddlers/data continuations, and required reading.
+     two-chunk pass/frontier, including known issues from the review, current
+     counts, incoming straddlers/data continuations, and required reading.
    - Use desktop control to focus the GUI agent chat identified by
      `payload.agentName` or the configured Claude GUI window.
    - Paste the tailored next-run prompt into that chat and send it.
@@ -34,8 +34,8 @@ For each new event:
      `AGENTS.md`, `docs/DECOMP_LOG.md`, `docs/NEXT_STEPS.md`,
      `docs/WORKFLOW.md`, and `docs/PLATFORM.md`.
    - Tailor `docs/templates/chunk-source-ownership-run-prompt.md` for the next
-     chunk/frontier, including known issues from the review, current counts,
-     incoming straddlers/data continuations, and required reading.
+     two-chunk pass/frontier, including known issues from the review, current
+     counts, incoming straddlers/data continuations, and required reading.
    - Use desktop control to focus the GUI agent chat identified by
      `payload.agentName` or the configured Claude GUI window.
    - Paste the tailored next-run prompt into that chat and send it.
