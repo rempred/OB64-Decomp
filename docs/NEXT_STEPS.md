@@ -15,13 +15,13 @@ Current passing commands:
 node tools/verify_setup.js
 ```
 
-Current source mix: 9 tracked composite real-assembler chunks (chunk 0 177
-`boot/`; chunks 1–8 in `lib/`: 350, 216, 67, 376, 88, 78, 103, 87) = 1,542 tracked
-source files, plus 91 generated fallback chunks. **Chunks 0–8 are fully
-source-owned as named code/data parts** (`0x00001000..0x00091000`; chunk 5: 76 code
-+ 1 straddler-tail + 11 data; chunk 6: 60 code + 18 data; chunk 7: 80 code + 1
-straddler-head + 22 data; chunk 8: 61 code + 2 straddler + 24 data); next is chunk
-9 (`0x00091000`).
+Current source mix: 10 tracked composite real-assembler chunks (chunk 0 177
+`boot/`; chunks 1–9 in `lib/`: 350, 216, 67, 376, 88, 78, 103, 87, 34) = 1,576 tracked
+source files, plus 90 generated fallback chunks. **Chunks 0–9 are fully
+source-owned as named code/data parts** (`0x00001000..0x000A1000`; chunk 6: 60 code
++ 18 data; chunk 7: 80 code + 1 straddler-head + 22 data; chunk 8: 61 code + 2
+straddler + 24 data; chunk 9: 32 code + 2 straddler + 0 data, ALL CODE); next is
+chunk 10 (`0x000A1000`).
 
 The assembled code-region SHA256 is
 `40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`; the full
@@ -98,25 +98,28 @@ node tools/audit_code_region.js
    generates fallback owners for the rest. Keep `node tools/verify_setup.js`
    green after every promotion.
 
-3. Continue into chunk 9.
+3. Continue into chunk 10.
 
-   Chunks 0–8 (`0x00001000..0x00091000`) are fully source-owned as named code/data
-   parts: chunk 0 in `boot/`; chunks 1–8 in `lib/` (dossiers `lib-chunk1-…` …
-   `lib-chunk8-…`). Chunk 8 was MIXED 3-region: straddler tail + code + game data
-   (mission-name/options-menu pools) + code (87 parts: 61 code + 2 straddler + 24
-   data); the adversarial pass was 6/6 clean.
+   Chunks 0–9 (`0x00001000..0x000A1000`) are fully source-owned as named code/data
+   parts: chunk 0 in `boot/`; chunks 1–9 in `lib/` (dossiers `lib-chunk1-…` …
+   `lib-chunk9-…`). Chunk 9 was ALL CODE (first single-class chunk since chunk 2):
+   army-mgmt / F3DEX display-list builders (34 parts: 32 code + 2 straddler + 0
+   data); 1 preamble-orphan fold, 2 jump-table dispatchers with tables in `0x801F`
+   relocated RAM, 5 multi-entry fns; adversarial pass (4 refuters + 1 data-hunter)
+   found 0 disproofs and no inline data.
 
-   **Next frontier: `0x00091000` (chunk 9).** FIRST continue the function straddler:
-   `func_00090e54_chunk8head` `[0x90E54,0x91000)` continues to `0x912F4` (chunk-9
-   tail file `func_00090e54_chunk9tail` `[0x91000,0x912F4)`, true entry 0x90E54). Chunk 9
-   should remain largely **PARENT-DETECTED**, so `plan_chunk`+`dump_function_context`
-   should seed most of it; use `scan_functions` for parent-undetected sub-regions.
-   Content-scan for data regions FIRST (chunks 5–8 each had interior data). Pipeline:
+   **Next frontier: `0x000A1000` (chunk 10).** FIRST continue the function straddler:
+   `func_000A0DAC_chunk9head` `[0xA0DAC,0xA1000)` (true entry 0xA0DAC) continues to
+   `0x000A118C` (chunk-10 tail file `func_000A0DAC_chunk10tail` `[0xA1000,0x000A118C)`).
+   Chunk 10 should remain largely **PARENT-DETECTED**, so `plan_chunk`+
+   `dump_function_context` should seed most of it; use `scan_functions` for
+   parent-undetected sub-regions. Content-scan for data regions FIRST (chunks 5–8
+   each had interior data; chunk 9 had none — do not assume either way). Pipeline:
    `scan_functions` or `plan_chunk`/`slice_chunk --disasm`/`integrate_chunk` (context
-   optional)/`check_splits`/`check_boundaries` + swarms `build/wf_*.js`. The 10%
-   executable target `0x000468F8` is surpassed (coverage now 20.70%, code-only ≈
-   16.11%). See the DECOMP_LOG "Next Frontier" and
-   `docs/dossiers/lib-chunk8-81000-91000.md`.
+   optional)/`check_splits`/`check_boundaries` + analysis + adversarial swarms
+   (Agent-tool, one per slice/region). The 10% executable target `0x000468F8` is
+   surpassed (coverage now 23.0015%, code-only ≈ 18.41%). See the DECOMP_LOG "Next
+   Frontier" and `docs/dossiers/lib-chunk9-91000-A1000.md`.
 
 4. Keep the setup gate green.
 
