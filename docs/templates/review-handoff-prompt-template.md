@@ -1,7 +1,10 @@
 # Review Handoff Prompt Template
 
-Use this follow-up prompt after a chunk/run is complete. Replace
-`YYYY-MM-DD` and `<short-run-slug>` before sending it to the agent.
+Fallback template only. Future chunk prompts should normally require the agent to
+create the review handoff before it pings the bridge. Use this follow-up prompt
+only when a chunk/run is complete but the agent did not create a sufficient review
+handoff doc. Replace `YYYY-MM-DD` and `<short-run-slug>` before sending it to the
+agent.
 If the agent is using the local bridge, also replace `<bridge-url>`,
 `<gui-agent-name>`, and `<current-frontier>`.
 

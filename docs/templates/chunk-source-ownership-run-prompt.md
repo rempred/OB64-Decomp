@@ -17,6 +17,8 @@ requirements even when the next chunk is expected to be mostly code.
 - `{KNOWN_PARENT_DB_CAVEAT}`: parent DB / overlay caveat for the next range.
 - `{REQUIRED_REVIEW_DOCS}`: latest review handoff docs for the prior run.
 - `{KNOWN_ISSUES}`: cleanup issues to fix first.
+- `{REVIEW_DOC_PATH}`: review handoff doc to create for this run, e.g.
+  `docs/REVIEW_2026-06-22_chunk08-source-ownership.md`.
 - `{BRIDGE_URL}`: usually `http://127.0.0.1:17776`.
 - `{GUI_AGENT_NAME}`: the visible GUI agent/chat label, usually `Claude GUI`.
 
@@ -41,7 +43,7 @@ the chunk dossier, and included in the manifest/rebuild path.
 Do not continue into the next chunk unless chunk {CHUNK_N} is complete, verified,
 documented, committed, and the only remaining work is a small read-only recon note.
 The successful end state is a clean repo, exact rebuild preserved, chunk {CHUNK_N}
-complete, docs current, and an exact next frontier.
+complete, docs current, review handoff created, and an exact next frontier.
 
 Bridge instructions:
 - Bridge URL: `{BRIDGE_URL}`.
@@ -49,8 +51,8 @@ Bridge instructions:
 - The bridge is notification-only. It does not receive follow-up prompts itself;
   the coordinator will poll the bridge and paste the next prompt into your GUI
   chat window.
-- When the source-ownership run is complete, verified, documented, and committed,
-  ping the bridge before your final response:
+- When the source-ownership run is complete, verified, documented, committed, and
+  the review handoff document exists, ping the bridge before your final response:
 
 ```powershell
 Invoke-RestMethod -Method Post -ContentType 'application/json' `
@@ -58,8 +60,9 @@ Invoke-RestMethod -Method Post -ContentType 'application/json' `
   -Body (@{
     agentName = '{GUI_AGENT_NAME}'
     runSlug = 'chunk{CHUNK_N}-{RANGE_SLUG}'
+    reviewDoc = '{REVIEW_DOC_PATH}'
     frontier = '{NEXT_EXPECTED_FRONTIER}'
-    message = 'Chunk {CHUNK_N} source-ownership run is complete and ready for review handoff prompt.'
+    message = 'Chunk {CHUNK_N} source-ownership and review handoff are complete; ready for coordinator review and next-run prompt.'
   } | ConvertTo-Json -Compress)
 ```
 
@@ -206,9 +209,22 @@ Docs required:
 - `docs\PLATFORM.md`
 - `docs\WORKFLOW.md`
 - New `docs\dossiers\lib-chunk{CHUNK_N}-{RANGE_SLUG}.md`
-- New review handoff doc for this run.
+- New review handoff doc for this run: `{REVIEW_DOC_PATH}`.
 - Update the previous chunk dossier if an incoming straddler/continuation boundary
   is refined.
+
+Review handoff requirements:
+- Create `{REVIEW_DOC_PATH}` before the bridge ping.
+- Make it self-contained enough for a fresh reviewer to understand exactly what
+  changed, what was verified, what remains risky, and where to resume without
+  reading the full chat.
+- Include exact addresses, file counts, byte counts, commands, commits, caveats,
+  current frontier, and reviewer checklist.
+- Do not write a vague progress summary.
+- Do not call mixed code/data chunks "fully split into functions"; say
+  "source-owned as code/data parts."
+- If no file changes are needed after verifying an existing review doc, do not
+  make a token edit; still include its path in the bridge ping.
 
 Verification required before commit/final:
 - `node --check` on touched JS tools.
@@ -224,6 +240,8 @@ Verification required before commit/final:
 - `node tools/audit_code_region.js`
 - `git diff --check`
 - `git status --short --branch`
+- Confirm `{REVIEW_DOC_PATH}` exists, is current, and includes the verification
+  numbers from this run.
 
 Commit expectations:
 - Commit cleanup/docs/tool fixes separately if they are meaningful.

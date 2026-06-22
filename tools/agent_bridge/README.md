@@ -25,8 +25,9 @@ Invoke-RestMethod -Method Post -ContentType 'application/json' `
   -Body (@{
     agentName = 'Claude GUI'
     runSlug = 'chunk7-source-ownership'
+    reviewDoc = 'docs/REVIEW_2026-06-22_chunk7-source-ownership.md'
     frontier = '0x00081000'
-    message = 'Chunk 7 source-owned and committed; ready for review handoff prompt.'
+    message = 'Chunk 7 source-owned, review handoff committed; ready for coordinator review and next prompt.'
   } | ConvertTo-Json -Compress)
 ```
 
@@ -60,9 +61,10 @@ Invoke-RestMethod -Method Post -ContentType 'application/json' `
 ## Event Types
 
 - `run_complete`: the agent says source work is done and needs the review-handoff
-  prompt.
-- `review_complete`: the agent says the review handoff exists and needs a tailored
-  next-run prompt.
+  document reviewed. Newer prompts should include `payload.reviewDoc`; the
+  coordinator can then review it and paste the next-run prompt directly.
+- `review_complete`: compatibility event for older two-step prompts where the
+  agent created the review handoff after a separate follow-up prompt.
 - `agent_error`: the agent hit a blocker and wants the monitor/reviewer to inspect.
 
 ## Limits
