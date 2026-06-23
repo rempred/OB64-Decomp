@@ -1,0 +1,26 @@
+/*
+ * Original Rev 0 MIPS reference split.
+ * Parent source: asm/original/rev0/code_001E1000_001F1000.s
+ * z64 range: 0x001F09F0..0x001F0A2C exclusive
+ * Decode comments are aids, not proof of semantic function boundaries.
+ */
+.set noat
+.set noreorder
+.text
+
+/* Data region (not executable host code): RAM pointers in the 0x801B52-0x801B5A band (0x801B5200, 0x801B5834, 0x801B54DC, 0x801B550C, 0x801B5680, 0x801B56C4, 0x801B5818, then a 0x00000000 gap entry at 0x001F0A0C, then 0x801B58AC, 0x801B5A20, 0x801B591C, 0x801B5948, 0x801B5994, 0x801B59C0, 0x801B5A08). 15 words including one embedded null slot. Overlay-relocated runtime addresses; RAM column not authoritative.. */
+/* 0x001F09F0 0x802605F0 0x801B5200 */ .word 0x801B5200 # lb $k1, 0x5200($zero)
+/* 0x001F09F4 0x802605F4 0x801B5834 */ .word 0x801B5834 # lb $k1, 0x5834($zero)
+/* 0x001F09F8 0x802605F8 0x801B54DC */ .word 0x801B54DC # lb $k1, 0x54DC($zero)
+/* 0x001F09FC 0x802605FC 0x801B550C */ .word 0x801B550C # lb $k1, 0x550C($zero)
+/* 0x001F0A00 0x80260600 0x801B5680 */ .word 0x801B5680 # lb $k1, 0x5680($zero)
+/* 0x001F0A04 0x80260604 0x801B56C4 */ .word 0x801B56C4 # lb $k1, 0x56C4($zero)
+/* 0x001F0A08 0x80260608 0x801B5818 */ .word 0x801B5818 # lb $k1, 0x5818($zero)
+/* 0x001F0A0C 0x8026060C 0x00000000 */ .word 0x00000000 # nop
+/* 0x001F0A10 0x80260610 0x801B58AC */ .word 0x801B58AC # lb $k1, 0x58AC($zero)
+/* 0x001F0A14 0x80260614 0x801B5A20 */ .word 0x801B5A20 # lb $k1, 0x5A20($zero)
+/* 0x001F0A18 0x80260618 0x801B591C */ .word 0x801B591C # lb $k1, 0x591C($zero)
+/* 0x001F0A1C 0x8026061C 0x801B5948 */ .word 0x801B5948 # lb $k1, 0x5948($zero)
+/* 0x001F0A20 0x80260620 0x801B5994 */ .word 0x801B5994 # lb $k1, 0x5994($zero)
+/* 0x001F0A24 0x80260624 0x801B59C0 */ .word 0x801B59C0 # lb $k1, 0x59C0($zero)
+/* 0x001F0A28 0x80260628 0x801B5A08 */ .word 0x801B5A08 # lb $k1, 0x5A08($zero)

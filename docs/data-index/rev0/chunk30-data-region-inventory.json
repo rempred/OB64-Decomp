@@ -1,0 +1,1260 @@
+{
+  "chunk": 30,
+  "range": "0x001E1000..0x001F1000",
+  "dataRegion": "0x001EE574..0x001F0A30",
+  "status": "source-owned",
+  "generatedBy": "2026-06-23 chunks30-31 source-ownership run",
+  "summary": {
+    "dataTerritories": 1,
+    "dataFiles": 31,
+    "dataBytes": 9404,
+    "parsedBytes": 2888,
+    "rawButClassifiedBytes": 6516,
+    "undecodedBytes": 0,
+    "classification": "One interior data territory between two code regions: the Sound-Test / \"Ogre Battle 64 BGM Selection\" screen (graphics/GBI display-list + scene-name string pool + 0x801B pointer tables + a fixed-stride record table) followed by the glyph-order alphabet, screen format strings, and the staff-credits / ending-roll string pool with trailing 0x801A/0x801B handler-pointer + float tables.",
+    "knownFormatFamilies": [
+      "GBI/F3DEX2 display-list + packed graphics",
+      "NUL-delimited ASCII string pools (scene names, credits, alphabet, printf format strings)",
+      "RAM-pointer/handler tables (0x800E/0x801A/0x801B overlay band)",
+      "fixed-stride record table",
+      "IEEE float/double constant pools (pi, -90.0, 1.1)",
+      "zero-fill alignment"
+    ]
+  },
+  "dataSpans": [
+    {
+      "range": "0x001EE574..0x001EE590",
+      "size": 28,
+      "file": "asm/original/rev0/lib/zero_fill_001ee574.s",
+      "class": "zero_fill",
+      "parsedStatus": "parsed",
+      "confidence": "high",
+      "evidence": [
+        "7 all-zero words (28 bytes) of leading padding before the graphics/display-list blob."
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "range": "0x001EE590..0x001EE914",
+      "size": 900,
+      "file": "asm/original/rev0/lib/data_001ee590.s",
+      "class": "data",
+      "parsedStatus": "raw-but-classified",
+      "confidence": "medium",
+      "evidence": [
+        "Packed GRAPHICS / GBI-F3DEX2 display-list blob (Sound-Test/BGM screen). High-byte command opcodes present: 0xE7 (pipesync-like), 0xE3/0xE2 (setothermode H/L-like), 0xDF (enddl), 0xD9 (geometrymode), 0xD7 (texture), 0xFC (setcombine), 0xFA (setprimcolor). Interleaved small index/count byte runs (e.g. 0x00000001..0x00000004 sequences at 0x001EE7E8 and 0x001EE8E0) and embedded RAM-pointer operands 0x800EB240/0x800EB290 (0x001EE5D8) and pointer-like 0x80008000 (0x001EE68C/0x001EE81C). Not fully typable as fixed-stride records; treated as one opaque graphics blob."
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "range": "0x001EE914..0x001EE930",
+      "size": 28,
+      "file": "asm/original/rev0/lib/table_001ee914.s",
+      "class": "table",
+      "parsedStatus": "raw-but-classified",
+      "confidence": "medium",
+      "evidence": [
+        "7-word RAM pointer table. Values 0x800EB0B0, 0x800EB100, 0x800EB150, 0x800EB1A0, 0x800EB1F0, 0x800EB240, 0x800EB290 — RAM pointers in the 0x800E (0x800/0x801/0x802) band, contiguous even stride 0x50, all word-aligned. Likely a 7-entry table of pointers to per-row glyph/graphic sub-blocks for the BGM-selection list."
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "range": "0x001EE930..0x001EEB10",
+      "size": 480,
+      "file": "asm/original/rev0/lib/data_001ee930.s",
+      "class": "data",
+      "parsedStatus": "raw-but-classified",
+      "confidence": "medium",
+      "evidence": [
+        "Continuation of the packed GRAPHICS / GBI-F3DEX2 display-list blob after the pointer table. Same opcode mix: 0xE7/0xE3/0xE2/0xDF/0xD9/0xD7 plus 0xFA (setprimcolor, 0x001EE9C0 0xFA000000), 0xDB (movemem, 0x001EEAB0 0xDB020000), 0xDC (movemem, 0x001EEAB8 0xDC08060A / 0x001EEAC0 0xDC08090A) carrying 0x801B847x RAM-pointer operands. Embedded pointer-like words 0x80808000 (0x001EE970/74) and 0x80000400/0x8000C400 (0x001EE988/8C). Terminates at region end. Not fully typable as fixed-stride records."
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "range": "0x001EEB10..0x001EEB30",
+      "size": 32,
+      "file": "asm/original/rev0/lib/rodata_001eeb10.s",
+      "class": "rodata",
+      "parsedStatus": "parsed",
+      "confidence": "high",
+      "evidence": [
+        "ASCII title string 'Ogre Battle 64 BGM Selection' (0x4F 0x67 0x72 0x65 ...), NUL-terminated at 0x001EEB2C and padded with 0x00000000 to 4-word boundary."
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "range": "0x001EEB30..0x001EECF0",
+      "size": 448,
+      "file": "asm/original/rev0/lib/data_001eeb30.s",
+      "class": "data",
+      "parsedStatus": "raw-but-classified",
+      "confidence": "medium",
+      "evidence": [
+        "Packed sound-test control/graphics block. Begins with SJIS half-width bytes (0x82 0x61 0x82 0x66 0x82 0x6C = half-width kana, then '0'/'d'). Contains an ascending byte/index ramp 0x00000002..0x00000041 (one per word, 0x001EEB40..0x001EEC2C), a 0x801B8610 RAM-band word at 0x001EEC30, more SJIS bytes, 0xFFFF (0x0000FFFF) row sentinels with packed 0x631F4219/0x7BDFCE73-style record fields (apparent ~0x10-byte record stride: value + sentinel + 0x00000000 + 0x0000FFFF), and 0x01020303 / 0xFF000000 packed icon/palette-index rows at 0x001EECC0..0x001EECE8. No GBI/RDP display-list opcodes present. Cannot fully type; treated as packed data."
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "range": "0x001EECF0..0x001EEF44",
+      "size": 596,
+      "file": "asm/original/rev0/lib/rodata_001eecf0.s",
+      "class": "rodata",
+      "parsedStatus": "parsed",
+      "confidence": "high",
+      "evidence": [
+        "NUL-delimited scene/location-name string pool. Representative decoded strings: 'Castro Canyon', 'Zenobian Border', 'Crenel Canyon', 'Volmus Mine' (appears twice), 'Tenne Plains', 'Alba', 'Dardunnelles', 'Gunther Piedmont', 'Mylesia', 'Gules Hills', 'Tremos Mountains', 'Fair Heights', 'Temple of Berthe', 'Capitrium', 'Celesis', 'Sable Lowlands', 'Audovera Heights', 'Soathon', 'Mount Ithacan', 'Azure Plains', 'Wentinus', 'Mount Keryoleth', 'Tybell', 'Argent', 'Vert Plateau', 'Aurura Plains', 'Barpetheth', 'Latium', 'The Blue Basilica', 'Ptia', 'Romulus', 'Winnea', 'Castle Talpaea', 'Fort Romulus', 'Prologue', 'Ch. 1', 'Ch. 2', 'Ch. 3', 'Ch. 4', 'No Data'. Strings NUL-terminated, individually padded to word alignment."
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "range": "0x001EEF44..0x001EF030",
+      "size": 236,
+      "file": "asm/original/rev0/lib/table_001eef44.s",
+      "class": "table",
+      "parsedStatus": "raw-but-classified",
+      "confidence": "medium",
+      "evidence": [
+        "RAM-pointer table, 59 words, all in the 0x801B band (e.g. 0x801B9B88, 0x801B87F0, 0x801B8800, 0x801B8810 ...). Pointers index runtime-relocated copies of the name pool / sound-test entries. The value 0x801B9B88 recurs many times (entries at +0x00,+0x28,+0x34,+0x3C,+0x4C,+0x74,+0x7C,+0xA4,+0xA8,+0xAC,+0xB0,+0xC4,+0xC8,+0xCC,+0xD0) acting as a null/placeholder/'No Data' sentinel; remaining values strictly ascend (0x801B87F0..0x801B8A34) as sequential entry pointers. RAM addresses are overlay-relocated; verify vs scripts/ob64_overlay_map.json."
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "range": "0x001EF030..0x001EF034",
+      "size": 4,
+      "file": "asm/original/rev0/lib/rodata_001ef030.s",
+      "class": "rodata",
+      "parsedStatus": "parsed",
+      "confidence": "high",
+      "evidence": [
+        "Trailing constant scalar word 0x00000014 (decimal 20), an apparent count/terminator following the pointer table."
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "range": "0x001EF034..0x001EF0F0",
+      "size": 188,
+      "file": "asm/original/rev0/lib/table_001ef034.s",
+      "class": "table",
+      "parsedStatus": "raw-but-classified",
+      "confidence": "medium",
+      "evidence": [
+        "Pool of 47 small-magnitude scalar words; values are tiny (0x00000000-0x00000044, e.g. 0x22,0x14,0x18,0x0C,0x10,0x28,0x05,0x0F,0x01,0xFFFFFFFF at 0x001EF0E8). Likely a byte/index parameter table. Contains an interior all-zero gap ~0x001EF0BC-0x001EF0EC (kept with this block rather than over-fragmenting). Values are NOT RAM pointers or ROM offsets; treat as small indices/flags (unknown semantics)."
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "range": "0x001EF0F0..0x001EF1F4",
+      "size": 260,
+      "file": "asm/original/rev0/lib/data_001ef0f0.s",
+      "class": "data",
+      "parsedStatus": "raw-but-classified",
+      "confidence": "medium",
+      "evidence": [
+        "Packed/display-list-style block. High-byte words consistent with GBI/RDP display-list opcodes appear repeatedly: 0xE7000000 (G_SETOTHERMODE/swc1-pattern, at 0x001EF120/150/180/188/198), 0xE3000C00/0xE3001201/0xE3001001/0xE3001801/0xE3000A01 (0xE3), 0xE200001C/0xE2001E01 (0xE2), 0xDF000000 (0xDF), 0xFCFFFFFF/0xFFFDF6FB (0xFC color-combiner-style), 0xFA000000 (0xFA), 0xD9000000/0xD9FFFFFF (0xD9), 0xD7000002 (0xD7), interleaved with 0x00000000 operand/padding words and a few 0x801x-looking words (0x8BCF0000,0x80008000). Cannot fully type; classified as packed display-list/graphics data."
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "range": "0x001EF1F4..0x001EF898",
+      "size": 1700,
+      "file": "asm/original/rev0/lib/table_001ef1f4.s",
+      "class": "table",
+      "parsedStatus": "raw-but-classified",
+      "confidence": "medium",
+      "evidence": [
+        "Long fixed-stride record table. Repeating ~12-byte (3-word) record: word0 = a 0x801B-band RAM pointer (descending from ~0x801BA424 down to ~0x801B9C78, all in 0x801B9C..-0x801BA4.. range, i.e. runtime RAM pointers per CLAUDE.md overlay caveat), word1 = small flag word with 0x01 or 0x02 in MSB (0x01000000/0x02000000), word2 = small scalar (0x11,0x22,0x44,0x33,0x55,0x66,0x77,0x90,0xE5,0x3B,0x6E,0x4C,0x5D,0x0D etc.). Occasional 4-word marker rows interrupt the 3-word cadence (e.g. nop+0x07000000+0x000000E5 at 0x001EF344/0x001EF3D4/0x001EF488). Header at 0x001EF1F4 is 0x028001E0/0x01FF0004 pair (repeated, possibly a 16-byte preamble). Likely a per-track/per-scene pointer-plus-attribute table. Pointer values are RAM (0x801B band), NOT ROM offsets; do not linear-back-map. Approx ~140 record rows."
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "range": "0x001EF898..0x001EF8F0",
+      "size": 88,
+      "file": "asm/original/rev0/lib/data_001ef898.s",
+      "class": "data",
+      "parsedStatus": "raw-but-classified",
+      "confidence": "medium",
+      "evidence": [
+        "Trailing tail of the record table: mostly 0x00000000 (nop/padding) words interleaved with a few stray 0x801B-band RAM pointers (0x801B9C60,0x801B9C54,0x801B9C48) plus small flag/scalar words (0x01000000,0x03000000,0x04000000). Tapers to all-zero padding from ~0x001EF8E0 to the region end. Continuation/terminator of the preceding pointer table."
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "range": "0x001EF8F0..0x001EF928",
+      "size": 56,
+      "file": "asm/original/rev0/lib/rodata_001ef8f0.s",
+      "class": "rodata",
+      "parsedStatus": "parsed",
+      "confidence": "high",
+      "evidence": [
+        "Font/glyph-order ALPHABET string, 14 words / 56 bytes: \"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz.3&,\" (no NUL terminator; 0x2E='.', 0x33='3', 0x26='&', 0x2C=','). Maps glyph slot index to displayed character."
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "range": "0x001EF928..0x001EFEB4",
+      "size": 1420,
+      "file": "asm/original/rev0/lib/data_001ef928.s",
+      "class": "data",
+      "parsedStatus": "raw-but-classified",
+      "confidence": "medium",
+      "evidence": [
+        "Packed glyph-width / display-list-style data. Begins with small byte values 0x01..0x09 (per-glyph width / kerning tables, e.g. 0x01040104, 0x02060206) and includes GBI/RDP-looking opcode bytes 0xE7(swc1-pattern),0xE3,0xE2,0xDE,0xDF,0xD7,0xD9,0xFC repeating in a regular display-list-like stride. Embedded ASCII \"The END\\x00\" at 0x1EFDB0 (0x54686520 0x454E4400). Interior 4-16 byte zero gaps kept with the block. Could not fully type record stride."
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "range": "0x001EFEB4..0x001F0018",
+      "size": 356,
+      "file": "asm/original/rev0/lib/table_001efeb4.s",
+      "class": "table",
+      "parsedStatus": "raw-but-classified",
+      "confidence": "medium",
+      "evidence": [
+        "RAM-pointer table, 0x8019xxxx/0x801Axxxx band (0x801 pointer band). Pointers like 0x8019BE98,0x8019BF7C,0x8019D858,0x8019F9DC,0x801A1394,0x801A1BA8 (many repeats -> jump/case tables). Interleaved IEEE float CONSTANTS: 0x3FF00000=1.0 (hi half of double), 0x40080000=3.0, 0x41F00000=30.0, 0x40240000=10.0, 0x402A0000=13.0, 0x403B0000. Mixed pointer/const table; pointer band 0x8019/0x801A. [note: a 1.0 double straddles the soft data seam — hi-half 0x3FF00000 is the last word of the preceding data_001EF928 @0x1EFEB0, lo-half 0x00000000 @0x1EFEB4 begins this part; pure data, no boundary impact]."
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "range": "0x001F0018..0x001F0028",
+      "size": 16,
+      "file": "asm/original/rev0/lib/float_001f0018.s",
+      "class": "float",
+      "parsedStatus": "parsed",
+      "confidence": "high",
+      "evidence": [
+        "IEEE double constant pool: 0x400921FB54442D18 = pi (3.141592653589793). Followed by 0xC0568000 0x00000000 = double -90.0 (0xC056800000000000)."
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "range": "0x001F0028..0x001F0088",
+      "size": 96,
+      "file": "asm/original/rev0/lib/table_001f0028.s",
+      "class": "table",
+      "parsedStatus": "raw-but-classified",
+      "confidence": "medium",
+      "evidence": [
+        "RAM-pointer table, 0x801A3xxx band (0x801 pointer band). 24-byte all-zero gap at 0x1F0028..0x1F0040, then pointers 0x801A3CB4,0x801A3D78,0x801A3CCC,...,0x801A4044. Values are RAM pointers (state/menu jump table), several repeats."
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "range": "0x001F0088..0x001F00B8",
+      "size": 48,
+      "file": "asm/original/rev0/lib/rodata_001f0088.s",
+      "class": "rodata",
+      "parsedStatus": "parsed",
+      "confidence": "high",
+      "evidence": [
+        "printf format-string pool (preceded by 8 zero bytes): \"%s Scene %d\\x00\" (0x1F008C), \"999:59:59\\x00\" (0x1F0098), \"%d:%02d:%02d\\x00\" (0x1F00A4), then 8 bytes zero padding to 0x1F00B8."
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "range": "0x001F00B8..0x001F0148",
+      "size": 144,
+      "file": "asm/original/rev0/lib/table_001f00b8.s",
+      "class": "table",
+      "parsedStatus": "raw-but-classified",
+      "confidence": "medium",
+      "evidence": [
+        "RAM-pointer table, 0x801A9xxx/0x801AAxxx band (0x801 pointer band), 36 words. Pointers 0x801A94D4,0x801A94F8,...,0x801AA024 (the 0x801AA024 value repeats ~9x as a default/fallback entry) -> jump/case dispatch table."
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "range": "0x001F0148..0x001F0150",
+      "size": 8,
+      "file": "asm/original/rev0/lib/rodata_001f0148.s",
+      "class": "rodata",
+      "parsedStatus": "parsed",
+      "confidence": "high",
+      "evidence": [
+        "Trailing ASCII fragment, 2 words / 8 bytes: 0x20202020 0x20206279 = \"      by\" (spaces then \"by\"; start of a credits/label string continuing past region end)."
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "range": "0x001F0150..0x001F0934",
+      "size": 2020,
+      "file": "asm/original/rev0/lib/rodata_001f0150.s",
+      "class": "rodata",
+      "parsedStatus": "parsed",
+      "confidence": "high",
+      "evidence": [
+        "Leading NUL word at 0x001F0150 then NUL-delimited ASCII staff-credits string pool. Representative decoded lines: \"Presented\", \"Planning & Development\", \"Makoto Tokugawa\", \"Producer\", \"Assistant Producer\", \"Yuichi Ishibashi\", \"Jyosuke Kaji\", \"Yoshinori Maru\", \"Nobuhiro Kunishi\", \"Takuji Hottta\", \"Special Thanks\", \"MarioClub\", \"H.Nakao\", \"GEORGE Kurokawa\", \"Title Logo Design\", \"Toshiaki Kato\", \"Character Illustration\", \"Hitoshi Sakimoto\", \"Hayato Matsuo\", \"Masaharu Iwata\", \"Music Composer\", \"Toshiaki Imai\", \"Sound Director\", \"Kiyoshi Akimoto\", \"Hiroto Kondou\", \"Character Graphic\", \"Chief Designer\", \"CG Technical Support\", \"Field Program\", \"Event Program\", \"Battle Program\", \"World map Program\", \"System Program\", \"Graphics Design\", \"Director\", \"DUAL Corporation\", \"Wally Olson\", \"Brian Uy\", \"Game Testers\", \"Colin Totman\", \"Senior Localization Editor\", \"Project Leader\", \"International Coordinator\", \"Glenn Wissner\", \"Product Manager\", \"John Yamamoto\", \"Executive Producer\", \"Atlus U.S.A., Inc.\", \"Localization Staff\", \"Ogre Battle 3\". Final string byte 0x33 ('3') at 0x001F0930."
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "range": "0x001F0934..0x001F0948",
+      "size": 20,
+      "file": "asm/original/rev0/lib/zero_fill_001f0934.s",
+      "class": "zero_fill",
+      "parsedStatus": "parsed",
+      "confidence": "high",
+      "evidence": [
+        "20-byte all-zero pad between the credits string pool and the first RAM-pointer table."
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "range": "0x001F0948..0x001F0960",
+      "size": 24,
+      "file": "asm/original/rev0/lib/table_001f0948.s",
+      "class": "table",
+      "parsedStatus": "raw-but-classified",
+      "confidence": "medium",
+      "evidence": [
+        "6 RAM pointers in the 0x801ACC band (0x801ACC50, 0x801ACC48, 0x801ACC6C, 0x801ACD28, 0x801ACCF0, 0x801ACD18). Overlay-relocated runtime addresses; RAM column not authoritative."
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "range": "0x001F0960..0x001F0970",
+      "size": 16,
+      "file": "asm/original/rev0/lib/zero_fill_001f0960.s",
+      "class": "zero_fill",
+      "parsedStatus": "parsed",
+      "confidence": "high",
+      "evidence": [
+        "16-byte all-zero gap separating the 0x801ACC pointer table from the following double constant."
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "range": "0x001F0970..0x001F0978",
+      "size": 8,
+      "file": "asm/original/rev0/lib/float_001f0970.s",
+      "class": "float",
+      "parsedStatus": "parsed",
+      "confidence": "high",
+      "evidence": [
+        "IEEE-754 double-precision constant 0x3FF19999_9999999A = 1.1."
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "range": "0x001F0978..0x001F09D0",
+      "size": 88,
+      "file": "asm/original/rev0/lib/table_001f0978.s",
+      "class": "table",
+      "parsedStatus": "raw-but-classified",
+      "confidence": "medium",
+      "evidence": [
+        "22 RAM pointers in the 0x801B29-0x801B2B band (e.g. 0x801B2994, 0x801B2954, 0x801B2A0C, 0x801B2988, 0x801B2BC0, 0x801B2B14, 0x801B2BCC repeated many times as a default/fallback entry, 0x801B2A40, 0x801B2A8C, 0x801B2B24, 0x801B2AE8, 0x801B2AB4, 0x801B2968). Overlay-relocated runtime addresses; RAM column not authoritative."
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "range": "0x001F09D0..0x001F09DC",
+      "size": 12,
+      "file": "asm/original/rev0/lib/float_001f09d0.s",
+      "class": "float",
+      "parsedStatus": "parsed",
+      "confidence": "high",
+      "evidence": [
+        "IEEE-754 double constants: pi 0x400921FB_54442D18 @0x001F09D0, then -90.0 0xC0568000_00000000 @0x001F09D8 (byte-identical to the double -90.0 at float_001F0018)."
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "range": "0x001F09DC..0x001F09F0",
+      "size": 20,
+      "file": "asm/original/rev0/lib/zero_fill_001f09dc.s",
+      "class": "zero_fill",
+      "parsedStatus": "parsed",
+      "confidence": "high",
+      "evidence": [
+        "20-byte all-zero gap before the final RAM-pointer table."
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "range": "0x001F09F0..0x001F0A2C",
+      "size": 60,
+      "file": "asm/original/rev0/lib/table_001f09f0.s",
+      "class": "table",
+      "parsedStatus": "raw-but-classified",
+      "confidence": "medium",
+      "evidence": [
+        "RAM pointers in the 0x801B52-0x801B5A band (0x801B5200, 0x801B5834, 0x801B54DC, 0x801B550C, 0x801B5680, 0x801B56C4, 0x801B5818, then a 0x00000000 gap entry at 0x001F0A0C, then 0x801B58AC, 0x801B5A20, 0x801B591C, 0x801B5948, 0x801B5994, 0x801B59C0, 0x801B5A08). 15 words including one embedded null slot. Overlay-relocated runtime addresses; RAM column not authoritative."
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "range": "0x001F0A2C..0x001F0A30",
+      "size": 4,
+      "file": "asm/original/rev0/lib/zero_fill_001f0a2c.s",
+      "class": "zero_fill",
+      "parsedStatus": "parsed",
+      "confidence": "high",
+      "evidence": [
+        "Trailing 4-byte zero word terminating the table block; code resumes at 0x001F0A30."
+      ],
+      "unresolvedQuestions": []
+    }
+  ],
+  "stringInventory": {
+    "bgmTitle": {
+      "range": "0x001EEB10..0x001EEB2D",
+      "file": "asm/original/rev0/lib/rodata_001eeb10.s",
+      "text": "Ogre Battle 64 BGM Selection",
+      "note": "Sound-Test screen title; parent docs/rom-layout.md cites the same string near z64 0x1EEB1F."
+    },
+    "sceneNamePool": {
+      "range": "0x001EECF0..0x001EEF44",
+      "file": "asm/original/rev0/lib/rodata_001eecf0.s",
+      "count": 46,
+      "parsedStatus": "parsed",
+      "note": "NUL-delimited Sound-Test scene/location-name list (BGM track labels).",
+      "strings": [
+        {
+          "off": "0x1EECF0",
+          "s": "Castro Canyon"
+        },
+        {
+          "off": "0x1EED00",
+          "s": "Zenobian Border"
+        },
+        {
+          "off": "0x1EED10",
+          "s": "Crenel Canyon"
+        },
+        {
+          "off": "0x1EED20",
+          "s": "Volmus Mine"
+        },
+        {
+          "off": "0x1EED2C",
+          "s": "Volmus Mine"
+        },
+        {
+          "off": "0x1EED38",
+          "s": "Tenne Plains"
+        },
+        {
+          "off": "0x1EED48",
+          "s": "Alba"
+        },
+        {
+          "off": "0x1EED50",
+          "s": "Dardunnelles"
+        },
+        {
+          "off": "0x1EED60",
+          "s": "Gunther Piedmont"
+        },
+        {
+          "off": "0x1EED74",
+          "s": "Mylesia"
+        },
+        {
+          "off": "0x1EED7C",
+          "s": "Gules Hills"
+        },
+        {
+          "off": "0x1EED88",
+          "s": "Tremos Mountains"
+        },
+        {
+          "off": "0x1EED9C",
+          "s": "Fair Heights"
+        },
+        {
+          "off": "0x1EEDAC",
+          "s": "Temple of Berthe"
+        },
+        {
+          "off": "0x1EEDC0",
+          "s": "Capitrium"
+        },
+        {
+          "off": "0x1EEDCC",
+          "s": "Celesis"
+        },
+        {
+          "off": "0x1EEDD4",
+          "s": "Tremos Mountains"
+        },
+        {
+          "off": "0x1EEDE8",
+          "s": "Sable Lowlands"
+        },
+        {
+          "off": "0x1EEDF8",
+          "s": "Audvera Heights"
+        },
+        {
+          "off": "0x1EEE08",
+          "s": "Soathon"
+        },
+        {
+          "off": "0x1EEE10",
+          "s": "Mount Ithaca"
+        },
+        {
+          "off": "0x1EEE20",
+          "s": "Azure Plains"
+        },
+        {
+          "off": "0x1EEE30",
+          "s": "Wentinus"
+        },
+        {
+          "off": "0x1EEE3C",
+          "s": "Mount Keryoleth"
+        },
+        {
+          "off": "0x1EEE4C",
+          "s": "Tybell"
+        },
+        {
+          "off": "0x1EEE54",
+          "s": "Argent"
+        },
+        {
+          "off": "0x1EEE5C",
+          "s": "Vert Plateau"
+        },
+        {
+          "off": "0x1EEE6C",
+          "s": "Aurua Plains"
+        },
+        {
+          "off": "0x1EEE7C",
+          "s": "Barpheth"
+        },
+        {
+          "off": "0x1EEE88",
+          "s": "Latium"
+        },
+        {
+          "off": "0x1EEE90",
+          "s": "The Blue Basilica"
+        },
+        {
+          "off": "0x1EEEA4",
+          "s": "Ptia"
+        },
+        {
+          "off": "0x1EEEAC",
+          "s": "Romulus"
+        },
+        {
+          "off": "0x1EEEB4",
+          "s": "Wentinus"
+        },
+        {
+          "off": "0x1EEEC0",
+          "s": "Dardunnelles"
+        },
+        {
+          "off": "0x1EEED0",
+          "s": "Mount Keryoleth"
+        },
+        {
+          "off": "0x1EEEE0",
+          "s": "Winnea"
+        },
+        {
+          "off": "0x1EEEE8",
+          "s": "Castle Talpaea"
+        },
+        {
+          "off": "0x1EEEF8",
+          "s": "Fort Romulus"
+        },
+        {
+          "off": "0x1EEF08",
+          "s": "Alba"
+        },
+        {
+          "off": "0x1EEF10",
+          "s": "Prologue"
+        },
+        {
+          "off": "0x1EEF1C",
+          "s": "Ch. 1"
+        },
+        {
+          "off": "0x1EEF24",
+          "s": "Ch. 2"
+        },
+        {
+          "off": "0x1EEF2C",
+          "s": "Ch. 3"
+        },
+        {
+          "off": "0x1EEF34",
+          "s": "Ch. 4"
+        },
+        {
+          "off": "0x1EEF3C",
+          "s": "No Data"
+        }
+      ]
+    },
+    "alphabet": {
+      "range": "0x001EF8F0..0x001EF928",
+      "file": "asm/original/rev0/lib/rodata_001ef8f0.s",
+      "parsedStatus": "parsed",
+      "strings": [
+        {
+          "off": "0x1EF8F0",
+          "s": "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz.3&,"
+        }
+      ],
+      "note": "Glyph-order alphabet map ABC..xyz.3&,"
+    },
+    "formatStrings": {
+      "range": "0x001F0088..0x001F00B0",
+      "file": "asm/original/rev0/lib/rodata_001f0088.s",
+      "parsedStatus": "parsed",
+      "strings": [
+        {
+          "off": "0x1F008C",
+          "s": "%s Scene %d"
+        },
+        {
+          "off": "0x1F0098",
+          "s": "999:59:59"
+        },
+        {
+          "off": "0x1F00A4",
+          "s": "%d:%02d:%02d"
+        }
+      ],
+      "note": "printf-style screen format/time strings (%s Scene %d / 999:59:59 / %d:%02d:%02d)."
+    },
+    "creditsRoll": {
+      "range": "0x001F0150..0x001F0934",
+      "file": "asm/original/rev0/lib/rodata_001f0150.s",
+      "count": 126,
+      "parsedStatus": "parsed",
+      "note": "Staff-credits / ending-roll string pool.",
+      "strings": [
+        {
+          "off": "0x1F0154",
+          "s": "Presented"
+        },
+        {
+          "off": "0x1F0160",
+          "s": "Planning & Development"
+        },
+        {
+          "off": "0x1F0178",
+          "s": "Makoto Tokugawa"
+        },
+        {
+          "off": "0x1F0188",
+          "s": "Producer"
+        },
+        {
+          "off": "0x1F0194",
+          "s": "Takayuki Yasumitsu"
+        },
+        {
+          "off": "0x1F01A8",
+          "s": "Assistant Producer"
+        },
+        {
+          "off": "0x1F01BC",
+          "s": "Yuichi Ishibashi"
+        },
+        {
+          "off": "0x1F01D0",
+          "s": "Jyosuke Kaji"
+        },
+        {
+          "off": "0x1F01E0",
+          "s": "Yoshinori Maru"
+        },
+        {
+          "off": "0x1F01F0",
+          "s": "Nobuhiro Kunishima"
+        },
+        {
+          "off": "0x1F0204",
+          "s": "Takuji Hotta"
+        },
+        {
+          "off": "0x1F0214",
+          "s": "Special Thanks"
+        },
+        {
+          "off": "0x1F0224",
+          "s": "MarioClub"
+        },
+        {
+          "off": "0x1F0230",
+          "s": "H.Nakao"
+        },
+        {
+          "off": "0x1F0238",
+          "s": "Y.Saegusa"
+        },
+        {
+          "off": "0x1F0244",
+          "s": "T.Ohno"
+        },
+        {
+          "off": "0x1F024C",
+          "s": "K.Kashiwara"
+        },
+        {
+          "off": "0x1F0258",
+          "s": "S.Saijyo"
+        },
+        {
+          "off": "0x1F0264",
+          "s": "M.Moriguchi"
+        },
+        {
+          "off": "0x1F0270",
+          "s": "N.Seino"
+        },
+        {
+          "off": "0x1F0278",
+          "s": "M.Saito"
+        },
+        {
+          "off": "0x1F0280",
+          "s": "H.Tsuyama"
+        },
+        {
+          "off": "0x1F028C",
+          "s": "K.Yokota"
+        },
+        {
+          "off": "0x1F0298",
+          "s": "N.Arata"
+        },
+        {
+          "off": "0x1F02A0",
+          "s": "T.Tsuchiya"
+        },
+        {
+          "off": "0x1F02AC",
+          "s": "Y.Sudo"
+        },
+        {
+          "off": "0x1F02B4",
+          "s": "Bug Check"
+        },
+        {
+          "off": "0x1F02C0",
+          "s": "Yayoi Kito"
+        },
+        {
+          "off": "0x1F02CC",
+          "s": "Manual Edit"
+        },
+        {
+          "off": "0x1F02D8",
+          "s": "GEORGE Kurokawa"
+        },
+        {
+          "off": "0x1F02E8",
+          "s": "Title Logo Design"
+        },
+        {
+          "off": "0x1F02FC",
+          "s": "Toshiaki Kato"
+        },
+        {
+          "off": "0x1F030C",
+          "s": "Character Illustration"
+        },
+        {
+          "off": "0x1F0324",
+          "s": "Hitoshi Sakimoto"
+        },
+        {
+          "off": "0x1F0338",
+          "s": "Hayato Matsuo"
+        },
+        {
+          "off": "0x1F0348",
+          "s": "Masaharu Iwata"
+        },
+        {
+          "off": "0x1F0358",
+          "s": "Music Composer"
+        },
+        {
+          "off": "0x1F0368",
+          "s": "Toshiaki Imai"
+        },
+        {
+          "off": "0x1F0378",
+          "s": "Sound Director"
+        },
+        {
+          "off": "0x1F0388",
+          "s": "Kiyoshi Akimoto"
+        },
+        {
+          "off": "0x1F0398",
+          "s": "Hiroto Kondou"
+        },
+        {
+          "off": "0x1F03A8",
+          "s": "Kenichi Irie"
+        },
+        {
+          "off": "0x1F03B8",
+          "s": "Assistant Designer"
+        },
+        {
+          "off": "0x1F03CC",
+          "s": "Masayuki Fujiki"
+        },
+        {
+          "off": "0x1F03DC",
+          "s": "Naoki Katayose"
+        },
+        {
+          "off": "0x1F03EC",
+          "s": "Yukiko Wada"
+        },
+        {
+          "off": "0x1F03F8",
+          "s": "Effect Design"
+        },
+        {
+          "off": "0x1F0408",
+          "s": "Yuki Mizoguchi"
+        },
+        {
+          "off": "0x1F0418",
+          "s": "Chiho Kawase"
+        },
+        {
+          "off": "0x1F0428",
+          "s": "Teruhito Anbo"
+        },
+        {
+          "off": "0x1F0438",
+          "s": "BG Design"
+        },
+        {
+          "off": "0x1F0444",
+          "s": "Kazue Kondou"
+        },
+        {
+          "off": "0x1F0454",
+          "s": "Kouji Kameyama"
+        },
+        {
+          "off": "0x1F0464",
+          "s": "Hiroshi Seki"
+        },
+        {
+          "off": "0x1F0474",
+          "s": "Nobuhisa Enomoto"
+        },
+        {
+          "off": "0x1F0488",
+          "s": "Nozomu Nishiiri"
+        },
+        {
+          "off": "0x1F0498",
+          "s": "Character Model"
+        },
+        {
+          "off": "0x1F04A8",
+          "s": "Satomi Hongo"
+        },
+        {
+          "off": "0x1F04B8",
+          "s": "Ikumi Hachirou"
+        },
+        {
+          "off": "0x1F04C8",
+          "s": "Tomoyuki Kunugi"
+        },
+        {
+          "off": "0x1F04D8",
+          "s": "Kazutaka Matsuda"
+        },
+        {
+          "off": "0x1F04EC",
+          "s": "Character Graphic"
+        },
+        {
+          "off": "0x1F0500",
+          "s": "Kouji Takino"
+        },
+        {
+          "off": "0x1F0510",
+          "s": "Chief Designer"
+        },
+        {
+          "off": "0x1F0520",
+          "s": "Takayuki Ishii"
+        },
+        {
+          "off": "0x1F0530",
+          "s": "CG Technical Support"
+        },
+        {
+          "off": "0x1F0548",
+          "s": "Motohiko Suzuki"
+        },
+        {
+          "off": "0x1F0558",
+          "s": "Syu Kamiyama"
+        },
+        {
+          "off": "0x1F0568",
+          "s": "Assistant Programmer"
+        },
+        {
+          "off": "0x1F0580",
+          "s": "Shinichi Fujisawa"
+        },
+        {
+          "off": "0x1F0594",
+          "s": "Saichi Mima"
+        },
+        {
+          "off": "0x1F05A0",
+          "s": "Effect Program"
+        },
+        {
+          "off": "0x1F05B0",
+          "s": "Yuichi Murasawa"
+        },
+        {
+          "off": "0x1F05C0",
+          "s": "Fieldmap Program"
+        },
+        {
+          "off": "0x1F05D4",
+          "s": "Katsumi Ohno"
+        },
+        {
+          "off": "0x1F05E4",
+          "s": "Event Program"
+        },
+        {
+          "off": "0x1F05F4",
+          "s": "Katsuyuki Ito"
+        },
+        {
+          "off": "0x1F0604",
+          "s": "Battle Program"
+        },
+        {
+          "off": "0x1F0614",
+          "s": "Nobuo Morioka"
+        },
+        {
+          "off": "0x1F0624",
+          "s": "Worldmap Program"
+        },
+        {
+          "off": "0x1F0638",
+          "s": "Masaaki Kitagawa"
+        },
+        {
+          "off": "0x1F064C",
+          "s": "System Program"
+        },
+        {
+          "off": "0x1F065C",
+          "s": "Junichi Hokada"
+        },
+        {
+          "off": "0x1F066C",
+          "s": "Satoshi Uchida"
+        },
+        {
+          "off": "0x1F067C",
+          "s": "   Assistant"
+        },
+        {
+          "off": "0x1F068C",
+          "s": "Mizue Tanaka"
+        },
+        {
+          "off": "0x1F069C",
+          "s": "Event Make"
+        },
+        {
+          "off": "0x1F06A8",
+          "s": "Tomokazu Momota"
+        },
+        {
+          "off": "0x1F06B8",
+          "s": "Planner"
+        },
+        {
+          "off": "0x1F06C0",
+          "s": "Kazuhiro Kataoka"
+        },
+        {
+          "off": "0x1F06D4",
+          "s": "Assistant Director"
+        },
+        {
+          "off": "0x1F06E8",
+          "s": "Tatsuya Azeyagi"
+        },
+        {
+          "off": "0x1F06F8",
+          "s": "Development staff"
+        },
+        {
+          "off": "0x1F070C",
+          "s": "Sayaka Fujita"
+        },
+        {
+          "off": "0x1F071C",
+          "s": "Miharu Ishigaki"
+        },
+        {
+          "off": "0x1F072C",
+          "s": "Mayumi Sugawara"
+        },
+        {
+          "off": "0x1F073C",
+          "s": "Yuko Tanisako"
+        },
+        {
+          "off": "0x1F074C",
+          "s": "Graphics Designer"
+        },
+        {
+          "off": "0x1F0760",
+          "s": "Tsutomu Takano"
+        },
+        {
+          "off": "0x1F0770",
+          "s": "Programmer"
+        },
+        {
+          "off": "0x1F077C",
+          "s": "Iki Yasumoto"
+        },
+        {
+          "off": "0x1F078C",
+          "s": "Director"
+        },
+        {
+          "off": "0x1F079C",
+          "s": "DUAL Corporation"
+        },
+        {
+          "off": "0x1F07B0",
+          "s": "Wally Olson"
+        },
+        {
+          "off": "0x1F07BC",
+          "s": "Brian Uy"
+        },
+        {
+          "off": "0x1F07C8",
+          "s": "Game Testers"
+        },
+        {
+          "off": "0x1F07D8",
+          "s": "Colin Totman"
+        },
+        {
+          "off": "0x1F07E8",
+          "s": "Senior Localization Editor"
+        },
+        {
+          "off": "0x1F0804",
+          "s": "Kayoko Dietsche"
+        },
+        {
+          "off": "0x1F0814",
+          "s": "Eric Frey"
+        },
+        {
+          "off": "0x1F0820",
+          "s": "Naomi Saito"
+        },
+        {
+          "off": "0x1F082C",
+          "s": "Yasutaka Asakura"
+        },
+        {
+          "off": "0x1F0840",
+          "s": "Translators"
+        },
+        {
+          "off": "0x1F084C",
+          "s": "Yu Namba"
+        },
+        {
+          "off": "0x1F0858",
+          "s": "Project Leader"
+        },
+        {
+          "off": "0x1F0868",
+          "s": "Gail Salamanca"
+        },
+        {
+          "off": "0x1F0878",
+          "s": "Product Specialist"
+        },
+        {
+          "off": "0x1F088C",
+          "s": "Sonoko Saito"
+        },
+        {
+          "off": "0x1F089C",
+          "s": "International Coordinator"
+        },
+        {
+          "off": "0x1F08B8",
+          "s": "Glenn Wissner"
+        },
+        {
+          "off": "0x1F08C8",
+          "s": "Product Manager"
+        },
+        {
+          "off": "0x1F08D8",
+          "s": "John Yamamoto"
+        },
+        {
+          "off": "0x1F08E8",
+          "s": "Executive Producer"
+        },
+        {
+          "off": "0x1F08FC",
+          "s": "Atlus U.S.A., Inc."
+        },
+        {
+          "off": "0x1F0910",
+          "s": "Localization Staff"
+        },
+        {
+          "off": "0x1F0924",
+          "s": "Ogre Battle 3"
+        }
+      ]
+    }
+  },
+  "pointerTables": [
+    {
+      "range": "0x001EE914..0x001EE930",
+      "file": "asm/original/rev0/lib/table_001ee914.s",
+      "parsedStatus": "raw-but-classified",
+      "note": "7-word RAM pointer table. Values 0x800EB0B0, 0x800EB100, 0x800EB150, 0x800EB1A0, 0x800EB1F0, 0x800EB240, 0x800EB290 — RAM pointers in the 0x800E (0x800/0x801/0x802) band, contiguous even stride 0x50, all word-aligned. Likely a 7-entry table of pointers to per-row glyph/graphic sub-blocks for the BGM-selection list.",
+      "unresolvedTargets": "RAM pointers in the 0x800E/0x801A/0x801B overlay band; runtime targets not resolved (overlay-relocated; no simple z64 back-map)."
+    },
+    {
+      "range": "0x001EEF44..0x001EF030",
+      "file": "asm/original/rev0/lib/table_001eef44.s",
+      "parsedStatus": "raw-but-classified",
+      "note": "RAM-pointer table, 59 words, all in the 0x801B band (e.g. 0x801B9B88, 0x801B87F0, 0x801B8800, 0x801B8810 ...). Pointers index runtime-relocated copies of the name pool / sound-test entries. The value 0x801B9B88 recurs many times (entries at +0x00,+0x28,+0x34,+0x3C,+0x4C,+0x74,+0x7C,+0xA4,+0xA8,+0xAC,+0xB0,+0xC4,+0xC8,+0xCC,+0xD0) acting as a null/placeholder/'No Data' sentinel; remaining values strictly ascend (0x801B87F0..0x801B8A34) as sequential entry pointers. RAM addresses are overlay-relocated; verify vs scripts/ob64_overlay_map.json.",
+      "unresolvedTargets": "RAM pointers in the 0x800E/0x801A/0x801B overlay band; runtime targets not resolved (overlay-relocated; no simple z64 back-map)."
+    },
+    {
+      "range": "0x001EF034..0x001EF0F0",
+      "file": "asm/original/rev0/lib/table_001ef034.s",
+      "parsedStatus": "raw-but-classified",
+      "note": "Pool of 47 small-magnitude scalar words; values are tiny (0x00000000-0x00000044, e.g. 0x22,0x14,0x18,0x0C,0x10,0x28,0x05,0x0F,0x01,0xFFFFFFFF at 0x001EF0E8). Likely a byte/index parameter table. Contains an interior all-zero gap ~0x001EF0BC-0x001EF0EC (kept with this block rather than over-fragmenting). Values are NOT RAM pointers or ROM offsets; treat as small indices/flags (unknown semantics).",
+      "unresolvedTargets": "RAM pointers in the 0x800E/0x801A/0x801B overlay band; runtime targets not resolved (overlay-relocated; no simple z64 back-map)."
+    },
+    {
+      "range": "0x001EF1F4..0x001EF898",
+      "file": "asm/original/rev0/lib/table_001ef1f4.s",
+      "parsedStatus": "raw-but-classified",
+      "note": "Long fixed-stride record table. Repeating ~12-byte (3-word) record: word0 = a 0x801B-band RAM pointer (descending from ~0x801BA424 down to ~0x801B9C78, all in 0x801B9C..-0x801BA4.. range, i.e. runtime RAM pointers per CLAUDE.md overlay caveat), word1 = small flag word with 0x01 or 0x02 in MSB (0x01000000/0x02000000), word2 = small scalar (0x11,0x22,0x44,0x33,0x55,0x66,0x77,0x90,0xE5,0x3B,0x6E,0x4C,0x5D,0x0D etc.). Occasional 4-word marker rows interrupt the 3-word cadence (e.g. nop+0x07000000+0x000000E5 at 0x001EF344/0x001EF3D4/0x001EF488). Header at 0x001EF1F4 is 0x028001E0/0x01FF0004 pair (repeated, possibly a 16-byte preamble). Likely a per-track/per-scene pointer-plus-attribute table. Pointer values are RAM (0x801B band), NOT ROM offsets; do not linear-back-map. Approx ~140 record rows.",
+      "unresolvedTargets": "RAM pointers in the 0x800E/0x801A/0x801B overlay band; runtime targets not resolved (overlay-relocated; no simple z64 back-map)."
+    },
+    {
+      "range": "0x001EFEB4..0x001F0018",
+      "file": "asm/original/rev0/lib/table_001efeb4.s",
+      "parsedStatus": "raw-but-classified",
+      "note": "RAM-pointer table, 0x8019xxxx/0x801Axxxx band (0x801 pointer band). Pointers like 0x8019BE98,0x8019BF7C,0x8019D858,0x8019F9DC,0x801A1394,0x801A1BA8 (many repeats -> jump/case tables). Interleaved IEEE float CONSTANTS: 0x3FF00000=1.0 (hi half of double), 0x40080000=3.0, 0x41F00000=30.0, 0x40240000=10.0, 0x402A0000=13.0, 0x403B0000. Mixed pointer/const table; pointer band 0x8019/0x801A. [note: a 1.0 double straddles the soft data seam — hi-half 0x3FF00000 is the last word of the preceding data_001EF928 @0x1EFEB0, lo-half 0x00000000 @0x1EFEB4 begins this part; pure data, no boundary impact].",
+      "unresolvedTargets": "RAM pointers in the 0x800E/0x801A/0x801B overlay band; runtime targets not resolved (overlay-relocated; no simple z64 back-map)."
+    },
+    {
+      "range": "0x001F0028..0x001F0088",
+      "file": "asm/original/rev0/lib/table_001f0028.s",
+      "parsedStatus": "raw-but-classified",
+      "note": "RAM-pointer table, 0x801A3xxx band (0x801 pointer band). 24-byte all-zero gap at 0x1F0028..0x1F0040, then pointers 0x801A3CB4,0x801A3D78,0x801A3CCC,...,0x801A4044. Values are RAM pointers (state/menu jump table), several repeats.",
+      "unresolvedTargets": "RAM pointers in the 0x800E/0x801A/0x801B overlay band; runtime targets not resolved (overlay-relocated; no simple z64 back-map)."
+    },
+    {
+      "range": "0x001F00B8..0x001F0148",
+      "file": "asm/original/rev0/lib/table_001f00b8.s",
+      "parsedStatus": "raw-but-classified",
+      "note": "RAM-pointer table, 0x801A9xxx/0x801AAxxx band (0x801 pointer band), 36 words. Pointers 0x801A94D4,0x801A94F8,...,0x801AA024 (the 0x801AA024 value repeats ~9x as a default/fallback entry) -> jump/case dispatch table.",
+      "unresolvedTargets": "RAM pointers in the 0x800E/0x801A/0x801B overlay band; runtime targets not resolved (overlay-relocated; no simple z64 back-map)."
+    },
+    {
+      "range": "0x001F0948..0x001F0960",
+      "file": "asm/original/rev0/lib/table_001f0948.s",
+      "parsedStatus": "raw-but-classified",
+      "note": "6 RAM pointers in the 0x801ACC band (0x801ACC50, 0x801ACC48, 0x801ACC6C, 0x801ACD28, 0x801ACCF0, 0x801ACD18). Overlay-relocated runtime addresses; RAM column not authoritative.",
+      "unresolvedTargets": "RAM pointers in the 0x800E/0x801A/0x801B overlay band; runtime targets not resolved (overlay-relocated; no simple z64 back-map)."
+    },
+    {
+      "range": "0x001F0978..0x001F09D0",
+      "file": "asm/original/rev0/lib/table_001f0978.s",
+      "parsedStatus": "raw-but-classified",
+      "note": "22 RAM pointers in the 0x801B29-0x801B2B band (e.g. 0x801B2994, 0x801B2954, 0x801B2A0C, 0x801B2988, 0x801B2BC0, 0x801B2B14, 0x801B2BCC repeated many times as a default/fallback entry, 0x801B2A40, 0x801B2A8C, 0x801B2B24, 0x801B2AE8, 0x801B2AB4, 0x801B2968). Overlay-relocated runtime addresses; RAM column not authoritative.",
+      "unresolvedTargets": "RAM pointers in the 0x800E/0x801A/0x801B overlay band; runtime targets not resolved (overlay-relocated; no simple z64 back-map)."
+    },
+    {
+      "range": "0x001F09F0..0x001F0A2C",
+      "file": "asm/original/rev0/lib/table_001f09f0.s",
+      "parsedStatus": "raw-but-classified",
+      "note": "RAM pointers in the 0x801B52-0x801B5A band (0x801B5200, 0x801B5834, 0x801B54DC, 0x801B550C, 0x801B5680, 0x801B56C4, 0x801B5818, then a 0x00000000 gap entry at 0x001F0A0C, then 0x801B58AC, 0x801B5A20, 0x801B591C, 0x801B5948, 0x801B5994, 0x801B59C0, 0x801B5A08). 15 words including one embedded null slot. Overlay-relocated runtime addresses; RAM column not authoritative.",
+      "unresolvedTargets": "RAM pointers in the 0x800E/0x801A/0x801B overlay band; runtime targets not resolved (overlay-relocated; no simple z64 back-map)."
+    }
+  ],
+  "recordTableHypothesis": {
+    "range": "0x001EF1F4..0x001EF898",
+    "file": "asm/original/rev0/lib/table_001ef1f4.s",
+    "parsedStatus": "raw-but-classified",
+    "confidence": "medium",
+    "hypothesis": "Long fixed-stride record table (~12-byte/3-word records): word0 = a descending 0x801B-band RAM pointer; following 2 words = small scalar fields. Sound-Test per-track/per-scene record table. Stride + field semantics are a hypothesis, not proven."
+  },
+  "floatConstants": [
+    {
+      "range": "0x001F0018..0x001F0028",
+      "file": "asm/original/rev0/lib/float_001f0018.s",
+      "values": [
+        "pi (0x400921FB54442D18)",
+        "-90.0 (0xC0568000_00000000)"
+      ]
+    },
+    {
+      "range": "0x001F0970..0x001F0978",
+      "file": "asm/original/rev0/lib/float_001f0970.s",
+      "values": [
+        "1.1 (0x3FF19999_9999999A)"
+      ]
+    },
+    {
+      "range": "0x001F09D0..0x001F09DC",
+      "file": "asm/original/rev0/lib/float_001f09d0.s",
+      "values": [
+        "pi (0x400921FB54442D18)",
+        "-90.0 (0xC0568000_00000000)"
+      ]
+    }
+  ],
+  "codeContinuations": {
+    "incoming": {
+      "range": "0x001E1000..0x001E120C",
+      "file": "asm/original/rev0/lib/func_001E0FC8_chunk30tail.s",
+      "evidence": "Continuation of func_001E0FC8 from chunk 29 (parent prologue 0x001E0FC8); returns jr $ra at 0x001E1204 with delay slot at 0x001E1208."
+    },
+    "outgoing": {
+      "range": "0x001F0F90..0x001F1000",
+      "file": "asm/original/rev0/lib/func_001F0F9C.s",
+      "evidence": "Read-before-write preamble at 0x001F0F90 (lui $v1,0x801D / lw -0x1744 / lw 0x56C0) precedes parent prologue 0x001F0F9C; no jr $ra before 0x001F1000; continues into chunk 31 (returns at 0x001F1024)."
+    }
+  }
+}

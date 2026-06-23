@@ -203,9 +203,9 @@ Current result:
 - Code-region SHA256:
   `40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`.
 - Code-region match against baserom: pass.
-- Tracked real-assembler original-MIPS chunks: 30 composites (chunk 0 177 `boot/`;
-  chunks 1–29 in `lib/`: 350, 216, 67, 376, 88, 78, 103, 87, 34, 35, 191, 74, 67, 94, 153, 95, 66, 95, 80, 175, 99, 99, 73, 63, 71, 96, 142, 97, 103) = 3,544 real-assembler
-  source files. Chunks 0–29 (`0x00001000..0x001E1000`) are now fully source-owned as
+- Tracked real-assembler original-MIPS chunks: 31 composites (chunk 0 177 `boot/`;
+  chunks 1–30 in `lib/`: 350, 216, 67, 376, 88, 78, 103, 87, 34, 35, 191, 74, 67, 94, 153, 95, 66, 95, 80, 175, 99, 99, 73, 63, 71, 96, 142, 97, 103, 122) = 3,666 real-assembler
+  source files. Chunks 0–30 (`0x00001000..0x001F1000`) are now fully source-owned as
   named code/data parts (chunk 14: 74 code + 20 data, MIXED — graphics/display-list data
   + DL-builder code; chunk 15: 134 code + 19 data, MIXED — floats/display-list data + the
   OB64 opening-narration rodata; chunk 16: 72 code + 23 data, MIXED — leading scenario
@@ -238,9 +238,14 @@ Current result:
   function straddlers, MIXED — stronghold/tutorial text + pointer/GBI-like data + packed command/
   script blobs + recovered frameless helpers; chunk 29: 97 normal code + 4 zero-fill data + 2
   function straddlers, CODE-dominant MIXED — dense world-map/resource code + recovered frameless
-  helpers); next is chunk 30 (`0x001E1000`, still a
+  helpers; chunk 30: 89 normal code + 31 data + 2 function straddlers, MIXED — FP/RDP
+  display-list world-map/char-data/resource code wrapping an interior Sound-Test/"Ogre Battle
+  64 BGM Selection" + staff-credits DATA territory [`0x1EE574..0x1F0A30`: graphics/GBI
+  display-list + 46-string scene-name pool + 0x801B pointer tables + a fixed-stride record
+  table + alphabet + screen format strings + 126-string credits roll + handler/float tables]);
+  next is chunk 31 (`0x001F1000`, still a
   generated fallback chunk).
-- Generated fallback chunks: 70.
+- Generated fallback chunks: 69.
 - Assembled-code ROM rebuild command:
 
 ```powershell
@@ -255,7 +260,7 @@ Next source-layout work should continue promoting/splitting tracked
 `tools/promote_original_mips.js` for chunk promotion and `--strict-tracked` only
 after every configured code chunk is tracked.
 
-Chunks 0–29 `0x00001000..0x001E1000` are fully source-owned as named
+Chunks 0–30 `0x00001000..0x001F1000` are fully source-owned as named
 code/data parts (chunk 13: 27 code + 40 data, MIXED — unit-mgmt UI data; chunk 14: 74
 code + 20 data, MIXED — graphics/display-list data + DL-builder code; chunk 15: 134 code
 + 19 data, MIXED — floats/display-list data + the OB64 opening-narration rodata; chunk
@@ -402,15 +407,20 @@ text + pointer/GBI-like data + packed command/script blobs, recovered frameless 
 `0x1C3D14` and `0x1CE070..0x1CE174`, and outgoing function straddler-head `func_001D0694`;
 chunk 29 has 103 parts (97 normal code + 4 zero-fill data + 2 function straddlers), recovered
 frameless helpers at `0x1D9338` and `0x1E0A38`, and outgoing function straddler-head
-`func_001E0FC8`. Dossiers include
-`lib-chunk24-…`/`lib-chunk25-…`/`lib-chunk26-…`/`lib-chunk27-…`/`lib-chunk28-…`/`lib-chunk29-…`;
-data indexes include `docs/data-index/rev0/chunk{19,20,21,22,23,24,25,26,27,28,29}-data-region-inventory.json`
-and chunk20/22/23/24/25/26/27 string/table indexes.
-Next frontier is **`0x001E1000` (chunk 30)** — FIRST continue the OUTGOING FUNCTION straddler:
-`func_001E0FC8` starts in chunk 29 at `0x001E0FC0` with the parent prologue at `0x001E0FC8`,
-has no `jr$ra` before the chunk boundary, and must be emitted first in chunk 30 as
-`func_001E0FC8_chunk30tail` starting at `0x001E1000`.
-Coverage now 69.0045% (code-only 56.4735%).
+`func_001E0FC8`; chunk 30 has 122 parts (89 normal code + 31 data + 2 function straddlers),
+FP/RDP display-list world-map/resource code wrapping an interior Sound-Test/"Ogre Battle 64 BGM
+Selection" + staff-credits DATA territory (`0x1EE574..0x1F0A30`), and outgoing function
+straddler-head `func_001F0F9C`. Dossiers include
+`lib-chunk24-…`/…/`lib-chunk29-…`/`lib-chunk30-…`;
+data indexes include `docs/data-index/rev0/chunk{19,20,21,22,23,24,25,26,27,28,29,30}-data-region-inventory.json`
+and chunk20/22/23/24/25/26/27/30 string/table indexes.
+Next frontier is **`0x001F1000` (chunk 31, ALL CODE)** — FIRST continue the OUTGOING FUNCTION straddler:
+`func_001F0F9C` starts in chunk 30 at `0x001F0F90` (preamble) with the parent prologue at `0x001F0F9C`,
+has no `jr$ra` before the chunk boundary, and must be emitted first in chunk 31 as
+`func_001F0F9C_chunk31tail` (`0x001F1000..0x001F102C`, returns jr$ra@0x001F1024). Chunk 31 also
+contains the High-Attack streamsplit cleanup-guard site at z64 `0x001F36F0` (patch-workbench
+candidate; static-only, needs-runtime).
+Coverage now 71.3047% (code-only 58.4436%).
 The chunk-split pipeline is tracked:
 `scan_functions` (or `dump_function_context`+`plan_chunk` when parent-detected) →
 `tools/slice_chunk.js` (`--disasm` for mixed/sub-region) → analysis swarm →

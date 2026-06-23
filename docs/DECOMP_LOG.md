@@ -24,10 +24,10 @@ and replace the active log with a compact current-state summary.
   `original_mips`. A static control-flow audit found no credible code edge into
   the tail (0 branch targets, 0 J/JAL to a known function). Audit:
   `tools/audit_code_region.js` / `docs/CODE_REGION_AUDIT.md`.
-- Current tracked code source mix: thirty composite real-assembler chunks
-  (chunk 0 177 `boot/`; chunks 1–29 in `lib/`: 350, 216, 67, 376, 88, 78, 103, 87, 34, 35, 191, 74, 67, 94, 153, 95, 66, 95, 80, 175, 99, 99, 73, 63, 71, 96, 142, 97, 103) =
-  **3,544 tracked source files**, plus 70 generated fallback code chunks. **Chunks
-  0–29 (`0x00001000..0x001E1000`) are now fully source-owned as named code/data
+- Current tracked code source mix: thirty-one composite real-assembler chunks
+  (chunk 0 177 `boot/`; chunks 1–30 in `lib/`: 350, 216, 67, 376, 88, 78, 103, 87, 34, 35, 191, 74, 67, 94, 153, 95, 66, 95, 80, 175, 99, 99, 73, 63, 71, 96, 142, 97, 103, 122) =
+  **3,666 tracked source files**, plus 69 generated fallback code chunks. **Chunks
+  0–30 (`0x00001000..0x001F1000`) are now fully source-owned as named code/data
   parts** (chunk 13: 27 code + 40 data, MIXED — unit-mgmt UI data; chunk 14: 74 code + 20
   data, MIXED — graphics/display-list data + DL-builder code; chunk 15: 134 code + 19
   data, MIXED — floats/display-list data + the OB64 opening-narration rodata; chunk 16: 72
@@ -56,7 +56,9 @@ and replace the active log with a compact current-state summary.
   straddlers, MIXED - stronghold/tutorial text, pointer/GBI-like data, packed command/script
   blobs, and recovered frameless helpers; chunk 29: 97 normal code + 4 zero-fill data + 2
   function straddlers, CODE-dominant MIXED - dense world-map/resource code with tiny alignment
-  data and recovered frameless helpers); next is chunk 30 (`0x001E1000`, still a generated
+  data and recovered frameless helpers; chunk 30: 89 normal code + 31 data + 2 function
+  straddlers, MIXED - FP/RDP display-list world-map/resource code wrapping the Sound-Test/BGM
+  screen + staff-credits data territory); next is chunk 31 (`0x001F1000`, still a generated
   fallback chunk). The promote-tool merge blocker is FIXED.
 - The parent boundary DB has TWO recurring defects, both fixed when splitting:
   (1) `end_rom` is INCLUSIVE (exclusive end = `end_rom + 4`; do NOT treat the
@@ -226,10 +228,22 @@ Current named sequence:
   the parent's "combat code in the gap" [linear-map fallacy]). Dossier
   `docs/dossiers/lib-chunk19-131000-141000.md`; data index
   `docs/data-index/rev0/chunk19-data-region-inventory.json`. **Chunk 19 source-owned.**
-- Current remainder: none in chunks 0-29 (`0x1000..0x1E1000` fully source-owned).
-  **Current frontier: `0x001E1000` (chunk 30).** Next is chunk 30 generated fallback
-  `0x001E1000..0x001F1000`; first continue outgoing FUNCTION straddler
-  `func_001E0FC8` as `func_001E0FC8_chunk30tail`.
+- Chunk 30 source-ownership `0x001E1000..0x001F1000` (122 parts: 89 normal code + 31 data
+  + 2 function straddlers, MIXED): incoming straddler-tail `func_001E0FC8_chunk30tail` →
+  CODE R1 `0x1E120C..0x1EE574` (FP/RDP display-list world-map/char-data/resource code) →
+  interior DATA `0x1EE574..0x1F0A30` (Sound-Test/"Ogre Battle 64 BGM Selection" screen:
+  graphics/GBI display-list + 46-string scene-name pool + 0x801B pointer tables + a
+  fixed-stride record table; then alphabet + screen format strings + the 126-string
+  staff-credits roll + handler/float tables) → CODE R2 `0x1F0A30..0x1F0F90` → outgoing
+  straddler-head `func_001F0F9C`. Adversarial caught 2 missed frameless leaves (former
+  func_001EA134→4, func_001EAE50→2). Dossier `docs/dossiers/lib-chunk30-1E1000-1F1000.md`;
+  data index `docs/data-index/rev0/chunk30-data-region-inventory.json`. **Chunk 30 source-owned.**
+- Current remainder: none in chunks 0-30 (`0x1000..0x1F1000` fully source-owned).
+  **Current frontier: `0x001F1000` (chunk 31).** Next is chunk 31 generated fallback
+  `0x001F1000..0x00201000` (ALL CODE); first continue outgoing FUNCTION straddler
+  `func_001F0F9C` as `func_001F0F9C_chunk31tail` (`0x001F1000..0x001F102C`, returns
+  jr$ra@0x001F1024). Chunk 31 contains the High-Attack streamsplit cleanup-guard site at
+  z64 `0x001F36F0` (patch-workbench candidate; static-only, needs runtime proof).
 
 Static dossiers live under `docs/dossiers/` and are the durable evidence notes
 for each promoted source-layout split.

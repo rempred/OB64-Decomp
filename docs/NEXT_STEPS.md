@@ -15,10 +15,10 @@ Current passing commands:
 node tools/verify_setup.js
 ```
 
-Current source mix: 30 tracked composite real-assembler chunks (chunk 0 177
-`boot/`; chunks 1–29 in `lib/`: 350, 216, 67, 376, 88, 78, 103, 87, 34, 35, 191, 74, 67, 94, 153, 95, 66, 95, 80, 175, 99, 99, 73, 63, 71, 96, 142, 97, 103) = 3,544 tracked
-source files, plus 70 generated fallback chunks. **Chunks 0–29 are fully
-source-owned as named code/data parts** (`0x00001000..0x001E1000`; chunk 16: 72 code + 23
+Current source mix: 31 tracked composite real-assembler chunks (chunk 0 177
+`boot/`; chunks 1–30 in `lib/`: 350, 216, 67, 376, 88, 78, 103, 87, 34, 35, 191, 74, 67, 94, 153, 95, 66, 95, 80, 175, 99, 99, 73, 63, 71, 96, 142, 97, 103, 122) = 3,666 tracked
+source files, plus 69 generated fallback chunks. **Chunks 0–30 are fully
+source-owned as named code/data parts** (`0x00001000..0x001F1000`; chunk 16: 72 code + 23
 data, MIXED — leading scenario record/pointer/float64 data + the neutral-encounter code path;
 chunk 17: 66 code + 0 data, ALL CODE — char-data/encounter code;
 chunk 18: 95 code + 0 data, ALL CODE — FP-heavy scenario/combat code;
@@ -38,8 +38,11 @@ encounter/resource code + status/menu string table island + display-list/float/c
 with incoming AND outgoing FUNCTION straddlers; chunk 28: 73 normal code + 22 data + 2 function
 straddlers, MIXED - stronghold/tutorial text + pointer/GBI-like data + packed command/script
 blobs + recovered frameless helpers; chunk 29: 97 normal code + 4 zero-fill data + 2 function
-straddlers, CODE-dominant MIXED - dense world-map/resource code + recovered frameless helpers);
-next is chunk 30 (`0x001E1000`).
+straddlers, CODE-dominant MIXED - dense world-map/resource code + recovered frameless helpers;
+chunk 30: 89 normal code + 31 data + 2 function straddlers, MIXED - FP/RDP display-list
+world-map/resource code wrapping the Sound-Test/BGM-selection screen + staff-credits data
+territory);
+next is chunk 31 (`0x001F1000`).
 
 The assembled code-region SHA256 is
 `40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`; the full
@@ -116,31 +119,26 @@ node tools/audit_code_region.js
    generates fallback owners for the rest. Keep `node tools/verify_setup.js`
    green after every promotion.
 
-3. Continue into chunk 30.
+3. Continue into chunk 31.
 
-   Patch-workbench backfill prerequisite: read
-   `docs/REVIEW_2026-06-23_patch-workbench-backfill.md` and
-   `docs/patch-workbench/rev0/patch-workbench-backfill-2026-06-23.json`
-   before splitting chunk 30. Keep any patch-workbench harvest lightweight and
-   subordinate to source ownership.
+   Chunks 0–30 (`0x00001000..0x001F1000`) are fully source-owned as named code/data
+   parts: chunk 0 in `boot/`; chunks 1–30 in `lib/` (dossiers `lib-chunk1-…` …
+   `lib-chunk30-…`). Chunk 30 (122 parts: 89 normal code + 31 data + 2 function
+   straddlers) is MIXED: incoming `func_001E0FC8_chunk30tail`, FP/RDP display-list
+   world-map/char-data/resource code, an interior Sound-Test/"Ogre Battle 64 BGM
+   Selection" + staff-credits DATA territory (`0x1EE574..0x1F0A30`), and outgoing
+   FUNCTION straddler `func_001F0F9C`. Data index
+   `docs/data-index/rev0/chunk30-data-region-inventory.json`.
 
-   Chunks 0–29 (`0x00001000..0x001E1000`) are fully source-owned as named code/data
-   parts: chunk 0 in `boot/`; chunks 1–29 in `lib/` (dossiers `lib-chunk1-…` …
-   `lib-chunk29-…`). Chunks 13–16 and 19–29 are MIXED; chunks 17–18 are ALL CODE.
-   Chunk 29 (103 parts: 97 normal code + 4 zero-fill data + 2 function straddlers)
-   is CODE-dominant MIXED: incoming `func_001D0694_chunk29tail`, dense world-map/resource
-   code, recovered frameless helpers at `0x1D9338` and `0x1E0A38`, four tiny zero-fill
-   data islands, and outgoing FUNCTION straddler `func_001E0FC8`. Data index
-   `docs/data-index/rev0/chunk29-data-region-inventory.json`.
-
-   **Next frontier: `0x001E1000` (chunk 30).** FIRST continue the OUTGOING FUNCTION straddler:
-   `func_001E0FC8` starts in chunk 29 at `0x001E0FC0` with the parent prologue at
-   `0x001E0FC8`, has no `jr$ra` before the chunk boundary, and must be emitted first in
-   chunk 30 as `func_001E0FC8_chunk30tail` starting at `0x001E1000`.
-   Pipeline: `slice_extract`/`check_splits`/`check_boundaries` + analysis + adversarial swarms
-   (Workflow) + a data-classification/index/export swarm for data regions.
-   Coverage now 69.0045% (code-only 56.4735%). See the DECOMP_LOG "Next Frontier" and
-   `docs/dossiers/lib-chunk29-1D1000-1E1000.md`.
+   **Next frontier: `0x001F1000` (chunk 31, ALL CODE).** FIRST continue the OUTGOING FUNCTION
+   straddler: `func_001F0F9C` starts in chunk 30 at `0x001F0F90` (preamble) with the parent
+   prologue at `0x001F0F9C`, has no `jr$ra` before the chunk boundary, and must be emitted
+   first in chunk 31 as `func_001F0F9C_chunk31tail` (`0x001F1000..0x001F102C`, returns
+   jr$ra@0x001F1024). Chunk 31 also contains the High-Attack streamsplit cleanup-guard site
+   at z64 `0x001F36F0` (record as a patch-workbench candidate, static-only / needs-runtime).
+   Pipeline: `slice_chunk`/`check_splits`/`check_boundaries` + analysis + adversarial swarms
+   (Workflow). Coverage now 71.3047% (code-only 58.4436%). See the DECOMP_LOG and
+   `docs/dossiers/lib-chunk30-1E1000-1F1000.md`.
 
 4. Keep the setup gate green.
 
