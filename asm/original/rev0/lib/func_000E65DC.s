@@ -1,0 +1,32 @@
+/*
+ * Original Rev 0 MIPS reference split.
+ * Parent source: asm/original/rev0/code_000E1000_000F1000.s
+ * z64 range: 0x000E65DC..0x000E6620 exclusive
+ * Decode comments are aids, not proof of semantic function boundaries.
+ */
+.set noat
+.set noreorder
+.text
+
+/* preamble-orphan 0xE65DC..0xE65FC (4x lui/lh 0x800E args) folded forward into prologue func @0xE65FC frame=0x18; jr $ra@0xE6618 + delay */
+func_000E65DC:
+/* 0x000E65DC 0x801561DC 0x3C04800E */ .word 0x3C04800E # lui $a0, 0x800E
+/* 0x000E65E0 0x801561E0 0x84847A36 */ .word 0x84847A36 # lh $a0, 0x7A36($a0)
+/* 0x000E65E4 0x801561E4 0x3C05800E */ .word 0x3C05800E # lui $a1, 0x800E
+/* 0x000E65E8 0x801561E8 0x84A57A38 */ .word 0x84A57A38 # lh $a1, 0x7A38($a1)
+/* 0x000E65EC 0x801561EC 0x3C06800E */ .word 0x3C06800E # lui $a2, 0x800E
+/* 0x000E65F0 0x801561F0 0x84C67A3A */ .word 0x84C67A3A # lh $a2, 0x7A3A($a2)
+/* 0x000E65F4 0x801561F4 0x3C07800E */ .word 0x3C07800E # lui $a3, 0x800E
+/* 0x000E65F8 0x801561F8 0x84E77A3C */ .word 0x84E77A3C # lh $a3, 0x7A3C($a3)
+
+/* function boundary candidate: func_000E65FC, size=84, kind=prologue */
+func_000E65FC:
+/* 0x000E65FC 0x801561FC 0x27BDFFE8 */ .word 0x27BDFFE8 # addiu $sp, $sp, -0x18
+/* 0x000E6600 0x80156200 0xAFBF0010 */ .word 0xAFBF0010 # sw $ra, 0x10($sp)
+/* 0x000E6604 0x80156204 0x0C01E19D */ .word 0x0C01E19D # jal 0x80078674
+/* 0x000E6608 0x80156208 0x00000000 */ .word 0x00000000 # nop
+/* 0x000E660C 0x8015620C 0x0C066804 */ .word 0x0C066804 # jal 0x8019A010
+/* 0x000E6610 0x80156210 0x00000000 */ .word 0x00000000 # nop
+/* 0x000E6614 0x80156214 0x8FBF0010 */ .word 0x8FBF0010 # lw $ra, 0x10($sp)
+/* 0x000E6618 0x80156218 0x03E00008 */ .word 0x03E00008 # jr $ra
+/* 0x000E661C 0x8015621C 0x27BD0018 */ .word 0x27BD0018 # addiu $sp, $sp, 0x18

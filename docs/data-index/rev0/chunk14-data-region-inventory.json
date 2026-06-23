@@ -1,0 +1,264 @@
+{
+  "chunk": 14,
+  "regions": [
+    {
+      "name": "leading data",
+      "rangeZ64": [
+        "0x000E1000",
+        "0x000E48F0"
+      ]
+    },
+    {
+      "name": "pointer-table island",
+      "rangeZ64": [
+        "0x000EAEFC",
+        "0x000EBBB0"
+      ]
+    }
+  ],
+  "totalDataBytes": 17828,
+  "classification": "raw-but-classified (conservative; no field semantics invented)",
+  "byClassBytes": {
+    "packed/record": 14728,
+    "zero-fill": 92,
+    "ram-pointer-table": 3008
+  },
+  "partCount": 20,
+  "incomingStraddler": {
+    "part": "data_000e1000_chunk14tail",
+    "rangeZ64": [
+      "0x000E1000",
+      "0x000E13D0"
+    ],
+    "note": "continuation of chunk-13 data_000e0bd0_chunk13head packed/glyph blob; ends 0xE13D0 at first DF000000 display-list record"
+  },
+  "formatFamilies": [
+    "packed/glyph/compressed graphics blob (continues from chunk 13)",
+    "F3D/RDP display-list / command stream (E7 pipesync / DF fullsync / E3 setothermode / DE DL markers)",
+    "4bpp indexed-pixel/glyph blobs",
+    "RAM-pointer tables (0x8019/0x800E band with identical-pointer fill runs)",
+    "debug format strings (data_000eaf10: speech.c overflow / Kao No Error / Serifu position)"
+  ],
+  "entries": [
+    {
+      "part": "data_000e1000_chunk14tail",
+      "rangeZ64": [
+        "0x000E1000",
+        "0x000E13D0"
+      ],
+      "bytes": 976,
+      "class": "packed/record",
+      "state": "raw-but-classified",
+      "note": "Continuation of data_000e0bd0_chunk13head: high-byte-dense packed/glyph/compressed blob (0xB997ACBB/0x7968ACB9/0xAACCCBCA style, bytes mostly 0x77-0xCC). Continuous from 0x000E1000"
+    },
+    {
+      "part": "data_000e13d0",
+      "rangeZ64": [
+        "0x000E13D0",
+        "0x000E1FE0"
+      ],
+      "bytes": 3088,
+      "class": "packed/record",
+      "state": "raw-but-classified",
+      "note": "Display-list / command stream interleaved with packed graphics. Opens with DF000000 00000000; thereafter recurring 2-word command records (DF/E6/E7/E8/F0/F2/F3/F5/E2/E3/D7/D9 heade"
+    },
+    {
+      "part": "data_000e1fe0",
+      "rangeZ64": [
+        "0x000E1FE0",
+        "0x000E21E0"
+      ],
+      "bytes": 512,
+      "class": "packed/record",
+      "state": "raw-but-classified",
+      "note": "Dense packed-bitmap blob: long runs of 0x66666666 / 0xFFFFFFFF / 0x88888888 / 0xEEEEEEEE words with 0x6842xxxx-style row/control words interspersed (e.g. 0x68421070, 0x68544000). H"
+    },
+    {
+      "part": "data_000e21e0",
+      "rangeZ64": [
+        "0x000E21E0",
+        "0x000E2540"
+      ],
+      "bytes": 864,
+      "class": "packed/record",
+      "state": "raw-but-classified",
+      "note": "Display-list-led packed graphics block: DF000000 00000000 header then high-byte-dense packed records (0x7A11BB19/0xD35BCB9D) followed by low-nibble packed-bitmap runs (0x01111011/0"
+    },
+    {
+      "part": "data_000e2540",
+      "rangeZ64": [
+        "0x000E2540",
+        "0x000E2B40"
+      ],
+      "bytes": 1536,
+      "class": "packed/record",
+      "state": "raw-but-classified",
+      "note": "Display-list / command stream plus packed graphics, continues to the chunk boundary. DF/E6/E7/F2/F3/F5/E2/E3/D7/D9 2-word records separate packed sub-blocks (0x00010001 nibble runs"
+    },
+    {
+      "part": "zero_fill_000e2b40",
+      "rangeZ64": [
+        "0x000E2B40",
+        "0x000E2B50"
+      ],
+      "bytes": 16,
+      "class": "zero-fill",
+      "state": "parsed",
+      "note": "4 zero words; leading alignment/pad before first graphics block."
+    },
+    {
+      "part": "data_000e2b50",
+      "rangeZ64": [
+        "0x000E2B50",
+        "0x000E2EE4"
+      ],
+      "bytes": 916,
+      "class": "packed/record",
+      "state": "raw-but-classified",
+      "note": "Graphics block 1: packed pixel header (0x0001D8CE...) then F3D/RDP-style display-list stream. E7 (pipesync) markers at e2b70/e2ba8/e2bd8/e2f08; E3 setothermode_h (0x001001/0x001201"
+    },
+    {
+      "part": "zero_fill_000e2ee4",
+      "rangeZ64": [
+        "0x000E2EE4",
+        "0x000E2EFC"
+      ],
+      "bytes": 24,
+      "class": "zero-fill",
+      "state": "parsed",
+      "note": "6 zero words separating graphics block 1 from the main stream."
+    },
+    {
+      "part": "data_000e2efc",
+      "rangeZ64": [
+        "0x000E2EFC",
+        "0x000E33E0"
+      ],
+      "bytes": 1252,
+      "class": "packed/record",
+      "state": "raw-but-classified",
+      "note": "Interleaved RDP/display-list command + record stream and 4bpp pixel blobs. Numerous E7 pipesync, E3 setothermode_h, DF fullsync markers; recurring 0x80008000 packed pairs (NOT poin"
+    },
+    {
+      "part": "zero_fill_000e33e0",
+      "rangeZ64": [
+        "0x000E33E0",
+        "0x000E3400"
+      ],
+      "bytes": 32,
+      "class": "zero-fill",
+      "state": "parsed",
+      "note": "8 zero words; block separator within the graphics stream."
+    },
+    {
+      "part": "data_000e3400",
+      "rangeZ64": [
+        "0x000E3400",
+        "0x000E44BC"
+      ],
+      "bytes": 4284,
+      "class": "packed/record",
+      "state": "raw-but-classified",
+      "note": "Continuation of interleaved display-list/record/pixel graphics. Dense E7/E3/DF RDP command markers, recurring 0x80008000 packed pairs, 5-word coordinate/size records, embedded sing"
+    },
+    {
+      "part": "data_000e44bc",
+      "rangeZ64": [
+        "0x000E44BC",
+        "0x000E48F0"
+      ],
+      "bytes": 1076,
+      "class": "packed/record",
+      "state": "raw-but-classified",
+      "note": "Monotonically increasing 32-bit small-int table at e44bc (00000001,00000003,00000006,00000009,0000000E,00000015,00000027... cumulative/LUT-like) followed by further display-list/pi"
+    },
+    {
+      "part": "zero_fill_000eaefc",
+      "rangeZ64": [
+        "0x000EAEFC",
+        "0x000EAF10"
+      ],
+      "bytes": 20,
+      "class": "zero-fill",
+      "state": "parsed",
+      "note": "Leading pad: 5 words, all 0x00000000 except 0x000EAF00=0x00000008. Aligns the following table block."
+    },
+    {
+      "part": "data_000eaf10",
+      "rangeZ64": [
+        "0x000EAF10",
+        "0x000EAFE8"
+      ],
+      "bytes": 216,
+      "class": "packed/record",
+      "state": "raw-but-classified",
+      "note": "Packed interlude (54 words). Opens with 2 RAM pointers 0x8019E1C8, 0x800E91D0, then small ints and embedded ASCII debug/format strings ('speech.c: FdleWdk is...', 'Kao No Error', '"
+    },
+    {
+      "part": "table_000eafe8",
+      "rangeZ64": [
+        "0x000EAFE8",
+        "0x000EB300"
+      ],
+      "bytes": 792,
+      "class": "ram-pointer-table",
+      "state": "raw-but-classified",
+      "note": "RAM-pointer table (0x80xxxxxx words). Band 0x80199xxx first (default-fill 0x80199D18, ~88-word run 0x000EB01C-0x000EB170), then band 0x8019Cxxx (default-fill 0x8019C5BC). Interior "
+    },
+    {
+      "part": "table_000eb300",
+      "rangeZ64": [
+        "0x000EB300",
+        "0x000EB480"
+      ],
+      "bytes": 384,
+      "class": "ram-pointer-table",
+      "state": "raw-but-classified",
+      "note": "RAM-pointer table, band 0x8019Cxxx, default-fill 0x8019C7F8 (dominant). Trailing single 0x00000000 pad at 0x000EB47C kept inside."
+    },
+    {
+      "part": "table_000eb480",
+      "rangeZ64": [
+        "0x000EB480",
+        "0x000EB600"
+      ],
+      "bytes": 384,
+      "class": "ram-pointer-table",
+      "state": "raw-but-classified",
+      "note": "RAM-pointer table, bands 0x8019Cxxx/0x8019Dxxx, default-fill 0x8019D0A4 (dominant). Trailing single 0x00000000 pad at 0x000EB5FC kept inside."
+    },
+    {
+      "part": "table_000eb600",
+      "rangeZ64": [
+        "0x000EB600",
+        "0x000EB780"
+      ],
+      "bytes": 384,
+      "class": "ram-pointer-table",
+      "state": "raw-but-classified",
+      "note": "RAM-pointer table, band 0x8019Dxxx, default-fill 0x8019D394 (dominant). Trailing single 0x00000000 pad at 0x000EB77C kept inside."
+    },
+    {
+      "part": "table_000eb780",
+      "rangeZ64": [
+        "0x000EB780",
+        "0x000EBBA8"
+      ],
+      "bytes": 1064,
+      "class": "ram-pointer-table",
+      "state": "raw-but-classified",
+      "note": "Largest RAM-pointer table (266 words), band 0x8019Dxxx. Three default-fill values in sub-runs: 0x8019DA14 (0x000EB780-0x000EB8E4), 0x8019DB0C (0x000EB8E8-0x000EBA50), 0x8019DF38 (0"
+    },
+    {
+      "part": "data_000ebba8",
+      "rangeZ64": [
+        "0x000EBBA8",
+        "0x000EBBB0"
+      ],
+      "bytes": 8,
+      "class": "packed/record",
+      "state": "raw-but-classified",
+      "note": "Tail (6 words): 2x 0x00000000 pad at 0x000EBBA8-0x000EBBAC, then 4 non-pointer words 0x3C03800E,0x90637A32,0x3C06800E,0x90C67A33 (lui/lbu against 0x800E base) directly preceding th"
+    }
+  ]
+}
