@@ -1,0 +1,637 @@
+{
+  "runSlug": "patch-workbench-backfill-rev0",
+  "harvestedAt": "2026-06-23T11:00:18.0251048-04:00",
+  "completedRange": {
+    "romStart": "0x00001000",
+    "romEndExclusive": "0x001C1000",
+    "firstChunk": 0,
+    "lastChunk": 27,
+    "nextFrontier": "0x001C1000",
+    "nextFrontierChunk": 28,
+    "nextFirstAction": "func_001C0FC8_chunk28tail",
+    "sourceOwnedBytes": 1835008,
+    "sourceOwnedCoveragePercent": 64.4042,
+    "codeOnlyBytes": 1514224,
+    "codeOnlyCoveragePercent": 53.1455,
+    "trackedCompositeChunks": 28,
+    "trackedSourceFiles": 3344,
+    "generatedFallbackChunks": 72
+  },
+  "chunks": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23,
+    24,
+    25,
+    26,
+    27
+  ],
+  "behaviorTags": [
+    {
+      "id": "squads-runtime-template-substitution",
+      "status": "proven",
+      "confidence": "high",
+      "rangeZ64": "0x0019554C..0x001957D0",
+      "summary": "Enemy/squad record-builder runtime override path. Existing editor lane replaces the in-range bounds-check pair at 0x00195584/0x00195588 and resumes at 0x0019558C.",
+      "provenance": [
+        {
+          "path": "asm/original/rev0/lib/func_0019554C.s",
+          "lines": "11,28-30"
+        },
+        {
+          "path": "C:/Users/Joe/Projects/OgreBattlel64/editor/squadblob.js",
+          "lines": "6-12,27-37"
+        },
+        {
+          "path": "C:/Users/Joe/Projects/OgreBattlel64/AGENTS.md",
+          "lines": "193"
+        }
+      ]
+    },
+    {
+      "id": "chaos-frame-army-management-counter",
+      "status": "proven",
+      "confidence": "high",
+      "rangeZ64": "0x00023F7C plus bootstrap 0x00034E78",
+      "summary": "Army Management Chaos Frame display patch keeps the func_80093A00 hook and uses an in-range bootstrap lane before DMAing the module from tail padding.",
+      "provenance": [
+        {
+          "path": "asm/original/rev0/lib/func_00023e00.s",
+          "lines": "105-110"
+        },
+        {
+          "path": "C:/Users/Joe/Projects/OgreBattlel64/editor/tools-data.js",
+          "lines": "14-37"
+        },
+        {
+          "path": "C:/Users/Joe/Projects/OgreBattlel64/AGENTS.md",
+          "lines": "75"
+        }
+      ]
+    },
+    {
+      "id": "high-attack-streamsplit-bootstrap-only",
+      "status": "needs-runtime",
+      "confidence": "medium",
+      "rangeZ64": "0x00034F00 bootstrap in scope; primary behavior hooks out of scope",
+      "summary": "High Attack streamsplit has an in-range bootstrap cave, but the behavior hooks are outside completed chunks 0-27 and current moved-lane runtime proof remains unresolved.",
+      "provenance": [
+        {
+          "path": "asm/original/rev0/lib/zero_fill_00034e80.s",
+          "lines": "44,72"
+        },
+        {
+          "path": "C:/Users/Joe/Projects/OgreBattlel64/editor/tools-data.js",
+          "lines": "102-165"
+        },
+        {
+          "path": "C:/Users/Joe/Projects/OgreBattlel64/docs/combat-attack-buffer.md",
+          "lines": "5"
+        }
+      ]
+    },
+    {
+      "id": "scenario-overlay-runtime-override-archaeology",
+      "status": "proven",
+      "confidence": "high",
+      "rangeZ64": "0x000F07FC hook plus 0x0015FBF0 stub cave",
+      "summary": "Older runtime-override hook family is runtime-proven for generated scenario overrides and remains patch-workbench archaeology for already-owned ranges.",
+      "provenance": [
+        {
+          "path": "C:/Users/Joe/Projects/OgreBattlel64/docs/runtime-override-rom-plan.md",
+          "lines": "150-154,476-486"
+        },
+        {
+          "path": "C:/Users/Joe/Projects/OgreBattlel64/wiki/runtime-override-demo-volmus-full-overlayf07fc.json",
+          "lines": "4"
+        }
+      ]
+    },
+    {
+      "id": "direct-reward-writer-queue-path",
+      "status": "proven",
+      "confidence": "high",
+      "rangeZ64": "0x00132B80",
+      "summary": "Direct reward writer hook has ROM-side proof for the narrow reward queue path.",
+      "provenance": [
+        {
+          "path": "C:/Users/Joe/Projects/OgreBattlel64/docs/runtime-override-rom-plan.md",
+          "lines": "174-176,415-418"
+        },
+        {
+          "path": "C:/Users/Joe/Projects/OgreBattlel64/wiki/runtime-override-plan-crenel-valkyrie-powerfruit-direct132b80.json",
+          "lines": "4"
+        }
+      ]
+    },
+    {
+      "id": "overlay-address-space-nonlinear-mapping",
+      "status": "caveat",
+      "confidence": "high",
+      "rangeZ64": "0x0002F000..0x001C1000",
+      "summary": "Only low resident ROM follows the simple RAM = ROM + 0x8006FC00 mapping; later code is overlay/state-loaded and must not be back-mapped from 0x8022/0x8023 decode comments.",
+      "provenance": [
+        {
+          "path": "C:/Users/Joe/Projects/OgreBattlel64/docs/overlay-system.md",
+          "lines": "5,11"
+        },
+        {
+          "path": "docs/REVIEW_2026-06-23_chunks26-27-source-ownership.md",
+          "lines": "48"
+        }
+      ]
+    }
+  ],
+  "hookSites": [
+    {
+      "id": "squads-record-builder-hook",
+      "status": "proven",
+      "confidence": "high",
+      "hookZ64": "0x00195584",
+      "hookRam": "0x80205184",
+      "owner": "asm/original/rev0/lib/func_0019554C.s",
+      "originalWords": [
+        "0x2EA2001E",
+        "0x38420001"
+      ],
+      "displacedInstructions": [
+        "sltiu $v0,$s5,0x1E",
+        "xori $v0,$v0,0x0001"
+      ],
+      "likelyResumeZ64": "0x0019558C",
+      "likelyResumeRam": "0x8020518C",
+      "hazards": [
+        "Hook is after $ra save at 0x00195580.",
+        "Resolver must re-run the two displaced words before resuming at the or/beq sequence.",
+        "Preserve $s5/$v0/$v1 contract around the bounds check."
+      ],
+      "provenance": [
+        {
+          "path": "asm/original/rev0/lib/func_0019554C.s",
+          "lines": "24-31"
+        },
+        {
+          "path": "C:/Users/Joe/Projects/OgreBattlel64/editor/squadblob.js",
+          "lines": "27-37"
+        }
+      ]
+    },
+    {
+      "id": "chaos-frame-army-management-hook",
+      "status": "proven",
+      "confidence": "high",
+      "hookZ64": "0x00023F7C",
+      "hookRam": "0x80093B7C",
+      "owner": "asm/original/rev0/lib/func_00023e00.s",
+      "originalWords": [
+        "0x0C024050",
+        "0x24050040"
+      ],
+      "patchedWords": [
+        "0x0802929E",
+        "0x24050040"
+      ],
+      "displacedInstructions": [
+        "jal 0x80090140",
+        "addiu $a1,$zero,0x40"
+      ],
+      "likelyResumeZ64": "0x00023F84",
+      "likelyResumeRam": "0x80093B84",
+      "hazards": [
+        "The patched jump preserves the original delay slot at 0x00023F80.",
+        "Any alternate hook must preserve $a0/$a1 setup before the next jal at 0x00023F84.",
+        "Runtime proof covers the current Army Management lane; remaining hardening is pixel/sub-screen regression."
+      ],
+      "provenance": [
+        {
+          "path": "asm/original/rev0/lib/func_00023e00.s",
+          "lines": "105-110"
+        },
+        {
+          "path": "C:/Users/Joe/Projects/OgreBattlel64/editor/tools-data.js",
+          "lines": "20-37"
+        }
+      ]
+    },
+    {
+      "id": "high-attack-streamsplit-primary-hooks",
+      "status": "candidate",
+      "confidence": "medium",
+      "hookZ64": "0x0021CD48",
+      "owner": "outside completed chunks 0-27",
+      "originalWords": [
+        "0x3C02801D",
+        "0x8C42E8C0"
+      ],
+      "patchedWords": [
+        "0x0C0292C0",
+        "0x00000000"
+      ],
+      "likelyResumeZ64": "0x0021CD50",
+      "hazards": [
+        "Primary insert hook is outside the completed/source-owned backfill scope.",
+        "Current completed-range artifact may only classify the in-scope bootstrap cave and tail/free-RAM lane.",
+        "Fresh moved-lane runtime gates are required before release-ready/proven status."
+      ],
+      "provenance": [
+        {
+          "path": "C:/Users/Joe/Projects/OgreBattlel64/editor/tools-data.js",
+          "lines": "111-123"
+        },
+        {
+          "path": "C:/Users/Joe/Projects/OgreBattlel64/docs/runtime-override-rom-plan.md",
+          "lines": "18-22"
+        }
+      ]
+    },
+    {
+      "id": "runtime-override-overlay-hook",
+      "status": "proven",
+      "confidence": "high",
+      "hookZ64": "0x000F07FC",
+      "hookRam": "0x801A3A9C",
+      "originalWords": [
+        "0x27BDFF90",
+        "0xAFB50064"
+      ],
+      "stubCaveZ64": "0x0015FBF0",
+      "stubCaveRam": "0x8020EA80",
+      "likelyResumeRam": "0x801A3AA4",
+      "hazards": [
+        "Overlay/state-loaded path: runtime RAM must be proven in the current state before reuse.",
+        "Use as archaeology; current Squads implementation moved to a record-builder hook instead."
+      ],
+      "provenance": [
+        {
+          "path": "C:/Users/Joe/Projects/OgreBattlel64/docs/runtime-override-rom-plan.md",
+          "lines": "150-154,476-486"
+        }
+      ]
+    },
+    {
+      "id": "direct-reward-writer-hook",
+      "status": "proven",
+      "confidence": "high",
+      "hookZ64": "0x00132B80",
+      "hookRam": "0x801DE440",
+      "originalWords": [
+        "0x27BDFFB8",
+        "0xAFB20038"
+      ],
+      "likelyResumeRam": "0x801DE448",
+      "hazards": [
+        "Narrow queue-only reward path; do not generalize to class/drop/gear without separate proof."
+      ],
+      "provenance": [
+        {
+          "path": "C:/Users/Joe/Projects/OgreBattlel64/docs/runtime-override-rom-plan.md",
+          "lines": "415-418"
+        }
+      ]
+    },
+    {
+      "id": "scenario-main-hook",
+      "status": "needs-runtime",
+      "confidence": "medium",
+      "hookZ64": "0x001574B8",
+      "hookRam": "0x80206348",
+      "originalWords": [
+        "0x27BDFF78",
+        "0xAFBF0080"
+      ],
+      "likelyResumeRam": "0x80206350",
+      "hazards": [
+        "Survived probes but did not reliably produce visible effect.",
+        "Timing relative to load transition remains unresolved."
+      ],
+      "provenance": [
+        {
+          "path": "C:/Users/Joe/Projects/OgreBattlel64/docs/runtime-override-rom-plan.md",
+          "lines": "123-127,257-265"
+        }
+      ]
+    },
+    {
+      "id": "scenario-dispatch-hook",
+      "status": "rejected",
+      "confidence": "high",
+      "hookZ64": "0x00102FA8",
+      "hookRam": "0x801AE868",
+      "rejectionReason": "A pure no-op trampoline stalled Volmus preload before drop slots populated.",
+      "provenance": [
+        {
+          "path": "C:/Users/Joe/Projects/OgreBattlel64/docs/runtime-override-rom-plan.md",
+          "lines": "136-145"
+        },
+        {
+          "path": "C:/Users/Joe/Projects/OgreBattlel64/wiki/runtime-override-hook-experiments.json",
+          "lines": "24"
+        }
+      ]
+    },
+    {
+      "id": "stable-anchor-00008A58",
+      "status": "rejected",
+      "confidence": "high",
+      "hookZ64": "0x00008A58",
+      "rejectionReason": "Later disassembly showed this was display-list/resource-buffer confusion, not a squad hook anchor.",
+      "provenance": [
+        {
+          "path": "C:/Users/Joe/Projects/OgreBattlel64/docs/runtime-override-rom-plan.md",
+          "lines": "679-700"
+        }
+      ]
+    }
+  ],
+  "dataFreeSpace": [
+    {
+      "id": "squads-bootstrap-cave",
+      "status": "proven",
+      "classification": "zero-fill bootstrap cave",
+      "rangeZ64": "0x000283C4..0x00028430",
+      "sizeBytes": 108,
+      "owner": "asm/original/rev0/lib/data_000283C4.s",
+      "runtimeRam": "0x80097FC4",
+      "notes": "Parent/editor evidence uses this all-zero owned data block as the Squads bootstrap lane.",
+      "provenance": [
+        {
+          "path": "asm/original/rev0/lib/data_000283C4.s",
+          "lines": "4,12-13"
+        },
+        {
+          "path": "docs/audit/2026-06-23-parent-evidence-audit-chunks0-11.md",
+          "lines": "73,98"
+        }
+      ]
+    },
+    {
+      "id": "chaos-frame-bootstrap-cave",
+      "status": "proven",
+      "classification": "cross-file zero-fill bootstrap cave",
+      "rangeZ64": "0x00034E78..0x00034EE8",
+      "sizeBytes": 112,
+      "owners": [
+        "asm/original/rev0/lib/rsp_ucode_text_00034100.s",
+        "asm/original/rev0/lib/zero_fill_00034e80.s"
+      ],
+      "runtimeRam": "0x800A4A78",
+      "notes": "Starts on an all-zero tail word inside the RSP ucode owner and continues through zero_fill_00034e80.",
+      "provenance": [
+        {
+          "path": "asm/original/rev0/lib/rsp_ucode_text_00034100.s",
+          "lines": "874"
+        },
+        {
+          "path": "asm/original/rev0/lib/zero_fill_00034e80.s",
+          "lines": "1-44"
+        },
+        {
+          "path": "C:/Users/Joe/Projects/OgreBattlel64/editor/tools-data.js",
+          "lines": "20-37"
+        }
+      ]
+    },
+    {
+      "id": "high-attack-bootstrap-cave",
+      "status": "candidate",
+      "classification": "zero-fill bootstrap cave",
+      "rangeZ64": "0x00034F00..0x00034F64",
+      "sizeBytes": 100,
+      "owner": "asm/original/rev0/lib/zero_fill_00034e80.s",
+      "runtimeRam": "0x800A4B00",
+      "notes": "In completed scope, but behavior hooks and runtime proof are outside this backfill scope.",
+      "provenance": [
+        {
+          "path": "asm/original/rev0/lib/zero_fill_00034e80.s",
+          "lines": "44-68"
+        },
+        {
+          "path": "C:/Users/Joe/Projects/OgreBattlel64/editor/tools-data.js",
+          "lines": "111-165"
+        }
+      ]
+    },
+    {
+      "id": "tail-padding-runtime-lanes",
+      "status": "candidate",
+      "classification": "clean trailing 0xFF padding, out of completed source-owned chunk range",
+      "rangeZ64": "0x0275DD40..0x02800000",
+      "allocatedLanes": [
+        {
+          "feature": "squads",
+          "tailZ64": "0x02780000",
+          "moduleRam": "0x80400000"
+        },
+        {
+          "feature": "chaos-frame",
+          "tailZ64": "0x02790000",
+          "moduleRam": "0x80420000"
+        },
+        {
+          "feature": "high-attack",
+          "tailZ64": "0x027A0000",
+          "moduleRam": "0x80440000"
+        }
+      ],
+      "notes": "Structurally classified as clean padding by the full-ROM ledger, but outside chunks 0-27; use explicit collision metadata and mutual exclusion if lanes ever overlap.",
+      "provenance": [
+        {
+          "path": "AGENTS.md",
+          "lines": "96-97"
+        },
+        {
+          "path": "C:/Users/Joe/Projects/OgreBattlel64/AGENTS.md",
+          "lines": "33,45"
+        }
+      ]
+    },
+    {
+      "id": "cluster-3-tail-data",
+      "status": "rejected",
+      "classification": "not free space",
+      "rangeZ64": "0x0275415B..0x0275DD40",
+      "reason": "Preserved as ambiguous raw tail data; do not allocate patch payloads here.",
+      "provenance": [
+        {
+          "path": "AGENTS.md",
+          "lines": "96,128"
+        },
+        {
+          "path": "docs/FULL_ROM_SOURCE_MANIFEST.md",
+          "lines": "59"
+        }
+      ]
+    }
+  ],
+  "runtimeRequests": [
+    {
+      "id": "high-attack-rev0-moved-lane-gates",
+      "status": "needs-runtime",
+      "request": "Rerun clean Project64 interpreter cold-boot/manual or harness gates for the moved Rev 0 streamsplit lane with post-complete frames; confirm no 0xB0 corruption and no early-completion/menu-stall regressions.",
+      "provenance": [
+        {
+          "path": "C:/Users/Joe/Projects/OgreBattlel64/docs/combat-attack-buffer.md",
+          "lines": "5"
+        },
+        {
+          "path": "C:/Users/Joe/Projects/OgreBattlel64/AGENTS.md",
+          "lines": "405"
+        }
+      ]
+    },
+    {
+      "id": "squads-raw-capacity-placement-safety",
+      "status": "needs-runtime",
+      "request": "For raw-capacity squads, capture deployment, map object placement, battle targeting, and movement/AI state before treating over-5-unit records as patch-safe.",
+      "provenance": [
+        {
+          "path": "C:/Users/Joe/Projects/OgreBattlel64/AGENTS.md",
+          "lines": "73"
+        }
+      ]
+    },
+    {
+      "id": "chaos-frame-subscreen-regression",
+      "status": "needs-runtime",
+      "request": "Rerun the 30-frame pixel diff and sub-screen regression gates for the no-state-guard Chaos Frame module.",
+      "provenance": [
+        {
+          "path": "C:/Users/Joe/Projects/OgreBattlel64/AGENTS.md",
+          "lines": "75"
+        }
+      ]
+    },
+    {
+      "id": "scenario-main-hook-timing",
+      "status": "needs-runtime",
+      "request": "If 0x001574B8 is reused, capture registers/state around the load transition and prove visible effect timing before marking it candidate-safe.",
+      "provenance": [
+        {
+          "path": "C:/Users/Joe/Projects/OgreBattlel64/docs/runtime-override-rom-plan.md",
+          "lines": "123-127,257-265"
+        }
+      ]
+    },
+    {
+      "id": "overlay-mapping-register-proof",
+      "status": "needs-runtime",
+      "request": "For any overlay-band hook, capture runtime PC, RAM mapping, relocated globals, and registers in the exact state used by the patch; never infer from 0x8022/0x8023 decode comments alone.",
+      "provenance": [
+        {
+          "path": "C:/Users/Joe/Projects/OgreBattlel64/docs/overlay-system.md",
+          "lines": "5,11"
+        },
+        {
+          "path": "docs/REVIEW_2026-06-23_chunks26-27-source-ownership.md",
+          "lines": "48"
+        }
+      ]
+    }
+  ],
+  "rejected": [
+    {
+      "id": "current-chaos-frame-old-low-caves",
+      "status": "rejected",
+      "reason": "Old Chaos Frame payload/title caves 0x033DD0 and 0x030550 are superseded and intentionally untouched by the current module lane.",
+      "provenance": [
+        {
+          "path": "C:/Users/Joe/Projects/OgreBattlel64/AGENTS.md",
+          "lines": "75"
+        }
+      ]
+    },
+    {
+      "id": "scenario-dispatch-hook-00102FA8",
+      "status": "rejected",
+      "reason": "No-op trampoline stalled Volmus preload before drop slots populated.",
+      "provenance": [
+        {
+          "path": "C:/Users/Joe/Projects/OgreBattlel64/docs/runtime-override-rom-plan.md",
+          "lines": "136-145"
+        }
+      ]
+    },
+    {
+      "id": "stable-anchor-00008A58-800A81C8",
+      "status": "rejected",
+      "reason": "Display-list/resource-buffer confusion; not a squad hook anchor.",
+      "provenance": [
+        {
+          "path": "C:/Users/Joe/Projects/OgreBattlel64/docs/runtime-override-rom-plan.md",
+          "lines": "696-700"
+        }
+      ]
+    },
+    {
+      "id": "manifest-only-patch-harvest",
+      "status": "rejected",
+      "reason": "Current manifest omits kind/straddler metadata; this artifact cites source headers, dossiers, and parent proof directly instead of inferring hook/data status from manifest-only fields.",
+      "provenance": [
+        {
+          "path": "tools/split_original_mips_part.js",
+          "lines": "245-252,299-300"
+        },
+        {
+          "path": "tools/check_manifest.js",
+          "lines": "64"
+        }
+      ]
+    }
+  ],
+  "provenance": [
+    {
+      "id": "source-owner-frontier-review",
+      "path": "docs/REVIEW_2026-06-23_chunks26-27-source-ownership.md",
+      "lines": "11-13,37,48,82"
+    },
+    {
+      "id": "patch-workbench-template-rules",
+      "path": "docs/templates/chunk-source-ownership-run-prompt.md",
+      "lines": "169-191,378-398"
+    },
+    {
+      "id": "handoff-template-rules",
+      "path": "docs/templates/review-handoff-prompt-template.md",
+      "lines": "97-110"
+    },
+    {
+      "id": "parent-allocation-rule",
+      "path": "C:/Users/Joe/Projects/OgreBattlel64/AGENTS.md",
+      "lines": "33,45"
+    },
+    {
+      "id": "local-tail-padding-ledger",
+      "path": "AGENTS.md",
+      "lines": "96-97,128"
+    }
+  ],
+  "caveats": [
+    "This is a lightweight backfill for already source-owned Rev 0 chunks 0-27; it does not start chunk 28 and does not widen source ownership.",
+    "High Attack behavior hooks are outside the completed-range scope; only bootstrap/free-space metadata is harvested here.",
+    "Static-only claims stay candidate, rejected, or needs-runtime. Entries marked proven cite parent runtime or controlled mutation evidence.",
+    "The current manifest does not persist kind/straddler metadata. Future automated patch harvesters should add manifest kind/note/entry fields before relying on manifest-only classification.",
+    "Same-file duplicate labels remain in older source-owner files. The current frontier duplicate for func_001C0FC8 was cleaned, but a broader label-duplicate suppression gate is still a separate follow-up.",
+    "Overlay/RAM address-space claims require runtime-state proof; decode-comment RAM columns are not enough for later overlays."
+  ]
+}

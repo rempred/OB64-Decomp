@@ -9,7 +9,6 @@
 .text
 
 /* Straddler head: this function begins here and continues into the next 64 KiB chunk. OUTGOING FUNCTION STRADDLER-HEAD. Prologue addiu $sp,-0x18 @0x1C0FC8 (sw $s0,0x10/sw $ra,0x14). Body reads lbu 0xF($s0), or with $a3, jal 0x8016FBE0, sets sh 0x46($s0)=2. NO jr$ra in [0x1C0FC8,0x1C1000) — last word @0x1C0FFC is lhu $a0,0x46($s0); function CONTINUES into chunk 28. Previous fn func_001C0F10 already returned via jr$ra@0x1C0FC0. */
-func_001C0FC8:
 /* function boundary candidate: func_001C0FC8, size=92, kind=prologue */
 func_001C0FC8:
 /* 0x001C0FC8 0x80230BC8 0x27BDFFE8 */ .word 0x27BDFFE8 # addiu $sp, $sp, -0x18

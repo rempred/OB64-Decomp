@@ -350,7 +350,7 @@ These outputs are useful but ignored:
   func_0019554C [hook @0x195584] + huge func_001960A8 + dispatcher func_001977E0 + 2 inline data
   islands) → a shop-dialogue STRING POOL (`0x19BFF0..0x19C760`, rodata + handler-pointer tables) →
   CODE2 (`0x19C760..0x1A1000`) ending in the outgoing FUNCTION straddler-head `func_001A0264` into
-  chunk 26; 0 data in chunk 18 (dossiers
+  chunk 26; chunks 26-27 are now also source-owned, and chunk 18 remains all code (dossiers
   `docs/dossiers/boot-resource-decode-subsystem-B030-F22C.md`,
   `docs/dossiers/boot-codec-libc-vec3-F22C-11000.md`,
   `docs/dossiers/lib-chunk1-11000-21000.md`,
@@ -377,7 +377,9 @@ These outputs are useful but ignored:
   `docs/dossiers/lib-chunk22-161000-171000.md`,
   `docs/dossiers/lib-chunk23-171000-181000.md`,
   `docs/dossiers/lib-chunk24-181000-191000.md`,
-  `docs/dossiers/lib-chunk25-191000-1A1000.md`).
+  `docs/dossiers/lib-chunk25-191000-1A1000.md`,
+  `docs/dossiers/lib-chunk26-1A1000-1B1000.md`,
+  `docs/dossiers/lib-chunk27-1B1000-1C1000.md`).
 - Executable extent (evidence, `tools/audit_code_region.js`):
   `0x00001000..0x002B89B4`. The trailing `0x002B89B4..0x0063676C` (3,661,240
   bytes, 56.24%) has zero `jr $ra` and is non-code data still emitted as `.word`

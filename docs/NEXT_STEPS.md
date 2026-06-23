@@ -115,6 +115,12 @@ node tools/audit_code_region.js
 
 3. Continue into chunk 28.
 
+   Patch-workbench backfill prerequisite: read
+   `docs/REVIEW_2026-06-23_patch-workbench-backfill.md` and
+   `docs/patch-workbench/rev0/patch-workbench-backfill-2026-06-23.json`
+   before splitting chunk 28. Keep any patch-workbench harvest lightweight and
+   subordinate to source ownership.
+
    Chunks 0–27 (`0x00001000..0x001C1000`) are fully source-owned as named code/data
    parts: chunk 0 in `boot/`; chunks 1–27 in `lib/` (dossiers `lib-chunk1-…` …
    `lib-chunk27-…`). Chunks 13–16 and 19–27 are MIXED; chunks 17–18 are ALL CODE.

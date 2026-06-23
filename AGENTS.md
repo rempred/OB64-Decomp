@@ -401,7 +401,7 @@ Next frontier is **`0x001C1000` (chunk 28)** — FIRST continue the OUTGOING FUN
 has no entry preamble, and has no `jr$ra` before the chunk boundary — emit
 `func_001C0FC8_chunk28tail` starting at `0x1C1000` first and confirm its return before splitting
 the rest of chunk 28.
-Coverage now 62.10% (code-only ≈ 50.95%).
+Coverage now 64.4042% (code-only 53.1455%).
 The chunk-split pipeline is tracked:
 `scan_functions` (or `dump_function_context`+`plan_chunk` when parent-detected) →
 `tools/slice_chunk.js` (`--disasm` for mixed/sub-region) → analysis swarm →
