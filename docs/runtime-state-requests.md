@@ -43,7 +43,7 @@ The catalog usage guide is `docs/runtime-state-catalog.md`.
 
 | ID | Status | Priority | Needed state or nearest catalog slot | Request / proof needed | Notes |
 | --- | --- | --- | --- | --- | --- |
-| RSR-001 | needs-capture | high | `battle\battle_loading_or_intro`, `battle\battle_command_prompt`, `battle\battle_active`, `battle\battle_ending_or_results` | Curate broad vanilla battle states that can prove battle overlay mapping, active call paths, scheduler/stream state, command UI state, and battle cleanup/results transitions. | Current `battle` catalog is empty. Blocks better confidence for High Attack streamsplit style patch sites and battle-path source ownership. |
+| RSR-001 | candidate-state-available | high | `battle\battle_loading_or_intro`, `battle\battle_command_prompt`, `battle\battle_active`, `battle\battle_ending_or_results` | Use the broad vanilla battle states to prove battle overlay mapping, active call paths, scheduler/stream state, command UI state, and battle cleanup/results transitions. | 19 combat states are now present and passed static header identity checks on 2026-06-23. Runtime observations are still needed before any behavior or patch safety can be marked proven. |
 | RSR-002 | needs-capture | high | `data-coverage\normal_enemy_squads_loaded` | Capture a state with normal enemy squads loaded so agents can prove loaded EDAT/enemy-squad RAM layout, runtime squad selectors, and placement assumptions. | Supports raw squad placement safety, squad runtime hook work, and data table ownership. |
 | RSR-003 | needs-capture | high | `data-coverage\neutral_encounter_available` | Capture a state where a neutral encounter can be inspected before and during load, with watches for encounter table reads and selected encounter data. | Supports neutral encounter table ownership and patch-safety checks. |
 | RSR-004 | needs-capture | medium | `data-coverage\shop_inventory_loaded` plus existing `core-menus\shop` as a possible starting point | Prove where shop inventory rows are loaded/read in RAM, including exact source table ranges, registers, and menu update paths. | A shop menu state exists, but the data-coverage slot is empty. |
@@ -56,6 +56,27 @@ The catalog usage guide is `docs/runtime-state-catalog.md`.
 | RSR-011 | needs-runtime | high | Existing curated states if sufficient; otherwise exact missing category per hook | For patch-workbench hook candidates, record original words, displaced instructions, likely resume addresses, delay-slot/prologue/epilogue hazards, and runtime proof of active path/register assumptions before marking any hook proven. | This is a standing proof request for candidate hook sites harvested during source ownership. |
 | RSR-012 | satisfied | high | Existing curated states plus request-specific missing captures | Retrospectively triage previous source-owned chunks and patch-workbench artifacts against the curated state catalog: mark requests as served by existing state, still needs capture, or not actionable. | Next source-ownership prompt should run this as a bounded one-shot over already source-owned work, without starting future chunks or speculative emulator work. **Backfill one-shot ran 2026-06-23 (chunks 34-35 prompt); see Backfill Triage section below.** |
 | RSR-013 | candidate-state-available | medium | `core-menus\class_change` (6 states), `core-menus\army_management` (7 states) | Promotion / level-up / class-def overlay+register proof for chunks 34-35 code (e.g. `func_002226D4` level-up dispatcher and its callees, `func_0021EBBC` class-change state machine, the many `promotion consumer` / `class-def consumer` functions). Prove overlay/RAM mapping for the combat overlay these run in, and the meaning of the 0x801CE8xx / 0x801D08xx / 0x8018AA8x globals they read/write. | Opened by the chunks 34-35 source-ownership run. Broad class-change/army-management states exist and are the nearest starting points, but no runtime proof was recorded this run (static-only). Needs header-verified state load + register/memory watches. |
+| RSR-014 | candidate-state-available | high | Newly populated `battle\*` catalog leaves | Next-run one-shot: examine the newly added combat states against already source-owned past work and patch-workbench artifacts, especially combat/battle code in chunks 30-35, High Attack hook candidates (`0x0021CD48`, `0x0021BF84`), the `0x001F36F0` cleanup-guard site, scheduler/stream state, battle command UI, and reward/results paths. | Do this in the next prompt after the active chunks 34-35 run, not by interrupting the active Claude session. Use existing states only unless Joe asks for new captures; classify static/state-label-only findings as `candidate` or `needs-runtime`, not proven. |
+
+## Combat-State Catalog Update - 2026-06-23
+
+Joe added 19 vanilla Rev 0 combat states under
+`C:\Users\Joe\Projects\OgreBattlel64\runtime-states\vanilla\rev0\battle`.
+Read-only static header parsing confirmed all 19 match CRC
+`E6419BC5/69011DE3`, country `0x45`, version `0`.
+
+Counts:
+
+- `battle\battle_loading_or_intro`: 7 states.
+- `battle\battle_command_prompt`: 2 states.
+- `battle\battle_active`: 4 states.
+- `battle\battle_ending_or_results`: 6 states.
+
+This supersedes the earlier RSR-012 triage note that `battle\*` leaves were
+empty. The new states make RSR-001 and RSR-014 `candidate-state-available`, but
+they do not prove behavior by label alone. Future proof still needs exact state
+path, checked identity, watches/registers/memory ranges, observation result, and
+confidence.
 
 ## Backfill Triage — 2026-06-23 (chunks 34-35 one-shot, RSR-012)
 
@@ -63,12 +84,14 @@ Bounded static one-shot over already source-owned Rev 0 work (chunks 0-33,
 `0x00001000..0x00221000`) and current patch-workbench artifacts, triaged against
 the curated catalog. **No runtime states were loaded, captured, or mutated this
 run; no emulator sweeps were performed.** Catalog directory was re-inventoried
-read-only on 2026-06-23 and matches the documented snapshot (79 `.pj.zip`
-states; `battle\*` and `data-coverage\*` leaves all empty).
+read-only on 2026-06-23 and matched the then-current documented snapshot (79
+`.pj.zip` states; `battle\*` and `data-coverage\*` leaves empty). The battle
+portion of this triage was superseded later on 2026-06-23 when Joe added the 19
+combat states recorded above.
 
 | ID | Triage | Reason |
 | --- | --- | --- |
-| RSR-001 | still-needs-capture | `battle\*` (4 leaves) all empty by directory listing. Blocks High-Attack hook proof and combat-path runtime confidence for chunks 32-35. |
+| RSR-001 | superseded by combat-state update | During the one-shot, `battle\*` leaves were empty. Joe later added 19 combat states, so current status is `candidate-state-available`; runtime proof is still needed. |
 | RSR-002 | still-needs-capture | `data-coverage\normal_enemy_squads_loaded` empty. |
 | RSR-003 | still-needs-capture | `data-coverage\neutral_encounter_available` empty. |
 | RSR-004 | still-needs-capture | `data-coverage\shop_inventory_loaded` empty; `core-menus\shop` (1 state) is only a UI-entry start, not a data-load proof. |
@@ -103,12 +126,9 @@ section with:
 
 ## Missing Catalog Categories At Last Inspection
 
-Inspected 2026-06-23. These catalog leaves were empty:
+Inspected after the combat-state update on 2026-06-23. These catalog leaves were
+empty:
 
-- `battle\battle_active`
-- `battle\battle_command_prompt`
-- `battle\battle_ending_or_results`
-- `battle\battle_loading_or_intro`
 - `core-menus\training`
 - `data-coverage\boss_or_special_squad_loaded`
 - `data-coverage\map_objects_loaded`

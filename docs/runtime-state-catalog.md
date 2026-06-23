@@ -43,8 +43,10 @@ watches, register snapshots, memory reads, or controlled mutation:
   path cutscenes, and cutscene display-list/state questions.
 - `scenario-map\...`: mission briefing, scenario map loaded, selected/moving
   units, and scenario-world overlay questions.
-- `battle\...`: intended location for battle-loading, command-prompt,
-  active-battle, and ending/results states, but currently empty.
+- `battle\...`: battle-loading/intro, command-prompt/menu, active-battle, and
+  ending/results states. Use these for narrowed combat overlay, active call
+  path, battle scheduler/stream state, command UI, reward/results, and
+  patch-safety questions.
 - `data-coverage\...`: intended location for data-table proof states such as
   loaded enemy squads, neutral encounters, map objects, recruit/event units, and
   shop inventory, but currently empty.
@@ -86,22 +88,31 @@ artifacts, and wait for Joe's observations.
 
 ## Current Coverage Snapshot
 
-Inspected 2026-06-23. Present `.pj.zip` state count: 79.
+Inspected 2026-06-23. Present `.pj.zip` state count: 98.
 
 | Category | Present states | Notes |
 | --- | ---: | --- |
 | `core-menus` | 31 | Army Management, class change, shop, title/file select, unit list, world-map idle. `training` folder is present but empty. |
 | `dialogue-cutscene` | 25 | Cutscene-active and dialogue-box-active states. |
 | `scenario-map` | 23 | Mission briefing, scenario map loaded, one unit-moving state, and selected-unit states. |
-| `battle` | 0 | Folder scaffolds exist for loading/intro, command prompt, active battle, and ending/results. Needs curated vanilla states. |
+| `battle` | 19 | Loading/intro 7, command/menu 2, active battle 4, ending/results 6. Static header check on 2026-06-23 matched vanilla US Rev 0 identity for all 19. |
 | `data-coverage` | 0 | Folder scaffolds exist for enemy squads, neutral encounters, map objects, recruit/event units, and shop inventory. Needs curated vanilla states. |
+
+Battle leaf coverage:
+
+- `battle\battle_loading_or_intro`: 7 states.
+- `battle\battle_command_prompt`: 2 states.
+- `battle\battle_active`: 4 states.
+- `battle\battle_ending_or_results`: 6 states.
+
+All 19 battle states were checked read-only with the local Project64 savestate
+header parser (`tools\project64\pj64.py` `state_identity_from_file`) on
+2026-06-23 and matched CRC `E6419BC5/69011DE3`, country `0x45`, version `0`.
+This is a header identity check only; behavior still requires watches, register
+snapshots, memory reads, or controlled mutation before it can be called proven.
 
 Empty leaf categories at inspection time:
 
-- `battle\battle_active`
-- `battle\battle_command_prompt`
-- `battle\battle_ending_or_results`
-- `battle\battle_loading_or_intro`
 - `core-menus\training`
 - `data-coverage\boss_or_special_squad_loaded`
 - `data-coverage\map_objects_loaded`

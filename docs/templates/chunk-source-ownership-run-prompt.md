@@ -181,8 +181,11 @@ Runtime-state catalog workflow:
 - Choose the nearest broad state to the question: core menus for menu/task
   buffers, dialogue/cutscene for text/script/display-list paths, scenario-map
   for loaded scenario overlays, battle for battle paths, and data-coverage for
-  table/loaded-data questions. If the needed situation is missing, record a
-  precise runtime-state request instead of guessing.
+  table/loaded-data questions. The battle catalog includes loading/intro,
+  command/menu, active-battle, and ending/results states; use it for narrowed
+  combat overlay, scheduler/stream, command UI, and reward/results questions. If
+  the needed situation is missing, record a precise runtime-state request
+  instead of guessing.
 - State folder and file names are convenience labels, not semantic proof. A
   named state only supplies a likely starting point; prove behavior with exact
   watches, register snapshots, memory reads, or controlled mutation.
