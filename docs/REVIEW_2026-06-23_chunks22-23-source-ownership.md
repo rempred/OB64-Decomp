@@ -32,7 +32,7 @@ run date 2026-06-23.
 ## 3. Commits (this run, newest first)
 | Hash | Category | Purpose |
 |---|---|---|
-| `_(this doc's commit)_` | review handoff | Add chunks 22–23 review handoff (this file) |
+| `4fab271` | review handoff | Add chunks 22–23 review handoff (this file) |
 | `ff8871e` | source + docs | Source-own chunk 23 (73 parts, MIXED 6-region); dossier `lib-chunk23` + data-index inventory + decoded help-message export + doc updates |
 | `fefc199` | source + docs | Source-own chunk 22 (99 parts, MIXED); dossier `lib-chunk22` + data-index inventory + 3 decoded string-pool exports + doc updates |
 | `52c113d` | opening fix | Chunks 20–21 review nit: real commit hash `887b444` for the review-handoff own-row (replaced the `_(this doc's commit)_` placeholder) |
