@@ -131,7 +131,18 @@ If runtime states were used, include:
 
 State names and folder names are convenience labels only. Do not treat a state
 label as semantic proof. If the needed situation was missing, record a precise
-runtime-state request instead of guessing.
+runtime-state request in `docs\runtime-state-requests.md` instead of guessing.
+
+8c. Runtime-State Request Log Changes
+Summarize updates to `docs\runtime-state-requests.md`:
+- Requests opened.
+- Requests served by an existing state, with exact state path and proof summary.
+- Requests left as `needs-capture`, `needs-runtime`, or
+  `candidate-state-available`.
+- Requests superseded, with the replacement ID or reason.
+
+If the log was unchanged, write:
+`No runtime-state request-log changes.`
 
 9. Tooling Changes
 For every tool touched or added:
@@ -208,7 +219,8 @@ Writing requirements:
   `needs-runtime`.
 - Runtime-state observations must cite exact state paths, checked ROM identity,
   addresses, watches/registers/memory ranges, and confidence. Missing runtime
-  situations should become runtime-state requests, not guesses.
+  situations should become runtime-state requests in
+  `docs\runtime-state-requests.md`, not guesses.
 - Autonomous emulator/runtime work must follow
   `C:\Users\Joe\Projects\OgreBattlel64\TestingWorkFlow.MD`; user-driven testing
   should stay passive unless Joe asks otherwise.
