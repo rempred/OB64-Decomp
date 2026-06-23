@@ -30,7 +30,7 @@ run date 2026-06-23.
 ## 3. Commits (this run, newest first)
 | Hash | Category | Purpose |
 |---|---|---|
-| `_(this doc's commit)_` | review handoff | Add chunks 16–17 review handoff (this file, final commit) |
+| `bcb8d67` | review handoff | Add chunks 16–17 review handoff (this file, final commit) |
 | `89041c0` | source + docs | Source-own chunk 17 (66 parts, ALL CODE); dossier `lib-chunk17` + doc updates |
 | `a9bc553` | source + docs | Source-own chunk 16 (95 parts, MIXED); dossier `lib-chunk16` + data-index inventory + doc updates |
 | `d4c98d1` | opening fixes + data export | Chunks 14–15 review nit (hash 68d8bfc) + superseded 0xF135C notes + `tools/decode_rodata_strings.js` + chunk-15 opening-prologue decode/export |
