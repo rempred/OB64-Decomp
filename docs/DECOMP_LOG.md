@@ -24,10 +24,10 @@ and replace the active log with a compact current-state summary.
   `original_mips`. A static control-flow audit found no credible code edge into
   the tail (0 branch targets, 0 J/JAL to a known function). Audit:
   `tools/audit_code_region.js` / `docs/CODE_REGION_AUDIT.md`.
-- Current tracked code source mix: twenty-five composite real-assembler chunks
-  (chunk 0 177 `boot/`; chunks 1–24 in `lib/`: 350, 216, 67, 376, 88, 78, 103, 87, 34, 35, 191, 74, 67, 94, 153, 95, 66, 95, 80, 175, 99, 99, 73, 63) =
-  **3,035 tracked source files**, plus 75 generated fallback code chunks. **Chunks
-  0–24 (`0x00001000..0x00191000`) are now fully source-owned as named code/data
+- Current tracked code source mix: twenty-six composite real-assembler chunks
+  (chunk 0 177 `boot/`; chunks 1–25 in `lib/`: 350, 216, 67, 376, 88, 78, 103, 87, 34, 35, 191, 74, 67, 94, 153, 95, 66, 95, 80, 175, 99, 99, 73, 63, 71) =
+  **3,106 tracked source files**, plus 74 generated fallback code chunks. **Chunks
+  0–25 (`0x00001000..0x001A1000`) are now fully source-owned as named code/data
   parts** (chunk 13: 27 code + 40 data, MIXED — unit-mgmt UI data; chunk 14: 74 code + 20
   data, MIXED — graphics/display-list data + DL-builder code; chunk 15: 134 code + 19
   data, MIXED — floats/display-list data + the OB64 opening-narration rodata; chunk 16: 72
@@ -46,8 +46,10 @@ and replace the active log with a compact current-state summary.
   FUNCTION straddler func_0017FF4C; chunk 24: 40 code + 23 data, MIXED — FP/menu/display code
   wrapping a large ~26.7KB interior DATA region [font/tile bitmaps + fixed-stride record tables +
   0x8021 pointer tables + float64 pool] the parent DB again missed, with incoming AND outgoing
-  FUNCTION straddlers); next is
-  chunk 25 (`0x00191000`, still a generated fallback chunk). The promote-tool merge blocker is FIXED.
+  FUNCTION straddlers; chunk 25: 59 code + 12 data, CODE-dominant MIXED — char/class/scenario
+  code [incl. the documented record-builder func_0019554C, hook @0x195584] + a shop-dialogue
+  string pool + 2 inline data islands, with incoming AND outgoing FUNCTION straddlers); next is
+  chunk 26 (`0x001A1000`, still a generated fallback chunk). The promote-tool merge blocker is FIXED.
 - The parent boundary DB has TWO recurring defects, both fixed when splitting:
   (1) `end_rom` is INCLUSIVE (exclusive end = `end_rom + 4`; do NOT treat the
   delay slot as a gap — `tools/dump_function_context.js` now enforces this with a
@@ -216,11 +218,10 @@ Current named sequence:
   the parent's "combat code in the gap" [linear-map fallacy]). Dossier
   `docs/dossiers/lib-chunk19-131000-141000.md`; data index
   `docs/data-index/rev0/chunk19-data-region-inventory.json`. **Chunk 19 source-owned.**
-- Current remainder: none in chunks 0–24 (`0x1000..0x191000` fully source-owned).
-  **Current frontier: `0x00191000` (chunk 25).** Next is chunk 25 generated fallback
-  `0x00191000..0x001A1000` (code-dominant start: continues the chunk-24 OUTGOING FUNCTION
-  straddler `func_0018FB30` [`0x18FB30,0x191000)`, prologue in chunk 24, jr$ra at `0x19116C`;
-  chunk 25 has a dialogue string-pool island + ends in outgoing straddler `func_001A0264`).
+- Current remainder: none in chunks 0–25 (`0x1000..0x1A1000` fully source-owned).
+  **Current frontier: `0x001A1000` (chunk 26).** Next is chunk 26 generated fallback
+  `0x001A1000..0x001B1000` (code-dominant start: continues the chunk-25 OUTGOING FUNCTION
+  straddler `func_001A0264` [`0x1A0264,0x1A1000)`, prologue in chunk 25, parent end ~`0x1A11F8`).
 
 Static dossiers live under `docs/dossiers/` and are the durable evidence notes
 for each promoted source-layout split.
@@ -242,6 +243,35 @@ splits were archived here on 2026-06-23 to keep this log under the ~10k-token th
 there, in each `docs/dossiers/lib-chunk*` dossier, and in `docs/CODE_REGION_AUDIT.md`.
 Chunks 0–13 are fully source-owned; recent detail (chunks 14–17) and the current frontier
 are below.
+
+## 2026-06-23 - Chunk 25 Split (0x191000..0x1A1000); chunk 25 complete — CODE-dominant MIXED (char/class/scenario code + shop-dialogue string pool + inline data islands)
+
+DONE: **71 parts (59 code + 12 data)**. Tracked files 3,035 → **3,106**; fallback 75 → 74.
+Byte-exact (code SHA `40D4E787…B409`, ROM `571E8339…CC67A`). Coverage `0x1000..0x1A1000` =
+**1,703,936 B = 59.8039 %** (code-only = 1,389,036 B = 48.7517 %; +2,368 data bytes). Regions:
+incoming FUNCTION straddler-tail func_0018FB30_chunk25tail [0x191000,0x191174) (jr$ra@0x19116C) →
+char/class/scenario CODE1 `0x191000..0x19BFF0` (40+ funcs incl. the parent-documented,
+in-game-proven **record-builder func_0019554C** [hook @0x195584, builds 52B enemy record from
+enemydat template; name conservative], huge func_001960A8 [5776B], dispatcher func_001977E0
+[preamble-orphan, 4580B, jr$v0]; 9 preamble-orphans, 4 frameless leaves; 2 inline data islands
+data_001952E8 [Soldier/Thrust/Target Unit labels + 0x8021 ptr table] + data_00197738 [Mitsuiye /
+"No free space on TCharacterEnemyData." / "...EnemySolderData." debug strings + 0x80215A ptr
+table]) → shop-dialogue STRING POOL `0x19BFF0..0x19C760` (rodata_0019BFF0: 47 strings, "What's
+today's special?" etc. with {T05} tokens; + 6 handler/jump-pointer tables [0x8021/0x8016 band] +
+zero pad) → CODE2 `0x19C760..0x1A1000` (preamble-orphan entry func_0019C760 + func_0019E2E0
+[5456B]) ending in outgoing FUNCTION straddler-head func_001A0264 [0x1A0264,0x1A1000) → chunk 26
+(no jr$ra before 0x1A1000). Method: parent-evidence sweep + proret scan → slice_extract → 9 code
++ 1 data agents (Workflow) → combine_chunk.js → 4 cross-slice preamble folds (func_00191E50,
+func_0019AF78, + e1s1 internal) + 6 preamble-orphan label fixes + 1 name fix (func_0019B718→
+func_0019B710) → check_boundaries PASS + check_splits 0 frag → 6-agent adversarial swarm (0
+boundary moves; LOW fixes: 2 note ASCII transcriptions, 1 stale file field, string-pool tables
+reclassified as handler-pointer arrays). Gates check_manifest (26/3,106/74)/check_boundaries/
+check_splits/rebuild byte-exact/assemble byte-exact/verify_setup/audit all PASS; git diff --check
+clean; 0 data files with function wording; data-index JSON valid. Dossier
+`docs/dossiers/lib-chunk25-191000-1A1000.md`; data index
+`docs/data-index/rev0/chunk25-data-region-inventory.json` + 3 decoded ASCII exports
+(chunk25-dialogue-pool-19BFF0, chunk25-ui-labels-1952E8, chunk25-debug-strings-197738). Next file
+after split: chunk 26 `0x1A1000`, opening with the tail of func_001A0264 (`func_001A0264_chunk26tail`).
 
 ## 2026-06-23 - Chunk 24 Split (0x181000..0x191000); chunk 24 complete — MIXED (FP/menu/display code wrapping a large ~26.7KB interior data region)
 
@@ -626,9 +656,8 @@ the full quick index. The newest dossiers are:
 
 ## Next Frontier
 
-Chunks 0–24 (`0x00001000..0x00191000`) are fully source-owned as named code/data
-parts (chunk 19: 64 code + 16 data, MIXED — encounter/dispatcher code + a trailing scenario data
-region; chunk 20: 89 code + 86 data, MIXED — scenario data tables [neutral_encounter 40×20,
+Chunks 0–25 (`0x00001000..0x001A1000`) are fully source-owned as named code/data
+parts (chunk 20: 89 code + 86 data, MIXED — scenario data tables [neutral_encounter 40×20,
 creature_drop 36×8] + a 125-string game-text pool + encounter/dispatcher code; chunk 21: 94 code
 + 5 data, MIXED — class/character-lookup code + a trailing high-entropy/compressed data region
 with an outgoing data straddler; chunk 22: 35 code + 64 data, MIXED — UI/text + weapon-type/terrain
@@ -637,20 +666,19 @@ chunk 23: 40 code + 33 data, MIXED 6-region — scenario/camera + char-data code
 two large data islands the parent DB mislabeled as functions, ending in the outgoing FUNCTION
 straddler func_0017FF4C; chunk 24: 40 code + 23 data, MIXED — FP/menu/display code wrapping a
 large ~26.7KB interior DATA region [bitmaps + fixed-stride record tables + 0x8021 pointer tables
-+ float64 pool] the parent DB again missed, with incoming AND outgoing FUNCTION straddlers). The
-next frontier is **`0x00191000` (chunk 25)**. Coverage `0x1000..0x191000` =
-1,638,400 B = 57.5038% of the 2,849,204-byte executable extent (code-only = 1,325,868 B =
-46.5347%).
++ float64 pool] the parent DB again missed, with incoming AND outgoing FUNCTION straddlers;
+chunk 25: 59 code + 12 data, CODE-dominant MIXED — char/class/scenario code [incl. the documented
+record-builder func_0019554C] + a shop-dialogue string pool + 2 inline data islands, with incoming
+AND outgoing FUNCTION straddlers). The next frontier is **`0x001A1000` (chunk 26)**. Coverage
+`0x1000..0x1A1000` = 1,703,936 B = 59.8039% of the 2,849,204-byte executable extent (code-only =
+1,389,036 B = 48.7517%).
 
-FIRST: continue the OUTGOING FUNCTION straddler from chunk 24. `func_0018FB30`
-`[0x18FB30,0x191000)` has its `addiu $sp,-0x78` prologue in chunk 24 and continues past
-`0x191000` into chunk 25; 0 jr$ra in [0x18FB30,0x191000); its `jr $ra` is at `0x19116C`. Chunk
-25's first file is the tail of this function (`func_0018FB30_chunk25tail`); confirm its `jr $ra`.
+FIRST: continue the OUTGOING FUNCTION straddler from chunk 25. `func_001A0264`
+`[0x1A0264,0x1A1000)` has its `addiu $sp,-0x88` prologue in chunk 25 and continues past
+`0x1A1000` into chunk 26; 0 jr$ra in [0x1A0264,0x1A1000); parent end ~`0x1A11F8`. Chunk
+26's first file is the tail of this function (`func_001A0264_chunk26tail`); confirm its `jr $ra`.
 
-Then classify chunk 25's code/data mix. Chunk 25 is code-dominant (incl. the documented
-record-builder `0x19554C`) with a dialogue string-pool data island (`0x19BFF0..0x19C760`) +
-smaller inline data islands (debug strings + pointer tables), ending in the outgoing FUNCTION
-straddler `func_001A0264`. `plan_chunk`
+Then classify chunk 26's code/data mix. `plan_chunk`
 (+`dump_function_context`) seeds parent-detected code; use `scan_functions` for
 parent-undetected sub-regions; data-classification swarm for any data regions. Pipeline
 tools: `scan_functions` or `plan_chunk`/`slice_chunk --disasm`/`integrate_chunk` (context
@@ -660,7 +688,7 @@ mislabeled data islands as functions before (chunks 19, 23, 24) — pin boundari
 prologues/returns, not the DB.
 
 There are now two active tracks. The library source-ownership track continues at
-`0x191000` (chunk 25) as above. The full-ROM coverage track (opened 2026-06-21) next refines
+`0x1A1000` (chunk 26) as above. The full-ROM coverage track (opened 2026-06-21) next refines
 the exact code/data boundary near `0x002B89B4` and reclassifies the non-code tail
 `0x002B89B4..0x0063676C` from `original_mips` to a data source form, shrinking the
 configured code region to the executable extent while keeping the exact rebuild

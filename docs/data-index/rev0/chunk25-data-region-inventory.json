@@ -1,0 +1,210 @@
+{
+  "chunk": 25,
+  "chunkRangeZ64": [
+    "0x00191000",
+    "0x001A1000"
+  ],
+  "mixed": true,
+  "note": "CODE-DOMINANT chunk (59 code + 12 data). Data is 3 islands embedded in code: a shop-dialogue string pool + handler-pointer tables, and 2 small inline islands (UI labels / debug strings + pointer tables).",
+  "dataRegions": [
+    {
+      "name": "inline UI-label island (Soldier/Thrust/Target Unit + {C6}/{C0} tokens + 0x8021 pointer table)",
+      "rangeZ64": [
+        "0x001952E8",
+        "0x00195410"
+      ]
+    },
+    {
+      "name": "inline debug-string island (Mitsuiye + No free space on TCharacterEnemyData./EnemySolderData. + 0x80215A pointer table)",
+      "rangeZ64": [
+        "0x00197738",
+        "0x001977E0"
+      ]
+    },
+    {
+      "name": "shop-dialogue string pool + handler/jump-pointer tables + zero pad",
+      "rangeZ64": [
+        "0x0019BFF0",
+        "0x0019C760"
+      ]
+    }
+  ],
+  "totalDataBytes": 2368,
+  "classification": "parsed (ASCII rodata decoded byte-exact; RAM-pointer tables identified by 0x8016/0x8021/0x802-band targets) + raw-but-classified (small value/fill blocks). All 3 data islands adversarially confirmed 0 prologues/0 jr$ra. Pointer tables target relocated overlay code/data (0x8016/0x8021 band), NOT local-rodata string pointers.",
+  "byClassBytes": {
+    "packed/unknown": 548,
+    "ascii-string": 1176,
+    "ram-pointer-table": 632,
+    "zero-fill": 12
+  },
+  "partCount": 12,
+  "codeRegions": [
+    {
+      "rangeZ64": [
+        "0x00191000",
+        "0x0019BFF0"
+      ],
+      "note": "CODE region 1: incoming straddler-tail func_0018FB30_chunk25tail [0x191000,0x191174) + ~40 functions incl. the documented record-builder func_0019554C (hook @0x195584; builds 52B enemy record from enemydat template; name conservative), huge func_001960A8 (5776B) char/class hub, dispatcher func_001977E0 (preamble-orphan, 4580B, jr$v0 dispatch). 9 preamble-orphans, 4 frameless leaves."
+    },
+    {
+      "rangeZ64": [
+        "0x0019C760",
+        "0x001A1000"
+      ],
+      "note": "CODE region 2: preamble-orphan entry func_0019C760 + functions incl. func_0019E2E0 (5456B); ends in outgoing FUNCTION straddler-head func_001A0264."
+    }
+  ],
+  "incomingStraddler": {
+    "part": "func_0018FB30_chunk25tail",
+    "kind": "FUNCTION (code)",
+    "rangeZ64": [
+      "0x00191000",
+      "0x00191174"
+    ],
+    "note": "Tail of func_0018FB30 (prologue addiu $sp,-0x78 in chunk 24 @0x18FB30); ends jr$ra@0x19116C + delay@0x191170."
+  },
+  "outgoingStraddler": {
+    "part": "func_001A0264",
+    "kind": "FUNCTION (code)",
+    "rangeZ64": [
+      "0x001A0264",
+      "0x001A1000"
+    ],
+    "note": "Outgoing FUNCTION straddler-head: addiu $sp,-0x88 prologue @0x1A0264; NO jr$ra in [0x1A0264,0x1A1000) (adversarially confirmed); continues into chunk 26 (parent lead ~3988B, ends ~0x1A11F8)."
+  },
+  "parentEvidence": "Record-builder func_0019554C is DOCUMENTED + proven in-game (parent docs/editor.md, plan-custom-squads-finish.md, pending-tasks.md; builds runtime enemy records from enemydat templates; runtime hook @0x195584 outside CRC). func_001977E8 dispatcher/state-machine, func_001960A8/func_001A0264 large char/class hubs (parent leads). Names stay conservative func_*. Overlay-relocated (runtime 0x8021 band; symbols_v2 ram= linear back-map WRONG). Unlike chunk 24, the parent DB did NOT mislabel data here (data islands are small + inline).",
+  "entries": [
+    {
+      "part": "data_001952E8",
+      "rangeZ64": [
+        "0x001952E8",
+        "0x00195410"
+      ],
+      "bytes": 296,
+      "class": "packed/unknown",
+      "state": "raw-but-classified",
+      "note": "Inline data island, not executed. 4 alignment nops (0x001952E8..0x001952F8), then ASCII 'Soldier'/'Thrust'/'Target Unit' strings and packed byte arrays (0x010304FF... ramp tables), an 8-entry 0x802xxxxx pointer table (0x80217E20,0x80217FAC,0x80218060,0x8021812C,0x8021826C,0x80218858,0x802188E0,0x8021892C) and 0x817C817C fill, plus more byte ramp tables. Ends exactly at next prologue 0x00195410."
+    },
+    {
+      "part": "data_00197738",
+      "rangeZ64": [
+        "0x00197738",
+        "0x001977E0"
+      ],
+      "bytes": 168,
+      "class": "packed/unknown",
+      "state": "raw-but-classified",
+      "note": "Inline DATA island: ASCII debug strings \"Mitsuiye\", \"No free space on TCharacterEnemyData.\", \"No free space on EnemySolderData.\" (sic, byte-exact) + a 6-entry 0x80215Axx RAM-pointer table (0x80215A10..0x80215A78, 0x802 overlay band) + value fill. 0 prologues/0 jr$ra (adversarially confirmed)."
+    },
+    {
+      "part": "rodata_0019BFF0",
+      "rangeZ64": [
+        "0x0019BFF0",
+        "0x0019C488"
+      ],
+      "bytes": 1176,
+      "class": "ascii-string",
+      "state": "parsed",
+      "note": "NUL-delimited ASCII dialogue string pool (shop merchant lines + UI labels). Representative decoded strings: \"I shouldn't expect much from a place like this.\", \"This is all you got?\", \"What do we need?\", \"What should I get?\", \"Hmm{T05} Let's see{T05}\", \"What do you have on sale?\", \"What's today's special?\", \"Why do all the shops sell the same things?\", \"Hello, how much is this?\", \"C, can't you make it a little cheaper?\", \"Don't you have{T05} You know, those novelty things?\", \"You have to buy the things you need first, right?\", \"Excuse me, how much is this?\", \"{T05}Is there any way you can cut me a deal?\", \"I{T05} I never thought shopping was this fun!\", \"Come on{T05} You've got some rare items, dontcha?\", \"I used to take my family shopping on my days off.\", \"Shopping, shopping, I go shopping{T05}\", \"Did you know that my daughter likes shopping?\", \"Now, what do we need?\", \"Do you have anything more interesting?\", \"Yeah, can I have that? Let's see what else you got{T05}\", \"Can I have one of these, and this{T05} Oh, and that! Uh huh{T05}\", \"What kind of stuff do you have today?\", \"They are all very splendid. I am quite surprised.\", \"Target:\", \"Element:\", \"Effect\", \"Invalid\", \"Inventory\", \"None\". Embedded control code: literal ASCII token {T05} (bytes \\x7B\\x54\\x30\\x35\\x7D) appears inline as a text-speed/pause marker. Strings are double-quote-wrapped in the data."
+    },
+    {
+      "part": "data_0019C488",
+      "rangeZ64": [
+        "0x0019C488",
+        "0x0019C4BC"
+      ],
+      "bytes": 52,
+      "class": "packed/unknown",
+      "state": "raw-but-classified",
+      "note": "Byte-pattern index table, 13 words. First/third bytes step by 0x04 with second/fourth byte fixed at 0x02: 00 02 02 02 / 04 02 06 02 / 08 02 0A 02 / 0C 02 0E 02 / 10 02 12 02 / 14 02 16 02 / 18 02 1A 02 / 1C 02 1E 02 / 20 02 22 02 / 24 02 26 02 / 28 02 2A 02 / 2C 02 2E 02 / 30 02 00 00. Looks like a packed (index,stride=2) lookup/jump-index table, not ASCII or pointers."
+    },
+    {
+      "part": "table_0019C4BC",
+      "rangeZ64": [
+        "0x0019C4BC",
+        "0x0019C588"
+      ],
+      "bytes": 204,
+      "class": "ram-pointer-table",
+      "state": "parsed",
+      "note": "RAM-pointer table (handler/jump-pointer array; targets are relocated 0x8021/0x8016-band code/data, NOT local-rodata string pointers). Overlay-relocated targets. RAM pointer table, 0x8021 band (50 entries). Sample values: 0x80219790, 0x802197B0, 0x802197C4, 0x802197DC, ... 0x80215FE0-style neighbors. Ascending pointers into the 0x80214xxx-0x80219xxx region (likely string/record pointer table). Includes one stray non-pointer word 0x00009000 at 0x19C584 folded in as table padding/terminator."
+    },
+    {
+      "part": "table_0019C588",
+      "rangeZ64": [
+        "0x0019C588",
+        "0x0019C5C0"
+      ],
+      "bytes": 56,
+      "class": "ram-pointer-table",
+      "state": "parsed",
+      "note": "RAM-pointer table (handler/jump-pointer array; targets are relocated 0x8021/0x8016-band code/data, NOT local-rodata string pointers). Overlay-relocated targets. RAM pointer table, 0x8016 band (13 entries). Sample values: 0x8016F65C, 0x8016F6AC, 0x8016F6FC, 0x8016F74C, ... 0x8016F8CC. Evenly-strided pointers (likely fixed-size record/string array). Trailing single zero word at 0x19C5BC folded in as table terminator."
+    },
+    {
+      "part": "table_0019C5C0",
+      "rangeZ64": [
+        "0x0019C5C0",
+        "0x0019C600"
+      ],
+      "bytes": 64,
+      "class": "ram-pointer-table",
+      "state": "parsed",
+      "note": "RAM-pointer table (handler/jump-pointer array; targets are relocated 0x8021/0x8016-band code/data, NOT local-rodata string pointers). Overlay-relocated targets. RAM pointer table, 0x8021 band (16 entries). Sample values: 0x80214FCC, 0x80215348, 0x80215494, 0x802154EC, 0x8021583C, ... 0x80215FE0. Contains repeated pointers (0x80215A88 x2, 0x80215E00 x3) consistent with a pointer lookup table."
+    },
+    {
+      "part": "data_0019C600",
+      "rangeZ64": [
+        "0x0019C600",
+        "0x0019C620"
+      ],
+      "bytes": 32,
+      "class": "packed/unknown",
+      "state": "raw-but-classified",
+      "note": "Anomalous 8-word block embedded between pointer tables: 0x40185555, 0x55555555, 0x40185555, 0x55555555, 0x10760000, 0x20000000, 0x25730000, 0x00000000. The 0x40185555/0x55555555 repetition is a recognizable uninitialized/filler pattern; remaining words are not valid 0x8016/0x802x RAM pointers. Treated as raw data; trailing zero word folded in."
+    },
+    {
+      "part": "table_0019C620",
+      "rangeZ64": [
+        "0x0019C620",
+        "0x0019C688"
+      ],
+      "bytes": 104,
+      "class": "ram-pointer-table",
+      "state": "parsed",
+      "note": "RAM-pointer table (handler/jump-pointer array; targets are relocated 0x8021/0x8016-band code/data, NOT local-rodata string pointers). Overlay-relocated targets. RAM pointer table, 0x8021 band (25 entries). Dominated by repeated 0x80218988 (13 occurrences) with a few distinct neighbors: 0x80218990 x2, 0x80218998 x5, 0x802189A0 x2, 0x802189A8, 0x802189B0. Pattern of repeats indicates a default-fill pointer index table. Trailing single zero word at 0x19C684 folded in as terminator."
+    },
+    {
+      "part": "table_0019C688",
+      "rangeZ64": [
+        "0x0019C688",
+        "0x0019C6F0"
+      ],
+      "bytes": 104,
+      "class": "ram-pointer-table",
+      "state": "parsed",
+      "note": "RAM-pointer table (handler/jump-pointer array; targets are relocated 0x8021/0x8016-band code/data, NOT local-rodata string pointers). Overlay-relocated targets. RAM pointer table, 0x8021 band (25 entries). Dominated by repeated 0x80219048 (default fill) with distinct neighbors: 0x80219050 x2, 0x80219058 x5, 0x80219060 x2, 0x80219068, 0x80219070. Same repeated-default structure as the prior table. Trailing single zero word at 0x19C6EC folded in as terminator."
+    },
+    {
+      "part": "table_0019C6F0",
+      "rangeZ64": [
+        "0x0019C6F0",
+        "0x0019C754"
+      ],
+      "bytes": 100,
+      "class": "ram-pointer-table",
+      "state": "parsed",
+      "note": "RAM-pointer table (handler/jump-pointer array; targets are relocated 0x8021/0x8016-band code/data, NOT local-rodata string pointers). Overlay-relocated targets. RAM pointer table, 0x8021 band (25 entries) -- the trailing pointer table noted in the region spec. Dominated by repeated 0x802190AC with distinct neighbors: 0x802190B4 x2, 0x802190BC x5, then 0x802190C4 x2 (at 0x19C740/0x19C744), 0x802190CC (at 0x19C748), 0x802190AC, 0x802190D4. Includes the spec-cited 0x802190C4 and 0x802190CC entries."
+    },
+    {
+      "part": "zero_fill_0019C754",
+      "rangeZ64": [
+        "0x0019C754",
+        "0x0019C760"
+      ],
+      "bytes": 12,
+      "class": "zero-fill",
+      "state": "parsed",
+      "note": "Trailing pure-zero/nop words (3 words) padding to 0x19C760, where code region 2 begins."
+    }
+  ]
+}

@@ -131,8 +131,8 @@ Expected current results:
   `0x00121000..0x00131000` 95; `0x00131000..0x00141000` 80;
   `0x00141000..0x00151000` 175; `0x00151000..0x00161000` 99;
   `0x00161000..0x00171000` 99; `0x00171000..0x00181000` 73;
-  `0x00181000..0x00191000` 63 files = 3,035 tracked
-  source files total), plus 75 generated fallback chunks.
+  `0x00181000..0x00191000` 63; `0x00191000..0x001A1000` 71 files = 3,106 tracked
+  source files total), plus 74 generated fallback chunks.
 - `rebuild_rom.js --assembled-code ...` substitutes that assembled code blob for
   the raw code segment and still confirms the same full-ROM SHA256.
 - `build_full_source_manifest.js` emits a 1,059-entry full-ROM source ownership
@@ -214,7 +214,7 @@ These outputs are useful but ignored:
 - Code region currently extracted as original MIPS:
   `0x00001000..0x0063676C`.
 - Chunks 0–24 (`0x00001000..0x00191000`) are fully source-owned as named
-  code/data parts (3,035 tracked source files: 177 in `boot/` + 2,858 in `lib/`;
+  code/data parts (3,106 tracked source files: 177 in `boot/` + 2,929 in `lib/`;
   chunk 11: 189 code + 2 straddler + 0 data, ALL CODE — 77 frameless leaves recovered;
   chunk 12: 72 code + 2 straddler + 0 data, ALL CODE — 20 dispatchers; chunk 13: 27
   code + 40 data, MIXED — unit-mgmt UI data; chunk 14: 74 code + 20 data, MIXED —
@@ -238,7 +238,10 @@ These outputs are useful but ignored:
   func_0017FF4C; chunk 24: 40 code + 23 data, MIXED 3-region — FP/menu/display code wrapping a
   large ~26.7KB interior DATA region [font/tile bitmaps + fixed-stride record tables + 0x8021
   pointer tables + float64 pool] the parent DB again missed, with incoming AND outgoing FUNCTION
-  straddlers); current split frontier `0x00191000` (chunk 25, still a generated fallback chunk). chunk 1
+  straddlers; chunk 25: 59 code + 12 data, CODE-dominant MIXED — char/class/scenario code [incl.
+  the documented record-builder func_0019554C, hook @0x195584] + a shop-dialogue string pool +
+  2 inline data islands, with incoming AND outgoing FUNCTION straddlers); current split frontier
+  `0x001A1000` (chunk 26, still a generated fallback chunk). chunk 1
   `0x11000..0x21000` is a graphics/unit-script/math/libc/libultra library; chunk 2
   `0x21000..0x31000` is the statically-linked libultra (N64 SDK) + libc + 64-bit
   runtime + `gu` matrix library + RSP-microcode data; chunk 3 `0x31000..0x41000`
@@ -333,7 +336,12 @@ These outputs are useful but ignored:
   record tables [363×0x10, 177×0x10] + 0x8021 RAM-pointer tables + float64 pool — again missed by
   the parent DB, 0 prologues/returns) → CODE2 (`0x188B60..0x191000`, char/display code incl. the
   8788B func_00189778 + inline data island data_0018F044) ending in the outgoing FUNCTION
-  straddler-head `func_0018FB30` into chunk 25; 0 data in chunk 18 (dossiers
+  straddler-head `func_0018FB30` into chunk 25; chunk 25 `0x191000..0x1A1000` (CODE-dominant MIXED)
+  is char/class/scenario CODE1 (`0x191000..0x19BFF0`, incl. the documented record-builder
+  func_0019554C [hook @0x195584] + huge func_001960A8 + dispatcher func_001977E0 + 2 inline data
+  islands) → a shop-dialogue STRING POOL (`0x19BFF0..0x19C760`, rodata + handler-pointer tables) →
+  CODE2 (`0x19C760..0x1A1000`) ending in the outgoing FUNCTION straddler-head `func_001A0264` into
+  chunk 26; 0 data in chunk 18 (dossiers
   `docs/dossiers/boot-resource-decode-subsystem-B030-F22C.md`,
   `docs/dossiers/boot-codec-libc-vec3-F22C-11000.md`,
   `docs/dossiers/lib-chunk1-11000-21000.md`,
@@ -359,7 +367,8 @@ These outputs are useful but ignored:
   `docs/dossiers/lib-chunk21-151000-161000.md`,
   `docs/dossiers/lib-chunk22-161000-171000.md`,
   `docs/dossiers/lib-chunk23-171000-181000.md`,
-  `docs/dossiers/lib-chunk24-181000-191000.md`).
+  `docs/dossiers/lib-chunk24-181000-191000.md`,
+  `docs/dossiers/lib-chunk25-191000-1A1000.md`).
 - Executable extent (evidence, `tools/audit_code_region.js`):
   `0x00001000..0x002B89B4`. The trailing `0x002B89B4..0x0063676C` (3,661,240
   bytes, 56.24%) has zero `jr $ra` and is non-code data still emitted as `.word`
@@ -469,8 +478,8 @@ prints PASS. Current PASS summary:
 - Toolchain: `n64-tools-gcc-toolchain-mips64-win64`, GNU Binutils 2.39.
 - Binutils smoke tests: `.word`, real instructions, `.set noreorder`, and first
   tracked chunk real assembly all pass.
-- Source mix: 25 tracked composite real-asm chunks made from 3,035 tracked source
-  files, plus 75 generated fallback chunks.
+- Source mix: 26 tracked composite real-asm chunks made from 3,106 tracked source
+  files, plus 74 generated fallback chunks.
 - Source manifest: 1,059 entries, zero unknown bytes, 2,469,141 ambiguous bytes
   preserved explicitly.
 - Source owners: 3 tracked non-code files / 44,029 bytes plus 1,055 generated

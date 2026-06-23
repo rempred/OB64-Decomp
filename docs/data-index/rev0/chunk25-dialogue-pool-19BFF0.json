@@ -1,0 +1,672 @@
+{
+  "source": "build/original-mips/rev0/code_00191000_001A1000.s",
+  "rangeZ64": [
+    "0x0019BFF0",
+    "0x0019C488"
+  ],
+  "totalBytes": 1176,
+  "encoding": "ASCII, NUL-terminated, big-endian (z64) byte order; @-prefixed inline control codes left verbatim",
+  "title": "Chunk-25 dialogue string pool (0x19BFF0)",
+  "stringCount": 47,
+  "atCodeTally": {},
+  "atCodeSemantics": "UNRESOLVED — @0..@3/@w/@c/@e are inline formatting/control codes; exact runtime meaning not decoded",
+  "confidence": "high (printable ASCII text); control-code semantics hypothesis-grade",
+  "segments": [
+    {
+      "kind": "string",
+      "offset": "0x0019BFF0",
+      "bytes": 31,
+      "text": "\"I shouldn't expect much from a",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x0019C00F",
+      "bytes": 1
+    },
+    {
+      "kind": "string",
+      "offset": "0x0019C010",
+      "bytes": 18,
+      "text": " place like this.\"",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x0019C022",
+      "bytes": 2
+    },
+    {
+      "kind": "string",
+      "offset": "0x0019C024",
+      "bytes": 22,
+      "text": "\"This is all you got?\"",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x0019C03A",
+      "bytes": 2
+    },
+    {
+      "kind": "nul",
+      "offset": "0x0019C03D",
+      "bytes": 3
+    },
+    {
+      "kind": "string",
+      "offset": "0x0019C040",
+      "bytes": 18,
+      "text": "\"What do we need?\"",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x0019C052",
+      "bytes": 2
+    },
+    {
+      "kind": "nul",
+      "offset": "0x0019C055",
+      "bytes": 3
+    },
+    {
+      "kind": "string",
+      "offset": "0x0019C058",
+      "bytes": 20,
+      "text": "\"What should I get?\"",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x0019C06C",
+      "bytes": 4
+    },
+    {
+      "kind": "nul",
+      "offset": "0x0019C071",
+      "bytes": 3
+    },
+    {
+      "kind": "string",
+      "offset": "0x0019C074",
+      "bytes": 25,
+      "text": "\"Hmm{T05} Let's see{T05}\"",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x0019C08D",
+      "bytes": 3
+    },
+    {
+      "kind": "nul",
+      "offset": "0x0019C091",
+      "bytes": 3
+    },
+    {
+      "kind": "string",
+      "offset": "0x0019C094",
+      "bytes": 27,
+      "text": "\"What do you have on sale?\"",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x0019C0AF",
+      "bytes": 1
+    },
+    {
+      "kind": "nul",
+      "offset": "0x0019C0B1",
+      "bytes": 3
+    },
+    {
+      "kind": "string",
+      "offset": "0x0019C0B4",
+      "bytes": 25,
+      "text": "\"What's today's special?\"",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x0019C0CD",
+      "bytes": 3
+    },
+    {
+      "kind": "nul",
+      "offset": "0x0019C0D1",
+      "bytes": 3
+    },
+    {
+      "kind": "string",
+      "offset": "0x0019C0D4",
+      "bytes": 30,
+      "text": "\"Why do all the shops sell the",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x0019C0F2",
+      "bytes": 2
+    },
+    {
+      "kind": "string",
+      "offset": "0x0019C0F4",
+      "bytes": 14,
+      "text": " same things?\"",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x0019C102",
+      "bytes": 2
+    },
+    {
+      "kind": "string",
+      "offset": "0x0019C104",
+      "bytes": 26,
+      "text": "\"Hello, how much is this?\"",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x0019C11E",
+      "bytes": 2
+    },
+    {
+      "kind": "nul",
+      "offset": "0x0019C121",
+      "bytes": 3
+    },
+    {
+      "kind": "string",
+      "offset": "0x0019C124",
+      "bytes": 30,
+      "text": "\"C, can't you make it a little",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x0019C142",
+      "bytes": 2
+    },
+    {
+      "kind": "string",
+      "offset": "0x0019C144",
+      "bytes": 10,
+      "text": " cheaper?\"",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x0019C14E",
+      "bytes": 2
+    },
+    {
+      "kind": "string",
+      "offset": "0x0019C150",
+      "bytes": 30,
+      "text": "\"Don't you have{T05} You know,",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x0019C16E",
+      "bytes": 2
+    },
+    {
+      "kind": "string",
+      "offset": "0x0019C170",
+      "bytes": 23,
+      "text": " those novelty things?\"",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x0019C187",
+      "bytes": 1
+    },
+    {
+      "kind": "string",
+      "offset": "0x0019C188",
+      "bytes": 31,
+      "text": "\"You have to buy the things you",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x0019C1A7",
+      "bytes": 1
+    },
+    {
+      "kind": "string",
+      "offset": "0x0019C1A8",
+      "bytes": 20,
+      "text": " need first, right?\"",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x0019C1BC",
+      "bytes": 4
+    },
+    {
+      "kind": "string",
+      "offset": "0x0019C1C0",
+      "bytes": 30,
+      "text": "\"Excuse me, how much is this?\"",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x0019C1DE",
+      "bytes": 2
+    },
+    {
+      "kind": "nul",
+      "offset": "0x0019C1E1",
+      "bytes": 3
+    },
+    {
+      "kind": "string",
+      "offset": "0x0019C1E4",
+      "bytes": 34,
+      "text": "\"{T05}Is there any way you can cut",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x0019C206",
+      "bytes": 2
+    },
+    {
+      "kind": "string",
+      "offset": "0x0019C208",
+      "bytes": 12,
+      "text": " me a deal?\"",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x0019C214",
+      "bytes": 4
+    },
+    {
+      "kind": "string",
+      "offset": "0x0019C218",
+      "bytes": 32,
+      "text": "\"I{T05} I never thought shopping",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x0019C238",
+      "bytes": 4
+    },
+    {
+      "kind": "string",
+      "offset": "0x0019C23C",
+      "bytes": 15,
+      "text": " was this fun!\"",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x0019C24B",
+      "bytes": 1
+    },
+    {
+      "kind": "string",
+      "offset": "0x0019C24C",
+      "bytes": 34,
+      "text": "\"Come on{T05} You've got some rare",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x0019C26E",
+      "bytes": 2
+    },
+    {
+      "kind": "string",
+      "offset": "0x0019C270",
+      "bytes": 17,
+      "text": " items, dontcha?\"",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x0019C281",
+      "bytes": 3
+    },
+    {
+      "kind": "string",
+      "offset": "0x0019C284",
+      "bytes": 25,
+      "text": "\"I used to take my family",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x0019C29D",
+      "bytes": 3
+    },
+    {
+      "kind": "string",
+      "offset": "0x0019C2A0",
+      "bytes": 25,
+      "text": "shopping on my days off.\"",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x0019C2B9",
+      "bytes": 3
+    },
+    {
+      "kind": "string",
+      "offset": "0x0019C2BC",
+      "bytes": 25,
+      "text": "\"Shopping, shopping, I go",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x0019C2D5",
+      "bytes": 3
+    },
+    {
+      "kind": "string",
+      "offset": "0x0019C2D8",
+      "bytes": 15,
+      "text": " shopping{T05}\"",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x0019C2E7",
+      "bytes": 1
+    },
+    {
+      "kind": "string",
+      "offset": "0x0019C2E8",
+      "bytes": 30,
+      "text": "\"Did you know that my daughter",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x0019C306",
+      "bytes": 2
+    },
+    {
+      "kind": "string",
+      "offset": "0x0019C308",
+      "bytes": 17,
+      "text": " likes shopping?\"",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x0019C319",
+      "bytes": 3
+    },
+    {
+      "kind": "string",
+      "offset": "0x0019C31C",
+      "bytes": 23,
+      "text": "\"Now, what do we need?\"",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x0019C333",
+      "bytes": 1
+    },
+    {
+      "kind": "nul",
+      "offset": "0x0019C335",
+      "bytes": 3
+    },
+    {
+      "kind": "string",
+      "offset": "0x0019C338",
+      "bytes": 26,
+      "text": "\"Do you have anything more",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x0019C352",
+      "bytes": 2
+    },
+    {
+      "kind": "string",
+      "offset": "0x0019C354",
+      "bytes": 14,
+      "text": " interesting?\"",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x0019C362",
+      "bytes": 2
+    },
+    {
+      "kind": "string",
+      "offset": "0x0019C364",
+      "bytes": 29,
+      "text": "\"Yeah, can I have that? Let's",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x0019C381",
+      "bytes": 3
+    },
+    {
+      "kind": "string",
+      "offset": "0x0019C384",
+      "bytes": 28,
+      "text": " see what else you got{T05}\"",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x0019C3A0",
+      "bytes": 4
+    },
+    {
+      "kind": "string",
+      "offset": "0x0019C3A4",
+      "bytes": 29,
+      "text": "\"Can I have one of these, and",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x0019C3C1",
+      "bytes": 3
+    },
+    {
+      "kind": "string",
+      "offset": "0x0019C3C4",
+      "bytes": 37,
+      "text": " this{T05} Oh, and that! Uh huh{T05}\"",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x0019C3E9",
+      "bytes": 3
+    },
+    {
+      "kind": "string",
+      "offset": "0x0019C3EC",
+      "bytes": 31,
+      "text": "\"What kind of stuff do you have",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x0019C40B",
+      "bytes": 1
+    },
+    {
+      "kind": "string",
+      "offset": "0x0019C40C",
+      "bytes": 8,
+      "text": " today?\"",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x0019C414",
+      "bytes": 4
+    },
+    {
+      "kind": "string",
+      "offset": "0x0019C418",
+      "bytes": 33,
+      "text": "\"They are all very splendid. I am",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x0019C439",
+      "bytes": 3
+    },
+    {
+      "kind": "string",
+      "offset": "0x0019C43C",
+      "bytes": 18,
+      "text": " quite surprised.\"",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x0019C44E",
+      "bytes": 2
+    },
+    {
+      "kind": "string",
+      "offset": "0x0019C450",
+      "bytes": 7,
+      "text": "Target:",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x0019C457",
+      "bytes": 1
+    },
+    {
+      "kind": "string",
+      "offset": "0x0019C458",
+      "bytes": 8,
+      "text": "Element:",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x0019C460",
+      "bytes": 4
+    },
+    {
+      "kind": "string",
+      "offset": "0x0019C464",
+      "bytes": 6,
+      "text": "Effect",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x0019C46A",
+      "bytes": 2
+    },
+    {
+      "kind": "string",
+      "offset": "0x0019C46C",
+      "bytes": 7,
+      "text": "Invalid",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x0019C473",
+      "bytes": 1
+    },
+    {
+      "kind": "string",
+      "offset": "0x0019C474",
+      "bytes": 9,
+      "text": "Inventory",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x0019C47D",
+      "bytes": 3
+    },
+    {
+      "kind": "string",
+      "offset": "0x0019C480",
+      "bytes": 4,
+      "text": "None",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x0019C484",
+      "bytes": 4
+    }
+  ]
+}

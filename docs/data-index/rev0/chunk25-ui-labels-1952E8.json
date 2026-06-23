@@ -1,0 +1,239 @@
+{
+  "source": "build/original-mips/rev0/code_00191000_001A1000.s",
+  "rangeZ64": [
+    "0x001952E8",
+    "0x00195410"
+  ],
+  "totalBytes": 296,
+  "encoding": "ASCII, NUL-terminated, big-endian (z64) byte order; @-prefixed inline control codes left verbatim",
+  "title": "Chunk-25 inline UI labels (0x1952E8)",
+  "stringCount": 16,
+  "atCodeTally": {},
+  "atCodeSemantics": "UNRESOLVED — @0..@3/@w/@c/@e are inline formatting/control codes; exact runtime meaning not decoded",
+  "confidence": "high (printable ASCII text); control-code semantics hypothesis-grade",
+  "segments": [
+    {
+      "kind": "nul",
+      "offset": "0x001952E8",
+      "bytes": 16
+    },
+    {
+      "kind": "string",
+      "offset": "0x001952F8",
+      "bytes": 7,
+      "text": "Soldier",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x001952FF",
+      "bytes": 1
+    },
+    {
+      "kind": "string",
+      "offset": "0x00195300",
+      "bytes": 6,
+      "text": "Thrust",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x00195306",
+      "bytes": 2
+    },
+    {
+      "kind": "string",
+      "offset": "0x00195308",
+      "bytes": 4,
+      "text": "\\x01\\x03\\x04\\xFF",
+      "atCodes": {},
+      "nonPrintable": 4
+    },
+    {
+      "kind": "nul",
+      "offset": "0x0019530C",
+      "bytes": 6
+    },
+    {
+      "kind": "string",
+      "offset": "0x00195312",
+      "bytes": 5,
+      "text": "\\x02\\x03\\x04\\x05\\xFF",
+      "atCodes": {},
+      "nonPrintable": 5
+    },
+    {
+      "kind": "nul",
+      "offset": "0x00195317",
+      "bytes": 3
+    },
+    {
+      "kind": "string",
+      "offset": "0x0019531A",
+      "bytes": 4,
+      "text": "\\x01\\x04\\x05\\xFF",
+      "atCodes": {},
+      "nonPrintable": 4
+    },
+    {
+      "kind": "nul",
+      "offset": "0x0019531E",
+      "bytes": 6
+    },
+    {
+      "kind": "string",
+      "offset": "0x00195324",
+      "bytes": 5,
+      "text": "\\x01\\x04\\x06\\x07\\xFF",
+      "atCodes": {},
+      "nonPrintable": 5
+    },
+    {
+      "kind": "nul",
+      "offset": "0x00195329",
+      "bytes": 4
+    },
+    {
+      "kind": "string",
+      "offset": "0x0019532D",
+      "bytes": 14,
+      "text": "\\x01\\x02\\x03\\x05\\x06\\x07\\x08\\xFF\\x01\\x02\\x04\\x07\\x08\\xFF",
+      "atCodes": {},
+      "nonPrintable": 14
+    },
+    {
+      "kind": "nul",
+      "offset": "0x0019533B",
+      "bytes": 3
+    },
+    {
+      "kind": "string",
+      "offset": "0x0019533E",
+      "bytes": 4,
+      "text": "\\x03\\x04\\x07\\xFF",
+      "atCodes": {},
+      "nonPrintable": 4
+    },
+    {
+      "kind": "nul",
+      "offset": "0x00195342",
+      "bytes": 5
+    },
+    {
+      "kind": "string",
+      "offset": "0x00195347",
+      "bytes": 6,
+      "text": "\\x03\\x04\\x05\\x06\\x08\\xFF",
+      "atCodes": {},
+      "nonPrintable": 6
+    },
+    {
+      "kind": "nul",
+      "offset": "0x0019534D",
+      "bytes": 3
+    },
+    {
+      "kind": "string",
+      "offset": "0x00195350",
+      "bytes": 4,
+      "text": "\\x04\\x05\\x07\\xFF",
+      "atCodes": {},
+      "nonPrintable": 4
+    },
+    {
+      "kind": "nul",
+      "offset": "0x00195354",
+      "bytes": 16
+    },
+    {
+      "kind": "nul",
+      "offset": "0x00195365",
+      "bytes": 11
+    },
+    {
+      "kind": "string",
+      "offset": "0x00195370",
+      "bytes": 11,
+      "text": "Target Unit",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x0019537B",
+      "bytes": 3
+    },
+    {
+      "kind": "nul",
+      "offset": "0x0019537F",
+      "bytes": 1
+    },
+    {
+      "kind": "string",
+      "offset": "0x00195380",
+      "bytes": 4,
+      "text": "{C6}",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x00195384",
+      "bytes": 4
+    },
+    {
+      "kind": "string",
+      "offset": "0x00195388",
+      "bytes": 4,
+      "text": "{C0}",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x0019538C",
+      "bytes": 4
+    },
+    {
+      "kind": "string",
+      "offset": "0x00195390",
+      "bytes": 48,
+      "text": "\\x80!~ \\x80!\\x7F\\xAC\\x80!\\x80`\\x80!\\x81,\\x80!\\x82l\\x80!\\x88X\\x80!\\x88\\xE0\\x80!\\x89,\\x81|\\x81|\\x81|\\x81|\\x81|\\x81|\\x81|\\x81|",
+      "atCodes": {},
+      "nonPrintable": 25
+    },
+    {
+      "kind": "nul",
+      "offset": "0x001953C0",
+      "bytes": 5
+    },
+    {
+      "kind": "string",
+      "offset": "0x001953C5",
+      "bytes": 32,
+      "text": "\\x01\\x02\\x04\\x06\\x08\\x0B\\x0E\\x11\\x15\\x19\\x1D!%*/5:?CGKOSVY\\^`bcdd",
+      "atCodes": {},
+      "nonPrintable": 11
+    },
+    {
+      "kind": "nul",
+      "offset": "0x001953E5",
+      "bytes": 4
+    },
+    {
+      "kind": "string",
+      "offset": "0x001953E9",
+      "bytes": 32,
+      "text": "\\x14\\x1E%*/5:?DHLPSVY\\^`abcccddddddddd",
+      "atCodes": {},
+      "nonPrintable": 2
+    },
+    {
+      "kind": "nul",
+      "offset": "0x00195409",
+      "bytes": 7
+    }
+  ]
+}

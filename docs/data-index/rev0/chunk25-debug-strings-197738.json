@@ -1,0 +1,99 @@
+{
+  "source": "build/original-mips/rev0/code_00191000_001A1000.s",
+  "rangeZ64": [
+    "0x00197738",
+    "0x001977E0"
+  ],
+  "totalBytes": 168,
+  "encoding": "ASCII, NUL-terminated, big-endian (z64) byte order; @-prefixed inline control codes left verbatim",
+  "title": "Chunk-25 inline debug strings (0x197738)",
+  "stringCount": 6,
+  "atCodeTally": {},
+  "atCodeSemantics": "UNRESOLVED — @0..@3/@w/@c/@e are inline formatting/control codes; exact runtime meaning not decoded",
+  "confidence": "high (printable ASCII text); control-code semantics hypothesis-grade",
+  "segments": [
+    {
+      "kind": "nul",
+      "offset": "0x00197738",
+      "bytes": 8
+    },
+    {
+      "kind": "string",
+      "offset": "0x00197740",
+      "bytes": 8,
+      "text": "Mitsuiye",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x00197748",
+      "bytes": 4
+    },
+    {
+      "kind": "string",
+      "offset": "0x0019774C",
+      "bytes": 10,
+      "text": "\\x02\\x04\\x04\\x04\\x05\\x02\\x0F\\x02\\xFF\\xFF",
+      "atCodes": {},
+      "nonPrintable": 10
+    },
+    {
+      "kind": "nul",
+      "offset": "0x00197756",
+      "bytes": 10
+    },
+    {
+      "kind": "string",
+      "offset": "0x00197760",
+      "bytes": 16,
+      "text": "\\x81|\\x81|\\x81|\\x81|\\x81|\\x81|\\x81|\\x81|",
+      "atCodes": {},
+      "nonPrintable": 8
+    },
+    {
+      "kind": "nul",
+      "offset": "0x00197770",
+      "bytes": 4
+    },
+    {
+      "kind": "string",
+      "offset": "0x00197774",
+      "bytes": 38,
+      "text": "No free space on TCharacterEnemyData.\\x0A",
+      "atCodes": {},
+      "nonPrintable": 1
+    },
+    {
+      "kind": "nul",
+      "offset": "0x0019779A",
+      "bytes": 2
+    },
+    {
+      "kind": "string",
+      "offset": "0x0019779C",
+      "bytes": 34,
+      "text": "No free space on EnemySolderData.\\x0A",
+      "atCodes": {},
+      "nonPrintable": 1
+    },
+    {
+      "kind": "nul",
+      "offset": "0x001977BE",
+      "bytes": 2
+    },
+    {
+      "kind": "string",
+      "offset": "0x001977C0",
+      "bytes": 24,
+      "text": "\\x80!Z\\x10\\x80!Z \\x80!Z0\\x80!ZH\\x80!ZX\\x80!Zx",
+      "atCodes": {},
+      "nonPrintable": 7
+    },
+    {
+      "kind": "nul",
+      "offset": "0x001977D8",
+      "bytes": 8
+    }
+  ]
+}

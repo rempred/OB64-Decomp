@@ -1,0 +1,37 @@
+/*
+ * Original Rev 0 MIPS reference split.
+ * Parent source: asm/original/rev0/code_00191000_001A1000.s
+ * z64 range: 0x0019C688..0x0019C6F0 exclusive
+ * Decode comments are aids, not proof of semantic function boundaries.
+ */
+.set noat
+.set noreorder
+.text
+
+/* Data region (not executable host code): RAM-pointer table (handler/jump-pointer array; targets are relocated 0x8021/0x8016-band code/data, NOT local-rodata string pointers). Overlay-relocated targets. RAM pointer table, 0x8021 band (25 entries). Dominated by repeated 0x80219048 (default fill) with distinct neighbors: 0x80219050 x2, 0x80219058 x5, 0x80219060 x2, 0x80219068, 0x80219070. Same repeated-default structure as the prior table. Trailing single zero word at 0x19C6EC folded in as terminator.. */
+/* 0x0019C688 0x8020C288 0x80219048 */ .word 0x80219048 # lb $at, -0x6FB8($at)
+/* 0x0019C68C 0x8020C28C 0x80219048 */ .word 0x80219048 # lb $at, -0x6FB8($at)
+/* 0x0019C690 0x8020C290 0x80219048 */ .word 0x80219048 # lb $at, -0x6FB8($at)
+/* 0x0019C694 0x8020C294 0x80219048 */ .word 0x80219048 # lb $at, -0x6FB8($at)
+/* 0x0019C698 0x8020C298 0x80219048 */ .word 0x80219048 # lb $at, -0x6FB8($at)
+/* 0x0019C69C 0x8020C29C 0x80219048 */ .word 0x80219048 # lb $at, -0x6FB8($at)
+/* 0x0019C6A0 0x8020C2A0 0x80219048 */ .word 0x80219048 # lb $at, -0x6FB8($at)
+/* 0x0019C6A4 0x8020C2A4 0x80219048 */ .word 0x80219048 # lb $at, -0x6FB8($at)
+/* 0x0019C6A8 0x8020C2A8 0x80219048 */ .word 0x80219048 # lb $at, -0x6FB8($at)
+/* 0x0019C6AC 0x8020C2AC 0x80219048 */ .word 0x80219048 # lb $at, -0x6FB8($at)
+/* 0x0019C6B0 0x8020C2B0 0x80219048 */ .word 0x80219048 # lb $at, -0x6FB8($at)
+/* 0x0019C6B4 0x8020C2B4 0x80219048 */ .word 0x80219048 # lb $at, -0x6FB8($at)
+/* 0x0019C6B8 0x8020C2B8 0x80219048 */ .word 0x80219048 # lb $at, -0x6FB8($at)
+/* 0x0019C6BC 0x8020C2BC 0x80219050 */ .word 0x80219050 # lb $at, -0x6FB0($at)
+/* 0x0019C6C0 0x8020C2C0 0x80219050 */ .word 0x80219050 # lb $at, -0x6FB0($at)
+/* 0x0019C6C4 0x8020C2C4 0x80219058 */ .word 0x80219058 # lb $at, -0x6FA8($at)
+/* 0x0019C6C8 0x8020C2C8 0x80219058 */ .word 0x80219058 # lb $at, -0x6FA8($at)
+/* 0x0019C6CC 0x8020C2CC 0x80219058 */ .word 0x80219058 # lb $at, -0x6FA8($at)
+/* 0x0019C6D0 0x8020C2D0 0x80219058 */ .word 0x80219058 # lb $at, -0x6FA8($at)
+/* 0x0019C6D4 0x8020C2D4 0x80219058 */ .word 0x80219058 # lb $at, -0x6FA8($at)
+/* 0x0019C6D8 0x8020C2D8 0x80219060 */ .word 0x80219060 # lb $at, -0x6FA0($at)
+/* 0x0019C6DC 0x8020C2DC 0x80219060 */ .word 0x80219060 # lb $at, -0x6FA0($at)
+/* 0x0019C6E0 0x8020C2E0 0x80219068 */ .word 0x80219068 # lb $at, -0x6F98($at)
+/* 0x0019C6E4 0x8020C2E4 0x80219048 */ .word 0x80219048 # lb $at, -0x6FB8($at)
+/* 0x0019C6E8 0x8020C2E8 0x80219070 */ .word 0x80219070 # lb $at, -0x6F90($at)
+/* 0x0019C6EC 0x8020C2EC 0x00000000 */ .word 0x00000000 # nop
