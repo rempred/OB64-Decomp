@@ -1,0 +1,982 @@
+{
+  "name": "creature_drop_table",
+  "rangeZ64": [
+    "0x00142258",
+    "0x00142378"
+  ],
+  "totalBytes": 288,
+  "rowCount": 36,
+  "rowStride": "0x8",
+  "layout": "record (8B): [0]=u8 pad(0x00); [1]=u8 class_id; [2-3]=u16BE drop slot1; [4-5]=slot2; [6-7]=slot3. Drop slot: bit15(0x8000)=equipment flag, bits0-14=item id (index into item_stat_table @ ROM 0x62310). Indexed by class id; record 35 = all-zero sentinel.",
+  "confidence": "HIGH (docs/drop-table.md + editor/parsers.js:566-610 + table_map.json size 288=36x8; byte-verified e.g. Hawkman class 0x27 -> 80 31/80 9B/80 E8)",
+  "runtimeRamCopy": "0x801EDB18 (scenario state; overlay-relocated)",
+  "rawOwner": "asm/original/rev0/lib/<table part covering 0x142258> (byte-exact; companion decode)",
+  "records": [
+    {
+      "index": 0,
+      "romOffset": "0x00142258",
+      "pad": "0x00",
+      "classId": "0x27",
+      "drops": [
+        {
+          "raw": "0x8031",
+          "equipment": true,
+          "itemId": 49,
+          "itemIdHex": "0x0031"
+        },
+        {
+          "raw": "0x809B",
+          "equipment": true,
+          "itemId": 155,
+          "itemIdHex": "0x009B"
+        },
+        {
+          "raw": "0x80E8",
+          "equipment": true,
+          "itemId": 232,
+          "itemIdHex": "0x00E8"
+        }
+      ],
+      "sentinel": false
+    },
+    {
+      "index": 1,
+      "romOffset": "0x00142260",
+      "pad": "0x00",
+      "classId": "0x28",
+      "drops": [
+        {
+          "raw": "0x8032",
+          "equipment": true,
+          "itemId": 50,
+          "itemIdHex": "0x0032"
+        },
+        {
+          "raw": "0x809C",
+          "equipment": true,
+          "itemId": 156,
+          "itemIdHex": "0x009C"
+        },
+        {
+          "raw": "0x80E9",
+          "equipment": true,
+          "itemId": 233,
+          "itemIdHex": "0x00E9"
+        }
+      ],
+      "sentinel": false
+    },
+    {
+      "index": 2,
+      "romOffset": "0x00142268",
+      "pad": "0x00",
+      "classId": "0x29",
+      "drops": [
+        {
+          "raw": "0x8033",
+          "equipment": true,
+          "itemId": 51,
+          "itemIdHex": "0x0033"
+        },
+        {
+          "raw": "0x809C",
+          "equipment": true,
+          "itemId": 156,
+          "itemIdHex": "0x009C"
+        },
+        {
+          "raw": "0x80DE",
+          "equipment": true,
+          "itemId": 222,
+          "itemIdHex": "0x00DE"
+        }
+      ],
+      "sentinel": false
+    },
+    {
+      "index": 3,
+      "romOffset": "0x00142270",
+      "pad": "0x00",
+      "classId": "0x2F",
+      "drops": [
+        {
+          "raw": "0x8031",
+          "equipment": true,
+          "itemId": 49,
+          "itemIdHex": "0x0031"
+        },
+        {
+          "raw": "0x80BE",
+          "equipment": true,
+          "itemId": 190,
+          "itemIdHex": "0x00BE"
+        },
+        {
+          "raw": "0x80BE",
+          "equipment": true,
+          "itemId": 190,
+          "itemIdHex": "0x00BE"
+        }
+      ],
+      "sentinel": false
+    },
+    {
+      "index": 4,
+      "romOffset": "0x00142278",
+      "pad": "0x00",
+      "classId": "0x30",
+      "drops": [
+        {
+          "raw": "0x80BE",
+          "equipment": true,
+          "itemId": 190,
+          "itemIdHex": "0x00BE"
+        },
+        {
+          "raw": "0x80BE",
+          "equipment": true,
+          "itemId": 190,
+          "itemIdHex": "0x00BE"
+        },
+        {
+          "raw": "0x80BE",
+          "equipment": true,
+          "itemId": 190,
+          "itemIdHex": "0x00BE"
+        }
+      ],
+      "sentinel": false
+    },
+    {
+      "index": 5,
+      "romOffset": "0x00142280",
+      "pad": "0x00",
+      "classId": "0x31",
+      "drops": [
+        {
+          "raw": "0x8069",
+          "equipment": true,
+          "itemId": 105,
+          "itemIdHex": "0x0069"
+        },
+        {
+          "raw": "0x0006",
+          "equipment": false,
+          "itemId": 6,
+          "itemIdHex": "0x0006"
+        },
+        {
+          "raw": "0x0017",
+          "equipment": false,
+          "itemId": 23,
+          "itemIdHex": "0x0017"
+        }
+      ],
+      "sentinel": false
+    },
+    {
+      "index": 6,
+      "romOffset": "0x00142288",
+      "pad": "0x00",
+      "classId": "0x32",
+      "drops": [
+        {
+          "raw": "0x0016",
+          "equipment": false,
+          "itemId": 22,
+          "itemIdHex": "0x0016"
+        },
+        {
+          "raw": "0x0001",
+          "equipment": false,
+          "itemId": 1,
+          "itemIdHex": "0x0001"
+        },
+        {
+          "raw": "0x0002",
+          "equipment": false,
+          "itemId": 2,
+          "itemIdHex": "0x0002"
+        }
+      ],
+      "sentinel": false
+    },
+    {
+      "index": 7,
+      "romOffset": "0x00142290",
+      "pad": "0x00",
+      "classId": "0x33",
+      "drops": [
+        {
+          "raw": "0x0015",
+          "equipment": false,
+          "itemId": 21,
+          "itemIdHex": "0x0015"
+        },
+        {
+          "raw": "0x0001",
+          "equipment": false,
+          "itemId": 1,
+          "itemIdHex": "0x0001"
+        },
+        {
+          "raw": "0x0002",
+          "equipment": false,
+          "itemId": 2,
+          "itemIdHex": "0x0002"
+        }
+      ],
+      "sentinel": false
+    },
+    {
+      "index": 8,
+      "romOffset": "0x00142298",
+      "pad": "0x00",
+      "classId": "0x34",
+      "drops": [
+        {
+          "raw": "0x0008",
+          "equipment": false,
+          "itemId": 8,
+          "itemIdHex": "0x0008"
+        },
+        {
+          "raw": "0x0001",
+          "equipment": false,
+          "itemId": 1,
+          "itemIdHex": "0x0001"
+        },
+        {
+          "raw": "0x0002",
+          "equipment": false,
+          "itemId": 2,
+          "itemIdHex": "0x0002"
+        }
+      ],
+      "sentinel": false
+    },
+    {
+      "index": 9,
+      "romOffset": "0x001422A0",
+      "pad": "0x00",
+      "classId": "0x35",
+      "drops": [
+        {
+          "raw": "0x0001",
+          "equipment": false,
+          "itemId": 1,
+          "itemIdHex": "0x0001"
+        },
+        {
+          "raw": "0x8001",
+          "equipment": true,
+          "itemId": 1,
+          "itemIdHex": "0x0001"
+        },
+        {
+          "raw": "0x80A8",
+          "equipment": true,
+          "itemId": 168,
+          "itemIdHex": "0x00A8"
+        }
+      ],
+      "sentinel": false
+    },
+    {
+      "index": 10,
+      "romOffset": "0x001422A8",
+      "pad": "0x00",
+      "classId": "0x37",
+      "drops": [
+        {
+          "raw": "0x8026",
+          "equipment": true,
+          "itemId": 38,
+          "itemIdHex": "0x0026"
+        },
+        {
+          "raw": "0x803D",
+          "equipment": true,
+          "itemId": 61,
+          "itemIdHex": "0x003D"
+        },
+        {
+          "raw": "0x809B",
+          "equipment": true,
+          "itemId": 155,
+          "itemIdHex": "0x009B"
+        }
+      ],
+      "sentinel": false
+    },
+    {
+      "index": 11,
+      "romOffset": "0x001422B0",
+      "pad": "0x00",
+      "classId": "0x38",
+      "drops": [
+        {
+          "raw": "0x0002",
+          "equipment": false,
+          "itemId": 2,
+          "itemIdHex": "0x0002"
+        },
+        {
+          "raw": "0x0002",
+          "equipment": false,
+          "itemId": 2,
+          "itemIdHex": "0x0002"
+        },
+        {
+          "raw": "0x0002",
+          "equipment": false,
+          "itemId": 2,
+          "itemIdHex": "0x0002"
+        }
+      ],
+      "sentinel": false
+    },
+    {
+      "index": 12,
+      "romOffset": "0x001422B8",
+      "pad": "0x00",
+      "classId": "0x39",
+      "drops": [
+        {
+          "raw": "0x8006",
+          "equipment": true,
+          "itemId": 6,
+          "itemIdHex": "0x0006"
+        },
+        {
+          "raw": "0x0002",
+          "equipment": false,
+          "itemId": 2,
+          "itemIdHex": "0x0002"
+        },
+        {
+          "raw": "0x0002",
+          "equipment": false,
+          "itemId": 2,
+          "itemIdHex": "0x0002"
+        }
+      ],
+      "sentinel": false
+    },
+    {
+      "index": 13,
+      "romOffset": "0x001422C0",
+      "pad": "0x00",
+      "classId": "0x3A",
+      "drops": [
+        {
+          "raw": "0x8008",
+          "equipment": true,
+          "itemId": 8,
+          "itemIdHex": "0x0008"
+        },
+        {
+          "raw": "0x0002",
+          "equipment": false,
+          "itemId": 2,
+          "itemIdHex": "0x0002"
+        },
+        {
+          "raw": "0x0002",
+          "equipment": false,
+          "itemId": 2,
+          "itemIdHex": "0x0002"
+        }
+      ],
+      "sentinel": false
+    },
+    {
+      "index": 14,
+      "romOffset": "0x001422C8",
+      "pad": "0x00",
+      "classId": "0x3B",
+      "drops": [
+        {
+          "raw": "0x8037",
+          "equipment": true,
+          "itemId": 55,
+          "itemIdHex": "0x0037"
+        },
+        {
+          "raw": "0x0002",
+          "equipment": false,
+          "itemId": 2,
+          "itemIdHex": "0x0002"
+        },
+        {
+          "raw": "0x0002",
+          "equipment": false,
+          "itemId": 2,
+          "itemIdHex": "0x0002"
+        }
+      ],
+      "sentinel": false
+    },
+    {
+      "index": 15,
+      "romOffset": "0x001422D0",
+      "pad": "0x00",
+      "classId": "0x3C",
+      "drops": [
+        {
+          "raw": "0x8063",
+          "equipment": true,
+          "itemId": 99,
+          "itemIdHex": "0x0063"
+        },
+        {
+          "raw": "0x0002",
+          "equipment": false,
+          "itemId": 2,
+          "itemIdHex": "0x0002"
+        },
+        {
+          "raw": "0x0002",
+          "equipment": false,
+          "itemId": 2,
+          "itemIdHex": "0x0002"
+        }
+      ],
+      "sentinel": false
+    },
+    {
+      "index": 16,
+      "romOffset": "0x001422D8",
+      "pad": "0x00",
+      "classId": "0x3D",
+      "drops": [
+        {
+          "raw": "0x806F",
+          "equipment": true,
+          "itemId": 111,
+          "itemIdHex": "0x006F"
+        },
+        {
+          "raw": "0x0002",
+          "equipment": false,
+          "itemId": 2,
+          "itemIdHex": "0x0002"
+        },
+        {
+          "raw": "0x0002",
+          "equipment": false,
+          "itemId": 2,
+          "itemIdHex": "0x0002"
+        }
+      ],
+      "sentinel": false
+    },
+    {
+      "index": 17,
+      "romOffset": "0x001422E0",
+      "pad": "0x00",
+      "classId": "0x3E",
+      "drops": [
+        {
+          "raw": "0x807C",
+          "equipment": true,
+          "itemId": 124,
+          "itemIdHex": "0x007C"
+        },
+        {
+          "raw": "0x0002",
+          "equipment": false,
+          "itemId": 2,
+          "itemIdHex": "0x0002"
+        },
+        {
+          "raw": "0x0002",
+          "equipment": false,
+          "itemId": 2,
+          "itemIdHex": "0x0002"
+        }
+      ],
+      "sentinel": false
+    },
+    {
+      "index": 18,
+      "romOffset": "0x001422E8",
+      "pad": "0x00",
+      "classId": "0x3F",
+      "drops": [
+        {
+          "raw": "0x8100",
+          "equipment": true,
+          "itemId": 256,
+          "itemIdHex": "0x0100"
+        },
+        {
+          "raw": "0x000D",
+          "equipment": false,
+          "itemId": 13,
+          "itemIdHex": "0x000D"
+        },
+        {
+          "raw": "0x0003",
+          "equipment": false,
+          "itemId": 3,
+          "itemIdHex": "0x0003"
+        }
+      ],
+      "sentinel": false
+    },
+    {
+      "index": 19,
+      "romOffset": "0x001422F0",
+      "pad": "0x00",
+      "classId": "0x40",
+      "drops": [
+        {
+          "raw": "0x8101",
+          "equipment": true,
+          "itemId": 257,
+          "itemIdHex": "0x0101"
+        },
+        {
+          "raw": "0x000B",
+          "equipment": false,
+          "itemId": 11,
+          "itemIdHex": "0x000B"
+        },
+        {
+          "raw": "0x0003",
+          "equipment": false,
+          "itemId": 3,
+          "itemIdHex": "0x0003"
+        }
+      ],
+      "sentinel": false
+    },
+    {
+      "index": 20,
+      "romOffset": "0x001422F8",
+      "pad": "0x00",
+      "classId": "0x41",
+      "drops": [
+        {
+          "raw": "0x8102",
+          "equipment": true,
+          "itemId": 258,
+          "itemIdHex": "0x0102"
+        },
+        {
+          "raw": "0x000C",
+          "equipment": false,
+          "itemId": 12,
+          "itemIdHex": "0x000C"
+        },
+        {
+          "raw": "0x0003",
+          "equipment": false,
+          "itemId": 3,
+          "itemIdHex": "0x0003"
+        }
+      ],
+      "sentinel": false
+    },
+    {
+      "index": 21,
+      "romOffset": "0x00142300",
+      "pad": "0x00",
+      "classId": "0x42",
+      "drops": [
+        {
+          "raw": "0x8103",
+          "equipment": true,
+          "itemId": 259,
+          "itemIdHex": "0x0103"
+        },
+        {
+          "raw": "0x000E",
+          "equipment": false,
+          "itemId": 14,
+          "itemIdHex": "0x000E"
+        },
+        {
+          "raw": "0x0003",
+          "equipment": false,
+          "itemId": 3,
+          "itemIdHex": "0x0003"
+        }
+      ],
+      "sentinel": false
+    },
+    {
+      "index": 22,
+      "romOffset": "0x00142308",
+      "pad": "0x00",
+      "classId": "0x43",
+      "drops": [
+        {
+          "raw": "0x0013",
+          "equipment": false,
+          "itemId": 19,
+          "itemIdHex": "0x0013"
+        },
+        {
+          "raw": "0x0011",
+          "equipment": false,
+          "itemId": 17,
+          "itemIdHex": "0x0011"
+        },
+        {
+          "raw": "0x0005",
+          "equipment": false,
+          "itemId": 5,
+          "itemIdHex": "0x0005"
+        }
+      ],
+      "sentinel": false
+    },
+    {
+      "index": 23,
+      "romOffset": "0x00142310",
+      "pad": "0x00",
+      "classId": "0x44",
+      "drops": [
+        {
+          "raw": "0x0013",
+          "equipment": false,
+          "itemId": 19,
+          "itemIdHex": "0x0013"
+        },
+        {
+          "raw": "0x0012",
+          "equipment": false,
+          "itemId": 18,
+          "itemIdHex": "0x0012"
+        },
+        {
+          "raw": "0x0005",
+          "equipment": false,
+          "itemId": 5,
+          "itemIdHex": "0x0005"
+        }
+      ],
+      "sentinel": false
+    },
+    {
+      "index": 24,
+      "romOffset": "0x00142318",
+      "pad": "0x00",
+      "classId": "0x45",
+      "drops": [
+        {
+          "raw": "0x0004",
+          "equipment": false,
+          "itemId": 4,
+          "itemIdHex": "0x0004"
+        },
+        {
+          "raw": "0x0004",
+          "equipment": false,
+          "itemId": 4,
+          "itemIdHex": "0x0004"
+        },
+        {
+          "raw": "0x0004",
+          "equipment": false,
+          "itemId": 4,
+          "itemIdHex": "0x0004"
+        }
+      ],
+      "sentinel": false
+    },
+    {
+      "index": 25,
+      "romOffset": "0x00142320",
+      "pad": "0x00",
+      "classId": "0x46",
+      "drops": [
+        {
+          "raw": "0x0009",
+          "equipment": false,
+          "itemId": 9,
+          "itemIdHex": "0x0009"
+        },
+        {
+          "raw": "0x000A",
+          "equipment": false,
+          "itemId": 10,
+          "itemIdHex": "0x000A"
+        },
+        {
+          "raw": "0x0005",
+          "equipment": false,
+          "itemId": 5,
+          "itemIdHex": "0x0005"
+        }
+      ],
+      "sentinel": false
+    },
+    {
+      "index": 26,
+      "romOffset": "0x00142328",
+      "pad": "0x00",
+      "classId": "0x47",
+      "drops": [
+        {
+          "raw": "0x0004",
+          "equipment": false,
+          "itemId": 4,
+          "itemIdHex": "0x0004"
+        },
+        {
+          "raw": "0x0004",
+          "equipment": false,
+          "itemId": 4,
+          "itemIdHex": "0x0004"
+        },
+        {
+          "raw": "0x0004",
+          "equipment": false,
+          "itemId": 4,
+          "itemIdHex": "0x0004"
+        }
+      ],
+      "sentinel": false
+    },
+    {
+      "index": 27,
+      "romOffset": "0x00142330",
+      "pad": "0x00",
+      "classId": "0x48",
+      "drops": [
+        {
+          "raw": "0x000F",
+          "equipment": false,
+          "itemId": 15,
+          "itemIdHex": "0x000F"
+        },
+        {
+          "raw": "0x0010",
+          "equipment": false,
+          "itemId": 16,
+          "itemIdHex": "0x0010"
+        },
+        {
+          "raw": "0x0005",
+          "equipment": false,
+          "itemId": 5,
+          "itemIdHex": "0x0005"
+        }
+      ],
+      "sentinel": false
+    },
+    {
+      "index": 28,
+      "romOffset": "0x00142338",
+      "pad": "0x00",
+      "classId": "0x49",
+      "drops": [
+        {
+          "raw": "0x0011",
+          "equipment": false,
+          "itemId": 17,
+          "itemIdHex": "0x0011"
+        },
+        {
+          "raw": "0x0006",
+          "equipment": false,
+          "itemId": 6,
+          "itemIdHex": "0x0006"
+        },
+        {
+          "raw": "0x0006",
+          "equipment": false,
+          "itemId": 6,
+          "itemIdHex": "0x0006"
+        }
+      ],
+      "sentinel": false
+    },
+    {
+      "index": 29,
+      "romOffset": "0x00142340",
+      "pad": "0x00",
+      "classId": "0x4A",
+      "drops": [
+        {
+          "raw": "0x0007",
+          "equipment": false,
+          "itemId": 7,
+          "itemIdHex": "0x0007"
+        },
+        {
+          "raw": "0x0005",
+          "equipment": false,
+          "itemId": 5,
+          "itemIdHex": "0x0005"
+        },
+        {
+          "raw": "0x0005",
+          "equipment": false,
+          "itemId": 5,
+          "itemIdHex": "0x0005"
+        }
+      ],
+      "sentinel": false
+    },
+    {
+      "index": 30,
+      "romOffset": "0x00142348",
+      "pad": "0x00",
+      "classId": "0x4B",
+      "drops": [
+        {
+          "raw": "0x0002",
+          "equipment": false,
+          "itemId": 2,
+          "itemIdHex": "0x0002"
+        },
+        {
+          "raw": "0x0004",
+          "equipment": false,
+          "itemId": 4,
+          "itemIdHex": "0x0004"
+        },
+        {
+          "raw": "0x0004",
+          "equipment": false,
+          "itemId": 4,
+          "itemIdHex": "0x0004"
+        }
+      ],
+      "sentinel": false
+    },
+    {
+      "index": 31,
+      "romOffset": "0x00142350",
+      "pad": "0x00",
+      "classId": "0x4C",
+      "drops": [
+        {
+          "raw": "0x0013",
+          "equipment": false,
+          "itemId": 19,
+          "itemIdHex": "0x0013"
+        },
+        {
+          "raw": "0x0014",
+          "equipment": false,
+          "itemId": 20,
+          "itemIdHex": "0x0014"
+        },
+        {
+          "raw": "0x0005",
+          "equipment": false,
+          "itemId": 5,
+          "itemIdHex": "0x0005"
+        }
+      ],
+      "sentinel": false
+    },
+    {
+      "index": 32,
+      "romOffset": "0x00142358",
+      "pad": "0x00",
+      "classId": "0x4E",
+      "drops": [
+        {
+          "raw": "0x0001",
+          "equipment": false,
+          "itemId": 1,
+          "itemIdHex": "0x0001"
+        },
+        {
+          "raw": "0x0004",
+          "equipment": false,
+          "itemId": 4,
+          "itemIdHex": "0x0004"
+        },
+        {
+          "raw": "0x0004",
+          "equipment": false,
+          "itemId": 4,
+          "itemIdHex": "0x0004"
+        }
+      ],
+      "sentinel": false
+    },
+    {
+      "index": 33,
+      "romOffset": "0x00142360",
+      "pad": "0x00",
+      "classId": "0x4F",
+      "drops": [
+        {
+          "raw": "0x808E",
+          "equipment": true,
+          "itemId": 142,
+          "itemIdHex": "0x008E"
+        },
+        {
+          "raw": "0x80A8",
+          "equipment": true,
+          "itemId": 168,
+          "itemIdHex": "0x00A8"
+        },
+        {
+          "raw": "0x80DE",
+          "equipment": true,
+          "itemId": 222,
+          "itemIdHex": "0x00DE"
+        }
+      ],
+      "sentinel": false
+    },
+    {
+      "index": 34,
+      "romOffset": "0x00142368",
+      "pad": "0x00",
+      "classId": "0x50",
+      "drops": [
+        {
+          "raw": "0x8091",
+          "equipment": true,
+          "itemId": 145,
+          "itemIdHex": "0x0091"
+        },
+        {
+          "raw": "0x80B2",
+          "equipment": true,
+          "itemId": 178,
+          "itemIdHex": "0x00B2"
+        },
+        {
+          "raw": "0x80DF",
+          "equipment": true,
+          "itemId": 223,
+          "itemIdHex": "0x00DF"
+        }
+      ],
+      "sentinel": false
+    },
+    {
+      "index": 35,
+      "romOffset": "0x00142370",
+      "pad": "0x00",
+      "classId": "0x00",
+      "drops": [
+        {
+          "raw": "0x0000",
+          "empty": true
+        },
+        {
+          "raw": "0x0000",
+          "empty": true
+        },
+        {
+          "raw": "0x0000",
+          "empty": true
+        }
+      ],
+      "sentinel": true
+    }
+  ]
+}

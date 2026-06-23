@@ -15,17 +15,17 @@ Current passing commands:
 node tools/verify_setup.js
 ```
 
-Current source mix: 20 tracked composite real-assembler chunks (chunk 0 177
-`boot/`; chunks 1–19 in `lib/`: 350, 216, 67, 376, 88, 78, 103, 87, 34, 35, 191, 74, 67, 94, 153, 95, 66, 95, 80) = 2,526 tracked
-source files, plus 80 generated fallback chunks. **Chunks 0–19 are fully
-source-owned as named code/data parts** (`0x00001000..0x00141000`; chunk 14: 74 code + 20
-data, MIXED — graphics/display-list data + DL-builder code;
-chunk 15: 134 code + 19 data, MIXED — floats/display-list data + the OB64 opening-narration rodata;
+Current source mix: 21 tracked composite real-assembler chunks (chunk 0 177
+`boot/`; chunks 1–20 in `lib/`: 350, 216, 67, 376, 88, 78, 103, 87, 34, 35, 191, 74, 67, 94, 153, 95, 66, 95, 80, 175) = 2,701 tracked
+source files, plus 79 generated fallback chunks. **Chunks 0–20 are fully
+source-owned as named code/data parts** (`0x00001000..0x00151000`; chunk 15: 134 code + 19
+data, MIXED — floats/display-list data + the OB64 opening-narration rodata;
 chunk 16: 72 code + 23 data, MIXED — leading scenario record/pointer/float64 data + the neutral-encounter code path;
 chunk 17: 66 code + 0 data, ALL CODE — char-data/encounter code;
 chunk 18: 95 code + 0 data, ALL CODE — FP-heavy scenario/combat code;
-chunk 19: 64 code + 16 data, MIXED — encounter/dispatcher code + a trailing scenario data region with an outgoing data straddler);
-next is chunk 20 (`0x00141000`).
+chunk 19: 64 code + 16 data, MIXED — encounter/dispatcher code + a trailing scenario data region;
+chunk 20: 89 code + 86 data, MIXED — scenario data tables (neutral_encounter 40×20, creature_drop 36×8) + a 125-string game-text pool + encounter/dispatcher code);
+next is chunk 21 (`0x00151000`).
 
 The assembled code-region SHA256 is
 `40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`; the full
@@ -102,29 +102,31 @@ node tools/audit_code_region.js
    generates fallback owners for the rest. Keep `node tools/verify_setup.js`
    green after every promotion.
 
-3. Continue into chunk 20.
+3. Continue into chunk 21.
 
-   Chunks 0–19 (`0x00001000..0x00141000`) are fully source-owned as named code/data
-   parts: chunk 0 in `boot/`; chunks 1–19 in `lib/` (dossiers `lib-chunk1-…` …
-   `lib-chunk19-…`). Chunks 13–16 + 19 are MIXED; chunks 17–18 are ALL CODE. Chunk 19 (80
-   parts: 64 code + 16 data) is encounter/dispatcher code (`0x131050..0x13C49C`, incl. the
-   `neutralEncounterDispatcher` @0x13C068 named conservatively `func_0013C060`) + a large
-   trailing DATA region (`0x13C49C..0x141000`: bit-LUT + 0x801E pointer tables + a
-   fixed-stride record/script table + a packed-byte tail straddling into chunk 20).
-   Adversarial: 0 disproofs — the data-hunter REFUTED the parent's "combat code in the gap"
-   (linear-map fallacy: 0 prologues/returns). Data index
-   `docs/data-index/rev0/chunk19-data-region-inventory.json`.
+   Chunks 0–20 (`0x00001000..0x00151000`) are fully source-owned as named code/data
+   parts: chunk 0 in `boot/`; chunks 1–20 in `lib/` (dossiers `lib-chunk1-…` …
+   `lib-chunk20-…`). Chunks 13–16, 19, 20 are MIXED; chunks 17–18 are ALL CODE. Chunk 20
+   (175 parts: 89 code + 86 data) is leading scenario DATA (`0x141000..0x145210`:
+   packed-byte straddler + gfx/float pools + the documented `neutral_encounter_table`
+   [40×20 @0x141ED0] + `creature_drop_table` [36×8 @0x142258] + 0x801A/0x801B pointer tables
+   + a **125-string game-text pool** @0x1432E4) + encounter/dispatcher CODE
+   (`0x145210..0x151000`, inline data island @0x14DE88) with an outgoing function straddler.
+   Adversarial: 1 fix (hidden code at 0x145210 → data→code boundary 0x145290→0x145210). Both
+   tables + the string pool decoded (JSON + MD). Data index
+   `docs/data-index/rev0/chunk20-data-region-inventory.json`.
 
-   **Next frontier: `0x00141000` (chunk 20).** FIRST continue the OUTGOING DATA straddler:
-   `data_00140EA0_chunk19head` `[0x140EA0,0x141000)` is a packed-byte structure (values
-   ≤0x0C, no terminator) continuing into chunk 20; emit the chunk-20 tail file
-   `data_00141000_chunk20tail` first and prove its end. The documented `neutral_encounter_table`
-   (`0x141ED0`, 40×20 B) and `creature_drop_table` (`0x142258`, 36×8 B) are early in chunk 20
-   — content-scan for them. Pipeline:
+   **Next frontier: `0x00151000` (chunk 21).** FIRST continue the OUTGOING FUNCTION straddler:
+   `func_00150550` `[0x150550,0x151000)` (prologue `addiu $sp,-0x40`, no `jr $ra` in range)
+   continues to `0x15105C`; emit the chunk-21 tail file `func_00150550_chunk21tail`
+   `[0x151000,0x15105C)` first. Chunk 21 is MIXED: code `[0x15105C,0x15FBF0)` (incl. the
+   `classLookup_full` lead @0x1591FC, named conservatively `func_001591FC`) + a trailing
+   high-entropy DATA region `[0x15FBF0,0x161000)` (0 prologues/returns confirmed) with an
+   outgoing data straddler into chunk 22. Pipeline:
    `plan_chunk`/`slice_chunk --disasm`/`check_splits`/`check_boundaries` + analysis +
-   adversarial swarms (Workflow) + a data-classification/index/export swarm for data regions.
-   Coverage now 46.00% (code-only ≈ 38.74%). See the DECOMP_LOG "Next Frontier" and
-   `docs/dossiers/lib-chunk19-131000-141000.md`.
+   adversarial swarms (Workflow) + a data-classification/index swarm for the data region.
+   Coverage now 48.30% (code-only ≈ 40.32%). See the DECOMP_LOG "Next Frontier" and
+   `docs/dossiers/lib-chunk20-141000-151000.md`.
 
 4. Keep the setup gate green.
 

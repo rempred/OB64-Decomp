@@ -1,0 +1,34 @@
+/*
+ * Original Rev 0 MIPS reference split.
+ * Parent source: asm/original/rev0/code_00141000_00151000.s
+ * z64 range: 0x00143208..0x00143264 exclusive
+ * Decode comments are aids, not proof of semantic function boundaries.
+ */
+.set noat
+.set noreorder
+.text
+
+/* Data region (not executable host code): 23 RAM pointers, all 0x801DD274 (uniform default/jump slot table). Word-stride pointer table; 1 trailing zero word. [name-token: table_ptr_801DD274]. */
+/* 0x00143208 0x801B2E08 0x801DD274 */ .word 0x801DD274 # lb $sp, -0x2D8C($zero)
+/* 0x0014320C 0x801B2E0C 0x801DD278 */ .word 0x801DD278 # lb $sp, -0x2D88($zero)
+/* 0x00143210 0x801B2E10 0x801DD278 */ .word 0x801DD278 # lb $sp, -0x2D88($zero)
+/* 0x00143214 0x801B2E14 0x801DD278 */ .word 0x801DD278 # lb $sp, -0x2D88($zero)
+/* 0x00143218 0x801B2E18 0x801DD278 */ .word 0x801DD278 # lb $sp, -0x2D88($zero)
+/* 0x0014321C 0x801B2E1C 0x801DD278 */ .word 0x801DD278 # lb $sp, -0x2D88($zero)
+/* 0x00143220 0x801B2E20 0x801DD278 */ .word 0x801DD278 # lb $sp, -0x2D88($zero)
+/* 0x00143224 0x801B2E24 0x801DD278 */ .word 0x801DD278 # lb $sp, -0x2D88($zero)
+/* 0x00143228 0x801B2E28 0x801DD274 */ .word 0x801DD274 # lb $sp, -0x2D8C($zero)
+/* 0x0014322C 0x801B2E2C 0x801DD274 */ .word 0x801DD274 # lb $sp, -0x2D8C($zero)
+/* 0x00143230 0x801B2E30 0x801DD278 */ .word 0x801DD278 # lb $sp, -0x2D88($zero)
+/* 0x00143234 0x801B2E34 0x801DD278 */ .word 0x801DD278 # lb $sp, -0x2D88($zero)
+/* 0x00143238 0x801B2E38 0x801DD274 */ .word 0x801DD274 # lb $sp, -0x2D8C($zero)
+/* 0x0014323C 0x801B2E3C 0x801DD278 */ .word 0x801DD278 # lb $sp, -0x2D88($zero)
+/* 0x00143240 0x801B2E40 0x801DD278 */ .word 0x801DD278 # lb $sp, -0x2D88($zero)
+/* 0x00143244 0x801B2E44 0x801DD278 */ .word 0x801DD278 # lb $sp, -0x2D88($zero)
+/* 0x00143248 0x801B2E48 0x801DD278 */ .word 0x801DD278 # lb $sp, -0x2D88($zero)
+/* 0x0014324C 0x801B2E4C 0x801DD278 */ .word 0x801DD278 # lb $sp, -0x2D88($zero)
+/* 0x00143250 0x801B2E50 0x801DD278 */ .word 0x801DD278 # lb $sp, -0x2D88($zero)
+/* 0x00143254 0x801B2E54 0x801DD278 */ .word 0x801DD278 # lb $sp, -0x2D88($zero)
+/* 0x00143258 0x801B2E58 0x801DD278 */ .word 0x801DD278 # lb $sp, -0x2D88($zero)
+/* 0x0014325C 0x801B2E5C 0x801DD274 */ .word 0x801DD274 # lb $sp, -0x2D8C($zero)
+/* 0x00143260 0x801B2E60 0x801DD274 */ .word 0x801DD274 # lb $sp, -0x2D8C($zero)

@@ -1,0 +1,31 @@
+/*
+ * Original Rev 0 MIPS reference split.
+ * Parent source: asm/original/rev0/code_00141000_00151000.s
+ * z64 range: 0x00142EC0..0x00142F10 exclusive
+ * Decode comments are aids, not proof of semantic function boundaries.
+ */
+.set noat
+.set noreorder
+.text
+
+/* Data region (not executable host code): Double const pool with 8-byte-alignment zeros: 0x401921FB54442D18 (pi), 0x3FD00000 (0.25), 0x3FE80000 (0.75), 0x3FE00000 (0.5), 0x3FF00000 (1.0), repeated mix. Const pool only. [name-token: float_pool_consts_c]. */
+/* 0x00142EC0 0x801B2AC0 0x401921FB */ .word 0x401921FB # mfc0 $t9, $4
+/* 0x00142EC4 0x801B2AC4 0x54442D18 */ .word 0x54442D18 # bnel $v0, $a0, 0x801BDF28
+/* 0x00142EC8 0x801B2AC8 0x3FD00000 */ .word 0x3FD00000 # lui $s0, 0x0000
+/* 0x00142ECC 0x801B2ACC 0x00000000 */ .word 0x00000000 # nop
+/* 0x00142ED0 0x801B2AD0 0x3FE80000 */ .word 0x3FE80000 # lui $t0, 0x0000
+/* 0x00142ED4 0x801B2AD4 0x00000000 */ .word 0x00000000 # nop
+/* 0x00142ED8 0x801B2AD8 0x3FE00000 */ .word 0x3FE00000 # lui $zero, 0x0000
+/* 0x00142EDC 0x801B2ADC 0x00000000 */ .word 0x00000000 # nop
+/* 0x00142EE0 0x801B2AE0 0x3FF00000 */ .word 0x3FF00000 # lui $s0, 0x0000
+/* 0x00142EE4 0x801B2AE4 0x00000000 */ .word 0x00000000 # nop
+/* 0x00142EE8 0x801B2AE8 0x3FE00000 */ .word 0x3FE00000 # lui $zero, 0x0000
+/* 0x00142EEC 0x801B2AEC 0x00000000 */ .word 0x00000000 # nop
+/* 0x00142EF0 0x801B2AF0 0x3FD00000 */ .word 0x3FD00000 # lui $s0, 0x0000
+/* 0x00142EF4 0x801B2AF4 0x00000000 */ .word 0x00000000 # nop
+/* 0x00142EF8 0x801B2AF8 0x3FE80000 */ .word 0x3FE80000 # lui $t0, 0x0000
+/* 0x00142EFC 0x801B2AFC 0x00000000 */ .word 0x00000000 # nop
+/* 0x00142F00 0x801B2B00 0x3FE00000 */ .word 0x3FE00000 # lui $zero, 0x0000
+/* 0x00142F04 0x801B2B04 0x00000000 */ .word 0x00000000 # nop
+/* 0x00142F08 0x801B2B08 0x3FF00000 */ .word 0x3FF00000 # lui $s0, 0x0000
+/* 0x00142F0C 0x801B2B0C 0x00000000 */ .word 0x00000000 # nop

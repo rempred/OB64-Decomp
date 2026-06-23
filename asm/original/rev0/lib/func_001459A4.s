@@ -1,0 +1,31 @@
+/*
+ * Original Rev 0 MIPS reference split.
+ * Parent source: asm/original/rev0/code_00141000_00151000.s
+ * z64 range: 0x001459A4..0x001459EC exclusive
+ * Decode comments are aids, not proof of semantic function boundaries.
+ */
+.set noat
+.set noreorder
+.text
+
+/* Frame -0x28. Ends jr $ra at 0x1459E4 + delay 0x1459E8. The two words at 0x1459EC/0x1459F0 are the read-before-write preamble for the next function. */
+/* function boundary candidate: func_001459A4, size=72, kind=prologue */
+func_001459A4:
+/* 0x001459A4 0x801B55A4 0x27BDFFD8 */ .word 0x27BDFFD8 # addiu $sp, $sp, -0x28
+/* 0x001459A8 0x801B55A8 0xAFB1001C */ .word 0xAFB1001C # sw $s1, 0x1C($sp)
+/* 0x001459AC 0x801B55AC 0x00808821 */ .word 0x00808821 # move $s1, $a0
+/* 0x001459B0 0x801B55B0 0xAFB00018 */ .word 0xAFB00018 # sw $s0, 0x18($sp)
+/* 0x001459B4 0x801B55B4 0x27B00010 */ .word 0x27B00010 # addiu $s0, $sp, 0x10
+/* 0x001459B8 0x801B55B8 0x02002021 */ .word 0x02002021 # move $a0, $s0
+/* 0x001459BC 0x801B55BC 0xAFBF0020 */ .word 0xAFBF0020 # sw $ra, 0x20($sp)
+/* 0x001459C0 0x801B55C0 0x0C024CE0 */ .word 0x0C024CE0 # jal 0x80093380
+/* 0x001459C4 0x801B55C4 0x24050008 */ .word 0x24050008 # addiu $a1, $zero, 0x8
+/* 0x001459C8 0x801B55C8 0x24040006 */ .word 0x24040006 # addiu $a0, $zero, 0x6
+/* 0x001459CC 0x801B55CC 0x02002821 */ .word 0x02002821 # move $a1, $s0
+/* 0x001459D0 0x801B55D0 0x0C07D0D6 */ .word 0x0C07D0D6 # jal 0x801F4358
+/* 0x001459D4 0x801B55D4 0xA3B10010 */ .word 0xA3B10010 # sb $s1, 0x10($sp)
+/* 0x001459D8 0x801B55D8 0x8FBF0020 */ .word 0x8FBF0020 # lw $ra, 0x20($sp)
+/* 0x001459DC 0x801B55DC 0x8FB1001C */ .word 0x8FB1001C # lw $s1, 0x1C($sp)
+/* 0x001459E0 0x801B55E0 0x8FB00018 */ .word 0x8FB00018 # lw $s0, 0x18($sp)
+/* 0x001459E4 0x801B55E4 0x03E00008 */ .word 0x03E00008 # jr $ra
+/* 0x001459E8 0x801B55E8 0x27BD0028 */ .word 0x27BD0028 # addiu $sp, $sp, 0x28

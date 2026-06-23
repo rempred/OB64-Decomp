@@ -1,0 +1,1636 @@
+{
+  "source": "asm/original/rev0/lib/rodata_001432E4.s",
+  "rangeZ64": [
+    "0x001432E4",
+    "0x001449F0"
+  ],
+  "totalBytes": 5900,
+  "encoding": "ASCII, NUL-terminated, big-endian (z64) byte order; @-prefixed inline control codes left verbatim",
+  "title": "Chunk-20 game-text/string pool (0x1432E4)",
+  "stringCount": 125,
+  "atCodeTally": {},
+  "atCodeSemantics": "UNRESOLVED — @0..@3/@w/@c/@e are inline formatting/control codes; exact runtime meaning not decoded",
+  "confidence": "high (printable ASCII text); control-code semantics hypothesis-grade",
+  "segments": [
+    {
+      "kind": "string",
+      "offset": "0x001432E4",
+      "bytes": 64,
+      "text": "Legion led by the commander of\\x81\\x97battalion may not use this item.",
+      "atCodes": {},
+      "nonPrintable": 2
+    },
+    {
+      "kind": "nul",
+      "offset": "0x00143324",
+      "bytes": 4
+    },
+    {
+      "kind": "string",
+      "offset": "0x00143328",
+      "bytes": 49,
+      "text": "Winning condition:\\x81\\x97 Entering enemy headquarters.",
+      "atCodes": {},
+      "nonPrintable": 2
+    },
+    {
+      "kind": "nul",
+      "offset": "0x00143359",
+      "bytes": 3
+    },
+    {
+      "kind": "string",
+      "offset": "0x0014335C",
+      "bytes": 56,
+      "text": "Legion led by \\x81\\x94 will\\x81\\x97retreat back to the headquarters.",
+      "atCodes": {},
+      "nonPrintable": 4
+    },
+    {
+      "kind": "nul",
+      "offset": "0x00143394",
+      "bytes": 4
+    },
+    {
+      "kind": "string",
+      "offset": "0x00143398",
+      "bytes": 37,
+      "text": "Legion led by \\x81\\x94\\x81\\x97will be dispatched.",
+      "atCodes": {},
+      "nonPrintable": 4
+    },
+    {
+      "kind": "nul",
+      "offset": "0x001433BD",
+      "bytes": 3
+    },
+    {
+      "kind": "string",
+      "offset": "0x001433C0",
+      "bytes": 58,
+      "text": "The legion has disbanded, due to the\\x81\\x97petrification of \\x81\\x94.",
+      "atCodes": {},
+      "nonPrintable": 4
+    },
+    {
+      "kind": "nul",
+      "offset": "0x001433FA",
+      "bytes": 2
+    },
+    {
+      "kind": "string",
+      "offset": "0x001433FC",
+      "bytes": 66,
+      "text": "The unit led by the commander of\\x81\\x97battalion may not use this item.",
+      "atCodes": {},
+      "nonPrintable": 2
+    },
+    {
+      "kind": "nul",
+      "offset": "0x0014343E",
+      "bytes": 2
+    },
+    {
+      "kind": "string",
+      "offset": "0x00143440",
+      "bytes": 79,
+      "text": "The move type of the unit led by\\x81\\x97\\x81\\x94 has been altered.\\x81\\x97This unit can now move.",
+      "atCodes": {},
+      "nonPrintable": 6
+    },
+    {
+      "kind": "nul",
+      "offset": "0x0014348F",
+      "bytes": 1
+    },
+    {
+      "kind": "string",
+      "offset": "0x00143490",
+      "bytes": 40,
+      "text": "Immobile unit may\\x81\\x97not change direction.",
+      "atCodes": {},
+      "nonPrintable": 2
+    },
+    {
+      "kind": "nul",
+      "offset": "0x001434B8",
+      "bytes": 4
+    },
+    {
+      "kind": "string",
+      "offset": "0x001434BC",
+      "bytes": 72,
+      "text": "Cannot be assigned as a Leader because\\x81\\x97this character is incapacitated.",
+      "atCodes": {},
+      "nonPrintable": 2
+    },
+    {
+      "kind": "nul",
+      "offset": "0x00143504",
+      "bytes": 4
+    },
+    {
+      "kind": "string",
+      "offset": "0x00143508",
+      "bytes": 71,
+      "text": "Orders cannot be given while the group\\x81\\x97is demolishing the castle gate.",
+      "atCodes": {},
+      "nonPrintable": 2
+    },
+    {
+      "kind": "nul",
+      "offset": "0x0014354F",
+      "bytes": 1
+    },
+    {
+      "kind": "string",
+      "offset": "0x00143550",
+      "bytes": 67,
+      "text": "This item cannot be used because\\x81\\x97the Unit Leader is incapacitated.",
+      "atCodes": {},
+      "nonPrintable": 2
+    },
+    {
+      "kind": "nul",
+      "offset": "0x00143593",
+      "bytes": 1
+    },
+    {
+      "kind": "string",
+      "offset": "0x00143594",
+      "bytes": 43,
+      "text": "Losing condition :\\x81\\x97 Death of Prince Yumil.",
+      "atCodes": {},
+      "nonPrintable": 2
+    },
+    {
+      "kind": "nul",
+      "offset": "0x001435BF",
+      "bytes": 1
+    },
+    {
+      "kind": "string",
+      "offset": "0x001435C0",
+      "bytes": 74,
+      "text": "You are about to end the description of\\x81\\x97the View Status command. Proceed?",
+      "atCodes": {},
+      "nonPrintable": 2
+    },
+    {
+      "kind": "nul",
+      "offset": "0x0014360A",
+      "bytes": 2
+    },
+    {
+      "kind": "string",
+      "offset": "0x0014360C",
+      "bytes": 27,
+      "text": "\"What do you have on sale?\"",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x00143627",
+      "bytes": 1
+    },
+    {
+      "kind": "string",
+      "offset": "0x00143628",
+      "bytes": 19,
+      "text": "\"Hmm\\x81c Let's see\\x81c\"",
+      "atCodes": {},
+      "nonPrintable": 2
+    },
+    {
+      "kind": "nul",
+      "offset": "0x0014363B",
+      "bytes": 1
+    },
+    {
+      "kind": "string",
+      "offset": "0x0014363C",
+      "bytes": 20,
+      "text": "\"What should I get?\"",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x00143650",
+      "bytes": 4
+    },
+    {
+      "kind": "string",
+      "offset": "0x00143654",
+      "bytes": 18,
+      "text": "\"What do we need?\"",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x00143666",
+      "bytes": 2
+    },
+    {
+      "kind": "string",
+      "offset": "0x00143668",
+      "bytes": 22,
+      "text": "\"This is all you got?\"",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x0014367E",
+      "bytes": 2
+    },
+    {
+      "kind": "string",
+      "offset": "0x00143680",
+      "bytes": 51,
+      "text": "\"I shouldn't expect much from\\x81\\x97 a place like this.\"",
+      "atCodes": {},
+      "nonPrintable": 2
+    },
+    {
+      "kind": "nul",
+      "offset": "0x001436B3",
+      "bytes": 1
+    },
+    {
+      "kind": "string",
+      "offset": "0x001436B4",
+      "bytes": 27,
+      "text": "Destination is not decided.",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x001436CF",
+      "bytes": 1
+    },
+    {
+      "kind": "string",
+      "offset": "0x001436D0",
+      "bytes": 25,
+      "text": "This item cannot be used.",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x001436E9",
+      "bytes": 3
+    },
+    {
+      "kind": "string",
+      "offset": "0x001436EC",
+      "bytes": 44,
+      "text": "The enemy was unstirred by your\\x81\\x97persuasion.",
+      "atCodes": {},
+      "nonPrintable": 2
+    },
+    {
+      "kind": "nul",
+      "offset": "0x00143718",
+      "bytes": 4
+    },
+    {
+      "kind": "string",
+      "offset": "0x0014371C",
+      "bytes": 23,
+      "text": "to join your battalion.",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x00143733",
+      "bytes": 1
+    },
+    {
+      "kind": "string",
+      "offset": "0x00143734",
+      "bytes": 16,
+      "text": "%s was persuaded",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x00143744",
+      "bytes": 4
+    },
+    {
+      "kind": "string",
+      "offset": "0x00143748",
+      "bytes": 13,
+      "text": "%s was found.",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x00143755",
+      "bytes": 3
+    },
+    {
+      "kind": "string",
+      "offset": "0x00143758",
+      "bytes": 34,
+      "text": "You are about to use \\x81\\x94.\\x81\\x97Proceed?",
+      "atCodes": {},
+      "nonPrintable": 4
+    },
+    {
+      "kind": "nul",
+      "offset": "0x0014377A",
+      "bytes": 2
+    },
+    {
+      "kind": "string",
+      "offset": "0x0014377C",
+      "bytes": 11,
+      "text": "which unit?",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x00143787",
+      "bytes": 1
+    },
+    {
+      "kind": "string",
+      "offset": "0x00143788",
+      "bytes": 15,
+      "text": "Use the item on",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x00143797",
+      "bytes": 1
+    },
+    {
+      "kind": "string",
+      "offset": "0x00143798",
+      "bytes": 11,
+      "text": " was found.",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x001437A3",
+      "bytes": 1
+    },
+    {
+      "kind": "string",
+      "offset": "0x001437A4",
+      "bytes": 22,
+      "text": "No items were located.",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x001437BA",
+      "bytes": 2
+    },
+    {
+      "kind": "string",
+      "offset": "0x001437BC",
+      "bytes": 23,
+      "text": " joined your battalion.",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x001437D3",
+      "bytes": 1
+    },
+    {
+      "kind": "string",
+      "offset": "0x001437D4",
+      "bytes": 21,
+      "text": "turned into a zombie.",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x001437E9",
+      "bytes": 3
+    },
+    {
+      "kind": "string",
+      "offset": "0x001437EC",
+      "bytes": 27,
+      "text": "to life as an Angel Knight.",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x00143807",
+      "bytes": 1
+    },
+    {
+      "kind": "string",
+      "offset": "0x00143808",
+      "bytes": 22,
+      "text": " has been brought back",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x0014381E",
+      "bytes": 2
+    },
+    {
+      "kind": "string",
+      "offset": "0x00143820",
+      "bytes": 16,
+      "text": "from the legion.",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x00143830",
+      "bytes": 4
+    },
+    {
+      "kind": "string",
+      "offset": "0x00143834",
+      "bytes": 25,
+      "text": "This unit will be removed",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x0014384D",
+      "bytes": 3
+    },
+    {
+      "kind": "string",
+      "offset": "0x00143850",
+      "bytes": 21,
+      "text": "to add to the legion?",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x00143865",
+      "bytes": 3
+    },
+    {
+      "kind": "string",
+      "offset": "0x00143868",
+      "bytes": 22,
+      "text": "Which unit do you want",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x0014387E",
+      "bytes": 2
+    },
+    {
+      "kind": "string",
+      "offset": "0x00143880",
+      "bytes": 19,
+      "text": "\\x81\\x94 will be carried.",
+      "atCodes": {},
+      "nonPrintable": 2
+    },
+    {
+      "kind": "nul",
+      "offset": "0x00143893",
+      "bytes": 1
+    },
+    {
+      "kind": "string",
+      "offset": "0x00143894",
+      "bytes": 30,
+      "text": "\\x81\\x94 will be sent to\\x81\\x97the depot.",
+      "atCodes": {},
+      "nonPrintable": 4
+    },
+    {
+      "kind": "nul",
+      "offset": "0x001438B2",
+      "bytes": 2
+    },
+    {
+      "kind": "string",
+      "offset": "0x001438B4",
+      "bytes": 38,
+      "text": "Will you proceed to purchase\\x81\\x97\\x81\\x94 x \\x81\\x90?",
+      "atCodes": {},
+      "nonPrintable": 6
+    },
+    {
+      "kind": "nul",
+      "offset": "0x001438DA",
+      "bytes": 2
+    },
+    {
+      "kind": "string",
+      "offset": "0x001438DC",
+      "bytes": 38,
+      "text": "Will the unit led by \\x81\\x94\\x81\\x97carry the \\x81\\x90?",
+      "atCodes": {},
+      "nonPrintable": 6
+    },
+    {
+      "kind": "nul",
+      "offset": "0x00143902",
+      "bytes": 2
+    },
+    {
+      "kind": "string",
+      "offset": "0x00143904",
+      "bytes": 31,
+      "text": "Cannot be used in this mission.",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x00143923",
+      "bytes": 1
+    },
+    {
+      "kind": "string",
+      "offset": "0x00143924",
+      "bytes": 59,
+      "text": "This cannot be used on the unit\\x81\\x97which belongs to a legion.",
+      "atCodes": {},
+      "nonPrintable": 2
+    },
+    {
+      "kind": "nul",
+      "offset": "0x0014395F",
+      "bytes": 1
+    },
+    {
+      "kind": "string",
+      "offset": "0x00143960",
+      "bytes": 127,
+      "text": "You cannot enlist any more characters\\x81\\x97to the battalion.\\x81\\x97Please remove a character from the\\x81\\x97battalion in the Organize Screen.",
+      "atCodes": {},
+      "nonPrintable": 6
+    },
+    {
+      "kind": "nul",
+      "offset": "0x001439DF",
+      "bytes": 1
+    },
+    {
+      "kind": "string",
+      "offset": "0x001439E0",
+      "bytes": 70,
+      "text": "No enemy units with the character\\x81\\x97information ascertained were found.",
+      "atCodes": {},
+      "nonPrintable": 2
+    },
+    {
+      "kind": "nul",
+      "offset": "0x00143A26",
+      "bytes": 2
+    },
+    {
+      "kind": "string",
+      "offset": "0x00143A28",
+      "bytes": 37,
+      "text": "No usable items are in the inventory.",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x00143A4D",
+      "bytes": 3
+    },
+    {
+      "kind": "string",
+      "offset": "0x00143A50",
+      "bytes": 35,
+      "text": "The item will be sent to the depot.",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x00143A73",
+      "bytes": 1
+    },
+    {
+      "kind": "string",
+      "offset": "0x00143A74",
+      "bytes": 43,
+      "text": "You cannot purchase any more of this\\x81\\x97item.",
+      "atCodes": {},
+      "nonPrintable": 2
+    },
+    {
+      "kind": "nul",
+      "offset": "0x00143A9F",
+      "bytes": 1
+    },
+    {
+      "kind": "string",
+      "offset": "0x00143AA0",
+      "bytes": 30,
+      "text": "You have an insufficient fund.",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x00143ABE",
+      "bytes": 2
+    },
+    {
+      "kind": "string",
+      "offset": "0x00143AC0",
+      "bytes": 46,
+      "text": "The commander of battalion cannot be\\x81\\x97changed.",
+      "atCodes": {},
+      "nonPrintable": 2
+    },
+    {
+      "kind": "nul",
+      "offset": "0x00143AEE",
+      "bytes": 2
+    },
+    {
+      "kind": "string",
+      "offset": "0x00143AF0",
+      "bytes": 56,
+      "text": "This character is not capable of\\x81\\x97commanding the legion.",
+      "atCodes": {},
+      "nonPrintable": 2
+    },
+    {
+      "kind": "nul",
+      "offset": "0x00143B28",
+      "bytes": 4
+    },
+    {
+      "kind": "string",
+      "offset": "0x00143B2C",
+      "bytes": 64,
+      "text": "This character is not capable of\\x81\\x97becoming a leader of the unit.",
+      "atCodes": {},
+      "nonPrintable": 2
+    },
+    {
+      "kind": "nul",
+      "offset": "0x00143B6C",
+      "bytes": 4
+    },
+    {
+      "kind": "string",
+      "offset": "0x00143B70",
+      "bytes": 29,
+      "text": "No matching units were found.",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x00143B8D",
+      "bytes": 3
+    },
+    {
+      "kind": "string",
+      "offset": "0x00143B90",
+      "bytes": 79,
+      "text": "Exchange is not permitted because the\\x81\\x97link to the Legion Core will be cut off.",
+      "atCodes": {},
+      "nonPrintable": 2
+    },
+    {
+      "kind": "nul",
+      "offset": "0x00143BDF",
+      "bytes": 1
+    },
+    {
+      "kind": "string",
+      "offset": "0x00143BE0",
+      "bytes": 71,
+      "text": "Exchange is not permitted because it is\\x81\\x97not linked to the Legion Core.",
+      "atCodes": {},
+      "nonPrintable": 2
+    },
+    {
+      "kind": "nul",
+      "offset": "0x00143C27",
+      "bytes": 1
+    },
+    {
+      "kind": "string",
+      "offset": "0x00143C28",
+      "bytes": 33,
+      "text": "Legion Leader cannot be replaced.",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x00143C49",
+      "bytes": 3
+    },
+    {
+      "kind": "string",
+      "offset": "0x00143C4C",
+      "bytes": 46,
+      "text": "You cannot add any more units to this\\x81\\x97legion.",
+      "atCodes": {},
+      "nonPrintable": 2
+    },
+    {
+      "kind": "nul",
+      "offset": "0x00143C7A",
+      "bytes": 2
+    },
+    {
+      "kind": "string",
+      "offset": "0x00143C7C",
+      "bytes": 30,
+      "text": "This unit is already selected.",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x00143C9A",
+      "bytes": 2
+    },
+    {
+      "kind": "string",
+      "offset": "0x00143C9C",
+      "bytes": 81,
+      "text": "Relocation is not permitted because the\\x81\\x97link to the Legion Core will be cut off.",
+      "atCodes": {},
+      "nonPrintable": 2
+    },
+    {
+      "kind": "nul",
+      "offset": "0x00143CED",
+      "bytes": 3
+    },
+    {
+      "kind": "string",
+      "offset": "0x00143CF0",
+      "bytes": 73,
+      "text": "Relocation is not permitted because it\\x81\\x97is not linked to the Legion Core.",
+      "atCodes": {},
+      "nonPrintable": 2
+    },
+    {
+      "kind": "nul",
+      "offset": "0x00143D39",
+      "bytes": 3
+    },
+    {
+      "kind": "string",
+      "offset": "0x00143D3C",
+      "bytes": 46,
+      "text": "Relocation of Legion Leader is not\\x81\\x97permitted.",
+      "atCodes": {},
+      "nonPrintable": 2
+    },
+    {
+      "kind": "nul",
+      "offset": "0x00143D6A",
+      "bytes": 2
+    },
+    {
+      "kind": "string",
+      "offset": "0x00143D6C",
+      "bytes": 44,
+      "text": "Some characters are not assigned to\\x81\\x97a unit.",
+      "atCodes": {},
+      "nonPrintable": 2
+    },
+    {
+      "kind": "nul",
+      "offset": "0x00143D98",
+      "bytes": 4
+    },
+    {
+      "kind": "string",
+      "offset": "0x00143D9C",
+      "bytes": 65,
+      "text": "The maximum number of items that\\x81\\x97the unit can carry will change.",
+      "atCodes": {},
+      "nonPrintable": 2
+    },
+    {
+      "kind": "nul",
+      "offset": "0x00143DDD",
+      "bytes": 3
+    },
+    {
+      "kind": "string",
+      "offset": "0x00143DE0",
+      "bytes": 48,
+      "text": "Select the unit to exchange\\x81\\x97the character with.",
+      "atCodes": {},
+      "nonPrintable": 2
+    },
+    {
+      "kind": "nul",
+      "offset": "0x00143E10",
+      "bytes": 4
+    },
+    {
+      "kind": "string",
+      "offset": "0x00143E14",
+      "bytes": 77,
+      "text": "If this soldier is removed, a unit within\\x81\\x97the legion will not be maintained.",
+      "atCodes": {},
+      "nonPrintable": 2
+    },
+    {
+      "kind": "nul",
+      "offset": "0x00143E61",
+      "bytes": 3
+    },
+    {
+      "kind": "string",
+      "offset": "0x00143E64",
+      "bytes": 35,
+      "text": "This character is already selected.",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x00143E87",
+      "bytes": 1
+    },
+    {
+      "kind": "string",
+      "offset": "0x00143E88",
+      "bytes": 43,
+      "text": "Unit Leader cannot beremoved from the unit.",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x00143EB3",
+      "bytes": 1
+    },
+    {
+      "kind": "string",
+      "offset": "0x00143EB4",
+      "bytes": 57,
+      "text": "Cannot place characters\\x81\\x97adjacent to a L-sized character.",
+      "atCodes": {},
+      "nonPrintable": 2
+    },
+    {
+      "kind": "nul",
+      "offset": "0x00143EED",
+      "bytes": 3
+    },
+    {
+      "kind": "string",
+      "offset": "0x00143EF0",
+      "bytes": 55,
+      "text": "Not enough space available\\x81\\x97to add a L-sized character.",
+      "atCodes": {},
+      "nonPrintable": 2
+    },
+    {
+      "kind": "nul",
+      "offset": "0x00143F27",
+      "bytes": 1
+    },
+    {
+      "kind": "string",
+      "offset": "0x00143F28",
+      "bytes": 35,
+      "text": "No more characters can be enlisted.",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x00143F4B",
+      "bytes": 1
+    },
+    {
+      "kind": "string",
+      "offset": "0x00143F4C",
+      "bytes": 27,
+      "text": "Returning to the World Map.",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x00143F67",
+      "bytes": 1
+    },
+    {
+      "kind": "string",
+      "offset": "0x00143F68",
+      "bytes": 73,
+      "text": "Since \\x81\\x94 is petrified,\\x81\\x97this unit will retreat back\\x81\\x97to the headquarters.",
+      "atCodes": {},
+      "nonPrintable": 6
+    },
+    {
+      "kind": "nul",
+      "offset": "0x00143FB1",
+      "bytes": 3
+    },
+    {
+      "kind": "string",
+      "offset": "0x00143FB4",
+      "bytes": 13,
+      "text": "It got away\\x81c",
+      "atCodes": {},
+      "nonPrintable": 1
+    },
+    {
+      "kind": "nul",
+      "offset": "0x00143FC1",
+      "bytes": 3
+    },
+    {
+      "kind": "string",
+      "offset": "0x00143FC4",
+      "bytes": 42,
+      "text": "Unit led by \\x81\\x94 has\\x81\\x97encountered a wild \\x81\\x90.",
+      "atCodes": {},
+      "nonPrintable": 6
+    },
+    {
+      "kind": "nul",
+      "offset": "0x00143FEE",
+      "bytes": 2
+    },
+    {
+      "kind": "string",
+      "offset": "0x00143FF0",
+      "bytes": 118,
+      "text": "                         WARNING:\\x81\\x97  Legions cannot be used in this mission.\\x81\\x97      They will be disbanded into units.",
+      "atCodes": {},
+      "nonPrintable": 4
+    },
+    {
+      "kind": "nul",
+      "offset": "0x00144066",
+      "bytes": 2
+    },
+    {
+      "kind": "string",
+      "offset": "0x00144068",
+      "bytes": 31,
+      "text": "Cannot encamp at this location.",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x00144087",
+      "bytes": 1
+    },
+    {
+      "kind": "string",
+      "offset": "0x00144088",
+      "bytes": 27,
+      "text": "This will end the tutorial.",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x001440A3",
+      "bytes": 1
+    },
+    {
+      "kind": "string",
+      "offset": "0x001440A4",
+      "bytes": 60,
+      "text": "Winning condition:\\x81\\x97 Taking over the forts defending Winnea.",
+      "atCodes": {},
+      "nonPrintable": 2
+    },
+    {
+      "kind": "nul",
+      "offset": "0x001440E0",
+      "bytes": 4
+    },
+    {
+      "kind": "string",
+      "offset": "0x001440E4",
+      "bytes": 50,
+      "text": "Cannot be done while\\x81\\x97demolishing the castle gate.",
+      "atCodes": {},
+      "nonPrintable": 2
+    },
+    {
+      "kind": "nul",
+      "offset": "0x00144116",
+      "bytes": 2
+    },
+    {
+      "kind": "string",
+      "offset": "0x00144118",
+      "bytes": 59,
+      "text": "The unit led by \\x81\\x94 will\\x81\\x97begin demolishing the castle gate.",
+      "atCodes": {},
+      "nonPrintable": 4
+    },
+    {
+      "kind": "nul",
+      "offset": "0x00144153",
+      "bytes": 1
+    },
+    {
+      "kind": "string",
+      "offset": "0x00144154",
+      "bytes": 34,
+      "text": "Winning condition:\\x81\\x97 Defeating \\x81\\x94.",
+      "atCodes": {},
+      "nonPrintable": 4
+    },
+    {
+      "kind": "nul",
+      "offset": "0x00144176",
+      "bytes": 2
+    },
+    {
+      "kind": "string",
+      "offset": "0x00144178",
+      "bytes": 43,
+      "text": "Winning condition:\\x81\\x97 Rescuing Prince Yumil.",
+      "atCodes": {},
+      "nonPrintable": 2
+    },
+    {
+      "kind": "nul",
+      "offset": "0x001441A3",
+      "bytes": 1
+    },
+    {
+      "kind": "string",
+      "offset": "0x001441A4",
+      "bytes": 46,
+      "text": "Losing condition :\\x81\\x97 Exceeding the time limit.",
+      "atCodes": {},
+      "nonPrintable": 2
+    },
+    {
+      "kind": "nul",
+      "offset": "0x001441D2",
+      "bytes": 2
+    },
+    {
+      "kind": "string",
+      "offset": "0x001441D4",
+      "bytes": 66,
+      "text": "Losing condition :\\x81\\x97 Invasion of your headquarters.\\x81\\x97 Death of \\x81\\x94.",
+      "atCodes": {},
+      "nonPrintable": 6
+    },
+    {
+      "kind": "nul",
+      "offset": "0x00144216",
+      "bytes": 2
+    },
+    {
+      "kind": "string",
+      "offset": "0x00144218",
+      "bytes": 52,
+      "text": "Winning condition:\\x81\\x97 Taking over enemy headquarters.",
+      "atCodes": {},
+      "nonPrintable": 2
+    },
+    {
+      "kind": "nul",
+      "offset": "0x0014424C",
+      "bytes": 4
+    },
+    {
+      "kind": "string",
+      "offset": "0x00144250",
+      "bytes": 16,
+      "text": "CONGRATULATIONS!",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x00144260",
+      "bytes": 4
+    },
+    {
+      "kind": "string",
+      "offset": "0x00144264",
+      "bytes": 9,
+      "text": "GAME OVER",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x0014426D",
+      "bytes": 3
+    },
+    {
+      "kind": "string",
+      "offset": "0x00144270",
+      "bytes": 86,
+      "text": "Due to the death of \\x81\\x94,\\x81\\x97this unit    will initiate retreat\\x81\\x97back to the headquarters.",
+      "atCodes": {},
+      "nonPrintable": 6
+    },
+    {
+      "kind": "nul",
+      "offset": "0x001442C6",
+      "bytes": 2
+    },
+    {
+      "kind": "string",
+      "offset": "0x001442C8",
+      "bytes": 69,
+      "text": "You are about to save the current\\x81\\x97status and quit the game. Proceed?",
+      "atCodes": {},
+      "nonPrintable": 2
+    },
+    {
+      "kind": "nul",
+      "offset": "0x0014430D",
+      "bytes": 3
+    },
+    {
+      "kind": "string",
+      "offset": "0x00144310",
+      "bytes": 48,
+      "text": "There is no means of moving\\x81\\x97an immobile legion.",
+      "atCodes": {},
+      "nonPrintable": 2
+    },
+    {
+      "kind": "nul",
+      "offset": "0x00144340",
+      "bytes": 4
+    },
+    {
+      "kind": "string",
+      "offset": "0x00144344",
+      "bytes": 82,
+      "text": "Since the move type of the unit\\x81\\x97led by \\x81\\x94 was altered,\\x81\\x97the unit became immobile.",
+      "atCodes": {},
+      "nonPrintable": 6
+    },
+    {
+      "kind": "nul",
+      "offset": "0x00144396",
+      "bytes": 2
+    },
+    {
+      "kind": "string",
+      "offset": "0x00144398",
+      "bytes": 43,
+      "text": "Unit led by \\x81\\x94 captured\\x81\\x97the stronghold \\x81\\x90.",
+      "atCodes": {},
+      "nonPrintable": 6
+    },
+    {
+      "kind": "nul",
+      "offset": "0x001443C3",
+      "bytes": 1
+    },
+    {
+      "kind": "string",
+      "offset": "0x001443C4",
+      "bytes": 101,
+      "text": "Legion led by \\x81\\x94 is unable\\x81\\x97to manage all the units in it.\\x81\\x97Some units will separate from the legion.",
+      "atCodes": {},
+      "nonPrintable": 6
+    },
+    {
+      "kind": "nul",
+      "offset": "0x00144429",
+      "bytes": 3
+    },
+    {
+      "kind": "string",
+      "offset": "0x0014442C",
+      "bytes": 45,
+      "text": "Unit led by \\x81\\x94 will\\x81\\x97retreat to headquarters.",
+      "atCodes": {},
+      "nonPrintable": 4
+    },
+    {
+      "kind": "nul",
+      "offset": "0x00144459",
+      "bytes": 3
+    },
+    {
+      "kind": "string",
+      "offset": "0x0014445C",
+      "bytes": 35,
+      "text": "Unit led by \\x81\\x94\\x81\\x97will be dispatched.",
+      "atCodes": {},
+      "nonPrintable": 4
+    },
+    {
+      "kind": "nul",
+      "offset": "0x0014447F",
+      "bytes": 1
+    },
+    {
+      "kind": "string",
+      "offset": "0x00144480",
+      "bytes": 40,
+      "text": "Unit led by \\x81\\x94\\x81\\x97reached the destination.",
+      "atCodes": {},
+      "nonPrintable": 4
+    },
+    {
+      "kind": "nul",
+      "offset": "0x001444A8",
+      "bytes": 4
+    },
+    {
+      "kind": "string",
+      "offset": "0x001444AC",
+      "bytes": 50,
+      "text": "The stronghold \\x81\\x94 has\\x81\\x97been captured by the enemy.",
+      "atCodes": {},
+      "nonPrintable": 4
+    },
+    {
+      "kind": "nul",
+      "offset": "0x001444DE",
+      "bytes": 2
+    },
+    {
+      "kind": "string",
+      "offset": "0x001444E0",
+      "bytes": 93,
+      "text": "All members of the unit led by\\x81\\x97\\x81\\x94 have been petrified.\\x81\\x97Retreating back to the headquarters.",
+      "atCodes": {},
+      "nonPrintable": 6
+    },
+    {
+      "kind": "nul",
+      "offset": "0x0014453D",
+      "bytes": 3
+    },
+    {
+      "kind": "string",
+      "offset": "0x00144540",
+      "bytes": 138,
+      "text": "Since this legion consists of\\x81\\x97\\x81\\x94 units, maximum number\\x81\\x97of dispatchable units will be exceeded.\\x81\\x97Current # units: \\x81\\x90\\x81\\x97Maximum # units: \\x81\\x93",
+      "atCodes": {},
+      "nonPrintable": 14
+    },
+    {
+      "kind": "nul",
+      "offset": "0x001445CA",
+      "bytes": 2
+    },
+    {
+      "kind": "string",
+      "offset": "0x001445CC",
+      "bytes": 32,
+      "text": "Immobile unit may\\x81\\x97not be moved.",
+      "atCodes": {},
+      "nonPrintable": 2
+    },
+    {
+      "kind": "nul",
+      "offset": "0x001445EC",
+      "bytes": 4
+    },
+    {
+      "kind": "string",
+      "offset": "0x001445F0",
+      "bytes": 50,
+      "text": "Due to the death of \\x81\\x94,\\x81\\x97the legion has disbanded.",
+      "atCodes": {},
+      "nonPrintable": 4
+    },
+    {
+      "kind": "nul",
+      "offset": "0x00144622",
+      "bytes": 2
+    },
+    {
+      "kind": "string",
+      "offset": "0x00144624",
+      "bytes": 37,
+      "text": "The group will stop at this location.",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x00144649",
+      "bytes": 3
+    },
+    {
+      "kind": "string",
+      "offset": "0x0014464C",
+      "bytes": 28,
+      "text": "The group will start moving.",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x00144668",
+      "bytes": 4
+    },
+    {
+      "kind": "string",
+      "offset": "0x0014466C",
+      "bytes": 95,
+      "text": "There is no need to camp, since\\x81\\x97the designated unit/legion core\\x81\\x97is stationed in a stronghold.",
+      "atCodes": {},
+      "nonPrintable": 4
+    },
+    {
+      "kind": "nul",
+      "offset": "0x001446CB",
+      "bytes": 1
+    },
+    {
+      "kind": "string",
+      "offset": "0x001446CC",
+      "bytes": 71,
+      "text": "There is no need to camp, since\\x81\\x97the unit is stationed in a stronghold.",
+      "atCodes": {},
+      "nonPrintable": 2
+    },
+    {
+      "kind": "nul",
+      "offset": "0x00144713",
+      "bytes": 1
+    },
+    {
+      "kind": "string",
+      "offset": "0x00144714",
+      "bytes": 32,
+      "text": "Unit led by \\x81\\x94\\x81\\x97has broken camp.",
+      "atCodes": {},
+      "nonPrintable": 4
+    },
+    {
+      "kind": "nul",
+      "offset": "0x00144734",
+      "bytes": 4
+    },
+    {
+      "kind": "string",
+      "offset": "0x00144738",
+      "bytes": 29,
+      "text": "Unit led by \\x81\\x94\\x81\\x97has encamped.",
+      "atCodes": {},
+      "nonPrintable": 4
+    },
+    {
+      "kind": "nul",
+      "offset": "0x00144755",
+      "bytes": 3
+    },
+    {
+      "kind": "string",
+      "offset": "0x00144758",
+      "bytes": 29,
+      "text": "This unit requires more rest.",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x00144775",
+      "bytes": 3
+    },
+    {
+      "kind": "string",
+      "offset": "0x00144778",
+      "bytes": 39,
+      "text": "There is no need for this unit to camp.",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x0014479F",
+      "bytes": 1
+    },
+    {
+      "kind": "string",
+      "offset": "0x001447A0",
+      "bytes": 34,
+      "text": "Cannot change the march formation.",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x001447C2",
+      "bytes": 2
+    },
+    {
+      "kind": "string",
+      "offset": "0x001447C4",
+      "bytes": 60,
+      "text": "Legion led by \\x81\\x94 will\\x81\\x97The march formation will be canceled.",
+      "atCodes": {},
+      "nonPrintable": 4
+    },
+    {
+      "kind": "nul",
+      "offset": "0x00144800",
+      "bytes": 4
+    },
+    {
+      "kind": "string",
+      "offset": "0x00144804",
+      "bytes": 46,
+      "text": "Legion led by \\x81\\x94 will\\x81\\x97form a march formation.",
+      "atCodes": {},
+      "nonPrintable": 4
+    },
+    {
+      "kind": "nul",
+      "offset": "0x00144832",
+      "bytes": 2
+    },
+    {
+      "kind": "string",
+      "offset": "0x00144834",
+      "bytes": 22,
+      "text": "\\x83I\\x83v\\x83V\\x83\\x87\\x83\\x93\\x82\\xAA\\x93\\xFC\\x82\\xE9\\x97\\\\x92\\xE8\\x81I",
+      "atCodes": {},
+      "nonPrintable": 17
+    },
+    {
+      "kind": "nul",
+      "offset": "0x0014484A",
+      "bytes": 2
+    },
+    {
+      "kind": "string",
+      "offset": "0x0014484C",
+      "bytes": 47,
+      "text": "You cannot select the same location as\\x81\\x97before.",
+      "atCodes": {},
+      "nonPrintable": 2
+    },
+    {
+      "kind": "nul",
+      "offset": "0x0014487B",
+      "bytes": 1
+    },
+    {
+      "kind": "string",
+      "offset": "0x0014487C",
+      "bytes": 35,
+      "text": "You cannot dispatch any more units.",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x0014489F",
+      "bytes": 1
+    },
+    {
+      "kind": "string",
+      "offset": "0x001448A0",
+      "bytes": 36,
+      "text": "There are no units to be dispatched.",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x001448C4",
+      "bytes": 4
+    },
+    {
+      "kind": "string",
+      "offset": "0x001448C8",
+      "bytes": 34,
+      "text": "The Stop option will be activated.",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x001448EA",
+      "bytes": 2
+    },
+    {
+      "kind": "string",
+      "offset": "0x001448EC",
+      "bytes": 50,
+      "text": "Target of the unit led by\\x81\\x97\\x81\\x94 has been eliminated.",
+      "atCodes": {},
+      "nonPrintable": 4
+    },
+    {
+      "kind": "nul",
+      "offset": "0x0014491E",
+      "bytes": 2
+    },
+    {
+      "kind": "string",
+      "offset": "0x00144920",
+      "bytes": 45,
+      "text": "Unit led by \\x81\\x94 is\\x81\\x97about to engage in combat.",
+      "atCodes": {},
+      "nonPrintable": 4
+    },
+    {
+      "kind": "nul",
+      "offset": "0x0014494D",
+      "bytes": 3
+    },
+    {
+      "kind": "string",
+      "offset": "0x00144950",
+      "bytes": 19,
+      "text": "Changing direction.",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x00144963",
+      "bytes": 1
+    },
+    {
+      "kind": "string",
+      "offset": "0x00144964",
+      "bytes": 27,
+      "text": "Cannot assign while moving.",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x0014497F",
+      "bytes": 1
+    },
+    {
+      "kind": "string",
+      "offset": "0x00144980",
+      "bytes": 36,
+      "text": "Unit led by \\x81\\x94 has\\x81\\x97lost the target.",
+      "atCodes": {},
+      "nonPrintable": 4
+    },
+    {
+      "kind": "nul",
+      "offset": "0x001449A4",
+      "bytes": 4
+    },
+    {
+      "kind": "string",
+      "offset": "0x001449A8",
+      "bytes": 24,
+      "text": "Enemy has been detected.",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x001449C0",
+      "bytes": 4
+    },
+    {
+      "kind": "string",
+      "offset": "0x001449C4",
+      "bytes": 44,
+      "text": "Unit led by \\x81\\x94 liberated\\x81\\x97the stronghold \\x81\\x90.",
+      "atCodes": {},
+      "nonPrintable": 6
+    }
+  ]
+}

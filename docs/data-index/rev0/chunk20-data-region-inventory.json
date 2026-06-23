@@ -1,0 +1,1038 @@
+{
+  "chunk": 20,
+  "chunkRangeZ64": [
+    "0x00141000",
+    "0x00151000"
+  ],
+  "mixed": true,
+  "dataRegions": [
+    {
+      "name": "leading DATA (straddler + gfx/float pools + named tables + pointer tables + string pools)",
+      "rangeZ64": [
+        "0x00141000",
+        "0x00145210"
+      ]
+    },
+    {
+      "name": "inline DATA island in code region",
+      "rangeZ64": [
+        "0x0014DE88",
+        "0x0014EBE0"
+      ]
+    }
+  ],
+  "totalDataBytes": 20328,
+  "classification": "mixed parsed + raw-but-classified; named tables fully decoded; no invented field names",
+  "byClassBytes": {
+    "incoming-straddler-tail": 1696,
+    "display-list/graphics": 3976,
+    "zero-fill": 776,
+    "rodata-string": 6344,
+    "ram-pointer-table": 5492,
+    "float-const-pool": 664,
+    "packed/record": 276,
+    "neutral-encounter-table": 816,
+    "creature-drop-table": 288
+  },
+  "partCount": 86,
+  "incomingStraddler": {
+    "part": "data_00141000_chunk20tail",
+    "rangeZ64": [
+      "0x00141000",
+      "0x001416A0"
+    ],
+    "note": "Continuation of chunk-19 packed-byte structure (data_00140EA0_chunk19head); all bytes <=0x0D; ends 0x1416A0 at 0xDF000000 display-list transition."
+  },
+  "namedTables": [
+    {
+      "name": "neutral_encounter_table",
+      "part": "table_00141ED0",
+      "rangeZ64": [
+        "0x00141ED0",
+        "0x00142200"
+      ],
+      "rows": 40,
+      "stride": "0x14",
+      "confidence": "HIGH",
+      "decodeIndex": "docs/data-index/rev0/chunk20-neutral-encounter-table.json",
+      "decodeExport": "data/decoded/rev0/tables/chunk20-neutral-encounter-table.md"
+    },
+    {
+      "name": "creature_drop_table",
+      "part": "table_00142258",
+      "rangeZ64": [
+        "0x00142258",
+        "0x00142378"
+      ],
+      "rows": 36,
+      "stride": "0x8",
+      "confidence": "HIGH",
+      "decodeIndex": "docs/data-index/rev0/chunk20-creature-drop-table.json",
+      "decodeExport": "data/decoded/rev0/tables/chunk20-creature-drop-table.md"
+    }
+  ],
+  "stringPools": [
+    {
+      "part": "rodata_001432E4",
+      "rangeZ64": [
+        "0x001432E4",
+        "0x001449F0"
+      ],
+      "strings": 125,
+      "bytes": 5900,
+      "decodeIndex": "docs/data-index/rev0/chunk20-string-pool-1432E4.json",
+      "decodeExport": "data/decoded/rev0/strings/chunk20-string-pool-1432E4.md",
+      "note": "Game UI/battle messages (Legion/Winning condition/etc.); 0x81xx control codes preserved as raw escapes."
+    }
+  ],
+  "parentEvidence": "Both named tables independently documented (docs/neutral-encounters.md, drop-table.md, editor/parsers.js, ram_snapshots/table_map.json) and byte-verified (Hawkman class 0x27 drops 0x31/0x9B/0xE8). Code overlay-relocated to runtime 0x801F4xxx band (scenario). The chunk-19 linear-map fallacy does NOT recur here.",
+  "adversarialFix": "data-hunter found hidden code at 0x145210 (mis-classified as data_00145210); reclassified as func_00145210 + func_00145280 (frameless leaves); data->code boundary moved 0x145290 -> 0x145210.",
+  "entries": [
+    {
+      "part": "data_00141000_chunk20tail",
+      "rangeZ64": [
+        "0x00141000",
+        "0x001416A0"
+      ],
+      "bytes": 1696,
+      "class": "incoming-straddler-tail",
+      "state": "raw-but-classified",
+      "note": "INCOMING STRADDLER-TAIL continuing the packed-byte structure begun in chunk19 (data_00140EA0_chunk19head). Every byte is small (<=0x0D): words like 0x09050005 (first word at 0x141000), 0x07090707, 0x0"
+    },
+    {
+      "part": "data_001416A0",
+      "rangeZ64": [
+        "0x001416A0",
+        "0x001417CC"
+      ],
+      "bytes": 300,
+      "class": "display-list/graphics",
+      "state": "raw-but-classified",
+      "note": "High-entropy graphics/display-list-ish data block. Opens with 0xDF000000 at 0x001416A0 (DF is an RDP/display-list-style command byte) then a nibble-ramp run 0x00011111/0x10000000/0x00000001/0x11111000"
+    },
+    {
+      "part": "zero_fill_001417CC",
+      "rangeZ64": [
+        "0x001417CC",
+        "0x001419B0"
+      ],
+      "bytes": 484,
+      "class": "zero-fill",
+      "state": "parsed",
+      "note": "Pure-zero run: every word from 0x001417CC through 0x001419AC is 0x00000000 (>>2 zero words). Padding/alignment gap separating the graphics block from the ASCII strings at 0x001419B0."
+    },
+    {
+      "part": "rodata_001419B0",
+      "rangeZ64": [
+        "0x001419B0",
+        "0x001419D0"
+      ],
+      "bytes": 32,
+      "class": "rodata-string",
+      "state": "parsed",
+      "note": "Short ASCII strings, NUL-terminated. 0x436F6E66 0x69726D00 = \"Confirm\\0\"; 0x41636B6E 0x6F776C65 0x64676564 0x00000000 = \"Acknowledged\\0\"; 0x59657300 = \"Yes\\0\"; 0x4E6F0000 = \"No\\0\". UI/menu label strin"
+    },
+    {
+      "part": "table_001419D0",
+      "rangeZ64": [
+        "0x001419D0",
+        "0x00141BE4"
+      ],
+      "bytes": 532,
+      "class": "ram-pointer-table",
+      "state": "parsed",
+      "note": "Fixed-stride 4-byte RAM-pointer table. Every word is a 0x801D.../0x801E.../0x801F.... kseg0 RAM address in a (mostly) monotonically descending sequence: 0x801F0284, 0x801F0268, 0x801F0240, 0x801F0224,"
+    },
+    {
+      "part": "table_00141BE4",
+      "rangeZ64": [
+        "0x00141BE4",
+        "0x00141C80"
+      ],
+      "bytes": 156,
+      "class": "ram-pointer-table",
+      "state": "parsed",
+      "note": "Small-integer record table. Repeating 3-word groups where the first word is a small opcode/size byte and the next two words are 0x00000002/0x00000003: e.g. 0x0000001C,0x00000000,0x00000001 then 0x0000"
+    },
+    {
+      "part": "zero_fill_00141C80",
+      "rangeZ64": [
+        "0x00141C80",
+        "0x00141D10"
+      ],
+      "bytes": 144,
+      "class": "zero-fill",
+      "state": "parsed",
+      "note": "Mostly-zero gap with 0xFFFFFFFF sentinels. 0x00141C80=0xFFFFFFFF, then a long 0x00000000 run (0x00141C84..0x00141CE0), 0xF0000000 at 0x00141CE4, more zeros, then 0xFFFFFFFF/0xFFFFFFFF at 0x00141D04/0x"
+    },
+    {
+      "part": "data_00141D10",
+      "rangeZ64": [
+        "0x00141D10",
+        "0x00141E14"
+      ],
+      "bytes": 260,
+      "class": "display-list/graphics",
+      "state": "raw-but-classified",
+      "note": "RSP/RDP display-list-ish graphics data block (the E3/E7/DF/D9-marker region near ~0x141DA0 called out in the task). High-entropy words: 0x00005A05/0x7A854105/0xAB89ABCB/0xA389B451/0x8B07B40B/0xC4D3CCD"
+    },
+    {
+      "part": "float_00141E14",
+      "rangeZ64": [
+        "0x00141E14",
+        "0x00141E80"
+      ],
+      "bytes": 108,
+      "class": "float-const-pool",
+      "state": "parsed",
+      "note": "IEEE-754 32-bit float const pool. 0x00141E14=0xC036F9A0 (~-2.859), 0x00141E18=0xC0C00000 (-6.0), 0x00141E20=0x40C00000 (+6.0), 0x00141E2C/0x00141E30=0xC1200000 (-10.0), 0x00141E34=0xC06CCCCD (~-3.7), "
+    },
+    {
+      "part": "data_00141E80",
+      "rangeZ64": [
+        "0x00141E80",
+        "0x00141ED0"
+      ],
+      "bytes": 80,
+      "class": "packed/record",
+      "state": "raw-but-classified",
+      "note": "Region tail: a few small packed/index words then zero_fill to the region end. 0x00141E80=0x000A000F, 0x00141E84=0x1E281E32, 0x00141E88=0x00000005, 0x00141E8C=0x232D3700 (small byte tuples 0x0A/0x0F/0x"
+    },
+    {
+      "part": "table_00141ED0",
+      "rangeZ64": [
+        "0x00141ED0",
+        "0x00142200"
+      ],
+      "bytes": 816,
+      "class": "neutral-encounter-table",
+      "state": "parsed",
+      "note": "Documented neutral_encounter_table. 40 rows x 20-byte stride (0x14). Rows hold small class-id-like bytes interspersed with zero padding within each row; no floats, pointers, or ASCII. Sample words: 0x"
+    },
+    {
+      "part": "data_00142200",
+      "rangeZ64": [
+        "0x00142200",
+        "0x00142258"
+      ],
+      "bytes": 88,
+      "class": "packed/record",
+      "state": "raw-but-classified",
+      "note": "Small-value region between neutral_encounter_table and creature_drop_table (88B): words 0x00003232/0x00003838/0x34340000/0x00004343 (ASCII-ish 2/8/4/C bytes); not decoded (hypothesis: terrain/threshol"
+    },
+    {
+      "part": "table_00142258",
+      "rangeZ64": [
+        "0x00142258",
+        "0x00142378"
+      ],
+      "bytes": 288,
+      "class": "creature-drop-table",
+      "state": "parsed",
+      "note": "Documented creature_drop_table. 36 rows x 8-byte stride (0x8). Each row's word[0] high half is 0x00xx with byte[1] incrementing monotonically across rows (0x27,0x28,0x29,0x2F,0x30,0x31,0x32,0x33,0x34,"
+    },
+    {
+      "part": "zero_fill_00142378",
+      "rangeZ64": [
+        "0x00142378",
+        "0x00142380"
+      ],
+      "bytes": 8,
+      "class": "zero-fill",
+      "state": "parsed",
+      "note": "8-byte tail of two pure-zero words (0x00000000 @0x142378 and @0x14237C). Alignment/zero padding closing the region."
+    },
+    {
+      "part": "table_00142380",
+      "rangeZ64": [
+        "0x00142380",
+        "0x00142510"
+      ],
+      "bytes": 400,
+      "class": "ram-pointer-table",
+      "state": "parsed",
+      "note": "100 consecutive 4-byte RAM pointers into the 0x801AF000..0x801B0200 band (e.g. 0x801AF32C, 0x801AF448, 0x801AF458). Many repeats of 0x801B0208 act as a default/sentinel slot. Word-stride pointer table"
+    },
+    {
+      "part": "float_00142510",
+      "rangeZ64": [
+        "0x00142510",
+        "0x00142530"
+      ],
+      "bytes": 32,
+      "class": "float-const-pool",
+      "state": "parsed",
+      "note": "8 words = four identical IEEE-754 single-float pairs 0x3F947AE1 / 0x47AE147B (approx 1.1601 / 89000.96), repeated 4x. Const pool, not pointers/ascii. [name-token: float_pool_pair_repeat]"
+    },
+    {
+      "part": "table_00142530",
+      "rangeZ64": [
+        "0x00142530",
+        "0x001427D0"
+      ],
+      "bytes": 672,
+      "class": "ram-pointer-table",
+      "state": "parsed",
+      "note": "168 consecutive 4-byte RAM pointers in the 0x801B02C4..0x801B0C28 band (e.g. 0x801B02D4, 0x801B0780, 0x801B0B74, 0x801B0BC8, 0x801B0C28). Heavy repeats indicate default entries. Word-stride pointer ta"
+    },
+    {
+      "part": "float_001427D0",
+      "rangeZ64": [
+        "0x001427D0",
+        "0x001427E0"
+      ],
+      "bytes": 16,
+      "class": "float-const-pool",
+      "state": "parsed",
+      "note": "Doubles: 0x3FF00000 00000000 (=1.0) then 0x401921FB 54442D18 (=pi, 3.14159). IEEE-754 double const pool, 8-byte pairs. [name-token: float_pool_double_1_0_pi]"
+    },
+    {
+      "part": "rodata_001427E0",
+      "rangeZ64": [
+        "0x001427E0",
+        "0x00142810"
+      ],
+      "bytes": 48,
+      "class": "rodata-string",
+      "state": "parsed",
+      "note": "ASCII printf string: 'Value cannot be reached.(MakeRouteList):%d' + newline (0x56616C75='Valu' .. 0x25640A00='%d',LF,NUL). Zero-padded to 0x142810. [name-token: rodata_str_MakeRouteList]"
+    },
+    {
+      "part": "table_00142810",
+      "rangeZ64": [
+        "0x00142810",
+        "0x00142830"
+      ],
+      "bytes": 32,
+      "class": "ram-pointer-table",
+      "state": "parsed",
+      "note": "8 RAM pointers in the 0x801B3918..0x801B3A6C band (0x801B3918, 0x801B3970, ...). Small word-stride pointer table. [name-token: table_ptr_801B39xx]"
+    },
+    {
+      "part": "rodata_00142830",
+      "rangeZ64": [
+        "0x00142830",
+        "0x00142850"
+      ],
+      "bytes": 32,
+      "class": "rodata-string",
+      "state": "parsed",
+      "note": "ASCII string 'Mem error. (Magnetic))' + newline (0x4D656D20='Mem ' .. 0x2829290A=' ))',LF). Zero-padded to 0x142848; 2 zero words follow. [name-token: rodata_str_Magnetic]"
+    },
+    {
+      "part": "float_00142850",
+      "rangeZ64": [
+        "0x00142850",
+        "0x00142858"
+      ],
+      "bytes": 8,
+      "class": "float-const-pool",
+      "state": "parsed",
+      "note": "Single double 0x3FD00000 00000000 (=0.25). 8-byte const. [name-token: float_double_0_25]"
+    },
+    {
+      "part": "table_00142858",
+      "rangeZ64": [
+        "0x00142858",
+        "0x001428A4"
+      ],
+      "bytes": 76,
+      "class": "ram-pointer-table",
+      "state": "parsed",
+      "note": "19 RAM pointers in the 0x801B606C..0x801B6608 band (0x801B6104 repeated, 0x801B606C, 0x801B6208). Word-stride pointer table. [name-token: table_ptr_801B6xxx_a]"
+    },
+    {
+      "part": "zero_fill_001428A4",
+      "rangeZ64": [
+        "0x001428A4",
+        "0x001428A8"
+      ],
+      "bytes": 4,
+      "class": "zero-fill",
+      "state": "parsed",
+      "note": "Single zero word separating two 0x801B6xxx pointer banks (isolated null pointer slot; sub-2-word). [name-token: zero_fill_ptr_gap_1]"
+    },
+    {
+      "part": "table_001428A8",
+      "rangeZ64": [
+        "0x001428A8",
+        "0x001428F4"
+      ],
+      "bytes": 76,
+      "class": "ram-pointer-table",
+      "state": "parsed",
+      "note": "19 RAM pointers in the 0x801B6834..0x801B6898 band (0x801B687C repeated heavily, 0x801B6834, 0x801B6898). Word-stride pointer table. [name-token: table_ptr_801B68xx_b]"
+    },
+    {
+      "part": "zero_fill_001428F4",
+      "rangeZ64": [
+        "0x001428F4",
+        "0x00142900"
+      ],
+      "bytes": 12,
+      "class": "zero-fill",
+      "state": "parsed",
+      "note": "3 pure-zero words (padding before following packed data). [name-token: zero_fill_3w_a]"
+    },
+    {
+      "part": "data_00142900",
+      "rangeZ64": [
+        "0x00142900",
+        "0x00142950"
+      ],
+      "bytes": 80,
+      "class": "packed/record",
+      "state": "raw-but-classified",
+      "note": "Packed records with high-bit bytes; two identical 0x24-byte (9-word) blocks beginning 0x91E596EC 82B382F1 81498343 .. 0x0A000000, the block repeated at 0x142924. High-bit byte pattern looks like Shift"
+    },
+    {
+      "part": "table_00142950",
+      "rangeZ64": [
+        "0x00142950",
+        "0x00142A20"
+      ],
+      "bytes": 208,
+      "class": "ram-pointer-table",
+      "state": "parsed",
+      "note": "52 RAM pointers spanning 0x801B9CB0..0x801BB9EC (0x801B9CB0, 0x801BB9EC repeated as sentinel, 0x801BA2E8, ...). Word-stride pointer table. [name-token: table_ptr_801B9_801BB_band]"
+    },
+    {
+      "part": "float_00142A20",
+      "rangeZ64": [
+        "0x00142A20",
+        "0x00142A30"
+      ],
+      "bytes": 16,
+      "class": "float-const-pool",
+      "state": "parsed",
+      "note": "Two doubles: 0x3FD80000 00000000 (=0.375) and 0x3FE40000 00000000 (=0.625). 8-byte const pairs. [name-token: float_pool_doubles_a]"
+    },
+    {
+      "part": "table_00142A30",
+      "rangeZ64": [
+        "0x00142A30",
+        "0x00142A50"
+      ],
+      "bytes": 32,
+      "class": "ram-pointer-table",
+      "state": "parsed",
+      "note": "6 RAM pointers in the 0x801BBCA4..0x801BCCE0 band (0x801BCCE0, 0x801BBCA4, 0x801BC374). Small word-stride pointer table; 2 trailing zero words. [name-token: table_ptr_801BCxxx]"
+    },
+    {
+      "part": "rodata_00142A50",
+      "rangeZ64": [
+        "0x00142A50",
+        "0x00142A70"
+      ],
+      "bytes": 32,
+      "class": "rodata-string",
+      "state": "parsed",
+      "note": "ASCII string 'vtx_cnt number over :%d' + newline (0x7674785F='vtx_' .. 0x3A202564=': %d',LF,NUL). Zero-padded. [name-token: rodata_str_vtx_cnt]"
+    },
+    {
+      "part": "float_00142A70",
+      "rangeZ64": [
+        "0x00142A70",
+        "0x00142B08"
+      ],
+      "bytes": 152,
+      "class": "float-const-pool",
+      "state": "parsed",
+      "note": "Dense IEEE-754 double const pool with 8-byte-alignment zeros. Values include 0x401921FB54442D18 (pi, repeated), 0x4076800000000000 (=360.0), 0x3FB1EB851EB851EC (=0.0699), ~0x3FA9999A (0.05), 0x3FF7333"
+    },
+    {
+      "part": "zero_fill_00142B08",
+      "rangeZ64": [
+        "0x00142B08",
+        "0x00142B10"
+      ],
+      "bytes": 8,
+      "class": "zero-fill",
+      "state": "parsed",
+      "note": "2 pure-zero words (8-byte pad before string block). [name-token: zero_fill_2w_a]"
+    },
+    {
+      "part": "rodata_00142B10",
+      "rangeZ64": [
+        "0x00142B10",
+        "0x00142B50"
+      ],
+      "bytes": 64,
+      "class": "rodata-string",
+      "state": "parsed",
+      "note": "Two ASCII error strings: 'MEM Error.(spMakeTable1)' and 'MEM Error.(MakeSpleneTable)' each newline+NUL terminated (0x4D454D20='MEM ' .. 0x53706C69='Spli'). Zero-padded; trailing zero word at 0x142B4C."
+    },
+    {
+      "part": "float_00142B50",
+      "rangeZ64": [
+        "0x00142B50",
+        "0x00142B58"
+      ],
+      "bytes": 8,
+      "class": "float-const-pool",
+      "state": "parsed",
+      "note": "Single double 0x3FD00000 00000000 (=0.25). [name-token: float_double_0_25_b]"
+    },
+    {
+      "part": "rodata_00142B58",
+      "rangeZ64": [
+        "0x00142B58",
+        "0x00142B78"
+      ],
+      "bytes": 32,
+      "class": "rodata-string",
+      "state": "parsed",
+      "note": "ASCII string 'unitcommandnumber error!' + newline (0x756E6974='unit' .. 0x6F72210A='or!',LF). 2 trailing zero words. [name-token: rodata_str_unitcommand]"
+    },
+    {
+      "part": "table_00142B78",
+      "rangeZ64": [
+        "0x00142B78",
+        "0x00142BA0"
+      ],
+      "bytes": 40,
+      "class": "ram-pointer-table",
+      "state": "parsed",
+      "note": "10 RAM pointers in the 0x801C821C..0x801C82CC band (0x801C82CC, 0x801C82BC, 0x801C821C). Word-stride pointer table. [name-token: table_ptr_801C82xx]"
+    },
+    {
+      "part": "rodata_00142BA0",
+      "rangeZ64": [
+        "0x00142BA0",
+        "0x00142BB8"
+      ],
+      "bytes": 24,
+      "class": "rodata-string",
+      "state": "parsed",
+      "note": "ASCII string 'There is NO-TEXT.' + newline (0x54686572='Ther' .. 0x204E4F2D=' NO-', 0x2E0A0000='.',LF,NUL). 1 trailing zero word. [name-token: rodata_str_NO_TEXT]"
+    },
+    {
+      "part": "table_00142BB8",
+      "rangeZ64": [
+        "0x00142BB8",
+        "0x00142D48"
+      ],
+      "bytes": 400,
+      "class": "ram-pointer-table",
+      "state": "parsed",
+      "note": "100 RAM pointers in the 0x801CA3A0..0x801CAF34 band; 0x801CAF34 repeats as a sentinel for most of the run. Word-stride pointer table. [name-token: table_ptr_801CAxxx_band]"
+    },
+    {
+      "part": "zero_fill_00142D48",
+      "rangeZ64": [
+        "0x00142D48",
+        "0x00142D50"
+      ],
+      "bytes": 8,
+      "class": "zero-fill",
+      "state": "parsed",
+      "note": "2 pure-zero words (pad before float pool). [name-token: zero_fill_2w_b]"
+    },
+    {
+      "part": "float_00142D50",
+      "rangeZ64": [
+        "0x00142D50",
+        "0x00142D78"
+      ],
+      "bytes": 40,
+      "class": "float-const-pool",
+      "state": "parsed",
+      "note": "Five identical doubles 0x3F1A36E2 EB1C432D (~0.0001). 8-byte const, repeated 5x. [name-token: float_pool_double_repeat]"
+    },
+    {
+      "part": "rodata_00142D78",
+      "rangeZ64": [
+        "0x00142D78",
+        "0x00142D88"
+      ],
+      "bytes": 16,
+      "class": "rodata-string",
+      "state": "parsed",
+      "note": "ASCII string fragment 0x466F726D='Form' .. 0x2E0A0000='.',LF,NUL. 4 words, zero-padded. [name-token: rodata_str_Form]"
+    },
+    {
+      "part": "table_00142D88",
+      "rangeZ64": [
+        "0x00142D88",
+        "0x00142DE4"
+      ],
+      "bytes": 92,
+      "class": "ram-pointer-table",
+      "state": "parsed",
+      "note": "23 RAM pointers in the 0x801D0150..0x801D0174 band. Word-stride pointer table; 1 trailing zero word. [name-token: table_ptr_801D01xx_a]"
+    },
+    {
+      "part": "zero_fill_00142DE4",
+      "rangeZ64": [
+        "0x00142DE4",
+        "0x00142DE8"
+      ],
+      "bytes": 4,
+      "class": "zero-fill",
+      "state": "parsed",
+      "note": "Single zero word separating two 0x801D03xx pointer banks. [name-token: zero_fill_1w_a]"
+    },
+    {
+      "part": "table_00142DE8",
+      "rangeZ64": [
+        "0x00142DE8",
+        "0x00142E44"
+      ],
+      "bytes": 92,
+      "class": "ram-pointer-table",
+      "state": "parsed",
+      "note": "23 RAM pointers in the 0x801D0378..0x801D039C band. Word-stride pointer table. [name-token: table_ptr_801D03xx_b]"
+    },
+    {
+      "part": "zero_fill_00142E44",
+      "rangeZ64": [
+        "0x00142E44",
+        "0x00142E50"
+      ],
+      "bytes": 12,
+      "class": "zero-fill",
+      "state": "parsed",
+      "note": "3 pure-zero words (pad before string). [name-token: zero_fill_3w_b]"
+    },
+    {
+      "part": "rodata_00142E50",
+      "rangeZ64": [
+        "0x00142E50",
+        "0x00142E70"
+      ],
+      "bytes": 32,
+      "class": "rodata-string",
+      "state": "parsed",
+      "note": "ASCII error string 0x4D656D45='MemE' .. 0x6E642829='nd()',LF,NUL. Zero-padded. [name-token: rodata_str_MemError_spDepend]"
+    },
+    {
+      "part": "float_00142E70",
+      "rangeZ64": [
+        "0x00142E70",
+        "0x00142E80"
+      ],
+      "bytes": 16,
+      "class": "float-const-pool",
+      "state": "parsed",
+      "note": "Doubles: 0x401921FB54442D18 (pi) and 0x3FF00000 00000000 (1.0). 8-byte const pairs. [name-token: float_pool_pi_1_0]"
+    },
+    {
+      "part": "rodata_00142E80",
+      "rangeZ64": [
+        "0x00142E80",
+        "0x00142EA0"
+      ],
+      "bytes": 32,
+      "class": "rodata-string",
+      "state": "parsed",
+      "note": "ASCII error string 0x4D454D20='MEM ' .. 0x47290A00='G)',LF,NUL. Zero-padded; 1 trailing zero word. [name-token: rodata_str_MEM_Error_c]"
+    },
+    {
+      "part": "table_00142EA0",
+      "rangeZ64": [
+        "0x00142EA0",
+        "0x00142EC0"
+      ],
+      "bytes": 32,
+      "class": "ram-pointer-table",
+      "state": "parsed",
+      "note": "8 RAM pointers, all 0x801D20D4 (uniform; default/jump slot table). Word-stride pointer table. [name-token: table_ptr_801D20D4]"
+    },
+    {
+      "part": "float_00142EC0",
+      "rangeZ64": [
+        "0x00142EC0",
+        "0x00142F10"
+      ],
+      "bytes": 80,
+      "class": "float-const-pool",
+      "state": "parsed",
+      "note": "Double const pool with 8-byte-alignment zeros: 0x401921FB54442D18 (pi), 0x3FD00000 (0.25), 0x3FE80000 (0.75), 0x3FE00000 (0.5), 0x3FF00000 (1.0), repeated mix. Const pool only. [name-token: float_pool"
+    },
+    {
+      "part": "rodata_00142F10",
+      "rangeZ64": [
+        "0x00142F10",
+        "0x00142F30"
+      ],
+      "bytes": 32,
+      "class": "rodata-string",
+      "state": "parsed",
+      "note": "ASCII error string 0x4D454D20='MEM ' .. 0x61290A00='a)',LF,NUL. Zero-padded. [name-token: rodata_str_MEM_Error_d]"
+    },
+    {
+      "part": "float_00142F30",
+      "rangeZ64": [
+        "0x00142F30",
+        "0x00142F38"
+      ],
+      "bytes": 8,
+      "class": "float-const-pool",
+      "state": "parsed",
+      "note": "IEEE-754 single-float pair 0x3F847AE1 / 0x47AE147B. 8 bytes. [name-token: float_single_pair_a]"
+    },
+    {
+      "part": "zero_fill_00142F38",
+      "rangeZ64": [
+        "0x00142F38",
+        "0x00142F40"
+      ],
+      "bytes": 8,
+      "class": "zero-fill",
+      "state": "parsed",
+      "note": "2 pure-zero words (8-byte pad). [name-token: zero_fill_2w_c]"
+    },
+    {
+      "part": "float_00142F40",
+      "rangeZ64": [
+        "0x00142F40",
+        "0x00142FB4"
+      ],
+      "bytes": 116,
+      "class": "float-const-pool",
+      "state": "parsed",
+      "note": "Double const pool with alignment zeros: 0x3FE00000 (0.5) repeated, 0x401921FB54442D18 (pi), 0x400921FB54442D18 (2*pi=6.2831), 0x3FF00000 (1.0). Const pool only. [name-token: float_pool_consts_d]"
+    },
+    {
+      "part": "zero_fill_00142FB4",
+      "rangeZ64": [
+        "0x00142FB4",
+        "0x00142FC0"
+      ],
+      "bytes": 12,
+      "class": "zero-fill",
+      "state": "parsed",
+      "note": "3 pure-zero words (pad before pointer table). [name-token: zero_fill_3w_c]"
+    },
+    {
+      "part": "table_00142FC0",
+      "rangeZ64": [
+        "0x00142FC0",
+        "0x00142FD4"
+      ],
+      "bytes": 20,
+      "class": "ram-pointer-table",
+      "state": "parsed",
+      "note": "5 RAM pointers in the 0x801D9EC0..0x801D9F4C band. Small word-stride pointer table; 1 trailing zero word. [name-token: table_ptr_801D9Exx]"
+    },
+    {
+      "part": "zero_fill_00142FD4",
+      "rangeZ64": [
+        "0x00142FD4",
+        "0x00142FD8"
+      ],
+      "bytes": 4,
+      "class": "zero-fill",
+      "state": "parsed",
+      "note": "Single zero word. [name-token: zero_fill_1w_b]"
+    },
+    {
+      "part": "float_00142FD8",
+      "rangeZ64": [
+        "0x00142FD8",
+        "0x00143000"
+      ],
+      "bytes": 40,
+      "class": "float-const-pool",
+      "state": "parsed",
+      "note": "Double const pool: 0x400921FB54442D18 (2*pi) repeated 4x, then 0x3FE00000 (0.5); trailing zero word at 0x142FFC. Const pool only. [name-token: float_pool_consts_e]"
+    },
+    {
+      "part": "float_00143000",
+      "rangeZ64": [
+        "0x00143000",
+        "0x00143008"
+      ],
+      "bytes": 8,
+      "class": "float-const-pool",
+      "state": "parsed",
+      "note": "IEEE-754 single-float pair 0x3F847AE1 / 0x47AE147B. 8 bytes. [name-token: float_single_pair_b]"
+    },
+    {
+      "part": "rodata_00143008",
+      "rangeZ64": [
+        "0x00143008",
+        "0x00143028"
+      ],
+      "bytes": 32,
+      "class": "rodata-string",
+      "state": "parsed",
+      "note": "ASCII string fragment 0x6E6F2073='no s' .. 0x5B25645D='[%d]', 0x0A000000=LF,NUL. Zero-padded; 1 trailing zero word. [name-token: rodata_str_no_s_pct_d]"
+    },
+    {
+      "part": "table_00143028",
+      "rangeZ64": [
+        "0x00143028",
+        "0x00143174"
+      ],
+      "bytes": 332,
+      "class": "ram-pointer-table",
+      "state": "parsed",
+      "note": "83 RAM pointers in the 0x801DD004..0x801DD00C band; 0x801DD00C dominates as a repeated default. Word-stride pointer table. [name-token: table_ptr_801DD0xx_band]"
+    },
+    {
+      "part": "zero_fill_00143174",
+      "rangeZ64": [
+        "0x00143174",
+        "0x00143178"
+      ],
+      "bytes": 4,
+      "class": "zero-fill",
+      "state": "parsed",
+      "note": "Single zero word. [name-token: zero_fill_1w_c]"
+    },
+    {
+      "part": "float_00143178",
+      "rangeZ64": [
+        "0x00143178",
+        "0x00143180"
+      ],
+      "bytes": 8,
+      "class": "float-const-pool",
+      "state": "parsed",
+      "note": "Double 0x3FD00000 00000000 (=0.25). 8-byte const. [name-token: float_double_0_25_c]"
+    },
+    {
+      "part": "table_00143180",
+      "rangeZ64": [
+        "0x00143180",
+        "0x00143204"
+      ],
+      "bytes": 132,
+      "class": "ram-pointer-table",
+      "state": "parsed",
+      "note": "33 RAM pointers, all 0x801DD238 (uniform default/jump slot table). Word-stride pointer table; 1 trailing zero word. [name-token: table_ptr_801DD238]"
+    },
+    {
+      "part": "zero_fill_00143204",
+      "rangeZ64": [
+        "0x00143204",
+        "0x00143208"
+      ],
+      "bytes": 4,
+      "class": "zero-fill",
+      "state": "parsed",
+      "note": "Single zero word separating uniform pointer tables. [name-token: zero_fill_1w_e]"
+    },
+    {
+      "part": "table_00143208",
+      "rangeZ64": [
+        "0x00143208",
+        "0x00143264"
+      ],
+      "bytes": 92,
+      "class": "ram-pointer-table",
+      "state": "parsed",
+      "note": "23 RAM pointers, all 0x801DD274 (uniform default/jump slot table). Word-stride pointer table; 1 trailing zero word. [name-token: table_ptr_801DD274]"
+    },
+    {
+      "part": "zero_fill_00143264",
+      "rangeZ64": [
+        "0x00143264",
+        "0x00143268"
+      ],
+      "bytes": 4,
+      "class": "zero-fill",
+      "state": "parsed",
+      "note": "Single zero word separating uniform pointer tables. [name-token: zero_fill_1w_f]"
+    },
+    {
+      "part": "table_00143268",
+      "rangeZ64": [
+        "0x00143268",
+        "0x001432C8"
+      ],
+      "bytes": 96,
+      "class": "ram-pointer-table",
+      "state": "parsed",
+      "note": "24 RAM pointers, all 0x801DD2A4 (uniform default/jump slot table). Word-stride pointer table. [name-token: table_ptr_801DD2A4]"
+    },
+    {
+      "part": "zero_fill_001432C8",
+      "rangeZ64": [
+        "0x001432C8",
+        "0x001432D4"
+      ],
+      "bytes": 12,
+      "class": "zero-fill",
+      "state": "parsed",
+      "note": "3 pure-zero words (pad before small int table). [name-token: zero_fill_3w_d]"
+    },
+    {
+      "part": "data_001432D4",
+      "rangeZ64": [
+        "0x001432D4",
+        "0x001432E4"
+      ],
+      "bytes": 16,
+      "class": "packed/record",
+      "state": "raw-but-classified",
+      "note": "4 sequential int words 0x00000001, 0x00000002, 0x00000003, 0x00000004 (index sequence). Packed int data, not pointers/floats. [name-token: data_small_int_seq]"
+    },
+    {
+      "part": "rodata_001432E4",
+      "rangeZ64": [
+        "0x001432E4",
+        "0x001449F0"
+      ],
+      "bytes": 5900,
+      "class": "rodata-string",
+      "state": "parsed",
+      "note": "Large contiguous pool of ASCII game/UI message strings, NUL-terminated and word-padded, with embedded in-game control bytes (0x81 0x97 / 0x81 0x94 / 0x81 0x90 / 0x81 0x93 = full-width punctuation and "
+    },
+    {
+      "part": "zero_fill_001449F0",
+      "rangeZ64": [
+        "0x001449F0",
+        "0x001449F8"
+      ],
+      "bytes": 8,
+      "class": "zero-fill",
+      "state": "parsed",
+      "note": "2 pure-zero words (pad after string pool). [name-token: zero_fill_2w_d]"
+    },
+    {
+      "part": "data_001449F8",
+      "rangeZ64": [
+        "0x001449F8",
+        "0x00144A04"
+      ],
+      "bytes": 12,
+      "class": "packed/record",
+      "state": "raw-but-classified",
+      "note": "3 words of packed small bytes beginning 0x00010302 and ending 0x08000000 (small byte index/LUT; hypothesis). 1 trailing zero word. [name-token: data_packed_bytes]"
+    },
+    {
+      "part": "zero_fill_00144A04",
+      "rangeZ64": [
+        "0x00144A04",
+        "0x00144A08"
+      ],
+      "bytes": 4,
+      "class": "zero-fill",
+      "state": "parsed",
+      "note": "Single zero word. [name-token: zero_fill_1w_g]"
+    },
+    {
+      "part": "table_00144A08",
+      "rangeZ64": [
+        "0x00144A08",
+        "0x00144C50"
+      ],
+      "bytes": 584,
+      "class": "ram-pointer-table",
+      "state": "parsed",
+      "note": "Series of RAM-pointer sub-tables in the 0x801E30D8..0x801E5EE0 band, separated by single/triple zero words (bank terminators). Sub-banks observed: 15w@801E30D8, 23w@801E4E4C, 7w@801E4E7C, 23w@801E57C4"
+    },
+    {
+      "part": "float_00144C50",
+      "rangeZ64": [
+        "0x00144C50",
+        "0x00144C58"
+      ],
+      "bytes": 8,
+      "class": "float-const-pool",
+      "state": "parsed",
+      "note": "Double 0xC01921FB 54442D18 (= -pi, -3.14159), embedded mid pointer-region as an 8-byte const. [name-token: float_double_neg_pi]"
+    },
+    {
+      "part": "table_00144C58",
+      "rangeZ64": [
+        "0x00144C58",
+        "0x00144E54"
+      ],
+      "bytes": 508,
+      "class": "ram-pointer-table",
+      "state": "parsed",
+      "note": "Continuation of 0x801E pointer sub-tables: 21w@801E5E84, then a series of 9-word (0x24-byte) sub-banks in the 0x801E5EAC..0x801E62C8 band separated by single zero words, then 25w@801E6360..801E6A68. 4"
+    },
+    {
+      "part": "zero_fill_00144E54",
+      "rangeZ64": [
+        "0x00144E54",
+        "0x00144E58"
+      ],
+      "bytes": 4,
+      "class": "zero-fill",
+      "state": "parsed",
+      "note": "Single zero word separating pointer sub-tables. [name-token: zero_fill_1w_h]"
+    },
+    {
+      "part": "table_00144E58",
+      "rangeZ64": [
+        "0x00144E58",
+        "0x00145134"
+      ],
+      "bytes": 732,
+      "class": "ram-pointer-table",
+      "state": "parsed",
+      "note": "183 RAM pointers in the 0x801E6BD8..0x801E6D30 band; 0x801E6D30 repeats heavily as default. Largest single pointer run in region C. Word-stride pointer table. [name-token: table_ptr_801E6xxx_big]"
+    },
+    {
+      "part": "zero_fill_00145134",
+      "rangeZ64": [
+        "0x00145134",
+        "0x00145138"
+      ],
+      "bytes": 4,
+      "class": "zero-fill",
+      "state": "parsed",
+      "note": "Single zero word. [name-token: zero_fill_1w_i]"
+    },
+    {
+      "part": "table_00145138",
+      "rangeZ64": [
+        "0x00145138",
+        "0x001451D4"
+      ],
+      "bytes": 156,
+      "class": "ram-pointer-table",
+      "state": "parsed",
+      "note": "Four 9-word pointer sub-banks in the 0x801E6CD8..0x801E6ED4 band, separated by single zero words (banks at 801E6ED4, 801E6DC4, 801E6CD8, 801E6D30). 4-byte RAM pointers; word-stride. Hypothesis: 9-entr"
+    },
+    {
+      "part": "zero_fill_001451D4",
+      "rangeZ64": [
+        "0x001451D4",
+        "0x001451E0"
+      ],
+      "bytes": 12,
+      "class": "zero-fill",
+      "state": "parsed",
+      "note": "3 pure-zero words (pad before final string). [name-token: zero_fill_3w_e]"
+    },
+    {
+      "part": "rodata_001451E0",
+      "rangeZ64": [
+        "0x001451E0",
+        "0x00145204"
+      ],
+      "bytes": 36,
+      "class": "rodata-string",
+      "state": "parsed",
+      "note": "ASCII string beginning 0x536F6D65='Some' .. ending 0x2E630A20='.c',LF,space. 9 words, NUL/word-padded. [name-token: rodata_str_Some_tail]"
+    },
+    {
+      "part": "zero_fill_00145204",
+      "rangeZ64": [
+        "0x00145204",
+        "0x00145210"
+      ],
+      "bytes": 12,
+      "class": "zero-fill",
+      "state": "parsed",
+      "note": "3 pure-zero words (pad before trailing code-like data blob). [name-token: zero_fill_3w_f]"
+    },
+    {
+      "part": "data_0014DE88",
+      "rangeZ64": [
+        "0x0014DE88",
+        "0x0014EBE0"
+      ],
+      "bytes": 3416,
+      "class": "display-list/graphics",
+      "state": "raw-but-classified",
+      "note": "Inline data island (not executed). Leading nop padding, then byte-index/jump tables (0x06010602 runs, 0x00010203... ramps), 0x801Fxxxx pointer-table blocks, F3DEX display-list command words (E7/E3/DF/"
+    }
+  ]
+}

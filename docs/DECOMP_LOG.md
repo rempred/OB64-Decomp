@@ -24,10 +24,10 @@ and replace the active log with a compact current-state summary.
   `original_mips`. A static control-flow audit found no credible code edge into
   the tail (0 branch targets, 0 J/JAL to a known function). Audit:
   `tools/audit_code_region.js` / `docs/CODE_REGION_AUDIT.md`.
-- Current tracked code source mix: twenty composite real-assembler chunks
-  (chunk 0 177 `boot/`; chunks 1–19 in `lib/`: 350, 216, 67, 376, 88, 78, 103, 87, 34, 35, 191, 74, 67, 94, 153, 95, 66, 95, 80) =
-  **2,526 tracked source files**, plus 80 generated fallback code chunks. **Chunks
-  0–19 (`0x00001000..0x00141000`) are now fully source-owned as named code/data
+- Current tracked code source mix: twenty-one composite real-assembler chunks
+  (chunk 0 177 `boot/`; chunks 1–20 in `lib/`: 350, 216, 67, 376, 88, 78, 103, 87, 34, 35, 191, 74, 67, 94, 153, 95, 66, 95, 80, 175) =
+  **2,701 tracked source files**, plus 79 generated fallback code chunks. **Chunks
+  0–20 (`0x00001000..0x00151000`) are now fully source-owned as named code/data
   parts** (chunk 13: 27 code + 40 data, MIXED — unit-mgmt UI data; chunk 14: 74 code + 20
   data, MIXED — graphics/display-list data + DL-builder code; chunk 15: 134 code + 19
   data, MIXED — floats/display-list data + the OB64 opening-narration rodata; chunk 16: 72
@@ -35,7 +35,9 @@ and replace the active log with a compact current-state summary.
   neutral-encounter code path; chunk 17: 66 code + 0 data, ALL CODE — char-data/encounter
   code; chunk 18: 95 code + 0 data, ALL CODE — FP-heavy scenario/combat code; chunk 19: 64
   code + 16 data, MIXED — encounter/dispatcher code + a trailing scenario data region with
-  an outgoing data straddler); next is chunk 20 (`0x00141000`, still a generated fallback chunk). The promote-tool merge blocker is FIXED.
+  an outgoing data straddler; chunk 20: 89 code + 86 data, MIXED — scenario data tables
+  [neutral_encounter 40×20, creature_drop 36×8] + a 125-string game-text pool +
+  encounter/dispatcher code); next is chunk 21 (`0x00151000`, still a generated fallback chunk). The promote-tool merge blocker is FIXED.
 - The parent boundary DB has TWO recurring defects, both fixed when splitting:
   (1) `end_rom` is INCLUSIVE (exclusive end = `end_rom + 4`; do NOT treat the
   delay slot as a gap — `tools/dump_function_context.js` now enforces this with a
@@ -204,10 +206,10 @@ Current named sequence:
   the parent's "combat code in the gap" [linear-map fallacy]). Dossier
   `docs/dossiers/lib-chunk19-131000-141000.md`; data index
   `docs/data-index/rev0/chunk19-data-region-inventory.json`. **Chunk 19 source-owned.**
-- Current remainder: none in chunks 0–19 (`0x1000..0x141000` fully source-owned).
-  **Current frontier: `0x00141000` (chunk 20).** Next is chunk 20 generated fallback
-  `0x00141000..0x00151000` (data-dominant start: continues the chunk-19 packed-byte
-  straddler `data_00140EA0_chunk19head`).
+- Current remainder: none in chunks 0–20 (`0x1000..0x151000` fully source-owned).
+  **Current frontier: `0x00151000` (chunk 21).** Next is chunk 21 generated fallback
+  `0x00151000..0x00161000` (MIXED: starts with the chunk-20 function straddler
+  `func_00150550_chunk21tail`; trailing high-entropy data straddles into chunk 22).
 
 Static dossiers live under `docs/dossiers/` and are the durable evidence notes
 for each promoted source-layout split.
@@ -229,6 +231,40 @@ splits were archived here on 2026-06-23 to keep this log under the ~10k-token th
 there, in each `docs/dossiers/lib-chunk*` dossier, and in `docs/CODE_REGION_AUDIT.md`.
 Chunks 0–13 are fully source-owned; recent detail (chunks 14–17) and the current frontier
 are below.
+
+## 2026-06-23 - Chunk 20 Split (0x141000..0x151000); chunk 20 complete — MIXED (scenario data tables + encounter/dispatcher code)
+
+DONE: **175 parts (89 code + 86 data)**. Tracked files 2,526 → **2,701**; fallback 80 →
+79. Byte-exact (code SHA `40D4E787…B409`, ROM `571E8339…CC67A`). Coverage `0x1000..0x151000`
+= **1,376,256 B = 48.3032 %** (code-only ≈ 1,148,920 B = 40.3242 %; +20,328 data bytes).
+Regions: leading DATA `0x141000..0x145210` (84 parts) → CODE `0x145210..0x151000` (89 parts
+incl. an inline data island `data_0014DE88` [0x14DE88,0x14EBE0]). Incoming straddler-tail
+`data_00141000_chunk20tail` [0x141000,0x1416A0) (chunk-19 packed-byte continuation). Outgoing
+straddler-head `func_00150550` [0x150550,0x151000) → 0x15105C in chunk 21.
+
+DATA highlights (all decoded/indexed): **neutral_encounter_table** `table_00141ED0`
+[0x141ED0,0x142200) 40×20 (HIGH conf, byte-verified) and **creature_drop_table**
+`table_00142258` [0x142258,0x142378) 36×8 (Hawkman class 0x27 → 0x31/0x9B/0xE8) — both
+decoded to JSON + MD via new durable `tools/decode_ob64_tables.js`; a **125-string game-text
+pool** `rodata_001432E4` [0x1432E4,0x1449F0] (5900B: "Legion led by…"/"Winning condition…")
+decoded via `decode_rodata_strings.js` (0x81xx control codes preserved); + 0x801A/0x801B
+RAM-pointer tables, float/double const pools, display-list/graphics blocks, debug strings.
+
+Method: content-scan region map → 3 data + 7 code-slice agents (Workflow) → combine
+(data names → <kind>_<addr>; neutral-table boundary aligned to documented 816B; kinds
+normalized) → check_boundaries PASS + check_splits 0 true frags → 5-agent adversarial swarm
+(3 code + 2 data): **1 disproof** — data-hunter found HIDDEN CODE at 0x145210 mis-classified
+as data_00145210; reclassified as func_00145210 + func_00145280 (frameless leaves), data→code
+boundary moved 0x145290→0x145210 → re-gate → split. Gates check_manifest (21/2,701/79)/
+check_boundaries/check_splits/assemble byte-exact/verify_setup/audit all PASS; 0 data files
+with function wording; all data-index JSON valid. Parent-evidence: both tables independently
+documented (docs/neutral-encounters.md, drop-table.md, editor/parsers.js, table_map.json);
+code overlay-relocated to runtime 0x801F4xxx (scenario) — symbols_v2 `ram` 0x801B4xxx is the
+WRONG linear back-map; classifier tags not adopted. Dossier
+`docs/dossiers/lib-chunk20-141000-151000.md`; data indexes
+`docs/data-index/rev0/chunk20-{data-region-inventory,neutral-encounter-table,creature-drop-table,string-pool-1432E4}.json`;
+exports under `data/decoded/rev0/{tables,strings}/`. Next file after split: chunk 21
+`0x151000`, opening with `func_00150550_chunk21tail` [0x151000,0x15105C).
 
 ## 2026-06-23 - Chunk 19 Split (0x131000..0x141000); chunk 19 complete — MIXED (encounter/dispatcher code + trailing scenario data)
 
@@ -404,6 +440,7 @@ Dossier `docs/dossiers/lib-chunk14-E1000-F1000.md`; data index
 The current boot/source-layout dossier list is long; use `docs/PLATFORM.md` for
 the full quick index. The newest dossiers are:
 
+- `docs/dossiers/lib-chunk20-141000-151000.md` (175-part chunk-20: MIXED — leading scenario DATA [packed-byte straddler + gfx/float pools + neutral_encounter_table 40×20 + creature_drop_table 36×8 + 0x801A/0x801B pointer tables + a 125-string game-text pool @0x1432E4] + encounter/dispatcher CODE with an inline data island @0x14DE88 + outgoing fn straddler func_00150550; 89 code + 86 data; adversarial 1 fix — hidden code at 0x145210; both tables + string pool decoded to JSON+MD; chunk 20 done)
 - `docs/dossiers/lib-chunk19-131000-141000.md` (80-part chunk-19: MIXED — encounter/dispatcher CODE [incl. the neutralEncounterDispatcher @0x13C068, named func_0013C060] + a trailing DATA region [bit-LUT + 0x801E pointer tables + fixed-stride record/script table + packed-byte tail straddling into chunk 20]; 64 code + 16 data; adversarial 0 disproofs — data-hunter refuted the parent "combat code in the gap" linear-map fallacy; chunk 19 done)
 - `docs/dossiers/lib-chunk18-121000-131000.md` (95-part chunk-18: ALL CODE — FP-heavy scenario/combat code; incoming straddler-tail func_00120FC4_chunk18tail + ~93 functions [8 preamble-orphans, 23 frameless leaves] + outgoing straddler-head func_00130E60 into chunk 19; 0 data; adversarial 1 fix (missed frameless leaf 0x12ECDC); parent near-new territory, runtime band 0x801D; chunk 18 done)
 - `docs/dossiers/lib-chunk17-111000-121000.md` (66-part chunk-17: ALL CODE — char-data/encounter code; incoming straddler-tail func_00110160_chunk17tail + ~64 functions [23 preamble-orphans, 4 frameless leaves] + outgoing straddler-head func_00120FC4 into chunk 18; 0 data; adversarial 0 disproofs; parent lead only 0x115440 bitfield helpers; chunk 17 done)
@@ -445,23 +482,25 @@ the full quick index. The newest dossiers are:
 
 ## Next Frontier
 
-Chunks 0–19 (`0x00001000..0x00141000`) are fully source-owned as named code/data
-parts (chunk 15: 134 code + 19 data, MIXED — floats/display-list data + the OB64
-opening-narration rodata; chunk 16: 72 code + 23 data, MIXED — leading scenario record/
-pointer/float64 data + the neutral-encounter code path; chunk 17: 66 code + 0 data, ALL
-CODE — char-data/encounter code; chunk 18: 95 code + 0 data, ALL CODE — FP-heavy scenario/
-combat code; chunk 19: 64 code + 16 data, MIXED — encounter/dispatcher code + a trailing
-scenario data region with an outgoing data straddler). The next frontier is **`0x00141000`
-(chunk 20)**. Coverage `0x1000..0x141000` = 1,310,720 B = 46.0030% of the 2,849,204-byte
-executable extent (code-only ≈ 1,103,712 B = 38.7376%).
+Chunks 0–20 (`0x00001000..0x00151000`) are fully source-owned as named code/data
+parts (chunk 16: 72 code + 23 data, MIXED — leading scenario record/pointer/float64 data +
+the neutral-encounter code path; chunk 17: 66 code + 0 data, ALL CODE — char-data/encounter
+code; chunk 18: 95 code + 0 data, ALL CODE — FP-heavy scenario/combat code; chunk 19: 64
+code + 16 data, MIXED — encounter/dispatcher code + a trailing scenario data region;
+chunk 20: 89 code + 86 data, MIXED — scenario data tables [neutral_encounter 40×20,
+creature_drop 36×8] + a 125-string game-text pool + encounter/dispatcher code). The next
+frontier is **`0x00151000` (chunk 21)**. Coverage `0x1000..0x151000` = 1,376,256 B =
+48.3032% of the 2,849,204-byte executable extent (code-only ≈ 1,148,920 B = 40.3242%).
 
-FIRST: continue the OUTGOING DATA straddler from chunk 19. `data_00140EA0_chunk19head`
-`[0x140EA0,0x141000)` is a packed-byte structure (values ≤0x0C, no terminator) continuing
-into chunk 20. Chunk 20's first file is the tail `data_00141000_chunk20tail`; content-scan
-for its end. The documented `neutral_encounter_table` (0x141ED0, 40×20 B) and
-`creature_drop_table` (0x142258, 36×8 B) are early in chunk 20.
+FIRST: continue the OUTGOING FUNCTION straddler from chunk 20. `func_00150550`
+`[0x150550,0x151000)` (prologue `addiu $sp,-0x40` @0x150550, NO `jr $ra` in range) continues
+to `0x15105C`. Chunk 21's first file is the tail `func_00150550_chunk21tail`
+`[0x151000,0x15105C)`. Chunk 21 is MIXED: code `[0x15105C,0x15FBF0)` (incl. the
+`classLookup_full` lead @0x1591FC, named conservatively `func_001591FC`) + a trailing
+high-entropy DATA region `[0x15FBF0,0x161000)` (0 prologues/returns confirmed; possibly
+compressed) with an outgoing data straddler into chunk 22.
 
-Then classify chunk 20's code/data mix. `plan_chunk`
+Then classify chunk 21's code/data mix. `plan_chunk`
 (+`dump_function_context`) seeds parent-detected code; use `scan_functions` for
 parent-undetected sub-regions; data-classification swarm for any data regions. Pipeline
 tools: `scan_functions` or `plan_chunk`/`slice_chunk --disasm`/`integrate_chunk` (context
@@ -469,7 +508,7 @@ optional)/`check_splits`/`check_boundaries` + analysis + adversarial swarms (Wor
 agent per slice/region). Default **conservative `func_*`**.
 
 There are now two active tracks. The library source-ownership track continues at
-`0x141000` (chunk 20) as above. The full-ROM coverage track (opened 2026-06-21) next refines
+`0x151000` (chunk 21) as above. The full-ROM coverage track (opened 2026-06-21) next refines
 the exact code/data boundary near `0x002B89B4` and reclassifies the non-code tail
 `0x002B89B4..0x0063676C` from `original_mips` to a data source form, shrinking the
 configured code region to the executable extent while keeping the exact rebuild

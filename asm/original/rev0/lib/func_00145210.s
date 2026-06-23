@@ -1,0 +1,39 @@
+/*
+ * Original Rev 0 MIPS reference split.
+ * Parent source: asm/original/rev0/code_00141000_00151000.s
+ * z64 range: 0x00145210..0x00145280 exclusive
+ * Decode comments are aids, not proof of semantic function boundaries.
+ */
+.set noat
+.set noreorder
+.text
+
+/* FRAMELESS-LEAF recovered [adversarial: was mis-classified as data_00145210]. Bounded table-scan loop: lui $v0,0x8020 / lw $v0,-0x30C0($v0) over runtime table, sltiu bound 0x28(40), back-branch; j 0x801F4098 overlay tail-jumps internal. Ends jr $ra@0x145278 + delay move $v0,$a2@0x14527C. Entry 0x145210 after 3 alignment nops following the rodata string at 0x1451E0. */
+/* 0x00145210 0x801B4E10 0x10A00012 */ .word 0x10A00012 # beq $a1, $zero, 0x801B4E5C
+/* 0x00145214 0x801B4E14 0x2406FFFF */ .word 0x2406FFFF # addiu $a2, $zero, -0x1
+/* 0x00145218 0x801B4E18 0x00002821 */ .word 0x00002821 # move $a1, $zero
+/* 0x0014521C 0x801B4E1C 0x00A01821 */ .word 0x00A01821 # move $v1, $a1
+/* 0x00145220 0x801B4E20 0x3C028020 */ .word 0x3C028020 # lui $v0, 0x8020
+/* 0x00145224 0x801B4E24 0x00431021 */ .word 0x00431021 # addu $v0, $v0, $v1
+/* 0x00145228 0x801B4E28 0x8C42CF40 */ .word 0x8C42CF40 # lw $v0, -0x30C0($v0)
+/* 0x0014522C 0x801B4E2C 0x10440007 */ .word 0x10440007 # beq $v0, $a0, 0x801B4E4C
+/* 0x00145230 0x801B4E30 0x00000000 */ .word 0x00000000 # nop
+/* 0x00145234 0x801B4E34 0x24650008 */ .word 0x24650008 # addiu $a1, $v1, 0x8
+/* 0x00145238 0x801B4E38 0x2CA20028 */ .word 0x2CA20028 # sltiu $v0, $a1, 0x28
+/* 0x0014523C 0x801B4E3C 0x1440FFF8 */ .word 0x1440FFF8 # bne $v0, $zero, 0x801B4E20
+/* 0x00145240 0x801B4E40 0x00A01821 */ .word 0x00A01821 # move $v1, $a1
+/* 0x00145244 0x801B4E44 0x0807D026 */ .word 0x0807D026 # j 0x801F4098
+/* 0x00145248 0x801B4E48 0x00000000 */ .word 0x00000000 # nop
+/* 0x0014524C 0x801B4E4C 0x3C068020 */ .word 0x3C068020 # lui $a2, 0x8020
+/* 0x00145250 0x801B4E50 0x00C53021 */ .word 0x00C53021 # addu $a2, $a2, $a1
+/* 0x00145254 0x801B4E54 0x0807D026 */ .word 0x0807D026 # j 0x801F4098
+/* 0x00145258 0x801B4E58 0x8CC6CF44 */ .word 0x8CC6CF44 # lw $a2, -0x30BC($a2)
+/* 0x0014525C 0x801B4E5C 0x3C028020 */ .word 0x3C028020 # lui $v0, 0x8020
+/* 0x00145260 0x801B4E60 0x00441021 */ .word 0x00441021 # addu $v0, $v0, $a0
+/* 0x00145264 0x801B4E64 0x9042CE94 */ .word 0x9042CE94 # lbu $v0, -0x316C($v0)
+/* 0x00145268 0x801B4E68 0x00021080 */ .word 0x00021080 # sll $v0, $v0, 2
+/* 0x0014526C 0x801B4E6C 0x3C068020 */ .word 0x3C068020 # lui $a2, 0x8020
+/* 0x00145270 0x801B4E70 0x00C23021 */ .word 0x00C23021 # addu $a2, $a2, $v0
+/* 0x00145274 0x801B4E74 0x8CC6CD50 */ .word 0x8CC6CD50 # lw $a2, -0x32B0($a2)
+/* 0x00145278 0x801B4E78 0x03E00008 */ .word 0x03E00008 # jr $ra
+/* 0x0014527C 0x801B4E7C 0x00C01021 */ .word 0x00C01021 # move $v0, $a2

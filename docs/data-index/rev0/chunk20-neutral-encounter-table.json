@@ -1,0 +1,2657 @@
+{
+  "name": "neutral_encounter_table",
+  "rangeZ64": [
+    "0x00141ED0",
+    "0x00142200"
+  ],
+  "totalBytes": 816,
+  "rowCount": 40,
+  "rowStride": "0x14",
+  "layout": "4-byte leading zero pad; 40 rows x 20 bytes (rowFormula ROM = 0x141ED0 + 4 + (index-1)*20, rows end 0x1421F4); 12 trailing bytes [0x1421F4,0x142200) (NOT pure pad: 0x1421F8 = 0x4C504144 \"LPAD\" marker + 0x00004340). Each row = 10 terrain-indexed 2-byte slots; slot = [u8 classA, u8 classB]: classA==classB -> single creature, A!=B -> 50/50 random, [00 00] -> empty.",
+  "confidence": "HIGH (docs/neutral-encounters.md + editor/parsers.js + table_map.json size 816; byte-verified)",
+  "runtimeRamCopy": "0x801ED790 (scenario state; overlay-relocated, NOT a linear map of the ROM addr)",
+  "rawOwner": "asm/original/rev0/lib/<table part covering 0x141ED0> (byte-exact; this is a companion decode)",
+  "notes": "Slot->terrain mapping per docs; class IDs are 1-based game class IDs. The superseded 51x16B model is WRONG.",
+  "rows": [
+    {
+      "index": 1,
+      "romOffset": "0x00141ED4",
+      "slots": [
+        {
+          "terrain": "Plains/Roads",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Forest",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Hills",
+          "classA": "0x45",
+          "classB": "0x45",
+          "kind": "single"
+        },
+        {
+          "terrain": "Mountains",
+          "classA": "0x38",
+          "classB": "0x38",
+          "kind": "single"
+        },
+        {
+          "terrain": "Sea/Water",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Sky/Air",
+          "classA": "0x4E",
+          "classB": "0x4E",
+          "kind": "single"
+        },
+        {
+          "terrain": "Wasteland",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Town/Castle",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Swamp",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Snowy Highlands",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "romOffset": "0x00141EE8",
+      "slots": [
+        {
+          "terrain": "Plains/Roads",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Forest",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Hills",
+          "classA": "0x38",
+          "classB": "0x38",
+          "kind": "single"
+        },
+        {
+          "terrain": "Mountains",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Sea/Water",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Sky/Air",
+          "classA": "0x4E",
+          "classB": "0x4E",
+          "kind": "single"
+        },
+        {
+          "terrain": "Wasteland",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Town/Castle",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Swamp",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Snowy Highlands",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "romOffset": "0x00141EFC",
+      "slots": [
+        {
+          "terrain": "Plains/Roads",
+          "classA": "0x27",
+          "classB": "0x27",
+          "kind": "single"
+        },
+        {
+          "terrain": "Forest",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Hills",
+          "classA": "0x4B",
+          "classB": "0x4B",
+          "kind": "single"
+        },
+        {
+          "terrain": "Mountains",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Sea/Water",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Sky/Air",
+          "classA": "0x47",
+          "classB": "0x47",
+          "kind": "single"
+        },
+        {
+          "terrain": "Wasteland",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Town/Castle",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Swamp",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Snowy Highlands",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "romOffset": "0x00141F10",
+      "slots": [
+        {
+          "terrain": "Plains/Roads",
+          "classA": "0x27",
+          "classB": "0x27",
+          "kind": "single"
+        },
+        {
+          "terrain": "Forest",
+          "classA": "0x33",
+          "classB": "0x33",
+          "kind": "single"
+        },
+        {
+          "terrain": "Hills",
+          "classA": "0x4E",
+          "classB": "0x4E",
+          "kind": "single"
+        },
+        {
+          "terrain": "Mountains",
+          "classA": "0x34",
+          "classB": "0x34",
+          "kind": "single"
+        },
+        {
+          "terrain": "Sea/Water",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Sky/Air",
+          "classA": "0x45",
+          "classB": "0x45",
+          "kind": "single"
+        },
+        {
+          "terrain": "Wasteland",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Town/Castle",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Swamp",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Snowy Highlands",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "romOffset": "0x00141F24",
+      "slots": [
+        {
+          "terrain": "Plains/Roads",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Forest",
+          "classA": "0x38",
+          "classB": "0x38",
+          "kind": "single"
+        },
+        {
+          "terrain": "Hills",
+          "classA": "0x4B",
+          "classB": "0x4B",
+          "kind": "single"
+        },
+        {
+          "terrain": "Mountains",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Sea/Water",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Sky/Air",
+          "classA": "0x47",
+          "classB": "0x47",
+          "kind": "single"
+        },
+        {
+          "terrain": "Wasteland",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Town/Castle",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Swamp",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Snowy Highlands",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "romOffset": "0x00141F38",
+      "slots": [
+        {
+          "terrain": "Plains/Roads",
+          "classA": "0x27",
+          "classB": "0x27",
+          "kind": "single"
+        },
+        {
+          "terrain": "Forest",
+          "classA": "0x34",
+          "classB": "0x34",
+          "kind": "single"
+        },
+        {
+          "terrain": "Hills",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Mountains",
+          "classA": "0x2F",
+          "classB": "0x30",
+          "kind": "pair-5050"
+        },
+        {
+          "terrain": "Sea/Water",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Sky/Air",
+          "classA": "0x45",
+          "classB": "0x45",
+          "kind": "single"
+        },
+        {
+          "terrain": "Wasteland",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Town/Castle",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Swamp",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Snowy Highlands",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "romOffset": "0x00141F4C",
+      "slots": [
+        {
+          "terrain": "Plains/Roads",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Forest",
+          "classA": "0x38",
+          "classB": "0x38",
+          "kind": "single"
+        },
+        {
+          "terrain": "Hills",
+          "classA": "0x47",
+          "classB": "0x47",
+          "kind": "single"
+        },
+        {
+          "terrain": "Mountains",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Sea/Water",
+          "classA": "0x3C",
+          "classB": "0x3C",
+          "kind": "single"
+        },
+        {
+          "terrain": "Sky/Air",
+          "classA": "0x4E",
+          "classB": "0x4E",
+          "kind": "single"
+        },
+        {
+          "terrain": "Wasteland",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Town/Castle",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Swamp",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Snowy Highlands",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "romOffset": "0x00141F60",
+      "slots": [
+        {
+          "terrain": "Plains/Roads",
+          "classA": "0x27",
+          "classB": "0x27",
+          "kind": "single"
+        },
+        {
+          "terrain": "Forest",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Hills",
+          "classA": "0x38",
+          "classB": "0x39",
+          "kind": "pair-5050"
+        },
+        {
+          "terrain": "Mountains",
+          "classA": "0x2F",
+          "classB": "0x30",
+          "kind": "pair-5050"
+        },
+        {
+          "terrain": "Sea/Water",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Sky/Air",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Wasteland",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Town/Castle",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Swamp",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Snowy Highlands",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        }
+      ]
+    },
+    {
+      "index": 9,
+      "romOffset": "0x00141F74",
+      "slots": [
+        {
+          "terrain": "Plains/Roads",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Forest",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Hills",
+          "classA": "0x4B",
+          "classB": "0x4B",
+          "kind": "single"
+        },
+        {
+          "terrain": "Mountains",
+          "classA": "0x3B",
+          "classB": "0x3B",
+          "kind": "single"
+        },
+        {
+          "terrain": "Sea/Water",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Sky/Air",
+          "classA": "0x38",
+          "classB": "0x38",
+          "kind": "single"
+        },
+        {
+          "terrain": "Wasteland",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Town/Castle",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Swamp",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Snowy Highlands",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        }
+      ]
+    },
+    {
+      "index": 10,
+      "romOffset": "0x00141F88",
+      "slots": [
+        {
+          "terrain": "Plains/Roads",
+          "classA": "0x27",
+          "classB": "0x27",
+          "kind": "single"
+        },
+        {
+          "terrain": "Forest",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Hills",
+          "classA": "0x4B",
+          "classB": "0x3D",
+          "kind": "pair-5050"
+        },
+        {
+          "terrain": "Mountains",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Sea/Water",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Sky/Air",
+          "classA": "0x47",
+          "classB": "0x47",
+          "kind": "single"
+        },
+        {
+          "terrain": "Wasteland",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Town/Castle",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Swamp",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Snowy Highlands",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        }
+      ]
+    },
+    {
+      "index": 11,
+      "romOffset": "0x00141F9C",
+      "slots": [
+        {
+          "terrain": "Plains/Roads",
+          "classA": "0x27",
+          "classB": "0x27",
+          "kind": "single"
+        },
+        {
+          "terrain": "Forest",
+          "classA": "0x33",
+          "classB": "0x33",
+          "kind": "single"
+        },
+        {
+          "terrain": "Hills",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Mountains",
+          "classA": "0x34",
+          "classB": "0x3E",
+          "kind": "pair-5050"
+        },
+        {
+          "terrain": "Sea/Water",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Sky/Air",
+          "classA": "0x45",
+          "classB": "0x45",
+          "kind": "single"
+        },
+        {
+          "terrain": "Wasteland",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Town/Castle",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Swamp",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Snowy Highlands",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        }
+      ]
+    },
+    {
+      "index": 12,
+      "romOffset": "0x00141FB0",
+      "slots": [
+        {
+          "terrain": "Plains/Roads",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Forest",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Hills",
+          "classA": "0x4B",
+          "classB": "0x4B",
+          "kind": "single"
+        },
+        {
+          "terrain": "Mountains",
+          "classA": "0x32",
+          "classB": "0x32",
+          "kind": "single"
+        },
+        {
+          "terrain": "Sea/Water",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Sky/Air",
+          "classA": "0x3D",
+          "classB": "0x3D",
+          "kind": "single"
+        },
+        {
+          "terrain": "Wasteland",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Town/Castle",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Swamp",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Snowy Highlands",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        }
+      ]
+    },
+    {
+      "index": 13,
+      "romOffset": "0x00141FC4",
+      "slots": [
+        {
+          "terrain": "Plains/Roads",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Forest",
+          "classA": "0x33",
+          "classB": "0x33",
+          "kind": "single"
+        },
+        {
+          "terrain": "Hills",
+          "classA": "0x39",
+          "classB": "0x3A",
+          "kind": "pair-5050"
+        },
+        {
+          "terrain": "Mountains",
+          "classA": "0x2F",
+          "classB": "0x30",
+          "kind": "pair-5050"
+        },
+        {
+          "terrain": "Sea/Water",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Sky/Air",
+          "classA": "0x3C",
+          "classB": "0x3C",
+          "kind": "single"
+        },
+        {
+          "terrain": "Wasteland",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Town/Castle",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Swamp",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Snowy Highlands",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        }
+      ]
+    },
+    {
+      "index": 14,
+      "romOffset": "0x00141FD8",
+      "slots": [
+        {
+          "terrain": "Plains/Roads",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Forest",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Hills",
+          "classA": "0x4F",
+          "classB": "0x4F",
+          "kind": "single"
+        },
+        {
+          "terrain": "Mountains",
+          "classA": "0x49",
+          "classB": "0x49",
+          "kind": "single"
+        },
+        {
+          "terrain": "Sea/Water",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Sky/Air",
+          "classA": "0x3A",
+          "classB": "0x3A",
+          "kind": "single"
+        },
+        {
+          "terrain": "Wasteland",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Town/Castle",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Swamp",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Snowy Highlands",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        }
+      ]
+    },
+    {
+      "index": 15,
+      "romOffset": "0x00141FEC",
+      "slots": [
+        {
+          "terrain": "Plains/Roads",
+          "classA": "0x29",
+          "classB": "0x29",
+          "kind": "single"
+        },
+        {
+          "terrain": "Forest",
+          "classA": "0x33",
+          "classB": "0x33",
+          "kind": "single"
+        },
+        {
+          "terrain": "Hills",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Mountains",
+          "classA": "0x34",
+          "classB": "0x34",
+          "kind": "single"
+        },
+        {
+          "terrain": "Sea/Water",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Sky/Air",
+          "classA": "0x47",
+          "classB": "0x47",
+          "kind": "single"
+        },
+        {
+          "terrain": "Wasteland",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Town/Castle",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Swamp",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Snowy Highlands",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        }
+      ]
+    },
+    {
+      "index": 16,
+      "romOffset": "0x00142000",
+      "slots": [
+        {
+          "terrain": "Plains/Roads",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Forest",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Hills",
+          "classA": "0x4F",
+          "classB": "0x4F",
+          "kind": "single"
+        },
+        {
+          "terrain": "Mountains",
+          "classA": "0x3B",
+          "classB": "0x3B",
+          "kind": "single"
+        },
+        {
+          "terrain": "Sea/Water",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Sky/Air",
+          "classA": "0x3A",
+          "classB": "0x3A",
+          "kind": "single"
+        },
+        {
+          "terrain": "Wasteland",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Town/Castle",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Swamp",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Snowy Highlands",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        }
+      ]
+    },
+    {
+      "index": 17,
+      "romOffset": "0x00142014",
+      "slots": [
+        {
+          "terrain": "Plains/Roads",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Forest",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Hills",
+          "classA": "0x39",
+          "classB": "0x39",
+          "kind": "single"
+        },
+        {
+          "terrain": "Mountains",
+          "classA": "0x35",
+          "classB": "0x3B",
+          "kind": "pair-5050"
+        },
+        {
+          "terrain": "Sea/Water",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Sky/Air",
+          "classA": "0x49",
+          "classB": "0x49",
+          "kind": "single"
+        },
+        {
+          "terrain": "Wasteland",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Town/Castle",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Swamp",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Snowy Highlands",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        }
+      ]
+    },
+    {
+      "index": 18,
+      "romOffset": "0x00142028",
+      "slots": [
+        {
+          "terrain": "Plains/Roads",
+          "classA": "0x29",
+          "classB": "0x29",
+          "kind": "single"
+        },
+        {
+          "terrain": "Forest",
+          "classA": "0x28",
+          "classB": "0x28",
+          "kind": "single"
+        },
+        {
+          "terrain": "Hills",
+          "classA": "0x4F",
+          "classB": "0x4F",
+          "kind": "single"
+        },
+        {
+          "terrain": "Mountains",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Sea/Water",
+          "classA": "0x3C",
+          "classB": "0x3C",
+          "kind": "single"
+        },
+        {
+          "terrain": "Sky/Air",
+          "classA": "0x46",
+          "classB": "0x46",
+          "kind": "single"
+        },
+        {
+          "terrain": "Wasteland",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Town/Castle",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Swamp",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Snowy Highlands",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        }
+      ]
+    },
+    {
+      "index": 19,
+      "romOffset": "0x0014203C",
+      "slots": [
+        {
+          "terrain": "Plains/Roads",
+          "classA": "0x29",
+          "classB": "0x29",
+          "kind": "single"
+        },
+        {
+          "terrain": "Forest",
+          "classA": "0x28",
+          "classB": "0x28",
+          "kind": "single"
+        },
+        {
+          "terrain": "Hills",
+          "classA": "0x3E",
+          "classB": "0x3E",
+          "kind": "single"
+        },
+        {
+          "terrain": "Mountains",
+          "classA": "0x2F",
+          "classB": "0x30",
+          "kind": "pair-5050"
+        },
+        {
+          "terrain": "Sea/Water",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Sky/Air",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Wasteland",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Town/Castle",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Swamp",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Snowy Highlands",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        }
+      ]
+    },
+    {
+      "index": 20,
+      "romOffset": "0x00142050",
+      "slots": [
+        {
+          "terrain": "Plains/Roads",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Forest",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Hills",
+          "classA": "0x39",
+          "classB": "0x39",
+          "kind": "single"
+        },
+        {
+          "terrain": "Mountains",
+          "classA": "0x3C",
+          "classB": "0x3C",
+          "kind": "single"
+        },
+        {
+          "terrain": "Sea/Water",
+          "classA": "0x3C",
+          "classB": "0x3C",
+          "kind": "single"
+        },
+        {
+          "terrain": "Sky/Air",
+          "classA": "0x4C",
+          "classB": "0x4C",
+          "kind": "single"
+        },
+        {
+          "terrain": "Wasteland",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Town/Castle",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Swamp",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Snowy Highlands",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        }
+      ]
+    },
+    {
+      "index": 21,
+      "romOffset": "0x00142064",
+      "slots": [
+        {
+          "terrain": "Plains/Roads",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Forest",
+          "classA": "0x33",
+          "classB": "0x33",
+          "kind": "single"
+        },
+        {
+          "terrain": "Hills",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Mountains",
+          "classA": "0x34",
+          "classB": "0x3B",
+          "kind": "pair-5050"
+        },
+        {
+          "terrain": "Sea/Water",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Sky/Air",
+          "classA": "0x3A",
+          "classB": "0x3A",
+          "kind": "single"
+        },
+        {
+          "terrain": "Wasteland",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Town/Castle",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Swamp",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Snowy Highlands",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        }
+      ]
+    },
+    {
+      "index": 22,
+      "romOffset": "0x00142078",
+      "slots": [
+        {
+          "terrain": "Plains/Roads",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Forest",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Hills",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Mountains",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Sea/Water",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Sky/Air",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Wasteland",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Town/Castle",
+          "classA": "0x3E",
+          "classB": "0x3E",
+          "kind": "single"
+        },
+        {
+          "terrain": "Swamp",
+          "classA": "0x2F",
+          "classB": "0x2F",
+          "kind": "single"
+        },
+        {
+          "terrain": "Snowy Highlands",
+          "classA": "0x3D",
+          "classB": "0x3D",
+          "kind": "single"
+        }
+      ]
+    },
+    {
+      "index": 23,
+      "romOffset": "0x0014208C",
+      "slots": [
+        {
+          "terrain": "Plains/Roads",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Forest",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Hills",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Mountains",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Sea/Water",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Sky/Air",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Wasteland",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Town/Castle",
+          "classA": "0x39",
+          "classB": "0x39",
+          "kind": "single"
+        },
+        {
+          "terrain": "Swamp",
+          "classA": "0x3B",
+          "classB": "0x3B",
+          "kind": "single"
+        },
+        {
+          "terrain": "Snowy Highlands",
+          "classA": "0x3D",
+          "classB": "0x3D",
+          "kind": "single"
+        }
+      ]
+    },
+    {
+      "index": 24,
+      "romOffset": "0x001420A0",
+      "slots": [
+        {
+          "terrain": "Plains/Roads",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Forest",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Hills",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Mountains",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Sea/Water",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Sky/Air",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Wasteland",
+          "classA": "0x48",
+          "classB": "0x48",
+          "kind": "single"
+        },
+        {
+          "terrain": "Town/Castle",
+          "classA": "0x39",
+          "classB": "0x39",
+          "kind": "single"
+        },
+        {
+          "terrain": "Swamp",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Snowy Highlands",
+          "classA": "0x3D",
+          "classB": "0x3D",
+          "kind": "single"
+        }
+      ]
+    },
+    {
+      "index": 25,
+      "romOffset": "0x001420B4",
+      "slots": [
+        {
+          "terrain": "Plains/Roads",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Forest",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Hills",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Mountains",
+          "classA": "0x32",
+          "classB": "0x35",
+          "kind": "pair-5050"
+        },
+        {
+          "terrain": "Sea/Water",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Sky/Air",
+          "classA": "0x4F",
+          "classB": "0x3A",
+          "kind": "pair-5050"
+        },
+        {
+          "terrain": "Wasteland",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Town/Castle",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Swamp",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Snowy Highlands",
+          "classA": "0x50",
+          "classB": "0x50",
+          "kind": "single"
+        }
+      ]
+    },
+    {
+      "index": 26,
+      "romOffset": "0x001420C8",
+      "slots": [
+        {
+          "terrain": "Plains/Roads",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Forest",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Hills",
+          "classA": "0x46",
+          "classB": "0x46",
+          "kind": "single"
+        },
+        {
+          "terrain": "Mountains",
+          "classA": "0x3B",
+          "classB": "0x3B",
+          "kind": "single"
+        },
+        {
+          "terrain": "Sea/Water",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Sky/Air",
+          "classA": "0x48",
+          "classB": "0x48",
+          "kind": "single"
+        },
+        {
+          "terrain": "Wasteland",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Town/Castle",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Swamp",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Snowy Highlands",
+          "classA": "0x49",
+          "classB": "0x49",
+          "kind": "single"
+        }
+      ]
+    },
+    {
+      "index": 27,
+      "romOffset": "0x001420DC",
+      "slots": [
+        {
+          "terrain": "Plains/Roads",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Forest",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Hills",
+          "classA": "0x46",
+          "classB": "0x46",
+          "kind": "single"
+        },
+        {
+          "terrain": "Mountains",
+          "classA": "0x3B",
+          "classB": "0x3B",
+          "kind": "single"
+        },
+        {
+          "terrain": "Sea/Water",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Sky/Air",
+          "classA": "0x48",
+          "classB": "0x48",
+          "kind": "single"
+        },
+        {
+          "terrain": "Wasteland",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Town/Castle",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Swamp",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Snowy Highlands",
+          "classA": "0x49",
+          "classB": "0x49",
+          "kind": "single"
+        }
+      ]
+    },
+    {
+      "index": 28,
+      "romOffset": "0x001420F0",
+      "slots": [
+        {
+          "terrain": "Plains/Roads",
+          "classA": "0x28",
+          "classB": "0x28",
+          "kind": "single"
+        },
+        {
+          "terrain": "Forest",
+          "classA": "0x46",
+          "classB": "0x46",
+          "kind": "single"
+        },
+        {
+          "terrain": "Hills",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Mountains",
+          "classA": "0x3E",
+          "classB": "0x3E",
+          "kind": "single"
+        },
+        {
+          "terrain": "Sea/Water",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Sky/Air",
+          "classA": "0x46",
+          "classB": "0x46",
+          "kind": "single"
+        },
+        {
+          "terrain": "Wasteland",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Town/Castle",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Swamp",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Snowy Highlands",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        }
+      ]
+    },
+    {
+      "index": 29,
+      "romOffset": "0x00142104",
+      "slots": [
+        {
+          "terrain": "Plains/Roads",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Forest",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Hills",
+          "classA": "0x39",
+          "classB": "0x39",
+          "kind": "single"
+        },
+        {
+          "terrain": "Mountains",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Sea/Water",
+          "classA": "0x3C",
+          "classB": "0x3C",
+          "kind": "single"
+        },
+        {
+          "terrain": "Sky/Air",
+          "classA": "0x4C",
+          "classB": "0x4C",
+          "kind": "single"
+        },
+        {
+          "terrain": "Wasteland",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Town/Castle",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Swamp",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Snowy Highlands",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        }
+      ]
+    },
+    {
+      "index": 30,
+      "romOffset": "0x00142118",
+      "slots": [
+        {
+          "terrain": "Plains/Roads",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Forest",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Hills",
+          "classA": "0x48",
+          "classB": "0x48",
+          "kind": "single"
+        },
+        {
+          "terrain": "Mountains",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Sea/Water",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Sky/Air",
+          "classA": "0x50",
+          "classB": "0x49",
+          "kind": "pair-5050"
+        },
+        {
+          "terrain": "Wasteland",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Town/Castle",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Swamp",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Snowy Highlands",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        }
+      ]
+    },
+    {
+      "index": 31,
+      "romOffset": "0x0014212C",
+      "slots": [
+        {
+          "terrain": "Plains/Roads",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Forest",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Hills",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Mountains",
+          "classA": "0x35",
+          "classB": "0x3C",
+          "kind": "pair-5050"
+        },
+        {
+          "terrain": "Sea/Water",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Sky/Air",
+          "classA": "0x3A",
+          "classB": "0x3A",
+          "kind": "single"
+        },
+        {
+          "terrain": "Wasteland",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Town/Castle",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Swamp",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Snowy Highlands",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        }
+      ]
+    },
+    {
+      "index": 32,
+      "romOffset": "0x00142140",
+      "slots": [
+        {
+          "terrain": "Plains/Roads",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Forest",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Hills",
+          "classA": "0x4C",
+          "classB": "0x4C",
+          "kind": "single"
+        },
+        {
+          "terrain": "Mountains",
+          "classA": "0x3E",
+          "classB": "0x3E",
+          "kind": "single"
+        },
+        {
+          "terrain": "Sea/Water",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Sky/Air",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Wasteland",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Town/Castle",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Swamp",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Snowy Highlands",
+          "classA": "0x3D",
+          "classB": "0x3D",
+          "kind": "single"
+        }
+      ]
+    },
+    {
+      "index": 33,
+      "romOffset": "0x00142154",
+      "slots": [
+        {
+          "terrain": "Plains/Roads",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Forest",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Hills",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Mountains",
+          "classA": "0x32",
+          "classB": "0x35",
+          "kind": "pair-5050"
+        },
+        {
+          "terrain": "Sea/Water",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Sky/Air",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Wasteland",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Town/Castle",
+          "classA": "0x39",
+          "classB": "0x39",
+          "kind": "single"
+        },
+        {
+          "terrain": "Swamp",
+          "classA": "0x31",
+          "classB": "0x31",
+          "kind": "single"
+        },
+        {
+          "terrain": "Snowy Highlands",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        }
+      ]
+    },
+    {
+      "index": 34,
+      "romOffset": "0x00142168",
+      "slots": [
+        {
+          "terrain": "Plains/Roads",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Forest",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Hills",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Mountains",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Sea/Water",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Sky/Air",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Wasteland",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Town/Castle",
+          "classA": "0x50",
+          "classB": "0x50",
+          "kind": "single"
+        },
+        {
+          "terrain": "Swamp",
+          "classA": "0x4A",
+          "classB": "0x4A",
+          "kind": "single"
+        },
+        {
+          "terrain": "Snowy Highlands",
+          "classA": "0x3D",
+          "classB": "0x3D",
+          "kind": "single"
+        }
+      ]
+    },
+    {
+      "index": 35,
+      "romOffset": "0x0014217C",
+      "slots": [
+        {
+          "terrain": "Plains/Roads",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Forest",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Hills",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Mountains",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Sea/Water",
+          "classA": "0x3C",
+          "classB": "0x3C",
+          "kind": "single"
+        },
+        {
+          "terrain": "Sky/Air",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Wasteland",
+          "classA": "0x37",
+          "classB": "0x37",
+          "kind": "single"
+        },
+        {
+          "terrain": "Town/Castle",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Swamp",
+          "classA": "0x3E",
+          "classB": "0x3E",
+          "kind": "single"
+        },
+        {
+          "terrain": "Snowy Highlands",
+          "classA": "0x48",
+          "classB": "0x48",
+          "kind": "single"
+        }
+      ]
+    },
+    {
+      "index": 36,
+      "romOffset": "0x00142190",
+      "slots": [
+        {
+          "terrain": "Plains/Roads",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Forest",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Hills",
+          "classA": "0x39",
+          "classB": "0x39",
+          "kind": "single"
+        },
+        {
+          "terrain": "Mountains",
+          "classA": "0x31",
+          "classB": "0x35",
+          "kind": "pair-5050"
+        },
+        {
+          "terrain": "Sea/Water",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Sky/Air",
+          "classA": "0x46",
+          "classB": "0x4A",
+          "kind": "pair-5050"
+        },
+        {
+          "terrain": "Wasteland",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Town/Castle",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Swamp",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Snowy Highlands",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        }
+      ]
+    },
+    {
+      "index": 37,
+      "romOffset": "0x001421A4",
+      "slots": [
+        {
+          "terrain": "Plains/Roads",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Forest",
+          "classA": "0x29",
+          "classB": "0x29",
+          "kind": "single"
+        },
+        {
+          "terrain": "Hills",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Mountains",
+          "classA": "0x44",
+          "classB": "0x44",
+          "kind": "single"
+        },
+        {
+          "terrain": "Sea/Water",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Sky/Air",
+          "classA": "0x3A",
+          "classB": "0x3A",
+          "kind": "single"
+        },
+        {
+          "terrain": "Wasteland",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Town/Castle",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Swamp",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Snowy Highlands",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        }
+      ]
+    },
+    {
+      "index": 38,
+      "romOffset": "0x001421B8",
+      "slots": [
+        {
+          "terrain": "Plains/Roads",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Forest",
+          "classA": "0x28",
+          "classB": "0x28",
+          "kind": "single"
+        },
+        {
+          "terrain": "Hills",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Mountains",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Sea/Water",
+          "classA": "0x42",
+          "classB": "0x42",
+          "kind": "single"
+        },
+        {
+          "terrain": "Sky/Air",
+          "classA": "0x46",
+          "classB": "0x46",
+          "kind": "single"
+        },
+        {
+          "terrain": "Wasteland",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Town/Castle",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Swamp",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Snowy Highlands",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        }
+      ]
+    },
+    {
+      "index": 39,
+      "romOffset": "0x001421CC",
+      "slots": [
+        {
+          "terrain": "Plains/Roads",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Forest",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Hills",
+          "classA": "0x49",
+          "classB": "0x49",
+          "kind": "single"
+        },
+        {
+          "terrain": "Mountains",
+          "classA": "0x41",
+          "classB": "0x31",
+          "kind": "pair-5050"
+        },
+        {
+          "terrain": "Sea/Water",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Sky/Air",
+          "classA": "0x4A",
+          "classB": "0x48",
+          "kind": "pair-5050"
+        },
+        {
+          "terrain": "Wasteland",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Town/Castle",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Swamp",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Snowy Highlands",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        }
+      ]
+    },
+    {
+      "index": 40,
+      "romOffset": "0x001421E0",
+      "slots": [
+        {
+          "terrain": "Plains/Roads",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Forest",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Hills",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Mountains",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Sea/Water",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Sky/Air",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Wasteland",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Town/Castle",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Swamp",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        },
+        {
+          "terrain": "Snowy Highlands",
+          "classA": "0x00",
+          "classB": "0x00",
+          "kind": "empty"
+        }
+      ]
+    }
+  ]
+}

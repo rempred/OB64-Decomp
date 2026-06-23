@@ -1,0 +1,30 @@
+/*
+ * Original Rev 0 MIPS reference split.
+ * Parent source: asm/original/rev0/code_00141000_00151000.s
+ * z64 range: 0x001428A8..0x001428F4 exclusive
+ * Decode comments are aids, not proof of semantic function boundaries.
+ */
+.set noat
+.set noreorder
+.text
+
+/* Data region (not executable host code): 19 RAM pointers in the 0x801B6834..0x801B6898 band (0x801B687C repeated heavily, 0x801B6834, 0x801B6898). Word-stride pointer table. [name-token: table_ptr_801B68xx_b]. */
+/* 0x001428A8 0x801B24A8 0x801B687C */ .word 0x801B687C # lb $k1, 0x687C($zero)
+/* 0x001428AC 0x801B24AC 0x801B6834 */ .word 0x801B6834 # lb $k1, 0x6834($zero)
+/* 0x001428B0 0x801B24B0 0x801B6834 */ .word 0x801B6834 # lb $k1, 0x6834($zero)
+/* 0x001428B4 0x801B24B4 0x801B687C */ .word 0x801B687C # lb $k1, 0x687C($zero)
+/* 0x001428B8 0x801B24B8 0x801B687C */ .word 0x801B687C # lb $k1, 0x687C($zero)
+/* 0x001428BC 0x801B24BC 0x801B687C */ .word 0x801B687C # lb $k1, 0x687C($zero)
+/* 0x001428C0 0x801B24C0 0x801B687C */ .word 0x801B687C # lb $k1, 0x687C($zero)
+/* 0x001428C4 0x801B24C4 0x801B687C */ .word 0x801B687C # lb $k1, 0x687C($zero)
+/* 0x001428C8 0x801B24C8 0x801B684C */ .word 0x801B684C # lb $k1, 0x684C($zero)
+/* 0x001428CC 0x801B24CC 0x801B687C */ .word 0x801B687C # lb $k1, 0x687C($zero)
+/* 0x001428D0 0x801B24D0 0x801B6898 */ .word 0x801B6898 # lb $k1, 0x6898($zero)
+/* 0x001428D4 0x801B24D4 0x801B687C */ .word 0x801B687C # lb $k1, 0x687C($zero)
+/* 0x001428D8 0x801B24D8 0x801B687C */ .word 0x801B687C # lb $k1, 0x687C($zero)
+/* 0x001428DC 0x801B24DC 0x801B6874 */ .word 0x801B6874 # lb $k1, 0x6874($zero)
+/* 0x001428E0 0x801B24E0 0x801B6898 */ .word 0x801B6898 # lb $k1, 0x6898($zero)
+/* 0x001428E4 0x801B24E4 0x801B6898 */ .word 0x801B6898 # lb $k1, 0x6898($zero)
+/* 0x001428E8 0x801B24E8 0x801B6898 */ .word 0x801B6898 # lb $k1, 0x6898($zero)
+/* 0x001428EC 0x801B24EC 0x801B6898 */ .word 0x801B6898 # lb $k1, 0x6898($zero)
+/* 0x001428F0 0x801B24F0 0x801B687C */ .word 0x801B687C # lb $k1, 0x687C($zero)
