@@ -22,6 +22,9 @@ even when the next chunks are expected to be mostly code.
 - `{INCOMING_STRADDLER}`: function or data straddler entering chunk A, or `none`.
 - `{KNOWN_MID_STRADDLER}`: expected chunk A -> chunk B continuation, or `unknown`.
 - `{KNOWN_PARENT_DB_CAVEAT}`: parent DB / overlay caveat for both chunks.
+- `{PATCH_WORKBENCH_TARGETS}`: coordinator-side opportunistic patch-workbench
+  targets from parent evidence, previous review caveats, known patch sites, and
+  unresolved runtime-state requests. Use `none` when empty.
 - `{REQUIRED_REVIEW_DOCS}`: latest review handoff docs for the prior run.
 - `{KNOWN_ISSUES}`: cleanup/review issues to fix first.
 - `{REVIEW_DOC_PATH}`: review handoff doc to create for this run, e.g.
@@ -108,6 +111,7 @@ Use full swarm capabilities. Assign agents/passes for:
 - required reading and current-state reconciliation
 - cleanup/doc consistency fixes
 - parent workspace evidence sweep for current chunk addresses
+- opportunistic patch-workbench metadata harvest when encountered
 - chunk {CHUNK_A_N} code/data classification
 - chunk {CHUNK_A_N} code split review
 - chunk {CHUNK_A_N} data classification/indexing
@@ -158,6 +162,40 @@ Parent workspace evidence sweep:
   contradiction in the relevant chunk dossier and the review handoff. Include
   exact parent repo paths and the reason each artifact did or did not affect
   split boundaries, names, data classification, or control-flow assumptions.
+
+Patch Workbench Targets:
+{PATCH_WORKBENCH_TARGETS}
+
+Patch workbench harvest rules:
+- Source ownership remains the priority. Do not start speculative patch hunts,
+  do not widen the range, and do not delay chunk completion to prove patch
+  behavior.
+- Harvest patch metadata only when it is encountered naturally during parent
+  evidence sweep, source/data classification, data/free-space classification,
+  or review caveats.
+- Static-only findings are `candidate`, `rejected`, or `needs-runtime`, never
+  `proven`. Runtime trace, controlled mutation, or equivalent evidence is
+  required before calling behavior or patch safety proven.
+- If anything useful is found, prefer one run/chunk-scoped machine-readable JSON
+  artifact under `docs\patch-workbench\rev0\`, plus a short dossier/review
+  summary. Suggested top-level fields: `runSlug`, `chunks`, `sourceRange`,
+  `behaviorTags`, `hookSites`, `dataFreeSpace`, `runtimeRequests`, `rejected`,
+  and `provenance`.
+- Behavior tags should include tag/name, confidence, provenance path(s), exact
+  ROM/RAM range, evidence, and unresolved questions.
+- Candidate or rejected hook sites should include status, ROM/RAM address,
+  owning file/function/data span, original words, displaced instructions, likely
+  resume address, delay-slot/prologue/epilogue/branch hazards, overlay/RAM
+  address-space caveats, register/state assumptions, and the reason for the
+  classification.
+- Data/free-space notes should classify padding, caves, tail space, tables, or
+  data as `candidate`, `rejected`, or `needs-runtime`, with ownership, collision
+  risk, loader/tail constraints, and evidence.
+- Runtime-state requests should be precise: required savestate or scenario,
+  watchpoints, registers, overlay mapping, memory ranges, branch/register proof,
+  or mutation needed to prove behavior or patch safety.
+- If no patch-workbench metadata is encountered, say so briefly in the dossier
+  and review handoff. Do not create empty noise.
 
 Known issues to fix first:
 {KNOWN_ISSUES}
@@ -337,6 +375,8 @@ Docs required:
 - `docs\WORKFLOW.md`
 - New `docs\dossiers\lib-chunk{CHUNK_A_N}-{CHUNK_A_RANGE_SLUG}.md`
 - New `docs\dossiers\lib-chunk{CHUNK_B_N}-{CHUNK_B_RANGE_SLUG}.md`
+- New `docs\patch-workbench\rev0\...` artifact(s), only if opportunistic
+  patch-workbench metadata was actually harvested.
 - New review handoff doc for this two-chunk run: `{REVIEW_DOC_PATH}`.
 - Update the previous chunk dossier if an incoming straddler/continuation
   boundary is refined.
@@ -353,6 +393,10 @@ Review handoff requirements:
   parent workspace evidence matches/contradictions, data classification, tooling
   changes, verification, files changed, current frontier, unresolved caveats, and
   reviewer checklist.
+- Include patch-workbench harvests if encountered: behavior tags, hook-site
+  candidates/rejections, original words/displaced instructions/resume addresses,
+  hazards, overlay/RAM caveats, data/free-space notes, runtime-state requests,
+  and artifact paths. If none were encountered, state that explicitly.
 - For any data-dominant range or substantial data span, include total data bytes
   source-owned, parsed bytes, raw-but-classified bytes, undecoded bytes, data
   files added, index files added, known format families found, and exact next
@@ -372,6 +416,8 @@ Verification required before final commit/final:
 - Verify no data files have function/true-entry wording.
 - Verify any new `docs\data-index\rev0\*.json` files parse as valid JSON and
   match the ranges documented in dossiers/review docs.
+- Verify any new `docs\patch-workbench\rev0\*.json` files parse as valid JSON
+  and do not claim static-only findings as proven.
 - Verify no root scratch artifacts are tracked.
 - `node tools/assemble_original_mips.js`
 - `node tools/verify_setup.js`
@@ -399,6 +445,7 @@ Final report must include:
 - Code-only classified byte coverage if mixed data remains significant.
 - Current frontier.
 - Unresolved caveats.
+- Patch-workbench artifacts and unresolved runtime-state requests, if any.
 - Verification commands and results.
 - Review doc path.
 - Recommended next run.

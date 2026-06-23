@@ -16,6 +16,9 @@ For each new event:
    - Tailor `docs/templates/chunk-source-ownership-run-prompt.md` for the next
      two-chunk pass/frontier, including known issues from the review, current
      counts, incoming straddlers/data continuations, and required reading.
+   - Populate `PATCH_WORKBENCH_TARGETS` from parent evidence, previous review
+     caveats, known patch sites, and unresolved runtime-state requests. Keep it
+     as `none` when there are no concrete, source-range-relevant targets.
    - Use desktop control to focus the GUI agent chat identified by
      `payload.agentName` or the configured Claude GUI window.
    - Paste the tailored next-run prompt into that chat and send it.
@@ -36,6 +39,9 @@ For each new event:
    - Tailor `docs/templates/chunk-source-ownership-run-prompt.md` for the next
      two-chunk pass/frontier, including known issues from the review, current
      counts, incoming straddlers/data continuations, and required reading.
+   - Populate `PATCH_WORKBENCH_TARGETS` from parent evidence, previous review
+     caveats, known patch sites, and unresolved runtime-state requests. Keep it
+     as `none` when there are no concrete, source-range-relevant targets.
    - Use desktop control to focus the GUI agent chat identified by
      `payload.agentName` or the configured Claude GUI window.
    - Paste the tailored next-run prompt into that chat and send it.

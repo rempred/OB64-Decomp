@@ -94,6 +94,24 @@ If any data was split:
 - Known unknowns / field semantics not decoded.
 - Whether any data region has MIPS-looking decode comments that should be ignored.
 
+8a. Patch Workbench Harvest
+This section is opportunistic and must not turn the source-ownership run into a
+patch hunt. If no patch-workbench metadata was encountered naturally, write:
+`None encountered during source-ownership work.`
+
+If anything was encountered, include:
+- Artifact path(s), preferably machine-readable JSON under
+  `docs\patch-workbench\rev0\`.
+- Behavior tags with confidence, provenance path(s), exact ROM/RAM ranges,
+  evidence, and unresolved questions.
+- Candidate, rejected, and `needs-runtime` hook sites with original words,
+  displaced instructions, likely resume address, and owning source/data span.
+- Delay-slot, prologue, epilogue, branch, overlay, and RAM address-space hazards.
+- Data/free-space classification for any padding, cave, tail-space, table, or
+  data range relevant to future patching.
+- Runtime-state requests needed to prove behavior, registers, overlay mapping,
+  memory layout, or patch safety.
+
 9. Tooling Changes
 For every tool touched or added:
 - File path.
@@ -164,6 +182,11 @@ Writing requirements:
 - Keep historical notes accurate but mark superseded information clearly.
 - Do not claim semantic behavior is verified unless runtime trace or mutation
   evidence exists.
+- Do not claim patch behavior or patch safety is proven from static evidence
+  alone; classify static-only findings as `candidate`, `rejected`, or
+  `needs-runtime`.
+- Keep source ownership as the priority. Do not report speculative patch hunts
+  as run work.
 - Do not call mixed code/data chunks "fully split into functions"; say
   "source-owned as code/data parts."
 - Make the current state impossible to miss.
