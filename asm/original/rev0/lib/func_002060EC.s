@@ -1,0 +1,28 @@
+/*
+ * Original Rev 0 MIPS reference split.
+ * Parent source: asm/original/rev0/code_00201000_00211000.s
+ * z64 range: 0x002060EC..0x00206130 exclusive
+ * Decode comments are aids, not proof of semantic function boundaries.
+ */
+.set noat
+.set noreorder
+.text
+
+/* Frameless leaf split from over-merged parent func_00205C88 record. Table-search accessor: lui $v1,0x801D; lw $v1,0x728($v1); scans 0x13 records (+0xB0 stride) returning field 0x48 via j 0x801C2C98. Ends jr$ra@0x00206128 + delay nop. */
+/* 0x002060EC 0x80275CEC 0x3C03801D */ .word 0x3C03801D # lui $v1, 0x801D
+/* 0x002060F0 0x80275CF0 0x8C630728 */ .word 0x8C630728 # lw $v1, 0x728($v1)
+/* 0x002060F4 0x80275CF4 0x24050013 */ .word 0x24050013 # addiu $a1, $zero, 0x13
+/* 0x002060F8 0x80275CF8 0x8C620000 */ .word 0x8C620000 # lw $v0, 0x0($v1)
+/* 0x002060FC 0x80275CFC 0x50400006 */ .word 0x50400006 # beql $v0, $zero, 0x80275D18
+/* 0x00206100 0x80275D00 0x246300B0 */ .word 0x246300B0 # addiu $v1, $v1, 0xB0
+/* 0x00206104 0x80275D04 0x54440004 */ .word 0x54440004 # bnel $v0, $a0, 0x80275D18
+/* 0x00206108 0x80275D08 0x246300B0 */ .word 0x246300B0 # addiu $v1, $v1, 0xB0
+/* 0x0020610C 0x80275D0C 0x8C620048 */ .word 0x8C620048 # lw $v0, 0x48($v1)
+/* 0x00206110 0x80275D10 0x08070B26 */ .word 0x08070B26 # j 0x801C2C98
+/* 0x00206114 0x80275D14 0x00000000 */ .word 0x00000000 # nop
+/* 0x00206118 0x80275D18 0x00A01021 */ .word 0x00A01021 # move $v0, $a1
+/* 0x0020611C 0x80275D1C 0x1440FFF6 */ .word 0x1440FFF6 # bne $v0, $zero, 0x80275CF8
+/* 0x00206120 0x80275D20 0x24A5FFFF */ .word 0x24A5FFFF # addiu $a1, $a1, -0x1
+/* 0x00206124 0x80275D24 0x00001021 */ .word 0x00001021 # move $v0, $zero
+/* 0x00206128 0x80275D28 0x03E00008 */ .word 0x03E00008 # jr $ra
+/* 0x0020612C 0x80275D2C 0x00000000 */ .word 0x00000000 # nop

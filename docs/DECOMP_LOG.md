@@ -24,10 +24,10 @@ and replace the active log with a compact current-state summary.
   `original_mips`. A static control-flow audit found no credible code edge into
   the tail (0 branch targets, 0 J/JAL to a known function). Audit:
   `tools/audit_code_region.js` / `docs/CODE_REGION_AUDIT.md`.
-- Current tracked code source mix: thirty-two composite real-assembler chunks
-  (chunk 0 177 `boot/`; chunks 1–31 in `lib/`: 350, 216, 67, 376, 88, 78, 103, 87, 34, 35, 191, 74, 67, 94, 153, 95, 66, 95, 80, 175, 99, 99, 73, 63, 71, 96, 142, 97, 103, 122, 86) =
-  **3,752 tracked source files**, plus 68 generated fallback code chunks. **Chunks
-  0–31 (`0x00001000..0x00201000`) are now fully source-owned as named code/data
+- Current tracked code source mix: thirty-three composite real-assembler chunks
+  (chunk 0 177 `boot/`; chunks 1–32 in `lib/`: 350, 216, 67, 376, 88, 78, 103, 87, 34, 35, 191, 74, 67, 94, 153, 95, 66, 95, 80, 175, 99, 99, 73, 63, 71, 96, 142, 97, 103, 122, 86, 198) =
+  **3,950 tracked source files**, plus 67 generated fallback code chunks. **Chunks
+  0–32 (`0x00001000..0x00211000`) are now fully source-owned as named code/data
   parts** (chunk 13: 27 code + 40 data, MIXED — unit-mgmt UI data; chunk 14: 74 code + 20
   data, MIXED — graphics/display-list data + DL-builder code; chunk 15: 134 code + 19
   data, MIXED — floats/display-list data + the OB64 opening-narration rodata; chunk 16: 72
@@ -60,7 +60,9 @@ and replace the active log with a compact current-state summary.
   straddlers, MIXED - FP/RDP display-list world-map/resource code wrapping the Sound-Test/BGM
   screen + staff-credits data territory; chunk 31: 84 normal code + 0 data + 2 function
   straddlers, ALL CODE - FP/GBI display-list builders + attack/queue module code, incl. the
-  High-Attack cleanup-guard site at z64 0x1F36F0); next is chunk 32 (`0x00201000`, still a
+  High-Attack cleanup-guard site at z64 0x1F36F0; chunk 32: 196 normal code + 0 data + 2
+  function straddlers, ALL CODE - frameless-leaf-dense FP/display-list + class-def/char-data
+  code); next is chunk 33 (`0x00211000`, still a
   generated fallback chunk). The promote-tool merge blocker is FIXED.
 - The parent boundary DB has TWO recurring defects, both fixed when splitting:
   (1) `end_rom` is INCLUSIVE (exclusive end = `end_rom + 4`; do NOT treat the
@@ -250,10 +252,21 @@ Current named sequence:
   func_001F3540) into `docs/patch-workbench/rev0/patch-workbench-chunks30-31-2026-06-23.json`
   (static-only / needs-runtime). Dossier `docs/dossiers/lib-chunk31-1F1000-201000.md`; no
   data index (all code). **Chunk 31 source-owned.**
-- Current remainder: none in chunks 0-31 (`0x1000..0x201000` fully source-owned).
-  **Current frontier: `0x00201000` (chunk 32).** Next is chunk 32 generated fallback
-  `0x00201000..0x00211000`; first continue outgoing FUNCTION straddler `func_002006E8`
-  as `func_002006E8_chunk32tail` starting at `0x00201000` (parent end 0x00201108).
+- Chunk 32 source-ownership `0x00201000..0x00211000` (198 parts: 196 normal code + 0 data
+  + 2 function straddlers, ALL CODE, frameless-leaf-dense): incoming straddler-tail
+  `func_002006E8_chunk32tail` (`0x201000..0x201108`) → FP/display-list + class-def/char-data
+  code (preamble-orphans incl. func_00201108; jr$v0 dispatchers internal; ~50+ recovered
+  frameless leaves) → outgoing straddler-head `func_00210C30` (`0x210C30..0x211000` → chunk 33).
+  Adversarial caught 1 missed frameless leaf (func_0020156C over-extended → split off
+  func_00201584) + 2 preamble-orphan boundary corrections (func_002091F4/func_0020934C
+  re-anchored to their true preamble entry). Dossier `docs/dossiers/lib-chunk32-201000-211000.md`;
+  no data index (all code). **Chunk 32 source-owned.**
+- Current remainder: none in chunks 0-32 (`0x1000..0x211000` fully source-owned).
+  **Current frontier: `0x00211000` (chunk 33).** Next is chunk 33 generated fallback
+  `0x00211000..0x00221000` (MIXED: code + a font/glyph + pointer/float DATA region
+  `0x211D14..0x213B10`); first continue outgoing FUNCTION straddler `func_00210C30`
+  as `func_00210C30_chunk33tail` (`0x211000..0x211028`, returns jr$ra@0x211020). Chunk 33
+  contains High-Attack hook leads at z64 0x21BF84 and 0x21CD48.
 
 Static dossiers live under `docs/dossiers/` and are the durable evidence notes
 for each promoted source-layout split.
@@ -719,26 +732,25 @@ the full quick index. The newest dossiers are:
 
 ## Next Frontier
 
-Chunks 0–31 (`0x00001000..0x00201000`) are fully source-owned as named code/data
-parts. Chunk 31 (`0x001F1000..0x00201000`) is ALL CODE: 86 parts (84 normal code
-+ 2 function straddlers). It completes incoming `func_001F0F9C_chunk31tail`
-(`0x001F1000..0x001F102C`) and ends with outgoing function straddler-head
-`func_002006E8` (`0x002006E8..0x00201000`, parent end lead `0x00201108`).
-Dossier: `docs/dossiers/lib-chunk31-1F1000-201000.md`. (Chunk 30 dossier:
-`docs/dossiers/lib-chunk30-1E1000-1F1000.md`; data index
-`docs/data-index/rev0/chunk30-data-region-inventory.json`.)
+Chunks 0–32 (`0x00001000..0x00211000`) are fully source-owned as named code/data
+parts. Chunk 32 (`0x00201000..0x00211000`) is ALL CODE: 198 parts (196 normal code
++ 2 function straddlers, frameless-leaf-dense). It completes incoming
+`func_002006E8_chunk32tail` (`0x00201000..0x00201108`) and ends with outgoing
+function straddler-head `func_00210C30` (`0x00210C30..0x00211000`).
+Dossier: `docs/dossiers/lib-chunk32-201000-211000.md`. (Chunk 31 dossier:
+`docs/dossiers/lib-chunk31-1F1000-201000.md`.)
 
-Current frontier is **`0x00201000` (chunk 32)**. Coverage
-`0x1000..0x201000` = 2,097,152 B = 73.6048% of the 2,849,204-byte executable
-extent (code-only = 1,730,712 B = 60.7437%).
+Current frontier is **`0x00211000` (chunk 33)**. Coverage
+`0x1000..0x211000` = 2,162,688 B = 75.9047% of the 2,849,204-byte executable
+extent (code-only = 1,796,248 B = 63.0438%).
 
-FIRST for the next run: continue the OUTGOING FUNCTION straddler from chunk 31.
-`func_002006E8` starts in chunk 31 at `0x002006E8` (clean prologue, no preamble),
-has no `jr$ra` before the chunk boundary, and must be emitted first in chunk 32
-as `func_002006E8_chunk32tail` starting at `0x00201000`.
+FIRST for the next run: continue the OUTGOING FUNCTION straddler from chunk 32.
+`func_00210C30` starts in chunk 32 at `0x00210C30` (prologue addiu$sp,-0xD8, no preamble),
+has no `jr$ra` before the chunk boundary, and must be emitted first in chunk 33
+as `func_00210C30_chunk33tail` (`0x00211000..0x00211028`, returns jr$ra@0x00211020).
 
 There are now two active tracks. The library source-ownership track continues at
-`0x201000` (chunk 32) as above. The full-ROM coverage track (opened 2026-06-21)
+`0x211000` (chunk 33) as above. The full-ROM coverage track (opened 2026-06-21)
 next refines the exact code/data boundary near `0x002B89B4` and reclassifies the
 non-code tail `0x002B89B4..0x0063676C` from `original_mips` to a data source
 form, shrinking the configured code region to the executable extent while
