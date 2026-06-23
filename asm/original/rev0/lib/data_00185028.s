@@ -1,0 +1,95 @@
+/*
+ * Original Rev 0 MIPS reference split.
+ * Parent source: asm/original/rev0/code_00181000_00191000.s
+ * z64 range: 0x00185028..0x00185178 exclusive
+ * Decode comments are aids, not proof of semantic function boundaries.
+ */
+.set noat
+.set noreorder
+.text
+
+/* Data region (not executable host code): Trailing tail of the packed blob: almost entirely 0x02020202 zero-like filler (e.g. continuous run 0x185030..0x1850A4 and 0x1850B0..0x185128) with only sparse short active runs -- 0x02027877 @0x185024(boundary), 0x1E205959 @0x185028, 0x1F787878 @0x18502C, 0x741F7878 @0x1850A8, 0x78020202 @0x1850AC, 0x78780202 @0x185128. Ends at the zero-interspersed cluster: final words 0x02020202 @0x185168, 0x02020202 @0x18516C? -> actual last two words 0x00020101 @0x185170 and 0x01030000 @0x185174 are low-byte data (zeros interspersed with 0x01/0x02/0x03), confirming the region terminates in a packed/near-zero tail rather than a structured table. NOT zero_fill_ as a whole (the 0x02 filler is non-zero), NOT code; kept data_. HYPOTHESIS: end padding / final packed run; not parsed.. */
+/* 0x00185028 0x801F4C28 0x1E205959 */ .word 0x1E205959 # bgtz $s1, 0x8020B190
+/* 0x0018502C 0x801F4C2C 0x1F787878 */ .word 0x1F787878 # bgtz $k1, 0x80212E10
+/* 0x00185030 0x801F4C30 0x02020202 */ .word 0x02020202 # srl $zero, $v0, 8
+/* 0x00185034 0x801F4C34 0x02020202 */ .word 0x02020202 # srl $zero, $v0, 8
+/* 0x00185038 0x801F4C38 0x02020202 */ .word 0x02020202 # srl $zero, $v0, 8
+/* 0x0018503C 0x801F4C3C 0x02020202 */ .word 0x02020202 # srl $zero, $v0, 8
+/* 0x00185040 0x801F4C40 0x02020202 */ .word 0x02020202 # srl $zero, $v0, 8
+/* 0x00185044 0x801F4C44 0x02020202 */ .word 0x02020202 # srl $zero, $v0, 8
+/* 0x00185048 0x801F4C48 0x02020202 */ .word 0x02020202 # srl $zero, $v0, 8
+/* 0x0018504C 0x801F4C4C 0x02020202 */ .word 0x02020202 # srl $zero, $v0, 8
+/* 0x00185050 0x801F4C50 0x02020202 */ .word 0x02020202 # srl $zero, $v0, 8
+/* 0x00185054 0x801F4C54 0x02020202 */ .word 0x02020202 # srl $zero, $v0, 8
+/* 0x00185058 0x801F4C58 0x02020202 */ .word 0x02020202 # srl $zero, $v0, 8
+/* 0x0018505C 0x801F4C5C 0x02020202 */ .word 0x02020202 # srl $zero, $v0, 8
+/* 0x00185060 0x801F4C60 0x02020202 */ .word 0x02020202 # srl $zero, $v0, 8
+/* 0x00185064 0x801F4C64 0x02020202 */ .word 0x02020202 # srl $zero, $v0, 8
+/* 0x00185068 0x801F4C68 0x02020202 */ .word 0x02020202 # srl $zero, $v0, 8
+/* 0x0018506C 0x801F4C6C 0x02020202 */ .word 0x02020202 # srl $zero, $v0, 8
+/* 0x00185070 0x801F4C70 0x02020202 */ .word 0x02020202 # srl $zero, $v0, 8
+/* 0x00185074 0x801F4C74 0x02020202 */ .word 0x02020202 # srl $zero, $v0, 8
+/* 0x00185078 0x801F4C78 0x02020202 */ .word 0x02020202 # srl $zero, $v0, 8
+/* 0x0018507C 0x801F4C7C 0x02020202 */ .word 0x02020202 # srl $zero, $v0, 8
+/* 0x00185080 0x801F4C80 0x02020202 */ .word 0x02020202 # srl $zero, $v0, 8
+/* 0x00185084 0x801F4C84 0x02020202 */ .word 0x02020202 # srl $zero, $v0, 8
+/* 0x00185088 0x801F4C88 0x02020202 */ .word 0x02020202 # srl $zero, $v0, 8
+/* 0x0018508C 0x801F4C8C 0x02020202 */ .word 0x02020202 # srl $zero, $v0, 8
+/* 0x00185090 0x801F4C90 0x02020202 */ .word 0x02020202 # srl $zero, $v0, 8
+/* 0x00185094 0x801F4C94 0x02020202 */ .word 0x02020202 # srl $zero, $v0, 8
+/* 0x00185098 0x801F4C98 0x02020202 */ .word 0x02020202 # srl $zero, $v0, 8
+/* 0x0018509C 0x801F4C9C 0x02020202 */ .word 0x02020202 # srl $zero, $v0, 8
+/* 0x001850A0 0x801F4CA0 0x02020202 */ .word 0x02020202 # srl $zero, $v0, 8
+/* 0x001850A4 0x801F4CA4 0x02020278 */ .word 0x02020278 # dsll $zero, $v0, 9
+/* 0x001850A8 0x801F4CA8 0x741F7878 */ .word 0x741F7878 # op_0x1D
+/* 0x001850AC 0x801F4CAC 0x78020202 */ .word 0x78020202 # op_0x1E
+/* 0x001850B0 0x801F4CB0 0x02020202 */ .word 0x02020202 # srl $zero, $v0, 8
+/* 0x001850B4 0x801F4CB4 0x02020202 */ .word 0x02020202 # srl $zero, $v0, 8
+/* 0x001850B8 0x801F4CB8 0x02020202 */ .word 0x02020202 # srl $zero, $v0, 8
+/* 0x001850BC 0x801F4CBC 0x02020202 */ .word 0x02020202 # srl $zero, $v0, 8
+/* 0x001850C0 0x801F4CC0 0x02020202 */ .word 0x02020202 # srl $zero, $v0, 8
+/* 0x001850C4 0x801F4CC4 0x02020202 */ .word 0x02020202 # srl $zero, $v0, 8
+/* 0x001850C8 0x801F4CC8 0x02020202 */ .word 0x02020202 # srl $zero, $v0, 8
+/* 0x001850CC 0x801F4CCC 0x02020202 */ .word 0x02020202 # srl $zero, $v0, 8
+/* 0x001850D0 0x801F4CD0 0x02020202 */ .word 0x02020202 # srl $zero, $v0, 8
+/* 0x001850D4 0x801F4CD4 0x02020202 */ .word 0x02020202 # srl $zero, $v0, 8
+/* 0x001850D8 0x801F4CD8 0x02020202 */ .word 0x02020202 # srl $zero, $v0, 8
+/* 0x001850DC 0x801F4CDC 0x02020202 */ .word 0x02020202 # srl $zero, $v0, 8
+/* 0x001850E0 0x801F4CE0 0x02020202 */ .word 0x02020202 # srl $zero, $v0, 8
+/* 0x001850E4 0x801F4CE4 0x02020202 */ .word 0x02020202 # srl $zero, $v0, 8
+/* 0x001850E8 0x801F4CE8 0x02020202 */ .word 0x02020202 # srl $zero, $v0, 8
+/* 0x001850EC 0x801F4CEC 0x02020202 */ .word 0x02020202 # srl $zero, $v0, 8
+/* 0x001850F0 0x801F4CF0 0x02020202 */ .word 0x02020202 # srl $zero, $v0, 8
+/* 0x001850F4 0x801F4CF4 0x02020202 */ .word 0x02020202 # srl $zero, $v0, 8
+/* 0x001850F8 0x801F4CF8 0x02020202 */ .word 0x02020202 # srl $zero, $v0, 8
+/* 0x001850FC 0x801F4CFC 0x02020202 */ .word 0x02020202 # srl $zero, $v0, 8
+/* 0x00185100 0x801F4D00 0x02020202 */ .word 0x02020202 # srl $zero, $v0, 8
+/* 0x00185104 0x801F4D04 0x02020202 */ .word 0x02020202 # srl $zero, $v0, 8
+/* 0x00185108 0x801F4D08 0x02020202 */ .word 0x02020202 # srl $zero, $v0, 8
+/* 0x0018510C 0x801F4D0C 0x02020202 */ .word 0x02020202 # srl $zero, $v0, 8
+/* 0x00185110 0x801F4D10 0x02020202 */ .word 0x02020202 # srl $zero, $v0, 8
+/* 0x00185114 0x801F4D14 0x02020202 */ .word 0x02020202 # srl $zero, $v0, 8
+/* 0x00185118 0x801F4D18 0x02020202 */ .word 0x02020202 # srl $zero, $v0, 8
+/* 0x0018511C 0x801F4D1C 0x02020202 */ .word 0x02020202 # srl $zero, $v0, 8
+/* 0x00185120 0x801F4D20 0x02020202 */ .word 0x02020202 # srl $zero, $v0, 8
+/* 0x00185124 0x801F4D24 0x02020202 */ .word 0x02020202 # srl $zero, $v0, 8
+/* 0x00185128 0x801F4D28 0x78780202 */ .word 0x78780202 # op_0x1E
+/* 0x0018512C 0x801F4D2C 0x02020202 */ .word 0x02020202 # srl $zero, $v0, 8
+/* 0x00185130 0x801F4D30 0x02020202 */ .word 0x02020202 # srl $zero, $v0, 8
+/* 0x00185134 0x801F4D34 0x02020202 */ .word 0x02020202 # srl $zero, $v0, 8
+/* 0x00185138 0x801F4D38 0x02020202 */ .word 0x02020202 # srl $zero, $v0, 8
+/* 0x0018513C 0x801F4D3C 0x02020202 */ .word 0x02020202 # srl $zero, $v0, 8
+/* 0x00185140 0x801F4D40 0x02020202 */ .word 0x02020202 # srl $zero, $v0, 8
+/* 0x00185144 0x801F4D44 0x02020202 */ .word 0x02020202 # srl $zero, $v0, 8
+/* 0x00185148 0x801F4D48 0x02020202 */ .word 0x02020202 # srl $zero, $v0, 8
+/* 0x0018514C 0x801F4D4C 0x02020202 */ .word 0x02020202 # srl $zero, $v0, 8
+/* 0x00185150 0x801F4D50 0x02020202 */ .word 0x02020202 # srl $zero, $v0, 8
+/* 0x00185154 0x801F4D54 0x02020202 */ .word 0x02020202 # srl $zero, $v0, 8
+/* 0x00185158 0x801F4D58 0x02020202 */ .word 0x02020202 # srl $zero, $v0, 8
+/* 0x0018515C 0x801F4D5C 0x02020202 */ .word 0x02020202 # srl $zero, $v0, 8
+/* 0x00185160 0x801F4D60 0x02020202 */ .word 0x02020202 # srl $zero, $v0, 8
+/* 0x00185164 0x801F4D64 0x02020202 */ .word 0x02020202 # srl $zero, $v0, 8
+/* 0x00185168 0x801F4D68 0x02020202 */ .word 0x02020202 # srl $zero, $v0, 8
+/* 0x0018516C 0x801F4D6C 0x02020202 */ .word 0x02020202 # srl $zero, $v0, 8
+/* 0x00185170 0x801F4D70 0x00020101 */ .word 0x00020101 # special_0x01
+/* 0x00185174 0x801F4D74 0x01030000 */ .word 0x01030000 # sll $zero, $v1, 0

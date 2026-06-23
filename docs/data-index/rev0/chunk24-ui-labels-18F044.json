@@ -1,0 +1,118 @@
+{
+  "source": "build/original-mips/rev0/code_00181000_00191000.s",
+  "rangeZ64": [
+    "0x0018F044",
+    "0x0018F100"
+  ],
+  "totalBytes": 188,
+  "encoding": "ASCII, NUL-terminated, big-endian (z64) byte order; @-prefixed inline control codes left verbatim",
+  "title": "Chunk-24 inline UI labels + pointer mini-table (0x18F044)",
+  "stringCount": 4,
+  "atCodeTally": {},
+  "atCodeSemantics": "UNRESOLVED — @0..@3/@w/@c/@e are inline formatting/control codes; exact runtime meaning not decoded",
+  "confidence": "high (printable ASCII text); control-code semantics hypothesis-grade",
+  "segments": [
+    {
+      "kind": "nul",
+      "offset": "0x0018F044",
+      "bytes": 40
+    },
+    {
+      "kind": "string",
+      "offset": "0x0018F06C",
+      "bytes": 7,
+      "text": "Soldier",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x0018F073",
+      "bytes": 1
+    },
+    {
+      "kind": "string",
+      "offset": "0x0018F074",
+      "bytes": 16,
+      "text": "\\x81|\\x81|\\x81|\\x81|\\x81|\\x81|\\x81|\\x81|",
+      "atCodes": {},
+      "nonPrintable": 8
+    },
+    {
+      "kind": "nul",
+      "offset": "0x0018F084",
+      "bytes": 12
+    },
+    {
+      "kind": "string",
+      "offset": "0x0018F090",
+      "bytes": 6,
+      "text": "Remove",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x0018F096",
+      "bytes": 13
+    },
+    {
+      "kind": "nul",
+      "offset": "0x0018F0A4",
+      "bytes": 3
+    },
+    {
+      "kind": "nul",
+      "offset": "0x0018F0A8",
+      "bytes": 3
+    },
+    {
+      "kind": "nul",
+      "offset": "0x0018F0AC",
+      "bytes": 3
+    },
+    {
+      "kind": "nul",
+      "offset": "0x0018F0B0",
+      "bytes": 3
+    },
+    {
+      "kind": "nul",
+      "offset": "0x0018F0B4",
+      "bytes": 3
+    },
+    {
+      "kind": "nul",
+      "offset": "0x0018F0B8",
+      "bytes": 3
+    },
+    {
+      "kind": "nul",
+      "offset": "0x0018F0BC",
+      "bytes": 3
+    },
+    {
+      "kind": "nul",
+      "offset": "0x0018F0C0",
+      "bytes": 3
+    },
+    {
+      "kind": "nul",
+      "offset": "0x0018F0C4",
+      "bytes": 12
+    },
+    {
+      "kind": "string",
+      "offset": "0x0018F0D0",
+      "bytes": 36,
+      "text": "\\x80!\\x81H\\x80!\\x818\\x80!\\x81(\\x80!\\x81H\\x80!\\x81H\\x80!\\x81(\\x80!\\x86\\xE0\\x80!\\x86\\xE0\\x80!\\x81X",
+      "atCodes": {},
+      "nonPrintable": 20
+    },
+    {
+      "kind": "nul",
+      "offset": "0x0018F0F4",
+      "bytes": 12
+    }
+  ]
+}
