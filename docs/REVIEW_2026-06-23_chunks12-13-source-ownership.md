@@ -29,7 +29,7 @@ ROM z64 `0x000C1000..0x000E1000`, run date 2026-06-23.
 ## 3. Commits (this run, newest first)
 | Hash | Category | Purpose |
 |---|---|---|
-| _(this doc's commit)_ | review handoff | Add chunks 12–13 review handoff (final commit) |
+| `f99a9b9` | review handoff | Add chunks 12–13 review handoff (this file, final commit) |
 | `bb8137b` | source + docs | Source-own chunk 13 (67 parts, MIXED); dossier `lib-chunk13` + data-index inventory + doc updates |
 | `2fb03ed` | source + docs | Source-own chunk 12 (74 parts); dossier `lib-chunk12` + doc updates |
 | `a7eafdf` | audits | One-shot retroactive audits of chunks 0–11 (parent-evidence + data-inventory); 8 data-index JSONs |
