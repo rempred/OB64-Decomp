@@ -1,0 +1,473 @@
+{
+  "chunk": 13,
+  "rangeZ64": [
+    "0x000DAB18",
+    "0x000E1000"
+  ],
+  "totalDataBytes": 25832,
+  "classification": "raw-but-classified (conservative; no field semantics invented)",
+  "byClassBytes": {
+    "string-pool": 984,
+    "packed/record": 17084,
+    "zero-fill": 216,
+    "ram-pointer-table": 7548
+  },
+  "partCount": 40,
+  "outgoingStraddler": {
+    "part": "data_000e0bd0_chunk13head",
+    "rangeZ64": [
+      "0x000E0BD0",
+      "0x000E1000"
+    ],
+    "note": "high-byte-dense packed/glyph blob, no terminator, continues into chunk 14 as data_000e1000_chunk14tail"
+  },
+  "formatFamilies": [
+    "unit/battle-management UI string pools (0x0E/0x0F/0x10/NUL framing)",
+    "RAM-pointer tables (0x801A-0x801E band, with identical-pointer fill runs)",
+    "IEEE float constant blocks",
+    "E7/DF-tagged display-list/command record stream",
+    "packed/glyph/compressed blob (straddles into chunk 14)"
+  ],
+  "entries": [
+    {
+      "part": "rodata_000dab18",
+      "rangeZ64": [
+        "0x000DAB18",
+        "0x000DADD0"
+      ],
+      "bytes": 696,
+      "class": "string-pool",
+      "state": "raw-but-classified",
+      "note": "String pool 1 (NUL-terminated, padded to 4; some entries framed by control bytes 0x0E prefix / 0x0F separator). Leading 2 zero words (0xDAB18-0xDAB20) are alignment lead-in. Field labels: 'Type'@DAB20"
+    },
+    {
+      "part": "data_000dadd0",
+      "rangeZ64": [
+        "0x000DADD0",
+        "0x000DAE10"
+      ],
+      "bytes": 64,
+      "class": "packed/record",
+      "state": "raw-but-classified",
+      "note": "Small-int index + 16-bit value blocks. 0xDADD0: byte index ramp '00 01 02 03 03 03 02 01' (8 bytes, symmetric). 0xDADD8-0xDADE7: ascending big-endian u16 ramp 0x00A0,0x00C0,0x00E0,0x0100,0x0120,0x0140"
+    },
+    {
+      "part": "zero_fill_000dae10",
+      "rangeZ64": [
+        "0x000DAE10",
+        "0x000DAE28"
+      ],
+      "bytes": 24,
+      "class": "zero-fill",
+      "state": "parsed",
+      "note": "6 consecutive zero words (alignment/padding before the RAM-pointer table)."
+    },
+    {
+      "part": "table_000dae28",
+      "rangeZ64": [
+        "0x000DAE28",
+        "0x000DAF50"
+      ],
+      "bytes": 296,
+      "class": "ram-pointer-table",
+      "state": "raw-but-classified",
+      "note": "RAM-pointer table: 74 consecutive big-endian 0x801Exxxx words (0x801EE0C0..0x801EF894 range), all in a tight RAM band with some repeated and out-of-order entries (e.g. 0x801EF890 appears as a sentinel"
+    },
+    {
+      "part": "data_000daf50",
+      "rangeZ64": [
+        "0x000DAF50",
+        "0x000DB094"
+      ],
+      "bytes": 324,
+      "class": "packed/record",
+      "state": "raw-but-classified",
+      "note": "Signed-byte delta blob: dense run of small signed int8 values (mostly -0x09..+0x07, e.g. 00 fb fe fe fe fe ff fa ...), read as (dx,dy) or animation/offset deltas. Internal zero run at 0xDB048-0xDB05C "
+    },
+    {
+      "part": "data_000db094",
+      "rangeZ64": [
+        "0x000DB094",
+        "0x000DB248"
+      ],
+      "bytes": 436,
+      "class": "packed/record",
+      "state": "raw-but-classified",
+      "note": "Packed 4-byte records, all of form 0x0600xxxx (big-endian; high half 0x0600 constant, low half a 16-bit value). 110 records, stride 4. Low halves are mostly 0x1228 (a default/repeated value) with scat"
+    },
+    {
+      "part": "data_000db248",
+      "rangeZ64": [
+        "0x000DB248",
+        "0x000DB2E8"
+      ],
+      "bytes": 160,
+      "class": "packed/record",
+      "state": "raw-but-classified",
+      "note": "Tagged 8-byte records: first byte is a tag in 0xD7/0xD9/0xDF/0xE2/0xE3/0xE7 followed by 7 payload bytes (e.g. 'e7 00 00 00 00 00 00 00','e3 00 0a 01 00 00 00 00','e2 00 00 1c 0f 0a 40 00 fc 12 18 24 ."
+    },
+    {
+      "part": "data_000db2e8",
+      "rangeZ64": [
+        "0x000DB2E8",
+        "0x000DB808"
+      ],
+      "bytes": 1312,
+      "class": "packed/record",
+      "state": "raw-but-classified",
+      "note": "16-bit pair record block: stride-4 records each two big-endian u16 fields (e.g. 000F 0007 | 0019 001B | 000E 0007 ...). First field small (0x06..0x70), second field small (0x07..0x49); many trailing ("
+    },
+    {
+      "part": "data_000db808",
+      "rangeZ64": [
+        "0x000DB808",
+        "0x000DB860"
+      ],
+      "bytes": 88,
+      "class": "packed/record",
+      "state": "raw-but-classified",
+      "note": "Value block: 11 ascending big-endian u32 cumulative offsets 0x09E0,0x2360,0x3620,0x40C0,0x4B88,0x5790,0x6630,0x7380,0x7CB8,0x86B8,0x9EE8 (monotonic, look like byte offsets into a data segment) @DB808-"
+    },
+    {
+      "part": "rodata_000db860",
+      "rangeZ64": [
+        "0x000DB860",
+        "0x000DB980"
+      ],
+      "bytes": 288,
+      "class": "string-pool",
+      "state": "raw-but-classified",
+      "note": "String pool 2 (NUL-terminated, padded; one entry 0x0E/0x10/0x0F framed). Strings: 'Element:'@DB860,'Effect'@DB86C,'Invalid'@DB874,'Target:'@DB87C,'Execute'@DB884,'Continue'@DB88C,'Cancel'@DB898,'Yes'@"
+    },
+    {
+      "part": "data_000db980",
+      "rangeZ64": [
+        "0x000DB980",
+        "0x000DBBE8"
+      ],
+      "bytes": 616,
+      "class": "packed/record",
+      "state": "raw-but-classified",
+      "note": "Mixed tagged command/parameter records + small geometry blobs. Opens with 0xE2/0xE3/0xDF tagged 8-byte ops (same scheme as 0xDB248, e.g. 'e2 00 00 1c 00 50 41 c8 fc 32 38 64 ...','e3 00 0c 00 00 08 00"
+    },
+    {
+      "part": "data_000dbbe8",
+      "rangeZ64": [
+        "0x000DBBE8",
+        "0x000DBC44"
+      ],
+      "bytes": 92,
+      "class": "packed/record",
+      "state": "raw-but-classified",
+      "note": "Mixed small-record block: header 'fffe 0000 000c 0002 000e 0000' @DBBE8, then 10 IEEE-754 float32 (big-endian) @DBBF4-DBC1C: 40.0,64.0,-32.0,84.0,32.0,96.0,56.0,96.0,88.0,96.0 (0x42200000 etc, 0xC2000"
+    },
+    {
+      "part": "table_000dbc44",
+      "rangeZ64": [
+        "0x000DBC44",
+        "0x000DBCD0"
+      ],
+      "bytes": 140,
+      "class": "ram-pointer-table",
+      "state": "raw-but-classified",
+      "note": "Sparse RAM-pointer table: 0x801Cxxxx/0x801Dxxxx/0x801Exxxx pointers separated by zero words (e.g. 0x801E5760@DBC44, 0x801EB030@DBC4C, then a dense run 0x801C9D4C,0x801C84BC,0x801C97A0,0x801E6770,... @"
+    },
+    {
+      "part": "table_000dbcd0",
+      "rangeZ64": [
+        "0x000DBCD0",
+        "0x000DBD30"
+      ],
+      "bytes": 96,
+      "class": "ram-pointer-table",
+      "state": "raw-but-classified",
+      "note": "Dense RAM-pointer table: 24 consecutive big-endian 0x8016xxxx words (0x8016F65C..0x8016F8CC range; spans 0xDBCD0-0xDBD30 = 96 bytes). Tight ~0x50-stride RAM band with some repeats (0x8016F65C/F6AC/F6F"
+    },
+    {
+      "part": "data_000dbd30",
+      "rangeZ64": [
+        "0x000DBD30",
+        "0x000DBDD8"
+      ],
+      "bytes": 168,
+      "class": "packed/record",
+      "state": "raw-but-classified",
+      "note": "Packed 2-byte-pair / small-constant blob: rows of repeating 0x8101 and 0x8202 16-bit tokens (e.g. '8101 0000 8202 8101 8101 8101 ...') @DBD30-DBD78, then byte patterns '00 03 85 08 85 08 85 08','00 00"
+    },
+    {
+      "part": "data_000dbdd8",
+      "rangeZ64": [
+        "0x000DBDD8",
+        "0x000DBE18"
+      ],
+      "bytes": 64,
+      "class": "packed/record",
+      "state": "raw-but-classified",
+      "note": "Tail mixed block: 3 RAM pointers 0x8016DC2C,0x8016DCD4,0x8016DD74 @DBDD8-DBDE4 (too few for a table part); then small byte rows '02 02 02 01 01 01 00 00','00 00 00 00 01 01 01 02 ...' index/permutatio"
+    },
+    {
+      "part": "zero_fill_000dbe18",
+      "rangeZ64": [
+        "0x000DBE18",
+        "0x000DBE70"
+      ],
+      "bytes": 88,
+      "class": "zero-fill",
+      "state": "parsed",
+      "note": "22 words (88 bytes) of 0x00000000 zero-fill padding."
+    },
+    {
+      "part": "data_000dbe70",
+      "rangeZ64": [
+        "0x000DBE70",
+        "0x000DBE98"
+      ],
+      "bytes": 40,
+      "class": "packed/record",
+      "state": "raw-but-classified",
+      "note": "HYPOTHESIS: 10-word small-int/flag interlude between two zero runs. Non-zero words: 0x00001820, 0x00002300, then zeros, 0x00080612, 0x0D271F19, 0x15000000. Looks like packed small constants, not point"
+    },
+    {
+      "part": "zero_fill_000dbe98",
+      "rangeZ64": [
+        "0x000DBE98",
+        "0x000DBED4"
+      ],
+      "bytes": 60,
+      "class": "zero-fill",
+      "state": "parsed",
+      "note": "15 words (60 bytes) of 0x00000000 zero-fill padding."
+    },
+    {
+      "part": "data_000dbed4",
+      "rangeZ64": [
+        "0x000DBED4",
+        "0x000DC3A0"
+      ],
+      "bytes": 1228,
+      "class": "packed/record",
+      "state": "raw-but-classified",
+      "note": "HYPOTHESIS: ~1228-byte dense packed small-int / byte-array blob. High-byte-dense, no IEEE float pattern, no run of 0x80xxxxxx pointers. Contains recognizable little byte sequences (e.g. 0x04030201/0xF"
+    },
+    {
+      "part": "table_000dc3a0",
+      "rangeZ64": [
+        "0x000DC3A0",
+        "0x000DC3E8"
+      ],
+      "bytes": 72,
+      "class": "ram-pointer-table",
+      "state": "raw-but-classified",
+      "note": "RAM-pointer tables (0x801Axxxx range): 0xDC3A0 group of 9 ptrs 0x801A9ED8.. (one trailing null), 0xDC3C8 group of 7 ptrs 0x801B3C98.. + null. All words 0x801Axxxx or 0x00000000 separators."
+    },
+    {
+      "part": "data_000dc3e8",
+      "rangeZ64": [
+        "0x000DC3E8",
+        "0x000DC3F8"
+      ],
+      "bytes": 16,
+      "class": "packed/record",
+      "state": "raw-but-classified",
+      "note": "HYPOTHESIS: 4-word small-int index block 0x00000002,0x00000001,0x00000004,0x00000003 (a small permutation/index, not pointers)."
+    },
+    {
+      "part": "table_000dc3f8",
+      "rangeZ64": [
+        "0x000DC3F8",
+        "0x000DC600"
+      ],
+      "bytes": 520,
+      "class": "ram-pointer-table",
+      "state": "raw-but-classified",
+      "note": "Long span of RAM-pointer tables (0x801Bxxxx / 0x801Cxxxx / 0x801Dxxxx) separated by single-null terminators, with a few short embedded small-int/packed-byte interludes that are kept inside this table "
+    },
+    {
+      "part": "data_000dc600",
+      "rangeZ64": [
+        "0x000DC600",
+        "0x000DC630"
+      ],
+      "bytes": 48,
+      "class": "packed/record",
+      "state": "raw-but-classified",
+      "note": "Float-constant block (IEEE-754): 0x3F866666 (1.05), 0x3F800000 (1.0), 0x3F733333x2 (0.95), 0x3F800000, 0x3F866666, then 0x400921FA/0xFC8B007A (double pi 3.14159... as hi/lo words), 0x40668000 (3.6125)"
+    },
+    {
+      "part": "table_000dc630",
+      "rangeZ64": [
+        "0x000DC630",
+        "0x000DCB78"
+      ],
+      "bytes": 1352,
+      "class": "ram-pointer-table",
+      "state": "raw-but-classified",
+      "note": "Large RAM-pointer table region (0x801Dxxxx). Includes the long repeated-pointer run mis-described as a 'glyph/font blob': 0xDC840-0xDC988 is ~83 consecutive identical pointers 0x801DB274, and 0xDCA0C-"
+    },
+    {
+      "part": "data_000dcb78",
+      "rangeZ64": [
+        "0x000DCB78",
+        "0x000DCB88"
+      ],
+      "bytes": 16,
+      "class": "packed/record",
+      "state": "raw-but-classified",
+      "note": "HYPOTHESIS: 4-word marker/separator interlude (0x582B6831,0x33350000,0x400921FA,0xFC8B007A). Last two words are the recurring pi-double (0x400921FA/0xFC8B007A) acting as a table separator/sentinel bet"
+    },
+    {
+      "part": "table_000dcb88",
+      "rangeZ64": [
+        "0x000DCB88",
+        "0x000DD020"
+      ],
+      "bytes": 1176,
+      "class": "ram-pointer-table",
+      "state": "raw-but-classified",
+      "note": "Final RAM-pointer table region (0x801Dxxxx / 0x801Exxxx). Includes another long repeated-pointer run 0xDCBAC-0xDCD10 (~90 identical 0x801E096C), a run of 0x801E2BA4 at 0xDCD7C-0xDCEDC, and several sma"
+    },
+    {
+      "part": "table_000dd020",
+      "rangeZ64": [
+        "0x000DD020",
+        "0x000DD88C"
+      ],
+      "bytes": 2156,
+      "class": "ram-pointer-table",
+      "state": "raw-but-classified",
+      "note": "537 consecutive 0x801Exxxx RAM-pointer words (all upper-16 = 0x801E). Opens with a short ascending run (0x801E4CC0,4CE8,4D4C,...) then a long fill of identical 0x801E5734 (~165 words) followed by anot"
+    },
+    {
+      "part": "table_000dd88c",
+      "rangeZ64": [
+        "0x000DD88C",
+        "0x000DD8C8"
+      ],
+      "bytes": 60,
+      "class": "ram-pointer-table",
+      "state": "raw-but-classified",
+      "note": "Continuation of the same 0x801Exxxx pointer table across two embedded single-word null entries (0x00000000 at 0xDD88C and 0xDD8C4 — each only 1 word, below the >=3 zero_fill threshold, so treated as n"
+    },
+    {
+      "part": "table_000dd8c8",
+      "rangeZ64": [
+        "0x000DD8C8",
+        "0x000DDF58"
+      ],
+      "bytes": 1680,
+      "class": "ram-pointer-table",
+      "state": "raw-but-classified",
+      "note": "420 more consecutive 0x801Exxxx RAM-pointer words, no embedded zeros. Mix of long identical-value fills (0x801E6758, 0x801EC368) and short ascending sub-runs; same single table region, values bounded "
+    },
+    {
+      "part": "data_000ddf58",
+      "rangeZ64": [
+        "0x000DDF58",
+        "0x000DDF60"
+      ],
+      "bytes": 8,
+      "class": "packed/record",
+      "state": "raw-but-classified",
+      "note": "2 zero words separating the pointer table from the trailing packed blob. Only 2 words (< 3) so not a zero_fill; kept as a tiny data padding part to preserve byte-exact contiguity."
+    },
+    {
+      "part": "data_000ddf60",
+      "rangeZ64": [
+        "0x000DDF60",
+        "0x000DDFE8"
+      ],
+      "bytes": 136,
+      "class": "packed/record",
+      "state": "raw-but-classified",
+      "note": "34-word high-byte-dense packed blob. Byte values span the full 0x00-0xFF range with no 0x80xxxxxx alignment and no string/ASCII structure (e.g. 0xC5171085, 0xD623D5DB, 0xAB89ABCB, 0x39CF39CF, 0x42114A"
+    },
+    {
+      "part": "data_000ddfe8",
+      "rangeZ64": [
+        "0x000DDFE8",
+        "0x000DDFF0"
+      ],
+      "bytes": 8,
+      "class": "packed/record",
+      "state": "raw-but-classified",
+      "note": "Trailer of the packed blob: 0x00000000 then 0x0000FFFF. 2 words, mixed (not a pure zero_fill). Likely an end sentinel/terminator for the 0xDDF60 blob."
+    },
+    {
+      "part": "zero_fill_000ddff0",
+      "rangeZ64": [
+        "0x000DDFF0",
+        "0x000DE000"
+      ],
+      "bytes": 16,
+      "class": "zero-fill",
+      "state": "parsed",
+      "note": "4 consecutive 0x00000000 words padding the region tail up to the 0x000DE000 boundary. >=3 zero words => zero_fill."
+    },
+    {
+      "part": "data_000de000",
+      "rangeZ64": [
+        "0x000DE000",
+        "0x000DE020"
+      ],
+      "bytes": 32,
+      "class": "packed/record",
+      "state": "raw-but-classified",
+      "note": "8-word preamble: 0x0000965D, 0xD6D5F7FB, 0x00000000, 0x0000FFFF, 0x00000000 x3, 0x0000000E. Small scalar/header values preceding the packed blob at 0xDE020. Non-executable (coincidental mnemonics). HY"
+    },
+    {
+      "part": "data_000de020",
+      "rangeZ64": [
+        "0x000DE020",
+        "0x000DE0E0"
+      ],
+      "bytes": 192,
+      "class": "packed/record",
+      "state": "raw-but-classified",
+      "note": "Six 0x20-byte packed records, each ending in the recurring tail 0x8D5D9497 0x9CDBAD61 0xBDE1C631 0xEE26FFFF. High-byte-dense, structured; only the first word of each record varies (0x21092249, 0xE7392"
+    },
+    {
+      "part": "data_000de0e0",
+      "rangeZ64": [
+        "0x000DE0E0",
+        "0x000DE234"
+      ],
+      "bytes": 340,
+      "class": "packed/record",
+      "state": "raw-but-classified",
+      "note": "Small-int packed arrays: long run of 0x00010001 (interspersed 0x00012109, 0xEE2694D3, 0x0001FFFF, 0xEE265A17) then a run of 0x11111111 / 0x01111111. Looks like a bitmask/flag or packed-nibble table. E"
+    },
+    {
+      "part": "zero_fill_000de234",
+      "rangeZ64": [
+        "0x000DE234",
+        "0x000DE250"
+      ],
+      "bytes": 28,
+      "class": "zero-fill",
+      "state": "parsed",
+      "note": "7 consecutive zero words (28 bytes) embedded between the small-int arrays and the command-record stream. Pure zero fill / padding."
+    },
+    {
+      "part": "data_000de250",
+      "rangeZ64": [
+        "0x000DE250",
+        "0x000E0BD0"
+      ],
+      "bytes": 10624,
+      "class": "packed/record",
+      "state": "raw-but-classified",
+      "note": "Large homogeneous packed display-list / command-record stream (~0x2980 bytes). Dominant repeating record: 0xE7000000 / 0x00000000 / 0x01004008 / 0x060006xx / 0x06000204 / 0x00000406 / 0xDF000000 / 0x0"
+    },
+    {
+      "part": "data_000e0bd0_chunk13head",
+      "rangeZ64": [
+        "0x000E0BD0",
+        "0x000E1000"
+      ],
+      "bytes": 1072,
+      "class": "packed/record",
+      "state": "raw-but-classified",
+      "note": "OUTGOING DATA CONTINUATION into chunk 14. Final packed blob: starts at 0xE0BD0 (0x9AAAAA97 0x7BDC8789 ...) immediately after the 0xDF000000/0x00000000 terminator pair at 0xE0BC8. Fully high-byte-dense"
+    }
+  ]
+}

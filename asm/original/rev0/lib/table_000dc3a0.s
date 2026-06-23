@@ -1,0 +1,29 @@
+/*
+ * Original Rev 0 MIPS reference split.
+ * Parent source: asm/original/rev0/code_000D1000_000E1000.s
+ * z64 range: 0x000DC3A0..0x000DC3E8 exclusive
+ * Decode comments are aids, not proof of semantic function boundaries.
+ */
+.set noat
+.set noreorder
+.text
+
+/* Data region (not executable host code): RAM-pointer tables (0x801Axxxx range): 0xDC3A0 group of 9 ptrs 0x801A9ED8.. (one trailing null), 0xDC3C8 group of 7 ptrs 0x801B3C98.. + null. All words 0x801Axxxx or 0x00000000 separators.. */
+/* 0x000DC3A0 0x8014BFA0 0x801A9ED8 */ .word 0x801A9ED8 # lb $k0, -0x6128($zero)
+/* 0x000DC3A4 0x8014BFA4 0x801A9F00 */ .word 0x801A9F00 # lb $k0, -0x6100($zero)
+/* 0x000DC3A8 0x8014BFA8 0x801A9F40 */ .word 0x801A9F40 # lb $k0, -0x60C0($zero)
+/* 0x000DC3AC 0x8014BFAC 0x801A9EEC */ .word 0x801A9EEC # lb $k0, -0x6114($zero)
+/* 0x000DC3B0 0x8014BFB0 0x801A9F54 */ .word 0x801A9F54 # lb $k0, -0x60AC($zero)
+/* 0x000DC3B4 0x8014BFB4 0x801A9F68 */ .word 0x801A9F68 # lb $k0, -0x6098($zero)
+/* 0x000DC3B8 0x8014BFB8 0x801A9FB8 */ .word 0x801A9FB8 # lb $k0, -0x6048($zero)
+/* 0x000DC3BC 0x8014BFBC 0x801A9FB8 */ .word 0x801A9FB8 # lb $k0, -0x6048($zero)
+/* 0x000DC3C0 0x8014BFC0 0x801A9F7C */ .word 0x801A9F7C # lb $k0, -0x6084($zero)
+/* 0x000DC3C4 0x8014BFC4 0x00000000 */ .word 0x00000000 # nop
+/* 0x000DC3C8 0x8014BFC8 0x801B3C98 */ .word 0x801B3C98 # lb $k1, 0x3C98($zero)
+/* 0x000DC3CC 0x8014BFCC 0x801B3CAC */ .word 0x801B3CAC # lb $k1, 0x3CAC($zero)
+/* 0x000DC3D0 0x8014BFD0 0x801B3D5C */ .word 0x801B3D5C # lb $k1, 0x3D5C($zero)
+/* 0x000DC3D4 0x8014BFD4 0x801B3F94 */ .word 0x801B3F94 # lb $k1, 0x3F94($zero)
+/* 0x000DC3D8 0x8014BFD8 0x801B3FE4 */ .word 0x801B3FE4 # lb $k1, 0x3FE4($zero)
+/* 0x000DC3DC 0x8014BFDC 0x801B4328 */ .word 0x801B4328 # lb $k1, 0x4328($zero)
+/* 0x000DC3E0 0x8014BFE0 0x801B3CC0 */ .word 0x801B3CC0 # lb $k1, 0x3CC0($zero)
+/* 0x000DC3E4 0x8014BFE4 0x00000000 */ .word 0x00000000 # nop

@@ -1,0 +1,34 @@
+/*
+ * Original Rev 0 MIPS reference split.
+ * Parent source: asm/original/rev0/code_000D1000_000E1000.s
+ * z64 range: 0x000DBBE8..0x000DBC44 exclusive
+ * Decode comments are aids, not proof of semantic function boundaries.
+ */
+.set noat
+.set noreorder
+.text
+
+/* Data region (not executable host code): Mixed small-record block: header 'fffe 0000 000c 0002 000e 0000' @DBBE8, then 10 IEEE-754 float32 (big-endian) @DBBF4-DBC1C: 40.0,64.0,-32.0,84.0,32.0,96.0,56.0,96.0,88.0,96.0 (0x42200000 etc, 0xC2000000=-32.0); 0x01400000 @DBC1C; then u16 index ramp 0x0001,0x0002,0x0002,0x0003,0x0003,0x0003,0x0002,0x0002,0x0001,0x0063 @DBC20-DBC34. Hypothesis: float coordinate set + symmetric index ramp for a UI widget.. */
+/* 0x000DBBE8 0x8014B7E8 0xFFFE0000 */ .word 0xFFFE0000 # sd $s8, 0x0($ra)
+/* 0x000DBBEC 0x8014B7EC 0x000C0002 */ .word 0x000C0002 # srl $zero, $t4, 0
+/* 0x000DBBF0 0x8014B7F0 0x000E0000 */ .word 0x000E0000 # sll $zero, $t6, 0
+/* 0x000DBBF4 0x8014B7F4 0x42200000 */ .word 0x42200000 # cop0_0x11
+/* 0x000DBBF8 0x8014B7F8 0x42800000 */ .word 0x42800000 # cop0_0x14
+/* 0x000DBBFC 0x8014B7FC 0xC2000000 */ .word 0xC2000000 # ll $zero, 0x0($s0)
+/* 0x000DBC00 0x8014B800 0x42A80000 */ .word 0x42A80000 # cop0_0x15
+/* 0x000DBC04 0x8014B804 0x42000000 */ .word 0x42000000 # cop0_0x10
+/* 0x000DBC08 0x8014B808 0x42C00000 */ .word 0x42C00000 # cop0_0x16
+/* 0x000DBC0C 0x8014B80C 0x42600000 */ .word 0x42600000 # cop0_0x13
+/* 0x000DBC10 0x8014B810 0x42C00000 */ .word 0x42C00000 # cop0_0x16
+/* 0x000DBC14 0x8014B814 0x42B00000 */ .word 0x42B00000 # cop0_0x15
+/* 0x000DBC18 0x8014B818 0x42C00000 */ .word 0x42C00000 # cop0_0x16
+/* 0x000DBC1C 0x8014B81C 0x01400000 */ .word 0x01400000 # sll $zero, $zero, 0
+/* 0x000DBC20 0x8014B820 0x00010002 */ .word 0x00010002 # srl $zero, $at, 0
+/* 0x000DBC24 0x8014B824 0x00020003 */ .word 0x00020003 # sra $zero, $v0, 0
+/* 0x000DBC28 0x8014B828 0x00030003 */ .word 0x00030003 # sra $zero, $v1, 0
+/* 0x000DBC2C 0x8014B82C 0x00020002 */ .word 0x00020002 # srl $zero, $v0, 0
+/* 0x000DBC30 0x8014B830 0x00010063 */ .word 0x00010063 # subu $zero, $zero, $at
+/* 0x000DBC34 0x8014B834 0x00000000 */ .word 0x00000000 # nop
+/* 0x000DBC38 0x8014B838 0x00000000 */ .word 0x00000000 # nop
+/* 0x000DBC3C 0x8014B83C 0x00000000 */ .word 0x00000000 # nop
+/* 0x000DBC40 0x8014B840 0x00000000 */ .word 0x00000000 # nop
