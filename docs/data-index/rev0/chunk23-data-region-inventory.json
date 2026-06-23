@@ -1,0 +1,458 @@
+{
+  "chunk": 23,
+  "chunkRangeZ64": [
+    "0x00171000",
+    "0x00181000"
+  ],
+  "mixed": true,
+  "regionCount": 6,
+  "dataRegions": [
+    {
+      "name": "leading DATA (incoming straddler-tail + float64 pool + 0x8021 pointer tables + {Cn} tokens)",
+      "rangeZ64": [
+        "0x00171000",
+        "0x00171EA0"
+      ]
+    },
+    {
+      "name": "DATA ISLAND 1 (packed halfword/byte-index maps + a 408B tutorial help-message + 0x8021 pointer table)",
+      "rangeZ64": [
+        "0x00175F28",
+        "0x00177ED0"
+      ]
+    },
+    {
+      "name": "DATA ISLAND 2 (largest; packed/high-entropy [possibly compressed/graphics] + float64 pool + 0x801 pointer table)",
+      "rangeZ64": [
+        "0x0017BCD0",
+        "0x0017F9C0"
+      ]
+    },
+    {
+      "name": "inline zero_fill island within code region 1 (2 alignment words)",
+      "rangeZ64": [
+        "0x00173D48",
+        "0x00173D50"
+      ]
+    }
+  ],
+  "totalDataBytes": 27456,
+  "classification": "mixed parsed + raw-but-classified; ASCII help-message decoded byte-exactly; float64 pools + 0x8021/0x801-band pointer tables parsed; packed/high-entropy blocks raw-but-classified (possibly compressed/graphics marked HYPOTHESIS, no field semantics); BOTH data islands adversarially + independently confirmed to contain 0 prologues / 0 jr$ra (the parent functions DB MISLABELS them as functions — refuted byte-exactly)",
+  "byClassBytes": {
+    "packed/unknown": 25408,
+    "ieee754-const": 384,
+    "ram-pointer-table": 1132,
+    "ascii-string": 432,
+    "zero-fill": 100
+  },
+  "partCount": 33,
+  "codeRegions": [
+    {
+      "rangeZ64": [
+        "0x00171EA0",
+        "0x00175F28"
+      ],
+      "parts": 22,
+      "note": "CODE1: FP camera-transition leads (func_00173D50 begin, func_001742D0 stepSetup); preamble-orphans + recovered frameless leaves; jr $reg dispatcher @0x17459C internal."
+    },
+    {
+      "rangeZ64": [
+        "0x00177ED0",
+        "0x0017BCD0"
+      ],
+      "parts": 14,
+      "note": "CODE2: char-data/promotion consumers; preamble-orphan entry func_00177ED0 (lui/lw $a0,0x8022); huge func_00178A44 (5932B) single fn; func_0017B984 jr $v0 dispatch internal."
+    },
+    {
+      "rangeZ64": [
+        "0x0017F9C0",
+        "0x00181000"
+      ],
+      "parts": 4,
+      "note": "CODE3: preamble-orphan entry func_0017F9C0 (lui/lbu $v0,0x8021); ends in the outgoing FUNCTION straddler-head func_0017FF4C."
+    }
+  ],
+  "incomingStraddler": {
+    "part": "data_00171000_chunk23tail",
+    "rangeZ64": [
+      "0x00171000",
+      "0x00171C48"
+    ],
+    "note": "INCOMING DATA STRADDLER (tail): continuation of chunk-22 data_001708C8_chunk22head packed 0xF83E-family halfword stream; ends byte-exact at 0x171C48 (two zero words, then a float64 pool at 0x171C50) — adversarially confirmed."
+  },
+  "outgoingStraddler": {
+    "part": "func_0017FF4C",
+    "kind": "FUNCTION (code, NOT data)",
+    "rangeZ64": [
+      "0x0017FF4C",
+      "0x00181000"
+    ],
+    "note": "OUTGOING straddler is a CODE function straddler-head, not data: func_0017FF4C true entry is the 2-word lui/lbu $v0,0x8022 read-before-write preamble at 0x17FF4C folded into the addiu $sp,-0x88 prologue at 0x17FF54; NO jr$ra in [0x17FF4C,0x181000) (continues into chunk 24, parent end 0x181118)."
+  },
+  "parentEvidence": "Code overlay-relocated to runtime 0x8021xxxx band (scenario-state overlay; symbols_v2 ram= 0x801d5xxx is the WRONG linear back-map). CRITICAL: the parent functions DB lists ~35 functions spanning [0x171EA0,0x181000] but TWO large gaps are DATA ISLANDS (0x175F28..0x177ED0 and 0x17BCD0..0x17F9C0) with 0 prologues/0 jr$ra; the parent func_00177D20 is a 0x80218D00 pointer run (false positive, absorbed into table_00177B44). Boundaries pinned from byte-exact returns/prologues, NOT the DB. Hand-curated leads: scenarioCameraTransition_begin @0x173D50, _stepSetup @0x1742D0 (names stay func_*).",
+  "entries": [
+    {
+      "part": "data_00171000_chunk23tail",
+      "rangeZ64": [
+        "0x00171000",
+        "0x00171C48"
+      ],
+      "bytes": 3144,
+      "class": "packed/unknown",
+      "state": "raw-but-classified",
+      "note": "Incoming straddler-tail: continuation of the packed stream begun in chunk 22. Dominated by repeating wide tokens 0xF83EF83E, 0xB6B70001/0x0001B6B7, 0x8D6D8D6D, 0x9DF10001, 0x098F.. and 0x00010001 filler running unbroken from region start. Not 4-aligned MIPS (0 jr $ra); a packed/bitmap-style stream. Ends at the two pure-zero words 0x171C48-0x171C4C that precede the float64 pool."
+    },
+    {
+      "part": "float_00171C48",
+      "rangeZ64": [
+        "0x00171C48",
+        "0x00171D30"
+      ],
+      "bytes": 232,
+      "class": "ieee754-const",
+      "state": "parsed",
+      "note": "IEEE-754 float64 constant pool (8-byte aligned, each double = hi word then lo word, padded by 0x00000000 where needed). Evidence: 0x3F91DE69 0xAD42C3CA, 0x4004CCCC 0xCCCCCCCD (=2.6), 0x3FF4CCCC 0xCCCCCCCD (=1.3), 0x3FF028F5 0xC28F5C29 (=1.01), repeated 0x3FE66666 0x66666666 (=0.7), 0x41E00000 (2147483648.0 hi), 0x400921FB 0x54442D18 (=pi), 0x3FF921FB 0x54442D18 (=pi/2). Leading two 0x00000000 words at 0x171C48 are pad/separator. (swarm-label: float_00171C48_double_pool)"
+    },
+    {
+      "part": "data_00171D30",
+      "rangeZ64": [
+        "0x00171D30",
+        "0x00171DA0"
+      ],
+      "bytes": 112,
+      "class": "packed/unknown",
+      "state": "raw-but-classified",
+      "note": "Packed sub-table of 16-bit halfword pairs, small ascending magnitudes. Evidence: 0x00540078 0x005C0080 0x00540078 0x00EC0090, 0x00E40088 0x00EC0090, 0x00440022 0x004C002A, 0x0086006A 0x009C002C, 0x00A40034. High halves cluster 0x0044-0x00EC, low halves 0x0022-0x0090 -> coordinate/offset-pair or index data, not MIPS. Ends right before the 0x8021-band pointers at 0x171DA0. (swarm-label: data_00171D30_packed16)"
+    },
+    {
+      "part": "table_00171DA0",
+      "rangeZ64": [
+        "0x00171DA0",
+        "0x00171DF8"
+      ],
+      "bytes": 88,
+      "class": "ram-pointer-table",
+      "state": "parsed",
+      "note": "RAM-pointer table, 0x8021 band (RA-relocated runtime slots). Evidence: 0x8021AC7C 0x8021AD84 0x8021B004 0x8021B004 0x8021B39C 0x8021EE00 0x8021EE14 0x8021EE30, one 0x00000000 gap at 0x171DC0, then 0x8021EE44..0x8021EEB0 in ~+0x08/+0x14 strides. Every nonzero word is a 0x8021xxxx pointer. (swarm-label: table_00171DA0_ptr8021)"
+    },
+    {
+      "part": "rodata_00171DF8",
+      "rangeZ64": [
+        "0x00171DF8",
+        "0x00171E10"
+      ],
+      "bytes": 24,
+      "class": "ascii-string",
+      "state": "parsed",
+      "note": "Big-endian ASCII '{Cn}' format/color control tokens, each followed by a 0x00000000 separator. Decoded: 0x7B43367D='{C6}', 0x7B43307D='{C0}', 0x7B43387D='{C8}' (0x7B='{',0x43='C',0x36/30/38='6'/'0'/'8',0x7D='}'). (swarm-label: rodata_00171DF8_format_tokens)"
+    },
+    {
+      "part": "table_00171E10",
+      "rangeZ64": [
+        "0x00171E10",
+        "0x00171E58"
+      ],
+      "bytes": 72,
+      "class": "ram-pointer-table",
+      "state": "parsed",
+      "note": "RAM-pointer table, 0x8021 band. Evidence: 0x8021BC78 0x8021BCC8 0x8021BD3C 0x8021BEA8 0x8021BF38, three 0x00000000 words at 0x171E24-0x171E2C, then 0x8021CC68 0x8021CC88 0x8021CC98 0x8021CC58 0x8021CC60 0x8021CC90 0x8021CC98 0x8021CC78 0x8021CC70 0x8021CC80. All nonzero entries are 0x8021xxxx pointers. (swarm-label: table_00171E10_ptr8021)"
+    },
+    {
+      "part": "float_00171E58",
+      "rangeZ64": [
+        "0x00171E58",
+        "0x00171E78"
+      ],
+      "bytes": 32,
+      "class": "ieee754-const",
+      "state": "parsed",
+      "note": "Mixed float64/float32 constant pool. Evidence: 0x404CA666 0x66666666 (float64 =57.3), 0x40568000 0x00000000 (float64 =90.0), 0x40240000 0x00000000 (float64 =10.0), then float64 0x3F91D14E 0x3BCD35A8 (=~0.01745, radians-per-degree). All exponent-band 0x40xx/0x3Fxx with 0x6666/zero mantissas -> const pool, not code. (swarm-label: float_00171E58_const_pool)"
+    },
+    {
+      "part": "table_00171E78",
+      "rangeZ64": [
+        "0x00171E78",
+        "0x00171EA0"
+      ],
+      "bytes": 40,
+      "class": "ram-pointer-table",
+      "state": "parsed",
+      "note": "RAM-pointer table, 0x8021 band, with trailing zero pad. Evidence: 0x8021D2E8 0x8021D284 0x8021D238 0x8021D46C 0x8021D424 0x8021D3C4 0x8021D390 0x8021D330 (eight 0x8021Dxxx pointers), then two 0x00000000 pad words at 0x171E98-0x171E9C. Region ends at 0x171EA0 (real code begins there). (swarm-label: table_00171E78_ptr8021_zpad)"
+    },
+    {
+      "part": "zero_fill_00173D48",
+      "rangeZ64": [
+        "0x00173D48",
+        "0x00173D50"
+      ],
+      "bytes": 8,
+      "class": "zero-fill",
+      "state": "parsed",
+      "note": "Two zero/nop words (0x00000000) of inter-function alignment padding between the prior fn epilogue and the func_00173D50 prologue (leadingGap). Not executed."
+    },
+    {
+      "part": "zero_fill_00175F28",
+      "rangeZ64": [
+        "0x00175F28",
+        "0x00175F30"
+      ],
+      "bytes": 8,
+      "class": "zero-fill",
+      "state": "parsed",
+      "note": "Two pure-zero words at island start: 0x00000000, 0x00000000 (boundary pad between code1 jr $ra/addiu epilogue at 0x175F20 and the packed payload that follows). (swarm-label: zero_fill_island1_lead)"
+    },
+    {
+      "part": "data_00175F30",
+      "rangeZ64": [
+        "0x00175F30",
+        "0x001765B0"
+      ],
+      "bytes": 1664,
+      "class": "packed/unknown",
+      "state": "raw-but-classified",
+      "note": "Packed/RLE-style block dominated by repeating halfword fills. Evidence words: 0xAC95AC95 (runs), 0x9BD19BD1, 0xFFFEFFFE (long runs), 0x62C962C9, 0x52475247, 0x4A054A05, 0xBC97BC97, 0xA413A413, 0x00010001. Interspersed single 0x000xNNNN count/marker words (e.g. 0x00019BD1, 0x0001A413, 0x0001BC95, 0x000151C5) every few words suggest a run-length/segment-header packing. Not code (no jr $ra; decode is incidental). (swarm-label: data_packed_halfword_fills)"
+    },
+    {
+      "part": "data_001765B0",
+      "rangeZ64": [
+        "0x001765B0",
+        "0x00177918"
+      ],
+      "bytes": 4968,
+      "class": "packed/unknown",
+      "state": "raw-but-classified",
+      "note": "Large low-byte packed table: bytes overwhelmingly in range 0x01-0x15 (e.g. words 0x10851085, 0x01010101, 0x06060606, 0x03030303, 0x0E0E0E0E, 0x11111111, 0x13131313, 0x15151515) arranged in fixed-looking rows. Recurring row-header word 0x0106020E precedes many segments; segments are separated by 2-4 zero words (e.g. 0x176808/0x17687C/0x176944 each show 0x01010100 then nop nop). Looks like a tilemap/attribute or palette-index bitmap; classified as packed data. (swarm-label: data_byte_index_map)"
+    },
+    {
+      "part": "zero_fill_00177918",
+      "rangeZ64": [
+        "0x00177918",
+        "0x00177928"
+      ],
+      "bytes": 16,
+      "class": "zero-fill",
+      "state": "parsed",
+      "note": "Four pure-zero words (alignment/padding) after the byte-index map, before the 0x15-band index block."
+    },
+    {
+      "part": "data_00177928",
+      "rangeZ64": [
+        "0x00177928",
+        "0x00177980"
+      ],
+      "bytes": 88,
+      "class": "packed/unknown",
+      "state": "raw-but-classified",
+      "note": "Packed 0x15-band index/bitmap data (88B): recurring byte 0x15 with sparse 0x00 (e.g. 0x00151515, 0x15151500, 0x15151515). Raw-but-classified; no field semantics. (was over-merged into a zero_fill part — adversarially corrected)"
+    },
+    {
+      "part": "zero_fill_00177980",
+      "rangeZ64": [
+        "0x00177980",
+        "0x00177990"
+      ],
+      "bytes": 16,
+      "class": "zero-fill",
+      "state": "parsed",
+      "note": "Four pure-zero words (alignment/padding) after the 0x15-band index block, before the help-message text region."
+    },
+    {
+      "part": "data_00177990",
+      "rangeZ64": [
+        "0x00177990",
+        "0x001779A0"
+      ],
+      "bytes": 16,
+      "class": "packed/unknown",
+      "state": "raw-but-classified",
+      "note": "Single isolated word 0x800E91D0 at 0x177990 flanked by zero words (0x177994/0x177998/0x17799C = 0x00000000). A lone 0x800E-band RAM address (not the 0x8021 table below); kept as data_ since it is a one-off and surrounded by zero pad, not a multi-entry table. (swarm-label: data_stray_pointer_0x800E)"
+    },
+    {
+      "part": "rodata_001779A0",
+      "rangeZ64": [
+        "0x001779A0",
+        "0x00177B38"
+      ],
+      "bytes": 408,
+      "class": "ascii-string",
+      "state": "parsed",
+      "note": "ASCII English help/tutorial string, NUL-terminated. Decoded (0x81 0x97 = embedded newline/control bytes shown as [81][97]): \"When you move the cursor on the unit[81][97]icon and press the A Button,[81][97]the unit command is displayed.[81][97]Use this to give orders to the unit.[81][97]The main command is displayed when[81][97]you press the R Button. With this,[81][97]you can organize and dispatch units[81][97]located in the headquarters.[81][97]Each command has an accompanying[81][97]online explanatory statement called[81][97]Help Message. To view, select[81][97]the command and press START.[00]\". Raw evidence: 0x5768656E ('When'), 0x52542E00 ('RT.\\0'). (swarm-label: rodata_help_message_text)"
+    },
+    {
+      "part": "zero_fill_00177B38",
+      "rangeZ64": [
+        "0x00177B38",
+        "0x00177B44"
+      ],
+      "bytes": 12,
+      "class": "zero-fill",
+      "state": "parsed",
+      "note": "Three pure-zero words (0x177B38/0x177B3C/0x177B40 = 0x00000000) padding the NUL-terminated string out to the 4-aligned start of the pointer table. (swarm-label: zero_fill_after_text)"
+    },
+    {
+      "part": "table_00177B44",
+      "rangeZ64": [
+        "0x00177B44",
+        "0x00177ED0"
+      ],
+      "bytes": 908,
+      "class": "ram-pointer-table",
+      "state": "parsed",
+      "note": "RAM-pointer table, all entries in the 0x8021xxxx band (word-stride 0x4). Opens with 0x8021AA80 at 0x177B44, then two zero words, then a dense run starting 0x177B50 (0x80217684, 0x802176DC, 0x80217730, 0x8021781C, 0x802178B8, 0x802178F4, 0x802179EC, 0x80217B90, 0x80217BEC, 0x80217EA4, 0x802180D4, 0x8021812C...). Large default-fill runs: 0x8021812C repeated ~0x177B7C-0x177CE8, then 0x80218D00 repeated as the dominant default (0x177CF4-0x177DD4, including the func_00177D20 false boundary), and 0x80218F3C repeated 0x177DE4-0x177ECC. Non-default exceptions interleaved: 0x80218CB8, 0x80218CD4, 0x80218CF8, 0x80218D58, 0x80218E18, 0x80218EEC, 0x80218104. Ends at 0x80218E18 (0x177ECC); region terminates at 0x177ED0 where the 0x8022-band code2 preamble (lui $a0,0x8022) begins. (swarm-label: table_ptr_0x8021_band)"
+    },
+    {
+      "part": "zero_fill_0017BCD0",
+      "rangeZ64": [
+        "0x0017BCD0",
+        "0x0017BCF0"
+      ],
+      "bytes": 32,
+      "class": "zero-fill",
+      "state": "parsed",
+      "note": "8 pure-zero words (0x00000000) of NOP/zero padding at start of Data Island 2, immediately after code2's trailing 'jr $ra'/'addiu $sp' at 0x17BCC8-0x17BCCC. (swarm-label: zero_fill_island2_pad)"
+    },
+    {
+      "part": "data_0017BCF0",
+      "rangeZ64": [
+        "0x0017BCF0",
+        "0x0017C4F8"
+      ],
+      "bytes": 2056,
+      "class": "packed/unknown",
+      "state": "raw-but-classified",
+      "note": "Packed/compressed graphics data. Opens with 0xDF000000,0x00000000 sub-block marker (0x17BCF0), then dense small-byte stream dominated by bytes 0x00-0x11 with 0x00010001 fills and j-like 0x08xx08xx words (e.g. 0x08030003, 0x088308C3, 0x08C50885). Embeds prompt marker 0x84B763EF at 0x17C000 plus higher-entropy bursts (0x9D7F953D, 0x42199 53B). Possibly compressed (hypothesis); honest classification is opaque packed binary. (swarm-label: data_packed_gfx_lowband_a)"
+    },
+    {
+      "part": "data_0017C4F8",
+      "rangeZ64": [
+        "0x0017C4F8",
+        "0x0017C900"
+      ],
+      "bytes": 1032,
+      "class": "packed/unknown",
+      "state": "raw-but-classified",
+      "note": "0xDF000000,0x00000000 marker at 0x17C4F8 then a pure low-byte block: every byte < 0x10 (e.g. 0x02060503, 0x040E0302, 0x050B0D07, 0x0A0A0502). Looks like 4-bit indices or packed pixel deltas; possibly compressed (hypothesis). No pointers, no ASCII. (swarm-label: data_packed_lowbyte_b)"
+    },
+    {
+      "part": "data_0017C900",
+      "rangeZ64": [
+        "0x0017C900",
+        "0x0017CEF8"
+      ],
+      "bytes": 1528,
+      "class": "packed/unknown",
+      "state": "raw-but-classified",
+      "note": "0xDF000000,0x00000000 marker at 0x17C900 then a high-byte packed block: bytes clustered in 0x40-0x8B band (e.g. 0x5A815B01, 0x52C16381, 0x73417B8B, 0x6B8F83D5, 0x40014801). Trails into a long run of 0x00010001 fills (~0x17C9DC-0x17CAFF) and zero runs before the index block. Possibly compressed/packed pixel data (hypothesis). (swarm-label: data_packed_highbyte_c)"
+    },
+    {
+      "part": "data_0017CEF8",
+      "rangeZ64": [
+        "0x0017CEF8",
+        "0x0017EE74"
+      ],
+      "bytes": 8060,
+      "class": "packed/unknown",
+      "state": "raw-but-classified",
+      "note": "Large decoded graphics/bitmap index block. Byte values confined to a palette/index band: heavy 0x07 fills plus 0x2B-0x4D run-bytes (e.g. 0x084A4A4A, 0x4541493E (prompt marker), 0x45454545 'EEEE', 0x4C4D4748). Rows are ~0xA8 bytes (168) and terminate with a 0x..0000 / 0x00000000 marker pair (zero words recur every 0xA8 at 0x17CF9C,0x17D044,0x17D0EC,...). Tiles/sprite cells, NOT ASCII (the printable look is incidental index values). Hypothesis: indexed-color image data. (swarm-label: data_bitmap_index_rows_d)"
+    },
+    {
+      "part": "data_0017EE74",
+      "rangeZ64": [
+        "0x0017EE74",
+        "0x0017EF20"
+      ],
+      "bytes": 172,
+      "class": "packed/unknown",
+      "state": "raw-but-classified",
+      "note": "Run-byte 0x07 fill block: words are all 0x07070707 from 0x17EE78 to 0x17EF14, opened by a 0x..0000 row marker at 0x17EE74. Likely a blank/background scanline region of the preceding bitmap block. Ends at 0x17EF18 (0x07070000). (swarm-label: data_const07_fill_e)"
+    },
+    {
+      "part": "data_0017EF20",
+      "rangeZ64": [
+        "0x0017EF20",
+        "0x0017F660"
+      ],
+      "bytes": 1856,
+      "class": "packed/unknown",
+      "state": "raw-but-classified",
+      "note": "0xDF000000,0x00000000 marker at 0x17EF20 then a long mixed/high-entropy packed block spanning the full byte range (e.g. 0x6B19CDEF, 0x8B9D18C7, 0xD6B57C63, 0xDF39F7FF, 0xBCC7BCC7, 0xD659D65B, 0xEF71F775). Recurring 0xDF000000 separators and 0x00010001 fills throughout. Possibly compressed or packed audio/coordinate stream (hypothesis); not clean floats, not pointers, not ASCII. (swarm-label: data_packed_mixed_f)"
+    },
+    {
+      "part": "data_0017F660",
+      "rangeZ64": [
+        "0x0017F660",
+        "0x0017F830"
+      ],
+      "bytes": 464,
+      "class": "packed/unknown",
+      "state": "raw-but-classified",
+      "note": "Monotonic descending byte-ramp LUT. After 0xDF000000,0x00000000 at 0x17F660, bytes step smoothly down 0x1D,0x1D,...,0x1C,0x1B,0x1A,0x19,...,0x05 (e.g. 0x1D1D1D1D, 0x1C1B1B1B, 0x100F1505, then repeating descending segments 0x16171616..0x07060606). Looks like a gradient/fade/gamma or envelope curve table; low-byte band only. (swarm-label: data_byte_ramp_lut_g)"
+    },
+    {
+      "part": "data_0017F830",
+      "rangeZ64": [
+        "0x0017F830",
+        "0x0017F8C8"
+      ],
+      "bytes": 152,
+      "class": "packed/unknown",
+      "state": "raw-but-classified",
+      "note": "Nibble-packed bitmap/tilemap: words are repeated 1/2/3 nibbles (e.g. 0x11111111, 0x12212212, 0x21111321, 0x22122122, 0x01111111, 0x00111100) interrupted by 0x..0000 row markers (0x17F878,0x17F890,0x17F8A4). Byte values <= 0x32. Hypothesis: 4-bit indexed micro-tile or attribute map. (swarm-label: data_nibble_packed_bitmap_h)"
+    },
+    {
+      "part": "data_0017F8C8",
+      "rangeZ64": [
+        "0x0017F8C8",
+        "0x0017F910"
+      ],
+      "bytes": 72,
+      "class": "packed/unknown",
+      "state": "raw-but-classified",
+      "note": "0xDF000000 at 0x17F8C8, then a short packed stream (0x0000398D, 0xFFFFB5AD, 0x6B19CDEF, 0x8B9D18C7, 0xB56B0801, 0xD6B57C63, 0xDF39F7FF) with zero gaps, then 0x81752573/0x81760000 at 0x17F900-0x17F904 and two zero words. High-entropy packed data; not pointers/ASCII. (swarm-label: data_packed_tail_i)"
+    },
+    {
+      "part": "float_0017F910",
+      "rangeZ64": [
+        "0x0017F910",
+        "0x0017F988"
+      ],
+      "bytes": 120,
+      "class": "ieee754-const",
+      "state": "parsed",
+      "note": "IEEE-754 double-precision constant pool (big-endian word pairs). Decodes to: 10.5 (0x40250000), 16.0 (0x40300000), 181.773 (0x4066B8BA2E8BA2E9), 0.0174533 = pi/180 deg->rad (0x3F91DE69AD42C3CA, appears 3x), 1.0 (0x3FF00000), -1.0 (0xBFF00000), -4000.0 (0xC0AF4000, 2x), 1.5 (0x3FF80000), 64.0 (0x40500000), ~2.147e9 (0x41E00000). Math/geometry constants. (swarm-label: float_double_const_pool)"
+    },
+    {
+      "part": "data_0017F988",
+      "rangeZ64": [
+        "0x0017F988",
+        "0x0017F9A0"
+      ],
+      "bytes": 24,
+      "class": "packed/unknown",
+      "state": "raw-but-classified",
+      "note": "Short packed tail between the float pool and the pointer table: 0x7B43367D, 0x00000000, 0x7B433134, 0x7D000000, 0x7B43307D, 0x00000000. Repeating 0x7B43.. words; not clean floats or RAM pointers. Opaque packed data. (swarm-label: data_packed_tail_j)"
+    },
+    {
+      "part": "table_0017F9A0",
+      "rangeZ64": [
+        "0x0017F9A0",
+        "0x0017F9B8"
+      ],
+      "bytes": 24,
+      "class": "ram-pointer-table",
+      "state": "parsed",
+      "note": "RAM-pointer table: 6 contiguous 0x801xxxxx pointers (word stride 0x4): 0x80218A78, 0x80218B1C, 0x80218D0C, 0x80218D0C, 0x80218D60, 0x80218D60. All point into the 0x80218xxx RAM region (duplicate entries present). Honest table_ run; field names not asserted. (swarm-label: table_ram_ptr_801)"
+    },
+    {
+      "part": "zero_fill_0017F9B8",
+      "rangeZ64": [
+        "0x0017F9B8",
+        "0x0017F9C0"
+      ],
+      "bytes": 8,
+      "class": "zero-fill",
+      "state": "parsed",
+      "note": "2 pure-zero words (NOP padding) closing Data Island 2 at 0x17F9B8-0x17F9BC; immediately followed by the code3 preamble 'lui $v0, 0x8021' at 0x17F9C0 (region end). (swarm-label: zero_fill_island2_end_pad)"
+    }
+  ]
+}

@@ -1,0 +1,35 @@
+/*
+ * Original Rev 0 MIPS reference split.
+ * Parent source: asm/original/rev0/code_00171000_00181000.s
+ * z64 range: 0x00172364..0x001723B4 exclusive
+ * Decode comments are aids, not proof of semantic function boundaries.
+ */
+.set noat
+.set noreorder
+.text
+
+/* Read-before-write preamble lui $v0,0x8022 / lw $v0,-0x5590($v0) at 0x172364-0x172368 feeds body lw $v0,0x70($v0) at 0x172374 before $v0 is rewritten; folded forward over inner prologue at 0x17236C (addiu $sp,-0x18). jal 0x80079618; ends jr $ra (0x1723AC)+delay addiu $sp,0x18 (0x1723B0); part ends at slice end 0x1723B4. */
+func_00172364:
+/* 0x00172364 0x801E1F64 0x3C028022 */ .word 0x3C028022 # lui $v0, 0x8022
+/* 0x00172368 0x801E1F68 0x8C42AA70 */ .word 0x8C42AA70 # lw $v0, -0x5590($v0)
+
+/* function boundary candidate: func_0017236C, size=72, kind=prologue */
+func_0017236C:
+/* 0x0017236C 0x801E1F6C 0x27BDFFE8 */ .word 0x27BDFFE8 # addiu $sp, $sp, -0x18
+/* 0x00172370 0x801E1F70 0xAFBF0010 */ .word 0xAFBF0010 # sw $ra, 0x10($sp)
+/* 0x00172374 0x801E1F74 0x8C420070 */ .word 0x8C420070 # lw $v0, 0x70($v0)
+/* 0x00172378 0x801E1F78 0x1040000B */ .word 0x1040000B # beq $v0, $zero, 0x801E1FA8
+/* 0x0017237C 0x801E1F7C 0x3C040218 */ .word 0x3C040218 # lui $a0, 0x0218
+/* 0x00172380 0x801E1F80 0x3484E9B4 */ .word 0x3484E9B4 # ori $a0, $a0, 0xE9B4
+/* 0x00172384 0x801E1F84 0x24050016 */ .word 0x24050016 # addiu $a1, $zero, 0x16
+/* 0x00172388 0x801E1F88 0x0C01E586 */ .word 0x0C01E586 # jal 0x80079618
+/* 0x0017238C 0x801E1F8C 0x2406FFEF */ .word 0x2406FFEF # addiu $a2, $zero, -0x11
+/* 0x00172390 0x801E1F90 0x3C028022 */ .word 0x3C028022 # lui $v0, 0x8022
+/* 0x00172394 0x801E1F94 0x8C42AA70 */ .word 0x8C42AA70 # lw $v0, -0x5590($v0)
+/* 0x00172398 0x801E1F98 0xAC400070 */ .word 0xAC400070 # sw $zero, 0x70($v0)
+/* 0x0017239C 0x801E1F9C 0xAC400074 */ .word 0xAC400074 # sw $zero, 0x74($v0)
+/* 0x001723A0 0x801E1FA0 0xAC400078 */ .word 0xAC400078 # sw $zero, 0x78($v0)
+/* 0x001723A4 0x801E1FA4 0xAC40007C */ .word 0xAC40007C # sw $zero, 0x7C($v0)
+/* 0x001723A8 0x801E1FA8 0x8FBF0010 */ .word 0x8FBF0010 # lw $ra, 0x10($sp)
+/* 0x001723AC 0x801E1FAC 0x03E00008 */ .word 0x03E00008 # jr $ra
+/* 0x001723B0 0x801E1FB0 0x27BD0018 */ .word 0x27BD0018 # addiu $sp, $sp, 0x18

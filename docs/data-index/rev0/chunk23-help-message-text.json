@@ -1,0 +1,29 @@
+{
+  "source": "build/original-mips/rev0/code_00171000_00181000.s",
+  "rangeZ64": [
+    "0x001779A0",
+    "0x00177B38"
+  ],
+  "totalBytes": 408,
+  "encoding": "ASCII, NUL-terminated, big-endian (z64) byte order; @-prefixed inline control codes left verbatim",
+  "title": "Chunk-23 help/message text (0x1779A0, data island 1)",
+  "stringCount": 1,
+  "atCodeTally": {},
+  "atCodeSemantics": "UNRESOLVED — @0..@3/@w/@c/@e are inline formatting/control codes; exact runtime meaning not decoded",
+  "confidence": "high (printable ASCII text); control-code semantics hypothesis-grade",
+  "segments": [
+    {
+      "kind": "string",
+      "offset": "0x001779A0",
+      "bytes": 407,
+      "text": "When you move the cursor on the unit\\x81\\x97icon and press the A Button,\\x81\\x97the unit command is displayed.\\x81\\x97Use this to give orders to the unit.\\x81\\x97The main command is displayed when\\x81\\x97you press the R Button. With this,\\x81\\x97you can organize and dispatch units\\x81\\x97located in the headquarters.\\x81\\x97Each command has an accompanying\\x81\\x97online explanatory statement called\\x81\\x97Help Message. To view, select\\x81\\x97the command and press START.",
+      "atCodes": {},
+      "nonPrintable": 22
+    },
+    {
+      "kind": "nul",
+      "offset": "0x00177B37",
+      "bytes": 1
+    }
+  ]
+}
