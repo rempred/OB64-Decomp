@@ -31,7 +31,7 @@ run date 2026-06-23.
 ## 3. Commits (this run, newest first)
 | Hash | Category | Purpose |
 |---|---|---|
-| `_(this doc's commit)_` | review handoff | Add chunks 24–25 review handoff (this file) |
+| `3f718c1` | review handoff | Add chunks 24–25 review handoff (this file) |
 | `96a2a66` | source + docs | Source-own chunk 25 (71 parts, CODE-dominant MIXED); dossier `lib-chunk25` + data-index inventory + 3 decoded ASCII exports + doc updates |
 | `bb6fff9` | source + docs | Source-own chunk 24 (63 parts, MIXED); dossier `lib-chunk24` + data-index inventory + 1 decoded UI-label export + doc updates |
 | `e5f1f57` | cleanup + tool | Strip false-function labels from 2 data files (table_00177B44, zero_fill_00145204) + fix split tool to drop code labels in data parts |
