@@ -112,6 +112,27 @@ If anything was encountered, include:
 - Runtime-state requests needed to prove behavior, registers, overlay mapping,
   memory layout, or patch safety.
 
+8b. Runtime-State Catalog Evidence
+If no runtime states were used, write:
+`No runtime states were used; conclusions are static unless otherwise noted.`
+
+If runtime states were used, include:
+- Exact state path under
+  `C:\Users\Joe\Projects\OgreBattlel64\runtime-states\vanilla\rev0`.
+- Header/ROM identity that was checked: CRC pair, country, version, and whether
+  it matched the running ROM.
+- Broad catalog folder chosen and why it was the nearest state.
+- Exact ROM/RAM addresses, watchpoints, breakpoints, registers, memory ranges,
+  and frame/event ranges inspected.
+- Observation result and confidence: proven by runtime trace/controlled
+  mutation, supported candidate, rejected static lead, or still `needs-runtime`.
+- Any limitations from using a broad stable state rather than a frame-perfect
+  capture.
+
+State names and folder names are convenience labels only. Do not treat a state
+label as semantic proof. If the needed situation was missing, record a precise
+runtime-state request instead of guessing.
+
 9. Tooling Changes
 For every tool touched or added:
 - File path.
@@ -185,6 +206,12 @@ Writing requirements:
 - Do not claim patch behavior or patch safety is proven from static evidence
   alone; classify static-only findings as `candidate`, `rejected`, or
   `needs-runtime`.
+- Runtime-state observations must cite exact state paths, checked ROM identity,
+  addresses, watches/registers/memory ranges, and confidence. Missing runtime
+  situations should become runtime-state requests, not guesses.
+- Autonomous emulator/runtime work must follow
+  `C:\Users\Joe\Projects\OgreBattlel64\TestingWorkFlow.MD`; user-driven testing
+  should stay passive unless Joe asks otherwise.
 - Keep source ownership as the priority. Do not report speculative patch hunts
   as run work.
 - Do not call mixed code/data chunks "fully split into functions"; say

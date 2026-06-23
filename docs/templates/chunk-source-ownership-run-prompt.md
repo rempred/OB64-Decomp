@@ -138,7 +138,8 @@ Required reading before edits:
 8. `{REQUIRED_REVIEW_DOCS}`
 9. Latest relevant dossier before `{PREV_FRONTIER}`
 10. `asm\original\rev0\manifest.json`
-11. Relevant tools: `tools\dump_function_context.js`, `tools\plan_chunk.js`,
+11. `docs\runtime-state-catalog.md`
+12. Relevant tools: `tools\dump_function_context.js`, `tools\plan_chunk.js`,
     `tools\scan_functions.js`, `tools\check_boundaries.js`,
     `tools\check_splits.js`, `tools\split_original_mips_part.js`,
     `tools\slice_chunk.js`, `tools\integrate_chunk.js`,
@@ -162,6 +163,37 @@ Parent workspace evidence sweep:
   contradiction in the relevant chunk dossier and the review handoff. Include
   exact parent repo paths and the reason each artifact did or did not affect
   split boundaries, names, data classification, or control-flow assumptions.
+
+Runtime-state catalog workflow:
+- The curated vanilla Rev 0 Project64 state catalog lives in the parent
+  workspace at
+  `C:\Users\Joe\Projects\OgreBattlel64\runtime-states\vanilla\rev0`.
+  Read `docs\runtime-state-catalog.md` before using it.
+- Static source ownership remains primary. Use runtime states only to resolve
+  narrowed questions such as overlay/RAM mapping, register meaning, active call
+  paths, behavior confidence, or patch-safety/runtime-state requests.
+- Choose the nearest broad state to the question: core menus for menu/task
+  buffers, dialogue/cutscene for text/script/display-list paths, scenario-map
+  for loaded scenario overlays, battle for battle paths, and data-coverage for
+  table/loaded-data questions. If the needed situation is missing, record a
+  precise runtime-state request instead of guessing.
+- State folder and file names are convenience labels, not semantic proof. A
+  named state only supplies a likely starting point; prove behavior with exact
+  watches, register snapshots, memory reads, or controlled mutation.
+- Verify savestate headers before use. Current catalog identity is vanilla US
+  Rev 0 Project64 CRC `E6419BC5/69011DE3`, country `0x45`, version `0`, but each
+  runtime run must still record the checked state path and identity. Preferred
+  preflight when the Project64 bridge is active:
+  `python C:\Users\Joe\Projects\OgreBattlel64\tools\project64\pj64.py --port <port> stateinfo "<state.pj.zip>"`.
+- Autonomous emulator/runtime work must follow
+  `C:\Users\Joe\Projects\OgreBattlel64\TestingWorkFlow.MD`. During user-driven
+  testing, stay passive unless asked: prepare watches, drain logs, capture
+  artifacts, and wait for Joe's observations.
+- Record runtime observations in the dossier/review handoff and any affected
+  patch-workbench JSON with exact state path, ROM identity, addresses,
+  watchpoints/breakpoints, registers or memory ranges, observed frames/events,
+  confidence, and whether the result is `candidate`, `rejected`,
+  `needs-runtime`, or proven by runtime trace/controlled mutation.
 
 Patch Workbench Targets:
 {PATCH_WORKBENCH_TARGETS}
@@ -194,6 +226,9 @@ Patch workbench harvest rules:
 - Runtime-state requests should be precise: required savestate or scenario,
   watchpoints, registers, overlay mapping, memory ranges, branch/register proof,
   or mutation needed to prove behavior or patch safety.
+- When a request can be served by the vanilla Rev 0 runtime-state catalog, name
+  the nearest catalog folder/path and the exact proof still needed. When no
+  catalog state exists, say which missing category/state should be captured.
 - If no patch-workbench metadata is encountered, say so briefly in the dossier
   and review handoff. Do not create empty noise.
 
@@ -397,6 +432,9 @@ Review handoff requirements:
   candidates/rejections, original words/displaced instructions/resume addresses,
   hazards, overlay/RAM caveats, data/free-space notes, runtime-state requests,
   and artifact paths. If none were encountered, state that explicitly.
+- Include runtime-state catalog use if any: exact state path, verified identity,
+  watches/registers/memory ranges, addresses, confidence, and unresolved
+  runtime-state requests. If no runtime states were used, state that explicitly.
 - For any data-dominant range or substantial data span, include total data bytes
   source-owned, parsed bytes, raw-but-classified bytes, undecoded bytes, data
   files added, index files added, known format families found, and exact next
