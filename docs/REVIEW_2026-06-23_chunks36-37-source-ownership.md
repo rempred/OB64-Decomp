@@ -12,7 +12,7 @@ Final frontier: `0x00261000`
   (opening fix + combat-state retrospective; doc/workflow only)
 - `f456033` — `Source-own Rev0 chunk 36 (0x241000..0x251000)`
 - `755fc9f` — `Source-own Rev0 chunk 37 (0x251000..0x261000) + advance current-state docs`
-- (this document) — `Add chunks 36-37 review handoff`
+- `950e823` — `Add chunks 36-37 review handoff` (this document)
 
 ## Outcome
 
