@@ -15,10 +15,10 @@ Current passing commands:
 node tools/verify_setup.js
 ```
 
-Current source mix: 26 tracked composite real-assembler chunks (chunk 0 177
-`boot/`; chunks 1–25 in `lib/`: 350, 216, 67, 376, 88, 78, 103, 87, 34, 35, 191, 74, 67, 94, 153, 95, 66, 95, 80, 175, 99, 99, 73, 63, 71) = 3,106 tracked
-source files, plus 74 generated fallback chunks. **Chunks 0–25 are fully
-source-owned as named code/data parts** (`0x00001000..0x001A1000`; chunk 16: 72 code + 23
+Current source mix: 27 tracked composite real-assembler chunks (chunk 0 177
+`boot/`; chunks 1–26 in `lib/`: 350, 216, 67, 376, 88, 78, 103, 87, 34, 35, 191, 74, 67, 94, 153, 95, 66, 95, 80, 175, 99, 99, 73, 63, 71, 96) = 3,202 tracked
+source files, plus 73 generated fallback chunks. **Chunks 0–26 are fully
+source-owned as named code/data parts** (`0x00001000..0x001B1000`; chunk 16: 72 code + 23
 data, MIXED — leading scenario record/pointer/float64 data + the neutral-encounter code path;
 chunk 17: 66 code + 0 data, ALL CODE — char-data/encounter code;
 chunk 18: 95 code + 0 data, ALL CODE — FP-heavy scenario/combat code;
@@ -28,8 +28,13 @@ chunk 21: 94 code + 5 data, MIXED — class/character-lookup code + a trailing h
 chunk 22: 35 code + 64 data, MIXED — UI/text + weapon-type/terrain resource data wrapping FP-heavy menu/item/legion code, with incoming AND outgoing DATA straddlers;
 chunk 23: 40 code + 33 data, MIXED 6-region — scenario/camera + char-data code interleaved with two large data islands the parent DB mislabeled as functions, ending in the outgoing FUNCTION straddler func_0017FF4C;
 chunk 24: 40 code + 23 data, MIXED — FP/menu/display code wrapping a large ~26.7KB interior DATA region [font/tile bitmaps + fixed-stride record tables + 0x8021 pointer tables + float64 pool] the parent DB again missed, with incoming AND outgoing FUNCTION straddlers;
-chunk 25: 59 code + 12 data, CODE-dominant MIXED — char/class/scenario code [incl. the documented record-builder func_0019554C] + a shop-dialogue string pool + 2 inline data islands, with incoming AND outgoing FUNCTION straddlers);
-next is chunk 26 (`0x001A1000`).
+chunk 25: 59 code + 12 data, CODE-dominant MIXED — char/class/scenario code [incl. the documented record-builder func_0019554C] + a shop-dialogue string pool + 2 inline data islands, with incoming AND outgoing FUNCTION straddlers;
+chunk 26: 81 code + 15 data, CODE-dominant MIXED — FP-heavy char/class/scenario/encounter code +
+3 inline data islands [Soldier/Thrust labels + jump table; a ~1.9KB ramp-LUT/packed-record/double-pool
+island after func_001A42A4; an options-menu string pool], incl. the ESET loader func_001A6D64 + the
+reward-queue writer func_001AF828 + the 9.3KB dispatcher func_001A9290, with incoming AND outgoing
+FUNCTION straddlers);
+next is chunk 27 (`0x001B1000`).
 
 The assembled code-region SHA256 is
 `40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`; the full
@@ -106,27 +111,29 @@ node tools/audit_code_region.js
    generates fallback owners for the rest. Keep `node tools/verify_setup.js`
    green after every promotion.
 
-3. Continue into chunk 26.
+3. Continue into chunk 27.
 
-   Chunks 0–25 (`0x00001000..0x001A1000`) are fully source-owned as named code/data
-   parts: chunk 0 in `boot/`; chunks 1–25 in `lib/` (dossiers `lib-chunk1-…` …
-   `lib-chunk25-…`). Chunks 13–16, 19–25 are MIXED; chunks 17–18 are ALL CODE.
-   Chunk 25 (71 parts: 59 code + 12 data) is CODE-dominant MIXED: char/class/scenario CODE1 → a
-   shop-dialogue STRING POOL (`0x19BFF0..0x19C760`: rodata + handler-pointer tables) → CODE2,
-   plus 2 small inline data islands in CODE1 (UI labels `data_001952E8`; debug strings
-   `data_00197738`). Notable: the parent-documented, in-game-proven **record-builder
-   `func_0019554C`** (runtime hook @0x195584 builds 52B enemy records from enemydat templates;
-   name kept conservative). Adversarial: 6 verifiers, 0 boundary moves (LOW note/file fixes only).
-   Data index `docs/data-index/rev0/chunk25-data-region-inventory.json` + 3 decoded ASCII exports.
+   Chunks 0–26 (`0x00001000..0x001B1000`) are fully source-owned as named code/data
+   parts: chunk 0 in `boot/`; chunks 1–26 in `lib/` (dossiers `lib-chunk1-…` …
+   `lib-chunk26-…`). Chunks 13–16, 19–26 are MIXED; chunks 17–18 are ALL CODE.
+   Chunk 26 (96 parts: 81 code + 15 data) is CODE-dominant MIXED: FP-heavy char/class/scenario/
+   encounter code with 3 inline DATA islands — D1 UI labels (Soldier/Thrust) + jump table; a ~1.9KB
+   embedded island after `func_001A42A4` (ramp LUT + packed records + 0x8021 ptr table + IEEE-754
+   double pool); the D4 options/debug-menu string pool. Notable leads (names conservative): the ESET
+   loader `func_001A6D64`, the reward-queue writer `func_001AF828`, the 9.3KB dispatcher
+   `func_001A9290`; the editor's claimed "103×4B jump table at 0x1AB030" is refuted byte-exactly as
+   class-promotion CODE. Adversarial: 7 verifiers, 2 boundary moves + LOW fixes. Data index
+   `docs/data-index/rev0/chunk26-data-region-inventory.json` + 2 decoded ASCII exports.
 
-   **Next frontier: `0x001A1000` (chunk 26).** FIRST continue the OUTGOING FUNCTION straddler:
-   `func_001A0264` `[0x1A0264,0x1A1000)` has its `addiu $sp,-0x88` prologue in chunk 25 and
-   continues into chunk 26 (parent end ~`0x1A11F8`); emit `func_001A0264_chunk26tail` first and
-   confirm its `jr $ra`.
-   Pipeline: `plan_chunk`/`slice_chunk --disasm`/`check_splits`/`check_boundaries` + analysis +
-   adversarial swarms (Workflow) + a data-classification/index/export swarm for data regions.
-   Coverage now 59.80% (code-only ≈ 48.75%). See the DECOMP_LOG "Next Frontier" and
-   `docs/dossiers/lib-chunk25-191000-1A1000.md`.
+   **Next frontier: `0x001B1000` (chunk 27).** FIRST continue the OUTGOING FUNCTION straddler:
+   `func_001B0F78` `[0x1B0F78,0x1B1000)` has its read-before-write preamble @0x1B0F78 + prologue
+   `addiu $sp,-0x18`@0x1B0F80 in chunk 26 and continues into chunk 27; emit
+   `func_001B0F78_chunk27tail` `[0x1B1000,0x1B1070)` first (ends `jr$ra`@0x1B1068 + delay
+   `addiu $sp,0x18`@0x1B106C).
+   Pipeline: `slice_extract`/`check_splits`/`check_boundaries` + analysis + adversarial swarms
+   (Workflow) + a data-classification/index/export swarm for data regions.
+   Coverage now 62.10% (code-only ≈ 50.95%). See the DECOMP_LOG "Next Frontier" and
+   `docs/dossiers/lib-chunk26-1A1000-1B1000.md`.
 
 4. Keep the setup gate green.
 

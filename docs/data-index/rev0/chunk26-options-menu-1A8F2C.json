@@ -1,0 +1,450 @@
+{
+  "source": "asm/original/rev0/lib/rodata_001A8F2C.s",
+  "rangeZ64": [
+    "0x001A8F2C",
+    "0x001A90B0"
+  ],
+  "totalBytes": 388,
+  "encoding": "ASCII, NUL-terminated, big-endian (z64) byte order; @-prefixed inline control codes left verbatim",
+  "title": "Chunk 26 options/debug menu string pool (0x1A8F2C)",
+  "stringCount": 33,
+  "atCodeTally": {},
+  "atCodeSemantics": "UNRESOLVED — @0..@3/@w/@c/@e are inline formatting/control codes; exact runtime meaning not decoded",
+  "confidence": "high (printable ASCII text); control-code semantics hypothesis-grade",
+  "segments": [
+    {
+      "kind": "nul",
+      "offset": "0x001A8F2C",
+      "bytes": 4
+    },
+    {
+      "kind": "string",
+      "offset": "0x001A8F30",
+      "bytes": 13,
+      "text": "Message speed",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x001A8F3D",
+      "bytes": 3
+    },
+    {
+      "kind": "string",
+      "offset": "0x001A8F40",
+      "bytes": 12,
+      "text": "Cursor speed",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x001A8F4C",
+      "bytes": 4
+    },
+    {
+      "kind": "string",
+      "offset": "0x001A8F50",
+      "bytes": 12,
+      "text": "Help display",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x001A8F5C",
+      "bytes": 4
+    },
+    {
+      "kind": "string",
+      "offset": "0x001A8F60",
+      "bytes": 17,
+      "text": "Icon name display",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x001A8F71",
+      "bytes": 3
+    },
+    {
+      "kind": "string",
+      "offset": "0x001A8F74",
+      "bytes": 10,
+      "text": "Game speed",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x001A8F7E",
+      "bytes": 2
+    },
+    {
+      "kind": "string",
+      "offset": "0x001A8F80",
+      "bytes": 16,
+      "text": "Legion indicator",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x001A8F90",
+      "bytes": 4
+    },
+    {
+      "kind": "string",
+      "offset": "0x001A8F94",
+      "bytes": 19,
+      "text": "Destination display",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x001A8FA7",
+      "bytes": 1
+    },
+    {
+      "kind": "string",
+      "offset": "0x001A8FA8",
+      "bytes": 16,
+      "text": "Unit report type",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x001A8FB8",
+      "bytes": 4
+    },
+    {
+      "kind": "string",
+      "offset": "0x001A8FBC",
+      "bytes": 18,
+      "text": "Battle action name",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x001A8FCE",
+      "bytes": 2
+    },
+    {
+      "kind": "string",
+      "offset": "0x001A8FD0",
+      "bytes": 16,
+      "text": "Battle animation",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x001A8FE0",
+      "bytes": 4
+    },
+    {
+      "kind": "string",
+      "offset": "0x001A8FE4",
+      "bytes": 10,
+      "text": "Quick exit",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x001A8FEE",
+      "bytes": 2
+    },
+    {
+      "kind": "string",
+      "offset": "0x001A8FF0",
+      "bytes": 10,
+      "text": "Cancel all",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x001A8FFA",
+      "bytes": 2
+    },
+    {
+      "kind": "string",
+      "offset": "0x001A8FFC",
+      "bytes": 14,
+      "text": "Sound settings",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x001A900A",
+      "bytes": 2
+    },
+    {
+      "kind": "string",
+      "offset": "0x001A900C",
+      "bytes": 16,
+      "text": "Restore defaults",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x001A901C",
+      "bytes": 4
+    },
+    {
+      "kind": "string",
+      "offset": "0x001A9020",
+      "bytes": 3,
+      "text": "Off",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x001A9023",
+      "bytes": 1
+    },
+    {
+      "kind": "string",
+      "offset": "0x001A9024",
+      "bytes": 2,
+      "text": "On",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x001A9026",
+      "bytes": 2
+    },
+    {
+      "kind": "string",
+      "offset": "0x001A9028",
+      "bytes": 4,
+      "text": "Mono",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x001A902C",
+      "bytes": 4
+    },
+    {
+      "kind": "string",
+      "offset": "0x001A9030",
+      "bytes": 6,
+      "text": "Stereo",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x001A9036",
+      "bytes": 2
+    },
+    {
+      "kind": "string",
+      "offset": "0x001A9038",
+      "bytes": 4,
+      "text": "Slow",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x001A903C",
+      "bytes": 4
+    },
+    {
+      "kind": "string",
+      "offset": "0x001A9040",
+      "bytes": 6,
+      "text": "Normal",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x001A9046",
+      "bytes": 2
+    },
+    {
+      "kind": "string",
+      "offset": "0x001A9048",
+      "bytes": 4,
+      "text": "Fast",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x001A904C",
+      "bytes": 4
+    },
+    {
+      "kind": "string",
+      "offset": "0x001A9050",
+      "bytes": 6,
+      "text": "Slower",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x001A9056",
+      "bytes": 2
+    },
+    {
+      "kind": "string",
+      "offset": "0x001A9058",
+      "bytes": 4,
+      "text": "Slow",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x001A905C",
+      "bytes": 4
+    },
+    {
+      "kind": "string",
+      "offset": "0x001A9060",
+      "bytes": 6,
+      "text": "Normal",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x001A9066",
+      "bytes": 2
+    },
+    {
+      "kind": "string",
+      "offset": "0x001A9068",
+      "bytes": 4,
+      "text": "Fast",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x001A906C",
+      "bytes": 4
+    },
+    {
+      "kind": "string",
+      "offset": "0x001A9070",
+      "bytes": 6,
+      "text": "Faster",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x001A9076",
+      "bytes": 2
+    },
+    {
+      "kind": "string",
+      "offset": "0x001A9078",
+      "bytes": 3,
+      "text": "Off",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x001A907B",
+      "bytes": 1
+    },
+    {
+      "kind": "string",
+      "offset": "0x001A907C",
+      "bytes": 2,
+      "text": "On",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x001A907E",
+      "bytes": 2
+    },
+    {
+      "kind": "string",
+      "offset": "0x001A9080",
+      "bytes": 2,
+      "text": "On",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x001A9082",
+      "bytes": 2
+    },
+    {
+      "kind": "string",
+      "offset": "0x001A9084",
+      "bytes": 3,
+      "text": "Off",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x001A9087",
+      "bytes": 1
+    },
+    {
+      "kind": "string",
+      "offset": "0x001A9088",
+      "bytes": 4,
+      "text": "None",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x001A908C",
+      "bytes": 4
+    },
+    {
+      "kind": "string",
+      "offset": "0x001A9090",
+      "bytes": 12,
+      "text": "Third Person",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x001A909C",
+      "bytes": 4
+    },
+    {
+      "kind": "string",
+      "offset": "0x001A90A0",
+      "bytes": 12,
+      "text": "First Person",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x001A90AC",
+      "bytes": 4
+    }
+  ]
+}

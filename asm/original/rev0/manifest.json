@@ -3,7 +3,7 @@
   "profile": "us-rev0",
   "sourceReportPath": "build/original-mips/rev0-report.json",
   "outputDir": "asm/original/rev0",
-  "promotedChunks": 26,
+  "promotedChunks": 27,
   "codeRegion": {
     "start": "0x00001000",
     "endExclusive": "0x0063676C",
@@ -24548,8 +24548,8 @@
           "sha256": "7312547283655357E0DE1BA652B985397B60EC916B3CA0C14B9B5391352BB1F8"
         }
       ],
-      "textBytes": 1334874,
-      "sha256": "C592BA40D7C87A00D6ABEE674E09C9422F7036179A9076E06201220117796D4C"
+      "textBytes": 1334789,
+      "sha256": "8F9AF06FFD90E582B06BF7B48D1515A51C1021CF69FF2701242ED7F71AF88B37"
     },
     {
       "file": "asm/original/rev0/code_00151000_00161000.s",
@@ -27020,8 +27020,8 @@
           "sha256": "0CF763A9CD066BEE1F5BF65210A1D1A6FF8DF01299E248B9EB0FA2BE1FD6F1B9"
         }
       ],
-      "textBytes": 1295514,
-      "sha256": "A43DF0496AF20C77132997EF9253E4229202B470E1530EC36520789D643248D3"
+      "textBytes": 1295429,
+      "sha256": "99F372DEC052B4B7BFD33CACC44DB4562AB8864EA4311D9A202FB392AC5FA14E"
     },
     {
       "file": "asm/original/rev0/code_00181000_00191000.s",
@@ -28250,6 +28250,881 @@
       ],
       "textBytes": 1296838,
       "sha256": "D4E981997313CB0AF4A61A2146DF7F0E95B32BA7A80199157133FC5BA7242AD3"
+    },
+    {
+      "file": "asm/original/rev0/code_001A1000_001B1000.s",
+      "romStart": "0x001A1000",
+      "romEndExclusive": "0x001B1000",
+      "bytes": 65536,
+      "sourceReportFile": "build/original-mips/rev0/code_001A1000_001B1000.s",
+      "parts": [
+        {
+          "name": "func_001A0264_chunk26tail",
+          "file": "asm/original/rev0/lib/func_001A0264_chunk26tail.s",
+          "romStart": "0x001A1000",
+          "romEndExclusive": "0x001A11F8",
+          "bytes": 504,
+          "textBytes": 10425,
+          "sha256": "92DFEB3369DD4AD8A517B72BBA5366A9DF9770AF8F770D6E3D80DD838DD1ED89"
+        },
+        {
+          "name": "func_001A11F8",
+          "file": "asm/original/rev0/lib/func_001A11F8.s",
+          "romStart": "0x001A11F8",
+          "romEndExclusive": "0x001A131C",
+          "bytes": 292,
+          "textBytes": 6434,
+          "sha256": "8DB959888BE271132962BF642C36DBB3B85F11A592B310493A1F1AF914D98A0F"
+        },
+        {
+          "name": "func_001A131C",
+          "file": "asm/original/rev0/lib/func_001A131C.s",
+          "romStart": "0x001A131C",
+          "romEndExclusive": "0x001A1424",
+          "bytes": 264,
+          "textBytes": 5703,
+          "sha256": "FF7F5A597CBFEC49D5EC92844BB3C80777D98F2B305558DAB7CF80B62F00DBBD"
+        },
+        {
+          "name": "func_001A1424",
+          "file": "asm/original/rev0/lib/func_001A1424.s",
+          "romStart": "0x001A1424",
+          "romEndExclusive": "0x001A1440",
+          "bytes": 28,
+          "textBytes": 1014,
+          "sha256": "DE1B8CB64A8755A8C032B57FCD9EB53B7366868D357A50C3E7EEE656A18A8BA9"
+        },
+        {
+          "name": "func_001A1440",
+          "file": "asm/original/rev0/lib/func_001A1440.s",
+          "romStart": "0x001A1440",
+          "romEndExclusive": "0x001A1B38",
+          "bytes": 1784,
+          "textBytes": 35542,
+          "sha256": "7CAF2F908DB1E829E11ED959418B75C9BD503644A9C6382502F4764AF1EAD81C"
+        },
+        {
+          "name": "func_001A1B38",
+          "file": "asm/original/rev0/lib/func_001A1B38.s",
+          "romStart": "0x001A1B38",
+          "romEndExclusive": "0x001A1F84",
+          "bytes": 1100,
+          "textBytes": 22025,
+          "sha256": "E49F66931AB0DF17995EE39D44882E6EC133AC06572527E6E55966AF4565480C"
+        },
+        {
+          "name": "func_001A1F84",
+          "file": "asm/original/rev0/lib/func_001A1F84.s",
+          "romStart": "0x001A1F84",
+          "romEndExclusive": "0x001A215C",
+          "bytes": 472,
+          "textBytes": 9740,
+          "sha256": "537330957D90A30D621361F316D60A8E5ED6008D5C3AE9ECE85C97828CEBD5AD"
+        },
+        {
+          "name": "func_001A215C",
+          "file": "asm/original/rev0/lib/func_001A215C.s",
+          "romStart": "0x001A215C",
+          "romEndExclusive": "0x001A2500",
+          "bytes": 932,
+          "textBytes": 18857,
+          "sha256": "DD23E43724961071D23AA22FDEA6D666398C00686D96C0A6FC5DE4BCD968237D"
+        },
+        {
+          "name": "func_001A2500",
+          "file": "asm/original/rev0/lib/func_001A2500.s",
+          "romStart": "0x001A2500",
+          "romEndExclusive": "0x001A2580",
+          "bytes": 128,
+          "textBytes": 3011,
+          "sha256": "4AF0B9ABDF730044BF3B7C861EAF530C6DAB3A7C1D93685103855D353E270F87"
+        },
+        {
+          "name": "func_001A2580",
+          "file": "asm/original/rev0/lib/func_001A2580.s",
+          "romStart": "0x001A2580",
+          "romEndExclusive": "0x001A26AC",
+          "bytes": 300,
+          "textBytes": 6322,
+          "sha256": "00BA6E56F6EF9D17420ACB36FEAF9FEA61E0BC844CA7D0E8CF6D9724DBB6A3C8"
+        },
+        {
+          "name": "func_001A26AC",
+          "file": "asm/original/rev0/lib/func_001A26AC.s",
+          "romStart": "0x001A26AC",
+          "romEndExclusive": "0x001A276C",
+          "bytes": 192,
+          "textBytes": 4237,
+          "sha256": "3F402D0C18967EE3942E91811576B1054E881A477027A02B2EC6E18E71449D7D"
+        },
+        {
+          "name": "func_001A276C",
+          "file": "asm/original/rev0/lib/func_001A276C.s",
+          "romStart": "0x001A276C",
+          "romEndExclusive": "0x001A2830",
+          "bytes": 196,
+          "textBytes": 4349,
+          "sha256": "BCF04C0249BE58EA91D1EC85919914264D0DA753775A9C1D70FB1F06C1BB9872"
+        },
+        {
+          "name": "func_001A2830",
+          "file": "asm/original/rev0/lib/func_001A2830.s",
+          "romStart": "0x001A2830",
+          "romEndExclusive": "0x001A286C",
+          "bytes": 60,
+          "textBytes": 1656,
+          "sha256": "F598B706EFFFDB3F8A338C992254AA15DD48309774AB55A4C56F4FEAD8086A3C"
+        },
+        {
+          "name": "func_001A286C",
+          "file": "asm/original/rev0/lib/func_001A286C.s",
+          "romStart": "0x001A286C",
+          "romEndExclusive": "0x001A2990",
+          "bytes": 292,
+          "textBytes": 6076,
+          "sha256": "8CEBB6D0E81754A9357551B51A287F48C88B7C17E78D25D8922B010D9357E0B3"
+        },
+        {
+          "name": "func_001A2990",
+          "file": "asm/original/rev0/lib/func_001A2990.s",
+          "romStart": "0x001A2990",
+          "romEndExclusive": "0x001A2B6C",
+          "bytes": 476,
+          "textBytes": 9724,
+          "sha256": "065F2F7262E7C0D3042616B200F1E2E9805721FDFB88B84F055F31843693C491"
+        },
+        {
+          "name": "rodata_001A2B6C",
+          "file": "asm/original/rev0/lib/rodata_001A2B6C.s",
+          "romStart": "0x001A2B6C",
+          "romEndExclusive": "0x001A2B80",
+          "bytes": 20,
+          "textBytes": 941,
+          "sha256": "C766FDA97E0CC38E6B0C032DE7FB446E3625FE8B0C656D595072C403362ADCB0"
+        },
+        {
+          "name": "table_001A2B80",
+          "file": "asm/original/rev0/lib/table_001A2B80.s",
+          "romStart": "0x001A2B80",
+          "romEndExclusive": "0x001A2BD0",
+          "bytes": 80,
+          "textBytes": 2223,
+          "sha256": "0277DF0DFD5D9AFDA6926CA8A96E1D364CB41259C2F116E86B784A6B100228B1"
+        },
+        {
+          "name": "zero_fill_001A2BD0",
+          "file": "asm/original/rev0/lib/zero_fill_001A2BD0.s",
+          "romStart": "0x001A2BD0",
+          "romEndExclusive": "0x001A2BE0",
+          "bytes": 16,
+          "textBytes": 651,
+          "sha256": "CAEFC25B1935877E1DC189249D68B1E5EDD8160F0B4B35291450175EE74A566D"
+        },
+        {
+          "name": "jumptable_001A2BE0",
+          "file": "asm/original/rev0/lib/jumptable_001A2BE0.s",
+          "romStart": "0x001A2BE0",
+          "romEndExclusive": "0x001A2C20",
+          "bytes": 64,
+          "textBytes": 1904,
+          "sha256": "29A34AFDDC34D9E666D24060151F359E9F09BAF0D1B1810ECF4E4133E123056C"
+        },
+        {
+          "name": "func_001A2C20",
+          "file": "asm/original/rev0/lib/func_001A2C20.s",
+          "romStart": "0x001A2C20",
+          "romEndExclusive": "0x001A2CA0",
+          "bytes": 128,
+          "textBytes": 2987,
+          "sha256": "8933BDFE33860062916BF103EFEB1FA15E074D03848B770AE69F4C8CABE6AA5C"
+        },
+        {
+          "name": "func_001A2CA0",
+          "file": "asm/original/rev0/lib/func_001A2CA0.s",
+          "romStart": "0x001A2CA0",
+          "romEndExclusive": "0x001A2F38",
+          "bytes": 664,
+          "textBytes": 13320,
+          "sha256": "37B96AE85F109D841A1CD6D4B755B86E4C413115CE8DAEE509DFDD2233ED534C"
+        },
+        {
+          "name": "func_001A2F38",
+          "file": "asm/original/rev0/lib/func_001A2F38.s",
+          "romStart": "0x001A2F38",
+          "romEndExclusive": "0x001A3180",
+          "bytes": 584,
+          "textBytes": 11425,
+          "sha256": "E171355BE874C5EEA39A42D716F926FE0F4F97C985322CB879C3F0ABCBAD9087"
+        },
+        {
+          "name": "func_001A3180",
+          "file": "asm/original/rev0/lib/func_001A3180.s",
+          "romStart": "0x001A3180",
+          "romEndExclusive": "0x001A32CC",
+          "bytes": 332,
+          "textBytes": 6987,
+          "sha256": "EECFB835F9092F60D5FEE780D87003518E27A0187E1F58726C9F6880A6A92728"
+        },
+        {
+          "name": "func_001A32CC",
+          "file": "asm/original/rev0/lib/func_001A32CC.s",
+          "romStart": "0x001A32CC",
+          "romEndExclusive": "0x001A3358",
+          "bytes": 140,
+          "textBytes": 3167,
+          "sha256": "2862B10AD662965DDA4FB8E628C073805D0EFEA9EA254B48187ECB0102B04479"
+        },
+        {
+          "name": "func_001A3358",
+          "file": "asm/original/rev0/lib/func_001A3358.s",
+          "romStart": "0x001A3358",
+          "romEndExclusive": "0x001A3404",
+          "bytes": 172,
+          "textBytes": 3732,
+          "sha256": "C5BA28F1AF652C21E995CE23BAF7E9ACDC88877B96B7AA8BCB484CEACBE7314D"
+        },
+        {
+          "name": "func_001A3404",
+          "file": "asm/original/rev0/lib/func_001A3404.s",
+          "romStart": "0x001A3404",
+          "romEndExclusive": "0x001A3490",
+          "bytes": 140,
+          "textBytes": 3186,
+          "sha256": "26D55491C18AFC08D05D6DA7ACB72AF4067F278BA23B187E41E78EA0C1B785A8"
+        },
+        {
+          "name": "func_001A3490",
+          "file": "asm/original/rev0/lib/func_001A3490.s",
+          "romStart": "0x001A3490",
+          "romEndExclusive": "0x001A3768",
+          "bytes": 728,
+          "textBytes": 14409,
+          "sha256": "241FBCCD33CBAD6AF9427C17B231B18D786A84C40F2A068287EE05C155961C59"
+        },
+        {
+          "name": "func_001A3768",
+          "file": "asm/original/rev0/lib/func_001A3768.s",
+          "romStart": "0x001A3768",
+          "romEndExclusive": "0x001A37BC",
+          "bytes": 84,
+          "textBytes": 2174,
+          "sha256": "90CFE3233024D0C391E9EBEA006D3205F49EA9357C1DC343A9E3B2FFB65DCAAC"
+        },
+        {
+          "name": "func_001A37BC",
+          "file": "asm/original/rev0/lib/func_001A37BC.s",
+          "romStart": "0x001A37BC",
+          "romEndExclusive": "0x001A39D0",
+          "bytes": 532,
+          "textBytes": 10755,
+          "sha256": "BB48D9B580C1E2E4F923E5B0890AA3240648E6C12226FC5C8797E4D797EC664E"
+        },
+        {
+          "name": "func_001A39D0",
+          "file": "asm/original/rev0/lib/func_001A39D0.s",
+          "romStart": "0x001A39D0",
+          "romEndExclusive": "0x001A3D2C",
+          "bytes": 860,
+          "textBytes": 17358,
+          "sha256": "66E195095BA8D8BDE0B2DB6B8C200093FA9EF681560E17A074BD061A07D6433F"
+        },
+        {
+          "name": "func_001A3D2C",
+          "file": "asm/original/rev0/lib/func_001A3D2C.s",
+          "romStart": "0x001A3D2C",
+          "romEndExclusive": "0x001A4020",
+          "bytes": 756,
+          "textBytes": 15228,
+          "sha256": "42DEE96D10E2E95984FC8BC053529CC2A58AF1673FBA79EA9395F112A725AF01"
+        },
+        {
+          "name": "func_001A4020",
+          "file": "asm/original/rev0/lib/func_001A4020.s",
+          "romStart": "0x001A4020",
+          "romEndExclusive": "0x001A404C",
+          "bytes": 44,
+          "textBytes": 1319,
+          "sha256": "5031412F790F2AF83A21352A604992EF54D3CF17E2934E5822EB331BC4583C1D"
+        },
+        {
+          "name": "func_001A404C",
+          "file": "asm/original/rev0/lib/func_001A404C.s",
+          "romStart": "0x001A404C",
+          "romEndExclusive": "0x001A4058",
+          "bytes": 12,
+          "textBytes": 672,
+          "sha256": "BB197C4AEC3A2E6047BB9F28673BE1DC47BE928BFFB225042F4253E291CFBBD8"
+        },
+        {
+          "name": "func_001A4058",
+          "file": "asm/original/rev0/lib/func_001A4058.s",
+          "romStart": "0x001A4058",
+          "romEndExclusive": "0x001A4264",
+          "bytes": 524,
+          "textBytes": 10959,
+          "sha256": "0E6ADBDD7D318E66E44326528827C0DFCDFA4469C199AE313B802BF7AEDD31B3"
+        },
+        {
+          "name": "func_001A4264",
+          "file": "asm/original/rev0/lib/func_001A4264.s",
+          "romStart": "0x001A4264",
+          "romEndExclusive": "0x001A4474",
+          "bytes": 528,
+          "textBytes": 10686,
+          "sha256": "134842721BD7E4286EE744AA310EB62998A702FAF219C14AFA9B246C8F5E30AF"
+        },
+        {
+          "name": "data_001A4474",
+          "file": "asm/original/rev0/lib/data_001A4474.s",
+          "romStart": "0x001A4474",
+          "romEndExclusive": "0x001A4880",
+          "bytes": 1036,
+          "textBytes": 19546,
+          "sha256": "F3C6C097AD3E2F373D9DAB7516B85BCC06B738E2866D98E9E59E4BAE2E72F87A"
+        },
+        {
+          "name": "data_001A4880",
+          "file": "asm/original/rev0/lib/data_001A4880.s",
+          "romStart": "0x001A4880",
+          "romEndExclusive": "0x001A4BE0",
+          "bytes": 864,
+          "textBytes": 16428,
+          "sha256": "E2BC47814ACF2358F5A003DB22EC943A75250D5A1702D9D4BC9DC04FD0AA1E0F"
+        },
+        {
+          "name": "float_001A4BE0",
+          "file": "asm/original/rev0/lib/float_001A4BE0.s",
+          "romStart": "0x001A4BE0",
+          "romEndExclusive": "0x001A4C10",
+          "bytes": 48,
+          "textBytes": 1544,
+          "sha256": "ABFC75ADBF5B87668D21EB58468ED5DFD39E3ADAF0016F97E75F72DCEF6C6456"
+        },
+        {
+          "name": "func_001A4C10",
+          "file": "asm/original/rev0/lib/func_001A4C10.s",
+          "romStart": "0x001A4C10",
+          "romEndExclusive": "0x001A5388",
+          "bytes": 1912,
+          "textBytes": 37160,
+          "sha256": "16C573ECAA9B32973D65445F66A87848F4575ADE55946C83EBA241BC35FE53BF"
+        },
+        {
+          "name": "func_001A5388",
+          "file": "asm/original/rev0/lib/func_001A5388.s",
+          "romStart": "0x001A5388",
+          "romEndExclusive": "0x001A5658",
+          "bytes": 720,
+          "textBytes": 14420,
+          "sha256": "FD8F12D75CE33A5048457AF05D3B4638E2CACC64173FECE7830FBB5E1414B100"
+        },
+        {
+          "name": "func_001A5658",
+          "file": "asm/original/rev0/lib/func_001A5658.s",
+          "romStart": "0x001A5658",
+          "romEndExclusive": "0x001A578C",
+          "bytes": 308,
+          "textBytes": 6634,
+          "sha256": "E530D7B7BEE2A1D7C041C6B732307635C663C144897BC3F2C3078DDC2A9AEC0C"
+        },
+        {
+          "name": "func_001A578C",
+          "file": "asm/original/rev0/lib/func_001A578C.s",
+          "romStart": "0x001A578C",
+          "romEndExclusive": "0x001A58BC",
+          "bytes": 304,
+          "textBytes": 6429,
+          "sha256": "459BC26E077E95F8905130941D370228AC50D85DE8026D5B9E15E4862125096E"
+        },
+        {
+          "name": "func_001A58BC",
+          "file": "asm/original/rev0/lib/func_001A58BC.s",
+          "romStart": "0x001A58BC",
+          "romEndExclusive": "0x001A5968",
+          "bytes": 172,
+          "textBytes": 3977,
+          "sha256": "3AA3D514DA7D201B2AD67981D26836271F0CFABD037C15818E08E37EE2A152D1"
+        },
+        {
+          "name": "func_001A5968",
+          "file": "asm/original/rev0/lib/func_001A5968.s",
+          "romStart": "0x001A5968",
+          "romEndExclusive": "0x001A59D8",
+          "bytes": 112,
+          "textBytes": 2710,
+          "sha256": "5470F4B79805A467DBBC319ACF6C6198A486BC28DE53F5FC58E340CF4D0FB883"
+        },
+        {
+          "name": "func_001A59D8",
+          "file": "asm/original/rev0/lib/func_001A59D8.s",
+          "romStart": "0x001A59D8",
+          "romEndExclusive": "0x001A59F0",
+          "bytes": 24,
+          "textBytes": 960,
+          "sha256": "1257AEDF4C1E2335C39F403DF9C45E7F3A35CD35F7696B496D4C174DC152ABAE"
+        },
+        {
+          "name": "func_001A59F0",
+          "file": "asm/original/rev0/lib/func_001A59F0.s",
+          "romStart": "0x001A59F0",
+          "romEndExclusive": "0x001A5B70",
+          "bytes": 384,
+          "textBytes": 8172,
+          "sha256": "75A04C87DECDAA1FA14DBD477ED41E137D2B68B7DC7547B584ED41853A7C2A38"
+        },
+        {
+          "name": "func_001A5B70",
+          "file": "asm/original/rev0/lib/func_001A5B70.s",
+          "romStart": "0x001A5B70",
+          "romEndExclusive": "0x001A5BCC",
+          "bytes": 92,
+          "textBytes": 2472,
+          "sha256": "828901B527788A9B541D49A84812101A0C11551E470CACD4AF8ED19A146B9828"
+        },
+        {
+          "name": "func_001A5BCC",
+          "file": "asm/original/rev0/lib/func_001A5BCC.s",
+          "romStart": "0x001A5BCC",
+          "romEndExclusive": "0x001A612C",
+          "bytes": 1376,
+          "textBytes": 27502,
+          "sha256": "8B56280EBE361EF0CD7C2C1BFB727CD31077207338C8B5C64C0F8AA3A372C875"
+        },
+        {
+          "name": "func_001A612C",
+          "file": "asm/original/rev0/lib/func_001A612C.s",
+          "romStart": "0x001A612C",
+          "romEndExclusive": "0x001A61FC",
+          "bytes": 208,
+          "textBytes": 4570,
+          "sha256": "0ED8B4E85377F6F0F756BAE0250ABD87B7943A03A6856B42E09A9B20B390B785"
+        },
+        {
+          "name": "func_001A61FC",
+          "file": "asm/original/rev0/lib/func_001A61FC.s",
+          "romStart": "0x001A61FC",
+          "romEndExclusive": "0x001A6270",
+          "bytes": 116,
+          "textBytes": 2886,
+          "sha256": "033AA586579529FBB6E804209BEA1C4DA9ACDD44E5FC05CB7B906D37C8DC1290"
+        },
+        {
+          "name": "func_001A6270",
+          "file": "asm/original/rev0/lib/func_001A6270.s",
+          "romStart": "0x001A6270",
+          "romEndExclusive": "0x001A62F4",
+          "bytes": 132,
+          "textBytes": 3389,
+          "sha256": "87259E509EA0FF046E75060A8618ABBEF95FEB9924962A50B8A73E7A9AE08CE4"
+        },
+        {
+          "name": "func_001A62F4",
+          "file": "asm/original/rev0/lib/func_001A62F4.s",
+          "romStart": "0x001A62F4",
+          "romEndExclusive": "0x001A6D5C",
+          "bytes": 2664,
+          "textBytes": 51871,
+          "sha256": "CA2D5E6A0699B0B900D283F6361B196A8C481D5930AD7292ABE495E6B2D1A9F5"
+        },
+        {
+          "name": "func_001A6D5C",
+          "file": "asm/original/rev0/lib/func_001A6D5C.s",
+          "romStart": "0x001A6D5C",
+          "romEndExclusive": "0x001A7700",
+          "bytes": 2468,
+          "textBytes": 48572,
+          "sha256": "8D6CB315491C3AD7534559C86C74DB923A9503353772757AE898A307A7963EA6"
+        },
+        {
+          "name": "func_001A7700",
+          "file": "asm/original/rev0/lib/func_001A7700.s",
+          "romStart": "0x001A7700",
+          "romEndExclusive": "0x001A7854",
+          "bytes": 340,
+          "textBytes": 7102,
+          "sha256": "D58D50D6A3888C075D69CECD6A0F9D40584E71A6B9DA31E6780DD1C5D8165CD4"
+        },
+        {
+          "name": "func_001A7854",
+          "file": "asm/original/rev0/lib/func_001A7854.s",
+          "romStart": "0x001A7854",
+          "romEndExclusive": "0x001A7AC0",
+          "bytes": 620,
+          "textBytes": 12835,
+          "sha256": "5F0C2656D96F76FB15ACA0BD397F23A847CD4A943A983CE24940F3DAA60C0AB4"
+        },
+        {
+          "name": "func_001A7AC0",
+          "file": "asm/original/rev0/lib/func_001A7AC0.s",
+          "romStart": "0x001A7AC0",
+          "romEndExclusive": "0x001A7C2C",
+          "bytes": 364,
+          "textBytes": 7570,
+          "sha256": "13F1D1C4A08B3F984D92CAE9731F6889702BAF3706A0B48457279A1954140D7E"
+        },
+        {
+          "name": "func_001A7C2C",
+          "file": "asm/original/rev0/lib/func_001A7C2C.s",
+          "romStart": "0x001A7C2C",
+          "romEndExclusive": "0x001A7D74",
+          "bytes": 328,
+          "textBytes": 7078,
+          "sha256": "14B50871F171FC5819334B6791DB41334D1D046BE3712E329D8D026C61797376"
+        },
+        {
+          "name": "func_001A7D74",
+          "file": "asm/original/rev0/lib/func_001A7D74.s",
+          "romStart": "0x001A7D74",
+          "romEndExclusive": "0x001A80EC",
+          "bytes": 888,
+          "textBytes": 17667,
+          "sha256": "2E457759146BCEFE972A1D18F4FC37296553152F41157AD26E4D9BB9BB1992FB"
+        },
+        {
+          "name": "func_001A80EC",
+          "file": "asm/original/rev0/lib/func_001A80EC.s",
+          "romStart": "0x001A80EC",
+          "romEndExclusive": "0x001A8318",
+          "bytes": 556,
+          "textBytes": 11421,
+          "sha256": "7C5E67A2C4D2E34C9360ADB9183F76678FBCDDCE63C4144242191751C22746CC"
+        },
+        {
+          "name": "func_001A8318",
+          "file": "asm/original/rev0/lib/func_001A8318.s",
+          "romStart": "0x001A8318",
+          "romEndExclusive": "0x001A838C",
+          "bytes": 116,
+          "textBytes": 2866,
+          "sha256": "73F2523BC8E72061F15C4EEE98D2F7CC3815FEB33B395C12A027D5510E4A46E0"
+        },
+        {
+          "name": "func_001A838C",
+          "file": "asm/original/rev0/lib/func_001A838C.s",
+          "romStart": "0x001A838C",
+          "romEndExclusive": "0x001A8C70",
+          "bytes": 2276,
+          "textBytes": 44228,
+          "sha256": "B758F97B19521BCC4B174C6FDD5A254EFDFF904B9412FE03AB2FACFC73557C89"
+        },
+        {
+          "name": "func_001A8C70",
+          "file": "asm/original/rev0/lib/func_001A8C70.s",
+          "romStart": "0x001A8C70",
+          "romEndExclusive": "0x001A8CCC",
+          "bytes": 92,
+          "textBytes": 2419,
+          "sha256": "86F4B0F1A88EF3230EDA382A1828D221ED32935F9C1081B74107E6DEF3C5CD7B"
+        },
+        {
+          "name": "func_001A8CCC",
+          "file": "asm/original/rev0/lib/func_001A8CCC.s",
+          "romStart": "0x001A8CCC",
+          "romEndExclusive": "0x001A8F2C",
+          "bytes": 608,
+          "textBytes": 12241,
+          "sha256": "D22ABD07062603C6399EE0472CC8F1BFDBD75609DCE2628AE4736F53A789EDAA"
+        },
+        {
+          "name": "rodata_001A8F2C",
+          "file": "asm/original/rev0/lib/rodata_001A8F2C.s",
+          "romStart": "0x001A8F2C",
+          "romEndExclusive": "0x001A90B0",
+          "bytes": 388,
+          "textBytes": 8171,
+          "sha256": "93ADE74246B8E6264A433947140B36A762752233B84C231139BEA30490DF80C8"
+        },
+        {
+          "name": "data_001A90B0",
+          "file": "asm/original/rev0/lib/data_001A90B0.s",
+          "romStart": "0x001A90B0",
+          "romEndExclusive": "0x001A9190",
+          "bytes": 224,
+          "textBytes": 5039,
+          "sha256": "21F7B3BCB2AE34902C3617290A0360AEF7E51A358D8F90D6AB65510E81779E03"
+        },
+        {
+          "name": "table_001A9190",
+          "file": "asm/original/rev0/lib/table_001A9190.s",
+          "romStart": "0x001A9190",
+          "romEndExclusive": "0x001A91E0",
+          "bytes": 80,
+          "textBytes": 2316,
+          "sha256": "2AEBB0C6B7C97050E428209F78B23910DD14E06DB0F95DD8EBF501AA948F34A0"
+        },
+        {
+          "name": "data_001A91E0",
+          "file": "asm/original/rev0/lib/data_001A91E0.s",
+          "romStart": "0x001A91E0",
+          "romEndExclusive": "0x001A9218",
+          "bytes": 56,
+          "textBytes": 1600,
+          "sha256": "C5C8D10DBD4490976CC8635C789D120A972E2C977FF9E61C67BDC853FFEA1095"
+        },
+        {
+          "name": "zero_fill_001A9218",
+          "file": "asm/original/rev0/lib/zero_fill_001A9218.s",
+          "romStart": "0x001A9218",
+          "romEndExclusive": "0x001A9238",
+          "bytes": 32,
+          "textBytes": 842,
+          "sha256": "C08D388E4E16FB54654FB21483FF9573B0D67B3C73B350C0C0C8732D15F0669E"
+        },
+        {
+          "name": "table_001A9238",
+          "file": "asm/original/rev0/lib/table_001A9238.s",
+          "romStart": "0x001A9238",
+          "romEndExclusive": "0x001A926C",
+          "bytes": 52,
+          "textBytes": 1551,
+          "sha256": "45EE656BEDF09FD870EFB5AF29397FF80D70B2529EB165206F19B9F410E700B2"
+        },
+        {
+          "name": "data_001A926C",
+          "file": "asm/original/rev0/lib/data_001A926C.s",
+          "romStart": "0x001A926C",
+          "romEndExclusive": "0x001A9280",
+          "bytes": 20,
+          "textBytes": 882,
+          "sha256": "9FDBB6C3504A8BEE6024D7DE210F08361A581644DED99133961A5F06F73B3C56"
+        },
+        {
+          "name": "zero_fill_001A9280",
+          "file": "asm/original/rev0/lib/zero_fill_001A9280.s",
+          "romStart": "0x001A9280",
+          "romEndExclusive": "0x001A9290",
+          "bytes": 16,
+          "textBytes": 679,
+          "sha256": "A5BF117DC87D948A34BEE306FE842AC42286544F64464C2CD7C90E06ABD5F483"
+        },
+        {
+          "name": "func_001A9290",
+          "file": "asm/original/rev0/lib/func_001A9290.s",
+          "romStart": "0x001A9290",
+          "romEndExclusive": "0x001AB72C",
+          "bytes": 9372,
+          "textBytes": 180617,
+          "sha256": "B353EFD0FDA358FD803DC87137435FB99BC9D6A574CA5F4344C5747F3AC67C47"
+        },
+        {
+          "name": "func_001AB72C",
+          "file": "asm/original/rev0/lib/func_001AB72C.s",
+          "romStart": "0x001AB72C",
+          "romEndExclusive": "0x001AB768",
+          "bytes": 60,
+          "textBytes": 1756,
+          "sha256": "3FEF190D43DC3062B4CA882D7349822BA505968557AFE6F175AEED20304F0CBF"
+        },
+        {
+          "name": "func_001AB768",
+          "file": "asm/original/rev0/lib/func_001AB768.s",
+          "romStart": "0x001AB768",
+          "romEndExclusive": "0x001AB798",
+          "bytes": 48,
+          "textBytes": 1708,
+          "sha256": "8E003293274759F21AF92C2AA5490F198D0E8F35A439A6C9FFE4E27F07AFDBB1"
+        },
+        {
+          "name": "func_001AB798",
+          "file": "asm/original/rev0/lib/func_001AB798.s",
+          "romStart": "0x001AB798",
+          "romEndExclusive": "0x001AB7DC",
+          "bytes": 68,
+          "textBytes": 1812,
+          "sha256": "C6E611909958958C70DCCDD3189F10E8E976EB7815F481FC2FAFD91075D06EA1"
+        },
+        {
+          "name": "func_001AB7DC",
+          "file": "asm/original/rev0/lib/func_001AB7DC.s",
+          "romStart": "0x001AB7DC",
+          "romEndExclusive": "0x001AB958",
+          "bytes": 380,
+          "textBytes": 8003,
+          "sha256": "3E4ABCE965B2FBF7E26D0DCEDC7440B95CDEAE2C7F88D7AC0A3A1B6B59FA6A1B"
+        },
+        {
+          "name": "func_001AB958",
+          "file": "asm/original/rev0/lib/func_001AB958.s",
+          "romStart": "0x001AB958",
+          "romEndExclusive": "0x001AC710",
+          "bytes": 3512,
+          "textBytes": 67815,
+          "sha256": "E9E3F6CE3A12D44F0B10F4C43FDF241C05B8326FCC8E03AD115D2C096D2261BA"
+        },
+        {
+          "name": "func_001AC710",
+          "file": "asm/original/rev0/lib/func_001AC710.s",
+          "romStart": "0x001AC710",
+          "romEndExclusive": "0x001ACAB0",
+          "bytes": 928,
+          "textBytes": 18288,
+          "sha256": "65C2D2684CA67F61CC0C1F03963F20E98C3DC3C7B12653962C05755C6BD125D7"
+        },
+        {
+          "name": "func_001ACAB0",
+          "file": "asm/original/rev0/lib/func_001ACAB0.s",
+          "romStart": "0x001ACAB0",
+          "romEndExclusive": "0x001ACB98",
+          "bytes": 232,
+          "textBytes": 4911,
+          "sha256": "39647D7E3B15CD3B21A77FD0FAF8D45FF275654686939105977F10E37B341F4F"
+        },
+        {
+          "name": "func_001ACB98",
+          "file": "asm/original/rev0/lib/func_001ACB98.s",
+          "romStart": "0x001ACB98",
+          "romEndExclusive": "0x001AD0E4",
+          "bytes": 1356,
+          "textBytes": 26543,
+          "sha256": "58C969891B447815CC2593C28E258EEC0C6640FC03182A5B24C5EFCCC0BE4D54"
+        },
+        {
+          "name": "func_001AD0E4",
+          "file": "asm/original/rev0/lib/func_001AD0E4.s",
+          "romStart": "0x001AD0E4",
+          "romEndExclusive": "0x001AD8CC",
+          "bytes": 2024,
+          "textBytes": 39695,
+          "sha256": "82047D0D684F60E7E19BCFFD36D7B8A8066F681B7EC38EF39D7D30C95C7226B0"
+        },
+        {
+          "name": "func_001AD8CC",
+          "file": "asm/original/rev0/lib/func_001AD8CC.s",
+          "romStart": "0x001AD8CC",
+          "romEndExclusive": "0x001ADB8C",
+          "bytes": 704,
+          "textBytes": 14114,
+          "sha256": "DA60037C2832283C3C8282FFE1C21EE3E1D645EDF1ED20B505A68E6923796EA8"
+        },
+        {
+          "name": "func_001ADB8C",
+          "file": "asm/original/rev0/lib/func_001ADB8C.s",
+          "romStart": "0x001ADB8C",
+          "romEndExclusive": "0x001ADC8C",
+          "bytes": 256,
+          "textBytes": 5517,
+          "sha256": "1F0F84B9672D2139211C3087D9BAE74C516105A0FF3442F703777EDE33C9861D"
+        },
+        {
+          "name": "func_001ADC8C",
+          "file": "asm/original/rev0/lib/func_001ADC8C.s",
+          "romStart": "0x001ADC8C",
+          "romEndExclusive": "0x001ADD4C",
+          "bytes": 192,
+          "textBytes": 4429,
+          "sha256": "E88A08B81733AC6DA9F304E0095E56071407A9EB92BE180DE1F41F9337EF5625"
+        },
+        {
+          "name": "func_001ADD4C",
+          "file": "asm/original/rev0/lib/func_001ADD4C.s",
+          "romStart": "0x001ADD4C",
+          "romEndExclusive": "0x001AE0C8",
+          "bytes": 892,
+          "textBytes": 17965,
+          "sha256": "EB78C15855F840DEAC2EA1B10E55E2891BB5ED63CE5D70ECAFA5F2A7D5C8941B"
+        },
+        {
+          "name": "func_001AE0C8",
+          "file": "asm/original/rev0/lib/func_001AE0C8.s",
+          "romStart": "0x001AE0C8",
+          "romEndExclusive": "0x001AE13C",
+          "bytes": 116,
+          "textBytes": 2866,
+          "sha256": "01A2AB667F7F822AB171235674C60E8ADF55816DE81FCB81FB34563DABB3026A"
+        },
+        {
+          "name": "func_001AE13C",
+          "file": "asm/original/rev0/lib/func_001AE13C.s",
+          "romStart": "0x001AE13C",
+          "romEndExclusive": "0x001AE25C",
+          "bytes": 288,
+          "textBytes": 6252,
+          "sha256": "4C5BC1D19ED2C9025AFAE3DE187C31FEF60A7DCC74122AFB50C07E01ED0FB67F"
+        },
+        {
+          "name": "func_001AE25C",
+          "file": "asm/original/rev0/lib/func_001AE25C.s",
+          "romStart": "0x001AE25C",
+          "romEndExclusive": "0x001AF188",
+          "bytes": 3884,
+          "textBytes": 75182,
+          "sha256": "8E273A5C25972B15CF76556D816501C369A93B04FDFCF45101B2742D6B9D0937"
+        },
+        {
+          "name": "func_001AF188",
+          "file": "asm/original/rev0/lib/func_001AF188.s",
+          "romStart": "0x001AF188",
+          "romEndExclusive": "0x001AF754",
+          "bytes": 1484,
+          "textBytes": 29198,
+          "sha256": "6BB58788261E83BEDFA411B2A345170F1F0C26C89437F34730E7519054AD14C4"
+        },
+        {
+          "name": "func_001AF754",
+          "file": "asm/original/rev0/lib/func_001AF754.s",
+          "romStart": "0x001AF754",
+          "romEndExclusive": "0x001AF828",
+          "bytes": 212,
+          "textBytes": 4547,
+          "sha256": "227A0735F2D8E766639BE131E542A48629C08BC3310FA50D1E3752A16B83A405"
+        },
+        {
+          "name": "func_001AF828",
+          "file": "asm/original/rev0/lib/func_001AF828.s",
+          "romStart": "0x001AF828",
+          "romEndExclusive": "0x001AF8F0",
+          "bytes": 200,
+          "textBytes": 4317,
+          "sha256": "C02CA2B500D91DBE371A3F4EEB9679E1B73969CC96039F56329508B8DBEE7F17"
+        },
+        {
+          "name": "func_001AF8F0",
+          "file": "asm/original/rev0/lib/func_001AF8F0.s",
+          "romStart": "0x001AF8F0",
+          "romEndExclusive": "0x001AFB74",
+          "bytes": 644,
+          "textBytes": 12769,
+          "sha256": "1D0C43840310BB68752D0B1A72A5F379D1404B65CCB6FE7C37E7FC8CE905888A"
+        },
+        {
+          "name": "func_001AFB74",
+          "file": "asm/original/rev0/lib/func_001AFB74.s",
+          "romStart": "0x001AFB74",
+          "romEndExclusive": "0x001B044C",
+          "bytes": 2264,
+          "textBytes": 43711,
+          "sha256": "D2C3565792AB3797296F3663822D25E0C68A24EB857D0CDE1F423C033FF7C640"
+        },
+        {
+          "name": "func_001B044C",
+          "file": "asm/original/rev0/lib/func_001B044C.s",
+          "romStart": "0x001B044C",
+          "romEndExclusive": "0x001B0B0C",
+          "bytes": 1728,
+          "textBytes": 33864,
+          "sha256": "D78B93110A32045E41DFE2743CF2FEC2A67C932E4D1D56FBC34CB06979E398DE"
+        },
+        {
+          "name": "func_001B0B0C",
+          "file": "asm/original/rev0/lib/func_001B0B0C.s",
+          "romStart": "0x001B0B0C",
+          "romEndExclusive": "0x001B0F78",
+          "bytes": 1132,
+          "textBytes": 22285,
+          "sha256": "49DA8D67EC8EDA161F1B38A27CCD515ABD91499CC40BC687BB12E9570FE4F1D7"
+        },
+        {
+          "name": "func_001B0F78",
+          "file": "asm/original/rev0/lib/func_001B0F78.s",
+          "romStart": "0x001B0F78",
+          "romEndExclusive": "0x001B1000",
+          "bytes": 136,
+          "textBytes": 3329,
+          "sha256": "82DF22D55B226C59FB115504690B7A2188C16A72610EDB3BCEBBF828A06AAB90"
+        }
+      ],
+      "textBytes": 1316440,
+      "sha256": "34FD4EF340812ED2379CDA7407F491FC6AACCA6350B12A336389C19E293381BD"
     }
   ]
 }

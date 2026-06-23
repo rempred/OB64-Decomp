@@ -1,0 +1,47 @@
+{
+  "source": "asm/original/rev0/lib/rodata_001A2B6C.s",
+  "rangeZ64": [
+    "0x001A2B6C",
+    "0x001A2B80"
+  ],
+  "totalBytes": 20,
+  "encoding": "ASCII, NUL-terminated, big-endian (z64) byte order; @-prefixed inline control codes left verbatim",
+  "title": "Chunk 26 inline UI labels (0x1A2B6C)",
+  "stringCount": 2,
+  "atCodeTally": {},
+  "atCodeSemantics": "UNRESOLVED — @0..@3/@w/@c/@e are inline formatting/control codes; exact runtime meaning not decoded",
+  "confidence": "high (printable ASCII text); control-code semantics hypothesis-grade",
+  "segments": [
+    {
+      "kind": "nul",
+      "offset": "0x001A2B6C",
+      "bytes": 4
+    },
+    {
+      "kind": "string",
+      "offset": "0x001A2B70",
+      "bytes": 7,
+      "text": "Soldier",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x001A2B77",
+      "bytes": 1
+    },
+    {
+      "kind": "string",
+      "offset": "0x001A2B78",
+      "bytes": 6,
+      "text": "Thrust",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x001A2B7E",
+      "bytes": 2
+    }
+  ]
+}

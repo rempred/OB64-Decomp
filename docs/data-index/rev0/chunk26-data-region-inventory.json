@@ -1,0 +1,216 @@
+{
+  "chunk": 26,
+  "chunkRangeZ64": [
+    "0x001A1000",
+    "0x001B1000"
+  ],
+  "mixed": true,
+  "note": "CODE-dominant MIXED (81 code + 15 data). FP-heavy char/class/scenario/encounter code with three inline DATA islands. Most scanner-detected 'float runs' are FP CODE (lwc1/div.s/etc.), NOT data; the genuine data is the three islands below. All islands adversarially confirmed 0 prologues / 0 jr$ra.",
+  "dataRegions": [
+    {
+      "name": "D1: inline UI-label island — ASCII 'Soldier'/'Thrust' + byte index/ramp LUT + zero-fill + a 16-entry 0x802-band RAM-pointer (jump) table",
+      "rangeZ64": [
+        "0x001A2B6C",
+        "0x001A2C20"
+      ]
+    },
+    {
+      "name": "embedded island after func_001A42A4 — 0x04..0x0F up/down byte-ramp LUT + packed 0xE7/0xD9/0xFF records with an embedded 0x8021-band RAM-pointer table + an IEEE-754 DOUBLE pool (1.45, 1.2, 2*pi)",
+      "rangeZ64": [
+        "0x001A4474",
+        "0x001A4C10"
+      ]
+    },
+    {
+      "name": "D4: options/debug-menu string pool ('Message speed'.. 'Restore defaults') + a 14x0x10 menu-record array + two 0x8021/0x8022-band RAM-pointer tables + byte/index tables + zero-fill",
+      "rangeZ64": [
+        "0x001A8F2C",
+        "0x001A9290"
+      ]
+    }
+  ],
+  "totalDataBytes": 2996,
+  "classification": "parsed (ASCII rodata decoded byte-exact; IEEE-754 float/double pools; RAM-pointer & jump tables identified by 0x8021/0x8022-band targets) + raw-but-classified (byte index/ramp LUTs; packed 0xE7/0xD9/0xFF record blocks; the 14x0x10 menu-record array — field semantics undecoded). Undecoded: the packed-record field layouts, the ramp-LUT purpose, and the overlay-relocated pointer-table targets (true runtime band 0x801Bxxxx-0x801Cxxxx, not back-mappable to ROM here).",
+  "byClassBytes": {
+    "ascii-string": 408,
+    "ram-pointer-table": 212,
+    "zero-fill": 64,
+    "ram-pointer/jump-table": 64,
+    "packed/unknown": 2200,
+    "ieee754-float-pool": 48
+  },
+  "partCount": 15,
+  "codeRegions": [
+    "func_001A0264_chunk26tail .. D1 island .. func_001A42A4 (FP loop) .. embedded island .. func_001A4C10 (switch-dispatcher) .. func_001A8CCC .. D4 island .. func_001A9290 (9.3KB char-data dispatcher, 23 callees) .. func_001AF828 (reward-queue writer) .. func_001B0F78 (outgoing straddler-head)"
+  ],
+  "incomingStraddler": "func_001A0264_chunk26tail [0x001A1000,0x001A11F8) — tail of func_001A0264 whose addiu $sp,-0x88 prologue is in chunk 25 at 0x1A0264; ends jr$ra@0x1A11F0 + delay addiu $sp,0x88 @0x1A11F4.",
+  "outgoingStraddler": "func_001B0F78 [0x001B0F78,0x001B1000) — entry is a 2-word read-before-write preamble (lui/lbu $v0) @0x1B0F78, prologue addiu $sp,-0x18 @0x1B0F80; NO jr$ra in range; continues into chunk 27 as func_001B0F78_chunk27tail.",
+  "parentEvidence": "Leads (names kept conservative func_*): 0x1A6D64 runtime ESET/enemy-set loader (wiki live disasm; calls resource_alloc); 0x1AF828 reward-queue writer (sh to 0x801F0B50); 0x1A9290 char-data dispatcher (23 callees); 0x1A2990 uses const 30 (max active units). CONTRADICTION REFUTED: editor/app.js + scripts/ob64_class_tables4.js claim a '103x4B jump table' at ROM 0x1AB030 — byte-exact disasm shows that is executable class-promotion handler CODE (case dispatch via j 0x802173D8 overlay tail-jumps) inside func_001A9290, NOT a data table. ADDRESS-SPACE: the decode-column 0x8021/0x8022 band is the WRONG linear back-map; observed overlay map puts ROM 0x1A1448 at RAM 0x801C6AEC (true runtime band 0x801Bxxxx-0x801Cxxxx).",
+  "entries": [
+    {
+      "part": "rodata_001A2B6C",
+      "rangeZ64": [
+        "0x001A2B6C",
+        "0x001A2B80"
+      ],
+      "bytes": 20,
+      "class": "ascii-string",
+      "state": "parsed",
+      "note": "Inline data island D1 part 1: pad nop@0x1A2B6C then ASCII strings. 0x1A2B70=0x536F6C64 0x1A2B74=0x69657200 -> \"Soldier\\x00\"; 0x1A2B78=0x54687275 0x1A2B7C=0x73740000 -> \"Thrust\\x00\\x00\". Not executed (sits after func_001A2990, which ends just before 0x1A2B6C)."
+    },
+    {
+      "part": "table_001A2B80",
+      "rangeZ64": [
+        "0x001A2B80",
+        "0x001A2BD0"
+      ],
+      "bytes": 80,
+      "class": "ram-pointer-table",
+      "state": "parsed",
+      "note": "Inline data island D1 part 2: byte index/ramp LUT. Words include 0x00900000,0x010304FF,0x00000203,0x0405FF00,0x00000104,0x05FF0000,0x01040607,0xFF000000,0x00010203,0x05060708,0xFF010204,0x0708FF00,0x00000304,0x07FF0000,0x00000003,0x04050608,0xFF000000,0x040507FF — small ascending byte ramps with 0xFF separators, not valid code."
+    },
+    {
+      "part": "zero_fill_001A2BD0",
+      "rangeZ64": [
+        "0x001A2BD0",
+        "0x001A2BE0"
+      ],
+      "bytes": 16,
+      "class": "zero-fill",
+      "state": "raw-but-classified",
+      "note": "Inline data island D1 part 3: 4 words of zero-fill / alignment padding before the pointer table."
+    },
+    {
+      "part": "jumptable_001A2BE0",
+      "rangeZ64": [
+        "0x001A2BE0",
+        "0x001A2C20"
+      ],
+      "bytes": 64,
+      "class": "ram-pointer/jump-table",
+      "state": "parsed",
+      "note": "Inline data island D1 part 4: 16-entry RAM-pointer (jump) table in the 0x802xxxxx band: 0x80214FD8,0x80215104,0x802151D0,0x802152F0,0x802152F0,0x80215354,0x8021543C,0x80215E34,0x80215E34,0x80215E34,0x8021566C,0x80215C7C,0x80215C30,0x80215E34,0x80215E34,0x80215D24. Repeated targets (0x80215E34, 0x802152F0) confirm a switch dispatch table, not code."
+    },
+    {
+      "part": "data_001A4474",
+      "rangeZ64": [
+        "0x001A4474",
+        "0x001A4880"
+      ],
+      "bytes": 1036,
+      "class": "packed/unknown",
+      "state": "raw-but-classified",
+      "note": "Inline data island part 1 (non-executed; sits after func_001A42A4 return). Two alignment nops [0x1A4474,0x1A4480) then a 0x04..0x0F up/down byte ramp LUT the dispatcher indexes: rows e.g. 0x0F0F0F0F (repeated), 0x0F0F0E0E, 0x0E0E0F0F, 0x0D0C0B0A, 0x09080807, 0x07070808, 0x090A0B0C, 0x0D0E0F0F, 0x0F0F0E0D, 0x0C0B0908, 0x07060504, 0x04040506, 0x0708090B, 0x0C0D0E0F ... mirrored gradient blocks. Byte values stay in 0x00..0x0F (ramp/gradient table), NOT instructions."
+    },
+    {
+      "part": "data_001A4880",
+      "rangeZ64": [
+        "0x001A4880",
+        "0x001A4BE0"
+      ],
+      "bytes": 864,
+      "class": "packed/unknown",
+      "state": "raw-but-classified",
+      "note": "Inline data island part 2 (non-executed packed/mixed data with an embedded RAM-pointer table). Repeating 0xE7000000 / 0xD9000000 / 0xDF000000 / 0xFFFFFFFF byte-packed records, low byte-index runs (0x0600020A,0x0602040C,0x06080A0C,0x06101214,0x06181A1C ...), and a small 0x8021xxxx RAM-pointer band: 0x80216DA0@0x1A4B44, 0x80216EA0@0x1A4B88, 0x80216EB8@0x1A4B8C, 0x80216EC8@0x1A4B90, 0x80216ED8@0x1A4B94, 0x80216F08@0x1A4BBC. Not executed code."
+    },
+    {
+      "part": "float_001A4BE0",
+      "rangeZ64": [
+        "0x001A4BE0",
+        "0x001A4C10"
+      ],
+      "bytes": 48,
+      "class": "ieee754-float-pool",
+      "state": "parsed",
+      "note": "Inline data island part 3: IEEE-754 DOUBLE constant pool over [0x1A4BE0,0x1A4C10). Doubles: 0x3FF7333333333333 (=1.45) and 0x3FF3333333333333 (=1.2) @0x1A4BE0..0x1A4C00, then 0x401921FB54442D18 (=2*pi, 6.283185307) @0x1A4C00..0x1A4C08, then two 0x00000000 alignment words @0x1A4C08..0x1A4C10. The next owner (func_001A4C10) begins at 0x1A4C10"
+    },
+    {
+      "part": "rodata_001A8F2C",
+      "rangeZ64": [
+        "0x001A8F2C",
+        "0x001A90B0"
+      ],
+      "bytes": 388,
+      "class": "ascii-string",
+      "state": "parsed",
+      "note": "Options/debug menu string pool. Leading NUL word at 0x1A8F2C (\\x00\\x00\\x00\\x00), then NUL-delimited ASCII labels and value strings: \"Message speed\\x00\", \"Cursor speed\\x00\", \"Help display\\x00\", \"Icon name display\\x00\", \"Game speed\\x00\", \"Legion indicator\\x00\", \"Destination display\\x00\", \"Unit report type\\x00\", \"Battle action name\\x00\", \"Battle animation\\x00\", \"Quick exit\\x00\", \"Cancel all\\x00\", \"Sound settings\\x00\", \"Restore defaults\\x00\", \"Off\\x00\", \"On\\x00\", \"Mono\\x00\", \"Stereo\\x00\", \"Slow\\x00\", \"Normal\\x00\", \"Fast\\x00\", \"Slower\\x00\", \"Slow\\x00\", \"Normal\\x00\", \"Fast\\x00\", \"Faster\\x00\", \"Off\\x00\", \"On\\x00\", \"On\\x00\", \"Off\\x00\", \"None\\x00\", \"Third Person\\x00\", \"First Person\\x00\". Final string \"First Person\" ends 0x1A90AB; NUL pad through 0x1A90AF."
+    },
+    {
+      "part": "data_001A90B0",
+      "rangeZ64": [
+        "0x001A90B0",
+        "0x001A9190"
+      ],
+      "bytes": 224,
+      "class": "packed/unknown",
+      "state": "raw-but-classified",
+      "note": "Mixed menu-entry record array (14 records x 0x10 bytes). Each record interleaves small byte config fields (e.g. 0x01000000, 0x01010002 / 0x01010001 / 0x02020004, trailing selector bytes like 0x84000000/0x87000000/0x10000000/0x0C000000/0x0E000000/0x02000000/0x13000000) with one 0x80219xxx-band RAM pointer at +4 (0x802192A0,0x802192B0,0x802192C0,0x802192D0,0x802192E4,0x802192F0,0x80219304,0x80219318,0x8021932C,0x80219340,0x80219354,0x80219360,0x8021936C,0x8021937C). ~25% words are pointers, so packed/mixed not a clean table."
+    },
+    {
+      "part": "table_001A9190",
+      "rangeZ64": [
+        "0x001A9190",
+        "0x001A91E0"
+      ],
+      "bytes": 80,
+      "class": "ram-pointer-table",
+      "state": "parsed",
+      "note": "Dense RAM-pointer table, 0x8021/0x8022 band. 19 consecutive 0x80219xxx pointers: 0x80219390,0x80219394,0x80219398,0x802193A0,0x802193A8,0x802193B0,0x802193B8,0x802193C0,0x802193C8,0x802193D0,0x802193D8,0x802193E0,0x802193E8,0x802193EC,0x802193F0,0x802193F4,0x802193F8,0x80219400,0x80219410,0x802195A0 (20 ptr words 0x1A9190..0x1A91DC), then 0x00000000 terminator at 0x1A91DC? last ptr 0x802195A0 at 0x1A91DC; ends with zero word."
+    },
+    {
+      "part": "data_001A91E0",
+      "rangeZ64": [
+        "0x001A91E0",
+        "0x001A9218"
+      ],
+      "bytes": 56,
+      "class": "packed/unknown",
+      "state": "raw-but-classified",
+      "note": "Small byte/index data table. Words: 0x00000000,0x01000200,0x06000000,0x00000000,0x00000000,0x00000004,0x0000001E,0x0000002A,0x00000012,0x0000001F,0x00000039,0x00000045,0x0000002D. The trailing run is a single-byte index/value sequence 0x04,0x1E,0x2A,0x12,0x1F,0x39,0x45,0x2D."
+    },
+    {
+      "part": "zero_fill_001A9218",
+      "rangeZ64": [
+        "0x001A9218",
+        "0x001A9238"
+      ],
+      "bytes": 32,
+      "class": "zero-fill",
+      "state": "raw-but-classified",
+      "note": "8 pure-zero words (0x1A9218..0x1A9234)."
+    },
+    {
+      "part": "table_001A9238",
+      "rangeZ64": [
+        "0x001A9238",
+        "0x001A926C"
+      ],
+      "bytes": 52,
+      "class": "ram-pointer-table",
+      "state": "parsed",
+      "note": "RAM-pointer table, 0x8021/0x8022 band. 13 consecutive 0x802155xx/0x80215600+ pointers: 0x80215560,0x80215580,0x802155A0,0x802155B0,0x802155C0,0x802155D0,0x802155E0,0x802155F0,0x80215600,0x80215610,0x80215620,0x80215630,0x80215640."
+    },
+    {
+      "part": "data_001A926C",
+      "rangeZ64": [
+        "0x001A926C",
+        "0x001A9280"
+      ],
+      "bytes": 20,
+      "class": "packed/unknown",
+      "state": "raw-but-classified",
+      "note": "Small data island: 0x00000000 separator word at 0x1A926C, then four identical packed words 0x817C817C (0x1A9270..0x1A927C) — repeated 0x817C halfword pattern, not a 0x800/0x801/0x802 RAM pointer."
+    },
+    {
+      "part": "zero_fill_001A9280",
+      "rangeZ64": [
+        "0x001A9280",
+        "0x001A9290"
+      ],
+      "bytes": 16,
+      "class": "zero-fill",
+      "state": "raw-but-classified",
+      "note": "4 trailing pure-zero words (0x1A9280..0x1A928C) trailing alignment padding; the next owner func_001A9290 begins at 0x1A9290."
+    }
+  ]
+}

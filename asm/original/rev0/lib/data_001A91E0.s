@@ -1,0 +1,25 @@
+/*
+ * Original Rev 0 MIPS reference split.
+ * Parent source: asm/original/rev0/code_001A1000_001B1000.s
+ * z64 range: 0x001A91E0..0x001A9218 exclusive
+ * Decode comments are aids, not proof of semantic function boundaries.
+ */
+.set noat
+.set noreorder
+.text
+
+/* Data region (not executable host code): Small byte/index data table. Words: 0x00000000,0x01000200,0x06000000,0x00000000,0x00000000,0x00000004,0x0000001E,0x0000002A,0x00000012,0x0000001F,0x00000039,0x00000045,0x0000002D. The trailing run is a single-byte index/value sequence 0x04,0x1E,0x2A,0x12,0x1F,0x39,0x45,0x2D.. */
+/* 0x001A91E0 0x80218DE0 0x00000000 */ .word 0x00000000 # nop
+/* 0x001A91E4 0x80218DE4 0x01000200 */ .word 0x01000200 # sll $zero, $zero, 8
+/* 0x001A91E8 0x80218DE8 0x06000000 */ .word 0x06000000 # bltz $s0, 0x80218DEC
+/* 0x001A91EC 0x80218DEC 0x00000000 */ .word 0x00000000 # nop
+/* 0x001A91F0 0x80218DF0 0x00000000 */ .word 0x00000000 # nop
+/* 0x001A91F4 0x80218DF4 0x00000000 */ .word 0x00000000 # nop
+/* 0x001A91F8 0x80218DF8 0x00000004 */ .word 0x00000004 # sllv $zero, $zero, $zero
+/* 0x001A91FC 0x80218DFC 0x0000001E */ .word 0x0000001E # ddiv $zero, $zero
+/* 0x001A9200 0x80218E00 0x0000002A */ .word 0x0000002A # slt $zero, $zero, $zero
+/* 0x001A9204 0x80218E04 0x00000012 */ .word 0x00000012 # mflo $zero
+/* 0x001A9208 0x80218E08 0x0000001F */ .word 0x0000001F # ddivu $zero, $zero
+/* 0x001A920C 0x80218E0C 0x00000039 */ .word 0x00000039 # special_0x39
+/* 0x001A9210 0x80218E10 0x00000045 */ .word 0x00000045 # special_0x05
+/* 0x001A9214 0x80218E14 0x0000002D */ .word 0x0000002D # daddu $zero, $zero, $zero

@@ -131,8 +131,9 @@ Expected current results:
   `0x00121000..0x00131000` 95; `0x00131000..0x00141000` 80;
   `0x00141000..0x00151000` 175; `0x00151000..0x00161000` 99;
   `0x00161000..0x00171000` 99; `0x00171000..0x00181000` 73;
-  `0x00181000..0x00191000` 63; `0x00191000..0x001A1000` 71 files = 3,106 tracked
-  source files total), plus 74 generated fallback chunks.
+  `0x00181000..0x00191000` 63; `0x00191000..0x001A1000` 71;
+  `0x001A1000..0x001B1000` 96 files = 3,202 tracked
+  source files total), plus 73 generated fallback chunks.
 - `rebuild_rom.js --assembled-code ...` substitutes that assembled code blob for
   the raw code segment and still confirms the same full-ROM SHA256.
 - `build_full_source_manifest.js` emits a 1,059-entry full-ROM source ownership
@@ -213,8 +214,8 @@ These outputs are useful but ignored:
 - ROM size: 41,943,040 bytes.
 - Code region currently extracted as original MIPS:
   `0x00001000..0x0063676C`.
-- Chunks 0–25 (`0x00001000..0x001A1000`) are fully source-owned as named
-  code/data parts (3,106 tracked source files: 177 in `boot/` + 2,929 in `lib/`;
+- Chunks 0–26 (`0x00001000..0x001B1000`) are fully source-owned as named
+  code/data parts (3,202 tracked source files: 177 in `boot/` + 3,025 in `lib/`;
   chunk 11: 189 code + 2 straddler + 0 data, ALL CODE — 77 frameless leaves recovered;
   chunk 12: 72 code + 2 straddler + 0 data, ALL CODE — 20 dispatchers; chunk 13: 27
   code + 40 data, MIXED — unit-mgmt UI data; chunk 14: 74 code + 20 data, MIXED —
@@ -240,8 +241,13 @@ These outputs are useful but ignored:
   pointer tables + float64 pool] the parent DB again missed, with incoming AND outgoing FUNCTION
   straddlers; chunk 25: 59 code + 12 data, CODE-dominant MIXED — char/class/scenario code [incl.
   the documented record-builder func_0019554C, hook @0x195584] + a shop-dialogue string pool +
-  2 inline data islands, with incoming AND outgoing FUNCTION straddlers); current split frontier
-  `0x001A1000` (chunk 26, still a generated fallback chunk). chunk 1
+  2 inline data islands, with incoming AND outgoing FUNCTION straddlers; chunk 26: 81 code + 15
+  data, CODE-dominant MIXED — FP-heavy char/class/scenario/encounter code + 3 inline DATA islands
+  [Soldier/Thrust labels + jump table; a ~1.9KB ramp-LUT/packed-record/double-pool island after
+  func_001A42A4; an options-menu string pool], incl. ESET loader func_001A6D64, reward-queue writer
+  func_001AF828, 9.3KB dispatcher func_001A9290 (the editor's "0x1AB030 jump table" refuted as
+  class-promotion CODE), with incoming AND outgoing FUNCTION straddlers); current split frontier
+  `0x001B1000` (chunk 27, still a generated fallback chunk). chunk 1
   `0x11000..0x21000` is a graphics/unit-script/math/libc/libultra library; chunk 2
   `0x21000..0x31000` is the statically-linked libultra (N64 SDK) + libc + 64-bit
   runtime + `gu` matrix library + RSP-microcode data; chunk 3 `0x31000..0x41000`
@@ -478,8 +484,8 @@ prints PASS. Current PASS summary:
 - Toolchain: `n64-tools-gcc-toolchain-mips64-win64`, GNU Binutils 2.39.
 - Binutils smoke tests: `.word`, real instructions, `.set noreorder`, and first
   tracked chunk real assembly all pass.
-- Source mix: 26 tracked composite real-asm chunks made from 3,106 tracked source
-  files, plus 74 generated fallback chunks.
+- Source mix: 27 tracked composite real-asm chunks made from 3,202 tracked source
+  files, plus 73 generated fallback chunks.
 - Source manifest: 1,059 entries, zero unknown bytes, 2,469,141 ambiguous bytes
   preserved explicitly.
 - Source owners: 3 tracked non-code files / 44,029 bytes plus 1,055 generated
