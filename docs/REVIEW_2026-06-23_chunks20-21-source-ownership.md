@@ -30,7 +30,7 @@ run date 2026-06-23.
 ## 3. Commits (this run, newest first)
 | Hash | Category | Purpose |
 |---|---|---|
-| `_(this doc's commit)_` | review handoff | Add chunks 20–21 review handoff (this file, final commit) |
+| `887b444` | review handoff | Add chunks 20–21 review handoff (this file, final commit) |
 | `19a8eda` | source + docs | Source-own chunk 21 (99 parts, MIXED); dossier `lib-chunk21` + data-index inventory + doc updates |
 | `47f6753` | source + docs | Source-own chunk 20 (175 parts, MIXED); dossier `lib-chunk20` + 4 data indexes + 3 decoded exports + `tools/decode_ob64_tables.js` + doc updates |
 | `1be9fce` | opening fixes | Chunks 18–19 review nit (hash e1b54b1) + stale NEXT_STEPS range + stale DECOMP_LOG next-fallback line |
