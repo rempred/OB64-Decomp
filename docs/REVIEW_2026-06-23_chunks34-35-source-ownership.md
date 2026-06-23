@@ -64,6 +64,14 @@ patch-workbench artifacts, triaged against the curated vanilla Rev 0 Project64 c
 The catalog directory was re-inventoried read-only and matches the documented snapshot
 (79 `.pj.zip`; `battle\*` and `data-coverage\*` leaves all empty).
 
+> SUPERSEDED (2026-06-23, after commit `82f034d`): the `battle\*`-empty statement above
+> was true when this handoff was written. Joe subsequently added 19 vanilla Rev 0 battle
+> states (`battle_loading_or_intro` 7, `battle_command_prompt` 2, `battle_active` 4,
+> `battle_ending_or_results` 6). RSR-001/RSR-014 are now `candidate-state-available`. See
+> the "Combat-State Catalog Update" and "Combat-State One-Shot" sections in
+> `docs/runtime-state-requests.md` and the chunks36-37 review. Do not cite "battle empty"
+> as current state.
+
 Triage (full table in `docs/runtime-state-requests.md` → "Backfill Triage" section;
 machine-readable in `docs/patch-workbench/rev0/runtime-state-backfill-triage-2026-06-23.json`):
 

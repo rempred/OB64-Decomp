@@ -1,0 +1,26 @@
+{
+  "artifact": "combat-state-oneshot",
+  "date": "2026-06-23",
+  "request": "RSR-014",
+  "scope": "Static examination of the 19 new vanilla Rev 0 battle states vs source-owned combat code (chunks 30-35) + current patch-workbench artifacts. Chunks 36-37 prompt.",
+  "runtime_states_loaded": false,
+  "emulator_runs": 0,
+  "catalog_identity_expected": { "pj64_crc": "E6419BC5/69011DE3", "country": "0x45", "version": 0 },
+  "battle_inventory_2026-06-23": {
+    "battle_loading_or_intro": 7,
+    "battle_command_prompt": 2,
+    "battle_active": 4,
+    "battle_ending_or_results": 6,
+    "total": 19
+  },
+  "targets": [
+    { "site": "0x0021CD48", "owner": "func_0021CBC4", "chunk": 33, "nearest_state": ["battle/battle_active", "battle/battle_command_prompt"], "status": "candidate/needs-runtime", "proof_needed": "resolve combat-overlay RAM relocation; execute-watch hook; confirm active attack/damage-scale path; capture $v0/$s3 + 0x801D/0x801CE8C0 globals." },
+    { "site": "0x0021BF84", "owner": "func_0021B894", "chunk": 33, "nearest_state": ["battle/battle_active"], "status": "candidate/needs-runtime", "proof_needed": "execute-watch beq $s3,$zero guard; observe branch-taken across real attacks; confirm $s3 slot semantics + delay-slot move $v0,$s3." },
+    { "site": "0x001F36F0", "owner": "chunk31 cleanup path", "chunk": 31, "nearest_state": ["battle/battle_ending_or_results"], "status": "candidate/needs-runtime", "proof_needed": "execute-watch jal resource_free during teardown; confirm delay-slot owner load [0x801CE8BC] + owner-non-null guard." },
+    { "request": "RSR-001", "nearest_state": ["battle/*"], "status": "candidate-state-available", "proof_needed": "snapshot combat overlay base/extent; map chunk-30-35 ROM->RAM relocation; identify scheduler/stream globals." },
+    { "request": "RSR-013", "nearest_state": ["battle/battle_active", "core-menus/class_change"], "status": "candidate/needs-runtime", "proof_needed": "register/memory watches proving 0x801CE8xx/0x801D08xx/0x8018AA8x globals + class-change/level-up active call paths." }
+  ],
+  "patch_workbench_changes": "none (no runtime evidence gathered; all combat hook candidates remain candidate/needs-runtime)",
+  "chunks36_37_note": "mission-briefing/combat display-list module (F3DEX/GBI builders, 0x801F00xx control globals, class/promotion data from 0x801C/0x801D); no new hook candidates encountered.",
+  "request_log_changes": { "satisfied_examination": ["RSR-014"], "unchanged_open": ["RSR-001", "RSR-011", "RSR-013"] }
+}

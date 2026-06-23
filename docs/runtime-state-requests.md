@@ -56,7 +56,7 @@ The catalog usage guide is `docs/runtime-state-catalog.md`.
 | RSR-011 | needs-runtime | high | Existing curated states if sufficient; otherwise exact missing category per hook | For patch-workbench hook candidates, record original words, displaced instructions, likely resume addresses, delay-slot/prologue/epilogue hazards, and runtime proof of active path/register assumptions before marking any hook proven. | This is a standing proof request for candidate hook sites harvested during source ownership. |
 | RSR-012 | satisfied | high | Existing curated states plus request-specific missing captures | Retrospectively triage previous source-owned chunks and patch-workbench artifacts against the curated state catalog: mark requests as served by existing state, still needs capture, or not actionable. | Next source-ownership prompt should run this as a bounded one-shot over already source-owned work, without starting future chunks or speculative emulator work. **Backfill one-shot ran 2026-06-23 (chunks 34-35 prompt); see Backfill Triage section below.** |
 | RSR-013 | candidate-state-available | medium | `core-menus\class_change` (6 states), `core-menus\army_management` (7 states) | Promotion / level-up / class-def overlay+register proof for chunks 34-35 code (e.g. `func_002226D4` level-up dispatcher and its callees, `func_0021EBBC` class-change state machine, the many `promotion consumer` / `class-def consumer` functions). Prove overlay/RAM mapping for the combat overlay these run in, and the meaning of the 0x801CE8xx / 0x801D08xx / 0x8018AA8x globals they read/write. | Opened by the chunks 34-35 source-ownership run. Broad class-change/army-management states exist and are the nearest starting points, but no runtime proof was recorded this run (static-only). Needs header-verified state load + register/memory watches. |
-| RSR-014 | candidate-state-available | high | Newly populated `battle\*` catalog leaves | Next-run one-shot: examine the newly added combat states against already source-owned past work and patch-workbench artifacts, especially combat/battle code in chunks 30-35, High Attack hook candidates (`0x0021CD48`, `0x0021BF84`), the `0x001F36F0` cleanup-guard site, scheduler/stream state, battle command UI, and reward/results paths. | Do this in the next prompt after the active chunks 34-35 run, not by interrupting the active Claude session. Use existing states only unless Joe asks for new captures; classify static/state-label-only findings as `candidate` or `needs-runtime`, not proven. |
+| RSR-014 | satisfied (static examination) | high | Newly populated `battle\*` catalog leaves | Next-run one-shot: examine the newly added combat states against already source-owned past work and patch-workbench artifacts, especially combat/battle code in chunks 30-35, High Attack hook candidates (`0x0021CD48`, `0x0021BF84`), the `0x001F36F0` cleanup-guard site, scheduler/stream state, battle command UI, and reward/results paths. | **Static one-shot examination ran 2026-06-23 (chunks 36-37 prompt); see "Combat-State One-Shot" section below.** It mapped each combat target to its nearest battle state and recorded the exact runtime proof still needed. No states were loaded into an emulator and no behavior was proven this run; the actual runtime observation (per `TestingWorkFlow.MD`, Joe-driven) remains open under RSR-001/RSR-011/RSR-013. |
 
 ## Combat-State Catalog Update - 2026-06-23
 
@@ -77,6 +77,34 @@ empty. The new states make RSR-001 and RSR-014 `candidate-state-available`, but
 they do not prove behavior by label alone. Future proof still needs exact state
 path, checked identity, watches/registers/memory ranges, observation result, and
 confidence.
+
+## Combat-State One-Shot — 2026-06-23 (chunks 36-37 prompt, RSR-014)
+
+Bounded static examination of the 19 newly added vanilla Rev 0 `battle\*` states
+against already source-owned combat/battle code (chunks 30-35) and current
+patch-workbench artifacts. **No states were loaded into an emulator, mutated, moved, or
+renamed; no emulator sweeps were run.** Read-only directory re-inventory on 2026-06-23
+confirmed the 19 states (7 loading/intro, 2 command_prompt, 4 active, 6 ending/results);
+catalog identity was previously header-verified by the coordinator
+(`E6419BC5/69011DE3`, country `0x45`, version `0`). Per `TestingWorkFlow.MD`, actual
+runtime observation is Joe-driven and was NOT performed this run, so nothing below is
+marked proven.
+
+Target → nearest broad state → exact runtime proof still needed:
+
+| Target | Owning file (z64) | Nearest battle state(s) | Proof still needed (needs-runtime) |
+| --- | --- | --- | --- |
+| High Attack primary insert hook `0x0021CD48` | `lib/func_0021CBC4.s` (chunk 33) | `battle\battle_active`, `battle\battle_command_prompt` | Load state; resolve the combat-overlay RAM address `func_0021CBC4` relocates to; execute-watch the hook site; confirm it is on the active attack/damage-scale path; capture `$v0`/`$s3` and the `0x801D`/`0x801CE8C0` globals at the hook. |
+| High Attack slot0 zero-return hook `0x0021BF84` | `lib/func_0021B894.s` (chunk 33) | `battle\battle_active` | Execute-watch the `beq $s3,$zero` guard; observe branch-taken vs fall-through across real attacks; confirm `$s3` (slot index) semantics and the delay-slot `move $v0,$s3`. |
+| High Attack cleanup owner-free guard `0x001F36F0` | chunk 31 cleanup path | `battle\battle_ending_or_results` | Execute-watch the `jal resource_free` site during battle teardown; confirm the delay-slot owner load from `[0x801CE8BC]` and whether the free is guarded by owner-non-null. |
+| RSR-001 battle overlay/RAM mapping, scheduler/stream | combat overlay (chunks 30-35) | all four `battle\*` leaves | Snapshot the combat overlay base/extent in RAM; map a few chunk-30-35 functions' ROM→RAM relocation; identify the scheduler/stream-state globals. |
+| RSR-013 promotion/level-up/class-def (chunks 34-35) | `func_0021EBBC`, `func_002226D4`, etc. | `battle\battle_active` + `core-menus\class_change` | Register/memory watches proving the `0x801CE8xx`/`0x801D08xx`/`0x8018AA8x` global meanings and the class-change/level-up active call paths. |
+
+Outcome: RSR-014 examination satisfied (mapping recorded); RSR-001 stays
+`candidate-state-available`; RSR-011/RSR-013 stay `needs-runtime`/`candidate`. No
+patch-workbench classification changed (all combat hook candidates remain
+`candidate`/`needs-runtime`). Chunks 36-37 themselves are a mission-briefing/combat
+display-list module with no new hook candidates encountered.
 
 ## Backfill Triage — 2026-06-23 (chunks 34-35 one-shot, RSR-012)
 
