@@ -1,0 +1,178 @@
+{
+  "part": "rodata_00085960",
+  "rangeZ64": [
+    "0x85960",
+    "0x85C60"
+  ],
+  "bytes": 768,
+  "class": "string-pool",
+  "state": "parsed",
+  "encoding": "Each entry: 0x0E lead byte, ASCII text, 0x0F terminator, then 0x00 padding to ~4-byte alignment. The sequence 0x10 0x34 (shown as {10}4) is an embedded line-break marker; 'text' preserves non-ASCII bytes as {XX}.",
+  "entryCount": 40,
+  "entries": [
+    {
+      "offset": "0x85960",
+      "text": "Castro Canyon"
+    },
+    {
+      "offset": "0x85970",
+      "text": "Zenobian Border"
+    },
+    {
+      "offset": "0x85984",
+      "text": "Crenel Canyon"
+    },
+    {
+      "offset": "0x85994",
+      "text": "Volmus Mine"
+    },
+    {
+      "offset": "0x859A4",
+      "text": "Volmus Mine"
+    },
+    {
+      "offset": "0x859B4",
+      "text": "Tenne Plains"
+    },
+    {
+      "offset": "0x859C4",
+      "text": "Alba"
+    },
+    {
+      "offset": "0x859CC",
+      "text": "Dardunnelles,{10}4the Crossroads"
+    },
+    {
+      "offset": "0x859EC",
+      "text": "Gunther Piedmont"
+    },
+    {
+      "offset": "0x85A00",
+      "text": "Mylesia"
+    },
+    {
+      "offset": "0x85A0C",
+      "text": "Gules Hills"
+    },
+    {
+      "offset": "0x85A1C",
+      "text": "Tremos Mountains"
+    },
+    {
+      "offset": "0x85A30",
+      "text": "Fair Heights"
+    },
+    {
+      "offset": "0x85A40",
+      "text": "Temple of Berthe"
+    },
+    {
+      "offset": "0x85A54",
+      "text": "Capitrium,{10}4the Land of Advent"
+    },
+    {
+      "offset": "0x85A78",
+      "text": "Celesis,{10}4the Eastern Church"
+    },
+    {
+      "offset": "0x85A98",
+      "text": "Tremos Mountains"
+    },
+    {
+      "offset": "0x85AAC",
+      "text": "Sable Lowlands"
+    },
+    {
+      "offset": "0x85AC0",
+      "text": "Audvera Heights"
+    },
+    {
+      "offset": "0x85AD4",
+      "text": "The Highland{10}4of Soathon"
+    },
+    {
+      "offset": "0x85AF0",
+      "text": "Mount Ithaca"
+    },
+    {
+      "offset": "0x85B00",
+      "text": "Azure Plains"
+    },
+    {
+      "offset": "0x85B10",
+      "text": "Wentinus"
+    },
+    {
+      "offset": "0x85B1C",
+      "text": "Mount Keryoleth"
+    },
+    {
+      "offset": "0x85B30",
+      "text": "Tybell,{10}4the Wicked Land"
+    },
+    {
+      "offset": "0x85B4C",
+      "text": "The Tundra{10}4of Argent"
+    },
+    {
+      "offset": "0x85B64",
+      "text": "Vert Plateau"
+    },
+    {
+      "offset": "0x85B74",
+      "text": "Aurua Plains"
+    },
+    {
+      "offset": "0x85B84",
+      "text": "Barpheth"
+    },
+    {
+      "offset": "0x85B90",
+      "text": "Latium"
+    },
+    {
+      "offset": "0x85B9C",
+      "text": "The Blue Basilica"
+    },
+    {
+      "offset": "0x85BB0",
+      "text": "Ptia,{10}4the Secluded Land"
+    },
+    {
+      "offset": "0x85BCC",
+      "text": "Romulus"
+    },
+    {
+      "offset": "0x85BD8",
+      "text": "Wentinus"
+    },
+    {
+      "offset": "0x85BE4",
+      "text": "Dardunnelles,{10}4the Crossroads"
+    },
+    {
+      "offset": "0x85C04",
+      "text": "Mount Keryoleth"
+    },
+    {
+      "offset": "0x85C18",
+      "text": "Winnea,{10}4Capital of Palatinus"
+    },
+    {
+      "offset": "0x85C38",
+      "text": "Castle Talpaea"
+    },
+    {
+      "offset": "0x85C4C",
+      "text": "Fort Romulus"
+    },
+    {
+      "offset": "0x85C5C",
+      "text": "Alb"
+    }
+  ],
+  "notes": "Mission/location-name pool used by the world map / mission select. Last word 0x0E416C62 ('\u000e Alb') begins 'Alba' whose final 'a'+0x0F terminator falls in the NEXT part (rodata_00085c60 at 0x85C60). Several names repeat (e.g. Volmus Mine, Tremos Mountains, Wentinus, Mount Keryoleth, Dardunnelles) - the pool is indexed positionally, repeats are real bytes not errors.",
+  "hypotheses": [
+    "Entry index likely maps to a wiki scene/mission id but the mapping is NOT established here - do not assume positional index == any scenario id flavor."
+  ]
+}

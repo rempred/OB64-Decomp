@@ -1,0 +1,1131 @@
+{
+  "part": "rodata_000613b0",
+  "rangeZ64": [
+    "0x613B0",
+    "0x64A44"
+  ],
+  "bytes": 13972,
+  "indexedStringRangeZ64": [
+    "0x613B0",
+    "0x6230C"
+  ],
+  "indexedStringBytes": 3932,
+  "class": "string-pool",
+  "state": "parsed",
+  "encoding": "NUL-terminated ASCII, NUL-padded. Multi-line entries use 0x0E ... 0x10 0x63 ... 0x0F (shown {0E}...{10}c...{0F}).",
+  "entryCount": 277,
+  "entries": [
+    {
+      "offset": "0x613B0",
+      "text": "Short Sword"
+    },
+    {
+      "offset": "0x613BC",
+      "text": "Baldr Sword"
+    },
+    {
+      "offset": "0x613C8",
+      "text": "Falchion"
+    },
+    {
+      "offset": "0x613D4",
+      "text": "Flamberge"
+    },
+    {
+      "offset": "0x613E0",
+      "text": "Fafnir"
+    },
+    {
+      "offset": "0x613E8",
+      "text": "Sum Mannus"
+    },
+    {
+      "offset": "0x613F4",
+      "text": "Notos"
+    },
+    {
+      "offset": "0x613FC",
+      "text": "{0E}Sword of{10}cFiredrake{0F}"
+    },
+    {
+      "offset": "0x61414",
+      "text": "Laevateinn"
+    },
+    {
+      "offset": "0x61420",
+      "text": "Glamdring"
+    },
+    {
+      "offset": "0x6142C",
+      "text": "Stone Sword"
+    },
+    {
+      "offset": "0x61438",
+      "text": "{0E}Adamant{10}cKatana{0F}"
+    },
+    {
+      "offset": "0x6144C",
+      "text": "Ice Blade"
+    },
+    {
+      "offset": "0x61458",
+      "text": "{0E}Nephrite{10}cSword{0F}"
+    },
+    {
+      "offset": "0x6146C",
+      "text": "Blessed Sword"
+    },
+    {
+      "offset": "0x6147C",
+      "text": "Penitence"
+    },
+    {
+      "offset": "0x61488",
+      "text": "Oracion"
+    },
+    {
+      "offset": "0x61490",
+      "text": "Evil Blade"
+    },
+    {
+      "offset": "0x6149C",
+      "text": "Dainslaif"
+    },
+    {
+      "offset": "0x614A8",
+      "text": "{0E}Noish's{10}cPromise{0F}"
+    },
+    {
+      "offset": "0x614BC",
+      "text": "Knoevlfer"
+    },
+    {
+      "offset": "0x614C8",
+      "text": "{0E}Bastard{10}cSword{0F}"
+    },
+    {
+      "offset": "0x614DC",
+      "text": "{0E}Sword of{10}cTiamat{0F}"
+    },
+    {
+      "offset": "0x614F0",
+      "text": "Claymore"
+    },
+    {
+      "offset": "0x614FC",
+      "text": "Balmung"
+    },
+    {
+      "offset": "0x61504",
+      "text": "{0E}Glaive of{10}cChampion{0F}"
+    },
+    {
+      "offset": "0x6151C",
+      "text": "Sigmund"
+    },
+    {
+      "offset": "0x61524",
+      "text": "Matsukaze"
+    },
+    {
+      "offset": "0x61530",
+      "text": "Iscandelvey"
+    },
+    {
+      "offset": "0x6153C",
+      "text": "Kagari-bi"
+    },
+    {
+      "offset": "0x61548",
+      "text": "Gram"
+    },
+    {
+      "offset": "0x61550",
+      "text": "Yomogi-u"
+    },
+    {
+      "offset": "0x6155C",
+      "text": "{0E}Malachite{10}cSword{0F}"
+    },
+    {
+      "offset": "0x61570",
+      "text": "Yu-giri"
+    },
+    {
+      "offset": "0x61578",
+      "text": "Chaladholg"
+    },
+    {
+      "offset": "0x61584",
+      "text": "Kusanagi"
+    },
+    {
+      "offset": "0x61590",
+      "text": "Durandel"
+    },
+    {
+      "offset": "0x6159C",
+      "text": "Ogre Blade"
+    },
+    {
+      "offset": "0x615A8",
+      "text": "Sonic Blade"
+    },
+    {
+      "offset": "0x615B4",
+      "text": "Rapier"
+    },
+    {
+      "offset": "0x615BC",
+      "text": "Main Gauche"
+    },
+    {
+      "offset": "0x615C8",
+      "text": "{0E}Sword of{10}cDragon Gem{0F}"
+    },
+    {
+      "offset": "0x615E0",
+      "text": "Estoc"
+    },
+    {
+      "offset": "0x615E8",
+      "text": "Peridot Sword"
+    },
+    {
+      "offset": "0x615F8",
+      "text": "{0E}Needle of{10}cLight{0F}"
+    },
+    {
+      "offset": "0x6160C",
+      "text": "Anbicion"
+    },
+    {
+      "offset": "0x61618",
+      "text": "Clau Solace"
+    },
+    {
+      "offset": "0x61624",
+      "text": "Francisca"
+    },
+    {
+      "offset": "0x61630",
+      "text": "Halt Hammer"
+    },
+    {
+      "offset": "0x6163C",
+      "text": "Baldr Club"
+    },
+    {
+      "offset": "0x61648",
+      "text": "Baldr Axe"
+    },
+    {
+      "offset": "0x61654",
+      "text": "Euros"
+    },
+    {
+      "offset": "0x6165C",
+      "text": "Gramlock"
+    },
+    {
+      "offset": "0x61668",
+      "text": "Flame Flail"
+    },
+    {
+      "offset": "0x61674",
+      "text": "Axe of Wyrm"
+    },
+    {
+      "offset": "0x61680",
+      "text": "Aqua Hammer"
+    },
+    {
+      "offset": "0x6168C",
+      "text": "Frozen Axe"
+    },
+    {
+      "offset": "0x61698",
+      "text": "{0E}Celestial{10}cHammer{0F}"
+    },
+    {
+      "offset": "0x616AC",
+      "text": "Evil Axe"
+    },
+    {
+      "offset": "0x616B8",
+      "text": "{0E}Bloody{10}cCleaver{0F}"
+    },
+    {
+      "offset": "0x616CC",
+      "text": "Warhammer"
+    },
+    {
+      "offset": "0x616D8",
+      "text": "Paua Hammer"
+    },
+    {
+      "offset": "0x616E4",
+      "text": "Heavy Axe"
+    },
+    {
+      "offset": "0x616F0",
+      "text": "Mjollnir"
+    },
+    {
+      "offset": "0x616FC",
+      "text": "Boreas"
+    },
+    {
+      "offset": "0x61704",
+      "text": "Prox"
+    },
+    {
+      "offset": "0x6170C",
+      "text": "Sanscion"
+    },
+    {
+      "offset": "0x61718",
+      "text": "Yggdrasil"
+    },
+    {
+      "offset": "0x61724",
+      "text": "Urdarbrunn"
+    },
+    {
+      "offset": "0x61730",
+      "text": "Rune Axe"
+    },
+    {
+      "offset": "0x6173C",
+      "text": "{0E}Satan's{10}cBullova{0F}"
+    },
+    {
+      "offset": "0x61750",
+      "text": "{0E}Dagda's{10}cHammer{0F}"
+    },
+    {
+      "offset": "0x61764",
+      "text": "Short Spear"
+    },
+    {
+      "offset": "0x61770",
+      "text": "Spear"
+    },
+    {
+      "offset": "0x61778",
+      "text": "Baldr Spear"
+    },
+    {
+      "offset": "0x61784",
+      "text": "Culnrikolnne"
+    },
+    {
+      "offset": "0x61794",
+      "text": "{0E}Thunder{10}cSpear{0F}"
+    },
+    {
+      "offset": "0x617A8",
+      "text": "Zephyros"
+    },
+    {
+      "offset": "0x617B4",
+      "text": "Volcaetus"
+    },
+    {
+      "offset": "0x617C0",
+      "text": "Ignis"
+    },
+    {
+      "offset": "0x617C8",
+      "text": "Earth Javelin"
+    },
+    {
+      "offset": "0x617D8",
+      "text": "Osric's Spear"
+    },
+    {
+      "offset": "0x617E8",
+      "text": "Bentisca"
+    },
+    {
+      "offset": "0x617F4",
+      "text": "Holy Lance"
+    },
+    {
+      "offset": "0x61800",
+      "text": "{0E}Lance of{10}cLonginus{0F}"
+    },
+    {
+      "offset": "0x61818",
+      "text": "Evil Spear"
+    },
+    {
+      "offset": "0x61824",
+      "text": "Brionac"
+    },
+    {
+      "offset": "0x6182C",
+      "text": "Leather Whip"
+    },
+    {
+      "offset": "0x6183C",
+      "text": "Rupture Rose"
+    },
+    {
+      "offset": "0x6184C",
+      "text": "{0E}Whip of{10}cExorcism{0F}"
+    },
+    {
+      "offset": "0x61860",
+      "text": "{0E}Scourge of{10}cThor{0F}"
+    },
+    {
+      "offset": "0x61874",
+      "text": "Holy Comet"
+    },
+    {
+      "offset": "0x61880",
+      "text": "Blood Whip"
+    },
+    {
+      "offset": "0x6188C",
+      "text": "Iron Claw"
+    },
+    {
+      "offset": "0x61898",
+      "text": "Baldr Claw"
+    },
+    {
+      "offset": "0x618A4",
+      "text": "Touelno"
+    },
+    {
+      "offset": "0x618AC",
+      "text": "Lfal"
+    },
+    {
+      "offset": "0x618B4",
+      "text": "Berserk"
+    },
+    {
+      "offset": "0x618BC",
+      "text": "Cyanic Claw"
+    },
+    {
+      "offset": "0x618C8",
+      "text": "Vajra"
+    },
+    {
+      "offset": "0x618D0",
+      "text": "Black Cat"
+    },
+    {
+      "offset": "0x618DC",
+      "text": "Short Bow"
+    },
+    {
+      "offset": "0x618E8",
+      "text": "Great Bow"
+    },
+    {
+      "offset": "0x618F4",
+      "text": "Baldr Bow"
+    },
+    {
+      "offset": "0x61900",
+      "text": "Composite Bow"
+    },
+    {
+      "offset": "0x61910",
+      "text": "{0E}Bow of{10}cThunderbolt{0F}"
+    },
+    {
+      "offset": "0x61928",
+      "text": "{0E}Conflagrant{10}cBow{0F}"
+    },
+    {
+      "offset": "0x6193C",
+      "text": "{0E}Bow of{10}cSandstorm{0F}"
+    },
+    {
+      "offset": "0x61950",
+      "text": "Bow of Tundra"
+    },
+    {
+      "offset": "0x61960",
+      "text": "Crescente"
+    },
+    {
+      "offset": "0x6196C",
+      "text": "Ytival"
+    },
+    {
+      "offset": "0x61974",
+      "text": "Ji'ylga's Bow"
+    },
+    {
+      "offset": "0x61984",
+      "text": "Light Mace"
+    },
+    {
+      "offset": "0x61990",
+      "text": "Baldr Mace"
+    },
+    {
+      "offset": "0x6199C",
+      "text": "Celestial Mace"
+    },
+    {
+      "offset": "0x619AC",
+      "text": "Gambantein"
+    },
+    {
+      "offset": "0x619B8",
+      "text": "Scipplay Staff"
+    },
+    {
+      "offset": "0x619C8",
+      "text": "Arc Wand"
+    },
+    {
+      "offset": "0x619D4",
+      "text": "Hraesvelg"
+    },
+    {
+      "offset": "0x619E0",
+      "text": "Totila"
+    },
+    {
+      "offset": "0x619E8",
+      "text": "Jormungand"
+    },
+    {
+      "offset": "0x619F4",
+      "text": "Phorusgir"
+    },
+    {
+      "offset": "0x61A00",
+      "text": "Airgetlam"
+    },
+    {
+      "offset": "0x61A0C",
+      "text": "Kerykeion"
+    },
+    {
+      "offset": "0x61A18",
+      "text": "Hemlock"
+    },
+    {
+      "offset": "0x61A20",
+      "text": "Scepter"
+    },
+    {
+      "offset": "0x61A28",
+      "text": "Marionette"
+    },
+    {
+      "offset": "0x61A34",
+      "text": "Fool"
+    },
+    {
+      "offset": "0x61A3C",
+      "text": "Heaven's Doll"
+    },
+    {
+      "offset": "0x61A4C",
+      "text": "Lia Fail"
+    },
+    {
+      "offset": "0x61A58",
+      "text": "Doll of Curse"
+    },
+    {
+      "offset": "0x61A68",
+      "text": "Gallant Doll"
+    },
+    {
+      "offset": "0x61A78",
+      "text": "Battle Fan"
+    },
+    {
+      "offset": "0x61A84",
+      "text": "Caldia"
+    },
+    {
+      "offset": "0x61A8C",
+      "text": "Round Shield"
+    },
+    {
+      "offset": "0x61A9C",
+      "text": "Buckler"
+    },
+    {
+      "offset": "0x61AA4",
+      "text": "{0E}Electric{10}cShield{0F}"
+    },
+    {
+      "offset": "0x61AB8",
+      "text": "Flame Shield"
+    },
+    {
+      "offset": "0x61AC8",
+      "text": "Terra Shield"
+    },
+    {
+      "offset": "0x61AD8",
+      "text": "Ice Shield"
+    },
+    {
+      "offset": "0x61AE4",
+      "text": "Starry Sky"
+    },
+    {
+      "offset": "0x61AF0",
+      "text": "Kite Shield"
+    },
+    {
+      "offset": "0x61AFC",
+      "text": "Tower Shield"
+    },
+    {
+      "offset": "0x61B0C",
+      "text": "Large Shield"
+    },
+    {
+      "offset": "0x61B1C",
+      "text": "Baldr Shield"
+    },
+    {
+      "offset": "0x61B2C",
+      "text": "Dragon Shield"
+    },
+    {
+      "offset": "0x61B3C",
+      "text": "Shield of Nue"
+    },
+    {
+      "offset": "0x61B4C",
+      "text": "{0E}Shield of{10}cInferno{0F}"
+    },
+    {
+      "offset": "0x61B64",
+      "text": "Crystal Guard"
+    },
+    {
+      "offset": "0x61B74",
+      "text": "Saint's Shield"
+    },
+    {
+      "offset": "0x61B84",
+      "text": "Ogre Shield"
+    },
+    {
+      "offset": "0x61B90",
+      "text": "{0E}Hallowed{10}cShield{0F}"
+    },
+    {
+      "offset": "0x61BA4",
+      "text": "Half Armor"
+    },
+    {
+      "offset": "0x61BB0",
+      "text": "Cloth Armor"
+    },
+    {
+      "offset": "0x61BBC",
+      "text": "{0E}Leather{10}cArmor{0F}"
+    },
+    {
+      "offset": "0x61BD0",
+      "text": "Hard Leather"
+    },
+    {
+      "offset": "0x61BE0",
+      "text": "Ninja's Garb"
+    },
+    {
+      "offset": "0x61BF0",
+      "text": "Scale Armor"
+    },
+    {
+      "offset": "0x61BFC",
+      "text": "Chain Mail"
+    },
+    {
+      "offset": "0x61C08",
+      "text": "Thunder Chain"
+    },
+    {
+      "offset": "0x61C18",
+      "text": "Flame Leather"
+    },
+    {
+      "offset": "0x61C28",
+      "text": "Terra Armor"
+    },
+    {
+      "offset": "0x61C34",
+      "text": "Ice Chain"
+    },
+    {
+      "offset": "0x61C40",
+      "text": "Saint's Garb"
+    },
+    {
+      "offset": "0x61C50",
+      "text": "Idaten's Mail"
+    },
+    {
+      "offset": "0x61C60",
+      "text": "{0E}Breast{10}cLeather{0F}"
+    },
+    {
+      "offset": "0x61C74",
+      "text": "Breastplate"
+    },
+    {
+      "offset": "0x61C80",
+      "text": "Plate Mail"
+    },
+    {
+      "offset": "0x61C8C",
+      "text": "Baldr Mail"
+    },
+    {
+      "offset": "0x61C98",
+      "text": "Titania Mail"
+    },
+    {
+      "offset": "0x61CA8",
+      "text": "Peregrine Mail"
+    },
+    {
+      "offset": "0x61CB8",
+      "text": "Phoenix Mail"
+    },
+    {
+      "offset": "0x61CC8",
+      "text": "Nathalork Mail"
+    },
+    {
+      "offset": "0x61CD8",
+      "text": "Hwail Mail"
+    },
+    {
+      "offset": "0x61CE4",
+      "text": "Angelic Armor"
+    },
+    {
+      "offset": "0x61CF4",
+      "text": "{0E}Bloodstained{10}cArmor{0F}"
+    },
+    {
+      "offset": "0x61D0C",
+      "text": "Plate Armor"
+    },
+    {
+      "offset": "0x61D18",
+      "text": "Baldr Armor"
+    },
+    {
+      "offset": "0x61D24",
+      "text": "Heavy Armor"
+    },
+    {
+      "offset": "0x61D30",
+      "text": "Dragon Armor"
+    },
+    {
+      "offset": "0x61D40",
+      "text": "Wind Armor"
+    },
+    {
+      "offset": "0x61D4C",
+      "text": "Breidablick"
+    },
+    {
+      "offset": "0x61D58",
+      "text": "Rune Plate"
+    },
+    {
+      "offset": "0x61D64",
+      "text": "Ogre Armor"
+    },
+    {
+      "offset": "0x61D70",
+      "text": "{0E}Armor of{10}cDeath{0F}"
+    },
+    {
+      "offset": "0x61D84",
+      "text": "{0E}Southern{10}cCross{0F}"
+    },
+    {
+      "offset": "0x61D98",
+      "text": "Jeulnelune"
+    },
+    {
+      "offset": "0x61DA4",
+      "text": "{0E}Diadora's{10}cSong{0F}"
+    },
+    {
+      "offset": "0x61DB8",
+      "text": "Elem Plate"
+    },
+    {
+      "offset": "0x61DC4",
+      "text": "Torn Cloth"
+    },
+    {
+      "offset": "0x61DD0",
+      "text": "Robe"
+    },
+    {
+      "offset": "0x61DD8",
+      "text": "{0E}Cleric's{10}cVestment{0F}"
+    },
+    {
+      "offset": "0x61DF0",
+      "text": "{0E}Magician's{10}cRobe{0F}"
+    },
+    {
+      "offset": "0x61E04",
+      "text": "{0E}Robe of{10}cthe Wise{0F}"
+    },
+    {
+      "offset": "0x61E18",
+      "text": "{0E}Vestment of{10}cWind{0F}"
+    },
+    {
+      "offset": "0x61E2C",
+      "text": "{0E}Vestment of{10}cFlame{0F}"
+    },
+    {
+      "offset": "0x61E44",
+      "text": "Phoenix Robe"
+    },
+    {
+      "offset": "0x61E54",
+      "text": "{0E}Vestment of{10}cEarth{0F}"
+    },
+    {
+      "offset": "0x61E6C",
+      "text": "{0E}Vestment of{10}cWater{0F}"
+    },
+    {
+      "offset": "0x61E84",
+      "text": "Cloak of Oath"
+    },
+    {
+      "offset": "0x61E94",
+      "text": "Purified Robe"
+    },
+    {
+      "offset": "0x61EA4",
+      "text": "{0E}Bloodstained{10}cRobe{0F}"
+    },
+    {
+      "offset": "0x61EBC",
+      "text": "Robe of Abyss"
+    },
+    {
+      "offset": "0x61ECC",
+      "text": "Robe of Devus"
+    },
+    {
+      "offset": "0x61EDC",
+      "text": "Old Clothing"
+    },
+    {
+      "offset": "0x61EEC",
+      "text": "Plain Clothing"
+    },
+    {
+      "offset": "0x61EFC",
+      "text": "Witch's Dress"
+    },
+    {
+      "offset": "0x61F0C",
+      "text": "Fur Coat"
+    },
+    {
+      "offset": "0x61F18",
+      "text": "{0E}Pure-White{10}cDress{0F}"
+    },
+    {
+      "offset": "0x61F2C",
+      "text": "Feather Suit"
+    },
+    {
+      "offset": "0x61F3C",
+      "text": "Heat-Tex"
+    },
+    {
+      "offset": "0x61F48",
+      "text": "Forest Tunic"
+    },
+    {
+      "offset": "0x61F58",
+      "text": "Misty Coat"
+    },
+    {
+      "offset": "0x61F64",
+      "text": "Stardust"
+    },
+    {
+      "offset": "0x61F70",
+      "text": "Spell Robe"
+    },
+    {
+      "offset": "0x61F7C",
+      "text": "Tiny Clothing"
+    },
+    {
+      "offset": "0x61F8C",
+      "text": "{0E}Count's{10}cGarment{0F}"
+    },
+    {
+      "offset": "0x61FA0",
+      "text": "Quilted Cloth"
+    },
+    {
+      "offset": "0x61FB0",
+      "text": "Royal Garb"
+    },
+    {
+      "offset": "0x61FBC",
+      "text": "Iron Helm"
+    },
+    {
+      "offset": "0x61FC8",
+      "text": "Bone Helm"
+    },
+    {
+      "offset": "0x61FD4",
+      "text": "Armet"
+    },
+    {
+      "offset": "0x61FDC",
+      "text": "Baldr Helm"
+    },
+    {
+      "offset": "0x61FE8",
+      "text": "Dragon Helm"
+    },
+    {
+      "offset": "0x61FF4",
+      "text": "{0E}Helm of{10}cThunderclap{0F}"
+    },
+    {
+      "offset": "0x6200C",
+      "text": "Freude Helm"
+    },
+    {
+      "offset": "0x62018",
+      "text": "Ogre Helm"
+    },
+    {
+      "offset": "0x62024",
+      "text": "{0E}Helm of the{10}cFearless{0F}"
+    },
+    {
+      "offset": "0x6203C",
+      "text": "Cross Helm"
+    },
+    {
+      "offset": "0x62048",
+      "text": "Jelton Helm"
+    },
+    {
+      "offset": "0x62054",
+      "text": "Leather Hat"
+    },
+    {
+      "offset": "0x62060",
+      "text": "Bandanna"
+    },
+    {
+      "offset": "0x6206C",
+      "text": "Hachigane"
+    },
+    {
+      "offset": "0x62078",
+      "text": "Jin-gasa"
+    },
+    {
+      "offset": "0x62084",
+      "text": "{0E}Plumed{10}cHeadband{0F}"
+    },
+    {
+      "offset": "0x62098",
+      "text": "Pointy Hat"
+    },
+    {
+      "offset": "0x620A4",
+      "text": "Hannya Mask"
+    },
+    {
+      "offset": "0x620B0",
+      "text": "Burning Band"
+    },
+    {
+      "offset": "0x620C0",
+      "text": "Ice Bandanna"
+    },
+    {
+      "offset": "0x620D0",
+      "text": "Celestial Veil"
+    },
+    {
+      "offset": "0x620E0",
+      "text": "Red Branch"
+    },
+    {
+      "offset": "0x620EC",
+      "text": "Decoy Cap"
+    },
+    {
+      "offset": "0x620F8",
+      "text": "Spellbook"
+    },
+    {
+      "offset": "0x62104",
+      "text": "Book of Wind"
+    },
+    {
+      "offset": "0x62114",
+      "text": "Book of Flame"
+    },
+    {
+      "offset": "0x62124",
+      "text": "Book of Earth"
+    },
+    {
+      "offset": "0x62134",
+      "text": "Book of Water"
+    },
+    {
+      "offset": "0x62144",
+      "text": "Book of Bane"
+    },
+    {
+      "offset": "0x62154",
+      "text": "Tempest"
+    },
+    {
+      "offset": "0x6215C",
+      "text": "Annihilation"
+    },
+    {
+      "offset": "0x6216C",
+      "text": "Meteor Strike"
+    },
+    {
+      "offset": "0x6217C",
+      "text": "White Mute"
+    },
+    {
+      "offset": "0x62188",
+      "text": "Amulet"
+    },
+    {
+      "offset": "0x62190",
+      "text": "{0E}Ring of{10}cEloquence{0F}"
+    },
+    {
+      "offset": "0x621A8",
+      "text": "Firecrest"
+    },
+    {
+      "offset": "0x621B4",
+      "text": "{0E}Bell of{10}cThunder{0F}"
+    },
+    {
+      "offset": "0x621C8",
+      "text": "{0E}Fang of{10}cFiredrake{0F}"
+    },
+    {
+      "offset": "0x621E0",
+      "text": "Naga Ring"
+    },
+    {
+      "offset": "0x621EC",
+      "text": "Snow Orb"
+    },
+    {
+      "offset": "0x621F8",
+      "text": "Rosary"
+    },
+    {
+      "offset": "0x62200",
+      "text": "Elder's Sign"
+    },
+    {
+      "offset": "0x62210",
+      "text": "{0E}Feather of{10}cArchangel{0F}"
+    },
+    {
+      "offset": "0x62228",
+      "text": "{0E}Ring of{10}cBranding{0F}"
+    },
+    {
+      "offset": "0x6223C",
+      "text": "{0E}Angel's{10}cBrooch{0F}"
+    },
+    {
+      "offset": "0x62250",
+      "text": "Rai's Tear"
+    },
+    {
+      "offset": "0x6225C",
+      "text": "Runic Cape"
+    },
+    {
+      "offset": "0x62268",
+      "text": "Glass Pumpkin"
+    },
+    {
+      "offset": "0x62278",
+      "text": "Dream Tiara"
+    },
+    {
+      "offset": "0x62284",
+      "text": "Royal Crown"
+    },
+    {
+      "offset": "0x62290",
+      "text": "Bloody Emblem"
+    },
+    {
+      "offset": "0x622A0",
+      "text": "{0E}Ring of the{10}cDead{0F}"
+    },
+    {
+      "offset": "0x622B4",
+      "text": "Valiant Mantle"
+    },
+    {
+      "offset": "0x622C4",
+      "text": "{0E}Fur-lined{10}cMantle{0F}"
+    },
+    {
+      "offset": "0x622D8",
+      "text": "{0E}Majestic{10}cMantle{0F}"
+    },
+    {
+      "offset": "0x622EC",
+      "text": "Blue Sash"
+    },
+    {
+      "offset": "0x622F8",
+      "text": "Tunic"
+    },
+    {
+      "offset": "0x62300",
+      "text": "Guard Tunic"
+    }
+  ],
+  "notes": "Weapon/armor/accessory/item NAME string pool. ONLY the string portion 0x613B0..0x6230C is enumerated here; the rest of the manifest part (0x6230C..0x64A44, ~10040 bytes) is RAM-pointer (0x8018xxxx/0x8019xxxx) and packed record data, NOT strings - see audit report. The manifest part name 'rodata_000613b0' covers BOTH; the dominant-content label is fine but the part is mixed.",
+  "hypotheses": [
+    "Item IDs are 1-based per repo rules; positional pool index likely = item table index but the exact id<->name binding is via a separate pointer table (table_00064a44 etc.), not decoded here."
+  ]
+}

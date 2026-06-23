@@ -1,0 +1,418 @@
+{
+  "part": "rodata_0005d5fc",
+  "rangeZ64": [
+    "0x5D5FC",
+    "0x5DAD4"
+  ],
+  "bytes": 1240,
+  "class": "string-pool",
+  "state": "parsed",
+  "encoding": "NUL-terminated ASCII, NUL-padded. Multi-line entries use 0x0E ... (0x10 0x63 = {10}c line-break) ... 0x0F inside the NUL-delimited run; 'text' preserves these as {XX}.",
+  "entryCount": 100,
+  "entries": [
+    {
+      "offset": "0x5D5FC",
+      "text": "Thrust"
+    },
+    {
+      "offset": "0x5D604",
+      "text": "Peck"
+    },
+    {
+      "offset": "0x5D60C",
+      "text": "Pierce"
+    },
+    {
+      "offset": "0x5D614",
+      "text": "Slash"
+    },
+    {
+      "offset": "0x5D61C",
+      "text": "Cleave"
+    },
+    {
+      "offset": "0x5D624",
+      "text": "Rend"
+    },
+    {
+      "offset": "0x5D62C",
+      "text": "Claw"
+    },
+    {
+      "offset": "0x5D634",
+      "text": "Bite"
+    },
+    {
+      "offset": "0x5D63C",
+      "text": "Strike"
+    },
+    {
+      "offset": "0x5D644",
+      "text": "Crush"
+    },
+    {
+      "offset": "0x5D64C",
+      "text": "Smash"
+    },
+    {
+      "offset": "0x5D654",
+      "text": "Lash"
+    },
+    {
+      "offset": "0x5D65C",
+      "text": "Pull Strings"
+    },
+    {
+      "offset": "0x5D66C",
+      "text": "Shoot"
+    },
+    {
+      "offset": "0x5D674",
+      "text": "Take a Peek"
+    },
+    {
+      "offset": "0x5D680",
+      "text": "Flip Over"
+    },
+    {
+      "offset": "0x5D68C",
+      "text": "Sonic Boom"
+    },
+    {
+      "offset": "0x5D698",
+      "text": "Wind Shot"
+    },
+    {
+      "offset": "0x5D6A4",
+      "text": "{0E}Thunder{10}cArrow{0F}"
+    },
+    {
+      "offset": "0x5D6B8",
+      "text": "Wind Storm"
+    },
+    {
+      "offset": "0x5D6C4",
+      "text": "Mesmerize"
+    },
+    {
+      "offset": "0x5D6D0",
+      "text": "Life Drain"
+    },
+    {
+      "offset": "0x5D6DC",
+      "text": "Throw a Kiss"
+    },
+    {
+      "offset": "0x5D6EC",
+      "text": "{0E}Gaze of{10}cTerror{0F}"
+    },
+    {
+      "offset": "0x5D700",
+      "text": "Pumpkin Smash"
+    },
+    {
+      "offset": "0x5D710",
+      "text": "{0E}Pumpkin{10}cShower{0F}"
+    },
+    {
+      "offset": "0x5D724",
+      "text": "Banish"
+    },
+    {
+      "offset": "0x5D72C",
+      "text": "Jihad"
+    },
+    {
+      "offset": "0x5D734",
+      "text": "Magic Missile"
+    },
+    {
+      "offset": "0x5D744",
+      "text": "Abyss"
+    },
+    {
+      "offset": "0x5D74C",
+      "text": "{0E}Lightning{10}cBreath{0F}"
+    },
+    {
+      "offset": "0x5D760",
+      "text": "Fire Breath"
+    },
+    {
+      "offset": "0x5D76C",
+      "text": "Acid Breath"
+    },
+    {
+      "offset": "0x5D778",
+      "text": "Breath of Cold"
+    },
+    {
+      "offset": "0x5D788",
+      "text": "Sacred Breath"
+    },
+    {
+      "offset": "0x5D798",
+      "text": "Rotten Breath"
+    },
+    {
+      "offset": "0x5D7A8",
+      "text": "Petrify"
+    },
+    {
+      "offset": "0x5D7B0",
+      "text": "Radiant Gale"
+    },
+    {
+      "offset": "0x5D7C0",
+      "text": "Crimson Note"
+    },
+    {
+      "offset": "0x5D7D0",
+      "text": "Earthquake"
+    },
+    {
+      "offset": "0x5D7DC",
+      "text": "{0E}Clear{10}cDisaster{0F}"
+    },
+    {
+      "offset": "0x5D7F0",
+      "text": "Divine Ray"
+    },
+    {
+      "offset": "0x5D7FC",
+      "text": "Evil Dead"
+    },
+    {
+      "offset": "0x5D808",
+      "text": "Evocation"
+    },
+    {
+      "offset": "0x5D814",
+      "text": "Ninja Art"
+    },
+    {
+      "offset": "0x5D820",
+      "text": "Lightning"
+    },
+    {
+      "offset": "0x5D82C",
+      "text": "Thunder Flare"
+    },
+    {
+      "offset": "0x5D83C",
+      "text": "Shock Bolt"
+    },
+    {
+      "offset": "0x5D848",
+      "text": "Thunderbird"
+    },
+    {
+      "offset": "0x5D854",
+      "text": "Fireball"
+    },
+    {
+      "offset": "0x5D860",
+      "text": "Fire Storm"
+    },
+    {
+      "offset": "0x5D86C",
+      "text": "{0E}Ray of{10}cParalysis{0F}"
+    },
+    {
+      "offset": "0x5D880",
+      "text": "Salamander"
+    },
+    {
+      "offset": "0x5D88C",
+      "text": "Acid Vapor"
+    },
+    {
+      "offset": "0x5D898",
+      "text": "Crag Press"
+    },
+    {
+      "offset": "0x5D8A4",
+      "text": "Poison Cloud"
+    },
+    {
+      "offset": "0x5D8B4",
+      "text": "Gnome"
+    },
+    {
+      "offset": "0x5D8BC",
+      "text": "Ice Blast"
+    },
+    {
+      "offset": "0x5D8C8",
+      "text": "Ice Field"
+    },
+    {
+      "offset": "0x5D8D4",
+      "text": "Slumber Mist"
+    },
+    {
+      "offset": "0x5D8E4",
+      "text": "Fenrir"
+    },
+    {
+      "offset": "0x5D8EC",
+      "text": "Healing"
+    },
+    {
+      "offset": "0x5D8F4",
+      "text": "Healing Plus"
+    },
+    {
+      "offset": "0x5D904",
+      "text": "Word of Pain"
+    },
+    {
+      "offset": "0x5D914",
+      "text": "Dark Quest"
+    },
+    {
+      "offset": "0x5D920",
+      "text": "Nightmare"
+    },
+    {
+      "offset": "0x5D92C",
+      "text": "Dark Lore"
+    },
+    {
+      "offset": "0x5D938",
+      "text": "Tempest"
+    },
+    {
+      "offset": "0x5D940",
+      "text": "Annihilation"
+    },
+    {
+      "offset": "0x5D950",
+      "text": "Meteor Strike"
+    },
+    {
+      "offset": "0x5D960",
+      "text": "White Mute"
+    },
+    {
+      "offset": "0x5D96C",
+      "text": "Ionosphere"
+    },
+    {
+      "offset": "0x5D978",
+      "text": "Atmosphere"
+    },
+    {
+      "offset": "0x5D984",
+      "text": "Deep Sleep"
+    },
+    {
+      "offset": "0x5D990",
+      "text": "Plasma Ball"
+    },
+    {
+      "offset": "0x5D99C",
+      "text": "Plasma Storm"
+    },
+    {
+      "offset": "0x5D9AC",
+      "text": "Bind Flare"
+    },
+    {
+      "offset": "0x5D9B8",
+      "text": "Lava Shot"
+    },
+    {
+      "offset": "0x5D9C4",
+      "text": "Lava Flow"
+    },
+    {
+      "offset": "0x5D9D0",
+      "text": "Poison Plant"
+    },
+    {
+      "offset": "0x5D9E0",
+      "text": "Clay Assault"
+    },
+    {
+      "offset": "0x5D9F0",
+      "text": "Blue Spiral"
+    },
+    {
+      "offset": "0x5D9FC",
+      "text": "Poison Lime"
+    },
+    {
+      "offset": "0x5DA08",
+      "text": "Infest"
+    },
+    {
+      "offset": "0x5DA10",
+      "text": "Inferno"
+    },
+    {
+      "offset": "0x5DA18",
+      "text": "Black Breeze"
+    },
+    {
+      "offset": "0x5DA28",
+      "text": "Dark Blaze"
+    },
+    {
+      "offset": "0x5DA34",
+      "text": "Dark Flame"
+    },
+    {
+      "offset": "0x5DA40",
+      "text": "Doom"
+    },
+    {
+      "offset": "0x5DA48",
+      "text": "Sonic Blast"
+    },
+    {
+      "offset": "0x5DA54",
+      "text": "Wind Blast"
+    },
+    {
+      "offset": "0x5DA60",
+      "text": "Fire Blast"
+    },
+    {
+      "offset": "0x5DA6C",
+      "text": "Earth Blast"
+    },
+    {
+      "offset": "0x5DA78",
+      "text": "Aqua Blast"
+    },
+    {
+      "offset": "0x5DA84",
+      "text": "Holy Blast"
+    },
+    {
+      "offset": "0x5DA90",
+      "text": "Dark Blast"
+    },
+    {
+      "offset": "0x5DA9C",
+      "text": "Sonic Blade"
+    },
+    {
+      "offset": "0x5DAA8",
+      "text": "Ignis Fatuus"
+    },
+    {
+      "offset": "0x5DAB8",
+      "text": "Mirage Slash"
+    },
+    {
+      "offset": "0x5DAC8",
+      "text": "Fatal Dance"
+    }
+  ],
+  "notes": "Attack/spell/breath move-name pool (runtime attack NAMES per repo notes are normally runtime-only; this is the stored ROM source pool).",
+  "hypotheses": [
+    "Positional index likely corresponds to an attack-id table; mapping not established here."
+  ]
+}

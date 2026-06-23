@@ -1,0 +1,857 @@
+{
+  "part": "data_0005db18",
+  "rangeZ64": [
+    "0x5DB18",
+    "0x60980"
+  ],
+  "bytes": 11880,
+  "class": "record-table",
+  "state": "parsed",
+  "stride": "0x48",
+  "strideBytes": 72,
+  "recordCount": 165,
+  "knownFields": [
+    {
+      "name": "ptr44",
+      "offsetInRecord": "0x44",
+      "type": "RAM-pointer (overlay runtime, 0x80190xxx region)",
+      "evidence": "all 165 records have hi-byte 0x80 at +0x44"
+    }
+  ],
+  "record0": {
+    "note": "sentinel-like: bytes begin FF FF FF 00 FF FF FF 00 ...",
+    "ptrAt_0x44": "0x80190368"
+  },
+  "entries": [
+    {
+      "index": 0,
+      "offset": "0x5DB18",
+      "ptrAt_0x44": "0x80190368"
+    },
+    {
+      "index": 1,
+      "offset": "0x5DB60",
+      "ptrAt_0x44": "0x80190360"
+    },
+    {
+      "index": 2,
+      "offset": "0x5DBA8",
+      "ptrAt_0x44": "0x80190354"
+    },
+    {
+      "index": 3,
+      "offset": "0x5DBF0",
+      "ptrAt_0x44": "0x8019034C"
+    },
+    {
+      "index": 4,
+      "offset": "0x5DC38",
+      "ptrAt_0x44": "0x80190344"
+    },
+    {
+      "index": 5,
+      "offset": "0x5DC80",
+      "ptrAt_0x44": "0x80190338"
+    },
+    {
+      "index": 6,
+      "offset": "0x5DCC8",
+      "ptrAt_0x44": "0x80190330"
+    },
+    {
+      "index": 7,
+      "offset": "0x5DD10",
+      "ptrAt_0x44": "0x80190328"
+    },
+    {
+      "index": 8,
+      "offset": "0x5DD58",
+      "ptrAt_0x44": "0x8019031C"
+    },
+    {
+      "index": 9,
+      "offset": "0x5DDA0",
+      "ptrAt_0x44": "0x80190310"
+    },
+    {
+      "index": 10,
+      "offset": "0x5DDE8",
+      "ptrAt_0x44": "0x80190308"
+    },
+    {
+      "index": 11,
+      "offset": "0x5DE30",
+      "ptrAt_0x44": "0x80190300"
+    },
+    {
+      "index": 12,
+      "offset": "0x5DE78",
+      "ptrAt_0x44": "0x801902F8"
+    },
+    {
+      "index": 13,
+      "offset": "0x5DEC0",
+      "ptrAt_0x44": "0x801902E8"
+    },
+    {
+      "index": 14,
+      "offset": "0x5DF08",
+      "ptrAt_0x44": "0x801902DC"
+    },
+    {
+      "index": 15,
+      "offset": "0x5DF50",
+      "ptrAt_0x44": "0x801902D4"
+    },
+    {
+      "index": 16,
+      "offset": "0x5DF98",
+      "ptrAt_0x44": "0x801902C8"
+    },
+    {
+      "index": 17,
+      "offset": "0x5DFE0",
+      "ptrAt_0x44": "0x801902C0"
+    },
+    {
+      "index": 18,
+      "offset": "0x5E028",
+      "ptrAt_0x44": "0x801902B8"
+    },
+    {
+      "index": 19,
+      "offset": "0x5E070",
+      "ptrAt_0x44": "0x801902B0"
+    },
+    {
+      "index": 20,
+      "offset": "0x5E0B8",
+      "ptrAt_0x44": "0x801902A0"
+    },
+    {
+      "index": 21,
+      "offset": "0x5E100",
+      "ptrAt_0x44": "0x80190290"
+    },
+    {
+      "index": 22,
+      "offset": "0x5E148",
+      "ptrAt_0x44": "0x80190284"
+    },
+    {
+      "index": 23,
+      "offset": "0x5E190",
+      "ptrAt_0x44": "0x80190274"
+    },
+    {
+      "index": 24,
+      "offset": "0x5E1D8",
+      "ptrAt_0x44": "0x80190268"
+    },
+    {
+      "index": 25,
+      "offset": "0x5E220",
+      "ptrAt_0x44": "0x80190258"
+    },
+    {
+      "index": 26,
+      "offset": "0x5E268",
+      "ptrAt_0x44": "0x8019024C"
+    },
+    {
+      "index": 27,
+      "offset": "0x5E2B0",
+      "ptrAt_0x44": "0x80190244"
+    },
+    {
+      "index": 28,
+      "offset": "0x5E2F8",
+      "ptrAt_0x44": "0x80190230"
+    },
+    {
+      "index": 29,
+      "offset": "0x5E340",
+      "ptrAt_0x44": "0x80190228"
+    },
+    {
+      "index": 30,
+      "offset": "0x5E388",
+      "ptrAt_0x44": "0x80190220"
+    },
+    {
+      "index": 31,
+      "offset": "0x5E3D0",
+      "ptrAt_0x44": "0x80190218"
+    },
+    {
+      "index": 32,
+      "offset": "0x5E418",
+      "ptrAt_0x44": "0x8019020C"
+    },
+    {
+      "index": 33,
+      "offset": "0x5E460",
+      "ptrAt_0x44": "0x80190200"
+    },
+    {
+      "index": 34,
+      "offset": "0x5E4A8",
+      "ptrAt_0x44": "0x80190200"
+    },
+    {
+      "index": 35,
+      "offset": "0x5E4F0",
+      "ptrAt_0x44": "0x801901F0"
+    },
+    {
+      "index": 36,
+      "offset": "0x5E538",
+      "ptrAt_0x44": "0x801901E8"
+    },
+    {
+      "index": 37,
+      "offset": "0x5E580",
+      "ptrAt_0x44": "0x801901E0"
+    },
+    {
+      "index": 38,
+      "offset": "0x5E5C8",
+      "ptrAt_0x44": "0x801901D8"
+    },
+    {
+      "index": 39,
+      "offset": "0x5E610",
+      "ptrAt_0x44": "0x801901D0"
+    },
+    {
+      "index": 40,
+      "offset": "0x5E658",
+      "ptrAt_0x44": "0x801901C8"
+    },
+    {
+      "index": 41,
+      "offset": "0x5E6A0",
+      "ptrAt_0x44": "0x801901BC"
+    },
+    {
+      "index": 42,
+      "offset": "0x5E6E8",
+      "ptrAt_0x44": "0x801901B4"
+    },
+    {
+      "index": 43,
+      "offset": "0x5E730",
+      "ptrAt_0x44": "0x801901B4"
+    },
+    {
+      "index": 44,
+      "offset": "0x5E778",
+      "ptrAt_0x44": "0x801901AC"
+    },
+    {
+      "index": 45,
+      "offset": "0x5E7C0",
+      "ptrAt_0x44": "0x801901AC"
+    },
+    {
+      "index": 46,
+      "offset": "0x5E808",
+      "ptrAt_0x44": "0x801901A0"
+    },
+    {
+      "index": 47,
+      "offset": "0x5E850",
+      "ptrAt_0x44": "0x80190198"
+    },
+    {
+      "index": 48,
+      "offset": "0x5E898",
+      "ptrAt_0x44": "0x80190190"
+    },
+    {
+      "index": 49,
+      "offset": "0x5E8E0",
+      "ptrAt_0x44": "0x80190184"
+    },
+    {
+      "index": 50,
+      "offset": "0x5E928",
+      "ptrAt_0x44": "0x8019017C"
+    },
+    {
+      "index": 51,
+      "offset": "0x5E970",
+      "ptrAt_0x44": "0x80190174"
+    },
+    {
+      "index": 52,
+      "offset": "0x5E9B8",
+      "ptrAt_0x44": "0x8019016C"
+    },
+    {
+      "index": 53,
+      "offset": "0x5EA00",
+      "ptrAt_0x44": "0x80190164"
+    },
+    {
+      "index": 54,
+      "offset": "0x5EA48",
+      "ptrAt_0x44": "0x8019015C"
+    },
+    {
+      "index": 55,
+      "offset": "0x5EA90",
+      "ptrAt_0x44": "0x8019014C"
+    },
+    {
+      "index": 56,
+      "offset": "0x5EAD8",
+      "ptrAt_0x44": "0x80190138"
+    },
+    {
+      "index": 57,
+      "offset": "0x5EB20",
+      "ptrAt_0x44": "0x8019012C"
+    },
+    {
+      "index": 58,
+      "offset": "0x5EB68",
+      "ptrAt_0x44": "0x8019011C"
+    },
+    {
+      "index": 59,
+      "offset": "0x5EBB0",
+      "ptrAt_0x44": "0x80190110"
+    },
+    {
+      "index": 60,
+      "offset": "0x5EBF8",
+      "ptrAt_0x44": "0x801900FC"
+    },
+    {
+      "index": 61,
+      "offset": "0x5EC40",
+      "ptrAt_0x44": "0x801900EC"
+    },
+    {
+      "index": 62,
+      "offset": "0x5EC88",
+      "ptrAt_0x44": "0x801900DC"
+    },
+    {
+      "index": 63,
+      "offset": "0x5ECD0",
+      "ptrAt_0x44": "0x801900D0"
+    },
+    {
+      "index": 64,
+      "offset": "0x5ED18",
+      "ptrAt_0x44": "0x801900C4"
+    },
+    {
+      "index": 65,
+      "offset": "0x5ED60",
+      "ptrAt_0x44": "0x801900BC"
+    },
+    {
+      "index": 66,
+      "offset": "0x5EDA8",
+      "ptrAt_0x44": "0x801900B4"
+    },
+    {
+      "index": 67,
+      "offset": "0x5EDF0",
+      "ptrAt_0x44": "0x801900AC"
+    },
+    {
+      "index": 68,
+      "offset": "0x5EE38",
+      "ptrAt_0x44": "0x801900A4"
+    },
+    {
+      "index": 69,
+      "offset": "0x5EE80",
+      "ptrAt_0x44": "0x8019009C"
+    },
+    {
+      "index": 70,
+      "offset": "0x5EEC8",
+      "ptrAt_0x44": "0x80190094"
+    },
+    {
+      "index": 71,
+      "offset": "0x5EF10",
+      "ptrAt_0x44": "0x80190088"
+    },
+    {
+      "index": 72,
+      "offset": "0x5EF58",
+      "ptrAt_0x44": "0x8019007C"
+    },
+    {
+      "index": 73,
+      "offset": "0x5EFA0",
+      "ptrAt_0x44": "0x80190074"
+    },
+    {
+      "index": 74,
+      "offset": "0x5EFE8",
+      "ptrAt_0x44": "0x80190068"
+    },
+    {
+      "index": 75,
+      "offset": "0x5F030",
+      "ptrAt_0x44": "0x8019005C"
+    },
+    {
+      "index": 76,
+      "offset": "0x5F078",
+      "ptrAt_0x44": "0x80190054"
+    },
+    {
+      "index": 77,
+      "offset": "0x5F0C0",
+      "ptrAt_0x44": "0x8019004C"
+    },
+    {
+      "index": 78,
+      "offset": "0x5F108",
+      "ptrAt_0x44": "0x80190040"
+    },
+    {
+      "index": 79,
+      "offset": "0x5F150",
+      "ptrAt_0x44": "0x80190034"
+    },
+    {
+      "index": 80,
+      "offset": "0x5F198",
+      "ptrAt_0x44": "0x80190028"
+    },
+    {
+      "index": 81,
+      "offset": "0x5F1E0",
+      "ptrAt_0x44": "0x8019001C"
+    },
+    {
+      "index": 82,
+      "offset": "0x5F228",
+      "ptrAt_0x44": "0x80190014"
+    },
+    {
+      "index": 83,
+      "offset": "0x5F270",
+      "ptrAt_0x44": "0x80190028"
+    },
+    {
+      "index": 84,
+      "offset": "0x5F2B8",
+      "ptrAt_0x44": "0x8019000C"
+    },
+    {
+      "index": 85,
+      "offset": "0x5F300",
+      "ptrAt_0x44": "0x8018FFFC"
+    },
+    {
+      "index": 86,
+      "offset": "0x5F348",
+      "ptrAt_0x44": "0x8018FFF0"
+    },
+    {
+      "index": 87,
+      "offset": "0x5F390",
+      "ptrAt_0x44": "0x8018FFE8"
+    },
+    {
+      "index": 88,
+      "offset": "0x5F3D8",
+      "ptrAt_0x44": "0x80190014"
+    },
+    {
+      "index": 89,
+      "offset": "0x5F420",
+      "ptrAt_0x44": "0x80190274"
+    },
+    {
+      "index": 90,
+      "offset": "0x5F468",
+      "ptrAt_0x44": "0x80190218"
+    },
+    {
+      "index": 91,
+      "offset": "0x5F4B0",
+      "ptrAt_0x44": "0x8018FFE0"
+    },
+    {
+      "index": 92,
+      "offset": "0x5F4F8",
+      "ptrAt_0x44": "0x8018FFD4"
+    },
+    {
+      "index": 93,
+      "offset": "0x5F540",
+      "ptrAt_0x44": "0x80190200"
+    },
+    {
+      "index": 94,
+      "offset": "0x5F588",
+      "ptrAt_0x44": "0x80190354"
+    },
+    {
+      "index": 95,
+      "offset": "0x5F5D0",
+      "ptrAt_0x44": "0x801901BC"
+    },
+    {
+      "index": 96,
+      "offset": "0x5F618",
+      "ptrAt_0x44": "0x8018FFC8"
+    },
+    {
+      "index": 97,
+      "offset": "0x5F660",
+      "ptrAt_0x44": "0x8018FFBC"
+    },
+    {
+      "index": 98,
+      "offset": "0x5F6A8",
+      "ptrAt_0x44": "0x8018FFB0"
+    },
+    {
+      "index": 99,
+      "offset": "0x5F6F0",
+      "ptrAt_0x44": "0x8018FFA0"
+    },
+    {
+      "index": 100,
+      "offset": "0x5F738",
+      "ptrAt_0x44": "0x8018FF90"
+    },
+    {
+      "index": 101,
+      "offset": "0x5F780",
+      "ptrAt_0x44": "0x8018FF80"
+    },
+    {
+      "index": 102,
+      "offset": "0x5F7C8",
+      "ptrAt_0x44": "0x8018FF6C"
+    },
+    {
+      "index": 103,
+      "offset": "0x5F810",
+      "ptrAt_0x44": "0x8018FF6C"
+    },
+    {
+      "index": 104,
+      "offset": "0x5F858",
+      "ptrAt_0x44": "0x8018FF6C"
+    },
+    {
+      "index": 105,
+      "offset": "0x5F8A0",
+      "ptrAt_0x44": "0x8018FF6C"
+    },
+    {
+      "index": 106,
+      "offset": "0x5F8E8",
+      "ptrAt_0x44": "0x8018FF6C"
+    },
+    {
+      "index": 107,
+      "offset": "0x5F930",
+      "ptrAt_0x44": "0x8018FF64"
+    },
+    {
+      "index": 108,
+      "offset": "0x5F978",
+      "ptrAt_0x44": "0x8018FF64"
+    },
+    {
+      "index": 109,
+      "offset": "0x5F9C0",
+      "ptrAt_0x44": "0x8018FF64"
+    },
+    {
+      "index": 110,
+      "offset": "0x5FA08",
+      "ptrAt_0x44": "0x8018FF50"
+    },
+    {
+      "index": 111,
+      "offset": "0x5FA50",
+      "ptrAt_0x44": "0x8018FF50"
+    },
+    {
+      "index": 112,
+      "offset": "0x5FA98",
+      "ptrAt_0x44": "0x8018FF44"
+    },
+    {
+      "index": 113,
+      "offset": "0x5FAE0",
+      "ptrAt_0x44": "0x8018FFD4"
+    },
+    {
+      "index": 114,
+      "offset": "0x5FB28",
+      "ptrAt_0x44": "0x8018FF30"
+    },
+    {
+      "index": 115,
+      "offset": "0x5FB70",
+      "ptrAt_0x44": "0x8018FF28"
+    },
+    {
+      "index": 116,
+      "offset": "0x5FBB8",
+      "ptrAt_0x44": "0x80190328"
+    },
+    {
+      "index": 117,
+      "offset": "0x5FC00",
+      "ptrAt_0x44": "0x80190338"
+    },
+    {
+      "index": 118,
+      "offset": "0x5FC48",
+      "ptrAt_0x44": "0x801902C0"
+    },
+    {
+      "index": 119,
+      "offset": "0x5FC90",
+      "ptrAt_0x44": "0x801902F8"
+    },
+    {
+      "index": 120,
+      "offset": "0x5FCD8",
+      "ptrAt_0x44": "0x801901D8"
+    },
+    {
+      "index": 121,
+      "offset": "0x5FD20",
+      "ptrAt_0x44": "0x80190220"
+    },
+    {
+      "index": 122,
+      "offset": "0x5FD68",
+      "ptrAt_0x44": "0x80190268"
+    },
+    {
+      "index": 123,
+      "offset": "0x5FDB0",
+      "ptrAt_0x44": "0x801902A0"
+    },
+    {
+      "index": 124,
+      "offset": "0x5FDF8",
+      "ptrAt_0x44": "0x8018FFA0"
+    },
+    {
+      "index": 125,
+      "offset": "0x5FE40",
+      "ptrAt_0x44": "0x8018FFA0"
+    },
+    {
+      "index": 126,
+      "offset": "0x5FE88",
+      "ptrAt_0x44": "0x8018FFA0"
+    },
+    {
+      "index": 127,
+      "offset": "0x5FED0",
+      "ptrAt_0x44": "0x8018FFA0"
+    },
+    {
+      "index": 128,
+      "offset": "0x5FF18",
+      "ptrAt_0x44": "0x8018FFA0"
+    },
+    {
+      "index": 129,
+      "offset": "0x5FF60",
+      "ptrAt_0x44": "0x8018FF20"
+    },
+    {
+      "index": 130,
+      "offset": "0x5FFA8",
+      "ptrAt_0x44": "0x8018FF14"
+    },
+    {
+      "index": 131,
+      "offset": "0x5FFF0",
+      "ptrAt_0x44": "0x8018FF00"
+    },
+    {
+      "index": 132,
+      "offset": "0x60038",
+      "ptrAt_0x44": "0x8018FEEC"
+    },
+    {
+      "index": 133,
+      "offset": "0x60080",
+      "ptrAt_0x44": "0x8018FED8"
+    },
+    {
+      "index": 134,
+      "offset": "0x600C8",
+      "ptrAt_0x44": "0x8018FED0"
+    },
+    {
+      "index": 135,
+      "offset": "0x60110",
+      "ptrAt_0x44": "0x8018FED0"
+    },
+    {
+      "index": 136,
+      "offset": "0x60158",
+      "ptrAt_0x44": "0x801902F8"
+    },
+    {
+      "index": 137,
+      "offset": "0x601A0",
+      "ptrAt_0x44": "0x80190338"
+    },
+    {
+      "index": 138,
+      "offset": "0x601E8",
+      "ptrAt_0x44": "0x8019031C"
+    },
+    {
+      "index": 139,
+      "offset": "0x60230",
+      "ptrAt_0x44": "0x801902DC"
+    },
+    {
+      "index": 140,
+      "offset": "0x60278",
+      "ptrAt_0x44": "0x80190300"
+    },
+    {
+      "index": 141,
+      "offset": "0x602C0",
+      "ptrAt_0x44": "0x80190328"
+    },
+    {
+      "index": 142,
+      "offset": "0x60308",
+      "ptrAt_0x44": "0x80190338"
+    },
+    {
+      "index": 143,
+      "offset": "0x60350",
+      "ptrAt_0x44": "0x80190344"
+    },
+    {
+      "index": 144,
+      "offset": "0x60398",
+      "ptrAt_0x44": "0x80190258"
+    },
+    {
+      "index": 145,
+      "offset": "0x603E0",
+      "ptrAt_0x44": "0x80190310"
+    },
+    {
+      "index": 146,
+      "offset": "0x60428",
+      "ptrAt_0x44": "0x8018FF30"
+    },
+    {
+      "index": 147,
+      "offset": "0x60470",
+      "ptrAt_0x44": "0x8019024C"
+    },
+    {
+      "index": 148,
+      "offset": "0x604B8",
+      "ptrAt_0x44": "0x80190218"
+    },
+    {
+      "index": 149,
+      "offset": "0x60500",
+      "ptrAt_0x44": "0x801902A0"
+    },
+    {
+      "index": 150,
+      "offset": "0x60548",
+      "ptrAt_0x44": "0x80190230"
+    },
+    {
+      "index": 151,
+      "offset": "0x60590",
+      "ptrAt_0x44": "0x80190220"
+    },
+    {
+      "index": 152,
+      "offset": "0x605D8",
+      "ptrAt_0x44": "0x80190164"
+    },
+    {
+      "index": 153,
+      "offset": "0x60620",
+      "ptrAt_0x44": "0x80190290"
+    },
+    {
+      "index": 154,
+      "offset": "0x60668",
+      "ptrAt_0x44": "0x8018FF30"
+    },
+    {
+      "index": 155,
+      "offset": "0x606B0",
+      "ptrAt_0x44": "0x801902B0"
+    },
+    {
+      "index": 156,
+      "offset": "0x606F8",
+      "ptrAt_0x44": "0x80190190"
+    },
+    {
+      "index": 157,
+      "offset": "0x60740",
+      "ptrAt_0x44": "0x801901E0"
+    },
+    {
+      "index": 158,
+      "offset": "0x60788",
+      "ptrAt_0x44": "0x8018FF28"
+    },
+    {
+      "index": 159,
+      "offset": "0x607D0",
+      "ptrAt_0x44": "0x801902B8"
+    },
+    {
+      "index": 160,
+      "offset": "0x60818",
+      "ptrAt_0x44": "0x8018FED0"
+    },
+    {
+      "index": 161,
+      "offset": "0x60860",
+      "ptrAt_0x44": "0x801902B8"
+    },
+    {
+      "index": 162,
+      "offset": "0x608A8",
+      "ptrAt_0x44": "0x801902D4"
+    },
+    {
+      "index": 163,
+      "offset": "0x608F0",
+      "ptrAt_0x44": "0x8018FEBC"
+    },
+    {
+      "index": 164,
+      "offset": "0x60938",
+      "ptrAt_0x44": "0x80190378"
+    }
+  ],
+  "notes": "Fixed-stride 0x48 (72-byte) record table, 165 records, byte-exact start 0x5DB18. Only the +0x44 RAM-pointer field is typed; the remaining 0x44 bytes per record are undecoded scalars. Pointers are runtime OVERLAY RAM (NOT a linear ROM back-map) per repo rules.",
+  "hypotheses": [
+    "Record 0 (all-0xFF body) is likely a sentinel/default row.",
+    "The 0x80190xxx pointers descend by small steps across records, suggesting they point into a contiguous companion block."
+  ]
+}

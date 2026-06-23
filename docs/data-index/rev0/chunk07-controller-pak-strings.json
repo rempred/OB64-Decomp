@@ -1,0 +1,563 @@
+{
+  "part": "chunk7 DATA2 rodata pools (0x783A0..0x79730 region)",
+  "rangeZ64": [
+    "0x783F8",
+    "0x79730"
+  ],
+  "bytes": 1668,
+  "class": "string-pool",
+  "state": "parsed",
+  "encoding": "NUL-terminated ASCII, NUL-padded. Format tokens like %s, %2d, {C0}/{C13}/{X60} are literal in-string control sequences; multi-line spans use 0x0E..0x0F. Non-ASCII bytes shown as {XX}.",
+  "notes": "Aggregates the 8 identifiable NUL-terminated string sub-pools inside chunk 7's Controller-Pak/save-data menu DATA2 region. The interleaved table_* (pointer tables) and small data_* (byte/index/layout) parts in the same region are NOT included here (they are pointer/index data, not strings). 'rodata_000785c8' rows are the on-screen glyph/charset layout (10 chars/row) used by the text renderer.",
+  "sectionCount": 8,
+  "sections": [
+    {
+      "part": "rodata_000783f8",
+      "rangeZ64": [
+        "0x783F8",
+        "0x78410"
+      ],
+      "bytes": 24,
+      "description": "Reset-control-deck label",
+      "entries": [
+        {
+          "offset": "0x783F8",
+          "text": "Reset Control Deck."
+        }
+      ]
+    },
+    {
+      "part": "rodata_000784a8",
+      "rangeZ64": [
+        "0x784A8",
+        "0x784EC"
+      ],
+      "bytes": 68,
+      "description": "Chapter labels (Prologue / Chapter One..Three / Final Chapter)",
+      "entries": [
+        {
+          "offset": "0x784A8",
+          "text": "Prologue"
+        },
+        {
+          "offset": "0x784B4",
+          "text": "Chapter One"
+        },
+        {
+          "offset": "0x784C0",
+          "text": "Chapter Two"
+        },
+        {
+          "offset": "0x784CC",
+          "text": "Chapter Three"
+        },
+        {
+          "offset": "0x784DC",
+          "text": "Final Chapter"
+        }
+      ]
+    },
+    {
+      "part": "rodata_000785c8",
+      "rangeZ64": [
+        "0x785C8",
+        "0x78680"
+      ],
+      "bytes": 184,
+      "description": "Glyph/charset rows + debug name strings (Magnus/Mario/Legion/Pika, DEL_DATA, MUSIC_ON)",
+      "entries": [
+        {
+          "offset": "0x785D0",
+          "text": ".........."
+        },
+        {
+          "offset": "0x785DC",
+          "text": "'()<>+-*/="
+        },
+        {
+          "offset": "0x785E8",
+          "text": "?!.,{A5}:&_%#"
+        },
+        {
+          "offset": "0x785F4",
+          "text": "0123456789"
+        },
+        {
+          "offset": "0x78600",
+          "text": "uvwxyz    "
+        },
+        {
+          "offset": "0x7860C",
+          "text": "klmnopqrst"
+        },
+        {
+          "offset": "0x78618",
+          "text": "abcdefghij"
+        },
+        {
+          "offset": "0x78624",
+          "text": "UVWXYZ    "
+        },
+        {
+          "offset": "0x78630",
+          "text": "KLMNOPQRST"
+        },
+        {
+          "offset": "0x7863C",
+          "text": "ABCDEFGHIJ"
+        },
+        {
+          "offset": "0x78648",
+          "text": "Magnus"
+        },
+        {
+          "offset": "0x78650",
+          "text": "Mario"
+        },
+        {
+          "offset": "0x78658",
+          "text": "Legion"
+        },
+        {
+          "offset": "0x78660",
+          "text": "Pika"
+        },
+        {
+          "offset": "0x78668",
+          "text": "DEL_DATA"
+        },
+        {
+          "offset": "0x78674",
+          "text": "MUSIC_ON"
+        }
+      ]
+    },
+    {
+      "part": "rodata_00078898",
+      "rangeZ64": [
+        "0x78898",
+        "0x788A8"
+      ],
+      "bytes": 16,
+      "description": "Save magic strings (EB / NOBE)",
+      "entries": [
+        {
+          "offset": "0x78898",
+          "text": "EB"
+        },
+        {
+          "offset": "0x7889C",
+          "text": "NOBE"
+        }
+      ]
+    },
+    {
+      "part": "rodata_00078f68",
+      "rangeZ64": [
+        "0x78F68",
+        "0x78FC8"
+      ],
+      "bytes": 96,
+      "description": "Month abbreviations (Jan.-Dec.), 8-byte stride",
+      "entries": [
+        {
+          "offset": "0x78F68",
+          "text": "Jan."
+        },
+        {
+          "offset": "0x78F70",
+          "text": "Feb."
+        },
+        {
+          "offset": "0x78F78",
+          "text": "Mar."
+        },
+        {
+          "offset": "0x78F80",
+          "text": "Apr."
+        },
+        {
+          "offset": "0x78F88",
+          "text": "May."
+        },
+        {
+          "offset": "0x78F90",
+          "text": "Jun."
+        },
+        {
+          "offset": "0x78F98",
+          "text": "Jul."
+        },
+        {
+          "offset": "0x78FA0",
+          "text": "Aug."
+        },
+        {
+          "offset": "0x78FA8",
+          "text": "Sep."
+        },
+        {
+          "offset": "0x78FB0",
+          "text": "Oct."
+        },
+        {
+          "offset": "0x78FB8",
+          "text": "Nov."
+        },
+        {
+          "offset": "0x78FC0",
+          "text": "Dec."
+        }
+      ]
+    },
+    {
+      "part": "rodata_00079018",
+      "rangeZ64": [
+        "0x79018",
+        "0x79090"
+      ],
+      "bytes": 120,
+      "description": "Element/zodiac names (Deus..Raio), 8-byte stride, space-padded",
+      "entries": [
+        {
+          "offset": "0x79018",
+          "text": "Deus  "
+        },
+        {
+          "offset": "0x79020",
+          "text": "Tierra"
+        },
+        {
+          "offset": "0x79028",
+          "text": "Agua  "
+        },
+        {
+          "offset": "0x79030",
+          "text": "Sombra"
+        },
+        {
+          "offset": "0x79038",
+          "text": "Branca"
+        },
+        {
+          "offset": "0x79040",
+          "text": "Flama "
+        },
+        {
+          "offset": "0x79048",
+          "text": "Vento "
+        },
+        {
+          "offset": "0x79050",
+          "text": "Ouro  "
+        },
+        {
+          "offset": "0x79058",
+          "text": "Trueno"
+        },
+        {
+          "offset": "0x79060",
+          "text": "Trevas"
+        },
+        {
+          "offset": "0x79068",
+          "text": "Oceano"
+        },
+        {
+          "offset": "0x79070",
+          "text": "Preta "
+        },
+        {
+          "offset": "0x79078",
+          "text": "Gemeo "
+        },
+        {
+          "offset": "0x79080",
+          "text": "Fogo  "
+        },
+        {
+          "offset": "0x79088",
+          "text": "Raio  "
+        }
+      ]
+    },
+    {
+      "part": "rodata_000790cc",
+      "rangeZ64": [
+        "0x790CC",
+        "0x791B8"
+      ],
+      "bytes": 236,
+      "description": "Controller Pak menu UI strings + format tokens",
+      "entries": [
+        {
+          "offset": "0x790CC",
+          "text": "%s{X60}%2d"
+        },
+        {
+          "offset": "0x790D8",
+          "text": "{C2}"
+        },
+        {
+          "offset": "0x790E0",
+          "text": "{C1}"
+        },
+        {
+          "offset": "0x790E8",
+          "text": "{C0}"
+        },
+        {
+          "offset": "0x790F0",
+          "text": "Exit"
+        },
+        {
+          "offset": "0x790F8",
+          "text": "Erase"
+        },
+        {
+          "offset": "0x79100",
+          "text": "Load"
+        },
+        {
+          "offset": "0x79108",
+          "text": "Save"
+        },
+        {
+          "offset": "0x79110",
+          "text": "Controller Pak Menu"
+        },
+        {
+          "offset": "0x79125",
+          "text": "{14}"
+        },
+        {
+          "offset": "0x79127",
+          "text": "J"
+        },
+        {
+          "offset": "0x79129",
+          "text": "{82}"
+        },
+        {
+          "offset": "0x7912B",
+          "text": "{BE}%s"
+        },
+        {
+          "offset": "0x79130",
+          "text": "%s%s{C0}"
+        },
+        {
+          "offset": "0x7913C",
+          "text": "{C13}{0E}OgreBattle Game Notes{0F}{C0}"
+        },
+        {
+          "offset": "0x79160",
+          "text": "{C13}{0E}Game Notes{0F}"
+        },
+        {
+          "offset": "0x79174",
+          "text": "{0E}Pages{0F}{C0}"
+        },
+        {
+          "offset": "0x79180",
+          "text": "%s "
+        },
+        {
+          "offset": "0x79184",
+          "text": ":"
+        },
+        {
+          "offset": "0x79188",
+          "text": "OGREBATTLE64 %d"
+        },
+        {
+          "offset": "0x79198",
+          "text": "No Data"
+        },
+        {
+          "offset": "0x791A0",
+          "text": "1"
+        },
+        {
+          "offset": "0x791A4",
+          "text": "%s.%s"
+        },
+        {
+          "offset": "0x791AC",
+          "text": "%3d"
+        },
+        {
+          "offset": "0x791B0",
+          "text": "Left"
+        }
+      ]
+    },
+    {
+      "part": "rodata_00079394",
+      "rangeZ64": [
+        "0x79394",
+        "0x79730"
+      ],
+      "bytes": 924,
+      "description": "Controller Pak operation/status message pool",
+      "entries": [
+        {
+          "offset": "0x79394",
+          "text": "{C13}{0E}Note %d{0F}{C0}"
+        },
+        {
+          "offset": "0x793A8",
+          "text": "EB"
+        },
+        {
+          "offset": "0x793AC",
+          "text": "NOBE"
+        },
+        {
+          "offset": "0x793B4",
+          "text": "{C0}Not an Ogre"
+        },
+        {
+          "offset": "0x793C4",
+          "text": "{C0}Battle 64 note."
+        },
+        {
+          "offset": "0x793D8",
+          "text": "{C13}{0E}Not exist{0F}{C0}"
+        },
+        {
+          "offset": "0x793F0",
+          "text": "{C0}No Data"
+        },
+        {
+          "offset": "0x793FC",
+          "text": "{C13}{0E}Game Data 1{0F}{C0}"
+        },
+        {
+          "offset": "0x79414",
+          "text": "{C13}{0E}Game Data 2{0F}{C0}"
+        },
+        {
+          "offset": "0x7942C",
+          "text": "Insufficient notes to copy game."
+        },
+        {
+          "offset": "0x79450",
+          "text": "Insert Controller Pak."
+        },
+        {
+          "offset": "0x79468",
+          "text": "Deleting data."
+        },
+        {
+          "offset": "0x79478",
+          "text": "Loading data."
+        },
+        {
+          "offset": "0x79488",
+          "text": "Do not remove Controller Pak."
+        },
+        {
+          "offset": "0x794A8",
+          "text": "Saving data."
+        },
+        {
+          "offset": "0x794B8",
+          "text": "Delete data?"
+        },
+        {
+          "offset": "0x794C8",
+          "text": "A Button: OK    B Button: Cancel"
+        },
+        {
+          "offset": "0x794EC",
+          "text": "Overwrite data?"
+        },
+        {
+          "offset": "0x794FC",
+          "text": "1 note 25 pages to save."
+        },
+        {
+          "offset": "0x79518",
+          "text": "Insufficient pages to copy game."
+        },
+        {
+          "offset": "0x7953C",
+          "text": "{0E}Save data from this Controller Pak will be{10}0used.{0F}"
+        },
+        {
+          "offset": "0x79570",
+          "text": "{0E}Different Controller Pak has been inserted.{0F}"
+        },
+        {
+          "offset": "0x795A0",
+          "text": "Deleting data has failed."
+        },
+        {
+          "offset": "0x795BC",
+          "text": "Note deleted."
+        },
+        {
+          "offset": "0x795CC",
+          "text": "Loading data has failed."
+        },
+        {
+          "offset": "0x795E8",
+          "text": "Data loaded to Game Pak."
+        },
+        {
+          "offset": "0x79604",
+          "text": "Saving data has failed."
+        },
+        {
+          "offset": "0x7961C",
+          "text": "Data saved to Controller Pak."
+        },
+        {
+          "offset": "0x7963C",
+          "text": "       Cancel"
+        },
+        {
+          "offset": "0x7964C",
+          "text": "       Continue"
+        },
+        {
+          "offset": "0x7965C",
+          "text": "Repairing may cause save data to be lost."
+        },
+        {
+          "offset": "0x79688",
+          "text": "       Continue without saving"
+        },
+        {
+          "offset": "0x796A8",
+          "text": "       Repair"
+        },
+        {
+          "offset": "0x796B8",
+          "text": "       Retry"
+        },
+        {
+          "offset": "0x796C8",
+          "text": "{0E}Controller Pak is damaged or{10}0other device is inserted.{0F}"
+        },
+        {
+          "offset": "0x79704",
+          "text": "{0E}%s{10}cScene %d{0F}"
+        },
+        {
+          "offset": "0x79714",
+          "text": "%02d:%02d:%02d"
+        },
+        {
+          "offset": "0x79724",
+          "text": "None"
+        }
+      ]
+    }
+  ],
+  "hypotheses": [
+    "The parallel table_* pointer arrays in this region index into these pools; the pointer->string wiring is not decoded.",
+    "NOBE/EB are the Controller-Pak game-note save magic."
+  ]
+}

@@ -1,0 +1,234 @@
+{
+  "part": "rodata_00085c60",
+  "rangeZ64": [
+    "0x85C60",
+    "0x85EA8"
+  ],
+  "bytes": 584,
+  "class": "string-pool",
+  "state": "parsed",
+  "encoding": "NUL-terminated ASCII, NUL-padded between entries.",
+  "entryCount": 54,
+  "entries": [
+    {
+      "offset": "0x85C64",
+      "text": "Message speed"
+    },
+    {
+      "offset": "0x85C74",
+      "text": "Cursor speed"
+    },
+    {
+      "offset": "0x85C84",
+      "text": "Help display"
+    },
+    {
+      "offset": "0x85C94",
+      "text": "Icon name display"
+    },
+    {
+      "offset": "0x85CA8",
+      "text": "Game speed"
+    },
+    {
+      "offset": "0x85CB4",
+      "text": "Legion indicator"
+    },
+    {
+      "offset": "0x85CC8",
+      "text": "Destination display"
+    },
+    {
+      "offset": "0x85CDC",
+      "text": "Unit report type"
+    },
+    {
+      "offset": "0x85CF0",
+      "text": "Battle action name"
+    },
+    {
+      "offset": "0x85D04",
+      "text": "Battle animation"
+    },
+    {
+      "offset": "0x85D18",
+      "text": "Quick exit"
+    },
+    {
+      "offset": "0x85D24",
+      "text": "Cancel all"
+    },
+    {
+      "offset": "0x85D30",
+      "text": "Sound settings"
+    },
+    {
+      "offset": "0x85D40",
+      "text": "Restore defaults"
+    },
+    {
+      "offset": "0x85D54",
+      "text": "Off"
+    },
+    {
+      "offset": "0x85D58",
+      "text": "On"
+    },
+    {
+      "offset": "0x85D5C",
+      "text": "Mono"
+    },
+    {
+      "offset": "0x85D64",
+      "text": "Stereo"
+    },
+    {
+      "offset": "0x85D6C",
+      "text": "Slow"
+    },
+    {
+      "offset": "0x85D74",
+      "text": "Normal"
+    },
+    {
+      "offset": "0x85D7C",
+      "text": "Fast"
+    },
+    {
+      "offset": "0x85D84",
+      "text": "Slower"
+    },
+    {
+      "offset": "0x85D8C",
+      "text": "Slow"
+    },
+    {
+      "offset": "0x85D94",
+      "text": "Normal"
+    },
+    {
+      "offset": "0x85D9C",
+      "text": "Fast"
+    },
+    {
+      "offset": "0x85DA4",
+      "text": "Faster"
+    },
+    {
+      "offset": "0x85DAC",
+      "text": "Off"
+    },
+    {
+      "offset": "0x85DB0",
+      "text": "On"
+    },
+    {
+      "offset": "0x85DB4",
+      "text": "On"
+    },
+    {
+      "offset": "0x85DB8",
+      "text": "Off"
+    },
+    {
+      "offset": "0x85DBC",
+      "text": "None"
+    },
+    {
+      "offset": "0x85DC4",
+      "text": "Third Person"
+    },
+    {
+      "offset": "0x85DD4",
+      "text": "First Person"
+    },
+    {
+      "offset": "0x85DE4",
+      "text": "Prologue"
+    },
+    {
+      "offset": "0x85DF0",
+      "text": "Chapter:One"
+    },
+    {
+      "offset": "0x85DFC",
+      "text": "Chapter:Two"
+    },
+    {
+      "offset": "0x85E08",
+      "text": "Chapter:Three"
+    },
+    {
+      "offset": "0x85E18",
+      "text": "Chapter:Four"
+    },
+    {
+      "offset": "0x85E28",
+      "text": "No Data"
+    },
+    {
+      "offset": "0x85E30",
+      "text": "Deus"
+    },
+    {
+      "offset": "0x85E38",
+      "text": "Tierra"
+    },
+    {
+      "offset": "0x85E40",
+      "text": "Agua"
+    },
+    {
+      "offset": "0x85E48",
+      "text": "Sombra"
+    },
+    {
+      "offset": "0x85E50",
+      "text": "Branca"
+    },
+    {
+      "offset": "0x85E58",
+      "text": "Flama"
+    },
+    {
+      "offset": "0x85E60",
+      "text": "Vento"
+    },
+    {
+      "offset": "0x85E68",
+      "text": "Ouro"
+    },
+    {
+      "offset": "0x85E70",
+      "text": "Trueno"
+    },
+    {
+      "offset": "0x85E78",
+      "text": "Trevas"
+    },
+    {
+      "offset": "0x85E80",
+      "text": "Oceano"
+    },
+    {
+      "offset": "0x85E88",
+      "text": "Preta"
+    },
+    {
+      "offset": "0x85E90",
+      "text": "Gemeo"
+    },
+    {
+      "offset": "0x85E98",
+      "text": "Fogo"
+    },
+    {
+      "offset": "0x85EA0",
+      "text": "Raio"
+    }
+  ],
+  "notes": "Options/settings menu strings + chapter labels + elemental zodiac names (Portuguese: Deus/Tierra/Agua/...). The leading bytes 0x85C60..0x85C63 ('a'+0x0F+pad) are the spilled tail of 'Alba' from the previous part rodata_00085960 and are excluded from entries.",
+  "hypotheses": [
+    "Strings are referenced by separate pointer/index tables elsewhere in chunk 8 (e.g. table_00086010); wiring not decoded here."
+  ]
+}

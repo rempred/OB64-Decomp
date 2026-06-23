@@ -1,0 +1,78 @@
+{
+  "part": "rodata_0005d560",
+  "rangeZ64": [
+    "0x5D560",
+    "0x5D5FC"
+  ],
+  "bytes": 156,
+  "class": "string-pool",
+  "state": "parsed",
+  "encoding": "NUL-terminated ASCII, NUL-padded.",
+  "entryCount": 15,
+  "entries": [
+    {
+      "offset": "0x5D560",
+      "text": "Physical"
+    },
+    {
+      "offset": "0x5D56C",
+      "text": "Wind"
+    },
+    {
+      "offset": "0x5D574",
+      "text": "Flame"
+    },
+    {
+      "offset": "0x5D57C",
+      "text": "Earth"
+    },
+    {
+      "offset": "0x5D584",
+      "text": "Water"
+    },
+    {
+      "offset": "0x5D58C",
+      "text": "Virtue"
+    },
+    {
+      "offset": "0x5D594",
+      "text": "Bane"
+    },
+    {
+      "offset": "0x5D59C",
+      "text": "Drakonite"
+    },
+    {
+      "offset": "0x5D5A8",
+      "text": "Variable"
+    },
+    {
+      "offset": "0x5D5B4",
+      "text": "Wind+Flame"
+    },
+    {
+      "offset": "0x5D5C0",
+      "text": "Flame+Wind"
+    },
+    {
+      "offset": "0x5D5CC",
+      "text": "Earth+Flame"
+    },
+    {
+      "offset": "0x5D5D8",
+      "text": "Water+Earth"
+    },
+    {
+      "offset": "0x5D5E4",
+      "text": "Wind+Bane"
+    },
+    {
+      "offset": "0x5D5F0",
+      "text": "Flame+Bane"
+    }
+  ],
+  "notes": "Element-affinity display names (8 base elements + Drakonite/Variable + 5 dual-element combos).",
+  "hypotheses": [
+    "Order likely matches an element-id enumeration; not verified against any id table here."
+  ]
+}
