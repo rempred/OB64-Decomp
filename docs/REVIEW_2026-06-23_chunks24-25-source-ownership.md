@@ -132,7 +132,7 @@ run date 2026-06-23.
   12 B. **Parsed:** all 3 ASCII pools (decoded byte-exact) + the pointer tables (by band).
   **Raw-but-classified:** small value/fill blocks. **Undecoded:** handler-pointer-array targets
   (overlay-relocated).
-- **Index files added (5):** `chunk24-data-region-inventory.json`, `chunk24-ui-labels-18F044.json`;
+- **Index files added (6):** `chunk24-data-region-inventory.json`, `chunk24-ui-labels-18F044.json`;
   `chunk25-data-region-inventory.json`, `chunk25-dialogue-pool-19BFF0.json`,
   `chunk25-ui-labels-1952E8.json`, `chunk25-debug-strings-197738.json` (6 total).
 - **Decoded ASCII exports added (4):** `data/decoded/rev0/strings/chunk24-ui-labels-18F044.md`,

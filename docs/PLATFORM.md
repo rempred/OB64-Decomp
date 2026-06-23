@@ -213,7 +213,7 @@ These outputs are useful but ignored:
 - ROM size: 41,943,040 bytes.
 - Code region currently extracted as original MIPS:
   `0x00001000..0x0063676C`.
-- Chunks 0–24 (`0x00001000..0x00191000`) are fully source-owned as named
+- Chunks 0–25 (`0x00001000..0x001A1000`) are fully source-owned as named
   code/data parts (3,106 tracked source files: 177 in `boot/` + 2,929 in `lib/`;
   chunk 11: 189 code + 2 straddler + 0 data, ALL CODE — 77 frameless leaves recovered;
   chunk 12: 72 code + 2 straddler + 0 data, ALL CODE — 20 dispatchers; chunk 13: 27
