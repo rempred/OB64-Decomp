@@ -118,7 +118,7 @@ Expected current results:
 - `assemble_original_mips.js` emits `build/assembled/rev0/code.bin`, matching
   baserom code-region SHA256
   `40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`.
-- `assemble_original_mips.js` currently uses 21 tracked composite
+- `assemble_original_mips.js` currently uses 22 tracked composite
   real-assembler chunks (`0x00001000..0x00011000` 177; `0x00011000..0x00021000`
   350; `0x00021000..0x00031000` 216; `0x00031000..0x00041000` 67;
   `0x00041000..0x00051000` 376; `0x00051000..0x00061000` 88;
@@ -129,8 +129,8 @@ Expected current results:
   `0x000E1000..0x000F1000` 94; `0x000F1000..0x00101000` 153;
   `0x00101000..0x00111000` 95; `0x00111000..0x00121000` 66;
   `0x00121000..0x00131000` 95; `0x00131000..0x00141000` 80;
-  `0x00141000..0x00151000` 175 files = 2,701 tracked
-  source files total), plus 79 generated fallback chunks.
+  `0x00141000..0x00151000` 175; `0x00151000..0x00161000` 99 files = 2,800 tracked
+  source files total), plus 78 generated fallback chunks.
 - `rebuild_rom.js --assembled-code ...` substitutes that assembled code blob for
   the raw code segment and still confirms the same full-ROM SHA256.
 - `build_full_source_manifest.js` emits a 1,059-entry full-ROM source ownership
@@ -211,8 +211,8 @@ These outputs are useful but ignored:
 - ROM size: 41,943,040 bytes.
 - Code region currently extracted as original MIPS:
   `0x00001000..0x0063676C`.
-- Chunks 0–20 (`0x00001000..0x00151000`) are fully source-owned as named
-  code/data parts (2,701 tracked source files: 177 in `boot/` + 2,524 in `lib/`;
+- Chunks 0–21 (`0x00001000..0x00161000`) are fully source-owned as named
+  code/data parts (2,800 tracked source files: 177 in `boot/` + 2,623 in `lib/`;
   chunk 11: 189 code + 2 straddler + 0 data, ALL CODE — 77 frameless leaves recovered;
   chunk 12: 72 code + 2 straddler + 0 data, ALL CODE — 20 dispatchers; chunk 13: 27
   code + 40 data, MIXED — unit-mgmt UI data; chunk 14: 74 code + 20 data, MIXED —
@@ -226,7 +226,9 @@ These outputs are useful but ignored:
   record table/packed bytes) with an outgoing data straddler; chunk 20: 89 code + 86 data,
   MIXED — leading scenario data tables [neutral_encounter 40×20, creature_drop 36×8] +
   pointer tables + a 125-string game-text pool + encounter/dispatcher code with an outgoing
-  function straddler); current split frontier `0x00151000` (chunk 21, still a generated fallback chunk). chunk 1
+  function straddler; chunk 21: 94 code + 5 data, MIXED — class/character-lookup code [incl.
+  the classLookup_full lead @0x1591FC] + a trailing high-entropy/compressed data region with
+  an outgoing data straddler); current split frontier `0x00161000` (chunk 22, still a generated fallback chunk). chunk 1
   `0x11000..0x21000` is a graphics/unit-script/math/libc/libultra library; chunk 2
   `0x21000..0x31000` is the statically-linked libultra (N64 SDK) + libc + 64-bit
   runtime + `gu` matrix library + RSP-microcode data; chunk 3 `0x31000..0x41000`
@@ -299,7 +301,11 @@ These outputs are useful but ignored:
   the documented `neutral_encounter_table` [40×20 @0x141ED0] and `creature_drop_table`
   [36×8 @0x142258] + 0x801A/0x801B pointer tables + a 125-string game-text pool @0x1432E4) +
   encounter/dispatcher CODE (`0x145210..0x151000`, an inline data island @0x14DE88) with an
-  outgoing function straddler `func_00150550` into chunk 21; 0 data in chunk 18 (dossiers
+  outgoing function straddler `func_00150550` into chunk 21; chunk 21 `0x151000..0x161000`
+  (MIXED) is class/character-lookup CODE (`0x15105C..0x15FBF0`, incl. the `classLookup_full`
+  lead @0x1591FC named conservatively `func_001591FC`) + a trailing high-entropy/compressed
+  DATA region (`0x15FBF0..0x161000`) with an outgoing data straddler `data_0015FDF8` into
+  chunk 22; 0 data in chunk 18 (dossiers
   `docs/dossiers/boot-resource-decode-subsystem-B030-F22C.md`,
   `docs/dossiers/boot-codec-libc-vec3-F22C-11000.md`,
   `docs/dossiers/lib-chunk1-11000-21000.md`,
@@ -321,7 +327,8 @@ These outputs are useful but ignored:
   `docs/dossiers/lib-chunk17-111000-121000.md`,
   `docs/dossiers/lib-chunk18-121000-131000.md`,
   `docs/dossiers/lib-chunk19-131000-141000.md`,
-  `docs/dossiers/lib-chunk20-141000-151000.md`).
+  `docs/dossiers/lib-chunk20-141000-151000.md`,
+  `docs/dossiers/lib-chunk21-151000-161000.md`).
 - Executable extent (evidence, `tools/audit_code_region.js`):
   `0x00001000..0x002B89B4`. The trailing `0x002B89B4..0x0063676C` (3,661,240
   bytes, 56.24%) has zero `jr $ra` and is non-code data still emitted as `.word`
@@ -431,8 +438,8 @@ prints PASS. Current PASS summary:
 - Toolchain: `n64-tools-gcc-toolchain-mips64-win64`, GNU Binutils 2.39.
 - Binutils smoke tests: `.word`, real instructions, `.set noreorder`, and first
   tracked chunk real assembly all pass.
-- Source mix: 21 tracked composite real-asm chunks made from 2,701 tracked source
-  files, plus 79 generated fallback chunks.
+- Source mix: 22 tracked composite real-asm chunks made from 2,800 tracked source
+  files, plus 78 generated fallback chunks.
 - Source manifest: 1,059 entries, zero unknown bytes, 2,469,141 ambiguous bytes
   preserved explicitly.
 - Source owners: 3 tracked non-code files / 44,029 bytes plus 1,055 generated

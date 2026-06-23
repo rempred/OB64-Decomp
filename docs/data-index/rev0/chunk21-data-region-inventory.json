@@ -1,0 +1,99 @@
+{
+  "chunk": 21,
+  "chunkRangeZ64": [
+    "0x00151000",
+    "0x00161000"
+  ],
+  "mixed": true,
+  "dataRegions": [
+    {
+      "name": "trailing high-entropy data (possibly compressed) + packed-byte straddler",
+      "rangeZ64": [
+        "0x0015FBF0",
+        "0x00161000"
+      ]
+    }
+  ],
+  "totalDataBytes": 5148,
+  "classification": "raw-but-classified; high-entropy (possibly compressed); no field semantics; no hidden code (0 prologues/returns, adversarially confirmed)",
+  "byClassBytes": {
+    "packed/unknown": 12,
+    "high-entropy-blob": 96,
+    "packed-fill": 424,
+    "outgoing-straddler-head": 4616
+  },
+  "partCount": 5,
+  "codeRegion": {
+    "rangeZ64": [
+      "0x00151000",
+      "0x0015FBF0"
+    ],
+    "note": "94 code parts incl. incoming straddler-tail func_00150550_chunk21tail and the classLookup_full lead (named conservatively func_001591FC)."
+  },
+  "outgoingStraddler": {
+    "part": "data_0015FDF8_chunk21head",
+    "rangeZ64": [
+      "0x0015FDF8",
+      "0x00161000"
+    ],
+    "note": "Packed small-byte stream (0x0F-0x2B, e.g. 0x13131313) running to 0x161000 with no terminator; continues into chunk 22."
+  },
+  "parentEvidence": "Code overlay-relocated to runtime 0x8020xxxx band (scenario). classLookup_full @0x1591FC (runtime 0x8020808C) recorded as a LEAD; name stays func_001591FC. Runtime-override hook lead @0x1574B8; 0x15FBF0 = editor overlay stub-cave (not a function). The high-entropy data is NOT in parent docs.",
+  "entries": [
+    {
+      "part": "func_00151F34",
+      "rangeZ64": [
+        "0x00151F34",
+        "0x00151F40"
+      ],
+      "bytes": 12,
+      "class": "packed/unknown",
+      "state": "raw-but-classified",
+      "note": "Three nop words (alignment padding) between func_00151C30 epilogue and the frameless leaf at 0x151F40. Not executed."
+    },
+    {
+      "part": "data_0015FBF0",
+      "rangeZ64": [
+        "0x0015FBF0",
+        "0x0015FC48"
+      ],
+      "bytes": 88,
+      "class": "high-entropy-blob",
+      "state": "raw-but-classified",
+      "note": "High-entropy random-looking high-byte words, possibly compressed/packed (HYPOTHESIS, not confirmed). Raw evidence: 0xEA15F31D, 0x6887ECE9, 0x10451119, 0x34FB65BD, 0x967B9DF1, 0xC6F7DF7B, 0x3C57555B, 0"
+    },
+    {
+      "part": "data_0015FC48",
+      "rangeZ64": [
+        "0x0015FC48",
+        "0x0015FDF0"
+      ],
+      "bytes": 424,
+      "class": "packed-fill",
+      "state": "raw-but-classified",
+      "note": "Uniform run of word 0x00010001 (i.e. repeated 16-bit value 0x0001), ~170 words. Likely a packed/RLE-friendly 16-bit table or init constant block embedded in the data blob. Run ends at 0x0015FDEC with "
+    },
+    {
+      "part": "data_0015FDF0",
+      "rangeZ64": [
+        "0x0015FDF0",
+        "0x0015FDF8"
+      ],
+      "bytes": 8,
+      "class": "high-entropy-blob",
+      "state": "raw-but-classified",
+      "note": "Short transition tail of the high-entropy blob: 0xDF000000 (high-byte entropy word) followed by a single pure-zero word 0x00000000 at 0x0015FDF4 (not >=2, so not zero_fill). Acts as the gap before the"
+    },
+    {
+      "part": "data_0015FDF8_chunk21head",
+      "rangeZ64": [
+        "0x0015FDF8",
+        "0x00161000"
+      ],
+      "bytes": 4616,
+      "class": "outgoing-straddler-head",
+      "state": "raw-but-classified",
+      "note": "OUTGOING DATA STRADDLER. Contiguous packed-byte structure of small byte values (~0x0F,0x13,0x14,0x17,0x1A,0x1B,0x1C,0x1D,0x1E,0x1F,0x20,0x22,0x25,0x29,0x2A,0x2B). Raw evidence: 0x13131F1F (start at 0x"
+    }
+  ]
+}

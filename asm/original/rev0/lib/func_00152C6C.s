@@ -1,0 +1,38 @@
+/*
+ * Original Rev 0 MIPS reference split.
+ * Parent source: asm/original/rev0/code_00151000_00161000.s
+ * z64 range: 0x00152C6C..0x00152CD8 exclusive
+ * Decode comments are aids, not proof of semantic function boundaries.
+ */
+.set noat
+.set noreorder
+.text
+
+/* RECOVERED frameless leaf split from parent idx14 over-merge. No stack prologue; reads $a0/$a1 args, indexes 0x8019.5560 table, sb to $a2/$a3 out-ptrs; ends jr $ra@0x00152CD0 + delay (sb $v0,0($a3))@0x00152CD4. */
+/* 0x00152C6C 0x801C286C 0x30A200FF */ .word 0x30A200FF # andi $v0, $a1, 0x00FF
+/* 0x00152C70 0x801C2870 0x2C420064 */ .word 0x2C420064 # sltiu $v0, $v0, 0x64
+/* 0x00152C74 0x801C2874 0x00021023 */ .word 0x00021023 # subu $v0, $zero, $v0
+/* 0x00152C78 0x801C2878 0x308400FF */ .word 0x308400FF # andi $a0, $a0, 0x00FF
+/* 0x00152C7C 0x801C287C 0x14800008 */ .word 0x14800008 # bne $a0, $zero, 0x801C28A0
+/* 0x00152C80 0x801C2880 0x00A21024 */ .word 0x00A21024 # and $v0, $a1, $v0
+/* 0x00152C84 0x801C2884 0x304200FF */ .word 0x304200FF # andi $v0, $v0, 0x00FF
+/* 0x00152C88 0x801C2888 0x000218C0 */ .word 0x000218C0 # sll $v1, $v0, 3
+/* 0x00152C8C 0x801C288C 0x00621823 */ .word 0x00621823 # subu $v1, $v1, $v0
+/* 0x00152C90 0x801C2890 0x3C028019 */ .word 0x3C028019 # lui $v0, 0x8019
+/* 0x00152C94 0x801C2894 0x24423BC0 */ .word 0x24423BC0 # addiu $v0, $v0, 0x3BC0
+/* 0x00152C98 0x801C2898 0x080806D4 */ .word 0x080806D4 # j 0x80201B50
+/* 0x00152C9C 0x801C289C 0x000318C0 */ .word 0x000318C0 # sll $v1, $v1, 3
+/* 0x00152CA0 0x801C28A0 0x304200FF */ .word 0x304200FF # andi $v0, $v0, 0x00FF
+/* 0x00152CA4 0x801C28A4 0x00021840 */ .word 0x00021840 # sll $v1, $v0, 1
+/* 0x00152CA8 0x801C28A8 0x00621821 */ .word 0x00621821 # addu $v1, $v1, $v0
+/* 0x00152CAC 0x801C28AC 0x00031880 */ .word 0x00031880 # sll $v1, $v1, 2
+/* 0x00152CB0 0x801C28B0 0x00621821 */ .word 0x00621821 # addu $v1, $v1, $v0
+/* 0x00152CB4 0x801C28B4 0x00031880 */ .word 0x00031880 # sll $v1, $v1, 2
+/* 0x00152CB8 0x801C28B8 0x3C028019 */ .word 0x3C028019 # lui $v0, 0x8019
+/* 0x00152CBC 0x801C28BC 0x24425560 */ .word 0x24425560 # addiu $v0, $v0, 0x5560
+/* 0x00152CC0 0x801C28C0 0x00621821 */ .word 0x00621821 # addu $v1, $v1, $v0
+/* 0x00152CC4 0x801C28C4 0x90620011 */ .word 0x90620011 # lbu $v0, 0x11($v1)
+/* 0x00152CC8 0x801C28C8 0xA0C20000 */ .word 0xA0C20000 # sb $v0, 0x0($a2)
+/* 0x00152CCC 0x801C28CC 0x90620012 */ .word 0x90620012 # lbu $v0, 0x12($v1)
+/* 0x00152CD0 0x801C28D0 0x03E00008 */ .word 0x03E00008 # jr $ra
+/* 0x00152CD4 0x801C28D4 0xA0E20000 */ .word 0xA0E20000 # sb $v0, 0x0($a3)

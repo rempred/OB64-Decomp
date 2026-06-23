@@ -204,8 +204,8 @@ Current result:
   `40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`.
 - Code-region match against baserom: pass.
 - Tracked real-assembler original-MIPS chunks: 18 composites (chunk 0 177 `boot/`;
-  chunks 1–20 in `lib/`: 350, 216, 67, 376, 88, 78, 103, 87, 34, 35, 191, 74, 67, 94, 153, 95, 66, 95, 80, 175) = 2,701 real-assembler
-  source files. Chunks 0–20 (`0x00001000..0x00151000`) are now fully source-owned as
+  chunks 1–21 in `lib/`: 350, 216, 67, 376, 88, 78, 103, 87, 34, 35, 191, 74, 67, 94, 153, 95, 66, 95, 80, 175, 99) = 2,800 real-assembler
+  source files. Chunks 0–21 (`0x00001000..0x00161000`) are now fully source-owned as
   named code/data parts (chunk 14: 74 code + 20 data, MIXED — graphics/display-list data
   + DL-builder code; chunk 15: 134 code + 19 data, MIXED — floats/display-list data + the
   OB64 opening-narration rodata; chunk 16: 72 code + 23 data, MIXED — leading scenario
@@ -214,8 +214,10 @@ Current result:
   FP-heavy scenario/combat code; chunk 19: 64 code + 16 data, MIXED — encounter/dispatcher
   code + a trailing scenario data region; chunk 20: 89 code + 86 data, MIXED — leading
   scenario data tables [neutral_encounter 40×20, creature_drop 36×8] + pointer tables + a
-  125-string game-text pool + encounter/dispatcher code); next is chunk 21 (`0x00151000`, still a generated fallback chunk).
-- Generated fallback chunks: 79.
+  125-string game-text pool + encounter/dispatcher code; chunk 21: 94 code + 5 data, MIXED —
+  class/character-lookup code + a trailing high-entropy/compressed data region with an
+  outgoing data straddler); next is chunk 22 (`0x00161000`, still a generated fallback chunk).
+- Generated fallback chunks: 78.
 - Assembled-code ROM rebuild command:
 
 ```powershell
@@ -230,7 +232,7 @@ Next source-layout work should continue promoting/splitting tracked
 `tools/promote_original_mips.js` for chunk promotion and `--strict-tracked` only
 after every configured code chunk is tracked.
 
-Chunks 0–20 `0x00001000..0x00151000` are fully source-owned as named
+Chunks 0–21 `0x00001000..0x00161000` are fully source-owned as named
 code/data parts (chunk 13: 27 code + 40 data, MIXED — unit-mgmt UI data; chunk 14: 74
 code + 20 data, MIXED — graphics/display-list data + DL-builder code; chunk 15: 134 code
 + 19 data, MIXED — floats/display-list data + the OB64 opening-narration rodata; chunk
@@ -336,14 +338,18 @@ Chunk 20 (`0x141000..0x151000`, 175 parts: 89 code + 86 data, MIXED): leading sc
 encounter/dispatcher CODE `0x145210..0x151000` (inline data island @0x14DE88; outgoing
 straddler-head `func_00150550`); adversarial 1 fix (hidden code at 0x145210 → data→code
 boundary moved to 0x145210). Both tables + the string pool decoded to JSON + MD via
-`tools/decode_ob64_tables.js` / `decode_rodata_strings.js`. Dossiers
-`lib-chunk18-…`/`lib-chunk19-…`/`lib-chunk20-…`; data indexes
-`docs/data-index/rev0/chunk{19,20}-data-region-inventory.json` + chunk20 table/string indexes.
-Next frontier is **`0x00151000` (chunk 21)** — FIRST continue the OUTGOING FUNCTION straddler:
-`func_00150550` `[0x150550,0x151000)` continues to `0x15105C` (chunk-21 tail file
-`func_00150550_chunk21tail` `[0x151000,0x15105C)`). Chunk 21 is MIXED (code + a trailing
-high-entropy data region with an outgoing data straddler into chunk 22).
-Coverage now 48.30% (code-only ≈ 40.32%).
+`tools/decode_ob64_tables.js` / `decode_rodata_strings.js`. Chunk 21 (`0x151000..0x161000`,
+99 parts: 94 code + 5 data, MIXED): class/character-lookup CODE `0x15105C..0x15FBF0` (incl.
+the `classLookup_full` lead @0x1591FC, named conservatively `func_001591FC`) + a trailing
+high-entropy/compressed DATA region `0x15FBF0..0x161000` (0 prologues/returns confirmed) with
+an outgoing data straddler `data_0015FDF8_chunk21head` into chunk 22; adversarial 1 fix
+(missed frameless leaf at 0x15F838). Dossiers `lib-chunk19-…`/`lib-chunk20-…`/`lib-chunk21-…`;
+data indexes `docs/data-index/rev0/chunk{19,20,21}-data-region-inventory.json` + chunk20
+table/string indexes.
+Next frontier is **`0x00161000` (chunk 22)** — FIRST continue the OUTGOING DATA straddler:
+`data_0015FDF8_chunk21head` `[0x15FDF8,0x161000)` (packed small-byte stream, no terminator)
+continues into chunk 22 — emit `data_00161000_chunk22tail` first.
+Coverage now 50.60% (code-only ≈ 42.44%).
 The chunk-split pipeline is tracked:
 `scan_functions` (or `dump_function_context`+`plan_chunk` when parent-detected) →
 `tools/slice_chunk.js` (`--disasm` for mixed/sub-region) → analysis swarm →
@@ -2761,9 +2767,9 @@ setup-complete state:
 - Assembler: GNU Binutils 2.39 `mips64-elf-as.exe` with `-EB -mips3 -32`.
 - Setup verifier: `tools/verify_setup.js`.
 - Current verifier result: PASS; 825 archives, 0 unknown bytes, 108 overlap
-  bytes visible, 21 tracked composite real-asm chunks made from 2,701 tracked source
-  files (chunks 0–20 fully source-owned as code/data parts, `0x00001000..0x00151000`),
-  79 generated fallback chunks, full-source manifest 1,059 entries with
+  bytes visible, 22 tracked composite real-asm chunks made from 2,800 tracked source
+  files (chunks 0–21 fully source-owned as code/data parts, `0x00001000..0x00161000`),
+  78 generated fallback chunks, full-source manifest 1,059 entries with
   2,469,141 ambiguous bytes preserved explicitly, 3 tracked non-code
   source-owner files / 44,029 bytes, 1,055 generated non-code fallback files /
   35,388,567 bytes, source-manifest rebuild exact, full ROM
@@ -2771,12 +2777,11 @@ setup-complete state:
   `571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A`.
 
 Next phase is either promoting another small non-code owner batch or continuing
-tracked original-MIPS source-ownership into **chunk 21** (`0x00151000`) — FIRST
-continue the OUTGOING FUNCTION straddler `func_00150550` `[0x150550,0x151000)`, which
-continues to `0x15105C` (chunk-21 tail file `func_00150550_chunk21tail`
-`[0x151000,0x15105C)`). Chunk 21 is MIXED (code + a trailing high-entropy data region with
-an outgoing data straddler into chunk 22). Use `plan_chunk`+`dump_function_context` to seed
-parent-detected code, `scan_functions` for parent-undetected, data-classification swarm for
-any data. Chunks 0–20 are fully source-owned.
+tracked original-MIPS source-ownership into **chunk 22** (`0x00161000`) — FIRST
+continue the OUTGOING DATA straddler `data_0015FDF8_chunk21head` `[0x15FDF8,0x161000)`, a
+packed small-byte stream (no terminator) continuing into chunk 22 — emit
+`data_00161000_chunk22tail` first and prove its end. Use `plan_chunk`+`dump_function_context`
+to seed parent-detected code, `scan_functions` for parent-undetected, data-classification
+swarm for any data. Chunks 0–21 are fully source-owned.
 There is no tooling blocker. Do not begin semantic C decomp unless the setup
 verifier is green.
