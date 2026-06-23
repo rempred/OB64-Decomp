@@ -1,0 +1,230 @@
+{
+  "chunk": 19,
+  "chunkRangeZ64": [
+    "0x00131000",
+    "0x00141000"
+  ],
+  "mixed": true,
+  "dataRegions": [
+    {
+      "name": "trailing DATA (bit-LUT + 0x801E pointer tables + record/script table + packed blocks + packed-byte tail)",
+      "rangeZ64": [
+        "0x0013C49C",
+        "0x00141000"
+      ]
+    }
+  ],
+  "totalDataBytes": 19300,
+  "classification": "raw-but-classified (conservative; no field semantics invented; zero/pointer-tables parsed)",
+  "byClassBytes": {
+    "zero-fill": 8,
+    "bit-pattern-lut": 128,
+    "ram-pointer-table": 108,
+    "fixed-stride-record-table": 4848,
+    "packed-markers": 156,
+    "packed-fill": 1592,
+    "packed-highbyte": 12108,
+    "outgoing-straddler-head": 352
+  },
+  "partCount": 16,
+  "codeRegion": {
+    "rangeZ64": [
+      "0x00131000",
+      "0x0013C49C"
+    ],
+    "note": "64 code parts incl. incoming straddler-tail func_00130E60_chunk19tail and the neutralEncounterDispatcher (named conservatively func_0013C060)."
+  },
+  "outgoingStraddler": {
+    "part": "data_00140EA0_chunk19head",
+    "rangeZ64": [
+      "0x00140EA0",
+      "0x00141000"
+    ],
+    "note": "Packed-byte structure (values <=0x0C, e.g. 0x09090909/0x05000709/0x0C0A0709) beginning at 0x140EA0 and continuing past 0x141000 into chunk 20 with no terminator. NOT a clean boundary."
+  },
+  "parentContradictionResolved": "A parent wiki battle-turn-queue trace claimed live combat code at ROM 0x13DD74/0x13EE90/0x140180 in this region (RAM 0x801AFD80 = ROM+0x8006FC00 linear back-map). DISPROVEN: the entire region [0x13C49C,0x141000) has 0 addiu $sp,-N prologues, 0 jr $ra (0x03E00008), 0 sw $ra — no function is possible. Independently refuted by the adversarial data-hunter. The bytes at those ROM offsets are packed DATA (0x13DD74=0x5B875B09 descending bytes; 0x140180=0x294B2109 paired-byte tile). The real overlay source for that RAM lives elsewhere; this is the discredited linear-map fallacy.",
+  "notableContents": [
+    "Bit-pattern LUT [0x13C4A4,0x13C524): a single-bit-set pattern (0x80004000/0x20001000/0x08000400/...) repeating ~4x.",
+    "Three RAM-pointer tables (0x801E7Dxx and 0x801E90xx bands, stride 0x20).",
+    "A large fixed-stride record/script table [0x13C550,0x13D824) with regular 16-byte rows (monotonic index field 0x0C..0x10) — fields not decoded (hypothesis).",
+    "Packed-fill blocks (0x00010001, 0xFFFFFFFF runs) and a descending-high-byte ramp; a packed-byte tail straddling into chunk 20."
+  ],
+  "entries": [
+    {
+      "part": "zero_fill_0013C49C",
+      "rangeZ64": [
+        "0x0013C49C",
+        "0x0013C4A4"
+      ],
+      "bytes": 8,
+      "class": "zero-fill",
+      "state": "parsed",
+      "note": "Leading 2 pure-zero words (0x00000000 x2) trailing the prior function's epilogue; pad before the LUT."
+    },
+    {
+      "part": "data_0013C4A4",
+      "rangeZ64": [
+        "0x0013C4A4",
+        "0x0013C524"
+      ],
+      "bytes": 128,
+      "class": "bit-pattern-lut",
+      "state": "raw-but-classified",
+      "note": "Repeating 8-word bit-mask LUT: 0x80004000,0x20001000,0x08000400,0x02000100,0x00000000,0x00200010,0x00080004,0x00020001 -- pattern repeats 4 times (verified at 0x13C4A4/0x13C4C4/0x13C4E4/0x13C504). Packed single-bit masks, not code. [name-token: data_0013C4A4_bitpattern_lut]"
+    },
+    {
+      "part": "table_0013C524",
+      "rangeZ64": [
+        "0x0013C524",
+        "0x0013C534"
+      ],
+      "bytes": 16,
+      "class": "ram-pointer-table",
+      "state": "parsed",
+      "note": "RAM-pointer table, 4 words 0x801E7D64/0x801E7D84/0x801E7DA4/0x801E7DC4, stride 0x20 (hypothesis: per-entry struct base pointers into the 0x801E band). [name-token: table_0013C524_801E_band]"
+    },
+    {
+      "part": "data_0013C534",
+      "rangeZ64": [
+        "0x0013C534",
+        "0x0013C550"
+      ],
+      "bytes": 28,
+      "class": "fixed-stride-record-table",
+      "state": "raw-but-classified",
+      "note": "Short transition pad: 0x00000000, 0x0000000A, then 4 zero words (mostly zero but a stray 0x0A small-int -> not pure zero_fill). Precedes the large record/script table. [name-token: data_0013C534_pad]"
+    },
+    {
+      "part": "data_0013C550",
+      "rangeZ64": [
+        "0x0013C550",
+        "0x0013D824"
+      ],
+      "bytes": 4820,
+      "class": "fixed-stride-record-table",
+      "state": "raw-but-classified",
+      "note": "HYPOTHESIS: large fixed-stride record/script table. Regular short rows of small-ints with recurring 3-word zero runs and 0x0X0008XX / 0x0X0XXXXX-style fields, e.g. 0x05090611,0x0C0008CA,0x00000000 x3,0x02010001 at 0x13C5C0+; embedded RAM pointers appear inline (0x801B7678 @0x13D0DC, 0x801B... @0x13D108). 0xFFFFFFFF used as row/field sentinels. Packed game DATA, never code. [name-token: data_0013C550_record_script_table]"
+    },
+    {
+      "part": "table_0013D824",
+      "rangeZ64": [
+        "0x0013D824",
+        "0x0013D880"
+      ],
+      "bytes": 92,
+      "class": "ram-pointer-table",
+      "state": "parsed",
+      "note": "Embedded RAM-pointer sub-table in the 0x801E90xx band (0x801E9014/9038/9028/9054/90B8/9068/90A4/90D0/9078/908C...), interleaved with 0x00000000 padding words (hypothesis: sparse index of struct pointers). [name-token: table_0013D824_801E90_band]"
+    },
+    {
+      "part": "data_0013D880",
+      "rangeZ64": [
+        "0x0013D880",
+        "0x0013D900"
+      ],
+      "bytes": 128,
+      "class": "packed-markers",
+      "state": "raw-but-classified",
+      "note": "Packed small-int / byte-table block: ascending small values (0x04,0x20,0x21,0x22,0x1F...,0x40), a lone 0x00000001 marker, then a byte-ramp 0x05060506/0x05060607/0x06070607/0x07080708.../0x04050405 (rising paired-byte ramp). Packed DATA. [name-token: data_0013D880_packed_smallint]"
+    },
+    {
+      "part": "data_0013D900",
+      "rangeZ64": [
+        "0x0013D900",
+        "0x0013D91C"
+      ],
+      "bytes": 28,
+      "class": "packed-markers",
+      "state": "raw-but-classified",
+      "note": "Mixed markers: 0xFFFFFFFE, 0x00000000, 0x41F00000 (looks float-ish 30.0 but in a packed run), 0x4295828F, 0x0400FF5D, 0xFF5F7301, 0xFF1D0001. Treated as packed DATA, not code/float-array. [name-token: data_0013D900_markers]"
+    },
+    {
+      "part": "data_0013D91C",
+      "rangeZ64": [
+        "0x0013D91C",
+        "0x0013DD24"
+      ],
+      "bytes": 1032,
+      "class": "packed-fill",
+      "state": "raw-but-classified",
+      "note": "Long uniform run of 0x00010001 words (paired 16-bit value 0x0001). Constant-fill DATA region (~0x100 words); not pure-zero so not zero_fill. [name-token: data_0013D91C_fill_00010001]"
+    },
+    {
+      "part": "data_0013DD24",
+      "rangeZ64": [
+        "0x0013DD24",
+        "0x0013DD74"
+      ],
+      "bytes": 80,
+      "class": "packed-highbyte",
+      "state": "raw-but-classified",
+      "note": "Descending high-byte block: 0xF775F773,0xEF73EF31,0xEF2FEF2D,0xEEEBE6E9,0xDF29DF27...0x9D159D13 then 0x7C49740D,0x74497409,0x6BCB6BC7,0x63C76387 (monotonic-descending packed bytes 0xF7..0x63). Packed DATA (e.g. compressed/art or sample table). [name-token: data_0013DD24_descending_highbyte]"
+    },
+    {
+      "part": "data_0013DD74",
+      "rangeZ64": [
+        "0x0013DD74",
+        "0x0013DDB4"
+      ],
+      "bytes": 64,
+      "class": "packed-highbyte",
+      "state": "raw-but-classified",
+      "note": "Continuation of the descending/packed-byte block. Raw words 0x5B875B09 @0x13DD74, 0x5B475B45,0x53455307...; further down 0x294B2109 lands @0x140180. The parent wiki battle-trace labels 0x13DD74/0x13EE90/0x140180 'combat code' -- DISCREDITED linear-map fallacy; these are packed DATA bytes, NOT instructions. [name-token: data_0013DD74_packed_NOT_code]"
+    },
+    {
+      "part": "data_0013DDB4",
+      "rangeZ64": [
+        "0x0013DDB4",
+        "0x0013DF90"
+      ],
+      "bytes": 476,
+      "class": "packed-highbyte",
+      "state": "raw-but-classified",
+      "note": "Second uniform 0x00010001 constant-fill run (paired 0x0001) following the descending-byte block. Packed DATA. [name-token: data_0013DDB4_fill_00010001]"
+    },
+    {
+      "part": "data_0013DF90",
+      "rangeZ64": [
+        "0x0013DF90",
+        "0x00140C70"
+      ],
+      "bytes": 11488,
+      "class": "packed-highbyte",
+      "state": "raw-but-classified",
+      "note": "Large packed low-byte block, byte values mostly 0x01-0x11 (e.g. 0x0F050505,0x050A0B0D,0x0C0B0C0D,0x0F0F0F0F runs) transitioning mid-block into rising high-byte art-like data (0x6B5B735B,0x739D739D,0x7BDF7BDF,0x84218421,0x8C638C63,0x94A594A5...,0xCE73CE73,0xD6B5D6B3,0xDEF7DEF5,0xDCDCDCDC,0xE3E3E3E3). Contiguous packed DATA (hypothesis: tile/CLUT/compressed graphics); spans the addresses the parent mislabels as code (0x13EE90,0x140180). [name-token: data_0013DF90_packed_lowbyte_block]"
+    },
+    {
+      "part": "data_00140C70",
+      "rangeZ64": [
+        "0x00140C70",
+        "0x00140E80"
+      ],
+      "bytes": 528,
+      "class": "packed-fill",
+      "state": "raw-but-classified",
+      "note": "Sparse block of mostly 0x00000000 with scattered 0x0000FFFF / 0xFFFF0000 / 0xFFFFFFFF and a leading 0xDF000000. Mostly-zero but FFFF-punctuated -> packed DATA (bitmap/mask), kept as data rather than zero_fill. [name-token: data_00140C70_sparse_zero_ffff]"
+    },
+    {
+      "part": "data_00140E80",
+      "rangeZ64": [
+        "0x00140E80",
+        "0x00140EA0"
+      ],
+      "bytes": 32,
+      "class": "packed-fill",
+      "state": "raw-but-classified",
+      "note": "Short rising paired-byte mini-table 0x41D141D1,0x62D962D9,0x6B1D6B1D,0x74139D59,0x8413DEE6,0xB0C7B0C7,0xC1CFC1CF then a 0x00010001 separator @0x140E9C. Packed DATA header preceding the outgoing small-byte structure. [name-token: data_00140E80_rising_byte_minitable]"
+    },
+    {
+      "part": "data_00140EA0_chunk19head",
+      "rangeZ64": [
+        "0x00140EA0",
+        "0x00141000"
+      ],
+      "bytes": 352,
+      "class": "outgoing-straddler-head",
+      "state": "raw-but-classified",
+      "note": "OUTGOING DATA STRADDLER. Final contiguous small-byte (0x00-0x0C) packed structure: 0x09090909,0x05000709,0x0C0A0709,0x0A0A0C0C,0x0A0A0A0A,0x0A070909,0x09070000,0x07070200... ending at chunk tail with 0x09070A0A,0x07070C0A,0x0A0C0707,0x0C0A0709 @0x140FFC. CONTINUES PAST 0x141000 into chunk 20 (do not close here)."
+    }
+  ]
+}
