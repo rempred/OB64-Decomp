@@ -203,14 +203,14 @@ Current result:
 - Code-region SHA256:
   `40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`.
 - Code-region match against baserom: pass.
-- Tracked real-assembler original-MIPS chunks: 12 composites (chunk 0 177 `boot/`;
-  chunks 1–11 in `lib/`: 350, 216, 67, 376, 88, 78, 103, 87, 34, 35, 191) = 1,802 real-assembler
-  source files. Chunks 0–11 (`0x00001000..0x000C1000`) are now fully source-owned as
-  named code/data parts (chunk 8: 61 code + 2 straddler + 24 data; chunk 9: 32 code +
-  2 straddler + 0 data, ALL CODE; chunk 10: 33 code + 2 straddler + 0 data, ALL CODE;
-  chunk 11: 189 code + 2 straddler + 0 data, ALL CODE — 77 frameless leaves
-  recovered); next is chunk 12 (`0x000C1000`, still a generated fallback chunk).
-- Generated fallback chunks: 88.
+- Tracked real-assembler original-MIPS chunks: 13 composites (chunk 0 177 `boot/`;
+  chunks 1–12 in `lib/`: 350, 216, 67, 376, 88, 78, 103, 87, 34, 35, 191, 74) = 1,876 real-assembler
+  source files. Chunks 0–12 (`0x00001000..0x000D1000`) are now fully source-owned as
+  named code/data parts (chunk 9: 32 code + 2 straddler + 0 data, ALL CODE; chunk 10:
+  33 code + 2 straddler + 0 data, ALL CODE; chunk 11: 189 code + 2 straddler + 0 data,
+  ALL CODE — 77 frameless leaves recovered; chunk 12: 72 code + 2 straddler + 0 data,
+  ALL CODE — 20 dispatchers); next is chunk 13 (`0x000D1000`, still a generated fallback chunk).
+- Generated fallback chunks: 87.
 - Assembled-code ROM rebuild command:
 
 ```powershell
@@ -225,10 +225,11 @@ Next source-layout work should continue promoting/splitting tracked
 `tools/promote_original_mips.js` for chunk promotion and `--strict-tracked` only
 after every configured code chunk is tracked.
 
-Chunks 0–11 `0x00001000..0x000C1000` are fully source-owned as named
-code/data parts (chunk 8: 61 code + 2 straddler + 24 data; chunk 9: 32 code + 2
-straddler + 0 data, ALL CODE; chunk 10: 33 code + 2 straddler + 0 data, ALL CODE;
-chunk 11: 189 code + 2 straddler + 0 data, ALL CODE — 77 frameless leaves recovered).
+Chunks 0–12 `0x00001000..0x000D1000` are fully source-owned as named
+code/data parts (chunk 9: 32 code + 2 straddler + 0 data, ALL CODE; chunk 10: 33 code
++ 2 straddler + 0 data, ALL CODE; chunk 11: 189 code + 2 straddler + 0 data, ALL CODE
+— 77 frameless leaves recovered; chunk 12: 72 code + 2 straddler + 0 data, ALL CODE —
+20 dispatchers).
 Chunk 0 (`boot/`): resource-archive loader + decompressor, codec, libc, `vec3_*`,
 text renderer. Chunk 1 (`lib/`, `0x11000..0x21000`): graphics/unit-script + math
 + libc + libultra library. Chunk 2 (`lib/`, `0x21000..0x31000`): statically-linked
@@ -280,12 +281,19 @@ char-data/display-list code; the parent DB detected only 112 of 189 fns, the swa
 recovered 77 frameless leaves (4 gap clusters + many over-merge un-merges); 9
 jump-table dispatchers (tables in `0x801F` relocated RAM). Gates caught 2 delay-slot
 leaks; adversarial caught 1 under-split + 2 missed preamble-orphans. Dossier
-`lib-chunk11-B1000-C1000.md`. Next frontier is **`0x000C1000` (chunk 12)** — FIRST
-continue the function straddler: `func_000C0EDC_chunk11head` `[0xC0EDC,0xC1000)`
-(true entry 0xC0EDC) → `0x000C132C` (chunk-12 tail file `func_000C0EDC_chunk12tail`
-`[0xC1000,0x000C132C)`). Chunk 12 profile unknown — content-scan for data FIRST;
-`plan_chunk`+`dump_function_context` seed parent-detected code, `scan_functions` for
-parent-undetected. Coverage now 27.6018% (code-only ≈ 23.0115%).
+`lib-chunk11-B1000-C1000.md`. Chunk 12 (`0xC1000..0xD1000`) is also **ALL CODE** —
+74 parts (72 code + 2 straddler): FP-math + dispatcher-heavy char-data code,
+deferred-prologue `func_000C132C`, 12 frameless leaves + ~24 preamble-orphans, **20
+jump-table dispatchers** (tables in `0x801F` relocated RAM); adversarial 0 disproofs
+after 3 preamble-orphan fold fixes. Dossier `lib-chunk12-C1000-D1000.md`. The one-shot
+retroactive audits of chunks 0–11 (parent-evidence + data-inventory) found 0 proven
+mistakes; 8 data-index JSONs under `docs/data-index/rev0/`; reports under `docs/audit/`.
+Next frontier is **`0x000D1000` (chunk 13)** — FIRST continue the function straddler:
+`func_000D0B8C_chunk12head` `[0xD0B8C,0xD1000)` (true entry 0xD0B8C) → `0x000D110C`
+(chunk-13 tail file `func_000D0B8C_chunk13tail` `[0xD1000,0x000D110C)`). Chunk 13's
+profile (1,526 nops, 21 parent labels) differs from chunks 9–12 — content-scan for
+DATA FIRST; `plan_chunk`+`dump_function_context` seed parent-detected code,
+`scan_functions` for parent-undetected. Coverage now 29.9020% (code-only ≈ 25.3118%).
 The chunk-split pipeline is tracked:
 `scan_functions` (or `dump_function_context`+`plan_chunk` when parent-detected) →
 `tools/slice_chunk.js` (`--disasm` for mixed/sub-region) → analysis swarm →
@@ -2703,9 +2711,9 @@ setup-complete state:
 - Assembler: GNU Binutils 2.39 `mips64-elf-as.exe` with `-EB -mips3 -32`.
 - Setup verifier: `tools/verify_setup.js`.
 - Current verifier result: PASS; 825 archives, 0 unknown bytes, 108 overlap
-  bytes visible, 12 tracked composite real-asm chunks made from 1,802 tracked source
-  files (chunks 0–11 fully source-owned as code/data parts, `0x00001000..0x000C1000`),
-  88 generated fallback chunks, full-source manifest 1,059 entries with
+  bytes visible, 13 tracked composite real-asm chunks made from 1,876 tracked source
+  files (chunks 0–12 fully source-owned as code/data parts, `0x00001000..0x000D1000`),
+  87 generated fallback chunks, full-source manifest 1,059 entries with
   2,469,141 ambiguous bytes preserved explicitly, 3 tracked non-code
   source-owner files / 44,029 bytes, 1,055 generated non-code fallback files /
   35,388,567 bytes, source-manifest rebuild exact, full ROM
@@ -2713,12 +2721,12 @@ setup-complete state:
   `571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A`.
 
 Next phase is either promoting another small non-code owner batch or continuing
-tracked original-MIPS source-ownership into **chunk 12** (`0x000C1000`) — FIRST
-continue the function straddler `func_000C0EDC_chunk11head` `[0xC0EDC,0xC1000)`
-(true entry 0xC0EDC) → `0x000C132C` (chunk-12 tail file `func_000C0EDC_chunk12tail`
-`[0xC1000,0x000C132C)`). Chunk 12 profile unknown, so content-scan for data regions
-first and watch for chunk-11-style frameless-leaf density; `plan_chunk`+
+tracked original-MIPS source-ownership into **chunk 13** (`0x000D1000`) — FIRST
+continue the function straddler `func_000D0B8C_chunk12head` `[0xD0B8C,0xD1000)`
+(true entry 0xD0B8C) → `0x000D110C` (chunk-13 tail file `func_000D0B8C_chunk13tail`
+`[0xD1000,0x000D110C)`). Chunk 13's profile (1,526 nops, 21 parent labels) differs
+from chunks 9–12, so content-scan for DATA regions first; `plan_chunk`+
 `dump_function_context` seed parent-detected code, `scan_functions` for
-parent-undetected. Chunks 0–11 are fully source-owned.
+parent-undetected. Chunks 0–12 are fully source-owned.
 There is no tooling blocker. Do not begin semantic C decomp unless the setup
 verifier is green.

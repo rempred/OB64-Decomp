@@ -15,13 +15,13 @@ Current passing commands:
 node tools/verify_setup.js
 ```
 
-Current source mix: 12 tracked composite real-assembler chunks (chunk 0 177
-`boot/`; chunks 1–11 in `lib/`: 350, 216, 67, 376, 88, 78, 103, 87, 34, 35, 191) = 1,802 tracked
-source files, plus 88 generated fallback chunks. **Chunks 0–11 are fully
-source-owned as named code/data parts** (`0x00001000..0x000C1000`; chunk 8: 61 code
-+ 2 straddler + 24 data; chunk 9: 32 code + 2 straddler + 0 data, ALL CODE; chunk 10:
-33 code + 2 straddler + 0 data, ALL CODE; chunk 11: 189 code + 2 straddler + 0 data,
-ALL CODE — 77 frameless leaves recovered); next is chunk 12 (`0x000C1000`).
+Current source mix: 13 tracked composite real-assembler chunks (chunk 0 177
+`boot/`; chunks 1–12 in `lib/`: 350, 216, 67, 376, 88, 78, 103, 87, 34, 35, 191, 74) = 1,876 tracked
+source files, plus 87 generated fallback chunks. **Chunks 0–12 are fully
+source-owned as named code/data parts** (`0x00001000..0x000D1000`; chunk 9: 32 code +
+2 straddler + 0 data, ALL CODE; chunk 10: 33 code + 2 straddler + 0 data, ALL CODE;
+chunk 11: 189 code + 2 straddler + 0 data, ALL CODE — 77 frameless leaves recovered;
+chunk 12: 72 code + 2 straddler + 0 data, ALL CODE — 20 dispatchers); next is chunk 13 (`0x000D1000`).
 
 The assembled code-region SHA256 is
 `40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`; the full
@@ -98,29 +98,30 @@ node tools/audit_code_region.js
    generates fallback owners for the rest. Keep `node tools/verify_setup.js`
    green after every promotion.
 
-3. Continue into chunk 12.
+3. Continue into chunk 13.
 
-   Chunks 0–11 (`0x00001000..0x000C1000`) are fully source-owned as named code/data
-   parts: chunk 0 in `boot/`; chunks 1–11 in `lib/` (dossiers `lib-chunk1-…` …
-   `lib-chunk11-…`). Chunks 9–11 were all ALL CODE. Chunk 11 (191 parts: 189 code + 2
-   straddler + 0 data) was frameless-leaf-DENSE: the parent DB detected only 112 of
-   189 fns, the swarm recovered 77 frameless leaves (4 gap clusters + many over-merge
-   un-merges) across FP-math + char-data/display-list code; 9 jump-table dispatchers
-   (tables in `0x801F` relocated RAM). Gates caught 2 delay-slot leaks; the
-   adversarial pass (4 refuters + 1 data-hunter) caught 1 under-split + 2 missed
-   preamble-orphans and confirmed 0 inline data.
+   Chunks 0–12 (`0x00001000..0x000D1000`) are fully source-owned as named code/data
+   parts: chunk 0 in `boot/`; chunks 1–12 in `lib/` (dossiers `lib-chunk1-…` …
+   `lib-chunk12-…`). Chunks 9–12 were all ALL CODE. Chunk 12 (74 parts: 72 code + 2
+   straddler + 0 data) was FP-math + dispatcher-heavy char-data code: deferred-prologue
+   `func_000C132C`, 12 frameless leaves + ~24 preamble-orphans, 20 jump-table
+   dispatchers (tables in `0x801F` relocated RAM); adversarial 0 disproofs after 3
+   preamble-orphan fold fixes. Two one-shot retroactive audits of chunks 0–11
+   (parent-evidence + data-inventory) found 0 proven mistakes and added 8 data-index
+   JSONs under `docs/data-index/rev0/` (reports under `docs/audit/`).
 
-   **Next frontier: `0x000C1000` (chunk 12).** FIRST continue the function straddler:
-   `func_000C0EDC_chunk11head` `[0xC0EDC,0xC1000)` (true entry 0xC0EDC) continues to
-   `0x000C132C` (chunk-12 tail file `func_000C0EDC_chunk12tail` `[0xC1000,0x000C132C)`).
-   Chunk 12 profile is unknown — content-scan for data regions FIRST and watch for
-   chunk-11-style frameless-leaf density. `plan_chunk`+`dump_function_context` should
-   seed parent-detected code; use `scan_functions` for parent-undetected sub-regions.
+   **Next frontier: `0x000D1000` (chunk 13).** FIRST continue the function straddler:
+   `func_000D0B8C_chunk12head` `[0xD0B8C,0xD1000)` (true entry 0xD0B8C) continues to
+   `0x000D110C` (chunk-13 tail file `func_000D0B8C_chunk13tail` `[0xD1000,0x000D110C)`).
+   Chunk 13's source-report profile (1,526 nops, only 21 parent function labels)
+   differs sharply from chunks 9–12 — content-scan for DATA regions FIRST; it may be
+   data-heavy or frameless-dense. `plan_chunk`+`dump_function_context` should seed
+   parent-detected code; use `scan_functions` for parent-undetected sub-regions.
    Pipeline: `scan_functions` or `plan_chunk`/`slice_chunk --disasm`/`integrate_chunk`
    (context optional)/`check_splits`/`check_boundaries` + analysis + adversarial
    swarms (Agent-tool, one per slice/region). The 10% executable target `0x000468F8`
-   is surpassed (coverage now 27.6018%, code-only ≈ 23.0115%). See the DECOMP_LOG
-   "Next Frontier" and `docs/dossiers/lib-chunk11-B1000-C1000.md`.
+   is surpassed (coverage now 29.9020%, code-only ≈ 25.3118%). See the DECOMP_LOG
+   "Next Frontier" and `docs/dossiers/lib-chunk12-C1000-D1000.md`.
 
 4. Keep the setup gate green.
 
