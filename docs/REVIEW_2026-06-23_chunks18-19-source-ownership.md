@@ -30,7 +30,7 @@ run date 2026-06-23.
 ## 3. Commits (this run, newest first)
 | Hash | Category | Purpose |
 |---|---|---|
-| `_(this doc's commit)_` | review handoff | Add chunks 18–19 review handoff (this file, final commit) |
+| `e1b54b1` | review handoff | Add chunks 18–19 review handoff (this file, final commit) |
 | `e34016f` | source + docs | Source-own chunk 19 (80 parts, MIXED); dossier `lib-chunk19` + data-index inventory + doc updates |
 | `a4d07c5` | source + docs | Source-own chunk 18 (95 parts, ALL CODE); dossier `lib-chunk18` + doc updates |
 | `be7a250` | opening fixes | Chunks 16–17 review nit (hash bcb8d67) + stale Next-Frontier sentence fix + DECOMP_LOG compaction (archived 2026-06-21 audits + chunks 8–13) |

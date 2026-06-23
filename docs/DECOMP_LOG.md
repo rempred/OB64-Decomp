@@ -205,7 +205,9 @@ Current named sequence:
   `docs/dossiers/lib-chunk19-131000-141000.md`; data index
   `docs/data-index/rev0/chunk19-data-region-inventory.json`. **Chunk 19 source-owned.**
 - Current remainder: none in chunks 0–19 (`0x1000..0x141000` fully source-owned).
-  Next is chunk 18 generated fallback `0x00121000..0x00131000`.
+  **Current frontier: `0x00141000` (chunk 20).** Next is chunk 20 generated fallback
+  `0x00141000..0x00151000` (data-dominant start: continues the chunk-19 packed-byte
+  straddler `data_00140EA0_chunk19head`).
 
 Static dossiers live under `docs/dossiers/` and are the durable evidence notes
 for each promoted source-layout split.
