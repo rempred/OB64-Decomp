@@ -719,35 +719,26 @@ the full quick index. The newest dossiers are:
 
 ## Next Frontier
 
-Chunks 0–29 (`0x00001000..0x001E1000`) are fully source-owned as named code/data
-parts. Chunk 29 (`0x001D1000..0x001E1000`) is CODE-dominant MIXED: 103 parts
-(97 normal code + 4 zero-fill data + 2 function straddlers). It completes
-incoming `func_001D0694_chunk29tail` at `0x001D1000..0x001D10A4`, recovers
-frameless helpers at `0x001D9338` and `0x001E0A38`, preserves four pure-zero
-alignment islands as data, and ends with outgoing function straddler-head
-`func_001E0FC8` at `0x001E0FC0..0x001E1000`.
+Chunks 0–31 (`0x00001000..0x00201000`) are fully source-owned as named code/data
+parts. Chunk 31 (`0x001F1000..0x00201000`) is ALL CODE: 86 parts (84 normal code
++ 2 function straddlers). It completes incoming `func_001F0F9C_chunk31tail`
+(`0x001F1000..0x001F102C`) and ends with outgoing function straddler-head
+`func_002006E8` (`0x002006E8..0x00201000`, parent end lead `0x00201108`).
+Dossier: `docs/dossiers/lib-chunk31-1F1000-201000.md`. (Chunk 30 dossier:
+`docs/dossiers/lib-chunk30-1E1000-1F1000.md`; data index
+`docs/data-index/rev0/chunk30-data-region-inventory.json`.)
 
-Chunk 29 data totals 24 bytes, all parsed zero-fill:
+Current frontier is **`0x00201000` (chunk 32)**. Coverage
+`0x1000..0x201000` = 2,097,152 B = 73.6048% of the 2,849,204-byte executable
+extent (code-only = 1,730,712 B = 60.7437%).
 
-- `0x001D46F8..0x001D4700`.
-- `0x001D884C..0x001D8850`.
-- `0x001DAAAC..0x001DAAB0`.
-- `0x001DBF68..0x001DBF70`.
-
-Data index: `docs/data-index/rev0/chunk29-data-region-inventory.json`.
-Dossier: `docs/dossiers/lib-chunk29-1D1000-1E1000.md`.
-
-Current frontier is **`0x001E1000` (chunk 30)**. Coverage
-`0x1000..0x1E1000` = 1,966,080 B = 69.0045% of the 2,849,204-byte executable
-extent (code-only = 1,609,044 B = 56.4735%).
-
-FIRST for the next run: continue the OUTGOING FUNCTION straddler from chunk 29.
-`func_001E0FC8` starts in chunk 29 at `0x001E0FC0` with the parent prologue at
-`0x001E0FC8`, has no `jr$ra` before the chunk boundary, and must be emitted
-first in chunk 30 as `func_001E0FC8_chunk30tail` starting at `0x001E1000`.
+FIRST for the next run: continue the OUTGOING FUNCTION straddler from chunk 31.
+`func_002006E8` starts in chunk 31 at `0x002006E8` (clean prologue, no preamble),
+has no `jr$ra` before the chunk boundary, and must be emitted first in chunk 32
+as `func_002006E8_chunk32tail` starting at `0x00201000`.
 
 There are now two active tracks. The library source-ownership track continues at
-`0x1E1000` (chunk 30) as above. The full-ROM coverage track (opened 2026-06-21)
+`0x201000` (chunk 32) as above. The full-ROM coverage track (opened 2026-06-21)
 next refines the exact code/data boundary near `0x002B89B4` and reclassifies the
 non-code tail `0x002B89B4..0x0063676C` from `original_mips` to a data source
 form, shrinking the configured code region to the executable extent while

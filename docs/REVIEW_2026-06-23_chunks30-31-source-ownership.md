@@ -10,7 +10,7 @@ Commits in this run:
 
 - `a84635f` — `Source-own Rev0 chunk 30`
 - `69aa39d` — `Source-own Rev0 chunk 31`
-- `Add chunks 30-31 review handoff` — this document (final commit of the run)
+- `f959be2` — `Add chunks 30-31 review handoff` (this document)
 
 ## Outcome
 

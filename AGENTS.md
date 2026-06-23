@@ -2844,9 +2844,9 @@ setup-complete state:
 - Assembler: GNU Binutils 2.39 `mips64-elf-as.exe` with `-EB -mips3 -32`.
 - Setup verifier: `tools/verify_setup.js`.
 - Current verifier result: PASS; 825 archives, 0 unknown bytes, 108 overlap
-  bytes visible, 30 tracked composite real-asm chunks made from 3,544 tracked source
-  files (chunks 0–29 fully source-owned as code/data parts, `0x00001000..0x001E1000`),
-  70 generated fallback chunks, full-source manifest 1,059 entries with
+  bytes visible, 32 tracked composite real-asm chunks made from 3,752 tracked source
+  files (chunks 0–31 fully source-owned as code/data parts, `0x00001000..0x00201000`),
+  68 generated fallback chunks, full-source manifest 1,059 entries with
   2,469,141 ambiguous bytes preserved explicitly, 3 tracked non-code
   source-owner files / 44,029 bytes, 1,055 generated non-code fallback files /
   35,388,567 bytes, source-manifest rebuild exact, full ROM
@@ -2854,12 +2854,13 @@ setup-complete state:
   `571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A`.
 
 Next phase is either promoting another small non-code owner batch or continuing
-tracked original-MIPS source-ownership into **chunk 30** (`0x001E1000`) — FIRST
-continue the OUTGOING FUNCTION straddler `func_001E0FC8`, whose entry/prefix is
-in chunk 29 and whose return is in chunk 30. Emit `func_001E0FC8_chunk30tail`
-starting at `0x001E1000` first and confirm its `jr$ra`. Use
-`plan_chunk`+`dump_function_context` to seed parent-detected code,
-`scan_functions` for parent-undetected, and data-classification checks for any data.
-Chunks 0–29 are fully source-owned.
+tracked original-MIPS source-ownership into **chunk 32** (`0x00201000`) — FIRST
+continue the OUTGOING FUNCTION straddler `func_002006E8`, whose clean prologue is
+in chunk 31 at `0x002006E8` and whose return is in chunk 32 (parent end lead
+`0x00201108`). Emit `func_002006E8_chunk32tail` starting at `0x00201000` first and
+confirm its `jr$ra`. Use `plan_chunk`+`dump_function_context` to seed
+parent-detected code, `scan_functions` for parent-undetected, and
+data-classification checks for any data.
+Chunks 0–31 are fully source-owned.
 There is no tooling blocker. Do not begin semantic C decomp unless the setup
 verifier is green.
