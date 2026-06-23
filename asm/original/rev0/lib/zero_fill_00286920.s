@@ -1,0 +1,28 @@
+/*
+ * Original Rev 0 MIPS reference split.
+ * Parent source: asm/original/rev0/code_00281000_00291000.s
+ * z64 range: 0x00286920..0x00286964 exclusive
+ * Decode comments are aids, not proof of semantic function boundaries.
+ */
+.set noat
+.set noreorder
+.text
+
+/* Data region (not executable host code): Confirmed all-zero span, 0x44 bytes (17 words).. */
+/* 0x00286920 0x802F6520 0x00000000 */ .word 0x00000000 # nop
+/* 0x00286924 0x802F6524 0x00000000 */ .word 0x00000000 # nop
+/* 0x00286928 0x802F6528 0x00000000 */ .word 0x00000000 # nop
+/* 0x0028692C 0x802F652C 0x00000000 */ .word 0x00000000 # nop
+/* 0x00286930 0x802F6530 0x00000000 */ .word 0x00000000 # nop
+/* 0x00286934 0x802F6534 0x00000000 */ .word 0x00000000 # nop
+/* 0x00286938 0x802F6538 0x00000000 */ .word 0x00000000 # nop
+/* 0x0028693C 0x802F653C 0x00000000 */ .word 0x00000000 # nop
+/* 0x00286940 0x802F6540 0x00000000 */ .word 0x00000000 # nop
+/* 0x00286944 0x802F6544 0x00000000 */ .word 0x00000000 # nop
+/* 0x00286948 0x802F6548 0x00000000 */ .word 0x00000000 # nop
+/* 0x0028694C 0x802F654C 0x00000000 */ .word 0x00000000 # nop
+/* 0x00286950 0x802F6550 0x00000000 */ .word 0x00000000 # nop
+/* 0x00286954 0x802F6554 0x00000000 */ .word 0x00000000 # nop
+/* 0x00286958 0x802F6558 0x00000000 */ .word 0x00000000 # nop
+/* 0x0028695C 0x802F655C 0x00000000 */ .word 0x00000000 # nop
+/* 0x00286960 0x802F6560 0x00000000 */ .word 0x00000000 # nop

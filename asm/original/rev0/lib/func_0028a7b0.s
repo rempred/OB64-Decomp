@@ -1,0 +1,36 @@
+/*
+ * Original Rev 0 MIPS reference split.
+ * Parent source: asm/original/rev0/code_00281000_00291000.s
+ * z64 range: 0x0028A7B0..0x0028A814 exclusive
+ * Decode comments are aids, not proof of semantic function boundaries.
+ */
+.set noat
+.set noreorder
+.text
+
+/* Frameless leaf (bit-set helper). Ends with overlay tail-jump j 0x8022E8C4 @0x0028A7DC +delay @0x0028A7E0. [merged former func_0028a7e4: the bne@0x28a7bc is an internal forward branch; j 0x8022E8C4 is one exit, fall-through continues at 0x28a7e4]. */
+/* 0x0028A7B0 0x802FA3B0 0x24A2FFFF */ .word 0x24A2FFFF # addiu $v0, $a1, -0x1
+/* 0x0028A7B4 0x802FA3B4 0x30C600FF */ .word 0x30C600FF # andi $a2, $a2, 0x00FF
+/* 0x0028A7B8 0x802FA3B8 0x24050001 */ .word 0x24050001 # addiu $a1, $zero, 0x1
+/* 0x0028A7BC 0x802FA3BC 0x14C50009 */ .word 0x14C50009 # bne $a2, $a1, 0x802FA3E4
+/* 0x0028A7C0 0x802FA3C0 0x304200FF */ .word 0x304200FF # andi $v0, $v0, 0x00FF
+/* 0x0028A7C4 0x802FA3C4 0x000220C2 */ .word 0x000220C2 # srl $a0, $v0, 3
+/* 0x0028A7C8 0x802FA3C8 0x3C038024 */ .word 0x3C038024 # lui $v1, 0x8024
+/* 0x0028A7CC 0x802FA3CC 0x00641821 */ .word 0x00641821 # addu $v1, $v1, $a0
+/* 0x0028A7D0 0x802FA3D0 0x9063E5FF */ .word 0x9063E5FF # lbu $v1, -0x1A01($v1)
+/* 0x0028A7D4 0x802FA3D4 0x30420007 */ .word 0x30420007 # andi $v0, $v0, 0x0007
+/* 0x0028A7D8 0x802FA3D8 0x00451004 */ .word 0x00451004 # sllv $v0, $a1, $v0
+/* 0x0028A7DC 0x802FA3DC 0x0808BA31 */ .word 0x0808BA31 # j 0x8022E8C4
+/* 0x0028A7E0 0x802FA3E0 0x00621825 */ .word 0x00621825 # or $v1, $v1, $v0
+/* 0x0028A7E4 0x802FA3E4 0x000220C2 */ .word 0x000220C2 # srl $a0, $v0, 3
+/* 0x0028A7E8 0x802FA3E8 0x30420007 */ .word 0x30420007 # andi $v0, $v0, 0x0007
+/* 0x0028A7EC 0x802FA3EC 0x3C038024 */ .word 0x3C038024 # lui $v1, 0x8024
+/* 0x0028A7F0 0x802FA3F0 0x00641821 */ .word 0x00641821 # addu $v1, $v1, $a0
+/* 0x0028A7F4 0x802FA3F4 0x9063E5FF */ .word 0x9063E5FF # lbu $v1, -0x1A01($v1)
+/* 0x0028A7F8 0x802FA3F8 0x00451004 */ .word 0x00451004 # sllv $v0, $a1, $v0
+/* 0x0028A7FC 0x802FA3FC 0x00021027 */ .word 0x00021027 # nor $v0, $zero, $v0
+/* 0x0028A800 0x802FA400 0x00621824 */ .word 0x00621824 # and $v1, $v1, $v0
+/* 0x0028A804 0x802FA404 0x3C018024 */ .word 0x3C018024 # lui $at, 0x8024
+/* 0x0028A808 0x802FA408 0x00240821 */ .word 0x00240821 # addu $at, $at, $a0
+/* 0x0028A80C 0x802FA40C 0x03E00008 */ .word 0x03E00008 # jr $ra
+/* 0x0028A810 0x802FA410 0xA023E5FF */ .word 0xA023E5FF # sb $v1, -0x1A01($at)

@@ -11,8 +11,7 @@ Final frontier: `0x00281000` (clean — chunk 39 ends in data, no outgoing strad
 - `6cbd7b9` — `Fix chunks36-37 review handoff commit table` (opening cleanup fix; doc only)
 - `0f7268f` — `Source-own Rev0 chunk 38 (0x261000..0x271000)`
 - `ab35613` — `Source-own Rev0 chunk 39 (0x271000..0x281000) + advance current-state docs`
-- `Add chunks 38-39 review handoff` — this document, committed as the run's final commit
-  (its own hash is recorded in the run's final report / bridge ping).
+- `b412d8e` — `Add chunks 38-39 review handoff` (this document)
 
 ## Outcome
 
@@ -205,7 +204,7 @@ root scratch artifacts are tracked.
 - Chunk 38 (`0f7268f`): 232 `asm/original/rev0/lib/` parts; `manifest.json`;
   `docs/dossiers/lib-chunk38-261000-271000.md`; current-state docs (`AGENTS.md`, `DECOMP_LOG.md`,
   `NEXT_STEPS.md`, `PLATFORM.md`, `WORKFLOW.md`).
-- Chunk 39 (`__CHUNK39__`): 155 `asm/original/rev0/lib/` parts; `manifest.json`;
+- Chunk 39 (`ab35613`): 155 `asm/original/rev0/lib/` parts; `manifest.json`;
   `docs/dossiers/lib-chunk39-271000-281000.md`; `docs/data-index/rev0/chunk39-data-region-inventory.json`;
   current-state docs (`AGENTS.md`, `DECOMP_LOG.md`, `NEXT_STEPS.md`, `PLATFORM.md`, `WORKFLOW.md`).
 

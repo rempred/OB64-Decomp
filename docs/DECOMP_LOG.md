@@ -24,9 +24,9 @@ and replace the active log with a compact current-state summary.
   `original_mips`. A static control-flow audit found no credible code edge into
   the tail (0 branch targets, 0 J/JAL to a known function). Audit:
   `tools/audit_code_region.js` / `docs/CODE_REGION_AUDIT.md`.
-- Current tracked code source mix: forty composite real-assembler chunks
-  (chunk 0 177 `boot/`; chunks 1–39 in `lib/`: 350, 216, 67, 376, 88, 78, 103, 87, 34, 35, 191, 74, 67, 94, 153, 95, 66, 95, 80, 175, 99, 99, 73, 63, 71, 96, 142, 97, 103, 122, 86, 198, 109, 120, 134, 164, 180, 232, 155) =
-  **5,044 tracked source files**, plus 60 generated fallback code chunks. **Chunks
+- Current tracked code source mix: forty-one composite real-assembler chunks
+  (chunk 0 177 `boot/`; chunks 1–40 in `lib/`: 350, 216, 67, 376, 88, 78, 103, 87, 34, 35, 191, 74, 67, 94, 153, 95, 66, 95, 80, 175, 99, 99, 73, 63, 71, 96, 142, 97, 103, 122, 86, 198, 109, 120, 134, 164, 180, 232, 155, 159) =
+  **5,203 tracked source files**, plus 59 generated fallback code chunks. **Chunks
   0–39 (`0x00001000..0x00281000`) are now fully source-owned as named code/data
   parts** (chunk 39: 135 code + 19 data + 1 straddler-tail, MIXED — mission-briefing/combat
   display-list code continuing chunks 36-38, wrapping THREE interior data islands (big data
@@ -88,7 +88,7 @@ and replace the active log with a compact current-state summary.
   chunk 37: 170 normal code + 8 data + 2 function straddlers, MIXED - command-dispatcher
   mission-briefing/combat code + a 0x80x pointer/struct/float record-table DATA island
   [0x25E2BC..0x25EE90]);
-  next is chunk 38 (`0x00261000`, still a
+  next is chunk 41 (`0x00291000`, still a
   generated fallback chunk). The promote-tool merge blocker is FIXED.
 - The parent boundary DB has TWO recurring defects, both fixed when splitting:
   (1) `end_rom` is INCLUSIVE (exclusive end = `end_rom + 4`; do NOT treat the
@@ -360,7 +360,7 @@ Current named sequence:
   carve_chunk; adversarial 7 verifiers (4 code + 3 data) ALL structurally CLEAN (only 4 LOW
   note-text fixes). Dossier + data index added. **Chunk 39 source-owned.**
 - Current remainder: none in chunks 0-39 (`0x1000..0x281000` fully source-owned).
-  **Current frontier: `0x00281000` (chunk 40).** No incoming straddler (chunk 39 ended in
+  **Current frontier: `0x00291000` (chunk 41).** No incoming straddler (chunk 39 ended in
   DATA C tail data). First action: classify the start of `0x00281000` (content/return/prologue
   scan); do not assume code.
 
@@ -828,29 +828,26 @@ the full quick index. The newest dossiers are:
 
 ## Next Frontier
 
-Chunks 0–37 (`0x00001000..0x00261000`) are fully source-owned as named code/data
-parts. Chunk 36 (`0x00241000..0x00251000`, 164 parts) and chunk 37
-(`0x00251000..0x00261000`, 180 parts) are both MIXED mission-briefing/combat
-display-list / command-dispatcher code wrapping interior combat-overlay DATA islands
-(chunk 36 `0x243F14..0x2447A0` + `0x24B410..0x24BCA0`: 0x801D/0x801E pointer tables +
-GBI/RDP blobs + float/double pools + rodata; chunk 37 `0x25E2BC..0x25EE90`: mixed 0x80x
-pointer/struct/float record table). Chunk 36 ends with outgoing function straddler-head
-`func_00250F9C` (→ chunk 37); chunk 37 ends with outgoing straddler-head `func_00260F30`
-(→ chunk 38).
-Dossiers: `docs/dossiers/lib-chunk3{6,7}-*.md`; data indexes
-`docs/data-index/rev0/chunk3{6,7}-data-region-inventory.json`.
+Chunks 0–39 (`0x00001000..0x00281000`) are fully source-owned as named code/data
+parts. Chunk 38 (`0x00261000..0x00271000`, 232 parts) is ALL CODE (FP/GBI display-list +
+mission-briefing/combat dispatchers, frameless-leaf dense). Chunk 39
+(`0x00271000..0x00281000`, 155 parts) is MIXED — 3 code regions + 3 interior data islands
+(DATA A `0x273FFC..0x275850` big territory [pointer/jump/float64 tables]; DATA B
+`0x279DA8..0x27A020` GBI display-list blob; DATA C `0x280D48..0x281000` small-int LUTs +
+zero-fill + 640/480 screen-dim records). Chunk 39 ENDS IN DATA — no outgoing straddler.
+Dossiers: `docs/dossiers/lib-chunk3{8,9}-*.md`; chunk-39 data index
+`docs/data-index/rev0/chunk39-data-region-inventory.json`.
 
-Current frontier is **`0x00261000` (chunk 38)**. Coverage
-`0x1000..0x261000` = 2,490,368 B = 87.4057% of the 2,849,204-byte executable
-extent (code-only = 2,101,388 B = 73.7535%).
+Current frontier is **`0x00291000` (chunk 41)**. Coverage
+`0x1000..0x291000` = 2,686,976 B = 94.3056% of the 2,849,204-byte executable
+extent (code-only = 2,287,036 B = 80.2693%).
 
-FIRST for the next run: continue the OUTGOING FUNCTION straddler from chunk 37.
-`func_00260F30` starts in chunk 37 at `0x00260F30` (prologue `addiu $sp,-0x20`), has no
-`jr$ra` before the chunk boundary, and must be emitted first in chunk 38 as
-`func_00260F30_chunk38tail` starting at `0x00261000`.
+FIRST for the next run: there is NO incoming straddler (chunk 39 ended in DATA C tail data).
+Classify the start of `0x00281000` from scratch (content/zero/ASCII/pointer-density +
+return/prologue scan); do not assume code.
 
 There are now two active tracks. The library source-ownership track continues at
-`0x241000` (chunk 36) as above. The full-ROM coverage track (opened 2026-06-21)
+`0x281000` (chunk 40) as above. The full-ROM coverage track (opened 2026-06-21)
 next refines the exact code/data boundary near `0x002B89B4` and reclassifies the
 non-code tail `0x002B89B4..0x0063676C` from `original_mips` to a data source
 form, shrinking the configured code region to the executable extent while
