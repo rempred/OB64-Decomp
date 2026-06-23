@@ -27,7 +27,7 @@ run date 2026-06-23.
 ## 3. Commits (this run, newest first)
 | Hash | Category | Purpose |
 |---|---|---|
-| `_(this doc's commit)_` | review handoff | Add chunks 14–15 review handoff (this file, final commit) |
+| `68d8bfc` | review handoff | Add chunks 14–15 review handoff (this file, final commit) |
 | `32b14b6` | source + docs | Source-own chunk 15 (153 parts, MIXED); dossier `lib-chunk15` + data-index inventory + doc updates |
 | `5c2459c` | source + docs | Source-own chunk 14 (94 parts, MIXED); dossier `lib-chunk14` + data-index inventory + doc updates |
 | `f611ae8` | doc fix (opening) | Chunks 12–13 review nit: placeholder `_(this doc's commit)_` → real hash `f99a9b9` |

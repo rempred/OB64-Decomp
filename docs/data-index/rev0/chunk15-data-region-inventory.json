@@ -213,7 +213,9 @@
       "bytes": 1840,
       "class": "ascii-rodata",
       "state": "parsed",
-      "note": "Readable ASCII string pool: the Ogre Battle 64 opening prologue narration, NUL-padded between strings, using '@'-prefixed inline formatting control codes (@0,@1,@2,@3,@w,@c,@l,@e). Runs from '@0Palatinean Year 238' (0x1006F0) through '...It required ten years for a streak of light to shine through the dark, ominous clouds...' ending ~0x100E1F. Genuine rodata strings."
+      "note": "Readable ASCII string pool: the Ogre Battle 64 opening prologue narration, NUL-padded between strings, using '@'-prefixed inline formatting control codes (@0,@1,@2,@3,@w,@c,@l,@e). Runs from '@0Palatinean Year 238' (0x1006F0) through '...It required ten years for a streak of light to shine through the dark, ominous clouds...' ending ~0x100E1F. Genuine rodata strings.",
+      "decodedExport": "data/decoded/rev0/dialogue/chunk15-opening-prologue.md",
+      "stringsIndex": "docs/data-index/rev0/chunk15-opening-prologue-strings.json"
     },
     {
       "part": "table_00100e20",
@@ -259,5 +261,13 @@
       "state": "raw-but-classified",
       "note": "OUTGOING DATA CONTINUATION into chunk 16. Fifth 0x50-byte float-record begins at 0x100FD4 (header 0x00000004,0x00000064,0x00000001,0,0x00000001,0x000200F0,0x00F00000,0x00A80000, then floats 0xC2040000=-33, 0xC2380000=-46, 0x00000000) but is TRUNCATED at the chunk-15 edge 0x101000 after only 11 of 20 words. The record continues into chunk 16: 0x101000 = 0x42340000 (float 45.0) is word[11] of THIS record. Tail will be data_<...>_chunk16tail starting at 0x101000. Ends exactly at 0x00101000."
     }
-  ]
+  ],
+  "companionExports": {
+    "rodata_001006f0": {
+      "decodedJson": "docs/data-index/rev0/chunk15-opening-prologue-strings.json",
+      "decodedMarkdown": "data/decoded/rev0/dialogue/chunk15-opening-prologue.md",
+      "tool": "tools/decode_rodata_strings.js",
+      "note": "OB64 opening-prologue narration; 16 NUL-terminated ASCII strings; @-prefixed inline control codes (@0..@3/@w/@c/@e/@l) preserved verbatim, semantics UNRESOLVED; round-trip byte-exact against the raw owner."
+    }
+  }
 }

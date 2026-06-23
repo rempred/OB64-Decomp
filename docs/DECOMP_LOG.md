@@ -546,7 +546,8 @@ CODE `0xEBBB0..0xF1000` (char-data/FP; outgoing FUNCTION straddler).
 
 INCOMING data straddler `data_000e1000_chunk14tail [0xE1000,0xE13D0)` (continues
 chunk-13 data_000e0bd0; ends at first DF000000 record). OUTGOING straddler-head
-`func_000F0F64_chunk14head [0xF0F64,0xF1000)` → 0x000F135C in chunk 15. Adversarial
+`func_000F0F64_chunk14head [0xF0F64,0xF1000)` → 0x000F135C in chunk 15 [superseded: refined
+to 0xF1354 during the chunk-15 run — see the chunk-15 entry]. Adversarial
 swarm (4 agents) caught 2 boundary fixes: (1) data→code boundary is 0xE48F0 NOT the
 parent's 0xE4BE0 — 3 frameless DL-builder functions (func_000e48f0/4930/495c) precede
 the first framed fn; (2) preamble-orphan true entry 0xEBBB0 NOT 0xEBBC0 (4-word
@@ -558,7 +559,8 @@ byte-exact/diff all PASS; 0 data files with function wording; data-index JSON va
 Dossier `docs/dossiers/lib-chunk14-E1000-F1000.md`; data index
 `docs/data-index/rev0/chunk14-data-region-inventory.json`. Next file after split: chunk
 15 `0xF1000`, opening with the OUTGOING FUNCTION straddler tail
-`func_000F0F64_chunk15tail` `[0xF1000,0x000F135C)`.
+`func_000F0F64_chunk15tail` `[0xF1000,0x000F135C)` [superseded: refined to
+`[0xF1000,0x000F1354)` during the chunk-15 run — see the chunk-15 entry].
 
 ## Current Dossier Set
 

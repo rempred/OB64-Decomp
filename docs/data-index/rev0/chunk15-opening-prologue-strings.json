@@ -1,0 +1,367 @@
+{
+  "source": "asm/original/rev0/lib/rodata_001006f0.s",
+  "rangeZ64": [
+    "0x001006F0",
+    "0x00100E20"
+  ],
+  "totalBytes": 1840,
+  "encoding": "ASCII, NUL-terminated, big-endian (z64) byte order; @-prefixed inline control codes left verbatim",
+  "title": "Ogre Battle 64 opening-prologue narration",
+  "stringCount": 16,
+  "atCodeTally": {
+    "@0": 29,
+    "@1": 31,
+    "@w": 16,
+    "@e": 16,
+    "@2": 23,
+    "@3": 21,
+    "@c": 13,
+    "@l": 14
+  },
+  "atCodeSemantics": "UNRESOLVED — @0..@3/@w/@c/@e are inline formatting/control codes; exact runtime meaning not decoded",
+  "confidence": "high (printable ASCII text); control-code semantics hypothesis-grade",
+  "segments": [
+    {
+      "kind": "string",
+      "offset": "0x001006F0",
+      "bytes": 27,
+      "text": "@0Palatinean Year 238@1@w@e",
+      "atCodes": {
+        "@0": 1,
+        "@1": 1,
+        "@w": 1,
+        "@e": 1
+      },
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x0010070B",
+      "bytes": 1
+    },
+    {
+      "kind": "string",
+      "offset": "0x0010070C",
+      "bytes": 176,
+      "text": "@0The Holy Lodis Empire, located on the@1@2western region of the continent of Galicia,@3@w@c@0dispatched the Brigade of Radiant Cross@1@2against the neighboring countries@3@l@e",
+      "atCodes": {
+        "@0": 2,
+        "@1": 2,
+        "@2": 2,
+        "@3": 2,
+        "@w": 1,
+        "@c": 1,
+        "@l": 1,
+        "@e": 1
+      },
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x001007BC",
+      "bytes": 4
+    },
+    {
+      "kind": "string",
+      "offset": "0x001007C0",
+      "bytes": 53,
+      "text": "@0that rejected the teachings of@1@2Lord Lodis.@3@l@e",
+      "atCodes": {
+        "@0": 1,
+        "@1": 1,
+        "@2": 1,
+        "@3": 1,
+        "@l": 1,
+        "@e": 1
+      },
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x001007F5",
+      "bytes": 3
+    },
+    {
+      "kind": "string",
+      "offset": "0x001007F8",
+      "bytes": 121,
+      "text": "@0The purge and conversion of \"cults\"@1@2by force@1@w@c@0have reached Nirdam,@1@2the kingdom adjacent to Palatinus.@3@l@e",
+      "atCodes": {
+        "@0": 2,
+        "@1": 3,
+        "@2": 2,
+        "@w": 1,
+        "@c": 1,
+        "@3": 1,
+        "@l": 1,
+        "@e": 1
+      },
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x00100871",
+      "bytes": 3
+    },
+    {
+      "kind": "string",
+      "offset": "0x00100874",
+      "bytes": 102,
+      "text": "@0The noble king of Nirdam declared war@1@2against Lodis,@3@w@c@0but was defeated within a year.@1@l@e",
+      "atCodes": {
+        "@0": 2,
+        "@1": 2,
+        "@2": 1,
+        "@3": 1,
+        "@w": 1,
+        "@c": 1,
+        "@l": 1,
+        "@e": 1
+      },
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x001008DA",
+      "bytes": 2
+    },
+    {
+      "kind": "string",
+      "offset": "0x001008DC",
+      "bytes": 110,
+      "text": "@0After the fall of Nirdam, Lodis Empire@1@2has selected@1@w@c@0kingdom of Palatinus as the next target.@1@l@e",
+      "atCodes": {
+        "@0": 2,
+        "@1": 3,
+        "@2": 1,
+        "@w": 1,
+        "@c": 1,
+        "@l": 1,
+        "@e": 1
+      },
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x0010094A",
+      "bytes": 2
+    },
+    {
+      "kind": "string",
+      "offset": "0x0010094C",
+      "bytes": 119,
+      "text": "@0Having witnessed the formidable@1@2strength of Lodis,@3@w@c@0King Procus surrendered without@1@2much resistance@3@l@e",
+      "atCodes": {
+        "@0": 2,
+        "@1": 2,
+        "@2": 2,
+        "@3": 2,
+        "@w": 1,
+        "@c": 1,
+        "@l": 1,
+        "@e": 1
+      },
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x001009C3",
+      "bytes": 1
+    },
+    {
+      "kind": "string",
+      "offset": "0x001009C4",
+      "bytes": 56,
+      "text": "@0and signed the peace treaty offered@1@2by Lodis.@3@w@e",
+      "atCodes": {
+        "@0": 1,
+        "@1": 1,
+        "@2": 1,
+        "@3": 1,
+        "@w": 1,
+        "@e": 1
+      },
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x001009FC",
+      "bytes": 4
+    },
+    {
+      "kind": "string",
+      "offset": "0x00100A00",
+      "bytes": 173,
+      "text": "@0While forced to convert religion,@1@2introduce class system and pledge@3@w@c@0loyalty to Lodis Empire,@1@w@c@0Procus was granted to keep his position@1@2as the king.@3@l@e",
+      "atCodes": {
+        "@0": 3,
+        "@1": 3,
+        "@2": 2,
+        "@3": 2,
+        "@w": 2,
+        "@c": 2,
+        "@l": 1,
+        "@e": 1
+      },
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x00100AAD",
+      "bytes": 3
+    },
+    {
+      "kind": "string",
+      "offset": "0x00100AB0",
+      "bytes": 118,
+      "text": "@0Although supervised by the Triumvirate@1@2sent from Lodis, Palatinus@3@w@c@0was able to maintain its autonomy.@1@l@e",
+      "atCodes": {
+        "@0": 2,
+        "@1": 2,
+        "@2": 1,
+        "@3": 1,
+        "@w": 1,
+        "@c": 1,
+        "@l": 1,
+        "@e": 1
+      },
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x00100B26",
+      "bytes": 2
+    },
+    {
+      "kind": "string",
+      "offset": "0x00100B28",
+      "bytes": 117,
+      "text": "@0Six months later,@1@2Lodis ordered the subjugation of@3@w@c@0the uncivilized Southern Region@1@2of Palatinus.@3@l@e",
+      "atCodes": {
+        "@0": 2,
+        "@1": 2,
+        "@2": 2,
+        "@3": 2,
+        "@w": 1,
+        "@c": 1,
+        "@l": 1,
+        "@e": 1
+      },
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x00100B9D",
+      "bytes": 3
+    },
+    {
+      "kind": "string",
+      "offset": "0x00100BA0",
+      "bytes": 135,
+      "text": "@0The lower class, including the Bolmaukans,@1@2were forced into labor.@3@w@c@0People of the Eastern Region@1@2who worship Berthe@3@l@e",
+      "atCodes": {
+        "@0": 2,
+        "@1": 2,
+        "@2": 2,
+        "@3": 2,
+        "@w": 1,
+        "@c": 1,
+        "@l": 1,
+        "@e": 1
+      },
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x00100C27",
+      "bytes": 1
+    },
+    {
+      "kind": "string",
+      "offset": "0x00100C28",
+      "bytes": 147,
+      "text": "@0and the lower class joined forces to@1@2oppose the oppression,@3@w@c@0but were unable to overcome the power@1@2of the king backed by Lodis.@3@l@e",
+      "atCodes": {
+        "@0": 2,
+        "@1": 2,
+        "@2": 2,
+        "@3": 2,
+        "@w": 1,
+        "@c": 1,
+        "@l": 1,
+        "@e": 1
+      },
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x00100CBB",
+      "bytes": 1
+    },
+    {
+      "kind": "string",
+      "offset": "0x00100CBC",
+      "bytes": 147,
+      "text": "@0Taking the matter seriously,@1@2the Triumvirate of Lodis deprived@3@w@c@0the lower class of much rights,@1@2while rewarding the upper class@3@l@e",
+      "atCodes": {
+        "@0": 2,
+        "@1": 2,
+        "@2": 2,
+        "@3": 2,
+        "@w": 1,
+        "@c": 1,
+        "@l": 1,
+        "@e": 1
+      },
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x00100D4F",
+      "bytes": 1
+    },
+    {
+      "kind": "string",
+      "offset": "0x00100D50",
+      "bytes": 98,
+      "text": "@0with previleges to ensure their status...@1@w@2the inane status as the puppets of Lodis...@3@l@e",
+      "atCodes": {
+        "@0": 1,
+        "@1": 1,
+        "@w": 1,
+        "@2": 1,
+        "@3": 1,
+        "@l": 1,
+        "@e": 1
+      },
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x00100DB2",
+      "bytes": 2
+    },
+    {
+      "kind": "string",
+      "offset": "0x00100DB4",
+      "bytes": 106,
+      "text": "@0It required ten years for a streak of@1@2light to shine through the dark,@3@w@c@0ominous clouds...@1@l@e",
+      "atCodes": {
+        "@0": 2,
+        "@1": 2,
+        "@2": 1,
+        "@3": 1,
+        "@w": 1,
+        "@c": 1,
+        "@l": 1,
+        "@e": 1
+      },
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x00100E1E",
+      "bytes": 2
+    }
+  ]
+}
