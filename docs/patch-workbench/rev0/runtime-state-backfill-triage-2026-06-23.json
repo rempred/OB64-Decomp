@@ -1,0 +1,37 @@
+{
+  "artifact": "runtime-state-backfill-triage",
+  "date": "2026-06-23",
+  "scope": "Bounded static one-shot (RSR-012) over source-owned Rev 0 chunks 0-33 (0x00001000..0x00221000) and current patch-workbench artifacts, triaged against the curated vanilla Rev 0 Project64 state catalog.",
+  "runtime_states_used": false,
+  "emulator_runs": 0,
+  "catalog_identity_expected": { "pj64_crc": "E6419BC5/69011DE3", "country": "0x45", "version": 0 },
+  "catalog_inventory_2026-06-23": {
+    "total_pj_zip": 79,
+    "battle": 0,
+    "core-menus": { "army_management": 7, "class_change": 6, "shop": 1, "title_file_select": 3, "title_screen": 2, "training": 0, "unit_list": 7, "world_map_idle": 5 },
+    "data-coverage": 0,
+    "dialogue-cutscene": { "cutscene_active": 14, "dialogue_box_active": 11 },
+    "scenario-map": { "mission_briefing": 8, "scenario_map_loaded": 9, "scenario_unit_moving": 1, "scenario_unit_selected": 5, "encounter_prompt": 0, "enemy_visible_on_map": 0, "post_battle_reward": 0, "scenario_complete": 0 }
+  },
+  "triage": [
+    { "id": "RSR-001", "result": "still-needs-capture", "reason": "battle/* all empty; blocks High-Attack hook + combat-path proof." },
+    { "id": "RSR-002", "result": "still-needs-capture", "reason": "data-coverage/normal_enemy_squads_loaded empty." },
+    { "id": "RSR-003", "result": "still-needs-capture", "reason": "data-coverage/neutral_encounter_available empty." },
+    { "id": "RSR-004", "result": "still-needs-capture", "reason": "data-coverage/shop_inventory_loaded empty; core-menus/shop is UI-entry only." },
+    { "id": "RSR-005", "result": "still-needs-capture", "reason": "data-coverage/map_objects_loaded + scenario-map enemy/encounter slots empty." },
+    { "id": "RSR-006", "result": "still-needs-capture", "reason": "boss/recruit data-coverage slots empty." },
+    { "id": "RSR-007", "result": "served-by-existing-state-broad", "needs": "needs-runtime-for-proof", "reason": "core-menus army_management/class_change/unit_list reach the situation; guard/watch proof pending." },
+    { "id": "RSR-008", "result": "still-needs-capture", "reason": "scenario-map post_battle_reward/scenario_complete empty." },
+    { "id": "RSR-009", "result": "served-by-existing-state-broad", "needs": "needs-runtime-for-proof", "reason": "scenario-map briefing/map_loaded/unit states exist; low relevance to chunks 34-35." },
+    { "id": "RSR-010", "result": "served-by-existing-state-broad", "needs": "needs-runtime-for-proof", "reason": "dialogue/cutscene states exist; intersect chunk 33 text/glyph, not 34-35." },
+    { "id": "RSR-011", "result": "needs-runtime", "reason": "Standing hook-proof request; battle/* empty so 0x21CD48/0x21BF84/0x1F36F0 unproven." },
+    { "id": "RSR-012", "result": "satisfied", "reason": "This one-shot." },
+    { "id": "RSR-013", "result": "candidate-state-available", "needs": "needs-runtime", "reason": "Opened this run: chunks 34-35 promotion/level-up/class-def overlay+register proof; nearest states class_change/army_management." }
+  ],
+  "carried_hook_candidates_status": [
+    { "site": "0x0021CD48", "owner": "func_0021CBC4", "status": "candidate/needs-runtime", "blocked_by": "RSR-001 (battle states empty)" },
+    { "site": "0x0021BF84", "owner": "func_0021B894", "status": "candidate/needs-runtime", "blocked_by": "RSR-001 (battle states empty)" },
+    { "site": "0x001F36F0", "owner": "chunk31 cleanup-guard", "status": "candidate/needs-runtime", "blocked_by": "RSR-001/RSR-011" }
+  ],
+  "net_changes": { "opened": ["RSR-013"], "satisfied": ["RSR-012"], "superseded": [], "unresolved": ["RSR-001","RSR-002","RSR-003","RSR-004","RSR-005","RSR-006","RSR-007","RSR-008","RSR-009","RSR-010","RSR-011","RSR-013"] }
+}

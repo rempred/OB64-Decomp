@@ -13,7 +13,13 @@ Commits in this run:
 - `1c8521d` — `Sync coordinator template + runtime-state-catalog doc edits` (incidental external doc edits, committed separately)
 - `212aa5d` — `Source-own Rev0 chunk 32`
 - `82260e0` — `Source-own Rev0 chunk 33`
-- `Add chunks 32-33 review handoff` — this document (final commit of the run)
+- `34a668b` — `Add chunks 32-33 review handoff` (this document; final source-ownership commit of the run)
+
+Coordinator workflow follow-ups committed after this handoff (NOT source-ownership
+changes inside chunks 32-33):
+
+- `2ad2e14` — `Sync coordinator runtime-state-requests + doc edits`
+- `959a836` — `Sync coordinator review-handoff template edit`
 
 ## Outcome
 
