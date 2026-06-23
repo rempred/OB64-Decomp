@@ -1,0 +1,33 @@
+/*
+ * Original Rev 0 MIPS reference split.
+ * Parent source: asm/original/rev0/code_00211000_00221000.s
+ * z64 range: 0x0021EAA0..0x0021EAF0 exclusive
+ * Decode comments are aids, not proof of semantic function boundaries.
+ */
+.set noat
+.set noreorder
+.text
+
+/* Framed function (addiu $sp,-0x20; saves $s0/$s1/$ra). Loop over 3 elements (sltiu $s1,0x3 / bne back to 0x0021EAB8) calling 0x801AD974. jr $ra @0x0021EAE8 + delay addiu $sp,0x20 @0x0021EAEC. */
+/* function boundary candidate: func_0021EAA0, size=80, kind=prologue */
+func_0021EAA0:
+/* 0x0021EAA0 0x8028E6A0 0x27BDFFE0 */ .word 0x27BDFFE0 # addiu $sp, $sp, -0x20
+/* 0x0021EAA4 0x8028E6A4 0xAFB10014 */ .word 0xAFB10014 # sw $s1, 0x14($sp)
+/* 0x0021EAA8 0x8028E6A8 0x00008821 */ .word 0x00008821 # move $s1, $zero
+/* 0x0021EAAC 0x8028E6AC 0xAFB00010 */ .word 0xAFB00010 # sw $s0, 0x10($sp)
+/* 0x0021EAB0 0x8028E6B0 0x00808021 */ .word 0x00808021 # move $s0, $a0
+/* 0x0021EAB4 0x8028E6B4 0xAFBF0018 */ .word 0xAFBF0018 # sw $ra, 0x18($sp)
+/* 0x0021EAB8 0x8028E6B8 0x8E040000 */ .word 0x8E040000 # lw $a0, 0x0($s0)
+/* 0x0021EABC 0x8028E6BC 0x26100004 */ .word 0x26100004 # addiu $s0, $s0, 0x4
+/* 0x0021EAC0 0x8028E6C0 0x26310001 */ .word 0x26310001 # addiu $s1, $s1, 0x1
+/* 0x0021EAC4 0x8028E6C4 0x00002821 */ .word 0x00002821 # move $a1, $zero
+/* 0x0021EAC8 0x8028E6C8 0x0C06B65D */ .word 0x0C06B65D # jal 0x801AD974
+/* 0x0021EACC 0x8028E6CC 0x24840044 */ .word 0x24840044 # addiu $a0, $a0, 0x44
+/* 0x0021EAD0 0x8028E6D0 0x2E220003 */ .word 0x2E220003 # sltiu $v0, $s1, 0x3
+/* 0x0021EAD4 0x8028E6D4 0x1440FFF8 */ .word 0x1440FFF8 # bne $v0, $zero, 0x8028E6B8
+/* 0x0021EAD8 0x8028E6D8 0x00000000 */ .word 0x00000000 # nop
+/* 0x0021EADC 0x8028E6DC 0x8FBF0018 */ .word 0x8FBF0018 # lw $ra, 0x18($sp)
+/* 0x0021EAE0 0x8028E6E0 0x8FB10014 */ .word 0x8FB10014 # lw $s1, 0x14($sp)
+/* 0x0021EAE4 0x8028E6E4 0x8FB00010 */ .word 0x8FB00010 # lw $s0, 0x10($sp)
+/* 0x0021EAE8 0x8028E6E8 0x03E00008 */ .word 0x03E00008 # jr $ra
+/* 0x0021EAEC 0x8028E6EC 0x27BD0020 */ .word 0x27BD0020 # addiu $sp, $sp, 0x20

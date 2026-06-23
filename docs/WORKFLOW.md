@@ -20,6 +20,24 @@ precise savestate already reaches the target, Joe is actively driving and asks
 for passive watch/log support, or the task is specifically to create/catalog a
 new savestate for later proof.
 
+## Vanilla Rev 0 Runtime States
+
+The curated vanilla Rev 0 Project64 state catalog lives in the parent workspace:
+
+`C:\Users\Joe\Projects\OgreBattlel64\runtime-states\vanilla\rev0`
+
+This repo's usage guide is `docs/runtime-state-catalog.md`. Current verified
+catalog identity for present states is vanilla US Rev 0: Project64 CRC
+`E6419BC5 / 69011DE3`, country `0x45`, version `0`. Agents must still verify
+state headers before use and record the exact state path and checked identity.
+
+Use the catalog only for narrowed runtime questions: overlay/RAM mapping,
+register meaning, active call paths, behavior confidence, or patch-safety
+questions. State and folder names are convenience labels, not semantic proof.
+When no state reaches the needed situation, record a runtime-state request
+instead of guessing. Autonomous emulator/runtime work must follow the parent
+`TestingWorkFlow.MD`; user-driven testing should stay passive unless Joe asks.
+
 ## Setup Gate
 
 Before function splitting or C conversion, run:
@@ -98,8 +116,8 @@ This assembles tracked MIPS chunks with GNU `mips64-elf-as`, falls back to
 generated `.word` chunks for ranges not yet promoted, and substitutes the
 resulting binary blob for the raw code span. Manifest chunk `parts` are assembled
 in order, so a promoted no-gap chunk can be split into named files without losing
-coverage. Current expected result: 33 tracked composite real-asm chunks made from
-3,950 tracked source files (chunks 0–32 fully source-owned, `0x00001000..0x00211000`), plus 67
+coverage. Current expected result: 34 tracked composite real-asm chunks made from
+4,059 tracked source files (chunks 0–33 fully source-owned, `0x00001000..0x00221000`), plus 66
 generated fallback chunks; the assembled
 code-region SHA256 is
 `40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`, and the

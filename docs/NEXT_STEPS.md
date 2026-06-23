@@ -15,10 +15,10 @@ Current passing commands:
 node tools/verify_setup.js
 ```
 
-Current source mix: 33 tracked composite real-assembler chunks (chunk 0 177
-`boot/`; chunks 1–32 in `lib/`: 350, 216, 67, 376, 88, 78, 103, 87, 34, 35, 191, 74, 67, 94, 153, 95, 66, 95, 80, 175, 99, 99, 73, 63, 71, 96, 142, 97, 103, 122, 86, 198) = 3,950 tracked
-source files, plus 67 generated fallback chunks. **Chunks 0–32 are fully
-source-owned as named code/data parts** (`0x00001000..0x00211000`; chunk 16: 72 code + 23
+Current source mix: 34 tracked composite real-assembler chunks (chunk 0 177
+`boot/`; chunks 1–33 in `lib/`: 350, 216, 67, 376, 88, 78, 103, 87, 34, 35, 191, 74, 67, 94, 153, 95, 66, 95, 80, 175, 99, 99, 73, 63, 71, 96, 142, 97, 103, 122, 86, 198, 109) = 4,059 tracked
+source files, plus 66 generated fallback chunks. **Chunks 0–33 are fully
+source-owned as named code/data parts** (`0x00001000..0x00221000`; chunk 16: 72 code + 23
 data, MIXED — leading scenario record/pointer/float64 data + the neutral-encounter code path;
 chunk 17: 66 code + 0 data, ALL CODE — char-data/encounter code;
 chunk 18: 95 code + 0 data, ALL CODE — FP-heavy scenario/combat code;
@@ -44,8 +44,10 @@ world-map/resource code wrapping the Sound-Test/BGM-selection screen + staff-cre
 territory; chunk 31: 84 normal code + 0 data + 2 function straddlers, ALL CODE - FP/GBI
 display-list builders + attack/queue module code incl. the High-Attack cleanup-guard site
 at z64 0x1F36F0; chunk 32: 196 normal code + 0 data + 2 function straddlers, ALL CODE -
-frameless-leaf-dense FP/display-list + class-def/char-data code);
-next is chunk 33 (`0x00211000`).
+frameless-leaf-dense FP/display-list + class-def/char-data code; chunk 33: 82 normal code +
+25 data + 2 function straddlers, MIXED - code + a font/glyph + pointer/float DATA region
++ a jump-table state-machine straddler);
+next is chunk 34 (`0x00221000`).
 
 The assembled code-region SHA256 is
 `40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`; the full
@@ -122,25 +124,25 @@ node tools/audit_code_region.js
    generates fallback owners for the rest. Keep `node tools/verify_setup.js`
    green after every promotion.
 
-3. Continue into chunk 33.
+3. Continue into chunk 34.
 
-   Chunks 0–32 (`0x00001000..0x00211000`) are fully source-owned as named code/data
-   parts: chunk 0 in `boot/`; chunks 1–32 in `lib/` (dossiers `lib-chunk1-…` …
-   `lib-chunk32-…`). Chunk 32 (198 parts: 196 normal code + 0 data + 2 function
-   straddlers) is ALL CODE (frameless-leaf-dense): incoming `func_002006E8_chunk32tail`,
-   FP/display-list + class-def/char-data code, and outgoing FUNCTION straddler
-   `func_00210C30`. No data index (all code).
+   Chunks 0–33 (`0x00001000..0x00221000`) are fully source-owned as named code/data
+   parts: chunk 0 in `boot/`; chunks 1–33 in `lib/` (dossiers `lib-chunk1-…` …
+   `lib-chunk33-…`). Chunk 33 (109 parts: 82 normal code + 25 data + 2 function
+   straddlers) is MIXED: incoming `func_00210C30_chunk33tail`, code, a font/glyph +
+   pointer/float DATA region (`0x211D14..0x213B10`), more code (incl. the High-Attack
+   hook functions), and outgoing FUNCTION straddler `func_0021EBBC`. Data index
+   `docs/data-index/rev0/chunk33-data-region-inventory.json`.
 
-   **Next frontier: `0x00211000` (chunk 33, MIXED).** FIRST continue the OUTGOING FUNCTION
-   straddler: `func_00210C30` starts in chunk 32 at `0x00210C30` (prologue addiu$sp,-0xD8,
-   no preamble), has no `jr$ra` before the chunk boundary, and must be emitted first in
-   chunk 33 as `func_00210C30_chunk33tail` (`0x00211000..0x00211028`, returns jr$ra@0x211020).
-   Chunk 33 is MIXED: a font/glyph + pointer/float DATA region at `0x211D14..0x213B10`, then a
-   large jump-table state-machine outgoing straddler `func_0021EBBC` into chunk 34. It also
-   contains High-Attack hook leads at z64 0x21BF84 (func_0021B89C) and 0x21CD48 (func_0021CBCC).
-   Pipeline: `scan_functions`/`slice_chunk`/`check_splits`/`check_boundaries` + analysis +
-   data + adversarial swarms (Workflow). Coverage now 75.9047% (code-only 63.0438%). See the
-   DECOMP_LOG and `docs/dossiers/lib-chunk32-201000-211000.md`.
+   **Next frontier: `0x00221000` (chunk 34).** FIRST continue the OUTGOING FUNCTION
+   straddler: `func_0021EBBC` starts in chunk 33 at `0x0021EBBC` (prologue addiu$sp,-0x2E8,
+   no preamble; a jump-table state machine), has no `jr$ra` before the chunk boundary, and
+   must be emitted first in chunk 34 as `func_0021EBBC_chunk34tail` starting at `0x00221000`
+   (returns jr$ra@0x002213D4). Pipeline: `scan_functions`/`slice_chunk`/`check_splits`/
+   `check_boundaries` + analysis + adversarial swarms (Workflow). Coverage now 78.2051%
+   (code-only 65.0747%). See the DECOMP_LOG and `docs/dossiers/lib-chunk33-211000-221000.md`.
+   Patch-workbench artifact for this run:
+   `docs/patch-workbench/rev0/patch-workbench-chunks32-33-2026-06-23.json`.
 
 4. Keep the setup gate green.
 

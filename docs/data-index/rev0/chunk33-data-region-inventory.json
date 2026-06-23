@@ -1,0 +1,463 @@
+{
+  "chunk": 33,
+  "range": "0x00211000..0x00221000",
+  "dataRegion": "0x00211D14..0x00213B10",
+  "status": "source-owned",
+  "generatedBy": "2026-06-23 chunks32-33 source-ownership run",
+  "summary": {
+    "dataTerritories": 1,
+    "dataFiles": 25,
+    "dataBytes": 7676,
+    "parsedBytes": 876,
+    "rawButClassifiedBytes": 6800,
+    "undecodedBytes": 0,
+    "classification": "One interior data territory between code regions: a font/glyph asset block (rodata strings + glyph/charset codepoint remap map + per-glyph width table + a dense 16-bit remap LUT [1456 u16] + a packed graphics blob) followed by three 0x801A/0x801B/0x801C-band RAM-pointer/jump tables interleaved with IEEE float64/float32 constant + record pools.",
+    "knownFormatFamilies": [
+      "NUL-delimited ASCII rodata strings",
+      "glyph/charset codepoint remap map",
+      "per-glyph width/flag byte table",
+      "dense 16-bit index/remap LUT (1456 u16)",
+      "packed/compressed graphics blob",
+      "RAM-pointer/jump tables (0x801A/0x801B/0x801C overlay band)",
+      "IEEE float64/float32 constant + record pools",
+      "zero-fill alignment"
+    ]
+  },
+  "dataSpans": [
+    {
+      "range": "0x00211D14..0x00211D20",
+      "size": 12,
+      "file": "asm/original/rev0/lib/zero_fill_00211d14.s",
+      "class": "zero_fill",
+      "parsedStatus": "parsed",
+      "confidence": "high",
+      "evidence": [
+        "3 all-zero align words (00000000 x3) preceding the string pool."
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "range": "0x00211D20..0x00211D5C",
+      "size": 60,
+      "file": "asm/original/rev0/lib/rodata_00211d20.s",
+      "class": "rodata",
+      "parsedStatus": "parsed",
+      "confidence": "high",
+      "evidence": [
+        "Two NUL-terminated ASCII strings \"%s has changed class.\" @0x211D20 and \"Supportive Attack\" @0x211D38, plus trailing NUL alignment padding to 0x211D5C."
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "range": "0x00211D5C..0x00211D7C",
+      "size": 32,
+      "file": "asm/original/rev0/lib/float_00211d5c.s",
+      "class": "float",
+      "parsedStatus": "parsed",
+      "confidence": "high",
+      "evidence": [
+        "IEEE-754 float32 constant pool: 0x42A4C72B=82.39f, 0x42268A3D=41.635f, 0x42207CEE=40.122f, 0xBFC00000=-1.5f, 0x00000000=0.0f, 0xBFA28F5C=-1.27f, 0x3DCCCCCD=0.1f, 0x414E147B=12.88f."
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "range": "0x00211D7C..0x002122A4",
+      "size": 1320,
+      "file": "asm/original/rev0/lib/data_00211d7c.s",
+      "class": "data",
+      "parsedStatus": "raw-but-classified",
+      "confidence": "medium",
+      "evidence": [
+        "Large dense packed binary parameter/record block to region end. Interleaves float32 scalars (e.g. 0x46000006=8192.0f @0x211D98, 0x80008000 little fields), small u8/u16 integer fields, and embedded byte-ramp index tables: 01 02 03 04 / 07 08 07 08 / 0D 0E 0D 0E run @0x211F44-0x211F9C and ascending 01 01 02 12 / 03 04 04 05 / 05 01 06 09 ramps @0x212180-0x212238, then a trailing small-int/0xFF block @0x212240-0x2122A0. Recurring 16-byte motif (E3..01 sc-looking words with 00 padding, then FC..xx and 80008000) suggests a fixed-stride little-record table but exact field layout is unconfirmed; not a code region (no prologue/epilogue, branch/jr decodes are coincidental)."
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "range": "0x002122A4..0x00212350",
+      "size": 172,
+      "file": "asm/original/rev0/lib/rodata_002122a4.s",
+      "class": "rodata",
+      "parsedStatus": "parsed",
+      "confidence": "high",
+      "evidence": [
+        "Glyph/charset codepoint REMAP table (a 0x00..0x1F byte ramp then an ASCII-ordered glyph map with duplicates and small gaps; printable bytes form \" !\\\"#$%&...XYZ[\\]^_`abcd\", NUL-terminated). Non-monotone remap, not a clean ASCII ramp."
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "range": "0x00212350..0x002123A0",
+      "size": 80,
+      "file": "asm/original/rev0/lib/table_00212350.s",
+      "class": "table",
+      "parsedStatus": "raw-but-classified",
+      "confidence": "medium",
+      "evidence": [
+        "Per-glyph width/flag byte table: small byte values (00,01,02,03,04 mixed with nul gaps), e.g. 0x212370=0x01030302, 0x21237C=0x04030302, 0x212380=0x03030303. Interleaved with short zero runs. 80 bytes (20 words)."
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "range": "0x002123A0..0x00212F00",
+      "size": 2912,
+      "file": "asm/original/rev0/lib/table_002123a0.s",
+      "class": "table",
+      "parsedStatus": "raw-but-classified",
+      "confidence": "medium",
+      "evidence": [
+        "Dense 16-bit index/remap LUT: 1456 u16 entries (728 words), all in band 0x0000..0x02CE (max 0x2CE), font/tile remap."
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "range": "0x00212F00..0x00213120",
+      "size": 544,
+      "file": "asm/original/rev0/lib/data_00212f00.s",
+      "class": "data",
+      "parsedStatus": "raw-but-classified",
+      "confidence": "medium",
+      "evidence": [
+        "Packed/compressed graphics blob (font tile bitmaps). High-entropy bytes with distinctive run/RLE markers: repeated 0xDDDDDDDD / 0xBBBBBBBB / 0xDDDBBBBD fills (0x212FE8-0x213088), zero-run separators, and trailing E7000000 / E3000xxx / DF000000 / FF000000 patterned control words (0x213088-0x213118) resembling RLE control codes; ends 0x21311C=0x020100FF. Leading sub-block 0x212F00-0x212FC8 mixes small counts (0x0001,0x0020,0x0016,0x002C) with packed nibble data. Stride/codec not fully typed. 0x220 bytes."
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "range": "0x00213120..0x00213180",
+      "size": 96,
+      "file": "asm/original/rev0/lib/data_00213120.s",
+      "class": "data",
+      "parsedStatus": "raw-but-classified",
+      "confidence": "medium",
+      "evidence": [
+        "24 words of small packed byte/index data, not pointers. Bytes (BE): FFFF0001 02000000 06030007 04010805 02000000 08070605 04030201 00000000 02050801 04070003 06000000, then zeros, then 00000400 02000000 00000400 02000000 00020000 01020000 00100000 00000000. Looks like small byte-index/parameter tables (stride unclear)."
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "range": "0x00213180..0x00213230",
+      "size": 176,
+      "file": "asm/original/rev0/lib/table_00213180.s",
+      "class": "table",
+      "parsedStatus": "raw-but-classified",
+      "confidence": "medium",
+      "evidence": [
+        "44 x u32 RAM pointers, 0x801A band (range 0x801ADEC4..0x801AE824). Many repeated entries (0x801AE460 x6, 0x801AE824 many) -> index-indexed dispatch/lookup table."
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "range": "0x00213230..0x00213250",
+      "size": 32,
+      "file": "asm/original/rev0/lib/float_00213230.s",
+      "class": "float",
+      "parsedStatus": "parsed",
+      "confidence": "high",
+      "evidence": [
+        "f64 const pool: 0x400921FB54442D18 = pi (x2) separated/followed by 0xC056800000000000 = -90.0 and a 0.0 pad word pair."
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "range": "0x00213250..0x00213290",
+      "size": 64,
+      "file": "asm/original/rev0/lib/table_00213250.s",
+      "class": "table",
+      "parsedStatus": "raw-but-classified",
+      "confidence": "medium",
+      "evidence": [
+        "16 x u32 RAM pointers, 0x801AF2xx band (0x801AF290..0x801AF2B4); 8x repeat of 0x801AF2B4 then 0x801AF2B0/2A0/2A8/290/298/2A0/2A8. Final word 0x0A000000 (stray/filler index) included."
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "range": "0x00213290..0x002132A8",
+      "size": 24,
+      "file": "asm/original/rev0/lib/float_00213290.s",
+      "class": "float",
+      "parsedStatus": "parsed",
+      "confidence": "high",
+      "evidence": [
+        "f64 const pool: 0x3FF199999999999A = 1.1 (three copies)."
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "range": "0x002132A8..0x00213528",
+      "size": 640,
+      "file": "asm/original/rev0/lib/table_002132A8.s",
+      "class": "table",
+      "parsedStatus": "raw-but-classified",
+      "confidence": "medium",
+      "evidence": [
+        "160 x u32 RAM pointers, 0x801B3-0x801B45 band (0x801B3D48..0x801B45C4). Highly repetitive 4-wide blocks (e.g. 0x801B3D48 x4, 0x801B3D50 x4) -> 2D/strided index-indexed dispatch table."
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "range": "0x00213528..0x00213560",
+      "size": 56,
+      "file": "asm/original/rev0/lib/float_00213528.s",
+      "class": "float",
+      "parsedStatus": "parsed",
+      "confidence": "high",
+      "evidence": [
+        "f64 const pool: 0x4066800000000000 = 180.0; 0x400921FB54442D18 = pi (x2); 0x3F747AE147AE147B = 0.005; 0x3FE0000000000000 = 0.5; 0x3FF199999999999A = 1.1. Includes interspersed 0.0 pad words. [note: pool holds 180.0 x2 + pi x2]."
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "range": "0x00213560..0x00213608",
+      "size": 168,
+      "file": "asm/original/rev0/lib/table_00213560.s",
+      "class": "table",
+      "parsedStatus": "raw-but-classified",
+      "confidence": "medium",
+      "evidence": [
+        "42 x u32 RAM pointers, 0x801B7Axx band (0x801B7A30..0x801B7A68). Dominated by repeated 0x801B7A68 sentinel with sparse distinct entries (0x801B7A30/38/40/48/50/58/60) -> index-indexed lookup with default."
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "range": "0x00213608..0x00213618",
+      "size": 16,
+      "file": "asm/original/rev0/lib/zero_fill_00213608.s",
+      "class": "zero_fill",
+      "parsedStatus": "parsed",
+      "confidence": "high",
+      "evidence": [
+        "16-byte all-zero gap between pointer table and following f64 constant."
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "range": "0x00213618..0x00213620",
+      "size": 8,
+      "file": "asm/original/rev0/lib/float_00213618.s",
+      "class": "float",
+      "parsedStatus": "parsed",
+      "confidence": "high",
+      "evidence": [
+        "f64 const: 0x3F847AE147AE147B = 0.01."
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "range": "0x00213620..0x00213740",
+      "size": 288,
+      "file": "asm/original/rev0/lib/table_00213620.s",
+      "class": "table",
+      "parsedStatus": "raw-but-classified",
+      "confidence": "medium",
+      "evidence": [
+        "72 x u32 RAM pointers, 0x801BC7-0x801BC9 band (0x801BC7D4..0x801BC994). Repetitive blocks (0x801BC7D4/7DC, 0x801BC8B0/8B8, 0x801BC98C/994) -> index-indexed dispatch/lookup table. Region end."
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "range": "0x00213740..0x00213750",
+      "size": 16,
+      "file": "asm/original/rev0/lib/zero_fill_00213740.s",
+      "class": "zero_fill",
+      "parsedStatus": "parsed",
+      "confidence": "high",
+      "evidence": [
+        "4 words all-zero leading pad (.word 0x00000000 x4)."
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "range": "0x00213750..0x00213830",
+      "size": 224,
+      "file": "asm/original/rev0/lib/float_00213750.s",
+      "class": "float",
+      "parsedStatus": "parsed",
+      "confidence": "high",
+      "evidence": [
+        "IEEE float64 constant/record pool. Big-endian doubles: 0x3FC9999999999A=0.2, 0.0, 0x3FD322D0E5604189=0.3, 0x3FE2C8B439581062=~0.587, 0x3FBD2F1A9FBE76C9=~0.114, 0x3FE0..=0.5, 0x41E0..=2147483648.0. The 5-double record {0.3, ~0.587, ~0.114, 0.5, 2147483648.0} repeats; ends with 2-word zero pad (0x213828..0x213830)."
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "range": "0x00213830..0x00213840",
+      "size": 16,
+      "file": "asm/original/rev0/lib/rodata_00213830.s",
+      "class": "rodata",
+      "parsedStatus": "parsed",
+      "confidence": "high",
+      "evidence": [
+        "Four int32 scalar constants: 0x000003E8=1000, 0x000003E8=1000, 0xFFFFFC18=-1000, 0xFFFFFC18=-1000."
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "range": "0x00213840..0x00213A40",
+      "size": 512,
+      "file": "asm/original/rev0/lib/table_00213840.s",
+      "class": "table",
+      "parsedStatus": "raw-but-classified",
+      "confidence": "medium",
+      "evidence": [
+        "RAM-pointer table, 128 words (u32). All values in 0x801C band: 0x801C285C..0x801C7604 (grouped runs e.g. 0x801C28xx, 0x801C2Fxx, 0x801C37xx, 0x801C42xx, 0x801C43xx, 0x801C44xx, 0x801C4Axx, 0x801C54xx, 0x801C75xx). Final word 0x213A3C is a 0x00000000 trailing nop pad within the block."
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "range": "0x00213A40..0x00213AE0",
+      "size": 160,
+      "file": "asm/original/rev0/lib/float_00213A40.s",
+      "class": "float",
+      "parsedStatus": "parsed",
+      "confidence": "high",
+      "evidence": [
+        "IEEE float64 record pool, three 5-double records. Big-endian doubles per record: 0x3FCA9FBE76C8B439=~0.208, 0x3FD80000..=1.5, 0x3FD80000..=1.5, 0x3FE40000..=0.625, 0x3FE40000..=0.625, 0x3FE94FDF3B645A1D=~0.79. Record repeats x3; ends with 4-word zero pad (0x213AD0..0x213AE0)."
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "range": "0x00213AE0..0x00213B10",
+      "size": 48,
+      "file": "asm/original/rev0/lib/float_00213AE0.s",
+      "class": "float",
+      "parsedStatus": "parsed",
+      "confidence": "high",
+      "evidence": [
+        "IEEE float64 constant pool tail. Big-endian doubles: 0x400921FB54442D18=pi, 0x4076800000000000=360.0, 0x3FF4CCCCCCCCCCCD=1.3, 0x4074000000000000=320.0, 0x4000000000000000=2.0, 0x3FF8000000000000=1.5."
+      ],
+      "unresolvedQuestions": []
+    }
+  ],
+  "stringInventory": {
+    "messageStrings": {
+      "range": "0x00211D20..0x00211D5C",
+      "file": "asm/original/rev0/lib/rodata_00211d20.s",
+      "parsedStatus": "parsed",
+      "strings": [
+        {
+          "off": "0x211D20",
+          "s": "%s has changed class."
+        },
+        {
+          "off": "0x211D38",
+          "s": "Supportive Attack"
+        }
+      ],
+      "note": "UI message strings."
+    },
+    "glyphCharsetMap": {
+      "range": "0x002122A4..0x00212350",
+      "parsedStatus": "parsed",
+      "note": "Glyph/charset codepoint REMAP map (byte ramp 0x00..0x1F then ASCII-ordered glyph indices with duplicates/gaps; printable form \" !\\\"#$%&...XYZ[\\]^_`abcd\")."
+    }
+  },
+  "pointerTables": [
+    {
+      "range": "0x00212350..0x002123A0",
+      "file": "asm/original/rev0/lib/table_00212350.s",
+      "parsedStatus": "raw-but-classified",
+      "note": "Per-glyph width/flag byte table: small byte values (00,01,02,03,04 mixed with nul gaps), e.g. 0x212370=0x01030302, 0x21237C=0x04030302, 0x212380=0x03030303. Interleaved with short zero runs. 80 bytes (20 words).",
+      "unresolvedTargets": "RAM pointers in the 0x801A/0x801B/0x801C overlay band; runtime targets not resolved (overlay-relocated)."
+    },
+    {
+      "range": "0x002123A0..0x00212F00",
+      "file": "asm/original/rev0/lib/table_002123a0.s",
+      "parsedStatus": "raw-but-classified",
+      "note": "Dense 16-bit index/remap LUT: 1456 u16 entries (728 words), all in band 0x0000..0x02CE (max 0x2CE), font/tile remap.",
+      "unresolvedTargets": "RAM pointers in the 0x801A/0x801B/0x801C overlay band; runtime targets not resolved (overlay-relocated)."
+    },
+    {
+      "range": "0x00213180..0x00213230",
+      "file": "asm/original/rev0/lib/table_00213180.s",
+      "parsedStatus": "raw-but-classified",
+      "note": "44 x u32 RAM pointers, 0x801A band (range 0x801ADEC4..0x801AE824). Many repeated entries (0x801AE460 x6, 0x801AE824 many) -> index-indexed dispatch/lookup table.",
+      "unresolvedTargets": "RAM pointers in the 0x801A/0x801B/0x801C overlay band; runtime targets not resolved (overlay-relocated)."
+    },
+    {
+      "range": "0x00213250..0x00213290",
+      "file": "asm/original/rev0/lib/table_00213250.s",
+      "parsedStatus": "raw-but-classified",
+      "note": "16 x u32 RAM pointers, 0x801AF2xx band (0x801AF290..0x801AF2B4); 8x repeat of 0x801AF2B4 then 0x801AF2B0/2A0/2A8/290/298/2A0/2A8. Final word 0x0A000000 (stray/filler index) included.",
+      "unresolvedTargets": "RAM pointers in the 0x801A/0x801B/0x801C overlay band; runtime targets not resolved (overlay-relocated)."
+    },
+    {
+      "range": "0x002132A8..0x00213528",
+      "file": "asm/original/rev0/lib/table_002132A8.s",
+      "parsedStatus": "raw-but-classified",
+      "note": "160 x u32 RAM pointers, 0x801B3-0x801B45 band (0x801B3D48..0x801B45C4). Highly repetitive 4-wide blocks (e.g. 0x801B3D48 x4, 0x801B3D50 x4) -> 2D/strided index-indexed dispatch table.",
+      "unresolvedTargets": "RAM pointers in the 0x801A/0x801B/0x801C overlay band; runtime targets not resolved (overlay-relocated)."
+    },
+    {
+      "range": "0x00213560..0x00213608",
+      "file": "asm/original/rev0/lib/table_00213560.s",
+      "parsedStatus": "raw-but-classified",
+      "note": "42 x u32 RAM pointers, 0x801B7Axx band (0x801B7A30..0x801B7A68). Dominated by repeated 0x801B7A68 sentinel with sparse distinct entries (0x801B7A30/38/40/48/50/58/60) -> index-indexed lookup with default.",
+      "unresolvedTargets": "RAM pointers in the 0x801A/0x801B/0x801C overlay band; runtime targets not resolved (overlay-relocated)."
+    },
+    {
+      "range": "0x00213620..0x00213740",
+      "file": "asm/original/rev0/lib/table_00213620.s",
+      "parsedStatus": "raw-but-classified",
+      "note": "72 x u32 RAM pointers, 0x801BC7-0x801BC9 band (0x801BC7D4..0x801BC994). Repetitive blocks (0x801BC7D4/7DC, 0x801BC8B0/8B8, 0x801BC98C/994) -> index-indexed dispatch/lookup table. Region end.",
+      "unresolvedTargets": "RAM pointers in the 0x801A/0x801B/0x801C overlay band; runtime targets not resolved (overlay-relocated)."
+    },
+    {
+      "range": "0x00213840..0x00213A40",
+      "file": "asm/original/rev0/lib/table_00213840.s",
+      "parsedStatus": "raw-but-classified",
+      "note": "RAM-pointer table, 128 words (u32). All values in 0x801C band: 0x801C285C..0x801C7604 (grouped runs e.g. 0x801C28xx, 0x801C2Fxx, 0x801C37xx, 0x801C42xx, 0x801C43xx, 0x801C44xx, 0x801C4Axx, 0x801C54xx, 0x801C75xx). Final word 0x213A3C is a 0x00000000 trailing nop pad within the block.",
+      "unresolvedTargets": "RAM pointers in the 0x801A/0x801B/0x801C overlay band; runtime targets not resolved (overlay-relocated)."
+    }
+  ],
+  "floatPools": [
+    {
+      "range": "0x00211D5C..0x00211D7C",
+      "file": "asm/original/rev0/lib/float_00211d5c.s",
+      "note": "IEEE-754 float32 constant pool: 0x42A4C72B=82.39f, 0x42268A3D=41.635f, 0x42207CEE=40.122f, 0xBFC00000=-1.5f, 0x00000000=0.0f, 0xBFA28F5C=-1.27f, 0x3DCCCCCD=0.1f, 0x414E147B=12.88f."
+    },
+    {
+      "range": "0x00213230..0x00213250",
+      "file": "asm/original/rev0/lib/float_00213230.s",
+      "note": "f64 const pool: 0x400921FB54442D18 = pi (x2) separated/followed by 0xC056800000000000 = -90.0 and a 0.0 pad word pair."
+    },
+    {
+      "range": "0x00213290..0x002132A8",
+      "file": "asm/original/rev0/lib/float_00213290.s",
+      "note": "f64 const pool: 0x3FF199999999999A = 1.1 (three copies)."
+    },
+    {
+      "range": "0x00213528..0x00213560",
+      "file": "asm/original/rev0/lib/float_00213528.s",
+      "note": "f64 const pool: 0x4066800000000000 = 180.0; 0x400921FB54442D18 = pi (x2); 0x3F747AE147AE147B = 0.005; 0x3FE0000000000000 = 0.5; 0x3FF199999999999A = 1.1. Includes interspersed 0.0 pad words. [note: pool holds 180.0 x2 + pi x2]."
+    },
+    {
+      "range": "0x00213618..0x00213620",
+      "file": "asm/original/rev0/lib/float_00213618.s",
+      "note": "f64 const: 0x3F847AE147AE147B = 0.01."
+    },
+    {
+      "range": "0x00213750..0x00213830",
+      "file": "asm/original/rev0/lib/float_00213750.s",
+      "note": "IEEE float64 constant/record pool. Big-endian doubles: 0x3FC9999999999A=0.2, 0.0, 0x3FD322D0E5604189=0.3, 0x3FE2C8B439581062=~0.587, 0x3FBD2F1A9FBE76C9=~0.114, 0x3FE0..=0.5, 0x41E0..=2147483648.0. The 5-double record {0.3, ~0.587, ~0.114, 0.5, 2147483648.0} repeats; ends with 2-word zero pad (0x213828..0x213830)."
+    },
+    {
+      "range": "0x00213A40..0x00213AE0",
+      "file": "asm/original/rev0/lib/float_00213A40.s",
+      "note": "IEEE float64 record pool, three 5-double records. Big-endian doubles per record: 0x3FCA9FBE76C8B439=~0.208, 0x3FD80000..=1.5, 0x3FD80000..=1.5, 0x3FE40000..=0.625, 0x3FE40000..=0.625, 0x3FE94FDF3B645A1D=~0.79. Record repeats x3; ends with 4-word zero pad (0x213AD0..0x213AE0)."
+    },
+    {
+      "range": "0x00213AE0..0x00213B10",
+      "file": "asm/original/rev0/lib/float_00213AE0.s",
+      "note": "IEEE float64 constant pool tail. Big-endian doubles: 0x400921FB54442D18=pi, 0x4076800000000000=360.0, 0x3FF4CCCCCCCCCCCD=1.3, 0x4074000000000000=320.0, 0x4000000000000000=2.0, 0x3FF8000000000000=1.5."
+    }
+  ],
+  "codeContinuations": {
+    "incoming": {
+      "range": "0x00211000..0x00211028",
+      "file": "asm/original/rev0/lib/func_00210C30_chunk33tail.s",
+      "evidence": "Continuation of func_00210C30 from chunk 32; returns jr$ra@0x00211020."
+    },
+    "outgoing": {
+      "range": "0x0021EBBC..0x00221000",
+      "file": "asm/original/rev0/lib/func_0021EBBC.s",
+      "evidence": "Jump-table state machine (frame -0x2E8); no jr$ra before 0x221000; continues into chunk 34 (returns jr$ra@0x2213D4)."
+    }
+  }
+}

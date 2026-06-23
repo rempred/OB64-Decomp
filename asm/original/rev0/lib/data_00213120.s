@@ -1,0 +1,35 @@
+/*
+ * Original Rev 0 MIPS reference split.
+ * Parent source: asm/original/rev0/code_00211000_00221000.s
+ * z64 range: 0x00213120..0x00213180 exclusive
+ * Decode comments are aids, not proof of semantic function boundaries.
+ */
+.set noat
+.set noreorder
+.text
+
+/* Data region (not executable host code): 24 words of small packed byte/index data, not pointers. Bytes (BE): FFFF0001 02000000 06030007 04010805 02000000 08070605 04030201 00000000 02050801 04070003 06000000, then zeros, then 00000400 02000000 00000400 02000000 00020000 01020000 00100000 00000000. Looks like small byte-index/parameter tables (stride unclear).. */
+/* 0x00213120 0x80282D20 0xFFFF0001 */ .word 0xFFFF0001 # sd $ra, 0x1($ra)
+/* 0x00213124 0x80282D24 0x02000000 */ .word 0x02000000 # sll $zero, $zero, 0
+/* 0x00213128 0x80282D28 0x06030007 */ .word 0x06030007 # bgezl $s0, 0x80282D48
+/* 0x0021312C 0x80282D2C 0x04010805 */ .word 0x04010805 # bgez $zero, 0x80284D44
+/* 0x00213130 0x80282D30 0x02000000 */ .word 0x02000000 # sll $zero, $zero, 0
+/* 0x00213134 0x80282D34 0x08070605 */ .word 0x08070605 # j 0x801C1814
+/* 0x00213138 0x80282D38 0x04030201 */ .word 0x04030201 # bgezl $zero, 0x80283540
+/* 0x0021313C 0x80282D3C 0x00000000 */ .word 0x00000000 # nop
+/* 0x00213140 0x80282D40 0x02050801 */ .word 0x02050801 # special_0x01
+/* 0x00213144 0x80282D44 0x04070003 */ .word 0x04070003 # regimm_0x07 $zero, 0x80282D54
+/* 0x00213148 0x80282D48 0x06000000 */ .word 0x06000000 # bltz $s0, 0x80282D4C
+/* 0x0021314C 0x80282D4C 0x00000000 */ .word 0x00000000 # nop
+/* 0x00213150 0x80282D50 0x00000000 */ .word 0x00000000 # nop
+/* 0x00213154 0x80282D54 0x00000000 */ .word 0x00000000 # nop
+/* 0x00213158 0x80282D58 0x00000000 */ .word 0x00000000 # nop
+/* 0x0021315C 0x80282D5C 0x00000000 */ .word 0x00000000 # nop
+/* 0x00213160 0x80282D60 0x00000400 */ .word 0x00000400 # sll $zero, $zero, 16
+/* 0x00213164 0x80282D64 0x02000000 */ .word 0x02000000 # sll $zero, $zero, 0
+/* 0x00213168 0x80282D68 0x00000400 */ .word 0x00000400 # sll $zero, $zero, 16
+/* 0x0021316C 0x80282D6C 0x02000000 */ .word 0x02000000 # sll $zero, $zero, 0
+/* 0x00213170 0x80282D70 0x00020000 */ .word 0x00020000 # sll $zero, $v0, 0
+/* 0x00213174 0x80282D74 0x01020000 */ .word 0x01020000 # sll $zero, $v0, 0
+/* 0x00213178 0x80282D78 0x00100000 */ .word 0x00100000 # sll $zero, $s0, 0
+/* 0x0021317C 0x80282D7C 0x00000000 */ .word 0x00000000 # nop

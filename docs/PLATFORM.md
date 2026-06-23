@@ -118,7 +118,7 @@ Expected current results:
 - `assemble_original_mips.js` emits `build/assembled/rev0/code.bin`, matching
   baserom code-region SHA256
   `40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`.
-- `assemble_original_mips.js` currently uses 33 tracked composite
+- `assemble_original_mips.js` currently uses 34 tracked composite
   real-assembler chunks (`0x00001000..0x00011000` 177; `0x00011000..0x00021000`
   350; `0x00021000..0x00031000` 216; `0x00031000..0x00041000` 67;
   `0x00041000..0x00051000` 376; `0x00051000..0x00061000` 88;
@@ -135,8 +135,8 @@ Expected current results:
   `0x001A1000..0x001B1000` 96; `0x001B1000..0x001C1000` 142;
   `0x001C1000..0x001D1000` 97; `0x001D1000..0x001E1000` 103;
   `0x001E1000..0x001F1000` 122; `0x001F1000..0x00201000` 86;
-  `0x00201000..0x00211000` 198 files =
-  3,950 tracked source files total), plus 67 generated fallback chunks.
+  `0x00201000..0x00211000` 198; `0x00211000..0x00221000` 109 files =
+  4,059 tracked source files total), plus 66 generated fallback chunks.
 - `rebuild_rom.js --assembled-code ...` substitutes that assembled code blob for
   the raw code segment and still confirms the same full-ROM SHA256.
 - `build_full_source_manifest.js` emits a 1,059-entry full-ROM source ownership
@@ -217,8 +217,8 @@ These outputs are useful but ignored:
 - ROM size: 41,943,040 bytes.
 - Code region currently extracted as original MIPS:
   `0x00001000..0x0063676C`.
-- Chunks 0–32 (`0x00001000..0x00211000`) are fully source-owned as named
-  code/data parts (3,950 tracked source files: 177 in `boot/` + 3,773 in `lib/`;
+- Chunks 0–33 (`0x00001000..0x00221000`) are fully source-owned as named
+  code/data parts (4,059 tracked source files: 177 in `boot/` + 3,882 in `lib/`;
   chunk 11: 189 code + 2 straddler + 0 data, ALL CODE — 77 frameless leaves recovered;
   chunk 12: 72 code + 2 straddler + 0 data, ALL CODE — 20 dispatchers; chunk 13: 27
   code + 40 data, MIXED — unit-mgmt UI data; chunk 14: 74 code + 20 data, MIXED —
@@ -261,8 +261,10 @@ These outputs are useful but ignored:
   chunk 31: 84 normal code + 0 data + 2 function straddlers, ALL CODE - FP/GBI display-list
   builders + attack/queue module code incl. the High-Attack cleanup-guard site at z64 `0x1F36F0`;
   chunk 32: 196 normal code + 0 data + 2 function straddlers, ALL CODE - frameless-leaf-dense
-  FP/display-list + class-def/char-data code);
-  current split frontier `0x00211000` (chunk 33, still a generated fallback chunk).
+  FP/display-list + class-def/char-data code;
+  chunk 33: 82 normal code + 25 data + 2 function straddlers, MIXED - code + a font/glyph +
+  pointer/float DATA region [`0x211D14..0x213B10`] + a jump-table state-machine straddler);
+  current split frontier `0x00221000` (chunk 34, still a generated fallback chunk).
   chunk 1
   `0x11000..0x21000` is a graphics/unit-script/math/libc/libultra library; chunk 2
   `0x21000..0x31000` is the statically-linked libultra (N64 SDK) + libc + 64-bit
@@ -502,8 +504,8 @@ prints PASS. Current PASS summary:
 - Toolchain: `n64-tools-gcc-toolchain-mips64-win64`, GNU Binutils 2.39.
 - Binutils smoke tests: `.word`, real instructions, `.set noreorder`, and first
   tracked chunk real assembly all pass.
-- Source mix: 33 tracked composite real-asm chunks made from 3,950 tracked source
-  files, plus 67 generated fallback chunks.
+- Source mix: 34 tracked composite real-asm chunks made from 4,059 tracked source
+  files, plus 66 generated fallback chunks.
 - Source manifest: 1,059 entries, zero unknown bytes, 2,469,141 ambiguous bytes
   preserved explicitly.
 - Source owners: 3 tracked non-code files / 44,029 bytes plus 1,055 generated
@@ -606,9 +608,9 @@ The next phase remains full-ROM source preparation:
 1. Promote/curate the next tracked non-code owner batch under `data/` or
    `assets/`.
 2. Continue splitting original MIPS into cleaner function/data files from the
-   current frontier in `docs/NEXT_STEPS.md`: chunk 33 at `0x00211000`,
-   first continuing outgoing straddler `func_00210C30` as
-   `func_00210C30_chunk33tail`.
+   current frontier in `docs/NEXT_STEPS.md`: chunk 34 at `0x00221000`,
+   first continuing outgoing straddler `func_0021EBBC` as
+   `func_0021EBBC_chunk34tail`.
 3. Keep `node tools/verify_setup.js` green after every source-layout change.
 
 See `docs/NEXT_STEPS.md` for the active task queue.

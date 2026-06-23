@@ -1,0 +1,117 @@
+{
+  "runSlug": "chunks32-33-201000-221000",
+  "harvestedAt": "2026-06-23",
+  "completedRange": "0x00201000..0x00221000",
+  "chunks": [32, 33],
+  "summary": "Two naturally-encountered High-Attack streamsplit patch hook sites harvested while source-owning chunk 33: the primary insert hook at z64 0x0021CD48 and the slot0 zero-return/source hook at z64 0x0021BF84 (both named in the parent build_high_attack_stream_shift_rom.py / docs/combat-attack-buffer.md / scripts/ob64_patch_hook_audit.js). Both are static-only candidates; NOT proven. Chunk 32 yielded no patch-workbench metadata. The chunk 30-31 backfill site (0x1F36F0) and the backfill baseline remain unchanged.",
+  "sourceRange": "0x00201000..0x00221000",
+  "behaviorTags": [
+    {
+      "id": "high-attack-streamsplit-insert",
+      "status": "candidate",
+      "confidence": "medium",
+      "rangeZ64": "0x0021CBC4..0x0021D1CC",
+      "summary": "func_0021CBC4 is a damage/attack value scale-and-accumulate routine: it scales a value (sra-by-7, x3 via sll+add) and accumulates into $s3, then fetches the global state pointer (0x801D_E8C0). The High-Attack streamsplit 'primary insert hook' (parent build_high_attack_stream_shift_rom.py) hooks at 0x0021CD48. Behavior named from parent docs + static disasm; NOT runtime-confirmed.",
+      "provenance": [
+        "C:/Users/Joe/Projects/OgreBattlel64/tools/build_high_attack_stream_shift_rom.py",
+        "C:/Users/Joe/Projects/OgreBattlel64/docs/combat-attack-buffer.md",
+        "C:/Users/Joe/Projects/OgreBattlel64/scripts/ob64_patch_hook_audit.js",
+        "asm/original/rev0/lib/func_0021CBC4.s"
+      ],
+      "unresolvedQuestions": ["Exact runtime semantics of the scaled value and the 0x801D_E8C0+0x814 field read just after the hook.", "Whether the insert is safe across all attack-count states."]
+    },
+    {
+      "id": "high-attack-streamsplit-slot0-zero-return",
+      "status": "candidate",
+      "confidence": "medium",
+      "rangeZ64": "0x0021B894..0x0021C074",
+      "summary": "func_0021B894 contains a branch-on-zero guard (beq $s3,$zero) at 0x0021BF84 ahead of a jal; the High-Attack 'slot0 zero-return/source hook' targets this guard. Static lead only.",
+      "provenance": [
+        "C:/Users/Joe/Projects/OgreBattlel64/tools/build_high_attack_stream_shift_rom.py",
+        "C:/Users/Joe/Projects/OgreBattlel64/docs/combat-attack-buffer.md",
+        "asm/original/rev0/lib/func_0021B894.s"
+      ],
+      "unresolvedQuestions": ["What $s3 holds at 0x21BF84 (slot index / count?) and the effect of altering the zero-skip."]
+    }
+  ],
+  "hookSites": [
+    {
+      "id": "high-attack-primary-insert-hook",
+      "status": "candidate",
+      "confidence": "medium",
+      "hookZ64": "0x0021CD48",
+      "hookRam": "overlay-relocated; resolve via overlay map (parent docs give a RAM lead but it is NOT a simple z64 back-map)",
+      "owner": "func_0021CBC4 (asm/original/rev0/lib/func_0021CBC4.s), z64 0x0021CBC4..0x0021D1CC, returns jr$ra@0x0021D1C4",
+      "originalWords": [
+        "0x0021CD48 0x3C02801D  lui $v0,0x801D",
+        "0x0021CD4C 0x8C42E8C0  lw $v0,-0x1740($v0)  [global-state pointer 0x801D_E8C0]"
+      ],
+      "displacedInstructions": "Hooking at 0x21CD48 with a jump displaces the lui/lw global-fetch pair (0x3C02801D, 0x8C42E8C0). Preceding context (0x21CD3C sll $v0,$v1,1 / 0x21CD40 addu $v0,$v0,$v1 / 0x21CD44 addu $s3,$s3,$v0) is the x3 scale-accumulate into $s3; following (0x21CD50 addu $s2,$s1,$s0 / 0x21CD54 lw $a2,0x814($v0)) consumes the fetched pointer.",
+      "likelyResumeZ64": "0x0021CD50 (after replicating the displaced lui/lw, or re-deriving $v0 = 0x801D_E8C0 deref).",
+      "likelyResumeRam": "overlay-relocated; resolve via overlay map.",
+      "hazards": [
+        "0x21CD48 is NOT a branch — no delay-slot constraint at the hook word itself, but the displaced lw at 0x21CD4C defines $v0 which 0x21CD54 reads; a hook must preserve/replicate that load.",
+        "$s3 carries the accumulated scaled value across the hook; do not clobber $s2/$s3/$s0/$s1.",
+        "PROLOGUE/EPILOGUE: the hook is mid-function (func_0021CBC4, frame -0x40); return at 0x21D1C4.",
+        "OVERLAY/RAM: overlay-relocated; the 0x801D_E8C0 global and any RAM lead are overlay addresses, not z64 back-maps."
+      ],
+      "provenance": ["asm/original/rev0/lib/func_0021CBC4.s", "C:/Users/Joe/Projects/OgreBattlel64/tools/build_high_attack_stream_shift_rom.py"],
+      "reason": "Naturally encountered during chunk-33 source ownership; matches the parent-documented Rev 0 High-Attack primary insert hook. Static-only candidate; behavior/patch safety require runtime proof."
+    },
+    {
+      "id": "high-attack-slot0-zero-return-source-hook",
+      "status": "candidate",
+      "confidence": "medium",
+      "hookZ64": "0x0021BF84",
+      "hookRam": "overlay-relocated; resolve via overlay map",
+      "owner": "func_0021B894 (asm/original/rev0/lib/func_0021B894.s), z64 0x0021B894..0x0021C074, returns jr$ra@0x0021C06C",
+      "originalWords": [
+        "0x0021BF84 0x12600033  beq $s3,$zero,0x8028BC54 (z64 target ~0x21C054, +0xCC PC-relative)",
+        "0x0021BF88 0x02601021  move $v0,$s3  [DELAY SLOT]"
+      ],
+      "displacedInstructions": "Hooking at 0x21BF84 displaces the beq (0x12600033) and its delay slot (0x02601021 move $v0,$s3). Preceding (0x21BF7C j 0x801D8D84 / 0x21BF80 lhu $v0,0x606C($v1) delay); following (0x21BF8C jal 0x801D90E0).",
+      "likelyResumeZ64": "branch-dependent: the not-taken path continues at 0x0021BF8C (jal); the taken path goes to ~0x0021C054. A patch must preserve both edges (PC-relative branch target recomputed if relocated).",
+      "likelyResumeRam": "overlay-relocated; resolve via overlay map.",
+      "hazards": [
+        "DELAY SLOT: the beq's delay slot (0x21BF88 move $v0,$s3) executes regardless; a hook MUST preserve it.",
+        "PC-RELATIVE BRANCH: 0x21BF84 is a beq; its target is PC-relative — any moved-lane relocation must recompute the offset (overlay-immune addresses change).",
+        "$s3 is the guarded value (zero-check); $v0 set from $s3 in the delay slot is consumed downstream.",
+        "OVERLAY/RAM: overlay-relocated; addresses are overlay leads, not z64 back-maps."
+      ],
+      "provenance": ["asm/original/rev0/lib/func_0021B894.s", "C:/Users/Joe/Projects/OgreBattlel64/tools/build_high_attack_stream_shift_rom.py"],
+      "reason": "Naturally encountered during chunk-33 source ownership; matches the parent-documented Rev 0 High-Attack slot0 zero-return/source hook. Static-only candidate."
+    }
+  ],
+  "dataFreeSpace": [],
+  "runtimeRequests": [
+    {
+      "id": "high-attack-insert-hook-proof",
+      "need": "Runtime trace / controlled mutation to prove the primary-insert hook at 0x21CD48 and the slot0 zero-return hook at 0x21BF84 are safe and have the intended effect.",
+      "savestateOrScenario": "A battle exercising the high-attack streamsplit path (attack-count accumulation into $s3; slot0 source handling).",
+      "watchpoints": ["the 0x801D_E8C0 global + its +0x814 field", "$s3 across 0x21CD44/0x21CD48 and 0x21BF84", "the beq edge at 0x21BF84"],
+      "registers": ["$s3 (accumulated/guarded value)", "$v0 (global pointer / delay-slot copy)", "$s0/$s1/$s2"],
+      "overlayMapping": "Resolve the overlay-relocated runtime base for the chunk-33 module to confirm the RAM addresses and PC-relative branch target at 0x21BF84.",
+      "memoryRanges": ["the attack/queue structures pointed to by 0x801D_E8C0"],
+      "proofGoal": "Confirm the insert/zero-return hooks shift the stream as intended without corrupting attack-count state or mis-relocating the 0x21BF84 branch."
+    }
+  ],
+  "rejected": [
+    { "address": "0x0021CD18 (Rev 1.1 near-equivalent of the insert hook)", "reason": "Rev0 byte-exact disassembly @0x21CD18 is a bne $s6,$zero (not the lui at 0x21CD48); Rev1.1-specific, rejected for Rev0." },
+    { "address": "0x0021BF54 (Rev 1.1 near-equivalent of the slot0 hook)", "reason": "Rev0 byte-exact @0x21BF54 is ori/sb (flag-set store, not the beq at 0x21BF84); Rev1.1-specific, rejected for Rev0." },
+    { "address": "0x8025/0x8026/0x8028/0x8029 linear-map values", "reason": "ROM+0x8006FC00 decode-comment values; rejected as overlay back-maps." }
+  ],
+  "provenance": {
+    "method": "Parent-workspace evidence sweep (build_high_attack_stream_shift_rom.py, docs/combat-attack-buffer.md, scripts/ob64_patch_hook_audit.js, ob64_symbols_v2.json) reconciled against byte-exact Rev 0 disassembly of the promoted chunk-33 source.",
+    "parentArtifacts": [
+      "C:/Users/Joe/Projects/OgreBattlel64/tools/build_high_attack_stream_shift_rom.py",
+      "C:/Users/Joe/Projects/OgreBattlel64/docs/combat-attack-buffer.md",
+      "C:/Users/Joe/Projects/OgreBattlel64/scripts/ob64_patch_hook_audit.js"
+    ]
+  },
+  "caveats": [
+    "All findings here are static-only and classified candidate/needs-runtime; nothing is upgraded to proven.",
+    "Overlay/RAM addresses and the 0x21BF84 PC-relative branch target are leads/relocation-sensitive, not z64 back-maps.",
+    "The chunk 30-31 patch-workbench artifact (0x1F36F0 cleanup-guard) and the backfill baseline are unchanged.",
+    "Carried-forward unresolved runtime requests remain open: High Attack Rev 0 moved-lane gates, the 0x1F36F0 cleanup owner-free guard proof, raw squad-capacity placement safety, Chaos Frame sub-screen regression, scenario-main hook timing, overlay mapping/register proof."
+  ]
+}
