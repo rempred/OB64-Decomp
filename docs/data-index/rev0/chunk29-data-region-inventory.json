@@ -1,0 +1,125 @@
+{
+  "chunk": 29,
+  "range": "0x001D1000..0x001E1000",
+  "status": "source-owned",
+  "generatedBy": "2026-06-23 chunks28-29 source-ownership run",
+  "summary": {
+    "dataTerritories": 0,
+    "dataFiles": 4,
+    "dataBytes": 24,
+    "parsedBytes": 24,
+    "rawButClassifiedBytes": 0,
+    "undecodedBytes": 0,
+    "classification": "code-dominant all-code chunk with four tiny zero-fill alignment islands",
+    "negativeEvidence": [
+      "Scout and parent-context passes found dense parent/code coverage across the chunk.",
+      "No substantial RAM-pointer table, durable text pool, compressed/header signature, archive signature, or sustained display-list/table island was found.",
+      "Printable-byte candidates outside zero-fill were instruction-byte false positives.",
+      "The only data spans retained as data are pure-zero alignment islands between code parts."
+    ]
+  },
+  "dataSpans": [
+    {
+      "range": "0x001D46F8..0x001D4700",
+      "size": 8,
+      "file": "asm/original/rev0/lib/zero_fill_001D46F8.s",
+      "class": "zero_fill",
+      "parsedStatus": "parsed",
+      "confidence": "high",
+      "evidence": [
+        "Two 0x00000000 words after a returned code part and before the 0x001D4700 boundary prefix."
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "range": "0x001D884C..0x001D8850",
+      "size": 4,
+      "file": "asm/original/rev0/lib/zero_fill_001D884C.s",
+      "class": "zero_fill",
+      "parsedStatus": "parsed",
+      "confidence": "high",
+      "evidence": [
+        "Single 0x00000000 word between returned code and the next code part."
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "range": "0x001DAAAC..0x001DAAB0",
+      "size": 4,
+      "file": "asm/original/rev0/lib/zero_fill_001DAAAC.s",
+      "class": "zero_fill",
+      "parsedStatus": "parsed",
+      "confidence": "high",
+      "evidence": [
+        "Single 0x00000000 word between returned code and the next code part."
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "range": "0x001DBF68..0x001DBF70",
+      "size": 8,
+      "file": "asm/original/rev0/lib/zero_fill_001DBF68.s",
+      "class": "zero_fill",
+      "parsedStatus": "parsed",
+      "confidence": "high",
+      "evidence": [
+        "Two 0x00000000 words between returned code and the next code part."
+      ],
+      "unresolvedQuestions": []
+    }
+  ],
+  "codeContinuations": {
+    "incoming": {
+      "range": "0x001D1000..0x001D10A4",
+      "file": "asm/original/rev0/lib/func_001D0694_chunk29tail.s",
+      "evidence": "Continuation of func_001D0694 from chunk 28; returns via jr $ra at 0x001D109C with delay slot at 0x001D10A0."
+    },
+    "outgoing": {
+      "range": "0x001E0FC0..0x001E1000",
+      "file": "asm/original/rev0/lib/func_001E0FC8.s",
+      "evidence": "Two-word boundary prefix at 0x001E0FC0..0x001E0FC8 precedes the parent prologue at 0x001E0FC8; no jr $ra before 0x001E1000."
+    }
+  },
+  "recoveredCode": [
+    {
+      "range": "0x001D9338..0x001D94A8",
+      "file": "asm/original/rev0/lib/func_001D9338.s",
+      "evidence": "Parent-undetected frameless helper with coherent loop/body and terminal jr $ra at 0x001D94A0."
+    },
+    {
+      "range": "0x001E0A38..0x001E0B60",
+      "file": "asm/original/rev0/lib/func_001E0A38.s",
+      "evidence": "Parent-undetected frameless helper with coherent control flow and terminal jr $ra at 0x001E0B58."
+    }
+  ],
+  "parentEvidence": {
+    "usefulMatches": [
+      {
+        "path": "C:/Users/Joe/Projects/OgreBattlel64/scripts/ob64_functions.json",
+        "classification": "parent code/control-flow leads",
+        "effect": "Used only as seeds and reconciled against local byte-exact disassembly."
+      },
+      {
+        "path": "C:/Users/Joe/Projects/OgreBattlel64/scripts/ob64_multu72_search_output.txt",
+        "addresses": [
+          "0x001D39E4",
+          "0x001D9B98",
+          "0x001D9C80",
+          "0x001DABF8",
+          "0x001DAFF0",
+          "0x001DB600"
+        ],
+        "classification": "stride/render leads",
+        "effect": "All remain inside code parts and caused no data reclassification."
+      }
+    ],
+    "rejectedMatches": [
+      {
+        "reason": "High-attack/runtime artifacts using 0x801D.... PCs or out-of-range z64 hooks do not hit chunk 29 as Rev 0 ROM offsets."
+      },
+      {
+        "reason": "0x8022/0x8023 decode-column values are overlay/RAM leads only, not simple ROM back-maps."
+      }
+    ]
+  }
+}
