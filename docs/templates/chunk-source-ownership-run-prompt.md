@@ -50,6 +50,13 @@ fallback, and do not force data into `func_*` files just because it disassembles
 into plausible MIPS. Data regions must be split, named conservatively, indexed in
 the relevant chunk dossier, and included in the manifest/rebuild path.
 
+For data-heavy work, source ownership alone is not enough. Durable data
+inventory is part of the task: every data span should be discoverable by ROM
+range, file path, class, confidence, evidence, and unresolved questions. Prefer
+machine-readable indexes under `docs\data-index\rev0\` plus a human summary in
+the relevant dossier/review doc. If you cannot create a useful parsed index for a
+span, create a conservative raw-span index entry instead of leaving it invisible.
+
 Do not continue beyond chunk {CHUNK_B_N}. The successful end state is a clean
 repo, exact rebuild preserved, chunks {CHUNK_A_N} and {CHUNK_B_N} complete, docs
 current, one review handoff created, and exact next frontier
@@ -100,6 +107,7 @@ Invoke-RestMethod -Method Post -ContentType 'application/json' `
 Use full swarm capabilities. Assign agents/passes for:
 - required reading and current-state reconciliation
 - cleanup/doc consistency fixes
+- parent workspace evidence sweep for current chunk addresses
 - chunk {CHUNK_A_N} code/data classification
 - chunk {CHUNK_A_N} code split review
 - chunk {CHUNK_A_N} data classification/indexing
@@ -131,6 +139,25 @@ Required reading before edits:
     `tools\check_splits.js`, `tools\split_original_mips_part.js`,
     `tools\slice_chunk.js`, `tools\integrate_chunk.js`,
     `tools\check_manifest.js`.
+
+Parent workspace evidence sweep:
+- Search the parent repo `C:\Users\Joe\Projects\OgreBattlel64` for docs,
+  scripts, wiki artifacts, trace reports, Project64 bridge/watch outputs, patch
+  builders, editor hooks, mod-editor references, and other research artifacts
+  that mention addresses inside or near the current two-chunk range
+  `{CHUNK_A_START}..{CHUNK_B_END}`.
+- Include both z64 ROM offsets and plausible RAM-address forms for the active
+  overlay/code mapping. When searching RAM addresses, reconcile boot simple-map
+  addresses, overlay-loaded RAM addresses, Rev 0/Rev 1 differences, and any
+  patch/build relocation before treating a match as relevant.
+- Treat parent artifacts as naming/control-flow leads only after they are
+  reconciled against byte-exact Rev 0 disassembly and the current manifest.
+  Never trust an old editor hook, patch site, runtime watch, trace label, or
+  parent DB boundary just because it has a familiar name.
+- Record every useful match, rejected false match, address-space correction, and
+  contradiction in the relevant chunk dossier and the review handoff. Include
+  exact parent repo paths and the reason each artifact did or did not affect
+  split boundaries, names, data classification, or control-flow assumptions.
 
 Known issues to fix first:
 {KNOWN_ISSUES}
@@ -221,6 +248,57 @@ Repeat the same classification, code/data splitting, analysis swarm,
 adversarial review, and verification process used for chunk {CHUNK_A_N}. Do not
 assume the second chunk has the same code/data shape as the first.
 
+Data Territory Mode:
+Switch from function-splitting-first mode to data ownership plus data inventory
+mode whenever a target range is data-dominant, past the evidenced executable
+MIPS extent, or contains substantial non-code regions. Mixed chunks still need
+normal function splitting for code spans, but all data spans must receive the
+inventory treatment below.
+
+The goal in Data Territory Mode is to account for every byte, classify every
+span, preserve every raw byte, and build durable indexes that future agents can
+query. Do not stop at "byte-exact rebuild passes" if the data is still
+unindexed.
+
+Required outputs for each data-dominant range or substantial data span:
+- Byte-exact tracked source owners for every span.
+- A range inventory table with start, end, size, file path, class, confidence,
+  evidence, and unresolved questions.
+- A machine-readable JSON index under `docs\data-index\rev0\` when the range has
+  strings, pointers, records, tables, display lists, archive-like headers, or
+  repeated structure. Include a dossier summary even when the JSON is still
+  conservative.
+- String inventory where applicable.
+- Pointer/RAM-reference inventory where applicable.
+- Record/table stride hypotheses where applicable.
+- Compression/archive/header scan results.
+- Cross-reference notes from parent repo docs/scripts/wiki/traces/editor code.
+- Explicit list of undecoded spans, with why they remain undecoded.
+- Verification that all bytes rebuild exactly and no data remains only in
+  fallback.
+
+Parsing requirements:
+- If a structure is regular, fixed-stride, pointer-based, string-based,
+  compressed, display-list-like, archive-like, or table-like, attempt to parse it
+  into an index.
+- If parsing is uncertain, emit a conservative raw/indexed representation rather
+  than inventing field names.
+- Mark hypothesis-grade fields as hypotheses.
+- Do not claim semantic meaning unless backed by format evidence, parent
+  artifact reconciliation, runtime evidence, or known N64/OB64 structure.
+
+Indexing requirements:
+- Every data file should be discoverable by ROM range and class.
+- Every parsed table should list row count, row size if known, raw range,
+  unresolved fields, and confidence.
+- Every string pool should list offsets and decoded text where possible.
+- Every pointer table should list raw pointer values, resolved ROM/RAM targets
+  when possible, and unresolved targets.
+- Every unknown blob should still have size, entropy/pattern notes, nearby
+  references, and follow-up recommendations.
+- Distinguish `parsed`, `raw-but-classified`, and `undecoded`. A span can be
+  byte-owned and classified without being semantically decoded; say so plainly.
+
 Data-region handling requirements:
 - Continue any incoming data/function straddler until evidence shows it ends.
 - For each data region, classify the best-supported type: `data_`, `table_`,
@@ -272,8 +350,13 @@ Review handoff requirements:
 - Include exact addresses, file counts, byte counts, commands, commits, caveats,
   current frontier, and reviewer checklist.
 - Include opening fixes, parent DB / overlay contradictions, mistakes corrected,
-  data classification, tooling changes, verification, files changed, current
-  frontier, unresolved caveats, and reviewer checklist.
+  parent workspace evidence matches/contradictions, data classification, tooling
+  changes, verification, files changed, current frontier, unresolved caveats, and
+  reviewer checklist.
+- For any data-dominant range or substantial data span, include total data bytes
+  source-owned, parsed bytes, raw-but-classified bytes, undecoded bytes, data
+  files added, index files added, known format families found, and exact next
+  data frontier.
 - Do not write a vague progress summary.
 - Do not call mixed code/data chunks "fully split into functions"; say
   "source-owned as code/data parts."
@@ -287,6 +370,8 @@ Verification required before final commit/final:
 - `node tools/check_splits.js --splits <chunk-B splits> --disasm build/original-mips/rev0/code_{CHUNK_B_START_NODOT}_{CHUNK_B_END_NODOT}.s`
 - Verify every byte in both chunks is represented by a tracked code or data part.
 - Verify no data files have function/true-entry wording.
+- Verify any new `docs\data-index\rev0\*.json` files parse as valid JSON and
+  match the ranges documented in dossiers/review docs.
 - Verify no root scratch artifacts are tracked.
 - `node tools/assemble_original_mips.js`
 - `node tools/verify_setup.js`

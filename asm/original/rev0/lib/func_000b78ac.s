@@ -1,0 +1,37 @@
+/*
+ * Original Rev 0 MIPS reference split.
+ * Parent source: asm/original/rev0/code_000B1000_000C1000.s
+ * z64 range: 0x000B78AC..0x000B7910 exclusive
+ * Decode comments are aids, not proof of semantic function boundaries.
+ */
+.set noat
+.set noreorder
+.text
+
+/* RECOVERED frameless leaf (parent-merged into func_000B77F0). No sp adjust; reads $a0, loops 0x1180/0x1872 table clearing 0x04 flag bit. jr $ra at 0xB7908 + nop delay 0xB790C (slice end). */
+func_000b78ac:
+/* 0x000B78AC 0x801274AC 0x00002821 */ .word 0x00002821 # move $a1, $zero
+/* 0x000B78B0 0x801274B0 0x3084FFFF */ .word 0x3084FFFF # andi $a0, $a0, 0xFFFF
+/* 0x000B78B4 0x801274B4 0x000410C0 */ .word 0x000410C0 # sll $v0, $a0, 3
+/* 0x000B78B8 0x801274B8 0x00441023 */ .word 0x00441023 # subu $v0, $v0, $a0
+/* 0x000B78BC 0x801274BC 0x00021080 */ .word 0x00021080 # sll $v0, $v0, 2
+/* 0x000B78C0 0x801274C0 0x00441023 */ .word 0x00441023 # subu $v0, $v0, $a0
+/* 0x000B78C4 0x801274C4 0x00023040 */ .word 0x00023040 # sll $a2, $v0, 1
+/* 0x000B78C8 0x801274C8 0x240700FF */ .word 0x240700FF # addiu $a3, $zero, 0xFF
+/* 0x000B78CC 0x801274CC 0x3C048019 */ .word 0x3C048019 # lui $a0, 0x8019
+/* 0x000B78D0 0x801274D0 0x8C846AF8 */ .word 0x8C846AF8 # lw $a0, 0x6AF8($a0)
+/* 0x000B78D4 0x801274D4 0x00861021 */ .word 0x00861021 # addu $v0, $a0, $a2
+/* 0x000B78D8 0x801274D8 0x00451021 */ .word 0x00451021 # addu $v0, $v0, $a1
+/* 0x000B78DC 0x801274DC 0x90431180 */ .word 0x90431180 # lbu $v1, 0x1180($v0)
+/* 0x000B78E0 0x801274E0 0x10670006 */ .word 0x10670006 # beq $v1, $a3, 0x801274FC
+/* 0x000B78E4 0x801274E4 0x24A50001 */ .word 0x24A50001 # addiu $a1, $a1, 0x1
+/* 0x000B78E8 0x801274E8 0x00031840 */ .word 0x00031840 # sll $v1, $v1, 1
+/* 0x000B78EC 0x801274EC 0x00831821 */ .word 0x00831821 # addu $v1, $a0, $v1
+/* 0x000B78F0 0x801274F0 0x90621872 */ .word 0x90621872 # lbu $v0, 0x1872($v1)
+/* 0x000B78F4 0x801274F4 0x304200FB */ .word 0x304200FB # andi $v0, $v0, 0x00FB
+/* 0x000B78F8 0x801274F8 0xA0621872 */ .word 0xA0621872 # sb $v0, 0x1872($v1)
+/* 0x000B78FC 0x801274FC 0x28A20009 */ .word 0x28A20009 # slti $v0, $a1, 0x9
+/* 0x000B7900 0x80127500 0x1440FFF2 */ .word 0x1440FFF2 # bne $v0, $zero, 0x801274CC
+/* 0x000B7904 0x80127504 0x00000000 */ .word 0x00000000 # nop
+/* 0x000B7908 0x80127508 0x03E00008 */ .word 0x03E00008 # jr $ra
+/* 0x000B790C 0x8012750C 0x00000000 */ .word 0x00000000 # nop

@@ -1,0 +1,36 @@
+/*
+ * Original Rev 0 MIPS reference split.
+ * Parent source: asm/original/rev0/code_000B1000_000C1000.s
+ * z64 range: 0x000BAC44..0x000BAC98 exclusive
+ * Decode comments are aids, not proof of semantic function boundaries.
+ */
+.set noat
+.set noreorder
+.text
+
+/* Preamble-orphan: frameless entry @0xBAC44 (lui/lw 0x6AF8/lw 0x2C4) folds forward into addiu $sp,-0x8 prologue @0xBAC50 (parent fnRom). jr $ra @0xBAC90. */
+func_000bac44:
+/* 0x000BAC44 0x8012A844 0x3C028019 */ .word 0x3C028019 # lui $v0, 0x8019
+/* 0x000BAC48 0x8012A848 0x8C426AF8 */ .word 0x8C426AF8 # lw $v0, 0x6AF8($v0)
+/* 0x000BAC4C 0x8012A84C 0x8C4202C4 */ .word 0x8C4202C4 # lw $v0, 0x2C4($v0)
+
+/* function boundary candidate: func_000BAC50, size=72, kind=prologue */
+func_000BAC50:
+/* 0x000BAC50 0x8012A850 0x27BDFFF8 */ .word 0x27BDFFF8 # addiu $sp, $sp, -0x8
+/* 0x000BAC54 0x8012A854 0x1840000D */ .word 0x1840000D # blez $v0, 0x8012A88C
+/* 0x000BAC58 0x8012A858 0x00001821 */ .word 0x00001821 # move $v1, $zero
+/* 0x000BAC5C 0x8012A85C 0x308400FF */ .word 0x308400FF # andi $a0, $a0, 0x00FF
+/* 0x000BAC60 0x8012A860 0x00402821 */ .word 0x00402821 # move $a1, $v0
+/* 0x000BAC64 0x8012A864 0x3C028019 */ .word 0x3C028019 # lui $v0, 0x8019
+/* 0x000BAC68 0x8012A868 0x00431021 */ .word 0x00431021 # addu $v0, $v0, $v1
+/* 0x000BAC6C 0x8012A86C 0x904277D8 */ .word 0x904277D8 # lbu $v0, 0x77D8($v0)
+/* 0x000BAC70 0x8012A870 0x54440003 */ .word 0x54440003 # bnel $v0, $a0, 0x8012A880
+/* 0x000BAC74 0x8012A874 0x24630001 */ .word 0x24630001 # addiu $v1, $v1, 0x1
+/* 0x000BAC78 0x8012A878 0x0807388C */ .word 0x0807388C # j 0x801CE230
+/* 0x000BAC7C 0x8012A87C 0x306200FF */ .word 0x306200FF # andi $v0, $v1, 0x00FF
+/* 0x000BAC80 0x8012A880 0x0065102A */ .word 0x0065102A # slt $v0, $v1, $a1
+/* 0x000BAC84 0x8012A884 0x1440FFF7 */ .word 0x1440FFF7 # bne $v0, $zero, 0x8012A864
+/* 0x000BAC88 0x8012A888 0x00000000 */ .word 0x00000000 # nop
+/* 0x000BAC8C 0x8012A88C 0x240200FF */ .word 0x240200FF # addiu $v0, $zero, 0xFF
+/* 0x000BAC90 0x8012A890 0x03E00008 */ .word 0x03E00008 # jr $ra
+/* 0x000BAC94 0x8012A894 0x27BD0008 */ .word 0x27BD0008 # addiu $sp, $sp, 0x8

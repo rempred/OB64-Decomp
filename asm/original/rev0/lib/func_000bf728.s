@@ -1,0 +1,36 @@
+/*
+ * Original Rev 0 MIPS reference split.
+ * Parent source: asm/original/rev0/code_000B1000_000C1000.s
+ * z64 range: 0x000BF728..0x000BF788 exclusive
+ * Decode comments are aids, not proof of semantic function boundaries.
+ */
+.set noat
+.set noreorder
+.text
+
+/* RECOVERED frameless leaf; reads $a0/$a1; scans 0x117C table (9x) counting matches; returns $a3 via andi at 0xBF784 delay slot */
+func_000bf728:
+/* 0x000BF728 0x8012F328 0x00003821 */ .word 0x00003821 # move $a3, $zero
+/* 0x000BF72C 0x8012F32C 0x00003021 */ .word 0x00003021 # move $a2, $zero
+/* 0x000BF730 0x8012F330 0x30A500FF */ .word 0x30A500FF # andi $a1, $a1, 0x00FF
+/* 0x000BF734 0x8012F334 0x308400FF */ .word 0x308400FF # andi $a0, $a0, 0x00FF
+/* 0x000BF738 0x8012F338 0x000410C0 */ .word 0x000410C0 # sll $v0, $a0, 3
+/* 0x000BF73C 0x8012F33C 0x00441023 */ .word 0x00441023 # subu $v0, $v0, $a0
+/* 0x000BF740 0x8012F340 0x00021080 */ .word 0x00021080 # sll $v0, $v0, 2
+/* 0x000BF744 0x8012F344 0x00441023 */ .word 0x00441023 # subu $v0, $v0, $a0
+/* 0x000BF748 0x8012F348 0x3C038019 */ .word 0x3C038019 # lui $v1, 0x8019
+/* 0x000BF74C 0x8012F34C 0x8C636AF8 */ .word 0x8C636AF8 # lw $v1, 0x6AF8($v1)
+/* 0x000BF750 0x8012F350 0x00021040 */ .word 0x00021040 # sll $v0, $v0, 1
+/* 0x000BF754 0x8012F354 0x2442117C */ .word 0x2442117C # addiu $v0, $v0, 0x117C
+/* 0x000BF758 0x8012F358 0x00621821 */ .word 0x00621821 # addu $v1, $v1, $v0
+/* 0x000BF75C 0x8012F35C 0x00661021 */ .word 0x00661021 # addu $v0, $v1, $a2
+/* 0x000BF760 0x8012F360 0x90420004 */ .word 0x90420004 # lbu $v0, 0x4($v0)
+/* 0x000BF764 0x8012F364 0x54450003 */ .word 0x54450003 # bnel $v0, $a1, 0x8012F374
+/* 0x000BF768 0x8012F368 0x24C60001 */ .word 0x24C60001 # addiu $a2, $a2, 0x1
+/* 0x000BF76C 0x8012F36C 0x08074B48 */ .word 0x08074B48 # j 0x801D2D20
+/* 0x000BF770 0x8012F370 0x24E70001 */ .word 0x24E70001 # addiu $a3, $a3, 0x1
+/* 0x000BF774 0x8012F374 0x28C20009 */ .word 0x28C20009 # slti $v0, $a2, 0x9
+/* 0x000BF778 0x8012F378 0x5440FFF9 */ .word 0x5440FFF9 # bnel $v0, $zero, 0x8012F360
+/* 0x000BF77C 0x8012F37C 0x00661021 */ .word 0x00661021 # addu $v0, $v1, $a2
+/* 0x000BF780 0x8012F380 0x03E00008 */ .word 0x03E00008 # jr $ra
+/* 0x000BF784 0x8012F384 0x30E200FF */ .word 0x30E200FF # andi $v0, $a3, 0x00FF

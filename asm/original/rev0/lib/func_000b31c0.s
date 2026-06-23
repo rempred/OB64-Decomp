@@ -1,0 +1,32 @@
+/*
+ * Original Rev 0 MIPS reference split.
+ * Parent source: asm/original/rev0/code_000B1000_000C1000.s
+ * z64 range: 0x000B31C0..0x000B3210 exclusive
+ * Decode comments are aids, not proof of semantic function boundaries.
+ */
+.set noat
+.set noreorder
+.text
+
+/* Frameless/leaf split at jr $ra boundary; overlay-relocated (linear RAM column is wrong map). */
+func_000b31c0:
+/* 0x000B31C0 0x80122DC0 0x3C03800E */ .word 0x3C03800E # lui $v1, 0x800E
+/* 0x000B31C4 0x80122DC4 0x946379BC */ .word 0x946379BC # lhu $v1, 0x79BC($v1)
+/* 0x000B31C8 0x80122DC8 0x30620008 */ .word 0x30620008 # andi $v0, $v1, 0x0008
+/* 0x000B31CC 0x80122DCC 0x10400003 */ .word 0x10400003 # beq $v0, $zero, 0x80122DDC
+/* 0x000B31D0 0x80122DD0 0x2404FFFF */ .word 0x2404FFFF # addiu $a0, $zero, -0x1
+/* 0x000B31D4 0x80122DD4 0x080719EA */ .word 0x080719EA # j 0x801C67A8
+/* 0x000B31D8 0x80122DD8 0x00002021 */ .word 0x00002021 # move $a0, $zero
+/* 0x000B31DC 0x80122DDC 0x30620004 */ .word 0x30620004 # andi $v0, $v1, 0x0004
+/* 0x000B31E0 0x80122DE0 0x50400003 */ .word 0x50400003 # beql $v0, $zero, 0x80122DF0
+/* 0x000B31E4 0x80122DE4 0x30620002 */ .word 0x30620002 # andi $v0, $v1, 0x0002
+/* 0x000B31E8 0x80122DE8 0x080719EA */ .word 0x080719EA # j 0x801C67A8
+/* 0x000B31EC 0x80122DEC 0x24040001 */ .word 0x24040001 # addiu $a0, $zero, 0x1
+/* 0x000B31F0 0x80122DF0 0x50400003 */ .word 0x50400003 # beql $v0, $zero, 0x80122E00
+/* 0x000B31F4 0x80122DF4 0x30620001 */ .word 0x30620001 # andi $v0, $v1, 0x0001
+/* 0x000B31F8 0x80122DF8 0x080719EA */ .word 0x080719EA # j 0x801C67A8
+/* 0x000B31FC 0x80122DFC 0x24040002 */ .word 0x24040002 # addiu $a0, $zero, 0x2
+/* 0x000B3200 0x80122E00 0x54400001 */ .word 0x54400001 # bnel $v0, $zero, 0x80122E08
+/* 0x000B3204 0x80122E04 0x24040003 */ .word 0x24040003 # addiu $a0, $zero, 0x3
+/* 0x000B3208 0x80122E08 0x03E00008 */ .word 0x03E00008 # jr $ra
+/* 0x000B320C 0x80122E0C 0x00801021 */ .word 0x00801021 # move $v0, $a0

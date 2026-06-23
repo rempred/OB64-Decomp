@@ -24,14 +24,15 @@ and replace the active log with a compact current-state summary.
   `original_mips`. A static control-flow audit found no credible code edge into
   the tail (0 branch targets, 0 J/JAL to a known function). Audit:
   `tools/audit_code_region.js` / `docs/CODE_REGION_AUDIT.md`.
-- Current tracked code source mix: eleven composite real-assembler chunks
-  (chunk 0 177 `boot/`; chunks 1–10 in `lib/`: 350, 216, 67, 376, 88, 78, 103, 87, 34, 35) =
-  **1,611 tracked source files**, plus 89 generated fallback code chunks. **Chunks
-  0–10 (`0x00001000..0x000B1000`) are now fully source-owned as named code/data
-  parts** (chunk 6: 60 code + 18 data; chunk 7: 80 code + 1 straddler-head + 22 data;
-  chunk 8: 61 code + 2 straddler + 24 data; chunk 9: 32 code + 2 straddler + 0 data,
-  ALL CODE; chunk 10: 33 code + 2 straddler + 0 data, ALL CODE); next is chunk 11
-  (`0x000B1000`, still a generated fallback chunk). The promote-tool merge blocker is FIXED.
+- Current tracked code source mix: twelve composite real-assembler chunks
+  (chunk 0 177 `boot/`; chunks 1–11 in `lib/`: 350, 216, 67, 376, 88, 78, 103, 87, 34, 35, 191) =
+  **1,802 tracked source files**, plus 88 generated fallback code chunks. **Chunks
+  0–11 (`0x00001000..0x000C1000`) are now fully source-owned as named code/data
+  parts** (chunk 7: 80 code + 1 straddler-head + 22 data; chunk 8: 61 code + 2
+  straddler + 24 data; chunk 9: 32 code + 2 straddler + 0 data, ALL CODE; chunk 10:
+  33 code + 2 straddler + 0 data, ALL CODE; chunk 11: 189 code + 2 straddler + 0 data,
+  ALL CODE — frameless-leaf-dense, 77 leaves recovered); next is chunk 12
+  (`0x000C1000`, still a generated fallback chunk). The promote-tool merge blocker is FIXED.
 - The parent boundary DB has TWO recurring defects, both fixed when splitting:
   (1) `end_rom` is INCLUSIVE (exclusive end = `end_rom + 4`; do NOT treat the
   delay slot as a gap — `tools/dump_function_context.js` now enforces this with a
@@ -138,8 +139,15 @@ Current named sequence:
   dispatchers with tables in `0x801EF…` relocated RAM; 1 multi-entry; adversarial
   pass 0 disproofs, no inline data).
   Dossier: `docs/dossiers/lib-chunk10-A1000-B1000.md`. **Chunk 10 source-owned.**
-- Current remainder: none in chunks 0–10 (`0x1000..0xB1000` fully source-owned).
-  Next is chunk 11 generated fallback `0x000B1000..0x000C1000`.
+- Chunk 11 source-ownership `0x000B1000..0x000C1000` (191 parts: 189 code `func_*`
+  (112 framed + 77 frameless) + 2 straddler markers + 0 data; ALL CODE — FP-math +
+  frameless-leaf-dense char-data code; parent detected only 112 of 189 fns; 4 gap
+  clusters + many over-merge un-merges; 9 jump-table dispatchers (tables in `0x801F`
+  relocated RAM); gates caught 2 delay-slot leaks, adversarial caught 1 under-split +
+  2 missed preamble-orphans; 0 inline data).
+  Dossier: `docs/dossiers/lib-chunk11-B1000-C1000.md`. **Chunk 11 source-owned.**
+- Current remainder: none in chunks 0–11 (`0x1000..0xC1000` fully source-owned).
+  Next is chunk 12 generated fallback `0x000C1000..0x000D1000`.
 
 Static dossiers live under `docs/dossiers/` and are the durable evidence notes
 for each promoted source-layout split.
@@ -360,11 +368,43 @@ gates: check_manifest/check_boundaries/check_splits/assemble byte-exact/verify_s
 after split: chunk 11 `0xB1000`, opening with the straddler tail
 `func_000B0BFC_chunk11tail` `[0xB1000,0x000B1F00)`.
 
+## 2026-06-22 - Chunk 11 Split (0xB1000..0xC1000); chunk 11 complete — ALL CODE, frameless-dense
+
+DONE: **191 parts (189 code `func_*` [112 framed + 77 frameless] + 2 straddler
+markers + 0 data)**. Tracked files 1,611 → **1,802**; fallback 89 → 88. Byte-exact
+(code SHA `40D4E787…B409`, ROM `571E8339…CC67A`). Coverage `0x1000..0xC1000` =
+**786,432 B = 27.6018 %** (code-only ≈ 655,644 B = 23.0115 %). **ALL CODE** — FP-math
+(`~0xB2500..0xB4640`: cvt.s.w/mul.s/div.s, float constants built in-stream via
+lui+mtc1, NOT data) + frameless-leaf-dense char-data/display-list code. The defining
+feature: the parent DB detected only **112 of 189** functions; the swarm recovered
+**77 frameless leaves** (4 gap clusters gap1 0xB3B00 5 leaves / gap3 0xB8DD8 4 / gap4
+0xBA2B4 4 / gap2 0xB86F8, plus many over-merge un-merges). 9 internal jr$reg
+dispatchers (tables in 0x801F relocated RAM). STRADDLER-IN
+`func_000B0BFC_chunk11tail` `[0xB1000,0xB1F00)`; STRADDLER-OUT
+`func_000C0EDC_chunk11head` `[0xC0EDC,0xC1000)` → 0x000C132C in chunk 12.
+
+Corrections (all caught by gates/adversarial): 2 delay-slot leaks (gap4, by
+check_boundaries — boundaries shifted +1 word); 1 under-split `func_000b876c`
+(adversarial); 2 missed preamble-orphans `func_000bedb8`/`func_000bf248`
+(adversarial — analysis agent noted the fold but didn't move the boundary). No tool
+changes. Dossier `docs/dossiers/lib-chunk11-B1000-C1000.md`; review
+`docs/REVIEW_2026-06-22_chunks10-11-source-ownership.md`.
+
+Method: promote → dump_function_context + content-scan → plan_chunk (--tail-end
+0xB1F00) → slice_chunk --disasm (12 slices) → 12-agent analysis swarm →
+integrate_chunk → check_boundaries (caught 2 leaks) → 5-agent adversarial swarm
+(found under-split + 2 orphans) → re-check → split. Gates: check_manifest/
+check_boundaries/check_splits/assemble byte-exact/verify_setup (12 chunks/1,802/88)/
+audit all PASS; 0 data files with function wording. Next file after split: chunk 12
+`0xC1000`, opening with the straddler tail `func_000C0EDC_chunk12tail`
+`[0xC1000,0x000C132C)`.
+
 ## Current Dossier Set
 
 The current boot/source-layout dossier list is long; use `docs/PLATFORM.md` for
 the full quick index. The newest dossiers are:
 
+- `docs/dossiers/lib-chunk11-B1000-C1000.md` (191-part chunk-11: ALL CODE — FP-math + frameless-leaf-dense char-data code; 112 framed + 77 recovered frameless; 4 gap clusters, 9 RAM-table dispatchers, 0 data; gates+adversarial caught 2 leaks/1 under-split/2 orphans; chunk 11 done)
 - `docs/dossiers/lib-chunk10-A1000-B1000.md` (35-part chunk-10: ALL CODE — army-mgmt / F3DEX display-list builders; 3 preamble-orphans, 7 recovered frameless leaves (incl. 6,944 B func_000AB6D8), 5 RAM-table dispatchers, 1 multi-entry, 0 data; chunk 10 done)
 - `docs/dossiers/lib-chunk9-91000-A1000.md` (34-part chunk-9: ALL CODE — army-mgmt / F3DEX display-list builders; 1 preamble-orphan, 2 RAM-table dispatchers, 5 multi-entry, 0 data; chunk 9 done)
 - `docs/dossiers/lib-chunk8-81000-91000.md` (87-part chunk-8: MIXED 3-region — straddler tail + code + game data (mission-name/options-menu pools) + code; chunk 8 done)
@@ -397,29 +437,29 @@ the full quick index. The newest dossiers are:
 
 ## Next Frontier
 
-Chunks 0–10 (`0x00001000..0x000B1000`) are fully source-owned as named code/data
-parts (chunk 7: 80 code + 1 straddler-head + 22 data; chunk 8: 61 code + 2 straddler
-+ 24 data; chunk 9: 32 code + 2 straddler + 0 data, ALL CODE; chunk 10: 33 code + 2
-straddler + 0 data, ALL CODE). The next frontier is **`0x000B1000` (chunk 11)**.
-Coverage `0x1000..0xB1000` = 720,896 B = 25.3016% of the 2,849,204-byte executable
-extent (code-only ≈ 590,108 B = 20.71%).
+Chunks 0–11 (`0x00001000..0x000C1000`) are fully source-owned as named code/data
+parts (chunk 8: 61 code + 2 straddler + 24 data; chunk 9: 32 code + 2 straddler + 0
+data, ALL CODE; chunk 10: 33 code + 2 straddler + 0 data, ALL CODE; chunk 11: 189
+code + 2 straddler + 0 data, ALL CODE — 77 frameless leaves recovered). The next
+frontier is **`0x000C1000` (chunk 12)**. Coverage `0x1000..0xC1000` = 786,432 B =
+27.6018% of the 2,849,204-byte executable extent (code-only ≈ 655,644 B = 23.0115%).
 
-FIRST: continue the chunk-10→chunk-11 function straddler. `func_000B0BFC_chunk10head`
-`[0xB0BFC,0xB1000)` (true entry 0xB0BFC) continues to `0x000B1F00` (return jr $ra@
-`0xB1EF8`); chunk 11's first file is its tail `func_000B0BFC_chunk11tail`
-`[0xB1000,0x000B1F00)`. Confirmed from disasm: no `jr $ra` in `[0xB0BFC,0xB1000)`;
-the straddler-head contains an internal jr$reg dispatch @0xB0C50 (not a boundary).
+FIRST: continue the chunk-11→chunk-12 function straddler. `func_000C0EDC_chunk11head`
+`[0xC0EDC,0xC1000)` (true entry 0xC0EDC) continues to `0x000C132C`; chunk 12's first
+file is its tail `func_000C0EDC_chunk12tail` `[0xC1000,0x000C132C)`. Confirmed from
+disasm: no `jr $ra` in `[0xC0EDC,0xC1000)`; last word 0xC0FFC is a mid-stream lui/lw
+global load.
 
-Then classify chunk 11's code/data mix. Chunk 11 has 113 parent function labels and
-654 nops (very different profile from chunks 9–10) — content-scan for data regions
-FIRST. `plan_chunk` (+`dump_function_context`) should seed parent-detected code; use
-`scan_functions` for parent-undetected sub-regions. Pipeline tools: `scan_functions`
+Then classify chunk 12's code/data mix. Profile unknown — content-scan for data
+regions FIRST and watch for chunk-11-style frameless-leaf density. `plan_chunk`
+(+`dump_function_context`) should seed parent-detected code; use `scan_functions`
+for parent-undetected sub-regions. Pipeline tools: `scan_functions`
 or `plan_chunk`/`slice_chunk --disasm`/`integrate_chunk` (context optional)/
 `check_splits`/`check_boundaries` + analysis + adversarial swarms (Agent-tool, one
 per slice/region). Default **conservative `func_*`**.
 
 There are now two active tracks. The library source-ownership track continues at
-`0xB1000` (chunk 11) as above. The full-ROM coverage track (opened 2026-06-21) next refines
+`0xC1000` (chunk 12) as above. The full-ROM coverage track (opened 2026-06-21) next refines
 the exact code/data boundary near `0x002B89B4` and reclassifies the non-code tail
 `0x002B89B4..0x0063676C` from `original_mips` to a data source form, shrinking the
 configured code region to the executable extent while keeping the exact rebuild
