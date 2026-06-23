@@ -1,0 +1,31 @@
+/*
+ * Original Rev 0 MIPS reference split.
+ * Parent source: asm/original/rev0/code_00261000_00271000.s
+ * z64 range: 0x00262694..0x002626E4 exclusive
+ * Decode comments are aids, not proof of semantic function boundaries.
+ */
+.set noat
+.set noreorder
+.text
+
+/* Frameless leaf split from parent: fresh entry (lui $a0; lhu $a0,0xE8E) after prior delay slot. Internal j 0x8020DB2C/0x8020DB24. jr$ra@0x2626DC + delay 0x2626E0. */
+/* 0x00262694 0x802D2294 0x3C048022 */ .word 0x3C048022 # lui $a0, 0x8022
+/* 0x00262698 0x802D2298 0x94840E8E */ .word 0x94840E8E # lhu $a0, 0xE8E($a0)
+/* 0x0026269C 0x802D229C 0x3402FFFF */ .word 0x3402FFFF # ori $v0, $zero, 0xFFFF
+/* 0x002626A0 0x802D22A0 0x1082000C */ .word 0x1082000C # beq $a0, $v0, 0x802D22D4
+/* 0x002626A4 0x802D22A4 0x00041080 */ .word 0x00041080 # sll $v0, $a0, 2
+/* 0x002626A8 0x802D22A8 0x00441021 */ .word 0x00441021 # addu $v0, $v0, $a0
+/* 0x002626AC 0x802D22AC 0x000210C0 */ .word 0x000210C0 # sll $v0, $v0, 3
+/* 0x002626B0 0x802D22B0 0x3C038022 */ .word 0x3C038022 # lui $v1, 0x8022
+/* 0x002626B4 0x802D22B4 0x8C630D84 */ .word 0x8C630D84 # lw $v1, 0xD84($v1)
+/* 0x002626B8 0x802D22B8 0x00441023 */ .word 0x00441023 # subu $v0, $v0, $a0
+/* 0x002626BC 0x802D22BC 0x00021080 */ .word 0x00021080 # sll $v0, $v0, 2
+/* 0x002626C0 0x802D22C0 0x00621821 */ .word 0x00621821 # addu $v1, $v1, $v0
+/* 0x002626C4 0x802D22C4 0x94620000 */ .word 0x94620000 # lhu $v0, 0x0($v1)
+/* 0x002626C8 0x802D22C8 0x3C018022 */ .word 0x3C018022 # lui $at, 0x8022
+/* 0x002626CC 0x802D22CC 0x080836CB */ .word 0x080836CB # j 0x8020DB2C
+/* 0x002626D0 0x802D22D0 0xA4220E8E */ .word 0xA4220E8E # sh $v0, 0xE8E($at)
+/* 0x002626D4 0x802D22D4 0x080836C9 */ .word 0x080836C9 # j 0x8020DB24
+/* 0x002626D8 0x802D22D8 0x00000000 */ .word 0x00000000 # nop
+/* 0x002626DC 0x802D22DC 0x03E00008 */ .word 0x03E00008 # jr $ra
+/* 0x002626E0 0x802D22E0 0x00601021 */ .word 0x00601021 # move $v0, $v1

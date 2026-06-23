@@ -1,0 +1,22 @@
+/*
+ * Original Rev 0 MIPS reference split.
+ * Parent source: asm/original/rev0/code_00261000_00271000.s
+ * z64 range: 0x00262C94..0x00262CC0 exclusive
+ * Decode comments are aids, not proof of semantic function boundaries.
+ */
+.set noat
+.set noreorder
+.text
+
+/* Frameless accessor (lw FE8; sh +0x18, sw +0x1C/+0x20, sh 0x2 at +0x8). jr$ra@0x262CAC + delay 0x262CB0; 3 alignment nops 0x262CB4/B8/BC attach to end. */
+/* 0x00262C94 0x802D2894 0x3C028022 */ .word 0x3C028022 # lui $v0, 0x8022
+/* 0x00262C98 0x802D2898 0x8C420FE8 */ .word 0x8C420FE8 # lw $v0, 0xFE8($v0)
+/* 0x00262C9C 0x802D289C 0x24030002 */ .word 0x24030002 # addiu $v1, $zero, 0x2
+/* 0x00262CA0 0x802D28A0 0xA4460018 */ .word 0xA4460018 # sh $a2, 0x18($v0)
+/* 0x00262CA4 0x802D28A4 0xAC44001C */ .word 0xAC44001C # sw $a0, 0x1C($v0)
+/* 0x00262CA8 0x802D28A8 0xAC450020 */ .word 0xAC450020 # sw $a1, 0x20($v0)
+/* 0x00262CAC 0x802D28AC 0x03E00008 */ .word 0x03E00008 # jr $ra
+/* 0x00262CB0 0x802D28B0 0xA4430008 */ .word 0xA4430008 # sh $v1, 0x8($v0)
+/* 0x00262CB4 0x802D28B4 0x00000000 */ .word 0x00000000 # nop
+/* 0x00262CB8 0x802D28B8 0x00000000 */ .word 0x00000000 # nop
+/* 0x00262CBC 0x802D28BC 0x00000000 */ .word 0x00000000 # nop

@@ -1,0 +1,67 @@
+/*
+ * Original Rev 0 MIPS reference split.
+ * Parent source: asm/original/rev0/code_00261000_00271000.s
+ * z64 range: 0x0026CBDC..0x0026CCB4 exclusive
+ * Decode comments are aids, not proof of semantic function boundaries.
+ */
+.set noat
+.set noreorder
+.text
+
+/* Frameless-body interpolation lookup (frame -0x8): binary search via c.le.s/bc1fl over float array then cubic FP eval; ends jr$ra@0026CCAC + addiu$sp delay@0026CCB0. Un-merged from trailing frameless leaf at 0026CCB4. */
+/* function boundary candidate: func_0026CBDC, size=276, kind=prologue */
+func_0026CBDC:
+/* 0x0026CBDC 0x802DC7DC 0x27BDFFF8 */ .word 0x27BDFFF8 # addiu $sp, $sp, -0x8
+/* 0x0026CBE0 0x802DC7E0 0x24A5FFFF */ .word 0x24A5FFFF # addiu $a1, $a1, -0x1
+/* 0x0026CBE4 0x802DC7E4 0x8FA80018 */ .word 0x8FA80018 # lw $t0, 0x18($sp)
+/* 0x0026CBE8 0x802DC7E8 0x18A00011 */ .word 0x18A00011 # blez $a1, 0x802DC830
+/* 0x0026CBEC 0x802DC7EC 0x00002021 */ .word 0x00002021 # move $a0, $zero
+/* 0x0026CBF0 0x802DC7F0 0x00851021 */ .word 0x00851021 # addu $v0, $a0, $a1
+/* 0x0026CBF4 0x802DC7F4 0x00021FC2 */ .word 0x00021FC2 # srl $v1, $v0, 31
+/* 0x0026CBF8 0x802DC7F8 0x00431021 */ .word 0x00431021 # addu $v0, $v0, $v1
+/* 0x0026CBFC 0x802DC7FC 0x00021843 */ .word 0x00021843 # sra $v1, $v0, 1
+/* 0x0026CC00 0x802DC800 0x00031080 */ .word 0x00031080 # sll $v0, $v1, 2
+/* 0x0026CC04 0x802DC804 0x00461021 */ .word 0x00461021 # addu $v0, $v0, $a2
+/* 0x0026CC08 0x802DC808 0xC4400000 */ .word 0xC4400000 # lwc1 $f0, 0x0($v0)
+/* 0x0026CC0C 0x802DC80C 0x460C003C */ .word 0x460C003C # c.0xC.s $f0, $f12
+/* 0x0026CC10 0x802DC810 0x00000000 */ .word 0x00000000 # nop
+/* 0x0026CC14 0x802DC814 0x00000000 */ .word 0x00000000 # nop
+/* 0x0026CC18 0x802DC818 0x45020002 */ .word 0x45020002 # bc1fl 0x802DC824
+/* 0x0026CC1C 0x802DC81C 0x00602821 */ .word 0x00602821 # move $a1, $v1
+/* 0x0026CC20 0x802DC820 0x24640001 */ .word 0x24640001 # addiu $a0, $v1, 0x1
+/* 0x0026CC24 0x802DC824 0x0085102A */ .word 0x0085102A # slt $v0, $a0, $a1
+/* 0x0026CC28 0x802DC828 0x1440FFF2 */ .word 0x1440FFF2 # bne $v0, $zero, 0x802DC7F4
+/* 0x0026CC2C 0x802DC82C 0x00851021 */ .word 0x00851021 # addu $v0, $a0, $a1
+/* 0x0026CC30 0x802DC830 0x0004102A */ .word 0x0004102A # slt $v0, $zero, $a0
+/* 0x0026CC34 0x802DC834 0x00822023 */ .word 0x00822023 # subu $a0, $a0, $v0
+/* 0x0026CC38 0x802DC838 0x00041080 */ .word 0x00041080 # sll $v0, $a0, 2
+/* 0x0026CC3C 0x802DC83C 0x00462021 */ .word 0x00462021 # addu $a0, $v0, $a2
+/* 0x0026CC40 0x802DC840 0xC4820000 */ .word 0xC4820000 # lwc1 $f2, 0x0($a0)
+/* 0x0026CC44 0x802DC844 0x00481821 */ .word 0x00481821 # addu $v1, $v0, $t0
+/* 0x0026CC48 0x802DC848 0xC4700004 */ .word 0xC4700004 # lwc1 $f16, 0x4($v1)
+/* 0x0026CC4C 0x802DC84C 0x46026301 */ .word 0x46026301 # sub.s $f12, $f12, $f2
+/* 0x0026CC50 0x802DC850 0xC46A0000 */ .word 0xC46A0000 # lwc1 $f10, 0x0($v1)
+/* 0x0026CC54 0x802DC854 0x460A8001 */ .word 0x460A8001 # sub.s $f0, $f16, $f10
+/* 0x0026CC58 0x802DC858 0xC4880004 */ .word 0xC4880004 # lwc1 $f8, 0x4($a0)
+/* 0x0026CC5C 0x802DC85C 0x460C0002 */ .word 0x460C0002 # mul.s $f0, $f0, $f12
+/* 0x0026CC60 0x802DC860 0x46024201 */ .word 0x46024201 # sub.s $f8, $f8, $f2
+/* 0x0026CC64 0x802DC864 0x46080003 */ .word 0x46080003 # div.s $f0, $f0, $f8
+/* 0x0026CC68 0x802DC868 0x00471021 */ .word 0x00471021 # addu $v0, $v0, $a3
+/* 0x0026CC6C 0x802DC86C 0xC44E0000 */ .word 0xC44E0000 # lwc1 $f14, 0x0($v0)
+/* 0x0026CC70 0x802DC870 0xC4420004 */ .word 0xC4420004 # lwc1 $f2, 0x4($v0)
+/* 0x0026CC74 0x802DC874 0x460E1081 */ .word 0x460E1081 # sub.s $f2, $f2, $f14
+/* 0x0026CC78 0x802DC878 0x46081083 */ .word 0x46081083 # div.s $f2, $f2, $f8
+/* 0x0026CC7C 0x802DC87C 0x3C014040 */ .word 0x3C014040 # lui $at, 0x4040
+/* 0x0026CC80 0x802DC880 0x44813000 */ .word 0x44813000 # mtc1 $at, $f6
+/* 0x0026CC84 0x802DC884 0x460A5100 */ .word 0x460A5100 # add.s $f4, $f10, $f10
+/* 0x0026CC88 0x802DC888 0x46065282 */ .word 0x46065282 # mul.s $f10, $f10, $f6
+/* 0x0026CC8C 0x802DC88C 0x46102100 */ .word 0x46102100 # add.s $f4, $f4, $f16
+/* 0x0026CC90 0x802DC890 0x46082102 */ .word 0x46082102 # mul.s $f4, $f4, $f8
+/* 0x0026CC94 0x802DC894 0x460A0000 */ .word 0x460A0000 # add.s $f0, $f0, $f10
+/* 0x0026CC98 0x802DC898 0x460C0002 */ .word 0x460C0002 # mul.s $f0, $f0, $f12
+/* 0x0026CC9C 0x802DC89C 0x46041081 */ .word 0x46041081 # sub.s $f2, $f2, $f4
+/* 0x0026CCA0 0x802DC8A0 0x46020000 */ .word 0x46020000 # add.s $f0, $f0, $f2
+/* 0x0026CCA4 0x802DC8A4 0x460C0002 */ .word 0x460C0002 # mul.s $f0, $f0, $f12
+/* 0x0026CCA8 0x802DC8A8 0x460E0000 */ .word 0x460E0000 # add.s $f0, $f0, $f14
+/* 0x0026CCAC 0x802DC8AC 0x03E00008 */ .word 0x03E00008 # jr $ra
+/* 0x0026CCB0 0x802DC8B0 0x27BD0008 */ .word 0x27BD0008 # addiu $sp, $sp, 0x8

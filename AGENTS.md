@@ -203,10 +203,13 @@ Current result:
 - Code-region SHA256:
   `40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`.
 - Code-region match against baserom: pass.
-- Tracked real-assembler original-MIPS chunks: 38 composites (chunk 0 177 `boot/`;
-  chunks 1–37 in `lib/`: 350, 216, 67, 376, 88, 78, 103, 87, 34, 35, 191, 74, 67, 94, 153, 95, 66, 95, 80, 175, 99, 99, 73, 63, 71, 96, 142, 97, 103, 122, 86, 198, 109, 120, 134, 164, 180) = 4,657 real-assembler
-  source files. Chunks 0–37 (`0x00001000..0x00261000`) are now fully source-owned as
-  named code/data parts (chunk 36: 134 code + 28 data + 2 straddlers, MIXED —
+- Tracked real-assembler original-MIPS chunks: 39 composites (chunk 0 177 `boot/`;
+  chunks 1–38 in `lib/`: 350, 216, 67, 376, 88, 78, 103, 87, 34, 35, 191, 74, 67, 94, 153, 95, 66, 95, 80, 175, 99, 99, 73, 63, 71, 96, 142, 97, 103, 122, 86, 198, 109, 120, 134, 164, 180, 232) = 4,889 real-assembler
+  source files. Chunks 0–38 (`0x00001000..0x00271000`) are now fully source-owned as
+  named code/data parts (chunk 38: 230 code + 0 data + 2 straddlers, ALL CODE —
+  FP/GBI display-list builders + mission-briefing/combat dispatchers continuing chunks 36-37,
+  frameless-leaf dense, parent-gap frameless recoveries (288 B@0x2639D8, 796 B@0x2664A4);
+  chunk 36: 134 code + 28 data + 2 straddlers, MIXED —
   mission-briefing/combat display-list module with TWO interior combat-overlay DATA islands
   [0x801D/0x801E pointer tables + GBI/RDP blobs + float/double pools + rodata] + frameless
   GBI builders + a divide/scale-helper cluster recovered from parent gaps; chunk 37: 170
@@ -261,10 +264,10 @@ Current result:
   frameless-leaf-dense FP/display-list + class-def/char-data code;
   chunk 33: 82 normal code + 25 data + 2 function straddlers, MIXED — code + a
   font/glyph + pointer/float DATA region [`0x211D14..0x213B10`] + a jump-table
-  state-machine outgoing straddler);
-  next is chunk 34 (`0x00221000`, still a
+  state-machine outgoing straddler; chunks 34-38 also source-owned, see the chunk list above);
+  next is chunk 39 (`0x00271000`, still a
   generated fallback chunk).
-- Generated fallback chunks: 66.
+- Generated fallback chunks: 61.
 - Assembled-code ROM rebuild command:
 
 ```powershell

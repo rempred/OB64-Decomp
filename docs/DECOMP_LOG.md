@@ -24,11 +24,14 @@ and replace the active log with a compact current-state summary.
   `original_mips`. A static control-flow audit found no credible code edge into
   the tail (0 branch targets, 0 J/JAL to a known function). Audit:
   `tools/audit_code_region.js` / `docs/CODE_REGION_AUDIT.md`.
-- Current tracked code source mix: thirty-eight composite real-assembler chunks
-  (chunk 0 177 `boot/`; chunks 1–37 in `lib/`: 350, 216, 67, 376, 88, 78, 103, 87, 34, 35, 191, 74, 67, 94, 153, 95, 66, 95, 80, 175, 99, 99, 73, 63, 71, 96, 142, 97, 103, 122, 86, 198, 109, 120, 134, 164, 180) =
-  **4,657 tracked source files**, plus 62 generated fallback code chunks. **Chunks
-  0–37 (`0x00001000..0x00261000`) are now fully source-owned as named code/data
-  parts** (chunk 36: 134 code + 28 data + 2 straddlers, MIXED — mission-briefing/combat
+- Current tracked code source mix: thirty-nine composite real-assembler chunks
+  (chunk 0 177 `boot/`; chunks 1–38 in `lib/`: 350, 216, 67, 376, 88, 78, 103, 87, 34, 35, 191, 74, 67, 94, 153, 95, 66, 95, 80, 175, 99, 99, 73, 63, 71, 96, 142, 97, 103, 122, 86, 198, 109, 120, 134, 164, 180, 232) =
+  **4,889 tracked source files**, plus 61 generated fallback code chunks. **Chunks
+  0–38 (`0x00001000..0x00271000`) are now fully source-owned as named code/data
+  parts** (chunk 38: 230 code + 0 data + 2 straddlers, ALL CODE — FP/GBI display-list builders +
+  mission-briefing/combat dispatchers continuing chunks 36-37, frameless-leaf dense, parent-gap
+  frameless recoveries (288 B@0x2639D8 GBI builder, 796 B@0x2664A4 switch dispatch);
+  chunk 36: 134 code + 28 data + 2 straddlers, MIXED — mission-briefing/combat
   display-list module + TWO combat-overlay DATA islands; chunk 37: 170 code + 8 data + 2
   straddlers, MIXED — command-dispatcher mission-briefing/combat code + a 0x80x pointer/
   struct/float record-table DATA island; chunk 34: 89 code + 29 data + 2 straddlers, MIXED — promotion/level-up/class-def
@@ -327,10 +330,22 @@ Current named sequence:
   table) → CODE region 2 (frameless FP/compare leaves) → outgoing straddler-head
   `func_00260F30` (`0x260F30..0x261000` → chunk 38). Adversarial clean (LOW data-note nits
   only). Dossier + data index added. **Chunk 37 source-owned.**
-- Current remainder: none in chunks 0-37 (`0x1000..0x261000` fully source-owned).
-  **Current frontier: `0x00261000` (chunk 38).** First continue outgoing FUNCTION
-  straddler `func_00260F30` as `func_00260F30_chunk38tail` starting at `0x00261000`
-  (prologue `addiu $sp,-0x20`; continues into chunk 38).
+- Chunk 38 source-ownership `0x00261000..0x00271000` (232 parts: 230 normal code + 0 data
+  + 2 function straddlers, ALL CODE, FP/GBI display-list + mission-briefing/combat dispatcher
+  continuation of chunks 36-37): incoming straddler-tail `func_00260F30_chunk38tail`
+  (`0x261000..0x26109C`, jr$ra@0x261094) → CODE `0x26109C..0x270FF0` (~230 functions;
+  frameless-leaf dense; parent-gap frameless recoveries proven CODE: 288 B@0x2639D8 GBI
+  display-list builder `func_002639E0`, 96 B@0x264FB4 `func_00264FC0`, 796 B@0x2664A4 switch
+  dispatch `func_002664B0`/`func_00266550`) → outgoing straddler-head `func_00270FF0`
+  (`0x270FF0..0x271000` → chunk 39, returns jr$ra@0x271068). Content scan + boundary gates
+  confirmed NO data island. Adversarial 6 verifiers: 3 HIGH fixed (over-merge un-split
+  func_00263050→4; preamble folds func_00261D00, func_00267108), 3 clean. Dossier added; no
+  data index (all code). **Chunk 38 source-owned.**
+- Current remainder: none in chunks 0-38 (`0x1000..0x271000` fully source-owned).
+  **Current frontier: `0x00271000` (chunk 39).** First continue outgoing FUNCTION
+  straddler `func_00270FF0` as `func_00270FF0_chunk39tail` starting at `0x00271000`
+  (prologue `addiu $sp,-0x28`; returns jr$ra@0x271068 in chunk 39). Chunk 39 is MIXED (data
+  islands: 7328 B territory @`0x273FFC` + further gaps).
 
 Static dossiers live under `docs/dossiers/` and are the durable evidence notes
 for each promoted source-layout split.
