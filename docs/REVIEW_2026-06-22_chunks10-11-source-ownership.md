@@ -27,7 +27,7 @@ Review Handoff — Chunks 10 & 11 Source-Ownership, ROM z64 `0x000A1000..0x000C1
 ## 3. Commits (this run, newest first)
 | Hash | Category | Purpose |
 |---|---|---|
-| _(this doc's commit)_ | review handoff | Add chunks 10–11 review handoff doc (final commit) |
+| `6ef38f1` | review handoff | Add chunks 10–11 review handoff doc (this file, final commit) |
 | `946a709` | source + docs | Source-own chunk 11 (191 parts); dossier `lib-chunk11` + AGENTS/DECOMP_LOG/NEXT_STEPS/PLATFORM/WORKFLOW updates |
 | `9e98f8e` | source + docs + log prune | Source-own chunk 10 (35 parts); dossier `lib-chunk10`; doc count updates; pruned DECOMP_LOG (boot+chunks1–7 narratives → `docs/archive/`) |
 | `3746ce1` | doc fix (opening) | Chunk-9 review nit: placeholder `_(this doc's commit)_` → real hash `b162bfd` |
