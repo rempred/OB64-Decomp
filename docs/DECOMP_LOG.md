@@ -24,10 +24,10 @@ and replace the active log with a compact current-state summary.
   `original_mips`. A static control-flow audit found no credible code edge into
   the tail (0 branch targets, 0 J/JAL to a known function). Audit:
   `tools/audit_code_region.js` / `docs/CODE_REGION_AUDIT.md`.
-- Current tracked code source mix: thirty-one composite real-assembler chunks
-  (chunk 0 177 `boot/`; chunks 1–30 in `lib/`: 350, 216, 67, 376, 88, 78, 103, 87, 34, 35, 191, 74, 67, 94, 153, 95, 66, 95, 80, 175, 99, 99, 73, 63, 71, 96, 142, 97, 103, 122) =
-  **3,666 tracked source files**, plus 69 generated fallback code chunks. **Chunks
-  0–30 (`0x00001000..0x001F1000`) are now fully source-owned as named code/data
+- Current tracked code source mix: thirty-two composite real-assembler chunks
+  (chunk 0 177 `boot/`; chunks 1–31 in `lib/`: 350, 216, 67, 376, 88, 78, 103, 87, 34, 35, 191, 74, 67, 94, 153, 95, 66, 95, 80, 175, 99, 99, 73, 63, 71, 96, 142, 97, 103, 122, 86) =
+  **3,752 tracked source files**, plus 68 generated fallback code chunks. **Chunks
+  0–31 (`0x00001000..0x00201000`) are now fully source-owned as named code/data
   parts** (chunk 13: 27 code + 40 data, MIXED — unit-mgmt UI data; chunk 14: 74 code + 20
   data, MIXED — graphics/display-list data + DL-builder code; chunk 15: 134 code + 19
   data, MIXED — floats/display-list data + the OB64 opening-narration rodata; chunk 16: 72
@@ -58,8 +58,10 @@ and replace the active log with a compact current-state summary.
   function straddlers, CODE-dominant MIXED - dense world-map/resource code with tiny alignment
   data and recovered frameless helpers; chunk 30: 89 normal code + 31 data + 2 function
   straddlers, MIXED - FP/RDP display-list world-map/resource code wrapping the Sound-Test/BGM
-  screen + staff-credits data territory); next is chunk 31 (`0x001F1000`, still a generated
-  fallback chunk). The promote-tool merge blocker is FIXED.
+  screen + staff-credits data territory; chunk 31: 84 normal code + 0 data + 2 function
+  straddlers, ALL CODE - FP/GBI display-list builders + attack/queue module code, incl. the
+  High-Attack cleanup-guard site at z64 0x1F36F0); next is chunk 32 (`0x00201000`, still a
+  generated fallback chunk). The promote-tool merge blocker is FIXED.
 - The parent boundary DB has TWO recurring defects, both fixed when splitting:
   (1) `end_rom` is INCLUSIVE (exclusive end = `end_rom + 4`; do NOT treat the
   delay slot as a gap — `tools/dump_function_context.js` now enforces this with a
@@ -238,12 +240,20 @@ Current named sequence:
   straddler-head `func_001F0F9C`. Adversarial caught 2 missed frameless leaves (former
   func_001EA134→4, func_001EAE50→2). Dossier `docs/dossiers/lib-chunk30-1E1000-1F1000.md`;
   data index `docs/data-index/rev0/chunk30-data-region-inventory.json`. **Chunk 30 source-owned.**
-- Current remainder: none in chunks 0-30 (`0x1000..0x1F1000` fully source-owned).
-  **Current frontier: `0x001F1000` (chunk 31).** Next is chunk 31 generated fallback
-  `0x001F1000..0x00201000` (ALL CODE); first continue outgoing FUNCTION straddler
-  `func_001F0F9C` as `func_001F0F9C_chunk31tail` (`0x001F1000..0x001F102C`, returns
-  jr$ra@0x001F1024). Chunk 31 contains the High-Attack streamsplit cleanup-guard site at
-  z64 `0x001F36F0` (patch-workbench candidate; static-only, needs runtime proof).
+- Chunk 31 source-ownership `0x001F1000..0x00201000` (86 parts: 84 normal code + 0 data
+  + 2 function straddlers, ALL CODE): incoming straddler-tail `func_001F0F9C_chunk31tail`
+  (`0x1F1000..0x1F102C`) → FP/GBI display-list builders + attack/queue module code →
+  outgoing straddler-head `func_002006E8` (`0x2006E8..0x201000` → chunk 32). Recovered
+  frameless leaves + over-merge un-splits at 0x1F102C and 0x1FF7EC + the 0x1F8D70 flag-
+  accessor cluster; adversarial caught 1 missed frameless leaf (func_001F8A54→func_001F8BDC)
+  + 1 note fix. Harvested the High-Attack cleanup-guard candidate at z64 0x1F36F0 (owner
+  func_001F3540) into `docs/patch-workbench/rev0/patch-workbench-chunks30-31-2026-06-23.json`
+  (static-only / needs-runtime). Dossier `docs/dossiers/lib-chunk31-1F1000-201000.md`; no
+  data index (all code). **Chunk 31 source-owned.**
+- Current remainder: none in chunks 0-31 (`0x1000..0x201000` fully source-owned).
+  **Current frontier: `0x00201000` (chunk 32).** Next is chunk 32 generated fallback
+  `0x00201000..0x00211000`; first continue outgoing FUNCTION straddler `func_002006E8`
+  as `func_002006E8_chunk32tail` starting at `0x00201000` (parent end 0x00201108).
 
 Static dossiers live under `docs/dossiers/` and are the durable evidence notes
 for each promoted source-layout split.

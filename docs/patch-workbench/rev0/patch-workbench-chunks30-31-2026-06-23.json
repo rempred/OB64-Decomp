@@ -1,0 +1,94 @@
+{
+  "runSlug": "chunks30-31-1E1000-201000",
+  "harvestedAt": "2026-06-23",
+  "completedRange": "0x001E1000..0x00201000",
+  "chunks": [30, 31],
+  "summary": "One naturally-encountered patch-workbench candidate harvested while source-owning chunk 31: the Rev 0 High-Attack streamsplit resource_free owner-guard hook site at z64 0x001F36F0. Static-only; not proven. No new candidates were found in chunk 30 (its data territory is the Sound-Test/BGM screen + staff-credits roll, no patch sites). The existing backfill artifact (patch-workbench-backfill-2026-06-23.json) remains the baseline; this run-scoped file only adds the in-range 0x1F36F0 site.",
+  "behaviorTags": [
+    {
+      "id": "high-attack-streamsplit-cleanup",
+      "status": "candidate",
+      "confidence": "medium",
+      "rangeZ64": "0x001F3540..0x001F3714",
+      "summary": "func_001F3540 is the attack/queue cleanup routine: it walks a sub-cleanup jal chain (0x8017C2FC, 0x801C1D98, 0x801C1A9C, 0x801C234C, 0x801CBD48), then calls resource_free on the owner pointer stored at the queue/attack owner global 0x801CE8BC and clears that global. The Rev 0 High-Attack streamsplit fix hooks the final resource_free to skip it when the owner is the streamsplit FREE_OWNER. Behavior named from parent docs (combat-attack-buffer.md) + static disasm; NOT runtime-confirmed in this repo.",
+      "provenance": [
+        "C:/Users/Joe/Projects/OgreBattlel64/docs/combat-attack-buffer.md",
+        "C:/Users/Joe/Projects/OgreBattlel64/scripts/ob64_patch_hook_audit.js",
+        "asm/original/rev0/lib/func_001F3540.s"
+      ],
+      "unresolvedQuestions": [
+        "Exact runtime owner-global value/lifetime at 0x801CE8BC when this cleanup runs.",
+        "Whether guarding only the final resource_free (after the 5 sub-cleanup jals) is sufficient and safe."
+      ]
+    }
+  ],
+  "hookSites": [
+    {
+      "id": "high-attack-cleanup-owner-free-guard",
+      "status": "candidate",
+      "confidence": "medium",
+      "hookZ64": "0x001F36F0",
+      "hookRam": "parent claims RAM 0x801B0260 (overlay-relocated; NOT a simple z64 back-map — treat as a lead, verify against the active overlay map)",
+      "owner": "func_001F3540 (asm/original/rev0/lib/func_001F3540.s), z64 0x001F3540..0x001F3714, returns jr$ra@0x001F370C",
+      "originalWords": [
+        "0x001F36F0 0x0C01C4B1  jal 0x800712C4 (resource_free)",
+        "0x001F36F4 0x8C84E8BC  lw $a0,-0x1744($a0)  [DELAY SLOT: $a0 = [0x801CE8BC] owner pointer]"
+      ],
+      "displacedInstructions": "Hooking with a jump at 0x001F36F0 displaces the jal (0x0C01C4B1) and its delay slot (0x8C84E8BC = lw $a0,-0x1744($a0)). Note the surrounding context: 0x001F36EC lui $a0,0x801D loads the high half BEFORE the hook; 0x001F36F8 lui $at,0x801D / 0x001F36FC sw $zero,-0x1744($at) clears the owner global immediately AFTER the call.",
+      "likelyResumeZ64": "0x001F36F8 (the owner-global clear) for the vanilla path; the streamsplit guard re-implements/branches around the resource_free.",
+      "likelyResumeRam": "overlay-relocated; resolve via overlay map, not linear back-map.",
+      "hazards": [
+        "DELAY-SLOT: $a0 is loaded from [0x801CE8BC] in the jal's delay slot (0x001F36F4) — a0 is NOT set before the jal; any hook MUST preserve/replicate that load.",
+        "REGISTER: $at is used at 0x001F36F8/0x001F36FC to clear the owner global right after the call; do not clobber $at across the hook.",
+        "PROLOGUE/EPILOGUE: the hook is mid-function (func_001F3540), well after its prologue and 5 preceding sub-cleanup jals; epilogue/return is at 0x001F3700..0x001F3710.",
+        "OVERLAY/RAM: this code is overlay-relocated; the parent RAM 0x801B0260 and the owner global 0x801CE8BC are RAM/overlay leads, not z64 back-maps."
+      ],
+      "provenance": [
+        "asm/original/rev0/lib/func_001F3540.s",
+        "C:/Users/Joe/Projects/OgreBattlel64/docs/combat-attack-buffer.md",
+        "C:/Users/Joe/Projects/OgreBattlel64/scripts/ob64_patch_hook_audit.js"
+      ],
+      "reason": "Naturally encountered during chunk-31 source ownership; the address matches the parent-documented Rev 0 High-Attack cleanup-guard hook. Recorded static-only as a candidate: behavior/patch safety require runtime proof and are not asserted from source ownership."
+    }
+  ],
+  "dataFreeSpace": [],
+  "runtimeRequests": [
+    {
+      "id": "high-attack-cleanup-guard-proof",
+      "need": "Runtime trace or controlled mutation to prove the High-Attack cleanup-guard at z64 0x001F36F0 is safe.",
+      "savestateOrScenario": "A battle where the high-attack/streamsplit buffer at owner global 0x801CE8BC is allocated and this cleanup (func_001F3540) runs.",
+      "watchpoints": ["read/write of owner global 0x801CE8BC", "the resource_free call at the relocated 0x1F36F0 site", "FREE_OWNER 0x8044A820 comparison"],
+      "registers": ["$a0 at 0x1F36F0 (the owner pointer to free)", "$at across 0x1F36F8/FC"],
+      "overlayMapping": "Resolve the overlay-relocated runtime base for the chunk-31 module to confirm 0x801B0260 and the 0x801CE8BC owner global.",
+      "memoryRanges": ["owner buffer pointed to by [0x801CE8BC]"],
+      "proofGoal": "Confirm that skipping resource_free for streamsplit-owned buffers (and only those) does not leak or double-free, and that the 5 preceding sub-cleanup jals already ran."
+    }
+  ],
+  "rejected": [
+    {
+      "address": "0x8025xxxx / 0x8026xxxx",
+      "reason": "Linear-map (ROM+0x8006FC00) values from the decode comments; rejected as overlay back-maps."
+    },
+    {
+      "address": "RAM token table at 0x801F36D8",
+      "reason": "Parent rom-layout.md token table; resolves to ROM ~0x103ED8 (chunk 16), OUT OF the 0x1E1000..0x201000 range; rejected as in-range evidence."
+    },
+    {
+      "address": "Sound-Test format table at archive 0x8AE044",
+      "reason": "A different sound-test table in the archive cluster, not the chunk-30 BGM-screen data; out of range."
+    }
+  ],
+  "provenance": {
+    "method": "Parent-workspace evidence sweep (docs/combat-attack-buffer.md, scripts/ob64_patch_hook_audit.js, docs/rom-layout.md, ob64_symbols_v2.json) reconciled against byte-exact Rev 0 disassembly of the promoted chunk-31 source.",
+    "parentArtifacts": [
+      "C:/Users/Joe/Projects/OgreBattlel64/docs/combat-attack-buffer.md",
+      "C:/Users/Joe/Projects/OgreBattlel64/scripts/ob64_patch_hook_audit.js",
+      "C:/Users/Joe/Projects/OgreBattlel64/docs/rom-layout.md"
+    ]
+  },
+  "caveats": [
+    "All findings here are static-only and classified candidate/needs-runtime; nothing is upgraded to proven.",
+    "Overlay/RAM addresses are leads, not z64 back-maps.",
+    "The baseline patch-workbench artifact (patch-workbench-backfill-2026-06-23.json) is unchanged; its known proven/runtime-backed sites remain out of this two-chunk range."
+  ]
+}
