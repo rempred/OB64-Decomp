@@ -1,0 +1,34 @@
+/*
+ * Original Rev 0 MIPS reference split.
+ * Parent source: asm/original/rev0/code_00111000_00121000.s
+ * z64 range: 0x00118FE8..0x0011903C exclusive
+ * Decode comments are aids, not proof of semantic function boundaries.
+ */
+.set noat
+.set noreorder
+.text
+
+/* addiu $sp,-0x18 framed fn; jr $ra@0x00119034 + delay addiu $sp,0x18@0x00119038. End trimmed to 0x0011903C so trailing $a0/$a1 preamble folds into next fn. */
+/* function boundary candidate: func_00118FE8, size=84, kind=prologue */
+func_00118FE8:
+/* 0x00118FE8 0x80188BE8 0x27BDFFE8 */ .word 0x27BDFFE8 # addiu $sp, $sp, -0x18
+/* 0x00118FEC 0x80188BEC 0xAFB00010 */ .word 0xAFB00010 # sw $s0, 0x10($sp)
+/* 0x00118FF0 0x80188BF0 0xAFBF0014 */ .word 0xAFBF0014 # sw $ra, 0x14($sp)
+/* 0x00118FF4 0x80188BF4 0x0C06CB4B */ .word 0x0C06CB4B # jal 0x801B2D2C
+/* 0x00118FF8 0x80188BF8 0x00808021 */ .word 0x00808021 # move $s0, $a0
+/* 0x00118FFC 0x80188BFC 0x8E020000 */ .word 0x8E020000 # lw $v0, 0x0($s0)
+/* 0x00119000 0x80188C00 0x3C04800F */ .word 0x3C04800F # lui $a0, 0x800F
+/* 0x00119004 0x80188C04 0x2484B1F0 */ .word 0x2484B1F0 # addiu $a0, $a0, -0x4E10
+/* 0x00119008 0x80188C08 0x2403FFEF */ .word 0x2403FFEF # addiu $v1, $zero, -0x11
+/* 0x0011900C 0x80188C0C 0x24050289 */ .word 0x24050289 # addiu $a1, $zero, 0x289
+/* 0x00119010 0x80188C10 0x00431024 */ .word 0x00431024 # and $v0, $v0, $v1
+/* 0x00119014 0x80188C14 0x0C03A981 */ .word 0x0C03A981 # jal 0x800EA604
+/* 0x00119018 0x80188C18 0xAE020000 */ .word 0xAE020000 # sw $v0, 0x0($s0)
+/* 0x0011901C 0x80188C1C 0x0C071173 */ .word 0x0C071173 # jal 0x801C45CC
+/* 0x00119020 0x80188C20 0x02002021 */ .word 0x02002021 # move $a0, $s0
+/* 0x00119024 0x80188C24 0x0C075886 */ .word 0x0C075886 # jal 0x801D6218
+/* 0x00119028 0x80188C28 0x02002021 */ .word 0x02002021 # move $a0, $s0
+/* 0x0011902C 0x80188C2C 0x8FBF0014 */ .word 0x8FBF0014 # lw $ra, 0x14($sp)
+/* 0x00119030 0x80188C30 0x8FB00010 */ .word 0x8FB00010 # lw $s0, 0x10($sp)
+/* 0x00119034 0x80188C34 0x03E00008 */ .word 0x03E00008 # jr $ra
+/* 0x00119038 0x80188C38 0x27BD0018 */ .word 0x27BD0018 # addiu $sp, $sp, 0x18

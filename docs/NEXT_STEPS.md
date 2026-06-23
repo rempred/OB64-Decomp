@@ -15,15 +15,15 @@ Current passing commands:
 node tools/verify_setup.js
 ```
 
-Current source mix: 17 tracked composite real-assembler chunks (chunk 0 177
-`boot/`; chunks 1–16 in `lib/`: 350, 216, 67, 376, 88, 78, 103, 87, 34, 35, 191, 74, 67, 94, 153, 95) = 2,285 tracked
-source files, plus 83 generated fallback chunks. **Chunks 0–16 are fully
-source-owned as named code/data parts** (`0x00001000..0x00111000`; chunk 12: 72 code + 2
-straddler + 0 data, ALL CODE — 20 dispatchers; chunk 13: 27 code + 40 data, MIXED —
-unit-mgmt UI data; chunk 14: 74 code + 20 data, MIXED — graphics/display-list data + DL-builder code;
+Current source mix: 18 tracked composite real-assembler chunks (chunk 0 177
+`boot/`; chunks 1–17 in `lib/`: 350, 216, 67, 376, 88, 78, 103, 87, 34, 35, 191, 74, 67, 94, 153, 95, 66) = 2,351 tracked
+source files, plus 82 generated fallback chunks. **Chunks 0–17 are fully
+source-owned as named code/data parts** (`0x00001000..0x00121000`; chunk 13: 27 code + 40
+data, MIXED — unit-mgmt UI data; chunk 14: 74 code + 20 data, MIXED — graphics/display-list data + DL-builder code;
 chunk 15: 134 code + 19 data, MIXED — floats/display-list data + the OB64 opening-narration rodata;
-chunk 16: 72 code + 23 data, MIXED — leading scenario record/pointer/float64 data + the neutral-encounter code path);
-next is chunk 17 (`0x00111000`).
+chunk 16: 72 code + 23 data, MIXED — leading scenario record/pointer/float64 data + the neutral-encounter code path;
+chunk 17: 66 code + 0 data, ALL CODE — char-data/encounter code with incoming + outgoing function straddlers);
+next is chunk 18 (`0x00121000`).
 
 The assembled code-region SHA256 is
 `40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`; the full
@@ -100,28 +100,25 @@ node tools/audit_code_region.js
    generates fallback owners for the rest. Keep `node tools/verify_setup.js`
    green after every promotion.
 
-3. Continue into chunk 17.
+3. Continue into chunk 18.
 
-   Chunks 0–16 (`0x00001000..0x00111000`) are fully source-owned as named code/data
-   parts: chunk 0 in `boot/`; chunks 1–16 in `lib/` (dossiers `lib-chunk1-…` …
-   `lib-chunk16-…`). Chunks 13–16 are all MIXED. Chunk 16 (95 parts: 72 code + 23 data)
-   has a leading scenario DATA region (`0x101000..0x101CE0`: a fixed-stride 0x50-byte
-   record-table tail continuing from chunk 15, 0x801A RAM-pointer/jump tables, and a
-   float64 const pool) then the neutral-encounter CODE path (`0x101CE0..0x111000`) with an
-   outgoing FUNCTION straddler. Parent docs map the code (0x102FA8 scenario dispatcher,
-   0x105CC8 text_renderer, 0x10D484/0x10DDBC spawn helpers — LEADS only, names stay
-   `func_*`). Adversarial: 0 structural disproofs (1 data-note evidence fix). Data index
-   `docs/data-index/rev0/chunk16-data-region-inventory.json`.
+   Chunks 0–17 (`0x00001000..0x00121000`) are fully source-owned as named code/data
+   parts: chunk 0 in `boot/`; chunks 1–17 in `lib/` (dossiers `lib-chunk1-…` …
+   `lib-chunk17-…`). Chunks 13–16 are MIXED; chunk 17 is ALL CODE. Chunk 17 (66 parts:
+   66 code + 0 data) is char-data/encounter code: incoming straddler-tail
+   `func_00110160_chunk17tail` (`0x111000..0x111464`) + ~64 functions (23 preamble-orphans,
+   4 frameless leaves; jr$v0 dispatchers + j 0x801Cxxxx tail-jumps internal) + outgoing
+   straddler-head `func_00120FC4` (`0x120FC4..0x121000`). Parent docs: only 0x115440
+   carries a role lead (bitfield helpers) — names stay `func_*`. Adversarial: 0 disproofs.
 
-   **Next frontier: `0x00111000` (chunk 17).** FIRST continue the OUTGOING FUNCTION
-   straddler: `func_00110160` `[0x110160,0x111000)` (prologue `addiu $sp,-0x88`, no
-   `jr $ra` in range) continues to `0x111464`; emit the chunk-17 tail file
-   `func_00110160_chunk17tail` `[0x111000,0x111464)` first. Chunk 17 is ALL CODE
-   (incoming + outgoing straddlers, ~66 parts). Pipeline:
+   **Next frontier: `0x00121000` (chunk 18).** FIRST continue the OUTGOING FUNCTION
+   straddler: `func_00120FC4` `[0x120FC4,0x121000)` (prologue `addiu $sp,-0x50`, no
+   `jr $ra` in range) continues to `0x1211F8`; emit the chunk-18 tail file
+   `func_00120FC4_chunk18tail` `[0x121000,0x1211F8)` first. Pipeline:
    `plan_chunk`/`slice_chunk --disasm`/`check_splits`/`check_boundaries` + analysis +
-   adversarial swarms (Workflow, one agent per slice/region). Coverage now 39.10%
-   (code-only ≈ 32.51%). See the DECOMP_LOG "Next Frontier" and
-   `docs/dossiers/lib-chunk16-101000-111000.md`.
+   adversarial swarms (Workflow, one agent per slice/region) + data-classification swarm
+   for any data regions. Coverage now 41.40% (code-only ≈ 34.81%). See the DECOMP_LOG
+   "Next Frontier" and `docs/dossiers/lib-chunk17-111000-121000.md`.
 
 4. Keep the setup gate green.
 
