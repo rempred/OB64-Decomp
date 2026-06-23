@@ -15,13 +15,13 @@ Current passing commands:
 node tools/verify_setup.js
 ```
 
-Current source mix: 10 tracked composite real-assembler chunks (chunk 0 177
-`boot/`; chunks 1–9 in `lib/`: 350, 216, 67, 376, 88, 78, 103, 87, 34) = 1,576 tracked
-source files, plus 90 generated fallback chunks. **Chunks 0–9 are fully
-source-owned as named code/data parts** (`0x00001000..0x000A1000`; chunk 6: 60 code
-+ 18 data; chunk 7: 80 code + 1 straddler-head + 22 data; chunk 8: 61 code + 2
-straddler + 24 data; chunk 9: 32 code + 2 straddler + 0 data, ALL CODE); next is
-chunk 10 (`0x000A1000`).
+Current source mix: 11 tracked composite real-assembler chunks (chunk 0 177
+`boot/`; chunks 1–10 in `lib/`: 350, 216, 67, 376, 88, 78, 103, 87, 34, 35) = 1,611 tracked
+source files, plus 89 generated fallback chunks. **Chunks 0–10 are fully
+source-owned as named code/data parts** (`0x00001000..0x000B1000`; chunk 7: 80 code
++ 1 straddler-head + 22 data; chunk 8: 61 code + 2 straddler + 24 data; chunk 9: 32
+code + 2 straddler + 0 data, ALL CODE; chunk 10: 33 code + 2 straddler + 0 data, ALL
+CODE); next is chunk 11 (`0x000B1000`).
 
 The assembled code-region SHA256 is
 `40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`; the full
@@ -98,28 +98,29 @@ node tools/audit_code_region.js
    generates fallback owners for the rest. Keep `node tools/verify_setup.js`
    green after every promotion.
 
-3. Continue into chunk 10.
+3. Continue into chunk 11.
 
-   Chunks 0–9 (`0x00001000..0x000A1000`) are fully source-owned as named code/data
-   parts: chunk 0 in `boot/`; chunks 1–9 in `lib/` (dossiers `lib-chunk1-…` …
-   `lib-chunk9-…`). Chunk 9 was ALL CODE (first single-class chunk since chunk 2):
-   army-mgmt / F3DEX display-list builders (34 parts: 32 code + 2 straddler + 0
-   data); 1 preamble-orphan fold, 2 jump-table dispatchers with tables in `0x801F`
-   relocated RAM, 5 multi-entry fns; adversarial pass (4 refuters + 1 data-hunter)
+   Chunks 0–10 (`0x00001000..0x000B1000`) are fully source-owned as named code/data
+   parts: chunk 0 in `boot/`; chunks 1–10 in `lib/` (dossiers `lib-chunk1-…` …
+   `lib-chunk10-…`). Chunks 9 and 10 were both ALL CODE (army-mgmt / F3DEX display-list
+   builders). Chunk 10 (35 parts: 33 code + 2 straddler + 0 data) needed 3
+   preamble-orphan folds + 7 recovered frameless leaves (incl. the 6,944 B
+   `func_000AB6D8` un-merged from a parent over-merge) + 5 jump-table dispatchers
+   (tables in `0x801EF…` relocated RAM); adversarial pass (4 refuters + 1 data-hunter)
    found 0 disproofs and no inline data.
 
-   **Next frontier: `0x000A1000` (chunk 10).** FIRST continue the function straddler:
-   `func_000A0DAC_chunk9head` `[0xA0DAC,0xA1000)` (true entry 0xA0DAC) continues to
-   `0x000A118C` (chunk-10 tail file `func_000A0DAC_chunk10tail` `[0xA1000,0x000A118C)`).
-   Chunk 10 should remain largely **PARENT-DETECTED**, so `plan_chunk`+
-   `dump_function_context` should seed most of it; use `scan_functions` for
-   parent-undetected sub-regions. Content-scan for data regions FIRST (chunks 5–8
-   each had interior data; chunk 9 had none — do not assume either way). Pipeline:
-   `scan_functions` or `plan_chunk`/`slice_chunk --disasm`/`integrate_chunk` (context
-   optional)/`check_splits`/`check_boundaries` + analysis + adversarial swarms
-   (Agent-tool, one per slice/region). The 10% executable target `0x000468F8` is
-   surpassed (coverage now 23.0015%, code-only ≈ 18.41%). See the DECOMP_LOG "Next
-   Frontier" and `docs/dossiers/lib-chunk9-91000-A1000.md`.
+   **Next frontier: `0x000B1000` (chunk 11).** FIRST continue the function straddler:
+   `func_000B0BFC_chunk10head` `[0xB0BFC,0xB1000)` (true entry 0xB0BFC) continues to
+   `0x000B1F00` (chunk-11 tail file `func_000B0BFC_chunk11tail` `[0xB1000,0x000B1F00)`).
+   Chunk 11 has 113 parent function labels and 654 nops (a different profile from
+   chunks 9–10) — content-scan for data regions FIRST. `plan_chunk`+
+   `dump_function_context` should seed parent-detected code; use `scan_functions` for
+   parent-undetected sub-regions. Pipeline: `scan_functions` or `plan_chunk`/
+   `slice_chunk --disasm`/`integrate_chunk` (context optional)/`check_splits`/
+   `check_boundaries` + analysis + adversarial swarms (Agent-tool, one per
+   slice/region). The 10% executable target `0x000468F8` is surpassed (coverage now
+   25.3016%, code-only ≈ 20.71%). See the DECOMP_LOG "Next Frontier" and
+   `docs/dossiers/lib-chunk10-A1000-B1000.md`.
 
 4. Keep the setup gate green.
 

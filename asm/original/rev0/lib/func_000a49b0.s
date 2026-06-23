@@ -1,0 +1,33 @@
+/*
+ * Original Rev 0 MIPS reference split.
+ * Parent source: asm/original/rev0/code_000A1000_000B1000.s
+ * z64 range: 0x000A49B0..0x000A4A00 exclusive
+ * Decode comments are aids, not proof of semantic function boundaries.
+ */
+.set noat
+.set noreorder
+.text
+
+/* frame -0x20; ends at 0xA4A00 (jr $ra@0xA49F8 + epilogue addiu $sp,0x20@0xA49FC); preamble-orphan at 0xA4A00 belongs to the NEXT function, not this one */
+/* function boundary candidate: func_000A49B0, size=80, kind=prologue */
+func_000A49B0:
+/* 0x000A49B0 0x801145B0 0x27BDFFE0 */ .word 0x27BDFFE0 # addiu $sp, $sp, -0x20
+/* 0x000A49B4 0x801145B4 0xAFB00010 */ .word 0xAFB00010 # sw $s0, 0x10($sp)
+/* 0x000A49B8 0x801145B8 0x00808021 */ .word 0x00808021 # move $s0, $a0
+/* 0x000A49BC 0x801145BC 0xAFB20018 */ .word 0xAFB20018 # sw $s2, 0x18($sp)
+/* 0x000A49C0 0x801145C0 0x00A09021 */ .word 0x00A09021 # move $s2, $a1
+/* 0x000A49C4 0x801145C4 0xAFB10014 */ .word 0xAFB10014 # sw $s1, 0x14($sp)
+/* 0x000A49C8 0x801145C8 0x30D100FF */ .word 0x30D100FF # andi $s1, $a2, 0x00FF
+/* 0x000A49CC 0x801145CC 0xAFBF001C */ .word 0xAFBF001C # sw $ra, 0x1C($sp)
+/* 0x000A49D0 0x801145D0 0x0C06CEC0 */ .word 0x0C06CEC0 # jal 0x801B3B00
+/* 0x000A49D4 0x801145D4 0x02203021 */ .word 0x02203021 # move $a2, $s1
+/* 0x000A49D8 0x801145D8 0x02002021 */ .word 0x02002021 # move $a0, $s0
+/* 0x000A49DC 0x801145DC 0x02402821 */ .word 0x02402821 # move $a1, $s2
+/* 0x000A49E0 0x801145E0 0x0C06DD33 */ .word 0x0C06DD33 # jal 0x801B74CC
+/* 0x000A49E4 0x801145E4 0x02203021 */ .word 0x02203021 # move $a2, $s1
+/* 0x000A49E8 0x801145E8 0x8FBF001C */ .word 0x8FBF001C # lw $ra, 0x1C($sp)
+/* 0x000A49EC 0x801145EC 0x8FB20018 */ .word 0x8FB20018 # lw $s2, 0x18($sp)
+/* 0x000A49F0 0x801145F0 0x8FB10014 */ .word 0x8FB10014 # lw $s1, 0x14($sp)
+/* 0x000A49F4 0x801145F4 0x8FB00010 */ .word 0x8FB00010 # lw $s0, 0x10($sp)
+/* 0x000A49F8 0x801145F8 0x03E00008 */ .word 0x03E00008 # jr $ra
+/* 0x000A49FC 0x801145FC 0x27BD0020 */ .word 0x27BD0020 # addiu $sp, $sp, 0x20
