@@ -23734,8 +23734,8 @@
           "romStart": "0x00145204",
           "romEndExclusive": "0x00145210",
           "bytes": 12,
-          "textBytes": 668,
-          "sha256": "F82DF23AB3ECA9312FE3B3CC4B463A044B9BEE424775AA70E14894C16E21E71B"
+          "textBytes": 583,
+          "sha256": "32E051B970B749B5B0D5D2E2AEEDF3519C3AEB62B49B94A0A87E571A4CE519FF"
         },
         {
           "name": "func_00145210",
@@ -26728,8 +26728,8 @@
           "romStart": "0x00177B44",
           "romEndExclusive": "0x00177ED0",
           "bytes": 908,
-          "textBytes": 19077,
-          "sha256": "D71FA95E93793611588A8976FBB4805986E520204F7C9DA7BA98CBECA157A898"
+          "textBytes": 18992,
+          "sha256": "0A957F01DC407AD363B5C0387F213FB87BFA1DCD0D36D3C3F5103C4EE1EA8963"
         },
         {
           "name": "func_00177ED0",

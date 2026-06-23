@@ -129,8 +129,6 @@
 /* 0x00177D18 0x801E7918 0x80218D00 */ .word 0x80218D00 # lb $at, -0x7300($at)
 /* 0x00177D1C 0x801E791C 0x80218D00 */ .word 0x80218D00 # lb $at, -0x7300($at)
 
-/* function boundary candidate: func_00177D20, size=480, kind=leaf */
-func_00177D20:
 /* 0x00177D20 0x801E7920 0x80218D00 */ .word 0x80218D00 # lb $at, -0x7300($at)
 /* 0x00177D24 0x801E7924 0x80218D00 */ .word 0x80218D00 # lb $at, -0x7300($at)
 /* 0x00177D28 0x801E7928 0x80218D00 */ .word 0x80218D00 # lb $at, -0x7300($at)

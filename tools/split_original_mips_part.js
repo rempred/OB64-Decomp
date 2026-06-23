@@ -147,7 +147,7 @@ function wordLineRom(line) {
   return match ? parseInt(match[1], 16) : null;
 }
 
-function extractRange(lines, start, end) {
+function extractRange(lines, start, end, dropCodeLabels) {
   const out = [];
   let pending = [];
   let wordCount = 0;
@@ -155,10 +155,19 @@ function extractRange(lines, start, end) {
     const rom = wordLineRom(line);
     if (rom == null) {
       const trimmed = line.trim();
+      const isBoundaryComment = trimmed.startsWith('/* function boundary candidate:');
+      const isLabel = /^[A-Za-z_.$][A-Za-z0-9_.$]*:$/.test(trimmed);
+      // Data parts must not carry parent code-function labels or "function
+      // boundary candidate" annotations from the verbatim disasm — they are
+      // false-function artifacts inside a data region (the data part's own
+      // label, if any, is emitted in the header). Drop them entirely.
+      if (dropCodeLabels && (isBoundaryComment || isLabel)) {
+        continue;
+      }
       if (
         trimmed === '' ||
-        trimmed.startsWith('/* function boundary candidate:') ||
-        /^[A-Za-z_.$][A-Za-z0-9_.$]*:$/.test(trimmed)
+        isBoundaryComment ||
+        isLabel
       ) {
         pending.push(line);
       } else if (trimmed.startsWith('.')) {
@@ -195,7 +204,7 @@ function writeSplitFile({ split, sourcePart, lines }) {
   ensureDir(path.dirname(outPath));
   if (split.note) split.note = sanitizeComment(split.note);
   if (split.label) split.label = sanitizeComment(split.label);
-  const body = extractRange(lines, split.start, split.end);
+  const body = extractRange(lines, split.start, split.end, split.kind === 'data');
   const headerLines = [
     '/*',
     ' * Original Rev 0 MIPS reference split.',
