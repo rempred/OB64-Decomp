@@ -1,0 +1,33 @@
+/*
+ * Original Rev 0 MIPS reference split.
+ * Parent source: asm/original/rev0/code_00241000_00251000.s
+ * z64 range: 0x0024DF7C..0x0024DFCC exclusive
+ * Decode comments are aids, not proof of semantic function boundaries.
+ */
+.set noat
+.set noreorder
+.text
+
+/* Frame -0x30. Small wrapper: saves $s0/$s1/$ra, jal 0x801F7344 formatter then jal 0x801F91BC. jr $ra at 0x0024DFC4 + delay addiu $sp,0x30. Ends before prologue 0x0024DFCC. */
+/* function boundary candidate: func_0024DF7C, size=80, kind=prologue */
+func_0024DF7C:
+/* 0x0024DF7C 0x802BDB7C 0x27BDFFD0 */ .word 0x27BDFFD0 # addiu $sp, $sp, -0x30
+/* 0x0024DF80 0x802BDB80 0xAFB00020 */ .word 0xAFB00020 # sw $s0, 0x20($sp)
+/* 0x0024DF84 0x802BDB84 0x00A08021 */ .word 0x00A08021 # move $s0, $a1
+/* 0x0024DF88 0x802BDB88 0xAFB10024 */ .word 0xAFB10024 # sw $s1, 0x24($sp)
+/* 0x0024DF8C 0x802BDB8C 0x00C08821 */ .word 0x00C08821 # move $s1, $a2
+/* 0x0024DF90 0x802BDB90 0xAFBF0028 */ .word 0xAFBF0028 # sw $ra, 0x28($sp)
+/* 0x0024DF94 0x802BDB94 0x92060002 */ .word 0x92060002 # lbu $a2, 0x2($s0)
+/* 0x0024DF98 0x802BDB98 0x308400FF */ .word 0x308400FF # andi $a0, $a0, 0x00FF
+/* 0x0024DF9C 0x802BDB9C 0x27A50010 */ .word 0x27A50010 # addiu $a1, $sp, 0x10
+/* 0x0024DFA0 0x802BDBA0 0x0C07DCD1 */ .word 0x0C07DCD1 # jal 0x801F7344
+/* 0x0024DFA4 0x802BDBA4 0x30C600F0 */ .word 0x30C600F0 # andi $a2, $a2, 0x00F0
+/* 0x0024DFA8 0x802BDBA8 0x27A40010 */ .word 0x27A40010 # addiu $a0, $sp, 0x10
+/* 0x0024DFAC 0x802BDBAC 0x02002821 */ .word 0x02002821 # move $a1, $s0
+/* 0x0024DFB0 0x802BDBB0 0x0C07E46F */ .word 0x0C07E46F # jal 0x801F91BC
+/* 0x0024DFB4 0x802BDBB4 0x02203021 */ .word 0x02203021 # move $a2, $s1
+/* 0x0024DFB8 0x802BDBB8 0x8FBF0028 */ .word 0x8FBF0028 # lw $ra, 0x28($sp)
+/* 0x0024DFBC 0x802BDBBC 0x8FB10024 */ .word 0x8FB10024 # lw $s1, 0x24($sp)
+/* 0x0024DFC0 0x802BDBC0 0x8FB00020 */ .word 0x8FB00020 # lw $s0, 0x20($sp)
+/* 0x0024DFC4 0x802BDBC4 0x03E00008 */ .word 0x03E00008 # jr $ra
+/* 0x0024DFC8 0x802BDBC8 0x27BD0030 */ .word 0x27BD0030 # addiu $sp, $sp, 0x30

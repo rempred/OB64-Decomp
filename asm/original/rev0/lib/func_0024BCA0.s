@@ -1,0 +1,29 @@
+/*
+ * Original Rev 0 MIPS reference split.
+ * Parent source: asm/original/rev0/code_00241000_00251000.s
+ * z64 range: 0x0024BCA0..0x0024BCE8 exclusive
+ * Decode comments are aids, not proof of semantic function boundaries.
+ */
+.set noat
+.set noreorder
+.text
+
+/* Parent-undetected frameless leaf. Class-id range classifier: andi $a0,0xFF; sltiu 0x14; bne; second range -0x14 sltiu 0x1B; third range -0x2F sltiu 0x28 xori; returns 0/1/2 bucket in $v0. jr$ra@0x0024BCE0 + delay nop@0x0024BCE4. */
+/* 0x0024BCA0 0x802BB8A0 0x308200FF */ .word 0x308200FF # andi $v0, $a0, 0x00FF
+/* 0x0024BCA4 0x802BB8A4 0x2C420014 */ .word 0x2C420014 # sltiu $v0, $v0, 0x14
+/* 0x0024BCA8 0x802BB8A8 0x1440000D */ .word 0x1440000D # bne $v0, $zero, 0x802BB8E0
+/* 0x0024BCAC 0x802BB8AC 0x00001021 */ .word 0x00001021 # move $v0, $zero
+/* 0x0024BCB0 0x802BB8B0 0x2482FFEC */ .word 0x2482FFEC # addiu $v0, $a0, -0x14
+/* 0x0024BCB4 0x802BB8B4 0x304200FF */ .word 0x304200FF # andi $v0, $v0, 0x00FF
+/* 0x0024BCB8 0x802BB8B8 0x2C42001B */ .word 0x2C42001B # sltiu $v0, $v0, 0x1B
+/* 0x0024BCBC 0x802BB8BC 0x14400008 */ .word 0x14400008 # bne $v0, $zero, 0x802BB8E0
+/* 0x0024BCC0 0x802BB8C0 0x24020001 */ .word 0x24020001 # addiu $v0, $zero, 0x1
+/* 0x0024BCC4 0x802BB8C4 0x2482FFD1 */ .word 0x2482FFD1 # addiu $v0, $a0, -0x2F
+/* 0x0024BCC8 0x802BB8C8 0x304200FF */ .word 0x304200FF # andi $v0, $v0, 0x00FF
+/* 0x0024BCCC 0x802BB8CC 0x2C420028 */ .word 0x2C420028 # sltiu $v0, $v0, 0x28
+/* 0x0024BCD0 0x802BB8D0 0x38420001 */ .word 0x38420001 # xori $v0, $v0, 0x0001
+/* 0x0024BCD4 0x802BB8D4 0x00021023 */ .word 0x00021023 # subu $v0, $zero, $v0
+/* 0x0024BCD8 0x802BB8D8 0x304200FF */ .word 0x304200FF # andi $v0, $v0, 0x00FF
+/* 0x0024BCDC 0x802BB8DC 0x34420002 */ .word 0x34420002 # ori $v0, $v0, 0x0002
+/* 0x0024BCE0 0x802BB8E0 0x03E00008 */ .word 0x03E00008 # jr $ra
+/* 0x0024BCE4 0x802BB8E4 0x00000000 */ .word 0x00000000 # nop

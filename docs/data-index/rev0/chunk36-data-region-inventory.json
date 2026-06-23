@@ -1,0 +1,269 @@
+{
+  "chunk": 36,
+  "range": "0x243F14-0x2447A0,0x24B410-0x24BCA0",
+  "generated": "2026-06-23",
+  "dataPartCount": 28,
+  "dataBytes": 4380,
+  "bytesByClass": {
+    "zero_fill": 56,
+    "table": 684,
+    "data": 1996,
+    "float": 456,
+    "rodata": 1188
+  },
+  "evidence": "Overlay-map heuristic (0 loaded prologues / 0 jr$ra across the span) + per-word classification; pointer values 0x801x are combat-overlay RAM addresses, not linear back-maps. Verified by adversarial data skeptics (no hidden code).",
+  "parts": [
+    {
+      "name": "zero_fill_00243f14",
+      "file": "asm/original/rev0/lib/zero_fill_00243f14.s",
+      "romStart": "0x00243F14",
+      "romEnd": "0x00243F20",
+      "bytes": 12,
+      "class": "zero_fill",
+      "note": "3 align nop words (all-zero) preceding the pointer table."
+    },
+    {
+      "name": "table_00243f20",
+      "file": "asm/original/rev0/lib/table_00243f20.s",
+      "romStart": "0x00243F20",
+      "romEnd": "0x00243F40",
+      "bytes": 32,
+      "class": "table",
+      "note": "6 pointers 0x801E6FC4,0x801E6FCC,0x801E6FD4,0x801E6FDC,0x801E7004,0x801E7164 (0x801E overlay-RAM band), followed by 2 zero-word terminator/pad. 32 bytes."
+    },
+    {
+      "name": "data_00243f40",
+      "file": "asm/original/rev0/lib/data_00243f40.s",
+      "romStart": "0x00243F40",
+      "romEnd": "0x00243F4C",
+      "bytes": 12,
+      "class": "data",
+      "note": "3 words 0x1733281E,0x18342832,0x00000000; packed byte/halfword parameters preceding float pool (looks like paired 16-bit values + zero pad)."
+    },
+    {
+      "name": "float_00243f4c",
+      "file": "asm/original/rev0/lib/float_00243f4c.s",
+      "romStart": "0x00243F4C",
+      "romEnd": "0x00243FA0",
+      "bytes": 84,
+      "class": "float",
+      "note": "float32 constant pool: 0.5,1.0,(0),30.0,45.0,(0),1/6(0.16667),1/3(0.33333),0.5,2/3(0.66667),0.83333,1.0,(0),20.0,25.0,20.0,15.0,10.0,(0 pad). IEEE single constants."
+    },
+    {
+      "name": "rodata_00243fa0",
+      "file": "asm/original/rev0/lib/rodata_00243fa0.s",
+      "romStart": "0x00243FA0",
+      "romEnd": "0x002440C0",
+      "bytes": 288,
+      "class": "rodata",
+      "note": "ASCII NUL-terminated class-name string pool: 'Soldier','Fighter','Amazon','Knight','Berserker','Fencer','Phalanx','Beast_Tamer','Doll_Master','Ninja','Wizard','Archer','Dragon_Tamer','Walkyrie','Witch','Sorceress','Cleric','Hawkman','Zombie','Faerie','Gremlin','Young_Dragon','Red_Dragon','Wyrm','Griffin','Hellhound','Golem','Special_Character'; trailing zero pad to 0x2440C0."
+    },
+    {
+      "name": "data_002440c0",
+      "file": "asm/original/rev0/lib/data_002440c0.s",
+      "romStart": "0x002440C0",
+      "romEnd": "0x00244178",
+      "bytes": 184,
+      "class": "data",
+      "note": "packed/parameter block: scattered byte/halfword values (e.g. 0x00006319,0x7BDFCE73,0x0000FFFF,0x00FF0000,0x00EB0000) then a run of byte-quad records ~0x01040104 / ~0x02060206 (stride ~1B index data, values 0x01-0x09) with interior zero gaps; index/parameter table, not fully typed."
+    },
+    {
+      "name": "table_00244178",
+      "file": "asm/original/rev0/lib/table_00244178.s",
+      "romStart": "0x00244178",
+      "romEnd": "0x00244250",
+      "bytes": 216,
+      "class": "table",
+      "note": "single-pointer column: one 0x801Exxxx pointer (0x801EFD30..0x801EFE2C, 0x801E overlay-RAM band) every 8 bytes, paired with a small index byte (01,02,04,05,06,07,08,09,0A,0B,0C,0D,0E,0F,10,11,12,27,2D,33,34,38,3A,45,47,4B,4E) in the alternate slot. 30 entries x 8B."
+    },
+    {
+      "name": "data_00244250",
+      "file": "asm/original/rev0/lib/data_00244250.s",
+      "romStart": "0x00244250",
+      "romEnd": "0x00244360",
+      "bytes": 272,
+      "class": "data",
+      "note": "packed/parameter block: leading 0x32323200 pairs ('222'), 0x00006400 (100), signed halfword deltas (0xFFFB,0xFFF8,0x0008,0xFFF6,0x000A...), then repeating opcode-like record group (0xE7000000/0xE3000A01/0xD9000000/0xFCFFFFFF/0x80008000/0xDF000000) — appears to be a fixed-stride command/graphics parameter record, not fully typed."
+    },
+    {
+      "name": "data_00244360",
+      "file": "asm/original/rev0/lib/data_00244360.s",
+      "romStart": "0x00244360",
+      "romEnd": "0x00244420",
+      "bytes": 192,
+      "class": "data",
+      "note": "(no pointers; packed index/count words) byte/halfword index table: low-magnitude word values 0x02,0x08,0x0E,0x18,0x1E (multiples of 6) in a fixed sequence, then mixed packed bytes (0x00000100,0x00050000,0x00012D00,0x01120000,...0x01120036) — 16-bit/byte interleaved index/count table."
+    },
+    {
+      "name": "data_00244420",
+      "file": "asm/original/rev0/lib/data_00244420.s",
+      "romStart": "0x00244420",
+      "romEnd": "0x002446B0",
+      "bytes": 656,
+      "class": "data",
+      "note": "packed/parameter records: leading small index words (0x08,0x18,0x06,0x0112,0x36) then repeating opcode-like fixed-stride record blocks (0xE7000000/0xE3000A01/0xD9000000/0xE3000C00/0xE2001E01/0xFCFFFFFF/0x80008000/0xDF000000) interleaved with embedded 0x801E pointers (0x801EFFE8,0x801EFFE0) — command/graphics parameter data, stride not fully resolved."
+    },
+    {
+      "name": "data_002446b0",
+      "file": "asm/original/rev0/lib/data_002446b0.s",
+      "romStart": "0x002446B0",
+      "romEnd": "0x002446E4",
+      "bytes": 52,
+      "class": "data",
+      "note": "packed halfword/parameter block: 0x028001E0/0x01FF0000 paired records, 0x00000400/0x02000000 pairs, 0x00020000,0x01020000,0x00100000, zero pad. 16-bit coordinate/size-like values."
+    },
+    {
+      "name": "float_002446e4",
+      "file": "asm/original/rev0/lib/float_002446e4.s",
+      "romStart": "0x002446E4",
+      "romEnd": "0x00244710",
+      "bytes": 44,
+      "class": "float",
+      "note": "float32 constant pool: 0.5,1.0,45.0,15.0, then zero pad to 0x244710. IEEE single constants."
+    },
+    {
+      "name": "float_00244710",
+      "file": "asm/original/rev0/lib/float_00244710.s",
+      "romStart": "0x00244710",
+      "romEnd": "0x00244740",
+      "bytes": 48,
+      "class": "float",
+      "note": "IEEE double-precision constant pool: 0x4066800000000000=182.0 and 0x400921FB54442D18=pi, repeated 3x (182.0,pi pattern). 6 doubles."
+    },
+    {
+      "name": "rodata_00244740",
+      "file": "asm/original/rev0/lib/rodata_00244740.s",
+      "romStart": "0x00244740",
+      "romEnd": "0x00244770",
+      "bytes": 48,
+      "class": "rodata",
+      "note": "ASCII string 'There is no detals message@nthis chacter.' (note '@n' control / sic spelling), NUL-terminated/padded. 48 bytes."
+    },
+    {
+      "name": "table_00244770",
+      "file": "asm/original/rev0/lib/table_00244770.s",
+      "romStart": "0x00244770",
+      "romEnd": "0x0024478C",
+      "bytes": 28,
+      "class": "table",
+      "note": "7 pointers 0x801EE2B8,0x801EE2EC,0x801EE30C,0x801EE354,0x801EE32C,0x801EE32C,0x801EE34C (0x801E overlay-RAM band; one duplicate). 28 bytes."
+    },
+    {
+      "name": "float_0024478c",
+      "file": "asm/original/rev0/lib/float_0024478c.s",
+      "romStart": "0x0024478C",
+      "romEnd": "0x002447A0",
+      "bytes": 20,
+      "class": "float",
+      "note": "1 zero pad word then IEEE double-constant tail: 0x4056800000000000=90.0 and 0x4024000000000000=10.0 (each as 8-byte double with zero low word). Trailing double constants closing the island."
+    },
+    {
+      "name": "data_0024b410",
+      "file": "asm/original/rev0/lib/data_0024b410.s",
+      "romStart": "0x0024B410",
+      "romEnd": "0x0024B4F0",
+      "bytes": 224,
+      "class": "data",
+      "note": "Packed 16-bit record/pair data. Leading halfword pairs (0x0001/0x0002, 0x0003/0x0002, 0x0004 ...) followed by packed byte/halfword records (0xE7000000, 0xE3000A01, 0xE3000F00, 0xE3001001 etc.) interleaved with 0x00000000 separators. Stride hypothesis: 8-byte (value,0) records or 4-byte packed entries; not fully typed. Ends just before ASCII pool."
+    },
+    {
+      "name": "rodata_0024b4f0",
+      "file": "asm/original/rev0/lib/rodata_0024b4f0.s",
+      "romStart": "0x0024B4F0",
+      "romEnd": "0x0024B844",
+      "bytes": 852,
+      "class": "rodata",
+      "note": "ASCII string pool of area/chapter names, each prefixed by control byte \\x0E and terminated/separated by \\x0F\\x00. Strings include \"Cast or t\", \"Canyon\", \"Zenobian Border\", \"Crenel Canyon\", \"Volcanus Mine\", \"Tenne Plains\", \"Alba\", \"Dardunnelles\", \"the Crossroads\", \"Gunther Piedmont\", \"Mylesia\", \"Gules Hills\", \"Tremos Mountains\", \"Fair Heights\", \"Temple of Berthe\", \"Capitrium\", \"the Land of Advent\", \"Celesis\", \"the Eastern Church\", \"Tremos Mountains\", \"Sable Lowlands\", \"Audevera Heights\", \"the High lan dof Sotaho\", \"Mount Ithacan\", \"Azure Plains\", \"Wenunes\", \"Mount Keryoleth\", \"Tybell, the Wicked Lan d\", \"the Tundra\", \"of Argent\", \"Vert Plateau\", \"Aurua Plain\", \"Baphet\", \"Latium\", \"The Blue Basilica\", \"Ptiation, the Seclu ded Lan d\", \"Romulus\", \"Wenunes\", \"Dardunnelles\", \"the Crossroads\", \"Mount Keryoleth\", \"Winea, Capital of Palatinus\", \"Castle Talp aea\", \"Fort Romulus\", \"Alba\", \"Prologue\", \"Chapter:One\", \"Chapter:Two\", \"Chapter:Three\", \"Chapter:Four\", \"%s\", \"No Data\". Trailing \"%s\\x00No Data\\x00\" ends the pool at 0x0024B843."
+    },
+    {
+      "name": "table_0024b844",
+      "file": "asm/original/rev0/lib/table_0024b844.s",
+      "romStart": "0x0024B844",
+      "romEnd": "0x0024B854",
+      "bytes": 16,
+      "class": "table",
+      "note": "Pointer table, 4 entries, RAM 0x8016 band: 0x8016DF88, 0x8016DFDC, 0x8016E030, 0x8016E084 (stride 0x54). Overlay RAM addresses."
+    },
+    {
+      "name": "data_0024b854",
+      "file": "asm/original/rev0/lib/data_0024b854.s",
+      "romStart": "0x0024B854",
+      "romEnd": "0x0024B93C",
+      "bytes": 232,
+      "class": "data",
+      "note": "Packed 16-bit parameter/record block. Mostly small halfword values (0x0000, 0x0002, 0x0004, 0x001B, 0x0012/0x0016, 0x0040, 0x0019, 0x0023, 0x0006/0x0006, 0x0010/0x0010, 0x0018/0x0017, counts and small indices) with interior 4-8B zero gaps. Stride hypothesis: paired 16-bit fields; not fully typed."
+    },
+    {
+      "name": "table_0024b93c",
+      "file": "asm/original/rev0/lib/table_0024b93c.s",
+      "romStart": "0x0024B93C",
+      "romEnd": "0x0024BA24",
+      "bytes": 232,
+      "class": "table",
+      "note": "Pointer table, 58 entries, RAM 0x801D75xx-0x801D7Cxx band (e.g. 0x801D7590, 0x801D75A0, ... repeated sentinel 0x801D7C88). Overlay RAM addresses; no floats/halfwords interleaved."
+    },
+    {
+      "name": "zero_fill_0024ba24",
+      "file": "asm/original/rev0/lib/zero_fill_0024ba24.s",
+      "romStart": "0x0024BA24",
+      "romEnd": "0x0024BA30",
+      "bytes": 12,
+      "class": "zero_fill",
+      "note": "All-zero padding, 3 words (12 bytes) between two pointer tables."
+    },
+    {
+      "name": "table_0024ba30",
+      "file": "asm/original/rev0/lib/table_0024ba30.s",
+      "romStart": "0x0024BA30",
+      "romEnd": "0x0024BAD0",
+      "bytes": 160,
+      "class": "table",
+      "note": "Pointer table, 40 entries, RAM 0x801D0Fxx-0x801D17xx band (e.g. 0x801D0FD8, 0x801D0F98, 0x801D1078, ... 0x801D179C; repeated sentinel 0x801D1238). Overlay RAM addresses; no floats/halfwords interleaved."
+    },
+    {
+      "name": "float_0024bad0",
+      "file": "asm/original/rev0/lib/float_0024bad0.s",
+      "romStart": "0x0024BAD0",
+      "romEnd": "0x0024BBD4",
+      "bytes": 260,
+      "class": "float",
+      "note": "IEEE constant pool, mix of doubles and floats. Notable: 0x3FF4CCCCCCCCCCCD = 1.3 (double), 0x400921FB54442EEA = pi (double, hi 0x400921FB / lo 0x54442EEA), 0x4066800000000000 = 180.0 (double), 0x4082C00000000000, 0x41E0000000000000 = 2147483648.0 (double) recurring, 0x40140000 / 0x408F3800 / 0x400C0000 / 0x40590000 single/half-double words recurring. Several 0x00000000 fill words between constants."
+    },
+    {
+      "name": "zero_fill_0024bbd4",
+      "file": "asm/original/rev0/lib/zero_fill_0024bbd4.s",
+      "romStart": "0x0024BBD4",
+      "romEnd": "0x0024BBEC",
+      "bytes": 24,
+      "class": "zero_fill",
+      "note": "All-zero padding, 6 words (24 bytes) after the float pool."
+    },
+    {
+      "name": "data_0024bbec",
+      "file": "asm/original/rev0/lib/data_0024bbec.s",
+      "romStart": "0x0024BBEC",
+      "romEnd": "0x0024BC3C",
+      "bytes": 80,
+      "class": "data",
+      "note": "Packed records + pointer table. First 10 words 0x824F0000..0x82580000 (high halfword 0x824F-0x8258 incrementing by 1, low halfword 0x0000) look like packed 16-bit index/record entries; followed by 10 pointers 0x801D7C8C..0x801D7CB0 (0x801D band, stride 4). Mixed packed + 0x801D pointer table."
+    },
+    {
+      "name": "data_0024bc3c",
+      "file": "asm/original/rev0/lib/data_0024bc3c.s",
+      "romStart": "0x0024BC3C",
+      "romEnd": "0x0024BC98",
+      "bytes": 92,
+      "class": "data",
+      "note": "Mixed fragment: packed word 0x81460000, then embedded ASCII (\"\\x0E%sScene %d\\x0F\\x00\" / \"\\x0E%s\\x0F\") at 0x0024BC40-0x0024BC54, then a pointer table of ~16 entries in the 0x801D70xx-0x801D74xx band (0x801D7148, 0x801D7010, 0x801D70FC, repeated 0x801D7440 sentinel x8, 0x801D71B0, 0x801D7340, 0x801D7384, 0x801D73C4, 0x801D73F0). Overlay RAM pointers interleaved with format strings."
+    },
+    {
+      "name": "zero_fill_0024bc98",
+      "file": "asm/original/rev0/lib/zero_fill_0024bc98.s",
+      "romStart": "0x0024BC98",
+      "romEnd": "0x0024BCA0",
+      "bytes": 8,
+      "class": "zero_fill",
+      "note": "All-zero padding, 2 words (8 bytes) at end of region before separately-owned CODE leaf at 0x0024BCA0."
+    }
+  ]
+}
