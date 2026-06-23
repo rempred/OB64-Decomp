@@ -24,11 +24,16 @@ and replace the active log with a compact current-state summary.
   `original_mips`. A static control-flow audit found no credible code edge into
   the tail (0 branch targets, 0 J/JAL to a known function). Audit:
   `tools/audit_code_region.js` / `docs/CODE_REGION_AUDIT.md`.
-- Current tracked code source mix: thirty-nine composite real-assembler chunks
-  (chunk 0 177 `boot/`; chunks 1–38 in `lib/`: 350, 216, 67, 376, 88, 78, 103, 87, 34, 35, 191, 74, 67, 94, 153, 95, 66, 95, 80, 175, 99, 99, 73, 63, 71, 96, 142, 97, 103, 122, 86, 198, 109, 120, 134, 164, 180, 232) =
-  **4,889 tracked source files**, plus 61 generated fallback code chunks. **Chunks
-  0–38 (`0x00001000..0x00271000`) are now fully source-owned as named code/data
-  parts** (chunk 38: 230 code + 0 data + 2 straddlers, ALL CODE — FP/GBI display-list builders +
+- Current tracked code source mix: forty composite real-assembler chunks
+  (chunk 0 177 `boot/`; chunks 1–39 in `lib/`: 350, 216, 67, 376, 88, 78, 103, 87, 34, 35, 191, 74, 67, 94, 153, 95, 66, 95, 80, 175, 99, 99, 73, 63, 71, 96, 142, 97, 103, 122, 86, 198, 109, 120, 134, 164, 180, 232, 155) =
+  **5,044 tracked source files**, plus 60 generated fallback code chunks. **Chunks
+  0–39 (`0x00001000..0x00281000`) are now fully source-owned as named code/data
+  parts** (chunk 39: 135 code + 19 data + 1 straddler-tail, MIXED — mission-briefing/combat
+  display-list code continuing chunks 36-38, wrapping THREE interior data islands (big data
+  territory 0x273FFC..0x275850 with pointer/jump/float64 tables; a GBI display-list blob
+  0x279DA8..0x27A020; a tail small-int LUT + zero-fill 0x280D48..0x281000); chunk ends in data
+  (no outgoing straddler);
+  chunk 38: 230 code + 0 data + 2 straddlers, ALL CODE — FP/GBI display-list builders +
   mission-briefing/combat dispatchers continuing chunks 36-37, frameless-leaf dense, parent-gap
   frameless recoveries (288 B@0x2639D8 GBI builder, 796 B@0x2664A4 switch dispatch);
   chunk 36: 134 code + 28 data + 2 straddlers, MIXED — mission-briefing/combat
@@ -341,11 +346,23 @@ Current named sequence:
   confirmed NO data island. Adversarial 6 verifiers: 3 HIGH fixed (over-merge un-split
   func_00263050→4; preamble folds func_00261D00, func_00267108), 3 clean. Dossier added; no
   data index (all code). **Chunk 38 source-owned.**
-- Current remainder: none in chunks 0-38 (`0x1000..0x271000` fully source-owned).
-  **Current frontier: `0x00271000` (chunk 39).** First continue outgoing FUNCTION
-  straddler `func_00270FF0` as `func_00270FF0_chunk39tail` starting at `0x00271000`
-  (prologue `addiu $sp,-0x28`; returns jr$ra@0x271068 in chunk 39). Chunk 39 is MIXED (data
-  islands: 7328 B territory @`0x273FFC` + further gaps).
+- Chunk 39 source-ownership `0x00271000..0x00281000` (155 parts: 135 normal code + 19 data
+  + 1 function straddler-tail, MIXED, 3 code regions + 3 interior data islands; the most
+  interleaved chunk so far): incoming straddler-tail `func_00270FF0_chunk39tail`
+  (`0x271000..0x271070`, jr$ra@0x271068) → CODE R1 `0x271070..0x273FFC` → DATA A
+  `0x273FFC..0x275850` (6,228 B big territory: 136/272-word RAM-pointer tables, packed blobs,
+  ID/float arrays, overlay handler pointer table, float64 pool [pi-like/3.0/180.0], an 8-row
+  jump table) → CODE R2 `0x275850..0x279DA8` (frameless band 0x275850.. + dispatchers) → DATA B
+  `0x279DA8..0x27A020` (632 B static GBI/F3DEX2 display-list asset) → CODE R3 `0x27A020..0x280D48`
+  (functions + frameless GBI/FP builders at 0x27B1B4/0x27D050/0x2804D4/0x280970) → DATA C
+  `0x280D48..0x281000` (696 B small-int LUTs + zero-fill + 640/480 screen-dim records). Chunk
+  ENDS IN DATA — no outgoing straddler; frontier 0x281000 clean. 3 islands carved via
+  carve_chunk; adversarial 7 verifiers (4 code + 3 data) ALL structurally CLEAN (only 4 LOW
+  note-text fixes). Dossier + data index added. **Chunk 39 source-owned.**
+- Current remainder: none in chunks 0-39 (`0x1000..0x281000` fully source-owned).
+  **Current frontier: `0x00281000` (chunk 40).** No incoming straddler (chunk 39 ended in
+  DATA C tail data). First action: classify the start of `0x00281000` (content/return/prologue
+  scan); do not assume code.
 
 Static dossiers live under `docs/dossiers/` and are the durable evidence notes
 for each promoted source-layout split.

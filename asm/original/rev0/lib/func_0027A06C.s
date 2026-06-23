@@ -1,0 +1,33 @@
+/*
+ * Original Rev 0 MIPS reference split.
+ * Parent source: asm/original/rev0/code_00271000_00281000.s
+ * z64 range: 0x0027A06C..0x0027A0BC exclusive
+ * Decode comments are aids, not proof of semantic function boundaries.
+ */
+.set noat
+.set noreorder
+.text
+
+/* Prologue addiu $sp,-0x18. Has internal beql @0x27A090 -> 0x27A0A8 and j 0x80225920 tail-jump; real return jr $ra @0x27A0B4 + delay addiu $sp,0x18 @0x27A0B8. Un-merged from parent idx=1. */
+/* function boundary candidate: func_0027A06C, size=692, kind=prologue */
+func_0027A06C:
+/* 0x0027A06C 0x802E9C6C 0x27BDFFE8 */ .word 0x27BDFFE8 # addiu $sp, $sp, -0x18
+/* 0x0027A070 0x802E9C70 0x00042400 */ .word 0x00042400 # sll $a0, $a0, 16
+/* 0x0027A074 0x802E9C74 0x00042383 */ .word 0x00042383 # sra $a0, $a0, 14
+/* 0x0027A078 0x802E9C78 0xAFBF0010 */ .word 0xAFBF0010 # sw $ra, 0x10($sp)
+/* 0x0027A07C 0x802E9C7C 0x3C028023 */ .word 0x3C028023 # lui $v0, 0x8023
+/* 0x0027A080 0x802E9C80 0x00441021 */ .word 0x00441021 # addu $v0, $v0, $a0
+/* 0x0027A084 0x802E9C84 0x8C42D134 */ .word 0x8C42D134 # lw $v0, -0x2ECC($v0)
+/* 0x0027A088 0x802E9C88 0x8C43004C */ .word 0x8C43004C # lw $v1, 0x4C($v0)
+/* 0x0027A08C 0x802E9C8C 0x24020001 */ .word 0x24020001 # addiu $v0, $zero, 0x1
+/* 0x0027A090 0x802E9C90 0x50620005 */ .word 0x50620005 # beql $v1, $v0, 0x802E9CA8
+/* 0x0027A094 0x802E9C94 0x24040001 */ .word 0x24040001 # addiu $a0, $zero, 0x1
+/* 0x0027A098 0x802E9C98 0x3C028023 */ .word 0x3C028023 # lui $v0, 0x8023
+/* 0x0027A09C 0x802E9C9C 0x00441021 */ .word 0x00441021 # addu $v0, $v0, $a0
+/* 0x0027A0A0 0x802E9CA0 0x08089648 */ .word 0x08089648 # j 0x80225920
+/* 0x0027A0A4 0x802E9CA4 0x8C42D150 */ .word 0x8C42D150 # lw $v0, -0x2EB0($v0)
+/* 0x0027A0A8 0x802E9CA8 0x0C05B877 */ .word 0x0C05B877 # jal 0x8016E1DC
+/* 0x0027A0AC 0x802E9CAC 0x24050001 */ .word 0x24050001 # addiu $a1, $zero, 0x1
+/* 0x0027A0B0 0x802E9CB0 0x8FBF0010 */ .word 0x8FBF0010 # lw $ra, 0x10($sp)
+/* 0x0027A0B4 0x802E9CB4 0x03E00008 */ .word 0x03E00008 # jr $ra
+/* 0x0027A0B8 0x802E9CB8 0x27BD0018 */ .word 0x27BD0018 # addiu $sp, $sp, 0x18

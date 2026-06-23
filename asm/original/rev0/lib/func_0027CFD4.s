@@ -1,0 +1,43 @@
+/*
+ * Original Rev 0 MIPS reference split.
+ * Parent source: asm/original/rev0/code_00271000_00281000.s
+ * z64 range: 0x0027CFD4..0x0027D050 exclusive
+ * Decode comments are aids, not proof of semantic function boundaries.
+ */
+.set noat
+.set noreorder
+.text
+
+/* Frameless leaf un-merged from idx15. Linear search of a halfword array (lh 0($v0) vs $a3), j 0x80228868/0x802288B8 tail-jumps to shared loop epilogues (internal, not boundaries). jr $ra at 0x27D048, delay 0x27D04C (nop). */
+func_0027CFD4:
+/* 0x0027CFD4 0x802ECBD4 0x1080001C */ .word 0x1080001C # beq $a0, $zero, 0x802ECC48
+/* 0x0027CFD8 0x802ECBD8 0x00001021 */ .word 0x00001021 # move $v0, $zero
+/* 0x0027CFDC 0x802ECBDC 0x8C830000 */ .word 0x8C830000 # lw $v1, 0x0($a0)
+/* 0x0027CFE0 0x802ECBE0 0x10600019 */ .word 0x10600019 # beq $v1, $zero, 0x802ECC48
+/* 0x0027CFE4 0x802ECBE4 0x00000000 */ .word 0x00000000 # nop
+/* 0x0027CFE8 0x802ECBE8 0x0808A21A */ .word 0x0808A21A # j 0x80228868
+/* 0x0027CFEC 0x802ECBEC 0x00000000 */ .word 0x00000000 # nop
+/* 0x0027CFF0 0x802ECBF0 0x0808A22E */ .word 0x0808A22E # j 0x802288B8
+/* 0x0027CFF4 0x802ECBF4 0x00021403 */ .word 0x00021403 # sra $v0, $v0, 16
+/* 0x0027CFF8 0x802ECBF8 0x84620000 */ .word 0x84620000 # lh $v0, 0x0($v1)
+/* 0x0027CFFC 0x802ECBFC 0x10400011 */ .word 0x10400011 # beq $v0, $zero, 0x802ECC44
+/* 0x0027D000 0x802ECC00 0x00002821 */ .word 0x00002821 # move $a1, $zero
+/* 0x0027D004 0x802ECC04 0x94840004 */ .word 0x94840004 # lhu $a0, 0x4($a0)
+/* 0x0027D008 0x802ECC08 0x00603021 */ .word 0x00603021 # move $a2, $v1
+/* 0x0027D00C 0x802ECC0C 0x3087FFFF */ .word 0x3087FFFF # andi $a3, $a0, 0xFFFF
+/* 0x0027D010 0x802ECC10 0x00051400 */ .word 0x00051400 # sll $v0, $a1, 16
+/* 0x0027D014 0x802ECC14 0x000213C3 */ .word 0x000213C3 # sra $v0, $v0, 15
+/* 0x0027D018 0x802ECC18 0x00461021 */ .word 0x00461021 # addu $v0, $v0, $a2
+/* 0x0027D01C 0x802ECC1C 0x84420000 */ .word 0x84420000 # lh $v0, 0x0($v0)
+/* 0x0027D020 0x802ECC20 0x1047FFF3 */ .word 0x1047FFF3 # beq $v0, $a3, 0x802ECBF0
+/* 0x0027D024 0x802ECC24 0x00041400 */ .word 0x00041400 # sll $v0, $a0, 16
+/* 0x0027D028 0x802ECC28 0x24A20001 */ .word 0x24A20001 # addiu $v0, $a1, 0x1
+/* 0x0027D02C 0x802ECC2C 0x00021C00 */ .word 0x00021C00 # sll $v1, $v0, 16
+/* 0x0027D030 0x802ECC30 0x00031BC3 */ .word 0x00031BC3 # sra $v1, $v1, 15
+/* 0x0027D034 0x802ECC34 0x00661821 */ .word 0x00661821 # addu $v1, $v1, $a2
+/* 0x0027D038 0x802ECC38 0x84630000 */ .word 0x84630000 # lh $v1, 0x0($v1)
+/* 0x0027D03C 0x802ECC3C 0x1460FFF4 */ .word 0x1460FFF4 # bne $v1, $zero, 0x802ECC10
+/* 0x0027D040 0x802ECC40 0x00402821 */ .word 0x00402821 # move $a1, $v0
+/* 0x0027D044 0x802ECC44 0x00001021 */ .word 0x00001021 # move $v0, $zero
+/* 0x0027D048 0x802ECC48 0x03E00008 */ .word 0x03E00008 # jr $ra
+/* 0x0027D04C 0x802ECC4C 0x00000000 */ .word 0x00000000 # nop

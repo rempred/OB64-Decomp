@@ -15,10 +15,14 @@ Current passing commands:
 node tools/verify_setup.js
 ```
 
-Current source mix: 39 tracked composite real-assembler chunks (chunk 0 177
-`boot/`; chunks 1–38 in `lib/`: 350, 216, 67, 376, 88, 78, 103, 87, 34, 35, 191, 74, 67, 94, 153, 95, 66, 95, 80, 175, 99, 99, 73, 63, 71, 96, 142, 97, 103, 122, 86, 198, 109, 120, 134, 164, 180, 232) = 4,889 tracked
-source files, plus 61 generated fallback chunks. **Chunks 0–38 are fully
-source-owned as named code/data parts** (`0x00001000..0x00271000`;
+Current source mix: 40 tracked composite real-assembler chunks (chunk 0 177
+`boot/`; chunks 1–39 in `lib/`: 350, 216, 67, 376, 88, 78, 103, 87, 34, 35, 191, 74, 67, 94, 153, 95, 66, 95, 80, 175, 99, 99, 73, 63, 71, 96, 142, 97, 103, 122, 86, 198, 109, 120, 134, 164, 180, 232, 155) = 5,044 tracked
+source files, plus 60 generated fallback chunks. **Chunks 0–39 are fully
+source-owned as named code/data parts** (`0x00001000..0x00281000`;
+chunk 39: 135 code + 19 data + 1 straddler-tail, MIXED — mission-briefing/combat display-list
+code continuing chunks 36-38, wrapping THREE interior data islands (big data territory
+0x273FFC..0x275850 [pointer/jump/float64 tables]; GBI display-list blob 0x279DA8..0x27A020;
+tail small-int LUT+zero-fill 0x280D48..0x281000); chunk ends in data, NO outgoing straddler;
 chunk 38: 230 code + 0 data + 2 straddlers, ALL CODE — FP/GBI display-list builders +
 mission-briefing/combat dispatchers (continuation of chunks 36-37), frameless-leaf dense;
 parent-gap frameless recoveries (288 B@0x2639D8 GBI builder, 796 B@0x2664A4 switch dispatch);
@@ -63,7 +67,7 @@ at z64 0x1F36F0; chunk 32: 196 normal code + 0 data + 2 function straddlers, ALL
 frameless-leaf-dense FP/display-list + class-def/char-data code; chunk 33: 82 normal code +
 25 data + 2 function straddlers, MIXED - code + a font/glyph + pointer/float DATA region
 + a jump-table state-machine straddler);
-next is chunk 39 (`0x00271000`).
+next is chunk 40 (`0x00281000`).
 
 The assembled code-region SHA256 is
 `40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`; the full
@@ -140,25 +144,23 @@ node tools/audit_code_region.js
    generates fallback owners for the rest. Keep `node tools/verify_setup.js`
    green after every promotion.
 
-3. Continue into chunk 39.
+3. Continue into chunk 40.
 
-   Chunks 0–38 (`0x00001000..0x00271000`) are fully source-owned as named code/data
-   parts: chunk 0 in `boot/`; chunks 1–38 in `lib/` (dossiers `lib-chunk1-…` …
-   `lib-chunk38-…`). Chunk 38 (232 parts) is ALL CODE — FP/GBI display-list builders +
-   mission-briefing/combat dispatchers continuing chunks 36-37, frameless-leaf dense, with
-   parent-gap frameless recoveries (288 B@0x2639D8 GBI builder, 796 B@0x2664A4 switch
-   dispatch); adversarial caught 3 HIGH fixes (1 over-merge un-split, 2 preamble-orphan
-   folds). No data island. No data index (all code).
+   Chunks 0–39 (`0x00001000..0x00281000`) are fully source-owned as named code/data
+   parts: chunk 0 in `boot/`; chunks 1–39 in `lib/` (dossiers `lib-chunk1-…` …
+   `lib-chunk39-…`). Chunk 39 (155 parts) is MIXED — mission-briefing/combat display-list
+   code continuing chunks 36-38, wrapping THREE interior data islands (DATA A 0x273FFC..0x275850
+   big territory [136/272-word pointer tables, packed blobs, float64 pool, 8-row jump table];
+   DATA B 0x279DA8..0x27A020 GBI display-list blob; DATA C 0x280D48..0x281000 small-int LUTs +
+   zero-fill + 640/480 screen-dim records). Data index
+   `docs/data-index/rev0/chunk39-data-region-inventory.json`. Adversarial 7 verifiers all clean.
+   Chunk 39 ENDS IN DATA — no outgoing straddler.
 
-   **Next frontier: `0x00271000` (chunk 39).** FIRST continue the OUTGOING FUNCTION
-   straddler: `func_00270FF0` starts in chunk 38 at `0x00270FF0` (prologue
-   `addiu $sp,-0x28`), has no `jr$ra` before the chunk boundary, and must be emitted
-   first in chunk 39 as `func_00270FF0_chunk39tail` starting at `0x00271000` (returns
-   `jr$ra`@`0x00271068`). Chunk 39 is MIXED (data islands: a large data territory in the
-   7328 B gap @`0x273FFC` — pointer/string/zero-fill/record tables — plus further gaps).
-   Pipeline: `dump_function_context`/`plan_chunk`/`carve_chunk`/`slice_chunk`/`check_splits`/
-   `check_boundaries` + analysis + data + adversarial swarms (Workflow). Coverage now 89.7060%
-   (code-only 76.0539%). See the DECOMP_LOG and `docs/dossiers/lib-chunk38-*.md`. No
+   **Next frontier: `0x00281000` (chunk 40).** No incoming straddler. FIRST action: classify
+   the start of `0x00281000` (content/zero/ASCII/pointer-density + return/prologue scan); do not
+   assume code. Pipeline: `dump_function_context`/`plan_chunk`/`carve_chunk`/`slice_chunk`/
+   `check_splits`/`check_boundaries` + analysis + data + adversarial swarms (Workflow). Coverage
+   now 92.0060% (code-only 78.0888%). See the DECOMP_LOG and `docs/dossiers/lib-chunk39-*.md`. No
    new patch-workbench candidates in chunk 38; the chunk-33 candidates (`0x21CD48`/`0x21BF84`)
    and chunk-31 `0x1F36F0` stand (`candidate`/`needs-runtime`, RSR-011/RSR-014).
 

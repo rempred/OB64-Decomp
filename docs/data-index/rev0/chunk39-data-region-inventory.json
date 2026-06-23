@@ -1,0 +1,188 @@
+{
+  "chunk": 39,
+  "range": "0x00273FFC-0x00281000",
+  "generated": "2026-06-23",
+  "dataPartCount": 19,
+  "dataBytes": 7556,
+  "bytesByClass": {
+    "zero_fill": 288,
+    "data": 4888,
+    "table": 2072,
+    "float": 64,
+    "jumptable": 244
+  },
+  "evidence": "Overlay-map heuristic (0 loaded prologues / 0 jr$ra across the span) + per-word classification; pointer values 0x801x are combat-overlay RAM addresses, not linear back-maps. Verified by adversarial data skeptics (no hidden code).",
+  "parts": [
+    {
+      "name": "zero_fill_00273ffc",
+      "file": "asm/original/rev0/lib/zero_fill_00273ffc.s",
+      "romStart": "0x00273FFC",
+      "romEnd": "0x00274000",
+      "bytes": 4,
+      "class": "zero_fill",
+      "note": "Single leading zero word (alignment/padding before the packed header at 0x274000)."
+    },
+    {
+      "name": "data_00274000",
+      "file": "asm/original/rev0/lib/data_00274000.s",
+      "romStart": "0x00274000",
+      "romEnd": "0x0027401C",
+      "bytes": 28,
+      "class": "data",
+      "note": "Packed header: 0x050E1720, 0x29323B05, two zero words, then small index values 0x00010000 / 0x00020000. Mixed scalar/index, cannot fully type."
+    },
+    {
+      "name": "table_0027401c",
+      "file": "asm/original/rev0/lib/table_0027401c.s",
+      "romStart": "0x0027401C",
+      "romEnd": "0x0027423C",
+      "bytes": 544,
+      "class": "table",
+      "note": "136-word RAM-pointer table, all 0x8021F46x (133x 0x8021F460, 1x 0x8021F464, 2x 0x8021F468) — uniform default/back-reference pointer fill into 0x8021F4xx."
+    },
+    {
+      "name": "data_0027423c",
+      "file": "asm/original/rev0/lib/data_0027423c.s",
+      "romStart": "0x0027423C",
+      "romEnd": "0x00274650",
+      "bytes": 1044,
+      "class": "data",
+      "note": "Packed array of 16-bit value pairs (e.g. 0x000D000C, 0x000B000E ... 0x01790000), monotonically rising small indices/glyph IDs interleaved with zero words. 261 words; record/index data."
+    },
+    {
+      "name": "table_00274650",
+      "file": "asm/original/rev0/lib/table_00274650.s",
+      "romStart": "0x00274650",
+      "romEnd": "0x00274A90",
+      "bytes": 1088,
+      "class": "table",
+      "note": "272-word table of RAM pointers, all 0x80xxxxxx (dense 0x8021F6xx..0x8022xxxx run). Pointer/offset table into runtime data."
+    },
+    {
+      "name": "data_00274a90",
+      "file": "asm/original/rev0/lib/data_00274a90.s",
+      "romStart": "0x00274A90",
+      "romEnd": "0x00275644",
+      "bytes": 2996,
+      "class": "data",
+      "note": "Large mixed packed-binary blob: display-list/graphics-style primitives, repeating byte records (e.g. long 0x00640064 run @0x274C28+), embedded RAM pointers (0x80220710 @0x2754C4, 0x80224830) and float32 constants (1.0=0x3F800000, -1.0=0xBF800000, 1.2=0x3F99999A). No substantial clean interior zero span to split on."
+    },
+    {
+      "name": "data_00275644",
+      "file": "asm/original/rev0/lib/data_00275644.s",
+      "romStart": "0x00275644",
+      "romEnd": "0x002756F0",
+      "bytes": 172,
+      "class": "data",
+      "note": "ID/index arrays interleaved with float32 constants: leading 1.0f @0x275644, ID arrays of small ints 0x180-0x182/0x17D-0x17F @0x275650, float32 pairs (41B80000=23.0, C0800000=-4.0, 41500000=13.0, C1180000=-9.5, 418C0000=17.5, 41100000=9.0) @0x275678-0x27569C, then index array 0x100-0x19E @0x2756A0."
+    },
+    {
+      "name": "table_002756f0",
+      "file": "asm/original/rev0/lib/table_002756f0.s",
+      "romStart": "0x002756F0",
+      "romEnd": "0x00275704",
+      "bytes": 20,
+      "class": "table",
+      "note": "Overlay handler pointer table: 5 RAM code pointers 0x8020E6A4, 0x8020E74C, 0x8020E760, 0x8020E760, 0x8020E770."
+    },
+    {
+      "name": "zero_fill_00275704",
+      "file": "asm/original/rev0/lib/zero_fill_00275704.s",
+      "romStart": "0x00275704",
+      "romEnd": "0x00275710",
+      "bytes": 12,
+      "class": "zero_fill",
+      "note": "12-byte zero span between the overlay pointer table and the double constant pool."
+    },
+    {
+      "name": "float_00275710",
+      "file": "asm/original/rev0/lib/float_00275710.s",
+      "romStart": "0x00275710",
+      "romEnd": "0x00275750",
+      "bytes": 64,
+      "class": "float",
+      "note": "float64 (double) constant pool: pi=0x400921FB4D12D84A and 180.0=0x4066800000000000 repeated 3x (radians/degrees conversion), then 1.0=0x3FF0000000000000 and 3.0=0x4008000000000000; trailing zero word @0x27574C aligns to the jump table."
+    },
+    {
+      "name": "jumptable_00275750",
+      "file": "asm/original/rev0/lib/jumptable_00275750.s",
+      "romStart": "0x00275750",
+      "romEnd": "0x00275844",
+      "bytes": 244,
+      "class": "jumptable",
+      "note": "Jump table: 9 rows of 7 code pointers each followed by a 0x00000000 separator. Row bases: 0x80214xxx, 0x80215xxx, 0x80215Cxx, 0x80216xxx, 0x802168xx, 0x80216Dxx, 0x80217xxx, 0x8021Exxx — per-state switch/handler dispatch."
+    },
+    {
+      "name": "zero_fill_00275844",
+      "file": "asm/original/rev0/lib/zero_fill_00275844.s",
+      "romStart": "0x00275844",
+      "romEnd": "0x00275850",
+      "bytes": 12,
+      "class": "zero_fill",
+      "note": "3 alignment zero words trailing the jump table."
+    },
+    {
+      "name": "data_00279da8",
+      "file": "asm/original/rev0/lib/data_00279da8.s",
+      "romStart": "0x00279DA8",
+      "romEnd": "0x0027A020",
+      "bytes": 632,
+      "class": "data",
+      "note": "Static GBI/F3DEX2 RDP display-list asset (632 B). 8B zero pad lead-in @0x279DA8; GBI command+operand stream (pipesync 0xE7000000, setothermode 0xE3xxxxxx, geometrymode 0xD9D0F9FA/0xD9FFFFFF, 0xE200001C, texture 0xD7000002+0x80008000, enddl 0xDF000000, vertex cmds w/ 0x800x RAM ptrs); packed coord/index records (~12B-stride 0x000N0200 / 0x8000000N pattern @0x279E30-0x279F94, with a 0x003A0008/0x0004FFFF/0x00040004 repeated triple @0x279F58-0x279F6C); RGBA color pool (0x00FF00FF/0x00FF0064/0x00960064/0x006400AA) @0x279FD0; float64 hi-word 0x3FE00000 (0.5) @0x27A000 + zero pad; trailing coord ints 0x0010FFF0/0x0008FFF8 @0x27A010 and 8B zero tail. Single contiguous blob; no interior zero span >=16B."
+    },
+    {
+      "name": "zero_fill_00280d48",
+      "file": "asm/original/rev0/lib/zero_fill_00280d48.s",
+      "romStart": "0x00280D48",
+      "romEnd": "0x00280D5C",
+      "bytes": 20,
+      "class": "zero_fill",
+      "note": "20-byte alignment/leading zero-fill (5 zero words) preceding the small-int LUT."
+    },
+    {
+      "name": "table_00280d5c",
+      "file": "asm/original/rev0/lib/table_00280d5c.s",
+      "romStart": "0x00280D5C",
+      "romEnd": "0x00280EE0",
+      "bytes": 388,
+      "class": "table",
+      "note": "Small-int LUT: 0x84 bytes / 33 words, one small value per word (0x01,0x05,0x06,0x0A,0x0B,... mostly 0x03-0x2F; per-entry width/count/length). Contains small interior zero words (0x280D64, 0x280E8C, 0x280E9C-0x280EA4) kept inline."
+    },
+    {
+      "name": "zero_fill_00280ee0",
+      "file": "asm/original/rev0/lib/zero_fill_00280ee0.s",
+      "romStart": "0x00280EE0",
+      "romEnd": "0x00280F2C",
+      "bytes": 76,
+      "class": "zero_fill",
+      "note": "76-byte interior zero-fill (19 zero words) between the two small-int LUT blocks."
+    },
+    {
+      "name": "table_00280f2c",
+      "file": "asm/original/rev0/lib/table_00280f2c.s",
+      "romStart": "0x00280F2C",
+      "romEnd": "0x00280F4C",
+      "bytes": 32,
+      "class": "table",
+      "note": "Second small-int LUT block: 8 words, small values 0x0F,0x10,0x0F,0x11,0x10,0x16,0x1A,0x17 (same per-entry small-int format as table_00280d5c)."
+    },
+    {
+      "name": "zero_fill_00280f4c",
+      "file": "asm/original/rev0/lib/zero_fill_00280f4c.s",
+      "romStart": "0x00280F4C",
+      "romEnd": "0x00280FF0",
+      "bytes": 164,
+      "class": "zero_fill",
+      "note": "164-byte trailing zero-fill (41 zero words)."
+    },
+    {
+      "name": "data_00280ff0",
+      "file": "asm/original/rev0/lib/data_00280ff0.s",
+      "romStart": "0x00280FF0",
+      "romEnd": "0x00281000",
+      "bytes": 16,
+      "class": "data",
+      "note": "Four packed records at chunk end, stride 4 bytes as two 16-bit halves: 0x0280/0x01E0 (=640/480) and 0x01FF/0x0004; pattern repeats twice (dimension/extent pairs, exact type unknown)."
+    }
+  ]
+}
