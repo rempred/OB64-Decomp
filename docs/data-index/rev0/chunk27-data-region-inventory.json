@@ -1,0 +1,211 @@
+{
+  "chunk": 27,
+  "chunkRangeZ64": [
+    "0x001B1000",
+    "0x001C1000"
+  ],
+  "mixed": true,
+  "note": "CODE-DOMINANT MIXED (128 code + 14 data). FP-heavy class/char/encounter/resource code, even more code-dense than chunk 26. Two notable DATA islands (a status/menu string pool + a display-list/float/color-LUT island) plus two small zero-fill alignment islands. Most scanner 'float runs' are FP CODE. All islands adversarially confirmed 0 prologues / 0 jr$ra.",
+  "dataRegions": [
+    {
+      "name": "D5: status/menu string pool ('Empty'/'Not Applicable'/'Target:'/'Cannot be used'/'HP recovery'/'Petrification recovery'/'Resurrection'/'Level up'/STR-VIT-INT-MEN-AGI-DEX up/'ALI rise'/'ALI fall'/'Luck change', with inline \\x0e/\\x10/\\x0f markers) + byte-triplet & param tables + IEEE-754 double pools (pi/180, 2*pi, 175.0) + a 0x80218/0x80219-band RAM-pointer table",
+      "rangeZ64": [
+        "0x001B226C",
+        "0x001B2670"
+      ]
+    },
+    {
+      "name": "display-list/float island after func_001B924C -- RDP/RSP display-list + texture/palette command rows + a 16-entry monotonic IEEE-754 float ramp (0.08..0.60) + byte/color LUTs (0xFFFFFFFF/0x646400FF/0x787800FF) + 0x8021-band pointer tables",
+      "rangeZ64": [
+        "0x001B9920",
+        "0x001BA050"
+      ]
+    },
+    {
+      "name": "zero-fill alignment island before func_001B1518 (3 nops @0x1B1504)",
+      "rangeZ64": [
+        "0x001B1504",
+        "0x001B1510"
+      ]
+    },
+    {
+      "name": "zero-fill alignment island before func_001BBFB0 (2 nops @0x1BBFA8)",
+      "rangeZ64": [
+        "0x001BBFA8",
+        "0x001BBFB0"
+      ]
+    }
+  ],
+  "totalDataBytes": 2888,
+  "classification": "parsed -- (ASCII -- rodata -- decoded -- byte-exact; -- IEEE-754 -- float/double -- pools; -- RAM-pointer -- tables -- identified -- by -- 0x8021/0x8022-band -- targets) -- + -- raw-but-classified -- (RDP/RSP -- display-list -- command -- rows; -- byte-triplet/param/color -- tables -- — -- field -- semantics -- undecoded). -- Undecoded: -- the -- display-list -- command-stream -- layout, -- the -- byte-table -- field -- meanings, -- and -- the -- overlay-relocated -- pointer-table -- targets -- (true -- runtime -- band -- 0x801Bxxxx-0x801Cxxxx).",
+  "byClassBytes": {
+    "zero-fill": 56,
+    "ascii-string": 224,
+    "packed/unknown": 2244,
+    "ieee754-float-pool": 88,
+    "ram-pointer-table": 276
+  },
+  "partCount": 14,
+  "codeRegions": [
+    "func_001B0F78_chunk27tail .. func_001B1070/1518 (preamble-orphans) .. D5 island .. func_001B2670 .. func_001B2DC4/func_001B3ED8 .. func_001B4F74/func_001B6538 (3.7KB dispatcher) .. resource loaders func_001B902C/func_001BDD70/func_001BDE70 .. func_001B924C (display-list builder) .. island .. small-function cluster .. func_001BC020 (4.4KB) .. func_001BDF2C (4KB) .. func_001C061C .. func_001C0FC8 (outgoing straddler-head)"
+  ],
+  "incomingStraddler": "func_001B0F78_chunk27tail -- [0x001B1000,0x001B1070) -- — -- tail -- of -- func_001B0F78 -- whose -- entry -- (read-before-write -- preamble -- @0x1B0F78 -- + -- addiu -- $sp,-0x18 -- prologue -- @0x1B0F80) -- is -- in -- chunk -- 26; -- ends -- jr$ra@0x1B1068 -- + -- delay -- addiu -- $sp,0x18 -- @0x1B106C.",
+  "outgoingStraddler": "func_001C0FC8 -- [0x001C0FC8,0x001C1000) -- — -- prologue -- addiu -- $sp,-0x18 -- @0x1C0FC8 -- (the -- prior -- function -- returns -- jr$ra@0x1C0FC0; -- no -- entry -- preamble); -- NO -- jr$ra -- in -- range; -- continues -- into -- chunk -- 28 -- (next -- frontier -- 0x001C1000) -- as -- func_001C0FC8_chunk28tail.",
+  "parentEvidence": "Leads -- (names -- kept -- conservative -- func_*): -- dma/resource -- loaders -- 0x1B902C, -- 0x1BDD70, -- 0x1BDE70; -- 0x1B1078 -- encounter -- consumer; -- 0x1B6540 -- class-def -- consumer. -- Address-space: -- decode-column -- 0x8022/0x8023 -- band -- is -- the -- WRONG -- linear -- back-map; -- observed -- overlay -- map -- puts -- ROM -- 0x1B1518 -- at -- RAM -- 0x801BFE28 -- (true -- runtime -- band -- 0x801Bxxxx-0x801Cxxxx). -- Adversarial -- swarm -- (7 -- verifiers) -- all -- clean -- — -- no -- boundary -- moves; -- only -- LOW -- naming/note -- nits -- (preamble-orphans -- named -- by -- body-prologue -- address -- are -- documented -- and -- intentional).",
+  "entries": [
+    {
+      "part": "zero_fill_001B1504",
+      "rangeZ64": [
+        "0x001B1504",
+        "0x001B1510"
+      ],
+      "bytes": 12,
+      "class": "zero-fill",
+      "state": "raw-but-classified",
+      "note": "12-byte zero-fill alignment island: three 0x00000000 (nop) words at 0x1B1504/0x1B1508/0x1B150C. Sits after func_001B1070's return +delay and before func_001B1518's entry. Not executed."
+    },
+    {
+      "part": "rodata_001B226C",
+      "rangeZ64": [
+        "0x001B226C",
+        "0x001B234C"
+      ],
+      "bytes": 224,
+      "class": "ascii-string",
+      "state": "parsed",
+      "note": "Status/menu string pool, NUL-delimited ASCII, leading \\x00 pad. Decoded: \"\\x00Empty\\x00\\x00\\x00Not Applicable\\x00\\x00Target:\\x00\\x0eCannot\\x10cbe used\\x0f\\x00\\x00\\x00HP recovery\\x00\\x0ePetrification\\x10crecovery\\x0f\\x00\\x00\\x00Resurrection\\x00\\x00\\x00\\x00Level up\\x00\\x00\\x00\\x00Maximum HP up\\x00\\x00\\x00STR up\\x00\\x00VIT up\\x00\\x00INT up\\x00\\x00MEN up\\x00\\x00AGI up\\x00\\x00DEX up\\x00\\x00ALI rise\\x00\\x00\\x00\\x00ALI fall\\x00\\x00\\x00\\x00Luck change\\x00\". Control bytes \\x0e/\\x10/\\x0f are inline formatting markers preserved verbatim."
+    },
+    {
+      "part": "data_001B234C",
+      "rangeZ64": [
+        "0x001B234C",
+        "0x001B241C"
+      ],
+      "bytes": 208,
+      "class": "packed/unknown",
+      "state": "raw-but-classified",
+      "note": "Packed byte-triplet table, 208 bytes. Records of form '02 LO HI' (e.g. 02 0C 05 02 18 03 02 24 ...) transitioning into FF-saturated runs (..02 FF 01 02 FF 04..) then a 04/06/08/0A-prefixed tail. Likely an interpolation/envelope curve table. Field meaning not inferred."
+    },
+    {
+      "part": "data_001B241C",
+      "rangeZ64": [
+        "0x001B241C",
+        "0x001B24A4"
+      ],
+      "bytes": 136,
+      "class": "packed/unknown",
+      "state": "raw-but-classified",
+      "note": "Structured records mixing IEEE-754 float literals with byte/flag markers. Float pairs 0.3/0.3, 0.6/0.6, 0.9/0.9, 1.0/1.0 (last repeated 4x), each followed by small marker words (e.g. 0x04000400, 0x0B000000) that are not valid floats. Classified data (mixed) rather than pure float pool."
+    },
+    {
+      "part": "zero_fill_001B24A4",
+      "rangeZ64": [
+        "0x001B24A4",
+        "0x001B24BC"
+      ],
+      "bytes": 24,
+      "class": "zero-fill",
+      "state": "raw-but-classified",
+      "note": "6 pure-zero words (alignment/padding gap between record table and packed byte table)."
+    },
+    {
+      "part": "data_001B24BC",
+      "rangeZ64": [
+        "0x001B24BC",
+        "0x001B2500"
+      ],
+      "bytes": 68,
+      "class": "packed/unknown",
+      "state": "raw-but-classified",
+      "note": "Packed small-byte parameter table: 02 02 03 04 01 02 02 0A 04 03 04 03 ... 06 05 04 04 ... 04 05 06 05 ... 04 00 FF 00 00 00 00 00 01 00 00 00 00 00 FF 00 00... . Low-magnitude index/flag bytes. Field meaning not inferred."
+    },
+    {
+      "part": "float_001B2500",
+      "rangeZ64": [
+        "0x001B2500",
+        "0x001B2518"
+      ],
+      "bytes": 24,
+      "class": "ieee754-float-pool",
+      "state": "parsed",
+      "note": "Double-precision IEEE constant pool, 3 doubles: 0x3F91DE69AD42C3CA = 0.0174532925 (pi/180, degrees->radians), 0x3F91EB851EB851EC = 0.0175, 0x4013333333333333 = 4.8."
+    },
+    {
+      "part": "table_001B2518",
+      "rangeZ64": [
+        "0x001B2518",
+        "0x001B262C"
+      ],
+      "bytes": 276,
+      "class": "ram-pointer-table",
+      "state": "parsed",
+      "note": "RAM-pointer table, 0x80218xxx/0x80219xxx band (string/handler pointers, e.g. 0x802186DC, 0x80218590, 0x802186EC repeated, 0x80218E64, 0x80219590, 0x802190C8, 0x80219468.., 0x80219854). Includes a 4-word run of packed 0x817C817C halfwords (0x1B2558-0x1B2568) and two zero words (0x1B2568-0x1B2570). Pointer-dominant -> table."
+    },
+    {
+      "part": "data_001B262C",
+      "rangeZ64": [
+        "0x001B262C",
+        "0x001B2664"
+      ],
+      "bytes": 56,
+      "class": "packed/unknown",
+      "state": "raw-but-classified",
+      "note": "Mixed island: '%s\\x00\\x00' format string (0x1B262C), then double constants 0x401921FB54442D18 = 6.283185307179586 (2*pi) and 0x4065E00000000000 = 175.0, one zero word, then an int16 delta/index pair table (0x1B2644-0x1B2664): [-19,6],[-38,12],[10,15],[-9,21],[-28,27],[20,30],[1,36],[-18,42]."
+    },
+    {
+      "part": "zero_fill_001B2664",
+      "rangeZ64": [
+        "0x001B2664",
+        "0x001B2670"
+      ],
+      "bytes": 12,
+      "class": "zero-fill",
+      "state": "raw-but-classified",
+      "note": "3 trailing zero words immediately before func_001B2670 prologue (addiu $sp,$sp,-0x30 at 0x1B2670)."
+    },
+    {
+      "part": "data_001B9920",
+      "rangeZ64": [
+        "0x001B9920",
+        "0x001B9E40"
+      ],
+      "bytes": 1312,
+      "class": "packed/unknown",
+      "state": "raw-but-classified",
+      "note": "RDP/RSP display-list + texture/palette command data emitted by the builder above. Non-executed: repeating structured 8-byte command pairs and palette/color tables, e.g. 0x04000400 + 0xXXXX00FF rows, 0xB4B400FF / 0xB4B4B4FF / 0xDCDCDCFF color words, 0xFFFFFFFF fills, and small byte-index ramps (0x06000204 0x00000406 0x06000608 ... at 0x1B9C58 and 0x06000204..0x06141E18 at 0x1B9D90). Sits after func_001B924C's return ; no prologue/return present."
+    },
+    {
+      "part": "float_001B9E40",
+      "rangeZ64": [
+        "0x001B9E40",
+        "0x001B9E80"
+      ],
+      "bytes": 64,
+      "class": "ieee754-float-pool",
+      "state": "parsed",
+      "note": "IEEE-754 float CONSTANT pool, 16 consecutive .word constants forming a monotonic ramp ~0.08..0.6 loaded by lwc1 (DATA, NOT FP code): 0x3DA3D70A(0.08) 0x3DF5C28F(0.12) 0x3E23D70A(0.16) 0x3E4CCCCD(0.20) 0x3E75C28F(0.24) 0x3E8F5C29 0x3EA3D70A 0x3EB851EC 0x3ECCCCCD 0x3EE147AE 0x3EF5C28F 0x3F051EB8 0x3F0F5C29 0x3F147AE1 0x3F170A3D 0x3F19999A(0.60). These are constant operands, not div.s/mul.s/etc., so this is an embedded float-constant table, not FP instructions. func_001B924C already returned at 0x1B9918, so this is a trailing rodata pool, not a mid-function island between two code halves."
+    },
+    {
+      "part": "data_001B9E80",
+      "rangeZ64": [
+        "0x001B9E80",
+        "0x001BA050"
+      ],
+      "bytes": 464,
+      "class": "packed/unknown",
+      "state": "raw-but-classified",
+      "note": "Mixed trailing rodata: byte/color LUTs (0xFFFFFFFF / 0x646400FF / 0x787800FF / 0x8C0000FF / 0xB40000FF rows; byte ramp 0x56 0x88 0x6B 0x81 0x80 0x7A 0x95 0x73 0xAA 0x6C at 0x1B9EC0; byte table 0x01030302 0x02020101... at 0x1B9EF0). Double/float constant pools: 0x3FD99999/0x9999999A(1.4) 0x40200000 0x40280000 0x40448000 0x3FF4CCCC/0xCCCCCCCD 0x3FE99999.. 0x3FF00000(1.0) 0x40100000 0xC0200000 0x3F847AE1/0x47AE147B 0x3FC99999.. . RAM-pointer/JUMP tables in the 0x801/0x802 overlay band: at 0x1B9F30 0x8021538C 0x802153B0 0x802153F8 0x80215418 0x80215474 0x802154B8 0x80215500 0x8021555C ...; at 0x1BA030 0x80218E94 0x8021932C 0x80219388 0x802193D0 0x802193EC (dispatch targets into the func_001B924C body, used by the out-of-slice jr$reg). Ends with zero pad 0x1BA044..0x1BA050."
+    },
+    {
+      "part": "zero_fill_001BBFA8",
+      "rangeZ64": [
+        "0x001BBFA8",
+        "0x001BBFB0"
+      ],
+      "bytes": 8,
+      "class": "zero-fill",
+      "state": "raw-but-classified",
+      "note": "8 bytes inter-function alignment padding: two 0x00000000 words (nop) at 0x1BBFA8/0x1BBFAC, unreachable between func_001BBF94's jr+delay and func_001BBFB0's prologue. The SPECIAL '8B gap'."
+    }
+  ]
+}

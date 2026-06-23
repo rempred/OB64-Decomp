@@ -1,0 +1,36 @@
+/*
+ * Original Rev 0 MIPS reference split.
+ * Parent source: asm/original/rev0/code_001B1000_001C1000.s
+ * z64 range: 0x001BA0E0..0x001BA140 exclusive
+ * Decode comments are aids, not proof of semantic function boundaries.
+ */
+.set noat
+.set noreorder
+.text
+
+/* Frameless leaf reached by fall-through after func_001BA074's delay slot -> separate function. Looks up an id ($a0&0xFFFF) in the same 0x8022A1F0 table and clears the matching entry; internal overlay tail-jump j 0x80221028 (0x1BA120) kept INTERNAL. Ends jr$ra@0x1BA138 + delay nop at 0x1BA13C. */
+func_001BA0E0:
+/* 0x001BA0E0 0x80229CE0 0x3084FFFF */ .word 0x3084FFFF # andi $a0, $a0, 0xFFFF
+/* 0x001BA0E4 0x80229CE4 0x3C038023 */ .word 0x3C038023 # lui $v1, 0x8023
+/* 0x001BA0E8 0x80229CE8 0x2463A1F0 */ .word 0x2463A1F0 # addiu $v1, $v1, -0x5E10
+/* 0x001BA0EC 0x80229CEC 0x24650002 */ .word 0x24650002 # addiu $a1, $v1, 0x2
+/* 0x001BA0F0 0x80229CF0 0x00003021 */ .word 0x00003021 # move $a2, $zero
+/* 0x001BA0F4 0x80229CF4 0x24670020 */ .word 0x24670020 # addiu $a3, $v1, 0x20
+/* 0x001BA0F8 0x80229CF8 0x90620000 */ .word 0x90620000 # lbu $v0, 0x0($v1)
+/* 0x001BA0FC 0x80229CFC 0x5040000A */ .word 0x5040000A # beql $v0, $zero, 0x80229D28
+/* 0x001BA100 0x80229D00 0x24630004 */ .word 0x24630004 # addiu $v1, $v1, 0x4
+/* 0x001BA104 0x80229D04 0x94A20000 */ .word 0x94A20000 # lhu $v0, 0x0($a1)
+/* 0x001BA108 0x80229D08 0x54440007 */ .word 0x54440007 # bnel $v0, $a0, 0x80229D28
+/* 0x001BA10C 0x80229D0C 0x24630004 */ .word 0x24630004 # addiu $v1, $v1, 0x4
+/* 0x001BA110 0x80229D10 0x3C018023 */ .word 0x3C018023 # lui $at, 0x8023
+/* 0x001BA114 0x80229D14 0x00260821 */ .word 0x00260821 # addu $at, $at, $a2
+/* 0x001BA118 0x80229D18 0xA020A1F1 */ .word 0xA020A1F1 # sb $zero, -0x5E0F($at)
+/* 0x001BA11C 0x80229D1C 0xA4A00000 */ .word 0xA4A00000 # sh $zero, 0x0($a1)
+/* 0x001BA120 0x80229D20 0x0808840A */ .word 0x0808840A # j 0x80221028
+/* 0x001BA124 0x80229D24 0xA0600000 */ .word 0xA0600000 # sb $zero, 0x0($v1)
+/* 0x001BA128 0x80229D28 0x24A50004 */ .word 0x24A50004 # addiu $a1, $a1, 0x4
+/* 0x001BA12C 0x80229D2C 0x0067102A */ .word 0x0067102A # slt $v0, $v1, $a3
+/* 0x001BA130 0x80229D30 0x1440FFF1 */ .word 0x1440FFF1 # bne $v0, $zero, 0x80229CF8
+/* 0x001BA134 0x80229D34 0x24C60004 */ .word 0x24C60004 # addiu $a2, $a2, 0x4
+/* 0x001BA138 0x80229D38 0x03E00008 */ .word 0x03E00008 # jr $ra
+/* 0x001BA13C 0x80229D3C 0x00000000 */ .word 0x00000000 # nop

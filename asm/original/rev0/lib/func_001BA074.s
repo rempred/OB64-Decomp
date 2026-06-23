@@ -1,0 +1,39 @@
+/*
+ * Original Rev 0 MIPS reference split.
+ * Parent source: asm/original/rev0/code_001B1000_001C1000.s
+ * z64 range: 0x001BA074..0x001BA0E0 exclusive
+ * Decode comments are aids, not proof of semantic function boundaries.
+ */
+.set noat
+.set noreorder
+.text
+
+/* Frameless leaf (no stack frame) reached by fall-through after func_001BA050's delay slot -> separate function. Scans the 8-entry table at 0x8022A1F0 (stride 4) for a free slot, with internal overlay tail-jump j 0x80220F9C (0x1BA0AC) kept INTERNAL. Writes a record (sb/sh at -0x5E0F/-0x5E0E/-0x5E10). Ends jr$ra@0x1BA0D8 + delay sb $v1,-0x5E10($at) at 0x1BA0DC. */
+func_001BA074:
+/* 0x001BA074 0x80229C74 0x00001821 */ .word 0x00001821 # move $v1, $zero
+/* 0x001BA078 0x80229C78 0x00003021 */ .word 0x00003021 # move $a2, $zero
+/* 0x001BA07C 0x80229C7C 0x3C028023 */ .word 0x3C028023 # lui $v0, 0x8023
+/* 0x001BA080 0x80229C80 0x00461021 */ .word 0x00461021 # addu $v0, $v0, $a2
+/* 0x001BA084 0x80229C84 0x9042A1F0 */ .word 0x9042A1F0 # lbu $v0, -0x5E10($v0)
+/* 0x001BA088 0x80229C88 0x10400006 */ .word 0x10400006 # beq $v0, $zero, 0x80229CA4
+/* 0x001BA08C 0x80229C8C 0x28620008 */ .word 0x28620008 # slti $v0, $v1, 0x8
+/* 0x001BA090 0x80229C90 0x24630001 */ .word 0x24630001 # addiu $v1, $v1, 0x1
+/* 0x001BA094 0x80229C94 0x28620008 */ .word 0x28620008 # slti $v0, $v1, 0x8
+/* 0x001BA098 0x80229C98 0x1440FFF8 */ .word 0x1440FFF8 # bne $v0, $zero, 0x80229C7C
+/* 0x001BA09C 0x80229C9C 0x24C60004 */ .word 0x24C60004 # addiu $a2, $a2, 0x4
+/* 0x001BA0A0 0x80229CA0 0x28620008 */ .word 0x28620008 # slti $v0, $v1, 0x8
+/* 0x001BA0A4 0x80229CA4 0x14400003 */ .word 0x14400003 # bne $v0, $zero, 0x80229CB4
+/* 0x001BA0A8 0x80229CA8 0x00031080 */ .word 0x00031080 # sll $v0, $v1, 2
+/* 0x001BA0AC 0x80229CAC 0x080883E7 */ .word 0x080883E7 # j 0x80220F9C
+/* 0x001BA0B0 0x80229CB0 0x00000000 */ .word 0x00000000 # nop
+/* 0x001BA0B4 0x80229CB4 0x24030001 */ .word 0x24030001 # addiu $v1, $zero, 0x1
+/* 0x001BA0B8 0x80229CB8 0x3C018023 */ .word 0x3C018023 # lui $at, 0x8023
+/* 0x001BA0BC 0x80229CBC 0x00220821 */ .word 0x00220821 # addu $at, $at, $v0
+/* 0x001BA0C0 0x80229CC0 0xA025A1F1 */ .word 0xA025A1F1 # sb $a1, -0x5E0F($at)
+/* 0x001BA0C4 0x80229CC4 0x3C018023 */ .word 0x3C018023 # lui $at, 0x8023
+/* 0x001BA0C8 0x80229CC8 0x00220821 */ .word 0x00220821 # addu $at, $at, $v0
+/* 0x001BA0CC 0x80229CCC 0xA424A1F2 */ .word 0xA424A1F2 # sh $a0, -0x5E0E($at)
+/* 0x001BA0D0 0x80229CD0 0x3C018023 */ .word 0x3C018023 # lui $at, 0x8023
+/* 0x001BA0D4 0x80229CD4 0x00220821 */ .word 0x00220821 # addu $at, $at, $v0
+/* 0x001BA0D8 0x80229CD8 0x03E00008 */ .word 0x03E00008 # jr $ra
+/* 0x001BA0DC 0x80229CDC 0xA023A1F0 */ .word 0xA023A1F0 # sb $v1, -0x5E10($at)

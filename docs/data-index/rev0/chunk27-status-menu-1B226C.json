@@ -1,0 +1,255 @@
+{
+  "source": "asm/original/rev0/lib/rodata_001B226C.s",
+  "rangeZ64": [
+    "0x001B226C",
+    "0x001B234C"
+  ],
+  "totalBytes": 224,
+  "encoding": "ASCII, NUL-terminated, big-endian (z64) byte order; raw inline control bytes preserved verbatim",
+  "title": "Chunk 27 status/menu string pool (0x1B226C)",
+  "stringCount": 18,
+  "atCodeTally": {},
+  "atCodeSemantics": "No @-prefixed codes found. Raw inline control bytes \\x0E, \\x10, and \\x0F appear in two strings; exact runtime meaning not decoded.",
+  "confidence": "high (printable ASCII text); raw control-byte semantics hypothesis-grade",
+  "segments": [
+    {
+      "kind": "nul",
+      "offset": "0x001B226C",
+      "bytes": 4
+    },
+    {
+      "kind": "string",
+      "offset": "0x001B2270",
+      "bytes": 5,
+      "text": "Empty",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x001B2275",
+      "bytes": 3
+    },
+    {
+      "kind": "string",
+      "offset": "0x001B2278",
+      "bytes": 14,
+      "text": "Not Applicable",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x001B2286",
+      "bytes": 2
+    },
+    {
+      "kind": "string",
+      "offset": "0x001B2288",
+      "bytes": 7,
+      "text": "Target:",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x001B228F",
+      "bytes": 1
+    },
+    {
+      "kind": "string",
+      "offset": "0x001B2290",
+      "bytes": 17,
+      "text": "\\x0ECannot\\x10cbe used\\x0F",
+      "atCodes": {},
+      "nonPrintable": 3
+    },
+    {
+      "kind": "nul",
+      "offset": "0x001B22A1",
+      "bytes": 3
+    },
+    {
+      "kind": "string",
+      "offset": "0x001B22A4",
+      "bytes": 11,
+      "text": "HP recovery",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x001B22AF",
+      "bytes": 1
+    },
+    {
+      "kind": "string",
+      "offset": "0x001B22B0",
+      "bytes": 25,
+      "text": "\\x0EPetrification\\x10crecovery\\x0F",
+      "atCodes": {},
+      "nonPrintable": 3
+    },
+    {
+      "kind": "nul",
+      "offset": "0x001B22C9",
+      "bytes": 3
+    },
+    {
+      "kind": "string",
+      "offset": "0x001B22CC",
+      "bytes": 12,
+      "text": "Resurrection",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x001B22D8",
+      "bytes": 4
+    },
+    {
+      "kind": "string",
+      "offset": "0x001B22DC",
+      "bytes": 8,
+      "text": "Level up",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x001B22E4",
+      "bytes": 4
+    },
+    {
+      "kind": "string",
+      "offset": "0x001B22E8",
+      "bytes": 13,
+      "text": "Maximum HP up",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x001B22F5",
+      "bytes": 3
+    },
+    {
+      "kind": "string",
+      "offset": "0x001B22F8",
+      "bytes": 6,
+      "text": "STR up",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x001B22FE",
+      "bytes": 2
+    },
+    {
+      "kind": "string",
+      "offset": "0x001B2300",
+      "bytes": 6,
+      "text": "VIT up",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x001B2306",
+      "bytes": 2
+    },
+    {
+      "kind": "string",
+      "offset": "0x001B2308",
+      "bytes": 6,
+      "text": "INT up",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x001B230E",
+      "bytes": 2
+    },
+    {
+      "kind": "string",
+      "offset": "0x001B2310",
+      "bytes": 6,
+      "text": "MEN up",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x001B2316",
+      "bytes": 2
+    },
+    {
+      "kind": "string",
+      "offset": "0x001B2318",
+      "bytes": 6,
+      "text": "AGI up",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x001B231E",
+      "bytes": 2
+    },
+    {
+      "kind": "string",
+      "offset": "0x001B2320",
+      "bytes": 6,
+      "text": "DEX up",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x001B2326",
+      "bytes": 2
+    },
+    {
+      "kind": "string",
+      "offset": "0x001B2328",
+      "bytes": 8,
+      "text": "ALI rise",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x001B2330",
+      "bytes": 4
+    },
+    {
+      "kind": "string",
+      "offset": "0x001B2334",
+      "bytes": 8,
+      "text": "ALI fall",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x001B233C",
+      "bytes": 4
+    },
+    {
+      "kind": "string",
+      "offset": "0x001B2340",
+      "bytes": 11,
+      "text": "Luck change",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x001B234B",
+      "bytes": 1
+    }
+  ]
+}

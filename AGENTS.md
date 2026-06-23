@@ -203,9 +203,9 @@ Current result:
 - Code-region SHA256:
   `40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`.
 - Code-region match against baserom: pass.
-- Tracked real-assembler original-MIPS chunks: 27 composites (chunk 0 177 `boot/`;
-  chunks 1–26 in `lib/`: 350, 216, 67, 376, 88, 78, 103, 87, 34, 35, 191, 74, 67, 94, 153, 95, 66, 95, 80, 175, 99, 99, 73, 63, 71, 96) = 3,202 real-assembler
-  source files. Chunks 0–26 (`0x00001000..0x001B1000`) are now fully source-owned as
+- Tracked real-assembler original-MIPS chunks: 28 composites (chunk 0 177 `boot/`;
+  chunks 1–27 in `lib/`: 350, 216, 67, 376, 88, 78, 103, 87, 34, 35, 191, 74, 67, 94, 153, 95, 66, 95, 80, 175, 99, 99, 73, 63, 71, 96, 142) = 3,344 real-assembler
+  source files. Chunks 0–27 (`0x00001000..0x001C1000`) are now fully source-owned as
   named code/data parts (chunk 14: 74 code + 20 data, MIXED — graphics/display-list data
   + DL-builder code; chunk 15: 134 code + 19 data, MIXED — floats/display-list data + the
   OB64 opening-narration rodata; chunk 16: 72 code + 23 data, MIXED — leading scenario
@@ -232,8 +232,11 @@ Current result:
   a ~1.9KB ramp-LUT/packed-record/double-pool island after func_001A42A4; an options-menu string
   pool], incl. ESET loader func_001A6D64, reward-queue writer func_001AF828, 9.3KB dispatcher
   func_001A9290 (editor's "0x1AB030 jump table" refuted as class-promotion CODE), with incoming AND
-  outgoing FUNCTION straddlers); next is chunk 27 (`0x001B1000`, still a generated fallback chunk).
-- Generated fallback chunks: 73.
+  outgoing FUNCTION straddlers; chunk 27: 128 code + 14 data, CODE-dominant MIXED — FP-heavy
+  class/char/encounter/resource code + status/menu string table island + display-list/float/color-LUT
+  island, with incoming AND outgoing FUNCTION straddlers); next is chunk 28 (`0x001C1000`, still a
+  generated fallback chunk).
+- Generated fallback chunks: 72.
 - Assembled-code ROM rebuild command:
 
 ```powershell
@@ -248,7 +251,7 @@ Next source-layout work should continue promoting/splitting tracked
 `tools/promote_original_mips.js` for chunk promotion and `--strict-tracked` only
 after every configured code chunk is tracked.
 
-Chunks 0–26 `0x00001000..0x001B1000` are fully source-owned as named
+Chunks 0–27 `0x00001000..0x001C1000` are fully source-owned as named
 code/data parts (chunk 13: 27 code + 40 data, MIXED — unit-mgmt UI data; chunk 14: 74
 code + 20 data, MIXED — graphics/display-list data + DL-builder code; chunk 15: 134 code
 + 19 data, MIXED — floats/display-list data + the OB64 opening-narration rodata; chunk
@@ -393,10 +396,11 @@ verifiers: 0 boundary moves (LOW note/file fixes only). Dossiers
 `lib-chunk24-…`/`lib-chunk25-…`/`lib-chunk26-…`; data indexes
 `docs/data-index/rev0/chunk{19,20,21,22,23,24,25,26}-data-region-inventory.json` + chunk20/22/23/24/25/26
 string/table indexes.
-Next frontier is **`0x001B1000` (chunk 27)** — FIRST continue the OUTGOING FUNCTION straddler:
-`func_001B0F78` `[0x1B0F78,0x1B1000)` has its read-before-write preamble @`0x1B0F78` + `addiu $sp,-0x18`
-prologue @`0x1B0F80` in chunk 26 and continues into chunk 27 — emit `func_001B0F78_chunk27tail`
-`[0x1B1000,0x1B1070)` first (ends `jr$ra`@`0x1B1068` + delay `addiu $sp,0x18`@`0x1B106C`).
+Next frontier is **`0x001C1000` (chunk 28)** — FIRST continue the OUTGOING FUNCTION straddler:
+`func_001C0FC8` `[0x1C0FC8,0x1C1000)` starts with prologue `addiu $sp,-0x18` at `0x1C0FC8`,
+has no entry preamble, and has no `jr$ra` before the chunk boundary — emit
+`func_001C0FC8_chunk28tail` starting at `0x1C1000` first and confirm its return before splitting
+the rest of chunk 28.
 Coverage now 62.10% (code-only ≈ 50.95%).
 The chunk-split pipeline is tracked:
 `scan_functions` (or `dump_function_context`+`plan_chunk` when parent-detected) →
@@ -2815,9 +2819,9 @@ setup-complete state:
 - Assembler: GNU Binutils 2.39 `mips64-elf-as.exe` with `-EB -mips3 -32`.
 - Setup verifier: `tools/verify_setup.js`.
 - Current verifier result: PASS; 825 archives, 0 unknown bytes, 108 overlap
-  bytes visible, 27 tracked composite real-asm chunks made from 3,202 tracked source
-  files (chunks 0–26 fully source-owned as code/data parts, `0x00001000..0x001B1000`),
-  73 generated fallback chunks, full-source manifest 1,059 entries with
+  bytes visible, 28 tracked composite real-asm chunks made from 3,344 tracked source
+  files (chunks 0–27 fully source-owned as code/data parts, `0x00001000..0x001C1000`),
+  72 generated fallback chunks, full-source manifest 1,059 entries with
   2,469,141 ambiguous bytes preserved explicitly, 3 tracked non-code
   source-owner files / 44,029 bytes, 1,055 generated non-code fallback files /
   35,388,567 bytes, source-manifest rebuild exact, full ROM
@@ -2825,12 +2829,11 @@ setup-complete state:
   `571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A`.
 
 Next phase is either promoting another small non-code owner batch or continuing
-tracked original-MIPS source-ownership into **chunk 27** (`0x001B1000`) — FIRST
-continue the OUTGOING FUNCTION straddler `func_001B0F78` `[0x1B0F78,0x1B1000)`, whose
-read-before-write preamble @`0x1B0F78` + `addiu $sp,-0x18` prologue @`0x1B0F80` are in chunk 26 and
-continue into chunk 27 — emit `func_001B0F78_chunk27tail` `[0x1B1000,0x1B1070)` first (ends
-`jr$ra`@`0x1B1068`). Use `plan_chunk`+`dump_function_context` to seed parent-detected code,
-`scan_functions` for parent-undetected, data-classification swarm for any data. Chunks 0–26 are
-fully source-owned.
+tracked original-MIPS source-ownership into **chunk 28** (`0x001C1000`) — FIRST
+continue the OUTGOING FUNCTION straddler `func_001C0FC8` `[0x1C0FC8,0x1C1000)`, whose
+prologue is in chunk 27 and whose return is in chunk 28. Emit `func_001C0FC8_chunk28tail`
+starting at `0x1C1000` first and confirm its `jr$ra`. Use `plan_chunk`+`dump_function_context`
+to seed parent-detected code, `scan_functions` for parent-undetected, data-classification swarm for
+any data. Chunks 0–27 are fully source-owned.
 There is no tooling blocker. Do not begin semantic C decomp unless the setup
 verifier is green.

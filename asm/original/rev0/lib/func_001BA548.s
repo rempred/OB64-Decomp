@@ -1,0 +1,31 @@
+/*
+ * Original Rev 0 MIPS reference split.
+ * Parent source: asm/original/rev0/code_001B1000_001C1000.s
+ * z64 range: 0x001BA548..0x001BA594 exclusive
+ * Decode comments are aids, not proof of semantic function boundaries.
+ */
+.set noat
+.set noreorder
+.text
+
+/* Frameless leaf. nor a0; lw 0x8023:-0x6308 table; and-mask loop; jr ra at 0x001BA58C + delay (nop) at 0x001BA590. Family of near-identical mask-clear leaves. */
+func_001BA548:
+/* 0x001BA548 0x8022A148 0x00003821 */ .word 0x00003821 # move $a3, $zero
+/* 0x001BA54C 0x8022A14C 0x00042027 */ .word 0x00042027 # nor $a0, $zero, $a0
+/* 0x001BA550 0x8022A150 0x3C068023 */ .word 0x3C068023 # lui $a2, 0x8023
+/* 0x001BA554 0x8022A154 0x24C69CF8 */ .word 0x24C69CF8 # addiu $a2, $a2, -0x6308
+/* 0x001BA558 0x8022A158 0x8CC50000 */ .word 0x8CC50000 # lw $a1, 0x0($a2)
+/* 0x001BA55C 0x8022A15C 0x00001821 */ .word 0x00001821 # move $v1, $zero
+/* 0x001BA560 0x8022A160 0x94A20000 */ .word 0x94A20000 # lhu $v0, 0x0($a1)
+/* 0x001BA564 0x8022A164 0x24630001 */ .word 0x24630001 # addiu $v1, $v1, 0x1
+/* 0x001BA568 0x8022A168 0x00441024 */ .word 0x00441024 # and $v0, $v0, $a0
+/* 0x001BA56C 0x8022A16C 0xA4A20000 */ .word 0xA4A20000 # sh $v0, 0x0($a1)
+/* 0x001BA570 0x8022A170 0x28620004 */ .word 0x28620004 # slti $v0, $v1, 0x4
+/* 0x001BA574 0x8022A174 0x1440FFFA */ .word 0x1440FFFA # bne $v0, $zero, 0x8022A160
+/* 0x001BA578 0x8022A178 0x00000000 */ .word 0x00000000 # nop
+/* 0x001BA57C 0x8022A17C 0x24E70001 */ .word 0x24E70001 # addiu $a3, $a3, 0x1
+/* 0x001BA580 0x8022A180 0x28E20003 */ .word 0x28E20003 # slti $v0, $a3, 0x3
+/* 0x001BA584 0x8022A184 0x1440FFF4 */ .word 0x1440FFF4 # bne $v0, $zero, 0x8022A158
+/* 0x001BA588 0x8022A188 0x24C60004 */ .word 0x24C60004 # addiu $a2, $a2, 0x4
+/* 0x001BA58C 0x8022A18C 0x03E00008 */ .word 0x03E00008 # jr $ra
+/* 0x001BA590 0x8022A190 0x00000000 */ .word 0x00000000 # nop
