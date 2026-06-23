@@ -1,0 +1,38 @@
+/*
+ * Original Rev 0 MIPS reference split.
+ * Parent source: asm/original/rev0/code_00121000_00131000.s
+ * z64 range: 0x0012E8EC..0x0012E950 exclusive
+ * Decode comments are aids, not proof of semantic function boundaries.
+ */
+.set noat
+.set noreorder
+.text
+
+/* frame 0x18; counts non-0xFF entries in relocated 0x801969BA 5-slot row; ends jr $ra at 0x0012E948 + delay 0x0012E94C. */
+/* function boundary candidate: func_0012E8EC, size=404, kind=prologue */
+func_0012E8EC:
+/* 0x0012E8EC 0x8019E4EC 0x27BDFFE8 */ .word 0x27BDFFE8 # addiu $sp, $sp, -0x18
+/* 0x0012E8F0 0x8019E4F0 0xAFBF0010 */ .word 0xAFBF0010 # sw $ra, 0x10($sp)
+/* 0x0012E8F4 0x8019E4F4 0x0C07688A */ .word 0x0C07688A # jal 0x801DA228
+/* 0x0012E8F8 0x8019E4F8 0x00000000 */ .word 0x00000000 # nop
+/* 0x0012E8FC 0x8019E4FC 0x00002021 */ .word 0x00002021 # move $a0, $zero
+/* 0x0012E900 0x8019E500 0x00021840 */ .word 0x00021840 # sll $v1, $v0, 1
+/* 0x0012E904 0x8019E504 0x00621821 */ .word 0x00621821 # addu $v1, $v1, $v0
+/* 0x0012E908 0x8019E508 0x00031880 */ .word 0x00031880 # sll $v1, $v1, 2
+/* 0x0012E90C 0x8019E50C 0x00621823 */ .word 0x00621823 # subu $v1, $v1, $v0
+/* 0x0012E910 0x8019E510 0x3C028019 */ .word 0x3C028019 # lui $v0, 0x8019
+/* 0x0012E914 0x8019E514 0x244269BA */ .word 0x244269BA # addiu $v0, $v0, 0x69BA
+/* 0x0012E918 0x8019E518 0x00621821 */ .word 0x00621821 # addu $v1, $v1, $v0
+/* 0x0012E91C 0x8019E51C 0x24650005 */ .word 0x24650005 # addiu $a1, $v1, 0x5
+/* 0x0012E920 0x8019E520 0x90620000 */ .word 0x90620000 # lbu $v0, 0x0($v1)
+/* 0x0012E924 0x8019E524 0x24630001 */ .word 0x24630001 # addiu $v1, $v1, 0x1
+/* 0x0012E928 0x8019E528 0x384200FF */ .word 0x384200FF # xori $v0, $v0, 0x00FF
+/* 0x0012E92C 0x8019E52C 0x0002102B */ .word 0x0002102B # sltu $v0, $zero, $v0
+/* 0x0012E930 0x8019E530 0x00822021 */ .word 0x00822021 # addu $a0, $a0, $v0
+/* 0x0012E934 0x8019E534 0x0065102A */ .word 0x0065102A # slt $v0, $v1, $a1
+/* 0x0012E938 0x8019E538 0x1440FFF9 */ .word 0x1440FFF9 # bne $v0, $zero, 0x8019E520
+/* 0x0012E93C 0x8019E53C 0x00000000 */ .word 0x00000000 # nop
+/* 0x0012E940 0x8019E540 0x8FBF0010 */ .word 0x8FBF0010 # lw $ra, 0x10($sp)
+/* 0x0012E944 0x8019E544 0x00801021 */ .word 0x00801021 # move $v0, $a0
+/* 0x0012E948 0x8019E548 0x03E00008 */ .word 0x03E00008 # jr $ra
+/* 0x0012E94C 0x8019E54C 0x27BD0018 */ .word 0x27BD0018 # addiu $sp, $sp, 0x18

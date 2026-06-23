@@ -1,0 +1,34 @@
+/*
+ * Original Rev 0 MIPS reference split.
+ * Parent source: asm/original/rev0/code_00121000_00131000.s
+ * z64 range: 0x0012FDFC..0x0012FE58 exclusive
+ * Decode comments are aids, not proof of semantic function boundaries.
+ */
+.set noat
+.set noreorder
+.text
+
+/* Frameless leaf via fall-through after func_0012FBB8's jr/delay slot. Starts at sll $v0,$a0,3 (no prologue). Ends jr $ra@0x0012FE50 + nop delay 0x0012FE54. Internal j 0x801DB708 kept internal. */
+/* 0x0012FDFC 0x8019F9FC 0x000410C0 */ .word 0x000410C0 # sll $v0, $a0, 3
+/* 0x0012FE00 0x8019FA00 0x00441021 */ .word 0x00441021 # addu $v0, $v0, $a0
+/* 0x0012FE04 0x8019FA04 0x00021080 */ .word 0x00021080 # sll $v0, $v0, 2
+/* 0x0012FE08 0x8019FA08 0x3C038019 */ .word 0x3C038019 # lui $v1, 0x8019
+/* 0x0012FE0C 0x8019FA0C 0x00621821 */ .word 0x00621821 # addu $v1, $v1, $v0
+/* 0x0012FE10 0x8019FA10 0x906351CE */ .word 0x906351CE # lbu $v1, 0x51CE($v1)
+/* 0x0012FE14 0x8019FA14 0x240200FF */ .word 0x240200FF # addiu $v0, $zero, 0xFF
+/* 0x0012FE18 0x8019FA18 0x1062000D */ .word 0x1062000D # beq $v1, $v0, 0x8019FA50
+/* 0x0012FE1C 0x8019FA1C 0x00000000 */ .word 0x00000000 # nop
+/* 0x0012FE20 0x8019FA20 0x3C028019 */ .word 0x3C028019 # lui $v0, 0x8019
+/* 0x0012FE24 0x8019FA24 0x904236A9 */ .word 0x904236A9 # lbu $v0, 0x36A9($v0)
+/* 0x0012FE28 0x8019FA28 0x2443FFFE */ .word 0x2443FFFE # addiu $v1, $v0, -0x2
+/* 0x0012FE2C 0x8019FA2C 0x28620065 */ .word 0x28620065 # slti $v0, $v1, 0x65
+/* 0x0012FE30 0x8019FA30 0x14400003 */ .word 0x14400003 # bne $v0, $zero, 0x8019FA40
+/* 0x0012FE34 0x8019FA34 0x00031027 */ .word 0x00031027 # nor $v0, $zero, $v1
+/* 0x0012FE38 0x8019FA38 0x08076DC2 */ .word 0x08076DC2 # j 0x801DB708
+/* 0x0012FE3C 0x8019FA3C 0x24030064 */ .word 0x24030064 # addiu $v1, $zero, 0x64
+/* 0x0012FE40 0x8019FA40 0x000217C3 */ .word 0x000217C3 # sra $v0, $v0, 31
+/* 0x0012FE44 0x8019FA44 0x00621824 */ .word 0x00621824 # and $v1, $v1, $v0
+/* 0x0012FE48 0x8019FA48 0x3C018019 */ .word 0x3C018019 # lui $at, 0x8019
+/* 0x0012FE4C 0x8019FA4C 0xA02336A9 */ .word 0xA02336A9 # sb $v1, 0x36A9($at)
+/* 0x0012FE50 0x8019FA50 0x03E00008 */ .word 0x03E00008 # jr $ra
+/* 0x0012FE54 0x8019FA54 0x00000000 */ .word 0x00000000 # nop

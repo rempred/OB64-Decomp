@@ -1,0 +1,32 @@
+/*
+ * Original Rev 0 MIPS reference split.
+ * Parent source: asm/original/rev0/code_00121000_00131000.s
+ * z64 range: 0x0012FB64..0x0012FBB8 exclusive
+ * Decode comments are aids, not proof of semantic function boundaries.
+ */
+.set noat
+.set noreorder
+.text
+
+/* Frameless leaf entered by fall-through after func_0012F8C0's jr/delay slot. Starts at lw $v0,0xA8($a0) (no addiu $sp prologue). Ends jr $ra@0x0012FBB0 + nop delay 0x0012FBB4. Internal j 0x801DB470 kept internal. */
+/* 0x0012FB64 0x8019F764 0x8C8200A8 */ .word 0x8C8200A8 # lw $v0, 0xA8($a0)
+/* 0x0012FB68 0x8019F768 0x14400003 */ .word 0x14400003 # bne $v0, $zero, 0x8019F778
+/* 0x0012FB6C 0x8019F76C 0x2406FFFF */ .word 0x2406FFFF # addiu $a2, $zero, -0x1
+/* 0x0012FB70 0x8019F770 0x08076D1C */ .word 0x08076D1C # j 0x801DB470
+/* 0x0012FB74 0x8019F774 0x00001021 */ .word 0x00001021 # move $v0, $zero
+/* 0x0012FB78 0x8019F778 0x00402021 */ .word 0x00402021 # move $a0, $v0
+/* 0x0012FB7C 0x8019F77C 0x8C830000 */ .word 0x8C830000 # lw $v1, 0x0($a0)
+/* 0x0012FB80 0x8019F780 0x1066000B */ .word 0x1066000B # beq $v1, $a2, 0x8019F7B0
+/* 0x0012FB84 0x8019F784 0x00001021 */ .word 0x00001021 # move $v0, $zero
+/* 0x0012FB88 0x8019F788 0x1465FFFC */ .word 0x1465FFFC # bne $v1, $a1, 0x8019F77C
+/* 0x0012FB8C 0x8019F78C 0x24840004 */ .word 0x24840004 # addiu $a0, $a0, 0x4
+/* 0x0012FB90 0x8019F790 0x00051080 */ .word 0x00051080 # sll $v0, $a1, 2
+/* 0x0012FB94 0x8019F794 0x3C01801F */ .word 0x3C01801F # lui $at, 0x801F
+/* 0x0012FB98 0x8019F798 0x00220821 */ .word 0x00220821 # addu $at, $at, $v0
+/* 0x0012FB9C 0x8019F79C 0x8C220CB0 */ .word 0x8C220CB0 # lw $v0, 0xCB0($at)
+/* 0x0012FBA0 0x8019F7A0 0x8C420000 */ .word 0x8C420000 # lw $v0, 0x0($v0)
+/* 0x0012FBA4 0x8019F7A4 0x30420031 */ .word 0x30420031 # andi $v0, $v0, 0x0031
+/* 0x0012FBA8 0x8019F7A8 0x38420031 */ .word 0x38420031 # xori $v0, $v0, 0x0031
+/* 0x0012FBAC 0x8019F7AC 0x2C420001 */ .word 0x2C420001 # sltiu $v0, $v0, 0x1
+/* 0x0012FBB0 0x8019F7B0 0x03E00008 */ .word 0x03E00008 # jr $ra
+/* 0x0012FBB4 0x8019F7B4 0x00000000 */ .word 0x00000000 # nop
