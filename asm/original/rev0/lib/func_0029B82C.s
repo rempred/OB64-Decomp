@@ -1,0 +1,33 @@
+/*
+ * Original Rev 0 MIPS reference split.
+ * Parent source: asm/original/rev0/code_00291000_002A1000.s
+ * z64 range: 0x0029B82C..0x0029B87C exclusive
+ * Decode comments are aids, not proof of semantic function boundaries.
+ */
+.set noat
+.set noreorder
+.text
+
+/* prologue addiu$sp,-0x18; loop clearing 0x1C entries; jr@0x29B874 + delay 0x29B878. Un-merged from over-merge: leaf+preamble at 0x29B87C/0x29B9E0 split off. */
+/* function boundary candidate: func_0029B82C, size=436, kind=prologue */
+func_0029B82C:
+/* 0x0029B82C 0x8030B42C 0x27BDFFE8 */ .word 0x27BDFFE8 # addiu $sp, $sp, -0x18
+/* 0x0029B830 0x8030B430 0xAFB00010 */ .word 0xAFB00010 # sw $s0, 0x10($sp)
+/* 0x0029B834 0x8030B434 0x00008021 */ .word 0x00008021 # move $s0, $zero
+/* 0x0029B838 0x8030B438 0xAFBF0014 */ .word 0xAFBF0014 # sw $ra, 0x14($sp)
+/* 0x0029B83C 0x8030B43C 0x3C038023 */ .word 0x3C038023 # lui $v1, 0x8023
+/* 0x0029B840 0x8030B440 0x8C63A974 */ .word 0x8C63A974 # lw $v1, -0x568C($v1)
+/* 0x0029B844 0x8030B444 0x00101080 */ .word 0x00101080 # sll $v0, $s0, 2
+/* 0x0029B848 0x8030B448 0x00431021 */ .word 0x00431021 # addu $v0, $v0, $v1
+/* 0x0029B84C 0x8030B44C 0x8C441944 */ .word 0x8C441944 # lw $a0, 0x1944($v0)
+/* 0x0029B850 0x8030B450 0x10800003 */ .word 0x10800003 # beq $a0, $zero, 0x8030B460
+/* 0x0029B854 0x8030B454 0x26100001 */ .word 0x26100001 # addiu $s0, $s0, 0x1
+/* 0x0029B858 0x8030B458 0x0C01C4B1 */ .word 0x0C01C4B1 # jal 0x800712C4
+/* 0x0029B85C 0x8030B45C 0x00000000 */ .word 0x00000000 # nop
+/* 0x0029B860 0x8030B460 0x2A02001C */ .word 0x2A02001C # slti $v0, $s0, 0x1C
+/* 0x0029B864 0x8030B464 0x1440FFF5 */ .word 0x1440FFF5 # bne $v0, $zero, 0x8030B43C
+/* 0x0029B868 0x8030B468 0x00000000 */ .word 0x00000000 # nop
+/* 0x0029B86C 0x8030B46C 0x8FBF0014 */ .word 0x8FBF0014 # lw $ra, 0x14($sp)
+/* 0x0029B870 0x8030B470 0x8FB00010 */ .word 0x8FB00010 # lw $s0, 0x10($sp)
+/* 0x0029B874 0x8030B474 0x03E00008 */ .word 0x03E00008 # jr $ra
+/* 0x0029B878 0x8030B478 0x27BD0018 */ .word 0x27BD0018 # addiu $sp, $sp, 0x18

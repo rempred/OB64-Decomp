@@ -1,0 +1,233 @@
+{
+  "chunk": 41,
+  "range": "0x00299D44-0x0029A4C0",
+  "generated": "2026-06-23",
+  "dataPartCount": 24,
+  "dataBytes": 1916,
+  "bytesByClass": {
+    "zero_fill": 84,
+    "data": 520,
+    "rodata": 648,
+    "table": 632,
+    "float": 32
+  },
+  "evidence": "Overlay-map heuristic (0 loaded prologues / 0 jr$ra across the span) + per-word classification; pointer values 0x801x are combat-overlay RAM addresses, not linear back-maps. Verified by adversarial data skeptics (no hidden code).",
+  "parts": [
+    {
+      "name": "zero_fill_00299d44",
+      "file": "asm/original/rev0/lib/zero_fill_00299d44.s",
+      "romStart": "0x00299D44",
+      "romEnd": "0x00299D80",
+      "bytes": 60,
+      "class": "zero_fill",
+      "note": "60 bytes all-zero (15 words)."
+    },
+    {
+      "name": "data_00299d80",
+      "file": "asm/original/rev0/lib/data_00299d80.s",
+      "romStart": "0x00299D80",
+      "romEnd": "0x00299E50",
+      "bytes": 208,
+      "class": "data",
+      "note": "Packed binary record blob (~52 words): small byte triples like 0x00E8 0518, 0x00DB 0F08, descending high bytes 0xE8..0xAD; not 0x80xxxxxx pointers, not ASCII, not zero. Index/bitfield style table, type unresolved."
+    },
+    {
+      "name": "data_00299e50",
+      "file": "asm/original/rev0/lib/data_00299e50.s",
+      "romStart": "0x00299E50",
+      "romEnd": "0x00299E84",
+      "bytes": 52,
+      "class": "data",
+      "note": "Mixed packed blob incl. a near-ASCII descending charset run @0x299E58 (bytes 81 86 71 4D / 66 68 67 69 'fhgi' / 65 64 62 ... 5D 51 54 7F) plus binary words; reversed-order char/index table, not a clean string."
+    },
+    {
+      "name": "data_00299e84",
+      "file": "asm/original/rev0/lib/data_00299e84.s",
+      "romStart": "0x00299E84",
+      "romEnd": "0x00299F80",
+      "bytes": 252,
+      "class": "data",
+      "note": "Packed binary blob (~63 words) of 0xE7000000/0xE3xx/0xDFxx/0xFAxx opcodes-as-data interleaved with zero words; bitfield/command-record table, type unresolved (ends with two trailing zero words @0x299F74-0x299F7C)."
+    },
+    {
+      "name": "rodata_00299f80",
+      "file": "asm/original/rev0/lib/rodata_00299f80.s",
+      "romStart": "0x00299F80",
+      "romEnd": "0x00299FA4",
+      "bytes": 36,
+      "class": "rodata",
+      "note": "ASCII string: '    ( Scene Replay: Left Button(not)' (bytes 20 20 20 20 28 ... 6E 29), 0-terminated within word @0x299F9C. (includes trailing null/alignment word @0x299FA0)."
+    },
+    {
+      "name": "table_00299fa4",
+      "file": "asm/original/rev0/lib/table_00299fa4.s",
+      "romStart": "0x00299FA4",
+      "romEnd": "0x00299FE0",
+      "bytes": 60,
+      "class": "table",
+      "note": "RAM-pointer table, 15 words, all 0x8023E2xx descending from 0x8023E2D0 to 0x8023E260 (step ~8); pointers into a 0x8023Exxx data/string pool."
+    },
+    {
+      "name": "rodata_00299fe0",
+      "file": "asm/original/rev0/lib/rodata_00299fe0.s",
+      "romStart": "0x00299FE0",
+      "romEnd": "0x00299FF0",
+      "bytes": 16,
+      "class": "rodata",
+      "note": "ASCII string 'Palatinean Year' (bytes 50 61 6C 61 74 69 6E 65 61 6E 20 59 65 61 72 00), 0-terminated @0x299FEC."
+    },
+    {
+      "name": "table_00299ff0",
+      "file": "asm/original/rev0/lib/table_00299ff0.s",
+      "romStart": "0x00299FF0",
+      "romEnd": "0x0029A01C",
+      "bytes": 44,
+      "class": "table",
+      "note": "RAM-pointer table, 11 words, 0x8023E3xx descending 0x8023E300->0x8023E2D8; pointers into 0x8023Exxx pool."
+    },
+    {
+      "name": "rodata_0029a01c",
+      "file": "asm/original/rev0/lib/rodata_0029a01c.s",
+      "romStart": "0x0029A01C",
+      "romEnd": "0x0029A028",
+      "bytes": 12,
+      "class": "rodata",
+      "note": "ASCII digit string '0123456789' (bytes 30 31 32 33 34 35 36 37 38 39 00 00), 0-terminated/padded."
+    },
+    {
+      "name": "zero_fill_0029a028",
+      "file": "asm/original/rev0/lib/zero_fill_0029a028.s",
+      "romStart": "0x0029A028",
+      "romEnd": "0x0029A030",
+      "bytes": 8,
+      "class": "zero_fill",
+      "note": "8 bytes all-zero between digit string and next pointer table."
+    },
+    {
+      "name": "table_0029a030",
+      "file": "asm/original/rev0/lib/table_0029a030.s",
+      "romStart": "0x0029A030",
+      "romEnd": "0x0029A070",
+      "bytes": 64,
+      "class": "table",
+      "note": "RAM-pointer table, 16 words, 0x8023E3xx/E4xx descending 0x8023E4AC->0x8023E3A0; pointers into 0x8023Exxx pool."
+    },
+    {
+      "name": "rodata_0029a070",
+      "file": "asm/original/rev0/lib/rodata_0029a070.s",
+      "romStart": "0x0029A070",
+      "romEnd": "0x0029A080",
+      "bytes": 16,
+      "class": "rodata",
+      "note": "ASCII string pool 'Saldian\\0Viragore\\0' (53 61 6C 64 69 61 6E 00 56 69 72 61 67 6F 00)."
+    },
+    {
+      "name": "float_0029a080",
+      "file": "asm/original/rev0/lib/float_0029a080.s",
+      "romStart": "0x0029A080",
+      "romEnd": "0x0029A0A0",
+      "bytes": 32,
+      "class": "float",
+      "note": "float32 pool: 0x41F00000 (=30.0f) x3 at +0x00/+0x08/+0x10, each followed by a 0x00000000 word; trailing two zero words @0x29A098-0x29A09C."
+    },
+    {
+      "name": "table_0029a0a0",
+      "file": "asm/original/rev0/lib/table_0029a0a0.s",
+      "romStart": "0x0029A0A0",
+      "romEnd": "0x0029A0B8",
+      "bytes": 24,
+      "class": "table",
+      "note": "RAM-pointer table, 5 words, 0x8022E4xx ascending 0x8022E480->0x8022E4B0 (step 0xC); pointers into 0x8022Exxx pool. (Word @0x29A0B4 is 0 padding.)"
+    },
+    {
+      "name": "data_0029a0b8",
+      "file": "asm/original/rev0/lib/data_0029a0b8.s",
+      "romStart": "0x0029A0B8",
+      "romEnd": "0x0029A0C0",
+      "bytes": 8,
+      "class": "data",
+      "note": "Scalar/packed pair: 0x161C2200 then 0x00000000; small count/flag record preceding the large pointer table."
+    },
+    {
+      "name": "table_0029a0c0",
+      "file": "asm/original/rev0/lib/table_0029a0c0.s",
+      "romStart": "0x0029A0C0",
+      "romEnd": "0x0029A1A0",
+      "bytes": 224,
+      "class": "table",
+      "note": "RAM-pointer table, 56 words, all 0x80231Exx/0x80232xxx (e.g. 0x80231EF0 ... 0x802321BC); pointers into the 0x80231Exx-0x802321xx string/data pool."
+    },
+    {
+      "name": "rodata_0029a1a0",
+      "file": "asm/original/rev0/lib/rodata_0029a1a0.s",
+      "romStart": "0x0029A1A0",
+      "romEnd": "0x0029A218",
+      "bytes": 120,
+      "class": "rodata",
+      "note": "ASCII name pool with space padding: 'Raio  Fogo  Geme oPreta nOcean oTraver as Truenon Ouro  Vento Flama nBranca Somb raAgua  Tier ra Deus' (term/element names, space-/NUL-separated)."
+    },
+    {
+      "name": "table_0029a218",
+      "file": "asm/original/rev0/lib/table_0029a218.s",
+      "romStart": "0x0029A218",
+      "romEnd": "0x0029A244",
+      "bytes": 44,
+      "class": "table",
+      "note": "Small index/pointer table, 11 words: 0x81460000 then 0x8258..0x824F0000 descending (low-half pointers/index pairs), type tentatively pointer/index."
+    },
+    {
+      "name": "rodata_0029a244",
+      "file": "asm/original/rev0/lib/rodata_0029a244.s",
+      "romStart": "0x0029A244",
+      "romEnd": "0x0029A2DC",
+      "bytes": 152,
+      "class": "rodata",
+      "note": "printf-style format-string pool: contains '{C2}%s{X81}%2d{C0}%4d', '%s %.d', '{X84}%s%5d{X4d}{C0}' style sequences (bytes mix of 25 'x', 7B '{', 7D '}', 20 ' ', digits); UI/debug format strings."
+    },
+    {
+      "name": "zero_fill_0029a2dc",
+      "file": "asm/original/rev0/lib/zero_fill_0029a2dc.s",
+      "romStart": "0x0029A2DC",
+      "romEnd": "0x0029A2E0",
+      "bytes": 4,
+      "class": "zero_fill",
+      "note": "4-byte zero separator before the class/term name string pool."
+    },
+    {
+      "name": "rodata_0029a2e0",
+      "file": "asm/original/rev0/lib/rodata_0029a2e0.s",
+      "romStart": "0x0029A2E0",
+      "romEnd": "0x0029A408",
+      "bytes": 296,
+      "class": "rodata",
+      "note": "ASCII string pool with 0x0E/0x0F/0x10 control bytes between entries: 'Rebel','Second Prince','Princess to the Throne','The Progenitor','Kingen','Popen','Caligin','Holy Lord','cEmpire','Revolutionary Army','Eastern Method','ox Church','Southern Division','Eastern Division','Western Division','Central Division','Kingdom of Palatinus' (faction/term names)."
+    },
+    {
+      "name": "table_0029a408",
+      "file": "asm/original/rev0/lib/table_0029a408.s",
+      "romStart": "0x0029A408",
+      "romEnd": "0x0029A460",
+      "bytes": 88,
+      "class": "table",
+      "note": "RAM-pointer table, 21 words, 0x8023BExx-0x8023C5xx (e.g. 0x8023BE00, 0x8023BEE4, ... 0x8023C5D8); pointers into 0x8023Bxxx-0x8023Cxxx pool (some repeated entries)."
+    },
+    {
+      "name": "table_0029a460",
+      "file": "asm/original/rev0/lib/table_0029a460.s",
+      "romStart": "0x0029A460",
+      "romEnd": "0x0029A4B4",
+      "bytes": 84,
+      "class": "table",
+      "note": "RAM-pointer table, 21 words, 0x8023D8xx-0x8023DBxx (0x8023D8B4 ... 0x8023DB30/0x8023DB3C); pointers into 0x8023Dxxx pool, ending 0x8023DB30/0x8023DB30/0x8023DB3C @0x29A4A8-0x29A4B0 (many repeated DB30/DB3C entries)."
+    },
+    {
+      "name": "zero_fill_0029a4b4",
+      "file": "asm/original/rev0/lib/zero_fill_0029a4b4.s",
+      "romStart": "0x0029A4B4",
+      "romEnd": "0x0029A4C0",
+      "bytes": 12,
+      "class": "zero_fill",
+      "note": "12 bytes all-zero trailing pad before code resumes (prologue) at 0x29A4C0."
+    }
+  ]
+}

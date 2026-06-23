@@ -1,0 +1,27 @@
+/*
+ * Original Rev 0 MIPS reference split.
+ * Parent source: asm/original/rev0/code_00291000_002A1000.s
+ * z64 range: 0x0029A030..0x0029A070 exclusive
+ * Decode comments are aids, not proof of semantic function boundaries.
+ */
+.set noat
+.set noreorder
+.text
+
+/* Data region (not executable host code): RAM-pointer table, 16 words, 0x8023E3xx/E4xx descending 0x8023E4AC->0x8023E3A0; pointers into 0x8023Exxx pool.. */
+/* 0x0029A030 0x80309C30 0x8023E4AC */ .word 0x8023E4AC # lb $v1, -0x1B54($at)
+/* 0x0029A034 0x80309C34 0x8023E498 */ .word 0x8023E498 # lb $v1, -0x1B68($at)
+/* 0x0029A038 0x80309C38 0x8023E484 */ .word 0x8023E484 # lb $v1, -0x1B7C($at)
+/* 0x0029A03C 0x80309C3C 0x8023E470 */ .word 0x8023E470 # lb $v1, -0x1B90($at)
+/* 0x0029A040 0x80309C40 0x8023E458 */ .word 0x8023E458 # lb $v1, -0x1BA8($at)
+/* 0x0029A044 0x80309C44 0x8023E43C */ .word 0x8023E43C # lb $v1, -0x1BC4($at)
+/* 0x0029A048 0x80309C48 0x8023E424 */ .word 0x8023E424 # lb $v1, -0x1BDC($at)
+/* 0x0029A04C 0x80309C4C 0x8023E40C */ .word 0x8023E40C # lb $v1, -0x1BF4($at)
+/* 0x0029A050 0x80309C50 0x8023E3F8 */ .word 0x8023E3F8 # lb $v1, -0x1C08($at)
+/* 0x0029A054 0x80309C54 0x8023E3F0 */ .word 0x8023E3F0 # lb $v1, -0x1C10($at)
+/* 0x0029A058 0x80309C58 0x8023E3E8 */ .word 0x8023E3E8 # lb $v1, -0x1C18($at)
+/* 0x0029A05C 0x80309C5C 0x8023E3D4 */ .word 0x8023E3D4 # lb $v1, -0x1C2C($at)
+/* 0x0029A060 0x80309C60 0x8023E3BC */ .word 0x8023E3BC # lb $v1, -0x1C44($at)
+/* 0x0029A064 0x80309C64 0x8023E3AC */ .word 0x8023E3AC # lb $v1, -0x1C54($at)
+/* 0x0029A068 0x80309C68 0x8023E3A8 */ .word 0x8023E3A8 # lb $v1, -0x1C58($at)
+/* 0x0029A06C 0x80309C6C 0x8023E3A0 */ .word 0x8023E3A0 # lb $v1, -0x1C60($at)

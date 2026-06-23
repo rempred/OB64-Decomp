@@ -24,9 +24,9 @@ and replace the active log with a compact current-state summary.
   `original_mips`. A static control-flow audit found no credible code edge into
   the tail (0 branch targets, 0 J/JAL to a known function). Audit:
   `tools/audit_code_region.js` / `docs/CODE_REGION_AUDIT.md`.
-- Current tracked code source mix: forty-one composite real-assembler chunks
-  (chunk 0 177 `boot/`; chunks 1–40 in `lib/`: 350, 216, 67, 376, 88, 78, 103, 87, 34, 35, 191, 74, 67, 94, 153, 95, 66, 95, 80, 175, 99, 99, 73, 63, 71, 96, 142, 97, 103, 122, 86, 198, 109, 120, 134, 164, 180, 232, 155, 159) =
-  **5,203 tracked source files**, plus 59 generated fallback code chunks. **Chunks
+- Current tracked code source mix: forty-two composite real-assembler chunks
+  (chunk 0 177 `boot/`; chunks 1–41 in `lib/`: 350, 216, 67, 376, 88, 78, 103, 87, 34, 35, 191, 74, 67, 94, 153, 95, 66, 95, 80, 175, 99, 99, 73, 63, 71, 96, 142, 97, 103, 122, 86, 198, 109, 120, 134, 164, 180, 232, 155, 159, 160) =
+  **5,363 tracked source files**, plus 58 generated fallback code chunks. **Chunks
   0–39 (`0x00001000..0x00281000`) are now fully source-owned as named code/data
   parts** (chunk 39: 135 code + 19 data + 1 straddler-tail, MIXED — mission-briefing/combat
   display-list code continuing chunks 36-38, wrapping THREE interior data islands (big data
@@ -88,7 +88,7 @@ and replace the active log with a compact current-state summary.
   chunk 37: 170 normal code + 8 data + 2 function straddlers, MIXED - command-dispatcher
   mission-briefing/combat code + a 0x80x pointer/struct/float record-table DATA island
   [0x25E2BC..0x25EE90]);
-  next is chunk 41 (`0x00291000`, still a
+  next is chunk 42 (`0x002A1000`, still a
   generated fallback chunk). The promote-tool merge blocker is FIXED.
 - The parent boundary DB has TWO recurring defects, both fixed when splitting:
   (1) `end_rom` is INCLUSIVE (exclusive end = `end_rom + 4`; do NOT treat the
@@ -359,10 +359,28 @@ Current named sequence:
   ENDS IN DATA — no outgoing straddler; frontier 0x281000 clean. 3 islands carved via
   carve_chunk; adversarial 7 verifiers (4 code + 3 data) ALL structurally CLEAN (only 4 LOW
   note-text fixes). Dossier + data index added. **Chunk 39 source-owned.**
-- Current remainder: none in chunks 0-39 (`0x1000..0x281000` fully source-owned).
-  **Current frontier: `0x00291000` (chunk 41).** No incoming straddler (chunk 39 ended in
-  DATA C tail data). First action: classify the start of `0x00281000` (content/return/prologue
-  scan); do not assume code.
+- Chunk 40 source-ownership `0x00281000..0x00291000` (159 parts: 142 normal code + 16 data
+  + 1 function straddler-head, MIXED): leading DATA L `0x281000..0x281860` (640/480 records
+  continuing chunk 39 + ~314-word RAM-pointer table + Yes/No UI strings + float64 doubles) →
+  CODE C1 (incl. dispatcher `func_00284288`, 87 callees) → DATA M `0x2866E4..0x286BD0` (float32
+  pool + strings + zero-fill + 0x8022Axxx pointer table) → CODE C2 ending in OUTGOING
+  straddler-head `func_00290D50` (`0x290D50..0x291000` → chunk 41; preamble 0x290D50 →
+  prologue 0x290D58). No incoming straddler (started with data). Frameless recoveries (128 B@
+  0x283D94, 224 B@0x286444, 1944 B@0x28F18C) proven CODE; 1 over-split fixed (func_0028A7B0/
+  func_0028A7E4 merged — internal forward branch). Adversarial 6 verifiers ALL clean. Dossier +
+  data index added. **Chunk 40 source-owned.**
+- Chunk 41 source-ownership `0x00291000..0x002A1000` (160 parts: 134 normal code + 24 data
+  + 2 function straddlers, MIXED): incoming straddler-tail `func_00290D50_chunk41tail`
+  (`0x291000..0x2910DC`, jr$ra@0x2910D4) → CODE C1 (FP-heavy) → DATA D `0x299D44..0x29A4C0`
+  (1,916 B: zero-fill + RAM-pointer tables + ASCII pools ['Palatinean Year'/'Saldian'/'Viragore']
+  + 30.0f) → CODE C2 (incl. func_0029BBD8 delay-slot-prologue recovery) → OUTGOING straddler-head
+  `func_002A0EF0` (`0x2A0EF0..0x2A1000` → chunk 42). Fixed 7 spurious straddler-head labels, 9
+  preamble-orphan label conflicts, a 4-byte DATA D gap, and a slice-seam preamble fragment.
+  Adversarial 5 verifiers ALL clean. Dossier + data index added. **Chunk 41 source-owned.**
+- Current remainder: none in chunks 0-41 (`0x1000..0x2A1000` fully source-owned).
+  **Current frontier: `0x002A1000` (chunk 42).** Incoming OUTGOING-straddler from chunk 41:
+  `func_002A0EF0` (prologue `addiu $sp,-0x30` @0x2A0EF0, continues into chunk 42). First action:
+  emit `func_002A0EF0_chunk42tail` starting at `0x002A1000`, confirm its return in chunk 42.
 
 Static dossiers live under `docs/dossiers/` and are the durable evidence notes
 for each promoted source-layout split.
@@ -838,9 +856,9 @@ zero-fill + 640/480 screen-dim records). Chunk 39 ENDS IN DATA — no outgoing s
 Dossiers: `docs/dossiers/lib-chunk3{8,9}-*.md`; chunk-39 data index
 `docs/data-index/rev0/chunk39-data-region-inventory.json`.
 
-Current frontier is **`0x00291000` (chunk 41)**. Coverage
-`0x1000..0x291000` = 2,686,976 B = 94.3056% of the 2,849,204-byte executable
-extent (code-only = 2,287,036 B = 80.2693%).
+Current frontier is **`0x002A1000` (chunk 42)**. Coverage
+`0x1000..0x2A1000` = 2,752,512 B = 96.6068% of the 2,849,204-byte executable
+extent (code-only = 2,350,656 B = 82.5022%).
 
 FIRST for the next run: there is NO incoming straddler (chunk 39 ended in DATA C tail data).
 Classify the start of `0x00281000` from scratch (content/zero/ASCII/pointer-density +
