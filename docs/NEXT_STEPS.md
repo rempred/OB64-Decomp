@@ -15,17 +15,18 @@ Current passing commands:
 node tools/verify_setup.js
 ```
 
-Current source mix: 22 tracked composite real-assembler chunks (chunk 0 177
-`boot/`; chunks 1–21 in `lib/`: 350, 216, 67, 376, 88, 78, 103, 87, 34, 35, 191, 74, 67, 94, 153, 95, 66, 95, 80, 175, 99) = 2,800 tracked
-source files, plus 78 generated fallback chunks. **Chunks 0–21 are fully
-source-owned as named code/data parts** (`0x00001000..0x00161000`; chunk 16: 72 code + 23
+Current source mix: 23 tracked composite real-assembler chunks (chunk 0 177
+`boot/`; chunks 1–22 in `lib/`: 350, 216, 67, 376, 88, 78, 103, 87, 34, 35, 191, 74, 67, 94, 153, 95, 66, 95, 80, 175, 99, 99) = 2,899 tracked
+source files, plus 77 generated fallback chunks. **Chunks 0–22 are fully
+source-owned as named code/data parts** (`0x00001000..0x00171000`; chunk 16: 72 code + 23
 data, MIXED — leading scenario record/pointer/float64 data + the neutral-encounter code path;
 chunk 17: 66 code + 0 data, ALL CODE — char-data/encounter code;
 chunk 18: 95 code + 0 data, ALL CODE — FP-heavy scenario/combat code;
 chunk 19: 64 code + 16 data, MIXED — encounter/dispatcher code + a trailing scenario data region;
 chunk 20: 89 code + 86 data, MIXED — scenario data tables (neutral_encounter 40×20, creature_drop 36×8) + a 125-string game-text pool + encounter/dispatcher code;
-chunk 21: 94 code + 5 data, MIXED — class/character-lookup code + a trailing high-entropy/compressed data region with an outgoing data straddler);
-next is chunk 22 (`0x00161000`).
+chunk 21: 94 code + 5 data, MIXED — class/character-lookup code + a trailing high-entropy/compressed data region with an outgoing data straddler;
+chunk 22: 35 code + 64 data, MIXED — UI/text + weapon-type/terrain resource data wrapping FP-heavy menu/item/legion code, with incoming AND outgoing DATA straddlers);
+next is chunk 23 (`0x00171000`).
 
 The assembled code-region SHA256 is
 `40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`; the full
@@ -102,27 +103,30 @@ node tools/audit_code_region.js
    generates fallback owners for the rest. Keep `node tools/verify_setup.js`
    green after every promotion.
 
-3. Continue into chunk 22.
+3. Continue into chunk 23.
 
-   Chunks 0–21 (`0x00001000..0x00161000`) are fully source-owned as named code/data
-   parts: chunk 0 in `boot/`; chunks 1–21 in `lib/` (dossiers `lib-chunk1-…` …
-   `lib-chunk21-…`). Chunks 13–16, 19, 20, 21 are MIXED; chunks 17–18 are ALL CODE. Chunk 21
-   (99 parts: 94 code + 5 data) is class/character-lookup CODE (`0x15105C..0x15FBF0`, incl.
-   the `classLookup_full` lead @0x1591FC named conservatively `func_001591FC`) + a trailing
-   high-entropy/compressed DATA region (`0x15FBF0..0x161000`) with an outgoing data straddler.
-   Adversarial: 1 fix (missed frameless leaf at 0x15F838); the data-hunter confirmed no hidden
-   code (0 prologues/returns). Data index
-   `docs/data-index/rev0/chunk21-data-region-inventory.json`.
+   Chunks 0–22 (`0x00001000..0x00171000`) are fully source-owned as named code/data
+   parts: chunk 0 in `boot/`; chunks 1–22 in `lib/` (dossiers `lib-chunk1-…` …
+   `lib-chunk22-…`). Chunks 13–16, 19, 20, 21, 22 are MIXED; chunks 17–18 are ALL CODE. Chunk 22
+   (99 parts: 35 code + 64 data) is a leading DATA region (incoming straddler-tail + packed/
+   bitmap blobs + `0x801F/0x8021` pointer & float pools + decoded ASCII pools: weapon/armor
+   type-name table @0x163FC0, terrain+battle/legion/item UI message pool @0x1650A0) wrapping
+   FP-heavy menu/item/legion CODE (`0x165FC0..0x16FB90`; entry `func_00165FC0` preamble-orphan)
+   then a trailing DATA region (UI strings + GBI/RDP display-list data + outgoing `0xF83E`
+   packed straddler `data_001708C8_chunk22head` into chunk 23). Adversarial: 6 verifiers all
+   CLEAN (1 kind correction + 1 rodata-seam merge + 4 note nits). Data index
+   `docs/data-index/rev0/chunk22-data-region-inventory.json` + 3 decoded string-pool exports.
 
-   **Next frontier: `0x00161000` (chunk 22).** FIRST continue the OUTGOING DATA straddler:
-   `data_0015FDF8_chunk21head` `[0x15FDF8,0x161000)` is a packed small-byte stream (values
-   0x0F-0x2B, no terminator) continuing into chunk 22; emit the chunk-22 tail file
-   `data_00161000_chunk22tail` first and prove its end (test against the LZSS decoder if a
-   header appears — the chunk-21 trailing blob is high-entropy/possibly compressed). Pipeline:
-   `plan_chunk`/`slice_chunk --disasm`/`check_splits`/`check_boundaries` + analysis +
+   **Next frontier: `0x00171000` (chunk 23).** FIRST continue the OUTGOING DATA straddler:
+   `data_001708C8_chunk22head` `[0x1708C8,0x171000)` is a packed `0xF83E`-family halfword stream
+   (no terminator) continuing into chunk 23; emit the chunk-23 tail file
+   `data_00171000_chunk23tail` first and prove its end (test against the LZSS decoder if a
+   header appears). Chunk 23 is MIXED with **6 regions** (data + code1 + data island1 + code2 +
+   data island2 + code3) and ends in a FUNCTION straddler-head `func_0017FF4C` into chunk 24.
+   Pipeline: `plan_chunk`/`slice_chunk --disasm`/`check_splits`/`check_boundaries` + analysis +
    adversarial swarms (Workflow) + a data-classification/index/export swarm for data regions.
-   Coverage now 50.60% (code-only ≈ 42.44%). See the DECOMP_LOG "Next Frontier" and
-   `docs/dossiers/lib-chunk21-151000-161000.md`.
+   Coverage now 52.90% (code-only ≈ 43.84%). See the DECOMP_LOG "Next Frontier" and
+   `docs/dossiers/lib-chunk22-161000-171000.md`.
 
 4. Keep the setup gate green.
 

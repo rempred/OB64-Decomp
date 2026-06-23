@@ -1,0 +1,25 @@
+/*
+ * Original Rev 0 MIPS reference split.
+ * Parent source: asm/original/rev0/code_00161000_00171000.s
+ * z64 range: 0x001701F0..0x00170228 exclusive
+ * Decode comments are aids, not proof of semantic function boundaries.
+ */
+.set noat
+.set noreorder
+.text
+
+/* Data region (not executable host code): Packed-halfword ascending blob. Raw: 0x08851083 0x198D7056 0x22932AD3 0x2AD53317 0x3B59439B 0x43DD4C5F 0x54A185ED 0xB6F3CF3B 0x55943B85 0xF7E7B5C1 0xF78DF7B5 0x29079C61 0xA4A5735B 0xB5690001 then 0x00010001 0x00010001. Looks like a 16-bit value table with a trailing 0x0001 marker run; not verified. [name-token: data_001701F0_packed_halfwords]. */
+/* 0x001701F0 0x801DFDF0 0x08851083 */ .word 0x08851083 # j 0x8214420C
+/* 0x001701F4 0x801DFDF4 0x198D7056 */ .word 0x198D7056 # blez $t4, 0x801FBF50
+/* 0x001701F8 0x801DFDF8 0x22932AD3 */ .word 0x22932AD3 # addi $s3, $s4, 0x2AD3
+/* 0x001701FC 0x801DFDFC 0x2AD53317 */ .word 0x2AD53317 # slti $s5, $s6, 0x3317
+/* 0x00170200 0x801DFE00 0x3B59439B */ .word 0x3B59439B # xori $t9, $k0, 0x439B
+/* 0x00170204 0x801DFE04 0x43DD4C5F */ .word 0x43DD4C5F # cop0_0x1E
+/* 0x00170208 0x801DFE08 0x54A185ED */ .word 0x54A185ED # bnel $a1, $at, 0x801C15C0
+/* 0x0017020C 0x801DFE0C 0xB6F3CF3B */ .word 0xB6F3CF3B # sdr $s3, -0x30C5($s7)
+/* 0x00170210 0x801DFE10 0x55943B85 */ .word 0x55943B85 # bnel $t4, $s4, 0x801EEC28
+/* 0x00170214 0x801DFE14 0xF7E7B5C1 */ .word 0xF7E7B5C1 # sdc1 $f7, -0x4A3F($ra)
+/* 0x00170218 0x801DFE18 0xF78DF7B5 */ .word 0xF78DF7B5 # sdc1 $f13, -0x84B($gp)
+/* 0x0017021C 0x801DFE1C 0x29079C61 */ .word 0x29079C61 # slti $a3, $t0, -0x639F
+/* 0x00170220 0x801DFE20 0xA4A5735B */ .word 0xA4A5735B # sh $a1, 0x735B($a1)
+/* 0x00170224 0x801DFE24 0xB5690001 */ .word 0xB5690001 # sdr $t1, 0x1($t3)

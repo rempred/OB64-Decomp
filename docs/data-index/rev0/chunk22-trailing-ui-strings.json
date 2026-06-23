@@ -1,0 +1,250 @@
+{
+  "source": "build/original-mips/rev0/code_00161000_00171000.s",
+  "rangeZ64": [
+    "0x0016FE40",
+    "0x0016FF34"
+  ],
+  "totalBytes": 244,
+  "encoding": "ASCII, NUL-terminated, big-endian (z64) byte order; @-prefixed inline control codes left verbatim",
+  "title": "Chunk-22 trailing UI prompts + stat-label abbreviations (0x16FE40)",
+  "stringCount": 18,
+  "atCodeTally": {},
+  "atCodeSemantics": "UNRESOLVED — @0..@3/@w/@c/@e are inline formatting/control codes; exact runtime meaning not decoded",
+  "confidence": "high (printable ASCII text); control-code semantics hypothesis-grade",
+  "segments": [
+    {
+      "kind": "string",
+      "offset": "0x0016FE40",
+      "bytes": 19,
+      "text": "Is this acceptable?",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x0016FE53",
+      "bytes": 1
+    },
+    {
+      "kind": "string",
+      "offset": "0x0016FE54",
+      "bytes": 26,
+      "text": "The current action will be",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x0016FE6E",
+      "bytes": 2
+    },
+    {
+      "kind": "string",
+      "offset": "0x0016FE70",
+      "bytes": 18,
+      "text": "canceled. Proceed?",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x0016FE82",
+      "bytes": 2
+    },
+    {
+      "kind": "string",
+      "offset": "0x0016FE84",
+      "bytes": 4,
+      "text": "\\x82\\xC8\\x82\\xB5",
+      "atCodes": {},
+      "nonPrintable": 4
+    },
+    {
+      "kind": "nul",
+      "offset": "0x0016FE88",
+      "bytes": 4
+    },
+    {
+      "kind": "string",
+      "offset": "0x0016FE8C",
+      "bytes": 8,
+      "text": "\\x90\\xCF\\x8B\\xC9\\x8DU\\x8C\\x82",
+      "atCodes": {},
+      "nonPrintable": 7
+    },
+    {
+      "kind": "nul",
+      "offset": "0x0016FE94",
+      "bytes": 4
+    },
+    {
+      "kind": "string",
+      "offset": "0x0016FE98",
+      "bytes": 8,
+      "text": "\\x8F\\xC1\\x8B\\xC9\\x8DU\\x8C\\x82",
+      "atCodes": {},
+      "nonPrintable": 7
+    },
+    {
+      "kind": "nul",
+      "offset": "0x0016FEA0",
+      "bytes": 4
+    },
+    {
+      "kind": "string",
+      "offset": "0x0016FEA4",
+      "bytes": 8,
+      "text": "\\x83J\\x83X\\x83^\\x83\\x80",
+      "atCodes": {},
+      "nonPrintable": 5
+    },
+    {
+      "kind": "nul",
+      "offset": "0x0016FEAC",
+      "bytes": 4
+    },
+    {
+      "kind": "string",
+      "offset": "0x0016FEB0",
+      "bytes": 4,
+      "text": "Dir.",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x0016FEB4",
+      "bytes": 4
+    },
+    {
+      "kind": "string",
+      "offset": "0x0016FEB8",
+      "bytes": 4,
+      "text": "Hit.",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x0016FEBC",
+      "bytes": 4
+    },
+    {
+      "kind": "string",
+      "offset": "0x0016FEC0",
+      "bytes": 4,
+      "text": "Eva.",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x0016FEC4",
+      "bytes": 4
+    },
+    {
+      "kind": "string",
+      "offset": "0x0016FEC8",
+      "bytes": 4,
+      "text": "Gua.",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x0016FECC",
+      "bytes": 4
+    },
+    {
+      "kind": "string",
+      "offset": "0x0016FED0",
+      "bytes": 4,
+      "text": "Int.",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x0016FED4",
+      "bytes": 4
+    },
+    {
+      "kind": "string",
+      "offset": "0x0016FED8",
+      "bytes": 4,
+      "text": "Ret.",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x0016FEDC",
+      "bytes": 4
+    },
+    {
+      "kind": "string",
+      "offset": "0x0016FEE0",
+      "bytes": 4,
+      "text": "Gua.",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x0016FEE4",
+      "bytes": 4
+    },
+    {
+      "kind": "string",
+      "offset": "0x0016FEE8",
+      "bytes": 4,
+      "text": "Int.",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x0016FEEC",
+      "bytes": 4
+    },
+    {
+      "kind": "string",
+      "offset": "0x0016FEF0",
+      "bytes": 4,
+      "text": "Ret.",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x0016FEF4",
+      "bytes": 4
+    },
+    {
+      "kind": "string",
+      "offset": "0x0016FEF8",
+      "bytes": 30,
+      "text": "Cannot change the option while",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x0016FF16",
+      "bytes": 2
+    },
+    {
+      "kind": "string",
+      "offset": "0x0016FF18",
+      "bytes": 26,
+      "text": "the unit leader is absent.",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x0016FF32",
+      "bytes": 2
+    }
+  ]
+}

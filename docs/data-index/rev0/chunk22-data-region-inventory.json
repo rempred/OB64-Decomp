@@ -1,0 +1,764 @@
+{
+  "chunk": 22,
+  "chunkRangeZ64": [
+    "0x00161000",
+    "0x00171000"
+  ],
+  "mixed": true,
+  "dataRegions": [
+    {
+      "name": "leading UI/text + type-name + terrain resource block (interleaved packed/bitmap blobs, 0x801F/0x8021 pointer & float pools, ASCII pools)",
+      "rangeZ64": [
+        "0x00161000",
+        "0x00165FC0"
+      ]
+    },
+    {
+      "name": "trailing packed-halfword data + UI strings + GBI/RDP display-list data + outgoing packed-halfword straddler",
+      "rangeZ64": [
+        "0x0016FB90",
+        "0x00171000"
+      ]
+    }
+  ],
+  "totalDataBytes": 25648,
+  "classification": "mixed parsed + raw-but-classified; ASCII pools decoded byte-exactly (weapon/armor type names, terrain names, battle/legion/item UI messages, stat-label abbreviations, {Cn} color tokens); pointer tables + float pools parsed; packed/bitmap/high-entropy blobs raw-but-classified (no field semantics, possibly compressed marked as hypothesis); no hidden code (0 prologues/returns in both data regions, adversarially confirmed by 6 verifiers all-clean)",
+  "byClassBytes": {
+    "packed/unknown": 20540,
+    "zero-fill": 600,
+    "ascii-string": 3620,
+    "ram-pointer-table": 792,
+    "ieee754-const": 96
+  },
+  "partCount": 64,
+  "codeRegion": {
+    "rangeZ64": [
+      "0x00165FC0",
+      "0x0016FB90"
+    ],
+    "note": "35 code parts. Entry func_00165FC0 is a preamble-orphan (data->code boundary at the lui $v1,0x801F / lw $v1,0x3658 read-before-write pair, $v1 first read at beq 0x166010). func_0016A56C is a lower-confidence preamble fold (body redundantly reloads $a0 at 0x16A600 — recorded honestly). Parent lead: growth-table consumer near func_00167DE0 (heuristic, RRP 0x80216da0; name stays conservative). All overlay j 0x8021xxxx tail-jumps + jr $reg dispatchers kept internal."
+  },
+  "incomingStraddler": {
+    "part": "data_00161000_chunk22tail",
+    "rangeZ64": [
+      "0x00161000",
+      "0x00161388"
+    ],
+    "note": "INCOMING DATA STRADDLER (tail): continuation of chunk-21 data_0015FDF8_chunk21head packed small-byte stream (0x0F/0x13/0x2B band); ends byte-exact at 0x161388 (0x13131313@0x161384 -> 0x00110000@0x161388 alphabet break, adversarially confirmed)."
+  },
+  "outgoingStraddler": {
+    "part": "data_001708C8_chunk22head",
+    "rangeZ64": [
+      "0x001708C8",
+      "0x00171000"
+    ],
+    "note": "OUTGOING DATA STRADDLER (head): contiguous 0xF83E-family packed-halfword structure beginning byte-exact at 0x1708C8 (after zero pad 0x1708B4-0x1708C4), running with no terminator to 0x171000; continues into chunk 23 (data_00171000_chunk23tail, which starts 0xF83EF83E)."
+  },
+  "parentEvidence": "Code overlay-relocated to runtime 0x8021xxxx band (scenario-state overlay); symbols_v2 ram= values (0x801d5xxx) are the WRONG linear map (corrected via runtime_ram_primary). CORRECTION to parent guess: the big ASCII pool at 0x1650A0 is terrain names + battle/legion/item UI messages, NOT a weapon-name table; the actual weapon/armor TYPE-name table is at 0x163FC0..0x1641C4 (Sword..Garment, embedded \u000e/\u0010/\u000f format codes). No LHA archive entries, item/class-stat tables, or sprite/anim catalogs in range (parent artifacts).",
+  "entries": [
+    {
+      "part": "data_00161000_chunk22tail",
+      "rangeZ64": [
+        "0x00161000",
+        "0x00161388"
+      ],
+      "bytes": 904,
+      "class": "packed/unknown",
+      "state": "raw-but-classified",
+      "note": "Incoming straddler-tail: continuation of the chunk-21 packed small-byte stream (data_0015FDF8_chunk21head). Densely packed bytes drawn from a tiny alphabet {0x13,0x2B,0x0E,0x0D,0x0C,0x09,0x0B} with the previous chunk's dominant 0x13/0x2B run still present at the start (raw words 0x13132B13,0x13131313,0x2B0F2B13,0x2B0E2B13,0x132B0E2B). Looks like packed/compressed or a nibble/small-index stream (HYPOTHESIS). The stream ENDS at 0x161384 (last word 0x13131313); proof of transition: the very next word at 0x00161388 is 0x00110000 (sll-decode), a clean break out of the {0x13/0x2B/0x0E} alphabet into a different high-entropy block, so the straddler tail terminates here."
+    },
+    {
+      "part": "data_00161388",
+      "rangeZ64": [
+        "0x00161388",
+        "0x001613B8"
+      ],
+      "bytes": 48,
+      "class": "packed/unknown",
+      "state": "raw-but-classified",
+      "note": "Short transitional high-entropy block immediately after the packed-byte stream ends. Raw words 0x00110000,0x26163606,0x46263319,0x400C2613,0x39004C26,0x2329202C,0x23163609,0x49281434,0x08482916,0x36034324,0x18380444,0x00000000. Mixed byte values, no floats/pointers/ascii; ends just before a 0xDF000000 marker. HYPOTHESIS: a small packed parameter/header table preceding the first 0xDF-delimited asset block. [name-token: data_00161388_intro]"
+    },
+    {
+      "part": "zero_fill_001613B8",
+      "rangeZ64": [
+        "0x001613B8",
+        "0x001613C0"
+      ],
+      "bytes": 8,
+      "class": "zero-fill",
+      "state": "parsed",
+      "note": "Two pure-zero words (0x00000000 0x00000000) at 0x1613B8-0x1613BC. Padding/alignment gap."
+    },
+    {
+      "part": "data_001613C0",
+      "rangeZ64": [
+        "0x001613C0",
+        "0x001614B8"
+      ],
+      "bytes": 248,
+      "class": "packed/unknown",
+      "state": "raw-but-classified",
+      "note": "First 0xDF000000-led asset block. Header pattern 0xDF000000 0x00000000 (8-byte block marker recurring throughout the region), then repeating high-byte record rows. Raw evidence: 0x21092249,0x212B41CB,0x4A51734D,0x734B94D3,0x8D5D9497,0x9CDBAD61,0xBDE1C631,0xEE26FFFF repeating with a 0x20-byte (0x20) cadence (the 8-word group 0x..2249/0x212B41CB/0x4A51734D/0x734B..../0x8D5D9497/0x9CDBAD61/0xBDE1C631/0xEE26FFFF recurs ~6x). No ascii; values look like packed graphics/gradient ramp data. HYPOTHESIS: encoded texture or color-ramp rows, stride 0x20. [name-token: data_001613C0_block_DF]"
+    },
+    {
+      "part": "data_001614B8",
+      "rangeZ64": [
+        "0x001614B8",
+        "0x00161938"
+      ],
+      "bytes": 1152,
+      "class": "packed/unknown",
+      "state": "raw-but-classified",
+      "note": "Large bitmap/fill block dominated by byte 0xEE with sparse 0x07/0x77/0x00 bits. Raw words 0xE000EE0E,0xEEE0000E,0xE0EEEEEE,0x07770E07,0xE07EEEEE,0x7EEEE070,0xE0707EE0,0x07E07E07. Long pure-0xEEEEEEEE runs (e.g. 0x161614..0x161634, 0x16179C..0x1617D4) interleaved with structured 0x07/0x7E/0xE0 edges. Strongly resembles a 1-/4-bpp packed image or sprite mask where 0xE is the background nibble (HYPOTHESIS). No floats/pointers/ascii. [name-token: data_001614B8_bitmap_EE]"
+    },
+    {
+      "part": "data_00161938",
+      "rangeZ64": [
+        "0x00161938",
+        "0x00161B40"
+      ],
+      "bytes": 520,
+      "class": "packed/unknown",
+      "state": "raw-but-classified",
+      "note": "0xDF000000 0x00000000 marker at 0x161938-0x16193C, then a bitmap/texture block dominated by byte 0xDD with embedded 0x77/0x88/0x99/0xCC/0xEC/0x33 detail. Raw words 0xDD77DDDD,0xDDDDDDDD,0xDDE9DDDD,0xDECEE9DD,0xDD388DDD,0x56655BDD,0xECCCCEE9,0x33CCC23E. Trailing long 0xDDDDDDDD run (0x161B0C..0x161B3C). HYPOTHESIS: 4bpp packed image rows, background nibble 0xD; no floats/pointers/ascii. [name-token: data_00161938_bitmap_DD]"
+    },
+    {
+      "part": "data_00161B40",
+      "rangeZ64": [
+        "0x00161B40",
+        "0x00161B88"
+      ],
+      "bytes": 72,
+      "class": "packed/unknown",
+      "state": "raw-but-classified",
+      "note": "0xDF000000 0x00000000 marker then a small high-entropy record block. Raw words 0x000121BB,0x5B315DBF,0x0E610DCB,0x04812A49,0x3B4995D7,0xA65B6C89,0xF763EE26,0x5295FFFF,0x18C7294B,0x3A1F4A53,0x4D1B5A07,0x5DBF5B31,0x6B5B9519,0xAD6BD68D,0xDEF7EE26,0xF761FFFF. Mixed bytes ascending-ish ramp ending in 0xFFFF; no ascii. HYPOTHESIS: packed gradient/palette or codebook entry. [name-token: data_00161B40_block_DF]"
+    },
+    {
+      "part": "data_00161B88",
+      "rangeZ64": [
+        "0x00161B88",
+        "0x00161C10"
+      ],
+      "bytes": 136,
+      "class": "packed/unknown",
+      "state": "raw-but-classified",
+      "note": "0xDF000000 0x00000000 marker, a small header (0x00001000,0x00000000,0x00023123,0x20045400), then a block dominated by byte 0x33 with 0x32/0x10/0x36/0x53 detail. Raw words 0x00233333,0x34233200,0x01333333,0x42333310,0x02333332,0x53333310,0x33333200,0x23333333. HYPOTHESIS: 4bpp packed image rows, background nibble 0x3; no floats/pointers/ascii. [name-token: data_00161B88_block_DF_33]"
+    },
+    {
+      "part": "data_00161C10",
+      "rangeZ64": [
+        "0x00161C10",
+        "0x00161C38"
+      ],
+      "bytes": 40,
+      "class": "packed/unknown",
+      "state": "raw-but-classified",
+      "note": "0xDF000000 0x00000000 marker then a short high-entropy block: 0xAD5EAD1F,0x945B83D5,0xACDF8C17,0x941B0000 followed by four zero words (0x00000000 x4 at 0x161C28-0x161C34). No ascii. HYPOTHESIS: small packed header/record with trailing zero padding. [name-token: data_00161C10_block_DF]"
+    },
+    {
+      "part": "data_00161C38",
+      "rangeZ64": [
+        "0x00161C38",
+        "0x00161C68"
+      ],
+      "bytes": 48,
+      "class": "packed/unknown",
+      "state": "raw-but-classified",
+      "note": "0xDF000000 0x00000000 marker then an ascending byte-ramp block: 0x41CB6B5B,0x6C1B759B,0x86B7851B,0x8DDB965B,0x9DA39E9B,0xA535B66B,0xCEADDEF7,0xEE26FFFF. Monotone-rising high bytes ending in 0xFFFF — looks like a color/intensity ramp (HYPOTHESIS). No ascii/pointers. [name-token: data_00161C38_ramp_DF]"
+    },
+    {
+      "part": "data_00161C68",
+      "rangeZ64": [
+        "0x00161C68",
+        "0x00161EE8"
+      ],
+      "bytes": 640,
+      "class": "packed/unknown",
+      "state": "raw-but-classified",
+      "note": "0xDF000000 0x00000000 marker (at 0x161C60) precedes this block dominated by byte 0x11 with 0xEE/0x22/0xCC/0x44/0x55/0x66/0x77 detail and long 0x11111111 runs (0x161D90..0x161DC8, 0x161EE0..0x161EE4). Raw words 0x1111111E,0xEEF11111,0x111111E2,0x22FCCA11,0x1111CCCA,0x1E1E22AA,0xFC65677A. A near-duplicate of this block reappears (see 0x161EF0 sibling). HYPOTHESIS: 4bpp packed sprite, background nibble 0x1; no floats/ascii. [name-token: data_00161C68_bitmap_11]"
+    },
+    {
+      "part": "data_00161EE8",
+      "rangeZ64": [
+        "0x00161EE8",
+        "0x00161F18"
+      ],
+      "bytes": 48,
+      "class": "packed/unknown",
+      "state": "raw-but-classified",
+      "note": "0xDF000000 0x00000000 marker then another ascending high-byte ramp: 0xDEF5EE26,0xCE6DDE19,0xBE1BA5DB,0x9DD985D9,0x9D216D37,0x845B5B75,0x6B9539F1,0x4A510883. HYPOTHESIS: color/intensity ramp or codebook row; no ascii/pointers. [name-token: data_00161EE8_ramp_DF]"
+    },
+    {
+      "part": "data_00161F18",
+      "rangeZ64": [
+        "0x00161F18",
+        "0x00162218"
+      ],
+      "bytes": 768,
+      "class": "packed/unknown",
+      "state": "raw-but-classified",
+      "note": "0xDF000000 0x00000000 marker (0x161F10) then a large structured bitmap block built from nibbles E/4/D/7 in a tight 0x10-byte (16-byte) row cadence. Raw words 0x44444444,0x4EEEEEEE,0xEEEEEEEE,0x4DDDD4DD,0xDD4DDDDD,0x47E447EE,0x77EE77EE,0xE444E444. Repeating 4-word cells like (0x4EEEEEEE 0xEEEEEEEE 0x4DDDD44D 0xD44DD4DD). Strong texture/tile appearance (HYPOTHESIS: 4bpp image, 16-byte stride rows); no floats/ascii. [name-token: data_00161F18_bitmap_E4D]"
+    },
+    {
+      "part": "data_00162218",
+      "rangeZ64": [
+        "0x00162218",
+        "0x00162540"
+      ],
+      "bytes": 808,
+      "class": "packed/unknown",
+      "state": "raw-but-classified",
+      "note": "0xDF000000 0x00000000 marker (0x162218) then a bitmap block dominated by byte 0xCC with E/B/4/D/6/9/7/8 detail and long 0xCCCCCCCC runs. Raw words 0xCCCCCCCE,0xCCCCCCCC,0xCCCCCCEB,0xEECCCCCC,0xCCCCCEBB,0xBBEECCCC,0xCCCCE44B,0xBB24EE79. Organized into ~0x10-byte rows (e.g. CCCC.. CCCC.. CCCCxxxx xxxxCCCC). HYPOTHESIS: 4bpp packed image, background nibble 0xC; no floats/ascii. [name-token: data_00162218_bitmap_CC]"
+    },
+    {
+      "part": "data_00162540",
+      "rangeZ64": [
+        "0x00162540",
+        "0x00162568"
+      ],
+      "bytes": 40,
+      "class": "packed/unknown",
+      "state": "raw-but-classified",
+      "note": "0xDF000000 0x00000000 marker then a small high-entropy record: 0x00015B3F,0x5B315C77,0x5DBFA6AF,0xBF7563D9,0x749795D7,0xD697F763,0xEE26F7BD,0x5295FFFF. Ends in 0xFFFF; no ascii. HYPOTHESIS: packed header/ramp row. [name-token: data_00162540_block_DF]"
+    },
+    {
+      "part": "data_00162568",
+      "rangeZ64": [
+        "0x00162568",
+        "0x00162670"
+      ],
+      "bytes": 264,
+      "class": "packed/unknown",
+      "state": "raw-but-classified",
+      "note": "0xDF000000 0x00000000 marker then another 0xCC-dominated bitmap block with 0/2/D/4/6/B/3/A detail. Raw words 0xCCCCC0CC,0xCCCCC222,0x2222CCCC,0xCCCC0D2C,0xC22227DD,0xDDDD0CCC,0x081110DD,0x57200044. HYPOTHESIS: 4bpp packed image rows (background 0xC); no floats/ascii. [name-token: data_00162568_bitmap_CC]"
+    },
+    {
+      "part": "data_00162670",
+      "rangeZ64": [
+        "0x00162670",
+        "0x00162698"
+      ],
+      "bytes": 40,
+      "class": "packed/unknown",
+      "state": "raw-but-classified",
+      "note": "0xDF000000 0x00000000 marker then an ascending high-byte ramp: 0x529563D7,0x84DF8397,0x95A1959D,0xA457AEE3,0xB7D7B59D,0xCD5FE5DB,0xEE26EFBB,0xF663FFFF. HYPOTHESIS: color/intensity ramp; no ascii/pointers. [name-token: data_00162670_ramp_DF]"
+    },
+    {
+      "part": "data_00162698",
+      "rangeZ64": [
+        "0x00162698",
+        "0x001626C0"
+      ],
+      "bytes": 40,
+      "class": "packed/unknown",
+      "state": "raw-but-classified",
+      "note": "0xDF000000 0x00000000 marker then a short mixed block with embedded zeros: 0x00005A17,0xCEF3FFFF,0x00000000,0x0000FFFF,0x00000000,0x00000000,0x00000000,0x00000000. Mostly small values and 0xFFFF sentinels; trailing zero words. HYPOTHESIS: tiny header/control record with zero padding. [name-token: data_00162698_block_DF]"
+    },
+    {
+      "part": "data_001626C0",
+      "rangeZ64": [
+        "0x001626C0",
+        "0x00162708"
+      ],
+      "bytes": 72,
+      "class": "packed/unknown",
+      "state": "raw-but-classified",
+      "note": "0xDF000000 0x00000000 marker then a run of 0x00010001 halfword pairs (twelve words 0x00010001 at 0x1626C8..0x1626F8 with one interruption 0x00012109/0xEE2694D3 at 0x1626E0), closing 0x0001FFFF/0xEE265A17. Pattern of repeated 16-bit 0x0001 values. HYPOTHESIS: packed 16-bit count/index array or RLE control stream (NOT a RAM-pointer table); no ascii. [name-token: data_001626C0_table_0001]"
+    },
+    {
+      "part": "data_00162708",
+      "rangeZ64": [
+        "0x00162708",
+        "0x00162D30"
+      ],
+      "bytes": 1576,
+      "class": "packed/unknown",
+      "state": "raw-but-classified",
+      "note": "0xDF000000 0x00000000 marker (0x162708) then a very large striped texture block in a strict 16-byte (0x10) row cadence: every row begins 0xB9FE.... and ends ....FEB9B8B8. Raw evidence rows 0xB9FEFEFE/0xFEFEFEFE/0xFEFEFEFE/0xFEB9B8B8 and 0xD6B9B9B9/0xB9B9B9B9/0xB9B9B9B9/0xB9D6B8B8. Dominant bytes 0xFE/0xB9/0xB8 with C/D/E/F detail (0xC3,0xD2,0xED,0xF1,0xF5...). Classic decoded sprite/portrait texture appearance (HYPOTHESIS: 8bpp or 4bpp image, 16-byte stride). No floats/ascii/pointers. [name-token: data_00162708_bitmap_B9FE]"
+    },
+    {
+      "part": "data_00162D30",
+      "rangeZ64": [
+        "0x00162D30",
+        "0x00162EA4"
+      ],
+      "bytes": 372,
+      "class": "packed/unknown",
+      "state": "raw-but-classified",
+      "note": "0xDF000000 0x00000000 marker then a long uniform run of 0x00010001 halfword pairs (0x162D38..0x162EA0, ~0x168 bytes, all 0x00010001). Pattern of repeated 16-bit 0x0001. HYPOTHESIS: packed 16-bit index/count array or run-length fill (NOT a pointer table); no ascii. [name-token: data_00162D30_table_0001]"
+    },
+    {
+      "part": "data_00162EA4",
+      "rangeZ64": [
+        "0x00162EA4",
+        "0x00162F38"
+      ],
+      "bytes": 148,
+      "class": "packed/unknown",
+      "state": "raw-but-classified",
+      "note": "Ascending byte-ramp block (no leading DF marker; follows the 0x0001 fill directly). Raw words 0x135D2537,0x3E3E3B85,0x43C94BE1,0x5391544D,...,0xF435F675,0xFFFFFFFF — monotonically rising high bytes terminating in 0xFFFFFFFF. HYPOTHESIS: color/intensity ramp or codebook table; no ascii/pointers. [name-token: data_00162EA4_ramp]"
+    },
+    {
+      "part": "data_00162F38",
+      "rangeZ64": [
+        "0x00162F38",
+        "0x00163480"
+      ],
+      "bytes": 1352,
+      "class": "packed/unknown",
+      "state": "raw-but-classified",
+      "note": "0xDF000000 0x00000000 marker (0x162F38) then a large texture block in 16-byte rows dominated by nibbles 8/D/E/9 with detail bytes 0x88/0x8E/0xEE/0xDD/0x99/0xE8. Raw evidence 0x88888888,0x88888D88,0x88DD8888,0x8DDDD888,0xD88DDDDD,0x8EEEE8EE,0xD999999D. Rows of form (88.. .. .. xxDDDDDD) and (8EEE.. 8E8E.. EE8D.. ..). Decoded sprite/tile texture (HYPOTHESIS: 4bpp image, 16-byte stride). No floats/ascii. [name-token: data_00162F38_bitmap_88DDEE]"
+    },
+    {
+      "part": "data_00163480",
+      "rangeZ64": [
+        "0x00163480",
+        "0x001634A8"
+      ],
+      "bytes": 40,
+      "class": "packed/unknown",
+      "state": "raw-but-classified",
+      "note": "0xDF000000 0x00000000 marker then four 0x00010001 halfword-pair words (0x163488..0x163494) followed by 0x290794D3,0x418B6A53,0xEF71F780,0xF7B5FFFF. Short 0x0001-fill header then a high-byte ramp tail. HYPOTHESIS: packed index header + ramp; no ascii. [name-token: data_00163480_table_0001]"
+    },
+    {
+      "part": "data_001634A8",
+      "rangeZ64": [
+        "0x001634A8",
+        "0x00163530"
+      ],
+      "bytes": 136,
+      "class": "packed/unknown",
+      "state": "raw-but-classified",
+      "note": "0xDF000000 0x00000000 marker then a small bitmap/index block built from low nibbles 1/2/3/4/E/B. Raw words 0x00111000,0x11111110,0x00121300,0x12222213,0x11244113,0x1EEEE111,0x1E7AEB11,0x11BBBB11,0x1E58EB11,0x1E44EB11,0x1E62EB11. Mixed small indices with 0x1Exx markers. HYPOTHESIS: 4bpp packed image or index map (background nibble 0x1); no ascii. [name-token: data_001634A8_bitmap_11]"
+    },
+    {
+      "part": "data_00163530",
+      "rangeZ64": [
+        "0x00163530",
+        "0x00163558"
+      ],
+      "bytes": 40,
+      "class": "packed/unknown",
+      "state": "raw-but-classified",
+      "note": "0xDF000000 0x00000000 marker then 0xD8CE2907,0xF7E73B85,0xD6C1DEC3,0xF78DDF23 followed by four zero words (0x00000000 x4 at 0x163548-0x163554). Short header + zero pad. HYPOTHESIS: small packed record with trailing zero fill. [name-token: data_00163530_block_DF]"
+    },
+    {
+      "part": "data_00163558",
+      "rangeZ64": [
+        "0x00163558",
+        "0x00163580"
+      ],
+      "bytes": 40,
+      "class": "packed/unknown",
+      "state": "raw-but-classified",
+      "note": "0xDF000000 0x00000000-style lead (here 0x0001D8CE) then high-entropy record: 0x53F35C2F,0x6CB18533,0x5C71A5F1,0x6CA795A5,0x851F3B83,0xAE1F9D59,0x2907FFFF. Ends in 0xFFFF; no ascii. HYPOTHESIS: packed codebook/ramp row. [name-token: data_00163558_block_DF]"
+    },
+    {
+      "part": "data_00163580",
+      "rangeZ64": [
+        "0x00163580",
+        "0x00163680"
+      ],
+      "bytes": 256,
+      "class": "packed/unknown",
+      "state": "raw-but-classified",
+      "note": "0xDF000000 0x00000000 marker (0x163578) then a bitmap block dominated by byte 0x33 with embedded literal-looking constants (0x3DA61000,0xC6100000,0xC000154A,0x3F505690,0x3D909DEE,0x3C040000,0x34D00000,0x3D100025,0x39100245). Long 0x33333333 runs (0x1635E0..0x1635EC, 0x163670..0x16367C). Mixed packed image + small embedded numeric fields. HYPOTHESIS: 4bpp image (background 0x3) interleaved with packed parameters; the 0x3Dxx/0x3Cxx words are NOT validated IEEE floats here (treated as data). No ascii. [name-token: data_00163580_bitmap_33]"
+    },
+    {
+      "part": "data_00163680",
+      "rangeZ64": [
+        "0x00163680",
+        "0x001636C8"
+      ],
+      "bytes": 72,
+      "class": "packed/unknown",
+      "state": "raw-but-classified",
+      "note": "0xDF000000 0x00000000 marker then a descending/mixed high-byte ramp: 0xF7FDE733,0xDEF3EEAC,0xBE23D6AB,0xCEA5B5E5,0x8D199D9D,0x95158C5B,0x8CD573D3,0x5B4D2109,0xFDF1FCA5,0xFC2107FE,0xCB17FCA5,0xFB53FC21,0xF31DE39B,0xDB19D9D1,0xDA55B18D,0x81072109. HYPOTHESIS: color ramp/codebook; no ascii/pointers. [name-token: data_00163680_ramp_DF]"
+    },
+    {
+      "part": "data_001636C8",
+      "rangeZ64": [
+        "0x001636C8",
+        "0x001638D0"
+      ],
+      "bytes": 520,
+      "class": "packed/unknown",
+      "state": "raw-but-classified",
+      "note": "0xDF000000 0x00000000 marker (0x1636C8) then a large texture block in 16-byte rows with the recurring motif 0x3A09....E624 and 0x420B/0xC795/0x855D/0x7349/0xFDEF pairs. Raw evidence 0xE6247D1B,0x3A093A09,0x7D1BE624,0xE624855D,0x420B420B,0xC795C795,0xFD6BFDEF. Highly periodic symmetric pairs (e.g. 0x3A093A09, 0x420B420B, 0xC795C795) indicate a decoded image/tile. HYPOTHESIS: 4bpp/8bpp image, 16-byte stride. No floats/ascii. [name-token: data_001636C8_bitmap_3A09]"
+    },
+    {
+      "part": "data_001638D0",
+      "rangeZ64": [
+        "0x001638D0",
+        "0x00163958"
+      ],
+      "bytes": 136,
+      "class": "packed/unknown",
+      "state": "raw-but-classified",
+      "note": "0xDF000000 0x00000000 marker (0x1638D0) then a high-entropy record block: 0x00005A05,0x7A854105,0xAB89ABCB,0xA389B451,0x8B07B40B,0xC4D3CCD3,...,0xBAD51085,0xCC21CB19 with two interior FFFF/short groups (0x000010D7, 0x000058C5) and a 0x00000000 x3 + 0x00000001 sub-run at 0x163938-0x16394C, ending 0x52096452,0xFFC5FFFF. HYPOTHESIS: two stacked packed codebook/parameter records with zero padding between; no ascii. [name-token: data_001638D0_block_DF]"
+    },
+    {
+      "part": "data_00163958",
+      "rangeZ64": [
+        "0x00163958",
+        "0x00163A00"
+      ],
+      "bytes": 168,
+      "class": "packed/unknown",
+      "state": "raw-but-classified",
+      "note": "0xDF000000 0x00000000 marker (0x163958) then a bitmap block dominated by bytes 0xDD/0xBB with 0xEE/0xCE/0xEB/0xFE detail. Raw words 0xDDDBBBBD,0xDDDDDDDD,0xDDBBFFBD,0xDBBFEEBD,0xBBFEEBBD,0xBFEEBBDD,0xBBEEEBBD,0xDBBEEEBD. HYPOTHESIS: 4bpp packed image (background nibbles D/B); no floats/ascii. [name-token: data_00163958_bitmap_DDBB]"
+    },
+    {
+      "part": "data_00163A00",
+      "rangeZ64": [
+        "0x00163A00",
+        "0x00163A88"
+      ],
+      "bytes": 136,
+      "class": "packed/unknown",
+      "state": "raw-but-classified",
+      "note": "0xDF000000 0x00000000 marker (0x163A00) then a small index/bitmap block with low nibble values 1/3/4/5/6/9/A/B/C and embedded zeros. Raw words 0x00100000,0x01210000,0x11111000,0x13431000,0x15451601,0x57775100,0x18981612,0x49994210,0x1ABA1611,0x1BCB1606,0x61ACCCCC,0x0D1AFCCC,0x00061111,0x00000666,0x60000000, ending with 0x00000000 x2. HYPOTHESIS: 4bpp index map / packed glyph; no ascii. [name-token: data_00163A00_bitmap_idx]"
+    },
+    {
+      "part": "data_00163A88",
+      "rangeZ64": [
+        "0x00163A88",
+        "0x00163AB0"
+      ],
+      "bytes": 40,
+      "class": "packed/unknown",
+      "state": "raw-but-classified",
+      "note": "0xDF000000 0x00000000 marker then a short ascending high-byte record: 0x11BE0001,0xE11DF967,0xFAF1F9E7,0x650FFBBB,0xFB31FC3D,0xFDB9FF3F,0xFFFF2243,0xFDF5FFBF. Ends near 0xFFFF; no ascii. HYPOTHESIS: packed ramp/codebook row. [name-token: data_00163A88_block_DF]"
+    },
+    {
+      "part": "data_00163AB0",
+      "rangeZ64": [
+        "0x00163AB0",
+        "0x00163B38"
+      ],
+      "bytes": 136,
+      "class": "packed/unknown",
+      "state": "raw-but-classified",
+      "note": "0xDF000000 0x00000000 marker (0x163AB0) then a structured block with the recurring lead 0x420B94D3 repeated each ~0x20 bytes (0x163AB8,0x163AD8,0x163AF8,0x163B18) followed by rising high-byte runs (0xF7B3AD61,0xB5ADB5A1,0xC631C631,0xCF07D71D,0xDEF7E729,0xEFB3F838 ...). HYPOTHESIS: repeated-keyed codebook rows or texture stripes, stride ~0x20; no ascii/pointers. [name-token: data_00163AB0_bitmap_ramp]"
+    },
+    {
+      "part": "data_00163B38",
+      "rangeZ64": [
+        "0x00163B38",
+        "0x00163FC0"
+      ],
+      "bytes": 1160,
+      "class": "packed/unknown",
+      "state": "raw-but-classified",
+      "note": "0xDF000000 0x00000000 marker (0x163B38) then a large bitmap/border block dominated by bytes 0xFF and 0x99/0x90/0x11/0x00 with long 0xFFFFFFFF and 0x09909909-style runs. Raw evidence 0xFF000FFF,0xFFFFFFFF,0xF04440FF,0xF0AAA0FF,0x09999009,0x99909999,0xF1111111,0x11F111FF,0x09909909,0x90990990. Interleaved with small 0x00000010 / 0x0000000F header words. Classic packed image/frame mask (HYPOTHESIS: 4bpp, mixed stride 0x04/0x10); no floats/ascii. [name-token: data_00163B38_bitmap_FF99]"
+    },
+    {
+      "part": "rodata_00163FC0",
+      "rangeZ64": [
+        "0x00163FC0",
+        "0x001641C4"
+      ],
+      "bytes": 516,
+      "class": "ascii-string",
+      "state": "parsed",
+      "note": "Weapon/armor TYPE-name table (NUL-separated, 4-aligned), merged from the former swarm region seam at 0x164000 so no string is split (the \"2-Handed Axe/Hammer\" entry straddles 0x164000). Decoded entries in order: Sword, Greatsword, Thrusting Sword, \u000e1-Handed\u0010cAxe/Hammer\u000f, 2-Handed Axe/Hammer, Short Spear, Spear, Whip, Claw, Bow, Mace, Staff, Doll, Small Shield, Shield, Light Armor, Armor, Full Body Armor, Robe, Garment. Embedded format-control bytes \u000e/\u0010/\u000f (category/icon markers). Transition proof: prior word @0x163FBC=0x11FFFFFF (bitmap), @0x163FC0=0x53776F72 (\"Swor\")."
+    },
+    {
+      "part": "table_001641C4",
+      "rangeZ64": [
+        "0x001641C4",
+        "0x00164214"
+      ],
+      "bytes": 80,
+      "class": "ram-pointer-table",
+      "state": "parsed",
+      "note": "RAM-pointer table, all targets 0x8016xxxx (and one 0x8016DFxx group). 20 contiguous 4-byte pointers, monotonic within sub-runs. Raw words: 0x8016F65C, 0x8016F6AC, 0x8016F6FC, ... 0x8016DF88, 0x8016DFDC, ... 0x8016F8B4, 0x8016F8CC. Overlay caveat: these are RAM addresses; the RAM-decode column is a wrong linear map."
+    },
+    {
+      "part": "table_00164214",
+      "rangeZ64": [
+        "0x00164214",
+        "0x001642F0"
+      ],
+      "bytes": 220,
+      "class": "ram-pointer-table",
+      "state": "parsed",
+      "note": "RAM-pointer table, all targets 0x8021xxxx (mostly 0x80212Exx..0x802130xx, with several duplicate 0x80214CC0 entries used as null/default fill). 55 contiguous 4-byte pointers. Raw words: 0x80212E50, 0x80212E58, 0x80212E64, ... 0x80214CC0 (repeated at 0x1642B0,0x1642C0,0x1642C4,0x1642C8,0x1642CC), ... 0x80213038, 0x80213048. Overlay caveat: RAM addresses, not a linear back-map."
+    },
+    {
+      "part": "data_001642F0",
+      "rangeZ64": [
+        "0x001642F0",
+        "0x00164B44"
+      ],
+      "bytes": 2132,
+      "class": "packed/unknown",
+      "state": "raw-but-classified",
+      "note": "Packed small-value data: predominantly pairs of small 16-bit fields per word (e.g. 0x000F0007, 0x0018001B, 0x000E0007), many with one half zero, interspersed with full-zero words. Mid-block transitions to single-byte arrays of small indices (0x00..0x06, 0x0C) and then high-entropy sub-runs (0x001F533F,0x19B76C36,0x7413D7C1,0xB6816381 at 0x1647F0; 0x52948211,0x9AD7CBDF,0xF6B528C7 at 0x164B38) plus byte-run blocks like 0x03030303 (0x164810..) and 0x00660000-repeats (0x164940..) and 0x01010101-runs (0x1649F0..). Sparse pointer-ish markers 0x800E91D0 (0x1647E0,0x1648E8) and 0xDF000000 sentinels (0x1647D0,0x164938,0x1649C0,0x1649E8,0x164B30). Hypothesis (marked as such): a mix of stat/affinity records, index maps and small bitmaps; no single fixed record stride is provable across the whole span. Raw words quoted above."
+    },
+    {
+      "part": "zero_fill_00164B44",
+      "rangeZ64": [
+        "0x00164B44",
+        "0x00164D3C"
+      ],
+      "bytes": 504,
+      "class": "zero-fill",
+      "state": "parsed",
+      "note": "Pure-zero region: 126 consecutive 0x00000000 words (0x164B44..0x164D38 inclusive). Padding/uninitialized gap."
+    },
+    {
+      "part": "data_00164D3C",
+      "rangeZ64": [
+        "0x00164D3C",
+        "0x00165060"
+      ],
+      "bytes": 804,
+      "class": "packed/unknown",
+      "state": "raw-but-classified",
+      "note": "Packed dense data. Opens with a short ascending byte/index array (0x00000004,0x0000001E,0x0000002A,0x00000012,...,0x00000026 at 0x164D3C..0x164D5C), then becomes a dense block of small-byte tuples and 16-bit values resembling a grid/path/coordinate or graph-adjacency encoding (recurring word 0x0061002B and patterns like 0x00190402,0x0503002D,0x007C0013,0x04030504). Embedded pointer-ish markers 0x80000050 (0x164D88), 0xC0040040 (0x164EFC,0x164FBC), 0xC0040028 (0x164DB0). At 0x165000..0x165058 a small fixed-stride record block of 3-word rows {0x00004000 tag, 0x8021xxxx RAM pointer, 0x00000000} appears (rows at 0x165010=0x80213C10, 0x16501C=0x80213CEC, 0x165028=0x80213D84, 0x165034=0x80213DFC, 0x165040=0x80213E44, 0x16504C=0x80213E8C). Hypothesis (marked as such): map/region layout data plus a small pointer-tagged record table; stride 0xC applies only to the 0x165000-0x165058 sub-block. Raw words: 0x0061002B, 0x00004000, 0x80213C10."
+    },
+    {
+      "part": "data_00165060",
+      "rangeZ64": [
+        "0x00165060",
+        "0x001650A0"
+      ],
+      "bytes": 64,
+      "class": "packed/unknown",
+      "state": "raw-but-classified",
+      "note": "High-byte preamble/marker block preceding the ASCII string pool. Contains store-opcode-shaped sentinel words and a 0x80xxxxxx pointer-shaped value, not decodable as a fixed record. Raw words: 0xE7000000, 0xE3001001, 0x00008000, 0xE200001C, 0x0F0A7008, 0xFC119623, 0xFF2FFFFF, 0xFA000000, 0xFFFFFFFF, 0xD7000002, 0x80008000, 0xDF000000, then three 0x00000000. Hypothesis (marked as such): a small packed header/flag struct or compression sentinel preceding the message table."
+    },
+    {
+      "part": "rodata_001650A0",
+      "rangeZ64": [
+        "0x001650A0",
+        "0x00165BD4"
+      ],
+      "bytes": 2868,
+      "class": "ascii-string",
+      "state": "parsed",
+      "note": "Large ASCII rodata pool: terrain/map-type names followed by UI/help/error message strings, each NUL-terminated and 4-aligned. Terrain names: 'Highway\\0','Bridge\\0','Plain\\0','Barrens\\0','Forest\\0','Marsh\\0','Highlands\\0','River\\0','Snowy Highway\\0','Snow Bridge\\0','Snow Plain\\0','Snow Barrens\\0','Snow Forest\\0','Snow Highlands\\0','Stronghold\\0','Castle Wall\\0','Castle Gate\\0','Castle Gate\\0','With in Castle Wall\\0' (x3),'Bridge\\0','Malefic Woods\\0','Generator\\0','Building\\0'. Messages incl: 'Before the Castle Gate (Air)\\0','No usable items are in the inventory.\\0','No enemy units with the character information ascertained were found.\\0','You cannot enlist any more characters to the battalion. Please remove a character from the battalion.\\0','Which character do you  want to use the item?\\0','Are you about to use %s.\\0','Proceed?\\0','Relocation of Legion Leader is not permitted.\\0',... 'cannot be used to join your battalion.\\0',... 'A character needs to be assigned to a unit.\\0','Select the unit to exchange the character with.\\0','You cannot add any more characters to this unit.\\0','There is not enough space for\\0' / 'L-sized character to be added.\\0','You cannot place a character\\0' 'right next to the L-sized character.\\0','Unit Leader cannot be\\0'/'removed from the unit.\\0','This character is already select...','...the legion, and therefore cannot be replaced.\\0','The maximum number of items that\\0'/'the unit can carry will change.\\0','A character needs to be assigned to a unit.\\0',... 'If this soldier is removed, a unit within\\0'/'the legion will not be maintained.\\0','Yes\\0','No\\0'. Per SPECIAL: 0x696C6C20 ('ill ') appears repeatedly inside words like 'will' (e.g. at 0x165474,0x165600,0x165A00,0x165BB0). Raw words: 0x48696768 ('High'), 0x536E6F77 ('Snow'), 0x59657300 ('Yes\\0'), 0x4E6F0000 ('No\\0\\0'). Block ends at 0x165BD0 with 0x01000000 pad."
+    },
+    {
+      "part": "zero_fill_00165BD4",
+      "rangeZ64": [
+        "0x00165BD4",
+        "0x00165BE0"
+      ],
+      "bytes": 12,
+      "class": "zero-fill",
+      "state": "parsed",
+      "note": "Three consecutive 0x00000000 words (0x165BD4,0x165BD8,0x165BDC) separating the ASCII pool from the following string-pointer table."
+    },
+    {
+      "part": "table_00165BE0",
+      "rangeZ64": [
+        "0x00165BE0",
+        "0x00165D9C"
+      ],
+      "bytes": 444,
+      "class": "ram-pointer-table",
+      "state": "parsed",
+      "note": "RAM-pointer table (string pointers into the 0x8021xxxx message region above). Targets 0x80213Fxx..0x80214Axx, ascending. Contains a 4-word break at 0x165C54..0x165C60 (three 0x00000000 then a 0xDF000000 sentinel) splitting two pointer runs, and terminates with a 0xDF000000 sentinel at 0x165D98. Raw words: 0x80214E40, 0x80213F30, 0x80213F38, ... 0x80214A08, 0x80214A34, 0x80213F6C. Overlay caveat: RAM addresses, not linear-mapped."
+    },
+    {
+      "part": "data_00165D9C",
+      "rangeZ64": [
+        "0x00165D9C",
+        "0x00165E00"
+      ],
+      "bytes": 100,
+      "class": "packed/unknown",
+      "state": "raw-but-classified",
+      "note": "Packed small-byte array (values 0x00..0x03) with a trailing 0xFFFFFF00/0x00000001 marker. Looks like a per-entry index/level/count map. Raw words: 0x00000000(pad at 0x165D9C), 0x01020203, 0x03030202, 0x01020202, 0x02010100, 0x02020202, 0x01010101, then 0xFFFFFF00, 0x00000001, 0x00000000, 0x00000000. Hypothesis (marked as such): byte-indexed lookup/length table."
+    },
+    {
+      "part": "float_00165E00",
+      "rangeZ64": [
+        "0x00165E00",
+        "0x00165E30"
+      ],
+      "bytes": 48,
+      "class": "ieee754-const",
+      "state": "parsed",
+      "note": "IEEE-754 double-precision const pool: 64-bit constants stored as word pairs. 0x40202AAAAAAAAAAB ~= 8.08333, 0x401E555555555555 ~= 7.58333, 0x401BAAAAAAAAAAAB ~= 6.91667 (each repeated). Raw words: 0x40202AAA/0xAAAAAAAB, 0x401E5555/0x55555555 (x2), 0x401BAAAA/0xAAAAAAAB (x2), then 0x00000000."
+    },
+    {
+      "part": "float_00165E30",
+      "rangeZ64": [
+        "0x00165E30",
+        "0x00165E50"
+      ],
+      "bytes": 32,
+      "class": "ieee754-const",
+      "state": "parsed",
+      "note": "IEEE-754 single-precision const pool: 0x3F866666 (1.05), 0x3F800000 (1.0), 0x3F733333 (0.95) x2, 0x3F800000 (1.0), 0x3F866666 (1.05), then 0x00000000. Small multiplier/ratio table."
+    },
+    {
+      "part": "table_00165E50",
+      "rangeZ64": [
+        "0x00165E50",
+        "0x00165E80"
+      ],
+      "bytes": 48,
+      "class": "ram-pointer-table",
+      "state": "parsed",
+      "note": "RAM-pointer table, targets 0x8020xxxx. 11 contiguous 4-byte pointers followed by a 0x00000000 terminator. Raw words: 0x802027A8, 0x802027B0, 0x802027B8, 0x802027C0, 0x802027C8, 0x802027D0, 0x802043EC, 0x802044C0, 0x802045E8, 0x80204660, 0x802046CC, 0x00000000. Overlay caveat: RAM addresses, not linear-mapped."
+    },
+    {
+      "part": "data_00165E80",
+      "rangeZ64": [
+        "0x00165E80",
+        "0x00165F80"
+      ],
+      "bytes": 256,
+      "class": "packed/unknown",
+      "state": "raw-but-classified",
+      "note": "High-byte (SJIS-like) packed text/glyph block with embedded ASCII format tokens. Dominated by 0x80-0x9F lead bytes (0x8386,0x836A,0x8362,0x8367,...) characteristic of Shift-JIS double-byte text, interleaved with ASCII runs 0x2E2E ('..'), 0x4E6F ('No'), 0x2564 ('%d'), 0x0A (newline). Recurring header 0x8386836A 0x83628367 marks repeated entries. Raw words: 0x8386836A, 0x83628367, 0x88EA9797, 0x824F2E2E, 0x2E2E4E6F ('..No'), 0x2E25640A ('.%d\\n'), 0x4E6F2E8C, 0x9F8DF58E, 0xB894730A. Hypothesis (marked as such): JP message strings / formatted prompt templates retained alongside the English pool."
+    },
+    {
+      "part": "data_00165F80",
+      "rangeZ64": [
+        "0x00165F80",
+        "0x00165F8C"
+      ],
+      "bytes": 12,
+      "class": "packed/unknown",
+      "state": "raw-but-classified",
+      "note": "Three small index/count words preceding the token block. Raw words: 0x0000000B, 0x00000016, 0x00000021 (11,22,33 — even +0x0B stride, likely offsets/counts). Hypothesis (marked as such): index triplet."
+    },
+    {
+      "part": "rodata_00165F8C",
+      "rangeZ64": [
+        "0x00165F8C",
+        "0x00165FB0"
+      ],
+      "bytes": 36,
+      "class": "ascii-string",
+      "state": "parsed",
+      "note": "ASCII control-token markers of the form '{Cn}' (open-brace, 'C', digit, close-brace), each in its own word, zero-separated. Decoded: 0x7B43367D='{C6}', 0x7B43377D='{C7}', 0x7B43307D='{C0}', 0x7B43317D='{C1}', each followed by 0x00000000 (and an extra 0x00000000 at 0x165FAC). These are in-string formatting/color control tokens."
+    },
+    {
+      "part": "float_00165FB0",
+      "rangeZ64": [
+        "0x00165FB0",
+        "0x00165FC0"
+      ],
+      "bytes": 16,
+      "class": "ieee754-const",
+      "state": "parsed",
+      "note": "Small const block: 0x20200000 ('  \\0\\0', two ASCII spaces then NUL pad) at 0x165FB0, 0x00000000 at 0x165FB4, then IEEE-754 single 0x40448000 (= 3.0703125) at 0x165FB8, 0x00000000 at 0x165FBC. Mixed space-padding word + float constant. Raw words: 0x20200000, 0x00000000, 0x40448000, 0x00000000."
+    },
+    {
+      "part": "data_0016FB90",
+      "rangeZ64": [
+        "0x0016FB90",
+        "0x0016FD90"
+      ],
+      "bytes": 512,
+      "class": "packed/unknown",
+      "state": "raw-but-classified",
+      "note": "Packed-halfword blob: each 32-bit word is two repeated/adjacent 16-bit values that step monotonically in magnitude. Raw: 0x856B856B (x8), 0x6D276D27, 0x5CE15CE1, 0x4C9D4C9D, 0x1BCF1BCF, 0x0B890B89, 0x13CD13CD, 0x244F244F, 0x34933493, 0x4C934C93, 0x6C956C95, 0x84958495, ending 0x8495A497 at 0x0016FD8C. No floats, no pointers, no ASCII. Looks like a run-length-grouped 16-bit sample/coefficient table (hypothesis: signed waveform or curve LUT); not verified. [name-token: data_0016FB90_packed_halfwords]"
+    },
+    {
+      "part": "zero_fill_0016FD90",
+      "rangeZ64": [
+        "0x0016FD90",
+        "0x0016FDDC"
+      ],
+      "bytes": 76,
+      "class": "zero-fill",
+      "state": "parsed",
+      "note": "Pure-zero run, 19 words (0x4C bytes) all 0x00000000. Pad between the packed-halfword blob and the descending byte ramp."
+    },
+    {
+      "part": "data_0016FDDC",
+      "rangeZ64": [
+        "0x0016FDDC",
+        "0x0016FE40"
+      ],
+      "bytes": 100,
+      "class": "packed/unknown",
+      "state": "raw-but-classified",
+      "note": "Small packed byte data. Begins 0x5078FF00 0x32D28C00 then a descending byte ramp 0xFFFCF8F4 0xF0ECE8E4 0xE0DCD8D4 0xD0CCC8C4 ... 0x2C282420 0x1C181410 0x0C080400 (bytes stepping down by 4), followed by zero-fill words 0x00000000 to 0x0016FE3C. No ASCII, no pointers. Hypothesis: a fade/attenuation byte ramp; not verified. [name-token: data_0016FDDC_byteramp]"
+    },
+    {
+      "part": "rodata_0016FE40",
+      "rangeZ64": [
+        "0x0016FE40",
+        "0x0016FE84"
+      ],
+      "bytes": 68,
+      "class": "ascii-string",
+      "state": "parsed",
+      "note": "NUL-terminated ASCII UI prompt strings. Decoded: \"Is this acceptable?\\0\" (0x0016FE40), \"The current action will be\\0\" (0x0016FE54), \"canceled. Proceed?\\0\" (0x0016FE70). Raw words e.g. 0x49732074 0x68697320 0x61636365 0x70746162 0x6C653F00. [name-token: rodata_0016FE40_prompts]"
+    },
+    {
+      "part": "data_0016FE84",
+      "rangeZ64": [
+        "0x0016FE84",
+        "0x0016FEB0"
+      ],
+      "bytes": 44,
+      "class": "packed/unknown",
+      "state": "raw-but-classified",
+      "note": "Small non-printable packed binary interspersed between ASCII blocks (high-bit-set bytes, not text, not aligned pointers). Raw: 0x82C882B5 0x00000000 0x90CF8BC9 0x8D558C82 0x00000000 0x8FC18BC9 0x8D558C82 0x00000000 0x834A8358 0x835E8380 0x00000000. Hypothesis: small per-stat/per-label binary records adjacent to the Dir./Hit. labels that follow; not verified. [name-token: data_0016FE84_packed]"
+    },
+    {
+      "part": "rodata_0016FEB0",
+      "rangeZ64": [
+        "0x0016FEB0",
+        "0x0016FF34"
+      ],
+      "bytes": 132,
+      "class": "ascii-string",
+      "state": "parsed",
+      "note": "ASCII 4-byte stat labels (NUL/zero separated) then two more prompt strings. Decoded labels: \"Dir.\" \"Hit.\" \"Eva.\" \"Gua.\" \"Int.\" \"Ret.\" \"Gua.\" \"Int.\" \"Ret.\" (each at +8 with a 0x00000000 between). Then \"Cannot change the option while\\0\" (0x0016FEF8) and \"the unit leader is absent.\\0\" (0x0016FF18). Raw e.g. 0x4469722E 0x00000000 0x4869742E ... 0x43616E6E 0x6F742063. [name-token: rodata_0016FEB0_labels_prompts]"
+    },
+    {
+      "part": "data_0016FF34",
+      "rangeZ64": [
+        "0x0016FF34",
+        "0x001701F0"
+      ],
+      "bytes": 700,
+      "class": "packed/unknown",
+      "state": "raw-but-classified",
+      "note": "Packed binary record block, not code/text. Opens 0x800E91D0 0x00000000 0x00000000 0x800E91D0 (0x800E91D0 looks like a RAM pointer but appears as a stray repeated value, not a real pointer table). Then a long run of structured records dominated by 0x04000400 group headers with byte fields 0x..D8FF / 0xFFFB / 0x00060000 (e.g. 0xFFFA0000 0x04000400 0x606054FF 0xFFFC0004 0x00060000), and a sub-block of 0xE7000000/0xDF000000/0xD7000000/0xD9000000 (swc1/ld-shaped words) with 0x801869C8 embedded. Mixed packed data; no consistent fixed stride evident. Hypothesis: animation/timing or DList-like command records; not verified. [name-token: data_0016FF34_packed_records]"
+    },
+    {
+      "part": "data_001701F0",
+      "rangeZ64": [
+        "0x001701F0",
+        "0x00170228"
+      ],
+      "bytes": 56,
+      "class": "packed/unknown",
+      "state": "raw-but-classified",
+      "note": "Packed-halfword ascending blob. Raw: 0x08851083 0x198D7056 0x22932AD3 0x2AD53317 0x3B59439B 0x43DD4C5F 0x54A185ED 0xB6F3CF3B 0x55943B85 0xF7E7B5C1 0xF78DF7B5 0x29079C61 0xA4A5735B 0xB5690001 then 0x00010001 0x00010001. Looks like a 16-bit value table with a trailing 0x0001 marker run; not verified. [name-token: data_001701F0_packed_halfwords]"
+    },
+    {
+      "part": "data_00170228",
+      "rangeZ64": [
+        "0x00170228",
+        "0x001708C8"
+      ],
+      "bytes": 1696,
+      "class": "packed/unknown",
+      "state": "raw-but-classified",
+      "note": "Large structured byte-array table of small values 0x00-0x0F packed 4-per-word, organized into rows separated by recurring 0x0C0D0001 / 0x000D0C0X (and 0x0B0D0001) row-header markers (row marker recurs roughly every 0x30 bytes). Interleaved are solid runs (0x0D0D0D0D, 0x0C0C0C0C, 0x01010101, 0x0E0E0E0E, 0x06060606, 0x09090909) and short zero gaps. Tail at 0x001708AC-0x001708C4 is mostly zero (one stray 0x00000606 at 0x001708B0) padding up to the F83E structure. No pointers, no ASCII, no floats. Hypothesis: a tile/sprite metric or per-cell weight/cost matrix; record stride not cleanly fixed, not verified. [name-token: data_00170228_bytearray_table]"
+    },
+    {
+      "part": "data_001708C8_chunk22head",
+      "rangeZ64": [
+        "0x001708C8",
+        "0x00171000"
+      ],
+      "bytes": 1848,
+      "class": "packed/unknown",
+      "state": "raw-but-classified",
+      "note": "OUTGOING DATA STRADDLER. Contiguous packed-halfword structure built from a small alphabet of recurring 16-bit codes: 0xF83E (dominant), 0x0001, 0xCF3B, 0xB6B7, 0x098F, 0x8D6D, 0x9DF1, with long solid 0xF83EF83E runs. Begins at 0x001708C8 (first 0xF83EF83E after the zero pad) and runs with NO terminator to 0x00171000; the last word at 0x00170FFC is 0xF83EF83E and chunk 23 starts 0xF83EF83E, so this structure continues into chunk 23. Raw at start: 0xF83EF83E 0x00010001 0x00010001 0xF83EF83E 0xF83EF83E... Raw at end: 0xF83EF83E (repeated through 0x00170FFC). No ASCII, no real pointers, no floats."
+    }
+  ]
+}

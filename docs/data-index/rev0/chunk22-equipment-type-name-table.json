@@ -1,0 +1,619 @@
+{
+  "source": "build/original-mips/rev0/code_00161000_00171000.s",
+  "rangeZ64": [
+    "0x00163FC0",
+    "0x001641C4"
+  ],
+  "totalBytes": 516,
+  "encoding": "ASCII, NUL-terminated, big-endian (z64) byte order; @-prefixed inline control codes left verbatim",
+  "title": "Chunk-22 weapon/armor equipment-type name table (0x163FC0)",
+  "stringCount": 46,
+  "atCodeTally": {},
+  "atCodeSemantics": "UNRESOLVED — @0..@3/@w/@c/@e are inline formatting/control codes; exact runtime meaning not decoded",
+  "confidence": "high (printable ASCII text); control-code semantics hypothesis-grade",
+  "segments": [
+    {
+      "kind": "string",
+      "offset": "0x00163FC0",
+      "bytes": 5,
+      "text": "Sword",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x00163FC5",
+      "bytes": 3
+    },
+    {
+      "kind": "string",
+      "offset": "0x00163FC8",
+      "bytes": 10,
+      "text": "Greatsword",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x00163FD2",
+      "bytes": 2
+    },
+    {
+      "kind": "string",
+      "offset": "0x00163FD4",
+      "bytes": 15,
+      "text": "Thrusting Sword",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x00163FE3",
+      "bytes": 1
+    },
+    {
+      "kind": "string",
+      "offset": "0x00163FE4",
+      "bytes": 22,
+      "text": "\\x0E1-Handed\\x10cAxe/Hammer\\x0F",
+      "atCodes": {},
+      "nonPrintable": 3
+    },
+    {
+      "kind": "nul",
+      "offset": "0x00163FFA",
+      "bytes": 2
+    },
+    {
+      "kind": "string",
+      "offset": "0x00163FFC",
+      "bytes": 22,
+      "text": "\\x0E2-Handed\\x10cAxe/Hammer\\x0F",
+      "atCodes": {},
+      "nonPrintable": 3
+    },
+    {
+      "kind": "nul",
+      "offset": "0x00164012",
+      "bytes": 2
+    },
+    {
+      "kind": "string",
+      "offset": "0x00164014",
+      "bytes": 11,
+      "text": "Short Spear",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x0016401F",
+      "bytes": 1
+    },
+    {
+      "kind": "string",
+      "offset": "0x00164020",
+      "bytes": 5,
+      "text": "Spear",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x00164025",
+      "bytes": 3
+    },
+    {
+      "kind": "string",
+      "offset": "0x00164028",
+      "bytes": 4,
+      "text": "Whip",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x0016402C",
+      "bytes": 4
+    },
+    {
+      "kind": "string",
+      "offset": "0x00164030",
+      "bytes": 4,
+      "text": "Claw",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x00164034",
+      "bytes": 4
+    },
+    {
+      "kind": "string",
+      "offset": "0x00164038",
+      "bytes": 3,
+      "text": "Bow",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x0016403B",
+      "bytes": 1
+    },
+    {
+      "kind": "string",
+      "offset": "0x0016403C",
+      "bytes": 4,
+      "text": "Mace",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x00164040",
+      "bytes": 4
+    },
+    {
+      "kind": "string",
+      "offset": "0x00164044",
+      "bytes": 5,
+      "text": "Staff",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x00164049",
+      "bytes": 3
+    },
+    {
+      "kind": "string",
+      "offset": "0x0016404C",
+      "bytes": 4,
+      "text": "Doll",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x00164050",
+      "bytes": 4
+    },
+    {
+      "kind": "string",
+      "offset": "0x00164054",
+      "bytes": 12,
+      "text": "Small Shield",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x00164060",
+      "bytes": 4
+    },
+    {
+      "kind": "string",
+      "offset": "0x00164064",
+      "bytes": 6,
+      "text": "Shield",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x0016406A",
+      "bytes": 2
+    },
+    {
+      "kind": "string",
+      "offset": "0x0016406C",
+      "bytes": 11,
+      "text": "Light Armor",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x00164077",
+      "bytes": 1
+    },
+    {
+      "kind": "string",
+      "offset": "0x00164078",
+      "bytes": 5,
+      "text": "Armor",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x0016407D",
+      "bytes": 3
+    },
+    {
+      "kind": "string",
+      "offset": "0x00164080",
+      "bytes": 15,
+      "text": "Full Body Armor",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x0016408F",
+      "bytes": 1
+    },
+    {
+      "kind": "string",
+      "offset": "0x00164090",
+      "bytes": 4,
+      "text": "Robe",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x00164094",
+      "bytes": 4
+    },
+    {
+      "kind": "string",
+      "offset": "0x00164098",
+      "bytes": 7,
+      "text": "Garment",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x0016409F",
+      "bytes": 1
+    },
+    {
+      "kind": "string",
+      "offset": "0x001640A0",
+      "bytes": 4,
+      "text": "Helm",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x001640A4",
+      "bytes": 4
+    },
+    {
+      "kind": "string",
+      "offset": "0x001640A8",
+      "bytes": 8,
+      "text": "Headgear",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x001640B0",
+      "bytes": 4
+    },
+    {
+      "kind": "string",
+      "offset": "0x001640B4",
+      "bytes": 9,
+      "text": "Spellbook",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x001640BD",
+      "bytes": 3
+    },
+    {
+      "kind": "string",
+      "offset": "0x001640C0",
+      "bytes": 3,
+      "text": "Fan",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x001640C3",
+      "bytes": 1
+    },
+    {
+      "kind": "string",
+      "offset": "0x001640C4",
+      "bytes": 9,
+      "text": "Accessory",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x001640CD",
+      "bytes": 3
+    },
+    {
+      "kind": "string",
+      "offset": "0x001640D0",
+      "bytes": 11,
+      "text": "Expendable:",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x001640DB",
+      "bytes": 1
+    },
+    {
+      "kind": "string",
+      "offset": "0x001640DC",
+      "bytes": 9,
+      "text": "Valuable:",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x001640E5",
+      "bytes": 3
+    },
+    {
+      "kind": "string",
+      "offset": "0x001640E8",
+      "bytes": 8,
+      "text": "Curative",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x001640F0",
+      "bytes": 4
+    },
+    {
+      "kind": "string",
+      "offset": "0x001640F4",
+      "bytes": 10,
+      "text": "Supplement",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x001640FE",
+      "bytes": 2
+    },
+    {
+      "kind": "string",
+      "offset": "0x00164100",
+      "bytes": 5,
+      "text": "Other",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x00164105",
+      "bytes": 3
+    },
+    {
+      "kind": "string",
+      "offset": "0x00164108",
+      "bytes": 8,
+      "text": "Portable",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x00164110",
+      "bytes": 4
+    },
+    {
+      "kind": "string",
+      "offset": "0x00164114",
+      "bytes": 8,
+      "text": "Treasure",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x0016411C",
+      "bytes": 4
+    },
+    {
+      "kind": "nul",
+      "offset": "0x00164121",
+      "bytes": 3
+    },
+    {
+      "kind": "string",
+      "offset": "0x00164124",
+      "bytes": 9,
+      "text": "Character",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x0016412D",
+      "bytes": 3
+    },
+    {
+      "kind": "string",
+      "offset": "0x00164130",
+      "bytes": 4,
+      "text": "Unit",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x00164134",
+      "bytes": 4
+    },
+    {
+      "kind": "string",
+      "offset": "0x00164138",
+      "bytes": 10,
+      "text": "Enemy Unit",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x00164142",
+      "bytes": 2
+    },
+    {
+      "kind": "string",
+      "offset": "0x00164144",
+      "bytes": 5,
+      "text": "Sleep",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x00164149",
+      "bytes": 3
+    },
+    {
+      "kind": "string",
+      "offset": "0x0016414C",
+      "bytes": 8,
+      "text": "Paralyze",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x00164154",
+      "bytes": 4
+    },
+    {
+      "kind": "string",
+      "offset": "0x00164158",
+      "bytes": 7,
+      "text": "Petrify",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x0016415F",
+      "bytes": 1
+    },
+    {
+      "kind": "string",
+      "offset": "0x00164160",
+      "bytes": 11,
+      "text": "Mobile Wall",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x0016416B",
+      "bytes": 1
+    },
+    {
+      "kind": "string",
+      "offset": "0x0016416C",
+      "bytes": 11,
+      "text": "Right Ahead",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x00164177",
+      "bytes": 1
+    },
+    {
+      "kind": "string",
+      "offset": "0x00164178",
+      "bytes": 10,
+      "text": "Left Ahead",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x00164182",
+      "bytes": 2
+    },
+    {
+      "kind": "string",
+      "offset": "0x00164184",
+      "bytes": 11,
+      "text": "Grand Arrow",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x0016418F",
+      "bytes": 1
+    },
+    {
+      "kind": "string",
+      "offset": "0x00164190",
+      "bytes": 11,
+      "text": "Wedge Shift",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x0016419B",
+      "bytes": 1
+    },
+    {
+      "kind": "string",
+      "offset": "0x0016419C",
+      "bytes": 10,
+      "text": "Dual Wedge",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x001641A6",
+      "bytes": 2
+    },
+    {
+      "kind": "string",
+      "offset": "0x001641A8",
+      "bytes": 12,
+      "text": "Funnel Shift",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x001641B4",
+      "bytes": 4
+    },
+    {
+      "kind": "string",
+      "offset": "0x001641B8",
+      "bytes": 10,
+      "text": "Wing Shift",
+      "atCodes": {},
+      "nonPrintable": 0
+    },
+    {
+      "kind": "nul",
+      "offset": "0x001641C2",
+      "bytes": 2
+    }
+  ]
+}
