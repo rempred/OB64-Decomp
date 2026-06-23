@@ -1,0 +1,306 @@
+{
+  "chunk": 16,
+  "chunkRangeZ64": [
+    "0x00101000",
+    "0x00111000"
+  ],
+  "mixed": true,
+  "dataRegions": [
+    {
+      "name": "leading DATA (record-table tail + packed/pointer mix)",
+      "rangeZ64": [
+        "0x00101000",
+        "0x00101A40"
+      ]
+    },
+    {
+      "name": "leading DATA (0x801A RAM-pointer tables + float64 const pool)",
+      "rangeZ64": [
+        "0x00101A40",
+        "0x00101CE0"
+      ]
+    }
+  ],
+  "totalDataBytes": 3296,
+  "classification": "raw-but-classified (conservative; no field semantics invented; floats/ascii/zero parsed)",
+  "byClassBytes": {
+    "incoming-straddler-tail": 36,
+    "fixed-stride-record-table": 2140,
+    "indexed-float-ramp": 160,
+    "ram-pointer-table": 760,
+    "packed/record": 116,
+    "zero-fill": 24,
+    "float64-const-pool": 60
+  },
+  "partCount": 23,
+  "incomingStraddler": {
+    "part": "data_00101000_chunk16tail",
+    "rangeZ64": [
+      "0x00101000",
+      "0x00101024"
+    ],
+    "note": "9-word completion of the truncated fixed-stride 0x50-byte (20-word) float/param record begun at 0x100FD4 in chunk 15 (word[11]@0x101000=0x42340000=45.0). The same 0x50-stride record table then continues at 0x101024 for 4 more records and ends at 0x101164."
+  },
+  "notableContents": [
+    "Fixed-stride 0x50-byte (20-word) record table continuing from chunk 15 (header word[0]=0x03/4, word[1]=0x64=100); 4 records 0x101024..0x101164, then an index+float ramp.",
+    "Three RAM-pointer tables in the 0x801A/0x801B band (incl. a ~100-entry 0x801AEAEC default-fill jump/dispatch table) — per parent evidence these are scenario-state jump tables feeding the 0x102FA8 dispatcher (LEAD, not decoded).",
+    "Two embedded ASCII format strings \"{P%03d,%03d}\" and \"{C12}\" carved out of the pointer tables.",
+    "IEEE-754 float64 constant pool at 0x101C98: 1.0, 180.0, pi, pi/2, 2.5 (+ small-int pairs), zero-padded to the code start 0x101CE0."
+  ],
+  "parentEvidence": "Parent docs map this chunk as the neutral-encounter path: 0x102FA8 scenario event-state dispatcher (88 callees), 0x105CC8 contains text_renderer (+~0x53A4=ROM 0x10706C), 0x10D484/0x10DDBC spawn helpers. Names kept conservative func_*; runtime slots 0x801A-0x801C (scenario/combat_transition).",
+  "entries": [
+    {
+      "part": "data_00101000_chunk16tail",
+      "rangeZ64": [
+        "0x00101000",
+        "0x00101024"
+      ],
+      "bytes": 36,
+      "class": "incoming-straddler-tail",
+      "state": "raw-but-classified",
+      "note": "Incoming straddler tail: final 9 words [0x101000,0x101024) that COMPLETE a truncated fixed-stride 0x50-byte (20-word) float/param record begun at 0x100FD4 in chunk 15. word[11] at 0x101000=0x42340000 (=45.0f). Body is mostly IEEE-754 single floats and zero pads: 0x42340000(45.0), 0xC0C00000(-6.0), 0x41B80000(23.0), 0x41C00000(24.0), 0x42000000(32.0), 0x42880000(68.0), 0x42C20000(97.0), 0x42B00000(88.0), 0x42960000(75.0) interleaved with 0x00000000 fillers. Record completes exactly at 0x101024 where the same 0x50-byte table restarts."
+    },
+    {
+      "part": "data_00101024",
+      "rangeZ64": [
+        "0x00101024",
+        "0x00101164"
+      ],
+      "bytes": 320,
+      "class": "fixed-stride-record-table",
+      "state": "raw-but-classified",
+      "note": "Fixed-stride 0x50-byte (20-word) record table, 4 records: R0@0x101024, R1@0x101074, R2@0x1010C4, R3@0x101114 (stride 0x50 confirmed by repeating header). Header pattern word[0]=0x00000003 or 0x00000004 (e.g. 0x101024=0x04, 0x101074=0x04, 0x1010C4=0x03, 0x101114=0x03), word[1]=0x00000064 (=100), word[2]=small (0x01/0x02). Each record body then holds packed small ints (0x00000001, 0x000200FF, 0x00FF0000, 0x00A80000) and a run of IEEE floats (0x42880000=68.0, 0x42C20000=97.0, 0x41E80000=29.0, 0x42A60000=83.0, 0x427C0000=63.0...). R3 tail [0x101138,0x101164) carries 0xC1xx-prefixed floats interleaved with ascending index words (0xC1B9344A, 0x00000011, 0xC2085C5B, 0x00000013, 0xC21D9BD2, 0x00000015...). Table ends at 0x101164: the word there is 0x00000019 (followed by 0xC225A56B float, 0x0000001B), an index+float ramp, NOT a 0x00000003/4 + 0x00000064 record header — so the fixed-stride table terminates here. [adversarial fix: earlier draft mis-cited 0x00010002, which is actually at RAM 0x80171164 = a different z64 offset 0x101564, not z64 0x101164]. No field names asserted (hypothesis: per-record float param set keyed by count=100). [name-token: data_00101024_stride50_records]"
+    },
+    {
+      "part": "data_00101164",
+      "rangeZ64": [
+        "0x00101164",
+        "0x00101204"
+      ],
+      "bytes": 160,
+      "class": "indexed-float-ramp",
+      "state": "raw-but-classified",
+      "note": "Mixed packed data: an ascending IEEE-754 single-float ramp interleaved with small odd index words. Floats: 0x3C3A732E, 0x3C8C692F, 0x3CB05FAF, 0x3CE2EB1C, 0x3D2031CF, 0x3D70C34C, 0x3DB8572A, 0x3E0692F7, 0x3E364D7F, 0x3E743E96, 0x3EA4F228, 0x3EE05D10, 0x3F188D8F, 0x3F4DF655 (monotonic ~0.0114..0.806), then 0x3F800000 (=1.0f) at 0x101200 terminating the ramp. Interleaved index words 0x00000005,0x00000007,0x00000009,0x0000000B,...,0x0000001E. Hypothesis: a normalized lookup/curve table (value+index pairs), no field names asserted. [name-token: data_00101164_floatramp_indexed]"
+    },
+    {
+      "part": "table_00101204",
+      "rangeZ64": [
+        "0x00101204",
+        "0x00101228"
+      ],
+      "bytes": 36,
+      "class": "ram-pointer-table",
+      "state": "raw-but-classified",
+      "note": "RAM-pointer table, 9 words of 0x801Axxxx/0x801Bxxxx KSEG0 pointers: 0x801B3258, 0x801B3288, 0x801B32B8, 0x801B32E8, 0x801AFB94, 0x801B333C, 0x801B3350, 0x801B3364, 0x801B3378. Mostly +0x30 stride between first four then irregular. Overlay caveat: RAM column is a wrong linear map but these are genuine 0x801xxxxx data pointers. [name-token: table_00101204_ramptrs]"
+    },
+    {
+      "part": "data_00101228",
+      "rangeZ64": [
+        "0x00101228",
+        "0x00101390"
+      ],
+      "bytes": 360,
+      "class": "fixed-stride-record-table",
+      "state": "raw-but-classified",
+      "note": "Packed small-integer / halfword record block. Dominant byte patterns are 0x00xx00xx and 0xFFxx (signed deltas): e.g. 0x001B0000, 0x0000001E, 0x0000001F, 0x00220000, 0xFFE8FFE1, 0x001B0001, 0x0001001E, 0xFF9B0009, 0xFFC1FFCD, 0x0009FFFF, 0xFFF80002, 0x0008FFxx. Looks like packed (index, signed-offset) tuples — repeated 5-word groups visible near 0x1012F8..0x101388 (0x002A0000/0xFFxx000F/0x00080006/0x00080005 cadence). No fixed global stride proven; classify unknown packed data, no field names. [name-token: data_00101228_packed_smallint]"
+    },
+    {
+      "part": "table_00101390",
+      "rangeZ64": [
+        "0x00101390",
+        "0x001013AC"
+      ],
+      "bytes": 28,
+      "class": "ram-pointer-table",
+      "state": "raw-but-classified",
+      "note": "RAM-pointer sub-table, 7 words of 0x801Bxxxx KSEG0 pointers: 0x801B41E8, 0x801B4200, 0x801B4218, 0x801B4230, 0x801B4260, 0x801B42A8, 0x801B42F8. Roughly +0x18..+0x50 stride. Overlay caveat applies; genuine data pointers. [name-token: table_00101390_ramptrs]"
+    },
+    {
+      "part": "data_001013AC",
+      "rangeZ64": [
+        "0x001013AC",
+        "0x00101868"
+      ],
+      "bytes": 1212,
+      "class": "fixed-stride-record-table",
+      "state": "raw-but-classified",
+      "note": "Large packed small-integer/halfword data block. Pervasive 0x00xx00xx, 0x00FF00FF, 0xFFxx patterns and ascending tiny indices: e.g. 0x0004001E, 0x00050003, 0x00010008, 0x001E0000, 0x00FF0008, 0x001D0015, 0x00FF00FF, 0xFFB70029, 0x0005000E, 0x0046001A, 0x0068FFF8. Mixed 4/5-word group cadence with occasional 0xFFxx signed entries; no single proven stride. Unknown packed data, no field names invented. [name-token: data_001013AC_packed_smallint]"
+    },
+    {
+      "part": "data_00101868",
+      "rangeZ64": [
+        "0x00101868",
+        "0x00101954"
+      ],
+      "bytes": 236,
+      "class": "fixed-stride-record-table",
+      "state": "raw-but-classified",
+      "note": "Packed block mixing 0xE7/0xE3/0xE2/0xD9/0xD7/0xDF high-byte words with zero pads and a power-of-two index ramp. Examples: 0xE7000000, 0xE3000A01, 0xD9D0F9FA, 0xD9FFFFFF, 0xE3001001, 0xE2001E01, 0xD7000002, 0x80008000, 0xDF000000; then 0x00010202, and ramp 0x00000004,0x00000008,0x00000010,0x00000020 (repeated twice), followed by descending small-int rows 0x00030003/0x00020002/0x00010002/0x00000006. Hypothesis: packed control/parameter records; high-byte words are data not opcodes. No field names asserted. [name-token: data_00101868_packed_hibyte_pow2]"
+    },
+    {
+      "part": "table_00101954",
+      "rangeZ64": [
+        "0x00101954",
+        "0x001019D4"
+      ],
+      "bytes": 128,
+      "class": "ram-pointer-table",
+      "state": "raw-but-classified",
+      "note": "RAM-pointer table interleaved with tiny index words. Pointer values cycle over a small set {0x801B48B4, 0x801B48C4, 0x801B48E4}, each followed by an index word {0x00000004, 0x00000008, 0x0000000C}: e.g. 0x801B48B4/0x04, 0x801B48C4/0x08, 0x801B48E4/0x0C, repeating ~16 times. Pointer/index pairing makes this a dispatch-style RAM-pointer table (hypothesis: 3-entry pointer set selected by index). Overlay caveat applies; genuine 0x801Bxxxx pointers. [name-token: table_00101954_ramptr_indexed]"
+    },
+    {
+      "part": "data_001019D4",
+      "rangeZ64": [
+        "0x001019D4",
+        "0x00101A10"
+      ],
+      "bytes": 60,
+      "class": "packed/record",
+      "state": "raw-but-classified",
+      "note": "Small packed-index data run, mostly 0x000x0004 / 0x00010000 / zero pad pattern: 0x00000004, 0x00000005, 0x00040004, 0x00010000, 0x00010004, 0x00000000, 0x00020004, 0x00010000, 0x00030004, 0x00000000, 0x00040004, 0x00000000, 0x00010004, 0x00010000. Looks like packed (index, count=4) pairs with zero separators. No field names asserted. [name-token: data_001019D4_packed_smallint]"
+    },
+    {
+      "part": "data_00101A10",
+      "rangeZ64": [
+        "0x00101A10",
+        "0x00101A40"
+      ],
+      "bytes": 48,
+      "class": "packed/record",
+      "state": "raw-but-classified",
+      "note": "Final data tail before the 0x801AD878.. RAM-pointer table at 0x101A40 (which lies OUTSIDE this region). Words: 0xE7000000, 0x00000000, 0xE200001C, 0x005041C8, 0xFCFFC7FF, 0xFF8DFEFF, 0xD9FFFFFF, 0x00200404, 0xDF000000, then 3 trailing 0x00000000 alignment/terminator words at 0x101A34/0x101A38/0x101A3C. Mix of 0xE7/0xE2/0xD9/0xDF high-byte data words and 0xFFxx signed words; not pure zero_fill (only the final 3 words are zero). High-byte words are data, not opcodes. No field names asserted. [name-token: data_00101A10_packed_tail]"
+    },
+    {
+      "part": "table_00101A40",
+      "rangeZ64": [
+        "0x00101A40",
+        "0x00101A94"
+      ],
+      "bytes": 84,
+      "class": "ram-pointer-table",
+      "state": "raw-but-classified",
+      "note": "Ascending RAM pointers in the 0x801AD8xx..0x801ADExx band, e.g. 0x801AD878, 0x801AD8A4, 0x801AD8CC, ... 0x801ADE00. All high words 0x801A; values monotonically increasing -> word-aligned RAM pointer table (RAM column is a wrong linear map; words are data pointers, not code). [name-token: table_ram_ptrs_801AD8]"
+    },
+    {
+      "part": "data_00101A94",
+      "rangeZ64": [
+        "0x00101A94",
+        "0x00101AA0"
+      ],
+      "bytes": 12,
+      "class": "fixed-stride-record-table",
+      "state": "raw-but-classified",
+      "note": "Three non-pointer words interrupting the pointer table: 0x7B502530, 0x33642C25, 0x3033647D. High bytes 0x7B/0x33/0x30 are not the 0x801A/0x801B pointer band; classified as embedded packed data (hypothesis: small encoded record), not pointers. [name-token: data_embedded_nonptr]"
+    },
+    {
+      "part": "zero_fill_00101AA0",
+      "rangeZ64": [
+        "0x00101AA0",
+        "0x00101AA8"
+      ],
+      "bytes": 8,
+      "class": "zero-fill",
+      "state": "parsed",
+      "note": "Two zero words (0x00000000, 0x00000000) of padding between the embedded-data run and the next pointer block. [name-token: zero_fill_pad]"
+    },
+    {
+      "part": "table_00101AA8",
+      "rangeZ64": [
+        "0x00101AA8",
+        "0x00101AB8"
+      ],
+      "bytes": 16,
+      "class": "ram-pointer-table",
+      "state": "raw-but-classified",
+      "note": "Four RAM pointers in the 0x801AE8xx..0x801AE9xx band: 0x801AE8C4, 0x801AE904, 0x801AE93C, 0x801AE9B0. High word 0x801A -> RAM-pointer table. [name-token: table_ram_ptrs_801AE8]"
+    },
+    {
+      "part": "table_00101AB8",
+      "rangeZ64": [
+        "0x00101AB8",
+        "0x00101BC8"
+      ],
+      "bytes": 272,
+      "class": "ram-pointer-table",
+      "state": "raw-but-classified",
+      "note": "Long pointer table dominated by the identical-pointer fill value 0x801AEAEC repeated many times (placeholder/default-slot fill). A handful of distinct in-band entries break the run: 0x801AE9D4 (0x101B74), 0x801AE9C4 (0x101B7C), 0x801AE928 (0x101B98), 0x801AE914 (0x101BC4). All words are 0x801Axxxx RAM pointers. [name-token: table_ram_ptrs_801AEAEC_fill]"
+    },
+    {
+      "part": "data_00101BC8",
+      "rangeZ64": [
+        "0x00101BC8",
+        "0x00101BD0"
+      ],
+      "bytes": 8,
+      "class": "packed/record",
+      "state": "raw-but-classified",
+      "note": "Two non-pointer words interrupting the table: 0x7B433132 and 0x7D000000. High bytes 0x7B/0x7D are outside the 0x801A/0x801B pointer band; classified as embedded packed data (the 0x7D000000 looks like a trailing-byte marker), not pointers. [name-token: data_embedded_nonptr2]"
+    },
+    {
+      "part": "table_00101BD0",
+      "rangeZ64": [
+        "0x00101BD0",
+        "0x00101C80"
+      ],
+      "bytes": 176,
+      "class": "ram-pointer-table",
+      "state": "raw-but-classified",
+      "note": "Dense ascending RAM-pointer table crossing the 0x801AEFxx into the 0x801AFxxx band, e.g. 0x801AEF3C, 0x801AEF48, ... 0x801AF824, 0x801AF858, ... 0x801AFA78. All high words 0x801A, monotonically increasing -> pointer table. [name-token: table_ram_ptrs_801AEF_801AF]"
+    },
+    {
+      "part": "table_00101C80",
+      "rangeZ64": [
+        "0x00101C80",
+        "0x00101C94"
+      ],
+      "bytes": 20,
+      "class": "ram-pointer-table",
+      "state": "raw-but-classified",
+      "note": "Five RAM pointers in the 0x801B15xx band with a uniform +0x10 stride: 0x801B14F8, 0x801B1508, 0x801B1518, 0x801B1528, 0x801B1538. Fixed stride suggests a 16-byte-record pointer array (hypothesis); high word 0x801B -> RAM-pointer table. [name-token: table_ram_ptrs_801B15]"
+    },
+    {
+      "part": "zero_fill_00101C94",
+      "rangeZ64": [
+        "0x00101C94",
+        "0x00101C98"
+      ],
+      "bytes": 4,
+      "class": "zero-fill",
+      "state": "parsed",
+      "note": "Single 0x00000000 word aligning the start of the following 8-byte double const pool to an 8-byte boundary (0x101C98). Folded as zero padding. [name-token: zero_fill_pad2]"
+    },
+    {
+      "part": "data_00101C98",
+      "rangeZ64": [
+        "0x00101C98",
+        "0x00101CC8"
+      ],
+      "bytes": 48,
+      "class": "float64-const-pool",
+      "state": "parsed",
+      "note": "IEEE-754 big-endian FLOAT64 (double) constant pool. 0x3FF00000_00000000 = 1.0; 0x40668000_00000000 = 180.0; 0x400921FB_54442D18 = pi (3.14159265358979); 0x3FF921FB_54442D18 = pi/2 (1.5707963...). Followed by three small-int pairs not parsed as doubles: 0x00070009, 0x000B000D, 0x000F0000 (looks like packed 16-bit ints 7,9,11,13,15,0 -> embedded table within pool, hypothesis), then 0x00000000 pad word at 0x101CC4. [name-token: float_double_const_pool]"
+    },
+    {
+      "part": "data_00101CC8",
+      "rangeZ64": [
+        "0x00101CC8",
+        "0x00101CD4"
+      ],
+      "bytes": 12,
+      "class": "float64-const-pool",
+      "state": "parsed",
+      "note": "Continuation of the FLOAT64 const pool: 0x3FF921FB_54442D18 = pi/2 (repeat), then 0x40040000_00000000 = 2.5. Big-endian doubles. [name-token: float_double_const_pool2]"
+    },
+    {
+      "part": "zero_fill_00101CD4",
+      "rangeZ64": [
+        "0x00101CD4",
+        "0x00101CE0"
+      ],
+      "bytes": 12,
+      "class": "zero-fill",
+      "state": "parsed",
+      "note": "Three trailing zero words (0x00000000 x3) padding the const pool out to the region end at 0x101CE0. [name-token: zero_fill_tail]"
+    }
+  ]
+}
