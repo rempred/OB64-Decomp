@@ -1,0 +1,26 @@
+/*
+ * Original Rev 0 MIPS reference split.
+ * Parent source: asm/original/rev0/code_000F1000_00101000.s
+ * z64 range: 0x000FFD00..0x000FFD3C exclusive
+ * Decode comments are aids, not proof of semantic function boundaries.
+ */
+.set noat
+.set noreorder
+.text
+
+/* FRAMELESS LEAF recovered (planner absorbed into func_000FF894). Copies 4 halfword pairs to +0x94/+0x9C of struct, clears +0x88; jr $ra/sh $a1,0x8A($a0) at 0x000FFD34-0x000FFD38. */
+/* 0x000FFD00 0x8016F900 0x00004021 */ .word 0x00004021 # move $t0, $zero
+/* 0x000FFD04 0x8016F904 0x00801821 */ .word 0x00801821 # move $v1, $a0
+/* 0x000FFD08 0x8016F908 0x94C20000 */ .word 0x94C20000 # lhu $v0, 0x0($a2)
+/* 0x000FFD0C 0x8016F90C 0x24C60002 */ .word 0x24C60002 # addiu $a2, $a2, 0x2
+/* 0x000FFD10 0x8016F910 0xA4620094 */ .word 0xA4620094 # sh $v0, 0x94($v1)
+/* 0x000FFD14 0x8016F914 0x94E20000 */ .word 0x94E20000 # lhu $v0, 0x0($a3)
+/* 0x000FFD18 0x8016F918 0x25080001 */ .word 0x25080001 # addiu $t0, $t0, 0x1
+/* 0x000FFD1C 0x8016F91C 0x24E70002 */ .word 0x24E70002 # addiu $a3, $a3, 0x2
+/* 0x000FFD20 0x8016F920 0xA462009C */ .word 0xA462009C # sh $v0, 0x9C($v1)
+/* 0x000FFD24 0x8016F924 0x29020004 */ .word 0x29020004 # slti $v0, $t0, 0x4
+/* 0x000FFD28 0x8016F928 0x1440FFF7 */ .word 0x1440FFF7 # bne $v0, $zero, 0x8016F908
+/* 0x000FFD2C 0x8016F92C 0x24630002 */ .word 0x24630002 # addiu $v1, $v1, 0x2
+/* 0x000FFD30 0x8016F930 0xA4800088 */ .word 0xA4800088 # sh $zero, 0x88($a0)
+/* 0x000FFD34 0x8016F934 0x03E00008 */ .word 0x03E00008 # jr $ra
+/* 0x000FFD38 0x8016F938 0xA485008A */ .word 0xA485008A # sh $a1, 0x8A($a0)

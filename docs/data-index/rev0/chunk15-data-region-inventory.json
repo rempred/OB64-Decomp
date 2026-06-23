@@ -1,0 +1,263 @@
+{
+  "chunk": 15,
+  "chunkRangeZ64": [
+    "0x000F1000",
+    "0x00101000"
+  ],
+  "mixed": true,
+  "dataRegions": [
+    {
+      "name": "data R1 (floats/pointers/display-list between the two code regions)",
+      "rangeZ64": [
+        "0x000F8550",
+        "0x000F9FF8"
+      ]
+    },
+    {
+      "name": "data R2 (chunk tail: packed records, color, opening-narration rodata, pointer table, float-record table)",
+      "rangeZ64": [
+        "0x001003CC",
+        "0x00101000"
+      ]
+    }
+  ],
+  "totalDataBytes": 9948,
+  "classification": "raw-but-classified (conservative; no field semantics invented; float/ascii/zero parsed)",
+  "byClassBytes": {
+    "float32-table": 1232,
+    "zero-fill": 92,
+    "display-list/graphics": 4148,
+    "packed/record": 1488,
+    "ram-pointer-table": 176,
+    "float64/pointer-mixed": 356,
+    "packed-byte/color": 204,
+    "ascii-rodata": 1840,
+    "float-record-table": 412
+  },
+  "partCount": 19,
+  "outgoingStraddler": {
+    "part": "data_00100fd4_chunk15head",
+    "rangeZ64": [
+      "0x00100FD4",
+      "0x00101000"
+    ],
+    "note": "Fifth fixed-stride 0x50-byte float-record begins at 0x100FD4 but only 11 of 20 words fit before the chunk edge; continues into chunk 16 at 0x101000 (whose first word 0x42340000=45.0 is record word[11]). NOT a clean record boundary."
+  },
+  "notableContents": [
+    "rodata_001006f0: Ogre Battle 64 opening-prologue narration ASCII (\"@0Palatinean Year 238...The Holy Lodis Empire...continent of Galicia...\"), @-prefixed inline format codes, NUL-padded. 1840 bytes.",
+    "Two N64 RSP/RDP F3DEX display-list + graphics blobs (data_000f85b0, data_000f945c) plus a smaller one (data_000f8e58); GBI command bytes 0xDE/0xDF/0xE2/0xE3/0xE7/0xD7/0xD9/0xDA/0xFA in hi-byte.",
+    "Three IEEE-754 float32 parameter tables (data_000f8550/8b38/8f00) and a float64 region with pi (0x401921FB54442D18) at data_000f9e94.",
+    "Three RAM-pointer tables (0x801A8/0x801A9, 0x8019F, 0x801B3 bands) and a fixed-stride 0x50-byte float-record table at the chunk tail."
+  ],
+  "entries": [
+    {
+      "part": "data_000f8550",
+      "rangeZ64": [
+        "0x000F8550",
+        "0x000F8570"
+      ],
+      "bytes": 32,
+      "class": "float32-table",
+      "state": "parsed",
+      "note": "Opening IEEE-754 float32 constant table: 47.0, 1.3333334, 1.0, 160.0, 2.0, 0.0, 3.0, 20.0. Same 5-word header (47.0/1.333/1.0/160.0/2.0) recurs at 0xF86C0; likely shared per-effect parameter block."
+    },
+    {
+      "part": "zero_fill_000f8570",
+      "rangeZ64": [
+        "0x000F8570",
+        "0x000F85B0"
+      ],
+      "bytes": 64,
+      "class": "zero-fill",
+      "state": "parsed",
+      "note": "Mostly zero-word fill (15 words) with a lone 0x3F800000=1.0 at 0xF8580. >=3-word zero runs at 0xF8570 (4w) and 0xF8584 (11w)."
+    },
+    {
+      "part": "data_000f85b0",
+      "rangeZ64": [
+        "0x000F85B0",
+        "0x000F8B38"
+      ],
+      "bytes": 1416,
+      "class": "display-list/graphics",
+      "state": "raw-but-classified",
+      "note": "N64 RSP/RDP display-list + graphics blob (NON-EXECUTABLE). F3DEX GBI command bytes in hi-byte (0xDE/0xDF/0xE2/0xE3/0xE7/0xD7/0xD9/0xDA/0xFA), embedded segment/DL pointers (0x800E91D0 at 0xF85B0/0xF87B8; 0x801869C8; 0x801AB858/0x801ABA98/0x801ABB40/0x801ABD08..0x801ABD18; 0x80008000 texture-scale words), packed s16 vertex/coord tuples, and small float headers (47.0/1.333/1.0/160.0/2.0... repeated at 0xF86C0; 10.0/-20.0/10.0 at 0xF86D8). Hypothesis: animated 2D/effect display lists; field names not decoded."
+    },
+    {
+      "part": "data_000f8b38",
+      "rangeZ64": [
+        "0x000F8B38",
+        "0x000F8E58"
+      ],
+      "bytes": 800,
+      "class": "float32-table",
+      "state": "parsed",
+      "note": "IEEE-754 float32 parameter table (coefficients/ratios/angles). Samples: 0.7,0.5,0.5,0.42,0.38,0.3,0.25,0.33 (0xF8B38); fixed-point-looking 0.105/0.164/0.371/0.996 fractions; angle ramp 90/150/180/210/270/330 deg at 0xF8E40. Hypothesis: per-frame interpolation/scale tables; NOT field-named."
+    },
+    {
+      "part": "data_000f8e58",
+      "rangeZ64": [
+        "0x000F8E58",
+        "0x000F8F00"
+      ],
+      "bytes": 168,
+      "class": "display-list/graphics",
+      "state": "raw-but-classified",
+      "note": "Display-list/packed-graphics blob (NON-EXECUTABLE): packed s16 vertex tuples (e.g. 0x00500046/0xFFD80000/0x331926FF) then F3DEX GBI commands (0xE7/0xE3/0xD9/0xD7/0xE2/0xDF) with embedded DL pointer 0x801AC0F8."
+    },
+    {
+      "part": "data_000f8f00",
+      "rangeZ64": [
+        "0x000F8F00",
+        "0x000F9090"
+      ],
+      "bytes": 400,
+      "class": "float32-table",
+      "state": "parsed",
+      "note": "IEEE-754 float32 parameter table with sparse zero padding. Samples: 25.23, 1.52432, 0.0125, -5.99018, -102.008, 1.0, 0.01, 0.05, 0.2 ... trailing 0.996-style fixed fractions (0x3F7F0000) approaching 0xF9090."
+    },
+    {
+      "part": "data_000f9090",
+      "rangeZ64": [
+        "0x000F9090",
+        "0x000F9408"
+      ],
+      "bytes": 888,
+      "class": "packed/record",
+      "state": "raw-but-classified",
+      "note": "Packed small-int record blob (NON-EXECUTABLE): mostly dense halfword-pair words, e.g. ascending packed pairs 0x00A500A5..0x00A700A7 near the tail; head has six 0x3F7F0000 (~0.996) words and a few hi-byte>=0x80 words mixed in. Not a pointer table and no prologue/return shape. Hypothesis: index/LUT or packed vertex-attribute records; field layout not decoded."
+    },
+    {
+      "part": "table_000f9408",
+      "rangeZ64": [
+        "0x000F9408",
+        "0x000F9440"
+      ],
+      "bytes": 56,
+      "class": "ram-pointer-table",
+      "state": "raw-but-classified",
+      "note": "RAM-pointer table, 14 words. Band 0x801A81A4..0x801A9570 (interleaved 0x801A8xxx and 0x801A93xx-0x801A95xx). Likely display-list / routine pointer table."
+    },
+    {
+      "part": "zero_fill_000f9440",
+      "rangeZ64": [
+        "0x000F9440",
+        "0x000F945C"
+      ],
+      "bytes": 28,
+      "class": "zero-fill",
+      "state": "parsed",
+      "note": "Zero-word fill, 7 words (0xF9440..0xF945C)."
+    },
+    {
+      "part": "data_000f945c",
+      "rangeZ64": [
+        "0x000F945C",
+        "0x000F9E60"
+      ],
+      "bytes": 2564,
+      "class": "display-list/graphics",
+      "state": "raw-but-classified",
+      "note": "Large display-list / graphics blob (NON-EXECUTABLE). Begins 0x00000001 + packed words (0x028F...); F3DEX GBI command stream with embedded segment/DL pointers (0x801AC6E0/0x801AC720/0x801AC830; 0x801ACAC0/0x801ACB00; 0x801ACD00; 0x801ACDE0/0x801ACE20; 0x801AD020; 0x800E91D0 at 0xF9E60). Interior >=3-word zero runs at 0xF981C and 0xF9B3C (7w each). Hypothesis: scripted effect display lists."
+    },
+    {
+      "part": "table_000f9e60",
+      "rangeZ64": [
+        "0x000F9E60",
+        "0x000F9E94"
+      ],
+      "bytes": 52,
+      "class": "ram-pointer-table",
+      "state": "raw-but-classified",
+      "note": "RAM-pointer table: 0x800E91D0 then 3 zero words, then 9 pointers in 0x8019F9D8..0x8019FA38 band (0xF9E70..0xF9E94). Tight 0x8019Fxxx cluster (likely small DL/data targets)."
+    },
+    {
+      "part": "data_000f9e94",
+      "rangeZ64": [
+        "0x000F9E94",
+        "0x000F9FF8"
+      ],
+      "bytes": 356,
+      "class": "float64/pointer-mixed",
+      "state": "raw-but-classified",
+      "note": "Mixed pointer-table + IEEE-754 float64 (double) constant region (NON-EXECUTABLE). Doubles: 0x401921FB54442D18 = pi (3.14159265), 0x40768000.. , 0x41F00000=30.0(f32) recurring 5-tuple at 0xF9EA0..0xF9F00; more doubles at 0xF9F68, 0xF9FA8 (1.13963/1.675/1.7625), 0xF9FD8 (1.875/2.125). Pointer tables: 25w 0x801A287C..0x801A2F94 (0xF9F00), 6w 0x801A4670..0x801A48C4 (0xF9F90), 6w 0x801A7800..0x801A78B0 (0xF9FC0). Trailing 0x03E00008/0x00000000 at 0xF9FF0 are data (coincidental jr-ra decode), not code."
+    },
+    {
+      "part": "data_001003cc",
+      "rangeZ64": [
+        "0x001003CC",
+        "0x00100624"
+      ],
+      "bytes": 600,
+      "class": "packed/record",
+      "state": "raw-but-classified",
+      "note": "Leading alignment nop (0x1003CC) then a long packed small-int record blob of mostly 0x00xx00yy half-word pairs (sequential indices/counts 0x00..0x13 ascending, occasional 0xFF sentinels e.g. 0x006900FF/0x00FF00FF near 0x100634). Per-record field layout not decoded; treat field names as unknown. HYPOTHESIS: an index/lookup or small-int parameter table feeding the prologue sequence. Non-executable."
+    },
+    {
+      "part": "data_00100624",
+      "rangeZ64": [
+        "0x00100624",
+        "0x001006F0"
+      ],
+      "bytes": 204,
+      "class": "packed-byte/color",
+      "state": "raw-but-classified",
+      "note": "Packed-byte / color blob. Contains 0xFF-bracketed packed bytes (0x00504240, 0xFCFF99FF, 0xFF31FEFF), repeated grayscale RGBA words 0xDCDCDCFF x4 at 0x1006D0, 0x141414FF at 0x1006BC, and palette-like 0xCD9A6633 / 0x33669ACD / 0x12131415 / 0xBEBFC0C1 ramps near 0x1006E0. HYPOTHESIS: small palette / packed color or attribute table immediately preceding the string pool. Do NOT assume field names. Non-executable."
+    },
+    {
+      "part": "rodata_001006f0",
+      "rangeZ64": [
+        "0x001006F0",
+        "0x00100E20"
+      ],
+      "bytes": 1840,
+      "class": "ascii-rodata",
+      "state": "parsed",
+      "note": "Readable ASCII string pool: the Ogre Battle 64 opening prologue narration, NUL-padded between strings, using '@'-prefixed inline formatting control codes (@0,@1,@2,@3,@w,@c,@l,@e). Runs from '@0Palatinean Year 238' (0x1006F0) through '...It required ten years for a streak of light to shine through the dark, ominous clouds...' ending ~0x100E1F. Genuine rodata strings."
+    },
+    {
+      "part": "table_00100e20",
+      "rangeZ64": [
+        "0x00100E20",
+        "0x00100E64"
+      ],
+      "bytes": 68,
+      "class": "ram-pointer-table",
+      "state": "raw-but-classified",
+      "note": "17-word RAM-pointer table. Words 0..15 are ascending 0x801B36B0..0x801B3D74 pointers (likely into a relocated copy of the string pool / per-line structs), word 16 is 0x800E91D0 (same pointer also appears at region head 0x1003D0 and at 0x100E60). Consecutive 0x80xxxxxx run, classic pointer table."
+    },
+    {
+      "part": "data_00100e64",
+      "rangeZ64": [
+        "0x00100E64",
+        "0x00100E94"
+      ],
+      "bytes": 48,
+      "class": "float-record-table",
+      "state": "raw-but-classified",
+      "note": "12-word prefix/header of the float-record table that follows. Mix of integer-valued IEEE-754 floats (0xC2CE0000=-103, 0xC2AC0000=-86, 0xC2A00000=-80, 0xC1F00000=-30, 0xC2700000=-60, 0xC1C00000=-24, 0x40A00000=5, 0x41F00000=30) interleaved with 0x00000000 padding words. Same word kind as the 0x50-stride records below but not aligned to their header marker. HYPOTHESIS: header/first (irregular) entry of the float parameter table."
+    },
+    {
+      "part": "data_00100e94",
+      "rangeZ64": [
+        "0x00100E94",
+        "0x00100FD4"
+      ],
+      "bytes": 320,
+      "class": "float-record-table",
+      "state": "raw-but-classified",
+      "note": "Fixed-stride 0x50-byte (20-word) float/parameter record table; 4 complete records at 0x100E94, 0x100EE4, 0x100F34, 0x100F84. Each record: word[0] small int (3/4), word[1]=0x00000064 (=100) constant, word[2] small int (1/4), word[3]=0, word[4]=0x00000001, word[5]=0x000200FF flag, word[6]=0x000A0000, word[7]=0x00A80000, words[8..] a payload of integer-valued IEEE-754 floats (e.g. 0x42480000=50, 0x41A00000=20, 0x42180000=38, 0xC2820000=-65) and 0x00000000 padding. Field names unknown. HYPOTHESIS: per-line camera/position or animation parameter records for the prologue cutscene (immediately follows the prologue strings + pointer table). Non-executable."
+    },
+    {
+      "part": "data_00100fd4_chunk15head",
+      "rangeZ64": [
+        "0x00100FD4",
+        "0x00101000"
+      ],
+      "bytes": 44,
+      "class": "float-record-table",
+      "state": "raw-but-classified",
+      "note": "OUTGOING DATA CONTINUATION into chunk 16. Fifth 0x50-byte float-record begins at 0x100FD4 (header 0x00000004,0x00000064,0x00000001,0,0x00000001,0x000200F0,0x00F00000,0x00A80000, then floats 0xC2040000=-33, 0xC2380000=-46, 0x00000000) but is TRUNCATED at the chunk-15 edge 0x101000 after only 11 of 20 words. The record continues into chunk 16: 0x101000 = 0x42340000 (float 45.0) is word[11] of THIS record. Tail will be data_<...>_chunk16tail starting at 0x101000. Ends exactly at 0x00101000."
+    }
+  ]
+}
