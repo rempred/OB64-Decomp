@@ -25,6 +25,9 @@ even when the next chunks are expected to be mostly code.
 - `{PATCH_WORKBENCH_TARGETS}`: coordinator-side opportunistic patch-workbench
   targets from parent evidence, previous review caveats, known patch sites, and
   unresolved runtime-state requests. Use `none` when empty.
+- `{RUNTIME_STATE_ONESHOT}`: coordinator-side bounded retrospective runtime-state
+  backfill instructions. Use `none` when empty; do not leave stale one-shot text
+  in later prompts after it has been completed.
 - `{REQUIRED_REVIEW_DOCS}`: latest review handoff docs for the prior run.
 - `{KNOWN_ISSUES}`: cleanup/review issues to fix first.
 - `{REVIEW_DOC_PATH}`: review handoff doc to create for this run, e.g.
@@ -112,6 +115,8 @@ Use full swarm capabilities. Assign agents/passes for:
 - cleanup/doc consistency fixes
 - parent workspace evidence sweep for current chunk addresses
 - opportunistic patch-workbench metadata harvest when encountered
+- runtime-state request log maintenance
+- coordinator-enabled runtime-state one-shot/backfill, if provided
 - chunk {CHUNK_A_N} code/data classification
 - chunk {CHUNK_A_N} code split review
 - chunk {CHUNK_A_N} data classification/indexing
@@ -139,7 +144,8 @@ Required reading before edits:
 9. Latest relevant dossier before `{PREV_FRONTIER}`
 10. `asm\original\rev0\manifest.json`
 11. `docs\runtime-state-catalog.md`
-12. Relevant tools: `tools\dump_function_context.js`, `tools\plan_chunk.js`,
+12. `docs\runtime-state-requests.md`
+13. Relevant tools: `tools\dump_function_context.js`, `tools\plan_chunk.js`,
     `tools\scan_functions.js`, `tools\check_boundaries.js`,
     `tools\check_splits.js`, `tools\split_original_mips_part.js`,
     `tools\slice_chunk.js`, `tools\integrate_chunk.js`,
@@ -195,6 +201,34 @@ Runtime-state catalog workflow:
   confidence, and whether the result is `candidate`, `rejected`,
   `needs-runtime`, or proven by runtime trace/controlled mutation.
 
+Runtime-state request log:
+- Maintain `docs\runtime-state-requests.md` as the durable backlog for Joe.
+  When a source-ownership run discovers a missing state or runtime proof need,
+  add or update a precise request there instead of leaving it only in prose.
+- When an existing catalog state can serve a request, record the exact state
+  path, checked ROM identity, addresses, watchpoints/registers/memory ranges,
+  result, confidence, and affected files before marking it satisfied.
+- Do not delete old requests. Mark them `satisfied` or `superseded`, with the
+  evidence path and reason.
+- Do not let request-log work block the chunk goal. Keep it narrow and tied to
+  current evidence, review caveats, or the one-shot instructions below.
+
+Runtime-state one-shot/backfill:
+{RUNTIME_STATE_ONESHOT}
+
+When this section is not `none`, run it before starting new chunk ownership,
+after fixing concrete review issues. Keep the pass bounded:
+- Use existing curated vanilla Rev 0 states only unless the prompt explicitly
+  asks for a new capture.
+- Retrospectively triage already source-owned ranges, existing dossiers, review
+  docs, and patch-workbench artifacts named by the coordinator.
+- Classify each old runtime request or patch-safety question as
+  `served-by-existing-state`, `still-needs-capture`, `needs-runtime`, `rejected`,
+  or `not-actionable`.
+- Update `docs\runtime-state-requests.md` and any directly affected
+  patch-workbench JSON or review notes. Do not redo source ownership, do not
+  widen ranges, and do not start speculative emulator hunts.
+
 Patch Workbench Targets:
 {PATCH_WORKBENCH_TARGETS}
 
@@ -228,7 +262,8 @@ Patch workbench harvest rules:
   or mutation needed to prove behavior or patch safety.
 - When a request can be served by the vanilla Rev 0 runtime-state catalog, name
   the nearest catalog folder/path and the exact proof still needed. When no
-  catalog state exists, say which missing category/state should be captured.
+  catalog state exists, say which missing category/state should be captured and
+  update `docs\runtime-state-requests.md`.
 - If no patch-workbench metadata is encountered, say so briefly in the dossier
   and review handoff. Do not create empty noise.
 
@@ -435,6 +470,8 @@ Review handoff requirements:
 - Include runtime-state catalog use if any: exact state path, verified identity,
   watches/registers/memory ranges, addresses, confidence, and unresolved
   runtime-state requests. If no runtime states were used, state that explicitly.
+- Include runtime-state request-log changes: IDs opened, served, superseded, or
+  left unresolved in `docs\runtime-state-requests.md`.
 - For any data-dominant range or substantial data span, include total data bytes
   source-owned, parsed bytes, raw-but-classified bytes, undecoded bytes, data
   files added, index files added, known format families found, and exact next

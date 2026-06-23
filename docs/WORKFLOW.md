@@ -26,17 +26,21 @@ The curated vanilla Rev 0 Project64 state catalog lives in the parent workspace:
 
 `C:\Users\Joe\Projects\OgreBattlel64\runtime-states\vanilla\rev0`
 
-This repo's usage guide is `docs/runtime-state-catalog.md`. Current verified
-catalog identity for present states is vanilla US Rev 0: Project64 CRC
-`E6419BC5 / 69011DE3`, country `0x45`, version `0`. Agents must still verify
-state headers before use and record the exact state path and checked identity.
+This repo's usage guide is `docs/runtime-state-catalog.md`. The maintained
+request log for missing states and runtime proof work is
+`docs/runtime-state-requests.md`. Current verified catalog identity for present
+states is vanilla US Rev 0: Project64 CRC `E6419BC5 / 69011DE3`, country
+`0x45`, version `0`. Agents must still verify state headers before use and
+record the exact state path and checked identity.
 
 Use the catalog only for narrowed runtime questions: overlay/RAM mapping,
 register meaning, active call paths, behavior confidence, or patch-safety
 questions. State and folder names are convenience labels, not semantic proof.
 When no state reaches the needed situation, record a runtime-state request
-instead of guessing. Autonomous emulator/runtime work must follow the parent
-`TestingWorkFlow.MD`; user-driven testing should stay passive unless Joe asks.
+instead of guessing. Keep `docs/runtime-state-requests.md` current by adding,
+serving, or superseding requests rather than losing them in review prose.
+Autonomous emulator/runtime work must follow the parent `TestingWorkFlow.MD`;
+user-driven testing should stay passive unless Joe asks.
 
 ## Setup Gate
 

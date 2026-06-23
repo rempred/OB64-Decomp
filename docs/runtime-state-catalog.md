@@ -75,8 +75,9 @@ not broaden the static source-ownership range, replace byte-exact rebuild gates,
 or turn static-only claims into proven behavior.
 
 If no state reaches the needed situation, record a precise runtime-state request
-instead of guessing. A useful request names the target situation, needed ROM/RAM
-addresses, watches/registers, expected screen or scenario, and the proof needed.
+in `docs/runtime-state-requests.md` instead of guessing. A useful request names
+the target situation, needed ROM/RAM addresses, watches/registers, expected
+screen or scenario, and the proof needed.
 
 Autonomous emulator/runtime work must follow
 `C:\Users\Joe\Projects\OgreBattlel64\TestingWorkFlow.MD`. During user-driven
@@ -112,4 +113,3 @@ Empty leaf categories at inspection time:
 - `scenario-map\enemy_visible_on_map`
 - `scenario-map\post_battle_reward`
 - `scenario-map\scenario_complete`
-
