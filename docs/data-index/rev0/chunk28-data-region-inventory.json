@@ -1,0 +1,555 @@
+{
+  "chunk": 28,
+  "range": "0x001C1000..0x001D1000",
+  "status": "source-owned",
+  "generatedBy": "2026-06-23 chunks28-29 source-ownership run",
+  "summary": {
+    "dataTerritories": 3,
+    "dataFiles": 22,
+    "dataBytes": 36228,
+    "parsedBytes": 1124,
+    "rawButClassifiedBytes": 35104,
+    "undecodedBytes": 35104,
+    "codeResumesAt": [
+      "0x001C3300",
+      "0x001C904C",
+      "0x001CE070"
+    ],
+    "evidence": [
+      "Data territories have 0 prologues and 0 jr $ra returns in the generated disassembly.",
+      "Parent function/symbol overlap sweep found 0 accepted parent functions inside all three data territories.",
+      "The first territory has dense RAM-like pointer words plus GBI/RDP-like command words.",
+      "The second territory has a stronghold/tutorial string pool followed by pointer tables and packed command/script data.",
+      "The third territory has pointer/id table data and a packed command/script blob ending in a debug/test string and zero pad."
+    ]
+  },
+  "territories": [
+    {
+      "range": "0x001C2DC0..0x001C3300",
+      "size": 1344,
+      "class": "inline_mixed_pointer_gbi_data",
+      "confidence": "high",
+      "stats": {
+        "words": 336,
+        "zeroWords": 76,
+        "ramLikePointers": 149,
+        "ram8022Or8023Pointers": 111,
+        "gbiLikeWords": 42,
+        "jrRa": 0,
+        "prologues": 0
+      },
+      "gbiLikeExamples": [
+        "0x001C30C8:0xE7000000",
+        "0x001C30D8:0xE3000A01",
+        "0x001C30E8:0xE200001C",
+        "0x001C30F8:0xE3001201",
+        "0x001C3100:0xE2001E01"
+      ],
+      "unresolvedQuestions": [
+        "Exact owner subsystem for the pointer table is unresolved.",
+        "The display-list-like command stream is preserved byte-exactly but not semantically decoded."
+      ]
+    },
+    {
+      "range": "0x001C5690..0x001C904C",
+      "size": 14780,
+      "class": "stronghold_tutorial_text_and_script_data",
+      "confidence": "high",
+      "stats": {
+        "words": 3695,
+        "zeroWords": 59,
+        "ramLikePointers": 367,
+        "ram8022Or8023Pointers": 342,
+        "gbiLikeWords": 0,
+        "jrRa": 0,
+        "prologues": 0
+      },
+      "unresolvedQuestions": [
+        "Packed command/script record layout is not decoded.",
+        "RAM-like pointers are overlay/runtime leads only until reconciled against a live load map."
+      ]
+    },
+    {
+      "range": "0x001C91E8..0x001CE070",
+      "size": 20104,
+      "class": "stronghold_script_table_blob",
+      "confidence": "high",
+      "stats": {
+        "words": 5026,
+        "zeroWords": 315,
+        "ramLikePointers": 641,
+        "ram8022Or8023Pointers": 617,
+        "gbiLikeWords": 0,
+        "jrRa": 0,
+        "prologues": 0
+      },
+      "unresolvedQuestions": [
+        "Pointer/id table target semantics are unresolved.",
+        "Packed command/script blob remains raw-but-classified pending a parser."
+      ]
+    }
+  ],
+  "dataSpans": [
+    {
+      "range": "0x001C2DC0..0x001C2F44",
+      "size": 388,
+      "file": "asm/original/rev0/lib/table_001C2DC0.s",
+      "class": "ram_pointer_table",
+      "parsedStatus": "raw-but-classified",
+      "confidence": "high",
+      "evidence": [
+        "Dense 0x800*/0x802* RAM-like words.",
+        "No prologue or jr $ra pattern."
+      ],
+      "unresolvedQuestions": [
+        "Pointer target ownership and record stride are unresolved."
+      ]
+    },
+    {
+      "range": "0x001C2F44..0x001C2F94",
+      "size": 80,
+      "file": "asm/original/rev0/lib/zero_fill_001C2F44.s",
+      "class": "zero_fill",
+      "parsedStatus": "parsed",
+      "confidence": "high",
+      "evidence": [
+        "All words are 0x00000000."
+      ],
+      "unresolvedQuestions": []
+    },
+    {
+      "range": "0x001C2F94..0x001C2FC0",
+      "size": 44,
+      "file": "asm/original/rev0/lib/table_001C2F94.s",
+      "class": "mixed_pointer_record_table",
+      "parsedStatus": "raw-but-classified",
+      "confidence": "medium",
+      "evidence": [
+        "Small scalar and RAM-like pointer values before a sparse pad."
+      ],
+      "unresolvedQuestions": [
+        "Row width and field meaning are unknown."
+      ]
+    },
+    {
+      "range": "0x001C2FC0..0x001C3010",
+      "size": 80,
+      "file": "asm/original/rev0/lib/data_001C2FC0.s",
+      "class": "sparse_zero_pointer_pad",
+      "parsedStatus": "raw-but-classified",
+      "confidence": "medium",
+      "evidence": [
+        "Sparse zeros and pointer/control values between two structured spans."
+      ],
+      "unresolvedQuestions": [
+        "Whether this is padding or small records is unresolved."
+      ]
+    },
+    {
+      "range": "0x001C3010..0x001C30C8",
+      "size": 184,
+      "file": "asm/original/rev0/lib/data_001C3010.s",
+      "class": "packed_command_records",
+      "parsedStatus": "raw-but-classified",
+      "confidence": "medium",
+      "evidence": [
+        "Packed byte/halfword-looking control data with no executable return/prologue pattern."
+      ],
+      "unresolvedQuestions": [
+        "Record stride and command meanings are unknown."
+      ]
+    },
+    {
+      "range": "0x001C30C8..0x001C3250",
+      "size": 392,
+      "file": "asm/original/rev0/lib/data_001C30C8.s",
+      "class": "gbi_display_list_like",
+      "parsedStatus": "raw-but-classified",
+      "confidence": "high",
+      "evidence": [
+        "Contains E700/E300/E200/D700/DF00/FCFF/FA-style display-list command words."
+      ],
+      "unresolvedQuestions": [
+        "Display-list ownership and full command stream structure are unresolved."
+      ]
+    },
+    {
+      "range": "0x001C3250..0x001C32E8",
+      "size": 152,
+      "file": "asm/original/rev0/lib/table_001C3250.s",
+      "class": "ram_pointer_table",
+      "parsedStatus": "raw-but-classified",
+      "confidence": "high",
+      "evidence": [
+        "Dense RAM-like pointer run after the display-list-like stream."
+      ],
+      "unresolvedQuestions": [
+        "Target map is unresolved."
+      ]
+    },
+    {
+      "range": "0x001C32E8..0x001C3300",
+      "size": 24,
+      "file": "asm/original/rev0/lib/data_001C32E8.s",
+      "class": "tail_pad_or_small_records",
+      "parsedStatus": "raw-but-classified",
+      "confidence": "medium",
+      "evidence": [
+        "Short non-code trailer before code resumes at 0x001C3300."
+      ],
+      "unresolvedQuestions": [
+        "Field meaning is unknown."
+      ]
+    },
+    {
+      "range": "0x001C5690..0x001C5A5C",
+      "size": 972,
+      "file": "asm/original/rev0/lib/rodata_001C5690.s",
+      "class": "text_pool",
+      "parsedStatus": "parsed",
+      "confidence": "high",
+      "evidence": [
+        "Readable NUL-delimited stronghold/tutorial strings."
+      ],
+      "unresolvedQuestions": [
+        "Message table ownership is inferred from text only; runtime menu state is unproven."
+      ]
+    },
+    {
+      "range": "0x001C5A5C..0x001C5AAC",
+      "size": 80,
+      "file": "asm/original/rev0/lib/table_001C5A5C.s",
+      "class": "pointer_id_map",
+      "parsedStatus": "raw-but-classified",
+      "confidence": "medium",
+      "evidence": [
+        "Map-like scalar/pointer data immediately after the tutorial string pool."
+      ],
+      "unresolvedQuestions": [
+        "Target mapping and row width are unresolved."
+      ]
+    },
+    {
+      "range": "0x001C5AAC..0x001C5AD0",
+      "size": 36,
+      "file": "asm/original/rev0/lib/data_001C5AAC.s",
+      "class": "float_scalar_params",
+      "parsedStatus": "raw-but-classified",
+      "confidence": "medium",
+      "evidence": [
+        "Small scalar/float-like parameter block before a pointer table."
+      ],
+      "unresolvedQuestions": [
+        "Parameter semantics are unknown."
+      ]
+    },
+    {
+      "range": "0x001C5AD0..0x001C5B90",
+      "size": 192,
+      "file": "asm/original/rev0/lib/table_001C5AD0.s",
+      "class": "ram_pointer_table",
+      "parsedStatus": "raw-but-classified",
+      "confidence": "high",
+      "evidence": [
+        "Dense RAM-like pointer run at 0x001C5AD0."
+      ],
+      "unresolvedQuestions": [
+        "Pointer targets are overlay/runtime leads only."
+      ]
+    },
+    {
+      "range": "0x001C5B90..0x001C5C40",
+      "size": 176,
+      "file": "asm/original/rev0/lib/table_001C5B90.s",
+      "class": "fixed_or_variable_records",
+      "parsedStatus": "raw-but-classified",
+      "confidence": "medium",
+      "evidence": [
+        "Record-like words between pointer table and debug-label strings."
+      ],
+      "unresolvedQuestions": [
+        "Record stride is unresolved."
+      ]
+    },
+    {
+      "range": "0x001C5C40..0x001C5C58",
+      "size": 24,
+      "file": "asm/original/rev0/lib/rodata_001C5C40.s",
+      "class": "debug_label_strings",
+      "parsedStatus": "parsed",
+      "confidence": "high",
+      "evidence": [
+        "Contains dedasi_000 and dedasi_001 strings."
+      ],
+      "unresolvedQuestions": [
+        "Label consumer is unknown."
+      ]
+    },
+    {
+      "range": "0x001C5C58..0x001C5CD0",
+      "size": 120,
+      "file": "asm/original/rev0/lib/data_001C5C58.s",
+      "class": "pad_or_record_bytes",
+      "parsedStatus": "raw-but-classified",
+      "confidence": "medium",
+      "evidence": [
+        "Non-code bytes between two small debug-label string spans."
+      ],
+      "unresolvedQuestions": [
+        "Whether this is padding or records is unresolved."
+      ]
+    },
+    {
+      "range": "0x001C5CD0..0x001C5D00",
+      "size": 48,
+      "file": "asm/original/rev0/lib/rodata_001C5CD0.s",
+      "class": "debug_label_strings",
+      "parsedStatus": "parsed",
+      "confidence": "high",
+      "evidence": [
+        "Contains come here 000, come here 001, and come here 002 strings."
+      ],
+      "unresolvedQuestions": [
+        "Label consumer is unknown."
+      ]
+    },
+    {
+      "range": "0x001C5D00..0x001C8F90",
+      "size": 12944,
+      "file": "asm/original/rev0/lib/data_001C5D00.s",
+      "class": "packed_command_script_blob",
+      "parsedStatus": "undecoded",
+      "confidence": "high",
+      "evidence": [
+        "Large structured non-code span with no prologues, no jr $ra, and many pointer-like records."
+      ],
+      "unresolvedQuestions": [
+        "Parser for command/script records is still needed.",
+        "Runtime owner is unresolved."
+      ]
+    },
+    {
+      "range": "0x001C8F90..0x001C904C",
+      "size": 188,
+      "file": "asm/original/rev0/lib/table_001C8F90.s",
+      "class": "mixed_double_pointer_tail",
+      "parsedStatus": "raw-but-classified",
+      "confidence": "high",
+      "evidence": [
+        "Pointer/double-like table tail immediately before code resumes at 0x001C904C."
+      ],
+      "unresolvedQuestions": [
+        "Table field meanings are unresolved."
+      ]
+    },
+    {
+      "range": "0x001C91E8..0x001C926C",
+      "size": 132,
+      "file": "asm/original/rev0/lib/table_001C91E8.s",
+      "class": "pointer_id_table",
+      "parsedStatus": "raw-but-classified",
+      "confidence": "high",
+      "evidence": [
+        "Pointer/id table at the start of the second script blob."
+      ],
+      "unresolvedQuestions": [
+        "Target map is unresolved."
+      ]
+    },
+    {
+      "range": "0x001C926C..0x001CE050",
+      "size": 19940,
+      "file": "asm/original/rev0/lib/data_001C926C.s",
+      "class": "packed_command_script_blob",
+      "parsedStatus": "undecoded",
+      "confidence": "high",
+      "evidence": [
+        "Large structured non-code span with 0 prologues and 0 jr $ra.",
+        "False branch/jump decodes do not form coherent callable code."
+      ],
+      "unresolvedQuestions": [
+        "Parser for command/script records is still needed."
+      ]
+    },
+    {
+      "range": "0x001CE050..0x001CE064",
+      "size": 20,
+      "file": "asm/original/rev0/lib/rodata_001CE050.s",
+      "class": "debug_test_string",
+      "parsedStatus": "parsed",
+      "confidence": "high",
+      "evidence": [
+        "Readable debug/test string tusc_hc_test come with newline/NUL terminator."
+      ],
+      "unresolvedQuestions": [
+        "Consumer is unknown."
+      ]
+    },
+    {
+      "range": "0x001CE064..0x001CE070",
+      "size": 12,
+      "file": "asm/original/rev0/lib/zero_fill_001CE064.s",
+      "class": "zero_fill",
+      "parsedStatus": "parsed",
+      "confidence": "high",
+      "evidence": [
+        "All words are 0x00000000."
+      ],
+      "unresolvedQuestions": []
+    }
+  ],
+  "strings": [
+    {
+      "rom": "0x001C5690",
+      "text": "Stationing unit will gather information."
+    },
+    {
+      "rom": "0x001C56BC",
+      "text": "Displays the report on the stronghold"
+    },
+    {
+      "rom": "0x001C56E3",
+      "text": "(the occupying force, population, etc.)."
+    },
+    {
+      "rom": "0x001C570C",
+      "text": "Purchases items at a shop in the"
+    },
+    {
+      "rom": "0x001C572E",
+      "text": "stronghold."
+    },
+    {
+      "rom": "0x001C573C",
+      "text": "Reassigns character from one unit to"
+    },
+    {
+      "rom": "0x001C5762",
+      "text": "another in the same stronghold."
+    },
+    {
+      "rom": "0x001C5784",
+      "text": "Transfers item from one unit to"
+    },
+    {
+      "rom": "0x001C57A5",
+      "text": "another in the same stronghold."
+    },
+    {
+      "rom": "0x001C57C8",
+      "text": "This will end the instruction on"
+    },
+    {
+      "rom": "0x001C57EA",
+      "text": "Stronghold Command. Proceed?"
+    },
+    {
+      "rom": "0x001C580C",
+      "text": "Type of stronghold, occupying force,"
+    },
+    {
+      "rom": "0x001C5832",
+      "text": "presence of shop/witch den, name,"
+    },
+    {
+      "rom": "0x001C5855",
+      "text": "population, and morality are displayed."
+    },
+    {
+      "rom": "0x001C5880",
+      "text": "You can buy equipment and expendable"
+    },
+    {
+      "rom": "0x001C58A6",
+      "text": "items."
+    },
+    {
+      "rom": "0x001C58AE",
+      "text": "Move the Control Pad or Control Stick to"
+    },
+    {
+      "rom": "0x001C58D8",
+      "text": "the left/right to change item category."
+    },
+    {
+      "rom": "0x001C5900",
+      "text": "You can reassign a character from one"
+    },
+    {
+      "rom": "0x001C5927",
+      "text": "unit to another in the same stronghold,"
+    },
+    {
+      "rom": "0x001C5950",
+      "text": "as long as the number of characters in a"
+    },
+    {
+      "rom": "0x001C597A",
+      "text": "unit does not exceed the maximum."
+    },
+    {
+      "rom": "0x001C5A18",
+      "text": "This concludes the tutorial on Use Item"
+    },
+    {
+      "rom": "0x001C5A41",
+      "text": "command. Proceed?"
+    },
+    {
+      "rom": "0x001C5C40",
+      "text": "dedasi_000"
+    },
+    {
+      "rom": "0x001C5C4C",
+      "text": "dedasi_001"
+    },
+    {
+      "rom": "0x001C5CD0",
+      "text": "come here 000"
+    },
+    {
+      "rom": "0x001C5CE0",
+      "text": "come here 001"
+    },
+    {
+      "rom": "0x001C5CF0",
+      "text": "come here 002"
+    },
+    {
+      "rom": "0x001CE050",
+      "text": "tusc_hc_test come \\n"
+    }
+  ],
+  "parentEvidence": {
+    "usefulMatches": [
+      {
+        "path": "C:/Users/Joe/Projects/OgreBattlel64/scripts/ob64_multu72_search_output.txt",
+        "addresses": [
+          "0x001C1708",
+          "0x001CF770"
+        ],
+        "classification": "stride/render lead",
+        "effect": "Not a boundary change; local disassembly keeps both hits inside code parts."
+      },
+      {
+        "path": "C:/Users/Joe/Projects/OgreBattlel64/wiki/battle-turn-queue-trace/disasm_old_pointer_clear_training.txt",
+        "addresses": [
+          "0x001C1FBC"
+        ],
+        "classification": "control-flow lead",
+        "effect": "No boundary change; local split keeps 0x001C1FBC inside func_001C1F98 and starts the next functions at 0x001C1FF4 and 0x001C2064."
+      }
+    ],
+    "rejectedMatches": [
+      {
+        "reason": "High-attack artifacts use runtime 0x801D.... PCs or out-of-range z64 hooks and do not map to 0x001C1000..0x001D1000 as Rev 0 ROM offsets."
+      },
+      {
+        "reason": "0x8022/0x8023 pointer-looking words are not simple ROM back-maps in this overlay-loaded region."
+      },
+      {
+        "reason": "0x01Cxxxxx archive offsets in parent archive tools are not 0x001Cxxxx code-region offsets."
+      }
+    ]
+  }
+}

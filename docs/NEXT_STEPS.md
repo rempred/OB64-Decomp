@@ -15,10 +15,10 @@ Current passing commands:
 node tools/verify_setup.js
 ```
 
-Current source mix: 28 tracked composite real-assembler chunks (chunk 0 177
-`boot/`; chunks 1–27 in `lib/`: 350, 216, 67, 376, 88, 78, 103, 87, 34, 35, 191, 74, 67, 94, 153, 95, 66, 95, 80, 175, 99, 99, 73, 63, 71, 96, 142) = 3,344 tracked
-source files, plus 72 generated fallback chunks. **Chunks 0–27 are fully
-source-owned as named code/data parts** (`0x00001000..0x001C1000`; chunk 16: 72 code + 23
+Current source mix: 29 tracked composite real-assembler chunks (chunk 0 177
+`boot/`; chunks 1–28 in `lib/`: 350, 216, 67, 376, 88, 78, 103, 87, 34, 35, 191, 74, 67, 94, 153, 95, 66, 95, 80, 175, 99, 99, 73, 63, 71, 96, 142, 97) = 3,441 tracked
+source files, plus 71 generated fallback chunks. **Chunks 0–28 are fully
+source-owned as named code/data parts** (`0x00001000..0x001D1000`; chunk 16: 72 code + 23
 data, MIXED — leading scenario record/pointer/float64 data + the neutral-encounter code path;
 chunk 17: 66 code + 0 data, ALL CODE — char-data/encounter code;
 chunk 18: 95 code + 0 data, ALL CODE — FP-heavy scenario/combat code;
@@ -35,8 +35,10 @@ island after func_001A42A4; an options-menu string pool], incl. the ESET loader 
 reward-queue writer func_001AF828 + the 9.3KB dispatcher func_001A9290, with incoming AND outgoing
 FUNCTION straddlers; chunk 27: 128 code + 14 data, CODE-dominant MIXED - FP-heavy class/char/
 encounter/resource code + status/menu string table island + display-list/float/color-LUT island,
-with incoming AND outgoing FUNCTION straddlers);
-next is chunk 28 (`0x001C1000`).
+with incoming AND outgoing FUNCTION straddlers; chunk 28: 73 normal code + 22 data + 2 function
+straddlers, MIXED - stronghold/tutorial text + pointer/GBI-like data + packed command/script
+blobs + recovered frameless helpers);
+next is chunk 29 (`0x001D1000`).
 
 The assembled code-region SHA256 is
 `40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`; the full
@@ -113,35 +115,33 @@ node tools/audit_code_region.js
    generates fallback owners for the rest. Keep `node tools/verify_setup.js`
    green after every promotion.
 
-3. Continue into chunk 28.
+3. Continue into chunk 29.
 
    Patch-workbench backfill prerequisite: read
    `docs/REVIEW_2026-06-23_patch-workbench-backfill.md` and
    `docs/patch-workbench/rev0/patch-workbench-backfill-2026-06-23.json`
-   before splitting chunk 28. Keep any patch-workbench harvest lightweight and
+   before splitting chunk 29. Keep any patch-workbench harvest lightweight and
    subordinate to source ownership.
 
-   Chunks 0–27 (`0x00001000..0x001C1000`) are fully source-owned as named code/data
-   parts: chunk 0 in `boot/`; chunks 1–27 in `lib/` (dossiers `lib-chunk1-…` …
-   `lib-chunk27-…`). Chunks 13–16 and 19–27 are MIXED; chunks 17–18 are ALL CODE.
-   Chunk 27 (142 parts: 128 code + 14 data) is CODE-dominant MIXED: FP-heavy class/char/
-   encounter/resource code with an incoming FUNCTION straddler-tail, a status/menu string +
-   table/double/pointer island at `0x1B226C..0x1B2670`, a display-list/float/color-LUT island at
-   `0x1B9920..0x1BA050`, and outgoing FUNCTION straddler `func_001C0FC8`. Notable leads
-   (names conservative): `func_001B6538` 3.7KB dispatcher, `func_001B924C` display-list builder,
-   resource-loader leads `func_001B902C`/`func_001BDD70`/`func_001BDE70`, `func_001BC020` 4.4KB,
-   and `func_001BDF2C` 4KB. Adversarial: 7 verifiers, 0 boundary moves. Data index
-   `docs/data-index/rev0/chunk27-data-region-inventory.json` + decoded status/menu string export.
+   Chunks 0–28 (`0x00001000..0x001D1000`) are fully source-owned as named code/data
+   parts: chunk 0 in `boot/`; chunks 1–28 in `lib/` (dossiers `lib-chunk1-…` …
+   `lib-chunk28-…`). Chunks 13–16 and 19–28 are MIXED; chunks 17–18 are ALL CODE.
+   Chunk 28 (97 parts: 73 normal code + 22 data + 2 function straddlers) is MIXED:
+   incoming `func_001C0FC8_chunk28tail`, code clusters around three stronghold/tutorial data
+   territories, recovered frameless helpers at `0x1C3D14` and `0x1CE070..0x1CE174`, and
+   outgoing FUNCTION straddler `func_001D0694`. Data index
+   `docs/data-index/rev0/chunk28-data-region-inventory.json`.
 
-   **Next frontier: `0x001C1000` (chunk 28).** FIRST continue the OUTGOING FUNCTION straddler:
-   `func_001C0FC8` `[0x1C0FC8,0x1C1000)` starts at chunk 27 with prologue `addiu $sp,-0x18`
-   @`0x1C0FC8`, has no entry preamble, and has no `jr$ra` before the chunk boundary. Emit
-   `func_001C0FC8_chunk28tail` starting at `0x1C1000` and confirm its return before splitting the
-   rest of chunk 28.
+   **Next frontier: `0x001D1000` (chunk 29).** FIRST continue the OUTGOING FUNCTION straddler:
+   `func_001D0694` `[0x1D0694,0x1D1000)` starts at chunk 28 with prologue `addiu $sp,-0x80`
+   @`0x1D0694`, has no `jr$ra` before the chunk boundary, and returns in chunk 29 at
+   `0x001D109C` with delay slot `0x001D10A0`. Emit `func_001D0694_chunk29tail`
+   `0x001D1000..0x001D10A4`, then split the rest of chunk 29. Scout pass found no substantial
+   data territory in chunk 29, but preserve any true alignment/data findings honestly.
    Pipeline: `slice_extract`/`check_splits`/`check_boundaries` + analysis + adversarial swarms
    (Workflow) + a data-classification/index/export swarm for data regions.
-   Coverage now 64.4042% (code-only 53.1455%). See the DECOMP_LOG "Next Frontier" and
-   `docs/dossiers/lib-chunk27-1B1000-1C1000.md`.
+   Coverage now 66.7044% (code-only 54.1741%). See the DECOMP_LOG "Next Frontier" and
+   `docs/dossiers/lib-chunk28-1C1000-1D1000.md`.
 
 4. Keep the setup gate green.
 

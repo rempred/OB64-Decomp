@@ -1,0 +1,32 @@
+/*
+ * Original Rev 0 MIPS reference split.
+ * Parent source: asm/original/rev0/code_001C1000_001D1000.s
+ * z64 range: 0x001CE0C4..0x001CE114 exclusive
+ * Decode comments are aids, not proof of semantic function boundaries.
+ */
+.set noat
+.set noreorder
+.text
+
+/* Recovered frameless helper: starts 0x1CE0C4, returns at 0x1CE10C with delay @0x1CE110. Parent 0x1CE0C0 label is an internal/alignment artifact. */
+func_001CE0C4:
+/* 0x001CE0C4 0x8023DCC4 0x24020003 */ .word 0x24020003 # addiu $v0, $zero, 0x3
+/* 0x001CE0C8 0x8023DCC8 0x10820005 */ .word 0x10820005 # beq $a0, $v0, 0x8023DCE0
+/* 0x001CE0CC 0x8023DCCC 0x24A20003 */ .word 0x24A20003 # addiu $v0, $a1, 0x3
+/* 0x001CE0D0 0x8023DCD0 0x24020002 */ .word 0x24020002 # addiu $v0, $zero, 0x2
+/* 0x001CE0D4 0x8023DCD4 0x54820005 */ .word 0x54820005 # bnel $a0, $v0, 0x8023DCEC
+/* 0x001CE0D8 0x8023DCD8 0x24020001 */ .word 0x24020001 # addiu $v0, $zero, 0x1
+/* 0x001CE0DC 0x8023DCDC 0x24A20003 */ .word 0x24A20003 # addiu $v0, $a1, 0x3
+/* 0x001CE0E0 0x8023DCE0 0x00021082 */ .word 0x00021082 # srl $v0, $v0, 2
+/* 0x001CE0E4 0x8023DCE4 0x08065F03 */ .word 0x08065F03 # j 0x80197C0C
+/* 0x001CE0E8 0x8023DCE8 0x00021080 */ .word 0x00021080 # sll $v0, $v0, 2
+/* 0x001CE0EC 0x8023DCEC 0x10820004 */ .word 0x10820004 # beq $a0, $v0, 0x8023DD00
+/* 0x001CE0F0 0x8023DCF0 0x24A2000F */ .word 0x24A2000F # addiu $v0, $a1, 0xF
+/* 0x001CE0F4 0x8023DCF4 0x00021102 */ .word 0x00021102 # srl $v0, $v0, 4
+/* 0x001CE0F8 0x8023DCF8 0x08065F03 */ .word 0x08065F03 # j 0x80197C0C
+/* 0x001CE0FC 0x8023DCFC 0x00021100 */ .word 0x00021100 # sll $v0, $v0, 4
+/* 0x001CE100 0x8023DD00 0x24A20007 */ .word 0x24A20007 # addiu $v0, $a1, 0x7
+/* 0x001CE104 0x8023DD04 0x000210C2 */ .word 0x000210C2 # srl $v0, $v0, 3
+/* 0x001CE108 0x8023DD08 0x000210C0 */ .word 0x000210C0 # sll $v0, $v0, 3
+/* 0x001CE10C 0x8023DD0C 0x03E00008 */ .word 0x03E00008 # jr $ra
+/* 0x001CE110 0x8023DD10 0x00000000 */ .word 0x00000000 # nop

@@ -53,7 +53,7 @@
         "0x00175F28"
       ],
       "parts": 22,
-      "note": "CODE1: FP camera-transition leads (func_00173D50 begin, func_001742D0 stepSetup); preamble-orphans + recovered frameless leaves; jr $reg dispatcher @0x17459C internal."
+      "note": "Adjacent-code summary only: CODE1 has FP camera-transition leads (func_00173D50 begin, func_001742D0 stepSetup), folded boundary prefixes, recovered frameless leaves, and an internal jr $reg dispatcher @0x17459C."
     },
     {
       "rangeZ64": [
@@ -61,7 +61,7 @@
         "0x0017BCD0"
       ],
       "parts": 14,
-      "note": "CODE2: char-data/promotion consumers; preamble-orphan entry func_00177ED0 (lui/lw $a0,0x8022); huge func_00178A44 (5932B) single fn; func_0017B984 jr $v0 dispatch internal."
+      "note": "Adjacent-code summary only: CODE2 has char-data/promotion consumers, a boundary load prefix at func_00177ED0 (lui/lw $a0,0x8022), huge func_00178A44 (5932B) as a single function, and internal func_0017B984 jr $v0 dispatch."
     },
     {
       "rangeZ64": [
@@ -69,7 +69,7 @@
         "0x00181000"
       ],
       "parts": 4,
-      "note": "CODE3: preamble-orphan entry func_0017F9C0 (lui/lbu $v0,0x8021); ends in the outgoing FUNCTION straddler-head func_0017FF4C."
+      "note": "Adjacent-code summary only: CODE3 starts at func_0017F9C0 with a lui/lbu $v0,0x8021 boundary prefix and ends in the outgoing FUNCTION straddler-head func_0017FF4C."
     }
   ],
   "incomingStraddler": {
@@ -87,7 +87,7 @@
       "0x0017FF4C",
       "0x00181000"
     ],
-    "note": "OUTGOING straddler is a CODE function straddler-head, not data: func_0017FF4C true entry is the 2-word lui/lbu $v0,0x8022 read-before-write preamble at 0x17FF4C folded into the addiu $sp,-0x88 prologue at 0x17FF54; NO jr$ra in [0x17FF4C,0x181000) (continues into chunk 24, parent end 0x181118)."
+    "note": "OUTGOING straddler is a CODE function straddler-head, not data: func_0017FF4C starts with a 2-word lui/lbu $v0,0x8022 boundary prefix at 0x17FF4C before the addiu $sp,-0x88 framed body at 0x17FF54; NO jr$ra in [0x17FF4C,0x181000) (continues into chunk 24, parent end 0x181118)."
   },
   "parentEvidence": "Code overlay-relocated to runtime 0x8021xxxx band (scenario-state overlay; symbols_v2 ram= 0x801d5xxx is the WRONG linear back-map). CRITICAL: the parent functions DB lists ~35 functions spanning [0x171EA0,0x181000] but TWO large gaps are DATA ISLANDS (0x175F28..0x177ED0 and 0x17BCD0..0x17F9C0) with 0 prologues/0 jr$ra; the parent func_00177D20 is a 0x80218D00 pointer run (false positive, absorbed into table_00177B44). Boundaries pinned from byte-exact returns/prologues, NOT the DB. Hand-curated leads: scenarioCameraTransition_begin @0x173D50, _stepSetup @0x1742D0 (names stay func_*).",
   "entries": [
@@ -298,7 +298,7 @@
       "bytes": 908,
       "class": "ram-pointer-table",
       "state": "parsed",
-      "note": "RAM-pointer table, all entries in the 0x8021xxxx band (word-stride 0x4). Opens with 0x8021AA80 at 0x177B44, then two zero words, then a dense run starting 0x177B50 (0x80217684, 0x802176DC, 0x80217730, 0x8021781C, 0x802178B8, 0x802178F4, 0x802179EC, 0x80217B90, 0x80217BEC, 0x80217EA4, 0x802180D4, 0x8021812C...). Large default-fill runs: 0x8021812C repeated ~0x177B7C-0x177CE8, then 0x80218D00 repeated as the dominant default (0x177CF4-0x177DD4, including the func_00177D20 false boundary), and 0x80218F3C repeated 0x177DE4-0x177ECC. Non-default exceptions interleaved: 0x80218CB8, 0x80218CD4, 0x80218CF8, 0x80218D58, 0x80218E18, 0x80218EEC, 0x80218104. Ends at 0x80218E18 (0x177ECC); region terminates at 0x177ED0 where the 0x8022-band code2 preamble (lui $a0,0x8022) begins. (swarm-label: table_ptr_0x8021_band)"
+      "note": "RAM-pointer table, all entries in the 0x8021xxxx band (word-stride 0x4). Opens with 0x8021AA80 at 0x177B44, then two zero words, then a dense run starting 0x177B50 (0x80217684, 0x802176DC, 0x80217730, 0x8021781C, 0x802178B8, 0x802178F4, 0x802179EC, 0x80217B90, 0x80217BEC, 0x80217EA4, 0x802180D4, 0x8021812C...). Large default-fill runs: 0x8021812C repeated ~0x177B7C-0x177CE8, then 0x80218D00 repeated as the dominant default (0x177CF4-0x177DD4, including the parent false boundary label func_00177D20), and 0x80218F3C repeated 0x177DE4-0x177ECC. Non-default exceptions interleaved: 0x80218CB8, 0x80218CD4, 0x80218CF8, 0x80218D58, 0x80218E18, 0x80218EEC, 0x80218104. Ends at 0x80218E18 (0x177ECC); region terminates at 0x177ED0 where the 0x8022-band code2 boundary prefix (lui $a0,0x8022) begins. (swarm-label: table_ptr_0x8021_band)"
     },
     {
       "part": "zero_fill_0017BCD0",
@@ -452,7 +452,7 @@
       "bytes": 8,
       "class": "zero-fill",
       "state": "parsed",
-      "note": "2 pure-zero words (NOP padding) closing Data Island 2 at 0x17F9B8-0x17F9BC; immediately followed by the code3 preamble 'lui $v0, 0x8021' at 0x17F9C0 (region end). (swarm-label: zero_fill_island2_end_pad)"
+      "note": "2 pure-zero words (NOP padding) closing Data Island 2 at 0x17F9B8-0x17F9BC; immediately followed by the code3 boundary prefix 'lui $v0, 0x8021' at 0x17F9C0 (region end). (swarm-label: zero_fill_island2_end_pad)"
     }
   ]
 }

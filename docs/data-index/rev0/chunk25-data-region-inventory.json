@@ -44,14 +44,14 @@
         "0x00191000",
         "0x0019BFF0"
       ],
-      "note": "CODE region 1: incoming straddler-tail func_0018FB30_chunk25tail [0x191000,0x191174) + ~40 functions incl. the documented record-builder func_0019554C (hook @0x195584; builds 52B enemy record from enemydat template; name conservative), huge func_001960A8 (5776B) char/class hub, dispatcher func_001977E0 (preamble-orphan, 4580B, jr$v0 dispatch). 9 preamble-orphans, 4 frameless leaves."
+      "note": "Adjacent-code summary only: CODE region 1 has incoming straddler-tail func_0018FB30_chunk25tail [0x191000,0x191174) plus ~40 functions including the documented record-builder func_0019554C (hook @0x195584; builds 52B enemy record from enemydat template; name conservative), huge func_001960A8 (5776B) char/class hub, dispatcher func_001977E0 (folded boundary prefix, 4580B, jr$v0 dispatch), 9 folded boundary prefixes, and 4 frameless leaves."
     },
     {
       "rangeZ64": [
         "0x0019C760",
         "0x001A1000"
       ],
-      "note": "CODE region 2: preamble-orphan entry func_0019C760 + functions incl. func_0019E2E0 (5456B); ends in outgoing FUNCTION straddler-head func_001A0264."
+      "note": "Adjacent-code summary only: CODE region 2 starts at func_0019C760 with a folded boundary prefix, includes func_0019E2E0 (5456B), and ends in outgoing FUNCTION straddler-head func_001A0264."
     }
   ],
   "incomingStraddler": {

@@ -36,7 +36,7 @@
       "0x00165FC0",
       "0x0016FB90"
     ],
-    "note": "35 code parts. Entry func_00165FC0 is a preamble-orphan (data->code boundary at the lui $v1,0x801F / lw $v1,0x3658 read-before-write pair, $v1 first read at beq 0x166010). func_0016A56C is a lower-confidence preamble fold (body redundantly reloads $a0 at 0x16A600 — recorded honestly). Parent lead: growth-table consumer near func_00167DE0 (heuristic, RRP 0x80216da0; name stays conservative). All overlay j 0x8021xxxx tail-jumps + jr $reg dispatchers kept internal."
+    "note": "Adjacent-code summary only: 35 code parts. Code resumes at 0x00165FC0 with a boundary load pair before the framed body; func_0016A56C has a lower-confidence folded prefix because the body redundantly reloads $a0 at 0x16A600. Parent lead: growth-table consumer near func_00167DE0 (heuristic, RRP 0x80216da0; name stays conservative). All overlay j 0x8021xxxx tail-jumps + jr $reg dispatchers kept internal."
   },
   "incomingStraddler": {
     "part": "data_00161000_chunk22tail",
@@ -527,7 +527,7 @@
       "bytes": 64,
       "class": "packed/unknown",
       "state": "raw-but-classified",
-      "note": "High-byte preamble/marker block preceding the ASCII string pool. Contains store-opcode-shaped sentinel words and a 0x80xxxxxx pointer-shaped value, not decodable as a fixed record. Raw words: 0xE7000000, 0xE3001001, 0x00008000, 0xE200001C, 0x0F0A7008, 0xFC119623, 0xFF2FFFFF, 0xFA000000, 0xFFFFFFFF, 0xD7000002, 0x80008000, 0xDF000000, then three 0x00000000. Hypothesis (marked as such): a small packed header/flag struct or compression sentinel preceding the message table."
+      "note": "High-byte marker/header block preceding the ASCII string pool. Contains store-opcode-shaped sentinel words and a 0x80xxxxxx pointer-shaped value, not decodable as a fixed record. Raw words: 0xE7000000, 0xE3001001, 0x00008000, 0xE200001C, 0x0F0A7008, 0xFC119623, 0xFF2FFFFF, 0xFA000000, 0xFFFFFFFF, 0xD7000002, 0x80008000, 0xDF000000, then three 0x00000000. Hypothesis (marked as such): a small packed header/flag struct or compression sentinel preceding the message table."
     },
     {
       "part": "rodata_001650A0",

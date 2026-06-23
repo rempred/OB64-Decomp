@@ -36,14 +36,14 @@
         "0x00181000",
         "0x001822E4"
       ],
-      "note": "CODE1: incoming straddler-tail func_0017FF4C_chunk24tail [0x181000,0x181118) + FP/menu functions; 5 preamble-orphans (incl. the ~15-word hoisted-const preamble func_0018197C, adversarially confirmed single-function)."
+      "note": "Adjacent-code summary only: CODE1 has incoming straddler-tail func_0017FF4C_chunk24tail [0x181000,0x181118) plus FP/menu functions and 5 folded boundary prefixes (including the ~15-word hoisted-constant prefix at func_0018197C, adversarially confirmed single-function)."
     },
     {
       "rangeZ64": [
         "0x00188B60",
         "0x00191000"
       ],
-      "note": "CODE2: frameless DL-builder leaf func_00188B60 + char/display functions incl. the huge func_00189778 (8788B, 1 prologue/1 return); 10 preamble-orphans; ends in outgoing FUNCTION straddler-head func_0018FB30."
+      "note": "Adjacent-code summary only: CODE2 has frameless DL-builder leaf func_00188B60 plus char/display functions including huge func_00189778 (8788B, 1 prologue/1 return), 10 folded boundary prefixes, and the outgoing FUNCTION straddler-head func_0018FB30."
     }
   ],
   "incomingStraddler": {
