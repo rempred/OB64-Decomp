@@ -1,0 +1,32 @@
+/*
+ * Original Rev 0 MIPS reference split.
+ * Parent source: asm/original/rev0/code_00221000_00231000.s
+ * z64 range: 0x00222530..0x0022257C exclusive
+ * Decode comments are aids, not proof of semantic function boundaries.
+ */
+.set noat
+.set noreorder
+.text
+
+/* Prologue addiu$sp,-0x20@0x222530. Small FP leaf: jal 0x801BC35C then trunc.w.s, stores $f2 result to 0x1E of two structs. Returns jr$ra@0x222574 + delay addiu$sp,0x20@0x222578. */
+/* function boundary candidate: func_00222530, size=76, kind=prologue */
+func_00222530:
+/* 0x00222530 0x80292130 0x27BDFFE0 */ .word 0x27BDFFE0 # addiu $sp, $sp, -0x20
+/* 0x00222534 0x80292134 0xAFB00010 */ .word 0xAFB00010 # sw $s0, 0x10($sp)
+/* 0x00222538 0x80292138 0x00808021 */ .word 0x00808021 # move $s0, $a0
+/* 0x0022253C 0x8029213C 0xAFB10014 */ .word 0xAFB10014 # sw $s1, 0x14($sp)
+/* 0x00222540 0x80292140 0x00A08821 */ .word 0x00A08821 # move $s1, $a1
+/* 0x00222544 0x80292144 0xAFBF0018 */ .word 0xAFBF0018 # sw $ra, 0x18($sp)
+/* 0x00222548 0x80292148 0x8604001C */ .word 0x8604001C # lh $a0, 0x1C($s0)
+/* 0x0022254C 0x8029214C 0x0C06F0D7 */ .word 0x0C06F0D7 # jal 0x801BC35C
+/* 0x00222550 0x80292150 0x86050020 */ .word 0x86050020 # lh $a1, 0x20($s0)
+/* 0x00222554 0x80292154 0x4600008D */ .word 0x4600008D # trunc.w.s $f2, $f0
+/* 0x00222558 0x80292158 0x44021000 */ .word 0x44021000 # mfc1 $v0, $f2
+/* 0x0022255C 0x8029215C 0x00000000 */ .word 0x00000000 # nop
+/* 0x00222560 0x80292160 0xA622001E */ .word 0xA622001E # sh $v0, 0x1E($s1)
+/* 0x00222564 0x80292164 0xA602001E */ .word 0xA602001E # sh $v0, 0x1E($s0)
+/* 0x00222568 0x80292168 0x8FBF0018 */ .word 0x8FBF0018 # lw $ra, 0x18($sp)
+/* 0x0022256C 0x8029216C 0x8FB10014 */ .word 0x8FB10014 # lw $s1, 0x14($sp)
+/* 0x00222570 0x80292170 0x8FB00010 */ .word 0x8FB00010 # lw $s0, 0x10($sp)
+/* 0x00222574 0x80292174 0x03E00008 */ .word 0x03E00008 # jr $ra
+/* 0x00222578 0x80292178 0x27BD0020 */ .word 0x27BD0020 # addiu $sp, $sp, 0x20

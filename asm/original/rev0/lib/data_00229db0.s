@@ -1,0 +1,27 @@
+/*
+ * Original Rev 0 MIPS reference split.
+ * Parent source: asm/original/rev0/code_00221000_00231000.s
+ * z64 range: 0x00229DB0..0x00229DF0 exclusive
+ * Decode comments are aids, not proof of semantic function boundaries.
+ */
+.set noat
+.set noreorder
+.text
+
+/* Data region (not executable host code): "AddTimeTable:" ASCII label (0x41646454...3A) followed by packed binary table bytes (0x212121.., 0x2196A292,0x6D82CC96,0xBD97DF21,0x28256429, j-word 0x0A000000, 0x82A0..82EA index/offset bytes); record/offset table, not RAM pointers.. */
+/* 0x00229DB0 0x802999B0 0x41646454 */ .word 0x41646454 # cop0_0x0B
+/* 0x00229DB4 0x802999B4 0x696D6554 */ .word 0x696D6554 # ldl $t5, 0x6554($t3)
+/* 0x00229DB8 0x802999B8 0x61626C65 */ .word 0x61626C65 # daddi $v0, $t3, 0x6C65
+/* 0x00229DBC 0x802999BC 0x3A212121 */ .word 0x3A212121 # xori $at, $s1, 0x2121
+/* 0x00229DC0 0x802999C0 0x2196A292 */ .word 0x2196A292 # addi $s6, $t4, -0x5D6E
+/* 0x00229DC4 0x802999C4 0x6D82CC96 */ .word 0x6D82CC96 # ldr $v0, -0x336A($t4)
+/* 0x00229DC8 0x802999C8 0xBD97DF21 */ .word 0xBD97DF21 # cache 0x17, -0x20DF($t4)
+/* 0x00229DCC 0x802999CC 0x21212121 */ .word 0x21212121 # addi $at, $t1, 0x2121
+/* 0x00229DD0 0x802999D0 0x28256429 */ .word 0x28256429 # slti $a1, $at, 0x6429
+/* 0x00229DD4 0x802999D4 0x0A000000 */ .word 0x0A000000 # j 0x88000000
+/* 0x00229DD8 0x802999D8 0x82A082EA */ .word 0x82A082EA # lb $zero, -0x7D16($s5)
+/* 0x00229DDC 0x802999DC 0x814882A8 */ .word 0x814882A8 # lb $t0, -0x7D58($t2)
+/* 0x00229DE0 0x802999E0 0x82A982B5 */ .word 0x82A982B5 # lb $t1, -0x7D4B($s5)
+/* 0x00229DE4 0x802999E4 0x82A282BC */ .word 0x82A282BC # lb $v0, -0x7D44($s5)
+/* 0x00229DE8 0x802999E8 0x81498149 */ .word 0x81498149 # lb $t1, -0x7EB7($t2)
+/* 0x00229DEC 0x802999EC 0x81480A00 */ .word 0x81480A00 # lb $t0, 0xA00($t2)

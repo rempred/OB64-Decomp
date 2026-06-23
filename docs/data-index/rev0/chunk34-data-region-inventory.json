@@ -1,0 +1,278 @@
+{
+  "chunk": 34,
+  "range": "0x00228D6C-0x0022A280",
+  "generated": "2026-06-23",
+  "dataPartCount": 29,
+  "dataBytes": 5396,
+  "bytesByClass": {
+    "table": 2284,
+    "data": 1460,
+    "float": 1472,
+    "rodata": 176,
+    "zero_fill": 4
+  },
+  "evidence": "Overlay-map heuristic (0 loaded prologues / 0 jr$ra across the span) + per-word classification; pointer values 0x801x are combat-overlay RAM addresses, not linear back-maps. Verified by adversarial data skeptics (no hidden code).",
+  "parts": [
+    {
+      "name": "table_00228d6c",
+      "file": "asm/original/rev0/lib/table_00228d6c.s",
+      "romStart": "0x00228D6C",
+      "romEnd": "0x00228D90",
+      "bytes": 36,
+      "class": "table",
+      "note": "Align nop (0x00228D6C) + 6 RAM pointers in the 0x801D overlay band: 0x801D85C4, 0x801D92E0, 0x801D202C, 0x801DF9D8, 0x801DF404, 0x801D0854 (0x00228D70..0x00228D88), then 2 trailing nops (0x00228D88..0x00228D90). Pointer-table entries (overlay RAM addresses), not code."
+    },
+    {
+      "name": "data_00228d90",
+      "file": "asm/original/rev0/lib/data_00228d90.s",
+      "romStart": "0x00228D90",
+      "romEnd": "0x00228F94",
+      "bytes": 516,
+      "class": "data",
+      "note": "Packed high-entropy blob, no pointer/string structure. First bytes (big-endian) 09 6C 0D 61 14 61 15 67 25 9C 2F 62 ... read as small index/delta bytes. Scattered GBI/RDP-looking words appear repeatedly (0xE7000000, 0xE3001001/0xE3001201/0xE3000C00, 0xDF000000, 0xFC119623, 0xFF2FFFFF, 0xE200001C, 0x00504240) in a recurring ~0x30-0x38 byte cluster (e.g. 0x00228DC0..0x00228E64 repeats 3x). Mid-block packed small-int run at 0x00228F40 (bytes 02 05 07 07 / 07 06 07 07 ... values <=0x09). Cannot fully type; treat as packed/compressed or microcode-fragment data."
+    },
+    {
+      "name": "float_00228f94",
+      "file": "asm/original/rev0/lib/float_00228f94.s",
+      "romStart": "0x00228F94",
+      "romEnd": "0x002290E0",
+      "bytes": 332,
+      "class": "float",
+      "note": "IEEE single-precision float constant pool with 4B zero pads/group separators. Notable: 0x3E2AAAAB (~0.1667), 0x3EAAAAAB (~0.333), 0x3F000000 (0.5), 0x3F2AAAAB (~0.667), 0x3F555555 (~0.833), 0x3F800000 (1.0), and large values 0x40000000 (2.0), 0x40A00000 (5.0), 0x41200000 (10.0), 0x41700000 (15.0), 0x41A00000 (20.0), 0x41C80000 (25.0), 0x41F00000 (30.0), 0x42340000 (45.0). Several short sub-groups separated by nop words."
+    },
+    {
+      "name": "data_002290e0",
+      "file": "asm/original/rev0/lib/data_002290e0.s",
+      "romStart": "0x002290E0",
+      "romEnd": "0x002293B0",
+      "bytes": 720,
+      "class": "data",
+      "note": "Packed signed index/delta tables. Starts 0x01020304 08080403 02010000 (byte ramp 1..8). Then repeating triplet-style records of paired words: a 0xFFFFFFxx negative scalar, a zero, and a small positive scalar (e.g. FFFFFFF5/0000000B = -11/+11, FFFFFFDF/00000021 = -33/+33, FFFFFFC9/00000037 = -55/+55) across 0x002290F4..0x002292A0, then byte/halfword small-int run (00000004/00000003/00000005/0000000A/00000008/00000010/000003E8=1000/00000064=100) and signed halfword pairs (e.g. 0x000A000C, 0xFFF7FFF5) through 0x002293AC. Looks like a paired min/max or +/- offset lookup table; stride not fully resolved."
+    },
+    {
+      "name": "float_002293b0",
+      "file": "asm/original/rev0/lib/float_002293b0.s",
+      "romStart": "0x002293B0",
+      "romEnd": "0x0022979C",
+      "bytes": 1004,
+      "class": "float",
+      "note": "IEEE single-precision float pool with interleaved signed halfword pairs. Float constants include 0x3E000000 (0.125), 0x3E800000 (0.25), 0x3F000000 (0.5), 0x3F200000 (0.625), 0x3F400000 (0.75), 0x3F600000 (~0.875), 0x3F800000 (1.0), 0x3F880000/0x3F900000/0x3FA00000/0x3FB00000 (~1.06..1.375), 0x3FC00000 (1.5), 0x3FD00000/0x3FE00000/0x3FF00000 (~1.625..1.875), 0x40000000 (2.0). Embedded halfword-pair runs (e.g. 0xFFFCFFFB, 0x0000FFFE, 0xFFFB FFF4 / 0x0005FFF5 ascending k +/- pairs at 0x002294F8..0x00229690) suggest interleaved float curve data + small signed step/index table. Ends with a 0x00000000 word at 0x00229798; region boundary 0x0022979C precedes the next (0x801E-band) pointer table."
+    },
+    {
+      "name": "table_0022979c",
+      "file": "asm/original/rev0/lib/table_0022979c.s",
+      "romStart": "0x0022979C",
+      "romEnd": "0x002297E8",
+      "bytes": 76,
+      "class": "table",
+      "note": "18 RAM pointers, 0x801E-band (e.g. 0x801E1C60,0x801E1F44,0x801E4FD4,0x801E541C,0x801E5508,0x801E564C); trailing nop @0x002297E4 folded."
+    },
+    {
+      "name": "data_002297e8",
+      "file": "asm/original/rev0/lib/data_002297e8.s",
+      "romStart": "0x002297E8",
+      "romEnd": "0x00229824",
+      "bytes": 60,
+      "class": "data",
+      "note": "Packed/binary blob, not RAM pointers: words E7000000,E3000C00,E3001201,00002000,E3001001,00008000,FC119623,FF2FFFFF,E200001C,00504240,DF000000 with small zero gaps; structure not fully typed (looks like a small record/param block)."
+    },
+    {
+      "name": "table_00229824",
+      "file": "asm/original/rev0/lib/table_00229824.s",
+      "romStart": "0x00229824",
+      "romEnd": "0x0022986C",
+      "bytes": 72,
+      "class": "table",
+      "note": "18 RAM pointers, 0x801E-band (0x801E56F0,0x801E5774,0x801E57B8 repeated,0x801E586C,0x801E57F8,0x801E4B94,0x801E58F4,0x801E5970,0x801E59EC)."
+    },
+    {
+      "name": "data_0022986c",
+      "file": "asm/original/rev0/lib/data_0022986c.s",
+      "romStart": "0x0022986C",
+      "romEnd": "0x002298D0",
+      "bytes": 100,
+      "class": "data",
+      "note": "Packed/binary blob: words E7000000,E3000A01,D7000002,80008000,E3000C00,E3001201,00002000,E3001001,00008000,FC119623,FF2FFFFF,E200001C,00504240,DF000000 with interior zero gaps; same blob style as 0x002297E8 run, not typed."
+    },
+    {
+      "name": "table_002298d0",
+      "file": "asm/original/rev0/lib/table_002298d0.s",
+      "romStart": "0x002298D0",
+      "romEnd": "0x00229928",
+      "bytes": 88,
+      "class": "table",
+      "note": "21 RAM pointers, 0x801D-band (0x801D0938/0x801D0964 repeated set, then 0x801D25D8,0x801D2070,0x801D20DC,0x801D2118,0x801D21AC,0x801D21DC)."
+    },
+    {
+      "name": "float_00229928",
+      "file": "asm/original/rev0/lib/float_00229928.s",
+      "romStart": "0x00229928",
+      "romEnd": "0x00229930",
+      "bytes": 8,
+      "class": "float",
+      "note": "Float constant 0x40490000 (=3.140625, pi approximation) + nop."
+    },
+    {
+      "name": "table_00229930",
+      "file": "asm/original/rev0/lib/table_00229930.s",
+      "romStart": "0x00229930",
+      "romEnd": "0x00229964",
+      "bytes": 52,
+      "class": "table",
+      "note": "13 RAM pointers, 0x801D-band (0x801D25D8 repeated,0x801D2070,0x801D20DC,0x801D2118,0x801D21AC,0x801D21DC)."
+    },
+    {
+      "name": "rodata_00229964",
+      "file": "asm/original/rev0/lib/rodata_00229964.s",
+      "romStart": "0x00229964",
+      "romEnd": "0x002299A0",
+      "bytes": 60,
+      "class": "rodata",
+      "note": "ASCII format-string pool + control codes: \"%s cannot be used.\\x00\", control-code tokens \"{C6}\\x00\",\"{C14}\\x00\", interleaved float-looking words 0x40704000 (=3.7539...) with nop padding."
+    },
+    {
+      "name": "float_002299a0",
+      "file": "asm/original/rev0/lib/float_002299a0.s",
+      "romStart": "0x002299A0",
+      "romEnd": "0x002299B0",
+      "bytes": 16,
+      "class": "float",
+      "note": "Double constant pool: 0x3FE99999_9999999A (=0.8), 0x3FF80000_00000000 (=1.5)."
+    },
+    {
+      "name": "table_002299b0",
+      "file": "asm/original/rev0/lib/table_002299b0.s",
+      "romStart": "0x002299B0",
+      "romEnd": "0x002299C8",
+      "bytes": 24,
+      "class": "table",
+      "note": "6 RAM pointers, 0x801D-band (0x801D61E4,0x801D6400 repeated,0x801D627C,0x801D632C)."
+    },
+    {
+      "name": "rodata_002299c8",
+      "file": "asm/original/rev0/lib/rodata_002299c8.s",
+      "romStart": "0x002299C8",
+      "romEnd": "0x00229A00",
+      "bytes": 56,
+      "class": "rodata",
+      "note": "ASCII format-string pool: \"%s joined the battalion.\", \"%s was not persuaded.\\x00\\x00\\x00\"."
+    },
+    {
+      "name": "table_00229a00",
+      "file": "asm/original/rev0/lib/table_00229a00.s",
+      "romStart": "0x00229A00",
+      "romEnd": "0x00229A2C",
+      "bytes": 44,
+      "class": "table",
+      "note": "11 RAM pointers, 0x801D-band (0x801D6794,0x801D680C,0x801D6A64,0x801D6AC0,0x801D6C14 repeated,0x801D6B34)."
+    },
+    {
+      "name": "rodata_00229a2c",
+      "file": "asm/original/rev0/lib/rodata_00229a2c.s",
+      "romStart": "0x00229A2C",
+      "romEnd": "0x00229A60",
+      "bytes": 52,
+      "class": "rodata",
+      "note": "ASCII format-string pool: \"%s became %s.\\x00\", \"%s fled.\\x00\", \"%s has regenerated.\\x00\"."
+    },
+    {
+      "name": "float_00229a60",
+      "file": "asm/original/rev0/lib/float_00229a60.s",
+      "romStart": "0x00229A60",
+      "romEnd": "0x00229AB0",
+      "bytes": 80,
+      "class": "float",
+      "note": "Float constant pool with nop padding: 0x40704000 (=3.75) repeated, 0x403E0000 (=2.96875), 0x4082C000 (=4.0859375), 0x4092C000 (=4.5859375), 0x41F00000 (=30.0), 0x4062C000 (=3.54...)."
+    },
+    {
+      "name": "table_00229ab0",
+      "file": "asm/original/rev0/lib/table_00229ab0.s",
+      "romStart": "0x00229AB0",
+      "romEnd": "0x00229DB0",
+      "bytes": 768,
+      "class": "table",
+      "note": "Large RAM-pointer run, ~192 entries, 0x801D-band clustered around 0x801D813C/0x801D8144/0x801D814C/0x801D8154/0x801D815C, then 0x801D81F0/0x801D8200/0x801D8208/0x801D8210 block, then 0x801D8290/0x801D8298/0x801D82A0/0x801D82A8/0x801D82B0 block; ends with 0x801D87F0..0x801D8878 ramp; small zero gap @0x00229DAC folded."
+    },
+    {
+      "name": "data_00229db0",
+      "file": "asm/original/rev0/lib/data_00229db0.s",
+      "romStart": "0x00229DB0",
+      "romEnd": "0x00229DF0",
+      "bytes": 64,
+      "class": "data",
+      "note": "\"AddTimeTable:\" ASCII label (0x41646454...3A) followed by packed binary table bytes (0x212121.., 0x2196A292,0x6D82CC96,0xBD97DF21,0x28256429, j-word 0x0A000000, 0x82A0..82EA index/offset bytes); record/offset table, not RAM pointers."
+    },
+    {
+      "name": "table_00229df0",
+      "file": "asm/original/rev0/lib/table_00229df0.s",
+      "romStart": "0x00229DF0",
+      "romEnd": "0x00229EF8",
+      "bytes": 264,
+      "class": "table",
+      "note": "RAM-pointer run, ~66 entries, 0x801D9xxx-band (0x801D9DB8,0x801D9DFC,0x801D9D64,0x801D9E30 dominant; also 0x801D9B44,0x801D9C84,0x801D9CF0,0x801D9CE0,0x801D9E54,0x801D9E84,0x801D9C48); nop @0x00229EF4 folded."
+    },
+    {
+      "name": "float_00229ef8",
+      "file": "asm/original/rev0/lib/float_00229ef8.s",
+      "romStart": "0x00229EF8",
+      "romEnd": "0x00229F18",
+      "bytes": 32,
+      "class": "float",
+      "note": "Float/double constant pool: 0x3FB99999_9999999A (=0.1 double), 0x3F000000 (=0.5), 0x3F800000 (=1.0), 0x42340000 (=45.0), 0x41700000 (=15.0), with nop padding."
+    },
+    {
+      "name": "table_00229f18",
+      "file": "asm/original/rev0/lib/table_00229f18.s",
+      "romStart": "0x00229F18",
+      "romEnd": "0x0022A0C8",
+      "bytes": 432,
+      "class": "table",
+      "note": "Large RAM-pointer run, ~108 entries, 0x801D-band; 0x801DBF10 dominant fill with 0x801DDF10 sentinel-like values, then ascending ramp 0x801DBFB0..0x801DD800 (0x801DC170,0x801DC310,0x801DC494,0x801DCA74,0x801DCDC0,0x801DD0FC, etc.); nop @0x0022A0C4 folded."
+    },
+    {
+      "name": "table_0022a0c8",
+      "file": "asm/original/rev0/lib/table_0022a0c8.s",
+      "romStart": "0x0022A0C8",
+      "romEnd": "0x0022A0E0",
+      "bytes": 24,
+      "class": "table",
+      "note": "5 RAM pointers, 0x801D-band (0x801DD044,0x801DD054,0x801DD04C,0x801DD05C,0x801DD064); trailing nop @0x0022A0DC folded."
+    },
+    {
+      "name": "table_0022a0e0",
+      "file": "asm/original/rev0/lib/table_0022a0e0.s",
+      "romStart": "0x0022A0E0",
+      "romEnd": "0x0022A1D0",
+      "bytes": 240,
+      "class": "table",
+      "note": "RAM-pointer run, ~60 entries, 0x801DE-band; 0x801DEE70 dominant fill with scattered distinct entries (0x801DE3E4,0x801DE3A8,0x801DE3FC,0x801DE4A8,0x801DE80C,0x801DE8A8,0x801DE934,0x801DE76C,0x801DE9D8,0x801DEA58,0x801DE558,0x801DEAE8,0x801DEC64,0x801DEDA0)."
+    },
+    {
+      "name": "rodata_0022a1d0",
+      "file": "asm/original/rev0/lib/rodata_0022a1d0.s",
+      "romStart": "0x0022A1D0",
+      "romEnd": "0x0022A1D8",
+      "bytes": 8,
+      "class": "rodata",
+      "note": "ASCII \"NULL\" (0x4E554C4C) followed by j-shaped word 0x0A000000 (sentinel/terminator marker)."
+    },
+    {
+      "name": "table_0022a1d8",
+      "file": "asm/original/rev0/lib/table_0022a1d8.s",
+      "romStart": "0x0022A1D8",
+      "romEnd": "0x0022A27C",
+      "bytes": 164,
+      "class": "table",
+      "note": "RAM-pointer run, ~41 entries, 0x801DF-band and 0x801E-band (0x801DF688,0x801DF6BC,0x801DF6E8,...,0x801DF854 repeated,0x801E010C,0x801DFBCC,0x801DFE50,...,0x801E4C24 repeated x8, then descending 0x801E4C20/0x801E4C10/0x801E4C18/0x801E4C00/0x801E4C08 tail)."
+    },
+    {
+      "name": "zero_fill_0022a27c",
+      "file": "asm/original/rev0/lib/zero_fill_0022a27c.s",
+      "romStart": "0x0022A27C",
+      "romEnd": "0x0022A280",
+      "bytes": 4,
+      "class": "zero_fill",
+      "note": "Trailing 4-byte align nop (0x00000000)."
+    }
+  ]
+}

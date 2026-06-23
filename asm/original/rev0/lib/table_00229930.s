@@ -1,0 +1,24 @@
+/*
+ * Original Rev 0 MIPS reference split.
+ * Parent source: asm/original/rev0/code_00221000_00231000.s
+ * z64 range: 0x00229930..0x00229964 exclusive
+ * Decode comments are aids, not proof of semantic function boundaries.
+ */
+.set noat
+.set noreorder
+.text
+
+/* Data region (not executable host code): 13 RAM pointers, 0x801D-band (0x801D25D8 repeated,0x801D2070,0x801D20DC,0x801D2118,0x801D21AC,0x801D21DC).. */
+/* 0x00229930 0x80299530 0x801D25D8 */ .word 0x801D25D8 # lb $sp, 0x25D8($zero)
+/* 0x00229934 0x80299534 0x801D25D8 */ .word 0x801D25D8 # lb $sp, 0x25D8($zero)
+/* 0x00229938 0x80299538 0x801D2070 */ .word 0x801D2070 # lb $sp, 0x2070($zero)
+/* 0x0022993C 0x8029953C 0x801D20DC */ .word 0x801D20DC # lb $sp, 0x20DC($zero)
+/* 0x00229940 0x80299540 0x801D25D8 */ .word 0x801D25D8 # lb $sp, 0x25D8($zero)
+/* 0x00229944 0x80299544 0x801D25D8 */ .word 0x801D25D8 # lb $sp, 0x25D8($zero)
+/* 0x00229948 0x80299548 0x801D25D8 */ .word 0x801D25D8 # lb $sp, 0x25D8($zero)
+/* 0x0022994C 0x8029954C 0x801D2118 */ .word 0x801D2118 # lb $sp, 0x2118($zero)
+/* 0x00229950 0x80299550 0x801D21AC */ .word 0x801D21AC # lb $sp, 0x21AC($zero)
+/* 0x00229954 0x80299554 0x801D21DC */ .word 0x801D21DC # lb $sp, 0x21DC($zero)
+/* 0x00229958 0x80299558 0x801D25D8 */ .word 0x801D25D8 # lb $sp, 0x25D8($zero)
+/* 0x0022995C 0x8029955C 0x801D25D8 */ .word 0x801D25D8 # lb $sp, 0x25D8($zero)
+/* 0x00229960 0x80299560 0x801D25D8 */ .word 0x801D25D8 # lb $sp, 0x25D8($zero)
