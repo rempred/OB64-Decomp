@@ -24,11 +24,15 @@ and replace the active log with a compact current-state summary.
   `original_mips`. A static control-flow audit found no credible code edge into
   the tail (0 branch targets, 0 J/JAL to a known function). Audit:
   `tools/audit_code_region.js` / `docs/CODE_REGION_AUDIT.md`.
-- Current tracked code source mix: thirty-four composite real-assembler chunks
-  (chunk 0 177 `boot/`; chunks 1–33 in `lib/`: 350, 216, 67, 376, 88, 78, 103, 87, 34, 35, 191, 74, 67, 94, 153, 95, 66, 95, 80, 175, 99, 99, 73, 63, 71, 96, 142, 97, 103, 122, 86, 198, 109) =
-  **4,059 tracked source files**, plus 66 generated fallback code chunks. **Chunks
-  0–33 (`0x00001000..0x00221000`) are now fully source-owned as named code/data
-  parts** (chunk 13: 27 code + 40 data, MIXED — unit-mgmt UI data; chunk 14: 74 code + 20
+- Current tracked code source mix: thirty-six composite real-assembler chunks
+  (chunk 0 177 `boot/`; chunks 1–35 in `lib/`: 350, 216, 67, 376, 88, 78, 103, 87, 34, 35, 191, 74, 67, 94, 153, 95, 66, 95, 80, 175, 99, 99, 73, 63, 71, 96, 142, 97, 103, 122, 86, 198, 109, 120, 134) =
+  **4,313 tracked source files**, plus 64 generated fallback code chunks. **Chunks
+  0–35 (`0x00001000..0x00241000`) are now fully source-owned as named code/data
+  parts** (chunk 34: 89 code + 29 data + 2 straddlers, MIXED — promotion/level-up/class-def
+  code + a combat-overlay DATA island [0x801D/0x801E handler/jump pointer tables + GBI/RDP
+  display-list blobs + float/double pools + message-string rodata]; chunk 35: 127 code + 5
+  data + 2 straddlers, MIXED — class/promotion/display-list code + a float-ramp + 0x801F
+  pointer/double record-table DATA island, frameless-leaf dense; chunk 13: 27 code + 40 data, MIXED — unit-mgmt UI data; chunk 14: 74 code + 20
   data, MIXED — graphics/display-list data + DL-builder code; chunk 15: 134 code + 19
   data, MIXED — floats/display-list data + the OB64 opening-narration rodata; chunk 16: 72
   code + 23 data, MIXED — leading scenario record/pointer/float64 data + the
@@ -63,8 +67,12 @@ and replace the active log with a compact current-state summary.
   High-Attack cleanup-guard site at z64 0x1F36F0; chunk 32: 196 normal code + 0 data + 2
   function straddlers, ALL CODE - frameless-leaf-dense FP/display-list + class-def/char-data
   code; chunk 33: 82 normal code + 25 data + 2 function straddlers, MIXED - code + a font/glyph
-  + pointer/float DATA region [0x211D14..0x213B10] + a jump-table state-machine straddler);
-  next is chunk 34 (`0x00221000`, still a
+  + pointer/float DATA region [0x211D14..0x213B10] + a jump-table state-machine straddler;
+  chunk 34: 89 normal code + 29 data + 2 function straddlers, MIXED - promotion/level-up/class-def
+  code + a combat-overlay pointer/blob/float/string DATA island [0x228D6C..0x22A280];
+  chunk 35: 127 normal code + 5 data + 2 function straddlers, MIXED - class/promotion/display-list
+  code + a float-ramp/0x801F record-table DATA island [0x239B94..0x23A3A0]);
+  next is chunk 36 (`0x00241000`, still a
   generated fallback chunk). The promote-tool merge blocker is FIXED.
 - The parent boundary DB has TWO recurring defects, both fixed when splitting:
   (1) `end_rom` is INCLUSIVE (exclusive end = `end_rom + 4`; do NOT treat the
@@ -275,11 +283,28 @@ Current named sequence:
   `docs/patch-workbench/rev0/patch-workbench-chunks32-33-2026-06-23.json` (static-only).
   Dossier `docs/dossiers/lib-chunk33-211000-221000.md`; data index
   `docs/data-index/rev0/chunk33-data-region-inventory.json`. **Chunk 33 source-owned.**
-- Current remainder: none in chunks 0-33 (`0x1000..0x221000` fully source-owned).
-  **Current frontier: `0x00221000` (chunk 34).** Next is chunk 34 generated fallback
-  `0x00221000..0x00231000`; first continue outgoing FUNCTION straddler `func_0021EBBC`
-  as `func_0021EBBC_chunk34tail` starting at `0x00221000` (returns jr$ra@0x002213D4,
-  frame 0x2E8 jump-table state machine).
+- Chunk 34 source-ownership `0x00221000..0x00231000` (120 parts: 89 normal code + 29 data
+  + 2 function straddlers, MIXED): incoming straddler-tail `func_0021EBBC_chunk34tail`
+  (`0x221000..0x2213DC`, classChangeStateMachine tail) → CODE region A → interior
+  combat-overlay DATA island `0x228D6C..0x22A280` (0x801D/0x801E handler/jump pointer
+  tables + GBI/RDP display-list blobs + float/double pools + rodata message strings) →
+  CODE region B (dispatchers func_0022D14C/func_0022F580) → outgoing straddler-head
+  `func_00230A9C` (`0x230A9C..0x231000` → chunk 35). Adversarial 6/6 clean. Fixed a
+  preamble-orphan name/label mismatch (func_00228A88/func_00228B3C) that collided at
+  assemble. Dossier + data index added. **Chunk 34 source-owned.**
+- Chunk 35 source-ownership `0x00231000..0x00241000` (134 parts: 127 normal code + 5 data
+  + 2 function straddlers, MIXED): incoming straddler-tail `func_00230A9C_chunk35tail`
+  (`0x231000..0x2317C8`) → CODE region A → interior DATA island `0x239B94..0x23A3A0`
+  (float32 ramp 0.6→4.0 + packed record blob + 0x801F pointer/double record table) →
+  CODE region B (command dispatcher func_0023C114) → outgoing straddler-head
+  `func_00240FF0` (`0x240FF0..0x241000` → chunk 36). Frameless-leaf/preamble-orphan
+  dense; the run-prompt 60B/76B "data gap" leads (`0x23B210`/`0x23B678`) were proven CODE.
+  Adversarial 5 clean + 1 HIGH fixed (slice-seam preamble-orphan `0x240D20` folded
+  forward → func_00240D20). Dossier + data index added. **Chunk 35 source-owned.**
+- Current remainder: none in chunks 0-35 (`0x1000..0x241000` fully source-owned).
+  **Current frontier: `0x00241000` (chunk 36).** First continue outgoing FUNCTION
+  straddler `func_00240FF0` as `func_00240FF0_chunk36tail` starting at `0x00241000`
+  (prologue `addiu $sp,-0x20`, then `lui $s0,0x801F / lw`; continues into chunk 36).
 
 Static dossiers live under `docs/dossiers/` and are the durable evidence notes
 for each promoted source-layout split.
@@ -745,28 +770,29 @@ the full quick index. The newest dossiers are:
 
 ## Next Frontier
 
-Chunks 0–33 (`0x00001000..0x00221000`) are fully source-owned as named code/data
-parts. Chunk 33 (`0x00211000..0x00221000`) is MIXED: 109 parts (82 normal code
-+ 25 data + 2 function straddlers). It completes incoming
-`func_00210C30_chunk33tail` (`0x00211000..0x00211028`), owns a font/glyph +
-pointer/float DATA region `0x00211D14..0x00213B10`, and ends with outgoing
-function straddler-head `func_0021EBBC` (`0x0021EBBC..0x00221000`, a jump-table
-state machine continuing into chunk 34).
-Dossier: `docs/dossiers/lib-chunk33-211000-221000.md`; data index
-`docs/data-index/rev0/chunk33-data-region-inventory.json`. (Chunk 32 dossier:
-`docs/dossiers/lib-chunk32-201000-211000.md`.)
+Chunks 0–35 (`0x00001000..0x00241000`) are fully source-owned as named code/data
+parts. Chunk 34 (`0x00221000..0x00231000`, 120 parts) and chunk 35
+(`0x00231000..0x00241000`, 134 parts) are both MIXED promotion/level-up/class-def/
+display-list code wrapping an interior combat-overlay DATA island (chunk 34
+`0x228D6C..0x22A280`: 0x801D/0x801E handler/jump pointer tables + GBI/RDP display-list
+blobs + float/double pools + message strings; chunk 35 `0x239B94..0x23A3A0`: float ramp
++ 0x801F pointer/double record table). Chunk 34 ends with outgoing function
+straddler-head `func_00230A9C` (→ chunk 35); chunk 35 ends with outgoing
+straddler-head `func_00240FF0` (→ chunk 36).
+Dossiers: `docs/dossiers/lib-chunk3{4,5}-*.md`; data indexes
+`docs/data-index/rev0/chunk3{4,5}-data-region-inventory.json`.
 
-Current frontier is **`0x00221000` (chunk 34)**. Coverage
-`0x1000..0x221000` = 2,228,224 B = 78.2051% of the 2,849,204-byte executable
-extent (code-only = 1,854,108 B = 65.0747%).
+Current frontier is **`0x00241000` (chunk 36)**. Coverage
+`0x1000..0x241000` = 2,359,296 B = 82.8054% of the 2,849,204-byte executable
+extent (code-only = 1,977,724 B = 69.4132%).
 
-FIRST for the next run: continue the OUTGOING FUNCTION straddler from chunk 33.
-`func_0021EBBC` starts in chunk 33 at `0x0021EBBC` (prologue addiu$sp,-0x2E8, no preamble),
-has no `jr$ra` before the chunk boundary, and must be emitted first in chunk 34
-as `func_0021EBBC_chunk34tail` starting at `0x00221000` (returns jr$ra@0x002213D4).
+FIRST for the next run: continue the OUTGOING FUNCTION straddler from chunk 35.
+`func_00240FF0` starts in chunk 35 at `0x00240FF0` (prologue `addiu $sp,-0x20`, then
+`lui $s0,0x801F / lw`), has no `jr$ra` before the chunk boundary, and must be emitted
+first in chunk 36 as `func_00240FF0_chunk36tail` starting at `0x00241000`.
 
 There are now two active tracks. The library source-ownership track continues at
-`0x221000` (chunk 34) as above. The full-ROM coverage track (opened 2026-06-21)
+`0x241000` (chunk 36) as above. The full-ROM coverage track (opened 2026-06-21)
 next refines the exact code/data boundary near `0x002B89B4` and reclassifies the
 non-code tail `0x002B89B4..0x0063676C` from `original_mips` to a data source
 form, shrinking the configured code region to the executable extent while

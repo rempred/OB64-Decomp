@@ -1,0 +1,22 @@
+/*
+ * Original Rev 0 MIPS reference split.
+ * Parent source: asm/original/rev0/code_00231000_00241000.s
+ * z64 range: 0x0023EC00..0x0023EC2C exclusive
+ * Decode comments are aids, not proof of semantic function boundaries.
+ */
+.set noat
+.set noreorder
+.text
+
+/* Frameless leaf. Loads global at 0x801F-0x1B8, writes scroll fields 0x370/0x372/0x374/0x376 (=0x14/0xF2/0xA2) and clears 0x652. jr $ra at 0x0023EC24 + delay (sh $zero,0x652) at 0x0023EC28. Ends at 0x0023EC2C, the start of the next function's preamble. */
+/* 0x0023EC00 0x802AE800 0x3C03801F */ .word 0x3C03801F # lui $v1, 0x801F
+/* 0x0023EC04 0x802AE804 0x8C63FE48 */ .word 0x8C63FE48 # lw $v1, -0x1B8($v1)
+/* 0x0023EC08 0x802AE808 0x24040014 */ .word 0x24040014 # addiu $a0, $zero, 0x14
+/* 0x0023EC0C 0x802AE80C 0x240200A2 */ .word 0x240200A2 # addiu $v0, $zero, 0xA2
+/* 0x0023EC10 0x802AE810 0xA4620376 */ .word 0xA4620376 # sh $v0, 0x376($v1)
+/* 0x0023EC14 0x802AE814 0x240200F2 */ .word 0x240200F2 # addiu $v0, $zero, 0xF2
+/* 0x0023EC18 0x802AE818 0xA4640374 */ .word 0xA4640374 # sh $a0, 0x374($v1)
+/* 0x0023EC1C 0x802AE81C 0xA4640370 */ .word 0xA4640370 # sh $a0, 0x370($v1)
+/* 0x0023EC20 0x802AE820 0xA4620372 */ .word 0xA4620372 # sh $v0, 0x372($v1)
+/* 0x0023EC24 0x802AE824 0x03E00008 */ .word 0x03E00008 # jr $ra
+/* 0x0023EC28 0x802AE828 0xA4600652 */ .word 0xA4600652 # sh $zero, 0x652($v1)

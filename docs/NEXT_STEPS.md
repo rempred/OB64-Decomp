@@ -15,10 +15,16 @@ Current passing commands:
 node tools/verify_setup.js
 ```
 
-Current source mix: 34 tracked composite real-assembler chunks (chunk 0 177
-`boot/`; chunks 1–33 in `lib/`: 350, 216, 67, 376, 88, 78, 103, 87, 34, 35, 191, 74, 67, 94, 153, 95, 66, 95, 80, 175, 99, 99, 73, 63, 71, 96, 142, 97, 103, 122, 86, 198, 109) = 4,059 tracked
-source files, plus 66 generated fallback chunks. **Chunks 0–33 are fully
-source-owned as named code/data parts** (`0x00001000..0x00221000`; chunk 16: 72 code + 23
+Current source mix: 36 tracked composite real-assembler chunks (chunk 0 177
+`boot/`; chunks 1–35 in `lib/`: 350, 216, 67, 376, 88, 78, 103, 87, 34, 35, 191, 74, 67, 94, 153, 95, 66, 95, 80, 175, 99, 99, 73, 63, 71, 96, 142, 97, 103, 122, 86, 198, 109, 120, 134) = 4,313 tracked
+source files, plus 64 generated fallback chunks. **Chunks 0–35 are fully
+source-owned as named code/data parts** (`0x00001000..0x00241000`;
+chunk 34: 89 code + 29 data + 2 straddlers, MIXED — promotion/level-up/class-def code
+wrapping a combat-overlay DATA island (0x801D/0x801E handler/jump pointer tables + GBI/RDP
+display-list blobs + float/double pools + message-string rodata);
+chunk 35: 127 code + 5 data + 2 straddlers, MIXED — class/promotion/display-list code
+wrapping a float-ramp + 0x801F pointer/double record-table DATA island, frameless-leaf dense;
+chunk 16: 72 code + 23
 data, MIXED — leading scenario record/pointer/float64 data + the neutral-encounter code path;
 chunk 17: 66 code + 0 data, ALL CODE — char-data/encounter code;
 chunk 18: 95 code + 0 data, ALL CODE — FP-heavy scenario/combat code;
@@ -47,7 +53,7 @@ at z64 0x1F36F0; chunk 32: 196 normal code + 0 data + 2 function straddlers, ALL
 frameless-leaf-dense FP/display-list + class-def/char-data code; chunk 33: 82 normal code +
 25 data + 2 function straddlers, MIXED - code + a font/glyph + pointer/float DATA region
 + a jump-table state-machine straddler);
-next is chunk 34 (`0x00221000`).
+next is chunk 36 (`0x00241000`).
 
 The assembled code-region SHA256 is
 `40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`; the full
@@ -124,25 +130,27 @@ node tools/audit_code_region.js
    generates fallback owners for the rest. Keep `node tools/verify_setup.js`
    green after every promotion.
 
-3. Continue into chunk 34.
+3. Continue into chunk 36.
 
-   Chunks 0–33 (`0x00001000..0x00221000`) are fully source-owned as named code/data
-   parts: chunk 0 in `boot/`; chunks 1–33 in `lib/` (dossiers `lib-chunk1-…` …
-   `lib-chunk33-…`). Chunk 33 (109 parts: 82 normal code + 25 data + 2 function
-   straddlers) is MIXED: incoming `func_00210C30_chunk33tail`, code, a font/glyph +
-   pointer/float DATA region (`0x211D14..0x213B10`), more code (incl. the High-Attack
-   hook functions), and outgoing FUNCTION straddler `func_0021EBBC`. Data index
-   `docs/data-index/rev0/chunk33-data-region-inventory.json`.
+   Chunks 0–35 (`0x00001000..0x00241000`) are fully source-owned as named code/data
+   parts: chunk 0 in `boot/`; chunks 1–35 in `lib/` (dossiers `lib-chunk1-…` …
+   `lib-chunk35-…`). Chunk 34 (120 parts) and chunk 35 (134 parts) are both MIXED
+   promotion/level-up/class-def/display-list code wrapping interior combat-overlay DATA
+   islands (chunk 34 `0x228D6C..0x22A280`: pointer tables + GBI/RDP blobs + float/double
+   pools + message strings; chunk 35 `0x239B94..0x23A3A0`: float ramp + 0x801F pointer/
+   double record table). Data indexes
+   `docs/data-index/rev0/chunk3{4,5}-data-region-inventory.json`.
 
-   **Next frontier: `0x00221000` (chunk 34).** FIRST continue the OUTGOING FUNCTION
-   straddler: `func_0021EBBC` starts in chunk 33 at `0x0021EBBC` (prologue addiu$sp,-0x2E8,
-   no preamble; a jump-table state machine), has no `jr$ra` before the chunk boundary, and
-   must be emitted first in chunk 34 as `func_0021EBBC_chunk34tail` starting at `0x00221000`
-   (returns jr$ra@0x002213D4). Pipeline: `scan_functions`/`slice_chunk`/`check_splits`/
-   `check_boundaries` + analysis + adversarial swarms (Workflow). Coverage now 78.2051%
-   (code-only 65.0747%). See the DECOMP_LOG and `docs/dossiers/lib-chunk33-211000-221000.md`.
-   Patch-workbench artifact for this run:
-   `docs/patch-workbench/rev0/patch-workbench-chunks32-33-2026-06-23.json`.
+   **Next frontier: `0x00241000` (chunk 36).** FIRST continue the OUTGOING FUNCTION
+   straddler: `func_00240FF0` starts in chunk 35 at `0x00240FF0` (prologue
+   `addiu $sp,-0x20`, then `lui $s0,0x801F / lw`), has no `jr$ra` before the chunk
+   boundary, and must be emitted first in chunk 36 as `func_00240FF0_chunk36tail` starting
+   at `0x00241000`. Pipeline: `dump_function_context`/`plan_chunk`/`carve_chunk`/
+   `slice_chunk`/`check_splits`/`check_boundaries` + analysis + adversarial swarms
+   (Workflow). Coverage now 82.8054% (code-only 69.4132%). See the DECOMP_LOG and
+   `docs/dossiers/lib-chunk3{4,5}-*.md`. No new patch-workbench candidates this run; the
+   chunk-33 candidates (`0x21CD48`/`0x21BF84`) and chunk-31 `0x1F36F0` stand
+   (`candidate`/`needs-runtime`, RSR-011).
 
 4. Keep the setup gate green.
 
