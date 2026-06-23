@@ -1,0 +1,34 @@
+/*
+ * Original Rev 0 MIPS reference split.
+ * Parent source: asm/original/rev0/code_00251000_00261000.s
+ * z64 range: 0x00260B44..0x00260B98 exclusive
+ * Decode comments are aids, not proof of semantic function boundaries.
+ */
+.set noat
+.set noreorder
+.text
+
+/* Frame addiu$sp,-0x8. Scans 0x80220CA8 table; ends jr$ra@0x00260B90 + delay nop@0x00260B94. Plan idx28 over-merged the next leaf; split here. */
+/* function boundary candidate: func_00260B44, size=224, kind=prologue */
+func_00260B44:
+/* 0x00260B44 0x802D0744 0x27BDFFF8 */ .word 0x27BDFFF8 # addiu $sp, $sp, -0x8
+/* 0x00260B48 0x802D0748 0x3C028022 */ .word 0x3C028022 # lui $v0, 0x8022
+/* 0x00260B4C 0x802D074C 0x8C420CA0 */ .word 0x8C420CA0 # lw $v0, 0xCA0($v0)
+/* 0x00260B50 0x802D0750 0x3C058022 */ .word 0x3C058022 # lui $a1, 0x8022
+/* 0x00260B54 0x802D0754 0x8CA50CA8 */ .word 0x8CA50CA8 # lw $a1, 0xCA8($a1)
+/* 0x00260B58 0x802D0758 0x1840000C */ .word 0x1840000C # blez $v0, 0x802D078C
+/* 0x00260B5C 0x802D075C 0x00001821 */ .word 0x00001821 # move $v1, $zero
+/* 0x00260B60 0x802D0760 0x00403021 */ .word 0x00403021 # move $a2, $v0
+/* 0x00260B64 0x802D0764 0x8CA2000C */ .word 0x8CA2000C # lw $v0, 0xC($a1)
+/* 0x00260B68 0x802D0768 0x14440005 */ .word 0x14440005 # bne $v0, $a0, 0x802D0780
+/* 0x00260B6C 0x802D076C 0x24630001 */ .word 0x24630001 # addiu $v1, $v1, 0x1
+/* 0x00260B70 0x802D0770 0x94A20000 */ .word 0x94A20000 # lhu $v0, 0x0($a1)
+/* 0x00260B74 0x802D0774 0x24420001 */ .word 0x24420001 # addiu $v0, $v0, 0x1
+/* 0x00260B78 0x802D0778 0x08082FF7 */ .word 0x08082FF7 # j 0x8020BFDC
+/* 0x00260B7C 0x802D077C 0xA4A20000 */ .word 0xA4A20000 # sh $v0, 0x0($a1)
+/* 0x00260B80 0x802D0780 0x0066102A */ .word 0x0066102A # slt $v0, $v1, $a2
+/* 0x00260B84 0x802D0784 0x1440FFF7 */ .word 0x1440FFF7 # bne $v0, $zero, 0x802D0764
+/* 0x00260B88 0x802D0788 0x24A50014 */ .word 0x24A50014 # addiu $a1, $a1, 0x14
+/* 0x00260B8C 0x802D078C 0x27BD0008 */ .word 0x27BD0008 # addiu $sp, $sp, 0x8
+/* 0x00260B90 0x802D0790 0x03E00008 */ .word 0x03E00008 # jr $ra
+/* 0x00260B94 0x802D0794 0x00000000 */ .word 0x00000000 # nop

@@ -1,0 +1,88 @@
+{
+  "chunk": 37,
+  "range": "0x25E2BC-0x25EE90",
+  "generated": "2026-06-23",
+  "dataPartCount": 8,
+  "dataBytes": 3028,
+  "bytesByClass": {
+    "zero_fill": 12,
+    "table": 148,
+    "data": 2668,
+    "float": 200
+  },
+  "evidence": "Overlay-map heuristic (0 loaded prologues / 0 jr$ra across the span) + per-word classification; pointer values 0x801x are combat-overlay RAM addresses, not linear back-maps. Verified by adversarial data skeptics (no hidden code).",
+  "parts": [
+    {
+      "name": "zero_fill_0025e2bc",
+      "file": "asm/original/rev0/lib/zero_fill_0025e2bc.s",
+      "romStart": "0x0025E2BC",
+      "romEnd": "0x0025E2C0",
+      "bytes": 4,
+      "class": "zero_fill",
+      "note": "Single 0x00000000 padding/alignment word preceding the pointer table."
+    },
+    {
+      "name": "table_0025e2c0",
+      "file": "asm/original/rev0/lib/table_0025e2c0.s",
+      "romStart": "0x0025E2C0",
+      "romEnd": "0x0025E318",
+      "bytes": 88,
+      "class": "table",
+      "note": "Pointer subtable, ~22 words of overlay-RAM pointers in the 0x800E/0x801F/0x8020/0x8021 band (e.g. 0x8020ABC8, 0x801F725C, 0x80216018, ) with two interior 0x00000000 gaps. Pure 4-byte pointer entries, no interleaved floats."
+    },
+    {
+      "name": "data_0025e318",
+      "file": "asm/original/rev0/lib/data_0025e318.s",
+      "romStart": "0x0025E318",
+      "romEnd": "0x0025E890",
+      "bytes": 1400,
+      "class": "data",
+      "note": "Packed parameter-record array. Begins with a 0xFF-fill / sign-byte block (0xFF000100,0x00FF0001,...,0x01FFFF01), then a long run of packed small records: ascending one-byte index/id values (0x29,0x2A,...,0xE2) carried in the low byte of 0x80-prefixed half-words (0x800000xx / 0x940000xx / 0x9C0000xx encode index bytes with a 0x80/0x94/0x9C type/flag byte) interleaved with small marker shorts (0x000A0005, 0x01000000, 0x02000000) and short length/sub-id words. No real overlay pointers in this span; the high bytes are flag/type fields not RAM addresses. Stride appears irregular (~4-12 bytes per logical record) - packed variable-length parameter data, cannot fully type."
+    },
+    {
+      "name": "data_0025e890",
+      "file": "asm/original/rev0/lib/data_0025e890.s",
+      "romStart": "0x0025E890",
+      "romEnd": "0x0025ED30",
+      "bytes": 1184,
+      "class": "data",
+      "note": "Packed parameter/record block: 2-byte fields, monotonically incrementing 1-byte index values (0xD0..0x179) interleaved with recurring width/type markers (0x8000, 0x9400, 0x9C00, 0x0200) and 0x000A0005/0x000A003D-style tag words. Not a pointer table (no 0x800/0x801/0x802 RAM stride); no interleaved floats. Stride hypothesis ~8 bytes per logical entry but irregular. Continues the mixed struct block from the first half of the island."
+    },
+    {
+      "name": "table_0025ed30",
+      "file": "asm/original/rev0/lib/table_0025ed30.s",
+      "romStart": "0x0025ED30",
+      "romEnd": "0x0025ED6C",
+      "bytes": 60,
+      "class": "table",
+      "note": "Pure pointer table, 15 entries, all in RAM 0x802 band (0x802068E0, 0x80206A34, 0x80206B54, 0x80206BF8, 0x80206C9C, 0x80206D94, 0x80206F14, 0x8020700C, 0x8020711C, 0x80207240, 0x80207338, 0x80207524, 0x80207628, 0x80207728, 0x8020781C), monotonically increasing overlay RAM addresses. No interleaved floats."
+    },
+    {
+      "name": "data_0025ed6c",
+      "file": "asm/original/rev0/lib/data_0025ed6c.s",
+      "romStart": "0x0025ED6C",
+      "romEnd": "0x0025EDC0",
+      "bytes": 84,
+      "class": "data",
+      "note": "Packed mixed-data tail / sentinel region following the pointer table: 0x00010000, 0xFFFF0000 sentinel then 3 zero words; then small records 0x00001000/0x80000000, 0x00010004/0x00030002, 0xFFFFFFFC/0xFFFDFFFE, two zero words, then 0x00F40000/0x80000000, 0x00F50000/0x80000000, 0x00F60000/0x80000000 paired entries and 2 trailing zero words. Cannot fully type; appears to be small index/flag records bridging into the float pool."
+    },
+    {
+      "name": "float_0025edc0",
+      "file": "asm/original/rev0/lib/float_0025edc0.s",
+      "romStart": "0x0025EDC0",
+      "romEnd": "0x0025EE88",
+      "bytes": 200,
+      "class": "float",
+      "note": "IEEE float constant pool with zero pads. float64 doubles: 400921FB_54442D18 (PI, repeated 3x at 0xEDC8/0xEDD8/0xEDE8 within 40668000-prefixed groups), 3FB99999_9999999A (0.1) @0xEE00, 3FC33333_33333333 (0.15) @0xEE30, 3FD00000_00000000 (0.25) @0xEE58, 3FF00000_00000000 (1.0) @0xEE80; float32 3F800000 (1.0f) @0xEDF0/0xEE14/0xEE20/0xEE4C. 0x40668000 high words and zero words act as pads/double-high halves."
+    },
+    {
+      "name": "zero_fill_0025ee88",
+      "file": "asm/original/rev0/lib/zero_fill_0025ee88.s",
+      "romStart": "0x0025EE88",
+      "romEnd": "0x0025EE90",
+      "bytes": 8,
+      "class": "zero_fill",
+      "note": "Trailing zero words terminating the island (2 words)."
+    }
+  ]
+}

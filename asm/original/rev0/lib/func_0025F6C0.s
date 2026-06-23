@@ -1,0 +1,46 @@
+/*
+ * Original Rev 0 MIPS reference split.
+ * Parent source: asm/original/rev0/code_00251000_00261000.s
+ * z64 range: 0x0025F6C0..0x0025F73C exclusive
+ * Decode comments are aids, not proof of semantic function boundaries.
+ */
+.set noat
+.set noreorder
+.text
+
+/* Preamble-orphan: true entry at 0x0025F6C0 (slti $v0,$a1,2; bne ->0x0025F730 epilogue) reads $a1 before the addiu$sp,-0x8 prologue at 0x0025F6C8. Insertion/bubble-sort of u16 array. jr$ra at 0x0025F734 + delay nop 0x0025F738. */
+func_0025F6C0:
+/* 0x0025F6C0 0x802CF2C0 0x28A20002 */ .word 0x28A20002 # slti $v0, $a1, 0x2
+/* 0x0025F6C4 0x802CF2C4 0x1440001A */ .word 0x1440001A # bne $v0, $zero, 0x802CF330
+
+/* function boundary candidate: func_0025F6C8, size=132, kind=prologue */
+func_0025F6C8:
+/* 0x0025F6C8 0x802CF2C8 0x27BDFFF8 */ .word 0x27BDFFF8 # addiu $sp, $sp, -0x8
+/* 0x0025F6CC 0x802CF2CC 0x24A2FFFF */ .word 0x24A2FFFF # addiu $v0, $a1, -0x1
+/* 0x0025F6D0 0x802CF2D0 0x18400017 */ .word 0x18400017 # blez $v0, 0x802CF330
+/* 0x0025F6D4 0x802CF2D4 0x00005021 */ .word 0x00005021 # move $t2, $zero
+/* 0x0025F6D8 0x802CF2D8 0x00406021 */ .word 0x00406021 # move $t4, $v0
+/* 0x0025F6DC 0x802CF2DC 0x00805821 */ .word 0x00805821 # move $t3, $a0
+/* 0x0025F6E0 0x802CF2E0 0x0145102A */ .word 0x0145102A # slt $v0, $t2, $a1
+/* 0x0025F6E4 0x802CF2E4 0x1040000E */ .word 0x1040000E # beq $v0, $zero, 0x802CF320
+/* 0x0025F6E8 0x802CF2E8 0x01404021 */ .word 0x01404021 # move $t0, $t2
+/* 0x0025F6EC 0x802CF2EC 0x01604821 */ .word 0x01604821 # move $t1, $t3
+/* 0x0025F6F0 0x802CF2F0 0x000A1040 */ .word 0x000A1040 # sll $v0, $t2, 1
+/* 0x0025F6F4 0x802CF2F4 0x00443821 */ .word 0x00443821 # addu $a3, $v0, $a0
+/* 0x0025F6F8 0x802CF2F8 0x95260000 */ .word 0x95260000 # lhu $a2, 0x0($t1)
+/* 0x0025F6FC 0x802CF2FC 0x94E30000 */ .word 0x94E30000 # lhu $v1, 0x0($a3)
+/* 0x0025F700 0x802CF300 0x0066102B */ .word 0x0066102B # sltu $v0, $v1, $a2
+/* 0x0025F704 0x802CF304 0x10400003 */ .word 0x10400003 # beq $v0, $zero, 0x802CF314
+/* 0x0025F708 0x802CF308 0x25080001 */ .word 0x25080001 # addiu $t0, $t0, 0x1
+/* 0x0025F70C 0x802CF30C 0xA5230000 */ .word 0xA5230000 # sh $v1, 0x0($t1)
+/* 0x0025F710 0x802CF310 0xA4E60000 */ .word 0xA4E60000 # sh $a2, 0x0($a3)
+/* 0x0025F714 0x802CF314 0x0105102A */ .word 0x0105102A # slt $v0, $t0, $a1
+/* 0x0025F718 0x802CF318 0x1440FFF7 */ .word 0x1440FFF7 # bne $v0, $zero, 0x802CF2F8
+/* 0x0025F71C 0x802CF31C 0x24E70002 */ .word 0x24E70002 # addiu $a3, $a3, 0x2
+/* 0x0025F720 0x802CF320 0x254A0001 */ .word 0x254A0001 # addiu $t2, $t2, 0x1
+/* 0x0025F724 0x802CF324 0x014C102A */ .word 0x014C102A # slt $v0, $t2, $t4
+/* 0x0025F728 0x802CF328 0x1440FFED */ .word 0x1440FFED # bne $v0, $zero, 0x802CF2E0
+/* 0x0025F72C 0x802CF32C 0x256B0002 */ .word 0x256B0002 # addiu $t3, $t3, 0x2
+/* 0x0025F730 0x802CF330 0x27BD0008 */ .word 0x27BD0008 # addiu $sp, $sp, 0x8
+/* 0x0025F734 0x802CF334 0x03E00008 */ .word 0x03E00008 # jr $ra
+/* 0x0025F738 0x802CF338 0x00000000 */ .word 0x00000000 # nop

@@ -203,10 +203,16 @@ Current result:
 - Code-region SHA256:
   `40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`.
 - Code-region match against baserom: pass.
-- Tracked real-assembler original-MIPS chunks: 36 composites (chunk 0 177 `boot/`;
-  chunks 1–35 in `lib/`: 350, 216, 67, 376, 88, 78, 103, 87, 34, 35, 191, 74, 67, 94, 153, 95, 66, 95, 80, 175, 99, 99, 73, 63, 71, 96, 142, 97, 103, 122, 86, 198, 109, 120, 134) = 4,313 real-assembler
-  source files. Chunks 0–35 (`0x00001000..0x00241000`) are now fully source-owned as
-  named code/data parts (chunk 34: 89 code + 29 data + 2 straddlers, MIXED —
+- Tracked real-assembler original-MIPS chunks: 38 composites (chunk 0 177 `boot/`;
+  chunks 1–37 in `lib/`: 350, 216, 67, 376, 88, 78, 103, 87, 34, 35, 191, 74, 67, 94, 153, 95, 66, 95, 80, 175, 99, 99, 73, 63, 71, 96, 142, 97, 103, 122, 86, 198, 109, 120, 134, 164, 180) = 4,657 real-assembler
+  source files. Chunks 0–37 (`0x00001000..0x00261000`) are now fully source-owned as
+  named code/data parts (chunk 36: 134 code + 28 data + 2 straddlers, MIXED —
+  mission-briefing/combat display-list module with TWO interior combat-overlay DATA islands
+  [0x801D/0x801E pointer tables + GBI/RDP blobs + float/double pools + rodata] + frameless
+  GBI builders + a divide/scale-helper cluster recovered from parent gaps; chunk 37: 170
+  code + 8 data + 2 straddlers, MIXED — command-dispatcher-heavy mission-briefing/combat
+  code wrapping a mixed 0x80x pointer/struct/float record-table DATA island, heavy
+  parent-over-merge frameless-leaf recovery; chunk 34: 89 code + 29 data + 2 straddlers, MIXED —
   promotion/level-up/class-def code wrapping a combat-overlay DATA island
   [0x801D/0x801E handler/jump pointer tables + GBI/RDP display-list blobs + float/double
   pools + message-string rodata]; chunk 35: 127 code + 5 data + 2 straddlers, MIXED —
@@ -2860,9 +2866,9 @@ setup-complete state:
 - Assembler: GNU Binutils 2.39 `mips64-elf-as.exe` with `-EB -mips3 -32`.
 - Setup verifier: `tools/verify_setup.js`.
 - Current verifier result: PASS; 825 archives, 0 unknown bytes, 108 overlap
-  bytes visible, 36 tracked composite real-asm chunks made from 4,313 tracked source
-  files (chunks 0–35 fully source-owned as code/data parts, `0x00001000..0x00241000`),
-  64 generated fallback chunks, full-source manifest 1,059 entries with
+  bytes visible, 38 tracked composite real-asm chunks made from 4,657 tracked source
+  files (chunks 0–37 fully source-owned as code/data parts, `0x00001000..0x00261000`),
+  62 generated fallback chunks, full-source manifest 1,059 entries with
   2,469,141 ambiguous bytes preserved explicitly, 3 tracked non-code
   source-owner files / 44,029 bytes, 1,055 generated non-code fallback files /
   35,388,567 bytes, source-manifest rebuild exact, full ROM
@@ -2870,13 +2876,13 @@ setup-complete state:
   `571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A`.
 
 Next phase is either promoting another small non-code owner batch or continuing
-tracked original-MIPS source-ownership into **chunk 36** (`0x00241000`) — FIRST
-continue the OUTGOING FUNCTION straddler `func_00240FF0`, whose prologue is
-in chunk 35 at `0x00240FF0` (`addiu $sp,-0x20`, then `lui $s0,0x801F / lw`) and
-whose return is in chunk 36. Emit `func_00240FF0_chunk36tail` (starting at
-`0x00241000`) first and confirm its `jr$ra`. Use `plan_chunk`+`dump_function_context` to seed
-parent-detected code, `carve_chunk` to isolate any interior data island, and
-data-classification checks for any data.
-Chunks 0–35 are fully source-owned.
+tracked original-MIPS source-ownership into **chunk 38** (`0x00261000`) — FIRST
+continue the OUTGOING FUNCTION straddler `func_00260F30`, whose prologue is
+in chunk 37 at `0x00260F30` (`addiu $sp,-0x20`) and whose return is in chunk 38.
+Emit `func_00260F30_chunk38tail` (starting at `0x00261000`) first and confirm its
+`jr$ra`. Use `plan_chunk`+`dump_function_context` to seed parent-detected code,
+`carve_chunk` to isolate any interior data island, and data-classification checks
+for any data.
+Chunks 0–37 are fully source-owned.
 There is no tooling blocker. Do not begin semantic C decomp unless the setup
 verifier is green.

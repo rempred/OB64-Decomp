@@ -217,8 +217,12 @@ These outputs are useful but ignored:
 - ROM size: 41,943,040 bytes.
 - Code region currently extracted as original MIPS:
   `0x00001000..0x0063676C`.
-- Chunks 0–35 (`0x00001000..0x00241000`) are fully source-owned as named
-  code/data parts (4,313 tracked source files: 177 in `boot/` + 4,136 in `lib/`;
+- Chunks 0–37 (`0x00001000..0x00261000`) are fully source-owned as named
+  code/data parts (4,657 tracked source files: 177 in `boot/` + 4,480 in `lib/`;
+  chunk 36: 134 code + 2 straddler + 28 data, MIXED — mission-briefing/combat display-list
+  module + TWO combat-overlay DATA islands + frameless GBI builders + divide/scale helpers;
+  chunk 37: 170 code + 2 straddler + 8 data, MIXED — command-dispatcher mission-briefing/combat
+  code + a 0x80x pointer/struct/float record-table DATA island, heavy frameless-leaf recovery;
   chunk 34: 89 code + 2 straddler + 29 data, MIXED — promotion/level-up/class-def code +
   a combat-overlay pointer/blob/float/string DATA island; chunk 35: 127 code + 2 straddler
   + 5 data, MIXED — class/promotion/display-list code + a float-ramp/0x801F record-table
