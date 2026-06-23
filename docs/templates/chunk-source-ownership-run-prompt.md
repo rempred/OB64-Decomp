@@ -1,27 +1,41 @@
-# Two-Chunk Source-Ownership Run Prompt Template
+# Multi-Chunk Source-Ownership Run Prompt Template
 
 Use this template for future Rev 0 original-MIPS source-ownership runs. The
-default unit of work is now two adjacent 64 KiB chunks. Replace every
-`{PLACEHOLDER}` before sending it to an agent. Keep the data-region requirements
-even when the next chunks are expected to be mostly code.
+default unit of work is still two adjacent 64 KiB chunks, but the coordinator
+may choose three adjacent chunks when the previous run is clean, the next range
+looks mechanically tractable, and doing so will not dilute data ownership,
+patch-workbench harvest quality, runtime-state request logging, or review
+coverage. Replace every `{PLACEHOLDER}` before sending it to an agent. Keep the
+data-region requirements even when the next chunks are expected to be mostly
+code.
 
 ## Quick Update Checklist
 
-- `{CHUNK_A_N}` / `{CHUNK_B_N}`: next two chunk numbers.
+- `{CHUNK_COUNT}`: `2` or `3`. Use `3` only when the next range looks doable
+  without lowering review quality.
+- `{TARGET_CHUNKS_LABEL}`: human label such as `chunks 38-39` or
+  `chunks 38-40`.
+- `{CHUNK_A_N}` / `{CHUNK_B_N}` / `{CHUNK_C_N}`: next chunk numbers. Remove
+  optional chunk C blocks before sending a two-chunk prompt.
 - `{CHUNK_A_START}` / `{CHUNK_A_END}`: first chunk exact z64 range.
 - `{CHUNK_B_START}` / `{CHUNK_B_END}`: second chunk exact z64 range.
+- `{CHUNK_C_START}` / `{CHUNK_C_END}`: optional third chunk exact z64 range.
 - `{PREV_FRONTIER}`: current frontier before the run.
 - `{MID_FRONTIER}`: frontier after chunk A, usually `{CHUNK_A_END}`.
-- `{NEXT_EXPECTED_FRONTIER}`: expected frontier after chunk B.
+- `{SECOND_FRONTIER}`: frontier after chunk B, usually `{CHUNK_B_END}`.
+- `{NEXT_EXPECTED_FRONTIER}`: expected final frontier after chunk B for a
+  two-chunk run or chunk C for a three-chunk run.
 - `{CURRENT_TRACKED_FILES}` and `{CURRENT_FALLBACK_CHUNKS}`: from `verify_setup`.
-- `{EXPECTED_FALLBACK_CHUNKS}`: expected fallback count after both chunks.
+- `{EXPECTED_FALLBACK_CHUNKS}`: expected fallback count after all target chunks.
 - `{CURRENT_SOURCE_OWNED_BYTES}` / `{EXPECTED_SOURCE_OWNED_BYTES}`.
 - `{CURRENT_SOURCE_OWNED_PERCENT}` / `{EXPECTED_SOURCE_OWNED_PERCENT}`.
 - `{CURRENT_CODE_ONLY_BYTES}` / `{CURRENT_CODE_ONLY_PERCENT}`.
 - `{EXPECTED_CODE_ONLY_BYTES}` / `{EXPECTED_CODE_ONLY_PERCENT}` if knowable.
 - `{INCOMING_STRADDLER}`: function or data straddler entering chunk A, or `none`.
 - `{KNOWN_MID_STRADDLER}`: expected chunk A -> chunk B continuation, or `unknown`.
-- `{KNOWN_PARENT_DB_CAVEAT}`: parent DB / overlay caveat for both chunks.
+- `{KNOWN_B_TO_C_STRADDLER}`: optional expected chunk B -> chunk C continuation,
+  or `unknown`/`not applicable`.
+- `{KNOWN_PARENT_DB_CAVEAT}`: parent DB / overlay caveat for target chunks.
 - `{PATCH_WORKBENCH_TARGETS}`: coordinator-side opportunistic patch-workbench
   targets from parent evidence, previous review caveats, known patch sites, and
   unresolved runtime-state requests. Use `none` when empty.
@@ -31,9 +45,86 @@ even when the next chunks are expected to be mostly code.
 - `{REQUIRED_REVIEW_DOCS}`: latest review handoff docs for the prior run.
 - `{KNOWN_ISSUES}`: cleanup/review issues to fix first.
 - `{REVIEW_DOC_PATH}`: review handoff doc to create for this run, e.g.
-  `docs/REVIEW_2026-06-23_chunks09-10-source-ownership.md`.
+  `docs/REVIEW_2026-06-23_chunks09-10-source-ownership.md` or
+  `docs/REVIEW_2026-06-23_chunks09-11-source-ownership.md`.
+- `{RUN_SLUG}`: bridge-safe slug such as `chunks09-10-091000-0b1000` or
+  `chunks09-11-091000-0c1000`.
+- `{OPTIONAL_CHUNK_C_*}` placeholders: replace with real chunk C text in
+  three-chunk mode, or remove the whole optional line/block in two-chunk mode.
+- `{OPTIONAL_CHUNK_C_WORKFLOW_BLOCK}`: in three-chunk mode, include chunk C's
+  first-action instructions, a second mid-run gate after chunk B, chunk C's
+  workflow, and the stop condition if chunk B makes chunk C unsafe to start.
+- `{OPTIONAL_B_TO_C_STRADDLER_LINES}`: use only in three-chunk mode; otherwise
+  remove it before sending.
 - `{BRIDGE_URL}`: usually `http://127.0.0.1:17776`.
 - `{GUI_AGENT_NAME}`: the visible GUI agent/chat label, usually `Claude GUI`.
+
+## Optional Three-Chunk Block Text
+
+When `{CHUNK_COUNT}` is `3`, use these optional replacements:
+
+- `{OPTIONAL_CHUNK_C_OBJECTIVE_LINE}`:
+  ```text
+  - Chunk {CHUNK_C_N}: `{CHUNK_C_START}..{CHUNK_C_END}`
+  ```
+- `{OPTIONAL_CHUNK_C_SWARM_TASKS}`:
+  add chunk {CHUNK_C_N} code/data classification, code split review, and data
+  classification/indexing bullets.
+- `{OPTIONAL_CHUNK_C_FRONTIER_LINE}`:
+  ```text
+  - Expected final frontier after chunk {CHUNK_C_N}: `{NEXT_EXPECTED_FRONTIER}`
+  ```
+- `{OPTIONAL_B_TO_C_STRADDLER_LINES}`:
+  ```text
+  - Known or suspected chunk {CHUNK_B_N} -> chunk {CHUNK_C_N} straddler:
+    `{KNOWN_B_TO_C_STRADDLER}`.
+  ```
+- `{OPTIONAL_CHUNK_C_DOSSIER_LINE}`:
+  ```text
+  - New `docs\dossiers\lib-chunk{CHUNK_C_N}-{CHUNK_C_RANGE_SLUG}.md`
+  ```
+- `{OPTIONAL_CHUNK_C_VERIFICATION_LINES}`:
+  ```text
+  - `node tools/check_boundaries.js --splits <chunk-C splits> --disasm build/original-mips/rev0/code_{CHUNK_C_START_NODOT}_{CHUNK_C_END_NODOT}.s`
+  - `node tools/check_splits.js --splits <chunk-C splits> --disasm build/original-mips/rev0/code_{CHUNK_C_START_NODOT}_{CHUNK_C_END_NODOT}.s`
+  ```
+- `{OPTIONAL_CHUNK_C_COMMIT_LINE}`:
+  ```text
+  - Commit chunk {CHUNK_C_N} source ownership after full gates pass.
+  ```
+
+When `{CHUNK_COUNT}` is `3`, replace `{OPTIONAL_CHUNK_C_WORKFLOW_BLOCK}` with:
+
+```text
+Second mid-run gate before starting chunk {CHUNK_C_N}:
+- Run at least:
+  - `node tools/check_manifest.js`
+  - `node tools/check_boundaries.js --splits <chunk-B splits> --disasm build/original-mips/rev0/code_{CHUNK_B_START_NODOT}_{CHUNK_B_END_NODOT}.s`
+  - `node tools/check_splits.js --splits <chunk-B splits> --disasm build/original-mips/rev0/code_{CHUNK_B_START_NODOT}_{CHUNK_B_END_NODOT}.s`
+  - `node tools/assemble_original_mips.js`
+  - `git diff --check`
+- Commit chunk {CHUNK_B_N} source ownership if and only if those gates pass.
+- Update docs/frontier counts and the chunk {CHUNK_B_N} dossier before starting
+  chunk {CHUNK_C_N}.
+- If chunk {CHUNK_B_N} exposes a hard blocker, or if chunk {CHUNK_C_N} is now
+  clearly too risky to complete at the same quality, stop, document the blocked
+  frontier, and ping `agent_error` instead of pushing through.
+
+Chunk {CHUNK_C_N} required first action:
+Classify the start of `{CHUNK_C_START}`. If chunk {CHUNK_B_N} ended with an
+outgoing straddler or data continuation, emit the honest continuation first.
+Confirm its end from disassembly/data evidence before splitting the rest of the
+chunk.
+
+Chunk {CHUNK_C_N} workflow:
+Repeat the same classification, code/data splitting, analysis swarm,
+adversarial review, and verification process used for chunks {CHUNK_A_N} and
+{CHUNK_B_N}. Do not assume the third chunk has the same code/data shape as the
+first two.
+```
+
+When `{CHUNK_COUNT}` is `2`, remove all optional chunk C placeholders and set
+`{NEXT_EXPECTED_FRONTIER}` to `{CHUNK_B_END}`.
 
 ## Copyable Prompt
 
@@ -43,11 +134,12 @@ You are continuing the Rev 0 original-MIPS source-ownership project in:
 C:\Users\Joe\Projects\OgreBattlel64\OB64 Decomp
 
 Primary objective:
-Fix all known issues from the previous review, then fully source-own two adjacent
-chunks:
+Fix all known issues from the previous review, then fully source-own the
+adjacent target chunks listed below:
 
 - Chunk {CHUNK_A_N}: `{CHUNK_A_START}..{CHUNK_A_END}`
 - Chunk {CHUNK_B_N}: `{CHUNK_B_START}..{CHUNK_B_END}`
+{OPTIONAL_CHUNK_C_OBJECTIVE_LINE}
 
 Data ownership is part of the goal, not optional. Each chunk is complete only
 when every byte in its range is source-owned as either code or honestly
@@ -63,15 +155,15 @@ machine-readable indexes under `docs\data-index\rev0\` plus a human summary in
 the relevant dossier/review doc. If you cannot create a useful parsed index for a
 span, create a conservative raw-span index entry instead of leaving it invisible.
 
-Do not continue beyond chunk {CHUNK_B_N}. The successful end state is a clean
-repo, exact rebuild preserved, chunks {CHUNK_A_N} and {CHUNK_B_N} complete, docs
+Do not continue beyond the final target chunk. The successful end state is a
+clean repo, exact rebuild preserved, {TARGET_CHUNKS_LABEL} complete, docs
 current, one review handoff created, and exact next frontier
 `{NEXT_EXPECTED_FRONTIER}`.
 
-Minimum success is BOTH chunks complete. If chunk {CHUNK_A_N} completes but chunk
-{CHUNK_B_N} hits a hard blocker, do not send `run_complete`. Commit the safe
-chunk-A work only if all gates pass, document the exact blocked frontier/risk,
-and ping `agent_error` with the exact address and reason.
+Minimum success is all target chunks complete. If an early target chunk completes
+but a later target chunk hits a hard blocker, do not send `run_complete`. Commit
+only safe completed chunk work if all gates pass, document the exact blocked
+frontier/risk, and ping `agent_error` with the exact address and reason.
 
 Bridge instructions:
 - Bridge URL: `{BRIDGE_URL}`.
@@ -79,29 +171,29 @@ Bridge instructions:
 - The bridge is notification-only. It does not receive follow-up prompts itself;
   the coordinator will poll the bridge, read your review doc, and paste the next
   prompt into your GUI chat window.
-- When both chunks are complete, verified, documented, committed, and the review
-  handoff document exists, ping the bridge before your final response:
+- When all target chunks are complete, verified, documented, committed, and the
+  review handoff document exists, ping the bridge before your final response:
 
 ```powershell
 Invoke-RestMethod -Method Post -ContentType 'application/json' `
   -Uri '{BRIDGE_URL}/agent/run-complete' `
   -Body (@{
     agentName = '{GUI_AGENT_NAME}'
-    runSlug = 'chunks{CHUNK_A_N}-{CHUNK_B_N}-{RANGE_SLUG}'
+    runSlug = '{RUN_SLUG}'
     reviewDoc = '{REVIEW_DOC_PATH}'
     frontier = '{NEXT_EXPECTED_FRONTIER}'
-    message = 'Chunks {CHUNK_A_N}-{CHUNK_B_N} source-ownership and review handoff are complete; ready for coordinator review and next-run prompt.'
+    message = '{TARGET_CHUNKS_LABEL} source-ownership and review handoff are complete; ready for coordinator review and next-run prompt.'
   } | ConvertTo-Json -Compress)
 ```
 
-- If you hit a blocker instead of completing both chunks, ping:
+- If you hit a blocker instead of completing all target chunks, ping:
 
 ```powershell
 Invoke-RestMethod -Method Post -ContentType 'application/json' `
   -Uri '{BRIDGE_URL}/agent/error' `
   -Body (@{
     agentName = '{GUI_AGENT_NAME}'
-    runSlug = 'chunks{CHUNK_A_N}-{CHUNK_B_N}-{RANGE_SLUG}'
+    runSlug = '{RUN_SLUG}'
     frontier = '<exact blocked frontier>'
     message = '<short blocker summary with exact address/range>'
   } | ConvertTo-Json -Compress)
@@ -125,6 +217,7 @@ Use full swarm capabilities. Assign agents/passes for:
 - chunk {CHUNK_B_N} code/data classification
 - chunk {CHUNK_B_N} code split review
 - chunk {CHUNK_B_N} data classification/indexing
+{OPTIONAL_CHUNK_C_SWARM_TASKS}
 - parent-undetected function discovery
 - boundary planning
 - adversarial review
@@ -155,8 +248,8 @@ Parent workspace evidence sweep:
 - Search the parent repo `C:\Users\Joe\Projects\OgreBattlel64` for docs,
   scripts, wiki artifacts, trace reports, Project64 bridge/watch outputs, patch
   builders, editor hooks, mod-editor references, and other research artifacts
-  that mention addresses inside or near the current two-chunk range
-  `{CHUNK_A_START}..{CHUNK_B_END}`.
+  that mention addresses inside or near the current target range
+  `{CHUNK_A_START}..{NEXT_EXPECTED_FRONTIER}`.
 - Include both z64 ROM offsets and plausible RAM-address forms for the active
   overlay/code mapping. When searching RAM addresses, reconcile boot simple-map
   addresses, overlay-loaded RAM addresses, Rev 0/Rev 1 differences, and any
@@ -294,13 +387,16 @@ Current known state:
 - Code-only classified bytes: `{CURRENT_CODE_ONLY_BYTES}`, about `{CURRENT_CODE_ONLY_PERCENT}`.
 - Current frontier: `{PREV_FRONTIER}`.
 - Expected mid-run frontier after chunk {CHUNK_A_N}: `{MID_FRONTIER}`.
-- Expected final frontier after chunk {CHUNK_B_N}: `{NEXT_EXPECTED_FRONTIER}`.
-- Expected source-owned bytes after both chunks: `{EXPECTED_SOURCE_OWNED_BYTES}`.
-- Expected project coverage after both chunks: `{EXPECTED_SOURCE_OWNED_PERCENT}`.
-- Expected fallback chunks after both chunks: `{EXPECTED_FALLBACK_CHUNKS}`.
+- Expected second frontier after chunk {CHUNK_B_N}: `{SECOND_FRONTIER}`.
+{OPTIONAL_CHUNK_C_FRONTIER_LINE}
+- Expected final frontier after all target chunks: `{NEXT_EXPECTED_FRONTIER}`.
+- Expected source-owned bytes after all target chunks: `{EXPECTED_SOURCE_OWNED_BYTES}`.
+- Expected project coverage after all target chunks: `{EXPECTED_SOURCE_OWNED_PERCENT}`.
+- Expected fallback chunks after all target chunks: `{EXPECTED_FALLBACK_CHUNKS}`.
 - Incoming straddler or continuation: `{INCOMING_STRADDLER}`.
 - Known or suspected chunk {CHUNK_A_N} -> chunk {CHUNK_B_N} straddler:
   `{KNOWN_MID_STRADDLER}`.
+{OPTIONAL_B_TO_C_STRADDLER_LINES}
 - Parent DB / overlay caveat: `{KNOWN_PARENT_DB_CAVEAT}`.
 
 Chunk {CHUNK_A_N} required first action:
@@ -358,6 +454,8 @@ Chunk {CHUNK_B_N} workflow:
 Repeat the same classification, code/data splitting, analysis swarm,
 adversarial review, and verification process used for chunk {CHUNK_A_N}. Do not
 assume the second chunk has the same code/data shape as the first.
+
+{OPTIONAL_CHUNK_C_WORKFLOW_BLOCK}
 
 Data Territory Mode:
 Switch from function-splitting-first mode to data ownership plus data inventory
@@ -419,11 +517,11 @@ Data-region handling requirements:
 - Record exact ROM ranges, byte counts, observed structure, pointer density,
   string content, stride hypotheses, and unresolved field semantics in the
   relevant chunk dossier.
-- If a data blob or function straddles into the next chunk after chunk
-  {CHUNK_B_N}, mark the chunk part honestly as an outgoing continuation/head and
-  leave the exact expected next-run first action.
+- If a data blob or function straddles into the next chunk after the final
+  target chunk, mark the chunk part honestly as an outgoing continuation/head
+  and leave the exact expected next-run first action.
 - Run an adversarial pass against every data/code boundary.
-- Do not call either chunk complete if any byte remains unclassified or only
+- Do not call any target chunk complete if any byte remains unclassified or only
   implicitly covered by fallback.
 
 Running log / compaction safety:
@@ -433,7 +531,7 @@ Running log / compaction safety:
 - After each chunk split, record exact part counts, data/code counts, current
   frontier, tracked file count, fallback count, byte coverage, and unresolved
   caveats.
-- Prune/archive between chunks before starting chunk {CHUNK_B_N} if the log is
+- Prune/archive between chunks before starting the next target chunk if the log is
   bulky. Do not delete durable facts; relocate them with clear references.
 - If interrupted or compacted, the next agent must be able to resume from
   `AGENTS.md`, `docs\DECOMP_LOG.md`, `docs\NEXT_STEPS.md`, and the latest chunk
@@ -448,9 +546,10 @@ Docs required:
 - `docs\WORKFLOW.md`
 - New `docs\dossiers\lib-chunk{CHUNK_A_N}-{CHUNK_A_RANGE_SLUG}.md`
 - New `docs\dossiers\lib-chunk{CHUNK_B_N}-{CHUNK_B_RANGE_SLUG}.md`
+{OPTIONAL_CHUNK_C_DOSSIER_LINE}
 - New `docs\patch-workbench\rev0\...` artifact(s), only if opportunistic
   patch-workbench metadata was actually harvested.
-- New review handoff doc for this two-chunk run: `{REVIEW_DOC_PATH}`.
+- New review handoff doc for this {CHUNK_COUNT}-chunk run: `{REVIEW_DOC_PATH}`.
 - Update the previous chunk dossier if an incoming straddler/continuation
   boundary is refined.
 
@@ -459,7 +558,7 @@ Review handoff requirements:
 - Make it self-contained enough for a fresh reviewer to understand exactly what
   changed, what was verified, what remains risky, and where to resume without
   reading the full chat.
-- Cover BOTH chunks separately and together.
+- Cover all target chunks separately and together.
 - Include exact addresses, file counts, byte counts, commands, commits, caveats,
   current frontier, and reviewer checklist.
 - Include opening fixes, parent DB / overlay contradictions, mistakes corrected,
@@ -490,7 +589,8 @@ Verification required before final commit/final:
 - `node tools/check_splits.js --splits <chunk-A splits> --disasm build/original-mips/rev0/code_{CHUNK_A_START_NODOT}_{CHUNK_A_END_NODOT}.s`
 - `node tools/check_boundaries.js --splits <chunk-B splits> --disasm build/original-mips/rev0/code_{CHUNK_B_START_NODOT}_{CHUNK_B_END_NODOT}.s`
 - `node tools/check_splits.js --splits <chunk-B splits> --disasm build/original-mips/rev0/code_{CHUNK_B_START_NODOT}_{CHUNK_B_END_NODOT}.s`
-- Verify every byte in both chunks is represented by a tracked code or data part.
+{OPTIONAL_CHUNK_C_VERIFICATION_LINES}
+- Verify every byte in all target chunks is represented by a tracked code or data part.
 - Verify no data files have function/true-entry wording.
 - Verify any new `docs\data-index\rev0\*.json` files parse as valid JSON and
   match the ranges documented in dossiers/review docs.
@@ -508,15 +608,17 @@ Verification required before final commit/final:
 Commit expectations:
 - Commit cleanup/docs/tool fixes separately if meaningful.
 - Commit chunk {CHUNK_A_N} source ownership after mid-run gates pass.
-- Commit chunk {CHUNK_B_N} source ownership after full gates pass.
+- Commit chunk {CHUNK_B_N} source ownership after full gates pass in two-chunk
+  mode, or after second mid-run gates pass in three-chunk mode.
+{OPTIONAL_CHUNK_C_COMMIT_LINE}
 - Add the review handoff as its own final commit if that matches current repo
   pattern.
 - End with a clean working tree unless there is a clearly documented blocker.
 
 Final report must include:
 - Issues fixed.
-- Exact chunk ranges and classifications for both chunks.
-- Function count, data count, and straddlers for both chunks.
+- Exact chunk ranges and classifications for all target chunks.
+- Function count, data count, and straddlers for all target chunks.
 - Current tracked source-file count.
 - Current fallback chunk count.
 - Source-owned byte coverage and percent of evidenced executable MIPS.
@@ -528,5 +630,5 @@ Final report must include:
 - Review doc path.
 - Recommended next run.
 
-End Chunk {CHUNK_A_N}-{CHUNK_B_N} prompt
+End {TARGET_CHUNKS_LABEL} prompt
 ````
