@@ -203,10 +203,16 @@ Current result:
 - Code-region SHA256:
   `40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`.
 - Code-region match against baserom: pass.
-- Tracked real-assembler original-MIPS chunks: 48 composites (chunk 0 177 `boot/`;
-  chunks 1–47 in `lib/`: 350, 216, 67, 376, 88, 78, 103, 87, 34, 35, 191, 74, 67, 94, 153, 95, 66, 95, 80, 175, 99, 99, 73, 63, 71, 96, 142, 97, 103, 122, 86, 198, 109, 120, 134, 164, 180, 232, 155, 159, 160, 171, 90, 17, 15, 17, 27) = 5,700 real-assembler
-  source files. Chunks 0–47 (`0x00001000..0x00301000`) are now fully source-owned as
-  named code/data parts (chunk 47: 0 code + 27 data [14 data + 13 zero_fill], DATA TERRITORY —
+- Tracked real-assembler original-MIPS chunks: 52 composites (chunk 0 177 `boot/`;
+  chunks 1–51 in `lib/`: 350, 216, 67, 376, 88, 78, 103, 87, 34, 35, 191, 74, 67, 94, 153, 95, 66, 95, 80, 175, 99, 99, 73, 63, 71, 96, 142, 97, 103, 122, 86, 198, 109, 120, 134, 164, 180, 232, 155, 159, 160, 171, 90, 17, 15, 17, 27, 9, 11, 13, 13) = 5,746 real-assembler
+  source files. Chunks 0–51 (`0x00001000..0x00341000`) are now fully source-owned as
+  named code/data parts (chunks 48-51 = Section A slice 1 [survey natural unit Section A
+  `0x301000..0x4E3000`]: 0 code + 46 data [25 data + 21 zero_fill] across `0x301000..0x341000`, DATA
+  TERRITORY — high-entropy asset data continuing the chunk-43..47 family, TYPE UNRESOLVED
+  (graphics/texture vs audio-codec-residual; conservative `data_`/`zero_fill_` names); 0 jr$ra/0
+  prologues/0 pointers; B-table-to-A hypothesis byte-tested + rejected for this slice; outgoing
+  continuation `data_0033FD78` into chunk 52;
+  chunk 47: 0 code + 27 data [14 data + 13 zero_fill], DATA TERRITORY —
   non-code high-entropy graphics/texture asset data past the executable extent, continuing chunk 46's
   `data_002EF7F8` tail (0 jr$ra/0 prologues/0 pointers); final part `data_003002E8` is an OUTGOING
   data continuation into chunk 48; no code, no straddler;
@@ -292,9 +298,9 @@ Current result:
   chunk 33: 82 normal code + 25 data + 2 function straddlers, MIXED — code + a
   font/glyph + pointer/float DATA region [`0x211D14..0x213B10`] + a jump-table
   state-machine outgoing straddler; chunks 34-38 also source-owned, see the chunk list above);
-  next is chunk 48 (`0x00301000`, still a
+  next is chunk 52 (`0x00341000`, still a
   generated fallback chunk — deeper in the non-code data tail).
-- Generated fallback chunks: 52.
+- Generated fallback chunks: 48.
 - Assembled-code ROM rebuild command:
 
 ```powershell
@@ -2896,9 +2902,9 @@ setup-complete state:
 - Assembler: GNU Binutils 2.39 `mips64-elf-as.exe` with `-EB -mips3 -32`.
 - Setup verifier: `tools/verify_setup.js`.
 - Current verifier result: PASS; 825 archives, 0 unknown bytes, 108 overlap
-  bytes visible, 48 tracked composite real-asm chunks made from 5,700 tracked source
-  files (chunks 0–47 fully source-owned as code/data parts, `0x00001000..0x00301000`),
-  52 generated fallback chunks, full-source manifest 1,059 entries with
+  bytes visible, 52 tracked composite real-asm chunks made from 5,746 tracked source
+  files (chunks 0–51 fully source-owned as code/data parts, `0x00001000..0x00341000`),
+  48 generated fallback chunks, full-source manifest 1,059 entries with
   2,469,141 ambiguous bytes preserved explicitly, 3 tracked non-code
   source-owner files / 44,029 bytes, 1,055 generated non-code fallback files /
   35,388,567 bytes, source-manifest rebuild exact, full ROM

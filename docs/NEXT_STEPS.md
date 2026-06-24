@@ -15,10 +15,14 @@ Current passing commands:
 node tools/verify_setup.js
 ```
 
-Current source mix: 48 tracked composite real-assembler chunks (chunk 0 177
-`boot/`; chunks 1–47 in `lib/`: 350, 216, 67, 376, 88, 78, 103, 87, 34, 35, 191, 74, 67, 94, 153, 95, 66, 95, 80, 175, 99, 99, 73, 63, 71, 96, 142, 97, 103, 122, 86, 198, 109, 120, 134, 164, 180, 232, 155, 159, 160, 171, 90, 17, 15, 17, 27) = 5,700 tracked
-source files, plus 52 generated fallback chunks. **Chunks 0–47 are fully
-source-owned as named code/data parts** (`0x00001000..0x00301000`;
+Current source mix: 52 tracked composite real-assembler chunks (chunk 0 177
+`boot/`; chunks 1–51 in `lib/`: 350, 216, 67, 376, 88, 78, 103, 87, 34, 35, 191, 74, 67, 94, 153, 95, 66, 95, 80, 175, 99, 99, 73, 63, 71, 96, 142, 97, 103, 122, 86, 198, 109, 120, 134, 164, 180, 232, 155, 159, 160, 171, 90, 17, 15, 17, 27, 9, 11, 13, 13) = 5,746 tracked
+source files, plus 48 generated fallback chunks. **Chunks 0–51 are fully
+source-owned as named code/data parts** (`0x00001000..0x00341000`;
+chunks 48-51 = Section A slice 1 [survey natural unit Section A 0x301000..0x4E3000]: 0 code + 46
+data [25 data + 21 zero_fill], DATA TERRITORY — high-entropy asset data continuing the chunk-43..47
+family, TYPE UNRESOLVED (graphics/texture vs audio-codec-residual; conservative names); 0 jr$ra/0
+prologues/0 pointers; outgoing continuation data_0033FD78 into chunk 52;
 chunk 47: 0 code + 27 data [14 data + 13 zero_fill], DATA TERRITORY — the entire 64 KiB is non-code
 high-entropy graphics/texture asset data past the executable extent, continuing chunk 46's
 `data_002EF7F8` tail (0 jr$ra/0 prologues/0 pointers); final part `data_003002E8` runs to the chunk
@@ -85,7 +89,7 @@ at z64 0x1F36F0; chunk 32: 196 normal code + 0 data + 2 function straddlers, ALL
 frameless-leaf-dense FP/display-list + class-def/char-data code; chunk 33: 82 normal code +
 25 data + 2 function straddlers, MIXED - code + a font/glyph + pointer/float DATA region
 + a jump-table state-machine straddler);
-next is chunk 48 (`0x00301000`, deeper in the non-code data tail).
+next is chunk 52 (`0x00341000`, deeper in the non-code data tail).
 
 The assembled code-region SHA256 is
 `40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`; the full
@@ -162,25 +166,28 @@ node tools/audit_code_region.js
    generates fallback owners for the rest. Keep `node tools/verify_setup.js`
    green after every promotion.
 
-3. Continue into chunk 48 (data territory).
+3. Continue into chunk 52 (Section A slice 2, data territory).
 
-   Chunks 0–47 (`0x00001000..0x00301000`) are fully source-owned as named code/data
-   parts: chunk 0 in `boot/`; chunks 1–47 in `lib/` (dossiers `lib-chunk1-…` …
-   `lib-chunk47-…`). Chunk 43 (90 parts) is the MIXED code→data transition chunk. Chunks 44-47
-   are DATA TERRITORY: each entire 64 KiB is non-code high-entropy graphics/texture asset data past
-   the executable extent (0 jr$ra/0 prologues/0 pointers), `data_` + `zero_fill_` parts; adversarial
-   skeptics all clean. Data indexes `docs/data-index/rev0/chunk4{3,4,5,6,7}-data-region-inventory.json`.
+   Chunks 0–51 (`0x00001000..0x00341000`) are fully source-owned as named code/data
+   parts: chunk 0 in `boot/`; chunks 1–51 in `lib/` (dossiers `lib-chunk1-…` … `lib-chunk47-…` +
+   `section-a-00301000-00341000-data-ownership.md`). Chunk 43 (90 parts) is the MIXED code→data
+   transition chunk. Chunks 44-47 + Section A slice 1 (chunks 48-51) are DATA TERRITORY: each entire
+   64 KiB is non-code high-entropy asset data past the executable extent (0 jr$ra/0 prologues/0
+   pointers), `data_` + `zero_fill_` parts; adversarial skeptics all clean. Indexes
+   `docs/data-index/rev0/chunk4{3,4,5,6,7}-data-region-inventory.json` +
+   `section-a-00301000-00341000-data-inventory.json`.
 
-   **Next frontier: `0x00301000` (chunk 48).** The evidenced executable MIPS extent
-   `0x1000..0x2B89B4` is **100.0000% source-owned**. Chunk 47 ended in DATA with an OUTGOING
-   continuation: `data_003002E8` runs to `0x00301000` with no terminating zero-fill and continues
-   into chunk 48. FIRST action: own that data continuation. NOTE: chunk 48 (`0x301000..0x311000`) is
-   deeper in the non-code data tail — expect more data territory; do not reclassify the global
-   non-code tail beyond the target chunk.
-   Pipeline: data-territory scans (entropy/string/pointer/zero) + data classifier + adversarial data
-   skeptic (Workflow). Coverage 100.0000% of the executable extent (code-only 85.7977%). See the
-   DECOMP_LOG and `docs/dossiers/lib-chunk4{3,4,5,6,7}-*.md`.
-   No new patch-workbench candidates in chunks 43-47; the chunk-33 candidates (`0x21CD48`/`0x21BF84`)
+   **Next frontier: `0x00341000` (chunk 52).** The evidenced executable MIPS extent
+   `0x1000..0x2B89B4` is **100.0000% source-owned**. Chunk 51 ended in DATA with an OUTGOING
+   continuation: `data_0033FD78` runs to `0x00341000` with no terminating zero-fill and continues
+   into chunk 52. FIRST action: own that data continuation (Section A slice 2). NOTE: chunk 52
+   (`0x341000..0x351000`) is still inside survey Section A (high-entropy asset pool to 0x4E3000;
+   type texture-vs-audio unresolved) — expect more data territory; do not reclassify the global
+   non-code tail beyond the target. Use `docs/templates/data-territory-source-ownership-run-prompt.md`.
+   Pipeline: data-territory scans (entropy/string/pointer/zero) + tiling generator + adversarial
+   data/parent swarm (Workflow). Coverage 100.0000% of the executable extent (code-only 85.7977%). See
+   the DECOMP_LOG, `docs/data-index/rev0/data-territory-survey-00301000.json`, and the Section A slice-1 dossier.
+   No new patch-workbench candidates in chunks 43-51; the chunk-33 candidates (`0x21CD48`/`0x21BF84`)
    and chunk-31 `0x1F36F0` stand (`candidate`/`needs-runtime`, RSR-011/RSR-014).
 
 4. Keep the setup gate green.

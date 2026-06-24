@@ -1,0 +1,573 @@
+{
+  "schemaVersion": 1,
+  "dataUnit": "Section A slice 1 (high-entropy asset pool, first 4 chunks)",
+  "dataUnitSlug": "section-a-00301000-00341000",
+  "generated": "2026-06-23",
+  "parentNaturalUnit": "survey Section A 0x00301000..0x004E3000 (1,974,272 B); this run owns only the first slice 0x301000..0x341000",
+  "romRange": "0x00301000..0x00341000",
+  "bytes": 262144,
+  "chunkCoverage": "chunks 48-51 (full)",
+  "frontierBefore": "0x00301000",
+  "frontierAfter": "0x00341000",
+  "typeFamily": "high-entropy packed asset data — TYPE UNRESOLVED: graphics/texture vs signed-PCM/ADPCM audio-codec-residual/sample-bank (survey); kept conservative data_/zero_fill_ names",
+  "status": "raw-but-classified",
+  "confidence": "high (non-code, asset data) / medium (exact type texture-vs-audio)",
+  "byteSplit": {
+    "parsed_zero_fill": 436,
+    "raw_but_classified_data": 261708,
+    "undecoded": 0
+  },
+  "partCount": 46,
+  "dataParts": 25,
+  "zeroFillParts": 21,
+  "parserEvidence": "none (no parser-backed format; no record stride, no compression magic)",
+  "dumperEvidence": "none",
+  "catalogEvidence": "none in-range (parent ob64_4a/4f_audit gapOffsets are decompressed-7MB-LZSS-stream offsets, NOT ROM offsets — byte-rejected; see rejectedLeads)",
+  "editorEvidence": "none",
+  "modderResourceEvidence": "none",
+  "runtimeEvidence": "none (0 PI-DMA reads source this range per the survey; CPU-read in place)",
+  "hiddenCodeRisk": {
+    "result": "none — data-only safe",
+    "evidence": "0 jr$ra, 0 stack prologues (0x27BD8xxx..0x27BDFxxx), 0 0x80xxxxxx pointer-table runs (>=4), 0 archive/MIO0/Yay0/Yaz0/LHA magic, no real ASCII strings, across all 65,536 words. Confirmed by 2 independent adversary passes + a deterministic lead scan."
+  },
+  "knownContinuations": {
+    "incoming": "chunk 47 data_003002E8 -> data_00301000 (seamless, no zero gap at 0x301000)",
+    "outgoing": "data_0033FD78 runs to 0x341000 (continues into chunk 52 / Section A slice 2; no terminating zero-fill)"
+  },
+  "decodedRecords": "none",
+  "unresolvedFields": [
+    "exact asset type: graphics/texture vs audio-codec-residual (competing survey evidence; kept conservative)",
+    "whether the data is compressed/encoded (entropy ~7.0-7.3) or raw pixel/sample data",
+    "full Section A type resolution (a later slice or the B-table-to-A test on Section A's tail may decide)"
+  ],
+  "bTableToAHypothesis": {
+    "tested": true,
+    "result": "REJECTED for this slice",
+    "detail": "The Section B index table at ROM 0x4E3158 (1798 records [u32-BE offset 0x3848..0xDC58][u32-BE 0x64]) was byte-tested against this slice under absolute / table-relative / section-tail / 0x301000-relative bases. Only base=0x301000 lands arithmetically in-slice (0x304848..0x30EC58), but the bytes there show NO record structure/headers/terminators (pure asset noise) — coincidence-of-arithmetic, not a real mapping. Table-relative and section-tail bases point to Section A's TAIL (~0x4D5xxx), far past 0x341000. The table does NOT classify chunks 48-51."
+  },
+  "rejectedLeads": [
+    {
+      "artifact": "scripts/ob64_4a_audit.json / ob64_4f_audit.json in-range-looking gapOffsets (16 + 6, e.g. 0x3016b4, 0x332cde, 0x3326ce)",
+      "reason": "decompressed-7MB-LZSS-stream offsets (audit max ~0x6dae24 ~7.1MB = stream space), NOT ROM offsets; byte-verified: ROM bytes at 0x332cde are not a valid F3DEX2 display list. No byte-verified ROM mapping.",
+      "confidence": "high"
+    },
+    {
+      "artifact": "fallback .s decode comments (RAM column 0x80370C00-style + MIPS mnemonics)",
+      "reason": "invalid linear RAM=ROM+0x8006FC00 back-map on data; 0 real instructions (0 jr$ra). Not ownership evidence.",
+      "confidence": "high"
+    }
+  ],
+  "ownershipAssessment": "yes (this slice 0x301000..0x341000 is byte-exact tracked as 46 data_/zero_fill_ parts under asm/original/rev0/lib/, with per-part provenance, this index, a dossier, recorded adversarial hidden-code proof, exact chunk coverage, and confidence/caveats). NOTE: only this 4-chunk SLICE is owned; full Section A (to 0x4E3000) is NOT yet owned.",
+  "recommendedFollowups": [
+    "Own Section A slice 2 (chunks 52+, 0x341000..) continuing data_0033FD78.",
+    "During a later Section A slice or at the A/B boundary, resolve the texture-vs-audio type (e.g. test the B-table against Section A's tail 0x4D5xxx)."
+  ],
+  "subregions": [
+    {
+      "name": "data_00301000",
+      "file": "asm/original/rev0/lib/data_00301000.s",
+      "chunk": 48,
+      "romStart": "0x00301000",
+      "romEnd": "0x00303544",
+      "bytes": 9540,
+      "class": "data",
+      "status": "raw-but-classified",
+      "note": "Continuation of the chunk-47 data_003002E8 high-entropy asset span across the 0x301000 chunk boundary (no zero gap at the seam). High-entropy asset data (9540 B; entropy ~7.0-7.3; GBI-byte density coincidental ~20%, 0 jr$ra/0 prologues/0 RAM-pointers, no display-list ENDDL structure). raw-but-classified; Section A asset pool, TYPE UNRESOLVED (graphics/texture vs audio-codec-residual; not decoded; possibly compressed)."
+    },
+    {
+      "name": "zero_fill_00303544",
+      "file": "asm/original/rev0/lib/zero_fill_00303544.s",
+      "chunk": 48,
+      "romStart": "0x00303544",
+      "romEnd": "0x00303558",
+      "bytes": 20,
+      "class": "zero_fill",
+      "status": "parsed",
+      "note": "Zero-fill alignment (5 words) between Section A asset objects. parsed (all-zero)."
+    },
+    {
+      "name": "data_00303558",
+      "file": "asm/original/rev0/lib/data_00303558.s",
+      "chunk": 48,
+      "romStart": "0x00303558",
+      "romEnd": "0x00306A28",
+      "bytes": 13520,
+      "class": "data",
+      "status": "raw-but-classified",
+      "note": "High-entropy asset data (13520 B; entropy ~7.0-7.3; GBI-byte density coincidental ~20%, 0 jr$ra/0 prologues/0 RAM-pointers, no display-list ENDDL structure). raw-but-classified; Section A asset pool, TYPE UNRESOLVED (graphics/texture vs audio-codec-residual; not decoded; possibly compressed)."
+    },
+    {
+      "name": "zero_fill_00306A28",
+      "file": "asm/original/rev0/lib/zero_fill_00306A28.s",
+      "chunk": 48,
+      "romStart": "0x00306A28",
+      "romEnd": "0x00306A38",
+      "bytes": 16,
+      "class": "zero_fill",
+      "status": "parsed",
+      "note": "Zero-fill alignment (4 words) between Section A asset objects. parsed (all-zero)."
+    },
+    {
+      "name": "data_00306A38",
+      "file": "asm/original/rev0/lib/data_00306A38.s",
+      "chunk": 48,
+      "romStart": "0x00306A38",
+      "romEnd": "0x0030C2F8",
+      "bytes": 22720,
+      "class": "data",
+      "status": "raw-but-classified",
+      "note": "High-entropy asset data (22720 B; entropy ~7.0-7.3; GBI-byte density coincidental ~20%, 0 jr$ra/0 prologues/0 RAM-pointers, no display-list ENDDL structure). raw-but-classified; Section A asset pool, TYPE UNRESOLVED (graphics/texture vs audio-codec-residual; not decoded; possibly compressed)."
+    },
+    {
+      "name": "zero_fill_0030C2F8",
+      "file": "asm/original/rev0/lib/zero_fill_0030C2F8.s",
+      "chunk": 48,
+      "romStart": "0x0030C2F8",
+      "romEnd": "0x0030C308",
+      "bytes": 16,
+      "class": "zero_fill",
+      "status": "parsed",
+      "note": "Zero-fill alignment (4 words) between Section A asset objects. parsed (all-zero)."
+    },
+    {
+      "name": "data_0030C308",
+      "file": "asm/original/rev0/lib/data_0030C308.s",
+      "chunk": 48,
+      "romStart": "0x0030C308",
+      "romEnd": "0x0030F6A8",
+      "bytes": 13216,
+      "class": "data",
+      "status": "raw-but-classified",
+      "note": "High-entropy asset data (13216 B; entropy ~7.0-7.3; GBI-byte density coincidental ~20%, 0 jr$ra/0 prologues/0 RAM-pointers, no display-list ENDDL structure). raw-but-classified; Section A asset pool, TYPE UNRESOLVED (graphics/texture vs audio-codec-residual; not decoded; possibly compressed)."
+    },
+    {
+      "name": "zero_fill_0030F6A8",
+      "file": "asm/original/rev0/lib/zero_fill_0030F6A8.s",
+      "chunk": 48,
+      "romStart": "0x0030F6A8",
+      "romEnd": "0x0030F6B8",
+      "bytes": 16,
+      "class": "zero_fill",
+      "status": "parsed",
+      "note": "Zero-fill alignment (4 words) between Section A asset objects. parsed (all-zero)."
+    },
+    {
+      "name": "data_0030F6B8",
+      "file": "asm/original/rev0/lib/data_0030F6B8.s",
+      "chunk": 48,
+      "romStart": "0x0030F6B8",
+      "romEnd": "0x00311000",
+      "bytes": 6472,
+      "class": "data",
+      "status": "raw-but-classified",
+      "note": "High-entropy asset data (6472 B; entropy ~7.0-7.3; GBI-byte density coincidental ~20%, 0 jr$ra/0 prologues/0 RAM-pointers, no display-list ENDDL structure). raw-but-classified; Section A asset pool, TYPE UNRESOLVED (graphics/texture vs audio-codec-residual; not decoded; possibly compressed)."
+    },
+    {
+      "name": "data_00311000",
+      "file": "asm/original/rev0/lib/data_00311000.s",
+      "chunk": 49,
+      "romStart": "0x00311000",
+      "romEnd": "0x003127C8",
+      "bytes": 6088,
+      "class": "data",
+      "status": "raw-but-classified",
+      "note": "High-entropy asset data (6088 B; entropy ~7.0-7.3; GBI-byte density coincidental ~20%, 0 jr$ra/0 prologues/0 RAM-pointers, no display-list ENDDL structure). raw-but-classified; Section A asset pool, TYPE UNRESOLVED (graphics/texture vs audio-codec-residual; not decoded; possibly compressed)."
+    },
+    {
+      "name": "zero_fill_003127C8",
+      "file": "asm/original/rev0/lib/zero_fill_003127C8.s",
+      "chunk": 49,
+      "romStart": "0x003127C8",
+      "romEnd": "0x003127D8",
+      "bytes": 16,
+      "class": "zero_fill",
+      "status": "parsed",
+      "note": "Zero-fill alignment (4 words) between Section A asset objects. parsed (all-zero)."
+    },
+    {
+      "name": "data_003127D8",
+      "file": "asm/original/rev0/lib/data_003127D8.s",
+      "chunk": 49,
+      "romStart": "0x003127D8",
+      "romEnd": "0x00312CC0",
+      "bytes": 1256,
+      "class": "data",
+      "status": "raw-but-classified",
+      "note": "High-entropy asset data (1256 B; entropy ~7.0-7.3; GBI-byte density coincidental ~20%, 0 jr$ra/0 prologues/0 RAM-pointers, no display-list ENDDL structure). raw-but-classified; Section A asset pool, TYPE UNRESOLVED (graphics/texture vs audio-codec-residual; not decoded; possibly compressed)."
+    },
+    {
+      "name": "zero_fill_00312CC0",
+      "file": "asm/original/rev0/lib/zero_fill_00312CC0.s",
+      "chunk": 49,
+      "romStart": "0x00312CC0",
+      "romEnd": "0x00312CD8",
+      "bytes": 24,
+      "class": "zero_fill",
+      "status": "parsed",
+      "note": "Zero-fill alignment (6 words) between Section A asset objects. parsed (all-zero)."
+    },
+    {
+      "name": "data_00312CD8",
+      "file": "asm/original/rev0/lib/data_00312CD8.s",
+      "chunk": 49,
+      "romStart": "0x00312CD8",
+      "romEnd": "0x00319414",
+      "bytes": 26428,
+      "class": "data",
+      "status": "raw-but-classified",
+      "note": "High-entropy asset data (26428 B; entropy ~7.0-7.3; GBI-byte density coincidental ~20%, 0 jr$ra/0 prologues/0 RAM-pointers, no display-list ENDDL structure). raw-but-classified; Section A asset pool, TYPE UNRESOLVED (graphics/texture vs audio-codec-residual; not decoded; possibly compressed)."
+    },
+    {
+      "name": "zero_fill_00319414",
+      "file": "asm/original/rev0/lib/zero_fill_00319414.s",
+      "chunk": 49,
+      "romStart": "0x00319414",
+      "romEnd": "0x00319428",
+      "bytes": 20,
+      "class": "zero_fill",
+      "status": "parsed",
+      "note": "Zero-fill alignment (5 words) between Section A asset objects. parsed (all-zero)."
+    },
+    {
+      "name": "data_00319428",
+      "file": "asm/original/rev0/lib/data_00319428.s",
+      "chunk": 49,
+      "romStart": "0x00319428",
+      "romEnd": "0x0031D8F0",
+      "bytes": 17608,
+      "class": "data",
+      "status": "raw-but-classified",
+      "note": "High-entropy asset data (17608 B; entropy ~7.0-7.3; GBI-byte density coincidental ~20%, 0 jr$ra/0 prologues/0 RAM-pointers, no display-list ENDDL structure). raw-but-classified; Section A asset pool, TYPE UNRESOLVED (graphics/texture vs audio-codec-residual; not decoded; possibly compressed)."
+    },
+    {
+      "name": "zero_fill_0031D8F0",
+      "file": "asm/original/rev0/lib/zero_fill_0031D8F0.s",
+      "chunk": 49,
+      "romStart": "0x0031D8F0",
+      "romEnd": "0x0031D908",
+      "bytes": 24,
+      "class": "zero_fill",
+      "status": "parsed",
+      "note": "Zero-fill alignment (6 words) between Section A asset objects. parsed (all-zero)."
+    },
+    {
+      "name": "data_0031D908",
+      "file": "asm/original/rev0/lib/data_0031D908.s",
+      "chunk": 49,
+      "romStart": "0x0031D908",
+      "romEnd": "0x00320634",
+      "bytes": 11564,
+      "class": "data",
+      "status": "raw-but-classified",
+      "note": "High-entropy asset data (11564 B; entropy ~7.0-7.3; GBI-byte density coincidental ~20%, 0 jr$ra/0 prologues/0 RAM-pointers, no display-list ENDDL structure). raw-but-classified; Section A asset pool, TYPE UNRESOLVED (graphics/texture vs audio-codec-residual; not decoded; possibly compressed)."
+    },
+    {
+      "name": "zero_fill_00320634",
+      "file": "asm/original/rev0/lib/zero_fill_00320634.s",
+      "chunk": 49,
+      "romStart": "0x00320634",
+      "romEnd": "0x00320648",
+      "bytes": 20,
+      "class": "zero_fill",
+      "status": "parsed",
+      "note": "Zero-fill alignment (5 words) between Section A asset objects. parsed (all-zero)."
+    },
+    {
+      "name": "data_00320648",
+      "file": "asm/original/rev0/lib/data_00320648.s",
+      "chunk": 49,
+      "romStart": "0x00320648",
+      "romEnd": "0x00321000",
+      "bytes": 2488,
+      "class": "data",
+      "status": "raw-but-classified",
+      "note": "High-entropy asset data (2488 B; entropy ~7.0-7.3; GBI-byte density coincidental ~20%, 0 jr$ra/0 prologues/0 RAM-pointers, no display-list ENDDL structure). raw-but-classified; Section A asset pool, TYPE UNRESOLVED (graphics/texture vs audio-codec-residual; not decoded; possibly compressed)."
+    },
+    {
+      "name": "data_00321000",
+      "file": "asm/original/rev0/lib/data_00321000.s",
+      "chunk": 50,
+      "romStart": "0x00321000",
+      "romEnd": "0x003226A4",
+      "bytes": 5796,
+      "class": "data",
+      "status": "raw-but-classified",
+      "note": "High-entropy asset data (5796 B; entropy ~7.0-7.3; GBI-byte density coincidental ~20%, 0 jr$ra/0 prologues/0 RAM-pointers, no display-list ENDDL structure). raw-but-classified; Section A asset pool, TYPE UNRESOLVED (graphics/texture vs audio-codec-residual; not decoded; possibly compressed)."
+    },
+    {
+      "name": "zero_fill_003226A4",
+      "file": "asm/original/rev0/lib/zero_fill_003226A4.s",
+      "chunk": 50,
+      "romStart": "0x003226A4",
+      "romEnd": "0x003226B8",
+      "bytes": 20,
+      "class": "zero_fill",
+      "status": "parsed",
+      "note": "Zero-fill alignment (5 words) between Section A asset objects. parsed (all-zero)."
+    },
+    {
+      "name": "data_003226B8",
+      "file": "asm/original/rev0/lib/data_003226B8.s",
+      "chunk": 50,
+      "romStart": "0x003226B8",
+      "romEnd": "0x003243BC",
+      "bytes": 7428,
+      "class": "data",
+      "status": "raw-but-classified",
+      "note": "High-entropy asset data (7428 B; entropy ~7.0-7.3; GBI-byte density coincidental ~20%, 0 jr$ra/0 prologues/0 RAM-pointers, no display-list ENDDL structure). raw-but-classified; Section A asset pool, TYPE UNRESOLVED (graphics/texture vs audio-codec-residual; not decoded; possibly compressed)."
+    },
+    {
+      "name": "zero_fill_003243BC",
+      "file": "asm/original/rev0/lib/zero_fill_003243BC.s",
+      "chunk": 50,
+      "romStart": "0x003243BC",
+      "romEnd": "0x003243D8",
+      "bytes": 28,
+      "class": "zero_fill",
+      "status": "parsed",
+      "note": "Zero-fill alignment (7 words) between Section A asset objects. parsed (all-zero)."
+    },
+    {
+      "name": "data_003243D8",
+      "file": "asm/original/rev0/lib/data_003243D8.s",
+      "chunk": 50,
+      "romStart": "0x003243D8",
+      "romEnd": "0x00325644",
+      "bytes": 4716,
+      "class": "data",
+      "status": "raw-but-classified",
+      "note": "High-entropy asset data (4716 B; entropy ~7.0-7.3; GBI-byte density coincidental ~20%, 0 jr$ra/0 prologues/0 RAM-pointers, no display-list ENDDL structure). raw-but-classified; Section A asset pool, TYPE UNRESOLVED (graphics/texture vs audio-codec-residual; not decoded; possibly compressed)."
+    },
+    {
+      "name": "zero_fill_00325644",
+      "file": "asm/original/rev0/lib/zero_fill_00325644.s",
+      "chunk": 50,
+      "romStart": "0x00325644",
+      "romEnd": "0x00325658",
+      "bytes": 20,
+      "class": "zero_fill",
+      "status": "parsed",
+      "note": "Zero-fill alignment (5 words) between Section A asset objects. parsed (all-zero)."
+    },
+    {
+      "name": "data_00325658",
+      "file": "asm/original/rev0/lib/data_00325658.s",
+      "chunk": 50,
+      "romStart": "0x00325658",
+      "romEnd": "0x00326194",
+      "bytes": 2876,
+      "class": "data",
+      "status": "raw-but-classified",
+      "note": "High-entropy asset data (2876 B; entropy ~7.0-7.3; GBI-byte density coincidental ~20%, 0 jr$ra/0 prologues/0 RAM-pointers, no display-list ENDDL structure). raw-but-classified; Section A asset pool, TYPE UNRESOLVED (graphics/texture vs audio-codec-residual; not decoded; possibly compressed)."
+    },
+    {
+      "name": "zero_fill_00326194",
+      "file": "asm/original/rev0/lib/zero_fill_00326194.s",
+      "chunk": 50,
+      "romStart": "0x00326194",
+      "romEnd": "0x003261A8",
+      "bytes": 20,
+      "class": "zero_fill",
+      "status": "parsed",
+      "note": "Zero-fill alignment (5 words) between Section A asset objects. parsed (all-zero)."
+    },
+    {
+      "name": "data_003261A8",
+      "file": "asm/original/rev0/lib/data_003261A8.s",
+      "chunk": 50,
+      "romStart": "0x003261A8",
+      "romEnd": "0x0032716C",
+      "bytes": 4036,
+      "class": "data",
+      "status": "raw-but-classified",
+      "note": "High-entropy asset data (4036 B; entropy ~7.0-7.3; GBI-byte density coincidental ~20%, 0 jr$ra/0 prologues/0 RAM-pointers, no display-list ENDDL structure). raw-but-classified; Section A asset pool, TYPE UNRESOLVED (graphics/texture vs audio-codec-residual; not decoded; possibly compressed)."
+    },
+    {
+      "name": "zero_fill_0032716C",
+      "file": "asm/original/rev0/lib/zero_fill_0032716C.s",
+      "chunk": 50,
+      "romStart": "0x0032716C",
+      "romEnd": "0x00327188",
+      "bytes": 28,
+      "class": "zero_fill",
+      "status": "parsed",
+      "note": "Zero-fill alignment (7 words) between Section A asset objects. parsed (all-zero)."
+    },
+    {
+      "name": "data_00327188",
+      "file": "asm/original/rev0/lib/data_00327188.s",
+      "chunk": 50,
+      "romStart": "0x00327188",
+      "romEnd": "0x003282C8",
+      "bytes": 4416,
+      "class": "data",
+      "status": "raw-but-classified",
+      "note": "High-entropy asset data (4416 B; entropy ~7.0-7.3; GBI-byte density coincidental ~20%, 0 jr$ra/0 prologues/0 RAM-pointers, no display-list ENDDL structure). raw-but-classified; Section A asset pool, TYPE UNRESOLVED (graphics/texture vs audio-codec-residual; not decoded; possibly compressed)."
+    },
+    {
+      "name": "zero_fill_003282C8",
+      "file": "asm/original/rev0/lib/zero_fill_003282C8.s",
+      "chunk": 50,
+      "romStart": "0x003282C8",
+      "romEnd": "0x003282D8",
+      "bytes": 16,
+      "class": "zero_fill",
+      "status": "parsed",
+      "note": "Zero-fill alignment (4 words) between Section A asset objects. parsed (all-zero)."
+    },
+    {
+      "name": "data_003282D8",
+      "file": "asm/original/rev0/lib/data_003282D8.s",
+      "chunk": 50,
+      "romStart": "0x003282D8",
+      "romEnd": "0x00331000",
+      "bytes": 36136,
+      "class": "data",
+      "status": "raw-but-classified",
+      "note": "High-entropy asset data (36136 B; entropy ~7.0-7.3; GBI-byte density coincidental ~20%, 0 jr$ra/0 prologues/0 RAM-pointers, no display-list ENDDL structure). raw-but-classified; Section A asset pool, TYPE UNRESOLVED (graphics/texture vs audio-codec-residual; not decoded; possibly compressed)."
+    },
+    {
+      "name": "data_00331000",
+      "file": "asm/original/rev0/lib/data_00331000.s",
+      "chunk": 51,
+      "romStart": "0x00331000",
+      "romEnd": "0x003350D4",
+      "bytes": 16596,
+      "class": "data",
+      "status": "raw-but-classified",
+      "note": "High-entropy asset data (16596 B; entropy ~7.0-7.3; GBI-byte density coincidental ~20%, 0 jr$ra/0 prologues/0 RAM-pointers, no display-list ENDDL structure). raw-but-classified; Section A asset pool, TYPE UNRESOLVED (graphics/texture vs audio-codec-residual; not decoded; possibly compressed)."
+    },
+    {
+      "name": "zero_fill_003350D4",
+      "file": "asm/original/rev0/lib/zero_fill_003350D4.s",
+      "chunk": 51,
+      "romStart": "0x003350D4",
+      "romEnd": "0x003350E8",
+      "bytes": 20,
+      "class": "zero_fill",
+      "status": "parsed",
+      "note": "Zero-fill alignment (5 words) between Section A asset objects. parsed (all-zero)."
+    },
+    {
+      "name": "data_003350E8",
+      "file": "asm/original/rev0/lib/data_003350E8.s",
+      "chunk": 51,
+      "romStart": "0x003350E8",
+      "romEnd": "0x00336EFC",
+      "bytes": 7700,
+      "class": "data",
+      "status": "raw-but-classified",
+      "note": "High-entropy asset data (7700 B; entropy ~7.0-7.3; GBI-byte density coincidental ~20%, 0 jr$ra/0 prologues/0 RAM-pointers, no display-list ENDDL structure). raw-but-classified; Section A asset pool, TYPE UNRESOLVED (graphics/texture vs audio-codec-residual; not decoded; possibly compressed)."
+    },
+    {
+      "name": "zero_fill_00336EFC",
+      "file": "asm/original/rev0/lib/zero_fill_00336EFC.s",
+      "chunk": 51,
+      "romStart": "0x00336EFC",
+      "romEnd": "0x00336F18",
+      "bytes": 28,
+      "class": "zero_fill",
+      "status": "parsed",
+      "note": "Zero-fill alignment (7 words) between Section A asset objects. parsed (all-zero)."
+    },
+    {
+      "name": "data_00336F18",
+      "file": "asm/original/rev0/lib/data_00336F18.s",
+      "chunk": 51,
+      "romStart": "0x00336F18",
+      "romEnd": "0x0033B794",
+      "bytes": 18556,
+      "class": "data",
+      "status": "raw-but-classified",
+      "note": "High-entropy asset data (18556 B; entropy ~7.0-7.3; GBI-byte density coincidental ~20%, 0 jr$ra/0 prologues/0 RAM-pointers, no display-list ENDDL structure). raw-but-classified; Section A asset pool, TYPE UNRESOLVED (graphics/texture vs audio-codec-residual; not decoded; possibly compressed)."
+    },
+    {
+      "name": "zero_fill_0033B794",
+      "file": "asm/original/rev0/lib/zero_fill_0033B794.s",
+      "chunk": 51,
+      "romStart": "0x0033B794",
+      "romEnd": "0x0033B7A8",
+      "bytes": 20,
+      "class": "zero_fill",
+      "status": "parsed",
+      "note": "Zero-fill alignment (5 words) between Section A asset objects. parsed (all-zero)."
+    },
+    {
+      "name": "data_0033B7A8",
+      "file": "asm/original/rev0/lib/data_0033B7A8.s",
+      "chunk": 51,
+      "romStart": "0x0033B7A8",
+      "romEnd": "0x0033CB70",
+      "bytes": 5064,
+      "class": "data",
+      "status": "raw-but-classified",
+      "note": "High-entropy asset data (5064 B; entropy ~7.0-7.3; GBI-byte density coincidental ~20%, 0 jr$ra/0 prologues/0 RAM-pointers, no display-list ENDDL structure). raw-but-classified; Section A asset pool, TYPE UNRESOLVED (graphics/texture vs audio-codec-residual; not decoded; possibly compressed)."
+    },
+    {
+      "name": "zero_fill_0033CB70",
+      "file": "asm/original/rev0/lib/zero_fill_0033CB70.s",
+      "chunk": 51,
+      "romStart": "0x0033CB70",
+      "romEnd": "0x0033CB88",
+      "bytes": 24,
+      "class": "zero_fill",
+      "status": "parsed",
+      "note": "Zero-fill alignment (6 words) between Section A asset objects. parsed (all-zero)."
+    },
+    {
+      "name": "data_0033CB88",
+      "file": "asm/original/rev0/lib/data_0033CB88.s",
+      "chunk": 51,
+      "romStart": "0x0033CB88",
+      "romEnd": "0x0033D5E4",
+      "bytes": 2652,
+      "class": "data",
+      "status": "raw-but-classified",
+      "note": "High-entropy asset data (2652 B; entropy ~7.0-7.3; GBI-byte density coincidental ~20%, 0 jr$ra/0 prologues/0 RAM-pointers, no display-list ENDDL structure). raw-but-classified; Section A asset pool, TYPE UNRESOLVED (graphics/texture vs audio-codec-residual; not decoded; possibly compressed)."
+    },
+    {
+      "name": "zero_fill_0033D5E4",
+      "file": "asm/original/rev0/lib/zero_fill_0033D5E4.s",
+      "chunk": 51,
+      "romStart": "0x0033D5E4",
+      "romEnd": "0x0033D5F8",
+      "bytes": 20,
+      "class": "zero_fill",
+      "status": "parsed",
+      "note": "Zero-fill alignment (5 words) between Section A asset objects. parsed (all-zero)."
+    },
+    {
+      "name": "data_0033D5F8",
+      "file": "asm/original/rev0/lib/data_0033D5F8.s",
+      "chunk": 51,
+      "romStart": "0x0033D5F8",
+      "romEnd": "0x0033FD64",
+      "bytes": 10092,
+      "class": "data",
+      "status": "raw-but-classified",
+      "note": "High-entropy asset data (10092 B; entropy ~7.0-7.3; GBI-byte density coincidental ~20%, 0 jr$ra/0 prologues/0 RAM-pointers, no display-list ENDDL structure). raw-but-classified; Section A asset pool, TYPE UNRESOLVED (graphics/texture vs audio-codec-residual; not decoded; possibly compressed)."
+    },
+    {
+      "name": "zero_fill_0033FD64",
+      "file": "asm/original/rev0/lib/zero_fill_0033FD64.s",
+      "chunk": 51,
+      "romStart": "0x0033FD64",
+      "romEnd": "0x0033FD78",
+      "bytes": 20,
+      "class": "zero_fill",
+      "status": "parsed",
+      "note": "Zero-fill alignment (5 words) between Section A asset objects. parsed (all-zero)."
+    },
+    {
+      "name": "data_0033FD78",
+      "file": "asm/original/rev0/lib/data_0033FD78.s",
+      "chunk": 51,
+      "romStart": "0x0033FD78",
+      "romEnd": "0x00341000",
+      "bytes": 4744,
+      "class": "data",
+      "status": "raw-but-classified",
+      "note": "High-entropy asset data (4744 B; entropy ~7.0-7.3; GBI-byte density coincidental ~20%, 0 jr$ra/0 prologues/0 RAM-pointers, no display-list ENDDL structure). raw-but-classified; Section A asset pool, TYPE UNRESOLVED (graphics/texture vs audio-codec-residual; not decoded; possibly compressed)."
+    }
+  ]
+}
