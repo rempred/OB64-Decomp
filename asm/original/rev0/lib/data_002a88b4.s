@@ -1,0 +1,39 @@
+/*
+ * Original Rev 0 MIPS reference split.
+ * Parent source: asm/original/rev0/code_002A1000_002B1000.s
+ * z64 range: 0x002A88B4..0x002A8924 exclusive
+ * Decode comments are aids, not proof of semantic function boundaries.
+ */
+.set noat
+.set noreorder
+.text
+
+/* Data region (not executable host code): Packed byte/halfword record block (values like 0x0002,0x00A8,0x008E,0x00DE,0x0067,0x009B,0x00E7, with 0xFFFFFFFF sentinels at 0x2A88C0/0x2A88C8/0x2A8900). Small-magnitude paired bytes; record table that cannot be fully typed.. */
+/* 0x002A88B4 0x803184B4 0x000200A8 */ .word 0x000200A8 # special_0x28
+/* 0x002A88B8 0x803184B8 0x008E00DE */ .word 0x008E00DE # ddiv $a0, $t6
+/* 0x002A88BC 0x803184BC 0x0067009B */ .word 0x0067009B # divu $v1, $a3
+/* 0x002A88C0 0x803184C0 0x00E7FFFF */ .word 0x00E7FFFF # dsra32 $ra, $a3, 31
+/* 0x002A88C4 0x803184C4 0x0030009B */ .word 0x0030009B # divu $at, $s0
+/* 0x002A88C8 0x803184C8 0x00DCFFFF */ .word 0x00DCFFFF # dsra32 $ra, $gp, 31
+/* 0x002A88CC 0x803184CC 0x007500BF */ .word 0x007500BF # dsra32 $zero, $s5, 2
+/* 0x002A88D0 0x803184D0 0x00F300FD */ .word 0x00F300FD # special_0x3D
+/* 0x002A88D4 0x803184D4 0x007500CF */ .word 0x007500CF # sync
+/* 0x002A88D8 0x803184D8 0x00F300EC */ .word 0x00F300EC # dadd $zero, $a3, $s3
+/* 0x002A88DC 0x803184DC 0x007500CF */ .word 0x007500CF # sync
+/* 0x002A88E0 0x803184E0 0x00F300FD */ .word 0x00F300FD # special_0x3D
+/* 0x002A88E4 0x803184E4 0x007100C0 */ .word 0x007100C0 # sll $zero, $s1, 3
+/* 0x002A88E8 0x803184E8 0x0104FFFF */ .word 0x0104FFFF # dsra32 $ra, $a0, 31
+/* 0x002A88EC 0x803184EC 0x0016009A */ .word 0x0016009A # div $zero, $s6
+/* 0x002A88F0 0x803184F0 0x00EAFFFF */ .word 0x00EAFFFF # dsra32 $ra, $t2, 31
+/* 0x002A88F4 0x803184F4 0x007100C0 */ .word 0x007100C0 # sll $zero, $s1, 3
+/* 0x002A88F8 0x803184F8 0x0104FFFF */ .word 0x0104FFFF # dsra32 $ra, $a0, 31
+/* 0x002A88FC 0x803184FC 0x0058009B */ .word 0x0058009B # divu $v0, $t8
+/* 0x002A8900 0x80318500 0xFFFFFFFF */ .word 0xFFFFFFFF # sd $ra, -0x1($ra)
+/* 0x002A8904 0x80318504 0x007F00BF */ .word 0x007F00BF # dsra32 $zero, $ra, 2
+/* 0x002A8908 0x80318508 0x00FD00E8 */ .word 0x00FD00E8 # special_0x28
+/* 0x002A890C 0x8031850C 0x0028009F */ .word 0x0028009F # ddivu $at, $t0
+/* 0x002A8910 0x80318510 0x00DDFFFF */ .word 0x00DDFFFF # dsra32 $ra, $sp, 31
+/* 0x002A8914 0x80318514 0x000F00B2 */ .word 0x000F00B2 # tlt $zero, $t7
+/* 0x002A8918 0x80318518 0x007600C1 */ .word 0x007600C1 # special_0x01
+/* 0x002A891C 0x8031851C 0x007200C2 */ .word 0x007200C2 # srl $zero, $s2, 3
+/* 0x002A8920 0x80318520 0x0059009C */ .word 0x0059009C # dmult $v0, $t9

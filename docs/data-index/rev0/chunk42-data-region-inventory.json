@@ -1,0 +1,126 @@
+{
+  "chunk": 42,
+  "range": "0x002A82B4-0x002AE3C0",
+  "generated": "2026-06-23",
+  "dataPartCount": 12,
+  "dataBytes": 2804,
+  "bytesByClass": {
+    "zero_fill": 28,
+    "rodata": 1540,
+    "table": 204,
+    "data": 228,
+    "float": 664,
+    "jumptable": 140
+  },
+  "evidence": "Overlay-map heuristic (0 loaded prologues / 0 jr$ra across the span) + per-word classification; pointer values 0x801x are combat-overlay RAM addresses, not linear back-maps. Verified by adversarial data skeptics (no hidden code).",
+  "parts": [
+    {
+      "name": "zero_fill_002a82b4",
+      "file": "asm/original/rev0/lib/zero_fill_002a82b4.s",
+      "romStart": "0x002A82B4",
+      "romEnd": "0x002A82D0",
+      "bytes": 28,
+      "class": "zero_fill",
+      "note": "7 zero words (28 bytes) of alignment/padding immediately after the jr$ra@0x2A82AC + delay-slot at 0x2A82B0; before first string."
+    },
+    {
+      "name": "rodata_002a82d0",
+      "file": "asm/original/rev0/lib/rodata_002a82d0.s",
+      "romStart": "0x002A82D0",
+      "romEnd": "0x002A8894",
+      "bytes": 1476,
+      "class": "rodata",
+      "note": "Concept/emotion string pool (BE bytes per word). Readable ASCII fragments: 'ardor','passion','valengo'/'valen','belief','hatred','hope','freedom'(read 'ordered'),'silence','anarchy','control','valour','purity','sacrifice','trust','love'(?),'truth','freedom','embrace'(emb..race),'lust','glory','strife','serenity','wealth','before','fertility','peace','changes','raw','ideal','honor','chaos'. Each entry NUL-terminated and 4-byte padded; small leading words (0x0C100804, 0x100C0874, etc.) are interleaved index/length prefix bytes misparsed as opcodes, not code. Trailing small ints at 0x2A8870-0x2A8890 (counts/indices) packed with the pool."
+    },
+    {
+      "name": "table_002a8894",
+      "file": "asm/original/rev0/lib/table_002a8894.s",
+      "romStart": "0x002A8894",
+      "romEnd": "0x002A88B4",
+      "bytes": 32,
+      "class": "table",
+      "note": "Paired RAM-pointer + index table: 4 records of {ptr 0x802393BC/0x802393AC/0x802393A0/0x80239390, index 0x01/0x02/0x03/0x04}. 8 words; ptr targets are 0x80239xxx data/string addrs."
+    },
+    {
+      "name": "data_002a88b4",
+      "file": "asm/original/rev0/lib/data_002a88b4.s",
+      "romStart": "0x002A88B4",
+      "romEnd": "0x002A8924",
+      "bytes": 112,
+      "class": "data",
+      "note": "Packed byte/halfword record block (values like 0x0002,0x00A8,0x008E,0x00DE,0x0067,0x009B,0x00E7, with 0xFFFFFFFF sentinels at 0x2A88C0/0x2A88C8/0x2A8900). Small-magnitude paired bytes; record table that cannot be fully typed."
+    },
+    {
+      "name": "data_002a8924",
+      "file": "asm/original/rev0/lib/data_002a8924.s",
+      "romStart": "0x002A8924",
+      "romEnd": "0x002A8940",
+      "bytes": 28,
+      "class": "data",
+      "note": "Small packed data: 0x20783200, 0x00000000, 0x20783300, then three zero words. Tag/marker pair plus padding."
+    },
+    {
+      "name": "table_002a8940",
+      "file": "asm/original/rev0/lib/table_002a8940.s",
+      "romStart": "0x002A8940",
+      "romEnd": "0x002A8958",
+      "bytes": 24,
+      "class": "table",
+      "note": "RAM-pointer table: 6 words 0x80237830,0x80238004,0x80238530,0x80238820,0x80237830,0x80237830 (0x80237xxx/0x80238xxx data targets, with duplicates)."
+    },
+    {
+      "name": "data_002a8958",
+      "file": "asm/original/rev0/lib/data_002a8958.s",
+      "romStart": "0x002A8958",
+      "romEnd": "0x002A89B0",
+      "bytes": 88,
+      "class": "data",
+      "note": "Mixed small-int / packed data: zero words, 0x0000000C/0x0000000D, byte-pairs (0x000A00E6,0x00E600E6,0x00C80000), then a short ascending sequence 0x00000002,0x00000003,0x00000001,0x00000003..0x00000006 (index/count lists). Followed by float-pool start."
+    },
+    {
+      "name": "float_002a89b0",
+      "file": "asm/original/rev0/lib/float_002a89b0.s",
+      "romStart": "0x002A89B0",
+      "romEnd": "0x002A8BC0",
+      "bytes": 528,
+      "class": "float",
+      "note": "IEEE float64/float32 constant pool. Identifiable doubles: 0x400921FB54442D18 = pi (repeated x4), 0x3FF553F7CED91687, 0x3F847AE147AE147B = 0.01, 0x3FF19999999A... = 1.1, 0x3FB99999999A = 0.1, 0x3FF0000000000000 = 1.0, 0x40768000/0x40640000/0x408F4000 = floats (1000.0 etc), 0x3F800000 = 1.0f, 0x40590000/0x40668000 floats. Interspersed zero words for 8-byte double alignment."
+    },
+    {
+      "name": "rodata_002a8bc0",
+      "file": "asm/original/rev0/lib/rodata_002a8bc0.s",
+      "romStart": "0x002A8BC0",
+      "romEnd": "0x002A8C00",
+      "bytes": 64,
+      "class": "rodata",
+      "note": "Element/attribute string pool (BE bytes): 'serene watered'/'serene water', 'solid earth', 'ragn flame'/'ragng flame', 'swift wind', NUL-terminated and padded; trailing 0xFFFFFFFF,0xFFFFFFFF sentinels at 0x2A8BF8/0x2A8BFC."
+    },
+    {
+      "name": "table_002a8c00",
+      "file": "asm/original/rev0/lib/table_002a8c00.s",
+      "romStart": "0x002A8C00",
+      "romEnd": "0x002A8C94",
+      "bytes": 148,
+      "class": "table",
+      "note": "RAM-pointer dispatch table: 0x80236A00 (x3), 0x80236A6C, 0x80237058 (x21), 0x80236AEC (x6), 0x80236B28, 0x80236C6C, 0x80236CC8, 0x80236D70, 0x80236ED0 (x2). All 0x80236xxx/0x80237058 data/handler targets; ends with one 0x00000000 pad at 0x2A8C94."
+    },
+    {
+      "name": "jumptable_002a8c94",
+      "file": "asm/original/rev0/lib/jumptable_002a8c94.s",
+      "romStart": "0x002A8C94",
+      "romEnd": "0x002A8D20",
+      "bytes": 140,
+      "class": "jumptable",
+      "note": "Trailing dispatch jumptable of 0x80237xxx RAM-code pointers: 0x00000000 pad, 0x802376D4, 0x80237770 (x24), 0x802376E4 (x5), 0x80237770, 0x802376E4. Repeated 0x80237770/0x802376E4 entries are the default/dispatch handler slots; code resumes at 0x2A8D20."
+    },
+    {
+      "name": "float_002ae338",
+      "file": "asm/original/rev0/lib/float_002ae338.s",
+      "romStart": "0x002AE338",
+      "romEnd": "0x002AE3C0",
+      "bytes": 136,
+      "class": "float",
+      "note": "float64 double constant pool, 17 doubles. 0x2AE338=0.0(pad), 0x2AE340=160.0(0x4064000000000000), 0x2AE348=120.0(0x405E0000...), 0x2AE350=180.0(0x4066800000000000), 0x2AE358=pi(0x400921FB54442D18), 0x2AE360=180.0, 0x2AE368=pi, 0x2AE370=180.0, 0x2AE378=pi, 0x2AE380=0.005(0x3F747AE147AE147B), 0x2AE388=0.5(0x3FE0000000000000), 0x2AE390=pi, 0x2AE398=-90.0(0xC056800000000000), 0x2AE3A0=pi, 0x2AE3A8=-90.0, 0x2AE3B0=1.0(0x3FF0000000000000), 0x2AE3B8=0.0(trailing pad). Leading and trailing 8-byte zero spans folded in (each <16B). Code resumes at 0x2AE3C0."
+    }
+  ]
+}

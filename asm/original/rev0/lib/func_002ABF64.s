@@ -1,0 +1,43 @@
+/*
+ * Original Rev 0 MIPS reference split.
+ * Parent source: asm/original/rev0/code_002A1000_002B1000.s
+ * z64 range: 0x002ABF64..0x002ABFD4 exclusive
+ * Decode comments are aids, not proof of semantic function boundaries.
+ */
+.set noat
+.set noreorder
+.text
+
+/* Preamble-folded forward: lui $v0,0x8023 / lw $v0,-0x568C read by addu $a0,$a0,$v0 at 0x002ABF78 before write. Body frame -0x18 (glabel func_002ABF6C). j 0x8023C868 internal; jr $ra at 0x002ABFCC + delay. */
+func_002ABF64:
+/* 0x002ABF64 0x8031BB64 0x3C028023 */ .word 0x3C028023 # lui $v0, 0x8023
+/* 0x002ABF68 0x8031BB68 0x8C42A974 */ .word 0x8C42A974 # lw $v0, -0x568C($v0)
+
+/* function boundary candidate: func_002ABF6C, size=104, kind=prologue */
+func_002ABF6C:
+/* 0x002ABF6C 0x8031BB6C 0x27BDFFE8 */ .word 0x27BDFFE8 # addiu $sp, $sp, -0x18
+/* 0x002ABF70 0x8031BB70 0x00042080 */ .word 0x00042080 # sll $a0, $a0, 2
+/* 0x002ABF74 0x8031BB74 0xAFBF0010 */ .word 0xAFBF0010 # sw $ra, 0x10($sp)
+/* 0x002ABF78 0x8031BB78 0x00822021 */ .word 0x00822021 # addu $a0, $a0, $v0
+/* 0x002ABF7C 0x8031BB7C 0x8C840018 */ .word 0x8C840018 # lw $a0, 0x18($a0)
+/* 0x002ABF80 0x8031BB80 0x10800004 */ .word 0x10800004 # beq $a0, $zero, 0x8031BB94
+/* 0x002ABF84 0x8031BB84 0x240200FF */ .word 0x240200FF # addiu $v0, $zero, 0xFF
+/* 0x002ABF88 0x8031BB88 0x90830147 */ .word 0x90830147 # lbu $v1, 0x147($a0)
+/* 0x002ABF8C 0x8031BB8C 0x14620003 */ .word 0x14620003 # bne $v1, $v0, 0x8031BB9C
+/* 0x002ABF90 0x8031BB90 0x00032140 */ .word 0x00032140 # sll $a0, $v1, 5
+/* 0x002ABF94 0x8031BB94 0x0808F21A */ .word 0x0808F21A # j 0x8023C868
+/* 0x002ABF98 0x8031BB98 0x00001021 */ .word 0x00001021 # move $v0, $zero
+/* 0x002ABF9C 0x8031BB9C 0x00832023 */ .word 0x00832023 # subu $a0, $a0, $v1
+/* 0x002ABFA0 0x8031BBA0 0x3C02801D */ .word 0x3C02801D # lui $v0, 0x801D
+/* 0x002ABFA4 0x8031BBA4 0x8C42E8BC */ .word 0x8C42E8BC # lw $v0, -0x1744($v0)
+/* 0x002ABFA8 0x8031BBA8 0x000420C0 */ .word 0x000420C0 # sll $a0, $a0, 3
+/* 0x002ABFAC 0x8031BBAC 0x248401C4 */ .word 0x248401C4 # addiu $a0, $a0, 0x1C4
+/* 0x002ABFB0 0x8031BBB0 0x0C0722DA */ .word 0x0C0722DA # jal 0x801C8B68
+/* 0x002ABFB4 0x8031BBB4 0x00442021 */ .word 0x00442021 # addu $a0, $v0, $a0
+/* 0x002ABFB8 0x8031BBB8 0x00401821 */ .word 0x00401821 # move $v1, $v0
+/* 0x002ABFBC 0x8031BBBC 0x10600002 */ .word 0x10600002 # beq $v1, $zero, 0x8031BBC8
+/* 0x002ABFC0 0x8031BBC0 0x24020001 */ .word 0x24020001 # addiu $v0, $zero, 0x1
+/* 0x002ABFC4 0x8031BBC4 0x24020002 */ .word 0x24020002 # addiu $v0, $zero, 0x2
+/* 0x002ABFC8 0x8031BBC8 0x8FBF0010 */ .word 0x8FBF0010 # lw $ra, 0x10($sp)
+/* 0x002ABFCC 0x8031BBCC 0x03E00008 */ .word 0x03E00008 # jr $ra
+/* 0x002ABFD0 0x8031BBD0 0x27BD0018 */ .word 0x27BD0018 # addiu $sp, $sp, 0x18

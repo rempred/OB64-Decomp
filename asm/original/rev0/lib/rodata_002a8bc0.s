@@ -1,0 +1,27 @@
+/*
+ * Original Rev 0 MIPS reference split.
+ * Parent source: asm/original/rev0/code_002A1000_002B1000.s
+ * z64 range: 0x002A8BC0..0x002A8C00 exclusive
+ * Decode comments are aids, not proof of semantic function boundaries.
+ */
+.set noat
+.set noreorder
+.text
+
+/* Data region (not executable host code): Element/attribute string pool (BE bytes): 'serene watered'/'serene water', 'solid earth', 'ragn flame'/'ragng flame', 'swift wind', NUL-terminated and padded; trailing 0xFFFFFFFF,0xFFFFFFFF sentinels at 0x2A8BF8/0x2A8BFC.. */
+/* 0x002A8BC0 0x803187C0 0x73657265 */ .word 0x73657265 # op_0x1C
+/* 0x002A8BC4 0x803187C4 0x6E652077 */ .word 0x6E652077 # ldr $a1, 0x2077($s3)
+/* 0x002A8BC8 0x803187C8 0x61746572 */ .word 0x61746572 # daddi $s4, $t3, 0x6572
+/* 0x002A8BCC 0x803187CC 0x00000000 */ .word 0x00000000 # nop
+/* 0x002A8BD0 0x803187D0 0x736F6C69 */ .word 0x736F6C69 # op_0x1C
+/* 0x002A8BD4 0x803187D4 0x64206561 */ .word 0x64206561 # daddiu $zero, $at, 0x6561
+/* 0x002A8BD8 0x803187D8 0x72746800 */ .word 0x72746800 # op_0x1C
+/* 0x002A8BDC 0x803187DC 0x72616769 */ .word 0x72616769 # op_0x1C
+/* 0x002A8BE0 0x803187E0 0x6E672066 */ .word 0x6E672066 # ldr $a3, 0x2066($s3)
+/* 0x002A8BE4 0x803187E4 0x6C616D65 */ .word 0x6C616D65 # ldr $at, 0x6D65($v1)
+/* 0x002A8BE8 0x803187E8 0x00000000 */ .word 0x00000000 # nop
+/* 0x002A8BEC 0x803187EC 0x73776966 */ .word 0x73776966 # op_0x1C
+/* 0x002A8BF0 0x803187F0 0x74207769 */ .word 0x74207769 # op_0x1D
+/* 0x002A8BF4 0x803187F4 0x6E640000 */ .word 0x6E640000 # ldr $a0, 0x0($s3)
+/* 0x002A8BF8 0x803187F8 0xFFFFFFFF */ .word 0xFFFFFFFF # sd $ra, -0x1($ra)
+/* 0x002A8BFC 0x803187FC 0xFFFFFFFF */ .word 0xFFFFFFFF # sd $ra, -0x1($ra)

@@ -1,0 +1,33 @@
+/*
+ * Original Rev 0 MIPS reference split.
+ * Parent source: asm/original/rev0/code_002A1000_002B1000.s
+ * z64 range: 0x002A7010..0x002A7060 exclusive
+ * Decode comments are aids, not proof of semantic function boundaries.
+ */
+.set noat
+.set noreorder
+.text
+
+/* Small leaf; stores $a1/$a2/$a3 to 0x80220F68.. then jal 0x8020DD60. jr $ra @0x002A704C + delay @0x002A7050; trailing alignment nops @0x002A7054-705C attach to end of this fn. */
+/* function boundary candidate: func_002A7010, size=68, kind=prologue */
+func_002A7010:
+/* 0x002A7010 0x80316C10 0x27BDFFE8 */ .word 0x27BDFFE8 # addiu $sp, $sp, -0x18
+/* 0x002A7014 0x80316C14 0x00042080 */ .word 0x00042080 # sll $a0, $a0, 2
+/* 0x002A7018 0x80316C18 0xAFBF0010 */ .word 0xAFBF0010 # sw $ra, 0x10($sp)
+/* 0x002A701C 0x80316C1C 0x3C018022 */ .word 0x3C018022 # lui $at, 0x8022
+/* 0x002A7020 0x80316C20 0xAC250F68 */ .word 0xAC250F68 # sw $a1, 0xF68($at)
+/* 0x002A7024 0x80316C24 0x3C018022 */ .word 0x3C018022 # lui $at, 0x8022
+/* 0x002A7028 0x80316C28 0xAC260F6C */ .word 0xAC260F6C # sw $a2, 0xF6C($at)
+/* 0x002A702C 0x80316C2C 0x3C018022 */ .word 0x3C018022 # lui $at, 0x8022
+/* 0x002A7030 0x80316C30 0xAC270F70 */ .word 0xAC270F70 # sw $a3, 0xF70($at)
+/* 0x002A7034 0x80316C34 0x3C018024 */ .word 0x3C018024 # lui $at, 0x8024
+/* 0x002A7038 0x80316C38 0x00240821 */ .word 0x00240821 # addu $at, $at, $a0
+/* 0x002A703C 0x80316C3C 0x8C249110 */ .word 0x8C249110 # lw $a0, -0x6EF0($at)
+/* 0x002A7040 0x80316C40 0x0C083758 */ .word 0x0C083758 # jal 0x8020DD60
+/* 0x002A7044 0x80316C44 0x00002821 */ .word 0x00002821 # move $a1, $zero
+/* 0x002A7048 0x80316C48 0x8FBF0010 */ .word 0x8FBF0010 # lw $ra, 0x10($sp)
+/* 0x002A704C 0x80316C4C 0x03E00008 */ .word 0x03E00008 # jr $ra
+/* 0x002A7050 0x80316C50 0x27BD0018 */ .word 0x27BD0018 # addiu $sp, $sp, 0x18
+/* 0x002A7054 0x80316C54 0x00000000 */ .word 0x00000000 # nop
+/* 0x002A7058 0x80316C58 0x00000000 */ .word 0x00000000 # nop
+/* 0x002A705C 0x80316C5C 0x00000000 */ .word 0x00000000 # nop
