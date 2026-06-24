@@ -31,6 +31,8 @@ Replace every `{PLACEHOLDER}` before sending it to an agent.
 - `{SURVEY_INDEX_PATHS}`: survey inventory/review paths that justify this batch.
 - `{PARENT_TOOLING_LEADS}`: concrete parent scripts/tools/wiki/editor/artifact
   leads to compare, or `none known`.
+- `{PARENT_OFFSET_SPACE_CAVEAT}`: target-specific address-space traps from
+  surveys/reviews, or `none`.
 - `{KNOWN_CONTINUATIONS}`: incoming/outgoing data continuations, if known.
 - `{KNOWN_ISSUES}`: review issues to fix before the new ownership work.
 - `{PATCH_WORKBENCH_TARGETS}`: opportunistic patch-workbench targets, or `none`.
@@ -61,6 +63,7 @@ unit below, not a pair of chunks:
 - Expected frontier after this run: `{EXPECTED_FRONTIER}`
 - Survey evidence: `{SURVEY_INDEX_PATHS}`
 - Parent tooling leads: `{PARENT_TOOLING_LEADS}`
+- Parent offset-space caveat: `{PARENT_OFFSET_SPACE_CAVEAT}`
 - Known continuations: `{KNOWN_CONTINUATIONS}`
 
 Machine-readable indexes are canonical. Human-readable Markdown is the
@@ -202,6 +205,15 @@ For the target range, inspect relevant material from:
 - parent `editor/` parsers, loaders, exporters, and generated data files
 - local `docs\data-index\rev0\` indexes and dossiers
 - local build or coverage reports relevant to source ownership
+
+Address-space caution: parent tooling may report ROM offsets, RAM addresses,
+archive-local offsets, decompressed-stream offsets, or heuristic scanner
+positions. Identify the address space before using any offset as ownership
+evidence. For the post-`0x00301000` Rev 0 data survey, parent
+`scripts/ob64_4a_audit.json` and `scripts/ob64_4f_audit.json` use
+decompressed-7MB-LZSS-stream `gapOffset` values, not raw ROM offsets; do not
+import those as ROM addresses unless a separate byte-verified mapping proves the
+conversion.
 
 Record useful matches and rejected leads in the machine-readable index or review
 notes. Broad statements such as "searched scripts" are not enough; name the
