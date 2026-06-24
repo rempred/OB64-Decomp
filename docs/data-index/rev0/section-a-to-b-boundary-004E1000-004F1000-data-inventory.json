@@ -1,0 +1,133 @@
+{
+  "schemaVersion": 1,
+  "dataUnit": "Section A/B boundary + Section B index table start (chunk 78)",
+  "dataUnitSlug": "section-a-to-b-boundary-004E1000-004F1000",
+  "generated": "2026-06-24",
+  "parentNaturalUnit": "Crosses the survey Section A (AUDIO, 0x301000..0x4E3140) / Section B (structured cutscene-audio subsystem, 0x4E3140..) boundary. Owns chunk 78: the Section A audio tail, the Section B index table, the Section B payload, and the head of the first cutscene audio-sequence block.",
+  "romRange": "0x004E1000..0x004F1000",
+  "bytes": 65536,
+  "chunkCoverage": "chunk 78 (full)",
+  "frontierBefore": "0x004E1000",
+  "frontierAfter": "0x004F1000",
+  "typeFamily": "MIXED data families across the Section A/B boundary: (A) flat 4-bit ADPCM audio tail; (B) Section B index table [decoded shape] + undecoded payload; (B) first parser-backed cutscene audio-sequence block head.",
+  "status": "partial (chunk-78 bytes byte-exact owned; Section B payload undecoded + first block parser-backed-but-not-chunk-locally-decoded)",
+  "chunk78BytesStatus": "yes",
+  "confidence": "high (byte-exact ownership; A/B boundary + table shape byte-confirmed) / low (Section B payload semantics + 0x64 field meaning)",
+  "byteSplit": {
+    "raw_but_classified_data": 23000,
+    "undecoded": 42536,
+    "parsed_zero_fill": 0
+  },
+  "partCount": 4,
+  "parserEvidence": "Section A/B boundary + Section B index table SHAPE byte-verified by a 5-pass swarm: boundary 0x4E3140; 6-u32 header [recordCount 0x706=1798, 0x2E4, 0x102, 0, 0, 0xDC6A=56426 payloadLen]; 1798 records [u32-BE offset, u32-BE 0x64], stride 8, offsets strictly monotonic 0x3848..0xDC58, base 0x4E3140 (rec0 0x3848->0x4E6988 payload start), table ends exactly 0x4E6988. field2=0x64 is a CONSTANT flag/type (NOT a per-record length — record spans are only 17-66 B). The indexed payload records are 0x80-TERMINATED variable-length event streams (1797/1798 records end in byte 0x80); the indexed payload effectively ends ~0x4F0DAA, followed by a u16-BE LUT 0x4F0DAA..0x4F0FB0 (incrementing 0x0000..0x0084 x2, purpose unknown). The first cutscene block @0x4F0FB0 is PARSER-BACKED (tag 0x00000215, nch 24, stride 0x1A0, size 0x30C0 -> ends 0x4F4070).",
+  "dumperEvidence": "none for the Section B index table / payload; the first cutscene block is parser-backed (parent tools/anim_block_codec.py + parse_anim_block.py, roundtrip_ok).",
+  "catalogEvidence": "ACCEPTED ROM LEAD (anyAcceptedRomLead=true): parent scripts/ob64_anim_block_catalog.json block 0 @0x4F0FB0 is a byte-verified ROM mapping into chunk 78 — region.first 0x4F0FB0, count 63, contiguous, block0 channels 24 / stride 0x1A0 / size 0x30C0 / roundtrip_ok; ROM header @0x4F0FB0 matches (tag 0x215, nch 0x18, t1off 0x38, t2off 0x98, t2end 0xF8, stride 0x1A0). Next block @0x4F4070 also tag 0x215 (confirms size + contiguity). The 63 blocks run 0x4F0FB0..0x594280. Container model parser-backed by tools/anim_block_codec.py (Gate-1 byte-identical roundtrip; Gate-2 in-game proof = cutscene MUSIC/SFX sequences). NO parent tool decodes the Section B INDEX TABLE @0x4E3140 or its payload.",
+  "editorEvidence": "none (no editor loader reads the Section B index table or payload)",
+  "modderResourceEvidence": "none",
+  "runtimeEvidence": "none (static-only)",
+  "hiddenCodeRisk": {
+    "result": "none — data-only safe",
+    "evidence": "0 jr$ra / 0 stack prologues / 0 epilogues / 0 lw $ra / 0 jr-any at ALL 4 byte alignments across every region (audio tail, index table, payload, anim head); 0 pointer-table runs (>=4 consecutive 0x80xxxxxx). The index-table offsets are payload-relative small monotonic values (base 0x4E3140), not 0x80xxxxxx code pointers; field2==0x64 constant for all 1798 records is impossible in code. Coincidental jal/j opcode-field matches in high-entropy data have no jr to return through and no frame to enter. Region entropies (audio 7.27 / table 3.25 / payload 5.47 / anim head 2.44) do not match structured code. Deterministic scan + independent adversary + ownership re-derivation from the raw z64 baserom."
+  },
+  "decodedContainerSchema": {
+    "sectionBIndexTable": {
+      "romRange": "0x004E3140..0x004E6988",
+      "header": "6 u32-BE @0x4E3140 = [recordCount 0x706 (1798), 0x2E4 (740), 0x102 (258), 0, 0, 0xDC6A (56426 = total payload length)]",
+      "records": "1798 records @0x4E3158, each 8 bytes = [u32-BE offset, u32-BE 0x64]; offsets monotonic 0x3848..0xDC58",
+      "offsetBase": "0x4E3140 (rec0 offset 0x3848 -> 0x4E6988 = payload start; verified)",
+      "field2": "0x64 (100) constant across all 1798 records — NOT a per-record length (offset deltas are ~0x11-0x1A); meaning unresolved (flag/type/attribute/count)",
+      "indexes": "the Section B payload 0x4E6988..0x4F0FB0"
+    },
+    "sectionBPayload": {
+      "romRange": "0x004E6988..0x004F0FB0",
+      "bytes": 42536,
+      "entropy": "~5.5 (medium)",
+      "status": "UNDECODED; indexed by the table as 0x80-TERMINATED variable-length event streams (1797/1798 records end in byte 0x80). Indexed payload effectively ends ~0x4F0DAA, followed by a u16-BE LUT 0x4F0DAA..0x4F0FB0 (incrementing 0x0000..0x0084 x2, purpose unknown). Record/stream schema unknown."
+    },
+    "firstCutsceneBlock": {
+      "romRange": "0x004F0FB0..0x004F4070 (size 0x30C0; HEAD only in chunk 78)",
+      "tag": "0x00000215 @0x4F0FB0",
+      "fields": "nch 0x18 (24), t1off 0x38, t2off 0x98, t2end 0xF8 (=t2off+nch*4), stride 0x1A0",
+      "evidence": "parser-backed BYTE-VERIFIED ROM lead: parent scripts/ob64_anim_block_catalog.json block 0 (region.first 0x4F0FB0; 63 contiguous blocks 0x4F0FB0..0x594280; roundtrip_ok; next block @0x4F4070 also tag 0x215) + tools/anim_block_codec.py (cutscene music/SFX sequences, Gate-2 in-game proof). HEAD only in chunk 78 (80 B @0x4F0FB0..0x4F1000); the block body continues past 0x4F1000 -> OUTGOING into chunk 79 (do not overclaim the whole block from a chunk-local read)."
+    }
+  },
+  "sectionABBoundary": {
+    "offset": "0x004E3140",
+    "evidence": "Byte-confirmed: the flat Section A 4-bit ADPCM audio tail ends and the Section B index-table header begins at 0x4E3140 (header word0 = 0x706 = 1798 record count). Entropy drops from ~6.8 (audio) to ~2.5 (index table) at this boundary. The survey wording \"table @0x4E3158 / header @0x4E3140\" is resolved: header 0x4E3140..0x4E3158 (24 B), records 0x4E3158..0x4E6988.",
+    "sectionA": "0x00301000..0x004E3140 (AUDIO — now fully owned)",
+    "sectionB": "0x004E3140.. (structured cutscene-audio subsystem: index table + payload + 63 audio-sequence blocks)"
+  },
+  "incomingContinuation": "chunk 77 data_004E0CE8 -> data_004E1000 (seamless flat audio across 0x4E1000; the LAST Section A audio, ending at 0x4E3140)",
+  "outgoingContinuation": "data_004F0FB0 = the head of the first cutscene audio-sequence block (tag 0x215, size 0x30C0, ends 0x4F4070); the block body continues past 0x4F1000 into chunk 79 (parser-backed natural-unit continuation; next block @0x4F4070 also tag 0x215; do not overclaim the whole block from a chunk-local read)",
+  "payloadExtentInterpretationGap": "The header payloadLen 0xDC6A (56426) implies a logical payload extent to 0x4E3140+0xDC6A = 0x4F45F2 (PAST the first anim block start 0x4F0FB0), while the chunk-local payload part correctly stops at the anim block 0x4F0FB0 (42,536 B). Whether the header length spans into the anim-block region or the indexed payload ends at the LUT (~0x4F0FB0) is UNRESOLVED — settle in the chunk-79 Section B / anim-block run. The split does not overclaim either way.",
+  "unresolvedFields": [
+    "Section B index-table 0x64 field meaning (constant flag/type/attribute/count — NOT a length)",
+    "Section B index-table header fields 0x2E4 / 0x102",
+    "Section B PAYLOAD format/schema (0x4E6988..0x4F0FB0, 42,536 B undecoded) and how each table record maps to a payload entry",
+    "the 12-byte non-zero fragment 0x4E3134..0x4E3140 just before the table header (audio tail fragment vs pre-table pad)"
+  ],
+  "rejectedLeads": [
+    {
+      "artifact": "scripts/ob64_4a_audit.json / ob64_4f_audit.json gapOffsets",
+      "reason": "decompressed-7MB-LZSS-stream coords (base 0x20248C2), NOT ROM.",
+      "confidence": "high"
+    },
+    {
+      "artifact": "scripts/ob64_audio_region_analysis.js / research/ob64_crack_gap3.js",
+      "reason": "target other ROM regions; comparison/rule-out only.",
+      "confidence": "high"
+    }
+  ],
+  "batchSizeFinding": "Correctly handled as a 1-chunk natural-boundary/schema run (NOT a flat 10-chunk batch): chunk 78 crosses the Section A/B boundary and contains a decoded index table + undecoded payload + a parser-backed block head. One chunk was the right unit; the boundary, table shape, and first-block tag all pinned cleanly. The NEXT unit is the Section B / cutscene-audio-block family (natural-block run), NOT a flat batch.",
+  "ownershipAssessment": "chunk-78 BYTES: yes — all 65,536 bytes (0x4E1000..0x4F1000) are byte-exact tracked as 4 structural data parts under asm/original/rev0/lib/, independently verified by a 5-pass swarm (hidden-code data-only-safe at all 4 alignments; QA contiguity/byte-math/alignment clean, 0 blocking problems; ownership reviewer yes). Per region: Section A audio tail = owned raw-but-classified; Section B index table = SHAPE decoded (1798 records, base 0x4E3140, table 0x4E3140..0x4E6988), semantics partial (0x64 flag + header fields unresolved); Section B payload (42,536 B) = owned but UNDECODED (0x80-terminated event streams, schema unknown); first cutscene block HEAD = owned + parser-backed (anim_block_catalog byte-match), OUTGOING into chunk 79. UNIT-LEVEL status is partial (Section B payload undecoded; Section B subsystem + the 63-block family span far past this chunk). Section A/B boundary pinned at 0x4E3140.",
+  "recommendedFollowups": [
+    "Continue the Section B cutscene audio-sequence block family from 0x4F0FB0/0x4F1000 as a PARSER-BACKED natural-block run (parent anim_block_codec.py; 63 blocks 0x4F0FB0..0x594280), preserving natural block boundaries — NOT flat chunk tiling.",
+    "Decode the Section B index-table 0x64 field + header fields and map records to payload entries (parser/runtime follow-up); the payload 0x4E6988..0x4F0FB0 stays undecoded until then."
+  ],
+  "subregions": [
+    {
+      "name": "data_004E1000",
+      "file": "asm/original/rev0/lib/data_004E1000.s",
+      "chunk": 78,
+      "romStart": "0x004E1000",
+      "romEnd": "0x004E3140",
+      "bytes": 8512,
+      "class": "data",
+      "status": "raw-but-classified",
+      "note": "Section A AUDIO tail: continuation of the chunk-77 data_004E0CE8 flat 4-bit ADPCM/VADPCM audio span across 0x4E1000 (no zero gap at the seam). The LAST Section A audio, ending exactly at the Section A/B boundary 0x4E3140 (the Section B index-table header). Includes a short trailing silence/fragment before the boundary. raw-but-classified (audio sample payload)."
+    },
+    {
+      "name": "data_004E3140",
+      "file": "asm/original/rev0/lib/data_004E3140.s",
+      "chunk": 78,
+      "romStart": "0x004E3140",
+      "romEnd": "0x004E6988",
+      "bytes": 14408,
+      "class": "data",
+      "status": "raw-but-classified",
+      "note": "SECTION B INDEX TABLE (Section A/B boundary): a 24-byte header @0x4E3140 [u32-BE recordCount=0x706 (1798), 0x2E4, 0x102, 0, 0, 0xDC6A (=total payload length 56426)] + 1798 records @0x4E3158, each [u32-BE offset (base 0x4E3140; rec0 0x3848 -> 0x4E6988 = payload start), u32-BE 0x64 (constant attribute/flag)]. Offsets monotonic 0x3848..0xDC58; records index into the Section B payload. raw-but-classified (table SHAPE decoded; the 0x64 field meaning + per-entry payload semantics unresolved). Very low entropy ~2.5."
+    },
+    {
+      "name": "data_004E6988",
+      "file": "asm/original/rev0/lib/data_004E6988.s",
+      "chunk": 78,
+      "romStart": "0x004E6988",
+      "romEnd": "0x004F0FB0",
+      "bytes": 42536,
+      "class": "data",
+      "status": "undecoded",
+      "note": "SECTION B PAYLOAD (undecoded): 42,536 B of medium-entropy (~5.5) packed data indexed by the 0x4E3140 table (record offsets resolve here, base 0x4E3140). Format/schema UNKNOWN per the survey. raw-but-classified / undecoded."
+    },
+    {
+      "name": "data_004F0FB0",
+      "file": "asm/original/rev0/lib/data_004F0FB0.s",
+      "chunk": 78,
+      "romStart": "0x004F0FB0",
+      "romEnd": "0x004F1000",
+      "bytes": 80,
+      "class": "data",
+      "status": "raw-but-classified",
+      "note": "First cutscene AUDIO-SEQUENCE block HEAD (parser-backed): block 0 of the 63 contiguous cutscene music/SFX sequence blocks (0x4F0FB0..0x594280) per parent scripts/ob64_anim_block_catalog.json + tools/anim_block_codec.py (roundtrip_ok, gate-proven). Tag 0x00000215 @0x4F0FB0 (matches the catalog/survey). This is the HEAD only (80 B in chunk 78); the block continues past 0x4F1000 -> OUTGOING natural-unit continuation into chunk 79. raw-but-classified (parser-backed block; not chunk-locally decodable)."
+    }
+  ]
+}

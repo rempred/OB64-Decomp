@@ -3,7 +3,7 @@
   "profile": "us-rev0",
   "sourceReportPath": "build/original-mips/rev0-report.json",
   "outputDir": "asm/original/rev0",
-  "promotedChunks": 78,
+  "promotedChunks": 79,
   "codeRegion": {
     "start": "0x00001000",
     "endExclusive": "0x0063676C",
@@ -55453,6 +55453,53 @@
       ],
       "textBytes": 1275510,
       "sha256": "2EE0445ABA0D9FF011ACE1EBB48859C4B761B856F74E90A7C5171BC3FEDE2E03"
+    },
+    {
+      "file": "asm/original/rev0/code_004E1000_004F1000.s",
+      "romStart": "0x004E1000",
+      "romEndExclusive": "0x004F1000",
+      "bytes": 65536,
+      "sourceReportFile": "build/original-mips/rev0/code_004E1000_004F1000.s",
+      "parts": [
+        {
+          "name": "data_004E1000",
+          "file": "asm/original/rev0/lib/data_004E1000.s",
+          "romStart": "0x004E1000",
+          "romEndExclusive": "0x004E3140",
+          "bytes": 8512,
+          "textBytes": 165474,
+          "sha256": "0BFD231B11A3AFB1A02B2288FBAE7978C819B94F121EF58FBA2127A56C04D58D"
+        },
+        {
+          "name": "data_004E3140",
+          "file": "asm/original/rev0/lib/data_004E3140.s",
+          "romStart": "0x004E3140",
+          "romEndExclusive": "0x004E6988",
+          "bytes": 14408,
+          "textBytes": 284824,
+          "sha256": "B7C678616DC55480700899928FE8DEC036A37F800DDDC17D56EE67E5ABD83921"
+        },
+        {
+          "name": "data_004E6988",
+          "file": "asm/original/rev0/lib/data_004E6988.s",
+          "romStart": "0x004E6988",
+          "romEndExclusive": "0x004F0FB0",
+          "bytes": 42536,
+          "textBytes": 819997,
+          "sha256": "ADE7637DC4F473A0894A3D3F5EE5C2C168AFC600D5ACCFF54F483093ABE09E60"
+        },
+        {
+          "name": "data_004F0FB0",
+          "file": "asm/original/rev0/lib/data_004F0FB0.s",
+          "romStart": "0x004F0FB0",
+          "romEndExclusive": "0x004F1000",
+          "bytes": 80,
+          "textBytes": 2294,
+          "sha256": "10FC164A730F6339A19349D37D96197C5BBA8DFC68E988255B0CBFFBEF58CC1E"
+        }
+      ],
+      "textBytes": 1272589,
+      "sha256": "604AFC6C2ACD6C78E47C4C54E84754E9F23CD461E0CBF280B4BB56E10DE250BA"
     }
   ]
 }

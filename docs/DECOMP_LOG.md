@@ -24,11 +24,14 @@ and replace the active log with a compact current-state summary.
   `original_mips`. A static control-flow audit found no credible code edge into
   the tail (0 branch targets, 0 J/JAL to a known function). Audit:
   `tools/audit_code_region.js` / `docs/CODE_REGION_AUDIT.md`.
-- Current tracked code source mix: seventy-eight composite real-assembler chunks
-  (chunk 0 177 `boot/`; chunks 1–77 in `lib/`: 350, 216, 67, 376, 88, 78, 103, 87, 34, 35, 191, 74, 67, 94, 153, 95, 66, 95, 80, 175, 99, 99, 73, 63, 71, 96, 142, 97, 103, 122, 86, 198, 109, 120, 134, 164, 180, 232, 155, 159, 160, 171, 90, 17, 15, 17, 27, 9, 11, 13, 13, 13, 9, 9, 9, 7, 1, 5, 3, 3, 5, 5, 5, 7, 15, 8, 21, 33, 23, 19, 23, 21, 33, 13, 7, 7, 15) =
-  **6,065 tracked source files**, plus 22 generated fallback code chunks. **Chunks
-  0–77 (`0x00001000..0x004E1000`) are now fully source-owned as named code/data
-  parts** (chunks 68-77 = flat Section A AUDIO sample payload [0x441000..0x4E1000]: 194 parts [102 data +
+- Current tracked code source mix: seventy-nine composite real-assembler chunks
+  (chunk 0 177 `boot/`; chunks 1–78 in `lib/`: 350, 216, 67, 376, 88, 78, 103, 87, 34, 35, 191, 74, 67, 94, 153, 95, 66, 95, 80, 175, 99, 99, 73, 63, 71, 96, 142, 97, 103, 122, 86, 198, 109, 120, 134, 164, 180, 232, 155, 159, 160, 171, 90, 17, 15, 17, 27, 9, 11, 13, 13, 13, 9, 9, 9, 7, 1, 5, 3, 3, 5, 5, 5, 7, 15, 8, 21, 33, 23, 19, 23, 21, 33, 13, 7, 7, 15, 4) =
+  **6,069 tracked source files**, plus 21 generated fallback code chunks. **Chunks
+  0–78 (`0x00001000..0x004F1000`) are now fully source-owned as named code/data
+  parts** (chunk 78 crosses the **Section A/B boundary** [0x4E1000..0x4F1000]: 4 structural parts =
+  Section A audio tail + Section B index table [1798 records, shape decoded] + Section B payload
+  [undecoded] + the head of the first parser-backed cutscene audio-sequence block [tag 0x215];
+  chunk-78 bytes owned, Section B unit partial) (chunks 68-77 = flat Section A AUDIO sample payload [0x441000..0x4E1000]: 194 parts [102 data +
   92 zero_fill, 0 code], raw 4-bit ADPCM/VADPCM after the chunk-66/67 bank; whole-range entropy 7.309, no
   sub-bank header, 4 quiet-audio <6.0 windows confirmed NON-structural; 10-chunk batch stayed clean;
   outgoing data_004E0CE8 into chunk 78. The Section A/B boundary is byte-confirmed just past this run at
@@ -120,8 +123,8 @@ and replace the active log with a compact current-state summary.
   chunk 37: 170 normal code + 8 data + 2 function straddlers, MIXED - command-dispatcher
   mission-briefing/combat code + a 0x80x pointer/struct/float record-table DATA island
   [0x25E2BC..0x25EE90]);
-  next is chunk 78 (`0x004E1000`, still a
-  generated fallback chunk — short audio tail then the Section A/B boundary ~0x4E3158). The promote-tool merge blocker is FIXED.
+  next is chunk 79 (`0x004F1000`, still a
+  generated fallback chunk — Section B cutscene anim-block family, parser-backed). The promote-tool merge blocker is FIXED.
 - The parent boundary DB has TWO recurring defects, both fixed when splitting:
   (1) `end_rom` is INCLUSIVE (exclusive end = `end_rom + 4`; do NOT treat the
   delay slot as a gap — `tools/dump_function_context.js` now enforces this with a
@@ -555,16 +558,29 @@ Current named sequence:
   0x44DB22 byte-rejected (stream coord). 5-pass swarm: ownership `yes`, **10-chunk batch stayed clean (no
   fallback)**. Index `docs/data-index/rev0/section-a-flat-audio-00441000-004E1000-data-inventory.json` +
   dossier added. Outgoing `data_004E0CE8` into chunk 78. **Chunks 68-77 source-owned (flat Section A audio).**
-- Current remainder: none in chunks 0-77 (`0x1000..0x4E1000` fully source-owned;
-  evidenced executable MIPS `0x1000..0x2B89B4` 100% source-owned).
-  **Current frontier: `0x004E1000` (chunk 78).** Chunk 77 ended in DATA with an OUTGOING continuation
-  (`data_004E0CE8` flat audio runs to `0x4E1000`, no terminating zero-fill). NEXT is a SHORT TRANSITIONAL
-  unit, NOT a flat 10-chunk batch: only ~0x2000 of flat Section A audio remains (`0x4E1000..~0x4E3158`),
-  then the **Section A/B boundary** — byte-confirmed at ~0x4E3158 (short zero-fill then an 8-byte-stride
-  `(u32-BE offset, u32-BE 0x64)` index table = the survey Section-B table). First action: own the short
-  audio tail as flat data, then **PIVOT to PARSE Section B** as a real fixed-record index table (NOT
-  flat-tiled), cross-ref `ob64_anim_block_catalog.json` (first cutscene block 0x4F0FB0). The global
-  non-code tail `0x002B89B4..0x0063676C` remains a separate design.
+- Section A/B boundary + Section B index start `0x004E1000..0x004F1000` (focused 1-chunk natural-boundary
+  run; chunk 78; 4 structural data parts, 0 code). Crosses the **Section A/B boundary, byte-pinned at
+  `0x4E3140`**. Parts: (1) `data_004E1000` Section A AUDIO tail (continuation of `data_004E0CE8`, ends at
+  the boundary); (2) `data_004E3140` SECTION B INDEX TABLE — header [recordCount 0x706=1798, ..., 0xDC6A
+  payloadLen] + 1798 records [u32-BE offset, u32-BE 0x64], base 0x4E3140, table 0x4E3140..0x4E6988 (shape
+  DECODED; 0x64 = constant flag not length; records index 0x80-terminated event streams); (3)
+  `data_004E6988` SECTION B PAYLOAD (42,536 B, UNDECODED); (4) `data_004F0FB0` first cutscene
+  audio-sequence block HEAD (tag 0x215, size 0x30C0 -> ends 0x4F4070). **Accepted byte-verified ROM lead:**
+  parent `ob64_anim_block_catalog.json` block 0 @0x4F0FB0 (63 blocks 0x4F0FB0..0x594280, roundtrip_ok) +
+  `anim_block_codec.py` (cutscene music/SFX, Gate-proven). 0 jr$ra/0 prologues at all 4 alignments. 5-pass
+  swarm: chunk-78 bytes `yes`, Section B unit `partial`. Index
+  `docs/data-index/rev0/section-a-to-b-boundary-004E1000-004F1000-data-inventory.json` + dossier added.
+  Outgoing first-block continuation into chunk 79. **Chunk 78 source-owned (A/B boundary + Section B start).**
+- Current remainder: none in chunks 0-78 (`0x1000..0x4F1000` fully source-owned;
+  evidenced executable MIPS `0x1000..0x2B89B4` 100% source-owned). **Section A (0x301000..0x4E3140) fully
+  owned + classified AUDIO.**
+  **Current frontier: `0x004F1000` (chunk 79).** Chunk 78 ended with the first cutscene block HEAD
+  (outgoing into chunk 79; block size 0x30C0 -> ends 0x4F4070). First action next run: continue the
+  **Section B cutscene anim-block family** from `0x4F1000` — finish the first block body then the
+  contiguous 63-block run (`0x4F0FB0..0x594280`) as a PARSER-BACKED natural-block run
+  (`anim_block_codec.py`), preserving natural block boundaries (NOT flat tiling); settle the Section B
+  header-payloadLen-vs-anim-block interpretation gap. The global non-code tail `0x002B89B4..0x0063676C`
+  remains a separate design.
 
 Static dossiers live under `docs/dossiers/` and are the durable evidence notes
 for each promoted source-layout split.
@@ -1030,7 +1046,7 @@ the full quick index. The newest dossiers are:
 
 ## Next Frontier
 
-Chunks 0–77 (`0x00001000..0x004E1000`) are fully source-owned as named code/data
+Chunks 0–78 (`0x00001000..0x004F1000`) are fully source-owned as named code/data
 parts. Chunk 43 (90 parts) is the MIXED code→data transition chunk: the mission-briefing/
 scenario-overview overlay CODE region `0x2B1000..0x2B89B8` (incoming straddler-tail
 func_002B0E8C_chunk43tail; 62 parent functions + frameless leaves) then the evidenced code→data
@@ -1042,32 +1058,35 @@ non-code high-entropy asset data past the executable extent (0 jr$ra/0 prologues
 (`0x431000..0x441000`) closes that bank's WaveTables payload (ends 0x431EF1) + flat post-tail audio (21
 parts); chunks 68-77 (`0x441000..0x4E1000`) are flat Section A audio sample payload (194 parts). All
 CONFIRM Section A is AUDIO; the chunk-66+67 bank unit is `partial` (payload byte-bounded, addressing
-unmapped). Dossiers: `docs/dossiers/lib-chunk4{3,4,5,6,7}-*.md` +
+unmapped). Chunk 78 (`0x4E1000..0x4F1000`) crosses the **Section A/B boundary** (pinned 0x4E3140): Section
+A audio tail + Section B index table [1798 records, shape decoded] + Section B payload [undecoded] + first
+parser-backed cutscene-block head (4 parts). Dossiers: `docs/dossiers/lib-chunk4{3,4,5,6,7}-*.md` +
 `docs/dossiers/section-a-00301000-00341000-data-ownership.md` +
 `docs/dossiers/section-a-00341000-003E1000-data-ownership.md` +
 `docs/dossiers/section-a-003E1000-00421000-data-ownership.md` +
 `docs/dossiers/section-a-audio-bank-00421000-00431000-data-ownership.md` +
 `docs/dossiers/section-a-audio-bank-tail-00431000-00441000-data-ownership.md` +
-`docs/dossiers/section-a-flat-audio-00441000-004E1000-data-ownership.md`; data indexes
+`docs/dossiers/section-a-flat-audio-00441000-004E1000-data-ownership.md` +
+`docs/dossiers/section-a-to-b-boundary-004E1000-004F1000-data-ownership.md`; data indexes
 `docs/data-index/rev0/chunk4{3,4,5,6,7}-data-region-inventory.json` +
 `section-a-00301000-00341000-data-inventory.json` + `section-a-00341000-003E1000-data-inventory.json`
 + `section-a-003E1000-00421000-data-inventory.json` + `section-a-audio-bank-00421000-00431000-data-inventory.json`
-+ `section-a-audio-bank-tail-00431000-00441000-data-inventory.json` + `section-a-flat-audio-00441000-004E1000-data-inventory.json`.
++ `section-a-audio-bank-tail-00431000-00441000-data-inventory.json` + `section-a-flat-audio-00441000-004E1000-data-inventory.json`
++ `section-a-to-b-boundary-004E1000-004F1000-data-inventory.json`.
 
-Current frontier is **`0x004E1000` (chunk 78)**. The evidenced executable MIPS extent
+Current frontier is **`0x004F1000` (chunk 79)**. The evidenced executable MIPS extent
 `0x1000..0x2B89B4` (2,849,204 B) is **100.0000% source-owned**; total source-owned
-`0x1000..0x4E1000` (code+data) = 5,111,804 B (code-only = 2,444,548 B = 85.7977% of the
-extent; the rest are interior + chunk-43..47 + Section A data spans through 0x4E1000).
+`0x1000..0x4F1000` (code+data) = 5,177,340 B (code-only = 2,444,548 B = 85.7977% of the
+extent; the rest are interior + chunk-43..47 + Section A audio + the Section A/B boundary/Section B start).
 
-FIRST for the next run: chunks 68-77 flat audio are owned and the 10-chunk batch stayed clean. The next
-unit is SHORT/TRANSITIONAL (only ~0x2000 of flat Section A audio remains, `0x4E1000..~0x4E3158`), then
-the **Section A/B boundary** at ~0x4E3158 (an 8-byte-stride `(offset,0x64)` index table = the survey
-Section-B table). Own the short audio tail as flat data, then **PIVOT to PARSE Section B** as a real
-fixed-record index table (NOT flat-tiled), cross-ref `ob64_anim_block_catalog.json` (first cutscene block
-0x4F0FB0). NOTE: chunk 78 (`0x4E1000..0x4F1000`) crosses the A/B boundary — do not flat-tile past it.
+FIRST for the next run: chunk 78 is owned and the Section A/B boundary is pinned at 0x4E3140. The next
+unit is the **Section B cutscene anim-block family** (parser-backed, NOT a flat batch): from `0x4F1000`,
+finish the first block body then the contiguous 63-block run (`0x4F0FB0..0x594280`) via
+`anim_block_codec.py`, preserving natural block boundaries; settle the Section B header-payloadLen-vs-
+anim-block interpretation gap. **Section A (0x301000..0x4E3140) is fully owned + classified AUDIO.**
 
 There are now two active tracks. The library source-ownership track continues at
-`0x4E1000` (chunk 78) as above. The full-ROM coverage track (opened 2026-06-21)
+`0x4F1000` (chunk 79) as above. The full-ROM coverage track (opened 2026-06-21)
 next refines the exact code/data boundary near `0x002B89B4` and reclassifies the
 non-code tail `0x002B89B4..0x0063676C` from `original_mips` to a data source
 form, shrinking the configured code region to the executable extent while
