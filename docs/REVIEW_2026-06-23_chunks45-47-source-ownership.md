@@ -17,8 +17,7 @@ Final frontier: `0x00301000` (chunk 48). The evidenced executable MIPS extent
 - `0659c74` — `Source-own Rev0 chunk 46 (0x2E1000..0x2F1000) + advance current-state docs`.
 - `90b98dc` — `Source-own Rev0 chunk 47 (0x2F1000..0x301000) + advance current-state docs`.
 - `a9417a3` — `Add four-chunk default for proven data-only tail territory to run template`.
-- `Add chunks 45-47 review handoff` — this document, the run's final commit (its own hash is
-  recorded in the run's final report / bridge ping, and may be filled in here by the next run).
+- `e42eae7` — `Add chunks 45-47 review handoff` (this document, the run's final commit).
 
 ## Opening Fix (commit `5683a79`)
 
