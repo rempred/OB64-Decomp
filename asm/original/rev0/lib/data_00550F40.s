@@ -1,0 +1,59 @@
+/*
+ * Original Rev 0 MIPS reference split.
+ * Parent source: asm/original/rev0/code_00541000_00551000.s
+ * z64 range: 0x00550F40..0x00551000 exclusive
+ * Decode comments are aids, not proof of semantic function boundaries.
+ */
+.set noat
+.set noreorder
+.text
+
+/* Data region (not executable host code): Section B cutscene audio-sequence BLOCK 32 HEAD (continues into the next chunk) (block 0x00550F40..0x00552070, size 0x00001130; tag 0x215). Parser-backed: parent ob64_anim_block_catalog.json (63 contiguous blocks 0x4F0FB0..0x594280, roundtrip_ok) + tools/anim_block_codec.py (cutscene MUSIC/SFX sequences, Gate-2 proven). raw-but-classified (parser-backed container; opcode semantics conservative).. */
+/* 0x00550F40 0x805C0B40 0x00000215 */ .word 0x00000215 # special_0x15
+/* 0x00550F44 0x805C0B44 0x00000013 */ .word 0x00000013 # mtlo $zero
+/* 0x00550F48 0x805C0B48 0x00000010 */ .word 0x00000010 # mfhi $zero
+/* 0x00550F4C 0x805C0B4C 0x00000038 */ .word 0x00000038 # dsll $zero, $zero, 0
+/* 0x00550F50 0x805C0B50 0x00000084 */ .word 0x00000084 # sllv $zero, $zero, $zero
+/* 0x00550F54 0x805C0B54 0x000000D0 */ .word 0x000000D0 # mfhi $zero
+/* 0x00550F58 0x805C0B58 0x0000013C */ .word 0x0000013C # dsll32 $zero, $zero, 4
+/* 0x00550F5C 0x805C0B5C 0x0000013C */ .word 0x0000013C # dsll32 $zero, $zero, 4
+/* 0x00550F60 0x805C0B60 0x0000011C */ .word 0x0000011C # dmult $zero, $zero
+/* 0x00550F64 0x805C0B64 0x000001AD */ .word 0x000001AD # daddu $zero, $zero, $zero
+/* 0x00550F68 0x805C0B68 0x00000000 */ .word 0x00000000 # nop
+/* 0x00550F6C 0x805C0B6C 0x00000000 */ .word 0x00000000 # nop
+/* 0x00550F70 0x805C0B70 0x00000000 */ .word 0x00000000 # nop
+/* 0x00550F74 0x805C0B74 0x00000000 */ .word 0x00000000 # nop
+/* 0x00550F78 0x805C0B78 0x000001B7 */ .word 0x000001B7 # special_0x37
+/* 0x00550F7C 0x805C0B7C 0x00000339 */ .word 0x00000339 # special_0x39
+/* 0x00550F80 0x805C0B80 0x000004C5 */ .word 0x000004C5 # special_0x05
+/* 0x00550F84 0x805C0B84 0x000005D6 */ .word 0x000005D6 # dsrlv $zero, $zero, $zero
+/* 0x00550F88 0x805C0B88 0x000006EC */ .word 0x000006EC # dadd $zero, $zero, $zero
+/* 0x00550F8C 0x805C0B8C 0x0000081A */ .word 0x0000081A # div $zero, $zero
+/* 0x00550F90 0x805C0B90 0x00000958 */ .word 0x00000958 # mult $zero, $zero
+/* 0x00550F94 0x805C0B94 0x00000AAF */ .word 0x00000AAF # dsubu $at, $zero, $zero
+/* 0x00550F98 0x805C0B98 0x00000BE9 */ .word 0x00000BE9 # special_0x29
+/* 0x00550F9C 0x805C0B9C 0x00000CFC */ .word 0x00000CFC # dsll32 $at, $zero, 19
+/* 0x00550FA0 0x805C0BA0 0x00000DDA */ .word 0x00000DDA # div $zero, $zero
+/* 0x00550FA4 0x805C0BA4 0x00000EA1 */ .word 0x00000EA1 # move $at, $zero
+/* 0x00550FA8 0x805C0BA8 0x00000F46 */ .word 0x00000F46 # srlv $at, $zero, $zero
+/* 0x00550FAC 0x805C0BAC 0x00000FCC */ .word 0x00000FCC # syscall 0x0003F
+/* 0x00550FB0 0x805C0BB0 0x0000104E */ .word 0x0000104E # special_0x0E
+/* 0x00550FB4 0x805C0BB4 0x000010C1 */ .word 0x000010C1 # special_0x01
+/* 0x00550FB8 0x805C0BB8 0x000010DD */ .word 0x000010DD # dmultu $zero, $zero
+/* 0x00550FBC 0x805C0BBC 0x000010F9 */ .word 0x000010F9 # special_0x39
+/* 0x00550FC0 0x805C0BC0 0x00001112 */ .word 0x00001112 # mflo $v0
+/* 0x00550FC4 0x805C0BC4 0x00000174 */ .word 0x00000174 # teq $zero, $zero
+/* 0x00550FC8 0x805C0BC8 0x00000177 */ .word 0x00000177 # special_0x37
+/* 0x00550FCC 0x805C0BCC 0x0000017A */ .word 0x0000017A # dsrl $zero, $zero, 5
+/* 0x00550FD0 0x805C0BD0 0x0000017D */ .word 0x0000017D # special_0x3D
+/* 0x00550FD4 0x805C0BD4 0x00000180 */ .word 0x00000180 # sll $zero, $zero, 6
+/* 0x00550FD8 0x805C0BD8 0x00000183 */ .word 0x00000183 # sra $zero, $zero, 6
+/* 0x00550FDC 0x805C0BDC 0x00000186 */ .word 0x00000186 # srlv $zero, $zero, $zero
+/* 0x00550FE0 0x805C0BE0 0x00000189 */ .word 0x00000189 # jalr $zero, $zero
+/* 0x00550FE4 0x805C0BE4 0x0000018C */ .word 0x0000018C # syscall 0x00006
+/* 0x00550FE8 0x805C0BE8 0x0000018F */ .word 0x0000018F # sync
+/* 0x00550FEC 0x805C0BEC 0x00000192 */ .word 0x00000192 # mflo $zero
+/* 0x00550FF0 0x805C0BF0 0x00000195 */ .word 0x00000195 # special_0x15
+/* 0x00550FF4 0x805C0BF4 0x00000198 */ .word 0x00000198 # mult $zero, $zero
+/* 0x00550FF8 0x805C0BF8 0x0000019B */ .word 0x0000019B # divu $zero, $zero
+/* 0x00550FFC 0x805C0BFC 0x0000019E */ .word 0x0000019E # ddiv $zero, $zero

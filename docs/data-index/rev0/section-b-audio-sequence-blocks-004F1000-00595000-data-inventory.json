@@ -1,0 +1,1237 @@
+{
+  "schemaVersion": 1,
+  "dataUnit": "Section B cutscene audio-sequence blocks (chunks 79-88) — FALLBACK at 0x591000",
+  "dataUnitSlug": "section-b-audio-sequence-blocks-004F1000-00595000",
+  "generated": "2026-06-24",
+  "parentNaturalUnit": "Section B parser-backed cutscene audio-sequence block family (63 blocks 0x4F0FB0..0x594280). This run owns chunks 79-88 (0x4F1000..0x591000) = block 0 body + blocks 1-60 (whole) + block 61 head. The planned target was 0x595000 (block family + directory tail); FELL BACK to 0x591000 (chunk 88 end).",
+  "romRange": "0x004F1000..0x00591000",
+  "bytes": 655360,
+  "chunkCoverage": "chunks 79-88 (full); planned chunk 89 partial (0x591000..0x595000) DEFERRED",
+  "frontierBefore": "0x004F1000",
+  "frontierAfter": "0x00591000",
+  "fallback": {
+    "occurred": true,
+    "plannedFrontier": "0x00595000 (block family end 0x594280 + directory tail to 0x595000)",
+    "actualFrontier": "0x00591000 (chunk 88 end)",
+    "reason": "The block-family end (0x594280), the prompt fallback boundary (0x594280), and the B/C boundary (0x595000) are ALL mid-chunk-89 (the 64KB report chunk is 0x591000..0x5A1000). tools/assemble_original_mips.js requires every tracked manifest chunk to EXACTLY tile its 64KB source-report chunk (it throws if parts do not end exactly at the report-chunk end), and promote refuses partial overlaps — so a partial-interior chunk 89 (0x591000..0x595000) is NOT representable. Owning the WHOLE report chunk 89 (0x591000..0x5A1000) would require source-owning Section C bytes past 0x595000, which the prompt forbids (\"Do not claim any Section C bytes past 0x00595000\"). So 0x591000 (chunk 88 end) is the only pipeline-clean boundary <= 0x595000. This is a stop/fallback condition: \"source-owner manifest/tooling cannot safely represent the planned split\" + \"the directory tail needs a separate pass\".",
+    "deferred": "block 61 tail (0x591000..0x592490) + block 62 (0x592490..0x594280) + Section-B directory tail (0x594280..0x595000) = 0x591000..0x595000 (16,384 B), all in chunk 89."
+  },
+  "typeFamily": "Section B parser-backed cutscene AUDIO-SEQUENCE blocks (music/SFX sequences; not vector animation). Each block: header tag 0x00000215 @+0x00, channel count @+0x04, t1off/t2off/t2end command/init tables; per-channel command/event streams. raw-but-classified (parser-backed container; opcode semantics conservative).",
+  "status": "raw-but-classified",
+  "confidence": "high (parser-backed byte-verified block container; data-only) / medium (per-opcode event-stream semantics)",
+  "byteSplit": {
+    "raw_but_classified_data": 655360,
+    "parsed_zero_fill": 0,
+    "undecoded": 0
+  },
+  "partCount": 71,
+  "blockCatalog": {
+    "source": "parent scripts/ob64_anim_block_catalog.json (true ROM-offset catalog)",
+    "region": "first 0x4F0FB0, last 0x592490, count 63, contiguous=true, family end 0x594280",
+    "totalFamilyBytes": 668368,
+    "ownedThisRun": "block 0 body (0x4F1000..0x4F4070; head was chunk 78) + blocks 1-60 (whole) + block 61 head (0x5908D0..0x591000)",
+    "verified": "all 63 block starts have tag 0x00000215; block[i].off+size == block[i+1].off (0 contiguity breaks); family end 0x594280 byte-confirmed."
+  },
+  "blockBoundarySummary": [
+    {
+      "block": 1,
+      "start": "0x004F4070",
+      "end": "0x004F7AC0",
+      "size": "0x00003A50"
+    },
+    {
+      "block": 2,
+      "start": "0x004F7AC0",
+      "end": "0x004FA220",
+      "size": "0x00002760"
+    },
+    {
+      "block": 3,
+      "start": "0x004FA220",
+      "end": "0x004FB050",
+      "size": "0x00000E30"
+    },
+    {
+      "block": 4,
+      "start": "0x004FB050",
+      "end": "0x004FBD90",
+      "size": "0x00000D40"
+    },
+    {
+      "block": 5,
+      "start": "0x004FBD90",
+      "end": "0x004FC940",
+      "size": "0x00000BB0"
+    },
+    {
+      "block": 6,
+      "start": "0x004FC940",
+      "end": "0x004FDC50",
+      "size": "0x00001310"
+    },
+    {
+      "block": 7,
+      "start": "0x004FDC50",
+      "end": "0x004FF270",
+      "size": "0x00001620"
+    },
+    {
+      "block": 8,
+      "start": "0x004FF270",
+      "end": "0x004FFC70",
+      "size": "0x00000A00"
+    },
+    {
+      "block": 9,
+      "start": "0x004FFC70",
+      "end": "0x00500770",
+      "size": "0x00000B00"
+    },
+    {
+      "block": 10,
+      "start": "0x00500770",
+      "end": "0x005021B0",
+      "size": "0x00001A40"
+    },
+    {
+      "block": 11,
+      "start": "0x005021B0",
+      "end": "0x00505640",
+      "size": "0x00003490"
+    },
+    {
+      "block": 12,
+      "start": "0x00505640",
+      "end": "0x00506730",
+      "size": "0x000010F0"
+    },
+    {
+      "block": 13,
+      "start": "0x00506730",
+      "end": "0x00510DB0",
+      "size": "0x0000A680"
+    },
+    {
+      "block": 14,
+      "start": "0x00510DB0",
+      "end": "0x00514FE0",
+      "size": "0x00004230"
+    },
+    {
+      "block": 15,
+      "start": "0x00514FE0",
+      "end": "0x0051A830",
+      "size": "0x00005850"
+    },
+    {
+      "block": 16,
+      "start": "0x0051A830",
+      "end": "0x005204B0",
+      "size": "0x00005C80"
+    },
+    {
+      "block": 17,
+      "start": "0x005204B0",
+      "end": "0x005249D0",
+      "size": "0x00004520"
+    },
+    {
+      "block": 18,
+      "start": "0x005249D0",
+      "end": "0x0052A360",
+      "size": "0x00005990"
+    },
+    {
+      "block": 19,
+      "start": "0x0052A360",
+      "end": "0x0052E870",
+      "size": "0x00004510"
+    },
+    {
+      "block": 20,
+      "start": "0x0052E870",
+      "end": "0x00531A70",
+      "size": "0x00003200"
+    },
+    {
+      "block": 21,
+      "start": "0x00531A70",
+      "end": "0x00535EB0",
+      "size": "0x00004440"
+    },
+    {
+      "block": 22,
+      "start": "0x00535EB0",
+      "end": "0x0053A350",
+      "size": "0x000044A0"
+    },
+    {
+      "block": 23,
+      "start": "0x0053A350",
+      "end": "0x0053EA20",
+      "size": "0x000046D0"
+    },
+    {
+      "block": 24,
+      "start": "0x0053EA20",
+      "end": "0x00543A50",
+      "size": "0x00005030"
+    },
+    {
+      "block": 25,
+      "start": "0x00543A50",
+      "end": "0x00546150",
+      "size": "0x00002700"
+    },
+    {
+      "block": 26,
+      "start": "0x00546150",
+      "end": "0x00549300",
+      "size": "0x000031B0"
+    },
+    {
+      "block": 27,
+      "start": "0x00549300",
+      "end": "0x0054CB30",
+      "size": "0x00003830"
+    },
+    {
+      "block": 28,
+      "start": "0x0054CB30",
+      "end": "0x0054F980",
+      "size": "0x00002E50"
+    },
+    {
+      "block": 29,
+      "start": "0x0054F980",
+      "end": "0x0054FDE0",
+      "size": "0x00000460"
+    },
+    {
+      "block": 30,
+      "start": "0x0054FDE0",
+      "end": "0x00550270",
+      "size": "0x00000490"
+    },
+    {
+      "block": 31,
+      "start": "0x00550270",
+      "end": "0x00550F40",
+      "size": "0x00000CD0"
+    },
+    {
+      "block": 32,
+      "start": "0x00550F40",
+      "end": "0x00552070",
+      "size": "0x00001130"
+    },
+    {
+      "block": 33,
+      "start": "0x00552070",
+      "end": "0x00555810",
+      "size": "0x000037A0"
+    },
+    {
+      "block": 34,
+      "start": "0x00555810",
+      "end": "0x00557040",
+      "size": "0x00001830"
+    },
+    {
+      "block": 35,
+      "start": "0x00557040",
+      "end": "0x00559B70",
+      "size": "0x00002B30"
+    },
+    {
+      "block": 36,
+      "start": "0x00559B70",
+      "end": "0x0055A4E0",
+      "size": "0x00000970"
+    },
+    {
+      "block": 37,
+      "start": "0x0055A4E0",
+      "end": "0x0055C070",
+      "size": "0x00001B90"
+    },
+    {
+      "block": 38,
+      "start": "0x0055C070",
+      "end": "0x0055E300",
+      "size": "0x00002290"
+    },
+    {
+      "block": 39,
+      "start": "0x0055E300",
+      "end": "0x00560690",
+      "size": "0x00002390"
+    },
+    {
+      "block": 40,
+      "start": "0x00560690",
+      "end": "0x005625B0",
+      "size": "0x00001F20"
+    },
+    {
+      "block": 41,
+      "start": "0x005625B0",
+      "end": "0x00566D80",
+      "size": "0x000047D0"
+    },
+    {
+      "block": 42,
+      "start": "0x00566D80",
+      "end": "0x00567930",
+      "size": "0x00000BB0"
+    },
+    {
+      "block": 43,
+      "start": "0x00567930",
+      "end": "0x00568FC0",
+      "size": "0x00001690"
+    },
+    {
+      "block": 44,
+      "start": "0x00568FC0",
+      "end": "0x0056AB10",
+      "size": "0x00001B50"
+    },
+    {
+      "block": 45,
+      "start": "0x0056AB10",
+      "end": "0x0056DC60",
+      "size": "0x00003150"
+    },
+    {
+      "block": 46,
+      "start": "0x0056DC60",
+      "end": "0x0056EB40",
+      "size": "0x00000EE0"
+    },
+    {
+      "block": 47,
+      "start": "0x0056EB40",
+      "end": "0x00570A80",
+      "size": "0x00001F40"
+    },
+    {
+      "block": 48,
+      "start": "0x00570A80",
+      "end": "0x00570BB0",
+      "size": "0x00000130"
+    },
+    {
+      "block": 49,
+      "start": "0x00570BB0",
+      "end": "0x00570D20",
+      "size": "0x00000170"
+    },
+    {
+      "block": 50,
+      "start": "0x00570D20",
+      "end": "0x005794E0",
+      "size": "0x000087C0"
+    },
+    {
+      "block": 51,
+      "start": "0x005794E0",
+      "end": "0x0057BF10",
+      "size": "0x00002A30"
+    },
+    {
+      "block": 52,
+      "start": "0x0057BF10",
+      "end": "0x0057D5A0",
+      "size": "0x00001690"
+    },
+    {
+      "block": 53,
+      "start": "0x0057D5A0",
+      "end": "0x00584090",
+      "size": "0x00006AF0"
+    },
+    {
+      "block": 54,
+      "start": "0x00584090",
+      "end": "0x0058A4A0",
+      "size": "0x00006410"
+    },
+    {
+      "block": 55,
+      "start": "0x0058A4A0",
+      "end": "0x0058B110",
+      "size": "0x00000C70"
+    },
+    {
+      "block": 56,
+      "start": "0x0058B110",
+      "end": "0x0058C400",
+      "size": "0x000012F0"
+    },
+    {
+      "block": 57,
+      "start": "0x0058C400",
+      "end": "0x0058DA80",
+      "size": "0x00001680"
+    },
+    {
+      "block": 58,
+      "start": "0x0058DA80",
+      "end": "0x0058EF00",
+      "size": "0x00001480"
+    },
+    {
+      "block": 59,
+      "start": "0x0058EF00",
+      "end": "0x0058F700",
+      "size": "0x00000800"
+    },
+    {
+      "block": 60,
+      "start": "0x0058F700",
+      "end": "0x005908D0",
+      "size": "0x000011D0"
+    },
+    {
+      "block": 61,
+      "start": "0x005908D0",
+      "end": "0x00592490",
+      "size": "0x00001BC0"
+    }
+  ],
+  "parserEvidence": "Byte-verified by a 5-pass swarm against the ROM + parent catalog + codec: all 63 block starts have tag 0x00000215 (0 exceptions); all header invariants hold (tag@+0x00, nch@+0x04, t1off@+0x0C=0x38, t2off@+0x10=t1off+nch*4, t2end@+0x14=t2off+nch*4, nch matches catalog); perfect contiguity (block[i].off+size==block[i+1].off, 0 gaps); family end 0x594280. Owned-span exact: block 0 body (0x4F1000..0x4F4070, head was chunk 78) + blocks 1-60 whole + block 61 head (0x5908D0..0x591000). Stream bodies carry the cutscene MUSIC/SFX grammar (track-start 95 ff 99 60 / 0x96 end-of-track). Container model parser-backed (anim_block_codec.py, byte-identical roundtrip); per-channel event-opcode semantics kept conservative (carried verbatim, not decoded).",
+  "dumperEvidence": "parent tools/anim_block_codec.py (byte-identical container roundtrip, roundtrip_ok per the catalog), parse_anim_block.py, patch_anim_block.py.",
+  "catalogEvidence": "ACCEPTED byte-verified ROM lead (anyAcceptedRomLead=true, catalogMatch=true): parent scripts/ob64_anim_block_catalog.json (region.first 0x4F0FB0, count 63, contiguous, region 0x4F0FB0..0x594280) matches the ROM exactly — all 63 starts tag 0x215, all boundaries tile. tools/anim_block_codec.py roundtrips all 63 blocks byte-identical (scan_region + verify_block on the documented cutscene blocks 0x550F40/0x555810 re-emit byte-identical). REJECTED: 5 in-range ob64_4a_audit gapOffsets (0x4F6E10/0x503928/0x510804/0x564892/0x584DFE) + 1 ob64_4f_audit (0x51BCDC) are decompressed-7MB-stream coords (base 0x20248C2) — read as ROM offsets they land mid-block with no 0x215 tag; byte-rejected. Range precedes the first LHA archive (0x636784).",
+  "editorEvidence": "none (no editor loader reads these blocks by offset)",
+  "modderResourceEvidence": "none",
+  "runtimeEvidence": "none this run (codec Gate-2 in-game proof exists historically: blanking tracks stopped cutscene sound while animation continued — supports the audio-sequence classification, needs-runtime to re-verify)",
+  "hiddenCodeRisk": {
+    "result": "none — data-only safe",
+    "evidence": "0 jr$ra / 0 prologues / 0 epilogues / 0 lw $ra / 0 sw $ra at ALL 4 byte alignments AND byte-agnostic (0 jr$ra / 0 jalr$ra / 0 negative-imm sp-prologues at any offset) across 655,360 B. Quantitative contrast: the known code region 0x1000..0x100000 has 2105 jr$ra + 1286 prologues; this comparable-size region has 0/0. Only 4 runs of >=4 consecutive 0x80xxxxxx words exist, all INSIDE per-channel audio-event stream bodies (high byte coincidentally 0x80; not aligned pointers/jump tables). Stream bodies carry the cutscene MUSIC/SFX grammar (95 ff 99 60 track-start / 0x96 end-of-track). Deterministic scan + independent adversary + ownership re-derivation from the raw z64 baserom."
+  },
+  "decodedContainerSchema": {
+    "block": "header +0x00 tag 0x00000215 (constant), +0x04 channel count, +0x0C t1off (==header length), t2off/t2end define table boundaries; table1 = per-channel command-stream starts; table2 = per-channel interstitial/init pointers; then per-channel command/event streams. Container model is parser-backed (anim_block_codec.py) and byte-identical roundtrip; opcode/event semantics kept conservative (not decoded here).",
+    "note": "Block bodies owned byte-exact as raw-but-classified parser-backed parts at natural block boundaries; the codec container is the provenance."
+  },
+  "incomingContinuation": "chunk 78 data_004F0FB0 (block 0 head, 0x4F0FB0..0x4F1000) -> data_004F1000 (block 0 body); seamless mid-block continuation across 0x4F1000.",
+  "outgoingContinuation": "block 61 head (0x5908D0..0x591000) -> block 61 tail (0x591000..0x592490) in chunk 89; the family continues (block 62 to 0x594280) then the directory tail to 0x595000. DEFERRED to the chunk-89 run.",
+  "sectionBDirectory": {
+    "romRange": "0x00594280..0x00595000 (DEFERRED, in chunk 89)",
+    "bytes": 3456,
+    "observation": "A 65-entry u32-BE offset table @0x594280 (table proper 0x594280..0x594384, 0x104 B): a 3-word prelude (0x64C2, 0x140, 0x148) then a largely-monotonic offset list 0x63DC..0x27C5F4 with a few repeated/shared entries (0xC9A42 x3, 0xEECD0 reused). The max offset 0x27C5F4 (~2.6 MB) EXCEEDS the raw-ROM Section C span, so the offsets index a DECOMPRESSED asset space — conservatively a directory indexing the Section C packed pool. Corroborated by the codec doc (\"65-entry u32 asset table at 0x594280 ... NOT animation data\"). NOTE: after 0x594384 there is a short zero gap then MORE non-zero directory/asset content running to ~0x594FFF (NOT zero-padding); then the Section C packed pool begins ~0x595000. Full semantics UNPROVEN. Not owned this run."
+  },
+  "sectionBCBoundary": {
+    "offset": "~0x00595000 (conservative; the run does not reach or cross it)",
+    "note": "The survey places Section C start ~0x595000; bytes are high-entropy on both sides of 0x595000 (no obvious zero/marker boundary), so the exact B/C boundary is unconfirmed and DEFERRED. Do not cross 0x595000 without a new prompt."
+  },
+  "payloadExtentInterpretationGap": "The chunk-78 Section B index-table header payloadLen 0xDC6A implies a logical extent to 0x4E3140+0xDC6A = 0x4F45F2, which falls inside the block-0/block-1 region (block 0 ends 0x4F4070, block 1 0x4F4070..). Whether the Section B index table logically spans into the audio-sequence-block region or its indexed payload ends at the LUT (~0x4F0FB0) remains UNRESOLVED (carried from chunk 78). The block family is independently parser-backed regardless.",
+  "unresolvedFields": [
+    "per-opcode/event-stream semantics within each block (kept conservative; container is parser-backed but event opcodes not decoded here)",
+    "the Section-B directory tail schema (0x594280..0x595000; offset table indexing what — Section C packed pool?) — DEFERRED",
+    "the exact Section B/C boundary (~0x595000) — DEFERRED",
+    "the chunk-78 payloadLen-vs-block-region interpretation gap"
+  ],
+  "rejectedLeads": [
+    {
+      "artifact": "scripts/ob64_4a_audit.json / ob64_4f_audit.json gapOffsets",
+      "reason": "decompressed-7MB-LZSS-stream coords (base 0x20248C2), NOT ROM.",
+      "confidence": "high"
+    },
+    {
+      "artifact": "scripts/ob64_audio_region_analysis.js",
+      "reason": "targets the later BGM envelope 0x925483..; comparison/rule-out only.",
+      "confidence": "high"
+    }
+  ],
+  "batchSizeFinding": "This was a parser-backed natural-block run (NOT flat tiling): parts cut at the 63-block catalog boundaries (+ chunk seams). The run FELL BACK at 0x591000 because the natural unit (block family end 0x594280 + directory 0x595000) lands mid-chunk-89, which the 64KB-report-chunk assemble pipeline cannot partially represent without owning forbidden Section C. RECOMMENDATION: the next run should own chunk 89 (block 61 tail + block 62 + directory + the B/C boundary) — likely requires a partial-interior-chunk pipeline enhancement, OR a combined Section B-tail + Section C-start run that ends at a 64KB chunk boundary (0x5A1000) once Section C is in scope.",
+  "ownershipAssessment": "yes (chunks 79-88, 0x4F1000..0x591000) — all 655,360 bytes byte-exact tracked as 71 parser-backed block parts under asm/original/rev0/lib/, at natural catalog block boundaries, independently verified by a 5-pass swarm (hidden-code data-only-safe at all alignments + byte-agnostic; parser all-63-blocks-tag-0x215 + contiguity + owned-span exact; parent anim_block_catalog byte-verified ROM lead + codec roundtrip; QA 71 parts contiguous/word-aligned/boundaries-match-catalog, 0 problems; ownership reviewer yes). Owns block 0 body + blocks 1-60 whole + block 61 head. FALLBACK at 0x591000 endorsed (the family end 0x594280 + B/C boundary 0x595000 are mid-chunk-89, not pipeline-representable without forbidden Section C). The block family is owned as a parser-backed CONTAINER (byte-exact); per-channel event-opcode semantics are conservative (carried verbatim).",
+  "recommendedFollowups": [
+    "Chunk-89 run: own block 61 tail (0x591000..0x592490) + block 62 (0x592490..0x594280) + the Section-B directory tail (0x594280..0x595000), then pin the Section B/C boundary and start Section C. Note: 0x594280/0x595000 are mid-chunk-89 — either enhance the pipeline for partial-interior chunks, or extend the run to the 0x5A1000 chunk boundary (owning the start of Section C).",
+    "Decode the Section-B directory-tail offset table (does it index the Section C packed pool?).",
+    "Optionally decode the per-block event-stream opcode semantics (parser/runtime follow-up)."
+  ],
+  "subregions": [
+    {
+      "name": "data_004F1000",
+      "file": "asm/original/rev0/lib/data_004F1000.s",
+      "chunk": 79,
+      "romStart": "0x004F1000",
+      "romEnd": "0x004F4070",
+      "bytes": 12400,
+      "class": "data",
+      "status": "raw-but-classified",
+      "note": "Section B cutscene audio-sequence BLOCK 0 body: continuation of the chunk-78 data_004F0FB0 head across 0x4F1000 (the block runs 0x004F0FB0..0x004F4070, size 0x000030C0). Parser-backed (parent ob64_anim_block_catalog.json block 0; tag 0x215, cutscene MUSIC/SFX sequence per tools/anim_block_codec.py). raw-but-classified (parser-backed container; opcode semantics conservative)."
+    },
+    {
+      "name": "data_004F4070",
+      "file": "asm/original/rev0/lib/data_004F4070.s",
+      "chunk": 79,
+      "romStart": "0x004F4070",
+      "romEnd": "0x004F7AC0",
+      "bytes": 14928,
+      "class": "data",
+      "status": "raw-but-classified",
+      "note": "Section B cutscene audio-sequence BLOCK 1 whole block (block 0x004F4070..0x004F7AC0, size 0x00003A50; tag 0x215). Parser-backed: parent ob64_anim_block_catalog.json (63 contiguous blocks 0x4F0FB0..0x594280, roundtrip_ok) + tools/anim_block_codec.py (cutscene MUSIC/SFX sequences, Gate-2 proven). raw-but-classified (parser-backed container; opcode semantics conservative)."
+    },
+    {
+      "name": "data_004F7AC0",
+      "file": "asm/original/rev0/lib/data_004F7AC0.s",
+      "chunk": 79,
+      "romStart": "0x004F7AC0",
+      "romEnd": "0x004FA220",
+      "bytes": 10080,
+      "class": "data",
+      "status": "raw-but-classified",
+      "note": "Section B cutscene audio-sequence BLOCK 2 whole block (block 0x004F7AC0..0x004FA220, size 0x00002760; tag 0x215). Parser-backed: parent ob64_anim_block_catalog.json (63 contiguous blocks 0x4F0FB0..0x594280, roundtrip_ok) + tools/anim_block_codec.py (cutscene MUSIC/SFX sequences, Gate-2 proven). raw-but-classified (parser-backed container; opcode semantics conservative)."
+    },
+    {
+      "name": "data_004FA220",
+      "file": "asm/original/rev0/lib/data_004FA220.s",
+      "chunk": 79,
+      "romStart": "0x004FA220",
+      "romEnd": "0x004FB050",
+      "bytes": 3632,
+      "class": "data",
+      "status": "raw-but-classified",
+      "note": "Section B cutscene audio-sequence BLOCK 3 whole block (block 0x004FA220..0x004FB050, size 0x00000E30; tag 0x215). Parser-backed: parent ob64_anim_block_catalog.json (63 contiguous blocks 0x4F0FB0..0x594280, roundtrip_ok) + tools/anim_block_codec.py (cutscene MUSIC/SFX sequences, Gate-2 proven). raw-but-classified (parser-backed container; opcode semantics conservative)."
+    },
+    {
+      "name": "data_004FB050",
+      "file": "asm/original/rev0/lib/data_004FB050.s",
+      "chunk": 79,
+      "romStart": "0x004FB050",
+      "romEnd": "0x004FBD90",
+      "bytes": 3392,
+      "class": "data",
+      "status": "raw-but-classified",
+      "note": "Section B cutscene audio-sequence BLOCK 4 whole block (block 0x004FB050..0x004FBD90, size 0x00000D40; tag 0x215). Parser-backed: parent ob64_anim_block_catalog.json (63 contiguous blocks 0x4F0FB0..0x594280, roundtrip_ok) + tools/anim_block_codec.py (cutscene MUSIC/SFX sequences, Gate-2 proven). raw-but-classified (parser-backed container; opcode semantics conservative)."
+    },
+    {
+      "name": "data_004FBD90",
+      "file": "asm/original/rev0/lib/data_004FBD90.s",
+      "chunk": 79,
+      "romStart": "0x004FBD90",
+      "romEnd": "0x004FC940",
+      "bytes": 2992,
+      "class": "data",
+      "status": "raw-but-classified",
+      "note": "Section B cutscene audio-sequence BLOCK 5 whole block (block 0x004FBD90..0x004FC940, size 0x00000BB0; tag 0x215). Parser-backed: parent ob64_anim_block_catalog.json (63 contiguous blocks 0x4F0FB0..0x594280, roundtrip_ok) + tools/anim_block_codec.py (cutscene MUSIC/SFX sequences, Gate-2 proven). raw-but-classified (parser-backed container; opcode semantics conservative)."
+    },
+    {
+      "name": "data_004FC940",
+      "file": "asm/original/rev0/lib/data_004FC940.s",
+      "chunk": 79,
+      "romStart": "0x004FC940",
+      "romEnd": "0x004FDC50",
+      "bytes": 4880,
+      "class": "data",
+      "status": "raw-but-classified",
+      "note": "Section B cutscene audio-sequence BLOCK 6 whole block (block 0x004FC940..0x004FDC50, size 0x00001310; tag 0x215). Parser-backed: parent ob64_anim_block_catalog.json (63 contiguous blocks 0x4F0FB0..0x594280, roundtrip_ok) + tools/anim_block_codec.py (cutscene MUSIC/SFX sequences, Gate-2 proven). raw-but-classified (parser-backed container; opcode semantics conservative)."
+    },
+    {
+      "name": "data_004FDC50",
+      "file": "asm/original/rev0/lib/data_004FDC50.s",
+      "chunk": 79,
+      "romStart": "0x004FDC50",
+      "romEnd": "0x004FF270",
+      "bytes": 5664,
+      "class": "data",
+      "status": "raw-but-classified",
+      "note": "Section B cutscene audio-sequence BLOCK 7 whole block (block 0x004FDC50..0x004FF270, size 0x00001620; tag 0x215). Parser-backed: parent ob64_anim_block_catalog.json (63 contiguous blocks 0x4F0FB0..0x594280, roundtrip_ok) + tools/anim_block_codec.py (cutscene MUSIC/SFX sequences, Gate-2 proven). raw-but-classified (parser-backed container; opcode semantics conservative)."
+    },
+    {
+      "name": "data_004FF270",
+      "file": "asm/original/rev0/lib/data_004FF270.s",
+      "chunk": 79,
+      "romStart": "0x004FF270",
+      "romEnd": "0x004FFC70",
+      "bytes": 2560,
+      "class": "data",
+      "status": "raw-but-classified",
+      "note": "Section B cutscene audio-sequence BLOCK 8 whole block (block 0x004FF270..0x004FFC70, size 0x00000A00; tag 0x215). Parser-backed: parent ob64_anim_block_catalog.json (63 contiguous blocks 0x4F0FB0..0x594280, roundtrip_ok) + tools/anim_block_codec.py (cutscene MUSIC/SFX sequences, Gate-2 proven). raw-but-classified (parser-backed container; opcode semantics conservative)."
+    },
+    {
+      "name": "data_004FFC70",
+      "file": "asm/original/rev0/lib/data_004FFC70.s",
+      "chunk": 79,
+      "romStart": "0x004FFC70",
+      "romEnd": "0x00500770",
+      "bytes": 2816,
+      "class": "data",
+      "status": "raw-but-classified",
+      "note": "Section B cutscene audio-sequence BLOCK 9 whole block (block 0x004FFC70..0x00500770, size 0x00000B00; tag 0x215). Parser-backed: parent ob64_anim_block_catalog.json (63 contiguous blocks 0x4F0FB0..0x594280, roundtrip_ok) + tools/anim_block_codec.py (cutscene MUSIC/SFX sequences, Gate-2 proven). raw-but-classified (parser-backed container; opcode semantics conservative)."
+    },
+    {
+      "name": "data_00500770",
+      "file": "asm/original/rev0/lib/data_00500770.s",
+      "chunk": 79,
+      "romStart": "0x00500770",
+      "romEnd": "0x00501000",
+      "bytes": 2192,
+      "class": "data",
+      "status": "raw-but-classified",
+      "note": "Section B cutscene audio-sequence BLOCK 10 HEAD (continues into the next chunk) (block 0x00500770..0x005021B0, size 0x00001A40; tag 0x215). Parser-backed: parent ob64_anim_block_catalog.json (63 contiguous blocks 0x4F0FB0..0x594280, roundtrip_ok) + tools/anim_block_codec.py (cutscene MUSIC/SFX sequences, Gate-2 proven). raw-but-classified (parser-backed container; opcode semantics conservative)."
+    },
+    {
+      "name": "data_00501000",
+      "file": "asm/original/rev0/lib/data_00501000.s",
+      "chunk": 80,
+      "romStart": "0x00501000",
+      "romEnd": "0x005021B0",
+      "bytes": 4528,
+      "class": "data",
+      "status": "raw-but-classified",
+      "note": "Section B cutscene audio-sequence BLOCK 10 TAIL (completes a block whose head is in the previous chunk) (block 0x00500770..0x005021B0, size 0x00001A40; tag 0x215). Parser-backed: parent ob64_anim_block_catalog.json (63 contiguous blocks 0x4F0FB0..0x594280, roundtrip_ok) + tools/anim_block_codec.py (cutscene MUSIC/SFX sequences, Gate-2 proven). raw-but-classified (parser-backed container; opcode semantics conservative)."
+    },
+    {
+      "name": "data_005021B0",
+      "file": "asm/original/rev0/lib/data_005021B0.s",
+      "chunk": 80,
+      "romStart": "0x005021B0",
+      "romEnd": "0x00505640",
+      "bytes": 13456,
+      "class": "data",
+      "status": "raw-but-classified",
+      "note": "Section B cutscene audio-sequence BLOCK 11 whole block (block 0x005021B0..0x00505640, size 0x00003490; tag 0x215). Parser-backed: parent ob64_anim_block_catalog.json (63 contiguous blocks 0x4F0FB0..0x594280, roundtrip_ok) + tools/anim_block_codec.py (cutscene MUSIC/SFX sequences, Gate-2 proven). raw-but-classified (parser-backed container; opcode semantics conservative)."
+    },
+    {
+      "name": "data_00505640",
+      "file": "asm/original/rev0/lib/data_00505640.s",
+      "chunk": 80,
+      "romStart": "0x00505640",
+      "romEnd": "0x00506730",
+      "bytes": 4336,
+      "class": "data",
+      "status": "raw-but-classified",
+      "note": "Section B cutscene audio-sequence BLOCK 12 whole block (block 0x00505640..0x00506730, size 0x000010F0; tag 0x215). Parser-backed: parent ob64_anim_block_catalog.json (63 contiguous blocks 0x4F0FB0..0x594280, roundtrip_ok) + tools/anim_block_codec.py (cutscene MUSIC/SFX sequences, Gate-2 proven). raw-but-classified (parser-backed container; opcode semantics conservative)."
+    },
+    {
+      "name": "data_00506730",
+      "file": "asm/original/rev0/lib/data_00506730.s",
+      "chunk": 80,
+      "romStart": "0x00506730",
+      "romEnd": "0x00510DB0",
+      "bytes": 42624,
+      "class": "data",
+      "status": "raw-but-classified",
+      "note": "Section B cutscene audio-sequence BLOCK 13 whole block (block 0x00506730..0x00510DB0, size 0x0000A680; tag 0x215). Parser-backed: parent ob64_anim_block_catalog.json (63 contiguous blocks 0x4F0FB0..0x594280, roundtrip_ok) + tools/anim_block_codec.py (cutscene MUSIC/SFX sequences, Gate-2 proven). raw-but-classified (parser-backed container; opcode semantics conservative)."
+    },
+    {
+      "name": "data_00510DB0",
+      "file": "asm/original/rev0/lib/data_00510DB0.s",
+      "chunk": 80,
+      "romStart": "0x00510DB0",
+      "romEnd": "0x00511000",
+      "bytes": 592,
+      "class": "data",
+      "status": "raw-but-classified",
+      "note": "Section B cutscene audio-sequence BLOCK 14 HEAD (continues into the next chunk) (block 0x00510DB0..0x00514FE0, size 0x00004230; tag 0x215). Parser-backed: parent ob64_anim_block_catalog.json (63 contiguous blocks 0x4F0FB0..0x594280, roundtrip_ok) + tools/anim_block_codec.py (cutscene MUSIC/SFX sequences, Gate-2 proven). raw-but-classified (parser-backed container; opcode semantics conservative)."
+    },
+    {
+      "name": "data_00511000",
+      "file": "asm/original/rev0/lib/data_00511000.s",
+      "chunk": 81,
+      "romStart": "0x00511000",
+      "romEnd": "0x00514FE0",
+      "bytes": 16352,
+      "class": "data",
+      "status": "raw-but-classified",
+      "note": "Section B cutscene audio-sequence BLOCK 14 TAIL (completes a block whose head is in the previous chunk) (block 0x00510DB0..0x00514FE0, size 0x00004230; tag 0x215). Parser-backed: parent ob64_anim_block_catalog.json (63 contiguous blocks 0x4F0FB0..0x594280, roundtrip_ok) + tools/anim_block_codec.py (cutscene MUSIC/SFX sequences, Gate-2 proven). raw-but-classified (parser-backed container; opcode semantics conservative)."
+    },
+    {
+      "name": "data_00514FE0",
+      "file": "asm/original/rev0/lib/data_00514FE0.s",
+      "chunk": 81,
+      "romStart": "0x00514FE0",
+      "romEnd": "0x0051A830",
+      "bytes": 22608,
+      "class": "data",
+      "status": "raw-but-classified",
+      "note": "Section B cutscene audio-sequence BLOCK 15 whole block (block 0x00514FE0..0x0051A830, size 0x00005850; tag 0x215). Parser-backed: parent ob64_anim_block_catalog.json (63 contiguous blocks 0x4F0FB0..0x594280, roundtrip_ok) + tools/anim_block_codec.py (cutscene MUSIC/SFX sequences, Gate-2 proven). raw-but-classified (parser-backed container; opcode semantics conservative)."
+    },
+    {
+      "name": "data_0051A830",
+      "file": "asm/original/rev0/lib/data_0051A830.s",
+      "chunk": 81,
+      "romStart": "0x0051A830",
+      "romEnd": "0x005204B0",
+      "bytes": 23680,
+      "class": "data",
+      "status": "raw-but-classified",
+      "note": "Section B cutscene audio-sequence BLOCK 16 whole block (block 0x0051A830..0x005204B0, size 0x00005C80; tag 0x215). Parser-backed: parent ob64_anim_block_catalog.json (63 contiguous blocks 0x4F0FB0..0x594280, roundtrip_ok) + tools/anim_block_codec.py (cutscene MUSIC/SFX sequences, Gate-2 proven). raw-but-classified (parser-backed container; opcode semantics conservative)."
+    },
+    {
+      "name": "data_005204B0",
+      "file": "asm/original/rev0/lib/data_005204B0.s",
+      "chunk": 81,
+      "romStart": "0x005204B0",
+      "romEnd": "0x00521000",
+      "bytes": 2896,
+      "class": "data",
+      "status": "raw-but-classified",
+      "note": "Section B cutscene audio-sequence BLOCK 17 HEAD (continues into the next chunk) (block 0x005204B0..0x005249D0, size 0x00004520; tag 0x215). Parser-backed: parent ob64_anim_block_catalog.json (63 contiguous blocks 0x4F0FB0..0x594280, roundtrip_ok) + tools/anim_block_codec.py (cutscene MUSIC/SFX sequences, Gate-2 proven). raw-but-classified (parser-backed container; opcode semantics conservative)."
+    },
+    {
+      "name": "data_00521000",
+      "file": "asm/original/rev0/lib/data_00521000.s",
+      "chunk": 82,
+      "romStart": "0x00521000",
+      "romEnd": "0x005249D0",
+      "bytes": 14800,
+      "class": "data",
+      "status": "raw-but-classified",
+      "note": "Section B cutscene audio-sequence BLOCK 17 TAIL (completes a block whose head is in the previous chunk) (block 0x005204B0..0x005249D0, size 0x00004520; tag 0x215). Parser-backed: parent ob64_anim_block_catalog.json (63 contiguous blocks 0x4F0FB0..0x594280, roundtrip_ok) + tools/anim_block_codec.py (cutscene MUSIC/SFX sequences, Gate-2 proven). raw-but-classified (parser-backed container; opcode semantics conservative)."
+    },
+    {
+      "name": "data_005249D0",
+      "file": "asm/original/rev0/lib/data_005249D0.s",
+      "chunk": 82,
+      "romStart": "0x005249D0",
+      "romEnd": "0x0052A360",
+      "bytes": 22928,
+      "class": "data",
+      "status": "raw-but-classified",
+      "note": "Section B cutscene audio-sequence BLOCK 18 whole block (block 0x005249D0..0x0052A360, size 0x00005990; tag 0x215). Parser-backed: parent ob64_anim_block_catalog.json (63 contiguous blocks 0x4F0FB0..0x594280, roundtrip_ok) + tools/anim_block_codec.py (cutscene MUSIC/SFX sequences, Gate-2 proven). raw-but-classified (parser-backed container; opcode semantics conservative)."
+    },
+    {
+      "name": "data_0052A360",
+      "file": "asm/original/rev0/lib/data_0052A360.s",
+      "chunk": 82,
+      "romStart": "0x0052A360",
+      "romEnd": "0x0052E870",
+      "bytes": 17680,
+      "class": "data",
+      "status": "raw-but-classified",
+      "note": "Section B cutscene audio-sequence BLOCK 19 whole block (block 0x0052A360..0x0052E870, size 0x00004510; tag 0x215). Parser-backed: parent ob64_anim_block_catalog.json (63 contiguous blocks 0x4F0FB0..0x594280, roundtrip_ok) + tools/anim_block_codec.py (cutscene MUSIC/SFX sequences, Gate-2 proven). raw-but-classified (parser-backed container; opcode semantics conservative)."
+    },
+    {
+      "name": "data_0052E870",
+      "file": "asm/original/rev0/lib/data_0052E870.s",
+      "chunk": 82,
+      "romStart": "0x0052E870",
+      "romEnd": "0x00531000",
+      "bytes": 10128,
+      "class": "data",
+      "status": "raw-but-classified",
+      "note": "Section B cutscene audio-sequence BLOCK 20 HEAD (continues into the next chunk) (block 0x0052E870..0x00531A70, size 0x00003200; tag 0x215). Parser-backed: parent ob64_anim_block_catalog.json (63 contiguous blocks 0x4F0FB0..0x594280, roundtrip_ok) + tools/anim_block_codec.py (cutscene MUSIC/SFX sequences, Gate-2 proven). raw-but-classified (parser-backed container; opcode semantics conservative)."
+    },
+    {
+      "name": "data_00531000",
+      "file": "asm/original/rev0/lib/data_00531000.s",
+      "chunk": 83,
+      "romStart": "0x00531000",
+      "romEnd": "0x00531A70",
+      "bytes": 2672,
+      "class": "data",
+      "status": "raw-but-classified",
+      "note": "Section B cutscene audio-sequence BLOCK 20 TAIL (completes a block whose head is in the previous chunk) (block 0x0052E870..0x00531A70, size 0x00003200; tag 0x215). Parser-backed: parent ob64_anim_block_catalog.json (63 contiguous blocks 0x4F0FB0..0x594280, roundtrip_ok) + tools/anim_block_codec.py (cutscene MUSIC/SFX sequences, Gate-2 proven). raw-but-classified (parser-backed container; opcode semantics conservative)."
+    },
+    {
+      "name": "data_00531A70",
+      "file": "asm/original/rev0/lib/data_00531A70.s",
+      "chunk": 83,
+      "romStart": "0x00531A70",
+      "romEnd": "0x00535EB0",
+      "bytes": 17472,
+      "class": "data",
+      "status": "raw-but-classified",
+      "note": "Section B cutscene audio-sequence BLOCK 21 whole block (block 0x00531A70..0x00535EB0, size 0x00004440; tag 0x215). Parser-backed: parent ob64_anim_block_catalog.json (63 contiguous blocks 0x4F0FB0..0x594280, roundtrip_ok) + tools/anim_block_codec.py (cutscene MUSIC/SFX sequences, Gate-2 proven). raw-but-classified (parser-backed container; opcode semantics conservative)."
+    },
+    {
+      "name": "data_00535EB0",
+      "file": "asm/original/rev0/lib/data_00535EB0.s",
+      "chunk": 83,
+      "romStart": "0x00535EB0",
+      "romEnd": "0x0053A350",
+      "bytes": 17568,
+      "class": "data",
+      "status": "raw-but-classified",
+      "note": "Section B cutscene audio-sequence BLOCK 22 whole block (block 0x00535EB0..0x0053A350, size 0x000044A0; tag 0x215). Parser-backed: parent ob64_anim_block_catalog.json (63 contiguous blocks 0x4F0FB0..0x594280, roundtrip_ok) + tools/anim_block_codec.py (cutscene MUSIC/SFX sequences, Gate-2 proven). raw-but-classified (parser-backed container; opcode semantics conservative)."
+    },
+    {
+      "name": "data_0053A350",
+      "file": "asm/original/rev0/lib/data_0053A350.s",
+      "chunk": 83,
+      "romStart": "0x0053A350",
+      "romEnd": "0x0053EA20",
+      "bytes": 18128,
+      "class": "data",
+      "status": "raw-but-classified",
+      "note": "Section B cutscene audio-sequence BLOCK 23 whole block (block 0x0053A350..0x0053EA20, size 0x000046D0; tag 0x215). Parser-backed: parent ob64_anim_block_catalog.json (63 contiguous blocks 0x4F0FB0..0x594280, roundtrip_ok) + tools/anim_block_codec.py (cutscene MUSIC/SFX sequences, Gate-2 proven). raw-but-classified (parser-backed container; opcode semantics conservative)."
+    },
+    {
+      "name": "data_0053EA20",
+      "file": "asm/original/rev0/lib/data_0053EA20.s",
+      "chunk": 83,
+      "romStart": "0x0053EA20",
+      "romEnd": "0x00541000",
+      "bytes": 9696,
+      "class": "data",
+      "status": "raw-but-classified",
+      "note": "Section B cutscene audio-sequence BLOCK 24 HEAD (continues into the next chunk) (block 0x0053EA20..0x00543A50, size 0x00005030; tag 0x215). Parser-backed: parent ob64_anim_block_catalog.json (63 contiguous blocks 0x4F0FB0..0x594280, roundtrip_ok) + tools/anim_block_codec.py (cutscene MUSIC/SFX sequences, Gate-2 proven). raw-but-classified (parser-backed container; opcode semantics conservative)."
+    },
+    {
+      "name": "data_00541000",
+      "file": "asm/original/rev0/lib/data_00541000.s",
+      "chunk": 84,
+      "romStart": "0x00541000",
+      "romEnd": "0x00543A50",
+      "bytes": 10832,
+      "class": "data",
+      "status": "raw-but-classified",
+      "note": "Section B cutscene audio-sequence BLOCK 24 TAIL (completes a block whose head is in the previous chunk) (block 0x0053EA20..0x00543A50, size 0x00005030; tag 0x215). Parser-backed: parent ob64_anim_block_catalog.json (63 contiguous blocks 0x4F0FB0..0x594280, roundtrip_ok) + tools/anim_block_codec.py (cutscene MUSIC/SFX sequences, Gate-2 proven). raw-but-classified (parser-backed container; opcode semantics conservative)."
+    },
+    {
+      "name": "data_00543A50",
+      "file": "asm/original/rev0/lib/data_00543A50.s",
+      "chunk": 84,
+      "romStart": "0x00543A50",
+      "romEnd": "0x00546150",
+      "bytes": 9984,
+      "class": "data",
+      "status": "raw-but-classified",
+      "note": "Section B cutscene audio-sequence BLOCK 25 whole block (block 0x00543A50..0x00546150, size 0x00002700; tag 0x215). Parser-backed: parent ob64_anim_block_catalog.json (63 contiguous blocks 0x4F0FB0..0x594280, roundtrip_ok) + tools/anim_block_codec.py (cutscene MUSIC/SFX sequences, Gate-2 proven). raw-but-classified (parser-backed container; opcode semantics conservative)."
+    },
+    {
+      "name": "data_00546150",
+      "file": "asm/original/rev0/lib/data_00546150.s",
+      "chunk": 84,
+      "romStart": "0x00546150",
+      "romEnd": "0x00549300",
+      "bytes": 12720,
+      "class": "data",
+      "status": "raw-but-classified",
+      "note": "Section B cutscene audio-sequence BLOCK 26 whole block (block 0x00546150..0x00549300, size 0x000031B0; tag 0x215). Parser-backed: parent ob64_anim_block_catalog.json (63 contiguous blocks 0x4F0FB0..0x594280, roundtrip_ok) + tools/anim_block_codec.py (cutscene MUSIC/SFX sequences, Gate-2 proven). raw-but-classified (parser-backed container; opcode semantics conservative)."
+    },
+    {
+      "name": "data_00549300",
+      "file": "asm/original/rev0/lib/data_00549300.s",
+      "chunk": 84,
+      "romStart": "0x00549300",
+      "romEnd": "0x0054CB30",
+      "bytes": 14384,
+      "class": "data",
+      "status": "raw-but-classified",
+      "note": "Section B cutscene audio-sequence BLOCK 27 whole block (block 0x00549300..0x0054CB30, size 0x00003830; tag 0x215). Parser-backed: parent ob64_anim_block_catalog.json (63 contiguous blocks 0x4F0FB0..0x594280, roundtrip_ok) + tools/anim_block_codec.py (cutscene MUSIC/SFX sequences, Gate-2 proven). raw-but-classified (parser-backed container; opcode semantics conservative)."
+    },
+    {
+      "name": "data_0054CB30",
+      "file": "asm/original/rev0/lib/data_0054CB30.s",
+      "chunk": 84,
+      "romStart": "0x0054CB30",
+      "romEnd": "0x0054F980",
+      "bytes": 11856,
+      "class": "data",
+      "status": "raw-but-classified",
+      "note": "Section B cutscene audio-sequence BLOCK 28 whole block (block 0x0054CB30..0x0054F980, size 0x00002E50; tag 0x215). Parser-backed: parent ob64_anim_block_catalog.json (63 contiguous blocks 0x4F0FB0..0x594280, roundtrip_ok) + tools/anim_block_codec.py (cutscene MUSIC/SFX sequences, Gate-2 proven). raw-but-classified (parser-backed container; opcode semantics conservative)."
+    },
+    {
+      "name": "data_0054F980",
+      "file": "asm/original/rev0/lib/data_0054F980.s",
+      "chunk": 84,
+      "romStart": "0x0054F980",
+      "romEnd": "0x0054FDE0",
+      "bytes": 1120,
+      "class": "data",
+      "status": "raw-but-classified",
+      "note": "Section B cutscene audio-sequence BLOCK 29 whole block (block 0x0054F980..0x0054FDE0, size 0x00000460; tag 0x215). Parser-backed: parent ob64_anim_block_catalog.json (63 contiguous blocks 0x4F0FB0..0x594280, roundtrip_ok) + tools/anim_block_codec.py (cutscene MUSIC/SFX sequences, Gate-2 proven). raw-but-classified (parser-backed container; opcode semantics conservative)."
+    },
+    {
+      "name": "data_0054FDE0",
+      "file": "asm/original/rev0/lib/data_0054FDE0.s",
+      "chunk": 84,
+      "romStart": "0x0054FDE0",
+      "romEnd": "0x00550270",
+      "bytes": 1168,
+      "class": "data",
+      "status": "raw-but-classified",
+      "note": "Section B cutscene audio-sequence BLOCK 30 whole block (block 0x0054FDE0..0x00550270, size 0x00000490; tag 0x215). Parser-backed: parent ob64_anim_block_catalog.json (63 contiguous blocks 0x4F0FB0..0x594280, roundtrip_ok) + tools/anim_block_codec.py (cutscene MUSIC/SFX sequences, Gate-2 proven). raw-but-classified (parser-backed container; opcode semantics conservative)."
+    },
+    {
+      "name": "data_00550270",
+      "file": "asm/original/rev0/lib/data_00550270.s",
+      "chunk": 84,
+      "romStart": "0x00550270",
+      "romEnd": "0x00550F40",
+      "bytes": 3280,
+      "class": "data",
+      "status": "raw-but-classified",
+      "note": "Section B cutscene audio-sequence BLOCK 31 whole block (block 0x00550270..0x00550F40, size 0x00000CD0; tag 0x215). Parser-backed: parent ob64_anim_block_catalog.json (63 contiguous blocks 0x4F0FB0..0x594280, roundtrip_ok) + tools/anim_block_codec.py (cutscene MUSIC/SFX sequences, Gate-2 proven). raw-but-classified (parser-backed container; opcode semantics conservative)."
+    },
+    {
+      "name": "data_00550F40",
+      "file": "asm/original/rev0/lib/data_00550F40.s",
+      "chunk": 84,
+      "romStart": "0x00550F40",
+      "romEnd": "0x00551000",
+      "bytes": 192,
+      "class": "data",
+      "status": "raw-but-classified",
+      "note": "Section B cutscene audio-sequence BLOCK 32 HEAD (continues into the next chunk) (block 0x00550F40..0x00552070, size 0x00001130; tag 0x215). Parser-backed: parent ob64_anim_block_catalog.json (63 contiguous blocks 0x4F0FB0..0x594280, roundtrip_ok) + tools/anim_block_codec.py (cutscene MUSIC/SFX sequences, Gate-2 proven). raw-but-classified (parser-backed container; opcode semantics conservative)."
+    },
+    {
+      "name": "data_00551000",
+      "file": "asm/original/rev0/lib/data_00551000.s",
+      "chunk": 85,
+      "romStart": "0x00551000",
+      "romEnd": "0x00552070",
+      "bytes": 4208,
+      "class": "data",
+      "status": "raw-but-classified",
+      "note": "Section B cutscene audio-sequence BLOCK 32 TAIL (completes a block whose head is in the previous chunk) (block 0x00550F40..0x00552070, size 0x00001130; tag 0x215). Parser-backed: parent ob64_anim_block_catalog.json (63 contiguous blocks 0x4F0FB0..0x594280, roundtrip_ok) + tools/anim_block_codec.py (cutscene MUSIC/SFX sequences, Gate-2 proven). raw-but-classified (parser-backed container; opcode semantics conservative)."
+    },
+    {
+      "name": "data_00552070",
+      "file": "asm/original/rev0/lib/data_00552070.s",
+      "chunk": 85,
+      "romStart": "0x00552070",
+      "romEnd": "0x00555810",
+      "bytes": 14240,
+      "class": "data",
+      "status": "raw-but-classified",
+      "note": "Section B cutscene audio-sequence BLOCK 33 whole block (block 0x00552070..0x00555810, size 0x000037A0; tag 0x215). Parser-backed: parent ob64_anim_block_catalog.json (63 contiguous blocks 0x4F0FB0..0x594280, roundtrip_ok) + tools/anim_block_codec.py (cutscene MUSIC/SFX sequences, Gate-2 proven). raw-but-classified (parser-backed container; opcode semantics conservative)."
+    },
+    {
+      "name": "data_00555810",
+      "file": "asm/original/rev0/lib/data_00555810.s",
+      "chunk": 85,
+      "romStart": "0x00555810",
+      "romEnd": "0x00557040",
+      "bytes": 6192,
+      "class": "data",
+      "status": "raw-but-classified",
+      "note": "Section B cutscene audio-sequence BLOCK 34 whole block (block 0x00555810..0x00557040, size 0x00001830; tag 0x215). Parser-backed: parent ob64_anim_block_catalog.json (63 contiguous blocks 0x4F0FB0..0x594280, roundtrip_ok) + tools/anim_block_codec.py (cutscene MUSIC/SFX sequences, Gate-2 proven). raw-but-classified (parser-backed container; opcode semantics conservative)."
+    },
+    {
+      "name": "data_00557040",
+      "file": "asm/original/rev0/lib/data_00557040.s",
+      "chunk": 85,
+      "romStart": "0x00557040",
+      "romEnd": "0x00559B70",
+      "bytes": 11056,
+      "class": "data",
+      "status": "raw-but-classified",
+      "note": "Section B cutscene audio-sequence BLOCK 35 whole block (block 0x00557040..0x00559B70, size 0x00002B30; tag 0x215). Parser-backed: parent ob64_anim_block_catalog.json (63 contiguous blocks 0x4F0FB0..0x594280, roundtrip_ok) + tools/anim_block_codec.py (cutscene MUSIC/SFX sequences, Gate-2 proven). raw-but-classified (parser-backed container; opcode semantics conservative)."
+    },
+    {
+      "name": "data_00559B70",
+      "file": "asm/original/rev0/lib/data_00559B70.s",
+      "chunk": 85,
+      "romStart": "0x00559B70",
+      "romEnd": "0x0055A4E0",
+      "bytes": 2416,
+      "class": "data",
+      "status": "raw-but-classified",
+      "note": "Section B cutscene audio-sequence BLOCK 36 whole block (block 0x00559B70..0x0055A4E0, size 0x00000970; tag 0x215). Parser-backed: parent ob64_anim_block_catalog.json (63 contiguous blocks 0x4F0FB0..0x594280, roundtrip_ok) + tools/anim_block_codec.py (cutscene MUSIC/SFX sequences, Gate-2 proven). raw-but-classified (parser-backed container; opcode semantics conservative)."
+    },
+    {
+      "name": "data_0055A4E0",
+      "file": "asm/original/rev0/lib/data_0055A4E0.s",
+      "chunk": 85,
+      "romStart": "0x0055A4E0",
+      "romEnd": "0x0055C070",
+      "bytes": 7056,
+      "class": "data",
+      "status": "raw-but-classified",
+      "note": "Section B cutscene audio-sequence BLOCK 37 whole block (block 0x0055A4E0..0x0055C070, size 0x00001B90; tag 0x215). Parser-backed: parent ob64_anim_block_catalog.json (63 contiguous blocks 0x4F0FB0..0x594280, roundtrip_ok) + tools/anim_block_codec.py (cutscene MUSIC/SFX sequences, Gate-2 proven). raw-but-classified (parser-backed container; opcode semantics conservative)."
+    },
+    {
+      "name": "data_0055C070",
+      "file": "asm/original/rev0/lib/data_0055C070.s",
+      "chunk": 85,
+      "romStart": "0x0055C070",
+      "romEnd": "0x0055E300",
+      "bytes": 8848,
+      "class": "data",
+      "status": "raw-but-classified",
+      "note": "Section B cutscene audio-sequence BLOCK 38 whole block (block 0x0055C070..0x0055E300, size 0x00002290; tag 0x215). Parser-backed: parent ob64_anim_block_catalog.json (63 contiguous blocks 0x4F0FB0..0x594280, roundtrip_ok) + tools/anim_block_codec.py (cutscene MUSIC/SFX sequences, Gate-2 proven). raw-but-classified (parser-backed container; opcode semantics conservative)."
+    },
+    {
+      "name": "data_0055E300",
+      "file": "asm/original/rev0/lib/data_0055E300.s",
+      "chunk": 85,
+      "romStart": "0x0055E300",
+      "romEnd": "0x00560690",
+      "bytes": 9104,
+      "class": "data",
+      "status": "raw-but-classified",
+      "note": "Section B cutscene audio-sequence BLOCK 39 whole block (block 0x0055E300..0x00560690, size 0x00002390; tag 0x215). Parser-backed: parent ob64_anim_block_catalog.json (63 contiguous blocks 0x4F0FB0..0x594280, roundtrip_ok) + tools/anim_block_codec.py (cutscene MUSIC/SFX sequences, Gate-2 proven). raw-but-classified (parser-backed container; opcode semantics conservative)."
+    },
+    {
+      "name": "data_00560690",
+      "file": "asm/original/rev0/lib/data_00560690.s",
+      "chunk": 85,
+      "romStart": "0x00560690",
+      "romEnd": "0x00561000",
+      "bytes": 2416,
+      "class": "data",
+      "status": "raw-but-classified",
+      "note": "Section B cutscene audio-sequence BLOCK 40 HEAD (continues into the next chunk) (block 0x00560690..0x005625B0, size 0x00001F20; tag 0x215). Parser-backed: parent ob64_anim_block_catalog.json (63 contiguous blocks 0x4F0FB0..0x594280, roundtrip_ok) + tools/anim_block_codec.py (cutscene MUSIC/SFX sequences, Gate-2 proven). raw-but-classified (parser-backed container; opcode semantics conservative)."
+    },
+    {
+      "name": "data_00561000",
+      "file": "asm/original/rev0/lib/data_00561000.s",
+      "chunk": 86,
+      "romStart": "0x00561000",
+      "romEnd": "0x005625B0",
+      "bytes": 5552,
+      "class": "data",
+      "status": "raw-but-classified",
+      "note": "Section B cutscene audio-sequence BLOCK 40 TAIL (completes a block whose head is in the previous chunk) (block 0x00560690..0x005625B0, size 0x00001F20; tag 0x215). Parser-backed: parent ob64_anim_block_catalog.json (63 contiguous blocks 0x4F0FB0..0x594280, roundtrip_ok) + tools/anim_block_codec.py (cutscene MUSIC/SFX sequences, Gate-2 proven). raw-but-classified (parser-backed container; opcode semantics conservative)."
+    },
+    {
+      "name": "data_005625B0",
+      "file": "asm/original/rev0/lib/data_005625B0.s",
+      "chunk": 86,
+      "romStart": "0x005625B0",
+      "romEnd": "0x00566D80",
+      "bytes": 18384,
+      "class": "data",
+      "status": "raw-but-classified",
+      "note": "Section B cutscene audio-sequence BLOCK 41 whole block (block 0x005625B0..0x00566D80, size 0x000047D0; tag 0x215). Parser-backed: parent ob64_anim_block_catalog.json (63 contiguous blocks 0x4F0FB0..0x594280, roundtrip_ok) + tools/anim_block_codec.py (cutscene MUSIC/SFX sequences, Gate-2 proven). raw-but-classified (parser-backed container; opcode semantics conservative)."
+    },
+    {
+      "name": "data_00566D80",
+      "file": "asm/original/rev0/lib/data_00566D80.s",
+      "chunk": 86,
+      "romStart": "0x00566D80",
+      "romEnd": "0x00567930",
+      "bytes": 2992,
+      "class": "data",
+      "status": "raw-but-classified",
+      "note": "Section B cutscene audio-sequence BLOCK 42 whole block (block 0x00566D80..0x00567930, size 0x00000BB0; tag 0x215). Parser-backed: parent ob64_anim_block_catalog.json (63 contiguous blocks 0x4F0FB0..0x594280, roundtrip_ok) + tools/anim_block_codec.py (cutscene MUSIC/SFX sequences, Gate-2 proven). raw-but-classified (parser-backed container; opcode semantics conservative)."
+    },
+    {
+      "name": "data_00567930",
+      "file": "asm/original/rev0/lib/data_00567930.s",
+      "chunk": 86,
+      "romStart": "0x00567930",
+      "romEnd": "0x00568FC0",
+      "bytes": 5776,
+      "class": "data",
+      "status": "raw-but-classified",
+      "note": "Section B cutscene audio-sequence BLOCK 43 whole block (block 0x00567930..0x00568FC0, size 0x00001690; tag 0x215). Parser-backed: parent ob64_anim_block_catalog.json (63 contiguous blocks 0x4F0FB0..0x594280, roundtrip_ok) + tools/anim_block_codec.py (cutscene MUSIC/SFX sequences, Gate-2 proven). raw-but-classified (parser-backed container; opcode semantics conservative)."
+    },
+    {
+      "name": "data_00568FC0",
+      "file": "asm/original/rev0/lib/data_00568FC0.s",
+      "chunk": 86,
+      "romStart": "0x00568FC0",
+      "romEnd": "0x0056AB10",
+      "bytes": 6992,
+      "class": "data",
+      "status": "raw-but-classified",
+      "note": "Section B cutscene audio-sequence BLOCK 44 whole block (block 0x00568FC0..0x0056AB10, size 0x00001B50; tag 0x215). Parser-backed: parent ob64_anim_block_catalog.json (63 contiguous blocks 0x4F0FB0..0x594280, roundtrip_ok) + tools/anim_block_codec.py (cutscene MUSIC/SFX sequences, Gate-2 proven). raw-but-classified (parser-backed container; opcode semantics conservative)."
+    },
+    {
+      "name": "data_0056AB10",
+      "file": "asm/original/rev0/lib/data_0056AB10.s",
+      "chunk": 86,
+      "romStart": "0x0056AB10",
+      "romEnd": "0x0056DC60",
+      "bytes": 12624,
+      "class": "data",
+      "status": "raw-but-classified",
+      "note": "Section B cutscene audio-sequence BLOCK 45 whole block (block 0x0056AB10..0x0056DC60, size 0x00003150; tag 0x215). Parser-backed: parent ob64_anim_block_catalog.json (63 contiguous blocks 0x4F0FB0..0x594280, roundtrip_ok) + tools/anim_block_codec.py (cutscene MUSIC/SFX sequences, Gate-2 proven). raw-but-classified (parser-backed container; opcode semantics conservative)."
+    },
+    {
+      "name": "data_0056DC60",
+      "file": "asm/original/rev0/lib/data_0056DC60.s",
+      "chunk": 86,
+      "romStart": "0x0056DC60",
+      "romEnd": "0x0056EB40",
+      "bytes": 3808,
+      "class": "data",
+      "status": "raw-but-classified",
+      "note": "Section B cutscene audio-sequence BLOCK 46 whole block (block 0x0056DC60..0x0056EB40, size 0x00000EE0; tag 0x215). Parser-backed: parent ob64_anim_block_catalog.json (63 contiguous blocks 0x4F0FB0..0x594280, roundtrip_ok) + tools/anim_block_codec.py (cutscene MUSIC/SFX sequences, Gate-2 proven). raw-but-classified (parser-backed container; opcode semantics conservative)."
+    },
+    {
+      "name": "data_0056EB40",
+      "file": "asm/original/rev0/lib/data_0056EB40.s",
+      "chunk": 86,
+      "romStart": "0x0056EB40",
+      "romEnd": "0x00570A80",
+      "bytes": 8000,
+      "class": "data",
+      "status": "raw-but-classified",
+      "note": "Section B cutscene audio-sequence BLOCK 47 whole block (block 0x0056EB40..0x00570A80, size 0x00001F40; tag 0x215). Parser-backed: parent ob64_anim_block_catalog.json (63 contiguous blocks 0x4F0FB0..0x594280, roundtrip_ok) + tools/anim_block_codec.py (cutscene MUSIC/SFX sequences, Gate-2 proven). raw-but-classified (parser-backed container; opcode semantics conservative)."
+    },
+    {
+      "name": "data_00570A80",
+      "file": "asm/original/rev0/lib/data_00570A80.s",
+      "chunk": 86,
+      "romStart": "0x00570A80",
+      "romEnd": "0x00570BB0",
+      "bytes": 304,
+      "class": "data",
+      "status": "raw-but-classified",
+      "note": "Section B cutscene audio-sequence BLOCK 48 whole block (block 0x00570A80..0x00570BB0, size 0x00000130; tag 0x215). Parser-backed: parent ob64_anim_block_catalog.json (63 contiguous blocks 0x4F0FB0..0x594280, roundtrip_ok) + tools/anim_block_codec.py (cutscene MUSIC/SFX sequences, Gate-2 proven). raw-but-classified (parser-backed container; opcode semantics conservative)."
+    },
+    {
+      "name": "data_00570BB0",
+      "file": "asm/original/rev0/lib/data_00570BB0.s",
+      "chunk": 86,
+      "romStart": "0x00570BB0",
+      "romEnd": "0x00570D20",
+      "bytes": 368,
+      "class": "data",
+      "status": "raw-but-classified",
+      "note": "Section B cutscene audio-sequence BLOCK 49 whole block (block 0x00570BB0..0x00570D20, size 0x00000170; tag 0x215). Parser-backed: parent ob64_anim_block_catalog.json (63 contiguous blocks 0x4F0FB0..0x594280, roundtrip_ok) + tools/anim_block_codec.py (cutscene MUSIC/SFX sequences, Gate-2 proven). raw-but-classified (parser-backed container; opcode semantics conservative)."
+    },
+    {
+      "name": "data_00570D20",
+      "file": "asm/original/rev0/lib/data_00570D20.s",
+      "chunk": 86,
+      "romStart": "0x00570D20",
+      "romEnd": "0x00571000",
+      "bytes": 736,
+      "class": "data",
+      "status": "raw-but-classified",
+      "note": "Section B cutscene audio-sequence BLOCK 50 HEAD (continues into the next chunk) (block 0x00570D20..0x005794E0, size 0x000087C0; tag 0x215). Parser-backed: parent ob64_anim_block_catalog.json (63 contiguous blocks 0x4F0FB0..0x594280, roundtrip_ok) + tools/anim_block_codec.py (cutscene MUSIC/SFX sequences, Gate-2 proven). raw-but-classified (parser-backed container; opcode semantics conservative)."
+    },
+    {
+      "name": "data_00571000",
+      "file": "asm/original/rev0/lib/data_00571000.s",
+      "chunk": 87,
+      "romStart": "0x00571000",
+      "romEnd": "0x005794E0",
+      "bytes": 34016,
+      "class": "data",
+      "status": "raw-but-classified",
+      "note": "Section B cutscene audio-sequence BLOCK 50 TAIL (completes a block whose head is in the previous chunk) (block 0x00570D20..0x005794E0, size 0x000087C0; tag 0x215). Parser-backed: parent ob64_anim_block_catalog.json (63 contiguous blocks 0x4F0FB0..0x594280, roundtrip_ok) + tools/anim_block_codec.py (cutscene MUSIC/SFX sequences, Gate-2 proven). raw-but-classified (parser-backed container; opcode semantics conservative)."
+    },
+    {
+      "name": "data_005794E0",
+      "file": "asm/original/rev0/lib/data_005794E0.s",
+      "chunk": 87,
+      "romStart": "0x005794E0",
+      "romEnd": "0x0057BF10",
+      "bytes": 10800,
+      "class": "data",
+      "status": "raw-but-classified",
+      "note": "Section B cutscene audio-sequence BLOCK 51 whole block (block 0x005794E0..0x0057BF10, size 0x00002A30; tag 0x215). Parser-backed: parent ob64_anim_block_catalog.json (63 contiguous blocks 0x4F0FB0..0x594280, roundtrip_ok) + tools/anim_block_codec.py (cutscene MUSIC/SFX sequences, Gate-2 proven). raw-but-classified (parser-backed container; opcode semantics conservative)."
+    },
+    {
+      "name": "data_0057BF10",
+      "file": "asm/original/rev0/lib/data_0057BF10.s",
+      "chunk": 87,
+      "romStart": "0x0057BF10",
+      "romEnd": "0x0057D5A0",
+      "bytes": 5776,
+      "class": "data",
+      "status": "raw-but-classified",
+      "note": "Section B cutscene audio-sequence BLOCK 52 whole block (block 0x0057BF10..0x0057D5A0, size 0x00001690; tag 0x215). Parser-backed: parent ob64_anim_block_catalog.json (63 contiguous blocks 0x4F0FB0..0x594280, roundtrip_ok) + tools/anim_block_codec.py (cutscene MUSIC/SFX sequences, Gate-2 proven). raw-but-classified (parser-backed container; opcode semantics conservative)."
+    },
+    {
+      "name": "data_0057D5A0",
+      "file": "asm/original/rev0/lib/data_0057D5A0.s",
+      "chunk": 87,
+      "romStart": "0x0057D5A0",
+      "romEnd": "0x00581000",
+      "bytes": 14944,
+      "class": "data",
+      "status": "raw-but-classified",
+      "note": "Section B cutscene audio-sequence BLOCK 53 HEAD (continues into the next chunk) (block 0x0057D5A0..0x00584090, size 0x00006AF0; tag 0x215). Parser-backed: parent ob64_anim_block_catalog.json (63 contiguous blocks 0x4F0FB0..0x594280, roundtrip_ok) + tools/anim_block_codec.py (cutscene MUSIC/SFX sequences, Gate-2 proven). raw-but-classified (parser-backed container; opcode semantics conservative)."
+    },
+    {
+      "name": "data_00581000",
+      "file": "asm/original/rev0/lib/data_00581000.s",
+      "chunk": 88,
+      "romStart": "0x00581000",
+      "romEnd": "0x00584090",
+      "bytes": 12432,
+      "class": "data",
+      "status": "raw-but-classified",
+      "note": "Section B cutscene audio-sequence BLOCK 53 TAIL (completes a block whose head is in the previous chunk) (block 0x0057D5A0..0x00584090, size 0x00006AF0; tag 0x215). Parser-backed: parent ob64_anim_block_catalog.json (63 contiguous blocks 0x4F0FB0..0x594280, roundtrip_ok) + tools/anim_block_codec.py (cutscene MUSIC/SFX sequences, Gate-2 proven). raw-but-classified (parser-backed container; opcode semantics conservative)."
+    },
+    {
+      "name": "data_00584090",
+      "file": "asm/original/rev0/lib/data_00584090.s",
+      "chunk": 88,
+      "romStart": "0x00584090",
+      "romEnd": "0x0058A4A0",
+      "bytes": 25616,
+      "class": "data",
+      "status": "raw-but-classified",
+      "note": "Section B cutscene audio-sequence BLOCK 54 whole block (block 0x00584090..0x0058A4A0, size 0x00006410; tag 0x215). Parser-backed: parent ob64_anim_block_catalog.json (63 contiguous blocks 0x4F0FB0..0x594280, roundtrip_ok) + tools/anim_block_codec.py (cutscene MUSIC/SFX sequences, Gate-2 proven). raw-but-classified (parser-backed container; opcode semantics conservative)."
+    },
+    {
+      "name": "data_0058A4A0",
+      "file": "asm/original/rev0/lib/data_0058A4A0.s",
+      "chunk": 88,
+      "romStart": "0x0058A4A0",
+      "romEnd": "0x0058B110",
+      "bytes": 3184,
+      "class": "data",
+      "status": "raw-but-classified",
+      "note": "Section B cutscene audio-sequence BLOCK 55 whole block (block 0x0058A4A0..0x0058B110, size 0x00000C70; tag 0x215). Parser-backed: parent ob64_anim_block_catalog.json (63 contiguous blocks 0x4F0FB0..0x594280, roundtrip_ok) + tools/anim_block_codec.py (cutscene MUSIC/SFX sequences, Gate-2 proven). raw-but-classified (parser-backed container; opcode semantics conservative)."
+    },
+    {
+      "name": "data_0058B110",
+      "file": "asm/original/rev0/lib/data_0058B110.s",
+      "chunk": 88,
+      "romStart": "0x0058B110",
+      "romEnd": "0x0058C400",
+      "bytes": 4848,
+      "class": "data",
+      "status": "raw-but-classified",
+      "note": "Section B cutscene audio-sequence BLOCK 56 whole block (block 0x0058B110..0x0058C400, size 0x000012F0; tag 0x215). Parser-backed: parent ob64_anim_block_catalog.json (63 contiguous blocks 0x4F0FB0..0x594280, roundtrip_ok) + tools/anim_block_codec.py (cutscene MUSIC/SFX sequences, Gate-2 proven). raw-but-classified (parser-backed container; opcode semantics conservative)."
+    },
+    {
+      "name": "data_0058C400",
+      "file": "asm/original/rev0/lib/data_0058C400.s",
+      "chunk": 88,
+      "romStart": "0x0058C400",
+      "romEnd": "0x0058DA80",
+      "bytes": 5760,
+      "class": "data",
+      "status": "raw-but-classified",
+      "note": "Section B cutscene audio-sequence BLOCK 57 whole block (block 0x0058C400..0x0058DA80, size 0x00001680; tag 0x215). Parser-backed: parent ob64_anim_block_catalog.json (63 contiguous blocks 0x4F0FB0..0x594280, roundtrip_ok) + tools/anim_block_codec.py (cutscene MUSIC/SFX sequences, Gate-2 proven). raw-but-classified (parser-backed container; opcode semantics conservative)."
+    },
+    {
+      "name": "data_0058DA80",
+      "file": "asm/original/rev0/lib/data_0058DA80.s",
+      "chunk": 88,
+      "romStart": "0x0058DA80",
+      "romEnd": "0x0058EF00",
+      "bytes": 5248,
+      "class": "data",
+      "status": "raw-but-classified",
+      "note": "Section B cutscene audio-sequence BLOCK 58 whole block (block 0x0058DA80..0x0058EF00, size 0x00001480; tag 0x215). Parser-backed: parent ob64_anim_block_catalog.json (63 contiguous blocks 0x4F0FB0..0x594280, roundtrip_ok) + tools/anim_block_codec.py (cutscene MUSIC/SFX sequences, Gate-2 proven). raw-but-classified (parser-backed container; opcode semantics conservative)."
+    },
+    {
+      "name": "data_0058EF00",
+      "file": "asm/original/rev0/lib/data_0058EF00.s",
+      "chunk": 88,
+      "romStart": "0x0058EF00",
+      "romEnd": "0x0058F700",
+      "bytes": 2048,
+      "class": "data",
+      "status": "raw-but-classified",
+      "note": "Section B cutscene audio-sequence BLOCK 59 whole block (block 0x0058EF00..0x0058F700, size 0x00000800; tag 0x215). Parser-backed: parent ob64_anim_block_catalog.json (63 contiguous blocks 0x4F0FB0..0x594280, roundtrip_ok) + tools/anim_block_codec.py (cutscene MUSIC/SFX sequences, Gate-2 proven). raw-but-classified (parser-backed container; opcode semantics conservative)."
+    },
+    {
+      "name": "data_0058F700",
+      "file": "asm/original/rev0/lib/data_0058F700.s",
+      "chunk": 88,
+      "romStart": "0x0058F700",
+      "romEnd": "0x005908D0",
+      "bytes": 4560,
+      "class": "data",
+      "status": "raw-but-classified",
+      "note": "Section B cutscene audio-sequence BLOCK 60 whole block (block 0x0058F700..0x005908D0, size 0x000011D0; tag 0x215). Parser-backed: parent ob64_anim_block_catalog.json (63 contiguous blocks 0x4F0FB0..0x594280, roundtrip_ok) + tools/anim_block_codec.py (cutscene MUSIC/SFX sequences, Gate-2 proven). raw-but-classified (parser-backed container; opcode semantics conservative)."
+    },
+    {
+      "name": "data_005908D0",
+      "file": "asm/original/rev0/lib/data_005908D0.s",
+      "chunk": 88,
+      "romStart": "0x005908D0",
+      "romEnd": "0x00591000",
+      "bytes": 1840,
+      "class": "data",
+      "status": "raw-but-classified",
+      "note": "Section B cutscene audio-sequence BLOCK 61 HEAD (continues into the next chunk) (block 0x005908D0..0x00592490, size 0x00001BC0; tag 0x215). Parser-backed: parent ob64_anim_block_catalog.json (63 contiguous blocks 0x4F0FB0..0x594280, roundtrip_ok) + tools/anim_block_codec.py (cutscene MUSIC/SFX sequences, Gate-2 proven). raw-but-classified (parser-backed container; opcode semantics conservative)."
+    }
+  ]
+}
