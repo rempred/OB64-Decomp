@@ -9,6 +9,13 @@ coverage. Replace every `{PLACEHOLDER}` before sending it to an agent. Keep the
 data-region requirements even when the next chunks are expected to be mostly
 code.
 
+For post-frontier data territory where a natural section, archive boundary,
+parser-backed format, table family, or asset bank is known or survey-recommended,
+prefer `docs/templates/data-territory-source-ownership-run-prompt.md`. Use this
+chunk template as the fallback for mixed/uncertain ranges, hidden-code risk,
+unknown schema decisions, patch-workbench/runtime-state questions, dirty or
+incomplete run state, or review-quality concerns.
+
 **Four-chunk default for proven data-only tail territory (added 2026-06-23 after
 chunks 45-47 confirmed clean all-data).** Once the frontier is past the evidenced
 executable-MIPS extent end `0x002B89B4` and recent runs have proven the range is
