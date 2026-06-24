@@ -24,11 +24,15 @@ and replace the active log with a compact current-state summary.
   `original_mips`. A static control-flow audit found no credible code edge into
   the tail (0 branch targets, 0 J/JAL to a known function). Audit:
   `tools/audit_code_region.js` / `docs/CODE_REGION_AUDIT.md`.
-- Current tracked code source mix: fifty-two composite real-assembler chunks
-  (chunk 0 177 `boot/`; chunks 1–51 in `lib/`: 350, 216, 67, 376, 88, 78, 103, 87, 34, 35, 191, 74, 67, 94, 153, 95, 66, 95, 80, 175, 99, 99, 73, 63, 71, 96, 142, 97, 103, 122, 86, 198, 109, 120, 134, 164, 180, 232, 155, 159, 160, 171, 90, 17, 15, 17, 27, 9, 11, 13, 13) =
-  **5,746 tracked source files**, plus 48 generated fallback code chunks. **Chunks
-  0–51 (`0x00001000..0x00341000`) are now fully source-owned as named code/data
-  parts** (chunks 48-51 = Section A slice 1 [survey natural unit Section A 0x301000..0x4E3000]:
+- Current tracked code source mix: sixty-two composite real-assembler chunks
+  (chunk 0 177 `boot/`; chunks 1–61 in `lib/`: 350, 216, 67, 376, 88, 78, 103, 87, 34, 35, 191, 74, 67, 94, 153, 95, 66, 95, 80, 175, 99, 99, 73, 63, 71, 96, 142, 97, 103, 122, 86, 198, 109, 120, 134, 164, 180, 232, 155, 159, 160, 171, 90, 17, 15, 17, 27, 9, 11, 13, 13, 13, 9, 9, 9, 7, 1, 5, 3, 3, 5) =
+  **5,810 tracked source files**, plus 38 generated fallback code chunks. **Chunks
+  0–61 (`0x00001000..0x003E1000`) are now fully source-owned as named code/data
+  parts** (chunks 52-61 = Section A slice 2 [0x341000..0x3E1000]: 0 code + 64 data [37 data + 27
+  zero_fill], DATA TERRITORY — same high-entropy asset family, TYPE UNRESOLVED, conservative names;
+  0 jr$ra/0 prologues/0 pointers at all 4 byte alignments; parent-tooling-dark (all leads rejected,
+  4a/4f byte-disproven); container layout decoded [37 objects + 27 pads, 8-aligned-not-16]; outgoing
+  continuation data_003DE988 into chunk 62. chunks 48-51 = Section A slice 1 [survey natural unit Section A 0x301000..0x4E3000]:
   0 code + 46 data [25 data + 21 zero_fill] across 0x301000..0x341000, DATA TERRITORY — high-entropy
   asset data continuing the chunk-43..47 family, TYPE UNRESOLVED (graphics/texture vs audio-codec-
   residual; conservative data_/zero_fill_ names); 0 jr$ra/0 prologues/0 pointers; B-table-to-A
@@ -100,7 +104,7 @@ and replace the active log with a compact current-state summary.
   chunk 37: 170 normal code + 8 data + 2 function straddlers, MIXED - command-dispatcher
   mission-briefing/combat code + a 0x80x pointer/struct/float record-table DATA island
   [0x25E2BC..0x25EE90]);
-  next is chunk 52 (`0x00341000`, still a
+  next is chunk 62 (`0x003E1000`, still a
   generated fallback chunk — deeper in the non-code data tail). The promote-tool merge blocker is FIXED.
 - The parent boundary DB has TWO recurring defects, both fixed when splitting:
   (1) `end_rom` is INCLUSIVE (exclusive end = `end_rom + 4`; do NOT treat the
@@ -470,11 +474,27 @@ Current named sequence:
   hidden-code + tiling QA + parent comparator): all clean. Index
   `docs/data-index/rev0/section-a-00301000-00341000-data-inventory.json` + dossier added. Outgoing
   continuation `data_0033FD78` into chunk 52. **Chunks 48-51 source-owned (Section A slice 1).**
-- Current remainder: none in chunks 0-51 (`0x1000..0x341000` fully source-owned;
+- Section A slice 2 ownership `0x00341000..0x003E1000` (chunks 52-61; 64 parts: 37 data + 27 zero_fill,
+  0 code — DATA TERRITORY): second ownership batch of survey Section A, a 10-chunk slice (proven-clean
+  data-only). Continues slice 1's `data_0033FD78` seamlessly (seam at 0x341000 non-zero both sides).
+  Proof of non-code: **0 jr$ra, 0 stack prologues AND 0 epilogues/lw $ra at all 4 byte alignments, 0
+  pointer runs** across all 163,840 words; 0 real strings (≥4-letter dictionary test = 0 hits; elevated
+  printable counts in chunks 59-61 are garbage); no archive/LZSS/MIO0 magic. Owned as 37 `data_`
+  high-entropy asset spans (raw-but-classified; TYPE UNRESOLVED) + 27 `zero_fill_` parts (parsed).
+  Parser decoded the **container layout** (37 objects + 27 zero pads, all post-pad boundaries
+  8-aligned-never-16) but object contents stay undecoded. **Parent-tooling-dark**: 0 functions/0
+  archives/0 anim-blocks in range; 4a/4f in-range gapOffsets byte-disproven (decompressed-7MB-stream,
+  NOT ROM — stream `block_3126_0x341e44` e6f70000.. ≠ ROM 0x341E44 dcbd53ae..); B-table-to-A re-tested
+  + rejected (0 in-range under all 4 mandated bases). Adversarial swarm 6 passes (2 hidden-code +
+  parent + parser + QA + independent reviewer): unanimous `yes`. 10-chunk batch preserved review
+  quality (machine-checkable standard scales O(bytes)); 10 = safe ceiling for flat data-only Section A,
+  drop to 4 on any heterogeneity. Index `docs/data-index/rev0/section-a-00341000-003E1000-data-inventory.json`
+  + dossier added. Outgoing continuation `data_003DE988` into chunk 62. **Chunks 52-61 source-owned (Section A slice 2).**
+- Current remainder: none in chunks 0-61 (`0x1000..0x3E1000` fully source-owned;
   evidenced executable MIPS `0x1000..0x2B89B4` 100% source-owned).
-  **Current frontier: `0x00341000` (chunk 52).** Chunk 51 ended in DATA with an OUTGOING continuation
-  (`data_0033FD78` runs to `0x341000`, no terminating zero-fill). First action: own that data
-  continuation across `0x341000` (Section A slice 2). NOTE: chunk 52 (`0x341000..0x351000`) is still
+  **Current frontier: `0x003E1000` (chunk 62).** Chunk 61 ended in DATA with an OUTGOING continuation
+  (`data_003DE988` runs to `0x3E1000`, no terminating zero-fill). First action: own that data
+  continuation across `0x3E1000` (Section A slice 3). NOTE: chunk 62 (`0x3E1000..0x3F1000`) is still
   inside survey Section A (high-entropy asset pool to 0x4E3000) — expect more data territory. The
   global non-code tail `0x002B89B4..0x0063676C` remains a separate, larger reclassification design.
 
@@ -942,30 +962,31 @@ the full quick index. The newest dossiers are:
 
 ## Next Frontier
 
-Chunks 0–51 (`0x00001000..0x00341000`) are fully source-owned as named code/data
+Chunks 0–61 (`0x00001000..0x003E1000`) are fully source-owned as named code/data
 parts. Chunk 43 (90 parts) is the MIXED code→data transition chunk: the mission-briefing/
 scenario-overview overlay CODE region `0x2B1000..0x2B89B8` (incoming straddler-tail
 func_002B0E8C_chunk43tail; 62 parent functions + frameless leaves) then the evidenced code→data
 boundary at `0x2B89B8` and an F3DEX2 display-list/float-pool/texture DATA tail `0x2B89B8..0x2C1000`
-(8 parts). Chunks 44-47 + Section A slice 1 (chunks 48-51) are DATA TERRITORY: each entire 64 KiB is
+(8 parts). Chunks 44-47 + Section A slices 1-2 (chunks 48-61) are DATA TERRITORY: each entire 64 KiB is
 non-code high-entropy asset data past the executable extent (0 jr$ra/0 prologues/0 pointers),
 `data_` + `zero_fill_` parts. Dossiers: `docs/dossiers/lib-chunk4{3,4,5,6,7}-*.md` +
-`docs/dossiers/section-a-00301000-00341000-data-ownership.md`; data indexes
+`docs/dossiers/section-a-00301000-00341000-data-ownership.md` +
+`docs/dossiers/section-a-00341000-003E1000-data-ownership.md`; data indexes
 `docs/data-index/rev0/chunk4{3,4,5,6,7}-data-region-inventory.json` +
-`section-a-00301000-00341000-data-inventory.json`.
+`section-a-00301000-00341000-data-inventory.json` + `section-a-00341000-003E1000-data-inventory.json`.
 
-Current frontier is **`0x00341000` (chunk 52)**. The evidenced executable MIPS extent
+Current frontier is **`0x003E1000` (chunk 62)**. The evidenced executable MIPS extent
 `0x1000..0x2B89B4` (2,849,204 B) is **100.0000% source-owned**; total source-owned
-`0x1000..0x341000` (code+data) = 3,407,868 B (code-only = 2,444,548 B = 85.7977% of the
-extent; the rest are interior + chunk-43..47 + Section A slice-1 data-tail spans).
+`0x1000..0x3E1000` (code+data) = 4,063,228 B (code-only = 2,444,548 B = 85.7977% of the
+extent; the rest are interior + chunk-43..47 + Section A slice-1/2 data-tail spans).
 
-FIRST for the next run: chunk 51 ended in DATA with an OUTGOING continuation, so own the
-`data_0033FD78` high-entropy asset continuation across `0x341000` first (Section A slice 2).
-NOTE: chunk 52 (`0x341000..0x351000`) is still inside survey Section A (high-entropy asset pool to
+FIRST for the next run: chunk 61 ended in DATA with an OUTGOING continuation, so own the
+`data_003DE988` high-entropy asset continuation across `0x3E1000` first (Section A slice 3).
+NOTE: chunk 62 (`0x3E1000..0x3F1000`) is still inside survey Section A (high-entropy asset pool to
 0x4E3000) — expect more data territory; do not reclassify the global non-code tail beyond the target.
 
 There are now two active tracks. The library source-ownership track continues at
-`0x341000` (chunk 52) as above. The full-ROM coverage track (opened 2026-06-21)
+`0x3E1000` (chunk 62) as above. The full-ROM coverage track (opened 2026-06-21)
 next refines the exact code/data boundary near `0x002B89B4` and reclassifies the
 non-code tail `0x002B89B4..0x0063676C` from `original_mips` to a data source
 form, shrinking the configured code region to the executable extent while
