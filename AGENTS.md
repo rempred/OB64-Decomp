@@ -205,7 +205,7 @@ Current result:
 - Code-region match against baserom: pass.
 - Tracked real-assembler original-MIPS chunks: 43 composites (chunk 0 177 `boot/`;
   chunks 1–42 in `lib/`: 350, 216, 67, 376, 88, 78, 103, 87, 34, 35, 191, 74, 67, 94, 153, 95, 66, 95, 80, 175, 99, 99, 73, 63, 71, 96, 142, 97, 103, 122, 86, 198, 109, 120, 134, 164, 180, 232, 155, 159, 160, 171) = 5,534 real-assembler
-  source files. Chunks 0–39 (`0x00001000..0x00281000`) are now fully source-owned as
+  source files. Chunks 0–42 (`0x00001000..0x002B1000`) are now fully source-owned as
   named code/data parts (chunk 39: 135 code + 19 data + 1 straddler-tail, MIXED —
   mission-briefing/combat display-list code continuing chunks 36-38 wrapping THREE interior
   data islands (big data territory 0x273FFC..0x275850 [pointer/jump/float64 tables]; GBI
@@ -2874,8 +2874,8 @@ setup-complete state:
 - Assembler: GNU Binutils 2.39 `mips64-elf-as.exe` with `-EB -mips3 -32`.
 - Setup verifier: `tools/verify_setup.js`.
 - Current verifier result: PASS; 825 archives, 0 unknown bytes, 108 overlap
-  bytes visible, 43 tracked composite real-asm chunks made from 5,044 tracked source
-  files (chunks 0–42 fully source-owned as code/data parts, `0x00001000..0x00281000`),
+  bytes visible, 43 tracked composite real-asm chunks made from 5,534 tracked source
+  files (chunks 0–42 fully source-owned as code/data parts, `0x00001000..0x002B1000`),
   57 generated fallback chunks, full-source manifest 1,059 entries with
   2,469,141 ambiguous bytes preserved explicitly, 3 tracked non-code
   source-owner files / 44,029 bytes, 1,055 generated non-code fallback files /

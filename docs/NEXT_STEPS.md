@@ -18,7 +18,7 @@ node tools/verify_setup.js
 Current source mix: 43 tracked composite real-assembler chunks (chunk 0 177
 `boot/`; chunks 1–42 in `lib/`: 350, 216, 67, 376, 88, 78, 103, 87, 34, 35, 191, 74, 67, 94, 153, 95, 66, 95, 80, 175, 99, 99, 73, 63, 71, 96, 142, 97, 103, 122, 86, 198, 109, 120, 134, 164, 180, 232, 155, 159, 160, 171) = 5,534 tracked
 source files, plus 57 generated fallback chunks. **Chunks 0–42 are fully
-source-owned as named code/data parts** (`0x00001000..0x00281000`;
+source-owned as named code/data parts** (`0x00001000..0x002B1000`;
 chunk 39: 135 code + 19 data + 1 straddler-tail, MIXED — mission-briefing/combat display-list
 code continuing chunks 36-38, wrapping THREE interior data islands (big data territory
 0x273FFC..0x275850 [pointer/jump/float64 tables]; GBI display-list blob 0x279DA8..0x27A020;

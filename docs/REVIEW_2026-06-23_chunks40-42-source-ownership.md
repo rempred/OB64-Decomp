@@ -14,8 +14,7 @@ continues into chunk 43)
   3 stale current-state blocks corrected in DECOMP_LOG/AGENTS/PLATFORM left at chunks 0-37/0x261000)
 - `1533e7d` — `Source-own Rev0 chunk 41 (0x291000..0x2A1000) + advance current-state docs`
 - `fcf18b5` — `Source-own Rev0 chunk 42 (0x2A1000..0x2B1000) + advance current-state docs`
-- `Add chunks 40-42 review handoff` — this document, committed as the run's final commit
-  (its own hash is recorded in the run's final report / bridge ping)
+- `7618139` — `Add chunks 40-42 review handoff` (this document, the run's final commit)
 
 ## Outcome
 
