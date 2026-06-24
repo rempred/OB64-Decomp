@@ -14,8 +14,7 @@ Final frontier: `0x002D1000` (chunk 45). The evidenced executable MIPS extent
 - `d4d6aa5` — `Fix chunks40-42 review commit hash + stale current-state docs` (opening fixes).
 - `e4cfab5` — `Source-own Rev0 chunk 43 (0x2B1000..0x2C1000) + advance current-state docs`.
 - `47e5c4f` — `Source-own Rev0 chunk 44 (0x2C1000..0x2D1000) + advance current-state docs`.
-- `Add chunks 43-44 review handoff` — this document, the run's final commit (its own hash is
-  recorded in the run's final report / bridge ping, and may be filled in here by the next run).
+- `28a1f2b` — `Add chunks 43-44 review handoff` (this document, the run's final commit).
 
 ## Opening Fixes (commit `d4d6aa5`)
 
