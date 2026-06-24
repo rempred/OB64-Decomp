@@ -1,0 +1,149 @@
+{
+  "chunk": 45,
+  "range": "0x002D1000-0x002E1000",
+  "generated": "2026-06-23",
+  "dataPartCount": 15,
+  "dataBytes": 65536,
+  "bytesByClass": {
+    "data": 65380,
+    "zero_fill": 156
+  },
+  "evidence": "Chunk 45 [0x2D1000..0x2E1000) is PAST the evidenced executable-MIPS extent end 0x2B89B4 (audit_code_region: non-code tail, data-evidenced). Proof of non-code across all 16384 words: 0 jr$ra (0x03E00008), 0 stack prologues (0x27BD8xxx..0x27BDFxxx), 0 0x80xxxxxx RAM-pointer words; no function prologue+return pair can exist. No real ASCII strings (3156 coincidental printable bytes in high-entropy pixel data, none forming words). No archive/LZSS/MIO0 magic at any data_ part start; continuation of the chunk-44 data_002CBA58 high-entropy texture tail. Class profile: high-entropy other 48236 B (texture/asset pixel data), coincidental GBI-byte density (~85% of words have a 0xDE-0xFF high byte), zero 168 B. Segmented at 7 zero-fill runs (>=16 B) separating texture/graphics objects into 8 data blobs. Verified by adversarial data skeptics (hidden-code + structure + tiling scans: no hidden code, no missed structure).",
+  "parts": [
+    {
+      "name": "data_002D1000",
+      "file": "asm/original/rev0/lib/data_002D1000.s",
+      "romStart": "0x002D1000",
+      "romEnd": "0x002D16AC",
+      "bytes": 1708,
+      "class": "data",
+      "note": "Continuation of the incoming high-entropy texture/asset data span (data_002CBA58) across the 0x2D1000 chunk boundary. High-entropy graphics/texture asset data (1708 B; GBI-byte density coincidental, 0 jr$ra/0 prologues/0 RAM-pointers, no display-list ENDDL structure). raw-but-classified (pixel/texture/asset data; not decoded; possibly compressed)."
+    },
+    {
+      "name": "zero_fill_002D16AC",
+      "file": "asm/original/rev0/lib/zero_fill_002D16AC.s",
+      "romStart": "0x002D16AC",
+      "romEnd": "0x002D16C8",
+      "bytes": 28,
+      "class": "zero_fill",
+      "note": "Zero-fill alignment (7 words) between texture/graphics objects. parsed (all-zero)."
+    },
+    {
+      "name": "data_002D16C8",
+      "file": "asm/original/rev0/lib/data_002D16C8.s",
+      "romStart": "0x002D16C8",
+      "romEnd": "0x002D3B88",
+      "bytes": 9408,
+      "class": "data",
+      "note": "High-entropy graphics/texture asset data (9408 B; GBI-byte density coincidental, 0 jr$ra/0 prologues/0 RAM-pointers, no display-list ENDDL structure). raw-but-classified (pixel/texture/asset data; not decoded; possibly compressed)."
+    },
+    {
+      "name": "zero_fill_002D3B88",
+      "file": "asm/original/rev0/lib/zero_fill_002D3B88.s",
+      "romStart": "0x002D3B88",
+      "romEnd": "0x002D3B98",
+      "bytes": 16,
+      "class": "zero_fill",
+      "note": "Zero-fill alignment (4 words) between texture/graphics objects. parsed (all-zero)."
+    },
+    {
+      "name": "data_002D3B98",
+      "file": "asm/original/rev0/lib/data_002D3B98.s",
+      "romStart": "0x002D3B98",
+      "romEnd": "0x002D6F94",
+      "bytes": 13308,
+      "class": "data",
+      "note": "High-entropy graphics/texture asset data (13308 B; GBI-byte density coincidental, 0 jr$ra/0 prologues/0 RAM-pointers, no display-list ENDDL structure). raw-but-classified (pixel/texture/asset data; not decoded; possibly compressed)."
+    },
+    {
+      "name": "zero_fill_002D6F94",
+      "file": "asm/original/rev0/lib/zero_fill_002D6F94.s",
+      "romStart": "0x002D6F94",
+      "romEnd": "0x002D6FA8",
+      "bytes": 20,
+      "class": "zero_fill",
+      "note": "Zero-fill alignment (5 words) between texture/graphics objects. parsed (all-zero)."
+    },
+    {
+      "name": "data_002D6FA8",
+      "file": "asm/original/rev0/lib/data_002D6FA8.s",
+      "romStart": "0x002D6FA8",
+      "romEnd": "0x002D9EEC",
+      "bytes": 12100,
+      "class": "data",
+      "note": "High-entropy graphics/texture asset data (12100 B; GBI-byte density coincidental, 0 jr$ra/0 prologues/0 RAM-pointers, no display-list ENDDL structure). raw-but-classified (pixel/texture/asset data; not decoded; possibly compressed)."
+    },
+    {
+      "name": "zero_fill_002D9EEC",
+      "file": "asm/original/rev0/lib/zero_fill_002D9EEC.s",
+      "romStart": "0x002D9EEC",
+      "romEnd": "0x002D9F08",
+      "bytes": 28,
+      "class": "zero_fill",
+      "note": "Zero-fill alignment (7 words) between texture/graphics objects. parsed (all-zero)."
+    },
+    {
+      "name": "data_002D9F08",
+      "file": "asm/original/rev0/lib/data_002D9F08.s",
+      "romStart": "0x002D9F08",
+      "romEnd": "0x002DCDFC",
+      "bytes": 12020,
+      "class": "data",
+      "note": "High-entropy graphics/texture asset data (12020 B; GBI-byte density coincidental, 0 jr$ra/0 prologues/0 RAM-pointers, no display-list ENDDL structure). raw-but-classified (pixel/texture/asset data; not decoded; possibly compressed)."
+    },
+    {
+      "name": "zero_fill_002DCDFC",
+      "file": "asm/original/rev0/lib/zero_fill_002DCDFC.s",
+      "romStart": "0x002DCDFC",
+      "romEnd": "0x002DCE18",
+      "bytes": 28,
+      "class": "zero_fill",
+      "note": "Zero-fill alignment (7 words) between texture/graphics objects. parsed (all-zero)."
+    },
+    {
+      "name": "data_002DCE18",
+      "file": "asm/original/rev0/lib/data_002DCE18.s",
+      "romStart": "0x002DCE18",
+      "romEnd": "0x002DE858",
+      "bytes": 6720,
+      "class": "data",
+      "note": "High-entropy graphics/texture asset data (6720 B; GBI-byte density coincidental, 0 jr$ra/0 prologues/0 RAM-pointers, no display-list ENDDL structure). raw-but-classified (pixel/texture/asset data; not decoded; possibly compressed)."
+    },
+    {
+      "name": "zero_fill_002DE858",
+      "file": "asm/original/rev0/lib/zero_fill_002DE858.s",
+      "romStart": "0x002DE858",
+      "romEnd": "0x002DE868",
+      "bytes": 16,
+      "class": "zero_fill",
+      "note": "Zero-fill alignment (4 words) between texture/graphics objects. parsed (all-zero)."
+    },
+    {
+      "name": "data_002DE868",
+      "file": "asm/original/rev0/lib/data_002DE868.s",
+      "romStart": "0x002DE868",
+      "romEnd": "0x002E0D54",
+      "bytes": 9452,
+      "class": "data",
+      "note": "High-entropy graphics/texture asset data (9452 B; GBI-byte density coincidental, 0 jr$ra/0 prologues/0 RAM-pointers, no display-list ENDDL structure). raw-but-classified (pixel/texture/asset data; not decoded; possibly compressed)."
+    },
+    {
+      "name": "zero_fill_002E0D54",
+      "file": "asm/original/rev0/lib/zero_fill_002E0D54.s",
+      "romStart": "0x002E0D54",
+      "romEnd": "0x002E0D68",
+      "bytes": 20,
+      "class": "zero_fill",
+      "note": "Zero-fill alignment (5 words) between texture/graphics objects. parsed (all-zero)."
+    },
+    {
+      "name": "data_002E0D68",
+      "file": "asm/original/rev0/lib/data_002E0D68.s",
+      "romStart": "0x002E0D68",
+      "romEnd": "0x002E1000",
+      "bytes": 664,
+      "class": "data",
+      "note": "High-entropy graphics/texture asset data (664 B; GBI-byte density coincidental, 0 jr$ra/0 prologues/0 RAM-pointers, no display-list ENDDL structure). raw-but-classified (pixel/texture/asset data; not decoded; possibly compressed)."
+    }
+  ]
+}
