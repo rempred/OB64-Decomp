@@ -1,0 +1,86 @@
+{
+  "chunk": 43,
+  "range": "0x002B89B8-0x002C1000",
+  "generated": "2026-06-23",
+  "dataPartCount": 8,
+  "dataBytes": 34376,
+  "bytesByClass": {
+    "zero_fill": 172,
+    "data": 34204
+  },
+  "evidence": "Code/data boundary at 0x002B89B8 = the last executable function func_002B88C8's epilogue (jr$ra@0x2B89B0 + delay@0x2B89B4); audit_code_region executable extent ends here (0x2B89B4 last jr$ra). The whole span [0x2B89B8,0x2C1000) has 0 valid parent functions, 0 jr$ra epilogue pairs, and 0 prologues. Per-word classification: F3DEX2 display-list command words (high byte 0xDE-0xFF: E7/E2/FC/D9/DF etc.) ~25-40% across [0x2B89C0,0x2BE9B8) interleaved with vertex/matrix/arg payload + IEEE float/double constant pools (pi, 90.0, 60.0f); trailing high-entropy texture-tile data [0x2BF118,0x2C1000). NO 0x80xxxxxx RAM-pointer words anywhere (ptr density 0), so no pointer/jump tables. One embedded ASCII format signature 'N64 PtrTablesV2\\0' at 0x2B8BA0. Verified by adversarial data skeptics (no hidden code/strings/tables).",
+  "parts": [
+    {
+      "name": "zero_fill_002B89B8",
+      "file": "asm/original/rev0/lib/zero_fill_002B89B8.s",
+      "romStart": "0x002B89B8",
+      "romEnd": "0x002B89C0",
+      "bytes": 8,
+      "class": "zero_fill",
+      "note": "Alignment padding (2 zero words) after func_002B88C8's epilogue, marking the exact code->data transition at 0x2B89B8. parsed (all-zero)."
+    },
+    {
+      "name": "data_002B89C0",
+      "file": "asm/original/rev0/lib/data_002B89C0.s",
+      "romStart": "0x002B89C0",
+      "romEnd": "0x002B8D00",
+      "bytes": 832,
+      "class": "data",
+      "note": "F3DEX2 display-list fragment (E7 G_RDPHALF_2/pipesync, E2 G_SETOTHERMODE_L, FC G_SETCOMBINE, D9 G_GEOMETRYMODE, DF G_ENDDL) + IEEE float/double constant pools (pi 0x400921FB54442D18, 90.0 0x4056800000000000, 60.0f 0x42700000, 0.5) + embedded ASCII signature 'N64 PtrTablesV2\\0' @0x2B8BA0 followed by a small offset/size word table. raw-but-classified (graphics/display-list + constants; exact object boundaries not decoded)."
+    },
+    {
+      "name": "zero_fill_002B8D00",
+      "file": "asm/original/rev0/lib/zero_fill_002B8D00.s",
+      "romStart": "0x002B8D00",
+      "romEnd": "0x002B8D20",
+      "bytes": 32,
+      "class": "zero_fill",
+      "note": "Zero-fill gap (8 words) separating display-list groups. parsed (all-zero)."
+    },
+    {
+      "name": "data_002B8D20",
+      "file": "asm/original/rev0/lib/data_002B8D20.s",
+      "romStart": "0x002B8D20",
+      "romEnd": "0x002B98B0",
+      "bytes": 2960,
+      "class": "data",
+      "note": "F3DEX2 display-list + graphics/constant data (GBI command words ~30-38% interleaved with vertex/matrix/arg payload). raw-but-classified."
+    },
+    {
+      "name": "zero_fill_002B98B0",
+      "file": "asm/original/rev0/lib/zero_fill_002B98B0.s",
+      "romStart": "0x002B98B0",
+      "romEnd": "0x002B9910",
+      "bytes": 96,
+      "class": "zero_fill",
+      "note": "Zero-fill gap (24 words) separating display-list groups. parsed (all-zero)."
+    },
+    {
+      "name": "data_002B9910",
+      "file": "asm/original/rev0/lib/data_002B9910.s",
+      "romStart": "0x002B9910",
+      "romEnd": "0x002BF0F4",
+      "bytes": 22500,
+      "class": "data",
+      "note": "Large F3DEX2 display-list + vertex/graphics blob (22500 B; GBI command density ~33-40%, zero density ~6%; one interior 16-byte zero run at 0x2BF0A8 kept inline). The bulk briefing-screen render data. raw-but-classified (display-list/graphics; not field-decoded)."
+    },
+    {
+      "name": "zero_fill_002BF0F4",
+      "file": "asm/original/rev0/lib/zero_fill_002BF0F4.s",
+      "romStart": "0x002BF0F4",
+      "romEnd": "0x002BF118",
+      "bytes": 36,
+      "class": "zero_fill",
+      "note": "Zero-fill gap (9 words) before the trailing graphics/texture region. parsed (all-zero)."
+    },
+    {
+      "name": "data_002BF118",
+      "file": "asm/original/rev0/lib/data_002BF118.s",
+      "romStart": "0x002BF118",
+      "romEnd": "0x002C1000",
+      "bytes": 7912,
+      "class": "data",
+      "note": "Trailing high-entropy graphics/texture-tile pixel data (7912 B; GBI-byte density ~20% is coincidental, zero density ~0%, no display-list ENDDL structure). Consistent with RGBA32/CI texture tiles flagged by the parent 4a-audit just past the boundary. No compression/archive header found at the boundary. raw-but-classified (pixel/texture data; not decoded)."
+    }
+  ]
+}

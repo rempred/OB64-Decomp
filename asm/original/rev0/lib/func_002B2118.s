@@ -1,0 +1,38 @@
+/*
+ * Original Rev 0 MIPS reference split.
+ * Parent source: asm/original/rev0/code_002B1000_002C1000.s
+ * z64 range: 0x002B2118..0x002B2174 exclusive
+ * Decode comments are aids, not proof of semantic function boundaries.
+ */
+.set noat
+.set noreorder
+.text
+
+/* Parent func_002B2120 with its leading lui $v0,0x8023 / lw $v0,-0x568C($v0) read-before-write preamble (0x002B2118) folded FORWARD: body addiu $sp,-0x18 @0x002B2120 reads $v0 via lw $s0,0x10($v0) before writing it. Body ends jr $ra @0x002B2160 + delay @0x002B2164; trailing alignment nops 0x002B2168-0x002B2170 attach here. */
+func_002B2118:
+/* 0x002B2118 0x80321D18 0x3C028023 */ .word 0x3C028023 # lui $v0, 0x8023
+/* 0x002B211C 0x80321D1C 0x8C42A974 */ .word 0x8C42A974 # lw $v0, -0x568C($v0)
+
+/* function boundary candidate: func_002B2120, size=72, kind=prologue */
+func_002B2120:
+/* 0x002B2120 0x80321D20 0x27BDFFE8 */ .word 0x27BDFFE8 # addiu $sp, $sp, -0x18
+/* 0x002B2124 0x80321D24 0xAFBF0014 */ .word 0xAFBF0014 # sw $ra, 0x14($sp)
+/* 0x002B2128 0x80321D28 0xAFB00010 */ .word 0xAFB00010 # sw $s0, 0x10($sp)
+/* 0x002B212C 0x80321D2C 0x8C500010 */ .word 0x8C500010 # lw $s0, 0x10($v0)
+/* 0x002B2130 0x80321D30 0x12000009 */ .word 0x12000009 # beq $s0, $zero, 0x80321D58
+/* 0x002B2134 0x80321D34 0x00000000 */ .word 0x00000000 # nop
+/* 0x002B2138 0x80321D38 0x0C01C4B1 */ .word 0x0C01C4B1 # jal 0x800712C4
+/* 0x002B213C 0x80321D3C 0x8E040004 */ .word 0x8E040004 # lw $a0, 0x4($s0)
+/* 0x002B2140 0x80321D40 0x0C01C4B1 */ .word 0x0C01C4B1 # jal 0x800712C4
+/* 0x002B2144 0x80321D44 0x8E040008 */ .word 0x8E040008 # lw $a0, 0x8($s0)
+/* 0x002B2148 0x80321D48 0x0C01C4B1 */ .word 0x0C01C4B1 # jal 0x800712C4
+/* 0x002B214C 0x80321D4C 0x8E04000C */ .word 0x8E04000C # lw $a0, 0xC($s0)
+/* 0x002B2150 0x80321D50 0x0C01C4B1 */ .word 0x0C01C4B1 # jal 0x800712C4
+/* 0x002B2154 0x80321D54 0x02002021 */ .word 0x02002021 # move $a0, $s0
+/* 0x002B2158 0x80321D58 0x8FBF0014 */ .word 0x8FBF0014 # lw $ra, 0x14($sp)
+/* 0x002B215C 0x80321D5C 0x8FB00010 */ .word 0x8FB00010 # lw $s0, 0x10($sp)
+/* 0x002B2160 0x80321D60 0x03E00008 */ .word 0x03E00008 # jr $ra
+/* 0x002B2164 0x80321D64 0x27BD0018 */ .word 0x27BD0018 # addiu $sp, $sp, 0x18
+/* 0x002B2168 0x80321D68 0x00000000 */ .word 0x00000000 # nop
+/* 0x002B216C 0x80321D6C 0x00000000 */ .word 0x00000000 # nop
+/* 0x002B2170 0x80321D70 0x00000000 */ .word 0x00000000 # nop

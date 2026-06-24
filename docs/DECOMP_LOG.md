@@ -24,11 +24,15 @@ and replace the active log with a compact current-state summary.
   `original_mips`. A static control-flow audit found no credible code edge into
   the tail (0 branch targets, 0 J/JAL to a known function). Audit:
   `tools/audit_code_region.js` / `docs/CODE_REGION_AUDIT.md`.
-- Current tracked code source mix: forty-three composite real-assembler chunks
-  (chunk 0 177 `boot/`; chunks 1–42 in `lib/`: 350, 216, 67, 376, 88, 78, 103, 87, 34, 35, 191, 74, 67, 94, 153, 95, 66, 95, 80, 175, 99, 99, 73, 63, 71, 96, 142, 97, 103, 122, 86, 198, 109, 120, 134, 164, 180, 232, 155, 159, 160, 171) =
-  **5,534 tracked source files**, plus 57 generated fallback code chunks. **Chunks
-  0–42 (`0x00001000..0x002B1000`) are now fully source-owned as named code/data
-  parts** (chunk 39: 135 code + 19 data + 1 straddler-tail, MIXED — mission-briefing/combat
+- Current tracked code source mix: forty-four composite real-assembler chunks
+  (chunk 0 177 `boot/`; chunks 1–43 in `lib/`: 350, 216, 67, 376, 88, 78, 103, 87, 34, 35, 191, 74, 67, 94, 153, 95, 66, 95, 80, 175, 99, 99, 73, 63, 71, 96, 142, 97, 103, 122, 86, 198, 109, 120, 134, 164, 180, 232, 155, 159, 160, 171, 90) =
+  **5,624 tracked source files**, plus 56 generated fallback code chunks. **Chunks
+  0–43 (`0x00001000..0x002C1000`) are now fully source-owned as named code/data
+  parts** (chunk 43: 81 code + 1 straddler-tail + 8 data, MIXED — mission-briefing/
+  scenario-overview overlay CODE `0x2B1000..0x2B89B8` then the code→data transition at
+  `0x2B89B8` and an F3DEX2 display-list/float-pool/texture DATA tail `0x2B89B8..0x2C1000`;
+  crosses the executable-extent end `0x2B89B4`; ends in data, no outgoing straddler;
+  chunk 39: 135 code + 19 data + 1 straddler-tail, MIXED — mission-briefing/combat
   display-list code continuing chunks 36-38, wrapping THREE interior data islands (big data
   territory 0x273FFC..0x275850 with pointer/jump/float64 tables; a GBI display-list blob
   0x279DA8..0x27A020; a tail small-int LUT + zero-fill 0x280D48..0x281000); chunk ends in data
@@ -88,8 +92,8 @@ and replace the active log with a compact current-state summary.
   chunk 37: 170 normal code + 8 data + 2 function straddlers, MIXED - command-dispatcher
   mission-briefing/combat code + a 0x80x pointer/struct/float record-table DATA island
   [0x25E2BC..0x25EE90]);
-  next is chunk 43 (`0x002B1000`, still a
-  generated fallback chunk). The promote-tool merge blocker is FIXED.
+  next is chunk 44 (`0x002C1000`, still a
+  generated fallback chunk — past the executable extent, data territory). The promote-tool merge blocker is FIXED.
 - The parent boundary DB has TWO recurring defects, both fixed when splitting:
   (1) `end_rom` is INCLUSIVE (exclusive end = `end_rom + 4`; do NOT treat the
   delay slot as a gap — `tools/dump_function_context.js` now enforces this with a
@@ -390,12 +394,28 @@ Current named sequence:
   slice-seam preamble fragment (func_002ADF30), and 1 MED adversarial preamble fix
   (func_002A8F24/func_002A90EC). Adversarial 7 verifiers clean (1 MED + LOW fixed). Dossier +
   data index added. **Chunk 42 source-owned.**
-- Current remainder: none in chunks 0-42 (`0x1000..0x2B1000` fully source-owned).
-  **Current frontier: `0x002B1000` (chunk 43).** OUTGOING straddler from chunk 42:
-  `func_002B0E8C` (preamble @0x2B0E8C → prologue `addiu $sp,-0x140` @0x2B0E94, continues into
-  chunk 43). First action: emit `func_002B0E8C_chunk43tail` starting at `0x002B1000`, confirm its
-  return in chunk 43. NOTE: chunk 43 (`0x2B1000..0x2C1000`) CROSSES the evidenced executable-extent
-  end `0x002B89B4` — expect a code→data transition; classify honestly past `0x2B89B4`.
+- Chunk 43 source-ownership `0x002B1000..0x002C1000` (90 parts: 81 normal code + 1 incoming
+  straddler-tail + 8 data, MIXED — code then data tail): incoming straddler-tail
+  `func_002B0E8C_chunk43tail` (`0x2B1000..0x2B1014`, jr$ra@0x2B100C) → CODE region
+  `0x2B1014..0x2B89B8` (the mission-briefing/scenario-overview overlay, runtime RAM ~`0x8023Cxxx`;
+  62 parent functions + recovered frameless leaves + preamble folds; all 4 parent-DB gaps are
+  frameless code) → **code→data transition at `0x2B89B8`** (last function func_002B88C8 epilogue
+  jr$ra@0x2B89B0 + delay@0x2B89B4; executable extent ends 0x2B89B4) → DATA tail `0x2B89B8..0x2C1000`
+  (34,376 B, 8 parts: F3DEX2 display lists + IEEE float/double pools [pi/90/60f] + 'N64 PtrTablesV2'
+  signature + trailing high-entropy texture tiles; 4 zero_fill + 4 data; raw-but-classified). No
+  outgoing straddler (chunk ends in data, continues into chunk 44). Fixed 3 slice-seam preamble
+  folds + 1 intra-slice preamble (func_002B1028) + 1 adversarial-caught frameless-leaf under-split
+  (func_002B24F0 @0x2B24F0). Label normalization (5 redundant parent-boundary labels removed).
+  Adversarial 6 skeptics: 5 clean + 1 real under-split (fixed). Dossier + data index added.
+  Parent `4a_audit` sprite-blocks in this range rejected as scanner false positives. **Chunk 43
+  source-owned.**
+- Current remainder: none in chunks 0-43 (`0x1000..0x2C1000` fully source-owned;
+  evidenced executable MIPS `0x1000..0x2B89B4` now 100% source-owned).
+  **Current frontier: `0x002C1000` (chunk 44).** Chunk 43 ended in DATA (no outgoing function
+  straddler); the trailing `data_002BF118` high-entropy texture region continues across `0x2C1000`.
+  First action: own that data continuation. NOTE: chunk 44 (`0x2C1000..0x2D1000`) is PAST the
+  evidenced executable extent `0x002B89B4` — expect pure data territory (verified: 0 jr$ra, 0
+  pointers, uniform high-entropy graphics/texture data). Do not reclassify the global non-code tail.
 
 Static dossiers live under `docs/dossiers/` and are the durable evidence notes
 for each promoted source-layout split.
@@ -861,26 +881,27 @@ the full quick index. The newest dossiers are:
 
 ## Next Frontier
 
-Chunks 0–42 (`0x00001000..0x002B1000`) are fully source-owned as named code/data
-parts. Chunks 40-42 are MIXED FP/display-list + UI code: chunk 40 (159 parts) leading DATA +
-dispatcher func_00284288 + interior float/pointer DATA; chunk 41 (160 parts) FP-heavy + one DATA
-island (calendar/faction string pools 'Palatinean Year'/'Saldian'/'Viragore'); chunk 42 (171
-parts) FP + two DATA islands (concept/element string pools + a float64 pi/180/90 math pool).
-Dossiers: `docs/dossiers/lib-chunk4{0,1,2}-*.md`; data indexes
-`docs/data-index/rev0/chunk4{0,1,2}-data-region-inventory.json`.
+Chunks 0–43 (`0x00001000..0x002C1000`) are fully source-owned as named code/data
+parts. Chunk 43 (90 parts) is the MIXED code→data transition chunk: the mission-briefing/
+scenario-overview overlay CODE region `0x2B1000..0x2B89B8` (incoming straddler-tail
+func_002B0E8C_chunk43tail; 62 parent functions + frameless leaves) then the evidenced code→data
+boundary at `0x2B89B8` and an F3DEX2 display-list/float-pool/texture DATA tail `0x2B89B8..0x2C1000`
+(8 parts). Dossier: `docs/dossiers/lib-chunk43-2B1000-2C1000.md`; data index
+`docs/data-index/rev0/chunk43-data-region-inventory.json`.
 
-Current frontier is **`0x002B1000` (chunk 43)**. Coverage
-`0x1000..0x2B1000` = 2,818,048 B = 98.9065% of the 2,849,204-byte executable
-extent (code-only = 2,413,388 B = 84.7042%).
+Current frontier is **`0x002C1000` (chunk 44)**. The evidenced executable MIPS extent
+`0x1000..0x2B89B4` (2,849,204 B) is now **100.0000% source-owned**; total source-owned
+`0x1000..0x2C1000` (code+data) = 2,883,580 B (code-only = 2,444,548 B = 85.7977% of the
+extent; the rest are interior + chunk-43-tail data spans).
 
-FIRST for the next run: continue the OUTGOING straddler from chunk 42. `func_002B0E8C`
-(preamble @0x2B0E8C → prologue `addiu $sp,-0x140` @0x2B0E94) has no `jr$ra` before `0x2B1000`;
-emit `func_002B0E8C_chunk43tail` starting at `0x002B1000` and confirm its return in chunk 43.
-NOTE: chunk 43 (`0x2B1000..0x2C1000`) CROSSES the evidenced executable-extent end `0x002B89B4` —
-expect a code→data transition partway; classify honestly past `0x2B89B4` (do not assume code).
+FIRST for the next run: chunk 43 ended in DATA (no outgoing function straddler), so own the
+`data_002BF118` high-entropy texture continuation across `0x2C1000` first.
+NOTE: chunk 44 (`0x2C1000..0x2D1000`) is PAST the evidenced executable-extent end `0x002B89B4` —
+expect pure data territory (verified: 0 jr$ra, 0 pointers, uniform high-entropy texture data); do
+not reclassify the global non-code tail beyond the target chunk.
 
 There are now two active tracks. The library source-ownership track continues at
-`0x2B1000` (chunk 43) as above. The full-ROM coverage track (opened 2026-06-21)
+`0x2C1000` (chunk 44) as above. The full-ROM coverage track (opened 2026-06-21)
 next refines the exact code/data boundary near `0x002B89B4` and reclassifies the
 non-code tail `0x002B89B4..0x0063676C` from `original_mips` to a data source
 form, shrinking the configured code region to the executable extent while

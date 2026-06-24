@@ -15,10 +15,14 @@ Current passing commands:
 node tools/verify_setup.js
 ```
 
-Current source mix: 43 tracked composite real-assembler chunks (chunk 0 177
-`boot/`; chunks 1–42 in `lib/`: 350, 216, 67, 376, 88, 78, 103, 87, 34, 35, 191, 74, 67, 94, 153, 95, 66, 95, 80, 175, 99, 99, 73, 63, 71, 96, 142, 97, 103, 122, 86, 198, 109, 120, 134, 164, 180, 232, 155, 159, 160, 171) = 5,534 tracked
-source files, plus 57 generated fallback chunks. **Chunks 0–42 are fully
-source-owned as named code/data parts** (`0x00001000..0x002B1000`;
+Current source mix: 44 tracked composite real-assembler chunks (chunk 0 177
+`boot/`; chunks 1–43 in `lib/`: 350, 216, 67, 376, 88, 78, 103, 87, 34, 35, 191, 74, 67, 94, 153, 95, 66, 95, 80, 175, 99, 99, 73, 63, 71, 96, 142, 97, 103, 122, 86, 198, 109, 120, 134, 164, 180, 232, 155, 159, 160, 171, 90) = 5,624 tracked
+source files, plus 56 generated fallback chunks. **Chunks 0–43 are fully
+source-owned as named code/data parts** (`0x00001000..0x002C1000`;
+chunk 43: 81 code + 1 straddler-tail + 8 data, MIXED — the mission-briefing/scenario-overview
+overlay CODE region 0x2B1000..0x2B89B8 then the evidenced code→data transition at 0x2B89B8 and an
+F3DEX2 display-list/float-pool/texture DATA tail 0x2B89B8..0x2C1000; crosses the executable-extent
+end 0x2B89B4; chunk ends in data, NO outgoing straddler;
 chunk 39: 135 code + 19 data + 1 straddler-tail, MIXED — mission-briefing/combat display-list
 code continuing chunks 36-38, wrapping THREE interior data islands (big data territory
 0x273FFC..0x275850 [pointer/jump/float64 tables]; GBI display-list blob 0x279DA8..0x27A020;
@@ -67,7 +71,7 @@ at z64 0x1F36F0; chunk 32: 196 normal code + 0 data + 2 function straddlers, ALL
 frameless-leaf-dense FP/display-list + class-def/char-data code; chunk 33: 82 normal code +
 25 data + 2 function straddlers, MIXED - code + a font/glyph + pointer/float DATA region
 + a jump-table state-machine straddler);
-next is chunk 43 (`0x002B1000`).
+next is chunk 44 (`0x002C1000`, past the executable extent — data territory).
 
 The assembled code-region SHA256 is
 `40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`; the full
@@ -144,26 +148,28 @@ node tools/audit_code_region.js
    generates fallback owners for the rest. Keep `node tools/verify_setup.js`
    green after every promotion.
 
-3. Continue into chunk 43.
+3. Continue into chunk 44 (data territory).
 
-   Chunks 0–42 (`0x00001000..0x002B1000`) are fully source-owned as named code/data
-   parts: chunk 0 in `boot/`; chunks 1–42 in `lib/` (dossiers `lib-chunk1-…` …
-   `lib-chunk42-…`). Chunks 40-42 are MIXED FP/display-list + UI code: chunk 40 (159 parts,
-   leading DATA + dispatcher func_00284288 + interior float/pointer DATA), chunk 41 (160 parts,
-   FP-heavy + one DATA island with calendar/faction string pools), chunk 42 (171 parts, FP +
-   two DATA islands incl. a float64 pi/180/90 math pool + concept/element string pools). Data
-   indexes `docs/data-index/rev0/chunk4{0,1,2}-data-region-inventory.json`. All adversarial swarms
-   clean (minor fixes only).
+   Chunks 0–43 (`0x00001000..0x002C1000`) are fully source-owned as named code/data
+   parts: chunk 0 in `boot/`; chunks 1–43 in `lib/` (dossiers `lib-chunk1-…` …
+   `lib-chunk43-…`). Chunk 43 (90 parts) is the MIXED code→data transition chunk: the
+   mission-briefing/scenario-overview overlay CODE region `0x2B1000..0x2B89B8` (incoming
+   straddler-tail func_002B0E8C_chunk43tail; 62 parent functions + frameless leaves) then the
+   evidenced code→data boundary at `0x2B89B8` and an F3DEX2 display-list/float-pool/texture DATA
+   tail `0x2B89B8..0x2C1000` (8 parts). Data index
+   `docs/data-index/rev0/chunk43-data-region-inventory.json`. Adversarial swarm: 5 clean + 1 real
+   frameless-leaf under-split (func_002B24F0), fixed.
 
-   **Next frontier: `0x002B1000` (chunk 43).** INCOMING OUTGOING-straddler from chunk 42:
-   `func_002B0E8C` (preamble @0x2B0E8C → prologue `addiu $sp,-0x140` @0x2B0E94, continues into
-   chunk 43). FIRST action: emit `func_002B0E8C_chunk43tail` starting at `0x002B1000` and confirm
-   its return. NOTE: chunk 43 (`0x2B1000..0x2C1000`) CROSSES the evidenced executable-extent end
-   `0x002B89B4` — expect a code→data transition partway; classify honestly past `0x2B89B4` (do not
-   assume code). Pipeline: `dump_function_context`/`plan_chunk`/`carve_chunk`/`slice_chunk`/
-   `check_splits`/`check_boundaries` + analysis + data + adversarial swarms (Workflow). Coverage
-   now 98.9065% (code-only 84.7042%). See the DECOMP_LOG and `docs/dossiers/lib-chunk4{0,1,2}-*.md`.
-   No new patch-workbench candidates in chunks 40-42; the chunk-33 candidates (`0x21CD48`/`0x21BF84`)
+   **Next frontier: `0x002C1000` (chunk 44).** The evidenced executable MIPS extent
+   `0x1000..0x2B89B4` is now 100.0000% source-owned. Chunk 43 ended in DATA (no outgoing function
+   straddler); the `data_002BF118` high-entropy texture region continues across `0x2C1000`. FIRST
+   action: own that data continuation. NOTE: chunk 44 (`0x2C1000..0x2D1000`) is PAST the evidenced
+   executable-extent end `0x002B89B4` — expect pure data territory (verified: 0 jr$ra, 0 pointers,
+   uniform high-entropy graphics/texture data); do not reclassify the global non-code tail beyond
+   the target chunk. Pipeline: data-territory scans (entropy/string/pointer/zero) + data classifier
+   + adversarial data skeptic (Workflow). Coverage now 100.0000% of the executable extent (code-only
+   85.7977%). See the DECOMP_LOG and `docs/dossiers/lib-chunk43-2B1000-2C1000.md`.
+   No new patch-workbench candidates in chunk 43; the chunk-33 candidates (`0x21CD48`/`0x21BF84`)
    and chunk-31 `0x1F36F0` stand (`candidate`/`needs-runtime`, RSR-011/RSR-014).
 
 4. Keep the setup gate green.

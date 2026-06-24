@@ -1,0 +1,39 @@
+/*
+ * Original Rev 0 MIPS reference split.
+ * Parent source: asm/original/rev0/code_002B1000_002C1000.s
+ * z64 range: 0x002B5230..0x002B529C exclusive
+ * Decode comments are aids, not proof of semantic function boundaries.
+ */
+.set noat
+.set noreorder
+.text
+
+/* Un-merged frameless leaf (over-merge in plan idx33). Computes scaled offset over $a0 table, zeroes 0xF bytes, internal j 0x80240474 intra-function. jr $ra at 0x5294 + delay 0x5298. */
+func_002B5230:
+/* 0x002B5230 0x80324E30 0x00052880 */ .word 0x00052880 # sll $a1, $a1, 2
+/* 0x002B5234 0x80324E34 0x90860086 */ .word 0x90860086 # lbu $a2, 0x86($a0)
+/* 0x002B5238 0x80324E38 0x00A42821 */ .word 0x00A42821 # addu $a1, $a1, $a0
+/* 0x002B523C 0x80324E3C 0x8CA50000 */ .word 0x8CA50000 # lw $a1, 0x0($a1)
+/* 0x002B5240 0x80324E40 0x10C00014 */ .word 0x10C00014 # beq $a2, $zero, 0x80324E94
+/* 0x002B5244 0x80324E44 0x3C038888 */ .word 0x3C038888 # lui $v1, 0x8888
+/* 0x002B5248 0x80324E48 0x8C82000C */ .word 0x8C82000C # lw $v0, 0xC($a0)
+/* 0x002B524C 0x80324E4C 0x34638889 */ .word 0x34638889 # ori $v1, $v1, 0x8889
+/* 0x002B5250 0x80324E50 0x00021102 */ .word 0x00021102 # srl $v0, $v0, 4
+/* 0x002B5254 0x80324E54 0x00430018 */ .word 0x00430018 # mult $v0, $v1
+/* 0x002B5258 0x80324E58 0x00003810 */ .word 0x00003810 # mfhi $a3
+/* 0x002B525C 0x80324E5C 0x00E21021 */ .word 0x00E21021 # addu $v0, $a3, $v0
+/* 0x002B5260 0x80324E60 0x00021103 */ .word 0x00021103 # sra $v0, $v0, 4
+/* 0x002B5264 0x80324E64 0x00460018 */ .word 0x00460018 # mult $v0, $a2
+/* 0x002B5268 0x80324E68 0x00001012 */ .word 0x00001012 # mflo $v0
+/* 0x002B526C 0x80324E6C 0x00021100 */ .word 0x00021100 # sll $v0, $v0, 4
+/* 0x002B5270 0x80324E70 0x00A21821 */ .word 0x00A21821 # addu $v1, $a1, $v0
+/* 0x002B5274 0x80324E74 0x00A3102B */ .word 0x00A3102B # sltu $v0, $a1, $v1
+/* 0x002B5278 0x80324E78 0x10400006 */ .word 0x10400006 # beq $v0, $zero, 0x80324E94
+/* 0x002B527C 0x80324E7C 0x00000000 */ .word 0x00000000 # nop
+/* 0x002B5280 0x80324E80 0xA0A0000F */ .word 0xA0A0000F # sb $zero, 0xF($a1)
+/* 0x002B5284 0x80324E84 0x24A50010 */ .word 0x24A50010 # addiu $a1, $a1, 0x10
+/* 0x002B5288 0x80324E88 0xA0A0000F */ .word 0xA0A0000F # sb $zero, 0xF($a1)
+/* 0x002B528C 0x80324E8C 0x0809011D */ .word 0x0809011D # j 0x80240474
+/* 0x002B5290 0x80324E90 0x24A50010 */ .word 0x24A50010 # addiu $a1, $a1, 0x10
+/* 0x002B5294 0x80324E94 0x03E00008 */ .word 0x03E00008 # jr $ra
+/* 0x002B5298 0x80324E98 0x00001021 */ .word 0x00001021 # move $v0, $zero

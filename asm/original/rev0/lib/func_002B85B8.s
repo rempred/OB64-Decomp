@@ -1,0 +1,31 @@
+/*
+ * Original Rev 0 MIPS reference split.
+ * Parent source: asm/original/rev0/code_002B1000_002C1000.s
+ * z64 range: 0x002B85B8..0x002B8600 exclusive
+ * Decode comments are aids, not proof of semantic function boundaries.
+ */
+.set noat
+.set noreorder
+.text
+
+/* Framed leaf (addiu$sp,-0x18). jal 0x80089A10; three jal 0x800712C4 calls; ends jr$ra@0x2B85F8 + delay addiu$sp,0x18@0x2B85FC. Un-merged from parent idx 59 which incorrectly extended to 0x2B8610. */
+/* function boundary candidate: func_002B85B8, size=80, kind=prologue */
+func_002B85B8:
+/* 0x002B85B8 0x803281B8 0x27BDFFE8 */ .word 0x27BDFFE8 # addiu $sp, $sp, -0x18
+/* 0x002B85BC 0x803281BC 0xAFB00010 */ .word 0xAFB00010 # sw $s0, 0x10($sp)
+/* 0x002B85C0 0x803281C0 0xAFBF0014 */ .word 0xAFBF0014 # sw $ra, 0x14($sp)
+/* 0x002B85C4 0x803281C4 0x0C022684 */ .word 0x0C022684 # jal 0x80089A10
+/* 0x002B85C8 0x803281C8 0x00808021 */ .word 0x00808021 # move $s0, $a0
+/* 0x002B85CC 0x803281CC 0x8E040000 */ .word 0x8E040000 # lw $a0, 0x0($s0)
+/* 0x002B85D0 0x803281D0 0x0C01C4B1 */ .word 0x0C01C4B1 # jal 0x800712C4
+/* 0x002B85D4 0x803281D4 0x00000000 */ .word 0x00000000 # nop
+/* 0x002B85D8 0x803281D8 0x0C01C4B1 */ .word 0x0C01C4B1 # jal 0x800712C4
+/* 0x002B85DC 0x803281DC 0x8E040004 */ .word 0x8E040004 # lw $a0, 0x4($s0)
+/* 0x002B85E0 0x803281E0 0x0C01C4B1 */ .word 0x0C01C4B1 # jal 0x800712C4
+/* 0x002B85E4 0x803281E4 0x8E040008 */ .word 0x8E040008 # lw $a0, 0x8($s0)
+/* 0x002B85E8 0x803281E8 0x0C01C4B1 */ .word 0x0C01C4B1 # jal 0x800712C4
+/* 0x002B85EC 0x803281EC 0x02002021 */ .word 0x02002021 # move $a0, $s0
+/* 0x002B85F0 0x803281F0 0x8FBF0014 */ .word 0x8FBF0014 # lw $ra, 0x14($sp)
+/* 0x002B85F4 0x803281F4 0x8FB00010 */ .word 0x8FB00010 # lw $s0, 0x10($sp)
+/* 0x002B85F8 0x803281F8 0x03E00008 */ .word 0x03E00008 # jr $ra
+/* 0x002B85FC 0x803281FC 0x27BD0018 */ .word 0x27BD0018 # addiu $sp, $sp, 0x18
