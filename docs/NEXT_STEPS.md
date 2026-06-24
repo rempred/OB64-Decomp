@@ -15,13 +15,16 @@ Current passing commands:
 node tools/verify_setup.js
 ```
 
-Current source mix: 68 tracked composite real-assembler chunks (chunk 0 177
-`boot/`; chunks 1–67 in `lib/`: 350, 216, 67, 376, 88, 78, 103, 87, 34, 35, 191, 74, 67, 94, 153, 95, 66, 95, 80, 175, 99, 99, 73, 63, 71, 96, 142, 97, 103, 122, 86, 198, 109, 120, 134, 164, 180, 232, 155, 159, 160, 171, 90, 17, 15, 17, 27, 9, 11, 13, 13, 13, 9, 9, 9, 7, 1, 5, 3, 3, 5, 5, 5, 7, 15, 8, 21) = 5,871 tracked
-source files, plus 32 generated fallback chunks. **Chunks 0–67 are fully
-source-owned as named code/data parts** (`0x00001000..0x00441000`;
+Current source mix: 78 tracked composite real-assembler chunks (chunk 0 177
+`boot/`; chunks 1–77 in `lib/`: 350, 216, 67, 376, 88, 78, 103, 87, 34, 35, 191, 74, 67, 94, 153, 95, 66, 95, 80, 175, 99, 99, 73, 63, 71, 96, 142, 97, 103, 122, 86, 198, 109, 120, 134, 164, 180, 232, 155, 159, 160, 171, 90, 17, 15, 17, 27, 9, 11, 13, 13, 13, 9, 9, 9, 7, 1, 5, 3, 3, 5, 5, 5, 7, 15, 8, 21, 33, 23, 19, 23, 21, 33, 13, 7, 7, 15) = 6,065 tracked
+source files, plus 22 generated fallback chunks. **Chunks 0–77 are fully
+source-owned as named code/data parts** (`0x00001000..0x004E1000`;
+chunks 68-77 = flat Section A AUDIO sample payload [0x441000..0x4E1000]: 194 parts [102 data + 92
+zero_fill, 0 code], raw 4-bit ADPCM/VADPCM after the chunk-66/67 bank; whole-range entropy 7.309, no
+sub-bank header, 4 quiet-audio <6.0 windows confirmed non-structural, 10-chunk batch stayed clean; outgoing
+data_004E0CE8 into chunk 78 (A/B boundary ~0x4E3158 just past);
 chunk 67 = the chunk-66 audio bank's WaveTables sample-payload TAIL closure + flat post-tail Section A
-audio [0x431000..0x441000]: 21 parts [11 data + 10 zero_fill, 0 code]; payload ends 0x431EF1 (terminator
-zero_fill_00431EF4); NO new sub-bank header; chunk-67 bytes owned, chunk-66+67 bank unit partial; outgoing
+audio [0x431000..0x441000]: 21 parts; payload ends 0x431EF1; chunk-66+67 bank unit partial; outgoing
 data_0043F3D8 into chunk 68;
 chunk 66 = a DECODED N64 audio sound-bank [0x421000..0x431000]: 8 structural parts [5 data + 3 zero_fill,
 0 code], N64 PtrTablesV2 codebook @0x423FF0 [133 order-2 VADPCM records] + N64 WaveTables @0x429CD0 — CONFIRMS
@@ -102,7 +105,7 @@ at z64 0x1F36F0; chunk 32: 196 normal code + 0 data + 2 function straddlers, ALL
 frameless-leaf-dense FP/display-list + class-def/char-data code; chunk 33: 82 normal code +
 25 data + 2 function straddlers, MIXED - code + a font/glyph + pointer/float DATA region
 + a jump-table state-machine straddler);
-next is chunk 68 (`0x00441000`, resume flat 10-chunk Section A audio batches).
+next is chunk 78 (`0x004E1000`, short audio tail then PARSE Section B at ~0x4E3158).
 
 The assembled code-region SHA256 is
 `40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`; the full
@@ -179,33 +182,36 @@ node tools/audit_code_region.js
    generates fallback owners for the rest. Keep `node tools/verify_setup.js`
    green after every promotion.
 
-3. Resume flat 10-chunk Section A audio batches at chunk 68 (the audio bank is closed).
+3. Short transitional unit at chunk 78, then PIVOT to PARSE Section B (the audio is owned through 0x4E1000).
 
-   Chunks 0–67 (`0x00001000..0x00441000`) are fully source-owned as named code/data
-   parts: chunk 0 in `boot/`; chunks 1–67 in `lib/` (dossiers `lib-chunk1-…` … `lib-chunk47-…` +
+   Chunks 0–77 (`0x00001000..0x004E1000`) are fully source-owned as named code/data
+   parts: chunk 0 in `boot/`; chunks 1–77 in `lib/` (dossiers `lib-chunk1-…` … `lib-chunk47-…` +
    `section-a-00301000-00341000-data-ownership.md` + `section-a-00341000-003E1000-data-ownership.md` +
    `section-a-003E1000-00421000-data-ownership.md` + `section-a-audio-bank-00421000-00431000-data-ownership.md`
-   + `section-a-audio-bank-tail-00431000-00441000-data-ownership.md`).
+   + `section-a-audio-bank-tail-00431000-00441000-data-ownership.md` + `section-a-flat-audio-00441000-004E1000-data-ownership.md`).
    Chunk 43 (90 parts) is the MIXED code→data
    transition chunk. Chunks 44-47 + Section A slices 1-3 (chunks 48-65) are DATA TERRITORY: each entire
    64 KiB is non-code high-entropy asset data past the executable extent (0 jr$ra/0 prologues/0
    pointers), `data_` + `zero_fill_` parts; adversarial skeptics all clean. Chunk 66 is a DECODED N64
    audio sound-bank (PtrTablesV2 codebook + WaveTables samples, order-2 VADPCM; 8 structural parts);
-   chunk 67 closes that bank's WaveTables payload (ends 0x431EF1) + flat post-tail audio (21 parts).
+   chunk 67 closes that bank's WaveTables payload (ends 0x431EF1) + flat post-tail audio (21 parts);
+   chunks 68-77 are flat Section A audio sample payload (194 parts). All confirm Section A is AUDIO.
    Indexes `docs/data-index/rev0/chunk4{3,4,5,6,7}-data-region-inventory.json` +
    `section-a-00301000-00341000-data-inventory.json` + `section-a-00341000-003E1000-data-inventory.json`
    + `section-a-003E1000-00421000-data-inventory.json` + `section-a-audio-bank-00421000-00431000-data-inventory.json`
-   + `section-a-audio-bank-tail-00431000-00441000-data-inventory.json`.
+   + `section-a-audio-bank-tail-00431000-00441000-data-inventory.json` + `section-a-flat-audio-00441000-004E1000-data-inventory.json`.
 
-   **Next frontier: `0x00441000` (chunk 68).** The evidenced executable MIPS extent
-   `0x1000..0x2B89B4` is **100.0000% source-owned**. Chunk 67 ended in DATA with an OUTGOING
-   continuation: `data_0043F3D8` (flat audio) runs to `0x00441000` with no terminating zero-fill and
-   continues into chunk 68. The audio-bank schema boundary is CLOSED. FIRST action: RESUME flat 10-chunk
-   Section A audio batches at chunk 68 (expected chunks 68-77, `0x441000..0x4E1000`, before the Section A/B
-   boundary ~0x4E3000); open mid-stream, fall back if a new PtrTablesV2/WaveTables header reappears. NOTE:
-   chunk 68 (`0x441000..0x451000`) is still inside survey Section A (to 0x4E3000;
-   Section A confirmed AUDIO) — do not reclassify the global
-   non-code tail beyond the target. Use `docs/templates/data-territory-source-ownership-run-prompt.md`.
+   **Next frontier: `0x004E1000` (chunk 78).** The evidenced executable MIPS extent
+   `0x1000..0x2B89B4` is **100.0000% source-owned**. Chunk 77 ended in DATA with an OUTGOING
+   continuation: `data_004E0CE8` (flat audio) runs to `0x004E1000` with no terminating zero-fill and
+   continues into chunk 78. NEXT is a SHORT/TRANSITIONAL unit, NOT a flat 10-chunk batch: only ~0x2000 of
+   flat Section A audio remains (`0x4E1000..~0x4E3158`), then the **Section A/B boundary** at ~0x4E3158
+   (byte-confirmed: a short zero-fill then an 8-byte-stride `(offset,0x64)` index table = the survey
+   Section-B table). FIRST action: own the short audio tail as flat data, then **PIVOT to PARSE Section B**
+   as a real fixed-record index table (NOT flat-tiled), cross-ref `ob64_anim_block_catalog.json` (first
+   cutscene block 0x4F0FB0, the 63 gate-proven audio-sequence blocks 0x4F0FB0..0x594280). NOTE: chunk 78
+   (`0x4E1000..0x4F1000`) CROSSES the A/B boundary — do not flat-tile past it. Use
+   `docs/templates/data-territory-source-ownership-run-prompt.md`.
    Pipeline: data-territory scans (entropy/string/pointer/zero) + tiling generator + adversarial
    data/parent swarm (Workflow). Coverage 100.0000% of the executable extent (code-only 85.7977%). See
    the DECOMP_LOG, `docs/data-index/rev0/data-territory-survey-00301000.json`, and the Section A slice-1 dossier.

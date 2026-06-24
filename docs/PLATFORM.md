@@ -136,7 +136,7 @@ Expected current results:
   `0x001C1000..0x001D1000` 97; `0x001D1000..0x001E1000` 103;
   `0x001E1000..0x001F1000` 122; `0x001F1000..0x00201000` 86;
   `0x00201000..0x00211000` 198; `0x00211000..0x00221000` 109 files =
-  5,871 tracked source files total across chunks 0–67; the per-chunk enumeration above is a HISTORICAL setup-milestone snapshot through chunk 33 — see DECOMP_LOG / the chunk list for current per-chunk counts), plus 32 generated fallback chunks.
+  6,065 tracked source files total across chunks 0–77; the per-chunk enumeration above is a HISTORICAL setup-milestone snapshot through chunk 33 — see DECOMP_LOG / the chunk list for current per-chunk counts), plus 22 generated fallback chunks.
 - `rebuild_rom.js --assembled-code ...` substitutes that assembled code blob for
   the raw code segment and still confirms the same full-ROM SHA256.
 - `build_full_source_manifest.js` emits a 1,059-entry full-ROM source ownership
@@ -217,8 +217,8 @@ These outputs are useful but ignored:
 - ROM size: 41,943,040 bytes.
 - Code region currently extracted as original MIPS:
   `0x00001000..0x0063676C`.
-- Chunks 0–67 (`0x00001000..0x00441000`) are fully source-owned as named
-  code/data parts (5,871 tracked source files: 177 in `boot/` + 5,694 in `lib/`;
+- Chunks 0–77 (`0x00001000..0x004E1000`) are fully source-owned as named
+  code/data parts (6,065 tracked source files: 177 in `boot/` + 5,888 in `lib/`;
   chunk 39: 135 code + 1 straddler-tail + 19 data, MIXED — mission-briefing/combat display-list
   code continuing chunks 36-38, wrapping THREE interior data islands (big data territory
   0x273FFC..0x275850 [136/272-word pointer tables + float64 pool + 8-row jump table]; GBI
@@ -280,7 +280,7 @@ These outputs are useful but ignored:
   FP/display-list + class-def/char-data code;
   chunk 33: 82 normal code + 25 data + 2 function straddlers, MIXED - code + a font/glyph +
   pointer/float DATA region [`0x211D14..0x213B10`] + a jump-table state-machine straddler);
-  current split frontier `0x00441000` (chunk 68, still a generated fallback chunk — resume flat 10-chunk Section A audio batches).
+  current split frontier `0x004E1000` (chunk 78, still a generated fallback chunk — short audio tail then the Section A/B boundary ~0x4E3158).
   chunk 1
   `0x11000..0x21000` is a graphics/unit-script/math/libc/libultra library; chunk 2
   `0x21000..0x31000` is the statically-linked libultra (N64 SDK) + libc + 64-bit
@@ -520,8 +520,8 @@ prints PASS. Current PASS summary:
 - Toolchain: `n64-tools-gcc-toolchain-mips64-win64`, GNU Binutils 2.39.
 - Binutils smoke tests: `.word`, real instructions, `.set noreorder`, and first
   tracked chunk real assembly all pass.
-- Source mix: 68 tracked composite real-asm chunks made from 5,871 tracked source
-  files, plus 32 generated fallback chunks. (Current totals: 68 composites / 5,871 files / 32 fallback.)
+- Source mix: 78 tracked composite real-asm chunks made from 6,065 tracked source
+  files, plus 22 generated fallback chunks. (Current totals: 78 composites / 6,065 files / 22 fallback.)
 - Source manifest: 1,059 entries, zero unknown bytes, 2,469,141 ambiguous bytes
   preserved explicitly.
 - Source owners: 3 tracked non-code files / 44,029 bytes plus 1,055 generated
