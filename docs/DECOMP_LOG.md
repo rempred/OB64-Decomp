@@ -24,11 +24,16 @@ and replace the active log with a compact current-state summary.
   `original_mips`. A static control-flow audit found no credible code edge into
   the tail (0 branch targets, 0 J/JAL to a known function). Audit:
   `tools/audit_code_region.js` / `docs/CODE_REGION_AUDIT.md`.
-- Current tracked code source mix: sixty-two composite real-assembler chunks
-  (chunk 0 177 `boot/`; chunks 1–61 in `lib/`: 350, 216, 67, 376, 88, 78, 103, 87, 34, 35, 191, 74, 67, 94, 153, 95, 66, 95, 80, 175, 99, 99, 73, 63, 71, 96, 142, 97, 103, 122, 86, 198, 109, 120, 134, 164, 180, 232, 155, 159, 160, 171, 90, 17, 15, 17, 27, 9, 11, 13, 13, 13, 9, 9, 9, 7, 1, 5, 3, 3, 5) =
-  **5,810 tracked source files**, plus 38 generated fallback code chunks. **Chunks
-  0–61 (`0x00001000..0x003E1000`) are now fully source-owned as named code/data
-  parts** (chunks 52-61 = Section A slice 2 [0x341000..0x3E1000]: 0 code + 64 data [37 data + 27
+- Current tracked code source mix: sixty-six composite real-assembler chunks
+  (chunk 0 177 `boot/`; chunks 1–65 in `lib/`: 350, 216, 67, 376, 88, 78, 103, 87, 34, 35, 191, 74, 67, 94, 153, 95, 66, 95, 80, 175, 99, 99, 73, 63, 71, 96, 142, 97, 103, 122, 86, 198, 109, 120, 134, 164, 180, 232, 155, 159, 160, 171, 90, 17, 15, 17, 27, 9, 11, 13, 13, 13, 9, 9, 9, 7, 1, 5, 3, 3, 5, 5, 5, 7, 15) =
+  **5,842 tracked source files**, plus 34 generated fallback code chunks. **Chunks
+  0–65 (`0x00001000..0x00421000`) are now fully source-owned as named code/data
+  parts** (chunks 62-65 = Section A slice 3, a FALLBACK from the planned 10-chunk batch 62-71: 0 code +
+  32 data [18 data + 14 zero_fill] across `0x3E1000..0x421000`; stopped at `0x421000` because chunk 66
+  is a **decoded N64 audio sound-bank** [magics `N64 PtrTablesV2` @0x423FF0 + `N64 WaveTables` @0x429CD0]
+  with a low-entropy region [2.66 bits/2KB @0x429800] that needs a focused decode run — strong evidence
+  the whole Section A family is AUDIO, not texture; 0 jr$ra/0 prologues at all 4 alignments;
+  parent-tooling-dark) (chunks 52-61 = Section A slice 2 [0x341000..0x3E1000]: 0 code + 64 data [37 data + 27
   zero_fill], DATA TERRITORY — same high-entropy asset family, TYPE UNRESOLVED, conservative names;
   0 jr$ra/0 prologues/0 pointers at all 4 byte alignments; parent-tooling-dark (all leads rejected,
   4a/4f byte-disproven); container layout decoded [37 objects + 27 pads, 8-aligned-not-16]; outgoing
@@ -104,8 +109,8 @@ and replace the active log with a compact current-state summary.
   chunk 37: 170 normal code + 8 data + 2 function straddlers, MIXED - command-dispatcher
   mission-briefing/combat code + a 0x80x pointer/struct/float record-table DATA island
   [0x25E2BC..0x25EE90]);
-  next is chunk 62 (`0x003E1000`, still a
-  generated fallback chunk — deeper in the non-code data tail). The promote-tool merge blocker is FIXED.
+  next is chunk 66 (`0x00421000`, still a
+  generated fallback chunk — the deferred N64 audio sound-bank). The promote-tool merge blocker is FIXED.
 - The parent boundary DB has TWO recurring defects, both fixed when splitting:
   (1) `end_rom` is INCLUSIVE (exclusive end = `end_rom + 4`; do NOT treat the
   delay slot as a gap — `tools/dump_function_context.js` now enforces this with a
@@ -490,13 +495,27 @@ Current named sequence:
   quality (machine-checkable standard scales O(bytes)); 10 = safe ceiling for flat data-only Section A,
   drop to 4 on any heterogeneity. Index `docs/data-index/rev0/section-a-00341000-003E1000-data-inventory.json`
   + dossier added. Outgoing continuation `data_003DE988` into chunk 62. **Chunks 52-61 source-owned (Section A slice 2).**
-- Current remainder: none in chunks 0-61 (`0x1000..0x3E1000` fully source-owned;
+- Section A slice 3 ownership `0x003E1000..0x00421000` (chunks 62-65; 32 parts: 18 data + 14 zero_fill,
+  0 code — DATA TERRITORY) — a **FALLBACK** from the planned 10-chunk batch (62-71). Continues slice 2's
+  `data_003DE988` seamlessly. Entropy 7.14-7.30 (min-2KB 6.49-6.97); 0 jr$ra/0 prologues/0 epilogues at
+  all 4 byte alignments (discriminator validated vs control .text). **Fell back at `0x421000`** because
+  chunk 66 is a **decoded N64 audio sound-bank** — embedded magics `N64 PtrTablesV2` @0x423FF0 +
+  `N64 WaveTables` @0x429CD0, a 133-record directory (strides 0xA0/0xD0, offset table @0x429820) +
+  WaveTables sample payload, with a low-entropy structured region (2.66 bits/2KB @0x429800, the
+  survey-documented 519B zero run @0x429AC1 = bank padding). This trips the `<6.0 bits/2KiB → fall back`
+  rule and is **strong evidence the entire Section A family is AUDIO, not texture** (kept conservative
+  for 62-65; magics are in chunk 66). Parent-tooling-dark (all leads byte-rejected). Adversarial swarm 5
+  passes: unanimous `yes` for 62-65, fallback endorsed. Index
+  `docs/data-index/rev0/section-a-003E1000-00421000-data-inventory.json` + dossier added. Outgoing
+  continuation `data_00420438` into chunk 66. **Chunks 62-65 source-owned (Section A slice 3, fallback).**
+- Current remainder: none in chunks 0-65 (`0x1000..0x421000` fully source-owned;
   evidenced executable MIPS `0x1000..0x2B89B4` 100% source-owned).
-  **Current frontier: `0x003E1000` (chunk 62).** Chunk 61 ended in DATA with an OUTGOING continuation
-  (`data_003DE988` runs to `0x3E1000`, no terminating zero-fill). First action: own that data
-  continuation across `0x3E1000` (Section A slice 3). NOTE: chunk 62 (`0x3E1000..0x3F1000`) is still
-  inside survey Section A (high-entropy asset pool to 0x4E3000) — expect more data territory. The
-  global non-code tail `0x002B89B4..0x0063676C` remains a separate, larger reclassification design.
+  **Current frontier: `0x00421000` (chunk 66).** Chunk 65 ended in DATA with an OUTGOING continuation
+  (`data_00420438` runs to `0x421000`, no terminating zero-fill); chunk 66 is the deferred N64 audio
+  sound-bank. First action next run: a FOCUSED audio-decode run on chunk 66+ (`N64 PtrTablesV2` @0x423FF0
+  header + 133-record directory + `N64 WaveTables` @0x429CD0 sample payload), small batch until the
+  schema resolves. NOTE: chunk 66 (`0x421000..0x431000`) is still inside survey Section A (to 0x4E3000).
+  The global non-code tail `0x002B89B4..0x0063676C` remains a separate, larger reclassification design.
 
 Static dossiers live under `docs/dossiers/` and are the durable evidence notes
 for each promoted source-layout split.
@@ -962,23 +981,27 @@ the full quick index. The newest dossiers are:
 
 ## Next Frontier
 
-Chunks 0–61 (`0x00001000..0x003E1000`) are fully source-owned as named code/data
+Chunks 0–65 (`0x00001000..0x00421000`) are fully source-owned as named code/data
 parts. Chunk 43 (90 parts) is the MIXED code→data transition chunk: the mission-briefing/
 scenario-overview overlay CODE region `0x2B1000..0x2B89B8` (incoming straddler-tail
 func_002B0E8C_chunk43tail; 62 parent functions + frameless leaves) then the evidenced code→data
 boundary at `0x2B89B8` and an F3DEX2 display-list/float-pool/texture DATA tail `0x2B89B8..0x2C1000`
-(8 parts). Chunks 44-47 + Section A slices 1-2 (chunks 48-61) are DATA TERRITORY: each entire 64 KiB is
+(8 parts). Chunks 44-47 + Section A slices 1-3 (chunks 48-65) are DATA TERRITORY: each entire 64 KiB is
 non-code high-entropy asset data past the executable extent (0 jr$ra/0 prologues/0 pointers),
-`data_` + `zero_fill_` parts. Dossiers: `docs/dossiers/lib-chunk4{3,4,5,6,7}-*.md` +
+`data_` + `zero_fill_` parts. Section A slice 3 (chunks 62-65) is a FALLBACK at `0x421000`: chunk 66 is
+a decoded N64 audio sound-bank (`N64 PtrTablesV2`/`N64 WaveTables` magics) deferred to a focused run —
+strong evidence Section A is AUDIO. Dossiers: `docs/dossiers/lib-chunk4{3,4,5,6,7}-*.md` +
 `docs/dossiers/section-a-00301000-00341000-data-ownership.md` +
-`docs/dossiers/section-a-00341000-003E1000-data-ownership.md`; data indexes
+`docs/dossiers/section-a-00341000-003E1000-data-ownership.md` +
+`docs/dossiers/section-a-003E1000-00421000-data-ownership.md`; data indexes
 `docs/data-index/rev0/chunk4{3,4,5,6,7}-data-region-inventory.json` +
-`section-a-00301000-00341000-data-inventory.json` + `section-a-00341000-003E1000-data-inventory.json`.
+`section-a-00301000-00341000-data-inventory.json` + `section-a-00341000-003E1000-data-inventory.json`
++ `section-a-003E1000-00421000-data-inventory.json`.
 
-Current frontier is **`0x003E1000` (chunk 62)**. The evidenced executable MIPS extent
+Current frontier is **`0x00421000` (chunk 66)**. The evidenced executable MIPS extent
 `0x1000..0x2B89B4` (2,849,204 B) is **100.0000% source-owned**; total source-owned
-`0x1000..0x3E1000` (code+data) = 4,063,228 B (code-only = 2,444,548 B = 85.7977% of the
-extent; the rest are interior + chunk-43..47 + Section A slice-1/2 data-tail spans).
+`0x1000..0x421000` (code+data) = 4,325,372 B (code-only = 2,444,548 B = 85.7977% of the
+extent; the rest are interior + chunk-43..47 + Section A slice-1/2/3 data-tail spans).
 
 FIRST for the next run: chunk 61 ended in DATA with an OUTGOING continuation, so own the
 `data_003DE988` high-entropy asset continuation across `0x3E1000` first (Section A slice 3).
