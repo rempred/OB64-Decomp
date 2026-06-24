@@ -15,10 +15,13 @@ Current passing commands:
 node tools/verify_setup.js
 ```
 
-Current source mix: 44 tracked composite real-assembler chunks (chunk 0 177
-`boot/`; chunks 1–43 in `lib/`: 350, 216, 67, 376, 88, 78, 103, 87, 34, 35, 191, 74, 67, 94, 153, 95, 66, 95, 80, 175, 99, 99, 73, 63, 71, 96, 142, 97, 103, 122, 86, 198, 109, 120, 134, 164, 180, 232, 155, 159, 160, 171, 90) = 5,624 tracked
-source files, plus 56 generated fallback chunks. **Chunks 0–43 are fully
-source-owned as named code/data parts** (`0x00001000..0x002C1000`;
+Current source mix: 45 tracked composite real-assembler chunks (chunk 0 177
+`boot/`; chunks 1–44 in `lib/`: 350, 216, 67, 376, 88, 78, 103, 87, 34, 35, 191, 74, 67, 94, 153, 95, 66, 95, 80, 175, 99, 99, 73, 63, 71, 96, 142, 97, 103, 122, 86, 198, 109, 120, 134, 164, 180, 232, 155, 159, 160, 171, 90, 17) = 5,641 tracked
+source files, plus 55 generated fallback chunks. **Chunks 0–44 are fully
+source-owned as named code/data parts** (`0x00001000..0x002D1000`;
+chunk 44: 0 code + 17 data [9 data + 8 zero_fill], DATA TERRITORY — the entire 64 KiB is non-code
+high-entropy graphics/texture data PAST the executable extent 0x2B89B4 (0 jr$ra/0 prologues/0
+pointers), continuing chunk 43's tail; no code, no straddler;
 chunk 43: 81 code + 1 straddler-tail + 8 data, MIXED — the mission-briefing/scenario-overview
 overlay CODE region 0x2B1000..0x2B89B8 then the evidenced code→data transition at 0x2B89B8 and an
 F3DEX2 display-list/float-pool/texture DATA tail 0x2B89B8..0x2C1000; crosses the executable-extent
@@ -71,7 +74,7 @@ at z64 0x1F36F0; chunk 32: 196 normal code + 0 data + 2 function straddlers, ALL
 frameless-leaf-dense FP/display-list + class-def/char-data code; chunk 33: 82 normal code +
 25 data + 2 function straddlers, MIXED - code + a font/glyph + pointer/float DATA region
 + a jump-table state-machine straddler);
-next is chunk 44 (`0x002C1000`, past the executable extent — data territory).
+next is chunk 45 (`0x002D1000`, deeper in the non-code data tail).
 
 The assembled code-region SHA256 is
 `40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`; the full
@@ -148,28 +151,26 @@ node tools/audit_code_region.js
    generates fallback owners for the rest. Keep `node tools/verify_setup.js`
    green after every promotion.
 
-3. Continue into chunk 44 (data territory).
+3. Continue into chunk 45 (data territory).
 
-   Chunks 0–43 (`0x00001000..0x002C1000`) are fully source-owned as named code/data
-   parts: chunk 0 in `boot/`; chunks 1–43 in `lib/` (dossiers `lib-chunk1-…` …
-   `lib-chunk43-…`). Chunk 43 (90 parts) is the MIXED code→data transition chunk: the
-   mission-briefing/scenario-overview overlay CODE region `0x2B1000..0x2B89B8` (incoming
-   straddler-tail func_002B0E8C_chunk43tail; 62 parent functions + frameless leaves) then the
-   evidenced code→data boundary at `0x2B89B8` and an F3DEX2 display-list/float-pool/texture DATA
-   tail `0x2B89B8..0x2C1000` (8 parts). Data index
-   `docs/data-index/rev0/chunk43-data-region-inventory.json`. Adversarial swarm: 5 clean + 1 real
-   frameless-leaf under-split (func_002B24F0), fixed.
+   Chunks 0–44 (`0x00001000..0x002D1000`) are fully source-owned as named code/data
+   parts: chunk 0 in `boot/`; chunks 1–44 in `lib/` (dossiers `lib-chunk1-…` …
+   `lib-chunk44-…`). Chunk 43 (90 parts) is the MIXED code→data transition chunk (mission-briefing/
+   scenario-overview overlay CODE `0x2B1000..0x2B89B8` + F3DEX2 display-list/float/texture DATA tail
+   `0x2B89B8..0x2C1000`; adversarial 5 clean + 1 under-split fixed). Chunk 44 (17 parts) is DATA
+   TERRITORY: the entire 64 KiB is non-code high-entropy graphics/texture data past the executable
+   extent (0 jr$ra/0 prologues/0 pointers), 9 `data_` + 8 `zero_fill_`; adversarial 4 skeptics all
+   clean. Data indexes `docs/data-index/rev0/chunk4{3,4}-data-region-inventory.json`.
 
-   **Next frontier: `0x002C1000` (chunk 44).** The evidenced executable MIPS extent
-   `0x1000..0x2B89B4` is now 100.0000% source-owned. Chunk 43 ended in DATA (no outgoing function
-   straddler); the `data_002BF118` high-entropy texture region continues across `0x2C1000`. FIRST
-   action: own that data continuation. NOTE: chunk 44 (`0x2C1000..0x2D1000`) is PAST the evidenced
-   executable-extent end `0x002B89B4` — expect pure data territory (verified: 0 jr$ra, 0 pointers,
-   uniform high-entropy graphics/texture data); do not reclassify the global non-code tail beyond
-   the target chunk. Pipeline: data-territory scans (entropy/string/pointer/zero) + data classifier
-   + adversarial data skeptic (Workflow). Coverage now 100.0000% of the executable extent (code-only
-   85.7977%). See the DECOMP_LOG and `docs/dossiers/lib-chunk43-2B1000-2C1000.md`.
-   No new patch-workbench candidates in chunk 43; the chunk-33 candidates (`0x21CD48`/`0x21BF84`)
+   **Next frontier: `0x002D1000` (chunk 45).** The evidenced executable MIPS extent
+   `0x1000..0x2B89B4` is **100.0000% source-owned**. Chunk 44 ended in DATA (no straddler); the
+   `data_002CBA58` high-entropy texture region continues across `0x2D1000`. FIRST action: own that
+   data continuation. NOTE: chunk 45 (`0x2D1000..0x2E1000`) is deeper in the non-code data tail —
+   expect more data territory; do not reclassify the global non-code tail beyond the target chunk.
+   Pipeline: data-territory scans (entropy/string/pointer/zero) + data classifier + adversarial data
+   skeptic (Workflow). Coverage 100.0000% of the executable extent (code-only 85.7977%). See the
+   DECOMP_LOG and `docs/dossiers/lib-chunk4{3,4}-*.md`.
+   No new patch-workbench candidates in chunks 43-44; the chunk-33 candidates (`0x21CD48`/`0x21BF84`)
    and chunk-31 `0x1F36F0` stand (`candidate`/`needs-runtime`, RSR-011/RSR-014).
 
 4. Keep the setup gate green.
