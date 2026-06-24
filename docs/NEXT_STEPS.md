@@ -15,14 +15,16 @@ Current passing commands:
 node tools/verify_setup.js
 ```
 
-Current source mix: 66 tracked composite real-assembler chunks (chunk 0 177
-`boot/`; chunks 1–65 in `lib/`: 350, 216, 67, 376, 88, 78, 103, 87, 34, 35, 191, 74, 67, 94, 153, 95, 66, 95, 80, 175, 99, 99, 73, 63, 71, 96, 142, 97, 103, 122, 86, 198, 109, 120, 134, 164, 180, 232, 155, 159, 160, 171, 90, 17, 15, 17, 27, 9, 11, 13, 13, 13, 9, 9, 9, 7, 1, 5, 3, 3, 5, 5, 5, 7, 15) = 5,842 tracked
-source files, plus 34 generated fallback chunks. **Chunks 0–65 are fully
-source-owned as named code/data parts** (`0x00001000..0x00421000`;
+Current source mix: 67 tracked composite real-assembler chunks (chunk 0 177
+`boot/`; chunks 1–66 in `lib/`: 350, 216, 67, 376, 88, 78, 103, 87, 34, 35, 191, 74, 67, 94, 153, 95, 66, 95, 80, 175, 99, 99, 73, 63, 71, 96, 142, 97, 103, 122, 86, 198, 109, 120, 134, 164, 180, 232, 155, 159, 160, 171, 90, 17, 15, 17, 27, 9, 11, 13, 13, 13, 9, 9, 9, 7, 1, 5, 3, 3, 5, 5, 5, 7, 15, 8) = 5,850 tracked
+source files, plus 33 generated fallback chunks. **Chunks 0–66 are fully
+source-owned as named code/data parts** (`0x00001000..0x00431000`;
+chunk 66 = a DECODED N64 audio sound-bank [0x421000..0x431000]: 8 structural parts [5 data + 3 zero_fill,
+0 code], N64 PtrTablesV2 codebook @0x423FF0 [133 order-2 VADPCM records, strides 0xA0/0xD0, offset table
+@0x429820] + N64 WaveTables sample bank @0x429CD0 [4-bit ADPCM, continues into chunk 67] — CONFIRMS
+Section A is AUDIO; chunk bytes owned, whole-bank schema partial; outgoing data_00429CC8 into chunk 67;
 chunks 62-65 = Section A slice 3 [0x3E1000..0x421000]: 0 code + 32 data [18 data + 14 zero_fill],
-DATA TERRITORY — FALLBACK from planned 62-71; stopped at 0x421000 because chunk 66 is a decoded N64
-audio sound-bank (magics N64 PtrTablesV2 @0x423FF0 / N64 WaveTables @0x429CD0) needing a focused run —
-strong evidence Section A is AUDIO; outgoing continuation data_00420438 into chunk 66;
+DATA TERRITORY — FALLBACK from planned 62-71; outgoing continuation data_00420438 into chunk 66;
 chunks 52-61 = Section A slice 2 [0x341000..0x3E1000]: 0 code + 64 data [37 data + 27 zero_fill],
 DATA TERRITORY — same asset family, TYPE UNRESOLVED, conservative names; 0 jr$ra/0 prologues/0 pointers
 at all 4 byte alignments; parent-tooling-dark; container layout decoded; outgoing continuation
@@ -97,7 +99,7 @@ at z64 0x1F36F0; chunk 32: 196 normal code + 0 data + 2 function straddlers, ALL
 frameless-leaf-dense FP/display-list + class-def/char-data code; chunk 33: 82 normal code +
 25 data + 2 function straddlers, MIXED - code + a font/glyph + pointer/float DATA region
 + a jump-table state-machine straddler);
-next is chunk 66 (`0x00421000`, the deferred N64 audio sound-bank).
+next is chunk 67 (`0x00431000`, the WaveTables sample-payload continuation).
 
 The assembled code-region SHA256 is
 `40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`; the full
@@ -174,28 +176,28 @@ node tools/audit_code_region.js
    generates fallback owners for the rest. Keep `node tools/verify_setup.js`
    green after every promotion.
 
-3. Continue into chunk 62 (Section A slice 3, data territory).
+3. Quick-verify chunk 67 WaveTables tail, then resume flat 10-chunk batches at chunk 68.
 
-   Chunks 0–65 (`0x00001000..0x00421000`) are fully source-owned as named code/data
-   parts: chunk 0 in `boot/`; chunks 1–65 in `lib/` (dossiers `lib-chunk1-…` … `lib-chunk47-…` +
+   Chunks 0–66 (`0x00001000..0x00431000`) are fully source-owned as named code/data
+   parts: chunk 0 in `boot/`; chunks 1–66 in `lib/` (dossiers `lib-chunk1-…` … `lib-chunk47-…` +
    `section-a-00301000-00341000-data-ownership.md` + `section-a-00341000-003E1000-data-ownership.md` +
-   `section-a-003E1000-00421000-data-ownership.md`).
+   `section-a-003E1000-00421000-data-ownership.md` + `section-a-audio-bank-00421000-00431000-data-ownership.md`).
    Chunk 43 (90 parts) is the MIXED code→data
    transition chunk. Chunks 44-47 + Section A slices 1-3 (chunks 48-65) are DATA TERRITORY: each entire
    64 KiB is non-code high-entropy asset data past the executable extent (0 jr$ra/0 prologues/0
-   pointers), `data_` + `zero_fill_` parts; adversarial skeptics all clean. Indexes
-   `docs/data-index/rev0/chunk4{3,4,5,6,7}-data-region-inventory.json` +
+   pointers), `data_` + `zero_fill_` parts; adversarial skeptics all clean. Chunk 66 is a DECODED N64
+   audio sound-bank (PtrTablesV2 codebook + WaveTables samples, order-2 VADPCM; 8 structural parts).
+   Indexes `docs/data-index/rev0/chunk4{3,4,5,6,7}-data-region-inventory.json` +
    `section-a-00301000-00341000-data-inventory.json` + `section-a-00341000-003E1000-data-inventory.json`
-   + `section-a-003E1000-00421000-data-inventory.json`.
+   + `section-a-003E1000-00421000-data-inventory.json` + `section-a-audio-bank-00421000-00431000-data-inventory.json`.
 
-   **Next frontier: `0x00421000` (chunk 66).** The evidenced executable MIPS extent
-   `0x1000..0x2B89B4` is **100.0000% source-owned**. Chunk 65 ended in DATA with an OUTGOING
-   continuation: `data_00420438` runs to `0x00421000` with no terminating zero-fill and continues
-   into chunk 66. Section A slice 3 (chunks 62-65) FELL BACK at 0x421000: chunk 66 is a decoded N64
-   audio sound-bank (`N64 PtrTablesV2`/`N64 WaveTables` magics, low-entropy 2.66 bits/2KB @0x429800).
-   FIRST action: a FOCUSED audio-decode run on chunk 66+ (small batch). NOTE: chunk 66
-   (`0x421000..0x431000`) is still inside survey Section A (to 0x4E3000;
-   Section A now strongly evidenced AUDIO) — do not reclassify the global
+   **Next frontier: `0x00431000` (chunk 67).** The evidenced executable MIPS extent
+   `0x1000..0x2B89B4` is **100.0000% source-owned**. Chunk 66 ended in DATA with an OUTGOING
+   continuation: `data_00429CC8` (WaveTables sample payload) runs to `0x00431000` with no terminating
+   zero-fill and continues into chunk 67 (terminates ~`0x431EF4`). FIRST action: quick-verify the
+   payload closes in chunk 67, then RESUME flat 10-chunk batches at chunk 68 (`0x441000`). NOTE: chunk 67
+   (`0x431000..0x441000`) is still inside survey Section A (to 0x4E3000;
+   Section A now confirmed AUDIO) — do not reclassify the global
    non-code tail beyond the target. Use `docs/templates/data-territory-source-ownership-run-prompt.md`.
    Pipeline: data-territory scans (entropy/string/pointer/zero) + tiling generator + adversarial
    data/parent swarm (Workflow). Coverage 100.0000% of the executable extent (code-only 85.7977%). See

@@ -3,7 +3,7 @@
   "profile": "us-rev0",
   "sourceReportPath": "build/original-mips/rev0-report.json",
   "outputDir": "asm/original/rev0",
-  "promotedChunks": 66,
+  "promotedChunks": 67,
   "codeRegion": {
     "start": "0x00001000",
     "endExclusive": "0x0063676C",
@@ -53314,6 +53314,89 @@
       ],
       "textBytes": 1273499,
       "sha256": "5F60C7F119C6CE8A196D2C86F1AF7490916318B46203A04AA5443A2E2C994747"
+    },
+    {
+      "file": "asm/original/rev0/code_00421000_00431000.s",
+      "romStart": "0x00421000",
+      "romEndExclusive": "0x00431000",
+      "bytes": 65536,
+      "sourceReportFile": "build/original-mips/rev0/code_00421000_00431000.s",
+      "parts": [
+        {
+          "name": "data_00421000",
+          "file": "asm/original/rev0/lib/data_00421000.s",
+          "romStart": "0x00421000",
+          "romEndExclusive": "0x00423FD4",
+          "bytes": 12244,
+          "textBytes": 237537,
+          "sha256": "C7036417B406E14FB60CC08452CFE4BFAC9DD6BD841F205EACE7A232EAECE5B3"
+        },
+        {
+          "name": "zero_fill_00423FD4",
+          "file": "asm/original/rev0/lib/zero_fill_00423FD4.s",
+          "romStart": "0x00423FD4",
+          "romEndExclusive": "0x00423FF0",
+          "bytes": 28,
+          "textBytes": 843,
+          "sha256": "D3E81EE95E54B0FB208EAF5ECEE685588E983591287D2C9C428B1459E68F38A0"
+        },
+        {
+          "name": "data_00423FF0",
+          "file": "asm/original/rev0/lib/data_00423FF0.s",
+          "romStart": "0x00423FF0",
+          "romEndExclusive": "0x00429820",
+          "bytes": 22576,
+          "textBytes": 427943,
+          "sha256": "F1952EF145B19455F47B239F43CC48ACD37FE80B256EFB23A84D3A26C4867B4D"
+        },
+        {
+          "name": "data_00429820",
+          "file": "asm/original/rev0/lib/data_00429820.s",
+          "romStart": "0x00429820",
+          "romEndExclusive": "0x00429A34",
+          "bytes": 532,
+          "textBytes": 10328,
+          "sha256": "30021F59BCEA19DFFC2CF3D583F11FA438685D127A028A4D4E63C7478D66F080"
+        },
+        {
+          "name": "zero_fill_00429A34",
+          "file": "asm/original/rev0/lib/zero_fill_00429A34.s",
+          "romStart": "0x00429A34",
+          "romEndExclusive": "0x00429AB4",
+          "bytes": 128,
+          "textBytes": 2366,
+          "sha256": "784F56A67EEA408CFBECA73E007F7A92CF1F903FD7159D37905FFF5FE809D63E"
+        },
+        {
+          "name": "data_00429AB4",
+          "file": "asm/original/rev0/lib/data_00429AB4.s",
+          "romStart": "0x00429AB4",
+          "romEndExclusive": "0x00429AC4",
+          "bytes": 16,
+          "textBytes": 778,
+          "sha256": "71956BC529C130BFF4A4556274E19235D3FEAD06BBE72626BC8A3BCCDD0AEE6A"
+        },
+        {
+          "name": "zero_fill_00429AC4",
+          "file": "asm/original/rev0/lib/zero_fill_00429AC4.s",
+          "romStart": "0x00429AC4",
+          "romEndExclusive": "0x00429CC8",
+          "bytes": 516,
+          "textBytes": 8507,
+          "sha256": "18B150E305506ACB101AD9A4C2ADA4FD5536761AAA24CCABBA3DAEA41F733A50"
+        },
+        {
+          "name": "data_00429CC8",
+          "file": "asm/original/rev0/lib/data_00429CC8.s",
+          "romStart": "0x00429CC8",
+          "romEndExclusive": "0x00431000",
+          "bytes": 29496,
+          "textBytes": 571097,
+          "sha256": "7F6B5BBE90E57850822399A76C89B624D4EC5EB3D09D9F5E0D68299F5677D4F1"
+        }
+      ],
+      "textBytes": 1259399,
+      "sha256": "CC2C7430D5B9367F427DFFC33D75A9476A7858B7C9338E5946FA976C209934D8"
     }
   ]
 }

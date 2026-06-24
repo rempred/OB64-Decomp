@@ -1,0 +1,231 @@
+{
+  "schemaVersion": 1,
+  "dataUnit": "Section A N64 audio sound-bank (PtrTablesV2 codebook + WaveTables samples), chunk 66",
+  "dataUnitSlug": "section-a-audio-bank-00421000-00431000",
+  "generated": "2026-06-24",
+  "parentNaturalUnit": "survey Section A 0x00301000..0x004E3000 (now strongly evidenced AUDIO). This run owns chunk 66 (0x421000..0x431000); the WaveTables sample payload continues into chunk 67+.",
+  "romRange": "0x00421000..0x00431000",
+  "bytes": 65536,
+  "chunkCoverage": "chunk 66 (full)",
+  "frontierBefore": "0x00421000",
+  "frontierAfter": "0x00431000",
+  "typeFamily": "N64 custom-framed audio sound-bank: a \"N64 PtrTablesV2\" VADPCM predictor-codebook directory + a \"N64 WaveTables\" raw ADPCM sample bank. Codec = standard order-2 N64 libultra VADPCM inside a custom container. Resolves the Section A texture-vs-audio question in favor of AUDIO.",
+  "status": "raw-but-classified",
+  "chunk66BytesStatus": "yes",
+  "wholeBankSchemaStatus": "partial (WaveTables payload continues into chunk 67; incoming edge is the previous bank tail; some record/header fields unresolved)",
+  "confidence": "high (audio sound-bank, container schema + order-2 VADPCM codec decoded) / medium (per-field record-header + exact sample addressing)",
+  "byteSplit": {
+    "parsed_zero_fill": 672,
+    "raw_but_classified_data": 64864,
+    "undecoded": 0
+  },
+  "partCount": 8,
+  "dataParts": 5,
+  "zeroFillParts": 3,
+  "parserEvidence": "CONTAINER SCHEMA DECODED (see decodedContainerSchema/offsetTable/recordTable/waveTables). Two embedded ASCII magics byte-confirmed: \"N64 PtrTablesV2\\0\" @0x423FF0, \"N64 WaveTables \\0\" @0x429CD0. recordCount field @0x424010 = 0x85 (133) matches the 133-entry offset table. The offset table (base 0x423FE0-relative, monotonic 0x30..0x5790, deltas {0xA0:106, 0xD0:26}) maps record index -> codebook offset and is self-consistent. Record bodies hold int16-BE predictor coefficients (VADPCM-style book); the WaveTables payload has a U-shaped nibble histogram (ADPCM residual signature). Object/record-level field semantics partly unresolved (field_0xNN).",
+  "dumperEvidence": "none (no parent dumper reads this on-ROM PtrTablesV2/WaveTables bank — see catalogEvidence/rejectedLeads)",
+  "catalogEvidence": "none accepted in-range. Parent ob64_audio_region_analysis.js targets the later BGM envelope 0x925483..0x1C4801C (NOT chunk 66). ob64_anim_block_catalog cutscene blocks >= 0x4F0FB0 (not in range). Chunk 66 is before the first LHA archive (0x636784).",
+  "editorEvidence": "none",
+  "modderResourceEvidence": "none",
+  "runtimeEvidence": "none (static-only; a PI-DMA audio loader presumably streams this bank at runtime, but no runtime pass this run)",
+  "hiddenCodeRisk": {
+    "result": "none — data-only safe",
+    "evidence": "0 jr$ra / 0 stack prologues / 0 epilogues / 0 lw $ra at ALL 4 byte alignments across the 65,536 bytes; 0 pointer-table runs (max consecutive 0x80xxxxxx run = 1-2, coincidental). The coefficient region 0x424040..0x429820 (the prime \"could disassemble as MIPS\" suspect) scanned in isolation: 0 jr$ra/0 prologues; its int16-BE values are signed and centered near zero (min -32540, max 32240, mean ~299) = ADPCM predictor book, not addresses. The offset table @0x429820 is 133 strictly-monotonic u32-BE values 0x30..0x5790 with no 0x80/KSEG prefix = base-relative record offsets, NOT a jump/pointer table. Deterministic scan + independent adversary + ownership re-derivation, all from the raw z64 baserom."
+  },
+  "decodedContainerSchema": {
+    "container": "N64 PtrTablesV2 (generic pointer-table container header; here it heads an audio VADPCM codebook). The same magic appears at ROM 0x2B8BA0 in chunk 43 in a GRAPHICS display-list context — so the magic is a generic container marker, and the AUDIO classification here comes from the paired N64 WaveTables sample bank, not the magic alone.",
+    "layout": [
+      "0x421000..0x423FD4 incoming raw VADPCM sample tail of the PREVIOUS bank (continuation of slice-3 data_00420438)",
+      "0x423FD4..0x423FF0 28B pre-header zero pad",
+      "0x423FF0..0x424000 \"N64 PtrTablesV2\\0\" magic (16B)",
+      "0x424000..0x424010 16B zero",
+      "0x424010..0x429820 record table (133 VADPCM predictor-codebook records, strides 0xA0/0xD0)",
+      "0x429820..0x429A34 offset table (133 x u32-BE)",
+      "0x429A34..0x429AB4 128B inter-section zero pad",
+      "0x429AB4..0x429AC4 16B inter-pad field (non-zero 0xEE/0x0A bytes; field_0x00, unresolved)",
+      "0x429AC4..0x429CC8 516B silence/alignment zero pad (survey 519B run)",
+      "0x429CC8..0x429CD0 two 0xD3000000 header words",
+      "0x429CD0..0x429CE0 \"N64 WaveTables \\0\" magic (16B)",
+      "0x429CE0..0x431000+ raw VADPCM sample payload (OUTGOING into chunk 67)"
+    ]
+  },
+  "audioBankFinding": {
+    "confirmed": true,
+    "type": "N64 VADPCM audio sound-bank (codebook directory + raw sample bank)",
+    "implication": "Confirms Section A (slices 1-3 high-entropy data) is AUDIO sample/bank data, not graphics/texture — resolving the long-standing survey ambiguity in favor of AUDIO."
+  },
+  "recordTable": {
+    "romRange": "0x00424010..0x00429820",
+    "bytes": 22544,
+    "recordCount": 133,
+    "recordCountField": "0x00000085 @0x424010 (matches the 133-entry offset table)",
+    "strides": {
+      "0xA0_160B": 106,
+      "0xD0_208B": 26,
+      "0xB0_176B_trailing": 1
+    },
+    "contiguity": "106*0xA0 + 26*0xD0 + 1*0xB0 = 0x5810 = exactly the region 0x424010..0x429820 (22544 B), zero gaps (swarm set-equality proven)",
+    "codec": "standard order-2 N64 libultra VADPCM (ALWaveTable/ADPCM book): every record carries field +0x28 = 2 (predictor ORDER, constant across all 133) and +0x2C = 4 (codec param, constant). Coefficient books are smooth quasi-sinusoidal int16-BE (rec0 book0: -2040,-2969,-2290,-376,1733,2897,2490,739,...); book1 all-zero (unused predictor slot). The 26 larger 0xD0 records are EXACTLY those with nonzero field +0x1C (extra loop/book field); the 107 standard 0xA0 records have +0x1C = 0.",
+    "globalHeaderAt0x424010": "record 0 doubles as a 0x30-byte global header (12 u32-BE, base 0x423FF0): +0x00 count=0x85(133); +0x04 0x5A44 (->offset-table END 0x429A34); +0x08 0x5ACC (->inter-pad 0x429ABC); +0x0C 0x5830 (->offset-table START 0x429820); +0x10 0x10; +0x14 0x4F5; +0x18 0; +0x1C 0xD0; +0x20 0x48; +0x24 0; +0x28 order=2; +0x2C 4.",
+    "perRecordSubHeader": "fixed metadata at record-relative +0x10..+0x30: +0x10 sample offset/size A (varies); +0x14 size/len B; +0x18 0; +0x1C extra loop/book field (nonzero only for the 26 0xD0 records); +0x20 ascending step-160 index; +0x24 0; +0x28 order=2; +0x2C 4. int16-BE predictor coefficients fill the record BODY from +0x30 onward."
+  },
+  "offsetTable": {
+    "romRange": "0x00429820..0x00429A34",
+    "entries": 133,
+    "elementType": "u32-BE",
+    "base": "0x00423FE0 (relative; entry0 0x30 -> 0x424010 = record 0)",
+    "range": "0x30..0x5790",
+    "monotonic": true,
+    "deltas": {
+      "160": 106,
+      "208": 26
+    },
+    "consistent": "entries map base+offset -> each record; deltas equal the record strides; 132 deltas for 133 entries."
+  },
+  "waveTables": {
+    "headerRomRange": "0x00429CC8..0x00429CE0",
+    "headerWords": "0xD3000000 0xD3000000 (then the magic) ; trailing header @0x429CE0 = 00000000 00000000 00C0051F 01F00000 ... (sample count/size/loop/rate? — field_0xNN, unresolved)",
+    "magic": "\"N64 WaveTables \\0\" @0x429CD0",
+    "payloadStart": "0x00429CE0",
+    "payloadInChunk66": "0x00429CE0..0x00431000",
+    "payloadClass": "raw VADPCM ADPCM sample data (entropy ~7.26; U-shaped nibble histogram)",
+    "outgoingContinuation": "payload runs to 0x431000 with no terminating zero-fill and continues into chunk 67 (exact bank end unknown this run)"
+  },
+  "padding": [
+    {
+      "rom": "0x00423FD4..0x00423FF0",
+      "bytes": 28,
+      "role": "pre-PtrTables-header alignment pad"
+    },
+    {
+      "rom": "0x00429A34..0x00429AB4",
+      "bytes": 128,
+      "role": "post-offset-table inter-section pad"
+    },
+    {
+      "rom": "0x00429AC4..0x00429CC8",
+      "bytes": 516,
+      "role": "pre-WaveTables silence/alignment pad (survey 519B run; NOT a section boundary)"
+    }
+  ],
+  "unresolvedFields": [
+    "record-header field semantics @0x424010 beyond count/stride (the magic-relative size pointers 0x5A44/0x5ACC/0x5830 and 0x10/0x4F5/0x48/0x2/0x4 — sizes/order/nPredictors/flags?)",
+    "WaveTables header @0x429CE0 fields (sample count/size/loop point/sample rate?) and the two 0xD3000000 words @0x429CC8",
+    "inter-pad field @0x429AB4 (non-zero 0xEE/0x0A bytes) semantics",
+    "exact per-sample VADPCM encoding parameters (order, npredictors, frame size) and the WaveTables bank end (continues past chunk 66)"
+  ],
+  "rejectedLeads": [
+    {
+      "artifact": "scripts/ob64_audio_region_analysis.js",
+      "reason": "targets the later BGM envelope ROM 0x925483..0x1C4801C; does NOT map onto chunk 66. Comparison-only.",
+      "confidence": "high"
+    },
+    {
+      "artifact": "scripts/ob64_4a_audit.json / ob64_4f_audit.json gapOffsets",
+      "reason": "decompressed-7MB-LZSS-stream offsets, NOT ROM.",
+      "confidence": "high"
+    },
+    {
+      "artifact": "fallback .s decode comments (RAM column + mnemonics)",
+      "reason": "invalid linear RAM=ROM back-map on data; 0 real instructions.",
+      "confidence": "high"
+    }
+  ],
+  "batchSizeFinding": "This was a 1-chunk focused decode run, correct for a structured audio-bank schema. 10-chunk batches remain the default for flat proven-clean data, but the WaveTables sample payload now continues as flat-ish high-entropy audio — once a focused pass confirms the bank end / that the following chunks are plain sample payload, a larger batch can resume. Recommend a small (1-4 chunk) continuation to find the bank end, then reassess.",
+  "ownershipAssessment": "chunk-66 BYTES: yes — all 65,536 bytes of chunk 66 (0x421000..0x431000) are byte-exact tracked as 8 structural data_/zero_fill_ parts under asm/original/rev0/lib/, independently verified byte-for-byte by a 5-pass swarm (hidden-code data-only-safe at all 4 alignments; QA contiguity/byte-math/alignment/zero-fill clean; ownership reviewer yes). WHOLE-BANK SCHEMA: partial — the WaveTables sample payload (data_00429CC8) continues past 0x431000 into chunk 67 (terminates ~0x431EF4 per the chunk-67 tiling) and the incoming edge is the PREVIOUS bank's sample tail whose header is before 0x421000, so the complete bank is not contained in chunk 66; several record/header fields remain semantically unresolved (field_0xNN). Per the run standard this is the intended disposition (chunk bytes yes, schema partial).",
+  "recommendedFollowups": [
+    "Confirm the WaveTables payload closes in chunk 67 at zero_fill_00431EF4 (chunk-67 tiling already exists, build/chunk_00431000-00441000_splits.json) and that no further PtrTablesV2/WaveTables sub-bank header appears before it terminates — small/quick verification.",
+    "Then RESUME flat 10-chunk batches starting at chunk 68 (0x441000); the payload ends only ~0xEF4 bytes into chunk 67, so the bank does not run deep.",
+    "Optionally decode the remaining record/WaveTables field semantics (field_0xNN: per-record +0x10/+0x14/+0x20 sample addressing, the two 0xD3000000 sentinel words, inter-pad EEEE/0A) and the exact VADPCM frame parameters (parser follow-up); cross-check a runtime PI-DMA audio loader (needs-runtime)."
+  ],
+  "subregions": [
+    {
+      "name": "data_00421000",
+      "file": "asm/original/rev0/lib/data_00421000.s",
+      "chunk": 66,
+      "romStart": "0x00421000",
+      "romEnd": "0x00423FD4",
+      "bytes": 12244,
+      "class": "data",
+      "status": "raw-but-classified",
+      "note": "Incoming continuation of the slice-3 data_00420438 high-entropy span across 0x421000 (no zero gap at the seam): raw VADPCM audio sample data = the tail of the PREVIOUS N64 audio bank's WaveTables payload (entropy ~6.96; U-shaped nibble histogram). raw-but-classified (audio sample payload; not individually decoded)."
+    },
+    {
+      "name": "zero_fill_00423FD4",
+      "file": "asm/original/rev0/lib/zero_fill_00423FD4.s",
+      "chunk": 66,
+      "romStart": "0x00423FD4",
+      "romEnd": "0x00423FF0",
+      "bytes": 28,
+      "class": "zero_fill",
+      "status": "parsed",
+      "note": "Pre-header alignment padding (7 words) before the N64 PtrTablesV2 directory header. parsed (all-zero)."
+    },
+    {
+      "name": "data_00423FF0",
+      "file": "asm/original/rev0/lib/data_00423FF0.s",
+      "chunk": 66,
+      "romStart": "0x00423FF0",
+      "romEnd": "0x00429820",
+      "bytes": 22576,
+      "class": "data",
+      "status": "raw-but-classified",
+      "note": "N64 PtrTablesV2 directory: \"N64 PtrTablesV2\\0\" ASCII magic @0x423FF0 + a 133-record VADPCM predictor codebook table. Record header @0x424010 begins with u32-BE recordCount=0x85 (133); records have strides 0xA0 (160 B) / 0xD0 (208 B) and hold int16-BE predictor coefficients (e.g. f808 f467 f70e... = signed ADPCM book), with intra-record zero padding kept inside. raw-but-classified (audio codebook; field-level schema in the data-index JSON)."
+    },
+    {
+      "name": "data_00429820",
+      "file": "asm/original/rev0/lib/data_00429820.s",
+      "chunk": 66,
+      "romStart": "0x00429820",
+      "romEnd": "0x00429A34",
+      "bytes": 532,
+      "class": "data",
+      "status": "raw-but-classified",
+      "note": "PtrTablesV2 offset table: 133 x u32-BE record offsets (base 0x423FE0-relative; first entry 0x30 -> 0x424010 = record 0; monotonic; deltas 0xA0/0xD0 == the record strides). The directory that maps record index -> codebook offset. parsed-structure / raw-but-classified."
+    },
+    {
+      "name": "zero_fill_00429A34",
+      "file": "asm/original/rev0/lib/zero_fill_00429A34.s",
+      "chunk": 66,
+      "romStart": "0x00429A34",
+      "romEnd": "0x00429AB4",
+      "bytes": 128,
+      "class": "zero_fill",
+      "status": "parsed",
+      "note": "Inter-section padding (32 words) after the offset table. parsed (all-zero)."
+    },
+    {
+      "name": "data_00429AB4",
+      "file": "asm/original/rev0/lib/data_00429AB4.s",
+      "chunk": 66,
+      "romStart": "0x00429AB4",
+      "romEnd": "0x00429AC4",
+      "bytes": 16,
+      "class": "data",
+      "status": "raw-but-classified",
+      "note": "Small inter-padding marker/field (16 B) between the two padding blocks (contains a short non-zero run 0x429AB7..0x429AC1). raw-but-classified; exact field semantics unresolved (field_0x00)."
+    },
+    {
+      "name": "zero_fill_00429AC4",
+      "file": "asm/original/rev0/lib/zero_fill_00429AC4.s",
+      "chunk": 66,
+      "romStart": "0x00429AC4",
+      "romEnd": "0x00429CC8",
+      "bytes": 516,
+      "class": "zero_fill",
+      "status": "parsed",
+      "note": "WaveTables silence/alignment padding (129 words) — the survey-documented single 519-byte zero run (word-aligned subset 0x429AC4..0x429CC8); internal padding, NOT a section boundary. parsed (all-zero)."
+    },
+    {
+      "name": "data_00429CC8",
+      "file": "asm/original/rev0/lib/data_00429CC8.s",
+      "chunk": 66,
+      "romStart": "0x00429CC8",
+      "romEnd": "0x00431000",
+      "bytes": 29496,
+      "class": "data",
+      "status": "raw-but-classified",
+      "note": "N64 WaveTables sample bank: two 0xD3000000 header words @0x429CC8 + \"N64 WaveTables \\0\" ASCII magic @0x429CD0 + a header (@0x429CE0) + raw VADPCM sample payload (entropy ~7.26; U-shaped nibble histogram = ADPCM residuals). OUTGOING continuation: the payload runs to 0x431000 with no terminating zero-fill and continues into chunk 67. raw-but-classified (audio sample payload)."
+    }
+  ]
+}

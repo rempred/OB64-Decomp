@@ -203,10 +203,12 @@ Current result:
 - Code-region SHA256:
   `40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`.
 - Code-region match against baserom: pass.
-- Tracked real-assembler original-MIPS chunks: 66 composites (chunk 0 177 `boot/`;
-  chunks 1–65 in `lib/`: 350, 216, 67, 376, 88, 78, 103, 87, 34, 35, 191, 74, 67, 94, 153, 95, 66, 95, 80, 175, 99, 99, 73, 63, 71, 96, 142, 97, 103, 122, 86, 198, 109, 120, 134, 164, 180, 232, 155, 159, 160, 171, 90, 17, 15, 17, 27, 9, 11, 13, 13, 13, 9, 9, 9, 7, 1, 5, 3, 3, 5, 5, 5, 7, 15) = 5,842 real-assembler
-  source files. Chunks 0–65 (`0x00001000..0x00421000`) are now fully source-owned as
-  named code/data parts (chunks 62-65 = Section A slice 3 [0x3E1000..0x421000]: 0 code + 32 data
+- Tracked real-assembler original-MIPS chunks: 67 composites (chunk 0 177 `boot/`;
+  chunks 1–66 in `lib/`: 350, 216, 67, 376, 88, 78, 103, 87, 34, 35, 191, 74, 67, 94, 153, 95, 66, 95, 80, 175, 99, 99, 73, 63, 71, 96, 142, 97, 103, 122, 86, 198, 109, 120, 134, 164, 180, 232, 155, 159, 160, 171, 90, 17, 15, 17, 27, 9, 11, 13, 13, 13, 9, 9, 9, 7, 1, 5, 3, 3, 5, 5, 5, 7, 15, 8) = 5,850 real-assembler
+  source files. Chunks 0–66 (`0x00001000..0x00431000`) are now fully source-owned as
+  named code/data parts (chunk 66 = a DECODED N64 audio sound-bank [0x421000..0x431000]: 8 structural
+  parts, `N64 PtrTablesV2` codebook + `N64 WaveTables` order-2 VADPCM samples; chunk bytes owned,
+  whole-bank schema partial; CONFIRMS Section A is AUDIO; outgoing `data_00429CC8` into chunk 67) (chunks 62-65 = Section A slice 3 [0x3E1000..0x421000]: 0 code + 32 data
   [18 data + 14 zero_fill], DATA TERRITORY — FALLBACK from planned 62-71 at `0x421000` because chunk 66
   is a decoded N64 audio sound-bank [`N64 PtrTablesV2` @0x423FF0 / `N64 WaveTables` @0x429CD0], strong
   evidence Section A is AUDIO; 0 jr$ra/0 prologues at all 4 alignments; parent-tooling-dark; outgoing
@@ -305,9 +307,9 @@ Current result:
   chunk 33: 82 normal code + 25 data + 2 function straddlers, MIXED — code + a
   font/glyph + pointer/float DATA region [`0x211D14..0x213B10`] + a jump-table
   state-machine outgoing straddler; chunks 34-38 also source-owned, see the chunk list above);
-  next is chunk 66 (`0x00421000`, still a
-  generated fallback chunk — the deferred N64 audio sound-bank).
-- Generated fallback chunks: 34.
+  next is chunk 67 (`0x00431000`, still a
+  generated fallback chunk — the WaveTables sample-payload continuation).
+- Generated fallback chunks: 33.
 - Assembled-code ROM rebuild command:
 
 ```powershell
@@ -2909,9 +2911,9 @@ setup-complete state:
 - Assembler: GNU Binutils 2.39 `mips64-elf-as.exe` with `-EB -mips3 -32`.
 - Setup verifier: `tools/verify_setup.js`.
 - Current verifier result: PASS; 825 archives, 0 unknown bytes, 108 overlap
-  bytes visible, 66 tracked composite real-asm chunks made from 5,842 tracked source
-  files (chunks 0–65 fully source-owned as code/data parts, `0x00001000..0x00421000`),
-  34 generated fallback chunks, full-source manifest 1,059 entries with
+  bytes visible, 67 tracked composite real-asm chunks made from 5,850 tracked source
+  files (chunks 0–66 fully source-owned as code/data parts, `0x00001000..0x00431000`),
+  33 generated fallback chunks, full-source manifest 1,059 entries with
   2,469,141 ambiguous bytes preserved explicitly, 3 tracked non-code
   source-owner files / 44,029 bytes, 1,055 generated non-code fallback files /
   35,388,567 bytes, source-manifest rebuild exact, full ROM
