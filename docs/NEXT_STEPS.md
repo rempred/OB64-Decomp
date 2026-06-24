@@ -15,14 +15,18 @@ Current passing commands:
 node tools/verify_setup.js
 ```
 
-Current source mix: 90 tracked composite real-assembler chunks (chunk 0 177
-`boot/`; chunks 1–89 in `lib/`: 350, 216, 67, 376, 88, 78, 103, 87, 34, 35, 191, 74, 67, 94, 153, 95, 66, 95, 80, 175, 99, 99, 73, 63, 71, 96, 142, 97, 103, 122, 86, 198, 109, 120, 134, 164, 180, 232, 155, 159, 160, 171, 90, 17, 15, 17, 27, 9, 11, 13, 13, 13, 9, 9, 9, 7, 1, 5, 3, 3, 5, 5, 5, 7, 15, 8, 21, 33, 23, 19, 23, 21, 33, 13, 7, 7, 15, 4, 11, 5, 4, 4, 5, 9, 9, 11, 4, 9, 5) = 6,145 tracked
-source files, plus 10 generated fallback chunks. **Chunks 0–89 are fully
-source-owned as named code/data parts** (`0x00001000..0x005A1000`;
+Current source mix: 100 tracked composite real-assembler chunks (chunk 0 177
+`boot/`; chunks 1–99 in `lib/`: 350, 216, 67, 376, 88, 78, 103, 87, 34, 35, 191, 74, 67, 94, 153, 95, 66, 95, 80, 175, 99, 99, 73, 63, 71, 96, 142, 97, 103, 122, 86, 198, 109, 120, 134, 164, 180, 232, 155, 159, 160, 171, 90, 17, 15, 17, 27, 9, 11, 13, 13, 13, 9, 9, 9, 7, 1, 5, 3, 3, 5, 5, 5, 7, 15, 8, 21, 33, 23, 19, 23, 21, 33, 13, 7, 7, 15, 4, 11, 5, 4, 4, 5, 9, 9, 11, 4, 9, 5, 3, 4, 4, 4, 4, 3, 4, 4, 5, 1) = 6,181 tracked
+source files, plus 0 generated fallback chunks. **Chunks 0–99 are fully
+source-owned as named code/data parts** (`0x00001000..0x0063676C` — the ENTIRE configured code region;
+the data-ownership loop is COMPLETE and a consolidated coordinator report is due;
+chunks 90-99 own the Section C HUFF pool tail [0x5A1000..0x63676C]: 36 parser-backed parts cut at
+word-aligned HUFF block starts [magic-12] + chunk seams, 0 code, LOOP-COMPLETE at the configured stop
+0x63676C incl. the terminal partial chunk 99; Section C = custom "HUFF" Huffman pool, 29 blocks, 18-byte
+container header decoded incl. leadU32==blockSize-4, payload UNDECODED, data-only-safe;
 chunk 89 owns the whole Section B tail + Section C start [0x591000..0x5A1000]: 5 structural parts
 [block 61 tail + block 62 = anim-family end 0x594280 + Section C 65-entry directory + zero pad + Section C
-HUFFMAN-compressed "HUFF" pool start], 0 code, RUN-COMPLETE resolving the prior partial-interior-chunk
-fallback (Section C = custom "HUFF" Huffman pool, 29 blocks, UNDECODED);
+HUFF pool start], 0 code;
 chunks 79-88 = Section B parser-backed cutscene AUDIO-SEQUENCE blocks [0x4F1000..0x591000]: 71 parts at
 natural catalog block boundaries [block 0 body + blocks 1-60 whole + block 61 head], 0 code;
 chunk 78 crosses the Section A/B boundary [0x4E1000..0x4F1000; boundary pinned 0x4E3140]: 4 structural
@@ -114,7 +118,7 @@ at z64 0x1F36F0; chunk 32: 196 normal code + 0 data + 2 function straddlers, ALL
 frameless-leaf-dense FP/display-list + class-def/char-data code; chunk 33: 82 normal code +
 25 data + 2 function straddlers, MIXED - code + a font/glyph + pointer/float DATA region
 + a jump-table state-machine straddler);
-next is chunk 90 (`0x005A1000`, Section C HUFFMAN-compressed "HUFF" pool continuation toward the data end 0x63676C).
+the configured code region is fully source-owned through chunk 99 (`0x0063676C`); 0 fallback chunks remain — the data-ownership loop is COMPLETE (consolidated coordinator report due).
 
 The assembled code-region SHA256 is
 `40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`; the full
@@ -191,15 +195,16 @@ node tools/audit_code_region.js
    generates fallback owners for the rest. Keep `node tools/verify_setup.js`
    green after every promotion.
 
-3. Chunk-90 run: Section C HUFFMAN-compressed "HUFF" pool continuation (raw-but-classified, undecoded).
+3. Data-ownership loop COMPLETE — consolidated coordinator report due (no library frontier remains).
 
-   Chunks 0–89 (`0x00001000..0x005A1000`) are fully source-owned as named code/data
-   parts: chunk 0 in `boot/`; chunks 1–89 in `lib/` (dossiers `lib-chunk1-…` … `lib-chunk47-…` +
+   Chunks 0–99 (`0x00001000..0x0063676C`) are fully source-owned as named code/data
+   parts — the ENTIRE configured code region (0 generated fallback chunks): chunk 0 in `boot/`; chunks 1–99 in `lib/` (dossiers `lib-chunk1-…` … `lib-chunk47-…` +
    `section-a-00301000-00341000-data-ownership.md` + `section-a-00341000-003E1000-data-ownership.md` +
    `section-a-003E1000-00421000-data-ownership.md` + `section-a-audio-bank-00421000-00431000-data-ownership.md`
    + `section-a-audio-bank-tail-00431000-00441000-data-ownership.md` + `section-a-flat-audio-00441000-004E1000-data-ownership.md`
    + `section-a-to-b-boundary-004E1000-004F1000-data-ownership.md` + `section-b-audio-sequence-blocks-004F1000-00595000-data-ownership.md`
-   + `section-b-tail-section-c-start-00591000-005A1000-data-ownership.md`).
+   + `section-b-tail-section-c-start-00591000-005A1000-data-ownership.md`
+   + `section-c-huff-pool-005A1000-0063676C-data-ownership.md`).
    Chunk 43 (90 parts) is the MIXED code→data
    transition chunk. Chunks 44-47 + Section A slices 1-3 (chunks 48-65) are DATA TERRITORY: each entire
    64 KiB is non-code high-entropy asset data past the executable extent (0 jr$ra/0 prologues/0
@@ -210,27 +215,31 @@ node tools/audit_code_region.js
    boundary (pinned 0x4E3140); chunks 79-88 are the Section B parser-backed cutscene audio-sequence blocks
    (71 parts; block 0 body + 1-60 whole + block 61 head); chunk 89 owns the whole Section B tail + Section C
    start (5 parts: block 61 tail + block 62 = anim-family end 0x594280 + Section C 65-entry directory + zero
-   pad + Section C HUFFMAN-compressed "HUFF" pool start; 29 HUFF blocks, UNDECODED; B/C boundary 0x594280).
-   All of Section A (0x301000..0x4E3140) is AUDIO.
+   pad + Section C HUFF pool start; B/C boundary 0x594280); chunks 90-99 own the Section C HUFF pool tail
+   (36 parser-backed parts cut at word-aligned HUFF block starts + chunk seams; LOOP-COMPLETE at the
+   configured stop 0x63676C incl. the terminal partial chunk 99). Section C = a custom "HUFF" Huffman pool,
+   29 blocks (first 0x5943D4, last 0x630BC4), 18-byte container header decoded (leadU32==blockSize-4),
+   payload UNDECODED, data-only-safe. All of Section A (0x301000..0x4E3140) is AUDIO.
    Indexes `docs/data-index/rev0/chunk4{3,4,5,6,7}-data-region-inventory.json` +
    `section-a-00301000-00341000-data-inventory.json` + `section-a-00341000-003E1000-data-inventory.json`
    + `section-a-003E1000-00421000-data-inventory.json` + `section-a-audio-bank-00421000-00431000-data-inventory.json`
    + `section-a-audio-bank-tail-00431000-00441000-data-inventory.json` + `section-a-flat-audio-00441000-004E1000-data-inventory.json`
    + `section-a-to-b-boundary-004E1000-004F1000-data-inventory.json` + `section-b-audio-sequence-blocks-004F1000-00595000-data-inventory.json`
-   + `section-b-tail-section-c-start-00591000-005A1000-data-inventory.json`.
+   + `section-b-tail-section-c-start-00591000-005A1000-data-inventory.json`
+   + `section-c-huff-pool-005A1000-0063676C-data-inventory.json`.
 
-   **Next frontier: `0x005A1000` (chunk 90).** The evidenced executable MIPS extent
-   `0x1000..0x2B89B4` is **100.0000% source-owned**. Chunk 89 owned the whole Section B tail + Section C
-   start (block 61 tail + block 62 = anim-family end 0x594280 + Section C directory + Section C HUFFMAN-
-   compressed "HUFF" pool start), a RUN-COMPLETE that resolved the prior partial-interior-chunk fallback.
-   FIRST action: the **chunk-90 run** — continue Section C: own the next run of "HUFF" Huffman-compressed
-   blocks (`0x5A1000..`) as raw-but-classified (undecoded-compressed) data territory, advancing toward the
-   hard data end ~`0x63676C` (last HUFF block 0x630BC4; first LHA archive 0x636784). Do NOT continue past
-   0x0063676C without Joe explicitly asking. Use
-   `docs/templates/data-territory-source-ownership-run-prompt.md`.
-   Pipeline: data-territory scans (entropy/string/pointer/zero) + tiling generator + adversarial
-   data/parent swarm (Workflow). Coverage 100.0000% of the executable extent (code-only 85.7977%). See
-   the DECOMP_LOG, `docs/data-index/rev0/data-territory-survey-00301000.json`, and the Section A slice-1 dossier.
+   **Frontier: `0x0063676C` (configured code-region end) — REACHED. The data-ownership loop is COMPLETE.**
+   The evidenced executable MIPS extent `0x1000..0x2B89B4` is **100.0000% source-owned**, and the **ENTIRE
+   configured code region `0x1000..0x63676C` (6,510,444 B = assembled code.bin) is 100% source-owned (0
+   generated fallback chunks).** Chunks 90-99 owned the Section C HUFF pool tail to the stop 0x63676C
+   (LOOP-COMPLETE), including the terminal partial chunk 99 (0x631000..0x63676C; fully promotable since
+   assemble tiles against the report chunk romEndExclusive). **A consolidated coordinator report is now
+   due.** Optional follow-ups (not required): (a) DECODE track — attempt the custom "HUFF" Huffman codec
+   (candidate decoder: the in-game boot Huffman subsystem boot 0xB030..0xF22C) + map the chunk-89 65-entry
+   directory to the 29 decompressed blocks; (b) the full-ROM coverage track below. Out of scope without
+   Joe: the 24-byte structural gap `0x63676C..0x636784` and the LHA `-lh5-` archive region at `0x636784+`.
+   Coverage 100.0000% of the executable extent (code-only 85.7977%). See the DECOMP_LOG and
+   `docs/data-index/rev0/section-c-huff-pool-005A1000-0063676C-data-inventory.json`.
    No new patch-workbench candidates in chunks 43-51; the chunk-33 candidates (`0x21CD48`/`0x21BF84`)
    and chunk-31 `0x1F36F0` stand (`candidate`/`needs-runtime`, RSR-011/RSR-014).
 

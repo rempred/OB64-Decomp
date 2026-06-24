@@ -1,0 +1,752 @@
+{
+  "schemaVersion": 1,
+  "dataUnit": "Section C custom \"HUFF\" Huffman-compressed resource pool (tail) — chunks 90-99 to the configured data-ownership stop",
+  "dataUnitSlug": "section-c-huff-pool-005A1000-0063676C",
+  "generated": "2026-06-24",
+  "parentNaturalUnit": "The remaining body of the Section C custom \"HUFF\" Huffman-compressed resource pool, continuing from the chunk-89 pool start (0x5943C8) to the configured data-ownership stop 0x63676C (the end of the configured code region). The 24-byte structural gap 0x63676C..0x636784 and the first LHA archive at 0x636784 are out of scope.",
+  "romRange": "0x005A1000..0x0063676C",
+  "bytes": 612204,
+  "chunkCoverage": "chunks 90-98 full (0x5A1000..0x631000) + terminal partial chunk 99 (0x631000..0x0063676C)",
+  "frontierBefore": "0x005A1000",
+  "frontierAfter": "0x0063676C",
+  "stopCondition": "0x0063676C (configured data-ownership loop end / configured code-region end). Did NOT own past it.",
+  "typeFamily": "Section C custom \"HUFF\" Huffman-compressed resource pool — a contiguous run of length-linked HUFF blocks, each with a word-aligned 18-byte container header and an undecoded compressed payload.",
+  "status": "BYTES yes (every byte byte-exact owned, container header decoded, data-only-safe) / DECODE-LEVEL partial (HUFF compressed payload undecoded; leadU32 + per-block decompressed semantics unknown)",
+  "ownershipBytes": "yes",
+  "ownershipNaturalUnit": "partial",
+  "confidence": "high (byte-exact ownership; 29-block container fully decoded incl. leadU32==blockSize-4; data-only-safe) / low (HUFF payload semantics; leadU32 meaning/units)",
+  "byteSplit": {
+    "raw_but_classified_data": 612204,
+    "parsed_zero_fill": 0,
+    "undecoded": 0
+  },
+  "partCount": 36,
+  "chunkPartCounts": {
+    "90": 3,
+    "91": 4,
+    "92": 4,
+    "93": 4,
+    "94": 4,
+    "95": 3,
+    "96": 4,
+    "97": 4,
+    "98": 5,
+    "99": 1
+  },
+  "huffBlockEvidence": {
+    "totalBlocksInPool": 29,
+    "blocksBeginningInRunSpan": 26,
+    "firstMagic": "0x005943D4",
+    "lastMagic": "0x00630BC4",
+    "firstBlockStartInSpan": "0x005A7870",
+    "lastBlockStart": "0x00630BB8",
+    "note": "Blocks 0-2 (head) were owned in chunk 89; blocks 3-28 begin in this run span. Block 2 straddles the 0x5A1000 seam (its tail is data_005A1000). All 29 \"HUFF\" magics const-header-valid (4855fe00/014000f0/012c)."
+  },
+  "decodedContainerSchema": {
+    "blockStart": "magic - 12 (word-aligned for all 29 blocks)",
+    "header": "18-byte word-aligned container header: [+0x00 u32 leadU32 (0x0000XXXX BE)] [+0x04 const 48 55 FE 00] [+0x08 const 01 40 00 F0] [+0x0C magic \"HUFF\" = 48 55 46 46] [+0x10 const 01 2C], then compressed payload to the next block start.",
+    "leadU32": "DECODED RELATION: leadU32 == blockSize - 4 for all blocks 0..27 (start + leadU32 + 4 == nextBlockStart, verified, 0 mismatches) -> leadU32 is a SELF-RELATIVE container length field (covers the 14 header bytes after itself + the compressed payload). Semantic NAME/units (e.g. encoded-length vs decompressed-size) UNKNOWN; do not name it a decoded field.",
+    "contiguity": "Blocks tile CONTIGUOUSLY (each block end == next block start; max zero-run in span = 6 B; 0 zero-runs >=16B).",
+    "constants": "The runs 48 55 FE 00, 01 40 00 F0 and trailing 01 2C are identical on all 29 blocks; purpose UNKNOWN.",
+    "payload": "Compressed Huffman payload UNDECODED (no parent decoder; entropy ~7.97, 0 sub-6.0 KB windows)."
+  },
+  "blockTable": [
+    {
+      "index": 0,
+      "start": "0x005943C8",
+      "end": "0x0059A65C",
+      "size": 25236,
+      "magic": "0x005943D4",
+      "leadU32": "0x00006290"
+    },
+    {
+      "index": 1,
+      "start": "0x0059A65C",
+      "end": "0x005A0E34",
+      "size": 26584,
+      "magic": "0x0059A668",
+      "leadU32": "0x000067D4"
+    },
+    {
+      "index": 2,
+      "start": "0x005A0E34",
+      "end": "0x005A7870",
+      "size": 27196,
+      "magic": "0x005A0E40",
+      "leadU32": "0x00006A38"
+    },
+    {
+      "index": 3,
+      "start": "0x005A7870",
+      "end": "0x005AE270",
+      "size": 27136,
+      "magic": "0x005A787C",
+      "leadU32": "0x000069FC"
+    },
+    {
+      "index": 4,
+      "start": "0x005AE270",
+      "end": "0x005B30E4",
+      "size": 20084,
+      "magic": "0x005AE27C",
+      "leadU32": "0x00004E70"
+    },
+    {
+      "index": 5,
+      "start": "0x005B30E4",
+      "end": "0x005B92FC",
+      "size": 25112,
+      "magic": "0x005B30F0",
+      "leadU32": "0x00006214"
+    },
+    {
+      "index": 6,
+      "start": "0x005B92FC",
+      "end": "0x005BE844",
+      "size": 21832,
+      "magic": "0x005B9308",
+      "leadU32": "0x00005544"
+    },
+    {
+      "index": 7,
+      "start": "0x005BE844",
+      "end": "0x005C39EC",
+      "size": 20904,
+      "magic": "0x005BE850",
+      "leadU32": "0x000051A4"
+    },
+    {
+      "index": 8,
+      "start": "0x005C39EC",
+      "end": "0x005C964C",
+      "size": 23648,
+      "magic": "0x005C39F8",
+      "leadU32": "0x00005C5C"
+    },
+    {
+      "index": 9,
+      "start": "0x005C964C",
+      "end": "0x005CED4C",
+      "size": 22272,
+      "magic": "0x005C9658",
+      "leadU32": "0x000056FC"
+    },
+    {
+      "index": 10,
+      "start": "0x005CED4C",
+      "end": "0x005D4720",
+      "size": 22996,
+      "magic": "0x005CED58",
+      "leadU32": "0x000059D0"
+    },
+    {
+      "index": 11,
+      "start": "0x005D4720",
+      "end": "0x005DA6C4",
+      "size": 24484,
+      "magic": "0x005D472C",
+      "leadU32": "0x00005FA0"
+    },
+    {
+      "index": 12,
+      "start": "0x005DA6C4",
+      "end": "0x005DF3AC",
+      "size": 19688,
+      "magic": "0x005DA6D0",
+      "leadU32": "0x00004CE4"
+    },
+    {
+      "index": 13,
+      "start": "0x005DF3AC",
+      "end": "0x005E45F8",
+      "size": 21068,
+      "magic": "0x005DF3B8",
+      "leadU32": "0x00005248"
+    },
+    {
+      "index": 14,
+      "start": "0x005E45F8",
+      "end": "0x005EA190",
+      "size": 23448,
+      "magic": "0x005E4604",
+      "leadU32": "0x00005B94"
+    },
+    {
+      "index": 15,
+      "start": "0x005EA190",
+      "end": "0x005EF7F4",
+      "size": 22116,
+      "magic": "0x005EA19C",
+      "leadU32": "0x00005660"
+    },
+    {
+      "index": 16,
+      "start": "0x005EF7F4",
+      "end": "0x005F50B0",
+      "size": 22716,
+      "magic": "0x005EF800",
+      "leadU32": "0x000058B8"
+    },
+    {
+      "index": 17,
+      "start": "0x005F50B0",
+      "end": "0x005FA9AC",
+      "size": 22780,
+      "magic": "0x005F50BC",
+      "leadU32": "0x000058F8"
+    },
+    {
+      "index": 18,
+      "start": "0x005FA9AC",
+      "end": "0x00601544",
+      "size": 27544,
+      "magic": "0x005FA9B8",
+      "leadU32": "0x00006B94"
+    },
+    {
+      "index": 19,
+      "start": "0x00601544",
+      "end": "0x00607E70",
+      "size": 26924,
+      "magic": "0x00601550",
+      "leadU32": "0x00006928"
+    },
+    {
+      "index": 20,
+      "start": "0x00607E70",
+      "end": "0x0060DDA4",
+      "size": 24372,
+      "magic": "0x00607E7C",
+      "leadU32": "0x00005F30"
+    },
+    {
+      "index": 21,
+      "start": "0x0060DDA4",
+      "end": "0x00613590",
+      "size": 22508,
+      "magic": "0x0060DDB0",
+      "leadU32": "0x000057E8"
+    },
+    {
+      "index": 22,
+      "start": "0x00613590",
+      "end": "0x006181E8",
+      "size": 19544,
+      "magic": "0x0061359C",
+      "leadU32": "0x00004C54"
+    },
+    {
+      "index": 23,
+      "start": "0x006181E8",
+      "end": "0x0061D094",
+      "size": 20140,
+      "magic": "0x006181F4",
+      "leadU32": "0x00004EA8"
+    },
+    {
+      "index": 24,
+      "start": "0x0061D094",
+      "end": "0x006227C8",
+      "size": 22324,
+      "magic": "0x0061D0A0",
+      "leadU32": "0x00005730"
+    },
+    {
+      "index": 25,
+      "start": "0x006227C8",
+      "end": "0x00627854",
+      "size": 20620,
+      "magic": "0x006227D4",
+      "leadU32": "0x00005088"
+    },
+    {
+      "index": 26,
+      "start": "0x00627854",
+      "end": "0x0062C514",
+      "size": 19648,
+      "magic": "0x00627860",
+      "leadU32": "0x00004CBC"
+    },
+    {
+      "index": 27,
+      "start": "0x0062C514",
+      "end": "0x00630BB8",
+      "size": 18084,
+      "magic": "0x0062C520",
+      "leadU32": "0x000046A0"
+    },
+    {
+      "index": 28,
+      "start": "0x00630BB8",
+      "end": "0x0063676C",
+      "size": 23476,
+      "magic": "0x00630BC4",
+      "leadU32": "0x00005BC4"
+    }
+  ],
+  "terminalPartial": {
+    "chunk": 99,
+    "romRange": "0x00631000..0x0063676C",
+    "bytes": 22380,
+    "part": "data_00631000 (single data part; tail of the final HUFF block 28, which starts 0x630BB8 in chunk 98).",
+    "representable": "YES — the source-report chunk code_00631000_0063676C.s ends at 0x63676C; promote reads romStart/romEndExclusive/bytes from the report (no 64 KiB assumption); assemble tiles against the report chunk romEndExclusive (partCursor!==end) and the code region ends at codeRegion.endExclusive=0x63676C. The terminal partial is fully promotable.",
+    "finalBlockNaturalEnd": "0x00636780 (= block 28 start 0x630BB8 + leadU32 0x5BC4 + 4). This is 20 B PAST the stop 0x63676C, inside the 24-byte structural gap 0x63676C..0x636784 (before the first LHA archive 0x636784). So this run owns only 0x630BB8..0x63676C of block 28; its true tail (0x63676C..0x636780) lies in the out-of-scope structural gap."
+  },
+  "sectionCBoundaryAndLha": {
+    "poolStart": "0x005943C8 (chunk 89; first block 0)",
+    "poolOwnedEnd": "0x0063676C (configured stop; mid-data, 0x63676C % 0x1000 = 0x76C)",
+    "structuralGap": "0x0063676C..0x00636784 (24 B, high-entropy filler incl. ~20 B of block 28 payload tail; full-ROM-manifest raw_structural_gap; OUT OF SCOPE)",
+    "firstLhaArchive": "0x00636784 (\"-lh5-\" at 0x636786; last_battle_test.n64; ob64_archive_catalog.json index 0). Section C precedes the LHA region."
+  },
+  "hiddenCodeRisk": {
+    "result": "data-only-safe",
+    "evidence": "Adversary + parent + schema swarm passes, all 4 byte alignments over 612,204 B: jr$ra (0x03E00008) = 0 at ANY alignment (the necessary condition for a returning function is absent); word-aligned stack prologues (0x27BD+signbit) = 0 (5 exist but all NON-word-aligned coincidences inside compressed payload); word-aligned lw$ra = 0; word-aligned sw$ra = 2 (0x5A14A0, 0x61BF28 — both large non-frame immediates, inside compressed payload, no jr$ra to pair = false positives). No pointer/jump-table runs >=4. Entropy ~7.974, 0 KB windows < 6.0. Contrast known code 0x1000..0x100000: 2105 jr$ra, 1286 prologues (all word-aligned), entropy 5.99.",
+    "note": "The lead scan had a sign-comparison bug that undercounted word-aligned lw/sw $ra; the swarm independently re-derived the correct counts (0 lw$ra, 2 sw$ra word-aligned, all false positives). Conclusion unchanged: data-only-safe (0 jr$ra anywhere is decisive)."
+  },
+  "parentToolingEvidence": {
+    "anyAcceptedRomLead": false,
+    "huffDecoderInParent": false,
+    "summary": "No parent TOOL decodes the \"HUFF\" (48 55 46 46) blocks. The editor lh5Decompress/repack.js Huffman is the DIFFERENT LHA LH5 codec (DICBIT=13, NC=510/NP=14/NT=19) targeting the -lh5- archives at 0x636784+; the archive scanner only matches \"-lh?-\". The repo also decompiles an IN-GAME boot codec subsystem (boot 0xB030..0xF22C: LZSS + canonical-Huffman/DEFLATE + adaptive-Huffman; e.g. boot_decode_huffman_codelengths 0xECF0) — game MIPS, not a parent tool, and NOT tied to the Section C pool (no catalog maps it to 0x5943D4+). Noted only as a candidate in-game decoder for a future decode attempt, unproven.",
+    "firstLhaArchive": "0x00636784 (confirmed from ob64_archive_catalog.json + ROM \"-lh5-\")"
+  },
+  "editorEvidence": "none (no editor surface for the Section C HUFF pool; the LHA-archive editor path is a different codec/region)",
+  "modderResourceEvidence": "none",
+  "runtimeEvidence": "none (static-only; RUNTIME_STATE_ONESHOT = none)",
+  "rejectedLeads": [
+    {
+      "artifact": "ob64_functions.json",
+      "reason": "0 functions with start_rom in 0x5A1000..0x63676C (and 0 overlaps). The only wider-Section-C entry 0x594A9C is valid:false/orphan/no-jr_ra (the known chunk-89 false-positive prologue) and lies below the span.",
+      "confidence": "high"
+    },
+    {
+      "artifact": "ob64_4a_audit.json (113 in-range) / ob64_4f_audit.json (64 in-range) gapOffsets",
+      "reason": "decompressed-7MB-LZSS-stream coords (base 0x20248C2; source region ROM 0x20248C2..0x26FF9F0). Numeric overlap with the span is coincidental; NOT ROM offsets.",
+      "confidence": "high"
+    },
+    {
+      "artifact": "editor lh5Decompress / repack.js (LHA LH5 Huffman)",
+      "reason": "a DIFFERENT codec targeting the -lh5- archives at 0x636784+ (scanner only matches \"-lh?-\"); does not decode the \"HUFF\" 48 55 46 46 magic.",
+      "confidence": "high"
+    }
+  ],
+  "unresolvedFields": [
+    "HUFF compressed payload (undecoded; no parent decoder for the 48 55 46 46 magic)",
+    "leadU32 semantic NAME/units (value verified as blockSize-4 self-relative length; meaning e.g. encoded-length vs decompressed-size unknown)",
+    "per-block decompressed size / symbol count / Huffman code-table layout",
+    "meaning of the constant header runs 48 55 FE 00, 01 40 00 F0, 01 2C",
+    "the chunk-89 Section C directory (65 u32-BE entries) -> HUFF block mapping (directory indexes a decompressed asset space; relation to the 29 compressed blocks unresolved)"
+  ],
+  "toolingNote": {
+    "terminalPartialChunk": "RESOLVED: the terminal partial chunk 99 (0x631000..0x63676C) is fully promotable+splittable — assemble tiles against the source-report chunk romEndExclusive (0x63676C), not a forced 0x_1000 boundary; codeRegion.endExclusive = 0x63676C. No pipeline change needed.",
+    "partitioning": "Parts cut at word-aligned HUFF block starts (magic-12) + chunk seams. Blocks straddling a chunk seam are owned as HEAD (ends at seam) + TAIL (next chunk). 0 zero_fill parts (no zero-runs >=16B)."
+  },
+  "loopCompletion": {
+    "isFinalRun": true,
+    "codeRegionFullyOwned": "After this run the entire configured code region 0x00001000..0x0063676C is fully source-owned (0 generated fallback chunks; 100 composites / 6,181 files).",
+    "consolidatedReportDue": true
+  },
+  "ownershipAssessment": "BYTES yes / NATURAL-UNIT partial. Every byte of 0x5A1000..0x63676C is byte-exact owned as 36 parser-backed data parts (assemble byte-exact, code SHA 40D4E787..B409 unchanged), 0 code (data-only-safe), with the 18-byte HUFF container header decoded (incl. leadU32==blockSize-4). The natural Section C unit is partial because the compressed payload + leadU32 semantics + per-block decompressed semantics are undecoded (no decoder). Reached the configured stop 0x63676C exactly; consolidated coordinator report is due.",
+  "recommendedFollowups": [
+    "Consolidated coordinator report: the configured code region 0x1000..0x63676C is now fully source-owned (data-ownership loop complete).",
+    "Optional decode track: attempt to decode the custom \"HUFF\" Huffman codec (candidate in-game decoder: boot 0xB030..0xF22C canonical/adaptive-Huffman subsystem) and map the chunk-89 65-entry directory to the 29 decompressed blocks.",
+    "Out of scope without Joe: the 24-byte structural gap 0x63676C..0x636784 and the LHA -lh5- archive region at 0x636784+."
+  ],
+  "subregions": [
+    {
+      "name": "data_005A1000",
+      "file": "asm/original/rev0/lib/data_005A1000.s",
+      "chunk": 90,
+      "romStart": "0x005A1000",
+      "romEnd": "0x005A7870",
+      "bytes": 26736,
+      "class": "data",
+      "status": "raw-but-classified",
+      "note": "Section C custom \"HUFF\" Huffman-compressed pool. HUFF block 2 TAIL (continuation of block 0x005A0E34..0x005A7870 across chunk seam 0x005A1000). raw-but-classified (undecoded-compressed; container header decoded, payload undecoded)."
+    },
+    {
+      "name": "data_005A7870",
+      "file": "asm/original/rev0/lib/data_005A7870.s",
+      "chunk": 90,
+      "romStart": "0x005A7870",
+      "romEnd": "0x005AE270",
+      "bytes": 27136,
+      "class": "data",
+      "status": "raw-but-classified",
+      "note": "Section C custom \"HUFF\" Huffman-compressed pool. HUFF block 3 WHOLE (0x005A7870..0x005AE270, lead=0x69fc). raw-but-classified (undecoded-compressed; container header decoded, payload undecoded)."
+    },
+    {
+      "name": "data_005AE270",
+      "file": "asm/original/rev0/lib/data_005AE270.s",
+      "chunk": 90,
+      "romStart": "0x005AE270",
+      "romEnd": "0x005B1000",
+      "bytes": 11664,
+      "class": "data",
+      "status": "raw-but-classified",
+      "note": "Section C custom \"HUFF\" Huffman-compressed pool. HUFF block 4 HEAD (block 0x005AE270..0x005B30E4 straddles chunk seam 0x005B1000). raw-but-classified (undecoded-compressed; container header decoded, payload undecoded)."
+    },
+    {
+      "name": "data_005B1000",
+      "file": "asm/original/rev0/lib/data_005B1000.s",
+      "chunk": 91,
+      "romStart": "0x005B1000",
+      "romEnd": "0x005B30E4",
+      "bytes": 8420,
+      "class": "data",
+      "status": "raw-but-classified",
+      "note": "Section C custom \"HUFF\" Huffman-compressed pool. HUFF block 4 TAIL (continuation of block 0x005AE270..0x005B30E4 across chunk seam 0x005B1000). raw-but-classified (undecoded-compressed; container header decoded, payload undecoded)."
+    },
+    {
+      "name": "data_005B30E4",
+      "file": "asm/original/rev0/lib/data_005B30E4.s",
+      "chunk": 91,
+      "romStart": "0x005B30E4",
+      "romEnd": "0x005B92FC",
+      "bytes": 25112,
+      "class": "data",
+      "status": "raw-but-classified",
+      "note": "Section C custom \"HUFF\" Huffman-compressed pool. HUFF block 5 WHOLE (0x005B30E4..0x005B92FC, lead=0x6214). raw-but-classified (undecoded-compressed; container header decoded, payload undecoded)."
+    },
+    {
+      "name": "data_005B92FC",
+      "file": "asm/original/rev0/lib/data_005B92FC.s",
+      "chunk": 91,
+      "romStart": "0x005B92FC",
+      "romEnd": "0x005BE844",
+      "bytes": 21832,
+      "class": "data",
+      "status": "raw-but-classified",
+      "note": "Section C custom \"HUFF\" Huffman-compressed pool. HUFF block 6 WHOLE (0x005B92FC..0x005BE844, lead=0x5544). raw-but-classified (undecoded-compressed; container header decoded, payload undecoded)."
+    },
+    {
+      "name": "data_005BE844",
+      "file": "asm/original/rev0/lib/data_005BE844.s",
+      "chunk": 91,
+      "romStart": "0x005BE844",
+      "romEnd": "0x005C1000",
+      "bytes": 10172,
+      "class": "data",
+      "status": "raw-but-classified",
+      "note": "Section C custom \"HUFF\" Huffman-compressed pool. HUFF block 7 HEAD (block 0x005BE844..0x005C39EC straddles chunk seam 0x005C1000). raw-but-classified (undecoded-compressed; container header decoded, payload undecoded)."
+    },
+    {
+      "name": "data_005C1000",
+      "file": "asm/original/rev0/lib/data_005C1000.s",
+      "chunk": 92,
+      "romStart": "0x005C1000",
+      "romEnd": "0x005C39EC",
+      "bytes": 10732,
+      "class": "data",
+      "status": "raw-but-classified",
+      "note": "Section C custom \"HUFF\" Huffman-compressed pool. HUFF block 7 TAIL (continuation of block 0x005BE844..0x005C39EC across chunk seam 0x005C1000). raw-but-classified (undecoded-compressed; container header decoded, payload undecoded)."
+    },
+    {
+      "name": "data_005C39EC",
+      "file": "asm/original/rev0/lib/data_005C39EC.s",
+      "chunk": 92,
+      "romStart": "0x005C39EC",
+      "romEnd": "0x005C964C",
+      "bytes": 23648,
+      "class": "data",
+      "status": "raw-but-classified",
+      "note": "Section C custom \"HUFF\" Huffman-compressed pool. HUFF block 8 WHOLE (0x005C39EC..0x005C964C, lead=0x5c5c). raw-but-classified (undecoded-compressed; container header decoded, payload undecoded)."
+    },
+    {
+      "name": "data_005C964C",
+      "file": "asm/original/rev0/lib/data_005C964C.s",
+      "chunk": 92,
+      "romStart": "0x005C964C",
+      "romEnd": "0x005CED4C",
+      "bytes": 22272,
+      "class": "data",
+      "status": "raw-but-classified",
+      "note": "Section C custom \"HUFF\" Huffman-compressed pool. HUFF block 9 WHOLE (0x005C964C..0x005CED4C, lead=0x56fc). raw-but-classified (undecoded-compressed; container header decoded, payload undecoded)."
+    },
+    {
+      "name": "data_005CED4C",
+      "file": "asm/original/rev0/lib/data_005CED4C.s",
+      "chunk": 92,
+      "romStart": "0x005CED4C",
+      "romEnd": "0x005D1000",
+      "bytes": 8884,
+      "class": "data",
+      "status": "raw-but-classified",
+      "note": "Section C custom \"HUFF\" Huffman-compressed pool. HUFF block 10 HEAD (block 0x005CED4C..0x005D4720 straddles chunk seam 0x005D1000). raw-but-classified (undecoded-compressed; container header decoded, payload undecoded)."
+    },
+    {
+      "name": "data_005D1000",
+      "file": "asm/original/rev0/lib/data_005D1000.s",
+      "chunk": 93,
+      "romStart": "0x005D1000",
+      "romEnd": "0x005D4720",
+      "bytes": 14112,
+      "class": "data",
+      "status": "raw-but-classified",
+      "note": "Section C custom \"HUFF\" Huffman-compressed pool. HUFF block 10 TAIL (continuation of block 0x005CED4C..0x005D4720 across chunk seam 0x005D1000). raw-but-classified (undecoded-compressed; container header decoded, payload undecoded)."
+    },
+    {
+      "name": "data_005D4720",
+      "file": "asm/original/rev0/lib/data_005D4720.s",
+      "chunk": 93,
+      "romStart": "0x005D4720",
+      "romEnd": "0x005DA6C4",
+      "bytes": 24484,
+      "class": "data",
+      "status": "raw-but-classified",
+      "note": "Section C custom \"HUFF\" Huffman-compressed pool. HUFF block 11 WHOLE (0x005D4720..0x005DA6C4, lead=0x5fa0). raw-but-classified (undecoded-compressed; container header decoded, payload undecoded)."
+    },
+    {
+      "name": "data_005DA6C4",
+      "file": "asm/original/rev0/lib/data_005DA6C4.s",
+      "chunk": 93,
+      "romStart": "0x005DA6C4",
+      "romEnd": "0x005DF3AC",
+      "bytes": 19688,
+      "class": "data",
+      "status": "raw-but-classified",
+      "note": "Section C custom \"HUFF\" Huffman-compressed pool. HUFF block 12 WHOLE (0x005DA6C4..0x005DF3AC, lead=0x4ce4). raw-but-classified (undecoded-compressed; container header decoded, payload undecoded)."
+    },
+    {
+      "name": "data_005DF3AC",
+      "file": "asm/original/rev0/lib/data_005DF3AC.s",
+      "chunk": 93,
+      "romStart": "0x005DF3AC",
+      "romEnd": "0x005E1000",
+      "bytes": 7252,
+      "class": "data",
+      "status": "raw-but-classified",
+      "note": "Section C custom \"HUFF\" Huffman-compressed pool. HUFF block 13 HEAD (block 0x005DF3AC..0x005E45F8 straddles chunk seam 0x005E1000). raw-but-classified (undecoded-compressed; container header decoded, payload undecoded)."
+    },
+    {
+      "name": "data_005E1000",
+      "file": "asm/original/rev0/lib/data_005E1000.s",
+      "chunk": 94,
+      "romStart": "0x005E1000",
+      "romEnd": "0x005E45F8",
+      "bytes": 13816,
+      "class": "data",
+      "status": "raw-but-classified",
+      "note": "Section C custom \"HUFF\" Huffman-compressed pool. HUFF block 13 TAIL (continuation of block 0x005DF3AC..0x005E45F8 across chunk seam 0x005E1000). raw-but-classified (undecoded-compressed; container header decoded, payload undecoded)."
+    },
+    {
+      "name": "data_005E45F8",
+      "file": "asm/original/rev0/lib/data_005E45F8.s",
+      "chunk": 94,
+      "romStart": "0x005E45F8",
+      "romEnd": "0x005EA190",
+      "bytes": 23448,
+      "class": "data",
+      "status": "raw-but-classified",
+      "note": "Section C custom \"HUFF\" Huffman-compressed pool. HUFF block 14 WHOLE (0x005E45F8..0x005EA190, lead=0x5b94). raw-but-classified (undecoded-compressed; container header decoded, payload undecoded)."
+    },
+    {
+      "name": "data_005EA190",
+      "file": "asm/original/rev0/lib/data_005EA190.s",
+      "chunk": 94,
+      "romStart": "0x005EA190",
+      "romEnd": "0x005EF7F4",
+      "bytes": 22116,
+      "class": "data",
+      "status": "raw-but-classified",
+      "note": "Section C custom \"HUFF\" Huffman-compressed pool. HUFF block 15 WHOLE (0x005EA190..0x005EF7F4, lead=0x5660). raw-but-classified (undecoded-compressed; container header decoded, payload undecoded)."
+    },
+    {
+      "name": "data_005EF7F4",
+      "file": "asm/original/rev0/lib/data_005EF7F4.s",
+      "chunk": 94,
+      "romStart": "0x005EF7F4",
+      "romEnd": "0x005F1000",
+      "bytes": 6156,
+      "class": "data",
+      "status": "raw-but-classified",
+      "note": "Section C custom \"HUFF\" Huffman-compressed pool. HUFF block 16 HEAD (block 0x005EF7F4..0x005F50B0 straddles chunk seam 0x005F1000). raw-but-classified (undecoded-compressed; container header decoded, payload undecoded)."
+    },
+    {
+      "name": "data_005F1000",
+      "file": "asm/original/rev0/lib/data_005F1000.s",
+      "chunk": 95,
+      "romStart": "0x005F1000",
+      "romEnd": "0x005F50B0",
+      "bytes": 16560,
+      "class": "data",
+      "status": "raw-but-classified",
+      "note": "Section C custom \"HUFF\" Huffman-compressed pool. HUFF block 16 TAIL (continuation of block 0x005EF7F4..0x005F50B0 across chunk seam 0x005F1000). raw-but-classified (undecoded-compressed; container header decoded, payload undecoded)."
+    },
+    {
+      "name": "data_005F50B0",
+      "file": "asm/original/rev0/lib/data_005F50B0.s",
+      "chunk": 95,
+      "romStart": "0x005F50B0",
+      "romEnd": "0x005FA9AC",
+      "bytes": 22780,
+      "class": "data",
+      "status": "raw-but-classified",
+      "note": "Section C custom \"HUFF\" Huffman-compressed pool. HUFF block 17 WHOLE (0x005F50B0..0x005FA9AC, lead=0x58f8). raw-but-classified (undecoded-compressed; container header decoded, payload undecoded)."
+    },
+    {
+      "name": "data_005FA9AC",
+      "file": "asm/original/rev0/lib/data_005FA9AC.s",
+      "chunk": 95,
+      "romStart": "0x005FA9AC",
+      "romEnd": "0x00601000",
+      "bytes": 26196,
+      "class": "data",
+      "status": "raw-but-classified",
+      "note": "Section C custom \"HUFF\" Huffman-compressed pool. HUFF block 18 HEAD (block 0x005FA9AC..0x00601544 straddles chunk seam 0x00601000). raw-but-classified (undecoded-compressed; container header decoded, payload undecoded)."
+    },
+    {
+      "name": "data_00601000",
+      "file": "asm/original/rev0/lib/data_00601000.s",
+      "chunk": 96,
+      "romStart": "0x00601000",
+      "romEnd": "0x00601544",
+      "bytes": 1348,
+      "class": "data",
+      "status": "raw-but-classified",
+      "note": "Section C custom \"HUFF\" Huffman-compressed pool. HUFF block 18 TAIL (continuation of block 0x005FA9AC..0x00601544 across chunk seam 0x00601000). raw-but-classified (undecoded-compressed; container header decoded, payload undecoded)."
+    },
+    {
+      "name": "data_00601544",
+      "file": "asm/original/rev0/lib/data_00601544.s",
+      "chunk": 96,
+      "romStart": "0x00601544",
+      "romEnd": "0x00607E70",
+      "bytes": 26924,
+      "class": "data",
+      "status": "raw-but-classified",
+      "note": "Section C custom \"HUFF\" Huffman-compressed pool. HUFF block 19 WHOLE (0x00601544..0x00607E70, lead=0x6928). raw-but-classified (undecoded-compressed; container header decoded, payload undecoded)."
+    },
+    {
+      "name": "data_00607E70",
+      "file": "asm/original/rev0/lib/data_00607E70.s",
+      "chunk": 96,
+      "romStart": "0x00607E70",
+      "romEnd": "0x0060DDA4",
+      "bytes": 24372,
+      "class": "data",
+      "status": "raw-but-classified",
+      "note": "Section C custom \"HUFF\" Huffman-compressed pool. HUFF block 20 WHOLE (0x00607E70..0x0060DDA4, lead=0x5f30). raw-but-classified (undecoded-compressed; container header decoded, payload undecoded)."
+    },
+    {
+      "name": "data_0060DDA4",
+      "file": "asm/original/rev0/lib/data_0060DDA4.s",
+      "chunk": 96,
+      "romStart": "0x0060DDA4",
+      "romEnd": "0x00611000",
+      "bytes": 12892,
+      "class": "data",
+      "status": "raw-but-classified",
+      "note": "Section C custom \"HUFF\" Huffman-compressed pool. HUFF block 21 HEAD (block 0x0060DDA4..0x00613590 straddles chunk seam 0x00611000). raw-but-classified (undecoded-compressed; container header decoded, payload undecoded)."
+    },
+    {
+      "name": "data_00611000",
+      "file": "asm/original/rev0/lib/data_00611000.s",
+      "chunk": 97,
+      "romStart": "0x00611000",
+      "romEnd": "0x00613590",
+      "bytes": 9616,
+      "class": "data",
+      "status": "raw-but-classified",
+      "note": "Section C custom \"HUFF\" Huffman-compressed pool. HUFF block 21 TAIL (continuation of block 0x0060DDA4..0x00613590 across chunk seam 0x00611000). raw-but-classified (undecoded-compressed; container header decoded, payload undecoded)."
+    },
+    {
+      "name": "data_00613590",
+      "file": "asm/original/rev0/lib/data_00613590.s",
+      "chunk": 97,
+      "romStart": "0x00613590",
+      "romEnd": "0x006181E8",
+      "bytes": 19544,
+      "class": "data",
+      "status": "raw-but-classified",
+      "note": "Section C custom \"HUFF\" Huffman-compressed pool. HUFF block 22 WHOLE (0x00613590..0x006181E8, lead=0x4c54). raw-but-classified (undecoded-compressed; container header decoded, payload undecoded)."
+    },
+    {
+      "name": "data_006181E8",
+      "file": "asm/original/rev0/lib/data_006181E8.s",
+      "chunk": 97,
+      "romStart": "0x006181E8",
+      "romEnd": "0x0061D094",
+      "bytes": 20140,
+      "class": "data",
+      "status": "raw-but-classified",
+      "note": "Section C custom \"HUFF\" Huffman-compressed pool. HUFF block 23 WHOLE (0x006181E8..0x0061D094, lead=0x4ea8). raw-but-classified (undecoded-compressed; container header decoded, payload undecoded)."
+    },
+    {
+      "name": "data_0061D094",
+      "file": "asm/original/rev0/lib/data_0061D094.s",
+      "chunk": 97,
+      "romStart": "0x0061D094",
+      "romEnd": "0x00621000",
+      "bytes": 16236,
+      "class": "data",
+      "status": "raw-but-classified",
+      "note": "Section C custom \"HUFF\" Huffman-compressed pool. HUFF block 24 HEAD (block 0x0061D094..0x006227C8 straddles chunk seam 0x00621000). raw-but-classified (undecoded-compressed; container header decoded, payload undecoded)."
+    },
+    {
+      "name": "data_00621000",
+      "file": "asm/original/rev0/lib/data_00621000.s",
+      "chunk": 98,
+      "romStart": "0x00621000",
+      "romEnd": "0x006227C8",
+      "bytes": 6088,
+      "class": "data",
+      "status": "raw-but-classified",
+      "note": "Section C custom \"HUFF\" Huffman-compressed pool. HUFF block 24 TAIL (continuation of block 0x0061D094..0x006227C8 across chunk seam 0x00621000). raw-but-classified (undecoded-compressed; container header decoded, payload undecoded)."
+    },
+    {
+      "name": "data_006227C8",
+      "file": "asm/original/rev0/lib/data_006227C8.s",
+      "chunk": 98,
+      "romStart": "0x006227C8",
+      "romEnd": "0x00627854",
+      "bytes": 20620,
+      "class": "data",
+      "status": "raw-but-classified",
+      "note": "Section C custom \"HUFF\" Huffman-compressed pool. HUFF block 25 WHOLE (0x006227C8..0x00627854, lead=0x5088). raw-but-classified (undecoded-compressed; container header decoded, payload undecoded)."
+    },
+    {
+      "name": "data_00627854",
+      "file": "asm/original/rev0/lib/data_00627854.s",
+      "chunk": 98,
+      "romStart": "0x00627854",
+      "romEnd": "0x0062C514",
+      "bytes": 19648,
+      "class": "data",
+      "status": "raw-but-classified",
+      "note": "Section C custom \"HUFF\" Huffman-compressed pool. HUFF block 26 WHOLE (0x00627854..0x0062C514, lead=0x4cbc). raw-but-classified (undecoded-compressed; container header decoded, payload undecoded)."
+    },
+    {
+      "name": "data_0062C514",
+      "file": "asm/original/rev0/lib/data_0062C514.s",
+      "chunk": 98,
+      "romStart": "0x0062C514",
+      "romEnd": "0x00630BB8",
+      "bytes": 18084,
+      "class": "data",
+      "status": "raw-but-classified",
+      "note": "Section C custom \"HUFF\" Huffman-compressed pool. HUFF block 27 WHOLE (0x0062C514..0x00630BB8, lead=0x46a0). raw-but-classified (undecoded-compressed; container header decoded, payload undecoded)."
+    },
+    {
+      "name": "data_00630BB8",
+      "file": "asm/original/rev0/lib/data_00630BB8.s",
+      "chunk": 98,
+      "romStart": "0x00630BB8",
+      "romEnd": "0x00631000",
+      "bytes": 1096,
+      "class": "data",
+      "status": "raw-but-classified",
+      "note": "Section C custom \"HUFF\" Huffman-compressed pool. HUFF block 28 HEAD (block 0x00630BB8..0x0063676C straddles chunk seam 0x00631000). raw-but-classified (undecoded-compressed; container header decoded, payload undecoded)."
+    },
+    {
+      "name": "data_00631000",
+      "file": "asm/original/rev0/lib/data_00631000.s",
+      "chunk": 99,
+      "romStart": "0x00631000",
+      "romEnd": "0x0063676C",
+      "bytes": 22380,
+      "class": "data",
+      "status": "raw-but-classified",
+      "note": "Section C custom \"HUFF\" Huffman-compressed pool. HUFF block 28 TAIL (continuation of block 0x00630BB8..0x0063676C across chunk seam 0x00631000). raw-but-classified (undecoded-compressed; container header decoded, payload undecoded)."
+    }
+  ]
+}
