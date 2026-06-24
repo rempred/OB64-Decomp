@@ -9,10 +9,29 @@ coverage. Replace every `{PLACEHOLDER}` before sending it to an agent. Keep the
 data-region requirements even when the next chunks are expected to be mostly
 code.
 
+**Four-chunk default for proven data-only tail territory (added 2026-06-23 after
+chunks 45-47 confirmed clean all-data).** Once the frontier is past the evidenced
+executable-MIPS extent end `0x002B89B4` and recent runs have proven the range is
+non-code data tail (high-entropy graphics/texture/asset data: 0 `jr $ra`, 0 stack
+prologues, 0 RAM-pointer tables, no hidden code, no parser/schema decisions, no
+patch-workbench or runtime-state questions, adversarial hidden-code/structure
+scans clean), the coordinator MAY default to **four** adjacent chunks per run.
+That work is mechanical data-territory ownership (segment at zero-fill runs into
+`data_`/`zero_fill_` parts, hidden-code scan, adversarial verify, index +
+dossier), so four chunks does not dilute review quality. This four-chunk default
+applies ONLY to such proven data-only territory. **Do NOT use four chunks** for
+mixed code/data, uncertain code/data boundaries, hidden-code risk, parser/schema
+decisions, patch-workbench or runtime-state questions, or any range where review
+quality could suffer — keep the two/three-chunk defaults and full code gates
+there. If a "data-only" run uncovers hidden code or a real structure mid-run,
+drop back to a smaller unit and the full code gates for the rest of that run.
+
 ## Quick Update Checklist
 
-- `{CHUNK_COUNT}`: `2` or `3`. Use `3` only when the next range looks doable
-  without lowering review quality.
+- `{CHUNK_COUNT}`: `2`, `3`, or `4`. Use `3` only when the next range looks doable
+  without lowering review quality; use `4` ONLY for proven data-only tail
+  territory past `0x002B89B4` (see the four-chunk default note above) — never for
+  mixed/uncertain/code or hidden-code-risk ranges.
 - `{TARGET_CHUNKS_LABEL}`: human label such as `chunks 38-39` or
   `chunks 38-40`.
 - `{CHUNK_A_N}` / `{CHUNK_B_N}` / `{CHUNK_C_N}`: next chunk numbers. Remove
