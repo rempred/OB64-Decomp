@@ -1,0 +1,157 @@
+{
+  "schemaVersion": 1,
+  "surveyName": "rev0-data-territory-survey-00301000",
+  "generated": "2026-06-23",
+  "kind": "survey-only (NOT an ownership claim; no tracked source parts created)",
+  "frontier": "0x00301000",
+  "leadMethod": "Deterministic baserom byte scan (build/survey_scan.js: per-window jr$ra/prologue/pointer/zero/ascii/gbi/entropy + zero-runs + ASCII strings + archive magic) consolidated with a 5-pass read-only swarm (parent-tooling comparator, parser/schema+boundary analyst, hidden-MIPS adversary, past-data normalizer, ownership-standard reviewer). All headline claims byte-verified by the lead.",
+  "surveyRanges": {
+    "pastDataScope": "0x00001000..0x00301000 (already source-owned; data spans through chunk 47)",
+    "remainingDataScope": "0x00301000..0x0063676C (configured-code-region non-code tail emitted as original_mips .word fallback; NOT yet split into tracked data parts)"
+  },
+  "pastDataScope": {
+    "ownedDataRange": "0x002B89B8..0x00301000",
+    "ownedDataBytes": 296520,
+    "ownedDataParts": 84,
+    "byteSplit": { "parsed_zero_fill": 932, "raw_but_classified_data": 295588, "undecoded": 0 },
+    "chunks": "43 (code->data transition: F3DEX2 display-list + float/double pools + 'N64 PtrTablesV2' signature + texture tail) ; 44-47 (uniform high-entropy graphics/texture asset data)",
+    "indexCatalog": "docs/data-index/rev0/_data-index-catalog.json",
+    "indexLandscape": {
+      "systematicInventories": 30,
+      "systematicInventoryBytes": 517036,
+      "systematicInventoryParts": 595,
+      "focusedStructureIndexes": 23,
+      "schemaDrift": "Inventory files use two schemas: v1-old (chunks 13-33: rangeZ64/totalDataBytes/partCount/entries) and v2-new (chunks 34-47: range/dataBytes/dataPartCount/parts). The chunk-43..47 subset (v2-new) is fully schema-consistent and byte-complete (0 undecoded). Normalization is OPTIONAL/non-blocking; documented in the catalog."
+    },
+    "ownershipAssessment": "yes (chunks 43-47 are byte-exact tracked data parts with per-part provenance, indexes, dossiers, and recorded adversarial hidden-code proof). Indexing ADEQUATE; optional enrichments recommended (continuation fields, accounting enum, evidenceTags)."
+  },
+  "remainingDataScope": {
+    "romRange": "0x00301000..0x0063676C",
+    "bytes": 3364716,
+    "currentOwner": "generated original_mips .word fallback (52 fallback chunks 48..99); zero tracked data parts at or after 0x301000",
+    "hardEnd": "0x0063676C = configured codeRegion end; then raw_structural_gap 0x0063676C..0x00636784 (24 B) owned by the full-ROM source manifest; then LHA archive cluster (first header -lh5- at 0x00636784/0x00636786, byte-verified). 0 archive entries below 0x636784.",
+    "fullRomManifestRelation": "The whole codeRegion 0x1000..0x63676C is one source form (original_mips). The full-ROM manifest's lha_archive / raw_audio_data / raw_lzss_region / padding_ff forms are ALL past 0x636784, so they do NOT overlap this survey range."
+  },
+  "chunkCoverage": {
+    "fallbackChunks": 52,
+    "chunkRange": "48..99 (chunk N start = 0x1000 + N*0x10000; chunk 99 partial 0x631000..0x63676C = 22380 B)",
+    "sectionToChunk": {
+      "A": "chunks 48..78 (78 partial; A holds 0x4E1000..0x4E3000 of chunk 78)",
+      "B": "chunks 78..89 (78 and 89 partial)",
+      "C": "chunks 89..99 (89 partial from 0x595000; 99 partial to 0x63676C)"
+    },
+    "note": "The natural section boundaries 0x4E3000 and 0x595000 fall MID-CHUNK, so natural-section units are stronger than the 0x10000 chunk grid here (use the data-territory-source-ownership-run-prompt.md template)."
+  },
+  "naturalGroups": [
+    {
+      "id": "A",
+      "name": "high-entropy asset pool (texture- or audio-residual)",
+      "romRange": "0x00301000..0x004E3000",
+      "bytes": 1974272,
+      "chunkCoverage": "chunks 48..78 (78 partial)",
+      "currentSourceOwner": "generated original_mips .word fallback (unowned)",
+      "likelyFamily": "high-entropy asset data, CONTINUATION of the chunk-43..47 family (chunk 47 final part data_003002E8 is an explicit outgoing continuation into chunk 48). TWO competing type hypotheses (UNRESOLVED): (1) graphics/texture asset pixel data (entropy ~7.0-7.36 matches chunks 44-47; parent-comparator + past-data + ownership passes); (2) signed-PCM/ADPCM audio-codec-residual sample bank (parser-analyst: U-shaped nibble histogram peaking at 0x0-0x3 and 0xE-0xF, saturating high-amplitude bytes, no palette spikes; possibly the sample bank indexed by Section B's offset table whose offsets exceed B's own size).",
+      "status": "raw-but-classified",
+      "confidence": "high (non-code, asset data) / medium (exact type texture-vs-audio)",
+      "parserEvidence": "none (no parent decoder addresses this range with true ROM offsets)",
+      "catalogEvidence": "none in-range (4a/4f scanner offsets are decompressed-7MB-stream offsets, NOT ROM offsets — see rejectedLeads)",
+      "hiddenCodeRisk": "none (0 jr$ra, 0 prologue, 0 pointer, 0 magic across the span)",
+      "internalFeatures": "single 519-byte zero run at 0x00429AC1..0x00429CC8 (internal silence/padding, NOT a section boundary; entropy resumes ~7.0 after it).",
+      "unresolvedFields": "exact asset type (texture vs audio-residual); whether Section B's 0x4E3158 offset table indexes into this region (would confirm an audio-sample-bank relationship).",
+      "recommendedNextOwnershipUnit": "clean mechanical data-territory batch (like chunks 44-47): segment at zero-fill runs into data_/zero_fill_ parts, raw-but-classified. Do NOT split at the 0x429AC1 padding as a section boundary. Cut at 0x4E3000 (structural table onset)."
+    },
+    {
+      "id": "B",
+      "name": "structured/lower-entropy family (index table + payload + cutscene audio-sequence blocks + directory)",
+      "romRange": "0x004E3000..0x00595000",
+      "bytes": 729088,
+      "chunkCoverage": "chunks 78..89 (78 and 89 partial)",
+      "currentSourceOwner": "generated original_mips .word fallback (unowned)",
+      "likelyFamily": "cutscene audio/sequence subsystem data with a leading index table. Lowest-entropy of the three sections; the only section with PARSER-BACKED and PARSED sub-structures.",
+      "status": "mixed: parsed (table + anim blocks) / undecoded (payload) / raw-but-classified (directory)",
+      "confidence": "high",
+      "hiddenCodeRisk": "none (0 jr$ra/0 pointer/0 magic; the 8-byte table briefly trips a code heuristic but is a regular data table)",
+      "subRegions": [
+        { "romRange": "0x004E3000..0x004E3140", "bytes": 320, "type": "lead-in (~7.0 entropy; may belong to A's family)", "status": "raw-but-classified" },
+        { "romRange": "0x004E3140..0x004E6988", "bytes": 14408, "type": "index/offset table: header 0x4E3140 (words 0x706, 0x2E4, 0x102, 0,0, 0xDC6A=total-length) + 1798 x 8-byte records [u32-BE monotonic offset][u32-BE constant 0x64=100]. BYTE-VERIFIED.", "status": "parsed", "fields": "field1=offset (decoded, monotonic 0x3848..0xDC58); field2=0x64 constant (guessed: count/rate/duration); offsets exceed the 4.4KB blob above the table -> index a LARGER external region (plausibly Section A).", "parserEvidence": "byte-proven structure; field meanings guessed" },
+        { "romRange": "0x004E6988..0x004F0FB0", "bytes": 42536, "type": "medium-entropy ~5.0 payload family (distinct from A ~7.0 and C ~7.95)", "status": "undecoded", "unresolvedFields": "format/schema unknown" },
+        { "romRange": "0x004F0FB0..0x00594280", "bytes": 668368, "type": "63 contiguous cutscene AUDIO-SEQUENCE blocks (music/SFX sequences). PARSER-BACKED + GATE-PROVEN.", "status": "parsed", "parserEvidence": "scripts/ob64_anim_block_catalog.json (region.note 'raw uncompressed cutscene animation blocks, below first LHA archive 0x636784', count 63, first block 0x4F0FB0, contiguous) + parent tools/anim_block_codec.py/parse_anim_block.py/patch_anim_block.py (header correction: blocks are cutscene MUSIC/SFX SEQUENCES; in-game Gate-2 proof: blanking tracks stopped cutscene sound; all 63 blocks roundtrip_ok). Block 0 tag 00 00 02 15; per-track streams '95 ff 99 60'..'96'." },
+        { "romRange": "0x00594280..0x00595000", "bytes": 3456, "type": "directory/offset table (u32-BE ascending offset/size index) preceding Section C", "status": "raw-but-classified", "unresolvedFields": "whether it indexes Section C packed pool" }
+      ],
+      "unresolvedFields": "B-payload (0x4E6988..0x4F0FB0) format; exact A/B boundary (table onset 0x4E3000 vs entropy ~0x4E2000); whether B's directories index A/C.",
+      "recommendedNextOwnershipUnit": "PARSER-BACKED / careful pass (NOT a straight mechanical raw batch). Own the index table as a named table_ part with decoded header; own the 63 anim blocks as named parser-backed parts (port anim_block_codec.py); own the payload + directory as raw-but-classified. Sub-batch suggestion: 78-82 (incl. table) then 83-89 (anim blocks)."
+    },
+    {
+      "id": "C",
+      "name": "directory-indexed near-max-entropy packed/compressed resource pool",
+      "romRange": "0x00595000..0x0063676C",
+      "bytes": 661356,
+      "chunkCoverage": "chunks 89..99 (89 partial from 0x595000; 99 partial to 0x63676C)",
+      "currentSourceOwner": "generated original_mips .word fallback (unowned)",
+      "likelyFamily": "opaque packed/compressed resource pool (custom encoding, NOT a standard N64 codec — 0 MIO0/Yay0/Yaz0/LHA magic). Homogeneous entropy ~7.92-7.97, zero ~0.3-0.5%, no internal sub-block boundaries / entropy dips. Preceded by the 0x594280 directory table.",
+      "status": "raw-but-classified",
+      "confidence": "high (non-code, opaque packed) / low (exact codec/format)",
+      "parserEvidence": "none",
+      "hiddenCodeRisk": "none (0 jr$ra/0 pointer/0 magic). Contains the SOLE coincidental stack-prologue word 0x00594A9C (0x27BD91B1, immediate -28239 not a multiple of 8, no paired jr$ra) — rejected as noise.",
+      "internalFeatures": "none (completely homogeneous high entropy to the hard end 0x63676C).",
+      "unresolvedFields": "compression/encoding scheme; whether the 0x594280 directory indexes it; record/sub-block boundaries (none detectable statically).",
+      "recommendedNextOwnershipUnit": "clean mechanical data-territory batch terminating at the hard 0x63676C boundary (own as one or few opaque packed-resource data_ parts; cite the 0x594280 directory as a structural header). Whoever owns chunk 89 coordinates the B/C split at 0x595000."
+    }
+  ],
+  "knownContinuations": [
+    { "from": "chunk 47 data_003002E8 (0x003002E8..0x00301000)", "into": "Section A start 0x00301000", "evidence": "chunk-47 dossier/index: outgoing data continuation, no terminating zero-fill" },
+    { "boundary": "A/B at 0x004E3000", "evidence": "structural onset of the 8-byte index table (header 0x4E3140); NOT an entropy cliff" },
+    { "boundary": "B/C at ~0x00595000", "evidence": "sharp entropy jump 0x593000 (5.90) -> 0x595000 (7.93); transitional window 0x594000" },
+    { "boundary": "C end at 0x0063676C", "evidence": "configured codeRegion end; 24-B raw gap; LHA -lh5- at 0x00636784 (byte-verified)" }
+  ],
+  "parentToolingComparisons": [
+    { "artifact": "C:/Users/Joe/Projects/OgreBattlel64/scripts/ob64_anim_block_catalog.json", "claim": "63 contiguous cutscene animation/audio-sequence blocks, ROM 0x4F0FB0..0x594280", "addressSpace": "true ROM z64 offsets", "overlap": "Section B sub-region 0x4F0FB0..0x594280 (668,368 B)", "verdict": "accepted", "confidence": "high", "reason": "byte-verified (first block 0x4F0FB0, count 63); parent decoder tools/anim_block_codec.py gate-proven (in-game sound blanking) + all 63 roundtrip_ok" },
+    { "artifact": "C:/Users/Joe/Projects/OgreBattlel64/scripts/ob64_archive_catalog.json", "claim": "first LHA archive at 0x636784 (-lh5-); 0 of 825 entries below 0x636784", "addressSpace": "ROM offsets", "overlap": "abuts the survey hard end 0x63676C (+24-B gap)", "verdict": "accepted", "confidence": "high", "reason": "byte-verified -lh5- at 0x636786; confirms 0x63676C is a real boundary" },
+    { "artifact": "directory/offset table at ROM 0x594280 (derived from baserom)", "claim": "u32-BE ascending offset/size index preceding Section C", "addressSpace": "ROM offsets", "overlap": "Section B 0x594280..0x595000", "verdict": "accepted (structural)", "confidence": "medium", "reason": "monotonic ascending values consistent with a resource directory; semantics not decoded" },
+    { "artifact": "C:/Users/Joe/Projects/OgreBattlel64/scripts/ob64_functions.json", "claim": "meta code_end_rom 0x63676C; highest VALID function start 0x2B88C8", "addressSpace": "ROM offsets", "overlap": "confirms 0 valid functions in the survey range", "verdict": "accepted", "confidence": "high", "reason": "the lone in-range entry 0x594A9C is valid:false/orphan/frame=28239 (noise)" },
+    { "artifact": "Cutscene Frames/dma_log*.txt + wiki/cutscene_rom_trace", "claim": "PI-DMA cart->RAM transfers", "addressSpace": "romoff = SOURCE, dram = DESTINATION", "overlap": "0 transfers SOURCE from 0x301000..0x63676C (all cart romoff >= ~0x9398E8)", "verdict": "accepted (negative)", "confidence": "high", "reason": "in-range data is CPU-read in place, never DMA-streamed (distinguish source romoff from dest dram)" }
+  ],
+  "hiddenCodeRisk": {
+    "result": "none — DATA-ONLY SAFE",
+    "evidence": "Across 0x301000..0x63676C: 0 jr$ra (0x03E00008), 0 0x80xxxxxx RAM-pointer words, 0 pointer-table runs >=4, 0 archive/MIO0/Yay0/Yaz0/LHA magic, exactly 1 coincidental stack-prologue word (0x00594A9C, immediate -28239 not /8, no jr$ra body), exactly 1 zero-run >=256B (0x429AC1..0x429CC8). Confirmed by the deterministic lead scan AND an independent adversary pass.",
+    "rejectedCodeSignals": "110 'jal targets into range' resolve to vram 0x80300000+ (above the executable extent 0x802A89B4 in non-linear overlay RAM — the forbidden linear back-map); 26363 'ROM-offset constants' and lui+addiu RAM constructs are ordinary MIPS encodings inside the code region whose 32-bit value numerically falls in range, not pointers into the tail.",
+    "recommendation": "No chunk-fallback or mixed code/data pass warranted. Proceed with data-territory ownership. Do NOT apply a linear RAM=ROM map anywhere in this range; the .word fallback decode comments (0x80370C00-style RAM column + mnemonics) are the invalid linear back-map on data and must be ignored as evidence."
+  },
+  "statusSummary": {
+    "remainingBytes": 3364716,
+    "byStatus": { "parsed": 682776, "raw-but-classified": 2639404, "undecoded": 42536, "gap": 0 },
+    "parsedDetail": "B index table 14408 + B anim blocks 668368 = 682776 B parsed (parser-backed/byte-proven).",
+    "rawButClassifiedDetail": "Section A 1974272 + B lead-in 320 + B directory 3456 + Section C 661356 = 2639404 B raw-but-classified.",
+    "undecodedDetail": "B payload 0x4E6988..0x4F0FB0 = 42536 B undecoded.",
+    "note": "These are SURVEY statuses (classification confidence), not ownership. All 3,364,716 B remain GENERATED FALLBACK (unowned) regardless of survey status."
+  },
+  "ownershipAssessment": {
+    "overall": "no",
+    "reason": "All of 0x301000..0x63676C is generated original_mips .word fallback with ZERO tracked named data parts; a survey establishes non-code + classification but NOT ownership. Ownership requires (per chunk-44..47 precedent + the data-territory template) tracked .s data parts + per-part provenance index + dossier + recorded adversarial hidden-code proof + exact chunk coverage. Byte-exactness alone is already met by the fallback (code SHA matches baserom).",
+    "perSection": { "A": "no (owned-candidate; clean mechanical batch)", "B": "no (owned-candidate; needs PARSER-BACKED/careful pass)", "C": "no (owned-candidate; clean mechanical batch)" }
+  },
+  "recommendedOwnershipBatches": [
+    { "order": 1, "unit": "Section A high-entropy asset pool", "romRange": "0x00301000..0x004E3000", "chunkCoverage": "48..78 (78 partial)", "template": "data-territory-source-ownership-run-prompt.md", "kind": "clean mechanical data-territory batch (continuation of chunks 44-47)", "note": "largest + cleanest; resolve the texture-vs-audio type question during ownership (test whether B's 0x4E3158 table offsets resolve into A)." },
+    { "order": 2, "unit": "Section B cutscene audio/sequence subsystem", "romRange": "0x004E3000..0x00595000", "chunkCoverage": "78..89 (boundary-split)", "template": "data-territory-source-ownership-run-prompt.md (parser-backed path) — possibly the chunk template for the sparse/table sub-parts", "kind": "PARSER-BACKED / careful pass (table_ part + 63 named anim-block parts via anim_block_codec.py + raw payload/directory). Sub-batch 78-82 then 83-89.", "note": "the only parser-backed section; do NOT bulk-classify as raw blob." },
+    { "order": 3, "unit": "Section C packed/compressed resource pool", "romRange": "0x00595000..0x0063676C", "chunkCoverage": "89..99 (99 partial, hard end)", "template": "data-territory-source-ownership-run-prompt.md", "kind": "clean mechanical data-territory batch terminating at the codeRegion/LHA boundary", "note": "own as opaque packed-resource parts; cite the 0x594280 directory as a structural header." }
+  ],
+  "recommendedTemplateAdjustments": {
+    "verdict": "data-territory-source-ownership-run-prompt.md is ADEQUATE for sections A and C (clean data-territory) and supports B's parser-backed path (it already has a parser/dumper-evidence path and a 'Stop And Fallback Conditions: unknown schema needing focused parser work' clause).",
+    "suggestedAddition": "Add an explicit caution: parent graphics/sprite scanners (scripts/ob64_4a_audit.json, ob64_4f_audit.json) use DECOMPRESSED-7MB-LZSS-STREAM offsets (gapOffset 0xf1ce0..0x6dae24; source compressed region at ROM 0x20248C2..0x26FF9F0, past 0x636784), NOT raw ROM offsets — any ownership pass MUST NOT import their offsets as ROM addresses (would mis-place ownership). Recommend a {PARENT_OFFSET_SPACE_CAVEAT} placeholder."
+  },
+  "unresolvedUnknowns": [
+    "Section A exact type: graphics/texture vs audio-codec-residual sample bank (competing byte/continuation evidence).",
+    "Section B payload 0x4E6988..0x4F0FB0 (42,536 B) format/schema.",
+    "Section B index-table field2 = 0x64 constant meaning (count/rate/duration guess).",
+    "Whether B's 0x4E3158 table and 0x594280 directory index Section A / Section C respectively.",
+    "Section C compression/encoding scheme (no magic; custom packed; entropy ~7.95).",
+    "Exact A/B boundary byte (table onset 0x4E3000 vs entropy ~0x4E2000) and B/C boundary byte (0x594000 vs 0x595000) — pin during ownership."
+  ],
+  "rejectedLeads": [
+    { "artifact": "scripts/ob64_4a_audit.json (1354 sprite blocks) + ob64_4f_audit.json (1808 blocks: TRIANGLE_MESH/SMALL_TABLE/ANIM_KEYFRAME)", "reason": "their gapOffset is a DECOMPRESSED-7MB-LZSS-STREAM offset (0xf1ce0..0x6dae24), NOT a ROM offset; source compressed region at ROM 0x20248C2..0x26FF9F0 (past 0x636784, inside the archive cluster). In-range-looking entries (e.g. block_3127_0x343118) are stream offsets. CONTRIBUTE ZERO real coverage of 0x301000..0x63676C; importing as ROM addresses would mis-place ownership.", "confidence": "high" },
+    { "artifact": "scripts/ob64_functions.json entry start 0x594A9C", "reason": "valid:false, orphan, has_jr_ra:false, frame_size 28239 (absurd); coincidental stack-prologue word in Section C max-entropy data; no body/return/callers. = data, not code.", "confidence": "high" },
+    { "artifact": "scripts/ob64_audio_region_analysis.js audio region", "reason": "targets ROM 0x925483..0x1C4801C (main BGM/SEQ pool), entirely past 0x636784; distinct from the in-range cutscene audio-sequence blocks at 0x4F0FB0.", "confidence": "high" },
+    { "artifact": "DMA traces (Cutscene Frames/dma_log_all.txt, wiki/cutscene_rom_trace) '84 in-range hits'", "reason": "matched on DESTINATION RAM (dram 0x802Dxxxx), not ROM source; true romoff/cart SOURCE filter = 0 in-range (all >= ~0x9398E8). In-range data is CPU-read in place.", "confidence": "high" },
+    { "artifact": "fallback .s decode comments (RAM column 0x80370C00-style + MIPS mnemonics) across the tail", "reason": "the invalid linear RAM=ROM+0x8006FC00 back-map applied to DATA bytes; non-load-bearing aids, 0 real instructions (0 jr$ra). Must NOT be lifted into part semantics.", "confidence": "high" }
+  ]
+}

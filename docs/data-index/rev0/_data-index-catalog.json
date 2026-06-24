@@ -1,0 +1,647 @@
+{
+  "schemaVersion": 1,
+  "manifestName": "rev0-data-index-catalog",
+  "generated": "2026-06-23",
+  "purpose": "Read-only catalog of all docs/data-index/rev0 data inventories + focused structure indexes through frontier 0x301000. Additive normalization layer (does not modify the source indexes). Documents the v1-old vs v2-new inventory schema drift.",
+  "schemas": {
+    "v1-old": "chunks 13-33: {chunk,rangeZ64,totalDataBytes,classification,byClassBytes,partCount,outgoingStraddler,formatFamilies,entries[]}",
+    "v2-new": "chunks 34-47: {chunk,range,generated,dataPartCount,dataBytes,bytesByClass,evidence,parts[]}"
+  },
+  "schemaDriftNote": "Inventory files use two schemas (v1-old chunks 13-33, v2-new chunks 34-47). A future unify pass could migrate v1 to v2 field names (rangeZ64->range, totalDataBytes->dataBytes, partCount->dataPartCount, entries->parts). Non-blocking; all indexes are individually valid and byte-consistent. Recommended OPTIONAL enrichments (per survey): per-part accounting enum (parsed/raw-but-classified/undecoded), continuesInto/continuesFrom continuation fields, evidenceTags controlled vocabulary.",
+  "inventoryCount": 30,
+  "inventorySystematicBytes": 517036,
+  "inventorySystematicParts": 595,
+  "inventories": [
+    {
+      "file": "docs/data-index/rev0/chunk13-data-region-inventory.json",
+      "chunk": 13,
+      "range": [
+        "0x000DAB18",
+        "0x000E1000"
+      ],
+      "bytes": 25832,
+      "parts": 40,
+      "schema": "v1-old",
+      "classes": {
+        "string-pool": 984,
+        "packed/record": 17084,
+        "zero-fill": 216,
+        "ram-pointer-table": 7548
+      }
+    },
+    {
+      "file": "docs/data-index/rev0/chunk14-data-region-inventory.json",
+      "chunk": 14,
+      "range": null,
+      "bytes": 17828,
+      "parts": 20,
+      "schema": "v1-old",
+      "classes": {
+        "packed/record": 14728,
+        "zero-fill": 92,
+        "ram-pointer-table": 3008
+      }
+    },
+    {
+      "file": "docs/data-index/rev0/chunk15-data-region-inventory.json",
+      "chunk": 15,
+      "range": null,
+      "bytes": 9948,
+      "parts": 19,
+      "schema": "v1-old",
+      "classes": {
+        "float32-table": 1232,
+        "zero-fill": 92,
+        "display-list/graphics": 4148,
+        "packed/record": 1488,
+        "ram-pointer-table": 176,
+        "float64/pointer-mixed": 356,
+        "packed-byte/color": 204,
+        "ascii-rodata": 1840,
+        "float-record-table": 412
+      }
+    },
+    {
+      "file": "docs/data-index/rev0/chunk16-data-region-inventory.json",
+      "chunk": 16,
+      "range": null,
+      "bytes": 3296,
+      "parts": 23,
+      "schema": "v1-old",
+      "classes": {
+        "incoming-straddler-tail": 36,
+        "fixed-stride-record-table": 2140,
+        "indexed-float-ramp": 160,
+        "ram-pointer-table": 760,
+        "packed/record": 116,
+        "zero-fill": 24,
+        "float64-const-pool": 60
+      }
+    },
+    {
+      "file": "docs/data-index/rev0/chunk19-data-region-inventory.json",
+      "chunk": 19,
+      "range": null,
+      "bytes": 19300,
+      "parts": 16,
+      "schema": "v1-old",
+      "classes": {
+        "zero-fill": 8,
+        "bit-pattern-lut": 128,
+        "ram-pointer-table": 108,
+        "fixed-stride-record-table": 4848,
+        "packed-markers": 156,
+        "packed-fill": 1592,
+        "packed-highbyte": 12108,
+        "outgoing-straddler-head": 352
+      }
+    },
+    {
+      "file": "docs/data-index/rev0/chunk20-data-region-inventory.json",
+      "chunk": 20,
+      "range": null,
+      "bytes": 20328,
+      "parts": 86,
+      "schema": "v1-old",
+      "classes": {
+        "incoming-straddler-tail": 1696,
+        "display-list/graphics": 3976,
+        "zero-fill": 776,
+        "rodata-string": 6344,
+        "ram-pointer-table": 5492,
+        "float-const-pool": 664,
+        "packed/record": 276,
+        "neutral-encounter-table": 816,
+        "creature-drop-table": 288
+      }
+    },
+    {
+      "file": "docs/data-index/rev0/chunk21-data-region-inventory.json",
+      "chunk": 21,
+      "range": null,
+      "bytes": 5148,
+      "parts": 5,
+      "schema": "v1-old",
+      "classes": {
+        "packed/unknown": 12,
+        "high-entropy-blob": 96,
+        "packed-fill": 424,
+        "outgoing-straddler-head": 4616
+      }
+    },
+    {
+      "file": "docs/data-index/rev0/chunk22-data-region-inventory.json",
+      "chunk": 22,
+      "range": null,
+      "bytes": 25648,
+      "parts": 64,
+      "schema": "v1-old",
+      "classes": {
+        "packed/unknown": 20540,
+        "zero-fill": 600,
+        "ascii-string": 3620,
+        "ram-pointer-table": 792,
+        "ieee754-const": 96
+      }
+    },
+    {
+      "file": "docs/data-index/rev0/chunk23-data-region-inventory.json",
+      "chunk": 23,
+      "range": null,
+      "bytes": 27456,
+      "parts": 33,
+      "schema": "v1-old",
+      "classes": {
+        "packed/unknown": 25408,
+        "ieee754-const": 384,
+        "ram-pointer-table": 1132,
+        "ascii-string": 432,
+        "zero-fill": 100
+      }
+    },
+    {
+      "file": "docs/data-index/rev0/chunk24-data-region-inventory.json",
+      "chunk": 24,
+      "range": null,
+      "bytes": 26936,
+      "parts": 23,
+      "schema": "v1-old",
+      "classes": {
+        "zero-fill": 52,
+        "packed/record/unknown": 24980,
+        "ram-pointer-table": 1824,
+        "ieee754-const": 80
+      }
+    },
+    {
+      "file": "docs/data-index/rev0/chunk25-data-region-inventory.json",
+      "chunk": 25,
+      "range": null,
+      "bytes": 2368,
+      "parts": 12,
+      "schema": "v1-old",
+      "classes": {
+        "packed/unknown": 548,
+        "ascii-string": 1176,
+        "ram-pointer-table": 632,
+        "zero-fill": 12
+      }
+    },
+    {
+      "file": "docs/data-index/rev0/chunk26-data-region-inventory.json",
+      "chunk": 26,
+      "range": null,
+      "bytes": 2996,
+      "parts": 15,
+      "schema": "v1-old",
+      "classes": {
+        "ascii-string": 408,
+        "ram-pointer-table": 212,
+        "zero-fill": 64,
+        "ram-pointer/jump-table": 64,
+        "packed/unknown": 2200,
+        "ieee754-float-pool": 48
+      }
+    },
+    {
+      "file": "docs/data-index/rev0/chunk27-data-region-inventory.json",
+      "chunk": 27,
+      "range": null,
+      "bytes": 2888,
+      "parts": 14,
+      "schema": "v1-old",
+      "classes": {
+        "zero-fill": 56,
+        "ascii-string": 224,
+        "packed/unknown": 2244,
+        "ieee754-float-pool": 88,
+        "ram-pointer-table": 276
+      }
+    },
+    {
+      "file": "docs/data-index/rev0/chunk28-data-region-inventory.json",
+      "chunk": 28,
+      "range": "0x001C1000..0x001D1000",
+      "bytes": null,
+      "parts": null,
+      "schema": "unknown",
+      "classes": null
+    },
+    {
+      "file": "docs/data-index/rev0/chunk29-data-region-inventory.json",
+      "chunk": 29,
+      "range": "0x001D1000..0x001E1000",
+      "bytes": null,
+      "parts": null,
+      "schema": "unknown",
+      "classes": null
+    },
+    {
+      "file": "docs/data-index/rev0/chunk30-data-region-inventory.json",
+      "chunk": 30,
+      "range": "0x001E1000..0x001F1000",
+      "bytes": null,
+      "parts": null,
+      "schema": "unknown",
+      "classes": null
+    },
+    {
+      "file": "docs/data-index/rev0/chunk33-data-region-inventory.json",
+      "chunk": 33,
+      "range": "0x00211000..0x00221000",
+      "bytes": null,
+      "parts": null,
+      "schema": "unknown",
+      "classes": null
+    },
+    {
+      "file": "docs/data-index/rev0/chunk34-data-region-inventory.json",
+      "chunk": 34,
+      "range": "0x00228D6C-0x0022A280",
+      "bytes": 5396,
+      "parts": 29,
+      "schema": "v2-new",
+      "classes": {
+        "table": 2284,
+        "data": 1460,
+        "float": 1472,
+        "rodata": 176,
+        "zero_fill": 4
+      }
+    },
+    {
+      "file": "docs/data-index/rev0/chunk35-data-region-inventory.json",
+      "chunk": 35,
+      "range": "0x00239B94-0x0023A3A0",
+      "bytes": 2060,
+      "parts": 5,
+      "schema": "v2-new",
+      "classes": {
+        "zero_fill": 16,
+        "float": 48,
+        "data": 636,
+        "table": 1360
+      }
+    },
+    {
+      "file": "docs/data-index/rev0/chunk36-data-region-inventory.json",
+      "chunk": 36,
+      "range": "0x243F14-0x2447A0,0x24B410-0x24BCA0",
+      "bytes": 4380,
+      "parts": 28,
+      "schema": "v2-new",
+      "classes": {
+        "zero_fill": 56,
+        "table": 684,
+        "data": 1996,
+        "float": 456,
+        "rodata": 1188
+      }
+    },
+    {
+      "file": "docs/data-index/rev0/chunk37-data-region-inventory.json",
+      "chunk": 37,
+      "range": "0x25E2BC-0x25EE90",
+      "bytes": 3028,
+      "parts": 8,
+      "schema": "v2-new",
+      "classes": {
+        "zero_fill": 12,
+        "table": 148,
+        "data": 2668,
+        "float": 200
+      }
+    },
+    {
+      "file": "docs/data-index/rev0/chunk39-data-region-inventory.json",
+      "chunk": 39,
+      "range": "0x00273FFC-0x00281000",
+      "bytes": 7556,
+      "parts": 19,
+      "schema": "v2-new",
+      "classes": {
+        "zero_fill": 288,
+        "data": 4888,
+        "table": 2072,
+        "float": 64,
+        "jumptable": 244
+      }
+    },
+    {
+      "file": "docs/data-index/rev0/chunk40-data-region-inventory.json",
+      "chunk": 40,
+      "range": "0x00281000-0x00286BD0",
+      "bytes": 3404,
+      "parts": 16,
+      "schema": "v2-new",
+      "classes": {
+        "data": 1380,
+        "table": 1552,
+        "rodata": 184,
+        "float": 220,
+        "zero_fill": 68
+      }
+    },
+    {
+      "file": "docs/data-index/rev0/chunk41-data-region-inventory.json",
+      "chunk": 41,
+      "range": "0x00299D44-0x0029A4C0",
+      "bytes": 1916,
+      "parts": 24,
+      "schema": "v2-new",
+      "classes": {
+        "zero_fill": 84,
+        "data": 520,
+        "rodata": 648,
+        "table": 632,
+        "float": 32
+      }
+    },
+    {
+      "file": "docs/data-index/rev0/chunk42-data-region-inventory.json",
+      "chunk": 42,
+      "range": "0x002A82B4-0x002AE3C0",
+      "bytes": 2804,
+      "parts": 12,
+      "schema": "v2-new",
+      "classes": {
+        "zero_fill": 28,
+        "rodata": 1540,
+        "table": 204,
+        "data": 228,
+        "float": 664,
+        "jumptable": 140
+      }
+    },
+    {
+      "file": "docs/data-index/rev0/chunk43-data-region-inventory.json",
+      "chunk": 43,
+      "range": "0x002B89B8-0x002C1000",
+      "bytes": 34376,
+      "parts": 8,
+      "schema": "v2-new",
+      "classes": {
+        "zero_fill": 172,
+        "data": 34204
+      }
+    },
+    {
+      "file": "docs/data-index/rev0/chunk44-data-region-inventory.json",
+      "chunk": 44,
+      "range": "0x002C1000-0x002D1000",
+      "bytes": 65536,
+      "parts": 17,
+      "schema": "v2-new",
+      "classes": {
+        "data": 65372,
+        "zero_fill": 164
+      }
+    },
+    {
+      "file": "docs/data-index/rev0/chunk45-data-region-inventory.json",
+      "chunk": 45,
+      "range": "0x002D1000-0x002E1000",
+      "bytes": 65536,
+      "parts": 15,
+      "schema": "v2-new",
+      "classes": {
+        "data": 65380,
+        "zero_fill": 156
+      }
+    },
+    {
+      "file": "docs/data-index/rev0/chunk46-data-region-inventory.json",
+      "chunk": 46,
+      "range": "0x002E1000-0x002F1000",
+      "bytes": 65536,
+      "parts": 17,
+      "schema": "v2-new",
+      "classes": {
+        "data": 65356,
+        "zero_fill": 180
+      }
+    },
+    {
+      "file": "docs/data-index/rev0/chunk47-data-region-inventory.json",
+      "chunk": 47,
+      "range": "0x002F1000-0x00301000",
+      "bytes": 65536,
+      "parts": 27,
+      "schema": "v2-new",
+      "classes": {
+        "data": 65276,
+        "zero_fill": 260
+      }
+    }
+  ],
+  "focusedIndexCount": 23,
+  "focusedIndexes": [
+    {
+      "file": "docs/data-index/rev0/chunk05-06-record-table-0x10.json",
+      "title": "chunk05-06-record-table-0x10",
+      "range": [
+        "0x60980",
+        "0x6136C"
+      ],
+      "records": 158
+    },
+    {
+      "file": "docs/data-index/rev0/chunk05-attack-name-pool.json",
+      "title": "chunk05-attack-name-pool",
+      "range": [
+        "0x5D5FC",
+        "0x5DAD4"
+      ],
+      "records": 100
+    },
+    {
+      "file": "docs/data-index/rev0/chunk05-element-name-pool.json",
+      "title": "chunk05-element-name-pool",
+      "range": [
+        "0x5D560",
+        "0x5D5FC"
+      ],
+      "records": 15
+    },
+    {
+      "file": "docs/data-index/rev0/chunk05-record-table-0x48.json",
+      "title": "chunk05-record-table-0x48",
+      "range": [
+        "0x5DB18",
+        "0x60980"
+      ],
+      "records": 165
+    },
+    {
+      "file": "docs/data-index/rev0/chunk06-item-name-pool.json",
+      "title": "chunk06-item-name-pool",
+      "range": [
+        "0x613B0",
+        "0x64A44"
+      ],
+      "records": 277
+    },
+    {
+      "file": "docs/data-index/rev0/chunk07-controller-pak-strings.json",
+      "title": "chunk07-controller-pak-strings",
+      "range": [
+        "0x783F8",
+        "0x79730"
+      ],
+      "records": null
+    },
+    {
+      "file": "docs/data-index/rev0/chunk08-mission-name-pool.json",
+      "title": "chunk08-mission-name-pool",
+      "range": [
+        "0x85960",
+        "0x85C60"
+      ],
+      "records": 40
+    },
+    {
+      "file": "docs/data-index/rev0/chunk08-options-menu-pool.json",
+      "title": "chunk08-options-menu-pool",
+      "range": [
+        "0x85C60",
+        "0x85EA8"
+      ],
+      "records": 54
+    },
+    {
+      "file": "docs/data-index/rev0/chunk15-opening-prologue-strings.json",
+      "title": "Ogre Battle 64 opening-prologue narration",
+      "range": [
+        "0x001006F0",
+        "0x00100E20"
+      ],
+      "records": null
+    },
+    {
+      "file": "docs/data-index/rev0/chunk20-creature-drop-table.json",
+      "title": "creature_drop_table",
+      "range": [
+        "0x00142258",
+        "0x00142378"
+      ],
+      "records": 36
+    },
+    {
+      "file": "docs/data-index/rev0/chunk20-neutral-encounter-table.json",
+      "title": "neutral_encounter_table",
+      "range": [
+        "0x00141ED0",
+        "0x00142200"
+      ],
+      "records": null
+    },
+    {
+      "file": "docs/data-index/rev0/chunk20-string-pool-1432E4.json",
+      "title": "Chunk-20 game-text/string pool (0x1432E4)",
+      "range": [
+        "0x001432E4",
+        "0x001449F0"
+      ],
+      "records": null
+    },
+    {
+      "file": "docs/data-index/rev0/chunk22-equipment-type-name-table.json",
+      "title": "Chunk-22 weapon/armor equipment-type name table (0x163FC0)",
+      "range": [
+        "0x00163FC0",
+        "0x001641C4"
+      ],
+      "records": null
+    },
+    {
+      "file": "docs/data-index/rev0/chunk22-trailing-ui-strings.json",
+      "title": "Chunk-22 trailing UI prompts + stat-label abbreviations (0x16FE40)",
+      "range": [
+        "0x0016FE40",
+        "0x0016FF34"
+      ],
+      "records": null
+    },
+    {
+      "file": "docs/data-index/rev0/chunk22-ui-string-pool.json",
+      "title": "Chunk-22 terrain-name + battle/legion/item UI message pool (0x1650A0)",
+      "range": [
+        "0x001650A0",
+        "0x00165BD4"
+      ],
+      "records": null
+    },
+    {
+      "file": "docs/data-index/rev0/chunk23-help-message-text.json",
+      "title": "Chunk-23 help/message text (0x1779A0, data island 1)",
+      "range": [
+        "0x001779A0",
+        "0x00177B38"
+      ],
+      "records": null
+    },
+    {
+      "file": "docs/data-index/rev0/chunk24-ui-labels-18F044.json",
+      "title": "Chunk-24 inline UI labels + pointer mini-table (0x18F044)",
+      "range": [
+        "0x0018F044",
+        "0x0018F100"
+      ],
+      "records": null
+    },
+    {
+      "file": "docs/data-index/rev0/chunk25-debug-strings-197738.json",
+      "title": "Chunk-25 inline debug strings (0x197738)",
+      "range": [
+        "0x00197738",
+        "0x001977E0"
+      ],
+      "records": null
+    },
+    {
+      "file": "docs/data-index/rev0/chunk25-dialogue-pool-19BFF0.json",
+      "title": "Chunk-25 dialogue string pool (0x19BFF0)",
+      "range": [
+        "0x0019BFF0",
+        "0x0019C488"
+      ],
+      "records": null
+    },
+    {
+      "file": "docs/data-index/rev0/chunk25-ui-labels-1952E8.json",
+      "title": "Chunk-25 inline UI labels (0x1952E8)",
+      "range": [
+        "0x001952E8",
+        "0x00195410"
+      ],
+      "records": null
+    },
+    {
+      "file": "docs/data-index/rev0/chunk26-options-menu-1A8F2C.json",
+      "title": "Chunk 26 options/debug menu string pool (0x1A8F2C)",
+      "range": [
+        "0x001A8F2C",
+        "0x001A90B0"
+      ],
+      "records": null
+    },
+    {
+      "file": "docs/data-index/rev0/chunk26-ui-labels-1A2B6C.json",
+      "title": "Chunk 26 inline UI labels (0x1A2B6C)",
+      "range": [
+        "0x001A2B6C",
+        "0x001A2B80"
+      ],
+      "records": null
+    },
+    {
+      "file": "docs/data-index/rev0/chunk27-status-menu-1B226C.json",
+      "title": "Chunk 27 status/menu string pool (0x1B226C)",
+      "range": [
+        "0x001B226C",
+        "0x001B234C"
+      ],
+      "records": null
+    }
+  ]
+}
