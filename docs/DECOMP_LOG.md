@@ -24,10 +24,10 @@ and replace the active log with a compact current-state summary.
   `original_mips`. A static control-flow audit found no credible code edge into
   the tail (0 branch targets, 0 J/JAL to a known function). Audit:
   `tools/audit_code_region.js` / `docs/CODE_REGION_AUDIT.md`.
-- Current tracked code source mix: forty-six composite real-assembler chunks
-  (chunk 0 177 `boot/`; chunks 1–45 in `lib/`: 350, 216, 67, 376, 88, 78, 103, 87, 34, 35, 191, 74, 67, 94, 153, 95, 66, 95, 80, 175, 99, 99, 73, 63, 71, 96, 142, 97, 103, 122, 86, 198, 109, 120, 134, 164, 180, 232, 155, 159, 160, 171, 90, 17, 15) =
-  **5,656 tracked source files**, plus 54 generated fallback code chunks. **Chunks
-  0–45 (`0x00001000..0x002E1000`) are now fully source-owned as named code/data
+- Current tracked code source mix: forty-seven composite real-assembler chunks
+  (chunk 0 177 `boot/`; chunks 1–46 in `lib/`: 350, 216, 67, 376, 88, 78, 103, 87, 34, 35, 191, 74, 67, 94, 153, 95, 66, 95, 80, 175, 99, 99, 73, 63, 71, 96, 142, 97, 103, 122, 86, 198, 109, 120, 134, 164, 180, 232, 155, 159, 160, 171, 90, 17, 15, 17) =
+  **5,673 tracked source files**, plus 53 generated fallback code chunks. **Chunks
+  0–46 (`0x00001000..0x002F1000`) are now fully source-owned as named code/data
   parts** (chunk 44: 0 code + 17 data [9 data + 8 zero_fill], DATA TERRITORY — the entire
   64 KiB is non-code high-entropy graphics/texture data PAST the executable extent `0x2B89B4`
   (0 jr$ra / 0 prologues / 0 pointers), continuing chunk 43's tail; no code, no straddler;
@@ -95,7 +95,7 @@ and replace the active log with a compact current-state summary.
   chunk 37: 170 normal code + 8 data + 2 function straddlers, MIXED - command-dispatcher
   mission-briefing/combat code + a 0x80x pointer/struct/float record-table DATA island
   [0x25E2BC..0x25EE90]);
-  next is chunk 46 (`0x002E1000`, still a
+  next is chunk 47 (`0x002F1000`, still a
   generated fallback chunk — deeper in the non-code data tail). The promote-tool merge blocker is FIXED.
 - The parent boundary DB has TWO recurring defects, both fixed when splitting:
   (1) `end_rom` is INCLUSIVE (exclusive end = `end_rom + 4`; do NOT treat the
@@ -107,7 +107,7 @@ and replace the active log with a compact current-state summary.
   seen at `0xD248/0xD600/0xECF0/0xF22C/0xFDB8/0x1054C/0x10E70/0x10FE0`). Always
   validate boundaries from disasm, not the parent record alone.
 - Current tracked non-code source-owner mix: 3 tracked files / 44,029 bytes,
-  plus 1,054 generated fallback owner files / 35,388,567 bytes.
+  plus 1,053 generated fallback owner files / 35,388,567 bytes.
 - Current code-region SHA256:
   `40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`.
 - Current rebuilt/full ROM SHA256:
@@ -432,11 +432,22 @@ Current named sequence:
   into chunk 46). Parent evidence: 4f_audit RGBA sprite-tile leads at the chunk start (`0x2d112c`/
   `119c`/`11fa`/`12a4`), 4a RGBA32 straddler `0x2d0fe2` — asset-shape hints only. Adversarial 2
   skeptics (hidden-code+structure + tiling): clean. Dossier + data index added. **Chunk 45 source-owned.**
-- Current remainder: none in chunks 0-45 (`0x1000..0x2E1000` fully source-owned;
+- Chunk 46 source-ownership `0x002E1000..0x002F1000` (17 parts: 9 data + 8 zero_fill, 0 code —
+  DATA TERRITORY): the entire 64 KiB chunk is non-code data, PAST the executable extent `0x002B89B4`.
+  It continues chunk 45's `data_002E0D68` high-entropy texture tail. Proof of non-code: **0 jr$ra,
+  0 stack prologues, 0 RAM-pointer words** across all 16,384 words; 1,564 coincidental ASCII bytes
+  (no real strings); no archive/LZSS magic. Owned as 9 `data_` high-entropy graphics/texture asset
+  spans (raw-but-classified; possibly compressed) + 8 `zero_fill_` parts (16–32 B, parsed). Last part
+  `data_002EF7F8` runs to the chunk end (continues into chunk 47). **Runtime-load evidence**: 3 real
+  PI-DMA cart→RAM transfers source this chunk (romoff `0x2e1110`/`14c2`/`1872`, 0x3c0 B each,
+  archive-unmapped raw asset bytes — `Cutscene Frames/dma_log.txt`); 4a CI4 asset-shape hint at
+  `0x2e81d8` (scanner-flooded). Adversarial 2 skeptics: clean. Dossier + data index added. **Chunk 46
+  source-owned.**
+- Current remainder: none in chunks 0-46 (`0x1000..0x2F1000` fully source-owned;
   evidenced executable MIPS `0x1000..0x2B89B4` 100% source-owned).
-  **Current frontier: `0x002E1000` (chunk 46).** Chunk 45 ended in DATA (no straddler); the trailing
-  `data_002E0D68` high-entropy texture region continues across `0x2E1000`. First action: own that
-  data continuation. NOTE: chunk 46 (`0x2E1000..0x2F1000`) is deeper in the non-code data tail —
+  **Current frontier: `0x002F1000` (chunk 47).** Chunk 46 ended in DATA (no straddler); the trailing
+  `data_002EF7F8` high-entropy texture region continues across `0x2F1000`. First action: own that
+  data continuation. NOTE: chunk 47 (`0x2F1000..0x301000`) is deeper in the non-code data tail —
   expect more data territory. The global non-code tail `0x002B89B4..0x0063676C` remains a separate,
   larger reclassification design; do not force it in a single chunk run.
 
@@ -904,28 +915,28 @@ the full quick index. The newest dossiers are:
 
 ## Next Frontier
 
-Chunks 0–45 (`0x00001000..0x002E1000`) are fully source-owned as named code/data
+Chunks 0–46 (`0x00001000..0x002F1000`) are fully source-owned as named code/data
 parts. Chunk 43 (90 parts) is the MIXED code→data transition chunk: the mission-briefing/
 scenario-overview overlay CODE region `0x2B1000..0x2B89B8` (incoming straddler-tail
 func_002B0E8C_chunk43tail; 62 parent functions + frameless leaves) then the evidenced code→data
 boundary at `0x2B89B8` and an F3DEX2 display-list/float-pool/texture DATA tail `0x2B89B8..0x2C1000`
-(8 parts). Chunks 44-45 are DATA TERRITORY: each entire 64 KiB is non-code high-entropy
+(8 parts). Chunks 44-46 are DATA TERRITORY: each entire 64 KiB is non-code high-entropy
 graphics/texture asset data past the executable extent (0 jr$ra/0 prologues/0 pointers),
-`data_` + `zero_fill_` parts. Dossiers: `docs/dossiers/lib-chunk4{3,4,5}-*.md`; data indexes
-`docs/data-index/rev0/chunk4{3,4,5}-data-region-inventory.json`.
+`data_` + `zero_fill_` parts. Dossiers: `docs/dossiers/lib-chunk4{3,4,5,6}-*.md`; data indexes
+`docs/data-index/rev0/chunk4{3,4,5,6}-data-region-inventory.json`.
 
-Current frontier is **`0x002E1000` (chunk 46)**. The evidenced executable MIPS extent
+Current frontier is **`0x002F1000` (chunk 47)**. The evidenced executable MIPS extent
 `0x1000..0x2B89B4` (2,849,204 B) is **100.0000% source-owned**; total source-owned
-`0x1000..0x2E1000` (code+data) = 3,014,652 B (code-only = 2,444,548 B = 85.7977% of the
-extent; the rest are interior + chunk-43/44/45 data-tail spans).
+`0x1000..0x2F1000` (code+data) = 3,080,188 B (code-only = 2,444,548 B = 85.7977% of the
+extent; the rest are interior + chunk-43/44/45/46 data-tail spans).
 
-FIRST for the next run: chunk 45 ended in DATA (no straddler), so own the
-`data_002E0D68` high-entropy texture continuation across `0x2E1000` first.
-NOTE: chunk 46 (`0x2E1000..0x2F1000`) is deeper in the non-code data tail — expect more data
+FIRST for the next run: chunk 46 ended in DATA (no straddler), so own the
+`data_002EF7F8` high-entropy texture continuation across `0x2F1000` first.
+NOTE: chunk 47 (`0x2F1000..0x301000`) is deeper in the non-code data tail — expect more data
 territory; do not reclassify the global non-code tail beyond the target chunk.
 
 There are now two active tracks. The library source-ownership track continues at
-`0x2E1000` (chunk 46) as above. The full-ROM coverage track (opened 2026-06-21)
+`0x2F1000` (chunk 47) as above. The full-ROM coverage track (opened 2026-06-21)
 next refines the exact code/data boundary near `0x002B89B4` and reclassifies the
 non-code tail `0x002B89B4..0x0063676C` from `original_mips` to a data source
 form, shrinking the configured code region to the executable extent while
