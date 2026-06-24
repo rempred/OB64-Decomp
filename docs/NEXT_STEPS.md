@@ -15,13 +15,16 @@ Current passing commands:
 node tools/verify_setup.js
 ```
 
-Current source mix: 89 tracked composite real-assembler chunks (chunk 0 177
-`boot/`; chunks 1–88 in `lib/`: 350, 216, 67, 376, 88, 78, 103, 87, 34, 35, 191, 74, 67, 94, 153, 95, 66, 95, 80, 175, 99, 99, 73, 63, 71, 96, 142, 97, 103, 122, 86, 198, 109, 120, 134, 164, 180, 232, 155, 159, 160, 171, 90, 17, 15, 17, 27, 9, 11, 13, 13, 13, 9, 9, 9, 7, 1, 5, 3, 3, 5, 5, 5, 7, 15, 8, 21, 33, 23, 19, 23, 21, 33, 13, 7, 7, 15, 4, 11, 5, 4, 4, 5, 9, 9, 11, 4, 9) = 6,140 tracked
-source files, plus 11 generated fallback chunks. **Chunks 0–88 are fully
-source-owned as named code/data parts** (`0x00001000..0x00591000`;
+Current source mix: 90 tracked composite real-assembler chunks (chunk 0 177
+`boot/`; chunks 1–89 in `lib/`: 350, 216, 67, 376, 88, 78, 103, 87, 34, 35, 191, 74, 67, 94, 153, 95, 66, 95, 80, 175, 99, 99, 73, 63, 71, 96, 142, 97, 103, 122, 86, 198, 109, 120, 134, 164, 180, 232, 155, 159, 160, 171, 90, 17, 15, 17, 27, 9, 11, 13, 13, 13, 9, 9, 9, 7, 1, 5, 3, 3, 5, 5, 5, 7, 15, 8, 21, 33, 23, 19, 23, 21, 33, 13, 7, 7, 15, 4, 11, 5, 4, 4, 5, 9, 9, 11, 4, 9, 5) = 6,145 tracked
+source files, plus 10 generated fallback chunks. **Chunks 0–89 are fully
+source-owned as named code/data parts** (`0x00001000..0x005A1000`;
+chunk 89 owns the whole Section B tail + Section C start [0x591000..0x5A1000]: 5 structural parts
+[block 61 tail + block 62 = anim-family end 0x594280 + Section C 65-entry directory + zero pad + Section C
+HUFFMAN-compressed "HUFF" pool start], 0 code, RUN-COMPLETE resolving the prior partial-interior-chunk
+fallback (Section C = custom "HUFF" Huffman pool, 29 blocks, UNDECODED);
 chunks 79-88 = Section B parser-backed cutscene AUDIO-SEQUENCE blocks [0x4F1000..0x591000]: 71 parts at
-natural catalog block boundaries [block 0 body + blocks 1-60 whole + block 61 head], 0 code; FALLBACK at
-0x591000 (block 61 tail + block 62 + Section-B directory tail are mid-chunk-89, deferred);
+natural catalog block boundaries [block 0 body + blocks 1-60 whole + block 61 head], 0 code;
 chunk 78 crosses the Section A/B boundary [0x4E1000..0x4F1000; boundary pinned 0x4E3140]: 4 structural
 parts = Section A audio tail + Section B index table [1798 records, shape decoded] + Section B payload
 [undecoded] + first parser-backed cutscene-block head; chunk-78 bytes owned, Section B unit partial;
@@ -111,7 +114,7 @@ at z64 0x1F36F0; chunk 32: 196 normal code + 0 data + 2 function straddlers, ALL
 frameless-leaf-dense FP/display-list + class-def/char-data code; chunk 33: 82 normal code +
 25 data + 2 function straddlers, MIXED - code + a font/glyph + pointer/float DATA region
 + a jump-table state-machine straddler);
-next is chunk 89 (`0x00591000`, Section B block tail + directory + B/C boundary).
+next is chunk 90 (`0x005A1000`, Section C HUFFMAN-compressed "HUFF" pool continuation toward the data end 0x63676C).
 
 The assembled code-region SHA256 is
 `40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`; the full
@@ -188,14 +191,15 @@ node tools/audit_code_region.js
    generates fallback owners for the rest. Keep `node tools/verify_setup.js`
    green after every promotion.
 
-3. Chunk-89 run: Section B block tail + directory + B/C boundary (mid-chunk; needs partial-chunk or combined Section C run).
+3. Chunk-90 run: Section C HUFFMAN-compressed "HUFF" pool continuation (raw-but-classified, undecoded).
 
-   Chunks 0–88 (`0x00001000..0x00591000`) are fully source-owned as named code/data
-   parts: chunk 0 in `boot/`; chunks 1–88 in `lib/` (dossiers `lib-chunk1-…` … `lib-chunk47-…` +
+   Chunks 0–89 (`0x00001000..0x005A1000`) are fully source-owned as named code/data
+   parts: chunk 0 in `boot/`; chunks 1–89 in `lib/` (dossiers `lib-chunk1-…` … `lib-chunk47-…` +
    `section-a-00301000-00341000-data-ownership.md` + `section-a-00341000-003E1000-data-ownership.md` +
    `section-a-003E1000-00421000-data-ownership.md` + `section-a-audio-bank-00421000-00431000-data-ownership.md`
    + `section-a-audio-bank-tail-00431000-00441000-data-ownership.md` + `section-a-flat-audio-00441000-004E1000-data-ownership.md`
-   + `section-a-to-b-boundary-004E1000-004F1000-data-ownership.md` + `section-b-audio-sequence-blocks-004F1000-00595000-data-ownership.md`).
+   + `section-a-to-b-boundary-004E1000-004F1000-data-ownership.md` + `section-b-audio-sequence-blocks-004F1000-00595000-data-ownership.md`
+   + `section-b-tail-section-c-start-00591000-005A1000-data-ownership.md`).
    Chunk 43 (90 parts) is the MIXED code→data
    transition chunk. Chunks 44-47 + Section A slices 1-3 (chunks 48-65) are DATA TERRITORY: each entire
    64 KiB is non-code high-entropy asset data past the executable extent (0 jr$ra/0 prologues/0
@@ -204,21 +208,25 @@ node tools/audit_code_region.js
    chunk 67 closes that bank's WaveTables payload (ends 0x431EF1) + flat post-tail audio (21 parts);
    chunks 68-77 are flat Section A audio sample payload (194 parts); chunk 78 crosses the Section A/B
    boundary (pinned 0x4E3140); chunks 79-88 are the Section B parser-backed cutscene audio-sequence blocks
-   (71 parts; block 0 body + 1-60 whole + block 61 head). All of Section A (0x301000..0x4E3140) is AUDIO.
+   (71 parts; block 0 body + 1-60 whole + block 61 head); chunk 89 owns the whole Section B tail + Section C
+   start (5 parts: block 61 tail + block 62 = anim-family end 0x594280 + Section C 65-entry directory + zero
+   pad + Section C HUFFMAN-compressed "HUFF" pool start; 29 HUFF blocks, UNDECODED; B/C boundary 0x594280).
+   All of Section A (0x301000..0x4E3140) is AUDIO.
    Indexes `docs/data-index/rev0/chunk4{3,4,5,6,7}-data-region-inventory.json` +
    `section-a-00301000-00341000-data-inventory.json` + `section-a-00341000-003E1000-data-inventory.json`
    + `section-a-003E1000-00421000-data-inventory.json` + `section-a-audio-bank-00421000-00431000-data-inventory.json`
    + `section-a-audio-bank-tail-00431000-00441000-data-inventory.json` + `section-a-flat-audio-00441000-004E1000-data-inventory.json`
-   + `section-a-to-b-boundary-004E1000-004F1000-data-inventory.json` + `section-b-audio-sequence-blocks-004F1000-00595000-data-inventory.json`.
+   + `section-a-to-b-boundary-004E1000-004F1000-data-inventory.json` + `section-b-audio-sequence-blocks-004F1000-00595000-data-inventory.json`
+   + `section-b-tail-section-c-start-00591000-005A1000-data-inventory.json`.
 
-   **Next frontier: `0x00591000` (chunk 89).** The evidenced executable MIPS extent
-   `0x1000..0x2B89B4` is **100.0000% source-owned**. Chunks 79-88 owned the Section B audio-sequence-block
-   family body (block 0 body + blocks 1-60 whole + block 61 head) and FELL BACK at 0x591000. FIRST action:
-   the **chunk-89 run** — own block 61 tail (`0x591000..0x592490`) + block 62 (`0x592490..0x594280`) + the
-   Section-B directory tail (`0x594280..0x595000`; a 65-entry u32-BE offset table indexing the decompressed
-   Section C asset space), then pin the Section B/C boundary (~0x595000) and start Section C. NOTE:
-   0x594280/0x595000 are mid-chunk-89 — needs a partial-interior-chunk pipeline enhancement OR a combined
-   Section-B-tail + Section-C run ending at the 0x5A1000 chunk boundary. Use
+   **Next frontier: `0x005A1000` (chunk 90).** The evidenced executable MIPS extent
+   `0x1000..0x2B89B4` is **100.0000% source-owned**. Chunk 89 owned the whole Section B tail + Section C
+   start (block 61 tail + block 62 = anim-family end 0x594280 + Section C directory + Section C HUFFMAN-
+   compressed "HUFF" pool start), a RUN-COMPLETE that resolved the prior partial-interior-chunk fallback.
+   FIRST action: the **chunk-90 run** — continue Section C: own the next run of "HUFF" Huffman-compressed
+   blocks (`0x5A1000..`) as raw-but-classified (undecoded-compressed) data territory, advancing toward the
+   hard data end ~`0x63676C` (last HUFF block 0x630BC4; first LHA archive 0x636784). Do NOT continue past
+   0x0063676C without Joe explicitly asking. Use
    `docs/templates/data-territory-source-ownership-run-prompt.md`.
    Pipeline: data-territory scans (entropy/string/pointer/zero) + tiling generator + adversarial
    data/parent swarm (Workflow). Coverage 100.0000% of the executable extent (code-only 85.7977%). See

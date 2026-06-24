@@ -24,15 +24,19 @@ and replace the active log with a compact current-state summary.
   `original_mips`. A static control-flow audit found no credible code edge into
   the tail (0 branch targets, 0 J/JAL to a known function). Audit:
   `tools/audit_code_region.js` / `docs/CODE_REGION_AUDIT.md`.
-- Current tracked code source mix: eighty-nine composite real-assembler chunks
-  (chunk 0 177 `boot/`; chunks 1–88 in `lib/`: 350, 216, 67, 376, 88, 78, 103, 87, 34, 35, 191, 74, 67, 94, 153, 95, 66, 95, 80, 175, 99, 99, 73, 63, 71, 96, 142, 97, 103, 122, 86, 198, 109, 120, 134, 164, 180, 232, 155, 159, 160, 171, 90, 17, 15, 17, 27, 9, 11, 13, 13, 13, 9, 9, 9, 7, 1, 5, 3, 3, 5, 5, 5, 7, 15, 8, 21, 33, 23, 19, 23, 21, 33, 13, 7, 7, 15, 4, 11, 5, 4, 4, 5, 9, 9, 11, 4, 9) =
-  **6,140 tracked source files**, plus 11 generated fallback code chunks. **Chunks
-  0–88 (`0x00001000..0x00591000`) are now fully source-owned as named code/data
-  parts** (chunks 79-88 = Section B parser-backed cutscene AUDIO-SEQUENCE blocks [0x4F1000..0x591000]:
+- Current tracked code source mix: ninety composite real-assembler chunks
+  (chunk 0 177 `boot/`; chunks 1–89 in `lib/`: 350, 216, 67, 376, 88, 78, 103, 87, 34, 35, 191, 74, 67, 94, 153, 95, 66, 95, 80, 175, 99, 99, 73, 63, 71, 96, 142, 97, 103, 122, 86, 198, 109, 120, 134, 164, 180, 232, 155, 159, 160, 171, 90, 17, 15, 17, 27, 9, 11, 13, 13, 13, 9, 9, 9, 7, 1, 5, 3, 3, 5, 5, 5, 7, 15, 8, 21, 33, 23, 19, 23, 21, 33, 13, 7, 7, 15, 4, 11, 5, 4, 4, 5, 9, 9, 11, 4, 9, 5) =
+  **6,145 tracked source files**, plus 10 generated fallback code chunks. **Chunks
+  0–89 (`0x00001000..0x005A1000`) are now fully source-owned as named code/data
+  parts** (chunk 89 owns the whole **Section B tail + Section C start** [0x591000..0x5A1000]: 5 structural
+  parts [block 61 tail + block 62 = anim-family end 0x594280 + Section C 65-entry directory + zero pad +
+  Section C HUFFMAN-compressed "HUFF" pool start], 0 code; RUN-COMPLETE — owning the whole chunk resolved
+  the prior partial-interior-chunk fallback; Section C = custom "HUFF" Huffman pool, 29 blocks, UNDECODED)
+  (chunks 79-88 = Section B parser-backed cutscene AUDIO-SEQUENCE blocks [0x4F1000..0x591000]:
   71 parts at natural catalog block boundaries [block 0 body + blocks 1-60 whole + block 61 head], 0 code;
   all 63 blocks tag 0x215 + contiguous per parent ob64_anim_block_catalog.json/anim_block_codec.py;
-  FALLBACK at 0x591000 — block 61 tail + block 62 + the Section-B directory tail are mid-chunk-89,
-  deferred) (chunk 78 crosses the **Section A/B boundary** [0x4E1000..0x4F1000]: 4 structural parts =
+  FALLBACK at 0x591000 — block 61 tail + block 62 + the Section-B directory tail were mid-chunk-89,
+  now owned in chunk 89) (chunk 78 crosses the **Section A/B boundary** [0x4E1000..0x4F1000]: 4 structural parts =
   Section A audio tail + Section B index table [1798 records, shape decoded] + Section B payload
   [undecoded] + the head of the first parser-backed cutscene audio-sequence block [tag 0x215];
   chunk-78 bytes owned, Section B unit partial) (chunks 68-77 = flat Section A AUDIO sample payload [0x441000..0x4E1000]: 194 parts [102 data +
@@ -127,8 +131,8 @@ and replace the active log with a compact current-state summary.
   chunk 37: 170 normal code + 8 data + 2 function straddlers, MIXED - command-dispatcher
   mission-briefing/combat code + a 0x80x pointer/struct/float record-table DATA island
   [0x25E2BC..0x25EE90]);
-  next is chunk 89 (`0x00591000`, still a
-  generated fallback chunk — block 61 tail + block 62 + Section-B directory + B/C boundary). The promote-tool merge blocker is FIXED.
+  next is chunk 90 (`0x005A1000`, still a
+  generated fallback chunk — Section C HUFFMAN-compressed "HUFF" pool continuation toward the data end 0x63676C). The promote-tool merge blocker is FIXED.
 - The parent boundary DB has TWO recurring defects, both fixed when splitting:
   (1) `end_rom` is INCLUSIVE (exclusive end = `end_rom + 4`; do NOT treat the
   delay slot as a gap — `tools/dump_function_context.js` now enforces this with a
@@ -590,15 +594,29 @@ Current named sequence:
   @0x594280 indexing the decompressed Section C asset space). Index
   `docs/data-index/rev0/section-b-audio-sequence-blocks-004F1000-00595000-data-inventory.json` + dossier
   added. Outgoing block 61 tail into chunk 89. **Chunks 79-88 source-owned (Section B audio-sequence blocks, fallback).**
-- Current remainder: none in chunks 0-88 (`0x1000..0x591000` fully source-owned;
+- Section B tail + Section C start `0x00591000..0x005A1000` (whole chunk 89; 5 structural parts, 0 code) —
+  a **RUN-COMPLETE** that resolves the prior partial-interior-chunk fallback by owning both sides of the
+  Section B/C boundary as separate subranges. Parts: block 61 tail (0x591000..0x592490) + block 62
+  (0x592490..0x594280 = the FINAL/63rd anim block, **family end 0x594280**) + Section C 65-entry u32-BE
+  **directory** (0x594280..0x594384; offsets 0x63DC..0x27C5F4, max 2.49 MB >> raw span 0xA24EC → indexes a
+  DECOMPRESSED asset space) + 68 B zero pad + **Section C HUFFMAN-compressed pool start** (0x5943C8..,
+  custom "HUFF" magic). 5-pass swarm byte-verified: blocks 61/62 close the family (codec roundtrip
+  IDENTICAL); **Section C = a custom "HUFF" Huffman pool, 29 blocks (first 0x5943D4, last 0x630BC4),
+  UNDECODED-compressed (no parent decoder)** — REFINES the survey's "no standard magic". B/C boundary
+  pinned at **0x594280** (survey's ~0x595000 was 0xD80 too high, inside the pool). Proof of non-code:
+  0 jr$ra at all 4 alignments; the lone prologue word 0x594A9C=0x27BD91B1 confirmed FALSE POSITIVE (inside
+  HUFF data, no return). Index `docs/data-index/rev0/section-b-tail-section-c-start-00591000-005A1000-data-inventory.json`
+  + dossier added. Outgoing Section C HUFF pool into chunk 90. **Chunk 89 source-owned (Section B tail + Section C start).**
+- Current remainder: none in chunks 0-89 (`0x1000..0x5A1000` fully source-owned;
   evidenced executable MIPS `0x1000..0x2B89B4` 100% source-owned). **Section A (0x301000..0x4E3140) fully
-  owned + classified AUDIO; Section B audio-sequence-block family owned through block 61 head.**
-  **Current frontier: `0x00591000` (chunk 89).** Chunk 88 ended with block 61 head (outgoing block 61 tail
-  into chunk 89). First action next run: own block 61 tail (`0x591000..0x592490`) + block 62
-  (`0x592490..0x594280`) + the Section-B directory tail (`0x594280..0x595000`), then pin the Section B/C
-  boundary (~0x595000) and start Section C. NOTE: 0x594280/0x595000 are mid-chunk-89 — needs a
-  partial-interior-chunk pipeline enhancement OR a combined Section-B-tail + Section-C run ending at the
-  0x5A1000 chunk boundary. The global non-code tail `0x002B89B4..0x0063676C` remains a separate design.
+  owned + classified AUDIO; Section B audio-sequence-block family fully owned (family end 0x594280);
+  Section C HUFFMAN-compressed pool started (0x5943C8).**
+  **Current frontier: `0x005A1000` (chunk 90).** Chunk 89 closed the Section B anim family (end 0x594280)
+  and started the Section C HUFFMAN-compressed "HUFF" pool (outgoing into chunk 90). First action next run:
+  the chunk-90 run — continue Section C, owning the next run of "HUFF" Huffman-compressed blocks
+  (`0x5A1000..`) as raw-but-classified (undecoded-compressed) data territory, advancing toward the hard data
+  end ~`0x63676C` (last HUFF block 0x630BC4; first LHA archive 0x636784). Do NOT continue past 0x0063676C
+  without Joe explicitly asking. The global non-code tail `0x002B89B4..0x0063676C` remains a separate design.
 
 Static dossiers live under `docs/dossiers/` and are the durable evidence notes
 for each promoted source-layout split.
@@ -1064,7 +1082,7 @@ the full quick index. The newest dossiers are:
 
 ## Next Frontier
 
-Chunks 0–88 (`0x00001000..0x00591000`) are fully source-owned as named code/data
+Chunks 0–89 (`0x00001000..0x005A1000`) are fully source-owned as named code/data
 parts. Chunk 43 (90 parts) is the MIXED code→data transition chunk: the mission-briefing/
 scenario-overview overlay CODE region `0x2B1000..0x2B89B8` (incoming straddler-tail
 func_002B0E8C_chunk43tail; 62 parent functions + frameless leaves) then the evidenced code→data
@@ -1080,7 +1098,10 @@ unmapped). Chunk 78 (`0x4E1000..0x4F1000`) crosses the **Section A/B boundary** 
 A audio tail + Section B index table [1798 records, shape decoded] + Section B payload [undecoded] + first
 parser-backed cutscene-block head (4 parts). Chunks 79-88 (`0x4F1000..0x591000`) are the Section B
 parser-backed cutscene AUDIO-SEQUENCE blocks (71 parts; block 0 body + blocks 1-60 whole + block 61 head;
-FALLBACK at 0x591000, block 61 tail + block 62 + directory deferred to chunk 89). Dossiers: `docs/dossiers/lib-chunk4{3,4,5,6,7}-*.md` +
+FALLBACK at 0x591000). Chunk 89 (`0x591000..0x5A1000`) owns the whole **Section B tail + Section C start**
+(5 parts; RUN-COMPLETE resolving that fallback): block 61 tail + block 62 = anim-family end 0x594280 +
+Section C 65-entry directory + zero pad + **Section C HUFFMAN-compressed "HUFF" pool start** (29 blocks,
+UNDECODED; B/C boundary pinned 0x594280). Dossiers: `docs/dossiers/lib-chunk4{3,4,5,6,7}-*.md` +
 `docs/dossiers/section-a-00301000-00341000-data-ownership.md` +
 `docs/dossiers/section-a-00341000-003E1000-data-ownership.md` +
 `docs/dossiers/section-a-003E1000-00421000-data-ownership.md` +
@@ -1093,23 +1114,26 @@ FALLBACK at 0x591000, block 61 tail + block 62 + directory deferred to chunk 89)
 + `section-a-003E1000-00421000-data-inventory.json` + `section-a-audio-bank-00421000-00431000-data-inventory.json`
 + `section-a-audio-bank-tail-00431000-00441000-data-inventory.json` + `section-a-flat-audio-00441000-004E1000-data-inventory.json`
 + `section-a-to-b-boundary-004E1000-004F1000-data-inventory.json` + `section-b-audio-sequence-blocks-004F1000-00595000-data-inventory.json`
-(+ dossier `docs/dossiers/section-b-audio-sequence-blocks-004F1000-00595000-data-ownership.md`).
++ `section-b-tail-section-c-start-00591000-005A1000-data-inventory.json`
+(+ dossiers `docs/dossiers/section-b-audio-sequence-blocks-004F1000-00595000-data-ownership.md`
++ `docs/dossiers/section-b-tail-section-c-start-00591000-005A1000-data-ownership.md`).
 
-Current frontier is **`0x00591000` (chunk 89)**. The evidenced executable MIPS extent
+Current frontier is **`0x005A1000` (chunk 90)**. The evidenced executable MIPS extent
 `0x1000..0x2B89B4` (2,849,204 B) is **100.0000% source-owned**; total source-owned
-`0x1000..0x591000` (code+data) = 5,832,700 B (code-only = 2,444,548 B = 85.7977% of the
-extent; the rest are interior + chunk-43..47 + Section A audio + Section A/B boundary + Section B audio-sequence blocks).
+`0x1000..0x5A1000` (code+data) = 5,898,236 B (code-only = 2,444,548 B = 85.7977% of the
+extent; the rest are interior + chunk-43..47 + Section A audio + Section A/B boundary + Section B
+audio-sequence blocks + Section C HUFF pool start).
 
-FIRST for the next run: chunks 79-88 owned the Section B audio-sequence-block family body (block 0 body +
-blocks 1-60 whole + block 61 head); the run FELL BACK at 0x591000. The next unit is the **chunk-89 run**:
-own block 61 tail (`0x591000..0x592490`) + block 62 (`0x592490..0x594280`) + the Section-B directory tail
-(`0x594280..0x595000`), then pin the Section B/C boundary (~0x595000) and start Section C. NOTE:
-0x594280/0x595000 are mid-chunk-89 — needs a partial-interior-chunk pipeline enhancement OR a combined
-Section-B-tail + Section-C run ending at the 0x5A1000 chunk boundary. **Section A (0x301000..0x4E3140) is
-fully owned + classified AUDIO.**
+FIRST for the next run: chunk 89 owned the whole Section B tail + Section C start (block 61 tail + block 62
+= anim-family end 0x594280 + Section C directory + Section C HUFFMAN-compressed "HUFF" pool start), a
+RUN-COMPLETE that resolved the prior partial-interior-chunk fallback. The next unit is the **chunk-90 run**:
+continue Section C — own the next run of "HUFF" Huffman-compressed blocks (`0x5A1000..`) as raw-but-classified
+(undecoded-compressed) data territory, advancing toward the hard data end ~`0x63676C` (last HUFF block
+0x630BC4; first LHA archive 0x636784). Do NOT continue past 0x0063676C without Joe explicitly asking.
+**Section A (0x301000..0x4E3140) is fully owned + classified AUDIO; Section B family fully owned.**
 
 There are now two active tracks. The library source-ownership track continues at
-`0x591000` (chunk 89) as above. The full-ROM coverage track (opened 2026-06-21)
+`0x5A1000` (chunk 90) as above. The full-ROM coverage track (opened 2026-06-21)
 next refines the exact code/data boundary near `0x002B89B4` and reclassifies the
 non-code tail `0x002B89B4..0x0063676C` from `original_mips` to a data source
 form, shrinking the configured code region to the executable extent while

@@ -203,14 +203,18 @@ Current result:
 - Code-region SHA256:
   `40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`.
 - Code-region match against baserom: pass.
-- Tracked real-assembler original-MIPS chunks: 89 composites (chunk 0 177 `boot/`;
-  chunks 1–88 in `lib/`: 350, 216, 67, 376, 88, 78, 103, 87, 34, 35, 191, 74, 67, 94, 153, 95, 66, 95, 80, 175, 99, 99, 73, 63, 71, 96, 142, 97, 103, 122, 86, 198, 109, 120, 134, 164, 180, 232, 155, 159, 160, 171, 90, 17, 15, 17, 27, 9, 11, 13, 13, 13, 9, 9, 9, 7, 1, 5, 3, 3, 5, 5, 5, 7, 15, 8, 21, 33, 23, 19, 23, 21, 33, 13, 7, 7, 15, 4, 11, 5, 4, 4, 5, 9, 9, 11, 4, 9) = 6,140 real-assembler
-  source files. Chunks 0–88 (`0x00001000..0x00591000`) are now fully source-owned as
+- Tracked real-assembler original-MIPS chunks: 90 composites (chunk 0 177 `boot/`;
+  chunks 1–89 in `lib/`: 350, 216, 67, 376, 88, 78, 103, 87, 34, 35, 191, 74, 67, 94, 153, 95, 66, 95, 80, 175, 99, 99, 73, 63, 71, 96, 142, 97, 103, 122, 86, 198, 109, 120, 134, 164, 180, 232, 155, 159, 160, 171, 90, 17, 15, 17, 27, 9, 11, 13, 13, 13, 9, 9, 9, 7, 1, 5, 3, 3, 5, 5, 5, 7, 15, 8, 21, 33, 23, 19, 23, 21, 33, 13, 7, 7, 15, 4, 11, 5, 4, 4, 5, 9, 9, 11, 4, 9, 5) = 6,145 real-assembler
+  source files. Chunks 0–89 (`0x00001000..0x005A1000`) are now fully source-owned as
   named code/data parts (Section A 0x301000..0x4E3140 fully AUDIO; chunk 78 crosses the Section A/B
   boundary [pinned 0x4E3140]; chunks 79-88 = Section B parser-backed cutscene AUDIO-SEQUENCE blocks
   [0x4F1000..0x591000; 71 parts at natural catalog block boundaries, block 0 body + 1-60 whole + 61 head;
-  all 63 blocks tag 0x215 per ob64_anim_block_catalog.json/anim_block_codec.py]; FALLBACK at 0x591000 —
-  block 61 tail + block 62 + the Section-B directory tail are mid-chunk-89, deferred) (chunks 62-65 = Section A slice 3 [0x3E1000..0x421000]: 0 code + 32 data
+  all 63 blocks tag 0x215 per ob64_anim_block_catalog.json/anim_block_codec.py]; chunk 89 owns the whole
+  **Section B tail + Section C start** [0x591000..0x5A1000; 5 parts: block 61 tail + block 62 = anim-family
+  end 0x594280 + Section C 65-entry directory + zero pad + **Section C HUFFMAN-compressed "HUFF" pool
+  start**, 0 code; RUN-COMPLETE resolving the prior partial-interior-chunk fallback; Section C = custom
+  "HUFF" Huffman pool, 29 blocks first 0x5943D4/last 0x630BC4, UNDECODED; B/C boundary pinned 0x594280])
+  (chunks 62-65 = Section A slice 3 [0x3E1000..0x421000]: 0 code + 32 data
   [18 data + 14 zero_fill], DATA TERRITORY — FALLBACK from planned 62-71 at `0x421000` because chunk 66
   is a decoded N64 audio sound-bank [`N64 PtrTablesV2` @0x423FF0 / `N64 WaveTables` @0x429CD0], strong
   evidence Section A is AUDIO; 0 jr$ra/0 prologues at all 4 alignments; parent-tooling-dark; outgoing
@@ -309,8 +313,8 @@ Current result:
   chunk 33: 82 normal code + 25 data + 2 function straddlers, MIXED — code + a
   font/glyph + pointer/float DATA region [`0x211D14..0x213B10`] + a jump-table
   state-machine outgoing straddler; chunks 34-38 also source-owned, see the chunk list above);
-  next is chunk 89 (`0x00591000`, still a
-  generated fallback chunk — Section B block tail + directory + B/C boundary).
+  next is chunk 90 (`0x005A1000`, still a
+  generated fallback chunk — Section C HUFFMAN-compressed "HUFF" pool continuation toward the data end 0x63676C).
 - Generated fallback chunks: 11.
 - Assembled-code ROM rebuild command:
 
@@ -2913,9 +2917,9 @@ setup-complete state:
 - Assembler: GNU Binutils 2.39 `mips64-elf-as.exe` with `-EB -mips3 -32`.
 - Setup verifier: `tools/verify_setup.js`.
 - Current verifier result: PASS; 825 archives, 0 unknown bytes, 108 overlap
-  bytes visible, 89 tracked composite real-asm chunks made from 6,140 tracked source
-  files (chunks 0–88 fully source-owned as code/data parts, `0x00001000..0x00591000`),
-  11 generated fallback chunks, full-source manifest 1,059 entries with
+  bytes visible, 90 tracked composite real-asm chunks made from 6,145 tracked source
+  files (chunks 0–89 fully source-owned as code/data parts, `0x00001000..0x005A1000`),
+  10 generated fallback chunks, full-source manifest 1,059 entries with
   2,469,141 ambiguous bytes preserved explicitly, 3 tracked non-code
   source-owner files / 44,029 bytes, 1,055 generated non-code fallback files /
   35,388,567 bytes, source-manifest rebuild exact, full ROM
