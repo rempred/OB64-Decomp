@@ -24,11 +24,14 @@ and replace the active log with a compact current-state summary.
   `original_mips`. A static control-flow audit found no credible code edge into
   the tail (0 branch targets, 0 J/JAL to a known function). Audit:
   `tools/audit_code_region.js` / `docs/CODE_REGION_AUDIT.md`.
-- Current tracked code source mix: sixty-seven composite real-assembler chunks
-  (chunk 0 177 `boot/`; chunks 1–66 in `lib/`: 350, 216, 67, 376, 88, 78, 103, 87, 34, 35, 191, 74, 67, 94, 153, 95, 66, 95, 80, 175, 99, 99, 73, 63, 71, 96, 142, 97, 103, 122, 86, 198, 109, 120, 134, 164, 180, 232, 155, 159, 160, 171, 90, 17, 15, 17, 27, 9, 11, 13, 13, 13, 9, 9, 9, 7, 1, 5, 3, 3, 5, 5, 5, 7, 15, 8) =
-  **5,850 tracked source files**, plus 33 generated fallback code chunks. **Chunks
-  0–66 (`0x00001000..0x00431000`) are now fully source-owned as named code/data
-  parts** (chunk 66 = a DECODED N64 audio sound-bank [0x421000..0x431000]: 8 structural parts [5 data +
+- Current tracked code source mix: sixty-eight composite real-assembler chunks
+  (chunk 0 177 `boot/`; chunks 1–67 in `lib/`: 350, 216, 67, 376, 88, 78, 103, 87, 34, 35, 191, 74, 67, 94, 153, 95, 66, 95, 80, 175, 99, 99, 73, 63, 71, 96, 142, 97, 103, 122, 86, 198, 109, 120, 134, 164, 180, 232, 155, 159, 160, 171, 90, 17, 15, 17, 27, 9, 11, 13, 13, 13, 9, 9, 9, 7, 1, 5, 3, 3, 5, 5, 5, 7, 15, 8, 21) =
+  **5,871 tracked source files**, plus 32 generated fallback code chunks. **Chunks
+  0–67 (`0x00001000..0x00441000`) are now fully source-owned as named code/data
+  parts** (chunk 67 = the chunk-66 audio bank's WaveTables sample-payload TAIL closure + flat post-tail
+  Section A audio [0x431000..0x441000]: 21 parts [11 data + 10 zero_fill, 0 code]; WaveTables payload ends
+  0x431EF1 [terminator zero_fill_00431EF4]; no new sub-bank header in chunk 67; chunk-67 bytes owned, the
+  chunk-66+67 audio-bank unit still `partial`; outgoing flat-audio continuation data_0043F3D8 into chunk 68) (chunk 66 = a DECODED N64 audio sound-bank [0x421000..0x431000]: 8 structural parts [5 data +
   3 zero_fill, 0 code], `N64 PtrTablesV2` codebook directory @0x423FF0 [133 order-2 VADPCM records,
   strides 0xA0/0xD0, u32-BE offset table @0x429820] + `N64 WaveTables` sample bank @0x429CD0 [4-bit ADPCM,
   continues into chunk 67] — CONFIRMS Section A is AUDIO; chunk-66 bytes owned `yes`, whole-bank schema
@@ -113,8 +116,8 @@ and replace the active log with a compact current-state summary.
   chunk 37: 170 normal code + 8 data + 2 function straddlers, MIXED - command-dispatcher
   mission-briefing/combat code + a 0x80x pointer/struct/float record-table DATA island
   [0x25E2BC..0x25EE90]);
-  next is chunk 67 (`0x00431000`, still a
-  generated fallback chunk — the WaveTables sample-payload continuation). The promote-tool merge blocker is FIXED.
+  next is chunk 68 (`0x00441000`, still a
+  generated fallback chunk — resume flat 10-chunk Section A audio batches). The promote-tool merge blocker is FIXED.
 - The parent boundary DB has TWO recurring defects, both fixed when splitting:
   (1) `end_rom` is INCLUSIVE (exclusive end = `end_rom + 4`; do NOT treat the
   delay slot as a gap — `tools/dump_function_context.js` now enforces this with a
@@ -525,13 +528,26 @@ Current named sequence:
   whole-bank schema `partial` (WaveTables payload continues into chunk 67, ends ~0x431EF4). Index
   `docs/data-index/rev0/section-a-audio-bank-00421000-00431000-data-inventory.json` + dossier added.
   Outgoing continuation `data_00429CC8` (WaveTables payload) into chunk 67. **Chunk 66 source-owned (audio sound-bank).**
-- Current remainder: none in chunks 0-66 (`0x1000..0x431000` fully source-owned;
+- Section A audio-bank WaveTables TAIL closure `0x00431000..0x00441000` (focused 1-chunk run; 21 parts:
+  11 data + 10 zero_fill, 0 code). Closes the chunk-66 bank: the WaveTables sample payload (data_00429CC8)
+  continues across 0x431000 as `data_00431000` and ENDS at last-non-zero byte **0x431EF0** (`...1f 1f 1f
+  1f 01 3f`), terminated by a 24-byte zero run 0x431EF1..0x431F09 (= `zero_fill_00431EF4`). Bank WaveTables
+  span = `0x429CD0..0x431EF1` (~33,313 B of 4-bit ADPCM). **NO new PtrTablesV2/WaveTables header in chunk
+  67**; the post-tail 0x431F08..0x441000 is flat high-entropy Section A audio sample data (U-shaped
+  nibbles, 2KB entropy 6.57-7.26, no <6.0 window). Proof of non-code: 0 jr$ra/0 prologues/0 epilogues at
+  all 4 alignments. Parent: anyAcceptedRomLead=false; 4a gapOffset 0x440172 byte-rejected (decompressed-
+  stream coord; ROM there is flat audio). 5-pass swarm: chunk-67 bytes `yes`, chunk-66+67 audio-bank unit
+  `partial` (payload byte-bounded but directory→sample addressing unmapped). Index
+  `docs/data-index/rev0/section-a-audio-bank-tail-00431000-00441000-data-inventory.json` + dossier added.
+  Outgoing flat-audio continuation `data_0043F3D8` into chunk 68. **Chunk 67 source-owned (WaveTables tail closure).**
+- Current remainder: none in chunks 0-67 (`0x1000..0x441000` fully source-owned;
   evidenced executable MIPS `0x1000..0x2B89B4` 100% source-owned).
-  **Current frontier: `0x00431000` (chunk 67).** Chunk 66 ended in DATA with an OUTGOING continuation
-  (`data_00429CC8` WaveTables payload runs to `0x431000`, no terminating zero-fill). First action next run:
-  quick-verify the WaveTables payload closes in chunk 67 (~`0x431EF4`, tiling exists), then RESUME flat
-  10-chunk batches at chunk 68 (`0x441000`). NOTE: chunk 67 (`0x431000..0x441000`) is still inside survey
-  Section A (to 0x4E3000). The global non-code tail `0x002B89B4..0x0063676C` remains a separate design.
+  **Current frontier: `0x00441000` (chunk 68).** Chunk 67 ended in DATA with an OUTGOING continuation
+  (`data_0043F3D8` flat audio runs to `0x441000`, no terminating zero-fill). The audio-bank schema boundary
+  is now CLOSED. First action next run: **RESUME flat 10-chunk Section A audio batches at chunk 68**
+  (expected chunks 68-77, `0x441000..0x4E1000`, before the Section A/B boundary ~0x4E3000); open mid-stream,
+  fall back if a new PtrTablesV2/WaveTables header reappears. NOTE: chunk 68 (`0x441000..0x451000`) is still
+  inside survey Section A. The global non-code tail `0x002B89B4..0x0063676C` remains a separate design.
 
 Static dossiers live under `docs/dossiers/` and are the durable evidence notes
 for each promoted source-layout split.
@@ -997,7 +1013,7 @@ the full quick index. The newest dossiers are:
 
 ## Next Frontier
 
-Chunks 0–66 (`0x00001000..0x00431000`) are fully source-owned as named code/data
+Chunks 0–67 (`0x00001000..0x00441000`) are fully source-owned as named code/data
 parts. Chunk 43 (90 parts) is the MIXED code→data transition chunk: the mission-briefing/
 scenario-overview overlay CODE region `0x2B1000..0x2B89B8` (incoming straddler-tail
 func_002B0E8C_chunk43tail; 62 parent functions + frameless leaves) then the evidenced code→data
@@ -1005,29 +1021,33 @@ boundary at `0x2B89B8` and an F3DEX2 display-list/float-pool/texture DATA tail `
 (8 parts). Chunks 44-47 + Section A slices 1-3 (chunks 48-65) are DATA TERRITORY: each entire 64 KiB is
 non-code high-entropy asset data past the executable extent (0 jr$ra/0 prologues/0 pointers),
 `data_` + `zero_fill_` parts. Chunk 66 (`0x421000..0x431000`) is a DECODED N64 audio sound-bank
-(`N64 PtrTablesV2` codebook + `N64 WaveTables` samples, order-2 VADPCM) — 8 structural parts, chunk
-bytes owned, whole-bank schema partial (payload continues into chunk 67); CONFIRMS Section A is AUDIO.
-Dossiers: `docs/dossiers/lib-chunk4{3,4,5,6,7}-*.md` +
+(`N64 PtrTablesV2` codebook + `N64 WaveTables` samples, order-2 VADPCM) — 8 structural parts; chunk 67
+(`0x431000..0x441000`) closes that bank's WaveTables payload (ends 0x431EF1) + flat post-tail audio (21
+parts). Both CONFIRM Section A is AUDIO; the chunk-66+67 bank unit is `partial` (payload byte-bounded,
+addressing unmapped). Dossiers: `docs/dossiers/lib-chunk4{3,4,5,6,7}-*.md` +
 `docs/dossiers/section-a-00301000-00341000-data-ownership.md` +
 `docs/dossiers/section-a-00341000-003E1000-data-ownership.md` +
 `docs/dossiers/section-a-003E1000-00421000-data-ownership.md` +
-`docs/dossiers/section-a-audio-bank-00421000-00431000-data-ownership.md`; data indexes
+`docs/dossiers/section-a-audio-bank-00421000-00431000-data-ownership.md` +
+`docs/dossiers/section-a-audio-bank-tail-00431000-00441000-data-ownership.md`; data indexes
 `docs/data-index/rev0/chunk4{3,4,5,6,7}-data-region-inventory.json` +
 `section-a-00301000-00341000-data-inventory.json` + `section-a-00341000-003E1000-data-inventory.json`
-+ `section-a-003E1000-00421000-data-inventory.json` + `section-a-audio-bank-00421000-00431000-data-inventory.json`.
++ `section-a-003E1000-00421000-data-inventory.json` + `section-a-audio-bank-00421000-00431000-data-inventory.json`
++ `section-a-audio-bank-tail-00431000-00441000-data-inventory.json`.
 
-Current frontier is **`0x00431000` (chunk 67)**. The evidenced executable MIPS extent
+Current frontier is **`0x00441000` (chunk 68)**. The evidenced executable MIPS extent
 `0x1000..0x2B89B4` (2,849,204 B) is **100.0000% source-owned**; total source-owned
-`0x1000..0x431000` (code+data) = 4,390,908 B (code-only = 2,444,548 B = 85.7977% of the
-extent; the rest are interior + chunk-43..47 + Section A slice-1/2/3 + chunk-66 audio-bank data spans).
+`0x1000..0x441000` (code+data) = 4,456,444 B (code-only = 2,444,548 B = 85.7977% of the
+extent; the rest are interior + chunk-43..47 + Section A slice-1/2/3 + chunk-66/67 audio-bank data spans).
 
-FIRST for the next run: chunk 66 ended in DATA with an OUTGOING continuation, so quick-verify the
-`data_00429CC8` WaveTables sample payload closes in chunk 67 (~`0x431EF4`, tiling exists), then RESUME
-flat 10-chunk batches at chunk 68 (`0x441000`). NOTE: chunk 67 (`0x431000..0x441000`) is still inside
-survey Section A (to 0x4E3000) — do not reclassify the global non-code tail beyond the target.
+FIRST for the next run: the chunk-66 audio bank is CLOSED in chunk 67 (WaveTables payload ends 0x431EF1).
+RESUME flat 10-chunk Section A audio batches at chunk 68 (`0x441000`) — expected chunks 68-77
+(`0x441000..0x4E1000`), before the Section A/B boundary ~0x4E3000; open mid-stream (no header at the seam),
+fall back if a new PtrTablesV2/WaveTables header reappears. NOTE: chunk 68 (`0x441000..0x451000`) is still
+inside survey Section A (to 0x4E3000) — do not reclassify the global non-code tail beyond the target.
 
 There are now two active tracks. The library source-ownership track continues at
-`0x3E1000` (chunk 62) as above. The full-ROM coverage track (opened 2026-06-21)
+`0x441000` (chunk 68) as above. The full-ROM coverage track (opened 2026-06-21)
 next refines the exact code/data boundary near `0x002B89B4` and reclassifies the
 non-code tail `0x002B89B4..0x0063676C` from `original_mips` to a data source
 form, shrinking the configured code region to the executable extent while

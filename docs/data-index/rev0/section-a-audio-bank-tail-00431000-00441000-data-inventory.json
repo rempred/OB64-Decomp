@@ -1,0 +1,321 @@
+{
+  "schemaVersion": 1,
+  "dataUnit": "Section A audio-bank WaveTables payload TAIL closure + post-tail flat audio, chunk 67",
+  "dataUnitSlug": "section-a-audio-bank-tail-00431000-00441000",
+  "generated": "2026-06-24",
+  "parentNaturalUnit": "Section A (now confirmed AUDIO). Closes the chunk-66 N64 PtrTablesV2/WaveTables bank (the WaveTables sample payload ran into chunk 67). Post-tail chunk-67 bytes return to flat Section A audio sample data.",
+  "romRange": "0x00431000..0x00441000",
+  "bytes": 65536,
+  "chunkCoverage": "chunk 67 (full)",
+  "frontierBefore": "0x00431000",
+  "frontierAfter": "0x00441000",
+  "typeFamily": "N64 audio: (a) the closing tail of the chunk-66 bank WaveTables 4-bit ADPCM/VADPCM sample payload, then (b) flat high-entropy Section A audio sample data (no new PtrTablesV2/WaveTables header in chunk 67).",
+  "status": "raw-but-classified",
+  "chunk67BytesStatus": "yes",
+  "bank66plus67Status": "partial (WaveTables sample payload now byte-bounded 0x429CD0..0x431EF1 + container decoded, BUT the codebook directory -> sample-byte addressing is not yet mapped; WaveTables header / 0xD3000000 sentinels / per-record offset fields unresolved)",
+  "confidence": "high (non-code audio sample data; tail closure byte-verified) / medium (exact per-sample VADPCM params; whether post-tail is the same bank or a new one)",
+  "byteSplit": {
+    "parsed_zero_fill": 212,
+    "raw_but_classified_data": 65324,
+    "undecoded": 0
+  },
+  "partCount": 21,
+  "dataParts": 11,
+  "zeroFillParts": 10,
+  "parserEvidence": "WaveTables tail closure byte-verified: the chunk-66 bank WaveTables sample payload (data_00429CC8) continues across 0x431000 as data_00431000 and ENDS at its last non-zero byte 0x431EF0 (...1f 1f 1f 1f 01 3f), terminated by a 24-byte zero run 0x431EF1..0x431F09 (word-aligned 20 B = zero_fill_00431EF4). NO new \"N64 PtrTablesV2\"/\"N64 WaveTables\" or sub-bank header anywhere in chunk 67. The post-tail region 0x431F08..0x441000 is flat high-entropy audio sample data (min-2KB entropy 6.57, max 7.26; no sustained <6.0 structured region) segmented by small alignment zero-fills — conservative raw ADPCM/VADPCM payload.",
+  "dumperEvidence": "none",
+  "catalogEvidence": "none accepted in-range (parent audio scripts target other regions; 4a/4f gapOffsets are decompressed-7MB-stream, not ROM). Chunk 67 precedes the first LHA archive (0x636784) = raw/uncompressed.",
+  "editorEvidence": "none (no parent loader reads PtrTablesV2/WaveTables banks)",
+  "modderResourceEvidence": "none",
+  "runtimeEvidence": "none (static-only)",
+  "hiddenCodeRisk": {
+    "result": "none — data-only safe",
+    "evidence": "0 jr$ra / 0 stack prologues / 0 epilogues / 0 lw $ra at ALL 4 byte alignments (65,533 words); 0 pointer-table runs (the lone sw $ra at unaligned 0x431D5B is noise with no surrounding frame; scattered 0x80xxxxxx words have non-constant gaps = random, not a 4-byte-stride KSEG0 table). No PtrTablesV2/WaveTables/N64/AIFC/0xD3000000 magic anywhere. Per-2KB entropy 6.57-7.26 (no <6.0 codebook window). Deterministic scan + independent adversary + ownership re-derivation from the raw z64 baserom."
+  },
+  "decodedContainerSchema": {
+    "note": "Chunk 67 = [WaveTables tail of the chunk-66 bank][bank terminator zero-fill][flat post-tail Section A audio data]. The chunk-66 bank itself (PtrTablesV2 codebook 0x423FF0 + WaveTables samples 0x429CD0) is decoded in section-a-audio-bank-00421000-00431000; this run closes its WaveTables payload at 0x431EF1."
+  },
+  "audioBankTailFinding": {
+    "waveTablesPayloadEnd": "0x00431EF1 (last non-zero byte 0x431EF0; terminator zero run 0x431EF1..0x431F09)",
+    "bankWaveTablesSpan": "0x00429CD0..0x00431EF1 (0x8221 = 33,313 B of 4-bit ADPCM samples across chunks 66-67)",
+    "newSubBankHeaderInChunk67": false,
+    "postTail": "flat high-entropy Section A audio sample data (no codebook directory in chunk 67); continues into chunk 68"
+  },
+  "waveTablesTail": {
+    "part": "data_00431000",
+    "romRange": "0x00431000..0x00431EF4",
+    "bytes": 3828,
+    "role": "WaveTables 4-bit ADPCM sample payload tail (continuation of chunk-66 data_00429CC8); last non-zero byte 0x431EF0",
+    "terminator": "zero_fill_00431EF4 (0x431EF4..0x431F08, 20 B word-aligned; byte-precise run 0x431EF1..0x431F09 = 24 B)"
+  },
+  "postTailRegion": {
+    "romRange": "0x00431F08..0x00441000",
+    "class": "flat high-entropy Section A audio sample data (raw ADPCM/VADPCM; no new PtrTablesV2/WaveTables header)",
+    "entropy2KB": "6.57-7.26 bits/byte (no sustained <6.0 structured region)",
+    "parts": "10 data + 9 zero_fill (excluding the tail part + terminator)",
+    "outgoing": "last part data_0043F3D8 runs to 0x441000 with no terminating zero-fill -> continues into chunk 68 (flat audio; resume 10-chunk batches)"
+  },
+  "padding": [
+    {
+      "rom": "0x00431EF4..0x00431F08",
+      "bytes": 20,
+      "role": "WaveTables bank terminator (24 B byte-precise run; word-aligned 20 B)"
+    }
+  ],
+  "unresolvedFields": [
+    "exact per-sample VADPCM frame parameters of the WaveTables payload",
+    "whether the post-tail flat audio (0x431F08+) belongs to the SAME bank (a second sample segment) or a NEW bank whose codebook appears later",
+    "exact total sample size implied by the chunk-66 codebook offset fields vs the byte-bounded WaveTables span (codebook->sample byte mapping not fully resolved)"
+  ],
+  "rejectedLeads": [
+    {
+      "artifact": "scripts/ob64_audio_region_analysis.js / research/ob64_crack_gap3.js",
+      "reason": "target other ROM regions (0x925483.. / 0x20248C2..); comparison/rule-out only, do not map to 0x431000.",
+      "confidence": "high"
+    },
+    {
+      "artifact": "scripts/ob64_4a_audit.json / ob64_4f_audit.json gapOffsets",
+      "reason": "decompressed-7MB-LZSS-stream offsets, NOT ROM.",
+      "confidence": "high"
+    }
+  ],
+  "batchSizeFinding": "The chunk-66 audio-bank schema boundary is now CLOSED in chunk 67 and the remaining signal is flat high-entropy Section A audio (min-2KB entropy >= 6.57, no structured region, no new header). RESUME the flat 10-chunk default at chunk 68 (0x441000) -> expected chunks 68-77 (0x441000..0x4E1000) up to the Section A/B boundary ~0x4E3000.",
+  "ownershipAssessment": "chunk-67 BYTES: yes — all 65,536 bytes of chunk 67 (0x431000..0x441000) are byte-exact tracked as 21 data_/zero_fill_ parts under asm/original/rev0/lib/, independently verified by a 5-pass swarm (hidden-code data-only-safe at all 4 alignments; QA contiguity/byte-math/alignment/zero-fill clean, 0 problems; ownership reviewer yes). The WaveTables sample payload tail is byte-closed at 0x431EF1 (terminator zero_fill_00431EF4), closing the chunk-66 bank's outgoing edge; the post-tail region is flat Section A audio sample data. CHUNK-66+67 AUDIO-BANK UNIT: partial — the WaveTables payload is now byte-bounded and the PtrTablesV2 container is decoded, but the directory->sample-byte addressing and several header/record fields remain unresolved (field_0xNN). Per the run standard, chunk bytes yes + bank-unit partial is the intended disposition.",
+  "recommendedFollowups": [
+    "RESUME flat 10-chunk Section A audio data ownership at chunk 68 (0x441000); expected chunks 68-77 (0x441000..0x4E1000), stopping before the Section A/B boundary ~0x4E3000.",
+    "Optionally (parser/runtime follow-up) map the chunk-66 codebook offset fields to concrete WaveTables sample byte ranges and resolve the remaining field_0xNN."
+  ],
+  "subregions": [
+    {
+      "name": "data_00431000",
+      "file": "asm/original/rev0/lib/data_00431000.s",
+      "chunk": 67,
+      "romStart": "0x00431000",
+      "romEnd": "0x00431EF4",
+      "bytes": 3828,
+      "class": "data",
+      "status": "raw-but-classified",
+      "note": "WaveTables sample payload TAIL of the chunk-66 N64 audio bank: continuation of data_00429CC8 across the 0x431000 chunk boundary (no zero gap at the seam). Raw 4-bit ADPCM / VADPCM sample data (3828 B; entropy ~6.63; U-shaped nibble histogram), closing at 0x431EF1 where the bank terminator zero-fill begins. raw-but-classified (audio sample payload)."
+    },
+    {
+      "name": "zero_fill_00431EF4",
+      "file": "asm/original/rev0/lib/zero_fill_00431EF4.s",
+      "chunk": 67,
+      "romStart": "0x00431EF4",
+      "romEnd": "0x00431F08",
+      "bytes": 20,
+      "class": "zero_fill",
+      "status": "parsed",
+      "note": "WaveTables bank TERMINATOR: the 5-word zero run that closes the chunk-66 audio bank's WaveTables sample payload (byte-precise run 0x431EF1..0x431F09, 24 B; word-aligned 20 B here). parsed (all-zero). After this the bank's PtrTablesV2/WaveTables structure ends."
+    },
+    {
+      "name": "data_00431F08",
+      "file": "asm/original/rev0/lib/data_00431F08.s",
+      "chunk": 67,
+      "romStart": "0x00431F08",
+      "romEnd": "0x004338B8",
+      "bytes": 6576,
+      "class": "data",
+      "status": "raw-but-classified",
+      "note": "Post-tail flat high-entropy Section A AUDIO sample data (6576 B; entropy ~6.99). After the chunk-66 bank's WaveTables terminator; NO new PtrTablesV2/WaveTables header in chunk 67 (more raw ADPCM/VADPCM sample payload, conservative). raw-but-classified."
+    },
+    {
+      "name": "zero_fill_004338B8",
+      "file": "asm/original/rev0/lib/zero_fill_004338B8.s",
+      "chunk": 67,
+      "romStart": "0x004338B8",
+      "romEnd": "0x004338C8",
+      "bytes": 16,
+      "class": "zero_fill",
+      "status": "parsed",
+      "note": "Zero-fill alignment (4 words) between Section A audio sample objects. parsed (all-zero)."
+    },
+    {
+      "name": "data_004338C8",
+      "file": "asm/original/rev0/lib/data_004338C8.s",
+      "chunk": 67,
+      "romStart": "0x004338C8",
+      "romEnd": "0x00434E14",
+      "bytes": 5452,
+      "class": "data",
+      "status": "raw-but-classified",
+      "note": "Post-tail flat high-entropy Section A AUDIO sample data (5452 B; entropy ~6.99). After the chunk-66 bank's WaveTables terminator; NO new PtrTablesV2/WaveTables header in chunk 67 (more raw ADPCM/VADPCM sample payload, conservative). raw-but-classified."
+    },
+    {
+      "name": "zero_fill_00434E14",
+      "file": "asm/original/rev0/lib/zero_fill_00434E14.s",
+      "chunk": 67,
+      "romStart": "0x00434E14",
+      "romEnd": "0x00434E28",
+      "bytes": 20,
+      "class": "zero_fill",
+      "status": "parsed",
+      "note": "Zero-fill alignment (5 words) between Section A audio sample objects. parsed (all-zero)."
+    },
+    {
+      "name": "data_00434E28",
+      "file": "asm/original/rev0/lib/data_00434E28.s",
+      "chunk": 67,
+      "romStart": "0x00434E28",
+      "romEnd": "0x00436788",
+      "bytes": 6496,
+      "class": "data",
+      "status": "raw-but-classified",
+      "note": "Post-tail flat high-entropy Section A AUDIO sample data (6496 B; entropy ~6.99). After the chunk-66 bank's WaveTables terminator; NO new PtrTablesV2/WaveTables header in chunk 67 (more raw ADPCM/VADPCM sample payload, conservative). raw-but-classified."
+    },
+    {
+      "name": "zero_fill_00436788",
+      "file": "asm/original/rev0/lib/zero_fill_00436788.s",
+      "chunk": 67,
+      "romStart": "0x00436788",
+      "romEnd": "0x004367A8",
+      "bytes": 32,
+      "class": "zero_fill",
+      "status": "parsed",
+      "note": "Zero-fill alignment (8 words) between Section A audio sample objects. parsed (all-zero)."
+    },
+    {
+      "name": "data_004367A8",
+      "file": "asm/original/rev0/lib/data_004367A8.s",
+      "chunk": 67,
+      "romStart": "0x004367A8",
+      "romEnd": "0x004380E8",
+      "bytes": 6464,
+      "class": "data",
+      "status": "raw-but-classified",
+      "note": "Post-tail flat high-entropy Section A AUDIO sample data (6464 B; entropy ~7.27). After the chunk-66 bank's WaveTables terminator; NO new PtrTablesV2/WaveTables header in chunk 67 (more raw ADPCM/VADPCM sample payload, conservative). raw-but-classified."
+    },
+    {
+      "name": "zero_fill_004380E8",
+      "file": "asm/original/rev0/lib/zero_fill_004380E8.s",
+      "chunk": 67,
+      "romStart": "0x004380E8",
+      "romEnd": "0x004380F8",
+      "bytes": 16,
+      "class": "zero_fill",
+      "status": "parsed",
+      "note": "Zero-fill alignment (4 words) between Section A audio sample objects. parsed (all-zero)."
+    },
+    {
+      "name": "data_004380F8",
+      "file": "asm/original/rev0/lib/data_004380F8.s",
+      "chunk": 67,
+      "romStart": "0x004380F8",
+      "romEnd": "0x004393C4",
+      "bytes": 4812,
+      "class": "data",
+      "status": "raw-but-classified",
+      "note": "Post-tail flat high-entropy Section A AUDIO sample data (4812 B; entropy ~7.07). After the chunk-66 bank's WaveTables terminator; NO new PtrTablesV2/WaveTables header in chunk 67 (more raw ADPCM/VADPCM sample payload, conservative). raw-but-classified."
+    },
+    {
+      "name": "zero_fill_004393C4",
+      "file": "asm/original/rev0/lib/zero_fill_004393C4.s",
+      "chunk": 67,
+      "romStart": "0x004393C4",
+      "romEnd": "0x004393D8",
+      "bytes": 20,
+      "class": "zero_fill",
+      "status": "parsed",
+      "note": "Zero-fill alignment (5 words) between Section A audio sample objects. parsed (all-zero)."
+    },
+    {
+      "name": "data_004393D8",
+      "file": "asm/original/rev0/lib/data_004393D8.s",
+      "chunk": 67,
+      "romStart": "0x004393D8",
+      "romEnd": "0x0043A4F4",
+      "bytes": 4380,
+      "class": "data",
+      "status": "raw-but-classified",
+      "note": "Post-tail flat high-entropy Section A AUDIO sample data (4380 B; entropy ~7.21). After the chunk-66 bank's WaveTables terminator; NO new PtrTablesV2/WaveTables header in chunk 67 (more raw ADPCM/VADPCM sample payload, conservative). raw-but-classified."
+    },
+    {
+      "name": "zero_fill_0043A4F4",
+      "file": "asm/original/rev0/lib/zero_fill_0043A4F4.s",
+      "chunk": 67,
+      "romStart": "0x0043A4F4",
+      "romEnd": "0x0043A508",
+      "bytes": 20,
+      "class": "zero_fill",
+      "status": "parsed",
+      "note": "Zero-fill alignment (5 words) between Section A audio sample objects. parsed (all-zero)."
+    },
+    {
+      "name": "data_0043A508",
+      "file": "asm/original/rev0/lib/data_0043A508.s",
+      "chunk": 67,
+      "romStart": "0x0043A508",
+      "romEnd": "0x0043B7B0",
+      "bytes": 4776,
+      "class": "data",
+      "status": "raw-but-classified",
+      "note": "Post-tail flat high-entropy Section A AUDIO sample data (4776 B; entropy ~7.30). After the chunk-66 bank's WaveTables terminator; NO new PtrTablesV2/WaveTables header in chunk 67 (more raw ADPCM/VADPCM sample payload, conservative). raw-but-classified."
+    },
+    {
+      "name": "zero_fill_0043B7B0",
+      "file": "asm/original/rev0/lib/zero_fill_0043B7B0.s",
+      "chunk": 67,
+      "romStart": "0x0043B7B0",
+      "romEnd": "0x0043B7C8",
+      "bytes": 24,
+      "class": "zero_fill",
+      "status": "parsed",
+      "note": "Zero-fill alignment (6 words) between Section A audio sample objects. parsed (all-zero)."
+    },
+    {
+      "name": "data_0043B7C8",
+      "file": "asm/original/rev0/lib/data_0043B7C8.s",
+      "chunk": 67,
+      "romStart": "0x0043B7C8",
+      "romEnd": "0x0043CDE8",
+      "bytes": 5664,
+      "class": "data",
+      "status": "raw-but-classified",
+      "note": "Post-tail flat high-entropy Section A AUDIO sample data (5664 B; entropy ~6.84). After the chunk-66 bank's WaveTables terminator; NO new PtrTablesV2/WaveTables header in chunk 67 (more raw ADPCM/VADPCM sample payload, conservative). raw-but-classified."
+    },
+    {
+      "name": "zero_fill_0043CDE8",
+      "file": "asm/original/rev0/lib/zero_fill_0043CDE8.s",
+      "chunk": 67,
+      "romStart": "0x0043CDE8",
+      "romEnd": "0x0043CDF8",
+      "bytes": 16,
+      "class": "zero_fill",
+      "status": "parsed",
+      "note": "Zero-fill alignment (4 words) between Section A audio sample objects. parsed (all-zero)."
+    },
+    {
+      "name": "data_0043CDF8",
+      "file": "asm/original/rev0/lib/data_0043CDF8.s",
+      "chunk": 67,
+      "romStart": "0x0043CDF8",
+      "romEnd": "0x0043F3BC",
+      "bytes": 9668,
+      "class": "data",
+      "status": "raw-but-classified",
+      "note": "Post-tail flat high-entropy Section A AUDIO sample data (9668 B; entropy ~7.03). After the chunk-66 bank's WaveTables terminator; NO new PtrTablesV2/WaveTables header in chunk 67 (more raw ADPCM/VADPCM sample payload, conservative). raw-but-classified."
+    },
+    {
+      "name": "zero_fill_0043F3BC",
+      "file": "asm/original/rev0/lib/zero_fill_0043F3BC.s",
+      "chunk": 67,
+      "romStart": "0x0043F3BC",
+      "romEnd": "0x0043F3D8",
+      "bytes": 28,
+      "class": "zero_fill",
+      "status": "parsed",
+      "note": "Zero-fill alignment (7 words) between Section A audio sample objects. parsed (all-zero)."
+    },
+    {
+      "name": "data_0043F3D8",
+      "file": "asm/original/rev0/lib/data_0043F3D8.s",
+      "chunk": 67,
+      "romStart": "0x0043F3D8",
+      "romEnd": "0x00441000",
+      "bytes": 7208,
+      "class": "data",
+      "status": "raw-but-classified",
+      "note": "Post-tail flat high-entropy Section A AUDIO sample data (7208 B; entropy ~7.20). After the chunk-66 bank's WaveTables terminator; NO new PtrTablesV2/WaveTables header in chunk 67 (more raw ADPCM/VADPCM sample payload, conservative). raw-but-classified."
+    }
+  ]
+}
