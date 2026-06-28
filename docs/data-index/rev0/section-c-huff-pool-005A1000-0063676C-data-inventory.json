@@ -1,20 +1,20 @@
 {
   "schemaVersion": 1,
-  "dataUnit": "Section C custom \"HUFF\" Huffman-compressed resource pool (tail) — chunks 90-99 to the configured data-ownership stop",
+  "dataUnit": "Section C N64 JPEG/NJPG-style \"HUFF\" entropy-compressed resource pool (tail) — chunks 90-99 to the configured data-ownership stop",
   "dataUnitSlug": "section-c-huff-pool-005A1000-0063676C",
   "generated": "2026-06-24",
-  "parentNaturalUnit": "The remaining body of the Section C custom \"HUFF\" Huffman-compressed resource pool, continuing from the chunk-89 pool start (0x5943C8) to the configured data-ownership stop 0x63676C (the end of the configured code region). The 24-byte structural gap 0x63676C..0x636784 and the first LHA archive at 0x636784 are out of scope.",
+  "parentNaturalUnit": "The remaining body of the Section C N64 JPEG/NJPG-style \"HUFF\" entropy-compressed resource pool, continuing from the chunk-89 pool start (0x5943C8) to the configured data-ownership stop 0x63676C (the end of the configured code region). The 24-byte structural gap 0x63676C..0x636784 and the first LHA archive at 0x636784 are out of scope.",
   "romRange": "0x005A1000..0x0063676C",
   "bytes": 612204,
   "chunkCoverage": "chunks 90-98 full (0x5A1000..0x631000) + terminal partial chunk 99 (0x631000..0x0063676C)",
   "frontierBefore": "0x005A1000",
   "frontierAfter": "0x0063676C",
   "stopCondition": "0x0063676C (configured data-ownership loop end / configured code-region end). Did NOT own past it.",
-  "typeFamily": "Section C custom \"HUFF\" Huffman-compressed resource pool — a contiguous run of length-linked HUFF blocks, each with a word-aligned 18-byte container header and an undecoded compressed payload.",
-  "status": "BYTES yes (every byte byte-exact owned, container header decoded, data-only-safe) / DECODE-LEVEL partial (HUFF compressed payload undecoded; leadU32 + per-block decompressed semantics unknown)",
+  "typeFamily": "Section C N64 JPEG/NJPG-style \"HUFF\" entropy-compressed resource pool — a contiguous run of length-linked HUFF blocks, each with a word-aligned 18-byte container header and an HUFF entropy stream with final image render pending.",
+  "status": "BYTES yes (every byte byte-exact owned, container header decoded, data-only-safe) / DECODE-LEVEL partial (HUFF compressed final image render pending; leadU32 + per-block decompressed semantics unknown)",
   "ownershipBytes": "yes",
   "ownershipNaturalUnit": "partial",
-  "confidence": "high (byte-exact ownership; 29-block container fully decoded incl. leadU32==blockSize-4; data-only-safe) / low (HUFF payload semantics; leadU32 meaning/units)",
+  "confidence": "high (byte-exact ownership; 29-block container fully decoded incl. leadU32==blockSize-4; data-only-safe) / low (final image rendering; leadU32 meaning/units)",
   "byteSplit": {
     "raw_but_classified_data": 612204,
     "parsed_zero_fill": 0,
@@ -47,8 +47,8 @@
     "header": "18-byte word-aligned container header: [+0x00 u32 leadU32 (0x0000XXXX BE)] [+0x04 const 48 55 FE 00] [+0x08 const 01 40 00 F0] [+0x0C magic \"HUFF\" = 48 55 46 46] [+0x10 const 01 2C], then compressed payload to the next block start.",
     "leadU32": "DECODED RELATION: leadU32 == blockSize - 4 for all blocks 0..27 (start + leadU32 + 4 == nextBlockStart, verified, 0 mismatches) -> leadU32 is a SELF-RELATIVE container length field (covers the 14 header bytes after itself + the compressed payload). Semantic NAME/units (e.g. encoded-length vs decompressed-size) UNKNOWN; do not name it a decoded field.",
     "contiguity": "Blocks tile CONTIGUOUSLY (each block end == next block start; max zero-run in span = 6 B; 0 zero-runs >=16B).",
-    "constants": "The runs 48 55 FE 00, 01 40 00 F0 and trailing 01 2C are identical on all 29 blocks; purpose UNKNOWN.",
-    "payload": "Compressed Huffman payload UNDECODED (no parent decoder; entropy ~7.97, 0 sub-6.0 KB windows)."
+    "constants": "The run 48 55 FE 00 remains unresolved; 01 40 00 F0 is 320x240 and trailing 01 2C is 300 macroblocks.",
+    "payload": "Compressed Huffman final image render pending (no parent decoder; entropy ~7.97, 0 sub-6.0 KB windows)."
   },
   "blockTable": [
     {
@@ -330,9 +330,9 @@
     }
   ],
   "unresolvedFields": [
-    "HUFF compressed payload (undecoded; no parent decoder for the 48 55 46 46 magic)",
+    "HUFF entropy stage decoded; final renderable pixels are not yet produced",
     "leadU32 semantic NAME/units (value verified as blockSize-4 self-relative length; meaning e.g. encoded-length vs decompressed-size unknown)",
-    "per-block decompressed size / symbol count / Huffman code-table layout",
+    "NJPG render parameters / quant tables / display target",
     "meaning of the constant header runs 48 55 FE 00, 01 40 00 F0, 01 2C",
     "the chunk-89 Section C directory (65 u32-BE entries) -> HUFF block mapping (directory indexes a decompressed asset space; relation to the 29 compressed blocks unresolved)"
   ],
@@ -345,7 +345,7 @@
     "codeRegionFullyOwned": "After this run the entire configured code region 0x00001000..0x0063676C is fully source-owned (0 generated fallback chunks; 100 composites / 6,181 files).",
     "consolidatedReportDue": true
   },
-  "ownershipAssessment": "BYTES yes / NATURAL-UNIT partial. Every byte of 0x5A1000..0x63676C is byte-exact owned as 36 parser-backed data parts (assemble byte-exact, code SHA 40D4E787..B409 unchanged), 0 code (data-only-safe), with the 18-byte HUFF container header decoded (incl. leadU32==blockSize-4). The natural Section C unit is partial because the compressed payload + leadU32 semantics + per-block decompressed semantics are undecoded (no decoder). Reached the configured stop 0x63676C exactly; consolidated coordinator report is due.",
+  "ownershipAssessment": "BYTES yes / NATURAL-UNIT partial. Every byte of 0x5A1000..0x63676C is byte-exact owned as 36 parser-backed data parts (assemble byte-exact, code SHA 40D4E787..B409 unchanged), 0 code (data-only-safe), with the 18-byte HUFF container header decoded (incl. leadU32==blockSize-4). The natural Section C unit is partial because final image rendering plus several wrapper/directory semantics remain unresolved. Reached the configured stop 0x63676C exactly; final consolidated coordinator report is written.",
   "recommendedFollowups": [
     "Consolidated coordinator report: the configured code region 0x1000..0x63676C is now fully source-owned (data-ownership loop complete).",
     "Optional decode track: attempt to decode the custom \"HUFF\" Huffman codec (candidate in-game decoder: boot 0xB030..0xF22C canonical/adaptive-Huffman subsystem) and map the chunk-89 65-entry directory to the 29 decompressed blocks.",
@@ -361,7 +361,7 @@
       "bytes": 26736,
       "class": "data",
       "status": "raw-but-classified",
-      "note": "Section C custom \"HUFF\" Huffman-compressed pool. HUFF block 2 TAIL (continuation of block 0x005A0E34..0x005A7870 across chunk seam 0x005A1000). raw-but-classified (undecoded-compressed; container header decoded, payload undecoded)."
+      "note": "Section C N64 JPEG/NJPG-style \"HUFF\" entropy pool. HUFF block 2 TAIL (continuation of block 0x005A0E34..0x005A7870 across chunk seam 0x005A1000). raw-but-classified (HUFF-entropy-decoded / final-render-pending; container header decoded, final image render pending)."
     },
     {
       "name": "data_005A7870",
@@ -372,7 +372,7 @@
       "bytes": 27136,
       "class": "data",
       "status": "raw-but-classified",
-      "note": "Section C custom \"HUFF\" Huffman-compressed pool. HUFF block 3 WHOLE (0x005A7870..0x005AE270, lead=0x69fc). raw-but-classified (undecoded-compressed; container header decoded, payload undecoded)."
+      "note": "Section C N64 JPEG/NJPG-style \"HUFF\" entropy pool. HUFF block 3 WHOLE (0x005A7870..0x005AE270, lead=0x69fc). raw-but-classified (HUFF-entropy-decoded / final-render-pending; container header decoded, final image render pending)."
     },
     {
       "name": "data_005AE270",
@@ -383,7 +383,7 @@
       "bytes": 11664,
       "class": "data",
       "status": "raw-but-classified",
-      "note": "Section C custom \"HUFF\" Huffman-compressed pool. HUFF block 4 HEAD (block 0x005AE270..0x005B30E4 straddles chunk seam 0x005B1000). raw-but-classified (undecoded-compressed; container header decoded, payload undecoded)."
+      "note": "Section C N64 JPEG/NJPG-style \"HUFF\" entropy pool. HUFF block 4 HEAD (block 0x005AE270..0x005B30E4 straddles chunk seam 0x005B1000). raw-but-classified (HUFF-entropy-decoded / final-render-pending; container header decoded, final image render pending)."
     },
     {
       "name": "data_005B1000",
@@ -394,7 +394,7 @@
       "bytes": 8420,
       "class": "data",
       "status": "raw-but-classified",
-      "note": "Section C custom \"HUFF\" Huffman-compressed pool. HUFF block 4 TAIL (continuation of block 0x005AE270..0x005B30E4 across chunk seam 0x005B1000). raw-but-classified (undecoded-compressed; container header decoded, payload undecoded)."
+      "note": "Section C N64 JPEG/NJPG-style \"HUFF\" entropy pool. HUFF block 4 TAIL (continuation of block 0x005AE270..0x005B30E4 across chunk seam 0x005B1000). raw-but-classified (HUFF-entropy-decoded / final-render-pending; container header decoded, final image render pending)."
     },
     {
       "name": "data_005B30E4",
@@ -405,7 +405,7 @@
       "bytes": 25112,
       "class": "data",
       "status": "raw-but-classified",
-      "note": "Section C custom \"HUFF\" Huffman-compressed pool. HUFF block 5 WHOLE (0x005B30E4..0x005B92FC, lead=0x6214). raw-but-classified (undecoded-compressed; container header decoded, payload undecoded)."
+      "note": "Section C N64 JPEG/NJPG-style \"HUFF\" entropy pool. HUFF block 5 WHOLE (0x005B30E4..0x005B92FC, lead=0x6214). raw-but-classified (HUFF-entropy-decoded / final-render-pending; container header decoded, final image render pending)."
     },
     {
       "name": "data_005B92FC",
@@ -416,7 +416,7 @@
       "bytes": 21832,
       "class": "data",
       "status": "raw-but-classified",
-      "note": "Section C custom \"HUFF\" Huffman-compressed pool. HUFF block 6 WHOLE (0x005B92FC..0x005BE844, lead=0x5544). raw-but-classified (undecoded-compressed; container header decoded, payload undecoded)."
+      "note": "Section C N64 JPEG/NJPG-style \"HUFF\" entropy pool. HUFF block 6 WHOLE (0x005B92FC..0x005BE844, lead=0x5544). raw-but-classified (HUFF-entropy-decoded / final-render-pending; container header decoded, final image render pending)."
     },
     {
       "name": "data_005BE844",
@@ -427,7 +427,7 @@
       "bytes": 10172,
       "class": "data",
       "status": "raw-but-classified",
-      "note": "Section C custom \"HUFF\" Huffman-compressed pool. HUFF block 7 HEAD (block 0x005BE844..0x005C39EC straddles chunk seam 0x005C1000). raw-but-classified (undecoded-compressed; container header decoded, payload undecoded)."
+      "note": "Section C N64 JPEG/NJPG-style \"HUFF\" entropy pool. HUFF block 7 HEAD (block 0x005BE844..0x005C39EC straddles chunk seam 0x005C1000). raw-but-classified (HUFF-entropy-decoded / final-render-pending; container header decoded, final image render pending)."
     },
     {
       "name": "data_005C1000",
@@ -438,7 +438,7 @@
       "bytes": 10732,
       "class": "data",
       "status": "raw-but-classified",
-      "note": "Section C custom \"HUFF\" Huffman-compressed pool. HUFF block 7 TAIL (continuation of block 0x005BE844..0x005C39EC across chunk seam 0x005C1000). raw-but-classified (undecoded-compressed; container header decoded, payload undecoded)."
+      "note": "Section C N64 JPEG/NJPG-style \"HUFF\" entropy pool. HUFF block 7 TAIL (continuation of block 0x005BE844..0x005C39EC across chunk seam 0x005C1000). raw-but-classified (HUFF-entropy-decoded / final-render-pending; container header decoded, final image render pending)."
     },
     {
       "name": "data_005C39EC",
@@ -449,7 +449,7 @@
       "bytes": 23648,
       "class": "data",
       "status": "raw-but-classified",
-      "note": "Section C custom \"HUFF\" Huffman-compressed pool. HUFF block 8 WHOLE (0x005C39EC..0x005C964C, lead=0x5c5c). raw-but-classified (undecoded-compressed; container header decoded, payload undecoded)."
+      "note": "Section C N64 JPEG/NJPG-style \"HUFF\" entropy pool. HUFF block 8 WHOLE (0x005C39EC..0x005C964C, lead=0x5c5c). raw-but-classified (HUFF-entropy-decoded / final-render-pending; container header decoded, final image render pending)."
     },
     {
       "name": "data_005C964C",
@@ -460,7 +460,7 @@
       "bytes": 22272,
       "class": "data",
       "status": "raw-but-classified",
-      "note": "Section C custom \"HUFF\" Huffman-compressed pool. HUFF block 9 WHOLE (0x005C964C..0x005CED4C, lead=0x56fc). raw-but-classified (undecoded-compressed; container header decoded, payload undecoded)."
+      "note": "Section C N64 JPEG/NJPG-style \"HUFF\" entropy pool. HUFF block 9 WHOLE (0x005C964C..0x005CED4C, lead=0x56fc). raw-but-classified (HUFF-entropy-decoded / final-render-pending; container header decoded, final image render pending)."
     },
     {
       "name": "data_005CED4C",
@@ -471,7 +471,7 @@
       "bytes": 8884,
       "class": "data",
       "status": "raw-but-classified",
-      "note": "Section C custom \"HUFF\" Huffman-compressed pool. HUFF block 10 HEAD (block 0x005CED4C..0x005D4720 straddles chunk seam 0x005D1000). raw-but-classified (undecoded-compressed; container header decoded, payload undecoded)."
+      "note": "Section C N64 JPEG/NJPG-style \"HUFF\" entropy pool. HUFF block 10 HEAD (block 0x005CED4C..0x005D4720 straddles chunk seam 0x005D1000). raw-but-classified (HUFF-entropy-decoded / final-render-pending; container header decoded, final image render pending)."
     },
     {
       "name": "data_005D1000",
@@ -482,7 +482,7 @@
       "bytes": 14112,
       "class": "data",
       "status": "raw-but-classified",
-      "note": "Section C custom \"HUFF\" Huffman-compressed pool. HUFF block 10 TAIL (continuation of block 0x005CED4C..0x005D4720 across chunk seam 0x005D1000). raw-but-classified (undecoded-compressed; container header decoded, payload undecoded)."
+      "note": "Section C N64 JPEG/NJPG-style \"HUFF\" entropy pool. HUFF block 10 TAIL (continuation of block 0x005CED4C..0x005D4720 across chunk seam 0x005D1000). raw-but-classified (HUFF-entropy-decoded / final-render-pending; container header decoded, final image render pending)."
     },
     {
       "name": "data_005D4720",
@@ -493,7 +493,7 @@
       "bytes": 24484,
       "class": "data",
       "status": "raw-but-classified",
-      "note": "Section C custom \"HUFF\" Huffman-compressed pool. HUFF block 11 WHOLE (0x005D4720..0x005DA6C4, lead=0x5fa0). raw-but-classified (undecoded-compressed; container header decoded, payload undecoded)."
+      "note": "Section C N64 JPEG/NJPG-style \"HUFF\" entropy pool. HUFF block 11 WHOLE (0x005D4720..0x005DA6C4, lead=0x5fa0). raw-but-classified (HUFF-entropy-decoded / final-render-pending; container header decoded, final image render pending)."
     },
     {
       "name": "data_005DA6C4",
@@ -504,7 +504,7 @@
       "bytes": 19688,
       "class": "data",
       "status": "raw-but-classified",
-      "note": "Section C custom \"HUFF\" Huffman-compressed pool. HUFF block 12 WHOLE (0x005DA6C4..0x005DF3AC, lead=0x4ce4). raw-but-classified (undecoded-compressed; container header decoded, payload undecoded)."
+      "note": "Section C N64 JPEG/NJPG-style \"HUFF\" entropy pool. HUFF block 12 WHOLE (0x005DA6C4..0x005DF3AC, lead=0x4ce4). raw-but-classified (HUFF-entropy-decoded / final-render-pending; container header decoded, final image render pending)."
     },
     {
       "name": "data_005DF3AC",
@@ -515,7 +515,7 @@
       "bytes": 7252,
       "class": "data",
       "status": "raw-but-classified",
-      "note": "Section C custom \"HUFF\" Huffman-compressed pool. HUFF block 13 HEAD (block 0x005DF3AC..0x005E45F8 straddles chunk seam 0x005E1000). raw-but-classified (undecoded-compressed; container header decoded, payload undecoded)."
+      "note": "Section C N64 JPEG/NJPG-style \"HUFF\" entropy pool. HUFF block 13 HEAD (block 0x005DF3AC..0x005E45F8 straddles chunk seam 0x005E1000). raw-but-classified (HUFF-entropy-decoded / final-render-pending; container header decoded, final image render pending)."
     },
     {
       "name": "data_005E1000",
@@ -526,7 +526,7 @@
       "bytes": 13816,
       "class": "data",
       "status": "raw-but-classified",
-      "note": "Section C custom \"HUFF\" Huffman-compressed pool. HUFF block 13 TAIL (continuation of block 0x005DF3AC..0x005E45F8 across chunk seam 0x005E1000). raw-but-classified (undecoded-compressed; container header decoded, payload undecoded)."
+      "note": "Section C N64 JPEG/NJPG-style \"HUFF\" entropy pool. HUFF block 13 TAIL (continuation of block 0x005DF3AC..0x005E45F8 across chunk seam 0x005E1000). raw-but-classified (HUFF-entropy-decoded / final-render-pending; container header decoded, final image render pending)."
     },
     {
       "name": "data_005E45F8",
@@ -537,7 +537,7 @@
       "bytes": 23448,
       "class": "data",
       "status": "raw-but-classified",
-      "note": "Section C custom \"HUFF\" Huffman-compressed pool. HUFF block 14 WHOLE (0x005E45F8..0x005EA190, lead=0x5b94). raw-but-classified (undecoded-compressed; container header decoded, payload undecoded)."
+      "note": "Section C N64 JPEG/NJPG-style \"HUFF\" entropy pool. HUFF block 14 WHOLE (0x005E45F8..0x005EA190, lead=0x5b94). raw-but-classified (HUFF-entropy-decoded / final-render-pending; container header decoded, final image render pending)."
     },
     {
       "name": "data_005EA190",
@@ -548,7 +548,7 @@
       "bytes": 22116,
       "class": "data",
       "status": "raw-but-classified",
-      "note": "Section C custom \"HUFF\" Huffman-compressed pool. HUFF block 15 WHOLE (0x005EA190..0x005EF7F4, lead=0x5660). raw-but-classified (undecoded-compressed; container header decoded, payload undecoded)."
+      "note": "Section C N64 JPEG/NJPG-style \"HUFF\" entropy pool. HUFF block 15 WHOLE (0x005EA190..0x005EF7F4, lead=0x5660). raw-but-classified (HUFF-entropy-decoded / final-render-pending; container header decoded, final image render pending)."
     },
     {
       "name": "data_005EF7F4",
@@ -559,7 +559,7 @@
       "bytes": 6156,
       "class": "data",
       "status": "raw-but-classified",
-      "note": "Section C custom \"HUFF\" Huffman-compressed pool. HUFF block 16 HEAD (block 0x005EF7F4..0x005F50B0 straddles chunk seam 0x005F1000). raw-but-classified (undecoded-compressed; container header decoded, payload undecoded)."
+      "note": "Section C N64 JPEG/NJPG-style \"HUFF\" entropy pool. HUFF block 16 HEAD (block 0x005EF7F4..0x005F50B0 straddles chunk seam 0x005F1000). raw-but-classified (HUFF-entropy-decoded / final-render-pending; container header decoded, final image render pending)."
     },
     {
       "name": "data_005F1000",
@@ -570,7 +570,7 @@
       "bytes": 16560,
       "class": "data",
       "status": "raw-but-classified",
-      "note": "Section C custom \"HUFF\" Huffman-compressed pool. HUFF block 16 TAIL (continuation of block 0x005EF7F4..0x005F50B0 across chunk seam 0x005F1000). raw-but-classified (undecoded-compressed; container header decoded, payload undecoded)."
+      "note": "Section C N64 JPEG/NJPG-style \"HUFF\" entropy pool. HUFF block 16 TAIL (continuation of block 0x005EF7F4..0x005F50B0 across chunk seam 0x005F1000). raw-but-classified (HUFF-entropy-decoded / final-render-pending; container header decoded, final image render pending)."
     },
     {
       "name": "data_005F50B0",
@@ -581,7 +581,7 @@
       "bytes": 22780,
       "class": "data",
       "status": "raw-but-classified",
-      "note": "Section C custom \"HUFF\" Huffman-compressed pool. HUFF block 17 WHOLE (0x005F50B0..0x005FA9AC, lead=0x58f8). raw-but-classified (undecoded-compressed; container header decoded, payload undecoded)."
+      "note": "Section C N64 JPEG/NJPG-style \"HUFF\" entropy pool. HUFF block 17 WHOLE (0x005F50B0..0x005FA9AC, lead=0x58f8). raw-but-classified (HUFF-entropy-decoded / final-render-pending; container header decoded, final image render pending)."
     },
     {
       "name": "data_005FA9AC",
@@ -592,7 +592,7 @@
       "bytes": 26196,
       "class": "data",
       "status": "raw-but-classified",
-      "note": "Section C custom \"HUFF\" Huffman-compressed pool. HUFF block 18 HEAD (block 0x005FA9AC..0x00601544 straddles chunk seam 0x00601000). raw-but-classified (undecoded-compressed; container header decoded, payload undecoded)."
+      "note": "Section C N64 JPEG/NJPG-style \"HUFF\" entropy pool. HUFF block 18 HEAD (block 0x005FA9AC..0x00601544 straddles chunk seam 0x00601000). raw-but-classified (HUFF-entropy-decoded / final-render-pending; container header decoded, final image render pending)."
     },
     {
       "name": "data_00601000",
@@ -603,7 +603,7 @@
       "bytes": 1348,
       "class": "data",
       "status": "raw-but-classified",
-      "note": "Section C custom \"HUFF\" Huffman-compressed pool. HUFF block 18 TAIL (continuation of block 0x005FA9AC..0x00601544 across chunk seam 0x00601000). raw-but-classified (undecoded-compressed; container header decoded, payload undecoded)."
+      "note": "Section C N64 JPEG/NJPG-style \"HUFF\" entropy pool. HUFF block 18 TAIL (continuation of block 0x005FA9AC..0x00601544 across chunk seam 0x00601000). raw-but-classified (HUFF-entropy-decoded / final-render-pending; container header decoded, final image render pending)."
     },
     {
       "name": "data_00601544",
@@ -614,7 +614,7 @@
       "bytes": 26924,
       "class": "data",
       "status": "raw-but-classified",
-      "note": "Section C custom \"HUFF\" Huffman-compressed pool. HUFF block 19 WHOLE (0x00601544..0x00607E70, lead=0x6928). raw-but-classified (undecoded-compressed; container header decoded, payload undecoded)."
+      "note": "Section C N64 JPEG/NJPG-style \"HUFF\" entropy pool. HUFF block 19 WHOLE (0x00601544..0x00607E70, lead=0x6928). raw-but-classified (HUFF-entropy-decoded / final-render-pending; container header decoded, final image render pending)."
     },
     {
       "name": "data_00607E70",
@@ -625,7 +625,7 @@
       "bytes": 24372,
       "class": "data",
       "status": "raw-but-classified",
-      "note": "Section C custom \"HUFF\" Huffman-compressed pool. HUFF block 20 WHOLE (0x00607E70..0x0060DDA4, lead=0x5f30). raw-but-classified (undecoded-compressed; container header decoded, payload undecoded)."
+      "note": "Section C N64 JPEG/NJPG-style \"HUFF\" entropy pool. HUFF block 20 WHOLE (0x00607E70..0x0060DDA4, lead=0x5f30). raw-but-classified (HUFF-entropy-decoded / final-render-pending; container header decoded, final image render pending)."
     },
     {
       "name": "data_0060DDA4",
@@ -636,7 +636,7 @@
       "bytes": 12892,
       "class": "data",
       "status": "raw-but-classified",
-      "note": "Section C custom \"HUFF\" Huffman-compressed pool. HUFF block 21 HEAD (block 0x0060DDA4..0x00613590 straddles chunk seam 0x00611000). raw-but-classified (undecoded-compressed; container header decoded, payload undecoded)."
+      "note": "Section C N64 JPEG/NJPG-style \"HUFF\" entropy pool. HUFF block 21 HEAD (block 0x0060DDA4..0x00613590 straddles chunk seam 0x00611000). raw-but-classified (HUFF-entropy-decoded / final-render-pending; container header decoded, final image render pending)."
     },
     {
       "name": "data_00611000",
@@ -647,7 +647,7 @@
       "bytes": 9616,
       "class": "data",
       "status": "raw-but-classified",
-      "note": "Section C custom \"HUFF\" Huffman-compressed pool. HUFF block 21 TAIL (continuation of block 0x0060DDA4..0x00613590 across chunk seam 0x00611000). raw-but-classified (undecoded-compressed; container header decoded, payload undecoded)."
+      "note": "Section C N64 JPEG/NJPG-style \"HUFF\" entropy pool. HUFF block 21 TAIL (continuation of block 0x0060DDA4..0x00613590 across chunk seam 0x00611000). raw-but-classified (HUFF-entropy-decoded / final-render-pending; container header decoded, final image render pending)."
     },
     {
       "name": "data_00613590",
@@ -658,7 +658,7 @@
       "bytes": 19544,
       "class": "data",
       "status": "raw-but-classified",
-      "note": "Section C custom \"HUFF\" Huffman-compressed pool. HUFF block 22 WHOLE (0x00613590..0x006181E8, lead=0x4c54). raw-but-classified (undecoded-compressed; container header decoded, payload undecoded)."
+      "note": "Section C N64 JPEG/NJPG-style \"HUFF\" entropy pool. HUFF block 22 WHOLE (0x00613590..0x006181E8, lead=0x4c54). raw-but-classified (HUFF-entropy-decoded / final-render-pending; container header decoded, final image render pending)."
     },
     {
       "name": "data_006181E8",
@@ -669,7 +669,7 @@
       "bytes": 20140,
       "class": "data",
       "status": "raw-but-classified",
-      "note": "Section C custom \"HUFF\" Huffman-compressed pool. HUFF block 23 WHOLE (0x006181E8..0x0061D094, lead=0x4ea8). raw-but-classified (undecoded-compressed; container header decoded, payload undecoded)."
+      "note": "Section C N64 JPEG/NJPG-style \"HUFF\" entropy pool. HUFF block 23 WHOLE (0x006181E8..0x0061D094, lead=0x4ea8). raw-but-classified (HUFF-entropy-decoded / final-render-pending; container header decoded, final image render pending)."
     },
     {
       "name": "data_0061D094",
@@ -680,7 +680,7 @@
       "bytes": 16236,
       "class": "data",
       "status": "raw-but-classified",
-      "note": "Section C custom \"HUFF\" Huffman-compressed pool. HUFF block 24 HEAD (block 0x0061D094..0x006227C8 straddles chunk seam 0x00621000). raw-but-classified (undecoded-compressed; container header decoded, payload undecoded)."
+      "note": "Section C N64 JPEG/NJPG-style \"HUFF\" entropy pool. HUFF block 24 HEAD (block 0x0061D094..0x006227C8 straddles chunk seam 0x00621000). raw-but-classified (HUFF-entropy-decoded / final-render-pending; container header decoded, final image render pending)."
     },
     {
       "name": "data_00621000",
@@ -691,7 +691,7 @@
       "bytes": 6088,
       "class": "data",
       "status": "raw-but-classified",
-      "note": "Section C custom \"HUFF\" Huffman-compressed pool. HUFF block 24 TAIL (continuation of block 0x0061D094..0x006227C8 across chunk seam 0x00621000). raw-but-classified (undecoded-compressed; container header decoded, payload undecoded)."
+      "note": "Section C N64 JPEG/NJPG-style \"HUFF\" entropy pool. HUFF block 24 TAIL (continuation of block 0x0061D094..0x006227C8 across chunk seam 0x00621000). raw-but-classified (HUFF-entropy-decoded / final-render-pending; container header decoded, final image render pending)."
     },
     {
       "name": "data_006227C8",
@@ -702,7 +702,7 @@
       "bytes": 20620,
       "class": "data",
       "status": "raw-but-classified",
-      "note": "Section C custom \"HUFF\" Huffman-compressed pool. HUFF block 25 WHOLE (0x006227C8..0x00627854, lead=0x5088). raw-but-classified (undecoded-compressed; container header decoded, payload undecoded)."
+      "note": "Section C N64 JPEG/NJPG-style \"HUFF\" entropy pool. HUFF block 25 WHOLE (0x006227C8..0x00627854, lead=0x5088). raw-but-classified (HUFF-entropy-decoded / final-render-pending; container header decoded, final image render pending)."
     },
     {
       "name": "data_00627854",
@@ -713,7 +713,7 @@
       "bytes": 19648,
       "class": "data",
       "status": "raw-but-classified",
-      "note": "Section C custom \"HUFF\" Huffman-compressed pool. HUFF block 26 WHOLE (0x00627854..0x0062C514, lead=0x4cbc). raw-but-classified (undecoded-compressed; container header decoded, payload undecoded)."
+      "note": "Section C N64 JPEG/NJPG-style \"HUFF\" entropy pool. HUFF block 26 WHOLE (0x00627854..0x0062C514, lead=0x4cbc). raw-but-classified (HUFF-entropy-decoded / final-render-pending; container header decoded, final image render pending)."
     },
     {
       "name": "data_0062C514",
@@ -724,7 +724,7 @@
       "bytes": 18084,
       "class": "data",
       "status": "raw-but-classified",
-      "note": "Section C custom \"HUFF\" Huffman-compressed pool. HUFF block 27 WHOLE (0x0062C514..0x00630BB8, lead=0x46a0). raw-but-classified (undecoded-compressed; container header decoded, payload undecoded)."
+      "note": "Section C N64 JPEG/NJPG-style \"HUFF\" entropy pool. HUFF block 27 WHOLE (0x0062C514..0x00630BB8, lead=0x46a0). raw-but-classified (HUFF-entropy-decoded / final-render-pending; container header decoded, final image render pending)."
     },
     {
       "name": "data_00630BB8",
@@ -735,7 +735,7 @@
       "bytes": 1096,
       "class": "data",
       "status": "raw-but-classified",
-      "note": "Section C custom \"HUFF\" Huffman-compressed pool. HUFF block 28 HEAD (block 0x00630BB8..0x0063676C straddles chunk seam 0x00631000). raw-but-classified (undecoded-compressed; container header decoded, payload undecoded)."
+      "note": "Section C N64 JPEG/NJPG-style \"HUFF\" entropy pool. HUFF block 28 HEAD (block 0x00630BB8..0x0063676C straddles chunk seam 0x00631000). raw-but-classified (HUFF-entropy-decoded / final-render-pending; container header decoded, final image render pending)."
     },
     {
       "name": "data_00631000",
@@ -746,7 +746,7 @@
       "bytes": 22380,
       "class": "data",
       "status": "raw-but-classified",
-      "note": "Section C custom \"HUFF\" Huffman-compressed pool. HUFF block 28 TAIL (continuation of block 0x00630BB8..0x0063676C across chunk seam 0x00631000). raw-but-classified (undecoded-compressed; container header decoded, payload undecoded)."
+      "note": "Section C N64 JPEG/NJPG-style \"HUFF\" entropy pool. HUFF block 28 TAIL (continuation of block 0x00630BB8..0x0063676C across chunk seam 0x00631000). raw-but-classified (HUFF-entropy-decoded / final-render-pending; container header decoded, final image render pending)."
     }
   ]
 }

@@ -206,20 +206,23 @@ Current result:
 - Tracked real-assembler original-MIPS chunks: **100 composites** (chunk 0 177 `boot/`;
   chunks 1–99 in `lib/`: 350, 216, 67, 376, 88, 78, 103, 87, 34, 35, 191, 74, 67, 94, 153, 95, 66, 95, 80, 175, 99, 99, 73, 63, 71, 96, 142, 97, 103, 122, 86, 198, 109, 120, 134, 164, 180, 232, 155, 159, 160, 171, 90, 17, 15, 17, 27, 9, 11, 13, 13, 13, 9, 9, 9, 7, 1, 5, 3, 3, 5, 5, 5, 7, 15, 8, 21, 33, 23, 19, 23, 21, 33, 13, 7, 7, 15, 4, 11, 5, 4, 4, 5, 9, 9, 11, 4, 9, 5, 3, 4, 4, 4, 4, 3, 4, 4, 5, 1) = **6,181 real-assembler
   source files; 0 generated fallback chunks — the ENTIRE configured code region `0x00001000..0x0063676C` is
-  now fully source-owned (data-ownership loop COMPLETE; consolidated coordinator report due)**.
+  now fully source-owned (data-ownership loop COMPLETE; final consolidated report:
+  `docs/FINAL_DATA_OWNERSHIP_REPORT_2026-06-24.md`)**.
   Chunks 0–99 (`0x00001000..0x0063676C`) are fully source-owned as
   named code/data parts (chunks 90-99 own the **Section C HUFF pool tail** [0x5A1000..0x63676C; 36
   parser-backed parts cut at word-aligned HUFF block starts (magic-12) + chunk seams, 0 code; LOOP-COMPLETE
-  at the configured stop 0x63676C incl. the terminal partial chunk 99 0x631000..0x63676C; Section C = custom
-  "HUFF" Huffman pool, 29 blocks, 18-byte container header decoded incl. leadU32==blockSize-4 self-relative
-  length, payload UNDECODED, data-only-safe]; Section A 0x301000..0x4E3140 fully AUDIO; chunk 78 crosses the Section A/B
+  at the configured stop 0x63676C incl. the terminal partial chunk 99 0x631000..0x63676C; Section C =
+  N64 JPEG/NJPG-style "HUFF" entropy pool, 29 blocks, 18-byte container header decoded incl.
+  leadU32==blockSize-4 self-relative length, Huffman entropy stage decoded to 230,400-byte coefficient
+  buffers per block, final image render pending, data-only-safe]; Section A 0x301000..0x4E3140 fully AUDIO; chunk 78 crosses the Section A/B
   boundary [pinned 0x4E3140]; chunks 79-88 = Section B parser-backed cutscene AUDIO-SEQUENCE blocks
   [0x4F1000..0x591000; 71 parts at natural catalog block boundaries, block 0 body + 1-60 whole + 61 head;
   all 63 blocks tag 0x215 per ob64_anim_block_catalog.json/anim_block_codec.py]; chunk 89 owns the whole
   **Section B tail + Section C start** [0x591000..0x5A1000; 5 parts: block 61 tail + block 62 = anim-family
   end 0x594280 + Section C 65-entry directory + zero pad + **Section C HUFFMAN-compressed "HUFF" pool
-  start**, 0 code; RUN-COMPLETE resolving the prior partial-interior-chunk fallback; Section C = custom
-  "HUFF" Huffman pool, 29 blocks first 0x5943D4/last 0x630BC4, UNDECODED; B/C boundary pinned 0x594280])
+  start**, 0 code; RUN-COMPLETE resolving the prior partial-interior-chunk fallback; Section C =
+  N64 JPEG/NJPG-style "HUFF" entropy pool, 29 blocks first 0x5943D4/last 0x630BC4, Huffman entropy stage
+  decoded, final image render pending; B/C boundary pinned 0x594280])
   (chunks 62-65 = Section A slice 3 [0x3E1000..0x421000]: 0 code + 32 data
   [18 data + 14 zero_fill], DATA TERRITORY — FALLBACK from planned 62-71 at `0x421000` because chunk 66
   is a decoded N64 audio sound-bank [`N64 PtrTablesV2` @0x423FF0 / `N64 WaveTables` @0x429CD0], strong
@@ -320,7 +323,8 @@ Current result:
   font/glyph + pointer/float DATA region [`0x211D14..0x213B10`] + a jump-table
   state-machine outgoing straddler; chunks 34-38 also source-owned, see the chunk list above);
   the configured code region is now fully source-owned through chunk 99 (`0x0063676C`) — 0 generated
-  fallback chunks remain; the data-ownership loop is COMPLETE (consolidated coordinator report due).
+  fallback chunks remain; the data-ownership loop is COMPLETE. Final consolidated report:
+  `docs/FINAL_DATA_OWNERSHIP_REPORT_2026-06-24.md`.
 - Generated fallback chunks: 0.
 - Assembled-code ROM rebuild command:
 

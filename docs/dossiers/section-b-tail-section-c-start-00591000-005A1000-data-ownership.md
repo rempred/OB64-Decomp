@@ -19,7 +19,7 @@ Section C resource-pool directory + Section C HUFFMAN-compressed pool start.
 | `data_00592490` | `0x592490..0x594280` | 7,664 | raw-but-classified | Section B **block 62** = the FINAL (63rd) family block (tag 0x215, no following header); **family end 0x594280** |
 | `data_00594280` | `0x594280..0x594384` | 260 | raw-but-classified | **Section C directory**: 65-entry u32-BE offset table (TOC for the HUFF pool) |
 | `zero_fill_00594384` | `0x594384..0x5943C8` | 68 | parsed (all-zero) | Post-directory zero pad (17 words) |
-| `data_005943C8` | `0x5943C8..0x5A1000` | 52,280 | raw-but-classified | **Section C HUFFMAN-compressed pool START** (custom "HUFF" magic; UNDECODED; OUTGOING into chunk 90) |
+| `data_005943C8` | `0x5943C8..0x5A1000` | 52,280 | raw-but-classified | **Section C HUFFMAN-compressed pool START** (N64 JPEG/NJPG-style HUFF entropy; OUTGOING into chunk 90) |
 
 - **Incoming:** chunk 88 block 61 head (`0x5908D0..0x591000`) → `data_00591000` (block 61 tail); seamless
   mid-block across the `0x591000` seam.
@@ -44,14 +44,13 @@ plus back-references at idx40→41/43→44/44→45 (shared/reused assets). Max o
 exceeds** the raw-ROM Section C span `0x594280..0x63676C` = `0xA24EC` (0.63 MB; ~4×), so **the offsets
 index a DECOMPRESSED asset space**, not raw ROM. Then a 68 B all-zero pad to `0x5943C8`.
 
-**Section C = a custom "HUFF" HUFFMAN-compressed pool** (`0x5943C8..`). ASCII `"HUFF"` (48 55 46 46) magic
+**Section C = an N64 JPEG/NJPG-style "HUFF" entropy pool** (`0x5943C8..`). ASCII `"HUFF"` (48 55 46 46) magic
 @`0x5943D4`, `0x59A668`, `0x5A0E40` (3 in-chunk; 4th @`0x5A787C` is past `0x5A1000`); **29 HUFF blocks**
-across `0x594280..0x63676C` (first `0x5943D4`, last `0x630BC4`). Block header is a consistent fixed
-container: `[u16 size/symbol-count-like]` then CONSTANT `48 55 fe 00 / 01 40 00 f0`, then `"HUFF"`, then
-CONSTANT `01 2c`, then compressed payload. Whole-pool entropy ~7.97 bits/byte. **UNDECODED-compressed** —
-no decompressor exists in the parent toolchain (the only parent Huffman code is the standard LHA `-lh5-`
-decoder for the archives @`0x636784+`, a different codec). This **refines the survey's** "no standard
-magic" classification: Section C does have a magic — a custom `"HUFF"` block magic.
+across `0x594280..0x63676C` (first `0x5943D4`, last `0x630BC4`). Header word `01 40 00 f0` is 320x240
+and `01 2c` is 300 macroblocks. Post-run decode update (2026-06-28): MSB-first standard JPEG Huffman
+decode succeeds for all 29 blocks, identifying the pool as N64 JPEG/NJPG-style HUFF entropy data. Final
+renderable images still require the NJPG/RSP JPEG stage or equivalent IDCT, quantization/de-zigzag, and YUV
+conversion.
 
 ## Section B/C boundary — pinned at `0x594280`
 
@@ -101,7 +100,7 @@ structural parts. Downgrades to caveats only — none affect byte-exact ownershi
 
 ## Caveats & unresolved fields
 
-- Section C HUFF (Huffman) codec UNDECODED-compressed (no parent decoder); blocks owned by container shape.
+- HUFF entropy stage decoded; final renderable pixels are not yet produced.
 - Directory per-entry semantics unresolved (3-word prelude meaning; the 29 compressed blocks vs 62 asset
   offsets mapping; offsets index decompressed-asset space, not reconciled against base `0x20248C2` here).
 - HUFF block header fields beyond the magic not formally decoded (leading u16; the constant
@@ -113,8 +112,7 @@ structural parts. Downgrades to caveats only — none affect byte-exact ownershi
 
 ## Next-run first action — chunk 90 (`0x005A1000`): continue Section C
 
-Own the next run of Section C "HUFF" Huffman-compressed blocks as raw-but-classified (undecoded-compressed)
-data territory, advancing toward the hard data end ~`0x0063676C` (last HUFF block @`0x630BC4`), after which
-the LHA `-lh5-` archive catalog begins at `0x636784`. Optionally build/port a HUFF decoder to decode the
-Section C blocks + map the directory entries to decompressed assets. Do NOT continue past `0x0063676C`
+Chunks 90-99 now own Section C through the configured stop. Next decode work is to implement the NJPG
+render stage and resolve the remaining directory entries; the LHA `-lh5-` archive catalog begins at
+`0x636784`. Do NOT continue past `0x0063676C`
 without Joe explicitly asking.

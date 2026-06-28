@@ -10,7 +10,7 @@
   "frontierBefore": "0x00591000",
   "frontierAfter": "0x005A1000",
   "typeFamily": "MIXED: (B) parser-backed cutscene audio-sequence block tail (block 61 tail + block 62) + Section C resource-pool directory (u32-BE offset table); (C) Section C HUFFMAN-compressed resource pool start (custom \"HUFF\" codec).",
-  "status": "partial (chunk-89 bytes byte-exact owned; Section C HUFF payload undecoded-compressed; directory per-entry + B/C-boundary-interpretation unresolved)",
+  "status": "partial (chunk-89 bytes byte-exact owned; Section C HUFF payload HUFF-entropy-decoded / final-render-pending; directory per-entry + B/C-boundary-interpretation unresolved)",
   "chunk89BytesStatus": "yes",
   "confidence": "high (byte-exact ownership; block tails parser-backed; HUFF/Section C identified) / low (HUFF payload semantics; directory entry meaning)",
   "byteSplit": {
@@ -36,10 +36,10 @@
   },
   "sectionCStart": {
     "romRange": "0x005943C8..0x005A1000 (continues to ~0x0063676C)",
-    "class": "SECTION C HUFFMAN-COMPRESSED resource pool — a pool of custom \"HUFF\"-magic Huffman-compressed blocks.",
+    "class": "SECTION C HUFFMAN-COMPRESSED resource pool — a pool of N64 JPEG/NJPG-style \"HUFF\" entropy blocks.",
     "huffMagic": "ASCII \"HUFF\" @0x5943D4 (and 2 more in-chunk @0x59A668, 0x5A0E40 = 3 in-chunk; the 4th @0x5A787C is past 0x5A1000); 29 \"HUFF\" blocks total across 0x594280..0x63676C (first 0x5943D4, last 0x630BC4).",
-    "blockHeader": "consistent fixed container (verified across in-chunk headers): [u16 varying size/symbol-count-like field, e.g. 0x6290/0x67D4/0x6A38] then CONSTANT bytes 48 55 fe 00 / 01 40 00 f0, then \"HUFF\" magic (48 55 46 46), then CONSTANT 01 2c, then compressed payload. Header field semantics beyond magic undecoded.",
-    "entropy": "high (whole-pool 7.974 bits/byte; per-512B in-chunk mean 7.56, 7.47-7.65); UNDECODED-compressed (custom HUFF codec; NO parent decoder — the only parent Huffman code is the standard LHA -lh5- decoder for the archives @0x636784+, a different codec).",
+    "blockHeader": "consistent fixed container (verified across in-chunk headers): [u16 varying size/symbol-count-like field, e.g. 0x6290/0x67D4/0x6A38] then CONSTANT bytes 48 55 fe 00 / 01 40 00 f0, then \"HUFF\" magic (48 55 46 46), then CONSTANT 01 2c, then compressed payload. Outer wrapper semantics beyond 320x240 / 300 macroblocks unresolved.",
+    "entropy": "high (whole-pool 7.974 bits/byte; per-512B in-chunk mean 7.56, 7.47-7.65); MSB-first standard JPEG Huffman decode succeeds for all 29 HUFF blocks; final image render pending.",
     "refinesSurvey": "The survey classified Section C as \"near-max-entropy opaque packed/compressed, no standard MIO0/Yay0/Yaz0/LHA magic.\" This run REFINES that: Section C uses a custom \"HUFF\" (Huffman) codec with an ASCII \"HUFF\" block magic."
   },
   "editorEvidence": "none",
@@ -53,7 +53,7 @@
     "block61Tail": "0x591000..0x592490 — completes cutscene block 61 (0x5908D0..0x592490, tag 0x215; head owned chunk 88). Parser-backed.",
     "block62": "0x592490..0x594280 — final (63rd) cutscene block (tag 0x215, no following header; family end 0x594280). Parser-backed.",
     "sectionCDirectory": "0x594280..0x594384 — 65-entry u32-BE offset table (indexes the decompressed Section C asset space).",
-    "sectionCHuffPool": "0x5943C8..0x5A1000 — custom \"HUFF\" Huffman-compressed blocks (undecoded-compressed)."
+    "sectionCHuffPool": "0x5943C8..0x5A1000 — N64 JPEG/NJPG-style \"HUFF\" entropy blocks (HUFF-entropy-decoded / final-render-pending)."
   },
   "incomingContinuation": "chunk 88 block 61 head (0x5908D0..0x591000) -> data_00591000 (block 61 tail); completes block 61 across the 0x591000 seam.",
   "outgoingContinuation": "data_005943C8 (Section C HUFF pool) runs to 0x5A1000 and continues into chunk 90 (the HUFF pool continues across Section C to ~0x0063676C; 29 HUFF blocks, last @0x630BC4).",
@@ -62,7 +62,7 @@
     "resolution": "RESOLVED by owning the WHOLE chunk 89 (0x591000..0x5A1000) as one chunk-aligned run with separate subranges (Section B tail + Section C directory + Section C HUFF start). No pipeline change needed; the mid-chunk B/C boundary is represented as an internal part boundary (0x594280) within the chunk-aligned manifest entry. This is the prompt-authorized strategy."
   },
   "unresolvedFields": [
-    "Section C HUFF (Huffman) codec — the compressed-block format / decompression (no parent decoder; UNDECODED)",
+    "Section C HUFF/NJPG render stage ? final pixels require NJPG/RSP JPEG or equivalent IDCT, quantization/de-zigzag, and YUV conversion.",
     "Section C directory per-entry semantics (decompressed-asset byte offsets vs indices; the 3-word prelude 0x64C2/0x140/0x148)",
     "exact Section B/C boundary INTERPRETATION (anim-family end 0x594280 vs HUFF-pool start ~0x5943C8 — both represented as part boundaries)",
     "the chunk-78 Section B index-table payloadLen interpretation gap (carried forward)"
@@ -79,11 +79,11 @@
       "confidence": "high"
     }
   ],
-  "batchSizeFinding": "Correctly a 1-chunk combined-boundary run (NOT a flat batch): owning the whole chunk 89 with separate Section B tail + Section C subranges resolved the prior partial-chunk fallback. The NEXT unit is the Section C HUFF pool (chunk 90+ toward 0x63676C) — a raw/compressed-pool run, owning the HUFF blocks as raw-but-classified (undecoded) until/unless a HUFF decoder is built.",
-  "ownershipAssessment": "yes (independent reviewer). All 65,536 bytes of chunk 89 byte-exact owned as 5 structural parts (4 data + 1 zero_fill); 0 code (data-only-safe); block tails parser-backed; directory + HUFF pool start classified. partialChunkResolved=true: owning the WHOLE chunk 89 with separate Section B tail + Section C subranges resolves the prior partial-chunk-89 fallback (no pipeline change needed; the mid-chunk B/C boundary 0x594280 is an internal part boundary in the chunk-aligned manifest entry). Downgrades to caveats only (HUFF payload undecoded-compressed; directory per-entry + block62-assumed-size + B/C dual-pin) — none affect byte-exact ownership.",
+  "batchSizeFinding": "Correctly a 1-chunk combined-boundary run (NOT a flat batch): owning the whole chunk 89 with separate Section B tail + Section C subranges resolved the prior partial-chunk fallback. Chunks 90-99 later completed the Section C HUFF pool through 0x63676C; remaining work is NJPG render-stage decoding and directory semantics.",
+  "ownershipAssessment": "yes (independent reviewer). All 65,536 bytes of chunk 89 byte-exact owned as 5 structural parts (4 data + 1 zero_fill); 0 code (data-only-safe); block tails parser-backed; directory + HUFF pool start classified. partialChunkResolved=true: owning the WHOLE chunk 89 with separate Section B tail + Section C subranges resolves the prior partial-chunk-89 fallback (no pipeline change needed; the mid-chunk B/C boundary 0x594280 is an internal part boundary in the chunk-aligned manifest entry). Downgrades to caveats only (HUFF payload HUFF-entropy-decoded / final-render-pending; directory per-entry + block62-assumed-size + B/C dual-pin) — none affect byte-exact ownership.",
   "recommendedFollowups": [
-    "Continue Section C (the HUFFMAN-compressed resource pool) from 0x5A1000 toward the hard data end 0x0063676C — own the \"HUFF\" blocks as raw-but-classified (undecoded-compressed), in chunk-aligned batches. 29 HUFF blocks total (last @0x630BC4); the first LHA archive is at 0x636784 (just past 0x63676C).",
-    "Optionally build/port a HUFF (Huffman) decoder to decode the Section C blocks + map the directory entries to decompressed assets (parser follow-up)."
+    "Implement the NJPG render stage for Section C HUFF coefficient buffers and resolve the remaining directory entries.",
+    "Do not continue past 0x0063676C without Joe explicitly asking; the first LHA archive is at 0x636784 just past the structural gap."
   ],
   "subregions": [
     {
@@ -139,7 +139,7 @@
       "bytes": 52280,
       "class": "data",
       "status": "raw-but-classified",
-      "note": "SECTION C HUFFMAN-COMPRESSED resource pool START: a pool of custom \"HUFF\"-magic Huffman-compressed blocks (first block header @~0x5943CA, ASCII \"HUFF\" magic @0x5943D4; 3 HUFF blocks in this chunk @0x5943D4/0x59A668/0x5A0E40; 29 HUFF blocks total across Section C 0x594280..0x63676C, last @0x630BC4). High-entropy (per-512B ~7.5-7.6; whole-region ~7.97). REFINES the survey: Section C uses a custom \"HUFF\" Huffman codec (NOT no-magic MIO0/Yay0/Yaz0/LHA). UNDECODED-compressed. OUTGOING: continues into chunk 90 toward the hard data end 0x0063676C. raw-but-classified. NOTE: word 0x594A9C = 0x27BD91B1 is a coincidental stack-prologue byte pattern in compressed data (the survey-known false positive; 0 jr$ra in the chunk = not code)."
+      "note": "SECTION C HUFFMAN-COMPRESSED resource pool START: a pool of N64 JPEG/NJPG-style \"HUFF\" entropy blocks (first block header @~0x5943CA, ASCII \"HUFF\" magic @0x5943D4; 3 HUFF blocks in this chunk @0x5943D4/0x59A668/0x5A0E40; 29 HUFF blocks total across Section C 0x594280..0x63676C, last @0x630BC4). High-entropy (per-512B ~7.5-7.6; whole-region ~7.97). REFINES the survey: Section C uses a custom \"HUFF\" Huffman codec (NOT no-magic MIO0/Yay0/Yaz0/LHA). HUFF-entropy-decoded / final-render-pending. OUTGOING: continues into chunk 90 toward the hard data end 0x0063676C. raw-but-classified. NOTE: word 0x594A9C = 0x27BD91B1 is a coincidental stack-prologue byte pattern in compressed data (the survey-known false positive; 0 jr$ra in the chunk = not code)."
     }
   ]
 }

@@ -19,11 +19,13 @@ Current source mix: 100 tracked composite real-assembler chunks (chunk 0 177
 `boot/`; chunks 1–99 in `lib/`: 350, 216, 67, 376, 88, 78, 103, 87, 34, 35, 191, 74, 67, 94, 153, 95, 66, 95, 80, 175, 99, 99, 73, 63, 71, 96, 142, 97, 103, 122, 86, 198, 109, 120, 134, 164, 180, 232, 155, 159, 160, 171, 90, 17, 15, 17, 27, 9, 11, 13, 13, 13, 9, 9, 9, 7, 1, 5, 3, 3, 5, 5, 5, 7, 15, 8, 21, 33, 23, 19, 23, 21, 33, 13, 7, 7, 15, 4, 11, 5, 4, 4, 5, 9, 9, 11, 4, 9, 5, 3, 4, 4, 4, 4, 3, 4, 4, 5, 1) = 6,181 tracked
 source files, plus 0 generated fallback chunks. **Chunks 0–99 are fully
 source-owned as named code/data parts** (`0x00001000..0x0063676C` — the ENTIRE configured code region;
-the data-ownership loop is COMPLETE and a consolidated coordinator report is due;
+the data-ownership loop is COMPLETE; final consolidated report:
+`docs/FINAL_DATA_OWNERSHIP_REPORT_2026-06-24.md`;
 chunks 90-99 own the Section C HUFF pool tail [0x5A1000..0x63676C]: 36 parser-backed parts cut at
 word-aligned HUFF block starts [magic-12] + chunk seams, 0 code, LOOP-COMPLETE at the configured stop
-0x63676C incl. the terminal partial chunk 99; Section C = custom "HUFF" Huffman pool, 29 blocks, 18-byte
-container header decoded incl. leadU32==blockSize-4, payload UNDECODED, data-only-safe;
+0x63676C incl. the terminal partial chunk 99; Section C = N64 JPEG/NJPG-style "HUFF" entropy pool, 29
+blocks, 18-byte container header decoded incl. leadU32==blockSize-4, Huffman entropy stage decoded to
+230,400-byte coefficient buffers per block, final image render pending, data-only-safe;
 chunk 89 owns the whole Section B tail + Section C start [0x591000..0x5A1000]: 5 structural parts
 [block 61 tail + block 62 = anim-family end 0x594280 + Section C 65-entry directory + zero pad + Section C
 HUFF pool start], 0 code;
@@ -118,7 +120,7 @@ at z64 0x1F36F0; chunk 32: 196 normal code + 0 data + 2 function straddlers, ALL
 frameless-leaf-dense FP/display-list + class-def/char-data code; chunk 33: 82 normal code +
 25 data + 2 function straddlers, MIXED - code + a font/glyph + pointer/float DATA region
 + a jump-table state-machine straddler);
-the configured code region is fully source-owned through chunk 99 (`0x0063676C`); 0 fallback chunks remain — the data-ownership loop is COMPLETE (consolidated coordinator report due).
+the configured code region is fully source-owned through chunk 99 (`0x0063676C`); 0 fallback chunks remain — the data-ownership loop is COMPLETE. Final consolidated report: `docs/FINAL_DATA_OWNERSHIP_REPORT_2026-06-24.md`.
 
 The assembled code-region SHA256 is
 `40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`; the full
@@ -195,7 +197,7 @@ node tools/audit_code_region.js
    generates fallback owners for the rest. Keep `node tools/verify_setup.js`
    green after every promotion.
 
-3. Data-ownership loop COMPLETE — consolidated coordinator report due (no library frontier remains).
+3. Data-ownership loop COMPLETE — final consolidated report written (no library frontier remains).
 
    Chunks 0–99 (`0x00001000..0x0063676C`) are fully source-owned as named code/data
    parts — the ENTIRE configured code region (0 generated fallback chunks): chunk 0 in `boot/`; chunks 1–99 in `lib/` (dossiers `lib-chunk1-…` … `lib-chunk47-…` +
@@ -217,9 +219,10 @@ node tools/audit_code_region.js
    start (5 parts: block 61 tail + block 62 = anim-family end 0x594280 + Section C 65-entry directory + zero
    pad + Section C HUFF pool start; B/C boundary 0x594280); chunks 90-99 own the Section C HUFF pool tail
    (36 parser-backed parts cut at word-aligned HUFF block starts + chunk seams; LOOP-COMPLETE at the
-   configured stop 0x63676C incl. the terminal partial chunk 99). Section C = a custom "HUFF" Huffman pool,
-   29 blocks (first 0x5943D4, last 0x630BC4), 18-byte container header decoded (leadU32==blockSize-4),
-   payload UNDECODED, data-only-safe. All of Section A (0x301000..0x4E3140) is AUDIO.
+   configured stop 0x63676C incl. the terminal partial chunk 99). Section C = a N64 JPEG/NJPG-style "HUFF"
+   entropy pool, 29 blocks (first 0x5943D4, last 0x630BC4), 18-byte container header decoded
+   (leadU32==blockSize-4), Huffman entropy stage decoded to 230,400-byte coefficient buffers per block,
+   final image render pending, data-only-safe. All of Section A (0x301000..0x4E3140) is AUDIO.
    Indexes `docs/data-index/rev0/chunk4{3,4,5,6,7}-data-region-inventory.json` +
    `section-a-00301000-00341000-data-inventory.json` + `section-a-00341000-003E1000-data-inventory.json`
    + `section-a-003E1000-00421000-data-inventory.json` + `section-a-audio-bank-00421000-00431000-data-inventory.json`
@@ -233,10 +236,10 @@ node tools/audit_code_region.js
    configured code region `0x1000..0x63676C` (6,510,444 B = assembled code.bin) is 100% source-owned (0
    generated fallback chunks).** Chunks 90-99 owned the Section C HUFF pool tail to the stop 0x63676C
    (LOOP-COMPLETE), including the terminal partial chunk 99 (0x631000..0x63676C; fully promotable since
-   assemble tiles against the report chunk romEndExclusive). **A consolidated coordinator report is now
-   due.** Optional follow-ups (not required): (a) DECODE track — attempt the custom "HUFF" Huffman codec
-   (candidate decoder: the in-game boot Huffman subsystem boot 0xB030..0xF22C) + map the chunk-89 65-entry
-   directory to the 29 decompressed blocks; (b) the full-ROM coverage track below. Out of scope without
+   assemble tiles against the report chunk romEndExclusive). **Final consolidated report:
+   `docs/FINAL_DATA_OWNERSHIP_REPORT_2026-06-24.md`.** Optional follow-ups (not required): (a) DECODE track
+   — implement the NJPG render stage for Section C and resolve the remaining chunk-89 65-entry directory
+   entries; (b) the full-ROM coverage track below. Out of scope without
    Joe: the 24-byte structural gap `0x63676C..0x636784` and the LHA `-lh5-` archive region at `0x636784+`.
    Coverage 100.0000% of the executable extent (code-only 85.7977%). See the DECOMP_LOG and
    `docs/data-index/rev0/section-c-huff-pool-005A1000-0063676C-data-inventory.json`.

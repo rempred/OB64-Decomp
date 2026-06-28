@@ -6,10 +6,12 @@ readable inventory: `docs/data-index/rev0/section-c-huff-pool-005A1000-0063676C-
 
 **This run REACHES the configured stop `0x0063676C`** (the end of the configured code region). After it, the
 **entire code region `0x00001000..0x0063676C` is fully source-owned** (0 generated fallback chunks) — the
-data-ownership loop is complete. A consolidated coordinator report is now due.
+data-ownership loop is complete. Final consolidated report:
+`docs/FINAL_DATA_OWNERSHIP_REPORT_2026-06-24.md`.
 
-Classification: **DATA TERRITORY — Section C custom "HUFF" Huffman-compressed resource pool** (length-linked
-blocks; container header decoded; compressed payload undecoded).
+Classification: **DATA TERRITORY — Section C N64 JPEG/NJPG-style "HUFF" entropy-compressed resource pool**
+(length-linked OB64 wrapper; container header decoded; Huffman entropy stage decoded to macroblock
+coefficient buffers; final image render pending).
 
 ## Composition — 36 parser-backed parts (all data, 0 zero_fill, 0 code)
 
@@ -45,6 +47,32 @@ Blocks tile **contiguously**. The final block 28 (`0x630BB8`) has `leadU32 = 0x5
 `0x636780`, which is **20 B past the stop `0x63676C`** (inside the structural gap, before LHA `0x636784`);
 so this run owns only `0x630BB8..0x63676C` of block 28.
 
+## HUFF payload decode attempt — 2026-06-28
+
+`node tools/analyze_section_c_huff.js` now dumps/parses/classifies the pool under ignored
+`build/huff-section-c/`. It writes per-block container/payload dumps, a JSON/Markdown report, and
+standard-JPEG-Huffman coefficient buffers under `build/huff-section-c/njpg/`.
+
+Result: **all 29 blocks decode with the N64 JPEG/NJPG HUFF shape**:
+
+- Inner buffer at `blockStart+0x0C` begins with `"HUFF"` + `0x012C`.
+- Header word `0x014000F0` decodes naturally as **320x240**.
+- `0x012C` = **300 macroblocks** = `(320/16) * (240/16)`.
+- MSB-first standard JPEG Huffman decode succeeds for **29/29** blocks.
+- LSB-first decode fails for **0/29** blocks.
+- Each decoded coefficient buffer is **230,400 B** (`300 * 6 * 64 * 2`).
+- Aggregate compressed payload: **663,982 B**, entropy **7.9742 bits/byte**.
+- Generic zlib/raw-deflate/gzip probes still produce **0** successes.
+
+This is the CPU entropy stage only. Final renderable images still require the NJPG/RSP JPEG stage or an
+equivalent IDCT, quantization, de-zigzag, and YUV conversion path. External format anchor:
+Nintendo's N64 JPEG/NJPG manual describes a `"HUFF"` Huffman-compressed JPEG path and a 16x16 macroblock
+layout: <https://ultra64.ca/files/documentation/online-manuals/man/pro-man/pro25/25-07.html>.
+
+Directory refinement: entries 2-30 map exactly to HUFF block starts 0-28, entry 31 maps to the natural
+HUFF pool end `0x636780`, and entry 48 repeats the final block start. Entries 32-64 do **not** resolve to
+simple raw Section C block starts under the directory base; their meaning remains unresolved.
+
 ## Proof of non-code (data-only safe)
 
 Swarm adversary + parent + schema passes, all 4 byte alignments over 612,204 B: **`jr $ra` = 0 at ANY
@@ -64,8 +92,8 @@ Contrast known code `0x1000..0x100000`: 2105 `jr $ra`, 1286 (all word-aligned) p
 codec** (DICBIT=13, NC=510/NP=14/NT=19) targeting the `-lh5-` archives at `0x636784+`; the archive scanner
 only matches `-lh?-`. The repo also decompiles an **in-game** boot codec subsystem (boot `0xB030..0xF22C`:
 LZSS + canonical-Huffman/DEFLATE + adaptive-Huffman; e.g. `boot_decode_huffman_codelengths 0xECF0`) — game
-MIPS, not a parent tool, not tied to the Section C pool; noted only as a candidate decoder for a future
-attempt. **REJECTED:** 0 functions in range (`ob64_functions.json`; the lone `0x594A9C` entry is the known
+MIPS, not a parent tool, and not required for the current HUFF result; the analyzer matches the N64
+JPEG/NJPG HUFF path instead. **REJECTED:** 0 functions in range (`ob64_functions.json`; the lone `0x594A9C` entry is the known
 false positive, below the span); `ob64_4a_audit.json` (113) / `ob64_4f_audit.json` (64) in-range gapOffsets
 are decompressed-7MB-stream coords (base `0x20248C2`), byte-rejected.
 
@@ -85,25 +113,26 @@ code); `assemble_original_mips` **byte-exact** (code SHA `40D4E787…B409` uncha
 ## Ownership status: BYTES `yes` / natural-unit `partial`
 
 Every byte of `0x5A1000..0x63676C` is byte-exact owned as 36 parser-backed data parts, 0 code, with the
-HUFF container header decoded (incl. `leadU32==blockSize−4`). The natural Section C unit is **partial**: the
-compressed payload + `leadU32` semantics + per-block decompressed semantics are undecoded (no decoder). The
-prompt's `yes` standard explicitly allows undecoded-compressed payload when byte ownership + container
-classification + code-risk are strong — all three hold here.
+HUFF container header decoded (incl. `leadU32==blockSize−4`). The natural Section C unit is **partial**:
+the HUFF entropy stage is decoded to coefficient buffers, but final image rendering and several wrapper/
+directory semantics remain unresolved. The earlier byte-ownership standard was already satisfied before payload decoding; the new decode result
+strengthens the data-territory classification.
 
 ## Caveats & unresolved fields
 
-- HUFF compressed payload UNDECODED (no parent/in-game decoder proven against the `48 55 46 46` magic).
+- HUFF entropy stage decoded; final renderable pixels are not yet produced.
 - `leadU32` verified numerically as `blockSize−4` (self-relative length); semantic name/units unknown.
-- Per-block decompressed size / symbol count / Huffman code-table layout unknown.
-- Const header runs `48 55 FE 00`, `01 40 00 F0`, `01 2C` purpose unknown (constant on all 29 blocks).
+- Coefficient buffers are 230,400 B per block, but quant tables / RSP JPEG parameters / display target are
+  not yet recovered.
+- Const header word `48 55 FE 00` purpose unknown; `01 40 00 F0` is 320x240 and `01 2C` is 300 macroblocks.
 - Block 28's natural end `0x636780` is past the stop; the terminal partial owns only `0x630BB8..0x63676C`.
-- The chunk-89 65-entry directory → 29-HUFF-block mapping (directory indexes a decompressed asset space) is
-  unresolved.
+- The chunk-89 65-entry directory has a compressed-block run (entries 2-31 plus entry 48 repeat), but
+  entries 32-64 remain unresolved.
 
 ## Loop completion / next
 
 This is the **final data-ownership-loop run**. After it the configured code region `0x1000..0x63676C` is
-fully source-owned (100 composites / 6,181 files / **0 fallback**). **A consolidated coordinator report is
-due.** Optional decode track: attempt the custom "HUFF" codec (candidate: the in-game boot Huffman
-subsystem) + map the directory to decompressed blocks. Out of scope without Joe: the structural gap
+fully source-owned (100 composites / 6,181 files / **0 fallback**). **Final consolidated report:
+`docs/FINAL_DATA_OWNERSHIP_REPORT_2026-06-24.md`.** Optional decode track: implement the NJPG render stage
+and resolve the remaining Section C directory entries. Out of scope without Joe: the structural gap
 `0x63676C..0x636784` and the LHA archive region `0x636784+`.

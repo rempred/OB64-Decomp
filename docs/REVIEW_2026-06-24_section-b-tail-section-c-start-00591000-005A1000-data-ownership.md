@@ -31,13 +31,13 @@ subranges in one chunk-aligned run.
 | `data_00592490` | `0x592490..0x594280` | 7,664 | Section B **block 62** = FINAL (63rd) block; **family end 0x594280** |
 | `data_00594280` | `0x594280..0x594384` | 260 | **Section C directory** (65-entry u32-BE offset table) |
 | `zero_fill_00594384` | `0x594384..0x5943C8` | 68 | post-directory zero pad (17 words) |
-| `data_005943C8` | `0x5943C8..0x5A1000` | 52,280 | **Section C HUFFMAN-compressed "HUFF" pool START** (UNDECODED; OUTGOING) |
+| `data_005943C8` | `0x5943C8..0x5A1000` | 52,280 | **Section C HUFFMAN-compressed "HUFF" pool START** (N64 JPEG/NJPG-style HUFF entropy; OUTGOING) |
 
 ## Ownership status: `yes` (all 65,536 bytes of chunk 89)
 
 Independent reviewer **yes**; `partialChunkResolved = true`. All bytes byte-exact owned as 5 parser-backed /
 classified parts. The block family is owned as a parser-backed **container**; Section C is owned as
-classified compressed data (payload undecoded).
+classified N64 JPEG/NJPG-style entropy data (HUFF stage decoded later; final image render pending).
 
 ## Section B closure (parser-backed, byte-verified)
 
@@ -54,12 +54,12 @@ terminator @`0x59427A` + zero-fill). This closes the 63-block family.
   offset list `0x63DC..0x27C5F4` (largely-monotonic, NOT strictly — repeats/back-references = shared
   assets). Max `0x27C5F4` (2.49 MB) **far exceeds** the raw-ROM Section C span `0xA24EC` (~4×) → indexes a
   **DECOMPRESSED asset space**. Then 68 B all-zero pad to `0x5943C8`.
-- **Section C = a custom "HUFF" HUFFMAN-compressed pool** (`0x5943C8..`). ASCII `"HUFF"` magic @`0x5943D4`,
+- **Section C = an N64 JPEG/NJPG-style "HUFF" entropy pool** (`0x5943C8..`). ASCII `"HUFF"` magic @`0x5943D4`,
   `0x59A668`, `0x5A0E40` (3 in-chunk); **29 HUFF blocks** across `0x594280..0x63676C` (first `0x5943D4`,
   last `0x630BC4`). Header: `[u16]` + CONSTANT `48 55 fe 00 / 01 40 00 f0` + `"HUFF"` + `01 2c` + payload.
-  Whole-pool entropy ~7.97. **UNDECODED-compressed** — no decompressor in the parent toolchain (the only
-  parent Huffman code is the standard LHA `-lh5-` decoder for the archives @`0x636784+`, a different codec).
-  This **refines the survey's** "no standard magic": Section C has a custom `"HUFF"` block magic.
+  Whole-pool entropy ~7.97. Post-run decode update (2026-06-28): MSB-first standard JPEG Huffman decode
+  succeeds for all 29 blocks, identifying the pool as N64 JPEG/NJPG-style HUFF entropy data. Final renderable
+  images still require the NJPG/RSP JPEG stage or equivalent IDCT, quantization/de-zigzag, and YUV conversion.
 
 ## Section B/C boundary — pinned at `0x594280`
 
@@ -113,10 +113,10 @@ partial-interior-chunk fallback.
 
 ## Caveats & unresolved fields
 
-- Section C HUFF (Huffman) codec UNDECODED-compressed (no parent decoder); blocks owned by container shape.
+- HUFF entropy stage decoded; final renderable pixels are not yet produced.
 - Directory per-entry semantics unresolved (prelude meaning; 29 blocks vs 62 offsets mapping; offsets index
   a decompressed-asset space, base `0x20248C2` not reconciled here).
-- HUFF block header fields beyond the magic not formally decoded.
+- Outer HUFF wrapper fields beyond 320x240 / 300 macroblocks are not fully named.
 - Block 62 size `0x1DF0` ASSUMED via KNOWN_TRAILING_END (only block not header-corroborated).
 - B/C boundary dual-pin: `0x594280` (structural) vs ~`0x5943C8` (payload); both are part boundaries.
 - chunk-78 Section B index-table payloadLen interpretation gap carried forward.
@@ -128,11 +128,9 @@ territory, static-only).
 
 ## Next recommended unit / frontier
 
-**Chunk 90 (`0x005A1000`):** continue Section C — own the next run of "HUFF" Huffman-compressed blocks as
-raw-but-classified (undecoded-compressed) data territory, advancing toward the hard data end ~`0x0063676C`
-(last HUFF block `0x630BC4`; first LHA archive `0x636784`). Optionally build/port a HUFF decoder to decode
-the Section C blocks + map the directory entries to decompressed assets. Do NOT continue past `0x0063676C`
-without Joe explicitly asking.
+**Section C follow-up:** chunks 90-99 are now owned through the configured stop. Next decode work is to
+implement the NJPG render stage and resolve the remaining directory entries. Do NOT continue past
+`0x0063676C` without Joe explicitly asking.
 
 ## Commits
 

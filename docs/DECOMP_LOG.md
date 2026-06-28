@@ -32,9 +32,10 @@ and replace the active log with a compact current-state summary.
   0–99 (`0x00001000..0x0063676C`) are fully source-owned as named code/data
   parts** (chunks 90-99 own the **Section C HUFF pool tail** [0x5A1000..0x63676C]: 36 parser-backed parts
   cut at word-aligned HUFF block starts [magic-12] + chunk seams, 0 code; LOOP-COMPLETE reaching the
-  configured stop 0x63676C incl. the terminal partial chunk 99 [0x631000..0x63676C]; Section C = custom
-  "HUFF" Huffman pool, 29 blocks, 18-byte word-aligned container header decoded incl. leadU32==blockSize-4
-  self-relative length, payload UNDECODED; data-only-safe) (chunk 89 owns the whole **Section B tail +
+  configured stop 0x63676C incl. the terminal partial chunk 99 [0x631000..0x63676C]; Section C = N64
+  JPEG/NJPG-style "HUFF" entropy pool, 29 blocks, 18-byte word-aligned container header decoded incl.
+  leadU32==blockSize-4 self-relative length, Huffman entropy stage decoded to 230,400-byte coefficient
+  buffers per block, final image render pending; data-only-safe) (chunk 89 owns the whole **Section B tail +
   Section C start** [0x591000..0x5A1000]: 5 structural parts [block 61 tail + block 62 = anim-family end
   0x594280 + Section C 65-entry directory + zero pad + Section C HUFF pool start], 0 code)
   (chunks 79-88 = Section B parser-backed cutscene AUDIO-SEQUENCE blocks [0x4F1000..0x591000]:
@@ -605,9 +606,9 @@ Current named sequence:
   (0x592490..0x594280 = the FINAL/63rd anim block, **family end 0x594280**) + Section C 65-entry u32-BE
   **directory** (0x594280..0x594384; offsets 0x63DC..0x27C5F4, max 2.49 MB >> raw span 0xA24EC → indexes a
   DECOMPRESSED asset space) + 68 B zero pad + **Section C HUFFMAN-compressed pool start** (0x5943C8..,
-  custom "HUFF" magic). 5-pass swarm byte-verified: blocks 61/62 close the family (codec roundtrip
-  IDENTICAL); **Section C = a custom "HUFF" Huffman pool, 29 blocks (first 0x5943D4, last 0x630BC4),
-  UNDECODED-compressed (no parent decoder)** — REFINES the survey's "no standard magic". B/C boundary
+  "HUFF" magic). 5-pass swarm byte-verified: blocks 61/62 close the family (codec roundtrip IDENTICAL);
+  **Section C = an N64 JPEG/NJPG-style "HUFF" entropy pool, 29 blocks (first 0x5943D4, last 0x630BC4);
+  Huffman entropy stage decoded offline 2026-06-28** — REFINES the survey's "no standard magic". B/C boundary
   pinned at **0x594280** (survey's ~0x595000 was 0xD80 too high, inside the pool). Proof of non-code:
   0 jr$ra at all 4 alignments; the lone prologue word 0x594A9C=0x27BD91B1 confirmed FALSE POSITIVE (inside
   HUFF data, no return). Index `docs/data-index/rev0/section-b-tail-section-c-start-00591000-005A1000-data-inventory.json`
@@ -619,8 +620,9 @@ Current named sequence:
   6-pass Ultracode swarm byte-verified: **29 HUFF blocks** (26 begin in span; first magic 0x5943D4, last
   0x630BC4), each with an 18-byte word-aligned container header `[u32 leadU32][48 55 fe 00][01 40 00 f0]
   ["HUFF"][01 2c]`; **NEW: leadU32 == blockSize-4 (self-relative container length) for all blocks 0..27**
-  (verified). Blocks tile contiguously; payload UNDECODED (no parent decoder — the editor LH5 codec is a
-  different codec for the -lh5- archives @0x636784+). Proof of non-code: 0 jr$ra at ANY alignment; 0
+  (verified). Blocks tile contiguously; HUFF entropy stage decoded to coefficient buffers (final image
+  render pending; the editor LH5 codec is a different codec for the -lh5- archives @0x636784+). Proof of
+  non-code: 0 jr$ra at ANY alignment; 0
   word-aligned prologues (5 non-word-aligned FPs); entropy ~7.97, 0 sub-6.0 KB windows = data-only-safe.
   Terminal partial chunk 99 fully promotable (assemble tiles against the report romEndExclusive 0x63676C).
   Index `docs/data-index/rev0/section-c-huff-pool-005A1000-0063676C-data-inventory.json` + dossier added.
@@ -628,13 +630,15 @@ Current named sequence:
 - Current remainder: **NONE — the entire configured code region `0x1000..0x63676C` is fully source-owned
   (0 generated fallback chunks; data-ownership loop COMPLETE).** Evidenced executable MIPS `0x1000..0x2B89B4`
   100% source-owned. **Section A (0x301000..0x4E3140) AUDIO; Section B audio-sequence-block family fully
-  owned (family end 0x594280); Section C custom "HUFF" Huffman pool fully owned 0x5943C8..0x63676C (29
-  blocks, container decoded, payload undecoded).**
+  owned (family end 0x594280); Section C N64 JPEG/NJPG-style "HUFF" entropy pool fully owned
+  0x5943C8..0x63676C (29 blocks, container decoded, Huffman entropy stage decoded; final image render
+  pending).**
   **Current frontier: `0x0063676C` (configured code-region end / data-ownership stop) — REACHED.** Chunks
-  90-99 owned the Section C HUFF pool tail to the stop. **A consolidated coordinator report is now due.**
+  90-99 owned the Section C HUFF pool tail to the stop. **Final consolidated coordinator report:
+  `docs/FINAL_DATA_OWNERSHIP_REPORT_2026-06-24.md`.**
   Out of scope without Joe: the 24-byte structural gap `0x63676C..0x636784` and the LHA `-lh5-` archive
-  region at `0x636784+`. Optional decode track: the custom "HUFF" codec (candidate: in-game boot Huffman
-  subsystem boot 0xB030..0xF22C) + the chunk-89 directory → HUFF-block mapping.
+  region at `0x636784+`. Optional decode track: implement the NJPG render stage and resolve the remaining
+  chunk-89 directory entries.
 
 Static dossiers live under `docs/dossiers/` and are the durable evidence notes
 for each promoted source-layout split.
@@ -1102,7 +1106,8 @@ the full quick index. The newest dossiers are:
 
 Chunks 0–99 (`0x00001000..0x0063676C`) are fully source-owned as named code/data
 parts — **the entire configured code region is source-owned (0 generated fallback chunks); the
-data-ownership loop is COMPLETE and a consolidated coordinator report is due.** Chunk 43 (90 parts) is the MIXED code→data transition chunk: the mission-briefing/
+data-ownership loop is COMPLETE. Final consolidated report:
+`docs/FINAL_DATA_OWNERSHIP_REPORT_2026-06-24.md`.** Chunk 43 (90 parts) is the MIXED code→data transition chunk: the mission-briefing/
 scenario-overview overlay CODE region `0x2B1000..0x2B89B8` (incoming straddler-tail
 func_002B0E8C_chunk43tail; 62 parent functions + frameless leaves) then the evidenced code→data
 boundary at `0x2B89B8` and an F3DEX2 display-list/float-pool/texture DATA tail `0x2B89B8..0x2C1000`
@@ -1120,11 +1125,13 @@ parser-backed cutscene AUDIO-SEQUENCE blocks (71 parts; block 0 body + blocks 1-
 FALLBACK at 0x591000). Chunk 89 (`0x591000..0x5A1000`) owns the whole **Section B tail + Section C start**
 (5 parts; RUN-COMPLETE resolving that fallback): block 61 tail + block 62 = anim-family end 0x594280 +
 Section C 65-entry directory + zero pad + **Section C HUFFMAN-compressed "HUFF" pool start** (29 blocks,
-UNDECODED; B/C boundary pinned 0x594280). Chunks 90-99 (`0x5A1000..0x63676C`) own the **Section C HUFF pool
+N64 JPEG/NJPG-style HUFF entropy decoded; B/C boundary pinned 0x594280). Chunks 90-99
+(`0x5A1000..0x63676C`) own the **Section C HUFF pool
 tail** (36 parser-backed parts, LOOP-COMPLETE at the configured stop 0x63676C incl. the terminal partial
-chunk 99): the rest of the 29-block custom "HUFF" Huffman pool, parts cut at word-aligned block starts
-(magic-12) + chunk seams, container header decoded (leadU32==blockSize-4 self-relative length), payload
-UNDECODED, data-only-safe. Dossiers: `docs/dossiers/lib-chunk4{3,4,5,6,7}-*.md` +
+chunk 99): the rest of the 29-block N64 JPEG/NJPG-style "HUFF" entropy pool, parts cut at word-aligned
+block starts (magic-12) + chunk seams, container header decoded (leadU32==blockSize-4 self-relative
+length), Huffman entropy stage decoded to coefficient buffers, final image render pending, data-only-safe.
+Dossiers: `docs/dossiers/lib-chunk4{3,4,5,6,7}-*.md` +
 `docs/dossiers/section-a-00301000-00341000-data-ownership.md` +
 `docs/dossiers/section-a-00341000-003E1000-data-ownership.md` +
 `docs/dossiers/section-a-003E1000-00421000-data-ownership.md` +
@@ -1151,11 +1158,10 @@ A audio + Section A/B boundary + Section B audio-sequence blocks + Section C HUF
 fallback chunks remain — the data-ownership loop is COMPLETE.**
 
 FIRST for the next run: the data-ownership loop is **complete** — chunks 90-99 owned the Section C HUFF pool
-tail to the configured stop `0x63676C` (LOOP-COMPLETE), so the whole code region is source-owned. **A
-consolidated coordinator report is now due.** No further library source-ownership frontier remains. Optional
-follow-ups: (a) a decode track for the custom "HUFF" Huffman codec (candidate decoder: the in-game boot
-Huffman subsystem boot 0xB030..0xF22C) + mapping the chunk-89 65-entry directory to the 29 decompressed
-blocks; (b) the full-ROM coverage track below. Out of scope without Joe: the 24-byte structural gap
+tail to the configured stop `0x63676C` (LOOP-COMPLETE), so the whole code region is source-owned. **Final
+consolidated coordinator report: `docs/FINAL_DATA_OWNERSHIP_REPORT_2026-06-24.md`.** No further library source-ownership frontier remains. Optional
+follow-ups: (a) implement the NJPG render stage for Section C and resolve the remaining chunk-89 65-entry
+directory entries; (b) the full-ROM coverage track below. Out of scope without Joe: the 24-byte structural gap
 `0x63676C..0x636784` and the LHA `-lh5-` archive region at `0x636784+`.
 **Section A (0x301000..0x4E3140) AUDIO; Section B family fully owned; Section C "HUFF" pool fully owned.**
 
