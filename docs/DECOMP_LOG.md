@@ -155,6 +155,36 @@ and replace the active log with a compact current-state summary.
 - Current rebuilt/full ROM SHA256:
   `571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A`.
 - Canonical verification command: `node tools\verify_setup.js`.
+- Beyond the boot-linear rule, three overlay VRAM deltas are promotion-grade
+  (runtime-trace proven): map-AI overlay `0x101000..0x130000` = `+0x800AB8C0`;
+  scenario-loader module `~0x195000..0x197800` = `+0x8007FB70`; the helper
+  module containing live `0x8021590C` = `+0x800A30E0` (z64 home `0x0017282C`).
+  The asm comment column stays nominal-linear — never exec-watch it for overlay
+  code. Source: `docs/subsystems/map-ai-eset-runtime.md`.
+
+## 2026-07-03 - Runtime fact import: map-AI/ESET subsystem
+
+First curated promotion-grade import from the parent scenario-editor research
+line (Wave 1 → R4 natural-wake → suppression hunt → gate mop-up → Wave 2/S3;
+AARs under parent `wiki/after-action-reports/20260702*/20260703*`). New:
+`docs/subsystems/map-ai-eset-runtime.md` — 14 evidence-named function
+identities (scenario deployment loader, map-unit update dispatcher, wake
+primitive, kind-2 gate resolver with the full operator enum incl. the op1
+two-way router, group movement consumer, scheduler setter/transfer passes with
+their kind jump tables, site-flag recompute, resident cache-invalidate leaves,
+and more), 16 verified data labels with layouts (map-unit pool 50×0xC0 and its
+dynamic iterator bound, Section 2/3 runtime tables + latch/evaluator bitsets,
+site records, route descriptors, formation tables, scenario resource-container
+pointer table), struct sketches (proven fields only), z64 static sources
+(ESET archives fetch-verified; shared placement-resources region
+`0x02625000..0x02628000` incl. the key30 selector table at `0x02626DFB`), and
+a binding "Explicitly NOT promoted" list. Every entry cites its parent trace
+or controlled-mutation artifact per the AGENTS.md import rule. Struct headers
+under `include/game/` were deliberately deferred until C conversion reaches
+these functions — the subsystem doc is the naming source until then.
+`docs/NEXT_STEPS.md` item 5 and `docs/runtime-state-catalog.md` (per-state
+index + canonical LOADING seed + card-clear driver) were updated in the same
+pass. Docs-only change; setup gate unaffected.
 
 ## Source Promotion History
 

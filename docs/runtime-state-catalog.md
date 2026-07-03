@@ -28,6 +28,22 @@ Preferred preflight when Project64 bridge tooling is available:
 python C:\Users\Joe\Projects\OgreBattlel64\tools\project64\pj64.py --port <port> stateinfo "<path-to-state.pj.zip>"
 ```
 
+## Per-State Index And LOADING-Lane Facts (2026-07-03)
+
+The parent corpus now has a generated per-state index with SHA-256 hashes and
+curated capture notes: parent `runtime-states/INDEX.md` (JSON
+`wiki/runtime-state-index.json`, generator `tools/gen_runtime_state_index.js`).
+Check it before filing a runtime-state request. Operationally proven for
+LOADING-transition work (parent `wiki/eset-archive-fetch-trace` series,
+2026-07-03): `scenario-map/scenario_map_loaded/From cutscene scenario
+LOADING.pj.zip` is the canonical staged-key redirect seed (`LOADING 2` is the
+validated backup; `LOADING 3/4` fail redirect — documented non-seeds); drive
+transitions with the calibrated card-clear input (wait ~90 frames, then four
+spaced `A` pulses) — the older nine-A-plus-one-B recipe can walk into gameplay
+menus and is invalid in current timing. Capture/liberation states pop a
+"capture card" ~90 frames after load that needs an `A` press before
+event-driven follow-ups land (parent `docs/project64-live-watch-sop.md`).
+
 If loading a state into Project64, use the warning-aware load path from the same
 tooling. Do not force or header-patch a state unless the task explicitly calls
 for that and the run records why.

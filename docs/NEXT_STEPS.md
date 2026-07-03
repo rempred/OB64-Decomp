@@ -256,6 +256,14 @@ node tools/audit_code_region.js
    Use parent symbols, trace docs, and clear local labels. Avoid semantic naming
    unless runtime/controlled evidence supports it.
 
+   The first curated promotion-grade symbol/label import is
+   `docs/subsystems/map-ai-eset-runtime.md` (2026-07-03): map-AI/ESET function
+   identities, data labels, struct sketches, and three proven overlay VRAM
+   deltas beyond the boot linear rule — every entry cites its parent
+   trace/mutation artifact. Use it as the naming source for the
+   `0x101000..0x130000` overlay and the `0x195xxx..0x197xxx` scenario-loader
+   module; its "Explicitly NOT promoted" list is binding until new evidence.
+
 6. Promote more chunks deliberately.
 
    Use `tools/promote_original_mips.js` in small batches or when a subsystem
