@@ -107,6 +107,56 @@ Post-report decode update, 2026-06-28:
   natural pool end `0x00636780`, and entry 48 repeats the final block start.
   Entries 32-64 remain unresolved.
 
+Render-stage update, 2026-07-08 (`tools/render_section_c_njpg.js`):
+
+- The render back-end is implemented: de-zigzag -> dequantize -> 8x8 IDCT ->
+  +128 level shift -> 4:2:0 plane assembly -> BT.601 YCbCr->RGB -> PNG, over
+  the coefficient buffers from `analyze_section_c_huff.js`. Output under
+  ignored `build/njpg/`.
+- The quantizer is FLAT (no embedded Q table; the coefficient spectrum already
+  decays naturally with frequency — luma mean |AC| 14.2 at k=1 falling to ~0.1
+  by k=32 — so Annex-K-style ramps over-amplify high frequencies and are
+  wrong). `flat1` renders all 29 blocks with 0% clipping; the exact flat scale
+  (1 vs 2) only affects contrast and is unpinned.
+- Content: 29 distinct 320x240 stills in a uniform purple/magenta palette —
+  grainy cloud-texture skies, at least one with a tree-silhouette foreground
+  (block 14). Chroma DC sits uniformly above neutral (Cb ~154, Cr ~162 as
+  pixels), i.e. the purple is in the data, not an obvious decode artifact.
+- REFUTED: the "animation loop" hypothesis — consecutive-block luma-DC
+  difference (mean 68.1) is no smaller than distant-block difference (53.9),
+  so ROM order is not temporal frame order.
+- Joe's eyeball pass (2026-07-08, same day): tentative ID = **battle
+  backgrounds**, and the 29 blocks visually group in PAIRS of 2 ("same image,
+  different hue"). Numerically: pairs share near-identical chroma-DC
+  signatures ((0,1)(2,3)(6,7)(8,9)(10,11)(12,13)(16,17)(20,21)(26,27)... =
+  ~14 pairs + 1) but their luma STRUCTURE does not correlate (r 0.1-0.6, no
+  better than non-pairs) — so a pair is the same hue/wash family, not a
+  re-tint of the same picture. Working hypothesis: two lighting/time-of-day
+  variants of the same battle locale's sky/backdrop layer.
+- Rendering with chroma NEGATED (`--chroma neg`) replaces the pink cast with
+  green/olive painted washes (ridgelines, foliage, the block-14 tree) —
+  empirical, not proven from the in-game decoder. Chroma is near-DC-only per
+  image (flat washes).
+- The decode is verified on every offline-testable axis: quantizer FLAT
+  (spectrum), MCU geometry 4:2:0 16x16 raster 20x15 with row-order Y (best of
+  5 arrangements by adjacency smoothness, 20.4 vs 26.8+), DC predictor =
+  standard shared-cumulative (best of 4 models, 20.4 vs 27.0+). The soft
+  low-structure wash appearance is the CONTENT, not a decode artifact.
+- Corroboration for "drawn as a full-screen base layer": GLideN64's
+  OB64-specific `hack_Ogre64` is literally "Ogre Battle 64 background copy —
+  YUV image copied to the framebuffer BEFORE draw" — i.e. the game pushes a
+  full-screen YUV image (NJPG output is YUV) as the bottom layer and
+  composites geometry/sprites over it. In battle, most of the wash would be
+  covered by battlefield geometry — consistent with these being battle
+  sky/atmosphere backdrops.
+- OPEN (offline well is DRY — every remaining question needs the in-game
+  consumer): trace reads/DMA from the HUFF pool (`0x5943C8+`) or the
+  `0x594280` directory during a battle load → which block loads for which
+  locale/time-of-day; that single trace confirms the ID, the pair axis, the
+  chroma convention, and the flat-scale constant at once. Alternative
+  passive channel: build GLideN64 `txDump`/`DEBUG_DUMP` (parent
+  pending-tasks #17 lane 4).
+
 ## Unresolved Questions
 
 - Implement the NJPG render stage for the decoded coefficient buffers.

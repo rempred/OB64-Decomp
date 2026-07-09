@@ -74,18 +74,23 @@ PARENT-UNDETECTED code regions (chunks 6-7).
 The hard stage is done (Huffman entropy decode 29/29). Remaining: de-zigzag,
 dequantization, IDCT, YUV->RGB.
 
-- [ ] Extend `tools/analyze_section_c_huff.js` (or add
-  `tools/render_section_c_njpg.js`) implementing the standard JPEG back-end;
-  reference the N64 RSP JPEG/NJPG microcode conventions where they diverge
-  (quant table location, YUV format). Emit PNGs to ignored `build/njpg/`.
-- [ ] Success test: images are coherent 320x240 pictures (likely cutscene
-  backgrounds). Then resolve directory entries 32-64 against decompressed
-  offsets.
-- [ ] On success, hand the parent an asset inventory (P1 addendum) for a future
-  editor viewer/replacer feature.
-- Effort: 1-2 sessions. Risk: quantization-table location unknown — if absent
-  from the container, the RSP ucode data (chunk 3 `rsp_ucode_` parts) is the
-  place to look. Gate: none (read-only analysis, `build/` outputs).
+- [x] DONE 2026-07-08: `tools/render_section_c_njpg.js` — de-zigzag, dequant,
+  IDCT, 4:2:0 assembly, BT.601, minimal PNG writer; renders to `build/njpg/`
+  with per-variant clip/blockiness metrics.
+- [x] Quantizer RESOLVED as FLAT (no embedded table needed): coefficient
+  spectrum analysis shows natural frequency decay already present, refuting
+  Annex-K-style ramps; `flat1` renders 29/29 blocks at 0% clipping (exact
+  flat-scale constant only affects contrast, unpinned).
+- [x] Partial success: all 29 render as coherent, distinct 320x240 grainy
+  purple-cloud sky stills (block 14 has a tree-silhouette foreground) —
+  recognizable scenic content, but NOT proven to be cutscene backgrounds;
+  the animation-loop hypothesis was REFUTED by frame-correlation testing.
+- [ ] REMAINING: in-game identification (Joe's eyeball vs the running game,
+  or trace the in-game consumer of the Section C directory) + chroma
+  convention confirmation; then the parent asset-inventory addendum and
+  directory entries 32-64.
+- Findings recorded in the FINAL report (render-stage update 2026-07-08) and
+  DECOMP_LOG.
 
 ## P4. Port decoded data to the editor
 

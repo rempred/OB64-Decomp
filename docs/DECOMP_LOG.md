@@ -74,12 +74,23 @@ and replace the active log with a compact current-state summary.
   chunks 6-7 = 105 exact). Delivered as parent
   `scripts/ob64_function_corrections_rev0.json` (mips-decode.md Stage 1b);
   wholesale regeneration filed as parent pending-tasks #16.
-- **2026-07-08 — P6 doc dedupe** (this pass): DECOMP_LOG compacted (full
+- **2026-07-08 — P6 doc dedupe** (`5e67bbf`): DECOMP_LOG compacted (full
   version archived as `docs/archive/DECOMP_LOG-full-2026-07-08.md`);
   PLATFORM.md rebuilt around a manifest-generated per-chunk table
   (pre-dedupe snapshot `docs/archive/PLATFORM-full-2026-07-08.md`);
   NEXT_STEPS reduced to the queue (snapshot
   `docs/archive/NEXT_STEPS-full-2026-07-08.md`).
+- **2026-07-08 — P3 NJPG render stage**: `tools/render_section_c_njpg.js`
+  renders the Section C pool (de-zigzag, FLAT dequant — spectrum analysis
+  refuted Annex-K ramps — IDCT, 4:2:0, BT.601) to PNGs under `build/njpg/`.
+  All 29 blocks render at 0% clip. Animation-loop hypothesis REFUTED. Joe's
+  eyeball pass: tentative ID = **battle backgrounds**, grouped in **~14
+  chroma-signature-confirmed PAIRS + 1**; chroma appears stored NEGATED vs
+  standard JPEG (`--chroma neg` turns the pink cast into green/olive painted
+  terrain washes; chroma is near-DC-only = flat washes). `--scale` option
+  added for review (`*_neg_2x.png`). Open: prove the negation from the
+  in-game decoder, pair semantics, flat-scale constant, in-game consumer
+  trace. Details in `docs/FINAL_DATA_OWNERSHIP_REPORT_2026-06-24.md`.
 
 ## Dossier Set
 
