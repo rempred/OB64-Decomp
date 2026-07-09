@@ -92,6 +92,20 @@ and replace the active log with a compact current-state summary.
   in-game decoder, pair semantics, flat-scale constant, in-game consumer
   trace. Details in `docs/FINAL_DATA_OWNERSHIP_REPORT_2026-06-24.md`.
 
+- **2026-07-09 — P4 editor data port + attack-name decode**: new generator
+  `tools/export_editor_names.js` -> editor `rom-names-data.js`. Solved the
+  combat action ID -> name mapping STATICALLY: action table @0x60980 (158 x
+  0x10), name pointer at +0xC, overlay RAM delta `0x8012A100`
+  (anchor-verified); 149/158 resolve to exact name-pool entries
+  (`0x5D560-0x5DAD4`), 9 caster actions (IDs 45-48/51-54/145) share the
+  dynamic-name slot RAM `0x8018FEB8` / ROM `0x65DB8` (element-composed at
+  runtime). **REFUTED the parent hard rule "attack names are runtime-only"**
+  (linear-mapping fallacy; corrected in parent CLAUDE/AGENTS/platform/
+  rom-layout). Also fixed the editor's shifted `SPELL_NAMES` (6 skipped
+  multi-line entries, 82 wrong keys, no consumers) and ported mission +
+  equipment-type name pools with per-entry ROM offsets. Editor wiring:
+  B43/B45/B47 tooltips show resolved names; browser smoke test clean.
+
 ## Dossier Set
 
 139+ dossiers under `docs/dossiers/`: 81 `boot-*` (chunk 0 splits), 47

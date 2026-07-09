@@ -94,15 +94,43 @@ dequantization, IDCT, YUV->RGB.
 
 ## P4. Port decoded data to the editor
 
-- [ ] Package the byte-verified table decodes for the LordlyCaliber editor
-  using its existing generated-data pattern (`squads-data.js` /
-  `tools-data.js`: "generated from the research workspace — do not hand-edit"):
-  neutral-encounter table (40x20 @`0x141ED0`), creature-drop table (36x8
-  @`0x142258`), weapon/armor type-name table @`0x163FC0`, and the string pools
-  already cross-checked against `editor/parsers.js`.
-- [ ] Source of truth stays here (`data/decoded/rev0/` + `docs/data-index/rev0/`);
-  the editor gets a generated module + provenance header.
-- Effort: 1 session. Gate: editor-side round-trip checks (editor repo rules).
+- [x] DONE 2026-07-09 — the gap analysis reshaped this item. The editor
+  already reads the two tables live from ROM (`parsers.js` @0x141ED0/0x142258)
+  and already carries the item pool (`ITEM_NAMES` @0x613B0, validated
+  entry-for-entry vs the decomp index: only line-break control codes differ).
+  What actually shipped, via new generator
+  `tools/export_editor_names.js` -> `editor/rom-names-data.js`:
+  - **NEW CAPABILITY — OB64.ACTION_NAMES / actionName(id):** the combat action
+    ID -> name map, solved STATICALLY (table @0x60980, name ptr at +0xC,
+    overlay RAM delta 0x8012A100; 149/158 exact pool resolutions; the 9 caster
+    actions IDs 45-48/51-54/145 share the dynamic-name slot 0x8018FEB8/ROM
+    0x65DB8, composed per-element at runtime). CSV anchors verified
+    (Thrust=1/Slash=4/Cleave=5/Strike=9; explains "[Elem. Magic]=45" and
+    Valkyrie "Lightning(51)"). UI (Joe's request 2026-07-09): the Classes-tab
+    columns are relabeled "Front Attack"/"Rear Attack" and both (table cells +
+    Card View tiles) now show the resolved attack NAME and edit via the
+    editor's searchable picker modal (OB64.actionOptions(), 159 options incl.
+    "0 — (none)" and "(element-based)" caster markers), falling back to raw
+    byte cells if the module is absent; B43 keeps raw editing with a name
+    hint. VERIFIED live in the browser preview with a real ROM loaded:
+    headers correct, names render ("Sacred Breath"/"Dark Blaze"...), picker
+    opens with the full catalog, selecting "4 — Slash" updated the cell +
+    modified flag, reverted cleanly; Card View tiles render the same.
+  - **BUG FIX:** editor `SPELL_NAMES` was hand-transcribed skipping 6
+    multi-line ROM entries — every key >= 0x21 shifted (82 wrong entries,
+    zero consumers). Replaced with the ROM-ordered 115-entry map; legacy kept
+    as `SPELL_NAMES_LEGACY`.
+  - **NEW pools with per-entry ROM offsets:** missions (40 @0x85960),
+    equipment/terrain type names (46 @0x163FC0), elements + attacks + items
+    (offsets enable future in-ROM renaming; all inside the CRC window —
+    renaming needs recalc).
+  - **HARD-RULE CORRECTION (parent-side):** "attack names are runtime-only"
+    REFUTED — it was the linear-mapping fallacy (pointers are overlay
+    0x8018xxxx, not boot-linear). Corrected in parent CLAUDE.md, AGENTS.md,
+    OgreBattle-Platform.md (x2), rom-layout.md "Combat Action Table".
+- [x] Source of truth stays here; generator is deterministic
+  (`node tools/export_editor_names.js`), sanity gates fail loudly (pool
+  counts, exact pointer resolution, CSV anchors).
 
 ## P5. Repo hardening (small, this repo)
 

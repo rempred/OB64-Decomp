@@ -1,0 +1,181 @@
+#!/usr/bin/env node
+// Generates the LordlyCaliber editor's ROM name-pool module
+// (../editor/rom-names-data.js) from the decomp's byte-verified data-index
+// JSONs plus the combat action table read directly from the normalized
+// baserom. Deterministic: same inputs -> same output.
+//
+// What it derives (all offsets z64):
+// - ACTION_NAMES: combat action ID (1-based, the class-def B45/B47 space) ->
+//   display name, resolved STATICALLY from the action table at 0x60980
+//   (158 x 0x10 records; name pointer at +0xC; chunk-5/6 data RAM delta
+//   0x8012A100, anchor-verified via class_def_table 0x5DAD8->0x80187BD8 and
+//   item_stat_table 0x62310->0x8018C410). Records whose pointer is the shared
+//   dynamic-name slot (RAM 0x8018FEB8 -> ROM 0x65DB8) are caster actions whose
+//   display name the game composes at runtime ("[Elemental Magic]").
+// - Name pools with per-entry ROM offsets: elements (15 @0x5D560), attacks
+//   (100 @0x5D5FC), items (277 @0x613B0), missions (40 @0x85960),
+//   equipment/terrain types (46 @0x163FC0).
+// - A corrected sequential element+attack map (the hand-transcribed
+//   OB64.SPELL_NAMES in data.js skipped 6 multi-line entries, shifting all
+//   keys >= 0x21; it has no consumers, so the module swaps in the corrected
+//   map and preserves the old one as SPELL_NAMES_LEGACY).
+//
+// Sanity gates (build fails loudly): pool entry counts, exact pool-offset
+// resolution for action-name pointers, and the CSV-identified anchors
+// Thrust=1 / Slash=4 / Cleave=5 / Strike=9.
+//
+// Usage: node tools/export_editor_names.js [--out <path>] [--baserom <z64>]
+const fs = require('fs');
+const path = require('path');
+
+const ROOT = path.resolve(__dirname, '..');
+const A = {}; const av = process.argv.slice(2);
+for (let i = 0; i < av.length; i += 2) A[av[i].replace(/^--/, '')] = av[i + 1];
+const OUT = A.out ? path.resolve(A.out) : path.resolve(ROOT, '..', 'editor', 'rom-names-data.js');
+const BASEROM = A.baserom ? path.resolve(A.baserom) : path.join(ROOT, 'build', 'baserom.us_rev0.z64');
+const IDX = (name) => path.join(ROOT, 'docs', 'data-index', 'rev0', name);
+
+const ACTION_TABLE = { base: 0x60980, stride: 0x10, count: 158, namePtrOff: 0xC };
+const RAM_DELTA = 0x8012A100; // chunk 5/6 game-data overlay slot (anchor-verified)
+const DYNAMIC_NAME_PTR = 0x8018FEB8; // shared caster-name slot; ROM 0x65DB8
+
+function loadEntries(file, expected) {
+  const d = JSON.parse(fs.readFileSync(IDX(file), 'utf8'));
+  const entries = d.entries.map((e) => [e.offset, e.text]);
+  if (entries.length !== expected) {
+    throw new Error(`${file}: expected ${expected} entries, got ${entries.length}`);
+  }
+  return { range: d.rangeZ64, entries };
+}
+
+function loadEquipTypes(expected) {
+  const d = JSON.parse(fs.readFileSync(IDX('chunk22-equipment-type-name-table.json'), 'utf8'));
+  const entries = d.segments
+    .filter((s) => s.kind === 'string')
+    .map((s) => [s.offset, s.text]);
+  if (entries.length !== expected) {
+    throw new Error(`equipment-type table: expected ${expected} strings, got ${entries.length}`);
+  }
+  return { range: d.rangeZ64, entries };
+}
+
+function main() {
+  const rom = fs.readFileSync(BASEROM);
+  const elements = loadEntries('chunk05-element-name-pool.json', 15);
+  const attacks = loadEntries('chunk05-attack-name-pool.json', 100);
+  const items = loadEntries('chunk06-item-name-pool.json', 277);
+  const missions = loadEntries('chunk08-mission-name-pool.json', 40);
+  const equipTypes = loadEquipTypes(46);
+
+  const byOff = new Map(
+    [...elements.entries, ...attacks.entries].map(([off, text]) => [parseInt(off, 16), text]),
+  );
+
+  const actionNames = {};
+  const dynamicIds = [];
+  const unresolved = [];
+  for (let i = 0; i < ACTION_TABLE.count; i += 1) {
+    const id = i + 1;
+    const recOff = ACTION_TABLE.base + i * ACTION_TABLE.stride;
+    const ptr = rom.readUInt32BE(recOff + ACTION_TABLE.namePtrOff);
+    if (ptr === DYNAMIC_NAME_PTR) {
+      actionNames[id] = '[Elemental Magic]';
+      dynamicIds.push(id);
+      continue;
+    }
+    const romOff = ptr - RAM_DELTA;
+    const text = byOff.get(romOff);
+    if (text === undefined) {
+      unresolved.push({ id, ptr: `0x${ptr.toString(16).toUpperCase()}` });
+      actionNames[id] = null;
+      continue;
+    }
+    actionNames[id] = text;
+  }
+  if (unresolved.length > 0) {
+    throw new Error(`action table: ${unresolved.length} pointer(s) resolve to neither a pool entry nor the dynamic slot: ${JSON.stringify(unresolved)}`);
+  }
+  const anchors = { 1: 'Thrust', 4: 'Slash', 5: 'Cleave', 9: 'Strike' };
+  for (const [id, want] of Object.entries(anchors)) {
+    if (actionNames[id] !== want) {
+      throw new Error(`anchor failed: action ${id} = ${actionNames[id]}, expected ${want}`);
+    }
+  }
+
+  const spellCorrected = {};
+  [...elements.entries, ...attacks.entries].forEach(([, text], i) => { spellCorrected[i] = text; });
+
+  const js = `// AUTO-GENERATED by "OB64 Decomp/tools/export_editor_names.js" - do not hand-edit.
+// ROM name pools + the combat action-ID -> name map, byte-verified against the
+// US Rev 0 ROM (z64 offsets) via the decomp data indexes:
+//   OB64 Decomp/docs/data-index/rev0/chunk05-{element,attack}-name-pool.json
+//   OB64 Decomp/docs/data-index/rev0/chunk06-item-name-pool.json
+//   OB64 Decomp/docs/data-index/rev0/chunk08-mission-name-pool.json
+//   OB64 Decomp/docs/data-index/rev0/chunk22-equipment-type-name-table.json
+//
+// ACTION_NAMES derivation: combat action table at z64 0x60980 (158 x 16-byte
+// records; the editor's B45/B47 "attack ID" is record index + 1). Each
+// record's +0xC field is a RAM pointer into the name pool (chunk-5/6 data
+// overlay RAM = ROM + 0x8012A100). Caster actions share one pointer to a
+// dynamic-name slot (RAM 0x8018FEB8 / ROM 0x65DB8): the game composes their
+// display name at runtime from the unit's element - shown here as
+// "[Elemental Magic]".
+//
+// Notes:
+// - {0E}...{0F} and {10}c inside strings are the game's line-break/display
+//   control codes (kept verbatim; strip for plain display via OB64.romNameText).
+// - ALL these pools sit INSIDE the CIC-6102 CRC window (z64 0x1000-0x100FFF):
+//   viewing is free, but writing name edits back requires a CRC recalculation
+//   and breaks native-save compatibility per workspace rules.
+// - data.js OB64.SPELL_NAMES was hand-transcribed and skipped 6 multi-line
+//   entries, shifting every key >= 0x21; it had no consumers, so this module
+//   replaces it with the ROM-ordered map and keeps the old one as
+//   OB64.SPELL_NAMES_LEGACY.
+(function (OB64) {
+  OB64.ROM_NAME_POOLS = ${JSON.stringify({
+    elements: { rangeZ64: elements.range, entries: elements.entries },
+    attacks: { rangeZ64: attacks.range, entries: attacks.entries },
+    items: { rangeZ64: items.range, entries: items.entries, idBase: 1 },
+    missions: { rangeZ64: missions.range, entries: missions.entries },
+    equipTypes: { rangeZ64: equipTypes.range, entries: equipTypes.entries },
+  })};
+
+  OB64.ACTION_NAMES = ${JSON.stringify(actionNames)};
+  OB64.ACTION_DYNAMIC_NAME_IDS = ${JSON.stringify(dynamicIds)};
+
+  OB64.romNameText = function (s) {
+    return String(s == null ? '' : s).replace(/\\{0E\\}|\\{0F\\}/g, '').replace(/\\{10\\}c/g, ' ');
+  };
+  OB64.actionName = function (id) {
+    var n = OB64.ACTION_NAMES[id];
+    if (!n) return 'Action_0x' + Number(id || 0).toString(16).padStart(2, '0');
+    return OB64.romNameText(n);
+  };
+
+  var _actionOptions = null;
+  OB64.actionOptions = function () {
+    if (_actionOptions) return _actionOptions;
+    _actionOptions = [{ id: 0, label: '0 \\u2014 (none)' }];
+    for (var id = 1; id <= ${ACTION_TABLE.count}; id += 1) {
+      var isDyn = OB64.ACTION_DYNAMIC_NAME_IDS.indexOf(id) >= 0;
+      _actionOptions.push({
+        id: id,
+        label: id + ' \\u2014 ' + OB64.actionName(id) + (isDyn ? ' (element-based)' : ''),
+      });
+    }
+    return _actionOptions;
+  };
+
+  if (OB64.SPELL_NAMES) {
+    OB64.SPELL_NAMES_LEGACY = OB64.SPELL_NAMES;
+    OB64.SPELL_NAMES = ${JSON.stringify(spellCorrected)};
+  }
+}(window.OB64 = window.OB64 || {}));
+`;
+  fs.writeFileSync(OUT, js);
+  console.log(`ACTION_NAMES: ${Object.keys(actionNames).length} actions (${dynamicIds.length} dynamic caster IDs: ${dynamicIds.join(',')})`);
+  console.log(`pools: elements ${elements.entries.length}, attacks ${attacks.entries.length}, items ${items.entries.length}, missions ${missions.entries.length}, equipTypes ${equipTypes.entries.length}`);
+  console.log(`wrote ${OUT} (${js.length} bytes)`);
+}
+
+main();
