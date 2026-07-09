@@ -50,14 +50,21 @@ preamble-orphan boundary shifts, over-merge un-merges, ~hundreds of recovered
 frameless leaves, data-islands-mislabeled-as-functions (chunks 23/24), and
 PARENT-UNDETECTED code regions (chunks 6-7).
 
-- [ ] New tool `tools/export_function_corrections.js`: walk
-  `asm/original/rev0/manifest.json` parts (name/kind/romStart/romEnd) and emit
-  `build/corrections/rev0-function-corrections.json` — per-part record with
-  kind (code / data / straddler), plus a diff against parent
-  `scripts/ob64_functions.json` (adds / boundary-moves / refutes).
-- [ ] Parent-side: regenerate or patch `scripts/ob64_functions.json` from that
-  artifact (parent decision on regenerate-vs-annotate), serving the open
-  KNOWN_FUNCTIONS re-verification item in parent pending-tasks.
+- [x] DONE 2026-07-08: `tools/export_function_corrections.js` emits
+  `build/corrections/rev0-function-corrections.json/.md` — vs the parent DB
+  over the executable extent: 1,279 recovered functions, 714 start corrections
+  (646 preamble-orphan folds), 497 over-merges, 79 decomp cluster files
+  (informational), 2 data refutes (0x30008, 0x177D20), 3 end-over-extensions
+  (0x2E348, 0x1A42A4, 0x1B924C), 1 beyond-extent false positive (0x594A9C).
+  Spot-verified against documented ground truth (0xD248/0xD600/0xECF0/0xF22C
+  deltas exact; chunk 4 = 212 vs documented ~211; chunks 6-7 = 105 exact).
+- [x] Parent-side delivery 2026-07-08: chose ANNOTATE over regenerate — the
+  overlay ships as parent `scripts/ob64_function_corrections_rev0.json`,
+  registered in parent `docs/mips-decode.md` (Stage 1b) and pending-tasks #4.
+  Wholesale `ob64_functions.json` regeneration is filed as parent
+  pending-tasks #16 (2026-07-08): two-tier plan (Stage-1 patcher with
+  machine-checkable gates, then offline Stage 2-5 regeneration), keep the
+  pre-corrections DB alongside for one cycle; agent-brute-force candidate.
 - Effort: tool ~1 session; parent ingestion 1 session. Gate: read-only tool
   (writes `build/` only); parent DB change needs parent-side spot checks
   against known-good functions before adoption.

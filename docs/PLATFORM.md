@@ -487,7 +487,16 @@ These outputs are useful but ignored:
   They write only gitignored `build/` artifacts.
 - `tools/check_manifest.js` is a read-only manifest integrity audit (contiguity,
   first/last `.word` vs declared range, sha256/textBytes/bytes, and duplicate
-  part name/file detection across all chunks).
+  part name/file detection across all chunks). Wired into `verify_setup.js` as
+  the `manifestIntegrityAudit` check (2026-07-08).
+- `tools/export_function_corrections.js` is a read-only exporter of the loop's
+  accumulated function-boundary corrections as a diff against the parent
+  function DB (`../scripts/ob64_functions.json`): recovered functions, start
+  corrections (preamble-orphan folds), over-merges, data refutes, and
+  end-over-extensions, written to ignored `build/corrections/`. The 2026-07-08
+  run was delivered parent-side as
+  `../scripts/ob64_function_corrections_rev0.json` (parent `docs/mips-decode.md`
+  Stage 1b).
 - `tools/check_boundaries.js` is a read-only deterministic boundary gate over a
   splits JSON + chunk disasm: overlay-immune invariants (no fragment, no
   cross-boundary PC-relative branch, no prologue-after-return under-split, no
