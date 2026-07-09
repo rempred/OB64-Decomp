@@ -8,6 +8,7 @@
 *.h text eol=lf
 *.s text eol=lf
 
+*.srcbin binary
 *.v64 binary
 *.z64 binary
 *.n64 binary

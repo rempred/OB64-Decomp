@@ -314,10 +314,13 @@ docs):
 Honest current limits of the verification chain — do not over-trust it:
 
 - `verify_setup.js` proves BYTE identity, not semantics. The disassembly
-  comments have never been cross-checked against an independent disassembler
-  (objdump/capstone).
-- `tools/check_manifest.js` is NOT part of `verify_setup.js`; run it manually
-  after any manifest-touching change.
+  comments were cross-validated against `mips64-elf-objdump` on 2026-07-08
+  (`docs/DISASM_VALIDATION_2026-07-08.md`): 0 genuine decode disagreements
+  across the executable extent; residual limits are pseudo-instruction naming
+  variants, generic `cop0_0x10` rendering for 5 COP0 CO-bit ops, and no
+  coverage of the data tail (whose comments are acknowledged noise by design).
+- `tools/check_manifest.js` is wired into `verify_setup.js` as the
+  `manifestIntegrityAudit` check (2026-07-08).
 - Non-code "ownership" outside the 3 tracked `.srcbin` owners is regenerated
   from the local baserom at verify time (1,055 fallback files) — that path
   proves plumbing, not tracked source.
@@ -327,9 +330,8 @@ Honest current limits of the verification chain — do not over-trust it:
   the durable record of what they found.
 - The pinned toolchain is Windows-only (`config/toolchain.json` hardcodes
   `.exe` paths).
-- `.gitattributes` does not declare `*.srcbin` binary; the tracked raw owners
-  are currently protected only by git's content heuristic. Declare it before
-  promoting more owners.
+- `.gitattributes` declares `*.srcbin binary` (2026-07-08), so promoted
+  non-code owners are safe from text/eol normalization.
 
 ## Backup And Remote Status
 
