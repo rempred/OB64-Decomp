@@ -30,6 +30,7 @@ function main() {
   const commands = [
     ['tools/verify_baserom.js'],
     ['tools/build_rom_coverage_ledger.js'],
+    ['tools/audit_code_region.js'],
     ['tools/extract_original_mips.js'],
     ['tests/word_asm_smoke.js'],
     ['tests/binutils_smoke.js'],
@@ -59,6 +60,8 @@ function main() {
 
   const baserom = readJson(path.join(ROOT, 'build', 'baserom.us_rev0.report.json'));
   const ledger = readJson(path.join(ROOT, 'build', 'coverage', 'rev0-rom-coverage-ledger.json'));
+  const profile = readJson(path.join(ROOT, 'config', 'roms', 'us_rev0.json'));
+  const codeAudit = readJson(path.join(ROOT, 'build', 'coverage', 'rev0-code-region-audit.json'));
   const toolchain = readJson(path.join(ROOT, 'build', 'toolchain-smoke', 'binutils-smoke-report.json'));
   const assembled = readJson(path.join(ROOT, 'build', 'assembled', 'rev0-report.json'));
   const rawRebuild = readJson(path.join(ROOT, 'build', 'rebuild', 'rev0-rebuild-report.json'));
@@ -81,6 +84,36 @@ function main() {
     check('binutilsNoreorderSmoke', toolchain.checks.some((item) => item.name === 'noreorderKeepsDelaySlot' && item.ok)),
     check('firstTrackedChunkRealAssembler', toolchain.checks.some((item) => item.name === 'firstTrackedChunkRealAssembler' && item.ok)),
     check('manifestIntegrityAudit', /ALL CHECKS PASS/.test((commandReports.find((item) => item.command === 'node tools/check_manifest.js') || {}).output || '')),
+    // Executable-extent gate (P7, 2026-07-09): the pinned boundary in config
+    // must match the audit's jr-ra extent (+4 = the final return's delay
+    // slot), and the tail must stay data-evidenced with no code edge into it.
+    check('executableExtentPinned', (() => {
+      if (!profile.executableExtent || !codeAudit.executableExtent?.endExclusive) return false;
+      const pinned = parseInt(profile.executableExtent.endExclusive, 16);
+      const audited = parseInt(codeAudit.executableExtent.endExclusive, 16);
+      const delta = pinned - audited;
+      // +4 is ONLY the final return's delay slot — require the audit to attest
+      // that its extent actually ends on a jr $ra word.
+      const deltaOk = delta === 0 || (delta === 4 && codeAudit.executableExtent.endsOnJrRa === true);
+      return deltaOk
+        && codeAudit.suspectedNonCodeTail?.verdict === 'data-evidenced'
+        && String(codeAudit.controlFlowAudit?.verdict || '').startsWith('no-credible-code-edge-into-tail');
+    })(), {
+      pinned: profile.executableExtent?.endExclusive || null,
+      audited: codeAudit.executableExtent?.endExclusive || null,
+      tailVerdict: codeAudit.suspectedNonCodeTail?.verdict || null,
+      controlFlowVerdict: codeAudit.controlFlowAudit?.verdict || null,
+    }),
+    check('codeDataSplitHonest', (() => {
+      if (!profile.executableExtent) return false;
+      const extentBytes = parseInt(profile.executableExtent.endExclusive, 16) - parseInt(profile.executableExtent.start, 16);
+      const tailBytes = parseInt(profile.codeRegion.endExclusive, 16) - parseInt(profile.executableExtent.endExclusive, 16);
+      return sourceManifest.summary.bySourceForm?.original_mips === extentBytes
+        && sourceManifest.summary.bySourceForm?.owned_data_parts === tailBytes;
+    })(), {
+      originalMipsBytes: sourceManifest.summary.bySourceForm?.original_mips ?? null,
+      ownedDataPartsBytes: sourceManifest.summary.bySourceForm?.owned_data_parts ?? null,
+    }),
     check('assembledCodeRegionExact', assembled.exactToReference, { sha256: assembled.assembled.sha256, sources: assembled.sources }),
     check('rawRebuildExact', rawRebuild.exact, { sha256: rawRebuild.rebuilt.sha256 }),
     check('fullSourceManifestNoGap', sourceManifest.ok, { summary: sourceManifest.summary }),

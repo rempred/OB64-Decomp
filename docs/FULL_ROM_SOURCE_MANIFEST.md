@@ -37,10 +37,10 @@ by `tools/extract_non_code_sources.js` after byte/range/SHA verification.
 
 Current status: PASS.
 
-- Entries: 1,059 contiguous ROM spans.
+- Entries: 1,060 contiguous ROM spans (code span split at the pinned extent 2026-07-09).
 - ROM bytes covered: 41,943,040 / 41,943,040.
 - Unknown bytes: 0.
-- Confirmed original-MIPS source bytes: 6,510,444.
+- Confirmed original-MIPS source bytes: 2,849,208 (executable extent only); owned_data_parts (reclassified data tail): 3,661,236.
 - Non-code/raw/data/archive source bytes: 35,432,596.
 - Ambiguous bytes preserved explicitly: 2,469,141.
 - Total non-code source-owner files: 1,058.
@@ -62,7 +62,8 @@ Current source-form byte totals:
 
 | Source form | Bytes | Meaning |
 |---|---:|---|
-| `original_mips` | 6,510,444 | Configured code region, emitted as byte-exact original MIPS. |
+| `original_mips` | 2,849,208 | Pinned executable extent (0x1000..0x2B89B8), byte-exact original MIPS. |
+| `owned_data_parts` | 3,661,236 | Reclassified code-region data tail (0x2B89B8..0x63676C); DATA byte-owned by the same tracked parts via the assembled blob. |
 | `raw_header` | 4,096 | N64 header source bytes. |
 | `raw_structural_gap` | 24 | Gap between code end and first parsed LHA header. |
 | `lha_archive` | 5,041,336 | Parsed LHA archives from the independent scanner. |
@@ -123,3 +124,15 @@ Promote/curate additional non-code owners under `data/bin/`,
 `data/archives/`, or `assets/` in deliberate batches. The generated
 owner/rebuild path remains byte-exact for unpromoted spans, and generated bulk
 proof files remain ignored.
+
+## Source form `owned_data_parts` (added 2026-07-09)
+
+The executable-extent reclassification split the old single `original_mips`
+region: `original_mips` now covers only the pinned executable extent
+(`0x1000..0x2B89B8`), and the non-code tail (`0x2B89B8..0x63676C`) is the
+source form `owned_data_parts` — DATA byte-owned by the same tracked
+`asm/original/rev0` `.word` parts and rebuilt from the assembled blob (no
+separate owner file; the assemble + rebuild tools treat both forms as
+assembled-backed). Summary field `ownedDataTailBytes` reports it; the gate
+check `codeDataSplitHonest` asserts the split matches
+`config/roms/us_rev0.json` exactly.

@@ -77,7 +77,10 @@ function loadExistingManifest(manifestPath) {
 }
 
 function entryMatchesSelection(entry, args) {
-  if (entry.sourceForm === 'original_mips') return false;
+  // Assembled-backed forms need no owner files: original MIPS code and the
+  // reclassified owned_data_parts tail are both byte-owned by the tracked
+  // asm/original parts via the assembled blob (2026-07-09).
+  if (entry.sourceForm === 'original_mips' || entry.sourceForm === 'owned_data_parts') return false;
   if (args.indexes.includes(entry.index)) return true;
   return args.sourceForms.includes(entry.sourceForm);
 }
@@ -152,7 +155,7 @@ function main() {
   const manifest = {
     tool: 'promote_non_code_sources',
     profile: sourceManifest.profile,
-    policy: 'Tracked source owners are curated replacements for generated build/source-owners entries. Unpromoted non-code spans remain generated proof owners.',
+    policy: 'Tracked source owners are curated replacements for generated build/source-owners entries. Unpromoted non-code spans remain generated proof owners. Entry indexes are informational; matching is range-based (romStart..romEndExclusive) as of 2026-07-09 because ledger-span splits shift indexes. Assembled-backed forms (original_mips, owned_data_parts) are never promotable.',
     source: {
       byteOrder: result.detectedByteOrder,
       z64Sha256: result.hashes.z64Sha256,

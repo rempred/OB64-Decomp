@@ -109,14 +109,17 @@ function main() {
     if (start !== cursor) throw new Error(`Source entry ${entry.index} starts at ${hex(start)}, expected ${hex(cursor)}`);
     let bytes;
     let source;
-    if (entry.sourceForm === 'original_mips') {
+    if (entry.sourceForm === 'original_mips' || entry.sourceForm === 'owned_data_parts') {
+      // Both forms are backed by the tracked asm/original parts via the
+      // assembled blob; 'owned_data_parts' is the reclassified non-code tail
+      // (executable extent pinned 0x2B89B8, 2026-07-09).
       const sliceStart = start - codeStart;
       const sliceEnd = end - codeStart;
       if (sliceStart < 0 || sliceEnd > assembledCode.length) {
-        throw new Error(`Original-MIPS entry ${entry.index} is outside assembled code blob`);
+        throw new Error(`Assembled-backed entry ${entry.index} is outside assembled code blob`);
       }
       bytes = Buffer.from(assembledCode.subarray(sliceStart, sliceEnd));
-      source = 'assembled-original-mips';
+      source = entry.sourceForm === 'original_mips' ? 'assembled-original-mips' : 'assembled-owned-data-parts';
       codeBytes += bytes.length;
     } else {
       const owner = ownerByIndex.get(entry.index);

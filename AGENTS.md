@@ -126,10 +126,10 @@ ownership manifest. It is part of `node tools/verify_setup.js`.
 
 Current result:
 
-- Entries: 1,059 contiguous ROM spans.
+- Entries: 1,060 contiguous ROM spans (code span split at the pinned extent 2026-07-09).
 - ROM bytes covered: 41,943,040 / 41,943,040.
 - Unknown bytes: 0.
-- Original-MIPS source bytes: 6,510,444.
+- Original-MIPS source bytes: 2,849,208 (the pinned executable extent); owned_data_parts (reclassified data tail, assembled-blob-backed): 3,661,236.
 - Non-code/raw/data/archive source bytes: 35,432,596.
 - Ambiguous bytes preserved explicitly: 2,469,141.
 
@@ -153,36 +153,33 @@ Current source-owner mix: 3 tracked files / 44,029 bytes, plus 1,055 generated
 fallback files / 35,388,567 bytes. Total non-code source ownership remains
 1,058 files / 35,432,596 bytes.
 
-## Code Region Extent (Code vs Data)
+## Code Region Extent (Code vs Data) — RECLASSIFIED 2026-07-09
 
-The configured code region `0x00001000..0x0063676C` is conservative and is NOT
-all executable. `tools/audit_code_region.js` (read-only) shows executable MIPS
-occupies only `0x00001000..0x002B89B4` (2,849,204 bytes): 96.75% opcode words,
-5,065 `jr $ra` returns, and all 13 parent overlay anchors contained inside it.
-The trailing `0x002B89B4..0x0063676C` (3,661,240 bytes, 56.24% of the configured
-region) has ZERO `jr $ra` across 915,310 words and ~35% ASCII density, so it is
-non-code data currently emitted as `.word` `original_mips`.
+The boundary is PINNED and the reclassification is DONE, enforced by the gate:
 
-Durable rules from this:
-
-- Do not treat the whole configured code region as proven code. The executable
-  extent ends near `0x002B89B4`; everything past it is unproven-as-code.
-- The region still rebuilds byte-exactly and stays `original_mips` until a gated
-  reclassification step shrinks the code region to the executable extent and
-  re-owns the tail as data. Preserve bytes; classify with evidence first.
-- The parent function DB's max `end_rom` `0x00598A9C` is a single `valid:false`
-  false positive inside the data tail; the valid boundary is `0x002B89B4`.
-- A static control-flow edge audit (part of `audit_code_region.js`) found no
-  credible code edge into the tail: 0 PC-relative branch targets (overlay-immune)
-  and 0 J/JAL targets resolving to a known function. The 7 raw J/JAL-into-tail
-  hits are a data ramp table embedded in function `0x001A42A4` decoding as `jal`,
-  not real edges. Strong evidence, not absolute proof (J/JAL through overlays is
-  not authoritative) — pin the exact boundary before reclassifying.
-- `audit_code_region.js` requires the parent function DB by default (missing or
-  corrupt = hard error); `--allow-missing-parent-db` downgrades a missing file to
+- **Executable extent: `0x00001000..0x002B89B8`** (2,849,208 bytes). Pin
+  evidence: last instruction `jr $ra` @`0x2B89B0` + delay slot @`0x2B89B4`
+  (end of `func_002B88C8`, chunk 43); the next part is `zero_fill_002B89B8`.
+  Recorded in `config/roms/us_rev0.json` `executableExtent`.
+- **The tail `0x002B89B8..0x0063676C`** (3,661,236 bytes) is classified DATA:
+  ledger category `code_region_data_tail`, source form `owned_data_parts` —
+  still byte-owned by the same tracked `asm/original/rev0` `.word` parts via
+  the assembled blob (`codeRegion` remains the assembly/tiling region), but
+  no longer counted or reported as MIPS.
+- **Gate enforcement:** `verify_setup.js` (19 checks) runs
+  `audit_code_region.js` every time and asserts `executableExtentPinned`
+  (config pin == audit jr-ra extent + the 4-byte final delay slot; tail
+  verdict data-evidenced; no credible control-flow edge into the tail) and
+  `codeDataSplitHonest` (manifest byte counts exactly match the split).
+- The parent function DB's `0x00594A9C` `valid:false` entry stays excluded
+  (compressed-data false positive inside Section C).
+- `audit_code_region.js` requires the parent function DB by default (missing
+  or corrupt = hard error); `--allow-missing-parent-db` downgrades to
   intrinsic-only mode.
+- Tracked non-code source owners are matched by ROM RANGE, not manifest entry
+  index (indexes shift when ledger spans split).
 
-Evidence and next step: `docs/CODE_REGION_AUDIT.md`.
+Evidence and history: `docs/CODE_REGION_AUDIT.md`.
 
 ## Exact Rebuild Rule
 
@@ -199,7 +196,7 @@ must report PASS before source replacement work is considered safe.
 
 Current exact rebuild result:
 
-- Segment count: 1,059.
+- Segment count: 1,060.
 - Total bytes: 41,943,040.
 - Rebuilt/reference SHA256:
   `571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A`.
@@ -221,7 +218,7 @@ no-gap source range.
 Current result:
 
 - Assembled code region: `0x00001000..0x0063676C`.
-- Bytes: 6,510,444.
+- Bytes: 6,510,444 (assembly/tiling region; classified as 2,849,208 code + 3,661,236 owned data tail).
 - Code-region SHA256:
   `40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`.
 - Code-region match against baserom: pass.
@@ -389,7 +386,7 @@ setup-complete state:
   source files (chunks 0-99 fully source-owned as code/data parts,
   `0x00001000..0x0063676C` — the entire configured code region; data-ownership
   loop COMPLETE 2026-06-24), 0 generated fallback chunks, full-source manifest
-  1,059 entries with 2,469,141 ambiguous bytes preserved explicitly, 3 tracked
+  1,060 entries with 2,469,141 ambiguous bytes preserved explicitly, 3 tracked
   non-code source-owner files / 44,029 bytes, 1,055 generated non-code fallback
   files / 35,388,567 bytes, source-manifest rebuild exact, full ROM SHA256
   `571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A`.

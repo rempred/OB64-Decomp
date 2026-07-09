@@ -103,7 +103,7 @@ node tools/rebuild_rom.js
 Runs the first exact rebuild loop from raw ledger spans. This is the safety net
 that future C and assembly replacement work must preserve.
 
-Current status: 1,059 ledger spans rebuild to a byte-identical Rev 0 ROM with
+Current status: 1,060 ledger spans rebuild to a byte-identical Rev 0 ROM with
 SHA256 `571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A`.
 
 ```powershell

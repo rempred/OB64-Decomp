@@ -114,9 +114,14 @@ function main() {
     const rawOk = bytes.length === segment.bytes && bytes.length === end - start && sha256 === segment.sha256;
     let outputBytes = bytes;
     let source = 'raw-segment';
-    if (assembledCode && start === codeRegion.start && end === codeRegion.end) {
-      outputBytes = assembledCode.bytes;
+    // The assembled blob covers the whole codeRegion; since the 2026-07-09
+    // executable-extent reclassification the segment manifest splits that
+    // span (code + code_region_data_tail), so substitute the matching SLICE
+    // for every segment fully inside the code region.
+    if (assembledCode && start >= codeRegion.start && end <= codeRegion.end) {
+      outputBytes = assembledCode.bytes.subarray(start - codeRegion.start, end - codeRegion.start);
       assembledCode.used = true;
+      assembledCode.coveredBytes = (assembledCode.coveredBytes || 0) + (end - start);
       source = 'assembled-code';
     }
     if (outputBytes.length !== end - start) {
@@ -140,7 +145,10 @@ function main() {
     cursor = end;
   }
   if (assembledCode && !assembledCode.used) {
-    throw new Error(`Assembled code was not used; no manifest segment exactly matched ${hex(codeRegion.start)}..${hex(codeRegion.end)}`);
+    throw new Error(`Assembled code was not used; no manifest segment fell inside ${hex(codeRegion.start)}..${hex(codeRegion.end)}`);
+  }
+  if (assembledCode && assembledCode.coveredBytes !== codeRegion.end - codeRegion.start) {
+    throw new Error(`Assembled code only covered ${assembledCode.coveredBytes} of ${codeRegion.end - codeRegion.start} code-region bytes; segment manifest does not tile the code region`);
   }
 
   const rebuilt = Buffer.concat(buffers);

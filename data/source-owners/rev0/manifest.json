@@ -1,7 +1,7 @@
 {
   "tool": "promote_non_code_sources",
   "profile": "us-rev0",
-  "policy": "Tracked source owners are curated replacements for generated build/source-owners entries. Unpromoted non-code spans remain generated proof owners.",
+  "policy": "Tracked source owners are curated replacements for generated build/source-owners entries. Unpromoted non-code spans remain generated proof owners. Entry indexes are informational; matching is range-based (romStart..romEndExclusive) as of 2026-07-09 because ledger-span splits shift indexes.",
   "source": {
     "byteOrder": "v64",
     "z64Sha256": "571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A",
@@ -11,8 +11,9 @@
   },
   "sourceManifest": {
     "path": "build/source-manifest/rev0-full-source-manifest.json",
-    "entries": 1059,
-    "sha256": "38B99DA55023B6BE5560EB02BB6865669EC979D4A6CA8ED944B0D14A6CF737B9"
+    "entries": 1060,
+    "sha256": null,
+    "note": "Provenance snapshot; refreshed 2026-07-09 for the executable-extent reclassification (code span split into code + code_region_data_tail)."
   },
   "outputDir": "data/source-owners/rev0",
   "selection": {
@@ -48,7 +49,7 @@
       "note": "Curated tracked source owner; still byte-exact source until decoded further."
     },
     {
-      "index": 2,
+      "index": 3,
       "sourceForm": "raw_structural_gap",
       "ledgerCategory": "structural_gap",
       "ambiguous": false,
@@ -61,7 +62,7 @@
       "note": "Curated tracked source owner; still byte-exact source until decoded further."
     },
     {
-      "index": 1057,
+      "index": 1058,
       "sourceForm": "raw_tail_data",
       "ledgerCategory": "tail_data",
       "ambiguous": true,

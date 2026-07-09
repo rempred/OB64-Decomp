@@ -21,9 +21,10 @@ const CATEGORY_BITS = {
   lzss: 1 << 4,
   tail_data: 1 << 5,
   structural_gap: 1 << 6,
+  code_region_data_tail: 1 << 7,
 };
 
-const CATEGORY_PRIORITY = ['header', 'code', 'archive', 'lzss', 'audio', 'tail_data', 'structural_gap'];
+const CATEGORY_PRIORITY = ['header', 'code', 'code_region_data_tail', 'archive', 'lzss', 'audio', 'tail_data', 'structural_gap'];
 
 function usage() {
   console.log(`Usage: node tools/build_rom_coverage_ledger.js [--input <rom>] [--json <path>] [--md <path>]\n\nBuilds a whole-ROM byte coverage ledger for OB64 US Rev 0. Known regions and LHA archives are tagged first; remaining spans are classified as padding or unknown.`);
@@ -145,6 +146,12 @@ function archiveClusterEnvelopes(archives) {
 function buildRanges(profile, archives, parentCatalog) {
   const codeStart = parseHexOrNumber(profile.codeRegion.start);
   const codeEnd = parseHexOrNumber(profile.codeRegion.endExclusive);
+  const extentEnd = profile.executableExtent
+    ? parseHexOrNumber(profile.executableExtent.endExclusive)
+    : codeEnd;
+  if (extentEnd < codeStart || extentEnd > codeEnd) {
+    throw new Error(`executableExtent end outside codeRegion: ${profile.executableExtent.endExclusive}`);
+  }
   const ranges = [
     {
       name: 'n64_header',
@@ -157,10 +164,18 @@ function buildRanges(profile, archives, parentCatalog) {
       name: 'boot_and_code',
       category: 'code',
       start: codeStart,
-      end: codeEnd,
-      source: 'config/roms/us_rev0.json codeRegion',
-      note: 'Raw ROM code region. Only early boot code is linearly mapped; later code is overlay-loaded.',
+      end: extentEnd,
+      source: 'config/roms/us_rev0.json codeRegion + executableExtent',
+      note: 'Executable MIPS extent (boundary pinned 2026-07-09: last jr $ra @0x2B89B0 + delay slot @0x2B89B4). Only early boot code is linearly mapped; later code is overlay-loaded.',
     },
+    ...(extentEnd < codeEnd ? [{
+      name: 'code_region_data_tail',
+      category: 'code_region_data_tail',
+      start: extentEnd,
+      end: codeEnd,
+      source: 'config/roms/us_rev0.json executableExtent (reclassified 2026-07-09)',
+      note: 'Non-code data inside the assembly/tiling region: pre-audio asset territory, Section A audio (incl. the VADPCM bank), Section B index + cutscene music blocks, Section C NJPG pool. Byte-owned by the same tracked .word parts via the assembled blob; see docs/FINAL_DATA_OWNERSHIP_REPORT_2026-06-24.md and docs/CODE_REGION_AUDIT.md.',
+    }] : []),
     {
       name: 'code_to_first_archive_gap',
       category: 'structural_gap',

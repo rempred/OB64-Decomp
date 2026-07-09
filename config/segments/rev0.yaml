@@ -15,10 +15,20 @@ segments:
   - name: boot_and_code
     type: code
     rom_start: 0x00001000
-    rom_end: 0x0063676C
+    rom_end: 0x002B89B8
     notes:
+      - "Executable MIPS extent; boundary PINNED 2026-07-09 (last jr $ra @0x2B89B0 + delay slot @0x2B89B4 = func_002B88C8 end; next part zero_fill_002B89B8)."
       - "Only early boot code below roughly 0x0002F000 is linearly mapped."
       - "Most later functions are runtime overlays and need overlay-aware RAM mapping."
+
+  - name: code_region_data_tail
+    type: data
+    rom_start: 0x002B89B8
+    rom_end: 0x0063676C
+    notes:
+      - "Reclassified from code 2026-07-09 (verify_setup gate checks executableExtentPinned + codeDataSplitHonest)."
+      - "Pre-audio asset territory, Section A audio (VADPCM bank), Section B index + cutscene music blocks, Section C NJPG pool."
+      - "Byte-owned by the same tracked asm/original/rev0 .word parts via the assembled blob (sourceForm owned_data_parts)."
 
   - name: code_to_first_archive_gap
     type: gap

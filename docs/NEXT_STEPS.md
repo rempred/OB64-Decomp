@@ -29,12 +29,17 @@ below.
 
 1. **Assessment fix plan** — `docs/PLAN_2026-07-08-assessment-fixes.md` is the
    active queue. Done: P5 hardening, P1 reverse-promotion, P2 function-DB
-   corrections (parent Stage 1b + pending-tasks #16). Next: P6 doc dedupe
-   (this pass), P3 NJPG render, P4 editor data ports, P7 reclassification,
-   P8 plan-of-record reconciliation (needs Joe).
+   corrections (parent Stage 1b + pending-tasks #16), P6 doc dedupe, P3 NJPG
+   render, P4 editor data ports + attack-name decode, P7 reclassification,
+   P8 plan-of-record reconciliation. REMAINING: Phase 1 workbench
+   (cutscene animation actors/programs — Joe's chosen M4 target) + the queued
+   runtime/swarm tracks (parent pending-tasks #16/#17, Section C consumer
+   trace).
 
-2. **Code/data boundary reclassification track** (opened 2026-06-21; = plan
-   P7). `tools/audit_code_region.js` bounds executable MIPS to
+2. **Code/data boundary reclassification track — COMPLETE 2026-07-09** (plan
+   P7 done; boundary pinned `0x2B89B8`, tail reclassified `owned_data_parts`,
+   audit wired into the 19-check gate; `docs/CODE_REGION_AUDIT.md` closure).
+   Original scope for reference: `tools/audit_code_region.js` bounds executable MIPS to
    `0x1000..0x2B89B4`; the control-flow edge audit found no credible code edge
    into the 3.66 MB tail (the 7 raw J/JAL hits are the `0x1A42A4` data ramp).
    Steps, each keeping `verify_setup` green: (a) pin the exact boundary byte

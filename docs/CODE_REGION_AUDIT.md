@@ -2,9 +2,10 @@
 
 `tools/audit_code_region.js` is a read-only audit of the configured Rev 0 code
 region. The configured region `0x00001000..0x0063676C`
-(`config/roms/us_rev0.json` `codeRegion`) is currently emitted in full as
-byte-exact `.word` `original_mips` source. That preserves every byte but does not
-prove every word is executable. This audit produces repeatable evidence for where
+(`config/roms/us_rev0.json` `codeRegion`) is the assembly/tiling region. Until
+2026-07-09 it was emitted in full as byte-exact `.word` `original_mips` source;
+the reclassification (CLOSURE section at the end) now splits it into the pinned
+executable extent (`original_mips`) and the `owned_data_parts` data tail. This audit produces repeatable evidence for where
 executable MIPS actually lives versus where the configured region holds non-code
 data emitted as instructions.
 
@@ -109,7 +110,7 @@ generated `build/coverage/rev0-code-region-audit.md`.
 Per the repo no-gap and evidence rules, an ambiguous region is preserved
 byte-exactly and classified explicitly with repeatable scanner evidence before
 being promoted as code or data. This audit is that evidence step. The tail
-remains byte-exact `original_mips` and rebuilds identically for now;
+remained byte-exact `original_mips` until the 2026-07-09 reclassification;
 reclassification is a separate, gated step.
 
 ## Next Step
@@ -129,3 +130,32 @@ tail). Remaining before reclassification:
    owner.
 3. Once the boundary is final, wire `audit_code_region.js` into a coverage gate
    so the executable extent and "no code outside it" stay enforced.
+
+---
+
+## CLOSURE — boundary pinned + reclassification executed (2026-07-09)
+
+The track this document opened is complete:
+
+1. **Boundary PINNED at `0x002B89B8`** (exclusive): the last executable
+   instruction is `jr $ra` @`0x2B89B0` with its delay slot @`0x2B89B4` — the
+   end of `func_002B88C8` (chunk 43); the next tracked part is
+   `zero_fill_002B89B8`. The audit's jr-ra extent (`0x2B89B4`) plus the final
+   return's 4-byte delay slot equals the pin. Recorded in
+   `config/roms/us_rev0.json` `executableExtent`.
+2. **Reclassification executed:** the coverage ledger splits the old code
+   span into `code` (`0x1000..0x2B89B8`) and `code_region_data_tail`
+   (`0x2B89B8..0x63676C`); the full-ROM source manifest maps the tail to the
+   new source form `owned_data_parts` (data, assembled-blob-backed — the
+   same tracked `.word` parts remain the byte owners; `codeRegion` in config
+   is now explicitly the assembly/tiling region). Manifest: 1,060 entries;
+   `original_mips` = 2,849,208 bytes; `owned_data_parts` = 3,661,236 bytes.
+   `rebuild_rom --assembled-code` now slices the blob across the split
+   segments and asserts full code-region coverage. Tracked non-code owners
+   are matched by ROM range (indexes shift when spans split).
+3. **Gate wired:** `verify_setup.js` (19 checks) runs this audit every time
+   and asserts `executableExtentPinned` + `codeDataSplitHonest`.
+
+Both SHA256 gates unchanged throughout: code
+`40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`, ROM
+`571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A`.

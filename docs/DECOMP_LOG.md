@@ -18,18 +18,17 @@ and replace the active log with a compact current-state summary.
   covers all 41,943,040 bytes with zero unknown bytes.
 - Whole-ROM coverage independently scans for LHA headers; do not trust the
   parent archive catalog by itself.
-- The configured code region `0x1000..0x63676C` is conservative: executable
-  MIPS occupies only `0x1000..0x2B89B4`; the 3.66 MB tail is classified
-  non-code data still emitted as `.word` pending the reclassification track
-  (`docs/CODE_REGION_AUDIT.md`; do not reclassify before the boundary is
-  pinned).
+- Executable extent `0x1000..0x2B89B8` — boundary PINNED and the 3.66 MB tail
+  RECLASSIFIED as data (`owned_data_parts`) 2026-07-09, gate-enforced
+  (`docs/CODE_REGION_AUDIT.md` closure). `codeRegion` in config is the
+  assembly/tiling region only.
 - Current state numbers, the per-chunk composition table, and the section map
   live in `docs/PLATFORM.md`; the loop summary lives in
   `docs/FINAL_DATA_OWNERSHIP_REPORT_2026-06-24.md`. Do not clone the chunk
   narrative into this file (AGENTS.md Documentation Policy).
-- Gate: `node tools/verify_setup.js` (17 checks incl. `manifestIntegrityAudit`)
-  must PASS after every source-layout change. Code SHA `40D4E787...B409`, ROM
-  SHA `571E8339...CC67A`.
+- Gate: `node tools/verify_setup.js` (19 checks incl. `manifestIntegrityAudit`,
+  `executableExtentPinned`, `codeDataSplitHonest`) must PASS after every
+  source-layout change. Code SHA `40D4E787...B409`, ROM SHA `571E8339...CC67A`.
 
 ## Dated Log (compact)
 
@@ -106,6 +105,18 @@ and replace the active log with a compact current-state summary.
   equipment-type name pools with per-entry ROM offsets. Editor wiring:
   B43/B45/B47 tooltips show resolved names; browser smoke test clean.
 
+- **2026-07-09 — P7 executable-extent reclassification (gate-enforced)**:
+  boundary PINNED at `0x2B89B8` (last `jr $ra` @0x2B89B0 + delay slot =
+  func_002B88C8 end; next part zero_fill_002B89B8). Ledger splits the old
+  code span into `code` + `code_region_data_tail`; manifest maps the tail to
+  new source form `owned_data_parts` (DATA, assembled-blob-backed, same
+  tracked parts; 3,661,236 B) leaving `original_mips` = the extent
+  (2,849,208 B); manifest 1,060 entries. `rebuild_rom --assembled-code`
+  slices across split segments; tracked owners matched by ROM range.
+  `verify_setup` now 19 checks incl. `executableExtentPinned` +
+  `codeDataSplitHonest` (audit runs every gate). Both SHAs unchanged.
+  Closure: `docs/CODE_REGION_AUDIT.md`.
+
 ## Dossier Set
 
 139+ dossiers under `docs/dossiers/`: 81 `boot-*` (chunk 0 splits), 47
@@ -116,8 +127,9 @@ inventories: `docs/data-index/rev0/*.json`. Review handoffs: `docs/REVIEW_*.md`.
 ## Next Frontier
 
 The data-ownership loop is COMPLETE at the configured stop `0x63676C`; no
-chunk frontier remains. Active queues: `docs/PLAN_2026-07-08-assessment-fixes.md`
-(P3/P4/P6/P7/P8 remaining) and `docs/NEXT_STEPS.md` (reclassification track,
-owner promotion, evidence-naming rules, optional decode tracks). Out of scope
+chunk frontier remains. The assessment fix plan (P1-P8) is COMPLETE as of 2026-07-09. Active queues:
+Phase 1 workbench (parent `docs/mips-decomp-workflow-plan.md`; first M4 target
+= cutscene animation actors/programs) and `docs/NEXT_STEPS.md` (owner
+promotion, evidence-naming rules, optional decode tracks). Out of scope
 without Joe: the structural gap `0x63676C..0x636784` and the LHA region
 `0x636784+`.

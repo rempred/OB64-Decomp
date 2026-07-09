@@ -99,7 +99,15 @@ function sourceFormForSpan(span) {
       kind: 'original_mips',
       label: 'Original MIPS source',
       ambiguous: false,
-      note: 'Every 4-byte word in the configured code region is emitted as original MIPS .word source. This preserves bytes but does not prove every word is executable.',
+      note: 'Executable-extent bytes emitted as original MIPS .word source (boundary pinned 0x2B89B8, 2026-07-09; audit-gated).',
+    };
+  }
+  if (category === 'code_region_data_tail') {
+    return {
+      kind: 'owned_data_parts',
+      label: 'Data territory owned as tracked .word parts (assembled-blob-backed)',
+      ambiguous: false,
+      note: 'Non-code bytes inside the assembly/tiling region, past the pinned executable extent (0x2B89B8). Byte-owned by the tracked asm/original/rev0 data parts and rebuilt from the assembled blob; classified as DATA, not MIPS. See docs/FINAL_DATA_OWNERSHIP_REPORT_2026-06-24.md.',
     };
   }
   if (category === 'header') return { kind: 'raw_header', label: 'Raw N64 header/source bytes', ambiguous: false };
@@ -218,15 +226,19 @@ function aggregateEntries(entries) {
   const byCategory = {};
   let ambiguousBytes = 0;
   let codeBytes = 0;
+  let ownedDataTailBytes = 0;
   let nonCodeBytes = 0;
   for (const entry of entries) {
     bySourceForm[entry.sourceForm] = (bySourceForm[entry.sourceForm] || 0) + entry.bytes;
     byCategory[entry.ledgerCategory] = (byCategory[entry.ledgerCategory] || 0) + entry.bytes;
     if (entry.ambiguous) ambiguousBytes += entry.bytes;
     if (entry.sourceForm === 'original_mips') codeBytes += entry.bytes;
+    else if (entry.sourceForm === 'owned_data_parts') ownedDataTailBytes += entry.bytes;
+    // nonCodeBytes = owner-file-backed forms only; the owned_data_parts tail
+    // is data but assembled-blob-backed, so it is counted separately.
     else nonCodeBytes += entry.bytes;
   }
-  return { bySourceForm, byCategory, ambiguousBytes, codeBytes, nonCodeBytes };
+  return { bySourceForm, byCategory, ambiguousBytes, codeBytes, ownedDataTailBytes, nonCodeBytes };
 }
 
 function requirement(name, ok, details = {}) {
@@ -376,6 +388,7 @@ function main() {
       romSize,
       entries: entries.length,
       codeBytes: aggregate.codeBytes,
+      ownedDataTailBytes: aggregate.ownedDataTailBytes,
       nonCodeBytes: aggregate.nonCodeBytes,
       ambiguousBytes: aggregate.ambiguousBytes,
       unknownBytes,
@@ -423,7 +436,7 @@ function main() {
   writeJson(args.json, report);
   writeMarkdown(args.md, report);
   console.log(`Full-ROM source manifest: ${ok ? 'PASS' : 'FAIL'}`);
-  console.log(`Entries: ${entries.length}; code bytes: ${aggregate.codeBytes}; non-code bytes: ${aggregate.nonCodeBytes}`);
+  console.log(`Entries: ${entries.length}; code bytes: ${aggregate.codeBytes}; owned-data-tail bytes: ${aggregate.ownedDataTailBytes}; non-code bytes: ${aggregate.nonCodeBytes}`);
   console.log(`Ambiguous bytes preserved explicitly: ${aggregate.ambiguousBytes}`);
   console.log(`Unknown bytes: ${unknownBytes}`);
   console.log(`Wrote JSON: ${args.json}`);

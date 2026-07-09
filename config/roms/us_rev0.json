@@ -15,7 +15,14 @@
   "romOffsetConvention": "z64",
   "codeRegion": {
     "start": "0x00001000",
-    "endExclusive": "0x0063676C"
+    "endExclusive": "0x0063676C",
+    "note": "Assembly/tiling region for the tracked source parts (100 chunks). NOT all executable: see executableExtent. Bytes past the extent are data owned by the same tracked parts (sourceForm owned_data_parts)."
+  },
+  "executableExtent": {
+    "start": "0x00001000",
+    "endExclusive": "0x002B89B8",
+    "pinned": "2026-07-09",
+    "evidence": "Last instruction jr $ra @0x2B89B0 + delay slot @0x2B89B4 (func_002B88C8, chunk 43); next part is zero_fill_002B89B8. audit_code_region jr-ra extent 0x2B89B4 + 4-byte final delay slot; static control-flow audit found no code edge past it. See docs/CODE_REGION_AUDIT.md."
   },
   "bootLinearMapping": {
     "ramBase": "0x8006FC00",

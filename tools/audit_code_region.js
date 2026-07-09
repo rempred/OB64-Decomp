@@ -20,6 +20,7 @@
 // later step that must keep the byte-exact rebuild gate green.
 const fs = require('fs');
 const path = require('path');
+const crypto = require('crypto');
 const {
   ROOT,
   ensureDir,
@@ -118,7 +119,10 @@ function loadParentJson(filePath, { allowMissing }) {
     throw new Error(`Parent JSON unreadable: ${filePath}: ${err.message}`);
   }
   try {
-    return { data: JSON.parse(raw), status: 'loaded', path: filePath };
+    // sha256 recorded so gate reports attest WHICH parent evidence they ran
+    // against (the parent DB is a mutable research artifact outside this repo).
+    const sha256 = crypto.createHash('sha256').update(raw).digest('hex').toUpperCase();
+    return { data: JSON.parse(raw), status: 'loaded', path: filePath, sha256 };
   } catch (err) {
     throw new Error(`Parent JSON is corrupt (not valid JSON): ${filePath}: ${err.message}`);
   }
@@ -518,6 +522,10 @@ function main() {
       start: hex(codeStart),
       endExclusive: hex(lastDetectedEnd),
       bytes: lastDetectedEnd - codeStart,
+      // true when the last word of the detected extent is jr $ra — the gate's
+      // +4 pin allowance (final return's delay slot) is only valid then.
+      endsOnJrRa: lastDetectedEnd >= codeStart + 4
+        && z.readUInt32BE(lastDetectedEnd - 4) === JR_RA,
       detectedFunctionBytes: detectedBytes,
       interleavedGapBytes: extGapBytes,
       interleavedGapPct: +(100 * extGapBytes / (lastDetectedEnd - codeStart)).toFixed(2),
@@ -592,8 +600,8 @@ function main() {
     byteOrder: result.detectedByteOrder,
     z64Sha256: result.hashes.z64Sha256,
     inputs: {
-      functions: { path: rel(args.functions), status: functionsLoad.status },
-      overlays: { path: rel(args.overlays), status: overlaysLoad.status },
+      functions: { path: rel(args.functions), status: functionsLoad.status, sha256: functionsLoad.sha256 || null },
+      overlays: { path: rel(args.overlays), status: overlaysLoad.status, sha256: overlaysLoad.sha256 || null },
       allowMissingParentDb: args.allowMissingParentDb,
     },
     configuredCodeRegion: {

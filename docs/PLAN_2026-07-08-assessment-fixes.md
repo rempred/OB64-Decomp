@@ -168,14 +168,20 @@ The declared-but-unexecuted track: pin the exact boundary near `0x2B89B4`
 region to the executable extent, re-own the 3.66MB tail as data source forms,
 and wire `audit_code_region.js` into the coverage gate.
 
-- [ ] Step 1: pin the boundary byte (last `jr $ra` + delay slot + alignment
-  padding evidence; chunk-43 dossier places the transition at `0x2B89B8`).
-- [ ] Step 2: reclassify across `config/segments/rev0.yaml`, the coverage
-  ledger, and the source manifest; ROM SHA must stay `571E8339...CC67A`.
-- [ ] Step 3: add the audit as a gate check ("no proven code outside the
-  executable extent").
-- Effort: 1-2 sessions; touches the config/gate path, so run
-  `node tools/verify_setup.js` before AND after each step.
+- [x] DONE 2026-07-09. Step 1: boundary PINNED `0x2B89B8` (last jr $ra
+  @0x2B89B0 + delay slot @0x2B89B4 = func_002B88C8 end; next part
+  zero_fill_002B89B8) → `config/roms/us_rev0.json` `executableExtent`.
+- [x] Step 2: reclassified — ledger category `code_region_data_tail` + source
+  form `owned_data_parts` (data, assembled-blob-backed by the same tracked
+  parts); segments yaml split; `rebuild_rom --assembled-code` slices across
+  split segments with a full-coverage assertion; tracked owners matched by
+  ROM range (indexes shift on span splits). Manifest 1,060 entries:
+  `original_mips` 2,849,208 B / `owned_data_parts` 3,661,236 B. Both SHAs
+  unchanged.
+- [x] Step 3: audit wired into the gate — verify_setup now 19 checks incl.
+  `executableExtentPinned` (pin == audit jr-ra extent + 4-byte delay slot;
+  tail data-evidenced; no credible control-flow edge) + `codeDataSplitHonest`
+  (manifest counts match config exactly). Full gate PASS.
 
 ## P8. [J] Reconcile the plan-of-record / decide the next phase
 

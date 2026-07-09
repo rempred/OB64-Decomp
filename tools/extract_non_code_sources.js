@@ -78,24 +78,25 @@ function loadTrackedOwnerManifest(trackedManifestPath, sourceEntries) {
     return tracked;
   }
 
-  const sourceByIndex = new Map(sourceEntries.map((entry) => [entry.index, entry]));
+  // Match tracked owners by ROM RANGE, not by manifest entry index: indexes
+  // shift whenever a ledger span is split (e.g. the 2026-07-09 executable
+  // extent reclassification), while the owned byte range is stable.
+  const rangeKeyOf = (e) => `${parseHexOrNumber(e.romStart)}:${parseHexOrNumber(e.romEndExclusive)}`;
+  const sourceByRange = new Map(sourceEntries.map((entry) => [rangeKeyOf(entry), entry]));
   for (const owner of tracked.manifest.entries) {
-    if (owner.index == null) {
-      tracked.errors.push('tracked owner entry is missing index');
-      continue;
-    }
-    if (tracked.byIndex.has(owner.index)) {
-      tracked.errors.push(`tracked owner entry ${owner.index} appears more than once`);
-      continue;
-    }
-
-    const sourceEntry = sourceByIndex.get(owner.index);
+    const rangeKey = rangeKeyOf(owner);
+    const sourceEntry = sourceByRange.get(rangeKey);
     if (!sourceEntry) {
-      tracked.errors.push(`tracked owner entry ${owner.index} is not in the source manifest`);
+      tracked.errors.push(`tracked owner range ${owner.romStart}..${owner.romEndExclusive} is not a source-manifest entry`);
       continue;
     }
-    if (sourceEntry.sourceForm === 'original_mips') {
-      tracked.errors.push(`tracked owner entry ${owner.index} points at original MIPS code`);
+    if (tracked.byIndex.has(sourceEntry.index)) {
+      tracked.errors.push(`tracked owner range ${rangeKey} matches an entry already claimed (${sourceEntry.index})`);
+      continue;
+    }
+    owner.index = sourceEntry.index;
+    if (sourceEntry.sourceForm === 'original_mips' || sourceEntry.sourceForm === 'owned_data_parts') {
+      tracked.errors.push(`tracked owner entry ${owner.index} points at an assembled-backed entry (${sourceEntry.sourceForm})`);
       continue;
     }
     if (owner.sourceForm !== sourceEntry.sourceForm) {
@@ -198,7 +199,9 @@ function main() {
   for (const entry of sourceManifest.entries) {
     const start = parseHexOrNumber(entry.romStart);
     const end = parseHexOrNumber(entry.romEndExclusive);
-    if (entry.sourceForm === 'original_mips') {
+    if (entry.sourceForm === 'original_mips' || entry.sourceForm === 'owned_data_parts') {
+      // Assembled-backed entries (code, plus the reclassified non-code tail
+      // owned by the same tracked parts) need no separate owner file.
       codeBytes += entry.bytes;
       entries.push({
         index: entry.index,
@@ -206,7 +209,7 @@ function main() {
         romStart: entry.romStart,
         romEndExclusive: entry.romEndExclusive,
         bytes: entry.bytes,
-        kind: 'original_mips',
+        kind: entry.sourceForm,
         ownerFile: null,
         assembledCode: sourceManifest.codeCoverage?.assembled?.report || null,
         sha256: null,
@@ -317,12 +320,15 @@ function main() {
     summary: {
       entries: entries.length,
       codeEntries: entries.filter((entry) => entry.kind === 'original_mips').length,
-      nonCodeEntries: entries.filter((entry) => entry.kind !== 'original_mips').length,
+      assembledBackedEntries: entries.filter((entry) => entry.kind === 'original_mips' || entry.kind === 'owned_data_parts').length,
+      // owner-FILE entries only; assembled-backed entries (original_mips +
+      // owned_data_parts) have no owner file and are excluded.
+      nonCodeEntries: entries.filter((entry) => entry.ownerFile != null).length,
       generatedOwnerEntries,
       generatedOwnerBytes,
       trackedOwnerEntries,
       trackedOwnerBytes,
-      codeBytes,
+      assembledBackedBytes: codeBytes,
       nonCodeBytes,
       ambiguousBytes,
       bySourceForm,

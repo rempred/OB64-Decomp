@@ -48,7 +48,7 @@ entire configured code region `0x00001000..0x0063676C` (6,510,444 bytes) is
 100% source-owned as named code/data parts — 100 composite chunks, 6,181
 tracked real-assembler source files, 0 generated fallback chunks. The full
 41,943,040-byte ROM rebuilds byte-identically, gated by
-`node tools/verify_setup.js` (17 checks).
+`node tools/verify_setup.js` (19 checks, incl. the executable-extent gate added 2026-07-09).
 
 What "source-owned" means precisely — and does not mean — is defined in
 `../AGENTS.md` ("What This Repo Is (And Is Not)" + "Definitions"). Canonical
@@ -81,11 +81,12 @@ node tools/verify_setup.js
 - Coverage ledger: 825 LHA archives (independent scan matches the parent
   catalog), 0 unknown bytes, the 108-byte archive/audio overlap visible.
 - Manifest integrity audit: ALL CHECKS PASS (6,181 parts, contiguity + sha256).
+- Executable-extent gate: boundary PINNED `0x2B89B8` (2026-07-09); manifest split `original_mips` 2,849,208 B / `owned_data_parts` (data tail) 3,661,236 B, audit-asserted every run.
 - Assembled code region SHA256
   `40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`; full ROM
   rebuild SHA256
   `571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A` (exact).
-- Full-ROM source manifest: 1,059 entries, 0 unknown bytes, 2,469,141
+- Full-ROM source manifest: 1,060 entries, 0 unknown bytes, 2,469,141
   ambiguous bytes preserved explicitly; source-owner mix 3 tracked non-code
   files / 44,029 bytes + 1,055 generated fallback files / 35,388,567 bytes;
   source-manifest rebuild exact.
@@ -154,9 +155,9 @@ Whole-ROM facts:
 
 - ROM size: 41,943,040 bytes; z64 SHA256 `571E8339...2CC67A`.
 - Configured code region: `0x00001000..0x0063676C` (fully source-owned).
-- Evidenced executable MIPS extent: `0x00001000..0x002B89B4`
-  (`docs/CODE_REGION_AUDIT.md`); the trailing 3,661,240 bytes are classified
-  non-code data still emitted as `.word` pending the reclassification track.
+- Executable MIPS extent: `0x00001000..0x002B89B8` — boundary PINNED and the
+  tail RECLASSIFIED as data 2026-07-09 (`owned_data_parts`, 3,661,236 bytes,
+  gate-enforced; `docs/CODE_REGION_AUDIT.md` closure section).
 - Valid parsed LHA archives: 825 (first at `0x636784`); archive-gap bytes
   2,429,124; tail data `0x275415B..0x275DD40`; trailing `0xFF` padding to
   `0x2800000`; known archive/audio overlap `0x925483..0x9254EF` (108 bytes).
@@ -168,8 +169,8 @@ Region map by content family (detail in the FINAL report + dossiers):
 | `0x1000..0x11000` | Chunk 0 `boot/`: resource loader/allocator, LZSS + Huffman codecs, libc, vec3, display-list core (semantically named; 81 boot dossiers) |
 | `0x11000..0x31000` | Statically linked libultra/libc/gu + graphics/unit-script library (named symbols) |
 | `0x31000..0x41000` | RSP microcode bundle + text-VM jump table + overlay code tail |
-| `0x41000..0x2B89B4` | Overlay-relocated game code (army/char/scenario/combat/menu/world-map/mission-briefing modules) with interleaved data islands; conservative `func_*` naming; per-chunk dossiers |
-| `0x2B89B4..0x301000` | Non-code high-entropy asset territory (code→data transition pinned `0x2B89B8` in chunk 43) |
+| `0x41000..0x2B89B8` | Overlay-relocated game code (army/char/scenario/combat/menu/world-map/mission-briefing modules) with interleaved data islands; conservative `func_*` naming; per-chunk dossiers |
+| `0x2B89B8..0x301000` | Non-code high-entropy asset territory (code→data transition pinned `0x2B89B8` in chunk 43) |
 | `0x301000..0x4E3140` | Section A = AUDIO: decoded PtrTablesV2/WaveTables VADPCM sound bank @`0x421000` + flat sample payload |
 | `0x4E3140..0x4F0FB0` | Section B index (1,798 records, shape decoded) + payload |
 | `0x4F0FB0..0x594280` | Section B: 63 parser-backed cutscene audio-sequence blocks (tag `0x215`, Gate-2 proven) |
@@ -377,9 +378,10 @@ real assembly. Full expected numbers are in Current State above.
 
 The data-ownership loop is COMPLETE; there is no chunk frontier. Active queues:
 
-1. `docs/PLAN_2026-07-08-assessment-fixes.md` — the assessment fix plan
-   (P1/P2/P5 done; next: P6 doc dedupe, P3 NJPG render, P4 editor data ports,
-   P7 boundary reclassification, P8 phase decision with Joe).
-2. `docs/NEXT_STEPS.md` — the standing task queue (code/data boundary
-   reclassification track, non-code owner promotion, evidence-naming rules).
+1. `docs/PLAN_2026-07-08-assessment-fixes.md` — the assessment fix plan:
+   P1-P8 ALL COMPLETE as of 2026-07-09. Next mainline: Phase 1 workbench
+   (parent `docs/mips-decomp-workflow-plan.md` Milestones; first M4 target =
+   cutscene animation actors/programs, Joe 2026-07-09).
+2. `docs/NEXT_STEPS.md` — the standing task queue (non-code owner promotion,
+   evidence-naming rules, optional decode tracks).
 3. Keep `node tools/verify_setup.js` green after every source-layout change.
