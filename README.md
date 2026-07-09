@@ -124,6 +124,7 @@ node tools/promote_original_mips.js --count 1
 ```
 
 Promotes generated no-gap MIPS chunks into tracked `asm/original/rev0/` source.
-Current tracked source coverage is the first chunk,
-`0x00001000..0x00011000`. Promotion refuses to overwrite existing tracked chunks
-unless `--force` is supplied.
+Promotion refuses to overwrite existing tracked chunks unless `--force` is
+supplied. ALL 100 chunks of the configured code region are promoted and
+source-owned as of 2026-06-24 (data-ownership loop complete) — current state
+numbers live in `docs/PLATFORM.md`, not here.

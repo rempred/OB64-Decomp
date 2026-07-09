@@ -114,13 +114,16 @@ dequantization, IDCT, YUV->RGB.
 
 ## P6. Documentation dedupe (follows the new AGENTS.md policy)
 
-- [ ] `docs/DECOMP_LOG.md` (105KB, ~26k tokens) violates its own ~10k-token
-  rule: archive the full version under `docs/archive/`, keep a compact
-  current-state summary.
-- [ ] `docs/PLATFORM.md`: replace the "Current State" run-on chunk narrative
-  and the historical 41-chunk enumeration with the per-chunk table + pointers
-  to the FINAL report (PLATFORM stays the canonical per-chunk composition home).
-- [ ] `docs/NEXT_STEPS.md`: drop the duplicated chunk narrative; keep only the
+- [x] DONE 2026-07-08: `docs/DECOMP_LOG.md` compacted 105KB -> ~7KB (full
+  version archived as `docs/archive/DECOMP_LOG-full-2026-07-08.md`); compact
+  dated log now covers the loop, NJPG classification, map-AI import, and the
+  2026-07-08 P-plan passes with commit hashes.
+- [x] DONE 2026-07-08: `docs/PLATFORM.md` rebuilt 641 -> 385 lines around a
+  manifest-GENERATED 100-row per-chunk composition table (reconciles to 6,181
+  parts) + a section-family map; run-on narratives replaced with pointers
+  (snapshot archived as `docs/archive/PLATFORM-full-2026-07-08.md`). Root
+  README.md stale "first chunk" coverage claim also fixed.
+- [x] DONE 2026-07-08: `docs/NEXT_STEPS.md`: dropped the duplicated chunk narrative; kept only the
   active queue.
 - Effort: 1 session. Gate: no facts deleted — anything unique goes to
   `docs/archive/` first (same method as the AGENTS.md migration, `d259dca`).

@@ -43,116 +43,52 @@ the same commit.
 
 ## Current State
 
-The repo has a Rev 0-only scaffold, verified baserom normalization, no-gap
-original MIPS extraction for the configured code region, a whole-ROM structural
-coverage ledger, raw span extraction, an exact byte-for-byte raw ROM rebuild,
-and an assembly-backed code-region rebuild. Setup is complete: a project-local
-GNU MIPS binutils toolchain is configured, tracked source chunks assemble through
-real `mips64-elf-as`, and `node tools/verify_setup.js` verifies the whole setup.
-The first source-layout loops have split the boot entry, early boot/resource
-allocator/free block, resource validation/tree helpers, early loader/state loop,
-boot mode/flag helper cluster, table/mask reconcile routine, boot mode/message
-accumulator helper, resource-buffer reset/flag helper, resource state reset
-wrapper, resource/display-list update cluster, display-list state emit helper,
-display-list finalize/flip helper, display-list sync/modes helper, and
-display-list counter-step/counter-packet helpers, resource window cache update
-helper, bitstream cursor helper cluster, bitstream descriptor decode helper, and
-bitstream descriptor encode helper, resource probe init helper, resource probe
-finalize wrapper, resource probe dispatch-prepare helper, and resource probe
-dispatch-apply helper, resource probe dispatch result-build helper, resource
-probe global cleanup helper, resource probe chunk callback-walk helper,
-resource probe global buffer copy helper, resource probe global buffer
-signature-check helper, resource probe ID materialize helper, resource probe
-dual-callback materialize helper, resource probe global-buffer dual-callback
-apply helper, resource probe ID check/materialize helper, and resource probe
-indexed-record check helper, resource probe large-record check helper, and
-resource probe small-record check helper, resource probe indexed-record
-copy/flag helper, resource probe large-record copy/flag helper, and resource
-probe record checksum/signature helper, boot state dispatch loop init helper,
-boot mode/message accumulator seed wrapper, boot resource table/mask apply
-cluster, boot state global reset helper, boot state slot callback dispatch
-helper, boot state slot render callback walk helper, boot state slot queue
-service gate, boot resource global handle release helper, boot resource global
-handle slot record prepare helper, boot state slot current peer record flag mark
-helper, boot state slot target peer record dispatch helper, boot state slot
-flagged dispatch/lookup helper, and boot state slot pool/table helpers into
-named tracked parts, then queue record-step, queue F000 record-step, slot record
-release/payload helpers, queue priority rebuild helper, no-op tails, and compact
-record-copy leaf, display-list transform record emit helper, and transform
-wrapper/clamped-rect emit helper, flagged rect packet emit helper, color rect
-packet emit helper, vector distance/transform-prefix helper, transform
-coefficients/sum-clear helper, command stream dispatch helper, command stream
-resource-node dispatch helper, resource-node payload materialize helper, and
-resource-node insert/find helper, resource-node context materialize helper,
-resource-node LZSS context materialize helper, resource-node overlay context
-materialize helper, resource-node recursive insert/slot-search helper,
-resource-node recursive cleanup/free helper, and resource-node recursive
-payload-clear helper, resource-node recursive field-`+0x0C` rewrite helper,
-resource-node recursive child/free helper, resource-node recursive key/field
-clear helper, byte copy/fill aligned leaves, the parent-labeled LZSS
-decompressor, the boot resource record mark-ready helper, and the boot resource
-loader callback-register helper into named tracked parts while preserving the
-exact rebuild gate. The current setup gate also builds a
-full-ROM source ownership manifest so non-code bytes are represented as
-raw/archive/audio/LZSS/tail/padding source forms instead of being misclassified
-as MIPS.
+Setup is complete and the data-ownership loop is COMPLETE (2026-06-24): the
+entire configured code region `0x00001000..0x0063676C` (6,510,444 bytes) is
+100% source-owned as named code/data parts — 100 composite chunks, 6,181
+tracked real-assembler source files, 0 generated fallback chunks. The full
+41,943,040-byte ROM rebuilds byte-identically, gated by
+`node tools/verify_setup.js` (17 checks).
 
-Current known-good pipeline:
+What "source-owned" means precisely — and does not mean — is defined in
+`../AGENTS.md` ("What This Repo Is (And Is Not)" + "Definitions"). Canonical
+detail, in reading order:
+
+1. `docs/FINAL_DATA_OWNERSHIP_REPORT_2026-06-24.md` — consolidated loop report
+   (coverage, natural units, HUFF/NJPG findings, unresolved questions).
+2. The Structural Snapshot table below — per-chunk composition, generated from
+   `asm/original/rev0/manifest.json`.
+3. `docs/dossiers/` — per-chunk and per-subsystem evidence (139+ dossiers).
+4. `docs/data-index/rev0/*.json` — machine-readable data-region inventories.
+5. `docs/DISASM_VALIDATION_2026-07-08.md` — the decode comments are validated
+   against GNU objdump (0 genuine disagreements over the executable extent).
+
+Recent additions (2026-07-08): AGENTS.md restored to a thin rulebook (run log
+archived, commit `d259dca`); `check_manifest.js` wired into the setup gate;
+`tools/export_function_corrections.js` delivered the loop's boundary
+corrections to the parent as `../scripts/ob64_function_corrections_rev0.json`
+(parent `docs/mips-decode.md` Stage 1b; regeneration filed as parent
+pending-tasks #16). Fix queue: `docs/PLAN_2026-07-08-assessment-fixes.md`.
+
+Current known-good pipeline and expected results:
 
 ```powershell
 node tools/verify_setup.js
 ```
 
-Expected current results:
-
-- `verify_baserom.js` accepts the parent Rev 0 `.v64`, normalizes it to
-  `build/baserom.us_rev0.z64`, and verifies Project64 CRC
-  `E6419BC5/69011DE3`.
-- `extract_original_mips.js` covers code region
-  `0x00001000..0x0063676C` with no gaps.
-- `build_rom_coverage_ledger.js` independently finds 825 valid LHA archives,
-  matches the parent archive catalog offsets, and reports zero unknown bytes.
-- `extract_rom_segments.js` emits 1,059 non-overlapping raw spans.
-- `rebuild_rom.js` produces `dist/rebuilt.us_rev0.z64` and confirms an exact
-  byte match against `build/baserom.us_rev0.z64`.
-- `assemble_original_mips.js` emits `build/assembled/rev0/code.bin`, matching
-  baserom code-region SHA256
-  `40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`.
-- `assemble_original_mips.js` currently uses 41 tracked composite
-  real-assembler chunks (`0x00001000..0x00011000` 177; `0x00011000..0x00021000`
-  350; `0x00021000..0x00031000` 216; `0x00031000..0x00041000` 67;
-  `0x00041000..0x00051000` 376; `0x00051000..0x00061000` 88;
-  `0x00061000..0x00071000` 78; `0x00071000..0x00081000` 103;
-  `0x00081000..0x00091000` 87; `0x00091000..0x000A1000` 34;
-  `0x000A1000..0x000B1000` 35; `0x000B1000..0x000C1000` 191;
-  `0x000C1000..0x000D1000` 74; `0x000D1000..0x000E1000` 67;
-  `0x000E1000..0x000F1000` 94; `0x000F1000..0x00101000` 153;
-  `0x00101000..0x00111000` 95; `0x00111000..0x00121000` 66;
-  `0x00121000..0x00131000` 95; `0x00131000..0x00141000` 80;
-  `0x00141000..0x00151000` 175; `0x00151000..0x00161000` 99;
-  `0x00161000..0x00171000` 99; `0x00171000..0x00181000` 73;
-  `0x00181000..0x00191000` 63; `0x00191000..0x001A1000` 71;
-  `0x001A1000..0x001B1000` 96; `0x001B1000..0x001C1000` 142;
-  `0x001C1000..0x001D1000` 97; `0x001D1000..0x001E1000` 103;
-  `0x001E1000..0x001F1000` 122; `0x001F1000..0x00201000` 86;
-  `0x00201000..0x00211000` 198; `0x00211000..0x00221000` 109 files =
-  6,181 tracked source files total across chunks 0–99; the per-chunk enumeration above is a HISTORICAL setup-milestone snapshot through chunk 33 — see DECOMP_LOG / the chunk list for current per-chunk counts), plus 0 generated fallback chunks (the entire configured code region 0x1000..0x63676C is now fully source-owned — data-ownership loop complete).
-- `rebuild_rom.js --assembled-code ...` substitutes that assembled code blob for
-  the raw code segment and still confirms the same full-ROM SHA256.
-- `build_full_source_manifest.js` emits a 1,059-entry full-ROM source ownership
-  manifest with zero unknown bytes and 2,469,141 ambiguous bytes preserved
-  explicitly.
-- `extract_non_code_sources.js` verifies 3 tracked non-code source owners under
-  `data/source-owners/rev0/` and generates 1,055 ignored fallback owners for the
-  remaining non-code spans.
-- `tests/binutils_smoke.js` proves `.word`, real instruction, `.set noreorder`,
-  and first tracked chunk real-assembler behavior.
-
-Current rebuilt/reference SHA256:
-
-```text
-571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A
-```
+- Rev 0 baserom verified (Project64 CRC `E6419BC5/69011DE3`), normalized to
+  `build/baserom.us_rev0.z64`.
+- Coverage ledger: 825 LHA archives (independent scan matches the parent
+  catalog), 0 unknown bytes, the 108-byte archive/audio overlap visible.
+- Manifest integrity audit: ALL CHECKS PASS (6,181 parts, contiguity + sha256).
+- Assembled code region SHA256
+  `40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`; full ROM
+  rebuild SHA256
+  `571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A` (exact).
+- Full-ROM source manifest: 1,059 entries, 0 unknown bytes, 2,469,141
+  ambiguous bytes preserved explicitly; source-owner mix 3 tracked non-code
+  files / 44,029 bytes + 1,055 generated fallback files / 35,388,567 bytes;
+  source-manifest rebuild exact.
 
 ## Repo Invariants
 
@@ -214,224 +150,137 @@ These outputs are useful but ignored:
 
 ## Structural Snapshot
 
-- ROM size: 41,943,040 bytes.
-- Code region currently extracted as original MIPS:
-  `0x00001000..0x0063676C`.
-- Chunks 0–99 (`0x00001000..0x0063676C`) are fully source-owned as named
-  code/data parts (6,181 tracked source files: 177 in `boot/` + 6,004 in `lib/`;
-  chunk 39: 135 code + 1 straddler-tail + 19 data, MIXED — mission-briefing/combat display-list
-  code continuing chunks 36-38, wrapping THREE interior data islands (big data territory
-  0x273FFC..0x275850 [136/272-word pointer tables + float64 pool + 8-row jump table]; GBI
-  display-list blob 0x279DA8..0x27A020; tail small-int LUTs + zero-fill 0x280D48..0x281000);
-  chunk ends in data, no outgoing straddler;
-  chunk 38: 230 code + 2 straddler + 0 data, ALL CODE — FP/GBI display-list builders +
-  mission-briefing/combat dispatchers (continuation of chunks 36-37), frameless-leaf dense;
-  parent-gap frameless recoveries (288 B@0x2639D8 GBI builder, 796 B@0x2664A4 switch dispatch);
-  chunk 36: 134 code + 2 straddler + 28 data, MIXED — mission-briefing/combat display-list
-  module + TWO combat-overlay DATA islands + frameless GBI builders + divide/scale helpers;
-  chunk 37: 170 code + 2 straddler + 8 data, MIXED — command-dispatcher mission-briefing/combat
-  code + a 0x80x pointer/struct/float record-table DATA island, heavy frameless-leaf recovery;
-  chunk 34: 89 code + 2 straddler + 29 data, MIXED — promotion/level-up/class-def code +
-  a combat-overlay pointer/blob/float/string DATA island; chunk 35: 127 code + 2 straddler
-  + 5 data, MIXED — class/promotion/display-list code + a float-ramp/0x801F record-table
-  DATA island, frameless-leaf dense;
-  chunk 11: 189 code + 2 straddler + 0 data, ALL CODE — 77 frameless leaves recovered;
-  chunk 12: 72 code + 2 straddler + 0 data, ALL CODE — 20 dispatchers; chunk 13: 27
-  code + 40 data, MIXED — unit-mgmt UI data; chunk 14: 74 code + 20 data, MIXED —
-  graphics/display-list data + DL-builder code; chunk 15: 134 code + 19 data, MIXED —
-  floats/display-list data + the OB64 opening-narration rodata; chunk 16: 72 code + 23
-  data, MIXED — leading scenario record/pointer/float64 data + the neutral-encounter code
-  path; chunk 17: 66 code + 0 data, ALL CODE — char-data/encounter code with incoming +
-  outgoing function straddlers; chunk 18: 95 code + 0 data, ALL CODE — FP-heavy scenario/
-  combat code; chunk 19: 64 code + 16 data, MIXED — encounter/dispatcher code (incl. the
-  neutralEncounterDispatcher) + a trailing scenario data region (bit-LUT/pointer tables/
-  record table/packed bytes) with an outgoing data straddler; chunk 20: 89 code + 86 data,
-  MIXED — leading scenario data tables [neutral_encounter 40×20, creature_drop 36×8] +
-  pointer tables + a 125-string game-text pool + encounter/dispatcher code with an outgoing
-  function straddler; chunk 21: 94 code + 5 data, MIXED — class/character-lookup code [incl.
-  the classLookup_full lead @0x1591FC] + a trailing high-entropy/compressed data region with
-  an outgoing data straddler; chunk 22: 35 code + 64 data, MIXED — leading UI/text +
-  weapon-type/terrain resource data + pointer/float pools wrapping FP-heavy menu/item/legion
-  code, with incoming AND outgoing DATA straddlers; chunk 23: 40 code + 33 data, MIXED 6-region —
-  scenario/camera + char-data code interleaved with two large data islands the parent DB
-  mislabeled as functions [refuted byte-exactly], ending in the outgoing FUNCTION straddler
-  func_0017FF4C; chunk 24: 40 code + 23 data, MIXED 3-region — FP/menu/display code wrapping a
-  large ~26.7KB interior DATA region [font/tile bitmaps + fixed-stride record tables + 0x8021
-  pointer tables + float64 pool] the parent DB again missed, with incoming AND outgoing FUNCTION
-  straddlers; chunk 25: 59 code + 12 data, CODE-dominant MIXED — char/class/scenario code [incl.
-  the documented record-builder func_0019554C, hook @0x195584] + a shop-dialogue string pool +
-  2 inline data islands, with incoming AND outgoing FUNCTION straddlers; chunk 26: 81 code + 15
-  data, CODE-dominant MIXED — FP-heavy char/class/scenario/encounter code + 3 inline DATA islands
-  [Soldier/Thrust labels + jump table; a ~1.9KB ramp-LUT/packed-record/double-pool island after
-  func_001A42A4; an options-menu string pool], incl. ESET loader func_001A6D64, reward-queue writer
-  func_001AF828, 9.3KB dispatcher func_001A9290 (the editor's "0x1AB030 jump table" refuted as
-  class-promotion CODE), with incoming AND outgoing FUNCTION straddlers; chunk 27: 128 code + 14
-  data, CODE-dominant MIXED - FP-heavy class/char/encounter/resource code + status/menu string
-  table island + display-list/float/color-LUT island, with incoming AND outgoing FUNCTION
-  straddlers; chunk 28: 73 normal code + 22 data + 2 function straddlers, MIXED - stronghold/
-  tutorial text + pointer/GBI-like data + packed command/script blobs + recovered frameless
-  helpers; chunk 29: 97 normal code + 4 zero-fill data + 2 function straddlers, CODE-dominant
-  MIXED - dense world-map/resource code + recovered frameless helpers; chunk 30: 89 normal code
-  + 31 data + 2 function straddlers, MIXED - FP/RDP display-list world-map/resource code wrapping
-  the Sound-Test/BGM-selection screen + staff-credits DATA territory [`0x1EE574..0x1F0A30`];
-  chunk 31: 84 normal code + 0 data + 2 function straddlers, ALL CODE - FP/GBI display-list
-  builders + attack/queue module code incl. the High-Attack cleanup-guard site at z64 `0x1F36F0`;
-  chunk 32: 196 normal code + 0 data + 2 function straddlers, ALL CODE - frameless-leaf-dense
-  FP/display-list + class-def/char-data code;
-  chunk 33: 82 normal code + 25 data + 2 function straddlers, MIXED - code + a font/glyph +
-  pointer/float DATA region [`0x211D14..0x213B10`] + a jump-table state-machine straddler);
-  the configured code region is now fully source-owned through `0x0063676C` (chunk 99, the terminal partial chunk; 0 generated fallback chunks remain — data-ownership loop complete; the Section C HUFF pool is fully owned).
-  chunk 1
-  `0x11000..0x21000` is a graphics/unit-script/math/libc/libultra library; chunk 2
-  `0x21000..0x31000` is the statically-linked libultra (N64 SDK) + libc + 64-bit
-  runtime + `gu` matrix library + RSP-microcode data; chunk 3 `0x31000..0x41000`
-  (DATA-DOMINANT) is a bundle of N64 RSP microcodes + the text-VM jump table +
-  zero-fill/rodata, plus a 23-function overlay-relocated code tail; chunk 4
-  `0x41000..0x51000` (CODE-DOMINANT) is overlay-relocated, frameless-leaf-dense
-  code (RAM `0x8016B198+`), all conservative `func_*`; chunk 5 `0x51000..0x61000`
-  (MIXED) is overlay code `0x5148C..0x5C208` + a ~20 KB game-data tail
-  `0x5C208..0x61000` (F3DEX2 GBI display-list image, AI/element/attack name string
-  pools, pointer/descriptor/order tables, two fixed-stride record tables); chunk 6
-  `0x61000..0x71000` (MIXED + PARENT-UNDETECTED) is item/equipment data
-  (`0x61000..0x66E10`) + parent-undetected overlay code (`0x66E10..0x70E70`) + a
-  data tail (`0x70E70..0x71000`, straddles into chunk 7); chunk 7 `0x71000..0x81000`
-  (MIXED 4-region) is a blob continuation + parent-undetected code
-  (`0x71280..0x783A0`) + Controller-Pak/save-data menu data (`0x783A0..0x79730`) +
-  parent-detected code (`0x79730..0x81000`, with an 11 KB switch-dispatcher and a
-  chunk-8 straddler); chunk 8 `0x81000..0x91000` (MIXED 3-region) is a straddler
-  tail + parent-detected code (`0x81000..0x85818`) + game data (`0x85818..0x87200`:
-  mission/location-name pool + UI/options-menu pool + packed records + RAM-pointer
-  tables) + code (`0x87200..0x91000`, with a chunk-9 straddler); chunk 9
-  `0x91000..0xA1000` (ALL CODE) is army-mgmt / F3DEX display-list builders — 32
-  framed functions + 2 straddlers, 1 preamble-orphan `func_00095258`, 2 jump-table
-  dispatchers with tables in `0x801F` relocated RAM, 0 inline data, with a chunk-10
-  straddler `func_000A0DAC` continuing to `0x000A118C`; chunk 10 `0xA1000..0xB1000`
-  (ALL CODE) is more of the same family — 33 functions + 2 straddlers, 3
-  preamble-orphans + 7 recovered frameless leaves (incl. the 6,944 B `func_000AB6D8`),
-  5 jump-table dispatchers (tables in `0x801EF…` relocated RAM), 0 inline data, with
-  a chunk-11 straddler `func_000B0BFC` continuing to `0x000B1F00`; chunk 11
-  `0xB1000..0xC1000` (ALL CODE, frameless-leaf-DENSE) is FP-math + char-data/
-  display-list code — 189 functions (112 framed + 77 recovered frameless) + 2
-  straddlers, 4 gap clusters, 9 jump-table dispatchers (tables in `0x801F` relocated
-  RAM), 0 inline data, with a chunk-12 straddler `func_000C0EDC` continuing to
-  `0x000C132C`; chunk 12 `0xC1000..0xD1000` (ALL CODE) is FP-math +
-  dispatcher-heavy char-data code — 72 functions + 2 straddlers, deferred-prologue
-  `func_000C132C`, 12 frameless leaves, ~24 preamble-orphans, 20 jump-table
-  dispatchers (tables in `0x801F` relocated RAM), 0 inline data, with a chunk-13
-  straddler `func_000D0B8C` continuing to `0x000D110C`; chunk 13 `0xD1000..0xE1000`
-  (MIXED) is dispatcher-heavy char-data code (`0xD1000..0xDAB18`, 26 fns + straddler-tail)
-  then unit/battle-management UI data (`0xDAB18..0xE1000`, 40 data parts: string pools,
-  RAM-pointer tables, IEEE floats, a display-list/command stream, + an outgoing
-  packed/glyph data straddler `data_000e0bd0` into chunk 14); chunk 14 `0xE1000..0xF1000`
-  (MIXED, 4 interleaved regions) is graphics/display-list DATA (`0xE1000..0xE48F0`) +
-  DL-builder/char-data CODE (`0xE48F0..0xEAEFC`, incl. 3 leading frameless DL builders)
-  + a pointer-table DATA island (`0xEAEFC..0xEBBB0`, with debug format strings) +
-  char-data/FP CODE (`0xEBBB0..0xF1000`), with an incoming data straddler and an
-  outgoing function straddler `func_000F0F64` into chunk 15; chunk 15 `0xF1000..0x101000`
-  (MIXED, code-heavier, 5 interleaved regions) is an incoming FUNCTION straddler-tail
-  (`0xF1000..0xF1354`) + CODE R1 (`0xF1354..0xF8550`) + floats/pointers/display-list
-  DATA (`0xF8550..0xF9FF8`) + CODE R2 (`0xF9FF8..0x1003CC`) + tail DATA
-  (`0x1003CC..0x101000`: packed records + the OB64 opening-prologue narration rodata
-  `rodata_001006f0` + a pointer table + a fixed-stride float-record table) ending in an
-  outgoing DATA straddler `data_00100fd4` into chunk 16; chunk 16 `0x101000..0x111000`
-  (MIXED) is a leading scenario DATA region (`0x101000..0x101CE0`: a fixed-stride
-  0x50-byte record-table tail continuing from chunk 15, 0x801A RAM-pointer/jump tables,
-  and a float64 const pool) + the neutral-encounter CODE path (`0x101CE0..0x111000`;
-  parent-documented LEADS: 0x102FA8 scenario dispatcher, 0x105CC8 text_renderer,
-  0x10D484/0x10DDBC spawn helpers — names stay `func_*`) with an outgoing FUNCTION
-  straddler `func_00110160` into chunk 17; chunk 17 `0x111000..0x121000` (ALL CODE) is
-  char-data/encounter code — incoming straddler-tail `func_00110160_chunk17tail`
-  (`0x111000..0x111464`) + ~64 functions + outgoing straddler-head `func_00120FC4`
-  (`0x120FC4..0x121000`) into chunk 18; chunk 18 `0x121000..0x131000` (ALL CODE) is
-  FP-heavy scenario/combat code — incoming straddler-tail `func_00120FC4_chunk18tail`
-  (`0x121000..0x1211F8`) + ~93 functions + outgoing straddler-head `func_00130E60`
-  (`0x130E60..0x131000`) into chunk 19; chunk 19 `0x131000..0x141000` (MIXED) is
-  encounter/dispatcher CODE (`0x131050..0x13C49C`, incl. the `neutralEncounterDispatcher`
-  @0x13C068 named conservatively `func_0013C060`) + a trailing DATA region
-  (`0x13C49C..0x141000`: bit-LUT + 0x801E pointer tables + a fixed-stride record/script
-  table + packed-byte tail straddling into chunk 20); chunk 20 `0x141000..0x151000` (MIXED)
-  is leading scenario DATA (`0x141000..0x145210`: packed-byte straddler + gfx/float pools +
-  the documented `neutral_encounter_table` [40×20 @0x141ED0] and `creature_drop_table`
-  [36×8 @0x142258] + 0x801A/0x801B pointer tables + a 125-string game-text pool @0x1432E4) +
-  encounter/dispatcher CODE (`0x145210..0x151000`, an inline data island @0x14DE88) with an
-  outgoing function straddler `func_00150550` into chunk 21; chunk 21 `0x151000..0x161000`
-  (MIXED) is class/character-lookup CODE (`0x15105C..0x15FBF0`, incl. the `classLookup_full`
-  lead @0x1591FC named conservatively `func_001591FC`) + a trailing high-entropy/compressed
-  DATA region (`0x15FBF0..0x161000`) with an outgoing data straddler `data_0015FDF8` into
-  chunk 22; chunk 22 `0x161000..0x171000` (MIXED) is leading resource DATA
-  (`0x161000..0x165FC0`: incoming straddler-tail + packed/bitmap blobs + 0x801F/0x8021 pointer
-  & float pools + decoded ASCII pools — weapon/armor type-name table @0x163FC0, terrain+UI
-  message pool @0x1650A0) + FP-heavy menu/item/legion CODE (`0x165FC0..0x16FB90`, entry
-  `func_00165FC0` preamble-orphan) + a trailing DATA region (`0x16FB90..0x171000`: UI strings +
-  GBI/RDP display-list data) with an outgoing `0xF83E` packed-halfword straddler
-  `data_001708C8_chunk22head` into chunk 23; chunk 23 `0x171000..0x181000` (MIXED, 6 regions) is
-  leading DATA → scenario/camera CODE1 (`0x171EA0..0x175F28`) → DATA island1
-  (`0x175F28..0x177ED0`, incl. a 408B tutorial help-message) → char-data CODE2
-  (`0x177ED0..0x17BCD0`) → DATA island2 (`0x17BCD0..0x17F9C0`, largest; packed/high-entropy) →
-  CODE3 (`0x17F9C0..0x181000`) ending in the outgoing FUNCTION straddler-head `func_0017FF4C`
-  into chunk 24 — the two data islands were proven byte-exactly to be data (0 prologues/returns),
-  refuting the parent DB's "function" mislabel; chunk 24 `0x181000..0x191000` (MIXED, 3 regions)
-  is CODE1 (`0x181000..0x1822E4`, incoming straddler-tail func_0017FF4C_chunk24tail + FP/menu code)
-  → a large interior DATA region (`0x1822E4..0x188B60`, ~26.7KB: font/tile bitmaps + fixed-stride
-  record tables [363×0x10, 177×0x10] + 0x8021 RAM-pointer tables + float64 pool — again missed by
-  the parent DB, 0 prologues/returns) → CODE2 (`0x188B60..0x191000`, char/display code incl. the
-  8788B func_00189778 + inline data island data_0018F044) ending in the outgoing FUNCTION
-  straddler-head `func_0018FB30` into chunk 25; chunk 25 `0x191000..0x1A1000` (CODE-dominant MIXED)
-  is char/class/scenario CODE1 (`0x191000..0x19BFF0`, incl. the documented record-builder
-  func_0019554C [hook @0x195584] + huge func_001960A8 + dispatcher func_001977E0 + 2 inline data
-  islands) → a shop-dialogue STRING POOL (`0x19BFF0..0x19C760`, rodata + handler-pointer tables) →
-  CODE2 (`0x19C760..0x1A1000`) ending in the outgoing FUNCTION straddler-head `func_001A0264` into
-  chunk 26; chunks 26-27 are now also source-owned, and chunk 18 remains all code (dossiers
-  `docs/dossiers/boot-resource-decode-subsystem-B030-F22C.md`,
-  `docs/dossiers/boot-codec-libc-vec3-F22C-11000.md`,
-  `docs/dossiers/lib-chunk1-11000-21000.md`,
-  `docs/dossiers/lib-chunk2-21000-31000.md`,
-  `docs/dossiers/lib-chunk3-31000-41000.md`,
-  `docs/dossiers/lib-chunk4-41000-51000.md`,
-  `docs/dossiers/lib-chunk5-51000-61000.md`,
-  `docs/dossiers/lib-chunk6-61000-71000.md`,
-  `docs/dossiers/lib-chunk7-71000-81000.md`,
-  `docs/dossiers/lib-chunk8-81000-91000.md`,
-  `docs/dossiers/lib-chunk9-91000-A1000.md`,
-  `docs/dossiers/lib-chunk10-A1000-B1000.md`,
-  `docs/dossiers/lib-chunk11-B1000-C1000.md`,
-  `docs/dossiers/lib-chunk12-C1000-D1000.md`,
-  `docs/dossiers/lib-chunk13-D1000-E1000.md`,
-  `docs/dossiers/lib-chunk14-E1000-F1000.md`,
-  `docs/dossiers/lib-chunk15-F1000-101000.md`,
-  `docs/dossiers/lib-chunk16-101000-111000.md`,
-  `docs/dossiers/lib-chunk17-111000-121000.md`,
-  `docs/dossiers/lib-chunk18-121000-131000.md`,
-  `docs/dossiers/lib-chunk19-131000-141000.md`,
-  `docs/dossiers/lib-chunk20-141000-151000.md`,
-  `docs/dossiers/lib-chunk21-151000-161000.md`,
-  `docs/dossiers/lib-chunk22-161000-171000.md`,
-  `docs/dossiers/lib-chunk23-171000-181000.md`,
-  `docs/dossiers/lib-chunk24-181000-191000.md`,
-  `docs/dossiers/lib-chunk25-191000-1A1000.md`,
-  `docs/dossiers/lib-chunk26-1A1000-1B1000.md`,
-  `docs/dossiers/lib-chunk27-1B1000-1C1000.md`).
-- Executable extent (evidence, `tools/audit_code_region.js`):
-  `0x00001000..0x002B89B4`. The trailing `0x002B89B4..0x0063676C` (3,661,240
-  bytes, 56.24%) has zero `jr $ra` and is non-code data still emitted as `.word`
-  `original_mips`; reclassification is the next full-ROM-coverage step. See
-  `docs/CODE_REGION_AUDIT.md`.
-- Valid parsed LHA archives: 825.
-- Parent archive catalog count and offsets match the independent scan.
-- Method-like signatures: 837 total, 12 rejected or unparsed, none in unknown
-  space.
-- Unknown bytes: 0.
-- Archive-gap bytes: 2,429,124.
-- Tail data: `0x0275415B..0x0275DD40`.
-- Clean trailing `0xFF` padding: `0x0275DD40..0x02800000`.
-- Known visible archive/audio overlap:
-  `0x00925483..0x009254EF` (108 bytes).
-- Full-ROM source manifest: 1,059 contiguous entries; 6,510,444 bytes
-  `original_mips`; 35,432,596 bytes non-code/raw/data/archive source forms;
-  2,469,141 ambiguous bytes preserved explicitly; 0 unknown bytes.
-- Source-owner rebuild: 3 tracked non-code owner files under
-  `data/source-owners/rev0/` (44,029 bytes), 1,048 generated fallback files under
-  `build/source-owners/rev0/` (35,388,567 bytes), source-manifest rebuild exact.
+Whole-ROM facts:
+
+- ROM size: 41,943,040 bytes; z64 SHA256 `571E8339...2CC67A`.
+- Configured code region: `0x00001000..0x0063676C` (fully source-owned).
+- Evidenced executable MIPS extent: `0x00001000..0x002B89B4`
+  (`docs/CODE_REGION_AUDIT.md`); the trailing 3,661,240 bytes are classified
+  non-code data still emitted as `.word` pending the reclassification track.
+- Valid parsed LHA archives: 825 (first at `0x636784`); archive-gap bytes
+  2,429,124; tail data `0x275415B..0x275DD40`; trailing `0xFF` padding to
+  `0x2800000`; known archive/audio overlap `0x925483..0x9254EF` (108 bytes).
+
+Region map by content family (detail in the FINAL report + dossiers):
+
+| Range | Family |
+|---|---|
+| `0x1000..0x11000` | Chunk 0 `boot/`: resource loader/allocator, LZSS + Huffman codecs, libc, vec3, display-list core (semantically named; 81 boot dossiers) |
+| `0x11000..0x31000` | Statically linked libultra/libc/gu + graphics/unit-script library (named symbols) |
+| `0x31000..0x41000` | RSP microcode bundle + text-VM jump table + overlay code tail |
+| `0x41000..0x2B89B4` | Overlay-relocated game code (army/char/scenario/combat/menu/world-map/mission-briefing modules) with interleaved data islands; conservative `func_*` naming; per-chunk dossiers |
+| `0x2B89B4..0x301000` | Non-code high-entropy asset territory (code→data transition pinned `0x2B89B8` in chunk 43) |
+| `0x301000..0x4E3140` | Section A = AUDIO: decoded PtrTablesV2/WaveTables VADPCM sound bank @`0x421000` + flat sample payload |
+| `0x4E3140..0x4F0FB0` | Section B index (1,798 records, shape decoded) + payload |
+| `0x4F0FB0..0x594280` | Section B: 63 parser-backed cutscene audio-sequence blocks (tag `0x215`, Gate-2 proven) |
+| `0x594280..0x63676C` | Section C: 65-entry directory + 29-block 320x240 NJPG "HUFF" image pool (entropy stage decoded; render pending) |
+
+Per-chunk composition (generated from `asm/original/rev0/manifest.json`;
+code = named function/straddler/cluster parts, data/zero-fill by part prefix;
+6,181 parts total — regenerate this table after any split change):
+
+| # | z64 range | parts | code | data | zero-fill | dossier |
+|---|---|---|---|---|---|---|
+| 0 | `0x00001000..0x00011000` | 177 | 177 | 0 | 0 | `boot-*` |
+| 1 | `0x00011000..0x00021000` | 350 | 349 | 1 | 0 | `lib-chunk1-11000-21000` |
+| 2 | `0x00021000..0x00031000` | 216 | 214 | 2 | 0 | `lib-chunk2-21000-31000` |
+| 3 | `0x00031000..0x00041000` | 67 | 23 | 23 | 21 | `lib-chunk3-31000-41000` |
+| 4 | `0x00041000..0x00051000` | 376 | 376 | 0 | 0 | `lib-chunk4-41000-51000` |
+| 5 | `0x00051000..0x00061000` | 88 | 77 | 11 | 0 | `lib-chunk5-51000-61000` |
+| 6 | `0x00061000..0x00071000` | 78 | 60 | 18 | 0 | `lib-chunk6-61000-71000` |
+| 7 | `0x00071000..0x00081000` | 103 | 81 | 22 | 0 | `lib-chunk7-71000-81000` |
+| 8 | `0x00081000..0x00091000` | 87 | 63 | 20 | 4 | `lib-chunk8-81000-91000` |
+| 9 | `0x00091000..0x000A1000` | 34 | 34 | 0 | 0 | `lib-chunk9-91000-A1000` |
+| 10 | `0x000A1000..0x000B1000` | 35 | 35 | 0 | 0 | `lib-chunk10-A1000-B1000` |
+| 11 | `0x000B1000..0x000C1000` | 191 | 191 | 0 | 0 | `lib-chunk11-B1000-C1000` |
+| 12 | `0x000C1000..0x000D1000` | 74 | 74 | 0 | 0 | `lib-chunk12-C1000-D1000` |
+| 13 | `0x000D1000..0x000E1000` | 67 | 27 | 35 | 5 | `lib-chunk13-D1000-E1000` |
+| 14 | `0x000E1000..0x000F1000` | 94 | 74 | 16 | 4 | `lib-chunk14-E1000-F1000` |
+| 15 | `0x000F1000..0x00101000` | 153 | 134 | 17 | 2 | `lib-chunk15-F1000-101000` |
+| 16 | `0x00101000..0x00111000` | 95 | 72 | 20 | 3 | `lib-chunk16-101000-111000` |
+| 17 | `0x00111000..0x00121000` | 66 | 66 | 0 | 0 | `lib-chunk17-111000-121000` |
+| 18 | `0x00121000..0x00131000` | 95 | 95 | 0 | 0 | `lib-chunk18-121000-131000` |
+| 19 | `0x00131000..0x00141000` | 80 | 64 | 15 | 1 | `lib-chunk19-131000-141000` |
+| 20 | `0x00141000..0x00151000` | 175 | 89 | 64 | 22 | `lib-chunk20-141000-151000` |
+| 21 | `0x00151000..0x00161000` | 99 | 95 | 4 | 0 | `lib-chunk21-151000-161000` |
+| 22 | `0x00161000..0x00171000` | 99 | 35 | 60 | 4 | `lib-chunk22-161000-171000` |
+| 23 | `0x00171000..0x00181000` | 73 | 40 | 26 | 7 | `lib-chunk23-171000-181000` |
+| 24 | `0x00181000..0x00191000` | 63 | 40 | 19 | 4 | `lib-chunk24-181000-191000` |
+| 25 | `0x00191000..0x001A1000` | 71 | 59 | 11 | 1 | `lib-chunk25-191000-1A1000` |
+| 26 | `0x001A1000..0x001B1000` | 96 | 81 | 12 | 3 | `lib-chunk26-1A1000-1B1000` |
+| 27 | `0x001B1000..0x001C1000` | 142 | 128 | 10 | 4 | `lib-chunk27-1B1000-1C1000` |
+| 28 | `0x001C1000..0x001D1000` | 97 | 75 | 20 | 2 | `lib-chunk28-1C1000-1D1000` |
+| 29 | `0x001D1000..0x001E1000` | 103 | 99 | 0 | 4 | `lib-chunk29-1D1000-1E1000` |
+| 30 | `0x001E1000..0x001F1000` | 122 | 91 | 26 | 5 | `lib-chunk30-1E1000-1F1000` |
+| 31 | `0x001F1000..0x00201000` | 86 | 86 | 0 | 0 | `lib-chunk31-1F1000-201000` |
+| 32 | `0x00201000..0x00211000` | 198 | 198 | 0 | 0 | `lib-chunk32-201000-211000` |
+| 33 | `0x00211000..0x00221000` | 109 | 84 | 22 | 3 | `lib-chunk33-211000-221000` |
+| 34 | `0x00221000..0x00231000` | 120 | 91 | 28 | 1 | `lib-chunk34-221000-231000` |
+| 35 | `0x00231000..0x00241000` | 134 | 129 | 4 | 1 | `lib-chunk35-231000-241000` |
+| 36 | `0x00241000..0x00251000` | 164 | 136 | 24 | 4 | `lib-chunk36-241000-251000` |
+| 37 | `0x00251000..0x00261000` | 180 | 172 | 6 | 2 | `lib-chunk37-251000-261000` |
+| 38 | `0x00261000..0x00271000` | 232 | 232 | 0 | 0 | `lib-chunk38-261000-271000` |
+| 39 | `0x00271000..0x00281000` | 155 | 136 | 13 | 6 | `lib-chunk39-271000-281000` |
+| 40 | `0x00281000..0x00291000` | 159 | 143 | 15 | 1 | `lib-chunk40-281000-291000` |
+| 41 | `0x00291000..0x002A1000` | 160 | 136 | 20 | 4 | `lib-chunk41-291000-2A1000` |
+| 42 | `0x002A1000..0x002B1000` | 171 | 159 | 11 | 1 | `lib-chunk42-2A1000-2B1000` |
+| 43 | `0x002B1000..0x002C1000` | 90 | 82 | 4 | 4 | `lib-chunk43-2B1000-2C1000` |
+| 44 | `0x002C1000..0x002D1000` | 17 | 0 | 9 | 8 | `lib-chunk44-2C1000-2D1000` |
+| 45 | `0x002D1000..0x002E1000` | 15 | 0 | 8 | 7 | `lib-chunk45-2D1000-2E1000` |
+| 46 | `0x002E1000..0x002F1000` | 17 | 0 | 9 | 8 | `lib-chunk46-2E1000-2F1000` |
+| 47 | `0x002F1000..0x00301000` | 27 | 0 | 14 | 13 | `lib-chunk47-2F1000-301000` |
+| 48 | `0x00301000..0x00311000` | 9 | 0 | 5 | 4 | `section-a-00301000-00341000-data-ownership` |
+| 49 | `0x00311000..0x00321000` | 11 | 0 | 6 | 5 | `section-a-00301000-00341000-data-ownership` |
+| 50 | `0x00321000..0x00331000` | 13 | 0 | 7 | 6 | `section-a-00301000-00341000-data-ownership` |
+| 51 | `0x00331000..0x00341000` | 13 | 0 | 7 | 6 | `section-a-00301000-00341000-data-ownership` |
+| 52 | `0x00341000..0x00351000` | 13 | 0 | 7 | 6 | `section-a-00341000-003E1000-data-ownership` |
+| 53 | `0x00351000..0x00361000` | 9 | 0 | 5 | 4 | `section-a-00341000-003E1000-data-ownership` |
+| 54 | `0x00361000..0x00371000` | 9 | 0 | 5 | 4 | `section-a-00341000-003E1000-data-ownership` |
+| 55 | `0x00371000..0x00381000` | 9 | 0 | 5 | 4 | `section-a-00341000-003E1000-data-ownership` |
+| 56 | `0x00381000..0x00391000` | 7 | 0 | 4 | 3 | `section-a-00341000-003E1000-data-ownership` |
+| 57 | `0x00391000..0x003A1000` | 1 | 0 | 1 | 0 | `section-a-00341000-003E1000-data-ownership` |
+| 58 | `0x003A1000..0x003B1000` | 5 | 0 | 3 | 2 | `section-a-00341000-003E1000-data-ownership` |
+| 59 | `0x003B1000..0x003C1000` | 3 | 0 | 2 | 1 | `section-a-00341000-003E1000-data-ownership` |
+| 60 | `0x003C1000..0x003D1000` | 3 | 0 | 2 | 1 | `section-a-00341000-003E1000-data-ownership` |
+| 61 | `0x003D1000..0x003E1000` | 5 | 0 | 3 | 2 | `section-a-00341000-003E1000-data-ownership` |
+| 62 | `0x003E1000..0x003F1000` | 5 | 0 | 3 | 2 | `section-a-003E1000-00421000-data-ownership` |
+| 63 | `0x003F1000..0x00401000` | 5 | 0 | 3 | 2 | `section-a-003E1000-00421000-data-ownership` |
+| 64 | `0x00401000..0x00411000` | 7 | 0 | 4 | 3 | `section-a-003E1000-00421000-data-ownership` |
+| 65 | `0x00411000..0x00421000` | 15 | 0 | 8 | 7 | `section-a-003E1000-00421000-data-ownership` |
+| 66 | `0x00421000..0x00431000` | 8 | 0 | 5 | 3 | `section-a-audio-bank-00421000-00431000-data-ownership` |
+| 67 | `0x00431000..0x00441000` | 21 | 0 | 11 | 10 | `section-a-audio-bank-tail-00431000-00441000-data-ownership` |
+| 68 | `0x00441000..0x00451000` | 33 | 0 | 17 | 16 | `section-a-flat-audio-00441000-004E1000-data-ownership` |
+| 69 | `0x00451000..0x00461000` | 23 | 0 | 12 | 11 | `section-a-flat-audio-00441000-004E1000-data-ownership` |
+| 70 | `0x00461000..0x00471000` | 19 | 0 | 10 | 9 | `section-a-flat-audio-00441000-004E1000-data-ownership` |
+| 71 | `0x00471000..0x00481000` | 23 | 0 | 12 | 11 | `section-a-flat-audio-00441000-004E1000-data-ownership` |
+| 72 | `0x00481000..0x00491000` | 21 | 0 | 11 | 10 | `section-a-flat-audio-00441000-004E1000-data-ownership` |
+| 73 | `0x00491000..0x004A1000` | 33 | 0 | 17 | 16 | `section-a-flat-audio-00441000-004E1000-data-ownership` |
+| 74 | `0x004A1000..0x004B1000` | 13 | 0 | 7 | 6 | `section-a-flat-audio-00441000-004E1000-data-ownership` |
+| 75 | `0x004B1000..0x004C1000` | 7 | 0 | 4 | 3 | `section-a-flat-audio-00441000-004E1000-data-ownership` |
+| 76 | `0x004C1000..0x004D1000` | 7 | 0 | 4 | 3 | `section-a-flat-audio-00441000-004E1000-data-ownership` |
+| 77 | `0x004D1000..0x004E1000` | 15 | 0 | 8 | 7 | `section-a-flat-audio-00441000-004E1000-data-ownership` |
+| 78 | `0x004E1000..0x004F1000` | 4 | 0 | 4 | 0 | `section-a-to-b-boundary-004E1000-004F1000-data-ownership` |
+| 79 | `0x004F1000..0x00501000` | 11 | 0 | 11 | 0 | `section-b-audio-sequence-blocks-004F1000-00595000-data-ownership` |
+| 80 | `0x00501000..0x00511000` | 5 | 0 | 5 | 0 | `section-b-audio-sequence-blocks-004F1000-00595000-data-ownership` |
+| 81 | `0x00511000..0x00521000` | 4 | 0 | 4 | 0 | `section-b-audio-sequence-blocks-004F1000-00595000-data-ownership` |
+| 82 | `0x00521000..0x00531000` | 4 | 0 | 4 | 0 | `section-b-audio-sequence-blocks-004F1000-00595000-data-ownership` |
+| 83 | `0x00531000..0x00541000` | 5 | 0 | 5 | 0 | `section-b-audio-sequence-blocks-004F1000-00595000-data-ownership` |
+| 84 | `0x00541000..0x00551000` | 9 | 0 | 9 | 0 | `section-b-audio-sequence-blocks-004F1000-00595000-data-ownership` |
+| 85 | `0x00551000..0x00561000` | 9 | 0 | 9 | 0 | `section-b-audio-sequence-blocks-004F1000-00595000-data-ownership` |
+| 86 | `0x00561000..0x00571000` | 11 | 0 | 11 | 0 | `section-b-audio-sequence-blocks-004F1000-00595000-data-ownership` |
+| 87 | `0x00571000..0x00581000` | 4 | 0 | 4 | 0 | `section-b-audio-sequence-blocks-004F1000-00595000-data-ownership` |
+| 88 | `0x00581000..0x00591000` | 9 | 0 | 9 | 0 | `section-b-audio-sequence-blocks-004F1000-00595000-data-ownership` |
+| 89 | `0x00591000..0x005A1000` | 5 | 0 | 4 | 1 | `section-b-audio-sequence-blocks-004F1000-00595000-data-ownership` |
+| 90 | `0x005A1000..0x005B1000` | 3 | 0 | 3 | 0 | `section-c-huff-pool-005A1000-0063676C-data-ownership` |
+| 91 | `0x005B1000..0x005C1000` | 4 | 0 | 4 | 0 | `section-c-huff-pool-005A1000-0063676C-data-ownership` |
+| 92 | `0x005C1000..0x005D1000` | 4 | 0 | 4 | 0 | `section-c-huff-pool-005A1000-0063676C-data-ownership` |
+| 93 | `0x005D1000..0x005E1000` | 4 | 0 | 4 | 0 | `section-c-huff-pool-005A1000-0063676C-data-ownership` |
+| 94 | `0x005E1000..0x005F1000` | 4 | 0 | 4 | 0 | `section-c-huff-pool-005A1000-0063676C-data-ownership` |
+| 95 | `0x005F1000..0x00601000` | 3 | 0 | 3 | 0 | `section-c-huff-pool-005A1000-0063676C-data-ownership` |
+| 96 | `0x00601000..0x00611000` | 4 | 0 | 4 | 0 | `section-c-huff-pool-005A1000-0063676C-data-ownership` |
+| 97 | `0x00611000..0x00621000` | 4 | 0 | 4 | 0 | `section-c-huff-pool-005A1000-0063676C-data-ownership` |
+| 98 | `0x00621000..0x00631000` | 5 | 0 | 5 | 0 | `section-c-huff-pool-005A1000-0063676C-data-ownership` |
+| 99 | `0x00631000..0x0063676C` | 1 | 0 | 1 | 0 | `section-c-huff-pool-005A1000-0063676C-data-ownership` |
 
 ## Current Tool Roles
 
@@ -514,128 +363,23 @@ These outputs are useful but ignored:
 - `tests/word_asm_smoke.js` verifies the minimal `.word` assembler used by the
   generated fallback path.
 
+
 ## Setup Complete
 
-Setup is complete when:
-
-```powershell
-node tools/verify_setup.js
-```
-
-prints PASS. Current PASS summary:
-
-- Baserom Rev 0 verified.
-- Coverage ledger: 825 archives, zero unknown bytes, 108 overlap bytes visible.
-- Toolchain: `n64-tools-gcc-toolchain-mips64-win64`, GNU Binutils 2.39.
-- Binutils smoke tests: `.word`, real instructions, `.set noreorder`, and first
-  tracked chunk real assembly all pass.
-- Source mix: 100 tracked composite real-asm chunks made from 6,181 tracked source
-  files, plus 0 generated fallback chunks. (Current totals: 100 composites / 6,181 files / 0 fallback — the entire configured code region 0x1000..0x63676C is fully source-owned.)
-- Source manifest: 1,059 entries, zero unknown bytes, 2,469,141 ambiguous bytes
-  preserved explicitly.
-- Source owners: 3 tracked non-code files / 44,029 bytes plus 1,055 generated
-  fallback files / 35,388,567 bytes; total 35,432,596 non-code bytes.
-- Code SHA256:
-  `40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`.
-- Full ROM SHA256:
-  `571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A`.
+Setup is complete when `node tools/verify_setup.js` prints PASS (currently: 17
+checks green). Toolchain: `n64-tools-gcc-toolchain-mips64-win64` (GNU Binutils
+2.39 `mips64-elf-as.exe`, `-EB -mips3 -32`, Windows-only), SHA256-pinned zip,
+installed under ignored `.toolchains/`. Smoke tests prove `.word` output, real
+instruction encodings, `.set noreorder` delay-slot behavior, and first-chunk
+real assembly. Full expected numbers are in Current State above.
 
 ## Next Best Work
 
-The setup phase is complete and the first source split is committed to local
-docs:
+The data-ownership loop is COMPLETE; there is no chunk frontier. Active queues:
 
-- `asm/original/rev0/boot/boot_entry_clear_bss.s`
-- `docs/dossiers/boot-entry-clear-bss.md`
-- `docs/dossiers/boot-resource-arena-and-alloc.md`
-- `docs/dossiers/boot-resource-alloc-free.md`
-- `docs/dossiers/boot-resource-validation-realloc-trees.md`
-- `docs/dossiers/boot-early-loader-state-loop.md`
-- `docs/dossiers/boot-mode-flag-helpers.md`
-- `docs/dossiers/boot-table-mask-reconcile.md`
-- `docs/dossiers/boot-mode-message-accumulator-update.md`
-- `docs/dossiers/boot-resource-buffer-reset-flags.md`
-- `docs/dossiers/boot-resource-state-reset.md`
-- `docs/dossiers/boot-resource-display-list-update.md`
-- `docs/dossiers/boot-display-list-state-emit.md`
-- `docs/dossiers/boot-display-list-finalize-flip.md`
-- `docs/dossiers/boot-display-list-sync-modes.md`
-- `docs/dossiers/boot-display-list-counter-step.md`
-- `docs/dossiers/boot-display-list-counter-packet-emit.md`
-- `docs/dossiers/boot-resource-window-cache-update.md`
-- `docs/dossiers/boot-bitstream-cursor-helpers.md`
-- `docs/dossiers/boot-bitstream-descriptor-decode.md`
-- `docs/dossiers/boot-bitstream-descriptor-encode.md`
-- `docs/dossiers/boot-resource-probe-init.md`
-- `docs/dossiers/boot-resource-probe-finalize.md`
-- `docs/dossiers/boot-resource-probe-dispatch-prepare.md`
-- `docs/dossiers/boot-resource-probe-dispatch-apply.md`
-- `docs/dossiers/boot-resource-probe-dispatch-result-build.md`
-- `docs/dossiers/boot-resource-probe-global-cleanup.md`
-- `docs/dossiers/boot-resource-probe-chunk-callback-walk.md`
-- `docs/dossiers/boot-resource-probe-global-buffer-copy.md`
-- `docs/dossiers/boot-resource-probe-global-buffer-signature-check.md`
-- `docs/dossiers/boot-resource-probe-id-materialize.md`
-- `docs/dossiers/boot-resource-probe-dual-callback-materialize.md`
-- `docs/dossiers/boot-resource-probe-global-buffer-dual-callback-apply.md`
-- `docs/dossiers/boot-resource-probe-id-check-materialize.md`
-- `docs/dossiers/boot-resource-probe-indexed-record-check.md`
-- `docs/dossiers/boot-resource-probe-large-record-check.md`
-- `docs/dossiers/boot-resource-probe-small-record-check.md`
-- `docs/dossiers/boot-resource-probe-indexed-record-copy-flag.md`
-- `docs/dossiers/boot-resource-probe-large-record-copy-flag.md`
-- `docs/dossiers/boot-resource-probe-small-record-copy-flag.md`
-- `docs/dossiers/boot-resource-probe-record-checksum-signature.md`
-- `docs/dossiers/boot-state-dispatch-loop-init.md`
-- `docs/dossiers/boot-mode-message-accumulator-seed-wrapper.md`
-- `docs/dossiers/boot-resource-table-mask-apply.md`
-- `docs/dossiers/boot-state-global-reset.md`
-- `docs/dossiers/boot-state-slot-callback-dispatch.md`
-- `docs/dossiers/boot-state-slot-render-callback-walk.md`
-- `docs/dossiers/boot-state-slot-queue-service-gate.md`
-- `docs/dossiers/boot-resource-global-handle-release.md`
-- `docs/dossiers/boot-resource-global-handle-slot-record-prepare.md`
-- `docs/dossiers/boot-state-slot-current-peer-record-flag-mark.md`
-- `docs/dossiers/boot-state-slot-target-peer-record-dispatch.md`
-- `docs/dossiers/boot-state-slot-flagged-dispatch-lookup.md`
-- `docs/dossiers/boot-state-slot-pool-table-helpers.md`
-- `docs/dossiers/boot-state-slot-queue-record-step.md`
-- `docs/dossiers/boot-state-slot-queue-f000-record-step.md`
-- `docs/dossiers/boot-state-slot-record-release-cluster.md`
-- `docs/dossiers/boot-display-list-transform-record-emit.md`
-- `docs/dossiers/boot-display-list-transform-wrapper-clamped-rect-emit.md`
-- `docs/dossiers/boot-display-list-flagged-rect-packet-emit.md`
-- `docs/dossiers/boot-display-list-color-rect-packet-emit.md`
-- `docs/dossiers/boot-display-list-vector-distance-and-transform-prefix.md`
-- `docs/dossiers/boot-display-list-transform-coefficients-sum-clear.md`
-- `docs/dossiers/boot-command-stream-dispatch.md`
-- `docs/dossiers/boot-command-stream-resource-node-dispatch.md`
-- `docs/dossiers/boot-resource-node-payload-materialize.md`
-- `docs/dossiers/boot-resource-node-insert-find.md`
-- `docs/dossiers/boot-resource-node-context-materialize.md`
-- `docs/dossiers/boot-resource-node-lzss-context-materialize.md`
-- `docs/dossiers/boot-resource-node-overlay-context-materialize.md`
-- `docs/dossiers/boot-resource-node-recursive-insert-slot-search.md`
-- `docs/dossiers/boot-resource-node-recursive-cleanup-free.md`
-- `docs/dossiers/boot-resource-node-recursive-payload-clear.md`
-- `docs/dossiers/boot-resource-node-recursive-field0c-rewrite.md`
-- `docs/dossiers/boot-resource-node-recursive-child-free.md`
-- `docs/dossiers/boot-resource-node-recursive-key-field-clear.md`
-- `docs/dossiers/boot-byte-copy-fill-aligned-leaves.md`
-- `docs/dossiers/boot-lzss-decompress.md`
-- `docs/dossiers/boot-resource-record-mark-ready.md`
-- `docs/dossiers/boot-resource-loader-callback-register.md`
-- `docs/DECOMP_LOG.md`
-- `docs/FULL_ROM_SOURCE_MANIFEST.md`
-
-The next phase remains full-ROM source preparation:
-
-1. Promote/curate the next tracked non-code owner batch under `data/` or
-   `assets/`.
-2. Continue splitting original MIPS into cleaner function/data files from the
-   current frontier in `docs/NEXT_STEPS.md`: chunk 34 at `0x00221000`,
-   first continuing outgoing straddler `func_0021EBBC` as
-   `func_0021EBBC_chunk34tail`.
+1. `docs/PLAN_2026-07-08-assessment-fixes.md` — the assessment fix plan
+   (P1/P2/P5 done; next: P6 doc dedupe, P3 NJPG render, P4 editor data ports,
+   P7 boundary reclassification, P8 phase decision with Joe).
+2. `docs/NEXT_STEPS.md` — the standing task queue (code/data boundary
+   reclassification track, non-code owner promotion, evidence-naming rules).
 3. Keep `node tools/verify_setup.js` green after every source-layout change.
-
-See `docs/NEXT_STEPS.md` for the active task queue.
