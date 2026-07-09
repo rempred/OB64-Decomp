@@ -28,7 +28,7 @@ and replace the active log with a compact current-state summary.
   (chunk 0 177 `boot/`; chunks 1–99 in `lib/`: 350, 216, 67, 376, 88, 78, 103, 87, 34, 35, 191, 74, 67, 94, 153, 95, 66, 95, 80, 175, 99, 99, 73, 63, 71, 96, 142, 97, 103, 122, 86, 198, 109, 120, 134, 164, 180, 232, 155, 159, 160, 171, 90, 17, 15, 17, 27, 9, 11, 13, 13, 13, 9, 9, 9, 7, 1, 5, 3, 3, 5, 5, 5, 7, 15, 8, 21, 33, 23, 19, 23, 21, 33, 13, 7, 7, 15, 4, 11, 5, 4, 4, 5, 9, 9, 11, 4, 9, 5, 3, 4, 4, 4, 4, 3, 4, 4, 5, 1) =
   **6,181 tracked source files**, plus **0 generated fallback code chunks — the entire configured code
   region `0x00001000..0x0063676C` is now FULLY SOURCE-OWNED (data-ownership loop COMPLETE; consolidated
-  coordinator report due)**. **Chunks
+  coordinator report: `docs/FINAL_DATA_OWNERSHIP_REPORT_2026-06-24.md`)**. **Chunks
   0–99 (`0x00001000..0x0063676C`) are fully source-owned as named code/data
   parts** (chunks 90-99 own the **Section C HUFF pool tail** [0x5A1000..0x63676C]: 36 parser-backed parts
   cut at word-aligned HUFF block starts [magic-12] + chunk seams, 0 code; LOOP-COMPLETE reaching the
