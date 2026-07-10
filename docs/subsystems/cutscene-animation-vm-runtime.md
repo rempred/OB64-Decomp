@@ -107,9 +107,58 @@ fake-linear assembly labels and must not be used as runtime watch PCs.
   column literally read `C+0xF0`); the true controller→visible-sprite
   ownership relation is OPEN. The channel-instability conclusion (below)
   stands on the independent suppression evidence, not on these columns.
-- **[live] Channel is not a stable visible-character identity:** across beats
-  the same controller row associates with different sprite records (per the
-  prior suppression/detachment evidence in `docs/cutscene-system.md`); no
+- **[live]+[code+multi] Creation-time `+0x74` writers (Phase-1 P0,
+  2026-07-09):** the content-verified opening-ceremony replay began with zero
+  controllers and armed 48 later-observed candidate `+0x74` destinations
+  before creation. `func_000140cc` populated the special root plus 22
+  consecutive `0x13C`-spaced non-root controllers: exact ROM `0x1422C` wrote
+  the root and `0x142A8` wrote the other 22;
+  **23/23** destinations were `$s0+0x74` and **23/23** values were block base
+  `$s2=0x800EBB00`. At the next frame `func_00014830` / opcode `0x95` exact
+  ROM `0x14858` made **23/23** literal `$a1+0xF0` writes; depth was zero, so
+  `$a1==$a0` and all observed destinations were controller `$a0+0xF0`.
+  **23/23** values equaled the just-loaded controller `+0x38` cursor.
+  Arithmetic closes the old `+0x7C` interpretation in this run:
+  `(C+0x7C)+0x74=C+0xF0`; where a next `0x13C`-spaced non-root controller
+  exists, `C+0x1B8=Cnext+0x7C`. No watched non-controller candidate received an
+  independent creation bundle/init write. The v6 opening equality scan found
+  `+0x1B8` exact in only **1/22** non-root rows at first VM and end; 23/24
+  region-wide exact matches were non-record-like overlapping views. This
+  rejects either fixed offset as an ownership rule for the opening scene's 48
+  watched destinations over relative frames 58–69; it is not a universal
+  scene/render negative. The `0x13C` rows are choreography/VM state. A
+  separate `0x170` render-side target is `[live]+[prior-code]` SUPPORTED, but
+  its controller join remains OPEN.
+  Evidence: parent raw trace
+  `wiki/decomp/traces/sprite-ownership-20260709/creation-plus74-writer/run2/walk-author-writewatch-1783645422.json`
+  (SHA-256 `0B3A375CA858910BA885EA57D57A3A744B165FBA688182F65C8EC9753198357C`),
+  ingested writer map `creation-plus74-writers.ingested.json`, and correlation
+  table `creation-plus74-correlation.json`.
+- **[live]+[code+multi] Phase-1 P0 render selector and visible-owner result
+  (2026-07-09, review: pending):** the prior “SUPPORTED / join OPEN” statement
+  is superseded for the tested opening context. VM-facing call z64
+  `0x00284C38` supplied command slot `$a0=1`; creator `func_002A0B14` returned
+  to live `0x80228C70`; and z64 `0x002A0B58` loaded
+  `$s0 = *(manager + slot*4 + 0x18)`. In two independently loaded replays,
+  manager `0x8019F470` entry `0x8019F474` selected neutral record
+  `0x800E4E30`, while the same slot's `+0xF8` array selected motion input
+  `0x801A2D50`. Recount: 2/2 exact selectors, 2/2 caller contexts, zero
+  contradictions, and 3,640 neighboring matrix-record controls. Record-local
+  suppression then set only record `+0x104/+0x108/+0x10C` scale from `1.0f`
+  to zero; all readbacks held/restored, selected and slot-2 coordinates stayed
+  baseline-exact, endpoint paired framebuffers changed in 679 selected-ROI
+  pixels and zero outside, and fresh restore was pixel-exact. This verifies
+  command slot→manager record selection and record→one-visible-actor for this
+  opening anchor. Parent artifacts:
+  `wiki/decomp/traces/render-pool-join-20260709/join-correlation.json` and
+  `suppression-verdict.json`. Competing interpretation: slot allocation or
+  record sharing may differ in other scenes. Limits: no controller address was
+  observed in this selector; no character identity, cross-scene mapping,
+  semantic thumbnail, or editor field is promoted.
+- **[live] Channel is not a promoted visible-character identity:** prior
+  suppression/detachment evidence shows these controller rows are not the
+  visible render owners. The new command-slot/manager-record join does not
+  observe a choreography controller, so no stable or beat-scoped
   channel→character map is promoted.
 - **[code+multi] Pose descriptor directory:** `*(0x802395B0)` points to 40
   records of stride `0x3C`; bank is `+0x00`, variant is `+0x0C`, and the pose-
@@ -147,13 +196,16 @@ the editor can implement the grammar and validation rules only.
 
 - ANY controller→sprite pairing offset. `+0x7C` is REFUTED (an overlapping
   view of the controller's own state; its "bundle" field is the `C+0xF0`
-  repeat-stack slot — see the linkage-review finding above). The chair-scene
-  `+0x1B8` equality is a snapshot heuristic only, because `+0x38` is a mutable
-  cursor. ALL per-fire `linkedSprite*` values in the 2026-07-09 capture tables
+  repeat-stack slot — see the linkage-review finding above). The `+0x1B8`
+  fixed-offset rule is refuted for the opening scene: equality failed in 21/22
+  non-root rows, and where a next `0x13C`-spaced controller exists the view is
+  `Cnext+0x7C`. No scene-universal `+0x1B8` semantic is promoted. ALL per-fire
+  `linkedSprite*` values in
+  the 2026-07-09 capture tables
   stay not-promoted; any character identity ever inferred from
-  `linkedSpriteId` is void. Code-proof path for the real relation: watch the
-  creation-time writer of the eventual sprite record's `+0x74` field and
-  correlate with the manager-selected controller.
+  `linkedSpriteId` is void. The opening command-slot→manager-record handoff is
+  now verified separately; it does not rescue either fixed offset or establish
+  a controller→record relation.
 - A stable choreography-channel-to-visible-character map (grounded in the
   suppression/detachment evidence in `docs/cutscene-system.md`, not in the
   refuted `linkedSprite*` columns).
