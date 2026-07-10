@@ -31,10 +31,14 @@ below.
    active queue. Done: P5 hardening, P1 reverse-promotion, P2 function-DB
    corrections (parent Stage 1b + pending-tasks #16), P6 doc dedupe, P3 NJPG
    render, P4 editor data ports + attack-name decode, P7 reclassification,
-   P8 plan-of-record reconciliation. REMAINING: Phase 1 workbench
-   (cutscene animation actors/programs — Joe's chosen M4 target) + the queued
-   runtime/swarm tracks (parent pending-tasks #16/#17, Section C consumer
-   trace).
+   P8 plan-of-record reconciliation. Phase-1 workbench M1 dossiers and M2 trace
+   ingestion and cutscene M4 are complete parent-side (2026-07-09); both
+   opcode `0x84` and `0x90` have runtime entry proof, and the evidence-graded
+   closure is `docs/subsystems/cutscene-animation-vm-runtime.md`. Remaining
+   cutscene research (not a Phase-1 milestone blocker): pose-entry bytes
+   `[1..6]`, controlled operand-semantic edits, and renderer/thumbnail naming.
+   Also queued: runtime/swarm tracks (parent pending-tasks #16/#17, Section C
+   consumer trace).
 
 2. **Code/data boundary reclassification track — COMPLETE 2026-07-09** (plan
    P7 done; boundary pinned `0x2B89B8`, tail reclassified `owned_data_parts`,

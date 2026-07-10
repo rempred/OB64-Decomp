@@ -133,3 +133,29 @@ Phase 1 workbench (parent `docs/mips-decomp-workflow-plan.md`; first M4 target
 promotion, evidence-naming rules, optional decode tracks). Out of scope
 without Joe: the structural gap `0x63676C..0x636784` and the LHA region
 `0x636784+`.
+
+2026-07-09 parent Phase-1 checkpoint: Milestones 1 and 2 are complete in the
+parent workspace. Atlas-authoritative dossiers now cover the cutscene
+interpreter, all 45 VM handlers, and six overlay-resolved pose/director
+functions. The Project64 JSONL ingester mapped a content-verified opening-
+ceremony run 89/89 with no ambiguity, promoted opcode `0x90` (ROM `0x114F0`)
+after 38 handler-entry hits, and mapped the creator/integrator coordinate
+writers to `func_002A0B14` / `func_002A0EF0`. A recovered prior capture then
+mapped 169/169 events (145 more `0x90`, 24 `0x84`), verifying both handler
+entries. Milestone 4 closes with
+`docs/subsystems/cutscene-animation-vm-runtime.md`. Parent evidence:
+`../../wiki/decomp/traces/op84-op90-runtime-20260709/runtime-summary.md`. No
+byte-exact atlas source or manifest changed in this pass.
+
+2026-07-09 coordinator linkage correction: the M4 packet's controller `+0x7C`
+"linked sprite" claim is REFUTED, not merely demoted. The offset was an
+adjacency heuristic in the parent capture tooling; disassembly of atlas parts
+`func_00014830`/`func_0001489c` (VM ops `0x95`/`0x96`) proves the alleged
+sprite bundle field `(C+0x7C)+0x74 = C+0xF0` is the repeat-stack save slot
+for the mutable `+0x38` parser cursor (depth byte `+0xDB`, frames
+`+0xE0..+0x13B`). The packet now promotes the repeat-stack decode at
+[code+multi] and lists ANY controller→sprite pairing offset as not promoted;
+true ownership is the parent's Phase-1 P0. Review chain: parent
+`wiki/after-action-reports/20260709-cutscene-controller-plus7c-linkage-review-aar.md`
+and `2026-07-09-phase1-coordinator-review.md`. No atlas source or manifest
+changed.
