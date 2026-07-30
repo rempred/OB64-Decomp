@@ -51,6 +51,20 @@ This repo should contain reproducible decomp source, configuration, curated docs
 and tools. When importing facts from the parent workspace, include the source doc
 or artifact path in the relevant note.
 
+This canonical Git-linked decomp is a clean-room boundary. External-derived
+source from Hijs, AdrSheik, or another unlicensed personal decomp may be verified
+and retained only in the separate local integration fork at
+`C:\Users\Joe\Projects\OB64-Decomp-Hijs-Integration`. Never copy, cherry-pick,
+mechanically rewrite, or merge that external-derived source, configuration,
+comments, or documentation into this repository. Correctness verification does
+not convert external work into our work.
+
+Only work independently produced by our project may enter this repository, with
+its own ROM/evidence derivation and normal review gates. Independently verified
+facts such as addresses, boundaries, and library identity may define the problem
+being solved, but external expression may not be copied. Record provenance so a
+canonical promotion cannot be confused with external-source intake.
+
 ## Required Context
 
 Before decomp work, read:
