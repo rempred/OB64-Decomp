@@ -372,9 +372,9 @@ function compileTarget(phase8, target, output, compiler, assembler) {
   run(compiler, [...phase8.config.compiler.compileFlags, '-o', compilerAssembly, sourceRelative], { cwd: ROOT });
 
   const compilerText = fs.readFileSync(compilerAssembly, 'utf8');
-  const textMatches = compilerText.match(/^\s*\.text\s*$/gm) || [];
+  const textMatches = compilerText.match(/^[ \t]*\.text[ \t]*\r?$/gm) || [];
   if (textMatches.length !== 1 || /^\s*\.section\b/m.test(compilerText)) fail('KMC target assembly section grammar drift: ' + target.symbol);
-  const linkedText = compilerText.replace(/^\s*\.text\s*$/m, '.section ' + target.sectionName + ',"ax",@progbits');
+  const linkedText = compilerText.replace(/^[ \t]*\.text[ \t]*\r?$/m, '.section ' + target.sectionName + ',"ax",@progbits');
   fs.writeFileSync(linkedAssembly, linkedText);
   run(assembler, [
     ...phase8.model.config.binutils.assemblerFlags,
