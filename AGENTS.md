@@ -25,13 +25,14 @@ Read this scope before trusting any source-ownership count:
 
 - The repository remains primarily a byte-exact disassembly atlas. Its 6,184
   tracked assembly owners use `.word` directives with generated decode comments.
-- Six independently written C functions now match their original ranges:
+- Seven independently written C functions now match their original ranges:
   `src/overlays/descriptor_02/func_000E5938.c` (36 bytes),
   `src/boot/boot_resource_pool_acquire_release.c` (168 bytes),
   `src/boot/boot_state_slot_flagged_dispatch_lookup.c` (224 bytes),
   `src/boot/boot_resource_record_resolve_load.c` (524 bytes),
-  `src/overlays/descriptor_12/func_00269470.c` (808 bytes), and
-  `src/overlays/descriptor_12/func_0026B360.c` (1,156 bytes).
+  `src/overlays/descriptor_12/func_00269470.c` (808 bytes),
+  `src/overlays/descriptor_12/func_0026B360.c` (1,156 bytes), and
+  `src/overlays/descriptor_12/func_0026B820.c` (1,196 bytes).
 - All accepted symbols remain structural. The boot filenames record accepted
   static evidence, not proven gameplay behavior.
 - The conventional build can replace explicitly pinned assembly sections with
