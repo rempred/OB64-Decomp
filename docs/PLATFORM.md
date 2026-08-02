@@ -175,7 +175,7 @@ Critical review accepted the fourth matching-C slice without correction. The
 worker result is commit `b0cdbc4d6efcfc1264214959ca17b3bf8c4b0399`.
 The review verdict is commit `c51f9988abdaf3e5ab7e6d6e13b18544a928b488`.
 
-The current matching-C owners are:
+Wave 3 left these matching-C owners:
 
 | Structural symbol | Static role | z64 ROM range | Bytes |
 |---|---|---:|---:|
@@ -189,6 +189,35 @@ secondary entry. Its retained assembly remains the comparison fallback.
 
 All four linked targets match their original bytes. Two fresh review roots
 reproduced target placement, relocations, code-region identity, and full-ROM
+identity.
+
+The review proves static structure, clean-room derivation, and exact build
+identity. It does not prove runtime behavior or gameplay meaning.
+
+## Accepted Matching-C Wave 4 — 2026-08-02
+
+Critical review accepted the fifth matching-C slice with one documentation
+correction. The worker result is commit
+`db8f7e697bdffc9ed6b3224894db4efe5cd2d6aa`. The review verdict is commit
+`fd7dd36d521a5f6a96ee3812de56642a8ba5daf0`. The completed cleanup is commit
+`d4c4c3d1e88ae7a81d17f147741c8559882e1f90`.
+
+The current matching-C owners are:
+
+| Structural symbol | Static role | z64 ROM range | Bytes |
+|---|---|---:|---:|
+| `func_000E5938` | Existing overlay target | `0x000E5938..0x000E595C` | 36 |
+| `func_0000B33C` | Boot resource-pool acquire/release | `0x0000B33C..0x0000B3E4` | 168 |
+| `func_00007688` | Boot state-slot flagged dispatch and lookup owner | `0x00007688..0x00007768` | 224 |
+| `func_0000BC8C` | Boot resource-record resolver and loader owner | `0x0000BC8C..0x0000BE98` | 524 |
+| `func_00269470` | Overlay descriptor 12 seven-way state-handler owner | `0x00269470..0x00269798` | 808 |
+
+The fifth owner has no secondary entry and retains its assembly fallback.
+Overlay descriptor 12 places it at runtime virtual range
+`0x802148C0..0x80214BE8`. The linked owner preserves all 42 relocations.
+
+All five linked targets match their original bytes. Independent review
+reproduced their placement, relocations, code-region identity, and full-ROM
 identity.
 
 The review proves static structure, clean-room derivation, and exact build

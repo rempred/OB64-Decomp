@@ -162,6 +162,17 @@ and replace the active log with a compact current-state summary.
   reproduced the same identities. Matching proves static structure and build
   identity, not runtime behavior or gameplay meaning.
 
+- **2026-08-02 — matching-C high-value Wave 4 accepted**: canonical worker
+  commit `db8f7e697bdffc9ed6b3224894db4efe5cd2d6aa` adds structural function
+  `func_00269470` at z64 ROM `0x00269470..0x00269798` as independently
+  derived C. The 808-byte overlay owner has no secondary entry and preserves
+  42 relocations. Fresh Critical review returned `Accepted with corrections`
+  at commit `fd7dd36d521a5f6a96ee3812de56642a8ba5daf0`. Cleanup commit
+  `d4c4c3d1e88ae7a81d17f147741c8559882e1f90` corrects only the comparison-
+  report identity. All five C targets, relocations, code region, and full ROM
+  remain exact. Matching proves static structure and build identity, not
+  runtime behavior or gameplay meaning.
+
 ## Dossier Set
 
 139+ dossiers under `docs/dossiers/`: 81 `boot-*` (chunk 0 splits), 47
