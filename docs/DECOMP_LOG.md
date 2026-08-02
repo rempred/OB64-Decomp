@@ -26,9 +26,11 @@ and replace the active log with a compact current-state summary.
   live in `docs/PLATFORM.md`; the loop summary lives in
   `docs/FINAL_DATA_OWNERSHIP_REPORT_2026-06-24.md`. Do not clone the chunk
   narrative into this file (AGENTS.md Documentation Policy).
-- Gate: `node tools/verify_setup.js` (19 checks incl. `manifestIntegrityAudit`,
-  `executableExtentPinned`, `codeDataSplitHonest`) must PASS after every
-  source-layout change. Code SHA `40D4E787...B409`, ROM SHA `571E8339...CC67A`.
+- Gate: `node tools/verify_setup.js --phase5a-root <accepted-root>` must pass
+  all 21 checks after every source-layout change.
+- Current tracked assembly owners: 6,184 across 100 composites, with zero
+  generated fallback chunks.
+- Code SHA `40D4E787...B409` and ROM SHA `571E8339...CC67A` remain exact.
 
 ## Dated Log (compact)
 
@@ -116,6 +118,17 @@ and replace the active log with a compact current-state summary.
   `verify_setup` now 19 checks incl. `executableExtentPinned` +
   `codeDataSplitHonest` (audit runs every gate). Both SHAs unchanged.
   Closure: `docs/CODE_REGION_AUDIT.md`.
+- **2026-08-01 — external-intake program accepted and promoted locally**:
+  Final review `f55c5832d74ee5f68d6619afff7d2dd859cdd257` accepted the program.
+  Correction review `9a42b85f4a3b3858d0862a1e3c33aa8e5ee4b02f` accepted the explicit
+  Phase 5A setup-root interface and 52-action boundary. Canonical technical
+  commit `31e781898a585285f87a4dd3b4edd91bc6319b5a` promotes that boundary.
+  The no-renames delta contains 43 additions, eight modifications, and one
+  deletion. The 21-check setup gate passes with unchanged code and ROM hashes.
+  Accepted capabilities include overlay configuration, Splat 0.34.0 ownership,
+  a conventional linker build, and one 36-byte matching-C function.
+  `func_000E5938` remains a structural name without gameplay semantics.
+  Five segment candidates and 6,154 function candidates remain unresolved.
 
 ## Dossier Set
 
@@ -126,13 +139,14 @@ inventories: `docs/data-index/rev0/*.json`. Review handoffs: `docs/REVIEW_*.md`.
 
 ## Next Frontier
 
-The data-ownership loop is COMPLETE at the configured stop `0x63676C`; no
-chunk frontier remains. The assessment fix plan (P1-P8) is COMPLETE as of 2026-07-09. Active queues:
-Phase 1 workbench (parent `docs/mips-decomp-workflow-plan.md`; first M4 target
-= cutscene animation actors/programs) and `docs/NEXT_STEPS.md` (owner
-promotion, evidence-naming rules, optional decode tracks). Out of scope
-without Joe: the structural gap `0x63676C..0x636784` and the LHA region
-`0x636784+`.
+The data-ownership and external-intake programs are complete. No chunk frontier
+or intake correction remains.
+
+The active queue is `docs/NEXT_STEPS.md`. It prioritizes incremental matching C,
+evidence-based naming, non-code owner promotion, and optional decode work.
+
+The structural gap `0x63676C..0x636784` and LHA region `0x636784+` remain
+outside scope without Joe's authority.
 
 2026-07-09 parent Phase-1 checkpoint: Milestones 1 and 2 are complete in the
 parent workspace. Atlas-authoritative dossiers now cover the cutscene

@@ -49,12 +49,15 @@ stay passive unless Joe asks.
 Before function splitting or C conversion, run:
 
 ```powershell
-node tools/verify_setup.js
+$phase5aRoot = '<accepted-phase5a-product-root>'
+node tools/verify_setup.js --phase5a-root $phase5aRoot
 ```
 
-This is the canonical setup gate. It verifies Rev 0 identity, whole-ROM coverage,
-GNU MIPS binutils smoke tests, first tracked chunk real assembly, raw rebuild,
-and assembled-code rebuild.
+This is the canonical 21-check setup gate. The Phase 5A product remains outside
+this clean-room repository.
+
+The gate verifies ROM identity, overlays, production segments, source ownership,
+GNU MIPS tools, and all exact rebuild paths.
 
 ## No-Gap Rule
 
@@ -123,7 +126,7 @@ generated `.word` chunks for ranges not yet promoted, and substitutes the
 resulting binary blob for the raw code span. Manifest chunk `parts` are assembled
 in order, so a promoted no-gap chunk can be split into named files without losing
 coverage. Current expected result: 100 tracked composite real-asm chunks made from
-6,181 tracked source files (chunks 0–99 fully source-owned, `0x00001000..0x0063676C` — the entire
+6,184 tracked source files (chunks 0–99 fully source-owned, `0x00001000..0x0063676C` — the entire
 configured code region; data-ownership loop complete), plus 0
 generated fallback chunks; the assembled
 code-region SHA256 is
@@ -155,6 +158,48 @@ spans, then rebuilds the ROM from assembled original MIPS plus those owners. It
 is the current proof path that non-code bytes are in the rebuild without being
 labeled as understood MIPS.
 
+## Conventional Build And Matching C
+
+Use fresh, empty directories outside this repository. Keep Splat, asm-differ,
+KMC, objects, maps, executables, ROMs, and reports untracked.
+
+Set paths to authenticated local prerequisites:
+
+```powershell
+$runRoot = '<fresh-external-work-root>'
+$splatPython = '<authenticated-python.exe>'
+$splatSplit = '<authenticated-splat-split.py>'
+$splatSnapshot = '<authenticated-splat-snapshot>'
+$asmDiffer = '<accepted-asm-differ-checkout>'
+$kmcCompiler = '<accepted-kmc-cc1.exe>'
+$splatOutput = Join-Path $runRoot 'splat'
+$phase7Output = Join-Path $runRoot 'phase7'
+$phase8Output = Join-Path $runRoot 'phase8'
+```
+
+Generate the 7,242-owner Splat extraction:
+
+```powershell
+node tools/run_phase7_splat.js --output $splatOutput --python $splatPython --split $splatSplit --snapshot-root $splatSnapshot
+```
+
+Build and verify the conventional assembly and linker result:
+
+```powershell
+node tools/build_phase7_conventional.js --output $phase7Output --splat-output $splatOutput --splat-python $splatPython --splat-split $splatSplit --asm-differ $asmDiffer
+node tools/verify_phase7_conventional.js --output $phase7Output --splat-python $splatPython --splat-split $splatSplit --asm-differ $asmDiffer
+```
+
+Build and verify the accepted structural matching-C replacement:
+
+```powershell
+node tools/build_phase8_matching_c.js --output $phase8Output --phase7-output $phase7Output --compiler $kmcCompiler --splat-python $splatPython --splat-split $splatSplit --asm-differ $asmDiffer
+node tools/verify_phase8_matching_c.js --output $phase8Output --compiler $kmcCompiler --splat-python $splatPython --splat-split $splatSplit --asm-differ $asmDiffer
+```
+
+These gates apply to the accepted Windows host. They do not prove gameplay
+semantics or cross-host reproduction.
+
 ## Chunk Split Pipeline (code chunks)
 
 To source-own a promoted 64 KiB code chunk as named function/data parts, use the
@@ -182,8 +227,9 @@ the final split):
    (`build/wf_adversarial.js`) and apply its fixes.
 7. `node tools/split_original_mips_part.js --part <chunk.s> --splits-file <json>
    --remove-source` — write the named parts + update the manifest.
-8. `node tools/check_manifest.js` + `node tools/assemble_original_mips.js` +
-   `node tools/verify_setup.js` — integrity + byte-exact gate.
+8. Run `node tools/check_manifest.js` and
+   `node tools/assemble_original_mips.js --strict-tracked`.
+9. Run `node tools/verify_setup.js --phase5a-root $phase5aRoot`.
 
 MIXED chunks (code + data): handle the code sub-region with steps 2–6 using a
 narrower `--end` (the code/data boundary) and `slice_chunk --disasm <full chunk.s>`

@@ -3,8 +3,18 @@
 Rev 0 decomp configuration lives here.
 
 - `roms/us_rev0.json` - ROM identity, byte order, CRC metadata, and core address rules.
-- `segments/rev0.yaml` - conservative segment scaffold for extraction/linking.
+- `segments/rev0.yaml` - production no-gap ROM ownership for Splat.
+- `overlays/us_rev0.json` - 19 ROM-derived overlay descriptors and group relationships.
+- `splat/us_rev0.yaml` - Splat 0.34.0 production configuration.
+- `splat/us_rev0.semantic.json` - machine-readable ownership and unresolved-candidate state.
+- `splat/us_rev0.overlay-linker-inputs.json` - separate Phase 4 overlay reservations.
+- `splat/splat64-0.34.0.lock.json` - authenticated runtime and package identities.
+- `splat/splat64-0.34.0.provenance.json` - authenticated artifact provenance.
+- `phase7/conventional-build.json` - pinned conventional assembly and linker contract.
+- `phase8/matching-c.json` - pinned 36-byte matching-C replacement contract.
 
-Future files should include symbols, overlays, linker scripts, and m2c context
-generated from verified Rev 0 data.
+Never hand-edit a generated configuration file. Change its generator, regenerate
+it, and rerun the applicable verification gate.
 
+Treat the Phase 7, Phase 8, lock, and provenance records as frozen contracts.
+Change them only through a new reviewed result.

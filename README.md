@@ -58,73 +58,35 @@ dist/          rebuilt ROMs/reports, ignored
 scratch/       local experiments, ignored
 ```
 
-## First Milestones
+## Current Milestones
 
-1. Import Rev 0 config and segment scaffolding.
-2. Build a read-only extraction/disassembly pass.
-3. Generate original MIPS into `asm/original/`.
-4. Add a minimal linker/compare loop.
-5. Begin replacing matched functions with C under `src/`.
+The repository now has these accepted capabilities:
 
-## Current First-Pass Tools
+1. The no-gap atlas owns the complete configured code region.
+2. The overlay configuration reproduces 19 descriptors, 11 groups, and 11 pointers.
+3. The production Splat configuration conserves all 7,242 accepted ROM owners.
+4. The conventional assembly and linker path reproduces the complete ROM.
+5. One independently written 36-byte C function matches its original section.
 
-Canonical setup verification:
+The matching function is `func_000E5938`. Its name and acceptance are
+structural; they do not establish gameplay semantics.
 
-```powershell
-node tools/verify_setup.js
-```
+## Canonical Verification
 
-Current result: setup complete. The command verifies the Rev 0 baserom, coverage
-ledger, real MIPS binutils smoke tests, tracked-chunk real assembly, raw rebuild,
-and assembled-code rebuild.
+The setup gate needs the accepted Phase 5A evidence root. That evidence remains
+outside this clean-room repository.
 
 ```powershell
-node tools/verify_baserom.js
-node tools/extract_original_mips.js
+$phase5aRoot = '<accepted-phase5a-product-root>'
+node tools/verify_setup.js --phase5a-root $phase5aRoot
 ```
 
-The extractor currently writes generated, ignored no-gap MIPS reference output
-under `build/original-mips/rev0/`. Once the split/link/compare policy is stable,
-curated original MIPS can be promoted into `asm/original/`.
+The current 21-check gate reproduces the full Rev 0 ROM at SHA-256
+`571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A`.
 
-```powershell
-node tools/build_rom_coverage_ledger.js
-```
+The assembled code region remains SHA-256
+`40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`.
 
-Builds the whole-ROM structural ledger. The current Rev 0 pass independently
-finds 825 valid LHA archives, matches the parent catalog offsets, reports zero
-unknown bytes, and keeps the `archive/audio` boundary overlap visible.
-
-```powershell
-node tools/extract_rom_segments.js
-node tools/rebuild_rom.js
-```
-
-Runs the first exact rebuild loop from raw ledger spans. This is the safety net
-that future C and assembly replacement work must preserve.
-
-Current status: 1,060 ledger spans rebuild to a byte-identical Rev 0 ROM with
-SHA256 `571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A`.
-
-```powershell
-node tools/assemble_original_mips.js
-node tools/rebuild_rom.js --assembled-code build/assembled/rev0/code.bin --out dist/rebuilt.us_rev0.assembled-code.z64 --report build/rebuild/rev0-assembled-code-rebuild-report.json
-```
-
-Assembles the generated no-gap `.word` MIPS reference into an ignored code blob
-and substitutes it for the raw code segment during rebuild. The assembler
-prefers promoted chunks under `asm/original/rev0/` and assembles them with GNU
-`mips64-elf-as`; it falls back to ignored generated chunks for ranges not
-promoted yet. Current assembled code-region SHA256:
-`40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`; full ROM
-rebuild remains byte-identical.
-
-```powershell
-node tools/promote_original_mips.js --count 1
-```
-
-Promotes generated no-gap MIPS chunks into tracked `asm/original/rev0/` source.
-Promotion refuses to overwrite existing tracked chunks unless `--force` is
-supplied. ALL 100 chunks of the configured code region are promoted and
-source-owned as of 2026-06-24 (data-ownership loop complete) — current state
-numbers live in `docs/PLATFORM.md`, not here.
+Use `docs/WORKFLOW.md` for the Splat, conventional build, and matching-C
+commands. Keep every generated object, map, executable, ROM, and report outside
+tracked source.

@@ -21,18 +21,18 @@ Person of Lordly Caliber, US Rev 0 only.
 
 ## What This Repo Is (And Is Not)
 
-Honest scope of "source-owned" — read this before trusting any headline number:
+Read this scope before trusting any source-ownership count:
 
-- This is currently a **byte-exact disassembly atlas**, not a matched
-  decompilation. All 6,181 tracked `.s` files (code AND data) are `.word`
-  directive dumps; the MIPS mnemonics in them are trailing comments generated
-  by `tools/lib/mips.js` and are decode AIDS — no gate validates them.
-- There is **zero decompiled C** so far: `src/` and `include/` are `.gitkeep`
-  scaffolds. "Source-owned" means byte ownership + named layout +
-  classification evidence, NOT semantic understanding.
-- Editing tracked source is **word-patching**, not source editing: there are no
-  symbols or relocations, and branch/JAL targets are hardcoded, so code can be
-  overwritten in place but never resized or relinked.
+- The repository remains primarily a byte-exact disassembly atlas. Its 6,184
+  tracked assembly owners use `.word` directives with generated decode comments.
+- One independently written C function now matches its original 36-byte range:
+  `src/overlays/descriptor_02/func_000E5938.c`.
+- The accepted function name is structural. Matching bytes do not prove its
+  gameplay behavior.
+- The conventional build can replace explicitly pinned assembly sections with
+  matching C. Exact owner, placement, and ROM checks reject layout drift.
+- Most original assembly still embeds branch and jump targets. Keep unchanged
+  assembly as the fallback until a replacement passes every comparison gate.
 - This repo does **not** compute the CIC-6102 checksum. Byte-identical rebuilds
   preserve the stock CRC trivially, but any real patch inside the z64 CRC
   window `0x1000..0x100FFF` needs the parent workspace's CRC tooling or the
@@ -180,7 +180,7 @@ The boundary is PINNED and the reclassification is DONE, enforced by the gate:
   still byte-owned by the same tracked `asm/original/rev0` `.word` parts via
   the assembled blob (`codeRegion` remains the assembly/tiling region), but
   no longer counted or reported as MIPS.
-- **Gate enforcement:** `verify_setup.js` (19 checks) runs
+- **Gate enforcement:** `verify_setup.js` (21 checks) runs
   `audit_code_region.js` every time and asserts `executableExtentPinned`
   (config pin == audit jr-ra extent + the 4-byte final delay slot; tail
   verdict data-evidenced; no credible control-flow edge into the tail) and
@@ -197,16 +197,17 @@ Evidence and history: `docs/CODE_REGION_AUDIT.md`.
 
 ## Exact Rebuild Rule
 
-Before replacing raw bytes with assembly or C, preserve the exact-rebuild loop:
+Before replacing raw bytes with assembly or C, preserve the exact-rebuild loop.
+Canonical verification requires the independently accepted Phase 5A product:
 
 ```powershell
-node tools/verify_setup.js
+$phase5aRoot = '<accepted-phase5a-product-root>'
+node tools/verify_setup.js --phase5a-root $phase5aRoot
 ```
 
-`verify_setup.js` runs baserom verification, whole-ROM coverage, MIPS extraction,
-binutils smoke tests, raw rebuild, full-ROM source-manifest audit, non-code
-source-owner extraction, source-manifest rebuild, and assembled-code rebuild. It
-must report PASS before source replacement work is considered safe.
+`verify_setup.js` verifies the baserom, overlays, production segments, source
+ownership, GNU MIPS tools, and all exact rebuild paths. It must report PASS
+before source replacement work is considered safe.
 
 Current exact rebuild result:
 
@@ -237,7 +238,7 @@ Current result:
   `40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`.
 - Code-region match against baserom: pass.
 - Tracked real-assembler original-MIPS chunks: **100 composites** (chunk 0 in
-  `boot/`, chunks 1-99 in `lib/`) = **6,181 tracked source files, 0 generated
+  `boot/`, chunks 1-99 in `lib/`) = **6,184 tracked source files, 0 generated
   fallback chunks**. The ENTIRE configured code region `0x00001000..0x0063676C`
   is fully source-owned as named code/data parts; the data-ownership loop is
   COMPLETE (2026-06-24). Canonical current-state references, in order:
@@ -384,8 +385,15 @@ instead of letting it sit here:
 
 ## Setup Complete Gate
 
-The setup phase is complete when `node tools/verify_setup.js` passes. Current
-setup-complete state:
+The setup phase is complete when the explicit-root setup command passes.
+Canonical decomp does not track the accepted Phase 5A evidence product.
+
+```powershell
+$phase5aRoot = '<accepted-phase5a-product-root>'
+node tools/verify_setup.js --phase5a-root $phase5aRoot
+```
+
+Current setup-complete state:
 
 - Local toolchain: `n64-tools-gcc-toolchain-mips64-win64` (Windows-only).
 - Toolchain source:
@@ -395,8 +403,8 @@ setup-complete state:
 - Installed under ignored `.toolchains/gcc-toolchain-mips64-win64/`.
 - Assembler: GNU Binutils 2.39 `mips64-elf-as.exe` with `-EB -mips3 -32`.
 - Setup verifier: `tools/verify_setup.js`.
-- Current verifier result: PASS; 825 archives, 0 unknown bytes, 108 overlap
-  bytes visible, 100 tracked composite real-asm chunks made from 6,181 tracked
+- Current verifier result: PASS with 21 checks; 825 archives, 0 unknown bytes,
+  108 overlap bytes visible, and 100 tracked composites made from 6,184 tracked
   source files (chunks 0-99 fully source-owned as code/data parts,
   `0x00001000..0x0063676C` — the entire configured code region; data-ownership
   loop COMPLETE 2026-06-24), 0 generated fallback chunks, full-source manifest
@@ -406,7 +414,6 @@ setup-complete state:
   `571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A`.
 
 The data-ownership loop is COMPLETE; there is no open chunk frontier. The
-active queue lives in `docs/NEXT_STEPS.md` (code/data boundary reclassification
-track, optional NJPG render track, non-code owner-batch promotion). There is no
-tooling blocker. Do not begin semantic C decomp unless the setup verifier is
-green.
+external-intake program is accepted and promoted locally. The active queue lives
+in `docs/NEXT_STEPS.md`. There is no tooling blocker. Do not infer semantic
+behavior from structural matching alone.

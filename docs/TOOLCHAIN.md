@@ -24,6 +24,30 @@ Current toolchain:
 
 `.toolchains/` is ignored and must not be committed.
 
+## Production Splat Runtime
+
+The accepted configuration targets Splat `0.34.0` at commit
+`999c792fdda1002f29926717d2b7197bb90480a9`.
+
+The runtime, source checkout, downloaded packages, and virtual environment stay
+outside tracked files. The canonical lock and provenance records are:
+
+- `config/splat/splat64-0.34.0.lock.json`;
+- `config/splat/splat64-0.34.0.provenance.json`.
+
+Use only an authenticated runtime that satisfies both records. Do not treat the
+machine-specific paths inside the accepted lock as portable installation paths.
+
+## Matching-C Compiler
+
+The accepted matching-C path uses KMC GCC 2.7.2 on the pinned Windows host.
+
+The compiler is an external prerequisite. This repository does not track its
+binary, acquisition record, or build environment.
+
+`config/phase8/matching-c.json` pins the accepted compiler hash and flags.
+Supplying a different compiler must fail before a matching result is accepted.
+
 ## Install
 
 From the repo root:
@@ -44,10 +68,12 @@ The hash must match `config/toolchain.json`.
 Run:
 
 ```powershell
-node tools/verify_setup.js
+$phase5aRoot = '<accepted-phase5a-product-root>'
+node tools/verify_setup.js --phase5a-root $phase5aRoot
 ```
 
-This command runs the binutils smoke tests and full ROM setup gates. The
+The Phase 5A product remains external to this clean-room repository. The command
+runs the binutils smoke tests and full ROM setup gates. The
 binutils smoke tests prove:
 
 - `.word` emits exact big-endian bytes.
@@ -56,4 +82,4 @@ binutils smoke tests prove:
 - The first tracked source chunk `0x00001000..0x00011000` assembles through
   `mips64-elf-as` and matches the baserom bytes exactly.
 
-Current setup-complete result: PASS.
+Current setup-complete result: PASS with 21 checks on the accepted Windows host.

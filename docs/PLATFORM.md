@@ -45,10 +45,10 @@ the same commit.
 
 Setup is complete and the data-ownership loop is COMPLETE (2026-06-24): the
 entire configured code region `0x00001000..0x0063676C` (6,510,444 bytes) is
-100% source-owned as named code/data parts — 100 composite chunks, 6,181
+100% source-owned as named code/data parts — 100 composite chunks, 6,184
 tracked real-assembler source files, 0 generated fallback chunks. The full
 41,943,040-byte ROM rebuilds byte-identically, gated by
-`node tools/verify_setup.js` (19 checks, incl. the executable-extent gate added 2026-07-09).
+`node tools/verify_setup.js --phase5a-root <accepted-root>` (21 checks).
 
 What "source-owned" means precisely — and does not mean — is defined in
 `../AGENTS.md` ("What This Repo Is (And Is Not)" + "Definitions"). Canonical
@@ -63,24 +63,26 @@ detail, in reading order:
 5. `docs/DISASM_VALIDATION_2026-07-08.md` — the decode comments are validated
    against GNU objdump (0 genuine disagreements over the executable extent).
 
-Recent additions (2026-07-08): AGENTS.md restored to a thin rulebook (run log
+Historical additions (2026-07-08): AGENTS.md restored to a thin rulebook (run log
 archived, commit `d259dca`); `check_manifest.js` wired into the setup gate;
 `tools/export_function_corrections.js` delivered the loop's boundary
 corrections to the parent as `../scripts/ob64_function_corrections_rev0.json`
 (parent `docs/mips-decode.md` Stage 1b; regeneration filed as parent
-pending-tasks #16). Fix queue: `docs/PLAN_2026-07-08-assessment-fixes.md`.
+pending-tasks #16). The former fix plan is complete and remains at
+`docs/PLAN_2026-07-08-assessment-fixes.md`.
 
 Current known-good pipeline and expected results:
 
 ```powershell
-node tools/verify_setup.js
+$phase5aRoot = '<accepted-phase5a-product-root>'
+node tools/verify_setup.js --phase5a-root $phase5aRoot
 ```
 
 - Rev 0 baserom verified (Project64 CRC `E6419BC5/69011DE3`), normalized to
   `build/baserom.us_rev0.z64`.
 - Coverage ledger: 825 LHA archives (independent scan matches the parent
   catalog), 0 unknown bytes, the 108-byte archive/audio overlap visible.
-- Manifest integrity audit: ALL CHECKS PASS (6,181 parts, contiguity + sha256).
+- Manifest integrity audit: ALL CHECKS PASS (6,184 parts, contiguity + SHA-256).
 - Executable-extent gate: boundary PINNED `0x2B89B8` (2026-07-09); manifest split `original_mips` 2,849,208 B / `owned_data_parts` (data tail) 3,661,236 B, audit-asserted every run.
 - Assembled code region SHA256
   `40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`; full ROM
@@ -90,6 +92,36 @@ node tools/verify_setup.js
   ambiguous bytes preserved explicitly; source-owner mix 3 tracked non-code
   files / 44,029 bytes + 1,055 generated fallback files / 35,388,567 bytes;
   source-manifest rebuild exact.
+
+## Accepted External-Intake Promotion — 2026-08-01
+
+Final review accepted the clean-room program result and its setup correction.
+The canonical technical promotion is commit
+`31e781898a585285f87a4dd3b4edd91bc6319b5a`.
+
+Its exact no-renames path boundary is the Git delta from baseline
+`98863fa79e8b8908f1df00ba7bf24b4aa5361c11`. That delta contains 43 additions,
+eight modifications, and one deletion across 52 unique actions.
+
+The promoted capabilities are:
+
+- ROM-derived overlay descriptors and group configuration;
+- a no-gap 7,242-owner Splat 0.34.0 configuration;
+- an overlay-aware conventional assembly and linker build;
+- exact ELF, map, code-region, and full-ROM verification; and
+- one independently written 36-byte matching-C function.
+
+The matching target is structural symbol `func_000E5938`. It covers z64 ROM
+`0x000E5938..0x000E595C` in overlay descriptor 2.
+
+The promotion preserves the canonical ROM and code-region SHA-256 values above.
+It applies to the accepted Windows host and external authenticated tools.
+
+The review does not prove gameplay semantics or cross-host reproduction. Five
+segment candidates and 6,154 function candidates remain unresolved.
+
+External-derived source, integration records, and proof-export records remain
+outside this clean-room repository. No acceptance grants publication authority.
 
 ## Repo Invariants
 
@@ -168,7 +200,7 @@ Region map by content family (detail in the FINAL report + dossiers):
 |---|---|
 | `0x1000..0x11000` | Chunk 0 `boot/`: resource loader/allocator, LZSS + Huffman codecs, libc, vec3, display-list core (semantically named; 81 boot dossiers) |
 | `0x11000..0x31000` | Statically linked libultra/libc/gu + graphics/unit-script library (named symbols) |
-| `0x31000..0x41000` | RSP microcode bundle + text-VM jump table + overlay code tail |
+| `0x31000..0x41000` | RSP microcode, overlay descriptor/group tables, residual data, and code tail |
 | `0x41000..0x2B89B8` | Overlay-relocated game code (army/char/scenario/combat/menu/world-map/mission-briefing modules) with interleaved data islands; conservative `func_*` naming; per-chunk dossiers |
 | `0x2B89B8..0x301000` | Non-code high-entropy asset territory (code→data transition pinned `0x2B89B8` in chunk 43) |
 | `0x301000..0x4E3140` | Section A = AUDIO: decoded PtrTablesV2/WaveTables VADPCM sound bank @`0x421000` + flat sample payload |
@@ -178,14 +210,14 @@ Region map by content family (detail in the FINAL report + dossiers):
 
 Per-chunk composition (generated from `asm/original/rev0/manifest.json`;
 code = named function/straddler/cluster parts, data/zero-fill by part prefix;
-6,181 parts total — regenerate this table after any split change):
+6,184 parts total — regenerate this table after any split change):
 
 | # | z64 range | parts | code | data | zero-fill | dossier |
 |---|---|---|---|---|---|---|
 | 0 | `0x00001000..0x00011000` | 177 | 177 | 0 | 0 | `boot-*` |
 | 1 | `0x00011000..0x00021000` | 350 | 349 | 1 | 0 | `lib-chunk1-11000-21000` |
 | 2 | `0x00021000..0x00031000` | 216 | 214 | 2 | 0 | `lib-chunk2-21000-31000` |
-| 3 | `0x00031000..0x00041000` | 67 | 23 | 23 | 21 | `lib-chunk3-31000-41000` |
+| 3 | `0x00031000..0x00041000` | 70 | 23 | 26 | 21 | `lib-chunk3-31000-41000` |
 | 4 | `0x00041000..0x00051000` | 376 | 376 | 0 | 0 | `lib-chunk4-41000-51000` |
 | 5 | `0x00051000..0x00061000` | 88 | 77 | 11 | 0 | `lib-chunk5-51000-61000` |
 | 6 | `0x00061000..0x00071000` | 78 | 60 | 18 | 0 | `lib-chunk6-61000-71000` |
@@ -359,7 +391,28 @@ code = named function/straddler/cluster parts, data/zero-fill by part prefix;
   prologue; the analysis swarm then recovers frameless leaves. Emits a
   `slice_chunk`-compatible plan. `integrate_chunk.js` treats the context as
   optional so these regions integrate without a parent-DB context file.
-- `tools/verify_setup.js` is the canonical setup verification command.
+- `tools/generate_overlay_config.js` derives the accepted overlay configuration
+  from canonical ROM bytes.
+- `tools/verify_overlay_config.js` verifies 19 descriptors, groups, pointers,
+  source ownership, and hostile controls.
+- `tools/generate_phase5b_production_config.js` regenerates the no-gap Splat
+  and segment configuration from an accepted Phase 5A product.
+- `tools/verify_phase5b_production_config.js` checks configuration identity,
+  conservation, unresolved counts, and authenticated Splat provenance.
+- `tools/run_phase7_splat.js` runs authenticated Splat into an external output
+  directory.
+- `tools/build_phase7_conventional.js` produces the conventional ELF, map, and
+  exact ROM outside the repository.
+- `tools/verify_phase7_conventional.js` rechecks build identities, layout, and
+  asm-differ resolution.
+- `tools/build_phase8_matching_c.js` replaces one pinned assembly owner with
+  independently written matching C.
+- `tools/verify_phase8_matching_c.js` verifies compiler identity, sole section
+  ownership, target bytes, and full-ROM identity.
+- `tools/verify_setup.js` is the canonical 21-check setup command. Canonical use
+  requires `--phase5a-root <accepted-phase5a-product-root>`.
+- `tests/verify_setup_phase5a_root.js` checks strict argument forwarding and the
+  preserved integration-local default.
 - `tests/binutils_smoke.js` verifies the GNU MIPS binutils path.
 - `tests/word_asm_smoke.js` verifies the minimal `.word` assembler used by the
   generated fallback path.
@@ -367,21 +420,25 @@ code = named function/straddler/cluster parts, data/zero-fill by part prefix;
 
 ## Setup Complete
 
-Setup is complete when `node tools/verify_setup.js` prints PASS (currently: 17
-checks green). Toolchain: `n64-tools-gcc-toolchain-mips64-win64` (GNU Binutils
-2.39 `mips64-elf-as.exe`, `-EB -mips3 -32`, Windows-only), SHA256-pinned zip,
-installed under ignored `.toolchains/`. Smoke tests prove `.word` output, real
-instruction encodings, `.set noreorder` delay-slot behavior, and first-chunk
-real assembly. Full expected numbers are in Current State above.
+Setup is complete when the explicit-root command reports 21 passing checks:
+
+```powershell
+$phase5aRoot = '<accepted-phase5a-product-root>'
+node tools/verify_setup.js --phase5a-root $phase5aRoot
+```
+
+The baseline toolchain is `n64-tools-gcc-toolchain-mips64-win64`. It provides
+GNU Binutils 2.39 with `-EB -mips3 -32` on Windows.
+
+Authenticated Splat and KMC prerequisites remain external. Full expected
+numbers and evidence limits appear in Current State above.
 
 ## Next Best Work
 
-The data-ownership loop is COMPLETE; there is no chunk frontier. Active queues:
+The data-ownership and external-intake programs are complete. There is no chunk
+frontier or intake correction pending.
 
-1. `docs/PLAN_2026-07-08-assessment-fixes.md` — the assessment fix plan:
-   P1-P8 ALL COMPLETE as of 2026-07-09. Next mainline: Phase 1 workbench
-   (parent `docs/mips-decomp-workflow-plan.md` Milestones; first M4 target =
-   cutscene animation actors/programs, Joe 2026-07-09).
-2. `docs/NEXT_STEPS.md` — the standing task queue (non-code owner promotion,
-   evidence-naming rules, optional decode tracks).
-3. Keep `node tools/verify_setup.js` green after every source-layout change.
+1. Use `docs/NEXT_STEPS.md` for the standing decomp queue.
+2. Add matching C incrementally through the accepted build path.
+3. Preserve structural names until evidence supports gameplay meaning.
+4. Keep the explicit-root setup command green after every layout change.

@@ -1,9 +1,29 @@
 # Independent Overlay, KMC, and Segment Reproduction Plan
 
-Status: **proposed — not yet active**
+Status: **superseded and closed — 2026-08-01**
 Created: 2026-07-25
 Intake updated: 2026-07-26
 Target: Ogre Battle 64 US Rev 0 only
+Superseded by:
+`C:\Users\Joe\Projects\OB64-Decomp-Hijs-Integration\docs\PLAN_2026-07-30-independent-external-intake-validation-r2.md`
+
+## Closure
+
+This proposal never became the active authority. Its editor slice never received
+Joe's authorization.
+
+The external-intake program replaced this proposal and completed its decomp
+build objectives under independent review.
+
+Canonical technical promotion commit
+`31e781898a585285f87a4dd3b4edd91bc6319b5a` contains the accepted clean-room
+delta. Integration review commits
+`f55c5832d74ee5f68d6619afff7d2dd859cdd257` and
+`9a42b85f4a3b3858d0862a1e3c33aa8e5ee4b02f` accepted the program and final
+setup correction.
+
+The remaining body is historical planning context. It does not grant current
+authority or describe the current queue.
 
 ## Objective
 
