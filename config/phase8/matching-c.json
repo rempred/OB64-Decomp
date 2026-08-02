@@ -62,6 +62,48 @@
         {"offset": "0x00000080", "type": "R_MIPS_26", "symbol": "func_000016C4", "section": ".rel.text"},
         {"offset": "0x00000000", "type": "R_MIPS_32", "symbol": "func_0000B33C", "section": ".rel.pdr"}
       ]
+    },
+    {
+      "symbol": "func_00007688",
+      "source": "src/boot/boot_state_slot_flagged_dispatch_lookup.c",
+      "sourceSha256": "BDEDCC08040A6DB6D45303ACEA8AE652E3A261FB6B63D44064C72F534A81F5A5",
+      "originalAssembly": "asm/original/rev0/boot/boot_state_slot_flagged_dispatch_lookup.s",
+      "originalAssemblySha256": "90B860B2C29E15957BB39D1E17DF7939C205CCC50E94A8F9FD215F36382E6DD2",
+      "rowIndex": 67,
+      "primaryId": "primary:3604e08f7eac09f922ae",
+      "sectionName": ".ob64.r0067",
+      "chunkIndex": 0,
+      "romStart": "0x00007688",
+      "romEndExclusive": "0x00007768",
+      "vramStart": "0x80077288",
+      "bytes": 224,
+      "overlayDescriptorId": null,
+      "descriptorRawSha256": null,
+      "expectedTextSha256": "4398E1D52DE73D83846A34DDB7A4A97EA669E8DA66DA321F98CFF91C0BF9BC31",
+      "expectedObjectTextSha256": "12FEA357E2873AB82DE2314783730C154F7B1B7964FCC9F9E0AD9E69FD994EBE",
+      "linkSymbols": {
+        "func_00008380": "0x80077F80",
+        "func_00008388": "0x80077F88",
+        "g_state_slot_status": "0x800C4C26",
+        "g_state_slot_records": "0x800E82C8"
+      },
+      "expectedRelocations": [
+        {"offset": "0x0000000C", "type": "R_MIPS_26", "symbol": "func_00008380", "section": ".rel.text"},
+        {"offset": "0x00000014", "type": "R_MIPS_HI16", "symbol": "g_state_slot_status", "section": ".rel.text"},
+        {"offset": "0x00000018", "type": "R_MIPS_LO16", "symbol": "g_state_slot_status", "section": ".rel.text"},
+        {"offset": "0x00000030", "type": "R_MIPS_HI16", "symbol": "g_state_slot_records", "section": ".rel.text"},
+        {"offset": "0x00000038", "type": "R_MIPS_LO16", "symbol": "g_state_slot_records", "section": ".rel.text"},
+        {"offset": "0x00000048", "type": "R_MIPS_HI16", "symbol": "g_state_slot_records", "section": ".rel.text"},
+        {"offset": "0x00000050", "type": "R_MIPS_LO16", "symbol": "g_state_slot_records", "section": ".rel.text"},
+        {"offset": "0x00000060", "type": "R_MIPS_26", "symbol": "func_00008388", "section": ".rel.text"},
+        {"offset": "0x00000094", "type": "R_MIPS_HI16", "symbol": "g_state_slot_records", "section": ".rel.text"},
+        {"offset": "0x0000009C", "type": "R_MIPS_LO16", "symbol": "g_state_slot_records", "section": ".rel.text"},
+        {"offset": "0x000000AC", "type": "R_MIPS_HI16", "symbol": "g_state_slot_records", "section": ".rel.text"},
+        {"offset": "0x000000B4", "type": "R_MIPS_LO16", "symbol": "g_state_slot_records", "section": ".rel.text"},
+        {"offset": "0x000000C0", "type": "R_MIPS_26", "symbol": ".text", "section": ".rel.text"},
+        {"offset": "0x00000000", "type": "R_MIPS_32", "symbol": "func_00007688", "section": ".rel.pdr"},
+        {"offset": "0x00000020", "type": "R_MIPS_32", "symbol": "func_00007714", "section": ".rel.pdr"}
+      ]
     }
   ],
   "compiler": {
