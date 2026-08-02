@@ -106,6 +106,26 @@
       ]
     },
     {
+      "symbol": "func_00005FC0",
+      "source": "src/boot/boot_state_dispatch_loop_init.c",
+      "sourceSha256": "BFEB371935DCA921472E44FA2AF6FF002459008DF47DA415B39CA2B1B785B999",
+      "originalAssembly": "asm/original/rev0/boot/boot_state_dispatch_loop_init.s",
+      "originalAssemblySha256": "92D12F3BAC341DCC418030610B2BFA6A6A0BFA4170FA0E48EF01E47455DA1AC2",
+      "rowIndex": 56,
+      "primaryId": "primary:32e7dec3aabd26f874d3",
+      "sectionName": ".ob64.r0056",
+      "chunkIndex": 0,
+      "romStart": "0x00005FC0",
+      "romEndExclusive": "0x000065A4",
+      "vramStart": "0x80075BC0",
+      "bytes": 1508,
+      "overlayDescriptorId": null,
+      "descriptorRawSha256": null,
+      "expectedTextSha256": "08B5A10F4A00B892D8CBE99A62BC7F823FBB7A6B4EB9FB488D1BC2EFC341B50B",
+      "expectedObjectTextSha256": "08B5A10F4A00B892D8CBE99A62BC7F823FBB7A6B4EB9FB488D1BC2EFC341B50B",
+      "expectedRelocations": []
+    },
+    {
       "symbol": "func_0000BC8C",
       "source": "src/boot/boot_resource_record_resolve_load.c",
       "sourceSha256": "1DD83FE80C651B037F67238CA6E6FF03C441469F869F1630F7316D0C89D73068",
