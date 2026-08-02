@@ -1,12 +1,12 @@
 # After-action report: Wave 7 evidence-consistency correction
 
-Status: correction complete and review-pending. The task log now names the authenticated reproducibility-report hash, and the worker AAR now records six pre-correction Markdown evidence records. This matters because the evidence package now assigns each reported identity to the correct artifact without changing the technical result. The Director must intake this correction and keep Critical review pending; no action is required from Joe.
+Status: historical consistency correction retained; candidate `func_00005FC0` is rejected and withdrawn from active matching C. The task log and worker AAR still preserve the corrected historical identities. This matters because the evidence package remains auditable after withdrawal. The Director must preserve the original assembly fallback and keep proportional Critical review pending; no action is required from Joe.
 
 ## Scope and authority
 
 This correction addressed two statements in the completed Wave 7 worker package. The authorized surfaces were the worker task log, the worker AAR, and this correction AAR.
 
-The source, matching-C configuration, evidence index, derivation record, target-selection record, and reproduction procedure remained read-only. The parent research repository, integration repository, ROM, emulator, RAM, savestates, and controller input remained untouched.
+The source, matching-C configuration, evidence index, derivation record, target-selection record, and reproduction procedure remained read-only during this consistency correction. The withdrawal later removed the rejected source and configuration entry. The parent research repository, integration repository, ROM, emulator, RAM, savestates, and controller input remained untouched.
 
 No technical build or verifier rerun was authorized. This correction worker did not create a branch, commit, stage, push, publish, delegate work, or issue an acceptance verdict.
 
@@ -23,11 +23,11 @@ The six pre-correction records were `evidence-index.md`, `independent-derivation
 
 ## Preservation checks
 
-The matching-C source remained SHA-256 `BFEB371935DCA921472E44FA2AF6FF002459008DF47DA415B39CA2B1B785B999`. The matching-C configuration remained SHA-256 `855E14C889788DBB708F0D02CEAEF225E3EE7642A2A77FF3819C886588ADA444`.
+The withdrawn matching-C source had SHA-256 `BFEB371935DCA921472E44FA2AF6FF002459008DF47DA415B39CA2B1B785B999`. The pre-withdrawal matching-C configuration had SHA-256 `855E14C889788DBB708F0D02CEAEF225E3EE7642A2A77FF3819C886588ADA444`. The current seven-owner configuration has SHA-256 `3FA55971AF36908D2CA0A44460F36BB9156DEF8DF71FA0630583B5AC2C01D07C`.
 
 The worker AAR had SHA-256 `B9717BF6F0FD183F01EF5838098BACDC44AA05919F2012523BEF72B1EE8BBE31` before this correction. Its post-correction SHA-256 is `15FAF16F9BCB748AD60D330FB4B54D4A23A5E27E7D0DA575CF6C127D6E37A5EC`.
 
-The disclosed exact-layout anchor limitation remains unchanged. The technical source, target boundary, placement, relocation contract, full-ROM identity, build identities, and review-pending state remain unchanged.
+The disclosed exact-layout anchor limitation remains unchanged in the historical record. The target boundary, placement, relocation contract, full-ROM identity, and build identities remain historical evidence. The candidate is no longer active.
 
 ## Verification
 
@@ -49,12 +49,16 @@ The parent research repository was on `main` at `2c431bb42f31b71d73c1efd97c55942
 
 The parent HEAD differs from the earlier Wave 7 worker baseline because the Director prepared this correction assignment. The difference does not affect the three authorized evidence surfaces.
 
+## Withdrawal status
+
+The candidate is rejected under `W7-MC-01` and withdrawn from active matching C. The original assembly remains the exact fallback. The accepted-backend research question remains unresolved.
+
 ## Evidence grade and review state
 
 Correction evidence grade: `Supported`. The corrected statements match the authenticated artifact identities and the observed Markdown-record inventory.
 
-Review state: `pending`. Independent Critical review remains required for the underlying Wave 7 technical result and its disclosed layout-anchor limitation. This correction worker does not issue an acceptance verdict.
+Review state: `historical; rejected; withdrawn`. Proportional Critical review of the withdrawal remains `pending`. This correction worker does not issue an acceptance verdict.
 
 ## Director handoff
 
-The Director must intake this correction with the completed Wave 7 worker AAR and evidence index. The Director must preserve the corrected reproducibility-report identity, the six pre-correction record count, and the pending Critical review state.
+The Director must preserve this historical consistency correction with the withdrawal AAR. The Director must preserve the corrected reproducibility-report identity, the six pre-correction record count, the rejected candidate status, and the pending withdrawal review state.

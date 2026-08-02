@@ -2,10 +2,11 @@
 
 ## Status and result
 
-Status: reproduction complete and review-pending. The authenticated setup,
-two final builds, two verifiers, and reproducibility comparison all passed.
-This proves the static build result is path-independent. The Director must
-route Critical review; no action is required from Joe.
+Status: historical candidate reproduction procedure retained; the candidate
+result is rejected and withdrawn. Its authenticated setup, two candidate
+builds, two verifiers, and reproducibility comparison passed before
+withdrawal. The current fallback-build commands and identities are recorded
+in the withdrawal AAR; no action is required from Joe.
 
 ## Authenticated inputs
 

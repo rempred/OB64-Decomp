@@ -1,6 +1,6 @@
 # After-action report: matching-C high-value wave 7
 
-Status: worker result complete and review-pending. `func_00005FC0` now has a verified 1,508-byte target contract and exact output in two fresh builds. This matters because the result advances matching C into the permanent boot task and state path while preserving the full ROM. The Director must route a fresh Critical review, especially for the disclosed compiler layout-anchor limitation; no action is required from Joe.
+Status: historical worker result retained; candidate `func_00005FC0` is rejected and withdrawn from active matching C. Its exact-byte evidence remains useful for the blocked backend research question, but it no longer contributes to the active seven-owner build. The Director must preserve the original assembly fallback and route future backend work separately; no action is required from Joe.
 
 ## Mission and authority
 
@@ -41,7 +41,7 @@ The implementation is [boot_state_dispatch_loop_init.c](../../../src/boot/boot_s
 
 The source also contains an explicit exact-layout anchor for the emitted target bytes. The pinned KMC backend does not emit the original hand-scheduled entry prologue. The anchor therefore preserves the original assembly layout while the C model records the control-flow and state semantics. This is a hybrid matching-C result, not a claim that KMC generated every target byte from ordinary C. The anchor has no text relocations and preserves the original assembly fallback contract.
 
-This limitation is a required review question. Critical review must decide whether the independently derived C model and explicit layout anchor satisfy the maintainable-C gate. The worker records the limitation and does not decide acceptance.
+This limitation was a required review question. Critical review found that the independently derived C model and explicit layout anchor failed the maintainable-C gate under `W7-MC-01`. The blocked correction AAR records the accepted-backend limit.
 
 The target configuration entry is in [matching-c.json](../../../config/phase8/matching-c.json). It pins the source hash, assembly hash, row index, section, ROM interval, RAM placement, expected text hash, and empty relocation list.
 
@@ -75,22 +75,26 @@ The first independent B retry used an incorrect asm-differ path. The final B3 re
 
 ## Changed surfaces and generated artifacts
 
-The uncommitted canonical changes are limited to the matching-C source, its phase configuration entry, and six pre-correction Markdown evidence records under `docs/matching-c/high-value-wave7-20260802/`. The required AAR is this file. No canonical domain document was changed before review.
+The historical worker package contained the matching-C source and phase configuration entry. The withdrawal correction removed both active candidate surfaces and restored the original assembly fallback. The worker evidence records remain retained for provenance, and no canonical domain document was changed.
 
 Generated object, map, ROM, verification, and reproducibility artifacts remain under `C:\Users\Joe\.codex\ob64-matching-c-wave7-20260802\`. They are external to the canonical repository and retain their generator provenance. The evidence root contains Markdown evidence only.
 
 The source SHA-256 is `BFEB371935DCA921472E44FA2AF6FF002459008DF47DA415B39CA2B1B785B999`. The final configuration SHA-256 is `855E14C889788DBB708F0D02CEAEF225E3EE7642A2A77FF3819C886588ADA444`. The original assembly SHA-256 is `92D12F3BAC341DCC418030610B2BFA6A6A0BFA4170FA0E48EF01E47455DA1AC2`.
 
+## Withdrawal status
+
+The independent review issued `Revision required` for `W7-MC-01`. The bounded maintainable-C correction reached the accepted-backend stop condition. The candidate is rejected and withdrawn from active matching C, while the original assembly remains the exact fallback.
+
 ## Evidence grade and review state
 
-Worker evidence grade: `Supported`. The claim is supported by independent derivation, exact target bytes, exact fixed-boot placement, zero relocations, preservation checks, two fresh builds, two verifier passes, and a reproducibility pass.
+Historical worker evidence grade: `Supported`. The claim remains supported as historical evidence by independent derivation, exact target bytes, exact fixed-boot placement, zero relocations, preservation checks, two fresh builds, two verifier passes, and a reproducibility pass.
 
-Review state: `pending`. Independent Critical review remains required. The reviewer must evaluate the target selection, semantic derivation, hybrid source design, explicit layout anchor, maintainable-C status, and preservation evidence. This worker does not issue an acceptance verdict.
+Review state: `rejected; withdrawn`. Independent Critical review found `W7-MC-01`, and the proportional correction reached its accepted-backend stop condition. This worker does not issue an acceptance verdict.
 
 ## Proposed canonical follow-up
 
-No canonical-domain edit is proposed before review. After acceptance, the Director may update the project status and next-step documents with the target identity, evidence grade, and review state. Any such update must preserve the explicit layout-anchor limitation and must not describe this result as pure compiler-generated C.
+No canonical-domain edit is proposed for this withdrawn candidate. The Director may record the rejected status and unresolved backend research question in coordination records. Any future correction must preserve the explicit layout-anchor limitation and must not describe this historical result as pure compiler-generated C.
 
 ## Director handoff
 
-The Director must route a fresh Critical review using this AAR, the target-selection record, the independent derivation, the reproduction procedure, and the evidence index. The review package must preserve the two fresh output roots and their hashes. The review must explicitly decide the maintainable-C gate for the disclosed KMC backend limitation.
+The Director must preserve this historical AAR, the blocked correction AAR, and the withdrawal AAR. The Director must keep the candidate excluded from active matching C and route any future backend research separately.

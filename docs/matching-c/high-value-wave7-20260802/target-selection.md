@@ -2,12 +2,9 @@
 
 ## Status and result
 
-Status: worker result complete and review-pending. The selected owner is
-`func_00005FC0`, a 1,508-byte permanent boot state-dispatch and task-loop
-owner. This matters because it adds a larger resource-orchestration control
-path with an explicit secondary entry.
+Status: historical selection retained; candidate `func_00005FC0` is rejected and withdrawn from active matching C. The record preserves the 1,508-byte permanent boot state-dispatch and task-loop boundary for provenance. The Director must keep the original assembly fallback active; no action is required from Joe.
 
-Independent Critical review remains pending. No action is required from Joe.
+Independent Critical review issued `Revision required` for `W7-MC-01`. Proportional Critical review of this withdrawal remains pending.
 
 ## Mission identity
 
@@ -68,9 +65,9 @@ return `0`, `1`, `0x800A872C`, or set status `0xFFFE` before returning.
 The C derivation models the callback table, task records, status transitions,
 result routing, polling, cleanup, and local selector dispatch with structural
 names. The pinned KMC backend did not reproduce the hand-scheduled entry
-prologue, so the source preserves an explicit exact-layout anchor for emitted
-bytes. Critical review must decide whether this backend limitation satisfies the
-maintainable-C gate.
+prologue, so the source preserved an explicit exact-layout anchor for emitted
+bytes. Critical review found this failed the maintainable-C gate under
+`W7-MC-01`; the blocked correction AAR records the accepted-backend limit.
 
 ## Structural value
 
@@ -114,6 +111,10 @@ the callback pointers, task records, status values, or helper functions.
 | `scripts/ob64_symbols_v2.json` | Parent calls, accesses, runtime placement, and state coverage |
 | `build/setup/verify-setup-report.json` | Canonical setup and ROM identity |
 
+## Withdrawal status
+
+The candidate is excluded from active matching C. The matching-C configuration no longer contains `func_00005FC0`, and the original assembly remains the exact fallback. The accepted-backend research question remains unresolved.
+
 ## Claim record
 
 ### Claim
@@ -126,7 +127,7 @@ the callback pointers, task records, status values, or helper functions.
 
 ### Review status
 
-`pending`.
+`rejected; withdrawn`.
 
 ### Scope and limits
 
@@ -140,5 +141,5 @@ unexpected change to an earlier owner invalidates this selection.
 
 ### Product consequence
 
-The owner is suitable for one fresh Critical review slice. No editor change is
-authorized by this worker result.
+The owner is not active matching C. No editor change is authorized by this
+historical selection record.

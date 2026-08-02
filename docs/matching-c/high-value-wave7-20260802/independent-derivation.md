@@ -2,10 +2,14 @@
 
 ## Status and result
 
-Status: worker result complete and review-pending. The selected boot task
-dispatcher has exact 1,508-byte output in both final builds. This matters
-because the result extends matching C into a permanent state-transition path.
-The Director must route a fresh Critical review; no action is required from Joe.
+Status: historical derivation retained; candidate `func_00005FC0` is rejected
+and withdrawn from active matching C. The pre-withdrawal candidate produced
+exact 1,508-byte output in its historical builds, but the current active build
+uses the original assembly fallback. The Director must preserve this
+derivation as historical evidence; no action is required from Joe.
+
+The exact-byte statements below describe the withdrawn candidate result. They
+do not describe the current seven-owner active matching-C build.
 
 ## Independent inputs
 
