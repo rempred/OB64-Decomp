@@ -130,7 +130,7 @@ corrections. The review verdict is commit
 `6082c2f755d08dcfc514a28c12b145c3085818db`. The completed cleanup is commit
 `0a4c16c765272e6ad4aebcf6d12c4c469dd21c9e`.
 
-The current matching-C owners are:
+Wave 1 left these matching-C owners:
 
 | Structural symbol | Static role | z64 ROM range | Bytes |
 |---|---|---:|---:|
@@ -145,6 +145,29 @@ above. It authenticates the accepted KMC manifest before compiler use.
 
 The accepted review proves structural matching, provenance, and exact rebuild
 preservation. It does not prove gameplay semantics or runtime behavior.
+
+## Accepted Matching-C Wave 2 — 2026-08-02
+
+Critical review accepted the third matching-C slice without correction. The
+worker result is commit `f06aea6b5bc8cd9c99ab09881e4f91a55474a602`.
+The review verdict is commit `082ad7a02be2b6069c2843d1aad4eeab7785ccf2`.
+
+The current matching-C owners are:
+
+| Structural symbol | Static role | z64 ROM range | Bytes |
+|---|---|---:|---:|
+| `func_000E5938` | Existing overlay target | `0x000E5938..0x000E595C` | 36 |
+| `func_0000B33C` | Boot resource-pool acquire/release | `0x0000B33C..0x0000B3E4` | 168 |
+| `func_00007688` | Boot state-slot flagged dispatch and lookup owner | `0x00007688..0x00007768` | 224 |
+
+The third owner preserves secondary entry `func_00007714` at owner offset
+`0x8C`. Its retained assembly remains available as the comparison fallback.
+
+All three linked targets match their original bytes. Two fresh build roots
+reproduced the same target, relocation, code-region, and full-ROM identities.
+
+The review proves static structure, clean-room derivation, and exact build
+identity. It does not prove state-slot semantics or gameplay behavior.
 
 ## Repo Invariants
 

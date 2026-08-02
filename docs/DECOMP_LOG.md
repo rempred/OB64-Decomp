@@ -142,6 +142,16 @@ and replace the active log with a compact current-state summary.
   remain exact. Matching proves structure and build identity, not gameplay
   semantics.
 
+- **2026-08-02 — matching-C high-value Wave 2 accepted**: canonical worker
+  commit `f06aea6b5bc8cd9c99ab09881e4f91a55474a602` adds structural function
+  `func_00007688` at z64 ROM `0x00007688..0x00007768` as independently
+  derived C. Its accepted owner contains secondary entry `func_00007714` at
+  offset `0x8C`. Fresh Critical review returned `Accepted` at commit
+  `082ad7a02be2b6069c2843d1aad4eeab7785ccf2`. The 224-byte linked target,
+  both earlier C targets, relocations, code region, and full ROM remain exact.
+  Two fresh roots reproduced the same identities. Matching proves structure
+  and build identity, not state-slot semantics or gameplay behavior.
+
 ## Dossier Set
 
 139+ dossiers under `docs/dossiers/`: 81 `boot-*` (chunk 0 splits), 47
