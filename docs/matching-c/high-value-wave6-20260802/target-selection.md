@@ -37,7 +37,7 @@ read-only, so this difference did not change the mission.
 | Proven boundary | PASS | The owner ends after `jr $ra` and its delay slot before `func_0026BCCC`. |
 | Proven overlay placement | PASS | Row `4836` and descriptor `12` identify one linked overlay slice. |
 | Proven secondary-entry status | PASS | The accepted function model lists no secondary entries. |
-| Exact relocations | PASS | The C object contains 29 `.rel.text` entries and one `.rel.pdr` entry. |
+| Exact relocations | PASS | The C object contains 28 text relocations and one `.rel.pdr` entry. |
 | Earlier owners preserved | PASS | Both fresh Phase 8 builds retain the six earlier owners byte-exact. |
 
 ## Selected owner and boundaries
@@ -81,7 +81,7 @@ Direct assembly shows these features:
 6. Selector five tests flags, calls a helper, sets a high flag, and clears a state bit.
 7. Selector three contains four bounded record propagation loops.
 8. Selector four tests a flag and record halfword before calling a helper.
-9. The owner links 15 named external symbols and four same-owner control-flow relocations.
+9. The owner links 15 named external symbols and six same-owner control-flow relocations.
 
 These are structural observations. They do not prove gameplay meanings for the
 selector, state fields, records, globals, or helper functions.

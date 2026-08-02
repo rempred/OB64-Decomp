@@ -150,7 +150,7 @@ Every overlay runtime address uses the accepted descriptor-12 placement.
 
 ## Relocation derivation
 
-The assembled object contains 29 `.rel.text` entries and one `.rel.pdr` entry.
+The assembled object contains 28 text relocations and one `.rel.pdr` entry.
 The complete contract is recorded in `config/phase8/matching-c.json`.
 
 | Relocation group | Owner-relative offsets | Evidence role |

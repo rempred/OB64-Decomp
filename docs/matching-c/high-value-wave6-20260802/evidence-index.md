@@ -59,7 +59,7 @@ The complete derivation is in
 | Selector-five offsets `0x1C0..0x240` | Check flags, call helper, set high flag, clear state flag | Structural flag transition |
 | Selector-three offsets `0x244..0x410` | Run four record loops with fixed helper arguments | Four bounded propagation loops |
 | Selector-four offsets `0x410..0x478` | Test flag and record halfword before helper call | Structural record check |
-| Relocation table | Resolve overlay globals and direct calls | 29 `.rel.text` entries and one `.rel.pdr` entry |
+| Relocation table | Resolve overlay globals and direct calls | 28 text relocations and one `.rel.pdr` entry |
 
 No external-derived implementation supplied C expressions or control flow.
 
@@ -80,7 +80,7 @@ The target contract records these identities:
 | Raw C object text | `C48C33CA6FBF76AFEEF6A19B3CF3709D83045EA82BEE78D4E23B6BA4F9FB814D` |
 | Linked target text | `A88503EABEC9D4127CFBD75972F3F0465DC1A58B904DBDDE3B54BCFBA16B4E1A` |
 | Linked section | `.ob64.r4836`, runtime `0x80216C70`, 1,196 bytes |
-| C object relocation count | 30 total |
+| C object relocation count | 29 total |
 | asm-differ proof | 299 rows, score `0`, maximum `29,900`, exact |
 
 The original assembly remains the comparison fallback. It is not linked for the

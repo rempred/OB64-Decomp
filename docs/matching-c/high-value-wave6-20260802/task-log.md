@@ -91,8 +91,8 @@ The KMC object is exactly 1,196 bytes. Its raw object text SHA-256 is
 `C48C33CA6FBF76AFEEF6A19B3CF3709D83045EA82BEE78D4E23B6BA4F9FB814D`.
 The linked target text SHA-256 is
 `A88503EABEC9D4127CFBD75972F3F0465DC1A58B904DBDDE3B54BCFBA16B4E1A`.
-The relocation contract records 29 `.rel.text` entries and one `.rel.pdr`
-entry. The Phase 8 row and source are now recorded in the scoped diff.
+The relocation contract records 28 text relocations and one `.rel.pdr` entry.
+The Phase 8 row and source are now recorded in the scoped diff.
 
 ### 2026-08-02 — verification
 

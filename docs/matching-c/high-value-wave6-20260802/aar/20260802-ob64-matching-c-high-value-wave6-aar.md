@@ -73,8 +73,8 @@ The raw C object text SHA-256 is
 The linked target SHA-256 is
 `A88503EABEC9D4127CFBD75972F3F0465DC1A58B904DBDDE3B54BCFBA16B4E1A`.
 
-The target manifest records 29 `.rel.text` relocations and one `.rel.pdr`
-relocation. The original assembly remains available as the comparison fallback.
+The target manifest records 28 text relocations and one `.rel.pdr` relocation.
+The original assembly remains available as the comparison fallback.
 
 No build-support source was changed for this owner. The existing Phase 8 build
 support and accepted compiler produced the target from the new source entry.
