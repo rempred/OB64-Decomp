@@ -3,6 +3,9 @@ const fs = require('fs');
 const path = require('path');
 
 const ROOT = path.resolve(__dirname, '..', '..');
+const PARENT_ROOT = process.env.OB64_PARENT_ROOT
+  ? path.resolve(process.env.OB64_PARENT_ROOT)
+  : path.resolve(ROOT, '..');
 
 function hex(value, width = 8) {
   return `0x${(Number(value) >>> 0).toString(16).toUpperCase().padStart(width, '0')}`;
@@ -114,7 +117,7 @@ function defaultInputCandidates() {
         .filter((name) => /\.(v64|z64|n64)$/i.test(name))
         .map((name) => path.join(baseromDir, name))
     : [];
-  const parentMaster = path.resolve(ROOT, '..', 'Ogre Battle 64 - Person of Lordly Caliber (U) [!].v64');
+  const parentMaster = path.resolve(PARENT_ROOT, 'Ogre Battle 64 - Person of Lordly Caliber (U) [!].v64');
   if (fs.existsSync(parentMaster)) baseromFiles.push(parentMaster);
   return baseromFiles;
 }
@@ -213,6 +216,7 @@ function loadAndVerifyRom({ inputPath, profile = loadProfile() } = {}) {
 }
 
 module.exports = {
+  PARENT_ROOT,
   ROOT,
   defaultInputCandidates,
   detectByteOrder,

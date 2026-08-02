@@ -1,0 +1,1703 @@
+{
+  "schemaVersion": 1,
+  "configId": "ob64-us-rev0-overlay-layout",
+  "generator": {
+    "tool": "tools/generate_overlay_config.js",
+    "version": "1.0.0",
+    "deterministicJson": true
+  },
+  "provenance": {
+    "ordinarySource": "canonical normalized US Rev 0 z64 bytes",
+    "rom": {
+      "byteOrder": "z64",
+      "bytes": 41943040,
+      "sha256": "571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A"
+    },
+    "acceptedComparisonInputs": {
+      "staticPackage": {
+        "role": "comparison expectation only",
+        "logicalSha256": "F950150E647D5D8CA3E2DD4A849357D9B8CFA3378BD12772101467C0DDB9C205"
+      },
+      "boundedRuntimePackage": {
+        "role": "annotation provenance only",
+        "productManifestSha256": "CD622760A083AAC4F2576B98ADEA19F3BCAA90B5DD746D85C4BF9CDF7AF40348"
+      }
+    },
+    "tooling": [
+      {
+        "file": "tools/lib/overlay_config.js",
+        "sha256": "0E90495EDD4D7D0CF15627C6BC71711A3FFF832D56D45221528C52A48CE68E05"
+      },
+      {
+        "file": "tools/generate_overlay_config.js",
+        "sha256": "684F2F8322FED9006A3F2CA6484F280022E807946902E260206D751174A7F371"
+      },
+      {
+        "file": "tools/verify_overlay_config.js",
+        "sha256": "0A6374E58C3A8F76A8681266C0F082C4706667D826ED0849DEBB819EB4362DAD"
+      }
+    ]
+  },
+  "layout": {
+    "descriptorTable": {
+      "start": "0x000387C0",
+      "endExclusive": "0x00038AB8",
+      "bytes": 760,
+      "count": 19,
+      "stride": 40
+    },
+    "groupRecords": {
+      "start": "0x00038AB8",
+      "endExclusive": "0x00038AFC",
+      "bytes": 68,
+      "count": 11,
+      "grammar": "zero-or-more unsigned descriptor IDs, 0xFF terminator, then zero padding to 4-byte alignment",
+      "canonicalRecordsNonempty": true
+    },
+    "pointerTable": {
+      "start": "0x00038AFC",
+      "endExclusive": "0x00038B28",
+      "bytes": 44,
+      "count": 11,
+      "canonicalPointersDistinct": true
+    },
+    "nullWord": {
+      "start": "0x00038B28",
+      "endExclusive": "0x00038B2C",
+      "bytes": 4
+    }
+  },
+  "descriptors": [
+    {
+      "id": 0,
+      "source": {
+        "start": "0x000387C0",
+        "endExclusive": "0x000387E8",
+        "bytes": 40
+      },
+      "rawSha256": "CF7F148CCF970AA35A81D85E9B49702DD5EF36B99F7D389365CBA0F50B9E8564",
+      "rawWords": [
+        "0x80197B70",
+        "0x8019A670",
+        "0x00066E10",
+        "0x00069900",
+        "0x8019A660",
+        "0x8019A670",
+        "0x80197B70",
+        "0x8019A210",
+        "0x8019A210",
+        "0x8019A660"
+      ],
+      "fields": {
+        "vramStart": "0x80197B70",
+        "vramEnd": "0x8019A670",
+        "romStart": "0x00066E10",
+        "romEnd": "0x00069900",
+        "bssStart": "0x8019A660",
+        "bssEnd": "0x8019A670",
+        "textStart": "0x80197B70",
+        "textEnd": "0x8019A210",
+        "dataRodataStart": "0x8019A210",
+        "dataRodataEnd": "0x8019A660"
+      },
+      "sizes": {
+        "vramReservationBytes": 11008,
+        "initializedImageBytes": 10992,
+        "textBytes": 9888,
+        "dataRodataBytes": 1104,
+        "bssBytes": 16
+      }
+    },
+    {
+      "id": 1,
+      "source": {
+        "start": "0x000387E8",
+        "endExclusive": "0x00038810",
+        "bytes": 40
+      },
+      "rawSha256": "A76EA58C88EE9217482B6F041E6F3542C6C5CA0605C6F40F7CE78180B8AA8EA7",
+      "rawWords": [
+        "0x80197B70",
+        "0x801F1510",
+        "0x0006E660",
+        "0x00071280",
+        "0x8019A790",
+        "0x8019A7A0",
+        "0x80197B70",
+        "0x8019A380",
+        "0x8019A380",
+        "0x8019A790"
+      ],
+      "fields": {
+        "vramStart": "0x80197B70",
+        "vramEnd": "0x801F1510",
+        "romStart": "0x0006E660",
+        "romEnd": "0x00071280",
+        "bssStart": "0x8019A790",
+        "bssEnd": "0x8019A7A0",
+        "textStart": "0x80197B70",
+        "textEnd": "0x8019A380",
+        "dataRodataStart": "0x8019A380",
+        "dataRodataEnd": "0x8019A790"
+      },
+      "sizes": {
+        "vramReservationBytes": 367008,
+        "initializedImageBytes": 11296,
+        "textBytes": 10256,
+        "dataRodataBytes": 1040,
+        "bssBytes": 16
+      }
+    },
+    {
+      "id": 2,
+      "source": {
+        "start": "0x00038810",
+        "endExclusive": "0x00038838",
+        "bytes": 40
+      },
+      "rawSha256": "9C94D164B29E79A5D145D83D53E9A42040A9035FCC2E3305E79EA5070F2B2F28",
+      "rawWords": [
+        "0x80197B70",
+        "0x8019EE50",
+        "0x000E48F0",
+        "0x000EBBB0",
+        "0x8019EE30",
+        "0x8019EE50",
+        "0x80197B70",
+        "0x8019E180",
+        "0x8019E180",
+        "0x8019EE30"
+      ],
+      "fields": {
+        "vramStart": "0x80197B70",
+        "vramEnd": "0x8019EE50",
+        "romStart": "0x000E48F0",
+        "romEnd": "0x000EBBB0",
+        "bssStart": "0x8019EE30",
+        "bssEnd": "0x8019EE50",
+        "textStart": "0x80197B70",
+        "textEnd": "0x8019E180",
+        "dataRodataStart": "0x8019E180",
+        "dataRodataEnd": "0x8019EE30"
+      },
+      "sizes": {
+        "vramReservationBytes": 29408,
+        "initializedImageBytes": 29376,
+        "textBytes": 26128,
+        "dataRodataBytes": 3248,
+        "bssBytes": 32
+      }
+    },
+    {
+      "id": 3,
+      "source": {
+        "start": "0x00038838",
+        "endExclusive": "0x00038860",
+        "bytes": 40
+      },
+      "rawSha256": "51966FFCC738587BD989B682E891AEF29F3E95BF6A0947A74ABB4F61D9607C6A",
+      "rawWords": [
+        "0x8019EE50",
+        "0x801AD5A0",
+        "0x000EBBB0",
+        "0x000F9FF0",
+        "0x801AD290",
+        "0x801AD5A0",
+        "0x8019EE50",
+        "0x801AB7F0",
+        "0x801AB7F0",
+        "0x801AD290"
+      ],
+      "fields": {
+        "vramStart": "0x8019EE50",
+        "vramEnd": "0x801AD5A0",
+        "romStart": "0x000EBBB0",
+        "romEnd": "0x000F9FF0",
+        "bssStart": "0x801AD290",
+        "bssEnd": "0x801AD5A0",
+        "textStart": "0x8019EE50",
+        "textEnd": "0x801AB7F0",
+        "dataRodataStart": "0x801AB7F0",
+        "dataRodataEnd": "0x801AD290"
+      },
+      "sizes": {
+        "vramReservationBytes": 59216,
+        "initializedImageBytes": 58432,
+        "textBytes": 51616,
+        "dataRodataBytes": 6816,
+        "bssBytes": 784
+      }
+    },
+    {
+      "id": 4,
+      "source": {
+        "start": "0x00038860",
+        "endExclusive": "0x00038888",
+        "bytes": 40
+      },
+      "rawSha256": "A90514C10A4E89BE1F4668B1CF711A99A267317BF2FAA3E7314D431CFE311A3B",
+      "rawWords": [
+        "0x8019EE50",
+        "0x8019F430",
+        "0x000F9FF0",
+        "0x000FA5D0",
+        "0x8019F430",
+        "0x8019F430",
+        "0x8019EE50",
+        "0x8019F430",
+        "0x8019F430",
+        "0x8019F430"
+      ],
+      "fields": {
+        "vramStart": "0x8019EE50",
+        "vramEnd": "0x8019F430",
+        "romStart": "0x000F9FF0",
+        "romEnd": "0x000FA5D0",
+        "bssStart": "0x8019F430",
+        "bssEnd": "0x8019F430",
+        "textStart": "0x8019EE50",
+        "textEnd": "0x8019F430",
+        "dataRodataStart": "0x8019F430",
+        "dataRodataEnd": "0x8019F430"
+      },
+      "sizes": {
+        "vramReservationBytes": 1504,
+        "initializedImageBytes": 1504,
+        "textBytes": 1504,
+        "dataRodataBytes": 0,
+        "bssBytes": 0
+      }
+    },
+    {
+      "id": 5,
+      "source": {
+        "start": "0x00038888",
+        "endExclusive": "0x000388B0",
+        "bytes": 40
+      },
+      "rawSha256": "BF55FD4D20458D3CBCAD2EA5872C78404D20E5AF8E92E72068640934EC8EB055",
+      "rawWords": [
+        "0x8019EE50",
+        "0x8019EE60",
+        "0x000FA5D0",
+        "0x000FA5E0",
+        "0x8019EE60",
+        "0x8019EE60",
+        "0x8019EE50",
+        "0x8019EE60",
+        "0x8019EE60",
+        "0x8019EE60"
+      ],
+      "fields": {
+        "vramStart": "0x8019EE50",
+        "vramEnd": "0x8019EE60",
+        "romStart": "0x000FA5D0",
+        "romEnd": "0x000FA5E0",
+        "bssStart": "0x8019EE60",
+        "bssEnd": "0x8019EE60",
+        "textStart": "0x8019EE50",
+        "textEnd": "0x8019EE60",
+        "dataRodataStart": "0x8019EE60",
+        "dataRodataEnd": "0x8019EE60"
+      },
+      "sizes": {
+        "vramReservationBytes": 16,
+        "initializedImageBytes": 16,
+        "textBytes": 16,
+        "dataRodataBytes": 0,
+        "bssBytes": 0
+      }
+    },
+    {
+      "id": 6,
+      "source": {
+        "start": "0x000388B0",
+        "endExclusive": "0x000388D8",
+        "bytes": 40
+      },
+      "rawSha256": "2908F814E155A58481A099576769D926C257C1C198D13EB271BD9D45490132CD",
+      "rawWords": [
+        "0x801AD5A0",
+        "0x801B4D40",
+        "0x000FA5E0",
+        "0x00101CE0",
+        "0x801B4CA0",
+        "0x801B4D40",
+        "0x801AD5A0",
+        "0x801B3390",
+        "0x801B3390",
+        "0x801B4CA0"
+      ],
+      "fields": {
+        "vramStart": "0x801AD5A0",
+        "vramEnd": "0x801B4D40",
+        "romStart": "0x000FA5E0",
+        "romEnd": "0x00101CE0",
+        "bssStart": "0x801B4CA0",
+        "bssEnd": "0x801B4D40",
+        "textStart": "0x801AD5A0",
+        "textEnd": "0x801B3390",
+        "dataRodataStart": "0x801B3390",
+        "dataRodataEnd": "0x801B4CA0"
+      },
+      "sizes": {
+        "vramReservationBytes": 30624,
+        "initializedImageBytes": 30464,
+        "textBytes": 24048,
+        "dataRodataBytes": 6416,
+        "bssBytes": 160
+      }
+    },
+    {
+      "id": 7,
+      "source": {
+        "start": "0x000388D8",
+        "endExclusive": "0x00038900",
+        "bytes": 40
+      },
+      "rawSha256": "45171BD5FE26DCEFC5AA6B58302107C3CC362B5FE5DA0E4E9FABD095BF3BF4F2",
+      "rawWords": [
+        "0x801AD5A0",
+        "0x801F4030",
+        "0x00101CE0",
+        "0x00145210",
+        "0x801F0AD0",
+        "0x801F4030",
+        "0x801AD5A0",
+        "0x801E7D60",
+        "0x801E7D60",
+        "0x801F0AD0"
+      ],
+      "fields": {
+        "vramStart": "0x801AD5A0",
+        "vramEnd": "0x801F4030",
+        "romStart": "0x00101CE0",
+        "romEnd": "0x00145210",
+        "bssStart": "0x801F0AD0",
+        "bssEnd": "0x801F4030",
+        "textStart": "0x801AD5A0",
+        "textEnd": "0x801E7D60",
+        "dataRodataStart": "0x801E7D60",
+        "dataRodataEnd": "0x801F0AD0"
+      },
+      "sizes": {
+        "vramReservationBytes": 289424,
+        "initializedImageBytes": 275760,
+        "textBytes": 239552,
+        "dataRodataBytes": 36208,
+        "bssBytes": 13664
+      }
+    },
+    {
+      "id": 8,
+      "source": {
+        "start": "0x00038900",
+        "endExclusive": "0x00038928",
+        "bytes": 40
+      },
+      "rawSha256": "48B064B7ED96BDE4E07BA42F49D14C46A92198D5D92EF0B510643AA218F9242F",
+      "rawWords": [
+        "0x801F4030",
+        "0x801FDA70",
+        "0x00145210",
+        "0x0014EBE0",
+        "0x801FDA00",
+        "0x801FDA70",
+        "0x801F4030",
+        "0x801FCCB0",
+        "0x801FCCB0",
+        "0x801FDA00"
+      ],
+      "fields": {
+        "vramStart": "0x801F4030",
+        "vramEnd": "0x801FDA70",
+        "romStart": "0x00145210",
+        "romEnd": "0x0014EBE0",
+        "bssStart": "0x801FDA00",
+        "bssEnd": "0x801FDA70",
+        "textStart": "0x801F4030",
+        "textEnd": "0x801FCCB0",
+        "dataRodataStart": "0x801FCCB0",
+        "dataRodataEnd": "0x801FDA00"
+      },
+      "sizes": {
+        "vramReservationBytes": 39488,
+        "initializedImageBytes": 39376,
+        "textBytes": 35968,
+        "dataRodataBytes": 3408,
+        "bssBytes": 112
+      }
+    },
+    {
+      "id": 9,
+      "source": {
+        "start": "0x00038928",
+        "endExclusive": "0x00038950",
+        "bytes": 40
+      },
+      "rawSha256": "3F2FD853AC1CA541DE03635CC5CD5AA4BBFDB82D7EDB58F9657C88B198A22914",
+      "rawWords": [
+        "0x801FDA70",
+        "0x80220F40",
+        "0x0014EBE0",
+        "0x00165FC0",
+        "0x80214E50",
+        "0x80214F80",
+        "0x801FDA70",
+        "0x8020EA80",
+        "0x8020EA80",
+        "0x80214E50"
+      ],
+      "fields": {
+        "vramStart": "0x801FDA70",
+        "vramEnd": "0x80220F40",
+        "romStart": "0x0014EBE0",
+        "romEnd": "0x00165FC0",
+        "bssStart": "0x80214E50",
+        "bssEnd": "0x80214F80",
+        "textStart": "0x801FDA70",
+        "textEnd": "0x8020EA80",
+        "dataRodataStart": "0x8020EA80",
+        "dataRodataEnd": "0x80214E50"
+      },
+      "sizes": {
+        "vramReservationBytes": 144592,
+        "initializedImageBytes": 95200,
+        "textBytes": 69648,
+        "dataRodataBytes": 25552,
+        "bssBytes": 304
+      }
+    },
+    {
+      "id": 10,
+      "source": {
+        "start": "0x00038950",
+        "endExclusive": "0x00038978",
+        "bytes": 40
+      },
+      "rawSha256": "1D7654735ED7CAE2A9226E64B45FBD76AEE84C79F36970CCCFFD0174DB6FEA68",
+      "rawWords": [
+        "0x801AD5A0",
+        "0x801F70E0",
+        "0x001F0A30",
+        "0x00213B10",
+        "0x801D0680",
+        "0x801D0840",
+        "0x801AD5A0",
+        "0x801CE890",
+        "0x801CE890",
+        "0x801D0680"
+      ],
+      "fields": {
+        "vramStart": "0x801AD5A0",
+        "vramEnd": "0x801F70E0",
+        "romStart": "0x001F0A30",
+        "romEnd": "0x00213B10",
+        "bssStart": "0x801D0680",
+        "bssEnd": "0x801D0840",
+        "textStart": "0x801AD5A0",
+        "textEnd": "0x801CE890",
+        "dataRodataStart": "0x801CE890",
+        "dataRodataEnd": "0x801D0680"
+      },
+      "sizes": {
+        "vramReservationBytes": 301888,
+        "initializedImageBytes": 143584,
+        "textBytes": 135920,
+        "dataRodataBytes": 7664,
+        "bssBytes": 448
+      }
+    },
+    {
+      "id": 11,
+      "source": {
+        "start": "0x00038978",
+        "endExclusive": "0x000389A0",
+        "bytes": 40
+      },
+      "rawSha256": "F580F5972143E39492617DF07B603E2FC693E1B2D3B4840019EFC9D9C24DB822",
+      "rawWords": [
+        "0x801F70E0",
+        "0x8020A2E0",
+        "0x0024BCA0",
+        "0x0025EE90",
+        "0x8020A2D0",
+        "0x8020A2E0",
+        "0x801F70E0",
+        "0x80209700",
+        "0x80209700",
+        "0x8020A2D0"
+      ],
+      "fields": {
+        "vramStart": "0x801F70E0",
+        "vramEnd": "0x8020A2E0",
+        "romStart": "0x0024BCA0",
+        "romEnd": "0x0025EE90",
+        "bssStart": "0x8020A2D0",
+        "bssEnd": "0x8020A2E0",
+        "textStart": "0x801F70E0",
+        "textEnd": "0x80209700",
+        "dataRodataStart": "0x80209700",
+        "dataRodataEnd": "0x8020A2D0"
+      },
+      "sizes": {
+        "vramReservationBytes": 78336,
+        "initializedImageBytes": 78320,
+        "textBytes": 75296,
+        "dataRodataBytes": 3024,
+        "bssBytes": 16
+      }
+    },
+    {
+      "id": 12,
+      "source": {
+        "start": "0x000389A0",
+        "endExclusive": "0x000389C8",
+        "bytes": 40
+      },
+      "rawSha256": "998FF913EC9C6AC3D5BDD3C3C24F78D0225D8C70D3F64AF0CC100CCAAA3BFBAA",
+      "rawWords": [
+        "0x8020A2E0",
+        "0x802210C0",
+        "0x0025EE90",
+        "0x00275850",
+        "0x80220CA0",
+        "0x802210C0",
+        "0x8020A2E0",
+        "0x8021F450",
+        "0x8021F450",
+        "0x80220CA0"
+      ],
+      "fields": {
+        "vramStart": "0x8020A2E0",
+        "vramEnd": "0x802210C0",
+        "romStart": "0x0025EE90",
+        "romEnd": "0x00275850",
+        "bssStart": "0x80220CA0",
+        "bssEnd": "0x802210C0",
+        "textStart": "0x8020A2E0",
+        "textEnd": "0x8021F450",
+        "dataRodataStart": "0x8021F450",
+        "dataRodataEnd": "0x80220CA0"
+      },
+      "sizes": {
+        "vramReservationBytes": 93664,
+        "initializedImageBytes": 92608,
+        "textBytes": 86384,
+        "dataRodataBytes": 6224,
+        "bssBytes": 1056
+      }
+    },
+    {
+      "id": 13,
+      "source": {
+        "start": "0x000389C8",
+        "endExclusive": "0x000389F0",
+        "bytes": 40
+      },
+      "rawSha256": "892FFD01AA369A5DD38EA010463932F8B296063BF4BCA7B7899BED4F61BD4758",
+      "rawWords": [
+        "0x802210C0",
+        "0x80225890",
+        "0x00275850",
+        "0x0027A020",
+        "0x80225890",
+        "0x80225890",
+        "0x802210C0",
+        "0x80225620",
+        "0x80225620",
+        "0x80225890"
+      ],
+      "fields": {
+        "vramStart": "0x802210C0",
+        "vramEnd": "0x80225890",
+        "romStart": "0x00275850",
+        "romEnd": "0x0027A020",
+        "bssStart": "0x80225890",
+        "bssEnd": "0x80225890",
+        "textStart": "0x802210C0",
+        "textEnd": "0x80225620",
+        "dataRodataStart": "0x80225620",
+        "dataRodataEnd": "0x80225890"
+      },
+      "sizes": {
+        "vramReservationBytes": 18384,
+        "initializedImageBytes": 18384,
+        "textBytes": 17760,
+        "dataRodataBytes": 624,
+        "bssBytes": 0
+      }
+    },
+    {
+      "id": 14,
+      "source": {
+        "start": "0x000389F0",
+        "endExclusive": "0x00038A18",
+        "bytes": 40
+      },
+      "rawSha256": "C36B5D59DAAFA315643EC195E7511032A1AA4A5938BE9C6FDB49E63C5987A452",
+      "rawWords": [
+        "0x80225890",
+        "0x80243DB0",
+        "0x00281860",
+        "0x00286BD0",
+        "0x8022AC00",
+        "0x8022AC90",
+        "0x80225890",
+        "0x8022A720",
+        "0x8022A720",
+        "0x8022AC00"
+      ],
+      "fields": {
+        "vramStart": "0x80225890",
+        "vramEnd": "0x80243DB0",
+        "romStart": "0x00281860",
+        "romEnd": "0x00286BD0",
+        "bssStart": "0x8022AC00",
+        "bssEnd": "0x8022AC90",
+        "textStart": "0x80225890",
+        "textEnd": "0x8022A720",
+        "dataRodataStart": "0x8022A720",
+        "dataRodataEnd": "0x8022AC00"
+      },
+      "sizes": {
+        "vramReservationBytes": 124192,
+        "initializedImageBytes": 21360,
+        "textBytes": 20112,
+        "dataRodataBytes": 1248,
+        "bssBytes": 144
+      }
+    },
+    {
+      "id": 15,
+      "source": {
+        "start": "0x00038A18",
+        "endExclusive": "0x00038A40",
+        "bytes": 40
+      },
+      "rawSha256": "D933798BD0A8682ED8270B0F5B8A58E12B347F54EFAC115870A113180830FDF3",
+      "rawWords": [
+        "0x80197B70",
+        "0x801BA710",
+        "0x001CE070",
+        "0x001F0A30",
+        "0x801BA530",
+        "0x801BA710",
+        "0x80197B70",
+        "0x801B8080",
+        "0x801B8080",
+        "0x801BA530"
+      ],
+      "fields": {
+        "vramStart": "0x80197B70",
+        "vramEnd": "0x801BA710",
+        "romStart": "0x001CE070",
+        "romEnd": "0x001F0A30",
+        "bssStart": "0x801BA530",
+        "bssEnd": "0x801BA710",
+        "textStart": "0x80197B70",
+        "textEnd": "0x801B8080",
+        "dataRodataStart": "0x801B8080",
+        "dataRodataEnd": "0x801BA530"
+      },
+      "sizes": {
+        "vramReservationBytes": 142240,
+        "initializedImageBytes": 141760,
+        "textBytes": 132368,
+        "dataRodataBytes": 9392,
+        "bssBytes": 480
+      }
+    },
+    {
+      "id": 16,
+      "source": {
+        "start": "0x00038A40",
+        "endExclusive": "0x00038A68",
+        "bytes": 40
+      },
+      "rawSha256": "778E0533B1E2B20D24A632C07605A68067C38EEF5D3250557B47A054D0E41A40",
+      "rawWords": [
+        "0x80225890",
+        "0x8022D170",
+        "0x0027A020",
+        "0x00281860",
+        "0x8022D0D0",
+        "0x8022D170",
+        "0x80225890",
+        "0x8022C5C0",
+        "0x8022C5C0",
+        "0x8022D0D0"
+      ],
+      "fields": {
+        "vramStart": "0x80225890",
+        "vramEnd": "0x8022D170",
+        "romStart": "0x0027A020",
+        "romEnd": "0x00281860",
+        "bssStart": "0x8022D0D0",
+        "bssEnd": "0x8022D170",
+        "textStart": "0x80225890",
+        "textEnd": "0x8022C5C0",
+        "dataRodataStart": "0x8022C5C0",
+        "dataRodataEnd": "0x8022D0D0"
+      },
+      "sizes": {
+        "vramReservationBytes": 30944,
+        "initializedImageBytes": 30784,
+        "textBytes": 27952,
+        "dataRodataBytes": 2832,
+        "bssBytes": 160
+      }
+    },
+    {
+      "id": 17,
+      "source": {
+        "start": "0x00038A68",
+        "endExclusive": "0x00038A90",
+        "bytes": 40
+      },
+      "rawSha256": "B84B36E7CD15FD19C2E74FCA19FD009D712F09AD3C5A488CA5ED80F4322EDB00",
+      "rawWords": [
+        "0x80197B70",
+        "0x8019C930",
+        "0x00069900",
+        "0x0006E660",
+        "0x8019C8D0",
+        "0x8019C930",
+        "0x80197B70",
+        "0x8019C1F0",
+        "0x8019C1F0",
+        "0x8019C8D0"
+      ],
+      "fields": {
+        "vramStart": "0x80197B70",
+        "vramEnd": "0x8019C930",
+        "romStart": "0x00069900",
+        "romEnd": "0x0006E660",
+        "bssStart": "0x8019C8D0",
+        "bssEnd": "0x8019C930",
+        "textStart": "0x80197B70",
+        "textEnd": "0x8019C1F0",
+        "dataRodataStart": "0x8019C1F0",
+        "dataRodataEnd": "0x8019C8D0"
+      },
+      "sizes": {
+        "vramReservationBytes": 19904,
+        "initializedImageBytes": 19808,
+        "textBytes": 18048,
+        "dataRodataBytes": 1760,
+        "bssBytes": 96
+      }
+    },
+    {
+      "id": 18,
+      "source": {
+        "start": "0x00038A90",
+        "endExclusive": "0x00038AB8",
+        "bytes": 40
+      },
+      "rawSha256": "4F9D363609A28A4AA68DAA49EDB8E51927142E81372DA34AEE31BFA36082CAAE",
+      "rawWords": [
+        "0x80220F40",
+        "0x802305E0",
+        "0x001BA050",
+        "0x001C3300",
+        "0x8022A1F0",
+        "0x8022A840",
+        "0x80220F40",
+        "0x80229CB0",
+        "0x80229CB0",
+        "0x8022A1F0"
+      ],
+      "fields": {
+        "vramStart": "0x80220F40",
+        "vramEnd": "0x802305E0",
+        "romStart": "0x001BA050",
+        "romEnd": "0x001C3300",
+        "bssStart": "0x8022A1F0",
+        "bssEnd": "0x8022A840",
+        "textStart": "0x80220F40",
+        "textEnd": "0x80229CB0",
+        "dataRodataStart": "0x80229CB0",
+        "dataRodataEnd": "0x8022A1F0"
+      },
+      "sizes": {
+        "vramReservationBytes": 63136,
+        "initializedImageBytes": 37552,
+        "textBytes": 36208,
+        "dataRodataBytes": 1344,
+        "bssBytes": 1616
+      }
+    }
+  ],
+  "groups": [
+    {
+      "physicalGroupId": 0,
+      "source": {
+        "start": "0x00038AB8",
+        "endExclusive": "0x00038ABC",
+        "bytes": 4
+      },
+      "memberIds": [
+        2,
+        1
+      ],
+      "terminatorOffset": 232122,
+      "paddingRange": {
+        "start": "0x00038ABB",
+        "endExclusive": "0x00038ABC",
+        "bytes": 1
+      },
+      "rawSha256": "3847B8D3167046ABC2DF78B15CB8CD0FBC43063B3F9A0399B7AE970834624E39",
+      "logicalGroupIds": [
+        0
+      ]
+    },
+    {
+      "physicalGroupId": 1,
+      "source": {
+        "start": "0x00038ABC",
+        "endExclusive": "0x00038AC4",
+        "bytes": 8
+      },
+      "memberIds": [
+        2,
+        3,
+        7,
+        8,
+        9
+      ],
+      "terminatorOffset": 232129,
+      "paddingRange": {
+        "start": "0x00038AC2",
+        "endExclusive": "0x00038AC4",
+        "bytes": 2
+      },
+      "rawSha256": "C6304F5BF8768E92B376D8399877DEE51411E6F448B91431F8CC437B3E714AC8",
+      "logicalGroupIds": [
+        1
+      ]
+    },
+    {
+      "physicalGroupId": 2,
+      "source": {
+        "start": "0x00038AC4",
+        "endExclusive": "0x00038ACC",
+        "bytes": 8
+      },
+      "memberIds": [
+        2,
+        4,
+        10,
+        11,
+        12,
+        13,
+        14
+      ],
+      "terminatorOffset": 232139,
+      "paddingRange": {
+        "start": "0x00038ACC",
+        "endExclusive": "0x00038ACC",
+        "bytes": 0
+      },
+      "rawSha256": "ED85D709F1241C3167A8C6E0601BFAAEE3DA99DA44E66EA2407EB56E3A55E434",
+      "logicalGroupIds": [
+        2
+      ]
+    },
+    {
+      "physicalGroupId": 3,
+      "source": {
+        "start": "0x00038ACC",
+        "endExclusive": "0x00038AD0",
+        "bytes": 4
+      },
+      "memberIds": [
+        0,
+        14
+      ],
+      "terminatorOffset": 232142,
+      "paddingRange": {
+        "start": "0x00038ACF",
+        "endExclusive": "0x00038AD0",
+        "bytes": 1
+      },
+      "rawSha256": "64734830B59BA9BB38D1F5831831F4F3EC434BF274B87BCEC76B70B3260F72FE",
+      "logicalGroupIds": [
+        3
+      ]
+    },
+    {
+      "physicalGroupId": 4,
+      "source": {
+        "start": "0x00038AD0",
+        "endExclusive": "0x00038AD4",
+        "bytes": 4
+      },
+      "memberIds": [
+        2,
+        3,
+        6
+      ],
+      "terminatorOffset": 232147,
+      "paddingRange": {
+        "start": "0x00038AD4",
+        "endExclusive": "0x00038AD4",
+        "bytes": 0
+      },
+      "rawSha256": "C57AD66DAB6C1FDCAB58E10BD3D770D4F279BDC6AB1A70366E53D0E8FDFB1AFC",
+      "logicalGroupIds": [
+        4
+      ]
+    },
+    {
+      "physicalGroupId": 5,
+      "source": {
+        "start": "0x00038AD4",
+        "endExclusive": "0x00038AD8",
+        "bytes": 4
+      },
+      "memberIds": [
+        15
+      ],
+      "terminatorOffset": 232149,
+      "paddingRange": {
+        "start": "0x00038AD6",
+        "endExclusive": "0x00038AD8",
+        "bytes": 2
+      },
+      "rawSha256": "E6E6E5F13275FF33F001CFD96EFDF3793ECCA4CE8B2A3BCD4C63164BA7CC2761",
+      "logicalGroupIds": [
+        5
+      ]
+    },
+    {
+      "physicalGroupId": 6,
+      "source": {
+        "start": "0x00038AD8",
+        "endExclusive": "0x00038AE4",
+        "bytes": 12
+      },
+      "memberIds": [
+        0,
+        1,
+        2,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14
+      ],
+      "terminatorOffset": 232163,
+      "paddingRange": {
+        "start": "0x00038AE4",
+        "endExclusive": "0x00038AE4",
+        "bytes": 0
+      },
+      "rawSha256": "1BCCD7367F09E2579D7F4CBCE5B8CDDAA6595E08ECBC2C9EB80E3D3C91858F54",
+      "logicalGroupIds": [
+        6
+      ]
+    },
+    {
+      "physicalGroupId": 7,
+      "source": {
+        "start": "0x00038AE4",
+        "endExclusive": "0x00038AEC",
+        "bytes": 8
+      },
+      "memberIds": [
+        2,
+        4,
+        10,
+        11,
+        12,
+        13,
+        16
+      ],
+      "terminatorOffset": 232171,
+      "paddingRange": {
+        "start": "0x00038AEC",
+        "endExclusive": "0x00038AEC",
+        "bytes": 0
+      },
+      "rawSha256": "E6DDB71E8D064142E6A6464C2F501483753F1ECBE3F39F217165C6327916360A",
+      "logicalGroupIds": [
+        7
+      ]
+    },
+    {
+      "physicalGroupId": 8,
+      "source": {
+        "start": "0x00038AEC",
+        "endExclusive": "0x00038AF0",
+        "bytes": 4
+      },
+      "memberIds": [
+        17,
+        18
+      ],
+      "terminatorOffset": 232174,
+      "paddingRange": {
+        "start": "0x00038AEF",
+        "endExclusive": "0x00038AF0",
+        "bytes": 1
+      },
+      "rawSha256": "17E8161FD02CAC42B6F23C966F77CD09FE91372EDF16AD8B15DD8A7FCC1C0E42",
+      "logicalGroupIds": [
+        8
+      ]
+    },
+    {
+      "physicalGroupId": 9,
+      "source": {
+        "start": "0x00038AF0",
+        "endExclusive": "0x00038AF8",
+        "bytes": 8
+      },
+      "memberIds": [
+        2,
+        3,
+        7,
+        8,
+        9,
+        18
+      ],
+      "terminatorOffset": 232182,
+      "paddingRange": {
+        "start": "0x00038AF7",
+        "endExclusive": "0x00038AF8",
+        "bytes": 1
+      },
+      "rawSha256": "3B8C649C2F3CEB2CBAFF3D55A0BB5B9E4F4BA97DF2C0B3A62D0608C0E2DDAAC1",
+      "logicalGroupIds": [
+        9
+      ]
+    },
+    {
+      "physicalGroupId": 10,
+      "source": {
+        "start": "0x00038AF8",
+        "endExclusive": "0x00038AFC",
+        "bytes": 4
+      },
+      "memberIds": [
+        2,
+        1,
+        18
+      ],
+      "terminatorOffset": 232187,
+      "paddingRange": {
+        "start": "0x00038AFC",
+        "endExclusive": "0x00038AFC",
+        "bytes": 0
+      },
+      "rawSha256": "5B0EE9DB0E64AD1EEAEFC3CB2A8AFFB372A7F946F0E2A93A96EC172136CEB6FF",
+      "logicalGroupIds": [
+        10
+      ]
+    }
+  ],
+  "pointers": [
+    {
+      "logicalGroupId": 0,
+      "slotOffset": "0x00038AFC",
+      "rawPointer": "0x800A86B8",
+      "targetOffset": "0x00038AB8",
+      "physicalGroupId": 0
+    },
+    {
+      "logicalGroupId": 1,
+      "slotOffset": "0x00038B00",
+      "rawPointer": "0x800A86BC",
+      "targetOffset": "0x00038ABC",
+      "physicalGroupId": 1
+    },
+    {
+      "logicalGroupId": 2,
+      "slotOffset": "0x00038B04",
+      "rawPointer": "0x800A86C4",
+      "targetOffset": "0x00038AC4",
+      "physicalGroupId": 2
+    },
+    {
+      "logicalGroupId": 3,
+      "slotOffset": "0x00038B08",
+      "rawPointer": "0x800A86CC",
+      "targetOffset": "0x00038ACC",
+      "physicalGroupId": 3
+    },
+    {
+      "logicalGroupId": 4,
+      "slotOffset": "0x00038B0C",
+      "rawPointer": "0x800A86D0",
+      "targetOffset": "0x00038AD0",
+      "physicalGroupId": 4
+    },
+    {
+      "logicalGroupId": 5,
+      "slotOffset": "0x00038B10",
+      "rawPointer": "0x800A86D4",
+      "targetOffset": "0x00038AD4",
+      "physicalGroupId": 5
+    },
+    {
+      "logicalGroupId": 6,
+      "slotOffset": "0x00038B14",
+      "rawPointer": "0x800A86D8",
+      "targetOffset": "0x00038AD8",
+      "physicalGroupId": 6
+    },
+    {
+      "logicalGroupId": 7,
+      "slotOffset": "0x00038B18",
+      "rawPointer": "0x800A86E4",
+      "targetOffset": "0x00038AE4",
+      "physicalGroupId": 7
+    },
+    {
+      "logicalGroupId": 8,
+      "slotOffset": "0x00038B1C",
+      "rawPointer": "0x800A86EC",
+      "targetOffset": "0x00038AEC",
+      "physicalGroupId": 8
+    },
+    {
+      "logicalGroupId": 9,
+      "slotOffset": "0x00038B20",
+      "rawPointer": "0x800A86F0",
+      "targetOffset": "0x00038AF0",
+      "physicalGroupId": 9
+    },
+    {
+      "logicalGroupId": 10,
+      "slotOffset": "0x00038B24",
+      "rawPointer": "0x800A86F8",
+      "targetOffset": "0x00038AF8",
+      "physicalGroupId": 10
+    }
+  ],
+  "nullWord": {
+    "source": {
+      "start": "0x00038B28",
+      "endExclusive": "0x00038B2C",
+      "bytes": 4
+    },
+    "value": "0x00000000"
+  },
+  "conservation": {
+    "sourceRomPositiveOverlapPairs": 0,
+    "vramReservationPositiveOverlapPairs": 37,
+    "initializedImagePositiveOverlapPairs": 29,
+    "allDescriptorFields16ByteAligned": true,
+    "sourceSplit": {
+      "manifestPath": "asm/original/rev0/manifest.json",
+      "manifestSha256": "EE6A81334FDCFC2867BC7AF63AD56624E08C6B92D992915A45B610B44D3FCF44",
+      "owners": [
+        {
+          "name": "overlay_descriptors_000387c0",
+          "file": "asm/original/rev0/lib/overlay_descriptors_000387c0.s",
+          "start": "0x000387C0",
+          "endExclusive": "0x00038AB8",
+          "bytes": 760,
+          "sha256": "9AE500C9C3493372151B7124F7E8ACD333CAE021EC73BB0A2C3F270EBAC5DC8B",
+          "textBytes": 15315
+        },
+        {
+          "name": "overlay_groups_00038ab8",
+          "file": "asm/original/rev0/lib/overlay_groups_00038ab8.s",
+          "start": "0x00038AB8",
+          "endExclusive": "0x00038AFC",
+          "bytes": 68,
+          "sha256": "663BB4442655ADCFC01C3912E71BE7A095D13A03C40C21B0FDA0D75F06186626",
+          "textBytes": 1637
+        },
+        {
+          "name": "overlay_group_pointers_00038afc",
+          "file": "asm/original/rev0/lib/overlay_group_pointers_00038afc.s",
+          "start": "0x00038AFC",
+          "endExclusive": "0x00038B2C",
+          "bytes": 48,
+          "sha256": "F7322D590E666FD678FF2F727F16E27190114418D209169F579CF0094C93C7DC",
+          "textBytes": 1326
+        },
+        {
+          "name": "data_00038b2c",
+          "file": "asm/original/rev0/lib/data_00038b2c.s",
+          "start": "0x00038B2C",
+          "endExclusive": "0x0003C100",
+          "bytes": 13780,
+          "sha256": "93FCBEFCFB9A5B3F0AF85BED530F548D4DA57A44962CE79F3FFC07E7531C8D48",
+          "textBytes": 255964
+        }
+      ]
+    }
+  },
+  "runtimeObservations": {
+    "evidenceGrade": "independently-reviewed-bounded-runtime-observation",
+    "provenance": {
+      "parentSemanticProductCommit": "a8284de9e9e428a83e0e99d6704e00cbe889d4fc",
+      "parentRecordBoundaryCommit": "72ffd71b9d0db9db3ec6be99a7f412dab11b5891",
+      "productManifestSha256": "CD622760A083AAC4F2576B98ADEA19F3BCAA90B5DD746D85C4BF9CDF7AF40348",
+      "capture": "one immutable zero-controller 1200-frame scenario-card-to-combat natural load"
+    },
+    "selections": [
+      {
+        "invocation": 0,
+        "frame": 242,
+        "logicalGroupId": 3,
+        "descriptorIds": [
+          0,
+          14
+        ]
+      },
+      {
+        "invocation": 1,
+        "frame": 276,
+        "logicalGroupId": 2,
+        "descriptorIds": [
+          2,
+          4,
+          10,
+          11,
+          12,
+          13,
+          14
+        ]
+      }
+    ],
+    "selectedDescriptors": [
+      {
+        "invocation": 0,
+        "descriptorId": 0,
+        "dma": {
+          "sourceStart": "0x00066E10",
+          "destinationStart": "0x80197B70",
+          "bytes": 10992,
+          "invocationBoundedGapFreeExact": true
+        },
+        "cacheCalls": {
+          "instructionRange": {
+            "start": "0x80197B70",
+            "endExclusive": "0x8019A210"
+          },
+          "dataRodataRange": {
+            "start": "0x8019A210",
+            "endExclusive": "0x8019A660"
+          },
+          "declaredEndpointCallsitesAndHelperEntriesObserved": true,
+          "limit": "execution observed; microarchitectural cache state not established"
+        }
+      },
+      {
+        "invocation": 0,
+        "descriptorId": 14,
+        "dma": {
+          "sourceStart": "0x00281860",
+          "destinationStart": "0x80225890",
+          "bytes": 21360,
+          "invocationBoundedGapFreeExact": true
+        },
+        "cacheCalls": {
+          "instructionRange": {
+            "start": "0x80225890",
+            "endExclusive": "0x8022A720"
+          },
+          "dataRodataRange": {
+            "start": "0x8022A720",
+            "endExclusive": "0x8022AC00"
+          },
+          "declaredEndpointCallsitesAndHelperEntriesObserved": true,
+          "limit": "execution observed; microarchitectural cache state not established"
+        }
+      },
+      {
+        "invocation": 1,
+        "descriptorId": 2,
+        "dma": {
+          "sourceStart": "0x000E48F0",
+          "destinationStart": "0x80197B70",
+          "bytes": 29376,
+          "invocationBoundedGapFreeExact": true
+        },
+        "cacheCalls": {
+          "instructionRange": {
+            "start": "0x80197B70",
+            "endExclusive": "0x8019E180"
+          },
+          "dataRodataRange": {
+            "start": "0x8019E180",
+            "endExclusive": "0x8019EE30"
+          },
+          "declaredEndpointCallsitesAndHelperEntriesObserved": true,
+          "limit": "execution observed; microarchitectural cache state not established"
+        }
+      },
+      {
+        "invocation": 1,
+        "descriptorId": 4,
+        "dma": {
+          "sourceStart": "0x000F9FF0",
+          "destinationStart": "0x8019EE50",
+          "bytes": 1504,
+          "invocationBoundedGapFreeExact": true
+        },
+        "cacheCalls": {
+          "instructionRange": {
+            "start": "0x8019EE50",
+            "endExclusive": "0x8019F430"
+          },
+          "dataRodataRange": {
+            "start": "0x8019F430",
+            "endExclusive": "0x8019F430"
+          },
+          "declaredEndpointCallsitesAndHelperEntriesObserved": true,
+          "limit": "execution observed; microarchitectural cache state not established"
+        }
+      },
+      {
+        "invocation": 1,
+        "descriptorId": 10,
+        "dma": {
+          "sourceStart": "0x001F0A30",
+          "destinationStart": "0x801AD5A0",
+          "bytes": 143584,
+          "invocationBoundedGapFreeExact": true
+        },
+        "cacheCalls": {
+          "instructionRange": {
+            "start": "0x801AD5A0",
+            "endExclusive": "0x801CE890"
+          },
+          "dataRodataRange": {
+            "start": "0x801CE890",
+            "endExclusive": "0x801D0680"
+          },
+          "declaredEndpointCallsitesAndHelperEntriesObserved": true,
+          "limit": "execution observed; microarchitectural cache state not established"
+        }
+      },
+      {
+        "invocation": 1,
+        "descriptorId": 11,
+        "dma": {
+          "sourceStart": "0x0024BCA0",
+          "destinationStart": "0x801F70E0",
+          "bytes": 78320,
+          "invocationBoundedGapFreeExact": true
+        },
+        "cacheCalls": {
+          "instructionRange": {
+            "start": "0x801F70E0",
+            "endExclusive": "0x80209700"
+          },
+          "dataRodataRange": {
+            "start": "0x80209700",
+            "endExclusive": "0x8020A2D0"
+          },
+          "declaredEndpointCallsitesAndHelperEntriesObserved": true,
+          "limit": "execution observed; microarchitectural cache state not established"
+        }
+      },
+      {
+        "invocation": 1,
+        "descriptorId": 12,
+        "dma": {
+          "sourceStart": "0x0025EE90",
+          "destinationStart": "0x8020A2E0",
+          "bytes": 92608,
+          "invocationBoundedGapFreeExact": true
+        },
+        "cacheCalls": {
+          "instructionRange": {
+            "start": "0x8020A2E0",
+            "endExclusive": "0x8021F450"
+          },
+          "dataRodataRange": {
+            "start": "0x8021F450",
+            "endExclusive": "0x80220CA0"
+          },
+          "declaredEndpointCallsitesAndHelperEntriesObserved": true,
+          "limit": "execution observed; microarchitectural cache state not established"
+        }
+      },
+      {
+        "invocation": 1,
+        "descriptorId": 13,
+        "dma": {
+          "sourceStart": "0x00275850",
+          "destinationStart": "0x802210C0",
+          "bytes": 18384,
+          "invocationBoundedGapFreeExact": true
+        },
+        "cacheCalls": {
+          "instructionRange": {
+            "start": "0x802210C0",
+            "endExclusive": "0x80225620"
+          },
+          "dataRodataRange": {
+            "start": "0x80225620",
+            "endExclusive": "0x80225890"
+          },
+          "declaredEndpointCallsitesAndHelperEntriesObserved": true,
+          "limit": "execution observed; microarchitectural cache state not established"
+        }
+      },
+      {
+        "invocation": 1,
+        "descriptorId": 14,
+        "dma": {
+          "sourceStart": "0x00281860",
+          "destinationStart": "0x80225890",
+          "bytes": 21360,
+          "invocationBoundedGapFreeExact": true
+        },
+        "cacheCalls": {
+          "instructionRange": {
+            "start": "0x80225890",
+            "endExclusive": "0x8022A720"
+          },
+          "dataRodataRange": {
+            "start": "0x8022A720",
+            "endExclusive": "0x8022AC00"
+          },
+          "declaredEndpointCallsitesAndHelperEntriesObserved": true,
+          "limit": "execution observed; microarchitectural cache state not established"
+        }
+      }
+    ],
+    "bss": {
+      "helperEntryPc": "0x80093380",
+      "observedStorePcUnion": [
+        "0x800933B8",
+        "0x800933BC",
+        "0x800933C0",
+        "0x800933C4",
+        "0x800933CC",
+        "0x800933D0",
+        "0x800933D4",
+        "0x800933DC",
+        "0x800933FC"
+      ],
+      "rows": [
+        {
+          "invocation": 0,
+          "frame": 242,
+          "descriptorId": 0,
+          "range": {
+            "start": "0x8019A660",
+            "endExclusive": "0x8019A670",
+            "bytes": 16
+          },
+          "helperEntryPc": "0x80093380",
+          "storePcs": [
+            "0x800933FC"
+          ],
+          "observedStoreCount": 4,
+          "wordCoverage": "exactly-once-aligned-zero"
+        },
+        {
+          "invocation": 0,
+          "frame": 242,
+          "descriptorId": 14,
+          "range": {
+            "start": "0x8022AC00",
+            "endExclusive": "0x8022AC90",
+            "bytes": 144
+          },
+          "helperEntryPc": "0x80093380",
+          "storePcs": [
+            "0x800933B8",
+            "0x800933BC",
+            "0x800933C0",
+            "0x800933C4",
+            "0x800933CC",
+            "0x800933D0",
+            "0x800933D4",
+            "0x800933DC",
+            "0x800933FC"
+          ],
+          "observedStoreCount": 36,
+          "wordCoverage": "exactly-once-aligned-zero"
+        },
+        {
+          "invocation": 1,
+          "frame": 276,
+          "descriptorId": 2,
+          "range": {
+            "start": "0x8019EE30",
+            "endExclusive": "0x8019EE50",
+            "bytes": 32
+          },
+          "helperEntryPc": "0x80093380",
+          "storePcs": [
+            "0x800933B8",
+            "0x800933BC",
+            "0x800933C0",
+            "0x800933C4",
+            "0x800933CC",
+            "0x800933D0",
+            "0x800933D4",
+            "0x800933DC"
+          ],
+          "observedStoreCount": 8,
+          "wordCoverage": "exactly-once-aligned-zero"
+        },
+        {
+          "invocation": 1,
+          "frame": 276,
+          "descriptorId": 4,
+          "range": {
+            "start": "0x8019F430",
+            "endExclusive": "0x8019F430",
+            "bytes": 0
+          },
+          "helperEntryPc": "0x80093380",
+          "storePcs": [],
+          "observedStoreCount": 0,
+          "wordCoverage": "exactly-once-aligned-zero"
+        },
+        {
+          "invocation": 1,
+          "frame": 277,
+          "descriptorId": 10,
+          "range": {
+            "start": "0x801D0680",
+            "endExclusive": "0x801D0840",
+            "bytes": 448
+          },
+          "helperEntryPc": "0x80093380",
+          "storePcs": [
+            "0x800933B8",
+            "0x800933BC",
+            "0x800933C0",
+            "0x800933C4",
+            "0x800933CC",
+            "0x800933D0",
+            "0x800933D4",
+            "0x800933DC"
+          ],
+          "observedStoreCount": 112,
+          "wordCoverage": "exactly-once-aligned-zero"
+        },
+        {
+          "invocation": 1,
+          "frame": 278,
+          "descriptorId": 11,
+          "range": {
+            "start": "0x8020A2D0",
+            "endExclusive": "0x8020A2E0",
+            "bytes": 16
+          },
+          "helperEntryPc": "0x80093380",
+          "storePcs": [
+            "0x800933FC"
+          ],
+          "observedStoreCount": 4,
+          "wordCoverage": "exactly-once-aligned-zero"
+        },
+        {
+          "invocation": 1,
+          "frame": 279,
+          "descriptorId": 12,
+          "range": {
+            "start": "0x80220CA0",
+            "endExclusive": "0x802210C0",
+            "bytes": 1056
+          },
+          "helperEntryPc": "0x80093380",
+          "storePcs": [
+            "0x800933B8",
+            "0x800933BC",
+            "0x800933C0",
+            "0x800933C4",
+            "0x800933CC",
+            "0x800933D0",
+            "0x800933D4",
+            "0x800933DC"
+          ],
+          "observedStoreCount": 264,
+          "wordCoverage": "exactly-once-aligned-zero"
+        },
+        {
+          "invocation": 1,
+          "frame": 279,
+          "descriptorId": 13,
+          "range": {
+            "start": "0x80225890",
+            "endExclusive": "0x80225890",
+            "bytes": 0
+          },
+          "helperEntryPc": "0x80093380",
+          "storePcs": [],
+          "observedStoreCount": 0,
+          "wordCoverage": "exactly-once-aligned-zero"
+        },
+        {
+          "invocation": 1,
+          "frame": 279,
+          "descriptorId": 14,
+          "range": {
+            "start": "0x8022AC00",
+            "endExclusive": "0x8022AC90",
+            "bytes": 144
+          },
+          "helperEntryPc": "0x80093380",
+          "storePcs": [
+            "0x800933B8",
+            "0x800933BC",
+            "0x800933C0",
+            "0x800933C4",
+            "0x800933CC",
+            "0x800933D0",
+            "0x800933D4",
+            "0x800933DC",
+            "0x800933FC"
+          ],
+          "observedStoreCount": 36,
+          "wordCoverage": "exactly-once-aligned-zero"
+        }
+      ]
+    },
+    "controller": {
+      "completeVectors": 3252,
+      "allButtonsMasksAndAxesZero": true
+    },
+    "finalResidency": {
+      "finalLogicalGroupId": 2,
+      "group2TextRomIdentical": true,
+      "group2WholeImageRomIdenticalDescriptorIds": [
+        2,
+        4,
+        11,
+        12,
+        13
+      ],
+      "laterDataByteChanges": [
+        {
+          "descriptorId": 10,
+          "count": 27
+        },
+        {
+          "descriptorId": 14,
+          "count": 1
+        }
+      ],
+      "overwritten": [
+        {
+          "descriptorId": 0,
+          "byDescriptorId": 2,
+          "sharedVramStart": "0x80197B70"
+        }
+      ],
+      "limit": "initialized DMA identity is distinct from final residency after ordinary game writes"
+    },
+    "limits": [
+      "Only logical groups 3 then 2 were observed.",
+      "No claim is made for the other nine groups or their natural-load behavior.",
+      "Cold boot, hardware cache contents, editor behavior, matching C, canonical promotion, and whole-program coverage remain unresolved."
+    ]
+  }
+}

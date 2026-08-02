@@ -1,0 +1,84 @@
+{
+  "schemaVersion": 1,
+  "profile": "us-rev0",
+  "rom": {
+    "bytes": 41943040,
+    "sha256": "571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A",
+    "codeRegionStart": 4096,
+    "codeRegionEndExclusive": 6514540,
+    "codeRegionSha256": "40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409",
+    "earlyBootLinearEndExclusive": 192512,
+    "earlyBootLinearBase": 2147941376
+  },
+  "expected": {
+    "primaryRows": 7242,
+    "assemblyOwners": 6184,
+    "dataOwners": 1058,
+    "linkSlices": 7251,
+    "splitOwners": 9,
+    "overlayReservations": 19,
+    "rspRows": 13
+  },
+  "acceptedInputSha256": {
+    "asm/original/rev0/manifest.json": "EE6A81334FDCFC2867BC7AF63AD56624E08C6B92D992915A45B610B44D3FCF44",
+    "config/roms/us_rev0.json": "5E9183D5DF1D87D83EEC70E7DCA4BE3F859059B85FF192B8E1317F38B60D0331",
+    "config/overlays/us_rev0.json": "D4F1FB177822334EB748D6D62B342FB813D8825FEDD912057CF651EB616A5FB6",
+    "config/segments/rev0.yaml": "4806C823E407729FF47F07AC2070E2D654D1DDC8F5F9AA311A2DFD57756031E3",
+    "config/splat/us_rev0.semantic.json": "1BC788145E625600756004CF53673A322616C4FEBFC5102788ACDEFA0F050574",
+    "config/splat/us_rev0.overlay-linker-inputs.json": "9090891B8C0277CB1B97F5EE958163FF050DDFBDD5AEB5B5BF8D6429BA42ABB6",
+    "config/splat/us_rev0.yaml": "9D8A94DE5683BFBF984E97C859BFE7C12DC78D4B56EA3178F6021D74EE9F3198",
+    "config/splat/splat64-0.34.0.lock.json": "FF1669083684AD936B3679C2C8EC6EB4664045D78B88C24CDFAEEB0068B2EB87",
+    "config/splat/splat64-0.34.0.provenance.json": "E7F0F6C06DEB58D3C899F39169DDCAD14C56B3CBC3E8EA546886C8A780BC2EFF",
+    "config/toolchain.json": "5A93298ED635C5FC6458C9DC1BBEB45A3EDCA7C4683D6E329BCE838E942B30FD",
+    "docs/external-intake/phase6-kmc-reproduction-20260801/reproduction-manifest.json": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26"
+  },
+  "splat": {
+    "version": "0.34.0",
+    "commit": "999c792fdda1002f29926717d2b7197bb90480a9",
+    "splitPySha256": "EED41D3C36AFA4A980A3B22BC76C371569696CADFEF925DBB63606BFB081544E",
+    "pythonVersion": "Python 3.11.15",
+    "pythonExeSha256": "4CCA2027319C08DCA5CC4B64C9BA415CC89205152202CB6805081277C43B610F"
+  },
+  "asmDiffer": {
+    "commit": "093360aa31f90e67216ed1971c4087516cc7b940",
+    "diffPySha256": "D69AA5916DA99A9D88D3B3156C4ABB1C656E425205644B3DB4726204DC7C2211",
+    "pyprojectSha256": "5B85F33ED68C30021AAD5F03E029E60B4D5DB577B9F2E5FB015FF79159CFFD5D",
+    "license": "Unlicense",
+    "licenseSha256": "E9B0E94F628E00B5ED98046CFA041696FF89EEBBBDD54108EE350625BC6D0363"
+  },
+  "binutils": {
+    "version": "GNU Binutils 2.39",
+    "assemblerFlags": ["-EB", "-mips3", "-32"],
+    "linkerFlags": ["-EB", "-m", "elf32ebmip", "--no-check-sections", "--build-id=none"],
+    "tools": {
+      "mips64-elf-as.exe": "D237475181458118BF964C369748ACF144394583C5DC24293F53F1C9119E8697",
+      "mips64-elf-ld.exe": "1820F2E525A330F9BA9E74C2EAC4A9326CD93A56B6C556AEB3E41FEE8F1E3D9E",
+      "mips64-elf-objcopy.exe": "2A34DB4F5447BFB196E1893B95894A0F9D51E1B7D1786C69A91B6E37ACEE62DA",
+      "mips64-elf-objdump.exe": "72A5E02C22B6826A46400AD17E64F0FFB612F0A55F02F3A731D61BB0C4FE853E",
+      "mips64-elf-readelf.exe": "52F76F9249F3961AE54A5CEB60AA88E791966A32BE947F8F23F93BA91E1943CF"
+    }
+  },
+  "host": {
+    "platform": "win32",
+    "release": "10.0.26200",
+    "architecture": "x64",
+    "nodeVersion": "v24.13.1",
+    "nodeExeSha256": "E3BE0545990C90995D7BF3A7AF5D64AF1F2E0FC1BBD9B79C27F7ABC1E9676E50",
+    "powershellVersion": "5.1.26100.8972",
+    "powershellExeSha256": "7600FFE12DA441FE89D035B13801E8E91D064BC544A27B19A5CF49F6AB8B18F5"
+  },
+  "representativeSymbols": [
+    {
+      "name": "boot_entry_clear_bss_and_jump",
+      "rowIndex": 1,
+      "romStart": 4096,
+      "vramStart": 2147945472
+    },
+    {
+      "name": "func_0020C3A8",
+      "rowIndex": 3896,
+      "romStart": 2147240,
+      "vramStart": 2149355288
+    }
+  ]
+}

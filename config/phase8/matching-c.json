@@ -1,0 +1,42 @@
+{
+  "schemaVersion": 1,
+  "profile": "us-rev0",
+  "target": {
+    "symbol": "func_000E5938",
+    "source": "src/overlays/descriptor_02/func_000E5938.c",
+    "sourceSha256": "8663465B420CE2BCCE4085D552FD88DAD194041ECEEA7AA15EECA6BC7C698FB5",
+    "originalAssembly": "asm/original/rev0/lib/func_000E5938.s",
+    "originalAssemblySha256": "56FF9576FAB7E66DA496E6BAEBCCAC6013004A69F04E6686337369E628B095DE",
+    "rowIndex": 1972,
+    "primaryId": "primary:a01f16a4c8f35f348137",
+    "sectionName": ".ob64.r1972",
+    "chunkIndex": 14,
+    "romStart": "0x000E5938",
+    "romEndExclusive": "0x000E595C",
+    "vramStart": "0x80198BB8",
+    "bytes": 36,
+    "overlayDescriptorId": 2,
+    "descriptorRawSha256": "9C94D164B29E79A5D145D83D53E9A42040A9035FCC2E3305E79EA5070F2B2F28",
+    "expectedTextSha256": "26256054A9F77DAD786308548B96966D4E7A3385975A9E989CEE70DBF0268789",
+    "expectedRelocations": []
+  },
+  "compiler": {
+    "manifest": "docs/external-intake/phase6-kmc-reproduction-20260801/reproduction-manifest.json",
+    "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+    "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+    "compileFlags": [
+      "-quiet",
+      "-O2",
+      "-meb",
+      "-mips3",
+      "-mgp32",
+      "-mfp32",
+      "-G",
+      "0",
+      "-fno-PIC",
+      "-mno-abicalls",
+      "-fno-builtin",
+      "-funsigned-char"
+    ]
+  }
+}

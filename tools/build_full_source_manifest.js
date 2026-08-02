@@ -2,6 +2,7 @@
 const fs = require('fs');
 const path = require('path');
 const {
+  PARENT_ROOT,
   ROOT,
   ensureDir,
   hex,
@@ -148,7 +149,7 @@ function sourceFormForSpan(span) {
 }
 
 function loadOptionalParentJson(relativePath) {
-  const fullPath = path.resolve(ROOT, '..', relativePath);
+  const fullPath = path.resolve(PARENT_ROOT, relativePath);
   if (!fs.existsSync(fullPath)) return null;
   return { path: fullPath, data: readJson(fullPath) };
 }

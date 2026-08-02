@@ -24,8 +24,8 @@
           "romStart": "0x00001000",
           "romEndExclusive": "0x00001060",
           "bytes": 96,
-          "textBytes": 2119,
-          "sha256": "FB25B68987CAF6D816DC75F2F7334784CF2EA39B4D75E5241C0281FF9BE3D7DA"
+          "textBytes": 2080,
+          "sha256": "C55F6547A0F6B365FC6035FD0AE75246F2D4F572A1B78B67A970B390BBA049AB"
         },
         {
           "name": "resource_arena_init",
@@ -6883,13 +6883,40 @@
           "sha256": "E239E515C1DCF3ACB16B766446D2FA3A99817519C4524FEDCE42CBCC2ED8B505"
         },
         {
-          "name": "table_text_vm_jump_table",
-          "file": "asm/original/rev0/lib/table_text_vm_jump_table.s",
+          "name": "overlay_descriptors_000387c0",
+          "file": "asm/original/rev0/lib/overlay_descriptors_000387c0.s",
           "romStart": "0x000387C0",
+          "romEndExclusive": "0x00038AB8",
+          "bytes": 760,
+          "textBytes": 15315,
+          "sha256": "9AE500C9C3493372151B7124F7E8ACD333CAE021EC73BB0A2C3F270EBAC5DC8B"
+        },
+        {
+          "name": "overlay_groups_00038ab8",
+          "file": "asm/original/rev0/lib/overlay_groups_00038ab8.s",
+          "romStart": "0x00038AB8",
+          "romEndExclusive": "0x00038AFC",
+          "bytes": 68,
+          "textBytes": 1637,
+          "sha256": "663BB4442655ADCFC01C3912E71BE7A095D13A03C40C21B0FDA0D75F06186626"
+        },
+        {
+          "name": "overlay_group_pointers_00038afc",
+          "file": "asm/original/rev0/lib/overlay_group_pointers_00038afc.s",
+          "romStart": "0x00038AFC",
+          "romEndExclusive": "0x00038B2C",
+          "bytes": 48,
+          "textBytes": 1326,
+          "sha256": "F7322D590E666FD678FF2F727F16E27190114418D209169F579CF0094C93C7DC"
+        },
+        {
+          "name": "data_00038b2c",
+          "file": "asm/original/rev0/lib/data_00038b2c.s",
+          "romStart": "0x00038B2C",
           "romEndExclusive": "0x0003C100",
-          "bytes": 14656,
-          "textBytes": 273097,
-          "sha256": "40AA0F23F9F535D96AC0B13DE4791819114656599A7D1267A6086CB897FEB242"
+          "bytes": 13780,
+          "textBytes": 255964,
+          "sha256": "93FCBEFCFB9A5B3F0AF85BED530F548D4DA57A44962CE79F3FFC07E7531C8D48"
         },
         {
           "name": "zero_fill_0003c100",
@@ -7342,8 +7369,8 @@
           "sha256": "DA69604069BCA4B8BCE69ED20074B86F37B9C553BEC22E6256DC42A36739B80E"
         }
       ],
-      "textBytes": 1218839,
-      "sha256": "D25947BEB93A6552349494E64F71C7C9BBC6AAFD0414A49151C60286E370D083"
+      "textBytes": 1219984,
+      "sha256": "003040496ADAC5C6BD5E34244342A83090DDA405CEE354E3DC34DA79755BF022"
     },
     {
       "file": "asm/original/rev0/code_00041000_00051000.s",

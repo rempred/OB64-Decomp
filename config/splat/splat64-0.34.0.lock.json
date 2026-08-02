@@ -1,0 +1,908 @@
+{
+  "schemaVersion": 3,
+  "artifactRoot": "C:\\Users\\Joe\\.codex\\phase5b-splat-20260801-r4\\artifacts",
+  "splat": {
+    "version": "0.34.0",
+    "commit": "999c792fdda1002f29926717d2b7197bb90480a9",
+    "license": "MIT",
+    "pyprojectSha256": "5429ABB32C155B87F5B2275E6280E3E376BF5843D32631D21426339902AD1953",
+    "sourceArchiveSha256": "55CB9F6AA53F038FD5916066480719875B72D879974E17BA503BF750D11FDE25"
+  },
+  "isolatedEnvironment": {
+    "interpreter": "C:\\Users\\Joe\\.codex\\phase5b-splat-20260801-r4\\venv\\Scripts\\python.exe",
+    "pythonVersion": "Python 3.11.15",
+    "installerVersion": "pip 24.0 from C:\\Users\\Joe\\.codex\\phase5b-splat-20260801-r4\\venv\\Lib\\site-packages\\pip (python 3.11)"
+  },
+  "declaredDependencyInventory": {
+    "entries": [
+      {
+        "requirement": "PyYAML",
+        "group": "base",
+        "name": "pyyaml"
+      },
+      {
+        "requirement": "pylibyaml",
+        "group": "base",
+        "name": "pylibyaml"
+      },
+      {
+        "requirement": "tqdm",
+        "group": "base",
+        "name": "tqdm"
+      },
+      {
+        "requirement": "intervaltree",
+        "group": "base",
+        "name": "intervaltree"
+      },
+      {
+        "requirement": "colorama",
+        "group": "base",
+        "name": "colorama"
+      },
+      {
+        "requirement": "spimdisasm>=1.32.0,<2.0.0",
+        "group": "mips",
+        "name": "spimdisasm"
+      },
+      {
+        "requirement": "rabbitizer>=1.12.0,<2.0.0",
+        "group": "mips",
+        "name": "rabbitizer"
+      },
+      {
+        "requirement": "pygfxd",
+        "group": "mips",
+        "name": "pygfxd"
+      },
+      {
+        "requirement": "n64img>=0.3.3",
+        "group": "mips",
+        "name": "n64img"
+      },
+      {
+        "requirement": "crunch64>=0.5.1,<1.0.0",
+        "group": "mips",
+        "name": "crunch64"
+      },
+      {
+        "requirement": "splat64[mips]",
+        "group": "dev",
+        "name": "splat64"
+      },
+      {
+        "requirement": "mypy",
+        "group": "dev",
+        "name": "mypy"
+      },
+      {
+        "requirement": "black",
+        "group": "dev",
+        "name": "black"
+      },
+      {
+        "requirement": "types-PyYAML",
+        "group": "dev",
+        "name": "types-pyyaml"
+      },
+      {
+        "requirement": "types-colorama",
+        "group": "dev",
+        "name": "types-colorama"
+      },
+      {
+        "requirement": "hatchling",
+        "group": "build-system",
+        "name": "hatchling"
+      }
+    ],
+    "inactiveEnvironmentMarkers": []
+  },
+  "packages": [
+    {
+      "name": "ast-serialize",
+      "version": "0.6.0",
+      "installedIdentity": "ast-serialize==0.6.0",
+      "origin": "https://pypi.org/simple/ast-serialize",
+      "dependencyClass": "resolved-transitive",
+      "declaredGroupOrParent": {
+        "transitiveParent": "mypy"
+      },
+      "bootstrapOrigin": null,
+      "artifactFiles": [
+        "ast_serialize-0.6.0-cp39-abi3-win_amd64.whl"
+      ]
+    },
+    {
+      "name": "black",
+      "version": "26.5.1",
+      "installedIdentity": "black==26.5.1",
+      "origin": "https://pypi.org/simple/black",
+      "dependencyClass": "declared-direct-or-build",
+      "declaredGroupOrParent": {
+        "group": "dev",
+        "requirement": "black"
+      },
+      "bootstrapOrigin": null,
+      "artifactFiles": [
+        "black-26.5.1-cp311-cp311-win_amd64.whl"
+      ]
+    },
+    {
+      "name": "click",
+      "version": "8.4.2",
+      "installedIdentity": "click==8.4.2",
+      "origin": "https://pypi.org/simple/click",
+      "dependencyClass": "resolved-transitive",
+      "declaredGroupOrParent": {
+        "transitiveParent": "black"
+      },
+      "bootstrapOrigin": null,
+      "artifactFiles": [
+        "click-8.4.2-py3-none-any.whl"
+      ]
+    },
+    {
+      "name": "colorama",
+      "version": "0.4.6",
+      "installedIdentity": "colorama==0.4.6",
+      "origin": "https://pypi.org/simple/colorama",
+      "dependencyClass": "declared-direct-or-build",
+      "declaredGroupOrParent": {
+        "group": "base",
+        "requirement": "colorama"
+      },
+      "bootstrapOrigin": null,
+      "artifactFiles": [
+        "colorama-0.4.6-py2.py3-none-any.whl"
+      ]
+    },
+    {
+      "name": "crunch64",
+      "version": "0.6.2",
+      "installedIdentity": "crunch64==0.6.2",
+      "origin": "https://pypi.org/simple/crunch64",
+      "dependencyClass": "declared-direct-or-build",
+      "declaredGroupOrParent": {
+        "group": "mips",
+        "requirement": "crunch64>=0.5.1,<1.0.0"
+      },
+      "bootstrapOrigin": null,
+      "artifactFiles": [
+        "crunch64-0.6.2-cp37-abi3-win_amd64.whl"
+      ]
+    },
+    {
+      "name": "hatchling",
+      "version": "1.31.0",
+      "installedIdentity": "hatchling==1.31.0",
+      "origin": "https://pypi.org/simple/hatchling",
+      "dependencyClass": "declared-direct-or-build",
+      "declaredGroupOrParent": {
+        "group": "build-system",
+        "requirement": "hatchling"
+      },
+      "bootstrapOrigin": null,
+      "artifactFiles": [
+        "hatchling-1.31.0-py3-none-any.whl"
+      ]
+    },
+    {
+      "name": "intervaltree",
+      "version": "3.2.1",
+      "installedIdentity": "intervaltree==3.2.1",
+      "origin": "https://pypi.org/simple/intervaltree",
+      "dependencyClass": "declared-direct-or-build",
+      "declaredGroupOrParent": {
+        "group": "base",
+        "requirement": "intervaltree"
+      },
+      "bootstrapOrigin": null,
+      "artifactFiles": [
+        "intervaltree-3.2.1-py2.py3-none-any.whl"
+      ]
+    },
+    {
+      "name": "librt",
+      "version": "0.13.0",
+      "installedIdentity": "librt==0.13.0",
+      "origin": "https://pypi.org/simple/librt",
+      "dependencyClass": "resolved-transitive",
+      "declaredGroupOrParent": {
+        "transitiveParent": "mypy"
+      },
+      "bootstrapOrigin": null,
+      "artifactFiles": [
+        "librt-0.13.0-cp311-cp311-win_amd64.whl"
+      ]
+    },
+    {
+      "name": "mypy",
+      "version": "2.3.0",
+      "installedIdentity": "mypy==2.3.0",
+      "origin": "https://pypi.org/simple/mypy",
+      "dependencyClass": "declared-direct-or-build",
+      "declaredGroupOrParent": {
+        "group": "dev",
+        "requirement": "mypy"
+      },
+      "bootstrapOrigin": null,
+      "artifactFiles": [
+        "mypy-2.3.0-cp311-cp311-win_amd64.whl"
+      ]
+    },
+    {
+      "name": "mypy-extensions",
+      "version": "1.1.0",
+      "installedIdentity": "mypy-extensions==1.1.0",
+      "origin": "https://pypi.org/simple/mypy-extensions",
+      "dependencyClass": "resolved-transitive",
+      "declaredGroupOrParent": {
+        "transitiveParent": "black"
+      },
+      "bootstrapOrigin": null,
+      "artifactFiles": [
+        "mypy_extensions-1.1.0-py3-none-any.whl"
+      ]
+    },
+    {
+      "name": "n64img",
+      "version": "0.3.3",
+      "installedIdentity": "n64img==0.3.3",
+      "origin": "https://pypi.org/simple/n64img",
+      "dependencyClass": "declared-direct-or-build",
+      "declaredGroupOrParent": {
+        "group": "mips",
+        "requirement": "n64img>=0.3.3"
+      },
+      "bootstrapOrigin": null,
+      "artifactFiles": [
+        "n64img-0.3.3-py3-none-any.whl"
+      ]
+    },
+    {
+      "name": "packaging",
+      "version": "26.2",
+      "installedIdentity": "packaging==26.2",
+      "origin": "https://pypi.org/simple/packaging",
+      "dependencyClass": "resolved-transitive",
+      "declaredGroupOrParent": {
+        "transitiveParent": "black"
+      },
+      "bootstrapOrigin": null,
+      "artifactFiles": [
+        "packaging-26.2-py3-none-any.whl"
+      ]
+    },
+    {
+      "name": "pathspec",
+      "version": "1.1.1",
+      "installedIdentity": "pathspec==1.1.1",
+      "origin": "https://pypi.org/simple/pathspec",
+      "dependencyClass": "resolved-transitive",
+      "declaredGroupOrParent": {
+        "transitiveParent": "black"
+      },
+      "bootstrapOrigin": null,
+      "artifactFiles": [
+        "pathspec-1.1.1-py3-none-any.whl"
+      ]
+    },
+    {
+      "name": "pip",
+      "version": "24.0",
+      "installedIdentity": "pip==24.0",
+      "origin": "venv-ensurepip",
+      "dependencyClass": "environment-bootstrap",
+      "declaredGroupOrParent": null,
+      "bootstrapOrigin": "CPython venv ensurepip",
+      "artifactFiles": []
+    },
+    {
+      "name": "platformdirs",
+      "version": "4.11.0",
+      "installedIdentity": "platformdirs==4.11.0",
+      "origin": "https://pypi.org/simple/platformdirs",
+      "dependencyClass": "resolved-transitive",
+      "declaredGroupOrParent": {
+        "transitiveParent": "black"
+      },
+      "bootstrapOrigin": null,
+      "artifactFiles": [
+        "platformdirs-4.11.0-py3-none-any.whl"
+      ]
+    },
+    {
+      "name": "pluggy",
+      "version": "1.6.0",
+      "installedIdentity": "pluggy==1.6.0",
+      "origin": "https://pypi.org/simple/pluggy",
+      "dependencyClass": "resolved-transitive",
+      "declaredGroupOrParent": {
+        "transitiveParent": "hatchling"
+      },
+      "bootstrapOrigin": null,
+      "artifactFiles": [
+        "pluggy-1.6.0-py3-none-any.whl"
+      ]
+    },
+    {
+      "name": "pygfxd",
+      "version": "1.0.5",
+      "installedIdentity": "pygfxd==1.0.5",
+      "origin": "https://pypi.org/simple/pygfxd",
+      "dependencyClass": "declared-direct-or-build",
+      "declaredGroupOrParent": {
+        "group": "mips",
+        "requirement": "pygfxd"
+      },
+      "bootstrapOrigin": null,
+      "artifactFiles": [
+        "pygfxd-1.0.5-cp311-cp311-win_amd64.whl"
+      ]
+    },
+    {
+      "name": "pylibyaml",
+      "version": "0.1.0",
+      "installedIdentity": "pylibyaml==0.1.0",
+      "origin": "https://pypi.org/simple/pylibyaml",
+      "dependencyClass": "declared-direct-or-build",
+      "declaredGroupOrParent": {
+        "group": "base",
+        "requirement": "pylibyaml"
+      },
+      "bootstrapOrigin": null,
+      "artifactFiles": [
+        "pylibyaml-0.1.0-py3-none-any.whl",
+        "pylibyaml-0.1.0.tar.gz"
+      ]
+    },
+    {
+      "name": "pypng",
+      "version": "0.20220715.0",
+      "installedIdentity": "pypng==0.20220715.0",
+      "origin": "https://pypi.org/simple/pypng",
+      "dependencyClass": "resolved-transitive",
+      "declaredGroupOrParent": {
+        "transitiveParent": "n64img"
+      },
+      "bootstrapOrigin": null,
+      "artifactFiles": [
+        "pypng-0.20220715.0-py3-none-any.whl"
+      ]
+    },
+    {
+      "name": "pytokens",
+      "version": "0.4.1",
+      "installedIdentity": "pytokens==0.4.1",
+      "origin": "https://pypi.org/simple/pytokens",
+      "dependencyClass": "resolved-transitive",
+      "declaredGroupOrParent": {
+        "transitiveParent": "black"
+      },
+      "bootstrapOrigin": null,
+      "artifactFiles": [
+        "pytokens-0.4.1-cp311-cp311-win_amd64.whl"
+      ]
+    },
+    {
+      "name": "pyyaml",
+      "version": "6.0.3",
+      "installedIdentity": "pyyaml==6.0.3",
+      "origin": "https://pypi.org/simple/pyyaml",
+      "dependencyClass": "declared-direct-or-build",
+      "declaredGroupOrParent": {
+        "group": "base",
+        "requirement": "PyYAML"
+      },
+      "bootstrapOrigin": null,
+      "artifactFiles": [
+        "pyyaml-6.0.3-cp311-cp311-win_amd64.whl"
+      ]
+    },
+    {
+      "name": "rabbitizer",
+      "version": "1.16.2",
+      "installedIdentity": "rabbitizer==1.16.2",
+      "origin": "https://pypi.org/simple/rabbitizer",
+      "dependencyClass": "declared-direct-or-build",
+      "declaredGroupOrParent": {
+        "group": "mips",
+        "requirement": "rabbitizer>=1.12.0,<2.0.0"
+      },
+      "bootstrapOrigin": null,
+      "artifactFiles": [
+        "rabbitizer-1.16.2-cp34-abi3-win_amd64.whl"
+      ]
+    },
+    {
+      "name": "setuptools",
+      "version": "79.0.1",
+      "installedIdentity": "setuptools==79.0.1",
+      "origin": "venv-ensurepip",
+      "dependencyClass": "environment-bootstrap",
+      "declaredGroupOrParent": null,
+      "bootstrapOrigin": "CPython venv ensurepip",
+      "artifactFiles": []
+    },
+    {
+      "name": "sortedcontainers",
+      "version": "2.4.0",
+      "installedIdentity": "sortedcontainers==2.4.0",
+      "origin": "https://pypi.org/simple/sortedcontainers",
+      "dependencyClass": "resolved-transitive",
+      "declaredGroupOrParent": {
+        "transitiveParent": "intervaltree"
+      },
+      "bootstrapOrigin": null,
+      "artifactFiles": [
+        "sortedcontainers-2.4.0-py2.py3-none-any.whl"
+      ]
+    },
+    {
+      "name": "spimdisasm",
+      "version": "1.42.3",
+      "installedIdentity": "spimdisasm==1.42.3",
+      "origin": "https://pypi.org/simple/spimdisasm",
+      "dependencyClass": "declared-direct-or-build",
+      "declaredGroupOrParent": {
+        "group": "mips",
+        "requirement": "spimdisasm>=1.32.0,<2.0.0"
+      },
+      "bootstrapOrigin": null,
+      "artifactFiles": [
+        "spimdisasm-1.42.3-py3-none-any.whl"
+      ]
+    },
+    {
+      "name": "splat64",
+      "version": "0.34.0",
+      "installedIdentity": "splat64==0.34.0",
+      "origin": "local-git-archive:999c792fdda1002f29926717d2b7197bb90480a9",
+      "dependencyClass": "declared-direct-or-build",
+      "declaredGroupOrParent": {
+        "group": "dev",
+        "requirement": "splat64[mips]"
+      },
+      "bootstrapOrigin": null,
+      "artifactFiles": [
+        "splat-999c792f.zip",
+        "splat64-0.34.0-py3-none-any.whl"
+      ]
+    },
+    {
+      "name": "tqdm",
+      "version": "4.70.0",
+      "installedIdentity": "tqdm==4.70.0",
+      "origin": "https://pypi.org/simple/tqdm",
+      "dependencyClass": "declared-direct-or-build",
+      "declaredGroupOrParent": {
+        "group": "base",
+        "requirement": "tqdm"
+      },
+      "bootstrapOrigin": null,
+      "artifactFiles": [
+        "tqdm-4.70.0-py3-none-any.whl"
+      ]
+    },
+    {
+      "name": "trove-classifiers",
+      "version": "2026.6.1.19",
+      "installedIdentity": "trove-classifiers==2026.6.1.19",
+      "origin": "https://pypi.org/simple/trove-classifiers",
+      "dependencyClass": "resolved-transitive",
+      "declaredGroupOrParent": {
+        "transitiveParent": "hatchling"
+      },
+      "bootstrapOrigin": null,
+      "artifactFiles": [
+        "trove_classifiers-2026.6.1.19-py3-none-any.whl"
+      ]
+    },
+    {
+      "name": "types-colorama",
+      "version": "0.4.15.20260508",
+      "installedIdentity": "types-colorama==0.4.15.20260508",
+      "origin": "https://pypi.org/simple/types-colorama",
+      "dependencyClass": "declared-direct-or-build",
+      "declaredGroupOrParent": {
+        "group": "dev",
+        "requirement": "types-colorama"
+      },
+      "bootstrapOrigin": null,
+      "artifactFiles": [
+        "types_colorama-0.4.15.20260508-py3-none-any.whl"
+      ]
+    },
+    {
+      "name": "types-pyyaml",
+      "version": "6.0.12.20260724",
+      "installedIdentity": "types-pyyaml==6.0.12.20260724",
+      "origin": "https://pypi.org/simple/types-pyyaml",
+      "dependencyClass": "declared-direct-or-build",
+      "declaredGroupOrParent": {
+        "group": "dev",
+        "requirement": "types-PyYAML"
+      },
+      "bootstrapOrigin": null,
+      "artifactFiles": [
+        "types_pyyaml-6.0.12.20260724-py3-none-any.whl"
+      ]
+    },
+    {
+      "name": "typing-extensions",
+      "version": "4.16.0",
+      "installedIdentity": "typing-extensions==4.16.0",
+      "origin": "https://pypi.org/simple/typing-extensions",
+      "dependencyClass": "resolved-transitive",
+      "declaredGroupOrParent": {
+        "transitiveParent": "black"
+      },
+      "bootstrapOrigin": null,
+      "artifactFiles": [
+        "typing_extensions-4.16.0-py3-none-any.whl"
+      ]
+    }
+  ],
+  "artifacts": [
+    {
+      "package": "ast-serialize",
+      "version": "0.6.0",
+      "file": "ast_serialize-0.6.0-cp39-abi3-win_amd64.whl",
+      "sha256": "113B58346F9CEB664352032770CACA817D4A3C86F611C6088E6EF65DDAA70F0E",
+      "origin": "https://files.pythonhosted.org/packages/47/ae/6710c14ecb276031cf10249f6adf5a59e2d3fdb3b5183bd59f70524067ee/ast_serialize-0.6.0-cp39-abi3-win_amd64.whl",
+      "dependencyClass": "resolved-transitive",
+      "declaredGroupOrParent": {
+        "transitiveParent": "mypy"
+      }
+    },
+    {
+      "package": "black",
+      "version": "26.5.1",
+      "file": "black-26.5.1-cp311-cp311-win_amd64.whl",
+      "sha256": "30D3C14661F2792E9142CCE3EEEB1CBC175B3EB5F733BE0C8EEB99651E52B0C3",
+      "origin": "https://files.pythonhosted.org/packages/a1/5b/0b39b3a5917f0657ac014ad2edb58c139553a478adfe7f817abf1622ff6e/black-26.5.1-cp311-cp311-win_amd64.whl",
+      "dependencyClass": "declared-direct-or-build",
+      "declaredGroupOrParent": {
+        "group": "dev",
+        "requirement": "black"
+      }
+    },
+    {
+      "package": "click",
+      "version": "8.4.2",
+      "file": "click-8.4.2-py3-none-any.whl",
+      "sha256": "E6F9F66136C816745B9D65817DA91D61D957FB16E02E4DCD0552553C5A197B76",
+      "origin": "https://files.pythonhosted.org/packages/fb/e2/79c688af8b210d232694e31e59da9f6ec747bae31c3f5946e4e9b98860d5/click-8.4.2-py3-none-any.whl",
+      "dependencyClass": "resolved-transitive",
+      "declaredGroupOrParent": {
+        "transitiveParent": "black"
+      }
+    },
+    {
+      "package": "colorama",
+      "version": "0.4.6",
+      "file": "colorama-0.4.6-py2.py3-none-any.whl",
+      "sha256": "4F1D9991F5ACC0CA119F9D443620B77F9D6B33703E51011C16BAF57AFB285FC6",
+      "origin": "https://files.pythonhosted.org/packages/d1/d6/3965ed04c63042e047cb6a3e6ed1a63a35087b6a609aa3a15ed8ac56c221/colorama-0.4.6-py2.py3-none-any.whl",
+      "dependencyClass": "declared-direct-or-build",
+      "declaredGroupOrParent": {
+        "group": "base",
+        "requirement": "colorama"
+      }
+    },
+    {
+      "package": "crunch64",
+      "version": "0.6.2",
+      "file": "crunch64-0.6.2-cp37-abi3-win_amd64.whl",
+      "sha256": "DC3490B53E75F4957C10BA46B4BCAC8EC577029F7973B6301B444E64DCCCCB56",
+      "origin": "https://files.pythonhosted.org/packages/ac/44/4678b4eb5b71e279e201045a1085fce58eeddaf19ec2657d88bd84462009/crunch64-0.6.2-cp37-abi3-win_amd64.whl",
+      "dependencyClass": "declared-direct-or-build",
+      "declaredGroupOrParent": {
+        "group": "mips",
+        "requirement": "crunch64>=0.5.1,<1.0.0"
+      }
+    },
+    {
+      "package": "hatchling",
+      "version": "1.31.0",
+      "file": "hatchling-1.31.0-py3-none-any.whl",
+      "sha256": "AAC80BEC8B6FE35E8480F1C335BE8910FA210A0E6F735A139BE205DADCACB544",
+      "origin": "https://files.pythonhosted.org/packages/64/e2/2c0af0a52d16be74a4f194564fcdc417521ed863e9b65e4bc9052dacba6f/hatchling-1.31.0-py3-none-any.whl",
+      "dependencyClass": "declared-direct-or-build",
+      "declaredGroupOrParent": {
+        "group": "build-system",
+        "requirement": "hatchling"
+      }
+    },
+    {
+      "package": "intervaltree",
+      "version": "3.2.1",
+      "file": "intervaltree-3.2.1-py2.py3-none-any.whl",
+      "sha256": "A8A8381BBD35D48CEEBEE932C77FFC988492D22FB1D27D0BA1D74A7694EB8F0B",
+      "origin": "https://files.pythonhosted.org/packages/83/7f/8a80a1c7c2ed05822b5a2b312d2995f30c533641f8198366ba2e26a7bb03/intervaltree-3.2.1-py2.py3-none-any.whl",
+      "dependencyClass": "declared-direct-or-build",
+      "declaredGroupOrParent": {
+        "group": "base",
+        "requirement": "intervaltree"
+      }
+    },
+    {
+      "package": "librt",
+      "version": "0.13.0",
+      "file": "librt-0.13.0-cp311-cp311-win_amd64.whl",
+      "sha256": "CC99DFB62B23C9207C33D0BE8A2E2AF7A42E21E6EA388B380A0C948C7B88953B",
+      "origin": "https://files.pythonhosted.org/packages/76/5a/f4aaf37b50f2fde12c8c663b83fdd499cdc24f957f19543d7414bfcc9e25/librt-0.13.0-cp311-cp311-win_amd64.whl",
+      "dependencyClass": "resolved-transitive",
+      "declaredGroupOrParent": {
+        "transitiveParent": "mypy"
+      }
+    },
+    {
+      "package": "mypy",
+      "version": "2.3.0",
+      "file": "mypy-2.3.0-cp311-cp311-win_amd64.whl",
+      "sha256": "13B1B16E2FA39F3B2E33FB1C468ABC7A69369FA2E886B4B87B5AFC81472325CD",
+      "origin": "https://files.pythonhosted.org/packages/37/28/8223157404a3d51920078459c37f80fbdc590e1d8ea049dc5ce48643022a/mypy-2.3.0-cp311-cp311-win_amd64.whl",
+      "dependencyClass": "declared-direct-or-build",
+      "declaredGroupOrParent": {
+        "group": "dev",
+        "requirement": "mypy"
+      }
+    },
+    {
+      "package": "mypy-extensions",
+      "version": "1.1.0",
+      "file": "mypy_extensions-1.1.0-py3-none-any.whl",
+      "sha256": "1BE4CCCDB0F2482337C4743E60421DE3A356CD97508ABADD57D47403E94F5505",
+      "origin": "https://files.pythonhosted.org/packages/79/7b/2c79738432f5c924bef5071f933bcc9efd0473bac3b4aa584a6f7c1c8df8/mypy_extensions-1.1.0-py3-none-any.whl",
+      "dependencyClass": "resolved-transitive",
+      "declaredGroupOrParent": {
+        "transitiveParent": "black"
+      }
+    },
+    {
+      "package": "n64img",
+      "version": "0.3.3",
+      "file": "n64img-0.3.3-py3-none-any.whl",
+      "sha256": "5DB569E3300F3404B875A319822221704FFAF7C1D8F1DB874B85702A16947921",
+      "origin": "https://files.pythonhosted.org/packages/87/6d/9480bcb7a31d6e96a0a8923c9b64812db0e480921bc988fcbfbce3ddf7a4/n64img-0.3.3-py3-none-any.whl",
+      "dependencyClass": "declared-direct-or-build",
+      "declaredGroupOrParent": {
+        "group": "mips",
+        "requirement": "n64img>=0.3.3"
+      }
+    },
+    {
+      "package": "packaging",
+      "version": "26.2",
+      "file": "packaging-26.2-py3-none-any.whl",
+      "sha256": "5FC45236B9446107FF2415CE77C807CEE2862CB6FAC22B8A73826D0693B0980E",
+      "origin": "https://files.pythonhosted.org/packages/df/b2/87e62e8c3e2f4b32e5fe99e0b86d576da1312593b39f47d8ceef365e95ed/packaging-26.2-py3-none-any.whl",
+      "dependencyClass": "resolved-transitive",
+      "declaredGroupOrParent": {
+        "transitiveParent": "black"
+      }
+    },
+    {
+      "package": "pathspec",
+      "version": "1.1.1",
+      "file": "pathspec-1.1.1-py3-none-any.whl",
+      "sha256": "A00CE642F577BF7F473932318056212BC4F8BFDF53128C78BBD5AF0B9B20B189",
+      "origin": "https://files.pythonhosted.org/packages/f1/d9/7fb5aa316bc299258e68c73ba3bddbc499654a07f151cba08f6153988714/pathspec-1.1.1-py3-none-any.whl",
+      "dependencyClass": "resolved-transitive",
+      "declaredGroupOrParent": {
+        "transitiveParent": "black"
+      }
+    },
+    {
+      "package": "platformdirs",
+      "version": "4.11.0",
+      "file": "platformdirs-4.11.0-py3-none-any.whl",
+      "sha256": "360CCDED2B7FCE0AF0FF80CC8F5942A1C5D99B0E856033ACB030BFC634709E74",
+      "origin": "https://files.pythonhosted.org/packages/7d/68/d8d58938dfb1370b266a1a729e6d77a985be23689a0496498ee17b2cbf90/platformdirs-4.11.0-py3-none-any.whl",
+      "dependencyClass": "resolved-transitive",
+      "declaredGroupOrParent": {
+        "transitiveParent": "black"
+      }
+    },
+    {
+      "package": "pluggy",
+      "version": "1.6.0",
+      "file": "pluggy-1.6.0-py3-none-any.whl",
+      "sha256": "E920276DD6813095E9377C0BC5566D94C932C33B27A3E3945D8389C374DD4746",
+      "origin": "https://files.pythonhosted.org/packages/54/20/4d324d65cc6d9205fabedc306948156824eb9f0ee1633355a8f7ec5c66bf/pluggy-1.6.0-py3-none-any.whl",
+      "dependencyClass": "resolved-transitive",
+      "declaredGroupOrParent": {
+        "transitiveParent": "hatchling"
+      }
+    },
+    {
+      "package": "pygfxd",
+      "version": "1.0.5",
+      "file": "pygfxd-1.0.5-cp311-cp311-win_amd64.whl",
+      "sha256": "F9C3290C5C734001BC7C1235C6D7092E81A21D70CFB9B1847CD7096828BBA072",
+      "origin": "https://files.pythonhosted.org/packages/33/08/156a47a928d70750ad59bfd760b22d15980d745902a71b2894072b1aa08c/pygfxd-1.0.5-cp311-cp311-win_amd64.whl",
+      "dependencyClass": "declared-direct-or-build",
+      "declaredGroupOrParent": {
+        "group": "mips",
+        "requirement": "pygfxd"
+      }
+    },
+    {
+      "package": "pylibyaml",
+      "version": "0.1.0",
+      "file": "pylibyaml-0.1.0-py3-none-any.whl",
+      "sha256": "210D4D2560679E349BD27484408590478E6760E20DF5AEADA5D93401FA600583",
+      "origin": "locally-built-from:pylibyaml-0.1.0.tar.gz",
+      "dependencyClass": "declared-direct-or-build",
+      "declaredGroupOrParent": {
+        "group": "base",
+        "requirement": "pylibyaml"
+      }
+    },
+    {
+      "package": "pylibyaml",
+      "version": "0.1.0",
+      "file": "pylibyaml-0.1.0.tar.gz",
+      "sha256": "3B58DEA061903C04689E35FAB63EC149F7CF5E82F0808BD3425FB3AB3950623E",
+      "origin": "https://files.pythonhosted.org/packages/c9/1a/3ae773a0d4cc0b787d1b7307786c666de0729df2c4159ec964e8ba45d06d/pylibyaml-0.1.0.tar.gz",
+      "dependencyClass": "declared-direct-or-build",
+      "declaredGroupOrParent": {
+        "group": "base",
+        "requirement": "pylibyaml"
+      }
+    },
+    {
+      "package": "pypng",
+      "version": "0.20220715.0",
+      "file": "pypng-0.20220715.0-py3-none-any.whl",
+      "sha256": "4A43E969B8F5AAAFB2A415536C1A8EC7E341CD6A3F957FD5B5F32A4CFEED902C",
+      "origin": "https://files.pythonhosted.org/packages/3e/b9/3766cc361d93edb2ce81e2e1f87dd98f314d7d513877a342d31b30741680/pypng-0.20220715.0-py3-none-any.whl",
+      "dependencyClass": "resolved-transitive",
+      "declaredGroupOrParent": {
+        "transitiveParent": "n64img"
+      }
+    },
+    {
+      "package": "pytokens",
+      "version": "0.4.1",
+      "file": "pytokens-0.4.1-cp311-cp311-win_amd64.whl",
+      "sha256": "EE44D0F85B803321710F9239F335AAFE16553B39106384CEF8E6DE40CB4EF2F6",
+      "origin": "https://files.pythonhosted.org/packages/d1/1b/44b0326cb5470a4375f37988aea5d61b5cc52407143303015ebee94abfd6/pytokens-0.4.1-cp311-cp311-win_amd64.whl",
+      "dependencyClass": "resolved-transitive",
+      "declaredGroupOrParent": {
+        "transitiveParent": "black"
+      }
+    },
+    {
+      "package": "pyyaml",
+      "version": "6.0.3",
+      "file": "pyyaml-6.0.3-cp311-cp311-win_amd64.whl",
+      "sha256": "9F3BFB4965EB874431221A3FF3FDCDDC7E74E3B07799E0E84CA4A0F867D449BF",
+      "origin": "https://files.pythonhosted.org/packages/da/e3/ea007450a105ae919a72393cb06f122f288ef60bba2dc64b26e2646fa315/pyyaml-6.0.3-cp311-cp311-win_amd64.whl",
+      "dependencyClass": "declared-direct-or-build",
+      "declaredGroupOrParent": {
+        "group": "base",
+        "requirement": "PyYAML"
+      }
+    },
+    {
+      "package": "rabbitizer",
+      "version": "1.16.2",
+      "file": "rabbitizer-1.16.2-cp34-abi3-win_amd64.whl",
+      "sha256": "3066C0484B9EA458A5B446CA41CF42B9EE9163F602A7796B699037F2AA9A8524",
+      "origin": "https://files.pythonhosted.org/packages/25/fa/56eb68dbd6414590d0c0e843e3fd6eac1c1d9b6ad1b1f8a78e4d82b0cd0f/rabbitizer-1.16.2-cp34-abi3-win_amd64.whl",
+      "dependencyClass": "declared-direct-or-build",
+      "declaredGroupOrParent": {
+        "group": "mips",
+        "requirement": "rabbitizer>=1.12.0,<2.0.0"
+      }
+    },
+    {
+      "package": "sortedcontainers",
+      "version": "2.4.0",
+      "file": "sortedcontainers-2.4.0-py2.py3-none-any.whl",
+      "sha256": "A163DCAEDE0F1C021485E957A39245190E74249897E2AE4B2AA38595DB237EE0",
+      "origin": "https://files.pythonhosted.org/packages/32/46/9cb0e58b2deb7f82b84065f37f3bffeb12413f947f9388e4cac22c4621ce/sortedcontainers-2.4.0-py2.py3-none-any.whl",
+      "dependencyClass": "resolved-transitive",
+      "declaredGroupOrParent": {
+        "transitiveParent": "intervaltree"
+      }
+    },
+    {
+      "package": "spimdisasm",
+      "version": "1.42.3",
+      "file": "spimdisasm-1.42.3-py3-none-any.whl",
+      "sha256": "3429A7FF4D852E5F0FBF80381BB46322D52463640C924EA628E9BC6134EC2F7C",
+      "origin": "https://files.pythonhosted.org/packages/a3/8c/df42ab0f71f717a2ff8f2bdc272c7ae9fb0f0a0478f22f0bda078c6a0fe6/spimdisasm-1.42.3-py3-none-any.whl",
+      "dependencyClass": "declared-direct-or-build",
+      "declaredGroupOrParent": {
+        "group": "mips",
+        "requirement": "spimdisasm>=1.32.0,<2.0.0"
+      }
+    },
+    {
+      "package": "splat64",
+      "version": "0.34.0",
+      "file": "splat-999c792f.zip",
+      "sha256": "55CB9F6AA53F038FD5916066480719875B72D879974E17BA503BF750D11FDE25",
+      "origin": "local-git-archive:999c792fdda1002f29926717d2b7197bb90480a9",
+      "dependencyClass": "authenticated-source-snapshot",
+      "declaredGroupOrParent": {
+        "group": "dev",
+        "requirement": "splat64[mips]"
+      }
+    },
+    {
+      "package": "splat64",
+      "version": "0.34.0",
+      "file": "splat64-0.34.0-py3-none-any.whl",
+      "sha256": "37061B40507EF14979B476F3B80A52FB54578E06AE4D39D505F5FBF10EF003FE",
+      "origin": "locally-built-from:splat-999c792f.zip",
+      "dependencyClass": "declared-direct-or-build",
+      "declaredGroupOrParent": {
+        "group": "dev",
+        "requirement": "splat64[mips]"
+      }
+    },
+    {
+      "package": "tqdm",
+      "version": "4.70.0",
+      "file": "tqdm-4.70.0-py3-none-any.whl",
+      "sha256": "7F585706BFDDBDEBF89DAAC705B2DFCC16890130727D3197CA62C732B4310953",
+      "origin": "https://files.pythonhosted.org/packages/f9/1c/01bfd571a64e7f270e6bab5e33777debe0edc56759233ce84f27dec92d14/tqdm-4.70.0-py3-none-any.whl",
+      "dependencyClass": "declared-direct-or-build",
+      "declaredGroupOrParent": {
+        "group": "base",
+        "requirement": "tqdm"
+      }
+    },
+    {
+      "package": "trove-classifiers",
+      "version": "2026.6.1.19",
+      "file": "trove_classifiers-2026.6.1.19-py3-none-any.whl",
+      "sha256": "AB4C4EC93CC4A4E7815FA759906E05E6BB3F2FBD92EA0F897288C6A43EFD15B3",
+      "origin": "https://files.pythonhosted.org/packages/7c/a4/81502f486f01db95bc8320646a8a12511f5e556cb63d5e224d91816605c4/trove_classifiers-2026.6.1.19-py3-none-any.whl",
+      "dependencyClass": "resolved-transitive",
+      "declaredGroupOrParent": {
+        "transitiveParent": "hatchling"
+      }
+    },
+    {
+      "package": "types-colorama",
+      "version": "0.4.15.20260508",
+      "file": "types_colorama-0.4.15.20260508-py3-none-any.whl",
+      "sha256": "B0C39908A3E5171EF1F8BF3D59FAE082E9EAFF3A19CA49B6D640B83F78CFF61C",
+      "origin": "https://files.pythonhosted.org/packages/56/33/a3449e3e93c43861b92d0a93ed4ea5505756463e507625812cfb29c91c7a/types_colorama-0.4.15.20260508-py3-none-any.whl",
+      "dependencyClass": "declared-direct-or-build",
+      "declaredGroupOrParent": {
+        "group": "dev",
+        "requirement": "types-colorama"
+      }
+    },
+    {
+      "package": "types-pyyaml",
+      "version": "6.0.12.20260724",
+      "file": "types_pyyaml-6.0.12.20260724-py3-none-any.whl",
+      "sha256": "D57DB930A4B2EFBC57CF430EC8882765D246929432FA253092F383902329A453",
+      "origin": "https://files.pythonhosted.org/packages/8b/42/0337fefc615e20ee55d1c8f71b774a9b2b734a04669139c20753b27a2a3a/types_pyyaml-6.0.12.20260724-py3-none-any.whl",
+      "dependencyClass": "declared-direct-or-build",
+      "declaredGroupOrParent": {
+        "group": "dev",
+        "requirement": "types-PyYAML"
+      }
+    },
+    {
+      "package": "typing-extensions",
+      "version": "4.16.0",
+      "file": "typing_extensions-4.16.0-py3-none-any.whl",
+      "sha256": "481CAA481374E813C1B176ADA14E97F1F67A4539CE9CFEB3F350D78D6370C2E8",
+      "origin": "https://files.pythonhosted.org/packages/49/d3/b8441a820a491ddfc024b0b0cf0393375b75ea13866d9c66727e54c2fc80/typing_extensions-4.16.0-py3-none-any.whl",
+      "dependencyClass": "resolved-transitive",
+      "declaredGroupOrParent": {
+        "transitiveParent": "black"
+      }
+    }
+  ]
+}

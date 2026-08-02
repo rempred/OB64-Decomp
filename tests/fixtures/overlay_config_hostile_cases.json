@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "cases": [
+    {
+      "id": "runtime-helper-store-conflation",
+      "expectedDiagnostic": "Runtime helper/store conflation"
+    },
+    {
+      "id": "runtime-wrong-descriptor-0-store-pc",
+      "expectedDiagnostic": "Descriptor 0 BSS store PC mismatch"
+    },
+    {
+      "id": "runtime-missing-store-union-pc",
+      "expectedDiagnostic": "Runtime BSS store-PC union mismatch"
+    },
+    {
+      "id": "runtime-extra-store-union-pc",
+      "expectedDiagnostic": "Runtime BSS store-PC union mismatch"
+    },
+    {
+      "id": "runtime-unsupported-other-group",
+      "expectedDiagnostic": "Unsupported other-group runtime promotion"
+    },
+    {
+      "id": "runtime-malformed-evidence-grade",
+      "expectedDiagnostic": "Runtime annotation evidence grade malformed"
+    },
+    {
+      "id": "config-manual-edit",
+      "expectedDiagnostic": "stale or manually edited"
+    },
+    {
+      "id": "config-descriptor-count-drift",
+      "expectedDiagnostic": "stale or manually edited"
+    },
+    {
+      "id": "config-descriptor-stride-drift",
+      "expectedDiagnostic": "stale or manually edited"
+    }
+  ]
+}

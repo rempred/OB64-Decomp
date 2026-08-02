@@ -1,0 +1,63 @@
+{
+  "schemaVersion": 1,
+  "splatSnapshot": {
+    "pyproject": "C:\\Users\\Joe\\.codex\\phase5b-splat-20260801-third-review-correction-r2\\snapshot\\pyproject.toml",
+    "pyprojectSha256": "5429ABB32C155B87F5B2275E6280E3E376BF5843D32631D21426339902AD1953",
+    "sourceArchive": "splat-999c792f.zip",
+    "sourceArchiveSha256": "55CB9F6AA53F038FD5916066480719875B72D879974E17BA503BF750D11FDE25",
+    "wheel": "splat64-0.34.0-py3-none-any.whl",
+    "wheelSha256": "37061B40507EF14979B476F3B80A52FB54578E06AE4D39D505F5FBF10EF003FE",
+    "commit": "999c792fdda1002f29926717d2b7197bb90480a9"
+  },
+  "machineAcquisition": {
+    "summary": "C:\\Users\\Joe\\.codex\\phase5b-splat-20260801-third-review-correction-r2\\logs\\pypi-acquisition-summary.json",
+    "summarySha256": "20A99DC5603A31BBA16E499FDB31A8ECB12D16980C709ADFFD5D720F6EA7B3C9"
+  },
+  "localBuilds": {
+    "pylibyaml": {
+      "source": "pylibyaml-0.1.0.tar.gz",
+      "sourceSha256": "3B58DEA061903C04689E35FAB63EC149F7CF5E82F0808BD3425FB3AB3950623E",
+      "wheel": "pylibyaml-0.1.0-py3-none-any.whl",
+      "wheelSha256": "210D4D2560679E349BD27484408590478E6760E20DF5AEADA5D93401FA600583",
+      "buildLog": "C:\\Users\\Joe\\.codex\\phase5b-splat-20260801-third-review-correction-r2\\logs\\build-pylibyaml.log",
+      "buildLogSha256": "5C03ED20CA71AF5A6DCC3593019FB1388FE04E21B4C80DCED5A2B1B6D9906B76",
+      "command": "python -m pip wheel --no-index --no-deps --no-cache-dir --no-build-isolation",
+      "pythonVersion": "Python 3.11.15",
+      "pipVersion": "pip 24.0",
+      "setuptoolsVersion": "79.0.1",
+      "reproducibleBuild": {
+        "route": "A",
+        "manifest": "C:\\Users\\Joe\\Projects\\OB64-Decomp-Hijs-Integration\\docs\\external-intake\\phase5b-production-splat-segment-wiring-20260731\\third-review-correction-20260801\\artifact-identity-r7\\reproducible-build-manifest.json",
+        "manifestSha256": "E485F13B036351E726C3E7845B406C9E0F5852405B1AAC709CCED33DB7F2AB2D"
+      }
+    },
+    "splat64": {
+      "source": "splat-999c792f.zip",
+      "sourceSha256": "55CB9F6AA53F038FD5916066480719875B72D879974E17BA503BF750D11FDE25",
+      "wheel": "splat64-0.34.0-py3-none-any.whl",
+      "wheelSha256": "37061B40507EF14979B476F3B80A52FB54578E06AE4D39D505F5FBF10EF003FE",
+      "buildLog": "C:\\Users\\Joe\\.codex\\phase5b-splat-20260801-third-review-correction-r2\\logs\\build-splat64.log",
+      "buildLogSha256": "5FD4DE3FFAFCA921D4C9F7DA3B9DCB7CA65C0224ECAA95B3F0D100A8E868D826"
+    }
+  },
+  "bootstrap": {
+    "mechanism": "CPython venv ensurepip",
+    "environmentConfig": "C:\\Users\\Joe\\.codex\\phase5b-splat-20260801-r4\\venv\\pyvenv.cfg",
+    "environmentConfigSha256": "54D456F45DC194F49D66A95968E512D8B7464D0DEACB5A78F1872A122C433C55"
+  },
+  "resolvedParents": {
+    "ast-serialize": "mypy",
+    "click": "black",
+    "mypy-extensions": "mypy",
+    "platformdirs": "black",
+    "pytokens": "black",
+    "librt": "mypy",
+    "typing-extensions": "mypy",
+    "packaging": "black",
+    "pathspec": "black",
+    "pluggy": "hatchling",
+    "trove-classifiers": "hatchling",
+    "pypng": "n64img",
+    "sortedcontainers": "intervaltree"
+  }
+}

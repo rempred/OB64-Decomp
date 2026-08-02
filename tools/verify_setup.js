@@ -26,9 +26,27 @@ function check(name, ok, details = {}) {
   return { name, ok: Boolean(ok), ...details };
 }
 
-function main() {
-  const commands = [
+function parseArgs(argv) {
+  let phase5aRoot = null;
+  for (let index = 0; index < argv.length; index += 1) {
+    const arg = argv[index];
+    if (arg !== '--phase5a-root') throw new Error(`Unknown argument: ${arg}`);
+    if (phase5aRoot !== null) throw new Error('Duplicate --phase5a-root argument');
+    const value = argv[index + 1];
+    if (!value || value.startsWith('--')) throw new Error('Missing --phase5a-root value');
+    phase5aRoot = path.resolve(value);
+    index += 1;
+  }
+  return { phase5aRoot };
+}
+
+function setupCommands(options = {}) {
+  const phase5bArgs = ['tools/verify_phase5b_production_config.js'];
+  if (options.phase5aRoot) phase5bArgs.push('--phase5a-root', options.phase5aRoot);
+  return [
     ['tools/verify_baserom.js'],
+    ['tools/verify_overlay_config.js'],
+    phase5bArgs,
     ['tools/build_rom_coverage_ledger.js'],
     ['tools/audit_code_region.js'],
     ['tools/extract_original_mips.js'],
@@ -51,6 +69,11 @@ function main() {
       'build/rebuild/rev0-assembled-code-rebuild-report.json',
     ],
   ];
+}
+
+function main(argv = process.argv.slice(2)) {
+  const options = parseArgs(argv);
+  const commands = setupCommands(options);
 
   const commandReports = [];
   for (const args of commands) {
@@ -59,6 +82,7 @@ function main() {
   }
 
   const baserom = readJson(path.join(ROOT, 'build', 'baserom.us_rev0.report.json'));
+  const overlayConfig = readJson(path.join(ROOT, 'build', 'overlay-config', 'verification.json'));
   const ledger = readJson(path.join(ROOT, 'build', 'coverage', 'rev0-rom-coverage-ledger.json'));
   const profile = readJson(path.join(ROOT, 'config', 'roms', 'us_rev0.json'));
   const codeAudit = readJson(path.join(ROOT, 'build', 'coverage', 'rev0-code-region-audit.json'));
@@ -72,6 +96,14 @@ function main() {
 
   const checks = [
     check('baseromRev0Verified', baserom.ok, { crc1: baserom.header.crc1, crc2: baserom.header.crc2 }),
+    check('overlayConfigurationVerified', overlayConfig.ok, {
+      descriptors: overlayConfig.descriptorCount,
+      groups: overlayConfig.groupCount,
+      pointers: overlayConfig.pointerCount,
+      configSha256: overlayConfig.configSha256,
+      parentAcceptedRows: overlayConfig.parentAcceptedRows,
+    }),
+    check('phase5bProductionConfigurationVerified', /Phase 5B production configuration: PASS/.test((commandReports.find((item) => item.command.startsWith('node tools/verify_phase5b_production_config.js')) || {}).output || '')),
     check('coverageArchiveCount825', ledger.archiveScan.count === 825, { actual: ledger.archiveScan.count }),
     check('coverageZeroUnknownBytes', ledger.summary.unknownBytes === 0, { actual: ledger.summary.unknownBytes }),
     check('coverageOverlapVisible', ledger.summary.overlapBytes > 0 && Array.isArray(ledger.overlapRanges) && ledger.overlapRanges.length > 0, {
@@ -149,6 +181,7 @@ function main() {
       generatedSourceOwnerBytes: sourceOwners.summary.generatedOwnerBytes ?? sourceOwners.summary.nonCodeBytes,
       codeSha256: assembled.assembled.sha256,
       romSha256: asmRebuild.rebuilt.sha256,
+      overlayConfigSha256: overlayConfig.configSha256,
     },
   };
   const reportPath = path.join(ROOT, 'build', 'setup', 'verify-setup-report.json');
@@ -178,8 +211,11 @@ function main() {
   );
   console.log(`Code SHA256: ${report.summary.codeSha256}`);
   console.log(`ROM SHA256:  ${report.summary.romSha256}`);
+  console.log(`Overlay config SHA256: ${report.summary.overlayConfigSha256}`);
   console.log(`Report: ${reportPath}`);
   if (!ok) process.exitCode = 1;
 }
 
-main();
+if (require.main === module) main();
+
+module.exports = { parseArgs, setupCommands };

@@ -2,6 +2,7 @@
 const fs = require('fs');
 const path = require('path');
 const {
+  PARENT_ROOT,
   ROOT,
   ensureDir,
   hex,
@@ -114,7 +115,7 @@ function rejectionReasonForMethodHit(z64, hit) {
 }
 
 function loadParentCatalog() {
-  const catalogPath = path.resolve(ROOT, '..', 'scripts', 'ob64_archive_catalog.json');
+  const catalogPath = path.resolve(PARENT_ROOT, 'scripts', 'ob64_archive_catalog.json');
   if (!fs.existsSync(catalogPath)) return null;
   return { path: catalogPath, entries: readJson(catalogPath) };
 }

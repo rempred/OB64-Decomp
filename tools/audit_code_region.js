@@ -22,6 +22,7 @@ const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
 const {
+  PARENT_ROOT,
   ROOT,
   ensureDir,
   hex,
@@ -67,8 +68,8 @@ fails loudly).`);
 function parseArgs(argv) {
   const args = {
     input: null,
-    functions: path.resolve(ROOT, '..', 'scripts', 'ob64_functions.json'),
-    overlays: path.resolve(ROOT, '..', 'ram_snapshots', 'overlay_sources.json'),
+    functions: path.resolve(PARENT_ROOT, 'scripts', 'ob64_functions.json'),
+    overlays: path.resolve(PARENT_ROOT, 'ram_snapshots', 'overlay_sources.json'),
     allowMissingParentDb: false,
     json: path.join(ROOT, 'build', 'coverage', 'rev0-code-region-audit.json'),
     md: path.join(ROOT, 'build', 'coverage', 'rev0-code-region-audit.md'),
