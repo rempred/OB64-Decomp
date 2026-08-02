@@ -29,7 +29,7 @@ const CONFIG_PATH = path.join(ROOT, 'config', 'phase8', 'matching-c.json');
 function parseNumber(value, label) {
   if (Number.isInteger(value)) return value;
   if (typeof value === 'string' && /^0x[0-9a-f]+$/i.test(value)) return Number.parseInt(value.slice(2), 16);
-  fail(`${label} is not an integer or hexadecimal string`);
+  fail(label + ' is not an integer or hexadecimal string');
 }
 
 function sameJson(left, right) {
@@ -39,7 +39,7 @@ function sameJson(left, right) {
 function safeRelative(relative, label) {
   const normalized = normalizePath(relative);
   if (!normalized || path.isAbsolute(relative) || normalized === '..' || normalized.startsWith('../') || normalized.includes('/../')) {
-    fail(`${label} is not a safe relative path: ${relative}`);
+    fail(label + ' is not a safe relative path: ' + relative);
   }
   return normalized;
 }
@@ -51,41 +51,14 @@ function resolveRelative(root, relative, label) {
 function loadPhase8Model() {
   const model = loadAcceptedModel();
   const config = readJson(CONFIG_PATH);
-  if (config.schemaVersion !== 1 || config.profile !== model.config.profile) fail('Phase 8 configuration schema or profile drift');
-
-  const target = {
-    ...config.target,
-    romStartNumber: parseNumber(config.target.romStart, 'target ROM start'),
-    romEndNumber: parseNumber(config.target.romEndExclusive, 'target ROM end'),
-    vramStartNumber: parseNumber(config.target.vramStart, 'target VRAM start'),
-  };
-  if (target.romEndNumber - target.romStartNumber !== target.bytes) fail('Phase 8 target range size drift');
-  const row = model.rows[target.rowIndex];
-  if (!row
-      || row.primaryId !== target.primaryId
-      || row.romStart !== target.romStartNumber
-      || row.romEndExclusive !== target.romEndNumber
-      || row.bytes !== target.bytes
-      || row.inputKind !== 'tracked-assembly'
-      || row.part.name !== target.symbol
-      || row.part.chunkIndex !== target.chunkIndex
-      || row.part.file !== target.originalAssembly
-      || row.part.sha256 !== target.originalAssemblySha256
-      || row.slices.length !== 1
-      || row.slices[0].sectionName !== target.sectionName
-      || row.slices[0].vramStart !== target.vramStartNumber
-      || row.slices[0].overlayDescriptorId !== target.overlayDescriptorId
-      || !row.slices[0].executable) {
-    fail('Phase 8 target no longer matches the accepted Phase 5/7 owner model');
+  if (config.schemaVersion !== 2 || config.profile !== model.config.profile || !Array.isArray(config.targets) || config.targets.length < 2) {
+    fail('Phase 8 configuration schema or profile drift');
   }
 
-  const sourceFile = resolveRelative(ROOT, target.source, 'target source');
-  const originalAssembly = resolveRelative(ROOT, target.originalAssembly, 'original assembly');
-  if (!fs.existsSync(sourceFile) || sha256File(sourceFile) !== target.sourceSha256) fail('Phase 8 C source identity drift');
-  if (!fs.existsSync(originalAssembly) || sha256File(originalAssembly) !== target.originalAssemblySha256) fail('Phase 8 original assembly identity drift');
-
   const phase6ManifestFile = resolveRelative(ROOT, config.compiler.manifest, 'compiler manifest');
-  if (!fs.existsSync(phase6ManifestFile) || sha256File(phase6ManifestFile) !== config.compiler.manifestSha256) fail('accepted Phase 6 compiler manifest drift');
+  if (!fs.existsSync(phase6ManifestFile) || sha256File(phase6ManifestFile) !== config.compiler.manifestSha256) {
+    fail('accepted Phase 6 compiler manifest drift');
+  }
   const phase6Manifest = readJson(phase6ManifestFile);
   if (phase6Manifest.schemaVersion !== 1
       || phase6Manifest.compiler.executableSha256 !== config.compiler.executableSha256
@@ -94,16 +67,81 @@ function loadPhase8Model() {
   }
 
   const overlayConfig = readJson(path.join(ROOT, 'config', 'overlays', 'us_rev0.json'));
-  const descriptor = overlayConfig.descriptors.find((item) => item.id === target.overlayDescriptorId);
-  if (!descriptor || descriptor.rawSha256 !== target.descriptorRawSha256) fail('Phase 8 target overlay descriptor identity drift');
+  const targets = config.targets.map((rawTarget, targetIndex) => {
+    const target = {
+      ...rawTarget,
+      targetIndex,
+      romStartNumber: parseNumber(rawTarget.romStart, 'target ROM start'),
+      romEndNumber: parseNumber(rawTarget.romEndExclusive, 'target ROM end'),
+      vramStartNumber: parseNumber(rawTarget.vramStart, 'target VRAM start'),
+      expectedRelocations: rawTarget.expectedRelocations || [],
+    };
+    if (target.romEndNumber - target.romStartNumber !== target.bytes) {
+      fail('Phase 8 target range size drift: ' + target.symbol);
+    }
+    if (!Array.isArray(target.expectedRelocations)) {
+      fail('Phase 8 target relocation contract is not an array: ' + target.symbol);
+    }
+    const row = model.rows[target.rowIndex];
+    if (!row
+        || row.primaryId !== target.primaryId
+        || row.romStart !== target.romStartNumber
+        || row.romEndExclusive !== target.romEndNumber
+        || row.bytes !== target.bytes
+        || row.inputKind !== 'tracked-assembly'
+        || row.part.chunkIndex !== target.chunkIndex
+        || row.part.file !== target.originalAssembly
+        || row.part.sha256 !== target.originalAssemblySha256
+        || row.slices.length !== 1
+        || row.slices[0].sectionName !== target.sectionName
+        || row.slices[0].vramStart !== target.vramStartNumber
+        || row.slices[0].overlayDescriptorId !== target.overlayDescriptorId
+        || !row.slices[0].executable) {
+      fail('Phase 8 target no longer matches the accepted Phase 5/7 owner model: ' + target.symbol);
+    }
 
-  return { config, descriptor, model, phase6Manifest, row, target };
+    const sourceFile = resolveRelative(ROOT, target.source, 'target source');
+    const originalAssembly = resolveRelative(ROOT, target.originalAssembly, 'original assembly');
+    if (!fs.existsSync(sourceFile) || sha256File(sourceFile) !== target.sourceSha256) {
+      fail('Phase 8 C source identity drift: ' + target.symbol);
+    }
+    if (!fs.existsSync(originalAssembly) || sha256File(originalAssembly) !== target.originalAssemblySha256) {
+      fail('Phase 8 original assembly identity drift: ' + target.symbol);
+    }
+
+    let descriptor = null;
+    if (target.overlayDescriptorId === null) {
+      if (target.descriptorRawSha256 !== null) fail('early-boot target descriptor contract drift: ' + target.symbol);
+    } else {
+      descriptor = overlayConfig.descriptors.find((item) => item.id === target.overlayDescriptorId);
+      if (!descriptor || descriptor.rawSha256 !== target.descriptorRawSha256) {
+        fail('Phase 8 target overlay descriptor identity drift: ' + target.symbol);
+      }
+    }
+    return { ...target, descriptor, model, row };
+  });
+
+  const seenRows = new Set();
+  const seenSymbols = new Set();
+  for (const target of targets) {
+    if (seenRows.has(target.rowIndex) || seenSymbols.has(target.symbol)) fail('Phase 8 target list contains duplicate owners');
+    seenRows.add(target.rowIndex);
+    seenSymbols.add(target.symbol);
+  }
+  return {
+    config,
+    descriptors: targets.map((target) => target.descriptor).filter(Boolean),
+    model,
+    phase6Manifest,
+    targets,
+    target: targets[0],
+  };
 }
 
 function isInside(candidate, root) {
   const resolvedCandidate = path.resolve(candidate).toLowerCase();
   const resolvedRoot = path.resolve(root).toLowerCase();
-  return resolvedCandidate === resolvedRoot || resolvedCandidate.startsWith(`${resolvedRoot}${path.sep}`);
+  return resolvedCandidate === resolvedRoot || resolvedCandidate.startsWith(resolvedRoot + path.sep);
 }
 
 function assertBuildLocations(output, phase7Output) {
@@ -116,7 +154,7 @@ function assertBuildLocations(output, phase7Output) {
 
 function verifyCompiler(phase8, compiler) {
   const resolved = path.resolve(compiler);
-  if (!fs.existsSync(resolved) || !fs.statSync(resolved).isFile()) fail(`KMC compiler is missing: ${resolved}`);
+  if (!fs.existsSync(resolved) || !fs.statSync(resolved).isFile()) fail('KMC compiler is missing: ' + resolved);
   const hash = sha256File(resolved);
   if (hash !== phase8.config.compiler.executableSha256) fail('KMC compiler executable SHA-256 drift');
   return {
@@ -142,7 +180,7 @@ function verifyPhase7Input(phase8, phase7Output) {
     objectManifest: path.join(phase7Output, 'objects', 'manifest.json'),
     linkerScript: path.join(phase7Output, 'linker', 'phase7.ld'),
   };
-  for (const file of Object.values(files)) if (!fs.existsSync(file)) fail(`Phase 7 input is incomplete: ${file}`);
+  for (const file of Object.values(files)) if (!fs.existsSync(file)) fail('Phase 7 input is incomplete: ' + file);
 
   verifyElfAgainstModel(phase8.model, parseElfFile(files.elf));
   verifyMap(phase8.model, fs.readFileSync(files.map, 'utf8'));
@@ -156,17 +194,19 @@ function verifyPhase7Input(phase8, phase7Output) {
     layout: sha256File(files.layout),
   };
   for (const [name, hash] of Object.entries(expectedOutputs)) {
-    if (report.verification.outputs[name].sha256 !== hash) fail(`Phase 7 recorded ${name} identity drift`);
+    if (report.verification.outputs[name].sha256 !== hash) fail('Phase 7 recorded ' + name + ' identity drift');
   }
   const renderedLinker = Buffer.from(renderLinkerScript(phase8.model), 'utf8');
   if (!fs.readFileSync(files.linkerScript).equals(renderedLinker)) fail('Phase 7 linker script differs from the accepted model');
 
   const objectManifest = readJson(files.objectManifest);
-  if (objectManifest.schemaVersion !== 1 || !Array.isArray(objectManifest.objects) || objectManifest.objects.length === 0) fail('Phase 7 object manifest schema drift');
+  if (objectManifest.schemaVersion !== 1 || !Array.isArray(objectManifest.objects) || objectManifest.objects.length === 0) {
+    fail('Phase 7 object manifest schema drift');
+  }
   for (const record of objectManifest.objects) {
     const objectFile = resolveRelative(phase7Output, record.path, 'Phase 7 object path');
     if (!fs.existsSync(objectFile) || fs.statSync(objectFile).size !== record.bytes || sha256File(objectFile) !== record.sha256) {
-      fail(`Phase 7 object identity drift: ${record.path}`);
+      fail('Phase 7 object identity drift: ' + record.path);
     }
   }
   return {
@@ -186,6 +226,15 @@ function verifyPhase7Input(phase8, phase7Output) {
   };
 }
 
+function targetsByChunk(phase8) {
+  const result = new Map();
+  for (const target of phase8.targets) {
+    if (!result.has(target.chunkIndex)) result.set(target.chunkIndex, []);
+    result.get(target.chunkIndex).push(target);
+  }
+  return result;
+}
+
 function copyPhase7Objects(phase8, phase7, output, objcopy) {
   const linkedObjects = [];
   for (const record of phase7.objectManifest.objects) {
@@ -194,64 +243,138 @@ function copyPhase7Objects(phase8, phase7, output, objcopy) {
     const destination = resolveRelative(output, relative, 'Phase 8 object destination');
     ensureDir(path.dirname(destination));
     fs.copyFileSync(source, destination);
-    if (fs.statSync(destination).size !== record.bytes || sha256File(destination) !== record.sha256) fail(`copied Phase 7 object drift: ${relative}`);
+    if (fs.statSync(destination).size !== record.bytes || sha256File(destination) !== record.sha256) {
+      fail('copied Phase 7 object drift: ' + relative);
+    }
     linkedObjects.push(relative);
   }
 
-  const chunkRelative = `objects/assembly/chunk_${String(phase8.target.chunkIndex).padStart(3, '0')}.o`;
-  if (!linkedObjects.includes(chunkRelative)) fail(`target Phase 7 chunk is absent: ${chunkRelative}`);
-  const linkedChunk = resolveRelative(output, chunkRelative, 'linked target chunk');
-  const fallbackRelative = `comparison/original/chunk_${String(phase8.target.chunkIndex).padStart(3, '0')}.o`;
-  const fallbackObject = resolveRelative(output, fallbackRelative, 'fallback object');
-  ensureDir(path.dirname(fallbackObject));
-  fs.copyFileSync(linkedChunk, fallbackObject);
+  const replacements = new Map();
+  for (const [chunkIndex, chunkTargets] of targetsByChunk(phase8)) {
+    const chunkName = String(chunkIndex).padStart(3, '0');
+    const chunkRelative = 'objects/assembly/chunk_' + chunkName + '.o';
+    if (!linkedObjects.includes(chunkRelative)) fail('target Phase 7 chunk is absent: ' + chunkRelative);
+    const linkedChunk = resolveRelative(output, chunkRelative, 'linked target chunk');
+    const fallbackRelative = 'comparison/original/chunk_' + chunkName + '.o';
+    const fallbackObject = resolveRelative(output, fallbackRelative, 'fallback object');
+    ensureDir(path.dirname(fallbackObject));
+    fs.copyFileSync(linkedChunk, fallbackObject);
 
-  run(objcopy, [`--remove-section=${phase8.target.sectionName}`, `--strip-symbol=${phase8.target.symbol}`, linkedChunk]);
-  const originalElf = parseElfFile(fallbackObject);
-  const prunedElf = parseElfFile(linkedChunk);
-  const originalTarget = originalElf.sections.filter((section) => section.name === phase8.target.sectionName);
-  if (originalTarget.length !== 1 || originalTarget[0].size !== phase8.target.bytes) fail('original fallback target section drift');
-  const originalBytes = Buffer.from(elfSectionBytes(originalElf, originalTarget[0]));
-  if (sha256Buffer(originalBytes) !== phase8.target.expectedTextSha256) fail('original fallback target bytes drift');
-  if (prunedElf.sections.some((section) => section.name === phase8.target.sectionName)) fail('target section survived fallback pruning');
-  if (prunedElf.symbols.some((symbol) => symbol.name === phase8.target.symbol)) fail('target symbol survived fallback pruning');
-
-  const originalSections = originalElf.sections.filter((section) => /^\.ob64\.r\d{4}(?:\.s\d+)?$/.test(section.name) && section.name !== phase8.target.sectionName);
-  const prunedSections = prunedElf.sections.filter((section) => /^\.ob64\.r\d{4}(?:\.s\d+)?$/.test(section.name));
-  if (originalSections.length !== prunedSections.length) fail('fallback pruning changed another accepted owner section');
-  const prunedByName = new Map(prunedSections.map((section) => [section.name, section]));
-  for (const section of originalSections) {
-    const candidate = prunedByName.get(section.name);
-    if (!candidate || candidate.size !== section.size || !Buffer.from(elfSectionBytes(prunedElf, candidate)).equals(elfSectionBytes(originalElf, section))) {
-      fail(`fallback pruning changed accepted owner bytes: ${section.name}`);
+    const originalElf = parseElfFile(fallbackObject);
+    const originalTargets = [];
+    for (const target of chunkTargets) {
+      const matches = originalElf.sections.filter((section) => section.name === target.sectionName);
+      if (matches.length !== 1 || matches[0].size !== target.bytes) fail('original fallback target section drift: ' + target.symbol);
+      const originalBytes = Buffer.from(elfSectionBytes(originalElf, matches[0]));
+      if (sha256Buffer(originalBytes) !== target.expectedTextSha256) fail('original fallback target bytes drift: ' + target.symbol);
+      originalTargets.push({ target, section: matches[0], bytes: originalBytes });
     }
+
+    const objcopyArgs = [];
+    for (const target of chunkTargets) {
+      objcopyArgs.push('--remove-section=' + target.sectionName, '--strip-symbol=' + target.symbol);
+    }
+    run(objcopy, [...objcopyArgs, linkedChunk]);
+    const prunedElf = parseElfFile(linkedChunk);
+    for (const target of chunkTargets) {
+      if (prunedElf.sections.some((section) => section.name === target.sectionName)) fail('target section survived fallback pruning: ' + target.symbol);
+      if (prunedElf.symbols.some((symbol) => symbol.name === target.symbol)) fail('target symbol survived fallback pruning: ' + target.symbol);
+    }
+
+    const excludedSections = new Set(chunkTargets.map((target) => target.sectionName));
+    const originalSections = originalElf.sections.filter((section) => (
+      /^\.ob64\.r\d{4}(?:\.s\d+)?$/.test(section.name) && !excludedSections.has(section.name)
+    ));
+    const prunedSections = prunedElf.sections.filter((section) => /^\.ob64\.r\d{4}(?:\.s\d+)?$/.test(section.name));
+    if (originalSections.length !== prunedSections.length) fail('fallback pruning changed another accepted owner section');
+    const prunedByName = new Map(prunedSections.map((section) => [section.name, section]));
+    for (const section of originalSections) {
+      const candidate = prunedByName.get(section.name);
+      if (!candidate || candidate.size !== section.size || !Buffer.from(elfSectionBytes(prunedElf, candidate)).equals(elfSectionBytes(originalElf, section))) {
+        fail('fallback pruning changed accepted owner bytes: ' + section.name);
+      }
+    }
+
+    const replacement = {
+      chunkIndex,
+      linkedChunkRelative: chunkRelative,
+      fallbackRelative,
+      fallbackSha256: sha256File(fallbackObject),
+      prunedSha256: sha256File(linkedChunk),
+      preservedTargetChunkSections: originalSections.length,
+      targets: chunkTargets,
+    };
+    replacements.set(chunkIndex, replacement);
   }
+  return { linkedObjects, replacements };
+}
+
+function normalizeRelocationRecord(record, target) {
   return {
-    linkedObjects,
-    linkedChunkRelative: chunkRelative,
-    fallbackRelative,
-    fallbackSha256: sha256File(fallbackObject),
-    prunedSha256: sha256File(linkedChunk),
-    preservedTargetChunkSections: originalSections.length,
-    originalTargetSha256: sha256Buffer(originalBytes),
+    offset: record.offset,
+    type: record.type,
+    symbol: record.symbol === target.sectionName ? '.text' : record.symbol,
+    section: record.section === '.rel' + target.sectionName ? '.rel.text' : record.section,
   };
 }
 
-function compileTarget(phase8, output, compiler, assembler) {
+function relocationRecords(elf, target) {
+  const typeNames = {
+    2: 'R_MIPS_32',
+    4: 'R_MIPS_26',
+    5: 'R_MIPS_HI16',
+    6: 'R_MIPS_LO16',
+  };
+  const symbolTables = new Map();
+  for (const symbol of elf.symbols) {
+    if (!Number.isInteger(symbol.symbolTableIndex) || !Number.isInteger(symbol.symbolIndex)) continue;
+    if (!symbolTables.has(symbol.symbolTableIndex)) symbolTables.set(symbol.symbolTableIndex, new Map());
+    symbolTables.get(symbol.symbolTableIndex).set(symbol.symbolIndex, symbol.name);
+  }
+  const records = [];
+  for (const section of elf.sections.filter((candidate) => candidate.type === 9)) {
+    if (section.entrySize !== 8 || section.offset + section.size > elf.buffer.length) fail('ELF relocation section is invalid: ' + section.name);
+    const symbols = symbolTables.get(section.link);
+    if (!symbols) fail('ELF relocation symbol table is missing: ' + section.name);
+    const count = section.size / section.entrySize;
+    for (let index = 0; index < count; index += 1) {
+      const offset = section.offset + index * section.entrySize;
+      const relocationOffset = elf.buffer.readUInt32BE(offset);
+      const info = elf.buffer.readUInt32BE(offset + 4);
+      const symbolName = symbols.get(info >>> 8);
+      const type = typeNames[info & 0xff];
+      if (symbolName === undefined || type === undefined) fail('unsupported ELF relocation entry: ' + section.name);
+      records.push(normalizeRelocationRecord({
+        offset: hex(relocationOffset),
+        type,
+        symbol: symbolName,
+        section: section.name,
+      }, target));
+    }
+  }
+  return records.sort((left, right) => {
+    const leftRank = left.section === '.rel.text' ? 0 : 1;
+    const rightRank = right.section === '.rel.text' ? 0 : 1;
+    if (leftRank !== rightRank) return leftRank - rightRank;
+    return Number.parseInt(left.offset.slice(2), 16) - Number.parseInt(right.offset.slice(2), 16);
+  });
+}
+
+function compileTarget(phase8, target, output, compiler, assembler) {
   const generatedRoot = path.join(output, 'generated', 'c');
   const objectRoot = path.join(output, 'objects', 'c');
   ensureDir(generatedRoot);
   ensureDir(objectRoot);
-  const compilerAssembly = path.join(generatedRoot, `${phase8.target.symbol}.compiler.s`);
-  const linkedAssembly = path.join(generatedRoot, `${phase8.target.symbol}.s`);
-  const objectFile = path.join(objectRoot, `${phase8.target.symbol}.o`);
-  const sourceRelative = safeRelative(phase8.target.source, 'target source');
+  const compilerAssembly = path.join(generatedRoot, target.symbol + '.compiler.s');
+  const linkedAssembly = path.join(generatedRoot, target.symbol + '.s');
+  const objectFile = path.join(objectRoot, target.symbol + '.o');
+  const sourceRelative = safeRelative(target.source, 'target source');
   run(compiler, [...phase8.config.compiler.compileFlags, '-o', compilerAssembly, sourceRelative], { cwd: ROOT });
 
   const compilerText = fs.readFileSync(compilerAssembly, 'utf8');
   const textMatches = compilerText.match(/^\s*\.text\s*$/gm) || [];
-  if (textMatches.length !== 1 || /^\s*\.section\b/m.test(compilerText)) fail('KMC target assembly section grammar drift');
-  const linkedText = compilerText.replace(/^\s*\.text\s*$/m, `.section ${phase8.target.sectionName},"ax",@progbits`);
+  if (textMatches.length !== 1 || /^\s*\.section\b/m.test(compilerText)) fail('KMC target assembly section grammar drift: ' + target.symbol);
+  const linkedText = compilerText.replace(/^\s*\.text\s*$/m, '.section ' + target.sectionName + ',"ax",@progbits');
   fs.writeFileSync(linkedAssembly, linkedText);
   run(assembler, [
     ...phase8.model.config.binutils.assemblerFlags,
@@ -261,95 +384,119 @@ function compileTarget(phase8, output, compiler, assembler) {
   ], { cwd: output });
 
   const elf = parseElfFile(objectFile);
-  const sections = elf.sections.filter((section) => section.name === phase8.target.sectionName);
-  if (sections.length !== 1 || sections[0].type !== 1 || (sections[0].flags & 6) !== 6 || sections[0].size !== phase8.target.bytes) {
-    fail('KMC target object section shape drift');
+  const sections = elf.sections.filter((section) => section.name === target.sectionName);
+  if (sections.length !== 1 || sections[0].type !== 1 || (sections[0].flags & 6) !== 6 || sections[0].size !== target.bytes) {
+    fail('KMC target object section shape drift: ' + target.symbol);
   }
   const textBytes = Buffer.from(elfSectionBytes(elf, sections[0]));
-  if (sha256Buffer(textBytes) !== phase8.target.expectedTextSha256) fail('KMC target object bytes differ from the accepted ROM reference');
-  const symbols = elf.symbols.filter((symbol) => symbol.name === phase8.target.symbol && symbol.sectionIndex !== 0);
-  if (symbols.length !== 1 || symbols[0].value !== 0 || symbols[0].size !== phase8.target.bytes || symbols[0].binding !== 1) fail('KMC target object symbol drift');
-  if (elf.sections.some((section) => section.name === `.rel${phase8.target.sectionName}` || section.name === `.rela${phase8.target.sectionName}`)) {
-    fail('KMC target unexpectedly contains code relocations');
+  const expectedObjectTextSha256 = target.expectedObjectTextSha256 || target.expectedTextSha256;
+  if (sha256Buffer(textBytes) !== expectedObjectTextSha256) fail('KMC target object bytes differ from the accepted object reference: ' + target.symbol);
+  const symbols = elf.symbols.filter((symbol) => symbol.name === target.symbol && symbol.sectionIndex !== 0);
+  if (symbols.length !== 1 || symbols[0].value !== 0 || symbols[0].size !== target.bytes || symbols[0].binding !== 1) {
+    fail('KMC target object symbol drift: ' + target.symbol);
   }
   for (const name of ['.data', '.bss']) {
     const section = elf.sections.find((candidate) => candidate.name === name);
-    if (section && section.size !== 0) fail(`KMC target unexpectedly owns ${name} bytes`);
+    if (section && section.size !== 0) fail('KMC target unexpectedly owns ' + name + ' bytes: ' + target.symbol);
+  }
+  const relocations = relocationRecords(elf, target);
+  if (!sameJson(relocations, target.expectedRelocations)) {
+    fail('KMC target relocation contract drift: ' + target.symbol);
   }
   return {
-    objectRelative: `objects/c/${phase8.target.symbol}.o`,
+    symbol: target.symbol,
+    objectRelative: 'objects/c/' + target.symbol + '.o',
     objectSha256: sha256File(objectFile),
-    compilerAssemblyRelative: `generated/c/${phase8.target.symbol}.compiler.s`,
+    compilerAssemblyRelative: 'generated/c/' + target.symbol + '.compiler.s',
     compilerAssemblySha256: sha256File(compilerAssembly),
-    linkedAssemblyRelative: `generated/c/${phase8.target.symbol}.s`,
+    linkedAssemblyRelative: 'generated/c/' + target.symbol + '.s',
     linkedAssemblySha256: sha256File(linkedAssembly),
     textSha256: sha256Buffer(textBytes),
-    relocations: [],
+    objectTextSha256: expectedObjectTextSha256,
+    relocations,
   };
 }
 
-function writeObjectManifest(output, linkedObjects, phase8, replacement, compiled) {
+function writeObjectManifest(output, linkedObjects, phase8, replacements, compiledBySymbol) {
   const objects = [];
+  const chunkTargets = targetsByChunk(phase8);
   for (const relative of linkedObjects) {
     const file = resolveRelative(output, relative, 'linked object');
+    const replacement = [...replacements.values()].find((candidate) => candidate.linkedChunkRelative === relative);
     objects.push({
       path: relative,
       bytes: fs.statSync(file).size,
       sha256: sha256File(file),
-      ownerKind: relative === replacement.linkedChunkRelative ? 'accepted-assembly-chunk-with-target-removed' : 'accepted-phase7-object',
+      ownerKind: replacement ? 'accepted-assembly-chunk-with-targets-removed' : 'accepted-phase7-object',
     });
-    if (relative === replacement.linkedChunkRelative) {
-      const cFile = resolveRelative(output, compiled.objectRelative, 'matching C object');
-      objects.push({
-        path: compiled.objectRelative,
-        bytes: fs.statSync(cFile).size,
-        sha256: sha256File(cFile),
-        ownerKind: 'matching-c-target',
-        targetSection: phase8.target.sectionName,
-      });
+    if (replacement) {
+      for (const target of chunkTargets.get(replacement.chunkIndex)) {
+        const compiled = compiledBySymbol.get(target.symbol);
+        const cFile = resolveRelative(output, compiled.objectRelative, 'matching C object');
+        objects.push({
+          path: compiled.objectRelative,
+          bytes: fs.statSync(cFile).size,
+          sha256: sha256File(cFile),
+          ownerKind: 'matching-c-target',
+          targetSection: target.sectionName,
+          targetSymbol: target.symbol,
+        });
+      }
     }
   }
-  const manifestFile = path.join(output, 'objects', 'manifest.json');
-  writeJson(manifestFile, {
-    schemaVersion: 1,
-    generator: 'tools/build_phase8_matching_c.js',
-    target: phase8.target.symbol,
-    linkedObjects: objects,
-    comparisonObject: {
+  const comparisonObjects = [...replacements.values()].map((replacement) => {
+    const file = resolveRelative(output, replacement.fallbackRelative, 'fallback object');
+    return {
       path: replacement.fallbackRelative,
-      bytes: fs.statSync(resolveRelative(output, replacement.fallbackRelative, 'fallback object')).size,
+      bytes: fs.statSync(file).size,
       sha256: replacement.fallbackSha256,
       ownerKind: 'original-assembly-fallback-and-comparison',
-    },
+    };
+  });
+  const manifestFile = path.join(output, 'objects', 'manifest.json');
+  writeJson(manifestFile, {
+    schemaVersion: 2,
+    generator: 'tools/build_phase8_matching_c.js',
+    targets: phase8.targets.map((target) => target.symbol),
+    linkedObjects: objects,
+    comparisonObjects,
   });
   return {
     file: manifestFile,
     linkedObjects: objects,
+    comparisonObjects,
     sha256: sha256File(manifestFile),
     bytes: fs.statSync(manifestFile).size,
   };
 }
 
-function writeLayout(phase8, phase7, output) {
+function writeLayout(phase8, phase7, output, replacements) {
   const layout = readJson(phase7.files.layout);
-  const owner = layout.owners.find((item) => item.index === phase8.target.rowIndex);
-  if (!owner || owner.primaryId !== phase8.target.primaryId || owner.slices.length !== 1 || owner.slices[0].sectionName !== phase8.target.sectionName) {
-    fail('Phase 7 target layout row drift');
+  for (const target of phase8.targets) {
+    const owner = layout.owners.find((item) => item.index === target.rowIndex);
+    if (!owner || owner.primaryId !== target.primaryId || owner.slices.length !== 1 || owner.slices[0].sectionName !== target.sectionName) {
+      fail('Phase 7 target layout row drift: ' + target.symbol);
+    }
+    owner.baseInputKind = owner.inputKind;
+    owner.inputKind = 'matching-c';
+    owner.source = target.source;
+    owner.originalAssemblyFallback = target.originalAssembly;
+    owner.matchingCSymbol = target.symbol;
   }
-  owner.baseInputKind = owner.inputKind;
-  owner.inputKind = 'matching-c';
-  owner.source = phase8.target.source;
-  owner.originalAssemblyFallback = phase8.target.originalAssembly;
   layout.generator = 'tools/build_phase8_matching_c.js';
-  layout.phase8MatchingCTarget = {
-    symbol: phase8.target.symbol,
-    rowIndex: phase8.target.rowIndex,
-    sectionName: phase8.target.sectionName,
-    romStart: phase8.target.romStartNumber,
-    romEndExclusive: phase8.target.romEndNumber,
-    vramStart: phase8.target.vramStartNumber,
-    bytes: phase8.target.bytes,
-  };
+  layout.phase8MatchingCTargets = phase8.targets.map((target) => {
+    const replacement = replacements.get(target.chunkIndex);
+    return {
+      symbol: target.symbol,
+      rowIndex: target.rowIndex,
+      sectionName: target.sectionName,
+      romStart: target.romStartNumber,
+      romEndExclusive: target.romEndNumber,
+      vramStart: target.vramStartNumber,
+      bytes: target.bytes,
+      fallbackObject: replacement.fallbackRelative,
+    };
+  });
   writeJson(path.join(output, 'layout.json'), layout);
 }
 
@@ -358,19 +505,29 @@ function linkPhase8(phase8, output, objectManifest, tools) {
   ensureDir(linkerRoot);
   const linkerScript = path.join(linkerRoot, 'phase8.ld');
   const responseFile = path.join(linkerRoot, 'objects.rsp');
-  fs.writeFileSync(linkerScript, renderLinkerScript(phase8.model));
-  fs.writeFileSync(responseFile, `${objectManifest.linkedObjects.map((record) => record.path).join('\n')}\n`);
+  const aliases = new Map();
+  for (const target of phase8.targets) {
+    for (const [symbol, value] of Object.entries(target.linkSymbols || {})) {
+      if (!/^[A-Za-z_.$][A-Za-z0-9_.$]*$/.test(symbol)) fail('unsafe Phase 8 link alias: ' + symbol);
+      const numericValue = parseNumber(value, 'link alias ' + symbol);
+      if (aliases.has(symbol) && aliases.get(symbol) !== numericValue) fail('Phase 8 link alias value drift: ' + symbol);
+      aliases.set(symbol, numericValue);
+    }
+  }
+  const aliasText = [...aliases.entries()].sort((left, right) => left[0].localeCompare(right[0])).map(([symbol, value]) => symbol + ' = ' + hex(value) + ';');
+  fs.writeFileSync(linkerScript, renderLinkerScript(phase8.model) + (aliasText.length ? '\n' + aliasText.join('\n') + '\n' : ''));
+  fs.writeFileSync(responseFile, objectManifest.linkedObjects.map((record) => record.path).join('\n') + '\n');
   const elfFile = path.join(output, 'phase8.elf');
   const mapFile = path.join(output, 'phase8.map');
   const romFile = path.join(output, 'phase8.us_rev0.z64');
   run(tools['mips64-elf-ld.exe'].path, [
     ...phase8.model.config.binutils.linkerFlags,
-    `-Map=${normalizePath(path.relative(output, mapFile))}`,
+    '-Map=' + normalizePath(path.relative(output, mapFile)),
     '-T',
     normalizePath(path.relative(output, linkerScript)),
     '-o',
     normalizePath(path.relative(output, elfFile)),
-    `@${normalizePath(path.relative(output, responseFile))}`,
+    '@' + normalizePath(path.relative(output, responseFile)),
   ], { cwd: output, maxBuffer: 256 * 1024 * 1024 });
   run(tools['mips64-elf-objcopy.exe'].path, [
     '-O',
@@ -390,26 +547,42 @@ function parseJsonOutput(value, label) {
   try {
     return JSON.parse(value);
   } catch (error) {
-    fail(`${label} did not emit JSON: ${error.message}`);
+    fail(label + ' did not emit JSON: ' + error.message);
   }
 }
 
-function runTargetAsmDiffer(phase8, options) {
+function runTargetAsmDiffer(phase8, target, options) {
   const output = path.resolve(options.output);
   const proofRoot = path.join(output, 'asm-differ-proof');
-  const runRoot = path.join(proofRoot, 'target-elf');
+  const runRoot = path.join(proofRoot, 'target-elf-' + target.symbol);
   ensureDir(runRoot);
   const shim = path.join(proofRoot, 'watchdog.py');
   fs.writeFileSync(shim, SHIM_TEXT);
   fs.copyFileSync(shim, path.join(runRoot, 'watchdog.py'));
+  const chunkName = String(target.chunkIndex).padStart(3, '0');
+  let myimg = '../../objects/c/' + target.symbol + '.o';
+  let resolvedObjectSha256 = null;
+  if (target.expectedRelocations.length > 0) {
+    const resolvedObject = path.join(proofRoot, target.symbol + '.resolved.o');
+    run(options.objcopy, [
+      '--only-section=' + target.sectionName,
+      '--rename-section',
+      target.sectionName + '=' + target.sectionName + ',alloc,load,code,readonly,data,contents',
+      '--change-addresses=-' + hex(target.vramStartNumber),
+      path.join(output, 'phase8.elf'),
+      resolvedObject,
+    ], { cwd: output });
+    myimg = '../' + target.symbol + '.resolved.o';
+    resolvedObjectSha256 = sha256File(resolvedObject);
+  }
   const settings = [
     'def apply(config, args):',
-    `    config["objdump_executable"] = ${JSON.stringify(options.objdump)}`,
+    '    config["objdump_executable"] = ' + JSON.stringify(options.objdump),
     '    config["arch"] = "mips"',
     '    config["map_format"] = "gnu"',
     '    config["show_line_numbers_default"] = False',
-    `    config["baseimg"] = ${JSON.stringify(`../../comparison/original/chunk_${String(phase8.target.chunkIndex).padStart(3, '0')}.o`)}`,
-    `    config["myimg"] = ${JSON.stringify(`../../objects/c/${phase8.target.symbol}.o`)}`,
+    '    config["baseimg"] = ' + JSON.stringify('../../comparison/original/chunk_' + chunkName + '.o'),
+    '    config["myimg"] = ' + JSON.stringify(myimg),
     '    config["mapfile"] = "../../phase8.map"',
     '',
   ].join('\n');
@@ -417,40 +590,45 @@ function runTargetAsmDiffer(phase8, options) {
   const env = { ...process.env, PYTHONPATH: runRoot, PYTHONDONTWRITEBYTECODE: '1' };
   const result = run(options.python, [
     path.join(options.asmDifferRoot, 'diff.py'),
-    hex(phase8.row.part.symbolByteOffset),
+    hex(target.row.part.symbolByteOffset),
     '-e',
-    phase8.target.symbol,
+    target.symbol,
     '-j',
-    phase8.target.sectionName,
+    target.sectionName,
     '--format',
     'json',
     '--algorithm',
     'difflib',
     '--no-line-numbers',
   ], { cwd: runRoot, env });
-  const json = parseJsonOutput(result.stdout, `asm-differ target proof for ${phase8.target.symbol}`);
+  const json = parseJsonOutput(result.stdout, 'asm-differ target proof for ' + target.symbol);
   if (!Array.isArray(json.rows) || json.rows.length === 0 || json.max_score <= 0 || json.current_score !== 0) {
-    fail(`asm-differ did not prove an exact nonempty target match: ${phase8.target.symbol}`);
+    fail('asm-differ did not prove an exact nonempty target match: ' + target.symbol);
   }
-  const jsonFile = path.join(proofRoot, `${phase8.target.symbol}.json`);
+  const jsonFile = path.join(proofRoot, target.symbol + '.json');
   writeJson(jsonFile, json);
   return {
-    symbol: phase8.target.symbol,
-    sectionName: phase8.target.sectionName,
+    symbol: target.symbol,
+    sectionName: target.sectionName,
     rows: json.rows.length,
     maxScore: json.max_score,
     currentScore: json.current_score,
     exact: true,
     outputSha256: sha256File(jsonFile),
     shimSha256: sha256File(shim),
+    resolvedObjectSha256,
   };
 }
 
-function verifyTargetMapOwner(phase8, mapText) {
-  const escaped = phase8.target.sectionName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+function escapeRegex(value) {
+  return value.replace(/[.*+?^$\\{}()|[\]\\]/g, '\\$&');
+}
+
+function verifyTargetMapOwner(target, mapText) {
+  const escaped = escapeRegex(target.sectionName);
   const lines = mapText.split(/\r?\n/);
-  const heading = lines.findIndex((line) => new RegExp(`^${escaped}\\s`).test(line));
-  if (heading < 0) fail(`target linker-map section is missing: ${phase8.target.sectionName}`);
+  const heading = lines.findIndex((line) => new RegExp('^' + escaped + '\\s').test(line));
+  if (heading < 0) fail('target linker-map section is missing: ' + target.sectionName);
   let end = lines.length;
   for (let index = heading + 1; index < lines.length; index += 1) {
     if (/^\.ob64\.r\d{4}(?:\.s\d+)?\s/.test(lines[index])) {
@@ -459,28 +637,39 @@ function verifyTargetMapOwner(phase8, mapText) {
     }
   }
   const block = lines.slice(heading, end);
-  const contributions = block.filter((line) => new RegExp(`^\\s+${escaped}\\s+.*\\sobjects/`).test(line));
-  const expectedOwner = `objects/c/${phase8.target.symbol}.o`;
-  const forbiddenOwner = `objects/assembly/chunk_${String(phase8.target.chunkIndex).padStart(3, '0')}.o`;
+  const contributions = block.filter((line) => new RegExp('^\\s+' + escaped + '\\s+.*\\sobjects/').test(line));
+  const expectedOwner = 'objects/c/' + target.symbol + '.o';
+  const forbiddenOwner = 'objects/assembly/chunk_' + String(target.chunkIndex).padStart(3, '0') + '.o';
   if (contributions.length !== 1 || !contributions[0].includes(expectedOwner) || block.some((line) => line.includes(forbiddenOwner))) {
-    fail('target linker-map owner is not the sole matching C object');
+    fail('target linker-map owner is not the sole matching C object: ' + target.symbol);
   }
-  if (!block.some((line) => new RegExp(`\\s${phase8.target.symbol}$`).test(line))) fail('target linker-map symbol is missing');
+  if (!block.some((line) => new RegExp('\\s' + escapeRegex(target.symbol) + '$').test(line))) fail('target linker-map symbol is missing: ' + target.symbol);
   return { contribution: contributions[0].trim(), linkedOwner: expectedOwner };
 }
 
-function verifyObjectManifest(output) {
+function verifyObjectManifest(output, phase8) {
   const manifestFile = path.join(output, 'objects', 'manifest.json');
   if (!fs.existsSync(manifestFile)) fail('Phase 8 object manifest is missing');
   const manifest = readJson(manifestFile);
-  if (manifest.schemaVersion !== 1 || !Array.isArray(manifest.linkedObjects) || manifest.linkedObjects.length === 0) fail('Phase 8 object manifest schema drift');
-  for (const record of [...manifest.linkedObjects, manifest.comparisonObject]) {
+  const expectedPruned = new Set([...targetsByChunk(phase8).keys()]);
+  if (manifest.schemaVersion !== 2
+      || !Array.isArray(manifest.linkedObjects)
+      || !Array.isArray(manifest.comparisonObjects)
+      || !Array.isArray(manifest.targets)
+      || !sameJson(manifest.targets, phase8.targets.map((target) => target.symbol))) {
+    fail('Phase 8 object manifest schema drift');
+  }
+  for (const record of [...manifest.linkedObjects, ...manifest.comparisonObjects]) {
     const file = resolveRelative(output, record.path, 'Phase 8 manifest object');
-    if (!fs.existsSync(file) || fs.statSync(file).size !== record.bytes || sha256File(file) !== record.sha256) fail(`Phase 8 object identity drift: ${record.path}`);
+    if (!fs.existsSync(file) || fs.statSync(file).size !== record.bytes || sha256File(file) !== record.sha256) {
+      fail('Phase 8 object identity drift: ' + record.path);
+    }
   }
   const cOwners = manifest.linkedObjects.filter((record) => record.ownerKind === 'matching-c-target');
-  const prunedOwners = manifest.linkedObjects.filter((record) => record.ownerKind === 'accepted-assembly-chunk-with-target-removed');
-  if (cOwners.length !== 1 || prunedOwners.length !== 1) fail('Phase 8 target ownership census drift');
+  const prunedOwners = manifest.linkedObjects.filter((record) => record.ownerKind === 'accepted-assembly-chunk-with-targets-removed');
+  if (cOwners.length !== phase8.targets.length || prunedOwners.length !== expectedPruned.size || manifest.comparisonObjects.length !== expectedPruned.size) {
+    fail('Phase 8 target ownership census drift');
+  }
   return { manifest, bytes: fs.statSync(manifestFile).size, sha256: sha256File(manifestFile) };
 }
 
@@ -492,63 +681,109 @@ function verifyPhase8Output(phase8, options) {
     rom: path.join(output, 'phase8.us_rev0.z64'),
     layout: path.join(output, 'layout.json'),
     readelf: path.join(output, 'phase8.readelf.txt'),
-    cObject: path.join(output, 'objects', 'c', `${phase8.target.symbol}.o`),
-    prunedObject: path.join(output, 'objects', 'assembly', `chunk_${String(phase8.target.chunkIndex).padStart(3, '0')}.o`),
-    fallbackObject: path.join(output, 'comparison', 'original', `chunk_${String(phase8.target.chunkIndex).padStart(3, '0')}.o`),
   };
-  for (const file of Object.values(files)) if (!fs.existsSync(file)) fail(`Phase 8 output is missing: ${file}`);
+  for (const file of Object.values(files)) if (!fs.existsSync(file)) fail('Phase 8 output is missing: ' + file);
 
   const elf = parseElfFile(files.elf);
-  const elfResult = verifyElfAgainstModel(phase8.model, elf);
+  const replacedRows = new Set(phase8.targets.map((target) => target.rowIndex));
+  const verificationModel = {
+    ...phase8.model,
+    rows: phase8.model.rows.map((row) => replacedRows.has(row.index) ? { ...row, inputKind: 'matching-c' } : row),
+  };
+  const elfResult = verifyElfAgainstModel(verificationModel, elf);
   const mapText = fs.readFileSync(files.map, 'utf8');
   const mapResult = verifyMap(phase8.model, mapText);
   const romResult = verifyRom(phase8.model, fs.readFileSync(files.rom));
-  const mapOwner = verifyTargetMapOwner(phase8, mapText);
+  const replacements = options.replacements || new Map([...targetsByChunk(phase8).keys()].map((chunkIndex) => [chunkIndex, {
+    fallbackRelative: 'comparison/original/chunk_' + String(chunkIndex).padStart(3, '0') + '.o',
+  }]));
+  const targetResults = [];
+  for (const target of phase8.targets) {
+    const cObject = path.join(output, 'objects', 'c', target.symbol + '.o');
+    const replacement = replacements.get(target.chunkIndex);
+    const prunedObject = path.join(output, 'objects', 'assembly', 'chunk_' + String(target.chunkIndex).padStart(3, '0') + '.o');
+    const fallbackObject = path.join(output, replacement.fallbackRelative);
+    for (const file of [cObject, prunedObject, fallbackObject]) if (!fs.existsSync(file)) fail('Phase 8 target output is missing: ' + file);
 
-  const linkedSections = elf.sections.filter((section) => section.name === phase8.target.sectionName);
-  if (linkedSections.length !== 1 || linkedSections[0].address !== phase8.target.vramStartNumber || linkedSections[0].size !== phase8.target.bytes) {
-    fail('linked target section placement drift');
-  }
-  const linkedText = Buffer.from(elfSectionBytes(elf, linkedSections[0]));
-  if (sha256Buffer(linkedText) !== phase8.target.expectedTextSha256) fail('linked target bytes differ from the accepted ROM reference');
-  const linkedSymbols = elf.symbols.filter((symbol) => symbol.name === phase8.target.symbol && symbol.sectionIndex !== 0);
-  if (linkedSymbols.length !== 1
-      || linkedSymbols[0].value !== phase8.target.vramStartNumber
-      || linkedSymbols[0].size !== phase8.target.bytes
-      || linkedSymbols[0].binding !== 1) {
-    fail('linked target symbol placement drift');
-  }
+    const mapOwner = verifyTargetMapOwner(target, mapText);
+    const linkedSections = elf.sections.filter((section) => section.name === target.sectionName);
+    if (linkedSections.length !== 1 || linkedSections[0].address !== target.vramStartNumber || linkedSections[0].size !== target.bytes) {
+      fail('linked target section placement drift: ' + target.symbol);
+    }
+    const linkedText = Buffer.from(elfSectionBytes(elf, linkedSections[0]));
+    if (sha256Buffer(linkedText) !== target.expectedTextSha256) fail('linked target bytes differ from the accepted ROM reference: ' + target.symbol);
+    const linkedSymbols = elf.symbols.filter((symbol) => symbol.name === target.symbol && symbol.sectionIndex !== 0);
+    if (linkedSymbols.length !== 1
+        || linkedSymbols[0].value !== target.vramStartNumber
+        || linkedSymbols[0].size !== target.bytes
+        || linkedSymbols[0].binding !== 1) {
+      fail('linked target symbol placement drift: ' + target.symbol);
+    }
 
-  const cElf = parseElfFile(files.cObject);
-  const cSection = cElf.sections.find((section) => section.name === phase8.target.sectionName);
-  if (!cSection || cSection.size !== phase8.target.bytes || sha256Buffer(elfSectionBytes(cElf, cSection)) !== phase8.target.expectedTextSha256) fail('recorded C object target bytes drift');
-  const fallbackElf = parseElfFile(files.fallbackObject);
-  const fallbackSection = fallbackElf.sections.find((section) => section.name === phase8.target.sectionName);
-  if (!fallbackSection || fallbackSection.size !== phase8.target.bytes || !Buffer.from(elfSectionBytes(fallbackElf, fallbackSection)).equals(linkedText)) fail('original assembly comparison bytes drift');
-  const prunedElf = parseElfFile(files.prunedObject);
-  if (prunedElf.sections.some((section) => section.name === phase8.target.sectionName) || prunedElf.symbols.some((symbol) => symbol.name === phase8.target.symbol)) {
-    fail('original assembly fallback remains a linked target owner');
+    const cElf = parseElfFile(cObject);
+    const cSection = cElf.sections.find((section) => section.name === target.sectionName);
+    if (!cSection || cSection.size !== target.bytes || sha256Buffer(elfSectionBytes(cElf, cSection)) !== (target.expectedObjectTextSha256 || target.expectedTextSha256)) {
+      fail('recorded C object target bytes drift: ' + target.symbol);
+    }
+    const relocations = relocationRecords(cElf, target);
+    if (!sameJson(relocations, target.expectedRelocations)) fail('recorded C object relocation drift: ' + target.symbol);
+
+    const fallbackElf = parseElfFile(fallbackObject);
+    const fallbackSection = fallbackElf.sections.find((section) => section.name === target.sectionName);
+    if (!fallbackSection || fallbackSection.size !== target.bytes || !Buffer.from(elfSectionBytes(fallbackElf, fallbackSection)).equals(linkedText)) {
+      fail('original assembly comparison bytes drift: ' + target.symbol);
+    }
+    const prunedElf = parseElfFile(prunedObject);
+    if (prunedElf.sections.some((section) => section.name === target.sectionName) || prunedElf.symbols.some((symbol) => symbol.name === target.symbol)) {
+      fail('original assembly fallback remains a linked target owner: ' + target.symbol);
+    }
+
+    targetResults.push({
+      symbol: target.symbol,
+      source: target.source,
+      originalAssemblyFallback: target.originalAssembly,
+      rowIndex: target.rowIndex,
+      primaryId: target.primaryId,
+      sectionName: target.sectionName,
+      romStart: target.romStartNumber,
+      romEndExclusive: target.romEndNumber,
+      vramStart: target.vramStartNumber,
+      bytes: target.bytes,
+      textSha256: sha256Buffer(linkedText),
+      linkedSymbolValue: hex(linkedSymbols[0].value),
+      linkedOwner: mapOwner.linkedOwner,
+      mapContribution: mapOwner.contribution,
+      relocations,
+    });
   }
 
   const layout = readJson(files.layout);
-  const layoutOwner = layout.owners && layout.owners.find((owner) => owner.index === phase8.target.rowIndex);
   if (layout.schemaVersion !== 1
       || layout.rows !== phase8.model.rows.length
       || layout.slices !== phase8.model.slices.length
       || layout.representedBytes !== phase8.model.config.rom.bytes
-      || !layoutOwner
-      || layoutOwner.inputKind !== 'matching-c'
-      || layoutOwner.source !== phase8.target.source
-      || layoutOwner.originalAssemblyFallback !== phase8.target.originalAssembly) {
+      || !Array.isArray(layout.phase8MatchingCTargets)
+      || !sameJson(layout.phase8MatchingCTargets.map((target) => target.symbol), phase8.targets.map((target) => target.symbol))) {
     fail('Phase 8 external layout summary drift');
   }
-  const objectManifest = verifyObjectManifest(output);
-  const asmDiffer = runTargetAsmDiffer(phase8, {
+  for (const target of phase8.targets) {
+    const layoutOwner = layout.owners && layout.owners.find((owner) => owner.index === target.rowIndex);
+    if (!layoutOwner
+        || layoutOwner.inputKind !== 'matching-c'
+        || layoutOwner.source !== target.source
+        || layoutOwner.matchingCSymbol !== target.symbol
+        || layoutOwner.originalAssemblyFallback !== target.originalAssembly) {
+      fail('Phase 8 external layout target drift: ' + target.symbol);
+    }
+  }
+  const objectManifest = verifyObjectManifest(output, phase8);
+  const asmDiffer = phase8.targets.map((target) => runTargetAsmDiffer(phase8, target, {
     output,
     asmDifferRoot: options.asmDifferRoot,
     python: options.splatPython,
     objdump: options.objdump,
-  });
+    objcopy: options.objcopy,
+  }));
   return {
     schemaVersion: 1,
     status: 'pass',
@@ -560,8 +795,8 @@ function verifyPhase8Output(phase8, options) {
       loadHeaders: elfResult.loadHeaderCount,
       symbols: elfResult.symbolCount,
       mapSections: mapResult.sectionMentions,
-      matchingCOwners: 1,
-      originalAssemblyFallbacks: 1,
+      matchingCOwners: phase8.targets.length,
+      originalAssemblyFallbacks: replacements.size,
     },
     outputs: {
       elf: { bytes: fs.statSync(files.elf).size, sha256: sha256File(files.elf) },
@@ -572,29 +807,13 @@ function verifyPhase8Output(phase8, options) {
       readelf: { bytes: fs.statSync(files.readelf).size, sha256: sha256File(files.readelf) },
       objectManifest: { bytes: objectManifest.bytes, sha256: objectManifest.sha256 },
     },
-    target: {
-      symbol: phase8.target.symbol,
-      source: phase8.target.source,
-      originalAssemblyFallback: phase8.target.originalAssembly,
-      rowIndex: phase8.target.rowIndex,
-      primaryId: phase8.target.primaryId,
-      sectionName: phase8.target.sectionName,
-      romStart: phase8.target.romStart,
-      romEndExclusive: phase8.target.romEndExclusive,
-      vramStart: phase8.target.vramStart,
-      bytes: phase8.target.bytes,
-      textSha256: sha256Buffer(linkedText),
-      linkedSymbolValue: hex(linkedSymbols[0].value),
-      linkedOwner: mapOwner.linkedOwner,
-      mapContribution: mapOwner.contribution,
-      relocations: [],
-    },
+    targets: targetResults,
     preservation: {
       fullRomExact: true,
       acceptedRowsPreserved: phase8.model.rows.length,
       acceptedSlicesPreserved: phase8.model.slices.length,
       overlayDescriptorsPreserved: phase8.model.overlays.length,
-      originalAssemblyTargetNotLinked: true,
+      originalAssemblyTargetsNotLinked: true,
     },
     asmDiffer,
   };
@@ -620,6 +839,7 @@ module.exports = {
   loadPhase8Model,
   pathIndependentRuntime,
   readJson,
+  relocationRecords,
   runTargetAsmDiffer,
   sha256File,
   verifyCompiler,

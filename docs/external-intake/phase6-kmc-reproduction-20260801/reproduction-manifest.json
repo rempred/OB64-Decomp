@@ -1,0 +1,127 @@
+{
+  "schemaVersion": 1,
+  "taskId": "ob64-external-intake-phase6-kmc-reproduction-20260801",
+  "compiler": {
+    "sourceUrl": "https://github.com/decompals/mips-gcc-2.7.2.git",
+    "license": "GPL-2.0",
+    "commit": "43d1cdb67ed135879869b5266f01efaaada5e35a",
+    "tree": "bbed133c38a1feffafe941c36b20d3b38ba47a33",
+    "copyingSha256": "F134E631F48350737B1A106BC809E696A0EC5A0B587E778975D33E8516A4640A",
+    "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+    "target": "MIPS GNU/ELF",
+    "abi": "o32",
+    "endianness": "big",
+    "isa": "mips3",
+    "compileFlags": [
+      "-quiet",
+      "-O2",
+      "-meb",
+      "-mips3",
+      "-mgp32",
+      "-mfp32",
+      "-G",
+      "0",
+      "-fno-PIC",
+      "-mno-abicalls",
+      "-fno-builtin",
+      "-funsigned-char"
+    ]
+  },
+  "binutils": {
+    "sourceProject": "https://github.com/n64-tools/gcc-toolchain-mips64",
+    "license": "GPL-3.0",
+    "releaseTag": "latest",
+    "releaseId": 89072931,
+    "assetId": 91820392,
+    "assetUrl": "https://github.com/n64-tools/gcc-toolchain-mips64/releases/download/latest/gcc-toolchain-mips64-win64.zip",
+    "archiveBytes": 79802655,
+    "archiveSha256": "7EE3598AC151C0A728DCFD916E3DF615793D2ED0A28CDC0CCAFA31EEF76526BB",
+    "assemblerFlags": ["-EB", "-mips3", "-32"],
+    "linkerFlags": ["-EB", "-m", "elf32ebmip"],
+    "tools": {
+      "mips64-elf-as.exe": "D237475181458118BF964C369748ACF144394583C5DC24293F53F1C9119E8697",
+      "mips64-elf-ld.exe": "1820F2E525A330F9BA9E74C2EAC4A9326CD93A56B6C556AEB3E41FEE8F1E3D9E",
+      "mips64-elf-objcopy.exe": "2A34DB4F5447BFB196E1893B95894A0F9D51E1B7D1786C69A91B6E37ACEE62DA",
+      "mips64-elf-objdump.exe": "72A5E02C22B6826A46400AD17E64F0FFB612F0A55F02F3A731D61BB0C4FE853E",
+      "mips64-elf-readelf.exe": "52F76F9249F3961AE54A5CEB60AA88E791966A32BE947F8F23F93BA91E1943CF"
+    }
+  },
+  "acceptedInputs": {
+    "integrationCommit": "ba4db1c3713f299ea777f9ce15aaedc37c031e0d",
+    "canonicalDecompCommit": "98863fa79e8b8908f1df00ba7bf24b4aa5361c11",
+    "masterV64Sha256": "6CA0A1AFE224831E202857AD64EF26BD429A034A4EA48404BB09621641A07B12",
+    "normalizedZ64Sha256": "571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A",
+    "phase5ProductionSemanticSha256": {
+      "config/segments/rev0.yaml": "4806C823E407729FF47F07AC2070E2D654D1DDC8F5F9AA311A2DFD57756031E3",
+      "config/splat/us_rev0.semantic.json": "1BC788145E625600756004CF53673A322616C4FEBFC5102788ACDEFA0F050574",
+      "config/splat/us_rev0.overlay-linker-inputs.json": "9090891B8C0277CB1B97F5EE958163FF050DDFBDD5AEB5B5BF8D6429BA42ABB6",
+      "config/splat/us_rev0.yaml": "9D8A94DE5683BFBF984E97C859BFE7C12DC78D4B56EA3178F6021D74EE9F3198"
+    },
+    "overlayConfigSha256": "D4F1FB177822334EB748D6D62B342FB813D8825FEDD912057CF651EB616A5FB6"
+  },
+  "fixtures": [
+    {
+      "id": "leaf_equal_12",
+      "category": "frameless leaf",
+      "source": "src/leaf_equal_12.c",
+      "sourceSha256": "07C19607AA98352CB8B29C067CF51AA08CC19671DCE74F89A8988C6C51CDF156",
+      "functionSymbol": "phase6_leaf_equal_12",
+      "descriptorId": 10,
+      "descriptorRawSha256": "1D7654735ED7CAE2A9226E64B45FBD76AEE84C79F36970CCCFFD0174DB6FEA68",
+      "textRomStart": "0x0020C3A8",
+      "textVramStart": "0x801C8F18",
+      "textBytes": 12,
+      "expectedObjectTextSha256": "F88F53A955BEE90DF7C544CA87C5B264DBAFEF14B0D456B6A4852978DA7E92E2",
+      "expectedLinkedTextSha256": "F88F53A955BEE90DF7C544CA87C5B264DBAFEF14B0D456B6A4852978DA7E92E2",
+      "expectedRelocations": [],
+      "linkSymbols": {}
+    },
+    {
+      "id": "framed_call_constant",
+      "category": "framed caller",
+      "source": "src/framed_call_constant.c",
+      "sourceSha256": "56CEA2DE3520AED3CE70D46BD04C4086488ACB5316A9114366DD78C01F3BE6EB",
+      "functionSymbol": "phase6_framed_call_constant",
+      "descriptorId": 18,
+      "descriptorRawSha256": "4F9D363609A28A4AA68DAA49EDB8E51927142E81372DA34AEE31BFA36082CAAE",
+      "textRomStart": "0x001BA860",
+      "textVramStart": "0x80221750",
+      "textBytes": 28,
+      "expectedObjectTextSha256": "283A728A0ED08E78D08A0A7DF2E2F6BD23FDBA5C56E16E79886EDAA92505EF1E",
+      "expectedLinkedTextSha256": "61E8BFB6A44BD0FA10A8698E51A80AD95EC262BF83A2B553FED1BDC5AA41A63C",
+      "expectedRelocations": [
+        {"offset": "0x00000008", "type": "R_MIPS_26", "symbol": "phase6_constant_callee"}
+      ],
+      "linkSymbols": {"phase6_constant_callee": "0x80093380"}
+    },
+    {
+      "id": "linked_data_get",
+      "category": "linked initialized data",
+      "source": "src/linked_data_get.c",
+      "sourceSha256": "B57BE3500A5D51DA139AA86F8B305DB01F65389A7E9859FE61B122F5DB0231BF",
+      "functionSymbol": "phase6_linked_data_get",
+      "descriptorId": 10,
+      "descriptorRawSha256": "1D7654735ED7CAE2A9226E64B45FBD76AEE84C79F36970CCCFFD0174DB6FEA68",
+      "textRomStart": "0x001F8D88",
+      "textVramStart": "0x801B58F8",
+      "textBytes": 12,
+      "dataRomStart": "0x00211F44",
+      "dataVramStart": "0x801CEAB4",
+      "dataBytes": 4,
+      "expectedObjectTextSha256": "928BDF5AD2AF30A445FF2CDB13F145844F82C5A3BCFA8A4571488E9630B177D4",
+      "expectedLinkedTextSha256": "4834C8B3C334BA214A695D6C3AF11187C3905137D6B7162D52473D7781024B17",
+      "expectedObjectDataSha256": "B40711A88C7039756FB8A73827EABE2C0FE5A0346CA7E0A104ADC0FC764F528D",
+      "expectedLinkedDataSha256": "B40711A88C7039756FB8A73827EABE2C0FE5A0346CA7E0A104ADC0FC764F528D",
+      "expectedRelocations": [
+        {"offset": "0x00000000", "type": "R_MIPS_HI16", "symbol": "phase6_linked_word"},
+        {"offset": "0x00000008", "type": "R_MIPS_LO16", "symbol": "phase6_linked_word"}
+      ],
+      "linkSymbols": {}
+    }
+  ],
+  "negativeControl": {
+    "fixture": "leaf_equal_12",
+    "wrongConfiguration": "replace -O2 with -O0",
+    "requiredResult": "linked text must differ from the accepted ROM reference"
+  }
+}

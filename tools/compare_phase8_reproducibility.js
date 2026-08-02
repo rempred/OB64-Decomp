@@ -49,7 +49,7 @@ function main() {
     buildReportSha256: sha256File(leftBuildFile),
     verificationReportSha256: sha256File(leftVerificationFile),
     outputs: leftBuild.verification.outputs,
-    target: leftBuild.verification.target,
+    targets: leftBuild.verification.targets,
     asmDiffer: leftBuild.verification.asmDiffer,
   };
   if (reportFile) writeJson(reportFile, result);

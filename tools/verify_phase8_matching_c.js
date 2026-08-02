@@ -46,6 +46,7 @@ function main() {
     asmDifferRoot: options.asmDifferRoot,
     splatPython: options.splatPython,
     objdump: runtime.tools['mips64-elf-objdump.exe'].path,
+    objcopy: runtime.tools['mips64-elf-objcopy.exe'].path,
   });
   const buildReport = readJson(buildReportFile);
   if (buildReport.schemaVersion !== 1 || buildReport.status !== 'pass') fail('recorded Phase 8 build report did not pass');
@@ -54,7 +55,7 @@ function main() {
     if (buildReport.verification.outputs[name].sha256 !== verification.outputs[name].sha256) fail(`recorded Phase 8 ${name} identity drift`);
   }
   if (buildReport.verification.outputs.codeRegionSha256 !== verification.outputs.codeRegionSha256) fail('recorded Phase 8 code-region identity drift');
-  if (JSON.stringify(buildReport.verification.target) !== JSON.stringify(verification.target)) fail('recorded Phase 8 target proof drift');
+  if (JSON.stringify(buildReport.verification.targets) !== JSON.stringify(verification.targets)) fail('recorded Phase 8 target proof drift');
   if (JSON.stringify(buildReport.verification.asmDiffer) !== JSON.stringify(verification.asmDiffer)) fail('recorded Phase 8 asm-differ proof drift');
   const result = { schemaVersion: 1, status: 'pass', output: '.', verification };
   if (reportFile) writeJson(reportFile, result);

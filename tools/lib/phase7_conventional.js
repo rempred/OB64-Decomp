@@ -362,6 +362,8 @@ function parseElf32BigEndian(buffer) {
     for (let index = 0; index < count; index += 1) {
       const offset = symbolSection.offset + index * 16;
       symbols.push({
+        symbolTableIndex: symbolSection.index,
+        symbolIndex: index,
         name: cString(stringBytes, u32(offset)),
         value: u32(offset + 4),
         size: u32(offset + 8),

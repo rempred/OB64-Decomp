@@ -61,26 +61,62 @@ function main() {
     args.output,
     runtime.tools['mips64-elf-objcopy.exe'].path,
   );
-  const compiled = compileTarget(
-    phase8,
-    args.output,
-    args.compiler,
-    runtime.tools['mips64-elf-as.exe'].path,
-  );
+  const compiled = new Map();
+  for (const target of phase8.targets) {
+    compiled.set(target.symbol, compileTarget(
+      phase8,
+      target,
+      args.output,
+      args.compiler,
+      runtime.tools['mips64-elf-as.exe'].path,
+    ));
+  }
   const objectManifest = writeObjectManifest(
     args.output,
     replacement.linkedObjects,
     phase8,
-    replacement,
+    replacement.replacements,
     compiled,
   );
-  writeLayout(phase8, phase7, args.output);
+  writeLayout(phase8, phase7, args.output, replacement.replacements);
   const linked = linkPhase8(phase8, args.output, objectManifest, runtime.tools);
   const verification = verifyPhase8Output(phase8, {
     output: args.output,
     asmDifferRoot: args.asmDifferRoot,
     splatPython: args.splatPython,
     objdump: runtime.tools['mips64-elf-objdump.exe'].path,
+    objcopy: runtime.tools['mips64-elf-objcopy.exe'].path,
+    replacements: replacement.replacements,
+  });
+
+  const targetReplacements = phase8.targets.map((target) => {
+    const compiledTarget = compiled.get(target.symbol);
+    const chunkReplacement = replacement.replacements.get(target.chunkIndex);
+    const verifiedTarget = verification.targets.find((item) => item.symbol === target.symbol);
+    return {
+      symbol: target.symbol,
+      rowIndex: target.rowIndex,
+      primaryId: target.primaryId,
+      sectionName: target.sectionName,
+      source: target.source,
+      sourceSha256: target.sourceSha256,
+      originalAssemblyFallback: target.originalAssembly,
+      originalAssemblySha256: target.originalAssemblySha256,
+      fallbackObject: chunkReplacement.fallbackRelative,
+      fallbackObjectSha256: chunkReplacement.fallbackSha256,
+      prunedAssemblyObject: chunkReplacement.linkedChunkRelative,
+      prunedAssemblyObjectSha256: chunkReplacement.prunedSha256,
+      preservedTargetChunkSections: chunkReplacement.preservedTargetChunkSections,
+      cObject: compiledTarget.objectRelative,
+      cObjectSha256: compiledTarget.objectSha256,
+      compilerAssembly: compiledTarget.compilerAssemblyRelative,
+      compilerAssemblySha256: compiledTarget.compilerAssemblySha256,
+      linkedAssembly: compiledTarget.linkedAssemblyRelative,
+      linkedAssemblySha256: compiledTarget.linkedAssemblySha256,
+      objectTextSha256: compiledTarget.textSha256,
+      linkedTextSha256: verifiedTarget.textSha256,
+      relocations: compiledTarget.relocations,
+    };
   });
 
   const report = {
@@ -90,37 +126,14 @@ function main() {
     acceptedInputs: {
       phase7Model: phase8.model.inputFiles,
       phase8Config: { bytes: fs.statSync(CONFIG_PATH).size, sha256: sha256File(CONFIG_PATH) },
-      cSource: { path: phase8.target.source, bytes: fs.statSync(path.join(ROOT, phase8.target.source)).size, sha256: phase8.target.sourceSha256 },
-      originalAssembly: { path: phase8.target.originalAssembly, sha256: phase8.target.originalAssemblySha256 },
+      cSources: phase8.targets.map((target) => ({ path: target.source, bytes: fs.statSync(path.join(ROOT, target.source)).size, sha256: target.sourceSha256 })),
+      originalAssemblies: phase8.targets.map((target) => ({ path: target.originalAssembly, sha256: target.originalAssemblySha256 })),
       phase6CompilerManifest: { path: phase8.config.compiler.manifest, sha256: phase8.config.compiler.manifestSha256 },
     },
     runtime: pathIndependentRuntime(runtime),
     compiler: { ...compiler, usedToBuildTarget: true },
     basePhase7: phase7.identity,
-    targetReplacement: {
-      symbol: phase8.target.symbol,
-      rowIndex: phase8.target.rowIndex,
-      primaryId: phase8.target.primaryId,
-      sectionName: phase8.target.sectionName,
-      source: phase8.target.source,
-      sourceSha256: phase8.target.sourceSha256,
-      originalAssemblyFallback: phase8.target.originalAssembly,
-      originalAssemblySha256: phase8.target.originalAssemblySha256,
-      fallbackObject: replacement.fallbackRelative,
-      fallbackObjectSha256: replacement.fallbackSha256,
-      prunedAssemblyObject: replacement.linkedChunkRelative,
-      prunedAssemblyObjectSha256: replacement.prunedSha256,
-      preservedTargetChunkSections: replacement.preservedTargetChunkSections,
-      cObject: compiled.objectRelative,
-      cObjectSha256: compiled.objectSha256,
-      compilerAssembly: compiled.compilerAssemblyRelative,
-      compilerAssemblySha256: compiled.compilerAssemblySha256,
-      linkedAssembly: compiled.linkedAssemblyRelative,
-      linkedAssemblySha256: compiled.linkedAssemblySha256,
-      objectTextSha256: compiled.textSha256,
-      linkedTextSha256: verification.target.textSha256,
-      relocations: compiled.relocations,
-    },
+    targetReplacements,
     objects: {
       linkedObjects: objectManifest.linkedObjects.length,
       manifest: { path: 'objects/manifest.json', bytes: objectManifest.bytes, sha256: objectManifest.sha256 },
@@ -135,7 +148,7 @@ function main() {
   };
   writeJson(path.join(args.output, 'build-report.json'), report);
   console.log(`Phase 8 matching C build: PASS (${verification.outputs.rom.sha256})`);
-  console.log(`Target: ${phase8.target.symbol} ${phase8.target.romStart}-${phase8.target.romEndExclusive}`);
+  console.log(`Targets: ${phase8.targets.map((target) => target.symbol).join(', ')}`);
   console.log(`ELF: ${linked.elfFile}`);
   console.log(`Map: ${linked.mapFile}`);
   console.log(`ROM: ${linked.romFile}`);
