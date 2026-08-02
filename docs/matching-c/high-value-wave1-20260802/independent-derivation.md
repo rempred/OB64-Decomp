@@ -48,10 +48,18 @@ This is an exact encoding repair, not an imported implementation. No external-de
 
 ## Local exact proof
 
-The candidate object and linked text each contain 168 bytes. Both hashes are `B5B9786B86B3BA207A56847F26694E126F19667DAB49498E93607F9C4939A0C9`.
+The candidate object's text section contains 168 bytes and hashes to the object-text SHA-256 22A134DAAC883CC9F33D2B7CBE82745E2DDCD284EBB8F1D1899B5F30ED6AABF9.
+
+The linked target text contains 168 bytes and hashes to the linked-text SHA-256 B5B9786B86B3BA207A56847F26694E126F19667DAB49498E93607F9C4939A0C9.
 
 The candidate object contains 13 `.rel.text` entries for the resource-pool symbol, two direct calls, and the local loop jump. The standalone link resolves those references to the target words and preserves the target placement at boot RAM `0x8007AF3C`.
 
-## Limits
+## Historical revision-1 limit
 
-The local exact proof does not establish full-ROM integration. The accepted Phase 8 build stops before compilation because its pinned Phase 6 manifest is absent from the canonical repository.
+The local exact proof did not establish full-ROM integration. Revision 1 recorded that the accepted Phase 8 build stopped before compilation because its pinned Phase 6 manifest was absent from the canonical repository.
+
+## Correction - 2026-08-02
+
+Revision 2 superseded the revision-1 manifest blocker. The canonical Phase 6 compiler manifest is present and authenticated. Its SHA-256 is 98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26.
+
+The recovery evidence is recorded in docs/matching-c/high-value-wave1-20260802/aar/20260802-ob64-matching-c-high-value-wave1-manifest-recovery-r2-aar.md.

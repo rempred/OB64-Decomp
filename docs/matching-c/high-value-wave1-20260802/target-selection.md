@@ -2,9 +2,15 @@
 
 ## Status
 
-The candidate target is selected, and its local byte-match proof passes. The accepted build cannot start because its pinned Phase 6 compiler manifest is missing. Joe must restore that authenticated manifest before integration can continue.
+The candidate target is selected, and its local byte-match proof passes. The revision-1 build blocker is historical: the accepted build then could not start because its pinned Phase 6 compiler manifest was missing.
 
 This record is a worker result with review status `pending`. It is not an acceptance verdict.
+
+## Correction - 2026-08-02
+
+Revision 2 superseded the revision-1 manifest blocker. The canonical Phase 6 compiler manifest is present and authenticated. Its SHA-256 is 98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26.
+
+The recovery evidence is recorded in docs/matching-c/high-value-wave1-20260802/aar/20260802-ob64-matching-c-high-value-wave1-manifest-recovery-r2-aar.md.
 
 ## Baseline
 
