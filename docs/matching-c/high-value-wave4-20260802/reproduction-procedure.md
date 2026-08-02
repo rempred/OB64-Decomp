@@ -96,8 +96,10 @@ node tools/compare_phase8_reproducibility.js --left "C:\Users\Joe\.codex\ob64-ma
 
 Expected result: `Phase 8 reproducibility comparison: PASS`.
 
-The recorded comparison report SHA-256 is
+The recorded build report SHA-256 is
 `E16576C27FCF4226F47871C8DB5E54D04C437612136140BBFD86E658001EB81B`.
+The recorded comparison report SHA-256 is
+`926B48259BC2A6282EF95BF06B95AAA36D161DA1C382656ECC5B61B265E73D57`.
 
 ## Step 7: verify target identities
 

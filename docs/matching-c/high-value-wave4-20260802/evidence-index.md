@@ -128,6 +128,8 @@ node tools/build_phase8_matching_c.js --output "C:\Users\Joe\.codex\ob64-matchin
 
 Result: PASS. The build report records full ROM SHA-256
 `571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A`.
+The build report SHA-256 is
+`E16576C27FCF4226F47871C8DB5E54D04C437612136140BBFD86E658001EB81B`.
 
 Explicit verifier command:
 
@@ -156,7 +158,7 @@ node tools/compare_phase8_reproducibility.js --left "C:\Users\Joe\.codex\ob64-ma
 ```
 
 Result: PASS. The comparison report SHA-256 is
-`E16576C27FCF4226F47871C8DB5E54D04C437612136140BBFD86E658001EB81B`.
+`926B48259BC2A6282EF95BF06B95AAA36D161DA1C382656ECC5B61B265E73D57`.
 
 ## Preservation results
 
