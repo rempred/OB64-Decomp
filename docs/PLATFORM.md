@@ -152,7 +152,7 @@ Critical review accepted the third matching-C slice without correction. The
 worker result is commit `f06aea6b5bc8cd9c99ab09881e4f91a55474a602`.
 The review verdict is commit `082ad7a02be2b6069c2843d1aad4eeab7785ccf2`.
 
-The current matching-C owners are:
+Wave 2 left these matching-C owners:
 
 | Structural symbol | Static role | z64 ROM range | Bytes |
 |---|---|---:|---:|
@@ -168,6 +168,31 @@ reproduced the same target, relocation, code-region, and full-ROM identities.
 
 The review proves static structure, clean-room derivation, and exact build
 identity. It does not prove state-slot semantics or gameplay behavior.
+
+## Accepted Matching-C Wave 3 — 2026-08-02
+
+Critical review accepted the fourth matching-C slice without correction. The
+worker result is commit `b0cdbc4d6efcfc1264214959ca17b3bf8c4b0399`.
+The review verdict is commit `c51f9988abdaf3e5ab7e6d6e13b18544a928b488`.
+
+The current matching-C owners are:
+
+| Structural symbol | Static role | z64 ROM range | Bytes |
+|---|---|---:|---:|
+| `func_000E5938` | Existing overlay target | `0x000E5938..0x000E595C` | 36 |
+| `func_0000B33C` | Boot resource-pool acquire/release | `0x0000B33C..0x0000B3E4` | 168 |
+| `func_00007688` | Boot state-slot flagged dispatch and lookup owner | `0x00007688..0x00007768` | 224 |
+| `func_0000BC8C` | Boot resource-record resolver and loader owner | `0x0000BC8C..0x0000BE98` | 524 |
+
+The fourth owner ends before adjacent dispatcher `func_0000BE98`. It has no
+secondary entry. Its retained assembly remains the comparison fallback.
+
+All four linked targets match their original bytes. Two fresh review roots
+reproduced target placement, relocations, code-region identity, and full-ROM
+identity.
+
+The review proves static structure, clean-room derivation, and exact build
+identity. It does not prove runtime behavior or gameplay meaning.
 
 ## Repo Invariants
 

@@ -152,6 +152,16 @@ and replace the active log with a compact current-state summary.
   Two fresh roots reproduced the same identities. Matching proves structure
   and build identity, not state-slot semantics or gameplay behavior.
 
+- **2026-08-02 — matching-C high-value Wave 3 accepted**: canonical worker
+  commit `b0cdbc4d6efcfc1264214959ca17b3bf8c4b0399` adds structural function
+  `func_0000BC8C` at z64 ROM `0x0000BC8C..0x0000BE98` as independently
+  derived C. The 524-byte resolver owner has no secondary entry. Fresh Critical
+  review returned `Accepted` at commit
+  `c51f9988abdaf3e5ab7e6d6e13b18544a928b488`. All four C targets,
+  relocations, code region, and full ROM remain exact. Two fresh review roots
+  reproduced the same identities. Matching proves static structure and build
+  identity, not runtime behavior or gameplay meaning.
+
 ## Dossier Set
 
 139+ dossiers under `docs/dossiers/`: 81 `boot-*` (chunk 0 splits), 47
