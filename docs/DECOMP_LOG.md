@@ -173,6 +173,16 @@ and replace the active log with a compact current-state summary.
   remain exact. Matching proves static structure and build identity, not
   runtime behavior or gameplay meaning.
 
+- **2026-08-02 — matching-C high-value Wave 5 accepted**: canonical worker
+  commit `470d7c4f9686e73f728d23862601c9d97a9110b2` adds structural function
+  `func_0026B360` at z64 ROM `0x0026B360..0x0026B7E4` as independently
+  derived C. The 1,156-byte overlay descriptor 12 owner has no secondary entry
+  and preserves 29 `.rel.text` relocations plus one `.rel.pdr` relocation.
+  Fresh Critical review returned `Accepted` at commit
+  `8d2d0d947729778b0b50fe6ea9a62f85b2b815d5`. All six C targets,
+  relocations, code region, and full ROM remain exact. Matching proves static
+  structure and build identity, not runtime behavior or gameplay meaning.
+
 ## Dossier Set
 
 139+ dossiers under `docs/dossiers/`: 81 `boot-*` (chunk 0 splits), 47

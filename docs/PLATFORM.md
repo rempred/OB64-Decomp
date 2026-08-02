@@ -202,7 +202,7 @@ correction. The worker result is commit
 `fd7dd36d521a5f6a96ee3812de56642a8ba5daf0`. The completed cleanup is commit
 `d4c4c3d1e88ae7a81d17f147741c8559882e1f90`.
 
-The current matching-C owners are:
+Wave 4 left these matching-C owners:
 
 | Structural symbol | Static role | z64 ROM range | Bytes |
 |---|---|---:|---:|
@@ -217,6 +217,35 @@ Overlay descriptor 12 places it at runtime virtual range
 `0x802148C0..0x80214BE8`. The linked owner preserves all 42 relocations.
 
 All five linked targets match their original bytes. Independent review
+reproduced their placement, relocations, code-region identity, and full-ROM
+identity.
+
+The review proves static structure, clean-room derivation, and exact build
+identity. It does not prove runtime behavior or gameplay meaning.
+
+## Accepted Matching-C Wave 5 — 2026-08-02
+
+Critical review accepted the sixth matching-C slice without correction. The
+worker result is commit `470d7c4f9686e73f728d23862601c9d97a9110b2`.
+The review verdict is commit `8d2d0d947729778b0b50fe6ea9a62f85b2b815d5`.
+
+The current matching-C owners are:
+
+| Structural symbol | Static role | z64 ROM range | Bytes |
+|---|---|---:|---:|
+| `func_000E5938` | Existing overlay target | `0x000E5938..0x000E595C` | 36 |
+| `func_0000B33C` | Boot resource-pool acquire/release | `0x0000B33C..0x0000B3E4` | 168 |
+| `func_00007688` | Boot state-slot flagged dispatch and lookup owner | `0x00007688..0x00007768` | 224 |
+| `func_0000BC8C` | Boot resource-record resolver and loader owner | `0x0000BC8C..0x0000BE98` | 524 |
+| `func_00269470` | Overlay descriptor 12 seven-way state-handler owner | `0x00269470..0x00269798` | 808 |
+| `func_0026B360` | Overlay descriptor 12 structural control-path owner | `0x0026B360..0x0026B7E4` | 1,156 |
+
+The sixth owner has no secondary entry and retains its assembly fallback.
+Overlay descriptor 12 places it at runtime virtual range
+`0x802167B0..0x80216C34`. The linked owner preserves 29 `.rel.text`
+relocations and one `.rel.pdr` relocation.
+
+All six linked targets match their original bytes. Independent review
 reproduced their placement, relocations, code-region identity, and full-ROM
 identity.
 
