@@ -190,7 +190,7 @@ node tools/build_phase7_conventional.js --output $phase7Output --splat-output $s
 node tools/verify_phase7_conventional.js --output $phase7Output --splat-python $splatPython --splat-split $splatSplit --asm-differ $asmDiffer
 ```
 
-Build and verify the accepted structural matching-C replacement:
+Build and verify the accepted structural matching-C replacements:
 
 ```powershell
 node tools/build_phase8_matching_c.js --output $phase8Output --phase7-output $phase7Output --compiler $kmcCompiler --splat-python $splatPython --splat-split $splatSplit --asm-differ $asmDiffer

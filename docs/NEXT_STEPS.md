@@ -22,6 +22,9 @@ node tools/verify_setup.js --phase5a-root $phase5aRoot
 
 The command currently passes all 21 checks.
 
+Two independently reviewed matching-C owners are active. They cover structural
+functions `func_000E5938` and `func_0000B33C`.
+
 ## Active Goal
 
 Replace selected assembly owners with independently written matching C while

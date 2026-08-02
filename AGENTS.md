@@ -25,10 +25,11 @@ Read this scope before trusting any source-ownership count:
 
 - The repository remains primarily a byte-exact disassembly atlas. Its 6,184
   tracked assembly owners use `.word` directives with generated decode comments.
-- One independently written C function now matches its original 36-byte range:
-  `src/overlays/descriptor_02/func_000E5938.c`.
-- The accepted function name is structural. Matching bytes do not prove its
-  gameplay behavior.
+- Two independently written C functions now match their original ranges:
+  `src/overlays/descriptor_02/func_000E5938.c` (36 bytes) and
+  `src/boot/boot_resource_pool_acquire_release.c` (168 bytes).
+- Both accepted symbols remain structural. The boot filename records accepted
+  static resource-loader evidence, not proven gameplay behavior.
 - The conventional build can replace explicitly pinned assembly sections with
   matching C. Exact owner, placement, and ROM checks reject layout drift.
 - Most original assembly still embeds branch and jump targets. Keep unchanged

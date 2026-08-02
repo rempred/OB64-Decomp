@@ -123,6 +123,29 @@ segment candidates and 6,154 function candidates remain unresolved.
 External-derived source, integration records, and proof-export records remain
 outside this clean-room repository. No acceptance grants publication authority.
 
+## Accepted Matching-C Wave 1 — 2026-08-02
+
+Critical review accepted the second matching-C slice with two documentation
+corrections. The review verdict is commit
+`6082c2f755d08dcfc514a28c12b145c3085818db`. The completed cleanup is commit
+`0a4c16c765272e6ad4aebcf6d12c4c469dd21c9e`.
+
+The current matching-C owners are:
+
+| Structural symbol | Static role | z64 ROM range | Bytes |
+|---|---|---:|---:|
+| `func_000E5938` | Existing overlay target | `0x000E5938..0x000E595C` | 36 |
+| `func_0000B33C` | Boot resource-pool acquire/release | `0x0000B33C..0x0000B3E4` | 168 |
+
+Both linked targets match their original bytes. Their original assembly owners
+remain available as comparison fallbacks.
+
+The multi-target build preserves the full-ROM and code-region SHA-256 values
+above. It authenticates the accepted KMC manifest before compiler use.
+
+The accepted review proves structural matching, provenance, and exact rebuild
+preservation. It does not prove gameplay semantics or runtime behavior.
+
 ## Repo Invariants
 
 - Rev 0 only until the build, compare, and overlay workflow is stable.
@@ -405,10 +428,10 @@ code = named function/straddler/cluster parts, data/zero-fill by part prefix;
   exact ROM outside the repository.
 - `tools/verify_phase7_conventional.js` rechecks build identities, layout, and
   asm-differ resolution.
-- `tools/build_phase8_matching_c.js` replaces one pinned assembly owner with
+- `tools/build_phase8_matching_c.js` replaces configured assembly owners with
   independently written matching C.
-- `tools/verify_phase8_matching_c.js` verifies compiler identity, sole section
-  ownership, target bytes, and full-ROM identity.
+- `tools/verify_phase8_matching_c.js` verifies compiler identity, per-target
+  section ownership, target bytes, and full-ROM identity.
 - `tools/verify_setup.js` is the canonical 21-check setup command. Canonical use
   requires `--phase5a-root <accepted-phase5a-product-root>`.
 - `tests/verify_setup_phase5a_root.js` checks strict argument forwarding and the

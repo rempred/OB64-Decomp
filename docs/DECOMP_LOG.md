@@ -130,6 +130,18 @@ and replace the active log with a compact current-state summary.
   `func_000E5938` remains a structural name without gameplay semantics.
   Five segment candidates and 6,154 function candidates remain unresolved.
 
+- **2026-08-02 — matching-C high-value Wave 1 accepted**: canonical worker
+  commit `444c99c3a163d8526ced583e1d6c63626a21f54c` adds structural function
+  `func_0000B33C` at z64 ROM `0x0000B33C..0x0000B3E4` as independently
+  derived C. Fresh Critical review accepted both configured C targets with two
+  documentation corrections at commit
+  `6082c2f755d08dcfc514a28c12b145c3085818db`. Cleanup commit
+  `0a4c16c765272e6ad4aebcf6d12c4c469dd21c9e` distinguishes object and linked
+  hashes and marks the recovered compiler-manifest blocker as historical. The
+  168-byte linked target, existing 36-byte target, code region, and full ROM
+  remain exact. Matching proves structure and build identity, not gameplay
+  semantics.
+
 ## Dossier Set
 
 139+ dossiers under `docs/dossiers/`: 81 `boot-*` (chunk 0 splits), 47
