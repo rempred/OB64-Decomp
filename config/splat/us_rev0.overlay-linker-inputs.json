@@ -3,10 +3,10 @@
   "generator": "tools/generate_phase5b_production_config.js",
   "mode": "primary-rom-only-with-explicit-phase4-overlay-reservations",
   "phase4OverlayConfigSha256": "D4F1FB177822334EB748D6D62B342FB813D8825FEDD912057CF651EB616A5FB6",
-  "phase5aProductSha256": "7CDACEAC4C84D508FB03C252212C376A084153677233F2756A777DA527E1D42E",
-  "phase5aProductManifestSha256": "64762581B888A8F6F14548F0E59DFE3358FCD2DB90FE6B3D1B902E577AFEBE68",
-  "phase5aPrimaryLedgerSha256": "85970FCDDE6448B9D4335BF767651A824E83C06F7482C23FFCD3E9B20F4488EF",
-  "phase5aProfile": "row585-code-successor",
+  "phase5aProductSha256": "02E621C81403C5EF7CC65EC29EF2ABF01B1ABA2755BB9B45801E94D6D4221BA6",
+  "phase5aProductManifestSha256": "F004C4C09D611671935BD0D7927D514EAC1E05C347FBB271A523C424AFDB1D04",
+  "phase5aPrimaryLedgerSha256": "4C76602C42BB287A520EDC71D5A597FF94D8F3066E49EEFBF2502087AE452BBE",
+  "phase5aProfile": "row565-row585-code-cumulative-successor",
   "splatPrimaryRows": [
     {
       "index": 0,
@@ -4531,7 +4531,7 @@
     {
       "index": 565,
       "primaryId": "primary:485acb8235385e9dd237",
-      "name": "p0565_data_original_mips_000241f8_00024250",
+      "name": "p0565_code_original_mips_000241f8_00024250",
       "romStart": 147960,
       "romEndExclusive": 148048,
       "bytes": 88

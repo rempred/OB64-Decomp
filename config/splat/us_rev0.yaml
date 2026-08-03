@@ -2282,7 +2282,7 @@ segments:
     type: bin
     start: 0x000240B0
     end: 0x000241F8
-  - name: p0565_data_original_mips_000241f8_00024250
+  - name: p0565_code_original_mips_000241f8_00024250
     type: bin
     start: 0x000241F8
     end: 0x00024250

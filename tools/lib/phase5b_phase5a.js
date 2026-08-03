@@ -20,8 +20,12 @@ const ACCEPTED_FILES = [
   { path: 'input-provenance-manifest.json', bytes: 7629, sha256: 'EDE5DF7BB7310D8BF3F589DDD7B0EEB964A8D9E75D5482FC1BCE0179D200060A' },
 ];
 
-const SUCCESSOR_FILES = ACCEPTED_FILES.map((row) => row.path === 'full-rom-primary-ledger.jsonl'
+const ROW585_FILES = ACCEPTED_FILES.map((row) => row.path === 'full-rom-primary-ledger.jsonl'
   ? { ...row, sha256: '85970FCDDE6448B9D4335BF767651A824E83C06F7482C23FFCD3E9B20F4488EF' }
+  : row);
+
+const CUMULATIVE_FILES = ROW585_FILES.map((row) => row.path === 'full-rom-primary-ledger.jsonl'
+  ? { ...row, sha256: '4C76602C42BB287A520EDC71D5A597FF94D8F3066E49EEFBF2502087AE452BBE' }
   : row);
 
 const ACCEPTED_PROFILE = {
@@ -32,17 +36,25 @@ const ACCEPTED_PROFILE = {
   files: ACCEPTED_FILES,
 };
 
-const SUCCESSOR_PROFILE = {
+const ROW585_PROFILE = {
   name: 'row585-code-successor',
   logicalSha256: '7CDACEAC4C84D508FB03C252212C376A084153677233F2756A777DA527E1D42E',
   productManifestSha256: '64762581B888A8F6F14548F0E59DFE3358FCD2DB90FE6B3D1B902E577AFEBE68',
   primaryLedgerSha256: '85970FCDDE6448B9D4335BF767651A824E83C06F7482C23FFCD3E9B20F4488EF',
-  files: SUCCESSOR_FILES,
+  files: ROW585_FILES,
 };
 
-const EXPECTED_PROFILES = Object.freeze({ accepted: ACCEPTED_PROFILE, successor: SUCCESSOR_PROFILE });
+const CUMULATIVE_PROFILE = {
+  name: 'row565-row585-code-cumulative-successor',
+  logicalSha256: '02E621C81403C5EF7CC65EC29EF2ABF01B1ABA2755BB9B45801E94D6D4221BA6',
+  productManifestSha256: 'F004C4C09D611671935BD0D7927D514EAC1E05C347FBB271A523C424AFDB1D04',
+  primaryLedgerSha256: '4C76602C42BB287A520EDC71D5A597FF94D8F3066E49EEFBF2502087AE452BBE',
+  files: CUMULATIVE_FILES,
+};
+
+const EXPECTED_PROFILES = Object.freeze({ accepted: ACCEPTED_PROFILE, successor: ROW585_PROFILE, cumulative: CUMULATIVE_PROFILE });
 const EXPECTED_FILES = ACCEPTED_FILES.map((row) => row.path);
-const SUCCESSOR_ROW = Object.freeze({
+const ROW585 = Object.freeze({
   index: 585,
   id: 'primary:eee9f5b0244d77b808d4',
   rom_start: 151552,
@@ -56,7 +68,32 @@ const SUCCESSOR_ROW = Object.freeze({
   ambiguous: false,
   source_manifest_index: 1,
 });
-const ACCEPTED_ROW_CLASS = 'data';
+const ROW565 = Object.freeze({
+  index: 565,
+  id: 'primary:485acb8235385e9dd237',
+  rom_start: 147960,
+  rom_end_exclusive: 148048,
+  bytes: 88,
+  primary_class: 'code',
+  owner_path: 'asm/original/rev0/lib/list_insert_head_000241f8.s',
+  owner_sha256: 'D3F7A9C28A521515FB02E146C9D99B669B660C8AC74EA2A3F788B6717AE788CF',
+  source_form: 'original_mips',
+  owner_kind: 'tracked-assembly-part',
+  ambiguous: false,
+  source_manifest_index: 1,
+});
+const ORIGINAL_ROW_CLASS = 'data';
+const PRESERVED_FIELDS = Object.freeze([
+  'rom_start',
+  'rom_end_exclusive',
+  'bytes',
+  'owner_path',
+  'owner_sha256',
+  'source_form',
+  'owner_kind',
+  'ambiguous',
+  'source_manifest_index',
+]);
 
 function sha256(file) {
   return crypto.createHash('sha256').update(fs.readFileSync(file)).digest('hex').toUpperCase();
@@ -79,24 +116,30 @@ function equalJson(left, right) {
 }
 
 function profileFor(manifest, manifestSha256) {
-  return [ACCEPTED_PROFILE, SUCCESSOR_PROFILE].find((profile) => (
+  return [ACCEPTED_PROFILE, ROW585_PROFILE, CUMULATIVE_PROFILE].find((profile) => (
     manifestSha256 === profile.productManifestSha256
     && manifest.logical_sha256 === profile.logicalSha256
   )) || null;
 }
 
-function verifyPrimaryRow(product, profile) {
+function verifyPrimaryRows(product, profile) {
   const ledgerFile = path.join(product, 'full-rom-primary-ledger.jsonl');
-  const row = jsonl(ledgerFile).find((candidate) => candidate.index === 585);
-  if (!row || row.index !== 585 || row.id !== SUCCESSOR_ROW.id) fail('row 585 identity drift');
-  const expectedClass = profile === SUCCESSOR_PROFILE ? SUCCESSOR_ROW.primary_class : ACCEPTED_ROW_CLASS;
-  if (row.primary_class !== expectedClass) fail(`row 585 primary_class drift for ${profile.name}`);
-  if (profile === SUCCESSOR_PROFILE) {
-    for (const field of ['rom_start', 'rom_end_exclusive', 'bytes', 'owner_path', 'owner_sha256', 'source_form', 'owner_kind', 'ambiguous', 'source_manifest_index']) {
-      if (row[field] !== SUCCESSOR_ROW[field]) fail(`successor row 585 preserved field drift: ${field}`);
+  const rows = jsonl(ledgerFile);
+  const verifyRow = (expected, expectedClass) => {
+    const row = rows.find((candidate) => candidate.index === expected.index);
+    if (!row || row.index !== expected.index || row.id !== expected.id) fail(`row ${expected.index} identity drift`);
+    if (row.primary_class !== expectedClass) fail(`row ${expected.index} primary_class drift for ${profile.name}`);
+    for (const field of PRESERVED_FIELDS) {
+      if (row[field] !== expected[field]) fail(`row ${expected.index} preserved field drift for ${profile.name}: ${field}`);
     }
-  }
-  return row;
+    return row;
+  };
+  const row565Class = profile === CUMULATIVE_PROFILE ? ROW565.primary_class : ORIGINAL_ROW_CLASS;
+  const row585Class = profile === ACCEPTED_PROFILE ? ORIGINAL_ROW_CLASS : ROW585.primary_class;
+  return {
+    row565: verifyRow(ROW565, row565Class),
+    row585: verifyRow(ROW585, row585Class),
+  };
 }
 
 function verifyPhase5aProduct(product) {
@@ -127,7 +170,7 @@ function verifyPhase5aProduct(product) {
     if (sha256(file) !== row.sha256) fail(`SHA-256 drift: ${row.path}`);
   }
   if (sha256(path.join(product, 'full-rom-primary-ledger.jsonl')) !== profile.primaryLedgerSha256) fail(`primary ledger identity drift for ${profile.name}`);
-  const row585 = verifyPrimaryRow(product, profile);
+  const primaryRows = verifyPrimaryRows(product, profile);
   return {
     profile: profile.name,
     logicalSha256: logical,
@@ -135,14 +178,17 @@ function verifyPhase5aProduct(product) {
     primaryLedgerSha256: profile.primaryLedgerSha256,
     fileCount: manifest.files.length,
     files: manifest.files,
-    row585,
+    row565: primaryRows.row565,
+    row585: primaryRows.row585,
   };
 }
 
 module.exports = {
   EXPECTED_FILES,
   EXPECTED_PROFILES,
-  SUCCESSOR_ROW,
+  ROW565,
+  ROW585,
+  SUCCESSOR_ROW: ROW585,
   verifyPhase5aProduct,
   sha256,
 };

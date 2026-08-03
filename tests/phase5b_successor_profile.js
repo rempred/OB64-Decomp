@@ -14,6 +14,13 @@ function value(flag) {
   return path.resolve(process.argv[index + 1]);
 }
 
+function optionalValue(flag) {
+  const index = process.argv.indexOf(flag);
+  if (index < 0) return null;
+  if (!process.argv[index + 1]) throw new Error(`Missing ${flag}`);
+  return path.resolve(process.argv[index + 1]);
+}
+
 function copyProduct(source, destination) {
   const manifestFile = path.join(source, 'verification', 'product-manifest.json');
   const manifest = JSON.parse(fs.readFileSync(manifestFile, 'utf8'));
@@ -55,6 +62,11 @@ function rejects(source, mutate, label, options = {}) {
 const accepted = value('--accepted-root');
 const successor = value('--successor-root');
 const reproduction = value('--reproduction-root');
+const cumulative = optionalValue('--cumulative-root');
+const cumulativeReproduction = optionalValue('--cumulative-reproduction-root');
+if (Boolean(cumulative) !== Boolean(cumulativeReproduction)) {
+  throw new Error('Cumulative profile requires both --cumulative-root and --cumulative-reproduction-root');
+}
 const scratch = fs.mkdtempSync(path.join(os.tmpdir(), 'ob64-phase5b-successor-profile-'));
 try {
   const acceptedResult = verifyPhase5aProduct(accepted);
@@ -67,6 +79,22 @@ try {
   assert.deepStrictEqual(reproductionResult.files, successorResult.files);
   assert.strictEqual(reproductionResult.logicalSha256, successorResult.logicalSha256);
   assert.strictEqual(reproductionResult.productManifestSha256, successorResult.productManifestSha256);
+
+  let cumulativeResult = null;
+  if (cumulative) {
+    cumulativeResult = verifyPhase5aProduct(cumulative);
+    const cumulativeReproductionResult = verifyPhase5aProduct(cumulativeReproduction);
+    assert.strictEqual(cumulativeResult.profile, 'row565-row585-code-cumulative-successor');
+    assert.strictEqual(cumulativeResult.row565.primary_class, 'code');
+    assert.strictEqual(cumulativeResult.row585.primary_class, 'code');
+    assert.deepStrictEqual(cumulativeReproductionResult.files, cumulativeResult.files);
+    assert.strictEqual(cumulativeReproductionResult.logicalSha256, cumulativeResult.logicalSha256);
+    assert.strictEqual(cumulativeReproductionResult.productManifestSha256, cumulativeResult.productManifestSha256);
+    assert.deepStrictEqual(
+      cumulativeResult.files.filter((row, index) => JSON.stringify(row) !== JSON.stringify(successorResult.files[index])).map((row) => row.path),
+      ['full-rom-primary-ledger.jsonl'],
+    );
+  }
 
   rejects(successor, (root) => {
     const manifestFile = path.join(root, 'verification', 'product-manifest.json');
@@ -106,6 +134,65 @@ try {
     lines[585] = JSON.stringify(row);
     fs.writeFileSync(ledgerFile, `${lines.join('\n')}\n`);
   }, 'changed-preserved-field');
+
+  if (cumulative) {
+    rejects(cumulative, (root) => {
+      const manifestFile = path.join(root, 'verification', 'product-manifest.json');
+      const manifest = JSON.parse(fs.readFileSync(manifestFile, 'utf8'));
+      manifest.logical_sha256 = successorResult.logicalSha256;
+      fs.writeFileSync(manifestFile, `${JSON.stringify(manifest, null, 2)}\n`);
+    }, 'cumulative-altered-identity', { refreshManifest: false });
+
+    rejects(cumulative, (root) => {
+      const manifestFile = path.join(root, 'verification', 'product-manifest.json');
+      const manifest = JSON.parse(fs.readFileSync(manifestFile, 'utf8'));
+      manifest.files.push({ path: 'extra.json', bytes: 0, sha256: '0'.repeat(64) });
+      fs.writeFileSync(path.join(root, 'extra.json'), '');
+      fs.writeFileSync(manifestFile, `${JSON.stringify(manifest, null, 2)}\n`);
+    }, 'cumulative-extra-declared-file');
+
+    rejects(cumulative, (root) => {
+      const ledgerFile = path.join(root, 'full-rom-primary-ledger.jsonl');
+      const lines = fs.readFileSync(ledgerFile, 'utf8').trim().split(/\r?\n/);
+      fs.writeFileSync(ledgerFile, `${lines.join('\n')}\n${lines[565]}\n`);
+    }, 'cumulative-extra-row');
+
+    rejects(cumulative, (root) => {
+      const ledgerFile = path.join(root, 'full-rom-primary-ledger.jsonl');
+      const lines = fs.readFileSync(ledgerFile, 'utf8').trim().split(/\r?\n/);
+      const row = JSON.parse(lines[564]);
+      row.primary_class = row.primary_class === 'code' ? 'data' : 'code';
+      lines[564] = JSON.stringify(row);
+      fs.writeFileSync(ledgerFile, `${lines.join('\n')}\n`);
+    }, 'cumulative-changed-other-row');
+
+    rejects(cumulative, (root) => {
+      const ledgerFile = path.join(root, 'full-rom-primary-ledger.jsonl');
+      const lines = fs.readFileSync(ledgerFile, 'utf8').trim().split(/\r?\n/);
+      const row = JSON.parse(lines[565]);
+      row.owner_path = 'asm/original/rev0/lib/func_000241f8.s';
+      lines[565] = JSON.stringify(row);
+      fs.writeFileSync(ledgerFile, `${lines.join('\n')}\n`);
+    }, 'cumulative-changed-preserved-field');
+
+    rejects(cumulative, (root) => {
+      const ledgerFile = path.join(root, 'full-rom-primary-ledger.jsonl');
+      const lines = fs.readFileSync(ledgerFile, 'utf8').trim().split(/\r?\n/);
+      const row = JSON.parse(lines[585]);
+      row.primary_class = 'data';
+      lines[585] = JSON.stringify(row);
+      fs.writeFileSync(ledgerFile, `${lines.join('\n')}\n`);
+    }, 'cumulative-row585-regression');
+
+    rejects(cumulative, (root) => {
+      const ledgerFile = path.join(root, 'full-rom-primary-ledger.jsonl');
+      const lines = fs.readFileSync(ledgerFile, 'utf8').trim().split(/\r?\n/);
+      const row = JSON.parse(lines[565]);
+      row.primary_class = 'data';
+      lines[565] = JSON.stringify(row);
+      fs.writeFileSync(ledgerFile, `${lines.join('\n')}\n`);
+    }, 'cumulative-row565-regression');
+  }
 
   console.log('phase5b_successor_profile: PASS');
 } finally {

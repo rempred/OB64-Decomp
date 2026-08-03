@@ -2,10 +2,10 @@
   "schemaVersion": 1,
   "generator": "tools/generate_phase5b_production_config.js",
   "acceptedPhase5a": {
-    "profile": "row585-code-successor",
-    "productSha256": "7CDACEAC4C84D508FB03C252212C376A084153677233F2756A777DA527E1D42E",
-    "productManifestSha256": "64762581B888A8F6F14548F0E59DFE3358FCD2DB90FE6B3D1B902E577AFEBE68",
-    "primaryLedgerSha256": "85970FCDDE6448B9D4335BF767651A824E83C06F7482C23FFCD3E9B20F4488EF",
+    "profile": "row565-row585-code-cumulative-successor",
+    "productSha256": "02E621C81403C5EF7CC65EC29EF2ABF01B1ABA2755BB9B45801E94D6D4221BA6",
+    "productManifestSha256": "F004C4C09D611671935BD0D7927D514EAC1E05C347FBB271A523C424AFDB1D04",
+    "primaryLedgerSha256": "4C76602C42BB287A520EDC71D5A597FF94D8F3066E49EEFBF2502087AE452BBE",
     "primaryRows": 7242,
     "representedBytes": 41943040,
     "unresolvedSegmentCandidates": 5,
@@ -16,7 +16,7 @@
     "overlayRows": 19
   },
   "inputHashes": {
-    "primaryLedger": "85970FCDDE6448B9D4335BF767651A824E83C06F7482C23FFCD3E9B20F4488EF",
+    "primaryLedger": "4C76602C42BB287A520EDC71D5A597FF94D8F3066E49EEFBF2502087AE452BBE",
     "segmentDispositions": "E154A4B95CA8ADE1991069F1A812A2C730DCA09F2B9F59DE1B6C996BCC74CEC8",
     "functionDispositions": "7812CA48DA2ABD17E569C15C5CD47D3DE235D94A01FC35E26FAA41A8869F3A9E",
     "overlayContainment": "E2AC95E51BA268EB60071FA2117E510C4558CF39EE1E6C6B3B77E3D3478AAF78",
@@ -7976,13 +7976,13 @@
       "romStart": 147960,
       "romEndExclusive": 148048,
       "bytes": 88,
-      "primaryClass": "data",
+      "primaryClass": "code",
       "sourceForm": "original_mips",
       "ownerKind": "tracked-assembly-part",
       "ambiguous": false,
       "processorClass": "cpu-or-non-cpu",
       "segmentType": "bin",
-      "name": "p0565_data_original_mips_000241f8_00024250"
+      "name": "p0565_code_original_mips_000241f8_00024250"
     },
     {
       "index": 566,
