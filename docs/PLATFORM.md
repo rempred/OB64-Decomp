@@ -271,18 +271,34 @@ The current matching-C owners are:
 | `func_00269470` | Overlay descriptor 12 seven-way state-handler owner | `0x00269470..0x00269798` | 808 |
 | `func_0026B360` | Overlay descriptor 12 structural control-path owner | `0x0026B360..0x0026B7E4` | 1,156 |
 | `func_0026B820` | Overlay descriptor 12 selector and state dispatcher | `0x0026B820..0x0026BCCC` | 1,196 |
+| `func_000241F8` | List-head insertion structural owner | `0x000241F8..0x00024250` | 88 |
 
 The seventh owner has no secondary entry and retains its assembly fallback.
 Overlay descriptor 12 places it at runtime virtual range
 `0x80216C70..0x8021711C`. The linked owner preserves 28 text relocations and
 one `.rel.pdr` relocation.
 
-All seven linked targets match their original bytes. Independent review
+All eight linked targets match their original bytes. Independent review
 reproduced their placement, relocations, code-region identity, and full-ROM
 identity.
 
 The review proves static structure, clean-room derivation, and exact build
 identity. It does not prove runtime behavior or gameplay meaning.
+
+## Accepted Four-Lane Lane C Target 1 — 2026-08-03
+
+Critical review accepted the cumulative row-565 Phase 5B correction and Lane C
+`func_000241F8`. The canonical correction commit is
+`0e2499d35ec34dd7399cfb041cd17cc2c1b99af3`. The frozen Lane C result is
+`bb88c6d175ddf5e65c05bb7b0730d4466d243c13`.
+
+The parent review-verdict commit is
+`606771c76bc7b84d0d18a6f2b833b4d9ec3ca5ed`. Two fresh review builds
+preserved exact object, linked, placement, relocation, code-region, and
+full-ROM identities.
+
+This acceptance proves structural and build identity. It does not prove
+gameplay meaning, runtime behavior, editor readiness, or release safety.
 
 ## Repo Invariants
 

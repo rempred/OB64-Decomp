@@ -22,9 +22,9 @@ node tools/verify_setup.js --phase5a-root $phase5aRoot
 
 The command currently passes all 21 checks.
 
-Seven independently reviewed matching-C owners are active. They cover structural
+Eight independently reviewed matching-C owners are active. They cover structural
 functions `func_000E5938`, `func_0000B33C`, `func_00007688`, `func_0000BC8C`,
-`func_00269470`, `func_0026B360`, and `func_0026B820`.
+`func_00269470`, `func_0026B360`, `func_0026B820`, and `func_000241F8`.
 
 ## Active Goal
 

@@ -194,6 +194,17 @@ and replace the active log with a compact current-state summary.
   Matching proves static structure and build identity, not runtime behavior or
   gameplay meaning.
 
+- **2026-08-03 — four-lane Lane C target 1 accepted**: canonical correction
+  commit `0e2499d35ec34dd7399cfb041cd17cc2c1b99af3` admits the authenticated
+  cumulative row-565 Phase 5B profile. Lane C commit
+  `bb88c6d175ddf5e65c05bb7b0730d4466d243c13` adds structural function
+  `func_000241F8` at z64 ROM `0x000241F8..0x00024250` as the eighth
+  matching-C owner. Fresh Critical review returned `Accepted` at parent commit
+  `606771c76bc7b84d0d18a6f2b833b4d9ec3ca5ed`. Two fresh builds preserved
+  exact object, linked, placement, relocation, code-region, and full-ROM
+  identities. Matching proves static structure and build identity, not runtime
+  behavior or gameplay meaning.
+
 ## Dossier Set
 
 139+ dossiers under `docs/dossiers/`: 81 `boot-*` (chunk 0 splits), 47
