@@ -5,7 +5,9 @@ rom:
   profile: us-rev0
   size: 0x02800000
 semantic_source: config/splat/us_rev0.semantic.json
-accepted_phase5a_product_sha256: 13BB110109C6DAE45157572DB5AC95DD233AB41C8639901302ED593AAB862EF2
+accepted_phase5a_product_sha256: 7CDACEAC4C84D508FB03C252212C376A084153677233F2756A777DA527E1D42E
+accepted_phase5a_product_manifest_sha256: 64762581B888A8F6F14548F0E59DFE3358FCD2DB90FE6B3D1B902E577AFEBE68
+accepted_phase5a_primary_ledger_sha256: 85970FCDDE6448B9D4335BF767651A824E83C06F7482C23FFCD3E9B20F4488EF
 accepted_phase4_overlay_config_sha256: D4F1FB177822334EB748D6D62B342FB813D8825FEDD912057CF651EB616A5FB6
 primary_row_count: 7242
 unresolved_function_candidate_count: 6154
@@ -6473,9 +6475,9 @@ segments:
     rom_end: 0x00025000
   - index: 585
     primary_id: primary:eee9f5b0244d77b808d4
-    name: p0585_data_original_mips_00025000_00025040
+    name: p0585_code_original_mips_00025000_00025040
     source_class: original_mips
-    primary_class: data
+    primary_class: code
     owner_kind: tracked-assembly-part
     processor_class: cpu-or-non-cpu
     ambiguous: false

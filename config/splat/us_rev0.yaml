@@ -2362,7 +2362,7 @@ segments:
     type: bin
     start: 0x00024F40
     end: 0x00025000
-  - name: p0585_data_original_mips_00025000_00025040
+  - name: p0585_code_original_mips_00025000_00025040
     type: bin
     start: 0x00025000
     end: 0x00025040

@@ -2,7 +2,10 @@
   "schemaVersion": 1,
   "generator": "tools/generate_phase5b_production_config.js",
   "acceptedPhase5a": {
-    "productSha256": "13BB110109C6DAE45157572DB5AC95DD233AB41C8639901302ED593AAB862EF2",
+    "profile": "row585-code-successor",
+    "productSha256": "7CDACEAC4C84D508FB03C252212C376A084153677233F2756A777DA527E1D42E",
+    "productManifestSha256": "64762581B888A8F6F14548F0E59DFE3358FCD2DB90FE6B3D1B902E577AFEBE68",
+    "primaryLedgerSha256": "85970FCDDE6448B9D4335BF767651A824E83C06F7482C23FFCD3E9B20F4488EF",
     "primaryRows": 7242,
     "representedBytes": 41943040,
     "unresolvedSegmentCandidates": 5,
@@ -13,7 +16,7 @@
     "overlayRows": 19
   },
   "inputHashes": {
-    "primaryLedger": "8A5473D596DBD961426A853440C798F9585F38C46A96E4ABA9DD073C52A2FABB",
+    "primaryLedger": "85970FCDDE6448B9D4335BF767651A824E83C06F7482C23FFCD3E9B20F4488EF",
     "segmentDispositions": "E154A4B95CA8ADE1991069F1A812A2C730DCA09F2B9F59DE1B6C996BCC74CEC8",
     "functionDispositions": "7812CA48DA2ABD17E569C15C5CD47D3DE235D94A01FC35E26FAA41A8869F3A9E",
     "overlayContainment": "E2AC95E51BA268EB60071FA2117E510C4558CF39EE1E6C6B3B77E3D3478AAF78",
@@ -8253,13 +8256,13 @@
       "romStart": 151552,
       "romEndExclusive": 151616,
       "bytes": 64,
-      "primaryClass": "data",
+      "primaryClass": "code",
       "sourceForm": "original_mips",
       "ownerKind": "tracked-assembly-part",
       "ambiguous": false,
       "processorClass": "cpu-or-non-cpu",
       "segmentType": "bin",
-      "name": "p0585_data_original_mips_00025000_00025040"
+      "name": "p0585_code_original_mips_00025000_00025040"
     },
     {
       "index": 586,

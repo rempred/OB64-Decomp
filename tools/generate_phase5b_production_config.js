@@ -9,7 +9,6 @@ const { verifyPhase5aProduct } = require('./lib/phase5b_phase5a');
 const ROOT = path.resolve(__dirname, '..');
 const PRODUCT = path.join(ROOT, 'docs', 'external-intake', 'phase5-boundary-segment-reconciliation-static-20260731');
 const EXPECTED = {
-  phase5aProductSha256: '13BB110109C6DAE45157572DB5AC95DD233AB41C8639901302ED593AAB862EF2',
   overlayConfigSha256: 'D4F1FB177822334EB748D6D62B342FB813D8825FEDD912057CF651EB616A5FB6',
   rows: 7242,
   bytes: 41943040,
@@ -58,9 +57,9 @@ function readInputs(product) {
     }
     cursor = row.rom_end_exclusive;
   }
-  if (ledger.length !== EXPECTED.rows || cursor !== EXPECTED.bytes) throw new Error('Accepted primary ledger conservation differs from the Phase 5A contract');
-  if (unresolvedSegments.length !== EXPECTED.unresolvedSegments) throw new Error('Accepted unresolved segment count differs from the Phase 5A contract');
-  if (unresolvedFunctions.length !== EXPECTED.unresolvedFunctions) throw new Error('Accepted unresolved function count differs from the Phase 5A contract');
+  if (ledger.length !== EXPECTED.rows || cursor !== EXPECTED.bytes) throw new Error('Verified primary ledger conservation differs from the Phase 5A contract');
+  if (unresolvedSegments.length !== EXPECTED.unresolvedSegments) throw new Error('Verified unresolved segment count differs from the Phase 5A contract');
+  if (unresolvedFunctions.length !== EXPECTED.unresolvedFunctions) throw new Error('Verified unresolved function count differs from the Phase 5A contract');
   const overlayFilePath = path.join(ROOT, 'config', 'overlays', 'us_rev0.json');
   if (sha256(overlayFilePath) !== EXPECTED.overlayConfigSha256) throw new Error('Accepted Phase 4 overlay configuration drifted');
   return {
@@ -80,6 +79,7 @@ function readInputs(product) {
 }
 
 function render(inputs) {
+  const identity = inputs.accepted;
   const rows = inputs.ledger.map((row) => ({
     index: row.index,
     primaryId: row.id,
@@ -98,7 +98,10 @@ function render(inputs) {
     schemaVersion: 1,
     generator: 'tools/generate_phase5b_production_config.js',
     acceptedPhase5a: {
-      productSha256: EXPECTED.phase5aProductSha256,
+      profile: identity.profile,
+      productSha256: identity.logicalSha256,
+      productManifestSha256: identity.productManifestSha256,
+      primaryLedgerSha256: identity.primaryLedgerSha256,
       primaryRows: EXPECTED.rows,
       representedBytes: EXPECTED.bytes,
       unresolvedSegmentCandidates: EXPECTED.unresolvedSegments,
@@ -124,7 +127,10 @@ function render(inputs) {
     generator: 'tools/generate_phase5b_production_config.js',
     mode: 'primary-rom-only-with-explicit-phase4-overlay-reservations',
     phase4OverlayConfigSha256: EXPECTED.overlayConfigSha256,
-    phase5aProductSha256: EXPECTED.phase5aProductSha256,
+    phase5aProductSha256: identity.logicalSha256,
+    phase5aProductManifestSha256: identity.productManifestSha256,
+    phase5aPrimaryLedgerSha256: identity.primaryLedgerSha256,
+    phase5aProfile: identity.profile,
     splatPrimaryRows: rows.map((row) => ({
       index: row.index,
       primaryId: row.primaryId,
@@ -143,7 +149,9 @@ function render(inputs) {
     '  profile: us-rev0',
     `  size: ${hex(EXPECTED.bytes)}`,
     'semantic_source: config/splat/us_rev0.semantic.json',
-    `accepted_phase5a_product_sha256: ${EXPECTED.phase5aProductSha256}`,
+    `accepted_phase5a_product_sha256: ${identity.logicalSha256}`,
+    `accepted_phase5a_product_manifest_sha256: ${identity.productManifestSha256}`,
+    `accepted_phase5a_primary_ledger_sha256: ${identity.primaryLedgerSha256}`,
     `accepted_phase4_overlay_config_sha256: ${EXPECTED.overlayConfigSha256}`,
     `primary_row_count: ${EXPECTED.rows}`,
     `unresolved_function_candidate_count: ${EXPECTED.unresolvedFunctions}`,
@@ -231,7 +239,7 @@ function main() {
     }
   }
   if (check && mismatches.length) throw new Error(`Generated Phase 5B configuration drift: ${mismatches.join(', ')}`);
-  console.log(`Phase 5B production configuration ${check ? 'matches' : 'generated'}: ${EXPECTED.rows} primary rows, ${EXPECTED.bytes} bytes`);
+  console.log(`Phase 5B production configuration ${check ? 'matches' : 'generated'}: ${inputs.accepted.profile}, ${EXPECTED.rows} primary rows, ${EXPECTED.bytes} bytes`);
 }
 
 main();

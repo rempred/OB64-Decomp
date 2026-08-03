@@ -31,6 +31,13 @@ function main() {
   const semantic = JSON.parse(fs.readFileSync(semanticFile, 'utf8'));
   const overlayLinkerInputs = JSON.parse(fs.readFileSync(overlayLinkerFile, 'utf8'));
   const acceptedPhase5a = verifyPhase5aProduct(phase5aRoot);
+  if (semantic.acceptedPhase5a.profile !== acceptedPhase5a.profile
+      || semantic.acceptedPhase5a.productSha256 !== acceptedPhase5a.logicalSha256
+      || semantic.acceptedPhase5a.productManifestSha256 !== acceptedPhase5a.productManifestSha256
+      || semantic.acceptedPhase5a.primaryLedgerSha256 !== acceptedPhase5a.primaryLedgerSha256) {
+    fail('Verified Phase 5A identity is not propagated into semantic configuration');
+  }
+  if (semantic.inputHashes.primaryLedger !== acceptedPhase5a.primaryLedgerSha256) fail('Verified primary-ledger identity drift in semantic configuration');
   if (semantic.acceptedPhase5a.primaryRows !== EXPECTED.rows || semantic.rows.length !== EXPECTED.rows) fail('Production primary row count drift');
   if (semantic.acceptedPhase5a.representedBytes !== EXPECTED.bytes) fail('Production byte count drift');
   if (semantic.unresolvedSegmentCandidates.length !== EXPECTED.unresolvedSegments) fail('Unresolved segment disposition drift');
@@ -50,6 +57,12 @@ function main() {
   const acceptedOverlays = jsonl(path.join(phase5aRoot, 'overlay-containment.jsonl'));
   if (overlayLinkerInputs.mode !== 'primary-rom-only-with-explicit-phase4-overlay-reservations') fail('Overlay linker mode drift');
   if (overlayLinkerInputs.phase4OverlayConfigSha256 !== EXPECTED.overlayHash) fail('Overlay linker Phase 4 hash drift');
+  if (overlayLinkerInputs.phase5aProfile !== acceptedPhase5a.profile
+      || overlayLinkerInputs.phase5aProductSha256 !== acceptedPhase5a.logicalSha256
+      || overlayLinkerInputs.phase5aProductManifestSha256 !== acceptedPhase5a.productManifestSha256
+      || overlayLinkerInputs.phase5aPrimaryLedgerSha256 !== acceptedPhase5a.primaryLedgerSha256) {
+    fail('Verified Phase 5A identity is not propagated into overlay-linker inputs');
+  }
   if (!Array.isArray(overlayLinkerInputs.splatPrimaryRows) || overlayLinkerInputs.splatPrimaryRows.length !== EXPECTED.rows) fail('Overlay linker primary-row count drift');
   if (!Array.isArray(overlayLinkerInputs.overlayReservations) || overlayLinkerInputs.overlayReservations.length !== acceptedOverlays.length) fail('Overlay linker reservation count drift');
   if (JSON.stringify(overlayLinkerInputs.overlayReservations) !== JSON.stringify(acceptedOverlays)) fail('Overlay linker reservations differ from accepted Phase 5A containment');
