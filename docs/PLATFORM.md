@@ -260,7 +260,7 @@ correction. The worker result is commit
 `b9a2e5acc53d3aee009a46edae88fd2d5a5b89f8`. The completed cleanup is commit
 `ed78fc639dcdf4593b32d7092313161143ef9b8e`.
 
-The current matching-C owners are:
+At the Wave 6 boundary, the matching-C owners were:
 
 | Structural symbol | Static role | z64 ROM range | Bytes |
 |---|---|---:|---:|
@@ -299,6 +299,33 @@ full-ROM identities.
 
 This acceptance proves structural and build identity. It does not prove
 gameplay meaning, runtime behavior, editor readiness, or release safety.
+
+## Accepted Four-Lane Lane A Batch 01 Promotion — 2026-08-03
+
+Critical review accepted canonical commit
+`6ca9a3bdbb3197b4289d9d12e86a15bccc055c01` as the eleven-owner baseline.
+The parent review-verdict commit is
+`5dbb72cf3832b972555941a8fc351df652b5046b`.
+
+The bounded report-format correction froze in parent commit
+`2aa340ce7e5e7a996356a12f63d820c96015f624`. It removed one terminal LF and
+preserved every reviewed technical byte and claim.
+
+The four newly active structural owners are:
+
+| Structural symbol | Source owner | z64 ROM range | Bytes |
+|---|---|---:|---:|
+| `func_00003798` | `src/boot/boot_resource_state_reset.c` | `0x00003798..0x000037F8` | 96 |
+| `func_0000A1F8` | `src/boot/boot_resource_node_recursive_payload_clear.c` | `0x0000A1F8..0x0000A250` | 88 |
+| `func_0002CBCC` | `src/lib/rand.c` | `0x0002CBCC..0x0002CC00` | 52 |
+| `func_0025C8A4` | `src/lib/func_0025C8A4.c` | `0x0025C8A4..0x0025C8D0` | 44 |
+
+The accepted matching-C configuration has SHA-256
+`FF8E396A08341C31D28DF12EE9DF021A2A201477D63A68CF4E25B4F4442386F3`.
+Two fresh review runs preserved the canonical ROM and code-region identities.
+
+The eleven owners prove clean-room static structure and exact build identity.
+They do not prove gameplay meaning, runtime behavior, or editor readiness.
 
 ## Repo Invariants
 
