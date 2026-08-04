@@ -22,14 +22,13 @@ node tools/verify_setup.js --phase5a-root $phase5aRoot
 
 The command currently passes all 21 checks.
 
-Nineteen independently reviewed matching-C owners are active. They cover
+Twenty independently reviewed matching-C owners are active. They cover
 structural functions `func_000E5938`, `func_0000B33C`, `func_00007688`,
 `func_0000BC8C`, `func_00269470`, `func_0026B360`, `func_0026B820`,
 `func_00003798`, `func_0000A1F8`, `func_0002CBCC`, `func_0025C8A4`,
 `func_00008564`, `func_00023970`, `func_0002CB80`, `func_0025CAF0`,
-`func_00025000`, `func_0000D994`, `func_0002CD70`, and `func_0025DAB0`.
-
-Lane A `func_00269798` is independently accepted but awaits batch promotion.
+`func_00025000`, `func_0000D994`, `func_0002CD70`, `func_0025DAB0`, and
+`func_00269798`.
 
 Lane C `func_000241F8`, `func_0025CB60`, and `func_0025EFC8` are independently
 accepted but await batch promotion.
@@ -41,8 +40,8 @@ preserving every exact-build and clean-room gate.
 
 ## Ordered Work
 
-1. **Current lane promotions.** Promote only the already-selected Lane A and
-   Lane C batches. Do not select another function under the active allocation
+1. **Current lane promotions.** Promote only the already-selected Lane C batch.
+   Do not select another function under the active allocation
    freeze. Keep every original assembly owner as the comparison fallback.
 
 2. **Exact conventional builds.** Use fresh external outputs and authenticated

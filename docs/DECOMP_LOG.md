@@ -216,6 +216,14 @@ and replace the active log with a compact current-state summary.
   Matching proves clean-room static structure and build identity, not gameplay
   meaning or runtime behavior.
 
+- **2026-08-03 — Lane A batch 02 canonical promotion accepted**: Canonical
+  commit `675caf7db95d09ae8e945da9211ef9555983919e` adds independently reviewed
+  `func_00269798` as the twentieth matching-C owner. The Sol Max Critical review
+  froze at parent commit `bda65be82da0e28ea4bd0451022cf21715576a23`.
+  Two fresh review roots preserved exact full-ROM and code-region identities.
+  Matching proves clean-room static structure and build identity, not gameplay
+  meaning or runtime behavior.
+
 ## Dossier Set
 
 139+ dossiers under `docs/dossiers/`: 81 `boot-*` (chunk 0 splits), 47

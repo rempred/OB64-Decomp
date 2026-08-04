@@ -372,6 +372,26 @@ Three fresh review roots preserved exact ROM and code-region identities.
 All nineteen owners prove clean-room static structure and exact build identity.
 They do not prove gameplay meaning, runtime behavior, or editor readiness.
 
+## Accepted Four-Lane Lane A Batch 02 Promotion — 2026-08-03
+
+Critical review accepted canonical commit
+`675caf7db95d09ae8e945da9211ef9555983919e` as the twenty-owner baseline.
+The parent review-verdict commit is
+`bda65be82da0e28ea4bd0451022cf21715576a23`.
+
+The newly active structural owner is:
+
+| Structural symbol | Source owner | z64 ROM range | Bytes |
+|---|---|---:|---:|
+| `func_00269798` | `src/lib/func_00269798.c` | `0x00269798..0x002697DC` | 68 |
+
+The twenty-owner configuration has SHA-256
+`EDD763A657223516284ABCA5521F12A25742ACFA5CECC8DF1042AAC06B12685F`.
+Two fresh review roots preserved exact ROM and code-region identities.
+
+All twenty owners prove clean-room static structure and exact build identity.
+They do not prove gameplay meaning, runtime behavior, or editor readiness.
+
 ## Repo Invariants
 
 - Rev 0 only until the build, compare, and overlay workflow is stable.
