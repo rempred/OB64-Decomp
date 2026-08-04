@@ -33,19 +33,18 @@ structural functions `func_000E5938`, `func_0000B33C`, `func_00007688`,
 ## Active Goal
 
 Run `OB64-MC-6LW01-20260803` from the accepted twenty-three-owner baseline.
-Process the 24 frozen primary targets through six isolated lanes and two
-Highway Directors. Joe's 2026-08-03 instruction lifts the prior allocation
-freeze only for the program's 30 reserved pool rows.
+Supply 84 candidates through two Highway queues and six isolated lanes.
+Highway Directors lease a candidate only when a lane becomes free. No function
+is assigned to a lane in advance.
 
 ## Ordered Work
 
-1. **Six-lane matching-C wave.** Run four primary targets per lane in the
-   frozen manifest order. A reserved fallback requires a recorded primary
-   blocker and Parent Director authority.
+1. **Continuous six-lane matching C.** Lease candidates just in time from each
+   Highway's immutable queue. Keep at most one live lease per lane.
 
-2. **Serial highway promotion.** Promote each accepted three-lane highway
-   through separate Sol worker and independent-review tasks. Start the second
-   promotion from the newly accepted canonical baseline.
+2. **Serial checkpoint promotion.** Promote each six-acceptance Highway
+   checkpoint through separate Sol worker and independent-review tasks. Start
+   every promotion from the newest accepted canonical baseline.
 
 3. **Exact conventional builds.** Use fresh external outputs and authenticated
    Splat, asm-differ, GNU binutils, and KMC prerequisites.
