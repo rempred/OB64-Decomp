@@ -32,31 +32,37 @@ structural functions `func_000E5938`, `func_0000B33C`, `func_00007688`,
 
 ## Active Goal
 
-Hold the accepted twenty-three-owner baseline under the allocation freeze.
-Wait for Joe before selecting another function or opening another batch.
+Run `OB64-MC-6LW01-20260803` from the accepted twenty-three-owner baseline.
+Process the 24 frozen primary targets through six isolated lanes and two
+Highway Directors. Joe's 2026-08-03 instruction lifts the prior allocation
+freeze only for the program's 30 reserved pool rows.
 
 ## Ordered Work
 
-1. **Allocation-freeze wait.** All already-selected lane work is promoted and
-   independently accepted. Do not select another function or open another
-   batch until Joe changes the allocation freeze.
+1. **Six-lane matching-C wave.** Run four primary targets per lane in the
+   frozen manifest order. A reserved fallback requires a recorded primary
+   blocker and Parent Director authority.
 
-2. **Exact conventional builds.** Use fresh external outputs and authenticated
+2. **Serial highway promotion.** Promote each accepted three-lane highway
+   through separate Sol worker and independent-review tasks. Start the second
+   promotion from the newly accepted canonical baseline.
+
+3. **Exact conventional builds.** Use fresh external outputs and authenticated
    Splat, asm-differ, GNU binutils, and KMC prerequisites.
 
-3. **Evidence-based naming.** Keep structural `func_*` names until accepted
+4. **Evidence-based naming.** Keep structural `func_*` names until accepted
    runtime or causal evidence supports gameplay meaning.
 
-4. **Non-code owner promotion.** The first tracked batch is complete
+5. **Non-code owner promotion.** The first tracked batch is complete
    (`raw_header`, `raw_structural_gap`, ambiguous `raw_tail_data` under
    `data/source-owners/rev0/`). Promote further batches deliberately; keep
    archive gaps raw and explicitly ambiguous unless repeatable scanner
    evidence improves the classification.
 
-5. **Optional decode tracks.** Continue Section C directory work, Section B
+6. **Optional decode tracks.** Continue Section C directory work, Section B
    semantics, or Section A sample addressing when explicitly assigned.
 
-6. **Parent-controlled work.** Keep editor, emulator, and research dependencies
+7. **Parent-controlled work.** Keep editor, emulator, and research dependencies
    in the parent workspace under its current authority rules.
 
 ## Watch Items
