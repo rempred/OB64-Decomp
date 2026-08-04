@@ -287,10 +287,13 @@ identity. It does not prove runtime behavior or gameplay meaning.
 ## Accepted Four-Lane Lane C Target 1 — 2026-08-03
 
 Critical review accepted the cumulative row-565 Phase 5B correction and Lane C
-`func_000241F8`. The function remains on Lane C pending batch promotion. It is
-not yet an active canonical owner. The canonical correction commit is
+`func_000241F8`. The function remained on Lane C at this milestone. The
+canonical correction commit is
 `0e2499d35ec34dd7399cfb041cd17cc2c1b99af3`. The frozen Lane C result is
 `bb88c6d175ddf5e65c05bb7b0730d4466d243c13`.
+
+Correction — 2026-08-03: Lane C batch-01 promotion later made this function
+an active canonical owner. See the accepted Lane C batch section below.
 
 The parent review-verdict commit is
 `606771c76bc7b84d0d18a6f2b833b4d9ec3ca5ed`. Two fresh review builds
@@ -391,6 +394,30 @@ Two fresh review roots preserved exact ROM and code-region identities.
 
 All twenty owners prove clean-room static structure and exact build identity.
 They do not prove gameplay meaning, runtime behavior, or editor readiness.
+
+## Accepted Four-Lane Lane C Batch 01 Promotion — 2026-08-03
+
+Critical review accepted canonical commit
+`66871a108c19253248a8bfe6e91009d5c835cdda` as the twenty-three-owner
+baseline. The parent review-verdict commit is
+`3e25d724d05d7ef790403ccd7aa0c8fcc5117bdd`.
+
+The three newly active structural owners are:
+
+| Structural symbol | Source owner | z64 ROM range | Bytes |
+|---|---|---:|---:|
+| `func_000241F8` | `src/lib/list_insert_head_000241f8.c` | `0x000241F8..0x00024250` | 88 |
+| `func_0025CB60` | `src/lib/func_0025CB60.c` | `0x0025CB60..0x0025CBA8` | 72 |
+| `func_0025EFC8` | `src/lib/func_0025EFC8.c` | `0x0025EFC8..0x0025F058` | 144 |
+
+The twenty-three-owner configuration has SHA-256
+`C1221A8FF12270BF20B96E94A159839066F0DCA83FB411BA0B73A7B133AB2513`.
+Two fresh review roots preserved exact ROM and code-region identities. All eight
+worker and reviewer ROM outputs matched the normalized read-only retail master.
+
+All twenty-three owners prove clean-room static structure and exact build
+identity. They do not prove gameplay meaning, runtime behavior, or editor
+readiness.
 
 ## Repo Invariants
 

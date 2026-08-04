@@ -224,6 +224,15 @@ and replace the active log with a compact current-state summary.
   Matching proves clean-room static structure and build identity, not gameplay
   meaning or runtime behavior.
 
+- **2026-08-03 — Lane C batch 01 canonical promotion accepted**: Canonical
+  commit `66871a108c19253248a8bfe6e91009d5c835cdda` adds independently reviewed
+  `func_000241F8`, `func_0025CB60`, and `func_0025EFC8` as owners twenty-one
+  through twenty-three. The Sol Max Critical review froze at parent commit
+  `3e25d724d05d7ef790403ccd7aa0c8fcc5117bdd`. Two fresh review roots
+  preserved exact full-ROM, code-region, Phase 5B, and retail-master identities.
+  All already-selected four-lane work is now promoted and accepted. Function
+  allocation remains frozen pending Joe's next instruction.
+
 ## Dossier Set
 
 139+ dossiers under `docs/dossiers/`: 81 `boot-*` (chunk 0 splits), 47
