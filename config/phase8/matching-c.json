@@ -753,6 +753,40 @@
         {"offset": "0x00000040", "type": "R_MIPS_LO16", "symbol": "g_func_0025DAB0_value_0F74", "section": ".rel.text"},
         {"offset": "0x00000000", "type": "R_MIPS_32", "symbol": "func_0025DAB0", "section": ".rel.pdr"}
       ]
+    },
+    {
+      "symbol": "func_00269798",
+      "source": "src/lib/func_00269798.c",
+      "sourceSha256": "EF08FAFBC2CA323EC8031D93FA23D0A2B80363566EC5C41461822D6D08E9BD0E",
+      "originalAssembly": "asm/original/rev0/lib/func_00269798.s",
+      "originalAssemblySha256": "8C7A0F1025428DA6739FB746F0CE832E27A36A200227FB879BF238DF56115120",
+      "rowIndex": 4802,
+      "primaryId": "primary:344505a188bba71bbd95",
+      "sectionName": ".ob64.r4802",
+      "chunkIndex": 38,
+      "romStart": "0x00269798",
+      "romEndExclusive": "0x002697DC",
+      "vramStart": "0x80214BE8",
+      "bytes": 68,
+      "overlayDescriptorId": 12,
+      "descriptorRawSha256": "998FF913EC9C6AC3D5BDD3C3C24F78D0225D8C70D3F64AF0CC100CCAAA3BFBAA",
+      "expectedTextSha256": "595967A215671EFBC9CD91CD8420C25EFB4B54BCF82E6CF6C3092766095958F3",
+      "expectedObjectTextSha256": "30B3747E32AB4BE6DDE2E8BA9A458DC592C150CC0E607D329783237DC2FD8D3A",
+      "linkSymbols": {
+        "func_00023780": "0x80093380",
+        "g_func_00269470_flags": "0x80221038",
+        "g_func_00269470_value_3C": "0x8022103C"
+      },
+      "expectedRelocations": [
+        {"offset": "0x0000000C", "type": "R_MIPS_HI16", "symbol": "g_func_00269470_flags", "section": ".rel.text"},
+        {"offset": "0x00000010", "type": "R_MIPS_LO16", "symbol": "g_func_00269470_flags", "section": ".rel.text"},
+        {"offset": "0x00000018", "type": "R_MIPS_26", "symbol": "func_00023780", "section": ".rel.text"},
+        {"offset": "0x00000020", "type": "R_MIPS_HI16", "symbol": "func_00269470", "section": ".rel.text"},
+        {"offset": "0x00000024", "type": "R_MIPS_LO16", "symbol": "func_00269470", "section": ".rel.text"},
+        {"offset": "0x00000028", "type": "R_MIPS_HI16", "symbol": "g_func_00269470_value_3C", "section": ".rel.text"},
+        {"offset": "0x00000030", "type": "R_MIPS_LO16", "symbol": "g_func_00269470_value_3C", "section": ".rel.text"},
+        {"offset": "0x00000000", "type": "R_MIPS_32", "symbol": "func_00269798", "section": ".rel.pdr"}
+      ]
     }
   ],
   "compiler": {
