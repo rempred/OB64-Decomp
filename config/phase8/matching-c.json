@@ -787,6 +787,91 @@
         {"offset": "0x00000030", "type": "R_MIPS_LO16", "symbol": "g_func_00269470_value_3C", "section": ".rel.text"},
         {"offset": "0x00000000", "type": "R_MIPS_32", "symbol": "func_00269798", "section": ".rel.pdr"}
       ]
+    },
+    {
+      "symbol": "func_000241f8",
+      "source": "src/lib/list_insert_head_000241f8.c",
+      "sourceSha256": "99D1D827E64B1D382FECA26C984A4F3A72E66199E3E928AE7641B9FAD8C6A0BA",
+      "originalAssembly": "asm/original/rev0/lib/list_insert_head_000241f8.s",
+      "originalAssemblySha256": "D3F7A9C28A521515FB02E146C9D99B669B660C8AC74EA2A3F788B6717AE788CF",
+      "rowIndex": 565,
+      "primaryId": "primary:485acb8235385e9dd237",
+      "sectionName": ".ob64.r0565",
+      "chunkIndex": 2,
+      "romStart": "0x000241F8",
+      "romEndExclusive": "0x00024250",
+      "vramStart": "0x80093DF8",
+      "bytes": 88,
+      "overlayDescriptorId": null,
+      "descriptorRawSha256": null,
+      "expectedTextSha256": "49B3A877893317A142F9ECEF00F82B41CD8690CD6B98A3403A7DF4746978A2E6",
+      "expectedObjectTextSha256": "E8E764C44CEDDD3BA802F394DA2BFD959C1557E0F21E3228B23F13DB4A88271E",
+      "linkSymbols": {
+        "func_0008B820": "0x8008B820"
+      },
+      "expectedRelocations": [
+        {"offset": "0x00000020", "type": "R_MIPS_26", "symbol": "func_0008B820", "section": ".rel.text"},
+        {"offset": "0x00000038", "type": "R_MIPS_26", "symbol": "func_0008B820", "section": ".rel.text"},
+        {"offset": "0x00000000", "type": "R_MIPS_32", "symbol": "func_000241f8", "section": ".rel.pdr"}
+      ]
+    },
+    {
+      "symbol": "func_0025CB60",
+      "source": "src/lib/func_0025CB60.c",
+      "sourceSha256": "EFE8BA4486EC0386D67163331128AF4233CCDF39161825C4991BE259302A74F9",
+      "originalAssembly": "asm/original/rev0/lib/func_0025CB60.s",
+      "originalAssemblySha256": "2C4D5D2C10A7085EFD1762763BF3F41EDE5490622DF3AC7832C779E8BA1B4897",
+      "rowIndex": 4583,
+      "primaryId": "primary:c2c005e51fc40dd0e8a1",
+      "sectionName": ".ob64.r4583",
+      "chunkIndex": 37,
+      "romStart": "0x0025CB60",
+      "romEndExclusive": "0x0025CBA8",
+      "vramStart": "0x80207FA0",
+      "bytes": 72,
+      "overlayDescriptorId": 11,
+      "descriptorRawSha256": "F580F5972143E39492617DF07B603E2FC693E1B2D3B4840019EFC9D9C24DB822",
+      "expectedTextSha256": "A4F1073BACEBC9D481B66C003E09126868AA85B613F2E81346877E3D48FD686C",
+      "expectedObjectTextSha256": "2C74FD820B27D61B4232E91650FE6CA869A81EC010F2398978B77EECCC25312B",
+      "linkSymbols": {
+        "g_func_0025CB60_pointer": "0x80220F6C",
+        "g_func_0025CB60_byte_71": "0x80220F71",
+        "func_0020DF00": "0x8020DF00"
+      },
+      "expectedRelocations": [
+        {"offset": "0x00000018", "type": "R_MIPS_HI16", "symbol": "g_func_0025CB60_pointer", "section": ".rel.text"},
+        {"offset": "0x0000001C", "type": "R_MIPS_LO16", "symbol": "g_func_0025CB60_pointer", "section": ".rel.text"},
+        {"offset": "0x00000028", "type": "R_MIPS_HI16", "symbol": "g_func_0025CB60_byte_71", "section": ".rel.text"},
+        {"offset": "0x0000002C", "type": "R_MIPS_LO16", "symbol": "g_func_0025CB60_byte_71", "section": ".rel.text"},
+        {"offset": "0x00000034", "type": "R_MIPS_26", "symbol": "func_0020DF00", "section": ".rel.text"},
+        {"offset": "0x00000000", "type": "R_MIPS_32", "symbol": "func_0025CB60", "section": ".rel.pdr"}
+      ]
+    },
+    {
+      "symbol": "func_0025EFC8",
+      "source": "src/lib/func_0025EFC8.c",
+      "sourceSha256": "9528F35D2C4CCC7CA0FC573197F78DD19AB410DE21EBC76C5BA6811B5343E1F4",
+      "originalAssembly": "asm/original/rev0/lib/func_0025EFC8.s",
+      "originalAssemblySha256": "FD9C692314F2A8E78B46BAC4C71925AD18C9EE04AFE8BE2D12AAE97F3654028A",
+      "rowIndex": 4612,
+      "primaryId": "primary:3ca08a19824aac63ecf9",
+      "sectionName": ".ob64.r4612",
+      "chunkIndex": 37,
+      "romStart": "0x0025EFC8",
+      "romEndExclusive": "0x0025F058",
+      "vramStart": "0x8020A418",
+      "bytes": 144,
+      "overlayDescriptorId": 12,
+      "descriptorRawSha256": "998FF913EC9C6AC3D5BDD3C3C24F78D0225D8C70D3F64AF0CC100CCAAA3BFBAA",
+      "expectedTextSha256": "15F4DB90F27A124496016D916085099977B3861C39CD38669323DD80E0CEDE48",
+      "expectedObjectTextSha256": "10FD583A5C3E09DF86A143CE2BACEC91ADDE0F1B43788038733A828018050383",
+      "linkSymbols": {
+        "sqrtf": "0x800907E0"
+      },
+      "expectedRelocations": [
+        {"offset": "0x00000044", "type": "R_MIPS_26", "symbol": "sqrtf", "section": ".rel.text"},
+        {"offset": "0x00000000", "type": "R_MIPS_32", "symbol": "func_0025EFC8", "section": ".rel.pdr"}
+      ]
     }
   ],
   "compiler": {
