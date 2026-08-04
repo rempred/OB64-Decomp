@@ -206,6 +206,16 @@ and replace the active log with a compact current-state summary.
   identities. Matching proves static structure and build identity, not runtime
   behavior or gameplay meaning.
 
+- **2026-08-03 — four-lane canonical promotions accepted through Lane D**:
+  Lane A promotion `6ca9a3bdbb3197b4289d9d12e86a15bccc055c01`, Lane B accepted
+  correction `76ab996e818c54e23e51a89ae5fd32e96fcd8794`, and Lane D promotion
+  `6b493bf1108e026e516c74029e472ace89d7dd75` expand canonical matching C
+  from seven to nineteen structural owners. Lane D's fresh Sol Max Critical
+  review froze at parent commit `b650ccf2d677a974defcc0b27f8fe1fde77a2266`.
+  Three fresh review roots preserved exact full-ROM and code-region identities.
+  Matching proves clean-room static structure and build identity, not gameplay
+  meaning or runtime behavior.
+
 ## Dossier Set
 
 139+ dossiers under `docs/dossiers/`: 81 `boot-*` (chunk 0 splits), 47

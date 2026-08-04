@@ -25,7 +25,7 @@ Read this scope before trusting any source-ownership count:
 
 - The repository remains primarily a byte-exact disassembly atlas. Its 6,184
   tracked assembly owners use `.word` directives with generated decode comments.
-- Eleven independently written C functions now match their original ranges:
+- Nineteen independently written C functions now match their original ranges:
   `src/overlays/descriptor_02/func_000E5938.c` (36 bytes),
   `src/boot/boot_resource_pool_acquire_release.c` (168 bytes),
   `src/boot/boot_state_slot_flagged_dispatch_lookup.c` (224 bytes),
@@ -35,8 +35,16 @@ Read this scope before trusting any source-ownership count:
   `src/overlays/descriptor_12/func_0026B820.c` (1,196 bytes),
   `src/boot/boot_resource_state_reset.c` (96 bytes),
   `src/boot/boot_resource_node_recursive_payload_clear.c` (88 bytes),
-  `src/lib/rand.c` (52 bytes), and
-  `src/lib/func_0025C8A4.c` (44 bytes).
+  `src/lib/rand.c` (52 bytes),
+  `src/lib/func_0025C8A4.c` (44 bytes),
+  `src/boot/boot_state_slot_payload_copy_free.c` (56 bytes),
+  `src/lib/osCreateMesgQueue.c` (48 bytes),
+  `src/lib/hypotf.c` (64 bytes),
+  `src/lib/func_0025CAF0.c` (112 bytes),
+  `src/lib/list_remove_node.c` (64 bytes),
+  `src/boot/boot_decode_huffman_reset_state.c` (36 bytes),
+  `src/lib/memset_0002cd70.c` (48 bytes), and
+  `src/lib/func_0025DAB0.c` (80 bytes).
 - All accepted symbols remain structural. The boot filenames record accepted
   static evidence, not proven gameplay behavior.
 - The conventional build can replace explicitly pinned assembly sections with

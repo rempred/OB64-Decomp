@@ -327,6 +327,51 @@ Two fresh review runs preserved the canonical ROM and code-region identities.
 The eleven owners prove clean-room static structure and exact build identity.
 They do not prove gameplay meaning, runtime behavior, or editor readiness.
 
+## Accepted Four-Lane Lane B Batch 01 Promotion — 2026-08-03
+
+Critical review accepted the Lane B promotion with one record correction. The
+accepted canonical commit is
+`76ab996e818c54e23e51a89ae5fd32e96fcd8794`.
+
+The parent review-verdict commit is
+`31932c39c9b5b2de05a8593703855314d1fa2d65`.
+
+The four newly active structural owners are:
+
+| Structural symbol | Source owner | z64 ROM range | Bytes |
+|---|---|---:|---:|
+| `func_00008564` | `src/boot/boot_state_slot_payload_copy_free.c` | `0x00008564..0x0000859C` | 56 |
+| `func_00023970` | `src/lib/osCreateMesgQueue.c` | `0x00023970..0x000239A0` | 48 |
+| `func_0002CB80` | `src/lib/hypotf.c` | `0x0002CB80..0x0002CBC0` | 64 |
+| `func_0025CAF0` | `src/lib/func_0025CAF0.c` | `0x0025CAF0..0x0025CB60` | 112 |
+
+The fifteen-owner configuration has SHA-256
+`4BA9398C154B4C14097F9500DF45EE9EE15EB0B588CE138A50D5F186DA50887F`.
+Fresh builds preserved the canonical ROM and code-region identities.
+
+## Accepted Four-Lane Lane D Batch 01 Promotion — 2026-08-03
+
+Critical review accepted canonical commit
+`6b493bf1108e026e516c74029e472ace89d7dd75` as the nineteen-owner baseline.
+The parent review-verdict commit is
+`b650ccf2d677a974defcc0b27f8fe1fde77a2266`.
+
+The four newly active structural owners are:
+
+| Structural symbol | Source owner | z64 ROM range | Bytes |
+|---|---|---:|---:|
+| `func_00025000` | `src/lib/list_remove_node.c` | `0x00025000..0x00025040` | 64 |
+| `func_0000D994` | `src/boot/boot_decode_huffman_reset_state.c` | `0x0000D994..0x0000D9B8` | 36 |
+| `func_0002CD70` | `src/lib/memset_0002cd70.c` | `0x0002CD70..0x0002CDA0` | 48 |
+| `func_0025DAB0` | `src/lib/func_0025DAB0.c` | `0x0025DAB0..0x0025DB00` | 80 |
+
+The nineteen-owner configuration has SHA-256
+`0443605E350DA54EA1131DC693B66E630DB9C0B2B2DB13A6F66AE2127904940C`.
+Three fresh review roots preserved exact ROM and code-region identities.
+
+All nineteen owners prove clean-room static structure and exact build identity.
+They do not prove gameplay meaning, runtime behavior, or editor readiness.
+
 ## Repo Invariants
 
 - Rev 0 only until the build, compare, and overlay workflow is stable.
