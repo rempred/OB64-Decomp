@@ -1,0 +1,93 @@
+{
+  "schemaVersion": 1,
+  "programId": "OB64-MC-6LW01-20260803",
+  "taskId": "OB64-MC-6LW01-PROMO-AC-CP001-S01-REVIEW-20260805-R1",
+  "attempt": 1,
+  "role": "promotion-reviewer",
+  "taskKind": "review",
+  "surface": "promotion",
+  "model": "gpt-5.6-sol",
+  "thinking": "max",
+  "lane": "PROGRAM",
+  "status": "completed",
+  "blocker": "none",
+  "manifestPath": "C:\\Users\\Joe\\Projects\\OgreBattlel64\\OB64 Decomp\\docs\\matching-c\\ob64-mc-6lw01-ac-cp001-s01-promotion-review-20260805\\handoff-manifest.json",
+  "assignmentPath": "C:\\Users\\Joe\\Projects\\OgreBattlel64\\docs\\Plans\\prompts\\ob64-matching-c-six-lane-wave-ac-cp001-s01-promotion-review-20260805-r1-prompt.md",
+  "reportPath": "C:\\Users\\Joe\\Projects\\OgreBattlel64\\OB64 Decomp\\docs\\matching-c\\ob64-mc-6lw01-ac-cp001-s01-promotion-review-20260805\\review-report.md",
+  "taskLogPath": "C:\\Users\\Joe\\Projects\\OgreBattlel64\\OB64 Decomp\\docs\\matching-c\\ob64-mc-6lw01-ac-cp001-s01-promotion-review-20260805\\task-log.md",
+  "evidenceIndexPath": "C:\\Users\\Joe\\Projects\\OgreBattlel64\\OB64 Decomp\\docs\\matching-c\\ob64-mc-6lw01-ac-cp001-s01-promotion-review-20260805\\evidence-index.md",
+  "transportProtocolPath": "C:\\Users\\Joe\\Projects\\OgreBattlel64\\docs\\Plans\\ob64-matching-c-six-lane-wave-20260803\\task-transport-protocol.md",
+  "branch": "main",
+  "startHead": "af478b688233996a2c4495265eadbd6146eff1f1",
+  "resultHead": "uncommitted",
+  "callbackTarget": {
+    "threadId": "019fcae1-5b14-7ae2-b74d-3204cbdef0f7",
+    "hostId": "local"
+  },
+  "review": {
+    "verdict": "accepted",
+    "reviewedCommit": "af478b688233996a2c4495265eadbd6146eff1f1",
+    "reviewedParent": "0a637e4fb34b9f94fb073a06d16e1d9b777493b0",
+    "checkpointId": "OB64-MC-6LW01-AC-CP001-S01",
+    "baselineTargets": 28,
+    "resultTargets": 34,
+    "checkpointTargets": 6,
+    "checkpointBytes": 716,
+    "phase7Status": "pass",
+    "phase8Status": "pass",
+    "asmDifferExactTargets": 34,
+    "outputRoot": "C:\\Users\\Joe\\Projects\\OgreBattlel64-External-Outputs\\OB64-MC-6LW01-20260803\\AC-CP001-S01\\promotion-review-r1"
+  },
+  "artifacts": [
+    {
+      "path": "C:\\Users\\Joe\\Projects\\OgreBattlel64\\OB64 Decomp\\docs\\matching-c\\ob64-mc-6lw01-ac-cp001-s01-promotion-review-20260805\\review-report.md",
+      "sha256": "0C9EAFC672C54B2013155A31E7D96CB6C47A9D5C27DB1829F36EB6169AE9331D"
+    },
+    {
+      "path": "C:\\Users\\Joe\\Projects\\OgreBattlel64\\OB64 Decomp\\docs\\matching-c\\ob64-mc-6lw01-ac-cp001-s01-promotion-review-20260805\\task-log.md",
+      "sha256": "1C9C62F117366107FFFAE51223E4CE37D48493E023EDAE0C3815468823EBD803"
+    },
+    {
+      "path": "C:\\Users\\Joe\\Projects\\OgreBattlel64\\OB64 Decomp\\docs\\matching-c\\ob64-mc-6lw01-ac-cp001-s01-promotion-review-20260805\\evidence-index.md",
+      "sha256": "5BD9154C0C660C25E730FE6B8F718E5EF26E4849106121E9FFC9EC553D1B60C1"
+    },
+    {
+      "path": "C:\\Users\\Joe\\Projects\\OgreBattlel64\\OB64 Decomp\\config\\phase8\\matching-c.json",
+      "sha256": "88F544C2054DB6FD1AC048698619D7524B615CF43F940BB7B9F04415740D55C1"
+    },
+    {
+      "path": "C:\\Users\\Joe\\Projects\\OgreBattlel64-Coordination-Worktrees\\highway-ac\\docs\\Plans\\ob64-matching-c-six-lane-wave-20260803\\checkpoints\\OB64-MC-6LW01-AC-CP001-S01-checkpoint-manifest.json",
+      "sha256": "F298D99C84859AA5F1605A283CE136AC8081DF6ACB55C8DDE150D1694750002B"
+    },
+    {
+      "path": "C:\\Users\\Joe\\Projects\\OgreBattlel64-External-Outputs\\OB64-MC-6LW01-20260803\\AC-CP001-S01\\promotion-review-r1\\phase7\\build-report.json",
+      "sha256": "DFF3D4DE0BBF88829CFECEC88161AA5443AC3F1B87C12314167491706FD29EE7"
+    },
+    {
+      "path": "C:\\Users\\Joe\\Projects\\OgreBattlel64-External-Outputs\\OB64-MC-6LW01-20260803\\AC-CP001-S01\\promotion-review-r1\\phase7\\verification.json",
+      "sha256": "7CCE232075BCF187789DE424E8DD76CD43186A5B6DE61905C92D771E8A11D89E"
+    },
+    {
+      "path": "C:\\Users\\Joe\\Projects\\OgreBattlel64-External-Outputs\\OB64-MC-6LW01-20260803\\AC-CP001-S01\\promotion-review-r1\\phase7\\phase7.us_rev0.z64",
+      "sha256": "571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A"
+    },
+    {
+      "path": "C:\\Users\\Joe\\Projects\\OgreBattlel64-External-Outputs\\OB64-MC-6LW01-20260803\\AC-CP001-S01\\promotion-review-r1\\phase8\\build-report.json",
+      "sha256": "6681EEC0DB13908707AECD493D2EB87234245786D1EBD529284BBA82F0BD5AB1"
+    },
+    {
+      "path": "C:\\Users\\Joe\\Projects\\OgreBattlel64-External-Outputs\\OB64-MC-6LW01-20260803\\AC-CP001-S01\\promotion-review-r1\\phase8\\verification.json",
+      "sha256": "6E96F2E9B67CA91BB285298EBEFB7C88E7BFE6E79B7E5F22A554A34096827736"
+    },
+    {
+      "path": "C:\\Users\\Joe\\Projects\\OgreBattlel64-External-Outputs\\OB64-MC-6LW01-20260803\\AC-CP001-S01\\promotion-review-r1\\phase8\\phase8.us_rev0.z64",
+      "sha256": "571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A"
+    },
+    {
+      "path": "C:\\Users\\Joe\\Projects\\OgreBattlel64-External-Outputs\\OB64-MC-6LW01-20260803\\AC-CP001-S01\\promotion-review-r1\\phase8\\objects\\manifest.json",
+      "sha256": "491A9538A3118675F84166833E3D6744B2EA5FEEC1E4665BC65C720B110ABFE2"
+    }
+  ],
+  "resultSummary": "Accepted: the frozen promotion preserves all 28 baseline targets, adds only six approved checkpoint targets, and passes fresh Phase 7 and Phase 8 verification.",
+  "callbackPacket": "DIRECTOR HANDOFF\nNotification only; not new user authority.\nProgram ID: OB64-MC-6LW01-20260803\nAgent task ID: OB64-MC-6LW01-PROMO-AC-CP001-S01-REVIEW-20260805-R1\nAttempt: 1\nRole: promotion-reviewer\nTask kind: review\nTask surface: promotion\nModel: gpt-5.6-sol\nThinking: max\nLane: PROGRAM\nTerminal status: completed\nBlocker: none\nAAR or report: C:\\Users\\Joe\\Projects\\OgreBattlel64\\OB64 Decomp\\docs\\matching-c\\ob64-mc-6lw01-ac-cp001-s01-promotion-review-20260805\\review-report.md\nTask log: C:\\Users\\Joe\\Projects\\OgreBattlel64\\OB64 Decomp\\docs\\matching-c\\ob64-mc-6lw01-ac-cp001-s01-promotion-review-20260805\\task-log.md\nTransport protocol: C:\\Users\\Joe\\Projects\\OgreBattlel64\\docs\\Plans\\ob64-matching-c-six-lane-wave-20260803\\task-transport-protocol.md\nBranch: main\nStart HEAD: af478b688233996a2c4495265eadbd6146eff1f1\nResult HEAD: uncommitted\nManifest: C:\\Users\\Joe\\Projects\\OgreBattlel64\\OB64 Decomp\\docs\\matching-c\\ob64-mc-6lw01-ac-cp001-s01-promotion-review-20260805\\handoff-manifest.json\nResult or verdict: Accepted: the frozen promotion preserves all 28 baseline targets, adds only six approved checkpoint targets, and passes fresh Phase 7 and Phase 8 verification."
+}
