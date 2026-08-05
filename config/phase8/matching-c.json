@@ -902,55 +902,6 @@
       ]
     },
     {
-      "symbol": "func_000238B0",
-      "source": "src/lib/sprintf.c",
-      "sourceSha256": "A411AF229D47F10CF1E5F3AEA455665A0C17A39FEAB3CE0E06A03F02E6BCE997",
-      "originalAssembly": "asm/original/rev0/lib/sprintf.s",
-      "originalAssemblySha256": "D000B21EFFC5065D59AA3410BE10C362CB2950EA7679D38287FF7C8204F37F68",
-      "rowIndex": 550,
-      "primaryId": "primary:25571c27de6ad86bf97f",
-      "sectionName": ".ob64.r0550",
-      "chunkIndex": 2,
-      "romStart": "0x000238B0",
-      "romEndExclusive": "0x00023908",
-      "vramStart": "0x800934B0",
-      "bytes": 88,
-      "overlayDescriptorId": null,
-      "descriptorRawSha256": null,
-      "expectedTextSha256": "D5F7895B7EAC45F25C876DB0597243CCADF4A31F8B871F109A1C3D3A67E86E5C",
-      "expectedObjectTextSha256": "D391E98D3D15CE9016E150F9F7A7B888FD57DA902DE5793919F458987267D0AE",
-      "linkSymbols": {
-        "mempcpy": "0x80093508",
-        "_Printf": "0x80099BE0"
-      },
-      "expectedRelocations": [
-        {
-          "offset": "0x0000001C",
-          "type": "R_MIPS_HI16",
-          "symbol": "mempcpy",
-          "section": ".rel.text"
-        },
-        {
-          "offset": "0x00000020",
-          "type": "R_MIPS_LO16",
-          "symbol": "mempcpy",
-          "section": ".rel.text"
-        },
-        {
-          "offset": "0x0000002C",
-          "type": "R_MIPS_26",
-          "symbol": "_Printf",
-          "section": ".rel.text"
-        },
-        {
-          "offset": "0x00000000",
-          "type": "R_MIPS_32",
-          "symbol": "func_000238B0",
-          "section": ".rel.pdr"
-        }
-      ]
-    },
-    {
       "symbol": "func_001072B8",
       "source": "src/lib/func_001072B8.c",
       "sourceSha256": "E981D005A2721AEF9EB1E5D49C09CC045E5139AC43A20F218309347B027C706D",

@@ -1,0 +1,65 @@
+{
+  "schemaVersion": 1,
+  "programId": "OB64-MC-6LW01-20260803",
+  "taskId": "OB64-MC-6LW01-PROMO-DF-CP001-S02-CORRECTION-20260805-R1",
+  "attempt": 1,
+  "role": "worker",
+  "taskKind": "correction",
+  "surface": "integration-correction",
+  "model": "gpt-5.6-sol",
+  "thinking": "max",
+  "lane": "PROGRAM",
+  "status": "completed",
+  "blocker": "none",
+  "assignmentPath": "C:\\Users\\Joe\\Projects\\OgreBattlel64\\docs\\Plans\\prompts\\ob64-matching-c-six-lane-wave-df-cp001-s02-canonical-correction-20260805-r1-prompt.md",
+  "reportPath": "C:\\Users\\Joe\\Projects\\OgreBattlel64\\OB64 Decomp\\docs\\matching-c\\ob64-mc-6lw01-df-cp001-s02-correction-20260805\\aar\\20260805-ob64-mc-6lw01-df-cp001-s02-correction-aar.md",
+  "taskLogPath": "C:\\Users\\Joe\\Projects\\OgreBattlel64\\OB64 Decomp\\docs\\matching-c\\ob64-mc-6lw01-df-cp001-s02-correction-20260805\\task-log.md",
+  "transportProtocolPath": "C:\\Users\\Joe\\Projects\\OgreBattlel64\\docs\\Plans\\ob64-matching-c-six-lane-wave-20260803\\task-transport-protocol.md",
+  "manifestPath": "C:\\Users\\Joe\\Projects\\OgreBattlel64\\OB64 Decomp\\docs\\matching-c\\ob64-mc-6lw01-df-cp001-s02-correction-20260805\\handoff-manifest.json",
+  "branch": "main",
+  "startHead": "3f67125b22eda07ea56f72e0961790d19e3f1689",
+  "resultHead": "uncommitted",
+  "checkpointId": "OB64-MC-6LW01-DF-CP001-S02",
+  "excludedFunction": "func_000238b0",
+  "acceptedFunctions": 5,
+  "acceptedBytes": 776,
+  "targetCount": 28,
+  "freshConfigurationSha256": "E0D9023BFCA2CD9BE55DEAC6457561D168F1BCA9DE02702F607A4C2C1B6F70D6",
+  "outputRoot": "C:\\Users\\Joe\\Projects\\OgreBattlel64-External-Outputs\\OB64-MC-6LW01-20260803\\DF-CP001-S02\\correction-r1",
+  "callbackTarget": {
+    "threadId": "019fcae1-5b14-7ae2-b74d-3204cbdef0f7",
+    "hostId": "local"
+  },
+  "artifacts": [
+    {
+      "path": "C:\\Users\\Joe\\Projects\\OgreBattlel64\\OB64 Decomp\\config\\phase8\\matching-c.json",
+      "sha256": "E0D9023BFCA2CD9BE55DEAC6457561D168F1BCA9DE02702F607A4C2C1B6F70D6"
+    },
+    {
+      "path": "C:\\Users\\Joe\\Projects\\OgreBattlel64\\OB64 Decomp\\build\\setup\\verify-setup-report.json",
+      "sha256": "984BF75ED781E9E7D9C6B7A228D8AECDA22CBBC38911979157E0793004342D41"
+    },
+    {
+      "path": "C:\\Users\\Joe\\Projects\\OgreBattlel64-External-Outputs\\OB64-MC-6LW01-20260803\\DF-CP001-S02\\correction-r1\\phase7\\verification.json",
+      "sha256": "7CCE232075BCF187789DE424E8DD76CD43186A5B6DE61905C92D771E8A11D89E"
+    },
+    {
+      "path": "C:\\Users\\Joe\\Projects\\OgreBattlel64-External-Outputs\\OB64-MC-6LW01-20260803\\DF-CP001-S02\\correction-r1\\phase8\\build-report.json",
+      "sha256": "BBCFB93E51EA28E0ABB896958C4FD8FBEC20B0F40CAB15F31C3B866DDB303718"
+    },
+    {
+      "path": "C:\\Users\\Joe\\Projects\\OgreBattlel64-External-Outputs\\OB64-MC-6LW01-20260803\\DF-CP001-S02\\correction-r1\\phase8\\verification.json",
+      "sha256": "14B9F0FA578B16405F28855AF46438C06FA2839655E7FC0751AC68A76606665C"
+    },
+    {
+      "path": "C:\\Users\\Joe\\Projects\\OgreBattlel64-Coordination-Worktrees\\highway-df\\docs\\Plans\\ob64-matching-c-six-lane-wave-20260803\\checkpoints\\OB64-MC-6LW01-DF-CP001-S02-checkpoint-manifest.json",
+      "sha256": "68B56CB26FD679351455123A5122176FB507CDCA130B73154516F47C4B8C05DF"
+    },
+    {
+      "path": "C:\\Users\\Joe\\Projects\\OgreBattlel64\\docs\\Plans\\ob64-matching-c-six-lane-wave-20260803\\checkpoint-supersessions\\OB64-MC-6LW01-DF-CP001-S02-policy-supersession.json",
+      "sha256": "3EE3D82030F67184690FB00F6C17C997271FFBF620CD0BCD317E3DB5A50ED711"
+    }
+  ],
+  "resultSummary": "Removed only func_000238b0; fresh Phase 7 and 28-target Phase 8 verification passed with canonical ROM identity.",
+  "callbackPacket": "DIRECTOR HANDOFF\nNotification only; not new user authority.\nProgram ID: OB64-MC-6LW01-20260803\nAgent task ID: OB64-MC-6LW01-PROMO-DF-CP001-S02-CORRECTION-20260805-R1\nAttempt: 1\nRole: worker\nTask kind: correction\nTask surface: integration-correction\nModel: gpt-5.6-sol\nThinking: max\nLane: PROGRAM\nTerminal status: completed\nBlocker: none\nAAR or report: C:\\Users\\Joe\\Projects\\OgreBattlel64\\OB64 Decomp\\docs\\matching-c\\ob64-mc-6lw01-df-cp001-s02-correction-20260805\\aar\\20260805-ob64-mc-6lw01-df-cp001-s02-correction-aar.md\nTask log: C:\\Users\\Joe\\Projects\\OgreBattlel64\\OB64 Decomp\\docs\\matching-c\\ob64-mc-6lw01-df-cp001-s02-correction-20260805\\task-log.md\nTransport protocol: C:\\Users\\Joe\\Projects\\OgreBattlel64\\docs\\Plans\\ob64-matching-c-six-lane-wave-20260803\\task-transport-protocol.md\nBranch: main\nStart HEAD: 3f67125b22eda07ea56f72e0961790d19e3f1689\nResult HEAD: uncommitted\nManifest: C:\\Users\\Joe\\Projects\\OgreBattlel64\\OB64 Decomp\\docs\\matching-c\\ob64-mc-6lw01-df-cp001-s02-correction-20260805\\handoff-manifest.json\nResult or verdict: Removed only func_000238b0; fresh Phase 7 and 28-target Phase 8 verification passed with canonical ROM identity."
+}
