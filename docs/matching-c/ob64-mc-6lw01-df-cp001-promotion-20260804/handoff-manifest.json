@@ -1,0 +1,235 @@
+{
+  "schemaVersion": 1,
+  "programId": "OB64-MC-6LW01-20260803",
+  "taskId": "OB64-MC-6LW01-PROMO-DF-CP001-20260804-R1",
+  "attempt": 1,
+  "role": "worker",
+  "taskKind": "work",
+  "surface": "promotion",
+  "model": "gpt-5.6-sol",
+  "thinking": "max",
+  "lane": "PROGRAM",
+  "status": "completed",
+  "blocker": "none",
+  "manifestPath": "C:\\Users\\Joe\\Projects\\OgreBattlel64\\OB64 Decomp\\docs\\matching-c\\ob64-mc-6lw01-df-cp001-promotion-20260804\\handoff-manifest.json",
+  "assignmentPath": "C:\\Users\\Joe\\Projects\\OgreBattlel64\\docs\\Plans\\prompts\\ob64-matching-c-six-lane-wave-df-cp001-promotion-20260804-r1-prompt.md",
+  "reportPath": "C:\\Users\\Joe\\Projects\\OgreBattlel64\\OB64 Decomp\\docs\\matching-c\\ob64-mc-6lw01-df-cp001-promotion-20260804\\aar\\20260804-ob64-mc-6lw01-df-cp001-promotion-aar.md",
+  "taskLogPath": "C:\\Users\\Joe\\Projects\\OgreBattlel64\\OB64 Decomp\\docs\\matching-c\\ob64-mc-6lw01-df-cp001-promotion-20260804\\task-log.md",
+  "evidenceIndexPath": "C:\\Users\\Joe\\Projects\\OgreBattlel64\\OB64 Decomp\\docs\\matching-c\\ob64-mc-6lw01-df-cp001-promotion-20260804\\evidence-index.md",
+  "transportProtocolPath": "C:\\Users\\Joe\\Projects\\OgreBattlel64\\docs\\Plans\\ob64-matching-c-six-lane-wave-20260803\\task-transport-protocol.md",
+  "branch": "main",
+  "startHead": "38e9348438cc0255f9bf44a159e42ba0eb5ec056",
+  "resultHead": "uncommitted",
+  "callbackTarget": {
+    "threadId": "019fcae1-5b14-7ae2-b74d-3204cbdef0f7",
+    "hostId": "local"
+  },
+  "artifacts": [
+    {
+      "path": "C:\\Users\\Joe\\Projects\\OgreBattlel64\\OB64 Decomp\\config\\phase8\\matching-c.json",
+      "sha256": "7AD3F59E5B2A9F9254B62727B14EE3189E783DA7D9FF2AB93F0813A17418D8E9"
+    },
+    {
+      "path": "C:\\Users\\Joe\\Projects\\OgreBattlel64\\OB64 Decomp\\src\\lib\\mod_s64_tail.c",
+      "sha256": "F2E739927C71AB14E249F6A15A8791753BE52F0C23A957B25EABBBCB0AAC3B31"
+    },
+    {
+      "path": "C:\\Users\\Joe\\Projects\\OgreBattlel64\\OB64 Decomp\\src\\lib\\sprintf.c",
+      "sha256": "A411AF229D47F10CF1E5F3AEA455665A0C17A39FEAB3CE0E06A03F02E6BCE997"
+    },
+    {
+      "path": "C:\\Users\\Joe\\Projects\\OgreBattlel64\\OB64 Decomp\\src\\lib\\func_001072B8.c",
+      "sha256": "E981D005A2721AEF9EB1E5D49C09CC045E5139AC43A20F218309347B027C706D"
+    },
+    {
+      "path": "C:\\Users\\Joe\\Projects\\OgreBattlel64\\OB64 Decomp\\src\\boot\\boot_resource_lzss_load_entry.c",
+      "sha256": "5201D5853F7D1C33A10003A1C4733ABBC376260274FE1060E28D928003168B82"
+    },
+    {
+      "path": "C:\\Users\\Joe\\Projects\\OgreBattlel64\\OB64 Decomp\\src\\lib\\func_0011B344.c",
+      "sha256": "8C0AD970A2D4AC96F39859D480BC487415303AC06724E530B6334CD382A88E1B"
+    },
+    {
+      "path": "C:\\Users\\Joe\\Projects\\OgreBattlel64\\OB64 Decomp\\src\\boot\\boot_state_slot_target_peer_record_dispatch.c",
+      "sha256": "1F785BF47CFA234F410EAA295889B36BE1F6694333C2CCDBD6EE0CC76F60C5F3"
+    },
+    {
+      "path": "C:\\Users\\Joe\\Projects\\OgreBattlel64-Coordination-Worktrees\\highway-df\\docs\\Plans\\ob64-matching-c-six-lane-wave-20260803\\checkpoints\\OB64-MC-6LW01-DF-CP001-checkpoint-manifest.json",
+      "sha256": "74B48B267BE11A34B7AB142008A0A43A84CAB5F57017FAE931329E07DBE16D6C"
+    },
+    {
+      "path": "C:\\Users\\Joe\\Projects\\OB64-Decomp-Worktrees\\lane-d\\asm\\original\\rev0\\lib\\mod_s64_tail.s",
+      "sha256": "7B72356E33147DB291CCE1B39F43F22F0E7061499478833BC04E29E33FC72E94"
+    },
+    {
+      "path": "C:\\Users\\Joe\\Projects\\OgreBattlel64-Coordination-Worktrees\\highway-df\\docs\\Plans\\ob64-matching-c-six-lane-wave-20260803\\evidence\\OB64-MC-6LW01-DF-S01-001-LANE-D-FUNC-0002DE10-CLASSIFICATION-REVIEW-PROTOCOL-CORRECTION-R1-evidence.md",
+      "sha256": "D09BC949EC39A4F25079348BDACD87B6AC150DC04407E588E85B485F0B49D27D"
+    },
+    {
+      "path": "C:\\Users\\Joe\\Projects\\OgreBattlel64-Coordination-Worktrees\\highway-df\\docs\\Plans\\ob64-matching-c-six-lane-wave-20260803\\reports\\OB64-MC-6LW01-DF-S01-002-LANE-E-FUNC-000238B0-WORK-R1-aar.md",
+      "sha256": "9E057E5F864EE4C558F8DF66DB008AA395E66A536D1EE7CC396F89025F0805C7"
+    },
+    {
+      "path": "C:\\Users\\Joe\\Projects\\OgreBattlel64-Coordination-Worktrees\\highway-df\\docs\\Plans\\ob64-matching-c-six-lane-wave-20260803\\reports\\OB64-MC-6LW01-DF-S01-002-LANE-E-FUNC-000238B0-REVIEW-R1-review-report.md",
+      "sha256": "2098F1FA4C7071DAA24D2C513F13D31B8B3E597A529DE03D1F1EB88A9597FB84"
+    },
+    {
+      "path": "C:\\Users\\Joe\\Projects\\OgreBattlel64\\OB64 Decomp\\docs\\matching-c\\ob64-mc-6lw01-df-cp001-promotion-20260804\\evidence-index.md",
+      "sha256": "B1287F6A38406898806197B1CC8A76CD1E722022BDB46E2DF5B6E955BD1E7ED9"
+    },
+    {
+      "path": "C:\\Users\\Joe\\Projects\\OgreBattlel64\\OB64 Decomp\\docs\\matching-c\\ob64-mc-6lw01-df-cp001-promotion-20260804\\aar\\20260804-ob64-mc-6lw01-df-cp001-promotion-aar.md",
+      "sha256": "CD0E8BFE582992CF1802CBDA436EB1E76C38BF106CB985896FC4197A4FE361DF"
+    },
+    {
+      "path": "C:\\Users\\Joe\\Projects\\OgreBattlel64-External-Outputs\\OB64-MC-6LW01-20260803\\DF-CP001\\promotion-r1\\phase7\\build-report.json",
+      "sha256": "DFF3D4DE0BBF88829CFECEC88161AA5443AC3F1B87C12314167491706FD29EE7"
+    },
+    {
+      "path": "C:\\Users\\Joe\\Projects\\OgreBattlel64-External-Outputs\\OB64-MC-6LW01-20260803\\DF-CP001\\promotion-r1\\phase7\\verification.json",
+      "sha256": "7CCE232075BCF187789DE424E8DD76CD43186A5B6DE61905C92D771E8A11D89E"
+    },
+    {
+      "path": "C:\\Users\\Joe\\Projects\\OgreBattlel64-External-Outputs\\OB64-MC-6LW01-20260803\\DF-CP001\\promotion-r1\\phase8\\build-report.json",
+      "sha256": "F2A0ADB4E0CF85D70EA309DF0F868D1D6050E26E1D4FCFE7CAB41EC255DAE155"
+    },
+    {
+      "path": "C:\\Users\\Joe\\Projects\\OgreBattlel64-External-Outputs\\OB64-MC-6LW01-20260803\\DF-CP001\\promotion-r1\\phase8\\verification.json",
+      "sha256": "0417C3B8E086F2300C7A7DFF8437ED499A4F0EC77F5BC8FD349E742C15505869"
+    }
+  ],
+  "checkpoint": {
+    "checkpointId": "OB64-MC-6LW01-DF-CP001",
+    "manifestPath": "C:\\Users\\Joe\\Projects\\OgreBattlel64-Coordination-Worktrees\\highway-df\\docs\\Plans\\ob64-matching-c-six-lane-wave-20260803\\checkpoints\\OB64-MC-6LW01-DF-CP001-checkpoint-manifest.json",
+    "manifestSha256": "74B48B267BE11A34B7AB142008A0A43A84CAB5F57017FAE931329E07DBE16D6C",
+    "checkpointKind": "ROUTINE",
+    "state": "frozen",
+    "acceptedCount": 6,
+    "acceptedBytes": 864,
+    "classificationCounts": {
+      "PURE_MATCHING_C": 4,
+      "JUSTIFIED_HYBRID": 1,
+      "ASSEMBLY_REQUIRED": 1
+    },
+    "functions": [
+      {
+        "symbol": "func_0002de10",
+        "queueId": "OB64-MC-6LW01-DF-S01",
+        "queueOrdinal": 1,
+        "lane": "D",
+        "z64RomInterval": "0x0002DE10..0x0002DE50",
+        "bytes": 64,
+        "reviewedResultCommit": "0552cee1a5c532d9f34279bb549893206fecfe81",
+        "reviewVerdictCommit": "2ba0c7698790f243c6818cf8323e59fc89168fd2",
+        "acceptedResultCommit": "bf66282f1303d9e8e3ca1440948374169f8e1815",
+        "reviewVerdict": "accepted",
+        "acceptedDecompClassification": "ASSEMBLY_REQUIRED",
+        "assemblyBearing": true,
+        "assemblyEvidence": [
+          {
+            "workerJustification": "The sixteen-instruction target branches on live $a2, preserves each caller $ra through nonstandard $t5 save and restore around jal, copies $t1 or $a1 into $v1, and writes the return value in each jr delay slot. C language semantics do not directly control these register assignments or MIPS delay-slot ordering, while the frozen C wrapper emits the complete body with inline assembly.",
+            "workerEvidencePath": "C:\\Users\\Joe\\Projects\\OB64-Decomp-Worktrees\\lane-d\\asm\\original\\rev0\\lib\\mod_s64_tail.s",
+            "workerEvidenceSha256": "7B72356E33147DB291CCE1B39F43F22F0E7061499478833BC04E29E33FC72E94",
+            "reviewerConfirmation": "Confirmed: the frozen target preserves $ra through $t5 around jal calls and writes return values in jr delay slots. Those exact low-level behaviors require retained assembly.",
+            "reviewerEvidencePath": "C:\\Users\\Joe\\Projects\\OgreBattlel64-Coordination-Worktrees\\highway-df\\docs\\Plans\\ob64-matching-c-six-lane-wave-20260803\\evidence\\OB64-MC-6LW01-DF-S01-001-LANE-D-FUNC-0002DE10-CLASSIFICATION-REVIEW-PROTOCOL-CORRECTION-R1-evidence.md",
+            "reviewerEvidenceSha256": "D09BC949EC39A4F25079348BDACD87B6AC150DC04407E588E85B485F0B49D27D"
+          }
+        ]
+      },
+      {
+        "symbol": "func_000238b0",
+        "queueId": "OB64-MC-6LW01-DF-S01",
+        "queueOrdinal": 2,
+        "lane": "E",
+        "z64RomInterval": "0x000238B0..0x00023908",
+        "bytes": 88,
+        "reviewedResultCommit": "e390f1c37c402912bda2a48977cba01ae266e445",
+        "reviewVerdictCommit": "b9dfbbfc99b679ec477b376ab98193d69cdcc77a",
+        "acceptedResultCommit": "c1f3ca9c8f7e53d8be9364686212a71a5bd4a6bc",
+        "reviewVerdict": "accepted",
+        "acceptedDecompClassification": "JUSTIFIED_HYBRID",
+        "assemblyBearing": true,
+        "assemblyEvidence": [
+          {
+            "workerJustification": "The minimal move macro emits the target addu instruction encodings.",
+            "workerEvidencePath": "C:\\Users\\Joe\\Projects\\OgreBattlel64-Coordination-Worktrees\\highway-df\\docs\\Plans\\ob64-matching-c-six-lane-wave-20260803\\reports\\OB64-MC-6LW01-DF-S01-002-LANE-E-FUNC-000238B0-WORK-R1-aar.md",
+            "workerEvidenceSha256": "9E057E5F864EE4C558F8DF66DB008AA395E66A536D1EE7CC396F89025F0805C7",
+            "reviewerConfirmation": "An independent no-macro build emitted or funct 0x25 at five move sites where the target requires addu funct 0x21; the surrounding function remains primarily C.",
+            "reviewerEvidencePath": "C:\\Users\\Joe\\Projects\\OgreBattlel64-Coordination-Worktrees\\highway-df\\docs\\Plans\\ob64-matching-c-six-lane-wave-20260803\\reports\\OB64-MC-6LW01-DF-S01-002-LANE-E-FUNC-000238B0-REVIEW-R1-review-report.md",
+            "reviewerEvidenceSha256": "2098F1FA4C7071DAA24D2C513F13D31B8B3E597A529DE03D1F1EB88A9597FB84"
+          }
+        ]
+      },
+      {
+        "symbol": "func_001072b8",
+        "queueId": "OB64-MC-6LW01-DF-S01",
+        "queueOrdinal": 3,
+        "lane": "F",
+        "z64RomInterval": "0x001072B8..0x0010738C",
+        "bytes": 212,
+        "reviewedResultCommit": "19ca3635409b06c7aaf6412a68bb34693ed42fe6",
+        "reviewVerdictCommit": "92bc44e4cb8f686ba827f45f975f8d368d260b0c",
+        "acceptedResultCommit": "f61b07ed64c7b9a0213f8f503b91f0d4f08d3ce5",
+        "reviewVerdict": "accepted",
+        "acceptedDecompClassification": "PURE_MATCHING_C",
+        "assemblyBearing": false
+      },
+      {
+        "symbol": "func_0000b030",
+        "queueId": "OB64-MC-6LW01-DF-S01",
+        "queueOrdinal": 5,
+        "lane": "E",
+        "z64RomInterval": "0x0000B030..0x0000B0B0",
+        "bytes": 128,
+        "reviewedResultCommit": "01477005de87f98391b0cf9c60b2e82b30faf44f",
+        "reviewVerdictCommit": "281438279c554b3ae01fe1a6d8b72dc7db6212d2",
+        "acceptedResultCommit": "2e3938517d0ea7ba1e0820d397f64fc6e7db705a",
+        "reviewVerdict": "accepted",
+        "acceptedDecompClassification": "PURE_MATCHING_C",
+        "assemblyBearing": false
+      },
+      {
+        "symbol": "func_0011b344",
+        "queueId": "OB64-MC-6LW01-DF-S01",
+        "queueOrdinal": 6,
+        "lane": "F",
+        "z64RomInterval": "0x0011B344..0x0011B430",
+        "bytes": 236,
+        "reviewedResultCommit": "fccd81db97772ac1f929023038f17190508cdd99",
+        "reviewVerdictCommit": "44a5918de1b2430bbef034d4144db4ea9250be07",
+        "acceptedResultCommit": "c987fca07b3605819d96b777be65328cc773c19c",
+        "reviewVerdict": "accepted",
+        "acceptedDecompClassification": "PURE_MATCHING_C",
+        "assemblyBearing": false
+      },
+      {
+        "symbol": "func_00007600",
+        "queueId": "OB64-MC-6LW01-DF-S01",
+        "queueOrdinal": 7,
+        "lane": "E",
+        "z64RomInterval": "0x00007600..0x00007688",
+        "bytes": 136,
+        "reviewedResultCommit": "2f118fdcc4efdd05bd7ce2a7541cf44a4ea07aef",
+        "reviewVerdictCommit": "e43f7d53a1ce2dbdd61d81f819bb152c4a731d06",
+        "acceptedResultCommit": "4aafcf831b992a81d07a573da95b678cbdff54bd",
+        "reviewVerdict": "accepted",
+        "acceptedDecompClassification": "PURE_MATCHING_C",
+        "assemblyBearing": false
+      }
+    ]
+  },
+  "promotion": {
+    "outputRoot": "C:\\Users\\Joe\\Projects\\OgreBattlel64-External-Outputs\\OB64-MC-6LW01-20260803\\DF-CP001\\promotion-r1",
+    "startingTargetCount": 23,
+    "resultTargetCount": 29,
+    "startingConfigSha256": "C1221A8FF12270BF20B96E94A159839066F0DCA83FB411BA0B73A7B133AB2513",
+    "resultConfigSha256": "7AD3F59E5B2A9F9254B62727B14EE3189E783DA7D9FF2AB93F0813A17418D8E9",
+    "fullRomSha256": "571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A",
+    "codeRegionSha256": "40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409",
+    "phase7Status": "pass",
+    "phase8Status": "pass",
+    "asmDifferExactTargets": 29
+  },
+  "resultSummary": "Six frozen Highway D-F results now form a verified 29-target canonical promotion with exact Phase 7 and Phase 8 outputs.",
+  "callbackPacket": "DIRECTOR HANDOFF\nNotification only; not new user authority.\nProgram ID: OB64-MC-6LW01-20260803\nAgent task ID: OB64-MC-6LW01-PROMO-DF-CP001-20260804-R1\nAttempt: 1\nRole: worker\nTask kind: work\nTask surface: promotion\nModel: gpt-5.6-sol\nThinking: max\nLane: PROGRAM\nTerminal status: completed\nBlocker: none\nAAR or report: C:\\Users\\Joe\\Projects\\OgreBattlel64\\OB64 Decomp\\docs\\matching-c\\ob64-mc-6lw01-df-cp001-promotion-20260804\\aar\\20260804-ob64-mc-6lw01-df-cp001-promotion-aar.md\nTask log: C:\\Users\\Joe\\Projects\\OgreBattlel64\\OB64 Decomp\\docs\\matching-c\\ob64-mc-6lw01-df-cp001-promotion-20260804\\task-log.md\nTransport protocol: C:\\Users\\Joe\\Projects\\OgreBattlel64\\docs\\Plans\\ob64-matching-c-six-lane-wave-20260803\\task-transport-protocol.md\nBranch: main\nStart HEAD: 38e9348438cc0255f9bf44a159e42ba0eb5ec056\nResult HEAD: uncommitted\nManifest: C:\\Users\\Joe\\Projects\\OgreBattlel64\\OB64 Decomp\\docs\\matching-c\\ob64-mc-6lw01-df-cp001-promotion-20260804\\handoff-manifest.json\nResult or verdict: Six frozen Highway D-F results now form a verified 29-target canonical promotion with exact Phase 7 and Phase 8 outputs."
+}
