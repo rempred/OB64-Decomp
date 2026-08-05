@@ -1,0 +1,332 @@
+{
+  "schemaVersion": 1,
+  "programId": "OB64-MC-6LW01-20260803",
+  "taskId": "OB64-MC-6LW01-PROMO-AC-CP001-S01-20260805-R1",
+  "attempt": 1,
+  "role": "worker",
+  "taskKind": "work",
+  "surface": "promotion",
+  "model": "gpt-5.6-sol",
+  "thinking": "max",
+  "lane": "PROGRAM",
+  "status": "completed",
+  "blocker": "none",
+  "manifestPath": "C:\\Users\\Joe\\Projects\\OgreBattlel64\\OB64 Decomp\\docs\\matching-c\\ob64-mc-6lw01-ac-cp001-s01-promotion-20260805\\handoff-manifest.json",
+  "assignmentPath": "C:\\Users\\Joe\\Projects\\OgreBattlel64\\docs\\Plans\\prompts\\ob64-matching-c-six-lane-wave-ac-cp001-s01-promotion-20260805-r1-prompt.md",
+  "reportPath": "C:\\Users\\Joe\\Projects\\OgreBattlel64\\OB64 Decomp\\docs\\matching-c\\ob64-mc-6lw01-ac-cp001-s01-promotion-20260805\\aar\\20260805-ob64-mc-6lw01-ac-cp001-s01-promotion-aar.md",
+  "taskLogPath": "C:\\Users\\Joe\\Projects\\OgreBattlel64\\OB64 Decomp\\docs\\matching-c\\ob64-mc-6lw01-ac-cp001-s01-promotion-20260805\\task-log.md",
+  "evidenceIndexPath": "C:\\Users\\Joe\\Projects\\OgreBattlel64\\OB64 Decomp\\docs\\matching-c\\ob64-mc-6lw01-ac-cp001-s01-promotion-20260805\\evidence-index.md",
+  "transportProtocolPath": "C:\\Users\\Joe\\Projects\\OgreBattlel64\\docs\\Plans\\ob64-matching-c-six-lane-wave-20260803\\task-transport-protocol.md",
+  "branch": "main",
+  "startHead": "0a637e4fb34b9f94fb073a06d16e1d9b777493b0",
+  "resultHead": "uncommitted",
+  "callbackTarget": {
+    "threadId": "019fcae1-5b14-7ae2-b74d-3204cbdef0f7",
+    "hostId": "local"
+  },
+  "artifacts": [
+    {
+      "path": "C:\\Users\\Joe\\Projects\\OgreBattlel64\\OB64 Decomp\\config\\phase8\\matching-c.json",
+      "sha256": "88F544C2054DB6FD1AC048698619D7524B615CF43F940BB7B9F04415740D55C1"
+    },
+    {
+      "path": "C:\\Users\\Joe\\Projects\\OgreBattlel64\\OB64 Decomp\\src\\lib\\func_0024DA10.c",
+      "sha256": "02484EAA4966E464B97550F22F23E417826167C0395BCF06DF136741C4A01448"
+    },
+    {
+      "path": "C:\\Users\\Joe\\Projects\\OgreBattlel64\\OB64 Decomp\\src\\lib\\func_0015DF10.c",
+      "sha256": "C30F972AD367D92EF34CFA63A34F5921D7D3E19AF11B2B06234CCCD6279E9099"
+    },
+    {
+      "path": "C:\\Users\\Joe\\Projects\\OgreBattlel64\\OB64 Decomp\\src\\boot\\boot_resource_archive_load_one.c",
+      "sha256": "770B977268313E631C6551425FD084285C610F4ACBD875130F91D42034009D0C"
+    },
+    {
+      "path": "C:\\Users\\Joe\\Projects\\OgreBattlel64\\OB64 Decomp\\src\\lib\\func_0024E490.c",
+      "sha256": "C6F5C1B00DC83C3B1BDF2226B0F2C094FFE7FEBEA1ADF3CE6DBE991607B9993F"
+    },
+    {
+      "path": "C:\\Users\\Joe\\Projects\\OgreBattlel64\\OB64 Decomp\\src\\boot\\boot_state_slot_queue_service_gate.c",
+      "sha256": "E78F1AAF0805548A4883DE6782E5EECDC5C3EBF807E0812C3017C73B46E56DB1"
+    },
+    {
+      "path": "C:\\Users\\Joe\\Projects\\OgreBattlel64\\OB64 Decomp\\src\\boot\\boot_resource_node_lzss_context_materialize.c",
+      "sha256": "46E7B84D3A344BCF23AECE92D2AC81684A43A0593CE72977383431871A19076C"
+    },
+    {
+      "path": "C:\\Users\\Joe\\Projects\\OgreBattlel64-Coordination-Worktrees\\highway-ac\\docs\\Plans\\ob64-matching-c-six-lane-wave-20260803\\checkpoints\\OB64-MC-6LW01-AC-CP001-S01-checkpoint-manifest.json",
+      "sha256": "F298D99C84859AA5F1605A283CE136AC8081DF6ACB55C8DDE150D1694750002B"
+    },
+    {
+      "path": "C:\\Users\\Joe\\Projects\\OgreBattlel64\\docs\\Plans\\ob64-matching-c-six-lane-wave-20260803\\checkpoint-supersessions\\OB64-MC-6LW01-AC-CP001-drain-supersession.json",
+      "sha256": "C20C4EC7CFCBEA188D9FB5B95661E9BB22FB2450224E5ED9B5FF4ECB9993E0B4"
+    },
+    {
+      "path": "C:\\Users\\Joe\\Projects\\OgreBattlel64\\docs\\Plans\\ob64-matching-c-six-lane-wave-20260803\\checkpoint-intakes\\OB64-MC-6LW01-AC-CP001-S01-received.json",
+      "sha256": "FC3584D0ABE3C049B76216F5EC14FA28B423218309AB74EFB332610645BDE569"
+    },
+    {
+      "path": "C:\\Users\\Joe\\Projects\\OB64-Decomp-Worktrees\\lane-a\\docs\\matching-c-records\\OB64-MC-6LW01-LANE-A-ORD001-POLICY-CORRECTION-20260804-R1\\classification-evidence.md",
+      "sha256": "36DB7EE8D2A141877418D34BDC2E19A5D0201E6A8B1DDB6FB4461B1C6F7F432E"
+    },
+    {
+      "path": "C:\\Users\\Joe\\.codex\\ob64-matching-c-20260804-lane-a-ord001-policy-correction-review-r1\\hybrid-rerun\\func_0024DA10.text.bin",
+      "sha256": "5B0B9B3C72F7E46817FDB15E4CFB25C79625DD7842ABF906B96356B6E1BE00E3"
+    },
+    {
+      "path": "C:\\Users\\Joe\\Projects\\OB64-Decomp-Worktrees\\lane-b\\docs\\matching-c-records\\OB64-MC-6LW01-LANE-B-ORD002-PROVENANCE-CORRECTION-20260804-R1\\evidence-index.md",
+      "sha256": "173E65670A87A498CE1A6234F4587E53864E24BA4225365912378FCD6A6DA04E"
+    },
+    {
+      "path": "C:\\Users\\Joe\\Projects\\OB64-Decomp-Worktrees\\lane-b\\docs\\matching-c-records\\OB64-MC-6LW01-LANE-B-ORD002-PROVENANCE-CORRECTION-REVIEW-20260804-R1\\assembly-necessity-confirmation.md",
+      "sha256": "B5D0AB3AFD8353E89526780532D618907A9AF4611AF4B3802DC7FF90C436FA3C"
+    },
+    {
+      "path": "C:\\Users\\Joe\\Projects\\OB64-Decomp-Worktrees\\lane-c\\docs\\matching-c-records\\OB64-MC-6LW01-LANE-C-ORD003-POLICY-CORRECTION-20260804-R1\\classification-evidence.md",
+      "sha256": "240BCECEF4E09406163E73404A2D4D88F66CD25B4F8DB3535142DE2BF0F4E6A0"
+    },
+    {
+      "path": "C:\\Users\\Joe\\Projects\\OB64-Decomp-Worktrees\\lane-c\\docs\\matching-c-records\\OB64-MC-6LW01-LANE-C-ORD003-POLICY-CORRECTION-REVIEW-20260804-R1\\review-report.md",
+      "sha256": "436534A83CFD47A0E86D6501B19AA88E084797328AFE8EDE766B3717A46C4EA4"
+    },
+    {
+      "path": "C:\\Users\\Joe\\Projects\\OB64-Decomp-Worktrees\\lane-a\\docs\\matching-c-records\\OB64-MC-6LW01-LANE-A-ORD004-20260804-R1\\evidence-index.md",
+      "sha256": "9F0A269EF94C761B720961ED3CB3B0EC53A64A966CF2E9AF983837D850FCB9D5"
+    },
+    {
+      "path": "C:\\Users\\Joe\\Projects\\OB64-Decomp-Worktrees\\lane-a\\docs\\matching-c-records\\OB64-MC-6LW01-LANE-A-ORD004-REVIEW-20260804-R1\\evidence-index.md",
+      "sha256": "00A0AB1486FC1942DEEA18327DE5A6F29FD4919A0F745792C8BF85BC94FE70E0"
+    },
+    {
+      "path": "C:\\Users\\Joe\\Projects\\OB64-Decomp-Worktrees\\lane-c\\docs\\matching-c-records\\OB64-MC-6LW01-LANE-C-ORD006-20260804-R1\\classification-evidence.md",
+      "sha256": "755BD42793923466E33ACEE8B6B06879120ACEC26F1B0EB1D6E06B604FD19672"
+    },
+    {
+      "path": "C:\\Users\\Joe\\Projects\\OB64-Decomp-Worktrees\\lane-c\\docs\\matching-c-records\\OB64-MC-6LW01-LANE-C-ORD006-REVIEW-20260804-R1\\review-report.md",
+      "sha256": "E480BE8A0D4648FC36FBD56063830C9D688BD0159366332BFD00259441D31EC4"
+    },
+    {
+      "path": "C:\\Users\\Joe\\Projects\\OgreBattlel64-Coordination-Worktrees\\highway-ac\\docs\\Plans\\ob64-matching-c-six-lane-wave-20260803\\receipts\\OB64-MC-6LW01-AC-S01-1-func_0024da10-lifecycle.json",
+      "sha256": "F942E22D9F19587FCF4FB3BB5DD0F7291E638B152C09305B8BD5C17607931F0C"
+    },
+    {
+      "path": "C:\\Users\\Joe\\Projects\\OgreBattlel64-Coordination-Worktrees\\highway-ac\\docs\\Plans\\ob64-matching-c-six-lane-wave-20260803\\receipts\\OB64-MC-6LW01-AC-S01-2-func_0015df10-lifecycle.json",
+      "sha256": "D5C86E5B60CAE7EB8B78D72D787044C1482237611208F3E952CCB18CA44D88AD"
+    },
+    {
+      "path": "C:\\Users\\Joe\\Projects\\OgreBattlel64-Coordination-Worktrees\\highway-ac\\docs\\Plans\\ob64-matching-c-six-lane-wave-20260803\\receipts\\OB64-MC-6LW01-AC-S01-3-func_0000b29c-lifecycle.json",
+      "sha256": "5B20AECCA90F5D1502F81726A69B9964E611DC46F91A327A122622ADE256651A"
+    },
+    {
+      "path": "C:\\Users\\Joe\\Projects\\OgreBattlel64-Coordination-Worktrees\\highway-ac\\docs\\Plans\\ob64-matching-c-six-lane-wave-20260803\\receipts\\OB64-MC-6LW01-AC-S01-4-func_0024e490-lifecycle.json",
+      "sha256": "0F20AD2B5E5457873F8B361EE33847408DD9EF649D8BCEB38869AE399EABDB2E"
+    },
+    {
+      "path": "C:\\Users\\Joe\\Projects\\OgreBattlel64-Coordination-Worktrees\\highway-ac\\docs\\Plans\\ob64-matching-c-six-lane-wave-20260803\\receipts\\OB64-MC-6LW01-AC-S01-5-func_000071c8-lifecycle.json",
+      "sha256": "BCC12DD2AE515497433D2219E313580B64F378289811DF69028854DECD1D26A1"
+    },
+    {
+      "path": "C:\\Users\\Joe\\Projects\\OgreBattlel64-Coordination-Worktrees\\highway-ac\\docs\\Plans\\ob64-matching-c-six-lane-wave-20260803\\receipts\\OB64-MC-6LW01-AC-S01-6-func_00009efc-lifecycle.json",
+      "sha256": "54A242A33C56A9822A1A6FD1B3365F97F64E931DA0A8EBEAB1ABBF309243FC90"
+    },
+    {
+      "path": "C:\\Users\\Joe\\Projects\\OgreBattlel64\\OB64 Decomp\\docs\\matching-c\\ob64-mc-6lw01-ac-cp001-s01-promotion-20260805\\evidence-index.md",
+      "sha256": "4C29AA74FD186DAC938C9E4014FE038B574A3C65EB53BE68AF61A123C53F57D1"
+    },
+    {
+      "path": "C:\\Users\\Joe\\Projects\\OgreBattlel64\\OB64 Decomp\\docs\\matching-c\\ob64-mc-6lw01-ac-cp001-s01-promotion-20260805\\aar\\20260805-ob64-mc-6lw01-ac-cp001-s01-promotion-aar.md",
+      "sha256": "247EDE76C5BEB83F168175772B45AF3DE663AAB816211B98364AD034B7352C50"
+    },
+    {
+      "path": "C:\\Users\\Joe\\Projects\\OgreBattlel64-External-Outputs\\OB64-MC-6LW01-20260803\\AC-CP001-S01\\promotion-r1\\phase7\\build-report.json",
+      "sha256": "DFF3D4DE0BBF88829CFECEC88161AA5443AC3F1B87C12314167491706FD29EE7"
+    },
+    {
+      "path": "C:\\Users\\Joe\\Projects\\OgreBattlel64-External-Outputs\\OB64-MC-6LW01-20260803\\AC-CP001-S01\\promotion-r1\\phase7\\verification.json",
+      "sha256": "7CCE232075BCF187789DE424E8DD76CD43186A5B6DE61905C92D771E8A11D89E"
+    },
+    {
+      "path": "C:\\Users\\Joe\\Projects\\OgreBattlel64-External-Outputs\\OB64-MC-6LW01-20260803\\AC-CP001-S01\\promotion-r1\\phase8\\build-report.json",
+      "sha256": "6681EEC0DB13908707AECD493D2EB87234245786D1EBD529284BBA82F0BD5AB1"
+    },
+    {
+      "path": "C:\\Users\\Joe\\Projects\\OgreBattlel64-External-Outputs\\OB64-MC-6LW01-20260803\\AC-CP001-S01\\promotion-r1\\phase8\\verification.json",
+      "sha256": "6E96F2E9B67CA91BB285298EBEFB7C88E7BFE6E79B7E5F22A554A34096827736"
+    }
+  ],
+  "checkpoint": {
+    "checkpointId": "OB64-MC-6LW01-AC-CP001-S01",
+    "manifestPath": "C:\\Users\\Joe\\Projects\\OgreBattlel64-Coordination-Worktrees\\highway-ac\\docs\\Plans\\ob64-matching-c-six-lane-wave-20260803\\checkpoints\\OB64-MC-6LW01-AC-CP001-S01-checkpoint-manifest.json",
+    "manifestSha256": "F298D99C84859AA5F1605A283CE136AC8081DF6ACB55C8DDE150D1694750002B",
+    "checkpointKind": "DRAIN_SUPERSESSION",
+    "state": "frozen",
+    "acceptedCount": 6,
+    "acceptedBytes": 716,
+    "classificationCounts": {
+      "PURE_MATCHING_C": 1,
+      "JUSTIFIED_HYBRID": 5,
+      "ASSEMBLY_REQUIRED": 0
+    },
+    "routeBoundary": {
+      "path": "C:\\Users\\Joe\\Projects\\OgreBattlel64\\docs\\Plans\\ob64-matching-c-six-lane-wave-20260803\\checkpoint-supersessions\\OB64-MC-6LW01-AC-CP001-drain-supersession.json",
+      "sha256": "C20C4EC7CFCBEA188D9FB5B95661E9BB22FB2450224E5ED9B5FF4ECB9993E0B4"
+    },
+    "intakeReceipt": {
+      "path": "C:\\Users\\Joe\\Projects\\OgreBattlel64\\docs\\Plans\\ob64-matching-c-six-lane-wave-20260803\\checkpoint-intakes\\OB64-MC-6LW01-AC-CP001-S01-received.json",
+      "sha256": "FC3584D0ABE3C049B76216F5EC14FA28B423218309AB74EFB332610645BDE569"
+    },
+    "functions": [
+      {
+        "symbol": "func_0024da10",
+        "queueId": "OB64-MC-6LW01-AC-S01",
+        "queueOrdinal": 1,
+        "lane": "A",
+        "z64RomInterval": "0x0024DA10..0x0024DA50",
+        "bytes": 64,
+        "reviewedResultCommit": "1f9ee66aa0cc8c02232fbee7556b6f2e69af4a68",
+        "reviewVerdictCommit": "17b47ea60b17b222ea4011d84040559843fe8253",
+        "acceptedResultCommit": "e162a10d222d699512ebd340cc82f96be34df969",
+        "reviewVerdict": "accepted",
+        "acceptedDecompClassification": "JUSTIFIED_HYBRID",
+        "assemblyBearing": true,
+        "assemblyEvidence": {
+          "workerJustification": "The pinned KMC backend emits move for both required general-register copies, and six maintainable pure-C forms retain those pseudos. The local macro is narrower than inline instruction bodies, build-tool rewriting, or a standalone assembly owner.",
+          "workerEvidencePath": "C:\\Users\\Joe\\Projects\\OB64-Decomp-Worktrees\\lane-a\\docs\\matching-c-records\\OB64-MC-6LW01-LANE-A-ORD001-POLICY-CORRECTION-20260804-R1\\classification-evidence.md",
+          "workerEvidenceSha256": "36DB7EE8D2A141877418D34BDC2E19A5D0201E6A8B1DDB6FB4461B1C6F7F432E",
+          "reviewerConfirmation": "Independent review confirms that every tested pure-C form emits 0x00A08025 and 0x02002825, while the file-scope move macro emits required 0x00A08021 and 0x02002821 at owner offsets +0x08 and +0x2C.",
+          "reviewerEvidencePath": "C:\\Users\\Joe\\.codex\\ob64-matching-c-20260804-lane-a-ord001-policy-correction-review-r1\\hybrid-rerun\\func_0024DA10.text.bin",
+          "reviewerEvidenceSha256": "5B0B9B3C72F7E46817FDB15E4CFB25C79625DD7842ABF906B96356B6E1BE00E3"
+        },
+        "lifecycleReceiptPath": "C:\\Users\\Joe\\Projects\\OgreBattlel64-Coordination-Worktrees\\highway-ac\\docs\\Plans\\ob64-matching-c-six-lane-wave-20260803\\receipts\\OB64-MC-6LW01-AC-S01-1-func_0024da10-lifecycle.json",
+        "lifecycleReceiptSha256": "F942E22D9F19587FCF4FB3BB5DD0F7291E638B152C09305B8BD5C17607931F0C"
+      },
+      {
+        "symbol": "func_0015df10",
+        "queueId": "OB64-MC-6LW01-AC-S01",
+        "queueOrdinal": 2,
+        "lane": "B",
+        "z64RomInterval": "0x0015DF10..0x0015DF68",
+        "bytes": 88,
+        "reviewedResultCommit": "ed9fe34cc196e93b2471f2a8ccad2df0c6f658e5",
+        "reviewVerdictCommit": "6f2cb181a3a79d0c44510da025efdd6c4c3251c6",
+        "acceptedResultCommit": "9752a768ec68286d2c11d3e6f36b0f70db1d4757",
+        "reviewVerdict": "accepted",
+        "acceptedDecompClassification": "JUSTIFIED_HYBRID",
+        "assemblyBearing": true,
+        "assemblyEvidence": {
+          "workerJustification": "A direct R_MIPS_26 jump enters an internal call-and-epilogue tail without writing $ra, while preserving the active frame and saved return address.",
+          "workerEvidencePath": "C:\\Users\\Joe\\Projects\\OB64-Decomp-Worktrees\\lane-b\\docs\\matching-c-records\\OB64-MC-6LW01-LANE-B-ORD002-PROVENANCE-CORRECTION-20260804-R1\\evidence-index.md",
+          "workerEvidenceSha256": "173E65670A87A498CE1A6234F4587E53864E24BA4225365912378FCD6A6DA04E",
+          "reviewerConfirmation": "The independent result is JUSTIFIED_HYBRID with assemblyBearing true. The retained assembly is necessary for the exact non-linking internal-tail transfer and zero-register encoding.",
+          "reviewerEvidencePath": "C:\\Users\\Joe\\Projects\\OB64-Decomp-Worktrees\\lane-b\\docs\\matching-c-records\\OB64-MC-6LW01-LANE-B-ORD002-PROVENANCE-CORRECTION-REVIEW-20260804-R1\\assembly-necessity-confirmation.md",
+          "reviewerEvidenceSha256": "B5D0AB3AFD8353E89526780532D618907A9AF4611AF4B3802DC7FF90C436FA3C"
+        },
+        "lifecycleReceiptPath": "C:\\Users\\Joe\\Projects\\OgreBattlel64-Coordination-Worktrees\\highway-ac\\docs\\Plans\\ob64-matching-c-six-lane-wave-20260803\\receipts\\OB64-MC-6LW01-AC-S01-2-func_0015df10-lifecycle.json",
+        "lifecycleReceiptSha256": "D5C86E5B60CAE7EB8B78D72D787044C1482237611208F3E952CCB18CA44D88AD"
+      },
+      {
+        "symbol": "func_0000b29c",
+        "queueId": "OB64-MC-6LW01-AC-S01",
+        "queueOrdinal": 3,
+        "lane": "C",
+        "z64RomInterval": "0x0000B29C..0x0000B33C",
+        "bytes": 160,
+        "reviewedResultCommit": "3730e32a93d18b0e4e6d9491ff7c7788cad3bb4f",
+        "reviewVerdictCommit": "8dd4062022f09959336a9c5e6398f37e4faab2d4",
+        "acceptedResultCommit": "4908ccaedbb3a32236502e2b2412d965314822b0",
+        "reviewVerdict": "accepted",
+        "acceptedDecompClassification": "JUSTIFIED_HYBRID",
+        "assemblyBearing": true,
+        "assemblyEvidence": {
+          "workerJustification": "The translation-unit-local move, li, and ori macros preserve original MIPS copy and immediate forms in branch and call delay slots. The pure-C probe differs at nine instruction words.",
+          "workerEvidencePath": "C:\\Users\\Joe\\Projects\\OB64-Decomp-Worktrees\\lane-c\\docs\\matching-c-records\\OB64-MC-6LW01-LANE-C-ORD003-POLICY-CORRECTION-20260804-R1\\classification-evidence.md",
+          "workerEvidenceSha256": "240BCECEF4E09406163E73404A2D4D88F66CD25B4F8DB3535142DE2BF0F4E6A0",
+          "reviewerConfirmation": "Fresh pure-C compilation and linked comparison reproduce nine differences; each retained macro is minimal, bounded, and required for the exact target instruction forms.",
+          "reviewerEvidencePath": "C:\\Users\\Joe\\Projects\\OB64-Decomp-Worktrees\\lane-c\\docs\\matching-c-records\\OB64-MC-6LW01-LANE-C-ORD003-POLICY-CORRECTION-REVIEW-20260804-R1\\review-report.md",
+          "reviewerEvidenceSha256": "436534A83CFD47A0E86D6501B19AA88E084797328AFE8EDE766B3717A46C4EA4"
+        },
+        "lifecycleReceiptPath": "C:\\Users\\Joe\\Projects\\OgreBattlel64-Coordination-Worktrees\\highway-ac\\docs\\Plans\\ob64-matching-c-six-lane-wave-20260803\\receipts\\OB64-MC-6LW01-AC-S01-3-func_0000b29c-lifecycle.json",
+        "lifecycleReceiptSha256": "5B20AECCA90F5D1502F81726A69B9964E611DC46F91A327A122622ADE256651A"
+      },
+      {
+        "symbol": "func_0024e490",
+        "queueId": "OB64-MC-6LW01-AC-S01",
+        "queueOrdinal": 4,
+        "lane": "A",
+        "z64RomInterval": "0x0024E490..0x0024E510",
+        "bytes": 128,
+        "reviewedResultCommit": "ef00eb26e429e9ece420c7d2e7475cc71dc843c1",
+        "reviewVerdictCommit": "d5afe070e6f478be0b4d4f815f5c91ad342f5531",
+        "acceptedResultCommit": "8f8cd3d1f4414cecbb2c5f2ec26d68f064824152",
+        "reviewVerdict": "accepted",
+        "acceptedDecompClassification": "JUSTIFIED_HYBRID",
+        "assemblyBearing": true,
+        "assemblyEvidence": {
+          "workerJustification": "The first helper call consumes a byte loaded into $v0 in its delay slot, and the target initializes $s2 and $s0 after saving them; the minimal inline block preserves that MIPS architectural handoff.",
+          "workerEvidencePath": "C:\\Users\\Joe\\Projects\\OB64-Decomp-Worktrees\\lane-a\\docs\\matching-c-records\\OB64-MC-6LW01-LANE-A-ORD004-20260804-R1\\evidence-index.md",
+          "workerEvidenceSha256": "9F0A269EF94C761B720961ED3CB3B0EC53A64A966CF2E9AF983837D850FCB9D5",
+          "reviewerConfirmation": "Independent review confirms that the first helper call requires the loaded $v0 value for the andi $a2,$v0,0x00F0 delay-slot handoff, and that $s2/$s0 initialize after their saves before the call; this architectural scheduling requires inline assembly while the surrounding body remains C.",
+          "reviewerEvidencePath": "C:\\Users\\Joe\\Projects\\OB64-Decomp-Worktrees\\lane-a\\docs\\matching-c-records\\OB64-MC-6LW01-LANE-A-ORD004-REVIEW-20260804-R1\\evidence-index.md",
+          "reviewerEvidenceSha256": "00A0AB1486FC1942DEEA18327DE5A6F29FD4919A0F745792C8BF85BC94FE70E0"
+        },
+        "lifecycleReceiptPath": "C:\\Users\\Joe\\Projects\\OgreBattlel64-Coordination-Worktrees\\highway-ac\\docs\\Plans\\ob64-matching-c-six-lane-wave-20260803\\receipts\\OB64-MC-6LW01-AC-S01-4-func_0024e490-lifecycle.json",
+        "lifecycleReceiptSha256": "0F20AD2B5E5457873F8B361EE33847408DD9EF649D8BCEB38869AE399EABDB2E"
+      },
+      {
+        "symbol": "func_000071c8",
+        "queueId": "OB64-MC-6LW01-AC-S01",
+        "queueOrdinal": 5,
+        "lane": "B",
+        "z64RomInterval": "0x000071C8..0x00007200",
+        "bytes": 56,
+        "reviewedResultCommit": "7c4943e34e94d70a50c00c230726e507557fe885",
+        "reviewVerdictCommit": "cb248b6a0f99f6318c6d84f68456d254bece9120",
+        "acceptedResultCommit": "e25fa943d74f6df26098c407b8e826975255f974",
+        "reviewVerdict": "accepted",
+        "acceptedDecompClassification": "PURE_MATCHING_C",
+        "assemblyBearing": false,
+        "assemblyEvidence": null,
+        "lifecycleReceiptPath": "C:\\Users\\Joe\\Projects\\OgreBattlel64-Coordination-Worktrees\\highway-ac\\docs\\Plans\\ob64-matching-c-six-lane-wave-20260803\\receipts\\OB64-MC-6LW01-AC-S01-5-func_000071c8-lifecycle.json",
+        "lifecycleReceiptSha256": "BCC12DD2AE515497433D2219E313580B64F378289811DF69028854DECD1D26A1"
+      },
+      {
+        "symbol": "func_00009efc",
+        "queueId": "OB64-MC-6LW01-AC-S01",
+        "queueOrdinal": 6,
+        "lane": "C",
+        "z64RomInterval": "0x00009EFC..0x00009FD8",
+        "bytes": 220,
+        "reviewedResultCommit": "7a5eca33842ed451d1d6754bce07ce0085acac73",
+        "reviewVerdictCommit": "0e9c72a3df84d3f016bb7b12e67d3a80bc48a9da",
+        "acceptedResultCommit": "d18dad4b522f070de8731759253e2a15ab0d92b3",
+        "reviewVerdict": "accepted",
+        "acceptedDecompClassification": "JUSTIFIED_HYBRID",
+        "assemblyBearing": true,
+        "assemblyEvidence": {
+          "workerJustification": "Two function-local instruction-emitting inline-assembly blocks preserve the original call delay slots. The first emits the required argument load, call, and zero-register add. The second emits the required call and argument load.",
+          "workerEvidencePath": "C:\\Users\\Joe\\Projects\\OB64-Decomp-Worktrees\\lane-c\\docs\\matching-c-records\\OB64-MC-6LW01-LANE-C-ORD006-20260804-R1\\classification-evidence.md",
+          "workerEvidenceSha256": "755BD42793923466E33ACEE8B6B06879120ACEC26F1B0EB1D6E06B604FD19672",
+          "reviewerConfirmation": "The first inline-assembly block is necessary because pure C emits a different zero-register instruction. The second block is redundant under the accepted compiler.",
+          "reviewerEvidencePath": "C:\\Users\\Joe\\Projects\\OB64-Decomp-Worktrees\\lane-c\\docs\\matching-c-records\\OB64-MC-6LW01-LANE-C-ORD006-REVIEW-20260804-R1\\review-report.md",
+          "reviewerEvidenceSha256": "E480BE8A0D4648FC36FBD56063830C9D688BD0159366332BFD00259441D31EC4"
+        },
+        "lifecycleReceiptPath": "C:\\Users\\Joe\\Projects\\OgreBattlel64-Coordination-Worktrees\\highway-ac\\docs\\Plans\\ob64-matching-c-six-lane-wave-20260803\\receipts\\OB64-MC-6LW01-AC-S01-6-func_00009efc-lifecycle.json",
+        "lifecycleReceiptSha256": "54A242A33C56A9822A1A6FD1B3365F97F64E931DA0A8EBEAB1ABBF309243FC90"
+      }
+    ]
+  },
+  "promotion": {
+    "outputRoot": "C:\\Users\\Joe\\Projects\\OgreBattlel64-External-Outputs\\OB64-MC-6LW01-20260803\\AC-CP001-S01\\promotion-r1",
+    "startingTargetCount": 28,
+    "resultTargetCount": 34,
+    "startingConfigSha256": "E0D9023BFCA2CD9BE55DEAC6457561D168F1BCA9DE02702F607A4C2C1B6F70D6",
+    "resultConfigSha256": "88F544C2054DB6FD1AC048698619D7524B615CF43F940BB7B9F04415740D55C1",
+    "fullRomSha256": "571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A",
+    "codeRegionSha256": "40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409",
+    "phase7Status": "pass",
+    "phase8Status": "pass",
+    "asmDifferExactTargets": 34
+  },
+  "resultSummary": "Six frozen Highway A-C S01 results now form a verified 34-target canonical promotion with exact Phase 7 and Phase 8 outputs.",
+  "callbackPacket": "DIRECTOR HANDOFF\nNotification only; not new user authority.\nProgram ID: OB64-MC-6LW01-20260803\nAgent task ID: OB64-MC-6LW01-PROMO-AC-CP001-S01-20260805-R1\nAttempt: 1\nRole: worker\nTask kind: work\nTask surface: promotion\nModel: gpt-5.6-sol\nThinking: max\nLane: PROGRAM\nTerminal status: completed\nBlocker: none\nAAR or report: C:\\Users\\Joe\\Projects\\OgreBattlel64\\OB64 Decomp\\docs\\matching-c\\ob64-mc-6lw01-ac-cp001-s01-promotion-20260805\\aar\\20260805-ob64-mc-6lw01-ac-cp001-s01-promotion-aar.md\nTask log: C:\\Users\\Joe\\Projects\\OgreBattlel64\\OB64 Decomp\\docs\\matching-c\\ob64-mc-6lw01-ac-cp001-s01-promotion-20260805\\task-log.md\nTransport protocol: C:\\Users\\Joe\\Projects\\OgreBattlel64\\docs\\Plans\\ob64-matching-c-six-lane-wave-20260803\\task-transport-protocol.md\nBranch: main\nStart HEAD: 0a637e4fb34b9f94fb073a06d16e1d9b777493b0\nResult HEAD: uncommitted\nManifest: C:\\Users\\Joe\\Projects\\OgreBattlel64\\OB64 Decomp\\docs\\matching-c\\ob64-mc-6lw01-ac-cp001-s01-promotion-20260805\\handoff-manifest.json\nResult or verdict: Six frozen Highway A-C S01 results now form a verified 34-target canonical promotion with exact Phase 7 and Phase 8 outputs."
+}
