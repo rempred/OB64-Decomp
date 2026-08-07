@@ -35,6 +35,7 @@
     { "symbol": "func_0000B29C", "source": "src/boot/boot_resource_archive_load_one.c" },
     { "symbol": "func_0024E490", "source": "src/lib/func_0024E490.c" },
     { "symbol": "func_000071C8", "source": "src/boot/boot_state_slot_queue_service_gate.c" },
-    { "symbol": "func_00009EFC", "source": "src/boot/boot_resource_node_lzss_context_materialize.c" }
+    { "symbol": "func_00009EFC", "source": "src/boot/boot_resource_node_lzss_context_materialize.c" },
+    { "symbol": "func_0019554C", "source": "src/lib/func_0019554C.c" }
   ]
 }
