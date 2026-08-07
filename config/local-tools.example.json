@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "workRoot": "C:\\path\\to\\ignored-ob64-work",
+  "compiler": "C:\\path\\to\\kmc-gcc-2.7.2\\cc1.exe",
+  "splatPython": "C:\\path\\to\\splat-venv\\Scripts\\python.exe",
+  "splatSplit": "C:\\path\\to\\splat-source\\split.py",
+  "splatSnapshotRoot": "C:\\path\\to\\splat-source",
+  "asmDifferRoot": "C:\\path\\to\\asm-differ",
+  "phase5aRoot": "C:\\path\\to\\accepted-phase5a-product",
+  "romInput": null,
+  "_environmentOverrides": {
+    "configFile": "OB64_LOCAL_TOOLS",
+    "workRoot": "OB64_WORK_ROOT",
+    "compiler": "OB64_KMC_COMPILER",
+    "splatPython": "OB64_SPLAT_PYTHON",
+    "splatSplit": "OB64_SPLAT_SPLIT",
+    "splatSnapshotRoot": "OB64_SPLAT_SNAPSHOT_ROOT",
+    "asmDifferRoot": "OB64_ASM_DIFFER_ROOT",
+    "phase5aRoot": "OB64_PHASE5A_ROOT",
+    "romInput": "OB64_ROM_INPUT"
+  }
+}

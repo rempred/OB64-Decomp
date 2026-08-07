@@ -9,7 +9,6 @@ const {
   ensureDir,
   fail,
   hex,
-  loadAcceptedModel,
   normalizePath,
   parseElfFile,
   readJson,
@@ -23,8 +22,10 @@ const {
   verifyRuntimeTools,
   writeJson,
 } = require('./phase7_conventional');
-
-const CONFIG_PATH = path.join(ROOT, 'config', 'phase8', 'matching-c.json');
+const {
+  CONFIG_PATH,
+  loadActiveTargetModel,
+} = require('./active_targets');
 
 function parseNumber(value, label) {
   if (Number.isInteger(value)) return value;
@@ -49,93 +50,7 @@ function resolveRelative(root, relative, label) {
 }
 
 function loadPhase8Model() {
-  const model = loadAcceptedModel();
-  const config = readJson(CONFIG_PATH);
-  if (config.schemaVersion !== 2 || config.profile !== model.config.profile || !Array.isArray(config.targets) || config.targets.length < 2) {
-    fail('Phase 8 configuration schema or profile drift');
-  }
-
-  const phase6ManifestFile = resolveRelative(ROOT, config.compiler.manifest, 'compiler manifest');
-  if (!fs.existsSync(phase6ManifestFile) || sha256File(phase6ManifestFile) !== config.compiler.manifestSha256) {
-    fail('accepted Phase 6 compiler manifest drift');
-  }
-  const phase6Manifest = readJson(phase6ManifestFile);
-  if (phase6Manifest.schemaVersion !== 1
-      || phase6Manifest.compiler.executableSha256 !== config.compiler.executableSha256
-      || !sameJson(phase6Manifest.compiler.compileFlags, config.compiler.compileFlags)) {
-    fail('Phase 8 compiler contract differs from the accepted Phase 6 contract');
-  }
-
-  const overlayConfig = readJson(path.join(ROOT, 'config', 'overlays', 'us_rev0.json'));
-  const targets = config.targets.map((rawTarget, targetIndex) => {
-    const target = {
-      ...rawTarget,
-      targetIndex,
-      romStartNumber: parseNumber(rawTarget.romStart, 'target ROM start'),
-      romEndNumber: parseNumber(rawTarget.romEndExclusive, 'target ROM end'),
-      vramStartNumber: parseNumber(rawTarget.vramStart, 'target VRAM start'),
-      expectedRelocations: rawTarget.expectedRelocations || [],
-    };
-    if (target.romEndNumber - target.romStartNumber !== target.bytes) {
-      fail('Phase 8 target range size drift: ' + target.symbol);
-    }
-    if (!Array.isArray(target.expectedRelocations)) {
-      fail('Phase 8 target relocation contract is not an array: ' + target.symbol);
-    }
-    const row = model.rows[target.rowIndex];
-    if (!row
-        || row.primaryId !== target.primaryId
-        || row.romStart !== target.romStartNumber
-        || row.romEndExclusive !== target.romEndNumber
-        || row.bytes !== target.bytes
-        || row.inputKind !== 'tracked-assembly'
-        || row.part.chunkIndex !== target.chunkIndex
-        || row.part.file !== target.originalAssembly
-        || row.part.sha256 !== target.originalAssemblySha256
-        || row.slices.length !== 1
-        || row.slices[0].sectionName !== target.sectionName
-        || row.slices[0].vramStart !== target.vramStartNumber
-        || row.slices[0].overlayDescriptorId !== target.overlayDescriptorId
-        || !row.slices[0].executable) {
-      fail('Phase 8 target no longer matches the accepted Phase 5/7 owner model: ' + target.symbol);
-    }
-
-    const sourceFile = resolveRelative(ROOT, target.source, 'target source');
-    const originalAssembly = resolveRelative(ROOT, target.originalAssembly, 'original assembly');
-    if (!fs.existsSync(sourceFile) || sha256File(sourceFile) !== target.sourceSha256) {
-      fail('Phase 8 C source identity drift: ' + target.symbol);
-    }
-    if (!fs.existsSync(originalAssembly) || sha256File(originalAssembly) !== target.originalAssemblySha256) {
-      fail('Phase 8 original assembly identity drift: ' + target.symbol);
-    }
-
-    let descriptor = null;
-    if (target.overlayDescriptorId === null) {
-      if (target.descriptorRawSha256 !== null) fail('early-boot target descriptor contract drift: ' + target.symbol);
-    } else {
-      descriptor = overlayConfig.descriptors.find((item) => item.id === target.overlayDescriptorId);
-      if (!descriptor || descriptor.rawSha256 !== target.descriptorRawSha256) {
-        fail('Phase 8 target overlay descriptor identity drift: ' + target.symbol);
-      }
-    }
-    return { ...target, descriptor, model, row };
-  });
-
-  const seenRows = new Set();
-  const seenSymbols = new Set();
-  for (const target of targets) {
-    if (seenRows.has(target.rowIndex) || seenSymbols.has(target.symbol)) fail('Phase 8 target list contains duplicate owners');
-    seenRows.add(target.rowIndex);
-    seenSymbols.add(target.symbol);
-  }
-  return {
-    config,
-    descriptors: targets.map((target) => target.descriptor).filter(Boolean),
-    model,
-    phase6Manifest,
-    targets,
-    target: targets[0],
-  };
+  return loadActiveTargetModel();
 }
 
 function isInside(candidate, root) {
@@ -318,7 +233,7 @@ function normalizeRelocationRecord(record, target) {
   };
 }
 
-function relocationRecords(elf, target) {
+function rawRelocationRecords(elf) {
   const typeNames = {
     2: 'R_MIPS_32',
     4: 'R_MIPS_26',
@@ -344,14 +259,18 @@ function relocationRecords(elf, target) {
       const symbolName = symbols.get(info >>> 8);
       const type = typeNames[info & 0xff];
       if (symbolName === undefined || type === undefined) fail('unsupported ELF relocation entry: ' + section.name);
-      records.push(normalizeRelocationRecord({
+      records.push({
         offset: hex(relocationOffset),
         type,
         symbol: symbolName,
         section: section.name,
-      }, target));
+      });
     }
   }
+  return records;
+}
+
+function sortRelocationRecords(records) {
   return records.sort((left, right) => {
     const leftRank = left.section === '.rel.text' ? 0 : 1;
     const rightRank = right.section === '.rel.text' ? 0 : 1;
@@ -360,7 +279,12 @@ function relocationRecords(elf, target) {
   });
 }
 
-function compileTarget(phase8, target, output, compiler, assembler) {
+function relocationRecords(elf, target) {
+  return sortRelocationRecords(rawRelocationRecords(elf).map((record) => normalizeRelocationRecord(record, target)));
+}
+
+function compileTarget(phase8, target, output, compiler, assembler, options = {}) {
+  const enforceAcceptedContract = options.enforceAcceptedContract !== false;
   const generatedRoot = path.join(output, 'generated', 'c');
   const objectRoot = path.join(output, 'objects', 'c');
   ensureDir(generatedRoot);
@@ -385,14 +309,14 @@ function compileTarget(phase8, target, output, compiler, assembler) {
 
   const elf = parseElfFile(objectFile);
   const sections = elf.sections.filter((section) => section.name === target.sectionName);
-  if (sections.length !== 1 || sections[0].type !== 1 || (sections[0].flags & 6) !== 6 || sections[0].size !== target.bytes) {
+  if (sections.length !== 1 || sections[0].type !== 1 || (sections[0].flags & 6) !== 6
+      || (enforceAcceptedContract && sections[0].size !== target.bytes)) {
     fail('KMC target object section shape drift: ' + target.symbol);
   }
   const textBytes = Buffer.from(elfSectionBytes(elf, sections[0]));
-  const expectedObjectTextSha256 = target.expectedObjectTextSha256 || target.expectedTextSha256;
-  if (sha256Buffer(textBytes) !== expectedObjectTextSha256) fail('KMC target object bytes differ from the accepted object reference: ' + target.symbol);
   const symbols = elf.symbols.filter((symbol) => symbol.name === target.symbol && symbol.sectionIndex !== 0);
-  if (symbols.length !== 1 || symbols[0].value !== 0 || symbols[0].size !== target.bytes || symbols[0].binding !== 1) {
+  if (symbols.length !== 1 || symbols[0].value !== 0 || symbols[0].size !== sections[0].size || symbols[0].binding !== 1
+      || (enforceAcceptedContract && symbols[0].size !== target.bytes)) {
     fail('KMC target object symbol drift: ' + target.symbol);
   }
   for (const name of ['.data', '.bss']) {
@@ -400,7 +324,7 @@ function compileTarget(phase8, target, output, compiler, assembler) {
     if (section && section.size !== 0) fail('KMC target unexpectedly owns ' + name + ' bytes: ' + target.symbol);
   }
   const relocations = relocationRecords(elf, target);
-  if (!sameJson(relocations, target.expectedRelocations)) {
+  if (enforceAcceptedContract && !sameJson(relocations, target.expectedRelocations)) {
     fail('KMC target relocation contract drift: ' + target.symbol);
   }
   return {
@@ -411,8 +335,8 @@ function compileTarget(phase8, target, output, compiler, assembler) {
     compilerAssemblySha256: sha256File(compilerAssembly),
     linkedAssemblyRelative: 'generated/c/' + target.symbol + '.s',
     linkedAssemblySha256: sha256File(linkedAssembly),
+    textBytes: textBytes.length,
     textSha256: sha256Buffer(textBytes),
-    objectTextSha256: expectedObjectTextSha256,
     relocations,
   };
 }
@@ -562,7 +486,8 @@ function runTargetAsmDiffer(phase8, target, options) {
   const chunkName = String(target.chunkIndex).padStart(3, '0');
   let myimg = '../../objects/c/' + target.symbol + '.o';
   let resolvedObjectSha256 = null;
-  if (target.expectedRelocations.length > 0) {
+  const relocations = options.relocations || target.expectedRelocations;
+  if (relocations.length > 0) {
     const resolvedObject = path.join(proofRoot, target.symbol + '.resolved.o');
     run(options.objcopy, [
       '--only-section=' + target.sectionName,
@@ -602,7 +527,9 @@ function runTargetAsmDiffer(phase8, target, options) {
     '--no-line-numbers',
   ], { cwd: runRoot, env });
   const json = parseJsonOutput(result.stdout, 'asm-differ target proof for ' + target.symbol);
-  if (!Array.isArray(json.rows) || json.rows.length === 0 || json.max_score <= 0 || json.current_score !== 0) {
+  const exact = Array.isArray(json.rows) && json.rows.length > 0 && json.max_score > 0 && json.current_score === 0;
+  if ((!Array.isArray(json.rows) || json.rows.length === 0 || json.max_score <= 0)
+      || (options.requireExact !== false && !exact)) {
     fail('asm-differ did not prove an exact nonempty target match: ' + target.symbol);
   }
   const jsonFile = path.join(proofRoot, target.symbol + '.json');
@@ -613,7 +540,7 @@ function runTargetAsmDiffer(phase8, target, options) {
     rows: json.rows.length,
     maxScore: json.max_score,
     currentScore: json.current_score,
-    exact: true,
+    exact,
     outputSha256: sha256File(jsonFile),
     shimSha256: sha256File(shim),
     resolvedObjectSha256,
@@ -722,9 +649,7 @@ function verifyPhase8Output(phase8, options) {
 
     const cElf = parseElfFile(cObject);
     const cSection = cElf.sections.find((section) => section.name === target.sectionName);
-    if (!cSection || cSection.size !== target.bytes || sha256Buffer(elfSectionBytes(cElf, cSection)) !== (target.expectedObjectTextSha256 || target.expectedTextSha256)) {
-      fail('recorded C object target bytes drift: ' + target.symbol);
-    }
+    if (!cSection || cSection.size !== target.bytes) fail('recorded C object target section shape drift: ' + target.symbol);
     const relocations = relocationRecords(cElf, target);
     if (!sameJson(relocations, target.expectedRelocations)) fail('recorded C object relocation drift: ' + target.symbol);
 

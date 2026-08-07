@@ -1,0 +1,2 @@
+.text
+.word 0

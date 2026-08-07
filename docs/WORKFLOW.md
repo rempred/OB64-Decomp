@@ -1,252 +1,422 @@
-# Decomp Workflow
+# OB64 Decomp — Canonical Workflow
 
-The working loop is:
+## Goal
 
-1. Choose a Rev 0 subsystem or function.
-2. Generate or update a static dossier from parent MIPS artifacts.
-3. Use overlay-aware addresses before interpreting any runtime RAM target.
-4. Trace only narrowed questions with Project64 execute/read/write watches.
-5. Ingest trace results into names, structs, jump tables, and m2c context.
-6. Replace nonmatching assembly with C only when compare evidence supports it.
-7. Promote semantic claims only after runtime trace or controlled mutation proof.
+Produce a reproducible source tree for *Ogre Battle 64: Person of Lordly Caliber* US Rev 0.
 
-The parent workspace document `docs/mips-decomp-workflow-plan.md` is the
-canonical process reference until this repo has its own full toolchain.
+For the matching baseline, source must rebuild the canonical normalized retail ROM byte-for-byte.
 
-For the current Rev 0 decomp loop, prefer static/offline evidence first:
-ROM/disassembly/archive/savestate-file analysis, xrefs, call graphs, function
-boundaries, jump-table scans, and exact rebuild checks. Use Project64 only when a
-precise savestate already reaches the target, Joe is actively driving and asks
-for passive watch/log support, or the task is specifically to create/catalog a
-new savestate for later proof.
+The workflow intentionally separates:
 
-## Vanilla Rev 0 Runtime States
+1. **matching evidence** — did the source produce the retail machine code?
+2. **source evidence** — is the claimed C actually C rather than embedded assembly?
+3. **structural evidence** — are boundaries, overlays, placement, and ownership correct?
+4. **semantic evidence** — do we understand what the code means?
 
-The curated vanilla Rev 0 Project64 state catalog lives in the parent workspace:
+Do not make an ordinary matching-C contribution carry all four evidence burdens.
 
-`C:\Users\Joe\Projects\OgreBattlel64\runtime-states\vanilla\rev0`
+---
 
-This repo's usage guide is `docs/runtime-state-catalog.md`. The maintained
-request log for missing states and runtime proof work is
-`docs/runtime-state-requests.md`. Current verified catalog identity for present
-states is vanilla US Rev 0: Project64 CRC `E6419BC5 / 69011DE3`, country
-`0x45`, version `0`. Agents must still verify state headers before use and
-record the exact state path and checked identity.
+## Acceptance Principle
 
-Use the catalog only for narrowed runtime questions: overlay/RAM mapping,
-register meaning, active call paths, behavior confidence, or patch-safety
-questions. State and folder names are convenience labels, not semantic proof.
-Battle states now cover loading/intro, command/menu, active battle, and
-ending/results situations for combat questions. When no state reaches the needed
-situation, record a runtime-state request instead of guessing. Keep
-`docs/runtime-state-requests.md` current by adding, serving, or superseding
-requests rather than losing them in review prose. Autonomous emulator/runtime
-work must follow the parent `TestingWorkFlow.MD`; user-driven testing should
-stay passive unless Joe asks.
+For an ordinary function to count as matching C:
 
-## Setup Gate
-
-Before function splitting or C conversion, run:
-
-```powershell
-$phase5aRoot = '<accepted-phase5a-product-root>'
-node tools/verify_setup.js --phase5a-root $phase5aRoot
+```text
+KNOWN REV 0 BASEROM
+        +
+PINNED MATCHING TOOLCHAIN
+        +
+PURE_C SOURCE
+        +
+ORIGINAL ASM TARGET EXCLUDED
+        +
+C OBJECT IS SOLE LINKED OWNER
+        +
+TARGET ADDRESS/SIZE CORRECT
+        +
+RELOCATION POLICY SATISFIED
+        +
+LINKED TARGET BYTES EXACT
+        +
+COMPLETE ROM EXACT
+        =
+MATCHING C ACCEPTED
 ```
 
-This is the canonical 21-check setup gate. The Phase 5A product remains outside
-this clean-room repository.
+This is machine-verifiable. A separate human or AI reviewer is not required to prove the
+machine-code match.
 
-The gate verifies ROM identity, overlays, production segments, source ownership,
-GNU MIPS tools, and all exact rebuild paths.
+A matching result does **not** prove a descriptive function name, field name, comment, or gameplay
+explanation.
 
-## No-Gap Rule
+---
 
-The decomp can tolerate incomplete names, incomplete C, and imperfect function
-boundaries. It cannot tolerate missing bytes.
+## Canonical Concepts
 
-Early extraction must therefore preserve every byte in each configured ROM
-segment. For the current Rev 0 code region, `tools/extract_original_mips.js`
-emits every 4-byte word as `.word` plus a decode comment. That means a missed
-leaf function, jump-table target, or embedded data record does not disappear
-from the rebuild path.
+### Baseline
 
-Later passes can split this no-gap reference into functions, rodata, binary data,
-and C. The compare loop should only get stricter over time.
+`BASELINE` means the accepted structural assembly/data build that reconstructs retail Rev 0.
 
-## Current Tool Loop
+It owns the accepted:
 
-```powershell
-node tools/verify_baserom.js
-node tools/extract_original_mips.js
+- ROM identity;
+- section/segment model;
+- overlay model;
+- function/data owner model;
+- linker layout; and
+- toolchain contract.
+
+Historical Phase 5A/5B/6/7 terminology may remain in implementation internals or archives during
+migration, but normal contributors should not need it.
+
+### Current
+
+`CURRENT` means `BASELINE` with zero or more accepted assembly owners replaced by C sources.
+
+The complete `CURRENT` matching build must still equal the retail ROM exactly.
+
+---
+
+## Evidence Classes
+
+### Matching evidence
+
+A target is exact when:
+
+- the original assembly implementation for that target is not linked;
+- the replacement object is the sole linked owner;
+- the linked bytes equal the baserom target bytes; and
+- the complete ROM equals the baserom.
+
+The verifier should also check accepted address/size and normalized relocations.
+
+### Source evidence
+
+Source classification is defined in `docs/SOURCE_POLICY.md`.
+
+An exact `.c` file can be `HYBRID_C`. Exact output alone does not make it decompiled C.
+
+Only exact `PURE_C` targets contribute to matching-C progress.
+
+### Structural evidence
+
+Function boundaries, overlay descriptors, linker placement, executable/data classification, and
+toolchain/layout changes are structural.
+
+Structural changes use `docs/AUDIT.md`.
+
+### Semantic evidence
+
+Names and behavioral explanations need evidence appropriate to the claim.
+
+Static evidence may justify a cautious structural name. Runtime trace or controlled mutation is
+needed when behavior cannot be established statically.
+
+Semantic work is not a prerequisite for exact C output.
+
+---
+
+## Normal Matching-C Loop
+
+### 1. Select an accepted target
+
+Choose an existing accepted owner.
+
+Prefer targets that remove a LordlyCaliber hook/limitation or unlock a high-value call graph.
+Do not optimize the queue primarily for count of easy matching functions.
+
+If the accepted boundary looks wrong, stop and create a structural task rather than silently
+changing it during matching.
+
+### 2. Write the C reconstruction
+
+Create or adjust the target under `src/`.
+
+The original assembly remains the comparison/fallback owner.
+
+Use disassembly, call graphs, known structs, constants, static data, and existing research as
+inputs. Weird-but-valid C is allowed when needed to reproduce historical compiler output.
+
+Do not paste assembly into C to obtain a match. See `docs/SOURCE_POLICY.md`.
+
+### 3. Iterate with the diff tool
+
+Canonical interface:
+
+```text
+node tools/diff.js <symbol>
 ```
 
-Expected first-pass result:
+The diff command is a development aid. It should:
 
-- Rev 0 header/CRC/game ID/version checks pass.
-- `build/baserom.us_rev0.z64` is written as canonical z64.
-- `build/original-mips/rev0/` contains chunked original assembly reference.
-- `build/original-mips/rev0-report.json` reports 100% coverage for
-  `config/roms/us_rev0.json` `codeRegion`.
+- resolve the target from the accepted model;
+- compile the current source with the pinned compiler;
+- compare it with the original target; and
+- provide actionable asm-differ output.
 
-Then run:
+Intermediate diff output is generated evidence and is not committed.
 
-```powershell
-node tools/build_rom_coverage_ledger.js
+### 4. Verify the target
+
+Canonical interface:
+
+```text
+node tools/verify.js --target <symbol> --require-pure
 ```
 
-The coverage ledger is the whole-ROM safety check. It does not prove every byte's
-semantics, but it proves every byte is at least structurally tagged or called out
-as padding/unknown before we build a linker plan.
+For the requested symbol, the verifier must:
 
-Because prior archive scans missed whole sections, this ledger must not trust the
-parent archive catalog by itself. It performs an independent LHA header scan,
-compares count and offsets against the parent catalog, records rejected
-method-like signatures, and reports overlaps rather than hiding them.
+1. verify baserom identity;
+2. verify matching compiler/toolchain identity;
+3. resolve the accepted structural owner uniquely;
+4. classify the translation unit using `docs/SOURCE_POLICY.md`;
+5. compile the source;
+6. remove/exclude the corresponding original assembly target from the linked build;
+7. prove the C object is the sole linker-map owner of the target section;
+8. verify accepted address and size;
+9. derive and compare normalized relocation information according to policy;
+10. compare final linked target bytes directly with the baserom;
+11. build the complete current ROM; and
+12. compare the complete current ROM byte-for-byte with the baserom.
 
-Then run:
+`--require-pure` must fail if the source class is not `PURE_C`, even when output is exact.
 
-```powershell
-node tools/extract_rom_segments.js
-node tools/rebuild_rom.js
+Expected summary:
+
+```text
+OB64 Decomp Verification
+
+Baserom identity ........ PASS
+Toolchain ................ PASS
+Structural owner ......... PASS
+Source policy ............ PURE_C
+C linker ownership ....... PASS
+Target placement ......... PASS
+Relocations .............. PASS
+Target bytes ............. EXACT
+Full ROM ................. EXACT
+
+RESULT: MATCHING C
 ```
 
-This is the first exact rebuild loop. It extracts the ledger's non-overlapping
-spans as raw files, concatenates them back into `dist/rebuilt.us_rev0.z64`, and
-fails unless the rebuilt ROM is byte-identical to `build/baserom.us_rev0.z64`.
+An exact hybrid should instead report:
 
-Then run the assembly-backed code-region gate:
+```text
+Source policy ............ HYBRID_C
+Target bytes ............. EXACT
+Full ROM ................. EXACT
 
-```powershell
-node tools/assemble_original_mips.js
-node tools/rebuild_rom.js --assembled-code build/assembled/rev0/code.bin --out dist/rebuilt.us_rev0.assembled-code.z64 --report build/rebuild/rev0-assembled-code-rebuild-report.json
+RESULT: MATCHING HYBRID
 ```
 
-This assembles tracked MIPS chunks with GNU `mips64-elf-as`, falls back to
-generated `.word` chunks for ranges not yet promoted, and substitutes the
-resulting binary blob for the raw code span. Manifest chunk `parts` are assembled
-in order, so a promoted no-gap chunk can be split into named files without losing
-coverage. Current expected result: 100 tracked composite real-asm chunks made from
-6,184 tracked source files (chunks 0–99 fully source-owned, `0x00001000..0x0063676C` — the entire
-configured code region; data-ownership loop complete), plus 0
-generated fallback chunks; the assembled
-code-region SHA256 is
-`40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`, and the
-full rebuilt ROM remains byte-identical to the normalized Rev 0 baserom.
+and `--require-pure` must return failure.
 
-Then run the full-ROM source ownership audit:
+### 5. Verify integrated current state
 
-```powershell
-node tools/build_full_source_manifest.js
+Before merging/integrating a set of changes:
+
+```text
+node tools/verify.js
 ```
 
-This verifies that the coverage ledger, segment manifest, original-MIPS report,
-and assembled-code report agree. It assigns every ROM byte to one current source
-strategy: `original_mips` for confirmed code-region bytes, or raw/header/archive/
-audio/LZSS/tail/padding source ownership for non-code bytes. Archive gaps and
-tail data remain explicitly ambiguous until repeatable scanners decode them.
+This verifies all active C/hybrid replacements and the complete ROM.
 
-Then generate and rebuild from source owners:
+Legacy hybrid targets may allow the overall exact baseline to pass, but status must list them
+separately from pure matching C.
 
-```powershell
-node tools/extract_non_code_sources.js
-node tools/rebuild_from_source_manifest.js
+### 6. Commit
+
+Commit the source and the smallest configuration change necessary to activate it.
+
+Git records source history. Do not create separate ordinary-function promotion manifests,
+checkpoint receipts, worker lifecycle receipts, frozen accepted trees, or independent matching
+review packages.
+
+---
+
+## Target Configuration
+
+The long-term target configuration should contain only facts that cannot be derived safely from the
+accepted structural model.
+
+Preferred shape:
+
+```json
+{
+  "symbol": "func_0000B33C",
+  "source": "src/boot/boot_resource_pool_acquire_release.c"
+}
 ```
 
-This verifies tracked non-code owner files under `data/source-owners/rev0/`,
-writes ignored fallback owners under `build/source-owners/rev0/` for unpromoted
-spans, then rebuilds the ROM from assembled original MIPS plus those owners. It
-is the current proof path that non-code bytes are in the rebuild without being
-labeled as understood MIPS.
+Derive where possible:
 
-## Conventional Build And Matching C
+- ROM start/end;
+- VRAM;
+- target size;
+- section name;
+- owner/chunk/row identity;
+- overlay descriptor;
+- original assembly path;
+- expected retail bytes;
+- source and original-assembly hashes;
+- expected text hash; and
+- normalized relocation records.
 
-Use fresh, empty directories outside this repository. Keep Splat, asm-differ,
-KMC, objects, maps, executables, ROMs, and reports untracked.
+If a symbol address or link alias is genuinely needed, prefer a shared canonical symbol table over
+duplicating it per target.
 
-Set paths to authenticated local prerequisites:
+During migration, legacy metadata may remain behind an adapter until the new derived path proves
+equivalent. Do not delete trusted metadata first and hope to reconstruct it later.
 
-```powershell
-$runRoot = '<fresh-external-work-root>'
-$splatPython = '<authenticated-python.exe>'
-$splatSplit = '<authenticated-splat-split.py>'
-$splatSnapshot = '<authenticated-splat-snapshot>'
-$asmDiffer = '<accepted-asm-differ-checkout>'
-$kmcCompiler = '<accepted-kmc-cc1.exe>'
-$splatOutput = Join-Path $runRoot 'splat'
-$phase7Output = Join-Path $runRoot 'phase7'
-$phase8Output = Join-Path $runRoot 'phase8'
+---
+
+## Relocation Policy
+
+Relocation equality is retained because the decomp is intended for source-level modification, not
+only historical byte reproduction.
+
+The verifier should derive normalized relocations from the accepted original owner/object and
+compare them with the C object.
+
+Do not manually maintain per-target relocation arrays once the derived comparison has been proven
+equivalent.
+
+If a target produces exact final bytes but relocation structure differs, report it explicitly.
+Do not silently count it as fully mod-ready pure C.
+
+---
+
+## Commands
+
+The normal human/agent interface should converge on:
+
+```text
+node tools/build.js
+node tools/diff.js <symbol>
+node tools/verify.js [--target <symbol>] [--require-pure]
+node tools/status.js
+node tools/audit.js
 ```
 
-Generate the 7,242-owner Splat extraction:
+### `build`
 
-```powershell
-node tools/run_phase7_splat.js --output $splatOutput --python $splatPython --split $splatSplit --snapshot-root $splatSnapshot
+Build the current source tree.
+
+It may use legacy Phase 7/8 implementation libraries internally during migration. Historical
+implementation names do not need to become user-facing concepts.
+
+### `diff`
+
+Fast per-target matching loop.
+
+### `verify`
+
+Normal exactness/ownership/source-policy gate.
+
+### `status`
+
+Derive current progress from the accepted model and source classifier.
+
+At minimum report:
+
+- exact `PURE_C` functions and bytes;
+- exact `HYBRID_C` functions and bytes;
+- assembly/non-C owners;
+- nonmatching/experimental C if tracked separately; and
+- full-ROM exact status.
+
+Do not source these counts from prose documentation.
+
+### `audit`
+
+Heavy structural verification. See `docs/AUDIT.md`.
+
+---
+
+## Local Tool Paths
+
+Tracked configuration owns expected tool identities/versions/hashes, not Joe-specific absolute
+paths.
+
+Machine-local paths should come from one ignored local config or documented environment variables
+resolved by a shared helper.
+
+Normal commands should not require users or agents to paste a long set of compiler/Splat/asm-differ
+paths on every invocation.
+
+Do not weaken tool identity checks merely to simplify path handling.
+
+---
+
+## Parallel Agents
+
+Use normal Git worktrees/branches.
+
+A worker:
+
+```text
+select target
+→ write C
+→ diff
+→ verify target
+→ commit
 ```
 
-Build and verify the conventional assembly and linker result:
+Integration:
 
-```powershell
-node tools/build_phase7_conventional.js --output $phase7Output --splat-output $splatOutput --splat-python $splatPython --splat-split $splatSplit --asm-differ $asmDiffer
-node tools/verify_phase7_conventional.js --output $phase7Output --splat-python $splatPython --splat-split $splatSplit --asm-differ $asmDiffer
+```text
+rebase/merge onto latest canonical
+→ node tools/verify.js
+→ accept if exact
 ```
 
-Build and verify the accepted structural matching-C replacements:
+No additional Highway/Lane/Lease/Checkpoint orchestration is part of decomp evidence.
 
-```powershell
-node tools/build_phase8_matching_c.js --output $phase8Output --phase7-output $phase7Output --compiler $kmcCompiler --splat-python $splatPython --splat-split $splatSplit --asm-differ $asmDiffer
-node tools/verify_phase8_matching_c.js --output $phase8Output --compiler $kmcCompiler --splat-python $splatPython --splat-split $splatSplit --asm-differ $asmDiffer
+---
+
+## Modified Builds
+
+Retail matching and mod behavior are different acceptance problems.
+
+For a modification:
+
+```text
+exact retail baseline
+→ intentional source change
+→ build modified ROM
+→ changed-byte/layout validation
+→ emulator/runtime proof
 ```
 
-These gates apply to the accepted Windows host. They do not prove gameplay
-semantics or cross-host reproduction.
+Do not require a modified ROM to equal retail.
 
-## Chunk Split Pipeline (code chunks)
+Do not use the existence of a matching baseline as proof that a modification behaves correctly.
 
-To source-own a promoted 64 KiB code chunk as named function/data parts, use the
-tracked chunk-split pipeline (it writes only gitignored `build/` artifacts until
-the final split):
+---
 
-1. `node tools/dump_function_context.js --start <s> --end <e>` — parent
-   boundaries + callgraph + globals + hazards (exclusive ends = parent
-   `end_rom + 4`).
-2. `node tools/plan_chunk.js --start <s> --end <e> --tail-end <t> --tail-name <n>`
-   — base partition (parent function starts; straddler tail forced as file 0).
-3. `node tools/slice_chunk.js --start <s> --end <e> --nslices <N>` — per-slice
-   `.s` + plan for the analysis swarm.
-4. Analysis swarm (one agent per slice) refines boundaries — un-merge over-merged
-   parents, recover FRAMELESS leaves the parent DB misses (no `addiu $sp`
-   prologue), fold preamble-orphans, classify data islands — writing
-   `build/chunk_<tag>_slices/slice<K>_final.json` (`{functions:[{start,end,name,
-   kind,note}]}`). Use **conservative `func_*`** for overlay-relocated chunks.
-5. `node tools/integrate_chunk.js ...` — merge + validate into a `--splits-file`.
-6. `node tools/check_boundaries.js --splits <json> --disasm <chunk.s>` —
-   deterministic boundary gate (fragment / cross-boundary PC-relative branch /
-   prologue-after-return under-split / delay-slot leak / straddler-position /
-   data-island). `node tools/check_splits.js --splits <json> --disasm <chunk.s>`
-   is the standalone fragment check. Then run an adversarial review swarm
-   (`build/wf_adversarial.js`) and apply its fixes.
-7. `node tools/split_original_mips_part.js --part <chunk.s> --splits-file <json>
-   --remove-source` — write the named parts + update the manifest.
-8. Run `node tools/check_manifest.js` and
-   `node tools/assemble_original_mips.js --strict-tracked`.
-9. Run `node tools/verify_setup.js --phase5a-root $phase5aRoot`.
+## Nonmatching C
 
-MIXED chunks (code + data): handle the code sub-region with steps 2–6 using a
-narrower `--end` (the code/data boundary) and `slice_chunk --disasm <full chunk.s>`
-(the chunk file is wider than the analyzed range). Classify the data region
-separately (overlay map = 0 loaded fns + 0 `jr $ra`/prologues + pointer/ASCII
-density ⇒ data) into `kind:"data"` parts (`zero_fill_`/`data_`/`rodata_`/`table_`/
-`jumptable_`/`rsp_ucode_`) with a data-classification swarm (`build/wf_data.js`),
-then concatenate code + data splits into one full-chunk splits JSON before step 7.
-The reusable swarm scripts live under gitignored `build/wf_analyze.js` /
-`build/wf_data.js` / `build/wf_adversarial.js` (edit the per-chunk DATA BLOCK).
+Nonmatching pure C can be useful for understanding a subsystem or prototyping a future modification,
+but it is not part of the retail exact baseline unless the build explicitly supports such a mode.
 
-Honest headers: `split_original_mips_part.js` emits data headers for
-`kind:"data"`, cross-chunk continuation headers for
-`kind:"straddler-head"/"straddler-tail"`, and a code part's `note` as its header
-(preferred over the preamble-orphan boilerplate, which only applies when the true
-entry precedes a parent-DB label inside the body).
+Label it honestly.
 
-After each loop, update `docs/DECOMP_LOG.md`. If that log approaches roughly
-10,000 tokens, condense it and archive the previous full version under
-`docs/archive/`.
+Do not lower exact matching requirements merely because a source reconstruction is semantically
+good.
+
+---
+
+## Progress Priority
+
+The project should prefer decompilation that reduces LordlyCaliber's dependence on runtime hooks
+and hard-coded workarounds.
+
+Priority order:
+
+1. code directly intercepted/patched by LordlyCaliber;
+2. dependencies needed to replace those hooks with source-level changes;
+3. code behind current editor limits;
+4. foundational subsystem code that unlocks several future targets;
+5. opportunistic easy matches.
+
+Matching-function count is a status metric, not the optimization target.

@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "matchingCompiler": {
+    "manifest": "docs/external-intake/phase6-kmc-reproduction-20260801/reproduction-manifest.json",
+    "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+    "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+    "preprocessingMode": "authenticated-external-companion",
+    "reason": "The accepted KMC artifact is cc1-only and rejects preprocessing directives, so the pinned target preprocessor expands headers/macros before policy scanning."
+  },
+  "preprocessor": {
+    "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+    "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+    "version": "mips64-elf-cpp.exe (GCC) 12.2.0",
+    "flags": ["-P", "-undef", "-nostdinc"],
+    "includeDirectories": ["include"]
+  }
+}

@@ -1,92 +1,46 @@
 # OB64 Decomp
 
-Dedicated decompilation repo for Ogre Battle 64: Person of Lordly Caliber, US
-Rev 0.
+Dedicated clean-room decompilation workspace for *Ogre Battle 64: Person of
+Lordly Caliber*, US Rev 0.
 
-Start here for future sessions:
+The project preserves the original MIPS owners while progressively replacing
+accepted ranges with source. A function counts as matching C only when it is
+`PURE_C`, is the sole linked owner of its accepted section, matches the retail
+target bytes, and preserves the byte-identical complete ROM.
 
-- `AGENTS.md` - local rules and durable memory gate.
-- `docs/PLATFORM.md` - current repo state, invariants, and command snapshot.
-- `docs/REV0_SCOPE.md` - Rev 0 identity and structural coverage snapshot.
-- `docs/TOOLCHAIN.md` - local MIPS binutils setup and smoke-test expectations.
-- `docs/WORKFLOW.md` - decomp loop and evidence rules.
-- `docs/NEXT_STEPS.md` - immediate task queue.
-
-The goal is to produce a reproducible source tree for the ROM:
-
-- `src/` - C source for decompiled functions and systems.
-- `asm/original/` - original MIPS disassembly preserved as readable reference.
-- `asm/nonmatching/` - assembly linked while a C version is not matching yet.
-- `data/` and `assets/` - structured data and extracted asset source forms.
-- `config/` - Rev 0 ROM profile, segments, overlays, symbols, and linker input.
-
-ROM binaries are local inputs only and are ignored by git.
-
-## Current Scope
-
-Rev 0 only. Rev 1 support is intentionally out of scope until the Rev 0 build,
-compare, and overlay workflow is stable.
-
-## Expected Local Input
-
-Place a local Rev 0 ROM under `baserom/`. The preferred file is the parent
-workspace master ROM:
+## Current commands
 
 ```text
-Ogre Battle 64 - Person of Lordly Caliber (U) [!].v64
+node tools/build.js
+node tools/diff.js <symbol>
+node tools/verify.js [--target <symbol>] [--require-pure]
+node tools/status.js
+node tools/audit.js
 ```
 
-Tools should normalize local input to canonical z64 bytes before extraction,
-disassembly, or comparison.
+`verify.js` is the normal acceptance gate. `audit.js` retains the heavier ROM,
+coverage, overlay, source-ownership, and structural checks for foundational
+changes. Run `status.js` for generated counts; this README does not duplicate
+them.
 
-## Folder Map
+## Local setup
 
-```text
-baserom/       local ROM inputs, ignored
-config/        Rev 0 profile, segments, overlays, symbols, linker config
-include/       shared C headers and structs
-src/           decompiled C source
-asm/           original, nonmatching, and handwritten MIPS assembly
-data/          tables, rodata, binary data source, archive manifests
-assets/        extracted art/audio/model source artifacts
-tools/         extraction, disassembly, compare, and context tools
-docs/          curated decomp notes and subsystem docs
-wiki/          regenerated decomp reports and function dossiers
-tests/         parser, extraction, and compare tests
-build/         generated objects/intermediates, ignored
-dist/          rebuilt ROMs/reports, ignored
-scratch/       local experiments, ignored
-```
+Place a supported Rev 0 ROM under `baserom/` or configure `OB64_ROM_INPUT`.
+Copy `config/local-tools.example.json` to the ignored
+`config/local-tools.json` and provide the authenticated local compiler, Splat,
+asm-differ, work-root, and audit-evidence paths. Environment variables listed
+by the example configuration may override those values.
 
-## Current Milestones
+ROM binaries, objects, maps, rebuilt ROMs, and generated reports are ignored
+and must not be committed.
 
-The repository now has these accepted capabilities:
+## Guidance
 
-1. The no-gap atlas owns the complete configured code region.
-2. The overlay configuration reproduces 19 descriptors, 11 groups, and 11 pointers.
-3. The production Splat configuration conserves all 7,242 accepted ROM owners.
-4. The conventional assembly and linker path reproduces the complete ROM.
-5. One independently written 36-byte C function matches its original section.
+- `AGENTS.md` — durable project rules.
+- `docs/WORKFLOW.md` — normal build, diff, and acceptance loop.
+- `docs/SOURCE_POLICY.md` — `PURE_C`, `HYBRID_C`, `ASM`, and `UNKNOWN` rules.
+- `docs/NEXT_STEPS.md` — active queue.
+- `docs/AUDIT.md` — heavyweight structural verification.
 
-The matching function is `func_000E5938`. Its name and acceptance are
-structural; they do not establish gameplay semantics.
-
-## Canonical Verification
-
-The setup gate needs the accepted Phase 5A evidence root. That evidence remains
-outside this clean-room repository.
-
-```powershell
-$phase5aRoot = '<accepted-phase5a-product-root>'
-node tools/verify_setup.js --phase5a-root $phase5aRoot
-```
-
-The current 21-check gate reproduces the full Rev 0 ROM at SHA-256
-`571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A`.
-
-The assembled code region remains SHA-256
-`40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`.
-
-Use `docs/WORKFLOW.md` for the Splat, conventional build, and matching-C
-commands. Keep every generated object, map, executable, ROM, and report outside
-tracked source.
+Rev 1, toolchain upgrades, segmentation changes, and native/static recomp work
+remain separate projects.

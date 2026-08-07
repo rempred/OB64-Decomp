@@ -15,6 +15,11 @@ const {
   loadPhase8Model,
   verifyTargetMapOwner,
 } = require('../tools/lib/phase8_matching_c');
+const {
+  SOURCE_CLASSES,
+  classifySource,
+  resolvePreprocessor,
+} = require('../tools/lib/source_policy');
 
 function usage() {
   console.log('Usage: node tests/phase8_matching_c.js --output <phase8-output>');
@@ -52,18 +57,29 @@ function main() {
   const elfBytes = fs.readFileSync(path.join(output, 'phase8.elf'));
   const romBytes = fs.readFileSync(path.join(output, 'phase8.us_rev0.z64'));
   const mapText = fs.readFileSync(path.join(output, 'phase8.map'), 'utf8');
-  const cObject = parseElf32BigEndian(fs.readFileSync(path.join(output, 'objects', 'c', `${phase8.target.symbol}.o`)));
-  const fallbackObject = parseElf32BigEndian(fs.readFileSync(path.join(output, 'comparison', 'original', `chunk_${String(phase8.target.chunkIndex).padStart(3, '0')}.o`)));
   const linkedElf = parseElf32BigEndian(elfBytes);
-  verifyElfAgainstModel(phase8.model, linkedElf);
+  const replacedRows = new Set(phase8.targets.map((target) => target.rowIndex));
+  const verificationModel = {
+    ...phase8.model,
+    rows: phase8.model.rows.map((row) => replacedRows.has(row.index) ? { ...row, inputKind: 'matching-c' } : row),
+  };
+  verifyElfAgainstModel(verificationModel, linkedElf);
   verifyRom(phase8.model, romBytes);
   verifyMap(phase8.model, mapText);
-  verifyTargetMapOwner(phase8, mapText);
-
-  const linkedText = sectionBytes(linkedElf, phase8.target.sectionName);
-  const cText = sectionBytes(cObject, phase8.target.sectionName);
-  const fallbackText = sectionBytes(fallbackObject, phase8.target.sectionName);
-  if (!linkedText.equals(cText) || !linkedText.equals(fallbackText)) fail('baseline target comparison is not exact');
+  const targetProofs = [];
+  for (const target of phase8.targets) {
+    verifyTargetMapOwner(target, mapText);
+    const cObject = parseElf32BigEndian(fs.readFileSync(path.join(output, 'objects', 'c', `${target.symbol}.o`)));
+    const fallbackObject = parseElf32BigEndian(fs.readFileSync(path.join(output, 'comparison', 'original', `chunk_${String(target.chunkIndex).padStart(3, '0')}.o`)));
+    const prunedObject = parseElf32BigEndian(fs.readFileSync(path.join(output, 'objects', 'assembly', `chunk_${String(target.chunkIndex).padStart(3, '0')}.o`)));
+    const linkedText = sectionBytes(linkedElf, target.sectionName);
+    const cText = sectionBytes(cObject, target.sectionName);
+    const fallbackText = sectionBytes(fallbackObject, target.sectionName);
+    if (!linkedText.equals(fallbackText)) fail(`linked/original target comparison is not exact: ${target.symbol}`);
+    if (cText.length !== target.bytes) fail(`C object target size drift: ${target.symbol}`);
+    if (prunedObject.sections.some((section) => section.name === target.sectionName)) fail(`original assembly target remains linked: ${target.symbol}`);
+    targetProofs.push({ symbol: target.symbol, bytes: linkedText.length, originalExcluded: true, soleCOwner: true });
+  }
 
   const mutations = [];
   mutations.push(expectRejection('ROM padding', /linked ROM size drift/, () => {
@@ -79,17 +95,20 @@ function main() {
 
   const expectedOwner = `objects/c/${phase8.target.symbol}.o`;
   const wrongOwner = `objects/assembly/chunk_${String(phase8.target.chunkIndex).padStart(3, '0')}.o`;
+  const fakeSource = classifySource(path.join(__dirname, 'fixtures', 'source-policy', 'ordinary.c'), { preprocessor: resolvePreprocessor() });
+  if (fakeSource.class !== SOURCE_CLASSES.PURE_C) fail('ownership falsifier source fixture is not PURE_C');
+  verifyRom(phase8.model, romBytes);
   mutations.push(expectRejection('target map owner', /sole matching C object/, () => {
-    verifyTargetMapOwner(phase8, mapText.split(expectedOwner).join(wrongOwner));
+    verifyTargetMapOwner(phase8.target, mapText.split(expectedOwner).join(wrongOwner));
   }));
 
   console.log(JSON.stringify({
     status: 'pass',
-    baseline: {
-      symbol: phase8.target.symbol,
-      bytes: linkedText.length,
-      cMatchesLinked: true,
-      fallbackMatchesLinked: true,
+    baseline: { targets: targetProofs.length, targetProofs },
+    ownershipFalsifier: {
+      fakeSourceClass: fakeSource.class,
+      romRemainedExact: true,
+      wrongOwnerRejected: true,
     },
     mutations,
   }, null, 2));

@@ -1,79 +1,175 @@
-# Next Steps
+# OB64 Decomp — Next Steps
 
-This is the immediate work queue for the Rev 0 decomp repo. Keep it short and
-update it when a task becomes durable, blocked, or complete. Per the AGENTS.md
-Documentation Policy, this file holds the QUEUE only — current-state numbers
-live in `docs/PLATFORM.md`, the loop summary in
-`docs/FINAL_DATA_OWNERSHIP_REPORT_2026-06-24.md`, and run history in
-`docs/DECOMP_LOG.md`. (The pre-dedupe narrative version of this file is
-archived as `docs/archive/NEXT_STEPS-full-2026-07-08.md`.)
+This file is the active queue only.
 
-## Status
+Changing counts belong in `node tools/status.js`, not in this document.
 
-Setup, data ownership, and the external-intake program are complete.
+---
 
-The configured code region has 100 composites, 6,184 tracked assembly owners,
-and zero generated fallback chunks.
+## Immediate Goal: Simplify Without Losing Proof
 
-```powershell
-$phase5aRoot = '<accepted-phase5a-product-root>'
-node tools/verify_setup.js --phase5a-root $phase5aRoot
+### 1. Freeze the current accepted baseline
+
+Before workflow surgery:
+
+- run the existing accepted baseline/Phase 7/Phase 8 verification paths;
+- record the current exact retail ROM identity;
+- record the currently active replacement target set; and
+- do not change existing C/asm implementations during the workflow migration.
+
+### 2. Add retrospective source classification
+
+Implement `tools/source_policy.js`.
+
+Classify every active `.c` replacement as:
+
+- `PURE_C`;
+- `HYBRID_C`; or
+- `UNKNOWN`.
+
+Do not break the exact baseline because legacy sources are hybrid.
+
+Update generated status so only exact `PURE_C` targets count as matching C.
+
+### 3. Add the minimal command layer
+
+Implement:
+
+```text
+node tools/build.js
+node tools/diff.js <symbol>
+node tools/verify.js [--target <symbol>] [--require-pure]
+node tools/status.js
+node tools/audit.js
 ```
 
-The command currently passes all 21 checks.
+Initially reuse the proven existing Phase 7/8 libraries internally.
 
-Twenty-three independently reviewed matching-C owners are active. They cover
-structural functions `func_000E5938`, `func_0000B33C`, `func_00007688`,
-`func_0000BC8C`, `func_00269470`, `func_0026B360`, `func_0026B820`,
-`func_00003798`, `func_0000A1F8`, `func_0002CBCC`, `func_0025C8A4`,
-`func_00008564`, `func_00023970`, `func_0002CB80`, `func_0025CAF0`,
-`func_00025000`, `func_0000D994`, `func_0002CD70`, `func_0025DAB0`,
-`func_00269798`, `func_000241F8`, `func_0025CB60`, and `func_0025EFC8`.
+Do not create a second independent matching implementation when the existing verifier already
+proves ownership, target bytes, and full-ROM identity.
 
-## Active Goal
+### 4. Prove parity
 
-Run `OB64-MC-6LW01-20260803` from the accepted twenty-three-owner baseline.
-Supply 84 candidates through two Highway queues and six isolated lanes.
-Highway Directors lease a candidate only when a lane becomes free. No function
-is assigned to a lane in advance.
+For the exact same source tree:
 
-## Ordered Work
+- old accepted verification passes;
+- new verification passes;
+- target placement/ownership decisions agree;
+- target linked bytes agree;
+- final ROM SHA/bytes agree; and
+- source-policy classification is deterministic.
 
-1. **Continuous six-lane matching C.** Lease candidates just in time from each
-   Highway's immutable queue. Keep at most one live lease per lane.
+Do not retire the old user-facing workflow before parity is demonstrated.
 
-2. **Serial checkpoint promotion.** Promote each six-acceptance Highway
-   checkpoint through separate Sol worker and independent-review tasks. Start
-   every promotion from the newest accepted canonical baseline.
+### 5. Reduce duplicated target metadata
 
-3. **Exact conventional builds.** Use fresh external outputs and authenticated
-   Splat, asm-differ, GNU binutils, and KMC prerequisites.
+Introduce a minimal active-target model containing primarily:
 
-4. **Evidence-based naming.** Keep structural `func_*` names until accepted
-   runtime or causal evidence supports gameplay meaning.
+```json
+{
+  "symbol": "...",
+  "source": "..."
+}
+```
 
-5. **Non-code owner promotion.** The first tracked batch is complete
-   (`raw_header`, `raw_structural_gap`, ambiguous `raw_tail_data` under
-   `data/source-owners/rev0/`). Promote further batches deliberately; keep
-   archive gaps raw and explicitly ambiguous unless repeatable scanner
-   evidence improves the classification.
+Derive addresses, ranges, owner IDs, overlay information, expected retail bytes, original assembly,
+and relocations from accepted structural sources where safe.
 
-6. **Optional decode tracks.** Continue Section C directory work, Section B
-   semantics, or Section A sample addressing when explicitly assigned.
+Use an adapter during migration. Do not delete trusted metadata before the derived replacement has
+been proven equivalent.
 
-7. **Parent-controlled work.** Keep editor, emulator, and research dependencies
-   in the parent workspace under its current authority rules.
+Move durable link symbols to a shared symbol source when unambiguous; do not invent addresses merely
+to make the config smaller.
 
-## Watch Items
+### 6. Retire active process bureaucracy
 
-- The parent archive catalog has missed whole sections in the past. Keep the
-  independent LHA scan in the default coverage gate.
-- The `archive/audio` overlap at `0x00925483..0x009254EF` is known and should
-  remain visible until reconciled.
-- Only the early boot region uses the simple `RAM = ROM + 0x8006FC00` mapping.
-  Later code is overlay-loaded and needs overlay-aware address handling.
-- Generated files under `build/` and `dist/` are local proof artifacts, not
-  source files to commit.
-- Patch-workbench candidates on file: chunk-33 `0x21CD48`/`0x21BF84` and
-  chunk-31 `0x1F36F0` (`candidate`/`needs-runtime`, RSR-011/RSR-014;
-  `docs/patch-workbench/rev0/`).
+After parity:
+
+- remove Highway/Lane/Lease/Checkpoint/Promotion concepts from active instructions;
+- stop generating ordinary-function promotion/review packages;
+- stop manually duplicating matching counts across docs;
+- keep historical evidence/history intact rather than rewriting it; and
+- keep the heavyweight forensic checks behind `audit`.
+
+### 7. Replace the canonical docs
+
+Install:
+
+- `AGENTS.md`;
+- `docs/WORKFLOW.md`;
+- `docs/SOURCE_POLICY.md`;
+- `docs/AUDIT.md`; and
+- this `docs/NEXT_STEPS.md`.
+
+---
+
+## After Migration: Optimize For LordlyCaliber Leverage
+
+Do not restart an easy-function matching farm merely to increase percentage.
+
+Choose the next decomp targets by the amount of runtime-hook/workaround complexity they can remove.
+
+### Tier 1 — Current runtime hooks and code patches
+
+Identify and decompile the original call graphs around:
+
+1. scenario deployment/enemy-record construction currently intercepted by the squad override;
+2. scenario/mission resource loading and DMA paths used by archive relocation;
+3. shop resource/inventory loading used by the Expansion-Pak shop override;
+4. the battle-stream path patched by High Attack Streamsplit; and
+5. the menu/render path used by the Chaos Frame display module.
+
+A large nonmatching research reconstruction can be more valuable than dozens of unrelated tiny
+matches, but the retail exact baseline must remain separate and honest.
+
+### Tier 2 — Current LordlyCaliber limits
+
+Prioritize code governing:
+
+- multi-window mission archive loading/relocation;
+- combat buffer capacity/ownership;
+- scenario deployment limits and group construction;
+- stronghold/scincsv descriptor creation;
+- map-sprite/class deployment validation; and
+- reserve/active character validation.
+
+### Tier 3 — Broad subsystem leverage
+
+Then expand through:
+
+- battle damage and action execution;
+- battle AI/action choice;
+- event/script interpretation;
+- world-map state;
+- dialogue; and
+- audio/resource consumers.
+
+---
+
+## Legacy Hybrid Cleanup
+
+Do not stop high-value subsystem work to purify every legacy hybrid immediately.
+
+Convert hybrids opportunistically when:
+
+- they sit on a high-value call graph;
+- removing inline assembly is tractable;
+- they are small foundational helpers; or
+- they obscure an important source-level modification.
+
+The target graduates from hybrid to matching C only when it is `PURE_C` and remains exact.
+
+---
+
+## Explicitly Deferred
+
+Do not combine these with the workflow migration:
+
+- Splat version upgrade;
+- compiler/toolchain replacement;
+- Rev 1 support;
+- new segmentation;
+- broad function-boundary reclassification; or
+- a native-PC/static-recomp project.
+
+Evaluate those separately once the simplified Rev 0 workflow is stable.

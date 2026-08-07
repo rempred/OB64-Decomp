@@ -33,6 +33,9 @@ node_modules/
 __pycache__/
 *.pyc
 
+# Machine-local workflow paths. Copy config/local-tools.example.json locally.
+/config/local-tools.json
+
 # OS/editor noise.
 .DS_Store
 Thumbs.db

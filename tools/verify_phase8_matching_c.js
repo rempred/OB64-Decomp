@@ -7,6 +7,7 @@ const {
   fail,
   loadPhase8Model,
   readJson,
+  sha256File,
   verifyCompiler,
   verifyPhase8Output,
   verifyRuntimeTools,
@@ -51,6 +52,22 @@ function main() {
   const buildReport = readJson(buildReportFile);
   if (buildReport.schemaVersion !== 1 || buildReport.status !== 'pass') fail('recorded Phase 8 build report did not pass');
   if (buildReport.compiler.sha256 !== compiler.sha256) fail('recorded KMC compiler identity drift');
+  const recordedSources = buildReport.acceptedInputs && buildReport.acceptedInputs.cSources;
+  const recordedTargets = buildReport.targetReplacements;
+  if (!Array.isArray(recordedSources) || recordedSources.length !== phase8.targets.length
+      || !Array.isArray(recordedTargets) || recordedTargets.length !== phase8.targets.length) {
+    fail('recorded Phase 8 source/object census drift');
+  }
+  for (const target of phase8.targets) {
+    const source = recordedSources.find((record) => record.path === target.source);
+    const replacement = recordedTargets.find((record) => record.symbol === target.symbol);
+    const objectFile = path.join(options.output, 'objects', 'c', `${target.symbol}.o`);
+    if (!source || source.sha256 !== target.sourceSha256
+        || !replacement || replacement.source !== target.source || replacement.sourceSha256 !== target.sourceSha256
+        || !fs.existsSync(objectFile) || replacement.cObjectSha256 !== sha256File(objectFile)) {
+      fail(`recorded Phase 8 source-to-object identity drift: ${target.symbol}`);
+    }
+  }
   for (const name of ['elf', 'map', 'rom', 'layout', 'readelf', 'objectManifest']) {
     if (buildReport.verification.outputs[name].sha256 !== verification.outputs[name].sha256) fail(`recorded Phase 8 ${name} identity drift`);
   }
