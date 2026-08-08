@@ -2,10 +2,6 @@ typedef unsigned char u8;
 typedef unsigned short u16;
 typedef signed short s16;
 
-asm(".macro move dst,src\n"
-    "addu \\dst,\\src,$0\n"
-    ".endm\n");
-
 typedef struct Func0019554CRecord {
     u8 field_00[0x11];
     u8 field_11;
