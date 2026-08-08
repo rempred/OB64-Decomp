@@ -1,0 +1,12 @@
+{
+  "schemaVersion": 1,
+  "symbol": "fixture_move_alias",
+  "sectionName": ".ob64.r9999",
+  "vramStart": "0x80001000",
+  "retailAdduHex": "00801021",
+  "gnuOrHex": "00801025",
+  "relocated": {
+    "expectedLinkedHex": "0C123456",
+    "unresolvedObjectHex": "0C000000"
+  }
+}

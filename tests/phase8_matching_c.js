@@ -11,7 +11,9 @@ const {
   verifyRom,
 } = require('../tools/lib/phase7_conventional');
 const {
+  compareLinkedTargetBytes,
   fail,
+  loadCanonicalBaserom,
   loadPhase8Model,
   verifyTargetMapOwner,
 } = require('../tools/lib/phase8_matching_c');
@@ -54,6 +56,7 @@ function main() {
   }
   const output = value('--output');
   const phase8 = loadPhase8Model();
+  const canonicalBaserom = loadCanonicalBaserom(phase8);
   const elfBytes = fs.readFileSync(path.join(output, 'phase8.elf'));
   const romBytes = fs.readFileSync(path.join(output, 'phase8.us_rev0.z64'));
   const mapText = fs.readFileSync(path.join(output, 'phase8.map'), 'utf8');
@@ -72,13 +75,23 @@ function main() {
     const cObject = parseElf32BigEndian(fs.readFileSync(path.join(output, 'objects', 'c', `${target.symbol}.o`)));
     const fallbackObject = parseElf32BigEndian(fs.readFileSync(path.join(output, 'comparison', 'original', `chunk_${String(target.chunkIndex).padStart(3, '0')}.o`)));
     const prunedObject = parseElf32BigEndian(fs.readFileSync(path.join(output, 'objects', 'assembly', `chunk_${String(target.chunkIndex).padStart(3, '0')}.o`)));
-    const linkedText = sectionBytes(linkedElf, target.sectionName);
+    const rawComparison = compareLinkedTargetBytes(target, linkedElf, canonicalBaserom);
+    if (!rawComparison.rawBytesExact) fail(`raw linked target comparison is not exact: ${target.symbol}`);
+    const linkedText = rawComparison.linkedBytes;
     const cText = sectionBytes(cObject, target.sectionName);
     const fallbackText = sectionBytes(fallbackObject, target.sectionName);
     if (!linkedText.equals(fallbackText)) fail(`linked/original target comparison is not exact: ${target.symbol}`);
     if (cText.length !== target.bytes) fail(`C object target size drift: ${target.symbol}`);
     if (prunedObject.sections.some((section) => section.name === target.sectionName)) fail(`original assembly target remains linked: ${target.symbol}`);
-    targetProofs.push({ symbol: target.symbol, bytes: linkedText.length, originalExcluded: true, soleCOwner: true });
+    targetProofs.push({
+      symbol: target.symbol,
+      bytes: linkedText.length,
+      rawBytesExact: rawComparison.rawBytesExact,
+      linkedTargetSha256: rawComparison.linkedTargetSha256,
+      expectedTargetSha256: rawComparison.expectedTargetSha256,
+      originalExcluded: true,
+      soleCOwner: true,
+    });
   }
 
   const mutations = [];

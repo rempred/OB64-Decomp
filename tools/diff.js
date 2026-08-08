@@ -33,6 +33,21 @@ function selectTarget(phase8, symbol) {
   return matches[0];
 }
 
+function comparisonLabel(comparison) {
+  if (!comparison
+      || typeof comparison.exact !== 'boolean'
+      || typeof comparison.asmDifferScoreZero !== 'boolean'
+      || typeof comparison.rawBytesExact !== 'boolean') {
+    throw new Error('target comparison result is malformed');
+  }
+  if (comparison.exact !== (comparison.asmDifferScoreZero && comparison.rawBytesExact)) {
+    throw new Error('target comparison exactness is inconsistent');
+  }
+  if (comparison.exact) return 'EXACT';
+  if (comparison.asmDifferScoreZero && !comparison.rawBytesExact) return 'RAW BYTES DIFFER';
+  return 'DIFFERS';
+}
+
 function main(argv = process.argv.slice(2)) {
   if (argv.length === 1 && (argv[0] === '--help' || argv[0] === '-h')) {
     usage();
@@ -86,7 +101,7 @@ function main(argv = process.argv.slice(2)) {
   });
   const sourcePolicy = classifySource(target.source, { preprocessor: resolvePreprocessor() });
   const report = {
-    schemaVersion: 1,
+    schemaVersion: 2,
     symbol: target.symbol,
     source: target.source,
     sourceClass: sourcePolicy.class,
@@ -98,9 +113,14 @@ function main(argv = process.argv.slice(2)) {
   writeJson(reportFile, report);
 
   console.log('');
-  console.log(`${target.symbol} ........ ${comparison.exact ? 'EXACT' : 'DIFFERS'}`);
+  console.log(`${target.symbol} ........ ${comparisonLabel(comparison)}`);
   console.log(`Source class ............... ${sourcePolicy.class}`);
   console.log(`Score ...................... ${comparison.currentScore} / ${comparison.maxScore}`);
+  console.log(`Raw linked bytes ........... ${comparison.rawBytesExact ? 'EXACT' : 'DIFFER'}`);
+  console.log(`Differing bytes ............ ${comparison.differingByteCount}`);
+  console.log(`Differing instruction words  ${comparison.differingInstructionWordCount}`);
+  console.log(`Linked target SHA-256 ...... ${comparison.linkedTargetSha256}`);
+  console.log(`Expected target SHA-256 .... ${comparison.expectedTargetSha256}`);
   console.log(`Report ..................... ${reportFile}`);
 }
 
@@ -108,9 +128,10 @@ if (require.main === module) {
   try {
     main();
   } catch (error) {
+    console.error('Diff status ................. ERROR');
     console.error(`Diff failed: ${error.message}`);
     process.exitCode = 1;
   }
 }
 
-module.exports = { main, selectTarget };
+module.exports = { comparisonLabel, main, selectTarget };

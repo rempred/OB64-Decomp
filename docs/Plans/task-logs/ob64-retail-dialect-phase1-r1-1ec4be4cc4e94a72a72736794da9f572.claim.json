@@ -1,0 +1,9 @@
+{
+  "schemaVersion": 1,
+  "taskId": "ob64-retail-dialect-phase1-raw-exactness",
+  "revision": 1,
+  "launchId": "1ec4be4cc4e94a72a72736794da9f572",
+  "receivingTaskId": "/root",
+  "hostId": "codex-desktop-current",
+  "createdAt": "2026-08-08T00:08:03.0653821Z"
+}

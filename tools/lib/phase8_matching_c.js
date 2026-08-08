@@ -53,6 +53,96 @@ function loadPhase8Model() {
   return loadActiveTargetModel();
 }
 
+function loadCanonicalBaserom(phase8) {
+  if (!phase8 || !phase8.model || !phase8.model.config || !phase8.model.config.rom) {
+    fail('canonical baserom model is missing');
+  }
+  const expected = phase8.model.config.rom;
+  if (!Number.isInteger(expected.bytes) || expected.bytes <= 0 || typeof expected.sha256 !== 'string') {
+    fail('canonical baserom model is malformed');
+  }
+  const file = path.join(ROOT, 'build', 'baserom.us_rev0.z64');
+  if (!fs.existsSync(file) || !fs.statSync(file).isFile()) fail('canonical normalized baserom is missing: ' + file);
+  const bytes = fs.readFileSync(file);
+  if (bytes.length !== expected.bytes || sha256Buffer(bytes) !== expected.sha256) fail('canonical normalized baserom identity drift');
+  return bytes;
+}
+
+function compareLinkedTargetBytes(target, linkedElf, canonicalBaserom) {
+  if (!target || typeof target.symbol !== 'string' || typeof target.sectionName !== 'string') {
+    fail('raw linked-target comparison metadata is malformed');
+  }
+  if (!Number.isInteger(target.bytes) || target.bytes <= 0 || target.bytes % 4 !== 0
+      || !Number.isInteger(target.romStartNumber) || !Number.isInteger(target.romEndNumber)
+      || target.romEndNumber - target.romStartNumber !== target.bytes
+      || !Number.isInteger(target.vramStartNumber)
+      || typeof target.expectedTextSha256 !== 'string' || !/^[0-9A-F]{64}$/.test(target.expectedTextSha256)) {
+    fail('raw linked-target comparison contract is malformed: ' + target.symbol);
+  }
+  if (!linkedElf || !Buffer.isBuffer(linkedElf.buffer)
+      || !Array.isArray(linkedElf.sections) || !Array.isArray(linkedElf.programHeaders)) {
+    fail('raw linked-target ELF is malformed: ' + target.symbol);
+  }
+  if (!Buffer.isBuffer(canonicalBaserom)
+      || target.romStartNumber < 0
+      || target.romEndNumber > canonicalBaserom.length) {
+    fail('raw linked-target baserom range is malformed: ' + target.symbol);
+  }
+
+  const sections = linkedElf.sections.filter((section) => section && section.name === target.sectionName);
+  if (sections.length !== 1) fail('raw linked-target section count drift: ' + target.symbol);
+  const section = sections[0];
+  if (section.type !== 1
+      || !Number.isInteger(section.flags) || (section.flags & 2) === 0 || (section.flags & 4) === 0
+      || section.address !== target.vramStartNumber
+      || section.size !== target.bytes
+      || !Number.isInteger(section.offset) || section.offset < 0) {
+    fail('raw linked-target section shape drift: ' + target.symbol);
+  }
+  const targetLoads = linkedElf.programHeaders.filter((header) => header && header.type === 1 && (
+    header.vaddr === target.vramStartNumber
+    || header.paddr === target.romStartNumber
+    || header.offset === section.offset
+  ));
+  if (targetLoads.length !== 1) fail('raw linked-target load-header count drift: ' + target.symbol);
+  const load = targetLoads[0];
+  if (load.offset !== section.offset
+      || load.vaddr !== target.vramStartNumber
+      || load.paddr !== target.romStartNumber
+      || load.fileSize !== target.bytes
+      || load.memorySize !== target.bytes
+      || !Number.isInteger(load.flags) || (load.flags & 1) === 0) {
+    fail('raw linked-target load placement drift: ' + target.symbol);
+  }
+
+  const linkedBytes = Buffer.from(elfSectionBytes(linkedElf, section));
+  if (linkedBytes.length !== target.bytes) fail('raw linked-target section size drift: ' + target.symbol);
+  const expectedBytes = Buffer.from(canonicalBaserom.subarray(target.romStartNumber, target.romEndNumber));
+  if (expectedBytes.length !== target.bytes) fail('raw linked-target expected size drift: ' + target.symbol);
+  const expectedTargetSha256 = sha256Buffer(expectedBytes);
+  if (expectedTargetSha256 !== target.expectedTextSha256) fail('raw linked-target expected identity drift: ' + target.symbol);
+
+  let differingByteCount = 0;
+  let firstDifferenceOffset = null;
+  const differingWords = new Set();
+  for (let offset = 0; offset < linkedBytes.length; offset += 1) {
+    if (linkedBytes[offset] === expectedBytes[offset]) continue;
+    differingByteCount += 1;
+    differingWords.add(Math.floor(offset / 4));
+    if (firstDifferenceOffset === null) firstDifferenceOffset = offset;
+  }
+  return {
+    rawBytesExact: differingByteCount === 0,
+    linkedTargetSha256: sha256Buffer(linkedBytes),
+    expectedTargetSha256,
+    differingByteCount,
+    differingInstructionWordCount: differingWords.size,
+    firstDifferenceOffset,
+    linkedBytes,
+    expectedBytes,
+  };
+}
+
 function isInside(candidate, root) {
   const resolvedCandidate = path.resolve(candidate).toLowerCase();
   const resolvedRoot = path.resolve(root).toLowerCase();
@@ -475,6 +565,47 @@ function parseJsonOutput(value, label) {
   }
 }
 
+function summarizeTargetComparison(json, rawComparison, label) {
+  if (!json || !Array.isArray(json.rows) || json.rows.length === 0
+      || json.rows.some((row) => !row || typeof row !== 'object' || Array.isArray(row))
+      || !Number.isInteger(json.max_score) || json.max_score <= 0
+      || !Number.isInteger(json.current_score) || json.current_score < 0
+      || json.current_score > json.max_score) {
+    fail(label + ' is missing a valid nonempty asm-differ score');
+  }
+  if (!rawComparison
+      || typeof rawComparison.rawBytesExact !== 'boolean'
+      || typeof rawComparison.linkedTargetSha256 !== 'string' || !/^[0-9A-F]{64}$/.test(rawComparison.linkedTargetSha256)
+      || typeof rawComparison.expectedTargetSha256 !== 'string' || !/^[0-9A-F]{64}$/.test(rawComparison.expectedTargetSha256)
+      || !Number.isInteger(rawComparison.differingByteCount) || rawComparison.differingByteCount < 0
+      || !Number.isInteger(rawComparison.differingInstructionWordCount) || rawComparison.differingInstructionWordCount < 0
+      || !(rawComparison.firstDifferenceOffset === null || (Number.isInteger(rawComparison.firstDifferenceOffset) && rawComparison.firstDifferenceOffset >= 0))
+      || (rawComparison.rawBytesExact && (rawComparison.differingByteCount !== 0
+        || rawComparison.differingInstructionWordCount !== 0
+        || rawComparison.firstDifferenceOffset !== null
+        || rawComparison.linkedTargetSha256 !== rawComparison.expectedTargetSha256))
+      || (!rawComparison.rawBytesExact && (rawComparison.differingByteCount === 0
+        || rawComparison.differingInstructionWordCount === 0
+        || rawComparison.firstDifferenceOffset === null
+        || rawComparison.linkedTargetSha256 === rawComparison.expectedTargetSha256))) {
+    fail(label + ' is missing a valid raw linked-target comparison');
+  }
+  const asmDifferScoreZero = json.current_score === 0;
+  return {
+    rows: json.rows.length,
+    maxScore: json.max_score,
+    currentScore: json.current_score,
+    asmDifferScoreZero,
+    rawBytesExact: rawComparison.rawBytesExact,
+    linkedTargetSha256: rawComparison.linkedTargetSha256,
+    expectedTargetSha256: rawComparison.expectedTargetSha256,
+    differingByteCount: rawComparison.differingByteCount,
+    differingInstructionWordCount: rawComparison.differingInstructionWordCount,
+    firstDifferenceOffset: rawComparison.firstDifferenceOffset,
+    exact: asmDifferScoreZero && rawComparison.rawBytesExact,
+  };
+}
+
 function runTargetAsmDiffer(phase8, target, options) {
   const output = path.resolve(options.output);
   const proofRoot = path.join(output, 'asm-differ-proof');
@@ -527,20 +658,20 @@ function runTargetAsmDiffer(phase8, target, options) {
     '--no-line-numbers',
   ], { cwd: runRoot, env });
   const json = parseJsonOutput(result.stdout, 'asm-differ target proof for ' + target.symbol);
-  const exact = Array.isArray(json.rows) && json.rows.length > 0 && json.max_score > 0 && json.current_score === 0;
-  if ((!Array.isArray(json.rows) || json.rows.length === 0 || json.max_score <= 0)
-      || (options.requireExact !== false && !exact)) {
-    fail('asm-differ did not prove an exact nonempty target match: ' + target.symbol);
+  const canonicalBaserom = options.canonicalBaserom || loadCanonicalBaserom(phase8);
+  const linkedElf = parseElfFile(path.join(output, 'phase8.elf'));
+  const rawComparison = compareLinkedTargetBytes(target, linkedElf, canonicalBaserom);
+  const comparison = summarizeTargetComparison(json, rawComparison, 'target comparison for ' + target.symbol);
+  if (options.requireExact !== false && !comparison.exact) {
+    if (!comparison.asmDifferScoreZero) fail('asm-differ did not prove an exact nonempty target match: ' + target.symbol);
+    fail('asm-differ score is zero but raw linked-target bytes differ: ' + target.symbol);
   }
   const jsonFile = path.join(proofRoot, target.symbol + '.json');
   writeJson(jsonFile, json);
   return {
     symbol: target.symbol,
     sectionName: target.sectionName,
-    rows: json.rows.length,
-    maxScore: json.max_score,
-    currentScore: json.current_score,
-    exact,
+    ...comparison,
     outputSha256: sha256File(jsonFile),
     shimSha256: sha256File(shim),
     resolvedObjectSha256,
@@ -621,6 +752,7 @@ function verifyPhase8Output(phase8, options) {
   const mapText = fs.readFileSync(files.map, 'utf8');
   const mapResult = verifyMap(phase8.model, mapText);
   const romResult = verifyRom(phase8.model, fs.readFileSync(files.rom));
+  const canonicalBaserom = loadCanonicalBaserom(phase8);
   const replacements = options.replacements || new Map([...targetsByChunk(phase8).keys()].map((chunkIndex) => [chunkIndex, {
     fallbackRelative: 'comparison/original/chunk_' + String(chunkIndex).padStart(3, '0') + '.o',
   }]));
@@ -633,12 +765,9 @@ function verifyPhase8Output(phase8, options) {
     for (const file of [cObject, prunedObject, fallbackObject]) if (!fs.existsSync(file)) fail('Phase 8 target output is missing: ' + file);
 
     const mapOwner = verifyTargetMapOwner(target, mapText);
-    const linkedSections = elf.sections.filter((section) => section.name === target.sectionName);
-    if (linkedSections.length !== 1 || linkedSections[0].address !== target.vramStartNumber || linkedSections[0].size !== target.bytes) {
-      fail('linked target section placement drift: ' + target.symbol);
-    }
-    const linkedText = Buffer.from(elfSectionBytes(elf, linkedSections[0]));
-    if (sha256Buffer(linkedText) !== target.expectedTextSha256) fail('linked target bytes differ from the accepted ROM reference: ' + target.symbol);
+    const rawComparison = compareLinkedTargetBytes(target, elf, canonicalBaserom);
+    if (!rawComparison.rawBytesExact) fail('linked target bytes differ from the accepted ROM reference: ' + target.symbol);
+    const linkedText = rawComparison.linkedBytes;
     const linkedSymbols = elf.symbols.filter((symbol) => symbol.name === target.symbol && symbol.sectionIndex !== 0);
     if (linkedSymbols.length !== 1
         || linkedSymbols[0].value !== target.vramStartNumber
@@ -675,6 +804,12 @@ function verifyPhase8Output(phase8, options) {
       vramStart: target.vramStartNumber,
       bytes: target.bytes,
       textSha256: sha256Buffer(linkedText),
+      rawBytesExact: rawComparison.rawBytesExact,
+      linkedTargetSha256: rawComparison.linkedTargetSha256,
+      expectedTargetSha256: rawComparison.expectedTargetSha256,
+      differingByteCount: rawComparison.differingByteCount,
+      differingInstructionWordCount: rawComparison.differingInstructionWordCount,
+      firstDifferenceOffset: rawComparison.firstDifferenceOffset,
       linkedSymbolValue: hex(linkedSymbols[0].value),
       linkedOwner: mapOwner.linkedOwner,
       mapContribution: mapOwner.contribution,
@@ -708,6 +843,7 @@ function verifyPhase8Output(phase8, options) {
     python: options.splatPython,
     objdump: options.objdump,
     objcopy: options.objcopy,
+    canonicalBaserom,
   }));
   return {
     schemaVersion: 1,
@@ -757,16 +893,19 @@ module.exports = {
   CONFIG_PATH,
   ROOT,
   assertBuildLocations,
+  compareLinkedTargetBytes,
   compileTarget,
   copyPhase7Objects,
   fail,
   linkPhase8,
+  loadCanonicalBaserom,
   loadPhase8Model,
   pathIndependentRuntime,
   readJson,
   relocationRecords,
   runTargetAsmDiffer,
   sha256File,
+  summarizeTargetComparison,
   verifyCompiler,
   verifyObjectManifest,
   verifyPhase7Input,

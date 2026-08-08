@@ -151,8 +151,13 @@ The diff command is a development aid. It should:
 
 - resolve the target from the accepted model;
 - compile the current source with the pinned compiler;
-- compare it with the original target; and
+- compare the final linked target bytes directly with the baserom;
+- report the asm-differ score and raw-byte result separately; and
 - provide actionable asm-differ output.
+
+`EXACT` requires both a zero nonempty asm-differ score and equal final linked bytes. A zero score
+with unequal bytes reports `RAW BYTES DIFFER`. Missing, duplicate, malformed, or wrong-sized linked
+sections fail with `ERROR`.
 
 Intermediate diff output is generated evidence and is not committed.
 
