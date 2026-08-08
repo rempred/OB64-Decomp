@@ -7,7 +7,7 @@ const {
   fail,
   loadPhase8Model,
   readJson,
-  sha256File,
+  validateRecordedPhase8Build,
   verifyCompiler,
   verifyPhase8Output,
   verifyRuntimeTools,
@@ -50,31 +50,13 @@ function main() {
     objcopy: runtime.tools['mips64-elf-objcopy.exe'].path,
   });
   const buildReport = readJson(buildReportFile);
-  if (buildReport.schemaVersion !== 1 || buildReport.status !== 'pass') fail('recorded Phase 8 build report did not pass');
-  if (buildReport.compiler.sha256 !== compiler.sha256) fail('recorded KMC compiler identity drift');
-  const recordedSources = buildReport.acceptedInputs && buildReport.acceptedInputs.cSources;
-  const recordedTargets = buildReport.targetReplacements;
-  if (!Array.isArray(recordedSources) || recordedSources.length !== phase8.targets.length
-      || !Array.isArray(recordedTargets) || recordedTargets.length !== phase8.targets.length) {
-    fail('recorded Phase 8 source/object census drift');
-  }
-  for (const target of phase8.targets) {
-    const source = recordedSources.find((record) => record.path === target.source);
-    const replacement = recordedTargets.find((record) => record.symbol === target.symbol);
-    const objectFile = path.join(options.output, 'objects', 'c', `${target.symbol}.o`);
-    if (!source || source.sha256 !== target.sourceSha256
-        || !replacement || replacement.source !== target.source || replacement.sourceSha256 !== target.sourceSha256
-        || !fs.existsSync(objectFile) || replacement.cObjectSha256 !== sha256File(objectFile)) {
-      fail(`recorded Phase 8 source-to-object identity drift: ${target.symbol}`);
-    }
-  }
-  for (const name of ['elf', 'map', 'rom', 'layout', 'readelf', 'objectManifest']) {
-    if (buildReport.verification.outputs[name].sha256 !== verification.outputs[name].sha256) fail(`recorded Phase 8 ${name} identity drift`);
-  }
-  if (buildReport.verification.outputs.codeRegionSha256 !== verification.outputs.codeRegionSha256) fail('recorded Phase 8 code-region identity drift');
-  if (JSON.stringify(buildReport.verification.targets) !== JSON.stringify(verification.targets)) fail('recorded Phase 8 target proof drift');
-  if (JSON.stringify(buildReport.verification.asmDiffer) !== JSON.stringify(verification.asmDiffer)) fail('recorded Phase 8 asm-differ proof drift');
-  const result = { schemaVersion: 1, status: 'pass', output: '.', verification };
+  validateRecordedPhase8Build(phase8, {
+    output: options.output,
+    buildReport,
+    verification,
+    compilerSha256: compiler.sha256,
+  });
+  const result = { schemaVersion: 2, status: 'pass', output: '.', verification };
   if (reportFile) writeJson(reportFile, result);
   console.log(`Phase 8 matching C verification: PASS (${verification.outputs.rom.sha256})`);
 }

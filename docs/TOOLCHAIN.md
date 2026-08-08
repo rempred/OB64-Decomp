@@ -48,6 +48,35 @@ binary, acquisition record, or build environment.
 `config/phase8/matching-c.json` pins the accepted compiler hash and flags.
 Supplying a different compiler must fail before a matching result is accepted.
 
+## Compiler-Assembly Dialect Stage
+
+The effective matching toolchain now has three authenticated stages:
+
+```text
+KMC GCC 2.7.2 compiler
+-> compiler-assembly dialect adapter
+-> GNU assembler 2.39 with -EB -mips3 -32
+```
+
+`config/compiler-assembly-dialect.json` pins both executable identities, both flag sets, and the
+adapter module SHA-256. `config/matching-c-targets.json` pins that manifest by path and SHA-256.
+
+The adapter changes only complete numeric-register `move` statements from eligible `PURE_C`
+output. It rewrites them as `addu` statements with `$0` as the third operand.
+
+`HYBRID_C` output bypasses parsing as byte-identical data. `UNKNOWN` source classification fails
+before compilation or adaptation.
+
+Each compiled target retains these authenticated stages:
+
+1. `<symbol>.compiler.s` is untouched compiler output.
+2. `<symbol>.dialect.s` is adapter output or exact hybrid passthrough.
+3. `<symbol>.s` contains only the target-section adjustment consumed by GNU assembler.
+4. `<symbol>.dialect-proof.json` records identities, decisions, hashes, counts, object, and target.
+
+Strict verification recreates the adapted assembly, section adjustment, and proof independently.
+Missing artifacts, stale schemas, identity drift, or proof drift must fail verification.
+
 ## Install
 
 From the repo root:

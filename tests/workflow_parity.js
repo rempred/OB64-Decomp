@@ -51,6 +51,9 @@ function main() {
   const newReport = readJson(path.join(newOutput, 'build-report.json'));
   assert(oldPhase7Report.status === 'pass', 'frozen Phase 7 report did not pass');
   assert(oldReport.status === 'pass' && newReport.status === 'pass', 'old/new build report did not pass');
+  assert(newReport.schemaVersion === 2 && newReport.verification.schemaVersion === 2, 'new dialect report schema drift');
+  assert(newReport.dialect.identity.manifestSha256 === phase8.dialect.identity.manifestSha256, 'new dialect identity drift');
+  assert(newReport.dialect.counts.proofTargets === phase8.targets.length, 'new dialect proof census drift');
 
   const oldRom = fs.readFileSync(path.join(oldOutput, 'phase8.us_rev0.z64'));
   const newRom = fs.readFileSync(path.join(newOutput, 'phase8.us_rev0.z64'));
@@ -66,6 +69,15 @@ function main() {
   const newMap = fs.readFileSync(path.join(newOutput, 'phase8.map'), 'utf8');
   const targets = [];
   for (const target of phase8.targets) {
+    const oldTargetReport = oldReport.targetReplacements.find((record) => record.symbol === target.symbol);
+    const newTargetReport = newReport.targetReplacements.find((record) => record.symbol === target.symbol);
+    assert(oldTargetReport && newTargetReport, `old/new target report is missing: ${target.symbol}`);
+    assert(oldTargetReport.compilerAssemblySha256 === newTargetReport.compilerAssemblySha256, `old/new compiler assembly differs: ${target.symbol}`);
+    assert(newTargetReport.sourceClass === newReport.verification.targets.find((record) => record.symbol === target.symbol).dialect.sourceClass, `dialect source class differs: ${target.symbol}`);
+    assert(newTargetReport.compilerAssemblySha256 === newTargetReport.dialectAssemblySha256, `inert raw/dialect assembly differs: ${target.symbol}`);
+    assert(newTargetReport.dialectDecision.transformationCount === 0, `inert target transformed: ${target.symbol}`);
+    const proofFile = path.join(newOutput, ...newTargetReport.dialectProof.path.split('/'));
+    assert(fs.existsSync(proofFile) && sha256File(proofFile) === newTargetReport.dialectProof.sha256, `dialect proof identity differs: ${target.symbol}`);
     const oldSection = section(oldElf, target.sectionName);
     const newSection = section(newElf, target.sectionName);
     assert(oldSection.address === newSection.address && oldSection.address === target.vramStartNumber, `linked address differs: ${target.symbol}`);
@@ -98,6 +110,11 @@ function main() {
       originalAssemblyExcluded: true,
       soleCOwner: true,
       relocationsEqual: true,
+      sourceClass: newTargetReport.sourceClass,
+      compilerAssemblySha256: newTargetReport.compilerAssemblySha256,
+      dialectAssemblySha256: newTargetReport.dialectAssemblySha256,
+      dialectProofSha256: newTargetReport.dialectProof.sha256,
+      transformationCount: newTargetReport.dialectDecision.transformationCount,
     });
   }
 
@@ -105,7 +122,7 @@ function main() {
   const policyB = classifyActiveTargets(phase8);
   assert(JSON.stringify(policyA.targets.map((target) => target.digest)) === JSON.stringify(policyB.targets.map((target) => target.digest)), 'source-policy results are not deterministic');
   const report = {
-    schemaVersion: 1,
+    schemaVersion: 2,
     status: 'pass',
     generatedAt: new Date().toISOString(),
     frozenReference: oldRoot,
@@ -117,6 +134,7 @@ function main() {
     compiler: { sha256: newReport.compiler.sha256, compileFlags: newReport.compiler.compileFlags, equivalent: true },
     targets,
     sourcePolicy: { deterministic: true, counts: policyA.counts, bytes: policyA.bytes },
+    compilerAssemblyDialect: newReport.dialect,
     compatibilityBridge: {
       retained: ['compiler contract', 'linkSymbols', 'expectedRelocations'],
       reason: 'The accepted original .word assembly objects emit no ELF relocations; the previously reviewed relocation arrays remain the non-derivable contract.',
@@ -136,6 +154,7 @@ function main() {
     `- PURE_C: ${policyA.counts.PURE_C} functions / ${policyA.bytes.PURE_C} bytes`,
     `- HYBRID_C: ${policyA.counts.HYBRID_C} functions / ${policyA.bytes.HYBRID_C} bytes`,
     `- UNKNOWN: ${policyA.counts.UNKNOWN}`,
+    `- Dialect proofs: ${newReport.dialect.counts.proofTargets}; transformed targets: ${newReport.dialect.counts.transformedTargets}; transformations: ${newReport.dialect.counts.transformations}`,
     '- Compatibility bridge: compiler contract, link aliases, and trusted relocation arrays retained internally because `.word` originals contain no ELF relocation metadata.',
     '',
   ].join('\n'));

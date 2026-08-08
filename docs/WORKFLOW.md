@@ -98,6 +98,33 @@ An exact `.c` file can be `HYBRID_C`. Exact output alone does not make it decomp
 
 Only exact `PURE_C` targets contribute to matching-C progress.
 
+### Compiler-assembly dialect evidence
+
+The build classifies every active target before compilation. `UNKNOWN` and `ASM` classifications
+reject before the compiler-assembly adapter can run.
+
+Only `PURE_C` compiler output may enter the dialect parser. Any `#APP` or `#NO_APP` marker rejects
+pure output before move parsing.
+
+`HYBRID_C` compiler output is opaque passthrough. Raw and adapted bytes and SHA-256 values must
+match, and the proof must record zero transformations.
+
+The parser recognizes only a complete numeric-register `move $N,$M` statement. It emits
+`addu $N,$M,$0`. Malformed moves, macros, conditionals, and semicolon statements reject.
+
+Each target retains four reviewable artifacts:
+
+1. untouched compiler assembly in `<symbol>.compiler.s`;
+2. adapted or passthrough assembly in `<symbol>.dialect.s`;
+3. section-adjusted assembly in `<symbol>.s`; and
+4. a deterministic `<symbol>.dialect-proof.json` record.
+
+The assembler consumes only the section-adjusted file. Strict verification recreates the adapted
+file, section adjustment, and proof before accepting linked bytes.
+
+Build-wide reports derive transformed-target and transformation totals from unique verified
+proofs. Phase 2 produced zero for both totals; later pure-C migrations may produce nonzero totals.
+
 ### Structural evidence
 
 Function boundaries, overlay descriptors, linker placement, executable/data classification, and

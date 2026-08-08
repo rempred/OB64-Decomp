@@ -18,10 +18,15 @@ const {
   verifyPhase7Input,
   verifyPhase8Output,
   verifyRuntimeTools,
+  writeDialectProofs,
   writeJson,
   writeLayout,
   writeObjectManifest,
 } = require('./lib/phase8_matching_c');
+const {
+  POLICY_CONFIG_PATH,
+  classifyTargetSources,
+} = require('./lib/source_policy');
 
 function usage() {
   console.log('Usage: node tools/build_phase8_matching_c.js --output <empty-external-dir> --phase7-output <verified-phase7-dir> --compiler <accepted-cc1.exe> --splat-python <python.exe> --splat-split <split.py> --asm-differ <checkout>');
@@ -55,6 +60,8 @@ function main() {
   const runtime = verifyRuntimeTools(phase8.model, args);
   const compiler = verifyCompiler(phase8, args.compiler);
   const phase7 = verifyPhase7Input(phase8, args.phase7Output);
+  const sourcePolicy = classifyTargetSources(phase8.targets);
+  const classificationBySymbol = new Map(sourcePolicy.targets.map((record) => [record.symbol, record]));
   const replacement = copyPhase7Objects(
     phase8,
     phase7,
@@ -69,6 +76,7 @@ function main() {
       args.output,
       args.compiler,
       runtime.tools['mips64-elf-as.exe'].path,
+      { classification: classificationBySymbol.get(target.symbol) },
     ));
   }
   const objectManifest = writeObjectManifest(
@@ -80,6 +88,11 @@ function main() {
   );
   writeLayout(phase8, phase7, args.output, replacement.replacements);
   const linked = linkPhase8(phase8, args.output, objectManifest, runtime.tools);
+  const dialectProofs = writeDialectProofs(phase8, {
+    output: args.output,
+    compiled,
+    sourcePolicy,
+  });
   const verification = verifyPhase8Output(phase8, {
     output: args.output,
     asmDifferRoot: args.asmDifferRoot,
@@ -111,8 +124,18 @@ function main() {
       cObjectSha256: compiledTarget.objectSha256,
       compilerAssembly: compiledTarget.compilerAssemblyRelative,
       compilerAssemblySha256: compiledTarget.compilerAssemblySha256,
+      dialectAssembly: compiledTarget.dialectAssemblyRelative,
+      dialectAssemblySha256: compiledTarget.dialectAssemblySha256,
       linkedAssembly: compiledTarget.linkedAssemblyRelative,
       linkedAssemblySha256: compiledTarget.linkedAssemblySha256,
+      sourceClass: compiledTarget.sourceClass,
+      sourcePolicyDigest: compiledTarget.sourcePolicyDigest,
+      dialectDecision: compiledTarget.dialectDecision,
+      dialectProof: {
+        path: dialectProofs.get(target.symbol).path,
+        bytes: dialectProofs.get(target.symbol).bytes,
+        sha256: dialectProofs.get(target.symbol).sha256,
+      },
       objectTextSha256: compiledTarget.textSha256,
       linkedTextSha256: verifiedTarget.textSha256,
       relocations: compiledTarget.relocations,
@@ -120,18 +143,38 @@ function main() {
   });
 
   const report = {
-    schemaVersion: 1,
+    schemaVersion: 2,
     status: 'pass',
     generator: 'tools/build_phase8_matching_c.js',
     acceptedInputs: {
       phase7Model: phase8.model.inputFiles,
       phase8Config: { bytes: fs.statSync(CONFIG_PATH).size, sha256: sha256File(CONFIG_PATH) },
+      compilerAssemblyDialect: {
+        path: phase8.dialect.identity.manifestPath,
+        sha256: phase8.dialect.identity.manifestSha256,
+        implementationPath: phase8.dialect.identity.implementationPath,
+        implementationSha256: phase8.dialect.identity.implementationSha256,
+      },
+      sourcePolicy: {
+        path: path.relative(ROOT, POLICY_CONFIG_PATH).replace(/\\/g, '/'),
+        bytes: fs.statSync(POLICY_CONFIG_PATH).size,
+        sha256: sha256File(POLICY_CONFIG_PATH),
+      },
       cSources: phase8.targets.map((target) => ({ path: target.source, bytes: fs.statSync(path.join(ROOT, target.source)).size, sha256: target.sourceSha256 })),
       originalAssemblies: phase8.targets.map((target) => ({ path: target.originalAssembly, sha256: target.originalAssemblySha256 })),
       phase6CompilerManifest: { path: phase8.config.compiler.manifest, sha256: phase8.config.compiler.manifestSha256 },
     },
     runtime: pathIndependentRuntime(runtime),
     compiler: { ...compiler, usedToBuildTarget: true },
+    sourcePolicy: {
+      schemaVersion: sourcePolicy.schemaVersion,
+      status: sourcePolicy.status,
+      preprocessor: sourcePolicy.preprocessor,
+      counts: sourcePolicy.counts,
+      bytes: sourcePolicy.bytes,
+      targets: sourcePolicy.targets,
+    },
+    dialect: verification.dialect,
     basePhase7: phase7.identity,
     targetReplacements,
     objects: {

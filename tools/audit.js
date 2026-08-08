@@ -10,7 +10,7 @@ const {
   verifyCurrent,
   writeJson,
 } = require('./lib/current_workflow');
-const { ROOT } = require('./lib/phase7_conventional');
+const { ROOT, sha256Buffer } = require('./lib/phase7_conventional');
 
 function usage() {
   console.log('Usage: node tools/audit.js [--phase5a-root <accepted-evidence-root>]');
@@ -46,14 +46,46 @@ function main(argv = process.argv.slice(2)) {
   runNode('verify_setup.js', ['--phase5a-root', phase5aRoot], 'structural audit');
   console.log('Running CURRENT ownership and exact-ROM verification...');
   const current = verifyCurrent(context);
+  const dialect = current.verification.verification.dialect;
+  if (!dialect || dialect.counts.hybridTransformations !== 0
+      || dialect.counts.hybridByteIdenticalTargets !== dialect.counts.hybridTargets) {
+    throw new Error('verified HYBRID_C dialect passthrough invariant failed');
+  }
+  const rebuiltRom = fs.readFileSync(path.join(current.build.output, 'phase8.us_rev0.z64'));
+  const func2cd70 = context.phase8.targets.find((target) => target.symbol === 'func_0002CD70');
+  if (!func2cd70) throw new Error('func_0002CD70 is missing from the active target model');
+  const func2cd70Bytes = rebuiltRom.subarray(func2cd70.romStartNumber, func2cd70.romEndNumber);
+  const func2cd70Gate = {
+    sourceClass: dialect.targets.find((target) => target.symbol === func2cd70.symbol).sourceClass,
+    targetSha256: sha256Buffer(func2cd70Bytes),
+    expectedTargetSha256: func2cd70.expectedTextSha256,
+    instructionWords: {
+      offset004: `0x${func2cd70Bytes.readUInt32BE(0x004).toString(16).toUpperCase().padStart(8, '0')}`,
+      offset028: `0x${func2cd70Bytes.readUInt32BE(0x028).toString(16).toUpperCase().padStart(8, '0')}`,
+    },
+  };
+  if (func2cd70Gate.sourceClass !== 'HYBRID_C'
+      || func2cd70Gate.targetSha256 !== '9842231309587A8F054CE82E257F9DC0FD864608CF90266F53AFF570E37E1ADF'
+      || func2cd70Gate.targetSha256 !== func2cd70Gate.expectedTargetSha256
+      || func2cd70Gate.instructionWords.offset004 !== '0x00801025'
+      || func2cd70Gate.instructionWords.offset028 !== '0x00801025') {
+    throw new Error('func_0002CD70 hybrid target gate failed');
+  }
   const report = {
-    schemaVersion: 1,
+    schemaVersion: 2,
     status: 'pass',
     completedAt: new Date().toISOString(),
     structuralReport: 'build/setup/verify-setup-report.json',
     currentVerificationReport: 'build/current/verification.json',
     romSha256: current.verification.verification.outputs.rom.sha256,
     sourcePolicyCounts: current.sourcePolicy.counts,
+    compilerAssemblyDialect: {
+      identity: dialect.identity,
+      counts: dialect.counts,
+      sourcePolicy: dialect.sourcePolicy,
+      hybridPassthroughVerified: true,
+    },
+    func0002CD70: func2cd70Gate,
   };
   const reportFile = path.join(ROOT, 'build', 'audit', 'report.json');
   writeJson(reportFile, report);

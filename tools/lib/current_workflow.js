@@ -17,8 +17,7 @@ const {
   verifyRuntimeTools,
 } = require('./phase8_matching_c');
 const {
-  SOURCE_CLASSES,
-  classifySource,
+  classifyTargetSources,
   resolvePreprocessor,
 } = require('./source_policy');
 
@@ -125,7 +124,7 @@ function baselineFingerprint(model, baserom) {
 
 function currentFingerprint(phase8, baseline, localTools) {
   return sha256Value({
-    schemaVersion: 1,
+    schemaVersion: 2,
     baseline,
     compilerSha256: sha256File(localTools.compiler),
     activeConfigSha256: sha256File(path.join(ROOT, 'config', 'matching-c-targets.json')),
@@ -138,6 +137,7 @@ function currentFingerprint(phase8, baseline, localTools) {
       })),
     },
     sourcePolicyConfigSha256: sha256File(path.join(ROOT, 'config', 'source-policy.json')),
+    compilerAssemblyDialect: phase8.dialect.identity,
     targets: phase8.targets.map((target) => ({ symbol: target.symbol, source: target.source, sourceSha256: target.sourceSha256 })),
     implementation: hashFiles([
       'tools/build_phase8_matching_c.js',
@@ -146,6 +146,7 @@ function currentFingerprint(phase8, baseline, localTools) {
       'tools/lib/active_targets.js',
       'tools/lib/current_workflow.js',
       'tools/lib/source_policy.js',
+      'tools/lib/compiler_assembly_dialect.js',
       'tools/verify.js',
     ]),
   });
@@ -156,14 +157,45 @@ function completeBaseline(directory) {
     .every((relative) => fs.existsSync(path.join(directory, ...relative.split('/'))));
 }
 
-function completeCurrent(directory) {
-  return ['phase8.elf', 'phase8.map', 'phase8.us_rev0.z64', 'layout.json', 'build-report.json', 'objects/manifest.json']
-    .every((relative) => fs.existsSync(path.join(directory, ...relative.split('/'))));
+function completeCurrent(directory, phase8) {
+  const required = ['phase8.elf', 'phase8.map', 'phase8.us_rev0.z64', 'layout.json', 'build-report.json', 'objects/manifest.json'];
+  if (!required.every((relative) => fs.existsSync(path.join(directory, ...relative.split('/'))))) return false;
+  let report;
+  try {
+    report = readJson(path.join(directory, 'build-report.json'));
+  } catch (_) {
+    return false;
+  }
+  if (!phase8 || report.schemaVersion !== 2 || report.status !== 'pass'
+      || !Array.isArray(report.targetReplacements) || report.targetReplacements.length !== phase8.targets.length) return false;
+  for (const target of phase8.targets) {
+    const record = report.targetReplacements.find((candidate) => candidate.symbol === target.symbol);
+    const identities = record && [
+      { path: record.compilerAssembly, sha256: record.compilerAssemblySha256 },
+      { path: record.dialectAssembly, sha256: record.dialectAssemblySha256 },
+      { path: record.linkedAssembly, sha256: record.linkedAssemblySha256 },
+      { path: record.cObject, sha256: record.cObjectSha256 },
+      record.dialectProof,
+    ];
+    if (!record || identities.some((identity) => {
+      if (!identity || typeof identity.path !== 'string' || typeof identity.sha256 !== 'string') return true;
+      const file = path.join(directory, ...identity.path.split('/'));
+      return !fs.existsSync(file) || !fs.statSync(file).isFile() || sha256File(file) !== identity.sha256;
+    })) return false;
+  }
+  return true;
 }
 
 function retryRoot(preferred) {
   if (!fs.existsSync(preferred) || fs.readdirSync(preferred).length === 0) return preferred;
   return `${preferred}-retry-${Date.now()}`;
+}
+
+function reusableCurrentState(context, state) {
+  return Boolean(state && state.schemaVersion === 2
+    && state.fingerprint === context.currentFingerprint
+    && state.baselineFingerprint === context.baselineFingerprint
+    && completeCurrent(state.output, context.phase8));
 }
 
 function runtimeArgs(localTools) {
@@ -228,8 +260,7 @@ function ensureCurrentBuild(context, options = {}) {
   const onStep = options.onStep || (() => {});
   const baseline = ensureBaseline(context, { onStep });
   const recorded = existingState(CURRENT_STATE_PATH);
-  if (recorded && recorded.schemaVersion === 1 && recorded.fingerprint === context.currentFingerprint
-      && recorded.baselineFingerprint === context.baselineFingerprint && completeCurrent(recorded.output)) {
+  if (reusableCurrentState(context, recorded)) {
     return { ...recorded, baseline, reused: true };
   }
   const root = retryRoot(path.join(context.localTools.workRoot, 'current', context.currentFingerprint.slice(0, 24).toLowerCase()));
@@ -244,7 +275,7 @@ function ensureCurrentBuild(context, options = {}) {
   ], 'CURRENT build');
   const report = readJson(path.join(output, 'build-report.json'));
   const state = {
-    schemaVersion: 1,
+    schemaVersion: 2,
     fingerprint: context.currentFingerprint,
     baselineFingerprint: context.baselineFingerprint,
     createdAt: new Date().toISOString(),
@@ -262,31 +293,14 @@ function ensureCurrentBuild(context, options = {}) {
 
 function classifyActiveTargets(phase8) {
   const preprocessor = resolvePreprocessor();
-  const targets = phase8.targets.map((target) => ({
-    symbol: target.symbol,
-    bytes: target.bytes,
-    ...classifySource(target.source, { preprocessor }),
-  }));
-  const counts = {};
-  const bytes = {};
-  for (const name of Object.values(SOURCE_CLASSES)) {
-    const selected = targets.filter((target) => target.class === name);
-    counts[name] = selected.length;
-    bytes[name] = selected.reduce((sum, target) => sum + target.bytes, 0);
-  }
+  const classification = classifyTargetSources(phase8.targets, { preprocessor });
   const report = {
-    schemaVersion: 1,
-    status: counts.UNKNOWN === 0 ? 'pass' : 'unknown',
+    ...classification,
     generatedAt: new Date().toISOString(),
     preprocessor: {
+      ...classification.preprocessor,
       path: preprocessor.path,
-      sha256: preprocessor.sha256,
-      version: preprocessor.version,
-      matchingCompiler: preprocessor.matchingCompiler,
     },
-    counts,
-    bytes,
-    targets,
   };
   writeJson(SOURCE_POLICY_REPORT_PATH, report);
   return report;
@@ -305,6 +319,12 @@ function verifyFreshCompilation(context, build) {
     asmDifferRoot: context.localTools.asmDifferRoot,
   });
   verifyCompiler(context.phase8, context.localTools.compiler);
+  const sourcePolicy = classifyTargetSources(context.phase8.targets);
+  const classificationBySymbol = new Map(sourcePolicy.targets.map((record) => [record.symbol, record]));
+  const builtReport = readJson(build.report);
+  if (builtReport.schemaVersion !== 2 || !Array.isArray(builtReport.targetReplacements)) {
+    throw new Error('CURRENT build report lacks dialect provenance');
+  }
   const targets = [];
   for (const target of context.phase8.targets) {
     const compiled = compileTarget(
@@ -313,9 +333,17 @@ function verifyFreshCompilation(context, build) {
       output,
       context.localTools.compiler,
       runtime.tools['mips64-elf-as.exe'].path,
+      { classification: classificationBySymbol.get(target.symbol) },
     );
+    const builtTarget = builtReport.targetReplacements.find((record) => record.symbol === target.symbol);
     const builtObject = path.join(build.output, 'objects', 'c', `${target.symbol}.o`);
-    if (!fs.existsSync(builtObject) || sha256File(builtObject) !== compiled.objectSha256) {
+    if (!builtTarget || !fs.existsSync(builtObject) || sha256File(builtObject) !== compiled.objectSha256
+        || builtTarget.compilerAssemblySha256 !== compiled.compilerAssemblySha256
+        || builtTarget.dialectAssemblySha256 !== compiled.dialectAssemblySha256
+        || builtTarget.linkedAssemblySha256 !== compiled.linkedAssemblySha256
+        || builtTarget.sourceClass !== compiled.sourceClass
+        || builtTarget.sourcePolicyDigest !== compiled.sourcePolicyDigest
+        || JSON.stringify(builtTarget.dialectDecision) !== JSON.stringify(compiled.dialectDecision)) {
       throw new Error(`freshly compiled object differs from CURRENT build: ${target.symbol}`);
     }
     targets.push({
@@ -323,14 +351,22 @@ function verifyFreshCompilation(context, build) {
       source: target.source,
       sourceSha256: target.sourceSha256,
       objectSha256: compiled.objectSha256,
+      compilerAssemblySha256: compiled.compilerAssemblySha256,
+      dialectAssemblySha256: compiled.dialectAssemblySha256,
+      sectionAdjustedAssemblySha256: compiled.linkedAssemblySha256,
+      sourceClass: compiled.sourceClass,
+      sourcePolicyDigest: compiled.sourcePolicyDigest,
+      dialectDecision: compiled.dialectDecision,
       relocations: compiled.relocations,
     });
   }
   const report = {
-    schemaVersion: 1,
+    schemaVersion: 2,
     status: 'pass',
     generatedAt: new Date().toISOString(),
     compilerSha256: sha256File(context.localTools.compiler),
+    dialect: context.phase8.dialect.identity,
+    sourcePolicy: { counts: sourcePolicy.counts, bytes: sourcePolicy.bytes },
     output,
     targets,
   };
@@ -366,8 +402,7 @@ function verifyCurrent(context, options = {}) {
 
 function currentVerificationState(context) {
   const state = existingState(CURRENT_STATE_PATH);
-  if (!state || state.schemaVersion !== 1 || state.fingerprint !== context.currentFingerprint
-      || state.baselineFingerprint !== context.baselineFingerprint || !state.verifiedAt || !completeCurrent(state.output)) {
+  if (!reusableCurrentState(context, state) || !state.verifiedAt) {
     return { exact: false, state };
   }
   const rom = path.join(state.output, 'phase8.us_rev0.z64');
@@ -389,6 +424,7 @@ module.exports = {
   ensureCurrentBuild,
   prepareContext,
   readJson,
+  reusableCurrentState,
   runNode,
   runtimeArgs,
   sha256Value,

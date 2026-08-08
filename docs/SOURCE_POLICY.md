@@ -64,6 +64,22 @@ The policy checker could not safely classify the translation unit.
 
 `UNKNOWN` fails closed for any task requiring `PURE_C`.
 
+## Compiler-Assembly Adapter Eligibility
+
+Source classification is complete before compiler-assembly adaptation. The external deterministic
+adapter does not change a translation unit's source class.
+
+Only `PURE_C` output may enter the numeric-register move parser. A pure output containing `#APP`
+or `#NO_APP` rejects before parsing.
+
+`HYBRID_C` output bypasses the parser as opaque bytes. Its raw and adapted files must match
+byte-for-byte, their SHA-256 values must match, and its transformation count must remain zero.
+
+APP-marker diagnostics can describe hybrid output. Marker balance and terminal APP state must not
+gate hybrid passthrough because authenticated compiler output can remain in APP mode at EOF.
+
+`UNKNOWN` rejects before adaptation. `ASM` is not a compiler-assembly adapter input.
+
 ---
 
 ## No Inline-Assembly Exception for `PURE_C`

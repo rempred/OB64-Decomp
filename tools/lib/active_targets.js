@@ -10,9 +10,15 @@ const {
   sha256Buffer,
   sha256File,
 } = require('./phase7_conventional');
+const {
+  validateDialectManifest,
+} = require('./compiler_assembly_dialect');
 
 const CONFIG_PATH = path.join(ROOT, 'config', 'matching-c-targets.json');
 const LEGACY_CONFIG_PATH = path.join(ROOT, 'config', 'phase8', 'matching-c.json');
+const DIALECT_MANIFEST_PATH = path.join(ROOT, 'config', 'compiler-assembly-dialect.json');
+const DIALECT_IMPLEMENTATION_PATH = path.join(ROOT, 'tools', 'lib', 'compiler_assembly_dialect.js');
+const TOOLCHAIN_CONFIG_PATH = path.join(ROOT, 'config', 'toolchain.json');
 
 function parseNumber(value, label) {
   if (Number.isInteger(value)) return value;
@@ -63,11 +69,25 @@ function assertEquivalent(symbol, field, derived, legacy) {
   return { field, derived, legacy, equivalent };
 }
 
+function validateDialectPin(pin, actualManifestSha256) {
+  if (!pin || typeof pin !== 'object' || Array.isArray(pin)
+      || !sameJson(Object.keys(pin).sort(), ['manifest', 'manifestSha256'])
+      || pin.manifest !== 'config/compiler-assembly-dialect.json'
+      || !/^[0-9A-F]{64}$/.test(pin.manifestSha256)
+      || !/^[0-9A-F]{64}$/.test(actualManifestSha256)
+      || pin.manifestSha256 !== actualManifestSha256) {
+    fail('compiler-assembly dialect manifest pin drift');
+  }
+  return pin;
+}
+
 function loadActiveTargetModel() {
   const model = loadAcceptedModel();
   const minimal = readJson(CONFIG_PATH);
   const legacy = readJson(LEGACY_CONFIG_PATH);
-  if (minimal.schemaVersion !== 1 || minimal.profile !== model.config.profile || !Array.isArray(minimal.targets) || minimal.targets.length === 0) {
+  if (minimal.schemaVersion !== 2 || minimal.profile !== model.config.profile || !Array.isArray(minimal.targets) || minimal.targets.length === 0
+      || !minimal.compilerAssemblyDialect || typeof minimal.compilerAssemblyDialect !== 'object'
+      || !sameJson(Object.keys(minimal.compilerAssemblyDialect).sort(), ['manifest', 'manifestSha256'])) {
     fail('active target configuration schema or profile drift');
   }
   if (legacy.schemaVersion !== 2 || legacy.profile !== minimal.profile || !Array.isArray(legacy.targets)) {
@@ -84,6 +104,43 @@ function loadActiveTargetModel() {
       || !sameJson(phase6Manifest.compiler.compileFlags, legacy.compiler.compileFlags)) {
     fail('matching compiler contract differs from the accepted reproduction contract');
   }
+
+  const dialectPin = minimal.compilerAssemblyDialect;
+  if (!fs.existsSync(DIALECT_MANIFEST_PATH)) fail('compiler-assembly dialect manifest pin drift');
+  validateDialectPin(dialectPin, sha256File(DIALECT_MANIFEST_PATH));
+  if (path.resolve(resolveRelative(ROOT, dialectPin.manifest, 'dialect manifest')).toLowerCase() !== path.resolve(DIALECT_MANIFEST_PATH).toLowerCase()) {
+    fail('compiler-assembly dialect manifest pin drift');
+  }
+  const dialectManifest = readJson(DIALECT_MANIFEST_PATH);
+  const toolchainConfig = readJson(TOOLCHAIN_CONFIG_PATH);
+  if (toolchainConfig.assemblerVersion !== model.config.binutils.version.replace(/^GNU Binutils /, 'GNU assembler (GNU Binutils) ')
+      || !sameJson(toolchainConfig.assemblerFlags, model.config.binutils.assemblerFlags)) {
+    fail('compiler-assembly dialect assembler configuration drift');
+  }
+  const dialectContract = {
+    compilerManifestSha256: legacy.compiler.manifestSha256,
+    compilerExecutableSha256: legacy.compiler.executableSha256,
+    compileFlags: legacy.compiler.compileFlags,
+    assemblerConfigSha256: sha256File(TOOLCHAIN_CONFIG_PATH),
+    assemblerExecutableSha256: model.config.binutils.tools['mips64-elf-as.exe'],
+    assemblerVersion: toolchainConfig.assemblerVersion,
+    assemblerFlags: model.config.binutils.assemblerFlags,
+    implementationPath: 'tools/lib/compiler_assembly_dialect.js',
+    implementationSha256: sha256File(DIALECT_IMPLEMENTATION_PATH),
+  };
+  validateDialectManifest(dialectManifest, dialectContract);
+  const dialect = {
+    manifest: dialectManifest,
+    contract: dialectContract,
+    identity: {
+      id: dialectManifest.id,
+      rule: dialectManifest.rule,
+      manifestPath: dialectPin.manifest,
+      manifestSha256: dialectPin.manifestSha256,
+      implementationPath: dialectManifest.implementationPath,
+      implementationSha256: dialectManifest.implementationSha256,
+    },
+  };
 
   const baseromFile = path.join(ROOT, 'build', 'baserom.us_rev0.z64');
   if (!fs.existsSync(baseromFile) || fs.statSync(baseromFile).size !== model.config.rom.bytes || sha256File(baseromFile) !== model.config.rom.sha256) {
@@ -182,6 +239,7 @@ function loadActiveTargetModel() {
     config: { ...minimal, compiler: legacy.compiler },
     compatibility,
     descriptors: targets.map((target) => target.descriptor).filter(Boolean),
+    dialect,
     legacyConfig: legacy,
     minimalConfig: minimal,
     model,
@@ -193,9 +251,13 @@ function loadActiveTargetModel() {
 
 module.exports = {
   CONFIG_PATH,
+  DIALECT_IMPLEMENTATION_PATH,
+  DIALECT_MANIFEST_PATH,
   LEGACY_CONFIG_PATH,
+  TOOLCHAIN_CONFIG_PATH,
   loadActiveTargetModel,
   parseNumber,
   resolveAcceptedRow,
   safeRelative,
+  validateDialectPin,
 };

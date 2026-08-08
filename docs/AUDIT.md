@@ -92,7 +92,10 @@ At minimum verify:
 
 - required tool binaries/versions/hashes match the tracked contract;
 - assembler endianness/ISA/delay-slot behavior smoke tests pass; and
-- compiler flags used for matching remain pinned.
+- compiler flags used for matching remain pinned;
+- the compiler-assembly dialect manifest and adapter-module hashes match their authenticated pins;
+- compiler and assembler identities, versions, and flags match the dialect manifest; and
+- stale build, verification, current-state, proof, or audit schemas reject.
 
 ### Baseline build
 
@@ -104,7 +107,18 @@ At minimum verify:
 
 - active C/hybrid replacements do not leave their original target implementations linked;
 - ownership/placement checks pass; and
+- every target is classified before compilation and `UNKNOWN` rejects;
+- strict verification independently recreates each adapted file, section adjustment, and proof;
+- every hybrid raw and adapted file is byte-identical with zero transformations;
+- proof counts and transformation totals are derived from unique verified target proofs; and
 - the complete current matching ROM is byte-identical to retail.
+
+The audit must also protect the `func_0002CD70` OR-encoding regression. The target must remain
+`HYBRID_C`, retain its accepted target hash, and contain `0x00801025` at offsets `+0x004` and
+`+0x028`.
+
+Phase 2 reports zero transformed targets and zero transformations. These values describe that
+inert result; they are not permanent audit invariants for later eligible pure-C migrations.
 
 ---
 

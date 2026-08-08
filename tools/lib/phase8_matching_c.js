@@ -26,6 +26,17 @@ const {
   CONFIG_PATH,
   loadActiveTargetModel,
 } = require('./active_targets');
+const {
+  adjustSectionAssembly,
+  applyCompilerAssemblyDialect,
+  buildDialectProof,
+  serializeDialectProof,
+} = require('./compiler_assembly_dialect');
+const {
+  POLICY_CONFIG_PATH,
+  SOURCE_CLASSES,
+  classifyTargetSources,
+} = require('./source_policy');
 
 function parseNumber(value, label) {
   if (Number.isInteger(value)) return value;
@@ -373,23 +384,73 @@ function relocationRecords(elf, target) {
   return sortRelocationRecords(rawRelocationRecords(elf).map((record) => normalizeRelocationRecord(record, target)));
 }
 
+function validateTargetClassification(target, classification) {
+  if (!classification || typeof classification !== 'object'
+      || classification.symbol !== target.symbol
+      || classification.source !== target.source
+      || classification.bytes !== target.bytes
+      || classification.sourceSha256 !== target.sourceSha256
+      || typeof classification.digest !== 'string'
+      || !/^[0-9A-F]{64}$/.test(classification.digest)
+      || ![SOURCE_CLASSES.PURE_C, SOURCE_CLASSES.HYBRID_C].includes(classification.class)) {
+    fail('active target source classification drift: ' + target.symbol);
+  }
+  return classification;
+}
+
+function validateTargetClassifications(phase8, sourcePolicy) {
+  if (!sourcePolicy || sourcePolicy.schemaVersion !== 1 || sourcePolicy.status !== 'pass'
+      || !Array.isArray(sourcePolicy.targets) || sourcePolicy.targets.length !== phase8.targets.length) {
+    fail('active target source-classification census drift');
+  }
+  const bySymbol = new Map();
+  for (const classification of sourcePolicy.targets) {
+    if (!classification || typeof classification.symbol !== 'string' || bySymbol.has(classification.symbol)) {
+      fail('active target source-classification symbol drift');
+    }
+    bySymbol.set(classification.symbol, classification);
+  }
+  for (const target of phase8.targets) validateTargetClassification(target, bySymbol.get(target.symbol));
+  const expectedCounts = Object.fromEntries(Object.values(SOURCE_CLASSES).map((name) => [
+    name,
+    sourcePolicy.targets.filter((classification) => classification.class === name).length,
+  ]));
+  const expectedBytes = Object.fromEntries(Object.values(SOURCE_CLASSES).map((name) => [
+    name,
+    sourcePolicy.targets.filter((classification) => classification.class === name).reduce((sum, classification) => sum + classification.bytes, 0),
+  ]));
+  if (!sameJson(sourcePolicy.counts, expectedCounts) || !sameJson(sourcePolicy.bytes, expectedBytes)) {
+    fail('active target source-classification aggregate drift');
+  }
+  return bySymbol;
+}
+
 function compileTarget(phase8, target, output, compiler, assembler, options = {}) {
   const enforceAcceptedContract = options.enforceAcceptedContract !== false;
+  const classification = validateTargetClassification(target, options.classification);
   const generatedRoot = path.join(output, 'generated', 'c');
   const objectRoot = path.join(output, 'objects', 'c');
   ensureDir(generatedRoot);
   ensureDir(objectRoot);
   const compilerAssembly = path.join(generatedRoot, target.symbol + '.compiler.s');
+  const dialectAssembly = path.join(generatedRoot, target.symbol + '.dialect.s');
   const linkedAssembly = path.join(generatedRoot, target.symbol + '.s');
   const objectFile = path.join(objectRoot, target.symbol + '.o');
   const sourceRelative = safeRelative(target.source, 'target source');
   run(compiler, [...phase8.config.compiler.compileFlags, '-o', compilerAssembly, sourceRelative], { cwd: ROOT });
 
-  const compilerText = fs.readFileSync(compilerAssembly, 'utf8');
-  const textMatches = compilerText.match(/^[ \t]*\.text[ \t]*\r?$/gm) || [];
-  if (textMatches.length !== 1 || /^\s*\.section\b/m.test(compilerText)) fail('KMC target assembly section grammar drift: ' + target.symbol);
-  const linkedText = compilerText.replace(/^[ \t]*\.text[ \t]*\r?$/m, '.section ' + target.sectionName + ',"ax",@progbits');
-  fs.writeFileSync(linkedAssembly, linkedText);
+  const compilerBytes = fs.readFileSync(compilerAssembly);
+  const applied = applyCompilerAssemblyDialect(compilerBytes, classification.class);
+  const dialectBytes = applied.output;
+  const decision = { ...applied };
+  delete decision.output;
+  if (classification.class === SOURCE_CLASSES.HYBRID_C
+      && (!compilerBytes.equals(dialectBytes) || decision.transformationCount !== 0)) {
+    fail('HYBRID_C compiler assembly was not an opaque byte-identical passthrough: ' + target.symbol);
+  }
+  fs.writeFileSync(dialectAssembly, dialectBytes);
+  const linkedBytes = adjustSectionAssembly(dialectBytes, target.sectionName);
+  fs.writeFileSync(linkedAssembly, linkedBytes);
   run(assembler, [
     ...phase8.model.config.binutils.assemblerFlags,
     '-o',
@@ -423,11 +484,222 @@ function compileTarget(phase8, target, output, compiler, assembler, options = {}
     objectSha256: sha256File(objectFile),
     compilerAssemblyRelative: 'generated/c/' + target.symbol + '.compiler.s',
     compilerAssemblySha256: sha256File(compilerAssembly),
+    dialectAssemblyRelative: 'generated/c/' + target.symbol + '.dialect.s',
+    dialectAssemblySha256: sha256File(dialectAssembly),
     linkedAssemblyRelative: 'generated/c/' + target.symbol + '.s',
     linkedAssemblySha256: sha256File(linkedAssembly),
+    sourceClass: classification.class,
+    sourcePolicyDigest: classification.digest,
+    dialectDecision: decision,
     textBytes: textBytes.length,
     textSha256: sha256Buffer(textBytes),
     relocations,
+  };
+}
+
+function fileIdentity(output, relative, label) {
+  const file = resolveRelative(output, relative, label);
+  if (!fs.existsSync(file) || !fs.statSync(file).isFile()) fail(label + ' is missing: ' + file);
+  return {
+    path: safeRelative(relative, label),
+    bytes: fs.statSync(file).size,
+    sha256: sha256File(file),
+  };
+}
+
+function deriveDialectProof(phase8, target, output, classification, linkedElf, canonicalBaserom) {
+  validateTargetClassification(target, classification);
+  const compilerRelative = 'generated/c/' + target.symbol + '.compiler.s';
+  const dialectRelative = 'generated/c/' + target.symbol + '.dialect.s';
+  const sectionRelative = 'generated/c/' + target.symbol + '.s';
+  const objectRelative = 'objects/c/' + target.symbol + '.o';
+  const compilerArtifact = fileIdentity(output, compilerRelative, 'compiler assembly');
+  const dialectArtifact = fileIdentity(output, dialectRelative, 'dialect assembly');
+  const sectionArtifact = fileIdentity(output, sectionRelative, 'section-adjusted assembly');
+  const objectArtifact = fileIdentity(output, objectRelative, 'matching C object');
+  const compilerBytes = fs.readFileSync(resolveRelative(output, compilerRelative, 'compiler assembly'));
+  const actualDialectBytes = fs.readFileSync(resolveRelative(output, dialectRelative, 'dialect assembly'));
+  const applied = applyCompilerAssemblyDialect(compilerBytes, classification.class);
+  if (!applied.output.equals(actualDialectBytes)) fail('dialect assembly does not match independent adaptation: ' + target.symbol);
+  const expectedSectionBytes = adjustSectionAssembly(actualDialectBytes, target.sectionName);
+  if (!expectedSectionBytes.equals(fs.readFileSync(resolveRelative(output, sectionRelative, 'section-adjusted assembly')))) {
+    fail('section-adjusted assembly does not match independent derivation: ' + target.symbol);
+  }
+  if (classification.class === SOURCE_CLASSES.HYBRID_C
+      && (!compilerBytes.equals(actualDialectBytes) || applied.transformationCount !== 0)) {
+    fail('HYBRID_C raw/adapted identity drift: ' + target.symbol);
+  }
+
+  const objectElf = parseElfFile(resolveRelative(output, objectRelative, 'matching C object'));
+  const objectSections = objectElf.sections.filter((section) => section.name === target.sectionName);
+  if (objectSections.length !== 1 || objectSections[0].type !== 1 || (objectSections[0].flags & 6) !== 6) {
+    fail('dialect-proof object section shape drift: ' + target.symbol);
+  }
+  const objectText = Buffer.from(elfSectionBytes(objectElf, objectSections[0]));
+  const rawComparison = compareLinkedTargetBytes(target, linkedElf, canonicalBaserom);
+  const decision = { ...applied };
+  delete decision.output;
+  const proof = buildDialectProof({
+    targetSymbol: target.symbol,
+    dialect: phase8.dialect.identity,
+    classification,
+    sourcePolicyConfigSha256: sha256File(POLICY_CONFIG_PATH),
+    decision,
+    artifacts: {
+      compilerAssembly: compilerArtifact,
+      dialectAssembly: dialectArtifact,
+      sectionAdjustedAssembly: sectionArtifact,
+      rawAndAdaptedByteIdentical: compilerBytes.equals(actualDialectBytes),
+    },
+    compiler: {
+      manifestPath: phase8.config.compiler.manifest,
+      manifestSha256: phase8.config.compiler.manifestSha256,
+      executableSha256: phase8.config.compiler.executableSha256,
+      flags: phase8.config.compiler.compileFlags,
+    },
+    assembler: {
+      configPath: 'config/toolchain.json',
+      configSha256: phase8.dialect.contract.assemblerConfigSha256,
+      executableSha256: phase8.dialect.contract.assemblerExecutableSha256,
+      version: phase8.dialect.contract.assemblerVersion,
+      flags: phase8.dialect.contract.assemblerFlags,
+    },
+    finalObject: {
+      ...objectArtifact,
+      sectionName: target.sectionName,
+      textBytes: objectText.length,
+      textSha256: sha256Buffer(objectText),
+      relocations: relocationRecords(objectElf, target),
+    },
+    finalTarget: {
+      path: 'phase8.elf',
+      sectionName: target.sectionName,
+      romStart: target.romStart,
+      romEndExclusive: target.romEndExclusive,
+      vramStart: target.vramStart,
+      bytes: target.bytes,
+      linkedSha256: rawComparison.linkedTargetSha256,
+      expectedSha256: rawComparison.expectedTargetSha256,
+      rawBytesExact: rawComparison.rawBytesExact,
+    },
+  });
+  return { proof, proofBytes: serializeDialectProof(proof), decision, rawComparison };
+}
+
+function writeDialectProofs(phase8, options) {
+  const output = path.resolve(options.output);
+  const classificationBySymbol = validateTargetClassifications(phase8, options.sourcePolicy);
+  if (!(options.compiled instanceof Map) || options.compiled.size !== phase8.targets.length) {
+    fail('compiled target census is missing before dialect proof generation');
+  }
+  const linkedElf = parseElfFile(path.join(output, 'phase8.elf'));
+  const canonicalBaserom = loadCanonicalBaserom(phase8);
+  const proofs = new Map();
+  for (const target of phase8.targets) {
+    const compiled = options.compiled.get(target.symbol);
+    if (!compiled || compiled.sourceClass !== classificationBySymbol.get(target.symbol).class
+        || compiled.sourcePolicyDigest !== classificationBySymbol.get(target.symbol).digest) {
+      fail('compiled target classification provenance drift: ' + target.symbol);
+    }
+    const derived = deriveDialectProof(
+      phase8,
+      target,
+      output,
+      classificationBySymbol.get(target.symbol),
+      linkedElf,
+      canonicalBaserom,
+    );
+    const proofRelative = 'generated/c/' + target.symbol + '.dialect-proof.json';
+    const proofFile = resolveRelative(output, proofRelative, 'dialect proof');
+    fs.writeFileSync(proofFile, derived.proofBytes);
+    const record = {
+      path: proofRelative,
+      bytes: derived.proofBytes.length,
+      sha256: sha256Buffer(derived.proofBytes),
+      proof: derived.proof,
+    };
+    proofs.set(target.symbol, record);
+    compiled.dialectProofRelative = record.path;
+    compiled.dialectProofBytes = record.bytes;
+    compiled.dialectProofSha256 = record.sha256;
+  }
+  return proofs;
+}
+
+function validateDialectProofBytes(actualBytes, expectedBytes) {
+  if (!Buffer.isBuffer(actualBytes) || !Buffer.isBuffer(expectedBytes)) fail('dialect proof validation requires byte buffers');
+  let actual;
+  try {
+    actual = JSON.parse(actualBytes.toString('utf8'));
+  } catch (_) {
+    fail('dialect proof is not valid JSON');
+  }
+  if (!actual || actual.schemaVersion !== 1 || !actual.dialect || !actual.sourcePolicy
+      || !actual.eligibility || !actual.artifacts || !actual.toolchain || !actual.counts
+      || !actual.finalObject || !actual.finalTarget) {
+    fail('dialect proof schema drift');
+  }
+  if (!actualBytes.equals(expectedBytes)) fail('dialect proof differs from independent reconstruction');
+  return actual;
+}
+
+function verifyDialectProofs(phase8, options) {
+  const output = path.resolve(options.output);
+  const sourcePolicy = classifyTargetSources(phase8.targets);
+  const classificationBySymbol = validateTargetClassifications(phase8, sourcePolicy);
+  const linkedElf = options.linkedElf || parseElfFile(path.join(output, 'phase8.elf'));
+  const canonicalBaserom = options.canonicalBaserom || loadCanonicalBaserom(phase8);
+  const records = [];
+  for (const target of phase8.targets) {
+    const derived = deriveDialectProof(
+      phase8,
+      target,
+      output,
+      classificationBySymbol.get(target.symbol),
+      linkedElf,
+      canonicalBaserom,
+    );
+    const proofRelative = 'generated/c/' + target.symbol + '.dialect-proof.json';
+    const proofFile = resolveRelative(output, proofRelative, 'dialect proof');
+    if (!fs.existsSync(proofFile)) fail('dialect proof is missing: ' + target.symbol);
+    try {
+      validateDialectProofBytes(fs.readFileSync(proofFile), derived.proofBytes);
+    } catch (error) {
+      fail(error.message + ': ' + target.symbol);
+    }
+    records.push({
+      symbol: target.symbol,
+      sourceClass: classificationBySymbol.get(target.symbol).class,
+      sourcePolicyDigest: classificationBySymbol.get(target.symbol).digest,
+      transformationCount: derived.decision.transformationCount,
+      appMarkerCount: derived.decision.appMarkerCount,
+      noAppMarkerCount: derived.decision.noAppMarkerCount,
+      inlineRegionCount: derived.decision.inlineRegionCount,
+      explicitOrStatementCount: derived.decision.explicitOrStatementCount,
+      unsupportedSyntaxCount: derived.decision.unsupportedSyntaxCount,
+      rawAndAdaptedByteIdentical: derived.proof.artifacts.rawAndAdaptedByteIdentical,
+      proof: { path: proofRelative, bytes: derived.proofBytes.length, sha256: sha256Buffer(derived.proofBytes) },
+    });
+  }
+  const hybrid = records.filter((record) => record.sourceClass === SOURCE_CLASSES.HYBRID_C);
+  const pure = records.filter((record) => record.sourceClass === SOURCE_CLASSES.PURE_C);
+  return {
+    identity: phase8.dialect.identity,
+    sourcePolicy: {
+      config: { path: normalizePath(path.relative(ROOT, POLICY_CONFIG_PATH)), sha256: sha256File(POLICY_CONFIG_PATH) },
+      counts: sourcePolicy.counts,
+      bytes: sourcePolicy.bytes,
+    },
+    counts: {
+      proofTargets: records.length,
+      pureTargets: pure.length,
+      hybridTargets: hybrid.length,
+      transformedTargets: records.filter((record) => record.transformationCount > 0).length,
+      transformations: records.reduce((sum, record) => sum + record.transformationCount, 0),
+      hybridByteIdenticalTargets: hybrid.filter((record) => record.rawAndAdaptedByteIdentical).length,
+      hybridTransformations: hybrid.reduce((sum, record) => sum + record.transformationCount, 0),
+    },
+    targets: records,
   };
 }
 
@@ -753,6 +1025,7 @@ function verifyPhase8Output(phase8, options) {
   const mapResult = verifyMap(phase8.model, mapText);
   const romResult = verifyRom(phase8.model, fs.readFileSync(files.rom));
   const canonicalBaserom = loadCanonicalBaserom(phase8);
+  const dialect = verifyDialectProofs(phase8, { output, linkedElf: elf, canonicalBaserom });
   const replacements = options.replacements || new Map([...targetsByChunk(phase8).keys()].map((chunkIndex) => [chunkIndex, {
     fallbackRelative: 'comparison/original/chunk_' + String(chunkIndex).padStart(3, '0') + '.o',
   }]));
@@ -791,6 +1064,8 @@ function verifyPhase8Output(phase8, options) {
     if (prunedElf.sections.some((section) => section.name === target.sectionName) || prunedElf.symbols.some((symbol) => symbol.name === target.symbol)) {
       fail('original assembly fallback remains a linked target owner: ' + target.symbol);
     }
+    const dialectTarget = dialect.targets.find((record) => record.symbol === target.symbol);
+    if (!dialectTarget) fail('verified dialect target record is missing: ' + target.symbol);
 
     targetResults.push({
       symbol: target.symbol,
@@ -814,6 +1089,7 @@ function verifyPhase8Output(phase8, options) {
       linkedOwner: mapOwner.linkedOwner,
       mapContribution: mapOwner.contribution,
       relocations,
+      dialect: dialectTarget,
     });
   }
 
@@ -846,7 +1122,7 @@ function verifyPhase8Output(phase8, options) {
     canonicalBaserom,
   }));
   return {
-    schemaVersion: 1,
+    schemaVersion: 2,
     status: 'pass',
     counts: {
       primaryRows: phase8.model.rows.length,
@@ -858,6 +1134,13 @@ function verifyPhase8Output(phase8, options) {
       mapSections: mapResult.sectionMentions,
       matchingCOwners: phase8.targets.length,
       originalAssemblyFallbacks: replacements.size,
+      dialectProofs: dialect.counts.proofTargets,
+      pureCTargets: dialect.counts.pureTargets,
+      hybridCTargets: dialect.counts.hybridTargets,
+      dialectTransformedTargets: dialect.counts.transformedTargets,
+      dialectTransformations: dialect.counts.transformations,
+      hybridByteIdenticalTargets: dialect.counts.hybridByteIdenticalTargets,
+      hybridDialectTransformations: dialect.counts.hybridTransformations,
     },
     outputs: {
       elf: { bytes: fs.statSync(files.elf).size, sha256: sha256File(files.elf) },
@@ -868,6 +1151,7 @@ function verifyPhase8Output(phase8, options) {
       readelf: { bytes: fs.statSync(files.readelf).size, sha256: sha256File(files.readelf) },
       objectManifest: { bytes: objectManifest.bytes, sha256: objectManifest.sha256 },
     },
+    dialect,
     targets: targetResults,
     preservation: {
       fullRomExact: true,
@@ -878,6 +1162,79 @@ function verifyPhase8Output(phase8, options) {
     },
     asmDiffer,
   };
+}
+
+function validateRecordedPhase8Build(phase8, options) {
+  const output = path.resolve(options.output);
+  const buildReport = options.buildReport;
+  const verification = options.verification;
+  if (!buildReport || buildReport.schemaVersion !== 2 || buildReport.status !== 'pass') {
+    fail('recorded Phase 8 build report did not pass');
+  }
+  if (!verification || verification.schemaVersion !== 2 || verification.status !== 'pass') {
+    fail('current Phase 8 verification result did not pass');
+  }
+  if (typeof options.compilerSha256 !== 'string' || buildReport.compiler.sha256 !== options.compilerSha256) {
+    fail('recorded KMC compiler identity drift');
+  }
+  const recordedDialectInput = buildReport.acceptedInputs && buildReport.acceptedInputs.compilerAssemblyDialect;
+  if (!recordedDialectInput
+      || recordedDialectInput.path !== phase8.dialect.identity.manifestPath
+      || recordedDialectInput.sha256 !== phase8.dialect.identity.manifestSha256
+      || recordedDialectInput.implementationPath !== phase8.dialect.identity.implementationPath
+      || recordedDialectInput.implementationSha256 !== phase8.dialect.identity.implementationSha256
+      || JSON.stringify(buildReport.dialect) !== JSON.stringify(verification.dialect)) {
+    fail('recorded compiler-assembly dialect identity or proof drift');
+  }
+  const recordedSources = buildReport.acceptedInputs && buildReport.acceptedInputs.cSources;
+  const recordedTargets = buildReport.targetReplacements;
+  if (!Array.isArray(recordedSources) || recordedSources.length !== phase8.targets.length
+      || !Array.isArray(recordedTargets) || recordedTargets.length !== phase8.targets.length) {
+    fail('recorded Phase 8 source/object census drift');
+  }
+  for (const target of phase8.targets) {
+    const source = recordedSources.find((record) => record.path === target.source);
+    const replacement = recordedTargets.find((record) => record.symbol === target.symbol);
+    const verifiedTarget = verification.targets.find((record) => record.symbol === target.symbol);
+    if (!source || source.sha256 !== target.sourceSha256 || !replacement || !verifiedTarget
+        || replacement.source !== target.source || replacement.sourceSha256 !== target.sourceSha256
+        || replacement.sourceClass !== verifiedTarget.dialect.sourceClass
+        || replacement.sourcePolicyDigest !== verifiedTarget.dialect.sourcePolicyDigest
+        || !replacement.dialectProof
+        || replacement.dialectProof.path !== verifiedTarget.dialect.proof.path
+        || replacement.dialectProof.bytes !== verifiedTarget.dialect.proof.bytes
+        || replacement.dialectProof.sha256 !== verifiedTarget.dialect.proof.sha256) {
+      fail('recorded Phase 8 source-to-object or dialect provenance drift: ' + target.symbol);
+    }
+    for (const [relative, expectedSha256, label] of [
+      [replacement.cObject, replacement.cObjectSha256, 'object'],
+      [replacement.compilerAssembly, replacement.compilerAssemblySha256, 'compiler assembly'],
+      [replacement.dialectAssembly, replacement.dialectAssemblySha256, 'dialect assembly'],
+      [replacement.linkedAssembly, replacement.linkedAssemblySha256, 'section-adjusted assembly'],
+      [replacement.dialectProof.path, replacement.dialectProof.sha256, 'dialect proof'],
+    ]) {
+      const file = resolveRelative(output, relative, `recorded ${label}`);
+      if (!fs.existsSync(file) || sha256File(file) !== expectedSha256) {
+        fail(`recorded Phase 8 ${label} identity drift: ${target.symbol}`);
+      }
+    }
+  }
+  for (const name of ['elf', 'map', 'rom', 'layout', 'readelf', 'objectManifest']) {
+    if (!buildReport.verification.outputs[name]
+        || buildReport.verification.outputs[name].sha256 !== verification.outputs[name].sha256) {
+      fail(`recorded Phase 8 ${name} identity drift`);
+    }
+  }
+  if (buildReport.verification.outputs.codeRegionSha256 !== verification.outputs.codeRegionSha256) {
+    fail('recorded Phase 8 code-region identity drift');
+  }
+  if (JSON.stringify(buildReport.verification.targets) !== JSON.stringify(verification.targets)) {
+    fail('recorded Phase 8 target proof drift');
+  }
+  if (JSON.stringify(buildReport.verification.asmDiffer) !== JSON.stringify(verification.asmDiffer)) {
+    fail('recorded Phase 8 asm-differ proof drift');
+  }
+  return { schemaVersion: 2, status: 'pass' };
 }
 
 function pathIndependentRuntime(runtime) {
@@ -906,13 +1263,18 @@ module.exports = {
   runTargetAsmDiffer,
   sha256File,
   summarizeTargetComparison,
+  validateRecordedPhase8Build,
+  validateDialectProofBytes,
+  validateTargetClassifications,
   verifyCompiler,
+  verifyDialectProofs,
   verifyObjectManifest,
   verifyPhase7Input,
   verifyPhase8Output,
   verifyRuntimeTools,
   verifyTargetMapOwner,
   writeJson,
+  writeDialectProofs,
   writeLayout,
   writeObjectManifest,
 };

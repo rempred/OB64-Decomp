@@ -1,6 +1,10 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "profile": "us-rev0",
+  "compilerAssemblyDialect": {
+    "manifest": "config/compiler-assembly-dialect.json",
+    "manifestSha256": "FD87D6E56A9285D7D37A6FCFCE972787FDED7C7B5A4C8536EF50A5408F1D0331"
+  },
   "targets": [
     { "symbol": "func_000E5938", "source": "src/overlays/descriptor_02/func_000E5938.c" },
     { "symbol": "func_0000B33C", "source": "src/boot/boot_resource_pool_acquire_release.c" },

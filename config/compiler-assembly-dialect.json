@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "id": "kmc-gpr-move-addu-v1",
+  "eligibilityClass": "PURE_C",
+  "hybridAction": "byte-identical-passthrough",
+  "unknownAction": "reject",
+  "compilerManifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+  "compilerExecutableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+  "compileFlags": [
+    "-quiet",
+    "-O2",
+    "-meb",
+    "-mips3",
+    "-mgp32",
+    "-mfp32",
+    "-G",
+    "0",
+    "-fno-PIC",
+    "-mno-abicalls",
+    "-fno-builtin",
+    "-funsigned-char"
+  ],
+  "assemblerConfigSha256": "5A93298ED635C5FC6458C9DC1BBEB45A3EDCA7C4683D6E329BCE838E942B30FD",
+  "assemblerExecutableSha256": "D237475181458118BF964C369748ACF144394583C5DC24293F53F1C9119E8697",
+  "assemblerVersion": "GNU assembler (GNU Binutils) 2.39",
+  "assemblerFlags": ["-EB", "-mips3", "-32"],
+  "rule": "move-numeric-gpr-gpr-to-addu-zero",
+  "unsupportedSyntax": "reject",
+  "implementationPath": "tools/lib/compiler_assembly_dialect.js",
+  "implementationSha256": "224E12F01B28E30C1402E0C6A6524529DA21C26E6BD62CDF953FF198A8229B12"
+}

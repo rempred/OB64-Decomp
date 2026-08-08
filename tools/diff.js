@@ -16,7 +16,7 @@ const {
   writeLayout,
   writeObjectManifest,
 } = require('./lib/phase8_matching_c');
-const { classifySource, resolvePreprocessor } = require('./lib/source_policy');
+const { classifyTargetSources } = require('./lib/source_policy');
 const {
   ensureBaseline,
   prepareContext,
@@ -69,6 +69,8 @@ function main(argv = process.argv.slice(2)) {
   };
   const runtime = verifyRuntimeTools(context.phase8.model, runtimeOptions);
   verifyCompiler(context.phase8, context.localTools.compiler);
+  const sourcePolicy = classifyTargetSources(context.phase8.targets);
+  const classificationBySymbol = new Map(sourcePolicy.targets.map((record) => [record.symbol, record]));
   const phase7 = verifyPhase7Input(context.phase8, baseline.phase7Output);
   const replacement = copyPhase7Objects(
     context.phase8,
@@ -84,7 +86,10 @@ function main(argv = process.argv.slice(2)) {
       output,
       context.localTools.compiler,
       runtime.tools['mips64-elf-as.exe'].path,
-      { enforceAcceptedContract: candidate.symbol !== target.symbol },
+      {
+        enforceAcceptedContract: candidate.symbol !== target.symbol,
+        classification: classificationBySymbol.get(candidate.symbol),
+      },
     ));
   }
   const objectManifest = writeObjectManifest(output, replacement.linkedObjects, context.phase8, replacement.replacements, compiled);
@@ -99,12 +104,14 @@ function main(argv = process.argv.slice(2)) {
     relocations: compiled.get(target.symbol).relocations,
     requireExact: false,
   });
-  const sourcePolicy = classifySource(target.source, { preprocessor: resolvePreprocessor() });
+  const targetSourcePolicy = classificationBySymbol.get(target.symbol);
   const report = {
-    schemaVersion: 2,
+    schemaVersion: 3,
     symbol: target.symbol,
     source: target.source,
-    sourceClass: sourcePolicy.class,
+    sourceClass: targetSourcePolicy.class,
+    sourcePolicyDigest: targetSourcePolicy.digest,
+    dialect: context.phase8.dialect.identity,
     output,
     object: compiled.get(target.symbol),
     comparison,
@@ -114,7 +121,7 @@ function main(argv = process.argv.slice(2)) {
 
   console.log('');
   console.log(`${target.symbol} ........ ${comparisonLabel(comparison)}`);
-  console.log(`Source class ............... ${sourcePolicy.class}`);
+  console.log(`Source class ............... ${targetSourcePolicy.class}`);
   console.log(`Score ...................... ${comparison.currentScore} / ${comparison.maxScore}`);
   console.log(`Raw linked bytes ........... ${comparison.rawBytesExact ? 'EXACT' : 'DIFFER'}`);
   console.log(`Differing bytes ............ ${comparison.differingByteCount}`);

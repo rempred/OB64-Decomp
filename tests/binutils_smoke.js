@@ -18,6 +18,7 @@ const {
   loadToolchainConfig,
   toolVersion,
 } = require('../tools/lib/real_mips_toolchain');
+const { applyCompilerAssemblyDialect } = require('../tools/lib/compiler_assembly_dialect');
 
 function bytesToHex(bytes) {
   return Buffer.from(bytes).toString('hex').toUpperCase();
@@ -105,6 +106,34 @@ nop
   const noreorderHex = bytesToHex(noreorder.bytes);
   requireHex('noreorder_branch', noreorderHex, '100000012408000100000000');
   checks.push({ name: 'noreorderKeepsDelaySlot', ok: true, bytesHex: noreorderHex });
+
+  const rawMove = assembleText({
+    name: 'raw_gnu_move',
+    text: `.set noreorder
+.text
+raw_gnu_move:
+move $2,$4
+`,
+  });
+  const rawMoveHex = bytesToHex(rawMove.bytes);
+  requireHex('raw_gnu_move', rawMoveHex, '00801025');
+  const adaptedSource = applyCompilerAssemblyDialect(Buffer.from(`.set noreorder
+.text
+adapted_gnu_move:
+move $2,$4
+`), 'PURE_C').output;
+  const adaptedMove = assembleText({
+    name: 'adapted_gnu_move',
+    text: adaptedSource.toString('utf8'),
+  });
+  const adaptedMoveHex = bytesToHex(adaptedMove.bytes);
+  requireHex('adapted_gnu_move', adaptedMoveHex, '00801021');
+  checks.push({
+    name: 'dialectMoveEncoding',
+    ok: true,
+    rawGnuMoveHex: rawMoveHex,
+    adaptedAdduHex: adaptedMoveHex,
+  });
 
   const manifest = readJson(path.join(ROOT, 'asm', 'original', 'rev0', 'manifest.json'));
   const first = manifest.chunks[0];

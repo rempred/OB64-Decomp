@@ -5,8 +5,10 @@ const path = require('path');
 const {
   SOURCE_CLASSES,
   classifySource,
+  classifyTargetSources,
   resolvePreprocessor,
 } = require('../tools/lib/source_policy');
+const { applyCompilerAssemblyDialect } = require('../tools/lib/compiler_assembly_dialect');
 
 const FIXTURES = path.join(__dirname, 'fixtures', 'source-policy');
 
@@ -43,11 +45,41 @@ function main() {
   if (!hidden.reasons.some((reason) => reason.stage === 'preprocessed' && reason.code === 'assembler-keyword')) {
     throw new Error('macro-hidden assembler was not detected in preprocessed source');
   }
+  const sharedTargets = classifyTargetSources([
+    { symbol: 'ordinary_fixture', source: 'tests/fixtures/source-policy/ordinary.c', bytes: 4 },
+    { symbol: 'inline_fixture', source: 'tests/fixtures/source-policy/inline_asm.c', bytes: 4 },
+  ], { preprocessor });
+  if (sharedTargets.counts.PURE_C !== 1 || sharedTargets.counts.HYBRID_C !== 1
+      || sharedTargets.counts.UNKNOWN !== 0 || sharedTargets.counts.ASM !== 0) {
+    throw new Error('shared target source classification census drift');
+  }
+  const firstSharedDigests = sharedTargets.targets.map((target) => target.digest);
+  applyCompilerAssemblyDialect(Buffer.from('\t.text\n\taddiu $2,$4,1\n'), SOURCE_CLASSES.PURE_C);
+  applyCompilerAssemblyDialect(Buffer.from(' #APP\n\tmove $2,$4\n'), SOURCE_CLASSES.HYBRID_C);
+  const afterAdapter = classifyTargetSources([
+    { symbol: 'ordinary_fixture', source: 'tests/fixtures/source-policy/ordinary.c', bytes: 4 },
+    { symbol: 'inline_fixture', source: 'tests/fixtures/source-policy/inline_asm.c', bytes: 4 },
+  ], { preprocessor });
+  if (JSON.stringify(firstSharedDigests) !== JSON.stringify(afterAdapter.targets.map((target) => target.digest))) {
+    throw new Error('adapter use changed source classification');
+  }
+  for (const escaped of ['../outside.c', path.resolve(FIXTURES, 'ordinary.c')]) {
+    try {
+      classifyTargetSources([{ symbol: 'escaped_fixture', source: escaped, bytes: 4 }], { preprocessor });
+    } catch (error) {
+      if (/escapes the repository/.test(error.message)) continue;
+      throw error;
+    }
+    throw new Error(`escaped source path was accepted: ${escaped}`);
+  }
   console.log(JSON.stringify({
     status: 'pass',
     preprocessor: { sha256: preprocessor.sha256, version: preprocessor.version, matchingCompiler: preprocessor.matchingCompiler },
     cases: results.map((item) => ({ file: item.file, expected: item.expected, actual: item.result.class, digest: item.result.digest })),
     deterministicMacroHiddenClassification: true,
+    sharedClassification: sharedTargets.counts,
+    adapterClassificationInvariant: true,
+    escapedPathsRejected: true,
   }, null, 2));
 }
 

@@ -425,11 +425,65 @@ function classifySource(source, options = {}) {
   return result;
 }
 
+function classifyTargetSources(targets, options = {}) {
+  if (!Array.isArray(targets) || targets.length === 0) throw new Error('active target source list is missing');
+  const preprocessor = options.preprocessor || resolvePreprocessor(options.config);
+  const symbols = new Set();
+  const records = targets.map((target) => {
+    if (!target || typeof target.symbol !== 'string' || typeof target.source !== 'string'
+        || !Number.isInteger(target.bytes) || target.bytes <= 0) {
+      throw new Error('active target source metadata is malformed');
+    }
+    const resolvedSource = path.resolve(ROOT, target.source);
+    const relativeSource = path.relative(ROOT, resolvedSource);
+    if (path.isAbsolute(target.source) || !relativeSource || relativeSource === '..'
+        || relativeSource.startsWith(`..${path.sep}`) || path.isAbsolute(relativeSource)) {
+      throw new Error(`active target source escapes the repository: ${target.source}`);
+    }
+    const key = target.symbol.toLowerCase();
+    if (symbols.has(key)) throw new Error(`active target source is duplicated: ${target.symbol}`);
+    symbols.add(key);
+    return {
+      symbol: target.symbol,
+      bytes: target.bytes,
+      ...classifySource(target.source, { preprocessor }),
+    };
+  });
+  const counts = {};
+  const bytes = {};
+  for (const name of Object.values(SOURCE_CLASSES)) {
+    const selected = records.filter((target) => target.class === name);
+    counts[name] = selected.length;
+    bytes[name] = selected.reduce((sum, target) => sum + target.bytes, 0);
+  }
+  const unknown = records.filter((target) => target.class === SOURCE_CLASSES.UNKNOWN);
+  if (unknown.length > 0) {
+    throw new Error(`active target source classification is UNKNOWN: ${unknown.map((target) => target.symbol).join(', ')}`);
+  }
+  const assembly = records.filter((target) => target.class === SOURCE_CLASSES.ASM);
+  if (assembly.length > 0) {
+    throw new Error(`active C target has ASM source class: ${assembly.map((target) => target.symbol).join(', ')}`);
+  }
+  return {
+    schemaVersion: 1,
+    status: 'pass',
+    preprocessor: {
+      sha256: preprocessor.sha256,
+      version: preprocessor.version,
+      matchingCompiler: preprocessor.matchingCompiler,
+    },
+    counts,
+    bytes,
+    targets: records,
+  };
+}
+
 module.exports = {
   POLICY_CONFIG_PATH,
   ROOT,
   SOURCE_CLASSES,
   classifySource,
+  classifyTargetSources,
   loadPolicyConfig,
   preprocessSource,
   resolvePreprocessor,
