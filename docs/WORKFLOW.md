@@ -243,6 +243,18 @@ RESULT: MATCHING HYBRID
 
 and `--require-pure` must return failure.
 
+A `HYBRID_C` allowance is permission to keep an intermediate or fallback, not automatic permission
+to finish the target and move on. Treat an exact hybrid as final only when either:
+
+- evidence indicates that the function most likely requires assembly inherently; or
+- a documented pure-C attempt has reached a concrete blocker that cannot be solved with the
+  current tools and information.
+
+Large size, difficult register allocation or scheduling, and exact hybrid output are not sufficient
+on their own. If neither condition applies, keep the target active and continue the pure-C work.
+When an exception does apply, record the evidence or blocker and continue to label the result
+`MATCHING HYBRID`, never matching C.
+
 ### 5. Verify integrated current state
 
 Before merging/integrating a set of changes:

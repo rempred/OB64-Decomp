@@ -113,6 +113,19 @@ A function task is done only when the requested acceptance class is achieved.
 If exact output requires inline assembly, report `HYBRID_C exact` rather than calling the task
 matching C.
 
+Permission to use `HYBRID_C` allows an intermediate or fallback. It does not by itself change a
+`PURE_C` assignment into a hybrid assignment. Treat an exact hybrid as the final result for an
+assigned target only when one of these conditions is documented:
+
+- the available evidence indicates that the function most likely requires assembly inherently;
+  or
+- a genuine pure-C attempt has reached a concrete blocker that cannot be resolved with the current
+  tools and information.
+
+Function size, compiler-scheduling difficulty, or exact hybrid bytes alone are not enough. State
+the evidence or blocker before advancing to the next target. Even when this exception applies, the
+result remains `HYBRID_C exact`; it is not matching C and does not count toward matching-C progress.
+
 ## Parallel Work
 
 Use ordinary Git branches/worktrees.
