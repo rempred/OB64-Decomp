@@ -419,6 +419,20 @@ All twenty-three owners prove clean-room static structure and exact build
 identity. They do not prove gameplay meaning, runtime behavior, or editor
 readiness.
 
+## Accepted Non-Descriptor Load-Slab Placement — 2026-08-07
+
+Structural audit and independent review accepted a generic Phase 7 placement class for code or
+data that retail manually loads at a runtime VMA without using one of the 19 fixed overlay
+descriptors. The first accepted record, `scenario-loader-00195410`, maps ROM
+`0x00195410..0x001977E0` to runtime `0x80214F80..0x80217350` with delta `+0x8007FB70`.
+
+The conventional linker now uses the runtime address as VMA while preserving the original ROM
+address as LMA through `AT(LMA)`. All fixed overlay descriptors, owner boundaries, segmentation,
+and retail bytes remain unchanged. Additional slab records require direct evidence for their exact
+ROM and runtime endpoints; the scenario-loader delta must not be generalized outside its proven
+range. This structural correction does not activate or establish matching C for
+`func_0019554C`. See the [structural audit](audit/2026-08-07-func-0019554c-slab-placement-blocker.md).
+
 ## Repo Invariants
 
 - Rev 0 only until the build, compare, and overlay workflow is stable.

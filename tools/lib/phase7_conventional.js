@@ -78,6 +78,60 @@ function loadConfig() {
   return config;
 }
 
+function validateNonDescriptorLoadSlabs(config, overlays = []) {
+  const slabs = config.nonDescriptorLoadSlabs;
+  const expectedCount = config.expected && config.expected.nonDescriptorLoadSlabs;
+  if (!Array.isArray(slabs) || !Number.isSafeInteger(expectedCount) || expectedCount < 0 || slabs.length !== expectedCount) {
+    fail('non-descriptor load-slab count drift');
+  }
+  if (!config.rom || !Number.isSafeInteger(config.rom.bytes) || config.rom.bytes <= 0) {
+    fail('ROM size is invalid for non-descriptor load-slab validation');
+  }
+
+  const ids = new Set();
+  const normalized = slabs.map((slab, index) => {
+    if (!slab || typeof slab !== 'object' || Array.isArray(slab)) fail(`non-descriptor load slab ${index} is malformed`);
+    if (typeof slab.id !== 'string' || !/^[A-Za-z0-9][A-Za-z0-9._-]*$/.test(slab.id) || ids.has(slab.id)) {
+      fail(`non-descriptor load-slab ID is invalid or repeated: ${String(slab.id)}`);
+    }
+    ids.add(slab.id);
+    if (typeof slab.kind !== 'string' || !/^[A-Za-z0-9][A-Za-z0-9._-]*$/.test(slab.kind)) {
+      fail(`non-descriptor load-slab kind is invalid: ${slab.id}`);
+    }
+    for (const endpoint of ['romStart', 'romEndExclusive', 'vramStart', 'vramEndExclusive']) {
+      if (!Number.isSafeInteger(slab[endpoint]) || slab[endpoint] % 4 !== 0) {
+        fail(`non-descriptor load-slab endpoint is not a safe aligned integer: ${slab.id}.${endpoint}`);
+      }
+    }
+    if (slab.romStart < 0 || slab.romEndExclusive > config.rom.bytes || slab.romEndExclusive <= slab.romStart) {
+      fail(`non-descriptor load-slab ROM range is invalid: ${slab.id}`);
+    }
+    if (slab.vramStart < 0 || slab.vramStart >= 0x100000000 || slab.vramEndExclusive > 0x100000000 || slab.vramEndExclusive <= slab.vramStart) {
+      fail(`non-descriptor load-slab VRAM range is invalid: ${slab.id}`);
+    }
+    if (slab.romEndExclusive - slab.romStart !== slab.vramEndExclusive - slab.vramStart) {
+      fail(`non-descriptor load-slab ROM and VRAM lengths differ: ${slab.id}`);
+    }
+    return { ...slab };
+  });
+
+  for (let leftIndex = 0; leftIndex < normalized.length; leftIndex += 1) {
+    const left = normalized[leftIndex];
+    for (let rightIndex = leftIndex + 1; rightIndex < normalized.length; rightIndex += 1) {
+      const right = normalized[rightIndex];
+      if (rangesIntersect(left.romStart, left.romEndExclusive, right.romStart, right.romEndExclusive)) {
+        fail(`non-descriptor load-slab ROM containment is not unique: ${left.id}, ${right.id}`);
+      }
+    }
+    for (const overlay of overlays) {
+      if (rangesIntersect(left.romStart, left.romEndExclusive, overlay.rom_start, overlay.rom_end_exclusive)) {
+        fail(`non-descriptor load slab overlaps fixed descriptor ROM mapping: ${left.id}, descriptor ${overlay.descriptor_id}`);
+      }
+    }
+  }
+  return normalized;
+}
+
 function verifyAcceptedInputHashes(config) {
   const records = [];
   for (const [relative, expected] of Object.entries(config.acceptedInputSha256)) {
@@ -134,6 +188,7 @@ function loadAcceptedModel() {
   if (semantic.schemaVersion !== 1 || semantic.rows.length !== config.expected.primaryRows) fail('accepted semantic row count drift');
   if (linkerInputs.schemaVersion !== 1 || linkerInputs.splatPrimaryRows.length !== semantic.rows.length) fail('accepted linker input schema drift');
   if (overlays.length !== config.expected.overlayReservations) fail('accepted overlay reservation count drift');
+  const nonDescriptorLoadSlabs = validateNonDescriptorLoadSlabs(config, overlays);
   if (!Array.isArray(assemblyManifest.chunks) || assemblyManifest.chunks.length !== 100) fail('tracked assembly manifest chunk drift');
   if (parseNumber(romProfile.sizeBytes) !== config.rom.bytes) fail('ROM profile size drift');
 
@@ -212,6 +267,11 @@ function loadAcceptedModel() {
         if (boundary > row.romStart && boundary < row.romEndExclusive) cuts.add(boundary);
       }
     }
+    for (const slab of nonDescriptorLoadSlabs) {
+      for (const boundary of [slab.romStart, slab.romEndExclusive]) {
+        if (boundary > row.romStart && boundary < row.romEndExclusive) cuts.add(boundary);
+      }
+    }
     const orderedCuts = [...cuts].sort((a, b) => a - b);
     if (orderedCuts.length > 2) splitOwners += 1;
     const rowSlices = [];
@@ -220,10 +280,15 @@ function loadAcceptedModel() {
       const romEndExclusive = orderedCuts[sliceIndex + 1];
       const containing = overlays.filter((overlay) => romStart >= overlay.rom_start && romEndExclusive <= overlay.rom_end_exclusive);
       const partial = overlays.filter((overlay) => rangesIntersect(romStart, romEndExclusive, overlay.rom_start, overlay.rom_end_exclusive) && !containing.includes(overlay));
+      const containingSlabs = nonDescriptorLoadSlabs.filter((slab) => romStart >= slab.romStart && romEndExclusive <= slab.romEndExclusive);
+      const partialSlabs = nonDescriptorLoadSlabs.filter((slab) => rangesIntersect(romStart, romEndExclusive, slab.romStart, slab.romEndExclusive) && !containingSlabs.includes(slab));
       if (partial.length || containing.length > 1) fail(`overlay placement is not unique for row ${row.index}, slice ${sliceIndex}`);
+      if (partialSlabs.length || containingSlabs.length > 1) fail(`non-descriptor load-slab placement is not unique for row ${row.index}, slice ${sliceIndex}`);
+      if (containing.length && containingSlabs.length) fail(`slice has both fixed-overlay and non-descriptor load-slab placement: row ${row.index}, slice ${sliceIndex}`);
 
       let placementKind;
       let overlayDescriptorId = null;
+      let loadSlabId = null;
       let vramStart;
       let overlaySection = null;
       if (containing.length === 1) {
@@ -234,6 +299,11 @@ function loadAcceptedModel() {
         if (romEndExclusive <= overlay.text_rom_end_exclusive) overlaySection = 'text';
         else if (romStart >= overlay.data_rodata_rom_start && romEndExclusive <= overlay.data_rodata_rom_end_exclusive) overlaySection = 'data-rodata';
         else fail(`overlay text/data placement is incomplete for row ${row.index}, slice ${sliceIndex}`);
+      } else if (containingSlabs.length === 1) {
+        const slab = containingSlabs[0];
+        placementKind = 'non-descriptor-load-slab';
+        loadSlabId = slab.id;
+        vramStart = slab.vramStart + (romStart - slab.romStart);
       } else if (romStart >= config.rom.codeRegionStart && romEndExclusive <= config.rom.earlyBootLinearEndExclusive) {
         placementKind = 'early-boot-linear';
         vramStart = config.rom.earlyBootLinearBase + romStart;
@@ -256,6 +326,7 @@ function loadAcceptedModel() {
         vramEndExclusive: vramStart + (romEndExclusive - romStart),
         placementKind,
         overlayDescriptorId,
+        loadSlabId,
         overlaySection,
         executable,
         inputKind: insideAssembly ? 'tracked-assembly' : 'splat-data',
@@ -281,10 +352,17 @@ function loadAcceptedModel() {
     assemblyManifest,
     romProfile,
     overlays,
+    nonDescriptorLoadSlabs,
     parts,
     rows,
     slices,
-    counts: { assemblyOwners, dataOwners, splitOwners, rspRows },
+    counts: {
+      assemblyOwners,
+      dataOwners,
+      splitOwners,
+      rspRows,
+      nonDescriptorLoadSlabs: nonDescriptorLoadSlabs.length,
+    },
   };
 }
 
@@ -706,6 +784,40 @@ function verifyOutput(model, options) {
   for (const file of [elfFile, mapFile, romFile, layoutFile]) if (!fs.existsSync(file)) fail(`build output is missing: ${file}`);
   const layout = readJson(layoutFile);
   if (layout.schemaVersion !== 1 || layout.rows !== model.rows.length || layout.slices !== model.slices.length || layout.representedBytes !== model.config.rom.bytes) fail('external layout summary drift');
+  const expectedSlabs = model.nonDescriptorLoadSlabs.map((slab) => ({
+    id: slab.id,
+    kind: slab.kind,
+    romStart: slab.romStart,
+    romEndExclusive: slab.romEndExclusive,
+    vramStart: slab.vramStart,
+    vramEndExclusive: slab.vramEndExclusive,
+  }));
+  if (JSON.stringify(layout.nonDescriptorLoadSlabs) !== JSON.stringify(expectedSlabs)) fail('external load-slab summary drift');
+  if (!Array.isArray(layout.owners) || layout.owners.length !== model.rows.length) fail('external layout owner census drift');
+  for (const row of model.rows) {
+    const owner = layout.owners[row.index];
+    if (!owner || owner.index !== row.index || owner.primaryId !== row.primaryId || !Array.isArray(owner.slices) || owner.slices.length !== row.slices.length) {
+      fail(`external layout owner drift: row ${row.index}`);
+    }
+    for (let index = 0; index < row.slices.length; index += 1) {
+      const expected = row.slices[index];
+      const actual = owner.slices[index];
+      for (const field of [
+        'sectionName',
+        'romStart',
+        'romEndExclusive',
+        'vramStart',
+        'vramEndExclusive',
+        'placementKind',
+        'overlayDescriptorId',
+        'loadSlabId',
+        'overlaySection',
+        'executable',
+      ]) {
+        if (!actual || actual[field] !== expected[field]) fail(`external layout slice drift: ${expected.sectionName}.${field}`);
+      }
+    }
+  }
   const elf = parseElfFile(elfFile);
   const elfResult = verifyElfAgainstModel(model, elf);
   const mapResult = verifyMap(model, fs.readFileSync(mapFile, 'utf8'));
@@ -726,6 +838,7 @@ function verifyOutput(model, options) {
       linkSlices: model.slices.length,
       splitOwners: model.counts.splitOwners,
       overlayReservations: model.overlays.length,
+      nonDescriptorLoadSlabs: model.counts.nonDescriptorLoadSlabs,
       representedBytes: elfResult.representedBytes,
       loadHeaders: elfResult.loadHeaderCount,
       symbols: elfResult.symbolCount,
@@ -760,6 +873,7 @@ module.exports = {
   runAsmDifferProof,
   sha256Buffer,
   sha256File,
+  validateNonDescriptorLoadSlabs,
   verifyElfAgainstModel,
   verifyMap,
   verifyOutput,

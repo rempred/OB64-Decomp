@@ -10,7 +10,9 @@ Rev 0 decomp configuration lives here.
 - `splat/us_rev0.overlay-linker-inputs.json` - separate Phase 4 overlay reservations.
 - `splat/splat64-0.34.0.lock.json` - authenticated runtime and package identities.
 - `splat/splat64-0.34.0.provenance.json` - authenticated artifact provenance.
-- `phase7/conventional-build.json` - pinned conventional assembly and linker contract.
+- `phase7/conventional-build.json` - pinned conventional assembly, runtime-placement, and linker
+  contract. Its `nonDescriptorLoadSlabs` records describe evidence-backed ROM ranges that are
+  manually loaded at a different runtime VMA without a fixed overlay descriptor.
 - `phase8/matching-c.json` - pinned 36-byte matching-C replacement contract.
 - `compiler-assembly-dialect.json` - schema-1 compiler-assembly adapter contract. It pins the
   compiler, adapter module, assembler, flags, eligibility boundary, and sole rewrite rule.

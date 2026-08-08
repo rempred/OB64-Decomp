@@ -17,8 +17,19 @@
     "linkSlices": 7251,
     "splitOwners": 9,
     "overlayReservations": 19,
+    "nonDescriptorLoadSlabs": 1,
     "rspRows": 13
   },
+  "nonDescriptorLoadSlabs": [
+    {
+      "id": "scenario-loader-00195410",
+      "kind": "loader-dma",
+      "romStart": 1659920,
+      "romEndExclusive": 1669088,
+      "vramStart": 2149666688,
+      "vramEndExclusive": 2149675856
+    }
+  ],
   "acceptedInputSha256": {
     "asm/original/rev0/manifest.json": "EE6A81334FDCFC2867BC7AF63AD56624E08C6B92D992915A45B610B44D3FCF44",
     "config/roms/us_rev0.json": "5E9183D5DF1D87D83EEC70E7DCA4BE3F859059B85FF192B8E1317F38B60D0331",

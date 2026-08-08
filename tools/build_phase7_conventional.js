@@ -255,6 +255,14 @@ function writeLayout(model, output) {
     rows: model.rows.length,
     slices: model.slices.length,
     representedBytes: model.config.rom.bytes,
+    nonDescriptorLoadSlabs: model.nonDescriptorLoadSlabs.map((slab) => ({
+      id: slab.id,
+      kind: slab.kind,
+      romStart: slab.romStart,
+      romEndExclusive: slab.romEndExclusive,
+      vramStart: slab.vramStart,
+      vramEndExclusive: slab.vramEndExclusive,
+    })),
     owners: model.rows.map((row) => ({
       index: row.index,
       primaryId: row.primaryId,
@@ -272,6 +280,7 @@ function writeLayout(model, output) {
         vramEndExclusive: slice.vramEndExclusive,
         placementKind: slice.placementKind,
         overlayDescriptorId: slice.overlayDescriptorId,
+        loadSlabId: slice.loadSlabId,
         overlaySection: slice.overlaySection,
         executable: slice.executable,
       })),

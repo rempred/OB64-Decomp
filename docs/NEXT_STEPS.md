@@ -109,6 +109,24 @@ Do not restart an easy-function matching farm merely to increase percentage.
 
 Choose the next decomp targets by the amount of runtime-hook/workaround complexity they can remove.
 
+### Structural follow-up — audit remaining manual-load slabs
+
+The accepted `scenario-loader-00195410` record proves the generic placement mechanism for a ROM
+range that retail manually DMA-loads to a different runtime VMA without a fixed overlay descriptor.
+Audit other `rom-only` executable owners against direct loader/DMA evidence before treating their
+ROM addresses as runtime addresses.
+
+- Add `nonDescriptorLoadSlabs` records only when exact ROM and runtime endpoints are proven and the
+  ranges have equal length.
+- Do not reuse the scenario-loader `+0x8007FB70` delta outside
+  `0x00195410..0x001977E0`, and do not invent fixed overlay descriptors for manual loads.
+- Preserve existing owner boundaries, ROM LMAs, segmentation, source ownership, and the 19 fixed
+  descriptors unless separate direct evidence proves one wrong.
+- Run the heavyweight structural audit and obtain independent review for every accepted mapping.
+
+The accepted mapping and remaining uncertainty are documented in
+`docs/audit/2026-08-07-func-0019554c-slab-placement-blocker.md`.
+
 ### Tier 1 — Current runtime hooks and code patches
 
 Identify and decompile the original call graphs around:

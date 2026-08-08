@@ -11,17 +11,17 @@ Primary parent references: `docs/enemy-system.md` ("Map-unit object + dispatcher
 section + dated 2026-07-01..03 bullets), `docs/research-workflow.md`, per-claim artifacts under
 `wiki/` as cited, AARs under `wiki/after-action-reports/` (20260702/03 scenario series).
 
-## Overlay / VRAM mapping (overlay-aware addressing — extends the boot-only linear rule)
+## Runtime ROM / VRAM mapping (fixed overlays, manual load slabs, and boot mapping)
 
 | module | ROM range (observed) | live delta | proof |
 |---|---|---|---|
 | early boot (already known) | low ROM to ~0x2F000 | `+0x8006FC00` | repo Watch Item |
 | map-AI overlay | `0x00101000..0x00130000` | `+0x800AB8C0` | [live] dozens of PC attributions, e.g. dispatcher ROM `0x00105EA0` = live `0x801B1760` (parent `wiki/runtime-eset-natural-wake-key1-runA.json`) |
-| scenario loader module | `~0x00195000..0x00197800` | `+0x8007FB70` | [live] builder trace ROM `0x196F84` = live `0x80216AF4` (`wiki/runtime-eset-route-descriptor-builder-trace-key20-summary.md`); loader call PC `0x8021697C` = ROM `0x00196E0C` (`wiki/eset-archive-fetch-trace.json`) |
+| scenario loader slab | `0x00195410..0x001977E0` | `+0x8007FB70` | [live] exact DMA target `0x80214F80..0x80217350`; builder trace ROM `0x196F84` = live `0x80216AF4` (`wiki/runtime-eset-route-descriptor-builder-trace-key20-summary.md`); loader call PC `0x8021697C` = ROM `0x00196E0C` (`wiki/eset-archive-fetch-trace.json`); accepted canonical placement record `scenario-loader-00195410` ([structural audit](../audit/2026-08-07-func-0019554c-slab-placement-blocker.md)) |
 | helper module (contains `0x8021590C`) | signature at z64 `0x0017282C` | `+0x800A30E0` | [live] first-bytes signature match (`wiki/eset-archive-fetch-trace.json`); single-site match — verify per new address before generalizing |
 
 Trap (proven twice): the asm comment column in `asm/original/rev0/lib/*.s` is the NOMINAL linear
-mapping. Exec-watching a linear-mapped address for overlay code produces false negatives — the
+mapping. Exec-watching a linear-mapped address for runtime-loaded code produces false negatives — the
 parent's `[13..15]`-reader "absent" result was exactly this failure, later refuted live
 (`docs/enemy-system.md` 2026-07-02 S1.4 supersession note).
 

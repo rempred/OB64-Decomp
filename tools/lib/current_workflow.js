@@ -114,6 +114,7 @@ function baselineFingerprint(model, baserom) {
     acceptedInputs: model.inputFiles,
     assemblySources: acceptedAssemblyIdentities(model),
     implementation: hashFiles([
+      'config/phase7/conventional-build.json',
       'tools/run_phase7_splat.js',
       'tools/build_phase7_conventional.js',
       'tools/verify_phase7_conventional.js',
