@@ -12,7 +12,9 @@ Rev 0 decomp configuration lives here.
 - `splat/splat64-0.34.0.provenance.json` - authenticated artifact provenance.
 - `phase7/conventional-build.json` - pinned conventional assembly, runtime-placement, and linker
   contract. Its `nonDescriptorLoadSlabs` records describe evidence-backed ROM ranges that are
-  manually loaded at a different runtime VMA without a fixed overlay descriptor.
+  manually loaded at a different runtime VMA without a fixed overlay descriptor. An optional
+  slab-local `executableRanges` list records narrowly evidenced executable treatment without
+  changing the accepted source owner or its source classification.
 - `phase8/matching-c.json` - pinned 36-byte matching-C replacement contract.
 - `compiler-assembly-dialect.json` - schema-1 compiler-assembly adapter contract. It pins the
   compiler, adapter module, assembler, flags, eligibility boundary, and sole rewrite rule.

@@ -14,10 +14,10 @@
     "primaryRows": 7242,
     "assemblyOwners": 6184,
     "dataOwners": 1058,
-    "linkSlices": 7251,
-    "splitOwners": 9,
+    "linkSlices": 7252,
+    "splitOwners": 10,
     "overlayReservations": 19,
-    "nonDescriptorLoadSlabs": 1,
+    "nonDescriptorLoadSlabs": 2,
     "rspRows": 13
   },
   "nonDescriptorLoadSlabs": [
@@ -28,6 +28,21 @@
       "romEndExclusive": 1669088,
       "vramStart": 2149666688,
       "vramEndExclusive": 2149675856
+    },
+    {
+      "id": "cold-boot-loader-00040e80",
+      "kind": "loader-dma",
+      "romStart": 265856,
+      "romEndExclusive": 421392,
+      "vramStart": 2148970368,
+      "vramEndExclusive": 2149125904,
+      "executableRanges": [
+        {
+          "id": "cold-boot-entry-stubs-00040e80",
+          "romStart": 265856,
+          "romEndExclusive": 265872
+        }
+      ]
     }
   ],
   "acceptedInputSha256": {

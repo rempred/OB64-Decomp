@@ -262,6 +262,11 @@ function writeLayout(model, output) {
       romEndExclusive: slab.romEndExclusive,
       vramStart: slab.vramStart,
       vramEndExclusive: slab.vramEndExclusive,
+      executableRanges: slab.executableRanges.map((range) => ({
+        id: range.id,
+        romStart: range.romStart,
+        romEndExclusive: range.romEndExclusive,
+      })),
     })),
     owners: model.rows.map((row) => ({
       index: row.index,
@@ -283,6 +288,7 @@ function writeLayout(model, output) {
         loadSlabId: slice.loadSlabId,
         overlaySection: slice.overlaySection,
         executable: slice.executable,
+        executableRangeId: slice.executableRangeId,
       })),
     })),
     overlays: model.overlays.map((overlay) => ({
