@@ -424,6 +424,20 @@ function main() {
     verifyElfAgainstModel(model, parseElf32BigEndian(coldBootExecutionDrift));
   }));
 
+  const coldBootTailProgramHeaderExecutionDrift = Buffer.from(elfBytes);
+  coldBootTailProgramHeaderExecutionDrift.writeUInt32BE(4, coldBootProgramHeaderOffset + 24);
+  results.push(expectRejection('cold-boot entry-stub PT_LOAD executable treatment', /ELF program-header execution flag drift: \.ob64\.r0810\.s1/, () => {
+    verifyElfAgainstModel(model, parseElf32BigEndian(coldBootTailProgramHeaderExecutionDrift));
+  }));
+
+  const coldBootHeadLoadHeader = p0810HeadHeaders[0];
+  const coldBootHeadProgramHeaderExecutionDrift = Buffer.from(elfBytes);
+  const coldBootHeadProgramHeaderOffset = baselineElf.header.phoff + coldBootHeadLoadHeader.index * baselineElf.header.phentsize;
+  coldBootHeadProgramHeaderExecutionDrift.writeUInt32BE(5, coldBootHeadProgramHeaderOffset + 24);
+  results.push(expectRejection('cold-boot head PT_LOAD non-executable treatment', /ELF program-header execution flag drift: \.ob64\.r0810\.s0/, () => {
+    verifyElfAgainstModel(model, parseElf32BigEndian(coldBootHeadProgramHeaderExecutionDrift));
+  }));
+
   const slabSlice = model.rows[3063].slices[0];
   const slabSection = baselineElf.sections.find((candidate) => candidate.name === slabSlice.sectionName);
   if (!slabSection) fail(`baseline slab section is missing: ${slabSlice.sectionName}`);

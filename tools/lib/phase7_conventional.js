@@ -616,6 +616,8 @@ function verifyElfAgainstModel(model, elf) {
     if (Boolean(section.flags & 4) !== slice.executable) fail(`ELF section execution flag drift: ${slice.sectionName}`);
     const headers = loadHeaders.filter((header) => header.vaddr === slice.vramStart && header.paddr === slice.romStart && header.fileSize === slice.bytes && header.memorySize === slice.bytes);
     if (headers.length !== 1) fail(`ELF load address drift: ${slice.sectionName}`);
+    const expectedFlags = slice.executable ? 5 : 4;
+    if (headers[0].flags !== expectedFlags) fail(`ELF program-header execution flag drift: ${slice.sectionName}`);
     representedBytes += slice.bytes;
   }
   if (representedBytes !== model.config.rom.bytes) fail('ELF represented-byte total drift');
