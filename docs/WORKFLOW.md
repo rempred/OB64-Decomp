@@ -112,11 +112,16 @@ match, and the proof must record zero total and zero per-rule transformations.
 The schema-2 contract has two target-blind rewrite rules:
 
 - a complete numeric-register `move $N,$M` statement emits `addu $N,$M,$0`; and
-- an unlabeled adjacent `la $4,symbol` plus direct `jal target`, in the authenticated non-PIC,
+- an unlabeled adjacent `la $4,symbol` plus direct `jal target`, where both operands match the
+  strict C-linkage identifier grammar `[A-Za-z_][A-Za-z0-9_]*`, in the authenticated non-PIC,
   no-abicalls, `-G0`, MIPS3/gp32 configuration with reorder and macro expansion enabled and
   volatile mode disabled, may emit
   `lui $4,%hi(symbol)`, `jal target`, `addiu $4,$4,%lo(symbol)` under an explicit temporary
   `.set noreorder` boundary when the address symbol is undefined in the translation unit.
+
+Current-location, section, dot-prefixed local-assembler, expression, addend, register, and `jalr`
+forms are outside the latter rule. Valid excluded forms remain byte-identical; a register-valued
+`la` address operand is rejected before adaptation or proof generation.
 
 The second rule excludes other registers, local symbols, labels, intervening emitted statements or
 mode boundaries, `jalr`, expressions/addends, unsupported relocation forms, and unverified modes.

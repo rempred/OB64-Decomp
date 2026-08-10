@@ -23,7 +23,10 @@ const {
   loadToolchainConfig,
   toolVersion,
 } = require('../tools/lib/real_mips_toolchain');
-const { applyCompilerAssemblyDialect } = require('../tools/lib/compiler_assembly_dialect');
+const {
+  LA_JAL_RULE_ID,
+  applyCompilerAssemblyDialect,
+} = require('../tools/lib/compiler_assembly_dialect');
 
 function bytesToHex(bytes) {
   return Buffer.from(bytes).toString('hex').toUpperCase();
@@ -53,6 +56,44 @@ function assembleText({ name, text }) {
 
 function requireHex(name, actual, expected) {
   if (actual !== expected) throw new Error(`${name} expected ${expected}, got ${actual}`);
+}
+
+function instructionWords(bytes) {
+  if (bytes.length % 4 !== 0) throw new Error(`Instruction byte count is not word-aligned: ${bytes.length}`);
+  const words = [];
+  for (let offset = 0; offset < bytes.length; offset += 4) {
+    words.push(`0x${bytes.readUInt32BE(offset).toString(16).toUpperCase().padStart(8, '0')}`);
+  }
+  return words;
+}
+
+function verifyDialectExclusion({ name, text, expectedWords = null }) {
+  const input = Buffer.from(text, 'utf8');
+  const decision = applyCompilerAssemblyDialect(input, 'PURE_C');
+  if (!decision.output.equals(input)) throw new Error(`${name} adapter output changed valid excluded input`);
+  if (decision.transformationCount !== 0 || decision.ruleTransformations[LA_JAL_RULE_ID] !== 0) {
+    throw new Error(`${name} adapter recorded a transformation for valid excluded input`);
+  }
+  const raw = assembleText({ name: `${name}_raw`, text });
+  const adapted = assembleText({ name: `${name}_adapted`, text: decision.output.toString('utf8') });
+  const rawWords = instructionWords(raw.bytes);
+  const adaptedWords = instructionWords(adapted.bytes);
+  if (!raw.bytes.equals(adapted.bytes) || JSON.stringify(rawWords) !== JSON.stringify(adaptedWords)) {
+    throw new Error(`${name} raw and adapted instruction words differ`);
+  }
+  if (expectedWords && JSON.stringify(rawWords) !== JSON.stringify(expectedWords)) {
+    throw new Error(`${name} instruction words expected ${JSON.stringify(expectedWords)}, got ${JSON.stringify(rawWords)}`);
+  }
+  return {
+    name,
+    inputSha256: hashBuffer(input, 'sha256'),
+    adaptedSha256: hashBuffer(decision.output, 'sha256'),
+    transformationCount: decision.transformationCount,
+    newRuleTransformations: decision.ruleTransformations[LA_JAL_RULE_ID],
+    rawTextSha256: hashBuffer(raw.bytes, 'sha256'),
+    adaptedTextSha256: hashBuffer(adapted.bytes, 'sha256'),
+    instructionWords: rawWords,
+  };
 }
 
 function main() {
@@ -171,6 +212,58 @@ jal external_call
     ok: true,
     bytesHex: adjacentHex,
     relocations: adjacentRelocations,
+  });
+
+  const strictIdentifierExclusions = [
+    verifyDialectExclusion({
+      name: 'dialect_excluded_current_location_address',
+      text: '.text\nla $4,.\njal ext_call\n',
+      expectedWords: ['0x3C040000', '0x0C000000', '0x24840000'],
+    }),
+    verifyDialectExclusion({
+      name: 'dialect_excluded_section_address',
+      text: '.data\n.word 0\n.text\nla $4,.data\njal ext_call\n',
+      expectedWords: ['0x3C040000', '0x0C000000', '0x24840000'],
+    }),
+    verifyDialectExclusion({
+      name: 'dialect_excluded_current_location_call',
+      text: '.text\nla $4,ext_address\njal .\n',
+      expectedWords: ['0x3C040000', '0x24840000', '0x0C000002', '0x00000000'],
+    }),
+  ];
+  const registerCallCases = [
+    ['$zero', 'zero'],
+    ['$at', 'at'],
+    ['$v0', 'value'],
+    ['$a0', 'argument'],
+    ['$t0', 'temporary'],
+    ['$t9', 'temporary_t9'],
+    ['$s0', 'saved'],
+    ['$s8', 'saved_s8'],
+    ['$k0', 'kernel'],
+    ['$gp', 'global_pointer'],
+    ['$sp', 'stack_pointer'],
+    ['$fp', 'frame_pointer'],
+    ['$ra', 'return_address'],
+    ['$31', 'numeric_31'],
+  ];
+  for (const [register, suffix] of registerCallCases) {
+    let expectedWords = null;
+    if (register === '$ra' || register === '$31') {
+      expectedWords = ['0x3C040000', '0x24840000', '0x03E0F809', '0x00000000'];
+    } else if (register === '$t9') {
+      expectedWords = ['0x3C040000', '0x24840000', '0x0320F809', '0x00000000'];
+    }
+    strictIdentifierExclusions.push(verifyDialectExclusion({
+      name: `dialect_excluded_jal_register_${suffix}`,
+      text: `.text\nla $4,ext_address\njal ${register}\n`,
+      expectedWords,
+    }));
+  }
+  checks.push({
+    name: 'dialectStrictCLinkageIdentifierExclusions',
+    ok: true,
+    cases: strictIdentifierExclusions,
   });
 
   const manifest = readJson(path.join(ROOT, 'asm', 'original', 'rev0', 'manifest.json'));

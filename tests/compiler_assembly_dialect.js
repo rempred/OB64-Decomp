@@ -4,6 +4,7 @@
 const fs = require('fs');
 const path = require('path');
 const {
+  C_LINKAGE_IDENTIFIER_GRAMMAR,
   DIALECT_ID,
   DIALECT_PROOF_SCHEMA_VERSION,
   DIALECT_RULE_IDS,
@@ -47,6 +48,8 @@ function expectPureUnchanged(name, text) {
 }
 
 function main() {
+  assert(C_LINKAGE_IDENTIFIER_GRAMMAR === '[A-Za-z_][A-Za-z0-9_]*', 'C-linkage identifier grammar drift');
+
   const numeric = fixture('pure-numeric.s');
   const numericResult = applyCompilerAssemblyDialect(numeric, 'PURE_C');
   const numericText = numericResult.output.toString('utf8');
@@ -108,8 +111,11 @@ function main() {
     ['label on la', '\t.text\naddress_site: la $4,external_address\n\tjal external_call\n'],
     ['non-$4 register', '\t.text\n\tla $5,external_address\n\tjal external_call\n'],
     ['$31 dependency', '\t.text\n\tla $31,external_address\n\tjal external_call\n'],
-    ['register-token address operand', '\t.text\n\tla $4,$31\n\tjal external_call\n'],
-    ['register-token call operand', '\t.text\n\tla $4,external_address\n\tjal $31\n'],
+    ['current-location address operand', '\t.text\n\tla $4,.\n\tjal external_call\n'],
+    ['section address operand', '\t.text\n\tla $4,.data\n\tjal external_call\n'],
+    ['undefined local-assembler address symbol', '\t.text\n\tla $4,.Lexternal_address\n\tjal external_call\n'],
+    ['current-location call operand', '\t.text\n\tla $4,external_address\n\tjal .\n'],
+    ['local-assembler call target', '\t.text\n\tla $4,external_address\n\tjal .Lexternal_call\n'],
     ['locally defined address symbol', '\t.text\n\tla $4,.Laddress\n\tjal external_call\n\t.section .rodata\n.Laddress:\n\t.word 0\n'],
     ['assigned local address symbol', '\t.text\n\tla $4,local_address\n\tjal external_call\nlocal_address = .\n'],
     ['jalr call', '\t.text\n\tla $4,external_address\n\tjalr $25\n'],
@@ -119,6 +125,25 @@ function main() {
     ['intervening directive', '\t.text\n\tla $4,external_address\n\t.align 2\n\tjal external_call\n'],
   ].map(([name, text]) => expectPureUnchanged(name, text));
 
+  const namedRegisterAliases = [
+    '$zero', '$at', '$v0', '$v1',
+    '$a0', '$a1', '$a2', '$a3',
+    '$t0', '$t1', '$t2', '$t3', '$t4', '$t5', '$t6', '$t7', '$t8', '$t9',
+    '$s0', '$s1', '$s2', '$s3', '$s4', '$s5', '$s6', '$s7', '$s8',
+    '$k0', '$k1', '$gp', '$sp', '$fp', '$ra',
+  ];
+  const numericRegisterAliases = Array.from({ length: 32 }, (_, register) => `$${register}`);
+  const registerAliases = [...namedRegisterAliases, ...numericRegisterAliases];
+  const registerCallExclusions = registerAliases.map((register) => expectPureUnchanged(
+    `direct jal register target ${register}`,
+    `\t.text\n\tla $4,external_address\n\tjal ${register}\n`,
+  ));
+  const registerAddressRejections = registerAliases.map((register) => expectRejection(
+    `la register-valued address operand ${register}`,
+    /la address operand must not be a register token/,
+    () => applyCompilerAssemblyDialect(Buffer.from(`\t.text\n\tla $4,${register}\n\tjal external_call\n`), 'PURE_C'),
+  ));
+
   const hybridLaJal = Buffer.from('\t.text\n\tla $4,external_address\n\tjal external_call\n', 'utf8');
   const hybridLaJalResult = applyCompilerAssemblyDialect(hybridLaJal, 'HYBRID_C');
   assert(hybridLaJalResult.output.equals(hybridLaJal) && hybridLaJalResult.transformationCount === 0
@@ -126,17 +151,37 @@ function main() {
   'HYBRID_C la/jal sequence was not opaque passthrough');
 
   const authentic = [
-    ['func_0002CD70.compiler.s', '040B9057A3F11214D78D719ACD75E96621056A172A862C24120A9DC84DB66969', 5, 4],
-    ['func_0025C8A4.compiler.s', '2F5732577B0A3F9D4B4BA470F90D6D8D6A1E5BBABF94AB50002B7F5CA2E4D095', 1, 0],
+    [
+      'func_0002CD70.compiler.s',
+      '33E82D7DFA3D2EE903DC94BA32D589A6A5E32B2808F6D4798ECB045285712A14',
+      '040B9057A3F11214D78D719ACD75E96621056A172A862C24120A9DC84DB66969',
+      5,
+      4,
+    ],
+    [
+      'func_0025C8A4.compiler.s',
+      '167DABAC2DC84D94CA00FA0E091F7B73897C6041BD5000881FF95A2ADE0223BE',
+      '2F5732577B0A3F9D4B4BA470F90D6D8D6A1E5BBABF94AB50002B7F5CA2E4D095',
+      1,
+      0,
+    ],
   ];
-  for (const [name, expectedSha256, appMarkerCount, noAppMarkerCount] of authentic) {
+  for (const [name, expectedLfSha256, expectedCrlfSha256, appMarkerCount, noAppMarkerCount] of authentic) {
     const input = fixture(name);
-    assert(sha256Buffer(input) === expectedSha256, `authentic fixture identity drift: ${name}`);
-    const result = applyCompilerAssemblyDialect(input, 'HYBRID_C');
-    assert(result.output.equals(input), `authentic hybrid passthrough changed bytes: ${name}`);
-    assert(result.transformationCount === 0, `authentic hybrid transformed: ${name}`);
-    assert(DIALECT_RULE_IDS.every((ruleId) => result.ruleTransformations[ruleId] === 0), `authentic hybrid per-rule count drift: ${name}`);
-    assert(result.appMarkerCount === appMarkerCount && result.noAppMarkerCount === noAppMarkerCount, `authentic marker diagnostics drift: ${name}`);
+    const inputText = input.toString('utf8');
+    assert(!/\r(?!\n)/.test(inputText), `authentic fixture contains a lone carriage return: ${name}`);
+    const lfInput = Buffer.from(inputText.replace(/\r\n/g, '\n'), 'utf8');
+    const crlfInput = Buffer.from(lfInput.toString('utf8').replace(/\n/g, '\r\n'), 'utf8');
+    assert(sha256Buffer(lfInput) === expectedLfSha256, `authentic LF fixture identity drift: ${name}`);
+    assert(sha256Buffer(crlfInput) === expectedCrlfSha256, `authentic CRLF fixture identity drift: ${name}`);
+    assert(input.equals(lfInput) || input.equals(crlfInput), `authentic fixture differs beyond LF/CRLF normalization: ${name}`);
+    for (const [lineEnding, variant] of [['LF', lfInput], ['CRLF', crlfInput]]) {
+      const result = applyCompilerAssemblyDialect(variant, 'HYBRID_C');
+      assert(result.output.equals(variant), `authentic ${lineEnding} hybrid passthrough changed bytes: ${name}`);
+      assert(result.transformationCount === 0, `authentic ${lineEnding} hybrid transformed: ${name}`);
+      assert(DIALECT_RULE_IDS.every((ruleId) => result.ruleTransformations[ruleId] === 0), `authentic ${lineEnding} hybrid per-rule count drift: ${name}`);
+      assert(result.appMarkerCount === appMarkerCount && result.noAppMarkerCount === noAppMarkerCount, `authentic ${lineEnding} marker diagnostics drift: ${name}`);
+    }
   }
 
   const balanced = fixture('hybrid-balanced.s');
@@ -238,6 +283,9 @@ function main() {
     numericTransformations: numericResult.transformationCount,
     adjacentLaJalTransformations: adjacentResult.transformationCount,
     allNumericRegistersCovered: true,
+    cLinkageIdentifierGrammar: C_LINKAGE_IDENTIFIER_GRAMMAR,
+    registerCallExclusions: registerCallExclusions.length,
+    registerAddressRejections: registerAddressRejections.length,
     authenticHybridFixtures: authentic.length,
     exclusions,
     hostileRejections: hostile.length + 13,

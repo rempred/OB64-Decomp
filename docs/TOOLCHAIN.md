@@ -64,10 +64,12 @@ adapter module SHA-256. `config/matching-c-targets.json` pins that manifest by p
 The schema-2 adapter has two target-blind rules for eligible `PURE_C` output. It rewrites complete
 numeric-register `move` statements as `addu` statements with `$0` as the third operand. It can also
 rewrite the authenticated adjacent external-symbol `la $4` plus direct `jal` subset into explicit
-`lui`, `jal`, and delay-slot `addiu` instructions under a temporary `.set noreorder` boundary.
-The latter rule preserves exact HI16, MIPS26, and LO16 relocation semantics and restores the prior
-effective assembler mode. Valid excluded sequences remain untouched; malformed or unsupported
-input fails closed.
+`lui`, `jal`, and delay-slot `addiu` instructions under a temporary `.set noreorder` boundary. Both
+symbols must match `[A-Za-z_][A-Za-z0-9_]*`, and the address symbol must be undefined within the
+translation unit. The latter rule preserves exact HI16, MIPS26, and LO16 relocation semantics and
+restores the prior effective assembler mode. Current-location, section, dot-prefixed, expression,
+addend, register-call, and `jalr` forms remain untouched; register-valued `la` address operands and
+other malformed or unsupported input fail closed.
 
 GNU assembler 2.39 remains the production assembler. The authenticated historical KMC assembler
 is a behavioral oracle for the second rule, not a build dependency. `-O2` is the pinned production

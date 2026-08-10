@@ -32,11 +32,12 @@
       "output": "addu-destination-source-zero"
     },
     {
-      "id": "la-gpr4-undefined-bare-symbol-direct-jal-delay-slot",
+      "id": "la-gpr4-undefined-c-linkage-identifier-direct-jal-c-linkage-identifier-delay-slot",
       "sourceClass": "PURE_C",
       "addressRegister": "$4",
-      "addressSymbol": "undefined-bare-symbol",
-      "call": "next-emitted-unlabeled-direct-jal-bare-symbol",
+      "addressSymbol": "translation-unit-undefined-c-linkage-identifier",
+      "call": "next-emitted-unlabeled-direct-jal-c-linkage-identifier",
+      "identifierGrammar": "[A-Za-z_][A-Za-z0-9_]*",
       "requiredModes": ["reorder", "macro", "novolatile"],
       "output": [
         "lui $4,%hi(address-symbol)",
@@ -48,5 +49,5 @@
   ],
   "unsupportedSyntax": "reject",
   "implementationPath": "tools/lib/compiler_assembly_dialect.js",
-  "implementationSha256": "1598CDDD50ED22EFE33FDC76322D6D305A0A43110C35F5BB8BFDD7206420919C"
+  "implementationSha256": "74EBB644F3B9A659C3AD91F179EB70CE531E2373714686D110C7FC42B3C5C74C"
 }

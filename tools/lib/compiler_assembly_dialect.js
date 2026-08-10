@@ -6,7 +6,9 @@ const DIALECT_SCHEMA_VERSION = 2;
 const DIALECT_PROOF_SCHEMA_VERSION = 2;
 const DIALECT_ID = 'kmc-compiler-assembly-dialect-v2';
 const MOVE_RULE_ID = 'move-numeric-gpr-gpr-to-addu-zero';
-const LA_JAL_RULE_ID = 'la-gpr4-undefined-bare-symbol-direct-jal-delay-slot';
+const LA_JAL_RULE_ID = 'la-gpr4-undefined-c-linkage-identifier-direct-jal-c-linkage-identifier-delay-slot';
+const C_LINKAGE_IDENTIFIER_GRAMMAR = '[A-Za-z_][A-Za-z0-9_]*';
+const C_LINKAGE_IDENTIFIER = new RegExp(`^${C_LINKAGE_IDENTIFIER_GRAMMAR}$`);
 const DIALECT_RULES = Object.freeze([
   Object.freeze({
     id: MOVE_RULE_ID,
@@ -18,8 +20,9 @@ const DIALECT_RULES = Object.freeze([
     id: LA_JAL_RULE_ID,
     sourceClass: 'PURE_C',
     addressRegister: '$4',
-    addressSymbol: 'undefined-bare-symbol',
-    call: 'next-emitted-unlabeled-direct-jal-bare-symbol',
+    addressSymbol: 'translation-unit-undefined-c-linkage-identifier',
+    call: 'next-emitted-unlabeled-direct-jal-c-linkage-identifier',
+    identifierGrammar: C_LINKAGE_IDENTIFIER_GRAMMAR,
     requiredModes: Object.freeze(['reorder', 'macro', 'novolatile']),
     output: Object.freeze([
       'lui $4,%hi(address-symbol)',
@@ -281,9 +284,6 @@ function transformPureCompilerAssembly(value) {
   const prohibitedConfigurationDirective = /^\.(?:abicalls|cpload|cprestore|cpadd|gpword|gpdword|option|module|insn)\b/i;
   const prohibitedMnemonic = /^(?:mov\.(?:s|d|ps)|d?m[ft]c[0-3]|c[ft]c[0-3])$/i;
   const numericMove = /^([ \t]*)move([ \t]+)(\$(?:0|[1-9]|[12][0-9]|3[01]))([ \t]*,[ \t]*)(\$(?:0|[1-9]|[12][0-9]|3[01]))([ \t]*)$/i;
-  const bareSymbol = /^[A-Za-z_.$][A-Za-z0-9_.$]*$/;
-  const numericRegisterToken = /^\$(?:0|[1-9]|[12][0-9]|3[01])$/;
-
   for (let index = 0; index < lines.length; index += 1) {
     const line = lines[index];
     const { scanned, statement } = line;
@@ -313,16 +313,17 @@ function transformPureCompilerAssembly(value) {
 
     if (mnemonic === 'la') {
       const la = validateLaStatement(line);
+      if (la.operand.startsWith('$')) {
+        fail('PURE_C la address operand must not be a register token');
+      }
       const jalIndex = nextEmittedStatement(lines, index + 1);
-      if (!statement.hadLabel && la.register === '$4' && bareSymbol.test(la.operand)
-          && !numericRegisterToken.test(la.operand)
+      if (!statement.hadLabel && la.register === '$4' && C_LINKAGE_IDENTIFIER.test(la.operand)
           && !definedSymbols.has(la.operand) && mode.reorder && mode.macro && !mode.volatile
           && jalIndex >= 0) {
         const jalLine = lines[jalIndex];
         if (mnemonicOf(jalLine.statement.text) === 'jal') {
           const jal = validateJalStatement(jalLine);
-          if (!jalLine.statement.hadLabel && bareSymbol.test(jal.operand)
-              && !numericRegisterToken.test(jal.operand)) {
+          if (!jalLine.statement.hadLabel && C_LINKAGE_IDENTIFIER.test(jal.operand)) {
             output.push(...renderLaJalSequence(lines, index, jalIndex, la, la.operand));
             ruleTransformations[LA_JAL_RULE_ID] += 1;
             index = jalIndex;
@@ -495,6 +496,7 @@ function serializeDialectProof(proof) {
 }
 
 module.exports = {
+  C_LINKAGE_IDENTIFIER_GRAMMAR,
   DIALECT_ID,
   DIALECT_PROOF_SCHEMA_VERSION,
   DIALECT_RULE_IDS,

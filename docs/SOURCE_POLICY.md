@@ -72,10 +72,15 @@ adapter does not change a translation unit's source class.
 Only authenticated `PURE_C` output may enter the versioned compiler-assembly statement parser. A
 pure output containing `#APP` or `#NO_APP` rejects before parsing. The current contract can rewrite
 only its complete numeric-register `move` form and its narrowly authenticated adjacent external
-symbol `la $4` plus direct `jal` form. Rule eligibility does not alter source classification.
+symbol `la $4` plus direct `jal` form. Both address and call symbols in the latter form must match
+the strict C-linkage identifier grammar `[A-Za-z_][A-Za-z0-9_]*`, and the address symbol must remain
+undefined within the translation unit. Rule eligibility does not alter source classification.
 
 Valid statements outside either supported subset remain byte-identical. Malformed or ambiguous
-syntax and unsupported statement or mode forms fail closed.
+syntax and unsupported statement or mode forms fail closed. Current-location, section,
+dot-prefixed local-assembler, expression, addend, register-call, and `jalr` forms are excluded from
+the `la`/`jal` rewrite; register-valued `la` address operands reject before any transformation or
+proof is recorded.
 
 `HYBRID_C` output bypasses the parser as opaque bytes. Its raw and adapted files must match
 byte-for-byte, their SHA-256 values must match, and its total and per-rule transformation counts
