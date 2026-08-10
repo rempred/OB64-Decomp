@@ -61,11 +61,20 @@ KMC GCC 2.7.2 compiler
 `config/compiler-assembly-dialect.json` pins both executable identities, both flag sets, and the
 adapter module SHA-256. `config/matching-c-targets.json` pins that manifest by path and SHA-256.
 
-The adapter changes only complete numeric-register `move` statements from eligible `PURE_C`
-output. It rewrites them as `addu` statements with `$0` as the third operand.
+The schema-2 adapter has two target-blind rules for eligible `PURE_C` output. It rewrites complete
+numeric-register `move` statements as `addu` statements with `$0` as the third operand. It can also
+rewrite the authenticated adjacent external-symbol `la $4` plus direct `jal` subset into explicit
+`lui`, `jal`, and delay-slot `addiu` instructions under a temporary `.set noreorder` boundary.
+The latter rule preserves exact HI16, MIPS26, and LO16 relocation semantics and restores the prior
+effective assembler mode. Valid excluded sequences remain untouched; malformed or unsupported
+input fails closed.
 
-`HYBRID_C` output bypasses parsing as byte-identical data. `UNKNOWN` source classification fails
-before compilation or adaptation.
+GNU assembler 2.39 remains the production assembler. The authenticated historical KMC assembler
+is a behavioral oracle for the second rule, not a build dependency. `-O2` is the pinned production
+compiler configuration but is not a demonstrated historical eligibility requirement.
+
+`HYBRID_C` output bypasses parsing as byte-identical data with zero total and per-rule
+transformations. `UNKNOWN` source classification fails before compilation or adaptation.
 
 Each compiled target retains these authenticated stages:
 

@@ -91,10 +91,11 @@ At minimum verify:
 ### Toolchain
 
 - required tool binaries/versions/hashes match the tracked contract;
-- assembler endianness/ISA/delay-slot behavior smoke tests pass; and
+- assembler endianness/ISA/delay-slot behavior and dialect relocation smoke tests pass;
 - compiler flags used for matching remain pinned;
 - the compiler-assembly dialect manifest and adapter-module hashes match their authenticated pins;
-- compiler and assembler identities, versions, and flags match the dialect manifest; and
+- compiler and assembler identities, versions, and flags match the dialect manifest;
+- the dialect schema and ordered rule identities match the versioned contract; and
 - stale build, verification, current-state, proof, or audit schemas reject.
 
 ### Baseline build
@@ -109,9 +110,16 @@ At minimum verify:
 - ownership/placement checks pass; and
 - every target is classified before compilation and `UNKNOWN` rejects;
 - strict verification independently recreates each adapted file, section adjustment, and proof;
-- every hybrid raw and adapted file is byte-identical with zero transformations;
-- proof counts and transformation totals are derived from unique verified target proofs; and
+- every hybrid raw and adapted file is byte-identical with zero total and per-rule transformations;
+- proof counts and total and per-rule transformation totals are derived from unique verified target
+  proofs; and
 - the complete current matching ROM is byte-identical to retail.
+
+For an authenticated assembler-dialect rule, retain GNU assembler as the production assembler and
+use a historical assembler only as a behavioral oracle. Compare emitted instruction words and
+logical relocations by offset, type, and resolved symbol; do not require raw ELF-container identity
+when authenticated metadata and section-layout differences are documented. A pinned production
+optimization flag is not a historical eligibility requirement unless the oracle evidence shows it.
 
 The audit must also protect the `func_0002CD70` OR-encoding regression. The target must remain
 `HYBRID_C`, retain its accepted target hash, and contain `0x00801025` at offsets `+0x004` and

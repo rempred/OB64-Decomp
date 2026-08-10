@@ -134,7 +134,7 @@ function loadActiveTargetModel() {
     contract: dialectContract,
     identity: {
       id: dialectManifest.id,
-      rule: dialectManifest.rule,
+      rules: dialectManifest.rules.map((rule) => rule.id),
       manifestPath: dialectPin.manifest,
       manifestSha256: dialectPin.manifestSha256,
       implementationPath: dialectManifest.implementationPath,

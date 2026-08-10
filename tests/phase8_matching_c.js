@@ -19,7 +19,13 @@ const {
   verifyDialectProofs,
   verifyTargetMapOwner,
 } = require('../tools/lib/phase8_matching_c');
-const { adjustSectionAssembly } = require('../tools/lib/compiler_assembly_dialect');
+const {
+  DIALECT_PROOF_SCHEMA_VERSION,
+  DIALECT_RULE_IDS,
+  LA_JAL_RULE_ID,
+  MOVE_RULE_ID,
+  adjustSectionAssembly,
+} = require('../tools/lib/compiler_assembly_dialect');
 const {
   SOURCE_CLASSES,
   classifySource,
@@ -78,14 +84,15 @@ function main() {
   const classifications = classifyTargetSources(phase8.targets);
   const classificationBySymbol = new Map(classifications.targets.map((record) => [record.symbol, record]));
   const dialectVerification = verifyDialectProofs(phase8, { output, linkedElf, canonicalBaserom });
-  if (dialectVerification.counts.proofTargets !== 36
-      || dialectVerification.counts.pureTargets !== 3
-      || dialectVerification.counts.hybridTargets !== 33
-      || dialectVerification.counts.transformedTargets !== 0
-      || dialectVerification.counts.transformations !== 0
-      || dialectVerification.counts.hybridByteIdenticalTargets !== 33
-      || dialectVerification.counts.hybridTransformations !== 0) {
-    fail('Phase 2 dialect aggregate gate drift');
+  if (dialectVerification.counts.proofTargets !== phase8.targets.length
+      || dialectVerification.counts.pureTargets !== classifications.counts.PURE_C
+      || dialectVerification.counts.hybridTargets !== classifications.counts.HYBRID_C
+      || dialectVerification.counts.hybridByteIdenticalTargets !== classifications.counts.HYBRID_C
+      || dialectVerification.counts.hybridTransformations !== 0
+      || dialectVerification.counts.ruleTransformations[LA_JAL_RULE_ID] !== 0
+      || Object.values(dialectVerification.counts.ruleTransformations).reduce((sum, count) => sum + count, 0)
+        !== dialectVerification.counts.transformations) {
+    fail('compiler-assembly dialect aggregate gate drift');
   }
   const targetProofs = [];
   let func2cd70Seen = false;
@@ -110,14 +117,16 @@ function main() {
     const proof = JSON.parse(proofBytes.toString('utf8'));
     const classification = classificationBySymbol.get(target.symbol);
     const verifiedDialectTarget = dialectVerification.targets.find((record) => record.symbol === target.symbol);
-    if (!classification || !verifiedDialectTarget || proof.schemaVersion !== 1 || proof.target !== target.symbol
+    if (!classification || !verifiedDialectTarget || proof.schemaVersion !== DIALECT_PROOF_SCHEMA_VERSION || proof.target !== target.symbol
         || proof.sourcePolicy.class !== classification.class || proof.sourcePolicy.digest !== classification.digest
         || proof.dialect.manifestSha256 !== phase8.dialect.identity.manifestSha256
         || proof.dialect.implementationSha256 !== phase8.dialect.identity.implementationSha256
+        || JSON.stringify(proof.dialect.rules) !== JSON.stringify(DIALECT_RULE_IDS)
         || proof.artifacts.compilerAssembly.sha256 !== sha256Buffer(compilerAssembly)
         || proof.artifacts.dialectAssembly.sha256 !== sha256Buffer(dialectAssembly)
         || proof.artifacts.sectionAdjustedAssembly.sha256 !== sha256Buffer(sectionAssembly)
         || proof.counts.transformationCount !== verifiedDialectTarget.transformationCount
+        || JSON.stringify(proof.counts.ruleTransformations) !== JSON.stringify(verifiedDialectTarget.ruleTransformations)
         || verifiedDialectTarget.proof.sha256 !== sha256Buffer(proofBytes)) {
       fail(`dialect proof field or artifact drift: ${target.symbol}`);
     }
@@ -127,12 +136,14 @@ function main() {
     if (classification.class === SOURCE_CLASSES.HYBRID_C) {
       if (proof.eligibility.eligible || proof.eligibility.action !== 'byte-identical-passthrough'
           || !proof.eligibility.bypassReason || proof.counts.transformationCount !== 0
+          || !DIALECT_RULE_IDS.every((ruleId) => proof.counts.ruleTransformations[ruleId] === 0)
           || !proof.artifacts.rawAndAdaptedByteIdentical || !compilerAssembly.equals(dialectAssembly)
           || proof.artifacts.compilerAssembly.sha256 !== proof.artifacts.dialectAssembly.sha256) {
         fail(`hybrid dialect passthrough drift: ${target.symbol}`);
       }
     } else if (classification.class === SOURCE_CLASSES.PURE_C) {
-      if (!proof.eligibility.eligible || proof.counts.transformationCount !== 0) fail(`Phase 2 pure dialect gate drift: ${target.symbol}`);
+      const perRuleTotal = Object.values(proof.counts.ruleTransformations).reduce((sum, count) => sum + count, 0);
+      if (!proof.eligibility.eligible || proof.counts.transformationCount !== perRuleTotal) fail(`pure dialect gate drift: ${target.symbol}`);
     } else {
       fail(`unexpected active target source class: ${target.symbol}`);
     }
@@ -145,6 +156,20 @@ function main() {
         fail('func_0002CD70 dialect or instruction-word gate drift');
       }
     }
+    if (target.symbol === 'func_0019554C'
+        && (classification.class !== SOURCE_CLASSES.PURE_C
+          || proof.counts.transformationCount !== 14
+          || proof.counts.ruleTransformations[MOVE_RULE_ID] !== 14
+          || proof.counts.ruleTransformations[LA_JAL_RULE_ID] !== 0)) {
+      fail('func_0019554C move-rule regression drift');
+    }
+    if (target.symbol === 'func_001957D0'
+        && (classification.class !== SOURCE_CLASSES.HYBRID_C
+          || proof.counts.transformationCount !== 0
+          || !compilerAssembly.equals(dialectAssembly)
+          || !DIALECT_RULE_IDS.every((ruleId) => proof.counts.ruleTransformations[ruleId] === 0))) {
+      fail('func_001957D0 must remain exact HYBRID_C passthrough');
+    }
     targetProofs.push({
       symbol: target.symbol,
       bytes: linkedText.length,
@@ -155,6 +180,7 @@ function main() {
       soleCOwner: true,
       sourceClass: classification.class,
       transformationCount: proof.counts.transformationCount,
+      ruleTransformations: proof.counts.ruleTransformations,
       compilerAssemblySha256: proof.artifacts.compilerAssembly.sha256,
       dialectAssemblySha256: proof.artifacts.dialectAssembly.sha256,
       sectionAdjustedAssemblySha256: proof.artifacts.sectionAdjustedAssembly.sha256,

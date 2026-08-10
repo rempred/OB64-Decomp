@@ -30,10 +30,10 @@ function main() {
     ['pin schema', { ...pin, selector: 'target-specific' }],
   ].map(([name, mutation]) => expectRejection(name, () => validateDialectPin(mutation, active.dialect.identity.manifestSha256)));
   const manifestMutations = [
-    ['schema', { schemaVersion: 2 }],
+    ['schema', { schemaVersion: 1 }],
     ['eligibility', { eligibilityClass: 'HYBRID_C' }],
     ['hybrid action', { hybridAction: 'parse' }],
-    ['rule', { rule: 'target-specific' }],
+    ['rules', { rules: [{ id: 'target-specific' }] }],
     ['compiler manifest', { compilerManifestSha256: '0'.repeat(64) }],
     ['compiler executable', { compilerExecutableSha256: '0'.repeat(64) }],
     ['compiler flags', { compileFlags: [...active.dialect.manifest.compileFlags, '-fPIC'] }],

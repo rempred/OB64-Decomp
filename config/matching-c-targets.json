@@ -3,7 +3,7 @@
   "profile": "us-rev0",
   "compilerAssemblyDialect": {
     "manifest": "config/compiler-assembly-dialect.json",
-    "manifestSha256": "FD87D6E56A9285D7D37A6FCFCE972787FDED7C7B5A4C8536EF50A5408F1D0331"
+    "manifestSha256": "666B6A863B8DAC10BB85774D66D9E536DED393FD706A1EF233539ACEBBB6D9EA"
   },
   "targets": [
     { "symbol": "func_000E5938", "source": "src/overlays/descriptor_02/func_000E5938.c" },

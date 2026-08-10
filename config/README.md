@@ -16,8 +16,8 @@ Rev 0 decomp configuration lives here.
   slab-local `executableRanges` list records narrowly evidenced executable treatment without
   changing the accepted source owner or its source classification.
 - `phase8/matching-c.json` - pinned 36-byte matching-C replacement contract.
-- `compiler-assembly-dialect.json` - schema-1 compiler-assembly adapter contract. It pins the
-  compiler, adapter module, assembler, flags, eligibility boundary, and sole rewrite rule.
+- `compiler-assembly-dialect.json` - schema-2 compiler-assembly adapter contract. It pins the
+  compiler, adapter module, assembler, flags, eligibility boundaries, and ordered rewrite rules.
 
 `matching-c-targets.json` owns the adapter manifest path and SHA-256 once. Target entries remain
 limited to `symbol` and `source`. Update the authenticated chain in this order:

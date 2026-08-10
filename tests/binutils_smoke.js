@@ -13,6 +13,11 @@ const {
   writeJson,
 } = require('../tools/lib/rom');
 const {
+  elfSectionBytes,
+  parseElfFile,
+} = require('../tools/lib/phase7_conventional');
+const { relocationRecords } = require('../tools/lib/phase8_matching_c');
+const {
   assembleFileToBinary,
   assertToolchainAvailable,
   loadToolchainConfig,
@@ -133,6 +138,39 @@ move $2,$4
     ok: true,
     rawGnuMoveHex: rawMoveHex,
     adaptedAdduHex: adaptedMoveHex,
+  });
+
+  const adjacentDecision = applyCompilerAssemblyDialect(Buffer.from(`.text
+dialect_la_jal:
+la $4,external_address
+jal external_call
+`), 'PURE_C');
+  const adjacent = assembleText({
+    name: 'dialect_la_jal',
+    text: adjacentDecision.output.toString('utf8'),
+  });
+  const adjacentHex = bytesToHex(adjacent.bytes);
+  requireHex('dialect_la_jal', adjacentHex, '3C0400000C00000024840000');
+  const adjacentElf = parseElfFile(adjacent.objPath);
+  const adjacentTextSection = adjacentElf.sections.find((section) => section.name === '.text');
+  if (!adjacentTextSection || !Buffer.from(elfSectionBytes(adjacentElf, adjacentTextSection)).equals(adjacent.bytes)) {
+    throw new Error('dialect la/jal object text section drift');
+  }
+  const adjacentRelocations = relocationRecords(adjacentElf, { sectionName: '.text' })
+    .filter((record) => record.section === '.rel.text');
+  const expectedAdjacentRelocations = [
+    { offset: '0x00000000', type: 'R_MIPS_HI16', symbol: 'external_address', section: '.rel.text' },
+    { offset: '0x00000004', type: 'R_MIPS_26', symbol: 'external_call', section: '.rel.text' },
+    { offset: '0x00000008', type: 'R_MIPS_LO16', symbol: 'external_address', section: '.rel.text' },
+  ];
+  if (JSON.stringify(adjacentRelocations) !== JSON.stringify(expectedAdjacentRelocations)) {
+    throw new Error(`dialect la/jal relocation drift: ${JSON.stringify(adjacentRelocations)}`);
+  }
+  checks.push({
+    name: 'dialectLaJalDelaySlotAndRelocations',
+    ok: true,
+    bytesHex: adjacentHex,
+    relocations: adjacentRelocations,
   });
 
   const manifest = readJson(path.join(ROOT, 'asm', 'original', 'rev0', 'manifest.json'));

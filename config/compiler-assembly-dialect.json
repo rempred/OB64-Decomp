@@ -1,6 +1,6 @@
 {
-  "schemaVersion": 1,
-  "id": "kmc-gpr-move-addu-v1",
+  "schemaVersion": 2,
+  "id": "kmc-compiler-assembly-dialect-v2",
   "eligibilityClass": "PURE_C",
   "hybridAction": "byte-identical-passthrough",
   "unknownAction": "reject",
@@ -24,8 +24,29 @@
   "assemblerExecutableSha256": "D237475181458118BF964C369748ACF144394583C5DC24293F53F1C9119E8697",
   "assemblerVersion": "GNU assembler (GNU Binutils) 2.39",
   "assemblerFlags": ["-EB", "-mips3", "-32"],
-  "rule": "move-numeric-gpr-gpr-to-addu-zero",
+  "rules": [
+    {
+      "id": "move-numeric-gpr-gpr-to-addu-zero",
+      "sourceClass": "PURE_C",
+      "input": "unlabeled-complete-move-numeric-gpr-gpr",
+      "output": "addu-destination-source-zero"
+    },
+    {
+      "id": "la-gpr4-undefined-bare-symbol-direct-jal-delay-slot",
+      "sourceClass": "PURE_C",
+      "addressRegister": "$4",
+      "addressSymbol": "undefined-bare-symbol",
+      "call": "next-emitted-unlabeled-direct-jal-bare-symbol",
+      "requiredModes": ["reorder", "macro", "novolatile"],
+      "output": [
+        "lui $4,%hi(address-symbol)",
+        "jal call-target",
+        "addiu $4,$4,%lo(address-symbol)"
+      ],
+      "assemblerModeGuard": ["noreorder", "reorder"]
+    }
+  ],
   "unsupportedSyntax": "reject",
   "implementationPath": "tools/lib/compiler_assembly_dialect.js",
-  "implementationSha256": "224E12F01B28E30C1402E0C6A6524529DA21C26E6BD62CDF953FF198A8229B12"
+  "implementationSha256": "1598CDDD50ED22EFE33FDC76322D6D305A0A43110C35F5BB8BFDD7206420919C"
 }

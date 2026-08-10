@@ -27,10 +27,13 @@ const {
   loadActiveTargetModel,
 } = require('./active_targets');
 const {
+  DIALECT_PROOF_SCHEMA_VERSION,
+  DIALECT_RULE_IDS,
   adjustSectionAssembly,
   applyCompilerAssemblyDialect,
   buildDialectProof,
   serializeDialectProof,
+  totalRuleTransformations,
 } = require('./compiler_assembly_dialect');
 const {
   POLICY_CONFIG_PATH,
@@ -445,7 +448,8 @@ function compileTarget(phase8, target, output, compiler, assembler, options = {}
   const decision = { ...applied };
   delete decision.output;
   if (classification.class === SOURCE_CLASSES.HYBRID_C
-      && (!compilerBytes.equals(dialectBytes) || decision.transformationCount !== 0)) {
+      && (!compilerBytes.equals(dialectBytes) || decision.transformationCount !== 0
+        || totalRuleTransformations(decision.ruleTransformations) !== 0)) {
     fail('HYBRID_C compiler assembly was not an opaque byte-identical passthrough: ' + target.symbol);
   }
   fs.writeFileSync(dialectAssembly, dialectBytes);
@@ -526,7 +530,8 @@ function deriveDialectProof(phase8, target, output, classification, linkedElf, c
     fail('section-adjusted assembly does not match independent derivation: ' + target.symbol);
   }
   if (classification.class === SOURCE_CLASSES.HYBRID_C
-      && (!compilerBytes.equals(actualDialectBytes) || applied.transformationCount !== 0)) {
+      && (!compilerBytes.equals(actualDialectBytes) || applied.transformationCount !== 0
+        || totalRuleTransformations(applied.ruleTransformations) !== 0)) {
     fail('HYBRID_C raw/adapted identity drift: ' + target.symbol);
   }
 
@@ -634,10 +639,13 @@ function validateDialectProofBytes(actualBytes, expectedBytes) {
   } catch (_) {
     fail('dialect proof is not valid JSON');
   }
-  if (!actual || actual.schemaVersion !== 1 || !actual.dialect || !actual.sourcePolicy
+  if (!actual || actual.schemaVersion !== DIALECT_PROOF_SCHEMA_VERSION || !actual.dialect || !actual.sourcePolicy
       || !actual.eligibility || !actual.artifacts || !actual.toolchain || !actual.counts
       || !actual.finalObject || !actual.finalTarget) {
     fail('dialect proof schema drift');
+  }
+  if (actual.counts.transformationCount !== totalRuleTransformations(actual.counts.ruleTransformations)) {
+    fail('dialect proof per-rule transformation counts drift');
   }
   if (!actualBytes.equals(expectedBytes)) fail('dialect proof differs from independent reconstruction');
   return actual;
@@ -672,6 +680,7 @@ function verifyDialectProofs(phase8, options) {
       sourceClass: classificationBySymbol.get(target.symbol).class,
       sourcePolicyDigest: classificationBySymbol.get(target.symbol).digest,
       transformationCount: derived.decision.transformationCount,
+      ruleTransformations: derived.decision.ruleTransformations,
       appMarkerCount: derived.decision.appMarkerCount,
       noAppMarkerCount: derived.decision.noAppMarkerCount,
       inlineRegionCount: derived.decision.inlineRegionCount,
@@ -683,6 +692,10 @@ function verifyDialectProofs(phase8, options) {
   }
   const hybrid = records.filter((record) => record.sourceClass === SOURCE_CLASSES.HYBRID_C);
   const pure = records.filter((record) => record.sourceClass === SOURCE_CLASSES.PURE_C);
+  const ruleTransformations = Object.fromEntries(DIALECT_RULE_IDS.map((ruleId) => [
+    ruleId,
+    records.reduce((sum, record) => sum + record.ruleTransformations[ruleId], 0),
+  ]));
   return {
     identity: phase8.dialect.identity,
     sourcePolicy: {
@@ -696,6 +709,7 @@ function verifyDialectProofs(phase8, options) {
       hybridTargets: hybrid.length,
       transformedTargets: records.filter((record) => record.transformationCount > 0).length,
       transformations: records.reduce((sum, record) => sum + record.transformationCount, 0),
+      ruleTransformations,
       hybridByteIdenticalTargets: hybrid.filter((record) => record.rawAndAdaptedByteIdentical).length,
       hybridTransformations: hybrid.reduce((sum, record) => sum + record.transformationCount, 0),
     },

@@ -103,14 +103,27 @@ Only exact `PURE_C` targets contribute to matching-C progress.
 The build classifies every active target before compilation. `UNKNOWN` and `ASM` classifications
 reject before the compiler-assembly adapter can run.
 
-Only `PURE_C` compiler output may enter the dialect parser. Any `#APP` or `#NO_APP` marker rejects
-pure output before move parsing.
+Only authenticated `PURE_C` compiler output may enter the versioned dialect parser. Any `#APP` or
+`#NO_APP` marker rejects pure output before statement parsing.
 
 `HYBRID_C` compiler output is opaque passthrough. Raw and adapted bytes and SHA-256 values must
-match, and the proof must record zero transformations.
+match, and the proof must record zero total and zero per-rule transformations.
 
-The parser recognizes only a complete numeric-register `move $N,$M` statement. It emits
-`addu $N,$M,$0`. Malformed moves, macros, conditionals, and semicolon statements reject.
+The schema-2 contract has two target-blind rewrite rules:
+
+- a complete numeric-register `move $N,$M` statement emits `addu $N,$M,$0`; and
+- an unlabeled adjacent `la $4,symbol` plus direct `jal target`, in the authenticated non-PIC,
+  no-abicalls, `-G0`, MIPS3/gp32 configuration with reorder and macro expansion enabled and
+  volatile mode disabled, may emit
+  `lui $4,%hi(symbol)`, `jal target`, `addiu $4,$4,%lo(symbol)` under an explicit temporary
+  `.set noreorder` boundary when the address symbol is undefined in the translation unit.
+
+The second rule excludes other registers, local symbols, labels, intervening emitted statements or
+mode boundaries, `jalr`, expressions/addends, unsupported relocation forms, and unverified modes.
+A valid excluded sequence remains byte-identical. Malformed or ambiguous syntax, unsupported
+statements, macros, conditionals, and semicolon statements reject. `-O2` remains the pinned
+production compiler setting, but it is not an eligibility condition inferred from the historical
+assembler behavior.
 
 Each target retains four reviewable artifacts:
 
@@ -122,8 +135,9 @@ Each target retains four reviewable artifacts:
 The assembler consumes only the section-adjusted file. Strict verification recreates the adapted
 file, section adjustment, and proof before accepting linked bytes.
 
-Build-wide reports derive transformed-target and transformation totals from unique verified
-proofs. Phase 2 produced zero for both totals; later pure-C migrations may produce nonzero totals.
+Build-wide reports derive transformed-target, total-transformation, and per-rule totals from unique
+verified proofs. Phase 2 produced zero transformed targets and transformations; later pure-C
+migrations may produce nonzero totals.
 
 ### Structural evidence
 

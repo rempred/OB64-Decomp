@@ -47,8 +47,17 @@ function main(argv = process.argv.slice(2)) {
   console.log('Running CURRENT ownership and exact-ROM verification...');
   const current = verifyCurrent(context);
   const dialect = current.verification.verification.dialect;
+  const perRuleTotal = dialect && dialect.counts && dialect.counts.ruleTransformations
+    ? Object.values(dialect.counts.ruleTransformations).reduce((sum, count) => sum + count, 0)
+    : -1;
+  const hybridRuleCountsZero = dialect && Array.isArray(dialect.targets)
+    && dialect.targets.filter((target) => target.sourceClass === 'HYBRID_C').every((target) => (
+      target.ruleTransformations
+      && Object.values(target.ruleTransformations).every((count) => count === 0)
+    ));
   if (!dialect || dialect.counts.hybridTransformations !== 0
-      || dialect.counts.hybridByteIdenticalTargets !== dialect.counts.hybridTargets) {
+      || dialect.counts.hybridByteIdenticalTargets !== dialect.counts.hybridTargets
+      || perRuleTotal !== dialect.counts.transformations || !hybridRuleCountsZero) {
     throw new Error('verified HYBRID_C dialect passthrough invariant failed');
   }
   const rebuiltRom = fs.readFileSync(path.join(current.build.output, 'phase8.us_rev0.z64'));
