@@ -148,9 +148,9 @@ function instructionText(code) {
   let text = code.trim();
   const labels = [];
   while (text) {
-    const label = /^[A-Za-z_.$][A-Za-z0-9_.$]*:[ \t]*/.exec(text);
+    const label = /^([A-Za-z_.$][A-Za-z0-9_.$]*|[0-9]+)[ \t]*:[ \t]*/.exec(text);
     if (!label) break;
-    labels.push(label[0].slice(0, label[0].indexOf(':')));
+    labels.push(label[1]);
     text = text.slice(label[0].length);
   }
   return { hadLabel: labels.length > 0, labels, text };
@@ -284,6 +284,7 @@ function transformPureCompilerAssembly(value) {
   const prohibitedConfigurationDirective = /^\.(?:abicalls|cpload|cprestore|cpadd|gpword|gpdword|option|module|insn)\b/i;
   const prohibitedMnemonic = /^(?:mov\.(?:s|d|ps)|d?m[ft]c[0-3]|c[ft]c[0-3])$/i;
   const numericMove = /^([ \t]*)move([ \t]+)(\$(?:0|[1-9]|[12][0-9]|3[01]))([ \t]*,[ \t]*)(\$(?:0|[1-9]|[12][0-9]|3[01]))([ \t]*)$/i;
+  const numericCop1Transfer = /^([ \t]*)(?:mfc1|mtc1)([ \t]+)(\$(?:0|[1-9]|[12][0-9]|3[01]))([ \t]*,[ \t]*)(\$f(?:0|[1-9]|[12][0-9]|3[01]))([ \t]*)$/i;
   for (let index = 0; index < lines.length; index += 1) {
     const line = lines[index];
     const { scanned, statement } = line;
@@ -303,6 +304,14 @@ function transformPureCompilerAssembly(value) {
     }
     const mnemonic = mnemonicOf(statement.text);
     if (!mnemonic) {
+      output.push(line.body, line.ending);
+      continue;
+    }
+    if (mnemonic === 'mfc1' || mnemonic === 'mtc1') {
+      if (statement.hadLabel) fail('PURE_C COP1 transfer must be one complete unlabeled statement');
+      if (!numericCop1Transfer.test(scanned.code)) {
+        fail('PURE_C COP1 transfer must use one numeric GPR and one numeric FPR operand from $0/$f0 through $31/$f31');
+      }
       output.push(line.body, line.ending);
       continue;
     }

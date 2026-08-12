@@ -49,6 +49,15 @@ function expectPureUnchanged(name, text) {
 
 function main() {
   assert(C_LINKAGE_IDENTIFIER_GRAMMAR === '[A-Za-z_][A-Za-z0-9_]*', 'C-linkage identifier grammar drift');
+  const namedRegisterAliases = [
+    '$zero', '$at', '$v0', '$v1',
+    '$a0', '$a1', '$a2', '$a3',
+    '$t0', '$t1', '$t2', '$t3', '$t4', '$t5', '$t6', '$t7', '$t8', '$t9',
+    '$s0', '$s1', '$s2', '$s3', '$s4', '$s5', '$s6', '$s7', '$s8',
+    '$k0', '$k1', '$gp', '$sp', '$fp', '$ra',
+  ];
+  const numericRegisterAliases = Array.from({ length: 32 }, (_, register) => `$${register}`);
+  const registerAliases = [...namedRegisterAliases, ...numericRegisterAliases];
 
   const numeric = fixture('pure-numeric.s');
   const numericResult = applyCompilerAssemblyDialect(numeric, 'PURE_C');
@@ -77,6 +86,35 @@ function main() {
   const zeroResult = applyCompilerAssemblyDialect(zero, 'PURE_C');
   assert(zeroResult.transformationCount === 0 && zeroResult.output.equals(zero), 'zero-transform pure fixture changed');
   assert(zeroResult.explicitOrStatementCount === 1, 'explicit or diagnostic count drift');
+
+  const cop1Fixture = fixture('pure-cop1-transfers.s');
+  const cop1FixtureResult = applyCompilerAssemblyDialect(cop1Fixture, 'PURE_C');
+  assert(cop1FixtureResult.output.equals(cop1Fixture), 'valid COP1 transfer fixture changed bytes');
+  assert(cop1FixtureResult.transformationCount === 0
+    && DIALECT_RULE_IDS.every((ruleId) => cop1FixtureResult.ruleTransformations[ruleId] === 0),
+  'valid COP1 transfer fixture recorded a transformation');
+
+  let cop1TransferStatements = 0;
+  for (const ending of ['\n', '\r\n']) {
+    const lines = ['\t.text'];
+    for (const mnemonic of ['mfc1', 'mtc1']) {
+      for (let gpr = 0; gpr < 32; gpr += 1) {
+        for (let fpr = 0; fpr < 32; fpr += 1) {
+          lines.push(`\t${mnemonic}\t$${gpr},$f${fpr} # ${mnemonic}-${gpr}-${fpr}`);
+          cop1TransferStatements += 1;
+        }
+      }
+    }
+    lines.push('');
+    const input = Buffer.from(lines.join(ending), 'utf8');
+    const first = applyCompilerAssemblyDialect(input, 'PURE_C');
+    const second = applyCompilerAssemblyDialect(input, 'PURE_C');
+    assert(first.output.equals(input) && second.output.equals(input), `COP1 transfer bytes changed for ${JSON.stringify(ending)}`);
+    assert(first.transformationCount === 0 && second.transformationCount === 0,
+      `COP1 transfer recorded a transformation for ${JSON.stringify(ending)}`);
+    assert(DIALECT_RULE_IDS.every((ruleId) => first.ruleTransformations[ruleId] === 0
+      && second.ruleTransformations[ruleId] === 0), `COP1 transfer per-rule count drift for ${JSON.stringify(ending)}`);
+  }
 
   const adjacentInput = Buffer.from([
     '\t.text',
@@ -125,15 +163,6 @@ function main() {
     ['intervening directive', '\t.text\n\tla $4,external_address\n\t.align 2\n\tjal external_call\n'],
   ].map(([name, text]) => expectPureUnchanged(name, text));
 
-  const namedRegisterAliases = [
-    '$zero', '$at', '$v0', '$v1',
-    '$a0', '$a1', '$a2', '$a3',
-    '$t0', '$t1', '$t2', '$t3', '$t4', '$t5', '$t6', '$t7', '$t8', '$t9',
-    '$s0', '$s1', '$s2', '$s3', '$s4', '$s5', '$s6', '$s7', '$s8',
-    '$k0', '$k1', '$gp', '$sp', '$fp', '$ra',
-  ];
-  const numericRegisterAliases = Array.from({ length: 32 }, (_, register) => `$${register}`);
-  const registerAliases = [...namedRegisterAliases, ...numericRegisterAliases];
   const registerCallExclusions = registerAliases.map((register) => expectPureUnchanged(
     `direct jal register target ${register}`,
     `\t.text\n\tla $4,external_address\n\tjal ${register}\n`,
@@ -149,6 +178,12 @@ function main() {
   assert(hybridLaJalResult.output.equals(hybridLaJal) && hybridLaJalResult.transformationCount === 0
     && DIALECT_RULE_IDS.every((ruleId) => hybridLaJalResult.ruleTransformations[ruleId] === 0),
   'HYBRID_C la/jal sequence was not opaque passthrough');
+
+  const hybridCop1 = Buffer.from('\t.text\nlabel: mtc1 $a0,$f32,extra\n\tdmtc1 $4,$f12\n', 'utf8');
+  const hybridCop1Result = applyCompilerAssemblyDialect(hybridCop1, 'HYBRID_C');
+  assert(hybridCop1Result.output.equals(hybridCop1) && hybridCop1Result.transformationCount === 0
+    && DIALECT_RULE_IDS.every((ruleId) => hybridCop1Result.ruleTransformations[ruleId] === 0),
+  'HYBRID_C COP1 syntax was not opaque passthrough');
 
   const authentic = [
     [
@@ -212,6 +247,13 @@ function main() {
     ['hostile-named-register.s', /canonical numeric GPR operands/],
     ['hostile-floating-move.s', /unsupported move syntax/],
     ['hostile-coprocessor-move.s', /unsupported move syntax/],
+    ['hostile-cop1-named-register.s', /numeric GPR and one numeric FPR operand/],
+    ['hostile-cop1-labeled.s', /complete unlabeled statement/],
+    ['hostile-cop1-numeric-label.s', /complete unlabeled statement/],
+    ['hostile-cop1-extra-operand.s', /numeric GPR and one numeric FPR operand/],
+    ['hostile-cop1-out-of-range.s', /numeric GPR and one numeric FPR operand/],
+    ['hostile-cop1-control-transfer.s', /unsupported move syntax/],
+    ['hostile-cop1-doubleword.s', /unsupported move syntax/],
   ];
   for (const [name, pattern] of hostile) {
     expectRejection(name, pattern, () => applyCompilerAssemblyDialect(fixture(name), 'PURE_C'));
@@ -221,6 +263,65 @@ function main() {
       applyCompilerAssemblyDialect(Buffer.from(text), 'PURE_C');
     });
   }
+  const malformedCop1Operands = [
+    'mtc1\n',
+    'mfc1 $2\n',
+    'mtc1 $2,\n',
+    'mfc1 ,$f2\n',
+    'mtc1 $2 $f2\n',
+    'mfc1 $2,$f2,$3\n',
+    'mtc1 $f2,$2\n',
+    'mfc1 2,$f2\n',
+    'mtc1 $2,f2\n',
+    'mfc1 $2,$2\n',
+    'mtc1 $2,$f\n',
+  ];
+  const malformedCop1Rejections = malformedCop1Operands.map((text) => expectRejection(
+    `malformed COP1 transfer ${JSON.stringify(text.trim())}`,
+    /numeric GPR and one numeric FPR operand/,
+    () => applyCompilerAssemblyDialect(Buffer.from(text), 'PURE_C'),
+  ));
+  const labeledCop1Rejections = ['mfc1', 'mtc1'].flatMap((mnemonic) => ['label:', '1:', 'spaced_label :'].map((label) => expectRejection(
+    `labeled COP1 transfer ${label} ${mnemonic}`,
+    /complete unlabeled statement/,
+    () => applyCompilerAssemblyDialect(Buffer.from(`${label} ${mnemonic} $2,$f2\n`), 'PURE_C'),
+  )));
+  const namedCop1Rejections = ['mfc1', 'mtc1'].flatMap((mnemonic) => namedRegisterAliases.map((register) => expectRejection(
+    `named COP1 GPR ${mnemonic} ${register}`,
+    /numeric GPR and one numeric FPR operand/,
+    () => applyCompilerAssemblyDialect(Buffer.from(`${mnemonic} ${register},$f2\n`), 'PURE_C'),
+  )));
+  const namedFprRejections = ['mfc1', 'mtc1'].flatMap((mnemonic) => ['$fzero', '$fa0', '$f31x'].map((register) => expectRejection(
+    `named COP1 FPR ${mnemonic} ${register}`,
+    /numeric GPR and one numeric FPR operand/,
+    () => applyCompilerAssemblyDialect(Buffer.from(`${mnemonic} $2,${register}\n`), 'PURE_C'),
+  )));
+  const outOfRangeCop1Rejections = ['mfc1', 'mtc1'].flatMap((mnemonic) => [
+    `${mnemonic} $-1,$f0\n`,
+    `${mnemonic} $32,$f0\n`,
+    `${mnemonic} $999,$f0\n`,
+    `${mnemonic} $0,$f-1\n`,
+    `${mnemonic} $0,$f32\n`,
+    `${mnemonic} $0,$f999\n`,
+  ].map((text) => expectRejection(
+    `out-of-range COP1 transfer ${JSON.stringify(text.trim())}`,
+    /numeric GPR and one numeric FPR operand/,
+    () => applyCompilerAssemblyDialect(Buffer.from(text), 'PURE_C'),
+  )));
+  const excludedCop1Forms = [
+    ['mfc0', '$2,$12'], ['mtc0', '$2,$12'],
+    ['mfc2', '$2,$12'], ['mtc2', '$2,$12'], ['mfc3', '$2,$12'], ['mtc3', '$2,$12'],
+    ['cfc0', '$2,$12'], ['ctc0', '$2,$12'], ['cfc1', '$2,$12'], ['ctc1', '$2,$12'],
+    ['cfc2', '$2,$12'], ['ctc2', '$2,$12'], ['cfc3', '$2,$12'], ['ctc3', '$2,$12'],
+    ['dmfc0', '$2,$12'], ['dmtc0', '$2,$12'], ['dmfc1', '$2,$f12'], ['dmtc1', '$2,$f12'],
+    ['dmfc2', '$2,$12'], ['dmtc2', '$2,$12'], ['dmfc3', '$2,$12'], ['dmtc3', '$2,$12'],
+    ['mov.s', '$f0,$f2'], ['mov.d', '$f0,$f2'], ['mov.ps', '$f0,$f2'],
+  ];
+  const excludedCop1Rejections = excludedCop1Forms.map(([mnemonic, operands]) => expectRejection(
+    `excluded COP1 form ${mnemonic}`,
+    /unsupported move syntax/,
+    () => applyCompilerAssemblyDialect(Buffer.from(`${mnemonic} ${operands}\n`), 'PURE_C'),
+  ));
   for (const text of [
     'la $4\n',
     'la $4,\n',
@@ -283,12 +384,21 @@ function main() {
     numericTransformations: numericResult.transformationCount,
     adjacentLaJalTransformations: adjacentResult.transformationCount,
     allNumericRegistersCovered: true,
+    cop1TransferStatements,
+    cop1TransferTransformations: cop1FixtureResult.transformationCount,
+    malformedCop1Rejections: malformedCop1Rejections.length,
+    labeledCop1Rejections: labeledCop1Rejections.length,
+    namedCop1Rejections: namedCop1Rejections.length + namedFprRejections.length,
+    outOfRangeCop1Rejections: outOfRangeCop1Rejections.length,
+    excludedCop1Rejections: excludedCop1Rejections.length,
     cLinkageIdentifierGrammar: C_LINKAGE_IDENTIFIER_GRAMMAR,
     registerCallExclusions: registerCallExclusions.length,
     registerAddressRejections: registerAddressRejections.length,
     authenticHybridFixtures: authentic.length,
     exclusions,
-    hostileRejections: hostile.length + 13,
+    hostileRejections: hostile.length + 13 + malformedCop1Rejections.length + labeledCop1Rejections.length
+      + namedCop1Rejections.length + namedFprRejections.length + outOfRangeCop1Rejections.length
+      + excludedCop1Rejections.length,
     deterministicProofSha256: sha256Buffer(proofA),
   }, null, 2));
 }

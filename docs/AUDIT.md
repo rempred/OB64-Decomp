@@ -96,6 +96,8 @@ At minimum verify:
 - the compiler-assembly dialect manifest and adapter-module hashes match their authenticated pins;
 - compiler and assembler identities, versions, and flags match the dialect manifest;
 - the dialect schema and ordered rule identities match the versioned contract; and
+- complete numeric `mfc1`/`mtc1` statements retain byte identity and zero transformations while
+  malformed, named, labeled, out-of-range, control-register, and doubleword forms reject; and
 - stale build, verification, current-state, proof, or audit schemas reject.
 
 ### Baseline build

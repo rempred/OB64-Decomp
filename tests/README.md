@@ -33,6 +33,7 @@ Compare the frozen pre-migration workflow with a completed external build:
 node tests/workflow_parity.js --old-root <frozen-workflow-root> --new-output <phase8-output>
 ```
 
-The dialect suite covers numeric-register moves, line endings, hostile syntax, authentic hybrid
-output, byte-identical passthrough, and deterministic proofs. Integration tests recreate proofs,
-derive counts, reject stale schemas, and protect the `func_0002CD70` OR words.
+The dialect suite covers numeric-register moves, complete numeric `mfc1`/`mtc1` passthrough,
+LF/CRLF behavior, malformed and excluded COP1 matrices, hostile syntax, authentic hybrid output,
+byte-identical passthrough, and deterministic proofs. Integration tests recreate proofs, derive
+counts, reject stale schemas, and protect the `func_0002CD70` OR words.

@@ -76,6 +76,12 @@ symbol `la $4` plus direct `jal` form. Both address and call symbols in the latt
 the strict C-linkage identifier grammar `[A-Za-z_][A-Za-z0-9_]*`, and the address symbol must remain
 undefined within the translation unit. Rule eligibility does not alter source classification.
 
+The parser also accepts complete unlabeled KMC-style `mtc1 $N,$fN` and `mfc1 $N,$fN` statements
+only when both registers are numeric and in the range 0 through 31. These statements remain
+byte-identical and record zero transformations. Named, labeled, malformed, extra-operand, and
+out-of-range forms reject. COP0 and control-register transfers, floating-point `mov.*` forms, and
+unproven doubleword transfers remain rejected.
+
 Valid statements outside either supported subset remain byte-identical. Malformed or ambiguous
 syntax and unsupported statement or mode forms fail closed. Current-location, section,
 dot-prefixed local-assembler, expression, addend, register-call, and `jalr` forms are excluded from

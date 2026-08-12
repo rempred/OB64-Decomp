@@ -119,6 +119,12 @@ The schema-2 contract has two target-blind rewrite rules:
   `lui $4,%hi(symbol)`, `jal target`, `addiu $4,$4,%lo(symbol)` under an explicit temporary
   `.set noreorder` boundary when the address symbol is undefined in the translation unit.
 
+Complete unlabeled KMC-style `mtc1 $N,$fN` and `mfc1 $N,$fN` statements are validated for numeric
+general-purpose and floating-point registers in the range 0 through 31, then retained
+byte-identically with zero transformations. Malformed operands, named registers, attached labels,
+extra operands, and out-of-range registers reject. COP0 transfers, control-register transfers,
+`mov.s`/`mov.d`/`mov.ps`, and unproven doubleword transfer forms remain rejected.
+
 Current-location, section, dot-prefixed local-assembler, expression, addend, register, and `jalr`
 forms are outside the latter rule. Valid excluded forms remain byte-identical; a register-valued
 `la` address operand is rejected before adaptation or proof generation.

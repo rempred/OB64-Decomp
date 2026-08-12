@@ -71,6 +71,11 @@ restores the prior effective assembler mode. Current-location, section, dot-pref
 addend, register-call, and `jalr` forms remain untouched; register-valued `la` address operands and
 other malformed or unsupported input fail closed.
 
+Complete unlabeled numeric `mtc1 $N,$fN` and `mfc1 $N,$fN` compiler statements pass through
+byte-identically and record zero transformations. Each register must be in the range 0 through 31.
+Malformed, named, labeled, extra-operand, and out-of-range forms reject, as do COP0 transfers,
+control-register transfers, `mov.s`/`mov.d`/`mov.ps`, and unproven doubleword transfers.
+
 GNU assembler 2.39 remains the production assembler. The authenticated historical KMC assembler
 is a behavioral oracle for the second rule, not a build dependency. `-O2` is the pinned production
 compiler configuration but is not a demonstrated historical eligibility requirement.

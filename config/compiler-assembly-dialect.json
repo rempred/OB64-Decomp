@@ -49,5 +49,5 @@
   ],
   "unsupportedSyntax": "reject",
   "implementationPath": "tools/lib/compiler_assembly_dialect.js",
-  "implementationSha256": "74EBB644F3B9A659C3AD91F179EB70CE531E2373714686D110C7FC42B3C5C74C"
+  "implementationSha256": "B63E58E001972AAA90585FE3860815865F9C91DCD190184AC6445C7869A01DCA"
 }

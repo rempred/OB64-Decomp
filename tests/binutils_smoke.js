@@ -24,6 +24,7 @@ const {
   toolVersion,
 } = require('../tools/lib/real_mips_toolchain');
 const {
+  DIALECT_RULE_IDS,
   LA_JAL_RULE_ID,
   applyCompilerAssemblyDialect,
 } = require('../tools/lib/compiler_assembly_dialect');
@@ -71,7 +72,8 @@ function verifyDialectExclusion({ name, text, expectedWords = null }) {
   const input = Buffer.from(text, 'utf8');
   const decision = applyCompilerAssemblyDialect(input, 'PURE_C');
   if (!decision.output.equals(input)) throw new Error(`${name} adapter output changed valid excluded input`);
-  if (decision.transformationCount !== 0 || decision.ruleTransformations[LA_JAL_RULE_ID] !== 0) {
+  if (decision.transformationCount !== 0
+      || !DIALECT_RULE_IDS.every((ruleId) => decision.ruleTransformations[ruleId] === 0)) {
     throw new Error(`${name} adapter recorded a transformation for valid excluded input`);
   }
   const raw = assembleText({ name: `${name}_raw`, text });
@@ -264,6 +266,17 @@ jal external_call
     name: 'dialectStrictCLinkageIdentifierExclusions',
     ok: true,
     cases: strictIdentifierExclusions,
+  });
+
+  const cop1Transfers = verifyDialectExclusion({
+    name: 'dialect_cop1_numeric_transfer_passthrough',
+    text: '.text\nmtc1 $4,$f12\nmfc1 $5,$f6\n',
+    expectedWords: ['0x44846000', '0x44053000', '0x00000000'],
+  });
+  checks.push({
+    name: 'dialectCop1NumericTransfersByteIdenticalPassthrough',
+    ok: true,
+    ...cop1Transfers,
   });
 
   const manifest = readJson(path.join(ROOT, 'asm', 'original', 'rev0', 'manifest.json'));
