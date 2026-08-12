@@ -94,8 +94,14 @@ function main() {
     && DIALECT_RULE_IDS.every((ruleId) => cop1FixtureResult.ruleTransformations[ruleId] === 0),
   'valid COP1 transfer fixture recorded a transformation');
 
+  const cop1PhysicalForms = [
+    ['LF', '\n', true],
+    ['CRLF', '\r\n', true],
+    ['CR', '\r', true],
+    ['missing-final-newline', '\n', false],
+  ];
   let cop1TransferStatements = 0;
-  for (const ending of ['\n', '\r\n']) {
+  for (const [name, ending, finalLineEnding] of cop1PhysicalForms) {
     const lines = ['\t.text'];
     for (const mnemonic of ['mfc1', 'mtc1']) {
       for (let gpr = 0; gpr < 32; gpr += 1) {
@@ -105,15 +111,30 @@ function main() {
         }
       }
     }
-    lines.push('');
-    const input = Buffer.from(lines.join(ending), 'utf8');
+    const input = Buffer.from(`${lines.join(ending)}${finalLineEnding ? ending : ''}`, 'utf8');
     const first = applyCompilerAssemblyDialect(input, 'PURE_C');
     const second = applyCompilerAssemblyDialect(input, 'PURE_C');
-    assert(first.output.equals(input) && second.output.equals(input), `COP1 transfer bytes changed for ${JSON.stringify(ending)}`);
+    assert(first.output.equals(input) && second.output.equals(input), `COP1 transfer bytes changed for ${name}`);
     assert(first.transformationCount === 0 && second.transformationCount === 0,
-      `COP1 transfer recorded a transformation for ${JSON.stringify(ending)}`);
+      `COP1 transfer recorded a transformation for ${name}`);
     assert(DIALECT_RULE_IDS.every((ruleId) => first.ruleTransformations[ruleId] === 0
-      && second.ruleTransformations[ruleId] === 0), `COP1 transfer per-rule count drift for ${JSON.stringify(ending)}`);
+      && second.ruleTransformations[ruleId] === 0), `COP1 transfer per-rule count drift for ${name}`);
+    assert(finalLineEnding || !/[\r\n]$/.test(input.toString('utf8')), 'missing-final-newline COP1 corpus gained a line ending');
+  }
+
+  const mixedCaseCop1Mnemonics = [
+    'MFC1 $0,$f0\n',
+    'MfC1 $31,$f31\n',
+    'MTC1 $0,$f31\n',
+    'mTc1 $31,$f0\n',
+  ];
+  for (const text of mixedCaseCop1Mnemonics) {
+    const input = Buffer.from(text, 'utf8');
+    const result = applyCompilerAssemblyDialect(input, 'PURE_C');
+    assert(result.output.equals(input), `mixed-case COP1 mnemonic changed bytes: ${text.trim()}`);
+    assert(result.transformationCount === 0
+      && DIALECT_RULE_IDS.every((ruleId) => result.ruleTransformations[ruleId] === 0),
+    `mixed-case COP1 mnemonic recorded a transformation: ${text.trim()}`);
   }
 
   const adjacentInput = Buffer.from([
@@ -281,6 +302,14 @@ function main() {
     /numeric GPR and one numeric FPR operand/,
     () => applyCompilerAssemblyDialect(Buffer.from(text), 'PURE_C'),
   ));
+  const uppercaseFprRejections = ['mfc1', 'mtc1'].flatMap((mnemonic) => [0, 31].map((register) => {
+    const text = `${mnemonic} $${register},$F${register}\n`;
+    return expectRejection(
+      `uppercase COP1 FPR prefix ${text.trim()}`,
+      /numeric GPR and one numeric FPR operand/,
+      () => applyCompilerAssemblyDialect(Buffer.from(text), 'PURE_C'),
+    );
+  }));
   const labeledCop1Rejections = ['mfc1', 'mtc1'].flatMap((mnemonic) => ['label:', '1:', 'spaced_label :'].map((label) => expectRejection(
     `labeled COP1 transfer ${label} ${mnemonic}`,
     /complete unlabeled statement/,
@@ -387,6 +416,7 @@ function main() {
     cop1TransferStatements,
     cop1TransferTransformations: cop1FixtureResult.transformationCount,
     malformedCop1Rejections: malformedCop1Rejections.length,
+    uppercaseFprRejections: uppercaseFprRejections.length,
     labeledCop1Rejections: labeledCop1Rejections.length,
     namedCop1Rejections: namedCop1Rejections.length + namedFprRejections.length,
     outOfRangeCop1Rejections: outOfRangeCop1Rejections.length,
@@ -396,7 +426,8 @@ function main() {
     registerAddressRejections: registerAddressRejections.length,
     authenticHybridFixtures: authentic.length,
     exclusions,
-    hostileRejections: hostile.length + 13 + malformedCop1Rejections.length + labeledCop1Rejections.length
+    hostileRejections: hostile.length + 13 + malformedCop1Rejections.length + uppercaseFprRejections.length
+      + labeledCop1Rejections.length
       + namedCop1Rejections.length + namedFprRejections.length + outOfRangeCop1Rejections.length
       + excludedCop1Rejections.length,
     deterministicProofSha256: sha256Buffer(proofA),

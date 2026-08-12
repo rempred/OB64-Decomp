@@ -284,7 +284,7 @@ function transformPureCompilerAssembly(value) {
   const prohibitedConfigurationDirective = /^\.(?:abicalls|cpload|cprestore|cpadd|gpword|gpdword|option|module|insn)\b/i;
   const prohibitedMnemonic = /^(?:mov\.(?:s|d|ps)|d?m[ft]c[0-3]|c[ft]c[0-3])$/i;
   const numericMove = /^([ \t]*)move([ \t]+)(\$(?:0|[1-9]|[12][0-9]|3[01]))([ \t]*,[ \t]*)(\$(?:0|[1-9]|[12][0-9]|3[01]))([ \t]*)$/i;
-  const numericCop1Transfer = /^([ \t]*)(?:mfc1|mtc1)([ \t]+)(\$(?:0|[1-9]|[12][0-9]|3[01]))([ \t]*,[ \t]*)(\$f(?:0|[1-9]|[12][0-9]|3[01]))([ \t]*)$/i;
+  const numericCop1Transfer = /^([ \t]*)(?:[mM][fF][cC]1|[mM][tT][cC]1)([ \t]+)(\$(?:0|[1-9]|[12][0-9]|3[01]))([ \t]*,[ \t]*)(\$f(?:0|[1-9]|[12][0-9]|3[01]))([ \t]*)$/;
   for (let index = 0; index < lines.length; index += 1) {
     const line = lines[index];
     const { scanned, statement } = line;
