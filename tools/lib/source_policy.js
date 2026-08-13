@@ -36,13 +36,80 @@ function displayPath(file) {
   return path.resolve(file);
 }
 
+function validPinnedExecutable(record, requireDriverProgram = false) {
+  return record
+    && typeof record.role === 'string'
+    && record.role.length > 0
+    && typeof record.path === 'string'
+    && record.path.length > 0
+    && Number.isInteger(record.bytes)
+    && record.bytes > 0
+    && typeof record.sha256 === 'string'
+    && /^[0-9A-F]{64}$/.test(record.sha256)
+    && (!requireDriverProgram || (typeof record.driverProgram === 'string' && /^[A-Za-z0-9_.+-]+$/.test(record.driverProgram)));
+}
+
 function loadPolicyConfig() {
   const config = readJson(POLICY_CONFIG_PATH);
-  if (config.schemaVersion !== 1 || !config.matchingCompiler || !config.preprocessor || !Array.isArray(config.preprocessor.flags)
-      || !Array.isArray(config.preprocessor.includeDirectories)) {
+  const preprocessor = config.preprocessor;
+  const requiredExecutables = preprocessor && preprocessor.requiredExecutables;
+  if (config.schemaVersion !== 2 || !config.matchingCompiler || !preprocessor
+      || typeof preprocessor.path !== 'string' || preprocessor.path.length === 0
+      || !Number.isInteger(preprocessor.bytes) || preprocessor.bytes <= 0
+      || typeof preprocessor.sha256 !== 'string' || !/^[0-9A-F]{64}$/.test(preprocessor.sha256)
+      || typeof preprocessor.version !== 'string' || preprocessor.version.length === 0
+      || !Array.isArray(requiredExecutables) || requiredExecutables.length === 0
+      || requiredExecutables.some((record) => !validPinnedExecutable(record, true))
+      || !Array.isArray(preprocessor.flags) || !preprocessor.flags.every((item) => typeof item === 'string')
+      || !Array.isArray(preprocessor.includeDirectories)
+      || !preprocessor.includeDirectories.every((item) => typeof item === 'string')) {
     throw new Error('source-policy configuration schema drift');
   }
+  const roles = ['driver', ...requiredExecutables.map((record) => record.role)];
+  const paths = [preprocessor.path, ...requiredExecutables.map((record) => record.path)].map((item) => normalizePath(item).toLowerCase());
+  if (new Set(roles).size !== roles.length || new Set(paths).size !== paths.length
+      || !requiredExecutables.some((record) => record.role === 'preprocessing-engine' && record.driverProgram === 'cc1')) {
+    throw new Error('source-policy executable closure schema drift');
+  }
   return config;
+}
+
+function resolvePinnedExecutable(record) {
+  const file = path.resolve(ROOT, record.path);
+  if (!fs.existsSync(file) || !fs.statSync(file).isFile()) {
+    throw new Error(`source-policy ${record.role} is missing: ${file}`);
+  }
+  const bytes = fs.statSync(file).size;
+  if (bytes !== record.bytes) {
+    throw new Error(`source-policy ${record.role} byte-size drift: ${bytes}`);
+  }
+  const actualSha256 = sha256File(file);
+  if (actualSha256 !== record.sha256) {
+    throw new Error(`source-policy ${record.role} SHA-256 drift: ${actualSha256}`);
+  }
+  return {
+    absolutePath: file,
+    identity: {
+      role: record.role,
+      path: displayPath(file),
+      bytes,
+      sha256: actualSha256,
+    },
+  };
+}
+
+function sameExecutablePath(left, right) {
+  const normalize = (file) => fs.realpathSync.native(path.resolve(file)).toLowerCase();
+  return normalize(left) === normalize(right);
+}
+
+function preprocessorIdentity(preprocessor) {
+  return {
+    sha256: preprocessor.sha256,
+    version: preprocessor.version,
+    executables: preprocessor.executables.map((record) => ({ ...record })),
+    matchingCompiler: { ...preprocessor.matchingCompiler },
+  };
 }
 
 function resolvePreprocessor(config = loadPolicyConfig()) {
@@ -56,15 +123,32 @@ function resolvePreprocessor(config = loadPolicyConfig()) {
       || config.matchingCompiler.preprocessingMode !== 'authenticated-external-companion') {
     throw new Error('source-policy matching compiler contract drift');
   }
-  const file = path.resolve(ROOT, config.preprocessor.path);
-  if (!fs.existsSync(file) || !fs.statSync(file).isFile()) {
-    throw new Error(`source-policy preprocessor is missing: ${file}`);
+  const driver = resolvePinnedExecutable({
+    role: 'driver',
+    path: config.preprocessor.path,
+    bytes: config.preprocessor.bytes,
+    sha256: config.preprocessor.sha256,
+  });
+  const dependencies = config.preprocessor.requiredExecutables.map((record) => ({
+    config: record,
+    resolved: resolvePinnedExecutable(record),
+  }));
+  for (const dependency of dependencies) {
+    const probe = childProcess.spawnSync(driver.absolutePath, [`-print-prog-name=${dependency.config.driverProgram}`], {
+      cwd: ROOT,
+      encoding: 'utf8',
+      windowsHide: true,
+    });
+    const reported = String(probe.stdout || '').split(/\r?\n/).find((line) => line.trim()) || '';
+    const reportedPath = path.isAbsolute(reported.trim())
+      ? path.resolve(reported.trim())
+      : path.resolve(path.dirname(driver.absolutePath), reported.trim());
+    if (probe.status !== 0 || probe.error || !reported.trim() || !fs.existsSync(reportedPath)
+        || !sameExecutablePath(reportedPath, dependency.resolved.absolutePath)) {
+      throw new Error(`source-policy ${dependency.config.role} dependency closure drift: ${reported.trim() || '<not resolved>'}`);
+    }
   }
-  const actualSha256 = sha256File(file);
-  if (actualSha256 !== config.preprocessor.sha256) {
-    throw new Error(`source-policy preprocessor SHA-256 drift: ${actualSha256}`);
-  }
-  const versionResult = childProcess.spawnSync(file, ['--version'], {
+  const versionResult = childProcess.spawnSync(driver.absolutePath, ['--version'], {
     cwd: ROOT,
     encoding: 'utf8',
     windowsHide: true,
@@ -74,9 +158,13 @@ function resolvePreprocessor(config = loadPolicyConfig()) {
     throw new Error(`source-policy preprocessor version drift: ${version || '<no version>'}`);
   }
   return {
-    path: file,
-    sha256: actualSha256,
+    path: driver.absolutePath,
+    sha256: driver.identity.sha256,
     version,
+    executables: [
+      { ...driver.identity, version },
+      ...dependencies.map((dependency) => ({ ...dependency.resolved.identity })),
+    ],
     flags: [...config.preprocessor.flags],
     includeDirectories: config.preprocessor.includeDirectories.map((item) => path.resolve(ROOT, item)),
     matchingCompiler: {
@@ -328,10 +416,7 @@ function resultDigest(result) {
     preprocessedSha256: result.preprocessedSha256 || null,
     reasons: result.reasons || [],
     error: result.error || null,
-    preprocessorSha256: result.preprocessor ? result.preprocessor.sha256 : null,
-    matchingCompilerSha256: result.preprocessor && result.preprocessor.matchingCompiler
-      ? result.preprocessor.matchingCompiler.executableSha256
-      : null,
+    preprocessorIdentity: result.preprocessor ? preprocessorIdentity(result.preprocessor) : null,
   };
   return sha256Buffer(Buffer.from(JSON.stringify(stable), 'utf8'));
 }
@@ -376,7 +461,7 @@ function classifySource(source, options = {}) {
       sourceSha256: sha256Buffer(Buffer.from(rawText, 'utf8')),
       reasons: [],
       error: `raw source classification failed: ${error.message}`,
-      preprocessor: { sha256: preprocessor.sha256, version: preprocessor.version, matchingCompiler: preprocessor.matchingCompiler },
+      preprocessor: preprocessorIdentity(preprocessor),
     };
     result.digest = resultDigest(result);
     return result;
@@ -390,7 +475,7 @@ function classifySource(source, options = {}) {
       sourceSha256: sha256Buffer(Buffer.from(rawText, 'utf8')),
       reasons: rawReasons,
       error: `preprocessing failed: ${preprocessed.error}`,
-      preprocessor: { sha256: preprocessor.sha256, version: preprocessor.version, matchingCompiler: preprocessor.matchingCompiler },
+      preprocessor: preprocessorIdentity(preprocessor),
     };
     result.digest = resultDigest(result);
     return result;
@@ -407,7 +492,7 @@ function classifySource(source, options = {}) {
       preprocessedSha256: sha256Buffer(Buffer.from(preprocessed.text, 'utf8')),
       reasons: rawReasons,
       error: `preprocessed source classification failed: ${error.message}`,
-      preprocessor: { sha256: preprocessor.sha256, version: preprocessor.version, matchingCompiler: preprocessor.matchingCompiler },
+      preprocessor: preprocessorIdentity(preprocessor),
     };
     result.digest = resultDigest(result);
     return result;
@@ -419,7 +504,7 @@ function classifySource(source, options = {}) {
     sourceSha256: sha256Buffer(Buffer.from(rawText, 'utf8')),
     preprocessedSha256: sha256Buffer(Buffer.from(preprocessed.text, 'utf8')),
     reasons,
-    preprocessor: { sha256: preprocessor.sha256, version: preprocessor.version, matchingCompiler: preprocessor.matchingCompiler },
+    preprocessor: preprocessorIdentity(preprocessor),
   };
   result.digest = resultDigest(result);
   return result;
@@ -467,11 +552,7 @@ function classifyTargetSources(targets, options = {}) {
   return {
     schemaVersion: 1,
     status: 'pass',
-    preprocessor: {
-      sha256: preprocessor.sha256,
-      version: preprocessor.version,
-      matchingCompiler: preprocessor.matchingCompiler,
-    },
+    preprocessor: preprocessorIdentity(preprocessor),
     counts,
     bytes,
     targets: records,
@@ -485,6 +566,7 @@ module.exports = {
   classifySource,
   classifyTargetSources,
   loadPolicyConfig,
+  preprocessorIdentity,
   preprocessSource,
   resolvePreprocessor,
   scanSource,

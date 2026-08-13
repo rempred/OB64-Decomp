@@ -21,6 +21,8 @@ Rev 0 decomp configuration lives here.
 - `gnu-binutils-2.6-build.json` - pinned source, deterministic MSYS2 build inputs, project patches,
   versions, production executables, and runner identities.
 - `toolchain.json` - active GNU Binutils 2.6 resolver, flags, and ignored local install root.
+- `source-policy.json` - matching-compiler provenance plus the complete authenticated executable
+  chain used to preprocess sources before classification.
 
 `matching-c-targets.json` owns the toolchain and build-provenance manifest paths and SHA-256 values
 once. Target entries remain limited to `symbol` and `source`. Update the authenticated chain in

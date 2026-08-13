@@ -249,13 +249,14 @@ function verifyFirstTrackedChunk(config) {
   const start = parseHexOrNumber(first.romStart);
   const end = parseHexOrNumber(first.romEndExclusive);
   const parts = Array.isArray(first.parts) && first.parts.length ? first.parts : [first];
+  const directory = path.join(SMOKE_ROOT, 'first_tracked_chunk');
+  fs.mkdirSync(directory, { recursive: true });
   const buffers = [];
   let cursor = start;
   for (const [partIndex, part] of parts.entries()) {
     const partStart = parseHexOrNumber(part.romStart);
     const partEnd = parseHexOrNumber(part.romEndExclusive);
     if (partStart !== cursor) throw new Error('first tracked chunk part coverage drift');
-    const directory = path.join(SMOKE_ROOT, 'first_tracked_chunk');
     const stem = path.basename(part.file, '.s');
     const outBin = path.join(directory, `${stem}.bin`);
     const outObj = path.join(directory, `${stem}.o`);

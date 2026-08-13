@@ -108,6 +108,13 @@ The compiler remains the authenticated Windows KMC GCC 2.7.2 `cc1.exe`, SHA-256
 resolved through ignored local-tool configuration. `config/phase8/matching-c.json` pins its
 manifest, executable identity, and compile flags.
 
+Source-policy preprocessing has a separate two-executable identity chain. The tracked contract
+pins the `mips64-elf-cpp.exe` driver and its GCC 12.2 `cc1.exe` preprocessing engine by role, path,
+byte size, and SHA-256. The resolver confirms that the driver selects that exact engine before
+preprocessing. Missing, changed, or unbound executables fail closed, and both identities appear in
+source-policy evidence. This GCC 12.2 engine classifies source only; it is not the matching KMC
+compiler.
+
 For every active C or hybrid target, the build retains:
 
 1. untouched `<symbol>.compiler.s` output from KMC;

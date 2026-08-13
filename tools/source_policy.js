@@ -7,6 +7,7 @@ const {
   ROOT,
   SOURCE_CLASSES,
   classifySource,
+  preprocessorIdentity,
   resolvePreprocessor,
 } = require('./lib/source_policy');
 
@@ -41,11 +42,17 @@ function selectTargets(targets, requested) {
   return matches;
 }
 
-function writeReport(results) {
+function writeReport(results, preprocessor) {
   const outputRoot = path.join(ROOT, 'build', 'source-policy');
   fs.mkdirSync(outputRoot, { recursive: true });
   const counts = Object.fromEntries(Object.values(SOURCE_CLASSES).map((name) => [name, results.filter((item) => item.class === name).length]));
-  const report = { schemaVersion: 1, status: counts.UNKNOWN === 0 ? 'pass' : 'unknown', counts, targets: results };
+  const report = {
+    schemaVersion: 2,
+    status: counts.UNKNOWN === 0 ? 'pass' : 'unknown',
+    preprocessor: preprocessorIdentity(preprocessor),
+    counts,
+    targets: results,
+  };
   const output = path.join(outputRoot, 'report.json');
   fs.writeFileSync(output, `${JSON.stringify(report, null, 2)}\n`);
   return { output, report };
@@ -60,7 +67,7 @@ function main(argv = process.argv.slice(2)) {
   const preprocessor = resolvePreprocessor();
   const targets = selectTargets(loadTargetEntries(), args.target);
   const results = targets.map((target) => ({ symbol: target.symbol, ...classifySource(target.source, { preprocessor }) }));
-  const { output, report } = writeReport(results);
+  const { output, report } = writeReport(results, preprocessor);
   console.log('OB64 Source Policy');
   console.log('');
   for (const result of results) console.log(`${result.symbol.padEnd(24)} ${result.class}`);

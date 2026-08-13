@@ -137,15 +137,21 @@ comments and ordinary string literals do not create false positives.
 For each active C target:
 
 1. inspect the raw source;
-2. preprocess using the matching compiler/preprocessor and accepted include configuration;
-3. inspect the preprocessed translation unit so assembler hidden in macros/headers is visible;
-4. ignore comments and string contents when looking for C-level assembler keywords, while retaining
+2. authenticate every executable in the preprocessing chain before invoking the preprocessor;
+3. preprocess using the matching compiler/preprocessor and accepted include configuration;
+4. inspect the preprocessed translation unit so assembler hidden in macros/headers is visible;
+5. ignore comments and string contents when looking for C-level assembler keywords, while retaining
    enough context to report the responsible source location;
-5. detect `asm`, `__asm`, `__asm__`, and equivalent accepted-compiler spellings;
-6. detect register-asm bindings;
-7. detect naked/section/alias mechanisms used to inject executable implementation;
-8. detect assembler-source inclusion or equivalent raw-code escape hatches;
-9. fail closed to `UNKNOWN` when preprocessing/classification cannot be completed.
+6. detect `asm`, `__asm`, `__asm__`, and equivalent accepted-compiler spellings;
+7. detect register-asm bindings;
+8. detect naked/section/alias mechanisms used to inject executable implementation;
+9. detect assembler-source inclusion or equivalent raw-code escape hatches;
+10. fail closed to `UNKNOWN` when preprocessing/classification cannot be completed.
+
+The preprocessing identity contract pins every required executable by role, path, byte size, and
+SHA-256. It also proves that the driver resolves the pinned preprocessing engine. A missing,
+changed, or unbound executable rejects before preprocessing. Source-policy reports record the
+complete executable identity set.
 
 The checker may produce generated JSON under `build/`, but the classification must be reproducible
 from tracked source and the pinned toolchain.

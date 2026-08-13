@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "matchingCompiler": {
     "manifest": "docs/external-intake/phase6-kmc-reproduction-20260801/reproduction-manifest.json",
     "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
@@ -9,8 +9,18 @@
   },
   "preprocessor": {
     "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+    "bytes": 1225728,
     "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
     "version": "mips64-elf-cpp.exe (GCC) 12.2.0",
+    "requiredExecutables": [
+      {
+        "role": "preprocessing-engine",
+        "driverProgram": "cc1",
+        "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+        "bytes": 21875200,
+        "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+      }
+    ],
     "flags": ["-P", "-undef", "-nostdinc"],
     "includeDirectories": ["include"]
   }
