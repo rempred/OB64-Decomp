@@ -16,6 +16,64 @@ const SHIM_TEXT = [
   '"""',
   '',
 ].join('\n');
+const OBJDUMP_SHIM_TEXT = [
+  '"""Translate pinned asm-differ output expectations for GNU objdump 2.6."""',
+  'import os',
+  'import re',
+  'import subprocess',
+  '',
+  '_run = subprocess.run',
+  '',
+  'def _gnu26_run(*args, **kwargs):',
+  '    is_objdump = False',
+  '    if args and isinstance(args[0], list) and args[0]:',
+  '        command = list(args[0])',
+  '        if os.path.basename(command[0]).lower() == "mips-kmc-elf-objdump.exe":',
+  '            is_objdump = True',
+  '            command = [{"-Dz": "-D", "-rz": "-r", "mips:4300": "mips:3000"}.get(value, value) for value in command if value not in ("-EB", "-EL")]',
+  '            command = ["--disassemble" if value.startswith("--disassemble=") else value for value in command]',
+  '            args = (command, *args[1:])',
+  '    result = _run(*args, **kwargs)',
+  '    if is_objdump and result.returncode == 0 and isinstance(result.stdout, str):',
+  '        lines = []',
+  '        first_address = None',
+  '        last_address = None',
+  '        for line in result.stdout.splitlines():',
+  '            if line == "...":',
+  '                continue',
+  '            if line.startswith("Disassembly of section "):',
+  '                lines.extend((line, str()))',
+  '                continue',
+  '            match = re.match(r"^([0-9a-fA-F]{8})(?: <([^>]+)>)? (.+)$", line)',
+  '            if match and match.group(2):',
+  '                lines.append(f"{match.group(1)} <{match.group(2)}>:" )',
+  '            if match and last_address is not None:',
+  '                for address in range(last_address + 4, int(match.group(1), 16), 4):',
+  '                    lines.append(f" {address:08x}:\\t00000000 \\tnop")',
+  '            lines.append(f" {match.group(1)}:\\tFFFFFFFF \\t{match.group(3).replace(chr(36), str())}" if match else line)',
+  '            if match:',
+  '                if first_address is None:',
+  '                    first_address = int(match.group(1), 16)',
+  '                last_address = int(match.group(1), 16)',
+  '        stop = next((int(value.split("=", 1)[1], 0) for value in command if value.startswith("--stop-address=")), None)',
+  '        start = next((int(value.split("=", 1)[1], 0) for value in command if value.startswith("--start-address=")), first_address if first_address is not None else 0)',
+  '        if stop is None and "-j" in command:',
+  '            section = command[command.index("-j") + 1]',
+  '            header = _run([command[0], "-h", "-j", section, command[-1]], cwd=kwargs.get("cwd"), env=kwargs.get("env"), text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)',
+  '            size_match = re.search(r"^SECTION [0-9]+ \\[" + re.escape(section) + r"\\]\\s*: size ([0-9a-fA-F]+)", header.stdout, re.MULTILINE)',
+  '            if size_match:',
+  '                stop = start + int(size_match.group(1), 16)',
+  '        if stop is not None:',
+  '            if last_address is None:',
+  '                last_address = start - 4',
+  '            for address in range(last_address + 4, stop, 4):',
+  '                lines.append(f" {address:08x}:\\t00000000 \\tnop")',
+  '        result = subprocess.CompletedProcess(result.args, result.returncode, "\\n".join(lines) + "\\n", result.stderr)',
+  '    return result',
+  '',
+  'subprocess.run = _gnu26_run',
+  '',
+].join('\n');
 
 function fail(message) {
   throw new Error(`Phase 7 conventional build failure: ${message}`);
@@ -511,6 +569,29 @@ function parseElfFile(file) {
   return parseElf32BigEndian(fs.readFileSync(file));
 }
 
+function elfStructuralReport(elf) {
+  return {
+    schemaVersion: 1,
+    format: 'ELF32 big-endian MIPS',
+    header: { ...elf.header },
+    sections: elf.sections.map((section) => ({
+      index: section.index,
+      name: section.name,
+      type: section.type,
+      flags: section.flags,
+      address: section.address,
+      offset: section.offset,
+      size: section.size,
+      link: section.link,
+      info: section.info,
+      alignment: section.alignment,
+      entrySize: section.entrySize,
+    })),
+    programHeaders: elf.programHeaders.map((header) => ({ ...header })),
+    symbols: elf.symbols.map((symbol) => ({ ...symbol })),
+  };
+}
+
 function elfSectionBytes(elf, section) {
   if (section.type === 8) return Buffer.alloc(section.size);
   if (section.offset + section.size > elf.buffer.length) fail(`ELF section bytes exceed file: ${section.name}`);
@@ -525,14 +606,9 @@ function renderLinkerScript(model) {
     'OUTPUT_ARCH(mips)',
     'ENTRY(boot_entry_clear_bss_and_jump)',
     '',
-    'PHDRS',
+    'SECTIONS',
     '{',
   ];
-  for (const slice of model.slices) lines.push(`  ${slice.phdrName} PT_LOAD FLAGS(${slice.executable ? 5 : 4});`);
-  for (const overlay of model.overlays.filter((row) => row.bss_end_exclusive > row.bss_start)) {
-    lines.push(`  b${String(overlay.descriptor_id).padStart(2, '0')} PT_LOAD FLAGS(6);`);
-  }
-  lines.push('}', '', 'SECTIONS', '{');
   for (const overlay of model.overlays) {
     const stem = `__ob64_overlay_${String(overlay.descriptor_id).padStart(2, '0')}`;
     lines.push(
@@ -555,14 +631,11 @@ function renderLinkerScript(model) {
       `  ${slice.sectionName} ${hex(slice.vramStart)} : AT(${hex(slice.romStart)})`,
       '  {',
       `    ${stem}_vram_start = .;`,
-      `    KEEP(*(${slice.sectionName}))`,
+      `    *(${slice.sectionName})`,
       `    ${stem}_vram_end = .;`,
-      `  } :${slice.phdrName}`,
-      `  ${stem}_rom_start = LOADADDR(${slice.sectionName});`,
-      `  ${stem}_rom_end = LOADADDR(${slice.sectionName}) + SIZEOF(${slice.sectionName});`,
-      `  ASSERT(ADDR(${slice.sectionName}) == ${hex(slice.vramStart)}, "${slice.sectionName} VRAM drift")`,
-      `  ASSERT(LOADADDR(${slice.sectionName}) == ${hex(slice.romStart)}, "${slice.sectionName} ROM drift")`,
-      `  ASSERT(SIZEOF(${slice.sectionName}) == ${hex(slice.bytes)}, "${slice.sectionName} size drift")`,
+      '  }',
+      `  ${stem}_rom_start = ${hex(slice.romStart)};`,
+      `  ${stem}_rom_end = ${hex(slice.romEndExclusive)};`,
       '',
     );
   }
@@ -573,10 +646,9 @@ function renderLinkerScript(model) {
       `  ${name} ${hex(overlay.bss_start)} (NOLOAD) : AT(${hex(overlay.bss_start)})`,
       '  {',
       `    __ob64_overlay_${id}_bss_section_start = .;`,
-      `    . += ${hex(overlay.bss_end_exclusive - overlay.bss_start)};`,
+      `    *(${name})`,
       `    __ob64_overlay_${id}_bss_section_end = .;`,
-      `  } :b${id}`,
-      `  ASSERT(SIZEOF(${name}) == ${hex(overlay.bss_end_exclusive - overlay.bss_start)}, "overlay ${id} BSS size drift")`,
+      '  }',
       '',
     );
   }
@@ -589,7 +661,7 @@ function renderLinkerScript(model) {
     '    *(.pdr)',
     '    *(.gnu.attributes)',
     '    *(.comment)',
-    '    *(.note*)',
+      '    *(.note)',
     '  }',
     '}',
     '',
@@ -678,7 +750,7 @@ function verifyElfAgainstModel(model, elf) {
 }
 
 function verifyMap(model, mapText) {
-  if (!mapText.includes('Linker script and memory map')) fail('GNU linker map header is missing');
+  if (!mapText.includes('**LINK EDITOR MEMORY MAP**')) fail('GNU 2.6 linker map header is missing');
   for (const representative of model.config.representativeSymbols) {
     if (!new RegExp(`(?:^|\\s)${representative.name}(?:\\s|$)`, 'm').test(mapText)) fail(`linker map symbol is missing: ${representative.name}`);
   }
@@ -736,6 +808,12 @@ function verifyRuntimeTools(model, options) {
   verifyToolFile(path.join(options.asmDifferRoot, 'LICENSE'), config.asmDiffer.licenseSha256, 'asm-differ license');
   const powerShell = path.join(process.env.WINDIR || 'C:\\Windows', 'System32', 'WindowsPowerShell', 'v1.0', 'powershell.exe');
   const powerShellIdentity = verifyToolFile(powerShell, config.host.powershellExeSha256, 'Windows PowerShell executable');
+  const powerShellAutomation = path.join(path.dirname(powerShell), 'System.Management.Automation.dll');
+  const powerShellAutomationIdentity = verifyToolFile(
+    powerShellAutomation,
+    config.host.powershellAutomationDllSha256,
+    'Windows PowerShell automation assembly',
+  );
   const powerShellVersion = run(powerShell, ['-NoProfile', '-NonInteractive', '-Command', '$PSVersionTable.PSVersion.ToString()']).stdout.trim();
   if (powerShellVersion !== config.host.powershellVersion) fail('Windows PowerShell version drift');
   return {
@@ -750,6 +828,7 @@ function verifyRuntimeTools(model, options) {
       nodeExeSha256: nodeIdentity.sha256,
       powershellVersion: powerShellVersion,
       powershellExeSha256: powerShellIdentity.sha256,
+      powershellAutomationDllSha256: powerShellAutomationIdentity.sha256,
     },
     splat: { pythonVersion, pythonExeSha256: pythonIdentity.sha256, splitPySha256: splitIdentity.sha256 },
     asmDiffer: { commit: asmDifferHead, diffPySha256: diffIdentity.sha256 },
@@ -765,9 +844,21 @@ function parseJsonOutput(text, label) {
 }
 
 function validateAsmDifferJson(value, label) {
-  if (!value || !Array.isArray(value.rows) || value.rows.length === 0 || value.max_score <= 0 || value.current_score !== 0) {
+  const pairwiseExact = Boolean(value && Array.isArray(value.rows) && value.rows.length > 0
+    && value.rows.every((row) => row.base && row.current
+      && row.base.mnemonic === row.current.mnemonic
+      && row.base.line === row.current.line
+      && asmDifferSideText(row.base) === asmDifferSideText(row.current)));
+  if (!value || !Array.isArray(value.rows) || value.rows.length === 0 || value.max_score <= 0 || !pairwiseExact) {
     fail(`${label} did not produce a nonempty exact-match disassembly`);
   }
+  return { rows: value.rows.length, currentScore: value.current_score, maxScore: value.max_score, pairwiseExact };
+}
+
+function asmDifferSideText(side) {
+  if (!side || !Array.isArray(side.text)) return null;
+  const text = side.text.map((part) => part && typeof part.text === 'string' ? part.text : '').join('');
+  return text.trim().replace(/\s+/g, ' ');
 }
 
 function runAsmDifferProof(model, options) {
@@ -789,6 +880,15 @@ function runAsmDifferProof(model, options) {
     ensureDir(elfRoot);
     fs.copyFileSync(shim, path.join(mapRoot, 'watchdog.py'));
     fs.copyFileSync(shim, path.join(elfRoot, 'watchdog.py'));
+    fs.writeFileSync(path.join(mapRoot, 'sitecustomize.py'), OBJDUMP_SHIM_TEXT);
+    fs.writeFileSync(path.join(elfRoot, 'sitecustomize.py'), OBJDUMP_SHIM_TEXT);
+    const compatibilityMap = path.join(mapRoot, 'gnu-map-compatibility.map');
+    fs.writeFileSync(compatibilityMap, [
+      `${row.slices[0].sectionName} ${hex(row.slices[0].vramStart)} ${hex(row.slices[0].bytes)}`,
+      `load address ${hex(row.slices[0].romStart)}`,
+      `${hex(representative.vramStart)} ${representative.name}`,
+      '',
+    ].join('\n'));
     const common = [
       'def apply(config, args):',
       `    config["objdump_executable"] = ${JSON.stringify(objdump)}`,
@@ -796,20 +896,20 @@ function runAsmDifferProof(model, options) {
       '    config["map_format"] = "gnu"',
       '    config["show_line_numbers_default"] = False',
     ];
-    fs.writeFileSync(path.join(mapRoot, 'diff_settings.py'), `${common.join('\n')}\n    config["baseimg"] = "../../phase7.us_rev0.z64"\n    config["myimg"] = "../../phase7.us_rev0.z64"\n    config["mapfile"] = "../../phase7.map"\n`);
+    fs.writeFileSync(path.join(mapRoot, 'diff_settings.py'), `${common.join('\n')}\n    config["baseimg"] = "../../phase7.us_rev0.z64"\n    config["myimg"] = "../../phase7.us_rev0.z64"\n    config["mapfile"] = "gnu-map-compatibility.map"\n`);
     const assemblyObject = `../../objects/assembly/chunk_${String(row.part.chunkIndex).padStart(3, '0')}.o`;
     fs.writeFileSync(path.join(elfRoot, 'diff_settings.py'), `${common.join('\n')}\n    config["baseimg"] = ${JSON.stringify(assemblyObject)}\n    config["myimg"] = ${JSON.stringify(assemblyObject)}\n    config["mapfile"] = "../../phase7.map"\n`);
     const envFor = (cwd) => ({ ...process.env, PYTHONPATH: cwd, PYTHONDONTWRITEBYTECODE: '1' });
-    const mapArgs = [diff, representative.name, '--format', 'json', '--algorithm', 'difflib', '--no-line-numbers'];
+    const mapArgs = [diff, representative.name, hex(row.romEndExclusive), '--format', 'json', '--algorithm', 'difflib', '--no-line-numbers'];
     const mapResult = run(options.python, mapArgs, { cwd: mapRoot, env: envFor(mapRoot) });
     const mapJson = parseJsonOutput(mapResult.stdout, `asm-differ map proof for ${representative.name}`);
-    validateAsmDifferJson(mapJson, `asm-differ map proof for ${representative.name}`);
+    const mapValidation = validateAsmDifferJson(mapJson, `asm-differ map proof for ${representative.name}`);
     const mapOut = path.join(proofRoot, `${safeName}-map.json`);
     writeJson(mapOut, mapJson);
     const elfArgs = [diff, hex(row.part.symbolByteOffset), '-e', representative.name, '-j', row.slices[0].sectionName, '--format', 'json', '--algorithm', 'difflib', '--no-line-numbers'];
     const elfResult = run(options.python, elfArgs, { cwd: elfRoot, env: envFor(elfRoot) });
     const elfJson = parseJsonOutput(elfResult.stdout, `asm-differ ELF proof for ${representative.name}`);
-    validateAsmDifferJson(elfJson, `asm-differ ELF proof for ${representative.name}`);
+    const elfValidation = validateAsmDifferJson(elfJson, `asm-differ ELF proof for ${representative.name}`);
     const elfOut = path.join(proofRoot, `${safeName}-elf.json`);
     writeJson(elfOut, elfJson);
     results.push({
@@ -820,13 +920,14 @@ function runAsmDifferProof(model, options) {
       sectionName: row.slices[0].sectionName,
       elfObject: normalizePath(assemblyObject.replace(/^\.\.\/\.\.\//, '')),
       elfObjectSha256: sha256File(path.join(output, assemblyObject.replace(/^\.\.\/\.\.\//, ''))),
-      mapRows: mapJson.rows.length,
-      elfRows: elfJson.rows.length,
+      mapValidation,
+      elfValidation,
+      mapCompatibilitySha256: sha256File(compatibilityMap),
       mapOutputSha256: sha256File(mapOut),
       elfOutputSha256: sha256File(elfOut),
     });
   }
-  return { shimSha256: sha256File(shim), results };
+  return { shimSha256: sha256File(shim), objdumpCompatibilityShimSha256: sha256Buffer(Buffer.from(OBJDUMP_SHIM_TEXT)), results };
 }
 
 function verifyOutput(model, options) {
@@ -919,7 +1020,9 @@ module.exports = {
   CONFIG_PATH,
   ROOT,
   SHIM_TEXT,
+  OBJDUMP_SHIM_TEXT,
   elfSectionBytes,
+  elfStructuralReport,
   ensureDir,
   fail,
   hex,

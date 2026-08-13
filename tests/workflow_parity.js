@@ -20,6 +20,16 @@ const {
 
 const ROOT = path.resolve(__dirname, '..');
 
+const EXPECTED_RELOCATION_MIGRATIONS = new Map([
+  ['func_00269798', [
+    { offset: '0x0000002C', type: 'R_MIPS_26', symbol: 'func_0020D778', section: '.rel.text' },
+  ]],
+  ['func_0002DE10', [
+    { offset: '0x0000000C', type: 'R_MIPS_26', symbol: 'func_0002DBB4', section: '.rel.text' },
+    { offset: '0x00000028', type: 'R_MIPS_26', symbol: 'func_0002DAB8', section: '.rel.text' },
+  ]],
+]);
+
 function value(flag) {
   const index = process.argv.indexOf(flag);
   if (index < 0 || !process.argv[index + 1]) throw new Error(`missing ${flag}`);
@@ -51,9 +61,10 @@ function main() {
   const newReport = readJson(path.join(newOutput, 'build-report.json'));
   assert(oldPhase7Report.status === 'pass', 'frozen Phase 7 report did not pass');
   assert(oldReport.status === 'pass' && newReport.status === 'pass', 'old/new build report did not pass');
-  assert(newReport.schemaVersion === 2 && newReport.verification.schemaVersion === 2, 'new dialect report schema drift');
-  assert(newReport.dialect.identity.manifestSha256 === phase8.dialect.identity.manifestSha256, 'new dialect identity drift');
-  assert(newReport.dialect.counts.proofTargets === phase8.targets.length, 'new dialect proof census drift');
+  assert(newReport.schemaVersion === 3 && newReport.verification.schemaVersion === 3, 'new source-to-object report schema drift');
+  assert(newReport.sourceObjectEvidence.identity.sourceCommit === '54514ded39ceb32165a125ddba04ca5b551773a2', 'GNU 2.6 source identity drift');
+  assert(newReport.sourceObjectEvidence.counts.proofTargets === phase8.targets.length, 'new source-to-object proof census drift');
+  assert(newReport.sourceObjectEvidence.counts.compilerAssemblyRewrites === 0, 'compiler assembly was rewritten');
 
   const oldRom = fs.readFileSync(path.join(oldOutput, 'phase8.us_rev0.z64'));
   const newRom = fs.readFileSync(path.join(newOutput, 'phase8.us_rev0.z64'));
@@ -68,16 +79,14 @@ function main() {
   const oldMap = fs.readFileSync(path.join(oldOutput, 'phase8.map'), 'utf8');
   const newMap = fs.readFileSync(path.join(newOutput, 'phase8.map'), 'utf8');
   const targets = [];
+  const observedRelocationMigrations = [];
   for (const target of phase8.targets) {
-    const oldTargetReport = oldReport.targetReplacements.find((record) => record.symbol === target.symbol);
     const newTargetReport = newReport.targetReplacements.find((record) => record.symbol === target.symbol);
-    assert(oldTargetReport && newTargetReport, `old/new target report is missing: ${target.symbol}`);
-    assert(oldTargetReport.compilerAssemblySha256 === newTargetReport.compilerAssemblySha256, `old/new compiler assembly differs: ${target.symbol}`);
-    assert(newTargetReport.sourceClass === newReport.verification.targets.find((record) => record.symbol === target.symbol).dialect.sourceClass, `dialect source class differs: ${target.symbol}`);
-    assert(newTargetReport.compilerAssemblySha256 === newTargetReport.dialectAssemblySha256, `inert raw/dialect assembly differs: ${target.symbol}`);
-    assert(newTargetReport.dialectDecision.transformationCount === 0, `inert target transformed: ${target.symbol}`);
-    const proofFile = path.join(newOutput, ...newTargetReport.dialectProof.path.split('/'));
-    assert(fs.existsSync(proofFile) && sha256File(proofFile) === newTargetReport.dialectProof.sha256, `dialect proof identity differs: ${target.symbol}`);
+    const newEvidence = newReport.verification.targets.find((record) => record.symbol === target.symbol).sourceObjectEvidence;
+    assert(newTargetReport && newEvidence, `new target report is missing: ${target.symbol}`);
+    assert(newTargetReport.compilerAssemblyRewritten === false && newEvidence.compilerAssemblyRewritten === false, `compiler assembly rewrite drift: ${target.symbol}`);
+    const proofFile = path.join(newOutput, ...newTargetReport.sourceObjectProof.path.split('/'));
+    assert(fs.existsSync(proofFile) && sha256File(proofFile) === newTargetReport.sourceObjectProof.sha256, `source-to-object proof identity differs: ${target.symbol}`);
     const oldSection = section(oldElf, target.sectionName);
     const newSection = section(newElf, target.sectionName);
     assert(oldSection.address === newSection.address && oldSection.address === target.vramStartNumber, `linked address differs: ${target.symbol}`);
@@ -100,8 +109,15 @@ function main() {
     const newC = parseElfFile(path.join(newOutput, 'objects', 'c', `${target.symbol}.o`));
     const oldRelocations = relocationRecords(oldC, target);
     const newRelocations = relocationRecords(newC, target);
-    assert(JSON.stringify(oldRelocations) === JSON.stringify(newRelocations), `old/new relocation verdict differs: ${target.symbol}`);
-    assert(JSON.stringify(newRelocations) === JSON.stringify(target.expectedRelocations), `accepted relocation contract differs: ${target.symbol}`);
+    const expectedMigration = EXPECTED_RELOCATION_MIGRATIONS.get(target.symbol) || [];
+    const oldKeys = new Set(oldRelocations.map((record) => JSON.stringify(record)));
+    const retained = oldRelocations.filter((record) => newRelocations.some((candidate) => JSON.stringify(candidate) === JSON.stringify(record)));
+    const additions = newRelocations.filter((record) => !oldKeys.has(JSON.stringify(record)));
+    assert(JSON.stringify(retained) === JSON.stringify(oldRelocations), `GNU 2.6 removed a frozen load-relevant relocation: ${target.symbol}`);
+    assert(JSON.stringify(additions) === JSON.stringify(expectedMigration), `unexpected GNU 2.6 load-relevant relocation migration: ${target.symbol}`);
+    if (expectedMigration.length > 0) observedRelocationMigrations.push({ symbol: target.symbol, additions });
+    assert(JSON.stringify(newRelocations) === JSON.stringify(target.expectedRelocations), `accepted load-relevant relocation contract differs: ${target.symbol}`);
+    assert(!newC.sections.some((candidate) => candidate.name === '.pdr'), `retired .pdr section returned: ${target.symbol}`);
     targets.push({
       symbol: target.symbol,
       address: target.vramStart,
@@ -109,20 +125,23 @@ function main() {
       linkedBytesEqual: true,
       originalAssemblyExcluded: true,
       soleCOwner: true,
-      relocationsEqual: true,
+      loadRelevantRelocationsEqual: true,
+      frozenLoadRelevantRelocationsEqual: expectedMigration.length === 0,
+      reviewedRelocationAdditions: expectedMigration,
       sourceClass: newTargetReport.sourceClass,
+      compilerAssemblyRewritten: false,
       compilerAssemblySha256: newTargetReport.compilerAssemblySha256,
-      dialectAssemblySha256: newTargetReport.dialectAssemblySha256,
-      dialectProofSha256: newTargetReport.dialectProof.sha256,
-      transformationCount: newTargetReport.dialectDecision.transformationCount,
+      sourceObjectProofSha256: newTargetReport.sourceObjectProof.sha256,
+      retiredPdrRelocations: newEvidence.retiredPdrRelocations,
     });
   }
+  assert(observedRelocationMigrations.length === EXPECTED_RELOCATION_MIGRATIONS.size, 'reviewed relocation migration census drift');
 
   const policyA = classifyActiveTargets(phase8);
   const policyB = classifyActiveTargets(phase8);
   assert(JSON.stringify(policyA.targets.map((target) => target.digest)) === JSON.stringify(policyB.targets.map((target) => target.digest)), 'source-policy results are not deterministic');
   const report = {
-    schemaVersion: 2,
+    schemaVersion: 3,
     status: 'pass',
     generatedAt: new Date().toISOString(),
     frozenReference: oldRoot,
@@ -132,12 +151,15 @@ function main() {
     newVerificationPassed: true,
     rom: { bytes: oldRom.length, sha256: phase8.model.config.rom.sha256, byteIdentical: true },
     compiler: { sha256: newReport.compiler.sha256, compileFlags: newReport.compiler.compileFlags, equivalent: true },
+    gnuBinutils26: newReport.sourceObjectEvidence.identity,
     targets,
     sourcePolicy: { deterministic: true, counts: policyA.counts, bytes: policyA.bytes },
-    compilerAssemblyDialect: newReport.dialect,
-    compatibilityBridge: {
-      retained: ['compiler contract', 'linkSymbols', 'expectedRelocations'],
-      reason: 'The accepted original .word assembly objects emit no ELF relocations; the previously reviewed relocation arrays remain the non-derivable contract.',
+    relocationPolicy: {
+      loadRelevantCompared: true,
+      frozenRelocationsRetained: true,
+      reviewedSymbolicCallAdditions: observedRelocationMigrations,
+      discardedProcedureMetadataRetired: true,
+      retiredPdrRelocations: newReport.sourceObjectEvidence.counts.retiredPdrRelocations,
     },
   };
   const jsonFile = path.join(ROOT, 'build', 'workflow-migration', 'parity.json');
@@ -145,18 +167,16 @@ function main() {
   writeJson(jsonFile, report);
   fs.mkdirSync(path.dirname(markdownFile), { recursive: true });
   fs.writeFileSync(markdownFile, [
-    '# Workflow migration parity',
-    '',
-    '- Frozen Phase 7/8: PASS',
-    '- New verification: PASS',
+    '# Workflow migration parity', '',
+    '- Frozen production Phase 7/8: PASS',
+    '- GNU Binutils 2.6 verification: PASS',
     `- Complete ROM: EXACT (${report.rom.sha256})`,
-    `- Targets: ${targets.length}; identical placement, bytes, exclusion, ownership, and relocations`,
+    `- Targets: ${targets.length}; identical placement, bytes, exclusion, ownership, and accepted load-relevant relocation contracts`,
+    `- Reviewed GNU 2.6 symbolic-call relocation additions: ${observedRelocationMigrations.reduce((sum, entry) => sum + entry.additions.length, 0)} across ${observedRelocationMigrations.length} hybrids`,
     `- PURE_C: ${policyA.counts.PURE_C} functions / ${policyA.bytes.PURE_C} bytes`,
     `- HYBRID_C: ${policyA.counts.HYBRID_C} functions / ${policyA.bytes.HYBRID_C} bytes`,
-    `- UNKNOWN: ${policyA.counts.UNKNOWN}`,
-    `- Dialect proofs: ${newReport.dialect.counts.proofTargets}; transformed targets: ${newReport.dialect.counts.transformedTargets}; transformations: ${newReport.dialect.counts.transformations}`,
-    '- Compatibility bridge: compiler contract, link aliases, and trusted relocation arrays retained internally because `.word` originals contain no ELF relocation metadata.',
-    '',
+    `- Retired .pdr relocations recorded as ancillary: ${report.relocationPolicy.retiredPdrRelocations}`,
+    '- Untouched KMC compiler output receives only the accepted target-section adjustment.', '',
   ].join('\n'));
   console.log(JSON.stringify({ status: 'pass', targets: targets.length, romSha256: report.rom.sha256, report: jsonFile }, null, 2));
 }

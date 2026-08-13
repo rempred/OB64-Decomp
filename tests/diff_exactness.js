@@ -129,15 +129,24 @@ function main() {
   assert(aliasRaw.differingInstructionWordCount === 1, 'alias mismatch word count drift');
   assert(aliasRaw.firstDifferenceOffset === 3, 'alias mismatch first offset drift');
 
-  const zeroScore = { rows: [{ base: 'move v0,a0', current: 'move v0,a0' }], max_score: 100, current_score: 0 };
+  const exactRow = {
+    base: { mnemonic: 'move', line: 0, text: [{ text: '0: move v0,a0' }] },
+    current: { mnemonic: 'move', line: 0, text: [{ text: ' 0:  move   v0,a0' }] },
+  };
+  const zeroScore = { rows: [exactRow], max_score: 100, current_score: 0 };
   const exactSummary = summarizeTargetComparison(zeroScore, exactRaw, 'exact fixture');
   const aliasSummary = summarizeTargetComparison(zeroScore, aliasRaw, 'alias fixture');
-  assert(exactSummary.asmDifferScoreZero && exactSummary.rawBytesExact && exactSummary.exact, 'equal raw bytes and zero score were not exact');
+  assert(exactSummary.asmDifferPairwiseExact && exactSummary.rawBytesExact && exactSummary.exact, 'equal raw bytes and decoded rows were not exact');
   assert(aliasSummary.asmDifferScoreZero && !aliasSummary.rawBytesExact && !aliasSummary.exact, 'zero score hid unequal raw bytes');
   assert(comparisonLabel(exactSummary) === 'EXACT', 'exact display label drift');
   assert(comparisonLabel(aliasSummary) === 'RAW BYTES DIFFER', 'raw mismatch display label drift');
-  const scoredDifference = summarizeTargetComparison({ ...zeroScore, current_score: 1 }, exactRaw, 'score fixture');
-  assert(!scoredDifference.exact && comparisonLabel(scoredDifference) === 'DIFFERS', 'nonzero asm-differ score was exact');
+  const scoredEquivalent = summarizeTargetComparison({ ...zeroScore, current_score: 1 }, exactRaw, 'score fixture');
+  assert(scoredEquivalent.exact && comparisonLabel(scoredEquivalent) === 'EXACT', 'GNU 2.6 raw-word score overrode exact decoded rows and linked bytes');
+  const decodedDifference = summarizeTargetComparison({
+    ...zeroScore,
+    rows: [{ ...exactRow, current: { ...exactRow.current, mnemonic: 'or', text: [{ text: '0: or v0,a0,zero' }] } }],
+  }, exactRaw, 'decoded fixture');
+  assert(!decodedDifference.exact && comparisonLabel(decodedDifference) === 'DIFFERS', 'different decoded instructions were exact');
 
   const relocatedExpected = Buffer.from(fixture.relocated.expectedLinkedHex, 'hex');
   const unresolvedObject = Buffer.from(fixture.relocated.unresolvedObjectHex, 'hex');
@@ -204,6 +213,7 @@ function main() {
     fixture: path.relative(path.resolve(__dirname, '..'), fixturePath).replace(/\\/g, '/'),
     aliasEquivalentRawMismatch: {
       asmDifferScoreZero: aliasSummary.asmDifferScoreZero,
+      asmDifferPairwiseExact: aliasSummary.asmDifferPairwiseExact,
       rawBytesExact: aliasSummary.rawBytesExact,
       exact: aliasSummary.exact,
       differingByteCount: aliasSummary.differingByteCount,

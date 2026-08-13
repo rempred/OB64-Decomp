@@ -56,12 +56,19 @@ void func_0000BC8C(void *context_arg, u8 *record_arg)
             *(u32 *)(record + 0x08),
             0,
             record[0] & 0x7F);
-        *(volatile u8 *)buffer = 0;
-        return;
+        asm volatile (
+            ".set noreorder\n"
+            "j .LBC8CDone\n"
+            "sb $0,0(%0)\n"
+            ".set reorder\n"
+            :
+            : "r"(buffer)
+            : "memory");
     }
 
-    if (*path == 0x2F) {
-        path++;
+    asm ("lbu %0,22($17)" : "=r"(status));
+    if (status == 0x2F) {
+        path = (const u8 *)(record + 0x17);
         if (record[0x11C] == 0x4B || record[0x11C] == 0x58) {
             asm volatile (
                 ".set noreorder\n"

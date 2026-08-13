@@ -51,27 +51,27 @@ function main() {
   const leftVerification = readJson(leftVerificationFile);
   const rightVerification = readJson(rightVerificationFile);
   for (const valueToCheck of [leftBuild, rightBuild, leftVerification, rightVerification]) {
-    if (valueToCheck.schemaVersion !== 2 || valueToCheck.status !== 'pass') fail('Phase 8 reproducibility input did not pass');
+    if (valueToCheck.schemaVersion !== 3 || valueToCheck.status !== 'pass') fail('Phase 8 reproducibility input did not pass');
   }
   if (JSON.stringify(leftBuild) !== JSON.stringify(rightBuild)) fail('path-independent Phase 8 build reports differ');
   if (JSON.stringify(leftVerification) !== JSON.stringify(rightVerification)) fail('path-independent Phase 8 verification reports differ');
   if (sha256File(leftBuildFile) !== sha256File(rightBuildFile)) fail('Phase 8 build-report file SHA-256 drift');
   if (sha256File(leftVerificationFile) !== sha256File(rightVerificationFile)) fail('Phase 8 verification-report file SHA-256 drift');
-  for (const relative of ['phase8.elf', 'phase8.map', 'phase8.us_rev0.z64', 'layout.json', 'phase8.readelf.txt', 'objects/manifest.json']) {
+  for (const relative of ['phase8.elf', 'phase8.map', 'phase8.us_rev0.z64', 'layout.json', 'phase8.elf-report.json', 'objects/manifest.json']) {
     compareArtifact(leftRoot, rightRoot, relative, 'output');
   }
   if (!Array.isArray(leftBuild.targetReplacements)) fail('Phase 8 reproducibility target records are missing');
   for (const target of leftBuild.targetReplacements) {
     for (const [field, label] of [
       ['cObject', 'object'],
+      ['sourceObject', 'source object'],
       ['compilerAssembly', 'compiler assembly'],
-      ['dialectAssembly', 'dialect assembly'],
       ['linkedAssembly', 'section-adjusted assembly'],
     ]) compareArtifact(leftRoot, rightRoot, target[field], `${target.symbol} ${label}`);
-    compareArtifact(leftRoot, rightRoot, target.dialectProof && target.dialectProof.path, `${target.symbol} dialect proof`);
+    compareArtifact(leftRoot, rightRoot, target.sourceObjectProof && target.sourceObjectProof.path, `${target.symbol} source-to-object proof`);
   }
   const result = {
-    schemaVersion: 2,
+    schemaVersion: 3,
     status: 'pass',
     reportsIdentical: true,
     buildReportSha256: sha256File(leftBuildFile),

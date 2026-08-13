@@ -10,10 +10,9 @@ without requiring the ROM to be committed.
 from asm-differ aliases. It also covers malformed target-section failures and
 the final-linked-byte requirement for relocated targets.
 
-Run the compiler-assembly dialect tests directly from the repository root:
+Run the toolchain and source-policy tests directly from the repository root:
 
 ```powershell
-node tests/compiler_assembly_dialect.js
 node tests/active_targets.js
 node tests/source_policy.js
 node tests/binutils_smoke.js
@@ -33,7 +32,9 @@ Compare the frozen pre-migration workflow with a completed external build:
 node tests/workflow_parity.js --old-root <frozen-workflow-root> --new-output <phase8-output>
 ```
 
-The dialect suite covers numeric-register moves, complete numeric `mfc1`/`mtc1` passthrough,
-LF/CRLF behavior, malformed and excluded COP1 matrices, hostile syntax, authentic hybrid output,
-byte-identical passthrough, and deterministic proofs. Integration tests recreate proofs, derive
-counts, reject stale schemas, and protect the `func_0002CD70` OR words.
+The GNU 2.6 suite authenticates the complete production bundle and covers historical
+numeric/named-register moves, explicit retail OR, ordinary-C COP1 forms and the uppercase-prefix
+falsifier, calls and relocations, custom sections, macros/conditionals, linker LMA/`PT_LOAD`
+behavior, binary extraction, an exact tracked assembly chunk, and retired-dependency rejection.
+Integration tests recreate source-to-object proofs, distinguish load-relevant from discarded
+ancillary relocations, reject stale schemas, and protect the `func_0002CD70` OR words.

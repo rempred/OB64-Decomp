@@ -8,7 +8,6 @@ const {
   classifyTargetSources,
   resolvePreprocessor,
 } = require('../tools/lib/source_policy');
-const { applyCompilerAssemblyDialect } = require('../tools/lib/compiler_assembly_dialect');
 
 const FIXTURES = path.join(__dirname, 'fixtures', 'source-policy');
 
@@ -54,14 +53,12 @@ function main() {
     throw new Error('shared target source classification census drift');
   }
   const firstSharedDigests = sharedTargets.targets.map((target) => target.digest);
-  applyCompilerAssemblyDialect(Buffer.from('\t.text\n\taddiu $2,$4,1\n'), SOURCE_CLASSES.PURE_C);
-  applyCompilerAssemblyDialect(Buffer.from(' #APP\n\tmove $2,$4\n'), SOURCE_CLASSES.HYBRID_C);
-  const afterAdapter = classifyTargetSources([
+  const repeatedTargets = classifyTargetSources([
     { symbol: 'ordinary_fixture', source: 'tests/fixtures/source-policy/ordinary.c', bytes: 4 },
     { symbol: 'inline_fixture', source: 'tests/fixtures/source-policy/inline_asm.c', bytes: 4 },
   ], { preprocessor });
-  if (JSON.stringify(firstSharedDigests) !== JSON.stringify(afterAdapter.targets.map((target) => target.digest))) {
-    throw new Error('adapter use changed source classification');
+  if (JSON.stringify(firstSharedDigests) !== JSON.stringify(repeatedTargets.targets.map((target) => target.digest))) {
+    throw new Error('repeated source classification changed target digests');
   }
   for (const escaped of ['../outside.c', path.resolve(FIXTURES, 'ordinary.c')]) {
     try {
@@ -78,7 +75,7 @@ function main() {
     cases: results.map((item) => ({ file: item.file, expected: item.expected, actual: item.result.class, digest: item.result.digest })),
     deterministicMacroHiddenClassification: true,
     sharedClassification: sharedTargets.counts,
-    adapterClassificationInvariant: true,
+    repeatedClassificationInvariant: true,
     escapedPathsRejected: true,
   }, null, 2));
 }

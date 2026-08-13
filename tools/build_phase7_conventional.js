@@ -5,6 +5,7 @@ const fs = require('fs');
 const path = require('path');
 const {
   ROOT,
+  elfStructuralReport,
   elfSectionBytes,
   ensureDir,
   fail,
@@ -85,10 +86,12 @@ function escapeRegex(valueToEscape) {
 
 function renderSectionDirective(slice) {
   return [
-    `.section ${slice.sectionName},"${slice.executable ? 'ax' : 'a'}",@progbits`,
+    `.section ${slice.sectionName},"a",@progbits`,
     '.balign 1',
   ];
 }
+
+const ANCILLARY_REMOVAL_FLAGS = ['--remove-section=.reginfo', '--remove-section=.pdr', '--remove-section=.comment', '--remove-section=.note'];
 
 function transformTrackedPart(row) {
   const part = row.part;
@@ -140,7 +143,7 @@ function transformTrackedPart(row) {
   return `${output.join('\n')}\n`;
 }
 
-function createAssemblyObjects(model, output, assembler, assemblerFlags) {
+function createAssemblyObjects(model, output, assembler, objcopy, assemblerFlags) {
   const generatedRoot = path.join(output, 'generated', 'assembly');
   const objectRoot = path.join(output, 'objects', 'assembly');
   ensureDir(generatedRoot);
@@ -156,6 +159,7 @@ function createAssemblyObjects(model, output, assembler, assemblerFlags) {
     if (rows.length !== chunk.parts.length) fail(`assembly chunk owner count drift: ${chunkIndex}`);
     const generatedFile = path.join(generatedRoot, `chunk_${String(chunkIndex).padStart(3, '0')}.s`);
     const objectFile = path.join(objectRoot, `chunk_${String(chunkIndex).padStart(3, '0')}.o`);
+    const rawObjectFile = path.join(objectRoot, `chunk_${String(chunkIndex).padStart(3, '0')}.raw.o`);
     const source = [
       '/* GENERATED FILE. DO NOT EDIT. */',
       `/* Accepted tracked assembly chunk ${chunkIndex}. */`,
@@ -163,13 +167,19 @@ function createAssemblyObjects(model, output, assembler, assemblerFlags) {
       ...rows.map(transformTrackedPart),
     ].join('\n');
     fs.writeFileSync(generatedFile, source);
-    run(assembler, [...assemblerFlags, '-o', normalizePath(path.relative(output, objectFile)), normalizePath(path.relative(output, generatedFile))], { cwd: output });
+    run(assembler, [...assemblerFlags, '-o', normalizePath(path.relative(output, rawObjectFile)), normalizePath(path.relative(output, generatedFile))], { cwd: output });
+    const executableFlags = rows.flatMap((row) => row.slices.filter((slice) => slice.executable).flatMap((slice) => [
+      '--set-section-flags',
+      `${slice.sectionName}=alloc,load,code,readonly,data,contents`,
+    ]));
+    run(objcopy, [...ANCILLARY_REMOVAL_FLAGS, ...executableFlags, normalizePath(path.relative(output, rawObjectFile)), normalizePath(path.relative(output, objectFile))], { cwd: output });
+    fs.unlinkSync(rawObjectFile);
     objects.push(objectFile);
   }
   return objects;
 }
 
-function createDataObjects(model, output, splatOutput, assembler, assemblerFlags) {
+function createDataObjects(model, output, splatOutput, assembler, objcopy, assemblerFlags) {
   const generatedRoot = path.join(output, 'generated', 'data');
   const objectRoot = path.join(output, 'objects', 'data');
   ensureDir(generatedRoot);
@@ -181,30 +191,63 @@ function createDataObjects(model, output, splatOutput, assembler, assemblerFlags
     const shardRows = rows.slice(offset, offset + shardSize);
     const generatedFile = path.join(generatedRoot, `data_${String(shardIndex).padStart(3, '0')}.s`);
     const objectFile = path.join(objectRoot, `data_${String(shardIndex).padStart(3, '0')}.o`);
+    const rawObjectFile = path.join(objectRoot, `data_${String(shardIndex).padStart(3, '0')}.raw.o`);
     const lines = ['/* GENERATED FILE. DO NOT EDIT. */', '.set noat', '.set noreorder', ''];
     for (const row of shardRows) {
       const asset = path.join(splatOutput, 'assets', `${row.name}.bin`);
-      const relativeAsset = normalizePath(path.relative(output, asset));
-      if (path.isAbsolute(relativeAsset)) fail(`Splat asset path is not path-independent: ${row.name}`);
+      const assetBytes = fs.readFileSync(asset);
       for (const slice of row.slices) {
         const symbol = slice.sliceIndex === 0
           ? `__ob64_data_owner_r${String(row.index).padStart(4, '0')}`
           : `__ob64_data_owner_r${String(row.index).padStart(4, '0')}_slice_${slice.sliceIndex}`;
         const assetOffset = slice.romStart - row.romStart;
+        const sliceBytes = assetBytes.subarray(assetOffset, assetOffset + slice.bytes);
+        if (sliceBytes.length !== slice.bytes) fail(`Splat asset slice exceeds its owner: ${row.name}`);
         lines.push(
           ...renderSectionDirective(slice),
           `.globl ${symbol}`,
           `${symbol}:`,
-          `.incbin ${JSON.stringify(relativeAsset)}, ${assetOffset}, ${slice.bytes}`,
-          '',
         );
+        for (let byteOffset = 0; byteOffset < sliceBytes.length; byteOffset += 32) {
+          lines.push(`.byte ${[...sliceBytes.subarray(byteOffset, byteOffset + 32)]
+            .map((value) => `0x${value.toString(16).toUpperCase().padStart(2, '0')}`).join(', ')}`);
+        }
+        lines.push('');
       }
     }
     fs.writeFileSync(generatedFile, `${lines.join('\n')}\n`);
-    run(assembler, [...assemblerFlags, '-o', normalizePath(path.relative(output, objectFile)), normalizePath(path.relative(output, generatedFile))], { cwd: output });
+    run(assembler, [...assemblerFlags, '-o', normalizePath(path.relative(output, rawObjectFile)), normalizePath(path.relative(output, generatedFile))], { cwd: output });
+    run(objcopy, [...ANCILLARY_REMOVAL_FLAGS, normalizePath(path.relative(output, rawObjectFile)), normalizePath(path.relative(output, objectFile))], { cwd: output });
+    fs.unlinkSync(rawObjectFile);
     objects.push(objectFile);
   }
   return objects;
+}
+
+function createOverlayBssObjects(model, output, assembler, objcopy, assemblerFlags) {
+  const generatedRoot = path.join(output, 'generated', 'bss');
+  const objectRoot = path.join(output, 'objects', 'bss');
+  ensureDir(generatedRoot);
+  ensureDir(objectRoot);
+  const generatedFile = path.join(generatedRoot, 'overlay_bss.s');
+  const objectFile = path.join(objectRoot, 'overlay_bss.o');
+  const rawObjectFile = path.join(objectRoot, 'overlay_bss.raw.o');
+  const lines = ['/* GENERATED FILE. DO NOT EDIT. */', '.set noat', '.set noreorder', ''];
+  for (const overlay of model.overlays.filter((row) => row.bss_end_exclusive > row.bss_start)) {
+    const id = String(overlay.descriptor_id).padStart(2, '0');
+    const name = `.ob64.overlay${id}.bss`;
+    lines.push(
+      `.section ${name},"aw",@nobits`,
+      '.balign 1',
+      `.space ${overlay.bss_end_exclusive - overlay.bss_start}`,
+      '',
+    );
+  }
+  fs.writeFileSync(generatedFile, `${lines.join('\n')}\n`);
+  run(assembler, [...assemblerFlags, '-o', normalizePath(path.relative(output, rawObjectFile)), normalizePath(path.relative(output, generatedFile))], { cwd: output });
+  run(objcopy, [...ANCILLARY_REMOVAL_FLAGS, normalizePath(path.relative(output, rawObjectFile)), normalizePath(path.relative(output, objectFile))], { cwd: output });
+  fs.unlinkSync(rawObjectFile);
+  return [objectFile];
 }
 
 function verifyObjectSections(model, objects, splatOutput) {
@@ -318,12 +361,16 @@ function link(model, output, objects, tools) {
   const elfFile = path.join(output, 'phase7.elf');
   const mapFile = path.join(output, 'phase7.map');
   const flags = model.config.binutils.linkerFlags;
-  run(tools['mips64-elf-ld.exe'].path, [...flags, `-Map=${normalizePath(path.relative(output, mapFile))}`, '-T', normalizePath(path.relative(output, linkerScript)), '-o', normalizePath(path.relative(output, elfFile)), `@${normalizePath(path.relative(output, responseFile))}`], { cwd: output, maxBuffer: 256 * 1024 * 1024 });
+  run(tools['mips-kmc-elf-ld.exe'].path, [...flags, `-Map=${normalizePath(path.relative(output, mapFile))}`, '-T', normalizePath(path.relative(output, linkerScript)), '-o', normalizePath(path.relative(output, elfFile)), `@${normalizePath(path.relative(output, responseFile))}`], { cwd: output, maxBuffer: 256 * 1024 * 1024 });
   const romFile = path.join(output, 'phase7.us_rev0.z64');
-  run(tools['mips64-elf-objcopy.exe'].path, ['-O', 'binary', normalizePath(path.relative(output, elfFile)), normalizePath(path.relative(output, romFile))], { cwd: output });
-  const readelf = run(tools['mips64-elf-readelf.exe'].path, ['-W', '-h', '-S', '-l', '-s', normalizePath(path.relative(output, elfFile))], { cwd: output, maxBuffer: 256 * 1024 * 1024 });
-  fs.writeFileSync(path.join(output, 'phase7.readelf.txt'), readelf.stdout);
-  return { linkerScript, responseFile, elfFile, mapFile, romFile };
+  const overlayBssRemovalFlags = model.overlays
+    .filter((overlay) => overlay.bss_end_exclusive > overlay.bss_start)
+    .map((overlay) => `--remove-section=.ob64.overlay${String(overlay.descriptor_id).padStart(2, '0')}.bss`);
+  const emptyDefaultRemovalFlags = ['--remove-section=.text', '--remove-section=.data', '--remove-section=.bss'];
+  run(tools['mips-kmc-elf-objcopy.exe'].path, ['-O', 'binary', ...overlayBssRemovalFlags, ...emptyDefaultRemovalFlags, normalizePath(path.relative(output, elfFile)), normalizePath(path.relative(output, romFile))], { cwd: output });
+  const elfReportFile = path.join(output, 'phase7.elf-report.json');
+  writeJson(elfReportFile, elfStructuralReport(parseElfFile(elfFile)));
+  return { linkerScript, responseFile, elfFile, elfReportFile, mapFile, romFile };
 }
 
 function pathIndependentRuntime(runtime) {
@@ -341,10 +388,12 @@ function main() {
   const model = loadAcceptedModel();
   const runtime = verifyRuntimeTools(model, args);
   const splat = verifySplatOutput(model, args.splatOutput);
-  const assembler = runtime.tools['mips64-elf-as.exe'].path;
-  const assemblyObjects = createAssemblyObjects(model, args.output, assembler, model.config.binutils.assemblerFlags);
-  const dataObjects = createDataObjects(model, args.output, args.splatOutput, assembler, model.config.binutils.assemblerFlags);
-  const objects = [...assemblyObjects, ...dataObjects];
+  const assembler = runtime.tools['mips-kmc-elf-as.exe'].path;
+  const objcopy = runtime.tools['mips-kmc-elf-objcopy.exe'].path;
+  const assemblyObjects = createAssemblyObjects(model, args.output, assembler, objcopy, model.config.binutils.assemblerFlags);
+  const dataObjects = createDataObjects(model, args.output, args.splatOutput, assembler, objcopy, model.config.binutils.assemblerFlags);
+  const bssObjects = createOverlayBssObjects(model, args.output, assembler, objcopy, model.config.binutils.assemblerFlags);
+  const objects = [...assemblyObjects, ...dataObjects, ...bssObjects];
   const objectVerification = verifyObjectSections(model, objects, args.splatOutput);
   const objectManifest = writeObjectManifest(args.output, objects);
   writeLayout(model, args.output);
@@ -353,7 +402,7 @@ function main() {
     output: args.output,
     asmDifferRoot: args.asmDifferRoot,
     splatPython: args.splatPython,
-    objdump: runtime.tools['mips64-elf-objdump.exe'].path,
+    objdump: runtime.tools['mips-kmc-elf-objdump.exe'].path,
   });
   const phase6 = readJson(path.join(ROOT, 'docs', 'external-intake', 'phase6-kmc-reproduction-20260801', 'reproduction-manifest.json'));
   const report = {
@@ -372,6 +421,7 @@ function main() {
     objects: {
       assemblyObjects: assemblyObjects.length,
       dataObjects: dataObjects.length,
+      bssObjects: bssObjects.length,
       ...objectVerification,
       manifest: objectManifest,
     },
@@ -379,7 +429,7 @@ function main() {
       flags: model.config.binutils.linkerFlags,
       scriptSha256: sha256File(linked.linkerScript),
       responseSha256: sha256File(linked.responseFile),
-      readelfSha256: sha256File(path.join(args.output, 'phase7.readelf.txt')),
+      elfReportSha256: sha256File(linked.elfReportFile),
     },
     verification,
   };

@@ -1,9 +1,11 @@
 {
-  "schemaVersion": 2,
+  "schemaVersion": 3,
   "profile": "us-rev0",
-  "compilerAssemblyDialect": {
-    "manifest": "config/compiler-assembly-dialect.json",
-    "manifestSha256": "F16E84F9754668C5FEBDF0094ED1C6A4AEF5954D6F7CEA8E9C49B05D707C1B37"
+  "toolchain": {
+    "manifest": "config/toolchain.json",
+    "manifestSha256": "EC642F5AEB318853BE699010E3B2BB43F186EE13C9761B5DB4A668A1BE9D0015",
+    "buildProvenance": "config/gnu-binutils-2.6-build.json",
+    "buildProvenanceSha256": "6B5C9B582F95B546E9AEDFD44A76E4F4D756AD0DF658D02EA96CCF503CEB1BD7"
   },
   "targets": [
     { "symbol": "func_000E5938", "source": "src/overlays/descriptor_02/func_000E5938.c" },

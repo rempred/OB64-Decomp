@@ -36,15 +36,15 @@ function selectTarget(phase8, symbol) {
 function comparisonLabel(comparison) {
   if (!comparison
       || typeof comparison.exact !== 'boolean'
-      || typeof comparison.asmDifferScoreZero !== 'boolean'
+      || typeof comparison.asmDifferPairwiseExact !== 'boolean'
       || typeof comparison.rawBytesExact !== 'boolean') {
     throw new Error('target comparison result is malformed');
   }
-  if (comparison.exact !== (comparison.asmDifferScoreZero && comparison.rawBytesExact)) {
+  if (comparison.exact !== (comparison.asmDifferPairwiseExact && comparison.rawBytesExact)) {
     throw new Error('target comparison exactness is inconsistent');
   }
   if (comparison.exact) return 'EXACT';
-  if (comparison.asmDifferScoreZero && !comparison.rawBytesExact) return 'RAW BYTES DIFFER';
+  if (comparison.asmDifferPairwiseExact && !comparison.rawBytesExact) return 'RAW BYTES DIFFER';
   return 'DIFFERS';
 }
 
@@ -76,7 +76,7 @@ function main(argv = process.argv.slice(2)) {
     context.phase8,
     phase7,
     output,
-    runtime.tools['mips64-elf-objcopy.exe'].path,
+    runtime.tools['mips-kmc-elf-objcopy.exe'].path,
   );
   const compiled = new Map();
   for (const candidate of context.phase8.targets) {
@@ -85,7 +85,8 @@ function main(argv = process.argv.slice(2)) {
       candidate,
       output,
       context.localTools.compiler,
-      runtime.tools['mips64-elf-as.exe'].path,
+      runtime.tools['mips-kmc-elf-as.exe'].path,
+      runtime.tools['mips-kmc-elf-objcopy.exe'].path,
       {
         enforceAcceptedContract: candidate.symbol !== target.symbol,
         classification: classificationBySymbol.get(candidate.symbol),
@@ -99,8 +100,8 @@ function main(argv = process.argv.slice(2)) {
     output,
     asmDifferRoot: context.localTools.asmDifferRoot,
     python: context.localTools.splatPython,
-    objdump: runtime.tools['mips64-elf-objdump.exe'].path,
-    objcopy: runtime.tools['mips64-elf-objcopy.exe'].path,
+    objdump: runtime.tools['mips-kmc-elf-objdump.exe'].path,
+    objcopy: runtime.tools['mips-kmc-elf-objcopy.exe'].path,
     relocations: compiled.get(target.symbol).relocations,
     requireExact: false,
   });
@@ -111,7 +112,7 @@ function main(argv = process.argv.slice(2)) {
     source: target.source,
     sourceClass: targetSourcePolicy.class,
     sourcePolicyDigest: targetSourcePolicy.digest,
-    dialect: context.phase8.dialect.identity,
+    toolchain: context.phase8.toolchain.identity,
     output,
     object: compiled.get(target.symbol),
     comparison,
@@ -123,6 +124,7 @@ function main(argv = process.argv.slice(2)) {
   console.log(`${target.symbol} ........ ${comparisonLabel(comparison)}`);
   console.log(`Source class ............... ${targetSourcePolicy.class}`);
   console.log(`Score ...................... ${comparison.currentScore} / ${comparison.maxScore}`);
+  console.log(`Decoded instruction rows ... ${comparison.asmDifferPairwiseExact ? 'EXACT' : 'DIFFER'}`);
   console.log(`Raw linked bytes ........... ${comparison.rawBytesExact ? 'EXACT' : 'DIFFER'}`);
   console.log(`Differing bytes ............ ${comparison.differingByteCount}`);
   console.log(`Differing instruction words  ${comparison.differingInstructionWordCount}`);

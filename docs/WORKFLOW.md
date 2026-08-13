@@ -98,57 +98,35 @@ An exact `.c` file can be `HYBRID_C`. Exact output alone does not make it decomp
 
 Only exact `PURE_C` targets contribute to matching-C progress.
 
-### Compiler-assembly dialect evidence
+### Compiler assembly and source-to-object evidence
 
-The build classifies every active target before compilation. `UNKNOWN` and `ASM` classifications
-reject before the compiler-assembly adapter can run.
+The build classifies every active target before compilation. `UNKNOWN` and `ASM` reject before the
+matching compiler runs. The source class is unchanged by later toolchain stages.
 
-Only authenticated `PURE_C` compiler output may enter the versioned dialect parser. Any `#APP` or
-`#NO_APP` marker rejects pure output before statement parsing.
+The authenticated Windows KMC GCC 2.7.2 compiler emits `<symbol>.compiler.s`. The build preserves
+that file untouched. It derives `<symbol>.s` only by replacing the sole `.text` directive with the
+accepted target-section directive, then passes that file directly to the pinned GNU 2.6
+assembler. There is no compiler-assembly rewrite or target-specific parser between the compiler
+and assembler.
 
-`HYBRID_C` compiler output is opaque passthrough. Raw and adapted bytes and SHA-256 values must
-match, and the proof must record zero total and zero per-rule transformations.
-
-The schema-2 contract has two target-blind rewrite rules:
-
-- a complete numeric-register `move $N,$M` statement emits `addu $N,$M,$0`; and
-- an unlabeled adjacent `la $4,symbol` plus direct `jal target`, where both operands match the
-  strict C-linkage identifier grammar `[A-Za-z_][A-Za-z0-9_]*`, in the authenticated non-PIC,
-  no-abicalls, `-G0`, MIPS3/gp32 configuration with reorder and macro expansion enabled and
-  volatile mode disabled, may emit
-  `lui $4,%hi(symbol)`, `jal target`, `addiu $4,$4,%lo(symbol)` under an explicit temporary
-  `.set noreorder` boundary when the address symbol is undefined in the translation unit.
-
-Complete unlabeled KMC-style `mtc1 $N,$fN` and `mfc1 $N,$fN` statements are validated for numeric
-general-purpose and floating-point registers in the range 0 through 31, then retained
-byte-identically with zero transformations. Malformed operands, named registers, attached labels,
-extra operands, and out-of-range registers reject. COP0 transfers, control-register transfers,
-`mov.s`/`mov.d`/`mov.ps`, and unproven doubleword transfer forms remain rejected.
-
-Current-location, section, dot-prefixed local-assembler, expression, addend, register, and `jalr`
-forms are outside the latter rule. Valid excluded forms remain byte-identical; a register-valued
-`la` address operand is rejected before adaptation or proof generation.
-
-The second rule excludes other registers, local symbols, labels, intervening emitted statements or
-mode boundaries, `jalr`, expressions/addends, unsupported relocation forms, and unverified modes.
-A valid excluded sequence remains byte-identical. Malformed or ambiguous syntax, unsupported
-statements, macros, conditionals, and semicolon statements reject. `-O2` remains the pinned
-production compiler setting, but it is not an eligibility condition inferred from the historical
-assembler behavior.
-
-Each target retains four reviewable artifacts:
+Each active target retains these reviewable artifacts:
 
 1. untouched compiler assembly in `<symbol>.compiler.s`;
-2. adapted or passthrough assembly in `<symbol>.dialect.s`;
-3. section-adjusted assembly in `<symbol>.s`; and
-4. a deterministic `<symbol>.dialect-proof.json` record.
+2. section-adjusted assembly in `<symbol>.s`;
+3. a raw GNU 2.6 source object containing load-relevant relocation evidence;
+4. a link input object with discarded ancillary sections removed; and
+5. a deterministic `<symbol>.source-object-proof.json` record.
 
-The assembler consumes only the section-adjusted file. Strict verification recreates the adapted
-file, section adjustment, and proof before accepting linked bytes.
+Strict verification independently recreates the section adjustment and proof. The proof records
+the source-policy result, compiler and assembler identities/flags, artifact hashes, target-section
+bytes, load-relevant relocations, visible ancillary differences, linked bytes, and final owner.
+It explicitly records that compiler assembly was not rewritten.
 
-Build-wide reports derive transformed-target, total-transformation, and per-rule totals from unique
-verified proofs. Phase 2 produced zero transformed targets and transformations; later pure-C
-migrations may produce nonzero totals.
+GNU 2.6 omits the procedure-descriptor relocation emitted by the former production assembler.
+Procedure metadata is discarded before the final link, so the historical records are retained as
+retired ancillary evidence rather than silently compared as active relocations. Every relocation
+against the accepted target section remains mandatory by offset, type, and normalized
+symbol/value semantics.
 
 ### Structural evidence
 
@@ -207,9 +185,9 @@ The diff command is a development aid. It should:
 - report the asm-differ score and raw-byte result separately; and
 - provide actionable asm-differ output.
 
-`EXACT` requires both a zero nonempty asm-differ score and equal final linked bytes. A zero score
-with unequal bytes reports `RAW BYTES DIFFER`. Missing, duplicate, malformed, or wrong-sized linked
-sections fail with `ERROR`.
+`EXACT` requires a nonempty pairwise decoded-instruction match and equal final linked bytes. Raw
+linked-byte comparison is authoritative; decoded output is a development aid. Missing, duplicate,
+malformed, or wrong-sized linked sections fail with `ERROR`.
 
 Intermediate diff output is generated evidence and is not committed.
 
@@ -334,8 +312,9 @@ Derive where possible:
 If a symbol address or link alias is genuinely needed, prefer a shared canonical symbol table over
 duplicating it per target.
 
-During migration, legacy metadata may remain behind an adapter until the new derived path proves
-equivalent. Do not delete trusted metadata first and hope to reconstruct it later.
+Historical ancillary metadata may remain recorded while the active contract derives load-relevant
+facts from GNU 2.6 source objects. Do not delete trusted evidence before the derived replacement has
+been proven equivalent.
 
 ---
 
@@ -344,8 +323,9 @@ equivalent. Do not delete trusted metadata first and hope to reconstruct it late
 Relocation equality is retained because the decomp is intended for source-level modification, not
 only historical byte reproduction.
 
-The verifier should derive normalized relocations from the accepted original owner/object and
-compare them with the C object.
+The verifier derives normalized load-relevant relocations from the GNU 2.6 source object and
+compares them with the reviewed accepted contract. Discarded ancillary metadata remains visible in
+the source-to-object report but is not treated as a ROM or modification-relevant relocation.
 
 Do not manually maintain per-target relocation arrays once the derived comparison has been proven
 equivalent.

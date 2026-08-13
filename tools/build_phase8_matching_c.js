@@ -18,7 +18,7 @@ const {
   verifyPhase7Input,
   verifyPhase8Output,
   verifyRuntimeTools,
-  writeDialectProofs,
+  writeSourceObjectProofs,
   writeJson,
   writeLayout,
   writeObjectManifest,
@@ -66,7 +66,7 @@ function main() {
     phase8,
     phase7,
     args.output,
-    runtime.tools['mips64-elf-objcopy.exe'].path,
+    runtime.tools['mips-kmc-elf-objcopy.exe'].path,
   );
   const compiled = new Map();
   for (const target of phase8.targets) {
@@ -75,7 +75,8 @@ function main() {
       target,
       args.output,
       args.compiler,
-      runtime.tools['mips64-elf-as.exe'].path,
+      runtime.tools['mips-kmc-elf-as.exe'].path,
+      runtime.tools['mips-kmc-elf-objcopy.exe'].path,
       { classification: classificationBySymbol.get(target.symbol) },
     ));
   }
@@ -88,7 +89,7 @@ function main() {
   );
   writeLayout(phase8, phase7, args.output, replacement.replacements);
   const linked = linkPhase8(phase8, args.output, objectManifest, runtime.tools);
-  const dialectProofs = writeDialectProofs(phase8, {
+  const sourceObjectProofs = writeSourceObjectProofs(phase8, {
     output: args.output,
     compiled,
     sourcePolicy,
@@ -97,8 +98,8 @@ function main() {
     output: args.output,
     asmDifferRoot: args.asmDifferRoot,
     splatPython: args.splatPython,
-    objdump: runtime.tools['mips64-elf-objdump.exe'].path,
-    objcopy: runtime.tools['mips64-elf-objcopy.exe'].path,
+    objdump: runtime.tools['mips-kmc-elf-objdump.exe'].path,
+    objcopy: runtime.tools['mips-kmc-elf-objcopy.exe'].path,
     replacements: replacement.replacements,
   });
 
@@ -122,19 +123,19 @@ function main() {
       preservedTargetChunkSections: chunkReplacement.preservedTargetChunkSections,
       cObject: compiledTarget.objectRelative,
       cObjectSha256: compiledTarget.objectSha256,
+      sourceObject: compiledTarget.proofObjectRelative,
+      sourceObjectSha256: compiledTarget.proofObjectSha256,
       compilerAssembly: compiledTarget.compilerAssemblyRelative,
       compilerAssemblySha256: compiledTarget.compilerAssemblySha256,
-      dialectAssembly: compiledTarget.dialectAssemblyRelative,
-      dialectAssemblySha256: compiledTarget.dialectAssemblySha256,
       linkedAssembly: compiledTarget.linkedAssemblyRelative,
       linkedAssemblySha256: compiledTarget.linkedAssemblySha256,
       sourceClass: compiledTarget.sourceClass,
       sourcePolicyDigest: compiledTarget.sourcePolicyDigest,
-      dialectDecision: compiledTarget.dialectDecision,
-      dialectProof: {
-        path: dialectProofs.get(target.symbol).path,
-        bytes: dialectProofs.get(target.symbol).bytes,
-        sha256: dialectProofs.get(target.symbol).sha256,
+      compilerAssemblyRewritten: compiledTarget.compilerAssemblyRewritten,
+      sourceObjectProof: {
+        path: sourceObjectProofs.get(target.symbol).path,
+        bytes: sourceObjectProofs.get(target.symbol).bytes,
+        sha256: sourceObjectProofs.get(target.symbol).sha256,
       },
       objectTextSha256: compiledTarget.textSha256,
       linkedTextSha256: verifiedTarget.textSha256,
@@ -143,17 +144,17 @@ function main() {
   });
 
   const report = {
-    schemaVersion: 2,
+    schemaVersion: 3,
     status: 'pass',
     generator: 'tools/build_phase8_matching_c.js',
     acceptedInputs: {
       phase7Model: phase8.model.inputFiles,
       phase8Config: { bytes: fs.statSync(CONFIG_PATH).size, sha256: sha256File(CONFIG_PATH) },
-      compilerAssemblyDialect: {
-        path: phase8.dialect.identity.manifestPath,
-        sha256: phase8.dialect.identity.manifestSha256,
-        implementationPath: phase8.dialect.identity.implementationPath,
-        implementationSha256: phase8.dialect.identity.implementationSha256,
+      gnuBinutils26: {
+        manifestPath: phase8.toolchain.identity.manifestPath,
+        manifestSha256: phase8.toolchain.identity.manifestSha256,
+        buildProvenancePath: phase8.toolchain.identity.buildProvenancePath,
+        buildProvenanceSha256: phase8.toolchain.identity.buildProvenanceSha256,
       },
       sourcePolicy: {
         path: path.relative(ROOT, POLICY_CONFIG_PATH).replace(/\\/g, '/'),
@@ -174,7 +175,7 @@ function main() {
       bytes: sourcePolicy.bytes,
       targets: sourcePolicy.targets,
     },
-    dialect: verification.dialect,
+    sourceObjectEvidence: verification.sourceObjectEvidence,
     basePhase7: phase7.identity,
     targetReplacements,
     objects: {
@@ -185,7 +186,7 @@ function main() {
       flags: phase8.model.config.binutils.linkerFlags,
       scriptSha256: sha256File(linked.linkerScript),
       responseSha256: sha256File(linked.responseFile),
-      readelfSha256: sha256File(linked.readelfFile),
+      elfReportSha256: sha256File(linked.elfReportFile),
     },
     verification,
   };

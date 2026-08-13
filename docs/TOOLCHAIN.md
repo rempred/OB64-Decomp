@@ -1,130 +1,160 @@
-# Toolchain
+# GNU Binutils 2.6 toolchain
 
-The setup-complete MIPS assembler path is GNU binutils from the N64-focused
-`n64-tools/gcc-toolchain-mips64` release.
-
-## Config
-
-Tracked config: `config/toolchain.json`
-
-Current toolchain:
-
-- ID: `n64-tools-gcc-toolchain-mips64-win64`
-- Kind: GNU binutils
-- Source project: `https://github.com/n64-tools/gcc-toolchain-mips64`
-- Archive:
-  `https://github.com/n64-tools/gcc-toolchain-mips64/releases/download/latest/gcc-toolchain-mips64-win64.zip`
-- Archive SHA256:
-  `7EE3598AC151C0A728DCFD916E3DF615793D2ED0A28CDC0CCAFA31EEF76526BB`
-- Local install root: `.toolchains/gcc-toolchain-mips64-win64/`
-- Assembler: `bin/mips64-elf-as.exe`
-- Objcopy: `bin/mips64-elf-objcopy.exe`
-- Assembler flags: `-EB -mips3 -32`
-- Objcopy flags: `-O binary -j .text`
-
-`.toolchains/` is ignored and must not be committed.
-
-## Production Splat Runtime
-
-The accepted configuration targets Splat `0.34.0` at commit
-`999c792fdda1002f29926717d2b7197bb90480a9`.
-
-The runtime, source checkout, downloaded packages, and virtual environment stay
-outside tracked files. The canonical lock and provenance records are:
-
-- `config/splat/splat64-0.34.0.lock.json`;
-- `config/splat/splat64-0.34.0.provenance.json`.
-
-Use only an authenticated runtime that satisfies both records. Do not treat the
-machine-specific paths inside the accepted lock as portable installation paths.
-
-## Matching-C Compiler
-
-The accepted matching-C path uses KMC GCC 2.7.2 on the pinned Windows host.
-
-The compiler is an external prerequisite. This repository does not track its
-binary, acquisition record, or build environment.
-
-`config/phase8/matching-c.json` pins the accepted compiler hash and flags.
-Supplying a different compiler must fail before a matching result is accepted.
-
-## Compiler-Assembly Dialect Stage
-
-The effective matching toolchain now has three authenticated stages:
+The production Rev 0 build uses an authenticated Windows KMC GCC 2.7.2 compiler and a complete
+native Windows/MSYS2 GNU Binutils 2.6 target chain.
 
 ```text
-KMC GCC 2.7.2 compiler
--> compiler-assembly dialect adapter
--> GNU assembler 2.39 with -EB -mips3 -32
+tracked assembly/data -> GNU 2.6 assembler
+KMC GCC 2.7.2 C -> untouched compiler assembly -> target-section adjustment -> GNU 2.6 assembler
+all objects -> GNU 2.6 linker -> GNU 2.6 objcopy -> canonical Rev 0 ROM
 ```
 
-`config/compiler-assembly-dialect.json` pins both executable identities, both flag sets, and the
-adapter module SHA-256. `config/matching-c-targets.json` pins that manifest by path and SHA-256.
+No compiler-assembly rewriting stage exists. GNU Binutils from another version may be used for
+research, but it is not part of the active production configuration.
 
-The schema-2 adapter has two target-blind rules for eligible `PURE_C` output. It rewrites complete
-numeric-register `move` statements as `addu` statements with `$0` as the third operand. It can also
-rewrite the authenticated adjacent external-symbol `la $4` plus direct `jal` subset into explicit
-`lui`, `jal`, and delay-slot `addiu` instructions under a temporary `.set noreorder` boundary. Both
-symbols must match `[A-Za-z_][A-Za-z0-9_]*`, and the address symbol must be undefined within the
-translation unit. The latter rule preserves exact HI16, MIPS26, and LO16 relocation semantics and
-restores the prior effective assembler mode. Current-location, section, dot-prefixed, expression,
-addend, register-call, and `jalr` forms remain untouched; register-valued `la` address operands and
-other malformed or unsupported input fail closed.
+## Tracked contracts
 
-Complete unlabeled numeric `mtc1 $N,$fN` and `mfc1 $N,$fN` compiler statements pass through
-byte-identically and record zero transformations. Each register must be in the range 0 through 31.
-Malformed, named, labeled, extra-operand, and out-of-range forms reject, as do COP0 transfers,
-control-register transfers, `mov.s`/`mov.d`/`mov.ps`, and unproven doubleword transfers.
+- `config/toolchain.json` selects the production bundle, flags, and ignored local install root.
+- `config/gnu-binutils-2.6-build.json` pins source, build host packages, patches, versions, every
+  production executable, and the MSYS2 runtime.
+- `config/phase7/conventional-build.json` pins the same production hashes for the baseline build.
+- `config/matching-c-targets.json` pins the toolchain and build-provenance manifests for active C
+  owners.
 
-GNU assembler 2.39 remains the production assembler. The authenticated historical KMC assembler
-is a behavioral oracle for the second rule, not a build dependency. `-O2` is the pinned production
-compiler configuration but is not a demonstrated historical eligibility requirement.
+The source identity is Decompals `mips-binutils-2.6` commit
+`54514ded39ceb32165a125ddba04ca5b551773a2`. The v0.3 Linux release is supporting comparison
+evidence and is pinned by archive SHA-256
+`5A612CD28344E5B410C3344EC5DCFB92D9D03947756F190CD12404055B4A624D`; a moving release URL is
+not an identity.
 
-`HYBRID_C` output bypasses parsing as byte-identical data with zero total and per-rule
-transformations. `UNKNOWN` source classification fails before compilation or adaptation.
+The ignored production install root is:
 
-Each compiled target retains these authenticated stages:
+```text
+.toolchains/gnu-binutils-2.6-mips-kmc-elf-msys2/
+```
 
-1. `<symbol>.compiler.s` is untouched compiler output.
-2. `<symbol>.dialect.s` is adapter output or exact hybrid passthrough.
-3. `<symbol>.s` contains only the target-section adjustment consumed by GNU assembler.
-4. `<symbol>.dialect-proof.json` records identities, decisions, hashes, counts, object, and target.
+It contains `as`, `ld`, `objcopy`, `objdump`, `nm`, `size`, `strings`, `strip`, and the pinned
+`msys-2.0.dll`. Production resolution fails closed on the size and SHA-256 of every file.
 
-Strict verification recreates the adapted assembly, section adjustment, and proof independently.
-Missing artifacts, stale schemas, identity drift, or proof drift must fail verification.
+## Reproducible build
 
-## Install
-
-From the repo root:
+Before building from a local source checkout, read every governing `AGENTS.md` from the checkout
+root through the affected subtree, plus the source repository's `README` and build workflow.
+Verify the checkout is exactly the pinned commit, then use an empty external work root and output
+root:
 
 ```powershell
-New-Item -ItemType Directory -Force .toolchains\downloads
-Invoke-WebRequest `
-  -Uri "https://github.com/n64-tools/gcc-toolchain-mips64/releases/download/latest/gcc-toolchain-mips64-win64.zip" `
-  -OutFile ".toolchains\downloads\gcc-toolchain-mips64-win64.zip"
-Get-FileHash -Algorithm SHA256 ".toolchains\downloads\gcc-toolchain-mips64-win64.zip"
-Expand-Archive ".toolchains\downloads\gcc-toolchain-mips64-win64.zip" ".toolchains\gcc-toolchain-mips64-win64" -Force
+node tools/build_gnu_binutils_2_6.js `
+  --source <pinned-mips-binutils-2.6-checkout> `
+  --msys-root <pinned-msys64-root> `
+  --work <empty-external-work-root> `
+  --output <empty-external-bundle-root>
 ```
 
-The hash must match `config/toolchain.json`.
+The script authenticates the source commit, build recipe, MSYS2 package inventory, all tracked
+patches, output versions, and final executable/runtime hashes. It sets the reproducibility epoch
+and rejects a nonempty work or bundle root.
 
-## Verify
+After a successful build, populate the ignored local root from the authenticated bundle. Do not
+commit tool binaries or generated compiler output.
 
-Run:
+## Patches and structural scope
+
+The source build carries one host-compatibility patch and three narrow, opt-in target patches:
+
+- modern MSYS2 host compilation compatibility;
+- one allocated output section per `PT_LOAD`, dynamically sized program-header storage, and exact
+  output-section LMA mapping;
+- binary extraction in LMA order, required by fixed ROM loads and overlapping runtime overlays;
+- symbol-matched MIPS `HI16`/`LO16` pairing across an intervening relocation emitted by KMC GCC.
+
+Their paths, scopes, and hashes are in `config/gnu-binutils-2.6-build.json`. These patches preserve
+the already accepted placement model; they do not authorize new boundaries, overlays, segments,
+owners, or executable ranges.
+
+GNU ld 2.6 predates the modern `PHDRS` path used by the former linker. The production linker script
+therefore uses GNU 2.6 syntax, and the patched BFD backend emits and verifies one load segment per
+nonempty allocated section. The project-owned ELF parser supplies structural inspection evidence;
+no external modern ELF reader is an active dependency.
+
+## Host runtime
+
+The Phase 7 contract pins the Windows release and architecture, Node executable, PowerShell
+version/executable, and the loaded `System.Management.Automation.dll`. The GNU 2.6 bundle pins its
+own `msys-2.0.dll`. A normal build fails before assembly or linking if any of these runner
+identities drifts.
+
+## Input flags
+
+Tracked assembly/data uses:
+
+```text
+-G 0 -mips3 -mabi=32 -V -EB
+```
+
+KMC compiler output uses:
+
+```text
+-G 0 -mips3 -mabi=32 -force-n64align -EB
+```
+
+The linker uses `-EB -m elf32bmip`; objcopy uses `-O binary` after project-owned ancillary-section
+removal. Exact flags remain tracked in the manifests.
+
+## Matching-C compiler and source-to-object evidence
+
+The compiler remains the authenticated Windows KMC GCC 2.7.2 `cc1.exe`, SHA-256
+`F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6`. Its external path is
+resolved through ignored local-tool configuration. `config/phase8/matching-c.json` pins its
+manifest, executable identity, and compile flags.
+
+For every active C or hybrid target, the build retains:
+
+1. untouched `<symbol>.compiler.s` output from KMC;
+2. `<symbol>.s`, derived only by replacing the sole `.text` directive with the accepted target
+   section directive;
+3. the raw GNU 2.6 source object before ancillary-section removal;
+4. the linked object after removal of `.reginfo`, `.pdr`, `.comment`, and `.note`; and
+5. `<symbol>.source-object-proof.json`, independently reproducible from tracked inputs.
+
+The proof records source class, compiler and assembler identities/flags, artifact hashes, target
+bytes, accepted load-relevant relocations, ancillary differences, final linked bytes, and sole
+ownership. GNU 2.6 does not emit the former procedure-descriptor relocation. That retired
+metadata remains visible as historical ancillary evidence but is not part of the active
+load-relevant relocation contract.
+
+## Verification
+
+Run the focused toolchain suite from the repository root:
 
 ```powershell
-$phase5aRoot = '<accepted-phase5a-product-root>'
-node tools/verify_setup.js --phase5a-root $phase5aRoot
+node tests/binutils_smoke.js
+node tests/active_targets.js
+node tests/source_policy.js
 ```
 
-The Phase 5A product remains external to this clean-room repository. The command
-runs the binutils smoke tests and full ROM setup gates. The
-binutils smoke tests prove:
+The smoke suite authenticates the complete bundle and checks big-endian words/instructions,
+MIPS3/O32 flags and alignment, delay slots, historical KMC `move` expansion, explicit retail OR,
+COP1 forms and the uppercase-prefix falsifier, adjacent `la`/direct-call relocations, numeric-call
+behavior, macros/conditionals, custom sections, exact binary extraction, one-section `PT_LOAD`
+and LMA behavior, an exact tracked assembly chunk, inactive p3066, and the absence of retired
+production dependencies.
 
-- `.word` emits exact big-endian bytes.
-- Real MIPS instructions emit expected bytes.
-- `.set noreorder` preserves the delay-slot instruction without inserted nops.
-- The first tracked source chunk `0x00001000..0x00011000` assembles through
-  `mips64-elf-as` and matches the baserom bytes exactly.
+Normal build and verification remain:
 
-Current setup-complete result: PASS with 21 checks on the accepted Windows host.
+```powershell
+node tools/build.js
+node tools/verify.js
+node tools/audit.js
+```
+
+The normalized full-ROM acceptance hash is
+`571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A`.
+
+## Splat runtime
+
+The accepted configuration uses Splat 0.34.0 at commit
+`999c792fdda1002f29926717d2b7197bb90480a9`. Its external runtime and source checkout must satisfy
+`config/splat/splat64-0.34.0.lock.json` and
+`config/splat/splat64-0.34.0.provenance.json`. Machine-specific paths in those records are not
+portable installation instructions.

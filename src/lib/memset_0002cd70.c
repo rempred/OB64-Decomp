@@ -1,4 +1,7 @@
-asm(".set noreorder");
+asm(".set noreorder\n"
+    ".macro move dst,src\n"
+    "or \\dst,\\src,$0\n"
+    ".endm\n");
 
 void *func_0002CD70(void *destination, int value, unsigned int count)
 {

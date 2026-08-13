@@ -22,7 +22,7 @@ void func_00269798(void *argument)
         "lui $4,%%hi(func_00269470)\n"
         "addiu $4,$4,%%lo(func_00269470)\n"
         "lui $1,%%hi(g_func_00269470_value_3C)\n"
-        "jal 0x8020D778\n"
+        "jal func_0020D778\n"
         "sw $16,%%lo(g_func_00269470_value_3C)($1)\n"
         ".set at\n"
         ".set reorder\n"

@@ -15,15 +15,20 @@ Rev 0 decomp configuration lives here.
   manually loaded at a different runtime VMA without a fixed overlay descriptor. An optional
   slab-local `executableRanges` list records narrowly evidenced executable treatment without
   changing the accepted source owner or its source classification.
-- `phase8/matching-c.json` - pinned 36-byte matching-C replacement contract.
-- `compiler-assembly-dialect.json` - schema-2 compiler-assembly adapter contract. It pins the
-  compiler, adapter module, assembler, flags, eligibility boundaries, and ordered rewrite rules.
+- `phase8/matching-c.json` - legacy detailed target/link-symbol/relocation evidence used to derive
+  the minimal active-target model. Procedure-descriptor records are retained only as retired
+  ancillary evidence.
+- `gnu-binutils-2.6-build.json` - pinned source, deterministic MSYS2 build inputs, project patches,
+  versions, production executables, and runner identities.
+- `toolchain.json` - active GNU Binutils 2.6 resolver, flags, and ignored local install root.
 
-`matching-c-targets.json` owns the adapter manifest path and SHA-256 once. Target entries remain
-limited to `symbol` and `source`. Update the authenticated chain in this order:
+`matching-c-targets.json` owns the toolchain and build-provenance manifest paths and SHA-256 values
+once. Target entries remain limited to `symbol` and `source`. Update the authenticated chain in
+this order:
 
 ```text
-adapter module -> dialect manifest -> active-target manifest pin -> workflow fingerprint
+build script/patches -> GNU 2.6 build provenance -> toolchain manifest
+-> Phase 7 and active-target pins -> workflow fingerprint
 ```
 
 Each step must reject the older hash before the next reviewed value becomes current.

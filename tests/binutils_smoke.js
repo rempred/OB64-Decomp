@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+'use strict';
+
 const fs = require('fs');
 const path = require('path');
 const {
@@ -16,347 +18,327 @@ const {
   elfSectionBytes,
   parseElfFile,
 } = require('../tools/lib/phase7_conventional');
-const { relocationRecords } = require('../tools/lib/phase8_matching_c');
+const {
+  loadPhase8Model,
+  relocationRecords,
+} = require('../tools/lib/phase8_matching_c');
 const {
   assembleFileToBinary,
   assertToolchainAvailable,
   loadToolchainConfig,
+  runTool,
   toolVersion,
 } = require('../tools/lib/real_mips_toolchain');
-const {
-  DIALECT_RULE_IDS,
-  LA_JAL_RULE_ID,
-  applyCompilerAssemblyDialect,
-} = require('../tools/lib/compiler_assembly_dialect');
+
+const SMOKE_ROOT = path.join(ROOT, 'build', 'toolchain-smoke');
+
+function sha256File(file) {
+  return hashBuffer(fs.readFileSync(file), 'sha256');
+}
 
 function bytesToHex(bytes) {
   return Buffer.from(bytes).toString('hex').toUpperCase();
 }
 
-function loadReference() {
-  const referencePath = path.join(ROOT, 'build', 'baserom.us_rev0.z64');
-  if (fs.existsSync(referencePath)) return fs.readFileSync(referencePath);
-  return loadAndVerifyRom().z64;
-}
-
-function assembleText({ name, text }) {
-  const dir = path.join(ROOT, 'build', 'toolchain-smoke', name);
-  ensureDir(dir);
-  const asmPath = path.join(dir, `${name}.s`);
-  const objPath = path.join(dir, `${name}.o`);
-  const binPath = path.join(dir, `${name}.bin`);
-  fs.writeFileSync(asmPath, text);
-  assembleFileToBinary({ source: asmPath, outBin: binPath, outObj: objPath });
-  return {
-    asmPath,
-    objPath,
-    binPath,
-    bytes: fs.readFileSync(binPath),
-  };
-}
-
-function requireHex(name, actual, expected) {
+function requireValue(name, actual, expected) {
   if (actual !== expected) throw new Error(`${name} expected ${expected}, got ${actual}`);
 }
 
-function instructionWords(bytes) {
-  if (bytes.length % 4 !== 0) throw new Error(`Instruction byte count is not word-aligned: ${bytes.length}`);
-  const words = [];
-  for (let offset = 0; offset < bytes.length; offset += 4) {
-    words.push(`0x${bytes.readUInt32BE(offset).toString(16).toUpperCase().padStart(8, '0')}`);
-  }
-  return words;
+function requirePrefix(name, bytes, expectedHex) {
+  const actual = bytesToHex(bytes.subarray(0, expectedHex.length / 2));
+  requireValue(name, actual, expectedHex);
 }
 
-function verifyDialectExclusion({ name, text, expectedWords = null }) {
-  const input = Buffer.from(text, 'utf8');
-  const decision = applyCompilerAssemblyDialect(input, 'PURE_C');
-  if (!decision.output.equals(input)) throw new Error(`${name} adapter output changed valid excluded input`);
-  if (decision.transformationCount !== 0
-      || !DIALECT_RULE_IDS.every((ruleId) => decision.ruleTransformations[ruleId] === 0)) {
-    throw new Error(`${name} adapter recorded a transformation for valid excluded input`);
+function sectionBytes(elf, name) {
+  const sections = elf.sections.filter((section) => section.name === name);
+  if (sections.length !== 1) throw new Error(`section does not resolve uniquely: ${name}`);
+  return Buffer.from(elfSectionBytes(elf, sections[0]));
+}
+
+function assembleText(config, { name, text, flags = config.compilerAssemblerFlags }) {
+  const directory = path.join(SMOKE_ROOT, name);
+  ensureDir(directory);
+  const source = path.join(directory, `${name}.s`);
+  const object = path.join(directory, `${name}.o`);
+  const binary = path.join(directory, `${name}.bin`);
+  fs.writeFileSync(source, text);
+  const assembled = assembleFileToBinary({ source, outBin: binary, outObj: object, config, assemblerFlags: flags });
+  return { source, object, extractionObject: assembled.extractionObject, binary, bytes: fs.readFileSync(binary), elf: parseElfFile(object) };
+}
+
+function loadReference() {
+  const referencePath = path.join(ROOT, 'build', 'baserom.us_rev0.z64');
+  return fs.existsSync(referencePath) ? fs.readFileSync(referencePath) : loadAndVerifyRom().z64;
+}
+
+function verifyToolIdentities(config) {
+  const versions = {};
+  const tools = {};
+  for (const [name, executable] of Object.entries(config.toolsAbs)) {
+    const relative = `bin/${path.basename(executable)}`;
+    const expected = config.provenance.outputs[relative];
+    tools[name] = { bytes: fs.statSync(executable).size, sha256: sha256File(executable) };
+    if (!expected || tools[name].bytes !== expected.bytes || tools[name].sha256 !== expected.sha256) {
+      throw new Error(`production tool identity drift: ${name}`);
+    }
+    if (Object.prototype.hasOwnProperty.call(config.versions, name)) {
+      versions[name] = toolVersion(executable);
+      requireValue(`${name} version`, versions[name], config.versions[name]);
+    }
   }
-  const raw = assembleText({ name: `${name}_raw`, text });
-  const adapted = assembleText({ name: `${name}_adapted`, text: decision.output.toString('utf8') });
-  const rawWords = instructionWords(raw.bytes);
-  const adaptedWords = instructionWords(adapted.bytes);
-  if (!raw.bytes.equals(adapted.bytes) || JSON.stringify(rawWords) !== JSON.stringify(adaptedWords)) {
-    throw new Error(`${name} raw and adapted instruction words differ`);
+  return { name: 'completePinnedToolBundle', ok: true, tools, versions };
+}
+
+function verifyPrimitiveAssembly(config) {
+  const checks = [];
+  const word = assembleText(config, {
+    name: 'word_be',
+    flags: config.baselineAssemblerFlags,
+    text: '.set noat\n.set noreorder\n.text\n.word 0x3C08800B\n.word 0x2508EDB0\n',
+  });
+  requirePrefix('big-endian words', word.bytes, '3C08800B2508EDB0');
+  requireValue('ELF class/data/machine flags', word.elf.header.flags, 0x10001001);
+  const textSection = word.elf.sections.find((section) => section.name === '.text');
+  if (!textSection || textSection.alignment !== 16 || textSection.size !== 16) {
+    throw new Error('MIPS3/O32 text alignment drift');
   }
-  if (expectedWords && JSON.stringify(rawWords) !== JSON.stringify(expectedWords)) {
-    throw new Error(`${name} instruction words expected ${JSON.stringify(expectedWords)}, got ${JSON.stringify(rawWords)}`);
+  checks.push({ name: 'bigEndianWordsAndMips3O32Flags', ok: true, bytesHex: bytesToHex(word.bytes), elfFlags: hex(word.elf.header.flags) });
+
+  const instructions = assembleText(config, {
+    name: 'instructions_be',
+    text: '.set noat\n.set noreorder\n.text\nlui $t0,0x800b\naddiu $t0,$t0,-0x1250\njr $ra\nnop\n',
+  });
+  requireValue('real instruction bytes', bytesToHex(instructions.bytes), '3C08800B2508EDB003E0000800000000');
+  checks.push({ name: 'realInstructionsBigEndian', ok: true, bytesHex: bytesToHex(instructions.bytes) });
+
+  const branch = assembleText(config, {
+    name: 'noreorder_branch',
+    text: '.set noat\n.set noreorder\n.text\nbeq $zero,$zero,1f\naddiu $t0,$zero,1\n1:\nnop\n',
+  });
+  requirePrefix('noreorder delay slot', branch.bytes, '100000012408000100000000');
+  checks.push({ name: 'noreorderDelaySlot', ok: true, bytesHex: bytesToHex(branch.bytes) });
+
+  const moveSource = [
+    '.set noat', '.set noreorder', '.text', '.globl move_alias_probe', 'move_alias_probe:',
+    '    move $fp,$0', '    move $s8,$zero', '    move $30,$0', '    move $2,$3', '    jr $31', '    nop', '',
+  ].join('\n');
+  const move = assembleText(config, { name: 'move-alias-probe', text: moveSource });
+  requireValue('KMC move aliases', bytesToHex(move.bytes), '0000F0210000F0210000F0210060102103E00008000000000000000000000000');
+  requireValue('historical move probe object', sha256File(move.object), config.provenance.assemblerEquivalence.moveProbeObjectSha256);
+  checks.push({
+    name: 'kmcMoveAliasesUseAddu',
+    ok: true,
+    objectSha256: sha256File(move.object),
+    textSha256: hashBuffer(sectionBytes(move.elf, '.text'), 'sha256'),
+  });
+
+  const explicitOr = assembleText(config, {
+    name: 'explicit_retail_or',
+    text: '.set noat\n.set noreorder\n.text\nor $2,$4,$zero\n',
+  });
+  requirePrefix('explicit retail OR', explicitOr.bytes, '00801025');
+  checks.push({ name: 'explicitRetailOr', ok: true, instructionWord: '0x00801025' });
+
+  const cop1 = assembleText(config, {
+    name: 'cop1_transfer',
+    text: '.set noat\n.set noreorder\n.text\nMFC1 $2,$f0\nMTC1 $4,$f1\n',
+  });
+  requirePrefix('ordinary-C COP1 transfers', cop1.bytes, '4402000044840800');
+  let uppercasePrefixRejected = false;
+  try {
+    assembleText(config, {
+      name: 'cop1_uppercase_prefix_falsifier',
+      text: '.set noat\n.set noreorder\n.text\nmfc1 $2,$F0\n',
+    });
+  } catch (error) {
+    uppercasePrefixRejected = /Illegal operands/.test(error.message);
+    if (!uppercasePrefixRejected) throw error;
+  }
+  if (!uppercasePrefixRejected) throw new Error('noncanonical uppercase COP1 FPR prefix was accepted');
+  checks.push({ name: 'cop1OrdinaryCFormsAndUppercasePrefixFalsifier', ok: true, bytesHex: bytesToHex(cop1.bytes), uppercasePrefixRejected });
+
+  const laJal = assembleText(config, {
+    name: 'la_jal',
+    text: '.set noat\n.set noreorder\n.section .ob64.smoke_la,"ax",@progbits\n.globl smoke_la\nsmoke_la:\nla $4,external_address\njal external_call\n',
+  });
+  requireValue('adjacent la/jal bytes', bytesToHex(laJal.bytes), '3C040000248400000C000000');
+  const relocations = relocationRecords(laJal.elf, { symbol: 'smoke_la', sectionName: '.ob64.smoke_la' });
+  const expectedRelocations = [
+    { offset: '0x00000000', type: 'R_MIPS_HI16', symbol: 'external_address', section: '.rel.text' },
+    { offset: '0x00000004', type: 'R_MIPS_LO16', symbol: 'external_address', section: '.rel.text' },
+    { offset: '0x00000008', type: 'R_MIPS_26', symbol: 'external_call', section: '.rel.text' },
+  ];
+  requireValue('adjacent la/jal relocations', JSON.stringify(relocations), JSON.stringify(expectedRelocations));
+  checks.push({ name: 'adjacentLaDirectJal', ok: true, bytesHex: bytesToHex(laJal.bytes), relocations });
+
+  const numericCall = assembleText(config, {
+    name: 'numeric_absolute_call',
+    text: '.set noat\n.set noreorder\n.text\njal 0x80012340\nnop\n',
+  });
+  requireValue('GNU 2.6 numeric absolute call bytes', bytesToHex(numericCall.bytes), '0C000000000000000000000000000000');
+  const numericRelocations = relocationRecords(numericCall.elf, { symbol: 'numeric_absolute_call', sectionName: '.text' });
+  requireValue('GNU 2.6 numeric absolute call relocations', JSON.stringify(numericRelocations), '[]');
+  checks.push({ name: 'numericAbsoluteCallBehaviorPinned', ok: true, bytesHex: bytesToHex(numericCall.bytes), relocations: numericRelocations });
+
+  const syntax = assembleText(config, {
+    name: 'custom_syntax',
+    text: [
+      '.set noat', '.set noreorder', '.macro EMIT_IF value', '.if \\value', '.word 0x11223344', '.endif', '.endm',
+      '.section .ob64.smoke_syntax,"ax",@progbits', '.globl smoke_syntax', '.ent smoke_syntax', 'smoke_syntax:',
+      'EMIT_IF 1', 'jr $31', 'nop', '.end smoke_syntax', '',
+    ].join('\n'),
+  });
+  requireValue('custom section/macro/conditional bytes', bytesToHex(syntax.bytes), '1122334403E0000800000000');
+  if (!syntax.elf.sections.some((section) => section.name === '.ob64.smoke_syntax')) throw new Error('custom .ob64 section missing');
+  checks.push({ name: 'customSectionEntEndMacroConditional', ok: true, bytesHex: bytesToHex(syntax.bytes) });
+  return checks;
+}
+
+function verifyLinkerAndBinaryLma(config) {
+  const directory = path.join(SMOKE_ROOT, 'linker_lma');
+  ensureDir(directory);
+  const left = assembleText(config, {
+    name: 'linker_lma_left',
+    text: '.section .ob64.smoke_a,"ax",@progbits\n.word 0x11223344\n',
+    flags: config.baselineAssemblerFlags,
+  });
+  const right = assembleText(config, {
+    name: 'linker_lma_right',
+    text: '.section .ob64.smoke_b,"a",@progbits\n.word 0x55667788\n',
+    flags: config.baselineAssemblerFlags,
+  });
+  const script = path.join(directory, 'linker.ld');
+  const elfFile = path.join(directory, 'linker.elf');
+  const mapFile = path.join(directory, 'linker.map');
+  const binaryFile = path.join(directory, 'linker.bin');
+  fs.writeFileSync(script, [
+    'OUTPUT_FORMAT("elf32-bigmips")', 'OUTPUT_ARCH(mips)', 'SECTIONS', '{',
+    '  .ob64.smoke_a 0x80100000 : AT(0x00000100) { *(.ob64.smoke_a) }',
+    '  .ob64.smoke_b 0x80100000 : AT(0x00000200) { *(.ob64.smoke_b) }',
+    '  /DISCARD/ : { *(.text) *(.data) *(.bss) *(.reginfo) *(.pdr) *(.comment) *(.note) }',
+    '}', '',
+  ].join('\n'));
+  runTool(config.toolsAbs.linker, [...config.linkerFlags, '-T', script, '-Map', mapFile, '-o', elfFile, left.extractionObject, right.extractionObject], { cwd: directory });
+  runTool(config.toolsAbs.objcopy, [...config.objcopyFlags, elfFile, binaryFile], { cwd: directory });
+  const elf = parseElfFile(elfFile);
+  const loads = elf.programHeaders.filter((header) => header.type === 1);
+  if (loads.length !== 2
+      || !loads.some((header) => header.vaddr === 0x80100000 && header.paddr === 0x100 && header.fileSize === 4 && header.flags === 5)
+      || !loads.some((header) => header.vaddr === 0x80100000 && header.paddr === 0x200 && header.fileSize === 4 && header.flags === 4)) {
+    throw new Error(`GNU 2.6 one-section PT_LOAD/LMA behavior drift: ${JSON.stringify(loads)}`);
+  }
+  const binary = fs.readFileSync(binaryFile);
+  if (binary.length !== 0x104 || bytesToHex(binary.subarray(0, 4)) !== '11223344'
+      || bytesToHex(binary.subarray(0x100, 0x104)) !== '55667788'
+      || binary.subarray(4, 0x100).some((byte) => byte !== 0)) {
+    throw new Error('GNU 2.6 binary LMA extraction drift');
   }
   return {
-    name,
-    inputSha256: hashBuffer(input, 'sha256'),
-    adaptedSha256: hashBuffer(decision.output, 'sha256'),
-    transformationCount: decision.transformationCount,
-    newRuleTransformations: decision.ruleTransformations[LA_JAL_RULE_ID],
-    rawTextSha256: hashBuffer(raw.bytes, 'sha256'),
-    adaptedTextSha256: hashBuffer(adapted.bytes, 'sha256'),
-    instructionWords: rawWords,
+    name: 'linkerOneSectionLoadsAndBinaryLma',
+    ok: true,
+    loadHeaders: loads,
+    elfSha256: sha256File(elfFile),
+    binarySha256: sha256File(binaryFile),
   };
+}
+
+function verifyFirstTrackedChunk(config) {
+  const manifest = readJson(path.join(ROOT, 'asm', 'original', 'rev0', 'manifest.json'));
+  const first = manifest.chunks[0];
+  const reference = loadReference();
+  const start = parseHexOrNumber(first.romStart);
+  const end = parseHexOrNumber(first.romEndExclusive);
+  const parts = Array.isArray(first.parts) && first.parts.length ? first.parts : [first];
+  const buffers = [];
+  let cursor = start;
+  for (const [partIndex, part] of parts.entries()) {
+    const partStart = parseHexOrNumber(part.romStart);
+    const partEnd = parseHexOrNumber(part.romEndExclusive);
+    if (partStart !== cursor) throw new Error('first tracked chunk part coverage drift');
+    const directory = path.join(SMOKE_ROOT, 'first_tracked_chunk');
+    const stem = path.basename(part.file, '.s');
+    const outBin = path.join(directory, `${stem}.bin`);
+    const outObj = path.join(directory, `${stem}.o`);
+    const adjustedSource = path.join(directory, `${stem}.s`);
+    const sourceText = fs.readFileSync(path.join(ROOT, part.file), 'utf8');
+    const textDirectives = sourceText.match(/^\s*\.text\s*$/gm) || [];
+    if (textDirectives.length !== 1 || /^\s*\.section\b/m.test(sourceText)) throw new Error(`tracked source section grammar drift: ${part.file}`);
+    fs.writeFileSync(adjustedSource, sourceText.replace(/^\s*\.text\s*$/m, `.section .ob64.smoke_part${partIndex},"ax",@progbits`));
+    assembleFileToBinary({ source: adjustedSource, outBin, outObj, config, assemblerFlags: config.baselineAssemblerFlags });
+    const bytes = fs.readFileSync(outBin);
+    const difference = firstDiff(reference.subarray(partStart, partEnd), bytes);
+    if (difference || bytes.length !== partEnd - partStart) throw new Error(`first tracked part mismatch at ${difference ? hex(partStart + difference.offset) : 'size'}`);
+    buffers.push(bytes);
+    cursor = partEnd;
+  }
+  const bytes = Buffer.concat(buffers);
+  const difference = firstDiff(reference.subarray(start, end), bytes);
+  if (cursor !== end || difference || bytes.length !== end - start) throw new Error('first tracked chunk GNU 2.6 mismatch');
+  return { name: 'firstTrackedChunkExact', ok: true, bytes: bytes.length, sha256: hashBuffer(bytes, 'sha256') };
+}
+
+function verifyProductionCutover() {
+  const deleted = [
+    'config/compiler-assembly-dialect.json',
+    'tools/lib/compiler_assembly_dialect.js',
+    'tests/compiler_assembly_dialect.js',
+    'tests/compiler_assembly_dialect_candidate.js',
+  ];
+  for (const relative of deleted) if (fs.existsSync(path.join(ROOT, relative))) throw new Error(`retired adapter path returned: ${relative}`);
+  const activeFiles = [
+    'config/toolchain.json', 'config/phase7/conventional-build.json', 'config/matching-c-targets.json',
+    'tools/build_phase7_conventional.js', 'tools/build_phase8_matching_c.js', 'tools/diff.js',
+    'tools/verify_phase7_conventional.js', 'tools/verify_phase8_matching_c.js',
+    'tools/lib/active_targets.js', 'tools/lib/current_workflow.js', 'tools/lib/phase7_conventional.js',
+    'tools/lib/phase8_matching_c.js', 'tools/lib/real_mips_toolchain.js',
+  ];
+  const forbidden = [/compiler-assembly-dialect/i, /compiler_assembly_dialect/i, /2\.39/, /readelf/i];
+  for (const relative of activeFiles) {
+    const text = fs.readFileSync(path.join(ROOT, relative), 'utf8');
+    for (const pattern of forbidden) if (pattern.test(text)) throw new Error(`retired production dependency returned in ${relative}: ${pattern}`);
+  }
+  const phase8 = loadPhase8Model();
+  if (phase8.targets.some((target) => target.rowIndex === 3066)) throw new Error('p3066 was activated by the toolchain migration');
+  if (phase8.targets.some((target) => target.expectedRelocations.some((relocation) => relocation.section === '.rel.pdr'))) {
+    throw new Error('discarded .pdr metadata remains in the active load-relevant relocation contract');
+  }
+  return { name: 'productionCutoverHasNoAdapterOrModernBinutils', ok: true, inspectedFiles: activeFiles.length, p3066Inactive: true };
 }
 
 function main() {
   const config = assertToolchainAvailable(loadToolchainConfig());
-  const asVersion = toolVersion(config.assemblerAbs);
-  const objcopyVersion = toolVersion(config.objcopyAbs);
-  const checks = [];
-
-  const word = assembleText({
-    name: 'word_be',
-    text: `.set noat
-.set noreorder
-.text
-.globl word_be
-word_be:
-.word 0x3C08800B
-.word 0x2508EDB0
-`,
-  });
-  const wordHex = bytesToHex(word.bytes);
-  requireHex('word_be', wordHex, '3C08800B2508EDB0');
-  checks.push({ name: 'wordBigEndian', ok: true, bytesHex: wordHex });
-
-  const instructions = assembleText({
-    name: 'instructions_be',
-    text: `.set noat
-.set noreorder
-.set nomacro
-.text
-.globl instructions_be
-instructions_be:
-lui $t0, 0x800b
-addiu $t0, $t0, -0x1250
-jr $ra
-nop
-`,
-  });
-  const instructionHex = bytesToHex(instructions.bytes);
-  requireHex('instructions_be', instructionHex, '3C08800B2508EDB003E0000800000000');
-  checks.push({ name: 'realInstructionsBigEndian', ok: true, bytesHex: instructionHex });
-
-  const noreorder = assembleText({
-    name: 'noreorder_branch',
-    text: `.set noat
-.set noreorder
-.set nomacro
-.text
-.globl noreorder_branch
-noreorder_branch:
-beq $zero, $zero, target
-addiu $t0, $zero, 1
-target:
-nop
-`,
-  });
-  const noreorderHex = bytesToHex(noreorder.bytes);
-  requireHex('noreorder_branch', noreorderHex, '100000012408000100000000');
-  checks.push({ name: 'noreorderKeepsDelaySlot', ok: true, bytesHex: noreorderHex });
-
-  const rawMove = assembleText({
-    name: 'raw_gnu_move',
-    text: `.set noreorder
-.text
-raw_gnu_move:
-move $2,$4
-`,
-  });
-  const rawMoveHex = bytesToHex(rawMove.bytes);
-  requireHex('raw_gnu_move', rawMoveHex, '00801025');
-  const adaptedSource = applyCompilerAssemblyDialect(Buffer.from(`.set noreorder
-.text
-adapted_gnu_move:
-move $2,$4
-`), 'PURE_C').output;
-  const adaptedMove = assembleText({
-    name: 'adapted_gnu_move',
-    text: adaptedSource.toString('utf8'),
-  });
-  const adaptedMoveHex = bytesToHex(adaptedMove.bytes);
-  requireHex('adapted_gnu_move', adaptedMoveHex, '00801021');
-  checks.push({
-    name: 'dialectMoveEncoding',
-    ok: true,
-    rawGnuMoveHex: rawMoveHex,
-    adaptedAdduHex: adaptedMoveHex,
-  });
-
-  const adjacentDecision = applyCompilerAssemblyDialect(Buffer.from(`.text
-dialect_la_jal:
-la $4,external_address
-jal external_call
-`), 'PURE_C');
-  const adjacent = assembleText({
-    name: 'dialect_la_jal',
-    text: adjacentDecision.output.toString('utf8'),
-  });
-  const adjacentHex = bytesToHex(adjacent.bytes);
-  requireHex('dialect_la_jal', adjacentHex, '3C0400000C00000024840000');
-  const adjacentElf = parseElfFile(adjacent.objPath);
-  const adjacentTextSection = adjacentElf.sections.find((section) => section.name === '.text');
-  if (!adjacentTextSection || !Buffer.from(elfSectionBytes(adjacentElf, adjacentTextSection)).equals(adjacent.bytes)) {
-    throw new Error('dialect la/jal object text section drift');
+  if (config.sourceCommit !== '54514ded39ceb32165a125ddba04ca5b551773a2'
+      || config.sourceCommit !== config.provenance.source.commit
+      || config.releaseArchiveSha256 !== config.provenance.source.releaseArchiveSha256) {
+    throw new Error('GNU Binutils 2.6 source/release identity drift');
   }
-  const adjacentRelocations = relocationRecords(adjacentElf, { sectionName: '.text' })
-    .filter((record) => record.section === '.rel.text');
-  const expectedAdjacentRelocations = [
-    { offset: '0x00000000', type: 'R_MIPS_HI16', symbol: 'external_address', section: '.rel.text' },
-    { offset: '0x00000004', type: 'R_MIPS_26', symbol: 'external_call', section: '.rel.text' },
-    { offset: '0x00000008', type: 'R_MIPS_LO16', symbol: 'external_address', section: '.rel.text' },
+  const checks = [
+    verifyToolIdentities(config),
+    ...verifyPrimitiveAssembly(config),
+    verifyLinkerAndBinaryLma(config),
+    verifyFirstTrackedChunk(config),
+    verifyProductionCutover(),
   ];
-  if (JSON.stringify(adjacentRelocations) !== JSON.stringify(expectedAdjacentRelocations)) {
-    throw new Error(`dialect la/jal relocation drift: ${JSON.stringify(adjacentRelocations)}`);
-  }
-  checks.push({
-    name: 'dialectLaJalDelaySlotAndRelocations',
-    ok: true,
-    bytesHex: adjacentHex,
-    relocations: adjacentRelocations,
-  });
-
-  const strictIdentifierExclusions = [
-    verifyDialectExclusion({
-      name: 'dialect_excluded_current_location_address',
-      text: '.text\nla $4,.\njal ext_call\n',
-      expectedWords: ['0x3C040000', '0x0C000000', '0x24840000'],
-    }),
-    verifyDialectExclusion({
-      name: 'dialect_excluded_section_address',
-      text: '.data\n.word 0\n.text\nla $4,.data\njal ext_call\n',
-      expectedWords: ['0x3C040000', '0x0C000000', '0x24840000'],
-    }),
-    verifyDialectExclusion({
-      name: 'dialect_excluded_current_location_call',
-      text: '.text\nla $4,ext_address\njal .\n',
-      expectedWords: ['0x3C040000', '0x24840000', '0x0C000002', '0x00000000'],
-    }),
-  ];
-  const registerCallCases = [
-    ['$zero', 'zero'],
-    ['$at', 'at'],
-    ['$v0', 'value'],
-    ['$a0', 'argument'],
-    ['$t0', 'temporary'],
-    ['$t9', 'temporary_t9'],
-    ['$s0', 'saved'],
-    ['$s8', 'saved_s8'],
-    ['$k0', 'kernel'],
-    ['$gp', 'global_pointer'],
-    ['$sp', 'stack_pointer'],
-    ['$fp', 'frame_pointer'],
-    ['$ra', 'return_address'],
-    ['$31', 'numeric_31'],
-  ];
-  for (const [register, suffix] of registerCallCases) {
-    let expectedWords = null;
-    if (register === '$ra' || register === '$31') {
-      expectedWords = ['0x3C040000', '0x24840000', '0x03E0F809', '0x00000000'];
-    } else if (register === '$t9') {
-      expectedWords = ['0x3C040000', '0x24840000', '0x0320F809', '0x00000000'];
-    }
-    strictIdentifierExclusions.push(verifyDialectExclusion({
-      name: `dialect_excluded_jal_register_${suffix}`,
-      text: `.text\nla $4,ext_address\njal ${register}\n`,
-      expectedWords,
-    }));
-  }
-  checks.push({
-    name: 'dialectStrictCLinkageIdentifierExclusions',
-    ok: true,
-    cases: strictIdentifierExclusions,
-  });
-
-  const cop1Transfers = verifyDialectExclusion({
-    name: 'dialect_cop1_numeric_transfer_passthrough',
-    text: '.text\nmtc1 $4,$f12\nmfc1 $5,$f6\n',
-    expectedWords: ['0x44846000', '0x44053000', '0x00000000'],
-  });
-  checks.push({
-    name: 'dialectCop1NumericTransfersByteIdenticalPassthrough',
-    ok: true,
-    ...cop1Transfers,
-  });
-
-  const manifest = readJson(path.join(ROOT, 'asm', 'original', 'rev0', 'manifest.json'));
-  const first = manifest.chunks[0];
-  const firstDir = path.join(ROOT, 'build', 'toolchain-smoke', 'first_tracked_chunk');
-  const reference = loadReference();
-  const start = parseHexOrNumber(first.romStart);
-  const end = parseHexOrNumber(first.romEndExclusive);
-  const firstParts = Array.isArray(first.parts) && first.parts.length > 0 ? first.parts : [first];
-  let partCursor = start;
-  const partReports = [];
-  const partBuffers = [];
-  for (const part of firstParts) {
-    const partStart = parseHexOrNumber(part.romStart);
-    const partEnd = parseHexOrNumber(part.romEndExclusive);
-    if (partStart !== partCursor) throw new Error(`First tracked part starts at ${hex(partStart)}, expected ${hex(partCursor)}`);
-    const partSource = path.join(ROOT, part.file);
-    const stem = path.basename(part.file, '.s');
-    const partBin = path.join(firstDir, `${stem}.bin`);
-    const partObj = path.join(firstDir, `${stem}.o`);
-    assembleFileToBinary({ source: partSource, outBin: partBin, outObj: partObj, config });
-    const partBytes = fs.readFileSync(partBin);
-    const partReferenceSlice = reference.subarray(partStart, partEnd);
-    const partDiff = firstDiff(partReferenceSlice, partBytes);
-    if (partDiff || partBytes.length !== partEnd - partStart) {
-      throw new Error(`First tracked part real-assembler mismatch at ${partDiff ? hex(partStart + partDiff.offset) : 'size'}`);
-    }
-    partReports.push({
-      name: part.name || null,
-      file: part.file,
-      romStart: part.romStart,
-      romEndExclusive: part.romEndExclusive,
-      bytes: partBytes.length,
-      sha256: hashBuffer(partBytes, 'sha256'),
-    });
-    partBuffers.push(partBytes);
-    partCursor = partEnd;
-  }
-  if (partCursor !== end) throw new Error(`First tracked parts end at ${hex(partCursor)}, expected ${hex(end)}`);
-  const firstBytes = Buffer.concat(partBuffers);
-  const referenceSlice = reference.subarray(start, end);
-  const diff = firstDiff(referenceSlice, firstBytes);
-  if (diff || firstBytes.length !== end - start) {
-    throw new Error(`First tracked chunk real-assembler mismatch at ${diff ? hex(start + diff.offset) : 'size'}`);
-  }
-  checks.push({
-    name: 'firstTrackedChunkRealAssembler',
-    ok: true,
-    file: first.file,
-    romStart: first.romStart,
-    romEndExclusive: first.romEndExclusive,
-    bytes: firstBytes.length,
-    sha256: hashBuffer(firstBytes, 'sha256'),
-    parts: partReports,
-  });
-
   const report = {
+    schemaVersion: 2,
     tool: 'binutils_smoke',
     toolchain: {
       id: config.id,
-      kind: config.kind,
-      sourceUrl: config.sourceUrl,
       sourceProject: config.sourceProject,
-      localRoot: config.localRoot,
-      archiveSha256: config.archiveSha256,
-      assembler: config.assembler,
-      objcopy: config.objcopy,
-      assemblerVersion: asVersion,
-      objcopyVersion,
-      assemblerFlags: config.assemblerFlags,
+      sourceCommit: config.sourceCommit,
+      releaseArchiveSha256: config.releaseArchiveSha256,
+      buildProvenance: config.buildProvenance,
+      buildProvenanceSha256: sha256File(config.provenancePath),
+      baselineAssemblerFlags: config.baselineAssemblerFlags,
+      compilerAssemblerFlags: config.compilerAssemblerFlags,
+      linkerFlags: config.linkerFlags,
       objcopyFlags: config.objcopyFlags,
     },
     ok: true,
     checks,
   };
-  const reportPath = path.join(ROOT, 'build', 'toolchain-smoke', 'binutils-smoke-report.json');
+  const reportPath = path.join(SMOKE_ROOT, 'binutils-smoke-report.json');
   writeJson(reportPath, report);
-  console.log(`Toolchain: ${config.id}`);
-  console.log(`Assembler: ${asVersion}`);
-  console.log(`Objcopy: ${objcopyVersion}`);
   for (const check of checks) console.log(`PASS ${check.name}`);
   console.log(`Report: ${reportPath}`);
 }

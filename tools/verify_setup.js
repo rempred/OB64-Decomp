@@ -111,10 +111,14 @@ function main(argv = process.argv.slice(2)) {
       overlapRanges: ledger.overlapRanges,
     }),
     check('toolchainAvailableAndSmokePassed', toolchain.ok, { toolchain: toolchain.toolchain }),
-    check('binutilsWordSmoke', toolchain.checks.some((item) => item.name === 'wordBigEndian' && item.ok)),
+    check('binutilsWordSmoke', toolchain.checks.some((item) => item.name === 'bigEndianWordsAndMips3O32Flags' && item.ok)),
     check('binutilsInstructionSmoke', toolchain.checks.some((item) => item.name === 'realInstructionsBigEndian' && item.ok)),
-    check('binutilsNoreorderSmoke', toolchain.checks.some((item) => item.name === 'noreorderKeepsDelaySlot' && item.ok)),
-    check('firstTrackedChunkRealAssembler', toolchain.checks.some((item) => item.name === 'firstTrackedChunkRealAssembler' && item.ok)),
+    check('binutilsNoreorderSmoke', toolchain.checks.some((item) => item.name === 'noreorderDelaySlot' && item.ok)),
+    check('binutilsCompleteBundle', toolchain.checks.some((item) => item.name === 'completePinnedToolBundle' && item.ok)),
+    check('binutilsHistoricalMove', toolchain.checks.some((item) => item.name === 'kmcMoveAliasesUseAddu' && item.ok)),
+    check('binutilsLinkerLma', toolchain.checks.some((item) => item.name === 'linkerOneSectionLoadsAndBinaryLma' && item.ok)),
+    check('firstTrackedChunkRealAssembler', toolchain.checks.some((item) => item.name === 'firstTrackedChunkExact' && item.ok)),
+    check('retiredProductionDependenciesAbsent', toolchain.checks.some((item) => item.name === 'productionCutoverHasNoAdapterOrModernBinutils' && item.ok)),
     check('manifestIntegrityAudit', /ALL CHECKS PASS/.test((commandReports.find((item) => item.command === 'node tools/check_manifest.js') || {}).output || '')),
     // Executable-extent gate (P7, 2026-07-09): the pinned boundary in config
     // must match the audit's jr-ra extent (+4 = the final return's delay

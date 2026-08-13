@@ -1,115 +1,37 @@
 # OB64 Decomp — Next Steps
 
-This file is the active queue only.
+This file is the active queue only. Changing counts belong in `node tools/status.js`, not here.
 
-Changing counts belong in `node tools/status.js`, not in this document.
+## Immediate gate: independent GNU Binutils 2.6 structural review
 
----
+The GNU Binutils 2.6 implementation commit requires a fresh independent structural review before
+it is treated as accepted canonical history. The reviewer should begin from the implementation
+commit and use new external output roots.
 
-## Immediate Goal: Simplify Without Losing Proof
+At minimum, independently falsify:
 
-### 1. Freeze the current accepted baseline
+- source commit `54514ded39ceb32165a125ddba04ca5b551773a2`, deterministic build inputs, tracked patch
+  scopes, output hashes, and runner identity;
+- big-endian MIPS3/O32 assembly behavior, historical `move` expansion, call relocations, linker
+  LMA/`PT_LOAD` behavior, and binary extraction;
+- exact Phase 7 assembly/data ownership and exact Phase 8 target ownership for all active
+  replacements;
+- untouched KMC compiler output followed only by the accepted target-section adjustment;
+- the reviewed distinction between load-relevant relocations and discarded ancillary procedure
+  metadata, including the `func_0000A1F8` section-symbol normalization;
+- all six GNU 2.6 hybrid rewrites, with every target still classified `HYBRID_C`;
+- p3063 exact `PURE_C`, p3064 exact `HYBRID_C`, protected `func_0002CD70` OR words, and inactive
+  p3066;
+- absence of the retired compiler-assembly rewrite path and modern Binutils from active
+  configuration/build code; and
+- two clean reproducible builds, normal verification, regression suites, the heavyweight audit,
+  and complete ROM SHA-256
+  `571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A`.
 
-Before workflow surgery:
+Record the review in a new durable audit report. Corrections discovered by review should be made
+as a separate structural change and rerun through the same gates.
 
-- run the existing accepted baseline/Phase 7/Phase 8 verification paths;
-- record the current exact retail ROM identity;
-- record the currently active replacement target set; and
-- do not change existing C/asm implementations during the workflow migration.
-
-### 2. Add retrospective source classification
-
-Implement `tools/source_policy.js`.
-
-Classify every active `.c` replacement as:
-
-- `PURE_C`;
-- `HYBRID_C`; or
-- `UNKNOWN`.
-
-Do not break the exact baseline because legacy sources are hybrid.
-
-Update generated status so only exact `PURE_C` targets count as matching C.
-
-### 3. Add the minimal command layer
-
-Implement:
-
-```text
-node tools/build.js
-node tools/diff.js <symbol>
-node tools/verify.js [--target <symbol>] [--require-pure]
-node tools/status.js
-node tools/audit.js
-```
-
-Initially reuse the proven existing Phase 7/8 libraries internally.
-
-Do not create a second independent matching implementation when the existing verifier already
-proves ownership, target bytes, and full-ROM identity.
-
-### 4. Prove parity
-
-For the exact same source tree:
-
-- old accepted verification passes;
-- new verification passes;
-- target placement/ownership decisions agree;
-- target linked bytes agree;
-- final ROM SHA/bytes agree; and
-- source-policy classification is deterministic.
-
-Do not retire the old user-facing workflow before parity is demonstrated.
-
-### 5. Reduce duplicated target metadata
-
-Introduce a minimal active-target model containing primarily:
-
-```json
-{
-  "symbol": "...",
-  "source": "..."
-}
-```
-
-Derive addresses, ranges, owner IDs, overlay information, expected retail bytes, original assembly,
-and relocations from accepted structural sources where safe.
-
-Use an adapter during migration. Do not delete trusted metadata before the derived replacement has
-been proven equivalent.
-
-Move durable link symbols to a shared symbol source when unambiguous; do not invent addresses merely
-to make the config smaller.
-
-### 6. Retire active process bureaucracy
-
-After parity:
-
-- remove Highway/Lane/Lease/Checkpoint/Promotion concepts from active instructions;
-- stop generating ordinary-function promotion/review packages;
-- stop manually duplicating matching counts across docs;
-- keep historical evidence/history intact rather than rewriting it; and
-- keep the heavyweight forensic checks behind `audit`.
-
-### 7. Replace the canonical docs
-
-Install:
-
-- `AGENTS.md`;
-- `docs/WORKFLOW.md`;
-- `docs/SOURCE_POLICY.md`;
-- `docs/AUDIT.md`; and
-- this `docs/NEXT_STEPS.md`.
-
----
-
-## After Migration: Optimize For LordlyCaliber Leverage
-
-Do not restart an easy-function matching farm merely to increase percentage.
-
-Choose the next decomp targets by the amount of runtime-hook/workaround complexity they can remove.
-
-### Structural follow-up — audit remaining manual-load slabs
+## Structural follow-up: audit remaining manual-load slabs
 
 The accepted `scenario-loader-00195410` record proves the generic placement mechanism for a ROM
 range that retail manually DMA-loads to a different runtime VMA without a fixed overlay descriptor.
@@ -126,6 +48,11 @@ ROM addresses as runtime addresses.
 
 The accepted mapping and remaining uncertainty are documented in
 `docs/audit/2026-08-07-func-0019554c-slab-placement-blocker.md`.
+
+## Matching priorities: optimize for LordlyCaliber leverage
+
+Do not restart an easy-function matching farm merely to increase percentage. Choose targets by the
+amount of runtime-hook or workaround complexity they can remove.
 
 ### Tier 1 — Current runtime hooks and code patches
 
@@ -162,32 +89,22 @@ Then expand through:
 - dialogue; and
 - audio/resource consumers.
 
----
+## Legacy hybrid cleanup
 
-## Legacy Hybrid Cleanup
+Do not stop high-value subsystem work to purify every legacy hybrid immediately. Convert hybrids
+opportunistically when they sit on a high-value call graph, are tractable foundational helpers, or
+obscure an important source-level modification.
 
-Do not stop high-value subsystem work to purify every legacy hybrid immediately.
+A target graduates from hybrid to matching C only when it is mechanically `PURE_C`, retains sole
+C-object ownership and exact target bytes, and the complete ROM remains exact.
 
-Convert hybrids opportunistically when:
+## Explicitly deferred
 
-- they sit on a high-value call graph;
-- removing inline assembly is tractable;
-- they are small foundational helpers; or
-- they obscure an important source-level modification.
+Do not combine the active queue with:
 
-The target graduates from hybrid to matching C only when it is `PURE_C` and remains exact.
-
----
-
-## Explicitly Deferred
-
-Do not combine these with the workflow migration:
-
-- Splat version upgrade;
-- compiler/toolchain replacement;
+- another Splat upgrade;
+- another compiler or Binutils replacement;
 - Rev 1 support;
-- new segmentation;
+- new segmentation without a dedicated structural task;
 - broad function-boundary reclassification; or
 - a native-PC/static-recomp project.
-
-Evaluate those separately once the simplified Rev 0 workflow is stable.

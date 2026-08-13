@@ -91,13 +91,18 @@ At minimum verify:
 ### Toolchain
 
 - required tool binaries/versions/hashes match the tracked contract;
-- assembler endianness/ISA/delay-slot behavior and dialect relocation smoke tests pass;
+- the GNU 2.6 source commit, deterministic build recipe, host package inventory, patches, complete
+  executable set, MSYS2 runner, and PowerShell executable/automation assembly match their
+  authenticated pins;
+- assembler endianness/ISA/alignment/delay-slot, historical `move`, COP1, call/relocation, custom
+  section, linker LMA/`PT_LOAD`, and binary-extraction smoke tests pass;
 - compiler flags used for matching remain pinned;
-- the compiler-assembly dialect manifest and adapter-module hashes match their authenticated pins;
-- compiler and assembler identities, versions, and flags match the dialect manifest;
-- the dialect schema and ordered rule identities match the versioned contract; and
-- complete numeric `mfc1`/`mtc1` statements retain byte identity and zero transformations while
-  malformed, named, labeled, out-of-range, control-register, and doubleword forms reject; and
+- untouched KMC compiler output differs from assembler input only by the accepted target-section
+  adjustment;
+- active configuration/build code contains no retired compiler-assembly rewrite stage or modern
+  Binutils dependency;
+- the project-owned ELF report and program-header checks retain exact section VMA/LMA, flags,
+  sizes, and one-section load mapping; and
 - stale build, verification, current-state, proof, or audit schemas reject.
 
 ### Baseline build
@@ -111,24 +116,27 @@ At minimum verify:
 - active C/hybrid replacements do not leave their original target implementations linked;
 - ownership/placement checks pass; and
 - every target is classified before compilation and `UNKNOWN` rejects;
-- strict verification independently recreates each adapted file, section adjustment, and proof;
-- every hybrid raw and adapted file is byte-identical with zero total and per-rule transformations;
-- proof counts and total and per-rule transformation totals are derived from unique verified target
-  proofs; and
+- strict verification independently recreates each section adjustment and source-to-object proof;
+- every load-relevant target-section relocation is compared by offset, type, and normalized
+  symbol/value semantics;
+- discarded ancillary differences, including retired procedure-descriptor relocations, remain
+  visible in reports without entering the active relocation contract;
+- every active replacement retains exact target bytes and sole C-object ownership, while source
+  classes remain honest; and
 - the complete current matching ROM is byte-identical to retail.
 
-For an authenticated assembler-dialect rule, retain GNU assembler as the production assembler and
-use a historical assembler only as a behavioral oracle. Compare emitted instruction words and
-logical relocations by offset, type, and resolved symbol; do not require raw ELF-container identity
-when authenticated metadata and section-layout differences are documented. A pinned production
-optimization flag is not a historical eligibility requirement unless the oracle evidence shows it.
+The GNU 2.6 source-object proof distinguishes load-relevant relocations from discarded ancillary
+metadata. Exact linked bytes do not excuse a missing or altered load-relevant relocation. Raw ELF
+container identity is not required across independently reproduced builds when deterministic
+production executables, target-section bytes, normalized relocations, and structural ELF reports
+are exact.
 
 The audit must also protect the `func_0002CD70` OR-encoding regression. The target must remain
 `HYBRID_C`, retain its accepted target hash, and contain `0x00801025` at offsets `+0x004` and
 `+0x028`.
 
-Phase 2 reports zero transformed targets and zero transformations. These values describe that
-inert result; they are not permanent audit invariants for later eligible pure-C migrations.
+The audit must also prove p3066 remains inactive unless a separate accepted matching task changes
+its ownership.
 
 ---
 

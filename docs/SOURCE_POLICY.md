@@ -64,38 +64,20 @@ The policy checker could not safely classify the translation unit.
 
 `UNKNOWN` fails closed for any task requiring `PURE_C`.
 
-## Compiler-Assembly Adapter Eligibility
+## Compiler-Assembly Handling
 
-Source classification is complete before compiler-assembly adaptation. The external deterministic
-adapter does not change a translation unit's source class.
+Source classification is complete before compilation and does not change during assembly.
+`UNKNOWN` and `ASM` are not accepted matching-compiler inputs.
 
-Only authenticated `PURE_C` output may enter the versioned compiler-assembly statement parser. A
-pure output containing `#APP` or `#NO_APP` rejects before parsing. The current contract can rewrite
-only its complete numeric-register `move` form and its narrowly authenticated adjacent external
-symbol `la $4` plus direct `jal` form. Both address and call symbols in the latter form must match
-the strict C-linkage identifier grammar `[A-Za-z_][A-Za-z0-9_]*`, and the address symbol must remain
-undefined within the translation unit. Rule eligibility does not alter source classification.
+For both `PURE_C` and `HYBRID_C`, the production path preserves the authenticated KMC compiler
+assembly byte-for-byte. The only permitted generated change is replacement of the sole `.text`
+directive with the accepted target-section directive. The pinned GNU 2.6 assembler consumes that
+section-adjusted file directly.
 
-The parser also accepts complete unlabeled KMC-style `mtc1 $N,$fN` and `mfc1 $N,$fN` statements
-only when both registers are numeric and in the range 0 through 31. These statements remain
-byte-identical and record zero transformations. Named, labeled, malformed, extra-operand, and
-out-of-range forms reject. COP0 and control-register transfers, floating-point `mov.*` forms, and
-unproven doubleword transfers remain rejected.
-
-Valid statements outside either supported subset remain byte-identical. Malformed or ambiguous
-syntax and unsupported statement or mode forms fail closed. Current-location, section,
-dot-prefixed local-assembler, expression, addend, register-call, and `jalr` forms are excluded from
-the `la`/`jal` rewrite; register-valued `la` address operands reject before any transformation or
-proof is recorded.
-
-`HYBRID_C` output bypasses the parser as opaque bytes. Its raw and adapted files must match
-byte-for-byte, their SHA-256 values must match, and its total and per-rule transformation counts
-must remain zero.
-
-APP-marker diagnostics can describe hybrid output. Marker balance and terminal APP state must not
-gate hybrid passthrough because authenticated compiler output can remain in APP mode at EOF.
-
-`UNKNOWN` rejects before adaptation. `ASM` is not a compiler-assembly adapter input.
+Source-to-object proof verifies the untouched compiler-assembly hash, section-adjusted hash,
+assembler identity and flags, raw object identity, target bytes, and load-relevant relocations.
+No downstream assembly rewrite can make a hybrid source pure: any `#APP`/`#NO_APP` content or other
+assembler escape hatch was already detected mechanically in the source-policy step.
 
 ---
 

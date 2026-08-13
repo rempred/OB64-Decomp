@@ -38,6 +38,8 @@ void func_0015DF10(u32 value)
         }
         break;
     }
+    asm volatile(".set noreorder");
     func_000EA604(g_func_0015DF10_default);
+    asm volatile("nop\n.set reorder" : : : "memory");
     asm volatile("" : : : "memory");
 }

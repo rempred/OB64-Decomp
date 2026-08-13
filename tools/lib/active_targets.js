@@ -10,15 +10,10 @@ const {
   sha256Buffer,
   sha256File,
 } = require('./phase7_conventional');
-const {
-  validateDialectManifest,
-} = require('./compiler_assembly_dialect');
-
 const CONFIG_PATH = path.join(ROOT, 'config', 'matching-c-targets.json');
 const LEGACY_CONFIG_PATH = path.join(ROOT, 'config', 'phase8', 'matching-c.json');
-const DIALECT_MANIFEST_PATH = path.join(ROOT, 'config', 'compiler-assembly-dialect.json');
-const DIALECT_IMPLEMENTATION_PATH = path.join(ROOT, 'tools', 'lib', 'compiler_assembly_dialect.js');
 const TOOLCHAIN_CONFIG_PATH = path.join(ROOT, 'config', 'toolchain.json');
+const TOOLCHAIN_BUILD_PATH = path.join(ROOT, 'config', 'gnu-binutils-2.6-build.json');
 
 function parseNumber(value, label) {
   if (Number.isInteger(value)) return value;
@@ -65,18 +60,20 @@ function resolveAcceptedRow(model, symbol) {
 
 function assertEquivalent(symbol, field, derived, legacy) {
   const equivalent = sameJson(derived, legacy);
-  if (!equivalent) fail(`active-target adapter mismatch for ${symbol} field ${field}`);
+  if (!equivalent) fail(`active-target legacy-contract mismatch for ${symbol} field ${field}`);
   return { field, derived, legacy, equivalent };
 }
 
-function validateDialectPin(pin, actualManifestSha256) {
+function validateToolchainPin(pin) {
   if (!pin || typeof pin !== 'object' || Array.isArray(pin)
-      || !sameJson(Object.keys(pin).sort(), ['manifest', 'manifestSha256'])
-      || pin.manifest !== 'config/compiler-assembly-dialect.json'
+      || !sameJson(Object.keys(pin).sort(), ['buildProvenance', 'buildProvenanceSha256', 'manifest', 'manifestSha256'])
+      || pin.manifest !== 'config/toolchain.json'
+      || pin.buildProvenance !== 'config/gnu-binutils-2.6-build.json'
       || !/^[0-9A-F]{64}$/.test(pin.manifestSha256)
-      || !/^[0-9A-F]{64}$/.test(actualManifestSha256)
-      || pin.manifestSha256 !== actualManifestSha256) {
-    fail('compiler-assembly dialect manifest pin drift');
+      || !/^[0-9A-F]{64}$/.test(pin.buildProvenanceSha256)
+      || pin.manifestSha256 !== sha256File(TOOLCHAIN_CONFIG_PATH)
+      || pin.buildProvenanceSha256 !== sha256File(TOOLCHAIN_BUILD_PATH)) {
+    fail('GNU Binutils 2.6 toolchain pin drift');
   }
   return pin;
 }
@@ -85,9 +82,8 @@ function loadActiveTargetModel() {
   const model = loadAcceptedModel();
   const minimal = readJson(CONFIG_PATH);
   const legacy = readJson(LEGACY_CONFIG_PATH);
-  if (minimal.schemaVersion !== 2 || minimal.profile !== model.config.profile || !Array.isArray(minimal.targets) || minimal.targets.length === 0
-      || !minimal.compilerAssemblyDialect || typeof minimal.compilerAssemblyDialect !== 'object'
-      || !sameJson(Object.keys(minimal.compilerAssemblyDialect).sort(), ['manifest', 'manifestSha256'])) {
+  if (minimal.schemaVersion !== 3 || minimal.profile !== model.config.profile || !Array.isArray(minimal.targets) || minimal.targets.length === 0
+      || !minimal.toolchain || typeof minimal.toolchain !== 'object') {
     fail('active target configuration schema or profile drift');
   }
   if (legacy.schemaVersion !== 2 || legacy.profile !== minimal.profile || !Array.isArray(legacy.targets)) {
@@ -105,40 +101,31 @@ function loadActiveTargetModel() {
     fail('matching compiler contract differs from the accepted reproduction contract');
   }
 
-  const dialectPin = minimal.compilerAssemblyDialect;
-  if (!fs.existsSync(DIALECT_MANIFEST_PATH)) fail('compiler-assembly dialect manifest pin drift');
-  validateDialectPin(dialectPin, sha256File(DIALECT_MANIFEST_PATH));
-  if (path.resolve(resolveRelative(ROOT, dialectPin.manifest, 'dialect manifest')).toLowerCase() !== path.resolve(DIALECT_MANIFEST_PATH).toLowerCase()) {
-    fail('compiler-assembly dialect manifest pin drift');
-  }
-  const dialectManifest = readJson(DIALECT_MANIFEST_PATH);
+  const toolchainPin = validateToolchainPin(minimal.toolchain);
   const toolchainConfig = readJson(TOOLCHAIN_CONFIG_PATH);
-  if (toolchainConfig.assemblerVersion !== model.config.binutils.version.replace(/^GNU Binutils /, 'GNU assembler (GNU Binutils) ')
-      || !sameJson(toolchainConfig.assemblerFlags, model.config.binutils.assemblerFlags)) {
-    fail('compiler-assembly dialect assembler configuration drift');
+  const toolchainBuild = readJson(TOOLCHAIN_BUILD_PATH);
+  if (toolchainConfig.schemaVersion !== 2
+      || toolchainConfig.sourceCommit !== '54514ded39ceb32165a125ddba04ca5b551773a2'
+      || toolchainBuild.schemaVersion !== 1
+      || toolchainBuild.source.commit !== toolchainConfig.sourceCommit
+      || !sameJson(toolchainConfig.baselineAssemblerFlags, model.config.binutils.assemblerFlags)
+      || !sameJson(toolchainConfig.compilerAssemblerFlags, model.config.binutils.compilerAssemblerFlags)
+      || !sameJson(toolchainConfig.linkerFlags, model.config.binutils.linkerFlags)) {
+    fail('GNU Binutils 2.6 production configuration drift');
   }
-  const dialectContract = {
+  const toolchain = {
     compilerManifestSha256: legacy.compiler.manifestSha256,
     compilerExecutableSha256: legacy.compiler.executableSha256,
     compileFlags: legacy.compiler.compileFlags,
-    assemblerConfigSha256: sha256File(TOOLCHAIN_CONFIG_PATH),
-    assemblerExecutableSha256: model.config.binutils.tools['mips64-elf-as.exe'],
-    assemblerVersion: toolchainConfig.assemblerVersion,
-    assemblerFlags: model.config.binutils.assemblerFlags,
-    implementationPath: 'tools/lib/compiler_assembly_dialect.js',
-    implementationSha256: sha256File(DIALECT_IMPLEMENTATION_PATH),
-  };
-  validateDialectManifest(dialectManifest, dialectContract);
-  const dialect = {
-    manifest: dialectManifest,
-    contract: dialectContract,
     identity: {
-      id: dialectManifest.id,
-      rules: dialectManifest.rules.map((rule) => rule.id),
-      manifestPath: dialectPin.manifest,
-      manifestSha256: dialectPin.manifestSha256,
-      implementationPath: dialectManifest.implementationPath,
-      implementationSha256: dialectManifest.implementationSha256,
+      id: toolchainConfig.id,
+      sourceCommit: toolchainConfig.sourceCommit,
+      manifestPath: toolchainPin.manifest,
+      manifestSha256: toolchainPin.manifestSha256,
+      buildProvenancePath: toolchainPin.buildProvenance,
+      buildProvenanceSha256: toolchainPin.buildProvenanceSha256,
+      assemblerExecutableSha256: model.config.binutils.tools['mips-kmc-elf-as.exe'],
+      assemblerFlags: model.config.binutils.compilerAssemblerFlags,
     },
   };
 
@@ -193,7 +180,10 @@ function loadActiveTargetModel() {
       overlayDescriptorId: slice.overlayDescriptorId,
       descriptorRawSha256: descriptor ? descriptor.rawSha256 : null,
       expectedTextSha256,
-      expectedRelocations: legacyTarget ? (legacyTarget.expectedRelocations || []) : [],
+      expectedRelocations: legacyTarget ? (legacyTarget.expectedRelocations || [])
+        .filter((record) => record.section !== '.rel.pdr')
+        .map((record) => ({ ...record, symbol: record.symbol === entry.symbol ? '.text' : record.symbol })) : [],
+      legacyAncillaryRelocations: legacyTarget ? (legacyTarget.expectedRelocations || []).filter((record) => record.section === '.rel.pdr') : [],
       linkSymbols: legacyTarget ? (legacyTarget.linkSymbols || {}) : {},
       sourceSha256: sha256File(sourceFile),
       descriptor,
@@ -220,7 +210,7 @@ function loadActiveTargetModel() {
       legacyRecord: Boolean(legacyTarget),
       comparisons,
       sourceHashAtMigrationEquivalent: legacyTarget ? target.sourceSha256 === legacyTarget.sourceSha256 : null,
-      relocationComparison: legacyTarget ? 'trusted-legacy-contract-retained' : 'no-legacy-relocation-contract',
+      relocationComparison: legacyTarget ? 'load-relevant-contract-retained; .pdr-retired-and-recorded-as-ancillary' : 'no-legacy-relocation-contract',
       relocationDerivationLimit: legacyTarget ? 'accepted .word assembly owners emit no ELF relocation records' : null,
       retainedBridgeFields: legacyTarget ? ['compiler', 'linkSymbols', 'expectedRelocations'] : ['compiler'],
       retiredPins: ['sourceSha256', 'expectedObjectTextSha256'],
@@ -239,7 +229,7 @@ function loadActiveTargetModel() {
     config: { ...minimal, compiler: legacy.compiler },
     compatibility,
     descriptors: targets.map((target) => target.descriptor).filter(Boolean),
-    dialect,
+    toolchain,
     legacyConfig: legacy,
     minimalConfig: minimal,
     model,
@@ -251,13 +241,12 @@ function loadActiveTargetModel() {
 
 module.exports = {
   CONFIG_PATH,
-  DIALECT_IMPLEMENTATION_PATH,
-  DIALECT_MANIFEST_PATH,
   LEGACY_CONFIG_PATH,
   TOOLCHAIN_CONFIG_PATH,
+  TOOLCHAIN_BUILD_PATH,
   loadActiveTargetModel,
   parseNumber,
   resolveAcceptedRow,
   safeRelative,
-  validateDialectPin,
+  validateToolchainPin,
 };

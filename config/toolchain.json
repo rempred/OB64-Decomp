@@ -1,15 +1,33 @@
 {
-  "id": "n64-tools-gcc-toolchain-mips64-win64",
+  "schemaVersion": 2,
+  "id": "decompals-mips-binutils-2.6-mips-kmc-elf-msys2",
   "kind": "gnu-binutils",
-  "sourceUrl": "https://github.com/n64-tools/gcc-toolchain-mips64/releases/download/latest/gcc-toolchain-mips64-win64.zip",
-  "sourceProject": "https://github.com/n64-tools/gcc-toolchain-mips64",
-  "archiveSha256": "7EE3598AC151C0A728DCFD916E3DF615793D2ED0A28CDC0CCAFA31EEF76526BB",
-  "localRoot": ".toolchains/gcc-toolchain-mips64-win64",
-  "assembler": "bin/mips64-elf-as.exe",
-  "objcopy": "bin/mips64-elf-objcopy.exe",
-  "assemblerVersion": "GNU assembler (GNU Binutils) 2.39",
-  "objcopyVersion": "GNU objcopy (GNU Binutils) 2.39",
-  "assemblerFlags": ["-EB", "-mips3", "-32"],
-  "objcopyFlags": ["-O", "binary", "-j", ".text"],
-  "note": "Project-local N64 MIPS64 GNU binutils toolchain. Keep the archive and extracted tools under .toolchains/; do not commit them."
+  "sourceProject": "https://github.com/decompals/mips-binutils-2.6",
+  "sourceCommit": "54514ded39ceb32165a125ddba04ca5b551773a2",
+  "releaseTag": "v0.3",
+  "releaseArchiveSha256": "5A612CD28344E5B410C3344EC5DCFB92D9D03947756F190CD12404055B4A624D",
+  "buildProvenance": "config/gnu-binutils-2.6-build.json",
+  "localRoot": ".toolchains/gnu-binutils-2.6-mips-kmc-elf-msys2",
+  "tools": {
+    "assembler": "bin/mips-kmc-elf-as.exe",
+    "linker": "bin/mips-kmc-elf-ld.exe",
+    "objcopy": "bin/mips-kmc-elf-objcopy.exe",
+    "objdump": "bin/mips-kmc-elf-objdump.exe",
+    "nm": "bin/mips-kmc-elf-nm.exe",
+    "size": "bin/mips-kmc-elf-size.exe",
+    "strings": "bin/mips-kmc-elf-strings.exe",
+    "strip": "bin/mips-kmc-elf-strip.exe",
+    "runner": "bin/msys-2.0.dll"
+  },
+  "versions": {
+    "assembler": "GNU assembler version 2.6 (mips-kmc-elf), using BFD version 2.6",
+    "linker": "ld version 2.6 (with BFD 2.6)",
+    "objcopy": "GNU objcopy version 2.6",
+    "objdump": "GNU objdump version 2.6"
+  },
+  "baselineAssemblerFlags": ["-G", "0", "-mips3", "-mabi=32", "-V", "-EB"],
+  "compilerAssemblerFlags": ["-G", "0", "-mips3", "-mabi=32", "-force-n64align", "-EB"],
+  "linkerFlags": ["-EB", "-m", "elf32bmip"],
+  "objcopyFlags": ["-O", "binary"],
+  "note": "Authenticated native Windows/MSYS2 GNU Binutils 2.6 bundle. Tracked opt-in BFD patches preserve the accepted one-section-per-PT_LOAD contract, recover exact section LMAs for overlapping overlays, extract binary output in LMA order, and pair KMC symbolic HI16/LO16 relocations across intervening relocations. GNU ld 2.6 predates PHDRS syntax and its stock binary backend uses VMA. The ignored localRoot is populated by the pinned build recipe; production fails closed on every executable and runner hash."
 }

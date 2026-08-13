@@ -108,6 +108,7 @@ node tests/binutils_smoke.js
 ```
 
 Verifies the project-local GNU MIPS binutils toolchain configured in
-`config/toolchain.json`: `.word` big-endian output, real MIPS instruction output,
-`.set noreorder` delay-slot behavior, and the first tracked chunk through
-`mips64-elf-as`.
+`config/toolchain.json`: complete GNU 2.6 executable/runner identity, big-endian MIPS3/O32 output,
+delay slots, historical moves, COP1 and call grammar, custom sections, linker LMA/`PT_LOAD`
+behavior, exact binary extraction, an exact tracked assembly chunk, inactive p3066, and absence
+of retired production dependencies.

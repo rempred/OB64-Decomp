@@ -46,26 +46,27 @@ function main(argv = process.argv.slice(2)) {
   runNode('verify_setup.js', ['--phase5a-root', phase5aRoot], 'structural audit');
   console.log('Running CURRENT ownership and exact-ROM verification...');
   const current = verifyCurrent(context);
-  const dialect = current.verification.verification.dialect;
-  const perRuleTotal = dialect && dialect.counts && dialect.counts.ruleTransformations
-    ? Object.values(dialect.counts.ruleTransformations).reduce((sum, count) => sum + count, 0)
-    : -1;
-  const hybridRuleCountsZero = dialect && Array.isArray(dialect.targets)
-    && dialect.targets.filter((target) => target.sourceClass === 'HYBRID_C').every((target) => (
-      target.ruleTransformations
-      && Object.values(target.ruleTransformations).every((count) => count === 0)
-    ));
-  if (!dialect || dialect.counts.hybridTransformations !== 0
-      || dialect.counts.hybridByteIdenticalTargets !== dialect.counts.hybridTargets
-      || perRuleTotal !== dialect.counts.transformations || !hybridRuleCountsZero) {
-    throw new Error('verified HYBRID_C dialect passthrough invariant failed');
+  const sourceObjectEvidence = current.verification.verification.sourceObjectEvidence;
+  if (!sourceObjectEvidence
+      || sourceObjectEvidence.identity.sourceCommit !== '54514ded39ceb32165a125ddba04ca5b551773a2'
+      || sourceObjectEvidence.counts.proofTargets !== context.phase8.targets.length
+      || sourceObjectEvidence.counts.pureTargets !== current.sourcePolicy.counts.PURE_C
+      || sourceObjectEvidence.counts.hybridTargets !== current.sourcePolicy.counts.HYBRID_C
+      || sourceObjectEvidence.counts.compilerAssemblyRewrites !== 0
+      || sourceObjectEvidence.counts.retiredPdrRelocations !== 38
+      || sourceObjectEvidence.targets.some((target) => target.compilerAssemblyRewritten !== false)) {
+    throw new Error('verified GNU 2.6 source-to-object evidence invariant failed');
+  }
+  if (context.phase8.targets.some((target) => target.expectedRelocations.some((record) => record.section === '.rel.pdr'))
+      || !context.phase8.targets.every((target) => target.legacyAncillaryRelocations.every((record) => record.section === '.rel.pdr'))) {
+    throw new Error('active/retired relocation policy invariant failed');
   }
   const rebuiltRom = fs.readFileSync(path.join(current.build.output, 'phase8.us_rev0.z64'));
   const func2cd70 = context.phase8.targets.find((target) => target.symbol === 'func_0002CD70');
   if (!func2cd70) throw new Error('func_0002CD70 is missing from the active target model');
   const func2cd70Bytes = rebuiltRom.subarray(func2cd70.romStartNumber, func2cd70.romEndNumber);
   const func2cd70Gate = {
-    sourceClass: dialect.targets.find((target) => target.symbol === func2cd70.symbol).sourceClass,
+    sourceClass: sourceObjectEvidence.targets.find((target) => target.symbol === func2cd70.symbol).sourceClass,
     targetSha256: sha256Buffer(func2cd70Bytes),
     expectedTargetSha256: func2cd70.expectedTextSha256,
     instructionWords: {
@@ -80,21 +81,38 @@ function main(argv = process.argv.slice(2)) {
       || func2cd70Gate.instructionWords.offset028 !== '0x00801025') {
     throw new Error('func_0002CD70 hybrid target gate failed');
   }
+  const p3063 = current.verification.verification.targets.find((target) => target.symbol === 'func_0019554C');
+  const p3064 = current.verification.verification.targets.find((target) => target.symbol === 'func_001957D0');
+  if (!p3063 || p3063.sourceObjectEvidence.sourceClass !== 'PURE_C'
+      || p3063.linkedTargetSha256 !== '5985A5DFC866D4EFFB58C0E412AA76A8E0AE8DA0EF19BB8E44A6BF278C2A5E2B'
+      || !p3064 || p3064.sourceObjectEvidence.sourceClass !== 'HYBRID_C'
+      || context.phase8.targets.some((target) => target.rowIndex === 3066)) {
+    throw new Error('p3063/p3064/p3066 migration gate failed');
+  }
   const report = {
-    schemaVersion: 2,
+    schemaVersion: 3,
     status: 'pass',
     completedAt: new Date().toISOString(),
     structuralReport: 'build/setup/verify-setup-report.json',
     currentVerificationReport: 'build/current/verification.json',
     romSha256: current.verification.verification.outputs.rom.sha256,
     sourcePolicyCounts: current.sourcePolicy.counts,
-    compilerAssemblyDialect: {
-      identity: dialect.identity,
-      counts: dialect.counts,
-      sourcePolicy: dialect.sourcePolicy,
-      hybridPassthroughVerified: true,
+    gnuBinutils26: {
+      identity: sourceObjectEvidence.identity,
+      counts: sourceObjectEvidence.counts,
+      sourcePolicy: sourceObjectEvidence.sourcePolicy,
+      compilerAssemblyRewrites: 0,
+    },
+    relocationPolicy: {
+      loadRelevantRelocations: sourceObjectEvidence.counts.loadRelevantRelocations,
+      ancillaryRelocations: sourceObjectEvidence.counts.ancillaryRelocations,
+      retiredPdrRelocations: sourceObjectEvidence.counts.retiredPdrRelocations,
+      activePdrRelocations: 0,
     },
     func0002CD70: func2cd70Gate,
+    p3063: { sourceClass: p3063.sourceObjectEvidence.sourceClass, targetSha256: p3063.linkedTargetSha256 },
+    p3064: { sourceClass: p3064.sourceObjectEvidence.sourceClass, targetSha256: p3064.linkedTargetSha256 },
+    p3066Active: false,
   };
   const reportFile = path.join(ROOT, 'build', 'audit', 'report.json');
   writeJson(reportFile, report);

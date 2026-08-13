@@ -123,9 +123,22 @@ function assembleSelectedFile({ filePath, selectedKind, args, toolchainConfig })
   let tool = 'word-asm';
   if (selectedKind === 'tracked' && args.useRealAsmForTracked) {
     const stem = path.basename(filePath, '.s');
-    const outBin = path.join(args.realAsmOutDir, `${stem}.bin`);
-    const outObj = path.join(args.realAsmOutDir, `${stem}.o`);
-    assembleFileToBinary({ source: filePath, outBin, outObj, config: toolchainConfig });
+    const identity = hashBuffer(Buffer.from(path.relative(ROOT, filePath).replace(/\\/g, '/')), 'sha256').slice(0, 12).toLowerCase();
+    const outputStem = `${stem}-${identity}`;
+    const adjustedSource = path.join(args.realAsmOutDir, `${outputStem}.s`);
+    const outBin = path.join(args.realAsmOutDir, `${outputStem}.bin`);
+    const outObj = path.join(args.realAsmOutDir, `${outputStem}.o`);
+    const sourceText = fs.readFileSync(filePath, 'utf8');
+    const textDirectives = sourceText.match(/^\s*\.text\s*$/gm) || [];
+    if (textDirectives.length !== 1 || /^\s*\.section\b/m.test(sourceText)) {
+      throw new Error(`Tracked assembly section grammar drift: ${filePath}`);
+    }
+    ensureDir(args.realAsmOutDir);
+    fs.writeFileSync(adjustedSource, sourceText.replace(
+      /^\s*\.text\s*$/m,
+      `.section .ob64.audit.${identity},"a",@progbits\n.balign 1`,
+    ));
+    assembleFileToBinary({ source: adjustedSource, outBin, outObj, config: toolchainConfig });
     const bytes = fs.readFileSync(outBin);
     assembled = { bytes, words: bytes.length / 4, outBin, outObj };
     sourceKind = 'tracked-real-asm';
@@ -169,6 +182,79 @@ function main() {
     if (start !== cursor) throw new Error(`Chunk ${chunk.file} starts at ${hex(start)}, expected ${hex(cursor)}`);
     const selected = selectChunkSource(chunk, args, trackedManifest);
     if (selected.kind === 'tracked-parts') {
+      if (args.useRealAsmForTracked) {
+        let partCursor = start;
+        const sectionName = `.ob64.audit.chunk${start.toString(16).padStart(8, '0')}`;
+        const adjustedParts = [];
+        const partMetadata = [];
+        for (const part of selected.parts) {
+          const partStart = parseHexOrNumber(part.romStart);
+          const partEnd = parseHexOrNumber(part.romEndExclusive);
+          if (partStart !== partCursor || partEnd > end || partEnd - partStart !== part.bytes) {
+            throw new Error(`Tracked part coverage drift: ${part.file}`);
+          }
+          const sourceText = fs.readFileSync(part.path, 'utf8');
+          const textDirectives = sourceText.match(/^\s*\.text\s*$/gm) || [];
+          if (textDirectives.length !== 1 || /^\s*\.section\b/m.test(sourceText)) {
+            throw new Error(`Tracked assembly section grammar drift: ${part.file}`);
+          }
+          adjustedParts.push(sourceText.replace(
+            /^\s*\.text\s*$/m,
+            `.section ${sectionName},"a",@progbits\n.balign 1`,
+          ));
+          partMetadata.push({ part, partStart, partEnd });
+          partCursor = partEnd;
+        }
+        if (partCursor !== end) throw new Error(`Tracked parts end at ${hex(partCursor)}, expected ${hex(end)}`);
+        ensureDir(args.realAsmOutDir);
+        const outputStem = `chunk_${start.toString(16).padStart(8, '0')}_${end.toString(16).padStart(8, '0')}`;
+        const generatedSource = path.join(args.realAsmOutDir, `${outputStem}.s`);
+        const outBin = path.join(args.realAsmOutDir, `${outputStem}.bin`);
+        const outObj = path.join(args.realAsmOutDir, `${outputStem}.o`);
+        fs.writeFileSync(generatedSource, `${adjustedParts.join('\n')}\n`);
+        assembleFileToBinary({ source: generatedSource, outBin, outObj, config: toolchainConfig });
+        const assembledBytes = fs.readFileSync(outBin);
+        if (assembledBytes.length !== end - start || assembledBytes.length !== chunk.bytes) {
+          throw new Error(`Assembled chunk size mismatch for ${chunk.file}: got ${assembledBytes.length}, expected ${chunk.bytes}`);
+        }
+        const partReports = [];
+        let byteOffset = 0;
+        for (const { part, partStart, partEnd } of partMetadata) {
+          const partBytes = assembledBytes.subarray(byteOffset, byteOffset + part.bytes);
+          partReports.push({
+            name: part.name || null,
+            file: path.relative(ROOT, part.path).replace(/\\/g, '/'),
+            source: 'tracked-real-asm',
+            tool: toolchainConfig.id,
+            toolOutput: path.relative(ROOT, outBin).replace(/\\/g, '/'),
+            romStart: hex(partStart),
+            romEndExclusive: hex(partEnd),
+            bytes: partBytes.length,
+            words: partBytes.length / 4,
+            sha256: hashBuffer(partBytes, 'sha256'),
+          });
+          byteOffset += part.bytes;
+        }
+        buffers.push(assembledBytes);
+        totalWords += assembledBytes.length / 4;
+        chunkReports.push({
+          file: selected.file,
+          source: 'tracked-parts-real-asm',
+          tool: toolchainConfig.id,
+          toolOutput: path.relative(ROOT, outBin).replace(/\\/g, '/'),
+          romStart: hex(start),
+          romEndExclusive: hex(end),
+          bytes: assembledBytes.length,
+          words: assembledBytes.length / 4,
+          sha256: hashBuffer(assembledBytes, 'sha256'),
+          parts: partReports,
+        });
+        sourceCounts.trackedComposite += 1;
+        sourceCounts.trackedRealAsm += 1;
+        sourceCounts.trackedRealAsmFiles += selected.parts.length;
+        cursor = end;
+        continue;
+      }
       let partCursor = start;
       let partWords = 0;
       const partBuffers = [];

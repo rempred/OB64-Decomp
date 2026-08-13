@@ -46,8 +46,8 @@ function main() {
     output: options.output,
     asmDifferRoot: options.asmDifferRoot,
     splatPython: options.splatPython,
-    objdump: runtime.tools['mips64-elf-objdump.exe'].path,
-    objcopy: runtime.tools['mips64-elf-objcopy.exe'].path,
+    objdump: runtime.tools['mips-kmc-elf-objdump.exe'].path,
+    objcopy: runtime.tools['mips-kmc-elf-objcopy.exe'].path,
   });
   const buildReport = readJson(buildReportFile);
   validateRecordedPhase8Build(phase8, {
@@ -56,7 +56,7 @@ function main() {
     verification,
     compilerSha256: compiler.sha256,
   });
-  const result = { schemaVersion: 2, status: 'pass', output: '.', verification };
+  const result = { schemaVersion: 3, status: 'pass', output: '.', verification };
   if (reportFile) writeJson(reportFile, result);
   console.log(`Phase 8 matching C verification: PASS (${verification.outputs.rom.sha256})`);
 }

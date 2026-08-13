@@ -32,7 +32,7 @@ function main() {
   const runtime = verifyRuntimeTools(model, options);
   const verification = verifyOutput(model, {
     ...options,
-    objdump: runtime.tools['mips64-elf-objdump.exe'].path,
+    objdump: runtime.tools['mips-kmc-elf-objdump.exe'].path,
   });
   const buildReport = readJson(buildReportFile);
   if (buildReport.schemaVersion !== 1 || buildReport.status !== 'pass') fail('recorded build report did not pass');

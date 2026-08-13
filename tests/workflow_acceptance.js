@@ -5,8 +5,8 @@ const fs = require('fs');
 const path = require('path');
 const {
   loadPhase8Model,
-  validateDialectProofBytes,
   validateRecordedPhase8Build,
+  validateSourceObjectProofBytes,
 } = require('../tools/lib/phase8_matching_c');
 const { SOURCE_CLASSES } = require('../tools/lib/source_policy');
 const {
@@ -71,14 +71,14 @@ function main() {
     output, buildReport: report, verification: staleVerification, compilerSha256: report.compiler.sha256,
   })));
   const missingProof = clone(report);
-  missingProof.targetReplacements[0].dialectProof = null;
+  missingProof.targetReplacements[0].sourceObjectProof = null;
   mutations.push(expectRejection('missing proof', () => validateRecordedPhase8Build(phase8, {
     output, buildReport: missingProof, verification: report.verification, compilerSha256: report.compiler.sha256,
   })));
   const hybridHashDrift = clone(report);
   const hybridReplacement = hybridHashDrift.targetReplacements.find((target) => target.symbol === hybrid.symbol);
-  hybridReplacement.dialectAssemblySha256 = '0'.repeat(64);
-  mutations.push(expectRejection('hybrid adapted hash drift', () => validateRecordedPhase8Build(phase8, {
+  hybridReplacement.linkedAssemblySha256 = '0'.repeat(64);
+  mutations.push(expectRejection('hybrid section-adjusted assembly hash drift', () => validateRecordedPhase8Build(phase8, {
     output, buildReport: hybridHashDrift, verification: report.verification, compilerSha256: report.compiler.sha256,
   })));
   const unknownClass = clone(report);
@@ -86,16 +86,16 @@ function main() {
   mutations.push(expectRejection('unknown recorded class', () => validateRecordedPhase8Build(phase8, {
     output, buildReport: unknownClass, verification: report.verification, compilerSha256: report.compiler.sha256,
   })));
-  const proofFile = path.join(output, ...report.targetReplacements[0].dialectProof.path.split('/'));
+  const proofFile = path.join(output, ...report.targetReplacements[0].sourceObjectProof.path.split('/'));
   const proofBytes = fs.readFileSync(proofFile);
   const staleProof = JSON.parse(proofBytes.toString('utf8'));
   staleProof.schemaVersion = 0;
   const staleProofBytes = Buffer.from(`${JSON.stringify(staleProof, null, 2)}\n`);
-  mutations.push(expectRejection('stale proof schema', () => validateDialectProofBytes(staleProofBytes, proofBytes)));
+  mutations.push(expectRejection('stale proof schema', () => validateSourceObjectProofBytes(staleProofBytes, proofBytes)));
 
   const context = prepareContext();
   const reusable = {
-    schemaVersion: 2,
+    schemaVersion: 3,
     fingerprint: context.currentFingerprint,
     baselineFingerprint: context.baselineFingerprint,
     output,
