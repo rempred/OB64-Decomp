@@ -2,8 +2,8 @@
 
 Status: **proposed complete product plan — implementation not yet authorized by this document alone**  
 Created: 2026-08-17  
-Target: **Ogre Battle 64: Person of Lordly Caliber, US Rev 0 only**  
-Primary objective: build a clean, live-connected runtime/static resolver whose dynamic evidence is acquired from Project64 as the game is actually played, including transient overlays and data loads that may exist for only a few frames.
+Revised: 2026-08-17 — **Total Resolver is a first-class `OB64-Decomp` tool**  
+Target: **Ogre Battle 64: Person of Lordly Caliber, US Rev 0 only**
 
 ## 1. Executive Summary
 
@@ -17,19 +17,24 @@ The project already has nearly all of the difficult ingredients required for a m
 - a runtime provenance atlas built from selected observed sessions;
 - a source-neutral Unified Resolver that joins accepted aides while preserving evidence lanes;
 - a custom `ob64-core` Project64 fork;
-- a persistent `Pj64Agent` bridge client that can read/write RAM, install read/write/execute watches, drain structured events, frame-step, instruction-step, load/save states, drive controller input, capture framebuffer state, and dump RDRAM.
+- a persistent Python Project64 client that can read/write RAM, install read/write/execute watches, drain structured events, frame-step, instruction-step, load/save states, drive controller input, capture framebuffer state, and dump RDRAM.
 
-The missing product is not another debugger or another static database. The missing product is a **clean acquisition and integration layer** that turns live Project64 activity into lossless, provenance-backed runtime evidence and then feeds that evidence into a new accepted resolver generation.
+The missing product is not another debugger or another static database. The missing product is a **decomp-owned Total Resolver** that combines the accepted static model with clean, live Project64 acquisition and can build a new dynamic placement/runtime database while the game is actually being played.
 
-Total Resolver R3 therefore has three major responsibilities:
+The implementation belongs in this repository under `tools/total_resolver/`. Project64 remains an external runtime dependency, but the client, recorder, schemas, derivation pipeline, resolver, verifier, coverage tools, and user-facing commands are decomp-repo tools.
+
+Large or mutable runtime outputs must still obey the decomp repository's source-ownership rules. Session databases, RAM captures, screenshots, temporary traces, generated SQLite products, and similar bulk artifacts live under ignored `build/total-resolver/` paths by default. The **tool is tracked; the raw runtime corpus is generated/ignored unless a deliberately bounded fixture is approved for version control.**
+
+Total Resolver R3 has four major responsibilities:
 
 1. **Capture reality without losing transient states.** A code or data placement that exists for one or two frames must be recordable even if no savestate was ever made while it was resident.
-2. **Separate machine truth from human interpretation.** Project64 can prove that bytes were loaded, placed, executed, read, or written. Joe can label visible states such as `World Map`, `Army - Equipment`, or `Battle Results`. Those labels must never become the identity or proof of the underlying machine configuration.
-3. **Resolve both live and offline evidence through one query surface.** A live PC, ROM offset, function, field, resource, loader event, runtime placement, or watch hit should be traceable through the accepted static and dynamic evidence without collapsing placement into execution or candidate evidence into fact.
+2. **Separate machine truth from human interpretation.** Project64 can prove that bytes were loaded, placed, executed, read, or written. Human labels such as `World Map`, `Army - Equipment`, or `Battle Results` remain annotations and never become machine identity.
+3. **Resolve live and offline evidence through one query surface.** A live PC, ROM offset, function, field, resource, loader event, runtime placement, or watch hit should be traceable through accepted static and dynamic evidence without collapsing placement into execution or candidate evidence into fact.
+4. **Measure coverage rather than guessing completeness.** R3 must report what the static model has never seen dynamically and what dynamic observations still cannot be explained statically.
 
-The recommended architecture is **not** to mutate the current accepted resolver in place. Freeze the current resolver and all five existing source products as historical/current reference points. Build R3 beside them, prove it independently, then promote it atomically only after its verifiers and review gates pass.
+The current Unified Resolver and its five source products should be frozen as reference inputs. R3 is built beside them, proven independently, then promoted only after its capture, derivation, query, and verification contracts pass.
 
-The first implementation milestone is deliberately small: **capture one real transition end-to-end with no lost transient loads, regenerate the result deterministically from a raw session database, and resolve the captured live PCs back to accepted static identities.** Once that is trustworthy, full-game acquisition is mainly a coverage exercise.
+The first implementation milestone is deliberately narrow: **capture one real transition end-to-end with no lost transient loads, regenerate that transition deterministically from a raw session database, and resolve its captured live PCs back to accepted static identities.** If that works, full-game acquisition becomes a coverage program rather than another one-off research project.
 
 ---
 
@@ -37,15 +42,17 @@ The first implementation milestone is deliberately small: **capture one real tra
 
 ### 2.1 What Total Resolver R3 is
 
-Total Resolver R3 is the combination of:
+Total Resolver R3 is a tracked tool suite in `OB64-Decomp` consisting of:
 
-- a **raw live-session capture store** fed by Project64;
-- a **placement/lifetime derivation pipeline** that becomes Overlay Atlas 2.0;
-- an **execution/memory-provenance derivation pipeline** that becomes Runtime Provenance 2.0;
-- the existing accepted static aides, either reused directly or rebuilt from the same authoritative inputs;
-- a new **R3 resolver registry and normalized query database**;
-- a **live resolver adapter** that can enrich current Project64 events without granting those unreviewed events accepted status;
-- deterministic coverage, provenance, unresolved, conflict, and review reports.
+- a Project64 bridge client owned by this repo, or a thin repo-local compatibility layer over the existing bridge protocol;
+- a **raw live-session recorder**;
+- a **placement/lifetime derivation pipeline** that produces Overlay Atlas 2.0 data;
+- an **execution/memory-provenance derivation pipeline** that produces Runtime Provenance 2.0 data;
+- adapters for the accepted static aides;
+- a new R3 resolver registry and normalized query database;
+- a live-session adapter that can enrich current Project64 events without granting them accepted status;
+- deterministic coverage, provenance, unresolved, conflict, and review reports;
+- a stable CLI/API usable by humans and Codex.
 
 ### 2.2 What Total Resolver R3 is not
 
@@ -53,73 +60,122 @@ It is not:
 
 - a replacement for the byte-exact decomp;
 - a replacement for Project64;
-- a replacement for the existing Project64 bridge;
 - a requirement to adopt Ghidra as canonical;
 - a claim that every possible game state can be mathematically proven visited;
-- a semantic gameplay database where a menu name or visible action automatically proves code meaning;
-- a reason to copy runtime databases, savestates, or large generated artifacts into this exact-build repository;
-- a destructive migration of Atlas 1.x or the current Unified Resolver.
+- a semantic gameplay database where a screen name automatically proves code meaning;
+- a reason to commit ROMs, savestates, full RAM dumps, screenshots, or generated bulk databases to Git;
+- a destructive migration of Atlas 1.x or the current Unified Resolver;
+- a requirement that the normal decomp build have a running Project64 instance.
 
 ---
 
-## 3. Repository and Ownership Boundaries
+## 3. Repository Ownership and Layout
 
-This plan lives in `OB64-Decomp` because the resolver depends on the decomp's structural truth and because future decomp work needs a stable specification for runtime mapping. The implementation must still preserve the existing workspace split.
+This revision intentionally makes Total Resolver a **decomp-repository capability**.
 
-### 3.1 Parent research workspace (`OgreBattlel64`)
+### 3.1 `OB64-Decomp` owns the Total Resolver implementation
 
-The parent workspace remains the owner of:
-
-- Project64 runtime control;
-- `Pj64Agent` and bridge-side experiment tooling;
-- savestates and runtime-state corpora;
-- live traces and event streams;
-- raw RDRAM captures;
-- live-session SQLite databases;
-- generated atlases and research-aide products under `wiki/`;
-- experimental recorder code until it becomes stable tooling;
-- runtime screenshots, framebuffer hashes, crash bundles, and intervention logs.
-
-Recommended maintained runtime tooling location:
+Tracked source should live here:
 
 ```text
-tools/project64/total_resolver/
+tools/total_resolver/
 ```
 
-Recommended generated product roots:
+This repository owns:
+
+- capture/recorder source code;
+- Project64 client/protocol code required by the resolver;
+- loader-specific decoders;
+- schemas;
+- static-source adapters;
+- Overlay Atlas 2.0 generator;
+- Runtime Provenance 2.0 generator;
+- normalized resolver builder;
+- query API/CLI;
+- live event enrichment;
+- coverage reporting;
+- verifiers and tests;
+- curated product documentation;
+- small approved fixtures.
+
+The decomp's accepted function ranges, structural ownership, overlay descriptors, linker model, and exact bytes remain the canonical static foundation.
+
+### 3.2 Project64 is an external runtime dependency
+
+The `ob64-core` Project64 fork can remain in its own repository/location. R3 communicates through the existing bridge protocol.
+
+R3 should not require the Project64 source tree to be nested in `OB64-Decomp`.
+
+The normal relationship is:
 
 ```text
-wiki/sol-total-resolver-r3-<date>/
-wiki/overlay-atlas-r4-<date>/          # if a separately versioned atlas product is retained
-wiki/runtime-provenance-r4-<date>/     # if a separately versioned runtime product is retained
+OB64-Decomp/tools/total_resolver
+        |
+        | TCP bridge protocol
+        v
+Project64 ob64-core + OB64 bridge
 ```
 
-The exact generated root name may follow the parent workspace's current research-aide naming convention at implementation time. The important rule is that the dynamic databases stay out of the decomp repository.
+If later it is useful to version the JavaScript bridge script itself in this repo, that should be an explicit migration with one canonical copy and protocol-version tests. Do not begin R3 by creating two independently maintained bridge implementations.
 
-### 3.2 `OB64-Decomp`
+### 3.3 Generated runtime data stays in the decomp repo working tree but out of Git
 
-This repository remains the owner of:
+Default generated root:
 
-- accepted Rev 0 static structure;
-- function/data ownership;
-- overlay descriptors and linker placement that have graduated into structural truth;
-- source/build/toolchain inputs;
-- byte-exact function ranges;
-- curated subsystem documentation;
-- any small machine-readable static export specifically needed to make cross-repository resolution reproducible;
-- this product plan.
+```text
+build/total-resolver/
+```
 
-R3 must consume decomp structure; it must not make the decomp depend at build time on a live Project64 installation or on generated runtime databases.
+Suggested structure:
 
-### 3.3 LordlyCaliber/editor
+```text
+build/total-resolver/
+  sessions/
+    <session-id>/
+      capture.sqlite
+      manifest.json
+      events.ndjson
+      captures/
+      session.log
+  products/
+    overlay-atlas-2.sqlite
+    runtime-provenance-2.sqlite
+    resolver-r3.sqlite
+    reports/
+    manifests/
+  cache/
+```
 
-LordlyCaliber may consume verified exports later, but no editor runtime dependency is required for R3. The resolver is a research/decomp capability first.
+These paths should be ignored unless a small fixture is intentionally promoted.
+
+### 3.4 Version-controlled configuration and fixtures
+
+Recommended tracked locations:
+
+```text
+config/total-resolver/
+  sources.json
+  loaders.json              # only if declarative loader config is useful
+  policy.json               # only if policy is not clearer in code/docs
+
+tests/fixtures/total-resolver/
+  synthetic/
+  transition-golden/        # bounded, copyright-safe evidence only
+```
+
+Do not commit raw game binaries or full captured game memory merely to make a test self-contained.
+
+### 3.5 Parent workspace relationship
+
+The parent research workspace may still hold historical experiments, old atlases, savestate corpora, and research logs. R3 may import explicitly identified historical products for **comparison**, but its implementation and normal command surface belong here.
+
+This plan therefore supersedes the earlier assumption that the recorder/resolver code itself should remain a parent-workspace product.
 
 ---
 
 ## 4. Existing Foundation and Source Lanes
 
-The current Unified Resolver is already source-neutral and registry-driven. Its main accepted input families are represented by five adapters.
+The current Unified Resolver is already source-neutral and registry-driven. Its accepted input families are represented by five adapters.
 
 ### 4.1 Static DB R3
 
@@ -127,12 +183,6 @@ Current adapter identity:
 
 ```text
 static-db-r3
-```
-
-Current database role:
-
-```text
-db/ob64-static.sqlite
 ```
 
 Provides:
@@ -154,12 +204,6 @@ Current adapter identity:
 
 ```text
 resource-chain-static
-```
-
-Current database role:
-
-```text
-db/resource-load-chains.sqlite
 ```
 
 Provides:
@@ -184,12 +228,6 @@ Current adapter identity:
 structure-field-static
 ```
 
-Current database role:
-
-```text
-db/structure-field-access.sqlite
-```
-
 Provides:
 
 - object families;
@@ -201,7 +239,7 @@ Provides:
 - semantic claims;
 - conflicts and unresolved evidence.
 
-Evidence lanes: `field` and bounded `static` ownership.
+Evidence lanes: `field` plus bounded static ownership.
 
 ### 4.4 Offline Overlay Atlas R3
 
@@ -211,23 +249,17 @@ Current adapter identity:
 overlay-atlas-r3
 ```
 
-Current database role:
-
-```text
-db/overlay-atlas.sqlite
-```
-
 Provides:
 
 - logical function placement observations;
-- source input/state identities;
+- state/input identities;
 - RAM/live function locations;
 - validated/candidate slabs;
 - placement ambiguities.
 
 Evidence lane: `placement`.
 
-Its current boundary is important: the corpus is finite, absence from that corpus is not evidence that code is unused, and a validated slab proves byte mapping rather than execution.
+Its finite savestate corpus is useful historical evidence, but absence from that corpus is not evidence that code is unused.
 
 ### 4.5 Runtime Provenance R3
 
@@ -237,41 +269,32 @@ Current adapter identity:
 runtime-provenance-r3
 ```
 
-Current database role:
-
-```text
-db/runtime-provenance.sqlite
-```
-
 Provides:
 
 - runtime sessions;
-- state identities and state-load proofs;
-- frames;
-- events;
-- watches;
+- state identities/load proofs;
+- frames/events/watches;
 - executed PCs;
 - mapped functions;
 - memory accesses;
-- observed direct edges;
-- observed indirect targets;
+- observed direct/indirect targets;
 - basic-block mappings;
 - runtime overlay placements;
 - live validation;
-- conflicts and predictions.
+- conflicts/predictions.
 
 Evidence lane: `runtime`.
 
-### 4.6 R3 migration policy
+### 4.6 Clean R3 migration policy
 
-For the clean Total Resolver R3 build:
+For the new clean dynamic lane:
 
-- **Static DB R3, Resource Chain Static, and Structure/Field Static** may remain current accepted static sources if their source identities still validate.
-- **Offline Overlay Atlas R3 and Runtime Provenance R3 must not seed the new dynamic database.** Freeze them and use them only for later comparison/corroboration.
-- New dynamic observations must originate from clean R3 sessions or from a separately classified retrospective audit run.
-- The old dynamic products remain queryable as historical/reference evidence outside the new accepted-current source set until a deliberate migration review says otherwise.
+- Static DB, Resource Chain Static, and Structure/Field Static may remain accepted static feeds if current identity checks pass.
+- Old Overlay Atlas R3 and Runtime Provenance R3 are frozen reference products and **do not seed clean R3 dynamic facts**.
+- Clean dynamic observations originate from new R3 capture sessions.
+- Historical products can later be compared against clean R3 and classified as corroborated, compatible-but-unseen, conflicting, or unresolvable.
 
-This prevents untrusted old savestate naming or unknown corpus gaps from becoming invisible inherited assumptions.
+This avoids inheriting questionable old savestate names or hidden corpus gaps.
 
 ---
 
@@ -279,30 +302,30 @@ This prevents untrusted old savestate naming or unknown corpus gaps from becomin
 
 ### G1. Clean acquisition from actual gameplay
 
-Start from a known Rev 0 ROM and a fresh R3 capture session. Joe may begin at a clean boot/new game or another explicitly identified starting point. Old savestate labels are not required.
+Start from a known Rev 0 ROM and a fresh R3 capture session. A clean boot/new game is preferred for the first broad coverage run. Old savestate labels are not required.
 
 ### G2. Preserve transient loads
 
-A code or data placement that exists for only one frame, a few frames, or a transition window must be represented as a lifetime/event record even if it never becomes a stable visible screen.
+A code or data placement that exists for one event, one frame, a few frames, or only during a transition must remain representable.
 
 ### G3. Capture source, destination, content, lifetime, and execution separately
 
 For every observed load where evidence permits, retain:
 
-- the loader/trigger;
+- loader/trigger;
 - source ROM/resource identity;
 - destination RAM range;
-- content hash;
-- first/last observed frame or event sequence;
-- replacement/unload cause;
+- content identity/hash;
+- first/last observed sequence and frame;
+- replacement/unload reason;
 - functions/bytes mapped into the region;
-- whether any mapped bytes were actually executed;
-- whether any addresses were read/written;
+- whether mapped bytes were actually executed;
+- relevant reads/writes;
 - confidence and evidence basis.
 
 ### G4. Human labels are optional annotations
 
-Joe should be able to mark:
+Examples:
 
 ```text
 World Map
@@ -312,31 +335,35 @@ Entering Item Shop
 Battle - Results
 ```
 
-but machine evidence must remain valid if a label is wrong, changed, absent, or more specific later.
+A corrected human label must not change placement identity or raw machine evidence.
 
 ### G5. Live resolution
 
-During a Project64 session, a watch hit or live PC should be resolvable immediately against:
+During a Project64 session, a watch hit or live PC should be immediately resolvable against:
 
 - accepted static structure;
-- accepted previous dynamic evidence;
-- the current unreviewed live session;
-- current frame/configuration context.
+- accepted dynamic evidence;
+- current live-unreviewed session evidence;
+- current sequence/frame/configuration context.
 
-### G6. Fail closed on ambiguous reused live addresses
+### G6. Fail closed on reused live addresses
 
-If `0x801Dxxxx` can contain different overlays in different contexts, the resolver must not silently choose one without a frame/session/current placement that disambiguates it.
+If the same KSEG range can host different overlays, a context-free query must not guess. Session/frame/region context must disambiguate it or the result stays unresolved.
 
 ### G7. Deterministic regeneration
 
-Raw session evidence must be sufficient to regenerate every derived dynamic atlas row and every R3 resolver contribution deterministically.
+Raw session evidence must be sufficient to regenerate all derived dynamic rows and reports deterministically.
 
 ### G8. Measurable coverage
 
-R3 must answer both:
+R3 must answer:
 
-- **static -> dynamic:** what known code/resources have never been observed placed/executing?
-- **dynamic -> static:** what observed placements/PCs/loads still cannot be resolved to static identities?
+- **static -> dynamic:** what known code/resources have never been observed placed or executed?
+- **dynamic -> static:** what observed placements/PCs/loads still cannot be explained by accepted static identities?
+
+### G9. Repo-local usability
+
+A contributor with the decomp repo plus the configured Project64 runtime dependency should be able to use the canonical commands without locating a separate resolver source tree.
 
 ---
 
@@ -349,18 +376,16 @@ R3 does not initially need to:
 - prove semantic behavior of every function;
 - trace every instruction continuously;
 - hash all 8 MiB of RDRAM every frame;
-- replace existing semantic docs;
 - import all old savestates;
-- create a GUI before the capture core is proven;
+- create a GUI before capture is proven;
 - modify ROM/RAM during ordinary capture;
-- infer function meaning from co-residency alone;
-- treat a loader chain as proof of natural reachability until actually observed.
+- infer function meaning from co-residency;
+- treat a static loader chain as proof of natural reachability;
+- make runtime acquisition part of `node tools/build.js` or ordinary exact-ROM verification.
 
 ---
 
 ## 7. Governing Invariants
-
-These are hard product rules.
 
 ### 7.1 Address-space separation
 
@@ -376,244 +401,324 @@ The early-boot `RAM = ROM + 0x8006FC00` shortcut is not valid for later overlays
 
 ### 7.2 Placement is not execution
 
-A byte-exact region found resident in RAM proves placement within the stated evidence limits. It does not prove that any instruction in that region executed.
+A byte-exact region resident in RAM proves placement within its evidence limits. It does not prove any instruction in that region executed.
 
 ### 7.3 Execution is session-scoped
 
-Observed execution proves that a PC/function executed in the recorded session/context. It does not prove universal gameplay semantics or reachability in every state.
+Observed execution proves a PC/function executed in the recorded session/context. It does not prove universal gameplay semantics.
 
 ### 7.4 Human labels are not machine identity
 
-`Army - Equipment` is annotation. The machine identity is the underlying placement/resource/execution configuration.
+`Army - Equipment` is annotation. The machine identity is the placement/resource/execution configuration.
 
 ### 7.5 Whole-RAM hashes are diagnostic only
 
-RNG, stacks, actors, timers, animation state, and heaps make whole-RAM identity unsuitable for deduplicating executable configurations.
+RNG, stacks, actors, timers, animation state, and heaps make whole-RAM identity unsuitable for configuration deduplication.
 
-### 7.6 Raw capture is append-only/immutable after closure
+### 7.6 Closed raw sessions are immutable inputs
 
-Once a session is closed and its manifest is written, derivation must not rewrite the raw event stream. Corrections happen in derived products or through explicit superseding annotations.
+Once a session is closed and its manifest is written, derivation must not rewrite the raw event stream. Corrections happen in derived products or superseding annotations.
 
 ### 7.7 Live evidence cannot silently become accepted evidence
 
-Current-session rows use a distinct state such as:
+Current-session rows use a distinct review state such as:
 
 ```text
 live-unreviewed
 ```
 
-Promotion to accepted dynamic evidence requires the R3 build/verifier/review path.
+Promotion requires the normal build/verifier/review path.
 
 ### 7.8 No hidden ambiguity repair
 
-Conflicts, missing sources, unknown loader completion, overlapping placements, and unresolved mappings remain visible.
+Conflicts, unknown loader completion, overlapping placements, missing sources, and unresolved mappings remain visible.
 
 ### 7.9 Observation-only by default
 
-The normal recorder does not press buttons, alter RAM, patch ROM, force state transitions, or inject code. Any automated exploration mode is separate and explicitly authorized.
+The normal recorder does not press buttons, alter RAM, patch ROM, force transitions, or inject code. Automated exploration is a separate explicit mode.
 
 ### 7.10 Decomp exactness remains independent
 
-No R3 failure may make the byte-exact baseline unrebuildable. Runtime research is an input to understanding, not a prerequisite for producing the accepted retail ROM.
+The Total Resolver is a decomp tool, but a live runtime is not required to rebuild or verify the retail ROM. Runtime research must not weaken the exact baseline.
+
+### 7.11 Generated bulk is not source
+
+Tracked code/config/docs are source. Session DBs, live dumps, screenshots, generated resolver DBs, caches, and large reports are build/research outputs unless explicitly promoted under a reviewed fixture policy.
 
 ---
 
 ## 8. High-Level Architecture
 
 ```text
-                                  +-----------------------+
-                                  |   OB64-Decomp static  |
-                                  | functions / calls /   |
-                                  | overlay structure      |
-                                  +-----------+-----------+
-                                              |
-                                              v
-+------------------+               +-----------------------+               +------------------+
-| Project64        |               |   Total Resolver R3   |               | Human annotations|
-| ob64-core        |-------------->|                       |<--------------| state / transition|
-|                  | raw events    | normalized query DB   |               | labels / notes    |
-+--------+---------+               +-----------+-----------+               +------------------+
-         |                                     ^
-         | bridge                              |
-         v                                     |
-+------------------+                +----------+-----------+
-| Pj64Agent        |                | derived dynamic      |
-| persistent TCP   |                | products              |
-+--------+---------+                | Overlay Atlas 2.0    |
-         |                          | Runtime Prov 2.0     |
-         v                          +----------+-----------+
-+--------------------------+                   ^
-| Raw Session Capture DB   |-------------------+
-| events / loads / frames  | deterministic derivation
-| region lifetimes / marks |
-+--------------------------+
+                         OB64-Decomp repository
+
+ +-------------------+       +----------------------+       +-------------------+
+ | Byte-exact static |------>| Total Resolver R3    |<------| Human annotations |
+ | model / aides     |       | tools/total_resolver |       | labels / markers  |
+ +-------------------+       +----------+-----------+       +-------------------+
+                                       ^ |
+                              raw P64  | | live queries
+                               events  | v
+                             +---------+---------+
+                             | Project64 client  |
+                             | + recorder        |
+                             +---------+---------+
+                                       |
+                                  TCP bridge
+                                       |
+                                       v
+                              +------------------+
+                              | Project64        |
+                              | ob64-core        |
+                              +------------------+
+
+ Generated/ignored:
+ build/total-resolver/sessions/*
+ build/total-resolver/products/*
 ```
 
-The key architectural choice is that **Project64 does not write the accepted atlas directly**. It writes raw observations. All accepted/derived data is reproducible from those observations.
+The key design rule is:
+
+> **Project64 writes raw observations. Derivation builds placement/runtime evidence. The accepted resolver consumes the derived products.**
+
+Project64 never writes directly into the accepted resolver database.
 
 ---
 
-## 9. Raw Session Capture Store
+## 9. Recommended Repo-Local Module Layout
+
+```text
+tools/total_resolver/
+  README.md
+  __init__.py
+  cli.py
+  pj64_client.py             # canonical repo-local bridge client
+  protocol.py                # command/event schema and version checks
+  recorder.py                # Pj64CaptureRecorder
+  capture_db.py
+  bridge_events.py           # raw event normalization only
+  watch_manager.py
+  loader_catalog.py
+  loaders/
+    __init__.py
+    <loader-specific decoders>.py
+  region_tracker.py
+  configuration.py
+  annotations.py
+  derive_overlay.py
+  derive_runtime.py
+  resolver_core/
+    ...
+  adapters/
+    static_db.py
+    resource_chain.py
+    structure_field.py
+    overlay_atlas_v2.py
+    runtime_atlas_v2.py
+    live_session.py
+  live_resolver.py
+  coverage.py
+  verify.py
+  health.py
+  schemas/
+    capture.sql
+    normalized.schema.json
+  tests/
+    ...
+
+config/total_resolver/
+  sources.json
+
+tests/fixtures/total_resolver/
+  synthetic/
+  transition-golden/
+```
+
+### 9.1 Project64 client ownership
+
+The repo should own the client API used by Total Resolver. There are two acceptable migration paths:
+
+1. move/adopt the existing proven `Pj64Agent` implementation into `tools/total_resolver/pj64_client.py`; or
+2. create a thin decomp-local wrapper over a separately installed client only temporarily, then remove the cross-repo dependency after parity is proven.
+
+The preferred steady state is **one canonical repo-local client for this tool**.
+
+Do not duplicate the bridge protocol without version checks and parity tests.
+
+### 9.2 User-facing command
+
+Prefer one command surface:
+
+```text
+python -m tools.total_resolver <command>
+```
+
+or, if project conventions favor script entrypoints:
+
+```text
+python tools/total_resolver/cli.py <command>
+```
+
+Exact packaging can be decided during implementation, but there should be one documented normal interface.
+
+---
+
+## 10. Raw Session Capture Store
 
 The raw session database is the foundation of R3. It must favor preservation over interpretation.
 
-Recommended database name during capture:
+Default location:
 
 ```text
-sessions/<session-id>/capture.sqlite
+build/total-resolver/sessions/<session-id>/capture.sqlite
 ```
 
-Recommended side artifacts:
+Side artifacts:
 
 ```text
-sessions/<session-id>/manifest.json
-sessions/<session-id>/events.ndjson          # optional raw mirror
-sessions/<session-id>/captures/              # bounded region/frame artifacts
-sessions/<session-id>/session.log
+manifest.json
+events.ndjson              # optional raw mirror
+captures/                  # bounded region/frame artifacts
+session.log
 ```
 
-### 9.1 `session`
+### 10.1 `session`
 
-Required fields should include at least:
+Record at least:
 
 - `session_id`;
 - start/end UTC timestamps;
-- recorder version/commit;
-- Project64 fork version/commit when available;
-- bridge version;
+- Total Resolver version/commit;
+- Project64 fork identity when available;
+- bridge/protocol version;
 - CPU core;
-- ROM identity (CRC1/CRC2, country, version, normalized hash if known);
-- parent repo commit/dirty-state summary;
-- decomp static source identity;
-- resolver source identity if live resolution is enabled;
+- ROM identity (CRC1/CRC2, country, version, normalized hash when known);
+- `OB64-Decomp` commit/dirty-state summary;
+- selected static source identities;
+- accepted resolver identity if live enrichment is enabled;
 - capture mode;
 - intervention policy;
 - closure status;
 - manifest/hash identity.
 
-### 9.2 `event_sequence`
+### 10.2 `event_sequence`
 
-Every bridge-derived event must receive a recorder-local monotonically increasing sequence number. Do not rely only on frame number; multiple important events can occur in one frame.
+Every bridge-derived event gets a recorder-local monotonically increasing sequence number.
 
-Fields:
+Required concepts:
 
 - `sequence_id`;
 - Project64 frame count;
 - host monotonic timestamp;
 - bridge event type;
-- raw JSON payload hash;
+- raw payload hash;
 - raw payload;
 - ingestion status.
 
-### 9.3 `frame_sample`
+Frame number alone is not sufficient because multiple important loads/accesses can happen within one rendered frame.
 
-A frame sample is context, not the master ordering primitive.
+### 10.3 `frame_sample`
 
-Fields may include:
+Frame samples are context, not the master ordering primitive.
+
+Possible fields:
 
 - frame number;
-- observed pause/run state;
-- optional framebuffer/frame hash;
+- paused/running state;
+- optional frame hash;
 - current semantic marker;
 - current configuration signature;
 - recorder health counters.
 
-### 9.4 `watch_definition`
+### 10.4 `watch_definition`
 
-Every watch installed by the recorder must be auditable:
+Every recorder-installed watch must be auditable:
 
 - watch ID;
-- kind: exec/read/write;
-- address/range;
-- size;
+- exec/read/write kind;
+- address/range/size;
 - label;
 - reason;
-- source of watch definition (static loader catalog, manual research request, safety detector);
+- source of watch definition;
 - installed/removed sequence;
 - expected event rate;
-- whether interpreter mode was required/verified.
+- interpreter-mode requirement/verification.
 
-### 9.5 `loader_event`
+### 10.5 `loader_event`
 
 Represents an observed loader/DMA/decompress/resource transition.
 
-Fields should allow unknowns:
+Fields should allow partial knowledge:
 
 - loader event ID;
-- entry and completion sequence/frame;
+- entry/completion sequence and frame;
 - loader live PC;
 - resolved loader function if known;
-- source ROM start/end if known;
-- resource/container/catalog identity if known;
-- compressed length;
-- decoded length;
+- source ROM/resource identity if known;
+- compressed/decoded length when known;
 - destination physical/live range;
 - codec if known;
-- arguments/register snapshot references;
+- register/argument snapshot reference;
 - completion method;
 - confidence/evidence grade;
 - unresolved reason.
 
-Do not require all fields to create a row. A partial loader observation is preferable to losing the event.
+A partial event is better than dropping it.
 
-### 9.6 `region_instance`
+### 10.6 `region_instance`
 
-This is the central R3 temporal placement concept.
+This is the central temporal placement concept.
 
-One row means: **these bytes occupied this destination range for this observed lifetime.**
+One row means:
 
-Required/important fields:
+> **These bytes occupied this destination range for this observed lifetime.**
+
+Fields:
 
 - region instance ID;
 - destination physical RDRAM start/end;
 - live KSEG start/end;
-- content size;
-- content SHA-256 or equivalent strong identity;
+- size;
+- strong content identity/hash;
 - first observed sequence/frame;
 - last observed sequence/frame;
-- terminating/replacement event if known;
+- replacement/unload/session-end reason;
 - source loader event;
 - source ROM/resource candidate;
 - classification: executable/data/mixed/unknown;
 - confidence;
-- exact byte-match status;
-- capture artifact reference when bytes were preserved.
+- exact-byte-match status;
+- optional capture artifact reference.
 
-A later load into the same RAM range creates a **new region instance**. It does not mutate history.
+A later load into the same RAM range creates a **new region instance**. It never rewrites the old one.
 
-### 9.7 `placement_observation`
+### 10.7 `placement_observation`
 
 Maps a static identity into a region instance.
 
-Examples:
-
-- whole ROM/resource range -> runtime region;
-- function `func_XXXX` -> live KSEG range;
-- validated slab -> destination range.
-
-Store the mapping method:
+Mapping methods must be explicit, for example:
 
 - direct loader provenance;
 - exact byte equality;
-- relocation/slab delta;
+- validated slab delta;
 - static descriptor mapping;
 - candidate heuristic.
 
-### 9.8 `execution_observation`
+### 10.8 `execution_observation`
 
-Represents actual observed execution:
+Represents observed execution:
 
 - sequence/frame;
 - live PC;
 - physical PC;
-- current region instance;
+- contemporaneous region instance;
 - mapped z64 instruction/function when resolvable;
 - event/watch source;
 - register snapshot reference;
 - evidence grade;
 - mapping confidence.
 
-### 9.9 `memory_access`
+### 10.9 `memory_access`
 
 For read/write evidence:
 
@@ -621,13 +726,13 @@ For read/write evidence:
 - access kind;
 - width;
 - effective address;
-- value before/after when available;
-- writer/reader PC;
-- current region instance for the PC;
+- value before/after where available;
+- reader/writer PC;
+- contemporaneous code region instance;
 - static function/instruction when resolvable;
 - optional field/resource relationship.
 
-### 9.10 `semantic_marker`
+### 10.10 `semantic_marker`
 
 Human annotation only.
 
@@ -637,17 +742,17 @@ Fields:
 - sequence/frame;
 - optional end sequence/frame;
 - label;
-- annotation type: stable-state, transition-start, transition-end, note, visible-action;
-- author/source (`human`, `inferred`, `imported-candidate`);
-- confidence in label;
-- supersedes marker if corrected;
-- free note.
+- type: stable-state, transition-start, transition-end, note, visible-action;
+- source: human, inferred, imported-candidate;
+- confidence;
+- supersedes marker;
+- note.
 
 Human labels never become placement keys.
 
-### 9.11 `transition`
+### 10.11 `transition`
 
-A transition should be first class because transient overlays/data often exist only between visible states.
+Transitions are first-class because transient overlays/data may exist only between visible states.
 
 Fields:
 
@@ -655,13 +760,13 @@ Fields:
 - from marker/state;
 - to marker/state;
 - start/end sequence/frame;
-- loader events occurring within it;
-- region instances born/destroyed within it;
+- loader events in the interval;
+- region instances born/destroyed in the interval;
 - optional human note.
 
-### 9.12 `configuration`
+### 10.12 `configuration`
 
-A machine configuration is a deduplicated set of relevant loaded identities, not a snapshot of all RAM.
+A machine configuration is a deduplicated set of relevant loaded region identities, not all RAM.
 
 Recommended signature input:
 
@@ -669,90 +774,84 @@ Recommended signature input:
 sorted(
   region class,
   destination start/end,
-  strong content/source identity,
+  content/source identity,
   loader/resource identity where known
 )
 ```
 
-Maintain separate signatures if useful:
+Separate code/resource/combined configuration signatures if useful.
 
-- `code_configuration`;
-- `resource_configuration`;
-- `combined_configuration`.
+### 10.13 `unresolved_observation`
 
-### 9.13 `unresolved_observation`
-
-Anything the recorder cannot safely classify goes here rather than disappearing:
+Anything unsafe to classify remains visible:
 
 - unknown changed executable page;
 - loader hit with unresolved destination;
-- destination bytes changed before completion could be sampled;
-- reused live address with multiple possible static mappings;
-- bridge event lacking enough context;
-- source resource unresolved;
-- apparent execution in an unknown region.
+- bytes changed before completion was captured;
+- reused live address with multiple static candidates;
+- bridge event lacking context;
+- unresolved source resource;
+- execution in an unknown region.
 
 Every unresolved row should include the **smallest next evidence** likely to resolve it.
 
-### 9.14 `recorder_health`
+### 10.14 `recorder_health`
 
-Track whether the capture itself is trustworthy:
+Track capture trustworthiness:
 
 - event queue depth/high-water mark;
-- dropped-event count if bridge exposes one;
+- dropped-event count if available;
 - drain cadence;
 - longest drain stall;
 - frame polling latency;
-- current CPU core;
+- CPU core;
 - bridge reconnects;
-- watch installation failures;
+- watch failures;
 - recorder exceptions;
 - Project64 pause/wedge/relaunch events.
 
-A session with known event loss must not silently promote to full coverage evidence.
+A session with known event loss cannot silently support full coverage claims.
 
 ---
 
-## 10. Project64 Capture Design
+## 11. Project64 Capture Design
 
-### 10.1 Do not rewrite the bridge first
+### 11.1 Reuse the proven bridge protocol
 
-Start by wrapping the existing `Pj64Agent`. The current client already supports the essential operations:
+Start from the capabilities already proven by the existing client/bridge. Do not rewrite `ob64-core` first.
 
-- persistent socket connection;
+Required operations include:
+
 - health/status/execution/exception;
-- exact memory reads and batched reads;
-- arbitrary memory writes for separately authorized tests;
+- exact RAM reads and batched reads;
 - exec/read/write watches;
-- event drain;
+- event draining;
 - pause/resume;
 - frame stepping;
 - instruction stepping;
-- save/load state;
-- controller input;
+- state identity/load/save where explicitly used;
+- controller input for later automated mode;
 - frame capture/hash;
-- RDRAM dumps and crash bundles.
+- RDRAM dump/crash diagnostics.
 
-Only modify `ob64-core` or the JavaScript bridge when the Phase 3 proof demonstrates a concrete missing primitive.
+Only modify Project64 or the bridge after a concrete missing primitive blocks a done-gate.
 
-### 10.2 Recorder startup sequence
+### 11.2 Recorder startup
 
-The capture process should:
+The recorder should:
 
 1. connect to Project64;
-2. verify bridge health;
+2. verify bridge protocol version;
 3. verify exact ROM identity;
 4. verify CPU core and require interpreter mode when watch coverage depends on it;
-5. capture current frame/emu state;
-6. clear stale recorder-owned watches/events only under a documented ownership rule;
-7. install the selected loader/DMA/decompress watches;
-8. record every installed watch definition;
-9. begin the event drain loop before gameplay resumes;
-10. create the initial machine configuration without assuming a human label.
+5. record current frame/emulator state;
+6. clear only recorder-owned stale watches/events under an explicit ownership rule;
+7. install loader/DMA/decompress watches;
+8. record all installed watch definitions;
+9. begin event draining before gameplay resumes;
+10. establish an initial machine configuration without assuming a human label.
 
-### 10.3 Event loop
-
-The recorder must drain events frequently enough that a transition can contain many events inside a single rendered frame without loss.
+### 11.3 Event loop
 
 The primary timeline is:
 
@@ -763,61 +862,61 @@ bridge event order -> recorder sequence -> frame context
 not:
 
 ```text
-one snapshot per rendered frame
+one snapshot per frame
 ```
 
-Frame sampling is secondary context.
+The recorder must drain frequently enough that several important events can occur within one frame without being collapsed.
 
-### 10.4 Loader instrumentation
+### 11.4 Loader instrumentation
 
-Begin with loader, DMA, cache, decompression, and allocation functions already represented by the resource-chain/static work.
+Begin with loader, DMA, cache, decompression, and allocation paths already identified by static/resource-chain work.
 
-For each known loader path, define a small capture contract:
+Each loader should have a small decoder contract:
 
-- entry watch location;
-- registers/arguments to preserve;
-- how source is represented;
-- how destination is represented;
-- how length is represented;
-- completion indicator/return path;
-- whether DMA completion is asynchronous;
-- whether cache invalidation marks executable readiness;
-- expected alternate callers/paths.
+- entry watch;
+- source representation;
+- destination representation;
+- length representation;
+- required registers/arguments;
+- completion indicator;
+- asynchronous behavior;
+- cache/ready semantics if relevant;
+- known alternate paths.
 
-Do not build one giant hard-coded interpretation function. Use loader-specific decoders registered by function/resource identity.
+Use loader-specific decoders instead of one monolithic heuristic.
 
-### 10.5 Completion detection
+### 11.5 Completion detection
 
-Correct content hashing requires knowing when a load is complete. Supported methods may include:
+Possible evidence:
 
-- observed loader return;
-- known DMA completion callback;
+- loader return;
+- DMA completion callback;
 - decompressor return;
 - cache maintenance event after write completion;
-- destination stability across a bounded check;
-- explicit resource-chain completion event.
+- bounded destination stability;
+- resource-chain completion event.
 
-Record the completion method and confidence. If completion cannot be established, retain a partial loader event and unresolved row.
+Record the method and confidence. Unknown completion remains unresolved.
 
-### 10.6 Region lifetime tracking
+### 11.6 Region lifetime tracking
 
-When a completed load writes a destination range:
+When a completed load writes a range:
 
-1. close/clip any prior region instance whose bytes are replaced;
-2. hash/capture the newly loaded range;
-3. create a new region instance;
-4. attempt direct source/ROM/resource mapping;
-5. attempt byte-equality/static function coverage mapping;
-6. register the new machine configuration;
-7. keep observing until replaced/unloaded/end-of-session.
+1. close or split previous overlapping region instances;
+2. hash/capture the new range;
+3. create the new region instance;
+4. attempt direct source/resource/ROM mapping;
+5. attempt exact-byte/static-function crosswalk;
+6. update the configuration identity;
+7. keep the instance alive until replaced, unloaded, or session end.
 
-Overlapping partial loads must be represented explicitly. Do not assume every load replaces an entire previous overlay.
+Partial overlap must be modeled explicitly.
 
-### 10.7 Transient placement requirement
+### 11.7 Transient requirement
 
 No minimum lifetime is allowed for machine acquisition.
 
-The recorder must be able to represent:
+R3 must represent sequences such as:
 
 ```text
 frame N:     stable overlay A
@@ -826,31 +925,27 @@ frame N+2:   transient data C / overlay D
 frame N+3:   final overlay E
 ```
 
-B, C, and D remain valid observations even if Joe never sees a distinct rendered menu for them.
+B, C, and D remain valid observations even if no distinct screen is rendered for them.
 
-### 10.8 Secondary unknown-change detector
+### 11.8 Unknown-change safety net
 
-Known loader hooks may miss alternate paths. Add a bounded safety net after the primary event-driven path works.
+Known loader hooks may miss alternate paths. After primary capture works, add bounded checks such as:
 
-Candidate mechanisms, to be benchmarked rather than assumed:
+- page hashes of known dynamic load pools at frame boundaries;
+- hashes after loader/DMA completion;
+- destination-pool write watches;
+- execution in pages lacking a current region identity;
+- current page identity compared against region tracker.
 
-- page hashes of known dynamic executable/load pools at each frame boundary;
-- hashes after every loader/DMA completion;
-- watch ranges on known destination pools;
-- execution hits in pages whose current region identity is unknown;
-- comparison of current page identity against the region tracker.
+Purpose:
 
-The detector should answer:
+> **Detect changes the known loader instrumentation failed to explain.**
 
-> Did RAM change in a way the loader instrumentation failed to explain?
+This is a safety net, not the primary acquisition model.
 
-It must not replace the event-driven model.
+### 11.9 Data loads are first-class
 
-### 10.9 Data loads are first-class
-
-Do not restrict R3 to executable overlays. Data tables, scripts, cutscene streams, resources, and runtime-relocated tables can be equally important.
-
-Each region instance has a class:
+Region class:
 
 ```text
 executable
@@ -859,159 +954,157 @@ mixed
 unknown
 ```
 
-Classification may improve after static matching or execution observation.
+Scripts, tables, cutscene streams, relocated data, and other non-code resources are valid runtime evidence.
 
-### 10.10 Execution observation
+### 11.10 Execution observation
 
-Avoid tracing every instruction by default. Use a layered strategy:
+Avoid full continuous instruction tracing by default. Prefer:
 
-1. watches around research targets;
-2. loader/entrypoint execution observations;
-3. observed direct/indirect calls already exposed by focused harnesses;
-4. targeted execute ranges when resolving a newly found placement;
-5. short bounded traces when necessary.
+1. focused watches;
+2. loader/entrypoint observations;
+3. observed call edges from focused harnesses;
+4. targeted execute ranges for new placements;
+5. short bounded traces when needed.
 
-The runtime atlas should represent what was actually observed, not pretend that residency equals execution coverage.
+Residency never creates execution evidence by itself.
 
-### 10.11 Rolling evidence buffer
+### 11.11 Rolling context buffer
 
-Maintain a bounded in-memory ring buffer of recent events/frame context so a human marker can be attached after the visible transition is recognized.
+Keep a bounded recent event/frame buffer so a human can label a visible state after recognizing it. The raw session DB remains authoritative.
 
-Example default:
+Example initial default:
 
 ```text
-10 seconds or 300 frames of recent event context
+10 seconds or 300 frames
 ```
-
-The raw session database remains the authoritative full history; the ring buffer exists only to make annotation convenient.
 
 ---
 
-## 11. Human Label and Play Workflow
+## 12. Human Play and Label Workflow
 
-### 11.1 No mandatory prompt on every machine change
+### 12.1 No prompt on every machine change
 
-The recorder should remain silent during ordinary acquisition unless:
+The recorder remains silent during ordinary play unless:
 
-- Joe explicitly asks to label;
-- an error threatens capture integrity;
-- an optional discovery notification is enabled.
+- the user explicitly labels/marks;
+- capture integrity is threatened;
+- optional discovery notifications are enabled.
 
-A few-frame transition may contain many machine configurations and should not create a barrage of prompts.
+Transient configurations are captured automatically without semantic questions.
 
-### 11.2 Minimal initial command surface
+### 12.2 Canonical commands
 
-Recommended commands:
+Recommended first command surface:
 
 ```text
-python tools/project64/total_resolver/session.py start
-python tools/project64/total_resolver/session.py status
-python tools/project64/total_resolver/session.py label "World Map - Palatinus"
-python tools/project64/total_resolver/session.py mark "Entering Army menu"
-python tools/project64/total_resolver/session.py note "Opened equipment for Magnus"
-python tools/project64/total_resolver/session.py stop
+python -m tools.total_resolver session start
+python -m tools.total_resolver session status
+python -m tools.total_resolver session label "World Map - Palatinus"
+python -m tools.total_resolver session mark "Entering Army menu"
+python -m tools.total_resolver session note "Opened equipment for Magnus"
+python -m tools.total_resolver session stop
 ```
 
-A later hotkey sidecar may map F8/F9 or another safe key to label/mark actions, but hotkeys are not required for the first proof.
+Later, a hotkey sidecar may make labels easier while playing.
 
-### 11.3 Label correction
+### 12.3 Label correction
 
-Never rewrite old annotations in place without history. Support superseding labels:
+Annotations are superseded, not silently rewritten:
 
 ```text
 marker 42: "Equipment"          superseded
 marker 57: "Army - Equipment"  supersedes 42
 ```
 
-### 11.4 Transition context
+### 12.4 Transition context
 
-If Joe labels a stable state before and after a transition, R3 may derive a contextual description:
+If two stable states are labeled, R3 may contextually describe the interval:
 
 ```text
 World Map -> Army - Unit List
 ```
 
-for the intervening transient observations without claiming that any transient region itself semantically means `Army`.
+but that does not assign the same semantic meaning to every transient load within the interval.
 
 ---
 
-## 12. Derived Dynamic Product: Overlay Atlas 2.0
+## 13. Derived Product: Overlay Atlas 2.0
 
-Overlay Atlas 2.0 is generated from raw session evidence. It should no longer be fundamentally savestate-oriented.
+Overlay Atlas 2.0 is generated from clean raw sessions and is no longer fundamentally savestate-oriented.
 
-### 12.1 Primary entities
+### 13.1 Primary entities
 
-- source input/session;
+- session/source input;
 - region instance;
 - placement identity;
 - static function placement;
 - slab/contiguous mapping;
 - configuration;
 - transition context;
-- ambiguity/conflict.
+- ambiguity/conflict;
+- witness.
 
-### 12.2 Placement identity
+### 13.2 Placement identity
 
-A canonical placement key should derive from machine facts such as:
+A placement key derives from machine facts such as:
 
-- source static/ROM/resource range when known;
+- source ROM/resource range when known;
 - destination physical/live range;
 - content identity;
 - length;
 - relocation/slab relationship.
 
-Human state names are not part of the key.
+Human labels are excluded.
 
-### 12.3 Witnesses
+### 13.3 Witnesses
 
-Multiple observations of the same placement become witnesses:
+Repeated observations accumulate witnesses instead of duplicate identities.
+
+Example:
 
 ```text
 placement P
-  observed session 1, frames ...
-  observed session 3, frames ...
-  observed during labels "Army - Equipment" and "Army - Unit Detail"
+  session 1 / frames ...
+  session 3 / frames ...
+  observed around "Army - Equipment"
+  observed around "Army - Unit Detail"
 ```
 
-The placement remains one technical identity with multiple contexts.
+### 13.4 Placement grades
 
-### 12.4 Confidence hierarchy
+Recommended conceptual levels:
 
-Recommended placement grades:
+- verified placement: direct source/destination proof plus exact resulting bytes or equivalent direct proof;
+- supported placement: exact byte crosswalk with validated boundaries/slab evidence;
+- candidate placement: plausible but incomplete mapping;
+- unresolved: observed region without safe static identity.
 
-- **Verified placement**: source/destination relationship proven by direct loader provenance plus exact resulting bytes or equivalent direct proof;
-- **Supported placement**: exact byte crosswalk and validated boundaries/slab evidence;
-- **Candidate placement**: plausible but incomplete mapping;
-- **Unresolved**: observed region without safe source/static identity.
+Use the project's existing evidence vocabulary exactly if it differs; do not create incompatible grade meanings casually.
 
-Do not reuse `Verified` if the current evidence policy reserves it for a stricter definition without updating the shared evidence contract first.
-
-### 12.5 Output reports
-
-Overlay Atlas 2.0 should emit:
+### 13.5 Required reports
 
 - placement inventory;
 - region lifetime summary;
-- transient-only placement report;
-- placement-by-human-state context report;
+- transient-only placements;
+- placement-by-human-context;
 - source->destination map;
-- destination reuse/ambiguity report;
+- destination reuse/ambiguity;
 - never-seen static placement candidates;
 - unresolved runtime regions;
-- old-Atlas comparison report, generated only after the clean atlas is built.
+- post-build old-Atlas comparison.
 
 ---
 
-## 13. Derived Dynamic Product: Runtime Provenance 2.0
+## 14. Derived Product: Runtime Provenance 2.0
 
 Runtime Provenance 2.0 is generated from observed execution and memory activity.
 
-### 13.1 Required entities
+### 14.1 Required entities
 
-Retain and improve the useful current concepts:
+Retain/improve the useful current concepts:
 
 - runtime session;
-- state/starting identity;
+- starting/state identity;
 - frame;
 - event;
 - executed PC;
@@ -1019,39 +1112,39 @@ Retain and improve the useful current concepts:
 - memory access;
 - observed direct edge;
 - observed indirect target;
-- basic block mapping;
+- basic-block mapping;
 - live validation;
-- runtime overlay placement reference;
+- runtime placement reference;
 - watch;
 - conflict;
-- prediction/hypothesis if the current schema still needs it.
+- prediction/hypothesis only if still needed by policy.
 
-### 13.2 Execution-to-placement linkage
+### 14.2 Execution-to-placement linkage
 
-Every executed PC should attempt to reference the `region_instance` that owned that address at that exact sequence/frame.
+Every executed PC attempts to reference the `region_instance` owning that address at that exact sequence/frame.
 
-This is crucial. A bare live address is insufficient when the same KSEG range can host different overlays over time.
+A bare live address is insufficient where overlays reuse RAM.
 
-### 13.3 Memory provenance
+### 14.3 Memory provenance
 
-For a read/write event, record both:
+For every read/write event retain both:
 
-- the data address being accessed;
-- the code region/function containing the reader/writer PC.
+- data address;
+- code region/function containing the reader/writer PC.
 
-Where static field/resource evidence exists, link it without rewriting the original evidence lane.
+Field/resource evidence can be linked without rewriting its original lane.
 
-### 13.4 Call evidence
+### 14.4 Call evidence
 
-Observed direct/indirect call edges should remain explicitly session-scoped. Static caller/callee relationships and observed runtime edges are complementary, not interchangeable.
+Observed call edges remain session-scoped. Static and runtime call relationships are complementary and distinct.
 
 ---
 
-## 14. Total Resolver R3 Normalized Query Product
+## 15. Total Resolver R3 Normalized Query Product
 
-### 14.1 Source registry
+### 15.1 Clean current source set
 
-The first clean R3 registry should contain, subject to identity verification:
+Subject to identity/review gates:
 
 ```text
 static-db-r3                    accepted-current
@@ -1061,23 +1154,23 @@ overlay-atlas-2                 accepted-current after review
 runtime-provenance-2            accepted-current after review
 ```
 
-Old overlay/runtime products remain outside the current source set as historical comparison archives.
+Historical dynamic products remain outside the current set.
 
-### 14.2 Current live session as an overlay source
+### 15.2 Current live session
 
-Do **not** insert a currently recording session into the accepted SQLite resolver database.
+Do not insert a recording session into the accepted resolver DB.
 
-Instead, the query layer may compose:
+Compose queries as:
 
 ```text
-accepted resolver DB
+accepted resolver
 +
-current live-session adapter (read-only, live-unreviewed)
+current live-session adapter (live-unreviewed)
 ```
 
-Responses must label the source distinction.
+The response must say which claims are accepted and which are live-unreviewed.
 
-### 14.3 Core query forms
+### 15.3 Query forms
 
 Retain existing forms:
 
@@ -1091,46 +1184,53 @@ ram:0x0016DE1C
 field-offset:0x1F
 ```
 
-Add bounded contextual forms such as:
+Add context selectors:
 
 ```text
 --session <id>
 --frame <n>
 --sequence <n>
 --current
---relationship placements
---relationship executions
---relationship loads
---relationship resources
---relationship fields
---relationship callers
---relationship callees
 ```
 
-### 14.4 Required live-PC resolution behavior
+Add relationships:
 
-For a query such as:
+```text
+placements
+executions
+loads
+resources
+fields
+callers
+callees
+transitions
+witnesses
+```
+
+### 15.4 Live-PC resolution behavior
+
+For:
 
 ```text
 live:0x8020B150 --session S --frame F
 ```
 
-R3 should attempt:
+R3 should attempt, in order:
 
-1. identify the region instance owning that address at F;
-2. identify the placement/source mapping for that region;
+1. find the contemporaneous region instance;
+2. find that region's placement/source mapping;
 3. map to z64 instruction/function if supported;
 4. return function+offset;
-5. return whether execution was merely queried, previously observed, or observed at the current event;
-6. return resource/loader ancestry when available;
+5. distinguish queried vs previously observed vs observed-now execution;
+6. return resource/loader ancestry;
 7. return static callers/callees;
-8. return field/resource access evidence where relevant;
-9. show conflicts/unresolved alternatives;
-10. fail closed if multiple live mappings remain equally valid.
+8. return field/resource context;
+9. surface conflicts/unresolved alternatives;
+10. refuse to guess if multiple mappings remain equally valid.
 
-### 14.5 Event enrichment
+### 15.5 Programmatic API
 
-Provide a programmatic API for Project64 tools:
+At minimum:
 
 ```python
 resolve_live_pc(pc, session_id=None, frame=None, sequence=None)
@@ -1139,23 +1239,21 @@ resolve_trace(events, session_context)
 resolve_address(address, address_space, context=None)
 ```
 
-Recommended higher-level wrapper:
+Recommended higher-level object:
 
 ```text
 Ob64ResearchAgent
-  .pj64       -> Pj64Agent
-  .resolver   -> TotalResolverClient
+  .pj64      -> repo-local Project64 client
+  .resolver  -> TotalResolverClient
 ```
 
-The wrapper must not make `Pj64Agent` depend on resolver internals. Keep the raw emulator client reusable.
+Raw emulator access and resolution stay separable so a resolver failure cannot destroy or block raw capture.
 
 ---
 
-## 15. Evidence and Acceptance Model
+## 16. Evidence and Acceptance Model
 
-R3 should preserve the current lane separation and make live status explicit.
-
-### 15.1 Evidence lanes
+### 16.1 Evidence lanes
 
 At minimum:
 
@@ -1164,9 +1262,9 @@ At minimum:
 - `runtime`;
 - `field`;
 - `resource`;
-- optional `annotation` for human semantic labels if those enter normalized query output.
+- optional `annotation` for human semantic context.
 
-### 15.2 Review states
+### 16.2 Review states
 
 Recommended distinction:
 
@@ -1175,9 +1273,9 @@ Recommended distinction:
 - `review-pending`;
 - `accepted-source`;
 - `historical`;
-- `rejected` where the product contract requires preserving a rejected record.
+- `rejected` when preserved by source policy.
 
-### 15.3 Dispositions
+### 16.3 Relationship disposition
 
 Retain:
 
@@ -1186,9 +1284,7 @@ Retain:
 - `unresolved`;
 - `unsupported`.
 
-### 15.4 Promotion rule
-
-A live observation becomes accepted only through:
+### 16.4 Promotion path
 
 ```text
 raw session
@@ -1205,13 +1301,13 @@ No manual SQLite editing is an acceptance path.
 
 ---
 
-## 16. Coverage and the Meaning of "Complete"
+## 17. Coverage and Meaning of "Complete"
 
-R3 must never define completeness as "we made lots of savestates" or "we played for N hours."
+R3 must never define completeness as "many savestates" or "many hours played."
 
-### 16.1 Static -> dynamic coverage
+### 17.1 Static -> dynamic
 
-For each known/candidate executable resource, function ownership range, overlay descriptor, or load-chain endpoint that is meaningful to runtime placement, classify:
+Classify relevant static executable/resource identities as:
 
 ```text
 observed placed
@@ -1222,31 +1318,32 @@ not expected to be independently loadable
 unresolved static identity
 ```
 
-### 16.2 Dynamic -> static coverage
+### 17.2 Dynamic -> static
 
 For every observed:
 
 - region instance;
-- executable page;
+- executable page/region;
 - executed PC;
 - loader event;
-- resource source;
+- source resource;
 
 report whether it resolves to an accepted static identity.
 
-### 16.3 Loader coverage
+### 17.3 Loader coverage
 
 Track:
 
 - known loader paths watched;
-- alternate loader paths discovered;
-- loader events with complete source+destination proof;
-- loader events with unresolved source;
-- loader events with unresolved completion/destination.
+- alternate paths discovered;
+- complete source+destination observations;
+- unresolved source;
+- unresolved completion/destination;
+- unexplained memory changes detected by safety net.
 
-### 16.4 Transition coverage
+### 17.4 Transition coverage
 
-Human labels can produce a useful navigation map:
+Human labels can build a navigation graph such as:
 
 ```text
 Title -> Main Menu
@@ -1254,455 +1351,413 @@ World Map -> Army
 Army -> Equipment
 Scenario -> Battle
 Battle -> Results
-...
 ```
 
-This is a gameplay-coverage aid, not proof of machine completeness.
+This helps find gameplay gaps but is not proof of machine completeness.
 
-### 16.5 Discovery rate
+### 17.5 Discovery rate
 
-Report new unique technical discoveries by session/time:
+Report per session/time:
 
-```text
-new placements
-new region identities
-new loader chains
-new executed functions
-new unresolved PCs
-```
+- new placements;
+- new region identities;
+- new loader chains;
+- newly executed functions;
+- new unresolved PCs.
 
-A declining discovery rate helps prioritize exploration but is not itself proof of completion.
+A falling discovery rate is useful prioritization evidence, not proof of completion.
 
-### 16.6 Completion claim
+### 17.6 Acceptable completeness statement
 
-The strongest acceptable release wording should be bounded, for example:
+A release may say something bounded like:
 
-> All executable/runtime placements encountered in the recorded Rev 0 coverage program resolve without unexplained live-address ambiguity, all observed loader events are accounted for or explicitly unresolved, and the accepted static inventory has a reported observed/unobserved classification.
+> All runtime placements encountered in the recorded Rev 0 coverage program resolve without unexplained live-address ambiguity, all observed loader events are accounted for or explicitly unresolved, and the accepted static inventory has a reported observed/unobserved classification.
 
-Do not claim that no unreachable/secret/untested state exists unless independently proven.
+Do not claim that no unseen secret/unreachable/untested state exists without independent proof.
 
 ---
 
-## 17. Operational Modes
+## 18. Operational Modes
 
-### 17.1 Manual Play Capture
+### 18.1 Manual Play Capture
 
-Default R3 acquisition mode.
+Default.
 
-- Joe controls the game.
+- human controls the game;
 - recorder is observation-only;
 - labels are optional;
-- all transient machine states are acquired automatically;
+- transient machine states are automatic;
 - no old savestate naming is trusted.
 
-### 17.2 Focused Research Capture
+### 18.2 Focused Research Capture
 
-Used when investigating one field/function/resource.
+For a particular function/field/resource:
 
 - install targeted watches;
 - record full event/register evidence;
-- still write into the raw session schema;
-- derive the same products as ordinary play.
+- use the same raw schema;
+- derive through the same pipeline.
 
-### 17.3 Retrospective Old-Corpus Audit
+### 18.3 Retrospective Old-Corpus Audit
 
-Only after the clean system works.
+Only after clean capture works:
 
-- load old states or parse old captures in a separately marked mode;
-- classify old human names as imported-candidate labels;
-- compare machine placements against clean R3 identities;
-- never allow this mode to silently seed accepted clean coverage.
+- load/parse old states in a separately marked mode;
+- treat names as imported-candidate annotations;
+- compare machine placements against clean identities;
+- never silently seed accepted clean coverage.
 
-### 17.4 Automated Codex Exploration
+### 18.4 Automated Codex Exploration
 
-Optional later mode.
+Optional later mode:
 
-- Codex may use `Pj64Agent.input()`/stick/frame-step to navigate reproducible paths;
-- requires explicit authorization because it controls gameplay;
-- must record every intervention and input sequence;
-- useful for hunting remaining static->dynamic gaps after manual coverage is mature;
-- does not change evidence grades merely because the run was automated.
+- use repo-local Project64 client input/stick/frame-step;
+- requires explicit authorization for gameplay control;
+- record every intervention/input;
+- use to hunt specific coverage gaps;
+- automation does not raise evidence grade by itself.
 
-### 17.5 Live Research Query Mode
+### 18.5 Live Research Query
 
-Codex can resolve a newly drained watch event immediately against accepted+current-session evidence without waiting for a formal atlas rebuild.
-
----
-
-## 18. Recommended File/Module Layout
-
-### 18.1 Parent workspace maintained tools
-
-```text
-tools/project64/total_resolver/
-  __init__.py
-  session.py                 # user-facing capture/session CLI
-  recorder.py                # Pj64CaptureRecorder
-  bridge_events.py           # raw event normalization only
-  watch_manager.py
-  loader_catalog.py
-  loaders/
-    <loader-specific decoders>.py
-  region_tracker.py
-  configuration.py
-  annotations.py
-  live_resolver.py
-  health.py
-  schemas/
-    capture_schema.sql
-  tests/
-```
-
-If current parent conventions prefer `scripts/` for product generators, keep capture-time tooling under `tools/project64/` and generation under a product root or `scripts/`.
-
-### 18.2 Generated R3 product root
-
-Suggested shape:
-
-```text
-wiki/sol-total-resolver-r3-<date>/
-  README.md
-  registry/
-    sources.v2.json
-  schema/
-    README.md
-    normalized.schema.json
-    capture.schema.sql
-  adapters/
-    static_db_v1.py
-    resource_chain_v1.py
-    structure_field_v1.py
-    overlay_atlas_v2.py
-    runtime_atlas_v2.py
-  scripts/
-    build_capture_product.py
-    build_overlay_atlas.py
-    build_runtime_atlas.py
-    build_resolver.py
-    query_resolver.py
-    verify_product.py
-    coverage.py
-  db/
-    overlay-atlas-2.sqlite
-    runtime-provenance-2.sqlite
-    resolver-r3.sqlite
-  reports/
-    coverage.md
-    unresolved.md
-    conflicts.md
-    transient-placements.md
-    source-identity.md
-    old-atlas-comparison.md
-  exports/
-  manifests/
-  evidence/
-  tests/
-```
-
-Do not copy raw full-session databases into the accepted product unless the product contract specifically needs bounded source artifacts. Prefer hashed source references plus minimal preserved evidence extracts when repository size/provenance policy requires it.
-
-### 18.3 `OB64-Decomp`
-
-Initial R3 changes here should be minimal:
-
-```text
-docs/PLAN_2026-08-17-total-resolver-r3.md
-```
-
-Later accepted static exporter/configuration changes should be added only when the cross-repo contract actually requires them.
+Codex can resolve newly drained watch events against accepted + current-session evidence immediately.
 
 ---
 
-## 19. Implementation Phases and Done-Gates
+## 19. Canonical CLI
 
-## Phase 0 — Freeze and Inventory the Current Resolver Stack
+The final command naming can be adjusted to repo convention, but the conceptual surface should stay small.
+
+### Environment/health
+
+```text
+python -m tools.total_resolver doctor
+python -m tools.total_resolver pj64 health
+```
+
+### Sessions
+
+```text
+python -m tools.total_resolver session start
+python -m tools.total_resolver session status
+python -m tools.total_resolver session label "Army - Equipment"
+python -m tools.total_resolver session mark "Entering shop"
+python -m tools.total_resolver session stop
+python -m tools.total_resolver session verify <session-id>
+```
+
+### Derivation/build
+
+```text
+python -m tools.total_resolver build overlay
+python -m tools.total_resolver build runtime
+python -m tools.total_resolver build resolver
+python -m tools.total_resolver build all
+```
+
+### Query
+
+```text
+python -m tools.total_resolver explain func_00043d1c
+python -m tools.total_resolver explain live:0x8016DE1C --current
+python -m tools.total_resolver explain live:0x8016DE1C --session <id> --frame <n>
+```
+
+### Coverage
+
+```text
+python -m tools.total_resolver coverage
+python -m tools.total_resolver unresolved
+python -m tools.total_resolver compare-old-atlas
+```
+
+### Verification
+
+```text
+python -m tools.total_resolver verify
+```
+
+Do not expose dozens of phase-specific commands once the product stabilizes.
+
+---
+
+## 20. Implementation Phases and Done-Gates
+
+## Phase 0 — Freeze and Inventory Current Resolver Stack
+
+Record exact identities for:
+
+- current Unified Resolver;
+- static DB;
+- resource-chain atlas;
+- structure/field atlas;
+- old overlay atlas;
+- old runtime provenance atlas;
+- current Project64 client;
+- bridge script/protocol;
+- `ob64-core` version;
+- decomp static source identity.
+
+Done-gate:
+
+- identities/hashes/versions recorded;
+- existing verifiers run;
+- no source product mutated;
+- old dynamic atlases classified as historical/reference for clean R3.
+
+---
+
+## Phase 1 — Establish Repo-Local Tool Ownership and Protocol Parity
 
 ### Work
 
-Record exact current identities for:
+Create `tools/total_resolver/` and establish the canonical repo-local Project64 client.
 
-- current Unified Resolver product;
-- `static-db-r3`;
-- `resource-chain-static`;
-- `structure-field-static`;
-- `overlay-atlas-r3`;
-- `runtime-provenance-r3`;
-- current `Pj64Agent`;
-- current bridge script;
-- current `ob64-core` fork;
-- decomp static source identity.
+If adopting the existing `Pj64Agent`, first prove parity for:
 
-Preserve old products read-only.
+- health/status;
+- RAM read/batch read;
+- watches/event drain;
+- pause/resume;
+- frame/instruction step;
+- state identity/load where used;
+- framebuffer/hash/dump diagnostics;
+- controller input (for later optional mode).
+
+Add explicit bridge protocol/version checks.
+
+Update repo docs/AGENTS only as required to reflect that **Total Resolver runtime acquisition is now an intentional decomp-owned tool**, while ordinary unrelated emulator experiments may still live elsewhere.
 
 ### Done-gate
 
-- exact paths/versions/hashes recorded;
-- all existing verifiers run and results preserved;
-- no source product mutated;
-- old dynamic atlases clearly classified as historical/reference for the clean R3 acquisition lane.
+- repo-local client performs the required bridge operations;
+- no duplicate hidden protocol semantics;
+- bridge incompatibility fails loudly;
+- ordinary exact decomp build remains independent of Project64.
 
 ---
 
-## Phase 1 — Freeze R3 Contracts and Schemas
+## Phase 2 — Freeze Raw Capture and Normalized Schemas
 
-### Work
-
-Define:
+Define and test:
 
 - raw capture schema;
+- event ordering;
 - region lifetime semantics;
 - configuration identity;
 - address spaces;
-- event ordering rules;
-- source identity/provenance contract;
-- evidence grades/review states;
-- live-unreviewed query behavior;
-- normalized R3 adapter contract changes, if any.
+- source/provenance contract;
+- evidence/review states;
+- live-unreviewed behavior;
+- normalized adapter contract changes.
 
-Create migration fixtures from the current adapter schemas so static-source compatibility is tested rather than assumed.
+Done-gate:
 
-### Done-gate
-
-- schema is closed and versioned;
-- unknown fields/enum values fail as intended;
-- test fixtures prove address-space separation;
-- region replacement/overlap semantics have executable tests;
-- human label changes cannot alter machine configuration identity;
-- current static adapters either pass unchanged or have a documented R3 adapter migration.
+- schemas versioned/closed;
+- unknown fields/enums reject as intended;
+- address-space separation tests pass;
+- overlap/split/replace tests pass;
+- label-only changes cannot alter machine configuration identity;
+- static adapters either remain compatible or have explicit migrations.
 
 ---
 
-## Phase 2 — Build the Raw Project64 Capture Recorder
+## Phase 3 — Build Raw Project64 Capture Recorder
 
-### Work
-
-Implement `Pj64CaptureRecorder` around existing `Pj64Agent`.
-
-Required first functions:
+Implement:
 
 - session start/stop;
-- health/ROM/core verification;
-- bridge event drain loop;
+- ROM/core/protocol verification;
+- event drain loop;
 - monotonic event sequencing;
-- frame context sampling;
-- watch registration/audit;
-- raw event persistence;
-- semantic marker CLI;
-- recorder health counters;
+- frame context;
+- watch audit;
+- raw persistence;
+- annotations;
+- recorder health;
 - clean shutdown/recovery.
 
-Do **not** implement full atlas inference yet.
+Do not implement full atlas inference yet.
 
-### Done-gate
+Done-gate:
 
-- recorder runs through a several-minute manual play session without data corruption;
-- event ordering is deterministic on replay;
-- recorder crash/restart behavior is documented;
-- raw session can be reopened read-only and independently verified;
-- no game input or RAM/ROM writes occur in observation mode.
+- several-minute manual session without corruption;
+- deterministic raw replay ordering;
+- documented crash/restart behavior;
+- closed session independently verifies;
+- observation mode performs no controller/RAM/ROM mutation.
 
 ---
 
-## Phase 3 — One-Transition Lossless Placement Proof
+## Phase 4 — One-Transition Lossless Placement Proof
 
-This is the first major product proof.
+Choose one reproducible dynamic-loading transition, preferably `World Map -> Army` if convenient.
 
-### Selection
+Instrument only required loader paths and capture:
 
-Choose one reproducible transition known or strongly expected to exercise dynamic loading. `World Map -> Army` is a good candidate if conveniently reachable; otherwise choose the simplest transition that demonstrably replaces runtime code/data.
-
-### Work
-
-Instrument only the loader paths required for this transition.
-
-Capture:
-
-- entry/exit/completion events;
-- relevant register snapshots;
-- source/destination/length when derivable;
-- every distinct destination content identity;
+- loader entry/completion;
+- registers/arguments;
+- source/destination/length where derivable;
+- every destination content identity;
 - region lifetimes;
-- transient placements lasting only a few frames;
-- final stable configuration;
-- endpoint human labels.
+- any few-frame transient placements;
+- final configuration;
+- optional endpoint labels.
 
-Generate an offline timeline such as:
+Generate a timeline such as:
 
 ```text
-frame/sequence A: source state
+source state
   load X
-  transient region B
+  transient B
   load Y
-  transient region C
+  transient C
   load Z
-frame/sequence B: destination state
+destination state
 ```
 
-### Done-gate
+Done-gate:
 
-- every observed destination change in the watched pools is explained by a recorded load or explicitly listed unresolved;
-- at least one transient region can be represented if the chosen transition contains one;
-- raw bytes/hashes reproduce on replay;
+- every detected destination change in watched pools is explained or explicitly unresolved;
+- transient region(s), if naturally present, are preserved;
+- raw bytes/hashes reproduce;
 - static crosswalk resolves known functions without fake linear mapping;
-- an independent verifier regenerates the transition result from raw capture only;
-- human labels can be changed without changing the machine timeline.
+- independent derivation regenerates the timeline from raw capture only;
+- label edits do not change machine timeline.
 
-If this phase fails, do not proceed to full-game capture. Fix the observation model first.
+If this fails, stop scaling and fix acquisition.
 
 ---
 
-## Phase 4 — Generalize Loader Coverage and Add the Unknown-Change Safety Net
+## Phase 5 — Generalize Loader Coverage and Unknown-Change Detection
 
-### Work
-
-Expand loader-specific decoding across known paths from the resource-chain/static aide.
+Expand across known loader/DMA/decompress paths.
 
 Add:
 
-- alternate loader/DMA paths;
-- asynchronous completion handling;
-- partial/overlapping region replacement;
-- cache/ready-state evidence if useful;
-- page/range change detector for unexplained loads;
-- execution-in-unknown-region alerting;
-- bounded capture artifacts for unresolved changes.
+- alternate paths;
+- async completion;
+- partial/overlapping writes;
+- cache/ready evidence where useful;
+- page/range change safety net;
+- execution-in-unknown-region detection;
+- bounded unresolved captures.
 
-### Done-gate
+Done-gate after varied manual play:
 
-Run a varied manual session including several menus/modes.
-
-Require:
-
-- no known event-buffer overflow;
-- every detected executable-region change is either loader-explained or explicitly unresolved;
-- transient multi-load transitions survive capture;
-- resource/data loads can be recorded without misclassifying everything as code;
-- capture overhead is measured and acceptable for research use.
+- no known event overflow;
+- every detected executable-region change is loader-explained or unresolved;
+- multi-load transitions survive capture;
+- data resources are not misclassified as code;
+- overhead measured and acceptable.
 
 ---
 
-## Phase 5 — Build Overlay Atlas 2.0 Generator
-
-### Work
-
-Derive from clean raw sessions:
-
-- region instances;
-- deduplicated placement identities;
-- function placements;
-- slab relationships;
-- source/destination mappings;
-- witness sessions/contexts;
-- destination reuse;
-- ambiguities/conflicts;
-- transient-only placements;
-- static->placement coverage.
-
-### Done-gate
-
-- fresh rebuilds are byte/logically deterministic;
-- changing only a human label does not change placement identity/root;
-- source/destination mutation tests trigger verifier failure;
-- old Overlay Atlas R3 is not used as an input;
-- a post-build comparison may show agreement/disagreement with Atlas R3, but the clean output remains independent.
-
----
-
-## Phase 6 — Build Runtime Provenance 2.0 Generator
-
-### Work
+## Phase 6 — Build Overlay Atlas 2.0 Generator
 
 Derive:
 
-- sessions;
-- frames/events;
-- executed PCs;
-- observed function execution;
+- region instances;
+- deduplicated placements;
+- function placements;
+- slab relationships;
+- source/destination mapping;
+- witness sessions/contexts;
+- destination reuse;
+- conflicts/ambiguities;
+- transient-only placements;
+- static->placement coverage.
+
+Done-gate:
+
+- deterministic fresh builds;
+- label-only changes do not alter placement identity;
+- source/destination mutation tests fail correctly;
+- old overlay atlas is not an input;
+- old-atlas comparison is post-build only.
+
+---
+
+## Phase 7 — Build Runtime Provenance 2.0 Generator
+
+Derive:
+
+- sessions/events/frames;
+- executed PCs/functions;
 - memory accesses;
-- observed direct/indirect edges;
+- observed call/indirect edges;
 - region-instance linkage;
-- live validations;
+- live validation;
 - runtime conflicts/unresolved PCs;
 - runtime->static coverage.
 
-### Done-gate
+Done-gate:
 
-- every accepted runtime PC maps through the placement owning that address at the recorded time;
-- reused live addresses are tested across at least two different placement contexts;
-- execution claims disappear if their raw observation is removed;
-- residency alone never generates an execution row;
-- static call edges remain distinguishable from observed runtime edges.
-
----
-
-## Phase 7 — Build Total Resolver R3
-
-### Work
-
-Create the new registry, adapters, normalized DB, query interface, and verifier.
-
-Required source set after review:
-
-- static DB;
-- resource chain;
-- structure/field;
-- Overlay Atlas 2.0;
-- Runtime Provenance 2.0.
-
-Add contextual live-address resolution.
-
-### Done-gate
-
-- all existing representative static queries still resolve with equivalent or explicitly improved results;
-- live address reuse fails closed without context;
-- session/frame context resolves the correct placement when available;
-- function -> placements -> sessions and live PC -> ROM -> function queries work;
-- field/resource relationships remain in their own evidence lanes;
-- stale/mismatched source identities cause hard failure;
-- full product rebuild is deterministic.
+- each accepted runtime PC maps through the contemporaneous placement;
+- reused live addresses tested across different contexts;
+- removing raw execution removes execution claims;
+- residency never generates execution evidence;
+- static and observed call edges remain distinguishable.
 
 ---
 
-## Phase 8 — Add Live Project64 Enrichment
+## Phase 8 — Build Total Resolver R3
 
-### Work
+Create:
 
-Add a read-only current-session adapter/client so Codex can do:
+- source registry;
+- adapters;
+- normalized SQLite DB;
+- query interface;
+- verifier;
+- coverage engine;
+- contextual live resolution.
+
+Done-gate:
+
+- representative old static queries remain equivalent or explicitly improve;
+- context-free reused live addresses fail closed;
+- session/frame context selects only supported placement;
+- function -> placements -> sessions works;
+- live PC -> ROM -> function works;
+- field/resource lanes remain separate;
+- stale source identities hard-fail;
+- build is deterministic.
+
+---
+
+## Phase 9 — Add Live Project64 Enrichment
+
+Add the current-session adapter so a watch hit can produce:
 
 ```text
-watch hit
-  -> resolve current PC
-  -> identify current region/placement
-  -> map to z64/function
-  -> show static callers/callees
-  -> show resource/field context
-  -> preserve raw event
+raw watch event
+  -> current region
+  -> current placement
+  -> z64/function
+  -> callers/callees
+  -> resource ancestry
+  -> field context
 ```
 
-Add resolved crash/evidence bundles containing both raw and derived views.
+Add resolved crash/evidence bundles with raw and derived views.
 
-### Done-gate
+Done-gate:
 
-- current-session records are visibly `live-unreviewed`;
-- disabling the resolver does not affect raw P64 capture;
-- a resolver failure cannot lose the raw watch event;
-- current live queries cannot mutate accepted resolver DBs;
-- watch-event enrichment is reproducible offline from the saved event+session context.
+- live records clearly marked `live-unreviewed`;
+- resolver disable/failure cannot lose raw P64 evidence;
+- live queries cannot mutate accepted DBs;
+- enrichment reproducible offline from saved event/session context.
 
 ---
 
-## Phase 9 — Clean Manual Playthrough Coverage Program
+## Phase 10 — Clean Manual Gameplay Coverage Program
 
-### Work
+Begin from the selected clean Rev 0 starting point and play normally.
 
-Begin from the chosen clean Rev 0 starting point and play normally while the recorder runs.
-
-Joe labels only meaningful states/transitions as useful. The recorder captures all machine transitions regardless of labels.
-
-Suggested coverage categories, not a rigid checklist:
+Suggested coverage categories:
 
 - boot/title/intro;
-- new game/file/select/options;
+- new game/file/options;
 - world map;
 - army management;
 - unit detail;
@@ -1718,103 +1773,94 @@ Suggested coverage categories, not a rigid checklist:
 - training;
 - cutscene/event modes;
 - special/secret flows;
-- ending paths reachable in the coverage program.
+- reachable ending paths.
 
-### Done-gate
+The recorder captures all machine transitions. Human labels are only added where useful.
 
-Not "finished the game." Instead require an R3 coverage report showing:
+Done-gate is a coverage report, not merely finishing the game:
 
-- total unique placement identities;
-- total transient-only placements;
-- total observed loader events;
-- total executed functions/PCs;
-- static inventory observed/unobserved classification;
-- dynamic observations resolved/unresolved classification;
-- destination reuse/ambiguity status;
-- discovery rate over recent sessions;
-- remaining explicit high-value gaps.
+- unique placements;
+- transient-only placements;
+- loader events;
+- executed functions/PCs;
+- static inventory observed/unobserved;
+- dynamic resolved/unresolved;
+- destination reuse/ambiguity;
+- discovery rate;
+- explicit high-value gaps.
 
 ---
 
-## Phase 10 — Gap Hunting and Optional Codex Automation
+## Phase 11 — Gap Hunting and Optional Codex Automation
 
-### Work
+Use coverage, not intuition, to target:
 
-Use coverage reports to target what is actually missing.
+- static executable resource never observed;
+- repeatedly unresolved live PC;
+- resource chain with no witness;
+- menu/context with unexplained changes;
+- training/rare mode with unique loaders;
+- old-atlas placement not reproduced by clean R3.
 
-Examples:
+Only after manual coverage matures, optionally authorize Codex input automation for specific gaps.
 
-- static executable resource never seen loaded;
-- live PC repeatedly unresolved;
-- resource chain with no dynamic witness;
-- menu family with unexplained destination changes;
-- training/rare state with unique loaders;
-- old Atlas R3 placement not reproduced by clean R3.
+Done-gate:
 
-Only after manual coverage is mature, optionally authorize Codex to use controller input or known saves to pursue specific gaps.
-
-### Done-gate
-
-Every remaining gap is one of:
+Every gap becomes:
 
 - resolved;
 - bounded unreachable/not-yet-reachable candidate;
-- explicitly unresolved with smallest-next-evidence;
+- explicitly unresolved with next evidence;
 - intentionally out of scope.
 
-No vague "probably complete" bucket.
+No vague `probably complete` bucket.
 
 ---
 
-## Phase 11 — Independent Review, Promotion, and Release
+## Phase 12 — Independent Review, Promotion, and Release
 
-### Work
-
-Perform independent review of:
+Review:
 
 - raw capture integrity;
+- protocol assumptions;
 - loader interpretation;
 - region lifetime logic;
 - placement derivation;
 - runtime execution linkage;
-- address ambiguity handling;
-- source identity checks;
+- live-address ambiguity handling;
+- source identities;
 - coverage claims;
-- current-only registry semantics.
+- current registry semantics.
 
-Freeze a release manifest and tag/version the product.
+Done-gate:
 
-### Done-gate
-
-- fresh rebuild/verifier passes;
-- independent review findings closed or explicitly accepted as limits;
-- old resolver remains preserved;
-- current R3 registry contains only reviewed current sources;
-- release README states exact boundaries and non-claims;
-- release artifacts contain no ROM/savestate material that violates repository policy.
+- fresh build/verifier passes;
+- review findings closed or documented as limits;
+- old resolver preserved;
+- current R3 registry contains only reviewed sources;
+- release docs state exact boundaries/non-claims;
+- no prohibited ROM/savestate/bulk runtime artifacts committed.
 
 ---
 
-## 20. Test Strategy
+## 21. Test Strategy
 
-Testing must cover both database correctness and the harder observation problem.
-
-### 20.1 Unit tests
+### 21.1 Unit tests
 
 - event ordering;
 - address normalization;
 - ROM/live/physical conversions;
 - region overlap/split/replace;
 - configuration signature stability;
-- human-label independence;
-- loader argument decoder fixtures;
-- evidence-grade rules;
+- label independence;
+- loader decoder fixtures;
+- evidence rules;
 - ambiguity rejection;
-- source registry validation.
+- registry/source identity.
 
-### 20.2 Synthetic event-stream tests
+### 21.2 Synthetic event-stream tests
 
-Use fabricated bridge events to force cases that may be rare naturally:
+Force cases such as:
 
 - two loads in one frame;
 - load A replaced by B one event later;
@@ -1822,23 +1868,23 @@ Use fabricated bridge events to force cases that may be rare naturally:
 - asynchronous completion;
 - unknown destination;
 - event loss marker;
-- same live address hosting two different ROM sources;
-- execution before mapping is known;
+- same live address hosting different ROM sources;
+- execution before mapping known;
 - label correction.
 
-The synthetic suite tests the recorder/derivation algorithm, not OB64 facts.
+These test the algorithm, not OB64 facts.
 
-### 20.3 Real transition golden fixture
+### 21.3 Real transition golden fixture
 
-The Phase 3 transition becomes a permanent bounded fixture. Preserve only what policy permits: hashes, event extracts, metadata, and minimal derived artifacts rather than uncontrolled bulk runtime data.
+Phase 4 becomes the bounded real-world regression fixture. Preserve only copyright-safe hashes/event excerpts/metadata/minimal bytes permitted by repo policy.
 
-### 20.4 Deterministic rebuild tests
+### 21.4 Deterministic rebuild
 
-Two fresh derivations from the same raw session must produce equivalent logical output and declared stable hashes.
+Two derivations from identical raw inputs must produce equivalent logical outputs and stable declared hashes.
 
-### 20.5 Mutation tests
+### 21.5 Mutation tests
 
-Deliberately alter:
+Mutate:
 
 - source range;
 - destination range;
@@ -1846,161 +1892,159 @@ Deliberately alter:
 - event order;
 - placement source;
 - region lifetime;
-- source registry hash;
+- registry identity;
 - semantic label.
 
-Required result:
+Machine-evidence mutations must fail/change product identity; label-only mutations must not change machine placement identity.
 
-- machine-evidence mutations must fail or change the corresponding product root;
-- semantic-label-only mutations must not change machine placement identity.
+### 21.6 Ambiguity tests
 
-### 20.6 Ambiguity tests
+Prove at least two contexts where one live address maps differently. No-context query must refuse to choose; contextual query may choose only with unique evidence.
 
-Create/locate at least two contexts where the same live address maps to different static regions. A context-free query must refuse to pick. A session/frame-context query must choose only when evidence uniquely supports it.
-
-### 20.7 Performance tests
+### 21.7 Performance tests
 
 Measure:
 
 - event drain throughput;
 - queue high-water mark;
 - recorder CPU overhead;
-- Project64 interpreter slowdown;
+- interpreter slowdown;
 - page-hash safety-net cost;
-- database write rate;
-- size growth per hour/session;
-- resolver latency for live queries.
+- DB write rate;
+- disk growth per hour;
+- query latency.
 
-Performance optimization must not discard evidence silently.
+Performance work must never silently discard evidence.
 
 ---
 
-## 21. Reliability and Failure Handling
+## 22. Failure Handling
 
-### 21.1 Bridge disconnect
+### Bridge disconnect
 
-- record disconnect sequence/time;
-- mark capture continuity broken;
-- reconnect only under explicit recorder logic;
+- record interruption sequence/time;
+- mark continuity broken;
 - do not pretend the gap was observed.
 
-### 21.2 Project64 wedge/crash
+### Project64 wedge/crash
 
-Use existing relaunch/crash-bundle procedures. Session manifest must record the interruption.
+Use existing relaunch/crash diagnostic procedures and record the interruption.
 
-### 21.3 Watch failure or wrong CPU core
+### Wrong CPU core/watch failure
 
-If required watches need interpreter mode and the emulator is not in interpreter mode, fail loudly before claiming coverage.
+If coverage requires interpreter watches and the core is wrong, fail loudly before claiming coverage.
 
-### 21.4 Event overflow/loss
+### Event overflow/loss
 
-If the bridge can expose dropped events, record and fail the affected coverage lane. If it cannot, Phase 2/4 should determine whether an event sequence/queue metric needs to be added to the bridge.
+If the bridge exposes dropped events, record them and invalidate the affected coverage claim. If it does not, determine whether queue/event-sequence telemetry must be added before Phase 5 acceptance.
 
-### 21.5 Incomplete loader completion
+### Incomplete loader completion
 
-Retain an unresolved load row. Never hash partially written memory and call it a verified placement without documenting that state.
+Retain unresolved loader evidence. Do not hash partially written memory and promote it as a verified placement.
 
-### 21.6 Session closure
+### Session closure
 
-On normal stop:
+On clean stop:
 
 - flush DB;
-- close open region lifetimes with `session-end` reason rather than pretending unload;
+- close open lifetimes with `session-end` reason;
 - write manifest;
-- hash declared stable artifacts;
-- run quick verifier;
+- hash stable artifacts;
+- run session verifier;
 - mark session closed.
 
 ---
 
-## 22. Risk Register
+## 23. Risk Register
 
-### R1. Transient loads occur faster than polling
+### R1. Transient loads are faster than polling
 
-**Mitigation:** event-driven loader/watch capture; frame polling only as context/safety net.
+Mitigation: event-driven watches/loader capture; frame sampling only as context/safety net.
 
-### R2. Alternate loader path is unknown
+### R2. Unknown alternate loader path
 
-**Mitigation:** changed-page safety net; execution in unknown region alert; expand loader catalog from observed evidence.
+Mitigation: page/range safety net and execution-in-unknown-region alerting.
 
-### R3. Interpreter mode changes timing
+### R3. Interpreter timing differs from normal recompiler play
 
-**Mitigation:** treat timing as research-environment observation; use exact event/frame ordering rather than assuming retail wall-clock timing; selectively corroborate important placement facts through byte/resource identity.
+Mitigation: treat timing as research-environment evidence; rely on event order and byte/resource identity rather than assuming wall-clock equivalence.
 
 ### R4. Human labels are wrong
 
-**Mitigation:** labels are annotations, supersedable, and excluded from machine identity.
+Mitigation: annotations are supersedable and excluded from machine identity.
 
-### R5. Old Atlas results bias clean discovery
+### R5. Old atlas biases clean discovery
 
-**Mitigation:** old overlay/runtime atlases excluded from clean dynamic source set until post-build comparison.
+Mitigation: old dynamic products excluded from clean source set until comparison stage.
 
-### R6. Live address reuse causes wrong ROM mapping
+### R6. Live address reuse maps to wrong ROM code
 
-**Mitigation:** region-instance + session/frame context; fail closed without unique context.
+Mitigation: contemporaneous region-instance context; fail closed without it.
 
-### R7. Data and code are confused
+### R7. Data/code confusion
 
-**Mitigation:** region class is explicit and may remain unknown; execution promotes evidence that bytes are executable but does not force entire region classification.
+Mitigation: explicit executable/data/mixed/unknown class; execution evidence does not force entire-region classification.
 
-### R8. Large data volume
+### R8. Data volume grows quickly
 
-**Mitigation:** store structured events/hashes by default; preserve bounded byte captures where needed; deduplicate large captured content by hash; keep raw bulk outside Git.
+Mitigation: structured events/hashes by default, bounded byte captures, content deduplication, ignored `build/total-resolver/` storage.
 
-### R9. Static decomp changes after atlas capture
+### R9. Static decomp changes after capture
 
-**Mitigation:** every session/product records decomp/static source identity; rebuild adapters or mark drift rather than silently remapping.
+Mitigation: every session/product records decomp source identity; rebuild or mark drift rather than silently remapping.
 
-### R10. Savestate restores mask natural loader behavior
+### R10. Savestate restores mask natural loads
 
-**Mitigation:** clean manual play/cold-load sessions are the primary R3 acquisition lane; retrospective state loads are separately classified.
+Mitigation: clean boot/manual play is primary R3 lane; retrospective state work is separately classified.
 
-### R11. Recorder becomes an invasive emulator dependency
+### R11. Resolver becomes coupled to Project64 internals
 
-**Mitigation:** keep `Pj64Agent` raw and reusable; add a sidecar recorder/wrapper; modify the emulator only for proven missing primitives.
+Mitigation: stable repo-local client/protocol layer; raw capture and resolver remain separable.
 
-### R12. "Complete" becomes an untestable claim
+### R12. "Complete" becomes untestable
 
-**Mitigation:** publish explicit static->dynamic, dynamic->static, loader, unresolved, and discovery-rate metrics; use bounded release wording.
+Mitigation: explicit static->dynamic, dynamic->static, loader, unresolved, transition, and discovery metrics.
 
 ---
 
-## 23. Product Verification Requirements
+## 24. Product Verification Requirements
 
-The final R3 verifier must independently check at least:
+Final verifier must independently check at least:
 
-1. schema version and closed-schema behavior;
+1. schema versions and closed-schema behavior;
 2. registry identity;
-3. complete selected-source identity set;
+3. selected-source identities;
 4. source DB hashes/logical roots;
 5. no duplicate primary entity keys;
 6. address-space validity;
 7. region lifetime ordering;
-8. no impossible negative/overlapping lifetime representation unless explicitly modeled;
-9. placement mapping arithmetic and boundary checks;
-10. execution observation linkage to the correct contemporaneous region;
-11. no accepted execution generated solely from residency;
+8. legal overlap/split representation;
+9. placement arithmetic/boundaries;
+10. execution linkage to contemporaneous region;
+11. no execution derived solely from residency;
 12. live-address ambiguity rejection;
-13. human annotation independence from machine identity;
+13. annotation independence from machine identity;
 14. deterministic generation;
 15. unresolved/conflict preservation;
 16. raw-session provenance references;
-17. no historical dynamic source accidentally selected as current;
+17. no historical dynamic source accidentally selected current;
 18. representative current-resolver query compatibility;
-19. bounded coverage report consistency;
-20. database read-only/immutability expectations during verification.
+19. coverage report internal consistency;
+20. read-only/immutability expectations during verification;
+21. generated bulk is ignored and tracked source remains clean;
+22. ordinary exact-ROM build remains unaffected when Project64 is absent.
 
 ---
 
-## 24. User-Facing Query and Status Examples
+## 25. User-Facing Examples
 
 ### Resolve a live watch hit
 
 ```text
-total-resolver explain live:0x8020B150 --current
+python -m tools.total_resolver explain live:0x8020B150 --current
 ```
 
-Expected conceptual output:
+Conceptual output:
 
 ```text
 live address       0x8020B150
@@ -2011,7 +2055,7 @@ z64                0x0022F580 + offset
 function           func_0022F580
 placement evidence observed this session
 execution evidence observed at event 9112
-resource ancestry  resource -> loader -> allocation (when known)
+resource ancestry  resource -> loader -> allocation
 static callers     ...
 static callees     ...
 field/resource     ...
@@ -2022,15 +2066,13 @@ review state       live-unreviewed
 ### Resolve a function
 
 ```text
-total-resolver explain func_0022F580 --relationship placements
+python -m tools.total_resolver explain func_0022F580 --relationship placements
 ```
 
-Should show accepted historical/current placements plus clearly separated current-session witnesses.
-
-### Show coverage
+### Coverage
 
 ```text
-total-resolver coverage
+python -m tools.total_resolver coverage
 ```
 
 Conceptual output:
@@ -2060,99 +2102,109 @@ Current session
 
 ---
 
-## 25. Old Atlas Comparison Policy
+## 26. Old Atlas Comparison Policy
 
-After clean Atlas 2.0 is independently generated, produce a comparison report against the old Overlay Atlas/Runtime Atlas.
+Only after clean Atlas 2.0 is independently generated, compare it with old Overlay/Runtime atlases.
 
-Classify each comparable old claim:
+Classify old claims as:
 
-- corroborated by clean R3;
+- corroborated;
 - compatible but not yet re-observed;
 - machine mapping differs;
 - human label differs/suspect;
-- old source identity unavailable;
+- source identity unavailable;
 - cannot compare.
 
-Do **not** automatically delete or rewrite old products. The comparison is historical quality analysis and may identify useful remaining coverage targets.
+Do not delete or rewrite old products automatically.
 
 ---
 
-## 26. Review and Change Control
+## 27. Review and Change Control
 
-Structural changes to any of these require independent review:
+Independent review is required for structural changes to:
 
 - address-space rules;
 - region lifetime semantics;
 - loader source/destination derivation;
 - placement identity;
 - function crosswalk;
-- current-source registry;
+- current source registry;
 - coverage/completeness claims;
-- acceptance-grade policy.
+- acceptance-grade policy;
+- bridge protocol semantics that affect evidence.
 
-Routine new play sessions do not require bespoke independent review merely to exist as raw evidence. Their promotion into an accepted generated atlas is covered by the generator/verifier/review process.
+Routine raw play sessions do not require bespoke review merely to be recorded. Promotion into an accepted generated product carries the review burden.
 
 ---
 
-## 27. First Implementation Slice
+## 28. First Implementation Slice
 
-The first worker should **not** be told to build the complete system in one pass.
+The first worker should not be asked to build every final feature in one pass.
 
 The first implementation assignment should be approximately:
 
-> Build the R3 raw session recorder and prove one dynamic game transition losslessly. Wrap the existing `Pj64Agent`; do not modify `ob64-core` or the bridge unless a concrete missing primitive blocks the proof. Record a monotonically ordered raw event stream, frame context, recorder health, installed watches, loader entry/completion evidence, destination byte identities, region lifetimes, and optional human endpoint labels. Select one reproducible transition that performs dynamic loading. Demonstrate that every detected destination change in the observed runtime pools is either explained by a captured load or explicitly unresolved, including any placement that lasts only one/few frames. Regenerate the transition timeline deterministically from the closed raw session database. Do not build the final accepted resolver or import old Atlas 1.x dynamic claims in this phase.
+> Create `tools/total_resolver/` in `OB64-Decomp`, establish a repo-local Project64 client with parity to the bridge operations required for observation, build the raw session recorder, and prove one dynamic game transition losslessly. Record a monotonically ordered event stream, frame context, recorder health, installed watches, loader entry/completion evidence, destination byte identities, region lifetimes, and optional human endpoint labels. Select one reproducible transition that performs dynamic loading. Demonstrate that every detected destination change in the observed runtime pools is either explained by a captured load or explicitly unresolved, including any placement that lasts only one/few frames. Regenerate the transition timeline deterministically from the closed raw session database. Keep all generated bulk under ignored `build/total-resolver/`. Do not build the final accepted resolver or import old Atlas 1.x dynamic claims in this first slice.
 
-That slice should produce enough evidence to answer the decisive question:
+The decisive question is:
 
-> **Can this acquisition layer observe the real overlay/data lifecycle without losing the short-lived states that savestate-based Atlas 1.x could miss?**
+> **Can the repo-local acquisition layer observe the real overlay/data lifecycle without losing the short-lived states that savestate-oriented Atlas 1.x could miss?**
 
-If yes, proceed through the phases above. If no, fix the runtime observation primitive before investing in the full database product.
+If yes, scale through the later phases. If no, fix the observation primitive before investing in broad coverage.
 
 ---
 
-## 28. Final Product Acceptance Criteria
+## 29. Final Product Acceptance Criteria
 
-Total Resolver R3 is ready for accepted release only when all of the following are true:
+Total Resolver R3 is release-ready only when:
 
+- its maintained implementation lives in `OB64-Decomp`;
 - current R2/current aides are preserved and reproducibly identifiable;
-- clean dynamic acquisition does not depend on old savestate names;
-- transient one/few-frame region instances are representable and proven captured in at least one real transition when naturally present;
+- clean acquisition does not depend on old savestate names;
+- transient one/few-frame region instances are representable and actually captured in a real transition when present;
 - loader events and region lifetimes have explicit provenance;
 - Overlay Atlas 2.0 is deterministic and independent of old dynamic atlas inputs;
 - Runtime Provenance 2.0 distinguishes placement from execution;
 - live PC resolution is contemporaneous-placement aware;
 - reused live addresses fail closed without sufficient context;
-- accepted static, resource, field, placement, and runtime evidence remain separate lanes;
-- live-unreviewed events can enrich Codex research without mutating accepted DBs;
-- human labels can be corrected without changing machine evidence identities;
-- coverage is reported in both static->dynamic and dynamic->static directions;
-- every unresolved runtime observation remains visible with a next-evidence path;
-- the complete product rebuild/verifier passes from declared inputs;
-- independent review has accepted the capture and mapping contracts;
-- release documentation states bounded completeness rather than claiming omniscience.
+- static/resource/field/placement/runtime evidence remain separate lanes;
+- live-unreviewed events enrich Codex research without mutating accepted DBs;
+- human labels can be corrected without changing machine evidence;
+- coverage is reported both static->dynamic and dynamic->static;
+- unresolved runtime observations remain visible with next-evidence paths;
+- complete product generation/verifier passes from declared inputs;
+- generated runtime bulk stays outside tracked source by default;
+- ordinary decomp build/verify remains usable without Project64;
+- independent review accepts capture and mapping contracts;
+- release documentation states bounded completeness rather than omniscience.
 
 ---
 
-## 29. Recommended Execution Order
+## 30. Recommended Execution Order
 
-The recommended order is therefore:
+1. freeze current resolver/aides and protocol identities;
+2. create the tracked `tools/total_resolver/` product skeleton;
+3. establish repo-local Project64 client parity;
+4. freeze raw-session and normalized contracts;
+5. build observation-only recorder;
+6. prove one transition losslessly;
+7. generalize loaders and unknown-change detection;
+8. generate Overlay Atlas 2.0;
+9. generate Runtime Provenance 2.0;
+10. build Total Resolver R3 and fail-closed contextual live resolution;
+11. connect current P64 events to live-unreviewed enrichment;
+12. begin clean manual gameplay acquisition;
+13. use coverage reports to hunt real gaps;
+14. optionally authorize Codex gameplay automation for targeted gaps;
+15. independently review, freeze, and promote the R3 current source set.
 
-1. freeze current resolver/aides;
-2. define R3 raw-session and normalized contracts;
-3. build the observation-only Project64 recorder;
-4. prove one transition losslessly;
-5. generalize loader coverage and unknown-change detection;
-6. generate Overlay Atlas 2.0;
-7. generate Runtime Provenance 2.0;
-8. build Total Resolver R3 and its fail-closed contextual live resolver;
-9. connect current P64 events to live-unreviewed resolver enrichment;
-10. begin clean manual gameplay acquisition;
-11. use coverage reports to hunt only real gaps;
-12. optionally authorize Codex gameplay automation for targeted remaining gaps;
-13. independently review, freeze, and promote the R3 current source set.
-
-The guiding principle throughout is:
+The guiding principle is:
 
 > **Capture raw machine truth first, derive placement and execution evidence second, attach human meaning separately, and promote only through reproducible verification.**
 
-That architecture preserves the project's strongest existing evidence discipline while finally making Project64, the dynamic atlases, the static decomp, and the Unified Resolver operate as one coherent research system.
+The resulting product should make the decomp repository itself the authoritative place to ask both:
+
+> **What is this ROM code?**
+
+and
+
+> **What is executing or being loaded in Project64 right now, and where did it come from?**
