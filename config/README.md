@@ -23,6 +23,8 @@ Rev 0 decomp configuration lives here.
 - `toolchain.json` - active GNU Binutils 2.6 resolver, flags, and ignored local install root.
 - `source-policy.json` - matching-compiler provenance plus the complete authenticated executable
   chain used to preprocess sources before classification.
+- `total-resolver/sources.json` - frozen pre-R3 migration inputs plus the maintained bridge/client,
+  external Project64, and decomp identities checked by Total Resolver before capture or rebuild.
 
 `matching-c-targets.json` owns the toolchain and build-provenance manifest paths and SHA-256 values
 once. Target entries remain limited to `symbol` and `source`. Update the authenticated chain in

@@ -79,6 +79,22 @@ A modified ROM is expected to differ from retail. Modified-game acceptance there
 and changed-byte/layout tests, not the retail exact-ROM rule. Always preserve a known-exact
 matching baseline from which modifications are derived.
 
+### 5. Total Resolver work
+
+Total Resolver is an intentional decomp-repository tool under `tools/total_resolver/`.
+Project64 remains an external runtime dependency, and the ordinary build and verifier must remain
+usable without it.
+
+Tracked resolver source, configuration, schemas, documentation, tests, and bounded approved
+fixtures belong in this repository. Session databases, RAM captures, screenshots, generated
+resolver databases, caches, traces, and other bulk runtime evidence belong under ignored
+`build/total-resolver/` paths by default.
+
+Keep static, placement, execution, resource, field, and human-annotation evidence distinct. New
+live observations begin as `live-unreviewed`; they do not silently alter accepted structural or
+matching evidence. The frozen pre-R3 overlay and runtime atlases remain historical/reference inputs
+and must not seed the clean R3 dynamic lane.
+
 ## Source Classes
 
 The source-policy tool determines source class. Agents do not self-certify it.

@@ -1,0 +1,129 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ob64-total-resolver-normalized-record.v1",
+  "title": "OB64 Total Resolver normalized record envelope",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "recordId",
+    "recordType",
+    "sourceId",
+    "evidenceLane",
+    "evidenceGrade",
+    "reviewState",
+    "disposition",
+    "addresses",
+    "nativePayload"
+  ],
+  "properties": {
+    "schema": {
+      "const": "ob64-total-resolver-normalized-record.v1"
+    },
+    "recordId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "recordType": {
+      "enum": [
+        "region-instance",
+        "placement-observation",
+        "execution-observation",
+        "memory-access",
+        "loader-event",
+        "configuration",
+        "transition",
+        "unresolved-observation",
+        "semantic-marker",
+        "witness"
+      ]
+    },
+    "sourceId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "sessionId": {
+      "type": ["string", "null"]
+    },
+    "sequence": {
+      "type": ["integer", "null"],
+      "minimum": 1
+    },
+    "frame": {
+      "type": ["integer", "null"],
+      "minimum": 0
+    },
+    "evidenceLane": {
+      "enum": ["static", "placement", "runtime", "field", "resource", "annotation"]
+    },
+    "evidenceGrade": {
+      "enum": ["verified", "supported", "candidate", "unresolved"]
+    },
+    "reviewState": {
+      "enum": [
+        "live-unreviewed",
+        "generated-unreviewed",
+        "review-pending",
+        "accepted-source",
+        "historical",
+        "rejected"
+      ]
+    },
+    "disposition": {
+      "enum": ["compatible", "conflicting", "unresolved", "unsupported"]
+    },
+    "addresses": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["space", "role", "start", "endExclusive"],
+        "properties": {
+          "space": {
+            "enum": [
+              "z64-rom",
+              "raw-v64",
+              "nominal-vram",
+              "physical-rdram",
+              "live-kseg"
+            ]
+          },
+          "role": {
+            "type": "string",
+            "minLength": 1
+          },
+          "start": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "endExclusive": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "contextId": {
+            "type": ["string", "null"]
+          }
+        }
+      }
+    },
+    "relationships": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["type", "target", "disposition"],
+        "properties": {
+          "type": {"type": "string", "minLength": 1},
+          "target": {"type": "string", "minLength": 1},
+          "disposition": {
+            "enum": ["compatible", "conflicting", "unresolved", "unsupported"]
+          }
+        }
+      },
+      "default": []
+    },
+    "nativePayload": {
+      "type": "object"
+    }
+  }
+}

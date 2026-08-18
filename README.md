@@ -23,6 +23,21 @@ coverage, overlay, source-ownership, and structural checks for foundational
 changes. Run `status.js` for generated counts; this README does not duplicate
 them.
 
+Total Resolver R3 is a separate research-tool surface; Phases 0-9 are implemented and the manual
+gameplay coverage phase is ready to begin:
+
+```text
+python -m tools.total_resolver doctor
+python -m tools.total_resolver pj64 health
+python -m tools.total_resolver session start --port 64656
+python -m tools.total_resolver resolver verify build/total-resolver/products/resolver-r3
+python -m tools.total_resolver explain func_00043d1c
+python -m tools.total_resolver coverage
+```
+
+Project64 is optional and remains outside the exact-ROM build path. See
+`tools/total_resolver/README.md` for the bridge, capture, resolver, and live-bundle commands.
+
 ## Local setup
 
 Place a supported Rev 0 ROM under `baserom/` or configure `OB64_ROM_INPUT`.

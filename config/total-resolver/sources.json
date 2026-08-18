@@ -1,0 +1,157 @@
+{
+  "schema": "ob64-total-resolver-source-freeze.v1",
+  "capturedOn": "2026-08-17",
+  "target": {
+    "game": "Ogre Battle 64: Person of Lordly Caliber",
+    "region": "US",
+    "revision": 0,
+    "normalizedRomSha256": "571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A"
+  },
+  "locators": {
+    "research-workspace": {
+      "environment": "OB64_RESEARCH_ROOT",
+      "defaultRelativeToDecomp": ".."
+    },
+    "project64-repository": {
+      "environment": "OB64_PROJECT64_ROOT"
+    }
+  },
+  "decompStaticSource": {
+    "gitCommit": "43A0AD3719F83EA4E6E31EF85F64D5BBD150DD6D",
+    "dirtyAtFreeze": false
+  },
+  "legacyResolver": {
+    "id": "unified-research-aide-resolver-r2",
+    "role": "historical-reference",
+    "base": "research-workspace",
+    "productPath": "wiki/unified-research-aide-resolver-r2-20260805",
+    "researchWorkspaceGitCommit": "957EF654F64E22C3FAF883A71A8D8110DFFE2D92",
+    "artifacts": [
+      {
+        "path": "db/resolver-r2.sqlite",
+        "kind": "file-sha256",
+        "sha256": "BF114399B5E37F398BF5073FC53FF3F4FADBD471733E14802D7CE6A0FB40AF6E"
+      },
+      {
+        "path": "registry/sources.v1.json",
+        "kind": "file-sha256",
+        "sha256": "DBA5B4DADF3FE9E2097B00476FD11DDCFC6CC64F35D809801478C70433A44419"
+      },
+      {
+        "path": "exports/logical-output-hash.json",
+        "kind": "file-sha256",
+        "sha256": "3CD0A3056603E8AC659D1E0D3A696309D86132BF6113B720366E36A49611D426"
+      },
+      {
+        "path": "reports/verification-summary.json",
+        "kind": "file-sha256",
+        "sha256": "43477CE256098EAE017D54C455D44FAC6611CA5AC0E53AAE6A8930120D7B61DB"
+      }
+    ],
+    "logicalOutput": {
+      "schema": "resolver-r2-logical-output.v1",
+      "sha256": "72B4FB8A0D77267A5447B877A3756DE7A6C50947FF0A9C54BA7E63FF5B23232B"
+    }
+  },
+  "sourceSnapshots": [
+    {
+      "adapterId": "static-db-r3",
+      "snapshotId": "sol-decomp-static-db-r3-20260710",
+      "identityKind": "file-sha256",
+      "identitySha256": "42B89420BE0939C654A890CCB13BEC08B2399E13F6E16CDB916F1D469794EDE7",
+      "evidenceLanes": ["static"],
+      "cleanR3Role": "accepted-static-feed-candidate"
+    },
+    {
+      "adapterId": "resource-chain-static",
+      "snapshotId": "rom-resource-load-chain-atlas-static-20260711",
+      "identityKind": "sqlite-logical-sha256",
+      "identitySha256": "316E6F19DE55A6F90E0B31027F8F1828DC24B650A6999E1066BD9D957E77B3DF",
+      "evidenceLanes": ["resource"],
+      "cleanR3Role": "accepted-static-feed-candidate"
+    },
+    {
+      "adapterId": "structure-field-static",
+      "snapshotId": "mips-structure-field-access-atlas-static-20260711",
+      "identityKind": "framed-file-set-sha256",
+      "identitySha256": "EC4F34D5DC1BBEDEE27A504B051BB5205F5F91C26A634FAC2CCBCE74F7C44C52",
+      "evidenceLanes": ["field", "static"],
+      "cleanR3Role": "accepted-static-feed-candidate"
+    },
+    {
+      "adapterId": "overlay-atlas-r3",
+      "snapshotId": "sol-overlay-atlas-r3-20260710",
+      "identityKind": "file-sha256",
+      "identitySha256": "06B36CDC8917C5C81C99909729AFD138D17DF479CE8963EEABB69C795C6DFC3C",
+      "evidenceLanes": ["placement"],
+      "cleanR3Role": "historical-reference-only"
+    },
+    {
+      "adapterId": "runtime-provenance-r3",
+      "snapshotId": "runtime-execution-memory-provenance-atlas-r3-20260712",
+      "identityKind": "framed-file-set-sha256",
+      "identitySha256": "D20A6290B36E9D36EAC912C3FD7FB45C641C59BD1AE882BEFD2C7850E6B83FDC",
+      "evidenceLanes": ["runtime"],
+      "cleanR3Role": "historical-reference-only"
+    }
+  ],
+  "project64": {
+    "clientReference": {
+      "role": "historical-reference",
+      "base": "research-workspace",
+      "path": "tools/project64/pj64.py",
+      "identitySource": "research-workspace-git-commit",
+      "gitCommit": "957EF654F64E22C3FAF883A71A8D8110DFFE2D92",
+      "sha256": "AD4BEEE14568556F497087A995627ADA0D5A8A7ABC57E52EAC0612C354F8C776"
+    },
+    "bridgeReference": {
+      "role": "historical-reference",
+      "base": "research-workspace",
+      "path": "tools/project64/ob64_pj64_bridge.js",
+      "identitySource": "research-workspace-git-commit",
+      "gitCommit": "957EF654F64E22C3FAF883A71A8D8110DFFE2D92",
+      "version": "0.6.8",
+      "sha256": "FBF04CD9FB1E5852004C857EEB06C6A9F77FDC6BC34554F67C2046A1892202F2"
+    },
+    "activeBridge": {
+      "role": "active-runtime-dependency",
+      "base": "research-workspace",
+      "path": "tools/project64/ob64_pj64_bridge.js",
+      "protocolVersion": "0.7.2",
+      "sha256": "8B90683C23358888E271524D17D384B522C1D6BE59F8D961AEC2076F3CC9DC74",
+      "queueModel": "unified",
+      "ordering": "emulator-side-monotonic-sequence-at-event-creation",
+      "epoch": "per-script-instance",
+      "lossEvidence": "explicit-sequence-ranges",
+      "dmaTransactionEvidence": "ordered-ROM-to-RDRAM-start-completion-pairs",
+      "dmaScope": "cartridge-ROM-to-RDRAM; SRAM and other PI domains excluded",
+      "dmaContentEvidence": "post-transfer-callback-destination-bytes",
+      "memoryRangeSafetyNet": "bounded FNV-1a change probes with exact bytes captured on detected change"
+    },
+    "runtimeRepository": {
+      "base": "project64-repository",
+      "branch": "ob64-core",
+      "gitCommit": "9F73D97A03AECEBFF62622AC2BE34E8B13B49404"
+    },
+    "activeNativeRuntime": {
+      "base": "project64-repository",
+      "baseGitCommit": "9F73D97A03AECEBFF62622AC2BE34E8B13B49404",
+      "sourceIdentityKind": "framed-file-set-sha256",
+      "sourceFiles": [
+        "Source/Project64-core/Debugger.h",
+        "Source/Project64-core/N64System/MemoryHandler/PeripheralInterfaceHandler.cpp",
+        "Source/Project64/UserInterface/Debugger/Debugger.cpp",
+        "Source/Project64/UserInterface/Debugger/ScriptAPI/ScriptAPI.h",
+        "Source/Project64/UserInterface/Debugger/ScriptAPI/ScriptAPI_events.cpp",
+        "Source/Project64/UserInterface/Debugger/ScriptTypes.h",
+        "Source/Project64/UserInterface/Debugger/debugger.h"
+      ],
+      "sourceFileSetSha256": "7D8BD1FB273B80C28593A3A3350941181D7D09C906B097A57E739AB551C043EC",
+      "binaryPath": "bin/Win32/Release/Project64.exe",
+      "binarySha256": "3D1F3C6D889A63713F522E6680275160317563E1CA321C195505DD6227434D6D",
+      "build": "Project64.vcxproj Release|Win32",
+      "nativeEvent": "events.onpidmacomplete",
+      "callbackPhase": "after cart-to-RDRAM copy"
+    }
+  }
+}
