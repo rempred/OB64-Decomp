@@ -45,6 +45,11 @@ class ScriptedTransport:
                 "droppedRanges": [],
                 "watches": [],
                 "dma": {},
+                "capture": {
+                    "enabled": False,
+                    "trace": {"enabled": False},
+                    "controllerInput": {"enabled": False},
+                },
                 "emuState": {},
             }
         if line == "health":
@@ -113,7 +118,7 @@ class ClientTests(unittest.TestCase):
         client = Pj64Client(transport=transport)
         client.connect()
         self.assertEqual(transport.lines, ["ping", "status", "health"])
-        self.assertEqual(client.handshake_result.version, "0.7.2")
+        self.assertEqual(client.handshake_result.version, "0.8.0")
 
     def test_incompatible_bridge_closes_transport(self) -> None:
         transport = ScriptedTransport(version="0.6.7")
@@ -142,6 +147,9 @@ class ClientTests(unittest.TestCase):
         self.assertEqual(block.frame_count, 123)
         self.assertEqual(client.watch_exec(0x80100000, size=4, label="loader entry"), {"id": 7})
         client.drain_events(32)
+        client.capture_start()
+        client.capture_status()
+        client.capture_stop()
         client.dma_start(0x1000, 0x2000, maximum=64, context_words=8)
         client.dma_set_rom_range(0x3000, 0x4000)
         client.dma_status()
@@ -159,6 +167,9 @@ class ClientTests(unittest.TestCase):
         self.assertIn("readblock 0x80000000 0x3", transport.lines)
         self.assertIn("watch exec 0x80100000 4 loader_entry", transport.lines)
         self.assertIn("drain 32", transport.lines)
+        self.assertIn("capture on", transport.lines)
+        self.assertIn("capture status", transport.lines)
+        self.assertIn("capture off", transport.lines)
         self.assertIn("dma on 0x1000 0x2000 64 0x0 8", transport.lines)
         self.assertIn("dma cart 0x3000 0x4000", transport.lines)
 

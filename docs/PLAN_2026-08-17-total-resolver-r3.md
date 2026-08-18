@@ -1,9 +1,13 @@
 # Total Resolver R3 Product Plan
 
-Status: **proposed complete product plan — implementation not yet authorized by this document alone**  
+Status: **authorized and implemented through Phase 9; Phase 10 gameplay acquisition active**
 Created: 2026-08-17  
-Revised: 2026-08-17 — **Total Resolver is a first-class `OB64-Decomp` tool**  
+Revised: 2026-08-18 — **protocol 0.8 execution/input capture and exact-content deduplication**
 Target: **Ogre Battle 64: Person of Lordly Caliber, US Rev 0 only**
+
+Implementation results and current limitations are maintained in
+`docs/total-resolver/implementation-status.md`. This plan remains the product/design record rather
+than a changing coverage ledger.
 
 ## 1. Executive Summary
 
@@ -833,6 +837,11 @@ Required operations include:
 - controller input for later automated mode;
 - frame capture/hash;
 - RDRAM dump/crash diagnostics.
+
+Protocol `0.8.0` extends that boundary with one emulator-assigned order across watch, DMA,
+execution, and effective-controller-input events; a script-instance epoch; explicit dropped
+sequence ranges; event-time DMA destination bytes; and generation-aware unique execution
+instruction/edge observations paired with exact code-page bytes.
 
 Only modify Project64 or the bridge after a concrete missing primitive blocks a done-gate.
 
@@ -1987,7 +1996,10 @@ Mitigation: explicit executable/data/mixed/unknown class; execution evidence doe
 
 ### R8. Data volume grows quickly
 
-Mitigation: structured events/hashes by default, bounded byte captures, content deduplication, ignored `build/total-resolver/` storage.
+Mitigation: structured events/hashes by default, bounded byte captures, and ignored
+`build/total-resolver/` storage. Deduplicate exact payload bytes, never event occurrences. Use
+hashes only as lookup buckets and require exact-byte equality before reuse, so a repeated stream
+can still reveal a new placement, byte generation, instruction, edge, or input transition.
 
 ### R9. Static decomp changes after capture
 

@@ -11,7 +11,7 @@ from pathlib import Path
 import sqlite3
 from typing import Any, Iterable, Mapping
 
-from .capture_db import canonical_json
+from .capture_db import canonical_json, load_event_payload
 from .configuration import machine_configuration_identity
 from .contracts import EvidenceGrade, RegionClass
 from .identities import read_normalized_rom, rom_identity_from_file
@@ -97,10 +97,14 @@ def _first_difference(left: bytes, right: bytes) -> int:
     return min(len(left), len(right))
 
 
-def _read_payload(row: sqlite3.Row) -> dict[str, Any]:
+def _read_payload(row: sqlite3.Row, connection: sqlite3.Connection | None = None) -> dict[str, Any]:
     try:
-        value = json.loads(str(row["raw_payload_json"]))
-    except json.JSONDecodeError as exc:
+        value = (
+            load_event_payload(connection, str(row["raw_payload_json"]))
+            if connection is not None
+            else json.loads(str(row["raw_payload_json"]))
+        )
+    except (json.JSONDecodeError, ValueError) as exc:
         raise ValueError(f"event {row['sequence_id']} has invalid JSON") from exc
     if not isinstance(value, dict):
         raise ValueError(f"event {row['sequence_id']} payload is not an object")
@@ -164,7 +168,7 @@ def _derive_transactions(
     ignored_non_rom_completions = 0
 
     for row in _event_rows(connection, end_sequence):
-        payload = _read_payload(row)
+        payload = _read_payload(row, connection)
         event_type = str(row["bridge_event_type"])
         if not _is_rom_dma(payload):
             if event_type == "dma-start":

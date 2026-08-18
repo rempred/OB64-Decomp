@@ -1,6 +1,6 @@
 # Total Resolver R3 Implementation Status
 
-Status: **Phases 0-9 complete; Phase 10 manual coverage pending**
+Status: **Phases 0-9 complete; protocol 0.8 acquisition implemented; Phase 10 manual coverage pending**
 Updated: 2026-08-18
 
 This page records the current implementation boundary. It is not a claim that the game has been
@@ -25,9 +25,14 @@ has yet established function execution. Sampled PCs remain context and do not co
 
 ## Completed behavior
 
-- Exact bridge `0.7.2` handshake and fail-closed compatibility tests.
-- Unified emulator-ordered watch/DMA stream with epoch and explicit dropped ranges.
+- Exact bridge `0.8.0` handshake and fail-closed compatibility tests.
+- Unified emulator-ordered watch/DMA/trace/input stream with epoch and explicit dropped ranges.
 - Event-time destination-byte evidence for completed ROM DMA events.
+- Lightweight generation-aware execution capture for unique PC/opcode and edge identities, paired
+  with exact event-time code-page bytes.
+- Effective Player 1 controller transitions, with consecutive identical states coalesced.
+- Exact per-session content interning that preserves every event occurrence and verifies bytes
+  before reusing a SHA-256-indexed blob.
 - Observation-only raw recorder with close, recovery, verification, and deterministic replay.
 - Region lifetimes, transient placements, Overlay Atlas 2.0, and Runtime Provenance 2.0.
 - Compact typed resolver with separate static, placement, runtime, field, and resource lanes.
@@ -45,12 +50,18 @@ placements alive at the respective event boundaries.
 ## Current limits
 
 - Coverage is deliberately incomplete and currently biased toward the observed Army/menu state.
-- There are no exact execution hits or event-time memory-watch accesses in the accepted runtime
-  product yet.
+- The accepted runtime product predates protocol `0.8.0`, so it still has no exact execution hits
+  or event-time memory-watch accesses. New capture capability does not retroactively strengthen it.
 - Static calls, sampled PCs, residency, exact execution, field candidates, and supported semantic
   names remain different evidence classes.
 - Hashes identify bytes and inputs; they do not prove meaning or equivalent behavior.
 - Live enrichment is `live-unreviewed` until incorporated into a rebuilt, verified product.
+- Code-page generations currently advance on CPU stores and completed PI DMA writes. Other RDRAM
+  writers remain a safety-net limitation and must not be silently treated as fully observed.
+- Exact content is shared within one session database, not across separate session files. Raw
+  sessions are not automatically deleted.
 
-Phase 10 now needs ordinary gameplay coverage. Human labels are optional; the machine recorder
-captures bridge transitions without requiring a courtroom-style evidence ritual.
+Phase 10 now needs ordinary gameplay coverage using the new trace/input stream. Repeating an
+unchanged menu stops adding learned instruction/edge coverage, while a new placement, changed
+bytes, new edge, or controller transition remains visible. Human labels are optional; the machine
+recorder captures bridge transitions without requiring a courtroom-style evidence ritual.

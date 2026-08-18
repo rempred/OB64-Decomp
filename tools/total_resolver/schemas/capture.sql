@@ -1,9 +1,9 @@
 PRAGMA foreign_keys = ON;
-PRAGMA user_version = 2;
+PRAGMA user_version = 3;
 
 CREATE TABLE schema_info (
     schema_name TEXT PRIMARY KEY CHECK (schema_name = 'ob64-total-resolver-capture'),
-    schema_version INTEGER NOT NULL CHECK (schema_version = 2),
+    schema_version INTEGER NOT NULL CHECK (schema_version = 3),
     created_utc TEXT NOT NULL
 ) STRICT;
 
@@ -58,19 +58,30 @@ CREATE TABLE session (
     notes TEXT
 ) STRICT;
 
+CREATE TABLE content_blob (
+    content_sha256 TEXT PRIMARY KEY CHECK (length(content_sha256) = 64),
+    byte_size INTEGER NOT NULL CHECK (byte_size >= 0),
+    content_bytes BLOB NOT NULL,
+    first_observed_utc TEXT NOT NULL,
+    CHECK (length(content_bytes) = byte_size)
+) STRICT;
+
 CREATE TABLE event_sequence (
     sequence_id INTEGER PRIMARY KEY AUTOINCREMENT,
     session_id TEXT NOT NULL REFERENCES session(session_id),
     frame_number INTEGER,
     host_monotonic_ns INTEGER NOT NULL CHECK (host_monotonic_ns >= 0),
     observed_utc TEXT NOT NULL,
-    bridge_stream TEXT NOT NULL CHECK (bridge_stream IN ('watch', 'dma', 'recorder')),
+    bridge_stream TEXT NOT NULL CHECK (bridge_stream IN (
+        'watch', 'dma', 'trace', 'input', 'recorder'
+    )),
     bridge_epoch TEXT NOT NULL,
     bridge_event_sequence INTEGER CHECK (bridge_event_sequence >= 1),
     recorder_batch_id INTEGER NOT NULL CHECK (recorder_batch_id >= 1),
     recorder_batch_index INTEGER NOT NULL CHECK (recorder_batch_index >= 0),
     bridge_event_type TEXT NOT NULL,
     raw_payload_sha256 TEXT NOT NULL,
+    stored_payload_sha256 TEXT NOT NULL,
     raw_payload_json TEXT NOT NULL,
     ingestion_status TEXT NOT NULL CHECK (ingestion_status IN (
         'accepted',
@@ -81,7 +92,7 @@ CREATE TABLE event_sequence (
     )),
     bridge_queue_remaining INTEGER CHECK (bridge_queue_remaining >= 0),
     bridge_dropped_total INTEGER CHECK (bridge_dropped_total >= 0),
-    event_time_content_sha256 TEXT,
+    event_time_content_sha256 TEXT REFERENCES content_blob(content_sha256),
     event_time_content_size INTEGER CHECK (
         event_time_content_size IS NULL OR event_time_content_size >= 0
     ),
@@ -91,11 +102,33 @@ CREATE TABLE event_sequence (
     ),
     event_time_content_phase TEXT CHECK (
         event_time_content_phase IS NULL OR
-        event_time_content_phase = 'post-transfer-callback'
+        event_time_content_phase IN (
+            'post-transfer-callback',
+            'pre-execution-callback',
+            'host-polled-range-snapshot'
+        )
+    ),
+    event_time_content_field TEXT CHECK (
+        event_time_content_field IS NULL OR
+        event_time_content_field IN (
+            'destinationBytesHex', 'codeBytesHex', 'bytesHex'
+        )
     ),
     CHECK (
         (bridge_stream = 'recorder' AND bridge_event_sequence IS NULL) OR
-        (bridge_stream IN ('watch', 'dma') AND bridge_event_sequence IS NOT NULL)
+        (bridge_stream IN ('watch', 'dma', 'trace', 'input') AND bridge_event_sequence IS NOT NULL)
+    ),
+    CHECK (
+        (event_time_content_sha256 IS NULL AND
+         event_time_content_size IS NULL AND
+         event_time_content_encoding IS NULL AND
+         event_time_content_phase IS NULL AND
+         event_time_content_field IS NULL) OR
+        (event_time_content_sha256 IS NOT NULL AND
+         event_time_content_size IS NOT NULL AND
+         event_time_content_encoding IS NOT NULL AND
+         event_time_content_phase IS NOT NULL AND
+         event_time_content_field IS NOT NULL)
     )
 ) STRICT;
 
@@ -140,7 +173,7 @@ CREATE TABLE watch_definition (
     watch_id TEXT PRIMARY KEY,
     session_id TEXT NOT NULL REFERENCES session(session_id),
     bridge_watch_id INTEGER,
-    watch_kind TEXT NOT NULL CHECK (watch_kind IN ('exec', 'read', 'write', 'dma')),
+    watch_kind TEXT NOT NULL CHECK (watch_kind IN ('exec', 'read', 'write', 'dma', 'input')),
     address_space TEXT NOT NULL CHECK (address_space IN (
         'z64-rom',
         'raw-v64',

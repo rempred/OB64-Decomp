@@ -27,6 +27,11 @@ def good_responses() -> tuple[dict, dict, dict]:
         "nextEventSequence": 1,
         "watches": [],
         "dma": {},
+        "capture": {
+            "enabled": False,
+            "trace": {"enabled": False},
+            "controllerInput": {"enabled": False},
+        },
         "emuState": {},
     }
     health = {
@@ -41,15 +46,15 @@ def good_responses() -> tuple[dict, dict, dict]:
 class ProtocolTests(unittest.TestCase):
     def test_exact_bridge_contract_is_accepted(self) -> None:
         handshake = validate_handshake(*good_responses())
-        self.assertEqual(handshake.version, "0.7.2")
+        self.assertEqual(handshake.version, "0.8.0")
         self.assertEqual(handshake.bridge_epoch, "EPOCH-1")
         self.assertEqual(handshake.core, "interpreter")
         self.assertEqual(handshake.capabilities, BRIDGE_CAPABILITIES)
 
     def test_version_mismatch_fails_closed(self) -> None:
         ping, status, health = good_responses()
-        health["version"] = "0.7.1"
-        with self.assertRaisesRegex(BridgeProtocolError, "required exactly 0.7.2"):
+        health["version"] = "0.7.2"
+        with self.assertRaisesRegex(BridgeProtocolError, "required exactly 0.8.0"):
             validate_handshake(ping, status, health)
 
     def test_missing_observation_fields_fail_closed(self) -> None:

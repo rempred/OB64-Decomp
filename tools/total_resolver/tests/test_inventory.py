@@ -23,7 +23,7 @@ class InventoryTests(unittest.TestCase):
         self.assertEqual(
             inventory["project64"]["bridgeReference"]["role"], "historical-reference"
         )
-        self.assertEqual(inventory["project64"]["activeBridge"]["protocolVersion"], "0.7.2")
+        self.assertEqual(inventory["project64"]["activeBridge"]["protocolVersion"], "0.8.0")
         self.assertEqual(inventory["project64"]["activeBridge"]["queueModel"], "unified")
         self.assertFalse(inventory["decompStaticSource"]["dirtyAtFreeze"])
 

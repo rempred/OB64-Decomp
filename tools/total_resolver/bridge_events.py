@@ -9,7 +9,7 @@ from typing import Any, Mapping
 from .protocol import BridgeProtocolError
 
 
-BRIDGE_STREAMS = frozenset({"watch", "dma"})
+BRIDGE_STREAMS = frozenset({"watch", "dma", "trace", "input"})
 
 
 @dataclass(frozen=True)
@@ -32,6 +32,7 @@ class PreservedBridgeEvent:
     event_time_content_size: int | None = None
     event_time_content_encoding: str | None = None
     event_time_content_phase: str | None = None
+    event_time_content_field: str | None = None
 
 
 @dataclass(frozen=True)
@@ -79,27 +80,60 @@ def _parse_ranges(value: Any) -> tuple[DroppedSequenceRange, ...]:
 
 def _content_identity(
     payload: Mapping[str, Any], event_type: str
-) -> tuple[str, int, str, str] | None:
-    if event_type != "dma-complete":
+) -> tuple[str, int, str, str, str] | None:
+    if event_type == "dma-complete":
+        phase = payload.get("capturePhase")
+        encoding = payload.get("destinationBytesEncoding")
+        size = payload.get("destinationByteLength")
+        field = "destinationBytesHex"
+        expected_phase = "post-transfer-callback"
+    elif event_type == "trace-page":
+        phase = payload.get("capturePhase")
+        encoding = payload.get("codeBytesEncoding")
+        size = payload.get("codeByteLength")
+        field = "codeBytesHex"
+        expected_phase = "pre-execution-callback"
+    else:
         return None
-    phase = payload.get("capturePhase")
-    encoding = payload.get("destinationBytesEncoding")
-    size = payload.get("destinationByteLength")
-    encoded = payload.get("destinationBytesHex")
-    if phase != "post-transfer-callback" or encoding != "hex-uppercase":
-        raise BridgeProtocolError("DMA completion lacks post-transfer byte-capture provenance")
+    encoded = payload.get(field)
+    if phase != expected_phase or encoding != "hex-uppercase":
+        raise BridgeProtocolError(f"{event_type} lacks exact byte-capture provenance")
     if isinstance(size, bool) or not isinstance(size, int) or size < 1:
-        raise BridgeProtocolError("DMA completion destinationByteLength must be positive")
+        raise BridgeProtocolError(f"{event_type} byte length must be positive")
     if not isinstance(encoded, str) or len(encoded) != size * 2:
-        raise BridgeProtocolError("DMA completion destinationBytesHex length mismatch")
+        raise BridgeProtocolError(f"{event_type} exact-byte field length mismatch")
     if encoded != encoded.upper() or any(
         character not in "0123456789ABCDEF" for character in encoded
     ):
         raise BridgeProtocolError(
-            "DMA completion destinationBytesHex is not canonical uppercase hex"
+            f"{event_type} exact-byte field is not canonical uppercase hex"
         )
     content = bytes.fromhex(encoded)
-    return hashlib.sha256(content).hexdigest().upper(), size, encoding, phase
+    return hashlib.sha256(content).hexdigest().upper(), size, encoding, phase, field
+
+
+def _validate_trace_or_input_event(payload: Mapping[str, Any], event_type: str) -> None:
+    if event_type == "trace-page":
+        if payload.get("dedupeDecision") != "exact-byte-compare":
+            raise BridgeProtocolError("trace page lacks an exact-byte dedupe decision")
+        physical = payload.get("physicalAddress")
+        if not isinstance(physical, str):
+            raise BridgeProtocolError("trace page omitted its physical placement")
+    elif event_type == "exec-coverage":
+        if payload.get("dedupeDecision") != "exact-content-and-identity":
+            raise BridgeProtocolError("execution coverage lacks its exact dedupe decision")
+        if payload.get("newInstruction") is not True and payload.get("newEdge") is not True:
+            raise BridgeProtocolError("execution coverage contains no new exact identity")
+        if not isinstance(payload.get("codePageContentId"), int):
+            raise BridgeProtocolError("execution coverage omitted its exact page-content ID")
+    elif event_type == "controller-input":
+        if payload.get("controller") != 0:
+            raise BridgeProtocolError("controller capture currently requires effective P1 input")
+        if payload.get("capturePhase") != "post-controller-read-and-bridge-injection":
+            raise BridgeProtocolError("controller input lacks effective-input provenance")
+        state = payload.get("state")
+        if not isinstance(state, str):
+            raise BridgeProtocolError("controller input omitted its exact state word")
 
 
 def _validate_dma_event(payload: Mapping[str, Any], event_type: str, sequence: int) -> None:
@@ -158,6 +192,7 @@ def _preserve_event(value: Any, envelope_epoch: str) -> PreservedBridgeEvent:
         status = "malformed"
     content = _content_identity(payload, event_type)
     _validate_dma_event(payload, event_type, sequence)
+    _validate_trace_or_input_event(payload, event_type)
     return PreservedBridgeEvent(
         payload=payload,
         event_type=event_type,
@@ -170,11 +205,12 @@ def _preserve_event(value: Any, envelope_epoch: str) -> PreservedBridgeEvent:
         event_time_content_size=content[1] if content else None,
         event_time_content_encoding=content[2] if content else None,
         event_time_content_phase=content[3] if content else None,
+        event_time_content_field=content[4] if content else None,
     )
 
 
 def parse_drain_response(response: Mapping[str, Any]) -> DrainBatch:
-    """Validate bridge 0.7.2's unified ordered drain envelope."""
+    """Validate bridge 0.8.0's unified ordered drain envelope."""
 
     if response.get("queueModel") != "unified":
         raise BridgeProtocolError("drain response did not declare the unified queue model")

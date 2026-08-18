@@ -9,7 +9,7 @@ from pathlib import Path
 import sqlite3
 from typing import Any
 
-from .capture_db import canonical_json, payload_sha256
+from .capture_db import canonical_json, load_event_payload, payload_sha256
 from .configuration import ConfigurationRegion, machine_configuration_identity
 from .contracts import RegionClass
 from .inventory import sha256_file
@@ -41,16 +41,26 @@ def _verify_events(
     checks: list[dict[str, str]],
     session: sqlite3.Row,
 ) -> None:
-    rows = connection.execute(
-        """
+    capture_version = int(connection.execute("PRAGMA user_version").fetchone()[0])
+    if capture_version >= 3:
+        query = """
         SELECT sequence_id, bridge_stream, bridge_epoch, bridge_event_sequence,
                host_monotonic_ns, raw_payload_json, raw_payload_sha256,
-               bridge_event_type, event_time_content_sha256,
+               stored_payload_sha256, bridge_event_type, event_time_content_sha256,
                event_time_content_size, event_time_content_encoding,
-               event_time_content_phase
+               event_time_content_phase, event_time_content_field
         FROM event_sequence ORDER BY sequence_id
         """
-    ).fetchall()
+    else:
+        query = """
+        SELECT sequence_id, bridge_stream, bridge_epoch, bridge_event_sequence,
+               host_monotonic_ns, raw_payload_json, raw_payload_sha256,
+               raw_payload_sha256, bridge_event_type, event_time_content_sha256,
+               event_time_content_size, event_time_content_encoding,
+               event_time_content_phase, NULL
+        FROM event_sequence ORDER BY sequence_id
+        """
+    rows = connection.execute(query).fetchall()
     global_ids = [int(row[0]) for row in rows]
     expected_global = list(range(1, len(rows) + 1))
     _check(checks, "event-sequence-contiguous", global_ids == expected_global, f"{len(rows)} event(s)")
@@ -63,7 +73,7 @@ def _verify_events(
     content_ok = True
     pair_ok = True
     dma_starts: dict[int, dict[str, Any]] = {}
-    require_dma_pairs = session["bridge_version"] in {"0.7.1", "0.7.2"}
+    require_dma_pairs = session["bridge_version"] in {"0.7.1", "0.7.2", "0.8.0"}
 
     def is_rom_loader_dma(value: dict[str, Any]) -> bool:
         if value.get("sourceDomain") == "cartridge-rom":
@@ -93,12 +103,17 @@ def _verify_events(
         else:
             machine_sequences.append(int(bridge_sequence))
         try:
-            value = json.loads(row[5])
+            stored_value = json.loads(row[5])
+            stored_json = canonical_json(stored_value)
+            value = load_event_payload(connection, row[5])
             raw_json = canonical_json(value)
-        except (TypeError, json.JSONDecodeError):
+        except (TypeError, json.JSONDecodeError, ValueError):
             payloads_ok = False
+            content_ok = False
             continue
-        if raw_json != row[5] or payload_sha256(raw_json) != row[6]:
+        if stored_json != row[5] or payload_sha256(stored_json) != row[7]:
+            payloads_ok = False
+        if payload_sha256(raw_json) != row[6]:
             payloads_ok = False
         if bridge_sequence is not None and (
             value.get("bridgeEpoch") != epoch
@@ -106,8 +121,9 @@ def _verify_events(
             or value.get("bridgeStream") != stream
         ):
             epochs_ok = False
-        is_dma = row[7] == "dma-complete"
-        if row[7] == "dma-start" and is_rom_loader_dma(value):
+        event_type = str(row[8])
+        is_dma = event_type == "dma-complete"
+        if event_type == "dma-start" and is_rom_loader_dma(value):
             if bridge_sequence is None:
                 pair_ok = False
             else:
@@ -122,7 +138,7 @@ def _verify_events(
                     start.get(field) == value.get(field)
                     for field in ("phys", "romoff", "requestedLength")
                 )
-        content_columns = (row[8], row[9], row[10], row[11])
+        content_columns = (row[9], row[10], row[11], row[12], row[13])
         if is_dma:
             encoded = value.get("destinationBytesHex")
             if not isinstance(encoded, str):
@@ -139,11 +155,34 @@ def _verify_events(
                         value.get("destinationBytesEncoding"),
                         value.get("capturePhase"),
                     )
+                    if tuple(content_columns[:4]) != expected_content or (
+                        content_columns[4] != "destinationBytesHex"
+                        if capture_version >= 3
+                        else content_columns[4] is not None
+                    ):
+                        content_ok = False
+        elif event_type == "trace-page":
+            encoded = value.get("codeBytesHex")
+            if not isinstance(encoded, str):
+                content_ok = False
+            else:
+                try:
+                    content = bytes.fromhex(encoded)
+                except ValueError:
+                    content_ok = False
+                else:
+                    expected_content = (
+                        hashlib.sha256(content).hexdigest().upper(),
+                        len(content),
+                        value.get("codeBytesEncoding"),
+                        value.get("capturePhase"),
+                        "codeBytesHex",
+                    )
                     if tuple(content_columns) != expected_content:
                         content_ok = False
-        elif row[7] == "range-snapshot":
+        elif event_type == "range-snapshot":
             encoded = value.get("bytesHex")
-            if any(item is not None for item in content_columns) or not isinstance(encoded, str):
+            if not isinstance(encoded, str):
                 content_ok = False
             else:
                 try:
@@ -157,6 +196,16 @@ def _verify_events(
                         or value.get("contentSha256")
                         != hashlib.sha256(content).hexdigest().upper()
                     ):
+                        content_ok = False
+                    if capture_version >= 3 and tuple(content_columns) != (
+                        hashlib.sha256(content).hexdigest().upper(),
+                        len(content),
+                        "hex-uppercase",
+                        "host-polled-range-snapshot",
+                        "bytesHex",
+                    ):
+                        content_ok = False
+                    if capture_version < 3 and any(item is not None for item in content_columns):
                         content_ok = False
         elif any(item is not None for item in content_columns):
             content_ok = False
@@ -177,11 +226,21 @@ def _verify_events(
         "monotonic recorder timestamps; not used as emulator ordering evidence",
     )
     _check(checks, "event-payload-hashes", payloads_ok, "canonical JSON and SHA-256")
+    if capture_version >= 3:
+        for blob in connection.execute(
+            "SELECT content_sha256, byte_size, content_bytes FROM content_blob"
+        ):
+            content = bytes(blob[2])
+            if (
+                len(content) != int(blob[1])
+                or hashlib.sha256(content).hexdigest().upper() != blob[0]
+            ):
+                content_ok = False
     _check(
         checks,
-        "dma-event-time-content",
+        "event-time-content",
         content_ok,
-        "post-transfer exact bytes and recomputed SHA-256",
+        "collision-checked exact blobs for DMA, trace pages, and range snapshots",
     )
     if require_dma_pairs:
         pair_ok = pair_ok and not dma_starts
@@ -302,21 +361,34 @@ def _verify_configurations(connection: sqlite3.Connection, checks: list[dict[str
 
 
 def _verify_event_mirror(connection: sqlite3.Connection, path: Path) -> bool:
+    capture_version = int(connection.execute("PRAGMA user_version").fetchone()[0])
     expected: list[dict[str, Any]] = []
-    for row in connection.execute(
-        """
+    if capture_version >= 3:
+        query = """
         SELECT sequence_id, frame_number, host_monotonic_ns, observed_utc,
                bridge_stream, bridge_epoch, bridge_event_sequence,
                recorder_batch_id, recorder_batch_index, bridge_event_type,
-               ingestion_status, raw_payload_sha256, bridge_queue_remaining,
+               ingestion_status, raw_payload_sha256, stored_payload_sha256,
+               bridge_queue_remaining,
                bridge_dropped_total, event_time_content_sha256,
                event_time_content_size, event_time_content_encoding,
-               event_time_content_phase, raw_payload_json
+               event_time_content_phase, event_time_content_field, raw_payload_json
         FROM event_sequence ORDER BY sequence_id
         """
-    ):
-        expected.append(
-            {
+    else:
+        query = """
+        SELECT sequence_id, frame_number, host_monotonic_ns, observed_utc,
+               bridge_stream, bridge_epoch, bridge_event_sequence,
+               recorder_batch_id, recorder_batch_index, bridge_event_type,
+               ingestion_status, raw_payload_sha256, raw_payload_sha256,
+               bridge_queue_remaining,
+               bridge_dropped_total, event_time_content_sha256,
+               event_time_content_size, event_time_content_encoding,
+               event_time_content_phase, NULL, raw_payload_json
+        FROM event_sequence ORDER BY sequence_id
+        """
+    for row in connection.execute(query):
+        item = {
                 "sequenceId": row[0],
                 "frame": row[1],
                 "hostMonotonicNs": row[2],
@@ -329,15 +401,18 @@ def _verify_event_mirror(connection: sqlite3.Connection, path: Path) -> bool:
                 "bridgeEventType": row[9],
                 "ingestionStatus": row[10],
                 "rawPayloadSha256": row[11],
-                "bridgeQueueRemaining": row[12],
-                "bridgeDroppedTotal": row[13],
-                "eventTimeContentSha256": row[14],
-                "eventTimeContentSize": row[15],
-                "eventTimeContentEncoding": row[16],
-                "eventTimeContentPhase": row[17],
-                "payload": json.loads(row[18]),
+                "bridgeQueueRemaining": row[13],
+                "bridgeDroppedTotal": row[14],
+                "eventTimeContentSha256": row[15],
+                "eventTimeContentSize": row[16],
+                "eventTimeContentEncoding": row[17],
+                "eventTimeContentPhase": row[18],
+                "payload": json.loads(row[20]),
             }
-        )
+        if capture_version >= 3:
+            item["storedPayloadSha256"] = row[12]
+            item["eventTimeContentField"] = row[19]
+        expected.append(item)
     try:
         actual = [
             json.loads(line)
@@ -360,7 +435,13 @@ def verify_session(session_dir: Path, repository_root: Path) -> SessionVerificat
     timeline_sha: str | None = None
     try:
         schema_errors = verify_capture_schema(connection)
-        _check(checks, "capture-schema", not schema_errors, "; ".join(schema_errors) or "v2")
+        capture_version = int(connection.execute("PRAGMA user_version").fetchone()[0])
+        _check(
+            checks,
+            "capture-schema",
+            not schema_errors,
+            "; ".join(schema_errors) or f"v{capture_version}",
+        )
         sessions = connection.execute("SELECT * FROM session").fetchall()
         _check(checks, "single-session", len(sessions) == 1, f"{len(sessions)} row(s)")
         if len(sessions) != 1:
@@ -422,6 +503,12 @@ def verify_session(session_dir: Path, repository_root: Path) -> SessionVerificat
         if manifest_path.is_file():
             manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
             core = build_manifest_core(connection, repository_root)
+            if capture_version == 2:
+                historical_core = manifest.get("manifestCore")
+                if isinstance(historical_core, dict) and isinstance(
+                    historical_core.get("trackedContracts"), dict
+                ):
+                    core["trackedContracts"] = historical_core["trackedContracts"]
             core_hash = manifest_core_sha256(core)
             manifest_ok = (
                 manifest.get("manifestCore") == core

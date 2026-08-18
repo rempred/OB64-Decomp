@@ -3,9 +3,10 @@
 Status: **complete; retained as the Phase 1 implementation record**
 Started: 2026-08-17
 
-The maintained client now lives in `tools/total_resolver/`. Every public bridge operation performs
-an exact `0.7.2` handshake before issuing its command, so a caller cannot bypass protocol identity
-by omitting an explicit `connect()` call.
+The maintained client lives in `tools/total_resolver/`. At the Phase 1 gate, every public bridge
+operation performed an exact `0.7.2` handshake before issuing its command, so a caller could not
+bypass protocol identity by omitting an explicit `connect()` call. The active protocol has since
+advanced to `0.8.0`; see the subsequent-status note below.
 
 ## Implemented
 
@@ -57,6 +58,7 @@ normal PowerShell directory does not contain the pinned automation assembly.
 ## Completed Phase 1 gate
 
 The repo-local client was subsequently exercised against the live `ob64-core` runtime and bridge
-`0.7.2`. Protocol mismatch tests fail closed, and the active bridge harness proves global ordering,
-epoch changes, visible loss, and event-time DMA destination-byte handling. Later phase status is in
-`docs/total-resolver/implementation-status.md`.
+`0.7.2`. Protocol mismatch tests failed closed, and the bridge harness proved global ordering,
+epoch changes, visible loss, and event-time DMA destination-byte handling. The maintained runtime
+is now protocol `0.8.0`, adding the ordered execution/input streams and exact-content deduplication
+described in `docs/total-resolver/implementation-status.md`.

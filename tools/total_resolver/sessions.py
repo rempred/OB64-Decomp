@@ -18,7 +18,12 @@ import uuid
 
 from . import __version__
 from .bridge_events import DrainBatch, parse_drain_response
-from .capture_db import CaptureStore, RawEventInput, SessionMetadata
+from .capture_db import (
+    CaptureStore,
+    RawEventInput,
+    SessionMetadata,
+    content_deduplication_stats,
+)
 from .contracts import CaptureMode, InterventionPolicy
 from .inventory import config_path, load_inventory, repository_root, sha256_file
 from .manifest import finalize_manifest
@@ -78,6 +83,23 @@ def _validate_session_id(session_id: str) -> str:
 
 def session_location(root: Path, session_id: str) -> SessionLocation:
     return SessionLocation(root.resolve(), _validate_session_id(session_id))
+
+
+def session_deduplication_report(
+    session_id: str,
+    *,
+    root: Path | None = None,
+) -> dict[str, Any]:
+    """Return the read-only exact-content deduplication report for a session."""
+
+    location = session_location(sessions_root(root), session_id)
+    if not location.database.is_file():
+        raise FileNotFoundError(f"capture database does not exist: {location.database}")
+    connection = open_capture_database(location.database, read_only=True)
+    try:
+        return content_deduplication_stats(connection)
+    finally:
+        connection.close()
 
 
 def _read_json(path: Path) -> dict[str, Any] | None:
@@ -662,6 +684,7 @@ def _append_recovery_batch(store: CaptureStore, batch: DrainBatch) -> None:
                 event_time_content_size=event.event_time_content_size,
                 event_time_content_encoding=event.event_time_content_encoding,
                 event_time_content_phase=event.event_time_content_phase,
+                event_time_content_field=event.event_time_content_field,
             )
         )
     store.append_event_batch(inputs)

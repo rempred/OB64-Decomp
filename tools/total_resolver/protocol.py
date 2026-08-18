@@ -6,9 +6,9 @@ from dataclasses import dataclass
 from typing import Any, Mapping
 
 
-BRIDGE_PROTOCOL_VERSION = "0.7.2"
+BRIDGE_PROTOCOL_VERSION = "0.8.0"
 
-# Bridge 0.7.2 does not advertise a machine-readable command catalog. This map
+# Bridge 0.8.0 does not advertise a machine-readable command catalog. This map
 # is therefore part of the frozen client contract. A new bridge version must be
 # reviewed and added explicitly instead of inheriting capabilities by guess.
 BRIDGE_CAPABILITIES = (
@@ -25,6 +25,9 @@ BRIDGE_CAPABILITIES = (
     "native-rom-dma-start-completion-pairs",
     "native-dma-completion-events",
     "event-time-dma-destination-bytes",
+    "native-generation-aware-exec-coverage",
+    "exact-page-placement-dedup",
+    "effective-controller-input-transitions",
     "pause-resume",
     "frame-step",
     "instruction-step",
@@ -74,7 +77,7 @@ def validate_handshake(
     status: Mapping[str, Any],
     health: Mapping[str, Any],
 ) -> BridgeHandshake:
-    """Validate three independent identity responses from bridge 0.7.2."""
+    """Validate three independent identity responses from bridge 0.8.0."""
 
     if ping.get("pong") is not True:
         raise BridgeProtocolError("ping response did not acknowledge pong")
@@ -97,6 +100,7 @@ def validate_handshake(
         "droppedRanges",
         "watches",
         "dma",
+        "capture",
         "emuState",
         "nextEventSequence",
     )
@@ -119,6 +123,13 @@ def validate_handshake(
     dropped_ranges = status.get("droppedRanges")
     if not isinstance(dropped_ranges, list):
         raise BridgeProtocolError("status droppedRanges must be an array")
+    capture = status.get("capture")
+    if not isinstance(capture, Mapping) or not isinstance(capture.get("enabled"), bool):
+        raise BridgeProtocolError("status capture state must be an object with enabled boolean")
+    for component in ("trace", "controllerInput"):
+        value = capture.get(component)
+        if not isinstance(value, Mapping) or not isinstance(value.get("enabled"), bool):
+            raise BridgeProtocolError(f"status capture.{component} state is incomplete")
     next_sequence = status.get("nextEventSequence")
     if isinstance(next_sequence, bool) or not isinstance(next_sequence, int) or next_sequence < 1:
         raise BridgeProtocolError("status nextEventSequence must be a positive integer")

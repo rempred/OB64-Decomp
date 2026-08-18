@@ -24,7 +24,7 @@ def insert_session(connection: sqlite3.Connection, *, mode: str = "manual-play")
             "0.1.0",
             "A" * 40,
             0,
-            "0.7.2",
+            "0.8.0",
             64640,
             "EPOCH-S1",
             1,
@@ -54,6 +54,7 @@ class CaptureSchemaTests(unittest.TestCase):
                 self.assertTrue(
                     {
                         "session",
+                        "content_blob",
                         "event_sequence",
                         "bridge_loss_range",
                         "loader_event",
@@ -89,9 +90,10 @@ class CaptureSchemaTests(unittest.TestCase):
                             bridge_stream, bridge_epoch, bridge_event_sequence,
                             recorder_batch_id,
                             recorder_batch_index,
-                            bridge_event_type, raw_payload_sha256, raw_payload_json,
+                            bridge_event_type, raw_payload_sha256, stored_payload_sha256,
+                            raw_payload_json,
                             ingestion_status, bridge_queue_remaining, bridge_dropped_total
-                        ) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+                        ) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
                         """,
                         (
                             "S1",
@@ -104,6 +106,7 @@ class CaptureSchemaTests(unittest.TestCase):
                             1,
                             len(rows),
                             "exec" if status == "accepted" else "event-loss",
+                            "A" * 64,
                             "A" * 64,
                             "{}",
                             status,

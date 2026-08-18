@@ -21,6 +21,139 @@ def payload_sha256(payload_json: str) -> str:
     return hashlib.sha256(payload_json.encode("utf-8")).hexdigest().upper()
 
 
+def load_event_payload(
+    connection: sqlite3.Connection,
+    raw_payload_json: str,
+) -> dict[str, Any]:
+    """Load a v2 inline payload or rehydrate a v3 content-blob payload."""
+
+    value = json.loads(raw_payload_json)
+    if not isinstance(value, dict):
+        raise ValueError("event payload is not a JSON object")
+    metadata = value.get("contentBlob")
+    if metadata is None:
+        return value
+    if not isinstance(metadata, Mapping):
+        raise ValueError("event contentBlob metadata is not an object")
+    digest = metadata.get("sha256")
+    size = metadata.get("byteLength")
+    encoding = metadata.get("encoding")
+    field = metadata.get("originalField")
+    if (
+        not isinstance(digest, str)
+        or isinstance(size, bool)
+        or not isinstance(size, int)
+        or size < 0
+        or encoding != "hex-uppercase"
+        or not isinstance(field, str)
+        or not field
+    ):
+        raise ValueError("event contentBlob metadata is malformed")
+    row = connection.execute(
+        "SELECT byte_size, content_bytes FROM content_blob WHERE content_sha256=?",
+        (digest,),
+    ).fetchone()
+    if row is None:
+        raise ValueError(f"event content blob {digest} is missing")
+    content = bytes(row[1])
+    actual = hashlib.sha256(content).hexdigest().upper()
+    if int(row[0]) != size or len(content) != size or actual != digest:
+        raise ValueError(f"event content blob {digest} failed exact identity validation")
+    result = dict(value)
+    del result["contentBlob"]
+    if field in result:
+        raise ValueError(f"event content field {field} is both inline and blob-backed")
+    result[field] = content.hex().upper()
+    return result
+
+
+def content_deduplication_stats(connection: sqlite3.Connection) -> dict[str, Any]:
+    """Report automatic exact-content interning without mutating the capture.
+
+    Event rows are deliberately never deduplicated: they are the occurrence and
+    ordering record.  Only exact byte payloads referenced by those rows are
+    interned, and a digest match is accepted only after byte-for-byte comparison
+    at ingestion time.
+    """
+
+    schema_version = int(connection.execute("PRAGMA user_version").fetchone()[0])
+    if schema_version not in {2, 3}:
+        raise ValueError(f"unsupported capture schema version: {schema_version}")
+    session_rows = connection.execute("SELECT session_id FROM session").fetchall()
+    if len(session_rows) != 1:
+        raise ValueError("capture database must contain exactly one session")
+    session_id = str(session_rows[0][0])
+    event_count = int(connection.execute("SELECT COUNT(*) FROM event_sequence").fetchone()[0])
+    policy = {
+        "unit": "exact-content-bytes",
+        "occurrencesPreserved": True,
+        "orderingPreserved": True,
+        "approximateHashesMaySuppress": False,
+        "digestMatchesRequireExactByteComparison": True,
+        "mutation": "none",
+    }
+    if schema_version < 3:
+        return {
+            "schema": "ob64-total-resolver-content-deduplication.v1",
+            "sessionId": session_id,
+            "captureSchemaVersion": schema_version,
+            "automaticContentInterning": False,
+            "legacyInlineContent": True,
+            "eventOccurrences": event_count,
+            "contentOccurrences": None,
+            "uniqueContentBlobs": None,
+            "duplicateContentOccurrences": None,
+            "contentOccurrenceBytes": None,
+            "uniqueContentBytesStored": None,
+            "exactPayloadBytesAvoided": None,
+            "policy": policy,
+        }
+
+    occurrence = connection.execute(
+        """
+        SELECT COUNT(*), COALESCE(SUM(event_time_content_size), 0),
+               COUNT(DISTINCT event_time_content_sha256)
+        FROM event_sequence
+        WHERE event_time_content_sha256 IS NOT NULL
+        """
+    ).fetchone()
+    blob = connection.execute(
+        """
+        SELECT COUNT(*), COALESCE(SUM(content_blob.byte_size), 0)
+        FROM content_blob
+        WHERE content_sha256 IN (
+            SELECT DISTINCT event_time_content_sha256
+            FROM event_sequence
+            WHERE event_time_content_sha256 IS NOT NULL
+        )
+        """
+    ).fetchone()
+    all_blob_count = int(connection.execute("SELECT COUNT(*) FROM content_blob").fetchone()[0])
+    content_occurrences = int(occurrence[0])
+    occurrence_bytes = int(occurrence[1])
+    unique_references = int(occurrence[2])
+    referenced_blob_count = int(blob[0])
+    unique_bytes = int(blob[1])
+    if referenced_blob_count != unique_references:
+        raise ValueError("capture contains a missing exact-content blob reference")
+    return {
+        "schema": "ob64-total-resolver-content-deduplication.v1",
+        "sessionId": session_id,
+        "captureSchemaVersion": schema_version,
+        "automaticContentInterning": True,
+        "legacyInlineContent": False,
+        "eventOccurrences": event_count,
+        "contentOccurrences": content_occurrences,
+        "uniqueContentBlobs": referenced_blob_count,
+        "unreferencedContentBlobs": all_blob_count - referenced_blob_count,
+        "duplicateContentOccurrences": content_occurrences - referenced_blob_count,
+        "contentOccurrenceBytes": occurrence_bytes,
+        "uniqueContentBytesStored": unique_bytes,
+        "exactPayloadBytesAvoided": occurrence_bytes - unique_bytes,
+        "policy": policy,
+    }
+
+
 @dataclass(frozen=True)
 class SessionMetadata:
     session_id: str
@@ -67,6 +200,7 @@ class RawEventInput:
     event_time_content_size: int | None = None
     event_time_content_encoding: str | None = None
     event_time_content_phase: str | None = None
+    event_time_content_field: str | None = None
 
 
 @dataclass(frozen=True)
@@ -75,6 +209,100 @@ class StoredEvent:
     input: RawEventInput
     raw_payload_json: str
     raw_payload_sha256: str
+    stored_payload_json: str
+    stored_payload_sha256: str
+    event_time_content_sha256: str | None
+    event_time_content_size: int | None
+    event_time_content_encoding: str | None
+    event_time_content_phase: str | None
+    event_time_content_field: str | None
+
+
+_CONTENT_FIELDS: dict[str, tuple[str, str, str, str]] = {
+    "dma-complete": (
+        "destinationBytesHex",
+        "destinationBytesEncoding",
+        "destinationByteLength",
+        "post-transfer-callback",
+    ),
+    "trace-page": (
+        "codeBytesHex",
+        "codeBytesEncoding",
+        "codeByteLength",
+        "pre-execution-callback",
+    ),
+    "range-snapshot": (
+        "bytesHex",
+        "bytesEncoding",
+        "size",
+        "host-polled-range-snapshot",
+    ),
+}
+
+
+def _compact_event_payload(
+    event: RawEventInput,
+) -> tuple[str, str, str, str, bytes | None, str | None, str | None]:
+    """Return original/compact JSON identities and exact content, if present."""
+
+    raw_json = canonical_json(event.payload)
+    raw_hash = payload_sha256(raw_json)
+    specification = _CONTENT_FIELDS.get(event.bridge_event_type)
+    if specification is None:
+        if any(
+            value is not None
+            for value in (
+                event.event_time_content_sha256,
+                event.event_time_content_size,
+                event.event_time_content_encoding,
+                event.event_time_content_phase,
+                event.event_time_content_field,
+            )
+        ):
+            raise ValueError(
+                f"{event.bridge_event_type} declares exact content without a content-field contract"
+            )
+        return raw_json, raw_hash, raw_json, raw_hash, None, None, None
+
+    field, encoding_field, size_field, expected_phase = specification
+    if event.event_time_content_field not in {None, field}:
+        raise ValueError(f"{event.bridge_event_type} declared the wrong exact-content field")
+    encoded = event.payload.get(field)
+    encoding = event.payload.get(encoding_field)
+    size = event.payload.get(size_field)
+    if encoding != "hex-uppercase" or not isinstance(encoded, str):
+        raise ValueError(f"{event.bridge_event_type} lacks canonical uppercase-hex content")
+    if encoded != encoded.upper() or any(character not in "0123456789ABCDEF" for character in encoded):
+        raise ValueError(f"{event.bridge_event_type} content is not canonical uppercase hex")
+    if isinstance(size, bool) or not isinstance(size, int) or size < 0 or len(encoded) != size * 2:
+        raise ValueError(f"{event.bridge_event_type} exact-content length is inconsistent")
+    content = bytes.fromhex(encoded)
+    digest = hashlib.sha256(content).hexdigest().upper()
+    declared_digest = event.event_time_content_sha256
+    if declared_digest is None and event.bridge_event_type == "range-snapshot":
+        payload_digest = event.payload.get("contentSha256")
+        declared_digest = payload_digest if isinstance(payload_digest, str) else None
+    if declared_digest is not None and declared_digest != digest:
+        raise ValueError(f"{event.bridge_event_type} exact-content SHA-256 is inconsistent")
+    if event.event_time_content_size not in {None, size}:
+        raise ValueError(f"{event.bridge_event_type} declared exact-content size is inconsistent")
+    if event.event_time_content_encoding not in {None, encoding}:
+        raise ValueError(f"{event.bridge_event_type} declared exact-content encoding is inconsistent")
+    if event.event_time_content_phase not in {None, expected_phase}:
+        raise ValueError(f"{event.bridge_event_type} declared exact-content phase is inconsistent")
+
+    compact = dict(event.payload)
+    del compact[field]
+    if "contentBlob" in compact:
+        raise ValueError("event payload already contains reserved contentBlob metadata")
+    compact["contentBlob"] = {
+        "sha256": digest,
+        "byteLength": size,
+        "encoding": encoding,
+        "originalField": field,
+    }
+    stored_json = canonical_json(compact)
+    return raw_json, raw_hash, stored_json, payload_sha256(stored_json), content, field, expected_phase
 
 
 class CaptureStore:
@@ -205,19 +433,50 @@ class CaptureStore:
         try:
             self.connection.execute("BEGIN IMMEDIATE")
             for event in pending:
-                raw_json = canonical_json(event.payload)
-                raw_hash = payload_sha256(raw_json)
+                (
+                    raw_json,
+                    raw_hash,
+                    stored_json,
+                    stored_hash,
+                    content,
+                    content_field,
+                    content_phase,
+                ) = _compact_event_payload(event)
+                content_hash = None
+                content_size = None
+                content_encoding = None
+                if content is not None:
+                    content_hash = hashlib.sha256(content).hexdigest().upper()
+                    content_size = len(content)
+                    content_encoding = "hex-uppercase"
+                    existing = self.connection.execute(
+                        "SELECT byte_size, content_bytes FROM content_blob WHERE content_sha256=?",
+                        (content_hash,),
+                    ).fetchone()
+                    if existing is None:
+                        self.connection.execute(
+                            """
+                            INSERT INTO content_blob(
+                                content_sha256, byte_size, content_bytes, first_observed_utc
+                            ) VALUES(?,?,?,?)
+                            """,
+                            (content_hash, content_size, content, event.observed_utc),
+                        )
+                    elif int(existing[0]) != content_size or bytes(existing[1]) != content:
+                        raise RuntimeError(
+                            "SHA-256 collision while interning exact event content; refusing dedupe"
+                        )
                 cursor = self.connection.execute(
                     """
                     INSERT INTO event_sequence(
                         session_id, frame_number, host_monotonic_ns, observed_utc,
                         bridge_stream, bridge_epoch, bridge_event_sequence, recorder_batch_id,
                         recorder_batch_index, bridge_event_type, raw_payload_sha256,
-                        raw_payload_json, ingestion_status, bridge_queue_remaining,
+                        stored_payload_sha256, raw_payload_json, ingestion_status, bridge_queue_remaining,
                         bridge_dropped_total, event_time_content_sha256,
                         event_time_content_size, event_time_content_encoding,
-                        event_time_content_phase
-                    ) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+                        event_time_content_phase, event_time_content_field
+                    ) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
                     """,
                     (
                         self.session_id,
@@ -231,18 +490,34 @@ class CaptureStore:
                         event.recorder_batch_index,
                         event.bridge_event_type,
                         raw_hash,
-                        raw_json,
+                        stored_hash,
+                        stored_json,
                         event.ingestion_status,
                         event.bridge_queue_remaining,
                         event.bridge_dropped_total,
-                        event.event_time_content_sha256,
-                        event.event_time_content_size,
-                        event.event_time_content_encoding,
-                        event.event_time_content_phase,
+                        content_hash,
+                        content_size,
+                        content_encoding,
+                        content_phase,
+                        content_field,
                     ),
                 )
                 assert cursor.lastrowid is not None
-                stored.append(StoredEvent(int(cursor.lastrowid), event, raw_json, raw_hash))
+                stored.append(
+                    StoredEvent(
+                        int(cursor.lastrowid),
+                        event,
+                        raw_json,
+                        raw_hash,
+                        stored_json,
+                        stored_hash,
+                        content_hash,
+                        content_size,
+                        content_encoding,
+                        content_phase,
+                        content_field,
+                    )
+                )
             self.connection.commit()
         except Exception:
             self.connection.rollback()
@@ -263,13 +538,15 @@ class CaptureStore:
                     "bridgeEventType": item.input.bridge_event_type,
                     "ingestionStatus": item.input.ingestion_status,
                     "rawPayloadSha256": item.raw_payload_sha256,
+                    "storedPayloadSha256": item.stored_payload_sha256,
                     "bridgeQueueRemaining": item.input.bridge_queue_remaining,
                     "bridgeDroppedTotal": item.input.bridge_dropped_total,
-                    "eventTimeContentSha256": item.input.event_time_content_sha256,
-                    "eventTimeContentSize": item.input.event_time_content_size,
-                    "eventTimeContentEncoding": item.input.event_time_content_encoding,
-                    "eventTimeContentPhase": item.input.event_time_content_phase,
-                    "payload": item.input.payload,
+                    "eventTimeContentSha256": item.event_time_content_sha256,
+                    "eventTimeContentSize": item.event_time_content_size,
+                    "eventTimeContentEncoding": item.event_time_content_encoding,
+                    "eventTimeContentPhase": item.event_time_content_phase,
+                    "eventTimeContentField": item.event_time_content_field,
+                    "payload": json.loads(item.stored_payload_json),
                 }
                 self._mirror_stream.write(canonical_json(envelope) + "\n")
             self._mirror_stream.flush()

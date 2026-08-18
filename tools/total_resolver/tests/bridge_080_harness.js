@@ -5,13 +5,14 @@ const vm = require('vm');
 
 const bridgePath = process.argv[2];
 if (!bridgePath) {
-    throw new Error('usage: node bridge_070_harness.js <bridge.js>');
+    throw new Error('usage: node bridge_080_harness.js <bridge.js>');
 }
 
 let serverInstance = null;
 let nextCallbackId = 1;
 const callbacks = {
     exec: new Map(),
+    execUnique: new Map(),
     read: new Map(),
     write: new Map(),
     dmaStart: null,
@@ -44,6 +45,12 @@ function register(kind, callback) {
 }
 
 const zeroProxy = new Proxy({}, { get: () => 0, set: () => true });
+const memoryWords = {};
+const wordProxy = new Proxy(memoryWords, {
+    get(target, key) { return Object.prototype.hasOwnProperty.call(target, key) ? target[key] : 0; },
+    set(target, key, value) { target[key] = Number(value) >>> 0; return true; },
+});
+let pageSalt = 0;
 const context = {
     Date,
     Math,
@@ -58,6 +65,7 @@ const context = {
     isNaN,
     parseInt,
     OS_READ: 0,
+    PIF_RAM_START: 0xBFC007C0,
     script: { keepalive() {}, timeout() {} },
     console: { log() {} },
     Server: FakeServer,
@@ -78,14 +86,14 @@ const context = {
     mem: {
         u8: zeroProxy,
         u16: zeroProxy,
-        u32: zeroProxy,
+        u32: wordProxy,
         s8: zeroProxy,
         s16: zeroProxy,
         s32: zeroProxy,
         getblock(_address, length) {
             const bytes = new Uint8Array(length);
             for (let index = 0; index < length; index += 1) {
-                bytes[index] = (0xAA + index) & 0xFF;
+                bytes[index] = (0xAA + index + pageSalt) & 0xFF;
             }
             return bytes;
         },
@@ -96,10 +104,12 @@ const context = {
         onpidma(callback) { callbacks.dmaStart = callback; return nextCallbackId++; },
         onpidmacomplete(callback) { callbacks.dmaComplete = callback; return nextCallbackId++; },
         onexec(_target, callback) { return register('exec', callback); },
+        onexecunique(_target, callback) { return register('execUnique', callback); },
         onread(_target, callback) { return register('read', callback); },
         onwrite(_target, callback) { return register('write', callback); },
         remove(id) {
             callbacks.exec.delete(id);
+            callbacks.execUnique.delete(id);
             callbacks.read.delete(id);
             callbacks.write.delete(id);
         },
@@ -141,11 +151,14 @@ function command(line) {
 
 const ping = command('ping');
 const initialStatus = command('status');
-if (ping.version !== '0.7.2' || ping.queueModel !== 'unified') {
+if (ping.version !== '0.8.0' || ping.queueModel !== 'unified') {
     throw new Error('protocol identity mismatch');
 }
 if (!ping.bridgeEpoch || ping.bridgeEpoch !== initialStatus.bridgeEpoch) {
     throw new Error('bridge epoch is missing or inconsistent');
+}
+if (callbacks.execUnique.size !== 0 || initialStatus.capture.enabled) {
+    throw new Error('bridge installed an execution watch before capture was explicitly enabled');
 }
 
 const watch = command('watch exec 0x80001000 4 fixture').watch;
@@ -237,6 +250,89 @@ if (
     throw new Error('readblock did not return the exact fingerprinted bytes');
 }
 
+const capture = command('capture on').capture;
+const uniqueCallback = callbacks.execUnique.get(capture.trace.callbackId);
+if (
+    !uniqueCallback ||
+    capture.trace.callbackIds.length !== 2 ||
+    callbacks.execUnique.size !== 2 ||
+    !capture.controllerInput.enabled
+) {
+    throw new Error('capture did not enable native unique execution and controller input');
+}
+const coverage = {
+    callbackId: capture.trace.callbackId,
+    pc: 0x80001000,
+    opcode: 0x27BDFFE0,
+    pagePhysicalAddress: 0x00001000,
+    pageGeneration: 1,
+    hasPrevious: false,
+    previousPc: 0,
+    previousOpcode: 0,
+    previousPagePhysicalAddress: 0xFFFFFFFF,
+    previousPageGeneration: 0,
+    newInstruction: true,
+    newEdge: false,
+};
+uniqueCallback(coverage);
+uniqueCallback({ ...coverage, pageGeneration: 2 });
+pageSalt = 1;
+uniqueCallback({ ...coverage, pageGeneration: 3 });
+pageSalt = 0;
+uniqueCallback({
+    ...coverage,
+    pc: 0x80001004,
+    opcode: 0xAFBF001C,
+    pageGeneration: 4,
+    hasPrevious: true,
+    previousPc: 0x80001000,
+    previousOpcode: 0x27BDFFE0,
+    previousPagePhysicalAddress: 0x00001000,
+    previousPageGeneration: 4,
+    newInstruction: true,
+    newEdge: true,
+});
+
+wordProxy[context.PIF_RAM_START] = 0xFF010401;
+wordProxy[context.PIF_RAM_START + 4] = 0;
+callbacks.pif();
+callbacks.pif();
+wordProxy[context.PIF_RAM_START + 4] = 0x800010F0;
+callbacks.pif();
+
+const captureDrain = command('drain 16');
+const tracePages = captureDrain.events.filter((event) => event.kind === 'trace-page');
+const exactCoverage = captureDrain.events.filter((event) => event.kind === 'exec-coverage');
+const inputTransitions = captureDrain.events.filter((event) => event.kind === 'controller-input');
+if (
+    tracePages.length !== 2 ||
+    exactCoverage.length !== 3 ||
+    inputTransitions.length !== 2 ||
+    captureDrain.events.some((event, index) => event.bridgeSequence !== index + 4)
+) {
+    throw new Error('exact trace/input dedupe lost a unique event or retained a duplicate');
+}
+if (
+    exactCoverage[2].pc !== '0x80001004' ||
+    !exactCoverage[2].newInstruction ||
+    !exactCoverage[2].newEdge
+) {
+    throw new Error('a novel structure after restored duplicate content was suppressed');
+}
+const captureStatus = command('capture status').capture;
+if (
+    captureStatus.trace.suppressedCoverage !== 1 ||
+    captureStatus.controllerInput.suppressedConsecutiveSamples !== 1
+) {
+    throw new Error('capture status did not account for exact/consecutive dedupe');
+}
+command('capture off');
+if (callbacks.execUnique.size !== 0) {
+    throw new Error('capture off did not remove every execution watch');
+}
+
+const overflowFirstSequence = captureDrain.nextEventSequence;
+
 for (let index = 0; index < 65539; index += 1) {
     execCallback({ callbackId: watch.id, pc: 0x80001000 });
 }
@@ -245,8 +341,8 @@ if (
     overflow.queued !== 65536 ||
     overflow.dropped !== 3 ||
     overflow.droppedRanges.length !== 1 ||
-    overflow.droppedRanges[0].firstSequence !== 4 ||
-    overflow.droppedRanges[0].lastSequence !== 6 ||
+    overflow.droppedRanges[0].firstSequence !== overflowFirstSequence ||
+    overflow.droppedRanges[0].lastSequence !== overflowFirstSequence + 2 ||
     overflow.droppedRanges[0].count !== 3
 ) {
     throw new Error('overflow did not expose the exact dropped sequence range');
@@ -259,8 +355,8 @@ if (cleared.discardedEvents !== 65536 || afterClear.queued !== 0) {
 }
 if (
     afterClear.droppedRanges.length !== 1 ||
-    afterClear.droppedRanges[0].firstSequence !== 4 ||
-    afterClear.droppedRanges[0].lastSequence !== 65542 ||
+    afterClear.droppedRanges[0].firstSequence !== overflowFirstSequence ||
+    afterClear.droppedRanges[0].lastSequence !== overflowFirstSequence + 65538 ||
     afterClear.droppedRanges[0].count !== 65539
 ) {
     throw new Error('discard loss did not extend the exact sequence range');
@@ -272,5 +368,9 @@ process.stdout.write(JSON.stringify({
     orderedSequences: drained.events.map((event) => event.bridgeSequence),
     dmaBytes: dma.destinationBytesHex,
     memoryBytes: block.bytesHex,
+    tracePageCount: tracePages.length,
+    exactCoverageCount: exactCoverage.length,
+    inputTransitionCount: inputTransitions.length,
+    suppressedCoverage: captureStatus.trace.suppressedCoverage,
     droppedRange: afterClear.droppedRanges[0],
 }) + '\n');

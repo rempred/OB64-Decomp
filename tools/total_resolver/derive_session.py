@@ -32,6 +32,7 @@ from .static_model import StaticModel
 SESSION_PRODUCT_SCHEMA = "ob64-total-resolver-session-derivation.v1"
 RANGE_CHANGE_SCHEMA = "ob64-total-resolver-range-change.v1"
 EXECUTION_SCHEMA = "ob64-total-resolver-execution-observation.v1"
+CONTROLLER_INPUT_SCHEMA = "ob64-total-resolver-controller-input.v1"
 UNRESOLVED_SCHEMA = "ob64-total-resolver-unresolved-observation.v1"
 
 
@@ -88,7 +89,7 @@ def _safety_range_analysis(
     races = 0
 
     for row in rows:
-        payload = _read_payload(row)
+        payload = _read_payload(row, connection)
         range_id = payload.get("rangeId")
         encoded = payload.get("bytesHex")
         if not isinstance(range_id, str) or not isinstance(encoded, str):
@@ -255,12 +256,31 @@ def _execution_analysis(
     transactions: list[Any],
     static: StaticModel,
 ) -> tuple[list[dict[str, Any]], list[dict[str, Any]], dict[str, Any]]:
+    trace_pages: dict[int, dict[str, Any]] = {}
+    for page_row in connection.execute(
+        """
+        SELECT sequence_id, raw_payload_json, event_time_content_sha256,
+               event_time_content_size
+        FROM event_sequence
+        WHERE bridge_stream='trace' AND bridge_event_type='trace-page'
+        ORDER BY sequence_id
+        """
+    ):
+        page_payload = _read_payload(page_row, connection)
+        content_id = page_payload.get("codePageContentId")
+        if isinstance(content_id, int) and not isinstance(content_id, bool):
+            trace_pages[content_id] = {
+                "sequence": int(page_row["sequence_id"]),
+                "physicalAddress": page_payload.get("physicalAddress"),
+                "contentSha256": page_row["event_time_content_sha256"],
+                "byteSize": page_row["event_time_content_size"],
+            }
     rows = connection.execute(
         """
         SELECT sequence_id, frame_number, bridge_stream, bridge_event_sequence,
                bridge_event_type, raw_payload_json
         FROM event_sequence
-        WHERE bridge_event_type IN ('exec', 'pc-sample')
+        WHERE bridge_event_type IN ('exec', 'exec-coverage', 'pc-sample')
         ORDER BY sequence_id
         """
     ).fetchall()
@@ -270,20 +290,40 @@ def _execution_analysis(
     observations: list[dict[str, Any]] = []
     unresolved: list[dict[str, Any]] = []
     exact_count = 0
+    native_coverage_count = 0
+    exact_watch_count = 0
     sampled_count = 0
 
     for row in rows:
-        payload = _read_payload(row)
+        payload = _read_payload(row, connection)
         encoded_pc = payload.get("pc")
         try:
             pc = int(str(encoded_pc), 0)
             physical_pc = physical_from_live(pc)
         except (TypeError, ValueError):
             continue
-        exact = row["bridge_event_type"] == "exec" and row["bridge_stream"] == "watch"
+        exact = (
+            (row["bridge_event_type"] == "exec" and row["bridge_stream"] == "watch")
+            or (
+                row["bridge_event_type"] == "exec-coverage"
+                and row["bridge_stream"] == "trace"
+            )
+        )
         exact_count += int(exact)
+        native_coverage_count += int(row["bridge_event_type"] == "exec-coverage")
+        exact_watch_count += int(row["bridge_event_type"] == "exec")
         sampled_count += int(not exact)
         sequence = int(row["sequence_id"])
+        code_page_content_id = payload.get("codePageContentId")
+        trace_page = (
+            trace_pages.get(code_page_content_id)
+            if isinstance(code_page_content_id, int) and not isinstance(code_page_content_id, bool)
+            else None
+        )
+        trace_content_resolved = (
+            row["bridge_event_type"] != "exec-coverage"
+            or (trace_page is not None and int(trace_page["sequence"]) < sequence)
+        )
         region = _active_region_for_pc(regions, sequence, physical_pc)
         nominal_function = static.resolve_nominal_pc(pc) if region is None else None
         transaction = (
@@ -329,8 +369,21 @@ def _execution_analysis(
             "frame": row["frame_number"],
             "pc": pc,
             "physicalPc": physical_pc,
-            "observationKind": "exact-watch-hit" if exact else "sampled-pc-context",
+            "observationKind": (
+                "native-exact-coverage"
+                if row["bridge_event_type"] == "exec-coverage"
+                else "exact-watch-hit"
+                if exact
+                else "sampled-pc-context"
+            ),
             "executionClaim": "observed" if exact else "sampled-only",
+            "opcode": payload.get("opcode"),
+            "codePageContentId": code_page_content_id,
+            "codePageContent": trace_page,
+            "codePageContentResolved": trace_content_resolved,
+            "newInstruction": payload.get("newInstruction"),
+            "newEdge": payload.get("newEdge"),
+            "previous": payload.get("previous"),
             "regionInstanceId": region["regionInstanceId"] if region else None,
             "romOffset": rom_offset,
             "function": function.to_dict() if function else None,
@@ -351,6 +404,20 @@ def _execution_analysis(
             ),
         }
         observations.append(observation)
+        if row["bridge_event_type"] == "exec-coverage" and not trace_content_resolved:
+            unresolved.append(
+                {
+                    "schema": UNRESOLVED_SCHEMA,
+                    "unresolvedId": f"unresolved-trace-content:{sequence:08d}",
+                    "kind": "trace-page-content-missing",
+                    "sequence": sequence,
+                    "frame": row["frame_number"],
+                    "pc": pc,
+                    "codePageContentId": code_page_content_id,
+                    "nextEvidence": "retain the earlier trace-page event or recapture this placement without queue loss",
+                    "reviewState": "generated-unreviewed",
+                }
+            )
         if status in {"resident-unmapped", "unknown-region"}:
             unresolved.append(
                 {
@@ -369,13 +436,71 @@ def _execution_analysis(
             )
     diagnostics = {
         "observationCount": len(observations),
-        "exactWatchHitCount": exact_count,
+        "exactExecutionCount": exact_count,
+        "exactWatchHitCount": exact_watch_count,
+        "nativeCoverageCount": native_coverage_count,
+        "resolvedTraceContentCount": sum(
+            item["observationKind"] == "native-exact-coverage"
+            and item["codePageContentResolved"]
+            for item in observations
+        ),
         "sampledPcCount": sampled_count,
         "resolvedFunctionCount": sum(item["status"] == "resolved-function" for item in observations),
         "resolvedRomCount": sum(item["romOffset"] is not None for item in observations),
         "unresolvedPcCount": len(unresolved),
     }
     return observations, unresolved, diagnostics
+
+
+def _controller_input_analysis(
+    connection: sqlite3.Connection,
+) -> tuple[list[dict[str, Any]], dict[str, Any]]:
+    rows = connection.execute(
+        """
+        SELECT sequence_id, frame_number, bridge_event_sequence, raw_payload_json
+        FROM event_sequence
+        WHERE bridge_stream='input' AND bridge_event_type='controller-input'
+        ORDER BY sequence_id
+        """
+    ).fetchall()
+    observations: list[dict[str, Any]] = []
+    for index, row in enumerate(rows):
+        payload = _read_payload(row, connection)
+        next_row = rows[index + 1] if index + 1 < len(rows) else None
+        observations.append(
+            {
+                "schema": CONTROLLER_INPUT_SCHEMA,
+                "controllerInputId": f"controller-input:{int(row['sequence_id']):08d}",
+                "sequence": int(row["sequence_id"]),
+                "bridgeSequence": int(row["bridge_event_sequence"]),
+                "frame": row["frame_number"],
+                "endSequenceExclusive": int(next_row["sequence_id"]) if next_row else None,
+                "endBridgeSequenceExclusive": (
+                    int(next_row["bridge_event_sequence"]) if next_row else None
+                ),
+                "endFrameExclusive": next_row["frame_number"] if next_row else None,
+                "controller": payload.get("controller"),
+                "state": payload.get("state"),
+                "buttons": payload.get("buttons"),
+                "stickX": payload.get("stickX"),
+                "stickY": payload.get("stickY"),
+                "injectedByBridge": payload.get("injectedByBridge"),
+                "inputSource": payload.get("inputSource"),
+                "capturePhase": payload.get("capturePhase"),
+                "timingRole": "transition-bounded-run",
+                "reviewState": "generated-unreviewed",
+            }
+        )
+    diagnostics = {
+        "transitionCount": len(observations),
+        "physicalOrEffectiveState": "effective-game-input",
+        "controllerScope": "P1",
+        "consecutiveDuplicatePolicy": "coalesced-until-next-transition",
+        "injectedTransitionCount": sum(
+            item["injectedByBridge"] is True for item in observations
+        ),
+    }
+    return observations, diagnostics
 
 
 def _memory_analysis(
@@ -408,7 +533,7 @@ def _memory_analysis(
     }
     accesses: list[dict[str, Any]] = []
     for row in rows:
-        payload = _read_payload(row)
+        payload = _read_payload(row, connection)
         try:
             pc = int(str(payload.get("pc")), 0)
             physical_pc = physical_from_live(pc)
@@ -525,6 +650,7 @@ def derive_session(
         memory_accesses, memory = _memory_analysis(
             connection, regions, transactions, static
         )
+        controller_inputs, controller_input = _controller_input_analysis(connection)
         loss_ranges = int(
             connection.execute("SELECT COUNT(*) FROM bridge_loss_range").fetchone()[0]
         )
@@ -550,10 +676,11 @@ def derive_session(
     elif not unresolved and safety["status"] == "captured":
         quality = "supported-working-evidence"
     caveats = [
-        "Bridge sequence orders emulator-created watch/DMA events; frame and host sampling remain context.",
+        "Bridge sequence orders emulator-created watch, DMA, trace, and input events; frame and host sampling remain context.",
         "Range fingerprints are cheap change signals. Exact bytes are retained only for initial/changed samples.",
         "Range polling can miss changes that revert between samples; unresolved changes remain explicit.",
-        "Sampled PCs are not continuous execution evidence and never upgrade residency into execution.",
+        "Native exact coverage proves observed instructions/edges; sampled PCs remain context only.",
+        "Controller rows are effective P1 input transitions. A run lasts until the next transition; repeated identical polls are coalesced.",
         "This generated product is intended to accelerate decompilation and remains unreviewed.",
     ]
     summary: dict[str, Any] = {
@@ -584,16 +711,19 @@ def derive_session(
             "unresolvedRangeChanges": safety["unresolvedChangeCount"],
             "executionObservations": execution["observationCount"],
             "exactExecutionWatchHits": execution["exactWatchHitCount"],
+            "nativeExecutionCoverage": execution["nativeCoverageCount"],
             "sampledPcs": execution["sampledPcCount"],
             "unresolvedPcs": execution["unresolvedPcCount"],
             "unresolvedObservations": len(unresolved),
             "memoryAccesses": memory["memoryAccessCount"],
+            "controllerInputTransitions": controller_input["transitionCount"],
             "bridgeLossRanges": loss_ranges,
         },
         "pairingDiagnostics": pairing,
         "safetyRangeDiagnostics": safety,
         "executionDiagnostics": execution,
         "memoryDiagnostics": memory,
+        "controllerInputDiagnostics": controller_input,
         "regionIssueCount": len(region_issues),
         "endpointConfiguration": configuration,
         "caveats": caveats,
@@ -605,6 +735,7 @@ def derive_session(
             "rangeChanges": "range-changes.ndjson",
             "executionObservations": "execution-observations.ndjson",
             "memoryAccesses": "memory-accesses.ndjson",
+            "controllerInput": "controller-input.ndjson",
             "unresolved": "unresolved.ndjson",
         },
     }
@@ -620,6 +751,7 @@ def derive_session(
     _write_ndjson(destination / "range-changes.ndjson", range_changes)
     _write_ndjson(destination / "execution-observations.ndjson", executions)
     _write_ndjson(destination / "memory-accesses.ndjson", memory_accesses)
+    _write_ndjson(destination / "controller-input.ndjson", controller_inputs)
     _write_ndjson(destination / "unresolved.ndjson", unresolved)
     _write_json(destination / "summary.json", summary)
     return {

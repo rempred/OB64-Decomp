@@ -12,14 +12,17 @@ limits are summarized in `docs/total-resolver/implementation-status.md`.
 
 ## Bridge contract
 
-The repo-local client requires Project64 bridge protocol `0.7.2` exactly and fails closed on a
+The repo-local client requires Project64 bridge protocol `0.8.0` exactly and fails closed on a
 version or capability mismatch. The bridge supplies:
 
-- one emulator-side monotonic sequence across watch and PI DMA events;
+- one emulator-side monotonic sequence across watch, PI DMA, execution-trace, and controller-input
+  events;
 - a bridge-instance epoch that changes when the script instance changes;
 - one ordered drain queue;
 - explicit dropped sequence ranges; and
-- event-time destination bytes for ROM DMA completions.
+- event-time destination bytes for ROM DMA completions;
+- generation-aware unique instruction/edge observations with exact code-page bytes; and
+- transitions in the effective Player 1 input returned to the game.
 
 Recorder timestamps and frames are context only. They never replace bridge ordering, and neither
 ordering nor a hash proves what transient destination bytes contained.
@@ -44,10 +47,32 @@ python -m tools.total_resolver session label "army management"
 python -m tools.total_resolver session mark "opened unit detail"
 python -m tools.total_resolver session stop
 python -m tools.total_resolver session verify SESSION_ID
+python -m tools.total_resolver session dedupe SESSION_ID
 ```
 
 Labels, marks, and notes are optional context. The recorder owns and removes only its own watches;
 passive capture does not press controls, write RAM, load a state, or clear bridge-global state.
+
+## Capture growth and exact deduplication
+
+Total Resolver follows one rule: **deduplicate payloads, never occurrences**. Every DMA, watch,
+input, or trace occurrence that reaches the recorder keeps its bridge order and context. Large
+exact byte payloads are stored once per session in `content_blob` and referenced by every event
+that used them. SHA-256 is an index; a matching digest is reused only after size and exact bytes
+also match. A mismatch fails closed.
+
+Execution coverage is more aggressive because its identities are structural. During one active
+bridge capture, returning to the same menu with the same bytes at the same physical placement does
+not re-emit instruction or edge coverage already seen for that page generation. The bridge still
+retains any new physical placement, changed page bytes, PC/opcode, control-flow edge, or controller
+transition. A repeated prefix never disables observation of the rest of the stream: every executed
+instruction still passes through the native novelty check, so a new edge reached after an old path
+is retained. Consecutive identical controller states are coalesced; the next transition remains an
+ordered event. DMA occurrences remain because a repeated transfer can still establish a new
+placement lifetime, but repeated destination bytes share one stored blob.
+
+`session dedupe` reports these exact savings without changing the database. Closed raw sessions
+are not automatically deleted, and separate session databases do not physically share blobs.
 
 Build and inspect accepted products:
 
@@ -80,10 +105,11 @@ and never mutates an accepted resolver database.
 
 ## What hashes mean
 
-Hashes detect byte changes, pin the exact inputs used by a generated product, and make an offline
-rebuild cheap to compare. They do not establish semantics, correctness, execution, or equivalent
-behavior. Exact event bytes, contextual placement records, static facts, and human interpretation
-remain distinct evidence.
+Hashes detect byte changes, pin the exact inputs used by a generated product, make an offline
+rebuild cheap to compare, and provide an efficient bucket for exact-content interning. Exact byte
+comparison, not the hash alone, decides deduplication. Hashes do not establish semantics,
+correctness, execution, or equivalent behavior. Exact event bytes, contextual placement records,
+static facts, and human interpretation remain distinct evidence.
 
 ## Tests
 
@@ -92,5 +118,6 @@ python -m unittest discover -s tools/total_resolver/tests -v
 ```
 
 The suite includes protocol incompatibility, global ordering, epoch/loss handling, DMA
-destination-byte capture, raw-session recovery, deterministic products, contextual ambiguity,
-source-identity rejection, coverage conservation, and offline live-bundle replay.
+destination-byte capture, generation-aware execution coverage, effective-input transitions,
+exact-content collision handling, raw-session recovery, deterministic products, contextual
+ambiguity, source-identity rejection, coverage conservation, and offline live-bundle replay.

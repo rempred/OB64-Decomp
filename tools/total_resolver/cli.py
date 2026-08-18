@@ -37,6 +37,7 @@ from .sessions import (
     create_session,
     recover_session,
     request_session_stop,
+    session_deduplication_report,
     session_status,
     sessions_root,
     verify_named_session,
@@ -111,6 +112,13 @@ def build_parser() -> argparse.ArgumentParser:
     verify = session_commands.add_parser("verify", help="independently verify a closed session")
     verify.add_argument("session_id")
     _add_sessions_root(verify)
+
+    dedupe = session_commands.add_parser(
+        "dedupe",
+        help="report automatic exact-content deduplication without deleting occurrences",
+    )
+    dedupe.add_argument("session_id")
+    _add_sessions_root(dedupe)
 
     recover = session_commands.add_parser(
         "recover", help="close a dead open worker as an explicit interruption"
@@ -342,6 +350,8 @@ def _session(args: argparse.Namespace) -> int:
             payload = result.to_dict()
             _print(payload)
             return 0 if result.ok else 1
+        elif args.session_command == "dedupe":
+            payload = session_deduplication_report(args.session_id, root=args.root)
         elif args.session_command == "recover":
             root = sessions_root(args.root)
             session_id = args.session_id or active_session_id(root)

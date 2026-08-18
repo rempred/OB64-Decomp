@@ -7,7 +7,11 @@ import sqlite3
 import tempfile
 import unittest
 
-from tools.total_resolver.derive_session import _execution_analysis, _safety_range_analysis
+from tools.total_resolver.derive_session import (
+    _controller_input_analysis,
+    _execution_analysis,
+    _safety_range_analysis,
+)
 from tools.total_resolver.derive_transition import _derive_regions, _derive_transactions
 from tools.total_resolver.static_model import StaticModel
 from tools.total_resolver.tests.test_derive_transition import (
@@ -45,6 +49,68 @@ def insert_snapshot(
 
 
 class SessionDerivationTests(unittest.TestCase):
+    def test_native_coverage_and_controller_transitions_remain_distinct(self) -> None:
+        with tempfile.TemporaryDirectory() as raw:
+            root = Path(raw)
+            static_path = root / "static.sqlite"
+            resource_path = root / "resource.sqlite"
+            create_static_database(static_path)
+            create_resource_database(resource_path)
+            static = StaticModel(static_path, resource_path)
+            connection = sqlite3.connect(":memory:")
+            connection.row_factory = sqlite3.Row
+            connection.execute(
+                """
+                CREATE TABLE event_sequence(
+                  sequence_id INTEGER PRIMARY KEY, frame_number INTEGER,
+                  bridge_event_sequence INTEGER, bridge_stream TEXT,
+                  bridge_event_type TEXT,
+                  raw_payload_json TEXT, event_time_content_sha256 TEXT,
+                  event_time_content_size INTEGER
+                )
+                """
+            )
+            coverage = {
+                "kind": "exec-coverage",
+                "pc": "0x80100000",
+                "opcode": "0x27BDFFE0",
+                "codePageContentId": 3,
+                "newInstruction": True,
+                "newEdge": True,
+                "previous": {"pc": "0x800FFFFC", "exactContentResolved": True},
+            }
+            neutral = {
+                "kind": "controller-input",
+                "controller": 0,
+                "state": "0x00000000",
+                "buttons": "0x00000000",
+                "stickX": 0,
+                "stickY": 0,
+                "inputSource": "effective-pif-response",
+                "capturePhase": "post-controller-read-and-bridge-injection",
+            }
+            pressed = dict(neutral, state="0x80000000", buttons="0x80000000")
+            connection.executemany(
+                "INSERT INTO event_sequence VALUES(?,?,?,?,?,?,?,?)",
+                (
+                    (1, 20, 1, "trace", "exec-coverage", json.dumps(coverage), None, None),
+                    (2, 20, 2, "input", "controller-input", json.dumps(neutral), None, None),
+                    (3, 21, 3, "input", "controller-input", json.dumps(pressed), None, None),
+                ),
+            )
+            executions, _, diagnostics = _execution_analysis(
+                connection, [], [], static
+            )
+            inputs, input_diagnostics = _controller_input_analysis(connection)
+            connection.close()
+
+            self.assertEqual(diagnostics["nativeCoverageCount"], 1)
+            self.assertEqual(executions[0]["observationKind"], "native-exact-coverage")
+            self.assertEqual(executions[0]["executionClaim"], "observed")
+            self.assertEqual(input_diagnostics["transitionCount"], 2)
+            self.assertEqual(inputs[0]["endSequenceExclusive"], 3)
+            self.assertEqual(inputs[1]["state"], "0x80000000")
+
     def test_dma_explained_change_and_contextual_pc_resolution_remain_distinct(self) -> None:
         with tempfile.TemporaryDirectory() as raw:
             root = Path(raw)

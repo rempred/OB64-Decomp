@@ -8,7 +8,8 @@ import sqlite3
 
 
 CAPTURE_SCHEMA_NAME = "ob64-total-resolver-capture"
-CAPTURE_SCHEMA_VERSION = 2
+CAPTURE_SCHEMA_VERSION = 3
+SUPPORTED_CAPTURE_SCHEMA_VERSIONS = frozenset({2, 3})
 
 
 def capture_schema_path() -> Path:
@@ -62,14 +63,19 @@ def open_capture_database(path: Path, *, read_only: bool = False) -> sqlite3.Con
 def verify_capture_schema(connection: sqlite3.Connection) -> list[str]:
     errors: list[str] = []
     user_version = int(connection.execute("PRAGMA user_version").fetchone()[0])
-    if user_version != CAPTURE_SCHEMA_VERSION:
-        errors.append(f"user_version is {user_version}, expected {CAPTURE_SCHEMA_VERSION}")
+    if user_version not in SUPPORTED_CAPTURE_SCHEMA_VERSIONS:
+        supported = ", ".join(str(value) for value in sorted(SUPPORTED_CAPTURE_SCHEMA_VERSIONS))
+        errors.append(f"user_version is {user_version}, supported versions are {supported}")
     row = connection.execute(
         "SELECT schema_name, schema_version FROM schema_info"
     ).fetchone()
     if row is None:
         errors.append("schema_info row is missing")
-    elif row["schema_name"] != CAPTURE_SCHEMA_NAME or row["schema_version"] != CAPTURE_SCHEMA_VERSION:
+    elif (
+        row["schema_name"] != CAPTURE_SCHEMA_NAME
+        or row["schema_version"] != user_version
+        or row["schema_version"] not in SUPPORTED_CAPTURE_SCHEMA_VERSIONS
+    ):
         errors.append("schema_info identity mismatch")
     integrity = connection.execute("PRAGMA integrity_check").fetchall()
     if [row[0] for row in integrity] != ["ok"]:

@@ -169,6 +169,61 @@ class BridgeEventTests(unittest.TestCase):
                 )
             )
 
+    def test_trace_pages_coverage_and_input_share_one_exact_order(self) -> None:
+        page = bytes((index & 0xFF) for index in range(0x1000))
+        batch = parse_drain_response(
+            self.envelope(
+                [
+                    {
+                        "kind": "trace-page",
+                        "bridgeEpoch": "EPOCH-1",
+                        "bridgeSequence": 1,
+                        "bridgeStream": "trace",
+                        "physicalAddress": "0x00001000",
+                        "codePageContentId": 1,
+                        "codeByteLength": len(page),
+                        "codeBytesEncoding": "hex-uppercase",
+                        "codeBytesHex": page.hex().upper(),
+                        "capturePhase": "pre-execution-callback",
+                        "dedupeDecision": "exact-byte-compare",
+                    },
+                    {
+                        "kind": "exec-coverage",
+                        "bridgeEpoch": "EPOCH-1",
+                        "bridgeSequence": 2,
+                        "bridgeStream": "trace",
+                        "pc": "0x80001000",
+                        "codePageContentId": 1,
+                        "newInstruction": True,
+                        "newEdge": False,
+                        "capturePhase": "pre-execution-callback",
+                        "dedupeDecision": "exact-content-and-identity",
+                    },
+                    {
+                        "kind": "controller-input",
+                        "bridgeEpoch": "EPOCH-1",
+                        "bridgeSequence": 3,
+                        "bridgeStream": "input",
+                        "controller": 0,
+                        "state": "0x80000000",
+                        "capturePhase": "post-controller-read-and-bridge-injection",
+                    },
+                ],
+                nextEventSequence=4,
+            )
+        )
+        self.assertEqual([item.bridge_stream for item in batch.events], ["trace", "trace", "input"])
+        self.assertEqual(batch.events[0].event_time_content_field, "codeBytesHex")
+        self.assertEqual(
+            batch.events[0].event_time_content_sha256,
+            hashlib.sha256(page).hexdigest().upper(),
+        )
+
+        broken = dict(batch.events[1].payload)
+        broken["dedupeDecision"] = "hash-only"
+        with self.assertRaisesRegex(BridgeProtocolError, "exact dedupe"):
+            parse_drain_response(self.envelope([broken], nextEventSequence=3))
+
 
 if __name__ == "__main__":
     unittest.main()

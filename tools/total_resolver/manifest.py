@@ -17,6 +17,12 @@ EXCLUDED_TABLES = {"sqlite_sequence", "recorder_control"}
 EXCLUDED_COLUMNS = {"session": {"manifest_sha256"}}
 
 
+def _logical_value(value: Any) -> Any:
+    if isinstance(value, bytes):
+        return {"$sqliteBlobHex": value.hex().upper()}
+    return value
+
+
 def _table_names(connection: sqlite3.Connection) -> list[str]:
     return [
         str(row[0])
@@ -52,7 +58,7 @@ def logical_database_identity(connection: sqlite3.Connection) -> dict[str, Any]:
         digest = hashlib.sha256()
         rows = 0
         for row in cursor:
-            encoded = canonical_json(list(row)).encode("utf-8")
+            encoded = canonical_json([_logical_value(value) for value in row]).encode("utf-8")
             digest.update(str(len(encoded)).encode("ascii"))
             digest.update(b":")
             digest.update(encoded)

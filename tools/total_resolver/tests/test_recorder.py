@@ -7,7 +7,7 @@ import tempfile
 import unittest
 from typing import Any
 
-from tools.total_resolver.capture_db import CaptureStore, SessionMetadata
+from tools.total_resolver.capture_db import CaptureStore, SessionMetadata, load_event_payload
 from tools.total_resolver.contracts import CaptureMode, InterventionPolicy
 from tools.total_resolver.identities import rom_identity_from_file
 from tools.total_resolver.manifest import finalize_manifest
@@ -54,6 +54,7 @@ class FakeClient:
         self.frame = 100
         self.poll = 0
         self.dma_enabled = False
+        self.capture_enabled = False
         self.event_batches: list[dict[str, Any]] = []
         self.memory_blocks: dict[tuple[int, int], bytes] = {}
 
@@ -75,6 +76,15 @@ class FakeClient:
             "queueModel": "unified",
             "nextEventSequence": getattr(self, "next_event_sequence", 1),
             "dma": {"enabled": self.dma_enabled, "queueModel": "unified"},
+            "capture": {
+                "enabled": self.capture_enabled,
+                "trace": {
+                    "enabled": self.capture_enabled,
+                    "callbackId": 77 if self.capture_enabled else None,
+                    "callbackIds": [77, 78] if self.capture_enabled else [],
+                },
+                "controllerInput": {"enabled": self.capture_enabled},
+            },
             "input": {
                 "mask": "0x00000000",
                 "stickActive": False,
@@ -142,6 +152,28 @@ class FakeClient:
         self.commands.append("dma off")
         self.dma_enabled = False
         return {"dma": {"enabled": False}}
+
+    def capture_start(self) -> dict[str, Any]:
+        self.commands.append("capture on")
+        self.capture_enabled = True
+        return {
+            "capture": {
+                "enabled": True,
+                "trace": {"enabled": True, "callbackId": 77, "callbackIds": [77, 78]},
+                "controllerInput": {"enabled": True},
+            }
+        }
+
+    def capture_stop(self) -> dict[str, Any]:
+        self.commands.append("capture off")
+        self.capture_enabled = False
+        return {
+            "capture": {
+                "enabled": False,
+                "trace": {"enabled": False, "callbackId": None, "callbackIds": []},
+                "controllerInput": {"enabled": False},
+            }
+        }
 
     def install_watch(self, *_args: Any, **_kwargs: Any) -> dict[str, Any]:
         self.commands.append("watch")
@@ -464,15 +496,20 @@ class RecorderTests(unittest.TestCase):
                 """
             ).fetchall()
             self.assertEqual(len(rows), 2)
-            payloads = [json.loads(row[0]) for row in rows]
+            compact_payloads = [json.loads(row[0]) for row in rows]
+            payloads = [load_event_payload(store.connection, row[0]) for row in rows]
             self.assertEqual([item["sampleReason"] for item in payloads], ["initial", "fingerprint-changed"])
             self.assertEqual([item["bytesHex"] for item in payloads], ["41424344", "5758595A"])
+            self.assertTrue(all("bytesHex" not in item for item in compact_payloads))
             self.assertEqual(
                 payloads[1]["contentSha256"], hashlib.sha256(b"WXYZ").hexdigest().upper()
             )
-            self.assertIsNone(rows[1][1])
-            self.assertIsNone(rows[1][2])
-            self.assertIsNone(rows[1][3])
+            self.assertEqual(rows[1][1], hashlib.sha256(b"WXYZ").hexdigest().upper())
+            self.assertEqual(rows[1][2], 4)
+            self.assertEqual(rows[1][3], "host-polled-range-snapshot")
+            self.assertEqual(
+                store.connection.execute("SELECT COUNT(*) FROM content_blob").fetchone()[0], 2
+            )
             self.assertEqual(client.commands.count("hashmem"), 2)
             self.assertEqual(client.commands.count("readblock"), 2)
             store.close_connection()
@@ -571,6 +608,47 @@ class RecorderTests(unittest.TestCase):
             recorder.stop_instrumentation()
             self.assertIn("unwatch", client.commands)
             self.assertNotIn("clear", client.commands)
+            store.close_connection()
+
+    def test_partial_startup_failure_removes_capture_and_dma_hooks(self) -> None:
+        with tempfile.TemporaryDirectory() as raw:
+            root = Path(raw)
+            identity = make_rom(root / "test.z64")
+
+            class FailedWatchClient(FakeClient):
+                def install_watch(self, *_args: Any, **_kwargs: Any) -> dict[str, Any]:
+                    self.commands.append("watch")
+                    raise RuntimeError("fixture watch failure")
+
+            client = FailedWatchClient(root / "test.z64")
+            store = CaptureStore.create(root / "session" / "capture.sqlite", metadata(identity))
+            recorder = Pj64CaptureRecorder(
+                client,
+                store,
+                RecorderSettings(
+                    identity["normalizedSha256"],
+                    watches=(
+                        WatchSpec(
+                            watch_id="fails",
+                            kind="exec",
+                            address=0x80001000,
+                            size=4,
+                            address_space="live-kseg",
+                            label="failure fixture",
+                            reason="prove startup rollback",
+                            definition_source="fixture",
+                        ),
+                    ),
+                ),
+                clock=FakeClock(),
+            )
+            with self.assertRaisesRegex(RuntimeError, "fixture watch failure"):
+                recorder.start()
+            self.assertFalse(recorder.started)
+            self.assertFalse(client.capture_enabled)
+            self.assertFalse(client.dma_enabled)
+            self.assertIn("capture off", client.commands)
+            self.assertIn("dma off", client.commands)
             store.close_connection()
 
 

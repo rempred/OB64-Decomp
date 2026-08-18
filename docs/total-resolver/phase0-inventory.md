@@ -47,6 +47,8 @@ Phase 1 parity references.
 
 ## Subsequent status
 
-The maintained client and bridge have since advanced to protocol `0.7.2`, completed live parity,
-and produced verified R3 sessions and products. The frozen `0.6.8` hash above remains a historical
-migration input, not the active protocol. See `docs/total-resolver/implementation-status.md`.
+The maintained client and bridge first advanced to protocol `0.7.2`, completed live parity, and
+produced verified R3 sessions and products. They have since advanced again to protocol `0.8.0` for
+ordered execution/input capture and exact-content deduplication. The frozen `0.6.8` hash above
+remains a historical migration input, not the active protocol. See
+`docs/total-resolver/implementation-status.md`.

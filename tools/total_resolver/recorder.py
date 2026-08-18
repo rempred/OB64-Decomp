@@ -46,6 +46,10 @@ class RecorderClient(Protocol):
 
     def dma_stop(self) -> dict[str, Any]: ...
 
+    def capture_start(self) -> dict[str, Any]: ...
+
+    def capture_stop(self) -> dict[str, Any]: ...
+
     def install_watch(
         self, kind: str, address: int, *, size: int = 1, label: str = ""
     ) -> dict[str, Any]: ...
@@ -214,7 +218,8 @@ def verify_observation_preflight(
     core = health.get("core")
     if core != "interpreter":
         raise BridgeProtocolError(
-            f"watch/DMA capture requires the interpreter core; connected core is {core!r}"
+            "watch/DMA/trace/input capture requires the interpreter core; "
+            f"connected core is {core!r}"
         )
 
     watches = status.get("watches")
@@ -242,6 +247,18 @@ def verify_observation_preflight(
         raise BridgeProtocolError("Project64 status omitted native DMA state")
     if dma.get("enabled") is not False:
         raise BridgeProtocolError("observation-only startup requires native DMA tracing to be off")
+
+    capture = status.get("capture")
+    if not isinstance(capture, Mapping):
+        raise BridgeProtocolError("Project64 status omitted execution/input capture state")
+    if capture.get("enabled") is not False:
+        raise BridgeProtocolError("observation-only startup requires execution/input capture to be off")
+    trace = capture.get("trace")
+    controller_capture = capture.get("controllerInput")
+    if not isinstance(trace, Mapping) or trace.get("enabled") is not False:
+        raise BridgeProtocolError("observation-only startup requires native execution tracing to be off")
+    if not isinstance(controller_capture, Mapping) or controller_capture.get("enabled") is not False:
+        raise BridgeProtocolError("observation-only startup requires controller observation to be off")
 
     input_state = status.get("input")
     if not isinstance(input_state, Mapping):
@@ -289,7 +306,7 @@ def verify_observation_preflight(
 
 
 class Pj64CaptureRecorder:
-    """Capture watch and DMA streams without mutating game state."""
+    """Capture ordered watch, DMA, trace, and input streams without mutating game state."""
 
     def __init__(
         self,
@@ -324,6 +341,7 @@ class Pj64CaptureRecorder:
         self._recorder_exceptions = 0
         self._continuity = "continuous"
         self._dma_enabled = False
+        self._capture_enabled = False
         self._pending_dma_starts: dict[int, Mapping[str, Any]] = {}
         self._safety_fingerprints: dict[str, str] = {}
 
@@ -353,6 +371,7 @@ class Pj64CaptureRecorder:
         event_time_content_size: int | None = None,
         event_time_content_encoding: str | None = None,
         event_time_content_phase: str | None = None,
+        event_time_content_field: str | None = None,
     ) -> int:
         if batch_id is None:
             self._batch_id += 1
@@ -379,6 +398,7 @@ class Pj64CaptureRecorder:
                     event_time_content_size=event_time_content_size,
                     event_time_content_encoding=event_time_content_encoding,
                     event_time_content_phase=event_time_content_phase,
+                    event_time_content_field=event_time_content_field,
                 ),
             )
         )
@@ -426,6 +446,17 @@ class Pj64CaptureRecorder:
                 "cpuCore": self.preflight.cpu_core,
                 "romNormalizedSha256": self.preflight.rom_identity["normalizedSha256"],
                 "machineEventOrder": "emulator-global-bridge-sequence",
+                "executionTrace": {
+                    "mode": "native-generation-aware-exact-coverage",
+                    "dedupe": "physical-placement-plus-exact-page-bytes-plus-instruction-or-edge",
+                    "timestampsAndFrames": "context-only",
+                },
+                "controllerInput": {
+                    "controller": 0,
+                    "source": "effective-pif-response",
+                    "dedupe": "consecutive-identical-state-coalesced",
+                    "timing": "transition-sequence-and-frame-preserved",
+                },
                 "safetyRangeSampling": {
                     "ordering": "host-polled-context-only",
                     "intervalSeconds": self.settings.safety_range_interval_seconds,
@@ -446,6 +477,60 @@ class Pj64CaptureRecorder:
             },
         )
 
+        try:
+            self._start_instrumentation()
+        except Exception:
+            self._rollback_instrumentation_start()
+            raise
+        self._started = True
+        return self.preflight
+
+    def _start_instrumentation(self) -> None:
+        """Enable recorder-owned hooks, with caller-managed rollback on any failure."""
+
+        self._capture_enabled = True
+        capture_response = self.client.capture_start()
+        capture = capture_response.get("capture")
+        if not isinstance(capture, Mapping) or capture.get("enabled") is not True:
+            raise BridgeProtocolError("capture start response did not enable trace/input capture")
+        trace = capture.get("trace")
+        controller_capture = capture.get("controllerInput")
+        if not isinstance(trace, Mapping) or trace.get("enabled") is not True:
+            raise BridgeProtocolError("capture start response did not enable native execution tracing")
+        if not isinstance(controller_capture, Mapping) or controller_capture.get("enabled") is not True:
+            raise BridgeProtocolError("capture start response did not enable controller observation")
+        trace_callback_id = trace.get("callbackId")
+        if isinstance(trace_callback_id, bool) or not isinstance(trace_callback_id, int):
+            raise BridgeProtocolError("capture start response omitted native trace callback ID")
+        trace_callback_ids = trace.get("callbackIds")
+        if (
+            not isinstance(trace_callback_ids, list)
+            or len(trace_callback_ids) != 2
+            or any(isinstance(value, bool) or not isinstance(value, int) for value in trace_callback_ids)
+            or trace_callback_ids[0] != trace_callback_id
+        ):
+            raise BridgeProtocolError("capture start response omitted exact KSEG0/KSEG1 trace callbacks")
+        for name, callback_id, start in (
+            ("kseg0", trace_callback_ids[0], 0x80000000),
+            ("kseg1", trace_callback_ids[1], 0xA0000000),
+        ):
+            self.store.record_watch(
+                watch_id=f"native-exact-execution-coverage-{name}",
+                bridge_watch_id=callback_id,
+                watch_kind="exec",
+                address_space="live-kseg",
+                address_start=start,
+                address_end_exclusive=start + 0x00800000,
+                label=f"Native exact execution coverage ({name.upper()})",
+                reason="Preserve new exact instruction and edge coverage without per-hit queue growth",
+                definition_source="total-resolver:bridge-0.8.0",
+                interpreter_required=True,
+                interpreter_verified=True,
+                ownership_scope="recorder-owned",
+                expected_event_rate="new exact page placement/instruction/edge identities only",
+            )
+
+        self._dma_enabled = True
         dma_response = self.client.dma_start(
             self.settings.dma_physical_start,
             self.settings.dma_physical_end,
@@ -455,7 +540,6 @@ class Pj64CaptureRecorder:
         if not isinstance(dma_response.get("dma"), Mapping):
             raise BridgeProtocolError("DMA start response omitted DMA state")
         self.client.dma_set_rom_range(self.settings.dma_rom_start, self.settings.dma_rom_end)
-        self._dma_enabled = True
         self.store.record_watch(
             watch_id="native-pi-dma",
             bridge_watch_id=None,
@@ -479,6 +563,7 @@ class Pj64CaptureRecorder:
                 bridge_id = installed.get("id")
                 if isinstance(bridge_id, bool) or not isinstance(bridge_id, int):
                     raise BridgeProtocolError(f"watch {spec.watch_id} omitted its numeric bridge ID")
+                self._installed_bridge_watch_ids.append(bridge_id)
                 self.store.record_watch(
                     watch_id=spec.watch_id,
                     bridge_watch_id=bridge_id,
@@ -494,12 +579,37 @@ class Pj64CaptureRecorder:
                     ownership_scope="recorder-owned",
                     expected_event_rate=spec.expected_event_rate,
                 )
-                self._installed_bridge_watch_ids.append(bridge_id)
             except Exception:
                 self._watch_failures += 1
                 raise
-        self._started = True
-        return self.preflight
+
+    def _rollback_instrumentation_start(self) -> None:
+        """Best-effort removal so a partial startup cannot leave a watch running."""
+
+        for bridge_watch_id in reversed(self._installed_bridge_watch_ids):
+            try:
+                self.client.remove_watch(bridge_watch_id)
+            except Exception:
+                pass
+        self._installed_bridge_watch_ids.clear()
+        if self._dma_enabled:
+            try:
+                self.client.dma_stop()
+            except Exception:
+                pass
+            self._dma_enabled = False
+        if self._capture_enabled:
+            try:
+                self.client.capture_stop()
+            except Exception:
+                pass
+            self._capture_enabled = False
+        try:
+            latest = self.store.latest_sequence()
+            if latest is not None:
+                self.store.mark_recorder_watches_removed(latest)
+        except Exception:
+            pass
 
     def _event_inputs(self, batch: DrainBatch, batch_id: int, start_index: int) -> list[RawEventInput]:
         inputs: list[RawEventInput] = []
@@ -524,6 +634,7 @@ class Pj64CaptureRecorder:
                     event_time_content_size=event.event_time_content_size,
                     event_time_content_encoding=event.event_time_content_encoding,
                     event_time_content_phase=event.event_time_content_phase,
+                    event_time_content_field=event.event_time_content_field,
                 )
             )
         return inputs
@@ -859,6 +970,9 @@ class Pj64CaptureRecorder:
     def stop_instrumentation(self) -> None:
         """Stop only recorder-owned instrumentation; queued evidence remains drainable."""
 
+        if self._capture_enabled:
+            self.client.capture_stop()
+            self._capture_enabled = False
         if self._dma_enabled:
             self.client.dma_stop()
             self._dma_enabled = False
@@ -871,6 +985,7 @@ class Pj64CaptureRecorder:
                 "kind": "instrumentation-stopped",
                 "bridgeEpoch": self.preflight.bridge_epoch if self.preflight else None,
                 "bridgeNextSequence": self._bridge_next_sequence,
+                "executionAndInputCaptureStopped": True,
             },
         )
         self.store.mark_recorder_watches_removed(removed_sequence)

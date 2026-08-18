@@ -270,7 +270,7 @@ def _raw_event(
         ).fetchone()
         if row is None:
             raise ValueError(f"capture event {sequence_id} does not exist in session {session_id}")
-        payload = _read_payload(row)
+        payload = _read_payload(row, connection)
         actual = hashlib.sha256(canonical_json(payload).encode("utf-8")).hexdigest().upper()
         if actual != row["raw_payload_sha256"]:
             raise ValueError("raw event payload identity does not verify")
@@ -361,7 +361,7 @@ def _enrich_raw_event(
             "reviewState": "live-unreviewed",
             "claimLimit": "A completed ROM DMA establishes bytes and placement, not execution.",
         }
-    elif event_type in {"exec", "read", "write", "pc-sample"}:
+    elif event_type in {"exec", "exec-coverage", "read", "write", "pc-sample"}:
         payload = raw["payload"]
         encoded_pc = payload.get("pc") if isinstance(payload, Mapping) else None
         if encoded_pc is not None:

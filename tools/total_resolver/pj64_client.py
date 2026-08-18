@@ -62,7 +62,7 @@ class BridgeTransport(Protocol):
 
 
 class SocketLineTransport:
-    """Persistent newline-framed JSON transport used by bridge 0.7.2."""
+    """Persistent newline-framed JSON transport used by bridge 0.8.0."""
 
     def __init__(self, host: str, port: int, timeout: float) -> None:
         self.host = host
@@ -393,7 +393,7 @@ class Pj64Client:
             raise Pj64Error(f"{command} response contains a malformed frame count")
         return epoch, next_sequence, frame
 
-    # Watch/event observation. Bridge 0.7.2 supports per-ID removal, so the
+    # Watch/event observation. Bridge 0.8.0 supports per-ID removal, so the
     # recorder never needs a global clear that could destroy another owner.
     def install_watch(
         self,
@@ -438,6 +438,16 @@ class Pj64Client:
         """Explicit global bridge mutation; never used by passive startup."""
         return self._command("clear")
 
+    def capture_start(self) -> dict[str, Any]:
+        """Enable native-filtered execution coverage and effective P1 input observation."""
+        return self._command("capture on")
+
+    def capture_stop(self) -> dict[str, Any]:
+        return self._command("capture off")
+
+    def capture_status(self) -> dict[str, Any]:
+        return self._command("capture status")
+
     # Native PI DMA observation.
     def dma_start(
         self,
@@ -474,7 +484,7 @@ class Pj64Client:
 
     def dma_drain(self, maximum: int | None = None) -> dict[str, Any]:
         raise BridgeProtocolError(
-            "bridge 0.7.2 has one unified ordered queue; use drain_events()"
+            "bridge 0.8.0 has one unified ordered queue; use drain_events()"
         )
 
     def dma_stop(self) -> dict[str, Any]:

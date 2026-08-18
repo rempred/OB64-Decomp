@@ -117,8 +117,8 @@
       "role": "active-runtime-dependency",
       "base": "research-workspace",
       "path": "tools/project64/ob64_pj64_bridge.js",
-      "protocolVersion": "0.7.2",
-      "sha256": "8B90683C23358888E271524D17D384B522C1D6BE59F8D961AEC2076F3CC9DC74",
+      "protocolVersion": "0.8.0",
+      "sha256": "2271A074789995D73645B274D6EF7BE1B7824D0A9B9BB4ADFA97E0E965A01F08",
       "queueModel": "unified",
       "ordering": "emulator-side-monotonic-sequence-at-event-creation",
       "epoch": "per-script-instance",
@@ -126,12 +126,15 @@
       "dmaTransactionEvidence": "ordered-ROM-to-RDRAM-start-completion-pairs",
       "dmaScope": "cartridge-ROM-to-RDRAM; SRAM and other PI domains excluded",
       "dmaContentEvidence": "post-transfer-callback-destination-bytes",
-      "memoryRangeSafetyNet": "bounded FNV-1a change probes with exact bytes captured on detected change"
+      "memoryRangeSafetyNet": "bounded FNV-1a change probes with exact bytes captured on detected change",
+      "executionEvidence": "native generation-aware instruction/edge coverage tied to exact 4 KiB physical page placements",
+      "executionDedupe": "weak-hash bucket followed by exact page-byte comparison; exact placement/instruction/edge identity decides suppression",
+      "controllerEvidence": "effective P1 state transitions after controller read and optional bridge injection"
     },
     "runtimeRepository": {
       "base": "project64-repository",
       "branch": "ob64-core",
-      "gitCommit": "9F73D97A03AECEBFF62622AC2BE34E8B13B49404"
+      "gitCommit": "D9D353D39FF9A407845C14689CC70C0EF893DADD"
     },
     "activeNativeRuntime": {
       "base": "project64-repository",
@@ -146,12 +149,13 @@
         "Source/Project64/UserInterface/Debugger/ScriptTypes.h",
         "Source/Project64/UserInterface/Debugger/debugger.h"
       ],
-      "sourceFileSetSha256": "7D8BD1FB273B80C28593A3A3350941181D7D09C906B097A57E739AB551C043EC",
+      "sourceFileSetSha256": "D4B10A3C8F4E47C5FD32F2D910BAA895FE30C891DAE951521B6B9DE1B90365E9",
       "binaryPath": "bin/Win32/Release/Project64.exe",
-      "binarySha256": "3D1F3C6D889A63713F522E6680275160317563E1CA321C195505DD6227434D6D",
+      "binarySha256": "8F8C90046484527CF1D5619A3A411E1B13AF46281488B9089B0330E4BB89AFA4",
       "build": "Project64.vcxproj Release|Win32",
       "nativeEvent": "events.onpidmacomplete",
-      "callbackPhase": "after cart-to-RDRAM copy"
+      "nativeExecutionEvent": "events.onexecunique",
+      "callbackPhase": "DMA after cart-to-RDRAM copy; execution before instruction dispatch"
     }
   }
 }
