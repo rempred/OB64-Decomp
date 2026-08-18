@@ -144,7 +144,11 @@ result remains `HYBRID_C exact`; it is not matching C and does not count toward 
 
 ## Parallel Work
 
-Use ordinary Git branches/worktrees.
+Do not create a Git branch or worktree unless Joe explicitly directs you to create it. A request to
+parallelize work, delegate a task, make a commit, or continue autonomously is not authorization to
+create either one. Work in the current checkout and branch by default.
+
+When Joe explicitly authorizes parallel branches or worktrees, use ordinary Git branches/worktrees.
 
 Each worker owns one target at a time, verifies against its current base, commits a small result,
 then integrates onto the newest canonical branch. Re-run normal verification after integration.
