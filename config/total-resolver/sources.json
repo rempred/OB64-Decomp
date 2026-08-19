@@ -134,7 +134,7 @@
     "runtimeRepository": {
       "base": "project64-repository",
       "branch": "ob64-core",
-      "gitCommit": "D9D353D39FF9A407845C14689CC70C0EF893DADD"
+      "gitCommit": "463653B3BFE24A3E558A80FFAD26C93E2AAF968A"
     },
     "activeNativeRuntime": {
       "base": "project64-repository",
@@ -146,12 +146,13 @@
         "Source/Project64/UserInterface/Debugger/Debugger.cpp",
         "Source/Project64/UserInterface/Debugger/ScriptAPI/ScriptAPI.h",
         "Source/Project64/UserInterface/Debugger/ScriptAPI/ScriptAPI_events.cpp",
+        "Source/Project64/UserInterface/Debugger/ScriptAPI/ScriptAPI_pj64.cpp",
         "Source/Project64/UserInterface/Debugger/ScriptTypes.h",
         "Source/Project64/UserInterface/Debugger/debugger.h"
       ],
-      "sourceFileSetSha256": "D4B10A3C8F4E47C5FD32F2D910BAA895FE30C891DAE951521B6B9DE1B90365E9",
+      "sourceFileSetSha256": "B27F3660D11429E0E0275CC70761208205E1A8DE33EBC387F35116A31C778CD7",
       "binaryPath": "bin/Win32/Release/Project64.exe",
-      "binarySha256": "8F8C90046484527CF1D5619A3A411E1B13AF46281488B9089B0330E4BB89AFA4",
+      "binarySha256": "508144F9ACDE0B991533D8D116BB7727B84243BB7C14E28D261E5DBA218E84D4",
       "build": "Project64.vcxproj Release|Win32",
       "nativeEvent": "events.onpidmacomplete",
       "nativeExecutionEvent": "events.onexecunique",

@@ -177,6 +177,8 @@ class ClientTests(unittest.TestCase):
         transport = ScriptedTransport()
         client = Pj64Client(transport=transport)
 
+        client.open_rom(r"C:\Games\Ogre Battle 64.v64")
+        client.close_rom()
         client.pause()
         client.resume()
         client.frame_step(2)
@@ -192,6 +194,8 @@ class ClientTests(unittest.TestCase):
         client.clear_input()
 
         expected = {
+            r"openrom C:\Games\Ogre Battle 64.v64",
+            "closerom",
             "pause",
             "resume",
             "framestep 2",
@@ -213,6 +217,8 @@ class ClientTests(unittest.TestCase):
         client = Pj64Client(transport=transport)
         with self.assertRaises(ValueError):
             client.save_state("state.pj\nclear")
+        with self.assertRaises(ValueError):
+            client.open_rom("game.v64\nclear")
         with self.assertRaises(ValueError):
             client.watch_exec(0x80000000, label="bad\nclear")
 

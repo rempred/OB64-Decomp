@@ -492,6 +492,12 @@ class Pj64Client:
 
     # Explicit emulator-control methods for focused research and later optional
     # automation. Passive capture does not call these.
+    def open_rom(self, path: str | Path) -> dict[str, Any]:
+        return self._command("openrom " + _path_argument(path))
+
+    def close_rom(self) -> dict[str, Any]:
+        return self._command("closerom")
+
     def pause(self) -> dict[str, Any]:
         return self._command("pause")
 
