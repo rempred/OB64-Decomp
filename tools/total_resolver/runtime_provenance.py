@@ -182,7 +182,42 @@ def build_runtime_provenance(
     conflicts: list[dict[str, Any]] = []
 
     for product in products:
-        for ordinal, value in enumerate(_optional_rows(product, "executionObservations"), 1):
+        execution_values = _optional_rows(product, "executionObservations")
+        native_function_candidates: defaultdict[
+            tuple[int, int], set[tuple[int, str]]
+        ] = defaultdict(set)
+        for value in execution_values:
+            if (
+                value.get("observationKind") != "native-exact-coverage"
+                or value.get("codePageContentResolved") is not True
+            ):
+                continue
+            content_id = value.get("codePageContentId")
+            function = value.get("function")
+            if not isinstance(content_id, int) or isinstance(content_id, bool):
+                continue
+            if not isinstance(function, Mapping):
+                continue
+            sequence = int(value["sequence"])
+            physical_pc = int(value["physicalPc"])
+            local_region = value.get("regionInstanceId")
+            region = (
+                atlas_regions.get((product.session_id, str(local_region)))
+                if local_region is not None
+                else None
+            )
+            contextual_mapping = bool(
+                _valid_region_context(
+                    region, sequence=sequence, physical_pc=physical_pc
+                )
+                or value.get("mappingMethod") == "accepted-static-nominal-vram"
+            )
+            if contextual_mapping:
+                native_function_candidates[(content_id, int(value["pc"]))].add(
+                    (int(function["functionId"]), str(function["structuralName"]))
+                )
+
+        for ordinal, value in enumerate(execution_values, 1):
             local_id = str(value.get("executionObservationId") or f"execution:{ordinal:08d}")
             sequence = int(value["sequence"])
             physical_pc = int(value["physicalPc"])
@@ -291,6 +326,57 @@ def build_runtime_provenance(
                         "payloadJson": canonical_json(unresolved_record),
                     }
                 )
+
+            previous = value.get("previous")
+            if (
+                claim == "observed"
+                and value.get("observationKind") == "native-exact-coverage"
+                and value.get("newEdge") is True
+                and value.get("codePageContentResolved") is True
+                and isinstance(previous, Mapping)
+                and previous.get("exactContentResolved") is True
+            ):
+                try:
+                    caller_pc = int(str(previous["pc"]), 0)
+                    previous_content_id = int(previous["codePageContentId"])
+                except (KeyError, TypeError, ValueError):
+                    pass
+                else:
+                    candidates = native_function_candidates.get(
+                        (previous_content_id, caller_pc), set()
+                    )
+                    caller_mapping = next(iter(candidates)) if len(candidates) == 1 else None
+                    edge_key = {
+                        "schema": "ob64-runtime-observed-edge-key.v1",
+                        "sessionId": product.session_id,
+                        "executionSequence": sequence,
+                        "callerLivePc": caller_pc,
+                        "calleeLivePc": int(value["pc"]),
+                        "sourceCodePageContentId": previous_content_id,
+                        "destinationCodePageContentId": value.get("codePageContentId"),
+                    }
+                    edges.append(
+                        {
+                            "observedEdgeId": _stable_id("observed-edge", edge_key),
+                            "sessionId": product.session_id,
+                            "executionSequence": sequence,
+                            "callerLivePc": caller_pc,
+                            "calleeLivePc": int(value["pc"]),
+                            "callerFunctionId": (
+                                caller_mapping[0] if caller_mapping is not None else None
+                            ),
+                            "callerStructuralName": (
+                                caller_mapping[1] if caller_mapping is not None else None
+                            ),
+                            "calleeFunctionId": function_id if contextual_mapping else None,
+                            "calleeStructuralName": (
+                                structural_name if contextual_mapping else None
+                            ),
+                            "edgeKind": "native-exact-instruction-transition",
+                            "evidenceGrade": "verified",
+                            "reviewState": "generated-unreviewed",
+                        }
+                    )
 
             return_address = record["returnAddress"]
             if claim == "observed" and return_address is not None and function_id is not None:
@@ -663,8 +749,15 @@ def build_runtime_provenance(
         "counts": {
             "sourceSessions": len(products),
             "executionObservations": len(executions),
-            "exactExecutionWatchHits": sum(
+            "exactExecutionObservations": sum(
                 item["executionClaim"] == "observed" for item in executions
+            ),
+            "exactExecutionWatchHits": sum(
+                item["observationKind"] == "exact-watch-hit" for item in executions
+            ),
+            "nativeExecutionCoverage": sum(
+                item["observationKind"] == "native-exact-coverage"
+                for item in executions
             ),
             "sampledPcContexts": sum(
                 item["executionClaim"] == "sampled-only" for item in executions
@@ -687,7 +780,7 @@ def build_runtime_provenance(
         },
         "reviewState": "generated-unreviewed",
         "claimLimit": (
-            "only exact watch hits count as observed execution; sampled PCs remain context and residency never creates execution"
+            "only exact watch hits and native exact coverage count as observed execution; sampled PCs remain context and residency never creates execution"
         ),
     }
     coverage = {

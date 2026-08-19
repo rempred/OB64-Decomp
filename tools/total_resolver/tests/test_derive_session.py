@@ -8,6 +8,8 @@ import tempfile
 import unittest
 
 from tools.total_resolver.derive_session import (
+    _ActiveRegionIndex,
+    _active_region_for_pc,
     _controller_input_analysis,
     _execution_analysis,
     _safety_range_analysis,
@@ -49,6 +51,95 @@ def insert_snapshot(
 
 
 class SessionDerivationTests(unittest.TestCase):
+    def test_bulk_nominal_pc_index_matches_lazy_resolution(self) -> None:
+        with tempfile.TemporaryDirectory() as raw:
+            root = Path(raw)
+            static_path = root / "static.sqlite"
+            create_static_database(static_path)
+
+            lazy = StaticModel(static_path)
+            expected = lazy.resolve_nominal_pc(0x80001000)
+            self.assertIsNotNone(expected)
+            self.assertEqual(lazy.resolve_nominal_rom_offset(0x80001000), 16)
+            self.assertIsNone(lazy.resolve_nominal_pc(0x81234560))
+            self.assertIsNone(lazy.resolve_nominal_rom_offset(0x81234560))
+
+            bulk = StaticModel(static_path)
+            bulk.preload_nominal_pc_index()
+            self.assertEqual(bulk.resolve_nominal_pc(0x80001000), expected)
+            self.assertEqual(bulk.resolve_nominal_rom_offset(0x80001000), 16)
+            self.assertIsNone(bulk.resolve_nominal_pc(0x81234560))
+            self.assertIsNone(bulk.resolve_nominal_rom_offset(0x81234560))
+
+    def test_bulk_nominal_pc_index_rejects_ambiguous_crosswalk(self) -> None:
+        with tempfile.TemporaryDirectory() as raw:
+            static_path = Path(raw) / "static.sqlite"
+            create_static_database(static_path)
+            connection = sqlite3.connect(static_path)
+            connection.execute("INSERT INTO word VALUES(17, 1, 2147487744)")
+            connection.execute("INSERT INTO instruction VALUES(17, 2)")
+            connection.commit()
+            connection.close()
+
+            lazy = StaticModel(static_path)
+            self.assertIsNone(lazy.resolve_nominal_pc(0x80001000))
+            self.assertIsNone(lazy.resolve_nominal_rom_offset(0x80001000))
+
+            bulk = StaticModel(static_path)
+            bulk.preload_nominal_pc_index()
+            self.assertIsNone(bulk.resolve_nominal_pc(0x80001000))
+            self.assertIsNone(bulk.resolve_nominal_rom_offset(0x80001000))
+
+    def test_active_region_index_matches_exact_lookup_across_lifetimes(self) -> None:
+        regions = [
+            {
+                "regionInstanceId": "A",
+                "destinationPhysicalStart": 0x1000,
+                "destinationPhysicalEndExclusive": 0x1800,
+                "firstSequence": 1,
+                "endSequenceExclusive": 5,
+            },
+            {
+                "regionInstanceId": "B",
+                "destinationPhysicalStart": 0x1000,
+                "destinationPhysicalEndExclusive": 0x1800,
+                "firstSequence": 5,
+                "endSequenceExclusive": None,
+            },
+            {
+                "regionInstanceId": "overlap",
+                "destinationPhysicalStart": 0x1700,
+                "destinationPhysicalEndExclusive": 0x2100,
+                "firstSequence": 3,
+                "endSequenceExclusive": 4,
+            },
+            {
+                "regionInstanceId": "other-page",
+                "destinationPhysicalStart": 0x9000,
+                "destinationPhysicalEndExclusive": 0xA000,
+                "firstSequence": 2,
+                "endSequenceExclusive": 8,
+            },
+        ]
+        index = _ActiveRegionIndex(regions)
+        for sequence, physical_pc in (
+            (0, 0x1000),
+            (1, 0x1000),
+            (2, 0x9004),
+            (3, 0x1750),
+            (3, 0x1F00),
+            (4, 0x1750),
+            (5, 0x1000),
+            (8, 0x9004),
+        ):
+            self.assertEqual(
+                index.resolve(sequence, physical_pc),
+                _active_region_for_pc(regions, sequence, physical_pc),
+            )
+
+        with self.assertRaisesRegex(ValueError, "nondecreasing"):
+            index.resolve(7, 0x1000)
+
     def test_native_coverage_and_controller_transitions_remain_distinct(self) -> None:
         with tempfile.TemporaryDirectory() as raw:
             root = Path(raw)
@@ -72,12 +163,12 @@ class SessionDerivationTests(unittest.TestCase):
             )
             coverage = {
                 "kind": "exec-coverage",
-                "pc": "0x80100000",
+                "pc": "0x80001000",
                 "opcode": "0x27BDFFE0",
                 "codePageContentId": 3,
                 "newInstruction": True,
                 "newEdge": True,
-                "previous": {"pc": "0x800FFFFC", "exactContentResolved": True},
+                "previous": {"pc": "0x80000FFC", "exactContentResolved": True},
             }
             neutral = {
                 "kind": "controller-input",
@@ -107,6 +198,10 @@ class SessionDerivationTests(unittest.TestCase):
             self.assertEqual(diagnostics["nativeCoverageCount"], 1)
             self.assertEqual(executions[0]["observationKind"], "native-exact-coverage")
             self.assertEqual(executions[0]["executionClaim"], "observed")
+            self.assertEqual(executions[0]["romOffset"], 16)
+            self.assertEqual(
+                executions[0]["mappingMethod"], "accepted-static-nominal-vram"
+            )
             self.assertEqual(input_diagnostics["transitionCount"], 2)
             self.assertEqual(inputs[0]["endSequenceExclusive"], 3)
             self.assertEqual(inputs[1]["state"], "0x80000000")

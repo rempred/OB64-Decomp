@@ -71,9 +71,66 @@ class RuntimeProvenanceTests(unittest.TestCase):
                 static_database=static,
             )
             self.assertEqual(runtime["result"], "PASS")
+            self.assertEqual(runtime["counts"]["exactExecutionObservations"], 1)
             self.assertEqual(runtime["counts"]["exactExecutionWatchHits"], 1)
+            self.assertEqual(runtime["counts"]["nativeExecutionCoverage"], 0)
             self.assertEqual(runtime["counts"]["sampledPcContexts"], 1)
             self.assertEqual(runtime["counts"]["observedExecutedFunctions"], 1)
+
+    def test_native_exact_transition_creates_content_resolved_edge(self) -> None:
+        with tempfile.TemporaryDirectory() as raw:
+            root = Path(raw)
+            static = root / "static.sqlite"
+            create_static_database(static)
+            source = make_session_product(root / "source")
+            first = observation(sequence=3)
+            first.update(
+                {
+                    "observationKind": "native-exact-coverage",
+                    "codePageContentId": 7,
+                    "codePageContentResolved": True,
+                    "newEdge": False,
+                    "previous": None,
+                }
+            )
+            second = observation(sequence=4)
+            second.update(
+                {
+                    "pc": 0x80002003,
+                    "physicalPc": 0x2003,
+                    "observationKind": "native-exact-coverage",
+                    "codePageContentId": 7,
+                    "codePageContentResolved": True,
+                    "newEdge": True,
+                    "previous": {
+                        "pc": "0x80002002",
+                        "codePageContentId": 7,
+                        "exactContentResolved": True,
+                    },
+                }
+            )
+            add_runtime_rows(source, [first, second])
+            atlas = build_overlay_atlas(
+                [source], output_directory=root / "atlas", static_database=static
+            )
+            runtime = build_runtime_provenance(
+                [source],
+                overlay_atlas=Path(atlas["productDirectory"]),
+                output_directory=root / "runtime",
+                static_database=static,
+            )
+            self.assertEqual(runtime["counts"]["exactExecutionObservations"], 2)
+            self.assertEqual(runtime["counts"]["exactExecutionWatchHits"], 0)
+            self.assertEqual(runtime["counts"]["nativeExecutionCoverage"], 2)
+            self.assertEqual(runtime["counts"]["observedEdges"], 1)
+            edge = json.loads(
+                (root / "runtime" / "observed-edges.ndjson").read_text(
+                    encoding="utf-8"
+                )
+            )
+            self.assertEqual(edge["edgeKind"], "native-exact-instruction-transition")
+            self.assertEqual(edge["callerFunctionId"], 2)
+            self.assertEqual(edge["calleeFunctionId"], 2)
 
     def test_residency_alone_never_creates_execution_and_bad_context_is_visible(self) -> None:
         with tempfile.TemporaryDirectory() as raw:

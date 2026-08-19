@@ -250,6 +250,88 @@ def _active_region_for_pc(
     return matches[0]
 
 
+class _ActiveRegionIndex:
+    """Incremental exact-region lookup for observations ordered by sequence."""
+
+    _PAGE_SHIFT = 12
+
+    def __init__(self, regions: list[dict[str, Any]]) -> None:
+        self._regions = regions
+        self._starts = sorted(
+            (int(region["firstSequence"]), index)
+            for index, region in enumerate(regions)
+        )
+        self._ends = sorted(
+            (int(region["endSequenceExclusive"]), index)
+            for index, region in enumerate(regions)
+            if region["endSequenceExclusive"] is not None
+        )
+        self._start_cursor = 0
+        self._end_cursor = 0
+        self._last_sequence: int | None = None
+        self._active: set[int] = set()
+        self._active_by_page: defaultdict[int, set[int]] = defaultdict(set)
+
+    def _page_numbers(self, index: int) -> range:
+        region = self._regions[index]
+        start = int(region["destinationPhysicalStart"])
+        end_exclusive = int(region["destinationPhysicalEndExclusive"])
+        if end_exclusive <= start:
+            return range(0)
+        return range(
+            start >> self._PAGE_SHIFT,
+            ((end_exclusive - 1) >> self._PAGE_SHIFT) + 1,
+        )
+
+    def _activate(self, index: int) -> None:
+        if index in self._active:
+            return
+        self._active.add(index)
+        for page in self._page_numbers(index):
+            self._active_by_page[page].add(index)
+
+    def _deactivate(self, index: int) -> None:
+        if index not in self._active:
+            return
+        self._active.remove(index)
+        for page in self._page_numbers(index):
+            candidates = self._active_by_page[page]
+            candidates.remove(index)
+            if not candidates:
+                del self._active_by_page[page]
+
+    def resolve(self, sequence: int, physical_pc: int) -> dict[str, Any] | None:
+        if self._last_sequence is not None and sequence < self._last_sequence:
+            raise ValueError("active-region index requires nondecreasing sequences")
+
+        while (
+            self._start_cursor < len(self._starts)
+            and self._starts[self._start_cursor][0] <= sequence
+        ):
+            self._activate(self._starts[self._start_cursor][1])
+            self._start_cursor += 1
+        while (
+            self._end_cursor < len(self._ends)
+            and self._ends[self._end_cursor][0] <= sequence
+        ):
+            self._deactivate(self._ends[self._end_cursor][1])
+            self._end_cursor += 1
+        self._last_sequence = sequence
+
+        matches = [
+            self._regions[index]
+            for index in self._active_by_page.get(
+                physical_pc >> self._PAGE_SHIFT, set()
+            )
+            if int(self._regions[index]["destinationPhysicalStart"])
+            <= physical_pc
+            < int(self._regions[index]["destinationPhysicalEndExclusive"])
+        ]
+        if len(matches) != 1:
+            return None
+        return matches[0]
+
+
 def _execution_analysis(
     connection: sqlite3.Connection,
     regions: list[dict[str, Any]],
@@ -284,6 +366,8 @@ def _execution_analysis(
         ORDER BY sequence_id
         """
     ).fetchall()
+    if rows:
+        static.preload_nominal_pc_index()
     transaction_by_id = {
         str(item.record["transactionId"]): item for item in transactions
     }
@@ -293,6 +377,7 @@ def _execution_analysis(
     native_coverage_count = 0
     exact_watch_count = 0
     sampled_count = 0
+    region_index = _ActiveRegionIndex(regions)
 
     for row in rows:
         payload = _read_payload(row, connection)
@@ -324,8 +409,11 @@ def _execution_analysis(
             row["bridge_event_type"] != "exec-coverage"
             or (trace_page is not None and int(trace_page["sequence"]) < sequence)
         )
-        region = _active_region_for_pc(regions, sequence, physical_pc)
+        region = region_index.resolve(sequence, physical_pc)
         nominal_function = static.resolve_nominal_pc(pc) if region is None else None
+        nominal_rom_offset = (
+            static.resolve_nominal_rom_offset(pc) if nominal_function is not None else None
+        )
         transaction = (
             transaction_by_id.get(str(region["sourceLoaderEventId"]))
             if region is not None and region.get("sourceLoaderEventId") is not None
@@ -346,6 +434,7 @@ def _execution_analysis(
                 function = static.function_containing(candidate)
         if function is None and nominal_function is not None:
             function = nominal_function
+            rom_offset = nominal_rom_offset
         safety_range_ids = payload.get("safetyRangeIds")
         inside_dynamic_safety_scope = bool(
             isinstance(safety_range_ids, list) and safety_range_ids
@@ -389,9 +478,9 @@ def _execution_analysis(
             "function": function.to_dict() if function else None,
             "mappingMethod": (
                 "contemporaneous-rom-dma-region"
-                if rom_offset is not None
+                if transaction is not None and rom_offset is not None
                 else "accepted-static-nominal-vram"
-                if nominal_function is not None
+                if nominal_function is not None and nominal_rom_offset is not None
                 else None
             ),
             "status": status,
@@ -532,6 +621,7 @@ def _memory_analysis(
         "s64": 64,
     }
     accesses: list[dict[str, Any]] = []
+    region_index = _ActiveRegionIndex(regions)
     for row in rows:
         payload = _read_payload(row, connection)
         try:
@@ -541,7 +631,7 @@ def _memory_analysis(
         except (TypeError, ValueError):
             continue
         sequence = int(row["sequence_id"])
-        region = _active_region_for_pc(regions, sequence, physical_pc)
+        region = region_index.resolve(sequence, physical_pc)
         transaction = (
             transaction_by_id.get(str(region["sourceLoaderEventId"]))
             if region is not None and region.get("sourceLoaderEventId") is not None
@@ -565,7 +655,9 @@ def _memory_analysis(
         if function is None and region is None:
             function = static.resolve_nominal_pc(pc)
             if function is not None:
-                mapping_method = "accepted-static-nominal-vram"
+                rom_offset = static.resolve_nominal_rom_offset(pc)
+                if rom_offset is not None:
+                    mapping_method = "accepted-static-nominal-vram"
         value_type = payload.get("valueType")
         accesses.append(
             {

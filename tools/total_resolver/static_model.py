@@ -80,6 +80,8 @@ class StaticModel:
         self.resource_ranges = self._load_resource_ranges()
         self._resource_starts = [item.start for item in self.resource_ranges]
         self._pc_cache: dict[int, StaticFunction | None] = {}
+        self._pc_rom_cache: dict[int, int | None] = {}
+        self._nominal_pc_index_loaded = False
 
     @staticmethod
     def _connect(path: Path) -> sqlite3.Connection:
@@ -204,6 +206,8 @@ class StaticModel:
         cached = self._pc_cache.get(live_pc)
         if live_pc in self._pc_cache:
             return cached
+        if self._nominal_pc_index_loaded:
+            return None
         connection = self._connect(self.static_database)
         try:
             rows = connection.execute(
@@ -227,6 +231,56 @@ class StaticModel:
                 int(row[0]), str(row[1]), str(row[2]), int(row[3]), int(row[4]), str(row[5])
             )
         self._pc_cache[live_pc] = result
+        return result
+
+    def preload_nominal_pc_index(self) -> None:
+        """Load the nominal-PC crosswalk once for bulk ordered derivation."""
+
+        if self._nominal_pc_index_loaded:
+            return
+        functions_by_id = {item.function_id: item for item in self.functions}
+        connection = self._connect(self.static_database)
+        try:
+            rows = connection.execute(
+                """
+                SELECT DISTINCT w.nominal_linear_vram, w.rom_address, i.function_id
+                FROM word w
+                JOIN instruction i ON i.rom_address=w.rom_address
+                JOIN logical_function f ON f.function_id=i.function_id
+                ORDER BY w.nominal_linear_vram, i.function_id
+                """
+            )
+            for row in rows:
+                live_pc = int(row[0])
+                rom_offset = int(row[1])
+                function = functions_by_id[int(row[2])]
+                if live_pc not in self._pc_cache:
+                    self._pc_cache[live_pc] = function
+                elif self._pc_cache[live_pc] != function:
+                    self._pc_cache[live_pc] = None
+                if live_pc not in self._pc_rom_cache:
+                    self._pc_rom_cache[live_pc] = rom_offset
+                elif self._pc_rom_cache[live_pc] != rom_offset:
+                    self._pc_rom_cache[live_pc] = None
+        finally:
+            connection.close()
+        self._nominal_pc_index_loaded = True
+
+    def resolve_nominal_rom_offset(self, live_pc: int) -> int | None:
+        if live_pc in self._pc_rom_cache:
+            return self._pc_rom_cache[live_pc]
+        if self._nominal_pc_index_loaded:
+            return None
+        connection = self._connect(self.static_database)
+        try:
+            rows = connection.execute(
+                "SELECT DISTINCT rom_address FROM word WHERE nominal_linear_vram=?",
+                (live_pc,),
+            ).fetchall()
+        finally:
+            connection.close()
+        result = int(rows[0][0]) if len(rows) == 1 else None
+        self._pc_rom_cache[live_pc] = result
         return result
 
     def functions_fully_within(self, start: int, end_exclusive: int) -> tuple[StaticFunction, ...]:
