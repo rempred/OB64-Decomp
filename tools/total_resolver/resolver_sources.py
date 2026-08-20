@@ -31,6 +31,19 @@ class ResolverSourcePaths:
 
 
 @dataclass(frozen=True)
+class QuerySourcePaths:
+    """Frozen read-only lanes used beside the selected dynamic knowledge DB."""
+
+    static_database: Path
+    resource_database: Path
+    field_product: Path
+
+    @property
+    def field_database(self) -> Path:
+        return self.field_product / "db" / "structure-field-access.sqlite"
+
+
+@dataclass(frozen=True)
 class SourceIdentity:
     source_id: str
     adapter_id: str
@@ -88,6 +101,15 @@ def default_source_paths() -> ResolverSourcePaths:
         / "mips-structure-field-access-atlas-static-20260711",
         overlay_atlas=products / "overlay-atlas-2",
         runtime_provenance=products / "runtime-provenance-2",
+    )
+
+
+def default_query_source_paths() -> QuerySourcePaths:
+    paths = default_source_paths()
+    return QuerySourcePaths(
+        paths.static_database,
+        paths.resource_database,
+        paths.field_product,
     )
 
 
@@ -299,5 +321,73 @@ def validate_resolver_sources(
             str(runtime["logicalSha256"]),
             "generated-unreviewed",
             "Exact watch evidence is execution; sampled PCs are context only.",
+        ),
+    )
+
+
+def validate_query_sources(
+    paths: QuerySourcePaths,
+    *,
+    expected_identities: Mapping[str, str] | None = None,
+) -> tuple[SourceIdentity, ...]:
+    """Validate only the frozen lanes needed by ordinary read-only queries.
+
+    Dynamic placement and execution facts deliberately do not come from the
+    historical Overlay Atlas or Runtime Provenance products on this path.
+    """
+
+    expected, frozen = _expected_identities(expected_identities)
+    actual_static = sha256_file(paths.static_database)
+    if actual_static != expected["static-db-r3"]:
+        raise ValueError(
+            "static-db-r3 identity mismatch: "
+            f"expected {expected['static-db-r3']}, got {actual_static}"
+        )
+    actual_resource = resource_logical_sha256(paths.resource_database)
+    if actual_resource != expected["resource-chain-static"]:
+        raise ValueError(
+            "resource-chain-static identity mismatch: "
+            f"expected {expected['resource-chain-static']}, got {actual_resource}"
+        )
+    actual_field = field_product_logical_sha256(paths.field_product)
+    if actual_field != expected["structure-field-static"]:
+        raise ValueError(
+            "structure-field-static identity mismatch: "
+            f"expected {expected['structure-field-static']}, got {actual_field}"
+        )
+
+    static_entry = frozen["static-db-r3"]
+    resource_entry = frozen["resource-chain-static"]
+    field_entry = frozen["structure-field-static"]
+    return (
+        SourceIdentity(
+            "static-db-r3",
+            "static-db-r3",
+            str(static_entry["snapshotId"]),
+            tuple(static_entry["evidenceLanes"]),
+            str(static_entry["identityKind"]),
+            actual_static,
+            "accepted-source",
+            "Static identity and calls; static mapping does not prove runtime execution.",
+        ),
+        SourceIdentity(
+            "resource-chain-static",
+            "resource-chain-static",
+            str(resource_entry["snapshotId"]),
+            tuple(resource_entry["evidenceLanes"]),
+            str(resource_entry["identityKind"]),
+            actual_resource,
+            "accepted-source",
+            "Static resource ancestry; unresolved links do not prove runtime reachability.",
+        ),
+        SourceIdentity(
+            "structure-field-static",
+            "structure-field-static",
+            str(field_entry["snapshotId"]),
+            tuple(field_entry["evidenceLanes"]),
+            str(field_entry["identityKind"]),
+            actual_field,
+            "accepted-source",
+            "Static field grouping; equal offsets do not establish one runtime field.",
         ),
     )

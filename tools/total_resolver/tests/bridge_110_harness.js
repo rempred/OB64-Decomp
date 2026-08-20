@@ -22,7 +22,21 @@ const callbacks = {
     dma: new Map(),
     snapshot: new Map(),
 };
-const native = { instructions: new Set(), edges: new Set(), dma: new Map() };
+const native = {
+    instructions: new Set(), edges: new Set(), dma: new Map(),
+    instructionOrdinals: new Map(), edgeOrdinals: new Map(), dmaOrdinals: new Map(),
+    instructionHits: new Set(), edgeHits: new Set(), dmaHits: new Set(),
+    instructionMaxOrdinal: 0, edgeMaxOrdinal: 0, dmaMaxOrdinal: 0,
+    contextRecords: [], contextNextOrder: 1, pendingContext: null,
+};
+
+function activityBitmap(ordinals, maximum) {
+    const bytes = Buffer.alloc(Math.floor((maximum + 7) / 8));
+    for (const ordinal of ordinals) {
+        bytes[Math.floor((ordinal - 1) / 8)] |= 1 << ((ordinal - 1) & 7);
+    }
+    return bytes;
+}
 
 class FakeServer {
     constructor() { this.handlers = {}; serverInstance = this; }
@@ -105,16 +119,70 @@ const context = {
             native.instructions = new Set(frontierFixture.instructions);
             native.edges = new Set(frontierFixture.edges);
             native.dma = new Map(frontierFixture.dma);
+            native.instructionOrdinals = new Map(
+                frontierFixture.instructions.map((key, index) => [key, index + 1]));
+            native.edgeOrdinals = new Map(
+                frontierFixture.edges.map((key, index) => [key, index + 1]));
+            native.dmaOrdinals = new Map(
+                frontierFixture.dma.map((item, index) => [item[0], index + 1]));
+            native.instructionMaxOrdinal = frontierFixture.instructions.length;
+            native.edgeMaxOrdinal = frontierFixture.edges.length;
+            native.dmaMaxOrdinal = frontierFixture.dma.length;
+            native.instructionHits.clear();
+            native.edgeHits.clear();
+            native.dmaHits.clear();
             return {
-                loaded: true, formatVersion: 3, rdramSize: RDRAM_SIZE,
+                loaded: true, formatVersion: 4, rdramSize: RDRAM_SIZE,
                 identity, romSha256: rom,
                 physicalPageCount: frontierFixture.pages,
                 instructionCount: native.instructions.size,
                 edgeCount: native.edges.size,
                 dmaCount: native.dma.size,
+                instructionMaxOrdinal: native.instructionMaxOrdinal,
+                edgeMaxOrdinal: native.edgeMaxOrdinal,
+                dmaMaxOrdinal: native.dmaMaxOrdinal,
             };
         },
         coveragefrontierstatus() { return { loaded: frontierFixture !== null }; },
+        resetcoverageactivity() {
+            native.instructionHits.clear();
+            native.edgeHits.clear();
+            native.dmaHits.clear();
+            native.contextRecords = [];
+            native.contextNextOrder = 1;
+            native.pendingContext = null;
+            return true;
+        },
+        armcoveragecontext(markerId, beforeCount, afterCount) {
+            if (native.pendingContext) throw new Error('context already pending');
+            native.pendingContext = {
+                markerId, beforeCount: Math.min(beforeCount, native.contextRecords.length),
+                afterCount, afterRemaining: afterCount,
+                records: native.contextRecords.slice(-beforeCount).map((record) =>
+                    Object.assign({}, record, { side: 'before' })),
+            };
+            return { markerId, beforeRequested: beforeCount, afterRequested: afterCount, armed: true };
+        },
+        draincoverageactivity() {
+            const result = {
+                formatVersion: 4,
+                identity: frontierFixture.identity,
+                instructionMaxOrdinal: native.instructionMaxOrdinal,
+                instructionHitCount: native.instructionHits.size,
+                instructionHitBitmap: activityBitmap(
+                    native.instructionHits, native.instructionMaxOrdinal),
+                edgeMaxOrdinal: native.edgeMaxOrdinal,
+                edgeHitCount: native.edgeHits.size,
+                edgeHitBitmap: activityBitmap(native.edgeHits, native.edgeMaxOrdinal),
+                dmaMaxOrdinal: native.dmaMaxOrdinal,
+                dmaHitCount: native.dmaHits.size,
+                dmaHitBitmap: activityBitmap(native.dmaHits, native.dmaMaxOrdinal),
+            };
+            native.instructionHits.clear();
+            native.edgeHits.clear();
+            native.dmaHits.clear();
+            return result;
+        },
         remove(id) {
             for (const map of Object.values(callbacks)) map.delete(id);
         },
@@ -157,15 +225,49 @@ function fireSnapshot(pc = 0x80001000) {
 }
 function emitExec(pc, opcode, page, generation) {
     const current = { pc, opcode, page, generation, physical: page + (pc & 0xFFF) };
-    const newInstruction = !native.instructions.has(instructionKey(current.physical, opcode));
+    const contextRecord = {
+        localOrder: native.contextNextOrder++, frame: 41, pc, opcode,
+        physicalAddress: page <= 0x3FF000 ? current.physical : null,
+        previousValid: nativePrevious !== null,
+        previousPc: nativePrevious ? nativePrevious.pc : 0,
+        previousOpcode: nativePrevious ? nativePrevious.opcode : 0,
+        previousPhysicalAddress: nativePrevious && nativePrevious.page <= 0x3FF000 ?
+            nativePrevious.physical : null,
+        side: 'after',
+    };
+    native.contextRecords.push(contextRecord);
+    if (native.contextRecords.length > 32768) native.contextRecords.shift();
+    let readyContext = null;
+    if (native.pendingContext) {
+        native.pendingContext.records.push(contextRecord);
+        native.pendingContext.afterRemaining -= 1;
+        if (native.pendingContext.afterRemaining === 0) {
+            readyContext = {
+                markerId: native.pendingContext.markerId,
+                beforeCount: native.pendingContext.beforeCount,
+                afterCount: native.pendingContext.afterCount,
+                requestedAfterCount: native.pendingContext.afterCount,
+                records: native.pendingContext.records,
+            };
+            native.pendingContext = null;
+        }
+    }
+    const currentKey = instructionKey(current.physical, opcode);
+    const newInstruction = !native.instructions.has(currentKey);
+    if (!newInstruction && native.instructionOrdinals.has(currentKey)) {
+        native.instructionHits.add(native.instructionOrdinals.get(currentKey));
+    }
     if (newInstruction) native.instructions.add(instructionKey(current.physical, opcode));
     let newEdge = false;
     if (nativePrevious && nativePrevious.physical < RDRAM_SIZE) {
         const key = edgeKey(nativePrevious, current);
         newEdge = !native.edges.has(key);
+        if (!newEdge && native.edgeOrdinals.has(key)) {
+            native.edgeHits.add(native.edgeOrdinals.get(key));
+        }
         if (newEdge) native.edges.add(key);
     }
-    if (newInstruction || newEdge) {
+    if (newInstruction || newEdge || readyContext) {
         for (const item of callbacks.execFrontier.values()) {
             if (!item.target || (pc >= item.target.start && pc <= item.target.end)) {
                 item.callback({
@@ -176,6 +278,8 @@ function emitExec(pc, opcode, page, generation) {
                     previousPagePhysicalAddress: nativePrevious ? nativePrevious.page : 0,
                     previousPageGeneration: nativePrevious ? nativePrevious.generation : 0,
                     newInstruction, newEdge,
+                    contextMarkerReady: readyContext !== null,
+                    executionContext: readyContext,
                 });
                 break;
             }
@@ -186,7 +290,10 @@ function emitExec(pc, opcode, page, generation) {
 function emitDma(source, destination, bytes) {
     if (destination >= RDRAM_SIZE || destination + bytes.length > RDRAM_SIZE) return false;
     const key = dmaKey(source, destination, bytes);
-    if (native.dma.has(key)) return false;
+    if (native.dma.has(key)) {
+        if (native.dmaOrdinals.has(key)) native.dmaHits.add(native.dmaOrdinals.get(key));
+        return false;
+    }
     native.dma.set(key, true);
     const data = Uint8Array.from(bytes);
     for (const callback of callbacks.dma.values()) {
@@ -205,10 +312,11 @@ function canonicalFactCount(events) {
 
 const ping = command('ping');
 const initial = command('status');
-if (ping.version !== '0.12.0' || ping.frontierFormatVersion !== 3 ||
+if (ping.version !== '0.13.0' || ping.frontierFormatVersion !== 4 ||
     ping.rdramSize !== ALLOCATED_RDRAM_SIZE || ping.captureRdramSize !== RDRAM_SIZE ||
     initial.capture.enabled ||
-    !ping.capabilities.includes('native-persistent-novelty-frontier-v3')) {
+    !ping.capabilities.includes('native-persistent-novelty-frontier-v4') ||
+    !ping.capabilities.includes('stop-time-known-activity-bitmaps')) {
     throw new Error('protocol identity mismatch');
 }
 
@@ -247,6 +355,24 @@ const repeated = command('drain 32');
 const repeatedCoverage = repeated.events.filter((event) => event.kind === 'exec-coverage');
 if (repeatedCoverage.length !== 0) throw new Error('known execution crossed into JavaScript');
 
+command('context marker SESSION-MARKER 7 2 2');
+let duplicateMarkerRejected = false;
+try {
+    command('context marker SESSION-MARKER 7 2 2');
+} catch (error) {
+    duplicateMarkerRejected = /already pending/.test(String(error));
+}
+if (!duplicateMarkerRejected) throw new Error('duplicate pending marker did not fail closed');
+emitExec(b.pc, b.opcode, b.page, 77);
+emitExec(a.pc, a.opcode, a.page, 77);
+const markerContextEvents = command('drain 8').events.filter(
+    (event) => event.kind === 'marker-execution-context');
+if (markerContextEvents.length !== 1 || markerContextEvents[0].beforeCount !== 2 ||
+    markerContextEvents[0].afterCount !== 2 ||
+    markerContextEvents[0].markerSessionId !== 'SESSION-MARKER') {
+    throw new Error('bounded native marker context did not cross the novelty filter');
+}
+
 emitExec(0x80401000, 0x11111111, 0x401000, 1);
 emitExec(a.pc, a.opcode, a.page, 79);
 const upperMemoryDrain = command('drain 8').events.filter((event) => event.kind === 'exec-coverage');
@@ -261,9 +387,13 @@ emitExec(0x80003000, a.opcode, 0x3000, 1);
 emitExec(a.pc, 0x0C000051, a.page, 81);
 emitExec(a.pc, a.opcode, 0xFFFFFFFF, undefined);
 command('capture off');
-const noveltyCoverage = command('drain 64').events.filter((event) => event.kind === 'exec-coverage');
+const noveltyEvents = command('drain 64').events;
+const noveltyCoverage = noveltyEvents.filter((event) => event.kind === 'exec-coverage');
+const activityEvents = noveltyEvents.filter((event) => event.kind === 'known-activity');
 if (noveltyCoverage.length !== 6 ||
-    !noveltyCoverage.some((event) => event.noveltyDecision.startsWith('unresolved-'))) {
+    !noveltyCoverage.some((event) => event.noveltyDecision.startsWith('unresolved-')) ||
+    activityEvents.length !== 1 || activityEvents[0].instructionHitCount < 2 ||
+    activityEvents[0].edgeHitCount < 1) {
     throw new Error('new tail/caller/placement/change fallback regressed: ' +
         noveltyCoverage.length + ' ' + JSON.stringify(noveltyCoverage));
 }
@@ -355,4 +485,12 @@ process.stdout.write(JSON.stringify({
     coldBootBaselineFirst: true,
     wrongRomRejected: true,
     observationOnlyCapture: true,
+    stopTimeActivitySummaries: activityEvents.length,
+    knownActivityBitmapBytes: activityEvents.reduce((total, event) => total +
+        event.instructionHitBitmapHex.length / 2 +
+        event.edgeHitBitmapHex.length / 2 +
+        event.dmaHitBitmapHex.length / 2, 0),
+    knownActivityFactHits: activityEvents.reduce((total, event) => total +
+        event.instructionHitCount + event.edgeHitCount + event.dmaHitCount, 0),
+    markerContextWindows: markerContextEvents.length,
 }));

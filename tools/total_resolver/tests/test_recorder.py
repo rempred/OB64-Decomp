@@ -19,7 +19,12 @@ from tools.total_resolver.pj64_client import (
     MemoryFingerprint,
     MemoryFingerprintBatch,
 )
-from tools.total_resolver.protocol import BRIDGE_PROTOCOL_VERSION, BridgeHandshake, BridgeProtocolError
+from tools.total_resolver.protocol import (
+    BRIDGE_PROTOCOL_VERSION,
+    FRONTIER_FORMAT_VERSION,
+    BridgeHandshake,
+    BridgeProtocolError,
+)
 from tools.total_resolver.recorder import (
     Pj64CaptureRecorder,
     RecorderClock,
@@ -66,6 +71,8 @@ class FakeClient:
         self.event_batches: list[dict[str, Any]] = []
         self.memory_blocks: dict[tuple[int, int], bytes] = {}
         self.baseline: BaselineSnapshot | None = None
+        self.frontier_identity: str | None = None
+        self.frontier_max_ordinals = (0, 0, 0)
 
     def connect(self) -> FakeClient:
         self.commands.append("connect")
@@ -164,6 +171,12 @@ class FakeClient:
 
     def load_novelty_frontier(self, frontier: Any) -> dict[str, Any]:
         self.commands.append("frontier load")
+        self.frontier_identity = frontier.identity
+        self.frontier_max_ordinals = (
+            max((item.fact_ordinal for item in frontier.instructions), default=0),
+            max((item.fact_ordinal for item in frontier.edges), default=0),
+            max((item.fact_ordinal for item in frontier.dma), default=0),
+        )
         return {
             "formatVersion": frontier.format_version,
             "committed": True,
@@ -176,6 +189,7 @@ class FakeClient:
 
     def capture_start(self, frontier_identity: str) -> dict[str, Any]:
         self.commands.append("capture on")
+        self.frontier_identity = frontier_identity
         self.capture_enabled = True
         for batch in self.event_batches:
             batch["nextEventSequence"] += 1
@@ -245,6 +259,48 @@ class FakeClient:
 
     def capture_stop(self) -> dict[str, Any]:
         self.commands.append("capture off")
+        next_sequence = max(
+            [getattr(self, "next_event_sequence", 1)]
+            + [int(batch["nextEventSequence"]) for batch in self.event_batches]
+        )
+        instruction_max, edge_max, dma_max = self.frontier_max_ordinals
+        self.event_batches.append(
+            {
+                "count": 1,
+                "remaining": 0,
+                "dropped": 0,
+                "droppedRanges": [],
+                "bridgeEpoch": self.epoch,
+                "queueModel": "unified",
+                "nextEventSequence": next_sequence + 1,
+                "events": [
+                    {
+                        "kind": "known-activity",
+                        "bridgeEpoch": self.epoch,
+                        "bridgeSequence": next_sequence,
+                        "bridgeStream": "trace",
+                        "frontierFormatVersion": FRONTIER_FORMAT_VERSION,
+                        "frontierIdentity": self.frontier_identity,
+                        "instructionMaxOrdinal": instruction_max,
+                        "instructionHitCount": 0,
+                        "instructionHitBitmapEncoding": (
+                            "ordinal-minus-one-lsb0-hex-uppercase"
+                        ),
+                        "instructionHitBitmapHex": "00" * ((instruction_max + 7) // 8),
+                        "edgeMaxOrdinal": edge_max,
+                        "edgeHitCount": 0,
+                        "edgeHitBitmapEncoding": "ordinal-minus-one-lsb0-hex-uppercase",
+                        "edgeHitBitmapHex": "00" * ((edge_max + 7) // 8),
+                        "dmaMaxOrdinal": dma_max,
+                        "dmaHitCount": 0,
+                        "dmaHitBitmapEncoding": "ordinal-minus-one-lsb0-hex-uppercase",
+                        "dmaHitBitmapHex": "00" * ((dma_max + 7) // 8),
+                        "capturePhase": "session-stop-native-hit-bitmap",
+                        "orderingClaim": "session-membership-only-not-event-order",
+                    }
+                ],
+            }
+        )
         self.capture_enabled = False
         return {
             "capture": {

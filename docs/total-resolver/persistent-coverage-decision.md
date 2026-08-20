@@ -1,7 +1,7 @@
 # Persistent structural delta capture
 
-Status: **implemented and selected**
-Scope: Total Resolver knowledge schema 2, frontier format 3, Project64 bridge protocol 0.12.0
+Status: **implemented, independently rebuilt, and selected**
+Scope: Total Resolver knowledge schema 3, frontier format 4, Project64 bridge protocol 0.13.0
 
 ## Decision
 
@@ -18,6 +18,10 @@ Page generation is contextual. It is attached to an emitted instruction or edge 
 generation change cannot create another instruction, edge, or call when the address/opcode keys
 are already known. Historical full-page blobs remain in their original raw sessions; schema 2
 does not copy them into structural knowledge.
+
+Schema 3 preserves schema 2's exact machine-fact foundation and adds compact context and candidate
+indexes. The persistent knowledge database itself is the default query authority; a stale
+generated Resolver is never an implicit dynamic source.
 
 This corrects the observed menu inflation. The protocol 0.9.0 run created 34,832 apparent new
 instructions because 792 changed full-page images owned the instruction identity. Under schema 2,
@@ -59,6 +63,27 @@ Opcode equality substantially strengthens a mapping and rejects overlay-slot mis
 single common opcode is not, by itself, semantic proof. Contemporaneous exact DMA placement remains
 stronger than a nominal match, and all dynamic labels remain live-unreviewed.
 
+When a new function placement, region lifetime, generation witness, or mapped edge arrives,
+ingestion queues only the overlapping physical range for candidate recalculation. An exact opcode
+match against a global placement is retained as a byte-confirmed global candidate. Same-session
+residency can strengthen it to a contemporaneous candidate. Only an unambiguous contemporaneous
+exact-byte result is a uniquely resolved live mapping; competing results remain explicitly
+ambiguous and never auto-promote.
+
+## Read-only query authority
+
+The agent query path opens selected persistent knowledge, frozen static functions, frozen resource
+chains, and the frozen field product through read-only SQLite connections with `query_only` set.
+Frozen immutable sources are opened immutable. Each response includes a source/freshness manifest.
+Generated Resolver products require an explicit `--legacy-resolver` option, and database-schema
+confusion fails closed.
+
+Schema 3 adds indexed session/frame/sequence witnesses for instructions and edges, region lifetime
+intervals, sampled PCs, semantic markers, typed unresolved fields, source selection identity, and
+candidate evidence. Default output is bounded. Unresolved results explain the exact fact,
+candidates, basis, contradiction or missing evidence, adjacent mapped edges, and next useful
+observation.
+
 ## Hashing policy
 
 Cryptographic capture integrity is not a persistent session/knowledge acceptance class.
@@ -78,11 +103,13 @@ Cryptographic capture integrity is not a persistent session/knowledge acceptance
 
 ## Frontier and hot path
 
-Frontier format 3 is one validated binary image containing:
+Frontier format 4 is one validated binary image containing:
 
-- fixed-width exact instruction records containing physical address and opcode;
-- fixed-width exact edge records containing both exact endpoint instructions;
-- exact-span DMA metadata plus the complete event-time destination bytes; and
+- fixed-width exact instruction records containing stable fact ordinal, physical address, and
+  opcode;
+- fixed-width exact edge records containing stable fact ordinal and both exact endpoint
+  instructions;
+- exact-span DMA metadata, stable canonical ordinal, and complete event-time destination bytes; and
 - an opaque database revision token, exact lower-4-MiB capture-window contract, and required ROM
   identity.
 
@@ -111,6 +138,16 @@ Queue insertion remains bounded and ordered by one bridge-side monotonic sequenc
 is represented by explicit dropped sequence ranges. Native DMA filtering includes event-time
 destination bytes in its exact identity; incomplete or ambiguous identities fall back to capture.
 Recorder time and frame number remain context only.
+
+Native Project64 marks the stable ordinals of known instructions, edges, and DMA facts that occur.
+Capture stop sends one compact bitmap for each lane. The bitmaps restore session membership without
+restoring repeated event streams and make no event-order claim. Native predecessor tracking still
+advances through every silent known instruction, so new tails and new callers remain discoverable.
+
+An optional 32,768-record native execution-context ring keeps exact PCs and predecessor edges in
+emulator memory. A human marker requests a bounded before/after window of at most 4,096 records per
+side; only that window is emitted. Its local order and frames are contextual, and an early stop
+records an explicit incomplete window.
 
 ## Observation-only authority
 
@@ -141,24 +178,17 @@ canonical equivalence.
 
 ## Migration result
 
-The selected six-session database was copied beside its source and upgraded from frontier format
-2 to format 3. The migration changed only frontier/protocol metadata, preserved every fact row,
-passed independent verification, and was selected only afterward. The former selected database
-remains unchanged.
+The ten-session schema-2 database remained selected while schema 3 was replayed beside it. Exact
+cross-schema comparison preserved every canonical schema-2 row: 293,275 instructions, 316,915
+edges, 222,319 DMA placements, 9,277 calls, 7,519 function placements, controller context, and all
+ten stable ledger identities.
 
-Schema 2 was built beside the schema-1 database, then selected only after verification:
-
-| Measure | Schema 1 page-owned model | Schema 2 structural model |
-|---|---:|---:|
-| Sessions | 3 | 3 |
-| Executable owners/pages | 5,260 page contents | 165 physical pages |
-| Instructions | 278,340 | 73,725 |
-| Edges | 319,569 | 78,300 |
-| Calls | 31,283 | 2,562 |
-| DMA placements | 18,095 | 18,095 |
-
-The old database, raw sessions, and historical products were not overwritten. A clean three-session
-ledger rebuild is exactly row-equivalent to the incrementally built schema-2 database.
+The schema-3 copy was then upgraded to frontier format 4 and protocol 0.13. A separate clean
+ten-session ledger replay was exactly row-equivalent across every schema-3 table, including
+570,445 instruction witnesses, 329,929 edge witnesses, 549,390 residency intervals, 21,120 sampled
+PCs, 81,762 typed unresolved rows, and 607,040 candidate-evidence rows. Only after both independent
+verification and the 108-test suite passed was schema 3 selected. The schema-2 database, raw
+sessions, and historical products remain unchanged beside it.
 
 ## Intentionally contextual or uncertain
 

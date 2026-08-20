@@ -1,212 +1,180 @@
 # Total Resolver R3 implementation status
 
-Status: **Protocol 0.12 native structural/DMA delta and pre-ROM capture are implemented**
-Updated: 2026-08-19
+Status: **Schema 3 and protocol 0.13 are implemented, verified, and selected**
+Updated: 2026-08-20
 
-This page records the current implementation boundary. It does not claim that all game paths have
-been observed or that a machine transition proves a semantic interpretation.
+This page records the current implementation boundary. Total Resolver is a practical decompilation
+accelerator: it preserves exact machine structure conservatively, exposes useful candidates, and
+states uncertainty without treating runtime context as accepted source structure.
 
-## Current persistent workflow
+## Selected knowledge
 
-One selected SQLite database accumulates unique machine facts across sessions. An active run first
-writes an isolated staging database. Normal stop drains and closes the stage, verifies its ROM,
-protocol, bridge epoch, sequence continuity, dropped ranges, and required event-time DMA bytes,
-derives a delta outside the knowledge transaction, then atomically merges facts, affected
-materialized rows, the ledger entry, and the next frontier.
+The selected database is the ignored runtime product
+`build/total-resolver/knowledge/total-resolver-v3.sqlite`. It contains all ten successfully ingested
+historical sessions and uses knowledge schema 3, frontier format 4, and active bridge protocol
+0.13.0.
 
-Normal capture disables the duplicate NDJSON event mirror. Finalization no longer computes a
-logical hash over every staging table, hashes the entire SQLite file, or builds the raw timeline
-twice. A small context manifest is written without capture/file/mirror digests. Validation reads
-canonical payloads, exact referenced bytes, machine ordering, and required metadata directly from
-SQLite.
+| Persistent row class | Count |
+|---|---:|
+| Sessions | 10 |
+| Exact instructions | 293,275 |
+| Exact edges | 316,915 |
+| Derived exact calls | 9,277 |
+| DMA placements | 222,319 |
+| Function placements | 7,519 |
+| Controller transitions | 5,956 |
+| Instruction context witnesses | 570,445 |
+| Edge context witnesses | 329,929 |
+| Residency/region lifetime intervals | 549,390 |
+| Periodic sampled PCs | 21,120 |
+| Typed unresolved rows | 81,762 |
+| Candidate-evidence rows | 607,040 |
 
-Schema 2 stores:
+The candidate rows cover 51,995 exact instructions and 52,469 distinct
+instruction/function/ROM-offset candidate identities. Their evidence states are:
 
-- physical-address plus exact-opcode instruction facts;
-- exact source/destination instruction edges and calls derived from those edges;
-- compact page and instruction/edge generation witnesses as session context;
-- DMA placements with exact event-time destination bytes and per-session witnesses;
-- effective P1 input transitions tied to the session;
-- unresolved observations when placement/generation cannot be established;
-- incremental overlay-atlas, runtime-provenance, and resolver function materializations; and
-- a successful-ingestion ledger and checkpointed frontier.
+| Candidate state | Rows |
+|---|---:|
+| Byte-confirmed global candidate | 72,451 |
+| Contemporaneous placement candidate | 175,481 |
+| Uniquely resolved live mapping evidence | 352,225 |
+| Ambiguous/conflicting mapping | 6,883 |
 
-Known executable structure is silent on replay. Whole mutable pages no longer own instructions and
-are neither read nor emitted by the protocol 0.12 execution callback. The native predecessor
-tracker still observes known prefixes, so a later new tail or new caller edge is retained.
+Candidate rows do not rewrite exact instruction facts. The selected database has 241,291 mapped
+instruction facts, 51,984 unmapped facts, 302 ambiguous instructions, zero opcode mismatches, and
+zero queued candidate recalculation ranges.
 
-Capture is restricted to vanilla OB64's lower 4 MiB of RDRAM; Project64 may allocate either 4 or
-8 MiB. The upper 4 MiB is ignored. Project64 takes one atomic native 4 MiB copy before the first
-captured instruction. Complete static-function byte matches from that
-census add resident placement evidence for code that has not executed and was not observed in a
-DMA. Census placement never becomes an execution or loader claim.
+## Truthful agent queries
 
-A power-on session can now be armed before Project64 has a loaded ROM or allocated N64 RDRAM.
-Project64 calls the bridge synchronously at `EMU_STARTED`, after fresh RDRAM exists and before
-`ExecuteInterpret()`. The bridge validates the expected Rev 0 CRC and interpreter core, installs
-the snapshot/execution/input/DMA hooks, and makes the 4 MiB snapshot the first ordered event. The
-worker then verifies the exact normalized ROM file identity before the stage can be accepted.
+`explain`, `search`, `coverage`, and `unresolved` now open one read-only `ResolverContext`. Selected
+persistent knowledge is the dynamic authority. Frozen static, resource, and field products remain
+separate read-only evidence lanes. SQLite connections use `mode=ro`, `PRAGMA query_only=ON`, and
+immutable mode for frozen inputs.
 
-## Identity and indexing policy
+Every result contains a source/freshness manifest with the selected database ID, schema, ledger
+ordinal, frontier identity, session count, review boundary, and frozen-source identities validated
+when the query context opens.
+A historical generated Resolver is available only through an explicit `--legacy-resolver PATH`;
+passing a knowledge database as a Resolver or a Resolver as knowledge fails closed.
 
-Cryptographic capture integrity is not a persistent session/knowledge acceptance class.
-Executable keys are compared directly:
+Default output is bounded. `explain --include SECTION` exposes requested detail, while `search`
+uses `--limit` and `--cursor`. Supported search dimensions include partial function name, ROM/live/
+physical address, exact opcode/bytes, session/frame/bridge-sequence range, incoming/outgoing edge,
+mapping status, unresolved kind, semantic marker, native marker execution context, and controller
+context.
 
-- instruction: physical instruction address and four opcode bytes;
-- edge: exact source instruction, exact destination instruction, and edge kind;
-- call: exact call edge plus uniquely resolved function endpoints.
+Unresolved execution diagnostics return the exact instruction fact, candidate mappings, the basis
+for each candidate, contradictions or missing contemporaneous evidence, adjacent mapped edges, and
+the next observation needed for promotion. The previously stranded Block-like observation at
+physical `0x001E8400`, opcode `0x24070002`, session
+`20260820T010432.018225Z-d237a550`, frame 5886, bridge sequence 7271 is now discoverable through
+`search` alone. It reports exact instruction 268,993, incoming edge 290,088, and the byte-confirmed
+global candidate `func_0022b1f4` at ROM `0x0022B6D0`, while correctly withholding live promotion
+because no contemporaneous residency interval covers that observation.
 
-Large DMA blobs use CRC32 only as a candidate-bucket accelerator, followed by exact BLOB equality.
-Forced collisions cannot merge content. The canonical ROM SHA-256 remains the repository-required
-Rev 0 target identity. Direct canonical-row comparison, not a logical hash, is the rebuild oracle.
+## Schema 3 context and reconciliation
 
-Page generation is context only. The same address/opcode in another generation does not create a
-new structural fact. A missing placement or generation is captured conservatively as unresolved
-instead of being treated as known.
+Schema 3 preserves the schema-2 machine-fact foundation and adds:
 
-Runtime instruction attribution is independently byte-confirmed. A nominal-VRAM or
-contemporaneous-DMA candidate may set an instruction's ROM offset/function only when the observed
-opcode equals all four bytes at that ROM offset. Address-only nominal matches remain candidates;
-mismatches retain the exact instruction and compact unresolved context. Ingestion repeats the byte
-check, and database verification checks every mapped row and function range.
+- source registry and selected-source identity;
+- session catalog and ingestion context summaries;
+- instruction and edge frame/sequence witnesses;
+- residency/region lifetime intervals;
+- periodic sampled-PC context;
+- semantic markers and notes;
+- typed indexed unresolved fields;
+- exact candidate mapping evidence; and
+- an affected-range candidate recalculation queue.
 
-## Observation-only boundary
+Ingestion queues only ranges touched by new placements, lifetimes, generation witnesses, or mapped
+edges. Exact opcode equality against a global placement creates a searchable global candidate.
+Promotion still requires unambiguous contemporaneous exact-byte evidence. Ambiguous candidates do
+not auto-promote.
 
-The recorder receives a narrow ObservationOnlyPj64Client facade. The facade exposes observation
-and recorder-owned instrumentation only. It does not expose RAM writes, controller injection,
-pause/resume, stepping, state load/save, ROM lifecycle, global clear, or memory dump commands.
-Captured knowledge and byte evidence are passed only through this facade during recorder runs.
+The ten historical sessions report context completeness as `emitted-events-and-saved-samples`.
+Events suppressed as already known under older novelty frontiers cannot be reconstructed. This is
+an explicit historical limitation; emitted events, saved samples, controller transitions, and
+recoverable residency context were retained.
 
-The broader Project64 bridge still supports explicitly invoked research controls for tools outside
-the recorder. Tests verify that those methods are absent from the recorder facade and that recorder
-source never invokes mutation commands.
+## Protocol 0.13 future-session context
 
-## Real migration result
+Frontier format 4 assigns stable fact ordinals to known instruction, edge, and canonical DMA facts.
+Native Project64 continues exact in-memory novelty filtering and predecessor tracking. Known facts
+set in-memory hit bits. Capture stop emits exactly one instruction/edge/DMA bitmap summary, allowing
+agents to answer whether already-known structure occurred in a session without restoring the
+repeated instruction stream.
 
-The three previously accepted valid sessions were replayed into
-build/total-resolver/knowledge/total-resolver-v2.sqlite beside the schema-1 database. Raw sessions
-and historical products were not changed. The schema-2 database was selected only after its
-checkpoint and all materializations verified.
+New instructions, edges, callers, tails, changed opcodes, unresolved placements, and changed DMA
+bytes continue through the ordered novelty queue unchanged. DMA equality still includes the exact
+event-time destination bytes. Queue loss remains explicit sequence ranges.
 
-| Measure | Schema 1 page-owned model | Schema 2 structural model |
-|---|---:|---:|
-| Sessions | 3 | 3 |
-| Executable owners/pages | 5,260 exact page contents | 165 physical pages |
-| Instructions | 278,340 | 73,725 |
-| Edges | 319,569 | 78,300 |
-| Calls | 31,283 | 2,562 |
-| DMA placements | 18,095 | 18,095 |
-| Controller transitions | 487 | 487 |
+An optional native ring retains 32,768 recent exact execution records in emulator memory. A human
+marker can save at most 4,096 records before and 4,096 after the marker. Only the requested window
+crosses the bridge. Local execution order and frames are context, not canonical bridge order; a
+stop before the after-window fills produces an explicit incomplete record.
 
-The former repeated-menu protocol 0.9 session now contributes 1,712 new instructions and 1,915
-new edges, exactly matching the address/opcode diagnostic, and contributes zero new physical
-pages. Under schema 1 it appeared to add 34,832 instructions because 792 changing full-page images
-were treated as distinct code owners.
+The verified binary and protocol-0.13 bridge are deployed to the dedicated port-64656 runtime as
+`Project64-TR-FPS-HotExact.exe` and `Scripts/000_ob64_pj64_bridge.js`. Project64 was not launched.
 
-The deterministic repair command replayed all three ledger entries into a separate database.
-Every canonical table was exactly row-equivalent to the incremental database. Both databases pass
-independent materialization, frontier, opcode-byte, foreign-key, and SQLite health checks.
+## Migration and equivalence
 
-After two protocol 0.10 captures, the five-session database was replayed beside the selected copy
-under the byte-confirmed mapping rule. The former copy contained 22,039 instruction mappings whose
-stored opcode did not equal the proposed ROM offset. The repaired database retains the same 94,053
-instruction facts, 100,131 edges, 171 physical pages, 29,065 DMA placements, five-session ledger,
-and exact frontier identity. It contains 71,702 byte-confirmed mapped instructions with zero opcode
-or function-range mismatches; unsupported derived calls decreased from 3,308 to 2,719. The 26,303
-unresolved rows are compact per-exact-issue representatives rather than 262,930 repeated witnesses.
-A second clean ledger replay was directly row-equivalent and the repaired database was selected.
-The former database and repair outputs remain beside it.
+Schema 3 was built beside the selected schema-2 database by replaying all ten declared ledger
+sessions. The prior database and historical products were not overwritten. Cross-schema comparison
+found every schema-2 canonical fact row identical; only schema/protocol/frontier-format metadata
+changed.
 
-## Capture-volume and startup measurements
+A separate `total-resolver-v3-oracle.sqlite` was then rebuilt from the ten-session ledger. Direct
+exact-row comparison reported no mismatched tables, including all schema-3 context, unresolved,
+candidate, materialization, and activity tables. Both databases independently pass SQLite health,
+foreign-key, opcode, mapping, frontier, materialization, candidate, context, and activity checks.
 
-The production bridge is exercised inside a Node fake-emulator harness; this never launches or
-controls Project64.
+## Capture-volume and lookup measurements
 
-| Measurement | First capture | Exact replay |
+The deterministic benchmark executes the production bridge in a fake emulator and never launches
+or controls Project64.
+
+| Measurement | First path | Exact replay |
 |---|---:|---:|
 | Canonical instruction/edge facts | 3 | 0 |
-| Structural trace events | 2 | 0 |
-| Full 4 KiB reads on execution path | 0 | 0 |
-| Exact known DMA events | n/a | 0 |
+| Structural trace events crossing JavaScript | 2 | 0 |
+| Full 4 KiB reads on the execution path | 0 | 0 |
+| Exact known DMA events crossing JavaScript | — | 0 |
 
-The startup census is one 4,194,304-byte staging payload by design; it replaces an incomplete
-40 KiB safety-page census and is placement evidence rather than a repeated execution stream.
+The replay reduction is 100% for both canonical structural facts and structural trace events in
+the fixture. Four known fact hits were retained in one stop-time summary using two bitmap bytes. A
+changed DMA still emitted one exact event. A new tail, new caller, relocation, changed opcode, and
+ambiguous fallback all remained visible. The latest complete fake-emulator run took 0.727 seconds
+on this host; this is not an FPS claim.
 
-The selected six-session database exports 241,862 instructions, 260,557 edges, and 141,683 exact
-DMA facts into a 129,815,139-byte native frontier. On the measured host, SQLite-to-memory export
-took 1.676 seconds and atomic binary writing took 0.423 seconds. Both are capture-start work, not
-per-event emulator-thread work.
+With one read-only context already open, an exact physical/opcode lookup measured 1.16 ms and a
+bounded common-opcode lookup measured 0.54 ms. Opening the context and revalidating all three frozen
+source identities took 2.85 seconds. Query plans use the opcode, session/frame/sequence, unresolved,
+and marker-context indexes, so lookup work does not scan linearly with total history.
 
-The same harness retains a known-prefix/new-tail transition, a new caller into a known
-destination, relocated identical code, a changed opcode at a reused address, and missing-generation
-fallback. It also verifies unified event order, event-time DMA bytes, explicit dropped ranges, and
-protocol identity.
+A real gameplay FPS comparison remains intentionally unperformed because it requires Joe to launch
+and play Project64. No capture was started during this correction.
 
-The current protocol 0.12 harness also proves that an exact known DMA produces zero bridge events,
-while the same transfer metadata with changed destination bytes produces one event containing
-those event-time bytes. With Project64 configured for an 8 MiB allocation, the harness additionally
-proves that execution and DMA activity in the upper 4 MiB produces zero bridge events while the
-atomic baseline remains exactly 4 MiB. The Win32 Release native fork compiles, passes its
-clang-format gate, and links in the isolated runtime as
-`Project64-TotalResolver-4MiBWindow.exe`. A real FPS comparison remains deliberately pending: it
-requires Joe to start that binary and perform the same controlled play path. No emulator was
-launched or controlled for this work.
+## Verification
 
-## Automated acceptance coverage
+- 108 Python/Node Total Resolver tests pass.
+- The standalone native exact-novelty test passes with 3,018 instructions and 3,003 edges in its
+  stress fixture.
+- Project64 Release|Win32 compiles, links, and passes its clang-format gate.
+- `doctor` passes the active bridge, native source-set, native binary, repository, and configured
+  source-freeze checks; the missing optional R2 Resolver database is `SKIP`. Opening the default
+  read-only query context separately validates all three frozen source identities.
+- The selected knowledge database passes all independent verification checks.
+- The ordinary exact-ROM build remains independent of Project64.
 
-The test suite proves:
+## Intentionally contextual or uncertain
 
-- exact session replay is idempotent and emits zero already-known structural facts;
-- page/generation churn does not multiply executable facts;
-- known prefix plus new tail and new caller-to-known-callee edges survive;
-- identical opcode bytes at different physical placements stay distinct;
-- changed opcodes at a reused address stay distinct;
-- opcode-mismatched nominal/ROM mappings fail before ingestion and fail database verification;
-- forced fingerprint collisions require exact byte comparison;
-- ambiguous placement/generation falls back to capture/unresolved storage;
-- interrupted ingestion rolls back completely;
-- queue overflow has explicit dropped sequence ranges;
-- older protocol clients and capture windows other than the lower 4 MiB fail closed against
-  protocol 0.12; 4 and 8 MiB Project64 allocations are accepted after ROM load;
-- powered-off capture accepts only zero allocated RDRAM with no loaded ROM, installs all hooks
-  before the first interpreter instruction, and rejects a wrong ROM before capture begins;
-- incremental materializations equal a direct exact-row full rebuild;
-- controller transitions retain session context;
-- the recorder facade does not expose mutation methods; and
-- Total Resolver tests and the ordinary exact-ROM workflow have no Project64 dependency.
-
-The current host invocation of `node tools/verify.js` reached the ordinary workflow without
-Project64, then failed closed at its independent pinned-host gate: Windows PowerShell is now
-5.1.26100.9168 rather than the recorded 5.1.26100.8972, and its automation assembly is GAC-loaded
-rather than present beside `powershell.exe`. No ROM build result is claimed from that invocation;
-the Total Resolver changes do not touch the build/toolchain path.
-
-## Historical products
-
-Frozen pre-R3 overlay/runtime atlases and previously generated accepted/candidate products remain
-historical/reference inputs. Schema 2 does not overwrite or silently promote them. The selected
-persistent database is live-unreviewed research knowledge, not accepted source ownership.
-
-## Current limits
-
-- Coverage is incomplete and biased toward paths actually played.
-- Static calls, residency, sampled PCs, exact execution, placement, field candidates, resource
-  ancestry, and human semantics remain different evidence classes.
-- Capture schemas 3 and 4 retain historically named SHA columns and content references for compatibility.
-  Existing candidate references are confirmed by exact bytes. New session manifests contain
-  context only; legacy payload/manifest/file/mirror hash mismatches are diagnostic and cannot reject
-  an otherwise structurally valid session.
-- Controller input and frame/time data are context, not canonical machine ordering.
-- Page generations supplied by native Project64 are contextual observations, not proof that every
-  possible RDRAM writer was observed.
-- DMA ordering alone cannot prove transient destination contents; exact event-time destination
-  bytes therefore remain required.
-- Exact opcode equality rejects false ROM mappings but does not by itself prove human semantics or
-  distinguish every coincidental common instruction; nominal-only matches therefore remain
-  supported live-unreviewed mappings rather than accepted structural ownership.
-- Closed raw sessions are not automatically deleted. The persistent marginal structural delta can
-  approach zero while session context and one ledger entry remain.
-
-No capture is active. A future controlled repeat should begin only after the target screen has
-settled and Joe explicitly says capture is ready, so cold-boot coverage is not mistaken for a menu
-delta.
+- Coverage is incomplete and biased toward played paths.
+- Frames, recorder timestamps, controller transitions, page generations, sampled PCs, and marker
+  ring order remain context rather than canonical machine ordering.
+- Global exact-byte candidates are useful search results, not contemporaneous live mappings.
+- Dynamic rows remain `live-unreviewed`; they do not promote accepted boundaries, ownership,
+  semantic names, or matching-C claims.
+- DMA ordering alone cannot prove transient placement contents; event-time destination bytes remain
+  required.
+- Closed raw staging sessions are retained. Persistent marginal structural growth can approach
+  zero while a session catalog row, compact context, and the stop-time activity bitmap remain.

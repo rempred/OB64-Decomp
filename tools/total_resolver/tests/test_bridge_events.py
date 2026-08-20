@@ -4,7 +4,7 @@ import hashlib
 import unittest
 
 from tools.total_resolver.bridge_events import parse_drain_response
-from tools.total_resolver.protocol import BridgeProtocolError
+from tools.total_resolver.protocol import BridgeProtocolError, FRONTIER_FORMAT_VERSION
 
 
 class BridgeEventTests(unittest.TestCase):
@@ -189,7 +189,7 @@ class BridgeEventTests(unittest.TestCase):
                         "exactInstructionResolved": True,
                         "newInstruction": True,
                         "newEdge": False,
-                        "frontierFormatVersion": 3,
+                        "frontierFormatVersion": FRONTIER_FORMAT_VERSION,
                         "frontierIdentity": self.FRONTIER,
                         "noveltyDecision": "new-instruction",
                         "capturePhase": "pre-execution-callback",
@@ -214,6 +214,81 @@ class BridgeEventTests(unittest.TestCase):
         broken = dict(batch.events[0].payload)
         broken["dedupeDecision"] = "hash-only"
         with self.assertRaisesRegex(BridgeProtocolError, "exact dedupe"):
+            parse_drain_response(self.envelope([broken], nextEventSequence=2))
+
+    def test_activity_and_marker_context_are_bounded_context_not_stream_order(self) -> None:
+        activity = {
+            "kind": "known-activity",
+            "bridgeEpoch": "EPOCH-1",
+            "bridgeSequence": 1,
+            "bridgeStream": "trace",
+            "frontierFormatVersion": FRONTIER_FORMAT_VERSION,
+            "frontierIdentity": self.FRONTIER,
+            "instructionMaxOrdinal": 2,
+            "instructionHitCount": 2,
+            "instructionHitBitmapEncoding": "ordinal-minus-one-lsb0-hex-uppercase",
+            "instructionHitBitmapHex": "03",
+            "edgeMaxOrdinal": 1,
+            "edgeHitCount": 1,
+            "edgeHitBitmapEncoding": "ordinal-minus-one-lsb0-hex-uppercase",
+            "edgeHitBitmapHex": "01",
+            "dmaMaxOrdinal": 0,
+            "dmaHitCount": 0,
+            "dmaHitBitmapEncoding": "ordinal-minus-one-lsb0-hex-uppercase",
+            "dmaHitBitmapHex": "",
+            "capturePhase": "session-stop-native-hit-bitmap",
+            "orderingClaim": "session-membership-only-not-event-order",
+        }
+        marker = {
+            "kind": "marker-execution-context",
+            "bridgeEpoch": "EPOCH-1",
+            "bridgeSequence": 2,
+            "bridgeStream": "trace",
+            "markerSessionId": "SESSION-1",
+            "markerId": 7,
+            "beforeCount": 1,
+            "afterCount": 1,
+            "requestedBeforeCount": 1,
+            "requestedAfterCount": 1,
+            "capturePhase": "native-bounded-marker-window",
+            "orderingClaim": "native-local-order-and-frame-context-only",
+            "records": [
+                {
+                    "localOrder": 10,
+                    "frame": 100,
+                    "pc": "0x80001000",
+                    "opcode": "0x24020001",
+                    "physicalAddress": "0x00001000",
+                    "previousValid": False,
+                    "previousPc": "0x00000000",
+                    "previousOpcode": "0x00000000",
+                    "previousPhysicalAddress": None,
+                    "side": "before",
+                },
+                {
+                    "localOrder": 11,
+                    "frame": 101,
+                    "pc": "0x80001004",
+                    "opcode": "0x24420001",
+                    "physicalAddress": "0x00001004",
+                    "previousValid": True,
+                    "previousPc": "0x80001000",
+                    "previousOpcode": "0x24020001",
+                    "previousPhysicalAddress": "0x00001000",
+                    "side": "after",
+                },
+            ],
+        }
+        batch = parse_drain_response(
+            self.envelope([activity, marker], nextEventSequence=3)
+        )
+        self.assertEqual(
+            [event.event_type for event in batch.events],
+            ["known-activity", "marker-execution-context"],
+        )
+        broken = dict(activity)
+        broken["instructionHitCount"] = 1
+        with self.assertRaisesRegex(BridgeProtocolError, "hit count"):
             parse_drain_response(self.envelope([broken], nextEventSequence=2))
 
 

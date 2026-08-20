@@ -15,9 +15,16 @@ from tools.total_resolver.knowledge import (
     EdgeObservation,
     FunctionPlacementObservation,
     InstructionObservation,
+    KnownActivityObservation,
+    MarkerContextWindowObservation,
+    MarkerExecutionContextRecord,
+    RegionLifetimeObservation,
+    SampledPcObservation,
+    SemanticMarkerObservation,
     SessionDelta,
     SUPPORTED_INGEST_PROTOCOL_VERSIONS,
     UnresolvedKnowledgeObservation,
+    compare_canonical_machine_facts,
     compare_knowledge_databases,
     create_knowledge_database,
     empty_novelty_frontier,
@@ -26,6 +33,12 @@ from tools.total_resolver.knowledge import (
     migrate_frontier_database,
     open_knowledge_database,
     verify_knowledge_database,
+)
+from tools.total_resolver.resolver_context import (
+    ResolverContext,
+    explain_selected,
+    open_explicit_legacy_resolver,
+    search_selected,
 )
 from tools.total_resolver.protocol import BRIDGE_PROTOCOL_VERSION
 from tools.total_resolver.knowledge_ingest import _evidence_grade as ingest_evidence_grade
@@ -126,14 +139,15 @@ class KnowledgeTests(unittest.TestCase):
             connection.commit()
         finally:
             connection.close()
-        destination = self.root / "frontier-v3.sqlite"
+        destination = self.root / "frontier-v4.sqlite"
 
         result = migrate_frontier_database(source, destination)
 
         self.assertEqual(result["fromFrontierFormatVersion"], 2)
-        self.assertEqual(result["toFrontierFormatVersion"], 3)
+        self.assertEqual(result["toFrontierFormatVersion"], 4)
         self.assertEqual(result["factMutation"], "none")
         self.assertEqual(result["verification"]["result"], "PASS")
+        self.assertTrue(compare_canonical_machine_facts(source, destination)["equivalent"])
         source_connection = sqlite3.connect(source)
         destination_connection = sqlite3.connect(destination)
         try:
@@ -141,7 +155,7 @@ class KnowledgeTests(unittest.TestCase):
                 destination_connection.execute(
                     "SELECT value FROM knowledge_meta WHERE key='frontierFormatVersion'"
                 ).fetchone()[0],
-                "3",
+                "4",
             )
             self.assertEqual(
                 destination_connection.execute(
@@ -261,7 +275,7 @@ class KnowledgeTests(unittest.TestCase):
             capture_identity=f"capture:{session_id}",
             raw_manifest_reference=None,
             capture_schema_version=3,
-            protocol_version=BRIDGE_PROTOCOL_VERSION,
+            protocol_version="0.12.0",
             frontier_identity_at_start=empty_novelty_frontier(self.rom_sha256).identity,
             rom_normalized_sha256=self.rom_sha256,
             bridge_epoch="EPOCH-" + session_id,
@@ -339,15 +353,38 @@ class KnowledgeTests(unittest.TestCase):
     def test_accepted_historical_protocols_replay_and_0_7_fails_closed(self) -> None:
         self.assertEqual(
             SUPPORTED_INGEST_PROTOCOL_VERSIONS,
-            ("0.8.0", "0.9.0", "0.10.0", "0.11.0", BRIDGE_PROTOCOL_VERSION),
+            (
+                "0.8.0",
+                "0.9.0",
+                "0.10.0",
+                "0.11.0",
+                "0.12.0",
+                BRIDGE_PROTOCOL_VERSION,
+            ),
         )
         for version in SUPPORTED_INGEST_PROTOCOL_VERSIONS:
             with self.subTest(version=version):
                 database = self.make_knowledge(f"protocol-{version}.sqlite")
-                result = ingest_delta(
-                    database,
-                    replace(self.delta("S1"), protocol_version=version),
-                )
+                delta = replace(self.delta("S1"), protocol_version=version)
+                if version == BRIDGE_PROTOCOL_VERSION:
+                    delta = replace(
+                        delta,
+                        known_activity=KnownActivityObservation(
+                            delta.frontier_identity_at_start,
+                            4,
+                            60,
+                            0,
+                            0,
+                            b"",
+                            0,
+                            0,
+                            b"",
+                            0,
+                            0,
+                            b"",
+                        ),
+                    )
+                result = ingest_delta(database, delta)
                 self.assertEqual(result["action"], "ingested")
 
         database = self.make_knowledge("protocol-0.7.2.sqlite")
@@ -615,6 +652,545 @@ class KnowledgeTests(unittest.TestCase):
         equivalence = compare_knowledge_databases(source, rebuilt)
         self.assertFalse(equivalence["equivalent"])
         self.assertIn("ingestion_ledger", equivalence["mismatchedTables"])
+
+    def test_schema3_retains_context_and_selected_queries_are_immediate_read_only(self) -> None:
+        database = self.make_knowledge("context.sqlite")
+        base = self.delta("CONTEXT")
+        unresolved_instruction = InstructionObservation(
+            0x2000,
+            0x0C000050,
+            40,
+            3,
+            None,
+            None,
+            "unresolved",
+            200,
+        )
+        delta = replace(
+            base,
+            instructions=(
+                *(replace(item, frame=190 + index) for index, item in enumerate(base.instructions)),
+                unresolved_instruction,
+            ),
+            edges=tuple(replace(item, frame=195) for item in base.edges),
+            function_placements=(
+                *base.function_placements,
+                FunctionPlacementObservation(
+                    1, 0x100, 0x140, 0x2000, 0x2040, "exact-test", 30, 50
+                ),
+            ),
+            regions=(
+                RegionLifetimeObservation(
+                    "region:context",
+                    0x2000,
+                    0x2040,
+                    "z64-rom",
+                    "z64:00000100-00000140",
+                    0x100,
+                    0x140,
+                    30,
+                    50,
+                    190,
+                    210,
+                    49,
+                    "replaced",
+                    "executable",
+                    "verified",
+                    "transaction:1",
+                    None,
+                ),
+            ),
+            sampled_pcs=(
+                SampledPcObservation(
+                    "sample:1",
+                    41,
+                    None,
+                    201,
+                    0x80002000,
+                    0x2000,
+                    0x0C000050,
+                    "region:context",
+                    None,
+                    None,
+                    "resident-unmapped",
+                    {"pc": "0x80002000", "opcode": "0x0C000050"},
+                ),
+            ),
+            semantic_markers=(
+                SemanticMarkerObservation(
+                    1,
+                    "visible-action",
+                    "human",
+                    "certain",
+                    "Block menu opened",
+                    "fixture marker",
+                    39,
+                    42,
+                    199,
+                    202,
+                    "2026-08-20T00:00:00Z",
+                ),
+            ),
+            marker_context_windows=(
+                MarkerContextWindowObservation(
+                    1,
+                    "complete",
+                    43,
+                    1,
+                    1,
+                    1,
+                    1,
+                    "native local order and frames are context only",
+                    (
+                        MarkerExecutionContextRecord(
+                            100, "before", 199, 0x80002000, 0x2000,
+                            0x0C000050, False, 0, None, 0
+                        ),
+                        MarkerExecutionContextRecord(
+                            101, "after", 200, 0x80002004, 0x2004,
+                            0, True, 0x80002000, 0x2000, 0x0C000050
+                        ),
+                    ),
+                ),
+            ),
+            unresolved=(
+                UnresolvedKnowledgeObservation(
+                    "unresolved:context",
+                    "exact-execution-placement-or-generation-unresolved",
+                    40,
+                    200,
+                    {
+                        "physicalPc": "0x2000",
+                        "opcode": "0x0C000050",
+                        "nextEvidence": "retain exact residency context",
+                    },
+                ),
+            ),
+        )
+        ingest_delta(database, delta)
+        rebuilt = self.make_knowledge("context-rebuilt.sqlite")
+        ingest_delta(rebuilt, delta)
+        context_equivalence = compare_knowledge_databases(database, rebuilt)
+        self.assertTrue(context_equivalence["equivalent"], context_equivalence)
+        connection = open_knowledge_database(database, read_only=True)
+        try:
+            self.assertEqual(
+                connection.execute("SELECT COUNT(*) FROM session_catalog").fetchone()[0], 1
+            )
+            self.assertEqual(
+                connection.execute("SELECT COUNT(*) FROM sampled_pc_context").fetchone()[0], 1
+            )
+            states = {
+                str(row[0])
+                for row in connection.execute(
+                    "SELECT candidate_state FROM instruction_mapping_candidate c "
+                    "JOIN instruction_fact i ON i.instruction_id=c.instruction_id "
+                    "WHERE i.physical_address=0x2000"
+                )
+            }
+            self.assertIn("uniquely-resolved-live-mapping", states)
+            self.assertIsNone(
+                connection.execute(
+                    "SELECT function_id FROM instruction_fact "
+                    "WHERE physical_address=0x2000 AND opcode_u32=0x0C000050"
+                ).fetchone()[0]
+            )
+        finally:
+            connection.close()
+
+        field_product = self.root / "field-product"
+        field_database = field_product / "db" / "structure-field-access.sqlite"
+        field_database.parent.mkdir(parents=True)
+        sqlite3.connect(field_database).close()
+        with patch(
+            "tools.total_resolver.resolver_context.validate_query_sources",
+            return_value=(),
+        ):
+            with ResolverContext.open(
+                database,
+                static_database=self.static,
+                resource_database=self.resource,
+                field_product=field_product,
+            ) as context:
+                explained, status = explain_selected(context, "func_00000100")
+                self.assertEqual(status, 0)
+                self.assertEqual(explained["sourceManifest"]["mode"], "selected-knowledge")
+                searched = search_selected(
+                    context,
+                    physical="0x2000",
+                    opcode="0x0C000050",
+                    session_id="CONTEXT",
+                    frame_start=190,
+                    frame_end=210,
+                    marker_text="Block",
+                    limit=5,
+                )
+                self.assertEqual(searched["counts"]["instructions"], 1)
+                self.assertEqual(searched["counts"]["markers"], 1)
+                self.assertEqual(
+                    searched["counts"]["markerExecutionContextRecords"], 1
+                )
+                self.assertEqual(
+                    searched["markers"][0]["executionContext"]["retained_after_count"],
+                    1,
+                )
+                self.assertTrue(searched["mappingDiagnostics"])
+                self.assertTrue(searched["pagination"]["bounded"])
+                self.assertLessEqual(
+                    max(
+                        len(searched[key])
+                        for key in (
+                            "functions",
+                            "instructions",
+                            "edges",
+                            "unresolved",
+                            "controllerTransitions",
+                            "markers",
+                            "sampledPcs",
+                            "markerExecutionContext",
+                        )
+                    ),
+                    5,
+                )
+
+                by_bytes_and_sequence = search_selected(
+                    context,
+                    exact_bytes="0C000050",
+                    session_id="CONTEXT",
+                    sequence_start=20,
+                    sequence_end=43,
+                )
+                self.assertGreaterEqual(
+                    by_bytes_and_sequence["counts"]["instructions"], 1
+                )
+                by_edge = search_selected(
+                    context,
+                    edge_from="0x1000",
+                    edge_to="0x1004",
+                    session_id="CONTEXT",
+                    frame_start=190,
+                    frame_end=200,
+                )
+                self.assertEqual(by_edge["counts"]["edges"], 1)
+                by_unresolved = search_selected(
+                    context,
+                    unresolved_kind=(
+                        "exact-execution-placement-or-generation-unresolved"
+                    ),
+                    session_id="CONTEXT",
+                    sequence_start=40,
+                    sequence_end=40,
+                )
+                self.assertEqual(by_unresolved["counts"]["unresolved"], 1)
+                by_controller = search_selected(
+                    context,
+                    session_id="CONTEXT",
+                    sequence_start=27,
+                    sequence_end=27,
+                    controller=True,
+                    buttons="0x80000000",
+                )
+                self.assertEqual(
+                    by_controller["counts"]["controllerTransitions"], 1
+                )
+                by_function = search_selected(context, function="000001")
+                self.assertEqual(by_function["counts"]["functions"], 2)
+
+                index_plans = {
+                    "instruction_opcode_idx": context.knowledge.execute(
+                        "EXPLAIN QUERY PLAN SELECT instruction_id FROM instruction_fact "
+                        "WHERE opcode_u32=?",
+                        (0x0C000050,),
+                    ).fetchall(),
+                    "instruction_session_sequence_idx": context.knowledge.execute(
+                        "EXPLAIN QUERY PLAN SELECT instruction_id FROM "
+                        "instruction_context_witness WHERE session_id=? "
+                        "AND bridge_sequence BETWEEN ? AND ?",
+                        ("CONTEXT", 20, 43),
+                    ).fetchall(),
+                    "edge_session_frame_idx": context.knowledge.execute(
+                        "EXPLAIN QUERY PLAN SELECT edge_id FROM edge_context_witness "
+                        "WHERE session_id=? AND frame BETWEEN ? AND ?",
+                        ("CONTEXT", 190, 200),
+                    ).fetchall(),
+                    "unresolved_kind_idx": context.knowledge.execute(
+                        "EXPLAIN QUERY PLAN SELECT local_unresolved_id FROM "
+                        "unresolved_index WHERE kind=? AND session_id=?",
+                        (
+                            "exact-execution-placement-or-generation-unresolved",
+                            "CONTEXT",
+                        ),
+                    ).fetchall(),
+                    "marker_context_opcode_idx": context.knowledge.execute(
+                        "EXPLAIN QUERY PLAN SELECT marker_id FROM "
+                        "marker_execution_context_record WHERE opcode_u32=?",
+                        (0x0C000050,),
+                    ).fetchall(),
+                }
+                for expected_index, plan in index_plans.items():
+                    self.assertIn(
+                        expected_index,
+                        " ".join(str(column) for row in plan for column in row),
+                    )
+                with self.assertRaises(sqlite3.OperationalError):
+                    context.knowledge.execute(
+                        "INSERT INTO knowledge_meta VALUES('forbidden','write')"
+                    )
+
+        with patch(
+            "tools.total_resolver.resolver_context.selected_knowledge_database",
+            return_value=database,
+        ), patch(
+            "tools.total_resolver.resolver_context.validate_query_sources",
+            return_value=(),
+        ):
+            with ResolverContext.open(
+                static_database=self.static,
+                resource_database=self.resource,
+                field_product=field_product,
+            ) as selected_context:
+                self.assertTrue(selected_context.manifest["dynamic"]["selected"])
+                self.assertEqual(
+                    selected_context.manifest["dynamic"]["sessionCount"], 1
+                )
+
+        stale_resolver = self.root / "stale-generated-resolver.sqlite"
+        stale_connection = sqlite3.connect(stale_resolver)
+        try:
+            stale_connection.executescript(
+                "CREATE TABLE meta(key TEXT PRIMARY KEY,value TEXT);"
+                "INSERT INTO meta VALUES('schema','ob64-total-resolver-r3.v1');"
+            )
+            stale_connection.commit()
+        finally:
+            stale_connection.close()
+        with patch(
+            "tools.total_resolver.resolver_context.selected_knowledge_database",
+            return_value=stale_resolver,
+        ):
+            with self.assertRaisesRegex(
+                ValueError, "unsupported Total Resolver knowledge schema"
+            ):
+                ResolverContext.open(
+                    static_database=self.static,
+                    resource_database=self.resource,
+                    field_product=field_product,
+                )
+
+        with self.assertRaisesRegex(ValueError, "not persistent knowledge"):
+            open_explicit_legacy_resolver(database)
+
+    def test_known_activity_bitmaps_restore_compact_session_membership(self) -> None:
+        database = self.make_knowledge("known-activity.sqlite")
+        first = ingest_delta(database, self.delta("ACTIVITY-1"))
+        repeated = replace(
+            self.delta("ACTIVITY-2"),
+            protocol_version=BRIDGE_PROTOCOL_VERSION,
+            frontier_identity_at_start=first["delta"]["frontierAfter"],
+            code_pages=(),
+            instructions=(),
+            edges=(),
+            dma_placements=(),
+            function_placements=(),
+            known_activity=KnownActivityObservation(
+                first["delta"]["frontierAfter"],
+                4,
+                60,
+                2,
+                2,
+                b"\x03",
+                1,
+                1,
+                b"\x01",
+                1,
+                1,
+                b"\x01",
+            ),
+        )
+        result = ingest_delta(database, repeated)
+        self.assertEqual(result["delta"]["newFacts"]["instructions"], 0)
+        self.assertEqual(result["delta"]["newFacts"]["edges"], 0)
+        self.assertEqual(result["delta"]["observed"]["knownInstructionHits"], 2)
+
+        field_product = self.root / "activity-field-product"
+        field_database = field_product / "db" / "structure-field-access.sqlite"
+        field_database.parent.mkdir(parents=True)
+        sqlite3.connect(field_database).close()
+        with patch(
+            "tools.total_resolver.resolver_context.validate_query_sources",
+            return_value=(),
+        ):
+            with ResolverContext.open(
+                database,
+                static_database=self.static,
+                resource_database=self.resource,
+                field_product=field_product,
+            ) as context:
+                explained, status = explain_selected(
+                    context, "func_00000100", includes=("sessions",)
+                )
+                self.assertEqual(status, 0)
+                sessions = {
+                    row["sessionId"]: row for row in explained["previews"]["sessions"]
+                }
+                self.assertEqual(
+                    sessions["ACTIVITY-2"]["knownActivityInstructionCount"], 1
+                )
+                searched = search_selected(
+                    context,
+                    function="func_00000100",
+                    session_id="ACTIVITY-2",
+                )
+                self.assertEqual(
+                    searched["knownActivity"]["matchingInstructionHitCount"], 1
+                )
+                self.assertEqual(
+                    searched["knownActivity"]["claim"], "session-membership-only"
+                )
+
+        invalid = replace(
+            repeated,
+            session_id="ACTIVITY-3",
+            capture_identity="capture:ACTIVITY-3",
+            bridge_epoch="EPOCH-ACTIVITY-3",
+            known_activity=replace(
+                repeated.known_activity,
+                instruction_max_ordinal=3,
+                instruction_hit_count=1,
+                instruction_hit_bitmap=b"\x04",
+            ),
+        )
+        with self.assertRaisesRegex(ValueError, "ordinal extent"):
+            ingest_delta(database, invalid)
+
+    def test_ambiguous_candidates_never_auto_promote(self) -> None:
+        database = self.make_knowledge("ambiguous-candidates.sqlite")
+        base = self.delta("CANDIDATES")
+        delta = replace(
+            base,
+            instructions=(
+                InstructionObservation(0x3000, 0, 40, 1, None, None, "unresolved", 100),
+            ),
+            edges=(),
+            function_placements=(
+                FunctionPlacementObservation(
+                    1, 0x100, 0x140, 0x2FFC, 0x303C, "candidate-a", 30, 60
+                ),
+                FunctionPlacementObservation(
+                    2, 0x140, 0x180, 0x3000, 0x3040, "candidate-b", 30, 60
+                ),
+            ),
+            regions=(
+                RegionLifetimeObservation(
+                    "region:a", 0x2FFC, 0x303C, "z64-rom",
+                    "z64:00000100-00000140", 0x100, 0x140, 30, 60,
+                    90, 110, 59, "replaced", "executable", "verified", None, None
+                ),
+                RegionLifetimeObservation(
+                    "region:b", 0x3000, 0x3040, "z64-rom",
+                    "z64:00000140-00000180", 0x140, 0x180, 30, 60,
+                    90, 110, 59, "replaced", "executable", "verified", None, None
+                ),
+            ),
+        )
+        ingest_delta(database, delta)
+        connection = open_knowledge_database(database, read_only=True)
+        try:
+            row = connection.execute(
+                "SELECT function_id,z64_offset,mapping_status FROM instruction_fact "
+                "WHERE physical_address=0x3000 AND opcode_u32=0"
+            ).fetchone()
+            self.assertEqual(tuple(row), (None, None, "unresolved"))
+            states = {
+                str(item[0])
+                for item in connection.execute(
+                    "SELECT candidate_state FROM instruction_mapping_candidate c "
+                    "JOIN instruction_fact i ON i.instruction_id=c.instruction_id "
+                    "WHERE i.physical_address=0x3000"
+                )
+            }
+            self.assertIn("ambiguous-conflicting-mapping", states)
+        finally:
+            connection.close()
+
+    def test_new_placement_reconsiders_an_old_unresolved_instruction(self) -> None:
+        database = self.make_knowledge("candidate-reconsideration.sqlite")
+        first_delta = replace(
+            self.delta("CANDIDATE-BEFORE"),
+            instructions=(
+                InstructionObservation(
+                    0x2000,
+                    0x0C000050,
+                    20,
+                    1,
+                    None,
+                    None,
+                    "unresolved",
+                    100,
+                ),
+            ),
+            edges=(),
+            function_placements=(),
+        )
+        first = ingest_delta(database, first_delta)
+        connection = open_knowledge_database(database, read_only=True)
+        try:
+            self.assertEqual(
+                connection.execute(
+                    "SELECT COUNT(*) FROM instruction_mapping_candidate"
+                ).fetchone()[0],
+                0,
+            )
+        finally:
+            connection.close()
+
+        placement_delta = replace(
+            self.delta("CANDIDATE-AFTER"),
+            frontier_identity_at_start=first["delta"]["frontierAfter"],
+            code_pages=(),
+            instructions=(),
+            edges=(),
+            dma_placements=(),
+            controller_transitions=(),
+            function_placements=(
+                FunctionPlacementObservation(
+                    1,
+                    0x100,
+                    0x140,
+                    0x2000,
+                    0x2040,
+                    "later-placement",
+                    30,
+                    50,
+                ),
+            ),
+        )
+        ingest_delta(database, placement_delta)
+        connection = open_knowledge_database(database, read_only=True)
+        try:
+            candidate = connection.execute(
+                "SELECT c.candidate_state,c.evidence_kind,c.exact_bytes_confirmed "
+                "FROM instruction_mapping_candidate c JOIN instruction_fact i "
+                "ON i.instruction_id=c.instruction_id "
+                "WHERE i.physical_address=0x2000 AND i.opcode_u32=0x0C000050"
+            ).fetchone()
+            self.assertEqual(
+                tuple(candidate),
+                (
+                    "byte-confirmed-global-candidate",
+                    "global-placement-plus-exact-opcode",
+                    1,
+                ),
+            )
+            self.assertEqual(
+                connection.execute(
+                    "SELECT status FROM candidate_recalculation_queue "
+                    "WHERE reason='function-placement'"
+                ).fetchone()[0],
+                "processed",
+            )
+        finally:
+            connection.close()
 
 
 if __name__ == "__main__":

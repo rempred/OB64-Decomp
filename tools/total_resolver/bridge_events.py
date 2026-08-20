@@ -157,6 +157,33 @@ def _validate_frontier_match(payload: Mapping[str, Any], event_type: str) -> Non
         raise BridgeProtocolError(f"{event_type} unmatched frontier page ID must be null")
 
 
+def _validate_activity_bitmap(payload: Mapping[str, Any], prefix: str) -> None:
+    maximum = payload.get(f"{prefix}MaxOrdinal")
+    count = payload.get(f"{prefix}HitCount")
+    encoding = payload.get(f"{prefix}HitBitmapEncoding")
+    encoded = payload.get(f"{prefix}HitBitmapHex")
+    if (
+        isinstance(maximum, bool)
+        or not isinstance(maximum, int)
+        or maximum < 0
+        or maximum > 0x1000000
+        or isinstance(count, bool)
+        or not isinstance(count, int)
+        or not 0 <= count <= maximum
+        or encoding != "ordinal-minus-one-lsb0-hex-uppercase"
+        or not isinstance(encoded, str)
+        or len(encoded) != ((maximum + 7) // 8) * 2
+        or encoded != encoded.upper()
+        or any(character not in "0123456789ABCDEF" for character in encoded)
+    ):
+        raise BridgeProtocolError(f"known activity {prefix} bitmap is malformed")
+    bitmap = bytes.fromhex(encoded)
+    if sum(byte.bit_count() for byte in bitmap) != count:
+        raise BridgeProtocolError(f"known activity {prefix} hit count is inconsistent")
+    if maximum & 7 and bitmap and bitmap[-1] & ~((1 << (maximum & 7)) - 1):
+        raise BridgeProtocolError(f"known activity {prefix} bitmap has set padding bits")
+
+
 def _validate_trace_or_input_event(payload: Mapping[str, Any], event_type: str) -> None:
     if event_type == "trace-page":
         if payload.get("dedupeDecision") != "exact-byte-compare":
@@ -287,6 +314,94 @@ def _validate_trace_or_input_event(payload: Mapping[str, Any], event_type: str) 
             or not payload.get("snapshotId")
         ):
             raise BridgeProtocolError("baseline snapshot lacks its atomic 4 MiB contract")
+    elif event_type == "known-activity":
+        _frontier_identity(payload, event_type)
+        if (
+            payload.get("capturePhase") != "session-stop-native-hit-bitmap"
+            or payload.get("orderingClaim") != "session-membership-only-not-event-order"
+        ):
+            raise BridgeProtocolError("known activity summary overstates its ordering evidence")
+        for prefix in ("instruction", "edge", "dma"):
+            _validate_activity_bitmap(payload, prefix)
+    elif event_type == "marker-execution-context":
+        marker_id = payload.get("markerId")
+        session_id = payload.get("markerSessionId")
+        before = payload.get("beforeCount")
+        after = payload.get("afterCount")
+        records = payload.get("records")
+        if (
+            isinstance(marker_id, bool)
+            or not isinstance(marker_id, int)
+            or marker_id < 1
+            or not isinstance(session_id, str)
+            or not session_id
+            or len(session_id) > 192
+            or any(character.isspace() or ord(character) < 0x21 for character in session_id)
+            or isinstance(before, bool)
+            or not isinstance(before, int)
+            or not 0 <= before <= 4096
+            or isinstance(after, bool)
+            or not isinstance(after, int)
+            or not 1 <= after <= 4096
+            or not isinstance(records, list)
+            or len(records) != before + after
+            or payload.get("capturePhase") != "native-bounded-marker-window"
+            or payload.get("orderingClaim")
+            != "native-local-order-and-frame-context-only"
+        ):
+            raise BridgeProtocolError("marker execution context has invalid bounds or identity")
+        orders: list[int] = []
+        for index, record in enumerate(records):
+            if not isinstance(record, Mapping):
+                raise BridgeProtocolError("marker execution context record is not an object")
+            order = record.get("localOrder")
+            frame = record.get("frame")
+            if (
+                isinstance(order, bool)
+                or not isinstance(order, int)
+                or order < 1
+                or (frame is not None and (
+                    isinstance(frame, bool) or not isinstance(frame, int) or frame < 0
+                ))
+                or record.get("side") != ("before" if index < before else "after")
+                or not isinstance(record.get("previousValid"), bool)
+            ):
+                raise BridgeProtocolError("marker execution context record metadata is invalid")
+            orders.append(order)
+            for field in ("pc", "opcode", "previousPc", "previousOpcode"):
+                try:
+                    value = int(str(record.get(field)), 0)
+                except (TypeError, ValueError) as exc:
+                    raise BridgeProtocolError(
+                        f"marker execution context record omitted {field}"
+                    ) from exc
+                if not 0 <= value <= 0xFFFFFFFF:
+                    raise BridgeProtocolError(
+                        f"marker execution context record has invalid {field}"
+                    )
+            for field in ("physicalAddress", "previousPhysicalAddress"):
+                raw = record.get(field)
+                if raw is None:
+                    continue
+                try:
+                    physical = int(str(raw), 0)
+                except (TypeError, ValueError) as exc:
+                    raise BridgeProtocolError(
+                        f"marker execution context record has invalid {field}"
+                    ) from exc
+                if physical & 3 or not 0 <= physical <= RDRAM_SIZE - 4:
+                    raise BridgeProtocolError(
+                        f"marker execution context record has invalid {field}"
+                    )
+        if orders != list(range(orders[0], orders[0] + len(orders))):
+            raise BridgeProtocolError("marker execution context local order is discontinuous")
+    elif event_type == "marker-execution-context-incomplete":
+        if (
+            payload.get("capturePhase")
+            != "capture-stopped-before-native-window-completed"
+            or payload.get("orderingClaim") != "no-execution-context-claim"
+        ):
+            raise BridgeProtocolError("incomplete marker context overstates its evidence")
 
 
 def _validate_dma_event(payload: Mapping[str, Any], event_type: str, sequence: int) -> None:

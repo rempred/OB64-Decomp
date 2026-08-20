@@ -66,9 +66,11 @@ def run_persistent_delta_benchmark(output: Path | None = None) -> dict[str, Any]
         and int(raw["baselineBytes"]) == 0x00400000
         and bool(raw["coldBootBaselineFirst"])
         and bool(raw["wrongRomRejected"])
+        and int(raw["stopTimeActivitySummaries"]) == 1
+        and int(raw["markerContextWindows"]) == 1
     )
     report = {
-        "schema": "ob64-total-resolver-persistent-delta-benchmark.v4",
+        "schema": "ob64-total-resolver-persistent-delta-benchmark.v5",
         "result": "PASS" if passed else "FAIL",
         "measuredUtc": utc_now(),
         "simulation": "Node.js fake emulator exercising the production bridge script",
@@ -81,6 +83,11 @@ def run_persistent_delta_benchmark(output: Path | None = None) -> dict[str, Any]
             "repeatedStructuralTraceEvents": repeated_trace_events,
             "traceEventReductionFraction": event_reduction,
             "fullPageReadsDuringExecutionTrace": int(raw["pageReadsDuringExecutionTrace"]),
+            "stopTimeKnownActivitySummaryEvents": int(
+                raw["stopTimeActivitySummaries"]
+            ),
+            "knownActivityFactHits": int(raw["knownActivityFactHits"]),
+            "knownActivityBitmapBytes": int(raw["knownActivityBitmapBytes"]),
         },
         "nativeBoundary": {
             "knownExecutionEventsCrossingIntoJavaScript": repeated_trace_events,
@@ -100,6 +107,11 @@ def run_persistent_delta_benchmark(output: Path | None = None) -> dict[str, Any]
             "coldBootBaselineFirst": bool(raw["coldBootBaselineFirst"]),
             "wrongRomRejectedBeforeCapture": bool(raw["wrongRomRejected"]),
             "observationOnlyCapture": bool(raw["observationOnlyCapture"]),
+            "knownActivityMembershipRetained": (
+                int(raw["stopTimeActivitySummaries"]) == 1
+                and int(raw["knownActivityFactHits"]) > 0
+            ),
+            "boundedMarkerContextRetained": int(raw["markerContextWindows"]) == 1,
         },
         "harnessWallNanoseconds": wall_ns,
     }

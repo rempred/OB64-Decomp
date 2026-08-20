@@ -505,6 +505,11 @@ class Pj64Client:
             "instructionCount": int(frontier.instruction_count),
             "edgeCount": len(frontier.edges),
             "dmaCount": len(frontier.dma),
+            "instructionMaxOrdinal": max(
+                (item.fact_ordinal for item in frontier.instructions), default=0
+            ),
+            "edgeMaxOrdinal": max((item.fact_ordinal for item in frontier.edges), default=0),
+            "dmaMaxOrdinal": max((item.fact_ordinal for item in frontier.dma), default=0),
             "nativeLoaded": True,
             "nativeRdramSize": RDRAM_SIZE,
         }
@@ -559,6 +564,32 @@ class Pj64Client:
 
     def capture_status(self) -> dict[str, Any]:
         return self._command("capture status")
+
+    def arm_execution_context(
+        self,
+        session_id: str,
+        marker_id: int,
+        *,
+        before: int = 256,
+        after: int = 256,
+    ) -> dict[str, Any]:
+        if (
+            not session_id
+            or len(session_id) > 192
+            or any(character.isspace() or ord(character) < 0x21 for character in session_id)
+        ):
+            raise ValueError("session_id must be one bounded opaque token")
+        if isinstance(before, bool) or not isinstance(before, int) or not 0 <= before <= 4096:
+            raise ValueError("before must be between zero and 4096")
+        bounded_after = _positive(after, "after", maximum=4096)
+        response = self._command(
+            f"context marker {session_id} {_positive(marker_id, 'marker_id')} "
+            f"{before} {bounded_after}"
+        )
+        context = response.get("context")
+        if not isinstance(context, Mapping) or context.get("markerId") != marker_id:
+            raise BridgeProtocolError("bridge did not arm the requested marker context")
+        return dict(context)
 
     def baseline_status(self) -> dict[str, Any]:
         value = self._command("baseline status").get("baseline")

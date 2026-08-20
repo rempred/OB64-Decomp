@@ -34,16 +34,32 @@ from .runtime_provenance import build_runtime_provenance, verify_runtime_provena
 from .resolver import (
     build_total_resolver,
     coverage_report,
-    resolver_products_root,
     verify_total_resolver,
 )
-from .resolver_query import explain, open_resolver, unresolved_report
-from .resolver_sources import ResolverSourcePaths, default_source_paths
+from .resolver_query import explain, unresolved_report
+from .resolver_context import (
+    DEFAULT_QUERY_LIMIT,
+    ResolverContext,
+    coverage_selected,
+    explain_selected,
+    legacy_manifest,
+    open_explicit_legacy_resolver,
+    search_selected,
+    unresolved_selected,
+)
+from .resolver_sources import (
+    QuerySourcePaths,
+    ResolverSourcePaths,
+    default_query_source_paths,
+    default_source_paths,
+)
 from .live_resolver import (
     build_bridge_context_bundle,
     build_event_bundle,
+    derive_live_snapshot,
     explain_current_address,
     replay_live_bundle,
+    resolve_snapshot_address,
 )
 from .sessions import (
     SessionConnection,
@@ -80,6 +96,26 @@ def _add_resolver_source_arguments(parser: argparse.ArgumentParser) -> None:
     parser.add_argument("--field-product", type=Path)
     parser.add_argument("--overlay-atlas", type=Path)
     parser.add_argument("--runtime-provenance", type=Path)
+
+
+def _add_query_source_arguments(
+    parser: argparse.ArgumentParser, *, allow_legacy: bool = True
+) -> None:
+    dynamic = parser.add_mutually_exclusive_group()
+    dynamic.add_argument(
+        "--knowledge-db",
+        type=Path,
+        help="persistent knowledge database (defaults to the selected database)",
+    )
+    if allow_legacy:
+        dynamic.add_argument(
+            "--legacy-resolver",
+            type=Path,
+            help="explicitly inspect a historical generated Resolver database",
+        )
+    parser.add_argument("--static-db", type=Path)
+    parser.add_argument("--resource-db", type=Path)
+    parser.add_argument("--field-product", type=Path)
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -130,11 +166,18 @@ def build_parser() -> argparse.ArgumentParser:
     knowledge_select.add_argument("db", type=Path)
     knowledge_migrate_frontier = knowledge_commands.add_parser(
         "migrate-frontier",
-        help="copy a schema-2 database to protocol frontier format 3 and verify it",
+        help="copy a knowledge database to protocol frontier format 4 and verify it",
     )
     knowledge_migrate_frontier.add_argument("--db", type=Path)
     knowledge_migrate_frontier.add_argument("--output", type=Path, required=True)
     knowledge_migrate_frontier.add_argument("--select", action="store_true")
+    knowledge_migrate_schema3 = knowledge_commands.add_parser(
+        "migrate-schema3",
+        help="replay a verified ledger into a new schema-3 database beside the source",
+    )
+    knowledge_migrate_schema3.add_argument("--db", type=Path)
+    knowledge_migrate_schema3.add_argument("--output", type=Path, required=True)
+    knowledge_migrate_schema3.add_argument("--select", action="store_true")
     for name, help_text in (
         ("status", "report persistent coverage and the current frontier"),
         ("verify", "verify facts, frontier, and incremental materializations"),
@@ -175,6 +218,9 @@ def build_parser() -> argparse.ArgumentParser:
         child = session_commands.add_parser(name, help=help_text)
         child.add_argument("text")
         child.add_argument("--session-id")
+        child.add_argument("--context-before", type=int, default=256)
+        child.add_argument("--context-after", type=int, default=256)
+        _add_connection_arguments(child)
         _add_sessions_root(child)
 
     stop = session_commands.add_parser("stop", help="cleanly stop and verify a capture")
@@ -263,19 +309,31 @@ def build_parser() -> argparse.ArgumentParser:
     resolver_verify.add_argument("product", type=Path)
     _add_resolver_source_arguments(resolver_verify)
 
-    explain_command = commands.add_parser("explain", help="resolve an identifier across evidence lanes")
+    explain_command = commands.add_parser(
+        "explain", help="query selected persistent knowledge across evidence lanes"
+    )
     explain_command.add_argument("identifier")
-    explain_command.add_argument("--db", type=Path)
+    _add_query_source_arguments(explain_command)
     explain_command.add_argument("--session", dest="resolver_session")
     explain_command.add_argument("--sequence", type=int)
     explain_command.add_argument("--frame", type=int)
-    explain_command.add_argument("--lane", choices=("static", "placement", "runtime", "field", "resource"))
+    explain_command.add_argument(
+        "--lane",
+        choices=("static", "dynamic", "placement", "runtime", "field", "resource"),
+    )
     explain_command.add_argument(
         "--relationship",
         choices=("all", "placements", "callers", "callees", "executions"),
         default="all",
     )
-    explain_command.add_argument("--limit", type=int, default=100)
+    explain_command.add_argument(
+        "--include",
+        action="append",
+        default=[],
+        help="detailed section to include (repeatable or comma-separated)",
+    )
+    explain_command.add_argument("--limit", type=int, default=DEFAULT_QUERY_LIMIT)
+    explain_command.add_argument("--cursor", type=int, default=0)
     explain_command.add_argument(
         "--current",
         action="store_true",
@@ -285,15 +343,50 @@ def build_parser() -> argparse.ArgumentParser:
     explain_command.add_argument("--rom", type=Path)
     _add_connection_arguments(explain_command)
 
-    coverage_command = commands.add_parser("coverage", help="report bounded R3 coverage")
-    coverage_command.add_argument("--db", type=Path)
-
-    unresolved_command = commands.add_parser("unresolved", help="show explicit unresolved work queues")
-    unresolved_command.add_argument("--db", type=Path)
-    unresolved_command.add_argument(
-        "--lane", choices=("static", "placement", "runtime", "field", "resource")
+    coverage_command = commands.add_parser(
+        "coverage", help="report selected persistent knowledge coverage"
     )
-    unresolved_command.add_argument("--limit", type=int, default=100)
+    _add_query_source_arguments(coverage_command)
+
+    unresolved_command = commands.add_parser(
+        "unresolved", help="show selected persistent unresolved work queues"
+    )
+    _add_query_source_arguments(unresolved_command)
+    unresolved_command.add_argument(
+        "--lane",
+        choices=("dynamic", "static", "placement", "runtime", "field", "resource"),
+    )
+    unresolved_command.add_argument("--kind")
+    unresolved_command.add_argument("--session")
+    unresolved_command.add_argument("--limit", type=int, default=DEFAULT_QUERY_LIMIT)
+    unresolved_command.add_argument("--cursor", type=int, default=0)
+
+    search_command = commands.add_parser(
+        "search", help="bounded read-only search over selected persistent knowledge"
+    )
+    _add_query_source_arguments(search_command, allow_legacy=False)
+    search_command.add_argument("--text")
+    search_command.add_argument("--function")
+    search_command.add_argument("--rom")
+    search_command.add_argument("--live")
+    search_command.add_argument("--physical")
+    search_command.add_argument("--opcode")
+    search_command.add_argument("--bytes", dest="exact_bytes")
+    search_command.add_argument("--session")
+    search_command.add_argument("--frame-start", type=int)
+    search_command.add_argument("--frame-end", type=int)
+    search_command.add_argument("--sequence-start", type=int)
+    search_command.add_argument("--sequence-end", type=int)
+    search_command.add_argument("--edge-from")
+    search_command.add_argument("--edge-to")
+    search_command.add_argument("--mapping-status")
+    search_command.add_argument("--unresolved-kind")
+    search_command.add_argument("--marker-text")
+    search_command.add_argument("--marker-type")
+    search_command.add_argument("--controller", action="store_true")
+    search_command.add_argument("--buttons")
+    search_command.add_argument("--limit", type=int, default=DEFAULT_QUERY_LIMIT)
+    search_command.add_argument("--cursor", type=int, default=0)
 
     live = commands.add_parser("live", help="read-only live enrichment and evidence bundles")
     live_commands = live.add_subparsers(dest="live_command", required=True)
@@ -413,6 +506,9 @@ def _session(args: argparse.Namespace) -> int:
                 marker_type=marker_types[args.session_command],
                 session_id=args.session_id,
                 root=args.root,
+                connection=_connection(args),
+                context_before=args.context_before,
+                context_after=args.context_after,
             )
         elif args.session_command == "stop":
             payload = request_session_stop(
@@ -478,6 +574,13 @@ def _knowledge(args: argparse.Namespace) -> int:
             payload = migrate_frontier_database(
                 _selected_knowledge(args.db), args.output
             )
+            if args.select:
+                payload["selection"] = select_knowledge_database(args.output)
+        elif args.knowledge_command == "migrate-schema3":
+            payload = rebuild_knowledge_database(
+                _selected_knowledge(args.db), args.output
+            )
+            payload["migration"] = "schema-3-ledger-replay"
             if args.select:
                 payload["selection"] = select_knowledge_database(args.output)
         elif args.knowledge_command == "status":
@@ -617,42 +720,132 @@ def _resolver(args: argparse.Namespace) -> int:
     return 0 if payload.get("result") == "PASS" else 1
 
 
-def _resolver_database(args: argparse.Namespace) -> Path:
-    return args.db or resolver_products_root() / "resolver-r3.sqlite"
+def _query_source_paths(args: argparse.Namespace) -> QuerySourcePaths:
+    defaults = default_query_source_paths()
+    return QuerySourcePaths(
+        static_database=args.static_db or defaults.static_database,
+        resource_database=args.resource_db or defaults.resource_database,
+        field_product=args.field_product or defaults.field_product,
+    )
+
+
+def _open_query_context(args: argparse.Namespace) -> ResolverContext:
+    paths = _query_source_paths(args)
+    return ResolverContext.open(
+        args.knowledge_db,
+        static_database=paths.static_database,
+        resource_database=paths.resource_database,
+        field_product=paths.field_product,
+    )
+
+
+def _query_includes(args: argparse.Namespace) -> list[str]:
+    includes = [
+        part.strip()
+        for value in args.include
+        for part in value.split(",")
+        if part.strip()
+    ]
+    relationship = args.relationship
+    if relationship != "all":
+        includes.append(
+            "placements"
+            if relationship == "placements"
+            else "calls"
+            if relationship in {"callers", "callees"}
+            else "instructions"
+        )
+    if args.lane == "field":
+        includes.append("fields")
+    elif args.lane == "resource":
+        includes.append("resources")
+    return includes
 
 
 def _explain(args: argparse.Namespace) -> int:
     try:
         if args.current:
+            if args.legacy_resolver is not None:
+                raise ValueError("--current cannot use a historical generated Resolver")
             lower = args.identifier.casefold()
             if not lower.startswith("live:"):
                 raise ValueError("--current currently requires a live:0x... identifier")
             live_address = int(args.identifier.split(":", 1)[1], 0)
+            root = sessions_root(args.sessions_root)
+            session_id = args.resolver_session or active_session_id(root)
+            if session_id is None:
+                raise ValueError("--current requires an active raw capture session")
             with Pj64Client(args.host, args.port, args.timeout) as client:
-                payload = explain_current_address(
-                    live_address,
-                    client=client,
-                    session_id=args.resolver_session,
-                    sessions_directory=args.sessions_root,
-                    rom_path=args.rom,
-                    resolver_database=args.db,
-                )
-            _print(payload)
-            return 0 if str(payload["mapping"]["status"]).startswith("resolved") else 2
-        connection = open_resolver(_resolver_database(args))
-        try:
-            payload, status = explain(
-                connection,
-                args.identifier,
-                session_id=args.resolver_session,
-                sequence=args.sequence,
-                frame=args.frame,
-                lane=args.lane,
-                relationship=args.relationship,
-                limit=args.limit,
+                bridge_status = client.status()
+            snapshot = derive_live_snapshot(
+                session_id,
+                sessions_directory=root,
+                rom_path=args.rom,
+                static_database=args.static_db,
+                resource_database=args.resource_db,
             )
-        finally:
-            connection.close()
+            if bridge_status.get("bridgeEpoch") != snapshot.session["bridge_epoch"]:
+                raise ValueError("live bridge epoch differs from the active capture session")
+            mapping = resolve_snapshot_address(snapshot, live_address)
+            mapped_function = mapping.get("function")
+            query_identifier = (
+                str(mapped_function["structuralName"])
+                if isinstance(mapped_function, dict)
+                else args.identifier
+            )
+            with _open_query_context(args) as context:
+                knowledge_payload, query_status = explain_selected(
+                    context,
+                    query_identifier,
+                    session_id=session_id,
+                    sequence=bridge_status.get("nextEventSequence"),
+                    frame=bridge_status.get("frameCount"),
+                    includes=_query_includes(args),
+                    limit=args.limit,
+                    cursor=args.cursor,
+                )
+            payload = {
+                "schema": "ob64-total-resolver-current-selected-knowledge.v1",
+                "reviewState": "live-unreviewed",
+                "liveAddress": live_address,
+                "bridgeContext": bridge_status,
+                "captureContext": snapshot.context_dict(),
+                "mapping": mapping,
+                "knowledgeQuery": knowledge_payload,
+                "sourceManifest": knowledge_payload["sourceManifest"],
+            }
+            _print(payload)
+            return query_status if str(mapping["status"]).startswith("resolved") else 2
+        if args.legacy_resolver is not None:
+            connection = open_explicit_legacy_resolver(args.legacy_resolver)
+            try:
+                payload, status = explain(
+                    connection,
+                    args.identifier,
+                    session_id=args.resolver_session,
+                    sequence=args.sequence,
+                    frame=args.frame,
+                    lane=args.lane if args.lane != "dynamic" else None,
+                    relationship=args.relationship,
+                    limit=args.limit,
+                )
+                payload["sourceManifest"] = legacy_manifest(
+                    args.legacy_resolver, connection
+                )
+            finally:
+                connection.close()
+        else:
+            with _open_query_context(args) as context:
+                payload, status = explain_selected(
+                    context,
+                    args.identifier,
+                    session_id=args.resolver_session,
+                    sequence=args.sequence,
+                    frame=args.frame,
+                    includes=_query_includes(args),
+                    limit=args.limit,
+                    cursor=args.cursor,
+                )
     except (OSError, sqlite3.Error, ValueError) as exc:
         print(f"Total Resolver query failed: {exc}", file=sys.stderr)
         return 2
@@ -662,11 +855,18 @@ def _explain(args: argparse.Namespace) -> int:
 
 def _coverage(args: argparse.Namespace) -> int:
     try:
-        connection = open_resolver(_resolver_database(args))
-        try:
-            payload = coverage_report(connection)
-        finally:
-            connection.close()
+        if args.legacy_resolver is not None:
+            connection = open_explicit_legacy_resolver(args.legacy_resolver)
+            try:
+                payload = coverage_report(connection)
+                payload["sourceManifest"] = legacy_manifest(
+                    args.legacy_resolver, connection
+                )
+            finally:
+                connection.close()
+        else:
+            with _open_query_context(args) as context:
+                payload = coverage_selected(context)
     except (OSError, sqlite3.Error, ValueError) as exc:
         print(f"Total Resolver coverage failed: {exc}", file=sys.stderr)
         return 2
@@ -737,13 +937,71 @@ def _live(args: argparse.Namespace) -> int:
 
 def _unresolved(args: argparse.Namespace) -> int:
     try:
-        connection = open_resolver(_resolver_database(args))
-        try:
-            payload = unresolved_report(connection, lane=args.lane, limit=args.limit)
-        finally:
-            connection.close()
+        if args.legacy_resolver is not None:
+            if args.kind is not None or args.session is not None or args.cursor:
+                raise ValueError(
+                    "legacy unresolved queries do not support kind, session, or cursor filters"
+                )
+            connection = open_explicit_legacy_resolver(args.legacy_resolver)
+            try:
+                legacy_lane = args.lane
+                if legacy_lane == "dynamic":
+                    legacy_lane = "runtime"
+                payload = unresolved_report(
+                    connection, lane=legacy_lane, limit=args.limit
+                )
+                payload["sourceManifest"] = legacy_manifest(
+                    args.legacy_resolver, connection
+                )
+            finally:
+                connection.close()
+        else:
+            with _open_query_context(args) as context:
+                payload = unresolved_selected(
+                    context,
+                    lane=args.lane,
+                    kind=args.kind,
+                    session_id=args.session,
+                    limit=args.limit,
+                    cursor=args.cursor,
+                )
     except (OSError, sqlite3.Error, ValueError) as exc:
         print(f"Total Resolver unresolved query failed: {exc}", file=sys.stderr)
+        return 2
+    _print(payload)
+    return 0
+
+
+def _search(args: argparse.Namespace) -> int:
+    try:
+        with _open_query_context(args) as context:
+            payload = search_selected(
+                context,
+                text=args.text,
+                function=args.function,
+                rom=args.rom,
+                live=args.live,
+                physical=args.physical,
+                opcode=args.opcode,
+                exact_bytes=args.exact_bytes,
+                session_id=args.session,
+                frame_start=args.frame_start,
+                frame_end=args.frame_end,
+                sequence_start=args.sequence_start,
+                sequence_end=args.sequence_end,
+                edge_from=args.edge_from,
+                edge_to=args.edge_to,
+                mapping_status=args.mapping_status,
+                unresolved_kind=args.unresolved_kind,
+                marker_text=args.marker_text,
+                marker_type=args.marker_type,
+                controller=args.controller,
+                buttons=args.buttons,
+                limit=args.limit,
+                cursor=args.cursor,
+            )
+    except (OSError, sqlite3.Error, ValueError) as exc:
+        print(f"Total Resolver search failed: {exc}", file=sys.stderr)
         return 2
     _print(payload)
     return 0
@@ -773,6 +1031,8 @@ def main(argv: Sequence[str] | None = None) -> int:
         return _coverage(args)
     if args.command == "unresolved":
         return _unresolved(args)
+    if args.command == "search":
+        return _search(args)
     if args.command == "live":
         return _live(args)
     raise AssertionError(f"unhandled command: {args.command}")

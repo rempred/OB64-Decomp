@@ -1188,6 +1188,9 @@ def add_session_annotation(
     marker_type: str,
     session_id: str | None = None,
     root: Path | None = None,
+    connection: SessionConnection | None = None,
+    context_before: int = 256,
+    context_after: int = 256,
 ) -> dict[str, Any]:
     if marker_type not in {
         "stable-state",
@@ -1209,7 +1212,29 @@ def add_session_annotation(
         )
     finally:
         store.close_connection()
-    return {"sessionId": location.session_id, "markerId": marker_id, "markerType": marker_type}
+    context_result: dict[str, Any] = {
+        "armed": False,
+        "reason": "no bridge connection requested",
+    }
+    if connection is not None:
+        try:
+            with Pj64Client(
+                connection.host, connection.port, connection.timeout
+            ) as client:
+                context_result = client.arm_execution_context(
+                    location.session_id,
+                    marker_id,
+                    before=context_before,
+                    after=context_after,
+                )
+        except (OSError, RuntimeError, ValueError) as exc:
+            context_result = {"armed": False, "reason": str(exc)}
+    return {
+        "sessionId": location.session_id,
+        "markerId": marker_id,
+        "markerType": marker_type,
+        "executionContext": context_result,
+    }
 
 
 def verify_named_session(

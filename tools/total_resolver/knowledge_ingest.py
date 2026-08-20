@@ -17,8 +17,15 @@ from .knowledge import (
     EdgeObservation,
     FunctionPlacementObservation,
     InstructionObservation,
+    KnownActivityObservation,
+    MarkerContextWindowObservation,
+    MarkerExecutionContextRecord,
+    RegionLifetimeObservation,
+    SampledPcObservation,
+    SemanticMarkerObservation,
     SessionDelta,
     UnresolvedKnowledgeObservation,
+    compare_canonical_machine_facts,
     compare_knowledge_databases,
     create_knowledge_database,
     ingest_delta,
@@ -305,6 +312,8 @@ def build_session_delta(
                     function_id,
                     value.get("romOffset"),
                     str(value.get("mappingMethod") or "unresolved"),
+                    value.get("frame"),
+                    str(value.get("observationKind") or "native-exact-coverage"),
                 )
             )
             previous = value.get("previous")
@@ -340,6 +349,8 @@ def build_session_delta(
                     source_z64_offset=caller[1],
                     destination_function_id=function_id,
                     destination_z64_offset=value.get("romOffset"),
+                    frame=value.get("frame"),
+                    observation_kind="native-exact-instruction-transition",
                 )
             )
 
@@ -414,6 +425,194 @@ def build_session_delta(
                 )
             )
 
+        regions: list[RegionLifetimeObservation] = []
+        for value in product.regions:
+            source_identity = value.get("sourceIdentity")
+            source_z64_start = source_z64_end = None
+            if isinstance(source_identity, str) and source_identity.startswith("z64:"):
+                try:
+                    start_text, end_text = source_identity[4:].split("-", 1)
+                    source_z64_start = int(start_text, 16)
+                    source_z64_end = int(end_text, 16)
+                except (ValueError, TypeError):
+                    source_z64_start = source_z64_end = None
+            regions.append(
+                RegionLifetimeObservation(
+                    str(value["regionInstanceId"]),
+                    int(value["destinationPhysicalStart"]),
+                    int(value["destinationPhysicalEndExclusive"]),
+                    str(value.get("sourceKind") or "unknown"),
+                    str(source_identity) if isinstance(source_identity, str) else None,
+                    source_z64_start,
+                    source_z64_end,
+                    int(value["firstSequence"]),
+                    value.get("endSequenceExclusive"),
+                    value.get("firstFrame"),
+                    value.get("lastObservedFrame"),
+                    value.get("lastObservedSequence"),
+                    value.get("closureReason"),
+                    str(value.get("regionClass") or "unknown"),
+                    str(value.get("evidenceGrade") or "unresolved"),
+                    value.get("sourceLoaderEventId"),
+                    value.get("parentRegionInstanceId"),
+                )
+            )
+
+        sampled_pcs: list[SampledPcObservation] = []
+        for value in execution_values:
+            if value.get("observationKind") != "sampled-pc-context":
+                continue
+            function = value.get("function")
+            opcode_value = value.get("opcode")
+            try:
+                opcode = _integer(opcode_value, "sampled opcode")
+            except ValueError:
+                opcode = None
+            physical_value = value.get("physicalPc")
+            try:
+                physical_pc = _integer(physical_value, "sampled physical PC")
+            except ValueError:
+                physical_pc = None
+            sampled_pcs.append(
+                SampledPcObservation(
+                    str(value.get("executionObservationId") or f"sample:{len(sampled_pcs) + 1:08d}"),
+                    _integer(value.get("sequence"), "sample sequence"),
+                    value.get("bridgeSequence"),
+                    value.get("frame"),
+                    _integer(value.get("pc"), "sample live PC"),
+                    physical_pc,
+                    opcode,
+                    value.get("regionInstanceId"),
+                    int(function["functionId"]) if isinstance(function, Mapping) else None,
+                    value.get("romOffset"),
+                    str(value.get("status") or "unknown"),
+                    dict(value),
+                )
+            )
+
+        semantic_markers = tuple(
+            SemanticMarkerObservation(
+                int(row["marker_id"]),
+                str(row["marker_type"]),
+                str(row["marker_source"]),
+                str(row["confidence"]),
+                str(row["label"]),
+                None if row["note"] is None else str(row["note"]),
+                row["start_sequence"],
+                row["end_sequence"],
+                row["start_frame"],
+                row["end_frame"],
+                str(row["created_utc"]),
+            )
+            for row in capture.execute(
+                "SELECT * FROM semantic_marker ORDER BY marker_id"
+            )
+        )
+
+        activity_rows = list(
+            capture.execute(
+                "SELECT bridge_event_sequence,raw_payload_json FROM event_sequence "
+                "WHERE bridge_event_type='known-activity' AND ingestion_status='accepted' "
+                "ORDER BY sequence_id"
+            )
+        )
+        if len(activity_rows) > 1:
+            raise ValueError("capture contains more than one stop-time known-activity summary")
+        known_activity = None
+        if activity_rows:
+            activity_row = activity_rows[0]
+            payload = load_event_payload(capture, str(activity_row["raw_payload_json"]))
+            bridge_sequence = activity_row["bridge_event_sequence"]
+            if bridge_sequence is None:
+                raise ValueError("known-activity summary lacks its bridge sequence")
+            known_activity = KnownActivityObservation(
+                str(payload.get("frontierIdentity")),
+                _integer(payload.get("frontierFormatVersion"), "activity frontier format"),
+                int(bridge_sequence),
+                _integer(payload.get("instructionMaxOrdinal"), "instruction max ordinal"),
+                _integer(payload.get("instructionHitCount"), "instruction hit count"),
+                bytes.fromhex(str(payload.get("instructionHitBitmapHex"))),
+                _integer(payload.get("edgeMaxOrdinal"), "edge max ordinal"),
+                _integer(payload.get("edgeHitCount"), "edge hit count"),
+                bytes.fromhex(str(payload.get("edgeHitBitmapHex"))),
+                _integer(payload.get("dmaMaxOrdinal"), "DMA max ordinal"),
+                _integer(payload.get("dmaHitCount"), "DMA hit count"),
+                bytes.fromhex(str(payload.get("dmaHitBitmapHex"))),
+                str(payload.get("capturePhase")),
+            )
+
+        marker_context_windows: list[MarkerContextWindowObservation] = []
+        for context_row in capture.execute(
+            "SELECT bridge_event_type,bridge_event_sequence,raw_payload_json "
+            "FROM event_sequence WHERE bridge_event_type IN "
+            "('marker-execution-context','marker-execution-context-incomplete') "
+            "AND ingestion_status='accepted' ORDER BY sequence_id"
+        ):
+            payload = load_event_payload(capture, str(context_row["raw_payload_json"]))
+            if payload.get("markerSessionId") != product.session_id:
+                raise ValueError("marker execution context names a different session")
+            bridge_sequence = context_row["bridge_event_sequence"]
+            if bridge_sequence is None:
+                raise ValueError("marker execution context lacks a bridge sequence")
+            complete = context_row["bridge_event_type"] == "marker-execution-context"
+            records: list[MarkerExecutionContextRecord] = []
+            record_values = payload.get("records", ()) if complete else ()
+            for record in record_values:
+                if not isinstance(record, Mapping):
+                    raise ValueError("marker execution context record is malformed")
+                physical = record.get("physicalAddress")
+                previous_physical = record.get("previousPhysicalAddress")
+                records.append(
+                    MarkerExecutionContextRecord(
+                        _integer(record.get("localOrder"), "marker local order"),
+                        str(record.get("side")),
+                        record.get("frame"),
+                        _integer(record.get("pc"), "marker PC"),
+                        None
+                        if physical is None
+                        else _integer(physical, "marker physical address"),
+                        _integer(record.get("opcode"), "marker opcode"),
+                        record.get("previousValid") is True,
+                        _integer(record.get("previousPc"), "marker previous PC"),
+                        None
+                        if previous_physical is None
+                        else _integer(
+                            previous_physical, "marker previous physical address"
+                        ),
+                        _integer(
+                            record.get("previousOpcode"), "marker previous opcode"
+                        ),
+                    )
+                )
+            marker_context_windows.append(
+                MarkerContextWindowObservation(
+                    _integer(payload.get("markerId"), "marker context ID"),
+                    "complete" if complete else "incomplete",
+                    int(bridge_sequence),
+                    _integer(
+                        payload.get("requestedBeforeCount"),
+                        "marker requested-before count",
+                    ),
+                    _integer(
+                        payload.get("requestedAfterCount"),
+                        "marker requested-after count",
+                    ),
+                    _integer(payload.get("beforeCount"), "marker before count")
+                    if complete
+                    else 0,
+                    _integer(payload.get("afterCount"), "marker after count")
+                    if complete
+                    else 0,
+                    (
+                        "Native local execution order and VI frames are contextual, not "
+                        "canonical bridge ordering."
+                        if complete
+                        else "Capture stopped before the requested after-window completed."
+                    ),
+                    tuple(records),
+                )
+            )
+
         unresolved = list(generated_unresolved)
         for ordinal, value in enumerate(product.unresolved, 1):
             unresolved.append(
@@ -453,6 +652,15 @@ def build_session_delta(
             tuple(controllers),
             tuple(unresolved),
             contextual_counts,
+            tuple(regions),
+            tuple(sampled_pcs),
+            semantic_markers,
+            (
+                "Historical known execution suppressed by the persistent frontier cannot be recreated; "
+                "only emitted events and saved samples are retained.",
+            ),
+            known_activity,
+            tuple(marker_context_windows),
         )
     finally:
         capture.close()
@@ -699,7 +907,12 @@ def rebuild_knowledge_database(source: Path, output: Path) -> dict[str, Any]:
         )
 
     rebuilt_verification = verify_knowledge_database(output_path)
-    exact_equivalence = compare_knowledge_databases(source_path, output_path)
+    if int(meta["schemaVersion"]) == int(
+        knowledge_status(output_path)["schemaVersion"]
+    ):
+        exact_equivalence = compare_knowledge_databases(source_path, output_path)
+    else:
+        exact_equivalence = compare_canonical_machine_facts(source_path, output_path)
     equivalent = (
         rebuilt_verification["result"] == "PASS"
         and exact_equivalence["equivalent"]

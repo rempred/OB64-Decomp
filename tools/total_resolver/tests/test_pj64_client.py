@@ -45,6 +45,9 @@ class ScriptedTransport:
             "instructionCount": 0,
             "edgeCount": 0,
             "dmaCount": 0,
+            "instructionMaxOrdinal": 0,
+            "edgeMaxOrdinal": 0,
+            "dmaMaxOrdinal": 0,
             "nativeLoaded": False,
             "nativeRdramSize": None,
         }
@@ -113,11 +116,21 @@ class ScriptedTransport:
             _, _, identity, rom, encoded_path = line.split()
             path = Path(bytes.fromhex(encoded_path).decode("utf-16le"))
             data = path.read_bytes()
-            if data[:8] != b"OB64TRF3":
+            if data[:8] != b"OB64TRF4":
                 return {"ok": False, "error": "bad frontier magic"}
             _, _, identity_length, rom_length, instruction_count, edge_count, dma_count = (
                 struct.unpack_from("<IIIIQQQ", data, 8)
             )
+            offset = 8 + struct.calcsize("<IIIIQQQ") + identity_length + rom_length
+            instruction_ordinals = [
+                struct.unpack_from("<I", data, offset + index * 12)[0]
+                for index in range(instruction_count)
+            ]
+            offset += instruction_count * 12
+            edge_ordinals = [
+                struct.unpack_from("<I", data, offset + index * 20)[0]
+                for index in range(edge_count)
+            ]
             self.frontier.update(
                 loading=False,
                 committed=True,
@@ -127,6 +140,9 @@ class ScriptedTransport:
                 instructionCount=instruction_count,
                 edgeCount=edge_count,
                 dmaCount=dma_count,
+                instructionMaxOrdinal=max(instruction_ordinals, default=0),
+                edgeMaxOrdinal=max(edge_ordinals, default=0),
+                dmaMaxOrdinal=0,
                 nativeLoaded=True,
                 nativeRdramSize=RDRAM_SIZE,
             )
@@ -281,11 +297,12 @@ class ClientTests(unittest.TestCase):
             1,
             (FrontierPage(0x1000, bytes(bitmap)),),
             (
-                FrontierInstruction(0x1000, 0, 0x0C000050),
-                FrontierInstruction(0x1000, 1, 0x00000000),
+                FrontierInstruction(1, 0x1000, 0, 0x0C000050),
+                FrontierInstruction(2, 0x1000, 1, 0x00000000),
             ),
             (
                 FrontierEdge(
+                    1,
                     0x1000,
                     0,
                     0x0C000050,

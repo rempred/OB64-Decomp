@@ -29,13 +29,15 @@ use only the following command families:
 - `doctor` and read-only `pj64 health`/`pj64 status`;
 - `knowledge status` and `knowledge verify`;
 - `session status`; and
-- `explain`, `coverage`, and `unresolved`.
+- `explain`, `search`, `coverage`, and `unresolved`, including their read-only session/frame/
+  sequence, controller-context, marker-context, edge, opcode, and address filters.
 
 In particular, a querying agent must not run:
 
 - `session start` or `session stop`;
+- `session label`, `session mark`, or `session note`;
 - `knowledge ingest` or `knowledge import`;
-- `knowledge select` or `knowledge migrate-frontier`; or
+- `knowledge select`, `knowledge migrate-frontier`, or `knowledge migrate-schema3`; or
 - `knowledge init`, `knowledge rebuild`, capture recovery, product builders, or any other command
   that writes capture, knowledge, selection, or generated product state.
 
@@ -53,7 +55,7 @@ python -m tools.total_resolver session status
 
 `knowledge verify` must pass. A missing selected database is a setup decision; do not silently
 initialize or select a different database. A closed latest session is normal. An optional missing
-frozen R2 resolver appears as `SKIP` in `doctor` and does not invalidate schema 2.
+frozen R2 resolver appears as `SKIP` in `doctor` and does not invalidate schema 3.
 
 For this workstation, verify the external runtime with:
 
@@ -78,9 +80,19 @@ Prefer the supported command surface over ad hoc writes:
 ```text
 python -m tools.total_resolver explain func_XXXXXXXX
 python -m tools.total_resolver explain live:0x80123456 --session SESSION_ID --sequence SEQUENCE
+python -m tools.total_resolver search --function PARTIAL_NAME
+python -m tools.total_resolver search --physical 0x00123456 --opcode 0xXXXXXXXX
+python -m tools.total_resolver search --session SESSION_ID --frame-start 100 --frame-end 120
+python -m tools.total_resolver search --edge-from 0x00123456 --edge-to 0x00124568
+python -m tools.total_resolver search --marker-text "visible action" --controller
 python -m tools.total_resolver coverage
 python -m tools.total_resolver unresolved
 ```
+
+These commands open the selected knowledge database read-only and report a source/freshness
+manifest. They do not consult a generated Resolver unless `--legacy-resolver PATH` is supplied
+explicitly. Default output is bounded; request a named detail section with `--include`, or advance
+through a search with `--cursor`.
 
 Exact physical-address/opcode instructions, exact endpoint edges, and exact DMA destination bytes
 are machine facts. ROM/function mapping is byte-confirmed but remains `live-unreviewed` placement
@@ -129,8 +141,8 @@ mutation commands; recorder code must use `ObservationOnlyPj64Client`.
 
 ## Database-building agents only: compatibility and repair
 
-Live capture requires bridge protocol 0.12.0 and frontier format 3 exactly. Deterministic ledger
-replay also accepts already-ingested historical protocols 0.8.0, 0.9.0, 0.10.0, and 0.11.0.
+Live capture requires bridge protocol 0.13.0 and frontier format 4 exactly. Deterministic ledger
+replay also accepts already-ingested historical protocols 0.8.0 through 0.12.0.
 Protocol 0.7.x captures predate the accepted ordering/evidence contract and remain raw historical
 sessions only.
 
@@ -139,6 +151,7 @@ selected source:
 
 ```text
 python -m tools.total_resolver knowledge migrate-frontier --output NEW_DATABASE
+python -m tools.total_resolver knowledge migrate-schema3 --output NEW_DATABASE
 python -m tools.total_resolver knowledge rebuild --output NEW_DATABASE
 ```
 

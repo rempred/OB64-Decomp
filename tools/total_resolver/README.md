@@ -1,6 +1,6 @@
 # Total Resolver R3
 
-Status: **Persistent protocol 0.12 native delta and pre-ROM capture implemented; schema 2 selected**
+Status: **Schema-3 agent queries and protocol-0.13 compact activity capture implemented**
 
 Total Resolver is a research accelerator beside the exact-ROM build. It keeps static facts,
 runtime placement, exact execution, field hypotheses, and resource ancestry in separate evidence
@@ -25,12 +25,14 @@ python -m tools.total_resolver knowledge status
 python -m tools.total_resolver knowledge verify
 python -m tools.total_resolver session status
 python -m tools.total_resolver explain ...
+python -m tools.total_resolver search ...
 python -m tools.total_resolver coverage
 python -m tools.total_resolver unresolved
 ```
 
-A querying agent must not run `session start`, `session stop`, `knowledge ingest`, `knowledge
-import`, `knowledge select`, or `knowledge migrate-frontier`. It must likewise avoid knowledge
+A querying agent must not run `session start`, `session stop`, `session label`, `session mark`,
+`session note`, `knowledge ingest`, `knowledge import`, `knowledge select`, `knowledge
+migrate-frontier`, or `knowledge migrate-schema3`. It must likewise avoid knowledge
 initialization/rebuild and other commands that write capture, database, selection, or generated
 product state. Those operations belong only to an agent explicitly assigned to build or maintain
 the database. A general decompilation, investigation, or resolver-query task does not grant that
@@ -41,7 +43,8 @@ and must never use computer control to launch Project64.
 
 ## Bridge contract
 
-The repo-local client requires Project64 bridge protocol `0.12.0` exactly and fails closed on a
+The repo-local client requires Project64 bridge protocol `0.13.0` and frontier format 4 exactly
+and fails closed on a
 version or capability mismatch. The bridge supplies:
 
 - one emulator-side monotonic sequence across watch, PI DMA, execution-trace, and controller-input
@@ -53,7 +56,11 @@ version or capability mismatch. The bridge supplies:
 - generation-aware instruction/edge observations keyed by physical address and exact opcode;
 - transitions in the effective Player 1 input returned to the game; and
 - a binary structural frontier loaded directly into native Project64, containing exact opcode,
-  exact-endpoint edge, and exact event-time DMA keys;
+  exact-endpoint edge, and exact event-time DMA keys plus stable fact ordinals;
+- one stop-time instruction, edge, and DMA activity bitmap, recording which already-known facts
+  occurred in the session without restoring their repeated event streams;
+- an optional bounded native PC/edge ring whose before/after window is persisted when a human
+  marker is created;
 - a one-time native copy of exactly 4 MiB of RDRAM before the first captured instruction; and
 - an exact lower-4-MiB vanilla-OB64 capture window. Project64 may allocate 4 or 8 MiB; the upper
   4 MiB is ignored by execution, DMA, snapshot, and database paths; and
@@ -123,7 +130,8 @@ JavaScript batch-loading path is not used.
 Migration and repair never overwrite accepted historical products:
 
 ```text
-python -m tools.total_resolver knowledge migrate-frontier --output build/total-resolver/knowledge/frontier-v3.sqlite --select
+python -m tools.total_resolver knowledge migrate-schema3 --output build/total-resolver/knowledge/total-resolver-v3.sqlite
+python -m tools.total_resolver knowledge migrate-frontier --output build/total-resolver/knowledge/frontier-v4.sqlite --select
 python -m tools.total_resolver knowledge import --sessions-root build/total-resolver/sessions
 python -m tools.total_resolver knowledge rebuild --output build/total-resolver/knowledge/rebuilt.sqlite
 python -m tools.total_resolver knowledge benchmark
@@ -135,17 +143,61 @@ diagnostic references, the historical frontier-format label, and the regenerated
 JSON are excluded because they are rebuild bookkeeping rather than machine facts. The benchmark
 uses a fake emulator around the production bridge script; it never launches or controls Project64.
 
-Ledger replay accepts protocols 0.8.0 through 0.11.0 as historical inputs plus the current 0.12.0
+Ledger replay accepts protocols 0.8.0 through 0.12.0 as historical inputs plus the current 0.13.0
 protocol. Protocol 0.7.x sessions remain available as raw historical captures but are not admitted
 to persistent knowledge because they predate the accepted ordering and payload contract. Live
 bridge compatibility remains exact-version only.
 
-`migrate-frontier` copies a format-2 schema-2 database beside its source, changes only protocol/
-frontier metadata, verifies all facts and materializations, then selects it only when `--select`
-is supplied. The prior database remains untouched.
+`migrate-schema3` replays the declared ledger into a new database and compares the schema-2
+canonical fact foundation exactly before selection. `migrate-frontier` copies a supported database
+beside its source, installs format 4 and the additive compact-activity/marker-context tables,
+verifies it, then selects it only when `--select` is supplied. The prior database remains
+untouched.
 
 The frozen R2 resolver is historical reference only. If its old SQLite copy is absent, `doctor`
-reports `SKIP` rather than blocking the schema-2 workflow; it is never used to seed dynamic facts.
+reports `SKIP` rather than blocking the schema-3 workflow; it is never used to seed dynamic facts.
+
+## Querying the selected knowledge database
+
+`explain`, `search`, `coverage`, and `unresolved` use one read-only `ResolverContext`. Its dynamic
+source is the database named by `build/total-resolver/knowledge/selected.json`; the frozen static,
+resource, and field products are opened as separate read-only evidence lanes. Every result includes
+the selected database identity, ledger frontier, session count, frozen-source identities, and a
+freshness statement. A generated historical Resolver can answer only when the caller explicitly
+passes `--legacy-resolver PATH`; passing the wrong database type fails closed.
+
+Typical bounded searches are:
+
+```text
+python -m tools.total_resolver search --function 0022b1
+python -m tools.total_resolver search --rom 0x0022B6D0
+python -m tools.total_resolver search --live 0x801E8400
+python -m tools.total_resolver search --physical 0x001E8400 --opcode 0x24070002
+python -m tools.total_resolver search --bytes 24070002
+python -m tools.total_resolver search --session SESSION_ID --frame-start 5886 --frame-end 5886 --sequence-start 7271 --sequence-end 7271
+python -m tools.total_resolver search --edge-from 0x001E83FC --edge-to 0x001E8400
+python -m tools.total_resolver search --unresolved-kind exact-execution-placement-or-generation-unresolved
+python -m tools.total_resolver search --marker-text persuasion
+python -m tools.total_resolver search --session SESSION_ID --controller --buttons 0x80000000
+```
+
+Default results contain counts and a small representative preview. Use `--include SECTION` with
+`explain` for a detailed lane, and `--limit`/`--cursor` for bounded pagination. Unresolved execution
+results include the exact physical/opcode fact, byte-confirmed global and contemporaneous
+candidates, the reason each candidate exists, contradictions or missing evidence, adjacent mapped
+edges, and the additional observation needed to resolve it.
+
+Schema 3 retains the session catalog, exact instruction/edge frame and bridge-sequence witnesses,
+region lifetime intervals, sampled PCs, semantic markers, typed unresolved fields, selected-source
+registry, and mapping-candidate evidence. New placements and residency evidence enqueue only
+overlapping physical ranges for candidate recalculation. Candidate states are deliberately
+separate: exact machine fact, byte-confirmed global candidate, contemporaneous candidate, uniquely
+resolved live mapping, and ambiguous/conflicting mapping. Exact opcode equality makes a global
+placement useful and searchable; it does not promote it without contemporaneous evidence.
+
+Historical novelty filtering means a schema-3 replay can recover emitted events and saved samples,
+but cannot recreate already-known instructions that older sessions suppressed. The limitation is
+recorded per session rather than inferred away.
 
 ## Other common commands
 
@@ -173,6 +225,12 @@ python -m tools.total_resolver session dedupe SESSION_ID
 Labels, marks, and notes are optional context. The recorder owns and removes only its own watches.
 Its observation-only client facade has no control injection, RAM write, pause/resume, stepping,
 state load/save, ROM lifecycle, global-clear, or memory-dump methods.
+
+On protocol 0.13, a label/mark/note also requests a bounded native execution-context window by
+default. The ring remains entirely in emulator memory while ordinary execution occurs. Only the
+requested before/after window crosses the bridge, and an incomplete window is explicitly marked if
+capture stops before its after side fills. This context has native local order and frames; it is
+not promoted to canonical bridge ordering.
 
 ## Capture growth and exact deduplication
 
@@ -209,6 +267,13 @@ placement/content fact while keeping compact per-session witness counts. Large D
 CRC32 bucket followed by exact BLOB comparison. These contextual rows, the 4 MiB startup census,
 and one ledger row mean a repeated session is small, not literally zero bytes.
 
+Known frontier facts have stable ordinals in format 4. Native Project64 sets ordinal hit bits while
+it performs the same exact instruction, edge, and DMA comparisons. At stop it emits exactly one
+compact three-bitmap summary. This restores session-level answers such as “the already-known
+function ran in session X” without sending each repeated instruction to JavaScript or SQLite. The
+bitmap proves membership only; detailed event correlation still requires a newly emitted fact,
+saved sample, controller transition, or requested marker window.
+
 `session dedupe` reports staging-database byte savings without changing data. Closed raw sessions
 are not automatically deleted. The selected knowledge database is the cross-session shared fact
 store; raw staging databases remain isolated for crash safety.
@@ -222,6 +287,8 @@ python -m tools.total_resolver resolver build
 python -m tools.total_resolver resolver verify build/total-resolver/products/resolver-r3
 python -m tools.total_resolver explain func_00043d1c
 python -m tools.total_resolver explain live:0x80197B70 --session SESSION_ID --sequence 200
+python -m tools.total_resolver search --function PARTIAL_NAME
+python -m tools.total_resolver search --physical 0x00197B70 --opcode 0xXXXXXXXX
 python -m tools.total_resolver coverage
 python -m tools.total_resolver unresolved
 ```
@@ -266,6 +333,8 @@ destination-byte capture, page-read-free structural execution coverage, effectiv
 transitions, forced fingerprint collisions, persistent idempotence and rollback,
 known-prefix/new-tail and new-caller replays, relocated/changed code, unresolved fallback,
 opcode-mismatched mapping rejection, incremental/full-rebuild exact-row equivalence,
-mutation-surface exclusion, raw-session recovery,
+schema-type rejection, immediate selected-knowledge queries, bounded indexed search, candidate
+reconsideration, compact known-activity membership, marker-ring context, mutation-surface exclusion,
+raw-session recovery,
 deterministic products, contextual ambiguity, coverage conservation, and offline live-bundle
 replay.

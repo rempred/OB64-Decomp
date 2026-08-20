@@ -24,8 +24,8 @@ class InventoryTests(unittest.TestCase):
             inventory["project64"]["bridgeReference"]["role"], "historical-reference"
         )
         self.assertEqual(inventory["legacyResolver"]["role"], "historical-reference")
-        self.assertEqual(inventory["project64"]["activeBridge"]["protocolVersion"], "0.12.0")
-        self.assertEqual(inventory["project64"]["activeBridge"]["frontierFormatVersion"], 3)
+        self.assertEqual(inventory["project64"]["activeBridge"]["protocolVersion"], "0.13.0")
+        self.assertEqual(inventory["project64"]["activeBridge"]["frontierFormatVersion"], 4)
         self.assertEqual(inventory["project64"]["activeBridge"]["queueModel"], "unified")
         native_sources = set(
             inventory["project64"]["activeNativeRuntime"]["sourceFiles"]

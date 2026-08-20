@@ -9,9 +9,12 @@ import sqlite3
 from typing import Any
 
 from .addressing import RDRAM_SIZE
+from .bridge_events import _validate_trace_or_input_event
 from .capture_db import canonical_json, load_event_payload
 from .configuration import ConfigurationRegion, machine_configuration_identity
 from .contracts import RegionClass
+from .protocol import BRIDGE_PROTOCOL_VERSION
+from .protocol import BridgeProtocolError
 from .schema import open_capture_database, verify_capture_schema
 
 
@@ -88,11 +91,14 @@ def _verify_events(
     trace_pages: dict[int, tuple[int, bytes]] = {}
     trace_generations: set[tuple[int, int, int]] = set()
     strict_trace_generations = session["bridge_version"] == "0.9.0"
-    structural_trace = session["bridge_version"] in {"0.10.0", "0.11.0", "0.12.0"}
+    structural_trace = session["bridge_version"] in {
+        "0.10.0", "0.11.0", "0.12.0", BRIDGE_PROTOCOL_VERSION
+    }
     pair_ok = True
     dma_starts: dict[int, dict[str, Any]] = {}
     baseline_sequences: list[int] = []
     execution_sequences: list[int] = []
+    activity_sequences: list[int] = []
     require_dma_pairs = session["bridge_version"] in {
         "0.7.1", "0.7.2", "0.8.0", "0.9.0", "0.10.0"
     }
@@ -172,6 +178,17 @@ def _verify_events(
             baseline_sequences.append(int(bridge_sequence))
         if event_type == "exec-coverage" and bridge_sequence is not None:
             execution_sequences.append(int(bridge_sequence))
+        if event_type == "known-activity" and bridge_sequence is not None:
+            activity_sequences.append(int(bridge_sequence))
+        if event_type in {
+            "known-activity",
+            "marker-execution-context",
+            "marker-execution-context-incomplete",
+        }:
+            try:
+                _validate_trace_or_input_event(value, event_type)
+            except BridgeProtocolError:
+                trace_reference_ok = False
         is_dma = event_type == "dma-complete"
         if event_type == "dma-start" and is_rom_loader_dma(value):
             if bridge_sequence is None:
@@ -441,7 +458,9 @@ def _verify_events(
         content_ok,
         "exact stored bytes, lengths, fields, encodings, and event phases",
     )
-    if capture_version >= 4 and session["bridge_version"] in {"0.11.0", "0.12.0"}:
+    if capture_version >= 4 and session["bridge_version"] in {
+        "0.11.0", "0.12.0", BRIDGE_PROTOCOL_VERSION
+    }:
         baseline_ok = len(baseline_sequences) == 1 and (
             not execution_sequences or baseline_sequences[0] < min(execution_sequences)
         )
@@ -457,6 +476,13 @@ def _verify_events(
         trace_reference_ok,
         f"{len(trace_pages)} exact page identity record(s)",
     )
+    if session["bridge_version"] == BRIDGE_PROTOCOL_VERSION:
+        _check(
+            checks,
+            "stop-time-known-activity-summary",
+            len(activity_sequences) == 1,
+            f"{len(activity_sequences)} accepted summary event(s)",
+        )
     if require_dma_pairs:
         pair_ok = pair_ok and not dma_starts
         _check(

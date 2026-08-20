@@ -90,7 +90,7 @@ CREATE TABLE instruction_fact (
     observation_count INTEGER NOT NULL,
     discovery_session_count INTEGER NOT NULL,
     UNIQUE (physical_address, opcode_bytes),
-    CHECK (physical_address BETWEEN 0 AND 8388604),
+    CHECK (physical_address BETWEEN 0 AND 4194300),
     CHECK ((physical_address & 3) = 0),
     CHECK (opcode_u32 BETWEEN 0 AND 4294967295),
     CHECK (length(opcode_bytes) = 4),

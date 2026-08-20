@@ -722,7 +722,7 @@ class Pj64CaptureRecorder:
                 address_end_exclusive=start + RDRAM_SIZE,
                 label=f"Native exact execution coverage ({name.upper()})",
                 reason="Preserve new exact instruction and edge coverage without per-hit queue growth",
-                definition_source=f"total-resolver:bridge-{BRIDGE_PROTOCOL_VERSION}-native-frontier-v3",
+                definition_source=f"total-resolver:bridge-{BRIDGE_PROTOCOL_VERSION}-native-frontier-v4",
                 interpreter_required=True,
                 interpreter_verified=True,
                 ownership_scope="recorder-owned",
@@ -1251,12 +1251,14 @@ class Pj64CaptureRecorder:
         if self._cold_boot_armed:
             self.client.cold_boot_cancel()
             self._cold_boot_armed = False
-        if self._capture_enabled:
-            self.client.capture_stop()
-            self._capture_enabled = False
         if self._dma_enabled:
             self.client.dma_stop()
             self._dma_enabled = False
+        if self._capture_enabled:
+            # DMA is disabled first so the native stop-time activity bitmap is
+            # a closed summary of all three novelty lanes.
+            self.client.capture_stop()
+            self._capture_enabled = False
         for bridge_watch_id in reversed(self._installed_bridge_watch_ids):
             self.client.remove_watch(bridge_watch_id)
         self._installed_bridge_watch_ids.clear()
