@@ -1284,7 +1284,7 @@ def _verify_database(
                 "SELECT COUNT(*) FROM placement WHERE byte_size<=0 "
                 "OR source_z64_end_exclusive<=source_z64_start "
                 "OR destination_physical_end_exclusive<=destination_physical_start "
-                "OR destination_physical_end_exclusive>8388608"
+                "OR destination_physical_end_exclusive>4194304"
             ).fetchone()[0]
         )
         bad_execution_claims = int(

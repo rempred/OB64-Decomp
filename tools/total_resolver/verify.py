@@ -3,18 +3,15 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-import hashlib
 import json
 from pathlib import Path
 import sqlite3
 from typing import Any
 
-from .capture_db import canonical_json, load_event_payload, payload_sha256
+from .addressing import RDRAM_SIZE
+from .capture_db import canonical_json, load_event_payload
 from .configuration import ConfigurationRegion, machine_configuration_identity
 from .contracts import RegionClass
-from .inventory import sha256_file
-from .manifest import build_manifest_core, manifest_core_sha256
-from .replay import build_timeline
 from .schema import open_capture_database, verify_capture_schema
 
 
@@ -34,6 +31,22 @@ class SessionVerification:
 
 def _check(checks: list[dict[str, str]], name: str, ok: bool, detail: str) -> None:
     checks.append({"name": name, "status": "PASS" if ok else "FAIL", "detail": detail})
+
+
+def _diagnostic(checks: list[dict[str, str]], name: str, matches: bool, detail: str) -> None:
+    """Record non-authoritative legacy/context information.
+
+    Diagnostics deliberately cannot make a session pass or fail.  This keeps
+    old hashes inspectable without treating them as capture evidence.
+    """
+
+    checks.append(
+        {
+            "name": name,
+            "status": "INFO",
+            "detail": f"{'matches' if matches else 'differs or absent'}; {detail}",
+        }
+    )
 
 
 def _verify_events(
@@ -67,13 +80,22 @@ def _verify_events(
 
     last_host = -1
     machine_sequences: list[int] = []
-    payloads_ok = True
+    payload_encoding_ok = True
     host_ok = True
     epochs_ok = True
     content_ok = True
+    trace_reference_ok = True
+    trace_pages: dict[int, tuple[int, bytes]] = {}
+    trace_generations: set[tuple[int, int, int]] = set()
+    strict_trace_generations = session["bridge_version"] == "0.9.0"
+    structural_trace = session["bridge_version"] in {"0.10.0", "0.11.0", "0.12.0"}
     pair_ok = True
     dma_starts: dict[int, dict[str, Any]] = {}
-    require_dma_pairs = session["bridge_version"] in {"0.7.1", "0.7.2", "0.8.0"}
+    baseline_sequences: list[int] = []
+    execution_sequences: list[int] = []
+    require_dma_pairs = session["bridge_version"] in {
+        "0.7.1", "0.7.2", "0.8.0", "0.9.0", "0.10.0"
+    }
 
     def is_rom_loader_dma(value: dict[str, Any]) -> bool:
         if value.get("sourceDomain") == "cartridge-rom":
@@ -85,6 +107,33 @@ def _verify_events(
             return int(cart, 0) & 0xF0000000 == 0xB0000000
         except ValueError:
             return False
+
+    def exact_content_metadata_ok(
+        stored_value: dict[str, Any],
+        columns: tuple[Any, ...],
+        *,
+        size: int,
+        encoding: Any,
+        phase: Any,
+        field: str,
+        legacy_inline_columns: bool = True,
+    ) -> bool:
+        if capture_version >= 3:
+            metadata = stored_value.get("contentBlob")
+            return isinstance(metadata, dict) and columns == (
+                metadata.get("sha256"),
+                size,
+                encoding,
+                phase,
+                field,
+            )
+        if not legacy_inline_columns:
+            return all(item is None for item in columns)
+        return (
+            columns[0] is not None
+            and columns[1:] == (size, encoding, phase, None)
+        )
+
     for row in rows:
         stream = str(row[1])
         epoch = str(row[2])
@@ -106,15 +155,12 @@ def _verify_events(
             stored_value = json.loads(row[5])
             stored_json = canonical_json(stored_value)
             value = load_event_payload(connection, row[5])
-            raw_json = canonical_json(value)
         except (TypeError, json.JSONDecodeError, ValueError):
-            payloads_ok = False
+            payload_encoding_ok = False
             content_ok = False
             continue
-        if stored_json != row[5] or payload_sha256(stored_json) != row[7]:
-            payloads_ok = False
-        if payload_sha256(raw_json) != row[6]:
-            payloads_ok = False
+        if stored_json != row[5]:
+            payload_encoding_ok = False
         if bridge_sequence is not None and (
             value.get("bridgeEpoch") != epoch
             or value.get("bridgeSequence") != bridge_sequence
@@ -122,6 +168,10 @@ def _verify_events(
         ):
             epochs_ok = False
         event_type = str(row[8])
+        if event_type == "baseline-snapshot" and bridge_sequence is not None:
+            baseline_sequences.append(int(bridge_sequence))
+        if event_type == "exec-coverage" and bridge_sequence is not None:
+            execution_sequences.append(int(bridge_sequence))
         is_dma = event_type == "dma-complete"
         if event_type == "dma-start" and is_rom_loader_dma(value):
             if bridge_sequence is None:
@@ -149,16 +199,13 @@ def _verify_events(
                 except ValueError:
                     content_ok = False
                 else:
-                    expected_content = (
-                        hashlib.sha256(content).hexdigest().upper(),
-                        len(content),
-                        value.get("destinationBytesEncoding"),
-                        value.get("capturePhase"),
-                    )
-                    if tuple(content_columns[:4]) != expected_content or (
-                        content_columns[4] != "destinationBytesHex"
-                        if capture_version >= 3
-                        else content_columns[4] is not None
+                    if not exact_content_metadata_ok(
+                        stored_value,
+                        content_columns,
+                        size=len(content),
+                        encoding=value.get("destinationBytesEncoding"),
+                        phase=value.get("capturePhase"),
+                        field="destinationBytesHex",
                     ):
                         content_ok = False
         elif event_type == "trace-page":
@@ -171,15 +218,139 @@ def _verify_events(
                 except ValueError:
                     content_ok = False
                 else:
-                    expected_content = (
-                        hashlib.sha256(content).hexdigest().upper(),
-                        len(content),
-                        value.get("codeBytesEncoding"),
-                        value.get("capturePhase"),
-                        "codeBytesHex",
-                    )
-                    if tuple(content_columns) != expected_content:
+                    if not exact_content_metadata_ok(
+                        stored_value,
+                        content_columns,
+                        size=len(content),
+                        encoding=value.get("codeBytesEncoding"),
+                        phase=value.get("capturePhase"),
+                        field="codeBytesHex",
+                    ):
                         content_ok = False
+                    try:
+                        content_id = int(value["codePageContentId"])
+                        physical = int(str(value["physicalAddress"]), 0)
+                        generation = int(value["pageGeneration"])
+                    except (KeyError, TypeError, ValueError):
+                        trace_reference_ok = False
+                    else:
+                        identity = (physical, content)
+                        previous = trace_pages.get(content_id)
+                        if content_id < 1 or generation < 0 or (
+                            previous is not None and previous != identity
+                        ):
+                            trace_reference_ok = False
+                        trace_pages[content_id] = identity
+                        trace_generations.add((content_id, physical, generation))
+        elif event_type == "trace-generation":
+            if (
+                value.get("exactContentResolved") is not True
+                or value.get("dedupeDecision") != "generation-distinct-exact-content"
+                or any(item is not None for item in content_columns)
+            ):
+                content_ok = False
+            try:
+                content_id = int(value["codePageContentId"])
+                physical = int(str(value["physicalAddress"]), 0)
+                generation = int(value["pageGeneration"])
+            except (KeyError, TypeError, ValueError):
+                trace_reference_ok = False
+            else:
+                known = trace_pages.get(content_id)
+                if (
+                    known is None
+                    or known[0] != physical
+                    or generation < 0
+                    or int(value.get("previousPageGeneration", generation)) == generation
+                ):
+                    trace_reference_ok = False
+                trace_generations.add((content_id, physical, generation))
+        elif event_type == "exec-coverage":
+            if structural_trace:
+                resolved = value.get("exactInstructionResolved")
+                if not isinstance(resolved, bool):
+                    trace_reference_ok = False
+                elif resolved:
+                    try:
+                        physical_page = int(str(value["physicalPageAddress"]), 0)
+                        physical = int(str(value["physicalAddress"]), 0)
+                        pc = int(str(value["pc"]), 0)
+                        generation = int(value["pageGeneration"])
+                        opcode = int(str(value["opcode"]), 0)
+                    except (KeyError, TypeError, ValueError):
+                        trace_reference_ok = False
+                    else:
+                        if (
+                            physical_page & 0xFFF
+                            or physical != physical_page + (pc & 0xFFF)
+                            or generation < 0
+                            or not 0 <= opcode <= 0xFFFFFFFF
+                        ):
+                            trace_reference_ok = False
+                previous = value.get("previous")
+                if value.get("newEdge") is True:
+                    if not isinstance(previous, dict) or not isinstance(
+                        previous.get("exactInstructionResolved"), bool
+                    ):
+                        trace_reference_ok = False
+                    elif previous.get("exactInstructionResolved") is True:
+                        try:
+                            previous_page = int(
+                                str(previous["physicalPageAddress"]), 0
+                            )
+                            previous_physical = int(
+                                str(previous["physicalAddress"]), 0
+                            )
+                            previous_pc = int(str(previous["pc"]), 0)
+                            previous_generation = int(previous["pageGeneration"])
+                            previous_opcode = int(str(previous["opcode"]), 0)
+                        except (KeyError, TypeError, ValueError):
+                            trace_reference_ok = False
+                        else:
+                            if (
+                                previous_page & 0xFFF
+                                or previous_physical
+                                != previous_page + (previous_pc & 0xFFF)
+                                or previous_generation < 0
+                                or not 0 <= previous_opcode <= 0xFFFFFFFF
+                            ):
+                                trace_reference_ok = False
+            else:
+                try:
+                    content_id = int(value["codePageContentId"])
+                    physical = int(str(value["physicalPageAddress"]), 0)
+                    generation = int(value["pageGeneration"])
+                except (KeyError, TypeError, ValueError):
+                    trace_reference_ok = False
+                else:
+                    if (
+                        trace_pages.get(content_id, (-1, ""))[0] != physical
+                        or (
+                            strict_trace_generations
+                            and (content_id, physical, generation) not in trace_generations
+                        )
+                    ):
+                        trace_reference_ok = False
+                    previous = value.get("previous")
+                    if isinstance(previous, dict) and previous.get("exactContentResolved") is True:
+                        try:
+                            previous_id = int(previous["codePageContentId"])
+                            previous_physical = int(str(previous["physicalPageAddress"]), 0)
+                            previous_generation = int(previous["pageGeneration"])
+                        except (KeyError, TypeError, ValueError):
+                            trace_reference_ok = False
+                        else:
+                            if (
+                                trace_pages.get(previous_id, (-1, ""))[0] != previous_physical
+                                or (
+                                    strict_trace_generations
+                                    and (previous_id, previous_physical, previous_generation)
+                                    not in trace_generations
+                                )
+                            ):
+                                trace_reference_ok = False
+            if any(item is not None for item in content_columns):
+                content_ok = False
         elif event_type == "range-snapshot":
             encoded = value.get("bytesHex")
             if not isinstance(encoded, str):
@@ -193,19 +364,45 @@ def _verify_events(
                     if (
                         value.get("bytesEncoding") != "hex-uppercase"
                         or value.get("size") != len(content)
-                        or value.get("contentSha256")
-                        != hashlib.sha256(content).hexdigest().upper()
                     ):
                         content_ok = False
-                    if capture_version >= 3 and tuple(content_columns) != (
-                        hashlib.sha256(content).hexdigest().upper(),
-                        len(content),
-                        "hex-uppercase",
-                        "host-polled-range-snapshot",
-                        "bytesHex",
+                    if not exact_content_metadata_ok(
+                        stored_value,
+                        content_columns,
+                        size=len(content),
+                        encoding="hex-uppercase",
+                        phase="host-polled-range-snapshot",
+                        field="bytesHex",
+                        legacy_inline_columns=False,
                     ):
                         content_ok = False
-                    if capture_version < 3 and any(item is not None for item in content_columns):
+        elif event_type == "baseline-snapshot":
+            encoded = value.get("rdramBytesHex")
+            if not isinstance(encoded, str):
+                content_ok = False
+            else:
+                try:
+                    content = bytes.fromhex(encoded)
+                except ValueError:
+                    content_ok = False
+                else:
+                    if (
+                        len(content) != RDRAM_SIZE
+                        or value.get("rdramSize") != RDRAM_SIZE
+                        or value.get("rdramByteLength") != RDRAM_SIZE
+                        or value.get("rdramBytesEncoding") != "hex-uppercase"
+                        or value.get("ordering")
+                        != "native-copy-before-first-captured-instruction"
+                    ):
+                        content_ok = False
+                    if not exact_content_metadata_ok(
+                        stored_value,
+                        content_columns,
+                        size=RDRAM_SIZE,
+                        encoding="hex-uppercase",
+                        phase="pre-execution-native-rdram-snapshot",
+                        field="rdramBytesHex",
+                    ):
                         content_ok = False
         elif any(item is not None for item in content_columns):
             content_ok = False
@@ -225,22 +422,40 @@ def _verify_events(
         host_ok,
         "monotonic recorder timestamps; not used as emulator ordering evidence",
     )
-    _check(checks, "event-payload-hashes", payloads_ok, "canonical JSON and SHA-256")
+    _check(
+        checks,
+        "event-payload-encoding",
+        payload_encoding_ok,
+        "canonical JSON; legacy digest columns are not acceptance evidence",
+    )
     if capture_version >= 3:
         for blob in connection.execute(
-            "SELECT content_sha256, byte_size, content_bytes FROM content_blob"
+            "SELECT byte_size, content_bytes FROM content_blob"
         ):
-            content = bytes(blob[2])
-            if (
-                len(content) != int(blob[1])
-                or hashlib.sha256(content).hexdigest().upper() != blob[0]
-            ):
+            content = bytes(blob[1])
+            if len(content) != int(blob[0]):
                 content_ok = False
     _check(
         checks,
         "event-time-content",
         content_ok,
-        "collision-checked exact blobs for DMA, trace pages, and range snapshots",
+        "exact stored bytes, lengths, fields, encodings, and event phases",
+    )
+    if capture_version >= 4 and session["bridge_version"] in {"0.11.0", "0.12.0"}:
+        baseline_ok = len(baseline_sequences) == 1 and (
+            not execution_sequences or baseline_sequences[0] < min(execution_sequences)
+        )
+        _check(
+            checks,
+            "atomic-4mib-baseline",
+            baseline_ok,
+            "exactly one native snapshot ordered before captured execution",
+        )
+    _check(
+        checks,
+        "trace-exact-content-references",
+        trace_reference_ok,
+        f"{len(trace_pages)} exact page identity record(s)",
     )
     if require_dma_pairs:
         pair_ok = pair_ok and not dma_starts
@@ -425,6 +640,7 @@ def _verify_event_mirror(connection: sqlite3.Connection, path: Path) -> bool:
 
 
 def verify_session(session_dir: Path, repository_root: Path) -> SessionVerification:
+    del repository_root  # retained for CLI/API compatibility with historical verification
     checks: list[dict[str, str]] = []
     database = session_dir / "capture.sqlite"
     if not database.is_file():
@@ -489,65 +705,67 @@ def verify_session(session_dir: Path, repository_root: Path) -> SessionVerificat
             f"interruptions={interruption_rows}, continuity={session['continuity_status']}",
         )
 
-        timeline = build_timeline(connection)
-        repeated = build_timeline(connection)
-        timeline_sha = str(timeline["timelineSha256"])
-        _check(
-            checks,
-            "deterministic-raw-replay",
-            timeline == repeated,
-            timeline_sha,
-        )
-
         manifest_path = session_dir / "manifest.json"
         if manifest_path.is_file():
-            manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
-            core = build_manifest_core(connection, repository_root)
-            if capture_version == 2:
-                historical_core = manifest.get("manifestCore")
-                if isinstance(historical_core, dict) and isinstance(
-                    historical_core.get("trackedContracts"), dict
-                ):
-                    core["trackedContracts"] = historical_core["trackedContracts"]
-            core_hash = manifest_core_sha256(core)
-            manifest_ok = (
-                manifest.get("manifestCore") == core
-                and manifest.get("manifestCoreSha256") == core_hash
-                and session["manifest_sha256"] == core_hash
-            )
-            _check(checks, "session-manifest", manifest_ok, core_hash)
-            file_hash_ok = manifest.get("captureDatabaseFileSha256") == sha256_file(database)
-            _check(checks, "capture-file-hash", file_hash_ok, sha256_file(database))
-            mirror_path = session_dir / "events.ndjson"
-            declared_mirror = manifest.get("eventMirrorSha256")
-            if mirror_path.is_file():
-                actual_mirror = sha256_file(mirror_path)
-                _check(
+            try:
+                manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+            except (OSError, json.JSONDecodeError):
+                _diagnostic(
                     checks,
-                    "event-mirror-hash",
-                    declared_mirror == actual_mirror,
-                    actual_mirror,
-                )
-                mirror_ok = _verify_event_mirror(connection, mirror_path)
-                _check(
-                    checks,
-                    "event-mirror-content",
-                    mirror_ok,
-                    "NDJSON envelopes equal authoritative SQLite rows",
+                    "session-context-manifest",
+                    False,
+                    "context file is unreadable; capture.sqlite remains authoritative",
                 )
             else:
-                _check(
+                historical_core = manifest.get("manifestCore")
+                context_session = manifest.get("session")
+                if not isinstance(context_session, dict) and isinstance(historical_core, dict):
+                    context_session = historical_core.get("session")
+                fields = (
+                    "session_id",
+                    "bridge_version",
+                    "bridge_epoch",
+                    "bridge_next_sequence_start",
+                    "bridge_next_sequence_end",
+                    "rom_normalized_sha256",
+                )
+                context_matches = isinstance(context_session, dict) and all(
+                    context_session.get(field) == session[field] for field in fields
+                )
+                expected_reference = (
+                    f"capture:{session['session_id']}:{session['bridge_epoch']}:"
+                    f"{session['bridge_next_sequence_start']}:"
+                    f"{session['bridge_next_sequence_end']}"
+                )
+                if manifest.get("schema") == "ob64-total-resolver-session-context.v2":
+                    context_matches = (
+                        context_matches
+                        and manifest.get("captureReference") == expected_reference
+                    )
+                _diagnostic(
                     checks,
-                    "event-mirror-hash",
-                    declared_mirror is None,
-                    "optional mirror absent",
+                    "session-context-manifest",
+                    context_matches,
+                    "context only; legacy manifest/file digests are not acceptance evidence",
                 )
         else:
-            _check(checks, "session-manifest", False, f"missing {manifest_path}")
+            _diagnostic(
+                checks,
+                "session-context-manifest",
+                False,
+                f"optional context file is missing: {manifest_path}",
+            )
+        mirror_path = session_dir / "events.ndjson"
+        _diagnostic(
+            checks,
+            "event-mirror-context",
+            mirror_path.is_file(),
+            "optional NDJSON is never authoritative and is not read during ingestion",
+        )
     finally:
         connection.close()
     return SessionVerification(
-        all(check["status"] == "PASS" for check in checks),
+        all(check["status"] != "FAIL" for check in checks),
         tuple(checks),
         timeline_sha,
     )

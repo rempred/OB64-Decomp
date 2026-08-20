@@ -339,7 +339,7 @@ CREATE TABLE placement (
     CHECK (source_z64_end_exclusive > source_z64_start),
     CHECK (destination_physical_start >= 0),
     CHECK (destination_physical_end_exclusive > destination_physical_start),
-    CHECK (destination_physical_end_exclusive <= 8388608)
+    CHECK (destination_physical_end_exclusive <= 4194304)
 ) STRICT;
 
 CREATE TABLE placement_witness (

@@ -1,4 +1,10 @@
-"""Deterministic logical identity and closed-session manifest generation."""
+"""Closed-session context plus optional legacy fingerprint helpers.
+
+The normal capture/ingest path does not use cryptographic integrity as an
+acceptance condition.  The legacy hashing helpers remain available for old
+session inspection, but finalization writes a small context manifest and does
+not scan or hash the capture database or event mirror.
+"""
 
 from __future__ import annotations
 
@@ -111,23 +117,40 @@ def finalize_manifest(
     session_dir: Path,
     repository_root: Path,
 ) -> dict[str, Any]:
-    core = build_manifest_core(connection, repository_root)
-    core_hash = manifest_core_sha256(core)
-    connection.execute("UPDATE session SET manifest_sha256=?", (core_hash,))
+    """Write non-authoritative session context without whole-capture hashing."""
+
+    del repository_root  # retained in the public signature for compatibility
+    session = _session_dict(connection)
+    end = session.get("bridge_next_sequence_end")
+    if end is None:
+        raise ValueError("cannot finalize context before the bridge sequence range is closed")
+    capture_reference = (
+        f"capture:{session['session_id']}:{session['bridge_epoch']}:"
+        f"{session['bridge_next_sequence_start']}:{end}"
+    )
+    # capture schema v3 retains this legacy column so historical sessions stay
+    # readable.  New sessions do not put a digest in it.
+    connection.execute("UPDATE session SET manifest_sha256=NULL")
     connection.commit()
     connection.execute("PRAGMA wal_checkpoint(TRUNCATE)")
 
     database_path = session_dir / "capture.sqlite"
+    if not database_path.is_file():
+        raise ValueError(f"capture database is missing: {database_path}")
     envelope: dict[str, Any] = {
-        "manifestCore": core,
-        "manifestCoreSha256": core_hash,
-        "captureDatabaseFileSha256": sha256_file(database_path),
+        "schema": "ob64-total-resolver-session-context.v2",
+        "captureReference": capture_reference,
+        "session": session,
+        "authority": {
+            "authoritativeStore": "capture.sqlite",
+            "hashesAreAcceptanceEvidence": False,
+            "eventMirrorIsContextOnly": True,
+        },
         "writtenUtc": utc_now(),
     }
     mirror = session_dir / "events.ndjson"
     if mirror.is_file():
-        envelope["eventMirrorSha256"] = sha256_file(mirror)
+        envelope["eventMirror"] = "events.ndjson"
     target = session_dir / "manifest.json"
     target.write_text(json.dumps(envelope, indent=2, sort_keys=True) + "\n", encoding="utf-8")
-    envelope["manifestFileSha256"] = sha256_file(target)
     return envelope

@@ -13,11 +13,14 @@ from pathlib import Path
 import socket
 from typing import Any, Mapping, Protocol, Sequence
 
+from .addressing import RDRAM_SIZE
 from .protocol import BridgeHandshake, BridgeProtocolError, validate_handshake
 
 
 DEFAULT_HOST = "127.0.0.1"
 DEFAULT_PORT = 64640
+FRONTIER_EDGE_BATCH_SIZE = 512
+FRONTIER_INSTRUCTION_BATCH_SIZE = 512
 MEMORY_KINDS = frozenset(("u8", "u16", "u32", "s8", "s16", "s32"))
 WATCH_KINDS = frozenset(("exec", "read", "write"))
 
@@ -49,6 +52,16 @@ class MemoryBlock:
     fingerprint: str
 
 
+@dataclass(frozen=True)
+class BaselineSnapshot:
+    snapshot_id: str
+    bridge_epoch: str
+    bridge_sequence: int
+    frame_count: int | None
+    pc: str
+    data: bytes
+
+
 class Pj64Error(RuntimeError):
     """A transport or bridge command failed."""
 
@@ -62,7 +75,7 @@ class BridgeTransport(Protocol):
 
 
 class SocketLineTransport:
-    """Persistent newline-framed JSON transport used by bridge 0.8.0."""
+    """Persistent newline-framed JSON transport used by the accepted bridge."""
 
     def __init__(self, host: str, port: int, timeout: float) -> None:
         self.host = host
@@ -161,11 +174,13 @@ class Pj64Client:
         timeout: float = 5.0,
         *,
         transport: BridgeTransport | None = None,
+        allow_unloaded: bool = False,
     ) -> None:
         self.host = host
         self.port = port
         self.timeout = timeout
         self._transport = transport or SocketLineTransport(host, port, timeout)
+        self._allow_unloaded = allow_unloaded
         self.handshake_result: BridgeHandshake | None = None
 
     def connect(self) -> Pj64Client:
@@ -182,6 +197,11 @@ class Pj64Client:
     def close(self) -> None:
         self._transport.close()
         self.handshake_result = None
+
+    def observation_only(self) -> ObservationOnlyPj64Client:
+        """Return the capture facade, which has no mutation/control methods."""
+
+        return ObservationOnlyPj64Client(self)
 
     def __enter__(self) -> Pj64Client:
         return self.connect()
@@ -201,7 +221,12 @@ class Pj64Client:
         ping = self._raw_command("ping")
         status = self._raw_command("status")
         health = self._raw_command("health")
-        return validate_handshake(ping, status, health)
+        return validate_handshake(
+            ping,
+            status,
+            health,
+            allow_unloaded=self._allow_unloaded,
+        )
 
     def handshake(self) -> BridgeHandshake:
         self.connect()
@@ -304,8 +329,8 @@ class Pj64Client:
             if checked_address + checked_size > 0x100000000:
                 raise ValueError("memory fingerprint range crosses the 32-bit boundary")
             total += checked_size
-            if total > 0x800000:
-                raise ValueError("memory fingerprint aggregate must be at most 8 MiB")
+            if total > RDRAM_SIZE:
+                raise ValueError("memory fingerprint aggregate must be at most 4 MiB")
             normalized.append((checked_address, checked_size))
             parts.extend((f"0x{checked_address:X}", f"0x{checked_size:X}"))
         response = self._command("hashmem " + " ".join(parts))
@@ -393,7 +418,7 @@ class Pj64Client:
             raise Pj64Error(f"{command} response contains a malformed frame count")
         return epoch, next_sequence, frame
 
-    # Watch/event observation. Bridge 0.8.0 supports per-ID removal, so the
+    # Watch/event observation. The accepted bridge supports per-ID removal, so the
     # recorder never needs a global clear that could destroy another owner.
     def install_watch(
         self,
@@ -438,9 +463,96 @@ class Pj64Client:
         """Explicit global bridge mutation; never used by passive startup."""
         return self._command("clear")
 
-    def capture_start(self) -> dict[str, Any]:
+    def frontier_status(self) -> dict[str, Any]:
+        value = self._command("frontier status").get("frontier")
+        if not isinstance(value, Mapping):
+            raise Pj64Error("frontier status omitted its exact state")
+        return dict(value)
+
+    def load_novelty_frontier(
+        self,
+        frontier: Any,
+        *,
+        native_path: Path | None = None,
+        instruction_batch_size: int = FRONTIER_INSTRUCTION_BATCH_SIZE,
+        edge_batch_size: int = FRONTIER_EDGE_BATCH_SIZE,
+    ) -> dict[str, Any]:
+        """Load one exact binary frontier directly into Project64."""
+
+        del instruction_batch_size, edge_batch_size  # retained for API compatibility
+        from .knowledge import native_frontier_cache_path, write_native_frontier
+
+        identity = str(frontier.identity)
+        rom_sha256 = str(frontier.rom_normalized_sha256)
+        if (
+            not identity
+            or len(identity) > 192
+            or any(character.isspace() or ord(character) < 0x21 for character in identity)
+        ):
+            raise ValueError("frontier identity must be one bounded opaque token")
+        if len(rom_sha256) != 64:
+            raise ValueError("frontier ROM identity must be SHA-256")
+        path = write_native_frontier(frontier, native_path or native_frontier_cache_path(frontier))
+        path_hex = str(path).encode("utf-16le").hex().upper()
+        response = self._command(f"frontier load {identity} {rom_sha256} {path_hex}")
+        status = response.get("frontier")
+        expected = {
+            "formatVersion": int(frontier.format_version),
+            "committed": True,
+            "frontierIdentity": identity,
+            "romNormalizedSha256": rom_sha256,
+            "physicalPageCount": len(frontier.pages),
+            "instructionCount": int(frontier.instruction_count),
+            "edgeCount": len(frontier.edges),
+            "dmaCount": len(frontier.dma),
+            "nativeLoaded": True,
+            "nativeRdramSize": RDRAM_SIZE,
+        }
+        if not isinstance(status, Mapping) or any(status.get(key) != value for key, value in expected.items()):
+            raise BridgeProtocolError("bridge frontier commit did not preserve the exact loaded identity")
+        return dict(status)
+
+    def capture_start(self, frontier_identity: str) -> dict[str, Any]:
         """Enable native-filtered execution coverage and effective P1 input observation."""
-        return self._command("capture on")
+        if (
+            not frontier_identity
+            or len(frontier_identity) > 192
+            or any(
+                character.isspace() or ord(character) < 0x21
+                for character in frontier_identity
+            )
+        ):
+            raise ValueError("frontier_identity must be one bounded opaque token")
+        return self._command("capture on " + frontier_identity)
+
+    def cold_boot_arm(
+        self,
+        frontier_identity: str,
+        expected_crc1: str,
+        expected_crc2: str,
+    ) -> dict[str, Any]:
+        for value, name in (
+            (frontier_identity, "frontier_identity"),
+            (expected_crc1, "expected_crc1"),
+            (expected_crc2, "expected_crc2"),
+        ):
+            if not isinstance(value, str) or not value:
+                raise ValueError(f"{name} must be nonempty text")
+        for value, name in ((expected_crc1, "expected_crc1"), (expected_crc2, "expected_crc2")):
+            if len(value) != 8 or value != value.upper() or any(c not in "0123456789ABCDEF" for c in value):
+                raise ValueError(f"{name} must be eight uppercase hexadecimal digits")
+        return self._command(
+            f"coldboot arm {frontier_identity} {expected_crc1} {expected_crc2}"
+        )
+
+    def cold_boot_status(self) -> dict[str, Any]:
+        value = self._command("coldboot status").get("coldBoot")
+        if not isinstance(value, Mapping):
+            raise Pj64Error("cold-boot status omitted its state")
+        return dict(value)
+
+    def cold_boot_cancel(self) -> dict[str, Any]:
+        return self._command("coldboot cancel")
 
     def capture_stop(self) -> dict[str, Any]:
         return self._command("capture off")
@@ -448,11 +560,67 @@ class Pj64Client:
     def capture_status(self) -> dict[str, Any]:
         return self._command("capture status")
 
+    def baseline_status(self) -> dict[str, Any]:
+        value = self._command("baseline status").get("baseline")
+        if not isinstance(value, Mapping):
+            raise Pj64Error("baseline status omitted its snapshot state")
+        return dict(value)
+
+    def read_baseline_snapshot(self) -> BaselineSnapshot:
+        status = self.baseline_status()
+        if status.get("state") != "ready":
+            raise Pj64Error(f"native baseline snapshot is not ready: {status.get('state')}")
+        snapshot_id = status.get("snapshotId")
+        bridge_sequence = status.get("bridgeSequence")
+        if (
+            not isinstance(snapshot_id, str)
+            or not snapshot_id
+            or isinstance(bridge_sequence, bool)
+            or not isinstance(bridge_sequence, int)
+            or status.get("byteLength") != RDRAM_SIZE
+            or status.get("rdramSize") != RDRAM_SIZE
+        ):
+            raise BridgeProtocolError("native baseline snapshot identity is incomplete")
+        chunks: list[bytes] = []
+        for offset in range(0, RDRAM_SIZE, 0x100000):
+            response = self._command(
+                f"baseline read {snapshot_id} {offset} {min(0x100000, RDRAM_SIZE - offset)}"
+            )
+            baseline = response.get("baseline")
+            encoded = response.get("bytesHex")
+            if (
+                not isinstance(baseline, Mapping)
+                or baseline.get("snapshotId") != snapshot_id
+                or baseline.get("bridgeSequence") != bridge_sequence
+                or not isinstance(encoded, str)
+            ):
+                raise BridgeProtocolError("baseline chunk changed identity while being read")
+            try:
+                chunks.append(bytes.fromhex(encoded))
+            except ValueError as exc:
+                raise BridgeProtocolError("baseline chunk is not hexadecimal") from exc
+        data = b"".join(chunks)
+        if len(data) != RDRAM_SIZE:
+            raise BridgeProtocolError("baseline snapshot is not exactly 4 MiB")
+        return BaselineSnapshot(
+            snapshot_id,
+            self.handshake().bridge_epoch,
+            bridge_sequence,
+            status.get("frameCount") if isinstance(status.get("frameCount"), int) else None,
+            str(status.get("pc")),
+            data,
+        )
+
+    def release_baseline_snapshot(self, snapshot_id: str) -> dict[str, Any]:
+        if not snapshot_id or any(character.isspace() for character in snapshot_id):
+            raise ValueError("snapshot_id must be one token")
+        return self._command("baseline release " + snapshot_id)
+
     # Native PI DMA observation.
     def dma_start(
         self,
         physical_start: int = 0,
-        physical_end: int = 0x10000000,
+        physical_end: int = RDRAM_SIZE,
         *,
         maximum: int = 8192,
         skip_length: int = 0,
@@ -484,7 +652,7 @@ class Pj64Client:
 
     def dma_drain(self, maximum: int | None = None) -> dict[str, Any]:
         raise BridgeProtocolError(
-            "bridge 0.8.0 has one unified ordered queue; use drain_events()"
+            "the accepted bridge has one unified ordered queue; use drain_events()"
         )
 
     def dma_stop(self) -> dict[str, Any]:
@@ -548,3 +716,118 @@ class Pj64Client:
 
     def clear_input(self) -> dict[str, Any]:
         return self._command("input clear")
+
+
+class ObservationOnlyPj64Client:
+    """Narrow recorder authority with no emulator mutation/control methods.
+
+    Persistent knowledge and captured bytes pass only through this facade
+    during recorder operation. Explicit research commands may still use the
+    broader client, but the recorder cannot reach that command surface.
+    """
+
+    __slots__ = ("__client",)
+
+    def __init__(self, client: Pj64Client) -> None:
+        self.__client = client
+
+    @property
+    def handshake_result(self) -> BridgeHandshake | None:
+        return self.__client.handshake_result
+
+    def connect(self) -> ObservationOnlyPj64Client:
+        self.__client.connect()
+        return self
+
+    def close(self) -> None:
+        self.__client.close()
+
+    def status(self) -> dict[str, Any]:
+        return self.__client.status()
+
+    def health(self) -> dict[str, Any]:
+        return self.__client.health()
+
+    def execution(self) -> dict[str, Any]:
+        return self.__client.execution()
+
+    def drain_events(self, maximum: int | None = None) -> dict[str, Any]:
+        return self.__client.drain_events(maximum)
+
+    def dma_start(
+        self,
+        physical_start: int = 0,
+        physical_end: int = RDRAM_SIZE,
+        *,
+        maximum: int = 8192,
+        skip_length: int = 0,
+        context_words: int = 0,
+    ) -> dict[str, Any]:
+        return self.__client.dma_start(
+            physical_start,
+            physical_end,
+            maximum=maximum,
+            skip_length=skip_length,
+            context_words=context_words,
+        )
+
+    def dma_set_rom_range(self, rom_start: int, rom_end: int) -> dict[str, Any]:
+        return self.__client.dma_set_rom_range(rom_start, rom_end)
+
+    def dma_stop(self) -> dict[str, Any]:
+        return self.__client.dma_stop()
+
+    def load_novelty_frontier(
+        self,
+        frontier: Any,
+        *,
+        instruction_batch_size: int = FRONTIER_INSTRUCTION_BATCH_SIZE,
+        edge_batch_size: int = FRONTIER_EDGE_BATCH_SIZE,
+    ) -> dict[str, Any]:
+        return self.__client.load_novelty_frontier(
+            frontier,
+            instruction_batch_size=instruction_batch_size,
+            edge_batch_size=edge_batch_size,
+        )
+
+    def baseline_status(self) -> dict[str, Any]:
+        return self.__client.baseline_status()
+
+    def read_baseline_snapshot(self) -> BaselineSnapshot:
+        return self.__client.read_baseline_snapshot()
+
+    def release_baseline_snapshot(self, snapshot_id: str) -> dict[str, Any]:
+        return self.__client.release_baseline_snapshot(snapshot_id)
+
+    def capture_start(self, frontier_identity: str) -> dict[str, Any]:
+        return self.__client.capture_start(frontier_identity)
+
+    def capture_stop(self) -> dict[str, Any]:
+        return self.__client.capture_stop()
+
+    def cold_boot_arm(
+        self, frontier_identity: str, expected_crc1: str, expected_crc2: str
+    ) -> dict[str, Any]:
+        return self.__client.cold_boot_arm(frontier_identity, expected_crc1, expected_crc2)
+
+    def cold_boot_status(self) -> dict[str, Any]:
+        return self.__client.cold_boot_status()
+
+    def cold_boot_cancel(self) -> dict[str, Any]:
+        return self.__client.cold_boot_cancel()
+
+    def install_watch(
+        self, kind: str, address: int, *, size: int = 1, label: str = ""
+    ) -> dict[str, Any]:
+        return self.__client.install_watch(kind, address, size=size, label=label)
+
+    def remove_watch(self, bridge_watch_id: int) -> dict[str, Any]:
+        return self.__client.remove_watch(bridge_watch_id)
+
+    def memory_fingerprints(
+        self, specs: Sequence[tuple[int, int]]
+    ) -> MemoryFingerprintBatch:
+        return self.__client.memory_fingerprints(specs)
+
+    def read_block(self, address: int, size: int) -> MemoryBlock:
+        return self.__client.read_block(address, size)

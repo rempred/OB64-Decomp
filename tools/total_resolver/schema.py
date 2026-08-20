@@ -8,8 +8,8 @@ import sqlite3
 
 
 CAPTURE_SCHEMA_NAME = "ob64-total-resolver-capture"
-CAPTURE_SCHEMA_VERSION = 3
-SUPPORTED_CAPTURE_SCHEMA_VERSIONS = frozenset({2, 3})
+CAPTURE_SCHEMA_VERSION = 4
+SUPPORTED_CAPTURE_SCHEMA_VERSIONS = frozenset({2, 3, 4})
 
 
 def capture_schema_path() -> Path:

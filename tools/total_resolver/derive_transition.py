@@ -11,6 +11,7 @@ from pathlib import Path
 import sqlite3
 from typing import Any, Iterable, Mapping
 
+from .addressing import RDRAM_SIZE
 from .capture_db import canonical_json, load_event_payload
 from .configuration import machine_configuration_identity
 from .contracts import EvidenceGrade, RegionClass
@@ -182,7 +183,14 @@ def _derive_transactions(
             continue
 
         linked_sequence = payload.get("dmaStartSequence")
-        linked = starts.pop(linked_sequence, None) if isinstance(linked_sequence, int) else None
+        completion_only = payload.get("pairingStatus") == "native-completion-only"
+        linked = (
+            (row, payload)
+            if completion_only and linked_sequence is None
+            else starts.pop(linked_sequence, None)
+            if isinstance(linked_sequence, int)
+            else None
+        )
         if linked is None:
             issues.append(
                 {
@@ -217,15 +225,26 @@ def _derive_transactions(
             )
             continue
         content_sha = hashlib.sha256(data).hexdigest().upper()
-        content_hash_valid = content_sha == row["event_time_content_sha256"]
+        legacy_content_hash_matches = content_sha == row["event_time_content_sha256"]
+        content_bytes_valid = bool(
+            row["event_time_content_size"] == len(data)
+            and payload.get("destinationByteLength") == len(data)
+            and payload.get("destinationBytesEncoding") == "hex-uppercase"
+            and payload.get("capturePhase") == "post-transfer-callback"
+        )
         descriptor_fields = ("phys", "romoff", "requestedLength")
-        descriptor_match = all(
+        descriptor_match = completion_only or all(
             start_payload.get(field) == payload.get(field) for field in descriptor_fields
         )
         pair_match = bool(
             descriptor_match
-            and payload.get("pairingStatus") == "matched"
-            and linked_sequence == int(start_row["bridge_event_sequence"])
+            and (
+                completion_only
+                or (
+                    payload.get("pairingStatus") == "matched"
+                    and linked_sequence == int(start_row["bridge_event_sequence"])
+                )
+            )
         )
         match_kind, matched_prefix = _source_match(rom, rom_offset, data)
         safe_end = rom_offset + matched_prefix
@@ -263,8 +282,8 @@ def _derive_transactions(
         limitations: list[str] = []
         if not pair_match:
             limitations.append("start/completion descriptors disagree")
-        if not content_hash_valid:
-            limitations.append("stored destination-byte hash disagrees")
+        if not content_bytes_valid:
+            limitations.append("stored destination-byte metadata is inconsistent")
         if transfer_span != len(data):
             limitations.append("native transfer span differs from captured envelope size")
         if match_kind != "exact-span":
@@ -294,8 +313,15 @@ def _derive_transactions(
             "transferSpanLength": transfer_span,
             "capturedByteLength": len(data),
             "destinationContentSha256": content_sha,
-            "contentHashValid": content_hash_valid,
-            "pairingStatus": "matched" if pair_match else "mismatch",
+            "contentBytesValid": content_bytes_valid,
+            "legacyContentHashMatches": legacy_content_hash_matches,
+            "pairingStatus": (
+                "native-completion-only"
+                if pair_match and completion_only
+                else "matched"
+                if pair_match
+                else "mismatch"
+            ),
             "romMatch": match_kind,
             "romMatchedPrefixLength": matched_prefix,
             "staticRegionClass": static_class,
@@ -306,10 +332,10 @@ def _derive_transactions(
             "reviewState": "generated-unreviewed",
             "limitations": limitations,
         }
-        if pair_match and content_hash_valid and match_kind == "exact-span":
+        if pair_match and content_bytes_valid and match_kind == "exact-span":
             grade = EvidenceGrade.VERIFIED
             source_identity = f"z64:{rom_offset:08X}-{safe_end:08X}"
-        elif pair_match and content_hash_valid and matched_prefix:
+        elif pair_match and content_bytes_valid and matched_prefix:
             grade = EvidenceGrade.SUPPORTED
             source_identity = None
         else:
@@ -429,8 +455,8 @@ def _derive_code_slabs(
         item
         for item in transactions
         if item.record["romMatch"] == "exact-span"
-        and item.record["pairingStatus"] == "matched"
-        and item.record["contentHashValid"] is True
+        and item.record["pairingStatus"] in {"matched", "native-completion-only"}
+        and item.record["contentBytesValid"] is True
         and item.record["staticRegionClass"] in {"executable", "mixed"}
     ]
     groups: list[list[DerivedTransaction]] = []
@@ -592,7 +618,7 @@ def _derive_regions(
     tracker = RegionTracker(session_id)
     issues: list[dict[str, Any]] = []
     for item in transactions:
-        if item.physical_start + len(item.data) > 0x00800000:
+        if item.physical_start + len(item.data) > RDRAM_SIZE:
             issues.append(
                 {
                     "kind": "destination-outside-rdram",
@@ -740,9 +766,13 @@ def derive_transition(
     )
     different = len(transition_transactions) - exact - prefix
     matched_pairs = sum(
-        item.record["pairingStatus"] == "matched" for item in transition_transactions
+        item.record["pairingStatus"] in {"matched", "native-completion-only"}
+        for item in transition_transactions
     )
-    valid_hashes = sum(item.record["contentHashValid"] for item in transition_transactions)
+    valid_content = sum(item.record["contentBytesValid"] for item in transition_transactions)
+    legacy_hash_matches = sum(
+        item.record["legacyContentHashMatches"] for item in transition_transactions
+    )
     transient_count = sum(item["transientAtMostTwoFrames"] for item in regions)
     caveats = [
         "Frame numbers and human markers provide context; bridge sequence defines event order.",
@@ -755,7 +785,7 @@ def derive_transition(
         pair_diagnostics["romPairIssueCount"]
         or loss_count
         or matched_pairs != len(transition_transactions)
-        or valid_hashes != len(transition_transactions)
+        or valid_content != len(transition_transactions)
     ):
         quality = "incomplete-working-evidence"
     summary: dict[str, Any] = {
@@ -789,7 +819,8 @@ def derive_transition(
         "counts": {
             "romDmaTransactions": len(transition_transactions),
             "matchedStartCompletionPairs": matched_pairs,
-            "validDestinationContentHashes": valid_hashes,
+            "validDestinationContentBytes": valid_content,
+            "legacyDestinationHashMatches": legacy_hash_matches,
             "exactRomSpanMatches": exact,
             "romPrefixWithAlignmentTail": prefix,
             "romDifferences": different,

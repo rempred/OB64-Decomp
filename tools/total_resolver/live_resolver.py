@@ -140,9 +140,9 @@ def derive_live_snapshot(
             session_id, transactions, 0, terminal
         )
         executions, _, _ = _execution_analysis(
-            connection, regions, transactions, static
+            connection, regions, transactions, static, rom
         )
-        memory, _ = _memory_analysis(connection, regions, transactions, static)
+        memory, _ = _memory_analysis(connection, regions, transactions, static, rom)
         loss_ranges = int(
             connection.execute(
                 "SELECT COUNT(*) FROM bridge_loss_range WHERE "
@@ -200,6 +200,7 @@ def resolve_snapshot_address(
     function = None
     mapping_method: str | None = None
     evidence_grade = "unresolved"
+    static_candidate: dict[str, Any] | None = None
     if transaction is not None:
         destination = int(transaction.record["destinationPhysicalStart"])
         candidate = int(transaction.record["sourceZ64Start"]) + physical - destination
@@ -214,21 +215,16 @@ def resolve_snapshot_address(
             mapping_method = "contemporaneous-rom-dma-region"
             evidence_grade = str(transaction.record["evidenceGrade"])
     if region is None:
-        function = snapshot.static.resolve_nominal_pc(live_address)
-        if function is not None:
-            static_connection = snapshot.static._connect(snapshot.static.static_database)
-            try:
-                matches = static_connection.execute(
-                    "SELECT w.rom_address FROM word w JOIN instruction i "
-                    "ON i.rom_address=w.rom_address WHERE w.nominal_linear_vram=? "
-                    "AND i.function_id=?",
-                    (live_address, function.function_id),
-                ).fetchall()
-            finally:
-                static_connection.close()
-            z64 = int(matches[0][0]) if len(matches) == 1 else None
-            mapping_method = "accepted-static-nominal-vram"
-            evidence_grade = "supported"
+        nominal = snapshot.static.resolve_nominal_mapping(live_address)
+        if nominal is not None:
+            candidate_function, candidate_z64 = nominal
+            static_candidate = {
+                "mappingMethod": "static-nominal-vram-address-candidate",
+                "z64Offset": candidate_z64,
+                "function": candidate_function.to_dict(),
+                "evidenceGrade": "candidate",
+                "nextEvidence": "observe exact opcode bytes or a contemporaneous ROM placement",
+            }
     status = (
         "resolved-function"
         if function is not None
@@ -249,6 +245,7 @@ def resolve_snapshot_address(
         "function": function.to_dict() if function is not None else None,
         "mappingMethod": mapping_method,
         "evidenceGrade": evidence_grade,
+        "staticCandidate": static_candidate,
         "reviewState": "live-unreviewed",
         "claimLimit": "Current-session mapping is working evidence; residency is not execution.",
     }

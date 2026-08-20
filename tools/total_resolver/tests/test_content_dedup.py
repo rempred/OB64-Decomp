@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from dataclasses import replace
 import hashlib
 import json
 from pathlib import Path
@@ -134,6 +135,27 @@ class ContentDedupTests(unittest.TestCase):
                     store.connection.execute("SELECT COUNT(*) FROM event_sequence").fetchone()[0],
                     0,
                 )
+            finally:
+                store.close_connection()
+
+    def test_bridge_digest_is_context_not_an_acceptance_requirement(self) -> None:
+        with tempfile.TemporaryDirectory() as raw:
+            store = CaptureStore.create(Path(raw) / "capture.sqlite", metadata())
+            try:
+                content = b"authoritative destination bytes"
+                event = replace(
+                    dma_event(1, content),
+                    event_time_content_sha256="0" * 64,
+                )
+                stored = store.append_event_batch((event,))
+                self.assertEqual(len(stored), 1)
+                restored = load_event_payload(
+                    store.connection,
+                    store.connection.execute(
+                        "SELECT raw_payload_json FROM event_sequence"
+                    ).fetchone()[0],
+                )
+                self.assertEqual(restored["destinationBytesHex"], content.hex().upper())
             finally:
                 store.close_connection()
 

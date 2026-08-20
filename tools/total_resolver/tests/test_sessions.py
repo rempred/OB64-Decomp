@@ -11,9 +11,11 @@ from tools.total_resolver.contracts import CaptureMode, InterventionPolicy
 from tools.total_resolver.sessions import (
     SessionConnection,
     add_session_annotation,
+    record_session_ingestion,
     recover_session,
     request_session_stop,
     session_status,
+    _worker_startup_wait_seconds,
 )
 from tools.total_resolver.verify import verify_session
 
@@ -116,6 +118,23 @@ class RecoverableClient:
 
 
 class SessionLifecycleTests(unittest.TestCase):
+    def test_worker_startup_wait_scales_with_persistent_frontier_transport(self) -> None:
+        empty = _worker_startup_wait_seconds(
+            SessionConnection(timeout=5.0),
+            frontier_page_count=0,
+            frontier_instruction_count=0,
+            frontier_edge_count=0,
+        )
+        migrated = _worker_startup_wait_seconds(
+            SessionConnection(timeout=5.0),
+            frontier_page_count=4,
+            frontier_instruction_count=278425,
+            frontier_edge_count=278425,
+        )
+        self.assertEqual(empty, 30.0)
+        self.assertGreater(migrated, 30.0)
+        self.assertLess(migrated, 60.0)
+
     def _open_session(self, root: Path, session_id: str) -> CaptureStore:
         location = root / session_id
         return CaptureStore.create(location / "capture.sqlite", metadata(session_id))
@@ -148,7 +167,7 @@ class SessionLifecycleTests(unittest.TestCase):
                 watch_kind="dma",
                 address_space="physical-rdram",
                 address_start=0,
-                address_end_exclusive=0x00800000,
+                address_end_exclusive=0x00400000,
                 label="DMA",
                 reason="fixture",
                 definition_source="fixture",
@@ -226,6 +245,33 @@ class SessionLifecycleTests(unittest.TestCase):
                 result = request_session_stop("S-STOP", root=root, wait_seconds=1.0)
             self.assertEqual(result, finalized)
             self.assertEqual(status_mock.call_count, 2)
+
+    def test_explicit_ingestion_retry_reconciles_closed_worker_status(self) -> None:
+        with tempfile.TemporaryDirectory() as raw:
+            root = Path(raw)
+            store = self._open_session(root, "S-INGEST")
+            store.set_bridge_next_sequence_end(1)
+            store.close_session("closed")
+            store.close_connection()
+            ingestion = {
+                "result": "PASS",
+                "action": "ingested",
+                "sessionId": "S-INGEST",
+                "knowledge": {
+                    "database": str(root / "knowledge.sqlite"),
+                    "frontier": {"frontierIdentity": "K2:fixture"},
+                },
+            }
+
+            status = record_session_ingestion(
+                "S-INGEST", ingestion, root=root
+            )
+
+            self.assertEqual(status["workerState"], "closed")
+            self.assertEqual(status["ingestion"], ingestion)
+            self.assertEqual(
+                status["frontier"]["frontierIdentity"], "K2:fixture"
+            )
 
     def test_visible_action_annotation_matches_closed_schema(self) -> None:
         with tempfile.TemporaryDirectory() as raw:

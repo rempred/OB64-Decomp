@@ -1,9 +1,9 @@
 PRAGMA foreign_keys = ON;
-PRAGMA user_version = 3;
+PRAGMA user_version = 4;
 
 CREATE TABLE schema_info (
     schema_name TEXT PRIMARY KEY CHECK (schema_name = 'ob64-total-resolver-capture'),
-    schema_version INTEGER NOT NULL CHECK (schema_version = 3),
+    schema_version INTEGER NOT NULL CHECK (schema_version = 4),
     created_utc TEXT NOT NULL
 ) STRICT;
 
@@ -105,13 +105,14 @@ CREATE TABLE event_sequence (
         event_time_content_phase IN (
             'post-transfer-callback',
             'pre-execution-callback',
-            'host-polled-range-snapshot'
+            'host-polled-range-snapshot',
+            'pre-execution-native-rdram-snapshot'
         )
     ),
     event_time_content_field TEXT CHECK (
         event_time_content_field IS NULL OR
         event_time_content_field IN (
-            'destinationBytesHex', 'codeBytesHex', 'bytesHex'
+            'destinationBytesHex', 'codeBytesHex', 'bytesHex', 'rdramBytesHex'
         )
     ),
     CHECK (
@@ -275,7 +276,7 @@ CREATE TABLE region_instance (
         destination_physical_start BETWEEN 0 AND 8388607
     ),
     destination_physical_end_exclusive INTEGER NOT NULL CHECK (
-        destination_physical_end_exclusive BETWEEN 1 AND 8388608 AND
+        destination_physical_end_exclusive BETWEEN 1 AND 4194304 AND
         destination_physical_end_exclusive > destination_physical_start
     ),
     destination_live_start INTEGER,

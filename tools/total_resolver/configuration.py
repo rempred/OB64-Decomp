@@ -7,6 +7,7 @@ import hashlib
 import json
 from typing import Iterable
 
+from .addressing import RDRAM_SIZE
 from .contracts import RegionClass
 
 
@@ -21,8 +22,8 @@ class ConfigurationRegion:
     loader_identity: str | None = None
 
     def __post_init__(self) -> None:
-        if not 0 <= self.physical_start < self.physical_end_exclusive <= 0x00800000:
-            raise ValueError("configuration region must be inside 8 MiB RDRAM")
+        if not 0 <= self.physical_start < self.physical_end_exclusive <= RDRAM_SIZE:
+            raise ValueError("configuration region must be inside vanilla OB64's 4 MiB RDRAM")
         if len(self.content_sha256) != 64:
             raise ValueError("configuration content identity must be SHA-256")
 

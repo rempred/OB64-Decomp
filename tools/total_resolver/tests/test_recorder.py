@@ -11,7 +11,14 @@ from tools.total_resolver.capture_db import CaptureStore, SessionMetadata, load_
 from tools.total_resolver.contracts import CaptureMode, InterventionPolicy
 from tools.total_resolver.identities import rom_identity_from_file
 from tools.total_resolver.manifest import finalize_manifest
-from tools.total_resolver.pj64_client import MemoryBlock, MemoryFingerprint, MemoryFingerprintBatch
+from tools.total_resolver.knowledge import empty_novelty_frontier
+from tools.total_resolver.addressing import RDRAM_SIZE
+from tools.total_resolver.pj64_client import (
+    BaselineSnapshot,
+    MemoryBlock,
+    MemoryFingerprint,
+    MemoryFingerprintBatch,
+)
 from tools.total_resolver.protocol import BRIDGE_PROTOCOL_VERSION, BridgeHandshake, BridgeProtocolError
 from tools.total_resolver.recorder import (
     Pj64CaptureRecorder,
@@ -20,6 +27,7 @@ from tools.total_resolver.recorder import (
     SafetyRangeSpec,
     WatchSpec,
     verify_observation_preflight,
+    verify_pre_rom_preflight,
 )
 from tools.total_resolver.replay import write_timeline
 from tools.total_resolver.verify import verify_session
@@ -57,6 +65,7 @@ class FakeClient:
         self.capture_enabled = False
         self.event_batches: list[dict[str, Any]] = []
         self.memory_blocks: dict[tuple[int, int], bytes] = {}
+        self.baseline: BaselineSnapshot | None = None
 
     def connect(self) -> FakeClient:
         self.commands.append("connect")
@@ -153,9 +162,61 @@ class FakeClient:
         self.dma_enabled = False
         return {"dma": {"enabled": False}}
 
-    def capture_start(self) -> dict[str, Any]:
+    def load_novelty_frontier(self, frontier: Any) -> dict[str, Any]:
+        self.commands.append("frontier load")
+        return {
+            "formatVersion": frontier.format_version,
+            "committed": True,
+            "frontierIdentity": frontier.identity,
+            "romNormalizedSha256": frontier.rom_normalized_sha256,
+            "physicalPageCount": len(frontier.pages),
+            "instructionCount": frontier.instruction_count,
+            "edgeCount": len(frontier.edges),
+        }
+
+    def capture_start(self, frontier_identity: str) -> dict[str, Any]:
         self.commands.append("capture on")
         self.capture_enabled = True
+        for batch in self.event_batches:
+            batch["nextEventSequence"] += 1
+            for event in batch["events"]:
+                event["bridgeSequence"] += 1
+                if isinstance(event.get("dmaStartSequence"), int):
+                    event["dmaStartSequence"] += 1
+            for dropped_range in batch.get("droppedRanges", []):
+                dropped_range["firstSequence"] += 1
+                dropped_range["lastSequence"] += 1
+        baseline_bytes = bytes(RDRAM_SIZE)
+        self.baseline = BaselineSnapshot(
+            "EPOCH-RECORDER-1", self.epoch, 1, self.frame, "0x80000000", baseline_bytes
+        )
+        self.event_batches.insert(
+            0,
+            {
+                "count": 1,
+                "remaining": 0,
+                "dropped": 0,
+                "droppedRanges": [],
+                "bridgeEpoch": self.epoch,
+                "queueModel": "unified",
+                "nextEventSequence": 2,
+                "events": [
+                    {
+                        "kind": "baseline-snapshot",
+                        "snapshotId": self.baseline.snapshot_id,
+                        "rdramSize": RDRAM_SIZE,
+                        "byteLength": RDRAM_SIZE,
+                        "pc": self.baseline.pc,
+                        "frameCount": self.frame,
+                        "capturePhase": "pre-execution-native-rdram-snapshot",
+                        "ordering": "native-copy-before-first-captured-instruction",
+                        "bridgeEpoch": self.epoch,
+                        "bridgeSequence": 1,
+                        "bridgeStream": "trace",
+                    }
+                ],
+            },
+        )
         return {
             "capture": {
                 "enabled": True,
@@ -163,6 +224,24 @@ class FakeClient:
                 "controllerInput": {"enabled": True},
             }
         }
+
+    def baseline_status(self) -> dict[str, Any]:
+        assert self.baseline is not None
+        return {
+            "state": "ready",
+            "snapshotId": self.baseline.snapshot_id,
+            "bridgeSequence": self.baseline.bridge_sequence,
+            "byteLength": RDRAM_SIZE,
+            "rdramSize": RDRAM_SIZE,
+        }
+
+    def read_baseline_snapshot(self) -> BaselineSnapshot:
+        assert self.baseline is not None
+        return self.baseline
+
+    def release_baseline_snapshot(self, snapshot_id: str) -> dict[str, Any]:
+        self.commands.append("baseline release")
+        return {"baseline": {"state": "released", "snapshotId": snapshot_id}}
 
     def capture_stop(self) -> dict[str, Any]:
         self.commands.append("capture off")
@@ -222,6 +301,61 @@ class FakeClient:
         )
 
 
+class PoweredOffFakeClient(FakeClient):
+    def __init__(self, rom_path: Path) -> None:
+        super().__init__(rom_path)
+        self.powered_off = True
+        self.cold_state = "idle"
+
+    def status(self) -> dict[str, Any]:
+        value = super().status()
+        value["rdramSize"] = 0 if self.powered_off else 0x00800000
+        value["coldBoot"] = {
+            "state": self.cold_state,
+            "armedAtNextSequence": 1,
+        }
+        return value
+
+    def health(self) -> dict[str, Any]:
+        value = super().health()
+        value["rdramSize"] = 0 if self.powered_off else 0x00800000
+        if self.powered_off:
+            value["core"] = "unknown"
+            value["rom"] = None
+        return value
+
+    def cold_boot_arm(
+        self, frontier_identity: str, expected_crc1: str, expected_crc2: str
+    ) -> dict[str, Any]:
+        self.commands.append("coldboot arm")
+        self.cold_state = "armed"
+        return {
+            "coldBoot": {
+                "state": "armed",
+                "frontierIdentity": frontier_identity,
+                "expectedCrc1": "0x" + expected_crc1,
+                "expectedCrc2": "0x" + expected_crc2,
+                "armedAtNextSequence": 1,
+            }
+        }
+
+    def cold_boot_status(self) -> dict[str, Any]:
+        self.commands.append("coldboot status")
+        if self.cold_state == "armed":
+            self.powered_off = False
+            self.cold_state = "capturing"
+            super().capture_start("cold-boot-fixture")
+            self.dma_enabled = True
+        return {"state": self.cold_state, "armedAtNextSequence": 1}
+
+    def cold_boot_cancel(self) -> dict[str, Any]:
+        self.commands.append("coldboot cancel")
+        self.cold_state = "cancelled"
+        self.capture_enabled = False
+        self.dma_enabled = False
+        return {"coldBoot": {"state": "cancelled"}}
+
+
 def make_rom(path: Path) -> dict[str, Any]:
     payload = bytearray(0x1000)
     payload[:4] = b"\x80\x37\x12\x40"
@@ -235,6 +369,7 @@ def make_rom(path: Path) -> dict[str, Any]:
 
 
 def metadata(identity: dict[str, Any]) -> SessionMetadata:
+    frontier = empty_novelty_frontier(identity["normalizedSha256"])
     return SessionMetadata(
         session_id="S-RECORDER",
         started_utc="2026-08-17T00:00:00.000Z",
@@ -255,12 +390,42 @@ def metadata(identity: dict[str, Any]) -> SessionMetadata:
         rom_version=identity["version"],
         rom_normalized_sha256=identity["normalizedSha256"],
         static_sources={"fixture": True},
+        accepted_resolver_identity=frontier.identity,
         capture_mode=CaptureMode.MANUAL_PLAY,
         intervention_policy=InterventionPolicy.OBSERVATION_ONLY,
     )
 
 
 class RecorderTests(unittest.TestCase):
+    def test_pre_rom_arm_captures_baseline_before_first_machine_event(self) -> None:
+        with tempfile.TemporaryDirectory() as raw:
+            root = Path(raw)
+            identity = make_rom(root / "test.z64")
+            client = PoweredOffFakeClient(root / "test.z64")
+            preflight = verify_pre_rom_preflight(client, identity)
+            database = root / "capture.sqlite"
+            store = CaptureStore.create(database, metadata(identity), mirror_events=False)
+            recorder = Pj64CaptureRecorder(
+                client,
+                store,
+                RecorderSettings(
+                    identity["normalizedSha256"],
+                    novelty_frontier=empty_novelty_frontier(identity["normalizedSha256"]),
+                ),
+                clock=FakeClock(),
+            )
+            recorder.arm_before_rom(preflight)
+            self.assertEqual(client.cold_state, "armed")
+            recorder.await_cold_boot_start()
+            row = store.connection.execute(
+                "SELECT bridge_event_type, bridge_event_sequence FROM event_sequence "
+                "WHERE bridge_event_sequence IS NOT NULL ORDER BY bridge_event_sequence LIMIT 1"
+            ).fetchone()
+            self.assertEqual(tuple(row), ("baseline-snapshot", 1))
+            self.assertTrue(recorder.started)
+            recorder.stop_instrumentation()
+            store.close_connection()
+
     def test_preflight_rejects_non_pristine_or_wrong_rom(self) -> None:
         with tempfile.TemporaryDirectory() as raw:
             root = Path(raw)
@@ -451,7 +616,7 @@ class RecorderTests(unittest.TestCase):
             ranges = store.connection.execute(
                 "SELECT first_bridge_sequence, last_bridge_sequence FROM bridge_loss_range"
             ).fetchall()
-            self.assertEqual([tuple(row) for row in ranges], [(1, 2)])
+            self.assertEqual([tuple(row) for row in ranges], [(2, 3)])
             store.close_connection()
 
     def test_safety_range_uses_fingerprint_then_captures_exact_changed_bytes(self) -> None:
@@ -508,7 +673,7 @@ class RecorderTests(unittest.TestCase):
             self.assertEqual(rows[1][2], 4)
             self.assertEqual(rows[1][3], "host-polled-range-snapshot")
             self.assertEqual(
-                store.connection.execute("SELECT COUNT(*) FROM content_blob").fetchone()[0], 2
+                store.connection.execute("SELECT COUNT(*) FROM content_blob").fetchone()[0], 3
             )
             self.assertEqual(client.commands.count("hashmem"), 2)
             self.assertEqual(client.commands.count("readblock"), 2)

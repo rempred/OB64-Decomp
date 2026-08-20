@@ -283,6 +283,24 @@ class StaticModel:
         self._pc_rom_cache[live_pc] = result
         return result
 
+    def resolve_nominal_mapping(
+        self, live_pc: int
+    ) -> tuple[StaticFunction, int] | None:
+        """Return one internally consistent nominal function/ROM candidate.
+
+        This is an address crosswalk only. Callers must confirm captured code
+        bytes before treating it as an observed runtime placement.
+        """
+
+        function = self.resolve_nominal_pc(live_pc)
+        rom_offset = self.resolve_nominal_rom_offset(live_pc)
+        if function is None or rom_offset is None:
+            return None
+        containing = self.function_containing(rom_offset)
+        if containing is None or containing.function_id != function.function_id:
+            return None
+        return function, rom_offset
+
     def functions_fully_within(self, start: int, end_exclusive: int) -> tuple[StaticFunction, ...]:
         index = bisect_left(self._function_starts, start)
         matches: list[StaticFunction] = []

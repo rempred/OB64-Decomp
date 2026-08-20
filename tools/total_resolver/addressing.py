@@ -6,7 +6,7 @@ from dataclasses import dataclass
 from enum import Enum
 
 
-RDRAM_SIZE = 0x00800000
+RDRAM_SIZE = 0x00400000
 KSEG0_START = 0x80000000
 KSEG1_START = 0xA0000000
 KSEG_END = 0xC0000000
@@ -36,7 +36,7 @@ class AddressRange:
         if self.end_exclusive > 0x100000000:
             raise ValueError("address range exceeds the 32-bit address space")
         if self.space is AddressSpace.PHYSICAL_RDRAM and self.end_exclusive > RDRAM_SIZE:
-            raise ValueError("physical RDRAM range exceeds 8 MiB")
+            raise ValueError("physical RDRAM range exceeds vanilla OB64's 4 MiB")
         if self.space is AddressSpace.LIVE_KSEG:
             physical_from_live(self.start)
             physical_from_live(self.end_exclusive - 1)
@@ -64,19 +64,19 @@ def physical_from_live(address: int) -> int:
         raise ValueError(f"address 0x{address:X} is not KSEG0/KSEG1")
     physical = address & PHYSICAL_MASK
     if physical >= RDRAM_SIZE:
-        raise ValueError(f"live address 0x{address:X} is outside 8 MiB RDRAM")
+        raise ValueError(f"live address 0x{address:X} is outside vanilla OB64's 4 MiB RDRAM")
     return physical
 
 
 def live_kseg0_from_physical(address: int) -> int:
     if isinstance(address, bool) or not isinstance(address, int) or not 0 <= address < RDRAM_SIZE:
-        raise ValueError("physical address must be inside 8 MiB RDRAM")
+        raise ValueError("physical address must be inside vanilla OB64's 4 MiB RDRAM")
     return KSEG0_START + address
 
 
 def live_kseg1_from_physical(address: int) -> int:
     if isinstance(address, bool) or not isinstance(address, int) or not 0 <= address < RDRAM_SIZE:
-        raise ValueError("physical address must be inside 8 MiB RDRAM")
+        raise ValueError("physical address must be inside vanilla OB64's 4 MiB RDRAM")
     return KSEG1_START + address
 
 

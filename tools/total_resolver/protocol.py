@@ -5,13 +5,14 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Any, Mapping
 
+from .addressing import RDRAM_SIZE
 
-BRIDGE_PROTOCOL_VERSION = "0.8.0"
 
-# Bridge 0.8.0 does not advertise a machine-readable command catalog. This map
-# is therefore part of the frozen client contract. A new bridge version must be
-# reviewed and added explicitly instead of inheriting capabilities by guess.
+BRIDGE_PROTOCOL_VERSION = "0.12.0"
+FRONTIER_FORMAT_VERSION = 3
+
 BRIDGE_CAPABILITIES = (
+    "capability-advertisement",
     "health-status",
     "memory-read",
     "memory-batch-read",
@@ -26,7 +27,17 @@ BRIDGE_CAPABILITIES = (
     "native-dma-completion-events",
     "event-time-dma-destination-bytes",
     "native-generation-aware-exec-coverage",
-    "exact-page-placement-dedup",
+    "native-persistent-novelty-frontier-v3",
+    "native-exact-dma-novelty-filter",
+    "exact-physical-opcode-instruction-identity",
+    "page-local-address-bitmaps",
+    "sparse-exact-opcode-edge-frontier",
+    "known-prefix-predecessor-tracking",
+    "generation-context-on-novel-facts",
+    "atomic-4mib-rdram-baseline",
+    "vanilla-ob64-lower-4mib-capture-window",
+    "pre-rom-armed-cold-boot-capture",
+    "observation-only-capture-contract",
     "effective-controller-input-transitions",
     "pause-resume",
     "frame-step",
@@ -50,6 +61,7 @@ class BridgeHandshake:
     core: str
     rom: Mapping[str, Any] | None
     bridge_epoch: str
+    frontier_format_version: int = FRONTIER_FORMAT_VERSION
     queue_model: str = "unified"
     capabilities: tuple[str, ...] = BRIDGE_CAPABILITIES
 
@@ -60,6 +72,7 @@ class BridgeHandshake:
             "core": self.core,
             "rom": dict(self.rom) if self.rom is not None else None,
             "bridgeEpoch": self.bridge_epoch,
+            "frontierFormatVersion": self.frontier_format_version,
             "queueModel": self.queue_model,
             "capabilities": list(self.capabilities),
         }
@@ -76,8 +89,10 @@ def validate_handshake(
     ping: Mapping[str, Any],
     status: Mapping[str, Any],
     health: Mapping[str, Any],
+    *,
+    allow_unloaded: bool = False,
 ) -> BridgeHandshake:
-    """Validate three independent identity responses from bridge 0.8.0."""
+    """Validate bridge identity, optionally before any ROM or RDRAM exists."""
 
     if ping.get("pong") is not True:
         raise BridgeProtocolError("ping response did not acknowledge pong")
@@ -101,6 +116,8 @@ def validate_handshake(
         "watches",
         "dma",
         "capture",
+        "frontier",
+        "coldBoot",
         "emuState",
         "nextEventSequence",
     )
@@ -120,6 +137,38 @@ def validate_handshake(
         raise BridgeProtocolError(
             f"bridge {BRIDGE_PROTOCOL_VERSION} requires one unified ordered event queue"
         )
+    for command, response in (("ping", ping), ("status", status), ("health", health)):
+        advertised = response.get("capabilities")
+        if not isinstance(advertised, list) or tuple(advertised) != BRIDGE_CAPABILITIES:
+            raise BridgeProtocolError(
+                f"bridge {BRIDGE_PROTOCOL_VERSION} {command} capability advertisement "
+                "is missing or incompatible"
+            )
+    frontier_versions = {
+        response.get("frontierFormatVersion") for response in (ping, status, health)
+    }
+    if frontier_versions != {FRONTIER_FORMAT_VERSION}:
+        raise BridgeProtocolError(
+            f"bridge requires novelty frontier format {FRONTIER_FORMAT_VERSION} exactly"
+        )
+    rom = health.get("rom")
+    if rom is not None and not isinstance(rom, Mapping):
+        raise BridgeProtocolError("health ROM identity must be an object or null")
+    rdram_sizes = {response.get("rdramSize") for response in (ping, status, health)}
+    permitted_rdram_sizes = {RDRAM_SIZE, 0x00800000}
+    if allow_unloaded and rom is None:
+        permitted_rdram_sizes.add(0)
+    if len(rdram_sizes) != 1 or next(iter(rdram_sizes)) not in permitted_rdram_sizes:
+        raise BridgeProtocolError(
+            "Total Resolver requires a Project64 4 or 8 MiB RDRAM allocation"
+        )
+    capture_sizes = {
+        response.get("captureRdramSize") for response in (ping, status, health)
+    }
+    if capture_sizes != {RDRAM_SIZE}:
+        raise BridgeProtocolError(
+            "Total Resolver requires an exact lower-4-MiB capture window"
+        )
     dropped_ranges = status.get("droppedRanges")
     if not isinstance(dropped_ranges, list):
         raise BridgeProtocolError("status droppedRanges must be an array")
@@ -130,6 +179,22 @@ def validate_handshake(
         value = capture.get(component)
         if not isinstance(value, Mapping) or not isinstance(value.get("enabled"), bool):
             raise BridgeProtocolError(f"status capture.{component} state is incomplete")
+    frontier = status.get("frontier")
+    if not isinstance(frontier, Mapping):
+        raise BridgeProtocolError("status novelty frontier state must be an object")
+    if frontier.get("formatVersion") != FRONTIER_FORMAT_VERSION:
+        raise BridgeProtocolError("status novelty frontier format is incompatible")
+    if not isinstance(frontier.get("committed"), bool):
+        raise BridgeProtocolError("status novelty frontier committed state is missing")
+    cold_boot = status.get("coldBoot")
+    if not isinstance(cold_boot, Mapping) or cold_boot.get("state") not in {
+        "idle",
+        "armed",
+        "capturing",
+        "failed",
+        "cancelled",
+    }:
+        raise BridgeProtocolError("status cold-boot arm state is missing or incompatible")
     next_sequence = status.get("nextEventSequence")
     if isinstance(next_sequence, bool) or not isinstance(next_sequence, int) or next_sequence < 1:
         raise BridgeProtocolError("status nextEventSequence must be a positive integer")
@@ -141,10 +206,6 @@ def validate_handshake(
     port = status.get("port")
     if not isinstance(port, int) or isinstance(port, bool):
         raise BridgeProtocolError("status response omitted numeric bridge port")
-
-    rom = health.get("rom")
-    if rom is not None and not isinstance(rom, Mapping):
-        raise BridgeProtocolError("health ROM identity must be an object or null")
 
     return BridgeHandshake(
         version=BRIDGE_PROTOCOL_VERSION,

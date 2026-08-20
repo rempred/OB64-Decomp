@@ -81,6 +81,41 @@ class RegionTrackerTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "strictly increasing"):
             tracker.observe_load(physical_start=1, data=b"B", sequence=1, frame=1)
 
+    def test_large_disjoint_set_replaces_only_the_overlapping_interval(self) -> None:
+        tracker = RegionTracker("S5")
+        region_count = 10_000
+        for index in range(region_count):
+            tracker.observe_load(
+                physical_start=index * 4,
+                data=b"AA",
+                sequence=index + 1,
+                frame=index,
+            )
+
+        target = region_count // 2
+        change = tracker.observe_load(
+            physical_start=target * 4 + 1,
+            data=b"BB",
+            sequence=region_count + 1,
+            frame=region_count,
+        )
+        active = tracker.active_regions
+
+        self.assertEqual(len(change.closed), 1)
+        self.assertEqual(len(active), region_count + 1)
+        self.assertEqual(
+            [
+                (region.physical_start, region.physical_end_exclusive, region.data)
+                for region in active[target : target + 2]
+            ],
+            [
+                (target * 4, target * 4 + 1, b"A"),
+                (target * 4 + 1, target * 4 + 3, b"BB"),
+            ],
+        )
+        self.assertEqual(active[target - 1].physical_start, (target - 1) * 4)
+        self.assertEqual(active[target + 2].physical_start, (target + 1) * 4)
+
 
 if __name__ == "__main__":
     unittest.main()

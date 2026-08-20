@@ -10,8 +10,23 @@ import sys
 from typing import Any, Sequence
 
 from .derive_transition import derive_transition
+from .benchmark import run_persistent_delta_benchmark
 from .derive_session import derive_session
 from .inventory import Check, verify_inventory
+from .knowledge import (
+    create_knowledge_database,
+    default_knowledge_database,
+    knowledge_status,
+    migrate_frontier_database,
+    select_knowledge_database,
+    selected_knowledge_database,
+    verify_knowledge_database,
+)
+from .knowledge_ingest import (
+    import_valid_sessions,
+    ingest_session,
+    rebuild_knowledge_database,
+)
 from .overlay_atlas import build_overlay_atlas, verify_overlay_atlas
 from .pj64_client import DEFAULT_HOST, DEFAULT_PORT, Pj64Client, Pj64Error
 from .protocol import BridgeProtocolError
@@ -35,6 +50,7 @@ from .sessions import (
     active_session_id,
     add_session_annotation,
     create_session,
+    record_session_ingestion,
     recover_session,
     request_session_stop,
     session_deduplication_report,
@@ -89,6 +105,63 @@ def build_parser() -> argparse.ArgumentParser:
     _add_connection_arguments(start)
     _add_sessions_root(start)
     start.add_argument("--foreground", action="store_true", help="run the worker in this process")
+    start.add_argument(
+        "--before-rom",
+        action="store_true",
+        help="arm capture while Project64 has no ROM or RDRAM, then wait for manual ROM load",
+    )
+    start.add_argument(
+        "--knowledge",
+        type=Path,
+        help="persistent knowledge database (defaults to the selected database)",
+    )
+
+    knowledge = commands.add_parser(
+        "knowledge", help="manage persistent cross-session Total Resolver knowledge"
+    )
+    knowledge_commands = knowledge.add_subparsers(dest="knowledge_command", required=True)
+    knowledge_init = knowledge_commands.add_parser("init", help="initialize and select a database")
+    knowledge_init.add_argument("--db", type=Path)
+    knowledge_init.add_argument("--rom", type=Path, required=True)
+    knowledge_init.add_argument("--static-db", type=Path)
+    knowledge_init.add_argument("--resource-db", type=Path)
+    knowledge_init.add_argument("--no-select", action="store_true")
+    knowledge_select = knowledge_commands.add_parser("select", help="select an initialized database")
+    knowledge_select.add_argument("db", type=Path)
+    knowledge_migrate_frontier = knowledge_commands.add_parser(
+        "migrate-frontier",
+        help="copy a schema-2 database to protocol frontier format 3 and verify it",
+    )
+    knowledge_migrate_frontier.add_argument("--db", type=Path)
+    knowledge_migrate_frontier.add_argument("--output", type=Path, required=True)
+    knowledge_migrate_frontier.add_argument("--select", action="store_true")
+    for name, help_text in (
+        ("status", "report persistent coverage and the current frontier"),
+        ("verify", "verify facts, frontier, and incremental materializations"),
+    ):
+        child = knowledge_commands.add_parser(name, help=help_text)
+        child.add_argument("--db", type=Path)
+    knowledge_ingest = knowledge_commands.add_parser(
+        "ingest", help="verify and retry ingestion of one closed staging session"
+    )
+    knowledge_ingest.add_argument("session_id")
+    knowledge_ingest.add_argument("--db", type=Path)
+    knowledge_ingest.add_argument("--sessions-root", type=Path)
+    knowledge_import = knowledge_commands.add_parser(
+        "import", help="migrate valid historical sessions without overwriting their products"
+    )
+    knowledge_import.add_argument("--db", type=Path)
+    knowledge_import.add_argument("--sessions-root", type=Path)
+    knowledge_import.add_argument("--continue-on-error", action="store_true")
+    knowledge_rebuild = knowledge_commands.add_parser(
+        "rebuild", help="replay the declared ledger into a new verification database"
+    )
+    knowledge_rebuild.add_argument("--db", type=Path)
+    knowledge_rebuild.add_argument("--output", type=Path, required=True)
+    knowledge_benchmark = knowledge_commands.add_parser(
+        "benchmark", help="measure repeated-delta volume and the native-filter boundary"
+    )
+    knowledge_benchmark.add_argument("--output", type=Path)
 
     status = session_commands.add_parser("status", help="show current session state")
     status.add_argument("session_id", nargs="?")
@@ -324,6 +397,8 @@ def _session(args: argparse.Namespace) -> int:
                 root=args.root,
                 connection=_connection(args),
                 foreground=args.foreground,
+                knowledge_database=args.knowledge,
+                before_rom=args.before_rom,
             )
         elif args.session_command == "status":
             payload = session_status(args.session_id, root=args.root)
@@ -371,6 +446,73 @@ def _session(args: argparse.Namespace) -> int:
     if args.session_command == "stop" and payload.get("closureStatus") == "open":
         return 3
     return 0
+
+
+def _selected_knowledge(explicit: Path | None) -> Path:
+    if explicit is not None:
+        return explicit.resolve()
+    selected = selected_knowledge_database()
+    if selected is None:
+        raise RuntimeError(
+            "no persistent knowledge database is selected; run `knowledge init` or pass --db"
+        )
+    return selected
+
+
+def _knowledge(args: argparse.Namespace) -> int:
+    try:
+        if args.knowledge_command == "init":
+            database = (args.db or default_knowledge_database()).resolve()
+            payload = create_knowledge_database(
+                database,
+                rom_path=args.rom,
+                static_database=args.static_db,
+                resource_database=args.resource_db,
+            )
+            if not args.no_select:
+                select_knowledge_database(database)
+                payload["selected"] = True
+        elif args.knowledge_command == "select":
+            payload = select_knowledge_database(args.db)
+        elif args.knowledge_command == "migrate-frontier":
+            payload = migrate_frontier_database(
+                _selected_knowledge(args.db), args.output
+            )
+            if args.select:
+                payload["selection"] = select_knowledge_database(args.output)
+        elif args.knowledge_command == "status":
+            payload = knowledge_status(_selected_knowledge(args.db))
+        elif args.knowledge_command == "verify":
+            payload = verify_knowledge_database(_selected_knowledge(args.db))
+            _print(payload)
+            return 0 if payload["result"] == "PASS" else 1
+        elif args.knowledge_command == "ingest":
+            session_directory = sessions_root(args.sessions_root) / args.session_id
+            payload = ingest_session(
+                _selected_knowledge(args.db), session_directory
+            )
+            record_session_ingestion(
+                args.session_id, payload, root=args.sessions_root
+            )
+        elif args.knowledge_command == "import":
+            payload = import_valid_sessions(
+                _selected_knowledge(args.db),
+                sessions_root(args.sessions_root),
+                strict=not args.continue_on_error,
+            )
+        elif args.knowledge_command == "rebuild":
+            payload = rebuild_knowledge_database(
+                _selected_knowledge(args.db), args.output
+            )
+        elif args.knowledge_command == "benchmark":
+            payload = run_persistent_delta_benchmark(args.output)
+        else:
+            raise AssertionError(f"unhandled knowledge command: {args.knowledge_command}")
+    except (OSError, sqlite3.Error, ValueError, RuntimeError) as exc:
+        print(f"Total Resolver knowledge command failed: {exc}", file=sys.stderr)
+        return 2
+    _print(payload)
+    return 0 if payload.get("result", "PASS") == "PASS" else 1
 
 
 def _derive(args: argparse.Namespace) -> int:
@@ -615,6 +757,8 @@ def main(argv: Sequence[str] | None = None) -> int:
         return _pj64(args)
     if args.command == "session":
         return _session(args)
+    if args.command == "knowledge":
+        return _knowledge(args)
     if args.command == "derive":
         return _derive(args)
     if args.command == "atlas":

@@ -2,10 +2,12 @@
 
 from __future__ import annotations
 
+from bisect import bisect_left
 from dataclasses import dataclass, replace
 import hashlib
 from typing import Iterable
 
+from .addressing import RDRAM_SIZE
 from .configuration import ConfigurationRegion
 from .contracts import EvidenceGrade, RegionClass
 
@@ -65,13 +67,14 @@ class RegionTracker:
         self.session_id = session_id
         self._counter = 0
         self._active: list[TrackedRegion] = []
+        self._active_starts: list[int] = []
         self._history: list[TrackedRegion] = []
         self._last_sequence = 0
         self._last_frame: int | None = None
 
     @property
     def active_regions(self) -> tuple[TrackedRegion, ...]:
-        return tuple(sorted(self._active, key=lambda region: region.physical_start))
+        return tuple(self._active)
 
     @property
     def history(self) -> tuple[TrackedRegion, ...]:
@@ -127,21 +130,30 @@ class RegionTracker:
         if not data:
             raise ValueError("region observation data must not be empty")
         physical_end = physical_start + len(data)
-        if not 0 <= physical_start < physical_end <= 0x00800000:
-            raise ValueError("region observation must fit in 8 MiB RDRAM")
+        if not 0 <= physical_start < physical_end <= RDRAM_SIZE:
+            raise ValueError("region observation must fit in vanilla OB64's 4 MiB RDRAM")
 
         created: list[TrackedRegion] = []
         closed: list[TrackedRegion] = []
-        survivors: list[TrackedRegion] = []
         previous_sequence = self._last_sequence or None
         previous_frame = self._last_frame
 
-        for old in self._active:
+        overlap_start_index = bisect_left(self._active_starts, physical_start)
+        if (
+            overlap_start_index > 0
+            and self._active[overlap_start_index - 1].physical_end_exclusive
+            > physical_start
+        ):
+            overlap_start_index -= 1
+        overlap_end_index = bisect_left(
+            self._active_starts, physical_end, lo=overlap_start_index
+        )
+        overlapping = self._active[overlap_start_index:overlap_end_index]
+        replacement_regions: list[TrackedRegion] = []
+
+        for old in overlapping:
             overlap_start = max(old.physical_start, physical_start)
             overlap_end = min(old.physical_end_exclusive, physical_end)
-            if overlap_start >= overlap_end:
-                survivors.append(old)
-                continue
 
             partial = overlap_start > old.physical_start or overlap_end < old.physical_end_exclusive
             old_closed = replace(
@@ -168,7 +180,7 @@ class RegionTracker:
                     loader_event_id=old.loader_event_id,
                     parent_region_instance_id=old.region_instance_id,
                 )
-                survivors.append(left)
+                replacement_regions.append(left)
                 created.append(left)
 
             if overlap_end < old.physical_end_exclusive:
@@ -185,7 +197,7 @@ class RegionTracker:
                     loader_event_id=old.loader_event_id,
                     parent_region_instance_id=old.region_instance_id,
                 )
-                survivors.append(right)
+                replacement_regions.append(right)
                 created.append(right)
 
         new_region = self._new_region(
@@ -199,11 +211,26 @@ class RegionTracker:
             source_identity=source_identity,
             loader_event_id=loader_event_id,
         )
-        survivors.append(new_region)
+        replacement_regions.append(new_region)
         created.append(new_region)
-        survivors.sort(key=lambda region: region.physical_start)
-        self._assert_nonoverlap(survivors)
-        self._active = survivors
+        replacement_regions.sort(key=lambda region: region.physical_start)
+        self._assert_nonoverlap(replacement_regions)
+        if (
+            overlap_start_index > 0
+            and self._active[overlap_start_index - 1].physical_end_exclusive
+            > replacement_regions[0].physical_start
+        ):
+            raise AssertionError("active region tracker state overlaps its left neighbor")
+        if (
+            overlap_end_index < len(self._active)
+            and replacement_regions[-1].physical_end_exclusive
+            > self._active[overlap_end_index].physical_start
+        ):
+            raise AssertionError("active region tracker state overlaps its right neighbor")
+        self._active[overlap_start_index:overlap_end_index] = replacement_regions
+        self._active_starts[overlap_start_index:overlap_end_index] = [
+            region.physical_start for region in replacement_regions
+        ]
         self._last_sequence = sequence
         self._last_frame = frame
         return RegionChange(tuple(created), tuple(closed))
@@ -231,6 +258,7 @@ class RegionTracker:
         )
         self._history.extend(closed)
         self._active = []
+        self._active_starts = []
         self._last_sequence = sequence
         self._last_frame = frame
         return closed

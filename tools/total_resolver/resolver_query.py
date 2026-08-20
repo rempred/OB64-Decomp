@@ -103,8 +103,8 @@ def _live_candidates_without_context(
                 "z64Offset": z64,
                 "functionPlacementId": None,
                 "placementId": None,
-                "mappingBasis": "accepted-static-nominal-vram",
-                "evidenceGrade": "supported",
+                "mappingBasis": "static-nominal-vram-address-candidate",
+                "evidenceGrade": "candidate",
             },
         )
     return [candidates[key] for key in sorted(candidates)]

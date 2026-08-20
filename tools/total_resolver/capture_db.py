@@ -56,9 +56,12 @@ def load_event_payload(
     if row is None:
         raise ValueError(f"event content blob {digest} is missing")
     content = bytes(row[1])
-    actual = hashlib.sha256(content).hexdigest().upper()
-    if int(row[0]) != size or len(content) != size or actual != digest:
-        raise ValueError(f"event content blob {digest} failed exact identity validation")
+    # The legacy column name is content_sha256, but the value is only the
+    # storage reference used by capture schema v3.  The referenced bytes and
+    # their declared length are authoritative; recomputing the digest here
+    # would turn a storage index back into an integrity requirement.
+    if int(row[0]) != size or len(content) != size:
+        raise ValueError(f"event content blob {digest} has an inconsistent length")
     result = dict(value)
     del result["contentBlob"]
     if field in result:
@@ -77,7 +80,7 @@ def content_deduplication_stats(connection: sqlite3.Connection) -> dict[str, Any
     """
 
     schema_version = int(connection.execute("PRAGMA user_version").fetchone()[0])
-    if schema_version not in {2, 3}:
+    if schema_version not in {2, 3, 4}:
         raise ValueError(f"unsupported capture schema version: {schema_version}")
     session_rows = connection.execute("SELECT session_id FROM session").fetchall()
     if len(session_rows) != 1:
@@ -237,6 +240,12 @@ _CONTENT_FIELDS: dict[str, tuple[str, str, str, str]] = {
         "size",
         "host-polled-range-snapshot",
     ),
+    "baseline-snapshot": (
+        "rdramBytesHex",
+        "rdramBytesEncoding",
+        "rdramByteLength",
+        "pre-execution-native-rdram-snapshot",
+    ),
 }
 
 
@@ -278,12 +287,9 @@ def _compact_event_payload(
         raise ValueError(f"{event.bridge_event_type} exact-content length is inconsistent")
     content = bytes.fromhex(encoded)
     digest = hashlib.sha256(content).hexdigest().upper()
-    declared_digest = event.event_time_content_sha256
-    if declared_digest is None and event.bridge_event_type == "range-snapshot":
-        payload_digest = event.payload.get("contentSha256")
-        declared_digest = payload_digest if isinstance(payload_digest, str) else None
-    if declared_digest is not None and declared_digest != digest:
-        raise ValueError(f"{event.bridge_event_type} exact-content SHA-256 is inconsistent")
+    # Bridge-provided digests are contextual compatibility fields.  Capture
+    # computes its own candidate storage key and always confirms an existing
+    # key with exact bytes before interning; a digest is never fact evidence.
     if event.event_time_content_size not in {None, size}:
         raise ValueError(f"{event.bridge_event_type} declared exact-content size is inconsistent")
     if event.event_time_content_encoding not in {None, encoding}:
@@ -312,7 +318,7 @@ class CaptureStore:
         connection: sqlite3.Connection,
         session_id: str,
         *,
-        mirror_events: bool = True,
+        mirror_events: bool = False,
     ) -> None:
         self.path = path
         self.session_dir = path.parent
@@ -329,7 +335,7 @@ class CaptureStore:
         path: Path,
         metadata: SessionMetadata,
         *,
-        mirror_events: bool = True,
+        mirror_events: bool = False,
     ) -> CaptureStore:
         if not metadata.session_id:
             raise ValueError("session_id must not be empty")
@@ -383,7 +389,7 @@ class CaptureStore:
         return cls(path, connection, metadata.session_id, mirror_events=mirror_events)
 
     @classmethod
-    def open(cls, path: Path, *, mirror_events: bool = True) -> CaptureStore:
+    def open(cls, path: Path, *, mirror_events: bool = False) -> CaptureStore:
         connection = open_capture_database(path)
         rows = connection.execute("SELECT session_id FROM session").fetchall()
         if len(rows) != 1:

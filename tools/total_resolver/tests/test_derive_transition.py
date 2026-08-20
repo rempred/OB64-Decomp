@@ -177,6 +177,10 @@ class TransitionDerivationTests(unittest.TestCase):
                 destination=0x2000,
                 data=rom[256:260],
             )
+            connection.execute(
+                "UPDATE event_sequence SET event_time_content_sha256=? WHERE sequence_id=2",
+                ("0" * 64,),
+            )
             # An unrelated data transaction can interleave without destroying
             # the source/destination-contiguous code slab.
             insert_pair(
@@ -201,6 +205,9 @@ class TransitionDerivationTests(unittest.TestCase):
 
             self.assertEqual(diagnostics["romPairIssueCount"], 0)
             self.assertEqual(len(transactions), 3)
+            self.assertTrue(transactions[0].record["contentBytesValid"])
+            self.assertFalse(transactions[0].record["legacyContentHashMatches"])
+            self.assertEqual(transactions[0].evidence_grade.value, "verified")
             self.assertEqual(
                 transactions[1].record["resourceMatches"][0]["entityId"],
                 "fixture-resource",

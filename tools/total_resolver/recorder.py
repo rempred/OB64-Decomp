@@ -12,9 +12,11 @@ from pathlib import Path
 import time
 from typing import Any, Callable, Mapping, Protocol
 
+from .addressing import RDRAM_SIZE
 from .bridge_events import DrainBatch, parse_drain_response
 from .capture_db import CaptureStore, RawEventInput
 from .identities import rom_identity_from_file
+from .knowledge import empty_novelty_frontier
 from .protocol import BRIDGE_PROTOCOL_VERSION, BridgeProtocolError
 from .schema import utc_now
 
@@ -35,7 +37,7 @@ class RecorderClient(Protocol):
     def dma_start(
         self,
         physical_start: int = 0,
-        physical_end: int = 0x10000000,
+        physical_end: int = RDRAM_SIZE,
         *,
         maximum: int = 8192,
         skip_length: int = 0,
@@ -46,9 +48,25 @@ class RecorderClient(Protocol):
 
     def dma_stop(self) -> dict[str, Any]: ...
 
-    def capture_start(self) -> dict[str, Any]: ...
+    def load_novelty_frontier(self, frontier: Any, *, edge_batch_size: int = 512) -> dict[str, Any]: ...
+
+    def capture_start(self, frontier_identity: str) -> dict[str, Any]: ...
 
     def capture_stop(self) -> dict[str, Any]: ...
+
+    def cold_boot_arm(
+        self, frontier_identity: str, expected_crc1: str, expected_crc2: str
+    ) -> dict[str, Any]: ...
+
+    def cold_boot_status(self) -> dict[str, Any]: ...
+
+    def cold_boot_cancel(self) -> dict[str, Any]: ...
+
+    def baseline_status(self) -> dict[str, Any]: ...
+
+    def read_baseline_snapshot(self) -> Any: ...
+
+    def release_baseline_snapshot(self, snapshot_id: str) -> dict[str, Any]: ...
 
     def install_watch(
         self, kind: str, address: int, *, size: int = 1, label: str = ""
@@ -87,12 +105,12 @@ class SafetyRangeSpec:
     def __post_init__(self) -> None:
         if not self.range_id or any(character.isspace() for character in self.range_id):
             raise ValueError("safety range ID must be nonempty and contain no whitespace")
-        if not 0x80000000 <= self.live_address < 0x80800000:
-            raise ValueError("safety range must start in cached 8 MiB RDRAM KSEG0")
+        if not 0x80000000 <= self.live_address < 0x80000000 + RDRAM_SIZE:
+            raise ValueError("safety range must start in cached vanilla OB64 RDRAM KSEG0")
         if not 0 < self.size <= 0x100000:
             raise ValueError("safety range size must be 1..1 MiB")
-        if self.live_address + self.size > 0x80800000:
-            raise ValueError("safety range must fit in 8 MiB RDRAM")
+        if self.live_address + self.size > 0x80000000 + RDRAM_SIZE:
+            raise ValueError("safety range must fit in vanilla OB64's 4 MiB RDRAM")
         if self.expected_class not in {"executable", "data", "mixed", "unknown"}:
             raise ValueError("safety range expected_class is invalid")
 
@@ -104,7 +122,7 @@ class RecorderSettings:
     drain_limit: int = 4096
     dma_queue_limit: int = 65536
     dma_physical_start: int = 0
-    dma_physical_end: int = 0x00800000
+    dma_physical_end: int = RDRAM_SIZE
     dma_rom_start: int = 0
     dma_rom_end: int = 0x10000000
     dma_context_words: int = 8
@@ -113,6 +131,7 @@ class RecorderSettings:
     watches: tuple[WatchSpec, ...] = ()
     safety_range_interval_seconds: float = 0.25
     safety_ranges: tuple[SafetyRangeSpec, ...] = ()
+    novelty_frontier: Any | None = None
 
     def __post_init__(self) -> None:
         expected = self.expected_rom_sha256.upper()
@@ -122,16 +141,16 @@ class RecorderSettings:
             raise ValueError("poll_interval_seconds must be nonnegative")
         if self.drain_limit < 1 or self.dma_queue_limit < 1:
             raise ValueError("drain limits must be positive")
-        if not 0 <= self.dma_physical_start < self.dma_physical_end <= 0x00800000:
-            raise ValueError("DMA physical range must be a nonempty 8 MiB RDRAM range")
+        if not 0 <= self.dma_physical_start < self.dma_physical_end <= RDRAM_SIZE:
+            raise ValueError("DMA physical range must be inside vanilla OB64's 4 MiB RDRAM")
         if not 0 <= self.dma_rom_start < self.dma_rom_end <= 0x10000000:
             raise ValueError("DMA ROM range must be nonempty")
         if not 0 <= self.dma_context_words <= 128:
             raise ValueError("dma_context_words must be 0..128")
         if self.safety_range_interval_seconds <= 0:
             raise ValueError("safety_range_interval_seconds must be positive")
-        if sum(item.size for item in self.safety_ranges) > 0x800000:
-            raise ValueError("safety ranges must total at most 8 MiB")
+        if sum(item.size for item in self.safety_ranges) > RDRAM_SIZE:
+            raise ValueError("safety ranges must total at most 4 MiB")
         ids = [item.range_id for item in self.safety_ranges]
         if len(ids) != len(set(ids)):
             raise ValueError("safety range IDs must be unique")
@@ -305,6 +324,85 @@ def verify_observation_preflight(
     )
 
 
+def verify_pre_rom_preflight(
+    client: RecorderClient,
+    expected_identity: Mapping[str, Any],
+) -> RecorderPreflight:
+    """Verify a powered-off bridge before any ROM or RDRAM is present."""
+
+    client.connect()
+    handshake = client.handshake_result
+    if handshake is None or handshake.version != BRIDGE_PROTOCOL_VERSION:
+        raise BridgeProtocolError("Project64 did not establish the cold-boot bridge handshake")
+    status = client.status()
+    health = client.health()
+    if health.get("rom") is not None:
+        raise BridgeProtocolError("pre-ROM capture requires Project64 to have no loaded ROM")
+    if status.get("rdramSize") != 0 or health.get("rdramSize") != 0:
+        raise BridgeProtocolError("pre-ROM capture requires no allocated N64 RDRAM")
+    if status.get("bridgeEpoch") != handshake.bridge_epoch:
+        raise BridgeProtocolError("bridge epoch changed during pre-ROM preflight")
+    if status.get("queueModel") != "unified":
+        raise BridgeProtocolError("pre-ROM capture requires one unified event queue")
+    if status.get("watches") != [] or status.get("queued") != 0 or status.get("dropped") != 0:
+        raise BridgeProtocolError("pre-ROM capture requires a pristine empty bridge")
+    if status.get("droppedRanges") != []:
+        raise BridgeProtocolError("pre-ROM capture refuses stale dropped sequence ranges")
+    capture = status.get("capture")
+    dma = status.get("dma")
+    cold_boot = status.get("coldBoot")
+    if not isinstance(capture, Mapping) or capture.get("enabled") is not False:
+        raise BridgeProtocolError("pre-ROM capture requires execution capture to be off")
+    if not isinstance(dma, Mapping) or dma.get("enabled") is not False:
+        raise BridgeProtocolError("pre-ROM capture requires DMA capture to be off")
+    if not isinstance(cold_boot, Mapping) or cold_boot.get("state") not in {"idle", "cancelled"}:
+        raise BridgeProtocolError("pre-ROM capture requires no existing cold-boot arm")
+    next_sequence = _integer(status.get("nextEventSequence"), "next event sequence")
+    assert next_sequence is not None
+    if next_sequence < 1:
+        raise BridgeProtocolError("Project64 next event sequence must be positive")
+    required = ("normalizedSha256", "crc1", "crc2", "country", "version")
+    if any(field not in expected_identity for field in required):
+        raise BridgeProtocolError("configured cold-boot ROM identity is incomplete")
+    return RecorderPreflight(
+        bridge_version=handshake.version,
+        bridge_port=int(handshake.port),
+        bridge_epoch=handshake.bridge_epoch,
+        bridge_next_sequence=next_sequence,
+        cpu_core="interpreter",
+        rom_identity=dict(expected_identity),
+        initial_frame=None,
+    )
+
+
+def verify_loaded_rom_after_arm(
+    client: RecorderClient,
+    preflight: RecorderPreflight,
+) -> Mapping[str, Any]:
+    """Prove the exact target after the bridge has synchronously armed capture."""
+
+    status = client.status()
+    health = client.health()
+    if status.get("bridgeEpoch") != preflight.bridge_epoch:
+        raise BridgeProtocolError("bridge epoch changed while waiting for the cold boot")
+    if health.get("core") != "interpreter":
+        raise BridgeProtocolError("cold-boot capture did not start under the interpreter core")
+    live_rom = health.get("rom")
+    if not isinstance(live_rom, Mapping):
+        raise BridgeProtocolError("cold-boot capture started without a loaded ROM identity")
+    identity = rom_identity_from_file(_resolve_live_rom_path(live_rom))
+    if identity["normalizedSha256"] != str(preflight.rom_identity["normalizedSha256"]).upper():
+        raise BridgeProtocolError("cold-boot loaded ROM normalized SHA-256 mismatch")
+    for field in ("crc1", "crc2"):
+        if _hex_identity(live_rom.get(field)) != identity[field]:
+            raise BridgeProtocolError(f"Project64 {field} disagrees with the cold-boot ROM file")
+        if identity[field] != _hex_identity(preflight.rom_identity.get(field)):
+            raise BridgeProtocolError(f"cold-boot loaded ROM {field} differs from the armed target")
+    if identity["version"] != 0 or identity["country"] != "0x45":
+        raise BridgeProtocolError("cold-boot loaded ROM is not the US Rev 0 target")
+    return identity
+
+
 class Pj64CaptureRecorder:
     """Capture ordered watch, DMA, trace, and input streams without mutating game state."""
 
@@ -344,6 +442,9 @@ class Pj64CaptureRecorder:
         self._capture_enabled = False
         self._pending_dma_starts: dict[int, Mapping[str, Any]] = {}
         self._safety_fingerprints: dict[str, str] = {}
+        self._frontier: Any | None = None
+        self._baseline_snapshot: Any | None = None
+        self._cold_boot_armed = False
 
     @property
     def started(self) -> bool:
@@ -404,20 +505,22 @@ class Pj64CaptureRecorder:
         )
         return stored[0].sequence_id
 
-    def start(self, preflight: RecorderPreflight | None = None) -> RecorderPreflight:
-        if self._started:
-            raise RuntimeError("recorder has already started")
-        self.preflight = preflight or verify_observation_preflight(
-            self.client, self.settings.expected_rom_sha256
-        )
+    def _prepare_session(self, preflight: RecorderPreflight, *, start_mode: str) -> None:
+        self.preflight = preflight
         session = self.store.connection.execute(
             """
             SELECT bridge_version, bridge_port, bridge_epoch,
-                   bridge_next_sequence_start, cpu_core, rom_normalized_sha256
+                   bridge_next_sequence_start, cpu_core, rom_normalized_sha256,
+                   accepted_resolver_identity
             FROM session WHERE session_id=?
             """,
             (self.store.session_id,),
         ).fetchone()
+        self._frontier = self.settings.novelty_frontier or empty_novelty_frontier(
+            self.settings.expected_rom_sha256
+        )
+        if self._frontier.rom_normalized_sha256 != self.preflight.rom_identity["normalizedSha256"]:
+            raise BridgeProtocolError("novelty frontier ROM identity differs from the live ROM")
         expected_session = (
             self.preflight.bridge_version,
             self.preflight.bridge_port,
@@ -425,6 +528,7 @@ class Pj64CaptureRecorder:
             self.preflight.bridge_next_sequence,
             self.preflight.cpu_core,
             self.preflight.rom_identity["normalizedSha256"],
+            self._frontier.identity,
         )
         if session is None or tuple(session) != expected_session:
             raise BridgeProtocolError(
@@ -438,6 +542,7 @@ class Pj64CaptureRecorder:
             "session-start",
             {
                 "kind": "session-start",
+                "startMode": start_mode,
                 "observationOnly": True,
                 "bridgeVersion": self.preflight.bridge_version,
                 "bridgePort": self.preflight.bridge_port,
@@ -447,9 +552,23 @@ class Pj64CaptureRecorder:
                 "romNormalizedSha256": self.preflight.rom_identity["normalizedSha256"],
                 "machineEventOrder": "emulator-global-bridge-sequence",
                 "executionTrace": {
-                    "mode": "native-generation-aware-exact-coverage",
-                    "dedupe": "physical-placement-plus-exact-page-bytes-plus-instruction-or-edge",
+                    "mode": "persistent-structural-frontier-filtered-native-coverage",
+                    "dedupe": "physical-instruction-address-plus-exact-opcode-and-exact-edge",
+                    "frontierFormatVersion": self._frontier.format_version,
+                    "frontierIdentity": self._frontier.identity,
+                    "frontierLedgerOrdinal": self._frontier.ledger_ordinal,
+                    "frontierPhysicalPages": len(self._frontier.pages),
+                    "frontierInstructions": self._frontier.instruction_count,
+                    "frontierEdges": len(self._frontier.edges),
+                    "frontierDmaPlacements": len(self._frontier.dma),
+                    "pageGenerations": "context-only-on-emitted-novel-facts",
+                    "captureAuthority": "observation-only",
                     "timestampsAndFrames": "context-only",
+                },
+                "baselineCensus": {
+                    "rdramSize": RDRAM_SIZE,
+                    "mode": "one-time-native-atomic-copy-before-first-captured-instruction",
+                    "role": "resident-byte-placement-evidence-not-execution-evidence",
                 },
                 "controllerInput": {
                     "controller": 0,
@@ -477,28 +596,108 @@ class Pj64CaptureRecorder:
             },
         )
 
+    def start(self, preflight: RecorderPreflight | None = None) -> RecorderPreflight:
+        if self._started:
+            raise RuntimeError("recorder has already started")
+        resolved = preflight or verify_observation_preflight(
+            self.client, self.settings.expected_rom_sha256
+        )
+        self._prepare_session(resolved, start_mode="already-loaded-rom")
+
         try:
             self._start_instrumentation()
+            self._started = True
+            self.poll_once(_startup_drain=True)
         except Exception:
+            self._started = False
             self._rollback_instrumentation_start()
             raise
-        self._started = True
         return self.preflight
 
-    def _start_instrumentation(self) -> None:
-        """Enable recorder-owned hooks, with caller-managed rollback on any failure."""
+    def arm_before_rom(self, preflight: RecorderPreflight) -> RecorderPreflight:
+        """Load the frontier and arm synchronous capture for EMU_STARTED."""
 
+        if self._started:
+            raise RuntimeError("recorder has already started")
+        self._prepare_session(preflight, start_mode="before-rom-load")
+        assert self._frontier is not None
+        loaded = self.client.load_novelty_frontier(self._frontier)
+        if loaded.get("frontierIdentity") != self._frontier.identity:
+            raise BridgeProtocolError("bridge loaded the wrong cold-boot novelty frontier")
+        crc1 = _hex_identity(preflight.rom_identity.get("crc1"))
+        crc2 = _hex_identity(preflight.rom_identity.get("crc2"))
+        if crc1 is None or crc2 is None:
+            raise BridgeProtocolError("cold-boot target CRC identity is incomplete")
+        response = self.client.cold_boot_arm(self._frontier.identity, crc1, crc2)
+        cold_boot = response.get("coldBoot")
+        if not isinstance(cold_boot, Mapping) or cold_boot.get("state") != "armed":
+            raise BridgeProtocolError("bridge did not enter the pre-ROM armed state")
+        if cold_boot.get("armedAtNextSequence") != preflight.bridge_next_sequence:
+            raise BridgeProtocolError("cold-boot arm changed the event cursor before ROM load")
+        self._cold_boot_armed = True
+        self._started = True
+        return preflight
+
+    def await_cold_boot_start(self) -> None:
+        """Wait for manual ROM load, validate it exactly, then adopt active hooks."""
+
+        if not self._started or not self._cold_boot_armed or self.preflight is None:
+            raise RuntimeError("cold-boot capture has not been armed")
+        while True:
+            if self.store.stop_requested():
+                raise BridgeProtocolError("cold-boot capture was cancelled before ROM load")
+            cold_boot = self.client.cold_boot_status()
+            state = cold_boot.get("state")
+            if state == "failed":
+                raise BridgeProtocolError(
+                    "cold-boot bridge rejected the loaded ROM: " + str(cold_boot.get("error"))
+                )
+            if state == "capturing":
+                break
+            if state != "armed":
+                raise BridgeProtocolError(f"cold-boot arm entered unexpected state {state!r}")
+            self.clock.sleep(0.02)
+        verify_loaded_rom_after_arm(self.client, self.preflight)
+        deadline = self.clock.monotonic_ns() + 10_000_000_000
+        while True:
+            baseline_status = self.client.baseline_status()
+            if baseline_status.get("state") == "ready":
+                break
+            if baseline_status.get("state") == "failed":
+                raise BridgeProtocolError("cold-boot native 4 MiB baseline snapshot failed")
+            if self.clock.monotonic_ns() >= deadline:
+                raise BridgeProtocolError("timed out waiting for cold-boot baseline snapshot")
+            self.clock.sleep(0.01)
+        self._baseline_snapshot = self.client.read_baseline_snapshot()
+        if (
+            self._baseline_snapshot.bridge_epoch != self.preflight.bridge_epoch
+            or len(self._baseline_snapshot.data) != RDRAM_SIZE
+        ):
+            raise BridgeProtocolError("cold-boot baseline changed bridge identity or size")
+        self.client.release_baseline_snapshot(self._baseline_snapshot.snapshot_id)
+        status = self.client.status()
+        capture = status.get("capture")
+        trace = capture.get("trace") if isinstance(capture, Mapping) else None
+        controller = capture.get("controllerInput") if isinstance(capture, Mapping) else None
+        dma = status.get("dma")
+        if (
+            not isinstance(capture, Mapping)
+            or capture.get("enabled") is not True
+            or not isinstance(trace, Mapping)
+            or trace.get("enabled") is not True
+            or not isinstance(controller, Mapping)
+            or controller.get("enabled") is not True
+            or not isinstance(dma, Mapping)
+            or dma.get("enabled") is not True
+        ):
+            raise BridgeProtocolError("cold-boot bridge did not atomically enable all capture hooks")
         self._capture_enabled = True
-        capture_response = self.client.capture_start()
-        capture = capture_response.get("capture")
-        if not isinstance(capture, Mapping) or capture.get("enabled") is not True:
-            raise BridgeProtocolError("capture start response did not enable trace/input capture")
-        trace = capture.get("trace")
-        controller_capture = capture.get("controllerInput")
-        if not isinstance(trace, Mapping) or trace.get("enabled") is not True:
-            raise BridgeProtocolError("capture start response did not enable native execution tracing")
-        if not isinstance(controller_capture, Mapping) or controller_capture.get("enabled") is not True:
-            raise BridgeProtocolError("capture start response did not enable controller observation")
+        self._dma_enabled = True
+        self._cold_boot_armed = False
+        self._record_native_watch_definitions(trace)
+        self.poll_once(_startup_drain=True)
+
+    def _record_native_watch_definitions(self, trace: Mapping[str, Any]) -> None:
         trace_callback_id = trace.get("callbackId")
         if isinstance(trace_callback_id, bool) or not isinstance(trace_callback_id, int):
             raise BridgeProtocolError("capture start response omitted native trace callback ID")
@@ -520,26 +719,15 @@ class Pj64CaptureRecorder:
                 watch_kind="exec",
                 address_space="live-kseg",
                 address_start=start,
-                address_end_exclusive=start + 0x00800000,
+                address_end_exclusive=start + RDRAM_SIZE,
                 label=f"Native exact execution coverage ({name.upper()})",
                 reason="Preserve new exact instruction and edge coverage without per-hit queue growth",
-                definition_source="total-resolver:bridge-0.8.0",
+                definition_source=f"total-resolver:bridge-{BRIDGE_PROTOCOL_VERSION}-native-frontier-v3",
                 interpreter_required=True,
                 interpreter_verified=True,
                 ownership_scope="recorder-owned",
-                expected_event_rate="new exact page placement/instruction/edge identities only",
+                expected_event_rate="new exact address/opcode instruction or edge identities only",
             )
-
-        self._dma_enabled = True
-        dma_response = self.client.dma_start(
-            self.settings.dma_physical_start,
-            self.settings.dma_physical_end,
-            maximum=self.settings.dma_queue_limit,
-            context_words=self.settings.dma_context_words,
-        )
-        if not isinstance(dma_response.get("dma"), Mapping):
-            raise BridgeProtocolError("DMA start response omitted DMA state")
-        self.client.dma_set_rom_range(self.settings.dma_rom_start, self.settings.dma_rom_end)
         self.store.record_watch(
             watch_id="native-pi-dma",
             bridge_watch_id=None,
@@ -554,6 +742,55 @@ class Pj64CaptureRecorder:
             interpreter_verified=True,
             ownership_scope="recorder-owned",
         )
+
+    def _start_instrumentation(self) -> None:
+        """Enable recorder-owned hooks, with caller-managed rollback on any failure."""
+
+        if self._frontier is None:
+            raise RuntimeError("recorder novelty frontier was not prepared")
+        loaded = self.client.load_novelty_frontier(self._frontier)
+        if loaded.get("frontierIdentity") != self._frontier.identity:
+            raise BridgeProtocolError("bridge loaded the wrong novelty frontier")
+        self._capture_enabled = True
+        capture_response = self.client.capture_start(self._frontier.identity)
+        capture = capture_response.get("capture")
+        if not isinstance(capture, Mapping) or capture.get("enabled") is not True:
+            raise BridgeProtocolError("capture start response did not enable trace/input capture")
+        trace = capture.get("trace")
+        controller_capture = capture.get("controllerInput")
+        if not isinstance(trace, Mapping) or trace.get("enabled") is not True:
+            raise BridgeProtocolError("capture start response did not enable native execution tracing")
+        if not isinstance(controller_capture, Mapping) or controller_capture.get("enabled") is not True:
+            raise BridgeProtocolError("capture start response did not enable controller observation")
+        deadline = self.clock.monotonic_ns() + 10_000_000_000
+        while True:
+            baseline_status = self.client.baseline_status()
+            if baseline_status.get("state") == "ready":
+                break
+            if baseline_status.get("state") == "failed":
+                raise BridgeProtocolError("native 4 MiB baseline snapshot failed")
+            if self.clock.monotonic_ns() >= deadline:
+                raise BridgeProtocolError("timed out waiting for native 4 MiB baseline snapshot")
+            self.clock.sleep(0.01)
+        self._baseline_snapshot = self.client.read_baseline_snapshot()
+        if (
+            self._baseline_snapshot.bridge_epoch != self.preflight.bridge_epoch
+            or len(self._baseline_snapshot.data) != RDRAM_SIZE
+        ):
+            raise BridgeProtocolError("native baseline snapshot changed bridge identity or size")
+        self.client.release_baseline_snapshot(self._baseline_snapshot.snapshot_id)
+        self._record_native_watch_definitions(trace)
+
+        self._dma_enabled = True
+        dma_response = self.client.dma_start(
+            self.settings.dma_physical_start,
+            self.settings.dma_physical_end,
+            maximum=self.settings.dma_queue_limit,
+            context_words=self.settings.dma_context_words,
+        )
+        if not isinstance(dma_response.get("dma"), Mapping):
+            raise BridgeProtocolError("DMA start response omitted DMA state")
+        self.client.dma_set_rom_range(self.settings.dma_rom_start, self.settings.dma_rom_end)
 
         for spec in self.settings.watches:
             try:
@@ -592,6 +829,12 @@ class Pj64CaptureRecorder:
             except Exception:
                 pass
         self._installed_bridge_watch_ids.clear()
+        if self._cold_boot_armed:
+            try:
+                self.client.cold_boot_cancel()
+            except Exception:
+                pass
+            self._cold_boot_armed = False
         if self._dma_enabled:
             try:
                 self.client.dma_stop()
@@ -604,6 +847,11 @@ class Pj64CaptureRecorder:
             except Exception:
                 pass
             self._capture_enabled = False
+        if self._baseline_snapshot is not None:
+            try:
+                self.client.release_baseline_snapshot(self._baseline_snapshot.snapshot_id)
+            except Exception:
+                pass
         try:
             latest = self.store.latest_sequence()
             if latest is not None:
@@ -615,6 +863,30 @@ class Pj64CaptureRecorder:
         inputs: list[RawEventInput] = []
         for offset, event in enumerate(batch.events):
             frame = event.frame_number if event.frame_number is not None else self._last_frame
+            payload = dict(event.payload)
+            content_sha256 = event.event_time_content_sha256
+            content_size = event.event_time_content_size
+            content_encoding = event.event_time_content_encoding
+            content_phase = event.event_time_content_phase
+            content_field = event.event_time_content_field
+            if event.event_type == "baseline-snapshot":
+                snapshot = self._baseline_snapshot
+                if (
+                    snapshot is None
+                    or payload.get("snapshotId") != snapshot.snapshot_id
+                    or event.bridge_sequence != snapshot.bridge_sequence
+                    or snapshot.bridge_epoch != event.bridge_epoch
+                    or len(snapshot.data) != RDRAM_SIZE
+                ):
+                    raise BridgeProtocolError("baseline event does not match the frozen native copy")
+                payload["rdramBytesEncoding"] = "hex-uppercase"
+                payload["rdramByteLength"] = RDRAM_SIZE
+                payload["rdramBytesHex"] = snapshot.data.hex().upper()
+                content_sha256 = hashlib.sha256(snapshot.data).hexdigest().upper()
+                content_size = RDRAM_SIZE
+                content_encoding = "hex-uppercase"
+                content_phase = "pre-execution-native-rdram-snapshot"
+                content_field = "rdramBytesHex"
             inputs.append(
                 RawEventInput(
                     frame_number=frame,
@@ -626,15 +898,15 @@ class Pj64CaptureRecorder:
                     recorder_batch_id=batch_id,
                     recorder_batch_index=start_index + offset,
                     bridge_event_type=event.event_type,
-                    payload=event.payload,
+                    payload=payload,
                     ingestion_status=event.ingestion_status,
                     bridge_queue_remaining=batch.remaining,
                     bridge_dropped_total=batch.dropped,
-                    event_time_content_sha256=event.event_time_content_sha256,
-                    event_time_content_size=event.event_time_content_size,
-                    event_time_content_encoding=event.event_time_content_encoding,
-                    event_time_content_phase=event.event_time_content_phase,
-                    event_time_content_field=event.event_time_content_field,
+                    event_time_content_sha256=content_sha256,
+                    event_time_content_size=content_size,
+                    event_time_content_encoding=content_encoding,
+                    event_time_content_phase=content_phase,
+                    event_time_content_field=content_field,
                 )
             )
         return inputs
@@ -645,6 +917,10 @@ class Pj64CaptureRecorder:
                 self._pending_dma_starts[event.bridge_sequence] = event.payload
                 continue
             if event.event_type != "dma-complete":
+                continue
+            if event.payload.get("pairingStatus") == "native-completion-only":
+                if event.payload.get("dmaStartSequence") is not None:
+                    raise BridgeProtocolError("native completion-only DMA named a start event")
                 continue
             start_sequence = event.payload.get("dmaStartSequence")
             start = self._pending_dma_starts.pop(start_sequence, None)
@@ -745,7 +1021,7 @@ class Pj64CaptureRecorder:
                     "label": spec.label,
                     "expectedClass": spec.expected_class,
                     "liveAddress": spec.live_address,
-                    "physicalAddress": spec.live_address & 0x007FFFFF,
+                    "physicalAddress": spec.live_address & 0x003FFFFF,
                     "size": spec.size,
                     "sampleReason": sample_reason,
                     "ordering": "host-polled-context-only",
@@ -800,7 +1076,9 @@ class Pj64CaptureRecorder:
             },
         )
 
-    def poll_once(self, *, force_samples: bool = False) -> PollResult:
+    def poll_once(
+        self, *, force_samples: bool = False, _startup_drain: bool = False
+    ) -> PollResult:
         if not self._started:
             raise RuntimeError("recorder has not started")
         started_ns = self.clock.monotonic_ns()
@@ -865,19 +1143,19 @@ class Pj64CaptureRecorder:
         self._last_poll_ns = started_ns
         self._longest_drain_stall_ms = max(self._longest_drain_stall_ms, drain_ms)
 
-        frame_due = (
+        frame_due = not _startup_drain and (
             force_samples
             or self._last_frame_sample_ns is None
             or now_ns - self._last_frame_sample_ns
             >= int(self.settings.frame_sample_interval_seconds * 1_000_000_000)
         )
-        health_due = (
+        health_due = not _startup_drain and (
             force_samples
             or self._last_health_ns is None
             or now_ns - self._last_health_ns
             >= int(self.settings.health_interval_seconds * 1_000_000_000)
         )
-        safety_due = bool(self.settings.safety_ranges) and (
+        safety_due = not _startup_drain and bool(self.settings.safety_ranges) and (
             force_samples
             or self._last_safety_sample_ns is None
             or now_ns - self._last_safety_sample_ns
@@ -970,6 +1248,9 @@ class Pj64CaptureRecorder:
     def stop_instrumentation(self) -> None:
         """Stop only recorder-owned instrumentation; queued evidence remains drainable."""
 
+        if self._cold_boot_armed:
+            self.client.cold_boot_cancel()
+            self._cold_boot_armed = False
         if self._capture_enabled:
             self.client.capture_stop()
             self._capture_enabled = False

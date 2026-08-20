@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from bisect import bisect_left
 from collections import defaultdict
 import hashlib
 import json
@@ -9,7 +10,7 @@ from pathlib import Path
 import sqlite3
 from typing import Any, Iterable, Mapping
 
-from .addressing import physical_from_live
+from .addressing import RDRAM_SIZE, physical_from_live
 from .capture_db import canonical_json
 from .derive_transition import (
     _bursts,
@@ -34,6 +35,67 @@ RANGE_CHANGE_SCHEMA = "ob64-total-resolver-range-change.v1"
 EXECUTION_SCHEMA = "ob64-total-resolver-execution-observation.v1"
 CONTROLLER_INPUT_SCHEMA = "ob64-total-resolver-controller-input.v1"
 UNRESOLVED_SCHEMA = "ob64-total-resolver-unresolved-observation.v1"
+MAPPING_POLICY = "exact-observed-opcode-confirmed-v2"
+
+
+def _u32(value: Any) -> int | None:
+    if isinstance(value, bool):
+        return None
+    if isinstance(value, int):
+        parsed = value
+    elif isinstance(value, str):
+        try:
+            parsed = int(value, 0)
+        except ValueError:
+            return None
+    else:
+        return None
+    return parsed if 0 <= parsed <= 0xFFFFFFFF else None
+
+
+def _captured_instruction_opcode(
+    payload: Mapping[str, Any],
+    pc: int,
+    trace_page_bytes: bytes | None,
+) -> int | None:
+    explicit = _u32(payload.get("opcode"))
+    if explicit is not None:
+        return explicit
+    if trace_page_bytes is None:
+        return None
+    offset = pc & 0xFFF
+    encoded = trace_page_bytes[offset : offset + 4]
+    return int.from_bytes(encoded, "big") if len(encoded) == 4 else None
+
+
+def _opcode_mapping_verification(
+    rom: bytes,
+    rom_offset: int,
+    captured_opcode: int | None,
+) -> dict[str, Any]:
+    expected_bytes = rom[rom_offset : rom_offset + 4]
+    expected_opcode = (
+        int.from_bytes(expected_bytes, "big") if len(expected_bytes) == 4 else None
+    )
+    if expected_opcode is None:
+        status = "rom-offset-out-of-range"
+    elif captured_opcode is None:
+        status = "captured-opcode-unavailable"
+    elif captured_opcode == expected_opcode:
+        status = "exact-opcode-match"
+    else:
+        status = "opcode-mismatch"
+    return {
+        "status": status,
+        "romOffset": rom_offset,
+        "capturedOpcode": (
+            f"0x{captured_opcode:08X}" if captured_opcode is not None else None
+        ),
+        "romOpcode": (
+            f"0x{expected_opcode:08X}" if expected_opcode is not None else None
+        ),
+        "equalityBasis": "all-four-opcode-bytes",
+    }
 
 
 def session_products_root(explicit: Path | None = None) -> Path:
@@ -41,6 +103,122 @@ def session_products_root(explicit: Path | None = None) -> Path:
         explicit
         or repository_root() / "build" / "total-resolver" / "products" / "sessions"
     ).resolve()
+
+
+def _baseline_census(
+    connection: sqlite3.Connection,
+    session_id: str,
+    static: StaticModel,
+    rom: bytes,
+) -> tuple[list[dict[str, Any]], dict[str, Any]]:
+    rows = connection.execute(
+        """
+        SELECT sequence_id,frame_number,bridge_event_sequence,raw_payload_json
+        FROM event_sequence
+        WHERE bridge_stream='trace' AND bridge_event_type='baseline-snapshot'
+        ORDER BY sequence_id
+        """
+    ).fetchall()
+    if len(rows) != 1:
+        return [], {
+            "status": "missing" if not rows else "invalid-multiple-snapshots",
+            "snapshotCount": len(rows),
+            "rdramBytes": 0,
+            "placementCount": 0,
+            "ambiguousStaticContentGroups": 0,
+            "ambiguousShortMatches": 0,
+        }
+    row = rows[0]
+    payload = _read_payload(row, connection)
+    encoded = payload.get("rdramBytesHex")
+    if (
+        payload.get("capturePhase") != "pre-execution-native-rdram-snapshot"
+        or payload.get("ordering") != "native-copy-before-first-captured-instruction"
+        or payload.get("rdramSize") != RDRAM_SIZE
+        or payload.get("rdramByteLength") != RDRAM_SIZE
+        or payload.get("rdramBytesEncoding") != "hex-uppercase"
+        or not isinstance(encoded, str)
+    ):
+        raise ValueError("baseline snapshot lacks its exact 4 MiB capture contract")
+    try:
+        rdram = bytes.fromhex(encoded)
+    except ValueError as exc:
+        raise ValueError("baseline snapshot bytes are not canonical hexadecimal") from exc
+    if len(rdram) != RDRAM_SIZE:
+        raise ValueError("baseline snapshot is not exactly 4 MiB")
+
+    content_groups: defaultdict[bytes, list[Any]] = defaultdict(list)
+    for function in static.functions:
+        content = rom[function.rom_start : function.rom_end_exclusive]
+        if len(content) == function.rom_end_exclusive - function.rom_start and content:
+            content_groups[content].append(function)
+    unique_functions = [group[0] for group in content_groups.values() if len(group) == 1]
+    ambiguous_groups = sum(len(group) > 1 for group in content_groups.values())
+
+    anchors: defaultdict[tuple[int, bytes], list[tuple[Any, bytes]]] = defaultdict(list)
+    for function in unique_functions:
+        content = rom[function.rom_start : function.rom_end_exclusive]
+        anchor_length = min(16, len(content))
+        anchors[(anchor_length, content[:anchor_length])].append((function, content))
+
+    matches: defaultdict[int, set[int]] = defaultdict(set)
+    function_by_id = {function.function_id: function for function in unique_functions}
+    for anchor_length in sorted({key[0] for key in anchors}):
+        for physical in range(0, RDRAM_SIZE - anchor_length + 1, 4):
+            candidates = anchors.get((anchor_length, rdram[physical : physical + anchor_length]))
+            if not candidates:
+                continue
+            for function, content in candidates:
+                if physical + len(content) <= RDRAM_SIZE and rdram[
+                    physical : physical + len(content)
+                ] == content:
+                    matches[function.function_id].add(physical)
+
+    placements: list[dict[str, Any]] = []
+    ambiguous_short = 0
+    for function_id, physical_matches in sorted(matches.items()):
+        function = function_by_id[function_id]
+        size = function.rom_end_exclusive - function.rom_start
+        if size < 16 and len(physical_matches) != 1:
+            ambiguous_short += 1
+            continue
+        for physical in sorted(physical_matches):
+            placements.append(
+                {
+                    "schema": "ob64-total-resolver-function-placement.v1",
+                    "placementId": (
+                        f"baseline:{int(row['sequence_id']):08d}:"
+                        f"function:{function.structural_name}:physical:{physical:06X}"
+                    ),
+                    "codeSlabId": None,
+                    "sessionId": session_id,
+                    "firstCompletionSequence": int(row["sequence_id"]),
+                    "lastCompletionSequence": int(row["sequence_id"]),
+                    "firstFrame": row["frame_number"],
+                    "lastFrame": row["frame_number"],
+                    "function": function.to_dict(),
+                    "destinationPhysicalStart": physical,
+                    "destinationPhysicalEndExclusive": physical + size,
+                    "destinationLiveStart": 0x80000000 + physical,
+                    "destinationLiveEndExclusive": 0x80000000 + physical + size,
+                    "mappingMethod": "atomic-baseline-rdram-exact-function-bytes",
+                    "equalityBasis": "complete-static-function-bytes",
+                    "executionClaim": False,
+                    "reviewState": "generated-unreviewed",
+                }
+            )
+    return placements, {
+        "status": "captured",
+        "snapshotCount": 1,
+        "snapshotSequence": int(row["sequence_id"]),
+        "snapshotBridgeSequence": row["bridge_event_sequence"],
+        "rdramBytes": len(rdram),
+        "uniqueStaticContentFunctionsScanned": len(unique_functions),
+        "ambiguousStaticContentGroups": ambiguous_groups,
+        "ambiguousShortMatches": ambiguous_short,
+        "placementCount": len(placements),
+        "mappingRole": "resident-byte-placement-evidence-not-execution-evidence",
+    }
 
 
 def _runs(offsets: Iterable[int], base: int) -> list[dict[str, int]]:
@@ -74,6 +252,15 @@ def _safety_range_analysis(
     connection: sqlite3.Connection,
     transactions: list[Any],
 ) -> tuple[list[dict[str, Any]], list[dict[str, Any]], dict[str, Any]]:
+    ordered_transactions = sorted(
+        (
+            int(transaction.record["completionBridgeSequence"]),
+            index,
+            transaction,
+        )
+        for index, transaction in enumerate(transactions)
+    )
+    transaction_sequences = [item[0] for item in ordered_transactions]
     rows = connection.execute(
         """
         SELECT sequence_id, frame_number, raw_payload_json
@@ -103,12 +290,10 @@ def _safety_range_analysis(
         except (ValueError, TypeError, KeyError):
             malformed += 1
             continue
-        if (
-            len(data) != payload.get("size")
-            or hashlib.sha256(data).hexdigest().upper() != payload.get("contentSha256")
-        ):
+        if len(data) != payload.get("size") or payload.get("bytesEncoding") != "hex-uppercase":
             malformed += 1
             continue
+        content_sha = hashlib.sha256(data).hexdigest().upper()
         race = payload.get("changedBetweenProbeAndSnapshot") is True
         races += int(race)
         previous = by_range.get(range_id)
@@ -121,7 +306,8 @@ def _safety_range_analysis(
             "liveStart": live_start,
             "physicalStart": physical_start,
             "byteSize": len(data),
-            "contentSha256": payload["contentSha256"],
+            "contentSha256": content_sha,
+            "legacyContentHashMatches": content_sha == payload.get("contentSha256"),
             "sampleReason": payload.get("sampleReason"),
             "hostPolled": True,
             "probeSnapshotRace": race,
@@ -148,11 +334,12 @@ def _safety_range_analysis(
                 continue
             modeled = bytearray(previous_data)
             candidates: list[str] = []
-            for transaction in transactions:
+            transaction_start = bisect_left(transaction_sequences, previous_next)
+            transaction_end = bisect_left(transaction_sequences, current_next)
+            for _, _, transaction in ordered_transactions[
+                transaction_start:transaction_end
+            ]:
                 transaction_record = transaction.record
-                bridge_sequence = int(transaction_record["completionBridgeSequence"])
-                if not previous_next <= bridge_sequence < current_next:
-                    continue
                 destination = int(transaction_record["destinationPhysicalStart"])
                 destination_end = destination + len(transaction.data)
                 overlap_start = max(physical_start, destination)
@@ -337,8 +524,10 @@ def _execution_analysis(
     regions: list[dict[str, Any]],
     transactions: list[Any],
     static: StaticModel,
+    rom: bytes,
 ) -> tuple[list[dict[str, Any]], list[dict[str, Any]], dict[str, Any]]:
     trace_pages: dict[int, dict[str, Any]] = {}
+    trace_page_bytes: dict[int, bytes] = {}
     for page_row in connection.execute(
         """
         SELECT sequence_id, raw_payload_json, event_time_content_sha256,
@@ -357,6 +546,12 @@ def _execution_analysis(
                 "contentSha256": page_row["event_time_content_sha256"],
                 "byteSize": page_row["event_time_content_size"],
             }
+            encoded = page_payload.get("codeBytesHex")
+            if isinstance(encoded, str):
+                try:
+                    trace_page_bytes[content_id] = bytes.fromhex(encoded)
+                except ValueError:
+                    pass
     rows = connection.execute(
         """
         SELECT sequence_id, frame_number, bridge_stream, bridge_event_sequence,
@@ -373,6 +568,24 @@ def _execution_analysis(
     }
     observations: list[dict[str, Any]] = []
     unresolved: list[dict[str, Any]] = []
+    unresolved_by_exact_issue: dict[tuple[Any, ...], dict[str, Any]] = {}
+
+    def retain_unresolved(
+        value: dict[str, Any], *, exact_issue: tuple[Any, ...]
+    ) -> None:
+        existing = unresolved_by_exact_issue.get(exact_issue)
+        if existing is None:
+            value["firstSequence"] = value.get("sequence")
+            value["lastSequence"] = value.get("sequence")
+            value["firstFrame"] = value.get("frame")
+            value["lastFrame"] = value.get("frame")
+            value["occurrenceCount"] = 1
+            unresolved_by_exact_issue[exact_issue] = value
+            unresolved.append(value)
+            return
+        existing["lastSequence"] = value.get("sequence")
+        existing["lastFrame"] = value.get("frame")
+        existing["occurrenceCount"] = int(existing["occurrenceCount"]) + 1
     exact_count = 0
     native_coverage_count = 0
     exact_watch_count = 0
@@ -405,15 +618,32 @@ def _execution_analysis(
             if isinstance(code_page_content_id, int) and not isinstance(code_page_content_id, bool)
             else None
         )
+        exact_trace_bytes = (
+            trace_page_bytes.get(code_page_content_id)
+            if isinstance(code_page_content_id, int)
+            and not isinstance(code_page_content_id, bool)
+            else None
+        )
+        captured_opcode = (
+            _captured_instruction_opcode(payload, pc, exact_trace_bytes)
+            if exact
+            else None
+        )
+        structural_instruction_resolved = payload.get("exactInstructionResolved") is True
+        if structural_instruction_resolved:
+            try:
+                payload_physical = int(str(payload.get("physicalAddress")), 0)
+            except (TypeError, ValueError):
+                structural_instruction_resolved = False
+            else:
+                structural_instruction_resolved = payload_physical == physical_pc
         trace_content_resolved = (
             row["bridge_event_type"] != "exec-coverage"
+            or structural_instruction_resolved
             or (trace_page is not None and int(trace_page["sequence"]) < sequence)
         )
         region = region_index.resolve(sequence, physical_pc)
-        nominal_function = static.resolve_nominal_pc(pc) if region is None else None
-        nominal_rom_offset = (
-            static.resolve_nominal_rom_offset(pc) if nominal_function is not None else None
-        )
+        nominal_mapping = static.resolve_nominal_mapping(pc) if region is None else None
         transaction = (
             transaction_by_id.get(str(region["sourceLoaderEventId"]))
             if region is not None and region.get("sourceLoaderEventId") is not None
@@ -421,6 +651,9 @@ def _execution_analysis(
         )
         rom_offset: int | None = None
         function = None
+        mapping_method: str | None = None
+        mapping_verification: dict[str, Any] | None = None
+        mapping_candidate: dict[str, Any] | None = None
         if transaction is not None:
             destination = int(transaction.record["destinationPhysicalStart"])
             candidate = int(transaction.record["sourceZ64Start"]) + physical_pc - destination
@@ -430,11 +663,51 @@ def _execution_analysis(
                 <= candidate
                 < int(transaction.record["sourceMatchedEndExclusive"])
             ):
-                rom_offset = candidate
-                function = static.function_containing(candidate)
-        if function is None and nominal_function is not None:
-            function = nominal_function
-            rom_offset = nominal_rom_offset
+                candidate_function = static.function_containing(candidate)
+                if exact:
+                    mapping_verification = _opcode_mapping_verification(
+                        rom, candidate, captured_opcode
+                    )
+                    if mapping_verification["status"] == "exact-opcode-match":
+                        rom_offset = candidate
+                        function = candidate_function
+                        mapping_method = "contemporaneous-rom-dma-region"
+                    else:
+                        mapping_candidate = {
+                            "mappingMethod": "contemporaneous-rom-dma-region",
+                            "romOffset": candidate,
+                            "function": (
+                                candidate_function.to_dict()
+                                if candidate_function is not None
+                                else None
+                            ),
+                        }
+                else:
+                    rom_offset = candidate
+                    function = candidate_function
+                    mapping_method = "contemporaneous-rom-dma-region"
+                    mapping_verification = {
+                        "status": "contextual-placement-without-exact-execution-opcode",
+                        "romOffset": candidate,
+                        "capturedOpcode": None,
+                        "romOpcode": None,
+                        "equalityBasis": "ordered-rom-dma-region-context",
+                    }
+        if function is None and region is None and nominal_mapping is not None:
+            nominal_function, nominal_rom_offset = nominal_mapping
+            mapping_verification = _opcode_mapping_verification(
+                rom, nominal_rom_offset, captured_opcode
+            )
+            if exact and mapping_verification["status"] == "exact-opcode-match":
+                function = nominal_function
+                rom_offset = nominal_rom_offset
+                mapping_method = "accepted-static-nominal-vram"
+            else:
+                mapping_candidate = {
+                    "mappingMethod": "static-nominal-vram-address-candidate",
+                    "romOffset": nominal_rom_offset,
+                    "function": nominal_function.to_dict(),
+                }
         safety_range_ids = payload.get("safetyRangeIds")
         inside_dynamic_safety_scope = bool(
             isinstance(safety_range_ids, list) and safety_range_ids
@@ -466,23 +739,29 @@ def _execution_analysis(
                 else "sampled-pc-context"
             ),
             "executionClaim": "observed" if exact else "sampled-only",
-            "opcode": payload.get("opcode"),
+            "opcode": (
+                f"0x{captured_opcode:08X}"
+                if captured_opcode is not None
+                else payload.get("opcode")
+            ),
             "codePageContentId": code_page_content_id,
             "codePageContent": trace_page,
             "codePageContentResolved": trace_content_resolved,
+            "exactInstructionResolved": (
+                structural_instruction_resolved
+                if row["bridge_event_type"] == "exec-coverage"
+                else exact
+            ),
+            "pageGeneration": payload.get("pageGeneration"),
             "newInstruction": payload.get("newInstruction"),
             "newEdge": payload.get("newEdge"),
             "previous": payload.get("previous"),
             "regionInstanceId": region["regionInstanceId"] if region else None,
             "romOffset": rom_offset,
             "function": function.to_dict() if function else None,
-            "mappingMethod": (
-                "contemporaneous-rom-dma-region"
-                if transaction is not None and rom_offset is not None
-                else "accepted-static-nominal-vram"
-                if nominal_function is not None and nominal_rom_offset is not None
-                else None
-            ),
+            "mappingMethod": mapping_method,
+            "mappingVerification": mapping_verification,
+            "mappingCandidate": mapping_candidate,
             "status": status,
             "reviewState": "generated-unreviewed",
             "registerSnapshot": payload.get("regs") if exact else None,
@@ -494,34 +773,75 @@ def _execution_analysis(
         }
         observations.append(observation)
         if row["bridge_event_type"] == "exec-coverage" and not trace_content_resolved:
-            unresolved.append(
+            retain_unresolved(
                 {
                     "schema": UNRESOLVED_SCHEMA,
                     "unresolvedId": f"unresolved-trace-content:{sequence:08d}",
-                    "kind": "trace-page-content-missing",
+                    "kind": "exact-instruction-placement-unresolved",
                     "sequence": sequence,
                     "frame": row["frame_number"],
                     "pc": pc,
                     "codePageContentId": code_page_content_id,
-                    "nextEvidence": "retain the earlier trace-page event or recapture this placement without queue loss",
+                    "nextEvidence": "recapture with a native physical placement and generation payload",
                     "reviewState": "generated-unreviewed",
-                }
+                },
+                exact_issue=(
+                    "exact-instruction-placement-unresolved",
+                    physical_pc,
+                    captured_opcode,
+                ),
             )
         if status in {"resident-unmapped", "unknown-region"}:
-            unresolved.append(
+            verification_status = (
+                mapping_verification.get("status")
+                if isinstance(mapping_verification, Mapping)
+                else None
+            )
+            candidate_method = (
+                mapping_candidate.get("mappingMethod")
+                if isinstance(mapping_candidate, Mapping)
+                else None
+            )
+            unresolved_kind = status
+            if verification_status == "opcode-mismatch":
+                unresolved_kind = (
+                    "nominal-vram-opcode-mismatch"
+                    if candidate_method == "static-nominal-vram-address-candidate"
+                    else "contemporaneous-placement-opcode-mismatch"
+                )
+            elif verification_status in {
+                "captured-opcode-unavailable",
+                "rom-offset-out-of-range",
+            }:
+                unresolved_kind = f"mapping-{verification_status}"
+            candidate_rom_offset = (
+                mapping_candidate.get("romOffset")
+                if isinstance(mapping_candidate, Mapping)
+                else None
+            )
+            retain_unresolved(
                 {
                     "schema": UNRESOLVED_SCHEMA,
                     "unresolvedId": f"unresolved-pc:{sequence:08d}",
-                    "kind": status,
+                    "kind": unresolved_kind,
                     "sequence": sequence,
                     "frame": row["frame_number"],
                     "pc": pc,
                     "observationKind": observation["observationKind"],
+                    "mappingVerification": mapping_verification,
+                    "mappingCandidate": mapping_candidate,
                     "nextEvidence": (
                         "capture the loader/write that established this page, then resolve through its contemporaneous region"
                     ),
                     "reviewState": "generated-unreviewed",
-                }
+                },
+                exact_issue=(
+                    unresolved_kind,
+                    physical_pc,
+                    captured_opcode,
+                    candidate_rom_offset,
+                    observation["observationKind"],
+                ),
             )
     diagnostics = {
         "observationCount": len(observations),
@@ -537,6 +857,19 @@ def _execution_analysis(
         "resolvedFunctionCount": sum(item["status"] == "resolved-function" for item in observations),
         "resolvedRomCount": sum(item["romOffset"] is not None for item in observations),
         "unresolvedPcCount": len(unresolved),
+        "opcodeConfirmedMappingCount": sum(
+            item.get("mappingVerification", {}).get("status") == "exact-opcode-match"
+            for item in observations
+            if isinstance(item.get("mappingVerification"), Mapping)
+        ),
+        "opcodeMismatchMappingCount": sum(
+            item.get("mappingVerification", {}).get("status") == "opcode-mismatch"
+            for item in observations
+            if isinstance(item.get("mappingVerification"), Mapping)
+        ),
+        "addressOnlyMappingCandidateCount": sum(
+            item.get("mappingCandidate") is not None for item in observations
+        ),
     }
     return observations, unresolved, diagnostics
 
@@ -597,6 +930,7 @@ def _memory_analysis(
     regions: list[dict[str, Any]],
     transactions: list[Any],
     static: StaticModel,
+    rom: bytes,
 ) -> tuple[list[dict[str, Any]], dict[str, Any]]:
     rows = connection.execute(
         """
@@ -640,6 +974,8 @@ def _memory_analysis(
         rom_offset: int | None = None
         function = None
         mapping_method: str | None = None
+        mapping_verification: dict[str, Any] | None = None
+        mapping_candidate: dict[str, Any] | None = None
         if transaction is not None:
             destination = int(transaction.record["destinationPhysicalStart"])
             candidate = int(transaction.record["sourceZ64Start"]) + physical_pc - destination
@@ -652,12 +988,33 @@ def _memory_analysis(
                 rom_offset = candidate
                 function = static.function_containing(candidate)
                 mapping_method = "contemporaneous-rom-dma-region"
+                mapping_verification = {
+                    "status": "contextual-placement-without-accessor-opcode",
+                    "romOffset": candidate,
+                    "capturedOpcode": None,
+                    "romOpcode": None,
+                    "equalityBasis": "ordered-rom-dma-region-context",
+                }
         if function is None and region is None:
-            function = static.resolve_nominal_pc(pc)
-            if function is not None:
-                rom_offset = static.resolve_nominal_rom_offset(pc)
-                if rom_offset is not None:
+            nominal_mapping = static.resolve_nominal_mapping(pc)
+            if nominal_mapping is not None:
+                nominal_function, nominal_rom_offset = nominal_mapping
+                accessor_opcode = _u32(
+                    payload.get("pcOpcode", payload.get("opcode"))
+                )
+                mapping_verification = _opcode_mapping_verification(
+                    rom, nominal_rom_offset, accessor_opcode
+                )
+                if mapping_verification["status"] == "exact-opcode-match":
+                    function = nominal_function
+                    rom_offset = nominal_rom_offset
                     mapping_method = "accepted-static-nominal-vram"
+                else:
+                    mapping_candidate = {
+                        "mappingMethod": "static-nominal-vram-address-candidate",
+                        "romOffset": nominal_rom_offset,
+                        "function": nominal_function.to_dict(),
+                    }
         value_type = payload.get("valueType")
         accesses.append(
             {
@@ -678,6 +1035,8 @@ def _memory_analysis(
                 "romOffset": rom_offset,
                 "function": function.to_dict() if function else None,
                 "mappingMethod": mapping_method,
+                "mappingVerification": mapping_verification,
+                "mappingCandidate": mapping_candidate,
                 "registerSnapshot": payload.get("regs"),
                 "reviewState": "generated-unreviewed",
             }
@@ -687,6 +1046,9 @@ def _memory_analysis(
         "readCount": sum(item["accessKind"] == "read" for item in accesses),
         "writeCount": sum(item["accessKind"] == "write" for item in accesses),
         "resolvedAccessorFunctionCount": sum(item["function"] is not None for item in accesses),
+        "addressOnlyAccessorCandidateCount": sum(
+            item.get("mappingCandidate") is not None for item in accesses
+        ),
     }
     return accesses, diagnostics
 
@@ -737,12 +1099,15 @@ def derive_session(
             connection, transactions
         )
         executions, execution_unresolved, execution = _execution_analysis(
-            connection, regions, transactions, static
+            connection, regions, transactions, static, rom
         )
         memory_accesses, memory = _memory_analysis(
-            connection, regions, transactions, static
+            connection, regions, transactions, static, rom
         )
         controller_inputs, controller_input = _controller_input_analysis(connection)
+        baseline_placements, baseline = _baseline_census(
+            connection, session_id, static, rom
+        )
         loss_ranges = int(
             connection.execute("SELECT COUNT(*) FROM bridge_loss_range").fetchone()[0]
         )
@@ -750,6 +1115,24 @@ def derive_session(
         connection.close()
 
     slabs, placements = _derive_code_slabs(transactions, static)
+    existing_placements = {
+        (
+            int(item["function"]["functionId"]),
+            int(item["destinationPhysicalStart"]),
+            int(item["destinationPhysicalEndExclusive"]),
+        )
+        for item in placements
+    }
+    placements.extend(
+        item
+        for item in baseline_placements
+        if (
+            int(item["function"]["functionId"]),
+            int(item["destinationPhysicalStart"]),
+            int(item["destinationPhysicalEndExclusive"]),
+        )
+        not in existing_placements
+    )
     bursts = _bursts(transactions)
     unresolved = range_unresolved + execution_unresolved + [
         {
@@ -772,11 +1155,14 @@ def derive_session(
         "Range fingerprints are cheap change signals. Exact bytes are retained only for initial/changed samples.",
         "Range polling can miss changes that revert between samples; unresolved changes remain explicit.",
         "Native exact coverage proves observed instructions/edges; sampled PCs remain context only.",
+        "The one-time 4 MiB baseline proves exact resident bytes at capture start; it does not prove execution or loader ancestry.",
+        "Static nominal function mapping requires equality of all four observed opcode bytes at the proposed ROM offset; address-only crosswalks remain candidates.",
         "Controller rows are effective P1 input transitions. A run lasts until the next transition; repeated identical polls are coalesced.",
         "This generated product is intended to accelerate decompilation and remains unreviewed.",
     ]
     summary: dict[str, Any] = {
         "schema": SESSION_PRODUCT_SCHEMA,
+        "mappingPolicy": MAPPING_POLICY,
         "sessionId": session_id,
         "rawSession": {
             "closureStatus": session["closure_status"],
@@ -796,6 +1182,10 @@ def derive_session(
             "capturedDestinationBytes": sum(len(item.data) for item in transactions),
             "codeSlabs": len(slabs),
             "functionPlacements": len(placements),
+            "baselineFunctionPlacements": sum(
+                item["mappingMethod"] == "atomic-baseline-rdram-exact-function-bytes"
+                for item in placements
+            ),
             "regionInstances": len(regions),
             "timelineBursts": len(bursts),
             "rangeSnapshots": safety["acceptedSnapshotCount"],
@@ -813,6 +1203,7 @@ def derive_session(
         },
         "pairingDiagnostics": pairing,
         "safetyRangeDiagnostics": safety,
+        "baselineCensusDiagnostics": baseline,
         "executionDiagnostics": execution,
         "memoryDiagnostics": memory,
         "controllerInputDiagnostics": controller_input,

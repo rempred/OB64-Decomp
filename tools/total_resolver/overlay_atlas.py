@@ -129,9 +129,12 @@ def _logical_hash(connection: sqlite3.Connection) -> str:
 
 
 def _evidence_grade(transaction: Mapping[str, Any]) -> str:
+    content_bytes_valid = transaction.get("contentBytesValid")
+    if not isinstance(content_bytes_valid, bool):
+        content_bytes_valid = transaction.get("contentHashValid") is True
     good = (
         transaction.get("pairingStatus") == "matched"
-        and transaction.get("contentHashValid") is True
+        and content_bytes_valid
     )
     if good and transaction.get("romMatch") == "exact-span":
         return "verified"

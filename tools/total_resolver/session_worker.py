@@ -16,6 +16,8 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--host", required=True)
     parser.add_argument("--port", required=True, type=int)
     parser.add_argument("--timeout", required=True, type=float)
+    parser.add_argument("--knowledge", type=Path)
+    parser.add_argument("--before-rom", action="store_true")
     return parser
 
 
@@ -23,7 +25,12 @@ def main(argv: Sequence[str] | None = None) -> int:
     args = build_parser().parse_args(argv)
     location = session_location(sessions_root(args.root), args.session_id)
     connection = SessionConnection(args.host, args.port, args.timeout)
-    return run_session_worker(location, connection)
+    return run_session_worker(
+        location,
+        connection,
+        args.knowledge,
+        before_rom=args.before_rom,
+    )
 
 
 if __name__ == "__main__":

@@ -33,7 +33,8 @@ def make_session_product(root: Path, *, destination: int = 0x2000) -> Path:
         "destinationContentSha256": "A" * 64,
         "staticRegionClass": "executable",
         "pairingStatus": "matched",
-        "contentHashValid": True,
+        "contentBytesValid": True,
+        "legacyContentHashMatches": False,
         "romMatch": "exact-span",
         "romMatchedPrefixLength": 8,
     }

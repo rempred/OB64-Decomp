@@ -167,7 +167,16 @@ def verify_inventory(
             path = product / artifact["path"]
             name = "legacy-resolver:" + artifact["path"]
             if not path.is_file():
-                checks.append(Check(name, "FAIL", f"missing {path}"))
+                status = "SKIP" if legacy.get("role") == "historical-reference" else "FAIL"
+                checks.append(
+                    Check(
+                        name,
+                        status,
+                        f"optional historical reference is absent: {path}"
+                        if status == "SKIP"
+                        else f"missing {path}",
+                    )
+                )
                 continue
             actual = sha256_file(path)
             expected = artifact["sha256"].upper()

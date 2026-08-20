@@ -10,7 +10,7 @@ from tools.total_resolver.inventory import load_inventory, repository_root
 
 
 class ActiveBridgeTests(unittest.TestCase):
-    def test_node_harness_proves_order_epoch_loss_and_dma_content_contract(self) -> None:
+    def test_node_harness_proves_structural_delta_and_ordering_contract(self) -> None:
         node = shutil.which("node")
         if node is None:
             self.skipTest("Node.js is unavailable")
@@ -19,7 +19,7 @@ class ActiveBridgeTests(unittest.TestCase):
             repository_root().parent
             / inventory["project64"]["activeBridge"]["path"]
         ).resolve()
-        harness = Path(__file__).with_name("bridge_080_harness.js")
+        harness = Path(__file__).with_name("bridge_110_harness.js")
         completed = subprocess.run(
             (node, str(harness), str(bridge)),
             check=True,
@@ -27,15 +27,24 @@ class ActiveBridgeTests(unittest.TestCase):
             text=True,
         )
         result = json.loads(completed.stdout)
-        self.assertEqual(result["version"], "0.8.0")
-        self.assertEqual(result["orderedSequences"], [1, 2, 3])
-        self.assertEqual(result["dmaBytes"], "AAAB")
-        self.assertEqual(result["memoryBytes"], "AAABAC")
-        self.assertEqual(result["tracePageCount"], 2)
-        self.assertEqual(result["exactCoverageCount"], 3)
-        self.assertEqual(result["inputTransitionCount"], 2)
-        self.assertEqual(result["suppressedCoverage"], 1)
-        self.assertEqual(result["droppedRange"]["count"], 65539)
+        self.assertEqual(result["version"], "0.12.0")
+        self.assertEqual(result["frontierFormatVersion"], 3)
+        self.assertEqual(result["pageReadsDuringExecutionTrace"], 0)
+        self.assertEqual(result["repeatedCanonicalExecutionEdgeFacts"], 0)
+        self.assertGreater(result["explicitDroppedRanges"], 0)
+        self.assertEqual(result["tracePageCount"], 0)
+        self.assertEqual(result["traceGenerationCount"], 0)
+        self.assertEqual(result["exactCoverageCount"], 2)
+        self.assertEqual(result["repeatedKnownMetadataCount"], 0)
+        self.assertEqual(result["firstCanonicalExecutionEdgeFacts"], 3)
+        self.assertEqual(result["newTailAndCallerEvents"], 6)
+        self.assertEqual(result["baselineBytes"], 0x00400000)
+        self.assertEqual(result["knownDmaEvents"], 0)
+        self.assertEqual(result["upperMemoryEvents"], 0)
+        self.assertEqual(result["newDmaEvents"], 1)
+        self.assertTrue(result["coldBootBaselineFirst"])
+        self.assertTrue(result["wrongRomRejected"])
+        self.assertTrue(result["observationOnlyCapture"])
 
 
 if __name__ == "__main__":

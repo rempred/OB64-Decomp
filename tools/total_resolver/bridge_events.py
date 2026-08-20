@@ -6,7 +6,8 @@ from dataclasses import dataclass
 import hashlib
 from typing import Any, Mapping
 
-from .protocol import BridgeProtocolError
+from .protocol import BridgeProtocolError, FRONTIER_FORMAT_VERSION
+from .addressing import RDRAM_SIZE
 
 
 BRIDGE_STREAMS = frozenset({"watch", "dma", "trace", "input"})
@@ -112,20 +113,162 @@ def _content_identity(
     return hashlib.sha256(content).hexdigest().upper(), size, encoding, phase, field
 
 
+def _frontier_identity(payload: Mapping[str, Any], event_type: str) -> str:
+    if payload.get("frontierFormatVersion") != FRONTIER_FORMAT_VERSION:
+        raise BridgeProtocolError(f"{event_type} has an incompatible novelty frontier format")
+    identity = payload.get("frontierIdentity")
+    if (
+        not isinstance(identity, str)
+        or not identity
+        or len(identity) > 192
+        or any(character.isspace() or ord(character) < 0x21 for character in identity)
+    ):
+        raise BridgeProtocolError(f"{event_type} omitted its opaque novelty frontier identity")
+    return identity
+
+
+def _trace_placement(payload: Mapping[str, Any], event_type: str) -> tuple[int, int]:
+    physical = payload.get("physicalAddress")
+    try:
+        physical_value = int(str(physical), 0)
+    except (TypeError, ValueError) as exc:
+        raise BridgeProtocolError(f"{event_type} omitted its physical placement") from exc
+    generation = payload.get("pageGeneration")
+    if (
+        physical_value & 0xFFF
+        or not 0 <= physical_value <= RDRAM_SIZE - 0x1000
+        or isinstance(generation, bool)
+        or not isinstance(generation, int)
+        or generation < 0
+    ):
+        raise BridgeProtocolError(f"{event_type} has an invalid placement/generation")
+    return physical_value, generation
+
+
+def _validate_frontier_match(payload: Mapping[str, Any], event_type: str) -> None:
+    matched = payload.get("frontierMatch")
+    page_id = payload.get("frontierPageId")
+    if not isinstance(matched, bool):
+        raise BridgeProtocolError(f"{event_type} omitted its exact frontier match decision")
+    if matched:
+        if isinstance(page_id, bool) or not isinstance(page_id, int) or page_id < 1:
+            raise BridgeProtocolError(f"{event_type} frontier match omitted its exact page ID")
+    elif page_id is not None:
+        raise BridgeProtocolError(f"{event_type} unmatched frontier page ID must be null")
+
+
 def _validate_trace_or_input_event(payload: Mapping[str, Any], event_type: str) -> None:
     if event_type == "trace-page":
         if payload.get("dedupeDecision") != "exact-byte-compare":
             raise BridgeProtocolError("trace page lacks an exact-byte dedupe decision")
-        physical = payload.get("physicalAddress")
-        if not isinstance(physical, str):
-            raise BridgeProtocolError("trace page omitted its physical placement")
+        _frontier_identity(payload, event_type)
+        _trace_placement(payload, event_type)
+        _validate_frontier_match(payload, event_type)
+        content_id = payload.get("codePageContentId")
+        if isinstance(content_id, bool) or not isinstance(content_id, int) or content_id < 1:
+            raise BridgeProtocolError("trace page omitted its exact page-content ID")
+    elif event_type == "trace-generation":
+        if payload.get("dedupeDecision") != "generation-distinct-exact-content":
+            raise BridgeProtocolError("trace generation lacks an exact generation decision")
+        if payload.get("exactContentResolved") is not True:
+            raise BridgeProtocolError("trace generation is not tied to exact page content")
+        _frontier_identity(payload, event_type)
+        _, generation = _trace_placement(payload, event_type)
+        _validate_frontier_match(payload, event_type)
+        content_id = payload.get("codePageContentId")
+        previous = payload.get("previousPageGeneration")
+        if (
+            isinstance(content_id, bool)
+            or not isinstance(content_id, int)
+            or content_id < 1
+            or isinstance(previous, bool)
+            or not isinstance(previous, int)
+            or previous < 0
+            or previous == generation
+        ):
+            raise BridgeProtocolError("trace generation has invalid exact identity fields")
     elif event_type == "exec-coverage":
-        if payload.get("dedupeDecision") != "exact-content-and-identity":
+        if payload.get("dedupeDecision") != "physical-address-and-exact-opcode":
             raise BridgeProtocolError("execution coverage lacks its exact dedupe decision")
+        _frontier_identity(payload, event_type)
+        if not isinstance(payload.get("newInstruction"), bool) or not isinstance(
+            payload.get("newEdge"), bool
+        ):
+            raise BridgeProtocolError("execution coverage novelty flags must be booleans")
         if payload.get("newInstruction") is not True and payload.get("newEdge") is not True:
             raise BridgeProtocolError("execution coverage contains no new exact identity")
-        if not isinstance(payload.get("codePageContentId"), int):
-            raise BridgeProtocolError("execution coverage omitted its exact page-content ID")
+        if payload.get("noveltyDecision") not in {
+            "new-instruction-and-edge",
+            "new-instruction",
+            "new-edge",
+            "unresolved-edge-fallback",
+            "unresolved-instruction-fallback",
+        }:
+            raise BridgeProtocolError("execution coverage omitted its exact novelty decision")
+        resolved = payload.get("exactInstructionResolved")
+        generation_resolved = payload.get("generationResolved")
+        if not isinstance(resolved, bool) or not isinstance(generation_resolved, bool):
+            raise BridgeProtocolError("execution coverage omitted its resolution flags")
+        try:
+            pc_value = int(str(payload.get("pc")), 0)
+            opcode_value = int(str(payload.get("opcode")), 0)
+        except (TypeError, ValueError) as exc:
+            raise BridgeProtocolError("execution coverage omitted its PC/opcode") from exc
+        generation = payload.get("pageGeneration")
+        page_offset = payload.get("pageOffset")
+        if (
+            isinstance(page_offset, bool)
+            or not isinstance(page_offset, int)
+            or page_offset != (pc_value & 0xFFF)
+            or page_offset & 3
+            or not 0 <= opcode_value <= 0xFFFFFFFF
+        ):
+            raise BridgeProtocolError("execution coverage has an invalid PC/opcode")
+        if resolved:
+            try:
+                physical_page = int(str(payload.get("physicalPageAddress")), 0)
+                physical_address = int(str(payload.get("physicalAddress")), 0)
+            except (TypeError, ValueError) as exc:
+                raise BridgeProtocolError(
+                    "resolved execution coverage omitted physical placement"
+                ) from exc
+            if (
+                physical_page & 0xFFF
+                or not 0 <= physical_page <= RDRAM_SIZE - 0x1000
+                or physical_address != physical_page + page_offset
+                or not generation_resolved
+                or isinstance(generation, bool)
+                or not isinstance(generation, int)
+                or generation < 0
+            ):
+                raise BridgeProtocolError(
+                    "resolved execution coverage has invalid placement/generation"
+                )
+        elif payload.get("noveltyDecision") not in {
+            "unresolved-edge-fallback",
+            "unresolved-instruction-fallback",
+        }:
+            raise BridgeProtocolError("unresolved execution fact was not captured conservatively")
+        previous = payload.get("previous")
+        if payload.get("newEdge") is True:
+            if not isinstance(previous, Mapping):
+                raise BridgeProtocolError("new execution edge omitted its predecessor")
+            previous_resolved = previous.get("exactInstructionResolved")
+            if not isinstance(previous_resolved, bool):
+                raise BridgeProtocolError(
+                    "execution predecessor omitted exact-instruction status"
+                )
+            if (
+                payload.get("noveltyDecision") == "unresolved-edge-fallback"
+                and previous_resolved
+                and resolved
+            ):
+                raise BridgeProtocolError("unresolved edge claims two exact endpoints")
+            if (
+                payload.get("noveltyDecision") != "unresolved-edge-fallback"
+                and (not previous_resolved or not resolved)
+            ):
+                raise BridgeProtocolError("exact edge has an unresolved endpoint")
     elif event_type == "controller-input":
         if payload.get("controller") != 0:
             raise BridgeProtocolError("controller capture currently requires effective P1 input")
@@ -134,10 +277,20 @@ def _validate_trace_or_input_event(payload: Mapping[str, Any], event_type: str) 
         state = payload.get("state")
         if not isinstance(state, str):
             raise BridgeProtocolError("controller input omitted its exact state word")
+    elif event_type == "baseline-snapshot":
+        if (
+            payload.get("capturePhase") != "pre-execution-native-rdram-snapshot"
+            or payload.get("ordering") != "native-copy-before-first-captured-instruction"
+            or payload.get("rdramSize") != RDRAM_SIZE
+            or payload.get("byteLength") != RDRAM_SIZE
+            or not isinstance(payload.get("snapshotId"), str)
+            or not payload.get("snapshotId")
+        ):
+            raise BridgeProtocolError("baseline snapshot lacks its atomic 4 MiB contract")
 
 
 def _validate_dma_event(payload: Mapping[str, Any], event_type: str, sequence: int) -> None:
-    if event_type not in {"dma-start", "dma-complete"}:
+    if event_type not in {"dma-start", "dma-complete", "dma-unresolved"}:
         return
     requested = payload.get("requestedLength")
     if isinstance(requested, bool) or not isinstance(requested, int) or requested < 1:
@@ -149,15 +302,22 @@ def _validate_dma_event(payload: Mapping[str, Any], event_type: str, sequence: i
             raise BridgeProtocolError("DMA start lacks pre-transfer callback provenance")
         return
     start_sequence = payload.get("dmaStartSequence")
-    if (
-        isinstance(start_sequence, bool)
+    pairing = payload.get("pairingStatus")
+    if pairing == "native-completion-only":
+        if start_sequence is not None:
+            raise BridgeProtocolError("native DMA completion unexpectedly names a start event")
+    elif (
+        pairing != "matched"
+        or isinstance(start_sequence, bool)
         or not isinstance(start_sequence, int)
         or start_sequence < 1
         or start_sequence >= sequence
     ):
-        raise BridgeProtocolError("DMA completion has an invalid dmaStartSequence")
-    if payload.get("pairingStatus") != "matched":
-        raise BridgeProtocolError("DMA completion does not match its start descriptor")
+        raise BridgeProtocolError("DMA completion has an invalid pairing contract")
+    if event_type == "dma-unresolved":
+        if payload.get("exactDestinationResolved") is not False:
+            raise BridgeProtocolError("unresolved DMA event lacks its conservative fallback flag")
+        return
     transfer_span = payload.get("transferSpanLength")
     destination_size = payload.get("destinationByteLength")
     if (
@@ -210,7 +370,7 @@ def _preserve_event(value: Any, envelope_epoch: str) -> PreservedBridgeEvent:
 
 
 def parse_drain_response(response: Mapping[str, Any]) -> DrainBatch:
-    """Validate bridge 0.8.0's unified ordered drain envelope."""
+    """Validate the accepted bridge's unified ordered drain envelope."""
 
     if response.get("queueModel") != "unified":
         raise BridgeProtocolError("drain response did not declare the unified queue model")

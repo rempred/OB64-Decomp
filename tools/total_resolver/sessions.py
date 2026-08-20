@@ -26,16 +26,29 @@ from .capture_db import (
 )
 from .contracts import CaptureMode, InterventionPolicy
 from .inventory import config_path, load_inventory, repository_root, sha256_file
+from .knowledge import (
+    build_frontier,
+    empty_novelty_frontier,
+    open_knowledge_database,
+    selected_knowledge_database,
+)
 from .manifest import finalize_manifest
-from .pj64_client import DEFAULT_HOST, DEFAULT_PORT, Pj64Client
+from .pj64_client import (
+    DEFAULT_HOST,
+    DEFAULT_PORT,
+    FRONTIER_EDGE_BATCH_SIZE,
+    FRONTIER_INSTRUCTION_BATCH_SIZE,
+    Pj64Client,
+)
 from .protocol import BridgeProtocolError
 from .recorder import (
     Pj64CaptureRecorder,
+    RecorderPreflight,
     RecorderSettings,
     SafetyRangeSpec,
     verify_observation_preflight,
+    verify_pre_rom_preflight,
 )
-from .replay import write_timeline
 from .schema import open_capture_database, utc_now
 from .verify import SessionVerification, verify_session
 
@@ -51,6 +64,36 @@ class SessionConnection:
     host: str = DEFAULT_HOST
     port: int = DEFAULT_PORT
     timeout: float = 5.0
+
+
+def _worker_startup_wait_seconds(
+    connection: SessionConnection,
+    *,
+    frontier_page_count: int,
+    frontier_instruction_count: int,
+    frontier_edge_count: int,
+) -> float:
+    """Budget readiness time for the structural frontier transport."""
+
+    if (
+        frontier_page_count < 0
+        or frontier_instruction_count < 0
+        or frontier_edge_count < 0
+    ):
+        raise ValueError("frontier counts must be nonnegative")
+    instruction_batches = (
+        frontier_instruction_count + FRONTIER_INSTRUCTION_BATCH_SIZE - 1
+    ) // FRONTIER_INSTRUCTION_BATCH_SIZE
+    edge_batches = (
+        frontier_edge_count + FRONTIER_EDGE_BATCH_SIZE - 1
+    ) // FRONTIER_EDGE_BATCH_SIZE
+    # Page bitmaps and batched exact instruction/edge keys are acknowledged.
+    # The ordinary socket timeout is not a whole-frontier startup budget.
+    transport_commands = (
+        2 + frontier_page_count + instruction_batches + edge_batches
+    )
+    scaled_transport_budget = 15.0 + (transport_commands * 0.02)
+    return max(30.0, connection.timeout * 3.0, scaled_transport_budget)
 
 
 @dataclass(frozen=True)
@@ -148,6 +191,48 @@ def _write_active(location: SessionLocation, state: Mapping[str, Any]) -> None:
     )
 
 
+def record_session_ingestion(
+    session_id: str,
+    ingestion: Mapping[str, Any],
+    *,
+    root: Path | None = None,
+) -> dict[str, Any]:
+    """Reconcile a successful explicit ingestion retry with session status."""
+
+    location = session_location(sessions_root(root), session_id)
+    if ingestion.get("result") != "PASS" or ingestion.get("sessionId") != session_id:
+        raise ValueError("explicit ingestion result does not match the session")
+    if ingestion.get("action") not in {"ingested", "no-op"}:
+        raise ValueError("explicit ingestion did not accept the session")
+    connection = open_capture_database(location.database, read_only=True)
+    try:
+        row = connection.execute(
+            "SELECT closure_status FROM session WHERE session_id=?", (session_id,)
+        ).fetchone()
+    finally:
+        connection.close()
+    if row is None or row["closure_status"] != "closed":
+        raise ValueError("only a normally closed session can be marked ingested")
+
+    knowledge = ingestion.get("knowledge")
+    if not isinstance(knowledge, Mapping):
+        raise ValueError("explicit ingestion result omitted knowledge status")
+    frontier = knowledge.get("frontier")
+    database = knowledge.get("database")
+    if not isinstance(frontier, Mapping) or not isinstance(database, str):
+        raise ValueError("explicit ingestion result omitted the accepted frontier")
+    state = _update_worker_state(
+        location,
+        "closed",
+        error=None,
+        ingestion=dict(ingestion),
+        knowledgeDatabase=database,
+        frontier=dict(frontier),
+    )
+    _write_active(location, state)
+    return session_status(session_id, root=location.root)
+
+
 def active_session_id(root: Path) -> str | None:
     value = _read_json(root.resolve() / ACTIVE_FILE)
     session_id = value.get("sessionId") if value is not None else None
@@ -223,7 +308,7 @@ def default_safety_ranges() -> tuple[SafetyRangeSpec, ...]:
             raise ValueError("overlay descriptor is malformed")
         fields = descriptor["fields"]
         text_pages.add(int(str(fields["textStart"]), 0) & ~0xFFF)
-    if not text_pages or min(text_pages) < 0x80000000 or max(text_pages) >= 0x80800000:
+    if not text_pages or min(text_pages) < 0x80000000 or max(text_pages) >= 0x80400000:
         raise ValueError("overlay text-entry safety pages fall outside cached RDRAM")
     source_label = "config/overlays/us_rev0.json:unique-descriptor-text-entry-pages"
     return tuple(
@@ -271,7 +356,12 @@ def list_open_sessions(root: Path) -> list[SessionLocation]:
     return result
 
 
-def _metadata(preflight: Any, connection: SessionConnection, session_id: str) -> SessionMetadata:
+def _metadata(
+    preflight: Any,
+    connection: SessionConnection,
+    session_id: str,
+    frontier: Any,
+) -> SessionMetadata:
     decomp = _git_identity(repository_root())
     project64_root = _project64_root()
     project64 = _git_identity(project64_root) if project64_root is not None else None
@@ -293,6 +383,7 @@ def _metadata(preflight: Any, connection: SessionConnection, session_id: str) ->
                 }
                 for item in default_safety_ranges()
             ],
+            "noveltyFrontier": frontier.summary(),
         },
     }
     identity = preflight.rom_identity
@@ -316,6 +407,7 @@ def _metadata(preflight: Any, connection: SessionConnection, session_id: str) ->
         rom_version=identity.get("version"),
         rom_normalized_sha256=identity.get("normalizedSha256"),
         static_sources=static_sources,
+        accepted_resolver_identity=frontier.identity,
         capture_mode=CaptureMode.MANUAL_PLAY,
         intervention_policy=InterventionPolicy.OBSERVATION_ONLY,
         notes=(
@@ -325,11 +417,35 @@ def _metadata(preflight: Any, connection: SessionConnection, session_id: str) ->
     )
 
 
+def _configured_target_identity(freeze: Mapping[str, Any]) -> dict[str, Any]:
+    target = freeze.get("target")
+    if not isinstance(target, Mapping):
+        raise ValueError("Total Resolver target identity is missing")
+    identity = {
+        "normalizedSha256": str(target.get("normalizedRomSha256") or "").upper(),
+        "crc1": str(target.get("crc1") or "").upper(),
+        "crc2": str(target.get("crc2") or "").upper(),
+        "country": str(target.get("country") or ""),
+        "version": target.get("version"),
+    }
+    if (
+        len(identity["normalizedSha256"]) != 64
+        or len(identity["crc1"]) != 8
+        or len(identity["crc2"]) != 8
+        or identity["country"] != "0x45"
+        or identity["version"] != 0
+    ):
+        raise ValueError("configured US Rev 0 cold-boot identity is incomplete")
+    return identity
+
+
 def create_session(
     *,
     root: Path | None = None,
     connection: SessionConnection = SessionConnection(),
     foreground: bool = False,
+    knowledge_database: Path | None = None,
+    before_rom: bool = False,
 ) -> dict[str, Any]:
     resolved_root = sessions_root(root)
     resolved_root.mkdir(parents=True, exist_ok=True)
@@ -350,15 +466,41 @@ def create_session(
 
     freeze = load_inventory()
     expected_rom = str(freeze["target"]["normalizedRomSha256"])
-    client = Pj64Client(connection.host, connection.port, connection.timeout)
+    selected_knowledge = (
+        knowledge_database.resolve()
+        if knowledge_database is not None
+        else selected_knowledge_database()
+    )
+    if selected_knowledge is None:
+        frontier = empty_novelty_frontier(expected_rom)
+    else:
+        knowledge_connection = open_knowledge_database(selected_knowledge, read_only=True)
+        try:
+            frontier = build_frontier(knowledge_connection)
+        finally:
+            knowledge_connection.close()
+    client = Pj64Client(
+        connection.host,
+        connection.port,
+        connection.timeout,
+        allow_unloaded=before_rom,
+    )
     try:
-        preflight = verify_observation_preflight(client, expected_rom)
+        preflight = (
+            verify_pre_rom_preflight(client, _configured_target_identity(freeze))
+            if before_rom
+            else verify_observation_preflight(client, expected_rom)
+        )
     finally:
         client.close()
 
     session_id = _new_session_id()
     location = session_location(resolved_root, session_id)
-    store = CaptureStore.create(location.database, _metadata(preflight, connection, session_id))
+    store = CaptureStore.create(
+        location.database,
+        _metadata(preflight, connection, session_id, frontier),
+        mirror_events=False,
+    )
     store.close_connection()
     state = _update_worker_state(
         location,
@@ -367,12 +509,28 @@ def create_session(
         host=connection.host,
         port=connection.port,
         timeout=connection.timeout,
+        knowledgeDatabase=(str(selected_knowledge) if selected_knowledge is not None else None),
+        frontier=frontier.summary(),
+        beforeRom=before_rom,
     )
     _write_active(location, state)
 
     if foreground:
-        exit_code = run_session_worker(location, connection)
-        return {"sessionId": session_id, "sessionDirectory": str(location.directory), "exitCode": exit_code}
+        exit_code = run_session_worker(
+            location,
+            connection,
+            selected_knowledge,
+            before_rom=before_rom,
+        )
+        return {
+            "sessionId": session_id,
+            "sessionDirectory": str(location.directory),
+            "exitCode": exit_code,
+            "knowledgeDatabase": (
+                str(selected_knowledge) if selected_knowledge is not None else None
+            ),
+            "frontier": frontier.summary(),
+        }
 
     log_stream = (location.directory / "session.log").open("a", encoding="utf-8")
     command = (
@@ -390,6 +548,10 @@ def create_session(
         "--timeout",
         str(connection.timeout),
     )
+    if selected_knowledge is not None:
+        command += ("--knowledge", str(selected_knowledge))
+    if before_rom:
+        command += ("--before-rom",)
     popen_kwargs: dict[str, Any] = {
         "cwd": str(repository_root()),
         "stdin": subprocess.DEVNULL,
@@ -409,23 +571,39 @@ def create_session(
         log_stream.close()
 
     current = _read_json(location.worker_state) or {}
-    if current.get("state") in {"running", "failed", "interrupted", "closed", "closed-invalid"}:
+    terminal_states = {
+        "running",
+        "armed",
+        "failed",
+        "interrupted",
+        "closed",
+        "closed-invalid",
+        "closed-ingest-failed",
+    }
+    if current.get("state") in terminal_states:
         state = current
     else:
         state = _update_worker_state(location, "starting", pid=process.pid)
     _write_active(location, state)
-    deadline = time.monotonic() + max(5.0, connection.timeout * 3.0)
+    readiness_wait = _worker_startup_wait_seconds(
+        connection,
+        frontier_page_count=len(frontier.pages),
+        frontier_instruction_count=frontier.instruction_count,
+        frontier_edge_count=len(frontier.edges),
+    )
+    deadline = time.monotonic() + readiness_wait
     while time.monotonic() < deadline:
         state = _read_json(location.worker_state) or state
-        if state.get("state") in {"running", "failed", "interrupted", "closed", "closed-invalid"}:
+        if state.get("state") in terminal_states:
             break
         if not _pid_is_alive(process.pid):
             break
         time.sleep(0.05)
-    if state.get("state") != "running":
+    ready_states = {"armed"} if before_rom else {"running"}
+    if state.get("state") not in ready_states:
         raise RuntimeError(
             f"capture worker did not become ready: {state.get('state')} "
-            f"({state.get('error') or 'see session.log'})"
+            f"after {readiness_wait:.1f}s ({state.get('error') or 'see session.log'})"
         )
     _write_active(location, state)
     return {
@@ -436,6 +614,10 @@ def create_session(
         "bridgeEpoch": preflight.bridge_epoch,
         "bridgeNextSequenceStart": preflight.bridge_next_sequence,
         "observationOnly": True,
+        "knowledgeDatabase": (
+            str(selected_knowledge) if selected_knowledge is not None else None
+        ),
+        "frontier": frontier.summary(),
     }
 
 
@@ -444,33 +626,86 @@ def _finalize_store(
     location: SessionLocation,
 ) -> SessionVerification:
     store.checkpoint()
-    write_timeline(store.connection, location.directory / "timeline.json")
     finalize_manifest(store.connection, location.directory, repository_root())
     result = verify_session(location.directory, repository_root())
     _write_json(location.directory / "verification.json", result.to_dict())
     return result
 
 
-def run_session_worker(location: SessionLocation, connection: SessionConnection) -> int:
+def run_session_worker(
+    location: SessionLocation,
+    connection: SessionConnection,
+    knowledge_database: Path | None = None,
+    *,
+    before_rom: bool = False,
+) -> int:
     """Run one worker until a stop request or an evidence-breaking failure."""
 
     state = _update_worker_state(location, "starting", pid=os.getpid())
     _write_active(location, state)
-    store = CaptureStore.open(location.database)
-    client = Pj64Client(connection.host, connection.port, connection.timeout)
+    try:
+        session_row = _session_row(location.database)
+        expected_rom = str(session_row["rom_normalized_sha256"])
+        if knowledge_database is None:
+            frontier = empty_novelty_frontier(expected_rom)
+        else:
+            knowledge_connection = open_knowledge_database(knowledge_database, read_only=True)
+            try:
+                frontier = build_frontier(knowledge_connection)
+            finally:
+                knowledge_connection.close()
+        if frontier.identity != str(session_row["accepted_resolver_identity"]):
+            raise BridgeProtocolError(
+                "the selected knowledge frontier changed after session preparation; "
+                "prepare a new capture session"
+            )
+    except Exception as exc:
+        error = f"frontier preparation failed: {type(exc).__name__}: {exc}"
+        state = _update_worker_state(location, "failed", pid=os.getpid(), error=error)
+        _write_active(location, state)
+        return 1
+    store = CaptureStore.open(location.database, mirror_events=False)
+    client = Pj64Client(
+        connection.host,
+        connection.port,
+        connection.timeout,
+        allow_unloaded=before_rom,
+    )
+    capture_client = client.observation_only()
     recorder = Pj64CaptureRecorder(
-        client,
+        capture_client,
         store,
         RecorderSettings(
-            str(_session_row(location.database)["rom_normalized_sha256"]),
+            expected_rom,
             safety_ranges=default_safety_ranges(),
+            novelty_frontier=frontier,
         ),
     )
     closure = "interrupted"
     error: str | None = None
     verification: SessionVerification | None = None
+    ingestion: dict[str, Any] | None = None
     try:
-        recorder.start()
+        if before_rom:
+            expected_identity = {
+                "normalizedSha256": expected_rom,
+                "crc1": str(session_row["rom_crc1"]),
+                "crc2": str(session_row["rom_crc2"]),
+                "country": str(session_row["rom_country"]),
+                "version": int(session_row["rom_version"]),
+            }
+            armed_preflight = verify_pre_rom_preflight(capture_client, expected_identity)
+            recorder.arm_before_rom(armed_preflight)
+            state = _update_worker_state(
+                location,
+                "armed",
+                pid=os.getpid(),
+                bridgeEpoch=armed_preflight.bridge_epoch,
+            )
+            _write_active(location, state)
+            recorder.await_cold_boot_start()
+        else:
+            recorder.start()
         state = _update_worker_state(
             location,
             "running",
@@ -522,8 +757,32 @@ def run_session_worker(location: SessionLocation, connection: SessionConnection)
             store.close_connection()
 
     if closure == "closed" and verification is not None and verification.ok:
-        final_state = "closed"
-        exit_code = 0
+        if knowledge_database is None:
+            final_state = "closed"
+            exit_code = 0
+        else:
+            state = _update_worker_state(
+                location,
+                "ingesting",
+                pid=os.getpid(),
+                error=error,
+                verification=verification.to_dict(),
+            )
+            _write_active(location, state)
+            try:
+                from .knowledge_ingest import ingest_session
+
+                ingestion = ingest_session(knowledge_database, location.directory)
+            except Exception as exc:
+                error = (
+                    f"{error + '; ' if error else ''}knowledge ingestion failed: "
+                    f"{type(exc).__name__}: {exc}"
+                )
+                final_state = "closed-ingest-failed"
+                exit_code = 1
+            else:
+                final_state = "closed"
+                exit_code = 0
     elif closure == "closed":
         final_state = "closed-invalid"
         exit_code = 1
@@ -536,6 +795,11 @@ def run_session_worker(location: SessionLocation, connection: SessionConnection)
         pid=os.getpid(),
         error=error,
         verification=(verification.to_dict() if verification is not None else None),
+        ingestion=ingestion,
+        knowledgeDatabase=(
+            str(knowledge_database.resolve()) if knowledge_database is not None else None
+        ),
+        frontier=frontier.summary(),
     )
     _write_active(location, state)
     return exit_code
@@ -755,7 +1019,7 @@ def recover_session(
     state = _read_json(location.worker_state) or {}
     if refuse_live_worker and _pid_is_alive(state.get("pid")):
         raise RuntimeError(f"refusing to recover live capture worker PID {state.get('pid')}")
-    store = CaptureStore.open(location.database)
+    store = CaptureStore.open(location.database, mirror_events=False)
     row = store.connection.execute("SELECT * FROM session").fetchone()
     if row is None:
         store.close_connection()
@@ -881,6 +1145,9 @@ def session_status(session_id: str | None = None, *, root: Path | None = None) -
         "markerCount": markers,
         "latestFrame": latest_frame,
         "error": state.get("error"),
+        "knowledgeDatabase": state.get("knowledgeDatabase"),
+        "frontier": state.get("frontier"),
+        "ingestion": state.get("ingestion"),
     }
 
 

@@ -10,6 +10,7 @@ import unittest
 from tools.total_resolver.derive_session import (
     _ActiveRegionIndex,
     _active_region_for_pc,
+    _baseline_census,
     _controller_input_analysis,
     _execution_analysis,
     _safety_range_analysis,
@@ -30,6 +31,7 @@ def insert_snapshot(
     data: bytes,
     next_bridge_sequence: int,
     reason: str,
+    declared_digest: str | None = None,
 ) -> None:
     payload = {
         "kind": "range-snapshot",
@@ -40,7 +42,7 @@ def insert_snapshot(
         "sampleReason": reason,
         "bridgeNextSequenceAtSnapshot": next_bridge_sequence,
         "changedBetweenProbeAndSnapshot": False,
-        "contentSha256": hashlib.sha256(data).hexdigest().upper(),
+        "contentSha256": declared_digest or hashlib.sha256(data).hexdigest().upper(),
         "bytesEncoding": "hex-uppercase",
         "bytesHex": data.hex().upper(),
     }
@@ -51,6 +53,106 @@ def insert_snapshot(
 
 
 class SessionDerivationTests(unittest.TestCase):
+    def test_atomic_four_mib_baseline_finds_resident_code_without_execution_claim(self) -> None:
+        with tempfile.TemporaryDirectory() as raw:
+            static_path = Path(raw) / "static.sqlite"
+            create_static_database(static_path)
+            static = StaticModel(static_path)
+            rom = bytearray(1024)
+            loader_bytes = bytes(range(1, 17))
+            rom[16:32] = loader_bytes
+            rom[258:262] = b"\xA1\xA2\xA3\xA4"
+            physical = 0x00070C00
+            rdram = bytearray(0x00400000)
+            rdram[physical : physical + len(loader_bytes)] = loader_bytes
+            payload = {
+                "kind": "baseline-snapshot",
+                "capturePhase": "pre-execution-native-rdram-snapshot",
+                "ordering": "native-copy-before-first-captured-instruction",
+                "rdramSize": 0x00400000,
+                "rdramByteLength": 0x00400000,
+                "rdramBytesEncoding": "hex-uppercase",
+                "rdramBytesHex": rdram.hex().upper(),
+            }
+            connection = sqlite3.connect(":memory:")
+            connection.row_factory = sqlite3.Row
+            connection.execute(
+                """
+                CREATE TABLE event_sequence(
+                  sequence_id INTEGER PRIMARY KEY, frame_number INTEGER,
+                  bridge_event_sequence INTEGER, bridge_stream TEXT,
+                  bridge_event_type TEXT, raw_payload_json TEXT,
+                  event_time_content_sha256 TEXT, event_time_content_size INTEGER
+                )
+                """
+            )
+            connection.execute(
+                "INSERT INTO event_sequence VALUES(?,?,?,?,?,?,?,?)",
+                (1, 10, 1, "trace", "baseline-snapshot", json.dumps(payload), None, None),
+            )
+
+            placements, diagnostics = _baseline_census(
+                connection, "BASELINE", static, bytes(rom)
+            )
+            connection.close()
+
+            loader = next(item for item in placements if item["function"]["structuralName"] == "loader")
+            self.assertEqual(loader["destinationPhysicalStart"], physical)
+            self.assertEqual(
+                loader["mappingMethod"], "atomic-baseline-rdram-exact-function-bytes"
+            )
+            self.assertFalse(loader["executionClaim"])
+            self.assertEqual(diagnostics["rdramBytes"], 0x00400000)
+
+    def test_safety_range_analysis_reads_irrelevant_dma_metadata_once(self) -> None:
+        class CountingTransaction:
+            def __init__(self, sequence: int) -> None:
+                self._record = {
+                    "completionBridgeSequence": sequence,
+                    "destinationPhysicalStart": 0x00190000,
+                    "transactionId": f"dma:{sequence}",
+                }
+                self.record_reads = 0
+                self.data = b"Z"
+
+            @property
+            def record(self) -> dict[str, object]:
+                self.record_reads += 1
+                return self._record
+
+        connection = sqlite3.connect(":memory:")
+        connection.row_factory = sqlite3.Row
+        connection.execute(
+            """
+            CREATE TABLE event_sequence(
+              sequence_id INTEGER PRIMARY KEY, frame_number INTEGER,
+              bridge_event_sequence INTEGER, bridge_stream TEXT,
+              bridge_event_type TEXT,
+              raw_payload_json TEXT, event_time_content_sha256 TEXT,
+              event_time_content_size INTEGER
+            )
+            """
+        )
+        for sequence, next_bridge_sequence in enumerate((1, 2, 3, 4), 1):
+            insert_snapshot(
+                connection,
+                sequence=sequence,
+                data=b"A",
+                next_bridge_sequence=next_bridge_sequence,
+                reason="performance-regression",
+            )
+        transactions = [CountingTransaction(sequence) for sequence in range(100, 2100)]
+
+        changes, unresolved, diagnostics = _safety_range_analysis(
+            connection, transactions
+        )
+        connection.close()
+
+        self.assertEqual(len(changes), 4)
+        self.assertEqual(unresolved, [])
+        self.assertEqual(diagnostics["changeCount"], 3)
+        self.assertTrue(all(item.record_reads == 1 for item in transactions))
+
     def test_bulk_nominal_pc_index_matches_lazy_resolution(self) -> None:
         with tempfile.TemporaryDirectory() as raw:
             root = Path(raw)
@@ -61,13 +163,16 @@ class SessionDerivationTests(unittest.TestCase):
             expected = lazy.resolve_nominal_pc(0x80001000)
             self.assertIsNotNone(expected)
             self.assertEqual(lazy.resolve_nominal_rom_offset(0x80001000), 16)
+            self.assertEqual(lazy.resolve_nominal_mapping(0x80001000), (expected, 16))
             self.assertIsNone(lazy.resolve_nominal_pc(0x81234560))
             self.assertIsNone(lazy.resolve_nominal_rom_offset(0x81234560))
+            self.assertIsNone(lazy.resolve_nominal_mapping(0x81234560))
 
             bulk = StaticModel(static_path)
             bulk.preload_nominal_pc_index()
             self.assertEqual(bulk.resolve_nominal_pc(0x80001000), expected)
             self.assertEqual(bulk.resolve_nominal_rom_offset(0x80001000), 16)
+            self.assertEqual(bulk.resolve_nominal_mapping(0x80001000), (expected, 16))
             self.assertIsNone(bulk.resolve_nominal_pc(0x81234560))
             self.assertIsNone(bulk.resolve_nominal_rom_offset(0x81234560))
 
@@ -84,11 +189,13 @@ class SessionDerivationTests(unittest.TestCase):
             lazy = StaticModel(static_path)
             self.assertIsNone(lazy.resolve_nominal_pc(0x80001000))
             self.assertIsNone(lazy.resolve_nominal_rom_offset(0x80001000))
+            self.assertIsNone(lazy.resolve_nominal_mapping(0x80001000))
 
             bulk = StaticModel(static_path)
             bulk.preload_nominal_pc_index()
             self.assertIsNone(bulk.resolve_nominal_pc(0x80001000))
             self.assertIsNone(bulk.resolve_nominal_rom_offset(0x80001000))
+            self.assertIsNone(bulk.resolve_nominal_mapping(0x80001000))
 
     def test_active_region_index_matches_exact_lookup_across_lifetimes(self) -> None:
         regions = [
@@ -189,8 +296,10 @@ class SessionDerivationTests(unittest.TestCase):
                     (3, 21, 3, "input", "controller-input", json.dumps(pressed), None, None),
                 ),
             )
+            rom = bytearray(1024)
+            rom[16:20] = bytes.fromhex("27BDFFE0")
             executions, _, diagnostics = _execution_analysis(
-                connection, [], [], static
+                connection, [], [], static, bytes(rom)
             )
             inputs, input_diagnostics = _controller_input_analysis(connection)
             connection.close()
@@ -202,9 +311,80 @@ class SessionDerivationTests(unittest.TestCase):
             self.assertEqual(
                 executions[0]["mappingMethod"], "accepted-static-nominal-vram"
             )
+            self.assertEqual(
+                executions[0]["mappingVerification"]["status"], "exact-opcode-match"
+            )
+            self.assertEqual(diagnostics["opcodeConfirmedMappingCount"], 1)
             self.assertEqual(input_diagnostics["transitionCount"], 2)
             self.assertEqual(inputs[0]["endSequenceExclusive"], 3)
             self.assertEqual(inputs[1]["state"], "0x80000000")
+
+    def test_nominal_mapping_rejects_opcode_mismatch_but_retains_candidate(self) -> None:
+        with tempfile.TemporaryDirectory() as raw:
+            root = Path(raw)
+            static_path = root / "static.sqlite"
+            create_static_database(static_path)
+            static = StaticModel(static_path)
+            connection = sqlite3.connect(":memory:")
+            connection.row_factory = sqlite3.Row
+            connection.execute(
+                """
+                CREATE TABLE event_sequence(
+                  sequence_id INTEGER PRIMARY KEY, frame_number INTEGER,
+                  bridge_event_sequence INTEGER, bridge_stream TEXT,
+                  bridge_event_type TEXT,
+                  raw_payload_json TEXT, event_time_content_sha256 TEXT,
+                  event_time_content_size INTEGER
+                )
+                """
+            )
+            coverage = {
+                "kind": "exec-coverage",
+                "pc": "0x80001000",
+                "physicalAddress": "0x00001000",
+                "opcode": "0xDEADBEEF",
+                "exactInstructionResolved": True,
+                "newInstruction": True,
+                "newEdge": False,
+            }
+            connection.executemany(
+                "INSERT INTO event_sequence VALUES(?,?,?,?,?,?,?,?)",
+                (
+                    (1, 20, 1, "trace", "exec-coverage", json.dumps(coverage), None, None),
+                    (2, 21, 2, "trace", "exec-coverage", json.dumps(coverage), None, None),
+                ),
+            )
+            rom = bytearray(1024)
+            rom[16:20] = bytes.fromhex("27BDFFE0")
+
+            executions, unresolved, diagnostics = _execution_analysis(
+                connection, [], [], static, bytes(rom)
+            )
+            connection.close()
+
+            observation = executions[0]
+            self.assertIsNone(observation["function"])
+            self.assertIsNone(observation["romOffset"])
+            self.assertIsNone(observation["mappingMethod"])
+            self.assertEqual(
+                observation["mappingVerification"],
+                {
+                    "status": "opcode-mismatch",
+                    "romOffset": 16,
+                    "capturedOpcode": "0xDEADBEEF",
+                    "romOpcode": "0x27BDFFE0",
+                    "equalityBasis": "all-four-opcode-bytes",
+                },
+            )
+            self.assertEqual(
+                observation["mappingCandidate"]["mappingMethod"],
+                "static-nominal-vram-address-candidate",
+            )
+            self.assertEqual(unresolved[-1]["kind"], "nominal-vram-opcode-mismatch")
+            self.assertEqual(unresolved[-1]["occurrenceCount"], 2)
+            self.assertEqual(unresolved[-1]["firstSequence"], 1)
+            self.assertEqual(unresolved[-1]["lastSequence"], 2)
+            self.assertEqual(diagnostics["opcodeMismatchMappingCount"], 2)
 
     def test_dma_explained_change_and_contextual_pc_resolution_remain_distinct(self) -> None:
         with tempfile.TemporaryDirectory() as raw:
@@ -234,6 +414,7 @@ class SessionDerivationTests(unittest.TestCase):
                 data=b"AAAA",
                 next_bridge_sequence=1,
                 reason="initial",
+                declared_digest="0" * 64,
             )
             insert_pair(
                 connection,
@@ -278,7 +459,7 @@ class SessionDerivationTests(unittest.TestCase):
                 connection, transactions
             )
             executions, unresolved_pcs, execution = _execution_analysis(
-                connection, regions, transactions, static
+                connection, regions, transactions, static, rom
             )
             connection.close()
 
@@ -288,6 +469,8 @@ class SessionDerivationTests(unittest.TestCase):
                 "unresolved",
             ])
             self.assertEqual(safety["unresolvedChangeCount"], 1)
+            self.assertEqual(safety["acceptedSnapshotCount"], 3)
+            self.assertFalse(changes[0]["legacyContentHashMatches"])
             self.assertEqual(unresolved_changes[0]["unresolvedByteCount"], 1)
             self.assertEqual(execution["sampledPcCount"], 1)
             self.assertEqual(executions[0]["executionClaim"], "sampled-only")

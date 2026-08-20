@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 from pathlib import Path
 import sqlite3
 import tempfile
@@ -12,7 +13,7 @@ from tools.total_resolver.capture_db import (
 )
 from tools.total_resolver.contracts import CaptureMode, InterventionPolicy
 from tools.total_resolver.manifest import finalize_manifest
-from tools.total_resolver.replay import build_timeline, write_timeline
+from tools.total_resolver.replay import build_timeline
 from tools.total_resolver.schema import open_capture_database
 from tools.total_resolver.verify import verify_session
 
@@ -142,7 +143,6 @@ def create_closed_session(root: Path, *, event_loss: bool = False) -> Path:
     store.set_bridge_next_sequence_end(4 if event_loss else 3)
     store.close_session("closed")
     finalize_manifest(store.connection, session_dir, REPOSITORY_ROOT)
-    write_timeline(store.connection, session_dir / "timeline.json")
     store.close_connection()
     return session_dir
 
@@ -167,6 +167,17 @@ class CaptureLifecycleTests(unittest.TestCase):
                 ["watch", "dma"],
             )
 
+    def test_normal_context_manifest_has_no_capture_integrity_digests(self) -> None:
+        with tempfile.TemporaryDirectory() as raw:
+            session_dir = create_closed_session(Path(raw))
+            manifest = json.loads((session_dir / "manifest.json").read_text(encoding="utf-8"))
+            self.assertEqual(manifest["schema"], "ob64-total-resolver-session-context.v2")
+            self.assertFalse((session_dir / "events.ndjson").exists())
+            self.assertFalse((session_dir / "timeline.json").exists())
+            self.assertNotIn("manifestCoreSha256", manifest)
+            self.assertNotIn("captureDatabaseFileSha256", manifest)
+            self.assertNotIn("eventMirrorSha256", manifest)
+
     def test_closed_store_rejects_application_writes(self) -> None:
         with tempfile.TemporaryDirectory() as raw:
             session_dir = create_closed_session(Path(raw))
@@ -183,7 +194,7 @@ class CaptureLifecycleTests(unittest.TestCase):
             result = verify_session(session_dir, REPOSITORY_ROOT)
             self.assertTrue(result.ok, result.to_dict())
 
-    def test_post_close_payload_mutation_is_detected(self) -> None:
+    def test_post_close_structural_payload_corruption_is_rejected(self) -> None:
         with tempfile.TemporaryDirectory() as raw:
             session_dir = create_closed_session(Path(raw))
             connection = sqlite3.connect(session_dir / "capture.sqlite")
@@ -197,8 +208,30 @@ class CaptureLifecycleTests(unittest.TestCase):
             result = verify_session(session_dir, REPOSITORY_ROOT)
             self.assertFalse(result.ok)
             failed = {check["name"] for check in result.checks if check["status"] == "FAIL"}
-            self.assertIn("event-payload-hashes", failed)
-            self.assertIn("session-manifest", failed)
+            self.assertIn("bridge-epoch-consistency", failed)
+
+    def test_legacy_hash_mismatches_are_diagnostic_not_acceptance_gates(self) -> None:
+        with tempfile.TemporaryDirectory() as raw:
+            session_dir = create_closed_session(Path(raw))
+            connection = sqlite3.connect(session_dir / "capture.sqlite")
+            try:
+                connection.execute(
+                    "UPDATE event_sequence SET raw_payload_sha256='not-authoritative', "
+                    "stored_payload_sha256='also-not-authoritative'"
+                )
+                connection.execute(
+                    "UPDATE session SET manifest_sha256='legacy-fingerprint-is-context-only'"
+                )
+                connection.commit()
+            finally:
+                connection.close()
+            result = verify_session(session_dir, REPOSITORY_ROOT)
+            self.assertTrue(result.ok, result.to_dict())
+            information = {
+                check["name"] for check in result.checks if check["status"] == "INFO"
+            }
+            self.assertIn("session-context-manifest", information)
+            self.assertIn("event-mirror-context", information)
 
 
 if __name__ == "__main__":
