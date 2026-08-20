@@ -27,6 +27,17 @@ class InventoryTests(unittest.TestCase):
         self.assertEqual(inventory["project64"]["activeBridge"]["protocolVersion"], "0.12.0")
         self.assertEqual(inventory["project64"]["activeBridge"]["frontierFormatVersion"], 3)
         self.assertEqual(inventory["project64"]["activeBridge"]["queueModel"], "unified")
+        native_sources = set(
+            inventory["project64"]["activeNativeRuntime"]["sourceFiles"]
+        )
+        self.assertIn(
+            "Source/Project64/UserInterface/Debugger/ExactExecNovelty.h",
+            native_sources,
+        )
+        self.assertIn(
+            "Source/Project64/UserInterface/Debugger/ScriptInstance.h",
+            native_sources,
+        )
         self.assertFalse(inventory["decompStaticSource"]["dirtyAtFreeze"])
 
     def test_file_hash_is_binary_and_deterministic(self) -> None:

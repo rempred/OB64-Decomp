@@ -134,7 +134,10 @@ cannot partially change knowledge.
 
 Normal materialization refreshes only destinations and functions touched by the delta. The rebuild
 command creates a separate database, replays successful ledger rows in order, and compares every
-canonical row directly after independently verifying both databases.
+canonical row directly after independently verifying both databases. Stable ledger identity is
+also compared exactly. Rebuild-local paths/timestamps, diagnostic product/manifest references, the
+historical frontier-format label, and regenerated summary JSON are bookkeeping and are not part of
+canonical equivalence.
 
 ## Migration result
 

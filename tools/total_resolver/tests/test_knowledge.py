@@ -16,6 +16,7 @@ from tools.total_resolver.knowledge import (
     FunctionPlacementObservation,
     InstructionObservation,
     SessionDelta,
+    SUPPORTED_INGEST_PROTOCOL_VERSIONS,
     UnresolvedKnowledgeObservation,
     compare_knowledge_databases,
     create_knowledge_database,
@@ -118,6 +119,10 @@ class KnowledgeTests(unittest.TestCase):
         connection = open_knowledge_database(source)
         try:
             connection.execute("UPDATE frontier_state SET format_version=2")
+            connection.execute(
+                "UPDATE knowledge_meta SET value='0.11.0' "
+                "WHERE key='activeBridgeProtocolVersion'"
+            )
             connection.commit()
         finally:
             connection.close()
@@ -137,6 +142,13 @@ class KnowledgeTests(unittest.TestCase):
                     "SELECT value FROM knowledge_meta WHERE key='frontierFormatVersion'"
                 ).fetchone()[0],
                 "3",
+            )
+            self.assertEqual(
+                destination_connection.execute(
+                    "SELECT value FROM knowledge_meta "
+                    "WHERE key='activeBridgeProtocolVersion'"
+                ).fetchone()[0],
+                BRIDGE_PROTOCOL_VERSION,
             )
             for table in ("instruction_fact", "edge_fact", "dma_placement"):
                 self.assertEqual(
@@ -323,6 +335,50 @@ class KnowledgeTests(unittest.TestCase):
         self.assertEqual(status["counts"]["edges"], 1)
         self.assertEqual(status["counts"]["executablePhysicalPages"], 1)
         self.assertEqual(status["counts"]["pageGenerationWitnesses"], 70)
+
+    def test_accepted_historical_protocols_replay_and_0_7_fails_closed(self) -> None:
+        self.assertEqual(
+            SUPPORTED_INGEST_PROTOCOL_VERSIONS,
+            ("0.8.0", "0.9.0", "0.10.0", "0.11.0", BRIDGE_PROTOCOL_VERSION),
+        )
+        for version in SUPPORTED_INGEST_PROTOCOL_VERSIONS:
+            with self.subTest(version=version):
+                database = self.make_knowledge(f"protocol-{version}.sqlite")
+                result = ingest_delta(
+                    database,
+                    replace(self.delta("S1"), protocol_version=version),
+                )
+                self.assertEqual(result["action"], "ingested")
+
+        database = self.make_knowledge("protocol-0.7.2.sqlite")
+        with self.assertRaisesRegex(ValueError, "unsupported session bridge protocol"):
+            ingest_delta(
+                database,
+                replace(self.delta("S1"), protocol_version="0.7.2"),
+            )
+
+    def test_stale_database_protocol_metadata_fails_closed(self) -> None:
+        database = self.make_knowledge("stale-protocol.sqlite")
+        connection = open_knowledge_database(database)
+        try:
+            connection.execute(
+                "UPDATE knowledge_meta SET value='0.11.0' "
+                "WHERE key='activeBridgeProtocolVersion'"
+            )
+            connection.commit()
+        finally:
+            connection.close()
+
+        verification = verify_knowledge_database(database)
+        protocol_check = next(
+            item
+            for item in verification["checks"]
+            if item["name"] == "active-bridge-protocol"
+        )
+        self.assertEqual(verification["result"], "FAIL")
+        self.assertEqual(protocol_check["status"], "FAIL")
+        with self.assertRaisesRegex(ValueError, "bridge metadata is not current"):
+            ingest_delta(database, self.delta("S1"))
 
     def test_exact_structural_keys_retain_tail_caller_relocation_and_changed_opcode(self) -> None:
         database = self.make_knowledge("structural.sqlite")
@@ -522,6 +578,43 @@ class KnowledgeTests(unittest.TestCase):
         self.assertEqual(verify_knowledge_database(rebuilt)["result"], "PASS")
         equivalence = compare_knowledge_databases(incremental, rebuilt)
         self.assertTrue(equivalence["equivalent"], equivalence)
+
+    def test_rebuild_equivalence_ignores_only_noncanonical_ledger_bookkeeping(self) -> None:
+        source = self.make_knowledge("equivalence-source.sqlite")
+        rebuilt = self.make_knowledge("equivalence-rebuilt.sqlite")
+        ingest_delta(source, self.delta("S1"))
+        ingest_delta(rebuilt, self.delta("S1"))
+
+        connection = open_knowledge_database(rebuilt)
+        try:
+            connection.execute(
+                """
+                UPDATE ingestion_ledger SET
+                    raw_manifest_reference='diagnostic-only',
+                    frontier_format_version=2,
+                    source_capture_path='different-capture-path',
+                    source_product_path='different-product-path',
+                    source_product_reference='regenerated-diagnostic-reference',
+                    ingested_utc='different-time',
+                    delta_summary_json='{}'
+                """
+            )
+            connection.commit()
+        finally:
+            connection.close()
+        self.assertTrue(compare_knowledge_databases(source, rebuilt)["equivalent"])
+
+        connection = open_knowledge_database(rebuilt)
+        try:
+            connection.execute(
+                "UPDATE ingestion_ledger SET bridge_epoch='DIFFERENT-STABLE-IDENTITY'"
+            )
+            connection.commit()
+        finally:
+            connection.close()
+        equivalence = compare_knowledge_databases(source, rebuilt)
+        self.assertFalse(equivalence["equivalent"])
+        self.assertIn("ingestion_ledger", equivalence["mismatchedTables"])
 
 
 if __name__ == "__main__":

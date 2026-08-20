@@ -9,6 +9,35 @@ bundles live below ignored `build/total-resolver/` paths.
 
 The implementation plan is `docs/PLAN_2026-08-17-total-resolver-r3.md`; current results and known
 limits are summarized in `docs/total-resolver/implementation-status.md`.
+Agents must also follow `tools/total_resolver/AGENTS.md`, which gives the safe entry checklist and
+separates offline queries from user-authorized capture.
+
+## Agent roles
+
+An ordinary agent using Total Resolver is a **querying agent** and must remain read-only. Its normal
+command set is:
+
+```text
+python -m tools.total_resolver doctor [--project64-root PATH] [--connect --port PORT]
+python -m tools.total_resolver pj64 health [--port PORT]
+python -m tools.total_resolver pj64 status [--port PORT]
+python -m tools.total_resolver knowledge status
+python -m tools.total_resolver knowledge verify
+python -m tools.total_resolver session status
+python -m tools.total_resolver explain ...
+python -m tools.total_resolver coverage
+python -m tools.total_resolver unresolved
+```
+
+A querying agent must not run `session start`, `session stop`, `knowledge ingest`, `knowledge
+import`, `knowledge select`, or `knowledge migrate-frontier`. It must likewise avoid knowledge
+initialization/rebuild and other commands that write capture, database, selection, or generated
+product state. Those operations belong only to an agent explicitly assigned to build or maintain
+the database. A general decompilation, investigation, or resolver-query task does not grant that
+role.
+
+Even a database-building agent must not start capture until Joe explicitly says the run is ready,
+and must never use computer control to launch Project64.
 
 ## Bridge contract
 
@@ -34,7 +63,7 @@ version or capability mismatch. The bridge supplies:
 Recorder timestamps, frames, and page generations are context only. They never replace bridge
 ordering, and neither ordering nor an index fingerprint proves transient destination contents.
 
-## Persistent single-database workflow
+## Database-building workflow: persistent single database
 
 Initialize and select one knowledge database once. The ROM path must name the normalized US Rev 0
 target; the database snapshots the accepted static functions and records its static/resource
@@ -100,9 +129,16 @@ python -m tools.total_resolver knowledge rebuild --output build/total-resolver/k
 python -m tools.total_resolver knowledge benchmark
 ```
 
-The rebuild replays the successful ledger into a new database and requires direct, exact row
-equivalence. The benchmark uses a fake emulator around the production bridge script; it never
-launches or controls Project64.
+The rebuild replays the successful ledger into a new database and requires direct, exact canonical
+row equivalence. Stable ledger identity is compared exactly. Output paths/timestamps, legacy
+diagnostic references, the historical frontier-format label, and the regenerated delta-summary
+JSON are excluded because they are rebuild bookkeeping rather than machine facts. The benchmark
+uses a fake emulator around the production bridge script; it never launches or controls Project64.
+
+Ledger replay accepts protocols 0.8.0 through 0.11.0 as historical inputs plus the current 0.12.0
+protocol. Protocol 0.7.x sessions remain available as raw historical captures but are not admitted
+to persistent knowledge because they predate the accepted ordering and payload contract. Live
+bridge compatibility remains exact-version only.
 
 `migrate-frontier` copies a format-2 schema-2 database beside its source, changes only protocol/
 frontier metadata, verifies all facts and materializations, then selects it only when `--select`

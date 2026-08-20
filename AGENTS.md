@@ -85,6 +85,9 @@ Total Resolver is an intentional decomp-repository tool under `tools/total_resol
 Project64 remains an external runtime dependency, and the ordinary build and verifier must remain
 usable without it.
 
+Before using or changing Total Resolver, read `tools/total_resolver/AGENTS.md`; it defines the
+agent-safe query, capture, recovery, and verification workflow.
+
 Tracked resolver source, configuration, schemas, documentation, tests, and bounded approved
 fixtures belong in this repository. Session databases, RAM captures, screenshots, generated
 resolver databases, caches, traces, and other bulk runtime evidence belong under ignored

@@ -24,6 +24,21 @@ from .static_model import StaticModel
 KNOWLEDGE_SCHEMA = "ob64-total-resolver-knowledge.v2"
 KNOWLEDGE_SCHEMA_VERSION = 2
 
+# Live capture is intentionally exact-version only, but a deterministic knowledge
+# rebuild must remain able to replay every protocol already admitted to the
+# persistent ledger. Protocol 0.7.x predates the accepted ordering/evidence
+# contract and is deliberately excluded.
+HISTORICAL_INGEST_PROTOCOL_VERSIONS = (
+    "0.8.0",
+    "0.9.0",
+    "0.10.0",
+    "0.11.0",
+)
+SUPPORTED_INGEST_PROTOCOL_VERSIONS = (
+    *HISTORICAL_INGEST_PROTOCOL_VERSIONS,
+    BRIDGE_PROTOCOL_VERSION,
+)
+
 MATERIALIZATION_TABLES = {
     "overlay-atlas": (
         "atlas_destination_materialized",
@@ -823,6 +838,7 @@ def knowledge_status(path: Path) -> dict[str, Any]:
             "databaseId": meta["databaseId"],
             "romNormalizedSha256": meta["romNormalizedSha256"],
             "activeBridgeProtocolVersion": meta["activeBridgeProtocolVersion"],
+            "supportedIngestProtocolVersions": list(SUPPORTED_INGEST_PROTOCOL_VERSIONS),
             "dynamicReviewState": meta["dynamicReviewState"],
             "captureAuthority": meta["captureAuthority"],
             "frontier": frontier.summary(),
@@ -862,7 +878,13 @@ def _validate_delta(delta: SessionDelta, meta: Mapping[str, str], rom: bytes) ->
         raise ValueError("knowledge delta capture reference is missing")
     if delta.rom_normalized_sha256 != meta["romNormalizedSha256"]:
         raise ValueError("session ROM identity differs from the knowledge database")
-    if delta.protocol_version not in {"0.8.0", "0.9.0", BRIDGE_PROTOCOL_VERSION}:
+    if meta.get("activeBridgeProtocolVersion") != BRIDGE_PROTOCOL_VERSION:
+        raise ValueError(
+            "knowledge database bridge metadata is not current; "
+            "a database-building agent must run `knowledge migrate-frontier` "
+            "to build and select a verified copy"
+        )
+    if delta.protocol_version not in SUPPORTED_INGEST_PROTOCOL_VERSIONS:
         raise ValueError(f"unsupported session bridge protocol {delta.protocol_version!r}")
     if delta.bridge_sequence_start < 1 or delta.bridge_sequence_end < delta.bridge_sequence_start:
         raise ValueError("knowledge delta bridge sequence range is invalid")
@@ -2013,8 +2035,21 @@ def _expected_materializations(
     }
 
 
-_VOLATILE_EQUIVALENCE_COLUMNS = {
-    "ingestion_ledger": {"source_capture_path", "source_product_path", "ingested_utc"},
+_NONCANONICAL_EQUIVALENCE_COLUMNS = {
+    # A rebuild regenerates derived products under a new output path and records
+    # the current frontier format. These fields are bookkeeping/diagnostics, not
+    # the stable session identity or canonical machine facts. Stable ledger
+    # fields (session/capture identity, protocol, ROM, epoch, sequence range,
+    # and starting frontier) remain in the exact comparison.
+    "ingestion_ledger": {
+        "raw_manifest_reference",
+        "frontier_format_version",
+        "source_capture_path",
+        "source_product_path",
+        "source_product_reference",
+        "ingested_utc",
+        "delta_summary_json",
+    },
     "materialization_state": {"updated_utc"},
     "frontier_state": {"generated_utc"},
 }
@@ -2023,7 +2058,7 @@ _VOLATILE_EQUIVALENCE_COLUMNS = {
 def _table_projection(
     connection: sqlite3.Connection, table: str
 ) -> tuple[str, tuple[str, ...]]:
-    excluded = _VOLATILE_EQUIVALENCE_COLUMNS.get(table, set())
+    excluded = _NONCANONICAL_EQUIVALENCE_COLUMNS.get(table, set())
     columns = tuple(
         str(row[1])
         for row in connection.execute(f"PRAGMA table_info({table})")
@@ -2140,6 +2175,35 @@ def verify_knowledge_database(path: Path) -> dict[str, Any]:
             meta.get("dynamicReviewState") == "live-unreviewed"
             and meta.get("captureAuthority") == "observation-only",
             f"{meta.get('dynamicReviewState')}/{meta.get('captureAuthority')}",
+        )
+        check(
+            "active-bridge-protocol",
+            meta.get("activeBridgeProtocolVersion") == BRIDGE_PROTOCOL_VERSION,
+            f"database {meta.get('activeBridgeProtocolVersion')}; "
+            f"required {BRIDGE_PROTOCOL_VERSION}",
+        )
+        ledger_protocols = {
+            str(row[0])
+            for row in connection.execute(
+                "SELECT DISTINCT protocol_version FROM ingestion_ledger"
+            )
+        }
+        unsupported_ledger_protocols = sorted(
+            ledger_protocols.difference(SUPPORTED_INGEST_PROTOCOL_VERSIONS)
+        )
+        accepted_ledger_protocols = [
+            version
+            for version in SUPPORTED_INGEST_PROTOCOL_VERSIONS
+            if version in ledger_protocols
+        ]
+        check(
+            "ledger-protocol-compatibility",
+            not unsupported_ledger_protocols,
+            (
+                "accepted " + ", ".join(accepted_ledger_protocols)
+                if not unsupported_ledger_protocols
+                else "unsupported " + ", ".join(unsupported_ledger_protocols)
+            ),
         )
         health = str(connection.execute("PRAGMA quick_check").fetchone()[0])
         check("sqlite-health", health == "ok", health)
