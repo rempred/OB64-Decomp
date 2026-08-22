@@ -92,8 +92,9 @@ At minimum verify:
 
 - required tool binaries/versions/hashes match the tracked contract;
 - the GNU 2.6 source commit, deterministic build recipe, host package inventory, patches, complete
-  executable set, MSYS2 runner, and PowerShell executable/automation assembly match their
-  authenticated pins;
+  executable set, MSYS2 runner, and configured pinned PowerShell executable/automation assembly
+  match their authenticated pins; normal verification must not fall back to an ambient updated
+  PowerShell installation;
 - assembler endianness/ISA/alignment/delay-slot, historical `move`, COP1, call/relocation, custom
   section, linker LMA/`PT_LOAD`, and binary-extraction smoke tests pass;
 - compiler flags used for matching remain pinned;

@@ -63,6 +63,7 @@ function main(argv = process.argv.slice(2)) {
 
   console.log(`Compiling ${target.symbol}...`);
   const runtimeOptions = {
+    powershellRuntimeRoot: context.localTools.powershellRuntimeRoot,
     splatPython: context.localTools.splatPython,
     splatSplit: context.localTools.splatSplit,
     asmDifferRoot: context.localTools.asmDifferRoot,

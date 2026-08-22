@@ -43,8 +43,11 @@ Project64 is optional and remains outside the exact-ROM build path. See
 Place a supported Rev 0 ROM under `baserom/` or configure `OB64_ROM_INPUT`.
 Copy `config/local-tools.example.json` to the ignored
 `config/local-tools.json` and provide the authenticated local compiler, Splat,
-asm-differ, work-root, and audit-evidence paths. Environment variables listed
-by the example configuration may override those values.
+asm-differ, work-root, audit-evidence, and pinned PowerShell-runtime paths. The
+PowerShell runtime root must contain `System32/WindowsPowerShell/v1.0/powershell.exe`
+and its authenticated `System.Management.Automation.dll`; normal commands select
+that copy without depending on the ambient Windows installation. Environment
+variables listed by the example configuration may override those values.
 
 ROM binaries, objects, maps, rebuilt ROMs, and generated reports are ignored
 and must not be committed.

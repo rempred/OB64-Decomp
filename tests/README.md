@@ -14,6 +14,7 @@ Run the toolchain and source-policy tests directly from the repository root:
 
 ```powershell
 node tests/active_targets.js
+node tests/local_tools.js
 node tests/source_policy.js
 node tests/binutils_smoke.js
 node tests/word_asm_smoke.js

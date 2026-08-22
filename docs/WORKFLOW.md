@@ -390,6 +390,14 @@ paths.
 Machine-local paths should come from one ignored local config or documented environment variables
 resolved by a shared helper.
 
+`config/local-tools.json` must set `powershellRuntimeRoot` to the root of the authenticated pinned
+Windows PowerShell runtime. That root contains
+`System32/WindowsPowerShell/v1.0/powershell.exe` and
+`System.Management.Automation.dll`. `OB64_POWERSHELL_RUNTIME_ROOT` is the environment override.
+Normal commands pass this path through every build and verification layer and isolate the child
+PowerShell version check with the matching `WINDIR` and `DEVPATH`; they do not depend on the
+machine's ambient, updateable PowerShell installation.
+
 Normal commands should not require users or agents to paste a long set of compiler/Splat/asm-differ
 paths on every invocation.
 

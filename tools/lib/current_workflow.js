@@ -199,6 +199,7 @@ function reusableCurrentState(context, state) {
 
 function runtimeArgs(localTools) {
   return [
+    '--powershell-runtime-root', localTools.powershellRuntimeRoot,
     '--splat-python', localTools.splatPython,
     '--splat-split', localTools.splatSplit,
     '--asm-differ', localTools.asmDifferRoot,
@@ -313,6 +314,7 @@ function verifyFreshCompilation(context, build) {
   );
   ensureDir(output);
   const runtime = verifyRuntimeTools(context.phase8.model, {
+    powershellRuntimeRoot: context.localTools.powershellRuntimeRoot,
     splatPython: context.localTools.splatPython,
     splatSplit: context.localTools.splatSplit,
     asmDifferRoot: context.localTools.asmDifferRoot,

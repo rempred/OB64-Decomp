@@ -84,6 +84,13 @@ version/executable, and the loaded `System.Management.Automation.dll`. The GNU 2
 own `msys-2.0.dll`. A normal build fails before assembly or linking if any of these runner
 identities drifts.
 
+Windows servicing may replace the ambient PowerShell executable or automation assembly. Keep the
+authenticated pinned runtime outside the repository and select its root with
+`powershellRuntimeRoot` in ignored `config/local-tools.json` (or
+`OB64_POWERSHELL_RUNTIME_ROOT`). Normal build and verification commands pass that root through the
+workflow and launch its version check with an isolated matching `WINDIR` and `DEVPATH`; agents do
+not need to alter their shell environment. Exact hashes and the pinned version remain mandatory.
+
 ## Input flags
 
 Tracked assembly/data uses:
@@ -137,6 +144,7 @@ Run the focused toolchain suite from the repository root:
 ```powershell
 node tests/binutils_smoke.js
 node tests/active_targets.js
+node tests/local_tools.js
 node tests/source_policy.js
 ```
 

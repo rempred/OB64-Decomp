@@ -29,7 +29,7 @@ const {
 } = require('./lib/source_policy');
 
 function usage() {
-  console.log('Usage: node tools/build_phase8_matching_c.js --output <empty-external-dir> --phase7-output <verified-phase7-dir> --compiler <accepted-cc1.exe> --splat-python <python.exe> --splat-split <split.py> --asm-differ <checkout>');
+  console.log('Usage: node tools/build_phase8_matching_c.js --output <empty-external-dir> --phase7-output <verified-phase7-dir> --compiler <accepted-cc1.exe> --splat-python <python.exe> --splat-split <split.py> --asm-differ <checkout> [--powershell-runtime-root <pinned-windows-runtime>]');
 }
 
 function value(flag) {
@@ -47,6 +47,7 @@ function parseArgs() {
     output: value('--output'),
     phase7Output: value('--phase7-output'),
     compiler: value('--compiler'),
+    powershellRuntimeRoot: process.argv.includes('--powershell-runtime-root') ? value('--powershell-runtime-root') : null,
     splatPython: value('--splat-python'),
     splatSplit: value('--splat-split'),
     asmDifferRoot: value('--asm-differ'),

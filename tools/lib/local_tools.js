@@ -10,6 +10,7 @@ const EXAMPLE_CONFIG_PATH = path.join(ROOT, 'config', 'local-tools.example.json'
 const SETTINGS = Object.freeze({
   workRoot: { environment: 'OB64_WORK_ROOT', kind: 'directory', create: true },
   compiler: { environment: 'OB64_KMC_COMPILER', kind: 'file' },
+  powershellRuntimeRoot: { environment: 'OB64_POWERSHELL_RUNTIME_ROOT', kind: 'directory' },
   splatPython: { environment: 'OB64_SPLAT_PYTHON', kind: 'file' },
   splatSplit: { environment: 'OB64_SPLAT_SPLIT', kind: 'file' },
   splatSnapshotRoot: { environment: 'OB64_SPLAT_SNAPSHOT_ROOT', kind: 'directory' },
@@ -78,6 +79,7 @@ module.exports = {
   DEFAULT_CONFIG_PATH,
   EXAMPLE_CONFIG_PATH,
   ROOT,
+  SETTINGS,
   loadLocalConfig,
   resolveLocalTools,
 };

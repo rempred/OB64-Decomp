@@ -24,7 +24,7 @@ const {
 } = require('./lib/phase7_conventional');
 
 function usage() {
-  console.log('Usage: node tools/build_phase7_conventional.js --output <empty-external-dir> --splat-output <verified-splat-dir> --splat-python <python.exe> --splat-split <split.py> --asm-differ <checkout>');
+  console.log('Usage: node tools/build_phase7_conventional.js --output <empty-external-dir> --splat-output <verified-splat-dir> --splat-python <python.exe> --splat-split <split.py> --asm-differ <checkout> [--powershell-runtime-root <pinned-windows-runtime>]');
 }
 
 function value(flag) {
@@ -41,6 +41,7 @@ function parseArgs() {
   return {
     output: value('--output'),
     splatOutput: value('--splat-output'),
+    powershellRuntimeRoot: process.argv.includes('--powershell-runtime-root') ? value('--powershell-runtime-root') : null,
     splatPython: value('--splat-python'),
     splatSplit: value('--splat-split'),
     asmDifferRoot: value('--asm-differ'),

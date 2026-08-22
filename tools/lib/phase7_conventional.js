@@ -784,6 +784,33 @@ function gitHead(repository) {
   return run('git', ['-C', repository, 'rev-parse', 'HEAD']).stdout.trim();
 }
 
+function resolvePowerShellRuntime(options = {}, environment = process.env) {
+  const configuredRoot = options.powershellRuntimeRoot
+    || environment.OB64_POWERSHELL_RUNTIME_ROOT
+    || environment.WINDIR;
+  if (typeof configuredRoot !== 'string' || configuredRoot.trim() === '') {
+    fail('pinned PowerShell runtime root is missing; configure powershellRuntimeRoot (OB64_POWERSHELL_RUNTIME_ROOT)');
+  }
+  const root = path.resolve(configuredRoot);
+  const directory = path.join(root, 'System32', 'WindowsPowerShell', 'v1.0');
+  return {
+    root,
+    directory,
+    executable: path.join(directory, 'powershell.exe'),
+    automationAssembly: path.join(directory, 'System.Management.Automation.dll'),
+  };
+}
+
+function powerShellEnvironment(runtime, environment = process.env) {
+  const result = {};
+  for (const [name, value] of Object.entries(environment)) {
+    if (!['WINDIR', 'DEVPATH'].includes(name.toUpperCase())) result[name] = value;
+  }
+  result.WINDIR = runtime.root;
+  result.DEVPATH = runtime.directory;
+  return result;
+}
+
 function verifyRuntimeTools(model, options) {
   const config = model.config;
   const toolchainConfig = readJson(path.join(ROOT, 'config', 'toolchain.json'));
@@ -806,15 +833,23 @@ function verifyRuntimeTools(model, options) {
   const diffIdentity = verifyToolFile(path.join(options.asmDifferRoot, 'diff.py'), config.asmDiffer.diffPySha256, 'asm-differ diff.py');
   verifyToolFile(path.join(options.asmDifferRoot, 'pyproject.toml'), config.asmDiffer.pyprojectSha256, 'asm-differ pyproject');
   verifyToolFile(path.join(options.asmDifferRoot, 'LICENSE'), config.asmDiffer.licenseSha256, 'asm-differ license');
-  const powerShell = path.join(process.env.WINDIR || 'C:\\Windows', 'System32', 'WindowsPowerShell', 'v1.0', 'powershell.exe');
+  const powerShellRuntime = resolvePowerShellRuntime(options);
+  const powerShell = powerShellRuntime.executable;
+  if (!fs.existsSync(powerShell) || !fs.existsSync(powerShellRuntime.automationAssembly)) {
+    fail(`pinned PowerShell runtime is incomplete at ${powerShellRuntime.root}; configure powershellRuntimeRoot (OB64_POWERSHELL_RUNTIME_ROOT) with the authenticated runtime`);
+  }
   const powerShellIdentity = verifyToolFile(powerShell, config.host.powershellExeSha256, 'Windows PowerShell executable');
-  const powerShellAutomation = path.join(path.dirname(powerShell), 'System.Management.Automation.dll');
+  const powerShellAutomation = powerShellRuntime.automationAssembly;
   const powerShellAutomationIdentity = verifyToolFile(
     powerShellAutomation,
     config.host.powershellAutomationDllSha256,
     'Windows PowerShell automation assembly',
   );
-  const powerShellVersion = run(powerShell, ['-NoProfile', '-NonInteractive', '-Command', '$PSVersionTable.PSVersion.ToString()']).stdout.trim();
+  const powerShellVersion = run(
+    powerShell,
+    ['-NoProfile', '-NonInteractive', '-Command', '$PSVersionTable.PSVersion.ToString()'],
+    { env: powerShellEnvironment(powerShellRuntime) },
+  ).stdout.trim();
   if (powerShellVersion !== config.host.powershellVersion) fail('Windows PowerShell version drift');
   return {
     binRoot,
@@ -1032,6 +1067,7 @@ module.exports = {
   parseElfFile,
   readJson,
   renderLinkerScript,
+  resolvePowerShellRuntime,
   run,
   runAsmDifferProof,
   sha256Buffer,

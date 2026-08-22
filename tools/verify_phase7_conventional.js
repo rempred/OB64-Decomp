@@ -21,6 +21,7 @@ function value(flag) {
 function main() {
   const options = {
     output: value('--output'),
+    powershellRuntimeRoot: process.argv.includes('--powershell-runtime-root') ? value('--powershell-runtime-root') : null,
     splatPython: value('--splat-python'),
     splatSplit: value('--splat-split'),
     asmDifferRoot: value('--asm-differ'),
