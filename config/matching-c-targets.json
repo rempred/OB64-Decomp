@@ -46,6 +46,7 @@
     { "symbol": "func_00195410", "source": "src/lib/func_00195410.c" },
     { "symbol": "func_001957D0", "source": "src/lib/func_001957D0.c" },
     { "symbol": "func_0004501C", "source": "src/lib/func_0004501C.c" },
-    { "symbol": "memcpy_bytewise", "source": "src/boot/memcpy_bytewise.c" }
+    { "symbol": "memcpy_bytewise", "source": "src/boot/memcpy_bytewise.c" },
+    { "symbol": "func_000135a0", "source": "src/lib/func_000135a0.c" }
   ]
 }
