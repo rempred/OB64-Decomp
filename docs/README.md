@@ -24,6 +24,8 @@ have graduated from parent-workspace experiments into decomp knowledge.
   snapshot.
 - `TOOLCHAIN.md` - project-local MIPS binutils setup and verification.
 - `WORKFLOW.md` - source-replacement and evidence loop.
+- `templates/matching-c-agent-prompt-guide.md` - concise guidance and a copyable
+  prompt for ordinary one-function matching workers.
 - `DECOMP_LOG.md` - compact running memory for completed decomp loops and
   context-compaction handoff.
 - `FULL_ROM_SOURCE_MANIFEST.md` - full-ROM source ownership policy and current

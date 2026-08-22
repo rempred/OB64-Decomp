@@ -407,7 +407,12 @@ Do not weaken tool identity checks merely to simplify path handling.
 
 ## Parallel Agents
 
-Use normal Git worktrees/branches.
+Work in the current checkout and branch unless Joe explicitly directs creation of
+a branch or worktree.
+
+Use `docs/templates/matching-c-agent-prompt-guide.md` when assigning an ordinary
+one-function matching task, especially to a worker that benefits from a short,
+explicit diff-and-verify loop.
 
 A worker:
 
