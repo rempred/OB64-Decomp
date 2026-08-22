@@ -77,6 +77,12 @@ function main() {
       || buildReport.verification.schemaVersion !== 3 || buildReport.verification.status !== 'pass') {
     fail('Phase 8 source-to-object report schema drift');
   }
+  const linkageInput = buildReport.acceptedInputs && buildReport.acceptedInputs.linkageConfig;
+  if (!linkageInput || linkageInput.path !== phase8.linkageConfigIdentity.path
+      || linkageInput.bytes !== phase8.linkageConfigIdentity.bytes
+      || linkageInput.sha256 !== phase8.linkageConfigIdentity.sha256) {
+    fail('reviewed matching-C linkage input drift');
+  }
   if (JSON.stringify(buildReport).includes('adapterApplications')
       || JSON.stringify(buildReport).includes('dialectProof')
       || JSON.stringify(buildReport).includes('dialectAssembly')) {
@@ -157,6 +163,7 @@ function main() {
     if (proof.schemaVersion !== 1 || proof.kind !== 'ob64-source-to-object-load-evidence'
         || proof.target.symbol !== target.symbol || proof.target.sourceClass !== classification.class
         || proof.target.sourcePolicyDigest !== classification.digest
+        || proof.target.relocationContractSource !== target.relocationContractSource
         || proof.assemblyContract.compilerAssemblyRewritten !== false
         || Object.prototype.hasOwnProperty.call(proof.assemblyContract, 'adapterApplied')
         || proof.artifacts.compilerAssembly.sha256 !== sha256Buffer(compilerAssembly)
@@ -196,6 +203,7 @@ function main() {
       soleCOwner: true,
       originalAssemblyExcluded: true,
       compilerAssemblyRewritten: false,
+      relocationContractSource: target.relocationContractSource,
       loadRelevantRelocations: target.expectedRelocations.length,
       retiredPdrRelocations: target.legacyAncillaryRelocations.length,
       sourceObjectProofSha256: replacement.sourceObjectProof.sha256,

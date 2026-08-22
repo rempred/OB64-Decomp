@@ -191,6 +191,19 @@ malformed, or wrong-sized linked sections fail with `ERROR`.
 
 Intermediate diff output is generated evidence and is not committed.
 
+For a difficult candidate, an ignored scratch loop may compile with the same
+authenticated compiler, exact production flags, sole accepted section-name
+adjustment, and pinned assembler, then compare the resulting target-section
+words with the baserom. This can make focused C experiments faster when the
+canonical diff rejects an intermediate wrong-sized candidate. It is diagnostic
+only: it does not prove linker ownership, linked addresses, relocation handling,
+or complete-ROM equality and never replaces `diff.js` or `verify.js`.
+
+In particular, raw-object `j` and `jal` words may differ before linking because
+their final addresses are supplied through relocations. Treat an otherwise-close
+raw object as a reason to run the canonical linked diff, not as a completed
+match.
+
 ### 4. Verify the target
 
 Canonical interface:
@@ -327,11 +340,23 @@ The verifier derives normalized load-relevant relocations from the GNU 2.6 sourc
 compares them with the reviewed accepted contract. Discarded ancillary metadata remains visible in
 the source-to-object report but is not treated as a ROM or modification-relevant relocation.
 
-Do not manually maintain per-target relocation arrays once the derived comparison has been proven
-equivalent.
+`config/matching-c-linkage.json` is the active reviewed linkage contract. It contains one shared
+absolute-symbol registry and a small per-target relocation list. Historical targets may still read
+an equivalent contract from the frozen `config/phase8/matching-c.json` compatibility record while
+that evidence is migrated. New targets must not be added to that legacy file.
 
 If a target produces exact final bytes but relocation structure differs, report it explicitly.
 Do not silently count it as fully mod-ready pure C.
+
+`tools/diff.js <symbol>` is allowed to compile the selected target before its contract exists. It
+prints and records the exact candidate relocations, but labels them `MISSING` and does not accept
+them. Review that candidate against the source and canonical linked result, then add an explicit
+entry to `matching-c-linkage.json`; use an empty list when the reviewed object has no load-relevant
+relocations. `tools/verify.js` fails closed if the entry is absent or if the object changes.
+
+Internal absolute `j`/`jal` relocations are normalized to `.text`. External function or data names
+must resolve through the shared registry or an actual linked definition. Never guess records from
+instruction text or copy them from another target.
 
 ---
 

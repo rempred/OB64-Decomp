@@ -5,6 +5,7 @@ const fs = require('fs');
 const path = require('path');
 const {
   CONFIG_PATH,
+  LINKAGE_CONFIG_PATH,
   ROOT,
   assertBuildLocations,
   compileTarget,
@@ -151,6 +152,11 @@ function main() {
     acceptedInputs: {
       phase7Model: phase8.model.inputFiles,
       phase8Config: { bytes: fs.statSync(CONFIG_PATH).size, sha256: sha256File(CONFIG_PATH) },
+      linkageConfig: {
+        path: path.relative(ROOT, LINKAGE_CONFIG_PATH).replace(/\\/g, '/'),
+        bytes: fs.statSync(LINKAGE_CONFIG_PATH).size,
+        sha256: sha256File(LINKAGE_CONFIG_PATH),
+      },
       gnuBinutils26: {
         manifestPath: phase8.toolchain.identity.manifestPath,
         manifestSha256: phase8.toolchain.identity.manifestSha256,

@@ -118,6 +118,8 @@ At minimum verify:
 - ownership/placement checks pass; and
 - every target is classified before compilation and `UNKNOWN` rejects;
 - strict verification independently recreates each section adjustment and source-to-object proof;
+- the reviewed matching-C linkage file is an authenticated build input, its shared symbols remain
+  consistent with retained legacy evidence, and no strict build accepts a missing target contract;
 - every load-relevant target-section relocation is compared by offset, type, and normalized
   symbol/value semantics;
 - discarded ancillary differences, including retired procedure-descriptor relocations, remain

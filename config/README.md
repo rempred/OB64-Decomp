@@ -18,6 +18,10 @@ Rev 0 decomp configuration lives here.
 - `phase8/matching-c.json` - legacy detailed target/link-symbol/relocation evidence used to derive
   the minimal active-target model. Procedure-descriptor records are retained only as retired
   ancillary evidence.
+- `matching-c-linkage.json` - reviewed active linkage contract. It owns the shared absolute-symbol
+  registry and explicit load-relevant relocation contracts for new or migrated targets. An empty
+  target contract is meaningful: it records that the source object was reviewed and has no
+  load-relevant relocations.
 - `gnu-binutils-2.6-build.json` - pinned source, deterministic MSYS2 build inputs, project patches,
   versions, production executables, and runner identities.
 - `toolchain.json` - active GNU Binutils 2.6 resolver, flags, and ignored local install root.
@@ -27,8 +31,10 @@ Rev 0 decomp configuration lives here.
   external Project64, and decomp identities checked by Total Resolver before capture or rebuild.
 
 `matching-c-targets.json` owns the toolchain and build-provenance manifest paths and SHA-256 values
-once. Target entries remain limited to `symbol` and `source`. Update the authenticated chain in
-this order:
+once. Target entries remain limited to `symbol` and `source`. New targets never receive fabricated
+records in `phase8/matching-c.json`: use `tools/diff.js` to discover their source-object relocation
+candidate, then review and record the smallest exact target contract in
+`matching-c-linkage.json`. Update the authenticated chain in this order:
 
 ```text
 build script/patches -> GNU 2.6 build provenance -> toolchain manifest

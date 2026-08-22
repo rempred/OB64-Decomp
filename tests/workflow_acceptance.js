@@ -70,6 +70,11 @@ function main() {
   mutations.push(expectRejection('stale verification schema', () => validateRecordedPhase8Build(phase8, {
     output, buildReport: report, verification: staleVerification, compilerSha256: report.compiler.sha256,
   })));
+  const staleLinkage = clone(report);
+  staleLinkage.acceptedInputs.linkageConfig.sha256 = '0'.repeat(64);
+  mutations.push(expectRejection('stale linkage contract', () => validateRecordedPhase8Build(phase8, {
+    output, buildReport: staleLinkage, verification: report.verification, compilerSha256: report.compiler.sha256,
+  })));
   const missingProof = clone(report);
   missingProof.targetReplacements[0].sourceObjectProof = null;
   mutations.push(expectRejection('missing proof', () => validateRecordedPhase8Build(phase8, {

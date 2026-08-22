@@ -129,11 +129,12 @@ function currentFingerprint(phase8, baseline, localTools) {
     baseline,
     compilerSha256: sha256File(localTools.compiler),
     activeConfigSha256: sha256File(path.join(ROOT, 'config', 'matching-c-targets.json')),
+    linkageConfig: phase8.linkageConfigIdentity,
     compatibilityBridge: {
       compiler: phase8.config.compiler,
       targets: phase8.targets.map((target) => ({
         symbol: target.symbol,
-        linkSymbols: target.linkSymbols,
+        relocationContractSource: target.relocationContractSource,
         expectedRelocations: target.expectedRelocations,
       })),
     },
@@ -211,7 +212,9 @@ function prepareContext(options = {}) {
   const baserom = ensureCanonicalBaserom(localTools);
   const model = loadAcceptedModel();
   const baseline = baselineFingerprint(model, baserom);
-  const phase8 = loadActiveTargetModel();
+  const phase8 = loadActiveTargetModel({
+    allowMissingRelocationContracts: options.allowMissingRelocationContracts || [],
+  });
   const current = currentFingerprint(phase8, baseline, localTools);
   return { baserom, baselineFingerprint: baseline, currentFingerprint: current, localTools, model, phase8 };
 }

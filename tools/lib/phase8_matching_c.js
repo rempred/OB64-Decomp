@@ -26,6 +26,7 @@ const {
 } = require('./phase7_conventional');
 const {
   CONFIG_PATH,
+  LINKAGE_CONFIG_PATH,
   loadActiveTargetModel,
 } = require('./active_targets');
 const {
@@ -573,6 +574,7 @@ function deriveSourceObjectProof(phase8, target, output, classification, linkedE
       sourceSha256: target.sourceSha256,
       sourceClass: classification.class,
       sourcePolicyDigest: classification.digest,
+      relocationContractSource: target.relocationContractSource,
     },
     toolchain: {
       compiler: {
@@ -690,6 +692,7 @@ function verifySourceObjectProofs(phase8, options) {
       sourcePolicyDigest: classification.digest,
       compilerAssemblyRewritten: false,
       loadRelevantRelocations: derived.proof.finalObject.loadRelevantRelocationsNormalized.length,
+      relocationContractSource: target.relocationContractSource,
       ancillaryRelocations: derived.proof.finalObject.ancillaryDiscardedRelocations.length,
       retiredPdrRelocations: target.legacyAncillaryRelocations.length,
       proof: { path: proofRelative, bytes: derived.proofBytes.length, sha256: sha256Buffer(derived.proofBytes) },
@@ -804,13 +807,11 @@ function linkPhase8(phase8, output, objectManifest, tools) {
   const linkerScript = path.join(linkerRoot, 'phase8.ld');
   const responseFile = path.join(linkerRoot, 'objects.rsp');
   const aliases = new Map();
-  for (const target of phase8.targets) {
-    for (const [symbol, value] of Object.entries(target.linkSymbols || {})) {
-      if (!/^[A-Za-z_.$][A-Za-z0-9_.$]*$/.test(symbol)) fail('unsafe Phase 8 link alias: ' + symbol);
-      const numericValue = parseNumber(value, 'link alias ' + symbol);
-      if (aliases.has(symbol) && aliases.get(symbol) !== numericValue) fail('Phase 8 link alias value drift: ' + symbol);
-      aliases.set(symbol, numericValue);
-    }
+  for (const [symbol, value] of Object.entries(phase8.linkSymbols || {})) {
+    if (!/^[A-Za-z_.$][A-Za-z0-9_.$]*$/.test(symbol)) fail('unsafe Phase 8 link alias: ' + symbol);
+    const numericValue = parseNumber(value, 'link alias ' + symbol);
+    if (aliases.has(symbol) && aliases.get(symbol) !== numericValue) fail('Phase 8 link alias value drift: ' + symbol);
+    aliases.set(symbol, numericValue);
   }
   const aliasText = [...aliases.entries()].sort((left, right) => left[0].localeCompare(right[0])).map(([symbol, value]) => symbol + ' = ' + hex(value) + ';');
   fs.writeFileSync(linkerScript, renderLinkerScript(phase8.model) + (aliasText.length ? '\n' + aliasText.join('\n') + '\n' : ''));
@@ -1189,13 +1190,18 @@ function validateRecordedPhase8Build(phase8, options) {
     fail('recorded KMC compiler identity drift');
   }
   const recordedToolchain = buildReport.acceptedInputs && buildReport.acceptedInputs.gnuBinutils26;
+  const recordedLinkage = buildReport.acceptedInputs && buildReport.acceptedInputs.linkageConfig;
   if (!recordedToolchain
       || recordedToolchain.manifestPath !== phase8.toolchain.identity.manifestPath
       || recordedToolchain.manifestSha256 !== phase8.toolchain.identity.manifestSha256
       || recordedToolchain.buildProvenancePath !== phase8.toolchain.identity.buildProvenancePath
       || recordedToolchain.buildProvenanceSha256 !== phase8.toolchain.identity.buildProvenanceSha256
+      || !recordedLinkage
+      || recordedLinkage.path !== phase8.linkageConfigIdentity.path
+      || recordedLinkage.bytes !== phase8.linkageConfigIdentity.bytes
+      || recordedLinkage.sha256 !== phase8.linkageConfigIdentity.sha256
       || JSON.stringify(buildReport.sourceObjectEvidence) !== JSON.stringify(verification.sourceObjectEvidence)) {
-    fail('recorded GNU Binutils 2.6 identity or source-to-object evidence drift');
+    fail('recorded toolchain, linkage contract, or source-to-object evidence drift');
   }
   const recordedSources = buildReport.acceptedInputs && buildReport.acceptedInputs.cSources;
   const recordedTargets = buildReport.targetReplacements;
@@ -1259,6 +1265,7 @@ function pathIndependentRuntime(runtime) {
 
 module.exports = {
   CONFIG_PATH,
+  LINKAGE_CONFIG_PATH,
   ROOT,
   adjustSectionAssembly,
   assertBuildLocations,

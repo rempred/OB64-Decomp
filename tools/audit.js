@@ -61,6 +61,14 @@ function main(argv = process.argv.slice(2)) {
       || !context.phase8.targets.every((target) => target.legacyAncillaryRelocations.every((record) => record.section === '.rel.pdr'))) {
     throw new Error('active/retired relocation policy invariant failed');
   }
+  const canonicalLinkageTargets = context.phase8.targets.filter((target) => target.relocationContractSource === 'canonical');
+  const legacyLinkageTargets = context.phase8.targets.filter((target) => target.relocationContractSource === 'legacy-compatibility');
+  const func135a0Linkage = context.phase8.compatibility.find((target) => target.symbol === 'func_000135a0');
+  if (canonicalLinkageTargets.length !== context.phase8.linkageConfig.targets.length
+      || !func135a0Linkage || func135a0Linkage.legacyRecord !== false
+      || func135a0Linkage.relocationContractSource !== 'canonical') {
+    throw new Error('reviewed matching-C linkage migration invariant failed');
+  }
   const rebuiltRom = fs.readFileSync(path.join(current.build.output, 'phase8.us_rev0.z64'));
   const func2cd70 = context.phase8.targets.find((target) => target.symbol === 'func_0002CD70');
   if (!func2cd70) throw new Error('func_0002CD70 is missing from the active target model');
@@ -104,6 +112,10 @@ function main(argv = process.argv.slice(2)) {
       compilerAssemblyRewrites: 0,
     },
     relocationPolicy: {
+      contract: context.phase8.linkageConfigIdentity,
+      sharedLinkSymbols: Object.keys(context.phase8.linkSymbols).length,
+      canonicalTargets: canonicalLinkageTargets.length,
+      legacyCompatibilityTargets: legacyLinkageTargets.length,
       loadRelevantRelocations: sourceObjectEvidence.counts.loadRelevantRelocations,
       ancillaryRelocations: sourceObjectEvidence.counts.ancillaryRelocations,
       retiredPdrRelocations: sourceObjectEvidence.counts.retiredPdrRelocations,

@@ -288,6 +288,7 @@ function verifyProductionCutover() {
   for (const relative of deleted) if (fs.existsSync(path.join(ROOT, relative))) throw new Error(`retired adapter path returned: ${relative}`);
   const activeFiles = [
     'config/toolchain.json', 'config/phase7/conventional-build.json', 'config/matching-c-targets.json',
+    'config/matching-c-linkage.json',
     'tools/build_phase7_conventional.js', 'tools/build_phase8_matching_c.js', 'tools/diff.js',
     'tools/verify_phase7_conventional.js', 'tools/verify_phase8_matching_c.js',
     'tools/lib/active_targets.js', 'tools/lib/current_workflow.js', 'tools/lib/phase7_conventional.js',

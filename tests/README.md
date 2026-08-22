@@ -20,6 +20,9 @@ node tests/binutils_smoke.js
 node tests/word_asm_smoke.js
 ```
 
+`tests/active_targets.js` also validates the shared matching-C symbol registry, rejects malformed
+or missing reviewed relocation contracts, and checks the canonical-to-legacy migration bridge.
+
 Use a completed external Phase 8 build for the artifact and fail-closed suites:
 
 ```powershell

@@ -20,6 +20,8 @@ research, but it is not part of the active production configuration.
 - `config/phase7/conventional-build.json` pins the same production hashes for the baseline build.
 - `config/matching-c-targets.json` pins the toolchain and build-provenance manifests for active C
   owners.
+- `config/matching-c-linkage.json` supplies the shared absolute-symbol registry and reviewed
+  load-relevant relocation contracts used by active C objects.
 
 The source identity is Decompals `mips-binutils-2.6` commit
 `54514ded39ceb32165a125ddba04ca5b551773a2`. The v0.3 Linux release is supporting comparison
@@ -136,6 +138,11 @@ bytes, accepted load-relevant relocations, ancillary differences, final linked b
 ownership. GNU 2.6 does not emit the former procedure-descriptor relocation. That retired
 metadata remains visible as historical ancillary evidence but is not part of the active
 load-relevant relocation contract.
+
+New targets do not receive synthetic records in `config/phase8/matching-c.json`. The diff command
+may expose a missing contract as an unaccepted candidate; strict builds require the reviewed
+target entry in `config/matching-c-linkage.json`, record that file's identity in the build report,
+and reject any later relocation change.
 
 ## Verification
 

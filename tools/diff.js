@@ -54,7 +54,7 @@ function main(argv = process.argv.slice(2)) {
     return;
   }
   if (argv.length !== 1 || argv[0].startsWith('--')) throw new Error('one target symbol is required');
-  const context = prepareContext();
+  const context = prepareContext({ allowMissingRelocationContracts: [argv[0]] });
   const target = selectTarget(context.phase8, argv[0]);
   const baseline = ensureBaseline(context, { onStep: (message) => console.log(`${message}...`) });
   const suffix = `${Date.now()}-${crypto.randomBytes(3).toString('hex')}`;
@@ -107,6 +107,9 @@ function main(argv = process.argv.slice(2)) {
     requireExact: false,
   });
   const targetSourcePolicy = classificationBySymbol.get(target.symbol);
+  const candidateRelocations = compiled.get(target.symbol).relocations;
+  const relocationContractMatches = target.relocationContractSource !== 'missing-diff-only'
+    && JSON.stringify(candidateRelocations) === JSON.stringify(target.expectedRelocations);
   const report = {
     schemaVersion: 3,
     symbol: target.symbol,
@@ -116,6 +119,12 @@ function main(argv = process.argv.slice(2)) {
     toolchain: context.phase8.toolchain.identity,
     output,
     object: compiled.get(target.symbol),
+    relocationContract: {
+      source: target.relocationContractSource,
+      matches: relocationContractMatches,
+      accepted: target.relocationContractSource === 'missing-diff-only' ? null : target.expectedRelocations,
+      candidate: candidateRelocations,
+    },
     comparison,
   };
   const reportFile = path.join(ROOT, 'build', 'diff', `${target.symbol}.json`);
@@ -131,6 +140,11 @@ function main(argv = process.argv.slice(2)) {
   console.log(`Differing instruction words  ${comparison.differingInstructionWordCount}`);
   console.log(`Linked target SHA-256 ...... ${comparison.linkedTargetSha256}`);
   console.log(`Expected target SHA-256 .... ${comparison.expectedTargetSha256}`);
+  console.log(`Relocation contract ........ ${target.relocationContractSource === 'missing-diff-only' ? 'MISSING' : relocationContractMatches ? 'MATCH' : 'DIFFERS'}`);
+  if (!relocationContractMatches) {
+    console.log('Candidate relocations .......');
+    console.log(JSON.stringify(candidateRelocations, null, 2));
+  }
   console.log(`Report ..................... ${reportFile}`);
 }
 

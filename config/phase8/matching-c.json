@@ -1513,30 +1513,6 @@
         {"offset":"0x00000388","type":"R_MIPS_HI16","symbol":"g_func_0019554C_class_records","section":".rel.text"},
         {"offset":"0x00000390","type":"R_MIPS_LO16","symbol":"g_func_0019554C_class_records","section":".rel.text"}
       ]
-    },
-    {
-      "symbol": "func_000135a0",
-      "source": "src/lib/func_000135a0.c",
-      "sourceSha256": "C79B14D16401A7055B81AFE26B3158E1ADA1DF8B5321274678EB2C08CDEB83F4",
-      "originalAssembly": "asm/original/rev0/lib/func_000135a0.s",
-      "originalAssemblySha256": "0D6228E70F08DEE248F2E6E8A596C7997813B435F4469C1503F82C326EDC6E92",
-      "rowIndex": 236,
-      "primaryId": "primary:5a14f02ddea75831e6c6",
-      "sectionName": ".ob64.r0236",
-      "chunkIndex": 1,
-      "romStart": "0x000135A0",
-      "romEndExclusive": "0x00013664",
-      "vramStart": "0x800831A0",
-      "bytes": 196,
-      "overlayDescriptorId": null,
-      "descriptorRawSha256": null,
-      "expectedTextSha256": "D2D7F419DA03B7027A6010B248FBD35BE290520DC854CF644CB8AA92E0248463",
-      "expectedObjectTextSha256": "51E821E760153855BE46755A7F63E01DE7BE365B56D2FDC4E59C098757C299ED",
-      "linkSymbols": {},
-      "expectedRelocations": [
-        {"offset":"0x00000094","type":"R_MIPS_26","symbol":".text","section":".rel.text"},
-        {"offset":"0x0000009C","type":"R_MIPS_26","symbol":".text","section":".rel.text"}
-      ]
     }
   ],
   "compiler": {
