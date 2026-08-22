@@ -46,6 +46,14 @@ fake-linear assembly labels and must not be used as runtime watch PCs.
 - **[code+multi] Terminator:** opcode `0x80` (`func_0001438c`) resets the object
   fields documented in the target map and returns zero. It is the explicit
   script terminator.
+- **[code] Countdown and byte reader:** exact matching C for `func_000135a0`
+  confirms that controller `+0x38` points to the next unread byte and advances
+  after every read. Controller `+0xA2` counts down; when it reaches zero, the
+  function reads a compact record using one, two, or three bytes and stores the
+  first byte's lower seven bits at `+0xBC` when its high bit is set. The exact
+  field behavior and the compiler-matching lesson are recorded in
+  `docs/dossiers/func-000135a0.md`. This does not by itself prove a gameplay
+  name for the value or countdown.
 - **[live]+[code] Opcode `0x84`:** the handler consumes exactly six bytes and
   executes on four transient/non-channel objects in the Hugo get-up capture.
   The 24 hits span frames 61..890. Captured first-six-byte patterns are

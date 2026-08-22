@@ -26,6 +26,10 @@ have graduated from parent-workspace experiments into decomp knowledge.
 - `WORKFLOW.md` - source-replacement and evidence loop.
 - `templates/matching-c-agent-prompt-guide.md` - concise guidance and a copyable
   prompt for ordinary one-function matching workers.
+- `KMC_GCC_MATCHING_NOTES.md` - scoped, experimentally reproduced compiler
+  matching observations and diagnostic-loop cautions.
+- `dossiers/func-000135a0.md` - accepted exact-C example showing how source
+  order, separate locals, integer widths, and expression shape affected output.
 - `DECOMP_LOG.md` - compact running memory for completed decomp loops and
   context-compaction handoff.
 - `FULL_ROM_SOURCE_MANIFEST.md` - full-ROM source ownership policy and current

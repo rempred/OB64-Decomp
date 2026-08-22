@@ -41,6 +41,56 @@ Do not prescribe register allocation, exact C syntax, or a guessed semantic name
 unless evidence makes it necessary. Let the worker use the diff to discover the
 required C shape.
 
+## When the Work Is Right but the Registers Differ
+
+The old compiler chooses CPU registers partly from how C variables are divided
+and how long each value is needed. Two pieces of C that do the same work can
+therefore produce different registers.
+
+If the instructions already do the right work but use the wrong registers:
+
+- keep independent reads and writes in the order suggested by the retail code;
+- write comparisons in the direction that gives the retail branch layout;
+- give separate reads or stages separate local variables when the compiler is
+  keeping one value alive for too long;
+- reuse a local when the retail code clearly reuses one register; and
+- use an ordinary temporary and separate statements when the compiler combines
+  arithmetic in the wrong order.
+
+Change one of these things at a time and run the diff again. Do not force the
+answer with inline assembly or fixed-register declarations.
+
+`func_000135a0` is the accepted example. Source-order and comparison changes
+first matched its loop and branch layout. Giving its three successive stream
+reads three cursor variables then fixed the remaining register choices. A
+signed arithmetic temporary and two separate statements fixed the last two
+instructions. Its complete example, experiment record, and the limits of the
+lesson are recorded in
+`docs/dossiers/func-000135a0.md`.
+
+Its experiments also provide two narrow type clues: a `u16` local can expose a
+16-bit truncation after arithmetic, and a `u8` value can expose a byte mask
+before an unsigned comparison. Use these only when the retail instructions show
+the corresponding operation.
+
+For a difficult close match, `docs/KMC_GCC_MATCHING_NOTES.md` records additional
+scoped experiments with the pinned compiler. It distinguishes reproduced
+observations from explanations that were not established. Read it for possible
+experiments, not as a recipe for predicting register allocation.
+
+An ignored scratch compile-and-word-compare loop may shorten focused experiments
+if it uses the authenticated compiler, exact production flags, accepted section
+adjustment, and pinned assembler. It remains diagnostic. Raw-object `j`/`jal`
+words may not resolve until linking, and only the canonical linked diff and
+verifiers can accept the target.
+
+For a newly activated target, `tools/diff.js` may report that its relocation
+contract is `MISSING` and print a candidate. That is expected discovery output,
+not a verifier failure. Review the candidate, add the smallest exact entry to
+`config/matching-c-linkage.json` (including an explicit empty list when there
+are no load-relevant relocations), and rerun the canonical diff and verifier.
+Never create a target record in the frozen `config/phase8/matching-c.json`.
+
 ## Completion and Stop Conditions
 
 An exact `PURE_C` task is complete only after all of these pass:
@@ -77,8 +127,10 @@ Target context:
 - Commit policy: `<commit after verification / do not commit>`
 
 Read `AGENTS.md`, `docs/WORKFLOW.md`, and `docs/SOURCE_POLICY.md`, followed only
-by the target-specific evidence above. Inspect Git status before editing. Do not
-create a branch or worktree.
+by the target-specific evidence above. For a difficult compiler-output match,
+also read `docs/KMC_GCC_MATCHING_NOTES.md` and
+`docs/dossiers/func-000135a0.md`. Inspect Git status before editing. Do not create
+a branch or worktree.
 
 This is an ordinary function match. Preserve the accepted function boundary,
 placement, overlay/segment model, linker ownership rules, and toolchain. Keep the
