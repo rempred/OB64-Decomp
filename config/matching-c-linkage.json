@@ -156,6 +156,30 @@
         { "offset": "0x0000008C", "type": "R_MIPS_HI16", "symbol": "g_func_001957D0_source_records", "section": ".rel.text" },
         { "offset": "0x00000090", "type": "R_MIPS_LO16", "symbol": "g_func_001957D0_source_records", "section": ".rel.text" }
       ]
-    }
+    },
+    { "symbol": "boot_state_slot_noop_return_tail", "expectedRelocations": [] },
+    { "symbol": "func_00012400", "expectedRelocations": [] },
+    { "symbol": "func_0001242c", "expectedRelocations": [] },
+    { "symbol": "func_00012434", "expectedRelocations": [] },
+    { "symbol": "func_000242e0", "expectedRelocations": [] },
+    { "symbol": "func_00042714", "expectedRelocations": [] },
+    { "symbol": "func_00046334", "expectedRelocations": [] },
+    { "symbol": "func_000496ac", "expectedRelocations": [] },
+    { "symbol": "func_000497ac", "expectedRelocations": [] },
+    { "symbol": "func_000497b4", "expectedRelocations": [] },
+    { "symbol": "func_0004e82c", "expectedRelocations": [] },
+    { "symbol": "func_0004ef10", "expectedRelocations": [] },
+    { "symbol": "func_0004ef50", "expectedRelocations": [] },
+    { "symbol": "func_0004ef58", "expectedRelocations": [] },
+    { "symbol": "func_0005192c", "expectedRelocations": [] },
+    { "symbol": "func_0005aff0", "expectedRelocations": [] },
+    { "symbol": "func_0005aff8", "expectedRelocations": [] },
+    { "symbol": "func_0005b000", "expectedRelocations": [] },
+    { "symbol": "func_0007dc00", "expectedRelocations": [] },
+    { "symbol": "func_000eacfc", "expectedRelocations": [] },
+    { "symbol": "func_000F3154", "expectedRelocations": [] },
+    { "symbol": "func_00100078", "expectedRelocations": [] },
+    { "symbol": "func_00128E78", "expectedRelocations": [] },
+    { "symbol": "func_00145DC8", "expectedRelocations": [] }
   ]
 }
