@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "profile": "us-rev0-kmc-gcc-2.7.2",
+  "databaseSchemaVersion": 2,
+  "m2c": {
+    "repository": "https://github.com/matt-kempster/m2c.git",
+    "commit": "3478473441a1e6da75d6bf07629452f410390ef4",
+    "tree": "3943f2fb966096365ca19d888a85f7a0386aac17",
+    "defaultRoot": "../tools/m2c",
+    "target": "mips-gcc-c",
+    "variants": [
+      { "name": "structured", "arguments": ["--valid-syntax", "--deterministic-vars"] },
+      { "name": "gotos", "arguments": ["--valid-syntax", "--deterministic-vars", "--gotos-only"] },
+      { "name": "stack", "arguments": ["--valid-syntax", "--deterministic-vars", "--stack-structs"] }
+    ]
+  },
+  "limits": {
+    "defaultRows": 20,
+    "maximumRows": 200,
+    "maximumCapturedOutputBytes": 1048576
+  }
+}

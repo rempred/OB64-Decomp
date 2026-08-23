@@ -18,7 +18,26 @@ node tests/local_tools.js
 node tests/source_policy.js
 node tests/binutils_smoke.js
 node tests/word_asm_smoke.js
+node tests/matching_workbench.js
 ```
+
+`tests/matching_workbench.js` covers deterministic mismatch classes,
+collision-safe family grouping, exact target/context fixtures, store
+idempotence and rollback, canonical-source/provenance separation, retry after
+failed compilation, atomic compile-plus-comparison insertion, compiler-probe
+comparison, and the m2c adapter.
+It uses a temporary SQLite database for mutation tests.
+
+When the local baserom, pinned m2c checkout, compiler, and GNU tools are
+available, also run:
+
+```powershell
+node tests/matching_workbench_integration.js
+```
+
+The integration fixture generates and scratch-compiles `memcpy_bytewise` to
+exact bytes. This is deliberately not a substitute for canonical linked/full-ROM
+verification.
 
 `tests/active_targets.js` also validates the shared matching-C symbol registry, rejects malformed
 or missing reviewed relocation contracts, and checks the canonical-to-legacy migration bridge.

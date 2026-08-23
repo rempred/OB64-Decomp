@@ -54,6 +54,13 @@ The accepted mapping and remaining uncertainty are documented in
 Do not restart an easy-function matching farm merely to increase percentage. Choose targets by the
 amount of runtime-hook or workaround complexity they can remove.
 
+Use `node tools/match.js rank --lane leverage` as an inspectable starting queue,
+then apply the reviewed subsystem priorities below. The workbench's scratch-exact
+results and family siblings are leads to review, not automatic promotion. Add
+target-specific value annotations to `config/matching-priorities.json` only when
+the subsystem relationship is already supported; do not let the high-yield
+small-leaf pilot displace LordlyCaliber leverage.
+
 ### Tier 1 — Current runtime hooks and code patches
 
 Identify and decompile the original call graphs around:

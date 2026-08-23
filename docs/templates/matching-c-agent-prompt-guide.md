@@ -37,6 +37,20 @@ specific mismatch. They should not replace the diff loop or become a long attemp
 to predict the compiler before the first build. Manual byte equality is diagnostic
 only; it is not acceptance.
 
+The repository also has an optional matching workbench. It can prepare a first
+draft and recover earlier experiments without making canonical source changes:
+
+```text
+node tools/match.js inspect <symbol>
+node tools/match.js prepare <symbol>
+node tools/match.js best <symbol>
+```
+
+Let the worker use it when useful; do not turn every command into a mandatory
+ritual. A scratch result labeled `exact-bytes` still needs to be deliberately
+adapted into `src/` and pass the normal linked diff and verifiers. For a close
+hard case, `family`, `context`, and `probe` can answer a specific question.
+
 Do not prescribe register allocation, exact C syntax, or a guessed semantic name
 unless evidence makes it necessary. Let the worker use the diff to discover the
 required C shape.
@@ -138,7 +152,9 @@ implementation genuinely `PURE_C`: no inline assembly, register-asm bindings,
 raw instruction injection, or section tricks.
 
 Work directly toward a match:
-1. Inspect the accepted target and nearby calling context.
+1. Inspect the accepted target and nearby calling context. You may use
+   `node tools/match.js inspect <symbol>` and `prepare <symbol>` to recover a
+   bounded first draft and earlier research.
 2. Write the simplest plausible C reconstruction.
 3. Run `node tools/diff.js <symbol>` early.
 4. Iterate from the concrete instruction/byte diff. Inspect compiler assembly or

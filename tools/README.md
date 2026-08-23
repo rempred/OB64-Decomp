@@ -12,6 +12,90 @@ Initial expected tools:
 
 Tools should be deterministic and should not require ROM binaries to be tracked.
 
+## Matching Workbench
+
+```powershell
+node tools/match.js --help
+node tools/match.js doctor
+```
+
+The matching workbench is an optional, generated research layer over the
+accepted US Rev 0 model. It resolves exact target ranges and bytes, remembers
+scratch candidates in `build/matching/workbench.sqlite`, compiles through the
+authenticated production compiler/toolchain, and reports why a scratch object
+differs. It never activates or promotes a target.
+
+Schema 2 keys a candidate by exact target plus exact source text. Separate
+observation rows retain each generation path, variant, and portable tool
+arguments. Thus identical C is compiled once without discarding how it was
+found. Failed compiler attempts remain visible but do not poison the reusable
+success cache.
+
+Common commands:
+
+```powershell
+node tools/match.js inspect <symbol>
+node tools/match.js prepare <symbol>
+node tools/match.js watch <symbol> --source <candidate.c>
+node tools/match.js history <symbol>
+node tools/match.js best <symbol>
+node tools/match.js family <symbol>
+node tools/match.js context <symbol>
+node tools/match.js rank --lane leverage
+node tools/match.js probe <symbol> --source <candidate.c>
+```
+
+Batch research is bounded and checkpointed after every target:
+
+```powershell
+node tools/match.js sweep --set smallest-leaves-200 --variant structured --no-context
+node tools/match.js sweep-status
+```
+
+Use `--include-targets` when a complete sweep row list is genuinely needed;
+default output contains counts and representative rows. Re-running an
+interrupted sweep reuses successful exact-input compiles. m2c is authenticated
+at the commit and tree in `config/matching-workbench.json`; tracked edits or
+untracked executable Python inputs fail closed. Set `OB64_M2C_ROOT` to select a
+checkout outside the documented default. Reviewed value annotations
+can be added to `config/matching-priorities.json`; value and matchability remain
+separate in ranking output.
+
+Family tiers are collision-checked exact representations. Only the exact-byte
+tier is byte equality, and even exact clones remain distinct physical targets.
+The relocation-normalized tier removes only external `J`/`JAL` target fields;
+it does not guess `HI16`/`LO16` intent from raw bytes.
+Callsite/type context is structural evidence, not a semantic declaration.
+`context --runtime` optionally reads Total Resolver; it does not start capture
+or require Project64. `probe` dumps are always research-only. A compiler passed
+with `--research-compiler` is structurally confined to `probe` and is never
+accepted by build, diff, or verification commands.
+
+Priority annotations use reviewed, explicit records rather than inferred names:
+
+```json
+{
+  "subsystems": [{ "id": "reviewed-subsystem", "value": 20 }],
+  "targets": [{ "symbol": "func_XXXXXXXX", "subsystem": "reviewed-subsystem", "value": 5, "runtimeReach": 3 }]
+}
+```
+
+`value` is an additive reviewed priority. `runtimeReach` is a reviewed session
+or context count; missing runtime evidence is displayed and is not scored as a
+negative.
+
+All workbench outputs are ignored and noncanonical. The SQLite database is
+intended to persist locally across matching sessions; back up
+`build/matching/workbench.sqlite` if local experiment history matters. Preserve
+a valuable blocked candidate in tracked source and a dossier explicitly with:
+
+```powershell
+node tools/match.js preserve <candidate-id> --note "why this is worth keeping"
+```
+
+Canonical acceptance remains `tools/diff.js`, target `tools/verify.js`, sole C
+linker ownership, and the exact full-ROM verifier.
+
 ## Current Tools
 
 ```powershell
