@@ -6,10 +6,36 @@ The workbench produced 142 exact `PURE_C` scratch-object candidates from the
 fixed 200-smallest-leaf corpus. None of those targets was already active, and
 all 142 exact objects had zero relocations. They cover 1,708 retail bytes.
 
-These are strong promotion leads, not 142 accepted matches. The workbench does
-not establish sole linker ownership, final linked placement, reviewed
-relocation contracts, or full-ROM identity. Each selected source must still go
-through the normal canonical diff and verification workflow.
+At pilot generation time these were strong promotion leads, not 142 accepted
+matches. The workbench does not establish sole linker ownership, final linked
+placement, reviewed relocation contracts, or full-ROM identity. Each selected
+source still had to pass the normal canonical integration and verification
+workflow.
+
+## Promotion follow-through — 2026-08-23
+
+All 142 candidates were reviewed, stripped of generated m2c scaffolding,
+rewritten as concise ordinary C where useful, and promoted in six independently
+verified batches:
+
+- `612aa86` — first 24 exact leaves;
+- `c7e66d5` — next 24 exact leaves;
+- `a5070e6` — 24 exact accessors;
+- `b5d264f` — fourth 24-function batch;
+- `d82436a` — fifth 23-function batch; and
+- `821312b` — final 23-function batch.
+
+Every batch passed source policy, sole C linker ownership, accepted placement,
+its explicit empty-relocation contracts, exact linked target bytes, and a
+byte-exact complete ROM. The final combined verification reported 151
+`PURE_C` exact functions covering 4,240 bytes. Subtracting the pre-pilot nine
+functions and 2,532 bytes confirms that the promoted corpus accounts for all
+142 candidates and the expected 1,708 bytes.
+
+No candidate required assembly or was deferred. Unknown fields and numeric RAM
+addresses remain deliberately neutral rather than receiving unsupported
+semantic names. The original assembly files remain available as reference and
+fallback source history.
 
 ## Fixed identities
 
