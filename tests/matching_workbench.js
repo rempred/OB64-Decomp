@@ -19,16 +19,23 @@ const { buildTargetContext } = require('../tools/lib/matching/context');
 const {
   applyGenerationTransforms,
   compilableM2cSource,
+  directConditionalReturns,
+  explicitByteCursorSteps,
+  groupGenerationVariants,
+  materializeMaskedComparison,
   m2cDiagnostics,
   m2cFailure,
   portableM2cArguments,
   preloadByteBeforeZeroStore,
   preserveGprArgumentGaps,
+  widenNarrowReturns,
 } = require('../tools/lib/matching/m2c');
 const { ROOT } = require('../tools/lib/phase7_conventional');
 const { requestStore } = require('../tools/lib/matching/store');
 const { candidateRecord } = require('../tools/lib/matching/compiler');
 const { compareProbes } = require('../tools/lib/matching/probe');
+const { summarizeEnsemble } = require('../tools/lib/matching/sweep');
+const { boundedSweepResult } = require('../tools/match');
 
 function fail(message) {
   throw new Error(`matching workbench test failure: ${message}`);
@@ -121,6 +128,12 @@ function m2cAdapterTests() {
   assert(m2cFailure('/*\nDecompilation failure in function fixture:\n\nCannot find branch target\n*/')?.includes('Cannot find branch target'), 'm2c generation failure detail was discarded');
   const portable = portableM2cArguments([path.join(ROOT, 'build', 'matching', 'fixture.s')], { root: path.resolve(ROOT, '..', 'tools', 'm2c') });
   assert(portable[0] === '<repo>/build/matching/fixture.s', 'm2c candidate provenance retained a machine-local repository path');
+  const generationGroups = groupGenerationVariants([
+    { name: 'base', arguments: ['--valid-syntax'] },
+    { name: 'local-rule', arguments: ['--valid-syntax'], transforms: ['fixture'] },
+    { name: 'gotos', arguments: ['--valid-syntax', '--gotos-only'] },
+  ]);
+  assert(generationGroups.length === 2 && generationGroups[0].variants.map((row) => row.name).join(',') === 'base,local-rule', 'identical m2c invocations were not grouped across local rulesets');
 
   const oneGap = preserveGprArgumentGaps('s32 fixture(s32 arg1) { return arg1 + 2; }', 'fixture');
   assert(oneGap.applied && oneGap.source.includes('s32 m2c_unused_arg0, s32 arg1'), 'missing first GPR argument was not preserved');
@@ -145,6 +158,64 @@ function m2cAdapterTests() {
   assert(!preloadByteBeforeZeroStore(loadFirstInput.replace('(arg0) + (0xB2)', '(arg1) + (0xB2)'), 'fixture').applied, 'possibly aliasing zero-store address received the preload transform');
   const combined = applyGenerationTransforms('s32 fixture(s32 arg1) { return arg1 + 2; }', ['preserve-gpr-argument-gaps'], { symbol: 'fixture' });
   assert(combined.applied.length === 1 && combined.source.includes('m2c_unused_arg0'), 'configured transform did not record exact provenance');
+
+  const directReturnInput = [
+    's32 fixture(s32 arg0) {',
+    '    s32 var_v0_9;',
+    '',
+    '    var_v0_9 = -1;',
+    '    if (arg0 < 0x32) {',
+    '        var_v0_9 = arg0;',
+    '    }',
+    '    return var_v0_9;',
+    '}',
+  ].join('\n');
+  const directReturn = directConditionalReturns(directReturnInput, 'fixture');
+  assert(directReturn.applied && directReturn.source.includes('if (!(arg0 < 0x32))'), 'conditional result temporary was not converted to direct returns');
+  assert(!directReturn.source.includes('var_v0_9'), 'removed conditional result temporary survived');
+
+  const widened = widenNarrowReturns(directReturnInput.replace(/^s32/, 's8').replace(/    s32 var_v0_9;/, '    s8 var_v0_9;'), 'fixture');
+  assert(widened.applied && widened.source.startsWith('s32 fixture') && widened.source.includes('s32 var_v0_9;'), 'narrow return and result temporary were not widened together');
+
+  const directCursorInput = [
+    'void *fixture(void *arg0, u8 *arg1) {',
+    '    u8 temp_v0_7;',
+    '',
+    '    temp_v0_7 = *arg1;',
+    '    (*(u8 *)((s8 *)(arg0) + (0xB8))) = temp_v0_7;',
+    '    if (temp_v0_7 != 0) {',
+    '        use(temp_v0_7);',
+    '    }',
+    '    return arg1 + 1;',
+    '}',
+  ].join('\n');
+  const directCursor = explicitByteCursorSteps(directCursorInput, 'fixture');
+  assert(directCursor.applied && directCursor.source.indexOf('arg1 += 1;') < directCursor.source.indexOf('= temp_v0_7;'), 'direct cursor advance was not retained at the load');
+  assert(directCursor.source.includes('return arg1;'), 'direct cursor return still hid the advance');
+
+  const packedCursorInput = [
+    'void *fixture(void *arg0, void *arg1) {',
+    '    (*(s16 *)((s8 *)(arg0) + (0xB4))) = 0;',
+    '    (*(s16 *)((s8 *)(arg0) + (0xB2))) = (s16) ((*(u8 *)((s8 *)(arg1) + (1))) | ((*(u8 *)((s8 *)(arg1) + (0))) << 8));',
+    '    return arg1 + 1 + 1;',
+    '}',
+  ].join('\n');
+  const packedCursor = explicitByteCursorSteps(packedCursorInput, 'fixture');
+  assert(packedCursor.applied && packedCursor.details.pattern === 'packed-word', 'packed word cursor pattern was not recognized');
+  assert(packedCursor.source.includes('m2c_high_byte = *arg1;') && packedCursor.source.includes('m2c_low_byte = *arg1;'), 'packed word loads were not made sequential');
+
+  const maskedInput = [
+    's32 fixture(void *arg0) {',
+    '    s32 result;',
+    '    result = 0;',
+    '    if ((*(s32 *)arg0) == 1) {',
+    '        result = ((*(s32 *)arg0) & 0x40) == 0;',
+    '    }',
+    '    return result;',
+    '}',
+  ].join('\n');
+  const masked = materializeMaskedComparison(maskedInput, 'fixture');
+  assert(masked.applied && masked.source.includes('m2c_masked_value = ((*(s32 *)arg0) & 0x40);'), 'masked comparison did not retain the intermediate value');
   expectError(/unknown m2c generation transform/, () => applyGenerationTransforms('void fixture(void) {}', ['unknown'], { symbol: 'fixture' }));
 }
 
@@ -174,6 +245,53 @@ function probeComparisonTests() {
   } finally {
     fs.rmSync(directory, { recursive: true, force: true });
   }
+}
+
+function ensembleSummaryTests() {
+  const summary = summarizeEnsemble([
+    {
+      symbol: 'baseline_and_alt', variants: [
+        { variant: 'structured', exactBytes: true, candidateId: 'BASE-A' },
+        { variant: 'alternate', exactBytes: true, candidateId: 'ALT-A' },
+      ],
+    },
+    {
+      symbol: 'baseline_only', variants: [
+        { variant: 'structured', exactBytes: true, candidateId: 'BASE-B' },
+        { variant: 'alternate', exactBytes: false, candidateId: 'ALT-B' },
+      ],
+    },
+    {
+      symbol: 'alternate_only', variants: [
+        { variant: 'structured', exactBytes: false, candidateId: 'BASE-C' },
+        { variant: 'alternate', exactBytes: true, candidateId: 'ALT-C' },
+      ],
+    },
+  ], ['structured', 'alternate']);
+  assert(summary.exactTargetCount === 3, 'ensemble exact target count double-counted overlapping rulesets');
+  const baseline = summary.ruleSets.find((row) => row.name === 'structured');
+  const alternate = summary.ruleSets.find((row) => row.name === 'alternate');
+  assert(baseline.exactCount === 2 && alternate.exactCount === 2, 'per-ruleset exact counts were not retained');
+  assert(alternate.gainedVsBaseline[0].symbol === 'alternate_only', 'regressive ruleset gain was not recorded');
+  assert(alternate.lostVsBaseline[0] === 'baseline_only', 'regressive ruleset loss was not recorded');
+  assert(alternate.uniqueToRuleSet[0].candidateId === 'ALT-C', 'ruleset-unique exact candidate identity was lost');
+  const shared = summary.functionMembership.find((row) => row.symbol === 'baseline_and_alt');
+  assert(shared.matches.map((row) => row.ruleSet).join(',') === 'structured,alternate', 'function-to-ruleset membership was incomplete');
+  assert(shared.matches.map((row) => row.candidateId).join(',') === 'BASE-A,ALT-A', 'function-to-candidate membership was incomplete');
+
+  const bounded = boundedSweepResult({
+    selector: { variants: ['structured', 'alternate'] },
+    summary: { targets: [{ symbol: 'fixture', variants: [] }], ensemble: summary },
+  }, false, 1);
+  assert(bounded.summary.targets === undefined && bounded.summary.targetsOmitted === 0, 'bounded sweep output retained full target rows');
+  assert(bounded.summary.ensemble.functionMembership.samples.length === 1
+    && bounded.summary.ensemble.functionMembership.omitted === 2, 'bounded sweep output did not bound ensemble membership');
+  assert(bounded.summary.ensemble.ruleSets[0].exactSymbols.omitted === 1, 'bounded sweep output did not bound ruleset symbols');
+  const alreadyBounded = boundedSweepResult({
+    selector: { variants: ['structured', 'alternate'] },
+    summary: { targetSamples: [{ symbol: 'sample' }], targetsOmitted: 9, ensemble: summary },
+  }, false, 1);
+  assert(alreadyBounded.summary.targetSamples[0].symbol === 'sample' && alreadyBounded.summary.targetsOmitted === 9, 'stored bounded target samples were discarded');
 }
 
 function storeTests() {
@@ -294,6 +412,7 @@ function main() {
   m2cAdapterTests();
   candidateIdentityTests();
   probeComparisonTests();
+  ensembleSummaryTests();
   storeTests();
   acceptedModelTests();
   console.log('Matching workbench tests: PASS');

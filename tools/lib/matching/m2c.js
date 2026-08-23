@@ -9,7 +9,7 @@ const { emitM2cAssembly } = require('./assembly');
 const { MATCHING_ROOT, compileCandidate, recordCandidate, syncTargets } = require('./compiler');
 const { renderM2cContext, storeTargetContext } = require('./context');
 
-const M2C_ADAPTER_VERSION = 6;
+const M2C_ADAPTER_VERSION = 7;
 
 const TYPE_PRELUDE = [
   'typedef signed char s8;',
@@ -213,6 +213,176 @@ function preloadByteBeforeZeroStore(source, symbol) {
   };
 }
 
+function replaceFunctionBody(source, definition, body) {
+  return source.slice(0, definition.bodyOpen + 1) + body + source.slice(definition.bodyEnd);
+}
+
+function widenNarrowReturns(source, symbol) {
+  const definition = functionDefinition(source, symbol);
+  if (!definition) return { source, applied: false };
+  const symbolIndex = source.lastIndexOf(symbol, definition.parameterOpen);
+  const headerStart = source.lastIndexOf('\n', symbolIndex) + 1;
+  const header = source.slice(headerStart, symbolIndex);
+  const returnType = header.match(/\b(s8|u8|s16|u16)\s*$/);
+  if (!returnType) return { source, applied: false };
+  const body = source.slice(definition.bodyOpen + 1, definition.bodyEnd);
+  const returned = body.match(/\breturn\s+([A-Za-z_][A-Za-z0-9_]*)\s*;\s*$/);
+  if (!returned) return { source, applied: false };
+  const widenedLocals = [];
+  const widenedBody = body.replace(/^(\s*)(s8|u8|s16|u16)(\s+)([A-Za-z_][A-Za-z0-9_]*)(\s*;)\s*$/gm,
+    (line, indent, type, spacing, name, suffix) => {
+      widenedLocals.push({ name, from: type });
+      return `${indent}s32${spacing}${name}${suffix}`;
+    });
+  if (!widenedLocals.some((local) => local.name === returned[1])) return { source, applied: false };
+  const typeStart = headerStart + returnType.index;
+  const withReturn = source.slice(0, typeStart) + 's32' + source.slice(typeStart + returnType[1].length);
+  const adjustedDefinition = functionDefinition(withReturn, symbol);
+  return {
+    source: replaceFunctionBody(withReturn, adjustedDefinition, widenedBody),
+    applied: true,
+    details: { returnType: returnType[1], widenedLocals },
+  };
+}
+
+function directConditionalReturns(source, symbol) {
+  const definition = functionDefinition(source, symbol);
+  if (!definition) return { source, applied: false };
+  const body = source.slice(definition.bodyOpen + 1, definition.bodyEnd).replace(/\r\n/g, '\n');
+  const returned = body.match(/\breturn\s+([A-Za-z_][A-Za-z0-9_]*)\s*;\s*$/);
+  if (!returned) return { source, applied: false };
+  const resultName = returned[1];
+  const name = escapedPattern(resultName);
+  const sequence = new RegExp(`\\n([ \\t]*)${name}\\s*=\\s*([^;\\n]+);\\s*if\\s*\\(([^\\n]+)\\)\\s*\\{\\s*${name}\\s*=\\s*([^;\\n]+);\\s*\\}\\s*return\\s+${name}\\s*;\\s*$`);
+  const match = body.match(sequence);
+  if (!match || match[2].includes(resultName) || match[4].includes(resultName)) return { source, applied: false };
+  let prefix = body.slice(0, match.index + 1);
+  const declaration = new RegExp(`^[ \\t]*(?:s8|u8|s16|u16|s32|u32|s64|u64|f32|f64|M2C_UNK(?:8|16|32|64)?)\\s+${name}\\s*;[ \\t]*(?:\\n|$)`, 'm');
+  if (!declaration.test(prefix)) return { source, applied: false };
+  prefix = prefix.replace(declaration, '');
+  const indent = match[1];
+  const replacement = [
+    `${indent}if (!(${match[3].trim()})) {`,
+    `${indent}    return ${match[2].trim()};`,
+    `${indent}}`,
+    `${indent}return ${match[4].trim()};`,
+    '',
+  ].join('\n');
+  return {
+    source: replaceFunctionBody(source, definition, prefix + replacement),
+    applied: true,
+    details: { resultVariable: resultName },
+  };
+}
+
+function advanceDirectByteCursor(source, symbol) {
+  const definition = functionDefinition(source, symbol);
+  if (!definition) return null;
+  const body = source.slice(definition.bodyOpen + 1, definition.bodyEnd).replace(/\r\n/g, '\n');
+  const lines = body.split('\n');
+  for (let index = 0; index < lines.length; index += 1) {
+    const load = lines[index].match(/^(\s*)([A-Za-z_][A-Za-z0-9_]*)\s*=\s*\*(arg[0-9]+)\s*;\s*$/);
+    if (!load) continue;
+    const cursor = load[3];
+    const returnIndex = lines.findIndex((line) => new RegExp(`^\\s*return\\s+${escapedPattern(cursor)}\\s*\\+\\s*1\\s*;\\s*$`).test(line));
+    if (returnIndex <= index) continue;
+    const signature = source.slice(definition.parameterOpen + 1, definition.parameterEnd);
+    if (!new RegExp(`\\bu8\\s*\\*\\s*${escapedPattern(cursor)}\\b`).test(signature)) continue;
+    const dereferences = [...body.matchAll(new RegExp(`\\*\\s*${escapedPattern(cursor)}\\b`, 'g'))];
+    const mutations = [...body.matchAll(new RegExp(`\\b${escapedPattern(cursor)}\\s*(?:\\+\\+|--|[+\\-*/]?=)`, 'g'))];
+    if (dereferences.length !== 1 || mutations.length !== 0) continue;
+    lines.splice(index + 1, 0, `${load[1]}${cursor} += 1;`);
+    lines[returnIndex + 1] = lines[returnIndex + 1].replace(/return\s+[^;]+;/, `return ${cursor};`);
+    return {
+      source: replaceFunctionBody(source, definition, lines.join('\n')),
+      details: { pattern: 'direct-byte', cursorArgument: cursor },
+    };
+  }
+  return null;
+}
+
+function advancePackedWordCursor(source, symbol) {
+  const definition = functionDefinition(source, symbol);
+  if (!definition) return null;
+  const body = source.slice(definition.bodyOpen + 1, definition.bodyEnd).replace(/\r\n/g, '\n');
+  const statements = body.split('\n')
+    .map((line) => ({ indent: (line.match(/^\s*/) || [''])[0], text: line.trim() }))
+    .filter((line) => line.text);
+  if (statements.length !== 3) return null;
+  const returned = statements[2].text.match(/^return\s+(arg[0-9]+)\s*\+\s*1\s*\+\s*1\s*;$/);
+  if (!returned || !statements[0].text.endsWith('= 0;')) return null;
+  const cursor = returned[1];
+  const signature = source.slice(definition.parameterOpen + 1, definition.parameterEnd);
+  if (!new RegExp(`\\b(?:u8|void)\\s*\\*\\s*${escapedPattern(cursor)}\\b`).test(signature)) return null;
+  const highExpression = `(*(u8 *)((s8 *)(${cursor}) + (0)))`;
+  const lowExpression = `(*(u8 *)((s8 *)(${cursor}) + (1)))`;
+  if (statements[1].text.split(highExpression).length !== 2 || statements[1].text.split(lowExpression).length !== 2) return null;
+  const highName = 'm2c_high_byte';
+  const lowName = 'm2c_low_byte';
+  if (source.includes(highName) || source.includes(lowName)) return null;
+  const rewrittenStore = statements[1].text.replace(highExpression, highName).replace(lowExpression, lowName);
+  const indent = statements[0].indent;
+  const rewritten = [
+    '',
+    `${indent}u8 ${highName};`,
+    `${indent}u8 ${lowName};`,
+    '',
+    `${indent}${highName} = *${cursor};`,
+    `${indent}${cursor} += 1;`,
+    `${indent}${lowName} = *${cursor};`,
+    `${indent}${cursor} += 1;`,
+    `${indent}${statements[0].text}`,
+    `${indent}${rewrittenStore}`,
+    `${indent}return ${cursor};`,
+    '',
+  ].join('\n');
+  let transformedSource = replaceFunctionBody(source, definition, rewritten);
+  const transformedDefinition = functionDefinition(transformedSource, symbol);
+  const parameters = transformedSource.slice(transformedDefinition.parameterOpen + 1, transformedDefinition.parameterEnd);
+  const voidCursor = new RegExp(`\\bvoid\\s*\\*\\s*${escapedPattern(cursor)}\\b`);
+  if (voidCursor.test(parameters)) {
+    const rewrittenParameters = parameters.replace(voidCursor, `u8 *${cursor}`);
+    transformedSource = transformedSource.slice(0, transformedDefinition.parameterOpen + 1)
+      + rewrittenParameters
+      + transformedSource.slice(transformedDefinition.parameterEnd);
+  }
+  return {
+    source: transformedSource,
+    details: { pattern: 'packed-word', cursorArgument: cursor },
+  };
+}
+
+function explicitByteCursorSteps(source, symbol) {
+  const result = advanceDirectByteCursor(source, symbol) || advancePackedWordCursor(source, symbol);
+  return result ? { ...result, applied: true } : { source, applied: false };
+}
+
+function materializeMaskedComparison(source, symbol) {
+  const definition = functionDefinition(source, symbol);
+  if (!definition) return { source, applied: false };
+  const body = source.slice(definition.bodyOpen + 1, definition.bodyEnd).replace(/\r\n/g, '\n');
+  const lines = body.split('\n');
+  const matches = [];
+  for (let index = 0; index < lines.length; index += 1) {
+    const match = lines[index].match(/^(\s*)([A-Za-z_][A-Za-z0-9_]*)\s*=\s*(.+&\s*0x[0-9A-Fa-f]+\)*)\s*==\s*0\s*;\s*$/);
+    if (match) matches.push({ index, match });
+  }
+  if (matches.length !== 1 || source.includes('m2c_masked_value')) return { source, applied: false };
+  const selected = matches[0];
+  if (!new RegExp(`\\breturn\\s+${escapedPattern(selected.match[2])}\\s*;`).test(body)) return { source, applied: false };
+  const indent = selected.match[1];
+  lines.splice(selected.index, 1,
+    `${indent}m2c_masked_value = ${selected.match[3].trim()};`,
+    `${indent}${selected.match[2]} = m2c_masked_value == 0;`);
+  const declarationIndent = '    ';
+  lines.splice(1, 0, `${declarationIndent}s32 m2c_masked_value;`);
+  return {
+    source: replaceFunctionBody(source, definition, lines.join('\n')),
+    applied: true,
+    details: { resultVariable: selected.match[2] },
+  };
+}
+
 function applyGenerationTransforms(source, transforms, options = {}) {
   let current = source;
   const applied = [];
@@ -220,6 +390,10 @@ function applyGenerationTransforms(source, transforms, options = {}) {
     let result;
     if (name === 'preserve-gpr-argument-gaps') result = preserveGprArgumentGaps(current, options.symbol);
     else if (name === 'preload-byte-before-zero-store') result = preloadByteBeforeZeroStore(current, options.symbol);
+    else if (name === 'widen-narrow-returns') result = widenNarrowReturns(current, options.symbol);
+    else if (name === 'direct-conditional-returns') result = directConditionalReturns(current, options.symbol);
+    else if (name === 'explicit-byte-cursor-steps') result = explicitByteCursorSteps(current, options.symbol);
+    else if (name === 'materialize-masked-comparison') result = materializeMaskedComparison(current, options.symbol);
     else throw new Error(`unknown m2c generation transform: ${name}`);
     current = result.source;
     if (result.applied) applied.push({ name, details: result.details || {} });
@@ -278,6 +452,21 @@ function resolveM2c(workbench, options = {}) {
   return { root, script, commit, tree, untracked: statusLines.filter((line) => line.startsWith('?? ')).map((line) => line.slice(3)) };
 }
 
+function groupGenerationVariants(variants) {
+  const groups = [];
+  const byArguments = new Map();
+  for (const variant of variants) {
+    const key = JSON.stringify(variant.arguments || []);
+    if (!byArguments.has(key)) {
+      const group = { arguments: variant.arguments || [], variants: [] };
+      byArguments.set(key, group);
+      groups.push(group);
+    }
+    byArguments.get(key).variants.push(variant);
+  }
+  return groups;
+}
+
 function runM2c(workbench, target, options = {}) {
   const m2c = resolveM2c(workbench, options);
   const localTools = options.localTools || resolveLocalTools();
@@ -299,14 +488,14 @@ function runM2c(workbench, target, options = {}) {
     fs.writeFileSync(contextFile, renderM2cContext(context), 'utf8');
   }
   const selectedVariants = options.variants || workbench.config.m2c.variants;
-  const results = [];
-  for (const variant of selectedVariants) {
+  const results = new Map();
+  for (const group of groupGenerationVariants(selectedVariants)) {
     const argumentsList = [
       m2c.script,
       '--target', workbench.config.m2c.target,
       '--function', target.symbol,
       '--globals', 'used',
-      ...variant.arguments,
+      ...group.arguments,
     ];
     if (contextFile && (options.useContext === true || options.contextFile)) argumentsList.push('--context', path.resolve(contextFile));
     argumentsList.push(assemblyFile);
@@ -321,36 +510,48 @@ function runM2c(workbench, target, options = {}) {
     const diagnostics = m2cDiagnostics(rawSource);
     const failure = m2cFailure(rawSource);
     const compilableSource = rawSource.trim() ? compilableM2cSource(rawSource) : rawSource;
-    const transformed = applyGenerationTransforms(compilableSource, variant.transforms || [], { symbol: target.symbol });
-    const source = transformed.source;
-    const sourceFile = path.join(targetRoot, `${target.symbol}.${variant.name}.c`);
-    fs.writeFileSync(sourceFile, source, 'utf8');
-    const ok = processResult.status === 0 && source.trim().length > 0 && !source.includes('Decompilation failure');
-    results.push({
-      variant: variant.name,
-      arguments: portableM2cArguments(argumentsList.slice(1), m2c),
-      ok,
-      source,
-      sourceFile,
-      stderr: String(processResult.stderr || ''),
-      exitCode: processResult.status,
-      durationMs: Date.now() - started,
-      diagnostics,
-      failure,
-      transforms: {
-        requested: variant.transforms || [],
-        applied: transformed.applied,
-      },
-      m2c,
-    });
+    const durationMs = Date.now() - started;
+    for (const variant of group.variants) {
+      const transformed = applyGenerationTransforms(compilableSource, variant.transforms || [], { symbol: target.symbol });
+      const source = transformed.source;
+      const sourceFile = path.join(targetRoot, `${target.symbol}.${variant.name}.c`);
+      fs.writeFileSync(sourceFile, source, 'utf8');
+      const ok = processResult.status === 0 && source.trim().length > 0 && !source.includes('Decompilation failure');
+      results.set(variant.name, {
+        variant: variant.name,
+        arguments: portableM2cArguments(argumentsList.slice(1), m2c),
+        ok,
+        source,
+        sourceFile,
+        stderr: String(processResult.stderr || ''),
+        exitCode: processResult.status,
+        durationMs,
+        sharedGenerationVariants: group.variants.map((item) => item.name),
+        diagnostics,
+        failure,
+        transforms: {
+          requested: variant.transforms || [],
+          applied: transformed.applied,
+        },
+        m2c,
+      });
+    }
   }
-  return { assembly, assemblyFile, context, contextFile, results, m2c };
+  return {
+    assembly,
+    assemblyFile,
+    context,
+    contextFile,
+    results: selectedVariants.map((variant) => results.get(variant.name)),
+    m2c,
+  };
 }
 
 function prepareAndCompile(workbench, target, options = {}) {
   if (options.syncTargets !== false) syncTargets(workbench, options.storeOptions || {});
   const generated = runM2c(workbench, target, options);
   const compilations = [];
+  const compiledSources = new Map();
   for (const result of generated.results) {
     if (!result.ok) {
       compilations.push({ variant: result.variant, generated: false, error: result.failure || result.stderr || 'm2c decompilation failed' });
@@ -379,17 +580,40 @@ function prepareAndCompile(workbench, target, options = {}) {
       });
       continue;
     }
-    compilations.push({
-      variant: result.variant,
-      generated: true,
-      result: compileCandidate(workbench, target, result.source, {
+    if (compiledSources.has(result.source)) {
+      const recorded = recordCandidate(workbench, target, result.source, {
         origin: 'm2c',
         variant: result.variant,
         metadata,
-        session: options.compilerSession,
         storeOptions: options.storeOptions,
         syncTargets: false,
-      }),
+      });
+      const shared = compiledSources.get(result.source);
+      compilations.push({
+        variant: result.variant,
+        generated: true,
+        result: {
+          ...shared.result,
+          candidate: recorded.candidate,
+          sharedCompile: true,
+          sharedCompileVariant: shared.variant,
+        },
+      });
+      continue;
+    }
+    const compiled = compileCandidate(workbench, target, result.source, {
+      origin: 'm2c',
+      variant: result.variant,
+      metadata,
+      session: options.compilerSession,
+      storeOptions: options.storeOptions,
+      syncTargets: false,
+    });
+    compiledSources.set(result.source, { variant: result.variant, result: compiled });
+    compilations.push({
+      variant: result.variant,
+      generated: true,
+      result: compiled,
     });
   }
   return { ...generated, compilations };
@@ -404,8 +628,13 @@ module.exports = {
   m2cFailure,
   portableM2cArguments,
   preloadByteBeforeZeroStore,
+  directConditionalReturns,
+  explicitByteCursorSteps,
+  groupGenerationVariants,
+  materializeMaskedComparison,
   prepareAndCompile,
   preserveGprArgumentGaps,
   resolveM2c,
   runM2c,
+  widenNarrowReturns,
 };

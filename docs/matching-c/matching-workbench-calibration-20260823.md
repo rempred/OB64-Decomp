@@ -12,6 +12,12 @@ variants. Each variant was rerun independently over the same fixed corpus. Both
 increased exact yield and retained every one of the original 142 exact symbols,
 so both were kept.
 
+That lack of regression is an observed result, not the retention rule. The
+workbench now evaluates rulesets as an ensemble: a pass remains useful when it
+adds an otherwise-missing exact function even if another pass is needed to
+retain a baseline match. Per-function membership and the later calibration are
+recorded in `matching-workbench-ensemble-20260823.md`.
+
 ## Manual corrections
 
 | Target | m2c draft problem | Corrected source fact | Result |

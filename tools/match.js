@@ -20,7 +20,7 @@ const {
 } = require('./lib/matching/compiler');
 const { compareMips, targetMetrics } = require('./lib/matching/mips_analysis');
 const { prepareAndCompile, resolveM2c } = require('./lib/matching/m2c');
-const { runSweep } = require('./lib/matching/sweep');
+const { runSweep, summarizeEnsemble } = require('./lib/matching/sweep');
 const { buildFamilyAtlas } = require('./lib/matching/family');
 const { buildContextIndex, storeTargetContext } = require('./lib/matching/context');
 const { rankTargets } = require('./lib/matching/rank');
@@ -46,7 +46,7 @@ Core:
   preserve <candidate-id> --note <reason>
 
 Generation:
-  prepare <symbol> [--variant structured|gotos|stack] [--with-context] [--no-context] [--no-compile]
+  prepare <symbol> [--variant <ruleset>] [--with-context] [--no-context] [--no-compile]
   sweep [--set smallest-leaves-200] [--max-size N] [--leaf-only] [--limit N] [--include-solved]
   sweep-status [--limit N] [--include-targets]
 
@@ -110,15 +110,43 @@ function portableSourcePath(file) {
 }
 
 function boundedSweepResult(result, includeTargets = false, targetLimit = 20) {
-  if (includeTargets || !Array.isArray(result?.summary?.targets)) return result;
-  const targets = result.summary.targets;
+  if (!result?.summary) return result;
+  const hasTargets = Array.isArray(result.summary.targets);
+  const targets = hasTargets ? result.summary.targets : [];
+  const ruleSetNames = result.selector?.variants || result.summary.ensemble?.ruleSets?.map((row) => row.name) || [];
+  const ensemble = result.summary.ensemble || summarizeEnsemble(targets, ruleSetNames);
+  const complete = { ...result, summary: { ...result.summary, ensemble } };
+  if (includeTargets) return complete;
+  function boundedRows(rows) {
+    const values = Array.isArray(rows) ? rows : [];
+    return { samples: values.slice(0, targetLimit), omitted: Math.max(0, values.length - targetLimit) };
+  }
+  const boundedEnsemble = {
+    schemaVersion: ensemble.schemaVersion,
+    baselineRuleSet: ensemble.baselineRuleSet,
+    exactTargetCount: ensemble.exactTargetCount,
+    exactSymbols: boundedRows(ensemble.exactSymbols),
+    functionMembership: boundedRows(ensemble.functionMembership),
+    ruleSets: ensemble.ruleSets.map((ruleSet) => ({
+      name: ruleSet.name,
+      exactCount: ruleSet.exactCount,
+      exactSymbols: boundedRows(ruleSet.exactSymbols),
+      matches: boundedRows(ruleSet.matches),
+      gainedVsBaseline: boundedRows(ruleSet.gainedVsBaseline),
+      lostVsBaseline: boundedRows(ruleSet.lostVsBaseline),
+      uniqueToRuleSet: boundedRows(ruleSet.uniqueToRuleSet),
+    })),
+  };
   return {
-    ...result,
+    ...complete,
     summary: {
-      ...result.summary,
+      ...complete.summary,
+      ensemble: boundedEnsemble,
       targets: undefined,
-      targetSamples: targets.slice(0, targetLimit),
-      targetsOmitted: Math.max(0, targets.length - targetLimit),
+      targetSamples: hasTargets ? targets.slice(0, targetLimit) : (result.summary.targetSamples || []),
+      targetsOmitted: hasTargets
+        ? Math.max(0, targets.length - targetLimit)
+        : (result.summary.targetsOmitted || 0),
     },
   };
 }
@@ -435,18 +463,25 @@ function main(argv = process.argv.slice(2)) {
   }
   if (command === 'sweep-status') {
     if (positional.length) throw new Error('sweep-status takes no positional arguments');
+    const includeTargets = options['include-targets'] === true;
+    const storedSweeps = requestStore({
+      action: 'query',
+      name: 'sweeps',
+      args: {
+        modelId: workbench.modelId,
+        limit: numeric(options.limit, '--limit', 20),
+        includeTargets,
+        targetLimit: 5,
+      },
+    });
+    const sweeps = storedSweeps.map((sweep) => {
+      if (includeTargets || sweep.summary?.ensemble) return boundedSweepResult(sweep, includeTargets, 5);
+      const complete = requestStore({ action: 'query', name: 'sweep_by_id', args: { sweepId: sweep.sweep_id } });
+      return boundedSweepResult(complete, false, 5);
+    });
     print({
       modelId: workbench.modelId,
-      sweeps: requestStore({
-        action: 'query',
-        name: 'sweeps',
-        args: {
-          modelId: workbench.modelId,
-          limit: numeric(options.limit, '--limit', 20),
-          includeTargets: options['include-targets'] === true,
-          targetLimit: 5,
-        },
-      }),
+      sweeps,
     }, options);
     return;
   }

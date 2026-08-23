@@ -229,20 +229,40 @@ Candidate identity is exact target plus exact source. Generation path, variant,
 and tool arguments are separate observations, so the same C found in two ways
 does not incur two compiles or lose its provenance.
 
-When the normal structured draft is already close, two bounded calibrated
-variants may be tried explicitly:
+When the normal structured draft is already close, bounded calibrated rulesets
+may be tried explicitly:
 
 ```text
 node tools/match.js prepare <symbol> --variant structured-abi-gaps --no-context
 node tools/match.js prepare <symbol> --variant structured-load-first --no-context
+node tools/match.js prepare <symbol> --variant structured-return-flow --no-context
+node tools/match.js prepare <symbol> --variant structured-cursor-steps --no-context
+node tools/match.js prepare <symbol> --variant structured-masked-local --no-context
 ```
 
 The first preserves a literal missing general-purpose argument slot in m2c's
 `arg0` through `arg3` numbering. The second tests one exact three-statement
 shape where the retail schedule requires a cursor byte to be loaded before an
-independent zero store. Both refuse broader shapes rather than guessing. They
-remain candidate generators; exact output still enters the normal review,
-linked diff, and verification path.
+independent zero store. The remaining passes test three other observed shapes:
+direct returns instead of a narrow result temporary, explicit byte-cursor
+advances, and a separately materialized masked comparison. Each refuses
+unrecognized source shapes rather than guessing.
+
+Treat these rulesets as an ensemble. A pass may be retained when it produces an
+exact function no other pass finds even if it loses functions covered by
+another pass. Do not replace the baseline with the apparent best single pass.
+Sweep summaries record every exact function/ruleset/candidate-ID membership,
+per-ruleset gains and losses against the first pass, ruleset-unique functions,
+and the deduplicated ensemble total. The legacy `exactBytes` field counts exact
+variant runs and may count one function more than once; use
+`summary.ensemble.exactTargetCount` for the function total. Full membership is
+available with `sweep-status --include-targets`; default output is bounded.
+
+Rulesets with identical m2c arguments share one m2c invocation. Identical exact
+source produced by several rulesets is compiled once within that preparation
+while every generation observation remains recorded. These remain candidate
+generators; exact output still enters the normal review, linked diff, and
+verification path.
 
 The workbench can also expose related code, bounded callsite/type clues, target
 queues, and compiler dumps:

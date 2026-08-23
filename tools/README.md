@@ -52,24 +52,47 @@ node tools/match.js sweep --set smallest-leaves-200 --variant structured --no-co
 node tools/match.js sweep-status
 ```
 
-Two calibrated structured variants are available when the ordinary structured
+Calibrated structured rulesets are available when the ordinary structured
 draft is close:
 
 ```powershell
 node tools/match.js prepare <symbol> --variant structured-abi-gaps --no-context
 node tools/match.js prepare <symbol> --variant structured-load-first --no-context
+node tools/match.js prepare <symbol> --variant structured-return-flow --no-context
+node tools/match.js prepare <symbol> --variant structured-cursor-steps --no-context
+node tools/match.js prepare <symbol> --variant structured-masked-local --no-context
 ```
 
 `structured-abi-gaps` preserves literal missing `arg0`-through-`arg3` integer
 or pointer ABI slots. `structured-load-first` tests one narrow three-statement
-byte-load/store ordering shape. These are versioned post-generation
+byte-load/store ordering shape. `structured-return-flow` tests direct returns
+and widening of an inferred narrow return temporary. `structured-cursor-steps`
+retains explicit byte-cursor advances. `structured-masked-local` retains one
+masked value as a separate C temporary. These are versioned post-generation
 hypotheses, and candidate provenance records whether a transform actually
 applied. They do not rewrite canonical source or replace exact compilation.
-Their fixed-corpus calibration is recorded in
-`docs/matching-c/matching-workbench-calibration-20260823.md`.
 
-Use `--include-targets` when a complete sweep row list is genuinely needed;
-default output contains counts and representative rows. Re-running an
+These passes form an ensemble, not a contest to select one winner. A ruleset
+with unique exact matches remains useful even if another function regresses in
+that pass, because the other passes still retain it. A saved sweep records:
+
+- every exact symbol and candidate ID for each ruleset;
+- every matching ruleset for each function;
+- gains and losses relative to the first ruleset;
+- symbols unique to one ruleset; and
+- one deduplicated `exactTargetCount` for the ensemble.
+
+The older `exactBytes` counter is retained as the number of exact variant runs,
+so it can be larger than the number of exact functions. Identical m2c inputs
+share one generator launch, and identical generated source is compiled once per
+preparation while separate ruleset observations are preserved. Fixed-corpus
+results are recorded in
+`docs/matching-c/matching-workbench-calibration-20260823.md` and
+`docs/matching-c/matching-workbench-ensemble-20260823.md`.
+
+Use `--include-targets` when complete target rows and complete ruleset
+membership are genuinely needed; default output contains counts and
+representative rows. Re-running an
 interrupted sweep reuses successful exact-input compiles. m2c is authenticated
 at the commit and tree in `config/matching-workbench.json`; tracked edits or
 untracked executable Python inputs fail closed. Set `OB64_M2C_ROOT` to select a

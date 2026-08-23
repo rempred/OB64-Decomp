@@ -194,6 +194,13 @@ strand its experiment history.
 The measured pilot and its evidence boundaries are recorded in
 `docs/matching-c/matching-workbench-pilot-20260822.md`.
 
+Post-plan calibration added a versioned ruleset ensemble. Sweep contract 3
+stores exact function-to-ruleset and candidate-ID membership, gains and losses
+against the baseline pass, unique wins, and a deduplicated exact-function
+total. Identical generator inputs and exact source are shared without dropping
+the separate provenance observations. The two fixed-corpus results are recorded
+in `docs/matching-c/matching-workbench-ensemble-20260823.md`.
+
 Intentionally excluded from this implementation are automatic promotion,
 unbounded permutation, semantic naming from code shape, revision comparison,
 and any Project64 dependency. Scratch exactness remains diagnostic until the

@@ -20,6 +20,21 @@
         "arguments": ["--valid-syntax", "--deterministic-vars"],
         "transforms": ["preload-byte-before-zero-store"]
       },
+      {
+        "name": "structured-return-flow",
+        "arguments": ["--valid-syntax", "--deterministic-vars"],
+        "transforms": ["widen-narrow-returns", "direct-conditional-returns"]
+      },
+      {
+        "name": "structured-cursor-steps",
+        "arguments": ["--valid-syntax", "--deterministic-vars"],
+        "transforms": ["explicit-byte-cursor-steps"]
+      },
+      {
+        "name": "structured-masked-local",
+        "arguments": ["--valid-syntax", "--deterministic-vars"],
+        "transforms": ["materialize-masked-comparison"]
+      },
       { "name": "gotos", "arguments": ["--valid-syntax", "--deterministic-vars", "--gotos-only"] },
       { "name": "stack", "arguments": ["--valid-syntax", "--deterministic-vars", "--stack-structs"] }
     ]

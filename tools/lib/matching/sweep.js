@@ -35,6 +35,7 @@ function summarizeTarget(result) {
       status: compilation.result?.compile?.status || compilation.status || 'not-compiled',
       candidateId: compilation.result?.candidate?.candidateId || compilation.candidateId || null,
       cached: compilation.result?.cached || false,
+      sharedCompileVariant: compilation.result?.sharedCompileVariant || null,
       primaryClass: comparison?.primaryClass || null,
       score: comparison?.score ?? null,
       exactBytes: comparison?.exactBytes || false,
@@ -43,6 +44,67 @@ function summarizeTarget(result) {
     };
   });
   return { variants };
+}
+
+function summarizeEnsemble(targets = [], requestedRuleSets = []) {
+  const ruleSetNames = [];
+  const seenRuleSets = new Set();
+  function addRuleSet(name) {
+    if (!name || seenRuleSets.has(name)) return;
+    seenRuleSets.add(name);
+    ruleSetNames.push(name);
+  }
+  requestedRuleSets.forEach((ruleSet) => addRuleSet(typeof ruleSet === 'string' ? ruleSet : ruleSet?.name));
+  for (const target of targets) {
+    for (const variant of target.variants || []) addRuleSet(variant.variant);
+  }
+
+  const exactByRuleSet = new Map(ruleSetNames.map((name) => [name, new Map()]));
+  for (const target of targets) {
+    for (const variant of target.variants || []) {
+      if (!variant.exactBytes || !variant.variant) continue;
+      if (!exactByRuleSet.has(variant.variant)) exactByRuleSet.set(variant.variant, new Map());
+      exactByRuleSet.get(variant.variant).set(target.symbol, variant.candidateId || null);
+    }
+  }
+
+  const allSymbols = [...new Set(
+    [...exactByRuleSet.values()].flatMap((matches) => [...matches.keys()]),
+  )].sort();
+  const functionMembership = allSymbols.map((symbol) => ({
+    symbol,
+    matches: ruleSetNames
+      .filter((ruleSet) => exactByRuleSet.get(ruleSet)?.has(symbol))
+      .map((ruleSet) => ({ ruleSet, candidateId: exactByRuleSet.get(ruleSet).get(symbol) })),
+  }));
+  const membershipCount = new Map(functionMembership.map((row) => [row.symbol, row.matches.length]));
+  const baselineRuleSet = ruleSetNames[0] || null;
+  const baselineMatches = baselineRuleSet ? exactByRuleSet.get(baselineRuleSet) : new Map();
+  const ruleSets = ruleSetNames.map((name) => {
+    const exact = exactByRuleSet.get(name) || new Map();
+    const exactSymbols = [...exact.keys()].sort();
+    return {
+      name,
+      exactCount: exactSymbols.length,
+      exactSymbols,
+      matches: exactSymbols.map((symbol) => ({ symbol, candidateId: exact.get(symbol) })),
+      gainedVsBaseline: exactSymbols
+        .filter((symbol) => !baselineMatches.has(symbol))
+        .map((symbol) => ({ symbol, candidateId: exact.get(symbol) })),
+      lostVsBaseline: [...baselineMatches.keys()].filter((symbol) => !exact.has(symbol)).sort(),
+      uniqueToRuleSet: exactSymbols
+        .filter((symbol) => membershipCount.get(symbol) === 1)
+        .map((symbol) => ({ symbol, candidateId: exact.get(symbol) })),
+    };
+  });
+  return {
+    schemaVersion: 1,
+    baselineRuleSet,
+    exactTargetCount: allSymbols.length,
+    exactSymbols: allSymbols,
+    functionMembership,
+    ruleSets,
+  };
 }
 
 function runSweep(workbench, selector = {}, options = {}) {
@@ -62,7 +124,7 @@ function runSweep(workbench, selector = {}, options = {}) {
     generateContext: options.generateContext !== false,
     useContext: options.useContext === true,
     adapterVersion: M2C_ADAPTER_VERSION,
-    summaryContract: 2,
+    summaryContract: 3,
     m2cCommit: m2c.commit,
   };
   const sweepId = digest({ schemaVersion: 1, modelId: workbench.modelId, selector: normalizedSelector, m2cCommit: m2c.commit });
@@ -91,6 +153,7 @@ function runSweep(workbench, selector = {}, options = {}) {
     failed: 0,
     classifications: {},
     targets: [],
+    ensemble: summarizeEnsemble([], variants),
   };
   const summary = existing?.summary || emptySummary;
   summary.classifications = summary.classifications || {};
@@ -122,9 +185,11 @@ function runSweep(workbench, selector = {}, options = {}) {
         }
         if (!variant.generated || variant.status === 'failed') summary.failed += 1;
       }
+      summary.ensemble = summarizeEnsemble(summary.targets, variants);
     } catch (error) {
       summary.targets.push({ symbol: target.symbol, bytes: target.bytes, error: error.message, variants: [] });
       summary.failed += variants.length;
+      summary.ensemble = summarizeEnsemble(summary.targets, variants);
     }
     summary.processed += 1;
     if (options.onProgress) options.onProgress({ ...summary, targets: undefined, current: target.symbol });
@@ -146,4 +211,4 @@ function runSweep(workbench, selector = {}, options = {}) {
   };
 }
 
-module.exports = { runSweep, selectSweepTargets };
+module.exports = { runSweep, selectSweepTargets, summarizeEnsemble };
