@@ -298,6 +298,13 @@
     { "symbol": "func_00290810", "expectedRelocations": [] },
     { "symbol": "func_002A05DC", "expectedRelocations": [] },
     { "symbol": "func_0001499c", "expectedRelocations": [] },
-    { "symbol": "func_0001f2a4", "expectedRelocations": [] }
+    { "symbol": "func_0001f2a4", "expectedRelocations": [] },
+    { "symbol": "func_00014614", "expectedRelocations": [] },
+    { "symbol": "func_00014988", "expectedRelocations": [] },
+    { "symbol": "func_000149b0", "expectedRelocations": [] },
+    { "symbol": "func_00014a0c", "expectedRelocations": [] },
+    { "symbol": "__osPopThread", "expectedRelocations": [] },
+    { "symbol": "func_0004649c", "expectedRelocations": [] },
+    { "symbol": "func_000464ac", "expectedRelocations": [] }
   ]
 }
