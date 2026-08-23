@@ -1,97 +1,62 @@
 # OB64 Decomp Platform
 
-Read this after `../AGENTS.md`. It is the fast orientation document for future
-agents who need to understand where the Rev 0 decomp repo stands without
-reconstructing the parent workspace history.
+Status: **structural inventory and historical acceptance chronology**. This is
+not the current command guide or progress ledger. Use `node tools/status.js`
+for changing counts, `WORKFLOW.md` for the current matching loop, and
+`NEXT_STEPS.md` for the active queue.
 
 ## Purpose
 
-`OB64 Decomp/` is the dedicated source-level decompilation repo for Ogre Battle
-64: Person of Lordly Caliber, US Rev 0 only.
+`OB64 Decomp/` is the dedicated source-level decompilation repository for
+*Ogre Battle 64: Person of Lordly Caliber*, US Rev 0. It combines decompiled C,
+original/reference MIPS, and structured or byte-owned data into an exact retail
+ROM build. The parent workspace remains a research source; only independently
+verified facts and curated notes enter this clean-room repository.
 
-The intended finished output is a reproducible source tree that can build the
-original ROM from:
+## Current source of truth
 
-- C source under `src/`.
-- Original/reference MIPS under `asm/original/`.
-- Nonmatching or handwritten MIPS under `asm/nonmatching/` only while C is not
-  matching.
-- Structured data and asset source forms under `data/` and `assets/`.
-
-The parent `OgreBattlel64` workspace remains the research lab for emulator
-traces, Project64 automation, editor experiments, patch builders, and large
-generated artifacts. This repo should receive only stable decomp inputs, tools,
-and curated notes.
-
-## Source Of Truth Order
-
-For decomp work, use this order:
+For ordinary work, follow the shorter task-scoped order in `../AGENTS.md`:
 
 1. `../AGENTS.md`
-2. `docs/PLATFORM.md`
-3. `docs/REV0_SCOPE.md`
-4. `docs/TOOLCHAIN.md`
-5. `docs/WORKFLOW.md`
-6. `docs/DECOMP_LOG.md`
-7. `docs/FULL_ROM_SOURCE_MANIFEST.md`
-8. `docs/NEXT_STEPS.md`
-9. Parent `docs/mips-decomp-workflow-plan.md`
-10. Parent subsystem docs and trace artifacts as cited by the local note
+2. `WORKFLOW.md`
+3. `SOURCE_POLICY.md`
+4. `NEXT_STEPS.md`
+5. only the relevant subsystem or research document
 
-When a durable fact changes, update `AGENTS.md` and the relevant `docs/` file in
-the same commit.
+Read `AUDIT.md` for structural changes. Read `TOOLCHAIN.md` when changing or
+diagnosing the authenticated compiler/build chain. Do not require this
+historical chronology for an ordinary one-function match.
 
-## Current State
+## Current operational surface
 
-Setup is complete and the data-ownership loop is COMPLETE (2026-06-24): the
-entire configured code region `0x00001000..0x0063676C` (6,510,444 bytes) is
-100% source-owned as named code/data parts — 100 composite chunks, 6,184
-tracked real-assembler source files, 0 generated fallback chunks. The full
-41,943,040-byte ROM rebuilds byte-identically, gated by
-`node tools/verify_setup.js --phase5a-root <accepted-root>` (21 checks).
+The production path is the authenticated Windows KMC GCC 2.7.2 compiler
+followed by the project-pinned GNU Binutils 2.6 assembler, linker, and objcopy.
+Normal commands are:
 
-What "source-owned" means precisely — and does not mean — is defined in
-`../AGENTS.md` ("What This Repo Is (And Is Not)" + "Definitions"). Canonical
-detail, in reading order:
-
-1. `docs/FINAL_DATA_OWNERSHIP_REPORT_2026-06-24.md` — consolidated loop report
-   (coverage, natural units, HUFF/NJPG findings, unresolved questions).
-2. The Structural Snapshot table below — per-chunk composition, generated from
-   `asm/original/rev0/manifest.json`.
-3. `docs/dossiers/` — per-chunk and per-subsystem evidence (139+ dossiers).
-4. `docs/data-index/rev0/*.json` — machine-readable data-region inventories.
-5. `docs/DISASM_VALIDATION_2026-07-08.md` — the decode comments are validated
-   against GNU objdump (0 genuine disagreements over the executable extent).
-
-Historical additions (2026-07-08): AGENTS.md restored to a thin rulebook (run log
-archived, commit `d259dca`); `check_manifest.js` wired into the setup gate;
-`tools/export_function_corrections.js` delivered the loop's boundary
-corrections to the parent as `../scripts/ob64_function_corrections_rev0.json`
-(parent `docs/mips-decode.md` Stage 1b; regeneration filed as parent
-pending-tasks #16). The former fix plan is complete and remains at
-`docs/PLAN_2026-07-08-assessment-fixes.md`.
-
-Current known-good pipeline and expected results:
-
-```powershell
-$phase5aRoot = '<accepted-phase5a-product-root>'
-node tools/verify_setup.js --phase5a-root $phase5aRoot
+```text
+node tools/build.js
+node tools/diff.js <symbol>
+node tools/verify.js [--target <symbol>] [--require-pure]
+node tools/status.js
+node tools/audit.js
 ```
 
-- Rev 0 baserom verified (Project64 CRC `E6419BC5/69011DE3`), normalized to
-  `build/baserom.us_rev0.z64`.
-- Coverage ledger: 825 LHA archives (independent scan matches the parent
-  catalog), 0 unknown bytes, the 108-byte archive/audio overlap visible.
-- Manifest integrity audit: ALL CHECKS PASS (6,184 parts, contiguity + SHA-256).
-- Executable-extent gate: boundary PINNED `0x2B89B8` (2026-07-09); manifest split `original_mips` 2,849,208 B / `owned_data_parts` (data tail) 3,661,236 B, audit-asserted every run.
-- Assembled code region SHA256
-  `40D4E7875BA50F005788611C63CF9C42D9154339B36793556BF045C25B64B409`; full ROM
-  rebuild SHA256
-  `571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A` (exact).
-- Full-ROM source manifest: 1,060 entries, 0 unknown bytes, 2,469,141
-  ambiguous bytes preserved explicitly; source-owner mix 3 tracked non-code
-  files / 44,029 bytes + 1,055 generated fallback files / 35,388,567 bytes;
-  source-manifest rebuild exact.
+The optional generated matching workbench is documented by
+`node tools/match.js --help` and `../tools/README.md`. It can generate and
+classify candidates but cannot promote them. Total Resolver has a separate
+role and permission guide at `../tools/total_resolver/AGENTS.md`.
+
+The source-ownership program established an exact 41,943,040-byte Rev 0 ROM,
+no-gap configured ownership, and the pinned executable extent
+`0x00001000..0x002B89B8`. The structural tables and dated acceptance sections
+below preserve that program's evidence and chronology. Their historical
+matching counts and command snapshots must not be treated as current.
+
+## Historical acceptance chronology
+
+The following dated sections record accepted milestones at their respective
+commits. Git and the cited audit records preserve their evidence; current
+acceptance is determined by the present verifier.
 
 ## Accepted External-Intake Promotion — 2026-08-01
 
@@ -433,7 +398,7 @@ ROM and runtime endpoints; the scenario-loader delta must not be generalized out
 range. This structural correction does not activate or establish matching C for
 `func_0019554C`. See the [structural audit](audit/2026-08-07-func-0019554c-slab-placement-blocker.md).
 
-## Repo Invariants
+## Structural baseline invariants
 
 - Rev 0 only until the build, compare, and overlay workflow is stable.
 - Do not commit ROM binaries, savestates, save files, generated bulk outputs,
@@ -446,7 +411,9 @@ range. This structural correction does not activate or establish matching C for
   have missing bytes.
 - The coverage ledger must keep using an independent archive scan. Do not rely
   on the parent archive catalog alone.
-- `rebuild_rom.js` must stay green before replacing raw spans with assembly or C.
+- The canonical build and verifier must remain exact when replacing an accepted
+  assembly owner with C. `rebuild_rom.js` remains part of the lower-level
+  source-ownership audit rather than the ordinary matching loop.
 
 ## Folder Map
 
@@ -625,7 +592,12 @@ code = named function/straddler/cluster parts, data/zero-fill by part prefix;
 | 98 | `0x00621000..0x00631000` | 5 | 0 | 5 | 0 | `section-c-huff-pool-005A1000-0063676C-data-ownership` |
 | 99 | `0x00631000..0x0063676C` | 1 | 0 | 1 | 0 | `section-c-huff-pool-005A1000-0063676C-data-ownership` |
 
-## Current Tool Roles
+## Historical structural-tool inventory
+
+This inventory describes the source-ownership and external-intake machinery
+that produced the structural baseline. The current ordinary interface is the
+five-command surface listed near the top of this file; the current matching
+workbench reference is `../tools/README.md`.
 
 - `tools/verify_baserom.js` verifies Rev 0 identity and writes canonical z64.
 - `tools/extract_original_mips.js` emits no-gap `.word` MIPS reference chunks
@@ -647,9 +619,10 @@ code = named function/straddler/cluster parts, data/zero-fill by part prefix;
 - `tools/rebuild_from_source_manifest.js` rebuilds from assembled original MIPS
   plus source-owner files and byte-compares against the baserom.
 - `tools/assemble_original_mips.js` assembles tracked/generated source chunks
-  into one code-region binary. Tracked chunks use GNU `mips64-elf-as`; generated
-  fallback chunks use the minimal `.word` assembler. Manifest chunk `parts` are
-  assembled in order for named source splits.
+  into one code-region binary. Tracked chunks use the configured authenticated
+  GNU Binutils 2.6 assembler; generated fallback chunks use the minimal `.word`
+  assembler. Manifest chunk `parts` are assembled in order for named source
+  splits.
 - `tools/promote_original_mips.js` promotes generated chunks into tracked
   `asm/original/rev0/` source in deliberate batches.
 - `tools/audit_code_region.js` is a read-only code-region audit: it unions the
@@ -719,8 +692,10 @@ code = named function/straddler/cluster parts, data/zero-fill by part prefix;
   independently written matching C.
 - `tools/verify_phase8_matching_c.js` verifies compiler identity, per-target
   section ownership, target bytes, and full-ROM identity.
-- `tools/verify_setup.js` is the canonical 21-check setup command. Canonical use
-  requires `--phase5a-root <accepted-phase5a-product-root>`.
+- `tools/verify_setup.js` retains the historical structural setup gate used
+  internally by `tools/audit.js`. Its accepted Phase 5A evidence root comes
+  from local configuration or an explicit `--phase5a-root`; ordinary function
+  matching uses `tools/verify.js` instead.
 - `tests/verify_setup_phase5a_root.js` checks strict argument forwarding and the
   preserved integration-local default.
 - `tests/binutils_smoke.js` verifies the GNU MIPS binutils path.
@@ -728,20 +703,17 @@ code = named function/straddler/cluster parts, data/zero-fill by part prefix;
   generated fallback path.
 
 
-## Setup Complete
+## Current verification
 
-Setup is complete when the explicit-root command reports 21 passing checks:
+Use `node tools/verify.js` for ordinary integrated matching work and
+`node tools/audit.js` for structural changes. The production compiler is the
+authenticated Windows KMC GCC 2.7.2 compiler; compiler assembly and tracked
+assembly/data are consumed by the authenticated GNU Binutils 2.6 chain. Splat,
+KMC, GNU, asm-differ, and the pinned PowerShell runtime remain external ignored
+dependencies selected through `config/local-tools.json`.
 
-```powershell
-$phase5aRoot = '<accepted-phase5a-product-root>'
-node tools/verify_setup.js --phase5a-root $phase5aRoot
-```
-
-The baseline toolchain is `n64-tools-gcc-toolchain-mips64-win64`. It provides
-GNU Binutils 2.39 with `-EB -mips3 -32` on Windows.
-
-Authenticated Splat and KMC prerequisites remain external. Full expected
-numbers and evidence limits appear in Current State above.
+Run `node tools/status.js` for the current source-class and byte census. Do not
+copy the dated counts above into new current-state prose.
 
 ## Next Best Work
 
@@ -749,6 +721,8 @@ The data-ownership and external-intake programs are complete. There is no chunk
 frontier or intake correction pending.
 
 1. Use `docs/NEXT_STEPS.md` for the standing decomp queue.
-2. Add matching C incrementally through the accepted build path.
+2. Use `node tools/match.js rank --lane leverage` as an inspectable research
+   queue, then add matching C deliberately through the accepted build path.
 3. Preserve structural names until evidence supports gameplay meaning.
-4. Keep the explicit-root setup command green after every layout change.
+4. Keep `node tools/verify.js` green for ordinary integration; run the
+   heavyweight audit after structural or toolchain changes.

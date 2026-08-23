@@ -2,35 +2,6 @@
 
 This file is the active queue only. Changing counts belong in `node tools/status.js`, not here.
 
-## Immediate gate: independent GNU Binutils 2.6 structural review
-
-The GNU Binutils 2.6 implementation commit requires a fresh independent structural review before
-it is treated as accepted canonical history. The reviewer should begin from the implementation
-commit and use new external output roots.
-
-At minimum, independently falsify:
-
-- source commit `54514ded39ceb32165a125ddba04ca5b551773a2`, deterministic build inputs, tracked patch
-  scopes, output hashes, and runner identity;
-- big-endian MIPS3/O32 assembly behavior, historical `move` expansion, call relocations, linker
-  LMA/`PT_LOAD` behavior, and binary extraction;
-- exact Phase 7 assembly/data ownership and exact Phase 8 target ownership for all active
-  replacements;
-- untouched KMC compiler output followed only by the accepted target-section adjustment;
-- the reviewed distinction between load-relevant relocations and discarded ancillary procedure
-  metadata, including the `func_0000A1F8` section-symbol normalization;
-- all six GNU 2.6 hybrid rewrites, with every target still classified `HYBRID_C`;
-- p3063 exact `PURE_C`, p3064 exact `HYBRID_C`, protected `func_0002CD70` OR words, and inactive
-  p3066;
-- absence of the retired compiler-assembly rewrite path and modern Binutils from active
-  configuration/build code; and
-- two clean reproducible builds, normal verification, regression suites, the heavyweight audit,
-  and complete ROM SHA-256
-  `571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A`.
-
-Record the review in a new durable audit report. Corrections discovered by review should be made
-as a separate structural change and rerun through the same gates.
-
 ## Structural follow-up: audit remaining manual-load slabs
 
 The accepted `scenario-loader-00195410` record proves the generic placement mechanism for a ROM
@@ -56,7 +27,9 @@ amount of runtime-hook or workaround complexity they can remove.
 
 Use `node tools/match.js rank --lane leverage` as an inspectable starting queue,
 then apply the reviewed subsystem priorities below. The workbench's scratch-exact
-results and family siblings are leads to review, not automatic promotion. Add
+results, ruleset-ensemble membership, and family siblings are leads to review,
+not automatic promotion. Use `--variant structured` for one baseline draft or
+the default configured ensemble when a broader bounded pass is useful. Add
 target-specific value annotations to `config/matching-priorities.json` only when
 the subsystem relationship is already supported; do not let the high-yield
 small-leaf pilot displace LordlyCaliber leverage.

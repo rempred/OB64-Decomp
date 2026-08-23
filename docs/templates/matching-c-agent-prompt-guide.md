@@ -42,14 +42,19 @@ draft and recover earlier experiments without making canonical source changes:
 
 ```text
 node tools/match.js inspect <symbol>
-node tools/match.js prepare <symbol>
+node tools/match.js prepare <symbol> --variant structured
+node tools/match.js history <symbol>
 node tools/match.js best <symbol>
+node tools/match.js watch <symbol> --source <candidate.c>
 ```
 
 Let the worker use it when useful; do not turn every command into a mandatory
-ritual. A scratch result labeled `exact-bytes` still needs to be deliberately
-adapted into `src/` and pass the normal linked diff and verifiers. For a close
-hard case, `family`, `context`, and `probe` can answer a specific question.
+ritual. `--variant structured` produces one ordinary first draft; omitting
+`--variant` runs the complete configured ensemble and is useful when the
+baseline draft is not exact. A scratch result labeled `exact-bytes` still needs
+to be deliberately adapted into `src/` and pass the normal linked diff and
+verifiers. For a close hard case, `family`, `context`, `classify`, `compare`,
+and `probe` can answer a specific question.
 
 Do not prescribe register allocation, exact C syntax, or a guessed semantic name
 unless evidence makes it necessary. Let the worker use the diff to discover the
@@ -153,12 +158,15 @@ raw instruction injection, or section tricks.
 
 Work directly toward a match:
 1. Inspect the accepted target and nearby calling context. You may use
-   `node tools/match.js inspect <symbol>` and `prepare <symbol>` to recover a
-   bounded first draft and earlier research.
+   `node tools/match.js inspect <symbol>`, `history <symbol>`, and
+   `prepare <symbol> --variant structured` to recover a bounded first draft
+   and earlier research. If that draft is not exact, the default `prepare
+   <symbol>` may run the full configured ensemble.
 2. Write the simplest plausible C reconstruction.
 3. Run `node tools/diff.js <symbol>` early.
-4. Iterate from the concrete instruction/byte diff. Inspect compiler assembly or
-   use small ignored probes only when they answer a specific mismatch.
+4. Iterate from the concrete instruction/byte diff. `match.js watch` can shorten
+   scratch iterations; inspect compiler assembly or use a probe only when it
+   answers a specific mismatch.
 5. Once exact, run:
    - `node tools/source_policy.js --target <symbol>`
    - `node tools/verify.js --target <symbol> --require-pure`

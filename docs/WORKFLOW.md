@@ -66,8 +66,8 @@ It owns the accepted:
 - linker layout; and
 - toolchain contract.
 
-Historical Phase 5A/5B/6/7 terminology may remain in implementation internals or archives during
-migration, but normal contributors should not need it.
+Historical Phase 5A/5B/6/7 terminology remains in some retained implementation
+internals and archives, but normal contributors do not need it.
 
 ### Current
 
@@ -212,41 +212,69 @@ canonical matching rules:
 ```text
 node tools/match.js doctor
 node tools/match.js inspect <symbol>
-node tools/match.js prepare <symbol>
-node tools/match.js watch <symbol> --source <candidate.c>
 node tools/match.js history <symbol>
 node tools/match.js best <symbol>
+node tools/match.js watch <symbol> --source <candidate.c>
+node tools/match.js classify <candidate-id>
+node tools/match.js compare <candidate-id> <candidate-id>
+node tools/match.js preserve <candidate-id> --note "reason"
 ```
 
+`watch` compiles a hand-edited candidate. `classify` reopens one candidate and
+its latest run, while `compare` compares two successfully compiled candidates
+for the same exact target. `preserve` is the one command above that writes
+tracked files: it copies a deliberately selected blocked candidate and a short
+dossier into the archive. It does not activate or promote the target.
+
 `prepare` exports the function from the current accepted model, invokes the
-pinned m2c revision, compiles the draft with the authenticated KMC/GNU
-toolchain, and classifies the scratch-object difference. Its generated C,
-objects, reports, and SQLite experiment history remain under ignored
-`build/matching/`. A repeated successful compile is reused exactly; a failed
-compile can be retried after its environment is repaired.
+pinned m2c revision, compiles generated drafts with the authenticated KMC/GNU
+toolchain, and classifies each scratch-object difference:
+
+```text
+# One ordinary structured draft
+node tools/match.js prepare <symbol> --variant structured
+
+# The complete configured ruleset ensemble (the default)
+node tools/match.js prepare <symbol>
+
+# A selected subset; --variant may be repeated
+node tools/match.js prepare <symbol> --variant structured --variant gotos
+```
+
+Context is generated for inspection by default but is not passed to m2c unless
+`--with-context` is explicit. `--no-context` skips its generation, and
+`--no-compile` stops after generation. Generated C, objects, reports, and SQLite
+experiment history remain under ignored `build/matching/`. A repeated successful
+compile is reused exactly; a failed compile can be retried after its environment
+is repaired.
 
 Candidate identity is exact target plus exact source. Generation path, variant,
 and tool arguments are separate observations, so the same C found in two ways
 does not incur two compiles or lose its provenance.
 
-When the normal structured draft is already close, bounded calibrated rulesets
-may be tried explicitly:
+The configured ensemble contains ordinary m2c modes plus narrow calibrated
+post-generation hypotheses. Select one explicitly when testing a particular
+idea:
 
 ```text
+node tools/match.js prepare <symbol> --variant structured --no-context
 node tools/match.js prepare <symbol> --variant structured-abi-gaps --no-context
 node tools/match.js prepare <symbol> --variant structured-load-first --no-context
 node tools/match.js prepare <symbol> --variant structured-return-flow --no-context
 node tools/match.js prepare <symbol> --variant structured-cursor-steps --no-context
 node tools/match.js prepare <symbol> --variant structured-masked-local --no-context
+node tools/match.js prepare <symbol> --variant gotos --no-context
+node tools/match.js prepare <symbol> --variant stack --no-context
 ```
 
-The first preserves a literal missing general-purpose argument slot in m2c's
-`arg0` through `arg3` numbering. The second tests one exact three-statement
-shape where the retail schedule requires a cursor byte to be loaded before an
-independent zero store. The remaining passes test three other observed shapes:
+`structured-abi-gaps` preserves a literal missing general-purpose argument slot
+in m2c's `arg0` through `arg3` numbering. `structured-load-first` tests one
+exact three-statement shape where the retail schedule requires a cursor byte to
+be loaded before an independent zero store. The other calibrated passes test
 direct returns instead of a narrow result temporary, explicit byte-cursor
 advances, and a separately materialized masked comparison. Each refuses
-unrecognized source shapes rather than guessing.
+unrecognized source shapes rather than guessing. `gotos` and `stack` are the
+pinned m2c goto-only and stack-structure modes, not post-generation rewrites.
 
 Treat these rulesets as an ensemble. A pass may be retained when it produces an
 exact function no other pass finds even if it loses functions covered by
@@ -264,14 +292,37 @@ while every generation observation remains recorded. These remain candidate
 generators; exact output still enters the normal review, linked diff, and
 verification path.
 
+Batch sweeps are checkpointed after every function and resume an interrupted
+run. Bare `sweep` selects every currently unsolved ordinary target and runs the
+full configured ensemble, so use an explicit bound unless that is genuinely
+intended:
+
+```text
+node tools/match.js sweep --max-size 64 --leaf-only --limit 200
+node tools/match.js sweep --set smallest-leaves-200 --variant structured --no-context
+node tools/match.js sweep-status
+node tools/match.js sweep-status --include-targets
+```
+
+The fixed `smallest-leaves-200` set is a reproducible calibration corpus and
+includes already solved members. General sweeps omit active matching targets
+unless `--include-solved` is supplied. Use `summary.ensemble.exactTargetCount`,
+not the legacy exact-variant-run counter, for the number of distinct exact
+functions.
+
 The workbench can also expose related code, bounded callsite/type clues, target
 queues, and compiler dumps:
 
 ```text
+node tools/match.js family build
 node tools/match.js family <symbol>
+node tools/match.js family list --tier exact --include-members
 node tools/match.js context <symbol>
 node tools/match.js rank --lane leverage
+node tools/match.js rank --explain <symbol>
 node tools/match.js probe <symbol> --source <candidate.c>
+node tools/match.js probe <symbol> --candidate <candidate-id>
+node tools/match.js probe compare <left-report.json> <right-report.json>
 ```
 
 Callsite context is generated by default for inspection but is not passed to
@@ -287,10 +338,14 @@ never acceptance-eligible, including output from the
 accepted compiler. A research compiler supplied to `probe` is labeled even
 more strictly and cannot enter `diff` or `verify` through this interface.
 
-Use `preserve <candidate-id> --note <reason>` only when a blocked candidate is
-worth tracking in Git. Adding source under `src/` and activating a target remain
-deliberate human/agent actions followed by the canonical linked diff and both
-verification gates below. Scratch `exact-bytes` is a strong lead, not a match.
+Default results are bounded. Request complete detail deliberately with the
+relevant `--include-details`, `--include-source`, `--include-members`,
+`--include-context`, or `--include-targets` option; use `--json` for structured
+output.
+
+Adding source under `src/` and activating a target remain deliberate
+human/agent actions followed by the canonical linked diff and both verification
+gates below. Scratch `exact-bytes` is a strong lead, not a match.
 
 ### 4. Verify the target
 
@@ -439,7 +494,7 @@ Do not silently count it as fully mod-ready pure C.
 `tools/diff.js <symbol>` is allowed to compile the selected target before its contract exists. It
 prints and records the exact candidate relocations, but labels them `MISSING` and does not accept
 them. Review that candidate against the source and canonical linked result, then add an explicit
-entry to `matching-c-linkage.json`; use an empty list when the reviewed object has no load-relevant
+entry to `config/matching-c-linkage.json`; use an empty list when the reviewed object has no load-relevant
 relocations. `tools/verify.js` fails closed if the entry is absent or if the object changes.
 
 Internal absolute `j`/`jal` relocations are normalized to `.text`. External function or data names
@@ -470,8 +525,8 @@ node tools/match.js --help
 
 Build the current source tree.
 
-It may use legacy Phase 7/8 implementation libraries internally during migration. Historical
-implementation names do not need to become user-facing concepts.
+It uses some Phase 7/8-named compatibility libraries internally. Those
+historical implementation names are not user-facing workflow concepts.
 
 ### `diff`
 
@@ -498,6 +553,13 @@ Do not source these counts from prose documentation.
 ### `audit`
 
 Heavy structural verification. See `docs/AUDIT.md`.
+
+### `match`
+
+Optional generated research workbench. It may prepare candidates and write
+ignored experiment state, but it is not part of canonical acceptance and is not
+required by `build`, `diff`, `verify`, or `status`. Run
+`node tools/match.js --help` for its current command and option surface.
 
 ---
 

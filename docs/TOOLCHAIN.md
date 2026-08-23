@@ -22,6 +22,8 @@ research, but it is not part of the active production configuration.
   owners.
 - `config/matching-c-linkage.json` supplies the shared absolute-symbol registry and reviewed
   load-relevant relocation contracts used by active C objects.
+- `config/matching-workbench.json` pins the optional m2c checkout and target plus the bounded
+  generation ruleset ensemble. It does not participate in canonical build acceptance.
 
 The source identity is Decompals `mips-binutils-2.6` commit
 `54514ded39ceb32165a125ddba04ca5b551773a2`. The v0.3 Linux release is supporting comparison
@@ -143,6 +145,22 @@ New targets do not receive synthetic records in `config/phase8/matching-c.json`.
 may expose a missing contract as an unaccepted candidate; strict builds require the reviewed
 target entry in `config/matching-c-linkage.json`, record that file's identity in the build report,
 and reject any later relocation change.
+
+## Optional matching research chain
+
+`tools/match.js` is a generated research layer, not another production
+compiler. It authenticates the m2c commit and tree pinned by
+`config/matching-workbench.json`, generates candidate C, and scratch-compiles
+that source through the same authenticated KMC/GNU chain described above.
+`OB64_M2C_ROOT` may select an external m2c checkout; tracked changes or untracked
+executable Python inputs fail closed.
+
+The workbench records exact target/source identity, generation provenance,
+compiler output, and comparisons under ignored `build/matching/`. Scratch byte
+equality does not prove linker ownership, reviewed relocations, linked target
+placement, or complete-ROM identity. No m2c checkout, workbench database, or
+generated candidate is required by `build.js`, `diff.js`, `verify.js`, or
+`status.js`.
 
 ## Verification
 

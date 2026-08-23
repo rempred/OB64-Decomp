@@ -1,8 +1,10 @@
 # tools
 
-Repo-local decomp tools belong here.
+Repo-local deterministic decomp tools belong here. The canonical matching
+surface is `build.js`, `diff.js`, `verify.js`, `status.js`, and `audit.js`.
+Generated research tools may accelerate that loop, but cannot accept source.
 
-Initial expected tools:
+The repository also contains tools for:
 
 - ROM byte-order normalization.
 - Rev 0 extraction from `config/segments/rev0.yaml`.
@@ -35,22 +37,45 @@ Common commands:
 
 ```powershell
 node tools/match.js inspect <symbol>
-node tools/match.js prepare <symbol>
-node tools/match.js watch <symbol> --source <candidate.c>
 node tools/match.js history <symbol>
 node tools/match.js best <symbol>
+node tools/match.js watch <symbol> --source <candidate.c>
+node tools/match.js classify <candidate-id>
+node tools/match.js compare <candidate-id> <candidate-id>
+node tools/match.js preserve <candidate-id> --note "why it is worth keeping"
+node tools/match.js prepare <symbol> --variant structured
+node tools/match.js prepare <symbol>
+node tools/match.js family build
 node tools/match.js family <symbol>
+node tools/match.js family list --tier exact --include-members
 node tools/match.js context <symbol>
 node tools/match.js rank --lane leverage
+node tools/match.js rank --explain <symbol>
 node tools/match.js probe <symbol> --source <candidate.c>
+node tools/match.js probe compare <left-report.json> <right-report.json>
 ```
 
-Batch research is bounded and checkpointed after every target:
+`prepare --variant structured` requests one baseline draft. With no `--variant`,
+`prepare` runs the complete configured ensemble. Repeat `--variant` to select a
+subset. Context is generated for inspection by default, passed to m2c only with
+`--with-context`, and skipped with `--no-context`. Use `--no-compile` when only
+generated sources are wanted.
+
+Batch research supports explicit bounds and is checkpointed after every target:
 
 ```powershell
+node tools/match.js sweep --max-size 64 --leaf-only --limit 200
 node tools/match.js sweep --set smallest-leaves-200 --variant structured --no-context
 node tools/match.js sweep-status
+node tools/match.js sweep-status --include-targets
 ```
+
+Bare `sweep` means every currently unsolved ordinary target with the full
+configured ensemble; supply a set, size, or limit unless that full run is
+intentional. General sweeps omit active matching targets by default. The fixed
+`smallest-leaves-200` calibration set includes solved members so historical
+runs remain comparable. `--include-solved` opts a general sweep back into active
+targets.
 
 Calibrated structured rulesets are available when the ordinary structured
 draft is close:
@@ -61,10 +86,14 @@ node tools/match.js prepare <symbol> --variant structured-load-first --no-contex
 node tools/match.js prepare <symbol> --variant structured-return-flow --no-context
 node tools/match.js prepare <symbol> --variant structured-cursor-steps --no-context
 node tools/match.js prepare <symbol> --variant structured-masked-local --no-context
+node tools/match.js prepare <symbol> --variant gotos --no-context
+node tools/match.js prepare <symbol> --variant stack --no-context
 ```
 
-`structured-abi-gaps` preserves literal missing `arg0`-through-`arg3` integer
-or pointer ABI slots. `structured-load-first` tests one narrow three-statement
+`structured` is the baseline structured m2c pass. `gotos` and `stack` expose
+m2c's goto-only and stack-structure modes. `structured-abi-gaps` preserves
+literal missing `arg0`-through-`arg3` integer or pointer ABI slots.
+`structured-load-first` tests one narrow three-statement
 byte-load/store ordering shape. `structured-return-flow` tests direct returns
 and widening of an inferred narrow return temporary. `structured-cursor-steps`
 retains explicit byte-cursor advances. `structured-masked-local` retains one
@@ -123,10 +152,11 @@ Priority annotations use reviewed, explicit records rather than inferred names:
 or context count; missing runtime evidence is displayed and is not scored as a
 negative.
 
-All workbench outputs are ignored and noncanonical. The SQLite database is
+Routine workbench outputs are ignored and noncanonical. The SQLite database is
 intended to persist locally across matching sessions; back up
 `build/matching/workbench.sqlite` if local experiment history matters. Preserve
-a valuable blocked candidate in tracked source and a dossier explicitly with:
+a valuable blocked candidate in tracked source and a dossier only through the
+explicit tracked export:
 
 ```powershell
 node tools/match.js preserve <candidate-id> --note "why this is worth keeping"
@@ -135,14 +165,20 @@ node tools/match.js preserve <candidate-id> --note "why this is worth keeping"
 Canonical acceptance remains `tools/diff.js`, target `tools/verify.js`, sole C
 linker ownership, and the exact full-ROM verifier.
 
-## Current Tools
+Default output is bounded. Use `--include-details`, `--include-source`,
+`--include-members`, `--include-context`, or `--include-targets` only when the
+complete rows are needed, and `--json` for machine-readable output. The current
+option list is always available from `node tools/match.js --help`.
+
+## Other repository tools
 
 ```powershell
 node tools/verify_setup.js
 ```
 
-Canonical setup-complete verifier. Runs the full setup gate and writes
-`build/setup/verify-setup-report.json`.
+Historical structural setup/compatibility gate used by `tools/audit.js`. It
+writes `build/setup/verify-setup-report.json`. Ordinary matching acceptance uses
+`tools/verify.js`; do not substitute this setup gate for it.
 
 ```powershell
 node tools/verify_baserom.js

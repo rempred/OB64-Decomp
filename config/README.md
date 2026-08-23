@@ -27,8 +27,15 @@ Rev 0 decomp configuration lives here.
 - `toolchain.json` - active GNU Binutils 2.6 resolver, flags, and ignored local install root.
 - `source-policy.json` - matching-compiler provenance plus the complete authenticated executable
   chain used to preprocess sources before classification.
+- `matching-workbench.json` - optional workbench schema, pinned m2c commit/tree/target, configured
+  ruleset ensemble, and bounded-output limits. It is a research contract, not an acceptance gate.
+- `matching-priorities.json` - reviewed additive target/subsystem value annotations used by
+  workbench ranking. Missing runtime or priority evidence is not scored negatively.
 - `total-resolver/sources.json` - frozen pre-R3 migration inputs plus the maintained bridge/client,
   external Project64, and decomp identities checked by Total Resolver before capture or rebuild.
+- `local-tools.example.json` - portable template for the ignored `local-tools.json` that resolves
+  the authenticated compiler, Splat, asm-differ, work roots, audit evidence, and pinned PowerShell
+  runtime without committing machine-specific paths.
 
 `matching-c-targets.json` owns the toolchain and build-provenance manifest paths and SHA-256 values
 once. Target entries remain limited to `symbol` and `source`. New targets never receive fabricated

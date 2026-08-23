@@ -122,7 +122,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description="OB64 Total Resolver R3")
     commands = parser.add_subparsers(dest="command", required=True)
 
-    doctor = commands.add_parser("doctor", help="verify the frozen Phase 0 boundary")
+    doctor = commands.add_parser("doctor", help="verify frozen inputs and optional bridge compatibility")
     doctor.add_argument("--research-root", type=Path)
     doctor.add_argument("--project64-root", type=Path)
     doctor.add_argument("--connect", action="store_true", help="also validate a live bridge")

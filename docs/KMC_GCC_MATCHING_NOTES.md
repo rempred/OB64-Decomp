@@ -18,23 +18,28 @@ The `func_000490ec` session used the relocation workflow that existed in its
 worktree. Its synthetic legacy Phase 8 record is obsolete; the current linkage
 workflow described below supersedes that part of the branch commit.
 
-Machine-local tool paths come from `config/local-tools.json` and the phase-6
-reproduction manifest; this file intentionally records no absolute paths.
+Machine-local tool paths come from ignored `config/local-tools.json`. Compiler
+identity and flags come from the tracked active-target/toolchain contracts and
+their retained KMC provenance manifest; this file intentionally records no
+absolute paths.
 
 ## Fast iteration harness
 
-This optional ignored scratch loop turned focused experiments from minutes into
-seconds when the canonical diff rejected a wrong-sized intermediate candidate.
+Use the matching workbench instead of manually recreating the scratch pipeline:
 
-1. Compile with the pinned `cc1.exe` using exactly the accepted compile flags
-   (`config/phase8/matching-c.json` → `compiler.compileFlags`) writing assembly
-   to a scratch directory.
-2. Replace the lone `.text` directive with the accepted target-section directive:
-   `.section .ob64.rNNNN,"ax",@progbits`.
-3. Assemble with the pinned gas using the compiler assembler flags.
-4. Extract the section bytes (`parseElfFile`/`elfSectionBytes` from
-   `tools/lib/phase7_conventional.js`) and word-compare against the baserom
-   slice at the accepted ROM range.
+```text
+node tools/match.js watch <symbol> --source <candidate.c>
+node tools/match.js classify <candidate-id> --include-details
+node tools/match.js compare <candidate-id> <candidate-id>
+```
+
+`watch` resolves the accepted target, authenticates and uses the production KMC
+compiler and GNU assembler with the accepted flags, performs only the permitted
+target-section adjustment, compares the scratch section with the baserom, and
+stores the experiment under ignored `build/matching/`. Use `probe` only when a
+specific compiler pass is the remaining question. These commands automate the
+fast loop; they do not prove linked ownership, relocation resolution, or the
+full ROM.
 
 Notes:
 
@@ -370,7 +375,8 @@ prohibitions for other functions:
   entry, reviewed its seven candidate relocations into
   `config/matching-c-linkage.json`, and omitted the obsolete legacy
   `config/phase8/matching-c.json` record.
-- A fresh Git worktree does not inherit ignored tool bundles. The
+- When Joe has explicitly authorized a fresh Git worktree, remember that it
+  does not inherit ignored tool bundles. The
   `func_000490ec` worktree had its isolated local-tools configuration but was
   missing both the pinned GNU Binutils bundle and the source-policy
   preprocessor bundle. Provisioning byte-identical copies from the authenticated

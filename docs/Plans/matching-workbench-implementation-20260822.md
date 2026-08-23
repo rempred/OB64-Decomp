@@ -1,5 +1,10 @@
 # Matching Workbench Implementation Plan
 
+Status: **complete, including the post-plan ruleset ensemble**. Current usage is
+documented in `docs/WORKFLOW.md`, `tools/README.md`, and
+`node tools/match.js --help`; the planning language below is retained as the
+design record.
+
 ## Goal
 
 Turn the existing exact-ROM matching workflow into a higher-throughput research
@@ -104,7 +109,8 @@ same-size functions remain separate, and rebuilds are deterministic.
 
 ## Phase 5: callsite ABI and type context
 
-Implement `context` and feed its structured output to `prepare`.
+Implement `context` and make its structured output available to `prepare`
+without forcing inferred context into generation.
 
 - Summarize argument preparation, stack arguments, extension behavior, return
   use, load/store widths, recurring structure offsets, calls, and globals.
@@ -113,7 +119,8 @@ Implement `context` and feed its structured output to `prepare`.
 
 Acceptance: known fixtures recover their argument/return facts, conflicts stay
 ambiguous, missing runtime evidence is harmless, and the m2c pilot measures the
-effect of added context.
+effect of added context. Context is generated for inspection by default and is
+passed to m2c only through explicit `--with-context`.
 
 ## Phase 6: two-axis target ranking
 
@@ -151,11 +158,12 @@ and probe-disabled compilation remains unchanged.
 The agent loop becomes:
 
 ```text
-match rank --lane leverage
--> match prepare <symbol>
+node tools/match.js rank --lane leverage
+-> node tools/match.js prepare <symbol> --variant structured
 -> inspect family, context, history, and generated candidates
 -> edit one scratch candidate
--> match watch <symbol> --source <candidate>
+-> node tools/match.js watch <symbol> --source <candidate>
+-> run the configured ensemble only when another bounded generation view is useful
 -> use probe only for a structurally close hard case
 -> deliberately add exact source to the normal target configuration
 -> diff <symbol>
@@ -172,7 +180,8 @@ verifier.
 
 ## Implementation status
 
-All seven phases are implemented on baseline commit `3aa9865`.
+All eight numbered phases (0 through 7) are implemented on baseline commit
+`3aa9865`.
 
 | Phase | Status | Principal result |
 |---|---|---|
@@ -194,7 +203,7 @@ strand its experiment history.
 The measured pilot and its evidence boundaries are recorded in
 `docs/matching-c/matching-workbench-pilot-20260822.md`.
 
-Post-plan calibration added a versioned ruleset ensemble. Sweep contract 3
+Post-plan calibration added a versioned eight-ruleset ensemble. Sweep contract 3
 stores exact function-to-ruleset and candidate-ID membership, gains and losses
 against the baseline pass, unique wins, and a deduplicated exact-function
 total. Identical generator inputs and exact source are shared without dropping

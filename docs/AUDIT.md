@@ -13,9 +13,10 @@ Canonical interface:
 node tools/audit.js
 ```
 
-During migration, the command may accept compatibility arguments required by the existing forensic
-gate, such as an accepted external evidence root. Those requirements should remain confined to the
-audit path rather than the normal per-function loop.
+The command retains compatibility arguments required by the structural gate,
+including the accepted external Phase 5A evidence root. Local configuration may
+supply that root. These requirements remain confined to the audit path rather
+than the normal per-function loop.
 
 ---
 
@@ -177,15 +178,14 @@ Git plus the reproducible audit is the evidence chain.
 
 ---
 
-## Legacy Gate
+## Retained structural gate
 
-The existing multi-check setup/coverage/overlay/source-ownership verifier is valuable.
+The multi-check setup/coverage/overlay/source-ownership verifier remains behind
+`tools/audit.js`. The normal `tools/verify.js` path is independently responsible
+for current target ownership, placement, relocations, source class, target
+bytes, and complete-ROM identity; it does not make the broader structural gate
+part of every function match.
 
-During simplification:
-
-1. keep it intact;
-2. place it behind `tools/audit.js`;
-3. prove the new normal verifier against the existing Phase 8 proof separately;
-4. only then remove duplicated checks from the normal path.
-
-Do not weaken or delete structural checks merely to reduce the displayed command count.
+Do not remove or weaken retained structural checks merely to reduce the
+displayed command count. A future replacement is itself structural work and
+must prove equivalent coverage before the old gate is retired.

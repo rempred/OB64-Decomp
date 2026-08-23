@@ -25,7 +25,9 @@ node tests/matching_workbench.js
 collision-safe family grouping, exact target/context fixtures, store
 idempotence and rollback, canonical-source/provenance separation, retry after
 failed compilation, atomic compile-plus-comparison insertion, compiler-probe
-comparison, and the m2c adapter.
+comparison, the m2c adapter, narrow post-generation transforms, shared
+generation/compile reuse, per-function ruleset-ensemble attribution, and
+bounded default sweep/selector output.
 It uses a temporary SQLite database for mutation tests.
 
 When the local baserom, pinned m2c checkout, compiler, and GNU tools are
@@ -35,9 +37,12 @@ available, also run:
 node tests/matching_workbench_integration.js
 ```
 
-The integration fixture generates and scratch-compiles `memcpy_bytewise` to
-exact bytes. This is deliberately not a substitute for canonical linked/full-ROM
-verification.
+The integration fixture authenticates the real local m2c/KMC/GNU chain,
+generates and scratch-compiles `memcpy_bytewise` to exact bytes, exercises a
+multi-ruleset preparation with shared generation/compilation, and verifies
+cached repetition without losing ruleset provenance. This is deliberately not
+a substitute for canonical linked/full-ROM verification. Sweep resume and
+membership behavior are covered by the unit suite above.
 
 `tests/active_targets.js` also validates the shared matching-C symbol registry, rejects malformed
 or missing reviewed relocation contracts, and checks the canonical-to-legacy migration bridge.

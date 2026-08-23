@@ -280,13 +280,34 @@ function ensembleSummaryTests() {
   assert(shared.matches.map((row) => row.candidateId).join(',') === 'BASE-A,ALT-A', 'function-to-candidate membership was incomplete');
 
   const bounded = boundedSweepResult({
-    selector: { variants: ['structured', 'alternate'] },
+    selector: { variants: ['structured', 'alternate'], symbols: ['fixture', 'second', 'third'] },
     summary: { targets: [{ symbol: 'fixture', variants: [] }], ensemble: summary },
   }, false, 1);
   assert(bounded.summary.targets === undefined && bounded.summary.targetsOmitted === 0, 'bounded sweep output retained full target rows');
+  assert(bounded.selector.symbols === undefined
+    && bounded.selector.symbolSamples[0] === 'fixture'
+    && bounded.selector.symbolsOmitted === 2, 'bounded sweep output retained the complete selector symbol list');
   assert(bounded.summary.ensemble.functionMembership.samples.length === 1
     && bounded.summary.ensemble.functionMembership.omitted === 2, 'bounded sweep output did not bound ensemble membership');
-  assert(bounded.summary.ensemble.ruleSets[0].exactSymbols.omitted === 1, 'bounded sweep output did not bound ruleset symbols');
+  assert(bounded.summary.ensemble.ruleSets[0].matches.omitted === 1, 'bounded sweep output did not bound ruleset matches');
+  const noisy = boundedSweepResult({
+    selector: { variants: ['structured'] },
+    summary: {
+      targets: [{
+        symbol: 'fixture', bytes: 4, variants: [{
+          variant: 'structured', generated: true, status: 'failed', error: 'very long compiler output', exactBytes: false,
+        }],
+      }],
+      ensemble: summary,
+    },
+  }, false, 5);
+  assert(noisy.summary.targetSamples[0].variants[0].error === undefined
+    && noisy.summary.targetSamples[0].variants[0].hasError, 'bounded sweep output retained verbose compiler errors');
+  const complete = boundedSweepResult({
+    selector: { variants: ['structured'], symbols: ['fixture', 'second'] },
+    summary: { targets: [{ symbol: 'fixture', variants: [] }], ensemble: summary },
+  }, true, 1);
+  assert(complete.selector.symbols.length === 2 && complete.summary.targets.length === 1, 'include-targets did not retain complete sweep rows');
   const alreadyBounded = boundedSweepResult({
     selector: { variants: ['structured', 'alternate'] },
     summary: { targetSamples: [{ symbol: 'sample' }], targetsOmitted: 9, ensemble: summary },

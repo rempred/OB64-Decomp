@@ -1,13 +1,16 @@
 # Total Resolver R3 Product Plan
 
-Status: **authorized and implemented through Phase 9; Phase 10 gameplay acquisition active**
-Created: 2026-08-17  
-Revised: 2026-08-18 — **protocol 0.8 execution/input capture and exact-content deduplication**
+Status: **historical product/design record; implementation through Phase 9 is complete and the
+human-driven Phase 10 coverage program remains open**
+Created: 2026-08-17
+Historical revision: 2026-08-18 — **protocol 0.8 execution/input capture and exact-content deduplication**
+Operational-status note: 2026-08-23
 Target: **Ogre Battle 64: Person of Lordly Caliber, US Rev 0 only**
 
-Implementation results and current limitations are maintained in
-`docs/total-resolver/implementation-status.md`. This plan remains the product/design record rather
-than a changing coverage ledger.
+Implementation results, selected schema/protocol state, current corpus, and known limits are
+maintained in `docs/total-resolver/implementation-status.md`. This plan is not an operational
+workflow or changing coverage ledger; querying and capture permissions are defined in
+`tools/total_resolver/AGENTS.md`.
 
 ## 1. Executive Summary
 

@@ -7,8 +7,9 @@ runtime placement, exact execution, field hypotheses, and resource ancestry in s
 lanes so a useful answer can remain explicit about uncertainty. Generated sessions, products, and
 bundles live below ignored `build/total-resolver/` paths.
 
-The implementation plan is `docs/PLAN_2026-08-17-total-resolver-r3.md`; current results and known
-limits are summarized in `docs/total-resolver/implementation-status.md`.
+The completed implementation plan is retained as the historical design record in
+`docs/PLAN_2026-08-17-total-resolver-r3.md`; current results and known limits are summarized in
+`docs/total-resolver/implementation-status.md`.
 Agents must also follow `tools/total_resolver/AGENTS.md`, which gives the safe entry checklist and
 separates offline queries from user-authorized capture.
 

@@ -23,20 +23,41 @@ coverage, overlay, source-ownership, and structural checks for foundational
 changes. Run `status.js` for generated counts; this README does not duplicate
 them.
 
-Total Resolver R3 is a separate research-tool surface; Phases 0-9 are implemented and the manual
-gameplay coverage phase is ready to begin:
+The optional matching workbench prepares and compares research candidates,
+remembers prior experiments, finds structural relatives and callsite context,
+and ranks targets. It never promotes a function or replaces the canonical
+linked/full-ROM gates:
+
+```text
+node tools/match.js --help
+node tools/match.js doctor
+node tools/match.js rank --lane leverage
+node tools/match.js inspect <symbol>
+node tools/match.js prepare <symbol> --variant structured
+```
+
+See `tools/README.md` for the complete bounded command surface and ruleset
+ensemble behavior.
+
+Total Resolver R3 is a separate research-tool surface. Ordinary querying agents
+remain read-only and use the selected knowledge database without Project64:
 
 ```text
 python -m tools.total_resolver doctor
-python -m tools.total_resolver pj64 health
-python -m tools.total_resolver session start --port 64656
-python -m tools.total_resolver resolver verify build/total-resolver/products/resolver-r3
+python -m tools.total_resolver knowledge status
+python -m tools.total_resolver knowledge verify
+python -m tools.total_resolver session status
 python -m tools.total_resolver explain func_00043d1c
+python -m tools.total_resolver search --function 00043d1c
 python -m tools.total_resolver coverage
 ```
 
 Project64 is optional and remains outside the exact-ROM build path. See
-`tools/total_resolver/README.md` for the bridge, capture, resolver, and live-bundle commands.
+`tools/total_resolver/AGENTS.md` before using the resolver, then
+`tools/total_resolver/README.md` for the complete command reference. Capture, ingestion,
+migration, database selection, and product-building commands are reserved for
+an explicitly assigned database-building agent; capture additionally requires
+Joe to say he is ready for that run.
 
 ## Local setup
 
@@ -58,7 +79,9 @@ and must not be committed.
 - `docs/WORKFLOW.md` — normal build, diff, and acceptance loop.
 - `docs/SOURCE_POLICY.md` — `PURE_C`, `HYBRID_C`, `ASM`, and `UNKNOWN` rules.
 - `docs/NEXT_STEPS.md` — active queue.
+- `docs/TOOLCHAIN.md` — authenticated KMC/GNU production toolchain.
+- `tools/README.md` — optional matching-workbench and repository-tool reference.
 - `docs/AUDIT.md` — heavyweight structural verification.
 
-Rev 1, toolchain upgrades, segmentation changes, and native/static recomp work
-remain separate projects.
+Rev 1, future toolchain changes, segmentation changes, and native/static recomp
+work remain separately scoped projects.

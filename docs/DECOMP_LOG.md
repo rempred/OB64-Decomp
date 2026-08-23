@@ -1,17 +1,18 @@
 # OB64 Decomp Log
 
-This is the compact current-state decomp memory. Full historical logs are
+Status: **historical compact log through 2026-08-03**. It is not the current
+progress, command, or queue authority. Run `node tools/status.js` for changing
+counts and read `docs/NEXT_STEPS.md` for the active queue.
+
+This is compact decomp history. Full historical logs are
 archived under `docs/archive/`; the newest full archive before this compaction
 is `docs/archive/DECOMP_LOG-full-2026-07-08.md` (through the map-AI/ESET
 import), preceded by the 2026-06-21 archives.
 
-Read this after `AGENTS.md`, `docs/PLATFORM.md`, `docs/REV0_SCOPE.md`,
-`docs/TOOLCHAIN.md`, and `docs/WORKFLOW.md`. Keep this file focused on durable
-session facts, active frontiers, and verification results. If it again grows
-toward roughly 10,000 tokens, archive the full version under `docs/archive/`
-and replace the active log with a compact current-state summary.
+This file is optional historical context, not required reading for ordinary
+matching work. The task-scoped read order is maintained in `AGENTS.md`.
 
-## Current Invariants
+## Snapshot invariants
 
 - Target: Ogre Battle 64 US Rev 0 only.
 - Every configured byte must remain source-owned. The full-ROM source manifest
@@ -26,9 +27,9 @@ and replace the active log with a compact current-state summary.
   live in `docs/PLATFORM.md`; the loop summary lives in
   `docs/FINAL_DATA_OWNERSHIP_REPORT_2026-06-24.md`. Do not clone the chunk
   narrative into this file (AGENTS.md Documentation Policy).
-- Gate: `node tools/verify_setup.js --phase5a-root <accepted-root>` must pass
-  all 21 checks after every source-layout change.
-- Current tracked assembly owners: 6,184 across 100 composites, with zero
+- Historical gate at this snapshot: `node tools/verify_setup.js --phase5a-root
+  <accepted-root>` passed all 21 checks after source-layout changes.
+- Snapshot tracked assembly owners: 6,184 across 100 composites, with zero
   generated fallback chunks.
 - Code SHA `40D4E787...B409` and ROM SHA `571E8339...CC67A` remain exact.
 
@@ -233,14 +234,14 @@ and replace the active log with a compact current-state summary.
   All already-selected four-lane work is now promoted and accepted. Function
   allocation remains frozen pending Joe's next instruction.
 
-## Dossier Set
+## Snapshot dossier set
 
 139+ dossiers under `docs/dossiers/`: 81 `boot-*` (chunk 0 splits), 47
 `lib-chunkNN-*` (one per library chunk), 10 `section-*` data-ownership, 1
 survey, plus `docs/subsystems/map-ai-eset-runtime.md`. Machine-readable
 inventories: `docs/data-index/rev0/*.json`. Review handoffs: `docs/REVIEW_*.md`.
 
-## Next Frontier
+## Snapshot frontier
 
 The data-ownership and external-intake programs are complete. No chunk frontier
 or intake correction remains.
