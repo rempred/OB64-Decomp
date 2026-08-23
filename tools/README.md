@@ -52,6 +52,22 @@ node tools/match.js sweep --set smallest-leaves-200 --variant structured --no-co
 node tools/match.js sweep-status
 ```
 
+Two calibrated structured variants are available when the ordinary structured
+draft is close:
+
+```powershell
+node tools/match.js prepare <symbol> --variant structured-abi-gaps --no-context
+node tools/match.js prepare <symbol> --variant structured-load-first --no-context
+```
+
+`structured-abi-gaps` preserves literal missing `arg0`-through-`arg3` integer
+or pointer ABI slots. `structured-load-first` tests one narrow three-statement
+byte-load/store ordering shape. These are versioned post-generation
+hypotheses, and candidate provenance records whether a transform actually
+applied. They do not rewrite canonical source or replace exact compilation.
+Their fixed-corpus calibration is recorded in
+`docs/matching-c/matching-workbench-calibration-20260823.md`.
+
 Use `--include-targets` when a complete sweep row list is genuinely needed;
 default output contains counts and representative rows. Re-running an
 interrupted sweep reuses successful exact-input compiles. m2c is authenticated

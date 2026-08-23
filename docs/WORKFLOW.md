@@ -229,6 +229,21 @@ Candidate identity is exact target plus exact source. Generation path, variant,
 and tool arguments are separate observations, so the same C found in two ways
 does not incur two compiles or lose its provenance.
 
+When the normal structured draft is already close, two bounded calibrated
+variants may be tried explicitly:
+
+```text
+node tools/match.js prepare <symbol> --variant structured-abi-gaps --no-context
+node tools/match.js prepare <symbol> --variant structured-load-first --no-context
+```
+
+The first preserves a literal missing general-purpose argument slot in m2c's
+`arg0` through `arg3` numbering. The second tests one exact three-statement
+shape where the retail schedule requires a cursor byte to be loaded before an
+independent zero store. Both refuse broader shapes rather than guessing. They
+remain candidate generators; exact output still enters the normal review,
+linked diff, and verification path.
+
 The workbench can also expose related code, bounded callsite/type clues, target
 queues, and compiler dumps:
 

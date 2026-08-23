@@ -276,6 +276,57 @@ loop repeats a fixed-address scan or why the empty loop exists.
   "finds the unit" description. Preserve the machine behavior and keep neutral
   names when the meaning remains unclear.
 
+## Preserve argument slots named by the disassembly
+
+If a generated draft calls its first declared value `arg1`, that name can carry
+an ABI fact: the value arrived in the second argument register. Do not silently
+compress it into the first C parameter. Keep an unused earlier parameter when
+the instruction reads `$a1`; likewise, keep an unused middle parameter when a
+value named `arg2` must remain in `$a2`.
+
+`func_000149b0` is the smallest matching example:
+
+```c
+int func_000149b0(int unused, int value)
+{
+    return value + 2;
+}
+```
+
+This rule is safe only for an established integer/pointer argument slot. Do not
+guess the same layout for floating-point, 64-bit, varargs, or ambiguous
+signatures.
+
+## A retained early load can explain store order
+
+When retail loads a cursor byte before writing an independent field, express
+that lifetime directly with a local. Writing the zero field first and spelling
+the byte dereference inside the later assignment can make KMC schedule the load
+after the first store.
+
+`func_00014614` demonstrates the matching shape:
+
+```c
+unsigned char value = *cursor;
+*(short *)((unsigned char *)state + 0xB2) = 0;
+*(short *)((unsigned char *)state + 0xB4) = value;
+return cursor + 1;
+```
+
+This is not permission to reorder arbitrary memory operations. The local says
+which value must be read first and remains useful when the pointers might
+alias.
+
+## A value still in `$v0` may be the return value
+
+Do not infer `void` merely because the final instructions do not move a value
+into `$v0`. In `__osPopThread`, the first load already places the removed queue
+head in `$v0`; the function then stores the successor and returns the head.
+That semantic correction makes KMC use `$v1` for the successor, while retail
+uses `$t9`. Exactness therefore needs a register binding and remains
+`HYBRID_C`. The return-value observation is durable; the `$t9` choice is not a
+general KMC source rule.
+
 ## Local negative experiments
 
 These controlled variants did not help `func_000135a0`; they are not general

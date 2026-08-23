@@ -170,3 +170,6 @@ acceptance-ineligible.
 
 No Project64 process, capture session, Total Resolver database, or revision
 comparison was required for this pilot.
+
+The seven closest nonexact results were subsequently calibrated in
+`docs/matching-c/matching-workbench-calibration-20260823.md`.

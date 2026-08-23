@@ -16,7 +16,15 @@ const {
 } = require('../tools/lib/matching/target_model');
 const { collisionSafeGroups } = require('../tools/lib/matching/family');
 const { buildTargetContext } = require('../tools/lib/matching/context');
-const { compilableM2cSource, m2cDiagnostics, m2cFailure, portableM2cArguments } = require('../tools/lib/matching/m2c');
+const {
+  applyGenerationTransforms,
+  compilableM2cSource,
+  m2cDiagnostics,
+  m2cFailure,
+  portableM2cArguments,
+  preloadByteBeforeZeroStore,
+  preserveGprArgumentGaps,
+} = require('../tools/lib/matching/m2c');
 const { ROOT } = require('../tools/lib/phase7_conventional');
 const { requestStore } = require('../tools/lib/matching/store');
 const { candidateRecord } = require('../tools/lib/matching/compiler');
@@ -113,6 +121,31 @@ function m2cAdapterTests() {
   assert(m2cFailure('/*\nDecompilation failure in function fixture:\n\nCannot find branch target\n*/')?.includes('Cannot find branch target'), 'm2c generation failure detail was discarded');
   const portable = portableM2cArguments([path.join(ROOT, 'build', 'matching', 'fixture.s')], { root: path.resolve(ROOT, '..', 'tools', 'm2c') });
   assert(portable[0] === '<repo>/build/matching/fixture.s', 'm2c candidate provenance retained a machine-local repository path');
+
+  const oneGap = preserveGprArgumentGaps('s32 fixture(s32 arg1) { return arg1 + 2; }', 'fixture');
+  assert(oneGap.applied && oneGap.source.includes('s32 m2c_unused_arg0, s32 arg1'), 'missing first GPR argument was not preserved');
+  const middleGap = preserveGprArgumentGaps('void fixture(s32 arg0, s8 arg2) { use(arg2); }', 'fixture');
+  assert(middleGap.applied && middleGap.source.includes('s32 arg0, s32 m2c_unused_arg1, s8 arg2'), 'missing middle GPR argument was not preserved');
+  assert(!preserveGprArgumentGaps('void fixture(s32 arg0, s8 arg1) {}', 'fixture').applied, 'contiguous GPR arguments were rewritten');
+  assert(!preserveGprArgumentGaps('void fixture(f32 arg1) {}', 'fixture').applied, 'floating-point ABI gap was guessed as a GPR');
+  assert(!preserveGprArgumentGaps('void fixture(s32 value) {}', 'fixture').applied, 'non-m2c parameter names were rewritten');
+
+  const loadFirstInput = [
+    'void *fixture(void *arg0, u8 *arg1) {',
+    '    (*(s16 *)((s8 *)(arg0) + (0xB2))) = 0;',
+    '    (*(s16 *)((s8 *)(arg0) + (0xB4))) = (s16) *arg1;',
+    '    return arg1 + 1;',
+    '}',
+  ].join('\n');
+  const loadFirst = preloadByteBeforeZeroStore(loadFirstInput, 'fixture');
+  assert(loadFirst.applied, 'bounded source-byte preload pattern was not recognized');
+  assert(loadFirst.source.indexOf('u8 m2c_loaded_byte = *arg1;') < loadFirst.source.indexOf('= 0;'), 'source byte was not loaded before the zero store');
+  assert(loadFirst.source.includes('= (s16) m2c_loaded_byte;'), 'preloaded byte did not replace the later dereference');
+  assert(!preloadByteBeforeZeroStore(loadFirstInput.replace('return arg1 + 1;', 'side_effect();\n    return arg1 + 1;'), 'fixture').applied, 'multi-statement body received the narrow scheduling transform');
+  assert(!preloadByteBeforeZeroStore(loadFirstInput.replace('(arg0) + (0xB2)', '(arg1) + (0xB2)'), 'fixture').applied, 'possibly aliasing zero-store address received the preload transform');
+  const combined = applyGenerationTransforms('s32 fixture(s32 arg1) { return arg1 + 2; }', ['preserve-gpr-argument-gaps'], { symbol: 'fixture' });
+  assert(combined.applied.length === 1 && combined.source.includes('m2c_unused_arg0'), 'configured transform did not record exact provenance');
+  expectError(/unknown m2c generation transform/, () => applyGenerationTransforms('void fixture(void) {}', ['unknown'], { symbol: 'fixture' }));
 }
 
 function candidateIdentityTests() {

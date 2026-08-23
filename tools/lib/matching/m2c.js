@@ -9,7 +9,7 @@ const { emitM2cAssembly } = require('./assembly');
 const { MATCHING_ROOT, compileCandidate, recordCandidate, syncTargets } = require('./compiler');
 const { renderM2cContext, storeTargetContext } = require('./context');
 
-const M2C_ADAPTER_VERSION = 5;
+const M2C_ADAPTER_VERSION = 6;
 
 const TYPE_PRELUDE = [
   'typedef signed char s8;',
@@ -99,6 +99,132 @@ function compilableM2cSource(source) {
   // in the generation result, so remove those lines from the compilable view.
   const withoutWarnings = source.replace(/^Warning:\s*.*(?:\r?\n|$)/gm, '');
   return `${TYPE_PRELUDE}${expandValidSyntaxMacros(withoutWarnings.replace(/^\uFEFF/, ''))}`;
+}
+
+function escapedPattern(value) {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+function functionDefinition(source, symbol) {
+  const pattern = new RegExp(`\\b${escapedPattern(symbol)}\\s*\\(`, 'g');
+  while (true) {
+    const match = pattern.exec(source);
+    if (!match) return null;
+    const parameterOpen = source.indexOf('(', match.index + symbol.length);
+    const parameters = macroArguments(source, parameterOpen);
+    let bodyOpen = parameters.end;
+    while (/\s/.test(source[bodyOpen] || '')) bodyOpen += 1;
+    if (source[bodyOpen] !== '{') continue;
+    let depth = 1;
+    for (let index = bodyOpen + 1; index < source.length; index += 1) {
+      if (source[index] === '{') depth += 1;
+      else if (source[index] === '}') {
+        depth -= 1;
+        if (depth === 0) {
+          return {
+            parameterOpen,
+            parameterEnd: parameters.end - 1,
+            parameters: parameters.args,
+            bodyOpen,
+            bodyEnd: index,
+          };
+        }
+      }
+    }
+    throw new Error(`unterminated generated function body: ${symbol}`);
+  }
+}
+
+function preserveGprArgumentGaps(source, symbol) {
+  const definition = functionDefinition(source, symbol);
+  if (!definition || definition.parameters.length === 0) return { source, applied: false };
+  if (definition.parameters.length === 1 && definition.parameters[0] === 'void') return { source, applied: false };
+  const parameters = [];
+  for (const declaration of definition.parameters) {
+    const name = declaration.match(/\barg([0-9]+)\b(?=\s*(?:\[[^\]]*\])?\s*$)/);
+    if (!name) return { source, applied: false };
+    const index = Number(name[1]);
+    const type = declaration.slice(0, name.index);
+    if (!Number.isInteger(index) || index < 0 || index > 3) return { source, applied: false };
+    if (/\b(?:f32|f64|float|double|s64|u64)\b|long\s+long/i.test(type)) return { source, applied: false };
+    parameters.push({ declaration: declaration.trim(), index });
+  }
+  if (parameters.some((parameter, index) => index > 0 && parameter.index <= parameters[index - 1].index)) {
+    return { source, applied: false };
+  }
+  const byIndex = new Map(parameters.map((parameter) => [parameter.index, parameter.declaration]));
+  const highest = parameters[parameters.length - 1].index;
+  const missing = [];
+  const expanded = [];
+  for (let index = 0; index <= highest; index += 1) {
+    if (byIndex.has(index)) expanded.push(byIndex.get(index));
+    else {
+      missing.push(index);
+      expanded.push(`s32 m2c_unused_arg${index}`);
+    }
+  }
+  if (!missing.length) return { source, applied: false };
+  return {
+    source: source.slice(0, definition.parameterOpen + 1)
+      + expanded.join(', ')
+      + source.slice(definition.parameterEnd),
+    applied: true,
+    details: { insertedGprArguments: missing },
+  };
+}
+
+function preloadByteBeforeZeroStore(source, symbol) {
+  const definition = functionDefinition(source, symbol);
+  if (!definition) return { source, applied: false };
+  const body = source.slice(definition.bodyOpen + 1, definition.bodyEnd).replace(/\r\n/g, '\n');
+  const lines = body.split('\n');
+  const statements = lines
+    .map((line, index) => ({ index, indent: (line.match(/^\s*/) || [''])[0], text: line.trim() }))
+    .filter((line) => line.text);
+  if (statements.length !== 3) return { source, applied: false };
+  const zeroStore = statements[0].text.match(/^(.+?)\s*=\s*0;$/);
+  const byteStore = statements[1].text.match(/^(.+?)\s*=\s*((?:\([A-Za-z_][A-Za-z0-9_]*\)\s*)?)\*(arg[0-9]+);$/);
+  const returnedCursor = statements[2].text.match(/^return\s+(arg[0-9]+)\s*\+\s*1;$/);
+  if (!zeroStore || !byteStore || !returnedCursor || byteStore[3] !== returnedCursor[1]) {
+    return { source, applied: false };
+  }
+  if (!zeroStore[1].startsWith('(*(') || !byteStore[1].startsWith('(*(')) return { source, applied: false };
+  const cursor = byteStore[3];
+  if (zeroStore[1].includes(cursor) || byteStore[1].includes(cursor)) return { source, applied: false };
+  const firstBases = [...zeroStore[1].matchAll(/\barg[0-9]+\b/g)].map((match) => match[0]);
+  const secondBases = [...byteStore[1].matchAll(/\barg[0-9]+\b/g)].map((match) => match[0]);
+  if (new Set(firstBases).size !== 1 || new Set(secondBases).size !== 1 || firstBases[0] !== secondBases[0]) {
+    return { source, applied: false };
+  }
+  const signature = source.slice(definition.parameterOpen + 1, definition.parameterEnd);
+  if (!new RegExp(`\\bu8\\s*\\*\\s*${escapedPattern(cursor)}\\b`).test(signature)) return { source, applied: false };
+  const loadedName = 'm2c_loaded_byte';
+  if (new RegExp(`\\b${loadedName}\\b`).test(source)) return { source, applied: false };
+  lines.splice(statements[0].index, 0, `${statements[0].indent}u8 ${loadedName} = *${cursor};`);
+  const adjustedByteStoreIndex = statements[1].index + 1;
+  lines[adjustedByteStoreIndex] = `${statements[1].indent}${byteStore[1]} = ${byteStore[2]}${loadedName};`;
+  const transformedBody = lines.join('\n');
+  return {
+    source: source.slice(0, definition.bodyOpen + 1)
+      + transformedBody
+      + source.slice(definition.bodyEnd),
+    applied: true,
+    details: { cursorArgument: cursor },
+  };
+}
+
+function applyGenerationTransforms(source, transforms, options = {}) {
+  let current = source;
+  const applied = [];
+  for (const name of transforms || []) {
+    let result;
+    if (name === 'preserve-gpr-argument-gaps') result = preserveGprArgumentGaps(current, options.symbol);
+    else if (name === 'preload-byte-before-zero-store') result = preloadByteBeforeZeroStore(current, options.symbol);
+    else throw new Error(`unknown m2c generation transform: ${name}`);
+    current = result.source;
+    if (result.applied) applied.push({ name, details: result.details || {} });
+  }
+  return { source: current, applied };
 }
 
 function m2cDiagnostics(source) {
@@ -194,7 +320,9 @@ function runM2c(workbench, target, options = {}) {
     const rawSource = String(processResult.stdout || '');
     const diagnostics = m2cDiagnostics(rawSource);
     const failure = m2cFailure(rawSource);
-    const source = rawSource.trim() ? compilableM2cSource(rawSource) : rawSource;
+    const compilableSource = rawSource.trim() ? compilableM2cSource(rawSource) : rawSource;
+    const transformed = applyGenerationTransforms(compilableSource, variant.transforms || [], { symbol: target.symbol });
+    const source = transformed.source;
     const sourceFile = path.join(targetRoot, `${target.symbol}.${variant.name}.c`);
     fs.writeFileSync(sourceFile, source, 'utf8');
     const ok = processResult.status === 0 && source.trim().length > 0 && !source.includes('Decompilation failure');
@@ -209,6 +337,10 @@ function runM2c(workbench, target, options = {}) {
       durationMs: Date.now() - started,
       diagnostics,
       failure,
+      transforms: {
+        requested: variant.transforms || [],
+        applied: transformed.applied,
+      },
       m2c,
     });
   }
@@ -229,6 +361,7 @@ function prepareAndCompile(workbench, target, options = {}) {
       m2cCommit: generated.m2c.commit,
       m2cTree: generated.m2c.tree,
       arguments: result.arguments,
+      transforms: result.transforms,
     };
     if (options.compile === false) {
       const recorded = recordCandidate(workbench, target, result.source, {
@@ -264,12 +397,15 @@ function prepareAndCompile(workbench, target, options = {}) {
 
 module.exports = {
   M2C_ADAPTER_VERSION,
+  applyGenerationTransforms,
   compilableM2cSource,
   expandValidSyntaxMacros,
   m2cDiagnostics,
   m2cFailure,
   portableM2cArguments,
+  preloadByteBeforeZeroStore,
   prepareAndCompile,
+  preserveGprArgumentGaps,
   resolveM2c,
   runM2c,
 };

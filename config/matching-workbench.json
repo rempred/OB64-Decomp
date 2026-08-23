@@ -10,6 +10,16 @@
     "target": "mips-gcc-c",
     "variants": [
       { "name": "structured", "arguments": ["--valid-syntax", "--deterministic-vars"] },
+      {
+        "name": "structured-abi-gaps",
+        "arguments": ["--valid-syntax", "--deterministic-vars"],
+        "transforms": ["preserve-gpr-argument-gaps"]
+      },
+      {
+        "name": "structured-load-first",
+        "arguments": ["--valid-syntax", "--deterministic-vars"],
+        "transforms": ["preload-byte-before-zero-store"]
+      },
       { "name": "gotos", "arguments": ["--valid-syntax", "--deterministic-vars", "--gotos-only"] },
       { "name": "stack", "arguments": ["--valid-syntax", "--deterministic-vars", "--stack-structs"] }
     ]
