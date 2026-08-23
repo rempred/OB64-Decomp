@@ -9,6 +9,11 @@ functions or a small probe, not a general model of the compiler. The accepted
 `func_000135a0` example and its conservative matching lesson are in
 `docs/dossiers/func-000135a0.md`.
 
+The nonmatching `func_0006d7d8` session also supplied useful scoped stack-layout,
+control-flow, and negative experiments. Those observations are labeled below;
+they do not make that function an accepted match. Its reviewed record is in
+`docs/dossiers/func-0006d7d8.md`.
+
 The `func_000490ec` session used the relocation workflow that existed in its
 worktree. Its synthetic legacy Phase 8 record is obsolete; the current linkage
 workflow described below supersedes that part of the branch commit.
@@ -44,6 +49,11 @@ Notes:
   target section was used. Removing `-force-n64align` did not remove those
   bytes, so the exact cause was not established. Always reproduce the accepted
   section adjustment rather than attributing the padding to that flag.
+- The `func_0006d7d8` scratch loop reproduced the same counting trap: its
+  literal `.text` section reported 416 bytes, while the function disassembly
+  ended at 404 bytes. Do not infer executable instruction count from a padded
+  scratch section. This still does not prove that the canonical linked section
+  has the right shape; return to `diff.js` for that proof.
 - In `build/diff/<symbol>.json`, `comparison.rows` is the instruction-row
   count, not the detailed row array. The report's `output` value names the
   ignored run directory; detailed rows are in
@@ -101,6 +111,36 @@ Do not infer argument meaning merely from an entry `move`, and do not assume a
 fixed register preference order. Change one C property at a time and use the
 actual diff.
 
+## Stack layout and aggregate locals
+
+The nonmatching `func_0006d7d8` experiment had a directly observed `0x58`
+frame, five byte loads at `sp+0x18..sp+0x1C`, and a pointer at `sp+0x24` whose
+value was `sp+0x18`. Separate arrays, pointers, oversized arrays, and
+`volatile` padding either produced the wrong frame or moved the pointer and
+disturbed register allocation.
+
+One ordinary local aggregate reproduced the frame and all three offsets at
+once:
+
+```c
+typedef struct Func0006D7D8Scratch {
+    u8 movement_bytes[5];
+    u8 unknown_05[7];
+    u8 *movement_start;
+    u8 unknown_10[8];
+} Func0006D7D8Scratch;
+```
+
+This does not prove that the original source used that struct or that the
+unknown bytes had meaning. It demonstrates a focused matching technique: when
+retail establishes several relative stack offsets, model them as fields of one
+aggregate before fabricating independent padding locals.
+
+In the same candidate, moving only `index = 0` above the early-return guard
+changed the prologue from 42 raw object differences to 31 and reproduced the
+retail save/zero interleave. Treat statement placement around a guard as a
+localized prologue-scheduling experiment, not a general initialization rule.
+
 ## Conditionals and control-flow shape
 
 - In this function, writing the two conditions as
@@ -114,6 +154,16 @@ actual diff.
   was silently reassociated to the other grouping; forcing the intended order
   required an explicit sequenced statement:
   `high = high + 2; result = byte + high;`
+- In `func_0006d7d8`, an apparent `j 0x8019BB54` became an ordinary internal
+  forward jump after applying the accepted overlay placement. A `goto` to the
+  shared slot-advance tail reproduced it. Tested end-of-function and
+  `noreturn` call forms still emitted `jal`; they did not explain the retail
+  word. Resolve placement and exact jump offset before testing unusual call
+  declarations.
+- Decode a loop branch's exact target before assigning statements to a loop.
+  The `func_0006d7d8` inner back-edge returned to the per-slot load, not the
+  two destination-header stores immediately above it. Correcting that target
+  moved those stores to the outer loop and removed a large false mismatch.
 
 ## Loops, indexing, and store scheduling
 
@@ -143,6 +193,20 @@ working only on the localized difference.
   multiply by three with shift/add, shift that value by three, then add the
   original index. A strange shift/add chain can therefore be a direct clue to
   an odd structure stride rather than hand-written arithmetic.
+- In the nonmatching `func_0006d7d8` candidate, indexing a 56-byte table
+  produced the retail multiply-by-56 chain: shift by three, subtract the
+  original index to form seven times the index, then shift by three again.
+- For the same target, this source produced the retail branchless zero-or-value
+  mask for an unsigned byte threshold:
+
+  ```c
+  class_index = source_pair[0];
+  class_index &= -(class_index < 100);
+  ```
+
+  The observed output was `sltiu`, subtraction from zero, and `and`. A later
+  one-statement spelling canonicalized identically, so the instruction pattern
+  supports the mask operation but not one unique source spelling.
 - Directly indexing
   `g_func_001957D0_source_records[0].field_02[member_index]` produced the retail
   fixed-symbol-plus-two-plus-index load. The outer `unit_index` does not
@@ -224,6 +288,16 @@ prohibitions for other functions:
 - A guard comparing an extra parameter left additional branch instructions.
 - A `volatile` local introduced memory traffic incompatible with this frameless
   target.
+- In `func_0006d7d8`, unused ordinary locals were removed and did not reserve
+  the hoped-for stack space. Unused `volatile` arrays did enlarge the frame in
+  the tested forms, but they also moved the proven pointer spill and changed
+  register allocation. Do not use dummy volatile storage as a substitute for
+  an observed stack model.
+- Broad declaration-order, setup-order, padding-size, and address-syntax sweeps
+  did not establish a register-allocation rule for `func_0006d7d8`. Several
+  forms canonicalized identically; others changed unrelated code. Once a diff
+  stabilizes into a few local pockets, preserve the best candidate and seek a
+  new structural hypothesis instead of treating more permutations as evidence.
 
 ## Pipeline & configuration mechanics
 

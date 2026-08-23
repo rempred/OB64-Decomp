@@ -22,3 +22,27 @@ the worker's reasoning, commands, tool output, local paths, and final report.
 The durable, reviewed lesson is summarized in
 `docs/dossiers/func-000135a0.md`; do not treat every theory in the raw session
 as an accepted compiler rule.
+
+## `func_0006d7d8`
+
+- File: `2026-08-22-func-0006d7d8-opencode-session.json`
+- Original session title: `Match func_0006d7d8 as PURE_C`
+- Session ID: `ses_fd499272bffeTKyWl9JMvyTEtq`
+- Exported model label: `opencode/x-preview-f-free`, variant `max`
+- Session time: `2026-08-22T21:35:55.604Z` through
+  `2026-08-22T23:37:46.858Z`
+- Result: nonmatching research candidate; nothing promoted
+- Size: 2,548,572 bytes
+- SHA-256:
+  `BFEE9BCD5B69F5F33E3668F1D2D1F88E1D2CA9403961A7D79A604A936A194C47`
+
+The JSON is a byte-for-byte copy of the supplied session export. It includes
+the initial reconstruction, failed padding and declaration sweeps, the later
+fixed-layout aggregate correction, every scratch comparison, and the final
+report. The final report's raw-difference arithmetic is corrected in
+`docs/dossiers/func-0006d7d8.md`. The best source itself is preserved at
+`docs/archive/matching-c-candidates/2026-08-22-func-0006d7d8-vT.c`.
+
+As with the earlier session, treat the raw reasoning as experiment history.
+Only the scoped outcomes reviewed in the dossier and
+`docs/KMC_GCC_MATCHING_NOTES.md` are durable guidance.
