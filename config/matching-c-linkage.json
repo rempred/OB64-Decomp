@@ -41,6 +41,7 @@
     { "name": "func_000FC120", "address": "0x8016BD20" },
     { "name": "func_0015F070", "address": "0x8020DF00" },
     { "name": "func_0016C454", "address": "0x801DC054" },
+    { "name": "func_0016F9D4", "address": "0x8016F9D4" },
     { "name": "func_00195410_helper", "address": "0x8016F5C8" },
     { "name": "func_001957D0_finalize", "address": "0x801D4928" },
     { "name": "func_001C6C04", "address": "0x801C6C04" },
@@ -496,6 +497,12 @@
     { "symbol": "func_002AB558", "expectedRelocations": [] },
     { "symbol": "func_002B5044", "expectedRelocations": [] },
     { "symbol": "func_002a3310", "expectedRelocations": [] },
+    {
+      "symbol": "func_000bf228",
+      "expectedRelocations": [
+        { "offset": "0x00000008", "type": "R_MIPS_26", "symbol": "func_0016F9D4", "section": ".rel.text" }
+      ]
+    },
     { "symbol": "strcat", "expectedRelocations": [] }
   ]
 }
