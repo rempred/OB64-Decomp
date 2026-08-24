@@ -559,6 +559,18 @@
       ]
     },
     {
+      "symbol": "func_000bf248",
+      "expectedRelocations": [
+        { "offset": "0x00000040", "type": "R_MIPS_26", "symbol": ".text", "section": ".rel.text" },
+        { "offset": "0x0000004C", "type": "R_MIPS_HI16", "symbol": "D_801EF288", "section": ".rel.text" },
+        { "offset": "0x00000054", "type": "R_MIPS_LO16", "symbol": "D_801EF288", "section": ".rel.text" },
+        { "offset": "0x00000084", "type": "R_MIPS_26", "symbol": ".text", "section": ".rel.text" },
+        { "offset": "0x00000090", "type": "R_MIPS_HI16", "symbol": "D_801EF288", "section": ".rel.text" },
+        { "offset": "0x00000094", "type": "R_MIPS_LO16", "symbol": "D_801EF288", "section": ".rel.text" },
+        { "offset": "0x00000184", "type": "R_MIPS_26", "symbol": "func_000bedb8", "section": ".rel.text" }
+      ]
+    },
+    {
       "symbol": "func_000bf458",
       "expectedRelocations": [
         { "offset": "0x00000028", "type": "R_MIPS_HI16", "symbol": "D_80193BC0", "section": ".rel.text" },
