@@ -25,6 +25,14 @@ const { requestStore } = require('./store');
 
 const MATCHING_ROOT = path.join(ROOT, 'build', 'matching');
 
+function compileArtifactDirectory(runId) {
+  // Keep transient compiler paths independent of the target symbol. The
+  // accepted legacy Windows cc1 cannot create outputs beyond MAX_PATH, and a
+  // target-symbol directory plus a symbol-named assembly file duplicated long
+  // names in the old build/matching/targets/<symbol>/runs/<run> layout.
+  return path.join(MATCHING_ROOT, 'runs', runId);
+}
+
 function relative(file) {
   const value = path.relative(ROOT, file).replace(/\\/g, '/');
   if (!value || value === '..' || value.startsWith('../')) throw new Error(`matching candidate escapes repository: ${file}`);
@@ -142,7 +150,7 @@ function compileCandidate(workbench, target, sourceText, options = {}) {
   // to an old environmental failure.
   const attemptStartedAt = new Date().toISOString();
   const runId = digest({ cacheKey, kind: 'compile-run', attemptStartedAt });
-  const artifactDir = path.join(MATCHING_ROOT, 'targets', target.symbol, 'runs', runId);
+  const artifactDir = compileArtifactDirectory(runId);
   ensureDirectory(artifactDir);
   const started = Date.now();
   const targetForCompile = {
@@ -249,6 +257,7 @@ function compileCandidate(workbench, target, sourceText, options = {}) {
 module.exports = {
   MATCHING_ROOT,
   candidateRecord,
+  compileArtifactDirectory,
   compileCandidate,
   prepareCompilerSession,
   recordCandidate,

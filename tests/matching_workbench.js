@@ -32,7 +32,11 @@ const {
 } = require('../tools/lib/matching/m2c');
 const { ROOT } = require('../tools/lib/phase7_conventional');
 const { requestStore } = require('../tools/lib/matching/store');
-const { candidateRecord } = require('../tools/lib/matching/compiler');
+const {
+  MATCHING_ROOT,
+  candidateRecord,
+  compileArtifactDirectory,
+} = require('../tools/lib/matching/compiler');
 const { compareProbes } = require('../tools/lib/matching/probe');
 const { summarizeEnsemble } = require('../tools/lib/matching/sweep');
 const { boundedSweepResult } = require('../tools/match');
@@ -114,14 +118,23 @@ function familyTests() {
 function m2cAdapterTests() {
   const source = compilableM2cSource([
     'Warning: missing "jr $ra" in final block',
+    'M2C_UNK callee(void); /* extern */',
+    'struct fixture_stack {',
+    '    /* 0x00 */ char pad[4];',
+    '}; /* size = 0x4 */',
     'f32 fixture(void) {',
+    '    const char *literal = "/* retained literal */";',
+    '    char slash = \'/\'; // generated line comment',
+    '    callee();',
     '    return M2C_BITWISE(f32, 0x3F800000U);',
     '}',
     '',
   ].join('\n'));
   assert(source.includes('typedef float f32;'), 'm2c adapter omitted the floating-point type prelude');
   assert(!source.includes('Warning:'), 'm2c warning leaked into direct cc1 input');
-  assert(!source.includes('/*'), 'm2c adapter emitted a comment into direct cc1 input');
+  assert(!source.includes('/* extern */') && !source.includes('/* 0x00 */') && !source.includes('/* size = 0x4 */'), 'm2c block comment leaked into direct cc1 input');
+  assert(!source.includes('// generated line comment'), 'm2c line comment leaked into direct cc1 input');
+  assert(source.includes('"/* retained literal */"') && source.includes("'/'"), 'm2c comment stripping damaged a string or character literal');
   assert(!source.includes('M2C_BITWISE'), 'm2c valid-syntax macro was not expanded');
   const diagnostics = m2cDiagnostics('Warning: missing return\nvoid fixture(void) {}\n');
   assert(diagnostics.length === 1 && diagnostics[0].message === 'missing return', 'm2c warning was not retained as a diagnostic');
@@ -217,6 +230,18 @@ function m2cAdapterTests() {
   const masked = materializeMaskedComparison(maskedInput, 'fixture');
   assert(masked.applied && masked.source.includes('m2c_masked_value = ((*(s32 *)arg0) & 0x40);'), 'masked comparison did not retain the intermediate value');
   expectError(/unknown m2c generation transform/, () => applyGenerationTransforms('void fixture(void) {}', ['unknown'], { symbol: 'fixture' }));
+}
+
+function compilerArtifactPathTests() {
+  const runId = 'A'.repeat(64);
+  const longSymbol = 'boot_display_list_vector_distance_and_transform_prefix';
+  const artifactDir = compileArtifactDirectory(runId);
+  const compilerOutput = path.join(artifactDir, 'generated', 'c', `${longSymbol}.compiler.s`);
+  const legacyOutput = path.join(MATCHING_ROOT, 'targets', longSymbol, 'runs', runId, 'generated', 'c', `${longSymbol}.compiler.s`);
+  assert(path.relative(MATCHING_ROOT, artifactDir) === path.join('runs', runId), 'compiler artifacts did not use the symbol-independent run root');
+  assert(!artifactDir.includes(longSymbol), 'compiler artifact directory retained the target symbol');
+  assert(compilerOutput.length < legacyOutput.length, 'compiler artifact path was not shortened for long symbols');
+  assert(path.relative(ROOT, compilerOutput).length < 200, 'compiler artifact path exceeded the repository-relative legacy-tool budget');
 }
 
 function candidateIdentityTests() {
@@ -431,6 +456,7 @@ function main() {
   classifierTests();
   familyTests();
   m2cAdapterTests();
+  compilerArtifactPathTests();
   candidateIdentityTests();
   probeComparisonTests();
   ensembleSummaryTests();

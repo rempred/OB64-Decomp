@@ -9,7 +9,7 @@ const { emitM2cAssembly } = require('./assembly');
 const { MATCHING_ROOT, compileCandidate, recordCandidate, syncTargets } = require('./compiler');
 const { renderM2cContext, storeTargetContext } = require('./context');
 
-const M2C_ADAPTER_VERSION = 7;
+const M2C_ADAPTER_VERSION = 8;
 
 const TYPE_PRELUDE = [
   'typedef signed char s8;',
@@ -92,13 +92,70 @@ function expandValidSyntaxMacros(source) {
   return result.replace(/\bM2C_CARRY\b/g, '0');
 }
 
+function stripCComments(source) {
+  let result = '';
+  let state = 'code';
+  for (let index = 0; index < source.length; index += 1) {
+    const char = source[index];
+    const next = source[index + 1];
+    if (state === 'code') {
+      if (char === '"') {
+        state = 'string';
+        result += char;
+      } else if (char === "'") {
+        state = 'character';
+        result += char;
+      } else if (char === '/' && next === '*') {
+        state = 'block-comment';
+        result += '  ';
+        index += 1;
+      } else if (char === '/' && next === '/') {
+        state = 'line-comment';
+        result += '  ';
+        index += 1;
+      } else {
+        result += char;
+      }
+      continue;
+    }
+    if (state === 'string' || state === 'character') {
+      result += char;
+      if (char === '\\' && next !== undefined) {
+        result += next;
+        index += 1;
+      } else if ((state === 'string' && char === '"') || (state === 'character' && char === "'")) {
+        state = 'code';
+      }
+      continue;
+    }
+    if (state === 'block-comment') {
+      if (char === '*' && next === '/') {
+        result += '  ';
+        index += 1;
+        state = 'code';
+      } else {
+        result += char === '\r' || char === '\n' ? char : ' ';
+      }
+      continue;
+    }
+    if (char === '\r' || char === '\n') {
+      result += char;
+      state = 'code';
+    } else {
+      result += ' ';
+    }
+  }
+  return result;
+}
+
 function compilableM2cSource(source) {
   // cc1 is invoked directly by the accepted build contract, so its input must
   // already be preprocessed: even a C89 comment emitted by the adapter is a
   // parse error. m2c warnings are diagnostics rather than source and are kept
   // in the generation result, so remove those lines from the compilable view.
   const withoutWarnings = source.replace(/^Warning:\s*.*(?:\r?\n|$)/gm, '');
-  return `${TYPE_PRELUDE}${expandValidSyntaxMacros(withoutWarnings.replace(/^\uFEFF/, ''))}`;
+  const preprocessed = stripCComments(withoutWarnings.replace(/^\uFEFF/, ''));
+  return `${TYPE_PRELUDE}${expandValidSyntaxMacros(preprocessed)}`;
 }
 
 function escapedPattern(value) {
@@ -516,7 +573,7 @@ function runM2c(workbench, target, options = {}) {
       const source = transformed.source;
       const sourceFile = path.join(targetRoot, `${target.symbol}.${variant.name}.c`);
       fs.writeFileSync(sourceFile, source, 'utf8');
-      const ok = processResult.status === 0 && source.trim().length > 0 && !source.includes('Decompilation failure');
+      const ok = processResult.status === 0 && !failure && source.trim().length > TYPE_PRELUDE.trim().length;
       results.set(variant.name, {
         variant: variant.name,
         arguments: portableM2cArguments(argumentsList.slice(1), m2c),
