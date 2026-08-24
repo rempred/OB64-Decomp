@@ -33,6 +33,10 @@ arguments. Thus identical C is compiled once without discarding how it was
 found. Failed compiler attempts remain visible but do not poison the reusable
 success cache.
 
+The exact target-model identity includes the accepted Phase 7 conventional-build configuration,
+including load-slab placement. A structural placement change therefore starts a new model while
+retaining earlier experiments as stale history.
+
 Common commands:
 
 ```powershell

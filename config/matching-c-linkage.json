@@ -4,6 +4,7 @@
   "symbols": [
     { "name": "D_80193AC0", "address": "0x80193AC0" },
     { "name": "D_80196B00", "address": "0x80196B00" },
+    { "name": "D_801EF288", "address": "0x801EF288" },
     { "name": "func_00001330", "address": "0x80070F30" },
     { "name": "func_000016C4", "address": "0x800712C4" },
     { "name": "func_0000368C", "address": "0x8007328C" },
@@ -42,6 +43,7 @@
     { "name": "func_000EA604", "address": "0x800EA604" },
     { "name": "func_000FC120", "address": "0x8016BD20" },
     { "name": "func_0015F070", "address": "0x8020DF00" },
+    { "name": "func_0016B6FC", "address": "0x8016B6FC" },
     { "name": "func_0016C454", "address": "0x801DC054" },
     { "name": "func_0016F9D4", "address": "0x8016F9D4" },
     { "name": "func_00195410_helper", "address": "0x8016F5C8" },
@@ -466,6 +468,27 @@
     { "symbol": "func_000b34c4", "expectedRelocations": [] },
     { "symbol": "func_000b876c", "expectedRelocations": [] },
     { "symbol": "func_000bba9c", "expectedRelocations": [] },
+    {
+      "symbol": "func_000bbd50",
+      "expectedRelocations": [
+        { "offset": "0x00000010", "type": "R_MIPS_26", "symbol": ".text", "section": ".rel.text" }
+      ]
+    },
+    {
+      "symbol": "func_000bbd80",
+      "expectedRelocations": [
+        { "offset": "0x00000010", "type": "R_MIPS_26", "symbol": ".text", "section": ".rel.text" }
+      ]
+    },
+    {
+      "symbol": "func_000bc684",
+      "expectedRelocations": [
+        { "offset": "0x00000018", "type": "R_MIPS_HI16", "symbol": "D_801EF288", "section": ".rel.text" },
+        { "offset": "0x0000001C", "type": "R_MIPS_LO16", "symbol": "D_801EF288", "section": ".rel.text" },
+        { "offset": "0x00000048", "type": "R_MIPS_26", "symbol": "func_0016B6FC", "section": ".rel.text" },
+        { "offset": "0x00000050", "type": "R_MIPS_26", "symbol": ".text", "section": ".rel.text" }
+      ]
+    },
     { "symbol": "func_000bd318", "expectedRelocations": [] },
     { "symbol": "func_000ecabc", "expectedRelocations": [] },
     { "symbol": "func_000ecb58", "expectedRelocations": [] },

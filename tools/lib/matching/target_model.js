@@ -4,6 +4,7 @@ const crypto = require('crypto');
 const fs = require('fs');
 const path = require('path');
 const {
+  CONFIG_PATH: PHASE7_CONFIG_PATH,
   ROOT,
   loadAcceptedModel,
   sha256Buffer,
@@ -62,9 +63,13 @@ function loadWorkbenchModel(options = {}) {
   const activeBySymbol = new Map((active.targets || []).map((target) => [target.symbol.toLowerCase(), target]));
   const modelManifest = {
     schemaVersion: 1,
-    targetModelContract: 2,
+    targetModelContract: 3,
     profile: config.profile,
     baserom: { bytes: model.config.rom.bytes, sha256: model.config.rom.sha256 },
+    conventionalBuild: {
+      path: 'config/phase7/conventional-build.json',
+      sha256: sha256File(PHASE7_CONFIG_PATH),
+    },
     semantic: { path: 'config/splat/us_rev0.semantic.json', sha256: sha256File(SEMANTIC_PATH) },
     acceptedInputs: model.inputFiles,
   };

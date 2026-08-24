@@ -67,7 +67,7 @@ function main() {
   verifyMap(model, mapText);
 
   const results = [];
-  assert.strictEqual(model.counts.nonDescriptorLoadSlabs, 2, 'accepted load-slab count drift');
+  assert.strictEqual(model.counts.nonDescriptorLoadSlabs, 3, 'accepted load-slab count drift');
   assert.strictEqual(model.slices.length, 7252, 'accepted link-slice count drift');
   assert.strictEqual(model.counts.splitOwners, 10, 'accepted split-owner count drift');
   assert.strictEqual(model.overlays.length, 19, 'fixed-descriptor count drift');
@@ -91,6 +91,14 @@ function main() {
       romStart: 0x00040E80,
       romEndExclusive: 0x00040E90,
     }],
+  }, {
+    id: 'loader-dma-00087200',
+    kind: 'loader-dma',
+    romStart: 0x00087200,
+    romEndExclusive: 0x000DDF60,
+    vramStart: 0x8019A7A0,
+    vramEndExclusive: 0x801F1500,
+    executableRanges: [],
   }], 'accepted load-slab record drift');
 
   const coldBootSlab = model.nonDescriptorLoadSlabs.find((slab) => slab.id === 'cold-boot-loader-00040e80');
@@ -99,6 +107,56 @@ function main() {
   assert.strictEqual(coldBootSlab.vramEndExclusive - coldBootSlab.vramStart, 0x25F90, 'cold-boot VRAM length drift');
   assert.strictEqual(coldBootSlab.vramStart - coldBootSlab.romStart, 0x8012A100, 'cold-boot start delta drift');
   assert.strictEqual(coldBootSlab.vramEndExclusive - coldBootSlab.romEndExclusive, 0x8012A100, 'cold-boot end delta drift');
+
+  const runtimeSlab = model.nonDescriptorLoadSlabs.find((slab) => slab.id === 'loader-dma-00087200');
+  assert.ok(runtimeSlab, 'runtime load slab is missing');
+  assert.strictEqual(runtimeSlab.romEndExclusive - runtimeSlab.romStart, 0x56D60, 'runtime-slab ROM length drift');
+  assert.strictEqual(runtimeSlab.vramEndExclusive - runtimeSlab.vramStart, 0x56D60, 'runtime-slab VRAM length drift');
+  assert.strictEqual(runtimeSlab.vramStart - runtimeSlab.romStart, 0x801135A0, 'runtime-slab start delta drift');
+  assert.strictEqual(runtimeSlab.vramEndExclusive - runtimeSlab.romEndExclusive, 0x801135A0, 'runtime-slab end delta drift');
+
+  const runtimeSlabRows = model.rows.filter((row) => (
+    row.romStart < runtimeSlab.romEndExclusive
+    && row.romEndExclusive > runtimeSlab.romStart
+  ));
+  assert.strictEqual(runtimeSlabRows.length, 435, 'runtime-slab owner count drift');
+  assert.strictEqual(runtimeSlabRows[0].index, 1503, 'runtime-slab first owner drift');
+  assert.strictEqual(runtimeSlabRows[0].romStart, runtimeSlab.romStart, 'runtime-slab first boundary drift');
+  assert.strictEqual(runtimeSlabRows.at(-1).index, 1937, 'runtime-slab final owner drift');
+  assert.strictEqual(runtimeSlabRows.at(-1).romEndExclusive, runtimeSlab.romEndExclusive, 'runtime-slab final boundary drift');
+  for (const row of runtimeSlabRows) {
+    assert.strictEqual(row.slices.length, 1, `runtime-slab owner was unexpectedly split: p${row.index}`);
+    const [slice] = row.slices;
+    assert.strictEqual(slice.placementKind, 'non-descriptor-load-slab', `runtime-slab placement drift: p${row.index}`);
+    assert.strictEqual(slice.loadSlabId, 'loader-dma-00087200', `runtime-slab identity drift: p${row.index}`);
+    assert.strictEqual(slice.vramStart, slice.romStart + 0x801135A0, `runtime-slab VMA start drift: p${row.index}`);
+    assert.strictEqual(slice.vramEndExclusive, slice.romEndExclusive + 0x801135A0, `runtime-slab VMA end drift: p${row.index}`);
+  }
+  for (const rowIndex of [1502, 1938]) {
+    const row = model.rows[rowIndex];
+    assert.ok(row && row.slices.every((slice) => slice.loadSlabId !== 'loader-dma-00087200'), `p${rowIndex} crossed a runtime-slab endpoint`);
+  }
+
+  const affectedRuntimeOwners = [
+    { rowIndex: 1745, romStart: 0x000BBD50, vramStart: 0x801CF2F0 },
+    { rowIndex: 1746, romStart: 0x000BBD80, vramStart: 0x801CF320 },
+    { rowIndex: 1752, romStart: 0x000BC684, vramStart: 0x801CFC24 },
+    { rowIndex: 1767, romStart: 0x000BD26C, vramStart: 0x801D080C },
+  ];
+  for (const expected of affectedRuntimeOwners) {
+    const row = model.rows[expected.rowIndex];
+    assert.ok(row, `affected runtime owner is missing: p${expected.rowIndex}`);
+    assert.strictEqual(row.romStart, expected.romStart, `affected runtime owner ROM drift: p${expected.rowIndex}`);
+    assert.strictEqual(row.slices.length, 1, `affected runtime owner slice drift: p${expected.rowIndex}`);
+    assert.strictEqual(row.slices[0].vramStart, expected.vramStart, `affected runtime owner VMA drift: p${expected.rowIndex}`);
+    assert.strictEqual(row.slices[0].loadSlabId, 'loader-dma-00087200', `affected runtime owner slab drift: p${expected.rowIndex}`);
+  }
+
+  const localJumpWord = romBytes.readUInt32BE(0x000BD2D0);
+  assert.strictEqual(localJumpWord, 0x0807421F, 'func_000BD26C retail local-jump word drift');
+  const localJumpTarget = 0x80000000 | ((localJumpWord & 0x03FFFFFF) << 2);
+  assert.strictEqual(localJumpTarget >>> 0, 0x801D087C, 'func_000BD26C retail local-jump target drift');
+  assert.strictEqual(localJumpTarget >>> 0, runtimeSlab.vramStart + (0x000BD2DC - runtimeSlab.romStart), 'func_000BD26C local jump does not agree with the runtime slab');
 
   for (let leftIndex = 0; leftIndex < model.nonDescriptorLoadSlabs.length; leftIndex += 1) {
     const left = model.nonDescriptorLoadSlabs[leftIndex];

@@ -11,6 +11,7 @@ const {
   targetMetrics,
 } = require('../tools/lib/matching/mips_analysis');
 const {
+  digest,
   loadWorkbenchModel,
   resolveTarget,
   targetRecord,
@@ -31,7 +32,11 @@ const {
   preserveGprArgumentGaps,
   widenNarrowReturns,
 } = require('../tools/lib/matching/m2c');
-const { ROOT } = require('../tools/lib/phase7_conventional');
+const {
+  CONFIG_PATH: PHASE7_CONFIG_PATH,
+  ROOT,
+  sha256File,
+} = require('../tools/lib/phase7_conventional');
 const { requestStore } = require('../tools/lib/matching/store');
 const {
   MATCHING_ROOT,
@@ -585,6 +590,14 @@ function storeTests() {
 
 function acceptedModelTests() {
   const workbench = loadWorkbenchModel();
+  assert(workbench.modelManifest.targetModelContract === 3, 'target-model contract drift');
+  assert(JSON.stringify(workbench.modelManifest.conventionalBuild) === JSON.stringify({
+    path: 'config/phase7/conventional-build.json',
+    sha256: sha256File(PHASE7_CONFIG_PATH),
+  }), 'accepted placement configuration is missing from target-model identity');
+  const changedPlacementManifest = JSON.parse(JSON.stringify(workbench.modelManifest));
+  changedPlacementManifest.conventionalBuild.sha256 = '0'.repeat(64);
+  assert(digest(changedPlacementManifest) !== workbench.modelId, 'placement configuration drift did not invalidate the target model');
   assert(workbench.targets.length === 4883, 'accepted function census drift');
   assert(workbench.targets.filter((target) => target.symbolByteOffset === 0).length === 4878, 'ordinary target census drift');
   const memcpy = resolveTarget(workbench, 'memcpy_bytewise');
