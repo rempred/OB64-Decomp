@@ -66,6 +66,7 @@ Batch research supports explicit bounds and is checkpointed after every target:
 ```powershell
 node tools/match.js sweep --max-size 64 --leaf-only --limit 200
 node tools/match.js sweep --set smallest-leaves-200 --variant structured --no-context
+node tools/match.js sweep --max-size 256 --variant structured-return-flow --no-context --jobs 8
 node tools/match.js sweep-status
 node tools/match.js sweep-status --include-targets
 ```
@@ -75,7 +76,15 @@ configured ensemble; supply a set, size, or limit unless that full run is
 intentional. General sweeps omit active matching targets by default. The fixed
 `smallest-leaves-200` calibration set includes solved members so historical
 runs remain comparable. `--include-solved` opts a general sweep back into active
-targets.
+targets. `--jobs N` parallelizes across targets while keeping the rulesets for
+one target together so generation and compilation reuse remain intact. Parallel
+sweeps currently require `--no-context`; one coordinator records deterministic,
+per-target checkpoints, and changing the worker count does not change sweep
+identity. The coordinator runs workers from an authenticated temporary snapshot
+of the pinned m2c tree, and ruleset definitions plus target membership are part
+of sweep identity. Infrastructure exceptions abort with the current target left
+pending for resume. Start with eight workers on a 16-thread host and increase
+only after a bounded canary shows that compiler and SQLite traffic remain healthy.
 
 Calibrated structured rulesets are available when the ordinary structured
 draft is close:

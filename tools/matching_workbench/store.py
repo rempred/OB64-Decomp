@@ -340,7 +340,8 @@ def _put_sweep(connection: sqlite3.Connection, request: dict[str, Any]) -> dict[
         """INSERT INTO sweep_run(sweep_id,model_id,selector_json,status,summary_json,started_at,finished_at)
            VALUES (?,?,?,?,?,?,?)
            ON CONFLICT(sweep_id) DO UPDATE SET status=excluded.status,
-             summary_json=excluded.summary_json,finished_at=excluded.finished_at""",
+             summary_json=excluded.summary_json,started_at=excluded.started_at,
+             finished_at=excluded.finished_at""",
         (
             source["sweepId"], source["modelId"], selector_json,
             source["status"], _json(source["summary"]), source["startedAt"],
@@ -560,14 +561,29 @@ def main() -> None:
     schema = Path(args.schema).resolve()
     database.parent.mkdir(parents=True, exist_ok=True)
     request = json.load(sys.stdin)
-    connection = sqlite3.connect(database)
+    connection = sqlite3.connect(database, timeout=30.0)
     connection.row_factory = sqlite3.Row
     connection.execute("PRAGMA foreign_keys=ON")
     connection.execute("PRAGMA busy_timeout=30000")
-    connection.executescript(schema.read_text(encoding="utf-8"))
-    version = connection.execute("SELECT value FROM metadata WHERE key='schemaVersion'").fetchone()[0]
+    try:
+        version_row = connection.execute(
+            "SELECT value FROM metadata WHERE key='schemaVersion'"
+        ).fetchone()
+        version = version_row[0] if version_row is not None else None
+    except sqlite3.OperationalError:
+        version = None
+    if request.get("action") == "init" or version != "2":
+        connection.executescript(schema.read_text(encoding="utf-8"))
+        version = connection.execute(
+            "SELECT value FROM metadata WHERE key='schemaVersion'"
+        ).fetchone()[0]
     if version != "2":
         raise RuntimeError(f"matching workbench schema drift: {version}")
+    if request.get("action") == "init":
+        # A sweep coordinator initializes the store before starting workers.
+        # WAL keeps their read-heavy cache/provenance traffic concurrent while
+        # SQLite continues to serialize the short transactional writes.
+        connection.execute("PRAGMA journal_mode=WAL")
     try:
         with connection:
             result = dispatch(connection, request)

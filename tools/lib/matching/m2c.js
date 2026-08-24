@@ -1,7 +1,9 @@
 'use strict';
 
 const childProcess = require('child_process');
+const crypto = require('crypto');
 const fs = require('fs');
+const os = require('os');
 const path = require('path');
 const { ROOT } = require('../phase7_conventional');
 const { resolveLocalTools } = require('../local_tools');
@@ -10,6 +12,7 @@ const { MATCHING_ROOT, compileCandidate, recordCandidate, syncTargets } = requir
 const { renderM2cContext, storeTargetContext } = require('./context');
 
 const M2C_ADAPTER_VERSION = 8;
+const M2C_SNAPSHOT_PREFIX = 'ob64-m2c-snapshot-';
 
 const TYPE_PRELUDE = [
   'typedef signed char s8;',
@@ -509,6 +512,107 @@ function resolveM2c(workbench, options = {}) {
   return { root, script, commit, tree, untracked: statusLines.filter((line) => line.startsWith('?? ')).map((line) => line.slice(3)) };
 }
 
+function m2cSnapshotContentSha256(root) {
+  const resolvedRoot = path.resolve(root);
+  const hash = crypto.createHash('sha256');
+  function visit(directory) {
+    for (const entry of fs.readdirSync(directory, { withFileTypes: true }).sort((left, right) => left.name.localeCompare(right.name))) {
+      const absolute = path.join(directory, entry.name);
+      const relative = path.relative(resolvedRoot, absolute).replace(/\\/g, '/');
+      if (entry.isDirectory()) {
+        hash.update(`directory\0${relative}\0`);
+        visit(absolute);
+      } else if (entry.isSymbolicLink()) {
+        hash.update(`symlink\0${relative}\0${fs.readlinkSync(absolute)}\0`);
+      } else if (entry.isFile()) {
+        hash.update(`file\0${relative}\0`);
+        hash.update(fs.readFileSync(absolute));
+        hash.update('\0');
+      } else {
+        throw new Error(`m2c snapshot contains an unsupported entry: ${relative}`);
+      }
+    }
+  }
+  visit(resolvedRoot);
+  return hash.digest('hex').toUpperCase();
+}
+
+function validateM2cSnapshot(m2c) {
+  if (!m2c?.snapshot || !m2c.snapshotRoot || !m2c.snapshotContentSha256) {
+    throw new Error('m2c sweep snapshot provenance is incomplete');
+  }
+  const script = path.join(path.resolve(m2c.root), 'm2c.py');
+  if (path.resolve(m2c.script) !== script || !fs.existsSync(script)) {
+    throw new Error('m2c sweep snapshot script is missing');
+  }
+  const observed = m2cSnapshotContentSha256(m2c.root);
+  if (observed !== m2c.snapshotContentSha256) {
+    throw new Error(`m2c sweep snapshot content drift: ${observed}`);
+  }
+  return m2c;
+}
+
+function setM2cSnapshotWritable(root, writable) {
+  function visit(directory) {
+    if (writable) fs.chmodSync(directory, 0o755);
+    for (const entry of fs.readdirSync(directory, { withFileTypes: true })) {
+      const absolute = path.join(directory, entry.name);
+      if (entry.isDirectory()) visit(absolute);
+      else if (entry.isFile()) fs.chmodSync(absolute, writable ? 0o644 : 0o444);
+    }
+    if (!writable) fs.chmodSync(directory, 0o555);
+  }
+  visit(path.resolve(root));
+}
+
+function removeM2cSnapshot(m2c) {
+  if (!m2c?.snapshotRoot) return;
+  const temporaryRoot = path.resolve(os.tmpdir());
+  const snapshotRoot = path.resolve(m2c.snapshotRoot);
+  const relative = path.relative(temporaryRoot, snapshotRoot);
+  if (!relative || relative.startsWith('..') || path.isAbsolute(relative)
+      || !path.basename(snapshotRoot).startsWith(M2C_SNAPSHOT_PREFIX)) {
+    throw new Error(`refusing to remove unsafe m2c snapshot path: ${snapshotRoot}`);
+  }
+  if (!fs.existsSync(snapshotRoot)) return;
+  setM2cSnapshotWritable(snapshotRoot, true);
+  fs.rmSync(snapshotRoot, { recursive: true, force: true, maxRetries: 3, retryDelay: 100 });
+}
+
+function createM2cSnapshot(workbench, authenticatedM2c) {
+  const source = resolveM2c(workbench, { m2cRoot: authenticatedM2c.root });
+  const snapshotRoot = fs.mkdtempSync(path.join(os.tmpdir(), M2C_SNAPSHOT_PREFIX));
+  const archive = path.join(snapshotRoot, 'source.tar');
+  const root = path.join(snapshotRoot, 'tree');
+  fs.mkdirSync(root);
+  try {
+    const archived = childProcess.spawnSync('git', [
+      '-C', source.root, 'archive', '--format=tar', `--output=${archive}`, source.commit,
+    ], { encoding: 'utf8', windowsHide: true });
+    if (archived.status !== 0 || archived.error) {
+      throw new Error(`m2c snapshot archive failed: ${String(archived.stderr || archived.error || '').trim() || 'unknown git error'}`);
+    }
+    const extracted = childProcess.spawnSync('tar', ['-xf', archive, '-C', root], { encoding: 'utf8', windowsHide: true });
+    if (extracted.status !== 0 || extracted.error) {
+      throw new Error(`m2c snapshot extraction failed: ${String(extracted.stderr || extracted.error || '').trim() || 'unknown tar error'}`);
+    }
+    fs.unlinkSync(archive);
+    const snapshot = {
+      ...source,
+      root,
+      script: path.join(root, 'm2c.py'),
+      snapshot: true,
+      snapshotRoot,
+      snapshotContentSha256: m2cSnapshotContentSha256(root),
+    };
+    setM2cSnapshotWritable(root, false);
+    return validateM2cSnapshot(snapshot);
+  } catch (error) {
+    removeM2cSnapshot({ snapshotRoot });
+    throw error;
+  }
+}
+
 function groupGenerationVariants(variants) {
   const groups = [];
   const byArguments = new Map();
@@ -525,7 +629,9 @@ function groupGenerationVariants(variants) {
 }
 
 function runM2c(workbench, target, options = {}) {
-  const m2c = resolveM2c(workbench, options);
+  // Sweeps authenticate m2c once before dispatching targets. Reuse that
+  // immutable identity instead of spawning three git probes for every target.
+  const m2c = options.m2c || resolveM2c(workbench, options);
   const localTools = options.localTools || resolveLocalTools();
   const targetRoot = path.join(MATCHING_ROOT, 'targets', target.symbol, 'prepare');
   fs.mkdirSync(targetRoot, { recursive: true });
@@ -560,6 +666,7 @@ function runM2c(workbench, target, options = {}) {
     const processResult = childProcess.spawnSync(localTools.splatPython, argumentsList, {
       cwd: m2c.root,
       encoding: 'utf8',
+      env: { ...process.env, PYTHONDONTWRITEBYTECODE: '1' },
       windowsHide: true,
       maxBuffer: workbench.config.limits.maximumCapturedOutputBytes,
     });
@@ -680,6 +787,7 @@ module.exports = {
   M2C_ADAPTER_VERSION,
   applyGenerationTransforms,
   compilableM2cSource,
+  createM2cSnapshot,
   expandValidSyntaxMacros,
   m2cDiagnostics,
   m2cFailure,
@@ -691,7 +799,9 @@ module.exports = {
   materializeMaskedComparison,
   prepareAndCompile,
   preserveGprArgumentGaps,
+  removeM2cSnapshot,
   resolveM2c,
   runM2c,
+  validateM2cSnapshot,
   widenNarrowReturns,
 };

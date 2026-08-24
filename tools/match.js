@@ -28,7 +28,7 @@ const { compareProbes, runProbe } = require('./lib/matching/probe');
 
 const VALUE_OPTIONS = new Set([
   'limit', 'source', 'candidate', 'variant', 'm2c-root', 'set', 'max-size',
-  'lane', 'note', 'research-compiler', 'passes',
+  'lane', 'note', 'research-compiler', 'passes', 'jobs',
 ]);
 const REPEAT_OPTIONS = new Set(['variant']);
 
@@ -47,7 +47,7 @@ Core:
 
 Generation:
   prepare <symbol> [--variant <ruleset>]... [--with-context|--no-context] [--runtime] [--no-compile] [--m2c-root <path>]
-  sweep [--set <name>] [--variant <ruleset>]... [--max-size N] [--leaf-only] [--limit N]
+  sweep [--set <name>] [--variant <ruleset>]... [--max-size N] [--leaf-only] [--limit N] [--jobs N]
         [--include-solved] [--with-context|--no-context] [--runtime] [--no-compile] [--m2c-root <path>]
   sweep-status [--limit N] [--include-targets]
 
@@ -353,7 +353,7 @@ function preserveCandidate(workbench, candidateId, note) {
   return { source: sourceRelative, dossier: dossierRelative };
 }
 
-function main(argv = process.argv.slice(2)) {
+async function main(argv = process.argv.slice(2)) {
   if (!argv.length || argv[0] === '--help' || argv[0] === '-h') { usage(); return; }
   const command = argv[0];
   const parsed = parseArgs(argv.slice(1));
@@ -482,8 +482,9 @@ function main(argv = process.argv.slice(2)) {
       ...(options['include-solved'] ? { includeSolved: true } : {}),
       limit: numeric(options.limit, '--limit'),
     };
-    const result = runSweep(workbench, selector, {
+    const result = await runSweep(workbench, selector, {
       variantNames: options.variant,
+      jobs: numeric(options.jobs, '--jobs', 1),
       compile: !options['no-compile'],
       generateContext: !options['no-context'],
       useContext: options['with-context'] === true,
@@ -591,12 +592,10 @@ function main(argv = process.argv.slice(2)) {
 }
 
 if (require.main === module) {
-  try {
-    main();
-  } catch (error) {
+  main().catch((error) => {
     console.error(`Matching workbench failed: ${error.message}`);
     process.exitCode = 1;
-  }
+  });
 }
 
 module.exports = {

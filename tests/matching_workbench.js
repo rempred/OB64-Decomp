@@ -4,6 +4,7 @@
 const fs = require('fs');
 const os = require('os');
 const path = require('path');
+const { EventEmitter } = require('events');
 const {
   bufferFromWords,
   compareMips,
@@ -38,8 +39,15 @@ const {
   compileArtifactDirectory,
 } = require('../tools/lib/matching/compiler');
 const { compareProbes } = require('../tools/lib/matching/probe');
-const { summarizeEnsemble } = require('../tools/lib/matching/sweep');
-const { boundedSweepResult } = require('../tools/match');
+const {
+  addTargetSummary,
+  buildSweepIdentity,
+  normalizeSweepJobs,
+  runParallelTargets,
+  selectSweepVariants,
+  summarizeEnsemble,
+} = require('../tools/lib/matching/sweep');
+const { boundedSweepResult, parseArgs } = require('../tools/match');
 
 function fail(message) {
   throw new Error(`matching workbench test failure: ${message}`);
@@ -63,6 +71,14 @@ function expectError(pattern, callback) {
     return;
   }
   fail(`expected error was not raised: ${pattern}`);
+}
+
+async function expectAsyncError(pattern, callback) {
+  try { await callback(); } catch (error) {
+    if (!pattern.test(error.message)) throw error;
+    return;
+  }
+  fail(`expected async error was not raised: ${pattern}`);
 }
 
 function classifierTests() {
@@ -340,6 +356,124 @@ function ensembleSummaryTests() {
   assert(alreadyBounded.summary.targetSamples[0].symbol === 'sample' && alreadyBounded.summary.targetsOmitted === 9, 'stored bounded target samples were discarded');
 }
 
+function sweepParallelismTests() {
+  assert(normalizeSweepJobs() === 1 && normalizeSweepJobs(8) === 8, 'valid sweep worker counts were not retained');
+  expectError(/positive integer/, () => normalizeSweepJobs(0));
+  expectError(/must not exceed 32/, () => normalizeSweepJobs(33));
+  const parsed = parseArgs(['--jobs', '8', '--no-context']);
+  assert(parsed.options.jobs === '8' && parsed.options['no-context'] === true, 'sweep jobs option was not parsed');
+
+  const identityWorkbench = {
+    modelId: 'MODEL',
+    config: {
+      m2c: {
+        repository: 'https://example.invalid/m2c.git', commit: 'COMMIT', tree: 'TREE', target: 'mips-gcc-c',
+        variants: [
+          { name: 'structured-return-flow', arguments: ['--valid-syntax'], transforms: ['direct-conditional-returns'] },
+          { name: 'structured-cursor-steps', arguments: ['--valid-syntax'], transforms: ['explicit-byte-cursor-steps'] },
+        ],
+      },
+      limits: { maximumCapturedOutputBytes: 1024 },
+    },
+  };
+  const identityTargets = [{ targetId: 'TARGET-1' }, { targetId: 'TARGET-2' }];
+  const identityM2c = { commit: 'COMMIT', tree: 'TREE' };
+  const identityOptions = { compile: true, generateContext: false, useContext: false, runtimeContext: false };
+  const identityVariants = selectSweepVariants(identityWorkbench, ['structured-return-flow']);
+  const oneJob = buildSweepIdentity(identityWorkbench, { maxSize: 256 }, identityTargets, identityVariants, { ...identityOptions, jobs: 1 }, identityM2c);
+  const eightJobs = buildSweepIdentity(identityWorkbench, { maxSize: 256 }, identityTargets, identityVariants, { ...identityOptions, jobs: 8 }, identityM2c);
+  assert(oneJob.sweepId === eightJobs.sweepId, 'worker count fragmented sweep identity');
+  const runtime = buildSweepIdentity(identityWorkbench, { maxSize: 256 }, identityTargets, identityVariants, { ...identityOptions, runtimeContext: true }, identityM2c);
+  assert(runtime.sweepId !== oneJob.sweepId, 'runtime context was omitted from sweep identity');
+  const changedWorkbench = JSON.parse(JSON.stringify(identityWorkbench));
+  changedWorkbench.config.m2c.variants[0].transforms.push('new-rule');
+  const changedVariants = selectSweepVariants(changedWorkbench, ['structured-return-flow']);
+  const changedRule = buildSweepIdentity(changedWorkbench, { maxSize: 256 }, identityTargets, changedVariants, identityOptions, identityM2c);
+  assert(changedRule.sweepId !== oneJob.sweepId, 'complete ruleset definition was omitted from sweep identity');
+  const changedTargets = buildSweepIdentity(identityWorkbench, { maxSize: 256 }, [{ targetId: 'TARGET-3' }, identityTargets[1]], identityVariants, identityOptions, identityM2c);
+  assert(changedTargets.sweepId !== oneJob.sweepId, 'selected target membership was omitted from sweep identity');
+  expectError(/unknown m2c variant/, () => selectSweepVariants(identityWorkbench, ['not-a-rule']));
+
+  const variants = [{ name: 'structured-return-flow' }, { name: 'structured-cursor-steps' }];
+  const summary = {
+    processed: 0, generated: 0, compileSucceeded: 0, exactBytes: 0,
+    relocationMaskedExact: 0, failed: 0, classifications: {}, targets: [],
+  };
+  const order = new Map([['first', 0], ['second', 1]]);
+  addTargetSummary(summary, {
+    symbol: 'second', bytes: 8, variants: [
+      { variant: 'structured-return-flow', generated: true, status: 'compiled', primaryClass: 'opcode-mismatch' },
+      { variant: 'structured-cursor-steps', generated: false, status: 'failed' },
+    ],
+  }, variants, order);
+  addTargetSummary(summary, {
+    symbol: 'first', bytes: 4, variants: [
+      { variant: 'structured-return-flow', generated: true, status: 'compiled', primaryClass: 'exact', exactBytes: true, candidateId: 'C1' },
+      { variant: 'structured-cursor-steps', generated: true, status: 'compiled', primaryClass: 'exact', exactBytes: true, candidateId: 'C1' },
+    ],
+  }, variants, order);
+  assert(summary.targets.map((target) => target.symbol).join(',') === 'first,second', 'out-of-order worker results were not normalized');
+  assert(summary.processed === 2 && summary.generated === 3 && summary.compileSucceeded === 3 && summary.failed === 1, 'parallel target accounting drifted');
+  assert(summary.ensemble.exactTargetCount === 1, 'parallel target accounting lost deduplicated exact membership');
+}
+
+function fakeSweepWorker(index, behavior) {
+  const worker = new EventEmitter();
+  worker.terminate = () => Promise.resolve(0);
+  worker.postMessage = (message) => behavior(worker, message, index);
+  setImmediate(() => worker.emit('message', { type: 'ready' }));
+  return worker;
+}
+
+async function sweepWorkerLifecycleTests() {
+  const targets = [
+    { targetId: 'TARGET-1', symbol: 'first' },
+    { targetId: 'TARGET-2', symbol: 'second' },
+  ];
+  const arrivals = [];
+  await runParallelTargets(targets, 2, {}, (target) => arrivals.push(target.symbol), {
+    createWorker: (_, index) => fakeSweepWorker(index, (worker, message, workerIndex) => {
+      if (message.type === 'target') {
+        setTimeout(() => worker.emit('message', {
+          type: 'result', target: { symbol: message.symbol, bytes: 4, variants: [] },
+        }), workerIndex === 0 ? 15 : 0);
+      } else if (message.type === 'shutdown') {
+        setImmediate(() => {
+          worker.emit('message', { type: 'shutdown-complete' });
+          worker.emit('exit', 0);
+        });
+      }
+    }),
+  });
+  assert(arrivals.join(',') === 'second,first', 'parallel sweep did not accept out-of-order worker completion');
+
+  const oneTarget = [targets[0]];
+  await expectAsyncError(/initialization failed: fixture fatal/, () => runParallelTargets(oneTarget, 1, {}, () => {}, {
+    createWorker: () => {
+      const worker = new EventEmitter();
+      worker.terminate = () => Promise.resolve(0);
+      worker.postMessage = () => {};
+      setImmediate(() => worker.emit('message', { type: 'fatal', error: 'fixture fatal' }));
+      return worker;
+    },
+  }));
+  await expectAsyncError(/failed while processing first: fixture target error/, () => runParallelTargets(oneTarget, 1, {}, () => {}, {
+    createWorker: (_, index) => fakeSweepWorker(index, (worker, message) => {
+      if (message.type === 'target') setImmediate(() => worker.emit('message', { type: 'target-error', symbol: message.symbol, error: 'fixture target error' }));
+    }),
+  }));
+  await expectAsyncError(/without a shutdown acknowledgement while processing first/, () => runParallelTargets(oneTarget, 1, {}, () => {}, {
+    createWorker: (_, index) => fakeSweepWorker(index, (worker, message) => {
+      if (message.type === 'target') setImmediate(() => worker.emit('exit', 0));
+    }),
+  }));
+  await expectAsyncError(/exited with code 7/, () => runParallelTargets(oneTarget, 1, {}, () => {}, {
+    createWorker: (_, index) => fakeSweepWorker(index, (worker, message) => {
+      if (message.type === 'target') setImmediate(() => worker.emit('exit', 7));
+    }),
+  }));
+}
+
 function storeTests() {
   const directory = fs.mkdtempSync(path.join(os.tmpdir(), 'ob64-match-store-'));
   const database = path.join(directory, 'workbench.sqlite');
@@ -371,6 +505,19 @@ function storeTests() {
     expectError(/FOREIGN KEY constraint failed/, () => requestStore({ action: 'replace_families', modelId: 'MODEL-A', groups: [{ groupId: 'G2', tier: 'exact', representation: 'y', metadata: {}, members: ['MISSING'] }] }, options));
     const families = requestStore({ action: 'query', name: 'families_for_target', args: { targetId: 'TARGET-A', limit: 20 } }, options);
     assert(families.length === 1 && families[0].group_id === 'G1', 'failed family replacement partially altered the store');
+
+    const sweep = {
+      sweepId: 'SWEEP-A', modelId: 'MODEL-A', selector: { fixture: true }, status: 'invalid',
+      summary: { processed: 1 }, startedAt: '2026-08-22T00:00:00.000Z', finishedAt: '2026-08-22T00:00:01.000Z',
+    };
+    requestStore({ action: 'put_sweep', record: sweep }, options);
+    requestStore({ action: 'put_sweep', record: {
+      ...sweep, status: 'running', summary: { processed: 0 },
+      startedAt: '2026-08-22T01:00:00.000Z', finishedAt: null,
+    } }, options);
+    const restartedSweep = requestStore({ action: 'query', name: 'sweep_by_id', args: { sweepId: 'SWEEP-A' } }, options);
+    assert(restartedSweep.started_at === '2026-08-22T01:00:00.000Z' && restartedSweep.finished_at === null,
+      'restarted invalid sweep retained the prior attempt timing');
 
     const failedCompile = {
       runId: 'RUN-FAILED', candidateId: 'CANDIDATE-A', cacheKey: 'CACHE-A', status: 'failed',
@@ -452,7 +599,7 @@ function acceptedModelTests() {
   assert(first.expectedBytes.equals(second.expectedBytes), 'known exact clone fixture drift');
 }
 
-function main() {
+async function main() {
   classifierTests();
   familyTests();
   m2cAdapterTests();
@@ -460,11 +607,18 @@ function main() {
   candidateIdentityTests();
   probeComparisonTests();
   ensembleSummaryTests();
+  sweepParallelismTests();
+  await sweepWorkerLifecycleTests();
   storeTests();
   acceptedModelTests();
   console.log('Matching workbench tests: PASS');
 }
 
-if (require.main === module) main();
+if (require.main === module) {
+  main().catch((error) => {
+    console.error(error.stack || error.message);
+    process.exitCode = 1;
+  });
+}
 
 module.exports = { main };
