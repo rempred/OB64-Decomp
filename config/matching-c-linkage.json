@@ -504,6 +504,30 @@
       ]
     },
     {
+      "symbol": "func_00043e88",
+      "expectedRelocations": [
+        { "offset": "0x00000038", "type": "R_MIPS_26", "symbol": ".text", "section": ".rel.text" }
+      ]
+    },
+    {
+      "symbol": "func_00043edc",
+      "expectedRelocations": [
+        { "offset": "0x00000038", "type": "R_MIPS_26", "symbol": ".text", "section": ".rel.text" }
+      ]
+    },
+    {
+      "symbol": "func_00043f30",
+      "expectedRelocations": [
+        { "offset": "0x00000038", "type": "R_MIPS_26", "symbol": ".text", "section": ".rel.text" }
+      ]
+    },
+    {
+      "symbol": "func_00043f84",
+      "expectedRelocations": [
+        { "offset": "0x00000038", "type": "R_MIPS_26", "symbol": ".text", "section": ".rel.text" }
+      ]
+    },
+    {
       "symbol": "func_00044934",
       "expectedRelocations": [
         { "offset": "0x00000064", "type": "R_MIPS_26", "symbol": ".text", "section": ".rel.text" }
