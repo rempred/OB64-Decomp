@@ -558,7 +558,55 @@
         { "offset": "0x00000094", "type": "R_MIPS_26", "symbol": "func_0016B088", "section": ".rel.text" }
       ]
     },
+    {
+      "symbol": "func_000bf458",
+      "expectedRelocations": [
+        { "offset": "0x00000028", "type": "R_MIPS_HI16", "symbol": "D_80193BC0", "section": ".rel.text" },
+        { "offset": "0x0000002C", "type": "R_MIPS_LO16", "symbol": "D_80193BC0", "section": ".rel.text" },
+        { "offset": "0x00000060", "type": "R_MIPS_HI16", "symbol": "g_func_0019554C_class_records", "section": ".rel.text" },
+        { "offset": "0x00000068", "type": "R_MIPS_LO16", "symbol": "g_func_0019554C_class_records", "section": ".rel.text" },
+        { "offset": "0x00000094", "type": "R_MIPS_26", "symbol": ".text", "section": ".rel.text" },
+        { "offset": "0x0000009C", "type": "R_MIPS_26", "symbol": "func_000bedb8", "section": ".rel.text" },
+        { "offset": "0x000000D4", "type": "R_MIPS_HI16", "symbol": "D_801EF288", "section": ".rel.text" },
+        { "offset": "0x000000D8", "type": "R_MIPS_LO16", "symbol": "D_801EF288", "section": ".rel.text" },
+        { "offset": "0x000000FC", "type": "R_MIPS_26", "symbol": "func_000415fc", "section": ".rel.text" }
+      ]
+    },
     { "symbol": "func_000bfebc", "expectedRelocations": [] },
+    {
+      "symbol": "func_000c37ec",
+      "expectedRelocations": [
+        { "offset": "0x00000028", "type": "R_MIPS_26", "symbol": "func_000bbd80", "section": ".rel.text" },
+        { "offset": "0x00000038", "type": "R_MIPS_26", "symbol": "func_000bbd80", "section": ".rel.text" },
+        { "offset": "0x00000070", "type": "R_MIPS_26", "symbol": ".text", "section": ".rel.text" },
+        { "offset": "0x00000098", "type": "R_MIPS_26", "symbol": "func_000bbd50", "section": ".rel.text" },
+        { "offset": "0x000000BC", "type": "R_MIPS_26", "symbol": ".text", "section": ".rel.text" },
+        { "offset": "0x000000C4", "type": "R_MIPS_26", "symbol": "func_000bbd50", "section": ".rel.text" },
+        { "offset": "0x000000DC", "type": "R_MIPS_26", "symbol": "func_000bbd50", "section": ".rel.text" }
+      ]
+    },
+    {
+      "symbol": "func_000c91a0",
+      "expectedRelocations": [
+        { "offset": "0x00000000", "type": "R_MIPS_HI16", "symbol": "D_80196AF8", "section": ".rel.text" },
+        { "offset": "0x00000004", "type": "R_MIPS_LO16", "symbol": "D_80196AF8", "section": ".rel.text" },
+        { "offset": "0x00000034", "type": "R_MIPS_26", "symbol": ".text", "section": ".rel.text" },
+        { "offset": "0x00000048", "type": "R_MIPS_26", "symbol": ".text", "section": ".rel.text" },
+        { "offset": "0x00000058", "type": "R_MIPS_26", "symbol": "func_000c54c0", "section": ".rel.text" },
+        { "offset": "0x00000060", "type": "R_MIPS_26", "symbol": ".text", "section": ".rel.text" },
+        { "offset": "0x00000084", "type": "R_MIPS_26", "symbol": ".text", "section": ".rel.text" },
+        { "offset": "0x000000A4", "type": "R_MIPS_26", "symbol": ".text", "section": ".rel.text" },
+        { "offset": "0x000000C0", "type": "R_MIPS_26", "symbol": ".text", "section": ".rel.text" },
+        { "offset": "0x000000FC", "type": "R_MIPS_HI16", "symbol": "D_80196AF8", "section": ".rel.text" },
+        { "offset": "0x00000100", "type": "R_MIPS_LO16", "symbol": "D_80196AF8", "section": ".rel.text" },
+        { "offset": "0x00000128", "type": "R_MIPS_HI16", "symbol": "D_80196AF8", "section": ".rel.text" },
+        { "offset": "0x0000012C", "type": "R_MIPS_LO16", "symbol": "D_80196AF8", "section": ".rel.text" },
+        { "offset": "0x00000144", "type": "R_MIPS_26", "symbol": "func_000bc684", "section": ".rel.text" },
+        { "offset": "0x0000014C", "type": "R_MIPS_HI16", "symbol": "D_80196AF8", "section": ".rel.text" },
+        { "offset": "0x00000150", "type": "R_MIPS_LO16", "symbol": "D_80196AF8", "section": ".rel.text" },
+        { "offset": "0x00000164", "type": "R_MIPS_26", "symbol": "func_000bf5dc", "section": ".rel.text" }
+      ]
+    },
     {
       "symbol": "func_00044130",
       "expectedRelocations": [
