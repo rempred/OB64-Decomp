@@ -389,6 +389,7 @@
     { "symbol": "func_002B5044", "source": "src/lib/func_002B5044.c" },
     { "symbol": "func_002a3310", "source": "src/lib/func_002a3310.c" },
     { "symbol": "func_000bf228", "source": "src/lib/func_000bf228.c" },
+    { "symbol": "func_00044934", "source": "src/lib/func_00044934.c" },
     { "symbol": "strcat", "source": "src/lib/strcat.c" }
   ]
 }
