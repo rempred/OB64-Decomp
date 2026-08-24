@@ -466,6 +466,7 @@
     { "symbol": "func_000b34c4", "expectedRelocations": [] },
     { "symbol": "func_000b876c", "expectedRelocations": [] },
     { "symbol": "func_000bba9c", "expectedRelocations": [] },
+    { "symbol": "func_000bd318", "expectedRelocations": [] },
     { "symbol": "func_000ecabc", "expectedRelocations": [] },
     { "symbol": "func_000ecb58", "expectedRelocations": [] },
     { "symbol": "func_00100298", "expectedRelocations": [] },
