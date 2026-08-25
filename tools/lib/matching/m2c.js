@@ -11,7 +11,7 @@ const { emitM2cAssembly } = require('./assembly');
 const { MATCHING_ROOT, compileCandidate, recordCandidate, syncTargets } = require('./compiler');
 const { renderM2cContext, storeTargetContext } = require('./context');
 
-const M2C_ADAPTER_VERSION = 10;
+const M2C_ADAPTER_VERSION = 11;
 const M2C_SNAPSHOT_PREFIX = 'ob64-m2c-snapshot-';
 
 const TYPE_PRELUDE = [

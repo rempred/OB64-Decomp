@@ -17,8 +17,8 @@ const {
   targetRecord,
 } = require('../tools/lib/matching/target_model');
 const { collisionSafeGroups } = require('../tools/lib/matching/family');
-const { buildTargetContext } = require('../tools/lib/matching/context');
-const { emitM2cAssembly } = require('../tools/lib/matching/assembly');
+const { buildTargetContext, targetInstructions } = require('../tools/lib/matching/context');
+const { discoverOverlayJumpTables, emitM2cAssembly } = require('../tools/lib/matching/assembly');
 const {
   applyGenerationTransforms,
   compilableM2cSource,
@@ -671,6 +671,22 @@ function acceptedModelTests() {
     && straddler.originalAssemblyParts[1].symbol === 'func_0021EBBC_chunk34tail', 'accepted straddler source-part provenance is missing');
   const straddlerAssembly = emitM2cAssembly(straddler, workbench);
   assert(/nop # m2c analysis guard:[^\n]+\n\.L_0021F808:/.test(straddlerAssembly), 'm2c likely-branch/call-delay guard is missing');
+  const largeDispatcher = resolveTarget(workbench, 'func_0010DDB4');
+  const largeDispatcherTables = discoverOverlayJumpTables(largeDispatcher, workbench,
+    targetInstructions(largeDispatcher));
+  assert(largeDispatcherTables.length === 1
+    && largeDispatcherTables[0].tableVram === 0x801EE210
+    && largeDispatcherTables[0].tableRom === 0x00142950
+    && largeDispatcherTables[0].entryCount === 52, '52-entry overlay jump table was not recovered exactly');
+  const largeDispatcherAssembly = emitM2cAssembly(largeDispatcher, workbench);
+  assert(/lui \$at, %hi\(jtbl_801EE210\)/.test(largeDispatcherAssembly)
+    && /lw \$v0, %lo\(jtbl_801EE210\)\(\$at\)/.test(largeDispatcherAssembly)
+    && /glabel jtbl_801EE210\n\.word \.L_801B9CB0/.test(largeDispatcherAssembly), 'm2c overlay jump-table annotations are incomplete');
+  const twoSwitches = resolveTarget(workbench, 'func_001390F0');
+  const twoSwitchTables = discoverOverlayJumpTables(twoSwitches, workbench,
+    targetInstructions(twoSwitches));
+  assert(twoSwitchTables.map((table) => `${table.tableVram.toString(16)}:${table.entryCount}`).join(',')
+    === '801f0308:23,801f0368:7', 'multiple overlay jump tables were not recovered independently');
   expectError(/does not resolve uniquely/, () => resolveTarget(workbench, 'func_0021EBBC_chunk34tail'));
 }
 

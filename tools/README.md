@@ -124,6 +124,13 @@ masked value as a separate C temporary. These are versioned post-generation
 hypotheses, and candidate provenance records whether a transform actually
 applied. They do not rewrite canonical source or replace exact compilation.
 
+Prepared assembly also supplies canonical overlay jump-table context when a
+dispatcher has the accepted bounded `sltiu`/scale-by-four/table-load/`jr`
+shape. The workbench maps the live table address through the accepted overlay
+descriptor and emits entries only when every canonical ROM word is an aligned
+destination inside the same accepted function. Unbounded, out-of-range, or
+partially invalid tables fail closed and are not guessed.
+
 These passes form an ensemble, not a contest to select one winner. A ruleset
 with unique exact matches remains useful even if another function regresses in
 that pass, because the other passes still retain it. A saved sweep records:

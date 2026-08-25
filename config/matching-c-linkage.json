@@ -1115,6 +1115,24 @@
         { "offset": "0x00000234", "type": "R_MIPS_LO16", "symbol": "D_80196AF8", "section": ".rel.text" }
       ]
     },
+    {
+      "symbol": "func_0012FBB8",
+      "expectedRelocations": [
+        { "offset": "0x00000044", "type": "R_MIPS_26", "symbol": ".text", "section": ".rel.text" },
+        { "offset": "0x00000074", "type": "R_MIPS_HI16", "symbol": "g_func_001957D0_source_records", "section": ".rel.text" },
+        { "offset": "0x00000078", "type": "R_MIPS_LO16", "symbol": "g_func_001957D0_source_records", "section": ".rel.text" },
+        { "offset": "0x000000BC", "type": "R_MIPS_26", "symbol": ".text", "section": ".rel.text" },
+        { "offset": "0x00000104", "type": "R_MIPS_26", "symbol": ".text", "section": ".rel.text" },
+        { "offset": "0x0000013C", "type": "R_MIPS_26", "symbol": "func_00022e60", "section": ".rel.text" },
+        { "offset": "0x0000018C", "type": "R_MIPS_26", "symbol": ".text", "section": ".rel.text" },
+        { "offset": "0x0000019C", "type": "R_MIPS_26", "symbol": ".text", "section": ".rel.text" },
+        { "offset": "0x000001AC", "type": "R_MIPS_26", "symbol": ".text", "section": ".rel.text" },
+        { "offset": "0x000001BC", "type": "R_MIPS_26", "symbol": ".text", "section": ".rel.text" },
+        { "offset": "0x000001CC", "type": "R_MIPS_26", "symbol": ".text", "section": ".rel.text" },
+        { "offset": "0x000001DC", "type": "R_MIPS_26", "symbol": ".text", "section": ".rel.text" },
+        { "offset": "0x00000208", "type": "R_MIPS_26", "symbol": ".text", "section": ".rel.text" }
+      ]
+    },
     { "symbol": "strcat", "expectedRelocations": [] }
   ]
 }
