@@ -112,7 +112,7 @@ function prepareCompilerSession(options = {}) {
     compilerFlags: context.phase8.config.compiler.compileFlags,
     assembler: context.phase8.toolchain.identity,
     sourcePolicyPreprocessorSha256: preprocessor.sha256,
-    workbenchCompilerContract: 1,
+    workbenchCompilerContract: 2,
   };
   return { context, runtime, preprocessor, tool, toolId: digest(tool) };
 }
@@ -177,7 +177,12 @@ function compileCandidate(workbench, target, sourceText, options = {}) {
       session.context.localTools.compiler,
       session.runtime.tools['mips-kmc-elf-as.exe'].path,
       session.runtime.tools['mips-kmc-elf-objcopy.exe'].path,
-      { enforceAcceptedContract: false, classification },
+      {
+        enforceAcceptedContract: false,
+        allowAuxiliaryReadOnlySections: true,
+        legalizeCop1BinaryInstructions: true,
+        classification,
+      },
     );
     const proofObject = path.join(artifactDir, ...result.proofObjectRelative.split('/'));
     const elf = parseElfFile(proofObject);

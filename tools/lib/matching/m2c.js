@@ -11,7 +11,7 @@ const { emitM2cAssembly } = require('./assembly');
 const { MATCHING_ROOT, compileCandidate, recordCandidate, syncTargets } = require('./compiler');
 const { renderM2cContext, storeTargetContext } = require('./context');
 
-const M2C_ADAPTER_VERSION = 8;
+const M2C_ADAPTER_VERSION = 10;
 const M2C_SNAPSHOT_PREFIX = 'ob64-m2c-snapshot-';
 
 const TYPE_PRELUDE = [
@@ -91,7 +91,9 @@ function expandValidSyntaxMacros(source) {
     ['M2C_OVERFLOW', () => '(0)'],
   ];
   let result = source;
-  for (const [name, expansion] of expansions) result = expandMacro(result, name, expansion);
+  for (const [name, expansion] of expansions) {
+    while (new RegExp(`\\b${name}\\s*\\(`).test(result)) result = expandMacro(result, name, expansion);
+  }
   return result.replace(/\bM2C_CARRY\b/g, '0');
 }
 
@@ -158,7 +160,12 @@ function compilableM2cSource(source) {
   // in the generation result, so remove those lines from the compilable view.
   const withoutWarnings = source.replace(/^Warning:\s*.*(?:\r?\n|$)/gm, '');
   const preprocessed = stripCComments(withoutWarnings.replace(/^\uFEFF/, ''));
-  return `${TYPE_PRELUDE}${expandValidSyntaxMacros(preprocessed)}`;
+  const expanded = expandValidSyntaxMacros(preprocessed);
+  // m2c uses a dereferenced `void *` for pointer-valued unknown memory words.
+  // Dereferencing void is invalid C; retaining the pointer-sized value requires
+  // a `void **` lvalue and does not change the emitted 32-bit load/store width.
+  const typedVoidDereferences = expanded.replace(/\*\(\s*void\s*\*\s*\)/g, '*(void **)');
+  return `${TYPE_PRELUDE}${typedVoidDereferences.replace(/\bNULL\b/g, '0')}`;
 }
 
 function escapedPattern(value) {

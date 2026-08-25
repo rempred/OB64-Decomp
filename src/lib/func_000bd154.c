@@ -54,9 +54,11 @@ int func_000bd154(int arg0)
         asm volatile("# Hybrid scope: retail uses a branch-likely so only the rejected path increments here.\n"
                      "# If should_process in $v0 is zero, beql skips the C success block and its annulled\n"
                      "# delay slot increments the $s0 entry index; the accepted path increments at the call.\n"
+                     "# Preserve the branch-likely and its rejected-path-only increment.\n"
                      ".set noreorder\n"
-                     "beql %1,$0,1f\n"
-                     "addiu %0,%2,1\n"
+                     "beql %1,$0,1f # skip character processing when the item/output predicate is false\n"
+                     "addiu %0,%2,1 # increment the entry index only in the taken likely-branch delay slot\n"
+                     "# Restore normal assembler scheduling after the rejected-path branch.\n"
                      ".set reorder\n"
                      : "=r" (index) : "r" (should_process), "0" (index));
         if (item >= 100) {
@@ -70,7 +72,7 @@ int func_000bd154(int arg0)
         index++;
         *output = result;
         output++;
-        asm volatile("1:\n"
+        asm volatile("1: # join after rejecting an entry or storing its class-combination result\n"
                      "# The local label is the rejected-path join; it emits no instruction.\n");
     } while (index < 9);
 

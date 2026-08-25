@@ -53,9 +53,9 @@ void func_000bf458(void)
                 "# The explicit $s3/$s5/$s2/$s0/$s1 and $v1 bindings elsewhere emit\n"
                 "# no opcodes; they preserve retail's long-lived counters, cursors, and\n"
                 "# final sum allocation after pure C selected different registers.\n"
-                "lui $1,%%hi(g_func_0019554C_class_records+0x45)\n"
-                "addu $1,$1,%1\n"
-                "lbu %0,%%lo(g_func_0019554C_class_records+0x45)($1)\n"
+                "lui $1,%%hi(g_func_0019554C_class_records+0x45) # load the class field_45 table address high half into $at\n"
+                "addu $1,$1,%1 # add the selected class's 0x48-byte record offset to $at\n"
+                "lbu %0,%%lo(g_func_0019554C_class_records+0x45)($1) # load and zero-extend field_45 for that class record\n"
                 : "=r" (current_class)
                 : "r" (class_offset)
                 : "$1");

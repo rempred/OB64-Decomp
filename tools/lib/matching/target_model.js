@@ -45,6 +45,47 @@ function loadBaserom(model) {
   return bytes;
 }
 
+function functionPartStem(name) {
+  const match = /^(func_[0-9a-f]{8})(?:_chunk[0-9]+head)?$/i.exec(String(name || ''));
+  return match ? match[1].toLowerCase() : null;
+}
+
+function continuationPartStem(name) {
+  const match = /^(func_[0-9a-f]{8})_chunk[0-9]+tail$/i.exec(String(name || ''));
+  return match ? match[1].toLowerCase() : null;
+}
+
+function compositeFunctionRows(model) {
+  const eligible = (row) => row.primaryClass === 'code'
+    && row.part
+    && row.slices.length === 1
+    && row.slices[0].executable;
+  const continuations = new Map();
+  const consumedRows = new Set();
+  for (let rowIndex = 0; rowIndex < model.rows.length; rowIndex += 1) {
+    const tail = model.rows[rowIndex];
+    const stem = continuationPartStem(tail.part?.name);
+    if (!stem) continue;
+    const head = model.rows[rowIndex - 1];
+    if (!head || !eligible(head) || !eligible(tail)
+        || functionPartStem(head.part.name) !== stem
+        || head.romEndExclusive !== tail.romStart
+        || head.slices[0].vramEndExclusive !== tail.slices[0].vramStart
+        || head.slices[0].placementKind !== tail.slices[0].placementKind
+        || head.slices[0].overlayDescriptorId !== tail.slices[0].overlayDescriptorId
+        || head.slices[0].loadSlabId !== tail.slices[0].loadSlabId
+        || tail.part.symbolByteOffset !== 0) {
+      throw new Error(`accepted continuation part does not compose with its preceding function head: ${tail.part.name}`);
+    }
+    if (continuations.has(head.index) || consumedRows.has(head.index) || consumedRows.has(tail.index)) {
+      throw new Error(`accepted continuation part is duplicated or overlaps: ${tail.part.name}`);
+    }
+    continuations.set(head.index, tail);
+    consumedRows.add(tail.index);
+  }
+  return { continuations, consumedRows };
+}
+
 function loadWorkbenchModel(options = {}) {
   const config = readJson(CONFIG_PATH);
   if (config.schemaVersion !== 1 || config.databaseSchemaVersion !== 2) throw new Error('matching workbench configuration schema drift');
@@ -63,7 +104,7 @@ function loadWorkbenchModel(options = {}) {
   const activeBySymbol = new Map((active.targets || []).map((target) => [target.symbol.toLowerCase(), target]));
   const modelManifest = {
     schemaVersion: 1,
-    targetModelContract: 3,
+    targetModelContract: 4,
     profile: config.profile,
     baserom: { bytes: model.config.rom.bytes, sha256: model.config.rom.sha256 },
     conventionalBuild: {
@@ -74,34 +115,57 @@ function loadWorkbenchModel(options = {}) {
     acceptedInputs: model.inputFiles,
   };
   const modelId = digest(modelManifest);
+  const compositeRows = compositeFunctionRows(model);
   const targets = model.rows
     .filter((row) => row.primaryClass === 'code' && row.part && row.slices.length === 1 && row.slices[0].executable)
+    .filter((row) => !compositeRows.consumedRows.has(row.index))
     .map((row) => {
       const slice = row.slices[0];
-      const expected = baserom ? Buffer.from(baserom.subarray(row.romStart, row.romEndExclusive)) : null;
+      const continuation = compositeRows.continuations.get(row.index) || null;
+      const continuationSlice = continuation ? continuation.slices[0] : null;
+      const symbol = continuation
+        ? `func_${continuationPartStem(continuation.part.name).slice(5).toUpperCase()}`
+        : row.part.name;
+      const romStart = continuation ? row.romStart + row.part.symbolByteOffset : row.romStart;
+      const romEndExclusive = continuation ? continuation.romEndExclusive : row.romEndExclusive;
+      const bytes = romEndExclusive - romStart;
+      const expected = baserom ? Buffer.from(baserom.subarray(romStart, romEndExclusive)) : null;
       const metadata = {
         schemaVersion: 1,
-        symbol: row.part.name,
+        symbol,
         primaryId: row.primaryId,
         rowIndex: row.index,
-        romStart: row.romStart,
-        romEndExclusive: row.romEndExclusive,
-        bytes: row.bytes,
-        vramStart: slice.vramStart,
-        vramEndExclusive: slice.vramEndExclusive,
+        romStart,
+        romEndExclusive,
+        bytes,
+        vramStart: continuation ? slice.vramStart + row.part.symbolByteOffset : slice.vramStart,
+        vramEndExclusive: continuationSlice ? continuationSlice.vramEndExclusive : slice.vramEndExclusive,
         entryVram: slice.vramStart + row.part.symbolByteOffset,
-        symbolByteOffset: row.part.symbolByteOffset,
+        symbolByteOffset: continuation ? 0 : row.part.symbolByteOffset,
         sectionName: slice.sectionName,
         placementKind: slice.placementKind,
         overlayDescriptorId: slice.overlayDescriptorId,
         loadSlabId: slice.loadSlabId,
         originalAssembly: row.part.file,
         originalAssemblySha256: row.part.sha256,
+        ...(continuation ? {
+          continuationRows: [continuation.index],
+          ownerSymbolByteOffset: row.part.symbolByteOffset,
+          originalAssemblyParts: [row, continuation].map((partRow) => ({
+            rowIndex: partRow.index,
+            symbol: partRow.part.name,
+            file: partRow.part.file,
+            sha256: partRow.part.sha256,
+            romStart: partRow.romStart,
+            romEndExclusive: partRow.romEndExclusive,
+          })),
+          sectionNames: [slice.sectionName, continuationSlice.sectionName],
+        } : {}),
       };
       const targetId = digest({ modelId, metadata, expectedBytesSha256: expected ? sha256Buffer(expected) : null });
       return {
         ...metadata,
-        activeMatchingSource: activeBySymbol.get(row.part.name.toLowerCase())?.source || null,
+        activeMatchingSource: activeBySymbol.get(symbol.toLowerCase())?.source || null,
         targetId,
         modelId,
         expectedBytes: expected,
@@ -156,6 +220,7 @@ function publicTarget(target) {
     loadSlabId: target.loadSlabId,
     sectionName: target.sectionName,
     originalAssembly: target.originalAssembly,
+    ...(target.originalAssemblyParts ? { originalAssemblyParts: target.originalAssemblyParts } : {}),
     expectedBytesSha256: target.expectedBytesSha256,
     activeMatchingSource: target.activeMatchingSource,
     ordinaryMatchingEligible: target.symbolByteOffset === 0,

@@ -37,6 +37,16 @@ The exact target-model identity includes the accepted Phase 7 conventional-build
 including load-slab placement. A structural placement change therefore starts a new model while
 retaining earlier experiments as stale history.
 
+An accepted function split across source-part rows remains one workbench target when the model
+names the adjacent parts as a `func_XXXXXXXX`/`func_XXXXXXXX_chunkNhead` head followed by the
+matching `func_XXXXXXXX_chunkNtail`. The workbench validates contiguous ROM, VRAM, placement, and
+source ownership before composing those rows; the tail is not exposed as a separate function.
+
+Scratch compilation may retain compiler-generated read-only `.rodata` and may encode numeric COP1
+binary operations deterministically for the pinned assembler. Those allowances are confined to
+research candidates. Canonical compilation, `diff`, and verification retain their stricter section
+and assembler contracts.
+
 Common commands:
 
 ```powershell

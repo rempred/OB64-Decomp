@@ -98,6 +98,14 @@ function validateLinkageConfig(linkage, expectedProfile) {
   return { config: linkage, linkSymbols, targets };
 }
 
+function validateNoActiveLinkSymbolShadows(targets, linkSymbols) {
+  for (const target of targets) {
+    if (Object.prototype.hasOwnProperty.call(linkSymbols, target.symbol)) {
+      fail(`shared absolute link symbol shadows active target: ${target.symbol}`);
+    }
+  }
+}
+
 function selectRelocationContract(symbol, canonicalTarget, legacyTarget, allowMissing = false) {
   const legacyRelocations = legacyTarget ? normalizeRelocationRecords(
     (legacyTarget.expectedRelocations || []).filter((record) => record.section !== '.rel.pdr'),
@@ -358,6 +366,8 @@ function loadActiveTargetModel(options = {}) {
     return target;
   });
 
+  validateNoActiveLinkSymbolShadows(targets, reviewedLinkage.linkSymbols);
+
   for (const key of reviewedLinkage.targets.keys()) {
     if (!usedCanonicalContracts.has(key)) fail(`matching-C linkage contract has no active target: ${reviewedLinkage.targets.get(key).symbol}`);
   }
@@ -403,5 +413,6 @@ module.exports = {
   safeRelative,
   selectRelocationContract,
   validateLinkageConfig,
+  validateNoActiveLinkSymbolShadows,
   validateToolchainPin,
 };

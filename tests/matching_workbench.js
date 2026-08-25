@@ -18,6 +18,7 @@ const {
 } = require('../tools/lib/matching/target_model');
 const { collisionSafeGroups } = require('../tools/lib/matching/family');
 const { buildTargetContext } = require('../tools/lib/matching/context');
+const { emitM2cAssembly } = require('../tools/lib/matching/assembly');
 const {
   applyGenerationTransforms,
   compilableM2cSource,
@@ -44,6 +45,10 @@ const {
   compileArtifactDirectory,
 } = require('../tools/lib/matching/compiler');
 const { compareProbes } = require('../tools/lib/matching/probe');
+const {
+  adjustSectionAssembly,
+  legalizeCop1BinaryAssembly,
+} = require('../tools/lib/phase8_matching_c');
 const {
   addTargetSummary,
   buildSweepIdentity,
@@ -124,6 +129,48 @@ function classifierTests() {
   assert(targetMetrics(exact, 0x80000000).leaf, 'simple return fixture was not a leaf');
 }
 
+function scratchAuxiliarySectionTests() {
+  const sectionName = '.ob64.r4074';
+  const switchAssembly = Buffer.from([
+    '\t.text',
+    'fixture:',
+    '\tj\t$2',
+    '\t.section\t.rodata',
+    '.Ltable:',
+    '\t.word\t.Lcase',
+    '\t.text',
+    '.Lcase:',
+    '\tj\t$31',
+    '',
+  ].join('\n'));
+  expectError(/section grammar drift/, () => adjustSectionAssembly(switchAssembly, sectionName));
+  const adjusted = adjustSectionAssembly(switchAssembly, sectionName, {
+    allowAuxiliaryReadOnlySections: true,
+  }).toString('utf8');
+  assert((adjusted.match(/\.section \.ob64\.r4074,"ax",@progbits/g) || []).length === 2,
+    'scratch switch text fragments were not assigned to the target section');
+  assert(adjusted.includes('\t.section\t.rodata'), 'scratch switch jump table was discarded');
+  const writableAssembly = Buffer.from('\t.text\nfixture:\n\tj\t$31\n\t.section\t.data\n\t.word\t0\n');
+  expectError(/non-read-only auxiliary section/, () => adjustSectionAssembly(writableAssembly, sectionName, {
+    allowAuxiliaryReadOnlySections: true,
+  }));
+  const cop1Assembly = [
+    '\tmul.s\t$f0,$f0,$f22',
+    '\tadd.s $f6, $f4, $f2',
+    '\t.word\t0xDEADBEEF',
+    '',
+  ].join('\r\n');
+  const legalized = legalizeCop1BinaryAssembly(cop1Assembly);
+  assert(legalized.includes('\t.word\t0x46160002\r\n'), 'scratch COP1 multiply was not encoded exactly');
+  assert(legalized.includes('\t.word\t0x46022180\r\n'), 'scratch COP1 add was not encoded exactly');
+  assert(legalized.includes('\t.word\t0xDEADBEEF\r\n'), 'existing raw word changed during COP1 legalization');
+  const adjustedCop1 = adjustSectionAssembly(Buffer.from(`\t.text\r\nfixture:\r\n${cop1Assembly}`), sectionName, {
+    allowAuxiliaryReadOnlySections: true,
+    legalizeCop1BinaryInstructions: true,
+  }).toString('utf8');
+  assert(adjustedCop1.includes('\t.word\t0x46160002\r\n'), 'scratch section adjustment omitted COP1 legalization');
+}
+
 function familyTests() {
   const items = [
     { targetId: 'A', symbol: 'a', romStart: 0, bytes: 4, value: 'same' },
@@ -146,6 +193,8 @@ function m2cAdapterTests() {
     'f32 fixture(void) {',
     '    const char *literal = "/* retained literal */";',
     '    char slash = \'/\'; // generated line comment',
+    '    void *pointer_word = *(void *)0x80000000;',
+    '    *(void *)0x80000004 = pointer_word;',
     '    callee();',
     '    return M2C_BITWISE(f32, 0x3F800000U);',
     '}',
@@ -157,6 +206,10 @@ function m2cAdapterTests() {
   assert(!source.includes('// generated line comment'), 'm2c line comment leaked into direct cc1 input');
   assert(source.includes('"/* retained literal */"') && source.includes("'/'"), 'm2c comment stripping damaged a string or character literal');
   assert(!source.includes('M2C_BITWISE'), 'm2c valid-syntax macro was not expanded');
+  assert(!source.includes('*(void *)') && source.match(/\*\(void \*\*\)/g)?.length === 2, 'invalid m2c void dereferences were not converted to pointer-word lvalues');
+  const nestedField = compilableM2cSource('s32 fixture(s32 **arg0) { return M2C_FIELD(M2C_FIELD(arg0, s32 **, 0), s32 *, 4); }');
+  assert(!nestedField.includes('M2C_FIELD') && nestedField.includes('s32 *'), 'nested m2c valid-syntax fields were not expanded recursively');
+  assert(!compilableM2cSource('s32 fixture(void) { return NULL; }').includes('NULL'), 'm2c NULL token was not lowered for direct cc1 input');
   const diagnostics = m2cDiagnostics('Warning: missing return\nvoid fixture(void) {}\n');
   assert(diagnostics.length === 1 && diagnostics[0].message === 'missing return', 'm2c warning was not retained as a diagnostic');
   assert(m2cFailure('/*\nDecompilation failure in function fixture:\n\nCannot find branch target\n*/')?.includes('Cannot find branch target'), 'm2c generation failure detail was discarded');
@@ -590,7 +643,7 @@ function storeTests() {
 
 function acceptedModelTests() {
   const workbench = loadWorkbenchModel();
-  assert(workbench.modelManifest.targetModelContract === 3, 'target-model contract drift');
+  assert(workbench.modelManifest.targetModelContract === 4, 'target-model contract drift');
   assert(JSON.stringify(workbench.modelManifest.conventionalBuild) === JSON.stringify({
     path: 'config/phase7/conventional-build.json',
     sha256: sha256File(PHASE7_CONFIG_PATH),
@@ -598,9 +651,10 @@ function acceptedModelTests() {
   const changedPlacementManifest = JSON.parse(JSON.stringify(workbench.modelManifest));
   changedPlacementManifest.conventionalBuild.sha256 = '0'.repeat(64);
   assert(digest(changedPlacementManifest) !== workbench.modelId, 'placement configuration drift did not invalidate the target model');
-  assert(workbench.targets.length === 4883, 'accepted function census drift');
-  assert(workbench.targets.filter((target) => target.symbolByteOffset === 0).length === 4878, 'ordinary target census drift');
+  assert(workbench.targets.length === 4851, 'accepted function census drift');
+  assert(workbench.targets.filter((target) => target.symbolByteOffset === 0).length === 4848, 'ordinary target census drift');
   const memcpy = resolveTarget(workbench, 'memcpy_bytewise');
+  assert(memcpy.targetId === '8C8CA226CF9B675BF66B44866DD425F8E4D1F513CC6750E952AE1F24858F53AD', 'target identity drifted outside an explicit target-model contract change');
   const context = buildTargetContext(workbench, memcpy);
   assert(context.summary.argumentRegistersReadBeforeWrite.join(',') === '$a0,$a1,$a2', 'memcpy argument context drift');
   assert(context.fields.some((field) => field.baseArgument === 0 && field.access === 'store' && field.width === 1), 'memcpy destination-byte fact missing');
@@ -610,10 +664,19 @@ function acceptedModelTests() {
   const first = resolveTarget(workbench, 'func_000E5938');
   const second = resolveTarget(workbench, 'func_0013466C');
   assert(first.expectedBytes.equals(second.expectedBytes), 'known exact clone fixture drift');
+  const straddler = resolveTarget(workbench, 'func_0021EBBC');
+  assert(straddler.romStart === 0x0021EBBC && straddler.romEndExclusive === 0x002213DC && straddler.bytes === 10272, 'accepted straddler function range was truncated at a source-part boundary');
+  assert(straddler.vramStart === 0x0021EBBC && straddler.vramEndExclusive === 0x002213DC, 'accepted straddler placement is not contiguous');
+  assert(straddler.originalAssemblyParts?.length === 2
+    && straddler.originalAssemblyParts[1].symbol === 'func_0021EBBC_chunk34tail', 'accepted straddler source-part provenance is missing');
+  const straddlerAssembly = emitM2cAssembly(straddler, workbench);
+  assert(/nop # m2c analysis guard:[^\n]+\n\.L_0021F808:/.test(straddlerAssembly), 'm2c likely-branch/call-delay guard is missing');
+  expectError(/does not resolve uniquely/, () => resolveTarget(workbench, 'func_0021EBBC_chunk34tail'));
 }
 
 async function main() {
   classifierTests();
+  scratchAuxiliarySectionTests();
   familyTests();
   m2cAdapterTests();
   compilerArtifactPathTests();

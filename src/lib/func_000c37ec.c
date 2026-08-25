@@ -61,7 +61,7 @@ small_kind:
     asm("# Hybrid scope: retail deliberately repeats mask_a & intersection after the conditional call.\n"
         "# KMC algebraically removes this redundant operation in pure C; this one `and` preserves it.\n"
         "# The earlier intersection, calls, tests, branch-likely, increment, and returns remain C.\n"
-        "and %0,%1,%0\n"
+        "and %0,%1,%0 # intersect mask_a with the existing class-mask intersection a second time\n"
         : "=r" (intersection) : "r" (mask_a), "0" (intersection));
     if ((intersection & 0xFFFF) != 0) {
         result++;

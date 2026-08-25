@@ -10,6 +10,7 @@ const {
   loadActiveTargetModel,
   selectRelocationContract,
   validateLinkageConfig,
+  validateNoActiveLinkSymbolShadows,
   validateToolchainPin,
 } = require('../tools/lib/active_targets');
 const { ROOT, sha256File } = require('../tools/lib/phase7_conventional');
@@ -60,6 +61,12 @@ function main() {
       }],
     }],
   ].map(([name, mutation]) => expectRejection(name, () => validateLinkageConfig(mutation, active.minimalConfig.profile)));
+  const rejectedActiveLinkSymbolShadows = [
+    expectRejection('active target absolute-symbol shadow', () => validateNoActiveLinkSymbolShadows(
+      [{ symbol: 'fixture_target' }],
+      { fixture_target: '0x80000000' },
+    )),
+  ];
   const missingContract = selectRelocationContract('fixture_target', null, null, true);
   if (missingContract.source !== 'missing-diff-only' || missingContract.expectedRelocations.length !== 0) {
     throw new Error('diff-only missing relocation contract state drift');
@@ -131,6 +138,7 @@ function main() {
     toolchain: active.toolchain.identity,
     rejectedToolchainMutations,
     rejectedLinkageMutations,
+    rejectedActiveLinkSymbolShadows,
     rejectedContractMutations,
     structuralFieldsEquivalent: true,
     sharedLinkSymbols: Object.keys(active.linkSymbols).length,

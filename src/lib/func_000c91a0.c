@@ -67,12 +67,14 @@ s32 func_000c91a0(void)
             candidate = row_count - 1;
             asm volatile("# Hybrid scope: bgez keeps a nonnegative last-row index; its delay slot computes the current row.\n"
                          "# Only a negative index is replaced with count + 2, then both paths divide the candidate by four.\n"
+                         "# Preserve the signed branch and its current-row delay slot.\n"
                          ".set noreorder\n"
-                         "bgez %0,1f\n"
-                         "srl %1,%2,2\n"
-                         "addiu %0,%3,2\n"
-                         "1:\n"
-                         "sra %0,%0,2\n"
+                         "bgez %0,1f # keep row_count - 1 when the last-row index is nonnegative\n"
+                         "srl %1,%2,2 # compute selection / 4 as the current row in the branch delay slot\n"
+                         "addiu %0,%3,2 # replace a negative last-row index with row_count + 2\n"
+                         "1: # join after selecting the nonnegative row candidate\n"
+                         "sra %0,%0,2 # divide the chosen candidate by four with signed rounding\n"
+                         "# Restore normal assembler scheduling after the row calculation.\n"
                          ".set reorder\n"
                          : "=r" (candidate), "=r" (current_row)
                          : "r" (selection), "r" (row_count), "0" (candidate));
@@ -117,7 +119,7 @@ selection_valid:
             lookup = current_selection * 2;
             asm("# Hybrid scope: this one addu forms retail's base-plus-row offset with $v1 before $v0.\n"
                 "# The selection load, doubling shift, table load, mask, and destination store remain C.\n"
-                "addu %0,%1,%0\n"
+                "addu %0,%1,%0 # add the doubled selection offset to the shared-state base pointer\n"
                 : "=r" (lookup) : "r" (current_data), "0" (lookup));
             *(s16 *)(current_data + 0x5E8) = *(u16 *)(lookup + 0x1C0E) & 0x7F;
         }

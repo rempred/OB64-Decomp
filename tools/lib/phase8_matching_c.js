@@ -57,7 +57,27 @@ function resolveRelative(root, relative, label) {
   return path.join(root, ...safeRelative(relative, label).split('/'));
 }
 
-function adjustSectionAssembly(compilerAssembly, sectionName) {
+function legalizeCop1BinaryAssembly(text) {
+  const functions = Object.freeze({
+    'add.s': 0x00,
+    'sub.s': 0x01,
+    'mul.s': 0x02,
+    'div.s': 0x03,
+  });
+  return text.replace(
+    /^([ \t]*)(add\.s|sub\.s|mul\.s|div\.s)[ \t]+\$f(\d+)[ \t]*,[ \t]*\$f(\d+)[ \t]*,[ \t]*\$f(\d+)[ \t]*(\r?)$/gm,
+    (line, indent, mnemonic, fdText, fsText, ftText, carriageReturn) => {
+      const fd = Number(fdText);
+      const fs = Number(fsText);
+      const ft = Number(ftText);
+      if (fd > 31 || fs > 31 || ft > 31) fail(`KMC compiler emitted a malformed ${mnemonic} register`);
+      const word = (0x46000000 | (ft << 16) | (fs << 11) | (fd << 6) | functions[mnemonic]) >>> 0;
+      return `${indent}.word\t0x${word.toString(16).toUpperCase().padStart(8, '0')}${carriageReturn}`;
+    },
+  );
+}
+
+function adjustSectionAssembly(compilerAssembly, sectionName, options = {}) {
   if (!Buffer.isBuffer(compilerAssembly)) fail('compiler assembly is not a byte buffer');
   if (typeof sectionName !== 'string' || !/^\.ob64\.r[0-9]+(?:\.s[0-9]+)?$/.test(sectionName)) {
     fail('target section name is malformed');
@@ -65,11 +85,27 @@ function adjustSectionAssembly(compilerAssembly, sectionName) {
   const text = compilerAssembly.toString('utf8');
   if (!Buffer.from(text, 'utf8').equals(compilerAssembly)) fail('compiler assembly is not exact UTF-8');
   const textMatches = text.match(/^[ \t]*\.text[ \t]*\r?$/gm) || [];
-  if (textMatches.length !== 1 || /^\s*\.section\b/m.test(text)) fail('KMC target assembly section grammar drift');
-  return Buffer.from(text.replace(
-    /^[ \t]*\.text[ \t]*(\r?)$/m,
+  const allowAuxiliaryReadOnlySections = options.allowAuxiliaryReadOnlySections === true;
+  if (!allowAuxiliaryReadOnlySections) {
+    if (textMatches.length !== 1 || /^\s*\.section\b/m.test(text)) fail('KMC target assembly section grammar drift');
+  } else {
+    if (textMatches.length === 0) fail('KMC target assembly section grammar drift');
+    const explicitSections = [...text.matchAll(/^[ \t]*\.section[ \t]+([^,\s]+).*$/gm)]
+      .map((match) => match[1]);
+    if (explicitSections.some((name) => name !== '.rodata')) {
+      fail('KMC scratch assembly owns a non-read-only auxiliary section');
+    }
+  }
+  const textPattern = allowAuxiliaryReadOnlySections
+    ? /^[ \t]*\.text[ \t]*(\r?)$/gm
+    : /^[ \t]*\.text[ \t]*(\r?)$/m;
+  const adjusted = text.replace(
+    textPattern,
     (_, carriageReturn) => `.section ${sectionName},"ax",@progbits${carriageReturn}`,
-  ), 'utf8');
+  );
+  return Buffer.from(options.legalizeCop1BinaryInstructions === true
+    ? legalizeCop1BinaryAssembly(adjusted)
+    : adjusted, 'utf8');
 }
 
 function loadPhase8Model() {
@@ -462,7 +498,10 @@ function compileTarget(phase8, target, output, compiler, assembler, objcopy, opt
   run(compiler, [...phase8.config.compiler.compileFlags, '-o', compilerAssembly, sourceRelative], { cwd: ROOT });
 
   const compilerBytes = fs.readFileSync(compilerAssembly);
-  const linkedBytes = adjustSectionAssembly(compilerBytes, target.sectionName);
+  const linkedBytes = adjustSectionAssembly(compilerBytes, target.sectionName, {
+    allowAuxiliaryReadOnlySections: options.allowAuxiliaryReadOnlySections === true,
+    legalizeCop1BinaryInstructions: options.legalizeCop1BinaryInstructions === true,
+  });
   fs.writeFileSync(linkedAssembly, linkedBytes);
   run(assembler, [
     ...phase8.model.config.binutils.compilerAssemblerFlags,
@@ -1274,6 +1313,7 @@ module.exports = {
   copyPhase7Objects,
   fail,
   linkPhase8,
+  legalizeCop1BinaryAssembly,
   loadCanonicalBaserom,
   loadPhase8Model,
   pathIndependentRuntime,
