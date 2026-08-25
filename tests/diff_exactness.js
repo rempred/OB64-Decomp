@@ -8,6 +8,7 @@ const { parseElf32BigEndian } = require('../tools/lib/phase7_conventional');
 const {
   compareLinkedTargetBytes,
   summarizeTargetComparison,
+  targetAsmDifferMaxLines,
 } = require('../tools/lib/phase8_matching_c');
 const { comparisonLabel } = require('../tools/diff');
 
@@ -157,6 +158,10 @@ function main() {
   assert(!compareLinkedTargetBytes(relocatedTarget, relocatableObjectElf, relocatedExpected).rawBytesExact, 'unresolved relocatable object substituted for linked bytes');
 
   const rejections = [];
+  assert(targetAsmDifferMaxLines({ bytes: 9132 }) === 2283, 'large target asm-differ extent was truncated');
+  rejections.push(expectRejection('unaligned asm-differ extent', /target byte extent is malformed/, () => {
+    targetAsmDifferMaxLines({ bytes: 9130 });
+  }));
   rejections.push(expectRejection('missing section', /section count drift/, () => {
     compareLinkedTargetBytes(target, makeElf('.ob64.other', target.vramStartNumber, [expected]), expected);
   }));

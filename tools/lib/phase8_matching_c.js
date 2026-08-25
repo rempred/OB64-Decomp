@@ -942,6 +942,13 @@ function summarizeTargetComparison(json, rawComparison, label) {
   };
 }
 
+function targetAsmDifferMaxLines(target) {
+  if (!target || !Number.isInteger(target.bytes) || target.bytes <= 0 || target.bytes % 4 !== 0) {
+    fail('asm-differ target byte extent is malformed');
+  }
+  return target.bytes / 4;
+}
+
 function runTargetAsmDiffer(phase8, target, options) {
   const output = path.resolve(options.output);
   const proofRoot = path.join(output, 'asm-differ-proof');
@@ -978,6 +985,8 @@ function runTargetAsmDiffer(phase8, target, options) {
     '--algorithm',
     'difflib',
     '--no-line-numbers',
+    '--max-lines',
+    String(targetAsmDifferMaxLines(target)),
   ], { cwd: runRoot, env });
   const json = parseJsonOutput(result.stdout, 'asm-differ target proof for ' + target.symbol);
   const canonicalBaserom = options.canonicalBaserom || loadCanonicalBaserom(phase8);
@@ -1322,6 +1331,7 @@ module.exports = {
   runTargetAsmDiffer,
   sha256File,
   summarizeTargetComparison,
+  targetAsmDifferMaxLines,
   validateRecordedPhase8Build,
   validateSourceObjectProofBytes,
   validateTargetClassifications,
