@@ -504,11 +504,13 @@ class Pj64Client:
             "physicalPageCount": len(frontier.pages),
             "instructionCount": int(frontier.instruction_count),
             "edgeCount": len(frontier.edges),
+            "callCount": len(frontier.calls),
             "dmaCount": len(frontier.dma),
             "instructionMaxOrdinal": max(
                 (item.fact_ordinal for item in frontier.instructions), default=0
             ),
             "edgeMaxOrdinal": max((item.fact_ordinal for item in frontier.edges), default=0),
+            "callMaxOrdinal": max((item.fact_ordinal for item in frontier.calls), default=0),
             "dmaMaxOrdinal": max((item.fact_ordinal for item in frontier.dma), default=0),
             "nativeLoaded": True,
             "nativeRdramSize": RDRAM_SIZE,

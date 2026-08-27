@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from pathlib import Path
+import json
 import tempfile
 import unittest
 from unittest.mock import patch
@@ -15,6 +16,7 @@ from tools.total_resolver.sessions import (
     recover_session,
     request_session_stop,
     session_status,
+    set_session_semantic_context,
     _worker_startup_wait_seconds,
 )
 from tools.total_resolver.verify import verify_session
@@ -272,6 +274,37 @@ class SessionLifecycleTests(unittest.TestCase):
             self.assertEqual(
                 status["frontier"]["frontierIdentity"], "K2:fixture"
             )
+
+    def test_post_stop_semantic_name_is_retry_safe_and_does_not_mutate_capture(self) -> None:
+        with tempfile.TemporaryDirectory() as raw:
+            root = Path(raw)
+            store = self._open_session(root, "S-NAME")
+            store.set_bridge_next_sequence_end(1)
+            store.close_session("closed")
+            store.close_connection()
+            session = root / "S-NAME"
+            (session / "verification.json").write_text(
+                json.dumps({"result": "PASS"}) + "\n", encoding="utf-8"
+            )
+            capture = session / "capture.sqlite"
+            before = capture.read_bytes()
+
+            created = set_session_semantic_context(
+                "S-NAME", "Neutral encounter and persuasion", notes="successful Talk", root=root
+            )
+            repeated = set_session_semantic_context(
+                "S-NAME", "Neutral encounter and persuasion", notes="successful Talk", root=root
+            )
+
+            self.assertEqual(created["action"], "created")
+            self.assertEqual(repeated["action"], "no-op")
+            self.assertEqual(capture.read_bytes(), before)
+            self.assertEqual(
+                session_status("S-NAME", root=root)["semanticContext"]["semanticName"],
+                "Neutral encounter and persuasion",
+            )
+            with self.assertRaisesRegex(RuntimeError, "already named"):
+                set_session_semantic_context("S-NAME", "Different name", root=root)
 
     def test_visible_action_annotation_matches_closed_schema(self) -> None:
         with tempfile.TemporaryDirectory() as raw:

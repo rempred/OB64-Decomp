@@ -41,6 +41,7 @@ HISTORICAL_INGEST_PROTOCOL_VERSIONS = (
     "0.10.0",
     "0.11.0",
     "0.12.0",
+    "0.13.0",
 )
 SUPPORTED_INGEST_PROTOCOL_VERSIONS = (
     *HISTORICAL_INGEST_PROTOCOL_VERSIONS,
@@ -95,6 +96,10 @@ def knowledge_v3_schema_path() -> Path:
 
 def knowledge_activity_schema_path() -> Path:
     return Path(__file__).resolve().parent / "schemas" / "knowledge_activity_v3.sql"
+
+
+def knowledge_calls_schema_path() -> Path:
+    return Path(__file__).resolve().parent / "schemas" / "knowledge_calls_v3.sql"
 
 
 def _research_root() -> Path:
@@ -253,6 +258,23 @@ class EdgeObservation:
 
 
 @dataclass(frozen=True)
+class CallObservation:
+    callsite_physical_address: int
+    callsite_opcode_u32: int
+    delay_physical_address: int
+    delay_opcode_u32: int
+    target_physical_address: int
+    target_opcode_u32: int
+    call_kind: str
+    bridge_sequence: int
+    callsite_generation: int | None = None
+    delay_generation: int | None = None
+    target_generation: int | None = None
+    frame: int | None = None
+    observation_kind: str = "native-atomic-call-context"
+
+
+@dataclass(frozen=True)
 class DmaPlacementObservation:
     source_domain: str
     source_start: int
@@ -372,6 +394,9 @@ class KnownActivityObservation:
     edge_max_ordinal: int
     edge_hit_count: int
     edge_hit_bitmap: bytes
+    call_max_ordinal: int
+    call_hit_count: int
+    call_hit_bitmap: bytes
     dma_max_ordinal: int
     dma_hit_count: int
     dma_hit_bitmap: bytes
@@ -423,6 +448,7 @@ class SessionDelta:
     code_pages: tuple[CodePageObservation, ...] = ()
     instructions: tuple[InstructionObservation, ...] = ()
     edges: tuple[EdgeObservation, ...] = ()
+    calls: tuple[CallObservation, ...] = ()
     dma_placements: tuple[DmaPlacementObservation, ...] = ()
     function_placements: tuple[FunctionPlacementObservation, ...] = ()
     controller_transitions: tuple[ControllerTransitionObservation, ...] = ()
@@ -434,6 +460,9 @@ class SessionDelta:
     context_limitations: tuple[str, ...] = ()
     known_activity: KnownActivityObservation | None = None
     marker_context_windows: tuple[MarkerContextWindowObservation, ...] = ()
+    semantic_name: str | None = None
+    semantic_notes: str | None = None
+    semantic_context_created_utc: str | None = None
 
 
 @dataclass(frozen=True)
@@ -473,6 +502,18 @@ class FrontierDma:
 
 
 @dataclass(frozen=True)
+class FrontierCall:
+    fact_ordinal: int
+    callsite_physical_address: int
+    callsite_opcode_u32: int
+    delay_physical_address: int
+    delay_opcode_u32: int
+    target_physical_address: int
+    target_opcode_u32: int
+    call_kind: str
+
+
+@dataclass(frozen=True)
 class NoveltyFrontier:
     identity: str
     rom_normalized_sha256: str
@@ -480,6 +521,7 @@ class NoveltyFrontier:
     pages: tuple[FrontierPage, ...]
     instructions: tuple[FrontierInstruction, ...]
     edges: tuple[FrontierEdge, ...]
+    calls: tuple[FrontierCall, ...]
     dma: tuple[FrontierDma, ...]
     format_version: int = FRONTIER_FORMAT_VERSION
 
@@ -489,7 +531,7 @@ class NoveltyFrontier:
 
     def summary(self) -> dict[str, Any]:
         return {
-            "schema": "ob64-total-resolver-novelty-frontier.v4",
+            "schema": "ob64-total-resolver-novelty-frontier.v5",
             "formatVersion": self.format_version,
             "frontierIdentity": self.identity,
             "romNormalizedSha256": self.rom_normalized_sha256,
@@ -497,6 +539,7 @@ class NoveltyFrontier:
             "physicalPageCount": len(self.pages),
             "instructionCount": len(self.instructions),
             "edgeCount": len(self.edges),
+            "callCount": len(self.calls),
             "dmaCount": len(self.dma),
             "instructionIdentity": "physical-address-plus-exact-opcode",
         }
@@ -510,6 +553,7 @@ def empty_novelty_frontier(rom_normalized_sha256: str) -> NoveltyFrontier:
         _frontier_identity("UNSELECTED", 0, 0, 0, 0),
         normalized,
         0,
+        (),
         (),
         (),
         (),
@@ -604,6 +648,7 @@ def create_knowledge_database(
         connection.executescript(knowledge_schema_path().read_text(encoding="utf-8"))
         connection.executescript(knowledge_v3_schema_path().read_text(encoding="utf-8"))
         connection.executescript(knowledge_activity_schema_path().read_text(encoding="utf-8"))
+        connection.executescript(knowledge_calls_schema_path().read_text(encoding="utf-8"))
         meta = {
             "schema": KNOWLEDGE_SCHEMA,
             "schemaVersion": str(KNOWLEDGE_SCHEMA_VERSION),
@@ -615,6 +660,7 @@ def create_knowledge_database(
             "captureAuthority": "observation-only",
             "instructionIdentity": "physical-address-plus-exact-opcode",
             "edgeIdentity": "exact-source-instruction-plus-exact-destination-instruction-plus-kind",
+            "callIdentity": "exact-callsite-plus-delay-slot-plus-target-plus-kind",
             "pageGenerationRole": "context-only",
             "contentEquality": "fast-bucket-then-exact-bytes",
             "romNormalizedSha256": expected,
@@ -717,8 +763,54 @@ def create_knowledge_database(
     return knowledge_status(destination)
 
 
+def _install_frontier_v5_schema(connection: sqlite3.Connection) -> int:
+    """Install call/activity context and seed exact historical call triples."""
+
+    if _table_exists(connection, "known_activity_summary"):
+        columns = {
+            str(row[1])
+            for row in connection.execute("PRAGMA table_info(known_activity_summary)")
+        }
+        if "call_hit_bitmap" not in columns:
+            connection.execute(
+                "ALTER TABLE known_activity_summary RENAME TO known_activity_summary_v4"
+            )
+            connection.executescript(
+                knowledge_activity_schema_path().read_text(encoding="utf-8")
+            )
+            connection.execute(
+                """
+                INSERT INTO known_activity_summary(
+                    session_id,frontier_identity,frontier_format_version,
+                    instruction_max_ordinal,instruction_hit_count,instruction_hit_bitmap,
+                    edge_max_ordinal,edge_hit_count,edge_hit_bitmap,
+                    call_max_ordinal,call_hit_count,call_hit_bitmap,
+                    dma_max_ordinal,dma_hit_count,dma_hit_bitmap,
+                    bridge_sequence,capture_phase
+                )
+                SELECT session_id,frontier_identity,frontier_format_version,
+                       instruction_max_ordinal,instruction_hit_count,instruction_hit_bitmap,
+                       edge_max_ordinal,edge_hit_count,edge_hit_bitmap,
+                       0,0,X'',dma_max_ordinal,dma_hit_count,dma_hit_bitmap,
+                       bridge_sequence,capture_phase
+                FROM known_activity_summary_v4
+                """
+            )
+            connection.execute("DROP TABLE known_activity_summary_v4")
+            connection.executescript(
+                knowledge_activity_schema_path().read_text(encoding="utf-8")
+            )
+    else:
+        connection.executescript(knowledge_activity_schema_path().read_text(encoding="utf-8"))
+    connection.executescript(knowledge_calls_schema_path().read_text(encoding="utf-8"))
+
+    if connection.execute("SELECT COUNT(*) FROM call_relationship_fact").fetchone()[0]:
+        return 0
+    return _seed_historical_call_relationships(connection)
+
+
 def migrate_frontier_database(source: Path, destination: Path) -> dict[str, Any]:
-    """Copy a supported database and install the protocol-4 frontier/context supplement."""
+    """Copy a supported database and install the protocol-5 call-aware frontier."""
 
     origin = source.resolve()
     target = destination.resolve()
@@ -732,15 +824,35 @@ def migrate_frontier_database(source: Path, destination: Path) -> dict[str, Any]
         state = source_connection.execute(
             "SELECT format_version FROM frontier_state WHERE singleton=1"
         ).fetchone()
-        if state is None or int(state[0]) not in {2, 3, FRONTIER_FORMAT_VERSION}:
+        if state is None or int(state[0]) not in {2, 3, 4, FRONTIER_FORMAT_VERSION}:
             raise ValueError("source database has no migratable novelty frontier")
         target.parent.mkdir(parents=True, exist_ok=True)
         target_connection = sqlite3.connect(target)
         try:
             source_connection.backup(target_connection)
-            target_connection.executescript(
-                knowledge_activity_schema_path().read_text(encoding="utf-8")
+            target_connection.row_factory = sqlite3.Row
+            seeded_calls = _install_frontier_v5_schema(target_connection)
+            maximum_ordinal = int(
+                target_connection.execute(
+                    "SELECT COALESCE(MAX(ledger_ordinal),0) FROM ingestion_ledger"
+                ).fetchone()[0]
             )
+            expected_materializations = _expected_materializations(target_connection)
+            for name, (table, columns) in MATERIALIZATION_TABLES.items():
+                rows = expected_materializations[name]
+                target_connection.execute(f"DELETE FROM {table}")
+                if rows:
+                    target_connection.executemany(
+                        f"INSERT INTO {table}({','.join(columns)}) "
+                        f"VALUES({','.join('?' for _ in columns)})",
+                        rows,
+                    )
+                target_connection.execute(
+                    "UPDATE materialization_state SET last_ledger_ordinal=?,"
+                    "row_count=?,updated_utc=? WHERE materialization=?",
+                    (maximum_ordinal, len(rows), utc_now(), name),
+                )
+            target_connection.commit()
             target_connection.execute("BEGIN IMMEDIATE")
             target_connection.execute(
                 "UPDATE frontier_state SET format_version=?,generated_utc=? WHERE singleton=1",
@@ -754,6 +866,10 @@ def migrate_frontier_database(source: Path, destination: Path) -> dict[str, Any]
                 (
                     ("frontierFormatVersion", str(FRONTIER_FORMAT_VERSION)),
                     ("activeBridgeProtocolVersion", BRIDGE_PROTOCOL_VERSION),
+                    (
+                        "callIdentity",
+                        "exact-callsite-plus-delay-slot-plus-target-plus-kind",
+                    ),
                 ),
             )
             target_connection.commit()
@@ -768,8 +884,15 @@ def migrate_frontier_database(source: Path, destination: Path) -> dict[str, Any]
 
     verification = verify_knowledge_database(target)
     if verification["result"] != "PASS":
+        failures = "; ".join(
+            f"{item['name']}: {item['detail']}"
+            for item in verification["checks"]
+            if item["status"] != "PASS"
+        )
         target.unlink()
-        raise ValueError("migrated frontier database failed independent verification")
+        raise ValueError(
+            "migrated frontier database failed independent verification: " + failures
+        )
     status = knowledge_status(target)
     return {
         "schema": "ob64-total-resolver-frontier-migration.v1",
@@ -778,8 +901,11 @@ def migrate_frontier_database(source: Path, destination: Path) -> dict[str, Any]
         "fromFrontierFormatVersion": int(state[0]),
         "toFrontierFormatVersion": FRONTIER_FORMAT_VERSION,
         "factMutation": "none",
-        "metadataMutation": "frontier format and active bridge protocol",
-        "schemaMutation": "additive known-activity and marker-context tables",
+        "metadataMutation": (
+            "frontier format, active bridge protocol, and deterministic derived materializations"
+        ),
+        "schemaMutation": "additive exact-call, known-activity, marker, and semantic-context tables",
+        "historicalCallRelationshipsSeeded": seeded_calls,
         "status": status,
         "verification": verification,
     }
@@ -831,6 +957,33 @@ def build_frontier(connection: sqlite3.Connection) -> NoveltyFrontier:
             """
         )
     )
+    if not _table_exists(connection, "call_relationship_fact"):
+        raise ValueError("knowledge database lacks the call-aware frontier schema")
+    calls = tuple(
+        FrontierCall(
+            int(row[0]),
+            int(row[1]),
+            int(row[2]),
+            int(row[3]),
+            int(row[4]),
+            int(row[5]),
+            int(row[6]),
+            str(row[7]),
+        )
+        for row in connection.execute(
+            """
+            SELECT c.call_relationship_id,callsite.physical_address,callsite.opcode_u32,
+                   delay.physical_address,delay.opcode_u32,
+                   target.physical_address,target.opcode_u32,c.call_kind
+            FROM call_relationship_fact c
+            JOIN instruction_fact callsite
+              ON callsite.instruction_id=c.callsite_instruction_id
+            JOIN instruction_fact delay ON delay.instruction_id=c.delay_instruction_id
+            JOIN instruction_fact target ON target.instruction_id=c.target_instruction_id
+            ORDER BY c.call_relationship_id
+            """
+        )
+    )
     dma = tuple(
         FrontierDma(
             int(row[0]),
@@ -864,6 +1017,7 @@ def build_frontier(connection: sqlite3.Connection) -> NoveltyFrontier:
         pages,
         instructions,
         edges,
+        calls,
         dma,
     )
     expected = (
@@ -904,16 +1058,17 @@ def write_native_frontier(frontier: NoveltyFrontier, destination: Path) -> Path:
     temporary = target.with_name(target.name + f".tmp-{os.getpid()}")
     try:
         with temporary.open("wb") as output:
-            output.write(b"OB64TRF4")
+            output.write(b"OB64TRF5")
             output.write(
                 struct.pack(
-                    "<IIIIQQQ",
+                    "<IIIIQQQQ",
                     FRONTIER_FORMAT_VERSION,
                     RDRAM_SIZE,
                     len(identity),
                     len(rom_sha256),
                     len(frontier.instructions),
                     len(frontier.edges),
+                    len(frontier.calls),
                     len(frontier.dma),
                 )
             )
@@ -945,6 +1100,46 @@ def write_native_frontier(frontier: NoveltyFrontier, destination: Path) -> Path:
                         int(edge.source_opcode_u32),
                         destination_address,
                         int(edge.destination_opcode_u32),
+                    )
+                )
+            call_kinds = {
+                "jal-direct": 1,
+                "jalr-register": 2,
+                "branch-and-link": 3,
+            }
+            for call in frontier.calls:
+                call_kind = call_kinds.get(call.call_kind)
+                if (
+                    call_kind is None
+                    or not 0 < int(call.fact_ordinal) <= 0xFFFFFFFF
+                    or call.delay_physical_address != call.callsite_physical_address + 4
+                    or not _call_target_matches_physical(
+                        call.call_kind,
+                        call.callsite_physical_address,
+                        call.callsite_opcode_u32,
+                        call.target_physical_address,
+                    )
+                    or any(
+                        address < 0 or address >= RDRAM_SIZE or address & 3
+                        for address in (
+                            call.callsite_physical_address,
+                            call.delay_physical_address,
+                            call.target_physical_address,
+                        )
+                    )
+                ):
+                    raise ValueError("frontier call relationship is invalid")
+                output.write(
+                    struct.pack(
+                        "<IIIIIIII",
+                        int(call.fact_ordinal),
+                        call.callsite_physical_address,
+                        call.callsite_opcode_u32,
+                        call.delay_physical_address,
+                        call.delay_opcode_u32,
+                        call.target_physical_address,
+                        call.target_opcode_u32,
+                        call_kind,
                     )
                 )
             for item in frontier.dma:
@@ -1007,7 +1202,10 @@ def knowledge_status(path: Path) -> dict[str, Any]:
                 ).fetchone()[0]
             ),
             "edges": len(frontier.edges),
-            "calls": int(connection.execute("SELECT COUNT(*) FROM call_fact").fetchone()[0]),
+            "callRelationships": len(frontier.calls),
+            "callsiteDelayEdges": int(
+                connection.execute("SELECT COUNT(*) FROM call_fact").fetchone()[0]
+            ),
             "exactDmaContents": int(connection.execute("SELECT COUNT(*) FROM exact_content").fetchone()[0]),
             "dmaPlacements": int(connection.execute("SELECT COUNT(*) FROM dma_placement").fetchone()[0]),
             "functionPlacements": int(
@@ -1051,6 +1249,11 @@ def knowledge_status(path: Path) -> dict[str, Any]:
                             "SELECT COUNT(*) FROM instruction_mapping_candidate"
                         ).fetchone()[0]
                     ),
+                    "namedSessions": int(
+                        connection.execute(
+                            "SELECT COUNT(*) FROM session_semantic_context"
+                        ).fetchone()[0]
+                    ),
                 }
             )
             if _table_exists(connection, "known_activity_summary"):
@@ -1082,6 +1285,10 @@ def knowledge_status(path: Path) -> dict[str, Any]:
             "captureAuthority": meta["captureAuthority"],
             "frontier": frontier.summary(),
             "counts": counts,
+            "callCountBoundary": (
+                "callRelationships are exact observed callsite-delay-target triples; "
+                "callsiteDelayEdges remains a historical compatibility count"
+            ),
         }
     finally:
         connection.close()
@@ -1176,6 +1383,44 @@ def _validate_delta(delta: SessionDelta, meta: Mapping[str, str], rom: bytes) ->
             raise ValueError("edge source generation must be nonnegative")
         if edge.destination_generation is not None and edge.destination_generation < 0:
             raise ValueError("edge destination generation must be nonnegative")
+    call_opcodes = {
+        "jal-direct": lambda opcode: (opcode >> 26) & 63 == 3,
+        "jalr-register": lambda opcode: (opcode >> 26) & 63 == 0 and opcode & 63 == 9,
+        "branch-and-link": lambda opcode: (
+            (opcode >> 26) & 63 == 1 and (opcode >> 16) & 31 in {16, 17}
+        ),
+    }
+    for call in delta.calls:
+        for address, opcode, label in (
+            (call.callsite_physical_address, call.callsite_opcode_u32, "callsite"),
+            (call.delay_physical_address, call.delay_opcode_u32, "call delay slot"),
+            (call.target_physical_address, call.target_opcode_u32, "call target"),
+        ):
+            _validate_physical_instruction(address, opcode, label)
+        validator = call_opcodes.get(call.call_kind)
+        if (
+            validator is None
+            or not validator(call.callsite_opcode_u32)
+            or call.delay_physical_address != call.callsite_physical_address + 4
+            or not _call_target_matches_physical(
+                call.call_kind,
+                call.callsite_physical_address,
+                call.callsite_opcode_u32,
+                call.target_physical_address,
+            )
+            or (
+                call.call_kind == "branch-and-link"
+                and call.target_physical_address == call.callsite_physical_address + 8
+            )
+        ):
+            raise ValueError("atomic call context is not an executed MIPS call transfer")
+        for generation in (
+            call.callsite_generation,
+            call.delay_generation,
+            call.target_generation,
+        ):
+            if generation is not None and generation < 0:
+                raise ValueError("call generation must be nonnegative")
     for dma in delta.dma_placements:
         if dma.source_end_exclusive <= dma.source_start:
             raise ValueError("DMA source range is empty")
@@ -1238,6 +1483,12 @@ def _validate_delta(delta: SessionDelta, meta: Mapping[str, str], rom: bytes) ->
                 activity.instruction_hit_bitmap,
             ),
             ("edge", activity.edge_max_ordinal, activity.edge_hit_count, activity.edge_hit_bitmap),
+            (
+                "call",
+                activity.call_max_ordinal,
+                activity.call_hit_count,
+                activity.call_hit_bitmap,
+            ),
             ("DMA", activity.dma_max_ordinal, activity.dma_hit_count, activity.dma_hit_bitmap),
         ):
             if (
@@ -1253,6 +1504,13 @@ def _validate_delta(delta: SessionDelta, meta: Mapping[str, str], rom: bytes) ->
                 )
             ):
                 raise ValueError(f"known activity {label} bitmap is inconsistent")
+    if delta.semantic_name is not None:
+        if not delta.semantic_name.strip() or len(delta.semantic_name.strip()) > 160:
+            raise ValueError("session semantic name must contain 1 to 160 characters")
+        if delta.semantic_context_created_utc is None:
+            raise ValueError("named session omitted semantic-context creation time")
+        if delta.semantic_notes is not None and len(delta.semantic_notes) > 4000:
+            raise ValueError("session semantic notes exceed 4000 characters")
     marker_ids = {marker.marker_id for marker in delta.semantic_markers}
     seen_marker_windows: set[int] = set()
     for window in delta.marker_context_windows:
@@ -1505,6 +1763,181 @@ def _call_kind(opcode: int) -> str | None:
     return None
 
 
+def _call_target_matches_physical(
+    call_kind: str, callsite_address: int, opcode: int, target_address: int
+) -> bool:
+    if call_kind == "jal-direct":
+        expected = (
+            ((callsite_address + 4) & 0xF0000000)
+            | ((opcode & 0x03FFFFFF) << 2)
+        )
+        return target_address == expected
+    if call_kind == "branch-and-link":
+        displacement = opcode & 0xFFFF
+        if displacement & 0x8000:
+            displacement -= 0x10000
+        expected = (callsite_address + 4 + displacement * 4) & 0xFFFFFFFF
+        return target_address == expected
+    return call_kind == "jalr-register"
+
+
+def _historical_session_call_observations(
+    connection: sqlite3.Connection, session_id: str
+) -> tuple[CallObservation, ...]:
+    """Recover the strongest call triples available from pre-0.14 edge events."""
+
+    observations: list[CallObservation] = []
+    rows = connection.execute(
+        "SELECT callsite.physical_address,callsite.opcode_u32,"
+        "delay.physical_address,delay.opcode_u32,"
+        "target.physical_address,target.opcode_u32,"
+        "w2.bridge_sequence,w2.frame,w1.source_generation,"
+        "w1.destination_generation,w2.destination_generation "
+        "FROM edge_context_witness w1 "
+        "JOIN edge_fact e1 ON e1.edge_id=w1.edge_id "
+        "JOIN instruction_fact callsite "
+        "ON callsite.instruction_id=e1.source_instruction_id "
+        "JOIN instruction_fact delay "
+        "ON delay.instruction_id=e1.destination_instruction_id "
+        "JOIN edge_context_witness w2 ON w2.session_id=w1.session_id "
+        "AND w2.bridge_sequence=w1.bridge_sequence+1 "
+        "JOIN edge_fact e2 ON e2.edge_id=w2.edge_id "
+        "AND e2.source_instruction_id=e1.destination_instruction_id "
+        "JOIN instruction_fact target "
+        "ON target.instruction_id=e2.destination_instruction_id "
+        "WHERE w1.session_id=? "
+        "AND e1.edge_kind='native-exact-instruction-transition' "
+        "AND e2.edge_kind='native-exact-instruction-transition' "
+        "AND delay.physical_address=callsite.physical_address+4 "
+        "ORDER BY w2.bridge_sequence,e1.edge_id,e2.edge_id",
+        (session_id,),
+    )
+    for row in rows:
+        kind = _call_kind(int(row[1]))
+        if kind is None or not _call_target_matches_physical(
+            kind, int(row[0]), int(row[1]), int(row[4])
+        ):
+            continue
+        observations.append(
+            CallObservation(
+                int(row[0]),
+                int(row[1]),
+                int(row[2]),
+                int(row[3]),
+                int(row[4]),
+                int(row[5]),
+                kind,
+                int(row[6]),
+                row[8],
+                row[9],
+                row[10],
+                row[7],
+                "historical-consecutive-edge-reconstruction",
+            )
+        )
+    return tuple(observations)
+
+
+def _seed_historical_call_relationships(connection: sqlite3.Connection) -> int:
+    """Seed format-5 calls in the same ledger/order used by a clean replay."""
+
+    inserted_count = 0
+    sessions = connection.execute(
+        "SELECT session_id FROM ingestion_ledger "
+        "WHERE status='ingested' ORDER BY ledger_ordinal"
+    )
+    for session_row in sessions:
+        session_id = str(session_row[0])
+        session_cache: set[tuple[int, int, int, str]] = set()
+        for call in _historical_session_call_observations(connection, session_id):
+            endpoint_ids: list[int] = []
+            for physical_address, opcode_u32 in (
+                (call.callsite_physical_address, call.callsite_opcode_u32),
+                (call.delay_physical_address, call.delay_opcode_u32),
+                (call.target_physical_address, call.target_opcode_u32),
+            ):
+                endpoint = connection.execute(
+                    "SELECT instruction_id FROM instruction_fact "
+                    "WHERE physical_address=? AND opcode_u32=?",
+                    (physical_address, opcode_u32),
+                ).fetchone()
+                if endpoint is None:
+                    raise ValueError(
+                        "historical exact-call migration references an unknown instruction"
+                    )
+                endpoint_ids.append(int(endpoint[0]))
+            key = (*endpoint_ids, call.call_kind)
+            if key in session_cache:
+                continue
+            session_cache.add(key)
+            row = connection.execute(
+                "SELECT call_relationship_id FROM call_relationship_fact "
+                "WHERE callsite_instruction_id=? AND delay_instruction_id=? "
+                "AND target_instruction_id=? AND call_kind=?",
+                key,
+            ).fetchone()
+            if row is None:
+                cursor = connection.execute(
+                    "INSERT INTO call_relationship_fact("
+                    "callsite_instruction_id,delay_instruction_id,target_instruction_id,"
+                    "call_kind,first_session_id,observation_count,discovery_session_count"
+                    ") VALUES(?,?,?,?,?,1,1)",
+                    (*key, session_id),
+                )
+                relationship_id = int(cursor.lastrowid)
+                inserted_count += 1
+            else:
+                relationship_id = int(row[0])
+                session_seen = connection.execute(
+                    "SELECT 1 FROM call_relationship_session "
+                    "WHERE call_relationship_id=? AND session_id=?",
+                    (relationship_id, session_id),
+                ).fetchone() is not None
+                connection.execute(
+                    "UPDATE call_relationship_fact SET "
+                    "observation_count=observation_count+1,"
+                    "discovery_session_count=discovery_session_count+? "
+                    "WHERE call_relationship_id=?",
+                    (int(not session_seen), relationship_id),
+                )
+            connection.execute(
+                "INSERT INTO call_relationship_session("
+                "call_relationship_id,session_id,first_bridge_sequence,"
+                "last_bridge_sequence,observation_count) VALUES(?,?,?,?,1) "
+                "ON CONFLICT(call_relationship_id,session_id) DO UPDATE SET "
+                "first_bridge_sequence=MIN(first_bridge_sequence,excluded.first_bridge_sequence),"
+                "last_bridge_sequence=MAX(last_bridge_sequence,excluded.last_bridge_sequence),"
+                "observation_count=observation_count+1",
+                (
+                    relationship_id,
+                    session_id,
+                    call.bridge_sequence,
+                    call.bridge_sequence,
+                ),
+            )
+            connection.execute(
+                "INSERT INTO call_relationship_context_witness "
+                "VALUES(?,?,?,?,?,?,?,?) "
+                "ON CONFLICT(call_relationship_id,session_id,bridge_sequence) "
+                "DO UPDATE SET frame=COALESCE(frame,excluded.frame),"
+                "callsite_generation=COALESCE(callsite_generation,excluded.callsite_generation),"
+                "delay_generation=COALESCE(delay_generation,excluded.delay_generation),"
+                "target_generation=COALESCE(target_generation,excluded.target_generation),"
+                "observation_kind=excluded.observation_kind",
+                (
+                    relationship_id,
+                    session_id,
+                    call.bridge_sequence,
+                    call.frame,
+                    call.callsite_generation,
+                    call.delay_generation,
+                    call.target_generation,
+                    call.observation_kind,
+                ),
+            )
+    return inserted_count
+
+
 def _refresh_destination(
     connection: sqlite3.Connection, destination_start: int, destination_end: int
 ) -> None:
@@ -1573,12 +2006,18 @@ def _refresh_function(connection: sqlite3.Connection, function_id: int) -> None:
     )
     call_in = int(
         connection.execute(
-            "SELECT COUNT(*) FROM call_fact WHERE callee_function_id=?", (function_id,)
+            "SELECT COUNT(*) FROM call_relationship_fact c "
+            "JOIN instruction_fact i ON i.instruction_id=c.target_instruction_id "
+            "WHERE i.function_id=?",
+            (function_id,),
         ).fetchone()[0]
     )
     call_out = int(
         connection.execute(
-            "SELECT COUNT(*) FROM call_fact WHERE caller_function_id=?", (function_id,)
+            "SELECT COUNT(*) FROM call_relationship_fact c "
+            "JOIN instruction_fact i ON i.instruction_id=c.callsite_instruction_id "
+            "WHERE i.function_id=?",
+            (function_id,),
         ).fetchone()[0]
     )
     sessions = int(
@@ -1665,6 +2104,13 @@ def _validate_activity_fact_ordinals(
             "WHERE edge_kind='native-exact-instruction-transition' ORDER BY edge_id",
             activity.edge_max_ordinal,
             activity.edge_hit_bitmap,
+        ),
+        (
+            "call",
+            "SELECT call_relationship_id FROM call_relationship_fact "
+            "ORDER BY call_relationship_id",
+            activity.call_max_ordinal,
+            activity.call_hit_bitmap,
         ),
         (
             "DMA",
@@ -2063,6 +2509,7 @@ def ingest_delta(
         schema_version = int(meta["schemaVersion"])
         has_context_schema = schema_version >= 3
         has_activity_schema = _table_exists(connection, "known_activity_summary")
+        has_call_schema = _table_exists(connection, "call_relationship_fact")
         rom = read_normalized_rom(Path(meta["romPath"]))
         _validate_delta(delta, meta, rom)
         if delta.known_activity is not None:
@@ -2073,6 +2520,8 @@ def ingest_delta(
             connection, "marker_context_window"
         ):
             raise ValueError("knowledge database lacks the marker-context schema")
+        if delta.calls and not has_call_schema:
+            raise ValueError("knowledge database lacks the exact-call schema")
         existing = connection.execute(
             "SELECT * FROM ingestion_ledger WHERE session_id=?", (delta.session_id,)
         ).fetchone()
@@ -2092,6 +2541,7 @@ def ingest_delta(
             "instructions": 0,
             "edges": 0,
             "calls": 0,
+            "legacyCallsiteDelayEdges": 0,
             "dmaPlacements": 0,
             "functionPlacements": 0,
             "mappingCandidates": 0,
@@ -2385,7 +2835,12 @@ def ingest_delta(
                 ).fetchone()
                 assert source_row is not None and destination_row is not None
                 call_kind = _call_kind(int(source_row[1]))
-                if call_kind is not None and source_row[0] is not None and destination_row[0] is not None:
+                if (
+                    delta.protocol_version != BRIDGE_PROTOCOL_VERSION
+                    and call_kind is not None
+                    and source_row[0] is not None
+                    and destination_row[0] is not None
+                ):
                     inserted = connection.execute(
                         "INSERT OR IGNORE INTO call_fact VALUES(?,?,?,?,?)",
                         (
@@ -2396,8 +2851,150 @@ def ingest_delta(
                             delta.session_id,
                         ),
                     ).rowcount
-                    new_counts["calls"] += int(inserted > 0)
+                    new_counts["legacyCallsiteDelayEdges"] += int(inserted > 0)
                     affected_functions.update((int(source_row[0]), int(destination_row[0])))
+
+            call_cache: set[tuple[int, int, int, str]] = set()
+            call_observations = [(call, False) for call in delta.calls]
+            if delta.protocol_version != BRIDGE_PROTOCOL_VERSION:
+                call_observations.extend(
+                    (call, True)
+                    for call in _historical_session_call_observations(
+                        connection, delta.session_id
+                    )
+                )
+            for call, historical_reconstruction in call_observations:
+                if historical_reconstruction:
+                    endpoint_ids: list[int] = []
+                    for physical_address, opcode_u32 in (
+                        (call.callsite_physical_address, call.callsite_opcode_u32),
+                        (call.delay_physical_address, call.delay_opcode_u32),
+                        (call.target_physical_address, call.target_opcode_u32),
+                    ):
+                        endpoint = connection.execute(
+                            "SELECT instruction_id FROM instruction_fact "
+                            "WHERE physical_address=? AND opcode_u32=?",
+                            (physical_address, opcode_u32),
+                        ).fetchone()
+                        if endpoint is None:
+                            raise ValueError(
+                                "historical exact-call reconstruction references an unknown "
+                                "instruction"
+                            )
+                        endpoint_ids.append(int(endpoint[0]))
+                    callsite_id, delay_id, target_id = endpoint_ids
+                else:
+                    callsite_id = ensure_observation(
+                        physical_address=call.callsite_physical_address,
+                        opcode_u32=call.callsite_opcode_u32,
+                        function_id=None,
+                        z64_offset=None,
+                        mapping_status="contextual-call-callsite",
+                        bridge_sequence=call.bridge_sequence,
+                        generation=call.callsite_generation,
+                    )
+                    delay_id = ensure_observation(
+                        physical_address=call.delay_physical_address,
+                        opcode_u32=call.delay_opcode_u32,
+                        function_id=None,
+                        z64_offset=None,
+                        mapping_status="contextual-call-delay-slot",
+                        bridge_sequence=call.bridge_sequence,
+                        generation=call.delay_generation,
+                    )
+                    target_id = ensure_observation(
+                        physical_address=call.target_physical_address,
+                        opcode_u32=call.target_opcode_u32,
+                        function_id=None,
+                        z64_offset=None,
+                        mapping_status="contextual-call-target",
+                        bridge_sequence=call.bridge_sequence,
+                        generation=call.target_generation,
+                    )
+                key = (callsite_id, delay_id, target_id, call.call_kind)
+                if key in call_cache:
+                    continue
+                call_cache.add(key)
+                row = connection.execute(
+                    "SELECT call_relationship_id FROM call_relationship_fact "
+                    "WHERE callsite_instruction_id=? AND delay_instruction_id=? "
+                    "AND target_instruction_id=? AND call_kind=?",
+                    key,
+                ).fetchone()
+                if row is None:
+                    cursor = connection.execute(
+                        """
+                        INSERT INTO call_relationship_fact(
+                            callsite_instruction_id,delay_instruction_id,
+                            target_instruction_id,call_kind,first_session_id,
+                            observation_count,discovery_session_count
+                        ) VALUES(?,?,?,?,?,1,1)
+                        """,
+                        (*key, delta.session_id),
+                    )
+                    relationship_id = int(cursor.lastrowid)
+                    new_counts["calls"] += 1
+                else:
+                    relationship_id = int(row[0])
+                    session_seen = connection.execute(
+                        "SELECT 1 FROM call_relationship_session "
+                        "WHERE call_relationship_id=? AND session_id=?",
+                        (relationship_id, delta.session_id),
+                    ).fetchone() is not None
+                    connection.execute(
+                        "UPDATE call_relationship_fact SET "
+                        "observation_count=observation_count+1,"
+                        "discovery_session_count=discovery_session_count+? "
+                        "WHERE call_relationship_id=?",
+                        (int(not session_seen), relationship_id),
+                    )
+                connection.execute(
+                    """
+                    INSERT INTO call_relationship_session(
+                        call_relationship_id,session_id,first_bridge_sequence,
+                        last_bridge_sequence,observation_count
+                    ) VALUES(?,?,?,?,1)
+                    ON CONFLICT(call_relationship_id,session_id) DO UPDATE SET
+                        first_bridge_sequence=MIN(
+                            first_bridge_sequence,excluded.first_bridge_sequence),
+                        last_bridge_sequence=MAX(
+                            last_bridge_sequence,excluded.last_bridge_sequence),
+                        observation_count=observation_count+1
+                    """,
+                    (
+                        relationship_id,
+                        delta.session_id,
+                        call.bridge_sequence,
+                        call.bridge_sequence,
+                    ),
+                )
+                connection.execute(
+                    "INSERT INTO call_relationship_context_witness "
+                    "VALUES(?,?,?,?,?,?,?,?) "
+                    "ON CONFLICT(call_relationship_id,session_id,bridge_sequence) "
+                    "DO UPDATE SET frame=COALESCE(frame,excluded.frame),"
+                    "callsite_generation=COALESCE(callsite_generation,excluded.callsite_generation),"
+                    "delay_generation=COALESCE(delay_generation,excluded.delay_generation),"
+                    "target_generation=COALESCE(target_generation,excluded.target_generation),"
+                    "observation_kind=excluded.observation_kind",
+                    (
+                        relationship_id,
+                        delta.session_id,
+                        call.bridge_sequence,
+                        call.frame,
+                        call.callsite_generation,
+                        call.delay_generation,
+                        call.target_generation,
+                        call.observation_kind,
+                    ),
+                )
+                function_rows = connection.execute(
+                    "SELECT function_id FROM instruction_fact WHERE instruction_id IN (?,?,?)",
+                    (callsite_id, delay_id, target_id),
+                )
+                affected_functions.update(
+                    int(value[0]) for value in function_rows if value[0] is not None
+                )
 
             new_counts["executablePhysicalPages"] = (
                 int(connection.execute("SELECT COUNT(*) FROM frontier_page_bitmap").fetchone()[0])
@@ -2766,10 +3363,22 @@ def ingest_delta(
                         " ".join(limitations),
                     ),
                 )
+                if delta.semantic_name is not None:
+                    connection.execute(
+                        "INSERT INTO session_semantic_context VALUES(?,?,?,?,?)",
+                        (
+                            delta.session_id,
+                            delta.semantic_name.strip(),
+                            delta.semantic_notes,
+                            delta.semantic_context_created_utc,
+                            "human-post-capture",
+                        ),
+                    )
                 if delta.known_activity is not None:
                     activity = delta.known_activity
                     connection.execute(
-                        "INSERT INTO known_activity_summary VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+                        "INSERT INTO known_activity_summary "
+                        "VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
                         (
                             delta.session_id,
                             activity.frontier_identity,
@@ -2780,6 +3389,9 @@ def ingest_delta(
                             activity.edge_max_ordinal,
                             activity.edge_hit_count,
                             activity.edge_hit_bitmap,
+                            activity.call_max_ordinal,
+                            activity.call_hit_count,
+                            activity.call_hit_bitmap,
                             activity.dma_max_ordinal,
                             activity.dma_hit_count,
                             activity.dma_hit_bitmap,
@@ -2840,6 +3452,7 @@ def ingest_delta(
                     "pageGenerationContexts": len(delta.code_pages),
                     "instructions": len(delta.instructions),
                     "edges": len(delta.edges),
+                    "calls": len(delta.calls),
                     "dmaPlacements": len(delta.dma_placements),
                     "functionPlacements": len(delta.function_placements),
                     "controllerTransitions": len(delta.controller_transitions),
@@ -2858,6 +3471,11 @@ def ingest_delta(
                         if delta.known_activity is not None
                         else 0
                     ),
+                    "knownCallHits": (
+                        delta.known_activity.call_hit_count
+                        if delta.known_activity is not None
+                        else 0
+                    ),
                     "knownDmaHits": (
                         delta.known_activity.dma_hit_count
                         if delta.known_activity is not None
@@ -2869,6 +3487,7 @@ def ingest_delta(
                     ),
                     **dict(sorted(delta.contextual_counts.items())),
                 },
+                "semanticName": delta.semantic_name,
                 "frontierAfter": frontier_id,
             }
             for name, (table, _columns) in MATERIALIZATION_TABLES.items():
@@ -2980,12 +3599,16 @@ def _expected_materializations(
                 WHERE i.function_id IS NOT NULL GROUP BY i.function_id
             ),
             incoming_calls AS (
-                SELECT callee_function_id AS function_id,COUNT(*) AS count
-                FROM call_fact GROUP BY callee_function_id
+                SELECT i.function_id,COUNT(*) AS count
+                FROM call_relationship_fact c
+                JOIN instruction_fact i ON i.instruction_id=c.target_instruction_id
+                WHERE i.function_id IS NOT NULL GROUP BY i.function_id
             ),
             outgoing_calls AS (
-                SELECT caller_function_id AS function_id,COUNT(*) AS count
-                FROM call_fact GROUP BY caller_function_id
+                SELECT i.function_id,COUNT(*) AS count
+                FROM call_relationship_fact c
+                JOIN instruction_fact i ON i.instruction_id=c.callsite_instruction_id
+                WHERE i.function_id IS NOT NULL GROUP BY i.function_id
             ),
             execution_sessions AS (
                 SELECT i.function_id,COUNT(DISTINCT s.session_id) AS count
@@ -3327,6 +3950,56 @@ def verify_knowledge_database(path: Path) -> dict[str, Any]:
         )
         check("instruction-exact-opcodes", opcode_errors == 0, f"{opcode_errors} mismatch(es)")
 
+        if _table_exists(connection, "call_relationship_fact"):
+            call_identity_errors = 0
+            call_rows = list(
+                connection.execute(
+                    "SELECT c.call_kind,callsite.physical_address,"
+                    "callsite.opcode_u32,delay.physical_address,"
+                    "target.physical_address,c.observation_count,"
+                    "c.discovery_session_count,c.call_relationship_id "
+                    "FROM call_relationship_fact c "
+                    "JOIN instruction_fact callsite "
+                    "ON callsite.instruction_id=c.callsite_instruction_id "
+                    "JOIN instruction_fact delay "
+                    "ON delay.instruction_id=c.delay_instruction_id "
+                    "JOIN instruction_fact target "
+                    "ON target.instruction_id=c.target_instruction_id"
+                )
+            )
+            for row in call_rows:
+                call_identity_errors += int(
+                    _call_kind(int(row[2])) != str(row[0])
+                    or int(row[3]) != int(row[1]) + 4
+                    or not _call_target_matches_physical(
+                        str(row[0]), int(row[1]), int(row[2]), int(row[4])
+                    )
+                )
+                aggregate = connection.execute(
+                    "SELECT COALESCE(SUM(observation_count),0),COUNT(*) "
+                    "FROM call_relationship_session WHERE call_relationship_id=?",
+                    (int(row[7]),),
+                ).fetchone()
+                assert aggregate is not None
+                call_identity_errors += int(
+                    int(aggregate[0]) != int(row[5])
+                    or int(aggregate[1]) != int(row[6])
+                )
+            call_context_errors = int(
+                connection.execute(
+                    "SELECT COUNT(*) FROM call_relationship_context_witness w "
+                    "LEFT JOIN ingestion_ledger l ON l.session_id=w.session_id "
+                    "WHERE l.session_id IS NULL OR w.bridge_sequence<l.bridge_sequence_start "
+                    "OR w.bridge_sequence>=l.bridge_sequence_end"
+                ).fetchone()[0]
+            )
+            check(
+                "exact-call-relationships",
+                call_identity_errors == 0 and call_context_errors == 0,
+                f"{len(call_rows)} relationship(s); {call_identity_errors} identity/count "
+                f"error(s); {call_context_errors} context-range error(s)",
+            )
+
         rom: bytes | None = None
         try:
             rom = read_normalized_rom(Path(meta["romPath"]))
@@ -3429,10 +4102,23 @@ def verify_knowledge_database(path: Path) -> dict[str, Any]:
                     f"ORDER BY {','.join(columns)}"
                 )
             ]
+            first_difference = next(
+                (
+                    (actual, wanted)
+                    for actual, wanted in zip(actual_rows, expected_rows)
+                    if actual != wanted
+                ),
+                None,
+            )
             check(
                 f"materialization-{name}",
                 actual_rows == expected_rows,
-                f"{len(actual_rows)} exact row(s)",
+                f"{len(actual_rows)} exact row(s)"
+                + (
+                    f"; first actual/expected difference {first_difference!r}"
+                    if first_difference is not None
+                    else ""
+                ),
             )
             materialized_state = connection.execute(
                 "SELECT last_ledger_ordinal,row_count FROM materialization_state "
@@ -3546,6 +4232,9 @@ def verify_knowledge_database(path: Path) -> dict[str, Any]:
                         int(row["edge_max_ordinal"]),
                         int(row["edge_hit_count"]),
                         bytes(row["edge_hit_bitmap"]),
+                        int(row["call_max_ordinal"]),
+                        int(row["call_hit_count"]),
+                        bytes(row["call_hit_bitmap"]),
                         int(row["dma_max_ordinal"]),
                         int(row["dma_hit_count"]),
                         bytes(row["dma_hit_bitmap"]),
@@ -3566,7 +4255,11 @@ def verify_knowledge_database(path: Path) -> dict[str, Any]:
                 check(
                     "known-activity-summaries",
                     activity_errors == 0
-                    and len(activity_rows) == current_ledger_count,
+                    and sum(
+                        str(row["protocol_version"]) == BRIDGE_PROTOCOL_VERSION
+                        for row in activity_rows
+                    )
+                    == current_ledger_count,
                     f"{len(activity_rows)} summary row(s); "
                     f"{current_ledger_count} current-protocol session(s); "
                     f"{activity_errors} invalid row(s)",

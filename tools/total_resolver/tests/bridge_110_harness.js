@@ -13,6 +13,7 @@ let nextCallbackId = 1;
 let memoryBlockReads = 0;
 let frontierFixture = null;
 let nativePrevious = null;
+let nativePreviousPrevious = null;
 const callbacks = {
     state: new Map(),
     exec: new Map(),
@@ -23,10 +24,11 @@ const callbacks = {
     snapshot: new Map(),
 };
 const native = {
-    instructions: new Set(), edges: new Set(), dma: new Map(),
-    instructionOrdinals: new Map(), edgeOrdinals: new Map(), dmaOrdinals: new Map(),
-    instructionHits: new Set(), edgeHits: new Set(), dmaHits: new Set(),
-    instructionMaxOrdinal: 0, edgeMaxOrdinal: 0, dmaMaxOrdinal: 0,
+    instructions: new Set(), edges: new Set(), calls: new Set(), dma: new Map(),
+    instructionOrdinals: new Map(), edgeOrdinals: new Map(),
+    callOrdinals: new Map(), dmaOrdinals: new Map(),
+    instructionHits: new Set(), edgeHits: new Set(), callHits: new Set(), dmaHits: new Set(),
+    instructionMaxOrdinal: 0, edgeMaxOrdinal: 0, callMaxOrdinal: 0, dmaMaxOrdinal: 0,
     contextRecords: [], contextNextOrder: 1, pendingContext: null,
 };
 
@@ -56,6 +58,30 @@ function instructionKey(physical, opcode) {
 function edgeKey(source, destination) {
     return instructionKey(source.physical, source.opcode) + '>' +
         instructionKey(destination.physical, destination.opcode);
+}
+function callKey(callsite, delaySlot, target, callKind) {
+    return String(callKind) + '|' + edgeKey(callsite, delaySlot) + '>' +
+        instructionKey(target.physical, target.opcode);
+}
+function callKindForOpcode(opcode) {
+    const primary = (opcode >>> 26) & 63;
+    if (primary === 3) return 1;
+    if (primary === 0 && (opcode & 63) === 9) return 2;
+    if (primary === 1 && (((opcode >>> 16) & 31) === 16 ||
+        ((opcode >>> 16) & 31) === 17)) return 3;
+    return 0;
+}
+function callTargetMatches(callKind, callsitePc, opcode, targetPc) {
+    if (callKind === 1) {
+        return targetPc === ((((callsitePc + 4) & 0xF0000000) |
+            ((opcode & 0x03FFFFFF) << 2)) >>> 0);
+    }
+    if (callKind === 3) {
+        let displacement = opcode & 0xFFFF;
+        if (displacement & 0x8000) displacement -= 0x10000;
+        return targetPc === ((callsitePc + 4 + displacement * 4) >>> 0);
+    }
+    return callKind === 2;
 }
 function dmaKey(source, destination, bytes) {
     return source.toString(16) + ':' + destination.toString(16) + ':' +
@@ -118,28 +144,35 @@ const context = {
             }
             native.instructions = new Set(frontierFixture.instructions);
             native.edges = new Set(frontierFixture.edges);
+            native.calls = new Set(frontierFixture.calls);
             native.dma = new Map(frontierFixture.dma);
             native.instructionOrdinals = new Map(
                 frontierFixture.instructions.map((key, index) => [key, index + 1]));
             native.edgeOrdinals = new Map(
                 frontierFixture.edges.map((key, index) => [key, index + 1]));
+            native.callOrdinals = new Map(
+                frontierFixture.calls.map((key, index) => [key, index + 1]));
             native.dmaOrdinals = new Map(
                 frontierFixture.dma.map((item, index) => [item[0], index + 1]));
             native.instructionMaxOrdinal = frontierFixture.instructions.length;
             native.edgeMaxOrdinal = frontierFixture.edges.length;
+            native.callMaxOrdinal = frontierFixture.calls.length;
             native.dmaMaxOrdinal = frontierFixture.dma.length;
             native.instructionHits.clear();
             native.edgeHits.clear();
+            native.callHits.clear();
             native.dmaHits.clear();
             return {
-                loaded: true, formatVersion: 4, rdramSize: RDRAM_SIZE,
+                loaded: true, formatVersion: 5, rdramSize: RDRAM_SIZE,
                 identity, romSha256: rom,
                 physicalPageCount: frontierFixture.pages,
                 instructionCount: native.instructions.size,
                 edgeCount: native.edges.size,
+                callCount: native.calls.size,
                 dmaCount: native.dma.size,
                 instructionMaxOrdinal: native.instructionMaxOrdinal,
                 edgeMaxOrdinal: native.edgeMaxOrdinal,
+                callMaxOrdinal: native.callMaxOrdinal,
                 dmaMaxOrdinal: native.dmaMaxOrdinal,
             };
         },
@@ -147,6 +180,7 @@ const context = {
         resetcoverageactivity() {
             native.instructionHits.clear();
             native.edgeHits.clear();
+            native.callHits.clear();
             native.dmaHits.clear();
             native.contextRecords = [];
             native.contextNextOrder = 1;
@@ -165,7 +199,7 @@ const context = {
         },
         draincoverageactivity() {
             const result = {
-                formatVersion: 4,
+                formatVersion: 5,
                 identity: frontierFixture.identity,
                 instructionMaxOrdinal: native.instructionMaxOrdinal,
                 instructionHitCount: native.instructionHits.size,
@@ -174,12 +208,16 @@ const context = {
                 edgeMaxOrdinal: native.edgeMaxOrdinal,
                 edgeHitCount: native.edgeHits.size,
                 edgeHitBitmap: activityBitmap(native.edgeHits, native.edgeMaxOrdinal),
+                callMaxOrdinal: native.callMaxOrdinal,
+                callHitCount: native.callHits.size,
+                callHitBitmap: activityBitmap(native.callHits, native.callMaxOrdinal),
                 dmaMaxOrdinal: native.dmaMaxOrdinal,
                 dmaHitCount: native.dmaHits.size,
                 dmaHitBitmap: activityBitmap(native.dmaHits, native.dmaMaxOrdinal),
             };
             native.instructionHits.clear();
             native.edgeHits.clear();
+            native.callHits.clear();
             native.dmaHits.clear();
             return result;
         },
@@ -207,11 +245,12 @@ function command(line) {
     return response;
 }
 function utf16Hex(value) { return Buffer.from(value, 'utf16le').toString('hex').toUpperCase(); }
-function loadFrontier(identity, instructions = [], edges = [], dma = []) {
+function loadFrontier(identity, instructions = [], edges = [], calls = [], dma = []) {
     frontierFixture = {
         identity,
         instructions: instructions.map((item) => instructionKey(item.physical, item.opcode)),
         edges: edges.map((item) => edgeKey(item[0], item[1])),
+        calls: calls.map((item) => callKey(item[0], item[1], item[2], item[3])),
         dma: dma.map((item) => [dmaKey(item.source, item.destination, item.bytes), true]),
         pages: new Set(instructions.map((item) => item.physical & ~0xFFF)).size,
     };
@@ -267,7 +306,24 @@ function emitExec(pc, opcode, page, generation) {
         }
         if (newEdge) native.edges.add(key);
     }
-    if (newInstruction || newEdge || readyContext) {
+    let callKind = 0;
+    let newCall = false;
+    if (nativePreviousPrevious && nativePrevious &&
+        nativePrevious.pc === nativePreviousPrevious.pc + 4) {
+        callKind = callKindForOpcode(nativePreviousPrevious.opcode);
+        if (callKind === 3 && pc === nativePreviousPrevious.pc + 8) callKind = 0;
+        if (callKind !== 0 && callTargetMatches(
+            callKind, nativePreviousPrevious.pc,
+            nativePreviousPrevious.opcode, pc)) {
+            const key = callKey(nativePreviousPrevious, nativePrevious, current, callKind);
+            newCall = !native.calls.has(key);
+            if (!newCall && native.callOrdinals.has(key)) {
+                native.callHits.add(native.callOrdinals.get(key));
+            }
+            if (newCall) native.calls.add(key);
+        }
+    }
+    if (newInstruction || newEdge || newCall || readyContext) {
         for (const item of callbacks.execFrontier.values()) {
             if (!item.target || (pc >= item.target.start && pc <= item.target.end)) {
                 item.callback({
@@ -277,7 +333,14 @@ function emitExec(pc, opcode, page, generation) {
                     previousOpcode: nativePrevious ? nativePrevious.opcode : 0,
                     previousPagePhysicalAddress: nativePrevious ? nativePrevious.page : 0,
                     previousPageGeneration: nativePrevious ? nativePrevious.generation : 0,
-                    newInstruction, newEdge,
+                    hasPreviousPrevious: nativePreviousPrevious !== null,
+                    previousPreviousPc: nativePreviousPrevious ? nativePreviousPrevious.pc : 0,
+                    previousPreviousOpcode: nativePreviousPrevious ? nativePreviousPrevious.opcode : 0,
+                    previousPreviousPagePhysicalAddress: nativePreviousPrevious ?
+                        nativePreviousPrevious.page : 0,
+                    previousPreviousPageGeneration: nativePreviousPrevious ?
+                        nativePreviousPrevious.generation : 0,
+                    newInstruction, newEdge, newCall, callKind,
                     contextMarkerReady: readyContext !== null,
                     executionContext: readyContext,
                 });
@@ -285,6 +348,7 @@ function emitExec(pc, opcode, page, generation) {
             }
         }
     }
+    nativePreviousPrevious = nativePrevious;
     nativePrevious = current;
 }
 function emitDma(source, destination, bytes) {
@@ -312,10 +376,11 @@ function canonicalFactCount(events) {
 
 const ping = command('ping');
 const initial = command('status');
-if (ping.version !== '0.13.0' || ping.frontierFormatVersion !== 4 ||
+if (ping.version !== '0.14.0' || ping.frontierFormatVersion !== 5 ||
     ping.rdramSize !== ALLOCATED_RDRAM_SIZE || ping.captureRdramSize !== RDRAM_SIZE ||
     initial.capture.enabled ||
-    !ping.capabilities.includes('native-persistent-novelty-frontier-v4') ||
+    !ping.capabilities.includes('native-persistent-novelty-frontier-v5') ||
+    !ping.capabilities.includes('atomic-callsite-delay-target-context') ||
     !ping.capabilities.includes('stop-time-known-activity-bitmaps')) {
     throw new Error('protocol identity mismatch');
 }
@@ -330,10 +395,11 @@ if (baseline.state !== 'ready' || baseline.byteLength !== RDRAM_SIZE) {
 if (command('baseline read ' + baseline.snapshotId + ' 0 4').bytesHex !== '00000000') {
     throw new Error('frozen baseline read failed');
 }
-const a = { pc: 0x80001000, opcode: 0x0C000050, page: 0x1000, generation: 1, physical: 0x1000 };
+const a = { pc: 0x80001000, opcode: 0x0C000400, page: 0x1000, generation: 1, physical: 0x1000 };
 const b = { pc: 0x80001004, opcode: 0, page: 0x1000, generation: 1, physical: 0x1004 };
 const readsBeforeTrace = memoryBlockReads;
 nativePrevious = null;
+nativePreviousPrevious = null;
 emitExec(a.pc, a.opcode, a.page, a.generation);
 emitExec(b.pc, b.opcode, b.page, b.generation);
 command('capture off');
@@ -344,10 +410,11 @@ if (firstCoverage.length !== 2 || memoryBlockReads !== readsBeforeTrace ||
     throw new Error('initial exact capture or baseline ordering regressed');
 }
 
-loadFrontier('K2:KNOWN', [a, b], [[a, b], [b, a]]);
+loadFrontier('K2:KNOWN', [a, b], [[a, b], [b, a]], [[a, b, a, 1]]);
 command('capture on K2:KNOWN');
 fireSnapshot();
 nativePrevious = null;
+nativePreviousPrevious = null;
 emitExec(a.pc, a.opcode, a.page, 77);
 emitExec(b.pc, b.opcode, b.page, 77);
 emitExec(a.pc, a.opcode, a.page, 78);
@@ -380,7 +447,7 @@ if (upperMemoryDrain.length !== 0) throw new Error('upper 4 MiB leaked into capt
 
 const c = { pc: 0x80001008, opcode: 0x24420001, page: 0x1000, generation: 80, physical: 0x1008 };
 emitExec(c.pc, c.opcode, c.page, c.generation);
-const caller = { pc: 0x80002000, opcode: 0x0C000050, page: 0x2000, generation: 4, physical: 0x2000 };
+const caller = { pc: 0x80002000, opcode: 0x0C000C00, page: 0x2000, generation: 4, physical: 0x2000 };
 emitExec(caller.pc, caller.opcode, caller.page, caller.generation);
 emitExec(b.pc, b.opcode, b.page, 80);
 emitExec(0x80003000, a.opcode, 0x3000, 1);
@@ -393,13 +460,15 @@ const activityEvents = noveltyEvents.filter((event) => event.kind === 'known-act
 if (noveltyCoverage.length !== 6 ||
     !noveltyCoverage.some((event) => event.noveltyDecision.startsWith('unresolved-')) ||
     activityEvents.length !== 1 || activityEvents[0].instructionHitCount < 2 ||
-    activityEvents[0].edgeHitCount < 1) {
+    activityEvents[0].edgeHitCount < 1 || activityEvents[0].callHitCount < 1) {
     throw new Error('new tail/caller/placement/change fallback regressed: ' +
         noveltyCoverage.length + ' ' + JSON.stringify(noveltyCoverage));
 }
 
 const dmaBytes = [0xAA, 0xBB];
-loadFrontier('K2:DMA', [], [], [{ source: 0x1000, destination: 0x2000, bytes: dmaBytes }]);
+loadFrontier('K2:DMA', [], [], [], [
+    { source: 0x1000, destination: 0x2000, bytes: dmaBytes }
+]);
 command('dma on 0 0x400000 65536 0');
 const knownDmaEmitted = emitDma(0x1000, 0x2000, dmaBytes);
 const upperDmaEmitted = emitDma(0x1000, 0x402000, dmaBytes);
@@ -427,6 +496,7 @@ context.pj64.romInfo = {
     filePath: 'C:/fixture.z64', crc1: 0x12345678, crc2: 0x9ABCDEF0,
 };
 nativePrevious = null;
+nativePreviousPrevious = null;
 for (const callback of callbacks.state.values()) callback({ state: context.EMU_STARTED });
 if (command('coldboot status').coldBoot.state !== 'capturing' ||
     !command('status').capture.enabled || !command('status').dma.enabled) {
@@ -489,8 +559,12 @@ process.stdout.write(JSON.stringify({
     knownActivityBitmapBytes: activityEvents.reduce((total, event) => total +
         event.instructionHitBitmapHex.length / 2 +
         event.edgeHitBitmapHex.length / 2 +
+        event.callHitBitmapHex.length / 2 +
         event.dmaHitBitmapHex.length / 2, 0),
     knownActivityFactHits: activityEvents.reduce((total, event) => total +
-        event.instructionHitCount + event.edgeHitCount + event.dmaHitCount, 0),
+        event.instructionHitCount + event.edgeHitCount + event.callHitCount +
+        event.dmaHitCount, 0),
+    knownCallActivityHits: activityEvents.reduce(
+        (total, event) => total + event.callHitCount, 0),
     markerContextWindows: markerContextEvents.length,
 }));

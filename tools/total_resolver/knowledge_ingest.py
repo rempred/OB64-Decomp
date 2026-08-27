@@ -12,6 +12,7 @@ from .derive_session import derive_session
 from .inventory import repository_root
 from .knowledge import (
     CodePageObservation,
+    CallObservation,
     ControllerTransitionObservation,
     DmaPlacementObservation,
     EdgeObservation,
@@ -283,6 +284,7 @@ def build_session_delta(
 
         instructions: list[InstructionObservation] = []
         edges: list[EdgeObservation] = []
+        calls: list[CallObservation] = []
         generated_unresolved: list[UnresolvedKnowledgeObservation] = []
         for ordinal, value in enumerate(execution_values, 1):
             if value.get("observationKind") != "native-exact-coverage":
@@ -316,6 +318,108 @@ def build_session_delta(
                     str(value.get("observationKind") or "native-exact-coverage"),
                 )
             )
+            call_value = value.get("call")
+            if value.get("newCall") is True and isinstance(call_value, Mapping):
+                callsite_value = call_value.get("callsite")
+                delay_value = call_value.get("delaySlot")
+                target_value = call_value.get("target")
+                call_exact = (
+                    exact_predecessor(callsite_value)
+                    if isinstance(callsite_value, Mapping)
+                    else None
+                )
+                delay_exact = (
+                    exact_predecessor(delay_value)
+                    if isinstance(delay_value, Mapping)
+                    else None
+                )
+                target_exact = (
+                    exact_predecessor(target_value)
+                    if isinstance(target_value, Mapping)
+                    else None
+                )
+                if call_exact is None or delay_exact is None or target_exact is None:
+                    generated_unresolved.append(
+                        UnresolvedKnowledgeObservation(
+                            f"knowledge-call-context:{ordinal:08d}",
+                            "exact-call-placement-or-generation-unresolved",
+                            value.get("sequence"),
+                            value.get("frame"),
+                            dict(value),
+                        )
+                    )
+                else:
+                    call_kind = str(call_value.get("callKind"))
+                    calls.append(
+                        CallObservation(
+                            call_exact[0],
+                            call_exact[1],
+                            delay_exact[0],
+                            delay_exact[1],
+                            target_exact[0],
+                            target_exact[1],
+                            call_kind,
+                            bridge_sequence,
+                            call_exact[2],
+                            delay_exact[2],
+                            target_exact[2],
+                            value.get("frame"),
+                        )
+                    )
+                    exact_nodes = (call_exact, delay_exact, target_exact)
+                    for node in exact_nodes:
+                        candidates = function_candidates.get((node[0], node[1]), set())
+                        mapped = next(iter(candidates)) if len(candidates) == 1 else (None, None)
+                        instructions.append(
+                            InstructionObservation(
+                                node[0],
+                                node[1],
+                                bridge_sequence,
+                                node[2],
+                                mapped[0],
+                                mapped[1],
+                                "atomic-call-context",
+                                value.get("frame"),
+                                "native-atomic-call-context",
+                            )
+                        )
+                    for source_node, destination_node in (
+                        (call_exact, delay_exact),
+                        (delay_exact, target_exact),
+                    ):
+                        source_candidates = function_candidates.get(
+                            (source_node[0], source_node[1]), set()
+                        )
+                        destination_candidates = function_candidates.get(
+                            (destination_node[0], destination_node[1]), set()
+                        )
+                        source_mapping = (
+                            next(iter(source_candidates))
+                            if len(source_candidates) == 1
+                            else (None, None)
+                        )
+                        destination_mapping = (
+                            next(iter(destination_candidates))
+                            if len(destination_candidates) == 1
+                            else (None, None)
+                        )
+                        edges.append(
+                            EdgeObservation(
+                                source_node[0],
+                                source_node[1],
+                                destination_node[0],
+                                destination_node[1],
+                                bridge_sequence,
+                                source_node[2],
+                                destination_node[2],
+                                source_function_id=source_mapping[0],
+                                source_z64_offset=source_mapping[1],
+                                destination_function_id=destination_mapping[0],
+                                destination_z64_offset=destination_mapping[1],
+                                frame=value.get("frame"),
+                                observation_kind="native-atomic-call-context",
+                            )
+                        )
             previous = value.get("previous")
             if value.get("newEdge") is not True or not isinstance(previous, Mapping):
                 continue
@@ -535,6 +639,9 @@ def build_session_delta(
                 _integer(payload.get("edgeMaxOrdinal"), "edge max ordinal"),
                 _integer(payload.get("edgeHitCount"), "edge hit count"),
                 bytes.fromhex(str(payload.get("edgeHitBitmapHex"))),
+                _integer(payload.get("callMaxOrdinal", 0), "call max ordinal"),
+                _integer(payload.get("callHitCount", 0), "call hit count"),
+                bytes.fromhex(str(payload.get("callHitBitmapHex", ""))),
                 _integer(payload.get("dmaMaxOrdinal"), "DMA max ordinal"),
                 _integer(payload.get("dmaHitCount"), "DMA hit count"),
                 bytes.fromhex(str(payload.get("dmaHitBitmapHex"))),
@@ -630,37 +737,62 @@ def build_session_delta(
             for key, value in (context.items() if isinstance(context, Mapping) else ())
             if isinstance(value, int) and not isinstance(value, bool)
         }
+        semantic_name = None
+        semantic_notes = None
+        semantic_context_created_utc = None
+        semantic_path = session_directory.resolve() / "semantic-context.json"
+        if semantic_path.is_file():
+            semantic_value = json.loads(semantic_path.read_text(encoding="utf-8"))
+            if (
+                not isinstance(semantic_value, Mapping)
+                or semantic_value.get("schema")
+                != "ob64-total-resolver-session-semantic-context.v1"
+                or semantic_value.get("sessionId") != product.session_id
+                or not isinstance(semantic_value.get("semanticName"), str)
+                or not isinstance(semantic_value.get("createdUtc"), str)
+            ):
+                raise ValueError("session semantic context is malformed or names another session")
+            semantic_name = str(semantic_value["semanticName"])
+            semantic_notes_value = semantic_value.get("notes")
+            if semantic_notes_value is not None and not isinstance(semantic_notes_value, str):
+                raise ValueError("session semantic notes must be text or null")
+            semantic_notes = semantic_notes_value
+            semantic_context_created_utc = str(semantic_value["createdUtc"])
         return SessionDelta(
-            product.session_id,
-            capture_identity,
-            raw_manifest_reference,
-            int(capture.execute("PRAGMA user_version").fetchone()[0]),
-            str(session["bridge_version"]),
-            frontier_identity,
-            str(session["rom_normalized_sha256"]),
-            str(session["bridge_epoch"]),
-            int(session["bridge_next_sequence_start"]),
-            int(session["bridge_next_sequence_end"]),
-            str(database.resolve()),
-            str(product.root.resolve()),
-            product.summary_sha256,
-            code_pages,
-            tuple(instructions),
-            tuple(edges),
-            tuple(dma_values),
-            tuple(placements),
-            tuple(controllers),
-            tuple(unresolved),
-            contextual_counts,
-            tuple(regions),
-            tuple(sampled_pcs),
-            semantic_markers,
-            (
+            session_id=product.session_id,
+            capture_identity=capture_identity,
+            raw_manifest_reference=raw_manifest_reference,
+            capture_schema_version=int(capture.execute("PRAGMA user_version").fetchone()[0]),
+            protocol_version=str(session["bridge_version"]),
+            frontier_identity_at_start=frontier_identity,
+            rom_normalized_sha256=str(session["rom_normalized_sha256"]),
+            bridge_epoch=str(session["bridge_epoch"]),
+            bridge_sequence_start=int(session["bridge_next_sequence_start"]),
+            bridge_sequence_end=int(session["bridge_next_sequence_end"]),
+            source_capture_path=str(database.resolve()),
+            source_product_path=str(product.root.resolve()),
+            source_product_reference=product.summary_sha256,
+            code_pages=code_pages,
+            instructions=tuple(instructions),
+            edges=tuple(edges),
+            calls=tuple(calls),
+            dma_placements=tuple(dma_values),
+            function_placements=tuple(placements),
+            controller_transitions=tuple(controllers),
+            unresolved=tuple(unresolved),
+            contextual_counts=contextual_counts,
+            regions=tuple(regions),
+            sampled_pcs=tuple(sampled_pcs),
+            semantic_markers=semantic_markers,
+            context_limitations=(
                 "Historical known execution suppressed by the persistent frontier cannot be recreated; "
                 "only emitted events and saved samples are retained.",
             ),
-            known_activity,
-            tuple(marker_context_windows),
+            known_activity=known_activity,
+            marker_context_windows=tuple(marker_context_windows),
+            semantic_name=semantic_name,
+            semantic_notes=semantic_notes,
+            semantic_context_created_utc=semantic_context_created_utc,
         )
     finally:
         capture.close()

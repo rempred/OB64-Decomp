@@ -30,7 +30,7 @@ from .resolver_sources import (
 from .schema import open_capture_database
 
 
-QUERY_SCHEMA = "ob64-total-resolver-agent-query.v1"
+QUERY_SCHEMA = "ob64-total-resolver-agent-query.v2"
 SOURCE_MANIFEST_SCHEMA = "ob64-total-resolver-query-source-manifest.v1"
 MAX_QUERY_LIMIT = 100
 DEFAULT_QUERY_LIMIT = 10
@@ -76,6 +76,20 @@ def _bounded_limit(limit: int) -> int:
     if limit < 1 or limit > MAX_QUERY_LIMIT:
         raise ValueError(f"query limit must be between 1 and {MAX_QUERY_LIMIT}")
     return limit
+
+
+def _session_keyword_terms(value: str | None) -> tuple[str, ...]:
+    if value is None:
+        return ()
+    keyword = value.strip()
+    if not keyword:
+        raise ValueError("session keyword must not be empty")
+    if len(keyword) > 256:
+        raise ValueError("session keyword must contain at most 256 characters")
+    terms = tuple(part.casefold() for part in keyword.split())
+    if len(terms) > 8:
+        raise ValueError("session keyword must contain at most 8 words")
+    return terms
 
 
 def _normalize_includes(includes: Iterable[str] | None) -> frozenset[str]:
@@ -604,12 +618,15 @@ def _function_dynamic_summary(
         "placementCount": int(row["placement_count"]),
         "instructionCount": int(row["instruction_count"]),
         "exactEdgeCount": int(row["exact_edge_count"]),
-        "callRelationshipCount": int(row["call_relationship_count"]),
         "incomingEdgeCount": int(row["incoming_edge_count"]),
         "outgoingEdgeCount": int(row["outgoing_edge_count"]),
-        "incomingCallCount": int(row["incoming_call_count"]),
-        "outgoingCallCount": int(row["outgoing_call_count"]),
         "executionSessionCount": int(row["execution_session_count"]),
+        "callCountSource": "callGraph",
+        "callCountLimit": (
+            "Legacy materialized call counts describe MIPS callsite-to-delay-slot edges and "
+            "are intentionally not exposed here. Truthful caller/callee counts are "
+            "reconstructed in callGraph from exact edge witnesses."
+        ),
     }
 
 
@@ -675,6 +692,125 @@ def _bitmap_contains(bitmap: bytes, ordinal: int) -> bool:
     return index // 8 < len(bitmap) and bool(bitmap[index // 8] & (1 << (index & 7)))
 
 
+def _session_semantic_map(
+    context: ResolverContext, session_ids: Sequence[str]
+) -> dict[str, dict[str, Any]]:
+    if not session_ids or not _table_exists(
+        context.knowledge, "session_semantic_context"
+    ):
+        return {}
+    unique_ids = tuple(dict.fromkeys(session_ids))
+    marks = ",".join("?" for _ in unique_ids)
+    return {
+        str(row["session_id"]): {
+            "semanticName": str(row["semantic_name"]),
+            "semanticNotes": row["notes"],
+            "semanticContextCreatedUtc": str(row["created_utc"]),
+            "semanticContextSource": str(row["context_source"]),
+        }
+        for row in context.knowledge.execute(
+            f"SELECT * FROM session_semantic_context WHERE session_id IN ({marks})",
+            unique_ids,
+        )
+    }
+
+
+def _attach_session_semantics(
+    context: ResolverContext, rows: Sequence[dict[str, Any]]
+) -> None:
+    semantics = _session_semantic_map(
+        context, [str(row["sessionId"]) for row in rows]
+    )
+    for row in rows:
+        row.update(
+            semantics.get(
+                str(row["sessionId"]),
+                {
+                    "semanticName": None,
+                    "semanticNotes": None,
+                    "semanticContextCreatedUtc": None,
+                    "semanticContextSource": None,
+                },
+            )
+        )
+
+
+def _search_sessions(
+    context: ResolverContext,
+    *,
+    session_id: str | None,
+    keyword_terms: Sequence[str],
+    limit: int,
+    offset: int,
+) -> list[dict[str, Any]]:
+    if not _table_exists(context.knowledge, "session_catalog"):
+        return []
+    has_semantics = _table_exists(context.knowledge, "session_semantic_context")
+    semantic_select = (
+        "sc.semantic_name,sc.notes,sc.created_utc AS semantic_created_utc,"
+        "sc.context_source "
+        if has_semantics
+        else "NULL AS semantic_name,NULL AS notes,NULL AS semantic_created_utc,"
+        "NULL AS context_source "
+    )
+    semantic_join = (
+        "LEFT JOIN session_semantic_context sc ON sc.session_id=c.session_id "
+        if has_semantics
+        else ""
+    )
+    clauses: list[str] = []
+    values: list[Any] = []
+    if session_id is not None:
+        clauses.append("c.session_id=?")
+        values.append(session_id)
+    if keyword_terms:
+        if not has_semantics:
+            return []
+        searchable = "lower(sc.semantic_name || ' ' || COALESCE(sc.notes,''))"
+        for term in keyword_terms:
+            clauses.append(f"instr({searchable},?)>0")
+            values.append(term)
+    where = " WHERE " + " AND ".join(clauses) if clauses else ""
+    rows = context.knowledge.execute(
+        "SELECT c.*,l.ledger_ordinal,l.status,l.ingested_utc,"
+        + semantic_select
+        + "FROM session_catalog c JOIN ingestion_ledger l ON l.session_id=c.session_id "
+        + semantic_join
+        + where
+        + " ORDER BY l.ledger_ordinal DESC,c.session_id LIMIT ? OFFSET ?",
+        [*values, limit, offset],
+    )
+    return [
+        {
+            "sessionId": str(row["session_id"]),
+            "semanticName": row["semantic_name"],
+            "semanticNotes": row["notes"],
+            "semanticContextCreatedUtc": row["semantic_created_utc"],
+            "semanticContextSource": row["context_source"],
+            "ledgerOrdinal": int(row["ledger_ordinal"]),
+            "ingestionStatus": str(row["status"]),
+            "ingestedUtc": str(row["ingested_utc"]),
+            "captureReference": str(row["capture_reference"]),
+            "protocolVersion": str(row["protocol_version"]),
+            "bridgeEpoch": str(row["bridge_epoch"]),
+            "bridgeSequenceStart": int(row["bridge_sequence_start"]),
+            "bridgeSequenceEnd": int(row["bridge_sequence_end"]),
+            "firstFrame": row["first_frame"],
+            "lastFrame": row["last_frame"],
+            "emittedInstructionWitnesses": int(
+                row["emitted_instruction_witnesses"]
+            ),
+            "emittedEdgeWitnesses": int(row["emitted_edge_witnesses"]),
+            "sampledPcCount": int(row["sampled_pc_count"]),
+            "semanticMarkerCount": int(row["semantic_marker_count"]),
+            "regionLifetimeCount": int(row["region_lifetime_count"]),
+            "contextCompleteness": str(row["context_completeness"]),
+            "limitationText": str(row["limitation_text"]),
+        }
+        for row in rows
+    ]
+
+
 def _known_activity(
     context: ResolverContext,
     session_id: str,
@@ -729,7 +865,7 @@ def _known_activity(
         matching_edge_ids = [
             edge_id for edge_id in matching_edge_ids if edge_id in relevant_edges
         ]
-    return {
+    result = {
         "sessionId": session_id,
         "frontierIdentity": str(row["frontier_identity"]),
         "bridgeSequence": int(row["bridge_sequence"]),
@@ -745,6 +881,8 @@ def _known_activity(
             "it does not provide its frame, bridge sequence, occurrence count, or local order."
         ),
     }
+    _attach_session_semantics(context, [result])
+    return result
 
 
 def _function_sessions(
@@ -810,38 +948,575 @@ def _function_sessions(
             session["knownActivityInstructionCount"] = hit_count
             session["membershipEvidence"] = "stop-time-native-hit-bitmap"
     ordered = [sessions[key] for key in sorted(sessions)]
-    return ordered[offset : offset + limit]
+    selected = ordered[offset : offset + limit]
+    _attach_session_semantics(context, selected)
+    return selected
 
 
-def _function_static_calls(
-    context: ResolverContext, function_ids: Sequence[int], *, limit: int, offset: int
-) -> dict[str, list[dict[str, Any]]]:
+def _call_function(row: sqlite3.Row, prefix: str, *, lane: str) -> dict[str, Any]:
+    start = int(row[f"{prefix}_z64_start"])
+    end = int(row[f"{prefix}_z64_end_exclusive"])
+    return {
+        "functionId": int(row[f"{prefix}_function_id"]),
+        "structuralName": str(row[f"{prefix}_structural_name"]),
+        "displayName": str(row[f"{prefix}_display_name"]),
+        "z64Start": start,
+        "z64EndExclusive": end,
+        "z64Range": f"{_hex(start)}..{_hex(end)}",
+        "confidence": str(row[f"{prefix}_confidence"]),
+        "evidenceLane": lane,
+    }
+
+
+def _omitted(total: int, offset: int, returned: int) -> int:
+    return max(0, total - offset - returned)
+
+
+def _empty_call_direction(*, included: bool) -> dict[str, Any]:
+    return {
+        "included": included,
+        "functionCount": 0,
+        "functions": [],
+        "callCount": 0,
+        "calls": [],
+        "callsiteFactCount": 0,
+        "unresolvedCallsiteCount": 0,
+        "frameSequenceWitnessCount": 0,
+        "frameSequenceWitnesses": [],
+        "knownActivity": {
+            "sessionCount": 0,
+            "sessions": [],
+            "sessionsOmitted": 0,
+            "claim": "session-membership-only",
+            "claimLimit": (
+                "Known-edge co-occurrence is contextual support, not an event-level call witness."
+            ),
+        },
+        "pagination": {
+            "functionsOmitted": 0,
+            "callsOmitted": 0,
+            "frameSequenceWitnessesOmitted": 0,
+        },
+    }
+
+
+def _static_call_direction(
+    context: ResolverContext,
+    function_ids: Sequence[int],
+    *,
+    direction: str,
+    limit: int,
+    offset: int,
+) -> dict[str, Any]:
     if not function_ids:
-        return {"callers": [], "callees": []}
+        return _empty_call_direction(included=True)
+    if not all(
+        _table_exists(context.static, table)
+        for table in ("logical_function", "direct_call", "candidate_callee")
+    ):
+        result = _empty_call_direction(included=True)
+        result["available"] = False
+        result["reason"] = "frozen static call tables are unavailable"
+        return result
     marks = ",".join("?" for _ in function_ids)
-    callers = [
-        _row_dict(row)
-        for row in context.static.execute(
-            "SELECT d.call_id,d.instruction_rom,d.function_id AS caller_function_id,"
-            "c.candidate_function_id AS callee_function_id,c.candidate_rom,"
-            "c.method,c.confidence FROM direct_call d JOIN candidate_callee c "
+    incoming = direction == "callers"
+    target_column = "c.candidate_function_id" if incoming else "d.function_id"
+    counterpart_column = "d.function_id" if incoming else "c.candidate_function_id"
+    function_count = int(
+        context.static.execute(
+            "SELECT COUNT(DISTINCT " + counterpart_column + ") "
+            "FROM direct_call d JOIN candidate_callee c "
             "ON c.instruction_rom=d.instruction_rom "
-            f"WHERE c.candidate_function_id IN ({marks}) ORDER BY d.call_id LIMIT ? OFFSET ?",
+            f"WHERE {target_column} IN ({marks})",
+            list(function_ids),
+        ).fetchone()[0]
+    )
+    call_count = int(
+        context.static.execute(
+            "SELECT COUNT(*) FROM direct_call d "
+            "JOIN candidate_callee c ON c.instruction_rom=d.instruction_rom "
+            f"WHERE {target_column} IN ({marks})",
+            list(function_ids),
+        ).fetchone()[0]
+    )
+    callsite_count = int(
+        context.static.execute(
+            "SELECT COUNT(DISTINCT d.call_id) FROM direct_call d "
+            "JOIN candidate_callee c ON c.instruction_rom=d.instruction_rom "
+            f"WHERE {target_column} IN ({marks})",
+            list(function_ids),
+        ).fetchone()[0]
+    )
+    function_rows = list(
+        context.static.execute(
+            "SELECT f.function_id AS related_function_id,"
+            "f.structural_name AS related_structural_name,"
+            "f.display_name AS related_display_name,"
+            "f.rom_start AS related_z64_start,"
+            "f.rom_end_exclusive AS related_z64_end_exclusive,"
+            "f.confidence AS related_confidence,"
+            "COUNT(DISTINCT d.call_id) AS call_count "
+            "FROM direct_call d JOIN candidate_callee c "
+            "ON c.instruction_rom=d.instruction_rom "
+            f"JOIN logical_function f ON f.function_id={counterpart_column} "
+            f"WHERE {target_column} IN ({marks}) "
+            "GROUP BY f.function_id,f.structural_name,f.display_name,"
+            "f.rom_start,f.rom_end_exclusive,f.confidence "
+            "ORDER BY f.function_id LIMIT ? OFFSET ?",
             [*function_ids, limit, offset],
         )
+    )
+    functions = [
+        {
+            **_call_function(row, "related", lane="static"),
+            "callsiteCount": int(row["call_count"]),
+            "relationshipEvidence": "frozen-static-direct-call-candidate",
+        }
+        for row in function_rows
     ]
-    callees = [
-        _row_dict(row)
-        for row in context.static.execute(
-            "SELECT d.call_id,d.instruction_rom,d.function_id AS caller_function_id,"
-            "c.candidate_function_id AS callee_function_id,c.candidate_rom,"
-            "c.method,c.confidence FROM direct_call d LEFT JOIN candidate_callee c "
+    call_rows = list(
+        context.static.execute(
+            "SELECT d.call_id,d.instruction_rom,"
+            "caller.function_id AS caller_function_id,"
+            "caller.structural_name AS caller_structural_name,"
+            "caller.display_name AS caller_display_name,"
+            "caller.rom_start AS caller_z64_start,"
+            "caller.rom_end_exclusive AS caller_z64_end_exclusive,"
+            "caller.confidence AS caller_confidence,"
+            "callee.function_id AS callee_function_id,"
+            "callee.structural_name AS callee_structural_name,"
+            "callee.display_name AS callee_display_name,"
+            "callee.rom_start AS callee_z64_start,"
+            "callee.rom_end_exclusive AS callee_z64_end_exclusive,"
+            "callee.confidence AS callee_confidence,"
+            "c.candidate_rom,c.method,c.confidence AS candidate_confidence "
+            "FROM direct_call d JOIN candidate_callee c "
             "ON c.instruction_rom=d.instruction_rom "
-            f"WHERE d.function_id IN ({marks}) ORDER BY d.call_id LIMIT ? OFFSET ?",
+            "JOIN logical_function caller ON caller.function_id=d.function_id "
+            "JOIN logical_function callee ON callee.function_id=c.candidate_function_id "
+            f"WHERE {target_column} IN ({marks}) "
+            "ORDER BY d.call_id,c.candidate_function_id LIMIT ? OFFSET ?",
             [*function_ids, limit, offset],
         )
+    )
+    calls = [
+        {
+            "staticCallId": int(row["call_id"]),
+            "instructionZ64": int(row["instruction_rom"]),
+            "instructionZ64Hex": _hex(int(row["instruction_rom"])),
+            "candidateTargetZ64": row["candidate_rom"],
+            "candidateTargetZ64Hex": (
+                None if row["candidate_rom"] is None else _hex(int(row["candidate_rom"]))
+            ),
+            "callerFunction": _call_function(row, "caller", lane="static"),
+            "calleeFunction": _call_function(row, "callee", lane="static"),
+            "method": str(row["method"]),
+            "confidence": str(row["candidate_confidence"]),
+            "evidence": "frozen-static-direct-call-candidate",
+        }
+        for row in call_rows
     ]
-    return {"callers": callers, "callees": callees}
+    result = _empty_call_direction(included=True)
+    result.update(
+        {
+            "available": True,
+            "functionCount": function_count,
+            "functions": functions,
+            "callCount": call_count,
+            "calls": calls,
+            "callsiteFactCount": callsite_count,
+            "pagination": {
+                "functionsOmitted": _omitted(function_count, offset, len(functions)),
+                "callsOmitted": _omitted(call_count, offset, len(calls)),
+                "frameSequenceWitnessesOmitted": 0,
+            },
+        }
+    )
+    return result
+
+
+def _known_call_activity(
+    context: ResolverContext,
+    relationships: Sequence[tuple[int, int, int]],
+    *,
+    limit: int,
+    offset: int,
+) -> dict[str, Any]:
+    sessions: list[dict[str, Any]] = []
+    if relationships and _table_exists(context.knowledge, "known_activity_summary"):
+        for row in context.knowledge.execute(
+            "SELECT session_id,bridge_sequence,call_hit_bitmap,edge_hit_bitmap "
+            "FROM known_activity_summary ORDER BY session_id"
+        ):
+            call_bitmap = bytes(row["call_hit_bitmap"])
+            edge_bitmap = bytes(row["edge_hit_bitmap"])
+            exact_hits = [
+                relation
+                for relation in relationships
+                if _bitmap_contains(call_bitmap, relation[0])
+            ]
+            historical_hits = [] if exact_hits else [
+                relation
+                for relation in relationships
+                if _bitmap_contains(edge_bitmap, relation[1])
+                and _bitmap_contains(edge_bitmap, relation[2])
+            ]
+            hits = exact_hits or historical_hits
+            if hits:
+                sessions.append(
+                    {
+                        "sessionId": str(row["session_id"]),
+                        "bridgeSequence": int(row["bridge_sequence"]),
+                        "relatedExactCallCount": len(hits),
+                        "callSamples": [
+                            {
+                                "callRelationshipId": relation[0],
+                                "callsiteEdgeId": relation[1],
+                                "transferEdgeId": relation[2],
+                            }
+                            for relation in hits[:DEFAULT_PREVIEW_LIMIT]
+                        ],
+                        "callsOmitted": max(0, len(hits) - DEFAULT_PREVIEW_LIMIT),
+                        "evidence": (
+                            "stop-time-native-call-hit-bitmap"
+                            if exact_hits
+                            else "historical-stop-time-edge-co-occurrence"
+                        ),
+                        "contextLimit": (
+                            "The exact call relationship occurred in this session; the bitmap "
+                            "does not preserve event order or occurrence count."
+                            if exact_hits
+                            else "Both exact edges occurred in this historical session, but the "
+                            "older bitmap cannot prove adjacency on this occurrence."
+                        ),
+                    }
+                )
+    return {
+        "sessionCount": len(sessions),
+        "sessions": sessions[offset : offset + limit],
+        "sessionsOmitted": _omitted(
+            len(sessions), offset, len(sessions[offset : offset + limit])
+        ),
+        "claim": "exact-call-session-membership-only",
+        "claimLimit": (
+            "Call activity establishes session membership, not event ordering or causation."
+        ),
+    }
+
+
+_CALL_OPCODE_SQL = (
+    "(((source.opcode_u32 >> 26) & 63) = 3 "
+    "OR (((source.opcode_u32 >> 26) & 63) = 0 AND (source.opcode_u32 & 63) = 9) "
+    "OR (((source.opcode_u32 >> 26) & 63) = 1 "
+    "AND ((source.opcode_u32 >> 16) & 31) IN (16,17)))"
+)
+
+
+def _runtime_call_transfer_witnesses(
+    context: ResolverContext, function_ids: Sequence[int], *, direction: str
+) -> tuple[list[sqlite3.Row], int]:
+    if not function_ids:
+        return [], 0
+    marks = ",".join("?" for _ in function_ids)
+    incoming = direction == "callers"
+    outgoing_callsite_count = (
+        0
+        if incoming
+        else int(
+            context.knowledge.execute(
+                "SELECT COUNT(*) FROM instruction_fact source "
+                f"WHERE source.function_id IN ({marks}) AND {_CALL_OPCODE_SQL}",
+                list(function_ids),
+            ).fetchone()[0]
+        )
+    )
+    target_column = "destination.function_id" if incoming else "source.function_id"
+    rows = list(
+        context.knowledge.execute(
+            "SELECT c.call_relationship_id,callsite.edge_id AS callsite_edge_id,"
+            "transfer.edge_id AS transfer_edge_id,c.call_kind,"
+            "w.session_id,w.bridge_sequence AS callsite_sequence,"
+            "w.frame AS callsite_frame,w.callsite_generation AS callsite_source_generation,"
+            "w.delay_generation AS delay_slot_generation,"
+            "w.bridge_sequence AS transfer_sequence,w.frame AS transfer_frame,"
+            "w.target_generation AS target_generation,"
+            "source.instruction_id AS source_instruction_id,"
+            "source.physical_address AS source_physical_address,"
+            "source.opcode_u32 AS source_opcode_u32,source.z64_offset AS source_z64_offset,"
+            "delay.instruction_id AS delay_instruction_id,"
+            "delay.physical_address AS delay_physical_address,"
+            "delay.opcode_u32 AS delay_opcode_u32,delay.z64_offset AS delay_z64_offset,"
+            "destination.instruction_id AS destination_instruction_id,"
+            "destination.physical_address AS destination_physical_address,"
+            "destination.opcode_u32 AS destination_opcode_u32,"
+            "destination.z64_offset AS destination_z64_offset,"
+            "callsite.observation_count AS callsite_observation_count,"
+            "transfer.observation_count AS transfer_observation_count,"
+            "caller.function_id AS caller_function_id,"
+            "caller.structural_name AS caller_structural_name,"
+            "caller.display_name AS caller_display_name,caller.z64_start AS caller_z64_start,"
+            "caller.z64_end_exclusive AS caller_z64_end_exclusive,"
+            "caller.confidence AS caller_confidence,"
+            "callee.function_id AS callee_function_id,"
+            "callee.structural_name AS callee_structural_name,"
+            "callee.display_name AS callee_display_name,callee.z64_start AS callee_z64_start,"
+            "callee.z64_end_exclusive AS callee_z64_end_exclusive,"
+            "callee.confidence AS callee_confidence "
+            "FROM call_relationship_fact c "
+            "JOIN instruction_fact source ON source.instruction_id=c.callsite_instruction_id "
+            "JOIN instruction_fact delay ON delay.instruction_id=c.delay_instruction_id "
+            "JOIN instruction_fact destination "
+            "ON destination.instruction_id=c.target_instruction_id "
+            "JOIN edge_fact callsite ON callsite.source_instruction_id=c.callsite_instruction_id "
+            "AND callsite.destination_instruction_id=c.delay_instruction_id "
+            "AND callsite.edge_kind='native-exact-instruction-transition' "
+            "JOIN edge_fact transfer ON transfer.source_instruction_id=c.delay_instruction_id "
+            "AND transfer.destination_instruction_id=c.target_instruction_id "
+            "AND transfer.edge_kind='native-exact-instruction-transition' "
+            "JOIN call_relationship_context_witness w "
+            "ON w.call_relationship_id=c.call_relationship_id "
+            "JOIN static_function caller ON caller.function_id=source.function_id "
+            "LEFT JOIN static_function callee ON callee.function_id=destination.function_id "
+            f"WHERE {target_column} IN ({marks}) "
+            "ORDER BY c.call_relationship_id,w.session_id,w.bridge_sequence",
+            list(function_ids),
+        )
+    )
+    return rows, outgoing_callsite_count
+
+
+def _instruction_summary(row: sqlite3.Row, prefix: str) -> dict[str, Any]:
+    physical = int(row[f"{prefix}_physical_address"])
+    opcode = int(row[f"{prefix}_opcode_u32"])
+    return {
+        "instructionId": int(row[f"{prefix}_instruction_id"]),
+        "physicalAddress": physical,
+        "physicalAddressHex": _hex(physical),
+        "opcode": opcode,
+        "opcodeHex": _hex(opcode),
+        "z64Offset": row[f"{prefix}_z64_offset"],
+    }
+
+
+def _runtime_call_direction(
+    context: ResolverContext,
+    function_ids: Sequence[int],
+    transfer_witnesses: Sequence[sqlite3.Row],
+    outgoing_callsite_count: int,
+    *,
+    direction: str,
+    limit: int,
+    offset: int,
+) -> dict[str, Any]:
+    if not function_ids:
+        return _empty_call_direction(included=True)
+    targets = set(function_ids)
+    incoming = direction == "callers"
+    filtered = [
+        row
+        for row in transfer_witnesses
+        if row["callee_function_id"] is not None
+        and (
+            (incoming and int(row["callee_function_id"]) in targets)
+            or (not incoming and int(row["caller_function_id"]) in targets)
+        )
+    ]
+    grouped: dict[tuple[int, int, int], list[sqlite3.Row]] = {}
+    for row in filtered:
+        key = (
+            int(row["call_relationship_id"]),
+            int(row["caller_function_id"]),
+            int(row["callee_function_id"]),
+        )
+        grouped.setdefault(key, []).append(row)
+    related_prefix = "caller" if incoming else "callee"
+    function_groups: dict[int, dict[str, Any]] = {}
+    for key, rows in grouped.items():
+        first = rows[0]
+        related_id = int(first[f"{related_prefix}_function_id"])
+        entry = function_groups.setdefault(
+            related_id,
+            {"row": first, "callKeys": set(), "sessions": set(), "witnessCount": 0},
+        )
+        entry["callKeys"].add(key)
+        entry["sessions"].update(str(row["session_id"]) for row in rows)
+        entry["witnessCount"] += len(rows)
+    ordered_functions = [function_groups[key] for key in sorted(function_groups)]
+    selected_functions = ordered_functions[offset : offset + limit]
+    functions = [
+        {
+            **_call_function(entry["row"], related_prefix, lane="runtime"),
+            "exactCallRelationshipCount": len(entry["callKeys"]),
+            "emittedSessionCount": len(entry["sessions"]),
+            "frameSequenceWitnessCount": int(entry["witnessCount"]),
+            "relationshipEvidence": "exact-runtime-delay-slot-transfer",
+            "reviewState": "live-unreviewed",
+        }
+        for entry in selected_functions
+    ]
+    ordered_groups = [grouped[key] for key in sorted(grouped)]
+    selected_groups = ordered_groups[offset : offset + limit]
+    calls: list[dict[str, Any]] = []
+    for rows in selected_groups:
+        first = rows[0]
+        calls.append(
+            {
+                "callsiteEdgeId": int(first["callsite_edge_id"]),
+                "transferEdgeId": int(first["transfer_edge_id"]),
+                "callRelationshipId": int(first["call_relationship_id"]),
+                "callKind": str(first["call_kind"]),
+                "callerFunction": _call_function(first, "caller", lane="runtime"),
+                "calleeFunction": _call_function(first, "callee", lane="runtime"),
+                "callsiteInstruction": _instruction_summary(first, "source"),
+                "delaySlotInstruction": _instruction_summary(first, "delay"),
+                "destinationInstruction": _instruction_summary(first, "destination"),
+                "callsiteEdgeObservationCount": int(first["callsite_observation_count"]),
+                "transferEdgeObservationCount": int(first["transfer_observation_count"]),
+                "emittedSessionCount": len({str(row["session_id"]) for row in rows}),
+                "frameSequenceWitnessCount": len(rows),
+                "evidence": "exact-runtime-delay-slot-transfer",
+                "reviewState": "live-unreviewed",
+            }
+        )
+    witness_count = len(filtered)
+    witness_rows = filtered[offset : offset + limit]
+    witnesses = [
+        {
+            "callsiteEdgeId": int(row["callsite_edge_id"]),
+            "transferEdgeId": int(row["transfer_edge_id"]),
+            "callRelationshipId": int(row["call_relationship_id"]),
+            "sessionId": str(row["session_id"]),
+            "callsiteSequence": int(row["callsite_sequence"]),
+            "transferSequence": int(row["transfer_sequence"]),
+            "callsiteFrame": row["callsite_frame"],
+            "transferFrame": row["transfer_frame"],
+            "callsiteSourceGeneration": row["callsite_source_generation"],
+            "delaySlotGeneration": row["delay_slot_generation"],
+            "targetGeneration": row["target_generation"],
+            "callKind": str(row["call_kind"]),
+            "callerFunctionId": int(row["caller_function_id"]),
+            "callerName": str(row["caller_structural_name"]),
+            "calleeFunctionId": int(row["callee_function_id"]),
+            "calleeName": str(row["callee_structural_name"]),
+            "contextOnly": True,
+        }
+        for row in witness_rows
+    ]
+    relationships = sorted(
+        {
+            (
+                int(rows[0]["call_relationship_id"]),
+                int(rows[0]["callsite_edge_id"]),
+                int(rows[0]["transfer_edge_id"]),
+            )
+            for rows in grouped.values()
+        }
+    )
+    resolved_callsite_ids = {int(rows[0]["call_relationship_id"]) for rows in grouped.values()}
+    callsite_fact_count = (
+        len(resolved_callsite_ids) if incoming else outgoing_callsite_count
+    )
+    unresolved_callsite_count = (
+        None if incoming else max(0, outgoing_callsite_count - len(resolved_callsite_ids))
+    )
+    result = _empty_call_direction(included=True)
+    result.update(
+        {
+            "functionCount": len(ordered_functions),
+            "functions": functions,
+            "callCount": len(ordered_groups),
+            "calls": calls,
+            "callsiteFactCount": callsite_fact_count,
+            "unresolvedCallsiteCount": unresolved_callsite_count,
+            "unresolvedCallsiteScope": (
+                "not-computable-for-incoming-query"
+                if incoming
+                else "selected-functions-outgoing-callsites"
+            ),
+            "frameSequenceWitnessCount": witness_count,
+            "frameSequenceWitnesses": witnesses,
+            "knownActivity": _known_call_activity(
+                context, relationships, limit=limit, offset=offset
+            ),
+            "pagination": {
+                "functionsOmitted": _omitted(
+                    len(ordered_functions), offset, len(functions)
+                ),
+                "callsOmitted": _omitted(len(ordered_groups), offset, len(calls)),
+                "frameSequenceWitnessesOmitted": _omitted(
+                    witness_count, offset, len(witnesses)
+                ),
+            },
+        }
+    )
+    return result
+
+
+def _function_call_graph(
+    context: ResolverContext,
+    function_ids: Sequence[int],
+    *,
+    relationship: str,
+    limit: int,
+    offset: int,
+    detail_included: bool,
+) -> dict[str, Any]:
+    selected_directions = (
+        {relationship}
+        if relationship in {"callers", "callees"}
+        else {"callers", "callees"}
+        if relationship == "all" or detail_included
+        else set()
+    )
+    static: dict[str, Any] = {}
+    runtime: dict[str, Any] = {}
+    for direction in ("callers", "callees"):
+        included = direction in selected_directions
+        static[direction] = (
+            _static_call_direction(
+                context,
+                function_ids,
+                direction=direction,
+                limit=limit,
+                offset=offset,
+            )
+            if included
+            else _empty_call_direction(included=False)
+        )
+        if included:
+            transfer_witnesses, outgoing_callsite_count = (
+                _runtime_call_transfer_witnesses(
+                    context, function_ids, direction=direction
+                )
+            )
+            runtime[direction] = _runtime_call_direction(
+                context,
+                function_ids,
+                transfer_witnesses,
+                outgoing_callsite_count,
+                direction=direction,
+                limit=limit,
+                offset=offset,
+            )
+        else:
+            runtime[direction] = _empty_call_direction(included=False)
+    return {
+        "targetFunctionIds": list(function_ids),
+        "relationship": relationship,
+        "static": static,
+        "runtime": runtime,
+        "detailIncluded": detail_included,
+        "evidenceBoundary": (
+            "Static direct calls are frozen candidates. Runtime relationships are exact observed "
+            "callsite-delay-slot-target triples; function names still require byte-confirmed "
+            "instruction mappings."
+        ),
+        "historicalOccurrenceLimit": (
+            "A retained exact transfer pair proves the relationship occurred. Historical novelty "
+            "filtering omits later repeated event streams; the dedicated call bitmap restores "
+            "exact per-session membership without claiming order or occurrence count."
+        ),
+    }
 
 
 def _function_fields(
@@ -912,6 +1587,7 @@ def explain_selected(
     session_id: str | None = None,
     sequence: int | None = None,
     frame: int | None = None,
+    relationship: str = "all",
     includes: Iterable[str] | None = None,
     limit: int = DEFAULT_QUERY_LIMIT,
     cursor: int = 0,
@@ -919,6 +1595,8 @@ def explain_selected(
     limit = _bounded_limit(limit)
     if cursor < 0:
         raise ValueError("query cursor must be nonnegative")
+    if relationship not in {"all", "placements", "callers", "callees", "executions"}:
+        raise ValueError(f"unsupported function relationship: {relationship}")
     include = _normalize_includes(includes)
     value = identifier.strip()
     lower = value.casefold()
@@ -1000,14 +1678,15 @@ def explain_selected(
             )
             for row in candidate_rows
         ]
-    calls = (
-        _function_static_calls(context, function_ids, limit=limit, offset=cursor)
-        if "calls" in include
-        else {
-            "callers": [],
-            "callees": [],
-            "detailAvailable": bool(function_ids),
-        }
+    call_limit = limit if "calls" in include else preview_limit
+    call_offset = cursor if "calls" in include else 0
+    call_graph = _function_call_graph(
+        context,
+        function_ids,
+        relationship=relationship,
+        limit=call_limit,
+        offset=call_offset,
+        detail_included="calls" in include,
     )
     fields = (
         _function_fields(context, function_ids, limit=limit, offset=cursor)
@@ -1028,6 +1707,7 @@ def explain_selected(
             "sessionId": session_id,
             "sequence": sequence,
             "frame": frame,
+            "relationship": relationship,
             "include": sorted(include),
             "limit": limit,
             "cursor": cursor,
@@ -1042,7 +1722,7 @@ def explain_selected(
             "sessions": sessions,
         },
         "mappingDiagnostics": candidates,
-        "staticCalls": calls,
+        "callGraph": call_graph,
         "fieldLane": fields,
         "resourceLane": resources,
         "pagination": {
@@ -1080,7 +1760,11 @@ def coverage_selected(context: ResolverContext) -> dict[str, Any]:
             ).fetchone()[0]
         ),
         "edges": int(context.knowledge.execute("SELECT COUNT(*) FROM edge_fact").fetchone()[0]),
-        "calls": int(context.knowledge.execute("SELECT COUNT(*) FROM call_fact").fetchone()[0]),
+        "callRelationships": int(
+            context.knowledge.execute(
+                "SELECT COUNT(*) FROM call_relationship_fact"
+            ).fetchone()[0]
+        ),
         "dmaPlacements": int(context.knowledge.execute("SELECT COUNT(*) FROM dma_placement").fetchone()[0]),
         "functionPlacements": int(
             context.knowledge.execute("SELECT COUNT(*) FROM function_placement_fact").fetchone()[0]
@@ -1093,7 +1777,8 @@ def coverage_selected(context: ResolverContext) -> dict[str, Any]:
     if _table_exists(context.knowledge, "known_activity_summary"):
         activity = context.knowledge.execute(
             "SELECT COUNT(*),COALESCE(SUM(instruction_hit_count),0),"
-            "COALESCE(SUM(edge_hit_count),0),COALESCE(SUM(dma_hit_count),0) "
+            "COALESCE(SUM(edge_hit_count),0),COALESCE(SUM(call_hit_count),0),"
+            "COALESCE(SUM(dma_hit_count),0) "
             "FROM known_activity_summary"
         ).fetchone()
         assert activity is not None
@@ -1102,11 +1787,12 @@ def coverage_selected(context: ResolverContext) -> dict[str, Any]:
                 "knownActivitySessions": int(activity[0]),
                 "knownInstructionSessionHits": int(activity[1]),
                 "knownEdgeSessionHits": int(activity[2]),
-                "knownDmaSessionHits": int(activity[3]),
+                "knownCallSessionHits": int(activity[3]),
+                "knownDmaSessionHits": int(activity[4]),
             }
         )
     return {
-        "schema": "ob64-total-resolver-selected-coverage.v1",
+        "schema": "ob64-total-resolver-selected-coverage.v2",
         "sourceManifest": context.manifest,
         "counts": counts,
         "functionCoverageClasses": classes,
@@ -1118,6 +1804,11 @@ def coverage_selected(context: ResolverContext) -> dict[str, Any]:
         "completenessBoundary": (
             "Coverage describes accepted captured sessions only. Unplayed paths and historically "
             "suppressed known occurrences remain outside this count."
+        ),
+        "callCountBoundary": (
+            "callsiteDelayEdges is the historical materialized count of call-instruction to "
+            "MIPS delay-slot edges. Use explain FUNCTION callGraph for actual caller/callee "
+            "relationships reconstructed from consecutive exact transfer witnesses."
         ),
     }
 
@@ -1366,6 +2057,7 @@ def search_selected(
     opcode: int | str | None = None,
     exact_bytes: str | None = None,
     session_id: str | None = None,
+    session_keyword: str | None = None,
     frame_start: int | None = None,
     frame_end: int | None = None,
     sequence_start: int | None = None,
@@ -1404,6 +2096,7 @@ def search_selected(
     parsed_edge_from = _parse_u32(edge_from, "edge source")
     parsed_edge_to = _parse_u32(edge_to, "edge destination")
     parsed_buttons = _parse_u32(buttons, "controller buttons")
+    session_keyword_terms = _session_keyword_terms(session_keyword)
     if not any(
         value is not None and value is not False
         for value in (
@@ -1413,6 +2106,7 @@ def search_selected(
             parsed_physical,
             parsed_opcode,
             session_id,
+            session_keyword,
             frame_start,
             frame_end,
             sequence_start,
@@ -1428,6 +2122,18 @@ def search_selected(
         )
     ):
         raise ValueError("search requires at least one bounded filter")
+
+    sessions = (
+        _search_sessions(
+            context,
+            session_id=session_id,
+            keyword_terms=session_keyword_terms,
+            limit=limit,
+            offset=cursor,
+        )
+        if session_id is not None or session_keyword_terms
+        else []
+    )
 
     function_query = function or text
     function_rows: list[sqlite3.Row] = []
@@ -1841,6 +2547,7 @@ def search_selected(
             "physical": parsed_physical,
             "opcode": parsed_opcode,
             "sessionId": session_id,
+            "sessionKeyword": session_keyword,
             "frameStart": frame_start,
             "frameEnd": frame_end,
             "sequenceStart": sequence_start,
@@ -1855,6 +2562,7 @@ def search_selected(
             "buttons": parsed_buttons,
         },
         "counts": {
+            "sessions": len(sessions),
             "functions": len(functions),
             "instructions": len(instructions),
             "edges": len(edges),
@@ -1874,6 +2582,7 @@ def search_selected(
                 else 0
             ),
         },
+        "sessions": sessions,
         "functions": functions,
         "instructions": [_instruction_dict(row) for row in instructions],
         "edges": edges,

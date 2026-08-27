@@ -11,6 +11,7 @@ from typing import Any, Sequence
 
 from .derive_transition import derive_transition
 from .benchmark import run_persistent_delta_benchmark
+from .capture_gui import CAPTURE_GUI_DEFAULT_PORT
 from .derive_session import derive_session
 from .inventory import Check, verify_inventory
 from .knowledge import (
@@ -67,6 +68,7 @@ from .sessions import (
     add_session_annotation,
     create_session,
     record_session_ingestion,
+    set_session_semantic_context,
     recover_session,
     request_session_stop,
     session_deduplication_report,
@@ -134,6 +136,16 @@ def build_parser() -> argparse.ArgumentParser:
         child = pj64_commands.add_parser(name)
         _add_connection_arguments(child)
 
+    gui = commands.add_parser(
+        "gui", help="open the human capture, naming, and explicit-ingestion window"
+    )
+    _add_connection_arguments(gui)
+    gui.set_defaults(port=CAPTURE_GUI_DEFAULT_PORT)
+    gui.add_argument("--sessions-root", type=Path)
+    gui.add_argument("--knowledge", type=Path)
+    gui.add_argument("--project64-root", type=Path)
+    gui.add_argument("--log", type=Path)
+
     session = commands.add_parser("session", help="manage observation-only capture sessions")
     session_commands = session.add_subparsers(dest="session_command", required=True)
 
@@ -151,6 +163,11 @@ def build_parser() -> argparse.ArgumentParser:
         type=Path,
         help="persistent knowledge database (defaults to the selected database)",
     )
+    start.add_argument(
+        "--defer-ingest",
+        action="store_true",
+        help="close and verify at stop, then wait for explicit naming/ingestion",
+    )
 
     knowledge = commands.add_parser(
         "knowledge", help="manage persistent cross-session Total Resolver knowledge"
@@ -166,7 +183,7 @@ def build_parser() -> argparse.ArgumentParser:
     knowledge_select.add_argument("db", type=Path)
     knowledge_migrate_frontier = knowledge_commands.add_parser(
         "migrate-frontier",
-        help="copy a knowledge database to protocol frontier format 4 and verify it",
+        help="copy a knowledge database to call-aware frontier format 5 and verify it",
     )
     knowledge_migrate_frontier.add_argument("--db", type=Path)
     knowledge_migrate_frontier.add_argument("--output", type=Path, required=True)
@@ -227,6 +244,14 @@ def build_parser() -> argparse.ArgumentParser:
     stop.add_argument("session_id", nargs="?")
     stop.add_argument("--wait", type=float, default=120.0)
     _add_sessions_root(stop)
+
+    name_capture = session_commands.add_parser(
+        "name", help="attach human semantic context to a verified un-ingested capture"
+    )
+    name_capture.add_argument("session_id")
+    name_capture.add_argument("semantic_name")
+    name_capture.add_argument("--notes")
+    _add_sessions_root(name_capture)
 
     verify = session_commands.add_parser("verify", help="independently verify a closed session")
     verify.add_argument("session_id")
@@ -330,7 +355,10 @@ def build_parser() -> argparse.ArgumentParser:
         "--include",
         action="append",
         default=[],
-        help="detailed section to include (repeatable or comma-separated)",
+        help=(
+            "detailed section to include (repeatable or comma-separated); calls expands the "
+            "integrated static/runtime call graph"
+        ),
     )
     explain_command.add_argument("--limit", type=int, default=DEFAULT_QUERY_LIMIT)
     explain_command.add_argument("--cursor", type=int, default=0)
@@ -373,6 +401,10 @@ def build_parser() -> argparse.ArgumentParser:
     search_command.add_argument("--opcode")
     search_command.add_argument("--bytes", dest="exact_bytes")
     search_command.add_argument("--session")
+    search_command.add_argument(
+        "--session-keyword",
+        help="find captured sessions by words in their semantic name or notes",
+    )
     search_command.add_argument("--frame-start", type=int)
     search_command.add_argument("--frame-end", type=int)
     search_command.add_argument("--sequence-start", type=int)
@@ -492,6 +524,7 @@ def _session(args: argparse.Namespace) -> int:
                 foreground=args.foreground,
                 knowledge_database=args.knowledge,
                 before_rom=args.before_rom,
+                auto_ingest=not args.defer_ingest,
             )
         elif args.session_command == "status":
             payload = session_status(args.session_id, root=args.root)
@@ -515,6 +548,13 @@ def _session(args: argparse.Namespace) -> int:
                 args.session_id,
                 root=args.root,
                 wait_seconds=args.wait,
+            )
+        elif args.session_command == "name":
+            payload = set_session_semantic_context(
+                args.session_id,
+                args.semantic_name,
+                notes=args.notes,
+                root=args.root,
             )
         elif args.session_command == "verify":
             result = verify_named_session(args.session_id, root=args.root)
@@ -800,6 +840,7 @@ def _explain(args: argparse.Namespace) -> int:
                     session_id=session_id,
                     sequence=bridge_status.get("nextEventSequence"),
                     frame=bridge_status.get("frameCount"),
+                    relationship=args.relationship,
                     includes=_query_includes(args),
                     limit=args.limit,
                     cursor=args.cursor,
@@ -842,6 +883,7 @@ def _explain(args: argparse.Namespace) -> int:
                     session_id=args.resolver_session,
                     sequence=args.sequence,
                     frame=args.frame,
+                    relationship=args.relationship,
                     includes=_query_includes(args),
                     limit=args.limit,
                     cursor=args.cursor,
@@ -985,6 +1027,7 @@ def _search(args: argparse.Namespace) -> int:
                 opcode=args.opcode,
                 exact_bytes=args.exact_bytes,
                 session_id=args.session,
+                session_keyword=args.session_keyword,
                 frame_start=args.frame_start,
                 frame_end=args.frame_end,
                 sequence_start=args.sequence_start,
@@ -1013,6 +1056,16 @@ def main(argv: Sequence[str] | None = None) -> int:
         return _doctor(args)
     if args.command == "pj64":
         return _pj64(args)
+    if args.command == "gui":
+        from .capture_gui import launch_capture_gui
+
+        return launch_capture_gui(
+            root=args.sessions_root,
+            knowledge_database=args.knowledge,
+            project64_root=args.project64_root,
+            connection=_connection(args),
+            log_path=args.log,
+        )
     if args.command == "session":
         return _session(args)
     if args.command == "knowledge":

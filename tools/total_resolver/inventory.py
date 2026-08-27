@@ -32,6 +32,13 @@ class Check:
         return asdict(self)
 
 
+@dataclass(frozen=True)
+class ActiveProject64Binary:
+    path: Path
+    sha256: str
+    project64_root: Path
+
+
 def repository_root() -> Path:
     return Path(__file__).resolve().parents[2]
 
@@ -133,6 +140,51 @@ def _resolve_project64_root(config: dict[str, Any], explicit: Path | None) -> Pa
         return Path(configured).resolve()
     candidate = repository_root().parent.parent / "project64"
     return candidate.resolve() if candidate.exists() else None
+
+
+def resolve_active_project64_binary(
+    *,
+    project64_root: Path | None = None,
+    inventory: dict[str, Any] | None = None,
+) -> ActiveProject64Binary:
+    """Resolve and authenticate the one Project64 binary frozen for capture."""
+
+    config = inventory or load_inventory()
+    resolved_root = _resolve_project64_root(config, project64_root)
+    if resolved_root is None:
+        environment = config["locators"]["project64-repository"]["environment"]
+        raise FileNotFoundError(
+            f"Project64 repository was not found; set {environment} or pass its root"
+        )
+    resolved_root = resolved_root.resolve()
+    native = config.get("project64", {}).get("activeNativeRuntime")
+    if not isinstance(native, dict):
+        raise ValueError("source freeze has no active Project64 native runtime")
+    raw_binary = native.get("binaryPath")
+    expected = native.get("binarySha256")
+    if (
+        not isinstance(raw_binary, str)
+        or not raw_binary
+        or Path(raw_binary).is_absolute()
+        or ".." in Path(raw_binary).parts
+    ):
+        raise ValueError("active Project64 binary path must stay relative to its repository")
+    if not isinstance(expected, str) or len(expected) != 64:
+        raise ValueError("active Project64 binary SHA-256 is missing or malformed")
+    binary = (resolved_root / raw_binary).resolve()
+    try:
+        binary.relative_to(resolved_root)
+    except ValueError as exc:
+        raise ValueError("active Project64 binary resolves outside its repository") from exc
+    if not binary.is_file():
+        raise FileNotFoundError(binary)
+    actual = sha256_file(binary)
+    if actual != expected.upper():
+        raise RuntimeError(
+            "configured Project64 binary failed SHA-256 authentication: "
+            f"expected {expected.upper()}, got {actual}"
+        )
+    return ActiveProject64Binary(binary, actual, resolved_root)
 
 
 def _git_value(root: Path, *arguments: str) -> str:

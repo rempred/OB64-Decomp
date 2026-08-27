@@ -722,7 +722,7 @@ class Pj64CaptureRecorder:
                 address_end_exclusive=start + RDRAM_SIZE,
                 label=f"Native exact execution coverage ({name.upper()})",
                 reason="Preserve new exact instruction and edge coverage without per-hit queue growth",
-                definition_source=f"total-resolver:bridge-{BRIDGE_PROTOCOL_VERSION}-native-frontier-v4",
+                definition_source=f"total-resolver:bridge-{BRIDGE_PROTOCOL_VERSION}-native-frontier-v5",
                 interpreter_required=True,
                 interpreter_verified=True,
                 ownership_scope="recorder-owned",

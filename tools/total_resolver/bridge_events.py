@@ -184,6 +184,51 @@ def _validate_activity_bitmap(payload: Mapping[str, Any], prefix: str) -> None:
         raise BridgeProtocolError(f"known activity {prefix} bitmap has set padding bits")
 
 
+def _validate_call_node(
+    node: Mapping[str, Any], label: str
+) -> tuple[int, int, int | None]:
+    try:
+        pc = int(str(node.get("pc")), 0)
+        opcode = int(str(node.get("opcode")), 0)
+    except (TypeError, ValueError) as exc:
+        raise BridgeProtocolError(f"{label} omitted its exact PC/opcode") from exc
+    offset = node.get("pageOffset")
+    generation = node.get("pageGeneration")
+    generation_resolved = node.get("generationResolved")
+    exact = node.get("exactInstructionResolved")
+    if (
+        not 0 <= pc <= 0xFFFFFFFF
+        or not 0 <= opcode <= 0xFFFFFFFF
+        or isinstance(offset, bool)
+        or not isinstance(offset, int)
+        or offset != (pc & 0xFFF)
+        or offset & 3
+        or not isinstance(generation_resolved, bool)
+        or not isinstance(exact, bool)
+    ):
+        raise BridgeProtocolError(f"{label} has invalid exact instruction context")
+    if not exact:
+        if node.get("physicalAddress") is not None:
+            raise BridgeProtocolError(f"unresolved {label} claims a physical instruction")
+        return pc, opcode, None
+    try:
+        page = int(str(node.get("physicalPageAddress")), 0)
+        physical = int(str(node.get("physicalAddress")), 0)
+    except (TypeError, ValueError) as exc:
+        raise BridgeProtocolError(f"resolved {label} omitted physical placement") from exc
+    if (
+        page & 0xFFF
+        or not 0 <= page <= RDRAM_SIZE - 0x1000
+        or physical != page + offset
+        or not generation_resolved
+        or isinstance(generation, bool)
+        or not isinstance(generation, int)
+        or generation < 0
+    ):
+        raise BridgeProtocolError(f"resolved {label} has invalid placement/generation")
+    return pc, opcode, physical
+
+
 def _validate_trace_or_input_event(payload: Mapping[str, Any], event_type: str) -> None:
     if event_type == "trace-page":
         if payload.get("dedupeDecision") != "exact-byte-compare":
@@ -218,11 +263,16 @@ def _validate_trace_or_input_event(payload: Mapping[str, Any], event_type: str) 
         if payload.get("dedupeDecision") != "physical-address-and-exact-opcode":
             raise BridgeProtocolError("execution coverage lacks its exact dedupe decision")
         _frontier_identity(payload, event_type)
-        if not isinstance(payload.get("newInstruction"), bool) or not isinstance(
-            payload.get("newEdge"), bool
+        if (
+            not isinstance(payload.get("newInstruction"), bool)
+            or not isinstance(payload.get("newEdge"), bool)
+            or not isinstance(payload.get("newCall"), bool)
         ):
             raise BridgeProtocolError("execution coverage novelty flags must be booleans")
-        if payload.get("newInstruction") is not True and payload.get("newEdge") is not True:
+        if not any(
+            payload.get(name) is True
+            for name in ("newInstruction", "newEdge", "newCall")
+        ):
             raise BridgeProtocolError("execution coverage contains no new exact identity")
         if payload.get("noveltyDecision") not in {
             "new-instruction-and-edge",
@@ -230,6 +280,8 @@ def _validate_trace_or_input_event(payload: Mapping[str, Any], event_type: str) 
             "new-edge",
             "unresolved-edge-fallback",
             "unresolved-instruction-fallback",
+            "new-call-relationship",
+            "unresolved-call-fallback",
         }:
             raise BridgeProtocolError("execution coverage omitted its exact novelty decision")
         resolved = payload.get("exactInstructionResolved")
@@ -274,6 +326,7 @@ def _validate_trace_or_input_event(payload: Mapping[str, Any], event_type: str) 
         elif payload.get("noveltyDecision") not in {
             "unresolved-edge-fallback",
             "unresolved-instruction-fallback",
+            "unresolved-call-fallback",
         }:
             raise BridgeProtocolError("unresolved execution fact was not captured conservatively")
         previous = payload.get("previous")
@@ -292,10 +345,86 @@ def _validate_trace_or_input_event(payload: Mapping[str, Any], event_type: str) 
             ):
                 raise BridgeProtocolError("unresolved edge claims two exact endpoints")
             if (
-                payload.get("noveltyDecision") != "unresolved-edge-fallback"
+                payload.get("noveltyDecision")
+                not in {"unresolved-edge-fallback", "unresolved-call-fallback"}
                 and (not previous_resolved or not resolved)
             ):
                 raise BridgeProtocolError("exact edge has an unresolved endpoint")
+        if payload.get("newCall") is True:
+            call = payload.get("call")
+            if not isinstance(call, Mapping) or call.get("callKind") not in {
+                "jal-direct",
+                "jalr-register",
+                "branch-and-link",
+            }:
+                raise BridgeProtocolError("new call omitted its exact call kind/context")
+            nodes = tuple(call.get(name) for name in ("callsite", "delaySlot", "target"))
+            if not all(isinstance(node, Mapping) for node in nodes):
+                raise BridgeProtocolError("new call omitted callsite, delay slot, or target")
+            callsite = _validate_call_node(nodes[0], "callsite")
+            delay_slot = _validate_call_node(nodes[1], "call delay slot")
+            target = _validate_call_node(nodes[2], "call target")
+            relationship_resolved = call.get("exactRelationshipResolved")
+            if not isinstance(relationship_resolved, bool):
+                raise BridgeProtocolError("new call omitted its exact resolution decision")
+            node_resolutions = tuple(
+                node.get("exactInstructionResolved") is True for node in nodes
+            )
+            if relationship_resolved != all(node_resolutions):
+                raise BridgeProtocolError("call resolution disagrees with its exact instructions")
+            if (
+                payload.get("noveltyDecision") == "unresolved-call-fallback"
+            ) != (not relationship_resolved):
+                raise BridgeProtocolError("call novelty decision disagrees with placement evidence")
+            call_kind = str(call["callKind"])
+            primary = (callsite[1] >> 26) & 63
+            register_target = primary == 0 and callsite[1] & 63 == 9
+            branch_and_link = (
+                primary == 1 and (callsite[1] >> 16) & 31 in {16, 17}
+            )
+            if (
+                delay_slot[0] != ((callsite[0] + 4) & 0xFFFFFFFF)
+                or (call_kind == "jal-direct") != (primary == 3)
+                or (call_kind == "jalr-register") != register_target
+                or (call_kind == "branch-and-link") != branch_and_link
+                or (
+                    callsite[2] is not None
+                    and delay_slot[2] is not None
+                    and delay_slot[2] != callsite[2] + 4
+                )
+            ):
+                raise BridgeProtocolError("atomic call context is not a MIPS call transfer")
+            if call_kind == "jal-direct":
+                decoded_target = (
+                    ((callsite[0] + 4) & 0xF0000000)
+                    | ((callsite[1] & 0x03FFFFFF) << 2)
+                )
+                if target[0] != decoded_target:
+                    raise BridgeProtocolError("JAL call target disagrees with the opcode")
+            elif call_kind == "branch-and-link":
+                displacement = callsite[1] & 0xFFFF
+                if displacement & 0x8000:
+                    displacement -= 0x10000
+                decoded_target = (callsite[0] + 4 + (displacement << 2)) & 0xFFFFFFFF
+                if target[0] != decoded_target:
+                    raise BridgeProtocolError(
+                        "branch-and-link call target disagrees with the opcode"
+                    )
+            previous = payload.get("previous")
+            if not isinstance(previous, Mapping):
+                raise BridgeProtocolError("new call omitted its top-level delay predecessor")
+            previous_node = _validate_call_node(previous, "execution predecessor")
+            try:
+                event_pc = int(str(payload.get("pc")), 0)
+                event_opcode = int(str(payload.get("opcode")), 0)
+            except (TypeError, ValueError) as exc:
+                raise BridgeProtocolError("new call omitted its target event") from exc
+            if (
+                previous_node != delay_slot
+                or event_pc != target[0]
+                or event_opcode != target[1]
+            ):
+                raise BridgeProtocolError("atomic call context contradicts its execution event")
     elif event_type == "controller-input":
         if payload.get("controller") != 0:
             raise BridgeProtocolError("controller capture currently requires effective P1 input")
@@ -321,7 +450,7 @@ def _validate_trace_or_input_event(payload: Mapping[str, Any], event_type: str) 
             or payload.get("orderingClaim") != "session-membership-only-not-event-order"
         ):
             raise BridgeProtocolError("known activity summary overstates its ordering evidence")
-        for prefix in ("instruction", "edge", "dma"):
+        for prefix in ("instruction", "edge", "call", "dma"):
             _validate_activity_bitmap(payload, prefix)
     elif event_type == "marker-execution-context":
         marker_id = payload.get("markerId")

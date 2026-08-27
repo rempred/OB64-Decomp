@@ -9,6 +9,7 @@ from unittest.mock import patch
 
 from tools.total_resolver.identities import rom_identity_from_file
 from tools.total_resolver.knowledge import (
+    CallObservation,
     CodePageObservation,
     ControllerTransitionObservation,
     DmaPlacementObservation,
@@ -79,9 +80,25 @@ def _make_static(path: Path) -> None:
             CREATE TABLE part_classification(part_id INTEGER, class TEXT);
             CREATE TABLE word(rom_address INTEGER, nominal_linear_vram INTEGER);
             CREATE TABLE instruction(rom_address INTEGER, function_id INTEGER);
+            CREATE TABLE direct_call(
+                call_id INTEGER PRIMARY KEY,
+                instruction_rom INTEGER,
+                function_id INTEGER
+            );
+            CREATE TABLE candidate_callee(
+                instruction_rom INTEGER,
+                candidate_function_id INTEGER,
+                candidate_rom INTEGER,
+                method TEXT,
+                confidence TEXT
+            );
             INSERT INTO logical_function VALUES
                 (1,'func_00000100','func_00000100',256,320,'accepted-structural'),
                 (2,'func_00000140','func_00000140',320,384,'accepted-structural');
+            INSERT INTO direct_call VALUES(1,256,1);
+            INSERT INTO candidate_callee VALUES(
+                256,2,320,'decoded-direct-target','accepted-structural'
+            );
             """
         )
         connection.commit()
@@ -139,12 +156,12 @@ class KnowledgeTests(unittest.TestCase):
             connection.commit()
         finally:
             connection.close()
-        destination = self.root / "frontier-v4.sqlite"
+        destination = self.root / "frontier-v5.sqlite"
 
         result = migrate_frontier_database(source, destination)
 
         self.assertEqual(result["fromFrontierFormatVersion"], 2)
-        self.assertEqual(result["toFrontierFormatVersion"], 4)
+        self.assertEqual(result["toFrontierFormatVersion"], 5)
         self.assertEqual(result["factMutation"], "none")
         self.assertEqual(result["verification"]["result"], "PASS")
         self.assertTrue(compare_canonical_machine_facts(source, destination)["equivalent"])
@@ -155,7 +172,7 @@ class KnowledgeTests(unittest.TestCase):
                 destination_connection.execute(
                     "SELECT value FROM knowledge_meta WHERE key='frontierFormatVersion'"
                 ).fetchone()[0],
-                "4",
+                "5",
             )
             self.assertEqual(
                 destination_connection.execute(
@@ -359,6 +376,7 @@ class KnowledgeTests(unittest.TestCase):
                 "0.10.0",
                 "0.11.0",
                 "0.12.0",
+                "0.13.0",
                 BRIDGE_PROTOCOL_VERSION,
             ),
         )
@@ -370,18 +388,21 @@ class KnowledgeTests(unittest.TestCase):
                     delta = replace(
                         delta,
                         known_activity=KnownActivityObservation(
-                            delta.frontier_identity_at_start,
-                            4,
-                            60,
-                            0,
-                            0,
-                            b"",
-                            0,
-                            0,
-                            b"",
-                            0,
-                            0,
-                            b"",
+                            frontier_identity=delta.frontier_identity_at_start,
+                            frontier_format_version=5,
+                            bridge_sequence=60,
+                            instruction_max_ordinal=0,
+                            instruction_hit_count=0,
+                            instruction_hit_bitmap=b"",
+                            edge_max_ordinal=0,
+                            edge_hit_count=0,
+                            edge_hit_bitmap=b"",
+                            call_max_ordinal=0,
+                            call_hit_count=0,
+                            call_hit_bitmap=b"",
+                            dma_max_ordinal=0,
+                            dma_hit_count=0,
+                            dma_hit_bitmap=b"",
                         ),
                     )
                 result = ingest_delta(database, delta)
@@ -766,6 +787,9 @@ class KnowledgeTests(unittest.TestCase):
                     },
                 ),
             ),
+            semantic_name="Hugo Report - People",
+            semantic_notes="Renamed and discharged a character",
+            semantic_context_created_utc="2026-08-27T20:00:00Z",
         )
         ingest_delta(database, delta)
         rebuilt = self.make_knowledge("context-rebuilt.sqlite")
@@ -815,6 +839,47 @@ class KnowledgeTests(unittest.TestCase):
                 explained, status = explain_selected(context, "func_00000100")
                 self.assertEqual(status, 0)
                 self.assertEqual(explained["sourceManifest"]["mode"], "selected-knowledge")
+                self.assertEqual(
+                    explained["schema"], "ob64-total-resolver-agent-query.v2"
+                )
+                call_graph = explained["callGraph"]
+                self.assertEqual(
+                    call_graph["static"]["callees"]["functions"][0]["structuralName"],
+                    "func_00000140",
+                )
+                self.assertEqual(
+                    call_graph["runtime"]["callees"]["callsiteFactCount"], 1
+                )
+                self.assertEqual(
+                    call_graph["runtime"]["callees"]["unresolvedCallsiteCount"], 1
+                )
+                reverse, reverse_status = explain_selected(
+                    context,
+                    "func_00000140",
+                    relationship="callers",
+                    includes=("calls",),
+                    limit=1,
+                )
+                self.assertEqual(reverse_status, 0)
+                self.assertFalse(reverse["callGraph"]["runtime"]["callees"]["included"])
+                self.assertEqual(
+                    reverse["callGraph"]["static"]["callers"]["functions"][0][
+                        "structuralName"
+                    ],
+                    "func_00000100",
+                )
+                placements_only, placements_status = explain_selected(
+                    context,
+                    "func_00000100",
+                    relationship="placements",
+                )
+                self.assertEqual(placements_status, 0)
+                self.assertFalse(
+                    placements_only["callGraph"]["static"]["callers"]["included"]
+                )
+                self.assertFalse(
+                    placements_only["callGraph"]["runtime"]["callees"]["included"]
+                )
                 searched = search_selected(
                     context,
                     physical="0x2000",
@@ -836,10 +901,16 @@ class KnowledgeTests(unittest.TestCase):
                 )
                 self.assertTrue(searched["mappingDiagnostics"])
                 self.assertTrue(searched["pagination"]["bounded"])
+                self.assertEqual(searched["counts"]["sessions"], 1)
+                self.assertEqual(
+                    searched["sessions"][0]["semanticName"],
+                    "Hugo Report - People",
+                )
                 self.assertLessEqual(
                     max(
                         len(searched[key])
                         for key in (
+                            "sessions",
                             "functions",
                             "instructions",
                             "edges",
@@ -895,6 +966,29 @@ class KnowledgeTests(unittest.TestCase):
                 )
                 by_function = search_selected(context, function="000001")
                 self.assertEqual(by_function["counts"]["functions"], 2)
+                self.assertEqual(by_function["counts"]["sessions"], 0)
+
+                by_session_name = search_selected(
+                    context, session_keyword="hugo people"
+                )
+                self.assertEqual(by_session_name["counts"]["sessions"], 1)
+                self.assertEqual(
+                    by_session_name["sessions"][0]["sessionId"], "CONTEXT"
+                )
+                self.assertEqual(
+                    by_session_name["sessions"][0]["semanticNotes"],
+                    "Renamed and discharged a character",
+                )
+                by_session_notes = search_selected(
+                    context, session_keyword="DISCHARGED"
+                )
+                self.assertEqual(by_session_notes["counts"]["sessions"], 1)
+
+                explained_sessions = explained["previews"]["sessions"]
+                self.assertEqual(
+                    explained_sessions[0]["semanticName"],
+                    "Hugo Report - People",
+                )
 
                 index_plans = {
                     "instruction_opcode_idx": context.knowledge.execute(
@@ -980,6 +1074,204 @@ class KnowledgeTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "not persistent knowledge"):
             open_explicit_legacy_resolver(database)
 
+    def test_function_call_graph_pairs_callsite_delay_slot_and_transfer(self) -> None:
+        database = self.make_knowledge("function-call-graph.sqlite")
+        base = self.delta("CALL-GRAPH")
+        delta = replace(
+            base,
+            protocol_version=BRIDGE_PROTOCOL_VERSION,
+            known_activity=KnownActivityObservation(
+                frontier_identity=base.frontier_identity_at_start,
+                frontier_format_version=5,
+                bridge_sequence=60,
+                instruction_max_ordinal=0,
+                instruction_hit_count=0,
+                instruction_hit_bitmap=b"",
+                edge_max_ordinal=0,
+                edge_hit_count=0,
+                edge_hit_bitmap=b"",
+                call_max_ordinal=0,
+                call_hit_count=0,
+                call_hit_bitmap=b"",
+                dma_max_ordinal=0,
+                dma_hit_count=0,
+                dma_hit_bitmap=b"",
+            ),
+            instructions=(
+                InstructionObservation(
+                    0x1000, 0x0C000050, 20, 1, 1, 0x100, "exact-test", 194
+                ),
+                InstructionObservation(
+                    0x1004, 0x00000000, 22, 1, 1, 0x104, "exact-test", 195
+                ),
+                InstructionObservation(
+                    0x0140, 0x00000000, 23, 1, 2, 0x140, "exact-test", 195
+                ),
+            ),
+            edges=(
+                EdgeObservation(
+                    0x1000,
+                    0x0C000050,
+                    0x1004,
+                    0x00000000,
+                    22,
+                    1,
+                    1,
+                    source_function_id=1,
+                    source_z64_offset=0x100,
+                    destination_function_id=1,
+                    destination_z64_offset=0x104,
+                    frame=195,
+                ),
+                EdgeObservation(
+                    0x1004,
+                    0x00000000,
+                    0x0140,
+                    0x00000000,
+                    23,
+                    1,
+                    1,
+                    source_function_id=1,
+                    source_z64_offset=0x104,
+                    destination_function_id=2,
+                    destination_z64_offset=0x140,
+                    frame=195,
+                ),
+            ),
+            calls=(
+                CallObservation(
+                    0x1000,
+                    0x0C000050,
+                    0x1004,
+                    0x00000000,
+                    0x0140,
+                    0x00000000,
+                    "jal-direct",
+                    23,
+                    1,
+                    1,
+                    1,
+                    195,
+                ),
+            ),
+            function_placements=(
+                FunctionPlacementObservation(
+                    1, 0x100, 0x140, 0x1000, 0x1040, "exact-test", 20, 23
+                ),
+                FunctionPlacementObservation(
+                    2, 0x140, 0x180, 0x0140, 0x0180, "exact-test", 20, 23
+                ),
+            ),
+        )
+        first_ingestion = ingest_delta(database, delta)
+        repeated = replace(
+            self.delta("CALL-GRAPH-REPEAT"),
+            protocol_version=BRIDGE_PROTOCOL_VERSION,
+            frontier_identity_at_start=first_ingestion["delta"]["frontierAfter"],
+            code_pages=(),
+            instructions=(),
+            edges=(),
+            calls=(),
+            dma_placements=(),
+            function_placements=(),
+            known_activity=KnownActivityObservation(
+                frontier_identity=first_ingestion["delta"]["frontierAfter"],
+                frontier_format_version=5,
+                bridge_sequence=60,
+                instruction_max_ordinal=3,
+                instruction_hit_count=0,
+                instruction_hit_bitmap=b"\x00",
+                edge_max_ordinal=2,
+                edge_hit_count=0,
+                edge_hit_bitmap=b"\x00",
+                call_max_ordinal=1,
+                call_hit_count=1,
+                call_hit_bitmap=b"\x01",
+                dma_max_ordinal=1,
+                dma_hit_count=0,
+                dma_hit_bitmap=b"\x00",
+            ),
+        )
+        ingest_delta(database, repeated)
+
+        connection = open_knowledge_database(database, read_only=True)
+        try:
+            persisted = connection.execute(
+                "SELECT callsite_instruction_id,delay_instruction_id,"
+                "target_instruction_id,call_kind FROM call_relationship_fact"
+            ).fetchone()
+            self.assertIsNotNone(persisted)
+            self.assertEqual(str(persisted[3]), "jal-direct")
+        finally:
+            connection.close()
+
+        field_product = self.root / "call-graph-field-product"
+        field_database = field_product / "db" / "structure-field-access.sqlite"
+        field_database.parent.mkdir(parents=True)
+        sqlite3.connect(field_database).close()
+        with patch(
+            "tools.total_resolver.resolver_context.validate_query_sources",
+            return_value=(),
+        ):
+            with ResolverContext.open(
+                database,
+                static_database=self.static,
+                resource_database=self.resource,
+                field_product=field_product,
+            ) as context:
+                explained, status = explain_selected(context, "func_00000100")
+                self.assertEqual(status, 0)
+                runtime_callees = explained["callGraph"]["runtime"]["callees"]
+                self.assertEqual(runtime_callees["functionCount"], 1)
+                self.assertEqual(
+                    runtime_callees["functions"][0]["structuralName"],
+                    "func_00000140",
+                )
+                self.assertEqual(runtime_callees["callsiteFactCount"], 1)
+                self.assertEqual(runtime_callees["unresolvedCallsiteCount"], 0)
+                known_call_sessions = runtime_callees["knownActivity"]["sessions"]
+                self.assertEqual(known_call_sessions[0]["sessionId"], "CALL-GRAPH-REPEAT")
+                self.assertEqual(
+                    known_call_sessions[0]["evidence"],
+                    "stop-time-native-call-hit-bitmap",
+                )
+                call = runtime_callees["calls"][0]
+                self.assertNotEqual(call["callsiteEdgeId"], call["transferEdgeId"])
+                self.assertEqual(
+                    call["callsiteInstruction"]["physicalAddress"], 0x1000
+                )
+                self.assertEqual(
+                    call["delaySlotInstruction"]["physicalAddress"], 0x1004
+                )
+                self.assertEqual(
+                    call["destinationInstruction"]["physicalAddress"], 0x0140
+                )
+                witness = runtime_callees["frameSequenceWitnesses"][0]
+                self.assertEqual(witness["sessionId"], "CALL-GRAPH")
+                self.assertEqual(witness["callsiteSequence"], 23)
+                self.assertEqual(witness["transferSequence"], 23)
+                self.assertEqual(witness["callsiteFrame"], 195)
+                self.assertEqual(witness["transferFrame"], 195)
+
+                reverse, reverse_status = explain_selected(
+                    context,
+                    "func_00000140",
+                    relationship="callers",
+                    includes=("calls",),
+                    limit=1,
+                )
+                self.assertEqual(reverse_status, 0)
+                runtime_callers = reverse["callGraph"]["runtime"]["callers"]
+                self.assertEqual(runtime_callers["functionCount"], 1)
+                self.assertEqual(
+                    runtime_callers["functions"][0]["structuralName"],
+                    "func_00000100",
+                )
+                self.assertIsNone(runtime_callers["unresolvedCallsiteCount"])
+                self.assertFalse(
+                    reverse["callGraph"]["runtime"]["callees"]["included"]
+                )
+
     def test_known_activity_bitmaps_restore_compact_session_membership(self) -> None:
         database = self.make_knowledge("known-activity.sqlite")
         first = ingest_delta(database, self.delta("ACTIVITY-1"))
@@ -993,18 +1285,21 @@ class KnowledgeTests(unittest.TestCase):
             dma_placements=(),
             function_placements=(),
             known_activity=KnownActivityObservation(
-                first["delta"]["frontierAfter"],
-                4,
-                60,
-                2,
-                2,
-                b"\x03",
-                1,
-                1,
-                b"\x01",
-                1,
-                1,
-                b"\x01",
+                frontier_identity=first["delta"]["frontierAfter"],
+                frontier_format_version=5,
+                bridge_sequence=60,
+                instruction_max_ordinal=2,
+                instruction_hit_count=2,
+                instruction_hit_bitmap=b"\x03",
+                edge_max_ordinal=1,
+                edge_hit_count=1,
+                edge_hit_bitmap=b"\x01",
+                call_max_ordinal=0,
+                call_hit_count=0,
+                call_hit_bitmap=b"",
+                dma_max_ordinal=1,
+                dma_hit_count=1,
+                dma_hit_bitmap=b"\x01",
             ),
         )
         result = ingest_delta(database, repeated)
@@ -1062,6 +1357,126 @@ class KnowledgeTests(unittest.TestCase):
         )
         with self.assertRaisesRegex(ValueError, "ordinal extent"):
             ingest_delta(database, invalid)
+
+    def test_historical_consecutive_edges_rebuild_exact_call_relationship(self) -> None:
+        database = self.make_knowledge("historical-call-rebuild.sqlite")
+        base = self.delta("HISTORICAL-CALL")
+        delta = replace(
+            base,
+            instructions=(
+                InstructionObservation(
+                    0x1000, 0x0C000050, 20, 1, 1, 0x100, "exact-test", 194
+                ),
+                InstructionObservation(
+                    0x1004, 0, 22, 1, 1, 0x104, "exact-test", 195
+                ),
+                InstructionObservation(
+                    0x0140, 0, 23, 1, 2, 0x140, "exact-test", 195
+                ),
+            ),
+            edges=(
+                EdgeObservation(
+                    0x1000, 0x0C000050, 0x1004, 0, 22, 1, 1,
+                    source_function_id=1, source_z64_offset=0x100,
+                    destination_function_id=1, destination_z64_offset=0x104,
+                    frame=195,
+                ),
+                EdgeObservation(
+                    0x1004, 0, 0x0140, 0, 23, 1, 1,
+                    source_function_id=1, source_z64_offset=0x104,
+                    destination_function_id=2, destination_z64_offset=0x140,
+                    frame=195,
+                ),
+            ),
+            calls=(),
+        )
+        ingest_delta(database, delta)
+        connection = open_knowledge_database(database, read_only=True)
+        try:
+            relationship = connection.execute(
+                "SELECT call_kind,observation_count FROM call_relationship_fact"
+            ).fetchone()
+            witness = connection.execute(
+                "SELECT observation_kind FROM call_relationship_context_witness"
+            ).fetchone()
+            generation = connection.execute(
+                "SELECT g.first_bridge_sequence,g.last_bridge_sequence,g.observation_count "
+                "FROM instruction_generation_witness g "
+                "JOIN instruction_fact i ON i.instruction_id=g.instruction_id "
+                "WHERE i.physical_address=0x1000 AND i.opcode_u32=0x0C000050"
+            ).fetchone()
+        finally:
+            connection.close()
+        self.assertEqual(tuple(relationship), ("jal-direct", 1))
+        self.assertEqual(
+            str(witness[0]), "historical-consecutive-edge-reconstruction"
+        )
+        self.assertEqual(tuple(generation), (20, 22, 2))
+
+    def test_call_aware_migration_matches_clean_historical_replay(self) -> None:
+        source = self.make_knowledge("historical-call-format4.sqlite")
+        expected = self.make_knowledge("historical-call-clean.sqlite")
+        base = self.delta("HISTORICAL-MIGRATION")
+        delta = replace(
+            base,
+            instructions=(
+                InstructionObservation(
+                    0x1000, 0x0C000050, 20, 1, 1, 0x100, "exact-test", 194
+                ),
+                InstructionObservation(
+                    0x1004, 0, 22, 1, 1, 0x104, "exact-test", 195
+                ),
+                InstructionObservation(
+                    0x0140, 0, 23, 1, 2, 0x140, "exact-test", 195
+                ),
+            ),
+            edges=(
+                EdgeObservation(
+                    0x1000, 0x0C000050, 0x1004, 0, 22, 1, 1,
+                    source_function_id=1, source_z64_offset=0x100,
+                    destination_function_id=1, destination_z64_offset=0x104,
+                    frame=195,
+                ),
+                EdgeObservation(
+                    0x1004, 0, 0x0140, 0, 23, 1, 1,
+                    source_function_id=1, source_z64_offset=0x104,
+                    destination_function_id=2, destination_z64_offset=0x140,
+                    frame=195,
+                ),
+            ),
+            calls=(),
+        )
+        ingest_delta(source, delta)
+        ingest_delta(expected, delta)
+
+        connection = sqlite3.connect(source)
+        try:
+            connection.execute("PRAGMA foreign_keys=OFF")
+            for table in (
+                "call_relationship_context_witness",
+                "call_relationship_session",
+                "call_relationship_fact",
+                "session_semantic_context",
+            ):
+                connection.execute(f"DROP TABLE {table}")
+            connection.execute("DELETE FROM knowledge_meta WHERE key='callIdentity'")
+            connection.execute("UPDATE frontier_state SET format_version=4")
+            connection.execute(
+                "UPDATE knowledge_meta SET value='4' WHERE key='frontierFormatVersion'"
+            )
+            connection.execute(
+                "UPDATE knowledge_meta SET value='0.13.0' "
+                "WHERE key='activeBridgeProtocolVersion'"
+            )
+            connection.commit()
+        finally:
+            connection.close()
+
+        migrated = self.root / "historical-call-migrated.sqlite"
+        result = migrate_frontier_database(source, migrated)
+        self.assertEqual(result["historicalCallRelationshipsSeeded"], 1)
+        equivalence = compare_knowledge_databases(migrated, expected)
+        self.assertTrue(equivalence["equivalent"], equivalence)
 
     def test_ambiguous_candidates_never_auto_promote(self) -> None:
         database = self.make_knowledge("ambiguous-candidates.sqlite")

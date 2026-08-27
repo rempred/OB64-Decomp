@@ -189,6 +189,7 @@ class BridgeEventTests(unittest.TestCase):
                         "exactInstructionResolved": True,
                         "newInstruction": True,
                         "newEdge": False,
+                        "newCall": False,
                         "frontierFormatVersion": FRONTIER_FORMAT_VERSION,
                         "frontierIdentity": self.FRONTIER,
                         "noveltyDecision": "new-instruction",
@@ -216,6 +217,70 @@ class BridgeEventTests(unittest.TestCase):
         with self.assertRaisesRegex(BridgeProtocolError, "exact dedupe"):
             parse_drain_response(self.envelope([broken], nextEventSequence=2))
 
+    def test_atomic_call_context_is_exact_and_opcode_consistent(self) -> None:
+        callsite = {
+            "pc": "0x80001000",
+            "opcode": "0x0C000400",
+            "physicalPageAddress": "0x00001000",
+            "physicalAddress": "0x00001000",
+            "pageOffset": 0,
+            "pageGeneration": 2,
+            "generationResolved": True,
+            "exactInstructionResolved": True,
+        }
+        delay = {
+            "pc": "0x80001004",
+            "opcode": "0x00000000",
+            "physicalPageAddress": "0x00001000",
+            "physicalAddress": "0x00001004",
+            "pageOffset": 4,
+            "pageGeneration": 2,
+            "generationResolved": True,
+            "exactInstructionResolved": True,
+        }
+        target = dict(callsite)
+        event = {
+            "kind": "exec-coverage",
+            "bridgeEpoch": "EPOCH-1",
+            "bridgeSequence": 1,
+            "bridgeStream": "trace",
+            "pc": target["pc"],
+            "opcode": target["opcode"],
+            "physicalPageAddress": target["physicalPageAddress"],
+            "physicalAddress": target["physicalAddress"],
+            "pageOffset": target["pageOffset"],
+            "pageGeneration": target["pageGeneration"],
+            "generationResolved": True,
+            "exactInstructionResolved": True,
+            "newInstruction": False,
+            "newEdge": False,
+            "newCall": True,
+            "previous": delay,
+            "call": {
+                "callKind": "jal-direct",
+                "exactRelationshipResolved": True,
+                "callsite": callsite,
+                "delaySlot": delay,
+                "target": target,
+            },
+            "frontierFormatVersion": FRONTIER_FORMAT_VERSION,
+            "frontierIdentity": self.FRONTIER,
+            "noveltyDecision": "new-call-relationship",
+            "capturePhase": "pre-execution-callback",
+            "dedupeDecision": "physical-address-and-exact-opcode",
+        }
+        parsed = parse_drain_response(self.envelope([event], nextEventSequence=2))
+        self.assertTrue(parsed.events[0].payload["newCall"])
+
+        contradictory = dict(event)
+        contradictory_call = dict(event["call"])
+        contradictory_target = dict(target)
+        contradictory_target["pc"] = "0x80002000"
+        contradictory_call["target"] = contradictory_target
+        contradictory["call"] = contradictory_call
+        with self.assertRaisesRegex(BridgeProtocolError, "JAL call target"):
+            parse_drain_response(self.envelope([contradictory], nextEventSequence=2))
+
     def test_activity_and_marker_context_are_bounded_context_not_stream_order(self) -> None:
         activity = {
             "kind": "known-activity",
@@ -232,6 +297,10 @@ class BridgeEventTests(unittest.TestCase):
             "edgeHitCount": 1,
             "edgeHitBitmapEncoding": "ordinal-minus-one-lsb0-hex-uppercase",
             "edgeHitBitmapHex": "01",
+            "callMaxOrdinal": 0,
+            "callHitCount": 0,
+            "callHitBitmapEncoding": "ordinal-minus-one-lsb0-hex-uppercase",
+            "callHitBitmapHex": "",
             "dmaMaxOrdinal": 0,
             "dmaHitCount": 0,
             "dmaHitBitmapEncoding": "ordinal-minus-one-lsb0-hex-uppercase",

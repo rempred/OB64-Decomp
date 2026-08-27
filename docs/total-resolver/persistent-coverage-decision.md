@@ -1,7 +1,7 @@
 # Persistent structural delta capture
 
-Status: **implemented, independently rebuilt, and selected**
-Scope: Total Resolver knowledge schema 3, frontier format 4, Project64 bridge protocol 0.13.0
+Status: **implemented and independently verified**
+Scope: Total Resolver knowledge schema 3, frontier format 5, Project64 bridge protocol 0.14.0
 
 ## Decision
 
@@ -35,7 +35,7 @@ edges across zero new physical pages.
 | Instruction | physical address and all four opcode bytes |
 | Physical-page coverage | physical page plus a 1024-bit summary of observed aligned addresses |
 | Edge | exact source instruction, exact destination instruction, and edge kind |
-| Call | one exact call edge plus its uniquely resolved caller/callee mappings |
+| Call | exact callsite instruction, exact executed delay-slot instruction, exact actual target instruction, and call kind |
 | Page/generation witness | session, bridge epoch, physical page, native generation, sequence bounds |
 | DMA placement | source domain/range, destination range, matched length, exact event-time destination bytes, mapping class |
 | Controller transition | session, bridge sequence, effective P1 state and contextual bounds |
@@ -45,6 +45,16 @@ physical address remain distinct. A known function reached from a new caller ret
 edge. A known prefix followed by a new tail retains the new transition and tail. If the native
 placement or generation payload is missing, the bridge emits a conservative unresolved event
 instead of suppressing it.
+
+MIPS calls execute their delay-slot instruction before transferring to the callee. The historical
+schema-2 table named `call_fact` therefore materializes callsite-to-delay-slot edges; its stored
+destination function must not be presented as the callee. Protocol 0.14 observes the callsite,
+executed delay slot, and actual target as one atomic native fact. For the ten older sessions, the
+format-5 migration creates that fact only where consecutive exact edge witnesses prove the same
+triple. Frozen static direct-call decoding remains a separate candidate lane. Missing atomic or
+historically consecutive evidence, or an unmapped target, remains unresolved rather than becoming
+an invented relationship. Function attribution is a query/materialization step and is not part of
+the physical/opcode call identity.
 
 ## Runtime-to-ROM mapping authority
 
@@ -84,6 +94,16 @@ candidate evidence. Default output is bounded. Unresolved results explain the ex
 candidates, basis, contradiction or missing evidence, adjacent mapped edges, and next useful
 observation.
 
+Human capture names and notes are a searchable contextual index over the session catalog. A
+case-insensitive, all-words keyword query returns bounded session IDs; an agent can then apply the
+ordinary session/frame/sequence filters to retained facts. Session-filtered results and function
+session previews carry the label forward. This context never participates in machine-fact
+identity, mapping promotion, or novelty suppression.
+
+Function explanations are cross-session. A function name returns bounded incoming and outgoing
+static and runtime call views directly from the selected knowledge plus frozen static source; no
+capture-session identifier is required.
+
 ## Hashing policy
 
 Cryptographic capture integrity is not a persistent session/knowledge acceptance class.
@@ -103,12 +123,14 @@ Cryptographic capture integrity is not a persistent session/knowledge acceptance
 
 ## Frontier and hot path
 
-Frontier format 4 is one validated binary image containing:
+Frontier format 5 is one validated binary image containing:
 
 - fixed-width exact instruction records containing stable fact ordinal, physical address, and
   opcode;
 - fixed-width exact edge records containing stable fact ordinal and both exact endpoint
   instructions;
+- fixed-width exact call records containing stable fact ordinal, exact callsite, executed delay
+  slot, actual target, and call kind;
 - exact-span DMA metadata, stable canonical ordinal, and complete event-time destination bytes; and
 - an opaque database revision token, exact lower-4-MiB capture-window contract, and required ROM
   identity.
@@ -117,8 +139,9 @@ The client exports the frontier from SQLite before capture, then native Project6
 atomically installs it. Execution and DMA callbacks perform in-memory exact lookups and
 in-session exact deduplication before JavaScript is called. Hash functions may select native
 container buckets, but equality operators compare every canonical field and every DMA byte. The
-hot path performs no SQLite work, persistent write, or 4 KiB code-page read. Native predecessor
-tracking advances through silent known prefixes.
+hot path performs no SQLite work, persistent write, or 4 KiB code-page read. Native tracking keeps
+the two previous instructions current through silent known prefixes, so it can still identify an
+atomic call after both earlier instructions were suppressed.
 
 At capture start Project64 takes one native, atomic copy of the lower 4 MiB of RDRAM before the first
 captured instruction. Total Resolver matches complete static function bytes against that census to
@@ -139,10 +162,11 @@ is represented by explicit dropped sequence ranges. Native DMA filtering include
 destination bytes in its exact identity; incomplete or ambiguous identities fall back to capture.
 Recorder time and frame number remain context only.
 
-Native Project64 marks the stable ordinals of known instructions, edges, and DMA facts that occur.
-Capture stop sends one compact bitmap for each lane. The bitmaps restore session membership without
-restoring repeated event streams and make no event-order claim. Native predecessor tracking still
-advances through every silent known instruction, so new tails and new callers remain discoverable.
+Native Project64 marks the stable ordinals of known instructions, edges, calls, and DMA facts that
+occur. Capture stop sends one compact bitmap for each lane. The bitmaps restore session membership
+without restoring repeated event streams and make no event-order claim. Native predecessor tracking
+still advances through every silent known instruction, so new tails, callers, and actual targets
+remain discoverable.
 
 An optional 32,768-record native execution-context ring keeps exact PCs and predecessor edges in
 emulator memory. A human marker requests a bounded before/after window of at most 4,096 records per
@@ -169,6 +193,14 @@ The successful ledger row is the final write in the SQLite transaction. An injec
 invalid session, interrupted session, discontinuity, stale frontier, or incompatible protocol
 cannot partially change knowledge.
 
+The human GUI always uses deferred ingestion. Its separate launch button can start only the
+configured Project64 capture executable after exact SHA-256 authentication; this does not load a
+ROM or start a capture. Stop first closes and verifies staging; the human then assigns a semantic
+name and optional notes in a separate sidecar before requesting ingestion. Semantic context is
+stored with the accepted session but is never part of its machine identity. A failed integration
+remains retryable with the same name. GUI and worker diagnostics are retained below ignored
+`build/total-resolver/` paths, and the GUI appends a bounded worker-log tail when an operation fails.
+
 Normal materialization refreshes only destinations and functions touched by the delta. The rebuild
 command creates a separate database, replays successful ledger rows in order, and compares every
 canonical row directly after independently verifying both databases. Stable ledger identity is
@@ -183,12 +215,14 @@ cross-schema comparison preserved every canonical schema-2 row: 293,275 instruct
 edges, 222,319 DMA placements, 9,277 calls, 7,519 function placements, controller context, and all
 ten stable ledger identities.
 
-The schema-3 copy was then upgraded to frontier format 4 and protocol 0.13. A separate clean
-ten-session ledger replay was exactly row-equivalent across every schema-3 table, including
-570,445 instruction witnesses, 329,929 edge witnesses, 549,390 residency intervals, 21,120 sampled
-PCs, 81,762 typed unresolved rows, and 607,040 candidate-evidence rows. Only after both independent
-verification and the 108-test suite passed was schema 3 selected. The schema-2 database, raw
-sessions, and historical products remain unchanged beside it.
+The schema-3 copy was then upgraded to frontier format 5 and protocol 0.14. The migration
+conservatively reconstructed 11,016 exact physical/opcode callsite/delay-slot/actual-target
+relationships and 11,467 retained session/context witnesses from consecutive historical facts.
+A separate clean ten-session ledger replay was exactly row-equivalent across every schema-3 table,
+including 570,445 instruction witnesses, 329,929 edge witnesses, 549,390 residency intervals,
+21,120 sampled PCs, 81,762 typed unresolved rows, and 607,040 candidate-evidence rows. Only after
+both independent verification and the 120-test suite passed was the format-5 database selected.
+The format-4 database, raw sessions, and historical products remain unchanged beside it.
 
 ## Intentionally contextual or uncertain
 

@@ -27,8 +27,8 @@ class ActiveBridgeTests(unittest.TestCase):
             text=True,
         )
         result = json.loads(completed.stdout)
-        self.assertEqual(result["version"], "0.13.0")
-        self.assertEqual(result["frontierFormatVersion"], 4)
+        self.assertEqual(result["version"], "0.14.0")
+        self.assertEqual(result["frontierFormatVersion"], 5)
         self.assertEqual(result["pageReadsDuringExecutionTrace"], 0)
         self.assertEqual(result["repeatedCanonicalExecutionEdgeFacts"], 0)
         self.assertGreater(result["explicitDroppedRanges"], 0)
@@ -47,6 +47,7 @@ class ActiveBridgeTests(unittest.TestCase):
         self.assertTrue(result["observationOnlyCapture"])
         self.assertEqual(result["stopTimeActivitySummaries"], 1)
         self.assertGreater(result["knownActivityFactHits"], 0)
+        self.assertGreater(result["knownCallActivityHits"], 0)
         self.assertGreater(result["knownActivityBitmapBytes"], 0)
         self.assertEqual(result["markerContextWindows"], 1)
 

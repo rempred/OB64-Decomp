@@ -57,6 +57,7 @@ SESSION_ID_PATTERN = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]*$")
 WORKER_FILE = "worker.json"
 ACTIVE_FILE = "active.json"
 CAPTURE_FILE = "capture.sqlite"
+SEMANTIC_CONTEXT_FILE = "semantic-context.json"
 
 
 @dataclass(frozen=True)
@@ -158,6 +159,75 @@ def _write_json(path: Path, value: Mapping[str, Any]) -> None:
     temporary = path.with_name(path.name + ".tmp")
     temporary.write_text(json.dumps(value, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     temporary.replace(path)
+
+
+def set_session_semantic_context(
+    session_id: str,
+    semantic_name: str,
+    *,
+    notes: str | None = None,
+    root: Path | None = None,
+) -> dict[str, Any]:
+    """Name one verified closed capture without mutating its machine evidence."""
+
+    name = semantic_name.strip()
+    if not 1 <= len(name) <= 160:
+        raise ValueError("semantic capture name must contain 1 to 160 characters")
+    normalized_notes = notes.strip() if notes is not None else None
+    if normalized_notes == "":
+        normalized_notes = None
+    if normalized_notes is not None and len(normalized_notes) > 4000:
+        raise ValueError("semantic capture notes must not exceed 4000 characters")
+    location = session_location(sessions_root(root), session_id)
+    status = session_status(session_id, root=location.root)
+    if status["closureStatus"] != "closed" or status["workerAlive"]:
+        raise RuntimeError("a capture can be named only after a normal stop completes")
+    state = _read_json(location.worker_state) or {}
+    if state.get("ingestion") is not None:
+        raise RuntimeError("an ingested capture's semantic context is immutable")
+    verification = _read_json(location.directory / "verification.json")
+    if not verification or verification.get("result") != "PASS":
+        raise RuntimeError("capture verification must pass before semantic naming")
+    context_path = location.directory / SEMANTIC_CONTEXT_FILE
+    existing = _read_json(context_path)
+    if existing is not None:
+        if (
+            existing.get("sessionId") == location.session_id
+            and existing.get("semanticName") == name
+            and existing.get("notes") == normalized_notes
+        ):
+            return {
+                "result": "PASS",
+                "action": "no-op",
+                "sessionId": location.session_id,
+                "semanticContext": existing,
+                "path": str(context_path.resolve()),
+            }
+        raise RuntimeError(
+            "capture semantic context is already named; use the existing name for ingestion retry"
+        )
+    value = {
+        "schema": "ob64-total-resolver-session-semantic-context.v1",
+        "sessionId": location.session_id,
+        "semanticName": name,
+        "notes": normalized_notes,
+        "createdUtc": utc_now(),
+        "evidenceRole": "human-context-only-not-machine-identity",
+    }
+    _write_json(context_path, value)
+    updated_state = _update_worker_state(
+        location,
+        str(state.get("state") or "closed-awaiting-ingest"),
+        semanticContext=value,
+    )
+    _write_active(location, updated_state)
+    return {
+        "result": "PASS",
+        "action": "created",
+        "sessionId": location.session_id,
+        "semanticContext": value,
+        "path": str(context_path.resolve()),
+    }
 
 
 def _update_worker_state(location: SessionLocation, state: str, **values: Any) -> dict[str, Any]:
@@ -446,6 +516,7 @@ def create_session(
     foreground: bool = False,
     knowledge_database: Path | None = None,
     before_rom: bool = False,
+    auto_ingest: bool = True,
 ) -> dict[str, Any]:
     resolved_root = sessions_root(root)
     resolved_root.mkdir(parents=True, exist_ok=True)
@@ -512,6 +583,7 @@ def create_session(
         knowledgeDatabase=(str(selected_knowledge) if selected_knowledge is not None else None),
         frontier=frontier.summary(),
         beforeRom=before_rom,
+        autoIngest=auto_ingest,
     )
     _write_active(location, state)
 
@@ -521,6 +593,7 @@ def create_session(
             connection,
             selected_knowledge,
             before_rom=before_rom,
+            auto_ingest=auto_ingest,
         )
         return {
             "sessionId": session_id,
@@ -552,6 +625,8 @@ def create_session(
         command += ("--knowledge", str(selected_knowledge))
     if before_rom:
         command += ("--before-rom",)
+    if not auto_ingest:
+        command += ("--defer-ingest",)
     popen_kwargs: dict[str, Any] = {
         "cwd": str(repository_root()),
         "stdin": subprocess.DEVNULL,
@@ -579,6 +654,7 @@ def create_session(
         "closed",
         "closed-invalid",
         "closed-ingest-failed",
+        "closed-awaiting-ingest",
     }
     if current.get("state") in terminal_states:
         state = current
@@ -638,6 +714,7 @@ def run_session_worker(
     knowledge_database: Path | None = None,
     *,
     before_rom: bool = False,
+    auto_ingest: bool = True,
 ) -> int:
     """Run one worker until a stop request or an evidence-breaking failure."""
 
@@ -759,6 +836,9 @@ def run_session_worker(
     if closure == "closed" and verification is not None and verification.ok:
         if knowledge_database is None:
             final_state = "closed"
+            exit_code = 0
+        elif not auto_ingest:
+            final_state = "closed-awaiting-ingest"
             exit_code = 0
         else:
             state = _update_worker_state(
@@ -1125,6 +1205,7 @@ def session_status(session_id: str | None = None, *, root: Path | None = None) -
         latest_frame = _latest_frame(connection)
     finally:
         connection.close()
+    semantic_context = _read_json(location.directory / SEMANTIC_CONTEXT_FILE)
     return {
         "sessionId": location.session_id,
         "sessionDirectory": str(location.directory),
@@ -1148,6 +1229,7 @@ def session_status(session_id: str | None = None, *, root: Path | None = None) -
         "knowledgeDatabase": state.get("knowledgeDatabase"),
         "frontier": state.get("frontier"),
         "ingestion": state.get("ingestion"),
+        "semanticContext": semantic_context,
     }
 
 

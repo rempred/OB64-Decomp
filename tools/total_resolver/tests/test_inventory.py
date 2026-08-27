@@ -9,6 +9,7 @@ from tools.total_resolver.inventory import (
     HISTORICAL_DYNAMIC_ADAPTERS,
     framed_file_set_sha256,
     load_inventory,
+    resolve_active_project64_binary,
     sha256_file,
 )
 
@@ -24,8 +25,8 @@ class InventoryTests(unittest.TestCase):
             inventory["project64"]["bridgeReference"]["role"], "historical-reference"
         )
         self.assertEqual(inventory["legacyResolver"]["role"], "historical-reference")
-        self.assertEqual(inventory["project64"]["activeBridge"]["protocolVersion"], "0.13.0")
-        self.assertEqual(inventory["project64"]["activeBridge"]["frontierFormatVersion"], 4)
+        self.assertEqual(inventory["project64"]["activeBridge"]["protocolVersion"], "0.14.0")
+        self.assertEqual(inventory["project64"]["activeBridge"]["frontierFormatVersion"], 5)
         self.assertEqual(inventory["project64"]["activeBridge"]["queueModel"], "unified")
         native_sources = set(
             inventory["project64"]["activeNativeRuntime"]["sourceFiles"]
@@ -57,6 +58,47 @@ class InventoryTests(unittest.TestCase):
             self.assertEqual(first, second)
             (root / "b.bin").write_bytes(b"d")
             self.assertNotEqual(first, framed_file_set_sha256(root, ["a.bin", "b.bin"]))
+
+    def test_active_project64_binary_is_resolved_and_authenticated(self) -> None:
+        with tempfile.TemporaryDirectory() as raw:
+            root = Path(raw)
+            binary = root / "Bin" / "Project64-TR.exe"
+            binary.parent.mkdir()
+            binary.write_bytes(b"authenticated Project64 fixture")
+            expected = hashlib.sha256(binary.read_bytes()).hexdigest().upper()
+            inventory = {
+                "project64": {
+                    "activeNativeRuntime": {
+                        "binaryPath": "Bin/Project64-TR.exe",
+                        "binarySha256": expected,
+                    }
+                }
+            }
+            active = resolve_active_project64_binary(
+                project64_root=root,
+                inventory=inventory,
+            )
+            self.assertEqual(active.path, binary.resolve())
+            self.assertEqual(active.sha256, expected)
+
+    def test_active_project64_binary_hash_drift_fails_closed(self) -> None:
+        with tempfile.TemporaryDirectory() as raw:
+            root = Path(raw)
+            binary = root / "Project64-TR.exe"
+            binary.write_bytes(b"unexpected build")
+            inventory = {
+                "project64": {
+                    "activeNativeRuntime": {
+                        "binaryPath": "Project64-TR.exe",
+                        "binarySha256": "0" * 64,
+                    }
+                }
+            }
+            with self.assertRaisesRegex(RuntimeError, "failed SHA-256 authentication"):
+                resolve_active_project64_binary(
+                    project64_root=root,
+                    inventory=inventory,
+                )
 
 
 if __name__ == "__main__":

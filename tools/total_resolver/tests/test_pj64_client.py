@@ -44,9 +44,11 @@ class ScriptedTransport:
             "physicalPageCount": 0,
             "instructionCount": 0,
             "edgeCount": 0,
+            "callCount": 0,
             "dmaCount": 0,
             "instructionMaxOrdinal": 0,
             "edgeMaxOrdinal": 0,
+            "callMaxOrdinal": 0,
             "dmaMaxOrdinal": 0,
             "nativeLoaded": False,
             "nativeRdramSize": None,
@@ -116,12 +118,15 @@ class ScriptedTransport:
             _, _, identity, rom, encoded_path = line.split()
             path = Path(bytes.fromhex(encoded_path).decode("utf-16le"))
             data = path.read_bytes()
-            if data[:8] != b"OB64TRF4":
+            if data[:8] != b"OB64TRF5":
                 return {"ok": False, "error": "bad frontier magic"}
-            _, _, identity_length, rom_length, instruction_count, edge_count, dma_count = (
-                struct.unpack_from("<IIIIQQQ", data, 8)
+            (
+                _, _, identity_length, rom_length,
+                instruction_count, edge_count, call_count, dma_count,
+            ) = (
+                struct.unpack_from("<IIIIQQQQ", data, 8)
             )
-            offset = 8 + struct.calcsize("<IIIIQQQ") + identity_length + rom_length
+            offset = 8 + struct.calcsize("<IIIIQQQQ") + identity_length + rom_length
             instruction_ordinals = [
                 struct.unpack_from("<I", data, offset + index * 12)[0]
                 for index in range(instruction_count)
@@ -131,6 +136,11 @@ class ScriptedTransport:
                 struct.unpack_from("<I", data, offset + index * 20)[0]
                 for index in range(edge_count)
             ]
+            offset += edge_count * 20
+            call_ordinals = [
+                struct.unpack_from("<I", data, offset + index * 32)[0]
+                for index in range(call_count)
+            ]
             self.frontier.update(
                 loading=False,
                 committed=True,
@@ -139,9 +149,11 @@ class ScriptedTransport:
                 physicalPageCount=0 if instruction_count == 0 else 1,
                 instructionCount=instruction_count,
                 edgeCount=edge_count,
+                callCount=call_count,
                 dmaCount=dma_count,
                 instructionMaxOrdinal=max(instruction_ordinals, default=0),
                 edgeMaxOrdinal=max(edge_ordinals, default=0),
+                callMaxOrdinal=max(call_ordinals, default=0),
                 dmaMaxOrdinal=0,
                 nativeLoaded=True,
                 nativeRdramSize=RDRAM_SIZE,
@@ -311,6 +323,7 @@ class ClientTests(unittest.TestCase):
                     0x00000000,
                 ),
             ),
+            (),
             (),
         )
         client.load_novelty_frontier(frontier, instruction_batch_size=1)

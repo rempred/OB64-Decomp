@@ -35,7 +35,7 @@ use only the following command families:
 In particular, a querying agent must not run:
 
 - `session start` or `session stop`;
-- `session label`, `session mark`, or `session note`;
+- `session label`, `session mark`, `session note`, `session name`, or `gui`;
 - `knowledge ingest` or `knowledge import`;
 - `knowledge select`, `knowledge migrate-frontier`, or `knowledge migrate-schema3`; or
 - `knowledge init`, `knowledge rebuild`, capture recovery, product builders, or any other command
@@ -79,9 +79,12 @@ Prefer the supported command surface over ad hoc writes:
 
 ```text
 python -m tools.total_resolver explain func_XXXXXXXX
+python -m tools.total_resolver explain func_XXXXXXXX --relationship callers --include calls
+python -m tools.total_resolver explain func_XXXXXXXX --relationship callees --include calls
 python -m tools.total_resolver explain live:0x80123456 --session SESSION_ID --sequence SEQUENCE
 python -m tools.total_resolver search --function PARTIAL_NAME
 python -m tools.total_resolver search --physical 0x00123456 --opcode 0xXXXXXXXX
+python -m tools.total_resolver search --session-keyword "capture name or notes"
 python -m tools.total_resolver search --session SESSION_ID --frame-start 100 --frame-end 120
 python -m tools.total_resolver search --edge-from 0x00123456 --edge-to 0x00124568
 python -m tools.total_resolver search --marker-text "visible action" --controller
@@ -89,10 +92,25 @@ python -m tools.total_resolver coverage
 python -m tools.total_resolver unresolved
 ```
 
+Use `--session-keyword` when Joe's semantic capture name or notes describe the behavior you need.
+All supplied words must occur, case-insensitively, in that name/notes text. The result supplies the
+session ID for a follow-up `--session` query. Do not confuse this with `--marker-text`, which
+searches event markers inside sessions. Session-filtered results and function session previews
+repeat the stored semantic context so a raw capture ID does not lose its human meaning.
+
 These commands open the selected knowledge database read-only and report a source/freshness
 manifest. They do not consult a generated Resolver unless `--legacy-resolver PATH` is supplied
 explicitly. Default output is bounded; request a named detail section with `--include`, or advance
 through a search with `--cursor`.
+
+A bare function explanation includes bounded incoming and outgoing call previews without requiring
+a session ID. Read `callGraph.static` for frozen decoded direct-call candidates and
+`callGraph.runtime` for stored exact callsite/delay-slot/actual-target relationships. Historical
+protocol-0.13 relationships appear only where consecutive exact edge witnesses allowed the
+format-5 migration to reconstruct the same triple. Use `--relationship callers` or
+`--relationship callees` to select one direction and `--include calls --limit N --cursor N` for
+detail. An unresolved callsite count means the current knowledge cannot safely name every dynamic
+target; do not fill that gap by choosing a convenient session or destination.
 
 Exact physical-address/opcode instructions, exact endpoint edges, and exact DMA destination bytes
 are machine facts. ROM/function mapping is byte-confirmed but remains `live-unreviewed` placement
@@ -110,15 +128,32 @@ look cleaner, and do not manually edit SQLite tables.
 A querying agent never enters this workflow. For an explicitly assigned database-building agent, a
 request to inspect, test, document, or use Total Resolver is still not permission to start a capture
 or install a watch. Start only after Joe explicitly says he is ready for that run. Never use
-computer control to launch Project64. Do not open/reset a ROM, load a state, pause/resume, step,
-inject controller input, or write RAM on the recorder's behalf.
+computer control to launch Project64. The Joe-facing GUI has a deliberate **Launch Project64**
+button for the authenticated frozen binary; do not activate it unless Joe explicitly asks you to
+launch Project64 in that run. Do not open/reset a ROM, load a state, pause/resume, step, inject
+controller input, or write RAM on the recorder's behalf.
 
-For an explicitly authorized ordinary run:
+The Joe-facing workflow is:
 
 ```text
-python -m tools.total_resolver session start --port 64656
+python -m tools.total_resolver gui --port 64656
+```
+
+The GUI launches Project64 only when its dedicated button is clicked, and only after the configured
+binary path and SHA-256 pass. Launch does not load a ROM or start capture. The GUI defers ingestion
+until after a clean stop, then requires a human semantic name before its explicit **Save Name and
+Integrate** action. It writes an attachable diagnostic log under `build/total-resolver/gui/logs/`
+and copies the worker-log tail into that log on failure. Do not open the GUI or click its launch or
+capture controls unless Joe explicitly asks.
+
+For an explicitly authorized command-line run:
+
+```text
+python -m tools.total_resolver session start --defer-ingest --port 64656
 python -m tools.total_resolver session status
 python -m tools.total_resolver session stop
+python -m tools.total_resolver session name SESSION_ID "SEMANTIC NAME"
+python -m tools.total_resolver knowledge ingest SESSION_ID
 python -m tools.total_resolver knowledge verify
 ```
 
@@ -126,9 +161,11 @@ Use `--before-rom` only when Joe explicitly requests a fresh power-on capture an
 has no loaded ROM or allocated N64 RDRAM. Arm it first, then Joe manually opens the exact Rev 0 ROM.
 The bridge never opens the ROM. Stop promptly when requested.
 
-Normal stop verifies the isolated staging database and atomically ingests it. If stop or ingestion
-fails, leave the raw session intact, report the error, and use an explicit retry only after the
-cause is understood:
+In the deferred GUI/CLI flow, normal stop verifies the isolated staging database and leaves it
+closed without changing knowledge. Naming writes a separate human-context sidecar and does not
+change captured machine identity. Explicit ingestion then merges the delta atomically. If stop or
+ingestion fails, leave the raw session intact, report the diagnostic-log path, and use an explicit
+retry only after the cause is understood:
 
 ```text
 python -m tools.total_resolver session verify SESSION_ID
@@ -141,8 +178,8 @@ mutation commands; recorder code must use `ObservationOnlyPj64Client`.
 
 ## Database-building agents only: compatibility and repair
 
-Live capture requires bridge protocol 0.13.0 and frontier format 4 exactly. Deterministic ledger
-replay also accepts already-ingested historical protocols 0.8.0 through 0.12.0.
+Live capture requires bridge protocol 0.14.0 and frontier format 5 exactly. Deterministic ledger
+replay also accepts already-ingested historical protocols 0.8.0 through 0.13.0.
 Protocol 0.7.x captures predate the accepted ordering/evidence contract and remain raw historical
 sessions only.
 

@@ -6,13 +6,16 @@
 CREATE TABLE IF NOT EXISTS known_activity_summary (
     session_id TEXT PRIMARY KEY,
     frontier_identity TEXT NOT NULL,
-    frontier_format_version INTEGER NOT NULL CHECK (frontier_format_version = 4),
+    frontier_format_version INTEGER NOT NULL CHECK (frontier_format_version IN (4, 5)),
     instruction_max_ordinal INTEGER NOT NULL CHECK (instruction_max_ordinal >= 0),
     instruction_hit_count INTEGER NOT NULL CHECK (instruction_hit_count >= 0),
     instruction_hit_bitmap BLOB NOT NULL,
     edge_max_ordinal INTEGER NOT NULL CHECK (edge_max_ordinal >= 0),
     edge_hit_count INTEGER NOT NULL CHECK (edge_hit_count >= 0),
     edge_hit_bitmap BLOB NOT NULL,
+    call_max_ordinal INTEGER NOT NULL CHECK (call_max_ordinal >= 0),
+    call_hit_count INTEGER NOT NULL CHECK (call_hit_count >= 0),
+    call_hit_bitmap BLOB NOT NULL,
     dma_max_ordinal INTEGER NOT NULL CHECK (dma_max_ordinal >= 0),
     dma_hit_count INTEGER NOT NULL CHECK (dma_hit_count >= 0),
     dma_hit_bitmap BLOB NOT NULL,
@@ -22,6 +25,7 @@ CREATE TABLE IF NOT EXISTS known_activity_summary (
     ),
     CHECK (length(instruction_hit_bitmap) = (instruction_max_ordinal + 7) / 8),
     CHECK (length(edge_hit_bitmap) = (edge_max_ordinal + 7) / 8),
+    CHECK (length(call_hit_bitmap) = (call_max_ordinal + 7) / 8),
     CHECK (length(dma_hit_bitmap) = (dma_max_ordinal + 7) / 8)
 ) STRICT;
 

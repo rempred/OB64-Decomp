@@ -771,6 +771,10 @@ def _execution_analysis(
                 else None
             ),
         }
+        if "newCall" in payload:
+            observation["newCall"] = payload["newCall"]
+        if "call" in payload:
+            observation["call"] = payload["call"]
         observations.append(observation)
         if row["bridge_event_type"] == "exec-coverage" and not trace_content_resolved:
             retain_unresolved(

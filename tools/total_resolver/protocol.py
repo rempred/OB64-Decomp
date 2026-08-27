@@ -8,8 +8,8 @@ from typing import Any, Mapping
 from .addressing import RDRAM_SIZE
 
 
-BRIDGE_PROTOCOL_VERSION = "0.13.0"
-FRONTIER_FORMAT_VERSION = 4
+BRIDGE_PROTOCOL_VERSION = "0.14.0"
+FRONTIER_FORMAT_VERSION = 5
 
 BRIDGE_CAPABILITIES = (
     "capability-advertisement",
@@ -27,9 +27,13 @@ BRIDGE_CAPABILITIES = (
     "native-dma-completion-events",
     "event-time-dma-destination-bytes",
     "native-generation-aware-exec-coverage",
-    "native-persistent-novelty-frontier-v4",
+    "native-persistent-novelty-frontier-v5",
     "stable-frontier-fact-ordinals",
     "stop-time-known-activity-bitmaps",
+    "atomic-callsite-delay-target-context",
+    "stable-call-relationship-ordinals",
+    "stop-time-known-call-activity-bitmap",
+    "native-marker-context-ring",
     "native-exact-dma-novelty-filter",
     "exact-physical-opcode-instruction-identity",
     "page-local-address-bitmaps",

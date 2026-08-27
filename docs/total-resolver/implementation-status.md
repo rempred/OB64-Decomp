@@ -1,7 +1,7 @@
 # Total Resolver R3 implementation status
 
-Status: **Schema 3 and protocol 0.13 are implemented, verified, and selected**
-Updated: 2026-08-20
+Status: **Schema 3 and protocol 0.14 are implemented and independently verified**
+Updated: 2026-08-26
 
 This page records the current implementation boundary. Total Resolver is a practical decompilation
 accelerator: it preserves exact machine structure conservatively, exposes useful candidates, and
@@ -9,17 +9,19 @@ states uncertainty without treating runtime context as accepted source structure
 
 ## Selected knowledge
 
-The selected database is the ignored runtime product
-`build/total-resolver/knowledge/total-resolver-v3.sqlite`. It contains all ten successfully ingested
-historical sessions and uses knowledge schema 3, frontier format 4, and active bridge protocol
-0.13.0.
+The verified call-aware database is the ignored runtime product
+`build/total-resolver/knowledge/total-resolver-v3-frontier-v5-r2.sqlite`. It contains all ten
+successfully ingested historical sessions and uses knowledge schema 3, frontier format 5, and active
+bridge protocol 0.14.0. Its format-4 source remains untouched beside it.
 
 | Persistent row class | Count |
 |---|---:|
 | Sessions | 10 |
 | Exact instructions | 293,275 |
 | Exact edges | 316,915 |
-| Derived exact calls | 9,277 |
+| Exact callsite/delay-slot/actual-target relationships | 11,016 |
+| Exact call session/context witnesses | 11,467 |
+| Historical callsite-to-delay-slot materializations | 9,277 |
 | DMA placements | 222,319 |
 | Function placements | 7,519 |
 | Controller transitions | 5,956 |
@@ -44,6 +46,18 @@ Candidate rows do not rewrite exact instruction facts. The selected database has
 instruction facts, 51,984 unmapped facts, 302 ambiguous instructions, zero opcode mismatches, and
 zero queued candidate recalculation ranges.
 
+The old `call_fact` name was misleading: because MIPS executes a delay slot, all 9,277 selected
+rows point from a call instruction to its delay-slot instruction, and all therefore retain the
+caller function on both sides. They are callsite facts, not actual caller-to-callee relations.
+
+The format-5 migration conservatively reconstructed 11,016 exact physical/opcode call triples from
+the historical sessions. Each triple contains the callsite, executed delay slot, actual target, and
+call kind. Of those, 8,787 have mapped caller and target functions and form 5,748 distinct
+caller/callee function pairs. The remaining 2,229 exact machine relationships stay visible without
+inventing a function mapping. Protocol 0.14 records this triple atomically for future captures.
+Frozen decoded direct calls remain available beside runtime results as a separate static candidate
+lane.
+
 ## Truthful agent queries
 
 `explain`, `search`, `coverage`, and `unresolved` now open one read-only `ResolverContext`. Selected
@@ -60,8 +74,16 @@ passing a knowledge database as a Resolver or a Resolver as knowledge fails clos
 Default output is bounded. `explain --include SECTION` exposes requested detail, while `search`
 uses `--limit` and `--cursor`. Supported search dimensions include partial function name, ROM/live/
 physical address, exact opcode/bytes, session/frame/bridge-sequence range, incoming/outgoing edge,
-mapping status, unresolved kind, semantic marker, native marker execution context, and controller
-context.
+mapping status, unresolved kind, semantic session-name/notes keyword, semantic marker, native
+marker execution context, and controller context. Session keyword search returns target session
+IDs without requiring an agent to know a capture ID in advance. Session-filtered results, function
+session previews, and known-activity summaries retain the human name and notes during drill-down.
+
+A bare `explain FUNCTION` now includes bounded incoming and outgoing call previews across all
+ingested sessions. `--relationship callers` and `--relationship callees` select one direction;
+`--include calls` expands the paginated detail. The result separates frozen static direct-call
+candidates from exact runtime callsite/delay-slot/target pairs and includes retained session,
+frame, and bridge-sequence witnesses. Querying does not require prior knowledge of a capture ID.
 
 Unresolved execution diagnostics return the exact instruction fact, candidate mappings, the basis
 for each candidate, contradictions or missing contemporaneous evidence, adjacent mapped edges, and
@@ -96,13 +118,14 @@ Events suppressed as already known under older novelty frontiers cannot be recon
 an explicit historical limitation; emitted events, saved samples, controller transitions, and
 recoverable residency context were retained.
 
-## Protocol 0.13 future-session context
+## Protocol 0.14 future-session context
 
-Frontier format 4 assigns stable fact ordinals to known instruction, edge, and canonical DMA facts.
-Native Project64 continues exact in-memory novelty filtering and predecessor tracking. Known facts
-set in-memory hit bits. Capture stop emits exactly one instruction/edge/DMA bitmap summary, allowing
-agents to answer whether already-known structure occurred in a session without restoring the
-repeated instruction stream.
+Frontier format 5 assigns stable fact ordinals to known instruction, edge, exact call, and canonical
+DMA facts. Native Project64 continues exact in-memory novelty filtering and tracks two preceding
+instructions through silent known execution. A new callsite or actual target therefore emits one
+atomic call fact even after a completely known prefix. Known facts set in-memory hit bits. Capture
+stop emits exactly one instruction/edge/call/DMA bitmap summary, allowing agents to answer whether
+already-known structure occurred in a session without restoring the repeated instruction stream.
 
 New instructions, edges, callers, tails, changed opcodes, unresolved placements, and changed DMA
 bytes continue through the ordered novelty queue unchanged. DMA equality still includes the exact
@@ -113,8 +136,22 @@ marker can save at most 4,096 records before and 4,096 after the marker. Only th
 crosses the bridge. Local execution order and frames are context, not canonical bridge order; a
 stop before the after-window fills produces an explicit incomplete record.
 
-The verified binary and protocol-0.13 bridge are deployed to the dedicated port-64656 runtime as
-`Project64-TR-FPS-HotExact.exe` and `Scripts/000_ob64_pj64_bridge.js`. Project64 was not launched.
+The protocol-0.14 native source builds and links as Project64 Release|Win32 and the protocol-0.14
+bridge passes its production JavaScript replay harness. Project64 was not launched during this
+correction.
+
+## Human capture workflow
+
+`python -m tools.total_resolver gui --port 64656` opens a Tkinter capture window. Its explicit
+**Launch Project64** button resolves and SHA-256-authenticates the frozen call-aware executable
+before starting it visibly. Launch does not load a ROM or start capture. The window provides bridge
+check, capture start, pre-ROM arm, clean stop, semantic name/notes, and an explicit **Save Name and
+Integrate** action; it has no ROM lifecycle, controller injection, or RAM-write path.
+
+GUI sessions always defer ingestion. Stop first closes and verifies staging. The semantic name is a
+separate human-context sidecar and cannot alter machine identity or rename an already accepted
+session. Ingestion is idempotent and atomic. A timestamped diagnostic log is displayed in the GUI;
+tracebacks and a bounded worker-log tail are included on failure.
 
 ## Migration and equivalence
 
@@ -123,7 +160,8 @@ sessions. The prior database and historical products were not overwritten. Cross
 found every schema-2 canonical fact row identical; only schema/protocol/frontier-format metadata
 changed.
 
-A separate `total-resolver-v3-oracle.sqlite` was then rebuilt from the ten-session ledger. Direct
+A separate `total-resolver-v3-frontier-v5-oracle-r2.sqlite` was then rebuilt from the ten-session
+ledger. Direct
 exact-row comparison reported no mismatched tables, including all schema-3 context, unresolved,
 candidate, materialization, and activity tables. Both databases independently pass SQLite health,
 foreign-key, opcode, mapping, frontier, materialization, candidate, context, and activity checks.
@@ -141,7 +179,8 @@ or controls Project64.
 | Exact known DMA events crossing JavaScript | — | 0 |
 
 The replay reduction is 100% for both canonical structural facts and structural trace events in
-the fixture. Four known fact hits were retained in one stop-time summary using two bitmap bytes. A
+the fixture. Five known fact hits, including one exact call, were retained in one stop-time summary
+using three bitmap bytes. A
 changed DMA still emitted one exact event. A new tail, new caller, relocation, changed opcode, and
 ambiguous fallback all remained visible. The latest complete fake-emulator run took 0.727 seconds
 on this host; this is not an FPS claim.
@@ -156,8 +195,8 @@ and play Project64. No capture was started during this correction.
 
 ## Verification
 
-- 108 Python/Node Total Resolver tests pass.
-- The standalone native exact-novelty test passes with 3,018 instructions and 3,003 edges in its
+- 120 Python/Node Total Resolver tests pass.
+- The standalone native exact-novelty test passes with 3,020 instructions and 3,003 edges in its
   stress fixture.
 - Project64 Release|Win32 compiles, links, and passes its clang-format gate.
 - `doctor` passes the active bridge, native source-set, native binary, repository, and configured
@@ -174,6 +213,10 @@ and play Project64. No capture was started during this correction.
 - Global exact-byte candidates are useful search results, not contemporaneous live mappings.
 - Dynamic rows remain `live-unreviewed`; they do not promote accepted boundaries, ownership,
   semantic names, or matching-C claims.
+- Historical exact caller/callee relationships exist only where consecutive callsite and transfer
+  witnesses survived older novelty filtering. Of 11,016 retained exact call triples, 2,229 lack a
+  mapped function at one or both endpoints. Static direct-call candidates can help navigate those
+  gaps without claiming a witnessed runtime mapping.
 - DMA ordering alone cannot prove transient placement contents; event-time destination bytes remain
   required.
 - Closed raw staging sessions are retained. Persistent marginal structural growth can approach
