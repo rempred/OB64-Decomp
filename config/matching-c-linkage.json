@@ -297,7 +297,8 @@
     { "name": "D_8022A95C", "address": "0x8022A95C" },
     { "name": "D_8022A954", "address": "0x8022A954" },
     { "name": "D_801CE8BC", "address": "0x801CE8BC" },
-    { "name": "D_8022A97C", "address": "0x8022A97C" }
+    { "name": "D_8022A97C", "address": "0x8022A97C" },
+    { "name": "D_8022A974", "address": "0x8022A974" }
   ],
   "targets": [
     {
@@ -2528,6 +2529,17 @@
         {"offset":"0x00000004","type":"R_MIPS_HI16","symbol":"D_8022A97C","section":".rel.text"},
         {"offset":"0x00000008","type":"R_MIPS_LO16","symbol":"D_8022A97C","section":".rel.text"},
         {"offset":"0x0000006C","type":"R_MIPS_26","symbol":".text","section":".rel.text"}
+      ]
+    },
+    {
+      "symbol": "func_002A05EC",
+      "expectedRelocations": [
+        {"offset":"0x00000020","type":"R_MIPS_26","symbol":".text","section":".rel.text"},
+        {"offset":"0x0000003C","type":"R_MIPS_HI16","symbol":"D_8022A974","section":".rel.text"},
+        {"offset":"0x00000040","type":"R_MIPS_LO16","symbol":"D_8022A974","section":".rel.text"},
+        {"offset":"0x00000058","type":"R_MIPS_26","symbol":"func_000016C4","section":".rel.text"},
+        {"offset":"0x00000060","type":"R_MIPS_HI16","symbol":"D_8022A974","section":".rel.text"},
+        {"offset":"0x00000064","type":"R_MIPS_LO16","symbol":"D_8022A974","section":".rel.text"}
       ]
     }
   ]
