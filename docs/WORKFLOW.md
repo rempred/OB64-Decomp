@@ -139,10 +139,32 @@ Structural changes use `docs/AUDIT.md`.
 
 Names and behavioral explanations need evidence appropriate to the claim.
 
-Static evidence may justify a cautious structural name. Runtime trace or controlled mutation is
-needed when behavior cannot be established statically.
+Static evidence may justify a cautious supported alias. Runtime trace, controlled mutation, or
+recognized SDK/library proof is required before replacing an address-based symbol with a canonical
+semantic name.
 
 Semantic work is not a prerequisite for exact C output.
+
+### Symbol-naming sidecar
+
+Naming accompanies normal matching work but does not gate it. Keep the accepted target symbol,
+usually `func_XXXXXXXX`, unless a canonical semantic name has already been established. Matching
+machine code does not by itself prove a name.
+
+Use exactly three naming classes:
+
+1. `CANDIDATE` — imported external lead; never used canonically.
+2. `SUPPORTED_ALIAS` — independently supported by static evidence.
+3. `CANONICAL` — established by runtime evidence, controlled mutation, or recognized SDK/library
+   proof.
+
+During matching, use existing `CANONICAL` names and preserve useful naming evidence. As a routine
+sidecar, the decomp agent should attempt to promote the target to `SUPPORTED_ALIAS` by independently
+checking its body, callers, callees, strings, and data accesses. External names begin as `CANDIDATE`;
+local static confirmation may promote them to `SUPPORTED_ALIAS`, but only the `CANONICAL` class may
+replace a build symbol. Insufficient naming evidence does not block Matching C; leave the function
+address-named and continue. Perform canonical renames as scoped semantic changes and rerun the normal
+target and complete-ROM verifiers.
 
 ---
 
