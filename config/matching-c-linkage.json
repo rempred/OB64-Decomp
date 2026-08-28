@@ -312,7 +312,10 @@
     { "name": "D_80197B01", "address": "0x80197B01" },
     { "name": "D_80197B02", "address": "0x80197B02" },
     { "name": "D_80197B04", "address": "0x80197B04" },
-    { "name": "func_80171B94", "address": "0x80171B94" }
+    { "name": "func_80171B94", "address": "0x80171B94" },
+    { "name": "D_801D0770", "address": "0x801D0770" },
+    { "name": "D_801D0748", "address": "0x801D0748" },
+    { "name": "D_801D0828", "address": "0x801D0828" }
   ],
   "targets": [
     {
@@ -2605,6 +2608,20 @@
         {"offset":"0x00000044","type":"R_MIPS_HI16","symbol":"D_80197B04","section":".rel.text"},
         {"offset":"0x00000048","type":"R_MIPS_26","symbol":"func_80171B94","section":".rel.text"},
         {"offset":"0x0000004C","type":"R_MIPS_LO16","symbol":"D_80197B04","section":".rel.text"}
+      ]
+    },
+    {
+      "symbol": "func_001FFA8C",
+      "expectedRelocations": [
+        {"offset":"0x00000008","type":"R_MIPS_HI16","symbol":"D_801D0770","section":".rel.text"},
+        {"offset":"0x0000000C","type":"R_MIPS_LO16","symbol":"D_801D0770","section":".rel.text"},
+        {"offset":"0x00000010","type":"R_MIPS_26","symbol":"memset_00023780","section":".rel.text"},
+        {"offset":"0x00000018","type":"R_MIPS_HI16","symbol":"D_801D0748","section":".rel.text"},
+        {"offset":"0x0000001C","type":"R_MIPS_LO16","symbol":"D_801D0748","section":".rel.text"},
+        {"offset":"0x00000020","type":"R_MIPS_26","symbol":"memset_00023780","section":".rel.text"},
+        {"offset":"0x00000028","type":"R_MIPS_HI16","symbol":"D_801D0828","section":".rel.text"},
+        {"offset":"0x0000002C","type":"R_MIPS_LO16","symbol":"D_801D0828","section":".rel.text"},
+        {"offset":"0x00000030","type":"R_MIPS_26","symbol":"memset_00023780","section":".rel.text"}
       ]
     }
   ]
