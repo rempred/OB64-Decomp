@@ -149,6 +149,7 @@
     { "name": "func_000775EC", "address": "0x800775EC" },
     { "name": "func_00077BF8", "address": "0x80077BF8" },
     { "name": "func_00089A10", "address": "0x80089A10" },
+    { "name": "func_80199D10", "address": "0x80199D10" },
     { "name": "func_0008B820", "address": "0x8008B820" },
     { "name": "func_00092F50", "address": "0x80092F50" },
     { "name": "func_000EA604", "address": "0x800EA604" },
@@ -2656,6 +2657,13 @@
         {"offset":"0x0000001C","type":"R_MIPS_LO16","symbol":"D_801CE8E4","section":".rel.text"},
         {"offset":"0x00000020","type":"R_MIPS_HI16","symbol":"D_801D06FC","section":".rel.text"},
         {"offset":"0x00000024","type":"R_MIPS_LO16","symbol":"D_801D06FC","section":".rel.text"}
+      ]
+    },
+    {
+      "symbol": "func_0006947c",
+      "expectedRelocations": [
+        {"offset":"0x00000008","type":"R_MIPS_26","symbol":"func_00089A10","section":".rel.text"},
+        {"offset":"0x00000010","type":"R_MIPS_26","symbol":"func_80199D10","section":".rel.text"}
       ]
     }
   ]
