@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 import hashlib
+import math
 from typing import Any, Mapping
 
 from .protocol import BridgeProtocolError, FRONTIER_FORMAT_VERSION
@@ -11,6 +12,16 @@ from .addressing import RDRAM_SIZE
 
 
 BRIDGE_STREAMS = frozenset({"watch", "dma", "trace", "input"})
+
+
+def _u32_hex_or_none(value: Any) -> bool:
+    return value is None or (
+        isinstance(value, str)
+        and len(value) == 10
+        and value.startswith("0x")
+        and value[2:] == value[2:].upper()
+        and all(character in "0123456789ABCDEF" for character in value[2:])
+    )
 
 
 @dataclass(frozen=True)
@@ -37,6 +48,15 @@ class PreservedBridgeEvent:
 
 
 @dataclass(frozen=True)
+class DrainSampleContext:
+    frame_number: int | None
+    debug_paused: bool
+    system_paused: bool
+    execution_state: str
+    pc: str | None
+
+
+@dataclass(frozen=True)
 class DrainBatch:
     bridge_epoch: str
     events: tuple[PreservedBridgeEvent, ...]
@@ -44,6 +64,7 @@ class DrainBatch:
     dropped: int
     dropped_ranges: tuple[DroppedSequenceRange, ...]
     next_event_sequence: int
+    sample_context: DrainSampleContext | None = None
 
 
 def _nonnegative_integer(value: Any, field: str) -> int:
@@ -77,6 +98,39 @@ def _parse_ranges(value: Any) -> tuple[DroppedSequenceRange, ...]:
         ranges.append(DroppedSequenceRange(first, last, count))
         previous_last = last
     return tuple(ranges)
+
+
+def _parse_sample_context(value: Any) -> DrainSampleContext | None:
+    if value is None:
+        return None
+    if not isinstance(value, Mapping):
+        raise BridgeProtocolError("drain response sampleContext must be an object")
+    frame = value.get("frameCount")
+    if frame is not None and (
+        isinstance(frame, bool) or not isinstance(frame, int) or frame < 0
+    ):
+        raise BridgeProtocolError("drain sample frameCount must be nonnegative or null")
+    debug_paused = value.get("debugPaused")
+    emu_state = value.get("emuState")
+    execution = value.get("execution")
+    pc = value.get("pc")
+    if not isinstance(debug_paused, bool):
+        raise BridgeProtocolError("drain sample debugPaused must be boolean")
+    if not isinstance(emu_state, Mapping) or not isinstance(
+        emu_state.get("systemPaused"), bool
+    ):
+        raise BridgeProtocolError("drain sample emuState must include systemPaused")
+    if not isinstance(execution, Mapping) or not isinstance(execution.get("state"), str):
+        raise BridgeProtocolError("drain sample execution must include a state")
+    if not _u32_hex_or_none(pc):
+        raise BridgeProtocolError("drain sample PC must be canonical u32 hex or null")
+    return DrainSampleContext(
+        frame_number=frame,
+        debug_paused=debug_paused,
+        system_paused=bool(emu_state["systemPaused"]),
+        execution_state=str(execution["state"]),
+        pc=pc,
+    )
 
 
 def _content_identity(
@@ -113,8 +167,12 @@ def _content_identity(
     return hashlib.sha256(content).hexdigest().upper(), size, encoding, phase, field
 
 
-def _frontier_identity(payload: Mapping[str, Any], event_type: str) -> str:
-    if payload.get("frontierFormatVersion") != FRONTIER_FORMAT_VERSION:
+def _frontier_identity(
+    payload: Mapping[str, Any],
+    event_type: str,
+    frontier_format_version: int = FRONTIER_FORMAT_VERSION,
+) -> str:
+    if payload.get("frontierFormatVersion") != frontier_format_version:
         raise BridgeProtocolError(f"{event_type} has an incompatible novelty frontier format")
     identity = payload.get("frontierIdentity")
     if (
@@ -229,11 +287,194 @@ def _validate_call_node(
     return pc, opcode, physical
 
 
-def _validate_trace_or_input_event(payload: Mapping[str, Any], event_type: str) -> None:
+def _validate_focused_event(payload: Mapping[str, Any]) -> None:
+    role = payload.get("focusedRole")
+    phase = payload.get("capturePhase")
+    expected_phase = {
+        "entry": "focused-function-entry",
+        "return": "focused-function-return-before-delay-slot",
+    }.get(role)
+    if (
+        expected_phase is None
+        or phase != expected_phase
+        or payload.get("targetSignatureVerified") is not True
+        or payload.get("exactInstructionResolved") is not True
+        or payload.get("orderingClaim")
+        != "bridge-sequence-orders-focused-events;-frame-is-context"
+        or payload.get("sampleMode") not in {"all", "first-per-frame"}
+        or payload.get("focusedProfileVersion") != 1
+    ):
+        raise BridgeProtocolError("focused execution event lacks its exact trigger contract")
+    for field in ("focusedProfileId", "focusedTargetId", "focusedInvocationId"):
+        value = payload.get(field)
+        if (
+            not isinstance(value, str)
+            or not value
+            or len(value) > 192
+            or any(character.isspace() or ord(character) < 0x21 for character in value)
+        ):
+            raise BridgeProtocolError(f"focused execution event has invalid {field}")
+    function_id = payload.get("focusedFunctionId")
+    if isinstance(function_id, bool) or not isinstance(function_id, int) or function_id < 1:
+        raise BridgeProtocolError("focused execution event omitted its static function ID")
+    try:
+        pc = int(str(payload.get("pc")), 0)
+        opcode = int(str(payload.get("opcode")), 0)
+        physical = int(str(payload.get("physicalAddress")), 0)
+        target_start = int(str(payload.get("targetLiveStart")), 0)
+        target_end = int(str(payload.get("targetLiveEndExclusive")), 0)
+        target_physical = int(str(payload.get("targetPhysicalStart")), 0)
+        z64_start = int(str(payload.get("focusedZ64Start")), 0)
+        return_address = int(str(payload.get("entryReturnAddress")), 0)
+    except (TypeError, ValueError) as exc:
+        raise BridgeProtocolError("focused execution event omitted an exact address") from exc
+    if (
+        pc & 3
+        or not 0 <= pc <= 0xFFFFFFFF
+        or not 0 <= opcode <= 0xFFFFFFFF
+        or physical != (pc & 0x003FFFFF)
+        or not 0 <= physical <= RDRAM_SIZE - 4
+        or target_start & 3
+        or target_end & 3
+        or not 0x80000000 <= target_start < target_end <= 0x80000000 + RDRAM_SIZE
+        or target_physical != target_start - 0x80000000
+        or not 0 <= z64_start <= 0x0FFFFFFC
+        or not 0 <= return_address <= 0xFFFFFFFF
+    ):
+        raise BridgeProtocolError("focused execution event has invalid address metadata")
+    encoded = payload.get("targetSignatureBytesHex")
+    byte_length = payload.get("targetSignatureByteLength")
+    if (
+        payload.get("targetSignatureBytesEncoding") != "hex-uppercase"
+        or isinstance(byte_length, bool)
+        or not isinstance(byte_length, int)
+        or not 4 <= byte_length <= 64
+        or byte_length & 3
+        or not isinstance(encoded, str)
+        or len(encoded) != byte_length * 2
+        or encoded != encoded.upper()
+        or any(character not in "0123456789ABCDEF" for character in encoded)
+    ):
+        raise BridgeProtocolError("focused execution event has invalid target signature bytes")
+    if role == "entry":
+        if pc != target_start or opcode != int(encoded[:8], 16):
+            raise BridgeProtocolError("focused entry contradicts its exact target signature")
+    elif (
+        not target_start <= pc < target_end
+        or opcode != 0x03E00008
+        or payload.get("returnPhaseLimitation")
+        != "registers-and-bytes-precede-the-jr-ra-delay-slot"
+    ):
+        raise BridgeProtocolError("focused return is not an in-range jr-ra observation")
+    registers = payload.get("regs")
+    low_gprs = (
+        "pc", "ra", "sp", "gp", "a0", "a1", "a2", "a3", "v0", "v1",
+        "t0", "t1", "t2", "t3", "t4", "t5", "t6", "t7", "t8", "t9",
+        "s0", "s1", "s2", "s3", "s4", "s5", "s6", "s7", "s8",
+    )
+    upper_gprs = (
+        "zero", "at", "v0", "v1", "a0", "a1", "a2", "a3",
+        "t0", "t1", "t2", "t3", "t4", "t5", "t6", "t7",
+        "s0", "s1", "s2", "s3", "s4", "s5", "s6", "s7",
+        "t8", "t9", "k0", "k1", "gp", "sp", "s8", "ra",
+    )
+    special_registers = ("hi", "uhi", "lo", "ulo", "fcr31")
+    cop0_registers = ("badvaddr", "epc", "errorepc", "status", "cause", "context")
+    if (
+        not isinstance(registers, Mapping)
+        or not isinstance(registers.get("gprUpper"), Mapping)
+        or not isinstance(registers.get("special"), Mapping)
+        or not isinstance(registers.get("cop0"), Mapping)
+        or any(not _u32_hex_or_none(registers.get(name)) for name in low_gprs)
+        or any(
+            not _u32_hex_or_none(registers["gprUpper"].get(name))
+            for name in upper_gprs
+        )
+        or any(
+            not _u32_hex_or_none(registers["special"].get(name))
+            for name in special_registers
+        )
+        or any(
+            not _u32_hex_or_none(registers["cop0"].get(name))
+            for name in cop0_registers
+        )
+        or not isinstance(registers.get("fprSingle"), list)
+        or len(registers["fprSingle"]) != 32
+        or not isinstance(registers.get("fprDouble"), list)
+        or len(registers["fprDouble"]) != 32
+        or any(
+            value is not None
+            and (
+                isinstance(value, bool)
+                or not isinstance(value, (int, float))
+                or not math.isfinite(value)
+            )
+            for value in (*registers["fprSingle"], *registers["fprDouble"])
+        )
+        or registers.get("floatingPointClaim")
+        != "numeric-context-not-raw-nan-payload-bits"
+    ):
+        raise BridgeProtocolError("focused execution event has an incomplete register snapshot")
+    stack = payload.get("stack")
+    if (
+        not isinstance(stack, Mapping)
+        or not _u32_hex_or_none(stack.get("base"))
+        or not isinstance(stack.get("words"), list)
+        or len(stack["words"]) > 128
+        or any(not _u32_hex_or_none(value) for value in stack["words"])
+    ):
+        raise BridgeProtocolError("focused execution event has an invalid stack snapshot")
+    snapshots = payload.get("pointerSnapshots")
+    issues = payload.get("pointerSnapshotIssues")
+    if not isinstance(snapshots, list) or not isinstance(issues, list):
+        raise BridgeProtocolError("focused execution event omitted pointer snapshot results")
+    expected_pointer_phase = "entry" if role == "entry" else "pre-return-delay-slot"
+    seen_registers: set[str] = set()
+    for item in snapshots:
+        if not isinstance(item, Mapping):
+            raise BridgeProtocolError("focused pointer snapshot is not an object")
+        register = item.get("register")
+        try:
+            address = int(str(item.get("address")), 0)
+            pointer_physical = int(str(item.get("physicalAddress")), 0)
+        except (TypeError, ValueError) as exc:
+            raise BridgeProtocolError("focused pointer snapshot omitted its address") from exc
+        size = item.get("byteLength")
+        pointer_bytes = item.get("bytesHex")
+        if (
+            register not in {"a0", "a1", "a2", "a3"}
+            or register in seen_registers
+            or item.get("phase") != expected_pointer_phase
+            or item.get("capturePhase") != "synchronous-focused-callback"
+            or item.get("bytesEncoding") != "hex-uppercase"
+            or isinstance(size, bool)
+            or not isinstance(size, int)
+            or not 1 <= size <= 4096
+            or (address & 0xE0000000) not in {0x80000000, 0xA0000000}
+            or pointer_physical != (address & 0x1FFFFFFF)
+            or not 0 <= pointer_physical < RDRAM_SIZE
+            or size > RDRAM_SIZE - pointer_physical
+            or not isinstance(pointer_bytes, str)
+            or len(pointer_bytes) != size * 2
+            or pointer_bytes != pointer_bytes.upper()
+            or any(character not in "0123456789ABCDEF" for character in pointer_bytes)
+        ):
+            raise BridgeProtocolError("focused pointer snapshot is malformed")
+        seen_registers.add(str(register))
+    for item in issues:
+        if not isinstance(item, Mapping) or item.get("register") not in {"a0", "a1", "a2", "a3"}:
+            raise BridgeProtocolError("focused pointer snapshot issue is malformed")
+
+
+def _validate_trace_or_input_event(
+    payload: Mapping[str, Any],
+    event_type: str,
+    frontier_format_version: int = FRONTIER_FORMAT_VERSION,
+) -> None:
     if event_type == "trace-page":
         if payload.get("dedupeDecision") != "exact-byte-compare":
             raise BridgeProtocolError("trace page lacks an exact-byte dedupe decision")
-        _frontier_identity(payload, event_type)
+        _frontier_identity(payload, event_type, frontier_format_version)
         _trace_placement(payload, event_type)
         _validate_frontier_match(payload, event_type)
         content_id = payload.get("codePageContentId")
@@ -244,7 +485,7 @@ def _validate_trace_or_input_event(payload: Mapping[str, Any], event_type: str) 
             raise BridgeProtocolError("trace generation lacks an exact generation decision")
         if payload.get("exactContentResolved") is not True:
             raise BridgeProtocolError("trace generation is not tied to exact page content")
-        _frontier_identity(payload, event_type)
+        _frontier_identity(payload, event_type, frontier_format_version)
         _, generation = _trace_placement(payload, event_type)
         _validate_frontier_match(payload, event_type)
         content_id = payload.get("codePageContentId")
@@ -262,7 +503,7 @@ def _validate_trace_or_input_event(payload: Mapping[str, Any], event_type: str) 
     elif event_type == "exec-coverage":
         if payload.get("dedupeDecision") != "physical-address-and-exact-opcode":
             raise BridgeProtocolError("execution coverage lacks its exact dedupe decision")
-        _frontier_identity(payload, event_type)
+        _frontier_identity(payload, event_type, frontier_format_version)
         if (
             not isinstance(payload.get("newInstruction"), bool)
             or not isinstance(payload.get("newEdge"), bool)
@@ -444,7 +685,7 @@ def _validate_trace_or_input_event(payload: Mapping[str, Any], event_type: str) 
         ):
             raise BridgeProtocolError("baseline snapshot lacks its atomic 4 MiB contract")
     elif event_type == "known-activity":
-        _frontier_identity(payload, event_type)
+        _frontier_identity(payload, event_type, frontier_format_version)
         if (
             payload.get("capturePhase") != "session-stop-native-hit-bitmap"
             or payload.get("orderingClaim") != "session-membership-only-not-event-order"
@@ -531,6 +772,8 @@ def _validate_trace_or_input_event(payload: Mapping[str, Any], event_type: str) 
             or payload.get("orderingClaim") != "no-execution-context-claim"
         ):
             raise BridgeProtocolError("incomplete marker context overstates its evidence")
+    elif event_type == "focused-exec":
+        _validate_focused_event(payload)
 
 
 def _validate_dma_event(payload: Mapping[str, Any], event_type: str, sequence: int) -> None:
@@ -633,6 +876,7 @@ def parse_drain_response(response: Mapping[str, Any]) -> DrainBatch:
             f"drain count {count} does not match {len(events)} returned event(s)"
         )
     ranges = _parse_ranges(response.get("droppedRanges"))
+    sample_context = _parse_sample_context(response.get("sampleContext"))
     if sum(item.count for item in ranges) != dropped:
         raise BridgeProtocolError("aggregate dropped count disagrees with droppedRanges")
     if ranges and ranges[-1].last_sequence >= next_sequence:
@@ -653,4 +897,5 @@ def parse_drain_response(response: Mapping[str, Any]) -> DrainBatch:
         dropped=dropped,
         dropped_ranges=ranges,
         next_event_sequence=next_sequence,
+        sample_context=sample_context,
     )

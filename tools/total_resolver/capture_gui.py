@@ -20,12 +20,14 @@ from typing import Any, Callable, Mapping, Sequence
 
 from .knowledge import selected_knowledge_database
 from .knowledge_ingest import ingest_session
+from .focused_capture import CUTSCENE_STUDIO_PROFILE_ID
 from .inventory import resolve_active_project64_binary
 from .pj64_client import DEFAULT_HOST, Pj64Client
 from .schema import utc_now
 from .sessions import (
     SessionConnection,
     active_session_id,
+    add_session_annotation,
     create_session,
     record_session_ingestion,
     request_session_stop,
@@ -181,6 +183,14 @@ class CaptureWorkflowController:
             active = resolve_active_project64_binary(
                 project64_root=self.project64_root
             )
+            if (
+                active.bridge_port is not None
+                and active.bridge_port != self.connection.port
+            ):
+                raise RuntimeError(
+                    "authenticated Project64 runtime bridge port does not match the GUI: "
+                    f"runtime {active.bridge_port}, GUI {self.connection.port}"
+                )
             process = subprocess.Popen(
                 (str(active.path),),
                 cwd=str(active.path.parent),
@@ -199,6 +209,10 @@ class CaptureWorkflowController:
             "pid": process.pid,
             "binary": str(active.path),
             "binarySha256": active.sha256,
+            "bridgeScript": (
+                str(active.bridge_path) if active.bridge_path is not None else None
+            ),
+            "bridgeScriptSha256": active.bridge_sha256,
             "bridgePort": self.connection.port,
             "romLoaded": False,
             "captureStarted": False,
@@ -240,7 +254,9 @@ class CaptureWorkflowController:
         self.log.write("Session status refreshed", details=result)
         return result
 
-    def start(self, *, before_rom: bool = False) -> dict[str, Any]:
+    def start(
+        self, *, before_rom: bool = False, focused: bool = False
+    ) -> dict[str, Any]:
         current = self.refresh() if self.session_id is not None else None
         if (
             current is not None
@@ -253,7 +269,12 @@ class CaptureWorkflowController:
             )
         self.log.write(
             "Starting deferred-ingestion capture",
-            details={"beforeRom": before_rom, "launchesProject64": False},
+            details={
+                "beforeRom": before_rom,
+                "launchesProject64": False,
+                "captureMode": "focused-research" if focused else "manual-play",
+                "focusedProfile": CUTSCENE_STUDIO_PROFILE_ID if focused else None,
+            },
         )
         try:
             result = create_session(
@@ -262,6 +283,7 @@ class CaptureWorkflowController:
                 knowledge_database=self._knowledge(),
                 before_rom=before_rom,
                 auto_ingest=False,
+                focused_profile_id=(CUTSCENE_STUDIO_PROFILE_ID if focused else None),
             )
         except Exception as exc:
             self.log.exception("Capture start", exc)
@@ -270,6 +292,45 @@ class CaptureWorkflowController:
             raise
         self.session_id = str(result["sessionId"])
         self.log.write("Capture started", details=result)
+        return result
+
+    def add_note(self, text: str) -> dict[str, Any]:
+        note = text.strip()
+        if not note:
+            raise ValueError("Enter a short note before pressing Add Note")
+        if self.session_id is None:
+            self.session_id = active_session_id(self.root)
+        if self.session_id is None:
+            raise RuntimeError("There is no active Total Resolver capture")
+        current = session_status(self.session_id, root=self.root)
+        if current.get("closureStatus") != "open" or not current.get("workerAlive"):
+            raise RuntimeError("Add Note is available only while a capture is running")
+        self.log.write(
+            "Adding focused contextual note",
+            details={
+                "sessionId": self.session_id,
+                "text": note,
+                "frameWindow": "60 before / 30 after at the game's 30 FPS baseline",
+            },
+        )
+        try:
+            result = add_session_annotation(
+                note,
+                marker_type="note",
+                session_id=self.session_id,
+                root=self.root,
+                connection=self.connection,
+                context_before=256,
+                context_after=256,
+                frame_context_before=60,
+                frame_context_after=30,
+            )
+        except Exception as exc:
+            self.log.exception("Add Note", exc)
+            self._append_worker_log()
+            raise
+        result["action"] = "note-added"
+        self.log.write("Contextual note added", details=result)
         return result
 
     def stop(self, *, wait_seconds: float = 180.0) -> dict[str, Any]:
@@ -361,7 +422,7 @@ def launch_capture_gui(
     )
     window = tk.Tk()
     window.title("OB64 Total Resolver Capture")
-    window.geometry("900x720")
+    window.geometry("900x790")
     work_queue: queue.Queue[tuple[str, Any]] = queue.Queue()
     busy = tk.BooleanVar(value=False)
     status_text = tk.StringVar(
@@ -370,6 +431,7 @@ def launch_capture_gui(
     session_text = tk.StringVar(value=controller.session_id or "None")
     before_rom = tk.BooleanVar(value=False)
     semantic_name = tk.StringVar()
+    note_text = tk.StringVar()
     log_path_text = tk.StringVar(value=str(log.path))
 
     outer = ttk.Frame(window, padding=12)
@@ -399,6 +461,20 @@ def launch_capture_gui(
 
     button_frame = ttk.Frame(connection_frame)
     button_frame.grid(row=2, column=0, columnspan=4, sticky="w", padx=6, pady=6)
+
+    note_frame = ttk.LabelFrame(outer, text="Context note (while capture is running)")
+    note_frame.pack(fill="x", pady=(10, 0))
+    ttk.Label(
+        note_frame,
+        text=(
+            "Focused targets are captured automatically. Add Note marks 2 seconds before "
+            "and 1 second after the current frame."
+        ),
+        wraplength=840,
+    ).grid(row=0, column=0, columnspan=2, sticky="w", padx=6, pady=(6, 2))
+    note_entry = ttk.Entry(note_frame, textvariable=note_text, width=78)
+    note_entry.grid(row=1, column=0, sticky="ew", padx=6, pady=6)
+    note_frame.columnconfigure(0, weight=1)
 
     naming = ttk.LabelFrame(outer, text="Name and integrate after stop")
     naming.pack(fill="x", pady=(10, 0))
@@ -433,7 +509,9 @@ def launch_capture_gui(
             launch_button,
             check_button,
             start_button,
+            focused_start_button,
             stop_button,
+            note_button,
             integrate_button,
         ):
             widget.configure(state="disabled" if value else "normal")
@@ -487,6 +565,12 @@ def launch_capture_gui(
                 status_text.set(
                     "Capture integrated successfully. Name and notes cleared for the next capture."
                 )
+            elif isinstance(value, Mapping) and value.get("action") == "note-added":
+                note_text.set("")
+                note_entry.focus_set()
+                status_text.set(
+                    "Note added with a 2-seconds-before / 1-second-after frame window."
+                )
             else:
                 status_text.set("Operation completed. See the status and log below.")
         window.after(100, poll_work)
@@ -518,12 +602,33 @@ def launch_capture_gui(
         command=start_capture,
     )
     start_button.pack(side="left", padx=6)
+    def start_focused_capture() -> None:
+        arm_before_rom = bool(before_rom.get())
+        run_async(
+            "Starting focused capture",
+            lambda: controller.start(before_rom=arm_before_rom, focused=True),
+        )
+
+    focused_start_button = ttk.Button(
+        button_frame,
+        text="Start Focused Capture",
+        command=start_focused_capture,
+    )
+    focused_start_button.pack(side="left", padx=6)
     stop_button = ttk.Button(
         button_frame,
         text="Stop Capture",
         command=lambda: run_async("Stopping capture", controller.stop),
     )
     stop_button.pack(side="left", padx=6)
+
+    def add_note() -> None:
+        text = note_text.get()
+        run_async("Adding note", lambda: controller.add_note(text))
+
+    note_button = ttk.Button(note_frame, text="Add Note", command=add_note)
+    note_button.grid(row=1, column=1, sticky="e", padx=6, pady=6)
+    note_entry.bind("<Return>", lambda _event: add_note())
     def integrate_capture() -> None:
         # Snapshot widget contents before the database work moves off the GUI thread.
         name = semantic_name.get()

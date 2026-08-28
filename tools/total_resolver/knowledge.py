@@ -16,15 +16,23 @@ from .addressing import RDRAM_SIZE
 from .capture_db import canonical_json
 from .identities import read_normalized_rom, rom_identity_from_file
 from .inventory import load_inventory, repository_root, sha256_file
-from .protocol import BRIDGE_PROTOCOL_VERSION, FRONTIER_FORMAT_VERSION
+from .protocol import (
+    ACTIVITY_PROTOCOL_VERSIONS,
+    ATOMIC_CALL_PROTOCOL_VERSIONS,
+    BRIDGE_PROTOCOL_VERSION,
+    FOCUSED_CAPTURE_PROTOCOL_VERSIONS,
+    FRONTIER_FORMAT_VERSION,
+)
 from .schema import utc_now
 from .static_model import StaticModel
 
 
-KNOWLEDGE_SCHEMA = "ob64-total-resolver-knowledge.v3"
-KNOWLEDGE_SCHEMA_VERSION = 3
+KNOWLEDGE_SCHEMA = "ob64-total-resolver-knowledge.v5"
+KNOWLEDGE_SCHEMA_VERSION = 5
 LEGACY_KNOWLEDGE_SCHEMAS = {
     2: "ob64-total-resolver-knowledge.v2",
+    3: "ob64-total-resolver-knowledge.v3",
+    4: "ob64-total-resolver-knowledge.v4",
 }
 SUPPORTED_KNOWLEDGE_SCHEMAS = {
     **LEGACY_KNOWLEDGE_SCHEMAS,
@@ -42,6 +50,9 @@ HISTORICAL_INGEST_PROTOCOL_VERSIONS = (
     "0.11.0",
     "0.12.0",
     "0.13.0",
+    "0.14.0",
+    "0.15.0",
+    "0.16.0",
 )
 SUPPORTED_INGEST_PROTOCOL_VERSIONS = (
     *HISTORICAL_INGEST_PROTOCOL_VERSIONS,
@@ -102,6 +113,14 @@ def knowledge_calls_schema_path() -> Path:
     return Path(__file__).resolve().parent / "schemas" / "knowledge_calls_v3.sql"
 
 
+def knowledge_v4_schema_path() -> Path:
+    return Path(__file__).resolve().parent / "schemas" / "knowledge_v4.sql"
+
+
+def knowledge_v5_schema_path() -> Path:
+    return Path(__file__).resolve().parent / "schemas" / "knowledge_v5.sql"
+
+
 def _research_root() -> Path:
     configured = os.environ.get("OB64_RESEARCH_ROOT")
     return Path(configured).resolve() if configured else repository_root().parent.resolve()
@@ -128,14 +147,14 @@ def default_resource_database() -> Path:
 
 
 def default_knowledge_database() -> Path:
-    # Schema 3 is built beside schema 2. Selection changes only after replay,
-    # exact fact comparison, and context verification succeed.
+    # Migrations build beside the selected database. Selection changes only
+    # after ledger replay, exact conservation, and verification succeed.
     return (
         repository_root()
         / "build"
         / "total-resolver"
         / "knowledge"
-        / "total-resolver-v3.sqlite"
+        / "total-resolver-v5.sqlite"
     ).resolve()
 
 
@@ -207,9 +226,18 @@ def _frontier_identity(
     pages: int,
     instructions: int,
     edges: int,
+    calls: int | None = None,
+    dma: int | None = None,
 ) -> str:
     """Return an opaque revision token, not a content digest."""
 
+    if calls is not None or dma is not None:
+        if calls is None or dma is None:
+            raise ValueError("current frontier identity requires call and DMA counts")
+        return (
+            f"K3:{database_id}:{revision}:{pages}:{instructions}:{edges}:"
+            f"{calls}:{dma}"
+        )
     return f"K2:{database_id}:{revision}:{pages}:{instructions}:{edges}"
 
 
@@ -431,6 +459,43 @@ class MarkerContextWindowObservation:
 
 
 @dataclass(frozen=True)
+class FocusedPointerSnapshotObservation:
+    register_name: str
+    snapshot_phase: str
+    label: str
+    pointer_address: int
+    physical_start: int
+    exact_bytes: bytes
+    capture_phase: str
+
+
+@dataclass(frozen=True)
+class FocusedExecutionObservation:
+    bridge_sequence: int
+    frame: int | None
+    profile_id: str
+    profile_version: int
+    target_id: str
+    trigger_role: str
+    invocation_id: str
+    function_id: int
+    z64_start: int
+    live_pc: int
+    physical_pc: int
+    opcode_u32: int
+    target_live_start: int
+    target_live_end_exclusive: int
+    sample_mode: str
+    entry_return_address: int
+    target_signature_bytes: bytes
+    registers: Mapping[str, Any]
+    stack: Mapping[str, Any]
+    pointer_issues: tuple[Mapping[str, Any], ...]
+    capture_phase: str
+    pointers: tuple[FocusedPointerSnapshotObservation, ...] = ()
+
+
+@dataclass(frozen=True)
 class SessionDelta:
     session_id: str
     capture_identity: str
@@ -460,6 +525,8 @@ class SessionDelta:
     context_limitations: tuple[str, ...] = ()
     known_activity: KnownActivityObservation | None = None
     marker_context_windows: tuple[MarkerContextWindowObservation, ...] = ()
+    focused_profile: Mapping[str, Any] | None = None
+    focused_executions: tuple[FocusedExecutionObservation, ...] = ()
     semantic_name: str | None = None
     semantic_notes: str | None = None
     semantic_context_created_utc: str | None = None
@@ -493,6 +560,7 @@ class FrontierEdge:
 @dataclass(frozen=True)
 class FrontierDma:
     fact_ordinal: int
+    match_kind: str
     source_start: int
     source_end_exclusive: int
     destination_physical_start: int
@@ -531,7 +599,7 @@ class NoveltyFrontier:
 
     def summary(self) -> dict[str, Any]:
         return {
-            "schema": "ob64-total-resolver-novelty-frontier.v5",
+            "schema": "ob64-total-resolver-novelty-frontier.v6",
             "formatVersion": self.format_version,
             "frontierIdentity": self.identity,
             "romNormalizedSha256": self.rom_normalized_sha256,
@@ -541,6 +609,15 @@ class NoveltyFrontier:
             "edgeCount": len(self.edges),
             "callCount": len(self.calls),
             "dmaCount": len(self.dma),
+            "dmaExactPlacementCount": sum(
+                item.match_kind == "exact-placement" for item in self.dma
+            ),
+            "dmaDataResourceCount": sum(
+                item.match_kind == "data-resource" for item in self.dma
+            ),
+            "dmaDataDestinationCount": sum(
+                item.match_kind == "data-destination" for item in self.dma
+            ),
             "instructionIdentity": "physical-address-plus-exact-opcode",
         }
 
@@ -550,7 +627,7 @@ def empty_novelty_frontier(rom_normalized_sha256: str) -> NoveltyFrontier:
     if len(normalized) != 64 or any(character not in "0123456789ABCDEF" for character in normalized):
         raise ValueError("empty frontier ROM identity must be SHA-256")
     return NoveltyFrontier(
-        _frontier_identity("UNSELECTED", 0, 0, 0, 0),
+        _frontier_identity("UNSELECTED", 0, 0, 0, 0, 0, 0),
         normalized,
         0,
         (),
@@ -649,6 +726,8 @@ def create_knowledge_database(
         connection.executescript(knowledge_v3_schema_path().read_text(encoding="utf-8"))
         connection.executescript(knowledge_activity_schema_path().read_text(encoding="utf-8"))
         connection.executescript(knowledge_calls_schema_path().read_text(encoding="utf-8"))
+        connection.executescript(knowledge_v4_schema_path().read_text(encoding="utf-8"))
+        connection.executescript(knowledge_v5_schema_path().read_text(encoding="utf-8"))
         meta = {
             "schema": KNOWLEDGE_SCHEMA,
             "schemaVersion": str(KNOWLEDGE_SCHEMA_VERSION),
@@ -663,6 +742,11 @@ def create_knowledge_database(
             "callIdentity": "exact-callsite-plus-delay-slot-plus-target-plus-kind",
             "pageGenerationRole": "context-only",
             "contentEquality": "fast-bucket-then-exact-bytes",
+            "dataDmaIdentity": (
+                "exact-rom-resource-bytes-plus-exact-destination-slot;"
+                "resource-slot-pairing-is-compact-context"
+            ),
+            "dataDmaCompaction": "static-data-full-rom-match-only",
             "romNormalizedSha256": expected,
             "romPath": str(rom_path.resolve()),
             "staticDatabasePath": str(static_path),
@@ -740,7 +824,7 @@ def create_knowledge_database(
             "INSERT INTO resolver_function_materialized VALUES(?,?,?,?,?,?)",
             ((item.function_id, 0, 0, 0, 0, "never-observed") for item in static.functions),
         )
-        empty_frontier = _frontier_identity(database_id, 0, 0, 0, 0)
+        empty_frontier = _frontier_identity(database_id, 0, 0, 0, 0, 0, 0)
         connection.execute(
             "INSERT INTO frontier_state VALUES(1,?,?,?,?,?,?,?,?)",
             (FRONTIER_FORMAT_VERSION, empty_frontier, 0, 0, 0, 0, 0, now),
@@ -810,7 +894,7 @@ def _install_frontier_v5_schema(connection: sqlite3.Connection) -> int:
 
 
 def migrate_frontier_database(source: Path, destination: Path) -> dict[str, Any]:
-    """Copy a supported database and install the protocol-5 call-aware frontier."""
+    """Copy a supported database and install the current exact native frontier."""
 
     origin = source.resolve()
     target = destination.resolve()
@@ -831,7 +915,26 @@ def migrate_frontier_database(source: Path, destination: Path) -> dict[str, Any]
         try:
             source_connection.backup(target_connection)
             target_connection.row_factory = sqlite3.Row
+            target_meta = _require_knowledge_schema(target_connection)
             seeded_calls = _install_frontier_v5_schema(target_connection)
+            dma_facts_added = 0
+            if _table_exists(target_connection, "dma_frontier_fact"):
+                dma_facts_added = target_connection.execute(
+                    """
+                    INSERT OR IGNORE INTO dma_frontier_fact(
+                        fact_kind,dma_placement_id
+                    )
+                    SELECT 'exact-placement',p.dma_placement_id
+                    FROM dma_placement p
+                    JOIN exact_content c ON c.content_id=p.content_id
+                    WHERE p.source_domain='cartridge-rom'
+                      AND c.byte_size>0
+                      AND p.source_end_exclusive-p.source_start=c.byte_size
+                      AND p.destination_physical_end_exclusive-
+                          p.destination_physical_start=c.byte_size
+                    ORDER BY p.dma_placement_id
+                    """
+                ).rowcount
             maximum_ordinal = int(
                 target_connection.execute(
                     "SELECT COALESCE(MAX(ledger_ordinal),0) FROM ingestion_ledger"
@@ -854,9 +957,59 @@ def migrate_frontier_database(source: Path, destination: Path) -> dict[str, Any]
                 )
             target_connection.commit()
             target_connection.execute("BEGIN IMMEDIATE")
+            page_count = int(
+                target_connection.execute(
+                    "SELECT COUNT(*) FROM frontier_page_bitmap"
+                ).fetchone()[0]
+            )
+            instruction_count = int(
+                target_connection.execute(
+                    "SELECT COUNT(*) FROM instruction_fact"
+                ).fetchone()[0]
+            )
+            edge_count = int(
+                target_connection.execute(
+                    "SELECT COUNT(*) FROM edge_fact "
+                    "WHERE edge_kind='native-exact-instruction-transition'"
+                ).fetchone()[0]
+            )
+            database_id = str(
+                target_connection.execute(
+                    "SELECT value FROM knowledge_meta WHERE key='databaseId'"
+                ).fetchone()[0]
+            )
+            if int(target_meta["schemaVersion"]) >= KNOWLEDGE_SCHEMA_VERSION:
+                call_count = int(
+                    target_connection.execute(
+                        "SELECT COUNT(*) FROM call_relationship_fact"
+                    ).fetchone()[0]
+                )
+                dma_count = int(
+                    target_connection.execute(
+                        "SELECT COUNT(*) FROM dma_frontier_fact"
+                    ).fetchone()[0]
+                )
+                frontier_identity = _frontier_identity(
+                    database_id,
+                    maximum_ordinal,
+                    page_count,
+                    instruction_count,
+                    edge_count,
+                    call_count,
+                    dma_count,
+                )
+            else:
+                frontier_identity = _frontier_identity(
+                    database_id,
+                    maximum_ordinal,
+                    page_count,
+                    instruction_count,
+                    edge_count,
+                )
             target_connection.execute(
-                "UPDATE frontier_state SET format_version=?,generated_utc=? WHERE singleton=1",
-                (FRONTIER_FORMAT_VERSION, utc_now()),
+                "UPDATE frontier_state SET format_version=?,frontier_identity=?,"
+                "generated_utc=? WHERE singleton=1",
+                (FRONTIER_FORMAT_VERSION, frontier_identity, utc_now()),
             )
             target_connection.executemany(
                 """
@@ -895,17 +1048,22 @@ def migrate_frontier_database(source: Path, destination: Path) -> dict[str, Any]
         )
     status = knowledge_status(target)
     return {
-        "schema": "ob64-total-resolver-frontier-migration.v1",
+        "schema": "ob64-total-resolver-frontier-migration.v2",
         "source": str(origin),
         "database": str(target),
         "fromFrontierFormatVersion": int(state[0]),
         "toFrontierFormatVersion": FRONTIER_FORMAT_VERSION,
         "factMutation": "none",
         "metadataMutation": (
-            "frontier format, active bridge protocol, and deterministic derived materializations"
+            "frontier format, active bridge protocol, exact DMA frontier index, "
+            "and deterministic derived materializations"
         ),
-        "schemaMutation": "additive exact-call, known-activity, marker, and semantic-context tables",
+        "schemaMutation": (
+            "additive exact-call, known-activity, marker, semantic-context, and "
+            "exact-DMA-frontier structures"
+        ),
         "historicalCallRelationshipsSeeded": seeded_calls,
+        "exactDmaFrontierFactsAdded": dma_facts_added,
         "status": status,
         "verification": verification,
     }
@@ -914,7 +1072,7 @@ def migrate_frontier_database(source: Path, destination: Path) -> dict[str, Any]
 def build_frontier(connection: sqlite3.Connection) -> NoveltyFrontier:
     meta = _require_knowledge_schema(connection)
     state = connection.execute("SELECT * FROM frontier_state WHERE singleton=1").fetchone()
-    if state is None or int(state["format_version"]) != FRONTIER_FORMAT_VERSION:
+    if state is None or int(state["format_version"]) not in {4, 5, FRONTIER_FORMAT_VERSION}:
         raise ValueError("knowledge database has no supported novelty frontier")
     pages = tuple(
         FrontierPage(int(row[0]), bytes(row[1]))
@@ -984,19 +1142,33 @@ def build_frontier(connection: sqlite3.Connection) -> NoveltyFrontier:
             """
         )
     )
-    dma = tuple(
-        FrontierDma(
-            int(row[0]),
-            int(row[1]),
-            int(row[2]),
-            int(row[3]),
-            int(row[4]),
-            int(row[5]),
-            bytes(row[6]),
-        )
-        for row in connection.execute(
+    if _table_exists(connection, "dma_frontier_fact"):
+        dma_rows = connection.execute(
             """
-            SELECT MIN(p.dma_placement_id),p.source_start,p.source_end_exclusive,
+            SELECT f.dma_fact_ordinal,f.fact_kind,
+                   COALESCE(p.source_start,r.source_start,0),
+                   COALESCE(p.source_end_exclusive,r.source_end_exclusive,0),
+                   COALESCE(p.destination_physical_start,d.destination_physical_start,0),
+                   COALESCE(p.destination_physical_end_exclusive,
+                            d.destination_physical_end_exclusive,0),
+                   CASE WHEN f.fact_kind='exact-placement' THEN pc.byte_size
+                        ELSE COALESCE(r.matched_length,d.matched_length) END,
+                   COALESCE(pc.content_bytes,rc.content_bytes,X'')
+            FROM dma_frontier_fact f
+            LEFT JOIN dma_placement p ON p.dma_placement_id=f.dma_placement_id
+            LEFT JOIN exact_content pc ON pc.content_id=p.content_id
+            LEFT JOIN dma_resource_fact r ON r.dma_resource_id=f.dma_resource_id
+            LEFT JOIN exact_content rc ON rc.content_id=r.content_id
+            LEFT JOIN dma_data_destination_fact d
+              ON d.dma_destination_id=f.dma_destination_id
+            ORDER BY f.dma_fact_ordinal
+            """
+        )
+    else:
+        dma_rows = connection.execute(
+            """
+            SELECT MIN(p.dma_placement_id),'exact-placement',
+                   p.source_start,p.source_end_exclusive,
                    p.destination_physical_start,p.destination_physical_end_exclusive,
                    p.matched_length,c.content_bytes
             FROM dma_placement p
@@ -1009,6 +1181,18 @@ def build_frontier(connection: sqlite3.Connection) -> NoveltyFrontier:
             ORDER BY MIN(p.dma_placement_id)
             """
         )
+    dma = tuple(
+        FrontierDma(
+            int(row[0]),
+            str(row[1]),
+            int(row[2]),
+            int(row[3]),
+            int(row[4]),
+            int(row[5]),
+            int(row[6]),
+            bytes(row[7]),
+        )
+        for row in dma_rows
     )
     frontier = NoveltyFrontier(
         str(state["frontier_identity"]),
@@ -1019,6 +1203,7 @@ def build_frontier(connection: sqlite3.Connection) -> NoveltyFrontier:
         edges,
         calls,
         dma,
+        int(state["format_version"]),
     )
     expected = (
         int(state["physical_page_count"]),
@@ -1058,7 +1243,7 @@ def write_native_frontier(frontier: NoveltyFrontier, destination: Path) -> Path:
     temporary = target.with_name(target.name + f".tmp-{os.getpid()}")
     try:
         with temporary.open("wb") as output:
-            output.write(b"OB64TRF5")
+            output.write(b"OB64TRF6")
             output.write(
                 struct.pack(
                     "<IIIIQQQQ",
@@ -1144,20 +1329,56 @@ def write_native_frontier(frontier: NoveltyFrontier, destination: Path) -> Path:
                 )
             for item in frontier.dma:
                 content = bytes(item.exact_bytes)
+                match_kind = {
+                    "exact-placement": 1,
+                    "data-resource": 2,
+                    "data-destination": 3,
+                }.get(item.match_kind)
                 if (
-                    item.destination_physical_end_exclusive > RDRAM_SIZE
+                    match_kind is None
                     or not 0 < int(item.fact_ordinal) <= 0xFFFFFFFF
-                    or len(content)
-                    != item.destination_physical_end_exclusive
-                    - item.destination_physical_start
-                    or len(content) != item.source_end_exclusive - item.source_start
-                    or not 0 <= item.matched_length <= len(content)
+                    or item.matched_length <= 0
+                    or (
+                        item.match_kind == "exact-placement"
+                        and (
+                            item.destination_physical_end_exclusive > RDRAM_SIZE
+                            or len(content)
+                            != item.destination_physical_end_exclusive
+                            - item.destination_physical_start
+                            or len(content)
+                            != item.source_end_exclusive - item.source_start
+                            or item.matched_length != len(content)
+                        )
+                    )
+                    or (
+                        item.match_kind == "data-resource"
+                        and (
+                            item.destination_physical_start != 0
+                            or item.destination_physical_end_exclusive != 0
+                            or len(content)
+                            != item.source_end_exclusive - item.source_start
+                            or item.matched_length != len(content)
+                        )
+                    )
+                    or (
+                        item.match_kind == "data-destination"
+                        and (
+                            content
+                            or item.source_start != 0
+                            or item.source_end_exclusive != 0
+                            or item.destination_physical_end_exclusive > RDRAM_SIZE
+                            or item.destination_physical_end_exclusive
+                            - item.destination_physical_start
+                            != item.matched_length
+                        )
+                    )
                 ):
-                    raise ValueError("frontier DMA fact is not exact 4 MiB-compatible data")
+                    raise ValueError("frontier DMA fact is not 4 MiB-compatible exact data")
                 output.write(
                     struct.pack(
-                        "<IIIIIII",
+                        "<IIIIIIII",
                         int(item.fact_ordinal),
+                        int(match_kind),
                         item.source_start,
                         item.source_end_exclusive,
                         item.destination_physical_start,
@@ -1206,7 +1427,20 @@ def knowledge_status(path: Path) -> dict[str, Any]:
             "callsiteDelayEdges": int(
                 connection.execute("SELECT COUNT(*) FROM call_fact").fetchone()[0]
             ),
-            "exactDmaContents": int(connection.execute("SELECT COUNT(*) FROM exact_content").fetchone()[0]),
+            "exactContents": int(
+                connection.execute("SELECT COUNT(*) FROM exact_content").fetchone()[0]
+            ),
+            "exactDmaContents": int(
+                connection.execute(
+                    (
+                        "SELECT COUNT(*) FROM ("
+                        "SELECT content_id FROM dma_placement UNION "
+                        "SELECT content_id FROM dma_resource_fact)"
+                        if schema_version >= 5
+                        else "SELECT COUNT(DISTINCT content_id) FROM dma_placement"
+                    )
+                ).fetchone()[0]
+            ),
             "dmaPlacements": int(connection.execute("SELECT COUNT(*) FROM dma_placement").fetchone()[0]),
             "functionPlacements": int(
                 connection.execute("SELECT COUNT(*) FROM function_placement_fact").fetchone()[0]
@@ -1256,6 +1490,26 @@ def knowledge_status(path: Path) -> dict[str, Any]:
                     ),
                 }
             )
+            if schema_version >= 5:
+                counts.update(
+                    {
+                        "dmaDataResources": int(
+                            connection.execute(
+                                "SELECT COUNT(*) FROM dma_resource_fact"
+                            ).fetchone()[0]
+                        ),
+                        "dmaDataDestinations": int(
+                            connection.execute(
+                                "SELECT COUNT(*) FROM dma_data_destination_fact"
+                            ).fetchone()[0]
+                        ),
+                        "dmaFrontierFacts": int(
+                            connection.execute(
+                                "SELECT COUNT(*) FROM dma_frontier_fact"
+                            ).fetchone()[0]
+                        ),
+                    }
+                )
             if _table_exists(connection, "known_activity_summary"):
                 counts["knownActivitySessions"] = int(
                     connection.execute(
@@ -1271,6 +1525,22 @@ def knowledge_status(path: Path) -> dict[str, Any]:
                 counts["markerContextRecords"] = int(
                     connection.execute(
                         "SELECT COUNT(*) FROM marker_execution_context_record"
+                    ).fetchone()[0]
+                )
+            if _table_exists(connection, "focused_capture_session"):
+                counts["focusedCaptureSessions"] = int(
+                    connection.execute(
+                        "SELECT COUNT(*) FROM focused_capture_session"
+                    ).fetchone()[0]
+                )
+                counts["focusedExecutionWitnesses"] = int(
+                    connection.execute(
+                        "SELECT COUNT(*) FROM focused_execution_witness"
+                    ).fetchone()[0]
+                )
+                counts["focusedPointerSnapshots"] = int(
+                    connection.execute(
+                        "SELECT COUNT(*) FROM focused_pointer_snapshot"
                     ).fetchone()[0]
                 )
         return {
@@ -1463,12 +1733,17 @@ def _validate_delta(delta: SessionDelta, meta: Mapping[str, str], rom: bytes) ->
                 "sampled PC",
             )
     activity = delta.known_activity
-    if delta.protocol_version == BRIDGE_PROTOCOL_VERSION and activity is None:
-        raise ValueError("current-protocol session omitted its stop-time known-activity summary")
+    if delta.protocol_version in ACTIVITY_PROTOCOL_VERSIONS and activity is None:
+        raise ValueError("activity-capable session omitted its stop-time known-activity summary")
     if activity is not None:
+        activity_format_ok = (
+            activity.frontier_format_version == FRONTIER_FORMAT_VERSION
+            if delta.protocol_version == BRIDGE_PROTOCOL_VERSION
+            else activity.frontier_format_version in {4, 5}
+        )
         if (
             activity.frontier_identity != delta.frontier_identity_at_start
-            or activity.frontier_format_version != FRONTIER_FORMAT_VERSION
+            or not activity_format_ok
             or not delta.bridge_sequence_start
             <= activity.bridge_sequence
             < delta.bridge_sequence_end
@@ -1511,6 +1786,189 @@ def _validate_delta(delta: SessionDelta, meta: Mapping[str, str], rom: bytes) ->
             raise ValueError("named session omitted semantic-context creation time")
         if delta.semantic_notes is not None and len(delta.semantic_notes) > 4000:
             raise ValueError("session semantic notes exceed 4000 characters")
+    if delta.focused_executions and delta.focused_profile is None:
+        raise ValueError("focused execution observations omitted their capture profile")
+    if (
+        delta.focused_profile is not None or delta.focused_executions
+    ) and delta.protocol_version not in FOCUSED_CAPTURE_PROTOCOL_VERSIONS:
+        raise ValueError("focused capture context requires the current bridge protocol")
+    focused_profile_id = (
+        delta.focused_profile.get("profileId")
+        if isinstance(delta.focused_profile, Mapping)
+        else None
+    )
+    focused_profile_version = (
+        delta.focused_profile.get("profileVersion")
+        if isinstance(delta.focused_profile, Mapping)
+        else None
+    )
+    configured_targets: dict[tuple[str, int], Mapping[str, Any]] = {}
+    if delta.focused_profile is not None:
+        configured_target_values = delta.focused_profile.get("targets")
+        trigger_count = delta.focused_profile.get("triggerCount")
+        if (
+            delta.focused_profile.get("schema")
+            != "ob64-total-resolver-focused-profile.v1"
+            or not isinstance(focused_profile_id, str)
+            or not focused_profile_id
+            or isinstance(focused_profile_version, bool)
+            or not isinstance(focused_profile_version, int)
+            or focused_profile_version < 1
+            or not isinstance(configured_target_values, list)
+            or isinstance(trigger_count, bool)
+            or not isinstance(trigger_count, int)
+            or trigger_count != len(configured_target_values)
+            or trigger_count < 1
+        ):
+            raise ValueError("focused capture profile metadata is inconsistent")
+        for configured in configured_target_values:
+            if not isinstance(configured, Mapping):
+                raise ValueError("focused capture target configuration is malformed")
+            target_id = configured.get("targetId")
+            live_start = configured.get("liveStart")
+            target_key = (target_id, live_start)
+            if (
+                not isinstance(target_id, str)
+                or not target_id
+                or isinstance(live_start, bool)
+                or not isinstance(live_start, int)
+                or target_key in configured_targets
+                or configured.get("profileId") != focused_profile_id
+                or configured.get("profileVersion") != focused_profile_version
+                or not isinstance(configured.get("pointerSnapshots"), list)
+            ):
+                raise ValueError("focused capture target configuration is inconsistent")
+            configured_targets[(target_id, live_start)] = configured
+    focused_sequences: set[int] = set()
+    focused_entries: set[str] = set()
+    focused_returns: set[str] = set()
+    for item in delta.focused_executions:
+        configured = configured_targets.get((item.target_id, item.target_live_start))
+        if (
+            configured is None
+            or item.bridge_sequence in focused_sequences
+            or not delta.bridge_sequence_start
+            <= item.bridge_sequence
+            < delta.bridge_sequence_end
+            or item.frame is not None
+            and item.frame < 0
+            or item.profile_id != focused_profile_id
+            or item.profile_version != focused_profile_version
+            or not item.target_id
+            or any(character.isspace() for character in item.target_id)
+            or not item.invocation_id
+            or item.trigger_role not in {"entry", "return"}
+            or item.sample_mode not in {"all", "first-per-frame"}
+            or item.capture_phase
+            != (
+                "focused-function-entry"
+                if item.trigger_role == "entry"
+                else "focused-function-return-before-delay-slot"
+            )
+            or not 0x80000000
+            <= item.target_live_start
+            < item.target_live_end_exclusive
+            <= 0x80000000 + RDRAM_SIZE
+            or item.physical_pc != (item.live_pc & 0x003FFFFF)
+            or not item.target_live_start <= item.live_pc < item.target_live_end_exclusive
+            or len(item.target_signature_bytes) < 4
+            or len(item.target_signature_bytes) > 64
+            or len(item.target_signature_bytes) & 3
+            or rom[item.z64_start : item.z64_start + len(item.target_signature_bytes)]
+            != item.target_signature_bytes
+            or not isinstance(item.registers, Mapping)
+            or not isinstance(item.stack, Mapping)
+            or not isinstance(item.stack.get("words"), list)
+            or any(
+                not isinstance(issue, Mapping)
+                or issue.get("register") not in {"a0", "a1", "a2", "a3"}
+                for issue in item.pointer_issues
+            )
+        ):
+            raise ValueError("focused execution witness is inconsistent")
+        try:
+            configured_signature = bytes.fromhex(
+                str(configured.get("signatureBytesHex"))
+            )
+        except ValueError as exc:
+            raise ValueError("focused target signature configuration is malformed") from exc
+        if (
+            configured.get("signatureBytesEncoding") != "hex-uppercase"
+            or configured_signature != item.target_signature_bytes
+            or configured.get("functionId") != item.function_id
+            or configured.get("z64Start") != item.z64_start
+            or configured.get("liveStart") != item.target_live_start
+            or configured.get("liveEndExclusive") != item.target_live_end_exclusive
+            or configured.get("sampleMode") != item.sample_mode
+            or configured.get("entryOpcode") != int.from_bytes(
+                item.target_signature_bytes[:4], "big"
+            )
+            or not isinstance(configured.get("stackWords"), int)
+            or len(item.stack.get("words", ())) != configured.get("stackWords")
+        ):
+            raise ValueError("focused execution witness disagrees with its frozen target")
+        _validate_physical_instruction(item.physical_pc, item.opcode_u32, "focused execution")
+        rom_offset = item.z64_start + item.live_pc - item.target_live_start
+        if rom[rom_offset : rom_offset + 4] != item.opcode_u32.to_bytes(4, "big"):
+            raise ValueError("focused execution opcode differs from exact ROM bytes")
+        if item.trigger_role == "entry":
+            if (
+                item.live_pc != item.target_live_start
+                or item.opcode_u32 != int.from_bytes(item.target_signature_bytes[:4], "big")
+                or item.invocation_id in focused_entries
+            ):
+                raise ValueError("focused entry witness contradicts its invocation/target")
+            focused_entries.add(item.invocation_id)
+        else:
+            if item.opcode_u32 != 0x03E00008 or item.invocation_id in focused_returns:
+                raise ValueError("focused return witness is not one unique jr-ra observation")
+            focused_returns.add(item.invocation_id)
+        focused_sequences.add(item.bridge_sequence)
+        pointer_registers: set[str] = set()
+        configured_pointers = {
+            str(pointer.get("register")): pointer
+            for pointer in configured["pointerSnapshots"]
+            if isinstance(pointer, Mapping)
+        }
+        issue_registers = {
+            str(issue.get("register"))
+            for issue in item.pointer_issues
+            if isinstance(issue, Mapping)
+        }
+        snapshot_registers = {pointer.register_name for pointer in item.pointers}
+        if (
+            len(configured_pointers) != len(configured["pointerSnapshots"])
+            or len(issue_registers) != len(item.pointer_issues)
+            or len(snapshot_registers) != len(item.pointers)
+            or snapshot_registers & issue_registers
+            or set(configured_pointers) != {
+                *snapshot_registers,
+                *issue_registers,
+            }
+        ):
+            raise ValueError("focused pointer results do not cover the configured recipe")
+        for pointer in item.pointers:
+            pointer_configuration = configured_pointers.get(pointer.register_name)
+            if (
+                pointer_configuration is None
+                or pointer.register_name not in {"a0", "a1", "a2", "a3"}
+                or pointer.register_name in pointer_registers
+                or pointer.snapshot_phase
+                != ("entry" if item.trigger_role == "entry" else "pre-return-delay-slot")
+                or pointer.capture_phase != "synchronous-focused-callback"
+                or (pointer.pointer_address & 0xE0000000)
+                not in {0x80000000, 0xA0000000}
+                or pointer.physical_start != (pointer.pointer_address & 0x1FFFFFFF)
+                or not 0 <= pointer.physical_start < RDRAM_SIZE
+                or not 1 <= len(pointer.exact_bytes) <= 4096
+                or pointer.physical_start + len(pointer.exact_bytes) > RDRAM_SIZE
+                or pointer_configuration.get("label") != pointer.label
+                or pointer_configuration.get("size") != len(pointer.exact_bytes)
+            ):
+                raise ValueError("focused pointer snapshot is inconsistent")
+            pointer_registers.add(pointer.register_name)
+    if not focused_returns.issubset(focused_entries):
+        raise ValueError("focused return witness has no retained entry invocation")
     marker_ids = {marker.marker_id for marker in delta.semantic_markers}
     seen_marker_windows: set[int] = set()
     for window in delta.marker_context_windows:
@@ -1941,7 +2399,7 @@ def _seed_historical_call_relationships(connection: sqlite3.Connection) -> int:
 def _refresh_destination(
     connection: sqlite3.Connection, destination_start: int, destination_end: int
 ) -> None:
-    row = connection.execute(
+    exact = connection.execute(
         """
         SELECT COUNT(*),COUNT(DISTINCT content_id),COALESCE(SUM(observation_count),0)
         FROM dma_placement
@@ -1949,16 +2407,37 @@ def _refresh_destination(
         """,
         (destination_start, destination_end),
     ).fetchone()
+    data = connection.execute(
+        """
+        SELECT COALESCE(SUM(distinct_resource_count),0),
+               COALESCE(SUM(distinct_content_count),0),
+               COALESCE(SUM(observation_count),0)
+        FROM dma_data_destination_fact
+        WHERE destination_physical_start=?
+          AND destination_physical_end_exclusive=?
+        """,
+        (destination_start, destination_end),
+    ).fetchone()
+    assert exact is not None and data is not None
     sessions = int(
         connection.execute(
             """
-            SELECT COUNT(DISTINCT w.session_id)
-            FROM dma_session_witness w
-            JOIN dma_placement p ON p.dma_placement_id=w.dma_placement_id
-            WHERE p.destination_physical_start=?
-              AND p.destination_physical_end_exclusive=?
+            SELECT COUNT(DISTINCT session_id) FROM (
+                SELECT w.session_id
+                FROM dma_session_witness w
+                JOIN dma_placement p ON p.dma_placement_id=w.dma_placement_id
+                WHERE p.destination_physical_start=?
+                  AND p.destination_physical_end_exclusive=?
+                UNION ALL
+                SELECT w.session_id
+                FROM dma_data_destination_session w
+                JOIN dma_data_destination_fact d
+                  ON d.dma_destination_id=w.dma_destination_id
+                WHERE d.destination_physical_start=?
+                  AND d.destination_physical_end_exclusive=?
+            )
             """,
-            (destination_start, destination_end),
+            (destination_start, destination_end, destination_start, destination_end),
         ).fetchone()[0]
     )
     connection.execute(
@@ -1970,7 +2449,14 @@ def _refresh_destination(
                       occurrence_count=excluded.occurrence_count,
                       session_count=excluded.session_count
         """,
-        (destination_start, destination_end, int(row[0]), int(row[1]), int(row[2]), sessions),
+        (
+            destination_start,
+            destination_end,
+            int(exact[0]) + int(data[0]),
+            int(exact[1]) + int(data[1]),
+            int(exact[2]) + int(data[2]),
+            sessions,
+        ),
     )
 
 
@@ -2081,6 +2567,66 @@ def _set_activity_ordinals(bitmap: bytes) -> set[int]:
     }
 
 
+def _bitmap_add_ordinal(
+    bitmap: bytes, maximum: int, ordinal: int
+) -> tuple[bytes, int, bool]:
+    if ordinal < 1:
+        raise ValueError("bitmap ordinal must be positive")
+    new_maximum = max(maximum, ordinal)
+    value = bytearray(bitmap)
+    needed = (new_maximum + 7) // 8
+    if len(value) < needed:
+        value.extend(b"\0" * (needed - len(value)))
+    byte_index = (ordinal - 1) >> 3
+    mask = 1 << ((ordinal - 1) & 7)
+    added = not bool(value[byte_index] & mask)
+    value[byte_index] |= mask
+    return bytes(value), new_maximum, added
+
+
+def _is_factorable_data_dma(value: DmaPlacementObservation) -> bool:
+    """Return true only for exact, full-ROM static-data transfers."""
+
+    return (
+        _is_exact_destination_dma(value)
+        and value.region_class == "data"
+        and value.matched_length == len(value.exact_bytes)
+    )
+
+
+def _is_exact_destination_dma(value: DmaPlacementObservation) -> bool:
+    """Return true when native code can confirm the complete transfer exactly.
+
+    ``matched_length`` is the recorder's ROM-prefix match.  It can be shorter
+    than the completed PI transfer because padding or runtime-written bytes
+    differ.  Native dedupe instead compares the full event-time destination
+    bytes, source span, and destination span.
+    """
+
+    byte_size = len(value.exact_bytes)
+    return (
+        value.source_domain == "cartridge-rom"
+        and byte_size > 0
+        and value.source_end_exclusive - value.source_start == byte_size
+        and value.destination_physical_end_exclusive
+        - value.destination_physical_start
+        == byte_size
+    )
+
+
+def _is_factorable_data_region(value: RegionLifetimeObservation) -> bool:
+    return (
+        value.region_class == "data"
+        and value.source_kind == "z64-rom"
+        and value.source_z64_start is not None
+        and value.source_z64_end_exclusive is not None
+        and value.source_z64_end_exclusive - value.source_z64_start
+        == value.destination_physical_end_exclusive
+        - value.destination_physical_start
+        and value.evidence_grade == "verified"
+    )
+
+
 def _validate_activity_fact_ordinals(
     connection: sqlite3.Connection,
     activity: KnownActivityObservation,
@@ -2091,7 +2637,7 @@ def _validate_activity_fact_ordinals(
     exact_current_frontier = (
         current is not None and str(current[0]) == activity.frontier_identity
     )
-    specifications = (
+    specifications = [
         (
             "instruction",
             "SELECT instruction_id FROM instruction_fact ORDER BY instruction_id",
@@ -2112,18 +2658,21 @@ def _validate_activity_fact_ordinals(
             activity.call_max_ordinal,
             activity.call_hit_bitmap,
         ),
-        (
-            "DMA",
-            "SELECT MIN(p.dma_placement_id) FROM dma_placement p "
-            "JOIN exact_content c ON c.content_id=p.content_id "
-            "WHERE p.source_domain='cartridge-rom' AND p.matched_length=c.byte_size "
-            "GROUP BY p.source_start,p.source_end_exclusive,"
-            "p.destination_physical_start,p.destination_physical_end_exclusive,"
-            "p.matched_length,c.content_bytes ORDER BY MIN(p.dma_placement_id)",
-            activity.dma_max_ordinal,
-            activity.dma_hit_bitmap,
-        ),
-    )
+    ]
+    # Formats 4/5 named the old destination/resource Cartesian placement key.
+    # Schema 5 deliberately compacts those rows, so their DMA bitmap remains
+    # honest count/context only. Format 6 uses the dense factored namespace and
+    # is checked exactly.
+    if activity.frontier_format_version == FRONTIER_FORMAT_VERSION:
+        specifications.append(
+            (
+                "DMA",
+                "SELECT dma_fact_ordinal FROM dma_frontier_fact "
+                "ORDER BY dma_fact_ordinal",
+                activity.dma_max_ordinal,
+                activity.dma_hit_bitmap,
+            )
+        )
     for label, query, maximum, bitmap in specifications:
         available = {int(row[0]) for row in connection.execute(query)}
         expected_maximum = max(available, default=0)
@@ -2510,6 +3059,7 @@ def ingest_delta(
         has_context_schema = schema_version >= 3
         has_activity_schema = _table_exists(connection, "known_activity_summary")
         has_call_schema = _table_exists(connection, "call_relationship_fact")
+        has_focused_schema = _table_exists(connection, "focused_execution_witness")
         rom = read_normalized_rom(Path(meta["romPath"]))
         _validate_delta(delta, meta, rom)
         if delta.known_activity is not None:
@@ -2522,6 +3072,10 @@ def ingest_delta(
             raise ValueError("knowledge database lacks the marker-context schema")
         if delta.calls and not has_call_schema:
             raise ValueError("knowledge database lacks the exact-call schema")
+        if (delta.focused_profile is not None or delta.focused_executions) and not has_focused_schema:
+            raise ValueError(
+                "knowledge database lacks focused-capture schema 4; migrate and select a copy"
+            )
         existing = connection.execute(
             "SELECT * FROM ingestion_ledger WHERE session_id=?", (delta.session_id,)
         ).fetchone()
@@ -2543,8 +3097,12 @@ def ingest_delta(
             "calls": 0,
             "legacyCallsiteDelayEdges": 0,
             "dmaPlacements": 0,
+            "dmaDataResources": 0,
+            "dmaDataDestinations": 0,
             "functionPlacements": 0,
             "mappingCandidates": 0,
+            "focusedExecutionWitnesses": 0,
+            "focusedPointerSnapshots": 0,
         }
         affected_destinations: set[tuple[int, int]] = set()
         affected_functions: set[int] = set()
@@ -2836,7 +3394,7 @@ def ingest_delta(
                 assert source_row is not None and destination_row is not None
                 call_kind = _call_kind(int(source_row[1]))
                 if (
-                    delta.protocol_version != BRIDGE_PROTOCOL_VERSION
+                    delta.protocol_version not in ATOMIC_CALL_PROTOCOL_VERSIONS
                     and call_kind is not None
                     and source_row[0] is not None
                     and destination_row[0] is not None
@@ -2856,7 +3414,7 @@ def ingest_delta(
 
             call_cache: set[tuple[int, int, int, str]] = set()
             call_observations = [(call, False) for call in delta.calls]
-            if delta.protocol_version != BRIDGE_PROTOCOL_VERSION:
+            if delta.protocol_version not in ATOMIC_CALL_PROTOCOL_VERSIONS:
                 call_observations.extend(
                     (call, True)
                     for call in _historical_session_call_observations(
@@ -3008,6 +3566,293 @@ def ingest_delta(
                     session_id=delta.session_id,
                     fingerprint_function=fingerprint_function,
                 )
+                if _is_factorable_data_dma(dma):
+                    resource_key = (
+                        dma.source_domain,
+                        dma.source_start,
+                        dma.source_end_exclusive,
+                        dma.matched_length,
+                        content_id,
+                        dma.region_class,
+                        dma.mapping_method,
+                    )
+                    resource_row = connection.execute(
+                        """
+                        SELECT dma_resource_id FROM dma_resource_fact
+                        WHERE source_domain=? AND source_start=?
+                          AND source_end_exclusive=? AND matched_length=?
+                          AND content_id=? AND region_class=? AND mapping_method=?
+                        """,
+                        resource_key,
+                    ).fetchone()
+                    if resource_row is None:
+                        cursor = connection.execute(
+                            """
+                            INSERT INTO dma_resource_fact(
+                                source_domain,source_start,source_end_exclusive,
+                                matched_length,content_id,region_class,mapping_method,
+                                evidence_grade,classification_reason,first_session_id,
+                                first_destination_physical_start,
+                                first_destination_physical_end_exclusive,
+                                observation_count,session_count
+                            ) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,1)
+                            """,
+                            (
+                                *resource_key,
+                                dma.evidence_grade,
+                                "static-data-full-rom-match",
+                                delta.session_id,
+                                dma.destination_physical_start,
+                                dma.destination_physical_end_exclusive,
+                                dma.occurrence_count,
+                            ),
+                        )
+                        assert cursor.lastrowid is not None
+                        resource_id = int(cursor.lastrowid)
+                        connection.execute(
+                            "INSERT INTO dma_frontier_fact(fact_kind,dma_resource_id) "
+                            "VALUES('data-resource',?)",
+                            (resource_id,),
+                        )
+                        new_counts["dmaDataResources"] += 1
+                    else:
+                        resource_id = int(resource_row[0])
+                        session_seen = connection.execute(
+                            "SELECT 1 FROM dma_resource_session "
+                            "WHERE dma_resource_id=? AND session_id=?",
+                            (resource_id, delta.session_id),
+                        ).fetchone() is not None
+                        connection.execute(
+                            "UPDATE dma_resource_fact SET "
+                            "observation_count=observation_count+?,"
+                            "session_count=session_count+? WHERE dma_resource_id=?",
+                            (
+                                dma.occurrence_count,
+                                int(not session_seen),
+                                resource_id,
+                            ),
+                        )
+                    connection.execute(
+                        """
+                        INSERT INTO dma_resource_session(
+                            dma_resource_id,session_id,bridge_epoch,
+                            first_bridge_sequence,last_bridge_sequence,
+                            first_frame,last_frame,occurrence_count,lifetime_context_count
+                        ) VALUES(?,?,?,?,?,?,?,?,?)
+                        ON CONFLICT(dma_resource_id,session_id) DO UPDATE SET
+                            first_bridge_sequence=MIN(
+                                first_bridge_sequence,excluded.first_bridge_sequence),
+                            last_bridge_sequence=MAX(
+                                last_bridge_sequence,excluded.last_bridge_sequence),
+                            first_frame=COALESCE(
+                                MIN(first_frame,excluded.first_frame),
+                                first_frame,excluded.first_frame),
+                            last_frame=COALESCE(
+                                MAX(last_frame,excluded.last_frame),
+                                last_frame,excluded.last_frame),
+                            occurrence_count=occurrence_count+excluded.occurrence_count,
+                            lifetime_context_count=lifetime_context_count+
+                                excluded.lifetime_context_count
+                        """,
+                        (
+                            resource_id,
+                            delta.session_id,
+                            delta.bridge_epoch,
+                            dma.first_bridge_sequence,
+                            dma.last_bridge_sequence,
+                            dma.first_frame,
+                            dma.last_frame,
+                            dma.occurrence_count,
+                            dma.lifetime_context_count,
+                        ),
+                    )
+
+                    destination_key = (
+                        dma.destination_physical_start,
+                        dma.destination_physical_end_exclusive,
+                        dma.matched_length,
+                        dma.region_class,
+                        dma.mapping_method,
+                    )
+                    destination_row = connection.execute(
+                        """
+                        SELECT * FROM dma_data_destination_fact
+                        WHERE destination_physical_start=?
+                          AND destination_physical_end_exclusive=?
+                          AND matched_length=? AND region_class=?
+                          AND mapping_method=?
+                        """,
+                        destination_key,
+                    ).fetchone()
+                    if destination_row is None:
+                        resource_bitmap, resource_max, _ = _bitmap_add_ordinal(
+                            b"", 0, resource_id
+                        )
+                        content_bitmap, content_max, _ = _bitmap_add_ordinal(
+                            b"", 0, content_id
+                        )
+                        cursor = connection.execute(
+                            """
+                            INSERT INTO dma_data_destination_fact(
+                                destination_physical_start,
+                                destination_physical_end_exclusive,matched_length,
+                                region_class,mapping_method,first_session_id,
+                                observation_count,session_count,resource_max_ordinal,
+                                distinct_resource_count,resource_hit_bitmap,
+                                content_max_ordinal,distinct_content_count,
+                                content_hit_bitmap
+                            ) VALUES(?,?,?,?,?,?,?,1,?,1,?,?,1,?)
+                            """,
+                            (
+                                *destination_key,
+                                delta.session_id,
+                                dma.occurrence_count,
+                                resource_max,
+                                resource_bitmap,
+                                content_max,
+                                content_bitmap,
+                            ),
+                        )
+                        assert cursor.lastrowid is not None
+                        destination_id = int(cursor.lastrowid)
+                        connection.execute(
+                            "INSERT INTO dma_frontier_fact("
+                            "fact_kind,dma_destination_id) "
+                            "VALUES('data-destination',?)",
+                            (destination_id,),
+                        )
+                        new_counts["dmaDataDestinations"] += 1
+                    else:
+                        destination_id = int(destination_row["dma_destination_id"])
+                        resource_bitmap, resource_max, resource_added = (
+                            _bitmap_add_ordinal(
+                                bytes(destination_row["resource_hit_bitmap"]),
+                                int(destination_row["resource_max_ordinal"]),
+                                resource_id,
+                            )
+                        )
+                        content_bitmap, content_max, content_added = (
+                            _bitmap_add_ordinal(
+                                bytes(destination_row["content_hit_bitmap"]),
+                                int(destination_row["content_max_ordinal"]),
+                                content_id,
+                            )
+                        )
+                        session_seen = connection.execute(
+                            "SELECT 1 FROM dma_data_destination_session "
+                            "WHERE dma_destination_id=? AND session_id=?",
+                            (destination_id, delta.session_id),
+                        ).fetchone() is not None
+                        connection.execute(
+                            "UPDATE dma_data_destination_fact SET "
+                            "observation_count=observation_count+?,"
+                            "session_count=session_count+?,resource_max_ordinal=?,"
+                            "distinct_resource_count=distinct_resource_count+?,"
+                            "resource_hit_bitmap=?,content_max_ordinal=?,"
+                            "distinct_content_count=distinct_content_count+?,"
+                            "content_hit_bitmap=? WHERE dma_destination_id=?",
+                            (
+                                dma.occurrence_count,
+                                int(not session_seen),
+                                resource_max,
+                                int(resource_added),
+                                resource_bitmap,
+                                content_max,
+                                int(content_added),
+                                content_bitmap,
+                                destination_id,
+                            ),
+                        )
+                    destination_session = connection.execute(
+                        "SELECT * FROM dma_data_destination_session "
+                        "WHERE dma_destination_id=? AND session_id=?",
+                        (destination_id, delta.session_id),
+                    ).fetchone()
+                    if destination_session is None:
+                        session_bitmap, session_max, _ = _bitmap_add_ordinal(
+                            b"", 0, resource_id
+                        )
+                        session_content_bitmap, session_content_max, _ = (
+                            _bitmap_add_ordinal(b"", 0, content_id)
+                        )
+                        connection.execute(
+                            """
+                            INSERT INTO dma_data_destination_session(
+                                dma_destination_id,session_id,first_bridge_sequence,
+                                last_bridge_sequence,first_frame,last_frame,
+                                occurrence_count,resource_max_ordinal,
+                                distinct_resource_count,resource_hit_bitmap,
+                                content_max_ordinal,distinct_content_count,
+                                content_hit_bitmap
+                            ) VALUES(?,?,?,?,?,?,?,?,1,?,?,1,?)
+                            """,
+                            (
+                                destination_id,
+                                delta.session_id,
+                                dma.first_bridge_sequence,
+                                dma.last_bridge_sequence,
+                                dma.first_frame,
+                                dma.last_frame,
+                                dma.occurrence_count,
+                                session_max,
+                                session_bitmap,
+                                session_content_max,
+                                session_content_bitmap,
+                            ),
+                        )
+                    else:
+                        session_bitmap, session_max, session_resource_added = (
+                            _bitmap_add_ordinal(
+                                bytes(destination_session["resource_hit_bitmap"]),
+                                int(destination_session["resource_max_ordinal"]),
+                                resource_id,
+                            )
+                        )
+                        (
+                            session_content_bitmap,
+                            session_content_max,
+                            session_content_added,
+                        ) = _bitmap_add_ordinal(
+                            bytes(destination_session["content_hit_bitmap"]),
+                            int(destination_session["content_max_ordinal"]),
+                            content_id,
+                        )
+                        connection.execute(
+                            """
+                            UPDATE dma_data_destination_session SET
+                                first_bridge_sequence=MIN(first_bridge_sequence,?),
+                                last_bridge_sequence=MAX(last_bridge_sequence,?),
+                                first_frame=COALESCE(MIN(first_frame,?),first_frame,?),
+                                last_frame=COALESCE(MAX(last_frame,?),last_frame,?),
+                                occurrence_count=occurrence_count+?,
+                                resource_max_ordinal=?,
+                                distinct_resource_count=distinct_resource_count+?,
+                                resource_hit_bitmap=?,content_max_ordinal=?,
+                                distinct_content_count=distinct_content_count+?,
+                                content_hit_bitmap=?
+                            WHERE dma_destination_id=? AND session_id=?
+                            """,
+                            (
+                                dma.first_bridge_sequence,
+                                dma.last_bridge_sequence,
+                                dma.first_frame,
+                                dma.first_frame,
+                                dma.last_frame,
+                                dma.last_frame,
+                                dma.occurrence_count,
+                                session_max,
+                                int(session_resource_added),
+                                session_bitmap,
+                                session_content_max,
+                                int(session_content_added),
+                                session_content_bitmap,
+                                destination_id,
+                                delta.session_id,
+                            ),
+                        )
+                    affected_destinations.add(destination_key[:2])
+                    continue
+
                 key = (
                     dma.source_domain,
                     dma.source_start,
@@ -3044,6 +3889,13 @@ def ingest_delta(
                     )
                     assert cursor.lastrowid is not None
                     placement_id = int(cursor.lastrowid)
+                    if _is_exact_destination_dma(dma):
+                        connection.execute(
+                            "INSERT INTO dma_frontier_fact("
+                            "fact_kind,dma_placement_id) "
+                            "VALUES('exact-placement',?)",
+                            (placement_id,),
+                        )
                     new_counts["dmaPlacements"] += 1
                 else:
                     placement_id = int(row[0])
@@ -3164,6 +4016,11 @@ def ingest_delta(
                 )
 
             if has_context_schema:
+                retained_regions = tuple(
+                    value
+                    for value in delta.regions
+                    if not _is_factorable_data_region(value)
+                )
                 connection.executemany(
                     "INSERT INTO region_lifetime_context VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
                     (
@@ -3187,10 +4044,10 @@ def ingest_delta(
                             value.loader_event_id,
                             value.parent_region_instance_id,
                         )
-                        for value in delta.regions
+                        for value in retained_regions
                     ),
                 )
-                for value in delta.regions:
+                for value in retained_regions:
                     _queue_candidate_range(
                         connection,
                         physical_start=value.destination_physical_start,
@@ -3276,6 +4133,101 @@ def ingest_delta(
                         ),
                     )
 
+                if delta.focused_profile is not None:
+                    for item in delta.focused_executions:
+                        function = connection.execute(
+                            "SELECT z64_start,z64_end_exclusive FROM static_function "
+                            "WHERE function_id=?",
+                            (item.function_id,),
+                        ).fetchone()
+                        if (
+                            function is None
+                            or int(function["z64_start"]) != item.z64_start
+                            or not int(function["z64_start"])
+                            <= item.z64_start + item.live_pc - item.target_live_start
+                            < int(function["z64_end_exclusive"])
+                        ):
+                            raise ValueError(
+                                "focused witness disagrees with frozen static function ownership"
+                            )
+                        connection.execute(
+                            "INSERT INTO focused_execution_witness "
+                            "VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+                            (
+                                delta.session_id,
+                                item.bridge_sequence,
+                                item.frame,
+                                item.profile_id,
+                                item.profile_version,
+                                item.target_id,
+                                item.trigger_role,
+                                item.invocation_id,
+                                item.function_id,
+                                item.z64_start,
+                                item.live_pc,
+                                item.physical_pc,
+                                item.opcode_u32,
+                                item.target_live_start,
+                                item.target_live_end_exclusive,
+                                item.sample_mode,
+                                item.entry_return_address,
+                                item.target_signature_bytes,
+                                canonical_json(item.registers),
+                                canonical_json(item.stack),
+                                canonical_json(list(item.pointer_issues)),
+                                item.capture_phase,
+                                "live-unreviewed",
+                            ),
+                        )
+                        new_counts["focusedExecutionWitnesses"] += 1
+                        for pointer in item.pointers:
+                            content_id, _ = _intern_exact_content(
+                                connection,
+                                pointer.exact_bytes,
+                                session_id=delta.session_id,
+                                fingerprint_function=fingerprint_function,
+                            )
+                            connection.execute(
+                                "INSERT INTO focused_pointer_snapshot "
+                                "VALUES(?,?,?,?,?,?,?,?,?,?)",
+                                (
+                                    delta.session_id,
+                                    item.bridge_sequence,
+                                    pointer.register_name,
+                                    pointer.snapshot_phase,
+                                    pointer.label,
+                                    pointer.pointer_address,
+                                    pointer.physical_start,
+                                    len(pointer.exact_bytes),
+                                    content_id,
+                                    pointer.capture_phase,
+                                ),
+                            )
+                            new_counts["focusedPointerSnapshots"] += 1
+                    connection.execute(
+                        "INSERT INTO focused_capture_session VALUES(?,?,?,?,?,?,?,?)",
+                        (
+                            delta.session_id,
+                            str(delta.focused_profile["profileId"]),
+                            int(delta.focused_profile["profileVersion"]),
+                            int(delta.focused_profile["triggerCount"]),
+                            sum(
+                                item.trigger_role == "entry"
+                                for item in delta.focused_executions
+                            ),
+                            sum(
+                                item.trigger_role == "return"
+                                for item in delta.focused_executions
+                            ),
+                            canonical_json(delta.focused_profile),
+                            (
+                                "Focused witnesses are live-unreviewed context. Return state is "
+                                "captured before the jr-ra delay slot; floating-point values are "
+                                "numeric context rather than exact NaN payload bits."
+                            ),
+                        ),
+                    )
+
             connection.executemany(
                 """
                 INSERT INTO controller_transition VALUES(?,?,?,?,?,?,?,?,?,?,?,?)
@@ -3336,6 +4288,7 @@ def ingest_delta(
                         *(item.frame for item in delta.sampled_pcs),
                         *(item.first_frame for item in delta.regions),
                         *(item.last_observed_frame for item in delta.regions),
+                        *(item.frame for item in delta.focused_executions),
                     )
                     if frame is not None
                 ]
@@ -3343,6 +4296,13 @@ def ingest_delta(
                     "Historical known execution suppressed by the persistent frontier cannot "
                     "be recreated; only emitted events and saved samples are retained.",
                 )
+                if len(retained_regions) != len(delta.regions):
+                    limitations = (
+                        *limitations,
+                        "Exact full-ROM static-data DMA lifetimes are compacted into resource "
+                        "and destination summaries; exact pairing/order remains in the "
+                        "immutable staging capture.",
+                    )
                 connection.execute(
                     "INSERT INTO session_catalog VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
                     (
@@ -3420,13 +4380,34 @@ def ingest_delta(
                     "WHERE edge_kind='native-exact-instruction-transition'"
                 ).fetchone()[0]
             )
-            frontier_id = _frontier_identity(
-                meta["databaseId"],
-                next_ordinal,
-                page_count,
-                instruction_count,
-                edge_count,
-            )
+            if int(meta["schemaVersion"]) >= KNOWLEDGE_SCHEMA_VERSION:
+                call_count = int(
+                    connection.execute(
+                        "SELECT COUNT(*) FROM call_relationship_fact"
+                    ).fetchone()[0]
+                )
+                dma_count = int(
+                    connection.execute(
+                        "SELECT COUNT(*) FROM dma_frontier_fact"
+                    ).fetchone()[0]
+                )
+                frontier_id = _frontier_identity(
+                    meta["databaseId"],
+                    next_ordinal,
+                    page_count,
+                    instruction_count,
+                    edge_count,
+                    call_count,
+                    dma_count,
+                )
+            else:
+                frontier_id = _frontier_identity(
+                    meta["databaseId"],
+                    next_ordinal,
+                    page_count,
+                    instruction_count,
+                    edge_count,
+                )
             now = utc_now()
             connection.execute(
                 """
@@ -3484,6 +4465,11 @@ def ingest_delta(
                     "markerContextWindows": len(delta.marker_context_windows),
                     "markerContextRecords": sum(
                         len(window.records) for window in delta.marker_context_windows
+                    ),
+                    "focusedProfiles": int(delta.focused_profile is not None),
+                    "focusedExecutionWitnesses": len(delta.focused_executions),
+                    "focusedPointerSnapshots": sum(
+                        len(item.pointers) for item in delta.focused_executions
                     ),
                     **dict(sorted(delta.contextual_counts.items())),
                 },
@@ -3555,30 +4541,92 @@ def ingest_delta(
 def _expected_materializations(
     connection: sqlite3.Connection,
 ) -> dict[str, list[tuple[Any, ...]]]:
-    overlay = [
-        tuple(row)
-        for row in connection.execute(
-            """
-            WITH session_counts AS (
-                SELECT p.destination_physical_start AS start,
-                       p.destination_physical_end_exclusive AS end,
-                       COUNT(DISTINCT w.session_id) AS sessions
+    if not _table_exists(connection, "dma_data_destination_fact"):
+        overlay = [
+            tuple(row)
+            for row in connection.execute(
+                """
+                WITH session_counts AS (
+                    SELECT p.destination_physical_start AS start,
+                           p.destination_physical_end_exclusive AS end,
+                           COUNT(DISTINCT w.session_id) AS sessions
+                    FROM dma_placement p
+                    JOIN dma_session_witness w
+                      ON w.dma_placement_id=p.dma_placement_id
+                    GROUP BY start,end
+                )
+                SELECT p.destination_physical_start,
+                       p.destination_physical_end_exclusive,
+                       COUNT(*),COUNT(DISTINCT p.content_id),
+                       SUM(p.observation_count),COALESCE(s.sessions,0)
                 FROM dma_placement p
-                JOIN dma_session_witness w ON w.dma_placement_id=p.dma_placement_id
-                GROUP BY start,end
+                LEFT JOIN session_counts s
+                  ON s.start=p.destination_physical_start
+                 AND s.end=p.destination_physical_end_exclusive
+                GROUP BY p.destination_physical_start,
+                         p.destination_physical_end_exclusive
+                ORDER BY p.destination_physical_start,
+                         p.destination_physical_end_exclusive
+                """
             )
-            SELECT p.destination_physical_start,p.destination_physical_end_exclusive,
-                   COUNT(*),COUNT(DISTINCT p.content_id),SUM(p.observation_count),
-                   COALESCE(s.sessions,0)
-            FROM dma_placement p
-            LEFT JOIN session_counts s
-              ON s.start=p.destination_physical_start
-             AND s.end=p.destination_physical_end_exclusive
-            GROUP BY p.destination_physical_start,p.destination_physical_end_exclusive
-            ORDER BY p.destination_physical_start,p.destination_physical_end_exclusive
-            """
-        )
-    ]
+        ]
+    else:
+        overlay = [
+            tuple(row)
+            for row in connection.execute(
+                """
+                WITH exact_rows AS (
+                    SELECT destination_physical_start AS start,
+                           destination_physical_end_exclusive AS end,
+                           COUNT(*) AS placements,
+                           COUNT(DISTINCT content_id) AS contents,
+                           SUM(observation_count) AS observations
+                    FROM dma_placement GROUP BY start,end
+                ),
+                data_rows AS (
+                    SELECT destination_physical_start AS start,
+                           destination_physical_end_exclusive AS end,
+                           SUM(distinct_resource_count) AS placements,
+                           SUM(distinct_content_count) AS contents,
+                           SUM(observation_count) AS observations
+                    FROM dma_data_destination_fact GROUP BY start,end
+                ),
+                destinations AS (
+                    SELECT start,end FROM exact_rows
+                    UNION SELECT start,end FROM data_rows
+                ),
+                session_values AS (
+                    SELECT p.destination_physical_start AS start,
+                           p.destination_physical_end_exclusive AS end,
+                           w.session_id
+                    FROM dma_placement p
+                    JOIN dma_session_witness w
+                      ON w.dma_placement_id=p.dma_placement_id
+                    UNION
+                    SELECT d.destination_physical_start AS start,
+                           d.destination_physical_end_exclusive AS end,
+                           w.session_id
+                    FROM dma_data_destination_fact d
+                    JOIN dma_data_destination_session w
+                      ON w.dma_destination_id=d.dma_destination_id
+                ),
+                session_counts AS (
+                    SELECT start,end,COUNT(*) AS sessions
+                    FROM session_values GROUP BY start,end
+                )
+                SELECT x.start,x.end,
+                       COALESCE(e.placements,0)+COALESCE(d.placements,0),
+                       COALESCE(e.contents,0)+COALESCE(d.contents,0),
+                       COALESCE(e.observations,0)+COALESCE(d.observations,0),
+                       COALESCE(s.sessions,0)
+                FROM destinations x
+                LEFT JOIN exact_rows e ON e.start=x.start AND e.end=x.end
+                LEFT JOIN data_rows d ON d.start=x.start AND d.end=x.end
+                LEFT JOIN session_counts s ON s.start=x.start AND s.end=x.end
+                ORDER BY x.start,x.end
+                """
+            )
+        ]
     runtime = [
         tuple(row)
         for row in connection.execute(
@@ -3867,6 +4915,358 @@ def compare_canonical_machine_facts(left: Path, right: Path) -> dict[str, Any]:
     }
 
 
+def compare_schema5_dma_conservation(left: Path, right: Path) -> dict[str, Any]:
+    """Prove schema-5 preserves exact facts while factoring static-data DMA."""
+
+    source = open_knowledge_database(left, read_only=True)
+    target = open_knowledge_database(right, read_only=True)
+    mismatches: list[str] = []
+    compared: dict[str, int] = {}
+    try:
+        if int(_require_knowledge_schema(target)["schemaVersion"]) < 5:
+            raise ValueError("schema-5 conservation requires a schema-5 target")
+
+        preserved_tables = (
+            "static_function",
+            "exact_content",
+            "page_generation_witness",
+            "instruction_fact",
+            "instruction_session",
+            "instruction_generation_witness",
+            "frontier_page_bitmap",
+            "edge_fact",
+            "edge_session",
+            "edge_generation_witness",
+            "call_fact",
+            "call_relationship_fact",
+            "call_relationship_session",
+            "call_relationship_context_witness",
+            "function_placement_fact",
+            "function_placement_session",
+            "controller_transition",
+            "unresolved_observation",
+            "unresolved_index",
+            "instruction_context_witness",
+            "edge_context_witness",
+            "sampled_pc_context",
+            "semantic_marker_context",
+            "instruction_mapping_candidate",
+            "known_activity_summary",
+            "marker_context_window",
+            "marker_execution_context_record",
+            "focused_capture_session",
+            "focused_execution_witness",
+            "focused_pointer_snapshot",
+            "session_semantic_context",
+            "runtime_function_materialized",
+            "resolver_function_materialized",
+            "atlas_destination_materialized",
+        )
+        for table in preserved_tables:
+            if not _table_exists(source, table) or not _table_exists(target, table):
+                continue
+            source_query, source_columns = _table_projection(source, table)
+            target_query, target_columns = _table_projection(target, table)
+            if source_columns != target_columns:
+                mismatches.append(f"{table}:columns")
+                continue
+            source_rows = [tuple(row) for row in source.execute(source_query)]
+            target_rows = [tuple(row) for row in target.execute(target_query)]
+            compared[table] = len(source_rows)
+            if source_rows != target_rows:
+                mismatches.append(table)
+
+        ledger_columns = (
+            "ledger_ordinal",
+            "session_id",
+            "capture_reference",
+            "capture_schema_version",
+            "protocol_version",
+            "frontier_identity_at_start",
+            "rom_normalized_sha256",
+            "bridge_epoch",
+            "bridge_sequence_start",
+            "bridge_sequence_end",
+            "status",
+        )
+        ledger_query = (
+            f"SELECT {','.join(ledger_columns)} FROM ingestion_ledger "
+            "ORDER BY ledger_ordinal"
+        )
+        if [tuple(row) for row in source.execute(ledger_query)] != [
+            tuple(row) for row in target.execute(ledger_query)
+        ]:
+            mismatches.append("ingestion_ledger")
+
+        session_columns = tuple(
+            str(row[1])
+            for row in source.execute("PRAGMA table_info(session_catalog)")
+            if str(row[1]) != "limitation_text"
+        )
+        session_query = (
+            f"SELECT {','.join(session_columns)} FROM session_catalog "
+            f"ORDER BY {','.join(session_columns)}"
+        )
+        if [tuple(row) for row in source.execute(session_query)] != [
+            tuple(row) for row in target.execute(session_query)
+        ]:
+            mismatches.append("session_catalog")
+
+        source_dma = list(
+            source.execute(
+                """
+                SELECT p.*,c.byte_size,c.content_bytes
+                FROM dma_placement p JOIN exact_content c ON c.content_id=p.content_id
+                ORDER BY p.dma_placement_id
+                """
+            )
+        )
+        target_exact = {
+            (
+                str(row["source_domain"]),
+                int(row["source_start"]),
+                int(row["source_end_exclusive"]),
+                int(row["destination_physical_start"]),
+                int(row["destination_physical_end_exclusive"]),
+                int(row["matched_length"]),
+                bytes(row["content_bytes"]),
+                str(row["region_class"]),
+                str(row["mapping_method"]),
+            ): row
+            for row in target.execute(
+                "SELECT p.*,c.content_bytes FROM dma_placement p "
+                "JOIN exact_content c ON c.content_id=p.content_id"
+            )
+        }
+        target_resources = {
+            (
+                str(row["source_domain"]),
+                int(row["source_start"]),
+                int(row["source_end_exclusive"]),
+                int(row["matched_length"]),
+                bytes(row["content_bytes"]),
+                str(row["region_class"]),
+                str(row["mapping_method"]),
+            ): row
+            for row in target.execute(
+                "SELECT r.*,c.content_bytes FROM dma_resource_fact r "
+                "JOIN exact_content c ON c.content_id=r.content_id"
+            )
+        }
+        target_destinations = {
+            (
+                int(row["destination_physical_start"]),
+                int(row["destination_physical_end_exclusive"]),
+                int(row["matched_length"]),
+                str(row["region_class"]),
+                str(row["mapping_method"]),
+            ): row
+            for row in target.execute("SELECT * FROM dma_data_destination_fact")
+        }
+        expected_resources: dict[tuple[Any, ...], dict[str, Any]] = {}
+        expected_destinations: dict[tuple[Any, ...], dict[str, Any]] = {}
+        factorable_ids: dict[int, tuple[tuple[Any, ...], tuple[Any, ...]]] = {}
+        expected_exact = 0
+        for row in source_dma:
+            exact_key = (
+                str(row["source_domain"]),
+                int(row["source_start"]),
+                int(row["source_end_exclusive"]),
+                int(row["destination_physical_start"]),
+                int(row["destination_physical_end_exclusive"]),
+                int(row["matched_length"]),
+                bytes(row["content_bytes"]),
+                str(row["region_class"]),
+                str(row["mapping_method"]),
+            )
+            factorable = (
+                row["source_domain"] == "cartridge-rom"
+                and row["region_class"] == "data"
+                and int(row["matched_length"]) == int(row["byte_size"])
+                and int(row["source_end_exclusive"]) - int(row["source_start"])
+                == int(row["byte_size"])
+                and int(row["destination_physical_end_exclusive"])
+                - int(row["destination_physical_start"])
+                == int(row["byte_size"])
+            )
+            if not factorable:
+                expected_exact += 1
+                other = target_exact.get(exact_key)
+                if other is None or (
+                    int(other["observation_count"]) != int(row["observation_count"])
+                    or int(other["session_count"]) != int(row["session_count"])
+                    or str(other["evidence_grade"]) != str(row["evidence_grade"])
+                    or str(other["first_session_id"]) != str(row["first_session_id"])
+                ):
+                    mismatches.append(
+                        f"dma-exact:{int(row['dma_placement_id'])}"
+                    )
+                continue
+            resource_key = (
+                str(row["source_domain"]),
+                int(row["source_start"]),
+                int(row["source_end_exclusive"]),
+                int(row["matched_length"]),
+                bytes(row["content_bytes"]),
+                str(row["region_class"]),
+                str(row["mapping_method"]),
+            )
+            destination_key = (
+                int(row["destination_physical_start"]),
+                int(row["destination_physical_end_exclusive"]),
+                int(row["matched_length"]),
+                str(row["region_class"]),
+                str(row["mapping_method"]),
+            )
+            factorable_ids[int(row["dma_placement_id"])] = (
+                resource_key,
+                destination_key,
+            )
+            resource = expected_resources.setdefault(
+                resource_key,
+                {
+                    "observations": 0,
+                    "sessions": set(),
+                    "first": row,
+                },
+            )
+            resource["observations"] += int(row["observation_count"])
+            destination = expected_destinations.setdefault(
+                destination_key,
+                {
+                    "observations": 0,
+                    "sessions": set(),
+                    "resources": set(),
+                    "contents": set(),
+                    "first": row,
+                },
+            )
+            destination["observations"] += int(row["observation_count"])
+            destination["resources"].add(resource_key)
+            destination["contents"].add(int(row["content_id"]))
+
+        compared["sourceDmaPlacementRows"] = len(source_dma)
+        compared["factoredDataResources"] = len(expected_resources)
+        compared["factoredDataDestinations"] = len(expected_destinations)
+        compared["retainedExactDmaPlacements"] = expected_exact
+        if len(target_exact) != expected_exact:
+            mismatches.append("dma-exact-count")
+        if set(target_resources) != set(expected_resources):
+            mismatches.append("dma-resource-identities")
+        if set(target_destinations) != set(expected_destinations):
+            mismatches.append("dma-destination-identities")
+
+        resource_key_by_id = {
+            int(row["dma_resource_id"]): key
+            for key, row in target_resources.items()
+        }
+        for key, expected in expected_resources.items():
+            actual = target_resources.get(key)
+            if actual is None:
+                continue
+            if (
+                int(actual["observation_count"]) != expected["observations"]
+                or str(actual["first_session_id"])
+                != str(expected["first"]["first_session_id"])
+            ):
+                mismatches.append(
+                    f"dma-resource-aggregate:{int(actual['dma_resource_id'])}"
+                )
+        for key, expected in expected_destinations.items():
+            actual = target_destinations.get(key)
+            if actual is None:
+                continue
+            resource_ids = _set_activity_ordinals(bytes(actual["resource_hit_bitmap"]))
+            actual_resource_keys = {
+                resource_key_by_id[ordinal]
+                for ordinal in resource_ids
+                if ordinal in resource_key_by_id
+            }
+            content_ids = _set_activity_ordinals(bytes(actual["content_hit_bitmap"]))
+            if (
+                int(actual["observation_count"]) != expected["observations"]
+                or actual_resource_keys != expected["resources"]
+                or content_ids != expected["contents"]
+                or int(actual["distinct_resource_count"])
+                != len(expected["resources"])
+                or int(actual["distinct_content_count"])
+                != len(expected["contents"])
+            ):
+                mismatches.append(
+                    f"dma-destination-aggregate:{int(actual['dma_destination_id'])}"
+                )
+
+        for witness in source.execute(
+            "SELECT * FROM dma_session_witness ORDER BY dma_placement_id,session_id"
+        ):
+            placement_id = int(witness["dma_placement_id"])
+            pair = factorable_ids.get(placement_id)
+            if pair is None:
+                continue
+            resource_key, destination_key = pair
+            expected_resources[resource_key]["sessions"].add(str(witness["session_id"]))
+            expected_destinations[destination_key]["sessions"].add(
+                str(witness["session_id"])
+            )
+
+        retained_region_query = (
+            "SELECT * FROM region_lifetime_context WHERE NOT ("
+            "region_class='data' AND source_kind='z64-rom' "
+            "AND source_z64_start IS NOT NULL "
+            "AND source_z64_end_exclusive IS NOT NULL "
+            "AND source_z64_end_exclusive-source_z64_start="
+            "destination_physical_end_exclusive-destination_physical_start "
+            "AND evidence_grade='verified') ORDER BY session_id,region_instance_id"
+        )
+        source_regions = [tuple(row) for row in source.execute(retained_region_query)]
+        target_regions = [
+            tuple(row)
+            for row in target.execute(
+                "SELECT * FROM region_lifetime_context "
+                "ORDER BY session_id,region_instance_id"
+            )
+        ]
+        compared["retainedRegionLifetimes"] = len(source_regions)
+        if source_regions != target_regions:
+            mismatches.append("region-lifetime-retention")
+
+        # Session sets were populated after the first aggregate pass; verify
+        # their final counts here.
+        for key, expected in expected_resources.items():
+            actual = target_resources.get(key)
+            if actual is not None and int(actual["session_count"]) != len(
+                expected["sessions"]
+            ):
+                mismatches.append(
+                    f"dma-resource-session-count:{int(actual['dma_resource_id'])}"
+                )
+        for key, expected in expected_destinations.items():
+            actual = target_destinations.get(key)
+            if actual is not None and int(actual["session_count"]) != len(
+                expected["sessions"]
+            ):
+                mismatches.append(
+                    f"dma-destination-session-count:{int(actual['dma_destination_id'])}"
+                )
+    finally:
+        source.close()
+        target.close()
+    unique_mismatches = sorted(set(mismatches))
+    return {
+        "schema": "ob64-total-resolver-schema5-dma-conservation.v1",
+        "equivalent": not unique_mismatches,
+        "mismatches": unique_mismatches,
+        "comparedCounts": compared,
+        "identityChange": (
+            "full-ROM static-data DMA is exact resource plus exact destination; "
+            "the rotating resource/destination pairing is compact context"
+        ),
+        "operationalTablesExcluded": [
+            "candidate_recalculation_queue",
+        ],
+    }
+
+
 def knowledge_logical_identity(path: Path) -> dict[str, Any]:
     """Compatibility summary. It intentionally contains no logical hash."""
 
@@ -3891,7 +5291,9 @@ def knowledge_logical_identity(path: Path) -> dict[str, Any]:
         connection.close()
 
 
-def verify_knowledge_database(path: Path) -> dict[str, Any]:
+def verify_knowledge_database(
+    path: Path, *, _allow_historical_active_bridge: bool = False
+) -> dict[str, Any]:
     """Verify exact keys, checkpoints, and derived rows without hash proof."""
 
     checks: list[dict[str, Any]] = []
@@ -3910,7 +5312,12 @@ def verify_knowledge_database(path: Path) -> dict[str, Any]:
         )
         check(
             "active-bridge-protocol",
-            meta.get("activeBridgeProtocolVersion") == BRIDGE_PROTOCOL_VERSION,
+            meta.get("activeBridgeProtocolVersion") == BRIDGE_PROTOCOL_VERSION
+            or (
+                _allow_historical_active_bridge
+                and meta.get("activeBridgeProtocolVersion")
+                in HISTORICAL_INGEST_PROTOCOL_VERSIONS
+            ),
             f"database {meta.get('activeBridgeProtocolVersion')}; "
             f"required {BRIDGE_PROTOCOL_VERSION}",
         )
@@ -4075,11 +5482,37 @@ def verify_knowledge_database(path: Path) -> dict[str, Any]:
                 "SELECT COALESCE(MAX(ledger_ordinal),0) FROM ingestion_ledger"
             ).fetchone()[0]
         )
-        expected_frontier = _frontier_identity(
-            meta["databaseId"], maximum_ordinal, pages, instructions, edges
+        if int(meta["schemaVersion"]) >= KNOWLEDGE_SCHEMA_VERSION:
+            call_count = int(
+                connection.execute(
+                    "SELECT COUNT(*) FROM call_relationship_fact"
+                ).fetchone()[0]
+            )
+            dma_count = int(
+                connection.execute(
+                    "SELECT COUNT(*) FROM dma_frontier_fact"
+                ).fetchone()[0]
+            )
+            expected_frontier = _frontier_identity(
+                meta["databaseId"],
+                maximum_ordinal,
+                pages,
+                instructions,
+                edges,
+                call_count,
+                dma_count,
+            )
+        else:
+            expected_frontier = _frontier_identity(
+                meta["databaseId"], maximum_ordinal, pages, instructions, edges
+            )
+        expected_frontier_format = (
+            FRONTIER_FORMAT_VERSION
+            if int(meta["schemaVersion"]) >= KNOWLEDGE_SCHEMA_VERSION
+            else int(meta["frontierFormatVersion"])
         )
         frontier_ok = (
-            int(state["format_version"]) == FRONTIER_FORMAT_VERSION
+            int(state["format_version"]) == expected_frontier_format
             and str(state["frontier_identity"]) == expected_frontier
             and int(state["database_revision"]) == maximum_ordinal
             and int(state["ledger_ordinal"]) == maximum_ordinal
@@ -4091,6 +5524,124 @@ def verify_knowledge_database(path: Path) -> dict[str, Any]:
             == (pages, instructions, edges)
         )
         check("frontier-checkpoint", frontier_ok, expected_frontier)
+
+        if int(meta["schemaVersion"]) >= 5:
+            resource_errors = int(
+                connection.execute(
+                    """
+                    SELECT COUNT(*) FROM dma_resource_fact r
+                    JOIN exact_content c ON c.content_id=r.content_id
+                    LEFT JOIN (
+                        SELECT dma_resource_id,SUM(occurrence_count) observations,
+                               COUNT(*) sessions
+                        FROM dma_resource_session GROUP BY dma_resource_id
+                    ) w ON w.dma_resource_id=r.dma_resource_id
+                    WHERE r.source_domain<>'cartridge-rom' OR r.region_class<>'data'
+                       OR r.matched_length<>c.byte_size
+                       OR r.source_end_exclusive-r.source_start<>c.byte_size
+                       OR r.observation_count<>COALESCE(w.observations,0)
+                       OR r.session_count<>COALESCE(w.sessions,0)
+                    """
+                ).fetchone()[0]
+            )
+            leaked_data_pairs = int(
+                connection.execute(
+                    """
+                    SELECT COUNT(*) FROM dma_placement p
+                    JOIN exact_content c ON c.content_id=p.content_id
+                    WHERE p.source_domain='cartridge-rom' AND p.region_class='data'
+                      AND p.matched_length=c.byte_size
+                      AND p.source_end_exclusive-p.source_start=c.byte_size
+                      AND p.destination_physical_end_exclusive-
+                          p.destination_physical_start=c.byte_size
+                    """
+                ).fetchone()[0]
+            )
+            destination_errors = 0
+            known_resource_ids = {
+                int(row[0])
+                for row in connection.execute(
+                    "SELECT dma_resource_id FROM dma_resource_fact"
+                )
+            }
+            known_content_ids = {
+                int(row[0]) for row in connection.execute("SELECT content_id FROM exact_content")
+            }
+            for row in connection.execute("SELECT * FROM dma_data_destination_fact"):
+                resource_ids = _set_activity_ordinals(bytes(row["resource_hit_bitmap"]))
+                content_ids = _set_activity_ordinals(bytes(row["content_hit_bitmap"]))
+                aggregate = connection.execute(
+                    "SELECT COALESCE(SUM(occurrence_count),0),COUNT(*) "
+                    "FROM dma_data_destination_session WHERE dma_destination_id=?",
+                    (int(row["dma_destination_id"]),),
+                ).fetchone()
+                assert aggregate is not None
+                destination_errors += int(
+                    resource_ids.difference(known_resource_ids) != set()
+                    or content_ids.difference(known_content_ids) != set()
+                    or len(resource_ids) != int(row["distinct_resource_count"])
+                    or len(content_ids) != int(row["distinct_content_count"])
+                    or int(aggregate[0]) != int(row["observation_count"])
+                    or int(aggregate[1]) != int(row["session_count"])
+                )
+            exact_frontier_expected = int(
+                connection.execute(
+                    "SELECT COUNT(*) FROM dma_placement p JOIN exact_content c "
+                    "ON c.content_id=p.content_id WHERE p.source_domain='cartridge-rom' "
+                    "AND c.byte_size>0 "
+                    "AND p.source_end_exclusive-p.source_start=c.byte_size "
+                    "AND p.destination_physical_end_exclusive-"
+                    "p.destination_physical_start=c.byte_size"
+                ).fetchone()[0]
+            )
+            frontier_expected = (
+                exact_frontier_expected
+                + len(known_resource_ids)
+                + int(
+                    connection.execute(
+                        "SELECT COUNT(*) FROM dma_data_destination_fact"
+                    ).fetchone()[0]
+                )
+            )
+            frontier_actual = int(
+                connection.execute("SELECT COUNT(*) FROM dma_frontier_fact").fetchone()[0]
+            )
+            frontier_reference_errors = int(
+                connection.execute(
+                    """
+                    SELECT COUNT(*) FROM dma_frontier_fact f
+                    LEFT JOIN dma_placement p ON p.dma_placement_id=f.dma_placement_id
+                    LEFT JOIN exact_content pc ON pc.content_id=p.content_id
+                    LEFT JOIN dma_resource_fact r ON r.dma_resource_id=f.dma_resource_id
+                    LEFT JOIN dma_data_destination_fact d
+                      ON d.dma_destination_id=f.dma_destination_id
+                    WHERE (f.fact_kind='exact-placement' AND (
+                              p.dma_placement_id IS NULL
+                           OR p.source_domain<>'cartridge-rom'
+                           OR pc.byte_size IS NULL OR pc.byte_size<=0
+                           OR p.source_end_exclusive-p.source_start<>pc.byte_size
+                           OR p.destination_physical_end_exclusive-
+                              p.destination_physical_start<>pc.byte_size))
+                       OR (f.fact_kind='data-resource' AND r.dma_resource_id IS NULL)
+                       OR (f.fact_kind='data-destination' AND d.dma_destination_id IS NULL)
+                    """
+                ).fetchone()[0]
+            )
+            check(
+                "factorized-data-dma",
+                resource_errors == 0
+                and destination_errors == 0
+                and leaked_data_pairs == 0,
+                f"{len(known_resource_ids)} resource(s); {destination_errors} destination "
+                f"error(s); {resource_errors} resource error(s); "
+                f"{leaked_data_pairs} uncompact pair(s)",
+            )
+            check(
+                "factorized-dma-frontier",
+                frontier_actual == frontier_expected and frontier_reference_errors == 0,
+                f"{frontier_actual}/{frontier_expected} fact(s); "
+                f"{frontier_reference_errors} broken reference(s)",
+            )
 
         expected = _expected_materializations(connection)
         for name, expected_rows in expected.items():
@@ -4214,10 +5765,12 @@ def verify_knowledge_database(path: Path) -> dict[str, Any]:
                         "ON l.session_id=a.session_id ORDER BY a.session_id"
                     )
                 )
-                current_ledger_count = int(
+                activity_ledger_count = int(
                     connection.execute(
-                        "SELECT COUNT(*) FROM ingestion_ledger WHERE protocol_version=?",
-                        (BRIDGE_PROTOCOL_VERSION,),
+                        "SELECT COUNT(*) FROM ingestion_ledger WHERE protocol_version IN ("
+                        + ",".join("?" for _ in ACTIVITY_PROTOCOL_VERSIONS)
+                        + ")",
+                        tuple(sorted(ACTIVITY_PROTOCOL_VERSIONS)),
                     ).fetchone()[0]
                 )
                 activity_errors = 0
@@ -4256,12 +5809,12 @@ def verify_knowledge_database(path: Path) -> dict[str, Any]:
                     "known-activity-summaries",
                     activity_errors == 0
                     and sum(
-                        str(row["protocol_version"]) == BRIDGE_PROTOCOL_VERSION
+                        str(row["protocol_version"]) in ACTIVITY_PROTOCOL_VERSIONS
                         for row in activity_rows
                     )
-                    == current_ledger_count,
+                    == activity_ledger_count,
                     f"{len(activity_rows)} summary row(s); "
-                    f"{current_ledger_count} current-protocol session(s); "
+                    f"{activity_ledger_count} activity-capable session(s); "
                     f"{activity_errors} invalid row(s)",
                 )
             if _table_exists(connection, "marker_context_window"):
@@ -4303,6 +5856,135 @@ def verify_knowledge_database(path: Path) -> dict[str, Any]:
                     "marker-execution-context",
                     marker_context_errors == 0,
                     f"{len(windows)} window(s); {marker_context_errors} invalid window(s)",
+                )
+            if _table_exists(connection, "focused_capture_session"):
+                focused_errors = 0
+                focused_configurations: dict[
+                    str, dict[tuple[str, int], Mapping[str, Any]]
+                ] = {}
+                configuration_errors = 0
+                focused_sessions = list(
+                    connection.execute(
+                        "SELECT * FROM focused_capture_session ORDER BY session_id"
+                    )
+                )
+                for session_row in focused_sessions:
+                    try:
+                        configuration = json.loads(
+                            str(session_row["configuration_json"])
+                        )
+                        targets = configuration["targets"]
+                        target_map = {
+                            (str(target["targetId"]), int(target["liveStart"])): target
+                            for target in targets
+                        }
+                    except (KeyError, TypeError, ValueError, json.JSONDecodeError):
+                        configuration_errors += 1
+                        continue
+                    if (
+                        not isinstance(configuration, Mapping)
+                        or configuration.get("schema")
+                        != "ob64-total-resolver-focused-profile.v1"
+                        or configuration.get("profileId") != session_row["profile_id"]
+                        or configuration.get("profileVersion")
+                        != session_row["profile_version"]
+                        or configuration.get("triggerCount")
+                        != session_row["configured_watch_count"]
+                        or not isinstance(targets, list)
+                        or len(targets) != int(session_row["configured_watch_count"])
+                        or len(target_map) != len(targets)
+                        or canonical_json(configuration)
+                        != str(session_row["configuration_json"])
+                    ):
+                        configuration_errors += 1
+                        continue
+                    focused_configurations[str(session_row["session_id"])] = target_map
+                focused_rows = list(
+                    connection.execute(
+                        "SELECT w.*,f.z64_start AS function_z64_start,"
+                        "f.z64_end_exclusive,l.bridge_sequence_start,"
+                        "l.bridge_sequence_end FROM focused_execution_witness w "
+                        "JOIN static_function f ON f.function_id=w.function_id "
+                        "LEFT JOIN ingestion_ledger l ON l.session_id=w.session_id "
+                        "ORDER BY w.session_id,w.bridge_sequence"
+                    )
+                )
+                for row in focused_rows:
+                    signature = bytes(row["target_signature_bytes"])
+                    z64_start = int(row["z64_start"])
+                    rom_offset = z64_start + int(row["live_pc"]) - int(
+                        row["target_live_start"]
+                    )
+                    configured = focused_configurations.get(
+                        str(row["session_id"]), {}
+                    ).get((str(row["target_id"]), int(row["target_live_start"])))
+                    focused_errors += int(
+                        rom is None
+                        or configured is None
+                        or configured.get("functionId") != int(row["function_id"])
+                        or configured.get("z64Start") != z64_start
+                        or configured.get("liveEndExclusive")
+                        != int(row["target_live_end_exclusive"])
+                        or configured.get("sampleMode") != row["sample_mode"]
+                        or configured.get("entryOpcode")
+                        != int.from_bytes(signature[:4], "big")
+                        or configured.get("signatureBytesHex")
+                        != signature.hex().upper()
+                        or row["bridge_sequence_start"] is None
+                        or not int(row["bridge_sequence_start"])
+                        <= int(row["bridge_sequence"])
+                        < int(row["bridge_sequence_end"])
+                        or int(row["function_z64_start"]) != z64_start
+                        or not int(row["function_z64_start"])
+                        <= rom_offset
+                        < int(row["z64_end_exclusive"])
+                        or rom[z64_start : z64_start + len(signature)] != signature
+                        or rom[rom_offset : rom_offset + 4]
+                        != int(row["opcode_u32"]).to_bytes(4, "big")
+                        or (
+                            str(row["trigger_role"]) == "entry"
+                            and (
+                                int(row["live_pc"]) != int(row["target_live_start"])
+                                or int(row["opcode_u32"])
+                                != int.from_bytes(signature[:4], "big")
+                            )
+                        )
+                        or (
+                            str(row["trigger_role"]) == "return"
+                            and int(row["opcode_u32"]) != 0x03E00008
+                        )
+                    )
+                session_errors = int(
+                    connection.execute(
+                        "SELECT COUNT(*) FROM focused_capture_session s "
+                        "LEFT JOIN ingestion_ledger l ON l.session_id=s.session_id "
+                        "WHERE l.session_id IS NULL OR s.entry_witness_count <> "
+                        "(SELECT COUNT(*) FROM focused_execution_witness w "
+                        "WHERE w.session_id=s.session_id AND w.trigger_role='entry') OR "
+                        "s.return_witness_count <> "
+                        "(SELECT COUNT(*) FROM focused_execution_witness w "
+                        "WHERE w.session_id=s.session_id AND w.trigger_role='return')"
+                    ).fetchone()[0]
+                ) + configuration_errors
+                pointer_errors = int(
+                    connection.execute(
+                        "SELECT COUNT(*) FROM focused_pointer_snapshot p "
+                        "JOIN exact_content c ON c.content_id=p.content_id "
+                        "LEFT JOIN focused_execution_witness w ON w.session_id=p.session_id "
+                        "AND w.bridge_sequence=p.bridge_sequence "
+                        "WHERE w.session_id IS NULL OR p.byte_size<>c.byte_size OR "
+                        "length(c.content_bytes)<>p.byte_size OR p.physical_start<0 OR "
+                        "p.physical_start+p.byte_size>4194304 OR "
+                        "(w.trigger_role='entry' AND p.snapshot_phase<>'entry') OR "
+                        "(w.trigger_role='return' AND "
+                        "p.snapshot_phase<>'pre-return-delay-slot')"
+                    ).fetchone()[0]
+                )
+                check(
+                    "focused-capture-context",
+                    focused_errors == 0 and session_errors == 0 and pointer_errors == 0,
+                    f"{len(focused_rows)} witness(es); {focused_errors} execution, "
+                    f"{session_errors} session/configuration, {pointer_errors} pointer error(s)",
                 )
     finally:
         connection.close()

@@ -50,6 +50,7 @@ INCLUDE_SECTIONS = frozenset(
         "controller",
         "markers",
         "samples",
+        "focused",
         "all",
     }
 )
@@ -1580,6 +1581,148 @@ def _function_resources(
     }
 
 
+def _focused_context(
+    context: ResolverContext,
+    *,
+    function_ids: Sequence[int] = (),
+    session_id: str | None = None,
+    frame_start: int | None = None,
+    frame_end: int | None = None,
+    sequence_start: int | None = None,
+    sequence_end: int | None = None,
+    physical: int | None = None,
+    opcode: int | None = None,
+    profile_id: str | None = None,
+    target_id: str | None = None,
+    detailed: bool,
+    limit: int,
+    offset: int,
+) -> dict[str, Any]:
+    if not _table_exists(context.knowledge, "focused_execution_witness"):
+        return {"available": False, "count": 0, "rows": []}
+    clauses: list[str] = []
+    values: list[Any] = []
+    if function_ids:
+        marks = ",".join("?" for _ in function_ids)
+        clauses.append(f"w.function_id IN ({marks})")
+        values.extend(function_ids)
+    if session_id is not None:
+        clauses.append("w.session_id=?")
+        values.append(session_id)
+    if frame_start is not None:
+        clauses.append("w.frame>=?")
+        values.append(frame_start)
+    if frame_end is not None:
+        clauses.append("w.frame<=?")
+        values.append(frame_end)
+    if sequence_start is not None:
+        clauses.append("w.bridge_sequence>=?")
+        values.append(sequence_start)
+    if sequence_end is not None:
+        clauses.append("w.bridge_sequence<=?")
+        values.append(sequence_end)
+    if physical is not None:
+        clauses.append("w.physical_pc=?")
+        values.append(physical)
+    if opcode is not None:
+        clauses.append("w.opcode_u32=?")
+        values.append(opcode)
+    if profile_id is not None:
+        clauses.append("w.profile_id=?")
+        values.append(profile_id)
+    if target_id is not None:
+        clauses.append("w.target_id=?")
+        values.append(target_id)
+    where = " WHERE " + " AND ".join(clauses) if clauses else ""
+    count = int(
+        context.knowledge.execute(
+            "SELECT COUNT(*) FROM focused_execution_witness w" + where,
+            values,
+        ).fetchone()[0]
+    )
+    rows = list(
+        context.knowledge.execute(
+            "SELECT w.*,f.structural_name,f.display_name FROM "
+            "focused_execution_witness w JOIN static_function f "
+            "ON f.function_id=w.function_id"
+            + where
+            + " ORDER BY w.session_id,w.bridge_sequence LIMIT ? OFFSET ?",
+            [*values, limit, offset],
+        )
+    )
+    result_rows: list[dict[str, Any]] = []
+    for row in rows:
+        registers = json.loads(str(row["register_json"]))
+        stack = json.loads(str(row["stack_json"]))
+        issues = json.loads(str(row["pointer_issue_json"]))
+        pointer_rows = list(
+            context.knowledge.execute(
+                "SELECT p.*,c.content_bytes FROM focused_pointer_snapshot p "
+                "JOIN exact_content c ON c.content_id=p.content_id "
+                "WHERE p.session_id=? AND p.bridge_sequence=? "
+                "ORDER BY p.register_name",
+                (row["session_id"], row["bridge_sequence"]),
+            )
+        )
+        pointers = []
+        for pointer in pointer_rows:
+            content = bytes(pointer["content_bytes"])
+            shown = content if detailed else content[:32]
+            pointers.append(
+                {
+                    "register": pointer["register_name"],
+                    "label": pointer["label"],
+                    "phase": pointer["snapshot_phase"],
+                    "pointerAddress": _hex(int(pointer["pointer_address"])),
+                    "physicalStart": _hex(int(pointer["physical_start"])),
+                    "byteSize": int(pointer["byte_size"]),
+                    "contentId": int(pointer["content_id"]),
+                    "bytesHex": shown.hex().upper(),
+                    "bytesTruncated": len(shown) < len(content),
+                }
+            )
+        selected_registers = {
+            name: registers.get(name)
+            for name in ("a0", "a1", "a2", "a3", "v0", "v1", "sp", "ra")
+        }
+        result_rows.append(
+            {
+                "sessionId": row["session_id"],
+                "bridgeSequence": int(row["bridge_sequence"]),
+                "frame": row["frame"],
+                "profileId": row["profile_id"],
+                "targetId": row["target_id"],
+                "role": row["trigger_role"],
+                "invocationId": row["invocation_id"],
+                "functionId": int(row["function_id"]),
+                "function": row["structural_name"],
+                "displayName": row["display_name"],
+                "z64Start": _hex(int(row["z64_start"])),
+                "livePc": _hex(int(row["live_pc"])),
+                "physicalPc": _hex(int(row["physical_pc"])),
+                "opcode": _hex(int(row["opcode_u32"])),
+                "entryReturnAddress": _hex(int(row["entry_return_address"])),
+                "sampleMode": row["sample_mode"],
+                "registers": registers if detailed else selected_registers,
+                "stack": stack if detailed else {"base": stack.get("base")},
+                "pointerSnapshots": pointers,
+                "pointerSnapshotIssues": issues,
+                "capturePhase": row["capture_phase"],
+                "reviewState": row["review_state"],
+            }
+        )
+    return {
+        "available": True,
+        "count": count,
+        "rows": result_rows,
+        "detailIncluded": detailed,
+        "claimLimit": (
+            "Focused values are live-unreviewed context. Return snapshots precede the jr-ra "
+            "delay slot; floating-point entries are numeric context, not raw NaN payload bits."
+        ),
+    }
+
+
 def explain_selected(
     context: ResolverContext,
     identifier: str,
@@ -1698,6 +1841,22 @@ def explain_selected(
         if "resources" in include
         else {"detailAvailable": bool(function_ids)}
     )
+    focused = _focused_context(
+        context,
+        function_ids=function_ids,
+        session_id=session_id,
+        frame_start=frame,
+        frame_end=frame,
+        sequence_start=sequence,
+        sequence_end=sequence,
+        detailed="focused" in include,
+        limit=limit if "focused" in include else preview_limit,
+        offset=cursor if "focused" in include else 0,
+    ) if function_ids else {
+        "available": _table_exists(context.knowledge, "focused_execution_witness"),
+        "count": 0,
+        "rows": [],
+    }
     any_result = bool(functions or address_instructions or candidates)
     payload = {
         "schema": QUERY_SCHEMA,
@@ -1720,6 +1879,7 @@ def explain_selected(
             "placements": placements,
             "instructions": instructions,
             "sessions": sessions,
+            "focusedContext": focused,
         },
         "mappingDiagnostics": candidates,
         "callGraph": call_graph,
@@ -1774,6 +1934,27 @@ def coverage_selected(context: ResolverContext) -> dict[str, Any]:
             context.knowledge.execute("SELECT COUNT(*) FROM unresolved_observation").fetchone()[0]
         ),
     }
+    if _table_exists(context.knowledge, "dma_resource_fact"):
+        counts.update(
+            {
+                "dmaExactPlacements": counts["dmaPlacements"],
+                "dmaDataResources": int(
+                    context.knowledge.execute(
+                        "SELECT COUNT(*) FROM dma_resource_fact"
+                    ).fetchone()[0]
+                ),
+                "dmaDataDestinations": int(
+                    context.knowledge.execute(
+                        "SELECT COUNT(*) FROM dma_data_destination_fact"
+                    ).fetchone()[0]
+                ),
+                "dmaFrontierFacts": int(
+                    context.knowledge.execute(
+                        "SELECT COUNT(*) FROM dma_frontier_fact"
+                    ).fetchone()[0]
+                ),
+            }
+        )
     if _table_exists(context.knowledge, "known_activity_summary"):
         activity = context.knowledge.execute(
             "SELECT COUNT(*),COALESCE(SUM(instruction_hit_count),0),"
@@ -2070,6 +2251,8 @@ def search_selected(
     marker_type: str | None = None,
     controller: bool = False,
     buttons: int | str | None = None,
+    focused_profile: str | None = None,
+    focused_target: str | None = None,
     limit: int = DEFAULT_QUERY_LIMIT,
     cursor: int = 0,
 ) -> dict[str, Any]:
@@ -2119,6 +2302,8 @@ def search_selected(
             marker_type,
             controller,
             parsed_buttons,
+            focused_profile,
+            focused_target,
         )
     ):
         raise ValueError("search requires at least one bounded filter")
@@ -2487,6 +2672,34 @@ def search_selected(
             )
         ]
 
+    focused = _focused_context(
+        context,
+        function_ids=[int(row["function_id"]) for row in function_rows],
+        session_id=session_id,
+        frame_start=frame_start,
+        frame_end=frame_end,
+        sequence_start=sequence_start,
+        sequence_end=sequence_end,
+        physical=parsed_physical,
+        opcode=parsed_opcode,
+        profile_id=focused_profile,
+        target_id=focused_target,
+        detailed=False,
+        limit=limit,
+        offset=cursor,
+    ) if (
+        function_rows
+        or session_id is not None
+        or frame_start is not None
+        or frame_end is not None
+        or sequence_start is not None
+        or sequence_end is not None
+        or parsed_physical is not None
+        or parsed_opcode is not None
+        or focused_profile is not None
+        or focused_target is not None
+    ) else {"available": _table_exists(context.knowledge, "focused_execution_witness"), "count": 0, "rows": []}
+
     raw_context = None
     persistent_context_available = _table_exists(
         context.knowledge, "session_catalog"
@@ -2560,6 +2773,8 @@ def search_selected(
             "markerType": marker_type,
             "controller": controller,
             "buttons": parsed_buttons,
+            "focusedProfile": focused_profile,
+            "focusedTarget": focused_target,
         },
         "counts": {
             "sessions": len(sessions),
@@ -2571,6 +2786,7 @@ def search_selected(
             "markers": len(markers),
             "sampledPcs": len(samples),
             "markerExecutionContextRecords": len(marker_execution_context),
+            "focusedExecutionWitnesses": int(focused.get("count", 0)),
             "rawEvents": (
                 len(raw_context.get("events", []))
                 if isinstance(raw_context, Mapping)
@@ -2592,6 +2808,7 @@ def search_selected(
         "markers": markers,
         "sampledPcs": samples,
         "markerExecutionContext": marker_execution_context,
+        "focusedContext": focused,
         "rawSessionContext": raw_context,
         "knownActivity": known_activity,
         "pagination": {

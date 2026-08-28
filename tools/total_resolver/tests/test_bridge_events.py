@@ -3,12 +3,16 @@ from __future__ import annotations
 import hashlib
 import unittest
 
-from tools.total_resolver.bridge_events import parse_drain_response
+from tools.total_resolver.bridge_events import (
+    _validate_trace_or_input_event,
+    parse_drain_response,
+)
 from tools.total_resolver.protocol import BridgeProtocolError, FRONTIER_FORMAT_VERSION
 
 
 class BridgeEventTests(unittest.TestCase):
     FRONTIER = "K2:TEST:1:1:1:0"
+
     @staticmethod
     def envelope(events: list, **updates: object) -> dict:
         value = {
@@ -77,6 +81,37 @@ class BridgeEventTests(unittest.TestCase):
             batch.events[2].event_time_content_sha256,
             hashlib.sha256(content).hexdigest().upper(),
         )
+
+    def test_drain_sample_context_is_validated_and_preserved(self) -> None:
+        batch = parse_drain_response(
+            self.envelope(
+                [],
+                sampleContext={
+                    "frameCount": 123,
+                    "debugPaused": False,
+                    "emuState": {"systemPaused": False},
+                    "execution": {"state": "running-or-system-paused"},
+                    "pc": "0x80001234",
+                },
+            )
+        )
+        self.assertIsNotNone(batch.sample_context)
+        assert batch.sample_context is not None
+        self.assertEqual(batch.sample_context.frame_number, 123)
+        self.assertEqual(batch.sample_context.pc, "0x80001234")
+        with self.assertRaisesRegex(BridgeProtocolError, "systemPaused"):
+            parse_drain_response(
+                self.envelope(
+                    [],
+                    sampleContext={
+                        "frameCount": 123,
+                        "debugPaused": False,
+                        "emuState": {},
+                        "execution": {"state": "running"},
+                        "pc": "0x80001234",
+                    },
+                )
+            )
 
     def test_envelope_order_count_and_counters_fail_closed(self) -> None:
         with self.assertRaisesRegex(BridgeProtocolError, "does not match"):
@@ -169,6 +204,95 @@ class BridgeEventTests(unittest.TestCase):
                     nextEventSequence=3,
                 )
             )
+
+    def test_focused_state_event_requires_exact_trigger_and_pointer_evidence(self) -> None:
+        low_names = (
+            "pc", "ra", "sp", "gp", "a0", "a1", "a2", "a3", "v0", "v1",
+            "t0", "t1", "t2", "t3", "t4", "t5", "t6", "t7", "t8", "t9",
+            "s0", "s1", "s2", "s3", "s4", "s5", "s6", "s7", "s8",
+        )
+        upper_names = (
+            "zero", "at", "v0", "v1", "a0", "a1", "a2", "a3",
+            "t0", "t1", "t2", "t3", "t4", "t5", "t6", "t7",
+            "s0", "s1", "s2", "s3", "s4", "s5", "s6", "s7",
+            "t8", "t9", "k0", "k1", "gp", "sp", "s8", "ra",
+        )
+        registers = {
+            **{name: "0x00000000" for name in low_names},
+            "a0": "0x80002000",
+            "sp": "0x80003000",
+            "ra": "0x80001100",
+            "gprUpper": {name: "0x00000000" for name in upper_names},
+            "special": {
+                name: "0x00000000" for name in ("hi", "uhi", "lo", "ulo", "fcr31")
+            },
+            "cop0": {
+                name: "0x00000000"
+                for name in ("badvaddr", "epc", "errorepc", "status", "cause", "context")
+            },
+            "fprSingle": [0.0] * 32,
+            "fprDouble": [0.0] * 32,
+            "floatingPointClaim": "numeric-context-not-raw-nan-payload-bits",
+        }
+        event = {
+            "kind": "focused-exec",
+            "bridgeEpoch": "EPOCH-1",
+            "bridgeSequence": 1,
+            "bridgeStream": "watch",
+            "frameCount": 90,
+            "pc": "0x80001000",
+            "opcode": "0x0C000050",
+            "physicalAddress": "0x00001000",
+            "exactInstructionResolved": True,
+            "focusedProfileId": "cutscene-studio-v1",
+            "focusedProfileVersion": 1,
+            "focusedTargetId": "stage-builder",
+            "focusedFunctionId": 1,
+            "focusedZ64Start": "0x00000100",
+            "focusedRole": "entry",
+            "focusedInvocationId": "cutscene-studio-v1:stage-builder:1",
+            "sampleMode": "all",
+            "targetLiveStart": "0x80001000",
+            "targetLiveEndExclusive": "0x80001040",
+            "targetPhysicalStart": "0x00001000",
+            "targetSignatureVerified": True,
+            "targetSignatureBytesEncoding": "hex-uppercase",
+            "targetSignatureByteLength": 4,
+            "targetSignatureBytesHex": "0C000050",
+            "entryReturnAddress": "0x80001100",
+            "capturePhase": "focused-function-entry",
+            "orderingClaim": "bridge-sequence-orders-focused-events;-frame-is-context",
+            "returnPhaseLimitation": None,
+            "regs": registers,
+            "stack": {"base": "0x80003000", "words": []},
+            "pointerSnapshots": [
+                {
+                    "register": "a0",
+                    "label": "arg0-stage",
+                    "phase": "entry",
+                    "address": "0x80002000",
+                    "physicalAddress": "0x00002000",
+                    "byteLength": 4,
+                    "bytesEncoding": "hex-uppercase",
+                    "bytesHex": "01020304",
+                    "capturePhase": "synchronous-focused-callback",
+                }
+            ],
+            "pointerSnapshotIssues": [],
+        }
+        parsed = parse_drain_response(self.envelope([event], nextEventSequence=2))
+        self.assertEqual(parsed.events[0].event_type, "focused-exec")
+
+        wrong_signature = dict(event, targetSignatureBytesHex="0C000051")
+        with self.assertRaisesRegex(BridgeProtocolError, "entry contradicts"):
+            parse_drain_response(self.envelope([wrong_signature], nextEventSequence=2))
+
+        wrong_segment = dict(event)
+        wrong_segment["pointerSnapshots"] = [
+            dict(event["pointerSnapshots"][0], address="0x00002000")
+        ]
+        with self.assertRaisesRegex(BridgeProtocolError, "pointer snapshot is malformed"):
+            parse_drain_response(self.envelope([wrong_segment], nextEventSequence=2))
 
     def test_structural_coverage_and_input_share_one_exact_order(self) -> None:
         batch = parse_drain_response(
@@ -359,6 +483,12 @@ class BridgeEventTests(unittest.TestCase):
         broken["instructionHitCount"] = 1
         with self.assertRaisesRegex(BridgeProtocolError, "hit count"):
             parse_drain_response(self.envelope([broken], nextEventSequence=2))
+
+        historical = dict(activity)
+        historical["frontierFormatVersion"] = 5
+        _validate_trace_or_input_event(historical, "known-activity", 5)
+        with self.assertRaisesRegex(BridgeProtocolError, "incompatible"):
+            _validate_trace_or_input_event(historical, "known-activity")
 
 
 if __name__ == "__main__":

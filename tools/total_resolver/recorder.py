@@ -12,10 +12,11 @@ from pathlib import Path
 import time
 from typing import Any, Callable, Mapping, Protocol
 
-from .addressing import RDRAM_SIZE
+from .addressing import AddressSpace, RDRAM_SIZE
 from .bridge_events import DrainBatch, parse_drain_response
 from .capture_db import CaptureStore, RawEventInput
 from .identities import rom_identity_from_file
+from .focused_capture import ResolvedFocusedWatch
 from .knowledge import empty_novelty_frontier
 from .protocol import BRIDGE_PROTOCOL_VERSION, BridgeProtocolError
 from .schema import utc_now
@@ -52,6 +53,8 @@ class RecorderClient(Protocol):
 
     def capture_start(self, frontier_identity: str) -> dict[str, Any]: ...
 
+    def configure_execution_context(self, enabled: bool) -> dict[str, Any]: ...
+
     def capture_stop(self) -> dict[str, Any]: ...
 
     def cold_boot_arm(
@@ -70,6 +73,22 @@ class RecorderClient(Protocol):
 
     def install_watch(
         self, kind: str, address: int, *, size: int = 1, label: str = ""
+    ) -> dict[str, Any]: ...
+
+    def install_focused_watch(
+        self,
+        *,
+        live_start: int,
+        live_end_exclusive: int,
+        entry_opcode: int,
+        signature_bytes: bytes,
+        profile_id: str,
+        target_id: str,
+        function_id: int,
+        z64_start: int,
+        sample_mode: str,
+        pointer_snapshots: tuple[tuple[str, int, str], ...],
+        stack_words: int,
     ) -> dict[str, Any]: ...
 
     def remove_watch(self, bridge_watch_id: int) -> dict[str, Any]: ...
@@ -118,7 +137,8 @@ class SafetyRangeSpec:
 @dataclass(frozen=True)
 class RecorderSettings:
     expected_rom_sha256: str
-    poll_interval_seconds: float = 0.01
+    poll_interval_seconds: float = 1.0 / 30.0
+    active_poll_interval_seconds: float = 0.01
     drain_limit: int = 4096
     dma_queue_limit: int = 65536
     dma_physical_start: int = 0
@@ -129,6 +149,7 @@ class RecorderSettings:
     frame_sample_interval_seconds: float = 0.25
     health_interval_seconds: float = 1.0
     watches: tuple[WatchSpec, ...] = ()
+    focused_watches: tuple[ResolvedFocusedWatch, ...] = ()
     safety_range_interval_seconds: float = 0.25
     safety_ranges: tuple[SafetyRangeSpec, ...] = ()
     novelty_frontier: Any | None = None
@@ -139,6 +160,8 @@ class RecorderSettings:
             raise ValueError("expected_rom_sha256 must be a 64-character hexadecimal digest")
         if self.poll_interval_seconds < 0:
             raise ValueError("poll_interval_seconds must be nonnegative")
+        if self.active_poll_interval_seconds < 0:
+            raise ValueError("active_poll_interval_seconds must be nonnegative")
         if self.drain_limit < 1 or self.dma_queue_limit < 1:
             raise ValueError("drain limits must be positive")
         if not 0 <= self.dma_physical_start < self.dma_physical_end <= RDRAM_SIZE:
@@ -154,6 +177,9 @@ class RecorderSettings:
         ids = [item.range_id for item in self.safety_ranges]
         if len(ids) != len(set(ids)):
             raise ValueError("safety range IDs must be unique")
+        focused_ids = [item.watch_id for item in self.focused_watches]
+        if len(focused_ids) != len(set(focused_ids)):
+            raise ValueError("focused watch IDs must be unique")
 
 
 @dataclass(frozen=True)
@@ -576,6 +602,13 @@ class Pj64CaptureRecorder:
                     "dedupe": "consecutive-identical-state-coalesced",
                     "timing": "transition-sequence-and-frame-preserved",
                 },
+                "eventDrainPolling": {
+                    "idleIntervalSeconds": self.settings.poll_interval_seconds,
+                    "activeIntervalSeconds": self.settings.active_poll_interval_seconds,
+                    "backlogIntervalSeconds": 0,
+                    "policy": "idle-30hz-active-100hz-backlog-immediate",
+                    "claim": "transport scheduling only; no event suppression",
+                },
                 "safetyRangeSampling": {
                     "ordering": "host-polled-context-only",
                     "intervalSeconds": self.settings.safety_range_interval_seconds,
@@ -624,6 +657,7 @@ class Pj64CaptureRecorder:
         loaded = self.client.load_novelty_frontier(self._frontier)
         if loaded.get("frontierIdentity") != self._frontier.identity:
             raise BridgeProtocolError("bridge loaded the wrong cold-boot novelty frontier")
+        self.client.configure_execution_context(bool(self.settings.focused_watches))
         crc1 = _hex_identity(preflight.rom_identity.get("crc1"))
         crc2 = _hex_identity(preflight.rom_identity.get("crc2"))
         if crc1 is None or crc2 is None:
@@ -695,6 +729,7 @@ class Pj64CaptureRecorder:
         self._dma_enabled = True
         self._cold_boot_armed = False
         self._record_native_watch_definitions(trace)
+        self._install_focused_watches()
         self.poll_once(_startup_drain=True)
 
     def _record_native_watch_definitions(self, trace: Mapping[str, Any]) -> None:
@@ -704,14 +739,14 @@ class Pj64CaptureRecorder:
         trace_callback_ids = trace.get("callbackIds")
         if (
             not isinstance(trace_callback_ids, list)
-            or len(trace_callback_ids) != 2
+            or len(trace_callback_ids) != 1
             or any(isinstance(value, bool) or not isinstance(value, int) for value in trace_callback_ids)
             or trace_callback_ids[0] != trace_callback_id
         ):
-            raise BridgeProtocolError("capture start response omitted exact KSEG0/KSEG1 trace callbacks")
+            raise BridgeProtocolError("capture start response omitted the direct native trace observer")
         for name, callback_id, start in (
             ("kseg0", trace_callback_ids[0], 0x80000000),
-            ("kseg1", trace_callback_ids[1], 0xA0000000),
+            ("kseg1", trace_callback_ids[0], 0xA0000000),
         ):
             self.store.record_watch(
                 watch_id=f"native-exact-execution-coverage-{name}",
@@ -721,8 +756,13 @@ class Pj64CaptureRecorder:
                 address_start=start,
                 address_end_exclusive=start + RDRAM_SIZE,
                 label=f"Native exact execution coverage ({name.upper()})",
-                reason="Preserve new exact instruction and edge coverage without per-hit queue growth",
-                definition_source=f"total-resolver:bridge-{BRIDGE_PROTOCOL_VERSION}-native-frontier-v5",
+                reason=(
+                    "One direct native observer covers both lower-4-MiB aliases and enters "
+                    "JavaScript only for new exact facts"
+                ),
+                definition_source=(
+                    f"total-resolver:bridge-{BRIDGE_PROTOCOL_VERSION}-native-frontier-v6"
+                ),
                 interpreter_required=True,
                 interpreter_verified=True,
                 ownership_scope="recorder-owned",
@@ -751,6 +791,7 @@ class Pj64CaptureRecorder:
         loaded = self.client.load_novelty_frontier(self._frontier)
         if loaded.get("frontierIdentity") != self._frontier.identity:
             raise BridgeProtocolError("bridge loaded the wrong novelty frontier")
+        self.client.configure_execution_context(bool(self.settings.focused_watches))
         self._capture_enabled = True
         capture_response = self.client.capture_start(self._frontier.identity)
         capture = capture_response.get("capture")
@@ -815,6 +856,63 @@ class Pj64CaptureRecorder:
                     interpreter_verified=True,
                     ownership_scope="recorder-owned",
                     expected_event_rate=spec.expected_event_rate,
+                )
+            except Exception:
+                self._watch_failures += 1
+                raise
+
+        self._install_focused_watches()
+
+    def _install_focused_watches(self) -> None:
+        """Install native-gated focused hooks after the atomic baseline exists."""
+
+        for spec in self.settings.focused_watches:
+            try:
+                installed = self.client.install_focused_watch(
+                    live_start=spec.live_start,
+                    live_end_exclusive=spec.live_end_exclusive,
+                    entry_opcode=spec.entry_opcode,
+                    signature_bytes=spec.signature_bytes,
+                    profile_id=spec.profile_id,
+                    target_id=spec.target_id,
+                    function_id=spec.function_id,
+                    z64_start=spec.z64_start,
+                    sample_mode=spec.sample_mode,
+                    pointer_snapshots=tuple(
+                        (item.register, item.size, item.label) for item in spec.pointers
+                    ),
+                    stack_words=spec.stack_words,
+                )
+                bridge_id = installed.get("id")
+                if isinstance(bridge_id, bool) or not isinstance(bridge_id, int):
+                    raise BridgeProtocolError(
+                        f"focused watch {spec.watch_id} omitted its numeric bridge ID"
+                    )
+                self._installed_bridge_watch_ids.append(bridge_id)
+                self.store.record_watch(
+                    watch_id=spec.watch_id,
+                    bridge_watch_id=bridge_id,
+                    watch_kind="exec",
+                    address_space=AddressSpace.LIVE_KSEG.value,
+                    address_start=spec.live_start,
+                    address_end_exclusive=spec.live_end_exclusive,
+                    label=spec.label,
+                    reason=(
+                        "Capture bounded function entry/return state after native exact-opcode "
+                        "and ROM-signature filtering"
+                    ),
+                    definition_source=(
+                        f"total-resolver:focused-profile:{spec.profile_id}:"
+                        f"v{spec.profile_version}"
+                    ),
+                    interpreter_required=True,
+                    interpreter_verified=True,
+                    ownership_scope="recorder-owned",
+                    expected_event_rate=(
+                        "all matching invocations"
+                        if spec.sample_mode == "all"
+                        else "at most one matching invocation per VI frame"
+                    ),
                 )
             except Exception:
                 self._watch_failures += 1
@@ -1162,21 +1260,43 @@ class Pj64CaptureRecorder:
             >= int(self.settings.safety_range_interval_seconds * 1_000_000_000)
         )
         frame_poll_latency_ms: float | None = None
+        execution: Mapping[str, Any] | None = None
         if frame_due or health_due:
-            status_started = self.clock.monotonic_ns()
-            status = self.client.status()
-            status_finished = self.clock.monotonic_ns()
-            frame_poll_latency_ms = max(0.0, (status_finished - status_started) / 1_000_000.0)
-            if status.get("bridgeEpoch") != batch.bridge_epoch:
-                raise BridgeProtocolError("bridge instance epoch changed during status sampling")
-            if status.get("queueModel") != "unified":
-                raise BridgeProtocolError("Project64 status lost the unified queue contract")
+            if batch.sample_context is not None:
+                sample = batch.sample_context
+                status = {
+                    "bridgeEpoch": batch.bridge_epoch,
+                    "queueModel": "unified",
+                    "nextEventSequence": batch.next_event_sequence,
+                    "frameCount": sample.frame_number,
+                    "debugPaused": sample.debug_paused,
+                    "emuState": {"systemPaused": sample.system_paused},
+                    "pc": sample.pc,
+                }
+                execution = {"state": sample.execution_state}
+                frame_poll_latency_ms = 0.0
+            else:
+                status_started = self.clock.monotonic_ns()
+                status = self.client.status()
+                status_finished = self.clock.monotonic_ns()
+                frame_poll_latency_ms = max(
+                    0.0, (status_finished - status_started) / 1_000_000.0
+                )
+                if status.get("bridgeEpoch") != batch.bridge_epoch:
+                    raise BridgeProtocolError(
+                        "bridge instance epoch changed during status sampling"
+                    )
+                if status.get("queueModel") != "unified":
+                    raise BridgeProtocolError(
+                        "Project64 status lost the unified queue contract"
+                    )
+                if frame_due:
+                    execution = self.client.execution()
             frame = status.get("frameCount")
             self._last_frame = _integer(frame, "frame count", nullable=True)
             if self._last_frame is not None and self._last_frame < 0:
                 raise BridgeProtocolError("Project64 frame count must be nonnegative")
             if frame_due and self._last_frame is not None:
-                execution = self.client.execution()
                 emu_state = status.get("emuState")
                 system_paused = (
                     emu_state.get("systemPaused") if isinstance(emu_state, Mapping) else None
@@ -1186,7 +1306,9 @@ class Pj64CaptureRecorder:
                     frame_number=self._last_frame,
                     host_monotonic_ns=self._next_host_ns(),
                     execution_state=(
-                        str(execution.get("state")) if execution.get("state") is not None else None
+                        str(execution.get("state"))
+                        if execution is not None and execution.get("state") is not None
+                        else None
                     ),
                     system_paused=system_paused if isinstance(system_paused, bool) else None,
                     debug_paused=debug_paused if isinstance(debug_paused, bool) else None,
@@ -1235,15 +1357,25 @@ class Pj64CaptureRecorder:
             if self.store.stop_requested() or (should_stop is not None and should_stop()):
                 break
             try:
-                self.poll_once()
+                result = self.poll_once()
             except Exception:
                 self._recorder_exceptions += 1
                 self._continuity = "broken"
                 self.store.set_continuity_broken("recorder exception interrupted event draining")
                 raise
             polls += 1
-            self.clock.sleep(self.settings.poll_interval_seconds)
+            self.clock.sleep(self._poll_delay_seconds(result))
         return polls
+
+    def _poll_delay_seconds(self, result: PollResult) -> float:
+        if result.remaining > 0:
+            return 0.0
+        if result.stored_events > 0:
+            return min(
+                self.settings.poll_interval_seconds,
+                self.settings.active_poll_interval_seconds,
+            )
+        return self.settings.poll_interval_seconds
 
     def stop_instrumentation(self) -> None:
         """Stop only recorder-owned instrumentation; queued evidence remains drainable."""

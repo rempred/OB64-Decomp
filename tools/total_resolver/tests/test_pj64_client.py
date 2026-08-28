@@ -118,7 +118,7 @@ class ScriptedTransport:
             _, _, identity, rom, encoded_path = line.split()
             path = Path(bytes.fromhex(encoded_path).decode("utf-16le"))
             data = path.read_bytes()
-            if data[:8] != b"OB64TRF5":
+            if data[:8] != b"OB64TRF6":
                 return {"ok": False, "error": "bad frontier magic"}
             (
                 _, _, identity_length, rom_length,
@@ -161,6 +161,16 @@ class ScriptedTransport:
             return {"ok": True, "frontier": dict(self.frontier)}
         if line == "frontier status":
             return {"ok": True, "frontier": dict(self.frontier)}
+        if line.startswith("context configure "):
+            enabled = line.endswith(" on")
+            return {
+                "ok": True,
+                "context": {
+                    "configured": True,
+                    "enabled": enabled,
+                    "ringCapacityRecords": 32768 if enabled else 0,
+                },
+            }
         if line.startswith("coldboot arm "):
             self.cold_state = "armed"
             return {
@@ -209,6 +219,8 @@ class ScriptedTransport:
             }
         if line.startswith("watch "):
             return {"ok": True, "watch": {"id": 7}}
+        if line.startswith("focusedwatch "):
+            return {"ok": True, "watch": {"id": 8, "callbackIds": [8, 9]}}
         if line == "framecount":
             return {"ok": True, "frameCount": 123}
         if line == "execution":
@@ -268,10 +280,27 @@ class ClientTests(unittest.TestCase):
         self.assertEqual(block.data, b"\x00\x01\x02")
         self.assertEqual(block.frame_count, 123)
         self.assertEqual(client.watch_exec(0x80100000, size=4, label="loader entry"), {"id": 7})
+        self.assertEqual(
+            client.install_focused_watch(
+                live_start=0x80001000,
+                live_end_exclusive=0x80001040,
+                entry_opcode=0x0C000050,
+                signature_bytes=bytes.fromhex("0C00005000000000"),
+                profile_id="cutscene-studio-v1",
+                target_id="stage-builder",
+                function_id=1,
+                z64_start=0x100,
+                sample_mode="all",
+                pointer_snapshots=(("a0", 4, "arg0-stage"),),
+                stack_words=0,
+            )["id"],
+            8,
+        )
         client.drain_events(32)
         frontier = empty_novelty_frontier("A" * 64)
         loaded = client.load_novelty_frontier(frontier)
         self.assertEqual(loaded["frontierIdentity"], frontier.identity)
+        client.configure_execution_context(False)
         client.capture_start(frontier.identity)
         client.capture_status()
         client.capture_stop()
@@ -291,8 +320,15 @@ class ClientTests(unittest.TestCase):
         self.assertIn("hashmem 0x80190000 0x1000 0x801A0000 0x2000", transport.lines)
         self.assertIn("readblock 0x80000000 0x3", transport.lines)
         self.assertIn("watch exec 0x80100000 4 loader_entry", transport.lines)
+        self.assertIn(
+            "focusedwatch 0x80001000 0x80001040 0xC000050 "
+            "0C00005000000000 cutscene-studio-v1 stage-builder 1 0x100 all "
+            "a0:4:arg0-stage 0",
+            transport.lines,
+        )
         self.assertIn("drain 32", transport.lines)
         self.assertIn(f"capture on {frontier.identity}", transport.lines)
+        self.assertIn("context configure off", transport.lines)
         self.assertIn("capture status", transport.lines)
         self.assertIn("capture off", transport.lines)
         self.assertIn("dma on 0x1000 0x2000 64 0x0 8", transport.lines)

@@ -1,7 +1,7 @@
 # Total Resolver R3 implementation status
 
-Status: **Schema 3 and protocol 0.14 are implemented and independently verified**
-Updated: 2026-08-26
+Status: **Schema 5 factorized DMA and protocol 0.17 are implemented and locally verified**
+Updated: 2026-08-28
 
 This page records the current implementation boundary. Total Resolver is a practical decompilation
 accelerator: it preserves exact machine structure conservatively, exposes useful candidates, and
@@ -9,52 +9,55 @@ states uncertainty without treating runtime context as accepted source structure
 
 ## Selected knowledge
 
-The verified call-aware database is the ignored runtime product
-`build/total-resolver/knowledge/total-resolver-v3-frontier-v5-r2.sqlite`. It contains all ten
-successfully ingested historical sessions and uses knowledge schema 3, frontier format 5, and active
-bridge protocol 0.14.0. Its format-4 source remains untouched beside it.
+The selected, verified protocol-0.17 database is the ignored runtime product
+`build/total-resolver/knowledge/total-resolver-v5-factorized-dma-protocol017-r3.sqlite`. It contains
+all 17 successfully ingested sessions and uses knowledge schema 5 and frontier format 6. It was
+built beside the prior selected schema-4 database
+`total-resolver-v4-focused-protocol016-r1.sqlite`, which remains untouched.
 
 | Persistent row class | Count |
 |---|---:|
-| Sessions | 10 |
-| Exact instructions | 293,275 |
-| Exact edges | 316,915 |
-| Exact callsite/delay-slot/actual-target relationships | 11,016 |
-| Exact call session/context witnesses | 11,467 |
+| Sessions | 17 |
+| Exact instructions | 296,918 |
+| Exact edges | 321,133 |
+| Exact callsite/delay-slot/actual-target relationships | 11,341 |
+| Exact call session/context witnesses | 11,792 |
 | Historical callsite-to-delay-slot materializations | 9,277 |
-| DMA placements | 222,319 |
-| Function placements | 7,519 |
-| Controller transitions | 5,956 |
-| Instruction context witnesses | 570,445 |
-| Edge context witnesses | 329,929 |
-| Residency/region lifetime intervals | 549,390 |
-| Periodic sampled PCs | 21,120 |
-| Typed unresolved rows | 81,762 |
-| Candidate-evidence rows | 607,040 |
+| Conservative destination-specific DMA placements | 73,885 |
+| Exact static-data DMA resources | 15,549 |
+| Exact static-data destination spans | 864 |
+| Native DMA frontier facts | 90,298 |
+| Function placements | 8,558 |
+| Controller transitions | 7,451 |
+| Instruction context witnesses | 575,510 |
+| Edge context witnesses | 334,482 |
+| Residency/region lifetime intervals | 285,955 |
+| Periodic sampled PCs | 28,391 |
+| Typed unresolved rows | 91,650 |
+| Candidate-evidence rows | 864,119 |
+| Focused sessions/witnesses/pointer snapshots | 2 / 22,389 / 26,860 |
 
-The candidate rows cover 51,995 exact instructions and 52,469 distinct
+The candidate rows cover 53,534 exact instructions and 54,037 distinct
 instruction/function/ROM-offset candidate identities. Their evidence states are:
 
 | Candidate state | Rows |
 |---|---:|
-| Byte-confirmed global candidate | 72,451 |
-| Contemporaneous placement candidate | 175,481 |
-| Uniquely resolved live mapping evidence | 352,225 |
-| Ambiguous/conflicting mapping | 6,883 |
+| Byte-confirmed global candidate | 85,731 |
+| Contemporaneous placement candidate | 345,747 |
+| Uniquely resolved live mapping evidence | 424,429 |
+| Ambiguous/conflicting mapping | 8,212 |
 
-Candidate rows do not rewrite exact instruction facts. The selected database has 241,291 mapped
-instruction facts, 51,984 unmapped facts, 302 ambiguous instructions, zero opcode mismatches, and
+Candidate rows do not rewrite exact instruction facts. The selected database has 243,405 mapped
+instruction facts, 53,513 unmapped facts, 309 ambiguous instructions, zero opcode mismatches, and
 zero queued candidate recalculation ranges.
 
 The old `call_fact` name was misleading: because MIPS executes a delay slot, all 9,277 selected
 rows point from a call instruction to its delay-slot instruction, and all therefore retain the
 caller function on both sides. They are callsite facts, not actual caller-to-callee relations.
 
-The format-5 migration conservatively reconstructed 11,016 exact physical/opcode call triples from
-the historical sessions. Each triple contains the callsite, executed delay slot, actual target, and
-call kind. Of those, 8,787 have mapped caller and target functions and form 5,748 distinct
-caller/callee function pairs. The remaining 2,229 exact machine relationships stay visible without
-inventing a function mapping. Protocol 0.14 records this triple atomically for future captures.
+The format-5 migration conservatively reconstructed exact physical/opcode call triples from the
+historical sessions. Each triple contains the callsite, executed delay slot, actual target, and
+call kind. Protocols 0.14 through 0.17 record this triple atomically for future captures.
 Frozen decoded direct calls remain available beside runtime results as a separate static candidate
 lane.
 
@@ -118,10 +121,50 @@ Events suppressed as already known under older novelty frontiers cannot be recon
 an explicit historical limitation; emitted events, saved samples, controller transitions, and
 recoverable residency context were retained.
 
-## Protocol 0.14 future-session context
+## Schema 5 factorized static-data DMA
 
-Frontier format 5 assigns stable fact ordinals to known instruction, edge, exact call, and canonical
-DMA facts. Native Project64 continues exact in-memory novelty filtering and tracks two preceding
+The prior schema stored each exact static-data resource at each rotating destination slot as a
+separate persistent placement. This produced a resource-by-slot Cartesian product: the seventeenth
+session observed 7,667 DMA transfers and appeared to add 6,852 placements even though it repeated
+a previously captured scene. Of those apparent additions, 4,605 were 960-byte static-data
+transfers through rotating slots.
+
+Schema 5 keeps destination-specific identity for executable, mixed, partial, unknown, and
+otherwise unsafe-to-factor DMA. A safe full-ROM static-data transfer is represented by two exact
+facts: its source range plus all event-time bytes, and its physical destination span. Resource and
+destination tables retain exact association bitmaps, occurrence counts, session counts, and
+per-session summaries. The immutable raw staging database remains the source for exact historical
+pair chronology.
+
+The 253,590 historical placement rows migrated into 73,885 retained conservative placements,
+15,549 exact data resources, and 864 data destination spans. Frontier format 6 exports 90,298 DMA
+facts: all 73,885 conservative placement records, 15,549 resource records, and 864 destination
+records.
+Native Project64 suppresses a safe static-data event only when its resource bytes and destination
+span are both already known. A new resource in a known slot, or a known resource in a new slot,
+still emits once. Exact byte equality, not a digest, decides suppression.
+
+For a destination-specific fact, the stored `matched_length` remains the number of bytes that also
+matched the ROM. Native dedupe does not misuse that prefix as the transfer length: it compares the
+complete source span, destination span, and event-time bytes. This matters for 22,047 retained
+partial-prefix, padded, or unknown-region transfers. They remain conservative placement facts but
+an identical completed transfer is now silent on a later run. The R2 frontier migration added only
+these derived native-index entries; canonical facts and raw sessions are byte-for-byte unchanged.
+The selected R3 copy also expands the opaque frontier revision token to include exact call and DMA
+fact counts. A repaired frontier therefore cannot share a token with its predecessor. This changes
+no captured fact or wire layout; it makes stale-frontier and activity provenance fail closed.
+
+The old-to-new conservation oracle accounted for every source DMA row and compared all retained
+instruction, edge, call, content, context, candidate-result, and materialized rows directly. The
+candidate recalculation queue is intentionally excluded because it is an operational work log;
+the new schema does not enqueue discarded static-data lifetimes, while the resulting 864,119
+candidate rows remain exactly equal. The selected database passes SQLite, foreign-key, opcode,
+mapping, frontier, factorization, materialization, context, activity, and focused-capture checks.
+
+## Protocol 0.16 native execution path retained by 0.17
+
+Frontier format 6 assigns stable fact ordinals to known instruction, edge, exact call, and
+factorized DMA facts. Native Project64 continues exact in-memory novelty filtering and tracks two preceding
 instructions through silent known execution. A new callsite or actual target therefore emits one
 atomic call fact even after a completely known prefix. Known facts set in-memory hit bits. Capture
 stop emits exactly one instruction/edge/call/DMA bitmap summary, allowing agents to answer whether
@@ -131,21 +174,57 @@ New instructions, edges, callers, tails, changed opcodes, unresolved placements,
 bytes continue through the ordered novelty queue unchanged. DMA equality still includes the exact
 event-time destination bytes. Queue loss remains explicit sequence ranges.
 
-An optional native ring retains 32,768 recent exact execution records in emulator memory. A human
+An optional compact native ring retains 32,768 recent exact execution records in emulator memory. A human
 marker can save at most 4,096 records before and 4,096 after the marker. Only the requested window
 crosses the bridge. Local execution order and frames are context, not canonical bridge order; a
 stop before the after-window fills produces an explicit incomplete record.
 
-The protocol-0.14 native source builds and links as Project64 Release|Win32 and the protocol-0.14
-bridge passes its production JavaScript replay harness. Project64 was not launched during this
-correction.
+Protocol 0.16 retains the protocol-0.14/0.15 frontier, activity, and focused-evidence contracts,
+but removes generic script work from the common known-instruction path. Native Project64 now uses
+one direct observer, one-pass exact known-fact lookups, cached exact edges, word-indexed focused
+watch gates, and native opcode prechecks. Novel execution facts are delivered in exact ordered
+batches of at most 256 and flush before DMA, input, focused-watch, and stop events. Ordinary
+Capture disables the marker ring; Focused Capture uses a smaller 32-byte ring record and
+power-of-two indexing. The recorder idles at 30 Hz, accelerates on activity/backlog, and receives
+frame/status context in the drain response instead of separate polls.
+
+The protocol-0.17 native Release/Win32 build, standalone exact-novelty tests, protocol tests, and
+production JavaScript replay harness pass. Project64 was not launched during this correction. Real-game FPS
+must still be measured by Joe; no FPS claim is inferred from synthetic tests.
+
+## Focused Capture
+
+The GUI now has a separate **Start Focused Capture** action. It extends normal novelty-filtered
+coverage and ingests into the same selected knowledge database. The Cutscene Studio profile resolves
+11 configured owners to 15 exact live watches because four shared environment/HUFF owners have two
+retained physical placements. Missing functions, placements, signatures, schema 4 or later, or protocol
+capabilities fail closed.
+
+Entry watches are filtered by exact opcode in native Project64 and then confirmed against exact ROM
+signature bytes before JavaScript records anything. Each accepted invocation retains full GPR
+context, numeric FPR context, bounded stack words, and configured argument-pointer bytes captured
+synchronously at entry and immediately before an in-range `jr ra`. Hot pose/matrix targets sample
+at most once per frame; outstanding invocations are bounded. Return values precede the delay slot,
+and FPR values do not claim raw NaN payload identity.
+
+The single **Add Note** action obtains the current bridge frame, records the note over 60 frames
+before through 30 frames after, and requests the existing bounded native execution-context window.
+This supports a roughly one-second human reaction delay without requiring separate background,
+camera, or actor buttons. Routine owner changes remain automatic.
+
+Schema 4 stores focused profile configuration, indexed entry/return witnesses, and exact pointer
+bytes transactionally. Queries expose a compact focused preview by default and full bounded state
+through `explain FUNCTION --include focused`; `search --focused-profile` and
+`--focused-target` work without Project64. All focused evidence remains `live-unreviewed`.
 
 ## Human capture workflow
 
 `python -m tools.total_resolver gui --port 64656` opens a Tkinter capture window. Its explicit
-**Launch Project64** button resolves and SHA-256-authenticates the frozen call-aware executable
-before starting it visibly. Launch does not load a ROM or start capture. The window provides bridge
-check, capture start, pre-ROM arm, clean stop, semantic name/notes, and an explicit **Save Name and
+**Launch Project64** button resolves and SHA-256-authenticates the frozen call-aware executable and
+the separately deployed bridge script before starting it visibly. It also requires the deployed
+script's literal port, the runtime inventory port, and the GUI port to agree. Launch does not load a
+ROM or start capture. The window provides bridge check, normal or focused capture start, one Add
+Note action, pre-ROM arm, clean stop, semantic name/notes, and an explicit **Save Name and
 Integrate** action; it has no ROM lifecycle, controller injection, or RAM-write path.
 
 GUI sessions always defer ingestion. Stop first closes and verifies staging. The semantic name is a
@@ -155,16 +234,18 @@ tracebacks and a bounded worker-log tail are included on failure.
 
 ## Migration and equivalence
 
-Schema 3 was built beside the selected schema-2 database by replaying all ten declared ledger
+Schema 4 was built beside the selected schema-3 database by replaying all 16 declared ledger
 sessions. The prior database and historical products were not overwritten. Cross-schema comparison
-found every schema-2 canonical fact row identical; only schema/protocol/frontier-format metadata
-changed.
+found every canonical foundation row identical; only schema/protocol metadata and the additive
+empty focused tables changed.
 
-A separate `total-resolver-v3-frontier-v5-oracle-r2.sqlite` was then rebuilt from the ten-session
-ledger. Direct
-exact-row comparison reported no mismatched tables, including all schema-3 context, unresolved,
-candidate, materialization, and activity tables. Both databases independently pass SQLite health,
-foreign-key, opcode, mapping, frontier, materialization, candidate, context, and activity checks.
+The historical `total-resolver-v3-frontier-v5-oracle-r2.sqlite` remains as the prior same-schema
+oracle. Schema-4 test fixtures independently prove exact full-rebuild equivalence including focused
+profile, witness, pointer-content, context, candidate, and materialization rows. The selected real
+database passes SQLite health, foreign-key, opcode, mapping, frontier, materialization, candidate,
+context, activity, focused-context, factorized-DMA, and DMA-frontier checks. The schema-5
+conservation comparison passes against the complete 17-session schema-4 source. The protocol-0.16
+database remains available beside it as the pre-factorization source.
 
 ## Capture-volume and lookup measurements
 
@@ -195,7 +276,8 @@ and play Project64. No capture was started during this correction.
 
 ## Verification
 
-- 120 Python/Node Total Resolver tests pass.
+- All 132 Python/Node Total Resolver tests pass, including focused protocol, trigger,
+  atomic-ingestion, rollback, query, migration, and compatibility coverage.
 - The standalone native exact-novelty test passes with 3,020 instructions and 3,003 edges in its
   stress fixture.
 - Project64 Release|Win32 compiles, links, and passes its clang-format gate.
@@ -214,9 +296,10 @@ and play Project64. No capture was started during this correction.
 - Dynamic rows remain `live-unreviewed`; they do not promote accepted boundaries, ownership,
   semantic names, or matching-C claims.
 - Historical exact caller/callee relationships exist only where consecutive callsite and transfer
-  witnesses survived older novelty filtering. Of 11,016 retained exact call triples, 2,229 lack a
-  mapped function at one or both endpoints. Static direct-call candidates can help navigate those
-  gaps without claiming a witnessed runtime mapping.
+  witnesses survived older novelty filtering. Static direct-call candidates can help navigate
+  unmapped endpoints without claiming a witnessed runtime mapping.
+- Focused return snapshots precede the MIPS delay slot, pointer bytes cover only the configured
+  bounded arguments, and floating-point values are numeric context rather than raw bit identity.
 - DMA ordering alone cannot prove transient placement contents; event-time destination bytes remain
   required.
 - Closed raw staging sessions are retained. Persistent marginal structural growth can approach

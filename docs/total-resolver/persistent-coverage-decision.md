@@ -1,7 +1,13 @@
 # Persistent structural delta capture
 
 Status: **implemented and independently verified**
-Scope: Total Resolver knowledge schema 3, frontier format 5, Project64 bridge protocol 0.14.0
+Scope: Total Resolver knowledge schema 5, frontier format 6, Project64 bridge protocol 0.17.0
+
+Schema 4 added focused entry/return state and bounded pointer-byte context. Protocol 0.16 moved the
+common exact-execution decision and ordered novel-event batching into native Project64. Schema 5
+and protocol 0.17 retain those contracts while factoring safe full-ROM static-data DMA into exact
+resource and destination facts. See `implementation-status.md` for the selected database and
+measured row counts.
 
 ## Decision
 
@@ -37,7 +43,9 @@ edges across zero new physical pages.
 | Edge | exact source instruction, exact destination instruction, and edge kind |
 | Call | exact callsite instruction, exact executed delay-slot instruction, exact actual target instruction, and call kind |
 | Page/generation witness | session, bridge epoch, physical page, native generation, sequence bounds |
-| DMA placement | source domain/range, destination range, matched length, exact event-time destination bytes, mapping class |
+| Conservative DMA placement | source domain/range, destination range, matched length, exact event-time destination bytes, mapping class |
+| Static-data DMA resource | exact full-ROM source domain/range, matched length, mapping class, and all event-time destination bytes |
+| Static-data DMA destination | exact physical destination range, matched length, and mapping class |
 | Controller transition | session, bridge sequence, effective P1 state and contextual bounds |
 
 Identical opcodes at different physical addresses remain distinct. Different opcodes at a reused
@@ -45,6 +53,12 @@ physical address remain distinct. A known function reached from a new caller ret
 edge. A known prefix followed by a new tail retains the new transition and tail. If the native
 placement or generation payload is missing, the bridge emits a conservative unresolved event
 instead of suppressing it.
+
+For conservative DMA placements, the persistent `matched_length` is the number of leading bytes
+that also matched the ROM; it is not assumed to equal the completed transfer size. The native
+frontier identity uses the complete source span, destination span, and all event-time destination
+bytes. This preserves the shorter ROM-prefix evidence while suppressing only an exactly repeated
+completed transfer.
 
 MIPS calls execute their delay-slot instruction before transferring to the callee. The historical
 schema-2 table named `call_fact` therefore materializes callsite-to-delay-slot edges; its stored
@@ -123,7 +137,7 @@ Cryptographic capture integrity is not a persistent session/knowledge acceptance
 
 ## Frontier and hot path
 
-Frontier format 5 is one validated binary image containing:
+Frontier format 6 is one validated binary image containing:
 
 - fixed-width exact instruction records containing stable fact ordinal, physical address, and
   opcode;
@@ -131,15 +145,22 @@ Frontier format 5 is one validated binary image containing:
   instructions;
 - fixed-width exact call records containing stable fact ordinal, exact callsite, executed delay
   slot, actual target, and call kind;
-- exact-span DMA metadata, stable canonical ordinal, and complete event-time destination bytes; and
+- destination-specific DMA metadata and complete event-time bytes for executable, mixed, partial,
+  unknown, or otherwise unsafe-to-factor transfers;
+- exact full-ROM static-data resource metadata and complete event-time bytes;
+- exact static-data destination spans; and
 - an opaque database revision token, exact lower-4-MiB capture-window contract, and required ROM
   identity.
 
 The client exports the frontier from SQLite before capture, then native Project64 validates and
 atomically installs it. Execution and DMA callbacks perform in-memory exact lookups and
-in-session exact deduplication before JavaScript is called. Hash functions may select native
-container buckets, but equality operators compare every canonical field and every DMA byte. The
-hot path performs no SQLite work, persistent write, or 4 KiB code-page read. Native tracking keeps
+in-session exact deduplication before JavaScript is called. For safe full-ROM static data, native
+Project64 suppresses a transfer only when both its exact resource bytes and exact destination span
+are already known. A resource seen in a new slot, or new bytes seen in a known slot, emits once.
+Unsafe, partial, executable, mixed, or ambiguous transfers retain the complete destination-specific
+identity. Hash functions may select native container buckets, but equality operators compare every
+canonical field and every DMA byte. The hot path performs no SQLite work, persistent write, or
+4 KiB code-page read. Native tracking keeps
 the two previous instructions current through silent known prefixes, so it can still identify an
 atomic call after both earlier instructions were suppressed.
 
@@ -168,10 +189,11 @@ without restoring repeated event streams and make no event-order claim. Native p
 still advances through every silent known instruction, so new tails, callers, and actual targets
 remain discoverable.
 
-An optional 32,768-record native execution-context ring keeps exact PCs and predecessor edges in
-emulator memory. A human marker requests a bounded before/after window of at most 4,096 records per
-side; only that window is emitted. Its local order and frames are contextual, and an early stop
-records an explicit incomplete window.
+Ordinary Capture disables execution-context retention. Focused Capture can enable a compact,
+power-of-two 32,768-record native ring containing exact PCs and predecessor edges. A human marker
+requests a bounded before/after window of at most 4,096 records per side; only that window is
+emitted. Its local order and frames are contextual, and an early stop records an explicit
+incomplete window.
 
 ## Observation-only authority
 
@@ -223,6 +245,21 @@ including 570,445 instruction witnesses, 329,929 edge witnesses, 549,390 residen
 21,120 sampled PCs, 81,762 typed unresolved rows, and 607,040 candidate-evidence rows. Only after
 both independent verification and the 120-test suite passed was the format-5 database selected.
 The format-4 database, raw sessions, and historical products remain unchanged beside it.
+
+The 17-session schema-4 database then remained untouched while schema 5 was built beside it. The
+cross-schema oracle accounted for all 253,590 old DMA placement rows as either 73,885 retained
+destination-specific placements or exact resource/destination facts. The selected schema-5 copy
+contains 15,549 exact static-data resources, 864 destination spans, and a 90,298-record native DMA
+frontier: 73,885 exact destination-specific placements plus the factored resources and spans.
+The 22,047 placements whose complete transfer bytes are known but whose ROM match is only a prefix
+remain conservative placement facts; the native frontier now compares their complete source span,
+destination span, and event-time bytes so exact repeats are suppressed without changing their
+evidence classification. The opaque frontier revision token now includes instruction, edge, call,
+and DMA fact counts, so this repaired native index has a distinct identity even though no ledger
+fact changed. Every retained non-DMA fact, context row, candidate result, and materialized result
+compared exactly. Only the candidate-recalculation work history differs: static-data lifetimes that
+are no longer persistent do not enqueue candidate scans. Raw sessions remain unchanged and retain
+the historical resource/destination chronology.
 
 ## Intentionally contextual or uncertain
 

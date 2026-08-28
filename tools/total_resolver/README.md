@@ -1,22 +1,32 @@
 # Total Resolver R3
 
-Status: **Schema-3 agent queries and protocol-0.14 call-aware delta capture implemented**
+Status: **Schema 5, factorized DMA knowledge, and protocol 0.17 are complete.**
 
-Total Resolver is a research accelerator beside the exact-ROM build. It keeps static facts,
-runtime placement, exact execution, field hypotheses, and resource ancestry in separate evidence
-lanes so a useful answer can remain explicit about uncertainty. Generated sessions, products, and
-bundles live below ignored `build/total-resolver/` paths.
+Total Resolver is a research tool for the exact-ROM decompilation project.
+It stores facts from accepted play sessions in one persistent knowledge database.
+It keeps each type of evidence separate.
+The evidence types include static facts, runtime placement, exact execution, field hypotheses, and resource ancestry.
 
-The completed implementation plan is retained as the historical design record in
-`docs/PLAN_2026-08-17-total-resolver-r3.md`; current results and known limits are summarized in
-`docs/total-resolver/implementation-status.md`.
-Agents must also follow `tools/total_resolver/AGENTS.md`, which gives the safe entry checklist and
-separates offline queries from user-authorized capture.
+Generated sessions, products, and bundles stay in ignored `build/total-resolver/` directories.
+The historical plan is `docs/PLAN_2026-08-17-total-resolver-r3.md`.
+The current status is `docs/total-resolver/implementation-status.md`.
+All agents must also obey `tools/total_resolver/AGENTS.md`.
+
+## Terms
+
+A knowledge database stores facts from all accepted sessions.
+A staging database stores one session before integration.
+A fact is an exact machine observation.
+
+A witness links a fact to a session, frame, or bridge sequence.
+A frontier is a compact set of facts that Project64 already knows.
+A bridge sequence gives the machine order of emitted events.
+A bridge epoch identifies one bridge script instance.
 
 ## Agent roles
 
-An ordinary agent using Total Resolver is a **querying agent** and must remain read-only. Its normal
-command set is:
+A query agent has read-only access.
+The normal read-only commands are:
 
 ```text
 python -m tools.total_resolver doctor [--project64-root PATH] [--connect --port PORT]
@@ -31,52 +41,79 @@ python -m tools.total_resolver coverage
 python -m tools.total_resolver unresolved
 ```
 
-A querying agent must not run `session start`, `session stop`, `session label`, `session mark`,
-`session note`, `session name`, `gui`, `knowledge ingest`, `knowledge import`, `knowledge select`, `knowledge
-migrate-frontier`, or `knowledge migrate-schema3`. It must likewise avoid knowledge
-initialization/rebuild and other commands that write capture, database, selection, or generated
-product state. Those operations belong only to an agent explicitly assigned to build or maintain
-the database. A general decompilation, investigation, or resolver-query task does not grant that
-role.
+A query agent must not use these commands or functions:
 
-Even a database-building agent must not start capture until Joe explicitly says the run is ready,
-and must never use computer control to launch Project64.
+- `session start`
+- `session stop`
+- `session label`
+- `session mark`
+- `session note`
+- `session name`
+- `gui`
+- Knowledge initialization
+- Knowledge ingestion
+- Knowledge import
+- Knowledge selection
+- Knowledge migration
+- Knowledge rebuild
+- Legacy product builders
+- Live evidence bundles
+- Other functions that write generated state
+
+Only an assigned database build agent can use those functions.
+A general decompilation task does not give this permission.
+Joe must approve each capture run before it starts.
+Never use computer control to start Project64.
 
 ## Bridge contract
 
-The repo-local client requires Project64 bridge protocol `0.14.0` and frontier format 5 exactly
-and fails closed on a
-version or capability mismatch. The bridge supplies:
+The repository client requires bridge protocol `0.17.0` and frontier format 6.
+The client stops if a version or a capability does not agree.
 
-- one emulator-side monotonic sequence across watch, PI DMA, execution-trace, and controller-input
-  events;
-- a bridge-instance epoch that changes when the script instance changes;
-- one ordered drain queue;
-- explicit dropped sequence ranges; and
-- event-time destination bytes for ROM DMA completions;
-- generation-aware instruction/edge observations keyed by physical address and exact opcode;
-- transitions in the effective Player 1 input returned to the game; and
-- a binary structural frontier loaded directly into native Project64, containing exact opcode,
-  exact-endpoint edge, exact callsite/delay-slot/target, and exact event-time DMA keys plus stable
-  fact ordinals;
-- one stop-time instruction, edge, call, and DMA activity bitmap, recording which already-known facts
-  occurred in the session without restoring their repeated event streams;
-- an optional bounded native PC/edge ring whose before/after window is persisted when a human
-  marker is created;
-- a one-time native copy of exactly 4 MiB of RDRAM before the first captured instruction; and
-- an exact lower-4-MiB vanilla-OB64 capture window. Project64 may allocate 4 or 8 MiB; the upper
-  4 MiB is ignored by execution, DMA, snapshot, and database paths; and
-- a pre-ROM arm state that installs the baseline, execution, input, and DMA hooks synchronously
-  in Project64's `EMU_STARTED` callback, before the interpreter executes its first instruction.
+The bridge supplies these functions:
 
-Recorder timestamps, frames, and page generations are context only. They never replace bridge
-ordering, and neither ordering nor an index fingerprint proves transient destination contents.
+- One emulator sequence for watch, PI DMA, execution, and controller events.
+- One bridge epoch that changes after each script restart.
+- One ordered drain queue.
+- Explicit ranges for lost sequence numbers.
+- Destination bytes from the time of each ROM DMA completion.
+- Instruction and edge facts with a physical address, an exact opcode, and a generation.
+- Each change in the effective Player 1 input that the game receives.
+- One binary frontier that native Project64 loads directly.
+- Stable fact numbers for instructions, edges, calls, and DMA facts.
+- One activity bitmap for each fact class at session stop.
+- An optional fixed PC and edge ring for a marker context window.
+- One direct native execution observer for the known-fact path.
+- Ordered batches with a maximum of 256 new execution facts.
+- Native opcode gates for focused watches.
+- One native copy of the lower 4 MiB of RDRAM.
+- A pre-ROM arm state that installs all hooks before the first interpreter instruction.
+- Optional focused watches for registers, stack words, and pointer bytes.
 
-## Database-building workflow: persistent single database
+The frontier stores exact facts for these classes:
 
-Initialize and select one knowledge database once. The ROM path must name the normalized US Rev 0
-target; the database snapshots the accepted static functions and records its static/resource
-inputs.
+- Opcodes
+- Edge endpoints
+- Callsites, delay slots, and targets
+- Conservative destination-specific DMA placements
+- Static-data resources
+- Data destinations
+
+Project64 can allocate 4 MiB or 8 MiB of RDRAM.
+Total Resolver uses only the lower 4 MiB.
+All execution, DMA, snapshot, and database paths ignore the upper 4 MiB.
+
+Recorder times, frame numbers, and page generations give context only.
+They do not replace the bridge sequence.
+An order value or an index fingerprint does not prove temporary destination bytes.
+
+## Database workflow
+
+### Initial setup
+
+The `knowledge init` command creates and selects one knowledge database.
+Use the normalized US Rev 0 ROM file.
+The initialization step copies the accepted static functions and records all source identities.
 
 ```text
 python -m tools.total_resolver knowledge init --rom C:\path\to\baserom.z64
@@ -84,29 +121,100 @@ python -m tools.total_resolver knowledge status
 python -m tools.total_resolver knowledge verify
 ```
 
-For human-operated capture, open the GUI:
+Only a database build agent can do this setup.
+
+### GUI workflow
+
+Start the GUI with this command:
 
 ```text
 python -m tools.total_resolver gui --port 64656
 ```
 
-Use **Launch Project64** to start the binary frozen as
-`project64.activeNativeRuntime.binaryPath` in `config/total-resolver/sources.json`. Before launch,
-the GUI resolves the configured Project64 repository and verifies the complete executable against
-its frozen SHA-256. It refuses a missing, relocated-outside-root, or changed binary. The current
-local deployment is
-`C:\Users\Joe\Projects\project64\Bin\Win32\Release_totalresolver_64656\Project64-TR-CallAware.exe`.
-This button does not load a ROM or start capture.
+The **Launch Project64** button starts the configured Total Resolver build.
+The configuration key is `project64.activeNativeRuntime.binaryPath` in `config/total-resolver/sources.json`.
 
-After Project64 opens, use **Check Bridge**, then **Start Capture**. The GUI never loads a ROM,
-injects controller input, or writes game memory. After playing, use **Stop Capture**, enter a
-semantic name and optional notes, then choose **Save Name and Integrate**. Stop first closes and
-verifies the isolated staging database. Naming is human context only and does not alter capture
-identity. The final button performs the explicit, atomic knowledge ingestion. Every operation and
-traceback is written to the path displayed under **Diagnostic log**; a failure also appends a
-bounded tail of the capture worker log so that single file can be attached to a report.
+Before launch, the GUI resolves the configured Project64 repository.
+Then, the GUI checks the complete executable and the deployed bridge script.
+It compares both files with their stored SHA-256 values.
+The GUI also checks the script port and the selected GUI port.
 
-The command-line equivalent is:
+The GUI rejects these conditions:
+
+- A required file does not exist.
+- A required file is outside the configured repository.
+- A required file has changed.
+- The script port and the GUI port are different.
+
+The canonical bridge source uses port `64640`.
+The authenticated local deployment uses port `64656`.
+The configured executable is:
+
+```text
+C:\Users\Joe\Projects\project64\Bin\Win32\Release_totalresolver_64656\Project64-TR-CallAware.exe
+```
+
+The launch button does not load a ROM.
+The launch button does not start a capture.
+
+Use this procedure for a normal capture:
+
+1. Start Project64.
+2. Select **Check Bridge**.
+3. Select **Start Capture**.
+4. Play the applicable game content.
+5. Select **Stop Capture**.
+6. Enter a clear session name and optional notes.
+7. Select **Save Name and Integrate**.
+
+The stop action closes and checks the isolated staging database.
+The session name and notes give human context only.
+They do not change the capture identity.
+The integration action adds all valid facts in one database transaction.
+
+The GUI writes each operation and each error to the displayed diagnostic log.
+After a failure, the GUI also adds a short part of the worker log.
+Give that log to the maintainer when you report a failure.
+
+The GUI does not load a ROM.
+It does not inject controller input.
+It does not write to game memory.
+
+### Focused Capture
+
+Focused Capture adds state evidence to the normal coverage stream.
+It uses the same staging database and the same knowledge database.
+
+Focused Capture watches exact retained placements for these owners:
+
+- The Stage builder
+- The environment loaders
+- The Director parser
+- The HUFF functions
+- The actor pose functions
+- The sprite matrix builder
+
+A native opcode gate rejects unrelated PCs before JavaScript starts.
+Project64 checks the exact ROM entry signature before it saves state.
+Project64 saves each call from an owner with a low call rate.
+For pose and matrix owners, Project64 saves a maximum of one call in each frame.
+
+Press **Add Note** when an important visual event occurs.
+The note uses the current bridge frame as its anchor.
+It selects 60 frames before the note and 30 frames after the note.
+At 30 FPS, the window is approximately three seconds.
+A delay of one second does not lose the earlier part of the event.
+
+Focused Capture saves owner state without separate visual-event buttons.
+The pointer snapshots have fixed size.
+Project64 saves a return snapshot immediately before `jr ra` executes its delay slot.
+Floating-point register values give numeric context.
+They do not preserve exact NaN payload bits.
+Each focused row starts with the `live-unreviewed` state.
+
+### Command-line workflow
+
+These commands give the same basic workflow:
 
 ```text
 python -m tools.total_resolver session start --defer-ingest --port 64656
@@ -117,83 +225,171 @@ python -m tools.total_resolver knowledge ingest SESSION_ID
 python -m tools.total_resolver knowledge status
 ```
 
-For a true power-on run, first end emulation so Project64 reports no ROM and zero allocated N64
-RDRAM, then arm the recorder before manually opening the ROM:
+Use `--defer-ingest` when a person must approve the closed session.
+This option lets the person add a name before ingestion.
+The GUI always uses this option.
+Without this option, the command-line stop adds the valid delta automatically.
 
-```text
-python -m tools.total_resolver session start --before-rom --defer-ingest --port 64656
-python -m tools.total_resolver session status
-# Manually open the exact US Rev 0 ROM in Project64.
-python -m tools.total_resolver session stop
-```
-
-The armed worker returns immediately in state `armed`. On manual ROM load, the bridge checks the
-target CRC and interpreter core synchronously, installs every observation hook, and requests the
-4 MiB snapshot before `ExecuteInterpret()` begins. The worker then verifies the loaded file's exact
-normalized ROM identity before the session can be accepted. A wrong ROM, restarted bridge, stale
-queue, pre-existing RDRAM allocation, or protocol mismatch fails closed. The bridge never opens the
-ROM on the recorder's behalf.
-
-`session start` exports the selected database frontier to one compact binary file, loads it into
-native Project64, and records an atomic 4 MiB resident-memory census before enabling ordinary
-capture work. With `--defer-ingest` (always used by the GUI), `session stop` closes and verifies the
-isolated staging database but leaves knowledge unchanged until the human names and explicitly
-ingests the session. Without that option, the legacy command-line flow derives and commits the delta
-automatically. If ingestion fails, the raw session remains closed and retryable:
+If ingestion fails, the raw session stays closed and available for another attempt.
 
 ```text
 python -m tools.total_resolver knowledge ingest SESSION_ID
 ```
 
-Normal capture writes only the staging SQLite database; the duplicate NDJSON event mirror is
-disabled. Stop does not hash the whole stage and does not materialize a second full timeline. It
-writes a small non-authoritative session-context manifest, then validates the SQLite payloads and
-machine-order contract directly. Full replay remains an explicit repair or research operation.
+### Capture before ROM load
 
-The hot path never queries SQLite. The client writes the frontier beside the knowledge database,
-then one bridge command asks native Project64 to validate and atomically install it. The old
-JavaScript batch-loading path is not used.
-
-Migration and repair never overwrite accepted historical products:
+First, end emulation.
+Make sure that Project64 reports no ROM and no allocated N64 RDRAM.
+Then, arm the recorder before you open the ROM.
 
 ```text
-python -m tools.total_resolver knowledge migrate-schema3 --output build/total-resolver/knowledge/total-resolver-v3.sqlite
-python -m tools.total_resolver knowledge migrate-frontier --output build/total-resolver/knowledge/frontier-v5.sqlite --select
+python -m tools.total_resolver session start --before-rom --defer-ingest --port 64656
+python -m tools.total_resolver session status
+# Open the exact US Rev 0 ROM in Project64.
+python -m tools.total_resolver session stop
+```
+
+The worker first enters the `armed` state.
+When the ROM starts, the bridge checks the ROM CRC and the interpreter core.
+Then, the bridge installs all observation hooks.
+The bridge requests the 4 MiB snapshot before `ExecuteInterpret()` starts.
+The worker also checks the exact normalized ROM identity.
+
+These conditions stop the session:
+
+- The ROM identity is wrong.
+- The bridge restarts.
+- The queue contains old data.
+- RDRAM already exists before the arm action.
+- A protocol value does not agree.
+
+The recorder never opens the ROM.
+
+### Session start and stop
+
+`session start` exports the selected frontier to one compact binary file.
+Native Project64 checks and installs that file in one operation.
+Then, the recorder saves one exact 4 MiB memory census.
+The recorder completes the census before it enables normal capture work.
+
+Normal capture writes only to the staging SQLite database.
+It does not write a second NDJSON event stream.
+The stop action does not calculate a hash for the complete stage.
+It does not make a second complete timeline.
+
+The stop action writes a small session-context manifest.
+Then, it checks the SQLite payloads and the machine-order contract.
+Use a full replay only for repair or research.
+
+### Capture hot path
+
+The hot path does not query SQLite.
+The client writes the frontier next to the knowledge database.
+One bridge command checks and installs the complete frontier.
+The bridge does not use the old JavaScript frontier loader.
+
+A known instruction uses these native operations:
+
+- One exact instruction lookup
+- One cached exact-edge lookup
+- Activity-bit updates
+- A predecessor update
+
+The known path does not take the script-system lock.
+Native Project64 sends new execution facts in ordered batches.
+It sends a batch before a different event stream gets a bridge sequence.
+
+The recorder drains the queue at 30 Hz when the queue has no events.
+It changes to 100 Hz when events arrive.
+It drains again without delay while a backlog exists.
+Each drain also gets the frame, pause state, execution state, and PC sample.
+
+The recorder still reads ten 4 KiB safety ranges at the current interval.
+A lower read rate can miss a short placement without a native dirty-page signal.
+
+### Migration and repair
+
+Migration and repair commands write new products.
+They do not overwrite accepted historical products.
+
+```text
+python -m tools.total_resolver knowledge migrate-schema5 --output build/total-resolver/knowledge/total-resolver-v5-factorized-dma.sqlite
+python -m tools.total_resolver knowledge migrate-frontier --output build/total-resolver/knowledge/total-resolver-frontier-repaired.sqlite
 python -m tools.total_resolver knowledge import --sessions-root build/total-resolver/sessions
 python -m tools.total_resolver knowledge rebuild --output build/total-resolver/knowledge/rebuilt.sqlite
 python -m tools.total_resolver knowledge benchmark
 ```
 
-The rebuild replays the successful ledger into a new database and requires direct, exact canonical
-row equivalence. Stable ledger identity is compared exactly. Output paths/timestamps, legacy
-diagnostic references, the historical frontier-format label, and the regenerated delta-summary
-JSON are excluded because they are rebuild bookkeeping rather than machine facts. The benchmark
-uses a fake emulator around the production bridge script; it never launches or controls Project64.
+The rebuild command replays each successful ledger entry into a new database.
+It compares all canonical rows with exact equality.
+It also compares the stable ledger identity.
 
-Ledger replay accepts protocols 0.8.0 through 0.13.0 as historical inputs plus the current 0.14.0
-protocol. Protocol 0.7.x sessions remain available as raw historical captures but are not admitted
-to persistent knowledge because they predate the accepted ordering and payload contract. Live
-bridge compatibility remains exact-version only.
+The comparison excludes these rebuild values:
 
-`migrate-schema3` replays the declared ledger into a new database and compares the schema-2
-canonical fact foundation exactly before selection. `migrate-frontier` copies a supported database
-beside its source, installs format 5 and the additive exact-call, compact-activity,
-semantic-session, and marker-context tables, verifies it, then selects it only when `--select` is
-supplied. The prior database remains untouched.
+- Output paths and times
+- Legacy diagnostic references
+- The historical frontier-format label
+- The regenerated delta-summary JSON
 
-The frozen R2 resolver is historical reference only. If its old SQLite copy is absent, `doctor`
-reports `SKIP` rather than blocking the schema-3 workflow; it is never used to seed dynamic facts.
+These values are rebuild metadata, not machine facts.
+The benchmark uses a fake emulator with the production bridge script.
+It never starts or controls Project64.
 
-## Querying the selected knowledge database
+Ledger replay accepts protocols `0.8.0` through `0.17.0` as historical input.
+Protocol `0.7.x` sessions stay available as raw historical captures.
+Persistent knowledge does not accept them because they do not have the required order and payload contract.
+The live bridge requires an exact protocol match.
 
-`explain`, `search`, `coverage`, and `unresolved` use one read-only `ResolverContext`. Its dynamic
-source is the database named by `build/total-resolver/knowledge/selected.json`; the frozen static,
-resource, and field products are opened as separate read-only evidence lanes. Every result includes
-the selected database identity, ledger frontier, session count, frozen-source identities, and a
-freshness statement. A generated historical Resolver can answer only when the caller explicitly
-passes `--legacy-resolver PATH`; passing the wrong database type fails closed.
+`migrate-schema5` replays the declared ledger next to its source database.
+Then, it checks the new database.
+It proves exact representation of every old DMA row.
 
-A function query is cross-session and function-first:
+Each old DMA row must have one of these representations:
+
+- The same conservative exact placement
+- An exact static-data resource and an exact destination span
+
+The migration compares all retained facts, candidates, context, and materialized results.
+It excludes the candidate work log because schema 5 removes unused static-data lifetime work.
+The command selects the new database only when you add `--select`.
+
+`migrate-frontier` makes a separate SQLite backup.
+It changes only the native frontier structures and their revision token.
+It checks the new copy before an optional selection.
+It does not change canonical facts or raw sessions.
+
+The frozen R2 resolver is a historical reference.
+If its SQLite file does not exist, `doctor` reports `SKIP`.
+This condition does not stop the schema-5 workflow.
+The R2 resolver never supplies dynamic facts to schema 5.
+
+## Query interface
+
+The `explain`, `search`, `coverage`, and `unresolved` commands use one read-only `ResolverContext`.
+The dynamic source is the database in `build/total-resolver/knowledge/selected.json`.
+The context opens the frozen static, resource, and field sources as separate evidence types.
+
+All SQLite query connections use read-only mode and `PRAGMA query_only=ON`.
+The context uses immutable mode for the applicable frozen sources.
+
+Each result contains this source and freshness information:
+
+- The selected database identity
+- The ledger frontier
+- The session count
+- The frozen-source identities
+- A freshness statement
+
+A caller must give `--legacy-resolver PATH` to query a generated historical Resolver.
+The command stops if the supplied database has the wrong schema type.
+
+`knowledge status` identifies the current selected database.
+`session status` identifies the database and frontier at the start of the last capture.
+Thus, `session status` can show an older database after a migration.
+
+### Function queries
+
+Use a function query before you search session files.
 
 ```text
 python -m tools.total_resolver explain func_00029170
@@ -201,19 +397,31 @@ python -m tools.total_resolver explain func_00029170 --relationship callers --in
 python -m tools.total_resolver explain func_00029170 --relationship callees --include calls
 ```
 
-No session ID is needed. The bounded `callGraph` result returns both directions in two clearly
-labelled lanes. `static` contains frozen decoded direct-call candidates, including paths not yet
-played. `runtime` contains exact relationships stored as one captured MIPS call instruction, its
-executed delay slot, and the actual transfer target. Historical protocol-0.13 relationships were
-conservatively reconstructed during the format-5 migration only when consecutive exact edge
-witnesses proved the same triple. Runtime detail includes the callsite, delay-slot and destination instructions plus
-retained session/frame/bridge-sequence witnesses. `unresolvedCallsiteCount` reports outgoing
-callsites for which that exact pair or a unique target mapping is unavailable. Use
-`--relationship` to select one direction and `--include calls --limit N --cursor N` to expand the
-preview. Session filters remain optional drill-down context; agents do not need to discover a
-capture file before asking who calls a function.
+You do not need a session ID.
+The `callGraph` result shows callers and callees in separate evidence types.
 
-Typical bounded searches are:
+`callGraph.static` contains frozen direct-call candidates.
+It can include code paths that no accepted session executed.
+`callGraph.runtime` contains exact observed call relationships.
+
+Each runtime call has these exact parts:
+
+- The captured MIPS call instruction
+- Its executed delay slot
+- Its actual transfer target
+
+The schema-5 migration reconstructed some protocol-0.13 calls.
+It did this only when consecutive exact edge witnesses proved the same three parts.
+Runtime details include session, frame, and bridge-sequence witnesses.
+
+`unresolvedCallsiteCount` counts callsites from the function without an exact pair or a unique target.
+Use `--relationship` to select one direction.
+Use `--include calls --limit N --cursor N` to get more rows.
+Use a session filter only when you need session context.
+
+### Search commands
+
+These examples show the main search types:
 
 ```text
 python -m tools.total_resolver search --function 0022b1
@@ -227,36 +435,72 @@ python -m tools.total_resolver search --edge-from 0x001E83FC --edge-to 0x001E840
 python -m tools.total_resolver search --unresolved-kind exact-execution-placement-or-generation-unresolved
 python -m tools.total_resolver search --marker-text persuasion
 python -m tools.total_resolver search --session SESSION_ID --controller --buttons 0x80000000
+python -m tools.total_resolver search --focused-profile cutscene-studio-v1 --focused-target director-parser
+python -m tools.total_resolver explain func_00284288 --include focused
 ```
 
-`--session-keyword` searches all words, case-insensitively, across the semantic names and notes
-assigned after capture. It returns bounded session-catalog rows and their session IDs. Use one of
-those IDs with `--session` to search that capture's retained facts and context. A `--session`
-result, function session preview, and known-activity result carry the semantic name and notes too,
-so the human label remains visible during drill-down. `--marker-text` is different: it searches
-markers created inside a capture.
+`--session-keyword` searches names and notes without a case distinction.
+All words in the query must occur.
+The result gives a small session catalog and its session IDs.
 
-Default results contain counts and a small representative preview. Use `--include SECTION` with
-`explain` for a detailed lane, and `--limit`/`--cursor` for bounded pagination. Unresolved execution
-results include the exact physical/opcode fact, byte-confirmed global and contemporaneous
-candidates, the reason each candidate exists, contradictions or missing evidence, adjacent mapped
-edges, and the additional observation needed to resolve it.
+Use a returned session ID with `--session`.
+This search can show facts, controller context, markers, and focused state for that session.
+Session results also show the semantic name and notes.
+`--marker-text` searches markers that a person made inside a capture.
 
-Schema 3 retains the session catalog, exact instruction/edge frame and bridge-sequence witnesses,
-region lifetime intervals, sampled PCs, semantic markers, typed unresolved fields, selected-source
-registry, and mapping-candidate evidence. New placements and residency evidence enqueue only
-overlapping physical ranges for candidate recalculation. Candidate states are deliberately
-separate: exact machine fact, byte-confirmed global candidate, contemporaneous candidate, uniquely
-resolved live mapping, and ambiguous/conflicting mapping. Exact opcode equality makes a global
-placement useful and searchable; it does not promote it without contemporaneous evidence.
+Commands give counts and a small row sample by default.
+Use `--include SECTION` to get a detailed evidence type.
+Use `--limit` and `--cursor` for pages of results.
 
-Historical novelty filtering means a schema-3 replay can recover emitted events and saved samples,
-but cannot recreate already-known instructions that older sessions suppressed. The limitation is
-recorded per session rather than inferred away.
+An unresolved execution result includes these items:
 
-## Other common commands
+- The exact physical address and opcode fact
+- Byte-confirmed global candidates
+- Contemporaneous candidates
+- The reason for each candidate
+- Contradictions or absent evidence
+- Adjacent mapped edges
+- The additional evidence that can resolve the fact
 
-Check frozen inputs and the live bridge:
+### Retained context and candidate states
+
+Schema 5 retains these schema-3 records:
+
+- The session catalog and ingestion summaries
+- Instruction and edge frame witnesses
+- Instruction and edge bridge-sequence witnesses
+- Region lifetime intervals
+- PC samples
+- Semantic markers
+- Typed unresolved fields
+- The selected-source registry
+- Candidate mapping evidence
+
+The ingest step adds only address ranges that overlap the new evidence to the candidate work queue.
+It does this after a new placement, lifetime interval, generation witness, or mapped edge.
+
+The resolver keeps these candidate states separate:
+
+- Exact machine fact
+- Byte-confirmed global candidate
+- Contemporaneous candidate
+- Unique live mapping
+- Ambiguous mapping or mapping with conflicts
+
+Exact opcode equality creates a useful global candidate.
+It does not create a resolved mapping without contemporaneous evidence.
+
+Schema 5 also retains schema-4 focused data.
+This data includes session rows, entry state, return state, and exact pointer bytes.
+
+Old novelty filters removed some known execution events before transport.
+A schema-5 replay can recover emitted events and saved samples only.
+It cannot recreate old suppressed events.
+Each applicable session reports this limitation.
+
+## Optional runtime checks
+
+Use these commands to check frozen inputs or an active bridge:
 
 ```text
 python -m tools.total_resolver doctor
@@ -265,8 +509,11 @@ python -m tools.total_resolver pj64 health
 python -m tools.total_resolver pj64 status
 ```
 
-The GUI above is the normal human capture workflow. Its command-line equivalent keeps ingestion
-explicit so the closed capture can be named first:
+## Capture commands
+
+These commands write capture or database state.
+Only a database build agent can use them.
+Joe must approve the capture before the agent starts it.
 
 ```text
 python -m tools.total_resolver session start --defer-ingest --port 64656
@@ -280,86 +527,163 @@ python -m tools.total_resolver session verify SESSION_ID
 python -m tools.total_resolver session dedupe SESSION_ID
 ```
 
-Labels, marks, and notes are optional context. The recorder owns and removes only its own watches.
-Its observation-only client facade has no control injection, RAM write, pause/resume, stepping,
-state load/save, ROM lifecycle, global-clear, or memory-dump methods.
+Labels, markers, and notes are optional context.
+The recorder removes only the watches that it owns.
 
-On protocol 0.14, a label/mark/note also requests a bounded native execution-context window by
-default. The ring remains entirely in emulator memory while ordinary execution occurs. Only the
-requested before/after window crosses the bridge, and an incomplete window is explicitly marked if
-capture stops before its after side fills. This context has native local order and frames; it is
-not promoted to canonical bridge ordering.
+The observation-only client does not have these functions:
 
-## Capture growth and exact deduplication
+- Controller input injection
+- RAM writes
+- Pause or resume
+- Instruction steps
+- State load or save
+- ROM control
+- A global watch clear
+- A memory dump
 
-The raw staging session preserves every event that the bridge emits. Capture schema 4 stores large
-exact byte payloads once and references them from occurrences. Its historically named SHA columns
-are storage/diagnostic fields, not acceptance evidence; an existing candidate key is reused only
-after exact BLOB comparison. Across sessions, the knowledge
-database stores direct executable keys, exact edges, exact callsite/delay-slot/target relationships,
-DMA facts, and compact contextual witnesses. All accumulated dynamic rows remain `live-unreviewed`
-machine facts; they do not
-silently change accepted source ownership, boundaries, or semantic names.
+With protocol 0.17, a focused label, marker, or note also requests an execution-context window.
+Ordinary Capture disables the context ring.
+Focused Capture uses a compact ring with a power-of-two size.
+It sends only a requested before-and-after window.
 
-Execution coverage is filtered natively against both the persistent frontier and the current
-session before JavaScript is called. An
-instruction is exactly physical address plus four opcode bytes. A known instruction reached
-through a known edge is silent, but the native callback still tracks its predecessor. A new tail
-after a known prefix, a known callee reached from a new caller, the same opcode at another physical
-address, a changed opcode at a reused address, or an unresolved placement/generation is retained.
-The bridge does not read or emit whole code pages. Generation context is attached only to emitted
-novel or conservatively unresolved facts.
+The database marks an incomplete window if the capture stops too early.
+The marker selects 60 frames before and 30 frames after its frame.
+The exact-PC ring has a separate limit of 4,096 records on each side.
+Neither context source changes canonical bridge order.
 
-Instruction identity and ROM/function attribution are separate decisions. An observed instruction
-is assigned to a proposed nominal or contemporaneous ROM offset only when all four captured opcode
-bytes equal the ROM bytes at that offset. A static address crosswalk without observed opcode bytes
-is returned as a candidate, not a resolved mapping. A mismatch keeps the exact physical/opcode fact
-and a compact unresolved representative with an occurrence count; repeated witnesses remain in the
-raw session rather than multiplying persistent unresolved rows. `knowledge verify` independently
-checks every stored instruction-to-ROM mapping and its function range.
+## Data growth and exact duplicate removal
 
-Controller states are coalesced only while consecutively unchanged and remain tied to their
-session. Project64 copies DMA destination bytes at completion and compares the complete exact DMA
-identity before JavaScript is called. Exact known transfers are silent. Partial or ambiguous
-matches are conservatively emitted. Persistent ingestion collapses their canonical
-placement/content fact while keeping compact per-session witness counts. Large DMA blobs use a
-CRC32 bucket followed by exact BLOB comparison. These contextual rows, the 4 MiB startup census,
-and one ledger row mean a repeated session is small, not literally zero bytes.
+The raw staging database keeps every event that the bridge sends.
+Capture schema 4 stores each large exact byte value once.
+Event rows refer to that stored value.
 
-Known frontier facts have stable ordinals in format 5. Native Project64 sets ordinal hit bits while
-it performs the same exact instruction, edge, call, and DMA comparisons. It continues tracking the
-two preceding instructions through a completely silent known prefix, so a new caller or target
-still emits one exact atomic call fact. At stop it emits exactly one compact four-bitmap summary.
-This restores session-level answers such as “the already-known
-function ran in session X” without sending each repeated instruction to JavaScript or SQLite. The
-bitmap proves membership only; detailed event correlation still requires a newly emitted fact,
-saved sample, controller transition, or requested marker window.
+Some storage columns have `SHA` in their historical names.
+These columns give storage or diagnostic data only.
+The software reuses an existing byte value only after an exact BLOB comparison.
 
-`session dedupe` reports staging-database byte savings without changing data. Closed raw sessions
-are not automatically deleted. The selected knowledge database is the cross-session shared fact
-store; raw staging databases remain isolated for crash safety.
+The knowledge database stores these cross-session facts:
 
-Build and inspect accepted products:
+- Direct executable keys
+- Exact edges
+- Exact callsite, delay-slot, and target relationships
+- DMA facts
+- Small context witnesses
+
+Each dynamic row keeps the `live-unreviewed` state.
+Dynamic rows do not change accepted ownership, boundaries, or names.
+
+### Execution facts
+
+Native Project64 checks both the persistent frontier and current-session facts.
+It does this before it calls JavaScript.
+One instruction identity contains a physical address and four exact opcode bytes.
+
+A known instruction through a known edge does not produce another event.
+Native Project64 still records the predecessor identity.
+
+The bridge keeps these events:
+
+- A new tail after a known prefix
+- A known callee from a new caller
+- The same opcode at a different physical address
+- A changed opcode at a reused address
+- An unresolved placement or generation
+
+The bridge does not read or send complete code pages.
+It adds generation context only to a new or unresolved fact.
+
+Instruction identity and ROM attribution are separate decisions.
+The resolver assigns a ROM offset only when all four opcode bytes agree with the ROM.
+A static address crosswalk without captured opcode bytes stays a candidate.
+
+After an opcode mismatch, the resolver keeps the exact physical address and opcode.
+It also keeps one small unresolved row with an occurrence count.
+Repeated raw witnesses stay in their raw sessions.
+They do not make duplicate persistent unresolved rows.
+
+`knowledge verify` checks each instruction-to-ROM mapping and its function range.
+
+### Controller and DMA facts
+
+The recorder combines only consecutive equal controller states.
+Each controller transition stays with its session.
+
+Project64 copies DMA destination bytes when each DMA completes.
+It copies the bytes before the novelty decision.
+
+Code, mixed, partial, and ambiguous transfers keep a complete destination-specific identity.
+A safe full-ROM static-data transfer uses two exact facts:
+
+- An exact source, range, and content resource
+- An exact destination span
+
+Native suppression requires both facts.
+A new resource or a new destination produces one event.
+This design removes the resource-by-slot Cartesian product.
+It does not use a digest to discard event-time bytes.
+
+Large byte values use a CRC32 bucket.
+An exact BLOB comparison decides equality.
+This rule applies to a forced CRC32 collision.
+The staging database keeps each emitted source and destination pair.
+Knowledge stores small resource and destination session summaries.
+
+For a destination-specific placement, `matched_length` is the ROM-equal prefix length.
+It is not the complete PI transfer length.
+The frontier checks the complete source span, destination span, and event-time bytes.
+It also checks bytes after a partial ROM match.
+Thus, a conservative fact stays distinct, and an exact repeat becomes silent.
+
+### Known activity
+
+Frontier format 6 gives each known fact a stable number.
+Native Project64 sets hit bits after an exact instruction, edge, call, or DMA match.
+
+Project64 keeps the two prior instructions through a silent known prefix.
+Thus, a new caller or target still produces one exact call fact.
+At stop, Project64 sends one small summary with four bitmaps.
+
+The frontier revision token contains the ledger revision and all native fact counts.
+An index repair cannot use an old token as if it were current.
+
+An activity bitmap proves that a known fact occurred in a session.
+It does not prove the event time or the number of occurrences.
+Detailed event context requires one of these records:
+
+- A new fact
+- A saved PC sample
+- A controller transition
+- A requested marker window
+
+`session dedupe` reports possible staging-database byte savings.
+It does not change the database.
+The software does not remove closed raw sessions automatically.
+The selected knowledge database remains the shared cross-session fact store.
+
+## Legacy products
+
+Normal queries use the selected knowledge database directly.
+They do not build an atlas, a runtime product, or a generated Resolver.
+
+Use these write commands only for maintenance, repair, or historical checks:
 
 ```text
 python -m tools.total_resolver atlas build
 python -m tools.total_resolver runtime build
 python -m tools.total_resolver resolver build
 python -m tools.total_resolver resolver verify build/total-resolver/products/resolver-r3
-python -m tools.total_resolver explain func_00043d1c
-python -m tools.total_resolver explain live:0x80197B70 --session SESSION_ID --sequence 200
-python -m tools.total_resolver search --function PARTIAL_NAME
-python -m tools.total_resolver search --physical 0x00197B70 --opcode 0xXXXXXXXX
-python -m tools.total_resolver search --session-keyword "capture name or notes"
-python -m tools.total_resolver coverage
-python -m tools.total_resolver unresolved
 ```
 
-A reused live address without session/sequence or frame context reports ambiguity instead of
-selecting a convenient mapping. A bare nominal-address match is likewise reported as a candidate
-until exact code bytes or a contemporaneous placement establish it.
+A reused live address without time context produces an ambiguous result.
+A nominal-address match stays a candidate until exact bytes or a contemporaneous placement prove it.
 
-Preserve and replay raw-first live context:
+## Live-evidence tasks
+
+These tasks are not normal knowledge queries.
+The `bundle`, `crash`, and `replay` commands create or read generated evidence artifacts.
+The `current` command requires an active live bridge.
+
+Use these commands only when the task requires live evidence or a reproducible bundle:
 
 ```text
 python -m tools.total_resolver live bundle SESSION_ID --sequence 6
@@ -368,36 +692,66 @@ python -m tools.total_resolver live replay BUNDLE_DIRECTORY
 python -m tools.total_resolver live current 0x80123456 --port 64656
 ```
 
-Raw bridge/session material is written before enrichment. Resolver failure therefore produces a
-partial bundle rather than losing the observation. Live enrichment is marked `live-unreviewed`
-and never mutates an accepted resolver database.
+The live tool writes raw bridge and session data before it adds resolver data.
+Thus, a resolver failure leaves a partial bundle with the original observation.
+All live enrichment has the `live-unreviewed` state.
+It never changes an accepted resolver database.
 
 ## Exact keys and fingerprints
 
-Cryptographic capture integrity is not a persistent session/knowledge acceptance class. Executable
-facts use direct address/opcode keys, and rebuild equivalence compares exact canonical rows. CRC32
-is only a bucket accelerator for large DMA byte strings; exact BLOB equality decides reuse,
-including under forced collisions. The Rev 0 ROM SHA-256 remains the repository-required target
-identity. Legacy raw-session and explicit product hash fields remain readable for compatibility and
-diagnostics. New stops write a context manifest without capture/file/mirror digests, and hash
-mismatches alone cannot reject ingestion or lower otherwise exact DMA evidence. Legacy product
-builders may retain deterministic
-fingerprints, but capture novelty and knowledge equality do not depend on them.
+Cryptographic capture integrity is not a persistent acceptance requirement.
+Executable facts use direct address and opcode keys.
+Rebuild verification compares exact canonical rows.
+
+CRC32 only selects a bucket for large DMA byte values.
+Exact BLOB equality decides whether the software reuses a value.
+This rule also applies during a forced collision.
+
+The Rev 0 ROM SHA-256 identifies the required repository target.
+Legacy hash fields stay readable for compatibility and diagnostics.
+New stop operations write a context manifest without capture, file, or mirror digests.
+A hash mismatch alone cannot reject an otherwise valid session.
+It also cannot reduce exact DMA evidence.
+
+Legacy product builders can keep deterministic fingerprints.
+Capture novelty and knowledge equality do not depend on those fingerprints.
 
 ## Tests
+
+Run the Total Resolver test suite with this command:
 
 ```text
 python -m unittest discover -s tools/total_resolver/tests -v
 ```
 
-The suite includes protocol incompatibility, global ordering, epoch/loss handling, DMA
-destination-byte capture, page-read-free structural execution coverage, effective-input
-transitions, forced fingerprint collisions, persistent idempotence and rollback,
-known-prefix/new-tail and new-caller replays, relocated/changed code, unresolved fallback,
-opcode-mismatched mapping rejection, incremental/full-rebuild exact-row equivalence,
-schema-type rejection, immediate selected-knowledge queries, delay-slot-aware bidirectional call
-graphs, bounded indexed search, candidate reconsideration, compact known-activity membership,
-marker-ring context, mutation-surface exclusion,
-raw-session recovery,
-deterministic products, contextual ambiguity, coverage conservation, and offline live-bundle
-replay.
+The suite checks these behaviors:
+
+- Protocol incompatibility
+- Global event order
+- Epoch changes and lost ranges
+- DMA destination bytes
+- Execution coverage without code-page reads
+- Effective controller transitions
+- Forced fingerprint collisions
+- Idempotent ingestion and transaction rollback
+- A known prefix with a new tail
+- A known callee with a new caller
+- Relocated code and changed code
+- The unresolved fallback
+- Opcode mismatch rejection
+- Exact equivalence between incremental ingestion and a full rebuild
+- Database schema rejection
+- Immediate selected-knowledge queries
+- Delay-slot-aware caller and callee results
+- Small indexed search results
+- Candidate recalculation
+- Known-activity membership
+- Marker context windows
+- Focused native state and pointer capture
+- Focused rollback and read-only queries
+- Mutation-surface exclusion
+- Raw-session recovery
+- Deterministic products
+- Contextual ambiguity
+- Coverage conservation
+- Offline live-bundle replay

@@ -7,6 +7,7 @@ import hashlib
 import json
 import os
 from pathlib import Path
+import re
 import subprocess
 from typing import Any
 
@@ -37,6 +38,9 @@ class ActiveProject64Binary:
     path: Path
     sha256: str
     project64_root: Path
+    bridge_path: Path | None = None
+    bridge_sha256: str | None = None
+    bridge_port: int | None = None
 
 
 def repository_root() -> Path:
@@ -142,6 +146,51 @@ def _resolve_project64_root(config: dict[str, Any], explicit: Path | None) -> Pa
     return candidate.resolve() if candidate.exists() else None
 
 
+def _resolve_active_runtime_bridge(
+    project64_root: Path, native: dict[str, Any]
+) -> tuple[Path, str, int]:
+    raw_path = native.get("bridgeScriptPath")
+    expected_sha256 = native.get("bridgeScriptSha256")
+    expected_port = native.get("bridgePort")
+    if (
+        not isinstance(raw_path, str)
+        or not raw_path
+        or Path(raw_path).is_absolute()
+        or ".." in Path(raw_path).parts
+    ):
+        raise ValueError("active Project64 bridge path must stay relative to its repository")
+    if not isinstance(expected_sha256, str) or len(expected_sha256) != 64:
+        raise ValueError("active Project64 bridge SHA-256 is missing or malformed")
+    if not isinstance(expected_port, int) or not 1 <= expected_port <= 65535:
+        raise ValueError("active Project64 bridge port is missing or invalid")
+
+    bridge = (project64_root / raw_path).resolve()
+    try:
+        bridge.relative_to(project64_root)
+    except ValueError as exc:
+        raise ValueError("active Project64 bridge resolves outside its repository") from exc
+    if not bridge.is_file():
+        raise FileNotFoundError(bridge)
+    actual_sha256 = sha256_file(bridge)
+    if actual_sha256 != expected_sha256.upper():
+        raise RuntimeError(
+            "configured Project64 bridge failed SHA-256 authentication: "
+            f"expected {expected_sha256.upper()}, got {actual_sha256}"
+        )
+
+    text = bridge.read_text(encoding="utf-8")
+    ports = re.findall(r"^\s*var\s+PORT\s*=\s*(\d+)\s*;\s*$", text, re.MULTILINE)
+    if len(ports) != 1:
+        raise RuntimeError("configured Project64 bridge has no unique literal PORT declaration")
+    actual_port = int(ports[0])
+    if actual_port != expected_port:
+        raise RuntimeError(
+            "configured Project64 bridge port disagrees with its runtime inventory: "
+            f"expected {expected_port}, got {actual_port}"
+        )
+    return bridge, actual_sha256, actual_port
+
+
 def resolve_active_project64_binary(
     *,
     project64_root: Path | None = None,
@@ -184,7 +233,12 @@ def resolve_active_project64_binary(
             "configured Project64 binary failed SHA-256 authentication: "
             f"expected {expected.upper()}, got {actual}"
         )
-    return ActiveProject64Binary(binary, actual, resolved_root)
+    bridge, bridge_sha256, bridge_port = _resolve_active_runtime_bridge(
+        resolved_root, native
+    )
+    return ActiveProject64Binary(
+        binary, actual, resolved_root, bridge, bridge_sha256, bridge_port
+    )
 
 
 def _git_value(root: Path, *arguments: str) -> str:
@@ -319,6 +373,22 @@ def verify_inventory(
                             "project64:active-binary",
                             "PASS" if binary_hash == expected_binary else "FAIL",
                             binary_hash,
+                        )
+                    )
+                try:
+                    _bridge, bridge_hash, bridge_port = _resolve_active_runtime_bridge(
+                        resolved_project64, native
+                    )
+                except (OSError, ValueError, RuntimeError) as exc:
+                    checks.append(
+                        Check("project64:active-runtime-bridge", "FAIL", str(exc))
+                    )
+                else:
+                    checks.append(
+                        Check(
+                            "project64:active-runtime-bridge",
+                            "PASS",
+                            f"{bridge_hash}@127.0.0.1:{bridge_port}",
                         )
                     )
     return checks

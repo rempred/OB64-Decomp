@@ -27,8 +27,9 @@ class ActiveBridgeTests(unittest.TestCase):
             text=True,
         )
         result = json.loads(completed.stdout)
-        self.assertEqual(result["version"], "0.14.0")
-        self.assertEqual(result["frontierFormatVersion"], 5)
+        self.assertEqual(result["version"], "0.17.0")
+        self.assertEqual(result["focusedContextEvents"], 2)
+        self.assertEqual(result["frontierFormatVersion"], 6)
         self.assertEqual(result["pageReadsDuringExecutionTrace"], 0)
         self.assertEqual(result["repeatedCanonicalExecutionEdgeFacts"], 0)
         self.assertGreater(result["explicitDroppedRanges"], 0)

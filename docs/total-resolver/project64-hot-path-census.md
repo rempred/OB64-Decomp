@@ -1,6 +1,12 @@
 # Project64 Capture Hot-Path Census — Total Resolver
 
 Status: **source-grounded census complete; no code changed**
+
+Historical note: this census describes the pre-protocol-0.16 implementation. Protocol 0.16 acts on
+its findings by adding a direct native observer, one-pass known-fact lookup, ordered novel-event
+batching, word-indexed/opcode-prefiltered focused gates, ordinary-capture ring disablement, compact
+focused ring records, and adaptive recorder polling. Keep the tables below as the before-state,
+not as a description of the current hot path.
 Scope: guest CPU execution through native Project64 callbacks, exact novelty
 structures, Duktape/JavaScript, bridge queue and transport, Python recorder and
 staging database.

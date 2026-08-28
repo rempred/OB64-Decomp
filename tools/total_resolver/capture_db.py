@@ -732,21 +732,36 @@ class CaptureStore:
         confidence: str = "certain",
         supersedes_marker_id: int | None = None,
         note: str | None = None,
+        context_before_frames: int = 0,
+        context_after_frames: int = 0,
     ) -> int:
         self._require_open()
         if not label.strip():
             raise ValueError("marker label must not be empty")
+        if context_before_frames < 0 or context_after_frames < 0:
+            raise ValueError("marker frame context must be nonnegative")
+        start_frame = (
+            None
+            if frame_number is None
+            else max(0, frame_number - context_before_frames)
+        )
+        end_frame = (
+            None
+            if frame_number is None
+            else frame_number + context_after_frames
+        )
         cursor = self.connection.execute(
             """
             INSERT INTO semantic_marker(
-                session_id, start_sequence, start_frame, label, marker_type,
+                session_id, start_sequence, start_frame, end_frame, label, marker_type,
                 marker_source, confidence, supersedes_marker_id, note, created_utc
-            ) VALUES(?,?,?,?,?,?,?,?,?,?)
+            ) VALUES(?,?,?,?,?,?,?,?,?,?,?)
             """,
             (
                 self.session_id,
                 self.latest_sequence(),
-                frame_number,
+                start_frame,
+                end_frame,
                 label.strip(),
                 marker_type,
                 marker_source,

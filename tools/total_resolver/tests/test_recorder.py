@@ -9,6 +9,7 @@ from typing import Any
 
 from tools.total_resolver.capture_db import CaptureStore, SessionMetadata, load_event_payload
 from tools.total_resolver.contracts import CaptureMode, InterventionPolicy
+from tools.total_resolver.focused_capture import ResolvedFocusedWatch
 from tools.total_resolver.identities import rom_identity_from_file
 from tools.total_resolver.manifest import finalize_manifest
 from tools.total_resolver.knowledge import empty_novelty_frontier
@@ -27,6 +28,7 @@ from tools.total_resolver.protocol import (
 )
 from tools.total_resolver.recorder import (
     Pj64CaptureRecorder,
+    PollResult,
     RecorderClock,
     RecorderSettings,
     SafetyRangeSpec,
@@ -44,6 +46,7 @@ REPOSITORY_ROOT = Path(__file__).resolve().parents[3]
 class FakeClock(RecorderClock):
     def __init__(self) -> None:
         self.now_ns = 1_000_000_000
+        self.sleeps: list[float] = []
 
     def monotonic_ns(self) -> int:
         self.now_ns += 1_000
@@ -53,6 +56,7 @@ class FakeClock(RecorderClock):
         return "2026-08-17T00:00:00.000Z"
 
     def sleep(self, seconds: float) -> None:
+        self.sleeps.append(seconds)
         self.now_ns += int(seconds * 1_000_000_000)
 
 
@@ -73,6 +77,7 @@ class FakeClient:
         self.baseline: BaselineSnapshot | None = None
         self.frontier_identity: str | None = None
         self.frontier_max_ordinals = (0, 0, 0)
+        self.execution_context_enabled: bool | None = None
 
     def connect(self) -> FakeClient:
         self.commands.append("connect")
@@ -97,7 +102,7 @@ class FakeClient:
                 "trace": {
                     "enabled": self.capture_enabled,
                     "callbackId": 77 if self.capture_enabled else None,
-                    "callbackIds": [77, 78] if self.capture_enabled else [],
+                    "callbackIds": [77] if self.capture_enabled else [],
                 },
                 "controllerInput": {"enabled": self.capture_enabled},
             },
@@ -234,9 +239,18 @@ class FakeClient:
         return {
             "capture": {
                 "enabled": True,
-                "trace": {"enabled": True, "callbackId": 77, "callbackIds": [77, 78]},
+                "trace": {"enabled": True, "callbackId": 77, "callbackIds": [77]},
                 "controllerInput": {"enabled": True},
             }
+        }
+
+    def configure_execution_context(self, enabled: bool) -> dict[str, Any]:
+        self.commands.append("context on" if enabled else "context off")
+        self.execution_context_enabled = enabled
+        return {
+            "configured": True,
+            "enabled": enabled,
+            "ringCapacityRecords": 32768 if enabled else 0,
         }
 
     def baseline_status(self) -> dict[str, Any]:
@@ -317,6 +331,10 @@ class FakeClient:
     def install_watch(self, *_args: Any, **_kwargs: Any) -> dict[str, Any]:
         self.commands.append("watch")
         return {"id": 1}
+
+    def install_focused_watch(self, *_args: Any, **_kwargs: Any) -> dict[str, Any]:
+        self.commands.append("focused watch")
+        return {"id": 2}
 
     def remove_watch(self, bridge_watch_id: int) -> dict[str, Any]:
         self.commands.append("unwatch")
@@ -457,6 +475,25 @@ def metadata(identity: dict[str, Any]) -> SessionMetadata:
 
 
 class RecorderTests(unittest.TestCase):
+    def test_polling_is_idle_slow_active_fast_and_backlog_immediate(self) -> None:
+        recorder = Pj64CaptureRecorder(
+            object(),  # type: ignore[arg-type]
+            object(),  # type: ignore[arg-type]
+            RecorderSettings("A" * 64),
+        )
+        self.assertAlmostEqual(
+            recorder._poll_delay_seconds(PollResult(0, 0, 0, None)),
+            1.0 / 30.0,
+        )
+        self.assertEqual(
+            recorder._poll_delay_seconds(PollResult(1, 0, 0, None)),
+            0.01,
+        )
+        self.assertEqual(
+            recorder._poll_delay_seconds(PollResult(4096, 1, 0, None)),
+            0.0,
+        )
+
     def test_pre_rom_arm_captures_baseline_before_first_machine_event(self) -> None:
         with tempfile.TemporaryDirectory() as raw:
             root = Path(raw)
@@ -833,6 +870,53 @@ class RecorderTests(unittest.TestCase):
             recorder.stop_instrumentation()
             self.assertIn("unwatch", client.commands)
             self.assertNotIn("clear", client.commands)
+            store.close_connection()
+
+    def test_focused_watch_startup_uses_capture_schema_address_space(self) -> None:
+        with tempfile.TemporaryDirectory() as raw:
+            root = Path(raw)
+            identity = make_rom(root / "test.z64")
+            client = FakeClient(root / "test.z64")
+            store = CaptureStore.create(root / "session" / "capture.sqlite", metadata(identity))
+            recorder = Pj64CaptureRecorder(
+                client,
+                store,
+                RecorderSettings(
+                    identity["normalizedSha256"],
+                    focused_watches=(
+                        ResolvedFocusedWatch(
+                            watch_id="focused-fixture-1",
+                            profile_id="fixture-profile",
+                            profile_version=1,
+                            target_id="fixture-target",
+                            label="Focused fixture",
+                            function_id=1,
+                            structural_name="func_00001000",
+                            z64_start=0x1000,
+                            z64_end_exclusive=0x1040,
+                            live_start=0x80001000,
+                            live_end_exclusive=0x80001040,
+                            physical_start=0x1000,
+                            entry_opcode=0x27BDFFE0,
+                            signature_bytes=bytes.fromhex("27BDFFE0"),
+                            sample_mode="all",
+                            pointers=(),
+                            stack_words=0,
+                        ),
+                    ),
+                ),
+                clock=FakeClock(),
+            )
+
+            recorder.start()
+
+            row = store.connection.execute(
+                "SELECT address_space,watch_kind,bridge_watch_id FROM watch_definition "
+                "WHERE watch_id='focused-fixture-1'"
+            ).fetchone()
+            self.assertEqual(tuple(row), ("live-kseg", "exec", 2))
+            self.assertIn("focused watch", client.commands)
+            recorder.stop_instrumentation()
             store.close_connection()
 
     def test_partial_startup_failure_removes_capture_and_dma_hooks(self) -> None:

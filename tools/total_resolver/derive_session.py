@@ -557,7 +557,7 @@ def _execution_analysis(
         SELECT sequence_id, frame_number, bridge_stream, bridge_event_sequence,
                bridge_event_type, raw_payload_json
         FROM event_sequence
-        WHERE bridge_event_type IN ('exec', 'exec-coverage', 'pc-sample')
+        WHERE bridge_event_type IN ('exec', 'exec-coverage', 'focused-exec', 'pc-sample')
         ORDER BY sequence_id
         """
     ).fetchall()
@@ -590,6 +590,7 @@ def _execution_analysis(
     native_coverage_count = 0
     exact_watch_count = 0
     sampled_count = 0
+    focused_count = 0
     region_index = _ActiveRegionIndex(regions)
 
     for row in rows:
@@ -601,7 +602,10 @@ def _execution_analysis(
         except (TypeError, ValueError):
             continue
         exact = (
-            (row["bridge_event_type"] == "exec" and row["bridge_stream"] == "watch")
+            (
+                row["bridge_event_type"] in {"exec", "focused-exec"}
+                and row["bridge_stream"] == "watch"
+            )
             or (
                 row["bridge_event_type"] == "exec-coverage"
                 and row["bridge_stream"] == "trace"
@@ -609,7 +613,8 @@ def _execution_analysis(
         )
         exact_count += int(exact)
         native_coverage_count += int(row["bridge_event_type"] == "exec-coverage")
-        exact_watch_count += int(row["bridge_event_type"] == "exec")
+        exact_watch_count += int(row["bridge_event_type"] in {"exec", "focused-exec"})
+        focused_count += int(row["bridge_event_type"] == "focused-exec")
         sampled_count += int(not exact)
         sequence = int(row["sequence_id"])
         code_page_content_id = payload.get("codePageContentId")
@@ -708,6 +713,56 @@ def _execution_analysis(
                     "romOffset": nominal_rom_offset,
                     "function": nominal_function.to_dict(),
                 }
+        if row["bridge_event_type"] == "focused-exec":
+            target_z64 = _u32(payload.get("focusedZ64Start"))
+            target_function_id = payload.get("focusedFunctionId")
+            target_live_start = _u32(payload.get("targetLiveStart"))
+            signature_hex = payload.get("targetSignatureBytesHex")
+            focused_function = (
+                static.function_containing(target_z64)
+                if target_z64 is not None
+                else None
+            )
+            try:
+                signature = (
+                    bytes.fromhex(signature_hex)
+                    if isinstance(signature_hex, str)
+                    else b""
+                )
+            except ValueError:
+                signature = b""
+            focused_offset = (
+                None
+                if target_z64 is None or target_live_start is None
+                else target_z64 + pc - target_live_start
+            )
+            if (
+                focused_function is not None
+                and isinstance(target_function_id, int)
+                and not isinstance(target_function_id, bool)
+                and focused_function.function_id == target_function_id
+                and target_z64 == focused_function.rom_start
+                and signature
+                and rom[target_z64 : target_z64 + len(signature)] == signature
+                and focused_offset is not None
+                and focused_function.rom_start
+                <= focused_offset
+                < focused_function.rom_end_exclusive
+                and captured_opcode is not None
+                and rom[focused_offset : focused_offset + 4]
+                == captured_opcode.to_bytes(4, "big")
+            ):
+                function = focused_function
+                rom_offset = focused_offset
+                mapping_method = "focused-profile-exact-signature-and-opcode"
+                mapping_verification = {
+                    "status": "exact-signature-and-opcode-match",
+                    "romOffset": focused_offset,
+                    "capturedOpcode": f"0x{captured_opcode:08X}",
+                    "signatureByteLength": len(signature),
+                    "equalityBasis": "event-time-target-signature-and-exact-opcode",
+                }
+                mapping_candidate = None
         safety_range_ids = payload.get("safetyRangeIds")
         inside_dynamic_safety_scope = bool(
             isinstance(safety_range_ids, list) and safety_range_ids
@@ -734,6 +789,8 @@ def _execution_analysis(
             "observationKind": (
                 "native-exact-coverage"
                 if row["bridge_event_type"] == "exec-coverage"
+                else "focused-owner-state"
+                if row["bridge_event_type"] == "focused-exec"
                 else "exact-watch-hit"
                 if exact
                 else "sampled-pc-context"
@@ -771,6 +828,36 @@ def _execution_analysis(
                 else None
             ),
         }
+        if row["bridge_event_type"] == "focused-exec":
+            observation.update(
+                {
+                    "focusedProfileId": payload.get("focusedProfileId"),
+                    "focusedProfileVersion": payload.get("focusedProfileVersion"),
+                    "focusedTargetId": payload.get("focusedTargetId"),
+                    "focusedFunctionId": payload.get("focusedFunctionId"),
+                    "focusedZ64Start": payload.get("focusedZ64Start"),
+                    "focusedRole": payload.get("focusedRole"),
+                    "focusedInvocationId": payload.get("focusedInvocationId"),
+                    "sampleMode": payload.get("sampleMode"),
+                    "targetLiveStart": payload.get("targetLiveStart"),
+                    "targetLiveEndExclusive": payload.get("targetLiveEndExclusive"),
+                    "entryReturnAddress": payload.get("entryReturnAddress"),
+                    "targetSignatureBytesEncoding": payload.get(
+                        "targetSignatureBytesEncoding"
+                    ),
+                    "targetSignatureByteLength": payload.get(
+                        "targetSignatureByteLength"
+                    ),
+                    "targetSignatureBytesHex": payload.get(
+                        "targetSignatureBytesHex"
+                    ),
+                    "stackSnapshot": payload.get("stack"),
+                    "pointerSnapshots": payload.get("pointerSnapshots"),
+                    "pointerSnapshotIssues": payload.get("pointerSnapshotIssues"),
+                    "capturePhase": payload.get("capturePhase"),
+                    "returnPhaseLimitation": payload.get("returnPhaseLimitation"),
+                }
+            )
         if "newCall" in payload:
             observation["newCall"] = payload["newCall"]
         if "call" in payload:
@@ -852,6 +939,7 @@ def _execution_analysis(
         "exactExecutionCount": exact_count,
         "exactWatchHitCount": exact_watch_count,
         "nativeCoverageCount": native_coverage_count,
+        "focusedOwnerStateCount": focused_count,
         "resolvedTraceContentCount": sum(
             item["observationKind"] == "native-exact-coverage"
             and item["codePageContentResolved"]
@@ -1197,6 +1285,7 @@ def derive_session(
             "unresolvedRangeChanges": safety["unresolvedChangeCount"],
             "executionObservations": execution["observationCount"],
             "exactExecutionWatchHits": execution["exactWatchHitCount"],
+            "focusedOwnerStateWitnesses": execution["focusedOwnerStateCount"],
             "nativeExecutionCoverage": execution["nativeCoverageCount"],
             "sampledPcs": execution["sampledPcCount"],
             "unresolvedPcs": execution["unresolvedPcCount"],

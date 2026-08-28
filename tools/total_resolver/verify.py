@@ -13,7 +13,11 @@ from .bridge_events import _validate_trace_or_input_event
 from .capture_db import canonical_json, load_event_payload
 from .configuration import ConfigurationRegion, machine_configuration_identity
 from .contracts import RegionClass
-from .protocol import BRIDGE_PROTOCOL_VERSION
+from .protocol import (
+    ACTIVITY_PROTOCOL_VERSIONS,
+    BRIDGE_PROTOCOL_VERSION,
+    FRONTIER_FORMAT_VERSION,
+)
 from .protocol import BridgeProtocolError
 from .schema import open_capture_database, verify_capture_schema
 
@@ -91,8 +95,13 @@ def _verify_events(
     trace_pages: dict[int, tuple[int, bytes]] = {}
     trace_generations: set[tuple[int, int, int]] = set()
     strict_trace_generations = session["bridge_version"] == "0.9.0"
+    session_frontier_format = (
+        5 if session["bridge_version"] in {"0.14.0", "0.15.0", "0.16.0"}
+        else FRONTIER_FORMAT_VERSION
+    )
     structural_trace = session["bridge_version"] in {
-        "0.10.0", "0.11.0", "0.12.0", BRIDGE_PROTOCOL_VERSION
+        "0.10.0", "0.11.0", "0.12.0", "0.13.0", "0.14.0", "0.15.0",
+        "0.16.0", BRIDGE_PROTOCOL_VERSION
     }
     pair_ok = True
     dma_starts: dict[int, dict[str, Any]] = {}
@@ -186,7 +195,9 @@ def _verify_events(
             "marker-execution-context-incomplete",
         }:
             try:
-                _validate_trace_or_input_event(value, event_type)
+                _validate_trace_or_input_event(
+                    value, event_type, session_frontier_format
+                )
             except BridgeProtocolError:
                 trace_reference_ok = False
         is_dma = event_type == "dma-complete"
@@ -459,7 +470,8 @@ def _verify_events(
         "exact stored bytes, lengths, fields, encodings, and event phases",
     )
     if capture_version >= 4 and session["bridge_version"] in {
-        "0.11.0", "0.12.0", BRIDGE_PROTOCOL_VERSION
+        "0.11.0", "0.12.0", "0.13.0", "0.14.0", "0.15.0", "0.16.0",
+        BRIDGE_PROTOCOL_VERSION
     }:
         baseline_ok = len(baseline_sequences) == 1 and (
             not execution_sequences or baseline_sequences[0] < min(execution_sequences)
@@ -476,7 +488,7 @@ def _verify_events(
         trace_reference_ok,
         f"{len(trace_pages)} exact page identity record(s)",
     )
-    if session["bridge_version"] == BRIDGE_PROTOCOL_VERSION:
+    if session["bridge_version"] in ACTIVITY_PROTOCOL_VERSIONS:
         _check(
             checks,
             "stop-time-known-activity-summary",

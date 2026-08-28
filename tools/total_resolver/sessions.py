@@ -22,9 +22,11 @@ from .capture_db import (
     CaptureStore,
     RawEventInput,
     SessionMetadata,
+    canonical_json,
     content_deduplication_stats,
 )
 from .contracts import CaptureMode, InterventionPolicy
+from .focused_capture import ResolvedFocusedProfile, resolve_focused_profile
 from .inventory import config_path, load_inventory, repository_root, sha256_file
 from .knowledge import (
     build_frontier,
@@ -431,6 +433,7 @@ def _metadata(
     connection: SessionConnection,
     session_id: str,
     frontier: Any,
+    focused_profile: ResolvedFocusedProfile | None = None,
 ) -> SessionMetadata:
     decomp = _git_identity(repository_root())
     project64_root = _project64_root()
@@ -456,6 +459,8 @@ def _metadata(
             "noveltyFrontier": frontier.summary(),
         },
     }
+    if focused_profile is not None:
+        static_sources["captureProfile"]["focusedCapture"] = focused_profile.to_dict()
     identity = preflight.rom_identity
     return SessionMetadata(
         session_id=session_id,
@@ -478,7 +483,11 @@ def _metadata(
         rom_normalized_sha256=identity.get("normalizedSha256"),
         static_sources=static_sources,
         accepted_resolver_identity=frontier.identity,
-        capture_mode=CaptureMode.MANUAL_PLAY,
+        capture_mode=(
+            CaptureMode.FOCUSED_RESEARCH
+            if focused_profile is not None
+            else CaptureMode.MANUAL_PLAY
+        ),
         intervention_policy=InterventionPolicy.OBSERVATION_ONLY,
         notes=(
             f"observation-only bridge endpoint {connection.host}:{connection.port}; "
@@ -517,6 +526,7 @@ def create_session(
     knowledge_database: Path | None = None,
     before_rom: bool = False,
     auto_ingest: bool = True,
+    focused_profile_id: str | None = None,
 ) -> dict[str, Any]:
     resolved_root = sessions_root(root)
     resolved_root.mkdir(parents=True, exist_ok=True)
@@ -542,12 +552,19 @@ def create_session(
         if knowledge_database is not None
         else selected_knowledge_database()
     )
+    focused_profile: ResolvedFocusedProfile | None = None
     if selected_knowledge is None:
+        if focused_profile_id is not None:
+            raise ValueError("Focused Capture requires a selected persistent knowledge database")
         frontier = empty_novelty_frontier(expected_rom)
     else:
         knowledge_connection = open_knowledge_database(selected_knowledge, read_only=True)
         try:
             frontier = build_frontier(knowledge_connection)
+            if focused_profile_id is not None:
+                focused_profile = resolve_focused_profile(
+                    knowledge_connection, focused_profile_id
+                )
         finally:
             knowledge_connection.close()
     client = Pj64Client(
@@ -569,7 +586,7 @@ def create_session(
     location = session_location(resolved_root, session_id)
     store = CaptureStore.create(
         location.database,
-        _metadata(preflight, connection, session_id, frontier),
+        _metadata(preflight, connection, session_id, frontier, focused_profile),
         mirror_events=False,
     )
     store.close_connection()
@@ -584,6 +601,7 @@ def create_session(
         frontier=frontier.summary(),
         beforeRom=before_rom,
         autoIngest=auto_ingest,
+        focusedProfile=(focused_profile.profile_id if focused_profile is not None else None),
     )
     _write_active(location, state)
 
@@ -594,6 +612,7 @@ def create_session(
             selected_knowledge,
             before_rom=before_rom,
             auto_ingest=auto_ingest,
+            focused_profile_id=focused_profile_id,
         )
         return {
             "sessionId": session_id,
@@ -627,6 +646,8 @@ def create_session(
         command += ("--before-rom",)
     if not auto_ingest:
         command += ("--defer-ingest",)
+    if focused_profile_id is not None:
+        command += ("--focused-profile", focused_profile_id)
     popen_kwargs: dict[str, Any] = {
         "cwd": str(repository_root()),
         "stdin": subprocess.DEVNULL,
@@ -690,6 +711,14 @@ def create_session(
         "bridgeEpoch": preflight.bridge_epoch,
         "bridgeNextSequenceStart": preflight.bridge_next_sequence,
         "observationOnly": True,
+        "captureMode": (
+            CaptureMode.FOCUSED_RESEARCH.value
+            if focused_profile is not None
+            else CaptureMode.MANUAL_PLAY.value
+        ),
+        "focusedProfile": (
+            focused_profile.profile_id if focused_profile is not None else None
+        ),
         "knowledgeDatabase": (
             str(selected_knowledge) if selected_knowledge is not None else None
         ),
@@ -715,6 +744,7 @@ def run_session_worker(
     *,
     before_rom: bool = False,
     auto_ingest: bool = True,
+    focused_profile_id: str | None = None,
 ) -> int:
     """Run one worker until a stop request or an evidence-breaking failure."""
 
@@ -723,18 +753,38 @@ def run_session_worker(
     try:
         session_row = _session_row(location.database)
         expected_rom = str(session_row["rom_normalized_sha256"])
+        focused_profile: ResolvedFocusedProfile | None = None
         if knowledge_database is None:
+            if focused_profile_id is not None:
+                raise ValueError("Focused Capture requires a persistent knowledge database")
             frontier = empty_novelty_frontier(expected_rom)
         else:
             knowledge_connection = open_knowledge_database(knowledge_database, read_only=True)
             try:
                 frontier = build_frontier(knowledge_connection)
+                if focused_profile_id is not None:
+                    focused_profile = resolve_focused_profile(
+                        knowledge_connection, focused_profile_id
+                    )
             finally:
                 knowledge_connection.close()
         if frontier.identity != str(session_row["accepted_resolver_identity"]):
             raise BridgeProtocolError(
                 "the selected knowledge frontier changed after session preparation; "
                 "prepare a new capture session"
+            )
+        static_sources = json.loads(str(session_row["static_sources_json"]))
+        stored_profile = (
+            static_sources.get("captureProfile", {}).get("focusedCapture")
+            if isinstance(static_sources, Mapping)
+            else None
+        )
+        resolved_profile = (
+            focused_profile.to_dict() if focused_profile is not None else None
+        )
+        if canonical_json(stored_profile) != canonical_json(resolved_profile):
+            raise BridgeProtocolError(
+                "the focused profile changed after session preparation; prepare a new session"
             )
     except Exception as exc:
         error = f"frontier preparation failed: {type(exc).__name__}: {exc}"
@@ -756,6 +806,7 @@ def run_session_worker(
             expected_rom,
             safety_ranges=default_safety_ranges(),
             novelty_frontier=frontier,
+            focused_watches=(focused_profile.watches if focused_profile is not None else ()),
         ),
     )
     closure = "interrupted"
@@ -1273,6 +1324,8 @@ def add_session_annotation(
     connection: SessionConnection | None = None,
     context_before: int = 256,
     context_after: int = 256,
+    frame_context_before: int = 0,
+    frame_context_after: int = 0,
 ) -> dict[str, Any]:
     if marker_type not in {
         "stable-state",
@@ -1284,37 +1337,64 @@ def add_session_annotation(
         raise ValueError(f"unsupported marker type: {marker_type}")
     resolved_root = sessions_root(root)
     location = _resolve_session(resolved_root, session_id)
-    store = CaptureStore.open(location.database, mirror_events=False)
-    try:
-        marker_id = store.add_marker(
-            text,
-            marker_type=marker_type,
-            frame_number=_latest_frame(store.connection),
-            note=text if marker_type == "note" else None,
-        )
-    finally:
-        store.close_connection()
+    live_client: Pj64Client | None = None
+    bridge_frame: int | None = None
     context_result: dict[str, Any] = {
         "armed": False,
         "reason": "no bridge connection requested",
     }
     if connection is not None:
         try:
-            with Pj64Client(
+            live_client = Pj64Client(
                 connection.host, connection.port, connection.timeout
-            ) as client:
-                context_result = client.arm_execution_context(
-                    location.session_id,
-                    marker_id,
-                    before=context_before,
-                    after=context_after,
-                )
+            )
+            live_client.connect()
+            bridge_frame = live_client.frame_count()
+        except (OSError, RuntimeError, ValueError) as exc:
+            if live_client is not None:
+                live_client.close()
+                live_client = None
+            context_result = {"armed": False, "reason": str(exc)}
+    store = CaptureStore.open(location.database, mirror_events=False)
+    try:
+        anchor_frame = (
+            bridge_frame
+            if bridge_frame is not None
+            else _latest_frame(store.connection)
+        )
+        marker_id = store.add_marker(
+            text,
+            marker_type=marker_type,
+            frame_number=anchor_frame,
+            note=text if marker_type == "note" else None,
+            context_before_frames=frame_context_before,
+            context_after_frames=frame_context_after,
+        )
+    finally:
+        store.close_connection()
+    if live_client is not None:
+        try:
+            context_result = live_client.arm_execution_context(
+                location.session_id,
+                marker_id,
+                before=context_before,
+                after=context_after,
+            )
         except (OSError, RuntimeError, ValueError) as exc:
             context_result = {"armed": False, "reason": str(exc)}
+        finally:
+            live_client.close()
     return {
         "sessionId": location.session_id,
         "markerId": marker_id,
         "markerType": marker_type,
+        "anchorFrame": anchor_frame,
+        "frameWindow": {
+            "beforeFrames": frame_context_before,
+            "afterFrames": frame_context_after,
+            "nominalSecondsBeforeAt30Fps": frame_context_before / 30.0,
+            "nominalSecondsAfterAt30Fps": frame_context_after / 30.0,
+        },
         "executionContext": context_result,
     }
 

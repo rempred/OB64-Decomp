@@ -164,6 +164,14 @@ def _positive(value: int, name: str, *, maximum: int | None = None) -> int:
     return value
 
 
+def _nonnegative(value: int, name: str, *, maximum: int | None = None) -> int:
+    if isinstance(value, bool) or not isinstance(value, int) or value < 0:
+        raise ValueError(f"{name} must be a nonnegative integer")
+    if maximum is not None and value > maximum:
+        raise ValueError(f"{name} must be at most {maximum}")
+    return value
+
+
 class Pj64Client:
     """Accepted bridge client surface for capture and later explicit control modes."""
 
@@ -439,6 +447,60 @@ class Pj64Client:
             raise Pj64Error("watch response omitted watch definition")
         return dict(watch)
 
+    def install_focused_watch(
+        self,
+        *,
+        live_start: int,
+        live_end_exclusive: int,
+        entry_opcode: int,
+        signature_bytes: bytes,
+        profile_id: str,
+        target_id: str,
+        function_id: int,
+        z64_start: int,
+        sample_mode: str,
+        pointer_snapshots: Sequence[tuple[str, int, str]],
+        stack_words: int,
+    ) -> dict[str, Any]:
+        """Install one exact native-gated focused function trigger."""
+
+        start = _u32(live_start, "live_start")
+        end = _u32(live_end_exclusive, "live_end_exclusive")
+        if end <= start:
+            raise ValueError("focused live range must be nonempty")
+        opcode = _u32(entry_opcode, "entry_opcode")
+        if not 4 <= len(signature_bytes) <= 64 or len(signature_bytes) & 3:
+            raise ValueError("focused signature must contain 4..64 aligned bytes")
+        signature = signature_bytes.hex().upper()
+        profile = _label_argument(profile_id)
+        target = _label_argument(target_id)
+        if profile != profile_id or target != target_id:
+            raise ValueError("focused profile and target IDs must be whitespace-free tokens")
+        if sample_mode not in {"all", "first-per-frame"}:
+            raise ValueError("unsupported focused sample mode")
+        pointer_parts: list[str] = []
+        for register, size, label in pointer_snapshots:
+            if register not in {"a0", "a1", "a2", "a3"}:
+                raise ValueError(f"unsupported focused pointer register: {register}")
+            token_label = _label_argument(label)
+            if token_label != label:
+                raise ValueError("focused pointer labels must be whitespace-free tokens")
+            pointer_parts.append(
+                f"{register}:{_positive(size, 'pointer size', maximum=4096)}:{token_label}"
+            )
+        recipe = ",".join(pointer_parts) if pointer_parts else "-"
+        response = self._command(
+            "focusedwatch "
+            f"0x{start:X} 0x{end:X} 0x{opcode:X} {signature} "
+            f"{profile} {target} {_positive(function_id, 'function_id')} "
+            f"0x{_u32(z64_start, 'z64_start'):X} {sample_mode} {recipe} "
+            f"{_nonnegative(stack_words, 'stack_words', maximum=128)}"
+        )
+        watch = response.get("watch")
+        if not isinstance(watch, Mapping):
+            raise Pj64Error("focusedwatch response omitted watch definition")
+        return dict(watch)
+
     def watch_exec(self, address: int, *, size: int = 1, label: str = "") -> dict[str, Any]:
         return self.install_watch("exec", address, size=size, label=label)
 
@@ -531,6 +593,20 @@ class Pj64Client:
         ):
             raise ValueError("frontier_identity must be one bounded opaque token")
         return self._command("capture on " + frontier_identity)
+
+    def configure_execution_context(self, enabled: bool) -> dict[str, Any]:
+        """Enable the marker ring only for focused captures, before capture starts."""
+        if not isinstance(enabled, bool):
+            raise TypeError("enabled must be a boolean")
+        response = self._command("context configure " + ("on" if enabled else "off"))
+        context = response.get("context")
+        if (
+            not isinstance(context, Mapping)
+            or context.get("configured") is not True
+            or context.get("enabled") is not enabled
+        ):
+            raise BridgeProtocolError("bridge did not preserve execution-context configuration")
+        return dict(context)
 
     def cold_boot_arm(
         self,
@@ -835,6 +911,9 @@ class ObservationOnlyPj64Client:
     def capture_start(self, frontier_identity: str) -> dict[str, Any]:
         return self.__client.capture_start(frontier_identity)
 
+    def configure_execution_context(self, enabled: bool) -> dict[str, Any]:
+        return self.__client.configure_execution_context(enabled)
+
     def capture_stop(self) -> dict[str, Any]:
         return self.__client.capture_stop()
 
@@ -853,6 +932,35 @@ class ObservationOnlyPj64Client:
         self, kind: str, address: int, *, size: int = 1, label: str = ""
     ) -> dict[str, Any]:
         return self.__client.install_watch(kind, address, size=size, label=label)
+
+    def install_focused_watch(
+        self,
+        *,
+        live_start: int,
+        live_end_exclusive: int,
+        entry_opcode: int,
+        signature_bytes: bytes,
+        profile_id: str,
+        target_id: str,
+        function_id: int,
+        z64_start: int,
+        sample_mode: str,
+        pointer_snapshots: Sequence[tuple[str, int, str]],
+        stack_words: int,
+    ) -> dict[str, Any]:
+        return self.__client.install_focused_watch(
+            live_start=live_start,
+            live_end_exclusive=live_end_exclusive,
+            entry_opcode=entry_opcode,
+            signature_bytes=signature_bytes,
+            profile_id=profile_id,
+            target_id=target_id,
+            function_id=function_id,
+            z64_start=z64_start,
+            sample_mode=sample_mode,
+            pointer_snapshots=pointer_snapshots,
+            stack_words=stack_words,
+        )
 
     def remove_watch(self, bridge_watch_id: int) -> dict[str, Any]:
         return self.__client.remove_watch(bridge_watch_id)

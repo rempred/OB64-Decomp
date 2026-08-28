@@ -14,6 +14,8 @@ from tools.total_resolver.knowledge import (
     ControllerTransitionObservation,
     DmaPlacementObservation,
     EdgeObservation,
+    FocusedExecutionObservation,
+    FocusedPointerSnapshotObservation,
     FunctionPlacementObservation,
     InstructionObservation,
     KnownActivityObservation,
@@ -27,6 +29,7 @@ from tools.total_resolver.knowledge import (
     UnresolvedKnowledgeObservation,
     compare_canonical_machine_facts,
     compare_knowledge_databases,
+    build_frontier,
     create_knowledge_database,
     empty_novelty_frontier,
     ingest_delta,
@@ -34,6 +37,7 @@ from tools.total_resolver.knowledge import (
     migrate_frontier_database,
     open_knowledge_database,
     verify_knowledge_database,
+    write_native_frontier,
 )
 from tools.total_resolver.resolver_context import (
     ResolverContext,
@@ -41,7 +45,11 @@ from tools.total_resolver.resolver_context import (
     open_explicit_legacy_resolver,
     search_selected,
 )
-from tools.total_resolver.protocol import BRIDGE_PROTOCOL_VERSION
+from tools.total_resolver.protocol import BRIDGE_PROTOCOL_VERSION, FRONTIER_FORMAT_VERSION
+from tools.total_resolver.protocol import (
+    ACTIVITY_PROTOCOL_VERSIONS,
+    ATOMIC_CALL_PROTOCOL_VERSIONS,
+)
 from tools.total_resolver.knowledge_ingest import _evidence_grade as ingest_evidence_grade
 
 
@@ -156,12 +164,12 @@ class KnowledgeTests(unittest.TestCase):
             connection.commit()
         finally:
             connection.close()
-        destination = self.root / "frontier-v5.sqlite"
+        destination = self.root / "frontier-v6.sqlite"
 
         result = migrate_frontier_database(source, destination)
 
         self.assertEqual(result["fromFrontierFormatVersion"], 2)
-        self.assertEqual(result["toFrontierFormatVersion"], 5)
+        self.assertEqual(result["toFrontierFormatVersion"], FRONTIER_FORMAT_VERSION)
         self.assertEqual(result["factMutation"], "none")
         self.assertEqual(result["verification"]["result"], "PASS")
         self.assertTrue(compare_canonical_machine_facts(source, destination)["equivalent"])
@@ -172,7 +180,7 @@ class KnowledgeTests(unittest.TestCase):
                 destination_connection.execute(
                     "SELECT value FROM knowledge_meta WHERE key='frontierFormatVersion'"
                 ).fetchone()[0],
-                "5",
+                str(FRONTIER_FORMAT_VERSION),
             )
             self.assertEqual(
                 destination_connection.execute(
@@ -367,6 +375,387 @@ class KnowledgeTests(unittest.TestCase):
         self.assertEqual(status["counts"]["executablePhysicalPages"], 1)
         self.assertEqual(status["counts"]["pageGenerationWitnesses"], 70)
 
+    def test_static_data_dma_factors_resources_destinations_and_rotating_pairs(self) -> None:
+        database = self.make_knowledge("factorized-data-dma.sqlite")
+
+        def dma(
+            destination: int,
+            region_class: str,
+            sequence: int = 30,
+            matched_length: int = 4,
+        ) -> DmaPlacementObservation:
+            return DmaPlacementObservation(
+                "cartridge-rom",
+                0x200,
+                0x204,
+                destination,
+                destination + 4,
+                matched_length,
+                b"RING",
+                region_class,
+                "exact-test",
+                "verified",
+                sequence,
+                sequence + 1,
+                100,
+                100,
+            )
+
+        first = replace(
+            self.delta("DMA-FACTOR-1"),
+            dma_placements=(
+                dma(0x3000, "data", 30),
+                dma(0x3004, "data", 32),
+                dma(0x4000, "executable", 34),
+                dma(0x4004, "executable", 36),
+                dma(0x4008, "executable", 38, matched_length=2),
+            ),
+        )
+        first_result = ingest_delta(database, first)
+        self.assertEqual(first_result["delta"]["newFacts"]["dmaDataResources"], 1)
+        self.assertEqual(first_result["delta"]["newFacts"]["dmaDataDestinations"], 2)
+        self.assertEqual(first_result["delta"]["newFacts"]["dmaPlacements"], 3)
+
+        second = replace(
+            self.delta("DMA-FACTOR-2"),
+            frontier_identity_at_start=first_result["delta"]["frontierAfter"],
+            dma_placements=(dma(0x3004, "data", 30), dma(0x3008, "data", 32)),
+        )
+        second_result = ingest_delta(database, second)
+        self.assertEqual(second_result["delta"]["newFacts"]["dmaDataResources"], 0)
+        self.assertEqual(second_result["delta"]["newFacts"]["dmaDataDestinations"], 1)
+        self.assertEqual(second_result["delta"]["newFacts"]["dmaPlacements"], 0)
+
+        connection = open_knowledge_database(database, read_only=True)
+        try:
+            frontier = build_frontier(connection)
+            self.assertEqual(
+                sorted(item.match_kind for item in frontier.dma),
+                [
+                    "data-destination",
+                    "data-destination",
+                    "data-destination",
+                    "data-resource",
+                    "exact-placement",
+                    "exact-placement",
+                    "exact-placement",
+                ],
+            )
+            partial = next(
+                item
+                for item in frontier.dma
+                if item.destination_physical_start == 0x4008
+            )
+            self.assertEqual(partial.matched_length, 4)
+            self.assertEqual(partial.exact_bytes, b"RING")
+            self.assertEqual(
+                connection.execute(
+                    "SELECT matched_length FROM dma_placement "
+                    "WHERE destination_physical_start=0x4008"
+                ).fetchone()[0],
+                2,
+            )
+            self.assertEqual(
+                tuple(
+                    connection.execute(
+                        "SELECT observation_count,session_count "
+                        "FROM dma_resource_fact"
+                    ).fetchone()
+                ),
+                (4, 2),
+            )
+            self.assertEqual(
+                connection.execute(
+                    "SELECT COUNT(*) FROM dma_data_destination_fact"
+                ).fetchone()[0],
+                3,
+            )
+            self.assertEqual(
+                connection.execute("SELECT COUNT(*) FROM dma_placement").fetchone()[0],
+                3,
+            )
+            self.assertEqual(
+                connection.execute("SELECT COUNT(*) FROM dma_frontier_fact").fetchone()[0],
+                7,
+            )
+        finally:
+            connection.close()
+        frontier_path = write_native_frontier(frontier, self.root / "factorized.trf")
+        self.assertEqual(frontier_path.read_bytes()[:8], b"OB64TRF6")
+        self.assertEqual(verify_knowledge_database(database)["result"], "PASS")
+
+    def test_frontier_migration_adds_missing_exact_partial_rom_dma(self) -> None:
+        source = self.make_knowledge("partial-dma-frontier-source.sqlite")
+        partial = DmaPlacementObservation(
+            "cartridge-rom",
+            0x200,
+            0x204,
+            0x5000,
+            0x5004,
+            2,
+            b"FULL",
+            "unknown",
+            "exact-test",
+            "supported",
+            30,
+            31,
+            100,
+            100,
+        )
+        ingest_delta(
+            source,
+            replace(self.delta("PARTIAL-DMA"), dma_placements=(partial,)),
+        )
+        connection = open_knowledge_database(source)
+        try:
+            placement_id = int(
+                connection.execute(
+                    "SELECT dma_placement_id FROM dma_placement "
+                    "WHERE destination_physical_start=0x5000"
+                ).fetchone()[0]
+            )
+            connection.execute(
+                "DELETE FROM dma_frontier_fact WHERE dma_placement_id=?",
+                (placement_id,),
+            )
+            connection.commit()
+        finally:
+            connection.close()
+
+        destination = self.root / "partial-dma-frontier-migrated.sqlite"
+        result = migrate_frontier_database(source, destination)
+
+        self.assertEqual(result["exactDmaFrontierFactsAdded"], 1)
+        self.assertEqual(result["verification"]["result"], "PASS")
+        self.assertTrue(result["status"]["frontier"]["frontierIdentity"].startswith("K3:"))
+        connection = open_knowledge_database(destination, read_only=True)
+        try:
+            item = next(
+                value
+                for value in build_frontier(connection).dma
+                if value.destination_physical_start == 0x5000
+            )
+            self.assertEqual(item.match_kind, "exact-placement")
+            self.assertEqual(item.matched_length, 4)
+            self.assertEqual(item.exact_bytes, b"FULL")
+        finally:
+            connection.close()
+
+    def test_focused_state_is_atomic_exact_and_immediately_queryable(self) -> None:
+        database = self.make_knowledge("focused.sqlite")
+        base = self.delta("FOCUSED")
+        activity = KnownActivityObservation(
+            frontier_identity=base.frontier_identity_at_start,
+            frontier_format_version=FRONTIER_FORMAT_VERSION,
+            bridge_sequence=60,
+            instruction_max_ordinal=0,
+            instruction_hit_count=0,
+            instruction_hit_bitmap=b"",
+            edge_max_ordinal=0,
+            edge_hit_count=0,
+            edge_hit_bitmap=b"",
+            call_max_ordinal=0,
+            call_hit_count=0,
+            call_hit_bitmap=b"",
+            dma_max_ordinal=0,
+            dma_hit_count=0,
+            dma_hit_bitmap=b"",
+        )
+        profile = {
+            "schema": "ob64-total-resolver-focused-profile.v1",
+            "profileId": "cutscene-studio-v1",
+            "profileVersion": 1,
+            "description": "test profile",
+            "triggerCount": 2,
+            "targets": [
+                {
+                    "watchId": "focused-stage-builder-1",
+                    "profileId": "cutscene-studio-v1",
+                    "profileVersion": 1,
+                    "targetId": "stage-builder",
+                    "functionId": 1,
+                    "z64Start": 0x100,
+                    "liveStart": 0x80001000,
+                    "liveEndExclusive": 0x80001040,
+                    "entryOpcode": 0x0C000050,
+                    "signatureBytesEncoding": "hex-uppercase",
+                    "signatureBytesHex": "0C000050",
+                    "sampleMode": "all",
+                    "pointerSnapshots": [
+                        {"register": "a0", "size": 4, "label": "arg0-stage"}
+                    ],
+                    "stackWords": 0,
+                },
+                {
+                    "watchId": "focused-stage-builder-2",
+                    "profileId": "cutscene-studio-v1",
+                    "profileVersion": 1,
+                    "targetId": "stage-builder",
+                    "functionId": 1,
+                    "z64Start": 0x100,
+                    "liveStart": 0x80002000,
+                    "liveEndExclusive": 0x80002040,
+                    "entryOpcode": 0x0C000050,
+                    "signatureBytesEncoding": "hex-uppercase",
+                    "signatureBytesHex": "0C000050",
+                    "sampleMode": "all",
+                    "pointerSnapshots": [
+                        {"register": "a0", "size": 4, "label": "arg0-stage"}
+                    ],
+                    "stackWords": 0,
+                },
+            ],
+            "capturePolicy": {},
+        }
+        focused = FocusedExecutionObservation(
+            bridge_sequence=40,
+            frame=200,
+            profile_id="cutscene-studio-v1",
+            profile_version=1,
+            target_id="stage-builder",
+            trigger_role="entry",
+            invocation_id="cutscene-studio-v1:stage-builder:1",
+            function_id=1,
+            z64_start=0x100,
+            live_pc=0x80001000,
+            physical_pc=0x1000,
+            opcode_u32=0x0C000050,
+            target_live_start=0x80001000,
+            target_live_end_exclusive=0x80001040,
+            sample_mode="all",
+            entry_return_address=0x80001100,
+            target_signature_bytes=bytes.fromhex("0C000050"),
+            registers={"a0": "0x80002000", "sp": "0x80003000"},
+            stack={"base": "0x80003000", "words": []},
+            pointer_issues=(),
+            capture_phase="focused-function-entry",
+            pointers=(
+                FocusedPointerSnapshotObservation(
+                    "a0",
+                    "entry",
+                    "arg0-stage",
+                    0x80002000,
+                    0x2000,
+                    b"STAG",
+                    "synchronous-focused-callback",
+                ),
+            ),
+        )
+        delta = replace(
+            base,
+            protocol_version=BRIDGE_PROTOCOL_VERSION,
+            known_activity=activity,
+            focused_profile=profile,
+            focused_executions=(focused,),
+        )
+        result = ingest_delta(database, delta)
+        self.assertEqual(result["delta"]["newFacts"]["focusedExecutionWitnesses"], 1)
+        self.assertEqual(result["delta"]["newFacts"]["focusedPointerSnapshots"], 1)
+        connection = open_knowledge_database(database, read_only=True)
+        try:
+            self.assertEqual(
+                tuple(
+                    connection.execute(
+                        "SELECT configured_watch_count,entry_witness_count "
+                        "FROM focused_capture_session"
+                    ).fetchone()
+                ),
+                (2, 1),
+            )
+            self.assertEqual(
+                bytes(
+                    connection.execute(
+                        "SELECT c.content_bytes FROM focused_pointer_snapshot p "
+                        "JOIN exact_content c ON c.content_id=p.content_id"
+                    ).fetchone()[0]
+                ),
+                b"STAG",
+            )
+        finally:
+            connection.close()
+
+        field_product = self.root / "focused-field-product"
+        field_database = field_product / "db" / "structure-field-access.sqlite"
+        field_database.parent.mkdir(parents=True)
+        sqlite3.connect(field_database).close()
+        with patch(
+            "tools.total_resolver.resolver_context.validate_query_sources",
+            return_value=(),
+        ):
+            with ResolverContext.open(
+                database,
+                static_database=self.static,
+                resource_database=self.resource,
+                field_product=field_product,
+            ) as context:
+                explained, status = explain_selected(
+                    context, "func_00000100", includes=("focused",)
+                )
+                self.assertEqual(status, 0)
+                focused_rows = explained["previews"]["focusedContext"]
+                self.assertEqual(focused_rows["count"], 1)
+                self.assertEqual(
+                    focused_rows["rows"][0]["pointerSnapshots"][0]["bytesHex"],
+                    "53544147",
+                )
+                searched = search_selected(
+                    context,
+                    focused_profile="cutscene-studio-v1",
+                    focused_target="stage-builder",
+                )
+                self.assertEqual(searched["counts"]["focusedExecutionWitnesses"], 1)
+
+        self.assertEqual(verify_knowledge_database(database)["result"], "PASS")
+        tampered = open_knowledge_database(database)
+        try:
+            tampered.execute(
+                "UPDATE focused_capture_session SET configuration_json="
+                "replace(configuration_json,'cutscene-studio-v1','tampered-profile')"
+            )
+            tampered.commit()
+        finally:
+            tampered.close()
+        tampered_verification = verify_knowledge_database(database)
+        self.assertEqual(tampered_verification["result"], "FAIL")
+        self.assertEqual(
+            next(
+                item
+                for item in tampered_verification["checks"]
+                if item["name"] == "focused-capture-context"
+            )["status"],
+            "FAIL",
+        )
+
+        invalid_database = self.make_knowledge("focused-invalid.sqlite")
+        invalid = replace(
+            delta,
+            session_id="FOCUSED-BAD",
+            capture_identity="capture:FOCUSED-BAD",
+            bridge_epoch="EPOCH-FOCUSED-BAD",
+            focused_executions=(
+                replace(
+                    focused,
+                    pointer_issues=({"register": "a0", "reason": "invalid"},),
+                ),
+            ),
+        )
+        with self.assertRaisesRegex(ValueError, "pointer results"):
+            ingest_delta(invalid_database, invalid)
+        invalid_connection = open_knowledge_database(invalid_database, read_only=True)
+        try:
+            self.assertEqual(
+                invalid_connection.execute("SELECT COUNT(*) FROM ingestion_ledger").fetchone()[0],
+                0,
+            )
+            self.assertEqual(
+                invalid_connection.execute(
+                    "SELECT COUNT(*) FROM focused_execution_witness"
+                ).fetchone()[0],
+                0,
+            )
+        finally:
+            invalid_connection.close()
+
     def test_accepted_historical_protocols_replay_and_0_7_fails_closed(self) -> None:
         self.assertEqual(
             SUPPORTED_INGEST_PROTOCOL_VERSIONS,
@@ -377,6 +766,9 @@ class KnowledgeTests(unittest.TestCase):
                 "0.11.0",
                 "0.12.0",
                 "0.13.0",
+                "0.14.0",
+                "0.15.0",
+                "0.16.0",
                 BRIDGE_PROTOCOL_VERSION,
             ),
         )
@@ -384,12 +776,16 @@ class KnowledgeTests(unittest.TestCase):
             with self.subTest(version=version):
                 database = self.make_knowledge(f"protocol-{version}.sqlite")
                 delta = replace(self.delta("S1"), protocol_version=version)
-                if version == BRIDGE_PROTOCOL_VERSION:
+                if version in ACTIVITY_PROTOCOL_VERSIONS:
                     delta = replace(
                         delta,
                         known_activity=KnownActivityObservation(
                             frontier_identity=delta.frontier_identity_at_start,
-                            frontier_format_version=5,
+                            frontier_format_version=(
+                                FRONTIER_FORMAT_VERSION
+                                if version == BRIDGE_PROTOCOL_VERSION
+                                else 5
+                            ),
                             bridge_sequence=60,
                             instruction_max_ordinal=0,
                             instruction_hit_count=0,
@@ -407,6 +803,17 @@ class KnowledgeTests(unittest.TestCase):
                     )
                 result = ingest_delta(database, delta)
                 self.assertEqual(result["action"], "ingested")
+                connection = open_knowledge_database(database, read_only=True)
+                try:
+                    compatibility_calls = int(
+                        connection.execute("SELECT COUNT(*) FROM call_fact").fetchone()[0]
+                    )
+                finally:
+                    connection.close()
+                self.assertEqual(
+                    compatibility_calls,
+                    0 if version in ATOMIC_CALL_PROTOCOL_VERSIONS else 1,
+                )
 
         database = self.make_knowledge("protocol-0.7.2.sqlite")
         with self.assertRaisesRegex(ValueError, "unsupported session bridge protocol"):
@@ -1082,7 +1489,7 @@ class KnowledgeTests(unittest.TestCase):
             protocol_version=BRIDGE_PROTOCOL_VERSION,
             known_activity=KnownActivityObservation(
                 frontier_identity=base.frontier_identity_at_start,
-                frontier_format_version=5,
+                frontier_format_version=FRONTIER_FORMAT_VERSION,
                 bridge_sequence=60,
                 instruction_max_ordinal=0,
                 instruction_hit_count=0,
@@ -1176,7 +1583,7 @@ class KnowledgeTests(unittest.TestCase):
             function_placements=(),
             known_activity=KnownActivityObservation(
                 frontier_identity=first_ingestion["delta"]["frontierAfter"],
-                frontier_format_version=5,
+                frontier_format_version=FRONTIER_FORMAT_VERSION,
                 bridge_sequence=60,
                 instruction_max_ordinal=3,
                 instruction_hit_count=0,
@@ -1286,7 +1693,7 @@ class KnowledgeTests(unittest.TestCase):
             function_placements=(),
             known_activity=KnownActivityObservation(
                 frontier_identity=first["delta"]["frontierAfter"],
-                frontier_format_version=5,
+                frontier_format_version=FRONTIER_FORMAT_VERSION,
                 bridge_sequence=60,
                 instruction_max_ordinal=2,
                 instruction_hit_count=2,

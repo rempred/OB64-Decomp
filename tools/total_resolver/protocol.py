@@ -8,8 +8,17 @@ from typing import Any, Mapping
 from .addressing import RDRAM_SIZE
 
 
-BRIDGE_PROTOCOL_VERSION = "0.14.0"
-FRONTIER_FORMAT_VERSION = 5
+BRIDGE_PROTOCOL_VERSION = "0.17.0"
+ACTIVITY_PROTOCOL_VERSIONS = frozenset(
+    {"0.14.0", "0.15.0", "0.16.0", BRIDGE_PROTOCOL_VERSION}
+)
+ATOMIC_CALL_PROTOCOL_VERSIONS = frozenset(
+    {"0.14.0", "0.15.0", "0.16.0", BRIDGE_PROTOCOL_VERSION}
+)
+FOCUSED_CAPTURE_PROTOCOL_VERSIONS = frozenset(
+    {"0.15.0", "0.16.0", BRIDGE_PROTOCOL_VERSION}
+)
+FRONTIER_FORMAT_VERSION = 6
 
 BRIDGE_CAPABILITIES = (
     "capability-advertisement",
@@ -20,14 +29,22 @@ BRIDGE_CAPABILITIES = (
     "memory-block-read",
     "memory-write-explicit",
     "exec-read-write-watches",
+    "native-opcode-filtered-focused-watches",
+    "focused-entry-return-state-snapshots",
+    "focused-event-time-pointer-bytes",
     "unified-ordered-event-drain",
+    "drain-includes-sample-context",
     "bridge-instance-epoch",
     "explicit-dropped-sequence-ranges",
     "native-rom-dma-start-completion-pairs",
     "native-dma-completion-events",
     "event-time-dma-destination-bytes",
     "native-generation-aware-exec-coverage",
-    "native-persistent-novelty-frontier-v5",
+    "native-direct-exec-novelty-observer",
+    "native-batched-novel-exec-events",
+    "word-indexed-focused-callback-gate",
+    "ordinary-capture-context-ring-disabled",
+    "native-persistent-novelty-frontier-v6",
     "stable-frontier-fact-ordinals",
     "stop-time-known-activity-bitmaps",
     "atomic-callsite-delay-target-context",
@@ -35,6 +52,7 @@ BRIDGE_CAPABILITIES = (
     "stop-time-known-call-activity-bitmap",
     "native-marker-context-ring",
     "native-exact-dma-novelty-filter",
+    "native-factorized-static-data-dma-filter",
     "exact-physical-opcode-instruction-identity",
     "page-local-address-bitmaps",
     "sparse-exact-opcode-edge-frontier",

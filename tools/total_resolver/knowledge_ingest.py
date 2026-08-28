@@ -16,6 +16,8 @@ from .knowledge import (
     ControllerTransitionObservation,
     DmaPlacementObservation,
     EdgeObservation,
+    FocusedExecutionObservation,
+    FocusedPointerSnapshotObservation,
     FunctionPlacementObservation,
     InstructionObservation,
     KnownActivityObservation,
@@ -28,6 +30,7 @@ from .knowledge import (
     UnresolvedKnowledgeObservation,
     compare_canonical_machine_facts,
     compare_knowledge_databases,
+    compare_schema5_dma_conservation,
     create_knowledge_database,
     ingest_delta,
     knowledge_status,
@@ -36,7 +39,7 @@ from .knowledge import (
 )
 from .overlay_atlas import SessionProduct, _read_ndjson, load_session_product
 from .schema import open_capture_database
-from .protocol import BRIDGE_PROTOCOL_VERSION
+from .protocol import ACTIVITY_PROTOCOL_VERSIONS, BRIDGE_PROTOCOL_VERSION
 from .verify import verify_session
 
 
@@ -196,6 +199,15 @@ def build_session_delta(
         frontier_identity = _frontier_identity_from_capture(capture)
 
         execution_values = _optional_rows(product, "executionObservations")
+
+        static_sources = json.loads(str(session["static_sources_json"]))
+        focused_profile = (
+            static_sources.get("captureProfile", {}).get("focusedCapture")
+            if isinstance(static_sources, Mapping)
+            else None
+        )
+        if focused_profile is not None and not isinstance(focused_profile, Mapping):
+            raise ValueError("capture focused profile metadata is malformed")
 
         def exact_instruction(
             value: Mapping[str, Any],
@@ -455,6 +467,82 @@ def build_session_delta(
                     destination_z64_offset=value.get("romOffset"),
                     frame=value.get("frame"),
                     observation_kind="native-exact-instruction-transition",
+                )
+            )
+
+        focused_executions: list[FocusedExecutionObservation] = []
+        for value in execution_values:
+            if value.get("observationKind") != "focused-owner-state":
+                continue
+            function = value.get("function")
+            registers = value.get("registerSnapshot")
+            stack = value.get("stackSnapshot")
+            issues = value.get("pointerSnapshotIssues")
+            if (
+                not isinstance(function, Mapping)
+                or not isinstance(registers, Mapping)
+                or not isinstance(stack, Mapping)
+                or not isinstance(issues, list)
+                or any(not isinstance(item, Mapping) for item in issues)
+            ):
+                raise ValueError("focused execution observation lacks retained state context")
+            try:
+                signature = bytes.fromhex(str(value.get("targetSignatureBytesHex")))
+            except ValueError as exc:
+                raise ValueError("focused execution target signature is malformed") from exc
+            pointer_values: list[FocusedPointerSnapshotObservation] = []
+            raw_pointers = value.get("pointerSnapshots")
+            if not isinstance(raw_pointers, list):
+                raise ValueError("focused execution pointer snapshots are malformed")
+            for pointer in raw_pointers:
+                if not isinstance(pointer, Mapping):
+                    raise ValueError("focused pointer snapshot is not an object")
+                try:
+                    exact_bytes = bytes.fromhex(str(pointer.get("bytesHex")))
+                except ValueError as exc:
+                    raise ValueError("focused pointer bytes are malformed") from exc
+                pointer_values.append(
+                    FocusedPointerSnapshotObservation(
+                        str(pointer.get("register")),
+                        str(pointer.get("phase")),
+                        str(pointer.get("label")),
+                        _integer(pointer.get("address"), "focused pointer address"),
+                        _integer(
+                            pointer.get("physicalAddress"),
+                            "focused pointer physical address",
+                        ),
+                        exact_bytes,
+                        str(pointer.get("capturePhase")),
+                    )
+                )
+            focused_executions.append(
+                FocusedExecutionObservation(
+                    _integer(value.get("bridgeSequence"), "focused bridge sequence"),
+                    value.get("frame"),
+                    str(value.get("focusedProfileId")),
+                    _integer(value.get("focusedProfileVersion"), "focused profile version"),
+                    str(value.get("focusedTargetId")),
+                    str(value.get("focusedRole")),
+                    str(value.get("focusedInvocationId")),
+                    int(function["functionId"]),
+                    _integer(value.get("focusedZ64Start"), "focused z64 start"),
+                    _integer(value.get("pc"), "focused live PC"),
+                    _integer(value.get("physicalPc"), "focused physical PC"),
+                    _integer(value.get("opcode"), "focused opcode"),
+                    _integer(value.get("targetLiveStart"), "focused target start"),
+                    _integer(
+                        value.get("targetLiveEndExclusive"), "focused target end"
+                    ),
+                    str(value.get("sampleMode")),
+                    _integer(
+                        value.get("entryReturnAddress"), "focused entry return address"
+                    ),
+                    signature,
+                    dict(registers),
+                    dict(stack),
+                    tuple(dict(item) for item in issues),
+                    str(value.get("capturePhase")),
+                    tuple(pointer_values),
                 )
             )
 
@@ -790,6 +878,8 @@ def build_session_delta(
             ),
             known_activity=known_activity,
             marker_context_windows=tuple(marker_context_windows),
+            focused_profile=(dict(focused_profile) if focused_profile is not None else None),
+            focused_executions=tuple(focused_executions),
             semantic_name=semantic_name,
             semantic_notes=semantic_notes,
             semantic_context_created_utc=semantic_context_created_utc,
@@ -918,7 +1008,7 @@ def ingest_session(
     )
     knowledge = open_knowledge_database(knowledge_database, read_only=True)
     try:
-        if delta.protocol_version == BRIDGE_PROTOCOL_VERSION and not _frontier_is_declared(
+        if delta.protocol_version in ACTIVITY_PROTOCOL_VERSIONS and not _frontier_is_declared(
             knowledge, delta.frontier_identity_at_start
         ):
             raise ValueError("capture names a frontier that is not in this knowledge ledger")
@@ -964,7 +1054,9 @@ def rebuild_knowledge_database(source: Path, output: Path) -> dict[str, Any]:
     output_path = output.resolve()
     if output_path.exists():
         raise FileExistsError(output_path)
-    source_verification = verify_knowledge_database(source_path)
+    source_verification = verify_knowledge_database(
+        source_path, _allow_historical_active_bridge=True
+    )
     if source_verification["result"] != "PASS":
         raise ValueError("source knowledge database failed verification")
     connection = open_knowledge_database(source_path, read_only=True)
@@ -1000,11 +1092,14 @@ def rebuild_knowledge_database(source: Path, output: Path) -> dict[str, Any]:
                 raise ValueError(
                     f"rebuild source identity changed for {identity_key}"
                 )
-        if rebuilt_meta["frontierFormatVersion"] != meta["frontierFormatVersion"]:
+        if (
+            int(meta["schemaVersion"]) == int(rebuilt_meta["schemaVersion"])
+            and rebuilt_meta["frontierFormatVersion"] != meta["frontierFormatVersion"]
+        ):
             raise ValueError("rebuild cannot change the frontier format")
         rebuilt.execute(
             "UPDATE knowledge_meta SET value=? WHERE key='activeBridgeProtocolVersion'",
-            (meta["activeBridgeProtocolVersion"],),
+            (BRIDGE_PROTOCOL_VERSION,),
         )
         rebuilt.commit()
     finally:
@@ -1039,10 +1134,11 @@ def rebuild_knowledge_database(source: Path, output: Path) -> dict[str, Any]:
         )
 
     rebuilt_verification = verify_knowledge_database(output_path)
-    if int(meta["schemaVersion"]) == int(
-        knowledge_status(output_path)["schemaVersion"]
-    ):
+    output_schema_version = int(knowledge_status(output_path)["schemaVersion"])
+    if int(meta["schemaVersion"]) == output_schema_version:
         exact_equivalence = compare_knowledge_databases(source_path, output_path)
+    elif output_schema_version >= 5:
+        exact_equivalence = compare_schema5_dma_conservation(source_path, output_path)
     else:
         exact_equivalence = compare_canonical_machine_facts(source_path, output_path)
     equivalent = (

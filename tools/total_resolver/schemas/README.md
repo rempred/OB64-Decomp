@@ -21,6 +21,16 @@
   with the exact facts to native Project64 without querying SQLite on the emulator thread.
 - `knowledge_calls_v3.sql` stores exact callsite, executed delay-slot, actual-target, and call-kind
   identities, compact session/context witnesses, and post-stop human semantic session context.
+- `knowledge_v4.sql` adds focused-capture profile sessions, exact function entry/return state
+  witnesses, and bounded exact event-time pointer-byte snapshots. These rows remain
+  `live-unreviewed` context and reference the existing exact-content store after exact-byte
+  comparison.
+- `knowledge_v5.sql` factors safe full-ROM static-data DMA into exact resource/content and exact
+  destination-span facts with compact association bitmaps and session aggregates. Executable,
+  mixed, partial, unknown, and ambiguous transfers remain destination-specific. Frontier format 6
+  exports the three DMA identity modes to native Project64. Destination-specific matching uses the
+  complete transfer span and event-time bytes even when the stored ROM-match prefix is shorter;
+  suppression requires complete field and byte equality, never a digest match alone.
 - `normalized.schema.json` defines the source-neutral dynamic record envelope used by derivation
   adapters.
 - `overlay_atlas.sql` stores normalized placement and region-lifetime history.

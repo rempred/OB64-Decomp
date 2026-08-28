@@ -168,6 +168,10 @@ def build_parser() -> argparse.ArgumentParser:
         action="store_true",
         help="close and verify at stop, then wait for explicit naming/ingestion",
     )
+    start.add_argument(
+        "--focused-profile",
+        help="add an exact owner-focused capture profile (for example cutscene-studio-v1)",
+    )
 
     knowledge = commands.add_parser(
         "knowledge", help="manage persistent cross-session Total Resolver knowledge"
@@ -183,18 +187,32 @@ def build_parser() -> argparse.ArgumentParser:
     knowledge_select.add_argument("db", type=Path)
     knowledge_migrate_frontier = knowledge_commands.add_parser(
         "migrate-frontier",
-        help="copy a knowledge database to call-aware frontier format 5 and verify it",
+        help="copy a knowledge database to the current exact native frontier and verify it",
     )
     knowledge_migrate_frontier.add_argument("--db", type=Path)
     knowledge_migrate_frontier.add_argument("--output", type=Path, required=True)
     knowledge_migrate_frontier.add_argument("--select", action="store_true")
     knowledge_migrate_schema3 = knowledge_commands.add_parser(
         "migrate-schema3",
-        help="replay a verified ledger into a new schema-3 database beside the source",
+        help="legacy migration alias; replay a verified ledger into the current schema",
     )
     knowledge_migrate_schema3.add_argument("--db", type=Path)
     knowledge_migrate_schema3.add_argument("--output", type=Path, required=True)
     knowledge_migrate_schema3.add_argument("--select", action="store_true")
+    knowledge_migrate_schema4 = knowledge_commands.add_parser(
+        "migrate-schema4",
+        help="replay a verified ledger into a focused-capture schema-4 database",
+    )
+    knowledge_migrate_schema4.add_argument("--db", type=Path)
+    knowledge_migrate_schema4.add_argument("--output", type=Path, required=True)
+    knowledge_migrate_schema4.add_argument("--select", action="store_true")
+    knowledge_migrate_schema5 = knowledge_commands.add_parser(
+        "migrate-schema5",
+        help="replay a verified ledger into a factorized-DMA schema-5 database",
+    )
+    knowledge_migrate_schema5.add_argument("--db", type=Path)
+    knowledge_migrate_schema5.add_argument("--output", type=Path, required=True)
+    knowledge_migrate_schema5.add_argument("--select", action="store_true")
     for name, help_text in (
         ("status", "report persistent coverage and the current frontier"),
         ("verify", "verify facts, frontier, and incremental materializations"),
@@ -357,7 +375,7 @@ def build_parser() -> argparse.ArgumentParser:
         default=[],
         help=(
             "detailed section to include (repeatable or comma-separated); calls expands the "
-            "integrated static/runtime call graph"
+            "integrated static/runtime call graph and focused expands retained owner state"
         ),
     )
     explain_command.add_argument("--limit", type=int, default=DEFAULT_QUERY_LIMIT)
@@ -417,6 +435,8 @@ def build_parser() -> argparse.ArgumentParser:
     search_command.add_argument("--marker-type")
     search_command.add_argument("--controller", action="store_true")
     search_command.add_argument("--buttons")
+    search_command.add_argument("--focused-profile")
+    search_command.add_argument("--focused-target")
     search_command.add_argument("--limit", type=int, default=DEFAULT_QUERY_LIMIT)
     search_command.add_argument("--cursor", type=int, default=0)
 
@@ -525,6 +545,7 @@ def _session(args: argparse.Namespace) -> int:
                 knowledge_database=args.knowledge,
                 before_rom=args.before_rom,
                 auto_ingest=not args.defer_ingest,
+                focused_profile_id=args.focused_profile,
             )
         elif args.session_command == "status":
             payload = session_status(args.session_id, root=args.root)
@@ -616,11 +637,15 @@ def _knowledge(args: argparse.Namespace) -> int:
             )
             if args.select:
                 payload["selection"] = select_knowledge_database(args.output)
-        elif args.knowledge_command == "migrate-schema3":
+        elif args.knowledge_command in {
+            "migrate-schema3",
+            "migrate-schema4",
+            "migrate-schema5",
+        }:
             payload = rebuild_knowledge_database(
                 _selected_knowledge(args.db), args.output
             )
-            payload["migration"] = "schema-3-ledger-replay"
+            payload["migration"] = "schema-5-factorized-data-dma-ledger-replay"
             if args.select:
                 payload["selection"] = select_knowledge_database(args.output)
         elif args.knowledge_command == "status":
@@ -1040,6 +1065,8 @@ def _search(args: argparse.Namespace) -> int:
                 marker_type=args.marker_type,
                 controller=args.controller,
                 buttons=args.buttons,
+                focused_profile=args.focused_profile,
+                focused_target=args.focused_target,
                 limit=args.limit,
                 cursor=args.cursor,
             )

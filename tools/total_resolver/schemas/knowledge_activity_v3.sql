@@ -6,7 +6,7 @@
 CREATE TABLE IF NOT EXISTS known_activity_summary (
     session_id TEXT PRIMARY KEY,
     frontier_identity TEXT NOT NULL,
-    frontier_format_version INTEGER NOT NULL CHECK (frontier_format_version IN (4, 5)),
+    frontier_format_version INTEGER NOT NULL CHECK (frontier_format_version IN (4, 5, 6)),
     instruction_max_ordinal INTEGER NOT NULL CHECK (instruction_max_ordinal >= 0),
     instruction_hit_count INTEGER NOT NULL CHECK (instruction_hit_count >= 0),
     instruction_hit_bitmap BLOB NOT NULL,

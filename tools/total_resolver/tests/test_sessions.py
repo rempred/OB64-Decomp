@@ -4,7 +4,7 @@ from pathlib import Path
 import json
 import tempfile
 import unittest
-from unittest.mock import patch
+from unittest.mock import Mock, patch
 from typing import Any
 
 from tools.total_resolver.capture_db import CaptureStore, SessionMetadata
@@ -326,6 +326,46 @@ class SessionLifecycleTests(unittest.TestCase):
             finally:
                 reopened.close_connection()
             self.assertEqual(marker_type, "visible-action")
+
+    def test_live_note_uses_current_bridge_frame_for_two_second_lookback(self) -> None:
+        with tempfile.TemporaryDirectory() as raw:
+            root = Path(raw)
+            store = self._open_session(root, "S-NOTE")
+            store.close_connection()
+            client = Mock()
+            client.frame_count.return_value = 900
+            client.arm_execution_context.return_value = {
+                "markerId": 1,
+                "armed": True,
+            }
+            with patch(
+                "tools.total_resolver.sessions.Pj64Client", return_value=client
+            ):
+                result = add_session_annotation(
+                    "chair pose changed",
+                    marker_type="note",
+                    session_id="S-NOTE",
+                    root=root,
+                    connection=SessionConnection("127.0.0.1", 64656, 1.0),
+                    frame_context_before=60,
+                    frame_context_after=30,
+                )
+            self.assertEqual(result["anchorFrame"], 900)
+            client.connect.assert_called_once_with()
+            client.arm_execution_context.assert_called_once_with(
+                "S-NOTE", 1, before=256, after=256
+            )
+            client.close.assert_called_once_with()
+            reopened = CaptureStore.open(
+                root / "S-NOTE" / "capture.sqlite", mirror_events=False
+            )
+            try:
+                frames = reopened.connection.execute(
+                    "SELECT start_frame,end_frame FROM semantic_marker"
+                ).fetchone()
+            finally:
+                reopened.close_connection()
+            self.assertEqual(tuple(frames), (840, 930))
 
 
 if __name__ == "__main__":

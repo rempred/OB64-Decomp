@@ -17,6 +17,7 @@ let nativePreviousPrevious = null;
 const callbacks = {
     state: new Map(),
     exec: new Map(),
+    opcode: new Map(),
     execFrontier: new Map(),
     read: new Map(),
     write: new Map(),
@@ -30,6 +31,7 @@ const native = {
     instructionHits: new Set(), edgeHits: new Set(), callHits: new Set(), dmaHits: new Set(),
     instructionMaxOrdinal: 0, edgeMaxOrdinal: 0, callMaxOrdinal: 0, dmaMaxOrdinal: 0,
     contextRecords: [], contextNextOrder: 1, pendingContext: null,
+    contextEnabled: false, observedInstructions: 0,
 };
 
 function activityBitmap(ordinals, maximum) {
@@ -88,7 +90,12 @@ function dmaKey(source, destination, bytes) {
         Buffer.from(bytes).toString('hex');
 }
 
+const gprValues = { sp: 0x80002000, ra: 0x80004000, a0: 0x80003000 };
 const zeroProxy = new Proxy({}, { get: () => 0, set: () => true });
+const gprProxy = new Proxy(gprValues, {
+    get: (target, key) => Object.prototype.hasOwnProperty.call(target, key) ? target[key] : 0,
+    set: (target, key, value) => { target[key] = value; return true; },
+});
 const context = {
     Date, Math, JSON, Number, String, Object, Array, Buffer, Uint8Array,
     isFinite, isNaN, parseInt,
@@ -116,7 +123,10 @@ const context = {
             filePath: 'C:/fixture.z64', crc1: 0x12345678, crc2: 0x9ABCDEF0,
         },
     },
-    cpu: { pc: 0x80001000, gpr: zeroProxy, cop0: zeroProxy },
+    cpu: {
+        pc: 0x80001000, gpr: gprProxy, ugpr: zeroProxy, cop0: zeroProxy,
+        fpr: zeroProxy, dfpr: zeroProxy, hi: 0, uhi: 0, lo: 0, ulo: 0, fcr31: 0,
+    },
     mem: {
         ramSize: ALLOCATED_RDRAM_SIZE,
         u8: zeroProxy, u16: zeroProxy, u32: zeroProxy,
@@ -130,9 +140,15 @@ const context = {
         onstatechange(callback) { return register(callbacks.state, callback); },
         onpifread() { return nextCallbackId++; },
         onexec(_target, callback) { return register(callbacks.exec, callback); },
+        onopcode(target, opcode, mask, callback) {
+            return register(callbacks.opcode, { target, opcode, mask, callback });
+        },
         onexecunique(_target, callback) { return register(callbacks.execFrontier, { callback }); },
         onexecfrontier(target, callback) {
             return register(callbacks.execFrontier, { target, callback });
+        },
+        onexecfrontierdirect(callback) {
+            return register(callbacks.execFrontier, { callback, batched: true });
         },
         onread(_target, callback) { return register(callbacks.read, callback); },
         onwrite(_target, callback) { return register(callbacks.write, callback); },
@@ -163,7 +179,7 @@ const context = {
             native.callHits.clear();
             native.dmaHits.clear();
             return {
-                loaded: true, formatVersion: 5, rdramSize: RDRAM_SIZE,
+                loaded: true, formatVersion: 6, rdramSize: RDRAM_SIZE,
                 identity, romSha256: rom,
                 physicalPageCount: frontierFixture.pages,
                 instructionCount: native.instructions.size,
@@ -176,7 +192,24 @@ const context = {
                 dmaMaxOrdinal: native.dmaMaxOrdinal,
             };
         },
-        coveragefrontierstatus() { return { loaded: frontierFixture !== null }; },
+        coveragefrontierstatus() {
+            return {
+                loaded: frontierFixture !== null,
+                directObserver: callbacks.execFrontier.size !== 0,
+                observedInstructionCount: native.observedInstructions,
+                executionContextEnabled: native.contextEnabled,
+            };
+        },
+        configurecoveragecontext(enabled) {
+            native.contextEnabled = !!enabled;
+            native.contextRecords = [];
+            native.contextNextOrder = 1;
+            native.pendingContext = null;
+            return {
+                enabled: native.contextEnabled,
+                ringCapacityRecords: native.contextEnabled ? 32768 : 0,
+            };
+        },
         resetcoverageactivity() {
             native.instructionHits.clear();
             native.edgeHits.clear();
@@ -199,7 +232,7 @@ const context = {
         },
         draincoverageactivity() {
             const result = {
-                formatVersion: 5,
+                formatVersion: 6,
                 identity: frontierFixture.identity,
                 instructionMaxOrdinal: native.instructionMaxOrdinal,
                 instructionHitCount: native.instructionHits.size,
@@ -244,6 +277,15 @@ function command(line) {
     if (!response.ok) throw new Error(line + ': ' + response.error);
     return response;
 }
+function emitOpcode(pc, opcode) {
+    for (const item of callbacks.opcode.values()) {
+        const inRange = typeof item.target === 'number' ?
+            pc === item.target : pc >= item.target.start && pc <= item.target.end;
+        if (inRange && (opcode & item.mask) === item.opcode) {
+            item.callback({ callbackId: [...callbacks.opcode].find((entry) => entry[1] === item)[0], pc, opcode });
+        }
+    }
+}
 function utf16Hex(value) { return Buffer.from(value, 'utf16le').toString('hex').toUpperCase(); }
 function loadFrontier(identity, instructions = [], edges = [], calls = [], dma = []) {
     frontierFixture = {
@@ -263,7 +305,15 @@ function fireSnapshot(pc = 0x80001000) {
     items[0]({ pc, ramSize: ALLOCATED_RDRAM_SIZE, bytes: new Uint8Array(RDRAM_SIZE) });
 }
 function emitExec(pc, opcode, page, generation) {
+    native.observedInstructions += 1;
     const current = { pc, opcode, page, generation, physical: page + (pc & 0xFFF) };
+    const segment = (pc & 0xE0000000) >>> 0;
+    if ((segment !== 0x80000000 && segment !== 0xA0000000) ||
+        (pc & 0x1FFFFFFF) >= RDRAM_SIZE) {
+        nativePreviousPrevious = nativePrevious;
+        nativePrevious = current;
+        return;
+    }
     const contextRecord = {
         localOrder: native.contextNextOrder++, frame: 41, pc, opcode,
         physicalAddress: page <= 0x3FF000 ? current.physical : null,
@@ -274,8 +324,10 @@ function emitExec(pc, opcode, page, generation) {
             nativePrevious.physical : null,
         side: 'after',
     };
-    native.contextRecords.push(contextRecord);
-    if (native.contextRecords.length > 32768) native.contextRecords.shift();
+    if (native.contextEnabled) {
+        native.contextRecords.push(contextRecord);
+        if (native.contextRecords.length > 32768) native.contextRecords.shift();
+    }
     let readyContext = null;
     if (native.pendingContext) {
         native.pendingContext.records.push(contextRecord);
@@ -326,7 +378,7 @@ function emitExec(pc, opcode, page, generation) {
     if (newInstruction || newEdge || newCall || readyContext) {
         for (const item of callbacks.execFrontier.values()) {
             if (!item.target || (pc >= item.target.start && pc <= item.target.end)) {
-                item.callback({
+                const event = {
                     pc, opcode, pagePhysicalAddress: page, pageGeneration: generation,
                     hasPrevious: nativePrevious !== null,
                     previousPc: nativePrevious ? nativePrevious.pc : 0,
@@ -343,7 +395,8 @@ function emitExec(pc, opcode, page, generation) {
                     newInstruction, newEdge, newCall, callKind,
                     contextMarkerReady: readyContext !== null,
                     executionContext: readyContext,
-                });
+                };
+                item.callback(item.batched ? [event] : event);
                 break;
             }
         }
@@ -376,16 +429,23 @@ function canonicalFactCount(events) {
 
 const ping = command('ping');
 const initial = command('status');
-if (ping.version !== '0.14.0' || ping.frontierFormatVersion !== 5 ||
+if (ping.version !== '0.17.0' || ping.frontierFormatVersion !== 6 ||
     ping.rdramSize !== ALLOCATED_RDRAM_SIZE || ping.captureRdramSize !== RDRAM_SIZE ||
     initial.capture.enabled ||
-    !ping.capabilities.includes('native-persistent-novelty-frontier-v5') ||
+    !ping.capabilities.includes('native-persistent-novelty-frontier-v6') ||
+    !ping.capabilities.includes('native-factorized-static-data-dma-filter') ||
+    !ping.capabilities.includes('native-direct-exec-novelty-observer') ||
+    !ping.capabilities.includes('native-batched-novel-exec-events') ||
+    !ping.capabilities.includes('word-indexed-focused-callback-gate') ||
+    !ping.capabilities.includes('drain-includes-sample-context') ||
     !ping.capabilities.includes('atomic-callsite-delay-target-context') ||
+    !ping.capabilities.includes('native-opcode-filtered-focused-watches') ||
     !ping.capabilities.includes('stop-time-known-activity-bitmaps')) {
     throw new Error('protocol identity mismatch');
 }
 
 loadFrontier('K2:FIRST');
+command('context configure off');
 command('capture on K2:FIRST');
 fireSnapshot();
 const baseline = command('baseline status').baseline;
@@ -407,10 +467,14 @@ const firstDrain = command('drain 32');
 const firstCoverage = firstDrain.events.filter((event) => event.kind === 'exec-coverage');
 if (firstCoverage.length !== 2 || memoryBlockReads !== readsBeforeTrace ||
     firstDrain.events[0].kind !== 'baseline-snapshot') {
-    throw new Error('initial exact capture or baseline ordering regressed');
+    throw new Error('initial exact capture or baseline ordering regressed: ' +
+        JSON.stringify({ firstCoverage, memoryBlockReads, readsBeforeTrace,
+            firstKind: firstDrain.events[0] && firstDrain.events[0].kind }));
 }
+const readsAfterExecutionTrace = memoryBlockReads;
 
 loadFrontier('K2:KNOWN', [a, b], [[a, b], [b, a]], [[a, b, a, 1]]);
+command('context configure on');
 command('capture on K2:KNOWN');
 fireSnapshot();
 nativePrevious = null;
@@ -486,6 +550,7 @@ command('dma off');
 context.pj64.romInfo = null;
 context.mem.ramSize = 0;
 loadFrontier('K2:COLDBOOT');
+command('context configure off');
 const armed = command('coldboot arm K2:COLDBOOT 12345678 9ABCDEF0').coldBoot;
 if (armed.state !== 'armed' || command('status').rdramSize !== 0) {
     throw new Error('pre-ROM cold-boot arm failed');
@@ -510,9 +575,37 @@ if (coldBootDrain.count !== 1 || coldBootDrain.events[0].kind !== 'baseline-snap
 }
 command('coldboot cancel');
 
+context.pj64.frameCount = 75;
+const focusedWatch = command(
+    'focusedwatch 0x80001000 0x80001040 0x00000000 00000000 ' +
+    'cutscene-studio-v1 stage-builder 3158 0x001FB32C first-per-frame ' +
+    'a0:16:arg0-stage 8').watch;
+emitOpcode(0x80001000, 0x00000001);
+emitOpcode(0x80001000, 0x00000000);
+emitOpcode(0x80001000, 0x00000000);
+emitOpcode(0x80001008, 0x03E00008);
+emitOpcode(0x80001008, 0x03E00008);
+const focusedEvents = command('drain 8').events.filter(
+    (event) => event.kind === 'focused-exec');
+if (focusedEvents.length !== 2 || focusedEvents[0].focusedRole !== 'entry' ||
+    focusedEvents[1].focusedRole !== 'return' ||
+    focusedEvents[0].focusedInvocationId !== focusedEvents[1].focusedInvocationId ||
+    focusedEvents[0].pointerSnapshots.length !== 1 ||
+    focusedEvents[0].pointerSnapshots[0].bytesHex !== '00000000000000000000000000000000' ||
+    focusedEvents[0].regs.fprSingle.length !== 32 ||
+    focusedWatch.callbackIds.length !== 2) {
+    throw new Error('focused native gate/state/pointer capture regressed: ' +
+        JSON.stringify({ focusedEvents, focusedWatch }));
+}
+command('unwatch ' + focusedWatch.id);
+
 context.pj64.romInfo = null;
 context.mem.ramSize = 0;
-command('coldboot arm K2:COLDBOOT 12345678 9ABCDEF0');
+// The prior cold-boot capture was cancelled, so reload a fresh frontier before
+// configuring the next pre-ROM arm.
+loadFrontier('K2:COLDBOOT-REJECT');
+command('context configure off');
+command('coldboot arm K2:COLDBOOT-REJECT 12345678 9ABCDEF0');
 context.mem.ramSize = ALLOCATED_RDRAM_SIZE;
 context.pj64.romInfo = {
     name: 'wrong', goodName: 'wrong', fileName: 'wrong.z64',
@@ -546,7 +639,7 @@ process.stdout.write(JSON.stringify({
     traceGenerationCount: 0,
     exactCoverageCount: firstCoverage.length,
     repeatedKnownMetadataCount: repeatedCoverage.length,
-    pageReadsDuringExecutionTrace: memoryBlockReads - readsBeforeTrace,
+    pageReadsDuringExecutionTrace: readsAfterExecutionTrace - readsBeforeTrace,
     explicitDroppedRanges: overflow.droppedRanges.length,
     baselineBytes: baseline.byteLength,
     knownDmaEvents: Number(knownDmaEmitted),
@@ -567,4 +660,5 @@ process.stdout.write(JSON.stringify({
     knownCallActivityHits: activityEvents.reduce(
         (total, event) => total + event.callHitCount, 0),
     markerContextWindows: markerContextEvents.length,
+    focusedContextEvents: focusedEvents.length,
 }));

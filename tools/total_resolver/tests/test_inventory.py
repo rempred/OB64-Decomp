@@ -25,8 +25,8 @@ class InventoryTests(unittest.TestCase):
             inventory["project64"]["bridgeReference"]["role"], "historical-reference"
         )
         self.assertEqual(inventory["legacyResolver"]["role"], "historical-reference")
-        self.assertEqual(inventory["project64"]["activeBridge"]["protocolVersion"], "0.14.0")
-        self.assertEqual(inventory["project64"]["activeBridge"]["frontierFormatVersion"], 5)
+        self.assertEqual(inventory["project64"]["activeBridge"]["protocolVersion"], "0.17.0")
+        self.assertEqual(inventory["project64"]["activeBridge"]["frontierFormatVersion"], 6)
         self.assertEqual(inventory["project64"]["activeBridge"]["queueModel"], "unified")
         native_sources = set(
             inventory["project64"]["activeNativeRuntime"]["sourceFiles"]
@@ -38,6 +38,12 @@ class InventoryTests(unittest.TestCase):
         self.assertIn(
             "Source/Project64/UserInterface/Debugger/ScriptInstance.h",
             native_sources,
+        )
+        native = inventory["project64"]["activeNativeRuntime"]
+        self.assertEqual(native["bridgePort"], 64656)
+        self.assertEqual(
+            native["bridgeScriptPath"],
+            "Bin/Win32/Release_totalresolver_64656/Scripts/000_ob64_pj64_bridge.js",
         )
         self.assertFalse(inventory["decompStaticSource"]["dirtyAtFreeze"])
 
@@ -66,11 +72,18 @@ class InventoryTests(unittest.TestCase):
             binary.parent.mkdir()
             binary.write_bytes(b"authenticated Project64 fixture")
             expected = hashlib.sha256(binary.read_bytes()).hexdigest().upper()
+            bridge = root / "Bin" / "Scripts" / "000_ob64_pj64_bridge.js"
+            bridge.parent.mkdir()
+            bridge.write_text("var PORT = 64656;\n", encoding="utf-8")
+            bridge_expected = hashlib.sha256(bridge.read_bytes()).hexdigest().upper()
             inventory = {
                 "project64": {
                     "activeNativeRuntime": {
                         "binaryPath": "Bin/Project64-TR.exe",
                         "binarySha256": expected,
+                        "bridgeScriptPath": "Bin/Scripts/000_ob64_pj64_bridge.js",
+                        "bridgeScriptSha256": bridge_expected,
+                        "bridgePort": 64656,
                     }
                 }
             }
@@ -80,6 +93,37 @@ class InventoryTests(unittest.TestCase):
             )
             self.assertEqual(active.path, binary.resolve())
             self.assertEqual(active.sha256, expected)
+            self.assertEqual(active.bridge_path, bridge.resolve())
+            self.assertEqual(active.bridge_sha256, bridge_expected)
+            self.assertEqual(active.bridge_port, 64656)
+
+    def test_active_project64_bridge_port_drift_fails_closed(self) -> None:
+        with tempfile.TemporaryDirectory() as raw:
+            root = Path(raw)
+            binary = root / "Project64-TR.exe"
+            binary.write_bytes(b"authenticated Project64 fixture")
+            bridge = root / "000_ob64_pj64_bridge.js"
+            bridge.write_text("var PORT = 64640;\n", encoding="utf-8")
+            inventory = {
+                "project64": {
+                    "activeNativeRuntime": {
+                        "binaryPath": binary.name,
+                        "binarySha256": hashlib.sha256(binary.read_bytes())
+                        .hexdigest()
+                        .upper(),
+                        "bridgeScriptPath": bridge.name,
+                        "bridgeScriptSha256": hashlib.sha256(bridge.read_bytes())
+                        .hexdigest()
+                        .upper(),
+                        "bridgePort": 64656,
+                    }
+                }
+            }
+            with self.assertRaisesRegex(RuntimeError, "bridge port disagrees"):
+                resolve_active_project64_binary(
+                    project64_root=root,
+                    inventory=inventory,
+                )
 
     def test_active_project64_binary_hash_drift_fails_closed(self) -> None:
         with tempfile.TemporaryDirectory() as raw:

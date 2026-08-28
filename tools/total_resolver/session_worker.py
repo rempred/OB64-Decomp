@@ -19,6 +19,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--knowledge", type=Path)
     parser.add_argument("--before-rom", action="store_true")
     parser.add_argument("--defer-ingest", action="store_true")
+    parser.add_argument("--focused-profile")
     return parser
 
 
@@ -32,6 +33,7 @@ def main(argv: Sequence[str] | None = None) -> int:
         args.knowledge,
         before_rom=args.before_rom,
         auto_ingest=not args.defer_ingest,
+        focused_profile_id=args.focused_profile,
     )
 
 

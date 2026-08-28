@@ -64,9 +64,9 @@ class ProtocolTests(unittest.TestCase):
 
     def test_version_mismatch_fails_closed(self) -> None:
         ping, status, health = good_responses()
-        ping["version"] = "0.9.0"
-        status["version"] = "0.9.0"
-        health["version"] = "0.9.0"
+        ping["version"] = "0.15.0"
+        status["version"] = "0.15.0"
+        health["version"] = "0.15.0"
         with self.assertRaisesRegex(BridgeProtocolError, f"required exactly {BRIDGE_PROTOCOL_VERSION}"):
             validate_handshake(ping, status, health)
 

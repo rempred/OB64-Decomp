@@ -92,11 +92,59 @@ class CaptureGuiControllerTests(unittest.TestCase):
             self.assertEqual(result["status"], recorded)
             self.assertIn("Capture integrated successfully", log.read())
 
+    def test_focused_start_and_single_note_use_the_bounded_context_window(self) -> None:
+        with tempfile.TemporaryDirectory() as raw:
+            root = Path(raw)
+            knowledge = root / "knowledge.sqlite"
+            knowledge.touch()
+            controller = CaptureWorkflowController(
+                root=root / "sessions",
+                knowledge_database=knowledge,
+                connection=SessionConnection("127.0.0.1", 64640, 1.0),
+                log=CaptureGuiLog(root / "capture-gui.log"),
+            )
+            with patch(
+                "tools.total_resolver.capture_gui.create_session",
+                return_value={"sessionId": "FOCUSED-1", "state": "running"},
+            ) as create_mock:
+                started = controller.start(focused=True)
+            self.assertEqual(started["sessionId"], "FOCUSED-1")
+            self.assertEqual(
+                create_mock.call_args.kwargs["focused_profile_id"],
+                "cutscene-studio-v1",
+            )
+            self.assertFalse(create_mock.call_args.kwargs["auto_ingest"])
+
+            with (
+                patch(
+                    "tools.total_resolver.capture_gui.session_status",
+                    return_value={"closureStatus": "open", "workerAlive": True},
+                ),
+                patch(
+                    "tools.total_resolver.capture_gui.add_session_annotation",
+                    return_value={"markerId": 7},
+                ) as note_mock,
+            ):
+                note = controller.add_note("chair changed pose")
+            self.assertEqual(note["action"], "note-added")
+            self.assertEqual(note_mock.call_args.kwargs["frame_context_before"], 60)
+            self.assertEqual(note_mock.call_args.kwargs["frame_context_after"], 30)
+            self.assertEqual(note_mock.call_args.kwargs["context_before"], 256)
+            self.assertEqual(note_mock.call_args.kwargs["context_after"], 256)
+
     def test_project64_button_launches_only_the_authenticated_binary_once(self) -> None:
         with tempfile.TemporaryDirectory() as raw:
             root = Path(raw)
             binary = root / "Project64-TR-CallAware.exe"
-            active = ActiveProject64Binary(binary, "A" * 64, root)
+            bridge = root / "Scripts" / "000_ob64_pj64_bridge.js"
+            active = ActiveProject64Binary(
+                binary,
+                "A" * 64,
+                root,
+                bridge,
+                "B" * 64,
+                CAPTURE_GUI_DEFAULT_PORT,
+            )
             process = Mock(pid=4242)
             process.poll.return_value = None
             log = CaptureGuiLog(root / "capture-gui.log")
@@ -118,8 +166,40 @@ class CaptureGuiControllerTests(unittest.TestCase):
             self.assertEqual(popen_mock.call_args.args[0], (str(binary),))
             self.assertEqual(popen_mock.call_args.kwargs["cwd"], str(root))
             self.assertEqual(launched["action"], "launched-authenticated-project64")
+            self.assertEqual(launched["bridgeScript"], str(bridge))
+            self.assertEqual(launched["bridgeScriptSha256"], "B" * 64)
             self.assertEqual(repeated["action"], "already-running-from-this-gui")
             self.assertIn("Authenticated Project64", log.read())
+
+    def test_project64_button_rejects_runtime_bridge_port_mismatch_before_launch(self) -> None:
+        with tempfile.TemporaryDirectory() as raw:
+            root = Path(raw)
+            binary = root / "Project64-TR-CallAware.exe"
+            active = ActiveProject64Binary(
+                binary,
+                "A" * 64,
+                root,
+                root / "000_ob64_pj64_bridge.js",
+                "B" * 64,
+                64640,
+            )
+            controller = CaptureWorkflowController(
+                root=root / "sessions",
+                connection=SessionConnection(
+                    "127.0.0.1", CAPTURE_GUI_DEFAULT_PORT, 1.0
+                ),
+                log=CaptureGuiLog(root / "capture-gui.log"),
+            )
+            with (
+                patch(
+                    "tools.total_resolver.capture_gui.resolve_active_project64_binary",
+                    return_value=active,
+                ),
+                patch("tools.total_resolver.capture_gui.subprocess.Popen") as popen_mock,
+            ):
+                with self.assertRaisesRegex(RuntimeError, "does not match the GUI"):
+                    controller.launch_project64()
+            popen_mock.assert_not_called()
 
     def test_failed_stop_includes_worker_log_tail_in_attachable_log(self) -> None:
         with tempfile.TemporaryDirectory() as raw:

@@ -1,223 +1,86 @@
 # Total Resolver — Agent Guide
 
-This guide applies to every file below `tools/total_resolver/`. Total Resolver is a practical
-decompilation accelerator. Preserve unique machine facts conservatively, state uncertainty, and
-do not treat its live observations as courtroom evidence or as automatic structural promotion.
+## Purpose
 
-## Required reading
+Total Resolver is a persistent runtime knowledge database for decompilation.
+It combines facts from all accepted capture sessions.
+It joins exact runtime facts with frozen static, resource, and field facts.
+Use Total Resolver as an evidence navigator.
 
-Read, in order:
+Runtime facts show what the machine did.
+They do not prove game meaning, accepted function boundaries, or matching C.
+Each new dynamic fact has the `live-unreviewed` state.
 
-1. the repository-root `AGENTS.md`;
-2. this file;
-3. `tools/total_resolver/README.md`;
-4. `docs/total-resolver/persistent-coverage-decision.md`; and
-5. the implementation-status page or module relevant to the task.
+## Before a query
 
-Read `docs/AUDIT.md` only when the work changes accepted structure, placement foundations,
-executable boundaries, or the toolchain contract.
+For a query task, read only the repository `AGENTS.md` and this file.
+For a capture or maintenance task, also read these documents:
 
-## Start with the selected knowledge database
+- `README.md`
+- `docs/total-resolver/persistent-coverage-decision.md`
+- The applicable status document or module document
 
-Offline queries do not need Project64. Unless the task is specifically a migration or rebuild,
-omit `--db` so commands use the canonical database named by ignored
-`build/total-resolver/knowledge/selected.json`.
-
-An ordinary Total Resolver user is a **querying agent**. Querying agents remain read-only and may
-use only the following command families:
-
-- `doctor` and read-only `pj64 health`/`pj64 status`;
-- `knowledge status` and `knowledge verify`;
-- `session status`; and
-- `explain`, `search`, `coverage`, and `unresolved`, including their read-only session/frame/
-  sequence, controller-context, marker-context, edge, opcode, and address filters.
-
-In particular, a querying agent must not run:
-
-- `session start` or `session stop`;
-- `session label`, `session mark`, `session note`, `session name`, or `gui`;
-- `knowledge ingest` or `knowledge import`;
-- `knowledge select`, `knowledge migrate-frontier`, or `knowledge migrate-schema3`; or
-- `knowledge init`, `knowledge rebuild`, capture recovery, product builders, or any other command
-  that writes capture, knowledge, selection, or generated product state.
-
-Those commands are reserved for an agent explicitly assigned to build or maintain the database.
-Being asked to decompile a function, investigate behavior, inspect Total Resolver, or use its facts
-does not make an agent a database-building agent.
-
-Run these read-only checks before relying on its facts:
+All query commands work without Project64.
+Run these checks before you use query results:
 
 ```text
 python -m tools.total_resolver knowledge status
 python -m tools.total_resolver knowledge verify
-python -m tools.total_resolver session status
 ```
 
-`knowledge verify` must pass. A missing selected database is a setup decision; do not silently
-initialize or select a different database. A closed latest session is normal. An optional missing
-frozen R2 resolver appears as `SKIP` in `doctor` and does not invalidate schema 3.
+If `knowledge verify` fails, stop.
+Do not initialize or select a different database.
+`knowledge status` identifies the current database.
+`session status` describes the latest capture.
+It can identify an older database or frontier.
 
-For this workstation, verify the external runtime with:
+## Query commands
 
-```text
-python -m tools.total_resolver doctor --project64-root C:\Users\Joe\Projects\project64
-```
-
-The dedicated live bridge currently uses port 64656. The port is local runtime configuration, not
-part of a captured fact. A read-only live check is:
-
-```text
-python -m tools.total_resolver pj64 status --port 64656
-```
-
-Connection failure means no bridge is available; it is not permission to launch or manipulate the
-emulator.
-
-## Use the accumulated knowledge
-
-Prefer the supported command surface over ad hoc writes:
+Start with a function or an exact address.
+Commands give small results by default.
+Use `--include`, `--limit`, or `--cursor` only when you need more detail.
 
 ```text
 python -m tools.total_resolver explain func_XXXXXXXX
 python -m tools.total_resolver explain func_XXXXXXXX --relationship callers --include calls
 python -m tools.total_resolver explain func_XXXXXXXX --relationship callees --include calls
-python -m tools.total_resolver explain live:0x80123456 --session SESSION_ID --sequence SEQUENCE
 python -m tools.total_resolver search --function PARTIAL_NAME
 python -m tools.total_resolver search --physical 0x00123456 --opcode 0xXXXXXXXX
 python -m tools.total_resolver search --session-keyword "capture name or notes"
 python -m tools.total_resolver search --session SESSION_ID --frame-start 100 --frame-end 120
 python -m tools.total_resolver search --edge-from 0x00123456 --edge-to 0x00124568
-python -m tools.total_resolver search --marker-text "visible action" --controller
+python -m tools.total_resolver search --focused-profile cutscene-studio-v1 --focused-target director-parser
 python -m tools.total_resolver coverage
 python -m tools.total_resolver unresolved
 ```
 
-Use `--session-keyword` when Joe's semantic capture name or notes describe the behavior you need.
-All supplied words must occur, case-insensitively, in that name/notes text. The result supplies the
-session ID for a follow-up `--session` query. Do not confuse this with `--marker-text`, which
-searches event markers inside sessions. Session-filtered results and function session previews
-repeat the stored semantic context so a raw capture ID does not lose its human meaning.
+`explain FUNCTION` searches all accepted sessions.
+It shows callers and callees without a capture ID.
+Use `--session-keyword` to find a session by its name or notes.
+Then, use the session ID to find time, controller, marker, or focused-state context.
 
-These commands open the selected knowledge database read-only and report a source/freshness
-manifest. They do not consult a generated Resolver unless `--legacy-resolver PATH` is supplied
-explicitly. Default output is bounded; request a named detail section with `--include`, or advance
-through a search with `--cursor`.
+Use `callGraph.static` for frozen direct-call candidates.
+Use `callGraph.runtime` for exact observed call relationships.
+Frames, labels, controller states, activity bitmaps, and focused snapshots are context.
+A known-activity hit proves only that a fact occurred in a session.
+It does not prove the event time or the event count.
+If a mapping is ambiguous, keep the mapping ambiguous.
 
-A bare function explanation includes bounded incoming and outgoing call previews without requiring
-a session ID. Read `callGraph.static` for frozen decoded direct-call candidates and
-`callGraph.runtime` for stored exact callsite/delay-slot/actual-target relationships. Historical
-protocol-0.13 relationships appear only where consecutive exact edge witnesses allowed the
-format-5 migration to reconstruct the same triple. Use `--relationship callers` or
-`--relationship callees` to select one direction and `--include calls --limit N --cursor N` for
-detail. An unresolved callsite count means the current knowledge cannot safely name every dynamic
-target; do not fill that gap by choosing a convenient session or destination.
+## Access limits
 
-Exact physical-address/opcode instructions, exact endpoint edges, and exact DMA destination bytes
-are machine facts. ROM/function mapping is byte-confirmed but remains `live-unreviewed` placement
-evidence. Frames, timestamps, controller transitions, page generations, and labels are context.
-None of these alone proves a semantic name, accepted function boundary, source owner, or matching-C
-claim. A reused live address requires session/sequence context; do not choose a convenient mapping
-when the resolver reports ambiguity.
+A query agent has read-only access.
+It can use `doctor`, read-only `pj64` checks, `knowledge status`, `knowledge verify`, and `session status`.
+It can also use `explain`, `search`, `coverage`, and `unresolved`.
 
-The database grows with unique knowledge. Repeated sessions may still add session context,
-counters, unresolved representatives, and genuinely new paths. Do not delete facts to make counts
-look cleaner, and do not manually edit SQLite tables.
+Do not do these actions without a database build assignment:
 
-## Database-building agents only: capture requires Joe's explicit readiness
+- A session start or stop
+- GUI use
+- A label, marker, name, or note
+- Knowledge initialization, ingestion, import, selection, migration, or rebuild
+- A legacy product or a live bundle
+- Project64 start or control
+- An emulator memory write
 
-A querying agent never enters this workflow. For an explicitly assigned database-building agent, a
-request to inspect, test, document, or use Total Resolver is still not permission to start a capture
-or install a watch. Start only after Joe explicitly says he is ready for that run. Never use
-computer control to launch Project64. The Joe-facing GUI has a deliberate **Launch Project64**
-button for the authenticated frozen binary; do not activate it unless Joe explicitly asks you to
-launch Project64 in that run. Do not open/reset a ROM, load a state, pause/resume, step, inject
-controller input, or write RAM on the recorder's behalf.
-
-The Joe-facing workflow is:
-
-```text
-python -m tools.total_resolver gui --port 64656
-```
-
-The GUI launches Project64 only when its dedicated button is clicked, and only after the configured
-binary path and SHA-256 pass. Launch does not load a ROM or start capture. The GUI defers ingestion
-until after a clean stop, then requires a human semantic name before its explicit **Save Name and
-Integrate** action. It writes an attachable diagnostic log under `build/total-resolver/gui/logs/`
-and copies the worker-log tail into that log on failure. Do not open the GUI or click its launch or
-capture controls unless Joe explicitly asks.
-
-For an explicitly authorized command-line run:
-
-```text
-python -m tools.total_resolver session start --defer-ingest --port 64656
-python -m tools.total_resolver session status
-python -m tools.total_resolver session stop
-python -m tools.total_resolver session name SESSION_ID "SEMANTIC NAME"
-python -m tools.total_resolver knowledge ingest SESSION_ID
-python -m tools.total_resolver knowledge verify
-```
-
-Use `--before-rom` only when Joe explicitly requests a fresh power-on capture and Project64 truly
-has no loaded ROM or allocated N64 RDRAM. Arm it first, then Joe manually opens the exact Rev 0 ROM.
-The bridge never opens the ROM. Stop promptly when requested.
-
-In the deferred GUI/CLI flow, normal stop verifies the isolated staging database and leaves it
-closed without changing knowledge. Naming writes a separate human-context sidecar and does not
-change captured machine identity. Explicit ingestion then merges the delta atomically. If stop or
-ingestion fails, leave the raw session intact, report the diagnostic-log path, and use an explicit
-retry only after the cause is understood:
-
-```text
-python -m tools.total_resolver session verify SESSION_ID
-python -m tools.total_resolver knowledge ingest SESSION_ID
-```
-
-Never make a rejected or interrupted session look accepted by editing its manifest, capture, or
-ledger. Do not expose the selected knowledge database or captured bytes to the bridge's broader
-mutation commands; recorder code must use `ObservationOnlyPj64Client`.
-
-## Database-building agents only: compatibility and repair
-
-Live capture requires bridge protocol 0.14.0 and frontier format 5 exactly. Deterministic ledger
-replay also accepts already-ingested historical protocols 0.8.0 through 0.13.0.
-Protocol 0.7.x captures predate the accepted ordering/evidence contract and remain raw historical
-sessions only.
-
-Migration and rebuild outputs must be new files beside the accepted database; never overwrite the
-selected source:
-
-```text
-python -m tools.total_resolver knowledge migrate-frontier --output NEW_DATABASE
-python -m tools.total_resolver knowledge migrate-schema3 --output NEW_DATABASE
-python -m tools.total_resolver knowledge rebuild --output NEW_DATABASE
-```
-
-Select a migrated copy only when the task explicitly authorizes selection and its verification
-passes. A rebuild is a repair/equivalence oracle, not the normal capture path.
-
-## Change and verification rules
-
-- Inspect Git status in the decomp, bridge, and native Project64 repositories before overlapping
-  their files. Preserve unrelated dirty work.
-- Do not create a branch or worktree without Joe's explicit direction.
-- Keep Project64 optional for the ordinary exact-ROM build and for offline resolver queries.
-- Keep generated sessions, databases, frontiers, RAM captures, products, and benchmarks below
-  ignored `build/total-resolver/` paths.
-- When the wire contract changes, bump the protocol, fail closed, update the bridge and client
-  together, and add compatibility tests.
-- When the native runtime changes, update its complete production source set and tested binary
-  identities in `config/total-resolver/sources.json`; never refresh an identity merely to silence a
-  failed check.
-- Do not start a real capture as a test. The benchmark and bridge harness use fake emulators.
-
-Run the complete tool suite after changes:
-
-```text
-python -m unittest discover -s tools/total_resolver/tests -v
-python -m tools.total_resolver doctor --project64-root C:\Users\Joe\Projects\project64
-python -m tools.total_resolver knowledge verify
-```
-
-A Total Resolver change is ready for agents only when the applicable tests, frozen runtime check,
-and selected-database verification pass, with any remaining coverage or semantic uncertainty
-reported plainly.
+Joe must approve each capture run before it starts.
+Never use computer control to start Project64.
