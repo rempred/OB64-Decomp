@@ -291,7 +291,8 @@
     { "name": "overlay_17f9c0_bss_start", "address": "0x8021E120" },
     { "name": "overlay_17f9c0_bss_end", "address": "0x8021E130" },
     { "name": "resource_pool", "address": "0x800A884C" },
-    { "name": "sqrtf", "address": "0x800907E0" }
+    { "name": "sqrtf", "address": "0x800907E0" },
+    { "name": "D_8022A958", "address": "0x8022A958" }
   ],
   "targets": [
     {
@@ -2443,6 +2444,17 @@
       "symbol": "func_00284210",
       "expectedRelocations": [
         {"offset":"0x00000008","type":"R_MIPS_26","symbol":"func_00283FA8","section":".rel.text"}
+      ]
+    },
+    {
+      "symbol": "func_002841CC",
+      "expectedRelocations": [
+        {"offset":"0x0000000C","type":"R_MIPS_HI16","symbol":"D_8022A958","section":".rel.text"},
+        {"offset":"0x00000010","type":"R_MIPS_LO16","symbol":"D_8022A958","section":".rel.text"},
+        {"offset":"0x00000018","type":"R_MIPS_26","symbol":"resource_free","section":".rel.text"},
+        {"offset":"0x00000024","type":"R_MIPS_HI16","symbol":"D_8022A958","section":".rel.text"},
+        {"offset":"0x00000028","type":"R_MIPS_LO16","symbol":"D_8022A958","section":".rel.text"},
+        {"offset":"0x0000002C","type":"R_MIPS_26","symbol":"func_00283FA8","section":".rel.text"}
       ]
     }
   ]
