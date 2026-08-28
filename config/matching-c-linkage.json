@@ -2438,6 +2438,12 @@
         {"offset":"0x00002374","type":"R_MIPS_LO16","symbol":"D_801F0DE8","section":".rel.text"}
       ]
     },
-    { "symbol": "strcat", "expectedRelocations": [] }
+    { "symbol": "strcat", "expectedRelocations": [] },
+    {
+      "symbol": "func_00284210",
+      "expectedRelocations": [
+        {"offset":"0x00000008","type":"R_MIPS_26","symbol":"func_00283FA8","section":".rel.text"}
+      ]
+    }
   ]
 }
