@@ -299,9 +299,9 @@
     { "name": "D_8022A954", "address": "0x8022A954" },
     { "name": "D_801CE8BC", "address": "0x801CE8BC" },
     { "name": "D_8022A974", "address": "0x8022A974" },
-    { "name": "func_002A3198", "address": "0x80233968" },
-    { "name": "func_0029E218", "address": "0x8022E9E8" },
-    { "name": "func_0029E7E0", "address": "0x8022EFB0" },
+    { "name": "func_80233968", "address": "0x80233968" },
+    { "name": "func_8022E9E8", "address": "0x8022E9E8" },
+    { "name": "func_8022EFB0", "address": "0x8022EFB0" },
     { "name": "D_8018FC18", "address": "0x8018FC18" },
     { "name": "D_800C4C26", "address": "0x800C4C26" },
     { "name": "func_80198D08", "address": "0x80198D08" },
@@ -2552,7 +2552,7 @@
       "expectedRelocations": [
         {"offset":"0x00000000","type":"R_MIPS_HI16","symbol":"D_8022A974","section":".rel.text"},
         {"offset":"0x00000004","type":"R_MIPS_LO16","symbol":"D_8022A974","section":".rel.text"},
-        {"offset":"0x00000040","type":"R_MIPS_26","symbol":"func_002A3198","section":".rel.text"}
+        {"offset":"0x00000040","type":"R_MIPS_26","symbol":"func_80233968","section":".rel.text"}
       ]
     },
     {
@@ -2562,10 +2562,10 @@
         {"offset":"0x00000004","type":"R_MIPS_LO16","symbol":"D_8022A974","section":".rel.text"},
         {"offset":"0x00000020","type":"R_MIPS_HI16","symbol":"D_8022A974","section":".rel.text"},
         {"offset":"0x00000024","type":"R_MIPS_LO16","symbol":"D_8022A974","section":".rel.text"},
-        {"offset":"0x00000040","type":"R_MIPS_26","symbol":"func_0029E218","section":".rel.text"},
+        {"offset":"0x00000040","type":"R_MIPS_26","symbol":"func_8022E9E8","section":".rel.text"},
         {"offset":"0x00000068","type":"R_MIPS_HI16","symbol":"D_8022A974","section":".rel.text"},
         {"offset":"0x0000006C","type":"R_MIPS_LO16","symbol":"D_8022A974","section":".rel.text"},
-        {"offset":"0x00000088","type":"R_MIPS_26","symbol":"func_0029E7E0","section":".rel.text"}
+        {"offset":"0x00000088","type":"R_MIPS_26","symbol":"func_8022EFB0","section":".rel.text"}
       ]
     },
     {
