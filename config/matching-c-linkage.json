@@ -296,7 +296,8 @@
     { "name": "D_8022A950", "address": "0x8022A950" },
     { "name": "D_8022A95C", "address": "0x8022A95C" },
     { "name": "D_8022A954", "address": "0x8022A954" },
-    { "name": "D_801CE8BC", "address": "0x801CE8BC" }
+    { "name": "D_801CE8BC", "address": "0x801CE8BC" },
+    { "name": "D_8022A97C", "address": "0x8022A97C" }
   ],
   "targets": [
     {
@@ -2519,6 +2520,14 @@
         {"offset":"0x0000000C","type":"R_MIPS_HI16","symbol":"D_801CE8BC","section":".rel.text"},
         {"offset":"0x00000010","type":"R_MIPS_LO16","symbol":"D_801CE8BC","section":".rel.text"},
         {"offset":"0x0000002C","type":"R_MIPS_26","symbol":".text","section":".rel.text"}
+      ]
+    },
+    {
+      "symbol": "func_002A13EC",
+      "expectedRelocations": [
+        {"offset":"0x00000004","type":"R_MIPS_HI16","symbol":"D_8022A97C","section":".rel.text"},
+        {"offset":"0x00000008","type":"R_MIPS_LO16","symbol":"D_8022A97C","section":".rel.text"},
+        {"offset":"0x0000006C","type":"R_MIPS_26","symbol":".text","section":".rel.text"}
       ]
     }
   ]
