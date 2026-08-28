@@ -295,7 +295,8 @@
     { "name": "D_8022A958", "address": "0x8022A958" },
     { "name": "D_8022A950", "address": "0x8022A950" },
     { "name": "D_8022A95C", "address": "0x8022A95C" },
-    { "name": "D_8022A954", "address": "0x8022A954" }
+    { "name": "D_8022A954", "address": "0x8022A954" },
+    { "name": "D_801CE8BC", "address": "0x801CE8BC" }
   ],
   "targets": [
     {
@@ -2511,6 +2512,14 @@
         {"offset":"0x0000004C","type":"R_MIPS_LO16","symbol":"D_8022A958","section":".rel.text"}
       ]
     },
-    { "symbol": "func_0020BFF8", "expectedRelocations": [] }
+    { "symbol": "func_0020BFF8", "expectedRelocations": [] },
+    {
+      "symbol": "func_0020C478",
+      "expectedRelocations": [
+        {"offset":"0x0000000C","type":"R_MIPS_HI16","symbol":"D_801CE8BC","section":".rel.text"},
+        {"offset":"0x00000010","type":"R_MIPS_LO16","symbol":"D_801CE8BC","section":".rel.text"},
+        {"offset":"0x0000002C","type":"R_MIPS_26","symbol":".text","section":".rel.text"}
+      ]
+    }
   ]
 }
