@@ -91,6 +91,18 @@ function main() {
   mutations.push(expectRejection('unknown recorded class', () => validateRecordedPhase8Build(phase8, {
     output, buildReport: unknownClass, verification: report.verification, compilerSha256: report.compiler.sha256,
   })));
+  const paddedTarget = phase8.targets.find((target) => target.auxiliarySections.some((auxiliary) => (
+    auxiliary.trailingPaddingBytes > 0
+  )));
+  if (!paddedTarget) throw new Error('padded auxiliary workflow mutation canary is missing');
+  const stalePaddingEvidence = clone(report);
+  const stalePaddingReplacement = stalePaddingEvidence.targetReplacements.find((target) => (
+    target.symbol === paddedTarget.symbol
+  ));
+  stalePaddingReplacement.auxiliarySections[0].trailingPaddingBytes = 0;
+  mutations.push(expectRejection('stale auxiliary padding evidence', () => validateRecordedPhase8Build(phase8, {
+    output, buildReport: stalePaddingEvidence, verification: report.verification, compilerSha256: report.compiler.sha256,
+  })));
   const proofFile = path.join(output, ...report.targetReplacements[0].sourceObjectProof.path.split('/'));
   const proofBytes = fs.readFileSync(proofFile);
   const staleProof = JSON.parse(proofBytes.toString('utf8'));
