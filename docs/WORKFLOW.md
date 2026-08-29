@@ -104,10 +104,16 @@ The build classifies every active target before compilation. `UNKNOWN` and `ASM`
 matching compiler runs. The source class is unchanged by later toolchain stages.
 
 The authenticated Windows KMC GCC 2.7.2 compiler emits `<symbol>.compiler.s`. The build preserves
-that file untouched. It derives `<symbol>.s` only by replacing the sole `.text` directive with the
-accepted target-section directive, then passes that file directly to the pinned GNU 2.6
-assembler. There is no compiler-assembly rewrite or target-specific parser between the compiler
-and assembler.
+that file untouched. Ordinarily it derives `<symbol>.s` only by replacing the sole `.text`
+directive with the accepted target-section directive. A target-specific reviewed linkage contract
+may instead assign the exact compiler-emitted `.text` regions and one read-only switch-table
+`.rodata` region to accepted output sections. That contract fixes section type/flags, alignment,
+size, object and linked hashes, normalized relocations, ROM/VMA placement, and ownership. The
+assignment changes section directives only; instructions, labels, table entries, and relocations
+remain untouched. If the table replaces only a prefix of an accepted assembly data row, the
+contract preserves the remainder through a unique read-only `PROGBITS` input section with exact
+bytes, ROM/VMA placement, and assembly ownership; conventional `.data` and `.bss` vessels reject.
+The pinned GNU 2.6 assembler consumes the section-assigned file directly.
 
 Each active target retains these reviewable artifacts:
 
@@ -117,7 +123,7 @@ Each active target retains these reviewable artifacts:
 4. a link input object with discarded ancillary sections removed; and
 5. a deterministic `<symbol>.source-object-proof.json` record.
 
-Strict verification independently recreates the section adjustment and proof. The proof records
+Strict verification independently recreates the contracted section assignment and proof. The proof records
 the source-policy result, compiler and assembler identities/flags, artifact hashes, target-section
 bytes, load-relevant relocations, visible ancillary differences, linked bytes, and final owner.
 It explicitly records that compiler assembly was not rewritten.
@@ -506,7 +512,8 @@ compares them with the reviewed accepted contract. Discarded ancillary metadata 
 the source-to-object report but is not treated as a ROM or modification-relevant relocation.
 
 `config/matching-c-linkage.json` is the active reviewed linkage contract. It contains one shared
-absolute-symbol registry and a small per-target relocation list. Historical targets may still read
+absolute-symbol registry, per-target relocation lists, and any target-specific audited auxiliary
+switch-table section contract. Historical targets may still read
 an equivalent contract from the frozen `config/phase8/matching-c.json` compatibility record while
 that evidence is migrated. New targets must not be added to that legacy file.
 

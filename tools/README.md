@@ -44,8 +44,11 @@ source ownership before composing those rows; the tail is not exposed as a separ
 
 Scratch compilation may retain compiler-generated read-only `.rodata` and may encode numeric COP1
 binary operations deterministically for the pinned assembler. Those allowances are confined to
-research candidates. Canonical compilation, `diff`, and verification retain their stricter section
-and assembler contracts.
+research candidates. Canonical compilation, `diff`, and verification reject auxiliary sections
+unless the active target has a reviewed switch-table contract fixing the exact read-only section,
+bytes, relocations, placement, and ownership. A preserved assembly-row remainder must use its own
+contracted read-only section rather than `.data` or `.bss`. The scratch allowance is not a
+canonical contract.
 
 Common commands:
 

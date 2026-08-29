@@ -100,7 +100,9 @@ At minimum verify:
   section, linker LMA/`PT_LOAD`, and binary-extraction smoke tests pass;
 - compiler flags used for matching remain pinned;
 - untouched KMC compiler output differs from assembler input only by the accepted target-section
-  adjustment;
+  assignment and any target-specific reviewed read-only auxiliary-section assignment;
+- a partially replaced auxiliary data row retains exact remainder bytes, placement, and assembly
+  ownership through a unique read-only input section rather than `.data` or `.bss`;
 - active configuration/build code contains no retired compiler-assembly rewrite stage or modern
   Binutils dependency;
 - the project-owned ELF report and program-header checks retain exact section VMA/LMA, flags,

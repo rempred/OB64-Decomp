@@ -70,9 +70,16 @@ Source classification is complete before compilation and does not change during 
 `UNKNOWN` and `ASM` are not accepted matching-compiler inputs.
 
 For both `PURE_C` and `HYBRID_C`, the production path preserves the authenticated KMC compiler
-assembly byte-for-byte. The only permitted generated change is replacement of the sole `.text`
-directive with the accepted target-section directive. The pinned GNU 2.6 assembler consumes that
-section-adjusted file directly.
+assembly byte-for-byte. Ordinarily the only generated change is replacement of the sole `.text`
+directive with the accepted target-section directive. A target-specific reviewed linkage contract
+may additionally assign the exact `.text` regions and one compiler-emitted read-only switch-table
+`.rodata` region to accepted output sections. The contract fixes the auxiliary section's
+read-only `PROGBITS` shape, alignment, size, hashes, relocations, placement, and ownership. The
+assignment changes section directives only; it does not rewrite instructions, labels, table
+entries, or relocations. Any preserved assembly remainder uses a uniquely named read-only
+`PROGBITS` input section under the same exact placement and ownership contract; `.data`, `.bss`,
+writable, executable, or uncontracted tail sections reject. The pinned GNU 2.6 assembler consumes
+the section-assigned file directly.
 
 Source-to-object proof verifies the untouched compiler-assembly hash, section-adjusted hash,
 assembler identity and flags, raw object identity, target bytes, and load-relevant relocations.
