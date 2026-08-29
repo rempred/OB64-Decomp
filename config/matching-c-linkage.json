@@ -102,6 +102,8 @@
     { "name": "D_8022A7F0", "address": "0x8022A7F0" },
     { "name": "func_801AECA4", "address": "0x801AECA4" },
     { "name": "func_8020B29C", "address": "0x8020B29C" },
+    { "name": "func_80231BBC", "address": "0x80231BBC" },
+    { "name": "func_8009C970", "address": "0x8009C970" },
     { "name": "D_802167E0", "address": "0x802167E0" },
     { "name": "D_80216F70", "address": "0x80216F70" },
     { "name": "D_80216F90", "address": "0x80216F90" },
@@ -2713,6 +2715,17 @@
         { "offset": "0x000000A4", "type": "R_MIPS_LO16", "symbol": "D_801CE8FC", "section": ".rel.text" },
         { "offset": "0x000000E4", "type": "R_MIPS_26", "symbol": "func_8022E3DC", "section": ".rel.text" },
         { "offset": "0x000000F0", "type": "R_MIPS_26", "symbol": "func_8022E9E8", "section": ".rel.text" }
+      ]
+    },
+    {
+      "symbol": "func_002A08C0",
+      "expectedRelocations": [
+        { "offset": "0x00000058", "type": "R_MIPS_HI16", "symbol": "D_8022A974", "section": ".rel.text" },
+        { "offset": "0x0000005C", "type": "R_MIPS_LO16", "symbol": "D_8022A974", "section": ".rel.text" },
+        { "offset": "0x000000A0", "type": "R_MIPS_26", "symbol": "func_80231BBC", "section": ".rel.text" },
+        { "offset": "0x000000D0", "type": "R_MIPS_26", "symbol": "func_80231BBC", "section": ".rel.text" },
+        { "offset": "0x00000160", "type": "R_MIPS_26", "symbol": "func_8009C970", "section": ".rel.text" },
+        { "offset": "0x00000168", "type": "R_MIPS_26", "symbol": "func_8022E9E8", "section": ".rel.text" }
       ]
     },
     {
