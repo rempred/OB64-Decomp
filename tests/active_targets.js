@@ -45,6 +45,67 @@ function main() {
       || canaryEntry.auxiliarySections.length !== 1 || canaryTarget.auxiliarySections.length !== 1) {
     throw new Error('canonical auxiliary switch-table canary contract is missing');
   }
+  const unpaddedCanary = canaryTarget.auxiliarySections[0];
+  if (Object.prototype.hasOwnProperty.call(canaryEntry.auxiliarySections[0], 'trailingPaddingBytes')
+      || Object.prototype.hasOwnProperty.call(canaryEntry.auxiliarySections[0], 'expectedTrailingPaddingSha256')
+      || unpaddedCanary.entryBytes !== unpaddedCanary.bytes
+      || unpaddedCanary.trailingPaddingBytes !== 0
+      || unpaddedCanary.expectedTrailingPaddingSha256 !== 'E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855') {
+    throw new Error('canonical unpadded auxiliary switch-table behavior drift');
+  }
+  const paddedFixture = {
+    ...canaryEntry.auxiliarySections[0],
+    entries: 7,
+    trailingPaddingBytes: 4,
+    expectedTrailingPaddingSha256: 'DF3F619804A92FDB4057192DC43DD748EA778ADC52BC498CE80524C014B81119',
+    expectedRelocations: canaryEntry.auxiliarySections[0].expectedRelocations.slice(0, 7),
+  };
+  const paddedFixtureConfig = {
+    ...linkage,
+    targets: linkage.targets.map((entry) => entry.symbol === canaryEntry.symbol ? {
+      ...entry,
+      auxiliarySections: [paddedFixture],
+    } : entry),
+  };
+  const normalizedPaddedFixture = validateLinkageConfig(
+    paddedFixtureConfig,
+    active.minimalConfig.profile,
+  ).targets.get(canaryEntry.symbol.toLowerCase()).auxiliarySections[0];
+  if (normalizedPaddedFixture.entryBytes !== 28
+      || normalizedPaddedFixture.trailingPaddingBytes !== 4
+      || normalizedPaddedFixture.bytes !== 32) {
+    throw new Error('canonical padded auxiliary switch-table normalization drift');
+  }
+  const legacyUnpaddedFixture = {
+    ...canaryEntry.auxiliarySections[0],
+    romEndExclusive: '0x00286BAC',
+    vramEndExclusive: '0x8022ABDC',
+    bytes: 28,
+    entries: 7,
+    preservedTail: {
+      ...canaryEntry.auxiliarySections[0].preservedTail,
+      romStart: '0x00286BAC',
+      vramStart: '0x8022ABDC',
+      bytes: 36,
+    },
+    expectedRelocations: canaryEntry.auxiliarySections[0].expectedRelocations.slice(0, 7),
+  };
+  const legacyUnpaddedFixtureConfig = {
+    ...linkage,
+    targets: linkage.targets.map((entry) => entry.symbol === canaryEntry.symbol ? {
+      ...entry,
+      auxiliarySections: [legacyUnpaddedFixture],
+    } : entry),
+  };
+  const normalizedLegacyUnpaddedFixture = validateLinkageConfig(
+    legacyUnpaddedFixtureConfig,
+    active.minimalConfig.profile,
+  ).targets.get(canaryEntry.symbol.toLowerCase()).auxiliarySections[0];
+  if (normalizedLegacyUnpaddedFixture.entryBytes !== 28
+      || normalizedLegacyUnpaddedFixture.trailingPaddingBytes !== 0
+      || normalizedLegacyUnpaddedFixture.bytes !== 28) {
+    throw new Error('legacy unpadded auxiliary switch-table compatibility drift');
+  }
   const mutateCanaryAuxiliary = (mutate) => ({
     ...linkage,
     targets: linkage.targets.map((entry) => entry.symbol === canaryEntry.symbol ? {
@@ -170,6 +231,35 @@ function main() {
     if (validator === validateLinkageConfig) validator(mutation, active.minimalConfig.profile);
     else validator(mutation);
   }));
+  const mutatePaddedFixture = (mutate) => ({
+    ...paddedFixtureConfig,
+    targets: paddedFixtureConfig.targets.map((entry) => entry.symbol === canaryEntry.symbol ? {
+      ...entry,
+      auxiliarySections: [mutate({ ...entry.auxiliarySections[0] })],
+    } : entry),
+  });
+  const rejectedPaddingMutations = [
+    ['missing padding hash', (record) => {
+      const { expectedTrailingPaddingSha256, ...rest } = record;
+      return rest;
+    }],
+    ['missing padding byte count', (record) => {
+      const { trailingPaddingBytes, ...rest } = record;
+      return rest;
+    }],
+    ['zero explicit padding', (record) => ({ ...record, trailingPaddingBytes: 0 })],
+    ['arbitrary padding length', (record) => ({ ...record, trailingPaddingBytes: 8 })],
+    ['nonzero padding hash', (record) => ({ ...record, expectedTrailingPaddingSha256: '0'.repeat(64) })],
+    ['relocation in padding', (record) => ({
+      ...record,
+      expectedRelocations: record.expectedRelocations.map((relocation, index) => index === 6
+        ? { ...relocation, offset: '0x0000001C' }
+        : relocation),
+    })],
+  ].map(([name, mutate]) => expectRejection(`auxiliary ${name}`, () => validateLinkageConfig(
+    mutatePaddedFixture(mutate),
+    active.minimalConfig.profile,
+  )));
   const rejectedActiveLinkSymbolShadows = [
     expectRejection('active target absolute-symbol shadow', () => validateNoActiveLinkSymbolShadows(
       [{ symbol: 'fixture_target' }],
@@ -248,6 +338,7 @@ function main() {
     rejectedToolchainMutations,
     rejectedLinkageMutations,
     rejectedAuxiliaryMutations,
+    rejectedPaddingMutations,
     rejectedActiveLinkSymbolShadows,
     rejectedContractMutations,
     structuralFieldsEquivalent: true,

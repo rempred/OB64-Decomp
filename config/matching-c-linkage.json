@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 2,
+  "schemaVersion": 3,
   "profile": "us-rev0",
   "symbols": [
     { "name": "D_800EB0DC", "address": "0x800EB0DC" },

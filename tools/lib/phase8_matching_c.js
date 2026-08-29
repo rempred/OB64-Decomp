@@ -249,6 +249,34 @@ function compareLinkedTargetBytes(target, linkedElf, canonicalBaserom) {
   };
 }
 
+function verifyAuxiliaryPaddingBytes(bytes, auxiliary, label) {
+  if (!Buffer.isBuffer(bytes)
+      || !auxiliary
+      || !Number.isInteger(auxiliary.bytes)
+      || !Number.isInteger(auxiliary.entryBytes)
+      || !Number.isInteger(auxiliary.trailingPaddingBytes)
+      || auxiliary.entryBytes < 0
+      || auxiliary.trailingPaddingBytes < 0
+      || auxiliary.entryBytes + auxiliary.trailingPaddingBytes !== auxiliary.bytes
+      || bytes.length !== auxiliary.bytes
+      || typeof auxiliary.expectedTrailingPaddingSha256 !== 'string') {
+    fail('auxiliary trailing-padding metadata is malformed: ' + label);
+  }
+  const padding = Buffer.from(bytes.subarray(auxiliary.entryBytes));
+  const expectedPadding = Buffer.alloc(auxiliary.trailingPaddingBytes);
+  const paddingSha256 = sha256Buffer(padding);
+  if (padding.length !== auxiliary.trailingPaddingBytes
+      || !padding.equals(expectedPadding)
+      || paddingSha256 !== auxiliary.expectedTrailingPaddingSha256) {
+    fail('auxiliary trailing-padding bytes drift: ' + label);
+  }
+  return {
+    entryBytes: auxiliary.entryBytes,
+    trailingPaddingBytes: padding.length,
+    trailingPaddingSha256: paddingSha256,
+  };
+}
+
 function compareLinkedAuxiliaryBytes(target, auxiliary, linkedElf, canonicalBaserom) {
   if (!auxiliary || auxiliary.kind !== 'switch-table'
       || !Number.isInteger(auxiliary.ownerSectionBytes)
@@ -298,6 +326,16 @@ function compareLinkedAuxiliaryBytes(target, auxiliary, linkedElf, canonicalBase
   }
   const linkedBytes = Buffer.from(ownerBytes.subarray(offsetInOwner, offsetInOwner + auxiliary.bytes));
   const expectedBytes = Buffer.from(canonicalBaserom.subarray(auxiliary.romStartNumber, auxiliary.romEndNumber));
+  const linkedPadding = verifyAuxiliaryPaddingBytes(
+    linkedBytes,
+    auxiliary,
+    target.symbol + ' ' + auxiliary.outputSection + ' linked bytes',
+  );
+  verifyAuxiliaryPaddingBytes(
+    expectedBytes,
+    auxiliary,
+    target.symbol + ' ' + auxiliary.outputSection + ' retail bytes',
+  );
   const linkedSha256 = sha256Buffer(linkedBytes);
   const expectedSha256 = sha256Buffer(expectedBytes);
   return {
@@ -310,6 +348,7 @@ function compareLinkedAuxiliaryBytes(target, auxiliary, linkedElf, canonicalBase
     ownerSectionSha256: sha256Buffer(ownerBytes),
     ownerSymbol: auxiliary.ownerSymbol,
     ownerSymbolValue: ownerSymbols[0].value,
+    ...linkedPadding,
   };
 }
 
@@ -498,6 +537,11 @@ function copyPhase7Objects(phase8, phase7, output, objcopy) {
         const ownerBytes = Buffer.from(elfSectionBytes(originalElf, auxiliaryMatches[0]));
         const tableBytes = Buffer.from(ownerBytes.subarray(0, auxiliary.bytes));
         const tailBytes = Buffer.from(ownerBytes.subarray(auxiliary.bytes));
+        verifyAuxiliaryPaddingBytes(
+          tableBytes,
+          auxiliary,
+          target.symbol + ' ' + auxiliary.outputSection + ' original fallback bytes',
+        );
         if (tableBytes.length !== auxiliary.bytes
             || tailBytes.length !== auxiliary.ownerTailBytes
             || sha256Buffer(tableBytes) !== auxiliary.expectedLinkedSha256) {
@@ -550,6 +594,9 @@ function copyPhase7Objects(phase8, phase7, output, objcopy) {
           symbol: owner.target.symbol,
           outputSection: owner.auxiliary.outputSection,
           tableBytes: owner.auxiliary.bytes,
+          entryBytes: owner.auxiliary.entryBytes,
+          trailingPaddingBytes: owner.auxiliary.trailingPaddingBytes,
+          trailingPaddingSha256: owner.auxiliary.expectedTrailingPaddingSha256,
           tailBytes: 0,
           binaryRelative: null,
           objectRelative: null,
@@ -589,6 +636,9 @@ function copyPhase7Objects(phase8, phase7, output, objcopy) {
         sectionFlags: tailEvidence.sectionFlags,
         alignment: tailEvidence.alignment,
         tableBytes: owner.auxiliary.bytes,
+        entryBytes: owner.auxiliary.entryBytes,
+        trailingPaddingBytes: owner.auxiliary.trailingPaddingBytes,
+        trailingPaddingSha256: owner.auxiliary.expectedTrailingPaddingSha256,
         tailBytes: owner.tailBytes.length,
         tailSha256: sha256Buffer(owner.tailBytes),
         romStart: owner.auxiliary.ownerTailRomStartNumber,
@@ -715,7 +765,7 @@ function auxiliaryRelocationRecords(elf, target, auxiliary) {
     .filter((record) => record.section === '.rel' + auxiliary.outputSection)
     .map((record) => {
       const offset = Number.parseInt(record.offset.slice(2), 16);
-      if (offset < 0 || offset + 4 > auxiliaryBytes.length || offset % 4 !== 0
+      if (offset < 0 || offset + 4 > auxiliary.entryBytes || offset % 4 !== 0
           || record.type !== 'R_MIPS_32'
           || record.symbolType !== 3
           || record.symbolSectionIndex !== targetSection.index
@@ -832,6 +882,11 @@ function compileTarget(phase8, target, output, compiler, assembler, objcopy, opt
       fail('KMC auxiliary object section shape drift: ' + target.symbol + ' ' + auxiliary.outputSection);
     }
     const bytes = Buffer.from(elfSectionBytes(elf, matches[0]));
+    const paddingEvidence = verifyAuxiliaryPaddingBytes(
+      bytes,
+      auxiliary,
+      target.symbol + ' ' + auxiliary.outputSection + ' source object',
+    );
     if (sha256Buffer(bytes) !== auxiliary.expectedObjectSha256) {
       fail('KMC auxiliary object bytes drift: ' + target.symbol + ' ' + auxiliary.outputSection);
     }
@@ -847,6 +902,7 @@ function compileTarget(phase8, target, output, compiler, assembler, objcopy, opt
       alignment: matches[0].alignment,
       flags: matches[0].flags,
       relocations: auxiliaryRelocations,
+      ...paddingEvidence,
     });
   }
   const acceptedAllocSections = new Set([
@@ -962,6 +1018,11 @@ function deriveSourceObjectProof(phase8, target, output, classification, linkedE
       fail('source-to-object auxiliary section shape drift: ' + target.symbol + ' ' + auxiliary.outputSection);
     }
     const bytes = Buffer.from(elfSectionBytes(objectElf, sections[0]));
+    const paddingEvidence = verifyAuxiliaryPaddingBytes(
+      bytes,
+      auxiliary,
+      target.symbol + ' ' + auxiliary.outputSection + ' proof object',
+    );
     const relocationSection = '.rel' + auxiliary.outputSection;
     loadRelocationSections.add(relocationSection);
     const rawRelocations = allRelocations.filter((record) => record.section === relocationSection);
@@ -984,6 +1045,10 @@ function deriveSourceObjectProof(phase8, target, output, classification, linkedE
       objectBytes: bytes.length,
       objectSha256: sha256Buffer(bytes),
       acceptedObjectSha256: auxiliary.expectedObjectSha256,
+      entryBytes: paddingEvidence.entryBytes,
+      trailingPaddingBytes: paddingEvidence.trailingPaddingBytes,
+      trailingPaddingSha256: paddingEvidence.trailingPaddingSha256,
+      acceptedTrailingPaddingSha256: auxiliary.expectedTrailingPaddingSha256,
       loadRelevantRelocationsRaw: rawRelocations,
       loadRelevantRelocationsNormalized: normalizedRelocations,
       acceptedLoadRelevantRelocations: auxiliary.expectedRelocations,
@@ -993,6 +1058,8 @@ function deriveSourceObjectProof(phase8, target, output, classification, linkedE
         vramStart: auxiliary.vramStart,
         vramEndExclusive: auxiliary.vramEndExclusive,
         bytes: auxiliary.bytes,
+        entryBytes: auxiliary.entryBytes,
+        trailingPaddingBytes: auxiliary.trailingPaddingBytes,
         ownerRowIndex: auxiliary.ownerRowIndex,
         ownerSection: auxiliary.outputSection,
         ownerSectionBytes: auxiliary.ownerSectionBytes,
@@ -1299,6 +1366,9 @@ function writeLayout(phase8, phase7, output, replacements) {
       vramStart: auxiliary.vramStartNumber,
       vramEndExclusive: auxiliary.vramEndNumber,
       bytes: auxiliary.bytes,
+      entryBytes: auxiliary.entryBytes,
+      trailingPaddingBytes: auxiliary.trailingPaddingBytes,
+      trailingPaddingSha256: auxiliary.expectedTrailingPaddingSha256,
       acceptedAssemblyTailBytes: tail.tailBytes,
       acceptedAssemblyTailObject: tail.objectRelative,
       acceptedAssemblyTailInputSection: tail.inputSection,
@@ -1723,6 +1793,9 @@ function verifyPhase8Output(phase8, options) {
       sectionFlags: ['SHF_ALLOC'],
       alignment: auxiliary.ownerTailAlignment,
       tableBytes: auxiliary.bytes,
+      entryBytes: auxiliary.entryBytes,
+      trailingPaddingBytes: auxiliary.trailingPaddingBytes,
+      trailingPaddingSha256: auxiliary.expectedTrailingPaddingSha256,
       tailBytes: auxiliary.ownerTailBytes,
       tailSha256: auxiliary.ownerTailSha256,
       romStart: auxiliary.ownerTailRomStartNumber,
@@ -1792,8 +1865,16 @@ function verifyPhase8Output(phase8, options) {
           || cAuxiliarySections[0].type !== 1
           || cAuxiliarySections[0].flags !== 2
           || cAuxiliarySections[0].alignment !== auxiliary.alignment
-          || cAuxiliarySections[0].size !== auxiliary.bytes
-          || sha256Buffer(Buffer.from(elfSectionBytes(cElf, cAuxiliarySections[0]))) !== auxiliary.expectedObjectSha256
+          || cAuxiliarySections[0].size !== auxiliary.bytes) {
+        fail('recorded C object auxiliary evidence drift: ' + target.symbol + ' ' + auxiliary.outputSection);
+      }
+      const cAuxiliaryBytes = Buffer.from(elfSectionBytes(cElf, cAuxiliarySections[0]));
+      verifyAuxiliaryPaddingBytes(
+        cAuxiliaryBytes,
+        auxiliary,
+        target.symbol + ' ' + auxiliary.outputSection + ' verified C object',
+      );
+      if (sha256Buffer(cAuxiliaryBytes) !== auxiliary.expectedObjectSha256
           || !sameJson(auxiliaryRelocationRecords(cElf, target, auxiliary), auxiliary.expectedRelocations)) {
         fail('recorded C object auxiliary evidence drift: ' + target.symbol + ' ' + auxiliary.outputSection);
       }
@@ -1803,6 +1884,11 @@ function verifyPhase8Output(phase8, options) {
           || sha256Buffer(Buffer.from(elfSectionBytes(fallbackElf, fallbackAuxiliarySections[0])).subarray(0, auxiliary.bytes)) !== auxiliary.expectedLinkedSha256) {
         fail('original assembly auxiliary comparison bytes drift: ' + target.symbol + ' ' + auxiliary.outputSection);
       }
+      verifyAuxiliaryPaddingBytes(
+        Buffer.from(elfSectionBytes(fallbackElf, fallbackAuxiliarySections[0])).subarray(0, auxiliary.bytes),
+        auxiliary,
+        target.symbol + ' ' + auxiliary.outputSection + ' verified fallback bytes',
+      );
       if (prunedElf.sections.some((section) => section.name === auxiliary.outputSection)) {
         fail('original assembly auxiliary table remains a linked owner: ' + target.symbol + ' ' + auxiliary.outputSection);
       }
@@ -1826,6 +1912,9 @@ function verifyPhase8Output(phase8, options) {
         vramStart: auxiliary.vramStartNumber,
         vramEndExclusive: auxiliary.vramEndNumber,
         bytes: auxiliary.bytes,
+        entryBytes: auxiliary.entryBytes,
+        trailingPaddingBytes: auxiliary.trailingPaddingBytes,
+        trailingPaddingSha256: auxiliary.expectedTrailingPaddingSha256,
         alignment: auxiliary.alignment,
         objectSha256: auxiliary.expectedObjectSha256,
         linkedSha256: linkedComparison.linkedSha256,
@@ -1908,6 +1997,9 @@ function verifyPhase8Output(phase8, options) {
           || layoutAuxiliary.vramStart !== auxiliary.vramStartNumber
           || layoutAuxiliary.vramEndExclusive !== auxiliary.vramEndNumber
           || layoutAuxiliary.bytes !== auxiliary.bytes
+          || layoutAuxiliary.entryBytes !== auxiliary.entryBytes
+          || layoutAuxiliary.trailingPaddingBytes !== auxiliary.trailingPaddingBytes
+          || layoutAuxiliary.trailingPaddingSha256 !== auxiliary.expectedTrailingPaddingSha256
           || layoutAuxiliary.acceptedAssemblyTailBytes !== auxiliary.ownerTailBytes
           || layoutAuxiliary.acceptedAssemblyTailInputSection !== auxiliary.ownerTailSection
           || layoutAuxiliary.acceptedAssemblyTailSha256 !== auxiliary.ownerTailSha256
@@ -2035,6 +2127,9 @@ function validateRecordedPhase8Build(phase8, options) {
           || compiledAuxiliary.compilerSection !== auxiliary.compilerSection
           || compiledAuxiliary.bytes !== auxiliary.bytes
           || compiledAuxiliary.sha256 !== auxiliary.expectedObjectSha256
+          || compiledAuxiliary.entryBytes !== auxiliary.entryBytes
+          || compiledAuxiliary.trailingPaddingBytes !== auxiliary.trailingPaddingBytes
+          || compiledAuxiliary.trailingPaddingSha256 !== auxiliary.expectedTrailingPaddingSha256
           || compiledAuxiliary.alignment !== auxiliary.alignment
           || compiledAuxiliary.flags !== 2
           || !sameJson(compiledAuxiliary.relocations, auxiliary.expectedRelocations)
@@ -2045,6 +2140,9 @@ function validateRecordedPhase8Build(phase8, options) {
           || !sameJson(recordedTail.sectionFlags, ['SHF_ALLOC'])
           || recordedTail.alignment !== auxiliary.ownerTailAlignment
           || recordedTail.tableBytes !== auxiliary.bytes
+          || recordedTail.entryBytes !== auxiliary.entryBytes
+          || recordedTail.trailingPaddingBytes !== auxiliary.trailingPaddingBytes
+          || recordedTail.trailingPaddingSha256 !== auxiliary.expectedTrailingPaddingSha256
           || recordedTail.tailBytes !== auxiliary.ownerTailBytes
           || recordedTail.tailSha256 !== auxiliary.ownerTailSha256
           || recordedTail.romStart !== auxiliary.ownerTailRomStartNumber
@@ -2054,6 +2152,10 @@ function validateRecordedPhase8Build(phase8, options) {
           || recordedTail.ownerOriginalAssembly !== auxiliary.ownerOriginalAssembly
           || recordedTail.ownerOriginalAssemblySha256 !== auxiliary.ownerOriginalAssemblySha256
           || !verifiedAuxiliary
+          || verifiedAuxiliary.entryBytes !== auxiliary.entryBytes
+          || verifiedAuxiliary.trailingPaddingBytes !== auxiliary.trailingPaddingBytes
+          || verifiedAuxiliary.trailingPaddingSha256 !== auxiliary.expectedTrailingPaddingSha256
+          || verifiedAuxiliary.objectSha256 !== auxiliary.expectedObjectSha256
           || verifiedAuxiliary.linkedSha256 !== auxiliary.expectedLinkedSha256
           || verifiedAuxiliary.rawBytesExact !== true
           || verifiedAuxiliary.linkedOwner !== replacement.cObject) {
@@ -2134,6 +2236,7 @@ module.exports = {
   targetAsmDifferMaxLines,
   validateRecordedPhase8Build,
   validateAuxiliaryTailObject,
+  verifyAuxiliaryPaddingBytes,
   validateSourceObjectProofBytes,
   validateTargetClassifications,
   verifyCompiler,

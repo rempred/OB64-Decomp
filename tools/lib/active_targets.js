@@ -94,7 +94,7 @@ function normalizeAuxiliarySectionContracts(contracts, targetSymbol, label) {
   const outputSections = new Set();
   return contracts.map((contract, index) => {
     const contractLabel = `${label} record ${index}`;
-    if (!exactKeys(contract, [
+    const baseKeys = [
       'kind',
       'compilerSection',
       'outputSection',
@@ -111,7 +111,14 @@ function normalizeAuxiliarySectionContracts(contracts, targetSymbol, label) {
       'expectedLinkedSha256',
       'preservedTail',
       'expectedRelocations',
-    ])
+    ];
+    const hasTrailingPaddingBytes = Object.prototype.hasOwnProperty.call(contract, 'trailingPaddingBytes');
+    const hasTrailingPaddingHash = Object.prototype.hasOwnProperty.call(contract, 'expectedTrailingPaddingSha256');
+    const contractKeys = hasTrailingPaddingBytes && hasTrailingPaddingHash
+      ? [...baseKeys, 'trailingPaddingBytes', 'expectedTrailingPaddingSha256']
+      : baseKeys;
+    if (hasTrailingPaddingBytes !== hasTrailingPaddingHash
+        || !exactKeys(contract, contractKeys)
         || contract.kind !== 'switch-table'
         || contract.compilerSection !== '.rodata'
         || typeof contract.outputSection !== 'string' || !AUXILIARY_OUTPUT_SECTION.test(contract.outputSection)
@@ -125,10 +132,27 @@ function normalizeAuxiliarySectionContracts(contracts, targetSymbol, label) {
         || typeof contract.vramEndExclusive !== 'string' || !/^0x[0-9A-F]{8}$/.test(contract.vramEndExclusive)
         || !Number.isInteger(contract.bytes) || contract.bytes <= 0 || contract.bytes % 4 !== 0
         || !Number.isInteger(contract.entries) || contract.entries <= 0
-        || contract.bytes !== contract.entries * 4
         || typeof contract.expectedObjectSha256 !== 'string' || !SHA256.test(contract.expectedObjectSha256)
         || typeof contract.expectedLinkedSha256 !== 'string' || !SHA256.test(contract.expectedLinkedSha256)) {
       fail(`${contractLabel} is malformed`);
+    }
+    const entryBytes = contract.entries * 4;
+    const trailingPaddingBytes = hasTrailingPaddingBytes ? contract.trailingPaddingBytes : 0;
+    const expectedTrailingPaddingSha256 = hasTrailingPaddingHash
+      ? contract.expectedTrailingPaddingSha256
+      : sha256Buffer(Buffer.alloc(0));
+    const alignmentPaddingBytes = (contract.alignment - (entryBytes % contract.alignment)) % contract.alignment;
+    if (!Number.isInteger(trailingPaddingBytes)
+        || (hasTrailingPaddingBytes && trailingPaddingBytes <= 0)
+        || trailingPaddingBytes % 4 !== 0
+        || (hasTrailingPaddingBytes && trailingPaddingBytes !== alignmentPaddingBytes)
+        || contract.bytes !== entryBytes + trailingPaddingBytes
+        || typeof expectedTrailingPaddingSha256 !== 'string'
+        || !SHA256.test(expectedTrailingPaddingSha256)) {
+      fail(`${contractLabel} trailing alignment padding is malformed`);
+    }
+    if (sha256Buffer(Buffer.alloc(trailingPaddingBytes)) !== expectedTrailingPaddingSha256) {
+      fail(`${contractLabel} trailing alignment padding is malformed`);
     }
     const tail = contract.preservedTail;
     if (!exactKeys(tail, [
@@ -204,6 +228,9 @@ function normalizeAuxiliarySectionContracts(contracts, targetSymbol, label) {
     outputSections.add(contract.outputSection);
     return {
       ...contract,
+      entryBytes,
+      trailingPaddingBytes,
+      expectedTrailingPaddingSha256,
       romStartNumber: romStart,
       romEndNumber: romEndExclusive,
       vramStartNumber: vramStart,
@@ -222,7 +249,7 @@ function normalizeAuxiliarySectionContracts(contracts, targetSymbol, label) {
 
 function validateLinkageConfig(linkage, expectedProfile) {
   if (!exactKeys(linkage, ['schemaVersion', 'profile', 'symbols', 'targets'])
-      || linkage.schemaVersion !== 2 || linkage.profile !== expectedProfile
+      || linkage.schemaVersion !== 3 || linkage.profile !== expectedProfile
       || !Array.isArray(linkage.symbols) || !Array.isArray(linkage.targets)) {
     fail('matching-C linkage configuration schema or profile drift');
   }
@@ -391,7 +418,7 @@ function resolveAuxiliarySectionContracts(model, baserom, target, contracts) {
     for (const [index, relocation] of contract.expectedRelocations.entries()) {
       const offset = Number.parseInt(relocation.offset.slice(2), 16);
       const addend = Number.parseInt(relocation.addend.slice(2), 16);
-      if (offset !== index * 4 || addend >= target.bytes) {
+      if (offset !== index * 4 || offset + 4 > contract.entryBytes || addend >= target.bytes) {
         fail(`auxiliary local-label relocation is outside its accepted text owner: ${target.symbol} ${contract.outputSection}`);
       }
       objectBytes.writeUInt32BE(addend >>> 0, offset);
@@ -399,7 +426,20 @@ function resolveAuxiliarySectionContracts(model, baserom, target, contracts) {
     }
     const retailBytes = Buffer.from(baserom.subarray(contract.romStartNumber, contract.romEndNumber));
     const retailTailBytes = Buffer.from(baserom.subarray(tail.romStartNumber, tail.romEndNumber));
-    if (sha256Buffer(objectBytes) !== contract.expectedObjectSha256
+    const expectedZeroPadding = Buffer.alloc(contract.trailingPaddingBytes);
+    const objectPadding = Buffer.from(objectBytes.subarray(contract.entryBytes));
+    const linkedPadding = Buffer.from(relocatedBytes.subarray(contract.entryBytes));
+    const retailPadding = Buffer.from(retailBytes.subarray(contract.entryBytes));
+    if (objectPadding.length !== contract.trailingPaddingBytes
+        || linkedPadding.length !== contract.trailingPaddingBytes
+        || retailPadding.length !== contract.trailingPaddingBytes
+        || !objectPadding.equals(expectedZeroPadding)
+        || !linkedPadding.equals(expectedZeroPadding)
+        || !retailPadding.equals(expectedZeroPadding)
+        || sha256Buffer(objectPadding) !== contract.expectedTrailingPaddingSha256
+        || sha256Buffer(linkedPadding) !== contract.expectedTrailingPaddingSha256
+        || sha256Buffer(retailPadding) !== contract.expectedTrailingPaddingSha256
+        || sha256Buffer(objectBytes) !== contract.expectedObjectSha256
         || sha256Buffer(relocatedBytes) !== contract.expectedLinkedSha256
         || sha256Buffer(retailBytes) !== contract.expectedLinkedSha256
         || !relocatedBytes.equals(retailBytes)

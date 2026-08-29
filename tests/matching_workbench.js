@@ -48,6 +48,7 @@ const { compareProbes } = require('../tools/lib/matching/probe');
 const {
   adjustSectionAssembly,
   legalizeCop1BinaryAssembly,
+  verifyAuxiliaryPaddingBytes,
 } = require('../tools/lib/phase8_matching_c');
 const {
   addTargetSummary,
@@ -219,6 +220,34 @@ function canonicalAuxiliarySectionTests() {
     auxiliarySections,
     allowAuxiliaryReadOnlySections: true,
   }));
+
+  const paddingContract = {
+    bytes: 40,
+    entryBytes: 36,
+    trailingPaddingBytes: 4,
+    expectedTrailingPaddingSha256: 'DF3F619804A92FDB4057192DC43DD748EA778ADC52BC498CE80524C014B81119',
+  };
+  const paddingEvidence = verifyAuxiliaryPaddingBytes(
+    Buffer.alloc(40),
+    paddingContract,
+    'canonical auxiliary padding fixture',
+  );
+  assert(paddingEvidence.entryBytes === 36
+      && paddingEvidence.trailingPaddingBytes === 4
+      && paddingEvidence.trailingPaddingSha256 === paddingContract.expectedTrailingPaddingSha256,
+  'canonical auxiliary padding evidence drift');
+  const nonzeroPadding = Buffer.alloc(40);
+  nonzeroPadding[39] = 1;
+  expectError(/trailing-padding bytes drift/, () => verifyAuxiliaryPaddingBytes(
+    nonzeroPadding,
+    paddingContract,
+    'nonzero auxiliary padding fixture',
+  ));
+  expectError(/trailing-padding metadata is malformed/, () => verifyAuxiliaryPaddingBytes(
+    Buffer.alloc(40),
+    { ...paddingContract, entryBytes: 40 },
+    'misbounded auxiliary padding fixture',
+  ));
 }
 
 function familyTests() {
