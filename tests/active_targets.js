@@ -8,6 +8,7 @@ const {
   LINKAGE_CONFIG_PATH,
   LEGACY_CONFIG_PATH,
   loadActiveTargetModel,
+  resolveAuxiliarySectionContracts,
   selectRelocationContract,
   validateLinkageConfig,
   validateNoActiveLinkSymbolShadows,
@@ -38,6 +39,28 @@ function main() {
   ].map(([name, mutation]) => expectRejection(name, () => validateToolchainPin(mutation)));
   const linkage = active.linkageConfig;
   validateLinkageConfig(linkage, active.minimalConfig.profile);
+  const canaryEntry = linkage.targets.find((entry) => entry.symbol === 'func_00283E14');
+  const canaryTarget = active.targets.find((target) => target.symbol === 'func_00283E14');
+  if (!canaryEntry || !canaryTarget || !Array.isArray(canaryEntry.auxiliarySections)
+      || canaryEntry.auxiliarySections.length !== 1 || canaryTarget.auxiliarySections.length !== 1) {
+    throw new Error('canonical auxiliary switch-table canary contract is missing');
+  }
+  const mutateCanaryAuxiliary = (mutate) => ({
+    ...linkage,
+    targets: linkage.targets.map((entry) => entry.symbol === canaryEntry.symbol ? {
+      ...entry,
+      auxiliarySections: [mutate({ ...entry.auxiliarySections[0] })],
+    } : entry),
+  });
+  const validateAuxiliaryPlacementMutation = (mutation) => {
+    const reviewed = validateLinkageConfig(mutation, active.minimalConfig.profile);
+    return resolveAuxiliarySectionContracts(
+      active.model,
+      fs.readFileSync(path.join(ROOT, 'build', 'baserom.us_rev0.z64')),
+      canaryTarget,
+      reviewed.targets.get(canaryEntry.symbol.toLowerCase()).auxiliarySections,
+    );
+  };
   const rejectedLinkageMutations = [
     ['schema', { ...linkage, schemaVersion: 0 }],
     ['profile', { ...linkage, profile: 'other' }],
@@ -61,6 +84,92 @@ function main() {
       }],
     }],
   ].map(([name, mutation]) => expectRejection(name, () => validateLinkageConfig(mutation, active.minimalConfig.profile)));
+  const rejectedAuxiliaryMutations = [
+    ['unexpected field', (record) => ({ ...record, permissive: true }), validateLinkageConfig],
+    ['unknown compiler section', (record) => ({ ...record, compilerSection: '.mystery' }), validateLinkageConfig],
+    ['writable data section', (record) => ({ ...record, compilerSection: '.data' }), validateLinkageConfig],
+    ['bss section', (record) => ({ ...record, compilerSection: '.bss' }), validateLinkageConfig],
+    ['unknown output section', (record) => ({ ...record, outputSection: '.rodata' }), validateLinkageConfig],
+    ['writable flags', (record) => ({ ...record, sectionFlags: ['SHF_ALLOC', 'SHF_WRITE'] }), validateLinkageConfig],
+    ['NOBITS type', (record) => ({ ...record, sectionType: 'SHT_NOBITS' }), validateLinkageConfig],
+    ['malformed alignment', (record) => ({ ...record, alignment: 3 }), validateLinkageConfig],
+    ['table count', (record) => ({ ...record, entries: record.entries + 1 }), validateLinkageConfig],
+    ['table byte count', (record) => ({ ...record, bytes: record.bytes + 4 }), validateLinkageConfig],
+    ['relocation count', (record) => ({ ...record, expectedRelocations: record.expectedRelocations.slice(0, -1) }), validateLinkageConfig],
+    ['relocation type', (record) => ({
+      ...record,
+      expectedRelocations: record.expectedRelocations.map((relocation, index) => index === 0
+        ? { ...relocation, type: 'R_MIPS_26' }
+        : relocation),
+    }), validateLinkageConfig],
+    ['ROM placement', (record) => ({ ...record, romStart: '0x00286B94', romEndExclusive: '0x00286BB4' }), validateAuxiliaryPlacementMutation],
+    ['VMA placement', (record) => ({ ...record, vramStart: '0x8022ABC8', vramEndExclusive: '0x8022ABE8' }), validateAuxiliaryPlacementMutation],
+    ['linked byte hash', (record) => ({ ...record, expectedLinkedSha256: '0'.repeat(64) }), validateAuxiliaryPlacementMutation],
+    ['object byte hash', (record) => ({ ...record, expectedObjectSha256: '0'.repeat(64) }), validateAuxiliaryPlacementMutation],
+    ['tail conventional data section', (record) => ({
+      ...record,
+      preservedTail: { ...record.preservedTail, inputSection: '.data' },
+    }), validateLinkageConfig],
+    ['tail bss section', (record) => ({
+      ...record,
+      preservedTail: { ...record.preservedTail, inputSection: '.bss' },
+    }), validateLinkageConfig],
+    ['tail unknown section', (record) => ({
+      ...record,
+      preservedTail: { ...record.preservedTail, inputSection: '.ob64.r9999.tail' },
+    }), validateLinkageConfig],
+    ['tail writable flags', (record) => ({
+      ...record,
+      preservedTail: { ...record.preservedTail, sectionFlags: ['SHF_ALLOC', 'SHF_WRITE'] },
+    }), validateLinkageConfig],
+    ['tail executable flags', (record) => ({
+      ...record,
+      preservedTail: { ...record.preservedTail, sectionFlags: ['SHF_ALLOC', 'SHF_EXECINSTR'] },
+    }), validateLinkageConfig],
+    ['tail NOBITS type', (record) => ({
+      ...record,
+      preservedTail: { ...record.preservedTail, sectionType: 'SHT_NOBITS' },
+    }), validateLinkageConfig],
+    ['tail byte count', (record) => ({
+      ...record,
+      preservedTail: { ...record.preservedTail, bytes: record.preservedTail.bytes + 4 },
+    }), validateLinkageConfig],
+    ['tail ROM placement', (record) => ({
+      ...record,
+      preservedTail: {
+        ...record.preservedTail,
+        romStart: '0x00286BB4',
+        romEndExclusive: '0x00286BD4',
+      },
+    }), validateAuxiliaryPlacementMutation],
+    ['tail VMA placement', (record) => ({
+      ...record,
+      preservedTail: {
+        ...record.preservedTail,
+        vramStart: '0x8022ABE4',
+        vramEndExclusive: '0x8022AC04',
+      },
+    }), validateAuxiliaryPlacementMutation],
+    ['tail byte hash', (record) => ({
+      ...record,
+      preservedTail: { ...record.preservedTail, expectedSha256: '0'.repeat(64) },
+    }), validateAuxiliaryPlacementMutation],
+    ['tail assembly owner', (record) => ({
+      ...record,
+      preservedTail: { ...record.preservedTail, ownerOriginalAssembly: 'asm/original/rev0/lib/other.s' },
+    }), validateAuxiliaryPlacementMutation],
+    ['relocation addend', (record) => ({
+      ...record,
+      expectedRelocations: record.expectedRelocations.map((relocation, index) => index === 0
+        ? { ...relocation, addend: '0x00000100' }
+        : relocation),
+    }), validateAuxiliaryPlacementMutation],
+    ['text ownership collision', (record) => ({ ...record, outputSection: canaryTarget.sectionName }), validateAuxiliaryPlacementMutation],
+  ].map(([name, mutate, validator]) => expectRejection(`auxiliary ${name}`, () => {
+    const mutation = mutateCanaryAuxiliary(mutate);
+    if (validator === validateLinkageConfig) validator(mutation, active.minimalConfig.profile);
+    else validator(mutation);
+  }));
   const rejectedActiveLinkSymbolShadows = [
     expectRejection('active target absolute-symbol shadow', () => validateNoActiveLinkSymbolShadows(
       [{ symbol: 'fixture_target' }],
@@ -138,6 +247,7 @@ function main() {
     toolchain: active.toolchain.identity,
     rejectedToolchainMutations,
     rejectedLinkageMutations,
+    rejectedAuxiliaryMutations,
     rejectedActiveLinkSymbolShadows,
     rejectedContractMutations,
     structuralFieldsEquivalent: true,

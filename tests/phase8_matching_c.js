@@ -5,6 +5,7 @@ const fs = require('fs');
 const path = require('path');
 const {
   elfSectionBytes,
+  parseElf32BigEndian,
   parseElfFile,
   sha256Buffer,
   verifyElfAgainstModel,
@@ -13,12 +14,16 @@ const {
 } = require('../tools/lib/phase7_conventional');
 const {
   adjustSectionAssembly,
+  auxiliaryRelocationRecords,
+  compareLinkedAuxiliaryBytes,
   compareLinkedTargetBytes,
   fail,
   loadCanonicalBaserom,
   loadPhase8Model,
+  validateAuxiliaryTailObject,
   validateSourceObjectProofBytes,
   verifySourceObjectProofs,
+  verifyAuxiliaryMapOwner,
   verifyTargetMapOwner,
 } = require('../tools/lib/phase8_matching_c');
 const {
@@ -150,21 +155,63 @@ function main() {
         || JSON.stringify(replacement.relocations) !== JSON.stringify(target.expectedRelocations)) {
       fail(`load-relevant/retired relocation policy drift: ${target.symbol}`);
     }
+    const auxiliaryChecks = [];
+    for (const auxiliary of target.auxiliarySections) {
+      const sourceSections = sourceObject.sections.filter((section) => section.name === auxiliary.outputSection);
+      const linkedSections = linkedObject.sections.filter((section) => section.name === auxiliary.outputSection);
+      const fallbackSections = fallbackObject.sections.filter((section) => section.name === auxiliary.outputSection);
+      const tail = replacement.auxiliaryTails.find((record) => record.outputSection === auxiliary.outputSection);
+      if (sourceSections.length !== 1 || linkedSections.length !== 1 || fallbackSections.length !== 1 || !tail) {
+        fail(`auxiliary object census drift: ${target.symbol} ${auxiliary.outputSection}`);
+      }
+      const sourceAuxiliary = Buffer.from(elfSectionBytes(sourceObject, sourceSections[0]));
+      const linkedObjectAuxiliary = Buffer.from(elfSectionBytes(linkedObject, linkedSections[0]));
+      const fallbackOwner = Buffer.from(elfSectionBytes(fallbackObject, fallbackSections[0]));
+      const linkedComparison = compareLinkedAuxiliaryBytes(target, auxiliary, linkedElf, canonicalBaserom);
+      const mapOwner = verifyAuxiliaryMapOwner(target, auxiliary, tail, mapText);
+      const relocations = auxiliaryRelocationRecords(sourceObject, target, auxiliary);
+      if (sourceSections[0].type !== 1 || sourceSections[0].flags !== 2
+          || sourceSections[0].alignment !== auxiliary.alignment
+          || sourceAuxiliary.length !== auxiliary.bytes
+          || !sourceAuxiliary.equals(linkedObjectAuxiliary)
+          || sha256Buffer(sourceAuxiliary) !== auxiliary.expectedObjectSha256
+          || fallbackOwner.length !== auxiliary.ownerSectionBytes
+          || sha256Buffer(fallbackOwner.subarray(0, auxiliary.bytes)) !== auxiliary.expectedLinkedSha256
+          || !linkedComparison.rawBytesExact
+          || linkedComparison.linkedSha256 !== auxiliary.expectedLinkedSha256
+          || mapOwner.linkedOwner !== replacement.cObject
+          || prunedObject.sections.some((section) => section.name === auxiliary.outputSection)
+          || JSON.stringify(relocations) !== JSON.stringify(auxiliary.expectedRelocations)) {
+        fail(`auxiliary placement, bytes, owner, or relocation drift: ${target.symbol} ${auxiliary.outputSection}`);
+      }
+      if (tail.tailBytes > 0) {
+        const tailObject = parseElfFile(path.join(output, ...tail.objectRelative.split('/')));
+        validateAuxiliaryTailObject(tailObject, auxiliary, fallbackOwner.subarray(auxiliary.bytes));
+      }
+      auxiliaryChecks.push({ auxiliary, linkedComparison, mapOwner, relocations });
+    }
 
     const compilerAssembly = fs.readFileSync(path.join(output, ...replacement.compilerAssembly.split('/')));
     const linkedAssembly = fs.readFileSync(path.join(output, ...replacement.linkedAssembly.split('/')));
     if (replacement.compilerAssemblyRewritten !== false
-        || !adjustSectionAssembly(compilerAssembly, target.sectionName).equals(linkedAssembly)) {
+        || !adjustSectionAssembly(compilerAssembly, target.sectionName, {
+          auxiliarySections: target.auxiliarySections,
+        }).equals(linkedAssembly)) {
       fail(`untouched KMC assembly contract drift: ${target.symbol}`);
     }
     const proofFile = path.join(output, ...replacement.sourceObjectProof.path.split('/'));
     const proofBytes = fs.readFileSync(proofFile);
     const proof = readJson(proofFile);
-    if (proof.schemaVersion !== 1 || proof.kind !== 'ob64-source-to-object-load-evidence'
+    if (proof.schemaVersion !== 2 || proof.kind !== 'ob64-source-to-object-load-evidence'
         || proof.target.symbol !== target.symbol || proof.target.sourceClass !== classification.class
         || proof.target.sourcePolicyDigest !== classification.digest
         || proof.target.relocationContractSource !== target.relocationContractSource
         || proof.assemblyContract.compilerAssemblyRewritten !== false
+        || proof.assemblyContract.auxiliarySectionCount !== target.auxiliarySections.length
+        || !Array.isArray(proof.finalObject.auxiliarySections)
+        || proof.finalObject.auxiliarySections.length !== target.auxiliarySections.length
+        || !Array.isArray(proof.finalTarget.auxiliarySections)
+        || proof.finalTarget.auxiliarySections.length !== target.auxiliarySections.length
         || Object.prototype.hasOwnProperty.call(proof.assemblyContract, 'adapterApplied')
         || proof.artifacts.compilerAssembly.sha256 !== sha256Buffer(compilerAssembly)
         || proof.artifacts.sectionAdjustedAssembly.sha256 !== sha256Buffer(linkedAssembly)
@@ -175,6 +222,22 @@ function main() {
         || proof.finalTarget.linkedSha256 !== rawComparison.linkedTargetSha256
         || replacement.sourceObjectProof.sha256 !== sha256Buffer(proofBytes)) {
       fail(`source-to-object proof field or artifact drift: ${target.symbol}`);
+    }
+    for (const check of auxiliaryChecks) {
+      const objectProof = proof.finalObject.auxiliarySections.find((record) => record.outputSection === check.auxiliary.outputSection);
+      const targetProof = proof.finalTarget.auxiliarySections.find((record) => record.outputSection === check.auxiliary.outputSection);
+      if (!objectProof || !targetProof
+          || objectProof.sectionType !== 'SHT_PROGBITS'
+          || JSON.stringify(objectProof.sectionFlags) !== JSON.stringify(['SHF_ALLOC'])
+          || objectProof.alignment !== check.auxiliary.alignment
+          || objectProof.objectSha256 !== check.auxiliary.expectedObjectSha256
+          || JSON.stringify(objectProof.loadRelevantRelocationsNormalized) !== JSON.stringify(check.auxiliary.expectedRelocations)
+          || targetProof.romStart !== check.auxiliary.romStart
+          || targetProof.vramStart !== check.auxiliary.vramStart
+          || targetProof.linkedSha256 !== check.auxiliary.expectedLinkedSha256
+          || targetProof.rawBytesExact !== true) {
+        fail(`auxiliary source-object proof drift: ${target.symbol} ${check.auxiliary.outputSection}`);
+      }
     }
     if (![SOURCE_CLASSES.PURE_C, SOURCE_CLASSES.HYBRID_C].includes(classification.class)) {
       fail(`unexpected active source class: ${target.symbol}`);
@@ -232,6 +295,159 @@ function main() {
   if (fakeSource.class !== SOURCE_CLASSES.PURE_C) fail('ownership falsifier source fixture is not PURE_C');
   mutations.push(expectRejection('target map owner', /sole matching C object/, () => {
     verifyTargetMapOwner(phase8.target, mapText.split(expectedOwner).join(wrongOwner));
+  }));
+  const auxiliaryCanary = phase8.targets.find((target) => target.symbol === 'func_00283E14');
+  const auxiliary = auxiliaryCanary && auxiliaryCanary.auxiliarySections[0];
+  const auxiliaryReplacement = auxiliaryCanary
+    ? buildReport.targetReplacements.find((record) => record.symbol === auxiliaryCanary.symbol)
+    : null;
+  if (!auxiliaryCanary || !auxiliary || !auxiliaryReplacement) fail('auxiliary mutation canary is missing');
+  const auxiliarySection = linkedElf.sections.find((section) => section.name === auxiliary.outputSection);
+  if (!auxiliarySection) fail('linked auxiliary mutation section is missing');
+  const writableAuxiliary = Buffer.from(fs.readFileSync(elfFile));
+  writableAuxiliary.writeUInt32BE(3, auxiliarySection.headerOffset + 8);
+  mutations.push(expectRejection('writable linked auxiliary section', /section shape drift/, () => {
+    compareLinkedAuxiliaryBytes(auxiliaryCanary, auxiliary, parseElf32BigEndian(writableAuxiliary), canonicalBaserom);
+  }));
+  const alignmentDrift = Buffer.from(fs.readFileSync(elfFile));
+  alignmentDrift.writeUInt32BE(auxiliary.alignment / 2, auxiliarySection.headerOffset + 32);
+  mutations.push(expectRejection('linked auxiliary alignment', /section shape drift/, () => {
+    compareLinkedAuxiliaryBytes(auxiliaryCanary, auxiliary, parseElf32BigEndian(alignmentDrift), canonicalBaserom);
+  }));
+  const auxiliaryByteDrift = Buffer.from(fs.readFileSync(elfFile));
+  auxiliaryByteDrift[auxiliarySection.offset] ^= 0x01;
+  mutations.push(expectRejection('linked auxiliary byte', /bytes are not exact/, () => {
+    const comparison = compareLinkedAuxiliaryBytes(
+      auxiliaryCanary,
+      auxiliary,
+      parseElf32BigEndian(auxiliaryByteDrift),
+      canonicalBaserom,
+    );
+    if (!comparison.rawBytesExact) throw new Error('linked auxiliary bytes are not exact');
+  }));
+  const auxiliaryTail = auxiliaryReplacement.auxiliaryTails.find((record) => record.outputSection === auxiliary.outputSection);
+  const auxiliaryTailObjectFile = path.join(output, ...auxiliaryTail.objectRelative.split('/'));
+  const auxiliaryTailObjectBytes = Buffer.from(fs.readFileSync(auxiliaryTailObjectFile));
+  const auxiliaryTailObject = parseElf32BigEndian(auxiliaryTailObjectBytes);
+  const auxiliaryTailSection = auxiliaryTailObject.sections.find((section) => section.name === auxiliary.ownerTailSection);
+  const expectedTailBytes = Buffer.from(canonicalBaserom.subarray(
+    auxiliary.ownerTailRomStartNumber,
+    auxiliary.ownerTailRomEndNumber,
+  ));
+  validateAuxiliaryTailObject(auxiliaryTailObject, auxiliary, expectedTailBytes);
+  const conventionalDataTail = {
+    ...auxiliaryTailObject,
+    sections: auxiliaryTailObject.sections.map((section) => section === auxiliaryTailSection
+      ? { ...section, name: '.data' }
+      : section),
+  };
+  mutations.push(expectRejection('conventional data tail vessel', /forbidden conventional data section/, () => {
+    validateAuxiliaryTailObject(conventionalDataTail, auxiliary, expectedTailBytes);
+  }));
+  const bssTail = {
+    ...auxiliaryTailObject,
+    sections: auxiliaryTailObject.sections.map((section) => section === auxiliaryTailSection
+      ? { ...section, name: '.bss', type: 8 }
+      : section),
+  };
+  mutations.push(expectRejection('bss tail vessel', /forbidden conventional data section/, () => {
+    validateAuxiliaryTailObject(bssTail, auxiliary, expectedTailBytes);
+  }));
+  const writableTail = {
+    ...auxiliaryTailObject,
+    sections: auxiliaryTailObject.sections.map((section) => section === auxiliaryTailSection
+      ? { ...section, flags: section.flags | 1 }
+      : section),
+  };
+  mutations.push(expectRejection('writable tail vessel', /object shape drift/, () => {
+    validateAuxiliaryTailObject(writableTail, auxiliary, expectedTailBytes);
+  }));
+  const executableTail = {
+    ...auxiliaryTailObject,
+    sections: auxiliaryTailObject.sections.map((section) => section === auxiliaryTailSection
+      ? { ...section, flags: section.flags | 4 }
+      : section),
+  };
+  mutations.push(expectRejection('executable tail vessel', /object shape drift/, () => {
+    validateAuxiliaryTailObject(executableTail, auxiliary, expectedTailBytes);
+  }));
+  const unknownAllocatedTail = {
+    ...auxiliaryTailObject,
+    sections: [
+      ...auxiliaryTailObject.sections,
+      { ...auxiliaryTailSection, name: '.mystery-tail' },
+    ],
+  };
+  mutations.push(expectRejection('unknown allocated tail vessel', /object shape drift/, () => {
+    validateAuxiliaryTailObject(unknownAllocatedTail, auxiliary, expectedTailBytes);
+  }));
+  const auxiliaryTailByteDrift = Buffer.from(auxiliaryTailObjectBytes);
+  auxiliaryTailByteDrift[auxiliaryTailSection.offset] ^= 0x01;
+  mutations.push(expectRejection('preserved tail byte', /object bytes drift/, () => {
+    validateAuxiliaryTailObject(parseElf32BigEndian(auxiliaryTailByteDrift), auxiliary, expectedTailBytes);
+  }));
+  const acceptedTailMap = verifyAuxiliaryMapOwner(auxiliaryCanary, auxiliary, auxiliaryTail, mapText);
+  const tailAddress = auxiliary.ownerTailVramStartNumber.toString(16);
+  const driftedTailContribution = acceptedTailMap.tailContribution.replace(
+    new RegExp(tailAddress, 'i'),
+    (auxiliary.ownerTailVramStartNumber + 4).toString(16),
+  );
+  mutations.push(expectRejection('preserved tail placement', /tail placement drift/, () => {
+    verifyAuxiliaryMapOwner(
+      auxiliaryCanary,
+      auxiliary,
+      auxiliaryTail,
+      mapText.replace(acceptedTailMap.tailContribution, driftedTailContribution),
+    );
+  }));
+  mutations.push(expectRejection('preserved tail data map contribution', /tail placement drift|forbidden conventional data section/, () => {
+    verifyAuxiliaryMapOwner(
+      auxiliaryCanary,
+      auxiliary,
+      auxiliaryTail,
+      mapText.replace(
+        acceptedTailMap.tailContribution,
+        acceptedTailMap.tailContribution.replace(auxiliaryTail.inputSection, '.data'),
+      ),
+    );
+  }));
+  mutations.push(expectRejection('preserved tail owner collision', /preserved-tail ownership collision/, () => {
+    verifyAuxiliaryMapOwner(
+      auxiliaryCanary,
+      auxiliary,
+      auxiliaryTail,
+      mapText.replace(
+        acceptedTailMap.tailContribution,
+        `${acceptedTailMap.tailContribution}\n    ${acceptedTailMap.tailContribution.replace(auxiliaryTail.objectRelative, wrongOwner)}`,
+      ),
+    );
+  }));
+  mutations.push(expectRejection('auxiliary map owner', /accepted matching C object|ownership collision/, () => {
+    verifyAuxiliaryMapOwner(
+      auxiliaryCanary,
+      auxiliary,
+      auxiliaryTail,
+      mapText.split(auxiliaryReplacement.cObject).join(wrongOwner),
+    );
+  }));
+  const auxiliarySourceObjectFile = path.join(output, ...auxiliaryReplacement.sourceObject.split('/'));
+  const auxiliarySourceObjectBytes = Buffer.from(fs.readFileSync(auxiliarySourceObjectFile));
+  const auxiliarySourceObject = parseElf32BigEndian(auxiliarySourceObjectBytes);
+  const auxiliaryObjectSection = auxiliarySourceObject.sections.find((section) => section.name === auxiliary.outputSection);
+  auxiliarySourceObjectBytes.writeUInt32BE(0x00000100, auxiliaryObjectSection.offset);
+  mutations.push(expectRejection('auxiliary relocation addend', /relocations differ/, () => {
+    const records = auxiliaryRelocationRecords(parseElf32BigEndian(auxiliarySourceObjectBytes), auxiliaryCanary, auxiliary);
+    if (JSON.stringify(records) !== JSON.stringify(auxiliary.expectedRelocations)) {
+      throw new Error('auxiliary relocations differ after addend drift');
+    }
+  }));
+  const auxiliaryRelocationTypeBytes = Buffer.from(fs.readFileSync(auxiliarySourceObjectFile));
+  const auxiliaryRelocationElf = parseElf32BigEndian(auxiliaryRelocationTypeBytes);
+  const auxiliaryRelocationSection = auxiliaryRelocationElf.sections.find((section) => section.name === '.rel' + auxiliary.outputSection);
+  const relocationInfo = auxiliaryRelocationTypeBytes.readUInt32BE(auxiliaryRelocationSection.offset + 4);
+  auxiliaryRelocationTypeBytes.writeUInt32BE((relocationInfo & 0xFFFFFF00) | 4, auxiliaryRelocationSection.offset + 4);
+  mutations.push(expectRejection('auxiliary relocation type', /local-label relocation drift/, () => {
+    auxiliaryRelocationRecords(parseElf32BigEndian(auxiliaryRelocationTypeBytes), auxiliaryCanary, auxiliary);
   }));
   const firstProofFile = path.join(output, ...buildReport.targetReplacements[0].sourceObjectProof.path.split('/'));
   const firstProofBytes = fs.readFileSync(firstProofFile);
