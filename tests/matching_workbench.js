@@ -171,6 +171,56 @@ function scratchAuxiliarySectionTests() {
   assert(adjustedCop1.includes('\t.word\t0x46160002\r\n'), 'scratch section adjustment omitted COP1 legalization');
 }
 
+function canonicalAuxiliarySectionTests() {
+  const sectionName = '.ob64.r5108';
+  const auxiliarySections = [{ compilerSection: '.rodata', outputSection: '.ob64.r5131' }];
+  const switchAssembly = Buffer.from([
+    '\t.text',
+    'fixture:',
+    '\tjr\t$2',
+    '\t.section\t.rodata',
+    '\t.align\t3',
+    '.Ltable:',
+    '\t.word\t.Lcase',
+    '\t.text',
+    '.Lcase:',
+    '\tjr\t$31',
+    '',
+  ].join('\n'));
+  const adjusted = adjustSectionAssembly(switchAssembly, sectionName, { auxiliarySections }).toString('utf8');
+  assert((adjusted.match(/\.section \.ob64\.r5108,"ax",@progbits/g) || []).length === 2,
+    'canonical switch text regions were not assigned exactly');
+  assert((adjusted.match(/\.section \.ob64\.r5131,"a",@progbits/g) || []).length === 1,
+    'canonical switch table was not assigned exactly');
+  const removeSectionDirectives = (value) => value.split(/\r?\n/)
+    .filter((line) => !/^\s*\.(?:text|section)\b/.test(line))
+    .join('\n');
+  assert(removeSectionDirectives(adjusted) === removeSectionDirectives(switchAssembly.toString('utf8')),
+    'canonical auxiliary assignment changed a non-section compiler-assembly line');
+
+  const mutation = (lines) => Buffer.from(lines.join('\n'));
+  const rejected = [
+    ['writable .data', mutation(['\t.text', 'fixture:', '\t.section\t.data', '\t.word\t0', '\t.text', ''])],
+    ['.bss', mutation(['\t.text', 'fixture:', '\t.section\t.bss', '\t.word\t0', '\t.text', ''])],
+    ['unknown section', mutation(['\t.text', 'fixture:', '\t.section\t.mystery', '\t.word\t0', '\t.text', ''])],
+    ['compiler flags', mutation(['\t.text', 'fixture:', '\t.section\t.rodata,"aw"', '\t.word\t0', '\t.text', ''])],
+    ['repeated table', mutation(['\t.text', 'fixture:', '\t.section\t.rodata', '\t.word\t0', '\t.section\t.rodata', '\t.word\t0', '\t.text', ''])],
+    ['missing text resume', mutation(['\t.text', 'fixture:', '\t.section\t.rodata', '\t.word\t0', ''])],
+    ['repeated text region', mutation(['\t.text', 'fixture:', '\t.text', '\t.section\t.rodata', '\t.word\t0', '\t.text', ''])],
+  ];
+  for (const [name, assembly] of rejected) {
+    expectError(/auxiliary-section grammar drift/, () => adjustSectionAssembly(assembly, sectionName, { auxiliarySections }));
+    assert(name.length > 0, 'canonical auxiliary rejection name drift');
+  }
+  expectError(/auxiliary-section grammar drift/, () => adjustSectionAssembly(switchAssembly, sectionName, {
+    auxiliarySections: [{ compilerSection: '.rodata', outputSection: sectionName }],
+  }));
+  expectError(/policies cannot be combined/, () => adjustSectionAssembly(switchAssembly, sectionName, {
+    auxiliarySections,
+    allowAuxiliaryReadOnlySections: true,
+  }));
+}
+
 function familyTests() {
   const items = [
     { targetId: 'A', symbol: 'a', romStart: 0, bytes: 4, value: 'same' },
@@ -693,6 +743,7 @@ function acceptedModelTests() {
 async function main() {
   classifierTests();
   scratchAuxiliarySectionTests();
+  canonicalAuxiliarySectionTests();
   familyTests();
   m2cAdapterTests();
   compilerArtifactPathTests();

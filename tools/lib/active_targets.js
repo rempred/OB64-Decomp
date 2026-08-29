@@ -17,6 +17,9 @@ const TOOLCHAIN_CONFIG_PATH = path.join(ROOT, 'config', 'toolchain.json');
 const TOOLCHAIN_BUILD_PATH = path.join(ROOT, 'config', 'gnu-binutils-2.6-build.json');
 const SAFE_LINK_SYMBOL = /^[A-Za-z_.$][A-Za-z0-9_.$]*$/;
 const LOAD_RELOCATION_TYPES = new Set(['R_MIPS_26', 'R_MIPS_HI16', 'R_MIPS_LO16']);
+const AUXILIARY_OUTPUT_SECTION = /^\.ob64\.r[0-9]+(?:\.s[0-9]+)?$/;
+const AUXILIARY_TAIL_SECTION = /^\.ob64\.r[0-9]+(?:\.s[0-9]+)?\.tail$/;
+const SHA256 = /^[0-9A-F]{64}$/;
 
 function parseNumber(value, label) {
   if (Number.isInteger(value)) return value;
@@ -60,9 +63,166 @@ function normalizeRelocationRecords(records, targetSymbol, label) {
   });
 }
 
+function normalizeAuxiliaryRelocationRecords(records, label) {
+  if (!Array.isArray(records)) fail(`${label} is not an array`);
+  const offsets = new Set();
+  let previousOffset = -1;
+  return records.map((record, index) => {
+    if (!exactKeys(record, ['offset', 'type', 'symbol', 'addend', 'section'])
+        || typeof record.offset !== 'string' || !/^0x[0-9A-F]{8}$/.test(record.offset)
+        || Number.parseInt(record.offset.slice(2), 16) % 4 !== 0
+        || record.type !== 'R_MIPS_32'
+        || record.symbol !== '.text'
+        || typeof record.addend !== 'string' || !/^0x[0-9A-F]{8}$/.test(record.addend)
+        || Number.parseInt(record.addend.slice(2), 16) % 4 !== 0
+        || record.section !== '.rel.rodata') {
+      fail(`${label} record ${index} is malformed`);
+    }
+    if (offsets.has(record.offset)) fail(`${label} contains duplicate relocation offset ${record.offset}`);
+    const numericOffset = Number.parseInt(record.offset.slice(2), 16);
+    if (numericOffset < previousOffset) fail(`${label} relocation offsets are not ordered`);
+    offsets.add(record.offset);
+    previousOffset = numericOffset;
+    return { ...record };
+  });
+}
+
+function normalizeAuxiliarySectionContracts(contracts, targetSymbol, label) {
+  if (contracts === undefined) return [];
+  if (!Array.isArray(contracts) || contracts.length === 0) fail(`${label} is not a nonempty array`);
+  const compilerSections = new Set();
+  const outputSections = new Set();
+  return contracts.map((contract, index) => {
+    const contractLabel = `${label} record ${index}`;
+    if (!exactKeys(contract, [
+      'kind',
+      'compilerSection',
+      'outputSection',
+      'sectionType',
+      'sectionFlags',
+      'alignment',
+      'romStart',
+      'romEndExclusive',
+      'vramStart',
+      'vramEndExclusive',
+      'bytes',
+      'entries',
+      'expectedObjectSha256',
+      'expectedLinkedSha256',
+      'preservedTail',
+      'expectedRelocations',
+    ])
+        || contract.kind !== 'switch-table'
+        || contract.compilerSection !== '.rodata'
+        || typeof contract.outputSection !== 'string' || !AUXILIARY_OUTPUT_SECTION.test(contract.outputSection)
+        || contract.sectionType !== 'SHT_PROGBITS'
+        || !sameJson(contract.sectionFlags, ['SHF_ALLOC'])
+        || !Number.isInteger(contract.alignment) || contract.alignment < 4
+        || contract.alignment > 16 || (contract.alignment & (contract.alignment - 1)) !== 0
+        || typeof contract.romStart !== 'string' || !/^0x[0-9A-F]{8}$/.test(contract.romStart)
+        || typeof contract.romEndExclusive !== 'string' || !/^0x[0-9A-F]{8}$/.test(contract.romEndExclusive)
+        || typeof contract.vramStart !== 'string' || !/^0x[0-9A-F]{8}$/.test(contract.vramStart)
+        || typeof contract.vramEndExclusive !== 'string' || !/^0x[0-9A-F]{8}$/.test(contract.vramEndExclusive)
+        || !Number.isInteger(contract.bytes) || contract.bytes <= 0 || contract.bytes % 4 !== 0
+        || !Number.isInteger(contract.entries) || contract.entries <= 0
+        || contract.bytes !== contract.entries * 4
+        || typeof contract.expectedObjectSha256 !== 'string' || !SHA256.test(contract.expectedObjectSha256)
+        || typeof contract.expectedLinkedSha256 !== 'string' || !SHA256.test(contract.expectedLinkedSha256)) {
+      fail(`${contractLabel} is malformed`);
+    }
+    const tail = contract.preservedTail;
+    if (!exactKeys(tail, [
+      'inputSection',
+      'sectionType',
+      'sectionFlags',
+      'alignment',
+      'romStart',
+      'romEndExclusive',
+      'vramStart',
+      'vramEndExclusive',
+      'bytes',
+      'expectedSha256',
+      'ownerOriginalAssembly',
+      'ownerOriginalAssemblySha256',
+    ])
+        || tail.inputSection !== `${contract.outputSection}.tail`
+        || !AUXILIARY_TAIL_SECTION.test(tail.inputSection)
+        || ['.data', '.bss', '.text', '.rodata'].includes(tail.inputSection)
+        || tail.sectionType !== 'SHT_PROGBITS'
+        || !sameJson(tail.sectionFlags, ['SHF_ALLOC'])
+        || !Number.isInteger(tail.alignment) || tail.alignment < 1
+        || tail.alignment > 16 || (tail.alignment & (tail.alignment - 1)) !== 0
+        || typeof tail.romStart !== 'string' || !/^0x[0-9A-F]{8}$/.test(tail.romStart)
+        || typeof tail.romEndExclusive !== 'string' || !/^0x[0-9A-F]{8}$/.test(tail.romEndExclusive)
+        || typeof tail.vramStart !== 'string' || !/^0x[0-9A-F]{8}$/.test(tail.vramStart)
+        || typeof tail.vramEndExclusive !== 'string' || !/^0x[0-9A-F]{8}$/.test(tail.vramEndExclusive)
+        || !Number.isInteger(tail.bytes) || tail.bytes <= 0
+        || typeof tail.expectedSha256 !== 'string' || !SHA256.test(tail.expectedSha256)
+        || typeof tail.ownerOriginalAssembly !== 'string' || path.isAbsolute(tail.ownerOriginalAssembly)
+        || tail.ownerOriginalAssembly.split('/').includes('..')
+        || typeof tail.ownerOriginalAssemblySha256 !== 'string'
+        || !SHA256.test(tail.ownerOriginalAssemblySha256)) {
+      fail(`${contractLabel} preserved tail is malformed`);
+    }
+    const romStart = parseNumber(contract.romStart, `${contractLabel} ROM start`);
+    const romEndExclusive = parseNumber(contract.romEndExclusive, `${contractLabel} ROM end`);
+    const vramStart = parseNumber(contract.vramStart, `${contractLabel} VMA start`);
+    const vramEndExclusive = parseNumber(contract.vramEndExclusive, `${contractLabel} VMA end`);
+    const tailRomStart = parseNumber(tail.romStart, `${contractLabel} tail ROM start`);
+    const tailRomEndExclusive = parseNumber(tail.romEndExclusive, `${contractLabel} tail ROM end`);
+    const tailVramStart = parseNumber(tail.vramStart, `${contractLabel} tail VMA start`);
+    const tailVramEndExclusive = parseNumber(tail.vramEndExclusive, `${contractLabel} tail VMA end`);
+    if (romEndExclusive - romStart !== contract.bytes
+        || vramEndExclusive - vramStart !== contract.bytes
+        || romStart % contract.alignment !== 0
+        || vramStart % contract.alignment !== 0
+        || tailRomEndExclusive - tailRomStart !== tail.bytes
+        || tailVramEndExclusive - tailVramStart !== tail.bytes
+        || tailRomStart % tail.alignment !== 0
+        || tailVramStart % tail.alignment !== 0
+        || romEndExclusive !== tailRomStart
+        || vramEndExclusive !== tailVramStart) {
+      fail(`${contractLabel} placement or alignment is malformed`);
+    }
+    const expectedRelocations = normalizeAuxiliaryRelocationRecords(
+      contract.expectedRelocations,
+      `${contractLabel} relocations`,
+    );
+    if (expectedRelocations.length !== contract.entries
+        || expectedRelocations.some((record, relocationIndex) => (
+          Number.parseInt(record.offset.slice(2), 16) !== relocationIndex * 4
+        ))) {
+      fail(`${contractLabel} switch-table entry census is malformed`);
+    }
+    if (compilerSections.has(contract.compilerSection)) {
+      fail(`${label} repeats compiler section ${contract.compilerSection}`);
+    }
+    if (outputSections.has(contract.outputSection)) {
+      fail(`${label} repeats output section ${contract.outputSection}`);
+    }
+    compilerSections.add(contract.compilerSection);
+    outputSections.add(contract.outputSection);
+    return {
+      ...contract,
+      romStartNumber: romStart,
+      romEndNumber: romEndExclusive,
+      vramStartNumber: vramStart,
+      vramEndNumber: vramEndExclusive,
+      preservedTail: {
+        ...tail,
+        romStartNumber: tailRomStart,
+        romEndNumber: tailRomEndExclusive,
+        vramStartNumber: tailVramStart,
+        vramEndNumber: tailVramEndExclusive,
+      },
+      expectedRelocations,
+    };
+  });
+}
+
 function validateLinkageConfig(linkage, expectedProfile) {
   if (!exactKeys(linkage, ['schemaVersion', 'profile', 'symbols', 'targets'])
-      || linkage.schemaVersion !== 1 || linkage.profile !== expectedProfile
+      || linkage.schemaVersion !== 2 || linkage.profile !== expectedProfile
       || !Array.isArray(linkage.symbols) || !Array.isArray(linkage.targets)) {
     fail('matching-C linkage configuration schema or profile drift');
   }
@@ -80,7 +240,10 @@ function validateLinkageConfig(linkage, expectedProfile) {
   }
   const targets = new Map();
   for (const [index, entry] of linkage.targets.entries()) {
-    if (!exactKeys(entry, ['symbol', 'expectedRelocations'])
+    const expectedKeys = entry && Object.prototype.hasOwnProperty.call(entry, 'auxiliarySections')
+      ? ['symbol', 'expectedRelocations', 'auxiliarySections']
+      : ['symbol', 'expectedRelocations'];
+    if (!exactKeys(entry, expectedKeys)
         || typeof entry.symbol !== 'string' || !SAFE_LINK_SYMBOL.test(entry.symbol)) {
       fail(`matching-C linkage target ${index} is malformed`);
     }
@@ -92,6 +255,11 @@ function validateLinkageConfig(linkage, expectedProfile) {
         entry.expectedRelocations,
         entry.symbol,
         `matching-C linkage target ${entry.symbol}`,
+      ),
+      auxiliarySections: normalizeAuxiliarySectionContracts(
+        entry.auxiliarySections,
+        entry.symbol,
+        `matching-C linkage target ${entry.symbol} auxiliary sections`,
       ),
     });
   }
@@ -118,6 +286,7 @@ function selectRelocationContract(symbol, canonicalTarget, legacyTarget, allowMi
     }
     return {
       expectedRelocations: canonicalTarget.expectedRelocations,
+      auxiliarySections: canonicalTarget.auxiliarySections,
       source: 'canonical',
       canonicalLegacyEquivalent: legacyRelocations ? true : null,
     };
@@ -125,6 +294,7 @@ function selectRelocationContract(symbol, canonicalTarget, legacyTarget, allowMi
   if (legacyRelocations) {
     return {
       expectedRelocations: legacyRelocations,
+      auxiliarySections: [],
       source: 'legacy-compatibility',
       canonicalLegacyEquivalent: null,
     };
@@ -132,6 +302,7 @@ function selectRelocationContract(symbol, canonicalTarget, legacyTarget, allowMi
   if (allowMissing) {
     return {
       expectedRelocations: [],
+      auxiliarySections: [],
       source: 'missing-diff-only',
       canonicalLegacyEquivalent: null,
     };
@@ -170,6 +341,96 @@ function resolveAcceptedRow(model, symbol) {
   if (candidates.length !== 1) candidates = model.rows.filter((row) => rowContainsSymbol(row, symbol));
   if (candidates.length !== 1) fail(`active target does not resolve to one accepted structural owner: ${symbol}`);
   return candidates[0];
+}
+
+function resolveAuxiliarySectionContracts(model, baserom, target, contracts) {
+  if (!Array.isArray(contracts)) fail(`auxiliary-section contract census is malformed: ${target.symbol}`);
+  return contracts.map((contract) => {
+    const rows = model.rows.filter((row) => (
+      Array.isArray(row.slices)
+      && row.slices.some((slice) => slice.sectionName === contract.outputSection)
+    ));
+    if (rows.length !== 1) {
+      fail(`auxiliary output section does not resolve to one accepted owner: ${target.symbol} ${contract.outputSection}`);
+    }
+    const row = rows[0];
+    const slices = row.slices.filter((slice) => slice.sectionName === contract.outputSection);
+    if (row.inputKind !== 'tracked-assembly'
+        || row.primaryClass !== 'data'
+        || !row.part
+        || slices.length !== 1
+        || slices[0].executable
+        || slices[0].overlaySection !== 'data-rodata'
+        || slices[0].overlayDescriptorId !== target.overlayDescriptorId
+        || row.part.chunkIndex !== target.chunkIndex) {
+      fail(`auxiliary output section is not one accepted read-only data owner: ${target.symbol} ${contract.outputSection}`);
+    }
+    const slice = slices[0];
+    if (contract.outputSection === target.sectionName
+        || contract.romStartNumber !== row.romStart
+        || contract.vramStartNumber !== slice.vramStart
+        || contract.romEndNumber > row.romEndExclusive
+        || contract.vramEndNumber > slice.vramEndExclusive
+        || row.romEndExclusive - row.romStart !== slice.vramEndExclusive - slice.vramStart) {
+      fail(`auxiliary output section placement drift: ${target.symbol} ${contract.outputSection}`);
+    }
+    const ownerFile = resolveRelative(ROOT, row.part.file, 'auxiliary original assembly');
+    if (!fs.existsSync(ownerFile) || !fs.statSync(ownerFile).isFile() || sha256File(ownerFile) !== row.part.sha256) {
+      fail(`accepted auxiliary original assembly identity drift: ${target.symbol} ${contract.outputSection}`);
+    }
+    const tail = contract.preservedTail;
+    if (contract.romStartNumber < 0 || tail.romEndNumber > baserom.length
+        || tail.romEndNumber !== row.romEndExclusive
+        || tail.vramEndNumber !== slice.vramEndExclusive
+        || tail.ownerOriginalAssembly !== row.part.file
+        || tail.ownerOriginalAssemblySha256 !== row.part.sha256) {
+      fail(`auxiliary baserom range is malformed: ${target.symbol} ${contract.outputSection}`);
+    }
+    const objectBytes = Buffer.alloc(contract.bytes);
+    const relocatedBytes = Buffer.alloc(contract.bytes);
+    for (const [index, relocation] of contract.expectedRelocations.entries()) {
+      const offset = Number.parseInt(relocation.offset.slice(2), 16);
+      const addend = Number.parseInt(relocation.addend.slice(2), 16);
+      if (offset !== index * 4 || addend >= target.bytes) {
+        fail(`auxiliary local-label relocation is outside its accepted text owner: ${target.symbol} ${contract.outputSection}`);
+      }
+      objectBytes.writeUInt32BE(addend >>> 0, offset);
+      relocatedBytes.writeUInt32BE((target.vramStartNumber + addend) >>> 0, offset);
+    }
+    const retailBytes = Buffer.from(baserom.subarray(contract.romStartNumber, contract.romEndNumber));
+    const retailTailBytes = Buffer.from(baserom.subarray(tail.romStartNumber, tail.romEndNumber));
+    if (sha256Buffer(objectBytes) !== contract.expectedObjectSha256
+        || sha256Buffer(relocatedBytes) !== contract.expectedLinkedSha256
+        || sha256Buffer(retailBytes) !== contract.expectedLinkedSha256
+        || !relocatedBytes.equals(retailBytes)
+        || retailTailBytes.length !== tail.bytes
+        || sha256Buffer(retailTailBytes) !== tail.expectedSha256) {
+      fail(`auxiliary switch-table bytes or relocation semantics drift: ${target.symbol} ${contract.outputSection}`);
+    }
+    return {
+      ...contract,
+      ownerRowIndex: row.index,
+      ownerPrimaryId: row.primaryId,
+      ownerChunkIndex: row.part.chunkIndex,
+      ownerSectionBytes: row.bytes,
+      ownerRomStartNumber: row.romStart,
+      ownerRomEndNumber: row.romEndExclusive,
+      ownerVramStartNumber: slice.vramStart,
+      ownerVramEndNumber: slice.vramEndExclusive,
+      ownerOriginalAssembly: row.part.file,
+      ownerOriginalAssemblySha256: row.part.sha256,
+      ownerSymbol: row.part.name,
+      ownerSymbolVram: slice.vramStart + row.part.symbolByteOffset,
+      ownerTailSection: tail.inputSection,
+      ownerTailAlignment: tail.alignment,
+      ownerTailBytes: tail.bytes,
+      ownerTailSha256: tail.expectedSha256,
+      ownerTailRomStartNumber: tail.romStartNumber,
+      ownerTailRomEndNumber: tail.romEndNumber,
+      ownerTailVramStartNumber: tail.vramStartNumber,
+      ownerTailVramEndNumber: tail.vramEndNumber,
+    };
+  });
 }
 
 function assertEquivalent(symbol, field, derived, legacy) {
@@ -323,6 +584,7 @@ function loadActiveTargetModel(options = {}) {
       descriptorRawSha256: descriptor ? descriptor.rawSha256 : null,
       expectedTextSha256,
       expectedRelocations: relocationContract.expectedRelocations,
+      auxiliarySections: [],
       relocationContractSource: relocationContract.source,
       legacyAncillaryRelocations: legacyTarget ? (legacyTarget.expectedRelocations || []).filter((record) => record.section === '.rel.pdr') : [],
       sourceSha256: sha256File(sourceFile),
@@ -330,6 +592,12 @@ function loadActiveTargetModel(options = {}) {
       model,
       row,
     };
+    target.auxiliarySections = resolveAuxiliarySectionContracts(
+      model,
+      baserom,
+      target,
+      relocationContract.auxiliarySections,
+    );
     const comparisons = legacyTarget ? [
       assertEquivalent(entry.symbol, 'primaryId', target.primaryId, legacyTarget.primaryId),
       assertEquivalent(entry.symbol, 'rowIndex', target.rowIndex, legacyTarget.rowIndex),
@@ -374,10 +642,22 @@ function loadActiveTargetModel(options = {}) {
 
   const rows = new Set();
   const symbols = new Set();
+  const textSections = new Set(targets.map((target) => target.sectionName));
+  const auxiliarySections = new Set();
+  const auxiliaryRows = new Set();
   for (const target of targets) {
     if (rows.has(target.rowIndex) || symbols.has(target.symbol.toLowerCase())) fail('active target list contains duplicate owners');
     rows.add(target.rowIndex);
     symbols.add(target.symbol.toLowerCase());
+    for (const auxiliary of target.auxiliarySections) {
+      if (textSections.has(auxiliary.outputSection)
+          || auxiliarySections.has(auxiliary.outputSection)
+          || auxiliaryRows.has(auxiliary.ownerRowIndex)) {
+        fail(`active auxiliary-section ownership collision: ${target.symbol} ${auxiliary.outputSection}`);
+      }
+      auxiliarySections.add(auxiliary.outputSection);
+      auxiliaryRows.add(auxiliary.ownerRowIndex);
+    }
   }
   return {
     config: { ...minimal, compiler: legacy.compiler },
@@ -407,9 +687,12 @@ module.exports = {
   TOOLCHAIN_CONFIG_PATH,
   TOOLCHAIN_BUILD_PATH,
   loadActiveTargetModel,
+  normalizeAuxiliaryRelocationRecords,
+  normalizeAuxiliarySectionContracts,
   normalizeRelocationRecords,
   parseNumber,
   resolveAcceptedRow,
+  resolveAuxiliarySectionContracts,
   safeRelative,
   selectRelocationContract,
   validateLinkageConfig,

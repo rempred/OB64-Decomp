@@ -142,6 +142,8 @@ function main() {
       objectTextSha256: compiledTarget.textSha256,
       linkedTextSha256: verifiedTarget.textSha256,
       relocations: compiledTarget.relocations,
+      auxiliarySections: compiledTarget.auxiliarySections,
+      auxiliaryTails: chunkReplacement.auxiliaryTails.filter((tail) => tail.symbol === target.symbol),
     };
   });
 
