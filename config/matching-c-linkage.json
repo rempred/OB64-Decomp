@@ -69,6 +69,7 @@
     { "name": "D_001A4C10", "address": "0x001A4C10" },
     { "name": "D_80214F80", "address": "0x80214F80" },
     { "name": "D_8022A974", "address": "0x8022A974" },
+    { "name": "func_80232E44", "address": "0x80232E44" },
     { "name": "func_8022E3DC", "address": "0x8022E3DC" },
     { "name": "func_8022E9E8", "address": "0x8022E9E8" },
     { "name": "D_8022A950", "address": "0x8022A950" },
@@ -3469,6 +3470,18 @@
         { "offset": "0x00000058", "type": "R_MIPS_26", "symbol": "func_000016C4", "section": ".rel.text" },
         { "offset": "0x00000060", "type": "R_MIPS_HI16", "symbol": "D_8022A974", "section": ".rel.text" },
         { "offset": "0x00000064", "type": "R_MIPS_LO16", "symbol": "D_8022A974", "section": ".rel.text" }
+      ]
+    },
+    {
+      "symbol": "func_002a3198",
+      "expectedRelocations": [
+        { "offset": "0x00000030", "type": "R_MIPS_26", "symbol": "func_80232E44", "section": ".rel.text" },
+        { "offset": "0x0000004C", "type": "R_MIPS_26", "symbol": ".text", "section": ".rel.text" },
+        { "offset": "0x000000A4", "type": "R_MIPS_26", "symbol": ".text", "section": ".rel.text" },
+        { "offset": "0x000000B4", "type": "R_MIPS_26", "symbol": ".text", "section": ".rel.text" },
+        { "offset": "0x000000C8", "type": "R_MIPS_26", "symbol": ".text", "section": ".rel.text" },
+        { "offset": "0x000000EC", "type": "R_MIPS_26", "symbol": ".text", "section": ".rel.text" },
+        { "offset": "0x00000124", "type": "R_MIPS_26", "symbol": ".text", "section": ".rel.text" }
       ]
     }
   ]
