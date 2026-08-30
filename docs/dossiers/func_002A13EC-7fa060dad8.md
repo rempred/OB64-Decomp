@@ -2,7 +2,9 @@
 
 ## Status
 
-This source is a research candidate. The original assembly remains the accepted owner.
+This source is a preserved PURE_C research candidate. The active canonical owner is the exact
+`HYBRID_C` translation unit at `src/lib/func_002A13EC.c`; this dossier does not promote the
+candidate.
 
 - Candidate: `7FA060DAD88DCD2FB660956F1859F6288B9C2D79E732506AE228011B584B189F`
 - Target: `func_002A13EC` at ROM `0x2A13EC`
