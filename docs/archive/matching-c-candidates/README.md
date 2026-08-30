@@ -48,3 +48,17 @@ No session export, temporary active-target configuration, or legacy Phase 8
 record is preserved with this candidate. Resume it through the current target
 and linkage workflow, and do not promote it unless the canonical target and
 full-ROM verifiers pass.
+
+## `func_002A0EF0` multi-owner retry
+
+- File: `2026-08-30-func_002A0EF0-1bdce1a7d7.c`
+- Source worktree: `codex/cutscene-func-002a0ef0`
+- Size: 6,493 bytes
+- SHA-256:
+  `D242158C1822796AF4D3D1313A4556B5D6DE0CB4C34D263ED984DF2EF4F19949`
+- Status: `PURE_C`, nonmatching, and inactive
+
+The canonical two-owner diff established the accepted 1,132-byte placement and 22 candidate
+relocations, then reported 351 differing bytes across 141 instruction words. Both original assembly
+owners remain active. The complete experiment record is in
+`docs/dossiers/func_002A0EF0-1bdce1a7d7.md`.

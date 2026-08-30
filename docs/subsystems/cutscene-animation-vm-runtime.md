@@ -25,7 +25,7 @@ Primary parent references:
 | pose-program lookup | `func_002A3198` | `0x80233968` | [live]+[code+multi] exact overlay mapping |
 | director word-command parser | `func_00284288` | `0x802282B8` | [live]+[code+multi] registered-wait and move-command traces |
 | motion-command creator | `func_002A0B14` | `0x802312E4` | [live] first coordinate-author write, frame 520 |
-| motion integrator | `func_002A0EF0` plus continuation `func_002A0EF0_chunk42tail` | `0x802316C0` | [live] 50 coordinate writes, frames 522..570 |
+| motion integrator (`SUPPORTED_ALIAS`: `cutscene_motion_integrator`) | `func_002A0EF0` plus continuation `func_002A0EF0_chunk42tail` | `0x802316C0` | [static]+[live] two-pass motion-slot integration/expiry plus 50 coordinate writes, frames 522..570 |
 | sprite-record matrix builder | `func_002A9AD0` | `0x8023A370` | [live] parent render-path exec watch |
 
 The low-ROM VM functions use the permanent `ROM + 0x8006FC00` mapping. The
