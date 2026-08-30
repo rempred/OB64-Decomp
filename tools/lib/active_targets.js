@@ -709,7 +709,9 @@ function resolveAuxiliarySectionContracts(model, baserom, target, contracts) {
 }
 
 function validateAuxiliaryOwnerGroups(targets) {
-  const textSections = new Set(targets.map((target) => target.sectionName));
+  const textSections = new Set(targets.flatMap((target) => (
+    (target.textOwners || [{ sectionName: target.sectionName }]).map((owner) => owner.sectionName)
+  )));
   const groups = new Map();
   for (const target of targets) {
     for (const auxiliary of target.auxiliarySections) {
@@ -1018,8 +1020,6 @@ function loadActiveTargetModel(options = {}) {
   const rows = new Set();
   const symbols = new Set();
   const textSections = new Set();
-  const auxiliarySections = new Set();
-  const auxiliaryRows = new Set();
   for (const target of targets) {
     if (symbols.has(target.symbol.toLowerCase())) fail('active target list contains duplicate symbols');
     symbols.add(target.symbol.toLowerCase());
@@ -1031,13 +1031,9 @@ function loadActiveTargetModel(options = {}) {
       textSections.add(owner.sectionName);
     }
     for (const auxiliary of target.auxiliarySections) {
-      if (textSections.has(auxiliary.outputSection)
-          || auxiliarySections.has(auxiliary.outputSection)
-          || auxiliaryRows.has(auxiliary.ownerRowIndex)) {
+      if (textSections.has(auxiliary.outputSection)) {
         fail(`active auxiliary-section ownership collision: ${target.symbol} ${auxiliary.outputSection}`);
       }
-      auxiliarySections.add(auxiliary.outputSection);
-      auxiliaryRows.add(auxiliary.ownerRowIndex);
     }
   }
   validateAuxiliaryOwnerGroups(targets);
