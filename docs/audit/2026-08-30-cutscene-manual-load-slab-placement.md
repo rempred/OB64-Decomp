@@ -140,9 +140,10 @@ remaining owner bytes:       8 zero bytes
 ```
 
 Thus the direct evidence supports classifying the final eight bytes as structural trailing
-alignment padding, not function-owned executable instructions. Changing the accepted target
-extent or introducing a primary-text padding contract remains gated on independent structural
-review. Until that review is accepted, p5397 remains the complete 376-byte assembly owner.
+alignment padding, not function-owned executable instructions. Independent structural review
+accepted that conclusion. This task nevertheless retains p5397 as the complete 376-byte owner;
+changing the accepted target extent or introducing a primary-text padding contract would be a
+separate reviewed structural change.
 
 ## Validation and non-regression
 
@@ -156,7 +157,7 @@ review. Until that review is accepted, p5397 remains the complete 376-byte assem
 - the placement-sensitive local-jump words and decoded runtime targets;
 - the retained 376-byte p5397 owner, return/delay-slot words, trailing zeros, successor boundary,
   and absence of direct control flow into the final eight bytes;
-- unique slab containment, fixed-descriptor non-overlap, and 19 fixed descriptors; and
+- unique slab containment, fixed-descriptor ROM-source non-overlap, and 19 fixed descriptors; and
 - generic rejection of malformed endpoints, unequal lengths, duplicate IDs, slab overlap,
   descriptor overlap, and count drift.
 
@@ -177,5 +178,13 @@ independent review finds the 368-byte compiler comparison or successor boundary 
 
 ## Review status
 
-The structural implementation and worker verification are complete. Independent read-only
-structural review is still required before Step 2 begins.
+Independent read-only structural review reproduced the loader and DMA endpoints, the single-slab
+conclusion, all five target placements, placement-sensitive local jumps, the 368-byte function plus
+eight-byte padding conclusion for p5397, the unchanged 19-descriptor census, sole ownership, and
+the byte-identical complete ROM. It found no blocking issue and accepted Step 1 before Matching-C
+retries began.
+
+The slab's runtime address interval overlaps the numeric runtime reservations of fixed descriptors
+14, 16, and 18. Those descriptors are mutually exclusive load contexts and do not own any ROM
+source byte in this slab; the non-overlap claim above is deliberately limited to ROM-source
+ownership rather than numeric runtime intervals.
