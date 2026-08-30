@@ -3,7 +3,7 @@
 Date: 2026-08-30
 Profile: US Rev 0
 Work type: structural
-Status: implementation candidate; exact inactive baseline and focused controls pass
+Status: accepted structural mechanism; exact gates and independent re-review pass
 
 ## Scope
 
@@ -84,14 +84,17 @@ When the logical target is active:
    objects. Each complete original chunk object is retained outside the link as fallback and
    comparison evidence.
 5. The one C object is listed once and contributes `.ob64.r5366` and `.ob64.r5367` to the two
-   unchanged linker output sections. The continuation owner label is preserved as a linker-defined
-   symbol at `0x802317D0`; it does not create a second C or assembly owner.
+   unchanged linker output sections. The splitter synthesizes the accepted continuation owner label
+   into that relocatable C object as a global, zero-size `STT_FUNC` owned by `.ob64.r5367`; the
+   linked symbol remains section-owned at `0x802317D0` and does not create a second owner.
 6. Verification checks each output section and `PT_LOAD` independently, concatenates them only for
    the logical byte comparison, and requires the complete ROM to remain exact.
 
 The splitter never edits compiler assembly instructions, injects machine code, changes a branch,
 or merges the two accepted rows. The unsplit assembler object is retained, and the source-object
-proof independently reproduces the split object byte-for-byte.
+proof deterministically reruns the same splitter from that unsplit artifact and reproduces the
+split object byte-for-byte. The synthetic splitter test provides separate relocation, seam, symbol,
+and linked-byte assertions; it is not a second splitter implementation.
 
 When the target is inactive, no chunk is pruned and both original assembly inputs remain linked
 through the existing Phase 7 path.
@@ -144,6 +147,20 @@ two-chunk prune/compile/split/link/map/proof path with a generated exact `HYBRID
 fixture and requires an exact complete ROM; the fixture never enters canonical target configuration
 and is not a matching-C claim. `tools/verify.js` and `tools/audit.js` remain the canonical complete
 gates.
+
+## Independent Review
+
+The read-only review of structural commit `dde8ae6` identified two medium findings: the initial
+tests did not activate the full multi-owner Phase 8 path, and the continuation label had been
+recreated as an absolute `NOTYPE` linker symbol. Follow-up commit `d0529f8` added the active exact
+structural fixture, preserved the accepted section-owned `STT_FUNC` semantics, removed the linker
+alias, and made the ordinary Phase 8 artifact suite owner-census aware.
+
+Independent re-review confirmed both findings resolved and found no additional correctness or
+fail-closed defect. The remaining non-blocking limitations are explicit: split-proof reproduction
+uses the production splitter rather than an independent implementation, and the active exact
+fixture uses raw `HYBRID_C` words while the separate synthetic splitter test covers cross-owner
+branch, relocation, and `HI16`/`LO16` behavior.
 
 ## Falsifiers
 
