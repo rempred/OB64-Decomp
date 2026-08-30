@@ -335,7 +335,8 @@ function main() {
     compareLinkedAuxiliaryBytes(auxiliaryCanary, auxiliary, parseElf32BigEndian(alignmentDrift), canonicalBaserom);
   }));
   const auxiliaryByteDrift = Buffer.from(fs.readFileSync(elfFile));
-  auxiliaryByteDrift[auxiliarySection.offset] ^= 0x01;
+  const auxiliaryOffsetInOwner = auxiliary.vramStartNumber - auxiliary.ownerVramStartNumber;
+  auxiliaryByteDrift[auxiliarySection.offset + auxiliaryOffsetInOwner] ^= 0x01;
   mutations.push(expectRejection('linked auxiliary byte', /bytes are not exact/, () => {
     const comparison = compareLinkedAuxiliaryBytes(
       auxiliaryCanary,
