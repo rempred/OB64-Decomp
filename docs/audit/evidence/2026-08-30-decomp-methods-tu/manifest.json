@@ -1,0 +1,112 @@
+{
+  "schemaVersion": 1,
+  "study": "OB64 decompilation methods and intended translation-unit recovery pilot",
+  "base": {
+    "repository": "C:/Users/Joe/Projects/OB64-Decomp-decomp-methods-tu-director",
+    "branch": "codex/decomp-methods-tu-director",
+    "commit": "ee6151458d789cab3d1242637b873ae0da5b2cee",
+    "worktreeCleanAtFreeze": true
+  },
+  "evidence": [
+    {
+      "snapshot": "benchmark-rows.csv",
+      "snapshotSha256": "39A8D34C9997D917016D60857ABF6F0E841776822A8ED7CBB873F0905C19FBC9",
+      "bytes": 76381,
+      "rows": 204,
+      "source": "build/decomp-methods-tu/lane-b/results/benchmark-rows.csv",
+      "sourceSha256": "39A8D34C9997D917016D60857ABF6F0E841776822A8ED7CBB873F0905C19FBC9",
+      "generation": "Corrected Lane-B schema-v2 aggregate: 34 frozen owner-level targets by six methods. The snapshot is byte-for-byte identical to the frozen source artifact."
+    },
+    {
+      "snapshot": "corpus.json",
+      "snapshotSha256": "889C6739D549DA837535AC54A23E65767AE7E50ABE3160E767CE187790ADEBD6",
+      "bytes": 33547,
+      "source": "build/decomp-methods-tu/lane-b/corpus/corpus.json",
+      "sourceSha256": "889C6739D549DA837535AC54A23E65767AE7E50ABE3160E767CE187790ADEBD6",
+      "generation": "Frozen 34-target corpus selected without opening canonical C. The snapshot is byte-for-byte identical to the frozen source artifact."
+    },
+    {
+      "snapshot": "phase2-function-results.csv",
+      "snapshotSha256": "FCD527E5FEDFB60310A4DAE6670B412EC72059117CBC172465591D39BBDFBF7D",
+      "bytes": 8394,
+      "rows": 26,
+      "source": "build/decomp-methods-tu/tu-compile-pilot/phase2-function-results.csv",
+      "sourceSha256": "FCD527E5FEDFB60310A4DAE6670B412EC72059117CBC172465591D39BBDFBF7D",
+      "generation": "Phase-2 per-logical-function grouped-versus-separate compilation aggregate. The snapshot is byte-for-byte identical to the frozen source artifact."
+    },
+    {
+      "snapshot": "func-002861c8-logical-supplement.csv",
+      "snapshotSha256": "4DB06F0D86979BF1960BCBCB488A2412F247DB637719AC4CA19E37CE2C51F6B8",
+      "bytes": 3647,
+      "rows": 15,
+      "source": "build/decomp-methods-tu/lane-b/supplement/func_002861C8-logical/results.json",
+      "sourceSha256": "EDECAB81B83A2201EABDE40BBD875CC0A1C52C7098817DC526BFE20EC88FA35C",
+      "generation": "Compact projection of the corrected three-logical-function by five-method supplement. Provider stderr, generated-source paths, and verbose scratch failures were omitted; the outcome column is a bounded categorical summary of the preserved state fields."
+    },
+    {
+      "snapshot": "hijs-segment14-mapping.csv",
+      "snapshotSha256": "3B8D672185B2E924E9A6BB3F4A5781FDC2E9F0D971A4C6AD8F3095A432EBC72F",
+      "bytes": 15167,
+      "rows": 44,
+      "source": "C:/Users/Joe/AppData/Local/Temp/hijs-ogrebattle64-511c8ca0",
+      "sourceCommit": "511c8ca0fb0fdcabd72b4c023a644e900f3b9112",
+      "sourceArchive": "C:/Users/Joe/Downloads/ogrebattle64-main Hijs.zip",
+      "sourceArchiveSha256": "B4F8D0148F2CA10F6CD045C11AC32B87632FDB1F466E6ABF0A86BD519DC82743",
+      "generation": "Mapped source order in src/segment_14/281860.c and src/segment_14/283DF0.c plus ogrebattle64.yaml rodata associations against the accepted OB64 owner model. The supplied archive had 119 of 119 files matching the inspected Git blobs."
+    }
+  ],
+  "externalTools": {
+    "m2c": {
+      "url": "https://github.com/matt-kempster/m2c.git",
+      "branch": "master",
+      "version": "0.1.0",
+      "commit": "3478473441a1e6da75d6bf07629452f410390ef4",
+      "tree": "3943f2fb966096365ca19d888a85f7a0386aac17",
+      "python": "3.11.15"
+    },
+    "asmlift": {
+      "url": "https://github.com/macabeus/asmlift.git",
+      "branch": "main",
+      "version": "0.5.0",
+      "describe": "v0.5.0-89-gbe9f44a",
+      "commit": "be9f44add56c0bdcbda2134b836c6c1158f76051",
+      "builtCliSha256": "81B28C5E165D3D6F764D35E901B1174B563CE6E9B8CEE5074FEFA475F6CEA223",
+      "pnpmLockSha256": "FB4E421FD21AC9E85CB5FC55C3321634E0846DC4E0CECEF8813E19EC69B1D08C",
+      "node": "v24.13.1",
+      "npm": "11.8.0",
+      "pnpm": "9.14.4"
+    },
+    "kmcCompiler": {
+      "version": "GNU C 2.7.2 (MIPS GNU/ELF)",
+      "sourceCommit": "43d1cdb67ed135879869b5266f01efaaada5e35a",
+      "cc1Sha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+      "flags": "-quiet -O2 -meb -mips3 -mgp32 -mfp32 -G 0 -fno-PIC -mno-abicalls -fno-builtin -funsigned-char"
+    },
+    "gnuBinutils": {
+      "version": "2.6 KMC-targeted build",
+      "sourceCommit": "54514ded39ceb32165a125ddba04ca5b551773a2",
+      "assemblerSha256": "0831D410AD140F2D2225382273219ACB418EF6EC1E986A3309F034D2A8350A5C",
+      "assemblerFlags": "-G 0 -mips3 -mabi=32 -force-n64align -EB"
+    },
+    "hijsRepository": {
+      "url": "https://codeberg.org/hijsje/ogrebattle64",
+      "branch": "main",
+      "commit": "511c8ca0fb0fdcabd72b4c023a644e900f3b9112",
+      "romSha1": "9CD0CFB50B883EDB068E0C30D213193B9CF89895",
+      "submodules": {
+        "libmus": "123a807",
+        "ultralib": "00cdfa",
+        "asmDiffer": "093360"
+      },
+      "reproducibilityLimit": "The Makefile references an absent/untracked tools/gcc_kmc and does not pin the system MIPS binutils, so an independent successful build at this commit was not established."
+    }
+  },
+  "reproductionNotes": [
+    "The benchmark source artifacts retain exact provider commands and per-row report references; this bounded bundle deliberately excludes generated C, generated assembly, objects, ROM bytes, compiler output, and bulk reports.",
+    "Historical raw m2c means one accepted function passed to m2c.py with its old default target and no context; emitted text is not compile or matching success.",
+    "Current match.js rows cover all eight configured candidate variants. Exact acceptance remains PURE_C plus sole linked owner, exact accepted bytes and relocations, and a byte-identical complete ROM.",
+    "The func_002861C8 supplement preserves the owner-level row separately and measures its three proven logical compiler functions using corrected ranges.",
+    "The grouped-TU table reports scratch per-function comparisons. It is not a general multi-owner linked-owner or complete-ROM proof.",
+    "Hash validation: Get-FileHash -Algorithm SHA256 docs/audit/evidence/2026-08-30-decomp-methods-tu/*; row validation: Import-Csv on each CSV and compare with the rows values above."
+  ]
+}
