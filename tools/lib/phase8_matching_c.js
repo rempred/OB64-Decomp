@@ -198,6 +198,22 @@ function targetTextOwners(target) {
   }];
 }
 
+function primaryCompilerFunctionBytes(target) {
+  const functions = target && target.compilerTextFunctions;
+  if (!Array.isArray(functions) || functions.length === 0
+      || functions[0].symbol !== target.symbol
+      || !Number.isInteger(functions[0].bytes) || functions[0].bytes <= 0) {
+    fail('primary compiler text-function contract is malformed: ' + (target && target.symbol));
+  }
+  if (targetTextOwners(target).length > 1) {
+    if (functions.length !== 1 || functions[0].bytes !== target.bytes) {
+      fail('multi-owner and multi-function target structures cannot be combined ambiguously: ' + target.symbol);
+    }
+    return target.bytes;
+  }
+  return functions[0].bytes;
+}
+
 function compareLinkedTargetBytes(target, linkedElf, canonicalBaserom) {
   if (!target || typeof target.symbol !== 'string' || typeof target.sectionName !== 'string') {
     fail('raw linked-target comparison metadata is malformed');
@@ -1100,10 +1116,11 @@ function compileTarget(phase8, target, output, compiler, assembler, objcopy, opt
     fail('KMC target object logical text extent drift: ' + target.symbol);
   }
   const compilerTextFunctions = verifyCompilerTextFunctions(elf, target, ownerSectionRecords[0].section);
+  const primaryFunctionBytes = primaryCompilerFunctionBytes(target);
   const symbols = elf.symbols.filter((symbol) => symbol.name === target.symbol && symbol.sectionIndex !== 0);
-  if (symbols.length !== 1 || symbols[0].value !== 0 || symbols[0].size !== textBytes.length || symbols[0].binding !== 1
+  if (symbols.length !== 1 || symbols[0].value !== 0 || symbols[0].size !== primaryFunctionBytes || symbols[0].binding !== 1
       || symbols[0].symbolType !== 2 || symbols[0].sectionIndex !== ownerSectionRecords[0].section.index
-      || (enforceAcceptedContract && symbols[0].size !== target.bytes)) {
+      || (enforceAcceptedContract && primaryFunctionBytes > target.bytes)) {
     fail('KMC target object symbol drift: ' + target.symbol);
   }
   for (const record of ownerSectionRecords.slice(1)) {
@@ -1197,7 +1214,7 @@ function compileTarget(phase8, target, output, compiler, assembler, objcopy, opt
     const linkedSection = linkedObjectElf.sections.find((section) => section.name === owner.sectionName);
     const expectedSymbol = ownerIndex === 0 ? target.symbol : owner.symbol;
     const linkedSymbols = linkedObjectElf.symbols.filter((symbol) => symbol.name === expectedSymbol);
-    const expectedSize = ownerIndex === 0 ? target.bytes : 0;
+    const expectedSize = ownerIndex === 0 ? primaryCompilerFunctionBytes(target) : 0;
     if (!linkedSection || linkedSymbols.length !== 1 || linkedSymbols[0].value !== 0
         || linkedSymbols[0].size !== expectedSize || linkedSymbols[0].binding !== 1
         || linkedSymbols[0].symbolType !== 2 || linkedSymbols[0].sectionIndex !== linkedSection.index) {
@@ -1314,7 +1331,7 @@ function deriveSourceObjectProof(phase8, target, output, classification, linkedE
   for (const [ownerIndex, record] of objectOwnerSections.entries()) {
     const expectedSymbol = ownerIndex === 0 ? target.symbol : record.owner.symbol;
     const ownerSymbols = objectElf.symbols.filter((symbol) => symbol.name === expectedSymbol);
-    const expectedSize = ownerIndex === 0 ? target.bytes : 0;
+    const expectedSize = ownerIndex === 0 ? primaryCompilerFunctionBytes(target) : 0;
     if (ownerSymbols.length !== 1 || ownerSymbols[0].value !== 0 || ownerSymbols[0].size !== expectedSize
         || ownerSymbols[0].binding !== 1 || ownerSymbols[0].symbolType !== 2
         || ownerSymbols[0].sectionIndex !== record.section.index) {
@@ -2282,7 +2299,7 @@ function verifyPhase8Output(phase8, options) {
     const linkedSymbols = elf.symbols.filter((symbol) => symbol.name === target.symbol && symbol.sectionIndex !== 0);
     if (linkedSymbols.length !== 1
         || linkedSymbols[0].value !== target.vramStartNumber
-        || linkedSymbols[0].size !== target.bytes
+        || linkedSymbols[0].size !== primaryCompilerFunctionBytes(target)
         || linkedSymbols[0].binding !== 1 || linkedSymbols[0].symbolType !== 2
         || !elf.sections[linkedSymbols[0].sectionIndex]
         || elf.sections[linkedSymbols[0].sectionIndex].name !== target.sectionName) {
