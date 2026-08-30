@@ -69,6 +69,7 @@
     { "name": "D_001A4C10", "address": "0x001A4C10" },
     { "name": "D_80214F80", "address": "0x80214F80" },
     { "name": "D_8022A974", "address": "0x8022A974" },
+    { "name": "D_8022A97C", "address": "0x8022A97C" },
     { "name": "func_80232E44", "address": "0x80232E44" },
     { "name": "func_001BC35C", "address": "0x801BC35C" },
     { "name": "func_00070F30", "address": "0x80070F30" },
@@ -3502,6 +3503,14 @@
         { "offset": "0x0000024C", "type": "R_MIPS_26", "symbol": "sqrtf", "section": ".rel.text" },
         { "offset": "0x000002AC", "type": "R_MIPS_26", "symbol": ".text", "section": ".rel.text" },
         { "offset": "0x000002BC", "type": "R_MIPS_26", "symbol": ".text", "section": ".rel.text" }
+      ]
+    },
+    {
+      "symbol": "func_002A13EC",
+      "expectedRelocations": [
+        { "offset": "0x00000004", "type": "R_MIPS_HI16", "symbol": "D_8022A97C", "section": ".rel.text" },
+        { "offset": "0x00000008", "type": "R_MIPS_LO16", "symbol": "D_8022A97C", "section": ".rel.text" },
+        { "offset": "0x0000006C", "type": "R_MIPS_26", "symbol": ".text", "section": ".rel.text" }
       ]
     }
   ]
