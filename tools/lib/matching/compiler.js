@@ -6,11 +6,13 @@ const {
   ROOT,
   elfSectionBytes,
   parseElfFile,
+  run,
   sha256Buffer,
   sha256File,
 } = require('../phase7_conventional');
 const {
-  compileTarget,
+  adjustSectionAssembly,
+  relocationRecords,
   verifyCompiler,
   verifyRuntimeTools,
 } = require('../phase8_matching_c');
@@ -24,6 +26,7 @@ const { canonicalJson, digest, targetRecord } = require('./target_model');
 const { requestStore } = require('./store');
 
 const MATCHING_ROOT = path.join(ROOT, 'build', 'matching');
+const SCRATCH_TEXT_TAIL_ALIGNMENT_LIMIT = 12;
 
 function compileArtifactDirectory(runId) {
   // Keep transient compiler paths independent of the target symbol. The
@@ -112,9 +115,183 @@ function prepareCompilerSession(options = {}) {
     compilerFlags: context.phase8.config.compiler.compileFlags,
     assembler: context.phase8.toolchain.identity,
     sourcePolicyPreprocessorSha256: preprocessor.sha256,
-    workbenchCompilerContract: 2,
+    workbenchCompilerContract: 4,
   };
   return { context, runtime, preprocessor, tool, toolId: digest(tool) };
+}
+
+function scratchSectionEvidence(section) {
+  return {
+    name: section.name,
+    index: section.index,
+    type: section.type,
+    flags: section.flags,
+    alignment: section.alignment,
+    bytes: section.size,
+  };
+}
+
+function compileScratchCandidate({ session, target, sourceFile, artifactDir }) {
+  if (!session || !session.context || !session.runtime || !target
+      || typeof target.symbol !== 'string' || typeof target.sectionName !== 'string'
+      || typeof sourceFile !== 'string' || typeof artifactDir !== 'string') {
+    throw new Error('scratch candidate compiler inputs are malformed');
+  }
+  ensureDirectory(artifactDir);
+  const compilerAssembly = path.join(artifactDir, 'candidate.compiler.s');
+  const adjustedAssembly = path.join(artifactDir, 'candidate.s');
+  const objectFile = path.join(artifactDir, 'candidate.o');
+  const compilerArgs = [
+    ...session.context.phase8.config.compiler.compileFlags,
+    '-o',
+    compilerAssembly,
+    relative(sourceFile),
+  ];
+  const compilerResult = run(session.context.localTools.compiler, compilerArgs, { cwd: ROOT });
+  const compilerBytes = fs.readFileSync(compilerAssembly);
+  const adjustedBytes = adjustSectionAssembly(compilerBytes, target.sectionName, {
+    allowAuxiliaryReadOnlySections: true,
+    legalizeCop1BinaryInstructions: true,
+  });
+  fs.writeFileSync(adjustedAssembly, adjustedBytes);
+  const assembler = session.runtime.tools['mips-kmc-elf-as.exe'].path;
+  const assemblerArgs = [
+    ...session.context.phase8.model.config.binutils.compilerAssemblerFlags,
+    '-o',
+    objectFile,
+    adjustedAssembly,
+  ];
+  const assemblerResult = run(assembler, assemblerArgs, { cwd: artifactDir });
+  const elf = parseElfFile(objectFile);
+
+  const textSections = elf.sections.filter((section) => section.name === target.sectionName);
+  if (textSections.length !== 1) throw new Error('scratch object target section count is not one');
+  const textSection = textSections[0];
+  if (textSection.type !== 1 || (textSection.flags & 6) !== 6 || (textSection.flags & 1) !== 0) {
+    throw new Error('scratch object target section is not executable nonwritable PROGBITS');
+  }
+  const executableSections = elf.sections.filter((section) => section.size > 0 && (section.flags & 4) !== 0);
+  if (executableSections.length !== 1 || executableSections[0].index !== textSection.index) {
+    throw new Error('scratch object must own exactly one nonempty executable section');
+  }
+  const sectionFunctions = elf.symbols.filter((symbol) => (
+    symbol.sectionIndex === textSection.index && symbol.symbolType === 2
+  ));
+  if (sectionFunctions.length !== 1) {
+    throw new Error(`scratch object target section must contain exactly one function symbol; found ${sectionFunctions.length}`);
+  }
+  const primary = sectionFunctions[0];
+  if (primary.name !== target.symbol || primary.value !== 0 || primary.binding !== 1
+      || primary.visibility !== 0 || !Number.isInteger(primary.size) || primary.size <= 0
+      || primary.size % 4 !== 0 || primary.size > textSection.size) {
+    throw new Error(`scratch object requested global function symbol is malformed: ${target.symbol}`);
+  }
+
+  const textSectionBytes = Buffer.from(elfSectionBytes(elf, textSection));
+  const objectText = Buffer.from(textSectionBytes.subarray(0, primary.size));
+  const tail = Buffer.from(textSectionBytes.subarray(primary.size));
+  if (tail.length % 4 !== 0 || tail.length > SCRATCH_TEXT_TAIL_ALIGNMENT_LIMIT || tail.some((byte) => byte !== 0)) {
+    throw new Error(`scratch object owns executable bytes outside the primary function: ${target.symbol}`);
+  }
+
+  const writableSections = elf.sections.filter((section) => section.size > 0 && (section.flags & 1) !== 0);
+  if (writableSections.length > 0) {
+    throw new Error(`scratch object unexpectedly owns writable bytes: ${writableSections[0].name}`);
+  }
+  for (const name of ['.data', '.bss', '.sdata', '.sbss']) {
+    const owned = elf.sections.filter((section) => section.name === name && section.size > 0);
+    if (owned.length > 0) throw new Error(`scratch object unexpectedly owns ${name} bytes: ${target.symbol}`);
+  }
+  const rodataSections = elf.sections.filter((section) => section.name === '.rodata' && section.size > 0);
+  if (rodataSections.length > 1) throw new Error('scratch object has multiple .rodata sections');
+  if (rodataSections.some((section) => section.type !== 1 || section.flags !== 2)) {
+    throw new Error('scratch object .rodata is not read-only allocated PROGBITS');
+  }
+  const reginfoSections = elf.sections.filter((section) => section.name === '.reginfo' && section.size > 0);
+  if (reginfoSections.length > 1
+      || reginfoSections.some((section) => section.type !== 0x70000006 || section.flags !== 2)) {
+    throw new Error('scratch object .reginfo shape is malformed');
+  }
+  const allowedAllocatedIndexes = new Set([
+    textSection.index,
+    ...rodataSections.map((section) => section.index),
+    ...reginfoSections.map((section) => section.index),
+  ]);
+  const unexpectedAllocated = elf.sections.filter((section) => (
+    section.size > 0 && (section.flags & 2) !== 0 && !allowedAllocatedIndexes.has(section.index)
+  ));
+  if (unexpectedAllocated.length > 0) {
+    throw new Error(`scratch object owns an unexpected allocated section: ${unexpectedAllocated[0].name}`);
+  }
+
+  const relocationTarget = {
+    symbol: target.symbol,
+    bytes: primary.size,
+    sectionName: target.sectionName,
+    compilerTextFunctions: [{ symbol: target.symbol, offsetNumber: 0 }],
+    auxiliarySections: rodataSections.length === 1
+      ? [{ compilerSection: '.rodata', outputSection: '.rodata' }]
+      : [],
+  };
+  const relocations = relocationRecords(elf, relocationTarget);
+  for (const relocation of relocations) {
+    const offset = typeof relocation.offset === 'string'
+      ? Number.parseInt(relocation.offset, 16)
+      : relocation.offset;
+    if (!Number.isInteger(offset) || offset < 0 || offset % 4 !== 0 || offset + 4 > primary.size) {
+      throw new Error(`scratch object relocation escapes the primary function: ${target.symbol}`);
+    }
+  }
+  const rodata = rodataSections.length === 1 ? rodataSections[0] : null;
+  const rodataRelocationSection = rodata
+    ? elf.sections.find((section) => section.name === '.rel.rodata')
+    : null;
+  const scratchContract = {
+    schemaVersion: 1,
+    kind: 'single-function-scratch-object',
+    primarySymbol: {
+      name: primary.name,
+      value: primary.value,
+      bytes: primary.size,
+      binding: 'GLOBAL',
+      visibility: 'DEFAULT',
+      symbolType: 'STT_FUNC',
+    },
+    textSection: {
+      ...scratchSectionEvidence(textSection),
+      functionBytes: objectText.length,
+      functionSha256: sha256Buffer(objectText),
+      trailingAlignmentBytes: tail.length,
+      trailingAlignmentSha256: sha256Buffer(tail),
+      trailingAlignmentLimit: SCRATCH_TEXT_TAIL_ALIGNMENT_LIMIT,
+    },
+    readOnlyData: rodata ? {
+      ...scratchSectionEvidence(rodata),
+      sha256: sha256Buffer(Buffer.from(elfSectionBytes(elf, rodata))),
+      relocationEntries: rodataRelocationSection ? rodataRelocationSection.size / 8 : 0,
+    } : null,
+    allocatedSections: elf.sections
+      .filter((section) => section.size > 0 && (section.flags & 2) !== 0)
+      .map(scratchSectionEvidence),
+    textRelocations: relocations,
+    commands: {
+      compiler: { executable: session.context.localTools.compiler, args: compilerArgs, cwd: ROOT },
+      assembler: { executable: assembler, args: assemblerArgs, cwd: artifactDir },
+    },
+    artifacts: {
+      compilerAssembly: relative(compilerAssembly),
+      adjustedAssembly: relative(adjustedAssembly),
+      object: relative(objectFile),
+      objectSha256: sha256File(objectFile),
+    },
+  };
+  return {
+    objectText,
+    relocations,
+    scratchContract,
+    stdout: [compilerResult.stdout, assemblerResult.stdout].filter(Boolean).join('\n'),
+    stderr: [compilerResult.stderr, assemblerResult.stderr].filter(Boolean).join('\n'),
+  };
 }
 
 function recordCandidate(workbench, target, sourceText, options = {}) {
@@ -169,26 +346,8 @@ function compileCandidate(workbench, target, sourceText, options = {}) {
   let compileRecord;
   let comparisonRecord = null;
   try {
-    const phase8 = { ...session.context.phase8, targets: [targetForCompile] };
-    const result = compileTarget(
-      phase8,
-      targetForCompile,
-      artifactDir,
-      session.context.localTools.compiler,
-      session.runtime.tools['mips-kmc-elf-as.exe'].path,
-      session.runtime.tools['mips-kmc-elf-objcopy.exe'].path,
-      {
-        enforceAcceptedContract: false,
-        allowAuxiliaryReadOnlySections: true,
-        legalizeCop1BinaryInstructions: true,
-        classification,
-      },
-    );
-    const proofObject = path.join(artifactDir, ...result.proofObjectRelative.split('/'));
-    const elf = parseElfFile(proofObject);
-    const section = elf.sections.find((item) => item.name === target.sectionName);
-    if (!section) throw new Error('scratch object target section is missing');
-    const objectText = Buffer.from(elfSectionBytes(elf, section));
+    const result = compileScratchCandidate({ session, target, sourceFile, artifactDir });
+    const objectText = result.objectText;
     compileRecord = {
       runId,
       candidateId: candidate.candidateId,
@@ -198,8 +357,8 @@ function compileCandidate(workbench, target, sourceText, options = {}) {
       objectText: objectText.toString('base64'),
       relocations: result.relocations,
       artifactDir: relative(artifactDir),
-      stdout: '',
-      stderr: '',
+      stdout: result.stdout,
+      stderr: result.stderr,
       durationMs: Date.now() - started,
       tool: session.tool,
       createdAt: attemptStartedAt,
@@ -223,6 +382,7 @@ function compileCandidate(workbench, target, sourceText, options = {}) {
       target: { symbol: target.symbol, targetId: target.targetId, expectedBytesSha256: target.expectedBytesSha256 },
       candidate: { ...candidate, sourceText: undefined },
       compile: compileRecord,
+      scratchContract: result.scratchContract,
       comparison,
       caveat: result.relocations.length > 0
         ? 'Relocation-bearing scratch objects are diagnostic only; canonical linking is required for exactness.'
@@ -264,6 +424,7 @@ module.exports = {
   candidateRecord,
   compileArtifactDirectory,
   compileCandidate,
+  compileScratchCandidate,
   prepareCompilerSession,
   recordCandidate,
   sourceSnapshot,
