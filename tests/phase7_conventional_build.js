@@ -67,7 +67,7 @@ function main() {
   verifyMap(model, mapText);
 
   const results = [];
-  assert.strictEqual(model.counts.nonDescriptorLoadSlabs, 3, 'accepted load-slab count drift');
+  assert.strictEqual(model.counts.nonDescriptorLoadSlabs, 4, 'accepted load-slab count drift');
   assert.strictEqual(model.slices.length, 7252, 'accepted link-slice count drift');
   assert.strictEqual(model.counts.splitOwners, 10, 'accepted split-owner count drift');
   assert.strictEqual(model.overlays.length, 19, 'fixed-descriptor count drift');
@@ -98,6 +98,14 @@ function main() {
     romEndExclusive: 0x000DDF60,
     vramStart: 0x8019A7A0,
     vramEndExclusive: 0x801F1500,
+    executableRanges: [],
+  }, {
+    id: 'loader-dma-0029a4c0',
+    kind: 'loader-dma',
+    romStart: 0x0029A4C0,
+    romEndExclusive: 0x002A8D20,
+    vramStart: 0x8022AC90,
+    vramEndExclusive: 0x802394F0,
     executableRanges: [],
   }], 'accepted load-slab record drift');
 
@@ -135,6 +143,117 @@ function main() {
   for (const rowIndex of [1502, 1938]) {
     const row = model.rows[rowIndex];
     assert.ok(row && row.slices.every((slice) => slice.loadSlabId !== 'loader-dma-00087200'), `p${rowIndex} crossed a runtime-slab endpoint`);
+  }
+
+  const cutsceneSlab = model.nonDescriptorLoadSlabs.find((slab) => slab.id === 'loader-dma-0029a4c0');
+  assert.ok(cutsceneSlab, 'cutscene load slab is missing');
+  assert.strictEqual(cutsceneSlab.romEndExclusive - cutsceneSlab.romStart, 0xE860, 'cutscene-slab ROM length drift');
+  assert.strictEqual(cutsceneSlab.vramEndExclusive - cutsceneSlab.vramStart, 0xE860, 'cutscene-slab VRAM length drift');
+  assert.strictEqual(cutsceneSlab.vramStart - cutsceneSlab.romStart, 0x7FF907D0, 'cutscene-slab start delta drift');
+  assert.strictEqual(cutsceneSlab.vramEndExclusive - cutsceneSlab.romEndExclusive, 0x7FF907D0, 'cutscene-slab end delta drift');
+
+  const cutsceneSlabRows = model.rows.filter((row) => (
+    row.romStart < cutsceneSlab.romEndExclusive
+    && row.romEndExclusive > cutsceneSlab.romStart
+  ));
+  assert.strictEqual(cutsceneSlabRows.length, 163, 'cutscene-slab owner count drift');
+  assert.strictEqual(cutsceneSlabRows[0].index, 5293, 'cutscene-slab first owner drift');
+  assert.strictEqual(cutsceneSlabRows[0].romStart, cutsceneSlab.romStart, 'cutscene-slab first boundary drift');
+  assert.strictEqual(cutsceneSlabRows.at(-1).index, 5455, 'cutscene-slab final owner drift');
+  assert.strictEqual(cutsceneSlabRows.at(-1).romEndExclusive, cutsceneSlab.romEndExclusive, 'cutscene-slab final boundary drift');
+  for (const row of cutsceneSlabRows) {
+    assert.strictEqual(row.slices.length, 1, `cutscene-slab owner was unexpectedly split: p${row.index}`);
+    const [slice] = row.slices;
+    assert.strictEqual(slice.placementKind, 'non-descriptor-load-slab', `cutscene-slab placement drift: p${row.index}`);
+    assert.strictEqual(slice.loadSlabId, cutsceneSlab.id, `cutscene-slab identity drift: p${row.index}`);
+    assert.strictEqual(slice.overlayDescriptorId, null, `fixed descriptor leaked into cutscene-slab owner p${row.index}`);
+    assert.strictEqual(slice.vramStart, slice.romStart + 0x7FF907D0, `cutscene-slab VMA start drift: p${row.index}`);
+    assert.strictEqual(slice.vramEndExclusive, slice.romEndExclusive + 0x7FF907D0, `cutscene-slab VMA end drift: p${row.index}`);
+  }
+  for (const rowIndex of [5292, 5456]) {
+    const row = model.rows[rowIndex];
+    assert.ok(row && row.slices.every((slice) => slice.loadSlabId !== cutsceneSlab.id), `p${rowIndex} crossed a cutscene-slab endpoint`);
+  }
+
+  const cutsceneTargets = [
+    { rowIndex: 5359, romStart: 0x002A05EC, romEndExclusive: 0x002A0680, vramStart: 0x80230DBC, vramEndExclusive: 0x80230E50 },
+    { rowIndex: 5371, romStart: 0x002A13EC, romEndExclusive: 0x002A1484, vramStart: 0x80231BBC, vramEndExclusive: 0x80231C54 },
+    { rowIndex: 5397, romStart: 0x002A3198, romEndExclusive: 0x002A3310, vramStart: 0x80233968, vramEndExclusive: 0x80233AE0 },
+    { rowIndex: 5364, romStart: 0x002A0B14, romEndExclusive: 0x002A0E2C, vramStart: 0x802312E4, vramEndExclusive: 0x802315FC },
+    { rowIndex: 5366, romStart: 0x002A0EF0, romEndExclusive: 0x002A1000, vramStart: 0x802316C0, vramEndExclusive: 0x802317D0 },
+    { rowIndex: 5367, romStart: 0x002A1000, romEndExclusive: 0x002A135C, vramStart: 0x802317D0, vramEndExclusive: 0x80231B2C },
+  ];
+  for (const expected of cutsceneTargets) {
+    const row = model.rows[expected.rowIndex];
+    assert.ok(row, `cutscene target owner is missing: p${expected.rowIndex}`);
+    assert.strictEqual(row.romStart, expected.romStart, `cutscene target ROM start drift: p${expected.rowIndex}`);
+    assert.strictEqual(row.romEndExclusive, expected.romEndExclusive, `cutscene target ROM end drift: p${expected.rowIndex}`);
+    assert.strictEqual(row.slices.length, 1, `cutscene target owner slice drift: p${expected.rowIndex}`);
+    assert.strictEqual(row.slices[0].vramStart, expected.vramStart, `cutscene target VMA start drift: p${expected.rowIndex}`);
+    assert.strictEqual(row.slices[0].vramEndExclusive, expected.vramEndExclusive, `cutscene target VMA end drift: p${expected.rowIndex}`);
+    assert.strictEqual(row.slices[0].loadSlabId, cutsceneSlab.id, `cutscene target slab drift: p${expected.rowIndex}`);
+  }
+
+  const cutsceneLoaderWords = new Map([
+    [0x00282868, 0x3C048023], [0x0028286C, 0x2484AC90],
+    [0x00282880, 0x3C048024], [0x00282884, 0x24848A90],
+    [0x00282888, 0x3C058024], [0x0028288C, 0x24A594F0],
+    [0x00282898, 0x3C04002A], [0x0028289C, 0x2484A4C0],
+    [0x002828A0, 0x3C058023], [0x002828A4, 0x24A5AC90],
+    [0x002828A8, 0x3C06002B], [0x002828AC, 0x24C68D20],
+    [0x002828B0, 0x0C027694], [0x002828B4, 0x00C43023],
+    [0x002828B8, 0x3C048024], [0x002828BC, 0x248494F0],
+    [0x002828C0, 0x3C058024], [0x002828C4, 0x24A595C0],
+  ]);
+  for (const [romAddress, word] of cutsceneLoaderWords) {
+    assert.strictEqual(romBytes.readUInt32BE(romAddress), word, `cutscene loader operand drift at 0x${romAddress.toString(16)}`);
+  }
+
+  const localJumpChecks = [
+    { romAddress: 0x002A060C, expectedWord: 0x0808C37A, targetRom: 0x002A0618 },
+    { romAddress: 0x002A1458, expectedWord: 0x0808C713, targetRom: 0x002A147C },
+    { romAddress: 0x002A31E4, expectedWord: 0x0808CE70, targetRom: 0x002A31F0 },
+    { romAddress: 0x002A323C, expectedWord: 0x0808CEA3, targetRom: 0x002A32BC },
+    { romAddress: 0x002A324C, expectedWord: 0x0808CEA3, targetRom: 0x002A32BC },
+    { romAddress: 0x002A3260, expectedWord: 0x0808CEA3, targetRom: 0x002A32BC },
+    { romAddress: 0x002A3284, expectedWord: 0x0808CEA3, targetRom: 0x002A32BC },
+    { romAddress: 0x002A32BC, expectedWord: 0x0808CEAE, targetRom: 0x002A32E8 },
+  ];
+  for (const expected of localJumpChecks) {
+    const word = romBytes.readUInt32BE(expected.romAddress);
+    assert.strictEqual(word, expected.expectedWord, `cutscene local-jump word drift at 0x${expected.romAddress.toString(16)}`);
+    const livePc = expected.romAddress + 0x7FF907D0;
+    const liveTarget = (((livePc + 4) & 0xF0000000) | ((word & 0x03FFFFFF) << 2)) >>> 0;
+    assert.strictEqual(liveTarget, expected.targetRom + 0x7FF907D0, `cutscene local jump disagrees with slab VMA at 0x${expected.romAddress.toString(16)}`);
+  }
+
+  const poseLookupOwner = model.rows[5397];
+  const poseLookupSuccessor = model.rows[5398];
+  assert.strictEqual(poseLookupOwner.bytes, 376, 'func_002a3198 accepted owner length drift');
+  assert.strictEqual(poseLookupOwner.romEndExclusive, 0x002A3310, 'func_002a3198 accepted owner end drift');
+  assert.strictEqual(poseLookupSuccessor.romStart, 0x002A3310, 'func_002a3198 successor boundary drift');
+  assert.deepStrictEqual([
+    romBytes.readUInt32BE(0x002A3300),
+    romBytes.readUInt32BE(0x002A3304),
+    romBytes.readUInt32BE(0x002A3308),
+    romBytes.readUInt32BE(0x002A330C),
+  ], [0x03E00008, 0x27BD0030, 0x00000000, 0x00000000], 'func_002a3198 return or trailing-zero evidence drift');
+  const poseLookupPaddingStart = 0x80233AD8;
+  const poseLookupPaddingEnd = 0x80233AE0;
+  for (let romAddress = poseLookupOwner.romStart; romAddress < 0x002A3308; romAddress += 4) {
+    const word = romBytes.readUInt32BE(romAddress);
+    const opcode = word >>> 26;
+    const livePc = romAddress + 0x7FF907D0;
+    let directTarget = null;
+    if (opcode === 2 || opcode === 3) {
+      directTarget = (((livePc + 4) & 0xF0000000) | ((word & 0x03FFFFFF) << 2)) >>> 0;
+    } else if (opcode === 1 || (opcode >= 4 && opcode <= 7) || (opcode >= 20 && opcode <= 23)
+        || (opcode === 17 && ((word >>> 21) & 0x1F) === 8)) {
+      const immediate = (word << 16) >> 16;
+      directTarget = (livePc + 4 + immediate * 4) >>> 0;
+    }
+    assert.ok(directTarget === null || directTarget < poseLookupPaddingStart || directTarget >= poseLookupPaddingEnd,
+      `func_002a3198 direct control flow enters trailing zero words at 0x${romAddress.toString(16)}`);
   }
 
   const affectedRuntimeOwners = [

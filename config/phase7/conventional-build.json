@@ -17,7 +17,7 @@
     "linkSlices": 7252,
     "splitOwners": 10,
     "overlayReservations": 19,
-    "nonDescriptorLoadSlabs": 3,
+    "nonDescriptorLoadSlabs": 4,
     "rspRows": 13
   },
   "nonDescriptorLoadSlabs": [
@@ -51,6 +51,14 @@
       "romEndExclusive": 909152,
       "vramStart": 2149164960,
       "vramEndExclusive": 2149520640
+    },
+    {
+      "id": "loader-dma-0029a4c0",
+      "kind": "loader-dma",
+      "romStart": 2729152,
+      "romEndExclusive": 2788640,
+      "vramStart": 2149756048,
+      "vramEndExclusive": 2149815536
     }
   ],
   "acceptedInputSha256": {
