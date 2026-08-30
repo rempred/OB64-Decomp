@@ -2,7 +2,7 @@ typedef signed char s8;
 typedef signed short s16;
 typedef signed int s32;
 
-void func_00047a94(s32 arg0);
+s32 func_00047a94(s32 arg0);
 void func_00047dd8(s32 arg0);
 
 extern s16 D_80197B06;
