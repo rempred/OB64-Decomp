@@ -148,6 +148,20 @@ function main() {
       || unpaddedCanary.expectedTrailingPaddingSha256 !== 'E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855') {
     throw new Error('canonical unpadded auxiliary switch-table behavior drift');
   }
+  const canonicalTailFixture = {
+    inputSection: '.ob64.r5131.tail',
+    sectionType: 'SHT_PROGBITS',
+    sectionFlags: ['SHF_ALLOC'],
+    alignment: 1,
+    romStart: '0x00286BB0',
+    romEndExclusive: '0x00286BD0',
+    vramStart: '0x8022ABE0',
+    vramEndExclusive: '0x8022AC00',
+    bytes: 32,
+    expectedSha256: '3941B3E27A8BADD8F62F4C9B1240B837A018B71541D9841BD160AE0BC6005AF5',
+    ownerOriginalAssembly: 'asm/original/rev0/lib/table_00286B90.s',
+    ownerOriginalAssemblySha256: '458B0517364A95A1700DEEBE79DB27EC82505DA987F2BD24B3BE5DA05853E539',
+  };
   const compilerTextFixture = [
     {
       symbol: canaryTarget.symbol,
@@ -238,7 +252,7 @@ function main() {
     bytes: 28,
     entries: 7,
     preservedTail: {
-      ...canaryEntry.auxiliarySections[0].preservedTail,
+      ...canonicalTailFixture,
       romStart: '0x00286BAC',
       vramStart: '0x8022ABDC',
       bytes: 36,
@@ -289,7 +303,7 @@ function main() {
     expectedObjectSha256: 'A9135899EECACABBA7D375B9AAF0F702020116739459D10E049FF5C6FB884EE5',
     expectedLinkedSha256: '8BB46E4A653E8091810D96866D3A5D0CBCECF798DEAE3A6200901709D8642D17',
     preservedTail: {
-      ...canaryEntry.auxiliarySections[0].preservedTail,
+      ...canonicalTailFixture,
       romStart: '0x00286BC8',
       romEndExclusive: '0x00286BD0',
       vramStart: '0x8022ABF8',
@@ -395,7 +409,10 @@ function main() {
     ...linkage,
     targets: linkage.targets.map((entry) => entry.symbol === canaryEntry.symbol ? {
       ...entry,
-      auxiliarySections: [mutate({ ...entry.auxiliarySections[0] })],
+      auxiliarySections: [mutate({
+        ...entry.auxiliarySections[0],
+        preservedTail: { ...canonicalTailFixture },
+      })],
     } : entry),
   });
   const validateAuxiliaryPlacementMutation = (mutation) => {
