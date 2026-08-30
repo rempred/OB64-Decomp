@@ -15,6 +15,7 @@ Run the toolchain and source-policy tests directly from the repository root:
 ```powershell
 node tests/active_targets.js
 node tests/multi_owner_text.js
+node tests/multi_owner_phase8.js
 node tests/func_002A0EF0_structure.js
 node tests/local_tools.js
 node tests/source_policy.js
@@ -61,6 +62,10 @@ wrong-section compiler-local entries. `tests/func_002861C8_structure.js` pins th
 owner and control-flow census, distinguishes the internal-only `+0x134` entry from the externally
 called local `+0x230` entry, and proves the six-entry compiler table plus final eight-byte assembly
 tail.
+`tests/multi_owner_phase8.js` activates only the logical target against the verified Phase 7
+baseline with a generated exact `HYBRID_C` fixture. It drives both chunk prunes, one split object,
+the real linker/map and proof path, and an exact complete ROM. The generated source is explicitly
+test-only: it is not written to canonical target configuration and makes no matching-C claim.
 `tests/func_002A0EF0_structure.js` independently checks the accepted target extent, sole direct
 entry, sole return, successor boundary, every cross-owner control-flow edge, and the branch/delay
 slot that straddles the preserved p5366/p5367 seam.

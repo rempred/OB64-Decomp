@@ -611,6 +611,12 @@ function copyPhase7Objects(phase8, phase7, output, objcopy) {
         if (sha256Buffer(originalBytes) !== textOwner.expectedTextSha256) {
           fail('original fallback target bytes drift: ' + target.symbol + ' ' + textOwner.sectionName);
         }
+        const ownerSymbols = originalElf.symbols.filter((symbol) => symbol.name === textOwner.symbol);
+        if (ownerSymbols.length !== 1 || ownerSymbols[0].value !== 0 || ownerSymbols[0].size !== 0
+            || ownerSymbols[0].binding !== 1 || ownerSymbols[0].symbolType !== 2
+            || ownerSymbols[0].sectionIndex !== matches[0].index) {
+          fail('original fallback target symbol drift: ' + target.symbol + ' ' + textOwner.symbol);
+        }
         originalTargets.push({ target, textOwner, section: matches[0], bytes: originalBytes });
       }
       for (const auxiliary of (target.auxiliarySections || []).filter((candidate) => candidate.ownerChunkIndex === chunkIndex)) {
@@ -1073,6 +1079,8 @@ function compileTarget(phase8, target, output, compiler, assembler, objcopy, opt
       targetTextOwners(target).map((owner) => ({
         sectionName: owner.sectionName,
         bytes: owner.bytes,
+        symbol: owner.symbol,
+        symbolSize: owner.ownerIndex === 0 ? target.bytes : 0,
       })),
     );
     fs.writeFileSync(proofObjectFile, splitResult.buffer);
@@ -1094,9 +1102,17 @@ function compileTarget(phase8, target, output, compiler, assembler, objcopy, opt
   const compilerTextFunctions = verifyCompilerTextFunctions(elf, target, ownerSectionRecords[0].section);
   const symbols = elf.symbols.filter((symbol) => symbol.name === target.symbol && symbol.sectionIndex !== 0);
   if (symbols.length !== 1 || symbols[0].value !== 0 || symbols[0].size !== textBytes.length || symbols[0].binding !== 1
-      || symbols[0].sectionIndex !== ownerSectionRecords[0].section.index
+      || symbols[0].symbolType !== 2 || symbols[0].sectionIndex !== ownerSectionRecords[0].section.index
       || (enforceAcceptedContract && symbols[0].size !== target.bytes)) {
     fail('KMC target object symbol drift: ' + target.symbol);
+  }
+  for (const record of ownerSectionRecords.slice(1)) {
+    const boundarySymbols = elf.symbols.filter((symbol) => symbol.name === record.owner.symbol);
+    if (boundarySymbols.length !== 1 || boundarySymbols[0].value !== 0 || boundarySymbols[0].size !== 0
+        || boundarySymbols[0].binding !== 1 || boundarySymbols[0].symbolType !== 2
+        || boundarySymbols[0].sectionIndex !== record.section.index) {
+      fail('KMC target object continuation symbol drift: ' + target.symbol + ' ' + record.owner.symbol);
+    }
   }
   for (const name of ['.data', '.bss']) {
     const section = elf.sections.find((candidate) => candidate.name === name);
@@ -1170,11 +1186,23 @@ function compileTarget(phase8, target, output, compiler, assembler, objcopy, opt
   if (!linkedTextBytes.equals(textBytes)) {
     fail('ancillary-section removal changed target bytes: ' + target.symbol);
   }
+  const linkedPrimarySection = linkedObjectElf.sections.find((section) => section.name === target.sectionName);
   if (!sameJson(
-    verifyCompilerTextFunctions(linkedObjectElf, target, linkedSections[0]),
+    verifyCompilerTextFunctions(linkedObjectElf, target, linkedPrimarySection),
     compilerTextFunctions,
   )) {
     fail('ancillary-section removal changed compiler text-function evidence: ' + target.symbol);
+  }
+  for (const [ownerIndex, owner] of targetTextOwners(target).entries()) {
+    const linkedSection = linkedObjectElf.sections.find((section) => section.name === owner.sectionName);
+    const expectedSymbol = ownerIndex === 0 ? target.symbol : owner.symbol;
+    const linkedSymbols = linkedObjectElf.symbols.filter((symbol) => symbol.name === expectedSymbol);
+    const expectedSize = ownerIndex === 0 ? target.bytes : 0;
+    if (!linkedSection || linkedSymbols.length !== 1 || linkedSymbols[0].value !== 0
+        || linkedSymbols[0].size !== expectedSize || linkedSymbols[0].binding !== 1
+        || linkedSymbols[0].symbolType !== 2 || linkedSymbols[0].sectionIndex !== linkedSection.index) {
+      fail('ancillary-section removal changed target owner symbol: ' + target.symbol + ' ' + expectedSymbol);
+    }
   }
   for (const auxiliary of acceptedAuxiliarySections) {
     const sourceSection = elf.sections.find((section) => section.name === auxiliary.outputSection);
@@ -1262,7 +1290,12 @@ function deriveSourceObjectProof(phase8, target, output, classification, linkedE
     const reproduced = splitRelocatableTextSection(
       fs.readFileSync(resolveRelative(output, assemblerRelative, 'unsplit assembler object')),
       target.sectionName,
-      targetTextOwners(target).map((owner) => ({ sectionName: owner.sectionName, bytes: owner.bytes })),
+      targetTextOwners(target).map((owner) => ({
+        sectionName: owner.sectionName,
+        bytes: owner.bytes,
+        symbol: owner.symbol,
+        symbolSize: owner.ownerIndex === 0 ? target.bytes : 0,
+      })),
     );
     if (!reproduced.buffer.equals(fs.readFileSync(resolveRelative(output, objectRelative, 'matching C object')))) {
       fail('source-to-object accepted-owner split is not independently reproducible: ' + target.symbol);
@@ -1278,6 +1311,16 @@ function deriveSourceObjectProof(phase8, target, output, classification, linkedE
     const bytes = Buffer.from(elfSectionBytes(objectElf, objectSections[0]));
     return { owner, section: objectSections[0], bytes };
   });
+  for (const [ownerIndex, record] of objectOwnerSections.entries()) {
+    const expectedSymbol = ownerIndex === 0 ? target.symbol : record.owner.symbol;
+    const ownerSymbols = objectElf.symbols.filter((symbol) => symbol.name === expectedSymbol);
+    const expectedSize = ownerIndex === 0 ? target.bytes : 0;
+    if (ownerSymbols.length !== 1 || ownerSymbols[0].value !== 0 || ownerSymbols[0].size !== expectedSize
+        || ownerSymbols[0].binding !== 1 || ownerSymbols[0].symbolType !== 2
+        || ownerSymbols[0].sectionIndex !== record.section.index) {
+      fail('source-to-object proof owner symbol drift: ' + target.symbol + ' ' + expectedSymbol);
+    }
+  }
   const objectText = Buffer.concat(objectOwnerSections.map((record) => record.bytes));
   const objectTextFunctions = verifyCompilerTextFunctions(
     objectElf,
@@ -1735,7 +1778,6 @@ function linkPhase8(phase8, output, objectManifest, tools) {
           || aliases.has(owner.symbol)) {
         fail('multi-owner preserved boundary symbol is ambiguous: ' + target.symbol + ' ' + owner.sectionName);
       }
-      aliases.set(owner.symbol, owner.vramStartNumber);
     }
   }
   const aliasText = [...aliases.entries()].sort((left, right) => left[0].localeCompare(right[0])).map(([symbol, value]) => symbol + ' = ' + hex(value) + ';');
@@ -2241,14 +2283,19 @@ function verifyPhase8Output(phase8, options) {
     if (linkedSymbols.length !== 1
         || linkedSymbols[0].value !== target.vramStartNumber
         || linkedSymbols[0].size !== target.bytes
-        || linkedSymbols[0].binding !== 1) {
+        || linkedSymbols[0].binding !== 1 || linkedSymbols[0].symbolType !== 2
+        || !elf.sections[linkedSymbols[0].sectionIndex]
+        || elf.sections[linkedSymbols[0].sectionIndex].name !== target.sectionName) {
       fail('linked target symbol placement drift: ' + target.symbol);
     }
     for (const owner of targetTextOwners(target).slice(1)) {
       const boundarySymbols = elf.symbols.filter((symbol) => symbol.name === owner.symbol);
       if (boundarySymbols.length !== 1
           || boundarySymbols[0].value !== owner.vramStartNumber
-          || boundarySymbols[0].binding !== 1) {
+          || boundarySymbols[0].size !== 0
+          || boundarySymbols[0].binding !== 1 || boundarySymbols[0].symbolType !== 2
+          || !elf.sections[boundarySymbols[0].sectionIndex]
+          || elf.sections[boundarySymbols[0].sectionIndex].name !== owner.sectionName) {
         fail('linked target preserved boundary symbol drift: ' + target.symbol + ' ' + owner.symbol);
       }
     }

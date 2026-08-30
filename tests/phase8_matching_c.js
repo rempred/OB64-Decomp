@@ -20,6 +20,7 @@ const {
   fail,
   loadCanonicalBaserom,
   loadPhase8Model,
+  targetTextOwners,
   validateAuxiliaryTailObject,
   validateSourceObjectProofBytes,
   verifyCompilerTextFunctions,
@@ -95,7 +96,7 @@ function main() {
     fail('retired compiler-assembly adapter evidence returned');
   }
 
-  const replacedRows = new Set(phase8.targets.map((target) => target.rowIndex));
+  const replacedRows = new Set(phase8.targets.flatMap((target) => targetTextOwners(target).map((owner) => owner.rowIndex)));
   const verificationModel = {
     ...phase8.model,
     rows: phase8.model.rows.map((row) => replacedRows.has(row.index) ? { ...row, inputKind: 'matching-c' } : row),
@@ -137,20 +138,36 @@ function main() {
     const fallbackObject = parseElfFile(path.join(output, ...replacement.fallbackObject.split('/')));
     const prunedObject = parseElfFile(path.join(output, ...replacement.prunedAssemblyObject.split('/')));
     const rawComparison = compareLinkedTargetBytes(target, linkedElf, canonicalBaserom);
-    const sourceText = sectionBytes(sourceObject, target.sectionName);
-    const linkedObjectText = sectionBytes(linkedObject, target.sectionName);
-    const fallbackText = sectionBytes(fallbackObject, target.sectionName);
+    const textOwners = targetTextOwners(target);
+    const sourceText = Buffer.concat(textOwners.map((textOwner) => sectionBytes(sourceObject, textOwner.sectionName)));
+    const linkedObjectText = Buffer.concat(textOwners.map((textOwner) => sectionBytes(linkedObject, textOwner.sectionName)));
     const sourceTextSection = sourceObject.sections.find((section) => section.name === target.sectionName);
     const linkedTextSection = linkedElf.sections.find((section) => section.name === target.sectionName);
     const compilerTextFunctions = verifyCompilerTextFunctions(sourceObject, target, sourceTextSection);
     const linkedCompilerTextFunctions = verifyCompilerTextFunctions(linkedElf, target, linkedTextSection, true);
+    const ownerArtifacts = textOwners.map((textOwner) => {
+      const replacementOwner = replacement.owners.find((record) => record.rowIndex === textOwner.rowIndex);
+      if (!replacementOwner) fail(`target replacement owner census drift: ${target.symbol} ${textOwner.sectionName}`);
+      const fallback = parseElfFile(path.join(output, ...replacementOwner.fallbackObject.split('/')));
+      const pruned = parseElfFile(path.join(output, ...replacementOwner.prunedAssemblyObject.split('/')));
+      return {
+        textOwner,
+        fallback,
+        pruned,
+        fallbackText: sectionBytes(fallback, textOwner.sectionName),
+      };
+    });
+    const fallbackText = Buffer.concat(ownerArtifacts.map((record) => record.fallbackText));
     if (!rawComparison.rawBytesExact || !rawComparison.linkedBytes.equals(fallbackText)
         || !sourceText.equals(linkedObjectText) || sourceText.length !== target.bytes
         || JSON.stringify(replacement.compilerTextFunctions) !== JSON.stringify(compilerTextFunctions)
         || JSON.stringify(verifiedTarget.compilerTextFunctions) !== JSON.stringify(linkedCompilerTextFunctions)
-        || owner.linkedOwner !== replacement.cObject
-        || prunedObject.sections.some((section) => section.name === target.sectionName)
-        || prunedObject.symbols.some((symbol) => symbol.name === target.symbol)) {
+        || owner.owners.length !== textOwners.length
+        || owner.owners.some((record) => record.linkedOwner !== replacement.cObject)
+        || ownerArtifacts.some((record) => (
+          record.pruned.sections.some((section) => section.name === record.textOwner.sectionName)
+          || record.pruned.symbols.some((symbol) => symbol.name === record.textOwner.symbol)
+        ))) {
       fail(`target byte, owner, or fallback exclusion drift: ${target.symbol}`);
     }
     if (sourceObject.sections.some((section) => section.name === '.pdr')

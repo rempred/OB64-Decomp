@@ -77,8 +77,8 @@ function main() {
   ]);
   const unsplitBytes = fs.readFileSync(unsplitObject);
   const split = splitRelocatableTextSection(unsplitBytes, '.ob64.r0001', [
-    { sectionName: '.ob64.r0001', bytes: 12 },
-    { sectionName: '.ob64.r0002', bytes: 20 },
+    { sectionName: '.ob64.r0001', bytes: 12, symbol: 'fixture', symbolSize: 32 },
+    { sectionName: '.ob64.r0002', bytes: 20, symbol: 'fixture_tail', symbolSize: 0 },
   ]);
   fs.writeFileSync(splitObject, split.buffer);
   const unsplit = parseElfFile(unsplitObject);
@@ -94,9 +94,15 @@ function main() {
   }
   const functionSymbols = splitElfObject.symbols.filter((symbol) => symbol.name === 'fixture');
   if (functionSymbols.length !== 1 || functionSymbols[0].value !== 0
-      || functionSymbols[0].size !== 32 || functionSymbols[0].binding !== 1
+      || functionSymbols[0].size !== 32 || functionSymbols[0].binding !== 1 || functionSymbols[0].symbolType !== 2
       || functionSymbols[0].sectionIndex !== splitElfObject.sections.find((section) => section.name === '.ob64.r0001').index) {
     throw new Error('logical function symbol extent drift after owner split');
+  }
+  const boundarySymbols = splitElfObject.symbols.filter((symbol) => symbol.name === 'fixture_tail');
+  if (boundarySymbols.length !== 1 || boundarySymbols[0].value !== 0 || boundarySymbols[0].size !== 0
+      || boundarySymbols[0].binding !== 1 || boundarySymbols[0].symbolType !== 2
+      || boundarySymbols[0].sectionIndex !== splitElfObject.sections.find((section) => section.name === '.ob64.r0002').index) {
+    throw new Error('continuation owner symbol semantics drift after owner split');
   }
   const relocationSections = splitElfObject.sections.filter((section) => section.type === 9);
   const firstRelocations = relocationSections.find((section) => section.name === '.rel.ob64.r0001');
@@ -133,6 +139,13 @@ function main() {
   if (unsplitLinked.length !== 32 || !splitLinked.equals(unsplitLinked)) {
     throw new Error('split and unsplit linked instruction bytes differ');
   }
+  const linkedBoundarySymbols = linkedSplitElf.symbols.filter((symbol) => symbol.name === 'fixture_tail');
+  if (linkedBoundarySymbols.length !== 1 || linkedBoundarySymbols[0].value !== 0x8023000C
+      || linkedBoundarySymbols[0].size !== 0 || linkedBoundarySymbols[0].binding !== 1
+      || linkedBoundarySymbols[0].symbolType !== 2
+      || linkedSplitElf.sections[linkedBoundarySymbols[0].sectionIndex].name !== '.ob64.r0002') {
+    throw new Error('linked continuation owner symbol semantics drift');
+  }
 
   const rejectedMutations = [
     expectRejection('missing owner bytes', () => splitRelocatableTextSection(unsplitBytes, '.ob64.r0001', [
@@ -159,6 +172,14 @@ function main() {
     expectRejection('HI16 LO16 pair crossing owner boundary', () => splitRelocatableTextSection(unsplitBytes, '.ob64.r0001', [
       { sectionName: '.ob64.r0001', bytes: 4 },
       { sectionName: '.ob64.r0002', bytes: 28 },
+    ])),
+    expectRejection('partial boundary-symbol census', () => splitRelocatableTextSection(unsplitBytes, '.ob64.r0001', [
+      { sectionName: '.ob64.r0001', bytes: 12, symbol: 'fixture', symbolSize: 32 },
+      { sectionName: '.ob64.r0002', bytes: 20 },
+    ])),
+    expectRejection('incorrect continuation symbol size', () => splitRelocatableTextSection(unsplitBytes, '.ob64.r0001', [
+      { sectionName: '.ob64.r0001', bytes: 12, symbol: 'fixture', symbolSize: 32 },
+      { sectionName: '.ob64.r0002', bytes: 20, symbol: 'fixture_tail', symbolSize: 20 },
     ])),
   ];
 
@@ -195,6 +216,14 @@ function main() {
     linkedSha256: sha256Buffer(splitLinked),
     splitEqualsUnsplit: true,
     logicalFunctionSymbolBytes: functionSymbols[0].size,
+    continuationSymbol: {
+      name: linkedBoundarySymbols[0].name,
+      value: `0x${linkedBoundarySymbols[0].value.toString(16).toUpperCase()}`,
+      size: linkedBoundarySymbols[0].size,
+      binding: linkedBoundarySymbols[0].binding,
+      type: linkedBoundarySymbols[0].symbolType,
+      section: linkedSplitElf.sections[linkedBoundarySymbols[0].sectionIndex].name,
+    },
     rejectedMutations,
     directAssemblyRejection,
   };

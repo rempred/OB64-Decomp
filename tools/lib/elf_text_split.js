@@ -7,13 +7,17 @@ const REL_BYTES = 8;
 const SHT_NULL = 0;
 const SHT_PROGBITS = 1;
 const SHT_SYMTAB = 2;
+const SHT_STRTAB = 3;
 const SHT_NOBITS = 8;
 const SHT_REL = 9;
+const STB_GLOBAL = 1;
+const STT_FUNC = 2;
 const STT_SECTION = 3;
 const SHN_LORESERVE = 0xff00;
 const R_MIPS_HI16 = 5;
 const R_MIPS_LO16 = 6;
 const OUTPUT_SECTION = /^\.ob64\.r[0-9]+(?:\.s[0-9]+)?$/;
+const SAFE_SYMBOL = /^[A-Za-z_.$][A-Za-z0-9_.$]*$/;
 
 function fail(message) {
   throw new Error(`relocatable text split failure: ${message}`);
@@ -88,26 +92,43 @@ function sectionBytes(buffer, section) {
 function normalizeOwners(owners, sourceSectionBytes) {
   if (!Array.isArray(owners) || owners.length < 2) fail('owner list must contain at least two sections');
   const names = new Set();
+  const symbols = new Set();
   let logicalOffset = 0;
   const normalized = owners.map((owner, index) => {
+    const hasSymbol = Object.prototype.hasOwnProperty.call(owner || {}, 'symbol');
+    const hasSymbolSize = Object.prototype.hasOwnProperty.call(owner || {}, 'symbolSize');
     if (!owner || typeof owner !== 'object' || Array.isArray(owner)
-        || Object.keys(owner).some((key) => !['sectionName', 'bytes'].includes(key))
+        || Object.keys(owner).some((key) => !['sectionName', 'bytes', 'symbol', 'symbolSize'].includes(key))
         || typeof owner.sectionName !== 'string' || !OUTPUT_SECTION.test(owner.sectionName)
         || names.has(owner.sectionName)
-        || !Number.isInteger(owner.bytes) || owner.bytes <= 0 || owner.bytes % 4 !== 0) {
+        || !Number.isInteger(owner.bytes) || owner.bytes <= 0 || owner.bytes % 4 !== 0
+        || hasSymbol !== hasSymbolSize
+        || (hasSymbol && (typeof owner.symbol !== 'string' || !SAFE_SYMBOL.test(owner.symbol)
+          || symbols.has(owner.symbol) || !Number.isInteger(owner.symbolSize) || owner.symbolSize < 0))) {
       fail(`owner record ${index} is malformed or duplicated`);
     }
     names.add(owner.sectionName);
+    if (hasSymbol) symbols.add(owner.symbol);
     const record = {
       sectionName: owner.sectionName,
       bytes: owner.bytes,
       logicalOffset,
       logicalEnd: logicalOffset + owner.bytes,
+      ...(hasSymbol ? { symbol: owner.symbol, symbolSize: owner.symbolSize } : {}),
     };
     logicalOffset += owner.bytes;
     return record;
   });
   if (logicalOffset !== sourceSectionBytes) fail('owner byte census does not equal the compiler text section');
+  const symbolizedOwners = normalized.filter((owner) => owner.symbol);
+  if (symbolizedOwners.length !== 0 && symbolizedOwners.length !== normalized.length) {
+    fail('owner boundary symbols must be specified for the complete owner census');
+  }
+  if (symbolizedOwners.length > 0
+      && (normalized[0].symbolSize !== sourceSectionBytes
+        || normalized.slice(1).some((owner) => owner.symbolSize !== 0))) {
+    fail('owner boundary symbol sizes do not preserve the logical function and continuation contract');
+  }
   return normalized;
 }
 
@@ -262,6 +283,91 @@ function rewriteSectionReferences(sectionList, relocation) {
   }
 }
 
+function symbolRecords(symbolTable, stringTable) {
+  if (symbolTable.entrySize !== SYMBOL_BYTES || symbolTable.data.length % SYMBOL_BYTES !== 0
+      || stringTable.type !== SHT_STRTAB || stringTable.data.length === 0 || stringTable.data[0] !== 0) {
+    fail('owner boundary symbol table is malformed');
+  }
+  const records = [];
+  for (let offset = 0; offset < symbolTable.data.length; offset += SYMBOL_BYTES) {
+    records.push({
+      offset,
+      name: readCString(stringTable.data, symbolTable.data.readUInt32BE(offset)),
+      value: symbolTable.data.readUInt32BE(offset + 4),
+      size: symbolTable.data.readUInt32BE(offset + 8),
+      binding: symbolTable.data[offset + 12] >> 4,
+      type: symbolTable.data[offset + 12] & 0xf,
+      sectionIndex: symbolTable.data.readUInt16BE(offset + 14),
+    });
+  }
+  return records;
+}
+
+function preserveOwnerBoundarySymbols(sectionList, owners) {
+  if (!owners[0].symbol) return;
+  const symbolTables = sectionList.sections.filter((section) => section.type === SHT_SYMTAB);
+  if (symbolTables.length !== 1) fail('owner boundary symbol table does not resolve uniquely');
+  const symbolTable = symbolTables[0];
+  const stringTable = sectionList.sections[symbolTable.link];
+  if (!stringTable) fail('owner boundary symbol string table is missing');
+  const records = symbolRecords(symbolTable, stringTable);
+  if (!Number.isInteger(symbolTable.info) || symbolTable.info <= 0 || symbolTable.info > records.length) {
+    fail('owner boundary symbol table local/global census is malformed');
+  }
+  for (const [ownerIndex, owner] of owners.entries()) {
+    const ownerSection = sectionList.ownerSections.get(owner.sectionName);
+    const matches = records.filter((record) => record.name === owner.symbol);
+    if (ownerIndex === 0) {
+      if (matches.length !== 1 || matches[0].value !== 0 || matches[0].size !== owner.symbolSize
+          || matches[0].binding !== STB_GLOBAL || matches[0].type !== STT_FUNC
+          || matches[0].sectionIndex !== ownerSection.index) {
+        fail('logical function symbol does not match the first accepted owner');
+      }
+      continue;
+    }
+    if (matches.length !== 0) fail(`continuation owner symbol already exists: ${owner.symbol}`);
+    const nameOffset = stringTable.data.length;
+    stringTable.data = Buffer.concat([stringTable.data, Buffer.from(`${owner.symbol}\0`, 'utf8')]);
+    const encoded = Buffer.alloc(SYMBOL_BYTES);
+    encoded.writeUInt32BE(nameOffset, 0);
+    encoded.writeUInt32BE(0, 4);
+    encoded.writeUInt32BE(owner.symbolSize, 8);
+    encoded[12] = (STB_GLOBAL << 4) | STT_FUNC;
+    encoded[13] = 0;
+    encoded.writeUInt16BE(ownerSection.index, 14);
+    symbolTable.data = Buffer.concat([symbolTable.data, encoded]);
+    records.push({
+      offset: symbolTable.data.length - SYMBOL_BYTES,
+      name: owner.symbol,
+      value: 0,
+      size: owner.symbolSize,
+      binding: STB_GLOBAL,
+      type: STT_FUNC,
+      sectionIndex: ownerSection.index,
+    });
+  }
+}
+
+function verifyOwnerBoundarySymbols(input, parsed, owners) {
+  if (!owners[0].symbol) return;
+  const symbolTables = parsed.sections.filter((section) => section.type === SHT_SYMTAB);
+  if (symbolTables.length !== 1) fail('serialized owner boundary symbol table does not resolve uniquely');
+  const symbolTable = { ...symbolTables[0], data: sectionBytes(input, symbolTables[0]) };
+  const linkedStringTable = parsed.sections[symbolTable.link];
+  if (!linkedStringTable) fail('serialized owner boundary symbol string table is missing');
+  const stringTable = { ...linkedStringTable, data: sectionBytes(input, linkedStringTable) };
+  const records = symbolRecords(symbolTable, stringTable);
+  for (const owner of owners) {
+    const section = parsed.sections.find((candidate) => candidate.name === owner.sectionName);
+    const matches = records.filter((record) => record.name === owner.symbol);
+    if (!section || matches.length !== 1 || matches[0].value !== 0 || matches[0].size !== owner.symbolSize
+        || matches[0].binding !== STB_GLOBAL || matches[0].type !== STT_FUNC
+        || matches[0].sectionIndex !== section.index) {
+      fail(`serialized owner boundary symbol drift: ${owner.symbol}`);
+    }
+  }
+}
+
 function rebuildSectionNames(sectionList, oldShstrIndex) {
   const shstrIndex = sectionList.oldToNew.get(oldShstrIndex);
   if (!Number.isInteger(shstrIndex)) fail('section-name table index was not preserved');
@@ -359,6 +465,7 @@ function splitRelocatableTextSection(input, sourceSectionName, requestedOwners) 
   const sectionList = buildSectionList(parsed, input, source, relocation, owners, relocationGroups);
   rewriteSymbolTables(sectionList, source, owners);
   rewriteSectionReferences(sectionList, relocation);
+  preserveOwnerBoundarySymbols(sectionList, owners);
   const shstrIndex = rebuildSectionNames(sectionList, parsed.shstrIndex);
   const buffer = serialize(input, parsed, sectionList, shstrIndex);
   const reparsed = parseRelocatable(buffer);
@@ -373,6 +480,7 @@ function splitRelocatableTextSection(input, sourceSectionName, requestedOwners) 
   if (!Buffer.concat(ownerBytes).equals(sectionBytes(input, source))) {
     fail('serialized owner sections do not reproduce the compiler text bytes');
   }
+  verifyOwnerBoundarySymbols(buffer, reparsed, owners);
   return {
     buffer,
     sourceSection: sourceSectionName,

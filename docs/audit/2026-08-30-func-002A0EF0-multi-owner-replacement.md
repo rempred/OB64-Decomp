@@ -130,15 +130,20 @@ Run from the repository root:
 ```powershell
 node tests/active_targets.js
 node tests/multi_owner_text.js
+node tests/multi_owner_phase8.js
 node tests/func_002A0EF0_structure.js
 node tools/verify.js
 node tools/audit.js
 ```
 
-The first three commands are focused structural controls. `tests/multi_owner_text.js` also proves
+The first four commands are focused structural controls. `tests/multi_owner_text.js` also proves
 that the split and unsplit synthetic objects link to identical bytes while preserving a logical
-function symbol larger than the first owner section. `tools/verify.js` and `tools/audit.js` remain
-the canonical complete gates.
+function symbol larger than the first owner section and a section-owned global `STT_FUNC` symbol
+at each preserved continuation boundary. `tests/multi_owner_phase8.js` exercises the active
+two-chunk prune/compile/split/link/map/proof path with a generated exact `HYBRID_C` structural
+fixture and requires an exact complete ROM; the fixture never enters canonical target configuration
+and is not a matching-C claim. `tools/verify.js` and `tools/audit.js` remain the canonical complete
+gates.
 
 ## Falsifiers
 
