@@ -272,6 +272,7 @@ function compactRelocationEvidence(evidence) {
     actual: sourceSummary(evidence.actual),
     comparisonAvailable: evidence.comparisonAvailable,
     recordsExact: evidence.recordsExact,
+    addendIdentity: evidence.addendIdentity || null,
     mask: evidence.mask,
     mismatch,
   };

@@ -483,6 +483,26 @@ function relocationComparison(options, wordCount) {
         outOfRangeRecords,
         compatible: false,
       },
+      addendIdentity: (() => {
+        const expectedMaskBearing = expected.entries.filter((entry) => relocationMask(entry.record.type) !== null);
+        const actualMaskBearing = actual.entries.filter((entry) => relocationMask(entry.record.type) !== null);
+        const expectedExplicit = expectedMaskBearing.filter((entry) => (
+          Object.prototype.hasOwnProperty.call(entry.record, 'addend')
+        )).length;
+        const actualExplicit = actualMaskBearing.filter((entry) => (
+          Object.prototype.hasOwnProperty.call(entry.record, 'addend')
+        )).length;
+        return {
+          expectedMaskBearingRecords: expectedMaskBearing.length,
+          actualMaskBearingRecords: actualMaskBearing.length,
+          expectedExplicitAddends: expectedExplicit,
+          actualExplicitAddends: actualExplicit,
+          proven: recordsExact === true
+            && expectedMaskBearing.length > 0
+            && expectedExplicit === expectedMaskBearing.length
+            && actualExplicit === actualMaskBearing.length,
+        };
+      })(),
     },
     masks,
   };
@@ -503,12 +523,11 @@ function sameRegisterFields(left, right) {
 
 function branchPolarityPair(left, right) {
   if (left.control !== 'branch' || right.control !== 'branch' || left.target !== right.target) return false;
-  if (!sameRegisterFields(left, right)) return false;
   const opPairs = new Set(['4:5', '5:4', '6:7', '7:6', '20:21', '21:20', '22:23', '23:22']);
-  if (opPairs.has(`${left.op}:${right.op}`)) return true;
+  if (opPairs.has(`${left.op}:${right.op}`)) return sameRegisterFields(left, right);
   if (left.op === 0x01 && right.op === 0x01) {
     const rtPairs = new Set(['0:1', '1:0', '2:3', '3:2', '16:17', '17:16', '18:19', '19:18']);
-    return rtPairs.has(`${left.rt}:${right.rt}`);
+    return left.rs === right.rs && rtPairs.has(`${left.rt}:${right.rt}`);
   }
   if (left.op === 0x11 && right.op === 0x11 && left.rs === 0x08 && right.rs === 0x08) {
     return (left.rt ^ right.rt) === 1;
@@ -576,11 +595,12 @@ function compareMips(expected, actual, options = {}) {
     else opcodeDifferences += 1;
     if (expectedWords[index] !== actualWords[index]) {
       differingAlignedInstructions += 1;
-      if (!sameRegisterFields(expectedInfo, actualInfo)) registerFieldDifferences += 1;
+      const inverseBranchPair = branchPolarityPair(expectedInfo, actualInfo);
+      if (!sameRegisterFields(expectedInfo, actualInfo) && !inverseBranchPair) registerFieldDifferences += 1;
       if (opcodeExact && !expectedInfo.control && !actualInfo.control
           && expectedInfo.immediate !== actualInfo.immediate) immediateFieldDifferences += 1;
       if (expectedInfo.control || actualInfo.control) controlFlowDifferences += 1;
-      if (branchPolarityPair(expectedInfo, actualInfo)) branchPolarityDifferences += 1;
+      if (inverseBranchPair) branchPolarityDifferences += 1;
       if (expectedInfo.memory && actualInfo.memory && (
         expectedInfo.memory.width !== actualInfo.memory.width
           || expectedInfo.memory.signed !== actualInfo.memory.signed
@@ -627,6 +647,17 @@ function compareMips(expected, actual, options = {}) {
     const right = actualCfg.blocks[index].words.map((info) => info.word >>> 0).sort((a, b) => a - b);
     return sameJson(left, right);
   });
+  const blockOpcodeOrderExact = cfgExact && expectedCfg.blocks.every((block, index) => (
+    sameJson(block.words.map(opcodeKey), actualCfg.blocks[index].words.map(opcodeKey))
+  ));
+  const blockWordOrderExact = cfgExact && expectedCfg.blocks.every((block, index) => (
+    sameJson(
+      block.words.map((info) => info.word >>> 0),
+      actualCfg.blocks[index].words.map((info) => info.word >>> 0),
+    )
+  ));
+  const blockOpcodeReordered = blockOpcodeMultisetsEqual && !blockOpcodeOrderExact;
+  const blockWordReordered = blockWordMultisetsEqual && !blockWordOrderExact;
   const expectedFrame = frameFacts(expectedCfg.infos);
   const actualFrame = frameFacts(actualCfg.infos);
   const frameMismatch = expectedFrame.frameSize !== actualFrame.frameSize || !sameJson(expectedFrame.stackOffsets, actualFrame.stackOffsets);
@@ -648,11 +679,11 @@ function compareMips(expected, actual, options = {}) {
     primaryClass = 'length-mismatch';
     recommendation = 'correct the function shape, boundary assumptions, or emitted prologue/epilogue';
   } else if (relocationMaskCompatible) {
-    primaryClass = relocation.evidence.recordsExact === true
+    primaryClass = relocation.evidence.addendIdentity.proven
       ? 'relocation-identity-proven'
       : 'relocation-mask-compatible';
-    recommendation = relocation.evidence.recordsExact === true
-      ? 'reproduce the accepted link and canonical ownership proof; normalized text relocation records are identical'
+    recommendation = relocation.evidence.addendIdentity.proven
+      ? 'reproduce the accepted link and canonical ownership proof; normalized text relocation records and explicit addends are identical'
       : 'resolve and compare relocation symbols, sections, and addends before treating masked operands as exact';
   } else if (!cfgExact || branchPolarityDifferences > 0) {
     primaryClass = 'cfg-mismatch';
@@ -660,7 +691,7 @@ function compareMips(expected, actual, options = {}) {
   } else if (registerNormalizedExact) {
     primaryClass = 'register-allocation-only';
     recommendation = 'inspect variable lifetimes; a bounded permuter or compiler probe may now be appropriate';
-  } else if (blockWordMultisetsEqual) {
+  } else if (blockWordReordered) {
     primaryClass = 'scheduling-or-block-order';
     recommendation = 'inspect statement ordering and scheduler dumps';
   } else if (frameMismatch) {
@@ -672,7 +703,7 @@ function compareMips(expected, actual, options = {}) {
   } else if (opcodeMatches === aligned) {
     primaryClass = 'immediate-or-signedness';
     recommendation = 'inspect constants, signedness, field widths, and relocation operands';
-  } else if (blockOpcodeMultisetsEqual) {
+  } else if (blockOpcodeReordered) {
     primaryClass = 'scheduling-or-block-order';
     recommendation = 'inspect statement ordering and scheduler dumps';
   } else {
@@ -709,20 +740,31 @@ function compareMips(expected, actual, options = {}) {
     ['register-allocation permutation', 'instruction scheduling search', 'relocation-only tuning'],
   ));
   if (relocationMaskCompatible) labels.push(mismatchLabel(
-    'relocation-mask-compatible', relocation.evidence.recordsExact === true ? 'high' : 'moderate',
-    relocation.evidence.recordsExact === true
-      ? 'All raw differences lie in safely maskable relocation operands and complete normalized text relocation records are identical; canonical linking is still required.'
+    'relocation-mask-compatible', relocation.evidence.addendIdentity.proven ? 'high' : 'moderate',
+    relocation.evidence.addendIdentity.proven
+      ? 'All raw differences lie in safely maskable relocation operands and complete normalized text relocation records, including explicit addends, are identical; canonical linking is still required.'
       : 'All raw differences lie in safely maskable relocation operands, but symbol/addend identity is unavailable or differs; this is compatibility, not relocation exactness.',
-    { appliedRecords: relocation.evidence.mask.appliedRecords, recordsExact: relocation.evidence.recordsExact, mismatch: relocation.evidence.mismatch },
+    {
+      appliedRecords: relocation.evidence.mask.appliedRecords,
+      recordsExact: relocation.evidence.recordsExact,
+      addendIdentity: relocation.evidence.addendIdentity,
+      mismatch: relocation.evidence.mismatch,
+    },
     ['accepted symbol and section spelling', 'relocation-bearing address form', 'canonical link reproduction'],
     ['register-allocation search', 'CFG restructuring', 'claiming exactness from operand masks'],
   ));
   if (relocation.evidence.recordsExact === true
       && (relocation.evidence.expected.count || relocation.evidence.actual.count)) labels.push(mismatchLabel(
-    'relocation-records-identical', 'high',
-    'Complete normalized offset/type/symbol/section/addend records are identical for the supplied expected and actual text relocation evidence.',
-    { expectedCount: relocation.evidence.expected.count, actualCount: relocation.evidence.actual.count },
-    ['canonical linked-byte verification'],
+    'relocation-records-identical', relocation.evidence.addendIdentity.proven ? 'high' : 'moderate',
+    relocation.evidence.addendIdentity.proven
+      ? 'Complete normalized offset/type/symbol/section records and explicit addends are identical for the supplied expected and actual text relocation evidence.'
+      : 'The supplied normalized relocation records are identical, but one or more mask-bearing REL records omit an explicit addend, so operand identity is not proven.',
+    {
+      expectedCount: relocation.evidence.expected.count,
+      actualCount: relocation.evidence.actual.count,
+      addendIdentity: relocation.evidence.addendIdentity,
+    },
+    ['explicit or independently reconstructed addend evidence', 'canonical linked-byte verification'],
     ['changing relocation symbols or addends without new evidence'],
   ));
   if (relocation.evidence.recordsExact === false) labels.push(mismatchLabel(
@@ -765,10 +807,10 @@ function compareMips(expected, actual, options = {}) {
     ['temporary lifetime and scope', 'declaration and evaluation order', 'temporary reuse versus separation', 'saved-register pressure'],
     registerNormalizedExact ? ['unbounded random permutation', 'fixed-register binding as PURE_C evidence'] : ['register tuning until length/CFG/opcode/stack prerequisites are fixed'],
   ));
-  if ((blockWordMultisetsEqual || blockOpcodeMultisetsEqual) && !exactBytes) labels.push(mismatchLabel(
-    'scheduling-or-block-order', blockWordMultisetsEqual ? 'high' : 'moderate',
+  if ((blockWordReordered || blockOpcodeReordered) && !exactBytes) labels.push(mismatchLabel(
+    'scheduling-or-block-order', blockWordReordered ? 'high' : 'moderate',
     'Corresponding CFG blocks retain matching word or opcode multisets while order differs; statement ordering or compiler scheduling is a plausible bounded search family.',
-    { blockWordMultisetsEqual, blockOpcodeMultisetsEqual },
+    { blockWordReordered, blockOpcodeReordered },
     ['statement order', 'split versus grouped expressions', 'temporary declaration point', 'compiler scheduling probe'],
     ['function-boundary changes', 'fixed-register binding before order is resolved'],
   ));

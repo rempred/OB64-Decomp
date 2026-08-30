@@ -115,7 +115,7 @@ function prepareCompilerSession(options = {}) {
     compilerFlags: context.phase8.config.compiler.compileFlags,
     assembler: context.phase8.toolchain.identity,
     sourcePolicyPreprocessorSha256: preprocessor.sha256,
-    workbenchCompilerContract: 5,
+    workbenchCompilerContract: 6,
   };
   return { context, runtime, preprocessor, tool, toolId: digest(tool) };
 }
@@ -129,6 +129,67 @@ function scratchSectionEvidence(section) {
     alignment: section.alignment,
     bytes: section.size,
   };
+}
+
+function scratchSymbolEvidence(symbol, elf) {
+  const specialSection = {
+    0: 'SHN_UNDEF',
+    0xFFF1: 'SHN_ABS',
+    0xFFF2: 'SHN_COMMON',
+  }[symbol.sectionIndex];
+  return {
+    name: symbol.name,
+    value: symbol.value,
+    bytes: symbol.size,
+    binding: symbol.binding,
+    symbolType: symbol.symbolType,
+    visibility: symbol.visibility,
+    sectionIndex: symbol.sectionIndex,
+    section: specialSection || elf.sections[symbol.sectionIndex]?.name || '<invalid-section>',
+  };
+}
+
+function validateScratchSymbolOwnership(elf, textSection, rodataSections, reginfoSections, primary) {
+  const rodataIndexes = new Set(rodataSections.map((section) => section.index));
+  const allowedSectionIndexes = new Set([
+    textSection.index,
+    ...rodataIndexes,
+    ...reginfoSections.map((section) => section.index),
+  ]);
+  const owned = [];
+  for (const symbol of elf.symbols) {
+    if (symbol === primary || symbol.sectionIndex === 0) continue;
+    const evidence = scratchSymbolEvidence(symbol, elf);
+    if (symbol.symbolType === 4 && symbol.binding === 0 && symbol.sectionIndex === 0xFFF1) {
+      continue;
+    }
+    const referencedSection = elf.sections[symbol.sectionIndex];
+    if (symbol.symbolType === 3 && symbol.binding === 0
+        && (allowedSectionIndexes.has(symbol.sectionIndex) || referencedSection?.size === 0
+          || (referencedSection && (referencedSection.flags & 2) === 0))) {
+      continue;
+    }
+    if (symbol.sectionIndex === textSection.index && symbol.binding === 0 && symbol.symbolType === 0
+        && symbol.size === 0 && symbol.value >= 0 && symbol.value <= textSection.size) {
+      owned.push(evidence);
+      continue;
+    }
+    const markerSection = elf.sections[symbol.sectionIndex];
+    if (symbol.name === 'gcc2_compiled.' && markerSection?.name === '.text'
+        && markerSection.type === 1 && markerSection.flags === 6 && markerSection.size === 0
+        && symbol.binding === 0 && symbol.symbolType === 1 && symbol.size === 0 && symbol.value === 0) {
+      owned.push(evidence);
+      continue;
+    }
+    const rodata = rodataSections.find((section) => section.index === symbol.sectionIndex);
+    if (rodata && symbol.binding === 0 && (symbol.symbolType === 0 || symbol.symbolType === 1)
+        && symbol.value >= 0 && symbol.size >= 0 && symbol.value + symbol.size <= rodata.size) {
+      owned.push(evidence);
+      continue;
+    }
+    throw new Error(`scratch object has unexpected symbol ownership: ${symbol.name || '<anonymous>'} (${evidence.section})`);
+  }
+  return owned;
 }
 
 function compileScratchCandidate({ session, target, sourceFile, artifactDir }) {
@@ -223,6 +284,13 @@ function compileScratchCandidate({ session, target, sourceFile, artifactDir }) {
   if (unexpectedAllocated.length > 0) {
     throw new Error(`scratch object owns an unexpected allocated section: ${unexpectedAllocated[0].name}`);
   }
+  const ownedDataAndLabels = validateScratchSymbolOwnership(
+    elf,
+    textSection,
+    rodataSections,
+    reginfoSections,
+    primary,
+  );
 
   const relocationTarget = {
     symbol: target.symbol,
@@ -273,6 +341,11 @@ function compileScratchCandidate({ session, target, sourceFile, artifactDir }) {
     allocatedSections: elf.sections
       .filter((section) => section.size > 0 && (section.flags & 2) !== 0)
       .map(scratchSectionEvidence),
+    ownedDataAndLabels: {
+      count: ownedDataAndLabels.length,
+      samples: ownedDataAndLabels.slice(0, 16),
+      omitted: Math.max(0, ownedDataAndLabels.length - 16),
+    },
     textRelocations: relocations,
     commands: {
       compiler: { executable: session.context.localTools.compiler, args: compilerArgs, cwd: ROOT },

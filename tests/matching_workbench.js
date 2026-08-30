@@ -103,11 +103,17 @@ function classifierTests() {
   assert(exactComparison.labels[0].category === 'exact', 'exact evidence label was missing');
 
   const renamed = bufferFromWords([rType(4, 5, 3, 0x21), jrRa, nop]);
-  assert(compareMips(exact, renamed, { start: 0x80000000 }).primaryClass === 'register-allocation-only', 'register-only difference was misclassified');
+  const renamedComparison = compareMips(exact, renamed, { start: 0x80000000 });
+  assert(renamedComparison.primaryClass === 'register-allocation-only', 'register-only difference was misclassified');
+  assert(!renamedComparison.labels.some((label) => label.category === 'scheduling-or-block-order'),
+    'register-only difference received false scheduling guidance');
 
   const immediateA = bufferFromWords([iType(0x09, 4, 2, 1), jrRa, nop]);
   const immediateB = bufferFromWords([iType(0x09, 4, 2, 2), jrRa, nop]);
-  assert(compareMips(immediateA, immediateB, { start: 0x80000000 }).primaryClass === 'immediate-or-signedness', 'immediate difference was misclassified');
+  const immediateComparison = compareMips(immediateA, immediateB, { start: 0x80000000 });
+  assert(immediateComparison.primaryClass === 'immediate-or-signedness', 'immediate difference was misclassified');
+  assert(!immediateComparison.labels.some((label) => label.category === 'scheduling-or-block-order'),
+    'immediate-only difference received false scheduling guidance');
   const unknownRelocation = { offset: 0, type: 'R_MIPS_UNKNOWN', symbol: 'unknown_target', section: '.rel.text' };
   const unknownComparison = compareMips(immediateA, immediateB, {
     start: 0x80000000,
@@ -131,7 +137,8 @@ function classifierTests() {
     expectedRelocations: [expectedJumpRelocation],
   });
   assert(identicalRelocations.primaryClass === 'relocation-identity-proven'
-      && identicalRelocations.relocationEvidence.recordsExact === true,
+      && identicalRelocations.relocationEvidence.recordsExact === true
+      && identicalRelocations.relocationEvidence.addendIdentity.proven,
   'identical normalized relocation records were not distinguished');
   assert(identicalRelocations.labels.some((label) => label.category === 'relocation-records-identical'),
     'identical relocation evidence label was missing');
@@ -155,6 +162,57 @@ function classifierTests() {
       && unavailableExpectedRelocations.relocationEvidence.recordsExact === null
       && unavailableExpectedRelocations.relocationEvidence.expected.unavailableReason === 'synthetic unavailable contract',
   'unavailable expected relocation evidence was treated as an empty contract');
+  const implicitJumpRelocation = {
+    offset: 0, type: 'R_MIPS_26', symbol: '.text', section: '.rel.text',
+  };
+  const implicitJumpAddends = compareMips(jumpA, jumpB, {
+    start: 0x80000000,
+    actualRelocations: [implicitJumpRelocation],
+    expectedRelocations: [implicitJumpRelocation],
+  });
+  assert(implicitJumpAddends.primaryClass === 'relocation-mask-compatible'
+      && implicitJumpAddends.relocationEvidence.recordsExact === true
+      && !implicitJumpAddends.relocationEvidence.addendIdentity.proven,
+  'implicit R_MIPS_26 addends were overstated as relocation identity');
+  const implicitPair = [
+    { offset: 0, type: 'R_MIPS_HI16', symbol: 'pair_target', section: '.rel.text' },
+    { offset: 4, type: 'R_MIPS_LO16', symbol: 'pair_target', section: '.rel.text' },
+  ];
+  const pairA = bufferFromWords([iType(0x0F, 0, 2, 0), iType(0x09, 2, 2, 4)]);
+  const pairB = bufferFromWords([iType(0x0F, 0, 2, 1), iType(0x09, 2, 2, 8)]);
+  const implicitPairComparison = compareMips(pairA, pairB, {
+    start: 0x80000000,
+    actualRelocations: implicitPair,
+    expectedRelocations: implicitPair,
+  });
+  assert(implicitPairComparison.primaryClass === 'relocation-mask-compatible'
+      && !implicitPairComparison.relocationEvidence.addendIdentity.proven,
+  'implicit HI16/LO16 addends were overstated as relocation identity');
+  const partiallyExplicitPair = implicitPair.map((record, index) => (
+    index === 0 ? { ...record, addend: 4 } : record
+  ));
+  assert(compareMips(pairA, pairB, {
+    start: 0x80000000,
+    actualRelocations: partiallyExplicitPair,
+    expectedRelocations: partiallyExplicitPair,
+  }).primaryClass === 'relocation-mask-compatible',
+  'partially explicit HI16/LO16 addends overstated the complete pair');
+  const unequalAddendRelocations = compareMips(jumpA, jumpB, {
+    start: 0x80000000,
+    expectedRelocations: [expectedJumpRelocation],
+    actualRelocations: [{ ...normalizedActualJumpRelocation, addend: 8 }],
+  });
+  assert(unequalAddendRelocations.primaryClass === 'relocation-mask-compatible'
+      && unequalAddendRelocations.relocationEvidence.recordsExact === false,
+  'unequal explicit relocation addends were overstated');
+  const missingActualAddend = compareMips(jumpA, jumpB, {
+    start: 0x80000000,
+    expectedRelocations: [expectedJumpRelocation],
+    actualRelocations: [implicitJumpRelocation],
+  });
+  assert(missingActualAddend.primaryClass === 'relocation-mask-compatible'
+      && missingActualAddend.relocationEvidence.recordsExact === false,
+  'one-sided relocation addend evidence was overstated');
 
   const branchA = bufferFromWords([iType(0x04, 4, 0, 1), nop, jrRa, nop]);
   const branchB = bufferFromWords([iType(0x04, 4, 0, 2), nop, jrRa, nop]);
@@ -164,6 +222,12 @@ function classifierTests() {
   assert(branchPolarity.primaryClass === 'cfg-mismatch'
       && branchPolarity.labels.some((label) => label.category === 'branch-polarity'),
   'branch-polarity evidence was not classified');
+  const bc1f = bufferFromWords([iType(0x11, 0x08, 0, 1), nop, jrRa, nop]);
+  const bc1t = bufferFromWords([iType(0x11, 0x08, 1, 1), nop, jrRa, nop]);
+  const bc1Polarity = compareMips(bc1f, bc1t, { start: 0x80000000 });
+  assert(bc1Polarity.labels.some((label) => label.category === 'branch-polarity')
+      && !bc1Polarity.labels.some((label) => label.category === 'register-allocation'),
+  'BC1F/BC1T polarity was not classified');
   const delaySlotShapeA = bufferFromWords([
     iType(0x04, 4, 0, 1), 0x08000003, iType(0x09, 2, 2, 1), jrRa, nop,
   ]);
@@ -207,7 +271,8 @@ function classifierTests() {
     'length excess was omitted from exact mismatch counts');
   const compact = compactComparison(wrongSymbolRelocations);
   assert(compact.topLabels.length <= 3 && compact.labelsOmitted >= 0
-      && compact.relocationEvidence.expected.records === undefined,
+      && compact.relocationEvidence.expected.records === undefined
+      && compact.relocationEvidence.addendIdentity.proven === false,
   'public classifier summary was unbounded');
   assert(targetMetrics(exact, 0x80000000).leaf, 'simple return fixture was not a leaf');
 }

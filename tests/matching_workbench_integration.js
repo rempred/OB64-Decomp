@@ -173,6 +173,16 @@ int scratch_secondary_function(int value)
     return value + 1;
 }
 `;
+  const commonStorageSource = `
+int scratch_common_global;
+
+void *memcpy_bytewise(void *destination, const void *source, unsigned int bytes)
+{
+    (void)source;
+    scratch_common_global += (int)bytes;
+    return destination;
+}
+`;
   const compileScratchFixture = (source, variant) => compileCandidate(workbench, target, source, {
     origin: 'matching-workbench-integration',
     variant,
@@ -200,6 +210,10 @@ int scratch_secondary_function(int value)
   requireCondition(secondaryFunction.compile.status === 'failed'
     && /must contain exactly one function symbol/.test(secondaryFunction.compile.stderr),
   'scratch compiler accepted an unexpected secondary function');
+  const commonStorage = compileScratchFixture(commonStorageSource, 'scratch-common-storage');
+  requireCondition(commonStorage.compile.status === 'failed'
+    && /unexpected symbol ownership: scratch_common_global \(SHN_COMMON\)/.test(commonStorage.compile.stderr),
+  'scratch compiler accepted unexpected COMMON writable storage');
 
   const repeated = prepareAndCompile(workbench, target, {
     variants,
@@ -210,7 +224,7 @@ int scratch_secondary_function(int value)
   if (repeated.some((compilation) => !compilation?.cached || compilation.candidate.candidateId !== candidateId)) {
     throw new Error('identical generated target/source did not reuse its exact compile result');
   }
-  console.log(`Matching workbench integration: PASS (${target.symbol}, ${target.bytes} exact bytes, six rulesets, one generation/compile, shorter/longer scored, .rodata relocations preserved, malformed symbols rejected, repeat cached)`);
+  console.log(`Matching workbench integration: PASS (${target.symbol}, ${target.bytes} exact bytes, six rulesets, one generation/compile, shorter/longer scored, .rodata relocations preserved, malformed functions and COMMON storage rejected, repeat cached)`);
 }
 
 if (require.main === module) main();
