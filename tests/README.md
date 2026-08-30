@@ -14,6 +14,8 @@ Run the toolchain and source-policy tests directly from the repository root:
 
 ```powershell
 node tests/active_targets.js
+node tests/multi_owner_text.js
+node tests/func_002A0EF0_structure.js
 node tests/local_tools.js
 node tests/source_policy.js
 node tests/binutils_smoke.js
@@ -47,14 +49,21 @@ a substitute for canonical linked/full-ROM verification. Sweep resume and
 membership behavior are covered by the unit suite above.
 
 `tests/active_targets.js` also validates the shared matching-C symbol registry, rejects malformed
-or missing reviewed relocation contracts, checks explicit compiler text-function partitions and
-shared auxiliary-row coverage, and checks the canonical-to-legacy migration bridge.
+or missing reviewed relocation contracts, checks explicit compiler text-function partitions,
+shared auxiliary-row coverage, the canonical-to-legacy migration bridge, and fail-closes malformed
+logical multi-owner target censuses. `tests/multi_owner_text.js` proves that one relocatable function
+can be split into preserved accepted owner sections without changing its instruction bytes, symbol
+extent, relocations, or final linked bytes; it also exercises the GNU 2.6 cross-section branch
+limitation and split-specific mutation controls.
 
 `tests/compiler_text_functions.js` rejects missing, extra, moved, resized, exported, hidden, or
 wrong-section compiler-local entries. `tests/func_002861C8_structure.js` pins the complete accepted
 owner and control-flow census, distinguishes the internal-only `+0x134` entry from the externally
 called local `+0x230` entry, and proves the six-entry compiler table plus final eight-byte assembly
 tail.
+`tests/func_002A0EF0_structure.js` independently checks the accepted target extent, sole direct
+entry, sole return, successor boundary, every cross-owner control-flow edge, and the branch/delay
+slot that straddles the preserved p5366/p5367 seam.
 
 Use a completed external Phase 8 build for the artifact and fail-closed suites:
 

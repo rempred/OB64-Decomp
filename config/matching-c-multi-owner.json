@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "profile": "us-rev0",
+  "targets": [
+    {
+      "symbol": "func_002A0EF0",
+      "ownerRows": [5366, 5367],
+      "romStart": "0x002A0EF0",
+      "romEndExclusive": "0x002A135C",
+      "vramStart": "0x802316C0",
+      "vramEndExclusive": "0x80231B2C",
+      "expectedTextSha256": "2204F4F99EB1C954D82732B70FDF9B25C86765080659261FA66E21BBDBF6BBE6"
+    }
+  ]
+}

@@ -125,11 +125,12 @@ function baselineFingerprint(model, baserom) {
 
 function currentFingerprint(phase8, baseline, localTools) {
   return sha256Value({
-    schemaVersion: 3,
+    schemaVersion: 4,
     baseline,
     compilerSha256: sha256File(localTools.compiler),
     activeConfigSha256: sha256File(path.join(ROOT, 'config', 'matching-c-targets.json')),
     linkageConfig: phase8.linkageConfigIdentity,
+    multiOwnerConfig: phase8.multiOwnerConfigIdentity,
     compatibilityBridge: {
       compiler: phase8.config.compiler,
       targets: phase8.targets.map((target) => ({
@@ -140,12 +141,25 @@ function currentFingerprint(phase8, baseline, localTools) {
     },
     sourcePolicyConfigSha256: sha256File(path.join(ROOT, 'config', 'source-policy.json')),
     gnuBinutils26: phase8.toolchain.identity,
-    targets: phase8.targets.map((target) => ({ symbol: target.symbol, source: target.source, sourceSha256: target.sourceSha256 })),
+    targets: phase8.targets.map((target) => ({
+      symbol: target.symbol,
+      source: target.source,
+      sourceSha256: target.sourceSha256,
+      textOwners: target.textOwners.map((owner) => ({
+        rowIndex: owner.rowIndex,
+        chunkIndex: owner.chunkIndex,
+        sectionName: owner.sectionName,
+        logicalOffset: owner.logicalOffset,
+        bytes: owner.bytes,
+        originalAssemblySha256: owner.originalAssemblySha256,
+      })),
+    })),
     implementation: hashFiles([
       'tools/build_phase8_matching_c.js',
       'tools/verify_phase8_matching_c.js',
       'tools/lib/phase8_matching_c.js',
       'tools/lib/active_targets.js',
+      'tools/lib/elf_text_split.js',
       'tools/lib/current_workflow.js',
       'tools/lib/source_policy.js',
       'tools/verify.js',
@@ -175,6 +189,7 @@ function completeCurrent(directory, phase8) {
       { path: record.compilerAssembly, sha256: record.compilerAssemblySha256 },
       { path: record.linkedAssembly, sha256: record.linkedAssemblySha256 },
       { path: record.cObject, sha256: record.cObjectSha256 },
+      ...(record.assemblerObject ? [{ path: record.assemblerObject, sha256: record.assemblerObjectSha256 }] : []),
       record.sourceObjectProof,
     ];
     if (!record || identities.some((identity) => {

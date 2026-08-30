@@ -12,6 +12,7 @@ const {
 } = require('./phase7_conventional');
 const CONFIG_PATH = path.join(ROOT, 'config', 'matching-c-targets.json');
 const LINKAGE_CONFIG_PATH = path.join(ROOT, 'config', 'matching-c-linkage.json');
+const MULTI_OWNER_CONFIG_PATH = path.join(ROOT, 'config', 'matching-c-multi-owner.json');
 const LEGACY_CONFIG_PATH = path.join(ROOT, 'config', 'phase8', 'matching-c.json');
 const TOOLCHAIN_CONFIG_PATH = path.join(ROOT, 'config', 'toolchain.json');
 const TOOLCHAIN_BUILD_PATH = path.join(ROOT, 'config', 'gnu-binutils-2.6-build.json');
@@ -442,6 +443,161 @@ function resolveCompilerTextFunctions(target, records) {
   return resolved;
 }
 
+function validateMultiOwnerConfig(config, expectedProfile, model, baserom) {
+  if (!exactKeys(config, ['schemaVersion', 'profile', 'targets'])
+      || config.schemaVersion !== 1 || config.profile !== expectedProfile
+      || !Array.isArray(config.targets)) {
+    fail('matching-C multi-owner configuration schema or profile drift');
+  }
+  const contracts = new Map();
+  for (const [contractIndex, contract] of config.targets.entries()) {
+    const label = `matching-C multi-owner contract ${contractIndex}`;
+    if (!exactKeys(contract, [
+      'symbol',
+      'ownerRows',
+      'romStart',
+      'romEndExclusive',
+      'vramStart',
+      'vramEndExclusive',
+      'expectedTextSha256',
+    ])
+        || typeof contract.symbol !== 'string' || !SAFE_LINK_SYMBOL.test(contract.symbol)
+        || !Array.isArray(contract.ownerRows) || contract.ownerRows.length < 2
+        || contract.ownerRows.some((rowIndex) => !Number.isInteger(rowIndex) || rowIndex < 0)
+        || new Set(contract.ownerRows).size !== contract.ownerRows.length
+        || typeof contract.romStart !== 'string' || !/^0x[0-9A-F]{8}$/.test(contract.romStart)
+        || typeof contract.romEndExclusive !== 'string' || !/^0x[0-9A-F]{8}$/.test(contract.romEndExclusive)
+        || typeof contract.vramStart !== 'string' || !/^0x[0-9A-F]{8}$/.test(contract.vramStart)
+        || typeof contract.vramEndExclusive !== 'string' || !/^0x[0-9A-F]{8}$/.test(contract.vramEndExclusive)
+        || typeof contract.expectedTextSha256 !== 'string' || !SHA256.test(contract.expectedTextSha256)) {
+      fail(`${label} is malformed`);
+    }
+    const key = contract.symbol.toLowerCase();
+    if (contracts.has(key)) fail(`matching-C multi-owner target is duplicated: ${contract.symbol}`);
+    const rows = contract.ownerRows.map((rowIndex) => model.rows.find((row) => row.index === rowIndex));
+    if (rows.some((row) => !row)) fail(`${label} references a missing accepted owner row`);
+    const firstResolved = resolveAcceptedRow(model, contract.symbol);
+    if (firstResolved.index !== rows[0].index) fail(`${label} does not begin with the symbol's accepted owner`);
+    for (const [ownerIndex, row] of rows.entries()) {
+      const slice = row.slices && row.slices[0];
+      if (row.inputKind !== 'tracked-assembly' || row.ownerKind !== 'tracked-assembly-part'
+          || row.primaryClass !== 'code' || row.ambiguous !== false || !row.part
+          || row.slices.length !== 1 || !slice || !slice.executable
+          || row.bytes <= 0 || row.bytes % 4 !== 0 || slice.bytes !== row.bytes
+          || row.romStart !== slice.romStart || row.romEndExclusive !== slice.romEndExclusive
+          || row.part.romStartNumber !== row.romStart || row.part.romEndNumber !== row.romEndExclusive
+          || row.part.bytes !== row.bytes || row.part.symbolByteOffset !== 0) {
+        fail(`${label} owner ${ownerIndex} is not one unambiguous accepted executable assembly row`);
+      }
+      if (ownerIndex > 0) {
+        const previous = rows[ownerIndex - 1];
+        const previousSlice = previous.slices[0];
+        if (row.index !== previous.index + 1
+            || row.romStart !== previous.romEndExclusive
+            || slice.vramStart !== previousSlice.vramEndExclusive
+            || slice.ordinal !== previousSlice.ordinal + 1
+            || slice.placementKind !== previousSlice.placementKind
+            || slice.overlayDescriptorId !== previousSlice.overlayDescriptorId
+            || slice.loadSlabId !== previousSlice.loadSlabId
+            || slice.overlaySection !== previousSlice.overlaySection) {
+          fail(`${label} owners are missing, extra, reordered, overlapping, noncontiguous, or placement-incompatible`);
+        }
+      }
+    }
+    const first = rows[0];
+    const last = rows[rows.length - 1];
+    const firstSlice = first.slices[0];
+    const lastSlice = last.slices[0];
+    const romStart = parseNumber(contract.romStart, `${label} ROM start`);
+    const romEndExclusive = parseNumber(contract.romEndExclusive, `${label} ROM end`);
+    const vramStart = parseNumber(contract.vramStart, `${label} VMA start`);
+    const vramEndExclusive = parseNumber(contract.vramEndExclusive, `${label} VMA end`);
+    const bytes = rows.reduce((sum, row) => sum + row.bytes, 0);
+    const expectedBytes = Buffer.from(baserom.subarray(romStart, romEndExclusive));
+    if (romStart !== first.romStart || romEndExclusive !== last.romEndExclusive
+        || vramStart !== firstSlice.vramStart || vramEndExclusive !== lastSlice.vramEndExclusive
+        || romEndExclusive - romStart !== bytes || vramEndExclusive - vramStart !== bytes
+        || expectedBytes.length !== bytes || sha256Buffer(expectedBytes) !== contract.expectedTextSha256) {
+      fail(`${label} logical extent or accepted text identity drift`);
+    }
+    let logicalOffset = 0;
+    const owners = rows.map((row) => {
+      const slice = row.slices[0];
+      const ownerFile = resolveRelative(ROOT, row.part.file, 'multi-owner original assembly');
+      if (!fs.existsSync(ownerFile) || !fs.statSync(ownerFile).isFile()
+          || sha256File(ownerFile) !== row.part.sha256) {
+        fail(`${label} accepted original assembly identity drift`);
+      }
+      const owner = {
+        logicalOffset,
+        logicalEnd: logicalOffset + row.bytes,
+        primaryId: row.primaryId,
+        rowIndex: row.index,
+        chunkIndex: row.part.chunkIndex,
+        sectionName: slice.sectionName,
+        symbol: row.part.name,
+        originalAssembly: row.part.file,
+        originalAssemblySha256: row.part.sha256,
+        romStartNumber: row.romStart,
+        romEndNumber: row.romEndExclusive,
+        vramStartNumber: slice.vramStart,
+        vramEndNumber: slice.vramEndExclusive,
+        bytes: row.bytes,
+        expectedTextSha256: sha256Buffer(baserom.subarray(row.romStart, row.romEndExclusive)),
+        row,
+      };
+      logicalOffset += row.bytes;
+      return owner;
+    }).map((owner, ownerIndex) => ({ ...owner, ownerIndex }));
+    contracts.set(key, {
+      ...contract,
+      romStartNumber: romStart,
+      romEndNumber: romEndExclusive,
+      vramStartNumber: vramStart,
+      vramEndNumber: vramEndExclusive,
+      bytes,
+      rows,
+      owners,
+    });
+  }
+  return contracts;
+}
+
+function resolveAcceptedRows(model, symbol, multiOwnerContracts = new Map()) {
+  const contract = multiOwnerContracts.get(symbol.toLowerCase()) || null;
+  if (contract) return { rows: contract.rows, owners: contract.owners, contract };
+  const row = resolveAcceptedRow(model, symbol);
+  const containingContracts = [...multiOwnerContracts.values()].filter((candidate) => (
+    candidate.rows.some((owner) => owner.index === row.index)
+  ));
+  if (containingContracts.length !== 0) {
+    fail(`active target selects only part of accepted logical multi-owner target: ${symbol}`);
+  }
+  const slice = row.slices && row.slices[0];
+  return {
+    rows: [row],
+    owners: slice ? [{
+      ownerIndex: 0,
+      logicalOffset: 0,
+      logicalEnd: row.bytes,
+      primaryId: row.primaryId,
+      rowIndex: row.index,
+      chunkIndex: row.part && row.part.chunkIndex,
+      sectionName: slice.sectionName,
+      symbol: row.part && row.part.name,
+      originalAssembly: row.part && row.part.file,
+      originalAssemblySha256: row.part && row.part.sha256,
+      romStartNumber: row.romStart,
+      romEndNumber: row.romEndExclusive,
+      vramStartNumber: slice.vramStart,
+      vramEndNumber: slice.vramEndExclusive,
+      bytes: row.bytes,
+      row,
+    }] : [],
+    contract: null,
+  };
+}
+
 function resolveAuxiliarySectionContracts(model, baserom, target, contracts) {
   if (!Array.isArray(contracts)) fail(`auxiliary-section contract census is malformed: ${target.symbol}`);
   return contracts.map((contract) => {
@@ -642,6 +798,7 @@ function loadActiveTargetModel(options = {}) {
   const model = loadAcceptedModel();
   const minimal = readJson(CONFIG_PATH);
   const linkage = readJson(LINKAGE_CONFIG_PATH);
+  const multiOwnerConfig = readJson(MULTI_OWNER_CONFIG_PATH);
   const legacy = readJson(LEGACY_CONFIG_PATH);
   if (minimal.schemaVersion !== 3 || minimal.profile !== model.config.profile || !Array.isArray(minimal.targets) || minimal.targets.length === 0
       || !minimal.toolchain || typeof minimal.toolchain !== 'object') {
@@ -708,6 +865,12 @@ function loadActiveTargetModel(options = {}) {
     fail('canonical normalized baserom is missing or has drifted; run node tools/verify_baserom.js');
   }
   const baserom = fs.readFileSync(baseromFile);
+  const multiOwnerContracts = validateMultiOwnerConfig(
+    multiOwnerConfig,
+    minimal.profile,
+    model,
+    baserom,
+  );
   const overlayConfig = readJson(path.join(ROOT, 'config', 'overlays', 'us_rev0.json'));
   const compatibility = [];
   const usedCanonicalContracts = new Set();
@@ -726,28 +889,43 @@ function loadActiveTargetModel(options = {}) {
       legacyTarget,
       allowMissing.has(entry.symbol.toLowerCase()),
     );
-    const row = resolveAcceptedRow(model, entry.symbol);
-    if (row.inputKind !== 'tracked-assembly' || !row.part || row.slices.length !== 1 || !row.slices[0].executable) {
-      fail(`active target is not one accepted executable assembly owner: ${entry.symbol}`);
+    const acceptedOwners = resolveAcceptedRows(model, entry.symbol, multiOwnerContracts);
+    const rows = acceptedOwners.rows;
+    const row = rows[0];
+    if (rows.length === 0 || acceptedOwners.owners.length !== rows.length
+        || rows.some((owner) => owner.inputKind !== 'tracked-assembly' || !owner.part
+          || owner.slices.length !== 1 || !owner.slices[0].executable)) {
+      fail(`active target is not an accepted executable assembly owner census: ${entry.symbol}`);
     }
     const slice = row.slices[0];
+    const lastRow = rows[rows.length - 1];
+    const lastSlice = lastRow.slices[0];
+    const bytes = rows.reduce((sum, owner) => sum + owner.bytes, 0);
     for (const record of relocationContract.expectedRelocations) {
-      if (Number.parseInt(record.offset.slice(2), 16) >= row.bytes) {
+      if (Number.parseInt(record.offset.slice(2), 16) >= bytes) {
         fail(`relocation contract offset is outside target ${entry.symbol}: ${record.offset}`);
       }
     }
     const sourceFile = resolveRelative(ROOT, entry.source, 'target source');
-    const originalAssemblyFile = resolveRelative(ROOT, row.part.file, 'original assembly');
     if (!fs.existsSync(sourceFile) || !fs.statSync(sourceFile).isFile()) fail(`active target source is missing: ${entry.symbol}`);
-    if (!fs.existsSync(originalAssemblyFile) || sha256File(originalAssemblyFile) !== row.part.sha256) {
-      fail(`accepted original assembly identity drift: ${entry.symbol}`);
+    for (const owner of acceptedOwners.owners) {
+      const originalAssemblyFile = resolveRelative(ROOT, owner.originalAssembly, 'original assembly');
+      if (!fs.existsSync(originalAssemblyFile)
+          || sha256File(originalAssemblyFile) !== owner.originalAssemblySha256) {
+        fail(`accepted original assembly identity drift: ${entry.symbol} ${owner.sectionName}`);
+      }
     }
     let descriptor = null;
     if (slice.overlayDescriptorId !== null) {
       descriptor = overlayConfig.descriptors.find((item) => item.id === slice.overlayDescriptorId);
       if (!descriptor) fail(`accepted overlay descriptor is missing: ${entry.symbol}`);
     }
-    const expectedTextSha256 = sha256Buffer(baserom.subarray(row.romStart, row.romEndExclusive));
+    const expectedTextSha256 = sha256Buffer(baserom.subarray(row.romStart, lastRow.romEndExclusive));
+    const textOwners = acceptedOwners.owners.map((owner) => ({
+      ...owner,
+      expectedTextSha256: owner.expectedTextSha256
+        || sha256Buffer(baserom.subarray(owner.romStartNumber, owner.romEndNumber)),
+    }));
     const target = {
       symbol: entry.symbol,
       source: entry.source,
@@ -758,13 +936,18 @@ function loadActiveTargetModel(options = {}) {
       originalAssembly: row.part.file,
       originalAssemblySha256: row.part.sha256,
       romStart: `0x${row.romStart.toString(16).toUpperCase().padStart(8, '0')}`,
-      romEndExclusive: `0x${row.romEndExclusive.toString(16).toUpperCase().padStart(8, '0')}`,
+      romEndExclusive: `0x${lastRow.romEndExclusive.toString(16).toUpperCase().padStart(8, '0')}`,
       romStartNumber: row.romStart,
-      romEndNumber: row.romEndExclusive,
+      romEndNumber: lastRow.romEndExclusive,
       vramStart: `0x${slice.vramStart.toString(16).toUpperCase().padStart(8, '0')}`,
+      vramEndExclusive: `0x${lastSlice.vramEndExclusive.toString(16).toUpperCase().padStart(8, '0')}`,
       vramStartNumber: slice.vramStart,
-      bytes: row.bytes,
+      vramEndNumber: lastSlice.vramEndExclusive,
+      bytes,
       sectionName: slice.sectionName,
+      textOwners,
+      multiOwner: textOwners.length > 1,
+      multiOwnerContract: acceptedOwners.contract,
       overlayDescriptorId: slice.overlayDescriptorId,
       descriptorRawSha256: descriptor ? descriptor.rawSha256 : null,
       expectedTextSha256,
@@ -778,6 +961,7 @@ function loadActiveTargetModel(options = {}) {
       descriptor,
       model,
       row,
+      rows,
     };
     target.compilerTextFunctions = resolveCompilerTextFunctions(
       target,
@@ -833,10 +1017,28 @@ function loadActiveTargetModel(options = {}) {
 
   const rows = new Set();
   const symbols = new Set();
+  const textSections = new Set();
+  const auxiliarySections = new Set();
+  const auxiliaryRows = new Set();
   for (const target of targets) {
-    if (rows.has(target.rowIndex) || symbols.has(target.symbol.toLowerCase())) fail('active target list contains duplicate owners');
-    rows.add(target.rowIndex);
+    if (symbols.has(target.symbol.toLowerCase())) fail('active target list contains duplicate symbols');
     symbols.add(target.symbol.toLowerCase());
+    for (const owner of target.textOwners) {
+      if (rows.has(owner.rowIndex) || textSections.has(owner.sectionName)) {
+        fail('active target list contains duplicate or ambiguous text owners');
+      }
+      rows.add(owner.rowIndex);
+      textSections.add(owner.sectionName);
+    }
+    for (const auxiliary of target.auxiliarySections) {
+      if (textSections.has(auxiliary.outputSection)
+          || auxiliarySections.has(auxiliary.outputSection)
+          || auxiliaryRows.has(auxiliary.ownerRowIndex)) {
+        fail(`active auxiliary-section ownership collision: ${target.symbol} ${auxiliary.outputSection}`);
+      }
+      auxiliarySections.add(auxiliary.outputSection);
+      auxiliaryRows.add(auxiliary.ownerRowIndex);
+    }
   }
   validateAuxiliaryOwnerGroups(targets);
   return {
@@ -851,6 +1053,13 @@ function loadActiveTargetModel(options = {}) {
       bytes: fs.statSync(LINKAGE_CONFIG_PATH).size,
       sha256: sha256File(LINKAGE_CONFIG_PATH),
     },
+    multiOwnerConfig,
+    multiOwnerConfigIdentity: {
+      path: path.relative(ROOT, MULTI_OWNER_CONFIG_PATH).replace(/\\/g, '/'),
+      bytes: fs.statSync(MULTI_OWNER_CONFIG_PATH).size,
+      sha256: sha256File(MULTI_OWNER_CONFIG_PATH),
+    },
+    multiOwnerContracts,
     linkSymbols: reviewedLinkage.linkSymbols,
     minimalConfig: minimal,
     model,
@@ -864,6 +1073,7 @@ module.exports = {
   CONFIG_PATH,
   LINKAGE_CONFIG_PATH,
   LEGACY_CONFIG_PATH,
+  MULTI_OWNER_CONFIG_PATH,
   TOOLCHAIN_CONFIG_PATH,
   TOOLCHAIN_BUILD_PATH,
   loadActiveTargetModel,
@@ -873,12 +1083,14 @@ module.exports = {
   normalizeRelocationRecords,
   parseNumber,
   resolveAcceptedRow,
+  resolveAcceptedRows,
   resolveAuxiliarySectionContracts,
   resolveCompilerTextFunctions,
   safeRelative,
   selectRelocationContract,
   validateLinkageConfig,
   validateAuxiliaryOwnerGroups,
+  validateMultiOwnerConfig,
   validateNoActiveLinkSymbolShadows,
   validateToolchainPin,
 };

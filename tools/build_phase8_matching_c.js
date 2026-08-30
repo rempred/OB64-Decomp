@@ -6,6 +6,7 @@ const path = require('path');
 const {
   CONFIG_PATH,
   LINKAGE_CONFIG_PATH,
+  MULTI_OWNER_CONFIG_PATH,
   ROOT,
   assertBuildLocations,
   compileTarget,
@@ -108,6 +109,24 @@ function main() {
   const targetReplacements = phase8.targets.map((target) => {
     const compiledTarget = compiled.get(target.symbol);
     const chunkReplacement = replacement.replacements.get(target.chunkIndex);
+    const ownerReplacements = target.textOwners.map((owner) => {
+      const ownerReplacement = replacement.replacements.get(owner.chunkIndex);
+      return {
+        rowIndex: owner.rowIndex,
+        primaryId: owner.primaryId,
+        chunkIndex: owner.chunkIndex,
+        sectionName: owner.sectionName,
+        logicalOffset: owner.logicalOffset,
+        bytes: owner.bytes,
+        originalAssemblyFallback: owner.originalAssembly,
+        originalAssemblySha256: owner.originalAssemblySha256,
+        fallbackObject: ownerReplacement.fallbackRelative,
+        fallbackObjectSha256: ownerReplacement.fallbackSha256,
+        prunedAssemblyObject: ownerReplacement.linkedChunkRelative,
+        prunedAssemblyObjectSha256: ownerReplacement.prunedSha256,
+        preservedTargetChunkSections: ownerReplacement.preservedTargetChunkSections,
+      };
+    });
     const verifiedTarget = verification.targets.find((item) => item.symbol === target.symbol);
     return {
       symbol: target.symbol,
@@ -123,10 +142,13 @@ function main() {
       prunedAssemblyObject: chunkReplacement.linkedChunkRelative,
       prunedAssemblyObjectSha256: chunkReplacement.prunedSha256,
       preservedTargetChunkSections: chunkReplacement.preservedTargetChunkSections,
+      owners: ownerReplacements,
       cObject: compiledTarget.objectRelative,
       cObjectSha256: compiledTarget.objectSha256,
       sourceObject: compiledTarget.proofObjectRelative,
       sourceObjectSha256: compiledTarget.proofObjectSha256,
+      assemblerObject: compiledTarget.assemblerObjectRelative,
+      assemblerObjectSha256: compiledTarget.assemblerObjectSha256,
       compilerAssembly: compiledTarget.compilerAssemblyRelative,
       compilerAssemblySha256: compiledTarget.compilerAssemblySha256,
       linkedAssembly: compiledTarget.linkedAssemblyRelative,
@@ -140,11 +162,15 @@ function main() {
         sha256: sourceObjectProofs.get(target.symbol).sha256,
       },
       objectTextSha256: compiledTarget.textSha256,
+      objectTextOwners: compiledTarget.textOwners,
+      splitContract: compiledTarget.splitContract,
       linkedTextSha256: verifiedTarget.textSha256,
       compilerTextFunctions: compiledTarget.compilerTextFunctions,
       relocations: compiledTarget.relocations,
       auxiliarySections: compiledTarget.auxiliarySections,
-      auxiliaryTails: chunkReplacement.auxiliaryTails.filter((tail) => tail.symbol === target.symbol),
+      auxiliaryTails: [...replacement.replacements.values()].flatMap((record) => (
+        record.auxiliaryTails.filter((tail) => tail.symbol === target.symbol)
+      )),
     };
   });
 
@@ -160,6 +186,11 @@ function main() {
         bytes: fs.statSync(LINKAGE_CONFIG_PATH).size,
         sha256: sha256File(LINKAGE_CONFIG_PATH),
       },
+      multiOwnerConfig: {
+        path: path.relative(ROOT, MULTI_OWNER_CONFIG_PATH).replace(/\\/g, '/'),
+        bytes: fs.statSync(MULTI_OWNER_CONFIG_PATH).size,
+        sha256: sha256File(MULTI_OWNER_CONFIG_PATH),
+      },
       gnuBinutils26: {
         manifestPath: phase8.toolchain.identity.manifestPath,
         manifestSha256: phase8.toolchain.identity.manifestSha256,
@@ -172,7 +203,10 @@ function main() {
         sha256: sha256File(POLICY_CONFIG_PATH),
       },
       cSources: phase8.targets.map((target) => ({ path: target.source, bytes: fs.statSync(path.join(ROOT, target.source)).size, sha256: target.sourceSha256 })),
-      originalAssemblies: phase8.targets.map((target) => ({ path: target.originalAssembly, sha256: target.originalAssemblySha256 })),
+      originalAssemblies: phase8.targets.flatMap((target) => target.textOwners.map((owner) => ({
+        path: owner.originalAssembly,
+        sha256: owner.originalAssemblySha256,
+      }))),
       phase6CompilerManifest: { path: phase8.config.compiler.manifest, sha256: phase8.config.compiler.manifestSha256 },
     },
     runtime: pathIndependentRuntime(runtime),

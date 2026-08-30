@@ -7,14 +7,17 @@ const {
   CONFIG_PATH,
   LINKAGE_CONFIG_PATH,
   LEGACY_CONFIG_PATH,
+  MULTI_OWNER_CONFIG_PATH,
   loadActiveTargetModel,
   normalizeAuxiliarySectionContracts,
   resolveAcceptedRow,
+  resolveAcceptedRows,
   resolveAuxiliarySectionContracts,
   resolveCompilerTextFunctions,
   selectRelocationContract,
   validateAuxiliaryOwnerGroups,
   validateLinkageConfig,
+  validateMultiOwnerConfig,
   validateNoActiveLinkSymbolShadows,
   validateToolchainPin,
 } = require('../tools/lib/active_targets');
@@ -30,8 +33,96 @@ function expectRejection(name, callback) {
   throw new Error(`mutation was accepted: ${name}`);
 }
 
+function sameJson(left, right) {
+  return JSON.stringify(left) === JSON.stringify(right);
+}
+
 function main() {
   const active = loadActiveTargetModel();
+  const baserom = fs.readFileSync(path.join(ROOT, 'build', 'baserom.us_rev0.z64'));
+  const multiOwnerConfig = JSON.parse(fs.readFileSync(MULTI_OWNER_CONFIG_PATH, 'utf8'));
+  const validatedMultiOwners = validateMultiOwnerConfig(
+    multiOwnerConfig,
+    active.minimalConfig.profile,
+    active.model,
+    baserom,
+  );
+  const cutsceneOwners = validatedMultiOwners.get('func_002a0ef0');
+  if (!cutsceneOwners || cutsceneOwners.bytes !== 1132
+      || cutsceneOwners.romStartNumber !== 0x002A0EF0
+      || cutsceneOwners.romEndNumber !== 0x002A135C
+      || cutsceneOwners.vramStartNumber !== 0x802316C0
+      || cutsceneOwners.vramEndNumber !== 0x80231B2C
+      || !sameJson(cutsceneOwners.rows.map((row) => row.index), [5366, 5367])
+      || !sameJson(cutsceneOwners.owners.map((owner) => owner.sectionName), ['.ob64.r5366', '.ob64.r5367'])
+      || !sameJson(cutsceneOwners.owners.map((owner) => owner.chunkIndex), [41, 42])
+      || !sameJson(cutsceneOwners.owners.map((owner) => owner.bytes), [272, 860])) {
+    throw new Error('func_002A0EF0 accepted multi-owner contract drift');
+  }
+  const resolvedCutsceneOwners = resolveAcceptedRows(active.model, 'func_002A0EF0', validatedMultiOwners);
+  if (!resolvedCutsceneOwners.contract || resolvedCutsceneOwners.rows.length !== 2) {
+    throw new Error('func_002A0EF0 did not resolve as one logical multi-owner target');
+  }
+  const mutateMultiOwner = (mutate, model = active.model) => validateMultiOwnerConfig(
+    mutate(JSON.parse(JSON.stringify(multiOwnerConfig))),
+    active.minimalConfig.profile,
+    model,
+    baserom,
+  );
+  const mutateContract = (config, mutate) => ({
+    ...config,
+    targets: config.targets.map((contract) => contract.symbol === 'func_002A0EF0'
+      ? mutate({ ...contract, ownerRows: [...contract.ownerRows] })
+      : contract),
+  });
+  const mutatedModel = (mutate) => {
+    const model = JSON.parse(JSON.stringify(active.model));
+    mutate(model.rows.find((row) => row.index === 5367));
+    return model;
+  };
+  const rejectedMultiOwnerMutations = [
+    expectRejection('multi-owner missing owner', () => mutateMultiOwner((config) => mutateContract(config, (contract) => ({ ...contract, ownerRows: [5366] })))),
+    expectRejection('multi-owner reordered owners', () => mutateMultiOwner((config) => mutateContract(config, (contract) => ({ ...contract, ownerRows: [5367, 5366] })))),
+    expectRejection('multi-owner noncontiguous owner', () => mutateMultiOwner((config) => mutateContract(config, (contract) => ({ ...contract, ownerRows: [5366, 5368] })))),
+    expectRejection('multi-owner extra owner', () => mutateMultiOwner((config) => mutateContract(config, (contract) => ({ ...contract, ownerRows: [5366, 5367, 5368] })))),
+    expectRejection('multi-owner duplicate owner', () => mutateMultiOwner((config) => mutateContract(config, (contract) => ({ ...contract, ownerRows: [5366, 5366] })))),
+    expectRejection('multi-owner unexpected field', () => mutateMultiOwner((config) => mutateContract(config, (contract) => ({ ...contract, permissive: true })))),
+    expectRejection('multi-owner overlapping placement', () => validateMultiOwnerConfig(
+      multiOwnerConfig,
+      active.minimalConfig.profile,
+      mutatedModel((row) => {
+        row.romStart -= 4;
+        row.slices[0].romStart -= 4;
+        row.part.romStartNumber -= 4;
+      }),
+      baserom,
+    )),
+    expectRejection('multi-owner VMA gap', () => validateMultiOwnerConfig(
+      multiOwnerConfig,
+      active.minimalConfig.profile,
+      mutatedModel((row) => {
+        row.slices[0].vramStart += 4;
+      }),
+      baserom,
+    )),
+    expectRejection('multi-owner ambiguous row', () => validateMultiOwnerConfig(
+      multiOwnerConfig,
+      active.minimalConfig.profile,
+      mutatedModel((row) => { row.ambiguous = true; }),
+      baserom,
+    )),
+    expectRejection('multi-owner placement-kind mismatch', () => validateMultiOwnerConfig(
+      multiOwnerConfig,
+      active.minimalConfig.profile,
+      mutatedModel((row) => { row.slices[0].loadSlabId = 'other-slab'; }),
+      baserom,
+    )),
+    expectRejection('multi-owner partial continuation activation', () => resolveAcceptedRows(
+      active.model,
+      'func_002A0EF0_chunk42tail',
+      validatedMultiOwners,
+    )),
+  ];
   const pin = active.minimalConfig.toolchain;
   validateToolchainPin(pin);
   const rejectedToolchainMutations = [
@@ -526,12 +617,14 @@ function main() {
     status: 'pass',
     activeConfig: { path: path.relative(ROOT, CONFIG_PATH).replace(/\\/g, '/'), sha256: sha256File(CONFIG_PATH) },
     linkageContract: { path: path.relative(ROOT, LINKAGE_CONFIG_PATH).replace(/\\/g, '/'), sha256: sha256File(LINKAGE_CONFIG_PATH) },
+    multiOwnerContract: { path: path.relative(ROOT, MULTI_OWNER_CONFIG_PATH).replace(/\\/g, '/'), sha256: sha256File(MULTI_OWNER_CONFIG_PATH) },
     legacyContract: { path: path.relative(ROOT, LEGACY_CONFIG_PATH).replace(/\\/g, '/'), sha256: sha256File(LEGACY_CONFIG_PATH) },
     targetCount: active.targets.length,
     toolchain: active.toolchain.identity,
     rejectedToolchainMutations,
     rejectedLinkageMutations,
     rejectedCompilerTextMutations,
+    rejectedMultiOwnerMutations,
     rejectedAuxiliaryMutations,
     rejectedSharedAuxiliaryMutations,
     rejectedPaddingMutations,

@@ -288,11 +288,11 @@ function verifyProductionCutover() {
   for (const relative of deleted) if (fs.existsSync(path.join(ROOT, relative))) throw new Error(`retired adapter path returned: ${relative}`);
   const activeFiles = [
     'config/toolchain.json', 'config/phase7/conventional-build.json', 'config/matching-c-targets.json',
-    'config/matching-c-linkage.json',
+    'config/matching-c-linkage.json', 'config/matching-c-multi-owner.json',
     'tools/build_phase7_conventional.js', 'tools/build_phase8_matching_c.js', 'tools/diff.js',
     'tools/verify_phase7_conventional.js', 'tools/verify_phase8_matching_c.js',
     'tools/lib/active_targets.js', 'tools/lib/current_workflow.js', 'tools/lib/phase7_conventional.js',
-    'tools/lib/phase8_matching_c.js', 'tools/lib/real_mips_toolchain.js',
+    'tools/lib/elf_text_split.js', 'tools/lib/phase8_matching_c.js', 'tools/lib/real_mips_toolchain.js',
   ];
   const forbidden = [/compiler-assembly-dialect/i, /compiler_assembly_dialect/i, /2\.39/, /readelf/i];
   for (const relative of activeFiles) {
