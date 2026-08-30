@@ -115,7 +115,7 @@ function prepareCompilerSession(options = {}) {
     compilerFlags: context.phase8.config.compiler.compileFlags,
     assembler: context.phase8.toolchain.identity,
     sourcePolicyPreprocessorSha256: preprocessor.sha256,
-    workbenchCompilerContract: 4,
+    workbenchCompilerContract: 5,
   };
   return { context, runtime, preprocessor, tool, toolId: digest(tool) };
 }
@@ -303,15 +303,47 @@ function recordCandidate(workbench, target, sourceText, options = {}) {
   return { candidate, sourceFile };
 }
 
+function acceptedExpectedRelocationEvidence(session, target) {
+  const acceptedTargets = session?.context?.phase8?.targets;
+  if (!Array.isArray(acceptedTargets)) {
+    return { available: false, records: null, reason: 'accepted phase8 target census is unavailable' };
+  }
+  const symbolMatches = acceptedTargets.filter((candidate) => (
+    typeof candidate.symbol === 'string'
+      && candidate.symbol.toLowerCase() === target.symbol.toLowerCase()
+  ));
+  const identityMatches = symbolMatches.filter((candidate) => (
+    candidate.bytes === target.bytes
+      && candidate.romStartNumber === target.romStart
+      && candidate.vramStartNumber === target.vramStart
+  ));
+  if (identityMatches.length !== 1) {
+    const reason = symbolMatches.length === 0
+      ? 'target is not an accepted phase8 C target'
+      : `accepted phase8 target identity is ${identityMatches.length === 0 ? 'incompatible' : 'ambiguous'}`;
+    return { available: false, records: null, reason };
+  }
+  if (!Array.isArray(identityMatches[0].expectedRelocations)) {
+    return { available: false, records: null, reason: 'accepted phase8 relocation contract is malformed' };
+  }
+  return {
+    available: true,
+    records: identityMatches[0].expectedRelocations,
+    reason: null,
+  };
+}
+
 function compileCandidate(workbench, target, sourceText, options = {}) {
   const storeOptions = options.storeOptions || {};
   const { candidate, sourceFile } = recordCandidate(workbench, target, sourceText, options);
   const session = options.session || prepareCompilerSession(options);
+  const expectedRelocationEvidence = acceptedExpectedRelocationEvidence(session, target);
   const cacheKey = digest({
-    schemaVersion: 1,
+    schemaVersion: 2,
     candidateId: candidate.candidateId,
     targetId: target.targetId,
     toolId: session.toolId,
+    expectedRelocationEvidence,
   });
   const cached = requestStore({ action: 'query', name: 'compile_by_cache', args: { cacheKey } }, storeOptions);
   if (cached && (cached.candidate_id !== candidate.candidateId || canonicalJson(cached.tool) !== canonicalJson(session.tool))) {
@@ -336,7 +368,6 @@ function compileCandidate(workbench, target, sourceText, options = {}) {
     sourceSha256: candidate.sourceSha256,
     bytes: target.bytes,
     sectionName: target.sectionName,
-    expectedRelocations: [],
   };
   const classification = {
     symbol: target.symbol,
@@ -365,7 +396,15 @@ function compileCandidate(workbench, target, sourceText, options = {}) {
     };
     const comparison = compareMips(target.expectedBytes, objectText, {
       start: target.vramStart,
-      relocations: result.relocations,
+      actualRelocations: result.relocations,
+      actualRelocationsAvailable: true,
+      ...(expectedRelocationEvidence.available ? {
+        expectedRelocations: expectedRelocationEvidence.records,
+        expectedRelocationsAvailable: true,
+      } : {
+        expectedRelocationsAvailable: false,
+        expectedRelocationsUnavailableReason: expectedRelocationEvidence.reason,
+      }),
     });
     comparisonRecord = {
       comparisonId: digest({ runId, comparison }),

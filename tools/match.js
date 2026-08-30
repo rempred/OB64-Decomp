@@ -212,6 +212,83 @@ function boundedContext(context, includeContext = false, rowLimit = 5) {
   };
 }
 
+function boundedEvidence(value, depth = 0) {
+  if (Array.isArray(value)) {
+    return {
+      samples: value.slice(0, 3).map((item) => boundedEvidence(item, depth + 1)),
+      omitted: Math.max(0, value.length - 3),
+    };
+  }
+  if (!value || typeof value !== 'object') return value;
+  if (depth >= 4) return '<nested evidence omitted>';
+  return Object.fromEntries(Object.entries(value).map(([key, item]) => [key, boundedEvidence(item, depth + 1)]));
+}
+
+function compactFrame(frame) {
+  const offsets = Array.isArray(frame?.stackOffsets) ? frame.stackOffsets : [];
+  return {
+    frameSize: frame?.frameSize ?? null,
+    stackOffsetCount: offsets.length,
+    stackOffsetSamples: offsets.slice(0, 5),
+    stackOffsetsOmitted: Math.max(0, offsets.length - 5),
+  };
+}
+
+function compactMismatchLabel(label) {
+  return {
+    category: label.category,
+    likelihood: label.likelihood,
+    interpretation: label.interpretation,
+    evidence: boundedEvidence(label.evidence),
+    searchFamilies: (label.searchFamilies || []).slice(0, 4),
+    avoidUntilResolved: (label.avoidUntilResolved || []).slice(0, 3),
+  };
+}
+
+function compactRelocationEvidence(evidence) {
+  if (!evidence) return null;
+  function sourceSummary(source) {
+    if (!source) return null;
+    return {
+      available: source.available,
+      count: source.count,
+      complete: source.complete,
+      unavailableReason: source.unavailableReason || null,
+      unknownKinds: (source.unknownKinds || []).slice(0, 4),
+      unmaskableKnownKinds: (source.unmaskableKnownKinds || []).slice(0, 4),
+      invalidRecordCount: (source.invalidRecords || []).length + (source.invalidRecordsOmitted || 0),
+    };
+  }
+  const mismatch = evidence.mismatch && {
+    expectedOnlyCount: evidence.mismatch.expectedOnlyCount,
+    actualOnlyCount: evidence.mismatch.actualOnlyCount,
+    identityMismatchCount: evidence.mismatch.identityMismatchCount,
+    expectedOnlySamples: (evidence.mismatch.expectedOnlySamples || []).slice(0, 2),
+    actualOnlySamples: (evidence.mismatch.actualOnlySamples || []).slice(0, 2),
+    identityMismatchSamples: (evidence.mismatch.identityMismatchSamples || []).slice(0, 2),
+  };
+  return {
+    expected: sourceSummary(evidence.expected),
+    actual: sourceSummary(evidence.actual),
+    comparisonAvailable: evidence.comparisonAvailable,
+    recordsExact: evidence.recordsExact,
+    mask: evidence.mask,
+    mismatch,
+  };
+}
+
+function compactMismatchEvidence(comparison) {
+  const labels = Array.isArray(comparison?.labels) ? comparison.labels : [];
+  return {
+    differingInstructions: comparison?.differingInstructions ?? null,
+    differingBytes: comparison?.differingBytes ?? null,
+    mismatchCounts: comparison?.mismatchCounts || null,
+    topLabels: labels.slice(0, 3).map(compactMismatchLabel),
+    labelsOmitted: Math.max(0, labels.length - 3),
+    relocationEvidence: compactRelocationEvidence(comparison?.relocationEvidence),
+  };
+}
+
 function publicCandidateRecord(record, options = {}) {
   const candidate = {
     candidateId: record.candidate.candidate_id,
@@ -224,19 +301,23 @@ function publicCandidateRecord(record, options = {}) {
     createdAt: record.candidate.created_at,
   };
   if (options.includeSource) candidate.source = record.candidate.source_text;
-  const runs = record.runs.map((run) => ({
-    runId: run.run_id,
-    status: run.status,
-    sourceClass: run.source_class,
-    primaryClass: run.primary_class,
-    exactBytes: Boolean(run.exact_bytes),
-    relocationMaskedExact: Boolean(run.relocation_masked_exact),
-    score: run.score,
-    durationMs: run.duration_ms,
-    artifactDir: run.artifact_dir,
-    createdAt: run.created_at,
-    ...(options.includeDetails ? { details: run.details, tool: run.tool, stderr: run.stderr } : {}),
-  }));
+  const runs = record.runs.map((run) => {
+    const details = run.details || null;
+    return {
+      runId: run.run_id,
+      status: run.status,
+      sourceClass: run.source_class,
+      primaryClass: run.primary_class,
+      exactBytes: Boolean(run.exact_bytes),
+      relocationMaskedExact: Boolean(run.relocation_masked_exact),
+      score: run.score,
+      durationMs: run.duration_ms,
+      artifactDir: run.artifact_dir,
+      createdAt: run.created_at,
+      ...(details ? compactMismatchEvidence(details) : {}),
+      ...(options.includeDetails ? { details, tool: run.tool, stderr: run.stderr } : {}),
+    };
+  });
   const observations = record.observations.map((observation) => ({
     observationId: observation.observation_id,
     origin: observation.origin,
@@ -262,10 +343,16 @@ function compactComparison(comparison, includeDetails = false) {
     score: comparison.score,
     expectedBytes: comparison.expectedBytes,
     actualBytes: comparison.actualBytes,
+    differingInstructions: comparison.differingInstructions,
+    differingBytes: comparison.differingBytes,
+    mismatchCounts: comparison.mismatchCounts,
+    topLabels: (comparison.labels || []).slice(0, 3).map(compactMismatchLabel),
+    labelsOmitted: Math.max(0, (comparison.labels || []).length - 3),
+    relocationEvidence: compactRelocationEvidence(comparison.relocationEvidence),
     opcodeMatches: comparison.opcodeMatches,
     firstDifference: comparison.firstDifference,
-    expectedFrame: comparison.expectedFrame,
-    actualFrame: comparison.actualFrame,
+    expectedFrame: compactFrame(comparison.expectedFrame),
+    actualFrame: compactFrame(comparison.actualFrame),
   };
 }
 
@@ -286,6 +373,7 @@ function comparisonSummary(result) {
     score: comparison?.score ?? result.comparison?.score ?? null,
     exactScratchBytes: comparison?.exactBytes ?? Boolean(result.comparison?.exact_bytes),
     relocationMaskedExact: comparison?.relocationMaskedExact ?? Boolean(result.comparison?.relocation_masked_exact),
+    ...compactMismatchEvidence(comparison),
     firstDifference: comparison?.firstDifference || null,
     recommendation: comparison?.recommendation || null,
     artifactDir: result.compile.artifact_dir || result.compile.artifactDir,
@@ -391,12 +479,21 @@ async function main(argv = process.argv.slice(2)) {
   if (command === 'history' || command === 'best') {
     if (positional.length !== 1) throw new Error(`${command} requires one symbol`);
     const target = resolveTarget(workbench, positional[0]);
-    const rows = requestStore({ action: 'query', name: command, args: {
+    const storedRows = requestStore({ action: 'query', name: command, args: {
       modelId: workbench.modelId,
       symbol: target.symbol,
       limit: numeric(options.limit, '--limit', 20),
-      includeDetails: options['include-details'] === true,
+      includeDetails: true,
     } });
+    const rows = storedRows.map((row) => {
+      if (!row.details) return row;
+      const { details, ...summary } = row;
+      return {
+        ...summary,
+        ...compactMismatchEvidence(details),
+        ...(options['include-details'] ? { details } : {}),
+      };
+    });
     print({ symbol: target.symbol, count: rows.length, rows }, options);
     return;
   }
@@ -602,6 +699,8 @@ module.exports = {
   boundedContext,
   boundedSweepResult,
   compactComparison,
+  compactMismatchEvidence,
+  compactRelocationEvidence,
   comparisonSummary,
   main,
   parseArgs,
