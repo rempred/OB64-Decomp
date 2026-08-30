@@ -11,6 +11,7 @@ const {
   writeJson,
 } = require('./lib/current_workflow');
 const { ROOT, sha256Buffer } = require('./lib/phase7_conventional');
+const { verifyFunc002861C8Structure } = require('../tests/func_002861C8_structure');
 
 function usage() {
   console.log('Usage: node tools/audit.js [--phase5a-root <accepted-evidence-root>]');
@@ -44,6 +45,7 @@ function main(argv = process.argv.slice(2)) {
   console.log('');
   console.log('Running structural ROM, coverage, overlay, ownership, and toolchain checks...');
   runNode('verify_setup.js', ['--phase5a-root', phase5aRoot], 'structural audit');
+  const func002861C8Structure = verifyFunc002861C8Structure({ runMutations: true });
   console.log('Running CURRENT ownership and exact-ROM verification...');
   const current = verifyCurrent(context);
   const sourceObjectEvidence = current.verification.verification.sourceObjectEvidence;
@@ -125,6 +127,7 @@ function main(argv = process.argv.slice(2)) {
     p3063: { sourceClass: p3063.sourceObjectEvidence.sourceClass, targetSha256: p3063.linkedTargetSha256 },
     p3064: { sourceClass: p3064.sourceObjectEvidence.sourceClass, targetSha256: p3064.linkedTargetSha256 },
     p3066Active: false,
+    func002861C8Structure,
   };
   const reportFile = path.join(ROOT, 'build', 'audit', 'report.json');
   writeJson(reportFile, report);

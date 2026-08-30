@@ -512,10 +512,24 @@ compares them with the reviewed accepted contract. Discarded ancillary metadata 
 the source-to-object report but is not treated as a ROM or modification-relevant relocation.
 
 `config/matching-c-linkage.json` is the active reviewed linkage contract. It contains one shared
-absolute-symbol registry, per-target relocation lists, and any target-specific audited auxiliary
-switch-table section contract. Historical targets may still read
+absolute-symbol registry, per-target relocation lists, any explicit compiler text-function
+partition, and any target-specific audited auxiliary switch-table section contract. Historical targets may still read
 an equivalent contract from the frozen `config/phase8/matching-c.json` compatibility record while
 that evidence is migrated. New targets must not be added to that legacy file.
+
+An explicit `compilerTextFunctions` list is permitted only when untouched compiler output emits
+multiple `STT_FUNC` symbols that exactly and gaplessly partition one accepted text owner. The first
+record remains the accepted global owner symbol at offset zero. Every additional compiler symbol
+must remain local and carry reviewed entry evidence; the list does not create another accepted
+owner, boundary, or public alias. The verifier checks the exact symbol census, offsets, sizes,
+bindings, visibility, section, linked addresses, and complete owner bytes.
+
+Multiple active C targets may contribute ordered read-only switch-table fragments to the same
+accepted auxiliary row only under a complete shared-row contract. The fragments must occur in
+link order, cover the row from its accepted start without gaps or overlaps, use the same read-only
+section shape, and leave at most one exact assembly tail after the final fragment. The original
+assembly owner is removed once; final map and program-header checks still require one complete
+read-only output row with exact retail bytes.
 
 If a target produces exact final bytes but relocation structure differs, report it explicitly.
 Do not silently count it as fully mod-ready pure C.

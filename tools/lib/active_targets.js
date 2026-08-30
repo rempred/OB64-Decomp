@@ -20,6 +20,8 @@ const LOAD_RELOCATION_TYPES = new Set(['R_MIPS_26', 'R_MIPS_HI16', 'R_MIPS_LO16'
 const AUXILIARY_OUTPUT_SECTION = /^\.ob64\.r[0-9]+(?:\.s[0-9]+)?$/;
 const AUXILIARY_TAIL_SECTION = /^\.ob64\.r[0-9]+(?:\.s[0-9]+)?\.tail$/;
 const SHA256 = /^[0-9A-F]{64}$/;
+const COMPILER_TEXT_ENTRY_EVIDENCE = new Set(['owner', 'internal-call-only', 'fixed-address-call']);
+const COMPILER_TEXT_ENTRY_BINDINGS = new Set(['GLOBAL', 'LOCAL']);
 
 function parseNumber(value, label) {
   if (Number.isInteger(value)) return value;
@@ -84,6 +86,39 @@ function normalizeAuxiliaryRelocationRecords(records, label) {
     offsets.add(record.offset);
     previousOffset = numericOffset;
     return { ...record };
+  });
+}
+
+function normalizeCompilerTextFunctions(records, targetSymbol, label) {
+  if (records === undefined) return [];
+  if (!Array.isArray(records) || records.length < 2) fail(`${label} is not a multi-function array`);
+  const symbols = new Set();
+  let previousOffset = -1;
+  return records.map((record, index) => {
+    const recordLabel = `${label} record ${index}`;
+    if (!exactKeys(record, ['symbol', 'offset', 'bytes', 'binding', 'entryEvidence'])
+        || typeof record.symbol !== 'string' || !SAFE_LINK_SYMBOL.test(record.symbol)
+        || typeof record.offset !== 'string' || !/^0x[0-9A-F]{8}$/.test(record.offset)
+        || !Number.isInteger(record.bytes) || record.bytes <= 0 || record.bytes % 4 !== 0
+        || !COMPILER_TEXT_ENTRY_BINDINGS.has(record.binding)
+        || !COMPILER_TEXT_ENTRY_EVIDENCE.has(record.entryEvidence)) {
+      fail(`${recordLabel} is malformed`);
+    }
+    const offsetNumber = Number.parseInt(record.offset.slice(2), 16);
+    if (offsetNumber % 4 !== 0 || offsetNumber <= previousOffset || symbols.has(record.symbol)) {
+      fail(`${label} is not uniquely ordered`);
+    }
+    if (index === 0) {
+      if (record.symbol !== targetSymbol || offsetNumber !== 0
+          || record.binding !== 'GLOBAL' || record.entryEvidence !== 'owner') {
+        fail(`${label} primary owner entry is malformed`);
+      }
+    } else if (record.binding !== 'LOCAL' || record.entryEvidence === 'owner') {
+      fail(`${recordLabel} invents an exported or duplicate owner entry`);
+    }
+    symbols.add(record.symbol);
+    previousOffset = offsetNumber;
+    return { ...record, offsetNumber };
   });
 }
 
@@ -155,7 +190,7 @@ function normalizeAuxiliarySectionContracts(contracts, targetSymbol, label) {
       fail(`${contractLabel} trailing alignment padding is malformed`);
     }
     const tail = contract.preservedTail;
-    if (!exactKeys(tail, [
+    if (tail !== null && (!exactKeys(tail, [
       'inputSection',
       'sectionType',
       'sectionFlags',
@@ -185,27 +220,29 @@ function normalizeAuxiliarySectionContracts(contracts, targetSymbol, label) {
         || typeof tail.ownerOriginalAssembly !== 'string' || path.isAbsolute(tail.ownerOriginalAssembly)
         || tail.ownerOriginalAssembly.split('/').includes('..')
         || typeof tail.ownerOriginalAssemblySha256 !== 'string'
-        || !SHA256.test(tail.ownerOriginalAssemblySha256)) {
+        || !SHA256.test(tail.ownerOriginalAssemblySha256))) {
       fail(`${contractLabel} preserved tail is malformed`);
     }
     const romStart = parseNumber(contract.romStart, `${contractLabel} ROM start`);
     const romEndExclusive = parseNumber(contract.romEndExclusive, `${contractLabel} ROM end`);
     const vramStart = parseNumber(contract.vramStart, `${contractLabel} VMA start`);
     const vramEndExclusive = parseNumber(contract.vramEndExclusive, `${contractLabel} VMA end`);
-    const tailRomStart = parseNumber(tail.romStart, `${contractLabel} tail ROM start`);
-    const tailRomEndExclusive = parseNumber(tail.romEndExclusive, `${contractLabel} tail ROM end`);
-    const tailVramStart = parseNumber(tail.vramStart, `${contractLabel} tail VMA start`);
-    const tailVramEndExclusive = parseNumber(tail.vramEndExclusive, `${contractLabel} tail VMA end`);
+    const tailRomStart = tail === null ? romEndExclusive : parseNumber(tail.romStart, `${contractLabel} tail ROM start`);
+    const tailRomEndExclusive = tail === null ? romEndExclusive : parseNumber(tail.romEndExclusive, `${contractLabel} tail ROM end`);
+    const tailVramStart = tail === null ? vramEndExclusive : parseNumber(tail.vramStart, `${contractLabel} tail VMA start`);
+    const tailVramEndExclusive = tail === null ? vramEndExclusive : parseNumber(tail.vramEndExclusive, `${contractLabel} tail VMA end`);
     if (romEndExclusive - romStart !== contract.bytes
         || vramEndExclusive - vramStart !== contract.bytes
         || romStart % contract.alignment !== 0
         || vramStart % contract.alignment !== 0
-        || tailRomEndExclusive - tailRomStart !== tail.bytes
-        || tailVramEndExclusive - tailVramStart !== tail.bytes
-        || tailRomStart % tail.alignment !== 0
-        || tailVramStart % tail.alignment !== 0
-        || romEndExclusive !== tailRomStart
-        || vramEndExclusive !== tailVramStart) {
+        || (tail !== null && (
+          tailRomEndExclusive - tailRomStart !== tail.bytes
+          || tailVramEndExclusive - tailVramStart !== tail.bytes
+          || tailRomStart % tail.alignment !== 0
+          || tailVramStart % tail.alignment !== 0
+          || romEndExclusive !== tailRomStart
+          || vramEndExclusive !== tailVramStart
+        ))) {
       fail(`${contractLabel} placement or alignment is malformed`);
     }
     const expectedRelocations = normalizeAuxiliaryRelocationRecords(
@@ -235,7 +272,7 @@ function normalizeAuxiliarySectionContracts(contracts, targetSymbol, label) {
       romEndNumber: romEndExclusive,
       vramStartNumber: vramStart,
       vramEndNumber: vramEndExclusive,
-      preservedTail: {
+      preservedTail: tail === null ? null : {
         ...tail,
         romStartNumber: tailRomStart,
         romEndNumber: tailRomEndExclusive,
@@ -267,9 +304,12 @@ function validateLinkageConfig(linkage, expectedProfile) {
   }
   const targets = new Map();
   for (const [index, entry] of linkage.targets.entries()) {
-    const expectedKeys = entry && Object.prototype.hasOwnProperty.call(entry, 'auxiliarySections')
-      ? ['symbol', 'expectedRelocations', 'auxiliarySections']
-      : ['symbol', 'expectedRelocations'];
+    const expectedKeys = [
+      'symbol',
+      'expectedRelocations',
+      ...(entry && Object.prototype.hasOwnProperty.call(entry, 'compilerTextFunctions') ? ['compilerTextFunctions'] : []),
+      ...(entry && Object.prototype.hasOwnProperty.call(entry, 'auxiliarySections') ? ['auxiliarySections'] : []),
+    ];
     if (!exactKeys(entry, expectedKeys)
         || typeof entry.symbol !== 'string' || !SAFE_LINK_SYMBOL.test(entry.symbol)) {
       fail(`matching-C linkage target ${index} is malformed`);
@@ -282,6 +322,11 @@ function validateLinkageConfig(linkage, expectedProfile) {
         entry.expectedRelocations,
         entry.symbol,
         `matching-C linkage target ${entry.symbol}`,
+      ),
+      compilerTextFunctions: normalizeCompilerTextFunctions(
+        entry.compilerTextFunctions,
+        entry.symbol,
+        `matching-C linkage target ${entry.symbol} compiler text functions`,
       ),
       auxiliarySections: normalizeAuxiliarySectionContracts(
         entry.auxiliarySections,
@@ -313,6 +358,7 @@ function selectRelocationContract(symbol, canonicalTarget, legacyTarget, allowMi
     }
     return {
       expectedRelocations: canonicalTarget.expectedRelocations,
+      compilerTextFunctions: canonicalTarget.compilerTextFunctions,
       auxiliarySections: canonicalTarget.auxiliarySections,
       source: 'canonical',
       canonicalLegacyEquivalent: legacyRelocations ? true : null,
@@ -321,6 +367,7 @@ function selectRelocationContract(symbol, canonicalTarget, legacyTarget, allowMi
   if (legacyRelocations) {
     return {
       expectedRelocations: legacyRelocations,
+      compilerTextFunctions: [],
       auxiliarySections: [],
       source: 'legacy-compatibility',
       canonicalLegacyEquivalent: null,
@@ -329,6 +376,7 @@ function selectRelocationContract(symbol, canonicalTarget, legacyTarget, allowMi
   if (allowMissing) {
     return {
       expectedRelocations: [],
+      compilerTextFunctions: [],
       auxiliarySections: [],
       source: 'missing-diff-only',
       canonicalLegacyEquivalent: null,
@@ -370,6 +418,30 @@ function resolveAcceptedRow(model, symbol) {
   return candidates[0];
 }
 
+function resolveCompilerTextFunctions(target, records) {
+  if (!Array.isArray(records)) fail(`compiler text-function contract is malformed: ${target.symbol}`);
+  const resolved = records.length === 0 ? [{
+    symbol: target.symbol,
+    offset: '0x00000000',
+    offsetNumber: 0,
+    bytes: target.bytes,
+    binding: 'GLOBAL',
+    entryEvidence: 'owner',
+  }] : records.map((record) => ({ ...record }));
+  let cursor = 0;
+  for (const [index, record] of resolved.entries()) {
+    if (record.offsetNumber !== cursor || record.offsetNumber + record.bytes > target.bytes) {
+      fail(`compiler text functions do not exactly partition accepted owner: ${target.symbol}`);
+    }
+    if (index === 0 && (record.symbol !== target.symbol || record.bytes >= target.bytes)) {
+      if (records.length !== 0) fail(`compiler text-function owner entry drift: ${target.symbol}`);
+    }
+    cursor += record.bytes;
+  }
+  if (cursor !== target.bytes) fail(`compiler text functions do not cover accepted owner: ${target.symbol}`);
+  return resolved;
+}
+
 function resolveAuxiliarySectionContracts(model, baserom, target, contracts) {
   if (!Array.isArray(contracts)) fail(`auxiliary-section contract census is malformed: ${target.symbol}`);
   return contracts.map((contract) => {
@@ -394,8 +466,8 @@ function resolveAuxiliarySectionContracts(model, baserom, target, contracts) {
     }
     const slice = slices[0];
     if (contract.outputSection === target.sectionName
-        || contract.romStartNumber !== row.romStart
-        || contract.vramStartNumber !== slice.vramStart
+        || contract.romStartNumber < row.romStart
+        || contract.vramStartNumber < slice.vramStart
         || contract.romEndNumber > row.romEndExclusive
         || contract.vramEndNumber > slice.vramEndExclusive
         || row.romEndExclusive - row.romStart !== slice.vramEndExclusive - slice.vramStart) {
@@ -406,11 +478,14 @@ function resolveAuxiliarySectionContracts(model, baserom, target, contracts) {
       fail(`accepted auxiliary original assembly identity drift: ${target.symbol} ${contract.outputSection}`);
     }
     const tail = contract.preservedTail;
-    if (contract.romStartNumber < 0 || tail.romEndNumber > baserom.length
-        || tail.romEndNumber !== row.romEndExclusive
-        || tail.vramEndNumber !== slice.vramEndExclusive
-        || tail.ownerOriginalAssembly !== row.part.file
-        || tail.ownerOriginalAssemblySha256 !== row.part.sha256) {
+    if (contract.romStartNumber < 0 || contract.romEndNumber > baserom.length
+        || (tail !== null && (
+          tail.romEndNumber > baserom.length
+          || tail.romEndNumber !== row.romEndExclusive
+          || tail.vramEndNumber !== slice.vramEndExclusive
+          || tail.ownerOriginalAssembly !== row.part.file
+          || tail.ownerOriginalAssemblySha256 !== row.part.sha256
+        ))) {
       fail(`auxiliary baserom range is malformed: ${target.symbol} ${contract.outputSection}`);
     }
     const objectBytes = Buffer.alloc(contract.bytes);
@@ -425,7 +500,9 @@ function resolveAuxiliarySectionContracts(model, baserom, target, contracts) {
       relocatedBytes.writeUInt32BE((target.vramStartNumber + addend) >>> 0, offset);
     }
     const retailBytes = Buffer.from(baserom.subarray(contract.romStartNumber, contract.romEndNumber));
-    const retailTailBytes = Buffer.from(baserom.subarray(tail.romStartNumber, tail.romEndNumber));
+    const retailTailBytes = tail === null
+      ? Buffer.alloc(0)
+      : Buffer.from(baserom.subarray(tail.romStartNumber, tail.romEndNumber));
     const expectedZeroPadding = Buffer.alloc(contract.trailingPaddingBytes);
     const objectPadding = Buffer.from(objectBytes.subarray(contract.entryBytes));
     const linkedPadding = Buffer.from(relocatedBytes.subarray(contract.entryBytes));
@@ -443,8 +520,10 @@ function resolveAuxiliarySectionContracts(model, baserom, target, contracts) {
         || sha256Buffer(relocatedBytes) !== contract.expectedLinkedSha256
         || sha256Buffer(retailBytes) !== contract.expectedLinkedSha256
         || !relocatedBytes.equals(retailBytes)
-        || retailTailBytes.length !== tail.bytes
-        || sha256Buffer(retailTailBytes) !== tail.expectedSha256) {
+        || (tail !== null && (
+          retailTailBytes.length !== tail.bytes
+          || sha256Buffer(retailTailBytes) !== tail.expectedSha256
+        ))) {
       fail(`auxiliary switch-table bytes or relocation semantics drift: ${target.symbol} ${contract.outputSection}`);
     }
     return {
@@ -461,16 +540,82 @@ function resolveAuxiliarySectionContracts(model, baserom, target, contracts) {
       ownerOriginalAssemblySha256: row.part.sha256,
       ownerSymbol: row.part.name,
       ownerSymbolVram: slice.vramStart + row.part.symbolByteOffset,
-      ownerTailSection: tail.inputSection,
-      ownerTailAlignment: tail.alignment,
-      ownerTailBytes: tail.bytes,
-      ownerTailSha256: tail.expectedSha256,
-      ownerTailRomStartNumber: tail.romStartNumber,
-      ownerTailRomEndNumber: tail.romEndNumber,
-      ownerTailVramStartNumber: tail.vramStartNumber,
-      ownerTailVramEndNumber: tail.vramEndNumber,
+      ownerTailSection: tail === null ? null : tail.inputSection,
+      ownerTailAlignment: tail === null ? 1 : tail.alignment,
+      ownerTailBytes: tail === null ? 0 : tail.bytes,
+      ownerTailSha256: tail === null ? sha256Buffer(Buffer.alloc(0)) : tail.expectedSha256,
+      ownerTailRomStartNumber: tail === null ? contract.romEndNumber : tail.romStartNumber,
+      ownerTailRomEndNumber: tail === null ? contract.romEndNumber : tail.romEndNumber,
+      ownerTailVramStartNumber: tail === null ? contract.vramEndNumber : tail.vramStartNumber,
+      ownerTailVramEndNumber: tail === null ? contract.vramEndNumber : tail.vramEndNumber,
     };
   });
+}
+
+function validateAuxiliaryOwnerGroups(targets) {
+  const textSections = new Set(targets.map((target) => target.sectionName));
+  const groups = new Map();
+  for (const target of targets) {
+    for (const auxiliary of target.auxiliarySections) {
+      if (textSections.has(auxiliary.outputSection)) {
+        fail(`active auxiliary-section ownership collision: ${target.symbol} ${auxiliary.outputSection}`);
+      }
+      if (!groups.has(auxiliary.ownerRowIndex)) groups.set(auxiliary.ownerRowIndex, []);
+      groups.get(auxiliary.ownerRowIndex).push({ target, auxiliary });
+    }
+  }
+  const outputOwners = new Map();
+  for (const members of groups.values()) {
+    const first = members[0].auxiliary;
+    if (outputOwners.has(first.outputSection) && outputOwners.get(first.outputSection) !== first.ownerRowIndex) {
+      fail(`active auxiliary output section resolves to multiple accepted owners: ${first.outputSection}`);
+    }
+    outputOwners.set(first.outputSection, first.ownerRowIndex);
+    const firstChunkIndex = members[0].target.chunkIndex;
+    if (members.some(({ target, auxiliary }) => (
+      target.chunkIndex !== firstChunkIndex
+      || auxiliary.outputSection !== first.outputSection
+      || auxiliary.ownerRowIndex !== first.ownerRowIndex
+      || auxiliary.ownerSectionBytes !== first.ownerSectionBytes
+      || auxiliary.ownerRomStartNumber !== first.ownerRomStartNumber
+      || auxiliary.ownerRomEndNumber !== first.ownerRomEndNumber
+      || auxiliary.ownerVramStartNumber !== first.ownerVramStartNumber
+      || auxiliary.ownerVramEndNumber !== first.ownerVramEndNumber
+      || auxiliary.ownerOriginalAssembly !== first.ownerOriginalAssembly
+      || auxiliary.ownerOriginalAssemblySha256 !== first.ownerOriginalAssemblySha256
+      || auxiliary.alignment !== first.alignment
+    ))) {
+      fail(`shared auxiliary accepted-owner identity drift: ${first.outputSection}`);
+    }
+    const ordered = [...members].sort((left, right) => left.auxiliary.romStartNumber - right.auxiliary.romStartNumber);
+    if (!sameJson(ordered.map(({ target }) => target.symbol), members.map(({ target }) => target.symbol))) {
+      fail(`shared auxiliary fragments are not in linker order: ${first.outputSection}`);
+    }
+    let romCursor = first.ownerRomStartNumber;
+    let vramCursor = first.ownerVramStartNumber;
+    for (const [index, member] of members.entries()) {
+      const { auxiliary } = member;
+      if (auxiliary.romStartNumber !== romCursor || auxiliary.vramStartNumber !== vramCursor) {
+        fail(`shared auxiliary fragments have a gap or overlap: ${first.outputSection}`);
+      }
+      if (index + 1 < members.length && auxiliary.ownerTailBytes !== 0) {
+        fail(`nonfinal shared auxiliary fragment owns an assembly tail: ${first.outputSection}`);
+      }
+      auxiliary.ownerFragmentIndex = index;
+      auxiliary.ownerFragmentCount = members.length;
+      romCursor = auxiliary.romEndNumber;
+      vramCursor = auxiliary.vramEndNumber;
+    }
+    const final = members[members.length - 1].auxiliary;
+    if (final.ownerTailRomStartNumber !== romCursor
+        || final.ownerTailVramStartNumber !== vramCursor
+        || final.ownerTailRomEndNumber !== first.ownerRomEndNumber
+        || final.ownerTailVramEndNumber !== first.ownerVramEndNumber
+        || final.ownerTailBytes !== first.ownerRomEndNumber - romCursor) {
+      fail(`shared auxiliary fragments and tail do not exactly cover accepted owner: ${first.outputSection}`);
+    }
+  }
+  return groups;
 }
 
 function assertEquivalent(symbol, field, derived, legacy) {
@@ -624,6 +769,8 @@ function loadActiveTargetModel(options = {}) {
       descriptorRawSha256: descriptor ? descriptor.rawSha256 : null,
       expectedTextSha256,
       expectedRelocations: relocationContract.expectedRelocations,
+      compilerTextFunctionsExplicit: relocationContract.compilerTextFunctions.length > 0,
+      compilerTextFunctions: [],
       auxiliarySections: [],
       relocationContractSource: relocationContract.source,
       legacyAncillaryRelocations: legacyTarget ? (legacyTarget.expectedRelocations || []).filter((record) => record.section === '.rel.pdr') : [],
@@ -632,6 +779,10 @@ function loadActiveTargetModel(options = {}) {
       model,
       row,
     };
+    target.compilerTextFunctions = resolveCompilerTextFunctions(
+      target,
+      relocationContract.compilerTextFunctions,
+    );
     target.auxiliarySections = resolveAuxiliarySectionContracts(
       model,
       baserom,
@@ -682,23 +833,12 @@ function loadActiveTargetModel(options = {}) {
 
   const rows = new Set();
   const symbols = new Set();
-  const textSections = new Set(targets.map((target) => target.sectionName));
-  const auxiliarySections = new Set();
-  const auxiliaryRows = new Set();
   for (const target of targets) {
     if (rows.has(target.rowIndex) || symbols.has(target.symbol.toLowerCase())) fail('active target list contains duplicate owners');
     rows.add(target.rowIndex);
     symbols.add(target.symbol.toLowerCase());
-    for (const auxiliary of target.auxiliarySections) {
-      if (textSections.has(auxiliary.outputSection)
-          || auxiliarySections.has(auxiliary.outputSection)
-          || auxiliaryRows.has(auxiliary.ownerRowIndex)) {
-        fail(`active auxiliary-section ownership collision: ${target.symbol} ${auxiliary.outputSection}`);
-      }
-      auxiliarySections.add(auxiliary.outputSection);
-      auxiliaryRows.add(auxiliary.ownerRowIndex);
-    }
   }
+  validateAuxiliaryOwnerGroups(targets);
   return {
     config: { ...minimal, compiler: legacy.compiler },
     compatibility,
@@ -729,13 +869,16 @@ module.exports = {
   loadActiveTargetModel,
   normalizeAuxiliaryRelocationRecords,
   normalizeAuxiliarySectionContracts,
+  normalizeCompilerTextFunctions,
   normalizeRelocationRecords,
   parseNumber,
   resolveAcceptedRow,
   resolveAuxiliarySectionContracts,
+  resolveCompilerTextFunctions,
   safeRelative,
   selectRelocationContract,
   validateLinkageConfig,
+  validateAuxiliaryOwnerGroups,
   validateNoActiveLinkSymbolShadows,
   validateToolchainPin,
 };

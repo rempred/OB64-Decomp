@@ -8,8 +8,12 @@ const {
   LINKAGE_CONFIG_PATH,
   LEGACY_CONFIG_PATH,
   loadActiveTargetModel,
+  normalizeAuxiliarySectionContracts,
+  resolveAcceptedRow,
   resolveAuxiliarySectionContracts,
+  resolveCompilerTextFunctions,
   selectRelocationContract,
+  validateAuxiliaryOwnerGroups,
   validateLinkageConfig,
   validateNoActiveLinkSymbolShadows,
   validateToolchainPin,
@@ -53,6 +57,66 @@ function main() {
       || unpaddedCanary.expectedTrailingPaddingSha256 !== 'E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855') {
     throw new Error('canonical unpadded auxiliary switch-table behavior drift');
   }
+  const compilerTextFixture = [
+    {
+      symbol: canaryTarget.symbol,
+      offset: '0x00000000',
+      bytes: 4,
+      binding: 'GLOBAL',
+      entryEvidence: 'owner',
+    },
+    {
+      symbol: `${canaryTarget.symbol}_local_0004`,
+      offset: '0x00000004',
+      bytes: canaryTarget.bytes - 4,
+      binding: 'LOCAL',
+      entryEvidence: 'internal-call-only',
+    },
+  ];
+  const compilerTextFixtureConfig = {
+    ...linkage,
+    targets: linkage.targets.map((entry) => entry.symbol === canaryEntry.symbol ? {
+      ...entry,
+      compilerTextFunctions: compilerTextFixture,
+    } : entry),
+  };
+  const normalizedCompilerTextFixture = validateLinkageConfig(
+    compilerTextFixtureConfig,
+    active.minimalConfig.profile,
+  ).targets.get(canaryEntry.symbol.toLowerCase()).compilerTextFunctions;
+  const resolvedCompilerTextFixture = resolveCompilerTextFunctions(canaryTarget, normalizedCompilerTextFixture);
+  if (resolvedCompilerTextFixture.length !== 2
+      || resolvedCompilerTextFixture[0].bytes !== 4
+      || resolvedCompilerTextFixture[1].offsetNumber !== 4
+      || resolvedCompilerTextFixture[1].binding !== 'LOCAL') {
+    throw new Error('compiler text-function partition normalization drift');
+  }
+  const mutateCompilerTextFixture = (mutate) => ({
+    ...linkage,
+    targets: linkage.targets.map((entry) => entry.symbol === canaryEntry.symbol ? {
+      ...entry,
+      compilerTextFunctions: mutate(compilerTextFixture.map((record) => ({ ...record }))),
+    } : entry),
+  });
+  const rejectedCompilerTextMutations = [
+    ['single function escape hatch', (records) => records.slice(0, 1), validateLinkageConfig],
+    ['primary symbol', (records) => [{ ...records[0], symbol: 'invented_owner' }, records[1]], validateLinkageConfig],
+    ['primary binding', (records) => [{ ...records[0], binding: 'LOCAL' }, records[1]], validateLinkageConfig],
+    ['local export', (records) => [records[0], { ...records[1], binding: 'GLOBAL' }], validateLinkageConfig],
+    ['unknown evidence', (records) => [records[0], { ...records[1], entryEvidence: 'guessed' }], validateLinkageConfig],
+    ['unaligned offset', (records) => [records[0], { ...records[1], offset: '0x00000002' }], validateLinkageConfig],
+    ['duplicate symbol', (records) => [records[0], { ...records[1], symbol: records[0].symbol }], validateLinkageConfig],
+    ['unexpected field', (records) => [records[0], { ...records[1], alias: true }], validateLinkageConfig],
+    ['gap', (records) => [records[0], { ...records[1], offset: '0x00000008', bytes: records[1].bytes - 4 }], resolveCompilerTextFunctions],
+    ['overlap', (records) => [{ ...records[0], bytes: 8 }, records[1]], resolveCompilerTextFunctions],
+    ['short coverage', (records) => [records[0], { ...records[1], bytes: records[1].bytes - 4 }], resolveCompilerTextFunctions],
+  ].map(([name, mutate, validator]) => expectRejection(`compiler text ${name}`, () => {
+    const mutation = mutateCompilerTextFixture(mutate);
+    const reviewed = validateLinkageConfig(mutation, active.minimalConfig.profile);
+    if (validator === resolveCompilerTextFunctions) {
+      resolveCompilerTextFunctions(canaryTarget, reviewed.targets.get(canaryEntry.symbol.toLowerCase()).compilerTextFunctions);
+    }
+  }));
   const paddedFixture = {
     ...canaryEntry.auxiliarySections[0],
     entries: 7,
@@ -106,6 +170,136 @@ function main() {
       || normalizedLegacyUnpaddedFixture.bytes !== 28) {
     throw new Error('legacy unpadded auxiliary switch-table compatibility drift');
   }
+  const secondOwnerRow = resolveAcceptedRow(active.model, 'func_002861C8');
+  const secondOwnerSlice = secondOwnerRow.slices.find((slice) => slice.executable);
+  if (!secondOwnerSlice) throw new Error('func_002861C8 accepted executable slice is missing');
+  const secondOwnerTarget = {
+    symbol: 'func_002861C8',
+    targetIndex: canaryTarget.targetIndex + 1,
+    chunkIndex: secondOwnerRow.part.chunkIndex,
+    overlayDescriptorId: secondOwnerSlice.overlayDescriptorId,
+    bytes: secondOwnerRow.bytes,
+    vramStartNumber: secondOwnerSlice.vramStart,
+    sectionName: secondOwnerSlice.sectionName,
+  };
+  const sharedSecondRaw = {
+    kind: 'switch-table',
+    compilerSection: '.rodata',
+    outputSection: '.ob64.r5131',
+    sectionType: 'SHT_PROGBITS',
+    sectionFlags: ['SHF_ALLOC'],
+    alignment: 8,
+    romStart: '0x00286BB0',
+    romEndExclusive: '0x00286BC8',
+    vramStart: '0x8022ABE0',
+    vramEndExclusive: '0x8022ABF8',
+    bytes: 24,
+    entries: 6,
+    expectedObjectSha256: 'A9135899EECACABBA7D375B9AAF0F702020116739459D10E049FF5C6FB884EE5',
+    expectedLinkedSha256: '8BB46E4A653E8091810D96866D3A5D0CBCECF798DEAE3A6200901709D8642D17',
+    preservedTail: {
+      ...canaryEntry.auxiliarySections[0].preservedTail,
+      romStart: '0x00286BC8',
+      romEndExclusive: '0x00286BD0',
+      vramStart: '0x8022ABF8',
+      vramEndExclusive: '0x8022AC00',
+      bytes: 8,
+      expectedSha256: 'AF5570F5A1810B7AF78CAF4BC70A660F0DF51E42BAF91D4DE5B2328DE0E83DFC',
+    },
+    expectedRelocations: [
+      { offset: '0x00000000', type: 'R_MIPS_32', symbol: '.text', addend: '0x00000054', section: '.rel.rodata' },
+      { offset: '0x00000004', type: 'R_MIPS_32', symbol: '.text', addend: '0x00000070', section: '.rel.rodata' },
+      { offset: '0x00000008', type: 'R_MIPS_32', symbol: '.text', addend: '0x0000008C', section: '.rel.rodata' },
+      { offset: '0x0000000C', type: 'R_MIPS_32', symbol: '.text', addend: '0x000000AC', section: '.rel.rodata' },
+      { offset: '0x00000010', type: 'R_MIPS_32', symbol: '.text', addend: '0x000000CC', section: '.rel.rodata' },
+      { offset: '0x00000014', type: 'R_MIPS_32', symbol: '.text', addend: '0x000000E0', section: '.rel.rodata' },
+    ],
+  };
+  const makeSharedAuxiliaryTargets = () => {
+    const firstContract = normalizeAuxiliarySectionContracts(
+      [{ ...canaryEntry.auxiliarySections[0], preservedTail: null }],
+      canaryTarget.symbol,
+      'shared auxiliary first fixture',
+    );
+    const secondContract = normalizeAuxiliarySectionContracts(
+      [sharedSecondRaw],
+      secondOwnerTarget.symbol,
+      'shared auxiliary second fixture',
+    );
+    return [
+      {
+        ...canaryTarget,
+        auxiliarySections: resolveAuxiliarySectionContracts(
+          active.model,
+          fs.readFileSync(path.join(ROOT, 'build', 'baserom.us_rev0.z64')),
+          canaryTarget,
+          firstContract,
+        ),
+      },
+      {
+        ...secondOwnerTarget,
+        auxiliarySections: resolveAuxiliarySectionContracts(
+          active.model,
+          fs.readFileSync(path.join(ROOT, 'build', 'baserom.us_rev0.z64')),
+          secondOwnerTarget,
+          secondContract,
+        ),
+      },
+    ];
+  };
+  const sharedAuxiliaryTargets = makeSharedAuxiliaryTargets();
+  validateAuxiliaryOwnerGroups(sharedAuxiliaryTargets);
+  if (sharedAuxiliaryTargets[0].auxiliarySections[0].ownerFragmentIndex !== 0
+      || sharedAuxiliaryTargets[1].auxiliarySections[0].ownerFragmentIndex !== 1
+      || sharedAuxiliaryTargets[1].auxiliarySections[0].ownerTailBytes !== 8) {
+    throw new Error('shared auxiliary accepted-owner partition normalization drift');
+  }
+  const rejectedSharedAuxiliaryMutations = [
+    ['linker order', (targets) => targets.reverse()],
+    ['gap', (targets) => {
+      targets[1].auxiliarySections[0].romStartNumber += 4;
+      targets[1].auxiliarySections[0].vramStartNumber += 4;
+      return targets;
+    }],
+    ['overlap', (targets) => {
+      targets[1].auxiliarySections[0].romStartNumber -= 4;
+      targets[1].auxiliarySections[0].vramStartNumber -= 4;
+      return targets;
+    }],
+    ['duplicate tail', (targets) => {
+      Object.assign(targets[0].auxiliarySections[0], {
+        ownerTailSection: '.ob64.r5131.tail',
+        ownerTailBytes: 32,
+      });
+      return targets;
+    }],
+    ['missing final tail', (targets) => {
+      const auxiliary = targets[1].auxiliarySections[0];
+      Object.assign(auxiliary, {
+        ownerTailSection: null,
+        ownerTailBytes: 0,
+        ownerTailRomStartNumber: auxiliary.romEndNumber,
+        ownerTailRomEndNumber: auxiliary.romEndNumber,
+        ownerTailVramStartNumber: auxiliary.vramEndNumber,
+        ownerTailVramEndNumber: auxiliary.vramEndNumber,
+      });
+      return targets;
+    }],
+    ['alignment', (targets) => {
+      targets[1].auxiliarySections[0].alignment = 4;
+      return targets;
+    }],
+    ['assembly chunk', (targets) => {
+      targets[1].chunkIndex += 1;
+      return targets;
+    }],
+    ['output section', (targets) => {
+      targets[1].auxiliarySections[0].outputSection = '.ob64.r5130';
+      return targets;
+    }],
+  ].map(([name, mutate]) => expectRejection(`shared auxiliary ${name}`, () => (
+    validateAuxiliaryOwnerGroups(mutate(makeSharedAuxiliaryTargets()))
+  )));
   const mutateCanaryAuxiliary = (mutate) => ({
     ...linkage,
     targets: linkage.targets.map((entry) => entry.symbol === canaryEntry.symbol ? {
@@ -337,7 +531,9 @@ function main() {
     toolchain: active.toolchain.identity,
     rejectedToolchainMutations,
     rejectedLinkageMutations,
+    rejectedCompilerTextMutations,
     rejectedAuxiliaryMutations,
+    rejectedSharedAuxiliaryMutations,
     rejectedPaddingMutations,
     rejectedActiveLinkSymbolShadows,
     rejectedContractMutations,

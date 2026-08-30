@@ -519,7 +519,7 @@ function copyPhase7Objects(phase8, phase7, output, objcopy) {
 
     const originalElf = parseElfFile(fallbackObject);
     const originalTargets = [];
-    const originalAuxiliaryOwners = [];
+    const auxiliaryGroups = new Map();
     for (const target of chunkTargets) {
       const matches = originalElf.sections.filter((section) => section.name === target.sectionName);
       if (matches.length !== 1 || matches[0].size !== target.bytes) fail('original fallback target section drift: ' + target.symbol);
@@ -527,28 +527,49 @@ function copyPhase7Objects(phase8, phase7, output, objcopy) {
       if (sha256Buffer(originalBytes) !== target.expectedTextSha256) fail('original fallback target bytes drift: ' + target.symbol);
       originalTargets.push({ target, section: matches[0], bytes: originalBytes });
       for (const auxiliary of target.auxiliarySections || []) {
-        const auxiliaryMatches = originalElf.sections.filter((section) => section.name === auxiliary.outputSection);
-        if (auxiliaryMatches.length !== 1
-            || auxiliaryMatches[0].type !== 1
-            || auxiliaryMatches[0].flags !== 2
-            || auxiliaryMatches[0].size !== auxiliary.ownerSectionBytes) {
-          fail('original fallback auxiliary section drift: ' + target.symbol + ' ' + auxiliary.outputSection);
-        }
-        const ownerBytes = Buffer.from(elfSectionBytes(originalElf, auxiliaryMatches[0]));
-        const tableBytes = Buffer.from(ownerBytes.subarray(0, auxiliary.bytes));
-        const tailBytes = Buffer.from(ownerBytes.subarray(auxiliary.bytes));
+        if (!auxiliaryGroups.has(auxiliary.ownerRowIndex)) auxiliaryGroups.set(auxiliary.ownerRowIndex, []);
+        auxiliaryGroups.get(auxiliary.ownerRowIndex).push({ target, auxiliary });
+      }
+    }
+    const originalAuxiliaryOwners = [];
+    for (const members of auxiliaryGroups.values()) {
+      const first = members[0];
+      const auxiliaryMatches = originalElf.sections.filter((section) => section.name === first.auxiliary.outputSection);
+      if (auxiliaryMatches.length !== 1
+          || auxiliaryMatches[0].type !== 1
+          || auxiliaryMatches[0].flags !== 2
+          || auxiliaryMatches[0].size !== first.auxiliary.ownerSectionBytes) {
+        fail('original fallback auxiliary section drift: ' + first.target.symbol + ' ' + first.auxiliary.outputSection);
+      }
+      const ownerBytes = Buffer.from(elfSectionBytes(originalElf, auxiliaryMatches[0]));
+      for (const member of members) {
+        const offset = member.auxiliary.romStartNumber - member.auxiliary.ownerRomStartNumber;
+        const tableBytes = Buffer.from(ownerBytes.subarray(offset, offset + member.auxiliary.bytes));
         verifyAuxiliaryPaddingBytes(
           tableBytes,
-          auxiliary,
-          target.symbol + ' ' + auxiliary.outputSection + ' original fallback bytes',
+          member.auxiliary,
+          member.target.symbol + ' ' + member.auxiliary.outputSection + ' original fallback bytes',
         );
-        if (tableBytes.length !== auxiliary.bytes
-            || tailBytes.length !== auxiliary.ownerTailBytes
-            || sha256Buffer(tableBytes) !== auxiliary.expectedLinkedSha256) {
-          fail('original fallback auxiliary bytes drift: ' + target.symbol + ' ' + auxiliary.outputSection);
+        if (tableBytes.length !== member.auxiliary.bytes
+            || sha256Buffer(tableBytes) !== member.auxiliary.expectedLinkedSha256) {
+          fail('original fallback auxiliary bytes drift: ' + member.target.symbol + ' ' + member.auxiliary.outputSection);
         }
-        originalAuxiliaryOwners.push({ target, auxiliary, section: auxiliaryMatches[0], ownerBytes, tailBytes });
       }
+      const final = members[members.length - 1];
+      const tailOffset = final.auxiliary.ownerTailRomStartNumber - final.auxiliary.ownerRomStartNumber;
+      const tailBytes = Buffer.from(ownerBytes.subarray(tailOffset));
+      if (tailBytes.length !== final.auxiliary.ownerTailBytes
+          || sha256Buffer(tailBytes) !== final.auxiliary.ownerTailSha256) {
+        fail('original fallback shared auxiliary tail drift: ' + final.target.symbol + ' ' + final.auxiliary.outputSection);
+      }
+      originalAuxiliaryOwners.push({
+        members,
+        target: final.target,
+        auxiliary: final.auxiliary,
+        section: auxiliaryMatches[0],
+        ownerBytes,
+        tailBytes,
+      });
     }
 
     const objcopyArgs = [];
@@ -589,16 +610,54 @@ function copyPhase7Objects(phase8, phase7, output, objcopy) {
 
     const auxiliaryTails = [];
     for (const owner of originalAuxiliaryOwners) {
+      for (const member of owner.members.slice(0, -1)) {
+        auxiliaryTails.push({
+          symbol: member.target.symbol,
+          outputSection: member.auxiliary.outputSection,
+          inputSection: null,
+          sectionType: 'SHT_PROGBITS',
+          sectionFlags: ['SHF_ALLOC'],
+          alignment: member.auxiliary.ownerTailAlignment,
+          tableBytes: member.auxiliary.bytes,
+          entryBytes: member.auxiliary.entryBytes,
+          trailingPaddingBytes: member.auxiliary.trailingPaddingBytes,
+          trailingPaddingSha256: member.auxiliary.expectedTrailingPaddingSha256,
+          tailBytes: 0,
+          tailSha256: member.auxiliary.ownerTailSha256,
+          romStart: member.auxiliary.ownerTailRomStartNumber,
+          romEndExclusive: member.auxiliary.ownerTailRomEndNumber,
+          vramStart: member.auxiliary.ownerTailVramStartNumber,
+          vramEndExclusive: member.auxiliary.ownerTailVramEndNumber,
+          ownerOriginalAssembly: member.auxiliary.ownerOriginalAssembly,
+          ownerOriginalAssemblySha256: member.auxiliary.ownerOriginalAssemblySha256,
+          binaryRelative: null,
+          binarySha256: null,
+          objectRelative: null,
+          objectSha256: null,
+        });
+      }
       if (owner.tailBytes.length === 0) {
         auxiliaryTails.push({
           symbol: owner.target.symbol,
           outputSection: owner.auxiliary.outputSection,
+          inputSection: null,
+          sectionType: 'SHT_PROGBITS',
+          sectionFlags: ['SHF_ALLOC'],
+          alignment: owner.auxiliary.ownerTailAlignment,
           tableBytes: owner.auxiliary.bytes,
           entryBytes: owner.auxiliary.entryBytes,
           trailingPaddingBytes: owner.auxiliary.trailingPaddingBytes,
           trailingPaddingSha256: owner.auxiliary.expectedTrailingPaddingSha256,
           tailBytes: 0,
+          tailSha256: owner.auxiliary.ownerTailSha256,
+          romStart: owner.auxiliary.ownerTailRomStartNumber,
+          romEndExclusive: owner.auxiliary.ownerTailRomEndNumber,
+          vramStart: owner.auxiliary.ownerTailVramStartNumber,
+          vramEndExclusive: owner.auxiliary.ownerTailVramEndNumber,
+          ownerOriginalAssembly: owner.auxiliary.ownerOriginalAssembly,
+          ownerOriginalAssemblySha256: owner.auxiliary.ownerOriginalAssemblySha256,
           binaryRelative: null,
+          binarySha256: null,
           objectRelative: null,
           objectSha256: null,
         });
@@ -718,10 +777,54 @@ function sortRelocationRecords(records) {
   });
 }
 
+function expectedCompilerTextFunctionEvidence(target, linked = false) {
+  const base = linked ? target.vramStartNumber : 0;
+  return target.compilerTextFunctions.map((expected) => ({
+    symbol: expected.symbol,
+    offset: expected.offset,
+    bytes: expected.bytes,
+    binding: expected.binding,
+    entryEvidence: expected.entryEvidence,
+    value: hex(base + expected.offsetNumber),
+  }));
+}
+
+function verifyCompilerTextFunctions(elf, target, section, linked = false) {
+  if (!section || !Array.isArray(target.compilerTextFunctions) || target.compilerTextFunctions.length === 0) {
+    fail('compiler text-function verification metadata is malformed: ' + target.symbol);
+  }
+  const base = linked ? target.vramStartNumber : 0;
+  const allFunctions = elf.symbols.filter((symbol) => (
+    symbol.sectionIndex === section.index && symbol.symbolType === 2
+  ));
+  const actual = target.compilerTextFunctionsExplicit
+    ? allFunctions
+    : allFunctions.filter((symbol) => symbol.name === target.symbol);
+  if (actual.length !== target.compilerTextFunctions.length) {
+    fail('compiler text-function symbol census drift: ' + target.symbol);
+  }
+  const evidence = expectedCompilerTextFunctionEvidence(target, linked);
+  for (const expected of target.compilerTextFunctions) {
+    const matches = actual.filter((symbol) => symbol.name === expected.symbol);
+    const expectedBinding = expected.binding === 'GLOBAL' ? 1 : 0;
+    if (matches.length !== 1
+        || matches[0].value !== base + expected.offsetNumber
+        || matches[0].size !== expected.bytes
+        || matches[0].binding !== expectedBinding
+        || matches[0].visibility !== 0) {
+      fail('compiler text-function symbol placement drift: ' + target.symbol + ' ' + expected.symbol);
+    }
+  }
+  return evidence;
+}
+
 function relocationRecords(elf, target) {
   const targetSections = elf.sections.filter((section) => section.name === target.sectionName);
   if (targetSections.length !== 1) fail('target relocation section owner drift: ' + target.symbol);
   const targetSection = targetSections[0];
+  const compilerTextFunctions = Array.isArray(target.compilerTextFunctions)
+    ? target.compilerTextFunctions
+    : [{ symbol: target.symbol, offsetNumber: 0 }];
   const auxiliaryBySectionIndex = new Map();
   for (const auxiliary of target.auxiliarySections || []) {
     const sections = elf.sections.filter((section) => section.name === auxiliary.outputSection);
@@ -732,9 +835,11 @@ function relocationRecords(elf, target) {
     .filter((record) => record.section === '.rel' + target.sectionName)
     .map((record) => {
       let symbol = record.symbol;
-      if ((record.symbol === target.symbol
+      const contractedFunction = compilerTextFunctions.find((entry) => entry.symbol === record.symbol);
+      if ((contractedFunction
+            && record.symbolType === 2
             && record.symbolSectionIndex === targetSection.index
-            && record.symbolValue === 0)
+            && record.symbolValue === contractedFunction.offsetNumber)
           || (record.symbolType === 3 && record.symbolSectionIndex === targetSection.index && record.symbolValue === 0)) {
         symbol = '.text';
       } else if (record.symbolType === 3
@@ -862,11 +967,7 @@ function compileTarget(phase8, target, output, compiler, assembler, objcopy, opt
     fail('KMC target object section shape drift: ' + target.symbol);
   }
   const textBytes = Buffer.from(elfSectionBytes(elf, sections[0]));
-  const symbols = elf.symbols.filter((symbol) => symbol.name === target.symbol && symbol.sectionIndex !== 0);
-  if (symbols.length !== 1 || symbols[0].value !== 0 || symbols[0].size !== sections[0].size || symbols[0].binding !== 1
-      || (enforceAcceptedContract && symbols[0].size !== target.bytes)) {
-    fail('KMC target object symbol drift: ' + target.symbol);
-  }
+  const compilerTextFunctions = verifyCompilerTextFunctions(elf, target, sections[0]);
   for (const name of ['.data', '.bss']) {
     const section = elf.sections.find((candidate) => candidate.name === name);
     if (section && section.size !== 0) fail('KMC target unexpectedly owns ' + name + ' bytes: ' + target.symbol);
@@ -933,6 +1034,12 @@ function compileTarget(phase8, target, output, compiler, assembler, objcopy, opt
   if (linkedSections.length !== 1 || !Buffer.from(elfSectionBytes(linkedObjectElf, linkedSections[0])).equals(textBytes)) {
     fail('ancillary-section removal changed target bytes: ' + target.symbol);
   }
+  if (!sameJson(
+    verifyCompilerTextFunctions(linkedObjectElf, target, linkedSections[0]),
+    compilerTextFunctions,
+  )) {
+    fail('ancillary-section removal changed compiler text-function evidence: ' + target.symbol);
+  }
   for (const auxiliary of acceptedAuxiliarySections) {
     const sourceSection = elf.sections.find((section) => section.name === auxiliary.outputSection);
     const linkedMatches = linkedObjectElf.sections.filter((section) => section.name === auxiliary.outputSection);
@@ -960,6 +1067,7 @@ function compileTarget(phase8, target, output, compiler, assembler, objcopy, opt
     compilerAssemblyRewritten: false,
     textBytes: textBytes.length,
     textSha256: sha256Buffer(textBytes),
+    compilerTextFunctions,
     relocations,
     auxiliarySections: auxiliaryRecords,
   };
@@ -1000,6 +1108,7 @@ function deriveSourceObjectProof(phase8, target, output, classification, linkedE
     fail('source-to-object proof section shape drift: ' + target.symbol);
   }
   const objectText = Buffer.from(elfSectionBytes(objectElf, objectSections[0]));
+  const objectTextFunctions = verifyCompilerTextFunctions(objectElf, target, objectSections[0]);
   const allRelocations = rawRelocationRecords(objectElf);
   const loadRelocationSections = new Set(['.rel' + target.sectionName]);
   const rawLoadRelevant = allRelocations.filter((record) => record.section === '.rel' + target.sectionName);
@@ -1008,6 +1117,9 @@ function deriveSourceObjectProof(phase8, target, output, classification, linkedE
     fail('source-to-object load-relevant relocation drift: ' + target.symbol);
   }
   const rawComparison = compareLinkedTargetBytes(target, linkedElf, canonicalBaserom);
+  const linkedTextSections = linkedElf.sections.filter((section) => section.name === target.sectionName);
+  if (linkedTextSections.length !== 1) fail('source-to-object linked text owner drift: ' + target.symbol);
+  const linkedTextFunctions = verifyCompilerTextFunctions(linkedElf, target, linkedTextSections[0], true);
   const auxiliaryProofs = (target.auxiliarySections || []).map((auxiliary) => {
     const sections = objectElf.sections.filter((section) => section.name === auxiliary.outputSection);
     if (sections.length !== 1
@@ -1110,6 +1222,7 @@ function deriveSourceObjectProof(phase8, target, output, classification, linkedE
       sectionName: target.sectionName,
       textBytes: objectText.length,
       textSha256: sha256Buffer(objectText),
+      compilerTextFunctions: objectTextFunctions,
       loadRelevantRelocationsRaw: rawLoadRelevant,
       loadRelevantRelocationsNormalized: normalizedLoadRelevant,
       acceptedLoadRelevantRelocations: target.expectedRelocations,
@@ -1128,6 +1241,7 @@ function deriveSourceObjectProof(phase8, target, output, classification, linkedE
       linkedSha256: rawComparison.linkedTargetSha256,
       expectedSha256: rawComparison.expectedTargetSha256,
       rawBytesExact: rawComparison.rawBytesExact,
+      compilerTextFunctions: linkedTextFunctions,
       auxiliarySections: auxiliaryProofs.map((auxiliary) => ({
         compilerSection: auxiliary.compilerSection,
         outputSection: auxiliary.outputSection,
@@ -1354,7 +1468,9 @@ function writeLayout(phase8, phase7, output, replacements) {
   });
   layout.phase8AuxiliarySections = phase8.targets.flatMap((target) => target.auxiliarySections.map((auxiliary) => {
     const replacement = replacements.get(target.chunkIndex);
-    const tail = replacement.auxiliaryTails.find((record) => record.outputSection === auxiliary.outputSection);
+    const tail = replacement.auxiliaryTails.find((record) => (
+      record.symbol === target.symbol && record.outputSection === auxiliary.outputSection
+    ));
     if (!tail) fail('Phase 8 auxiliary preserved-tail record is missing: ' + target.symbol);
     return {
       symbol: target.symbol,
@@ -1396,8 +1512,11 @@ function linkPhase8(phase8, output, objectManifest, tools) {
   }
   const aliasText = [...aliases.entries()].sort((left, right) => left[0].localeCompare(right[0])).map(([symbol, value]) => symbol + ' = ' + hex(value) + ';');
   let linkerText = renderLinkerScript(phase8.model);
+  const assignedAuxiliaryOwners = new Set();
   for (const target of phase8.targets) {
     for (const auxiliary of target.auxiliarySections) {
+      if (assignedAuxiliaryOwners.has(auxiliary.ownerRowIndex)) continue;
+      assignedAuxiliaryOwners.add(auxiliary.ownerRowIndex);
       const selector = `    *(${auxiliary.outputSection})`;
       const occurrences = linkerText.split(selector).length - 1;
       const symbolOffset = auxiliary.ownerSymbolVram - auxiliary.ownerVramStartNumber;
@@ -1824,17 +1943,17 @@ function verifyPhase8Output(phase8, options) {
     const rawComparison = compareLinkedTargetBytes(target, elf, canonicalBaserom);
     if (!rawComparison.rawBytesExact) fail('linked target bytes differ from the accepted ROM reference: ' + target.symbol);
     const linkedText = rawComparison.linkedBytes;
-    const linkedSymbols = elf.symbols.filter((symbol) => symbol.name === target.symbol && symbol.sectionIndex !== 0);
-    if (linkedSymbols.length !== 1
-        || linkedSymbols[0].value !== target.vramStartNumber
-        || linkedSymbols[0].size !== target.bytes
-        || linkedSymbols[0].binding !== 1) {
-      fail('linked target symbol placement drift: ' + target.symbol);
-    }
+    const linkedTextFunctions = verifyCompilerTextFunctions(
+      elf,
+      target,
+      elf.sections.find((section) => section.name === target.sectionName),
+      true,
+    );
 
     const cElf = parseElfFile(cObject);
     const cSection = cElf.sections.find((section) => section.name === target.sectionName);
     if (!cSection || cSection.size !== target.bytes) fail('recorded C object target section shape drift: ' + target.symbol);
+    verifyCompilerTextFunctions(cElf, target, cSection);
     const relocations = relocationRecords(cElf, target);
     if (!sameJson(relocations, target.expectedRelocations)) fail('recorded C object relocation drift: ' + target.symbol);
 
@@ -1879,13 +1998,20 @@ function verifyPhase8Output(phase8, options) {
         fail('recorded C object auxiliary evidence drift: ' + target.symbol + ' ' + auxiliary.outputSection);
       }
       const fallbackAuxiliarySections = fallbackElf.sections.filter((section) => section.name === auxiliary.outputSection);
+      const fallbackOffset = auxiliary.romStartNumber - auxiliary.ownerRomStartNumber;
       if (fallbackAuxiliarySections.length !== 1
           || fallbackAuxiliarySections[0].size !== auxiliary.ownerSectionBytes
-          || sha256Buffer(Buffer.from(elfSectionBytes(fallbackElf, fallbackAuxiliarySections[0])).subarray(0, auxiliary.bytes)) !== auxiliary.expectedLinkedSha256) {
+          || sha256Buffer(Buffer.from(elfSectionBytes(fallbackElf, fallbackAuxiliarySections[0])).subarray(
+            fallbackOffset,
+            fallbackOffset + auxiliary.bytes,
+          )) !== auxiliary.expectedLinkedSha256) {
         fail('original assembly auxiliary comparison bytes drift: ' + target.symbol + ' ' + auxiliary.outputSection);
       }
       verifyAuxiliaryPaddingBytes(
-        Buffer.from(elfSectionBytes(fallbackElf, fallbackAuxiliarySections[0])).subarray(0, auxiliary.bytes),
+        Buffer.from(elfSectionBytes(fallbackElf, fallbackAuxiliarySections[0])).subarray(
+          fallbackOffset,
+          fallbackOffset + auxiliary.bytes,
+        ),
         auxiliary,
         target.symbol + ' ' + auxiliary.outputSection + ' verified fallback bytes',
       );
@@ -1893,7 +2019,11 @@ function verifyPhase8Output(phase8, options) {
         fail('original assembly auxiliary table remains a linked owner: ' + target.symbol + ' ' + auxiliary.outputSection);
       }
       const fallbackOwnerBytes = Buffer.from(elfSectionBytes(fallbackElf, fallbackAuxiliarySections[0]));
-      const expectedTailBytes = Buffer.from(fallbackOwnerBytes.subarray(auxiliary.bytes));
+      const tailOffset = auxiliary.ownerTailRomStartNumber - auxiliary.ownerRomStartNumber;
+      const expectedTailBytes = Buffer.from(fallbackOwnerBytes.subarray(
+        tailOffset,
+        tailOffset + auxiliary.ownerTailBytes,
+      ));
       if (tail.tailBytes !== expectedTailBytes.length) {
         fail('accepted assembly auxiliary tail size drift: ' + target.symbol + ' ' + auxiliary.outputSection);
       }
@@ -1956,7 +2086,8 @@ function verifyPhase8Output(phase8, options) {
       differingByteCount: rawComparison.differingByteCount,
       differingInstructionWordCount: rawComparison.differingInstructionWordCount,
       firstDifferenceOffset: rawComparison.firstDifferenceOffset,
-      linkedSymbolValue: hex(linkedSymbols[0].value),
+      linkedSymbolValue: linkedTextFunctions[0].value,
+      compilerTextFunctions: linkedTextFunctions,
       linkedOwner: mapOwner.linkedOwner,
       mapContribution: mapOwner.contribution,
       relocations,
@@ -2107,6 +2238,8 @@ function validateRecordedPhase8Build(phase8, options) {
         || replacement.sourceClass !== verifiedTarget.sourceObjectEvidence.sourceClass
         || replacement.sourcePolicyDigest !== verifiedTarget.sourceObjectEvidence.sourcePolicyDigest
         || replacement.compilerAssemblyRewritten !== false
+        || !sameJson(replacement.compilerTextFunctions, expectedCompilerTextFunctionEvidence(target))
+        || !sameJson(verifiedTarget.compilerTextFunctions, expectedCompilerTextFunctionEvidence(target, true))
         || !Array.isArray(replacement.auxiliarySections)
         || !Array.isArray(replacement.auxiliaryTails)
         || !Array.isArray(verifiedTarget.auxiliarySections)
@@ -2239,6 +2372,7 @@ module.exports = {
   verifyAuxiliaryPaddingBytes,
   validateSourceObjectProofBytes,
   validateTargetClassifications,
+  verifyCompilerTextFunctions,
   verifyCompiler,
   verifySourceObjectProofs,
   verifyObjectManifest,

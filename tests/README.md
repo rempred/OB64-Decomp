@@ -19,6 +19,8 @@ node tests/source_policy.js
 node tests/binutils_smoke.js
 node tests/word_asm_smoke.js
 node tests/matching_workbench.js
+node tests/compiler_text_functions.js
+node tests/func_002861C8_structure.js
 ```
 
 `tests/matching_workbench.js` covers deterministic mismatch classes,
@@ -45,7 +47,14 @@ a substitute for canonical linked/full-ROM verification. Sweep resume and
 membership behavior are covered by the unit suite above.
 
 `tests/active_targets.js` also validates the shared matching-C symbol registry, rejects malformed
-or missing reviewed relocation contracts, and checks the canonical-to-legacy migration bridge.
+or missing reviewed relocation contracts, checks explicit compiler text-function partitions and
+shared auxiliary-row coverage, and checks the canonical-to-legacy migration bridge.
+
+`tests/compiler_text_functions.js` rejects missing, extra, moved, resized, exported, hidden, or
+wrong-section compiler-local entries. `tests/func_002861C8_structure.js` pins the complete accepted
+owner and control-flow census, distinguishes the internal-only `+0x134` entry from the externally
+called local `+0x230` entry, and proves the six-entry compiler table plus final eight-byte assembly
+tail.
 
 Use a completed external Phase 8 build for the artifact and fail-closed suites:
 

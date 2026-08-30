@@ -73,13 +73,21 @@ For both `PURE_C` and `HYBRID_C`, the production path preserves the authenticate
 assembly byte-for-byte. Ordinarily the only generated change is replacement of the sole `.text`
 directive with the accepted target-section directive. A target-specific reviewed linkage contract
 may additionally assign the exact `.text` regions and one compiler-emitted read-only switch-table
-`.rodata` region to accepted output sections. The contract fixes the auxiliary section's
+`.rodata` region per target to accepted output sections. A reviewed multi-function text contract
+may describe compiler-emitted local functions only when their exact offsets and sizes gaplessly
+partition the single accepted text owner; it cannot export a new symbol or split source ownership.
+The auxiliary contract fixes the section's
 read-only `PROGBITS` shape, alignment, size, hashes, relocations, placement, and ownership. The
 assignment changes section directives only; it does not rewrite instructions, labels, table
 entries, or relocations. Any preserved assembly remainder uses a uniquely named read-only
 `PROGBITS` input section under the same exact placement and ownership contract; `.data`, `.bss`,
 writable, executable, or uncontracted tail sections reject. The pinned GNU 2.6 assembler consumes
 the section-assigned file directly.
+
+When adjacent target-specific `.rodata` fragments share one accepted auxiliary row, their
+contracts must cover that row in linker order without gaps or overlaps. Only the final fragment may
+retain the single exact assembly tail. This shared-row representation does not change the accepted
+data boundary or turn either fragment into an independent structural owner.
 
 Source-to-object proof verifies the untouched compiler-assembly hash, section-adjusted hash,
 assembler identity and flags, raw object identity, target bytes, and load-relevant relocations.

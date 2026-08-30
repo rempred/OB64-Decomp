@@ -101,8 +101,12 @@ At minimum verify:
 - compiler flags used for matching remain pinned;
 - untouched KMC compiler output differs from assembler input only by the accepted target-section
   assignment and any target-specific reviewed read-only auxiliary-section assignment;
+- an explicit multi-function compiler contract gaplessly covers one accepted text owner, retains
+  exactly one global owner symbol, and keeps every reviewed secondary entry local;
 - a partially replaced auxiliary data row retains exact remainder bytes, placement, and assembly
   ownership through a unique read-only input section rather than `.data` or `.bss`;
+- multiple C switch-table fragments sharing one accepted auxiliary row are contiguous and ordered,
+  remove the original row once, and leave no gap, overlap, duplicate tail, or second load segment;
 - active configuration/build code contains no retired compiler-assembly rewrite stage or modern
   Binutils dependency;
 - the project-owned ELF report and program-header checks retain exact section VMA/LMA, flags,
