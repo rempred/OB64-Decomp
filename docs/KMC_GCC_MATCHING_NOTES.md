@@ -1,13 +1,13 @@
 # KMC GCC 2.7.2 Matching Notes
 
 Empirical compiler-behavior notes for ordinary matching-C work against the pinned
-KMC GCC 2.7.2 / GNU Binutils 2.6 toolchain. They were derived during the
+KMC GCC 2.7.2 / GNU Binutils 2.6 toolchain. The first notes came from the
 `func_000135a0` match (commit `1db925d`) and the verified `func_000490ec`
-worktree match (commit `ba2b75e`, promoted in `e76be61`). Unless a note
-explicitly says otherwise, it describes a result reproduced for one of those
-functions or a small probe, not a general model of the compiler. The accepted
-`func_000135a0` example and its conservative matching lesson are in
-`docs/dossiers/func-000135a0.md`.
+worktree match (commit `ba2b75e`, promoted in `e76be61`). Later exact matches
+and the fixed matching-workbench corpora supplied the additional observations
+below. This document records bounded experiments, not a general model of the
+compiler. The accepted `func_000135a0` example and its conservative matching
+lesson are in `docs/dossiers/func-000135a0.md`.
 
 The nonmatching `func_0006d7d8` session also supplied useful scoped stack-layout,
 control-flow, and negative experiments. Those observations are labeled below;
@@ -23,11 +23,52 @@ identity and flags come from the tracked active-target/toolchain contracts and
 their retained KMC provenance manifest; this file intentionally records no
 absolute paths.
 
+## Lesson evidence labels
+
+These labels describe the strength of a matching lesson. They do not add source
+classes or naming classes. `PURE_C`, `HYBRID_C`, `ASM`, `UNKNOWN`, and the
+three symbol-naming classes remain unchanged.
+
+- `REPRODUCED` — the technique produced canonically verified exact `PURE_C` in
+  at least two functions, or a controlled corpus reproduced the result.
+- `EXACT_SINGLE_FUNCTION` — one canonically verified exact `PURE_C` function
+  and controlled variants support the observation. Treat its exact spelling as
+  a case study, not a general rewrite rule.
+- `NONMATCHING_EXPERIMENT` — the experiment changed output in the expected
+  direction but did not produce an exact `PURE_C` function. It is a hypothesis
+  for a future diff, not a proven technique.
+
+Structural and tooling findings are identified separately. They are not C
+source-shape techniques and do not receive one of these lesson labels.
+
+## Technique index
+
+| Evidence | Symptom | Tested technique | Exact `PURE_C` evidence and limit |
+|---|---|---|---|
+| `REPRODUCED` | A small leaf needs a first draft | Use structured m2c without passing inferred context | 142 of the fixed 200 smallest leaves became verified matches, and those 142 had zero relocations; do not generalize this yield to larger or relocation-bearing functions |
+| `REPRODUCED` | An input is in `$a1`, `$a2`, or `$a3`, but generated C compresses the signature | Preserve unused earlier integer/pointer ABI slots | 12 exact functions across the calibration and second corpus; not established for floating-point, 64-bit, varargs, or ambiguous signatures |
+| `REPRODUCED` | A cursor byte is loaded too late | Retain the load in a local before an independent store | `func_00014614`, `func_00014988` |
+| `REPRODUCED` | A default-result temporary produces the wrong return CFG or extension | Use direct conditional returns and a correctly widened result | `func_0012E950`, `func_00201B18`, `func_0029C19C`; this ruleset regressed `func_00090e40`, which remained covered by another pass |
+| `REPRODUCED` | Cursor increments occur at the wrong instructions | Keep one- or two-byte advances at the corresponding loads | `func_000143dc`, `func_00014628` |
+| `EXACT_SINGLE_FUNCTION` | A mask and comparison fuse into the wrong expression tree | Materialize the masked value in a separate local | `func_00146094` |
+| `EXACT_SINGLE_FUNCTION` | Widths, branch polarity, local lifetimes, or grouping differ | Change only the source fact shown by the instruction diff | `func_000135a0` |
+| `EXACT_SINGLE_FUNCTION` | An otherwise exact straight-line tail has the wrong schedule | Reorder only the independent source stores | `func_000490ec` |
+| `REPRODUCED` | Retail has bottom-tested nested loop backedges | Use nested `do`/`while` only when the exact branch targets prove that structure | `func_000ba8a8`, `func_000ba918`; compatible exact shapes do not prove unique original syntax |
+| `EXACT_SINGLE_FUNCTION` | Parameter masks or switch lowering differ | Preserve narrow parameter widths when entry instructions support them | `func_000bb3d8` |
+| `EXACT_SINGLE_FUNCTION` | Address arithmetic folds into the wrong load tree | Materialize the supported lookup base before indexed access | `func_000bd26c` |
+| `EXACT_SINGLE_FUNCTION` | Only loop-body register fields differ | Express the proven nested scans as genuine loops | `func_002861C8`; ten loop variants matched, but this remains one owner |
+| `EXACT_SINGLE_FUNCTION` | Signed division uses the wrong correction branch | Spell the nonnegative/negative correction explicitly | `func_00283E14` for round-toward-zero division by four |
+| `EXACT_SINGLE_FUNCTION` | Only commutative pointer/integer operand order differs | Use an explicit 32-bit integer cast that preserves the expression tree | `func_002A05EC`; depends on the accepted 32-bit target model |
+| `REPRODUCED` | A numeric pointer produces the wrong address materialization | Use an independently supported symbol and its relocation | `func_001FFA8C` and the symbol-relative expression in `func_000490ec`; never invent a symbol for code generation |
+| `EXACT_SINGLE_FUNCTION` | A large function has the right behavior but wrong CFG/lifetime topology | Correct prototypes and joins, inspect pass dumps, then make a localized lifetime change | `func_00047a94`; its individual zero-cost source constructs are not automatic recipes |
+| `NONMATCHING_EXPERIMENT` | Several required stack offsets move independently | Model the offsets as fields of one local aggregate | `func_0006d7d8`; the aggregate reproduced offsets but the function did not become exact |
+
 ## Fast iteration harness
 
 Use the matching workbench instead of manually recreating the scratch pipeline:
 
 ```text
+node tools/match.js prepare <symbol> --variant structured
 node tools/match.js watch <symbol> --source <candidate.c>
 node tools/match.js classify <candidate-id> --include-details
 node tools/match.js compare <candidate-id> <candidate-id>
@@ -40,6 +81,20 @@ stores the experiment under ignored `build/matching/`. Use `probe` only when a
 specific compiler pass is the remaining question. These commands automate the
 fast loop; they do not prove linked ownership, relocation resolution, or the
 full ROM.
+
+Do not pass an inferred prototype to m2c by default. Context can still be
+generated for human inspection. Use `--with-context` only when callers,
+callees, and accepted types independently support that prototype.
+
+Evidence label: `REPRODUCED`. The fixed 200-smallest-leaf pilot used structured
+m2c with no context and produced 142 exact scratch candidates. All 142 were
+reviewed and later passed source policy, sole linked ownership, exact linked
+bytes, and the complete-ROM verifier. Every target in that result had zero
+relocations. In a separate ten-target A/B sample, generation without a passed
+prototype produced 8 exact candidates; `--with-context` produced 5. This is a
+strong first-draft result for small leaves, not a general 71-percent success
+claim for the ROM. See
+`docs/matching-c/matching-workbench-pilot-20260822.md`.
 
 Notes:
 
@@ -68,6 +123,36 @@ Notes:
   completion. Use the command's `Decoded instruction rows`, `Raw linked bytes`,
   and final verifier result as the acceptance signals, not the score alone.
 
+## Calibrated source-shape ensemble
+
+The workbench retains several narrow transforms because each produced an exact
+function that another pass missed. They form an ensemble. Do not select one
+transform as the universal structured form.
+
+Evidence label: `REPRODUCED` for ABI gaps, retained early loads, direct return
+flow, and explicit cursor steps. Evidence label: `EXACT_SINGLE_FUNCTION` for the
+masked-local transform.
+
+- `structured-abi-gaps` preserved missing integer/pointer argument slots. Four
+  first-corpus functions and eight second-corpus functions became exact.
+- `structured-load-first` loaded a cursor byte before an independent zero
+  store. `func_00014614` and `func_00014988` became exact.
+- `structured-return-flow` widened an inferred narrow result and replaced a
+  default/overwrite temporary with direct returns. `func_0012E950`,
+  `func_00201B18`, and `func_0029C19C` became exact.
+- `structured-cursor-steps` retained byte-cursor advances beside the loads.
+  `func_000143dc` and `func_00014628` became exact.
+- `structured-masked-local` retained a masked value as a separate temporary.
+  `func_00146094` became exact.
+
+The counterexamples define the limit. `structured-return-flow` lost the
+baseline match for `func_00090e40`, while another pass retained that function.
+The load-first pass had no unique win in the second corpus. Each transform
+refuses unrelated source shapes, and every generated candidate still needs the
+canonical linked and complete-ROM verifiers. See
+`docs/matching-c/matching-workbench-calibration-20260823.md` and
+`docs/matching-c/matching-workbench-ensemble-20260823.md`.
+
 ## Encoding facts
 
 Only final encoded words matter. The printed mnemonics in `.compiler.s` do not
@@ -89,7 +174,32 @@ disassembles both sides through the same objdump.
   branch-likely layout, including a store in the delay slot. Why the compiler
   chose that form is a useful working explanation, not a proven general rule.
 
+## Before register-allocation experiments
+
+Do not start broad register experiments merely because asm-differ colors show
+different registers. Confirm these prerequisites first:
+
+1. The accepted owner, executable extent, and placement are correct.
+2. Candidate and retail instruction extents agree.
+3. Branch targets, joins, loop backedges, and return paths agree.
+4. Opcode families, access widths, signedness, and immediate construction are
+   already correct or confined to a known local mismatch.
+5. The stack frame, saved registers, spills, and call sequence agree.
+6. Callee prototypes and integer/pointer ABI argument slots are supported by
+   caller and callee evidence.
+7. Relocations, symbol-based address construction, switch-table ownership, and
+   linked jump targets agree.
+
+If one prerequisite fails, fix that evidence class before allocator tuning.
+When the prerequisites pass, inspect KMC flow/global-allocation dumps when they
+answer a specific question. Change one source property at a time. Preserve
+already-matching regions instead of sweeping the whole function.
+
 ## Register-allocation observations
+
+Evidence label: `EXACT_SINGLE_FUNCTION` for the observations from
+`func_000135a0` and `func_000490ec` below. They do not establish a global KMC
+register preference order.
 
 The session generated several contradictory theories about the allocator's
 global preference order. None was established. The reproducible observations
@@ -118,6 +228,10 @@ actual diff.
 
 ## Stack layout and aggregate locals
 
+Evidence label: `NONMATCHING_EXPERIMENT`. This section records a useful
+stack-layout hypothesis from `func_0006d7d8`; it is not a verified exact-C
+technique.
+
 The nonmatching `func_0006d7d8` experiment had a directly observed `0x58`
 frame, five byte loads at `sp+0x18..sp+0x1C`, and a pointer at `sp+0x24` whose
 value was `sp+0x18`. Separate arrays, pointers, oversized arrays, and
@@ -137,9 +251,10 @@ typedef struct Func0006D7D8Scratch {
 ```
 
 This does not prove that the original source used that struct or that the
-unknown bytes had meaning. It demonstrates a focused matching technique: when
-retail establishes several relative stack offsets, model them as fields of one
-aggregate before fabricating independent padding locals.
+unknown bytes had meaning. It supports a focused experiment: when retail
+establishes several relative stack offsets, test one aggregate before
+fabricating independent padding locals. Keep the `NONMATCHING_EXPERIMENT` label
+until an exact `PURE_C` function reproduces this result.
 
 In the same candidate, moving only `index = 0` above the early-return guard
 changed the prologue from 42 raw object differences to 31 and reproduced the
@@ -147,6 +262,10 @@ retail save/zero interleave. Treat statement placement around a guard as a
 localized prologue-scheduling experiment, not a general initialization rule.
 
 ## Conditionals and control-flow shape
+
+Evidence label: `EXACT_SINGLE_FUNCTION` for the `func_000135a0` branch and
+expression observations. The explicitly identified `func_0006d7d8` bullets are
+`NONMATCHING_EXPERIMENT` observations.
 
 - In this function, writing the two conditions as
   `(u32)x >= 0x80 { big arm } else { small arm }` produced the retail
@@ -171,6 +290,10 @@ localized prologue-scheduling experiment, not a general initialization rule.
   moved those stores to the outer loop and removed a large false mismatch.
 
 ## Loops, indexing, and store scheduling
+
+Evidence label: `EXACT_SINGLE_FUNCTION` for the `func_000490ec` observations.
+The explicitly identified `func_0006d7d8` observations remain
+`NONMATCHING_EXPERIMENT`.
 
 The first plausible `func_000490ec` candidate matched 50 of 61 instruction
 words. Its prologue, call, nested loops, 25-byte record indexing, empty loop, and
@@ -265,6 +388,69 @@ descriptor[10] = 0xA;
 This excerpt is a matching example, not a semantic claim about why the outer
 loop repeats a fixed-address scan or why the empty loop exists.
 
+## Additional scoped exact shapes
+
+- Evidence label: `REPRODUCED`. `func_000ba8a8` and `func_000ba918` use nested
+  bottom-tested `do`/`while` loops that agree with the retail backedges. Decode
+  the branch targets first. Two compatible exact functions do not prove one
+  unique original syntax or justify rewriting top-tested loops.
+- Evidence label: `EXACT_SINGLE_FUNCTION`. `func_000bb3d8` retains byte-sized
+  parameters. The narrow entry values are compatible with its observed masks
+  and switch lowering. Do not narrow a parameter without caller and entry
+  evidence.
+- Evidence label: `EXACT_SINGLE_FUNCTION`. `func_000bd26c` materializes its
+  supported lookup base before indexed access. This prevented KMC from folding
+  the address into a different load expression. Test this only when the base,
+  stride, and remaining CFG are already correct.
+
+Commit `574512f` contains these accepted source examples.
+
+## Genuine loop structure can change allocator weighting
+
+Evidence label: `EXACT_SINGLE_FUNCTION`.
+
+`func_002861C8` was exact in size, function partition, switch table,
+relocations, control flow, and every opcode family, but six instruction words
+used `$t2` and `$t3` in the opposite roles. Declaration order, qualifiers,
+types, identity expressions, copy funnels, condition polarity, `volatile`, and
+ordinary goto variants did not resolve the pair.
+
+The exact `PURE_C` source expressed the proven outer scan and backward scan as
+genuine nested loops. KMC then assigned the two long-lived constants to the
+retail registers, and the register bindings could be removed. Ten loop
+variants reproduced exact bytes during the focused task. Commit `2a5e316`
+contains the accepted change.
+
+This result supports one narrow diagnostic: when only loop-body register fields
+differ and the pre-register checklist passes, reproduce the actual loop nesting
+before trying artificial register pressure. It does not establish that loops
+are preferable to gotos for all targets.
+
+## Advanced exact case: `func_00047a94`
+
+Evidence label: `EXACT_SINGLE_FUNCTION`.
+
+The initial generated candidates for this 836-byte scheduler owner were
+invalid or far from exact. The successful manual reconstruction first corrected
+whole-function facts:
+
+- the helper `func_00046738` has one argument, not two;
+- the retail labels and joins include a physical deferred-return path;
+- genuine shared globals need the observed volatile accesses;
+- branch-local assignments preserve the observed `$v0` reuse; and
+- allocator and conflict dumps identify which lifetimes remain different.
+
+After those facts were correct, two narrowly placed, no-instruction source
+forms changed KMC's allocation weight and lifetime split: one
+`do { ... } while (0)` around a state store and one matched increment/decrement
+pair. Commit `0aa696c` is exact `PURE_C`.
+
+Do not copy those final spellings into another function. Broad `goto`,
+declaration-order, and `volatile` experiments often made this candidate worse.
+The durable method is to correct prototypes and physical CFG first, use pass
+dumps for a specific residual mismatch, and change only the implicated
+lifetime.
+
 ## Address and evidence discipline
 
 - Runtime addresses printed in original split comments are decode aids, not
@@ -281,7 +467,63 @@ loop repeats a fixed-address scan or why the empty loop exists.
   "finds the unit" description. Preserve the machine behavior and keep neutral
   names when the meaning remains unclear.
 
+## Narrow expression and address cases
+
+### Explicit signed quotient correction
+
+Evidence label: `EXACT_SINGLE_FUNCTION`.
+
+In `func_00283E14`, an ordinary compact division-by-four expression produced a
+shorter branch-likely correction. Retail used an explicit `bgez` sequence before
+the arithmetic shift. This source shape reproduced it:
+
+```c
+if (decoded_size >= 0) {
+    adjusted_size = decoded_size;
+} else {
+    adjusted_size = decoded_size + 3;
+}
+tag = ((s32 *)decoded)[(adjusted_size >> 2) - 1];
+```
+
+Use this only when the instructions prove signed round-toward-zero division by
+four or an equivalent power-of-two case. It is not a general replacement for
+the division operator.
+
+### Explicit pointer/integer grouping
+
+Evidence label: `EXACT_SINGLE_FUNCTION`.
+
+In `func_002A05EC`, all logic and opcodes were correct, but two commutative
+`addu` operands had the wrong order. Casting the symbol-bearing pointer to the
+accepted 32-bit integer type preserved KMC's expression tree:
+
+```c
+*(void **)(offset + (unsigned int)D_8022A974 + 0x18)
+```
+
+This observation depends on the accepted 32-bit target model. Use it only for
+an operand-order mismatch after the address and relocation are independently
+correct.
+
+### Evidence-backed symbols instead of numeric pointers
+
+Evidence label: `REPRODUCED`.
+
+In `func_001FFA8C`, numeric pointer constants produced immediate-oriented
+address construction. Independently accepted extern symbols produced the
+retail relocation-bearing form. `func_000490ec` also matched through a real
+symbol-plus-offset expression.
+
+Do not fabricate a symbol merely to change compiler output. The symbol must
+have separate structural or semantic evidence. Rewriting KSEG0 hexadecimal
+literals as signed decimal values did not solve the workbench's remaining
+address-materialization cases.
+
 ## Preserve argument slots named by the disassembly
+
+Evidence label: `REPRODUCED`. The calibrated ABI-gap pass produced 12 exact
+`PURE_C` functions across two fixed corpora.
 
 If a generated draft calls its first declared value `arg1`, that name can carry
 an ABI fact: the value arrived in the second argument register. Do not silently
@@ -304,6 +546,9 @@ signatures.
 
 ## A retained early load can explain store order
 
+Evidence label: `REPRODUCED`. This shape produced exact `PURE_C` for
+`func_00014614` and `func_00014988`.
+
 When retail loads a cursor byte before writing an independent field, express
 that lifetime directly with a local. Writing the zero field first and spelling
 the byte dereference inside the later assignment can make KMC schedule the load
@@ -324,6 +569,10 @@ alias.
 
 ## A value still in `$v0` may be the return value
 
+Evidence label for a `PURE_C` matching technique: `NONMATCHING_EXPERIMENT`.
+The return-value interpretation is correct, but the accepted exact function
+remains `HYBRID_C` under the pinned compiler.
+
 Do not infer `void` merely because the final instructions do not move a value
 into `$v0`. In `__osPopThread`, the first load already places the removed queue
 head in `$v0`; the function then stores the successor and returns the head.
@@ -332,12 +581,14 @@ uses `$t9`. Exactness therefore needs a register binding and remains
 `HYBRID_C`. The return-value observation is durable; the `$t9` choice is not a
 general KMC source rule.
 
-## Local negative experiments
+## Negative experiments and limits
 
-These controlled variants did not help `func_000135a0`; they are not general
-prohibitions for other functions:
+These results prevent successful cases from becoming cargo-cult rules. A
+failed variant is not a general prohibition, but repeating it without a new
+diff hypothesis is not evidence.
 
-- One large plain `static` helper emitted a real call and stack frame instead of
+- In `func_000135a0`, one large plain `static` helper emitted a real call and
+  stack frame instead of
   being integrated into the caller.
 - The corresponding `static __inline__` helper integrated completely and did
   not leave the hoped-for argument moves.
@@ -354,6 +605,69 @@ prohibitions for other functions:
   forms canonicalized identically; others changed unrelated code. Once a diff
   stabilizes into a few local pockets, preserve the best candidate and seek a
   new structural hypothesis instead of treating more permutations as evidence.
+- Passing inferred context to m2c reduced a fixed ten-target sample from 8
+  exact candidates to 5. Context is type evidence to review, not a default
+  prototype source.
+- `structured-return-flow` added three exact functions but lost
+  `func_00090e40`; another ensemble pass retained it. No transform replaces the
+  ensemble.
+- Signed-decimal spelling did not make numeric KSEG0 pointers produce the
+  required relocation-bearing address form.
+- A generic index local did not stop KMC from folding an addition into a final
+  memory offset. Explicit base updates changed scheduling without reproducing
+  the target order.
+- Broad `goto`, declaration-order, and `volatile` changes did not solve
+  `func_00047a94`. They often disturbed already-matching regions.
+
+## Structural and tooling diagnostics
+
+The following findings explain why correct C can still fail. They are not
+ordinary source-shape techniques. Do not repair them by distorting C or by
+weakening verification.
+
+### Compiler-generated switch tables
+
+`func_00283E14` had exact C text but initially failed canonical ownership
+because KMC emitted its eight-entry table in `.rodata`. `func_002827EC` needed
+the same audited mechanism for a nine-entry table and four compiler alignment
+bytes. Target-specific auxiliary-section contracts fixed the exact table bytes,
+relocations, alignment, ROM/VMA placement, and assembly-tail ownership while
+leaving both ordinary C switches unchanged.
+
+This is structural work. Follow `docs/AUDIT.md` and the current auxiliary
+section rules in `docs/WORKFLOW.md`. A scratch workbench allowance is not a
+canonical ownership contract.
+
+### Placement before control-flow invention
+
+A runtime address in a split comment is not necessarily the accepted load-slab
+or overlay placement. An apparent external jump can become an ordinary local
+jump after the accepted live placement is applied. Exact masked opcodes do not
+prove a match when the final linked `j`, `jal`, or address materialization uses
+the wrong VMA. Resolve placement before testing unusual C call or goto forms.
+
+### Integrated verification remains mandatory
+
+An isolated target can have exact bytes while a combined active build exposes
+a symbol-registry, auxiliary-owner, or linkage collision. Only the current
+integrated verifier proves sole ownership and the complete ROM across all
+active targets. Do not treat scratch equality or an isolated object as an
+integration result.
+
+### Larger translation units did not improve tested code generation
+
+The 2026-08-30 translation-unit research compared 26 per-function results under
+separate and grouped compilation. After relocation normalization, grouping did
+not improve registers, stack layout, scheduling, switch lowering, or difficult
+parser/scanner code. The closest `func_002861C8` pure candidate retained the
+same six `$t2`/`$t3` words. Its later solution was genuine loop structure, not
+translation-unit grouping.
+
+This is a bounded negative result, not proof that original translation units
+never matter. Larger units can improve shared type, helper, and private-data
+understanding. Activate grouped canonical ownership only after a separate
+structural task proves a concrete layout or ownership benefit. See
+`docs/audit/2026-08-30-decomp-methods-tu-director-report.md`.
 
 ## Pipeline & configuration mechanics
 
@@ -368,6 +682,11 @@ prohibitions for other functions:
   absolute jumps normalized to `R_MIPS_26` records against `.text`. This is a
   build-contract fact, not a KMC matching rule. New targets never need a
   fabricated legacy Phase 8 record.
+- A reviewed compiler-generated switch table also belongs in the target's
+  `config/matching-c-linkage.json` entry. It is an auxiliary ownership contract,
+  not an instruction-generation workaround. Use
+  `config/matching-c-multi-owner.json` only when one logical compiled function
+  replaces two or more contiguous accepted executable owner rows.
 - The `func_000490ec` session exposed the old workflow defect clearly. Its
   legitimate external call and three `HI16`/`LO16` data-reference pairs forced
   the agent to add a whole synthetic legacy target record before strict
@@ -385,6 +704,9 @@ prohibitions for other functions:
   not as a C mismatch, and never weaken the pins to get past it.
 - Status counts are generated (`tools/status.js`, source-policy report); never
   hand-maintain them in prose docs.
+- Target verification still checks the complete current ROM. Re-run the full
+  verifier after integration because shared symbols and auxiliary owners can
+  collide only in the combined active set.
 - Stage only your own files when committing. Concurrent sessions share the
   checkout; unrelated modified files may appear mid-run — leave them for their
   owner.

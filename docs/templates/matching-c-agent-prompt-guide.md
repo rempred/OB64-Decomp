@@ -66,6 +66,13 @@ The old compiler chooses CPU registers partly from how C variables are divided
 and how long each value is needed. Two pieces of C that do the same work can
 therefore produce different registers.
 
+Before register tuning, confirm that the accepted owner and placement are
+correct. Candidate and retail instruction extents, CFG, opcode families, stack
+frame, calls, prototypes, ABI slots, relocations, and linked jump targets must
+already agree or have one bounded local difference. Fix any larger mismatch
+first. `docs/KMC_GCC_MATCHING_NOTES.md` contains the full checklist and evidence
+labels.
+
 If the instructions already do the right work but use the wrong registers:
 
 - keep independent reads and writes in the order suggested by the retail code;
