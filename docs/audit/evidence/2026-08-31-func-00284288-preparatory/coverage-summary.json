@@ -1,0 +1,48 @@
+{
+  "schemaVersion": 1,
+  "symbol": "func_00284288",
+  "acceptedBoundary": {
+    "rom": "0x00284288..0x002861C8",
+    "live": "0x802282B8..0x8022A1F8",
+    "bytes": 8000
+  },
+  "commands": {
+    "requested": 153,
+    "uniquelyMapped": 153,
+    "withKnownFixedArgumentCount": 141,
+    "withExternalCalls": 131,
+    "withMemoryAccessEvidence": 114
+  },
+  "prototypes": {
+    "retailCallSites": 145,
+    "uniqueCallees": 137,
+    "callSitesRepresented": 145,
+    "uniqueAcceptedOwnerCallees": 70,
+    "uniqueAcceptedOwnerCallSites": 75,
+    "unmappedOwnerCallees": 67,
+    "unmappedOwnerCallSites": 70,
+    "ambiguousOwnerCallees": 0,
+    "ambiguousOwnerCallSites": 0,
+    "strong": 18,
+    "moderate": 0,
+    "weak": 119,
+    "unknown": 0,
+    "predecessorDisagreementsWithStrongestDefinition": 14
+  },
+  "retailMetrics": {
+    "instructions": 2000,
+    "blocks": 583,
+    "edges": 958,
+    "calls": 145,
+    "indirectCalls": 0,
+    "indirectJumps": 0,
+    "branches": 230,
+    "memoryOperations": 467,
+    "floatingPoint": true,
+    "leaf": false,
+    "frameSize": 120,
+    "stackMemoryReferences": 99
+  },
+  "caseReport": "build/matching/targets/func_00284288/research/structured-skeleton-case-cfg.json",
+  "evidenceBoundary": "Static retail/control-flow evidence only. Unknown entries are intentional; this report does not establish behavior names, matching C, linked ownership, or full-ROM identity."
+}
