@@ -62,8 +62,8 @@ static s32 func_002861C8_scan(s32 *stream, s32 cursor, s32 nesting, s32 mode)
 {
     s32 *outer;
     s32 outer_marker;
-    register s32 limit asm("$10");
-    register s32 backward_marker asm("$11");
+    s32 limit;
+    s32 backward_marker;
     s32 offset;
     s32 current;
     s32 found;
@@ -98,35 +98,35 @@ loop_forward:
         limit = (s32)0x80000002;
         backward_marker = 0x0FFFFFFE;
         outer = (s32 *)(current * 4 + (s32)stream);
-loop_outer:
-        offset = current * 4;
-        if (*outer != outer_marker) {
-            goto next_outer;
-        }
-        if (cursor < current) {
-            s32 *address;
-
-            address = (s32 *)(offset + (s32)stream);
-            stream = address;
-loop_backward:
-            if ((*stream != limit) || (++found, nesting != found)) {
-                current -= 1;
-                stream -= 1;
-                if (cursor >= current) {
-                    return -1;
-                }
-                goto loop_backward;
+        do {
+            offset = current * 4;
+            if (*outer != outer_marker) {
+                goto next_outer;
             }
-            return current;
-        }
-        return -1;
-next_outer:
-        current += 1;
-        outer += 1;
-        if (current > backward_marker) {
+            if (cursor < current) {
+                s32 *address;
+
+                address = (s32 *)(offset + (s32)stream);
+                stream = address;
+                while (1) {
+                    if ((*stream == limit) && (++found, nesting == found)) {
+                        return current;
+                    }
+                    current -= 1;
+                    stream -= 1;
+                    if (cursor >= current) {
+                        return -1;
+                    }
+                }
+            }
             return -1;
-        }
-        goto loop_outer;
+next_outer:
+            current += 1;
+            outer += 1;
+            if (current > backward_marker) {
+                return -1;
+            }
+        } while (1);
     }
     return -1;
 }
