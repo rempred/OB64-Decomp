@@ -56,7 +56,9 @@ function writeCsv(file, columns, rows) {
 
 function walk(root, extensions, result = []) {
   if (!fs.existsSync(root)) return result;
-  for (const entry of fs.readdirSync(root, { withFileTypes: true })) {
+  const entries = fs.readdirSync(root, { withFileTypes: true })
+    .sort((left, right) => left.name.localeCompare(right.name));
+  for (const entry of entries) {
     const full = path.join(root, entry.name);
     if (entry.isDirectory()) walk(full, extensions, result);
     else if (extensions.has(path.extname(entry.name).toLowerCase())) result.push(full);
