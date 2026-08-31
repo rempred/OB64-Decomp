@@ -26,6 +26,36 @@
       "generation": "Frozen 34-target corpus selected without opening canonical C. The snapshot is byte-for-byte identical to the frozen source artifact."
     },
     {
+      "snapshot": "provider-reproduction.jsonl",
+      "snapshotSha256": "999EF83859589047E975AC2EF81CB44384BCB3E7F238C5178B3536F86EBE4C59",
+      "bytes": 531714,
+      "rows": 350,
+      "records": {
+        "metadata": 1,
+        "coverage": 204,
+        "runs": 145
+      },
+      "generation": "Durable path-token map, tool identities, exact provider argument arrays, cwd/environment contracts, ordered inputs and hashes, output hashes, and explicit coverage for every benchmark row. Generated C, assembly, objects, compiler output, and ROM bytes remain excluded."
+    },
+    {
+      "snapshot": "raw-m2c-input-emitter.js",
+      "snapshotSha256": "41491C8FB05129D326A13784BCB4F2C66EE259EDF5798128A1ECDE9372BE795D",
+      "bytes": 2180,
+      "generation": "Exact deterministic raw one-function assembly emitter extracted from the frozen benchmark harness."
+    },
+    {
+      "snapshot": "asmlift-input-adapter.mjs",
+      "snapshotSha256": "58040C05A2D36DF96F90C0968B681EDCCF7EAD6BEC2DB06C8D4A0069CEA488AF",
+      "bytes": 2528,
+      "generation": "Byte-identical retained implementation of the asmlift accepted-word-assembly to objdump-input adapter."
+    },
+    {
+      "snapshot": "asmlift-switch-asmdata.mjs",
+      "snapshotSha256": "A6F47AACE2AD6B11390DB33E1BB00AF50534673016C6180F578A3A62A2EC64FC",
+      "bytes": 2804,
+      "generation": "Byte-identical retained implementation of the bounded accepted switch-table side-data generator."
+    },
+    {
       "snapshot": "phase2-function-results.csv",
       "snapshotSha256": "FCD527E5FEDFB60310A4DAE6670B412EC72059117CBC172465591D39BBDFBF7D",
       "bytes": 8394,
@@ -93,20 +123,45 @@
       "branch": "main",
       "commit": "511c8ca0fb0fdcabd72b4c023a644e900f3b9112",
       "romSha1": "9CD0CFB50B883EDB068E0C30D213193B9CF89895",
+      "makefileBlob": "9ad74bb028e86e3e2d32841d0e73a2f497c11571",
+      "toolsMakefileBlob": "598d7c15f26c6e7e94d5ac5a58cbbea5d7beb4e0",
       "submodules": {
-        "libmus": "123a807",
-        "ultralib": "00cdfa",
-        "asmDiffer": "093360"
+        "libmus": {
+          "url": "https://github.com/cdlewis/libmus.git",
+          "commit": "123a807db6f23e2e3f1c2f0245ff586bc2aaef38"
+        },
+        "ultralib": {
+          "url": "https://github.com/cdlewis/ultralib.git",
+          "commit": "00cdfa3c80d9d32f10c71ba24116ca3fbda62a44"
+        },
+        "asmDiffer": {
+          "url": "https://github.com/simonlindholm/asm-differ.git",
+          "commit": "093360aa31f90e67216ed1971c4087516cc7b940"
+        }
       },
-      "reproducibilityLimit": "The Makefile references an absent/untracked tools/gcc_kmc and does not pin the system MIPS binutils, so an independent successful build at this commit was not established."
+      "buildConfiguration": {
+        "crossPrefix": "mips-linux-gnu-",
+        "compiler": "COMPILER_PATH=tools/gcc_kmc tools/gcc_kmc/gcc",
+        "abiFlags": "-mabi=32 -mgp32 -mfp32",
+        "cFlags": "-mno-abicalls -nostdinc -fno-PIC -G 0 -Wa,-force-n64align -funsigned-char -w -mips2 -EB -O2 -fno-builtin",
+        "macros": "-D_LANGUAGE_C -D_MIPS_SZLONG=32 -D_MIPS_SZINT=32 -D_MIPS_SZLONG=32 -D__USE_ISOC99 -DF3DEX_GBI_2 -DNDEBUG -D_FINALROM",
+        "includePaths": "-I include -I assets -I lib/ultralib/include -I lib/ultralib/include/PR -I lib/libmus/include/PR -I lib/libmus/src -I lib/f3dex2/PR plus per-source and per-build-directory includes",
+        "clangCheckFlags": "-MMD -MP -fno-builtin -fsyntax-only -fdiagnostics-color -std=gnu89 -m32 -DNON_MATCHING -DAVOID_UB -DCC_CHECK=1",
+        "sourcePipeline": "KMC -E -fno-asm | iconv UTF-8 to Shift-JIS | KMC -x c ... -fno-asm -c",
+        "assemblyPipeline": "cpp -P | iconv UTF-8 to Shift-JIS | mips-linux-gnu-as -G 0 -I include -mips3 -mabi=32",
+        "linker": "mips-linux-gnu-ld with generated main script, hardware_regs.ld, four undefined symbol/function scripts, map output, --no-check-sections, -lmus, and -lultra",
+        "binaryAndVerification": "mips-linux-gnu-objcopy -O binary followed by shasum --check ogrebattle64.sha1"
+      },
+      "reproducibilityLimit": "tools/Makefile downloads unchecksummed latest/download decompals GCC 2.7.2 and binutils 2.6 archives; ordinary assembly/link steps use unversioned system mips-linux-gnu-* tools. An independent successful build at this commit was not established."
     }
   },
   "reproductionNotes": [
-    "The benchmark source artifacts retain exact provider commands and per-row report references; this bounded bundle deliberately excludes generated C, generated assembly, objects, ROM bytes, compiler output, and bulk reports.",
+    "Exact provider/version records, argument arrays, cwd/environment contracts, ordered input/member lists and hashes, output hashes, and coverage for all 204 benchmark rows are tracked in provider-reproduction.jsonl. The raw emitter and both asmlift adapters are tracked beside it. Reproduction no longer depends on ignored run manifests; generated C, generated assembly, objects, ROM bytes, compiler output, and bulk reports remain excluded.",
+    "Candidate generation was blind at execution time but was not a holdout evaluation of the pre-existing ensemble: func_0012E950/structured-return-flow and func_000143dc/structured-cursor-steps are calibrated controls. Default exact results are three total and one excluding those controls; with-context is one total and zero excluding them.",
     "Historical raw m2c means one accepted function passed to m2c.py with its old default target and no context; emitted text is not compile or matching success.",
     "Current match.js rows cover all eight configured candidate variants. Exact acceptance remains PURE_C plus sole linked owner, exact accepted bytes and relocations, and a byte-identical complete ROM.",
     "The func_002861C8 supplement preserves the owner-level row separately and measures its three proven logical compiler functions using corrected ranges.",
     "The grouped-TU table reports scratch per-function comparisons. It is not a general multi-owner linked-owner or complete-ROM proof.",
-    "Hash validation: Get-FileHash -Algorithm SHA256 docs/audit/evidence/2026-08-30-decomp-methods-tu/*; row validation: Import-Csv on each CSV and compare with the rows values above."
+    "Hash validation: Get-FileHash -Algorithm SHA256 docs/audit/evidence/2026-08-30-decomp-methods-tu/*; row validation: Import-Csv on each CSV and parse each provider-reproduction.jsonl line with ConvertFrom-Json."
   ]
 }

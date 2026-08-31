@@ -8,6 +8,8 @@ Director branch: `codex/decomp-methods-tu-director`
 
 This is an evidence checkpoint, not authorization to regroup canonical source, merge logical functions, weaken accepted ownership, or replace the current Matching-C workflow. Product infrastructure is deferred at this checkpoint.
 
+Post-checkpoint implementation and final review are recorded in [2026-08-30-decomp-methods-tu-director-report.md](2026-08-30-decomp-methods-tu-director-report.md). That later work implemented only the scratch compiler repair and mismatch classifier; provider and TU infrastructure remained deferred.
+
 ## Vocabulary and baseline
 
 The investigation kept three concepts separate:
@@ -35,20 +37,22 @@ The 34-target corpus was selected and frozen without opening canonical matched C
 
 Candidate generation used only fixed automatic provider commands. No candidate was manually edited. Exact controls supplied accepted assembly, bytes, relocations, primitive context, and bounded jump-table evidence but not canonical C. Canonical source could be inspected only after the scored freeze for diagnosis. A later cross-lane status update disclosed high-level descriptions of a few source shapes; the corpus, commands, variants, compiler-adapter experiment, and clusters were already frozen and were not changed afterward.
 
+This was blind candidate generation at execution time, but it was not a holdout evaluation of the pre-existing ensemble. The `structured-return-flow` and `structured-cursor-steps` transforms predated this pilot and had been developed/validated on `func_0012E950` and `func_000143dc`. Their exact rows are calibrated controls that show retained capability, not generalization. Excluding those rows, the default workbench has one out-of-sample exact control (`strlen`), and the context run has none.
+
 An emitted C file was never counted as a match. The corrected schema separately records provider emission, compiler exit, object assembly, scratch-contract acceptance, scoreability, exact scratch text, canonical linked proof, and complete-ROM proof.
 
 ## Lifter results
 
-The durable 204-row table is [benchmark-rows.csv](evidence/2026-08-30-decomp-methods-tu/benchmark-rows.csv); the blind corpus is [corpus.json](evidence/2026-08-30-decomp-methods-tu/corpus.json).
+The durable 204-row table is [benchmark-rows.csv](evidence/2026-08-30-decomp-methods-tu/benchmark-rows.csv); the blind corpus is [corpus.json](evidence/2026-08-30-decomp-methods-tu/corpus.json). Exact per-row provider commands, cwd/environment contracts, ordered inputs and hashes, and retained input adapters are in [provider-reproduction.jsonl](evidence/2026-08-30-decomp-methods-tu/provider-reproduction.jsonl).
 
-| Method | Lifted | Explicit refusals | Candidates | Scoreable objects | Exact scratch | Canonical linked/full-ROM proof |
-|---|---:|---:|---:|---:|---:|---:|
-| Raw old-style m2c | 29/34 | 5 | 29 | 0 | 0 | 0 |
-| Raw m2c plus current syntax adapter | 29/34 | 5 | 29 | 3 | 1 | 0 |
-| Current `match.js` default | 34/34 | 0 | 104 | 24 | 3 | 3 |
-| Current `match.js --with-context` | 34/34 | 0 | 103 | 23 | 1 | 1 |
-| Multi-function m2c | 9 applicable rows | 0 | 9 | 6 | 0 | 0 |
-| asmlift | 1/34 | 33 | 1 | 1 | 0 | 0 |
+| Method | Lifted | Explicit refusals | Candidates | Scoreable objects | Exact scratch, all | Exact excluding calibrated controls | Canonical linked/full-ROM proof, all / holdout |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| Raw old-style m2c | 29/34 | 5 | 29 | 0 | 0 | 0 | 0 / 0 |
+| Raw m2c plus current syntax adapter | 29/34 | 5 | 29 | 3 | 1 | 1 | 0 / 0 |
+| Current `match.js` default | 34/34 | 0 | 104 | 24 | 3 | 1 | 3 / 1 |
+| Current `match.js --with-context` | 34/34 | 0 | 103 | 23 | 1 | 0 | 1 / 0 |
+| Multi-function m2c | 9 applicable rows | 0 | 9 | 6 | 0 | 0 | 0 / 0 |
+| asmlift | 1/34 | 33 | 1 | 1 | 0 | 0 | 0 / 0 |
 
 Headline conclusions:
 
@@ -99,7 +103,7 @@ Hijs did not represent this region as one giant multi-entry C function:
 - `src/segment_14/283DF0.c` contains 17 separately named `INCLUDE_ASM` routines in ROM order: `0x283DF0`, the seven exact parser controls, the one large parser at `0x284288`, three entries at `0x2861C8/0x2862FC/0x2863F8`, and five later helpers through `0x286620`. Its YAML-associated `.rodata` begins at `0x286B90`.
 - The Makefile pattern compiles each wrapper `.c` into one object. `INCLUDE_ASM` injects separate assembly routines and `INCLUDE_RODATA` fragments into that object. These files are hybrid assembly wrappers, not `PURE_C` and not proof of original retail source boundaries.
 
-Hijs independently chose a multi-function/object grouping consistent with the likely parser/resource module, including the three logical functions inside our `func_002861C8` owner. Its Makefile references an absent/untracked `tools/gcc_kmc` and does not pin system MIPS binutils, so an independent successful Hijs build/object reproduction was not established.
+Hijs independently chose a multi-function/object grouping consistent with the likely parser/resource module, including the three logical functions inside our `func_002861C8` owner. The final Director report records its relevant compiler flags, macros, includes, Clang check, Shift-JIS preprocessing, assembler/linker rules, and full dependency gitlinks. Its setup downloads unchecksummed `latest/download` compiler archives and its ordinary assembly/link path uses unversioned system `mips-linux-gnu-*` tools, so an independent successful Hijs build/object reproduction was not established.
 
 ## Logical functions versus likely TUs
 
@@ -125,8 +129,8 @@ A proven parser/resource TU might eventually replace the special shared auxiliar
 | The seven-function parser fixture has incompatible declarations and warnings. | Confirmed. It is evidence of a shared-source-model problem, not an acceptable fixture. The 16 accessors are the safer future infrastructure control. |
 | `compileSuccess` conflated scratch validation with post-hoc scoreability. | Resolved in the corrected schema-v2 table with separate state fields. |
 | `relocation-only` does not prove relocation symbol/addend identity. | Confirmed. Future classification should use a weaker `relocation-mask-compatible` likelihood until normalized records match. No classifier claim was strengthened here. |
-| Principal evidence lived only under ignored/user-specific paths. | Resolved for the bounded corpus/result/mapping tables by this tracked evidence bundle; ROMs, objects, generated C/assembly, compiler output, and bulk reports remain excluded. |
-| Hijs build reproducibility was overstated. | Resolved by recording the exact commit/archive and explicitly stating the absent compiler and unpinned-binutils limitation. |
+| Principal evidence lived only under ignored/user-specific paths. | Resolved with bounded corpus/result/mapping tables plus a 350-record provider provenance file and three retained input implementations; ROMs, objects, generated C/assembly, compiler output, and bulk reports remain excluded. |
+| Hijs build reproducibility was overstated. | Resolved by recording the exact commit/archive, Makefile assumptions, full gitlinks, and unchecksummed/generated compiler plus unpinned-system-binutils limitation. |
 
 ## Checkpoint decisions
 
