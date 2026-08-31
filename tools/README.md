@@ -80,18 +80,34 @@ declares the accepted command values, retail dispatch range, command register,
 registers whose dispatch-time values are statically fixed, and named shared
 tails. The command emulator fails closed if a branch condition depends on an
 unknown register, a control form is unsupported, or execution escapes the
-declared dispatch bounds. The candidate's dispatch/body/tail offsets remain
+declared dispatch bounds. The candidate's dispatch/body/tail offsets are
 explicit CLI inputs because they can move while a draft is being reconstructed.
+A schema-2 map can pin those inputs to an exact candidate ID, source hash, and
+source class. Missing inputs, duplicate/ambiguous mappings, and values that
+differ from that candidate contract fail clearly.
 
 The generated JSON aligns retail and candidate regions at each command entry.
-For every command it reports entry offsets, block counts, direct-call symbols,
-successor classes, unmatched normalized blocks, and named-tail convergence.
+It serializes the candidate/run identity, the complete expected and actual
+dispatch specifications, expected and actual command-body offsets, expected and
+actual shared tails, and the literal actual CLI inputs. For every command it
+reports entry offsets, block counts, direct-call symbols, successor classes,
+unmatched normalized blocks, and named-tail convergence. A result digest covers
+the comparison contract and result but intentionally excludes the run ID, so an
+isolated recompilation can reproduce the same comparison under a new run ID.
 Register names are omitted from block signatures, external calls use relocation
 symbols, and section-local `R_MIPS_26` jump addends are normalized before CFG
 construction. Region totals can count a shared interior block more than once;
 they are per-command coverage totals, not whole-function metrics. Reports stay
 under ignored `build/matching/case-cfg/`. This comparison does not establish
 semantics, linked ownership, exact bytes, or full-ROM identity.
+
+The tracked `func_00284288` contract has a self-contained isolated-database
+reproducer. It recompiles the frozen source and writes the full report under the
+ignored target research directory:
+
+```powershell
+node tools/reproduce_func_00284288_case_cfg.js --actual-dispatch 0x80 --actual-body 0x8A0 --actual-tail post-command=0x1EC8
+```
 
 The matching assembly adapter can insert analysis-only guards before labels
 that otherwise occupy an IDO likely-branch/call delay slot. These guards are

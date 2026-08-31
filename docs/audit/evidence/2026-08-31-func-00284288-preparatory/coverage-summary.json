@@ -1,6 +1,8 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "symbol": "func_00284288",
+  "retailAssembly": "asm/original/rev0/lib/func_00284288.s",
+  "analysisAssembly": "tools/lib/matching/assembly.js:emitM2cAssembly",
   "acceptedBoundary": {
     "rom": "0x00284288..0x002861C8",
     "live": "0x802282B8..0x8022A1F8",
@@ -44,5 +46,33 @@
     "stackMemoryReferences": 99
   },
   "caseReport": "build/matching/targets/func_00284288/research/structured-skeleton-case-cfg.json",
+  "caseComparison": {
+    "schemaVersion": 2,
+    "candidate": {
+      "candidateId": "9ED0FDEE460C920DC9A3906DE125591A33055CC4F0175249790959EFBB8FFD16",
+      "sourceClass": "PURE_C"
+    },
+    "actualInputs": {
+      "dispatchOffset": "0x0080",
+      "commandBodyOffset": "0x08A0",
+      "sharedTails": [
+        "post-command=0x1EC8"
+      ]
+    },
+    "resultDigest": "164228EC18C985EBD8C9E03ACD53F6E1B515A00D12C26DF0418EA5A54EF256B7",
+    "summary": {
+      "mappedCommands": 153,
+      "exactStructuralCommands": 70,
+      "blockCountParity": 125,
+      "callParity": 152,
+      "successorParity": 153,
+      "sharedTailConvergence": 153,
+      "normalizedBlockParity": 70,
+      "expectedRegionBlocks": 1007,
+      "actualRegionBlocks": 999,
+      "expectedRegionCalls": 291,
+      "actualRegionCalls": 289
+    }
+  },
   "evidenceBoundary": "Static retail/control-flow evidence only. Unknown entries are intentional; this report does not establish behavior names, matching C, linked ownership, or full-ROM identity."
 }

@@ -19,7 +19,12 @@ const {
   syncTargets,
 } = require('./lib/matching/compiler');
 const { compareMips, targetMetrics } = require('./lib/matching/mips_analysis');
-const { compareCaseCfg } = require('./lib/matching/case_cfg');
+const {
+  assertCandidateComparisonInputs,
+  assertCandidateComparisonResult,
+  compareCaseCfg,
+  resolveCandidateComparisonContract,
+} = require('./lib/matching/case_cfg');
 const { prepareAndCompile, resolveM2c } = require('./lib/matching/m2c');
 const { runSweep, summarizeEnsemble } = require('./lib/matching/sweep');
 const { buildFamilyAtlas } = require('./lib/matching/family');
@@ -90,7 +95,13 @@ function parseArgs(argv) {
       if (REPEAT_OPTIONS.has(name)) {
         options[name] = options[name] || [];
         options[name].push(value);
-      } else options[name] = value;
+      } else {
+        if (['case-map', 'actual-dispatch', 'actual-body', 'output'].includes(name)
+            && Object.prototype.hasOwnProperty.call(options, name)) {
+          throw new Error(`--${name} may not be repeated`);
+        }
+        options[name] = value;
+      }
     } else if ([
       'json', 'no-context', 'with-context', 'no-compile', 'leaf-only', 'runtime', 'skip-families',
       'include-targets', 'include-details', 'include-source', 'include-members', 'include-context', 'include-solved',
@@ -572,38 +583,55 @@ async function main(argv = process.argv.slice(2)) {
     if (!target) throw new Error('case-cfg candidate target is stale or absent from the accepted model');
     const mapFile = path.resolve(options['case-map']);
     const map = JSON.parse(fs.readFileSync(mapFile, 'utf8'));
-    if (map.schemaVersion !== 1 || map.symbol !== target.symbol || !Array.isArray(map.commands)) {
+    if (![1, 2].includes(map.schemaVersion) || map.symbol !== target.symbol || !Array.isArray(map.commands)) {
       throw new Error('case-cfg map does not match the candidate target or supported schema');
+    }
+    const candidateContract = resolveCandidateComparisonContract(map, positional[0]);
+    if (candidateContract?.sourceSha256
+        && candidateContract.sourceSha256.toUpperCase() !== String(record.candidate.source_sha256 || '').toUpperCase()) {
+      throw new Error(`case-cfg candidate source identity differs from tracked contract for ${positional[0]}`);
+    }
+    if (candidateContract?.sourceClass && candidateContract.sourceClass !== record.run.source_class) {
+      throw new Error(`case-cfg candidate source class differs from tracked contract for ${positional[0]}`);
     }
     const actualTails = actualTailMap(options['actual-tail']);
     if (!actualTails.length) throw new Error('case-cfg requires at least one --actual-tail name=offset mapping');
+    const actualBuffer = Buffer.from(record.run.object_text, 'base64');
+    const trackedActualDispatch = candidateContract?.actualDispatch || {};
+    const actualDispatch = {
+      dispatchOffset: nonnegativeInteger(options['actual-dispatch'], '--actual-dispatch'),
+      bodyOffset: nonnegativeInteger(options['actual-body'], '--actual-body'),
+      valueRegister: nonnegativeInteger(
+        trackedActualDispatch.valueRegister ?? map.actualValueRegister ?? map.expectedDispatch.valueRegister,
+        'actual value register'),
+      initialRegisters: trackedActualDispatch.initialRegisters
+        || map.actualInitialRegisters || map.expectedDispatch.initialRegisters,
+      localJumpMode: trackedActualDispatch.localJumpMode || 'section-relative',
+      ...(trackedActualDispatch.maximumSteps === undefined ? {} : { maximumSteps: trackedActualDispatch.maximumSteps }),
+    };
+    assertCandidateComparisonInputs(candidateContract, actualDispatch, actualTails, actualBuffer.length);
     const symbolForAddress = (address) => {
       const matches = workbench.targets.filter((item) => item.entryVram === (address >>> 0));
       if (matches.length === 1) return matches[0].symbol;
       return `func_${(address >>> 0).toString(16).toUpperCase().padStart(8, '0')}`;
     };
-    const report = compareCaseCfg(target.expectedBytes, Buffer.from(record.run.object_text, 'base64'), {
+    const report = compareCaseCfg(target.expectedBytes, actualBuffer, {
       start: target.vramStart,
       symbol: target.symbol,
       commands: map.commands,
       expectedDispatch: map.expectedDispatch,
-      actualDispatch: {
-        dispatchOffset: nonnegativeInteger(options['actual-dispatch'], '--actual-dispatch'),
-        bodyOffset: nonnegativeInteger(options['actual-body'], '--actual-body'),
-        valueRegister: nonnegativeInteger(map.actualValueRegister ?? map.expectedDispatch.valueRegister, 'actual value register'),
-        initialRegisters: map.actualInitialRegisters || map.expectedDispatch.initialRegisters,
-        localJumpMode: 'section-relative',
-      },
+      actualDispatch,
       expectedTails: map.expectedTails,
       actualTails,
       actualRelocations: record.run.relocations || [],
       symbolForAddress,
+      candidate: {
+        candidateId: positional[0],
+        runId: record.run.run_id,
+        sourceClass: record.run.source_class,
+      },
     });
-    report.candidate = {
-      candidateId: positional[0],
-      runId: record.run.run_id,
-      sourceClass: record.run.source_class,
-    };
+    assertCandidateComparisonResult(candidateContract, report);
     report.caseMap = path.relative(ROOT, mapFile).replace(/\\/g, '/');
     const defaultOutput = path.join(ROOT, 'build', 'matching', 'case-cfg', target.symbol, `${positional[0].slice(0, 12)}.json`);
     const outputFile = options.output ? path.resolve(options.output) : defaultOutput;
@@ -613,8 +641,10 @@ async function main(argv = process.argv.slice(2)) {
       schemaVersion: report.schemaVersion,
       target: report.target,
       candidate: report.candidate,
+      comparisonContract: report.comparisonContract,
       commandCount: report.commandCount,
       summary: report.summary,
+      resultDigest: report.resultDigest,
       mismatchedCommands: report.commands.filter((row) => !Object.values(row.parity).every(Boolean)).slice(0, 30)
         .map((row) => ({ command: row.command, expectedBlocks: row.expected.blockCount, actualBlocks: row.actual.blockCount, parity: row.parity })),
       mismatchedCommandsOmitted: Math.max(0, report.commandCount - report.summary.exactStructuralCommands - 30),

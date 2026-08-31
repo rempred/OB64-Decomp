@@ -4,15 +4,22 @@
 const fs = require('fs');
 const path = require('path');
 const { ROOT } = require('./lib/phase7_conventional');
-const { analyzeRegion, mapCommandEntries } = require('./lib/matching/case_cfg');
+const { emitM2cAssembly } = require('./lib/matching/assembly');
+const {
+  analyzeRegion,
+  assertCandidateComparisonInputs,
+  assertCandidateComparisonResult,
+  caseComparisonDigest,
+  mapCommandEntries,
+  resolveCandidateComparisonContract,
+} = require('./lib/matching/case_cfg');
 const { cfgForWords, instructionInfo, registerUsage, targetMetrics, wordsFromBuffer } = require('./lib/matching/mips_analysis');
-const { loadWorkbenchModel, resolveTarget } = require('./lib/matching/target_model');
+const { canonicalJson, loadWorkbenchModel, resolveTarget } = require('./lib/matching/target_model');
 
 const SYMBOL = 'func_00284288';
 const SPEC_PATH = path.join(ROOT, 'docs', 'audit', 'evidence', '2026-08-31-func-00284288-preparatory', 'case-cfg-map.json');
 const EVIDENCE_DIR = path.dirname(SPEC_PATH);
 const DETAIL_PATH = path.join(ROOT, 'build', 'matching', 'targets', SYMBOL, 'research', 'retail-command-evidence.json');
-const ASM_PATH = path.join(ROOT, 'build', 'matching', 'targets', SYMBOL, 'prepare', `${SYMBOL}.s`);
 const PREDECESSOR_PATH = path.join(ROOT, 'docs', 'archive', 'matching-c-candidates', '2026-08-31-func_00284288-e8eb93fecb.c');
 const COMMAND_CSV = path.join(EVIDENCE_DIR, 'command-map.csv');
 const PROTOTYPE_CSV = path.join(EVIDENCE_DIR, 'prototype-ledger.csv');
@@ -103,12 +110,13 @@ function renderPrototype(symbol, shape) {
   return `${shape.returnType} ${symbol}(${shape.parameters.length ? shape.parameters.join(', ') : 'void'})`;
 }
 
-function parseAssembly(file, target) {
+function parseAssembly(source, target, sourceIsText = false) {
   const rows = [];
   const byOffset = new Map();
   const calls = [];
   const symbolsByAddress = new Map();
-  for (const line of fs.readFileSync(file, 'utf8').split(/\r?\n/)) {
+  const text = sourceIsText ? source : fs.readFileSync(source, 'utf8');
+  for (const line of text.split(/\r?\n/)) {
     const match = line.match(/^\/\*\s+([0-9A-Fa-f]{8})\s+([0-9A-Fa-f]{8})\s+([0-9A-Fa-f]{8})\s+\*\/\s+(.+?)\s*$/);
     if (!match) continue;
     const rom = Number.parseInt(match[1], 16) >>> 0;
@@ -479,8 +487,29 @@ function main() {
   const workbench = loadWorkbenchModel();
   const target = resolveTarget(workbench, SYMBOL);
   const spec = readJson(SPEC_PATH);
-  const assembly = parseAssembly(ASM_PATH, target);
+  const assembly = parseAssembly(emitM2cAssembly(target, workbench), target, true);
   const caseReport = caseReportPath ? readJson(caseReportPath) : null;
+  if (caseReport) {
+    if (caseReport.schemaVersion !== 2 || caseReport.target !== SYMBOL
+        || !caseReport.candidate || !caseReport.comparisonContract) {
+      throw new Error('--case-report must be a schema-2 func_00284288 comparison report');
+    }
+    const contract = resolveCandidateComparisonContract(spec, caseReport.candidate.candidateId);
+    if (caseReport.candidate.sourceClass !== contract.sourceClass
+        || canonicalJson(caseReport.comparisonContract.candidate) !== canonicalJson(caseReport.candidate)) {
+      throw new Error('--case-report candidate identity or source class differs from its comparison contract');
+    }
+    assertCandidateComparisonInputs(
+      contract,
+      caseReport.comparisonContract.actual.dispatch,
+      caseReport.comparisonContract.actual.sharedTails,
+      target.bytes,
+    );
+    assertCandidateComparisonResult(contract, caseReport);
+    if (caseComparisonDigest(caseReport) !== caseReport.resultDigest) {
+      throw new Error('--case-report result differs from the tracked candidate contract');
+    }
+  }
   const command = commandRows(target, spec, assembly, caseReport);
   const predecessorSource = fs.readFileSync(PREDECESSOR_PATH, 'utf8');
   const predecessor = parsePredecessorDeclarations(predecessorSource);
@@ -544,8 +573,10 @@ function main() {
   })));
   const retailMetrics = targetMetrics(target.expectedBytes, target.entryVram);
   const summary = {
-    schemaVersion: 1,
+    schemaVersion: 2,
     symbol: SYMBOL,
+    retailAssembly: target.originalAssembly,
+    analysisAssembly: 'tools/lib/matching/assembly.js:emitM2cAssembly',
     acceptedBoundary: { rom: `${hex(target.romStart)}..${hex(target.romEndExclusive)}`, live: `${hex(target.vramStart)}..${hex(target.vramEndExclusive)}`, bytes: target.bytes },
     commands: {
       requested: spec.commands.length,
@@ -588,6 +619,16 @@ function main() {
       stackMemoryReferences: retailMetrics.stackOffsets.length,
     },
     caseReport: caseReportPath ? path.relative(ROOT, caseReportPath).replace(/\\/g, '/') : null,
+    caseComparison: caseReport ? {
+      schemaVersion: caseReport.schemaVersion,
+      candidate: {
+        candidateId: caseReport.candidate.candidateId,
+        sourceClass: caseReport.candidate.sourceClass,
+      },
+      actualInputs: caseReport.comparisonContract.actualInputs,
+      resultDigest: caseReport.resultDigest,
+      summary: caseReport.summary,
+    } : null,
     evidenceBoundary: 'Static retail/control-flow evidence only. Unknown entries are intentional; this report does not establish behavior names, matching C, linked ownership, or full-ROM identity.',
   };
   fs.writeFileSync(SUMMARY_JSON, `${JSON.stringify(summary, null, 2)}\n`);

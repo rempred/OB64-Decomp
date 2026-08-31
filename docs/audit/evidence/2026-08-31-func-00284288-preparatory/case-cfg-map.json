@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "symbol": "func_00284288",
   "commands": [
     "0x00000000", "0x00000001", "0x00000002", "0x00000003",
@@ -54,5 +54,40 @@
   },
   "expectedTails": [
     { "name": "post-command", "offset": "0x1EC4" }
+  ],
+  "candidateContracts": [
+    {
+      "candidateId": "9ED0FDEE460C920DC9A3906DE125591A33055CC4F0175249790959EFBB8FFD16",
+      "source": "docs/archive/matching-c-candidates/2026-08-31-func_00284288-9ed0fdee46.c",
+      "sourceSha256": "958986E6E7A4E933D10B8A41B8F4020C798282DEFC3B3E8A1D38C322FA279062",
+      "sourceClass": "PURE_C",
+      "actualDispatch": {
+        "dispatchOffset": "0x80",
+        "bodyOffset": "0x8A0",
+        "valueRegister": 3,
+        "initialRegisters": {
+          "22": "0x00000002",
+          "23": "0x00000001"
+        },
+        "localJumpMode": "section-relative"
+      },
+      "actualTails": [
+        { "name": "post-command", "offset": "0x1EC8" }
+      ],
+      "expectedSummary": {
+        "mappedCommands": 153,
+        "exactStructuralCommands": 70,
+        "blockCountParity": 125,
+        "callParity": 152,
+        "successorParity": 153,
+        "sharedTailConvergence": 153,
+        "normalizedBlockParity": 70,
+        "expectedRegionBlocks": 1007,
+        "actualRegionBlocks": 999,
+        "expectedRegionCalls": 291,
+        "actualRegionCalls": 289
+      },
+      "expectedResultDigest": "164228EC18C985EBD8C9E03ACD53F6E1B515A00D12C26DF0418EA5A54EF256B7"
+    }
   ]
 }

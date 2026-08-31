@@ -6,6 +6,7 @@ const {
   opcodeKey,
   wordsFromBuffer,
 } = require('./mips_analysis');
+const { canonicalJson, digest } = require('./target_model');
 
 function integer(value, label) {
   if (Number.isSafeInteger(value)) return value;
@@ -137,6 +138,60 @@ function normalizedDispatchSpec(spec, bufferLength, label) {
     localJumpMode: spec.localJumpMode || 'absolute',
     maximumSteps: integer(spec.maximumSteps ?? 2048, `${label} maximum steps`),
   };
+}
+
+function publicDispatchSpec(spec) {
+  const initialRegisters = {};
+  for (const [register, value] of [...spec.initialRegisters].sort((left, right) => left[0] - right[0])) {
+    initialRegisters[String(register)] = hex(value);
+  }
+  return {
+    dispatchOffset: hex(spec.dispatchOffset, 4),
+    bodyOffset: hex(spec.bodyOffset, 4),
+    valueRegister: spec.valueRegister,
+    initialRegisters,
+    localJumpMode: spec.localJumpMode,
+    maximumSteps: spec.maximumSteps,
+  };
+}
+
+function normalizedCandidateIdentity(source) {
+  if (!source || typeof source !== 'object' || Array.isArray(source)) {
+    throw new Error('case CFG candidate comparison identity is missing');
+  }
+  for (const field of ['candidateId', 'runId']) {
+    if (typeof source[field] !== 'string' || !/^[0-9a-f]{64}$/i.test(source[field])) {
+      throw new Error(`case CFG candidate ${field} is not a 64-digit identity`);
+    }
+  }
+  if (typeof source.sourceClass !== 'string' || !source.sourceClass) {
+    throw new Error('case CFG candidate source class is missing');
+  }
+  return {
+    candidateId: source.candidateId.toUpperCase(),
+    runId: source.runId.toUpperCase(),
+    sourceClass: source.sourceClass,
+  };
+}
+
+function resolveCandidateComparisonContract(map, candidateId) {
+  if (!map || typeof map !== 'object' || Array.isArray(map)) throw new Error('case-CFG map is missing');
+  if (map.schemaVersion === 1) return null;
+  if (map.schemaVersion !== 2 || !Array.isArray(map.candidateContracts) || !map.candidateContracts.length) {
+    throw new Error('case-CFG map candidate-contract schema is missing or unsupported');
+  }
+  const normalizedId = String(candidateId || '').toUpperCase();
+  const matches = map.candidateContracts.filter((contract) => (
+    typeof contract?.candidateId === 'string' && contract.candidateId.toUpperCase() === normalizedId
+  ));
+  if (matches.length !== 1) {
+    throw new Error(`case-CFG candidate contract does not resolve uniquely for ${candidateId}: found ${matches.length}`);
+  }
+  const contract = matches[0];
+  if (!contract.actualDispatch || !Array.isArray(contract.actualTails) || !contract.actualTails.length) {
+    throw new Error(`case-CFG candidate contract is incomplete for ${candidateId}`);
+  }
+  return contract;
 }
 
 function traceCommandEntry(buffer, start, spec, value, label = 'command') {
@@ -289,6 +344,7 @@ function normalizedTails(source, bufferLength, label) {
   if (!Array.isArray(source) || source.length === 0) throw new Error(`${label} shared-tail map is empty`);
   const names = new Set();
   const offsets = new Map();
+  const records = [];
   for (const [index, tail] of source.entries()) {
     if (!tail || typeof tail !== 'object' || typeof tail.name !== 'string' || !tail.name) {
       throw new Error(`${label} shared tail ${index} is malformed`);
@@ -297,13 +353,31 @@ function normalizedTails(source, bufferLength, label) {
     names.add(tail.name);
     const values = Array.isArray(tail.offsets) ? tail.offsets : [tail.offset];
     if (!values.length) throw new Error(`${label} shared tail ${tail.name} has no offsets`);
+    const parsedValues = [];
     for (const value of values) {
       const parsed = offset(value, `${label} shared tail ${tail.name}`, bufferLength);
       if (offsets.has(parsed)) throw new Error(`${label} shared-tail offset is ambiguous: ${hex(parsed)}`);
       offsets.set(parsed, tail.name);
+      parsedValues.push(parsed);
     }
+    records.push({ name: tail.name, offsets: parsedValues.sort((left, right) => left - right).map((value) => hex(value, 4)) });
   }
-  return { names, offsets };
+  records.sort((left, right) => left.name.localeCompare(right.name));
+  return { names, offsets, records };
+}
+
+function assertCandidateComparisonInputs(contract, actualDispatch, actualTails, bufferLength) {
+  if (!contract) return;
+  const expectedDispatch = publicDispatchSpec(
+    normalizedDispatchSpec(contract.actualDispatch, bufferLength, 'tracked actual'));
+  const providedDispatch = publicDispatchSpec(
+    normalizedDispatchSpec(actualDispatch, bufferLength, 'provided actual'));
+  const expectedTails = normalizedTails(contract.actualTails, bufferLength, 'tracked actual').records;
+  const providedTails = normalizedTails(actualTails, bufferLength, 'provided actual').records;
+  if (canonicalJson(expectedDispatch) !== canonicalJson(providedDispatch)
+      || canonicalJson(expectedTails) !== canonicalJson(providedTails)) {
+    throw new Error(`case-CFG actual inputs differ from tracked candidate contract for ${contract.candidateId}: expected ${canonicalJson({ dispatch: expectedDispatch, sharedTails: expectedTails })}, received ${canonicalJson({ dispatch: providedDispatch, sharedTails: providedTails })}`);
+  }
 }
 
 function callSymbol(info, instructionOffset, relocationByOffset, symbolForAddress) {
@@ -420,10 +494,43 @@ function sameStrings(left, right) {
   return left.length === right.length && left.every((value, index) => value === right[index]);
 }
 
+function caseComparisonDigest(report) {
+  return digest({
+    schemaVersion: report.schemaVersion,
+    target: report.target,
+    candidate: {
+      candidateId: report.candidate.candidateId,
+      sourceClass: report.candidate.sourceClass,
+    },
+    expected: report.comparisonContract.expected,
+    actual: report.comparisonContract.actual,
+    actualInputs: report.comparisonContract.actualInputs,
+    commandCount: report.commandCount,
+    summary: report.summary,
+    commands: report.commands,
+    evidenceBoundary: report.evidenceBoundary,
+  });
+}
+
+function assertCandidateComparisonResult(contract, report) {
+  if (!contract) return;
+  if (contract.expectedSummary !== undefined
+      && canonicalJson(report.summary) !== canonicalJson(contract.expectedSummary)) {
+    throw new Error(`case-CFG result summary differs from tracked candidate contract for ${contract.candidateId}`);
+  }
+  if (contract.expectedResultDigest !== undefined
+      && report.resultDigest !== contract.expectedResultDigest) {
+    throw new Error(`case-CFG result digest differs from tracked candidate contract for ${contract.candidateId}: expected ${contract.expectedResultDigest}, received ${report.resultDigest}`);
+  }
+}
+
 function compareCaseCfg(expectedBuffer, actualBuffer, options) {
   if (!options || typeof options !== 'object') throw new Error('case CFG options are required');
   const start = integer(options.start, 'case CFG start') >>> 0;
   const commands = options.commands;
+  const candidate = normalizedCandidateIdentity(options.candidate);
+  const expectedDispatch = normalizedDispatchSpec(options.expectedDispatch, expectedBuffer.length, 'expected');
+  const actualDispatch = normalizedDispatchSpec(options.actualDispatch, actualBuffer.length, 'actual');
   const expectedEntries = mapCommandEntries(expectedBuffer, start, options.expectedDispatch, commands, 'expected command');
   const actualEntries = mapCommandEntries(actualBuffer, start, options.actualDispatch, commands, 'actual command');
   const expectedTails = normalizedTails(options.expectedTails, expectedBuffer.length, 'expected');
@@ -481,9 +588,28 @@ function compareCaseCfg(expectedBuffer, actualBuffer, options) {
     };
   });
   const exactStructural = rows.filter((row) => Object.values(row.parity).every(Boolean)).length;
-  return {
-    schemaVersion: 1,
+  const report = {
+    schemaVersion: 2,
     target: options.symbol || null,
+    candidate,
+    comparisonContract: {
+      candidate,
+      expected: {
+        dispatch: publicDispatchSpec(expectedDispatch),
+        commandBodyOffset: hex(expectedDispatch.bodyOffset, 4),
+        sharedTails: expectedTails.records,
+      },
+      actual: {
+        dispatch: publicDispatchSpec(actualDispatch),
+        commandBodyOffset: hex(actualDispatch.bodyOffset, 4),
+        sharedTails: actualTails.records,
+      },
+      actualInputs: {
+        dispatchOffset: hex(actualDispatch.dispatchOffset, 4),
+        commandBodyOffset: hex(actualDispatch.bodyOffset, 4),
+        sharedTails: actualTails.records.flatMap((tail) => tail.offsets.map((tailOffset) => `${tail.name}=${tailOffset}`)),
+      },
+    },
     commandCount: rows.length,
     summary: {
       mappedCommands: rows.length,
@@ -501,13 +627,19 @@ function compareCaseCfg(expectedBuffer, actualBuffer, options) {
     commands: rows,
     evidenceBoundary: 'Case-aware CFG comparison is a scratch structural aid; it does not establish source ownership, linked bytes, semantics, or full-ROM identity.',
   };
+  report.resultDigest = caseComparisonDigest(report);
+  return report;
 }
 
 module.exports = {
   analyzeRegion,
   applySectionLocalRelocations,
+  assertCandidateComparisonInputs,
+  assertCandidateComparisonResult,
+  caseComparisonDigest,
   compareCaseCfg,
   mapCommandEntries,
+  resolveCandidateComparisonContract,
   resolveCommandEntry,
   traceCommandEntry,
 };

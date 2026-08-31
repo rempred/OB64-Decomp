@@ -18,3 +18,8 @@
 *.elf binary
 *.png binary
 *.wav binary
+
+# Frozen matching-workbench inputs retain byte identity; only their exact paths
+# suppress blank-at-EOL diagnostics. Other whitespace checks remain enabled.
+docs/archive/matching-c-candidates/2026-08-31-func_00284288-e8eb93fecb.c whitespace=-blank-at-eol
+docs/archive/matching-c-candidates/2026-08-31-func_00284288-9ed0fdee46.c whitespace=-blank-at-eol

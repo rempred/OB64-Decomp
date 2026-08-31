@@ -12,8 +12,11 @@ const {
   targetMetrics,
 } = require('../tools/lib/matching/mips_analysis');
 const {
+  assertCandidateComparisonInputs,
+  assertCandidateComparisonResult,
   compareCaseCfg,
   mapCommandEntries,
+  resolveCandidateComparisonContract,
   resolveCommandEntry,
 } = require('../tools/lib/matching/case_cfg');
 const {
@@ -360,7 +363,12 @@ function caseCfgTests() {
     { offset: 0x3C, type: 'R_MIPS_26', symbol: '.text', section: '.rel.text' },
     { offset: 0x48, type: 'R_MIPS_26', symbol: '.text', section: '.rel.text' },
   ];
-  const report = compareCaseCfg(expected, actual, {
+  const candidate = {
+    candidateId: 'A'.repeat(64),
+    runId: 'B'.repeat(64),
+    sourceClass: 'PURE_C',
+  };
+  const comparisonOptions = {
     start,
     symbol: 'fixture',
     commands,
@@ -370,25 +378,85 @@ function caseCfgTests() {
     actualTails: [{ name: 'post-command', offset: 0x50 }],
     actualRelocations,
     symbolForAddress: (address) => ({ 0x80301000: 'callee_a', 0x80302000: 'callee_b' }[address] || `target_${address.toString(16)}`),
-  });
+    candidate,
+  };
+  const report = compareCaseCfg(expected, actual, comparisonOptions);
   assert(report.commandCount === 2 && report.summary.mappedCommands === 2, 'case report lost a mapped command');
   assert(report.summary.callParity === 2 && report.summary.sharedTailConvergence === 2, 'case report failed relocation-normalized calls or shared tails');
   assert(report.summary.blockCountParity === 1 && report.commands[1].actual.blockCount === report.commands[1].expected.blockCount + 1,
     'case report did not localize an extra actual block');
   assert(report.commands[0].parity.normalizedBlocks && !report.commands[1].parity.normalizedBlocks,
     'case block normalization did not ignore register names or expose the extra block');
+  assert(report.schemaVersion === 2
+    && report.candidate.candidateId === candidate.candidateId
+    && report.candidate.runId === candidate.runId,
+  'case report did not serialize candidate and run identity');
+  assert(report.comparisonContract.expected.dispatch.dispatchOffset === '0x0000'
+    && report.comparisonContract.expected.commandBodyOffset === '0x0020'
+    && report.comparisonContract.expected.sharedTails[0].offsets[0] === '0x0048'
+    && report.comparisonContract.actual.dispatch.dispatchOffset === '0x0000'
+    && report.comparisonContract.actual.commandBodyOffset === '0x0020'
+    && report.comparisonContract.actual.sharedTails[0].offsets[0] === '0x0050'
+    && report.comparisonContract.actualInputs.dispatchOffset === '0x0000'
+    && report.comparisonContract.actualInputs.commandBodyOffset === '0x0020'
+    && report.comparisonContract.actualInputs.sharedTails[0] === 'post-command=0x0050',
+  'case report omitted or changed the expected/actual comparison contract');
+  const repeatedReport = compareCaseCfg(expected, actual, comparisonOptions);
+  assert(JSON.stringify(repeatedReport) === JSON.stringify(report),
+    'identical case-CFG inputs did not reproduce the same report');
+  const resultContract = {
+    candidateId: candidate.candidateId,
+    expectedSummary: report.summary,
+    expectedResultDigest: report.resultDigest,
+  };
+  assertCandidateComparisonResult(resultContract, repeatedReport);
+  expectError(/result summary differs/, () => assertCandidateComparisonResult({
+    ...resultContract,
+    expectedSummary: { ...report.summary, mappedCommands: report.summary.mappedCommands + 1 },
+  }, repeatedReport));
+  expectError(/result digest differs/, () => assertCandidateComparisonResult({
+    ...resultContract,
+    expectedResultDigest: 'C'.repeat(64),
+  }, repeatedReport));
+  expectError(/actual dispatch spec is missing/, () => compareCaseCfg(expected, actual, {
+    ...comparisonOptions, actualDispatch: undefined,
+  }));
+  expectError(/actual body offset must be a nonnegative integer/, () => compareCaseCfg(expected, actual, {
+    ...comparisonOptions, actualDispatch: { ...actualDispatch, bodyOffset: undefined },
+  }));
+  expectError(/actual shared-tail map is empty/, () => compareCaseCfg(expected, actual, {
+    ...comparisonOptions, actualTails: undefined,
+  }));
+  expectError(/actual shared-tail name is duplicated/, () => compareCaseCfg(expected, actual, {
+    ...comparisonOptions,
+    actualTails: [
+      { name: 'post-command', offset: 0x50 },
+      { name: 'post-command', offset: 0x54 },
+    ],
+  }));
+  expectError(/candidate comparison identity is missing/, () => compareCaseCfg(expected, actual, {
+    ...comparisonOptions, candidate: undefined,
+  }));
+  const candidateContract = {
+    candidateId: candidate.candidateId,
+    actualDispatch,
+    actualTails: comparisonOptions.actualTails,
+  };
+  const contractMap = { schemaVersion: 2, candidateContracts: [candidateContract] };
+  const resolvedContract = resolveCandidateComparisonContract(contractMap, candidate.candidateId);
+  assertCandidateComparisonInputs(resolvedContract, actualDispatch, comparisonOptions.actualTails, actual.length);
+  expectError(/does not resolve uniquely/, () => resolveCandidateComparisonContract({
+    ...contractMap, candidateContracts: [candidateContract, { ...candidateContract }],
+  }, candidate.candidateId));
+  expectError(/differ from tracked candidate contract/, () => assertCandidateComparisonInputs(
+    resolvedContract, { ...actualDispatch, bodyOffset: 0x24 }, comparisonOptions.actualTails, actual.length));
+  expectError(/differ from tracked candidate contract/, () => assertCandidateComparisonInputs(
+    resolvedContract, actualDispatch, [{ name: 'post-command', offset: 0x54 }], actual.length));
   const immediateActual = Buffer.from(actual);
   immediateActual.writeUInt32BE(iType(0x09, 6, 6, 2), 9 * 4);
   const immediateReport = compareCaseCfg(expected, immediateActual, {
-    start,
+    ...comparisonOptions,
     symbol: 'fixture-immediate',
-    commands,
-    expectedDispatch,
-    actualDispatch,
-    expectedTails: [{ name: 'post-command', offset: 0x48 }],
-    actualTails: [{ name: 'post-command', offset: 0x50 }],
-    actualRelocations,
-    symbolForAddress: (address) => ({ 0x80301000: 'callee_a', 0x80302000: 'callee_b' }[address] || `target_${address.toString(16)}`),
   });
   assert(!immediateReport.commands[0].parity.normalizedBlocks,
     'case block normalization hid a non-relocation immediate difference');
@@ -1018,6 +1086,47 @@ function acceptedModelTests() {
   const straddlerAssembly = emitM2cAssembly(straddler, workbench);
   assert(/nop # m2c analysis guard:[^\n]+\n\.L_0021F808:/.test(straddlerAssembly), 'm2c likely-branch/call-delay guard is missing');
   const cutsceneParser = resolveTarget(workbench, 'func_00284288');
+  const cutsceneEvidenceRoot = path.join(ROOT, 'docs', 'audit', 'evidence',
+    '2026-08-31-func-00284288-preparatory');
+  const cutsceneCaseMap = JSON.parse(fs.readFileSync(path.join(cutsceneEvidenceRoot, 'case-cfg-map.json'), 'utf8'));
+  const archivedContract = resolveCandidateComparisonContract(
+    cutsceneCaseMap, '9ED0FDEE460C920DC9A3906DE125591A33055CC4F0175249790959EFBB8FFD16');
+  assert(archivedContract.actualDispatch.dispatchOffset === '0x80'
+    && archivedContract.actualDispatch.bodyOffset === '0x8A0'
+    && archivedContract.actualTails.length === 1
+    && archivedContract.actualTails[0].name === 'post-command'
+    && archivedContract.actualTails[0].offset === '0x1EC8',
+  'func_00284288 tracked actual case-CFG inputs drifted');
+  assert(archivedContract.expectedResultDigest
+    === '164228EC18C985EBD8C9E03ACD53F6E1B515A00D12C26DF0418EA5A54EF256B7',
+  'func_00284288 tracked case-CFG result digest drifted');
+  const archivedSource = fs.readFileSync(path.resolve(ROOT, archivedContract.source), 'utf8');
+  const archivedSha256 = crypto.createHash('sha256').update(archivedSource).digest('hex').toUpperCase();
+  assert(archivedSha256 === archivedContract.sourceSha256,
+    'func_00284288 archived successor source bytes changed without a new identity');
+  assert(candidateRecord(cutsceneParser, archivedSource).candidateId === archivedContract.candidateId,
+    'func_00284288 archived successor candidate ID no longer derives from its frozen bytes');
+  const attributes = fs.readFileSync(path.join(ROOT, '.gitattributes'), 'utf8');
+  assert(attributes.includes(`${archivedContract.source} whitespace=-blank-at-eol`),
+    'func_00284288 archived successor lacks its exact-path whitespace policy');
+  const predecessorPath = 'docs/archive/matching-c-candidates/2026-08-31-func_00284288-e8eb93fecb.c';
+  const predecessorSha256 = crypto.createHash('sha256')
+    .update(fs.readFileSync(path.join(ROOT, predecessorPath))).digest('hex').toUpperCase();
+  assert(predecessorSha256 === 'CC7F0E0DBF8C69C61DDFEE85947B3F13FBB736AC738CBF26BF0C345B8F04F24C'
+    && attributes.includes(`${predecessorPath} whitespace=-blank-at-eol`),
+  'func_00284288 archived predecessor identity or exact-path whitespace policy drifted');
+  const cutsceneCoverage = JSON.parse(fs.readFileSync(path.join(cutsceneEvidenceRoot, 'coverage-summary.json'), 'utf8'));
+  assert(cutsceneCoverage.schemaVersion === 2
+    && cutsceneCoverage.caseComparison.candidate.candidateId === archivedContract.candidateId
+    && cutsceneCoverage.caseComparison.actualInputs.dispatchOffset === '0x0080'
+    && cutsceneCoverage.caseComparison.actualInputs.commandBodyOffset === '0x08A0'
+    && cutsceneCoverage.caseComparison.actualInputs.sharedTails[0] === 'post-command=0x1EC8'
+    && cutsceneCoverage.caseComparison.resultDigest === archivedContract.expectedResultDigest,
+  'func_00284288 compact case-CFG evidence lost its reproducible comparison contract');
+  const cutsceneResearchReport = fs.readFileSync(path.join(ROOT, 'docs', 'audit',
+    '2026-08-31-func-00284288-preparatory-reconstruction.md'), 'utf8');
+  assert(cutsceneResearchReport.includes('node tools/reproduce_func_00284288_case_cfg.js --actual-dispatch 0x80 --actual-body 0x8A0 --actual-tail post-command=0x1EC8'),
+    'func_00284288 fresh-worktree case-CFG reproduction command is not documented');
   const cutsceneAssembly = emitM2cAssembly(cutsceneParser, workbench);
   const cutsceneGuards = [...cutsceneAssembly.matchAll(/nop # m2c analysis guard:[^\n]+\n(\.L_[0-9A-F]+):/g)]
     .map((match) => match[1]);

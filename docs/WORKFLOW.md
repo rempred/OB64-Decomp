@@ -256,9 +256,21 @@ reviewed command map and explicit shared-tail offsets to compare bounded regions
 by command entry. It normalizes registers and supported relocations, reports
 block/call/successor/tail parity per command, and fails closed when dispatch
 resolution is ambiguous. Its region totals may include shared interior blocks
-once per command and are not whole-function metrics. `preserve` is the one command above that writes
-tracked files: it copies a deliberately selected blocked candidate and a short
-dossier into the archive. It does not activate or promote the target.
+once per command and are not whole-function metrics. A schema-2 command map may
+bind one exact candidate ID/source hash to its reviewed actual dispatch, body,
+and shared-tail offsets. The generated report then records the candidate and run
+IDs, both expected and actual specifications, the literal actual inputs, and a
+run-independent comparison-result digest. Required, duplicated, ambiguous, or
+changed actual inputs fail instead of falling back to the expected map.
+
+`preserve` is the one command above that writes tracked files: it copies a
+deliberately selected blocked candidate and a short dossier into the archive. It
+does not activate or promote the target. Preserved source identity covers every
+source byte, including trailing whitespace. Do not clean up a preserved file
+while retaining its candidate ID or hashes. When an exact archived input needs
+a Git whitespace exception, scope `whitespace=-blank-at-eol` to that one tracked
+path; do not weaken repository-wide checking. Any source edit is a successor
+candidate and requires a new identity, comparison, and dossier references.
 
 `prepare` exports the function from the current accepted model, invokes the
 pinned m2c revision, compiles generated drafts with the authenticated KMC/GNU

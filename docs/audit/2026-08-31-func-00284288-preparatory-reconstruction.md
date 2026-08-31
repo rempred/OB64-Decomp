@@ -5,8 +5,9 @@
 This is the successor research phase for the accepted single function at ROM
 `0x00284288..0x002861C8` and live range
 `0x802282B8..0x8022A1F8`. The 8,000-byte boundary, one-function identity,
-placement, and assembly owner are unchanged. The frozen E8EB93F candidate and
-its dossier were inputs only and were not amended.
+placement, and assembly owner are unchanged. The frozen E8EB93F predecessor was
+an input only. The 9ED0FDEE structured successor is also now frozen; this
+correction did not amend either archived source or either candidate identity.
 
 All results below are static retail, accepted-source, linkage, compiler, or
 scratch-object evidence. They do not prove semantics, linked C ownership,
@@ -15,7 +16,9 @@ Matching C, or complete-ROM identity. No full-ROM build or verifier was run.
 ## Durable and generated artifacts
 
 - `docs/audit/evidence/2026-08-31-func-00284288-preparatory/case-cfg-map.json`
-  is the reviewed dispatch contract.
+  is the reviewed schema-2 dispatch contract. It records the retail map and the
+  exact 9ED0FDEE candidate's source identity, actual offsets, expected summary,
+  and comparison-result digest.
 - `docs/audit/evidence/2026-08-31-func-00284288-preparatory/command-map.csv`
   is the compact 153-command ledger. It records retail ROM/live entry, region
   blocks, entry successors, cursor/stream facts, calls, memory accesses, shared
@@ -111,9 +114,21 @@ This separation is intentional and does not promote the successor.
 The reusable `match.js case-cfg` command aligns retail and a compiled candidate
 at each command entry and named shared tail. It normalizes candidate
 section-local `R_MIPS_26` jumps, resolves external calls by relocations/symbols,
-and compares register-independent opcode/edge signatures. It reports expected
-and actual entries, block counts, calls, successors, unmatched blocks, and
-shared-tail convergence. Unknown dispatch decisions fail closed.
+and compares register-independent opcode/edge signatures. Its schema-2 report
+records the candidate ID and compile-run ID; the expected and actual dispatch
+specifications; both command-body offsets; both shared-tail specifications; and
+the literal actual inputs. It also reports per-command entries, block counts,
+calls, successors, unmatched blocks, and shared-tail convergence. Unknown
+dispatch decisions and missing, duplicate, ambiguous, or contract-changing
+actual inputs fail closed.
+
+The retail contract uses dispatch `+0x0080`, first command body `+0x0894`, and
+`post-command=+0x1EC4`. The structured successor comparison was actually run
+with dispatch `+0x0080`, body `+0x08A0`, and
+`post-command=+0x1EC8`; these are no longer implicit local knowledge. Each
+isolated compilation receives its own run ID, which is serialized in the full
+generated report. The run-independent comparison digest is
+`164228EC18C985EBD8C9E03ACD53F6E1B515A00D12C26DF0418EA5A54EF256B7`.
 
 For successor candidate
 `9ED0FDEE460C920DC9A3906DE125591A33055CC4F0175249790959EFBB8FFD16`:
@@ -149,6 +164,96 @@ discrepancy is command `0x5D`: retail owns a distinct
 candidate cross-jumps to the pair emitted for the `0x80000006` path at candidate
 offsets `+0x1DDC/+0x1DE4`. Thus command-level call symbols agree for `0x5D`, but
 the whole candidate has two fewer call instructions.
+
+## Fresh-worktree reproduction
+
+Start from a clean checkout of this correction commit. The only generated or
+machine-local prerequisites are:
+
+- `build/baserom.us_rev0.z64`, the normalized 41,943,040-byte Rev 0 image with
+  SHA-256
+  `571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A`;
+- the authenticated KMC GCC 2.7.2 compiler selected by
+  `config/local-tools.json` (or its documented environment override), with
+  executable SHA-256
+  `F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6`;
+  and
+- the ignored GNU 2.6 and preprocessing/runtime tools selected by
+  `config/toolchain.json`, `config/source-policy.json`, and
+  `config/local-tools.json`. Their repository authentication checks run before
+  compilation and fail closed.
+
+No existing `build/matching/workbench.sqlite`, candidate snapshot, prepared
+assembly, or prior report is an input. The direct tracked task inputs are:
+
+- `tools/reproduce_func_00284288_case_cfg.js` and its checked-in matching
+  libraries;
+- `docs/audit/evidence/2026-08-31-func-00284288-preparatory/case-cfg-map.json`;
+- `docs/archive/matching-c-candidates/2026-08-31-func_00284288-9ed0fdee46.c`;
+- `asm/original/rev0/lib/func_00284288.s` and
+  `asm/original/rev0/manifest.json`;
+- `config/matching-workbench.json`, `config/phase7/conventional-build.json`,
+  `config/phase8/matching-c.json`, `config/matching-c-targets.json`,
+  `config/matching-c-linkage.json`, `config/matching-c-multi-owner.json`,
+  `config/toolchain.json`, `config/source-policy.json`, and the accepted
+  model/config inputs whose paths and hashes are embedded in the workbench
+  target-model identity; and
+- `tools/func_00284288_research.js` and
+  `tools/build_func_00284288_skeleton.js` for regenerating the compact evidence
+  and structured source view after the comparison.
+
+From the repository root, run exactly:
+
+```powershell
+git worktree add --detach <fresh-worktree> <correction-commit>
+Set-Location <fresh-worktree>
+# Provision the three authenticated machine-local prerequisites listed above.
+node tools/verify_baserom.js --input build/baserom.us_rev0.z64 --no-write
+node tools/reproduce_func_00284288_case_cfg.js --actual-dispatch 0x80 --actual-body 0x8A0 --actual-tail post-command=0x1EC8
+node tools/func_00284288_research.js --case-report build/matching/targets/func_00284288/research/structured-skeleton-case-cfg.json
+node tools/build_func_00284288_skeleton.js
+node tests/matching_workbench.js
+node tools/check_manifest.js
+git diff --exit-code -- docs/audit/evidence/2026-08-31-func-00284288-preparatory/command-map.csv docs/audit/evidence/2026-08-31-func-00284288-preparatory/prototype-ledger.csv docs/audit/evidence/2026-08-31-func-00284288-preparatory/coverage-summary.json
+node -e "const c=require('crypto'),f=require('fs'); const p='build/matching/targets/func_00284288/research/func_00284288.structured-skeleton.compile.c'; const q='docs/archive/matching-c-candidates/2026-08-31-func_00284288-9ed0fdee46.c'; const h=x=>c.createHash('sha256').update(f.readFileSync(x)).digest('hex').toUpperCase(); if(h(p)!==h(q)) throw Error('structured compiler input differs from frozen candidate'); console.log(h(p))"
+```
+
+The reproducer creates a new SQLite database below
+`build/matching/targets/func_00284288/case-cfg-reproduction/isolated-*`, a
+candidate snapshot and compiler run below `build/matching/`, and the complete
+case report at
+`build/matching/targets/func_00284288/research/structured-skeleton-case-cfg.json`.
+The research/skeleton commands additionally create ignored retail detail and
+structured skeleton files, then deterministically regenerate the three tracked
+compact evidence files named above.
+
+Expected stable outputs are candidate
+`9ED0FDEE460C920DC9A3906DE125591A33055CC4F0175249790959EFBB8FFD16`,
+source class `PURE_C`, the comparison digest above, 153 mapped commands, 70
+exact structural commands, 125 block-count matches, 152 call-list matches, 153
+successor matches, and 153 shared-tail convergences. The compilation run ID and
+isolated directory name are expected to differ between clean runs. The final
+hash command prints
+`958986E6E7A4E933D10B8A41B8F4020C798282DEFC3B3E8A1D38C322FA279062`.
+Correction validation ran consecutive isolated-database compilations and
+obtained the same digest and metrics under distinct run IDs. These steps do not
+run a full-ROM build or verifier.
+
+The research generator derives its analysis assembly directly from the tracked
+accepted assembly through `emitM2cAssembly`; it no longer consumes an untracked
+pre-existing `build/matching/.../prepare/func_00284288.s` file.
+
+## Archived-source whitespace and identity
+
+The predecessor and successor archived source files were not trimmed or
+rewritten. Their SHA-256 values remain respectively
+`CC7F0E0DBF8C69C61DDFEE85947B3F13FBB736AC738CBF26BF0C345B8F04F24C` and
+`958986E6E7A4E933D10B8A41B8F4020C798282DEFC3B3E8A1D38C322FA279062`;
+the successor retains candidate ID
+`9ED0FDEE460C920DC9A3906DE125591A33055CC4F0175249790959EFBB8FFD16`.
+Exact-path `.gitattributes` entries suppress only `blank-at-eol` diagnostics for
+those two frozen files. No global whitespace rule was weakened. A future edit
+must be preserved as a newly identified successor and re-compared.
 
 ## m2c label/delay-slot result
 
