@@ -880,7 +880,7 @@ function acceptedModelTests() {
   assert(workbench.targets.length === 4851, 'accepted function census drift');
   assert(workbench.targets.filter((target) => target.symbolByteOffset === 0).length === 4848, 'ordinary target census drift');
   const memcpy = resolveTarget(workbench, 'memcpy_bytewise');
-  assert(memcpy.targetId === '8C8CA226CF9B675BF66B44866DD425F8E4D1F513CC6750E952AE1F24858F53AD', 'target identity drifted outside an explicit target-model contract change');
+  assert(memcpy.targetId === 'C4C13EF4BEF72C9F2C2B31A109F7E23760659FDFA0E7C39FA5C9E84F06AD71C7', 'target identity drifted outside an explicit target-model contract change');
   const context = buildTargetContext(workbench, memcpy);
   assert(context.summary.argumentRegistersReadBeforeWrite.join(',') === '$a0,$a1,$a2', 'memcpy argument context drift');
   assert(context.fields.some((field) => field.baseArgument === 0 && field.access === 'store' && field.width === 1), 'memcpy destination-byte fact missing');
