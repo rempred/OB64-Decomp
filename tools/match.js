@@ -19,6 +19,7 @@ const {
   syncTargets,
 } = require('./lib/matching/compiler');
 const { compareMips, targetMetrics } = require('./lib/matching/mips_analysis');
+const { compareCaseCfg } = require('./lib/matching/case_cfg');
 const { prepareAndCompile, resolveM2c } = require('./lib/matching/m2c');
 const { runSweep, summarizeEnsemble } = require('./lib/matching/sweep');
 const { buildFamilyAtlas } = require('./lib/matching/family');
@@ -28,9 +29,10 @@ const { compareProbes, runProbe } = require('./lib/matching/probe');
 
 const VALUE_OPTIONS = new Set([
   'limit', 'source', 'candidate', 'variant', 'm2c-root', 'set', 'max-size',
-  'lane', 'note', 'research-compiler', 'passes', 'jobs',
+  'lane', 'note', 'research-compiler', 'passes', 'jobs', 'case-map',
+  'actual-dispatch', 'actual-body', 'output', 'actual-tail',
 ]);
-const REPEAT_OPTIONS = new Set(['variant']);
+const REPEAT_OPTIONS = new Set(['variant', 'actual-tail']);
 
 function usage() {
   console.log(`Usage: node tools/match.js <command> [arguments]
@@ -43,6 +45,8 @@ Core:
   watch <symbol> --source <candidate.c>
   classify <candidate-id> [--include-details] [--include-source]
   compare <candidate-id> <candidate-id>
+  case-cfg <candidate-id> --case-map <map.json> --actual-dispatch <offset> --actual-body <offset>
+           --actual-tail <name=offset>... [--output <report.json>]
   preserve <candidate-id> --note <reason>
 
 Generation:
@@ -102,6 +106,28 @@ function numeric(value, label, defaultValue = null) {
   const parsed = Number(value);
   if (!Number.isInteger(parsed) || parsed <= 0) throw new Error(`${label} must be a positive integer`);
   return parsed;
+}
+
+function nonnegativeInteger(value, label) {
+  if (Number.isSafeInteger(value) && value >= 0) return value;
+  if (typeof value === 'string' && /^(?:0x[0-9a-f]+|[0-9]+)$/i.test(value.trim())) {
+    const parsed = Number.parseInt(value, 0);
+    if (Number.isSafeInteger(parsed) && parsed >= 0) return parsed;
+  }
+  throw new Error(`${label} must be a nonnegative integer`);
+}
+
+function actualTailMap(values) {
+  const grouped = new Map();
+  for (const value of values || []) {
+    const match = /^([^=]+)=(0x[0-9a-f]+|[0-9]+)$/i.exec(value);
+    if (!match) throw new Error('--actual-tail requires name=offset');
+    const name = match[1].trim();
+    if (!name) throw new Error('--actual-tail name is empty');
+    if (!grouped.has(name)) grouped.set(name, []);
+    grouped.get(name).push(nonnegativeInteger(match[2], '--actual-tail offset'));
+  }
+  return [...grouped].map(([name, offsets]) => ({ name, offsets }));
 }
 
 function print(value, options = {}) {
@@ -530,6 +556,70 @@ async function main(argv = process.argv.slice(2)) {
       left: { candidateId: positional[0], runId: left.run.run_id, createdAt: left.run.created_at, compilerSha256: left.run.tool?.compilerSha256 },
       right: { candidateId: positional[1], runId: right.run.run_id, createdAt: right.run.created_at, compilerSha256: right.run.tool?.compilerSha256 },
       comparison: compactComparison(comparison, options['include-details']),
+    }, options);
+    return;
+  }
+  if (command === 'case-cfg') {
+    if (positional.length !== 1 || !options['case-map']) {
+      throw new Error('case-cfg requires <candidate-id> --case-map <map.json>');
+    }
+    if (options['actual-dispatch'] === undefined || options['actual-body'] === undefined) {
+      throw new Error('case-cfg requires --actual-dispatch and --actual-body');
+    }
+    const record = latestCandidateRun(positional[0]);
+    if (!record.run?.object_text) throw new Error('case-cfg requires a successfully compiled candidate');
+    const target = workbench.targets.find((item) => item.targetId === record.candidate.target_id);
+    if (!target) throw new Error('case-cfg candidate target is stale or absent from the accepted model');
+    const mapFile = path.resolve(options['case-map']);
+    const map = JSON.parse(fs.readFileSync(mapFile, 'utf8'));
+    if (map.schemaVersion !== 1 || map.symbol !== target.symbol || !Array.isArray(map.commands)) {
+      throw new Error('case-cfg map does not match the candidate target or supported schema');
+    }
+    const actualTails = actualTailMap(options['actual-tail']);
+    if (!actualTails.length) throw new Error('case-cfg requires at least one --actual-tail name=offset mapping');
+    const symbolForAddress = (address) => {
+      const matches = workbench.targets.filter((item) => item.entryVram === (address >>> 0));
+      if (matches.length === 1) return matches[0].symbol;
+      return `func_${(address >>> 0).toString(16).toUpperCase().padStart(8, '0')}`;
+    };
+    const report = compareCaseCfg(target.expectedBytes, Buffer.from(record.run.object_text, 'base64'), {
+      start: target.vramStart,
+      symbol: target.symbol,
+      commands: map.commands,
+      expectedDispatch: map.expectedDispatch,
+      actualDispatch: {
+        dispatchOffset: nonnegativeInteger(options['actual-dispatch'], '--actual-dispatch'),
+        bodyOffset: nonnegativeInteger(options['actual-body'], '--actual-body'),
+        valueRegister: nonnegativeInteger(map.actualValueRegister ?? map.expectedDispatch.valueRegister, 'actual value register'),
+        initialRegisters: map.actualInitialRegisters || map.expectedDispatch.initialRegisters,
+        localJumpMode: 'section-relative',
+      },
+      expectedTails: map.expectedTails,
+      actualTails,
+      actualRelocations: record.run.relocations || [],
+      symbolForAddress,
+    });
+    report.candidate = {
+      candidateId: positional[0],
+      runId: record.run.run_id,
+      sourceClass: record.run.source_class,
+    };
+    report.caseMap = path.relative(ROOT, mapFile).replace(/\\/g, '/');
+    const defaultOutput = path.join(ROOT, 'build', 'matching', 'case-cfg', target.symbol, `${positional[0].slice(0, 12)}.json`);
+    const outputFile = options.output ? path.resolve(options.output) : defaultOutput;
+    fs.mkdirSync(path.dirname(outputFile), { recursive: true });
+    fs.writeFileSync(outputFile, `${JSON.stringify(report, null, 2)}\n`);
+    print(options['include-details'] ? report : {
+      schemaVersion: report.schemaVersion,
+      target: report.target,
+      candidate: report.candidate,
+      commandCount: report.commandCount,
+      summary: report.summary,
+      mismatchedCommands: report.commands.filter((row) => !Object.values(row.parity).every(Boolean)).slice(0, 30)
+        .map((row) => ({ command: row.command, expectedBlocks: row.expected.blockCount, actualBlocks: row.actual.blockCount, parity: row.parity })),
+      mismatchedCommandsOmitted: Math.max(0, report.commandCount - report.summary.exactStructuralCommands - 30),
+      report: path.relative(ROOT, outputFile).replace(/\\/g, '/'),
+      evidenceBoundary: report.evidenceBoundary,
     }, options);
     return;
   }

@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "symbol": "func_00284288",
+  "retailRom": "0x00284288..0x002861C8",
+  "live": "0x802282B8..0x8022A1F8",
+  "m2c": {
+    "commit": "3478473441a1e6da75d6bf07629452f410390ef4",
+    "tree": "3943f2fb966096365ca19d888a85f7a0386aac17",
+    "target": "mips-gcc-c"
+  },
+  "guardedLabels": [
+    ".L_80229E80",
+    ".L_80229E8C",
+    ".L_80229E98",
+    ".L_8022A178"
+  ],
+  "guardedAssemblySha256": "7B38A93AF48701C039294E206333FBD8C32F5AFA862F84853D7C4AA778BDACB2",
+  "unguardedAssemblySha256": "EF14137FDF049997ABE7F5BC7CC7D931B0414B564C6AF76095D4AF3325E137EF",
+  "unguardedExpectedFailure": "Label ._m2c_.L_8022A178before refers to a delay slot; this is currently not supported.",
+  "reproducer": "node tools/reproduce_func_00284288_m2c_delay_slot.js --m2c-root <pinned-m2c-checkout>",
+  "workaround": "Insert a synthetic nop immediately before each guarded label in m2c's analysis input only; retail bytes and candidate C are unchanged."
+}

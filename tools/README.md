@@ -59,6 +59,9 @@ node tools/match.js best <symbol>
 node tools/match.js watch <symbol> --source <candidate.c>
 node tools/match.js classify <candidate-id>
 node tools/match.js compare <candidate-id> <candidate-id>
+node tools/match.js case-cfg <candidate-id> --case-map <map.json> \
+  --actual-dispatch <offset> --actual-body <offset> \
+  --actual-tail <name=offset>
 node tools/match.js preserve <candidate-id> --note "why it is worth keeping"
 node tools/match.js prepare <symbol> --variant structured
 node tools/match.js prepare <symbol>
@@ -70,6 +73,33 @@ node tools/match.js rank --lane leverage
 node tools/match.js rank --explain <symbol>
 node tools/match.js probe <symbol> --source <candidate.c>
 node tools/match.js probe compare <left-report.json> <right-report.json>
+```
+
+`case-cfg` is a bounded aid for large comparison-driven dispatchers. Its map
+declares the accepted command values, retail dispatch range, command register,
+registers whose dispatch-time values are statically fixed, and named shared
+tails. The command emulator fails closed if a branch condition depends on an
+unknown register, a control form is unsupported, or execution escapes the
+declared dispatch bounds. The candidate's dispatch/body/tail offsets remain
+explicit CLI inputs because they can move while a draft is being reconstructed.
+
+The generated JSON aligns retail and candidate regions at each command entry.
+For every command it reports entry offsets, block counts, direct-call symbols,
+successor classes, unmatched normalized blocks, and named-tail convergence.
+Register names are omitted from block signatures, external calls use relocation
+symbols, and section-local `R_MIPS_26` jump addends are normalized before CFG
+construction. Region totals can count a shared interior block more than once;
+they are per-command coverage totals, not whole-function metrics. Reports stay
+under ignored `build/matching/case-cfg/`. This comparison does not establish
+semantics, linked ownership, exact bytes, or full-ROM identity.
+
+The matching assembly adapter can insert analysis-only guards before labels
+that otherwise occupy an IDO likely-branch/call delay slot. These guards are
+not retail instructions and never enter candidate C. The pinned target-specific
+regression can be reproduced with:
+
+```text
+node tools/reproduce_func_00284288_m2c_delay_slot.js --m2c-root <pinned-m2c-checkout>
 ```
 
 `prepare --variant structured` requests one baseline draft. With no `--variant`,

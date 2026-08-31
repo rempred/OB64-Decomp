@@ -2,6 +2,7 @@
 'use strict';
 
 const fs = require('fs');
+const crypto = require('crypto');
 const os = require('os');
 const path = require('path');
 const { EventEmitter } = require('events');
@@ -10,6 +11,11 @@ const {
   compareMips,
   targetMetrics,
 } = require('../tools/lib/matching/mips_analysis');
+const {
+  compareCaseCfg,
+  mapCommandEntries,
+  resolveCommandEntry,
+} = require('../tools/lib/matching/case_cfg');
 const {
   digest,
   loadWorkbenchModel,
@@ -74,6 +80,10 @@ function rType(rs, rt, rd, funct) {
 
 function iType(op, rs, rt, immediate) {
   return ((op << 26) | (rs << 21) | (rt << 16) | (immediate & 0xFFFF)) >>> 0;
+}
+
+function jType(op, address) {
+  return ((op << 26) | ((address >>> 2) & 0x03FFFFFF)) >>> 0;
 }
 
 function expectError(pattern, callback) {
@@ -275,6 +285,116 @@ function classifierTests() {
       && compact.relocationEvidence.addendIdentity.proven === false,
   'public classifier summary was unbounded');
   assert(targetMetrics(exact, 0x80000000).leaf, 'simple return fixture was not a leaf');
+}
+
+function caseCfgTests() {
+  const start = 0x80200000;
+  const nop = 0;
+  const jrRa = rType(31, 0, 0, 0x08);
+  const expected = bufferFromWords([
+    iType(0x09, 0, 8, 0),
+    iType(0x04, 3, 8, 6),
+    nop,
+    iType(0x09, 0, 8, 1),
+    iType(0x04, 3, 8, 7),
+    nop,
+    jType(0x02, start + 0x48),
+    nop,
+    jType(0x03, 0x80301000),
+    iType(0x09, 5, 5, 1),
+    jType(0x02, start + 0x48),
+    nop,
+    iType(0x09, 5, 5, 1),
+    jType(0x03, 0x80302000),
+    nop,
+    jType(0x02, start + 0x48),
+    nop,
+    nop,
+    jrRa,
+    nop,
+  ]);
+  const actual = bufferFromWords([
+    iType(0x09, 0, 9, 0),
+    iType(0x04, 3, 9, 6),
+    nop,
+    iType(0x09, 0, 9, 1),
+    iType(0x04, 3, 9, 7),
+    nop,
+    jType(0x02, 0x50),
+    nop,
+    jType(0x03, 0),
+    iType(0x09, 6, 6, 1),
+    jType(0x02, 0x50),
+    nop,
+    iType(0x09, 6, 6, 1),
+    jType(0x03, 0),
+    nop,
+    jType(0x02, 0x48),
+    nop,
+    nop,
+    jType(0x02, 0x50),
+    nop,
+    jrRa,
+    nop,
+  ]);
+  const expectedDispatch = {
+    dispatchOffset: 0,
+    bodyOffset: 0x20,
+    valueRegister: 3,
+    localJumpMode: 'absolute',
+  };
+  const actualDispatch = {
+    dispatchOffset: 0,
+    bodyOffset: 0x20,
+    valueRegister: 3,
+    localJumpMode: 'section-relative',
+  };
+  const commands = [{ value: 0 }, { value: 1 }];
+  const expectedEntries = mapCommandEntries(expected, start, expectedDispatch, commands, 'fixture expected');
+  assert(expectedEntries.map((entry) => entry.entryOffset).join(',') === '32,48', 'case dispatch entries were not mapped by value');
+  const actualRelocations = [
+    { offset: 0x18, type: 'R_MIPS_26', symbol: '.text', section: '.rel.text' },
+    { offset: 0x20, type: 'R_MIPS_26', symbol: 'callee_a', section: '.rel.text' },
+    { offset: 0x28, type: 'R_MIPS_26', symbol: '.text', section: '.rel.text' },
+    { offset: 0x34, type: 'R_MIPS_26', symbol: 'callee_b', section: '.rel.text' },
+    { offset: 0x3C, type: 'R_MIPS_26', symbol: '.text', section: '.rel.text' },
+    { offset: 0x48, type: 'R_MIPS_26', symbol: '.text', section: '.rel.text' },
+  ];
+  const report = compareCaseCfg(expected, actual, {
+    start,
+    symbol: 'fixture',
+    commands,
+    expectedDispatch,
+    actualDispatch,
+    expectedTails: [{ name: 'post-command', offset: 0x48 }],
+    actualTails: [{ name: 'post-command', offset: 0x50 }],
+    actualRelocations,
+    symbolForAddress: (address) => ({ 0x80301000: 'callee_a', 0x80302000: 'callee_b' }[address] || `target_${address.toString(16)}`),
+  });
+  assert(report.commandCount === 2 && report.summary.mappedCommands === 2, 'case report lost a mapped command');
+  assert(report.summary.callParity === 2 && report.summary.sharedTailConvergence === 2, 'case report failed relocation-normalized calls or shared tails');
+  assert(report.summary.blockCountParity === 1 && report.commands[1].actual.blockCount === report.commands[1].expected.blockCount + 1,
+    'case report did not localize an extra actual block');
+  assert(report.commands[0].parity.normalizedBlocks && !report.commands[1].parity.normalizedBlocks,
+    'case block normalization did not ignore register names or expose the extra block');
+  const immediateActual = Buffer.from(actual);
+  immediateActual.writeUInt32BE(iType(0x09, 6, 6, 2), 9 * 4);
+  const immediateReport = compareCaseCfg(expected, immediateActual, {
+    start,
+    symbol: 'fixture-immediate',
+    commands,
+    expectedDispatch,
+    actualDispatch,
+    expectedTails: [{ name: 'post-command', offset: 0x48 }],
+    actualTails: [{ name: 'post-command', offset: 0x50 }],
+    actualRelocations,
+    symbolForAddress: (address) => ({ 0x80301000: 'callee_a', 0x80302000: 'callee_b' }[address] || `target_${address.toString(16)}`),
+  });
+  assert(!immediateReport.commands[0].parity.normalizedBlocks,
+    'case block normalization hid a non-relocation immediate difference');
+  expectError(/duplicate value/, () => mapCommandEntries(expected, start, expectedDispatch, [0, 0], 'duplicate fixture'));
+  const unknownDispatch = { ...expectedDispatch, dispatchOffset: 4 };
+  expectError(/reads unknown register/, () => resolveCommandEntry(expected, start, unknownDispatch, 0, 'unknown fixture'));
 }
 
 function scratchAuxiliarySectionTests() {
@@ -897,6 +1017,27 @@ function acceptedModelTests() {
     && straddler.originalAssemblyParts[1].symbol === 'func_0021EBBC_chunk34tail', 'accepted straddler source-part provenance is missing');
   const straddlerAssembly = emitM2cAssembly(straddler, workbench);
   assert(/nop # m2c analysis guard:[^\n]+\n\.L_0021F808:/.test(straddlerAssembly), 'm2c likely-branch/call-delay guard is missing');
+  const cutsceneParser = resolveTarget(workbench, 'func_00284288');
+  const cutsceneAssembly = emitM2cAssembly(cutsceneParser, workbench);
+  const cutsceneGuards = [...cutsceneAssembly.matchAll(/nop # m2c analysis guard:[^\n]+\n(\.L_[0-9A-F]+):/g)]
+    .map((match) => match[1]);
+  const cutsceneFixture = JSON.parse(fs.readFileSync(path.join(ROOT, 'tests', 'fixtures', 'matching',
+    'func_00284288-m2c-delay-slot.json'), 'utf8'));
+  assert(cutsceneFixture.schemaVersion === 1 && cutsceneFixture.symbol === cutsceneParser.symbol,
+    'func_00284288 m2c delay-slot fixture is malformed');
+  assert(cutsceneGuards.join(',') === cutsceneFixture.guardedLabels.join(','),
+    `func_00284288 m2c delay-slot guards drifted: ${cutsceneGuards.join(',')}`);
+  const cutsceneUnguarded = cutsceneAssembly.replace(
+    /^nop # m2c analysis guard: keep an IDO likely-branch rewrite out of a call delay slot\r?\n/gm, '');
+  const textSha256 = (text) => crypto.createHash('sha256').update(text).digest('hex').toUpperCase();
+  assert(textSha256(cutsceneAssembly) === cutsceneFixture.guardedAssemblySha256,
+    'func_00284288 guarded m2c assembly fixture drifted');
+  assert(textSha256(cutsceneUnguarded) === cutsceneFixture.unguardedAssemblySha256,
+    'func_00284288 unguarded m2c assembly fixture drifted');
+  const cutsceneFailure = m2cFailure(
+    `Decompilation failure in function ${cutsceneParser.symbol}:\n\n${cutsceneFixture.unguardedExpectedFailure}`);
+  assert(cutsceneFailure && cutsceneFailure.includes(cutsceneFixture.unguardedExpectedFailure),
+    'func_00284288 label-before-delay-slot diagnostic no longer normalizes to the fixture');
   const largeDispatcher = resolveTarget(workbench, 'func_0010DDB4');
   const largeDispatcherTables = discoverOverlayJumpTables(largeDispatcher, workbench,
     targetInstructions(largeDispatcher));
@@ -918,6 +1059,7 @@ function acceptedModelTests() {
 
 async function main() {
   classifierTests();
+  caseCfgTests();
   scratchAuxiliarySectionTests();
   canonicalAuxiliarySectionTests();
   familyTests();

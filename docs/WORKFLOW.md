@@ -245,12 +245,18 @@ node tools/match.js best <symbol>
 node tools/match.js watch <symbol> --source <candidate.c>
 node tools/match.js classify <candidate-id>
 node tools/match.js compare <candidate-id> <candidate-id>
+node tools/match.js case-cfg <candidate-id> --case-map <map.json> --actual-dispatch <offset> --actual-body <offset> --actual-tail <name=offset>
 node tools/match.js preserve <candidate-id> --note "reason"
 ```
 
 `watch` compiles a hand-edited candidate. `classify` reopens one candidate and
 its latest run, while `compare` compares two successfully compiled candidates
-for the same exact target. `preserve` is the one command above that writes
+for the same exact target. For a large command dispatcher, `case-cfg` can use a
+reviewed command map and explicit shared-tail offsets to compare bounded regions
+by command entry. It normalizes registers and supported relocations, reports
+block/call/successor/tail parity per command, and fails closed when dispatch
+resolution is ambiguous. Its region totals may include shared interior blocks
+once per command and are not whole-function metrics. `preserve` is the one command above that writes
 tracked files: it copies a deliberately selected blocked candidate and a short
 dossier into the archive. It does not activate or promote the target.
 
