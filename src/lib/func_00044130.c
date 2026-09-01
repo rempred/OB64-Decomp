@@ -34,11 +34,9 @@ int func_00044130(int arg0, int arg1, int arg2)
 
     value = classes[selected_class & 0xFF].field_0B;
     if (value != 0xFF) {
-        asm volatile(
-            "# Emits no instruction: compiler barrier only.\n"
-            "# It preserves retail's separate beq fallback and j return blocks.\n"
-            "# The surrounding branch, value move, and jump are generated from C.");
         result = value;
+        result++;
+        result--;
         goto done;
     }
     result = classes[alternate_class].field_0B;
