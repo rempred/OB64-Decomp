@@ -1624,6 +1624,14 @@
       ]
     },
     {
+      "symbol": "func_00044238",
+      "expectedRelocations": [
+        { "offset": "0x0000005C", "type": "R_MIPS_26", "symbol": ".text", "section": ".rel.text" },
+        { "offset": "0x00000074", "type": "R_MIPS_26", "symbol": ".text", "section": ".rel.text" },
+        { "offset": "0x000000BC", "type": "R_MIPS_26", "symbol": ".text", "section": ".rel.text" }
+      ]
+    },
+    {
       "symbol": "func_00045df4",
       "expectedRelocations": [
         { "offset": "0x00000054", "type": "R_MIPS_26", "symbol": ".text", "section": ".rel.text" }
