@@ -83,7 +83,7 @@ void func_00044aa4(CharacterRecord *arg0)
     s32 growth_1A;
     s32 growth_1E;
     s32 growth_22;
-    s32 equipment_index;
+    u8 equipment_index;
     s32 loop_index;
     s32 equipment_id;
     u16 growth_0A;
@@ -216,20 +216,15 @@ void func_00044aa4(CharacterRecord *arg0)
                modulo_temp_6 = modulo_temp_6 << 1,
                second_random_6 = second_random_6 - modulo_temp_6,
                random_value + second_random_6);
-        asm volatile("# Hybrid scope: this emits no instruction; it keeps the following zero initializers\n"
-                     "# at the shared seventh-growth join instead of letting KMC hoist one into a rand delay slot.\n");
         growth_22_base = class_record->growth_22;
-        asm volatile("# This zero-byte barrier keeps the growth_22 load ahead of the two zero initializers.\n");
         luck_delta = 0;
         loop_index = 0;
         growth_22 = growth_22_base + random_value;
-        asm volatile("# This zero-byte barrier preserves the retail copy from the zeroed loop register into $a1.\n"
-                     : "=r" (loop_index) : "0" (loop_index));
-        equipment_index = loop_index;
 
         do {
             s32 slot;
 
+            equipment_index = loop_index;
             slot = equipment_index & 0xFF;
             equipment = 0;
             switch (slot) {
@@ -267,7 +262,6 @@ void func_00044aa4(CharacterRecord *arg0)
 
 equipment_advance:
             loop_index += 1;
-            equipment_index = loop_index;
         } while (loop_index < 4);
 
         current = arg0->stat_16;
