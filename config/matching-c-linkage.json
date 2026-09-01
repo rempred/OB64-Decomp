@@ -1683,6 +1683,18 @@
       ]
     },
     {
+      "symbol": "func_000449ec",
+      "expectedRelocations": [
+        { "offset": "0x00000030", "type": "R_MIPS_26", "symbol": ".text", "section": ".rel.text" },
+        { "offset": "0x00000048", "type": "R_MIPS_26", "symbol": ".text", "section": ".rel.text" },
+        { "offset": "0x00000054", "type": "R_MIPS_26", "symbol": ".text", "section": ".rel.text" },
+        { "offset": "0x00000060", "type": "R_MIPS_26", "symbol": ".text", "section": ".rel.text" },
+        { "offset": "0x0000006C", "type": "R_MIPS_26", "symbol": ".text", "section": ".rel.text" },
+        { "offset": "0x0000008C", "type": "R_MIPS_HI16", "symbol": "g_func_0018B494_equipment_selectors", "section": ".rel.text" },
+        { "offset": "0x00000094", "type": "R_MIPS_LO16", "symbol": "g_func_0018B494_equipment_selectors", "section": ".rel.text" }
+      ]
+    },
+    {
       "symbol": "func_000d0150",
       "expectedRelocations": [
         { "offset": "0x00000000", "type": "R_MIPS_HI16", "symbol": "D_80196AF8", "section": ".rel.text" },
