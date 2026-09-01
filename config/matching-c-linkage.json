@@ -1632,6 +1632,15 @@
       ]
     },
     {
+      "symbol": "func_00044370",
+      "expectedRelocations": [
+        { "offset": "0x0000005C", "type": "R_MIPS_26", "symbol": "func_00045a50", "section": ".rel.text" },
+        { "offset": "0x00000064", "type": "R_MIPS_26", "symbol": ".text", "section": ".rel.text" },
+        { "offset": "0x00000070", "type": "R_MIPS_26", "symbol": "func_00045934", "section": ".rel.text" },
+        { "offset": "0x00000084", "type": "R_MIPS_26", "symbol": "func_000454e0", "section": ".rel.text" }
+      ]
+    },
+    {
       "symbol": "func_00045df4",
       "expectedRelocations": [
         { "offset": "0x00000054", "type": "R_MIPS_26", "symbol": ".text", "section": ".rel.text" }
