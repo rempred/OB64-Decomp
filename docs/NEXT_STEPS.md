@@ -44,6 +44,10 @@ Identify and decompile the original call graphs around:
 4. the battle-stream path patched by High Attack Streamsplit; and
 5. the menu/render path used by the Chaos Frame display module.
 
+Use the [High Attack Battle Stream Families Director Plan](Plans/high-attack-battle-stream-families-director-20260902.md)
+for item 4. It keeps all eight bounded families and five shared bridge functions
+in a sequential queue. Wave 1 is the action-stream record-construction family.
+
 A large nonmatching research reconstruction can be more valuable than dozens of unrelated tiny
 matches, but the retail exact baseline must remain separate and honest.
 
