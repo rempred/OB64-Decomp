@@ -90,6 +90,8 @@ function main() {
       || comparatorOwners.owners[0].romEndNumber !== 0x0021C968
       || comparatorOwners.owners[0].vramStartNumber !== 0x801D960C
       || comparatorOwners.owners[0].vramEndNumber !== 0x801D9698
+      || comparatorOwners.owners[0].logicalOffset !== 0
+      || comparatorOwners.owners[0].logicalEnd !== 140
       || comparatorOwners.owners[0].bytes !== 140) {
     throw new Error('func_0021C8DC executable-slice owner contract drift');
   }

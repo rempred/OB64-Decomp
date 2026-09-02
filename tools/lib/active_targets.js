@@ -587,7 +587,7 @@ function resolveAcceptedRows(model, symbol, multiOwnerContracts = new Map()) {
     owners: slice ? [{
       ownerIndex: 0,
       logicalOffset: 0,
-      logicalEnd: row.bytes,
+      logicalEnd: slice.bytes,
       primaryId: row.primaryId,
       rowIndex: row.index,
       chunkIndex: row.part && row.part.chunkIndex,
