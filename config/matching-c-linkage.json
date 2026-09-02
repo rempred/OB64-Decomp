@@ -194,6 +194,7 @@
     { "name": "func_0008b5e4", "address": "0x8019EB84" },
     { "name": "func_000c4e5c", "address": "0x801D83FC" },
     { "name": "func_000c54c0", "address": "0x801D8A60" },
+    { "name": "func_801D98F4", "address": "0x801D98F4" },
     { "name": "func_0016dec4", "address": "0x8016DEC4" },
     { "name": "g_func_000c4a40_callbacks", "address": "0x801EF288" },
     { "name": "g_func_000c4a40_class_records", "address": "0x80193BC0" },
@@ -3907,6 +3908,12 @@
         { "offset": "0x00000004", "type": "R_MIPS_HI16", "symbol": "D_8022A97C", "section": ".rel.text" },
         { "offset": "0x00000008", "type": "R_MIPS_LO16", "symbol": "D_8022A97C", "section": ".rel.text" },
         { "offset": "0x0000006C", "type": "R_MIPS_26", "symbol": ".text", "section": ".rel.text" }
+      ]
+    },
+    {
+      "symbol": "func_0021D1CC",
+      "expectedRelocations": [
+        { "offset": "0x00000020", "type": "R_MIPS_26", "symbol": "func_801D98F4", "section": ".rel.text" }
       ]
     }
   ]
