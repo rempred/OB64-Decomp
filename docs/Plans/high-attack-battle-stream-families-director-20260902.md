@@ -32,10 +32,10 @@ These decisions govern every wave:
 7. Start each wave from a clean, recorded decomp commit.
 8. Let the Director create and prepare a worktree when Joe authorizes one.
 9. Let the Director review, integrate, and remove or retain completed worktrees.
-10. Do not run the complete verifier after each edit or nonexact candidate.
+10. Do not run a complete-ROM verifier after each edit, candidate, or individual function.
 11. Use the canonical linked diff for iteration.
-12. Run the required target verifier once a final candidate is exact.
-13. Run the complete verifier after wave integration.
+12. Run one complete verifier at worker handoff after all practical family work is complete.
+13. Run the complete verifier again after wave integration.
 14. Prefer `PURE_C` and continue a serious Pure-C attempt before considering hybrid output.
 15. Do not treat m2c output as the completed decompilation attempt.
 16. Permit family-scale research, shared types, and creative source experiments.
@@ -342,7 +342,7 @@ For each family:
 6. Write a manual Pure-C reconstruction when generated drafts are insufficient.
 7. Run the canonical linked diff early.
 8. Change one source property in response to each concrete difference.
-9. Commit one exact target at a time.
+9. Commit one linked-byte-exact target at a time, pending the wave-end complete verifier.
 10. Continue until every family member received a full attempt.
 
 Use this canonical loop for a final target candidate:
@@ -350,14 +350,25 @@ Use this canonical loop for a final target candidate:
 ```text
 node tools/diff.js <symbol>
 node tools/source_policy.js --target <symbol>
-node tools/verify.js --target <symbol> --require-pure
 git diff --check
-commit the exact target
+commit the linked-byte-exact target
 ```
 
-`tools/diff.js` is the normal iteration command. Do not run a complete build
-after every source edit. The target verifier still checks the complete current
-ROM, so run it only after the linked candidate is exact and ready for acceptance.
+`tools/diff.js` is the normal per-function iteration and linked-byte check.
+`tools/verify.js --target` still builds and checks the complete current ROM.
+Workers must not run it after each exact function.
+
+After all practical family work is complete, the worker runs one batch gate:
+
+```text
+node tools/verify.js
+node tools/status.js
+git diff --check
+git status --short --branch
+```
+
+This single wave-end run verifies the complete active result. Before that run,
+an exact linked diff is a provisional exact result, not final acceptance.
 
 After the Director integrates a wave, run:
 
@@ -533,6 +544,9 @@ The worker must report each family member as one of:
 
 The report must distinguish direct targets, support targets, and other family
 members. It must list every function. It must not omit a failed attempt.
+
+The worker must report the single wave-end complete-verifier result. The worker
+must not repeat a complete-ROM verifier once per exact function.
 
 Commit exact targets separately. Do not activate or commit nonmatching sources
 as canonical implementations. Preserve selected research only through the
