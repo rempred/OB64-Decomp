@@ -14,7 +14,9 @@ Rev 0 decomp configuration lives here.
   contract. Its `nonDescriptorLoadSlabs` records describe evidence-backed ROM ranges that are
   manually loaded at a different runtime VMA without a fixed overlay descriptor. An optional
   slab-local `executableRanges` list records narrowly evidenced executable treatment without
-  changing the accepted source owner or its source classification.
+  changing the accepted source owner or its source classification. A slab-local
+  `nonExecutableRanges` list similarly carves directly evidenced padding out of an otherwise
+  code-class owner while retaining that owner's complete assembly fallback.
 - `phase8/matching-c.json` - legacy detailed target/link-symbol/relocation evidence used to derive
   the minimal active-target model. Procedure-descriptor records are retained only as retired
   ancillary evidence.

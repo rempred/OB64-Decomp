@@ -63,6 +63,45 @@ function main() {
   if (!resolvedCutsceneOwners.contract || resolvedCutsceneOwners.rows.length !== 2) {
     throw new Error('func_002A0EF0 did not resolve as one logical multi-owner target');
   }
+  const actionTailOwners = validatedMultiOwners.get('func_0021d374');
+  if (!actionTailOwners || actionTailOwners.bytes !== 220
+      || actionTailOwners.romStartNumber !== 0x0021D374
+      || actionTailOwners.romEndNumber !== 0x0021D450
+      || actionTailOwners.vramStartNumber !== 0x801DA0A4
+      || actionTailOwners.vramEndNumber !== 0x801DA180
+      || !sameJson(actionTailOwners.rows.map((row) => row.index), [4047, 4048])
+      || !sameJson(actionTailOwners.owners.map((owner) => owner.sectionName), ['.ob64.r4047', '.ob64.r4048'])
+      || !sameJson(actionTailOwners.owners.map((owner) => owner.chunkIndex), [33, 33])
+      || !sameJson(actionTailOwners.owners.map((owner) => owner.bytes), [72, 148])
+      || actionTailOwners.owners.some((owner) => owner.row.slices[0].loadSlabId !== 'resource-loader-00213b10')) {
+    throw new Error('func_0021D374 accepted multi-entry owner contract drift');
+  }
+  const resolvedActionTailOwners = resolveAcceptedRows(active.model, 'func_0021D374', validatedMultiOwners);
+  if (!resolvedActionTailOwners.contract || resolvedActionTailOwners.rows.length !== 2) {
+    throw new Error('func_0021D374 did not resolve as one logical multi-entry target');
+  }
+  const comparatorOwners = resolveAcceptedRows(active.model, 'func_0021C8DC', validatedMultiOwners);
+  if (comparatorOwners.contract !== null || comparatorOwners.rows.length !== 1
+      || comparatorOwners.owners.length !== 1
+      || comparatorOwners.rows[0].bytes !== 148
+      || comparatorOwners.rows[0].slices.length !== 2
+      || comparatorOwners.owners[0].sectionName !== '.ob64.r4033.s0'
+      || comparatorOwners.owners[0].romStartNumber !== 0x0021C8DC
+      || comparatorOwners.owners[0].romEndNumber !== 0x0021C968
+      || comparatorOwners.owners[0].vramStartNumber !== 0x801D960C
+      || comparatorOwners.owners[0].vramEndNumber !== 0x801D9698
+      || comparatorOwners.owners[0].bytes !== 140) {
+    throw new Error('func_0021C8DC executable-slice owner contract drift');
+  }
+  const comparatorPaddingMutationModel = JSON.parse(JSON.stringify(active.model));
+  comparatorPaddingMutationModel.rows[4033].slices[1].executable = true;
+  const rejectedFunctionPaddingMutations = [
+    expectRejection('function padding became executable', () => resolveAcceptedRows(
+      comparatorPaddingMutationModel,
+      'func_0021C8DC',
+      validatedMultiOwners,
+    )),
+  ];
   const mutateMultiOwner = (mutate, model = active.model) => validateMultiOwnerConfig(
     mutate(JSON.parse(JSON.stringify(multiOwnerConfig))),
     active.minimalConfig.profile,
@@ -120,6 +159,11 @@ function main() {
     expectRejection('multi-owner partial continuation activation', () => resolveAcceptedRows(
       active.model,
       'func_002A0EF0_chunk42tail',
+      validatedMultiOwners,
+    )),
+    expectRejection('multi-entry shared-tail activation', () => resolveAcceptedRows(
+      active.model,
+      'func_0021D3BC',
       validatedMultiOwners,
     )),
   ];
@@ -245,6 +289,99 @@ function main() {
       || normalizedPaddedFixture.bytes !== 32) {
     throw new Error('canonical padded auxiliary switch-table normalization drift');
   }
+  const actionDispatcherRow = resolveAcceptedRow(active.model, 'func_0021CBC4');
+  const actionDispatcherSlice = actionDispatcherRow.slices.find((slice) => slice.executable);
+  if (!actionDispatcherSlice || actionDispatcherSlice.loadSlabId !== 'resource-loader-00213b10') {
+    throw new Error('func_0021CBC4 accepted load-slab text placement drift');
+  }
+  const actionDispatcherTarget = {
+    symbol: 'func_0021CBC4',
+    targetIndex: -1,
+    chunkIndex: actionDispatcherRow.part.chunkIndex,
+    overlayDescriptorId: actionDispatcherSlice.overlayDescriptorId,
+    bytes: actionDispatcherSlice.bytes,
+    vramStartNumber: actionDispatcherSlice.vramStart,
+    sectionName: actionDispatcherSlice.sectionName,
+    row: actionDispatcherRow,
+    textOwners: [{ row: actionDispatcherRow, sectionName: actionDispatcherSlice.sectionName }],
+  };
+  const actionTableBytes = baserom.subarray(0x00229DF0, 0x00229EF8);
+  const hex32 = (value) => `0x${(value >>> 0).toString(16).toUpperCase().padStart(8, '0')}`;
+  const actionTableRelocations = Array.from({ length: 65 }, (_, index) => ({
+    offset: hex32(index * 4),
+    type: 'R_MIPS_32',
+    symbol: '.text',
+    addend: hex32(actionTableBytes.readUInt32BE(index * 4) - actionDispatcherSlice.vramStart),
+    section: '.rel.rodata',
+  }));
+  const actionTableRawContract = {
+    kind: 'switch-table',
+    compilerSection: '.rodata',
+    outputSection: '.ob64.r4158',
+    sectionType: 'SHT_PROGBITS',
+    sectionFlags: ['SHF_ALLOC'],
+    alignment: 8,
+    romStart: '0x00229DF0',
+    romEndExclusive: '0x00229EF8',
+    vramStart: '0x801E6B20',
+    vramEndExclusive: '0x801E6C28',
+    bytes: 264,
+    entries: 65,
+    trailingPaddingBytes: 4,
+    expectedTrailingPaddingSha256: 'DF3F619804A92FDB4057192DC43DD748EA778ADC52BC498CE80524C014B81119',
+    expectedObjectSha256: 'B8C244F0C4F26E1576796A6E5309C3E951E433CAFDDE9FA15AC524B480599536',
+    expectedLinkedSha256: 'D88942BC72126CDB2EAC36D63BCF8B262C671FFFA53ADD17DEBAC7BB6A02D112',
+    preservedTail: null,
+    expectedRelocations: actionTableRelocations,
+  };
+  const actionTableContract = normalizeAuxiliarySectionContracts(
+    [actionTableRawContract],
+    actionDispatcherTarget.symbol,
+    'func_0021CBC4 load-slab auxiliary fixture',
+  );
+  const resolvedActionTable = resolveAuxiliarySectionContracts(
+    active.model,
+    baserom,
+    actionDispatcherTarget,
+    actionTableContract,
+  )[0];
+  if (!resolvedActionTable || resolvedActionTable.ownerRowIndex !== 4158
+      || resolvedActionTable.ownerChunkIndex !== 34
+      || resolvedActionTable.ownerChunkIndex === actionDispatcherTarget.chunkIndex
+      || resolvedActionTable.ownerRomStartNumber !== 0x00229DF0
+      || resolvedActionTable.ownerRomEndNumber !== 0x00229EF8
+      || resolvedActionTable.ownerVramStartNumber !== 0x801E6B20
+      || resolvedActionTable.ownerVramEndNumber !== 0x801E6C28
+      || resolvedActionTable.entries !== 65
+      || resolvedActionTable.trailingPaddingBytes !== 4
+      || resolvedActionTable.ownerTailBytes !== 0) {
+    throw new Error('func_0021CBC4 load-slab auxiliary owner relationship drift');
+  }
+  const mutateActionTableModel = (mutate) => {
+    const model = JSON.parse(JSON.stringify(active.model));
+    mutate(model.rows.find((row) => row.index === 4158).slices[0]);
+    return model;
+  };
+  const rejectedLoadSlabAuxiliaryMutations = [
+    expectRejection('load-slab auxiliary identity mismatch', () => resolveAuxiliarySectionContracts(
+      mutateActionTableModel((slice) => { slice.loadSlabId = 'other-load-slab'; }),
+      baserom,
+      actionDispatcherTarget,
+      actionTableContract,
+    )),
+    expectRejection('load-slab auxiliary placement-kind mismatch', () => resolveAuxiliarySectionContracts(
+      mutateActionTableModel((slice) => { slice.placementKind = 'rom-only'; }),
+      baserom,
+      actionDispatcherTarget,
+      actionTableContract,
+    )),
+    expectRejection('load-slab auxiliary executable drift', () => resolveAuxiliarySectionContracts(
+      mutateActionTableModel((slice) => { slice.executable = true; }),
+      baserom,
+      actionDispatcherTarget,
+      actionTableContract,
+    )),
+  ];
   const legacyUnpaddedFixture = {
     ...canaryEntry.auxiliarySections[0],
     romEndExclusive: '0x00286BAC',
@@ -641,8 +778,10 @@ function main() {
     rejectedToolchainMutations,
     rejectedLinkageMutations,
     rejectedCompilerTextMutations,
+    rejectedFunctionPaddingMutations,
     rejectedMultiOwnerMutations,
     rejectedAuxiliaryMutations,
+    rejectedLoadSlabAuxiliaryMutations,
     rejectedSharedAuxiliaryMutations,
     rejectedPaddingMutations,
     rejectedActiveLinkSymbolShadows,

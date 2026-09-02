@@ -21,6 +21,7 @@ function main() {
     vramStart: 0x8019A7A0,
     vramEndExclusive: 0x801F1500,
     executableRanges: [],
+    nonExecutableRanges: [],
   }, 'accepted runtime load-slab record drift');
 
   assert.strictEqual(slab.romEndExclusive - slab.romStart, 0x56D60, 'ROM length drift');

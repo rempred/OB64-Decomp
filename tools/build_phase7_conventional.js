@@ -311,6 +311,11 @@ function writeLayout(model, output) {
         romStart: range.romStart,
         romEndExclusive: range.romEndExclusive,
       })),
+      nonExecutableRanges: slab.nonExecutableRanges.map((range) => ({
+        id: range.id,
+        romStart: range.romStart,
+        romEndExclusive: range.romEndExclusive,
+      })),
     })),
     owners: model.rows.map((row) => ({
       index: row.index,
@@ -333,6 +338,7 @@ function writeLayout(model, output) {
         overlaySection: slice.overlaySection,
         executable: slice.executable,
         executableRangeId: slice.executableRangeId,
+        nonExecutableRangeId: slice.nonExecutableRangeId,
       })),
     })),
     overlays: model.overlays.map((overlay) => ({
