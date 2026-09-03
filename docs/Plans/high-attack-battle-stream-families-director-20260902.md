@@ -1,6 +1,6 @@
 # High Attack Battle Stream Families — Director Plan
 
-Status: **Waves 1-2 integrated; Wave 3 ready**
+Status: **Waves 1-3 integrated; Wave 3 has one parked Pure-C retry; Wave 4 ready**
 
 Date: 2026-09-02
 
@@ -28,7 +28,13 @@ This plan does not design or install that modified-game migration.
 - 2026-09-03: Wave 2 was integrated on `main` at `8fc6bf9de0f71c2897de5aaee8f42c313836c13a`.
 - All three Wave 2 functions are exact `PURE_C` (1,160 executable bytes).
 - Wave 2 added no hybrid fragment and has no unresolved blocker.
-- The next active family is Wave 3, context and trailer initialization.
+- 2026-09-03: Wave 3 and its independently accepted structural follow-up were integrated on `main` at `7a163738111713f93d9ca66e30bbcb401e52b2cf`.
+- `func_00201108` and `func_002013D0` are exact `PURE_C` (796 executable bytes combined).
+- The 12 non-executable alignment bytes after `func_002013D0` remain in the accepted retained assembly slice.
+- `func_001FFE80` is exact `HYBRID_C`: 788 bytes are compiler output from C, one eight-byte inline-assembly fragment selects two moves, and one zero-instruction constraint influences allocation.
+- The preserved `func_001FFE80` Pure-C candidate is four bytes short because KMC coalesces a zero-offset record alias and changes a delay-slot/register decision. Reopen it when new KMC lifetime evidence, a matching neighboring source pattern, or a Pure-C alias/lifetime technique can test that decision.
+- Post-integration verification passed at 459 exact `PURE_C` functions / 31,904 bytes and 62 exact `HYBRID_C` functions / 33,724 bytes; the full ROM is exact.
+- The next active family is Wave 4, actor snapshot and interrupt control.
 
 ## Director decisions
 
@@ -51,6 +57,7 @@ These decisions govern every wave:
 15. Do not treat m2c output as the completed decompilation attempt.
 16. Permit family-scale research, shared types, and creative source experiments.
 17. Keep accepted owner boundaries and canonical source ownership unchanged.
+18. Create every worker and reviewer task under the `OB64 Decomp` Codex project, even when the task operates in a separately prepared external Git worktree. Do not use projectless task routing for this program.
 
 A worker must not stop because an automatic draft fails to compile or remains
 nonexact. The worker must repair the draft, reconstruct the logic, and iterate
@@ -171,9 +178,9 @@ relocation. The supported static call chain is
 
 | Function | Bytes | Priority | Current status |
 |---|---:|---|---|
-| `func_001FFE80` | 796 | `FAMILY` | `ASM` |
-| **`func_00201108`** | 712 | `SUPPORT` | `ASM` |
-| `func_002013D0` | 96 | `FAMILY` | `ASM` |
+| `func_001FFE80` | 796 | `FAMILY` | exact `HYBRID_C`; Pure-C retry parked |
+| **`func_00201108`** | 712 | `SUPPORT` | exact `PURE_C` |
+| `func_002013D0` | 96 | `FAMILY` | exact `PURE_C` for 84 executable bytes; 12-byte retained assembly padding |
 
 The worker must derive copy widths and record offsets from retail code. Parent
 relocation tables are leads. They do not replace independent derivation.
