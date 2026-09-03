@@ -535,6 +535,16 @@ static family wave.
 
 ## Wave handoff and integration
 
+Before the terminal callback, the worker or reviewer must finish all file writes,
+verification, hashes, Git-status checks, task-log updates, and final-response
+preparation. The callback to the Director must be the task's last action. After
+the callback, the agent must run no command, call no tool, and write no file; it
+must end the task immediately.
+
+When a callback arrives, the Director checks the source task status. If the task
+is not yet finished, the Director does not freeze its files and checks again two
+minutes later.
+
 The worker must report each family member as one of:
 
 - exact `PURE_C`;
