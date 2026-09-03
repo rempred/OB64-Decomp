@@ -53,7 +53,7 @@ rename is part of this work.
 
 | Function | Accepted range | Accepted bytes | Relocations | Target SHA-256 | Result | Commit/evidence |
 |---|---|---:|---:|---|---|---|
-| `func_001FFE80` | `0x001FFE80..0x0020019C` | 796 | 54 | `F980232EFC52C2B199FE98013C63495EC8DF87303E18353FC34FB3E47F9C7402` | exact `HYBRID_C` | `430061ecb263a249c69a98f338e9de5c19d0829b` |
+| `func_001FFE80` | `0x001FFE80..0x0020019C` | 796 | 54 | `F980232EFC52C2B199FE98013C63495EC8DF87303E18353FC34FB3E47F9C7402` | exact `HYBRID_C` | implementation `430061ecb263a249c69a98f338e9de5c19d0829b`; KMC cleanup `faeb9625281e8d4ccbd6387ce8f1ec8c84cdd27a` |
 | `func_00201108` | `0x00201108..0x002013D0` | 712 | 22 | `169467C77946852999653F4F85C4CFD19FD2F9D29A5868B6839C33493CB8213A` | exact `PURE_C` | `e8c4d05896d9e34054021d04a9191e7e14d6d536` |
 | `func_002013D0` | `0x002013D0..0x00201430` | 96 | 11 in candidate body | not applicable to a full accepted C owner | 84-byte executable prefix exact `PURE_C`; 12-byte owner-padding blocker | candidate `2EE9E463F38B39E3A9FA779A4F0D0293E76B09081C70008F784940AE1F74DB2C`; evidence commit `1385a212c25ab541d59d261c6b7e2499fdc7823d` |
 
@@ -134,7 +134,11 @@ Raw linked bytes ........... EXACT
 Relocation contract ........ MATCH
 ```
 
-The single wave-end complete verifier passed on the final tracked tree:
+An initial pre-final full-verifier attempt caught two block comments beside the
+inline assembly that direct KMC `cc1` does not parse. Removing only those
+comments in `faeb9625281e8d4ccbd6387ce8f1ec8c84cdd27a` restored the already
+proven object bytes; the repeated narrow diff was exact. The final wave-end
+complete verifier then passed on the corrected tracked tree:
 
 ```text
 node tools/verify.js
