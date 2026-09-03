@@ -9,6 +9,7 @@ const {
   loadAcceptedModel,
   parseElf32BigEndian,
   renderLinkerScript,
+  sha256Buffer,
   validateNonDescriptorLoadSlabs,
   verifyElfAgainstModel,
   verifyMap,
@@ -55,6 +56,18 @@ function rangesIntersect(startA, endA, startB, endB) {
   return startA < endB && endA > startB;
 }
 
+function directControlTarget(word, pc) {
+  const opcode = word >>> 26;
+  if (opcode === 2 || opcode === 3) {
+    return (((pc + 4) & 0xF0000000) | ((word & 0x03FFFFFF) << 2)) >>> 0;
+  }
+  if (opcode === 1 || (opcode >= 4 && opcode <= 7) || (opcode >= 20 && opcode <= 23)
+      || (opcode === 17 && ((word >>> 21) & 0x1F) === 8)) {
+    return (pc + 4 + ((word << 16) >> 16) * 4) >>> 0;
+  }
+  return null;
+}
+
 function main() {
   const output = value('--output');
   const model = loadAcceptedModel();
@@ -67,9 +80,9 @@ function main() {
   verifyMap(model, mapText);
 
   const results = [];
-  assert.strictEqual(model.counts.nonDescriptorLoadSlabs, 4, 'accepted load-slab count drift');
-  assert.strictEqual(model.slices.length, 7252, 'accepted link-slice count drift');
-  assert.strictEqual(model.counts.splitOwners, 10, 'accepted split-owner count drift');
+  assert.strictEqual(model.counts.nonDescriptorLoadSlabs, 5, 'accepted load-slab count drift');
+  assert.strictEqual(model.slices.length, 7253, 'accepted link-slice count drift');
+  assert.strictEqual(model.counts.splitOwners, 11, 'accepted split-owner count drift');
   assert.strictEqual(model.overlays.length, 19, 'fixed-descriptor count drift');
   assert.deepStrictEqual(model.nonDescriptorLoadSlabs, [{
     id: 'scenario-loader-00195410',
@@ -79,6 +92,7 @@ function main() {
     vramStart: 0x80214F80,
     vramEndExclusive: 0x80217350,
     executableRanges: [],
+    nonExecutableRanges: [],
   }, {
     id: 'cold-boot-loader-00040e80',
     kind: 'loader-dma',
@@ -91,6 +105,7 @@ function main() {
       romStart: 0x00040E80,
       romEndExclusive: 0x00040E90,
     }],
+    nonExecutableRanges: [],
   }, {
     id: 'loader-dma-00087200',
     kind: 'loader-dma',
@@ -99,6 +114,7 @@ function main() {
     vramStart: 0x8019A7A0,
     vramEndExclusive: 0x801F1500,
     executableRanges: [],
+    nonExecutableRanges: [],
   }, {
     id: 'loader-dma-0029a4c0',
     kind: 'loader-dma',
@@ -107,7 +123,166 @@ function main() {
     vramStart: 0x8022AC90,
     vramEndExclusive: 0x802394F0,
     executableRanges: [],
+    nonExecutableRanges: [],
+  }, {
+    id: 'resource-loader-00213b10',
+    kind: 'loader-dma',
+    romStart: 0x00213B10,
+    romEndExclusive: 0x0022A280,
+    vramStart: 0x801D0840,
+    vramEndExclusive: 0x801E6FB0,
+    executableRanges: [],
+    nonExecutableRanges: [{
+      id: 'func-0021c8dc-alignment-padding',
+      romStart: 0x0021C968,
+      romEndExclusive: 0x0021C970,
+    }],
   }], 'accepted load-slab record drift');
+
+  const actionStreamSlab = model.nonDescriptorLoadSlabs.find((slab) => slab.id === 'resource-loader-00213b10');
+  assert.ok(actionStreamSlab, 'action-stream resource load slab is missing');
+  assert.strictEqual(actionStreamSlab.romEndExclusive - actionStreamSlab.romStart, 0x16770, 'action-stream slab ROM length drift');
+  assert.strictEqual(actionStreamSlab.vramEndExclusive - actionStreamSlab.vramStart, 0x16770, 'action-stream slab VRAM length drift');
+  assert.strictEqual(actionStreamSlab.vramStart - actionStreamSlab.romStart, 0x7FFBCD30, 'action-stream slab start delta drift');
+  assert.strictEqual(actionStreamSlab.vramEndExclusive - actionStreamSlab.romEndExclusive, 0x7FFBCD30, 'action-stream slab end delta drift');
+  const actionStreamRows = model.rows.filter((row) => (
+    row.romStart < actionStreamSlab.romEndExclusive
+    && row.romEndExclusive > actionStreamSlab.romStart
+  ));
+  assert.strictEqual(actionStreamRows.length, 178, 'action-stream slab owner count drift');
+  assert.strictEqual(actionStreamRows[0].index, 3988, 'action-stream slab first owner drift');
+  assert.strictEqual(actionStreamRows[0].romStart, actionStreamSlab.romStart, 'action-stream slab first boundary drift');
+  assert.strictEqual(actionStreamRows.at(-1).index, 4165, 'action-stream slab final owner drift');
+  assert.strictEqual(actionStreamRows.at(-1).romEndExclusive, actionStreamSlab.romEndExclusive, 'action-stream slab final boundary drift');
+  for (const row of actionStreamRows) {
+    for (const slice of row.slices) {
+      assert.strictEqual(slice.placementKind, 'non-descriptor-load-slab', `action-stream slab placement drift: ${slice.sectionName}`);
+      assert.strictEqual(slice.loadSlabId, actionStreamSlab.id, `action-stream slab identity drift: ${slice.sectionName}`);
+      assert.strictEqual(slice.overlayDescriptorId, null, `fixed descriptor leaked into action-stream slab: ${slice.sectionName}`);
+      assert.strictEqual(slice.vramStart, slice.romStart + 0x7FFBCD30, `action-stream slab VMA start drift: ${slice.sectionName}`);
+      assert.strictEqual(slice.vramEndExclusive, slice.romEndExclusive + 0x7FFBCD30, `action-stream slab VMA end drift: ${slice.sectionName}`);
+    }
+  }
+  for (const rowIndex of [3987, 4166]) {
+    const row = model.rows[rowIndex];
+    assert.ok(row && row.slices.every((slice) => slice.loadSlabId !== actionStreamSlab.id), `p${rowIndex} crossed an action-stream slab endpoint`);
+  }
+
+  const actionStreamLoaderWords = new Map([
+    [0x0004E62C, 0x3C04801D], [0x0004E630, 0x24840840],
+    [0x0004E634, 0x3C05801E], [0x0004E638, 0x24A55AA0],
+    [0x0004E644, 0x3C04801E], [0x0004E648, 0x24845AA0],
+    [0x0004E64C, 0x3C05801E], [0x0004E650, 0x24A56FB0],
+    [0x0004E65C, 0x3C040021], [0x0004E660, 0x24843B10],
+    [0x0004E664, 0x3C05801D], [0x0004E668, 0x24A50840],
+    [0x0004E66C, 0x3C060023], [0x0004E670, 0x24C6A280],
+    [0x0004E674, 0x0C027694], [0x0004E678, 0x00C43023],
+    [0x0004E6CC, 0x3C040023], [0x0004E6D0, 0x2484A280],
+    [0x0004E6D4, 0x3C05801E], [0x0004E6D8, 0x24A56FB0],
+  ]);
+  for (const [romAddress, word] of actionStreamLoaderWords) {
+    assert.strictEqual(romBytes.readUInt32BE(romAddress), word, `action-stream loader operand drift at 0x${romAddress.toString(16)}`);
+  }
+
+  const wave1Targets = [
+    { rowIndex: 4034, romStart: 0x0021C970, romEndExclusive: 0x0021CA18, vramStart: 0x801D96A0, vramEndExclusive: 0x801D9748 },
+    { rowIndex: 4036, romStart: 0x0021CA88, romEndExclusive: 0x0021CB30, vramStart: 0x801D97B8, vramEndExclusive: 0x801D9860 },
+    { rowIndex: 4038, romStart: 0x0021CBC4, romEndExclusive: 0x0021D1CC, vramStart: 0x801D98F4, vramEndExclusive: 0x801D9EFC },
+    { rowIndex: 4047, romStart: 0x0021D374, romEndExclusive: 0x0021D3BC, vramStart: 0x801DA0A4, vramEndExclusive: 0x801DA0EC },
+    { rowIndex: 4048, romStart: 0x0021D3BC, romEndExclusive: 0x0021D450, vramStart: 0x801DA0EC, vramEndExclusive: 0x801DA180 },
+    { rowIndex: 4158, romStart: 0x00229DF0, romEndExclusive: 0x00229EF8, vramStart: 0x801E6B20, vramEndExclusive: 0x801E6C28 },
+  ];
+  for (const expected of wave1Targets) {
+    const row = model.rows[expected.rowIndex];
+    assert.ok(row, `Wave 1 structural owner is missing: p${expected.rowIndex}`);
+    assert.strictEqual(row.romStart, expected.romStart, `Wave 1 owner ROM start drift: p${expected.rowIndex}`);
+    assert.strictEqual(row.romEndExclusive, expected.romEndExclusive, `Wave 1 owner ROM end drift: p${expected.rowIndex}`);
+    assert.strictEqual(row.slices[0].vramStart, expected.vramStart, `Wave 1 owner VMA start drift: p${expected.rowIndex}`);
+    assert.strictEqual(row.slices.at(-1).vramEndExclusive, expected.vramEndExclusive, `Wave 1 owner VMA end drift: p${expected.rowIndex}`);
+    assert.ok(row.slices.every((slice) => slice.loadSlabId === actionStreamSlab.id), `Wave 1 owner slab drift: p${expected.rowIndex}`);
+  }
+
+  const comparatorOwner = model.rows[4033];
+  assert.deepStrictEqual(comparatorOwner.slices.map((slice) => ({
+    sectionName: slice.sectionName,
+    romStart: slice.romStart,
+    romEndExclusive: slice.romEndExclusive,
+    vramStart: slice.vramStart,
+    vramEndExclusive: slice.vramEndExclusive,
+    executable: slice.executable,
+    nonExecutableRangeId: slice.nonExecutableRangeId,
+  })), [{
+    sectionName: '.ob64.r4033.s0',
+    romStart: 0x0021C8DC,
+    romEndExclusive: 0x0021C968,
+    vramStart: 0x801D960C,
+    vramEndExclusive: 0x801D9698,
+    executable: true,
+    nonExecutableRangeId: null,
+  }, {
+    sectionName: '.ob64.r4033.s1',
+    romStart: 0x0021C968,
+    romEndExclusive: 0x0021C970,
+    vramStart: 0x801D9698,
+    vramEndExclusive: 0x801D96A0,
+    executable: false,
+    nonExecutableRangeId: 'func-0021c8dc-alignment-padding',
+  }], 'func_0021C8DC function/padding slice contract drift');
+  assert.deepStrictEqual([
+    romBytes.readUInt32BE(0x0021C960),
+    romBytes.readUInt32BE(0x0021C964),
+    romBytes.readUInt32BE(0x0021C968),
+    romBytes.readUInt32BE(0x0021C96C),
+  ], [0x03E00008, 0x00000000, 0x00000000, 0x00000000], 'func_0021C8DC return or alignment-padding evidence drift');
+  assert.strictEqual(
+    sha256Buffer(romBytes.subarray(0x0021C968, 0x0021C970)),
+    'AF5570F5A1810B7AF78CAF4BC70A660F0DF51E42BAF91D4DE5B2328DE0E83DFC',
+    'func_0021C8DC alignment-padding hash drift',
+  );
+  const comparatorPaddingTargets = [];
+  for (const slice of model.slices.filter((candidate) => (
+    candidate.executable && candidate.loadSlabId === actionStreamSlab.id
+  ))) {
+    for (let romAddress = slice.romStart; romAddress < slice.romEndExclusive; romAddress += 4) {
+      const pc = slice.vramStart + (romAddress - slice.romStart);
+      const target = directControlTarget(romBytes.readUInt32BE(romAddress), pc);
+      if (target !== null && target >= 0x801D9698 && target < 0x801D96A0) comparatorPaddingTargets.push(romAddress);
+    }
+  }
+  assert.deepStrictEqual(comparatorPaddingTargets, [], 'direct control flow enters func_0021C8DC alignment padding');
+
+  const directJumpEncodings = (target) => [
+    0x08000000 | ((target >>> 2) & 0x03FFFFFF),
+    0x0C000000 | ((target >>> 2) & 0x03FFFFFF),
+  ];
+  const executableWordHits = (words) => model.slices.filter((slice) => slice.executable).flatMap((slice) => {
+    const hits = [];
+    for (let romAddress = slice.romStart; romAddress < slice.romEndExclusive; romAddress += 4) {
+      if (words.includes(romBytes.readUInt32BE(romAddress))) hits.push(romAddress);
+    }
+    return hits;
+  });
+  assert.deepStrictEqual(executableWordHits(directJumpEncodings(0x801DA0A4)), [], 'func_0021D374 has an unexpected direct J/JAL entry');
+  assert.deepStrictEqual(executableWordHits(directJumpEncodings(0x801DA0EC)), [0x0021D39C], 'func_0021D3BC shared-tail entry census drift');
+  assert.deepStrictEqual(executableWordHits(directJumpEncodings(0x801DA108)), [0x0021D3A8, 0x0021D3B4], 'func_0021D3BC internal-entry census drift');
+  assert.strictEqual(romBytes.readUInt32BE(0x0021D384), 0x90680011, 'func_0021D374 $t0 definition drift');
+  assert.strictEqual(romBytes.readUInt32BE(0x0021D444), 0x00681821, 'func_0021D3BC $t0 consumption drift');
+
+  assert.deepStrictEqual([
+    romBytes.readUInt32BE(0x0021CE00),
+    romBytes.readUInt32BE(0x0021CE04),
+    romBytes.readUInt32BE(0x0021CE08),
+  ], [0x3C01801E, 0x00220821, 0x8C226B20], 'func_0021CBC4 switch-table address materialization drift');
+  const actionTable = romBytes.subarray(0x00229DF0, 0x00229EF8);
+  assert.strictEqual(actionTable.length, 0x108, 'func_0021CBC4 switch-table owner size drift');
+  assert.strictEqual(actionTable.readUInt32BE(0x104), 0, 'func_0021CBC4 switch-table padding drift');
+  for (let offset = 0; offset < 0x104; offset += 4) {
+    const entry = actionTable.readUInt32BE(offset);
+    assert.ok(entry >= 0x801D98F4 && entry < 0x801D9EFC && entry % 4 === 0,
+      `func_0021CBC4 switch-table entry escaped its accepted text owner at +0x${offset.toString(16)}`);
+  }
+  assert.strictEqual(sha256Buffer(actionTable), 'D88942BC72126CDB2EAC36D63BCF8B262C671FFFA53ADD17DEBAC7BB6A02D112',
+    'func_0021CBC4 switch-table linked-byte identity drift');
 
   const coldBootSlab = model.nonDescriptorLoadSlabs.find((slab) => slab.id === 'cold-boot-loader-00040e80');
   assert.ok(coldBootSlab, 'cold-boot load slab is missing');
@@ -538,6 +713,9 @@ function main() {
   assert.strictEqual(layout.owners[810].primaryId, 'primary:4b3693504d495f021786', 'layout changed p0810 source ownership');
   assert.strictEqual(layout.owners[810].slices.length, 2, 'layout p0810 placement slice count drift');
   assert.strictEqual(layout.owners[810].slices[1].executableRangeId, 'cold-boot-entry-stubs-00040e80', 'layout lost p0810 tail executable treatment');
+  assert.strictEqual(layout.owners[4033].slices.length, 2, 'layout lost func_0021C8DC function/padding split');
+  assert.strictEqual(layout.owners[4033].slices[0].nonExecutableRangeId, null, 'layout marked func_0021C8DC instructions non-executable');
+  assert.strictEqual(layout.owners[4033].slices[1].nonExecutableRangeId, 'func-0021c8dc-alignment-padding', 'layout lost func_0021C8DC padding treatment');
   assert.strictEqual(layout.owners[910].inputKind, 'tracked-assembly', 'layout activated p0910 C');
 
   const linkerScript = renderLinkerScript(model);
@@ -546,6 +724,9 @@ function main() {
   assert.ok(linkerScript.includes('.ob64.r0910 0x8016F11C : AT(0x0004501C)'), 'p0910 linker VMA/LMA relationship drift');
   assert.ok(linkerScript.includes('.ob64.r1289 0x80197B70 : AT(0x00066E10)'), 'p1289 descriptor-0 linker placement drift');
   assert.ok(linkerScript.includes('.ob64.r3063 0x802150BC : AT(0x0019554C)'), 'p3063 linker VMA/LMA relationship drift');
+  assert.ok(linkerScript.includes('.ob64.r4033.s0 0x801D960C : AT(0x0021C8DC)'), 'func_0021C8DC instruction linker placement drift');
+  assert.ok(linkerScript.includes('.ob64.r4033.s1 0x801D9698 : AT(0x0021C968)'), 'func_0021C8DC padding linker placement drift');
+  assert.ok(linkerScript.includes('.ob64.r4158 0x801E6B20 : AT(0x00229DF0)'), 'func_0021CBC4 auxiliary-owner linker placement drift');
   const retailJumpRomAddress = 0x001955B0;
   const retailJumpRuntimeAddress = 0x80215120;
   const retailJumpWord = romBytes.readUInt32BE(retailJumpRomAddress);
@@ -613,6 +794,33 @@ function main() {
   coldBootHeadProgramHeaderExecutionDrift.writeUInt32BE(5, coldBootHeadProgramHeaderOffset + 24);
   results.push(expectRejection('cold-boot head PT_LOAD non-executable treatment', /ELF program-header execution flag drift: \.ob64\.r0810\.s0/, () => {
     verifyElfAgainstModel(model, parseElf32BigEndian(coldBootHeadProgramHeaderExecutionDrift));
+  }));
+
+  const comparatorTextSlice = comparatorOwner.slices[0];
+  const comparatorPaddingSlice = comparatorOwner.slices[1];
+  const comparatorTextSection = baselineElf.sections.find((candidate) => candidate.name === comparatorTextSlice.sectionName);
+  const comparatorPaddingSection = baselineElf.sections.find((candidate) => candidate.name === comparatorPaddingSlice.sectionName);
+  if (!comparatorTextSection || !comparatorPaddingSection) fail('func_0021C8DC function/padding ELF sections are missing');
+  assert.ok((comparatorTextSection.flags & 4) !== 0, 'func_0021C8DC instruction section is not executable');
+  assert.strictEqual(comparatorPaddingSection.flags & 4, 0, 'func_0021C8DC alignment padding is executable');
+  const comparatorPaddingExecutionDrift = Buffer.from(elfBytes);
+  comparatorPaddingExecutionDrift.writeUInt32BE(comparatorPaddingSection.flags | 4, comparatorPaddingSection.headerOffset + 8);
+  results.push(expectRejection('func_0021C8DC executable padding section', /ELF section execution flag drift/, () => {
+    verifyElfAgainstModel(model, parseElf32BigEndian(comparatorPaddingExecutionDrift));
+  }));
+  const comparatorPaddingLoadHeader = baselineElf.programHeaders.find((candidate) => (
+    candidate.type === 1
+    && candidate.vaddr === comparatorPaddingSlice.vramStart
+    && candidate.paddr === comparatorPaddingSlice.romStart
+    && candidate.fileSize === comparatorPaddingSlice.bytes
+  ));
+  if (!comparatorPaddingLoadHeader) fail('func_0021C8DC padding load header is missing');
+  const comparatorPaddingProgramHeaderDrift = Buffer.from(elfBytes);
+  const comparatorPaddingProgramHeaderOffset = baselineElf.header.phoff
+    + comparatorPaddingLoadHeader.index * baselineElf.header.phentsize;
+  comparatorPaddingProgramHeaderDrift.writeUInt32BE(5, comparatorPaddingProgramHeaderOffset + 24);
+  results.push(expectRejection('func_0021C8DC executable padding PT_LOAD', /ELF program-header execution flag drift: \.ob64\.r4033\.s1/, () => {
+    verifyElfAgainstModel(model, parseElf32BigEndian(comparatorPaddingProgramHeaderDrift));
   }));
 
   const slabSlice = model.rows[3063].slices[0];
@@ -686,6 +894,33 @@ function main() {
       { id: 'stub-range-one', romStart: 0x1000, romEndExclusive: 0x1020 },
       { id: 'stub-range-two', romStart: 0x1010, romEndExclusive: 0x1030 },
     ] })]));
+  }));
+  results.push(expectRejection('malformed non-executable-range list', /non-executable ranges are malformed/, () => {
+    validateNonDescriptorLoadSlabs(slabFixture([validTestSlab({ nonExecutableRanges: {} })]));
+  }));
+  results.push(expectRejection('malformed non-executable-range endpoint', /non-executable-range endpoint is not a safe aligned integer/, () => {
+    validateNonDescriptorLoadSlabs(slabFixture([validTestSlab({ nonExecutableRanges: [{ id: 'padding-range', romStart: 0x1002, romEndExclusive: 0x1010 }] })]));
+  }));
+  results.push(expectRejection('non-executable range outside load slab', /non-executable range is outside its slab/, () => {
+    validateNonDescriptorLoadSlabs(slabFixture([validTestSlab({ nonExecutableRanges: [{ id: 'padding-range', romStart: 0x0FF0, romEndExclusive: 0x1010 }] })]));
+  }));
+  results.push(expectRejection('duplicate non-executable-range ID', /non-executable-range ID is invalid or repeated/, () => {
+    validateNonDescriptorLoadSlabs(slabFixture([validTestSlab({ nonExecutableRanges: [
+      { id: 'padding-range', romStart: 0x1000, romEndExclusive: 0x1010 },
+      { id: 'padding-range', romStart: 0x1020, romEndExclusive: 0x1030 },
+    ] })]));
+  }));
+  results.push(expectRejection('overlapping non-executable ranges', /non-executable ranges overlap/, () => {
+    validateNonDescriptorLoadSlabs(slabFixture([validTestSlab({ nonExecutableRanges: [
+      { id: 'padding-range-one', romStart: 0x1000, romEndExclusive: 0x1020 },
+      { id: 'padding-range-two', romStart: 0x1010, romEndExclusive: 0x1030 },
+    ] })]));
+  }));
+  results.push(expectRejection('overlapping executable and non-executable ranges', /executable and non-executable ranges overlap/, () => {
+    validateNonDescriptorLoadSlabs(slabFixture([validTestSlab({
+      executableRanges: [{ id: 'stub-range', romStart: 0x1000, romEndExclusive: 0x1020 }],
+      nonExecutableRanges: [{ id: 'padding-range', romStart: 0x1010, romEndExclusive: 0x1030 }],
+    })]));
   }));
 
   console.log(JSON.stringify({ status: 'pass', baseline: 'verified', mutations: results }, null, 2));

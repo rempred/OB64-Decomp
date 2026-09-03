@@ -14,10 +14,10 @@
     "primaryRows": 7242,
     "assemblyOwners": 6184,
     "dataOwners": 1058,
-    "linkSlices": 7252,
-    "splitOwners": 10,
+    "linkSlices": 7253,
+    "splitOwners": 11,
     "overlayReservations": 19,
-    "nonDescriptorLoadSlabs": 4,
+    "nonDescriptorLoadSlabs": 5,
     "rspRows": 13
   },
   "nonDescriptorLoadSlabs": [
@@ -59,6 +59,21 @@
       "romEndExclusive": 2788640,
       "vramStart": 2149756048,
       "vramEndExclusive": 2149815536
+    },
+    {
+      "id": "resource-loader-00213b10",
+      "kind": "loader-dma",
+      "romStart": 2177808,
+      "romEndExclusive": 2269824,
+      "vramStart": 2149386304,
+      "vramEndExclusive": 2149478320,
+      "nonExecutableRanges": [
+        {
+          "id": "func-0021c8dc-alignment-padding",
+          "romStart": 2214248,
+          "romEndExclusive": 2214256
+        }
+      ]
     }
   ],
   "acceptedInputSha256": {
