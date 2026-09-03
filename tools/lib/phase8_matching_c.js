@@ -198,6 +198,63 @@ function targetTextOwners(target) {
   }];
 }
 
+function targetRetainedAssemblySlices(target) {
+  const ownersByRow = new Map();
+  for (const owner of targetTextOwners(target)) {
+    const row = owner.row
+      || (Array.isArray(target.rows) ? target.rows.find((candidate) => candidate.index === owner.rowIndex) : null)
+      || (target.row && target.row.index === owner.rowIndex ? target.row : null);
+    if (!row || row.index !== owner.rowIndex || row.primaryId !== owner.primaryId
+        || row.inputKind !== 'tracked-assembly' || !row.part
+        || row.part.chunkIndex !== owner.chunkIndex
+        || row.part.file !== owner.originalAssembly
+        || row.part.sha256 !== owner.originalAssemblySha256
+        || !Array.isArray(row.slices)) {
+      fail('target accepted-row provenance is malformed: ' + target.symbol + ' ' + owner.sectionName);
+    }
+    const ownerSlices = row.slices.filter((slice) => slice.sectionName === owner.sectionName);
+    if (ownerSlices.length !== 1 || !ownerSlices[0].executable
+        || ownerSlices[0].romStart !== owner.romStartNumber
+        || ownerSlices[0].romEndExclusive !== owner.romEndNumber
+        || ownerSlices[0].vramStart !== owner.vramStartNumber
+        || ownerSlices[0].vramEndExclusive !== owner.vramEndNumber
+        || ownerSlices[0].bytes !== owner.bytes) {
+      fail('target accepted executable slice is malformed: ' + target.symbol + ' ' + owner.sectionName);
+    }
+    if (!ownersByRow.has(row.index)) ownersByRow.set(row.index, { row, owners: [] });
+    ownersByRow.get(row.index).owners.push(owner);
+  }
+
+  const retained = [];
+  for (const { row, owners } of ownersByRow.values()) {
+    const replacedSections = new Set(owners.map((owner) => owner.sectionName));
+    for (const slice of row.slices) {
+      if (replacedSections.has(slice.sectionName)) continue;
+      if (slice.executable !== false || !Number.isInteger(slice.bytes) || slice.bytes <= 0
+          || slice.romEndExclusive - slice.romStart !== slice.bytes
+          || slice.vramEndExclusive - slice.vramStart !== slice.bytes) {
+        fail('target retained assembly slice is malformed: ' + target.symbol + ' ' + slice.sectionName);
+      }
+      retained.push({
+        rowIndex: row.index,
+        primaryId: row.primaryId,
+        chunkIndex: row.part.chunkIndex,
+        sectionName: slice.sectionName,
+        romStartNumber: slice.romStart,
+        romEndNumber: slice.romEndExclusive,
+        vramStartNumber: slice.vramStart,
+        vramEndNumber: slice.vramEndExclusive,
+        bytes: slice.bytes,
+        executable: false,
+        originalAssembly: row.part.file,
+        originalAssemblySha256: row.part.sha256,
+        row,
+      });
+    }
+  }
+  return retained;
+}
+
 function primaryCompilerFunctionBytes(target) {
   const functions = target && target.compilerTextFunctions;
   if (!Array.isArray(functions) || functions.length === 0
@@ -1703,18 +1760,57 @@ function writeObjectManifest(output, linkedObjects, phase8, replacements, compil
 function writeLayout(phase8, phase7, output, replacements) {
   const layout = readJson(phase7.files.layout);
   for (const target of phase8.targets) {
+    const retainedAssemblySlices = targetRetainedAssemblySlices(target);
     for (const textOwner of targetTextOwners(target)) {
       const owner = layout.owners.find((item) => item.index === textOwner.rowIndex);
-      if (!owner || owner.primaryId !== textOwner.primaryId || owner.slices.length !== 1
-          || owner.slices[0].sectionName !== textOwner.sectionName) {
+      const matchingSlices = owner && Array.isArray(owner.slices)
+        ? owner.slices.filter((slice) => slice.sectionName === textOwner.sectionName)
+        : [];
+      const retainedForOwner = retainedAssemblySlices.filter((slice) => slice.rowIndex === textOwner.rowIndex);
+      if (!owner || owner.primaryId !== textOwner.primaryId || owner.inputKind !== 'tracked-assembly'
+          || matchingSlices.length !== 1
+          || matchingSlices[0].romStart !== textOwner.romStartNumber
+          || matchingSlices[0].romEndExclusive !== textOwner.romEndNumber
+          || matchingSlices[0].vramStart !== textOwner.vramStartNumber
+          || matchingSlices[0].vramEndExclusive !== textOwner.vramEndNumber
+          || matchingSlices[0].executable !== true
+          || owner.slices.length !== retainedForOwner.length + 1) {
         fail('Phase 7 target layout row drift: ' + target.symbol + ' ' + textOwner.sectionName);
       }
       owner.baseInputKind = owner.inputKind;
-      owner.inputKind = 'matching-c';
+      owner.inputKind = retainedForOwner.length > 0 ? 'mixed-matching-c-and-assembly' : 'matching-c';
       owner.source = target.source;
       owner.originalAssemblyFallback = textOwner.originalAssembly;
       owner.matchingCSymbol = target.symbol;
       owner.matchingCLogicalOffset = textOwner.logicalOffset;
+      if (retainedForOwner.length > 0) {
+        const replacement = replacements.get(textOwner.chunkIndex);
+        if (!replacement) fail('Phase 8 target replacement is missing while writing mixed layout: ' + target.symbol);
+        owner.slices = owner.slices.map((slice) => {
+          if (slice.sectionName === textOwner.sectionName) {
+            return {
+              ...slice,
+              baseInputKind: 'tracked-assembly',
+              inputKind: 'matching-c',
+              source: target.source,
+              originalAssemblyFallback: textOwner.originalAssembly,
+              matchingCSymbol: target.symbol,
+              matchingCLogicalOffset: textOwner.logicalOffset,
+              linkedOwner: 'objects/c/' + target.symbol + '.o',
+            };
+          }
+          const retained = retainedForOwner.find((candidate) => candidate.sectionName === slice.sectionName);
+          if (!retained) fail('Phase 8 mixed layout retained-slice census drift: ' + target.symbol + ' ' + slice.sectionName);
+          return {
+            ...slice,
+            baseInputKind: 'tracked-assembly',
+            inputKind: 'tracked-assembly',
+            originalAssembly: retained.originalAssembly,
+            originalAssemblySha256: retained.originalAssemblySha256,
+            linkedOwner: replacement.linkedChunkRelative,
+          };
+        });
+      }
     }
   }
   layout.generator = 'tools/build_phase8_matching_c.js';
@@ -1774,6 +1870,143 @@ function writeLayout(phase8, phase7, output, replacements) {
     };
   }));
   writeJson(path.join(output, 'layout.json'), layout);
+}
+
+function uniqueAcceptedRowSlice(row, sectionName) {
+  if (!row || !Array.isArray(row.slices)) return null;
+  const matches = row.slices.filter((slice) => slice.sectionName === sectionName);
+  return matches.length === 1 ? matches[0] : null;
+}
+
+const ACCEPTED_LAYOUT_SLICE_STRUCTURAL_FIELDS = [
+  'sectionName',
+  'romStart',
+  'romEndExclusive',
+  'vramStart',
+  'vramEndExclusive',
+  'placementKind',
+  'overlayDescriptorId',
+  'loadSlabId',
+  'overlaySection',
+  'executable',
+  'executableRangeId',
+  'nonExecutableRangeId',
+];
+
+function sameAcceptedLayoutSliceStructure(layoutSlice, acceptedSlice, expectedInputKind) {
+  if (!layoutSlice || !acceptedSlice || acceptedSlice.inputKind !== 'tracked-assembly'
+      || layoutSlice.inputKind !== expectedInputKind
+      || layoutSlice.baseInputKind !== acceptedSlice.inputKind) {
+    return false;
+  }
+  return ACCEPTED_LAYOUT_SLICE_STRUCTURAL_FIELDS.every((field) => (
+    sameJson(layoutSlice[field], acceptedSlice[field])
+  ));
+}
+
+function verifyPhase8Layout(phase8, layout, replacements) {
+  if (layout.schemaVersion !== 1
+      || layout.rows !== phase8.model.rows.length
+      || layout.slices !== phase8.model.slices.length
+      || layout.representedBytes !== phase8.model.config.rom.bytes
+      || !Array.isArray(layout.owners)
+      || !Array.isArray(layout.phase8MatchingCTargets)
+      || !Array.isArray(layout.phase8AuxiliarySections)
+      || layout.phase8AuxiliarySections.length !== phase8.targets.reduce((sum, target) => sum + target.auxiliarySections.length, 0)
+      || !sameJson(layout.phase8MatchingCTargets.map((target) => target.symbol), phase8.targets.map((target) => target.symbol))) {
+    fail('Phase 8 external layout summary drift');
+  }
+  for (const target of phase8.targets) {
+    const textOwners = targetTextOwners(target);
+    const retainedAssemblySlices = targetRetainedAssemblySlices(target);
+    const layoutTarget = layout.phase8MatchingCTargets.find((record) => record.symbol === target.symbol);
+    if (!layoutTarget || !Array.isArray(layoutTarget.owners)
+        || layoutTarget.owners.length !== textOwners.length) {
+      fail('Phase 8 external layout target owner census drift: ' + target.symbol);
+    }
+    for (const textOwner of textOwners) {
+      const retainedForOwner = retainedAssemblySlices.filter((slice) => slice.rowIndex === textOwner.rowIndex);
+      const layoutOwner = layout.owners.find((owner) => owner.index === textOwner.rowIndex);
+      const layoutTargetOwner = layoutTarget.owners.find((owner) => owner.rowIndex === textOwner.rowIndex);
+      const expectedInputKind = retainedForOwner.length > 0
+        ? 'mixed-matching-c-and-assembly'
+        : 'matching-c';
+      if (!layoutOwner
+          || layoutOwner.inputKind !== expectedInputKind
+          || layoutOwner.baseInputKind !== 'tracked-assembly'
+          || layoutOwner.source !== target.source
+          || layoutOwner.matchingCSymbol !== target.symbol
+          || layoutOwner.matchingCLogicalOffset !== textOwner.logicalOffset
+          || layoutOwner.originalAssemblyFallback !== textOwner.originalAssembly
+          || !layoutTargetOwner
+          || layoutTargetOwner.sectionName !== textOwner.sectionName
+          || layoutTargetOwner.chunkIndex !== textOwner.chunkIndex
+          || layoutTargetOwner.logicalOffset !== textOwner.logicalOffset
+          || layoutTargetOwner.bytes !== textOwner.bytes
+          || layoutTargetOwner.romStart !== textOwner.romStartNumber
+          || layoutTargetOwner.romEndExclusive !== textOwner.romEndNumber
+          || layoutTargetOwner.vramStart !== textOwner.vramStartNumber
+          || layoutTargetOwner.vramEndExclusive !== textOwner.vramEndNumber
+          || layoutTargetOwner.originalAssemblyFallback !== textOwner.originalAssembly
+          || layoutTargetOwner.fallbackObject !== replacements.get(textOwner.chunkIndex).fallbackRelative) {
+        fail('Phase 8 external layout target drift: ' + target.symbol + ' ' + textOwner.sectionName);
+      }
+      if (retainedForOwner.length > 0) {
+        if (!Array.isArray(layoutOwner.slices) || layoutOwner.slices.length !== retainedForOwner.length + 1) {
+          fail('Phase 8 external mixed layout slice census drift: ' + target.symbol);
+        }
+        const acceptedRow = textOwner.row
+          || (Array.isArray(target.rows) ? target.rows.find((row) => row.index === textOwner.rowIndex) : null)
+          || (target.row && target.row.index === textOwner.rowIndex ? target.row : null);
+        const acceptedMatchingSlice = uniqueAcceptedRowSlice(acceptedRow, textOwner.sectionName);
+        const matchingSlice = layoutOwner.slices.find((slice) => slice.sectionName === textOwner.sectionName);
+        if (!sameAcceptedLayoutSliceStructure(matchingSlice, acceptedMatchingSlice, 'matching-c')
+            || matchingSlice.source !== target.source
+            || matchingSlice.originalAssemblyFallback !== textOwner.originalAssembly
+            || matchingSlice.matchingCSymbol !== target.symbol
+            || matchingSlice.matchingCLogicalOffset !== textOwner.logicalOffset
+            || matchingSlice.linkedOwner !== 'objects/c/' + target.symbol + '.o') {
+          fail('Phase 8 external mixed layout C-slice drift: ' + target.symbol + ' ' + textOwner.sectionName);
+        }
+        for (const retained of retainedForOwner) {
+          const acceptedRetainedSlice = uniqueAcceptedRowSlice(retained.row, retained.sectionName);
+          const retainedSlice = layoutOwner.slices.find((slice) => slice.sectionName === retained.sectionName);
+          if (!sameAcceptedLayoutSliceStructure(retainedSlice, acceptedRetainedSlice, acceptedRetainedSlice && acceptedRetainedSlice.inputKind)
+              || retainedSlice.originalAssembly !== retained.originalAssembly
+              || retainedSlice.originalAssemblySha256 !== retained.originalAssemblySha256
+              || retainedSlice.linkedOwner !== replacements.get(retained.chunkIndex).linkedChunkRelative) {
+            fail('Phase 8 external mixed layout retained-slice drift: ' + target.symbol + ' ' + retained.sectionName);
+          }
+        }
+      }
+    }
+    for (const auxiliary of target.auxiliarySections) {
+      const layoutAuxiliary = layout.phase8AuxiliarySections.find((record) => (
+        record.symbol === target.symbol && record.outputSection === auxiliary.outputSection
+      ));
+      if (!layoutAuxiliary
+          || layoutAuxiliary.compilerSection !== auxiliary.compilerSection
+          || layoutAuxiliary.ownerRowIndex !== auxiliary.ownerRowIndex
+          || layoutAuxiliary.romStart !== auxiliary.romStartNumber
+          || layoutAuxiliary.romEndExclusive !== auxiliary.romEndNumber
+          || layoutAuxiliary.vramStart !== auxiliary.vramStartNumber
+          || layoutAuxiliary.vramEndExclusive !== auxiliary.vramEndNumber
+          || layoutAuxiliary.bytes !== auxiliary.bytes
+          || layoutAuxiliary.entryBytes !== auxiliary.entryBytes
+          || layoutAuxiliary.trailingPaddingBytes !== auxiliary.trailingPaddingBytes
+          || layoutAuxiliary.trailingPaddingSha256 !== auxiliary.expectedTrailingPaddingSha256
+          || layoutAuxiliary.acceptedAssemblyTailBytes !== auxiliary.ownerTailBytes
+          || layoutAuxiliary.acceptedAssemblyTailInputSection !== auxiliary.ownerTailSection
+          || layoutAuxiliary.acceptedAssemblyTailSha256 !== auxiliary.ownerTailSha256
+          || layoutAuxiliary.acceptedAssemblyTailRomStart !== auxiliary.ownerTailRomStartNumber
+          || layoutAuxiliary.acceptedAssemblyTailRomEndExclusive !== auxiliary.ownerTailRomEndNumber
+          || layoutAuxiliary.acceptedAssemblyTailVramStart !== auxiliary.ownerTailVramStartNumber
+          || layoutAuxiliary.acceptedAssemblyTailVramEndExclusive !== auxiliary.ownerTailVramEndNumber) {
+        fail('Phase 8 external layout auxiliary drift: ' + target.symbol + ' ' + auxiliary.outputSection);
+      }
+    }
+  }
+  return layout;
 }
 
 function linkPhase8(phase8, output, objectManifest, tools) {
@@ -2058,7 +2291,38 @@ function verifyTargetMapOwner(target, mapText) {
       linkedOwner: expectedOwner,
     };
   });
-  return { contribution: owners[0].contribution, linkedOwner: expectedOwner, owners };
+  const retainedAssemblySlices = targetRetainedAssemblySlices(target).map((retained) => {
+    const escaped = escapeRegex(retained.sectionName);
+    const heading = lines.findIndex((line) => new RegExp('^' + escaped + '\\s').test(line));
+    if (heading < 0) fail('retained assembly linker-map section is missing: ' + retained.sectionName);
+    let end = lines.length;
+    for (let index = heading + 1; index < lines.length; index += 1) {
+      if (/^\.ob64\.r\d{4}(?:\.s\d+)?\s/.test(lines[index])) {
+        end = index;
+        break;
+      }
+    }
+    const block = lines.slice(heading, end);
+    const contributions = block.filter((line) => new RegExp('^\\s+' + escaped + '\\s+.*\\sobjects/').test(line));
+    const expectedAssemblyOwner = 'objects/assembly/chunk_' + String(retained.chunkIndex).padStart(3, '0') + '.o';
+    if (contributions.length !== 1 || !contributions[0].includes(expectedAssemblyOwner)
+        || contributions[0].includes(expectedOwner)
+        || block.some((line) => line.includes(expectedOwner))) {
+      fail('retained assembly slice linker-map owner drift: ' + target.symbol + ' ' + retained.sectionName);
+    }
+    return {
+      rowIndex: retained.rowIndex,
+      sectionName: retained.sectionName,
+      contribution: contributions[0].trim(),
+      linkedOwner: expectedAssemblyOwner,
+    };
+  });
+  return {
+    contribution: owners[0].contribution,
+    linkedOwner: expectedOwner,
+    owners,
+    retainedAssemblySlices,
+  };
 }
 
 function verifyAuxiliaryMapOwner(target, auxiliary, tail, mapText) {
@@ -2215,6 +2479,25 @@ function verifyObjectManifest(output, phase8) {
   return { manifest, bytes: fs.statSync(manifestFile).size, sha256: sha256File(manifestFile) };
 }
 
+function phase8VerificationModel(phase8) {
+  const replacedRows = new Set(phase8.targets.flatMap((target) => (
+    targetTextOwners(target).map((owner) => owner.rowIndex)
+  )));
+  const mixedRows = new Set(phase8.targets.flatMap((target) => (
+    targetRetainedAssemblySlices(target).map((slice) => slice.rowIndex)
+  )));
+  return {
+    ...phase8.model,
+    rows: phase8.model.rows.map((row) => {
+      if (!replacedRows.has(row.index)) return row;
+      return {
+        ...row,
+        inputKind: mixedRows.has(row.index) ? 'mixed-matching-c-and-assembly' : 'matching-c',
+      };
+    }),
+  };
+}
+
 function verifyPhase8Output(phase8, options) {
   const output = path.resolve(options.output);
   const files = {
@@ -2227,11 +2510,7 @@ function verifyPhase8Output(phase8, options) {
   for (const file of Object.values(files)) if (!fs.existsSync(file)) fail('Phase 8 output is missing: ' + file);
 
   const elf = parseElfFile(files.elf);
-  const replacedRows = new Set(phase8.targets.flatMap((target) => targetTextOwners(target).map((owner) => owner.rowIndex)));
-  const verificationModel = {
-    ...phase8.model,
-    rows: phase8.model.rows.map((row) => replacedRows.has(row.index) ? { ...row, inputKind: 'matching-c' } : row),
-  };
+  const verificationModel = phase8VerificationModel(phase8);
   const elfResult = verifyElfAgainstModel(verificationModel, elf);
   const mapText = fs.readFileSync(files.map, 'utf8');
   const mapResult = verifyMap(phase8.model, mapText);
@@ -2239,6 +2518,7 @@ function verifyPhase8Output(phase8, options) {
   const canonicalBaserom = loadCanonicalBaserom(phase8);
   const sourceObjectEvidence = verifySourceObjectProofs(phase8, { output, linkedElf: elf, canonicalBaserom });
   const replacements = options.replacements || new Map([...targetsByChunk(phase8).entries()].map(([chunkIndex, chunkTargets]) => [chunkIndex, {
+    linkedChunkRelative: 'objects/assembly/chunk_' + String(chunkIndex).padStart(3, '0') + '.o',
     fallbackRelative: 'comparison/original/chunk_' + String(chunkIndex).padStart(3, '0') + '.o',
     auxiliaryTails: chunkTargets.flatMap((target) => target.auxiliarySections
       .filter((auxiliary) => auxiliary.ownerChunkIndex === chunkIndex)
@@ -2356,6 +2636,58 @@ function verifyPhase8Output(phase8, options) {
         expectedSha256: rawComparison.owners[ownerIndex].expectedSha256,
         rawBytesExact: rawComparison.owners[ownerIndex].rawBytesExact,
         mapContribution: mapOwner.owners[ownerIndex].contribution,
+      };
+    });
+    const retainedAssemblyResults = targetRetainedAssemblySlices(target).map((retained) => {
+      const replacement = replacements.get(retained.chunkIndex);
+      if (!replacement) fail('retained assembly slice replacement is missing: ' + target.symbol + ' ' + retained.sectionName);
+      const fallbackElf = parseElfFile(path.join(output, replacement.fallbackRelative));
+      const prunedElf = parseElfFile(path.join(output, replacement.linkedChunkRelative));
+      const fallbackSections = fallbackElf.sections.filter((section) => section.name === retained.sectionName);
+      const prunedSections = prunedElf.sections.filter((section) => section.name === retained.sectionName);
+      const linkedSections = elf.sections.filter((section) => section.name === retained.sectionName);
+      const cSections = cElf.sections.filter((section) => section.name === retained.sectionName);
+      if (fallbackSections.length !== 1 || prunedSections.length !== 1
+          || linkedSections.length !== 1 || cSections.length !== 0
+          || fallbackSections[0].type !== 1 || fallbackSections[0].flags !== 2
+          || prunedSections[0].type !== 1 || prunedSections[0].flags !== 2
+          || fallbackSections[0].size !== retained.bytes || prunedSections[0].size !== retained.bytes) {
+        fail('retained assembly slice object ownership drift: ' + target.symbol + ' ' + retained.sectionName);
+      }
+      const fallbackBytes = Buffer.from(elfSectionBytes(fallbackElf, fallbackSections[0]));
+      const prunedBytes = Buffer.from(elfSectionBytes(prunedElf, prunedSections[0]));
+      const linkedBytes = Buffer.from(elfSectionBytes(elf, linkedSections[0]));
+      const expectedBytes = Buffer.from(canonicalBaserom.subarray(retained.romStartNumber, retained.romEndNumber));
+      const expectedSha256 = sha256Buffer(expectedBytes);
+      const mapRecord = mapOwner.retainedAssemblySlices.find((record) => (
+        record.rowIndex === retained.rowIndex && record.sectionName === retained.sectionName
+      ));
+      if (!fallbackBytes.equals(prunedBytes)
+          || !prunedBytes.equals(expectedBytes)
+          || !linkedBytes.equals(expectedBytes)
+          || !mapRecord
+          || mapRecord.linkedOwner !== replacement.linkedChunkRelative) {
+        fail('retained assembly slice bytes or linked ownership drift: ' + target.symbol + ' ' + retained.sectionName);
+      }
+      return {
+        rowIndex: retained.rowIndex,
+        primaryId: retained.primaryId,
+        chunkIndex: retained.chunkIndex,
+        sectionName: retained.sectionName,
+        romStart: retained.romStartNumber,
+        romEndExclusive: retained.romEndNumber,
+        vramStart: retained.vramStartNumber,
+        vramEndExclusive: retained.vramEndNumber,
+        bytes: retained.bytes,
+        executable: false,
+        originalAssembly: retained.originalAssembly,
+        originalAssemblySha256: retained.originalAssemblySha256,
+        linkedOwner: mapRecord.linkedOwner,
+        mapContribution: mapRecord.contribution,
+        fallbackObject: replacement.fallbackRelative,
+        linkedSha256: sha256Buffer(linkedBytes),
+        expectedSha256,
+        rawBytesExact: true,
       };
     });
     const relocations = relocationRecords(cElf, target);
@@ -2494,6 +2826,7 @@ function verifyPhase8Output(phase8, options) {
       linkedOwner: mapOwner.linkedOwner,
       mapContribution: mapOwner.contribution,
       owners: ownerResults,
+      retainedAssemblySlices: retainedAssemblyResults,
       relocations,
       auxiliarySections: auxiliaryResults,
       sourceObjectEvidence: sourceObjectTarget,
@@ -2501,71 +2834,7 @@ function verifyPhase8Output(phase8, options) {
   }
 
   const layout = readJson(files.layout);
-  if (layout.schemaVersion !== 1
-      || layout.rows !== phase8.model.rows.length
-      || layout.slices !== phase8.model.slices.length
-      || layout.representedBytes !== phase8.model.config.rom.bytes
-      || !Array.isArray(layout.phase8MatchingCTargets)
-      || !Array.isArray(layout.phase8AuxiliarySections)
-      || layout.phase8AuxiliarySections.length !== phase8.targets.reduce((sum, target) => sum + target.auxiliarySections.length, 0)
-      || !sameJson(layout.phase8MatchingCTargets.map((target) => target.symbol), phase8.targets.map((target) => target.symbol))) {
-    fail('Phase 8 external layout summary drift');
-  }
-  for (const target of phase8.targets) {
-    const layoutTarget = layout.phase8MatchingCTargets.find((record) => record.symbol === target.symbol);
-    if (!layoutTarget || !Array.isArray(layoutTarget.owners)
-        || layoutTarget.owners.length !== targetTextOwners(target).length) {
-      fail('Phase 8 external layout target owner census drift: ' + target.symbol);
-    }
-    for (const textOwner of targetTextOwners(target)) {
-      const layoutOwner = layout.owners && layout.owners.find((owner) => owner.index === textOwner.rowIndex);
-      const layoutTargetOwner = layoutTarget.owners.find((owner) => owner.rowIndex === textOwner.rowIndex);
-      if (!layoutOwner
-          || layoutOwner.inputKind !== 'matching-c'
-          || layoutOwner.source !== target.source
-          || layoutOwner.matchingCSymbol !== target.symbol
-          || layoutOwner.matchingCLogicalOffset !== textOwner.logicalOffset
-          || layoutOwner.originalAssemblyFallback !== textOwner.originalAssembly
-          || !layoutTargetOwner
-          || layoutTargetOwner.sectionName !== textOwner.sectionName
-          || layoutTargetOwner.chunkIndex !== textOwner.chunkIndex
-          || layoutTargetOwner.logicalOffset !== textOwner.logicalOffset
-          || layoutTargetOwner.bytes !== textOwner.bytes
-          || layoutTargetOwner.romStart !== textOwner.romStartNumber
-          || layoutTargetOwner.romEndExclusive !== textOwner.romEndNumber
-          || layoutTargetOwner.vramStart !== textOwner.vramStartNumber
-          || layoutTargetOwner.vramEndExclusive !== textOwner.vramEndNumber
-          || layoutTargetOwner.originalAssemblyFallback !== textOwner.originalAssembly
-          || layoutTargetOwner.fallbackObject !== replacements.get(textOwner.chunkIndex).fallbackRelative) {
-        fail('Phase 8 external layout target drift: ' + target.symbol + ' ' + textOwner.sectionName);
-      }
-    }
-    for (const auxiliary of target.auxiliarySections) {
-      const layoutAuxiliary = layout.phase8AuxiliarySections.find((record) => (
-        record.symbol === target.symbol && record.outputSection === auxiliary.outputSection
-      ));
-      if (!layoutAuxiliary
-          || layoutAuxiliary.compilerSection !== auxiliary.compilerSection
-          || layoutAuxiliary.ownerRowIndex !== auxiliary.ownerRowIndex
-          || layoutAuxiliary.romStart !== auxiliary.romStartNumber
-          || layoutAuxiliary.romEndExclusive !== auxiliary.romEndNumber
-          || layoutAuxiliary.vramStart !== auxiliary.vramStartNumber
-          || layoutAuxiliary.vramEndExclusive !== auxiliary.vramEndNumber
-          || layoutAuxiliary.bytes !== auxiliary.bytes
-          || layoutAuxiliary.entryBytes !== auxiliary.entryBytes
-          || layoutAuxiliary.trailingPaddingBytes !== auxiliary.trailingPaddingBytes
-          || layoutAuxiliary.trailingPaddingSha256 !== auxiliary.expectedTrailingPaddingSha256
-          || layoutAuxiliary.acceptedAssemblyTailBytes !== auxiliary.ownerTailBytes
-          || layoutAuxiliary.acceptedAssemblyTailInputSection !== auxiliary.ownerTailSection
-          || layoutAuxiliary.acceptedAssemblyTailSha256 !== auxiliary.ownerTailSha256
-          || layoutAuxiliary.acceptedAssemblyTailRomStart !== auxiliary.ownerTailRomStartNumber
-          || layoutAuxiliary.acceptedAssemblyTailRomEndExclusive !== auxiliary.ownerTailRomEndNumber
-          || layoutAuxiliary.acceptedAssemblyTailVramStart !== auxiliary.ownerTailVramStartNumber
-          || layoutAuxiliary.acceptedAssemblyTailVramEndExclusive !== auxiliary.ownerTailVramEndNumber) {
-        fail('Phase 8 external layout auxiliary drift: ' + target.symbol + ' ' + auxiliary.outputSection);
-      }
-    }
-  }
+  verifyPhase8Layout(phase8, layout, replacements);
   const objectManifest = verifyObjectManifest(output, phase8);
   const asmDiffer = phase8.targets.map((target) => runTargetAsmDiffer(phase8, target, {
     output,
@@ -2814,12 +3083,14 @@ module.exports = {
   loadCanonicalBaserom,
   loadPhase8Model,
   pathIndependentRuntime,
+  phase8VerificationModel,
   readJson,
   relocationRecords,
   runTargetAsmDiffer,
   sha256File,
   summarizeTargetComparison,
   targetAsmDifferMaxLines,
+  targetRetainedAssemblySlices,
   targetTextOwners,
   validateRecordedPhase8Build,
   validateAuxiliaryTailObject,
@@ -2832,6 +3103,7 @@ module.exports = {
   verifyObjectManifest,
   verifyPhase7Input,
   verifyPhase8Output,
+  verifyPhase8Layout,
   verifyRuntimeTools,
   verifyTargetMapOwner,
   verifyAuxiliaryMapOwner,

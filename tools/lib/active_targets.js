@@ -573,13 +573,21 @@ function resolveAcceptedRows(model, symbol, multiOwnerContracts = new Map()) {
   if (containingContracts.length !== 0) {
     fail(`active target selects only part of accepted logical multi-owner target: ${symbol}`);
   }
-  const slice = row.slices && row.slices[0];
+  const symbolRomAddress = row.part ? row.romStart + row.part.symbolByteOffset : row.romStart;
+  const executableSlices = Array.isArray(row.slices) ? row.slices.filter((slice) => slice.executable) : [];
+  const symbolSlices = executableSlices.filter((slice) => (
+    symbolRomAddress >= slice.romStart && symbolRomAddress < slice.romEndExclusive
+  ));
+  const slice = symbolSlices.length === 1 && executableSlices.length === 1 ? symbolSlices[0] : null;
+  if (row.slices.length !== 1 && (!slice || symbolRomAddress !== slice.romStart)) {
+    fail(`active target does not resolve to one complete executable slice: ${symbol}`);
+  }
   return {
     rows: [row],
     owners: slice ? [{
       ownerIndex: 0,
       logicalOffset: 0,
-      logicalEnd: row.bytes,
+      logicalEnd: slice.bytes,
       primaryId: row.primaryId,
       rowIndex: row.index,
       chunkIndex: row.part && row.part.chunkIndex,
@@ -587,11 +595,11 @@ function resolveAcceptedRows(model, symbol, multiOwnerContracts = new Map()) {
       symbol: row.part && row.part.name,
       originalAssembly: row.part && row.part.file,
       originalAssemblySha256: row.part && row.part.sha256,
-      romStartNumber: row.romStart,
-      romEndNumber: row.romEndExclusive,
+      romStartNumber: slice.romStart,
+      romEndNumber: slice.romEndExclusive,
       vramStartNumber: slice.vramStart,
       vramEndNumber: slice.vramEndExclusive,
-      bytes: row.bytes,
+      bytes: slice.bytes,
       row,
     }] : [],
     contract: null,
@@ -610,14 +618,37 @@ function resolveAuxiliarySectionContracts(model, baserom, target, contracts) {
     }
     const row = rows[0];
     const slices = row.slices.filter((slice) => slice.sectionName === contract.outputSection);
+    const targetOwner = Array.isArray(target.textOwners) && target.textOwners.length > 0
+      ? target.textOwners[0]
+      : null;
+    const targetModelSlices = model.rows.flatMap((candidate) => (
+      Array.isArray(candidate.slices)
+        ? candidate.slices.filter((slice) => slice.sectionName === target.sectionName)
+        : []
+    ));
+    const targetSlice = targetOwner && targetOwner.row && Array.isArray(targetOwner.row.slices)
+      ? targetOwner.row.slices.find((slice) => slice.sectionName === targetOwner.sectionName)
+      : target.row && Array.isArray(target.row.slices)
+        ? target.row.slices.find((slice) => slice.sectionName === target.sectionName)
+        : targetModelSlices.length === 1 ? targetModelSlices[0] : null;
+    const auxiliarySlice = slices[0];
+    const sameFixedOverlay = targetSlice && auxiliarySlice
+      && targetSlice.placementKind === 'overlay'
+      && auxiliarySlice.placementKind === 'overlay'
+      && auxiliarySlice.overlaySection === 'data-rodata'
+      && auxiliarySlice.overlayDescriptorId !== null
+      && auxiliarySlice.overlayDescriptorId === targetSlice.overlayDescriptorId;
+    const sameLoadSlab = targetSlice && auxiliarySlice
+      && targetSlice.placementKind === 'non-descriptor-load-slab'
+      && auxiliarySlice.placementKind === 'non-descriptor-load-slab'
+      && auxiliarySlice.loadSlabId !== null
+      && auxiliarySlice.loadSlabId === targetSlice.loadSlabId;
     if (row.inputKind !== 'tracked-assembly'
         || row.primaryClass !== 'data'
         || !row.part
         || slices.length !== 1
         || slices[0].executable
-        || slices[0].overlaySection !== 'data-rodata'
-        || slices[0].overlayDescriptorId !== target.overlayDescriptorId
-        || row.part.chunkIndex !== target.chunkIndex) {
+        || (!sameFixedOverlay && !sameLoadSlab)) {
       fail(`auxiliary output section is not one accepted read-only data owner: ${target.symbol} ${contract.outputSection}`);
     }
     const slice = slices[0];
@@ -894,15 +925,24 @@ function loadActiveTargetModel(options = {}) {
     const acceptedOwners = resolveAcceptedRows(model, entry.symbol, multiOwnerContracts);
     const rows = acceptedOwners.rows;
     const row = rows[0];
+    const owners = acceptedOwners.owners;
     if (rows.length === 0 || acceptedOwners.owners.length !== rows.length
         || rows.some((owner) => owner.inputKind !== 'tracked-assembly' || !owner.part
-          || owner.slices.length !== 1 || !owner.slices[0].executable)) {
+          || !Array.isArray(owner.slices))
+        || owners.some((owner) => {
+          const ownerSlice = owner.row.slices.find((candidate) => candidate.sectionName === owner.sectionName);
+          return !ownerSlice || !ownerSlice.executable || ownerSlice.bytes !== owner.bytes
+            || ownerSlice.romStart !== owner.romStartNumber || ownerSlice.romEndExclusive !== owner.romEndNumber
+            || ownerSlice.vramStart !== owner.vramStartNumber || ownerSlice.vramEndExclusive !== owner.vramEndNumber;
+        })) {
       fail(`active target is not an accepted executable assembly owner census: ${entry.symbol}`);
     }
-    const slice = row.slices[0];
+    const firstOwner = owners[0];
+    const lastOwner = owners[owners.length - 1];
+    const slice = row.slices.find((candidate) => candidate.sectionName === firstOwner.sectionName);
     const lastRow = rows[rows.length - 1];
-    const lastSlice = lastRow.slices[0];
-    const bytes = rows.reduce((sum, owner) => sum + owner.bytes, 0);
+    const lastSlice = lastRow.slices.find((candidate) => candidate.sectionName === lastOwner.sectionName);
+    const bytes = owners.reduce((sum, owner) => sum + owner.bytes, 0);
     for (const record of relocationContract.expectedRelocations) {
       if (Number.parseInt(record.offset.slice(2), 16) >= bytes) {
         fail(`relocation contract offset is outside target ${entry.symbol}: ${record.offset}`);
@@ -922,7 +962,7 @@ function loadActiveTargetModel(options = {}) {
       descriptor = overlayConfig.descriptors.find((item) => item.id === slice.overlayDescriptorId);
       if (!descriptor) fail(`accepted overlay descriptor is missing: ${entry.symbol}`);
     }
-    const expectedTextSha256 = sha256Buffer(baserom.subarray(row.romStart, lastRow.romEndExclusive));
+    const expectedTextSha256 = sha256Buffer(baserom.subarray(firstOwner.romStartNumber, lastOwner.romEndNumber));
     const textOwners = acceptedOwners.owners.map((owner) => ({
       ...owner,
       expectedTextSha256: owner.expectedTextSha256
@@ -937,10 +977,10 @@ function loadActiveTargetModel(options = {}) {
       chunkIndex: row.part.chunkIndex,
       originalAssembly: row.part.file,
       originalAssemblySha256: row.part.sha256,
-      romStart: `0x${row.romStart.toString(16).toUpperCase().padStart(8, '0')}`,
-      romEndExclusive: `0x${lastRow.romEndExclusive.toString(16).toUpperCase().padStart(8, '0')}`,
-      romStartNumber: row.romStart,
-      romEndNumber: lastRow.romEndExclusive,
+      romStart: `0x${firstOwner.romStartNumber.toString(16).toUpperCase().padStart(8, '0')}`,
+      romEndExclusive: `0x${lastOwner.romEndNumber.toString(16).toUpperCase().padStart(8, '0')}`,
+      romStartNumber: firstOwner.romStartNumber,
+      romEndNumber: lastOwner.romEndNumber,
       vramStart: `0x${slice.vramStart.toString(16).toUpperCase().padStart(8, '0')}`,
       vramEndExclusive: `0x${lastSlice.vramEndExclusive.toString(16).toUpperCase().padStart(8, '0')}`,
       vramStartNumber: slice.vramStart,
