@@ -3912,6 +3912,10 @@
       ]
     },
     {
+      "symbol": "func_0021C8DC",
+      "expectedRelocations": []
+    },
+    {
       "symbol": "func_0021D1CC",
       "expectedRelocations": [
         { "offset": "0x00000020", "type": "R_MIPS_26", "symbol": "func_801D98F4", "section": ".rel.text" }
