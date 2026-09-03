@@ -1,6 +1,6 @@
 # High Attack Battle Stream Families — Director Plan
 
-Status: **Wave 1 integrated; Wave 2 ready**
+Status: **Waves 1-2 integrated; Wave 3 ready**
 
 Date: 2026-09-02
 
@@ -25,7 +25,10 @@ This plan does not design or install that modified-game migration.
 - All 16 Wave 1 logical functions are exact `PURE_C` (2,924 executable bytes).
 - The eight non-executable alignment bytes after `func_0021C8DC` remain in the accepted retained assembly slice.
 - Wave 1 added no hybrid fragment and has no unresolved blocker.
-- The next active family is Wave 2, combat-owner lifecycle.
+- 2026-09-03: Wave 2 was integrated on `main` at `8fc6bf9de0f71c2897de5aaee8f42c313836c13a`.
+- All three Wave 2 functions are exact `PURE_C` (1,160 executable bytes).
+- Wave 2 added no hybrid fragment and has no unresolved blocker.
+- The next active family is Wave 3, context and trailer initialization.
 
 ## Director decisions
 
