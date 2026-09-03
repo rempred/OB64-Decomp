@@ -170,11 +170,9 @@ void func_001FFE80(void)
                 goto next_entry;
             }
             temp_a0_117 = &temp_s2_113->core;
-            /* Preserve the retail call-argument register reuse without emitting code. */
             asm("" : "=r"(temp_a0_117) : "0"(temp_a0_117) : "$3");
             temp_v0_118 = temp_a0_117->position;
             temp_v1_119 = temp_a0_117->offset_52;
-            /* Bounded fallback: these are the only instruction-emitting asm bytes. */
             asm("move %0,%2\nmove %1,%3"
                 : "=&r"(temp_a3_120), "=&r"(temp_a2_122)
                 : "r"(temp_a1_112), "r"(temp_v0_118));
