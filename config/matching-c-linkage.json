@@ -3916,6 +3916,14 @@
       "expectedRelocations": []
     },
     {
+      "symbol": "func_0021C970",
+      "expectedRelocations": [
+        { "offset": "0x00000030", "type": "R_MIPS_26", "symbol": ".text", "section": ".rel.text" },
+        { "offset": "0x00000044", "type": "R_MIPS_26", "symbol": ".text", "section": ".rel.text" },
+        { "offset": "0x0000006C", "type": "R_MIPS_26", "symbol": ".text", "section": ".rel.text" }
+      ]
+    },
+    {
       "symbol": "func_0021D1CC",
       "expectedRelocations": [
         { "offset": "0x00000020", "type": "R_MIPS_26", "symbol": "func_801D98F4", "section": ".rel.text" }
