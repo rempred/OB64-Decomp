@@ -528,6 +528,7 @@
     { "symbol": "func_001F309C", "source": "src/lib/func_001F309C.c" },
     { "symbol": "func_001FFE80", "source": "src/lib/func_001FFE80.c" },
     { "symbol": "func_00201108", "source": "src/lib/func_00201108.c" },
-    { "symbol": "func_002013D0", "source": "src/lib/func_002013D0.c" }
+    { "symbol": "func_002013D0", "source": "src/lib/func_002013D0.c" },
+    { "symbol": "func_002158E4", "source": "src/battle/func_002158E4.c" }
   ]
 }
