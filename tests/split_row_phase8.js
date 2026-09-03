@@ -38,6 +38,20 @@ const SYMBOL = 'func_0021C8DC';
 const GENERATED_SOURCE = 'build/split-row-phase8-test/func_0021C8DC_exact_fixture.c';
 const TEXT_SECTION = '.ob64.r4033.s0';
 const PADDING_SECTION = '.ob64.r4033.s1';
+const ACCEPTED_SLICE_STRUCTURAL_FIELDS = [
+  'executable',
+  'executableRangeId',
+  'loadSlabId',
+  'nonExecutableRangeId',
+  'overlayDescriptorId',
+  'overlaySection',
+  'placementKind',
+  'romEndExclusive',
+  'romStart',
+  'sectionName',
+  'vramEndExclusive',
+  'vramStart',
+];
 
 function hex(value) {
   return `0x${value.toString(16).toUpperCase().padStart(8, '0')}`;
@@ -188,9 +202,18 @@ function cloneElfWithSection(elf, sectionName, mutate) {
   };
 }
 
+function contradictoryScalar(value) {
+  if (value === null) return 'contradictory-null-replacement';
+  if (typeof value === 'boolean') return !value;
+  if (typeof value === 'number') return value + 1;
+  if (typeof value === 'string') return `${value}-contradiction`;
+  throw new Error(`accepted split-row structural field is not scalar: ${typeof value}`);
+}
+
 function main() {
   const context = prepareContext();
   const baseline = ensureBaseline(context);
+  const acceptedLayout = JSON.parse(fs.readFileSync(path.join(baseline.phase7Output, 'layout.json'), 'utf8'));
   const baserom = fs.readFileSync(context.baserom.path);
   const sourceFile = writeExactFixtureSource();
   const target = buildFixtureTarget(context.phase8, baserom, sourceFile);
@@ -345,6 +368,50 @@ function main() {
   rejectedMutations.push(expectRejection('matching C layout provenance', /C-slice drift/, () => {
     verifyPhase8Layout(phase8, cLayoutMutation, replacement.replacements);
   }));
+
+  const acceptedLayoutOwner = acceptedLayout.owners[target.rowIndex];
+  if (!acceptedLayoutOwner || acceptedLayoutOwner.slices.length !== target.row.slices.length) {
+    throw new Error('accepted split-row external layout census drift');
+  }
+  for (const acceptedSlice of acceptedLayoutOwner.slices) {
+    const actualFields = Object.keys(acceptedSlice).sort();
+    if (JSON.stringify(actualFields) !== JSON.stringify(ACCEPTED_SLICE_STRUCTURAL_FIELDS)) {
+      throw new Error(`accepted split-row structural field census drift: ${acceptedSlice.sectionName}`);
+    }
+    const role = acceptedSlice.sectionName === TEXT_SECTION ? 'matching C' : 'retained assembly';
+    const rejectionPattern = acceptedSlice.sectionName === TEXT_SECTION ? /C-slice drift/ : /retained-slice drift/;
+    for (const acceptedField of ACCEPTED_SLICE_STRUCTURAL_FIELDS) {
+      const structuralMutation = JSON.parse(JSON.stringify(layout));
+      const structuralSlice = structuralMutation.owners[target.rowIndex].slices
+        .find((slice) => slice.sectionName === acceptedSlice.sectionName);
+      structuralSlice[acceptedField] = contradictoryScalar(structuralSlice[acceptedField]);
+      rejectedMutations.push(expectRejection(
+        `${role} accepted ${acceptedField}`,
+        rejectionPattern,
+        () => verifyPhase8Layout(phase8, structuralMutation, replacement.replacements),
+      ));
+    }
+
+    const acceptedInputMutation = JSON.parse(JSON.stringify(layout));
+    const acceptedInputSlice = acceptedInputMutation.owners[target.rowIndex].slices
+      .find((slice) => slice.sectionName === acceptedSlice.sectionName);
+    acceptedInputSlice.baseInputKind = contradictoryScalar(acceptedInputSlice.baseInputKind);
+    rejectedMutations.push(expectRejection(
+      `${role} accepted inputKind`,
+      rejectionPattern,
+      () => verifyPhase8Layout(phase8, acceptedInputMutation, replacement.replacements),
+    ));
+
+    const ownershipMutation = JSON.parse(JSON.stringify(layout));
+    const ownershipSlice = ownershipMutation.owners[target.rowIndex].slices
+      .find((slice) => slice.sectionName === acceptedSlice.sectionName);
+    ownershipSlice.inputKind = role === 'matching C' ? 'tracked-assembly' : 'matching-c';
+    rejectedMutations.push(expectRejection(
+      `${role} effective inputKind`,
+      rejectionPattern,
+      () => verifyPhase8Layout(phase8, ownershipMutation, replacement.replacements),
+    ));
+  }
 
   const report = {
     schemaVersion: 1,

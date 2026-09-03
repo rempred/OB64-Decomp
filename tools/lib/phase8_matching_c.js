@@ -1872,6 +1872,38 @@ function writeLayout(phase8, phase7, output, replacements) {
   writeJson(path.join(output, 'layout.json'), layout);
 }
 
+function uniqueAcceptedRowSlice(row, sectionName) {
+  if (!row || !Array.isArray(row.slices)) return null;
+  const matches = row.slices.filter((slice) => slice.sectionName === sectionName);
+  return matches.length === 1 ? matches[0] : null;
+}
+
+const ACCEPTED_LAYOUT_SLICE_STRUCTURAL_FIELDS = [
+  'sectionName',
+  'romStart',
+  'romEndExclusive',
+  'vramStart',
+  'vramEndExclusive',
+  'placementKind',
+  'overlayDescriptorId',
+  'loadSlabId',
+  'overlaySection',
+  'executable',
+  'executableRangeId',
+  'nonExecutableRangeId',
+];
+
+function sameAcceptedLayoutSliceStructure(layoutSlice, acceptedSlice, expectedInputKind) {
+  if (!layoutSlice || !acceptedSlice || acceptedSlice.inputKind !== 'tracked-assembly'
+      || layoutSlice.inputKind !== expectedInputKind
+      || layoutSlice.baseInputKind !== acceptedSlice.inputKind) {
+    return false;
+  }
+  return ACCEPTED_LAYOUT_SLICE_STRUCTURAL_FIELDS.every((field) => (
+    sameJson(layoutSlice[field], acceptedSlice[field])
+  ));
+}
+
 function verifyPhase8Layout(phase8, layout, replacements) {
   if (layout.schemaVersion !== 1
       || layout.rows !== phase8.model.rows.length
@@ -1923,10 +1955,12 @@ function verifyPhase8Layout(phase8, layout, replacements) {
         if (!Array.isArray(layoutOwner.slices) || layoutOwner.slices.length !== retainedForOwner.length + 1) {
           fail('Phase 8 external mixed layout slice census drift: ' + target.symbol);
         }
+        const acceptedRow = textOwner.row
+          || (Array.isArray(target.rows) ? target.rows.find((row) => row.index === textOwner.rowIndex) : null)
+          || (target.row && target.row.index === textOwner.rowIndex ? target.row : null);
+        const acceptedMatchingSlice = uniqueAcceptedRowSlice(acceptedRow, textOwner.sectionName);
         const matchingSlice = layoutOwner.slices.find((slice) => slice.sectionName === textOwner.sectionName);
-        if (!matchingSlice
-            || matchingSlice.inputKind !== 'matching-c'
-            || matchingSlice.baseInputKind !== 'tracked-assembly'
+        if (!sameAcceptedLayoutSliceStructure(matchingSlice, acceptedMatchingSlice, 'matching-c')
             || matchingSlice.source !== target.source
             || matchingSlice.originalAssemblyFallback !== textOwner.originalAssembly
             || matchingSlice.matchingCSymbol !== target.symbol
@@ -1935,15 +1969,9 @@ function verifyPhase8Layout(phase8, layout, replacements) {
           fail('Phase 8 external mixed layout C-slice drift: ' + target.symbol + ' ' + textOwner.sectionName);
         }
         for (const retained of retainedForOwner) {
+          const acceptedRetainedSlice = uniqueAcceptedRowSlice(retained.row, retained.sectionName);
           const retainedSlice = layoutOwner.slices.find((slice) => slice.sectionName === retained.sectionName);
-          if (!retainedSlice
-              || retainedSlice.inputKind !== 'tracked-assembly'
-              || retainedSlice.baseInputKind !== 'tracked-assembly'
-              || retainedSlice.executable !== false
-              || retainedSlice.romStart !== retained.romStartNumber
-              || retainedSlice.romEndExclusive !== retained.romEndNumber
-              || retainedSlice.vramStart !== retained.vramStartNumber
-              || retainedSlice.vramEndExclusive !== retained.vramEndNumber
+          if (!sameAcceptedLayoutSliceStructure(retainedSlice, acceptedRetainedSlice, acceptedRetainedSlice && acceptedRetainedSlice.inputKind)
               || retainedSlice.originalAssembly !== retained.originalAssembly
               || retainedSlice.originalAssemblySha256 !== retained.originalAssemblySha256
               || retainedSlice.linkedOwner !== replacements.get(retained.chunkIndex).linkedChunkRelative) {
