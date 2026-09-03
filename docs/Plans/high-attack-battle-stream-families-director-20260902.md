@@ -1,6 +1,6 @@
 # High Attack Battle Stream Families — Director Plan
 
-Status: **ready**
+Status: **Wave 1 integrated; Wave 2 ready**
 
 Date: 2026-09-02
 
@@ -18,6 +18,14 @@ authoritative. Run `node tools/status.js` before each wave and after integration
 The primary goal is exact `PURE_C` for every listed function. The work must make
 the retail functions available for a later source-level High Attack migration.
 This plan does not design or install that modified-game migration.
+
+## Program progress
+
+- 2026-09-03: Wave 1 was integrated on `main` at `2f51529767fd9c2415a83b72b1e5a34f917154b5`.
+- All 16 Wave 1 logical functions are exact `PURE_C` (2,924 executable bytes).
+- The eight non-executable alignment bytes after `func_0021C8DC` remain in the accepted retained assembly slice.
+- Wave 1 added no hybrid fragment and has no unresolved blocker.
+- The next active family is Wave 2, combat-owner lifecycle.
 
 ## Director decisions
 
