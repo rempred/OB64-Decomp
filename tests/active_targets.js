@@ -80,30 +80,66 @@ function main() {
   if (!resolvedActionTailOwners.contract || resolvedActionTailOwners.rows.length !== 2) {
     throw new Error('func_0021D374 did not resolve as one logical multi-entry target');
   }
-  const comparatorOwners = resolveAcceptedRows(active.model, 'func_0021C8DC', validatedMultiOwners);
-  if (comparatorOwners.contract !== null || comparatorOwners.rows.length !== 1
-      || comparatorOwners.owners.length !== 1
-      || comparatorOwners.rows[0].bytes !== 148
-      || comparatorOwners.rows[0].slices.length !== 2
-      || comparatorOwners.owners[0].sectionName !== '.ob64.r4033.s0'
-      || comparatorOwners.owners[0].romStartNumber !== 0x0021C8DC
-      || comparatorOwners.owners[0].romEndNumber !== 0x0021C968
-      || comparatorOwners.owners[0].vramStartNumber !== 0x801D960C
-      || comparatorOwners.owners[0].vramEndNumber !== 0x801D9698
-      || comparatorOwners.owners[0].logicalOffset !== 0
-      || comparatorOwners.owners[0].logicalEnd !== 140
-      || comparatorOwners.owners[0].bytes !== 140) {
-    throw new Error('func_0021C8DC executable-slice owner contract drift');
-  }
-  const comparatorPaddingMutationModel = JSON.parse(JSON.stringify(active.model));
-  comparatorPaddingMutationModel.rows[4033].slices[1].executable = true;
-  const rejectedFunctionPaddingMutations = [
-    expectRejection('function padding became executable', () => resolveAcceptedRows(
-      comparatorPaddingMutationModel,
-      'func_0021C8DC',
-      validatedMultiOwners,
-    )),
+  const splitRowContracts = [
+    {
+      symbol: 'func_002013D0',
+      rowIndex: 3758,
+      rowBytes: 96,
+      textSection: '.ob64.r3758.s0',
+      textRomStart: 0x002013D0,
+      textRomEnd: 0x00201424,
+      textVramStart: 0x801BDF40,
+      textVramEnd: 0x801BDF94,
+      textBytes: 84,
+      paddingSection: '.ob64.r3758.s1',
+      paddingRomEnd: 0x00201430,
+      paddingVramEnd: 0x801BDFA0,
+      paddingBytes: 12,
+      paddingRangeId: 'func-002013d0-alignment-padding',
+    },
+    {
+      symbol: 'func_0021C8DC',
+      rowIndex: 4033,
+      rowBytes: 148,
+      textSection: '.ob64.r4033.s0',
+      textRomStart: 0x0021C8DC,
+      textRomEnd: 0x0021C968,
+      textVramStart: 0x801D960C,
+      textVramEnd: 0x801D9698,
+      textBytes: 140,
+      paddingSection: '.ob64.r4033.s1',
+      paddingRomEnd: 0x0021C970,
+      paddingVramEnd: 0x801D96A0,
+      paddingBytes: 8,
+      paddingRangeId: 'func-0021c8dc-alignment-padding',
+    },
   ];
+  const rejectedFunctionPaddingMutations = [];
+  for (const expected of splitRowContracts) {
+    const resolved = resolveAcceptedRows(active.model, expected.symbol, validatedMultiOwners);
+    const row = resolved.rows[0];
+    const owner = resolved.owners[0];
+    const padding = row && row.slices[1];
+    if (resolved.contract !== null || resolved.rows.length !== 1 || resolved.owners.length !== 1
+        || row.index !== expected.rowIndex || row.bytes !== expected.rowBytes || row.slices.length !== 2
+        || owner.sectionName !== expected.textSection
+        || owner.romStartNumber !== expected.textRomStart || owner.romEndNumber !== expected.textRomEnd
+        || owner.vramStartNumber !== expected.textVramStart || owner.vramEndNumber !== expected.textVramEnd
+        || owner.logicalOffset !== 0 || owner.logicalEnd !== expected.textBytes || owner.bytes !== expected.textBytes
+        || !padding || padding.sectionName !== expected.paddingSection || padding.executable !== false
+        || padding.romStart !== expected.textRomEnd || padding.romEndExclusive !== expected.paddingRomEnd
+        || padding.vramStart !== expected.textVramEnd || padding.vramEndExclusive !== expected.paddingVramEnd
+        || padding.bytes !== expected.paddingBytes || padding.nonExecutableRangeId !== expected.paddingRangeId
+        || owner.bytes + padding.bytes !== row.bytes) {
+      throw new Error(`${expected.symbol} executable/padding split-row contract drift`);
+    }
+    const executablePaddingModel = JSON.parse(JSON.stringify(active.model));
+    executablePaddingModel.rows[expected.rowIndex].slices[1].executable = true;
+    rejectedFunctionPaddingMutations.push(expectRejection(
+      `${expected.symbol} padding became executable`,
+      () => resolveAcceptedRows(executablePaddingModel, expected.symbol, validatedMultiOwners),
+    ));
+  }
   const mutateMultiOwner = (mutate, model = active.model) => validateMultiOwnerConfig(
     mutate(JSON.parse(JSON.stringify(multiOwnerConfig))),
     active.minimalConfig.profile,

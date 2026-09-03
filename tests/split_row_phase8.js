@@ -34,10 +34,48 @@ const {
 const { ensureBaseline, prepareContext } = require('../tools/lib/current_workflow');
 const { SOURCE_CLASSES, classifyTargetSources } = require('../tools/lib/source_policy');
 
-const SYMBOL = 'func_0021C8DC';
-const GENERATED_SOURCE = 'build/split-row-phase8-test/func_0021C8DC_exact_fixture.c';
-const TEXT_SECTION = '.ob64.r4033.s0';
-const PADDING_SECTION = '.ob64.r4033.s1';
+const FIXTURES = [
+  {
+    symbol: 'func_002013D0',
+    generatedSource: 'build/split-row-phase8-test/func_002013D0_exact_fixture.c',
+    rowIndex: 3758,
+    rowBytes: 96,
+    textSection: '.ob64.r3758.s0',
+    textBytes: 84,
+    paddingSection: '.ob64.r3758.s1',
+    paddingBytes: 12,
+    paddingRomStart: 0x00201424,
+    paddingRomEnd: 0x00201430,
+    paddingRangeId: 'func-002013d0-alignment-padding',
+    expectedRelocations: [
+      { offset: '0x00000008', type: 'R_MIPS_26', symbol: 'func_00201108', section: '.rel.text' },
+      { offset: '0x00000010', type: 'R_MIPS_HI16', symbol: 'D_801CE8C0', section: '.rel.text' },
+      { offset: '0x00000014', type: 'R_MIPS_LO16', symbol: 'D_801CE8C0', section: '.rel.text' },
+      { offset: '0x00000018', type: 'R_MIPS_HI16', symbol: 'D_801976DC', section: '.rel.text' },
+      { offset: '0x0000001C', type: 'R_MIPS_LO16', symbol: 'D_801976DC', section: '.rel.text' },
+      { offset: '0x00000024', type: 'R_MIPS_26', symbol: 'func_00209774', section: '.rel.text' },
+      { offset: '0x0000002C', type: 'R_MIPS_HI16', symbol: 'D_801CE8C0', section: '.rel.text' },
+      { offset: '0x00000030', type: 'R_MIPS_LO16', symbol: 'D_801CE8C0', section: '.rel.text' },
+      { offset: '0x00000034', type: 'R_MIPS_HI16', symbol: 'D_801976E8', section: '.rel.text' },
+      { offset: '0x00000038', type: 'R_MIPS_LO16', symbol: 'D_801976E8', section: '.rel.text' },
+      { offset: '0x00000040', type: 'R_MIPS_26', symbol: 'func_00209774', section: '.rel.text' },
+    ],
+  },
+  {
+    symbol: 'func_0021C8DC',
+    generatedSource: 'build/split-row-phase8-test/func_0021C8DC_exact_fixture.c',
+    rowIndex: 4033,
+    rowBytes: 148,
+    textSection: '.ob64.r4033.s0',
+    textBytes: 140,
+    paddingSection: '.ob64.r4033.s1',
+    paddingBytes: 8,
+    paddingRomStart: 0x0021C968,
+    paddingRomEnd: 0x0021C970,
+    paddingRangeId: 'func-0021c8dc-alignment-padding',
+    expectedRelocations: [],
+  },
+];
 const ACCEPTED_SLICE_STRUCTURAL_FIELDS = [
   'executable',
   'executableRangeId',
@@ -69,8 +107,26 @@ function expectRejection(label, pattern, callback) {
   throw new Error(`${label} was accepted`);
 }
 
-function writeExactFixtureSource() {
-  const source = [
+function writeExactFixtureSource(fixture) {
+  const lines = fixture.symbol === 'func_002013D0' ? [
+    'typedef unsigned char u8;',
+    'typedef signed int s32;',
+    '',
+    'extern void * volatile D_801CE8C0;',
+    'extern u8 D_801976DC;',
+    'extern u8 D_801976E8;',
+    '',
+    'void func_00201108(void);',
+    'void func_00209774(s32 selector, void *state, u8 value);',
+    '',
+    'void func_002013D0(void)',
+    '{',
+    '    func_00201108();',
+    '    func_00209774(0, (u8 *)D_801CE8C0 + 0x82F, D_801976DC);',
+    '    func_00209774(1, (u8 *)D_801CE8C0 + 0x848, D_801976E8);',
+    '}',
+    '',
+  ] : [
     'typedef signed int s32;',
     'typedef unsigned char u8;',
     'typedef float f32;',
@@ -105,30 +161,35 @@ function writeExactFixtureSource() {
     '    return left - right;',
     '}',
     '',
-  ].join('\n');
-  const file = path.join(ROOT, ...GENERATED_SOURCE.split('/'));
+  ];
+  const source = lines.join('\n');
+  const file = path.join(ROOT, ...fixture.generatedSource.split('/'));
   fs.mkdirSync(path.dirname(file), { recursive: true });
   fs.writeFileSync(file, source);
   return file;
 }
 
-function buildFixtureTarget(basePhase8, baserom, sourceFile) {
-  const resolved = resolveAcceptedRows(basePhase8.model, SYMBOL, basePhase8.multiOwnerContracts);
+function buildFixtureTarget(basePhase8, baserom, sourceFile, fixture) {
+  const resolved = resolveAcceptedRows(basePhase8.model, fixture.symbol, basePhase8.multiOwnerContracts);
   if (resolved.contract !== null || resolved.rows.length !== 1 || resolved.owners.length !== 1) {
     throw new Error('accepted split-row fixture owner is unavailable');
   }
   const owner = resolved.owners[0];
   const row = resolved.rows[0];
+  const slice = row.slices.find((candidate) => candidate.sectionName === owner.sectionName);
+  const descriptor = slice.overlayDescriptorId === null ? null
+    : basePhase8.descriptors.find((candidate) => candidate.id === slice.overlayDescriptorId);
   const expectedText = Buffer.from(baserom.subarray(owner.romStartNumber, owner.romEndNumber));
   const source = path.relative(ROOT, sourceFile).replace(/\\/g, '/');
-  if (row.bytes !== 148 || row.slices.length !== 2
-      || owner.sectionName !== TEXT_SECTION || owner.bytes !== 140
-      || owner.logicalOffset !== 0 || owner.logicalEnd !== 140
-      || expectedText.length !== 140) {
+  if (row.index !== fixture.rowIndex || row.bytes !== fixture.rowBytes || row.slices.length !== 2
+      || owner.sectionName !== fixture.textSection || owner.bytes !== fixture.textBytes
+      || owner.logicalOffset !== 0 || owner.logicalEnd !== fixture.textBytes
+      || expectedText.length !== fixture.textBytes
+      || (slice.overlayDescriptorId !== null && !descriptor)) {
     throw new Error('accepted split-row fixture extent drift');
   }
   return {
-    symbol: SYMBOL,
+    symbol: fixture.symbol,
     source,
     targetIndex: 0,
     primaryId: owner.primaryId,
@@ -149,13 +210,13 @@ function buildFixtureTarget(basePhase8, baserom, sourceFile) {
     textOwners: [{ ...owner, expectedTextSha256: sha256Buffer(expectedText) }],
     multiOwner: false,
     multiOwnerContract: null,
-    overlayDescriptorId: null,
-    descriptorRawSha256: null,
+    overlayDescriptorId: slice.overlayDescriptorId,
+    descriptorRawSha256: descriptor ? descriptor.rawSha256 : null,
     expectedTextSha256: sha256Buffer(expectedText),
-    expectedRelocations: [],
+    expectedRelocations: fixture.expectedRelocations,
     compilerTextFunctionsExplicit: false,
     compilerTextFunctions: [{
-      symbol: SYMBOL,
+      symbol: fixture.symbol,
       offset: '0x00000000',
       offsetNumber: 0,
       bytes: owner.bytes,
@@ -166,7 +227,7 @@ function buildFixtureTarget(basePhase8, baserom, sourceFile) {
     relocationContractSource: 'generated-exact-split-row-structural-test-fixture',
     legacyAncillaryRelocations: [],
     sourceSha256: sha256File(sourceFile),
-    descriptor: null,
+    descriptor,
     model: basePhase8.model,
     row,
     rows: [row],
@@ -210,17 +271,13 @@ function contradictoryScalar(value) {
   throw new Error(`accepted split-row structural field is not scalar: ${typeof value}`);
 }
 
-function main() {
-  const context = prepareContext();
-  const baseline = ensureBaseline(context);
-  const acceptedLayout = JSON.parse(fs.readFileSync(path.join(baseline.phase7Output, 'layout.json'), 'utf8'));
-  const baserom = fs.readFileSync(context.baserom.path);
-  const sourceFile = writeExactFixtureSource();
-  const target = buildFixtureTarget(context.phase8, baserom, sourceFile);
+function runFixture(context, baseline, acceptedLayout, baserom, fixture) {
+  const sourceFile = writeExactFixtureSource(fixture);
+  const target = buildFixtureTarget(context.phase8, baserom, sourceFile, fixture);
   const phase8 = {
     ...context.phase8,
     compatibility: [],
-    descriptors: [],
+    descriptors: target.descriptor ? [target.descriptor] : [],
     targets: [target],
     target,
   };
@@ -230,16 +287,19 @@ function main() {
   }
 
   const retained = targetRetainedAssemblySlices(target);
-  if (retained.length !== 1 || retained[0].sectionName !== PADDING_SECTION
-      || retained[0].bytes !== 8 || retained[0].executable !== false
-      || retained[0].romStartNumber !== 0x0021C968
-      || retained[0].romEndNumber !== 0x0021C970) {
+  if (retained.length !== 1 || retained[0].sectionName !== fixture.paddingSection
+      || retained[0].bytes !== fixture.paddingBytes || retained[0].executable !== false
+      || retained[0].romStartNumber !== fixture.paddingRomStart
+      || retained[0].romEndNumber !== fixture.paddingRomEnd
+      || retained[0].row.slices[0].romEndExclusive !== retained[0].romStartNumber
+      || retained[0].row.slices[0].bytes + retained[0].bytes !== retained[0].row.bytes
+      || retained[0].row.slices[1].nonExecutableRangeId !== fixture.paddingRangeId) {
     throw new Error('accepted retained padding slice contract drift');
   }
 
   const testRoot = path.join(context.localTools.workRoot, 'tests');
   fs.mkdirSync(testRoot, { recursive: true });
-  const output = fs.mkdtempSync(path.join(testRoot, 'split-row-phase8-'));
+  const output = fs.mkdtempSync(path.join(testRoot, `split-row-phase8-${fixture.symbol}-`));
   assertBuildLocations(output, baseline.phase7Output);
   const runtime = verifyRuntimeTools(phase8.model, {
     powershellRuntimeRoot: context.localTools.powershellRuntimeRoot,
@@ -264,7 +324,7 @@ function main() {
     runtime.tools['mips-kmc-elf-objcopy.exe'].path,
     { classification: sourcePolicy.targets[0] },
   );
-  const compiled = new Map([[SYMBOL, compiledTarget]]);
+  const compiled = new Map([[fixture.symbol, compiledTarget]]);
   const manifest = writeObjectManifest(
     output,
     replacement.linkedObjects,
@@ -299,23 +359,23 @@ function main() {
   verifyRom(phase8.model, linkedRom);
   verifyPhase8Layout(phase8, layout, replacement.replacements);
 
-  const fallbackText = fallback.sections.filter((section) => section.name === TEXT_SECTION);
-  const fallbackPadding = fallback.sections.filter((section) => section.name === PADDING_SECTION);
-  const prunedText = pruned.sections.filter((section) => section.name === TEXT_SECTION);
-  const prunedPadding = pruned.sections.filter((section) => section.name === PADDING_SECTION);
-  const cText = cObject.sections.filter((section) => section.name === TEXT_SECTION);
-  const cPadding = cObject.sections.filter((section) => section.name === PADDING_SECTION);
-  const linkedPadding = linkedElf.sections.find((section) => section.name === PADDING_SECTION);
+  const fallbackText = fallback.sections.filter((section) => section.name === fixture.textSection);
+  const fallbackPadding = fallback.sections.filter((section) => section.name === fixture.paddingSection);
+  const prunedText = pruned.sections.filter((section) => section.name === fixture.textSection);
+  const prunedPadding = pruned.sections.filter((section) => section.name === fixture.paddingSection);
+  const cText = cObject.sections.filter((section) => section.name === fixture.textSection);
+  const cPadding = cObject.sections.filter((section) => section.name === fixture.paddingSection);
+  const linkedPadding = linkedElf.sections.find((section) => section.name === fixture.paddingSection);
   if (!linkedRom.equals(baserom)
       || !targetComparison.rawBytesExact || !linkedPadding
-      || !Buffer.from(elfSectionBytes(linkedElf, linkedPadding)).equals(Buffer.alloc(8))
-      || fallbackText.length !== 1 || fallbackText[0].size !== 140
-      || fallbackPadding.length !== 1 || fallbackPadding[0].size !== 8
-      || prunedText.length !== 0 || prunedPadding.length !== 1 || prunedPadding[0].size !== 8
-      || cText.length !== 1 || cText[0].size !== 140 || cPadding.length !== 0
-      || !Buffer.from(elfSectionBytes(pruned, prunedPadding[0])).equals(Buffer.alloc(8))
+      || !Buffer.from(elfSectionBytes(linkedElf, linkedPadding)).equals(Buffer.alloc(fixture.paddingBytes))
+      || fallbackText.length !== 1 || fallbackText[0].size !== fixture.textBytes
+      || fallbackPadding.length !== 1 || fallbackPadding[0].size !== fixture.paddingBytes
+      || prunedText.length !== 0 || prunedPadding.length !== 1 || prunedPadding[0].size !== fixture.paddingBytes
+      || cText.length !== 1 || cText[0].size !== fixture.textBytes || cPadding.length !== 0
+      || !Buffer.from(elfSectionBytes(pruned, prunedPadding[0])).equals(Buffer.alloc(fixture.paddingBytes))
       || mapOwner.owners.length !== 1
-      || mapOwner.owners[0].linkedOwner !== `objects/c/${SYMBOL}.o`
+      || mapOwner.owners[0].linkedOwner !== `objects/c/${fixture.symbol}.o`
       || mapOwner.retainedAssemblySlices.length !== 1
       || mapOwner.retainedAssemblySlices[0].linkedOwner !== chunkReplacement.linkedChunkRelative
       || sourceObjectProofs.size !== 1
@@ -325,28 +385,28 @@ function main() {
     throw new Error('active split-row Phase 8 integration invariant failed');
   }
 
-  const cOwner = `objects/c/${SYMBOL}.o`;
+  const cOwner = `objects/c/${fixture.symbol}.o`;
   const assemblyOwner = chunkReplacement.linkedChunkRelative;
   const rejectedMutations = [
     expectRejection('whole-row logical end', /owner census drift/, () => compareLinkedTargetBytes({
       ...target,
-      textOwners: target.textOwners.map((owner) => ({ ...owner, logicalEnd: 148 })),
+      textOwners: target.textOwners.map((owner) => ({ ...owner, logicalEnd: fixture.rowBytes })),
     }, linkedElf, baserom)),
     expectRejection('matching C map owner', /sole matching C object/, () => verifyTargetMapOwner(
       target,
-      replaceSectionMapOwner(mapText, TEXT_SECTION, cOwner, assemblyOwner),
+      replaceSectionMapOwner(mapText, fixture.textSection, cOwner, assemblyOwner),
     )),
     expectRejection('retained assembly map owner', /retained assembly slice linker-map owner drift/, () => verifyTargetMapOwner(
       target,
-      replaceSectionMapOwner(mapText, PADDING_SECTION, assemblyOwner, cOwner),
+      replaceSectionMapOwner(mapText, fixture.paddingSection, assemblyOwner, cOwner),
     )),
     expectRejection('retained assembly execution flag', /ELF section execution flag drift/, () => verifyElfAgainstModel(
       verificationModel,
-      cloneElfWithSection(linkedElf, PADDING_SECTION, (section) => ({ ...section, flags: section.flags | 4 })),
+      cloneElfWithSection(linkedElf, fixture.paddingSection, (section) => ({ ...section, flags: section.flags | 4 })),
     )),
     expectRejection('retained assembly placement', /ELF section VRAM placement drift/, () => verifyElfAgainstModel(
       verificationModel,
-      cloneElfWithSection(linkedElf, PADDING_SECTION, (section) => ({ ...section, address: section.address + 4 })),
+      cloneElfWithSection(linkedElf, fixture.paddingSection, (section) => ({ ...section, address: section.address + 4 })),
     )),
   ];
 
@@ -358,16 +418,37 @@ function main() {
 
   const retainedLayoutMutation = JSON.parse(JSON.stringify(layout));
   retainedLayoutMutation.owners[target.rowIndex].slices
-    .find((slice) => slice.sectionName === PADDING_SECTION).linkedOwner = cOwner;
+    .find((slice) => slice.sectionName === fixture.paddingSection).linkedOwner = cOwner;
   rejectedMutations.push(expectRejection('retained assembly layout provenance', /retained-slice drift/, () => {
     verifyPhase8Layout(phase8, retainedLayoutMutation, replacement.replacements);
   }));
   const cLayoutMutation = JSON.parse(JSON.stringify(layout));
   cLayoutMutation.owners[target.rowIndex].slices
-    .find((slice) => slice.sectionName === TEXT_SECTION).matchingCLogicalOffset = 4;
+    .find((slice) => slice.sectionName === fixture.textSection).matchingCLogicalOffset = 4;
   rejectedMutations.push(expectRejection('matching C layout provenance', /C-slice drift/, () => {
     verifyPhase8Layout(phase8, cLayoutMutation, replacement.replacements);
   }));
+  for (const [label, delta] of [['retained assembly layout gap', 4], ['retained assembly layout overlap', -4]]) {
+    const extentMutation = JSON.parse(JSON.stringify(layout));
+    const retainedSlice = extentMutation.owners[target.rowIndex].slices
+      .find((slice) => slice.sectionName === fixture.paddingSection);
+    retainedSlice.romStart += delta;
+    retainedSlice.vramStart += delta;
+    rejectedMutations.push(expectRejection(label, /retained-slice drift/, () => {
+      verifyPhase8Layout(phase8, extentMutation, replacement.replacements);
+    }));
+  }
+  if (fixture.paddingRangeId === 'func-002013d0-alignment-padding') {
+    const rangeSummaryMutation = JSON.parse(JSON.stringify(layout));
+    const range = rangeSummaryMutation.fixedOverlayNonExecutableRanges
+      .find((candidate) => candidate.id === fixture.paddingRangeId);
+    range.overlayDescriptorId += 1;
+    rejectedMutations.push(expectRejection(
+      'fixed-overlay non-executable-range layout provenance',
+      /fixed-overlay non-executable-range summary drift/,
+      () => verifyPhase8Layout(phase8, rangeSummaryMutation, replacement.replacements),
+    ));
+  }
 
   const acceptedLayoutOwner = acceptedLayout.owners[target.rowIndex];
   if (!acceptedLayoutOwner || acceptedLayoutOwner.slices.length !== target.row.slices.length) {
@@ -378,8 +459,8 @@ function main() {
     if (JSON.stringify(actualFields) !== JSON.stringify(ACCEPTED_SLICE_STRUCTURAL_FIELDS)) {
       throw new Error(`accepted split-row structural field census drift: ${acceptedSlice.sectionName}`);
     }
-    const role = acceptedSlice.sectionName === TEXT_SECTION ? 'matching C' : 'retained assembly';
-    const rejectionPattern = acceptedSlice.sectionName === TEXT_SECTION ? /C-slice drift/ : /retained-slice drift/;
+    const role = acceptedSlice.sectionName === fixture.textSection ? 'matching C' : 'retained assembly';
+    const rejectionPattern = acceptedSlice.sectionName === fixture.textSection ? /C-slice drift/ : /retained-slice drift/;
     for (const acceptedField of ACCEPTED_SLICE_STRUCTURAL_FIELDS) {
       const structuralMutation = JSON.parse(JSON.stringify(layout));
       const structuralSlice = structuralMutation.owners[target.rowIndex].slices
@@ -417,21 +498,33 @@ function main() {
     schemaVersion: 1,
     status: 'pass',
     fixtureClass: sourcePolicy.targets[0].class,
-    fixturePurpose: 'structural pipeline only; active configuration and archived candidate remain untouched',
-    target: SYMBOL,
+    fixturePurpose: 'structural pipeline only; generated sources do not mutate active configuration',
+    target: fixture.symbol,
     output,
-    cOwnerSection: TEXT_SECTION,
-    retainedAssemblySection: PADDING_SECTION,
+    cOwnerSection: fixture.textSection,
+    retainedAssemblySection: fixture.paddingSection,
+    executableBytes: fixture.textBytes,
+    retainedAssemblyBytes: fixture.paddingBytes,
+    relocationCount: fixture.expectedRelocations.length,
     retainedAssemblyOwner: assemblyOwner,
     sourceSha256: sha256File(sourceFile),
     cObjectSha256: sha256File(path.join(output, compiledTarget.objectRelative)),
-    proofSha256: sourceObjectProofs.get(SYMBOL).sha256,
+    proofSha256: sourceObjectProofs.get(fixture.symbol).sha256,
     romSha256: sha256Buffer(linkedRom),
     exactRom: true,
     rejectedMutations,
   };
   fs.writeFileSync(path.join(output, 'split-row-phase8-test-report.json'), `${JSON.stringify(report, null, 2)}\n`);
-  console.log(JSON.stringify(report, null, 2));
+  return report;
+}
+
+function main() {
+  const context = prepareContext();
+  const baseline = ensureBaseline(context);
+  const acceptedLayout = JSON.parse(fs.readFileSync(path.join(baseline.phase7Output, 'layout.json'), 'utf8'));
+  const baserom = fs.readFileSync(context.baserom.path);
+  const reports = FIXTURES.map((fixture) => runFixture(context, baseline, acceptedLayout, baserom, fixture));
+  console.log(JSON.stringify({ schemaVersion: 1, status: 'pass', reports }, null, 2));
 }
 
 main();

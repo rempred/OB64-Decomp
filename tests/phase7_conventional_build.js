@@ -10,6 +10,7 @@ const {
   parseElf32BigEndian,
   renderLinkerScript,
   sha256Buffer,
+  validateFixedOverlayNonExecutableRanges,
   validateNonDescriptorLoadSlabs,
   verifyElfAgainstModel,
   verifyMap,
@@ -52,6 +53,37 @@ function validTestSlab(overrides = {}) {
   };
 }
 
+function overlayRangeFixture(ranges, expectedCount = ranges.length) {
+  return {
+    rom: { bytes: 0x10000 },
+    expected: { fixedOverlayNonExecutableRanges: expectedCount },
+    fixedOverlayNonExecutableRanges: ranges,
+  };
+}
+
+function validTestOverlay(overrides = {}) {
+  return {
+    descriptor_id: 3,
+    rom_start: 0x2000,
+    rom_end_exclusive: 0x2200,
+    text_rom_end_exclusive: 0x2180,
+    data_rodata_rom_start: 0x2180,
+    data_rodata_rom_end_exclusive: 0x2200,
+    ...overrides,
+  };
+}
+
+function validOverlayNonExecutableRange(overrides = {}) {
+  return {
+    id: 'overlay-padding-range',
+    overlayDescriptorId: 3,
+    overlaySection: 'text',
+    romStart: 0x2100,
+    romEndExclusive: 0x2110,
+    ...overrides,
+  };
+}
+
 function rangesIntersect(startA, endA, startB, endB) {
   return startA < endB && endA > startB;
 }
@@ -81,9 +113,17 @@ function main() {
 
   const results = [];
   assert.strictEqual(model.counts.nonDescriptorLoadSlabs, 5, 'accepted load-slab count drift');
-  assert.strictEqual(model.slices.length, 7253, 'accepted link-slice count drift');
-  assert.strictEqual(model.counts.splitOwners, 11, 'accepted split-owner count drift');
+  assert.strictEqual(model.counts.fixedOverlayNonExecutableRanges, 1, 'accepted fixed-overlay non-executable-range count drift');
+  assert.strictEqual(model.slices.length, 7254, 'accepted link-slice count drift');
+  assert.strictEqual(model.counts.splitOwners, 12, 'accepted split-owner count drift');
   assert.strictEqual(model.overlays.length, 19, 'fixed-descriptor count drift');
+  assert.deepStrictEqual(model.fixedOverlayNonExecutableRanges, [{
+    id: 'func-002013d0-alignment-padding',
+    overlayDescriptorId: 10,
+    overlaySection: 'text',
+    romStart: 0x00201424,
+    romEndExclusive: 0x00201430,
+  }], 'accepted fixed-overlay non-executable-range record drift');
   assert.deepStrictEqual(model.nonDescriptorLoadSlabs, [{
     id: 'scenario-loader-00195410',
     kind: 'loader-dma',
@@ -201,6 +241,93 @@ function main() {
     assert.strictEqual(row.slices.at(-1).vramEndExclusive, expected.vramEndExclusive, `Wave 1 owner VMA end drift: p${expected.rowIndex}`);
     assert.ok(row.slices.every((slice) => slice.loadSlabId === actionStreamSlab.id), `Wave 1 owner slab drift: p${expected.rowIndex}`);
   }
+
+  const wrapperOwner = model.rows[3758];
+  assert.deepStrictEqual(wrapperOwner.slices.map((slice) => ({
+    sectionName: slice.sectionName,
+    romStart: slice.romStart,
+    romEndExclusive: slice.romEndExclusive,
+    vramStart: slice.vramStart,
+    vramEndExclusive: slice.vramEndExclusive,
+    placementKind: slice.placementKind,
+    overlayDescriptorId: slice.overlayDescriptorId,
+    overlaySection: slice.overlaySection,
+    executable: slice.executable,
+    nonExecutableRangeId: slice.nonExecutableRangeId,
+  })), [{
+    sectionName: '.ob64.r3758.s0',
+    romStart: 0x002013D0,
+    romEndExclusive: 0x00201424,
+    vramStart: 0x801BDF40,
+    vramEndExclusive: 0x801BDF94,
+    placementKind: 'overlay',
+    overlayDescriptorId: 10,
+    overlaySection: 'text',
+    executable: true,
+    nonExecutableRangeId: null,
+  }, {
+    sectionName: '.ob64.r3758.s1',
+    romStart: 0x00201424,
+    romEndExclusive: 0x00201430,
+    vramStart: 0x801BDF94,
+    vramEndExclusive: 0x801BDFA0,
+    placementKind: 'overlay',
+    overlayDescriptorId: 10,
+    overlaySection: 'text',
+    executable: false,
+    nonExecutableRangeId: 'func-002013d0-alignment-padding',
+  }], 'func_002013D0 function/padding slice contract drift');
+  assert.strictEqual(wrapperOwner.slices[0].bytes + wrapperOwner.slices[1].bytes, wrapperOwner.bytes,
+    'func_002013D0 split-row byte conservation drift');
+  assert.strictEqual(wrapperOwner.slices[0].romEndExclusive, wrapperOwner.slices[1].romStart,
+    'func_002013D0 split-row ROM gap or overlap');
+  assert.strictEqual(wrapperOwner.slices[0].vramEndExclusive, wrapperOwner.slices[1].vramStart,
+    'func_002013D0 split-row VMA gap or overlap');
+  assert.strictEqual(model.rows[3759].romStart, 0x00201430, 'func_002013D0 successor boundary drift');
+  assert.deepStrictEqual([
+    romBytes.readUInt32BE(0x0020141C),
+    romBytes.readUInt32BE(0x00201420),
+    romBytes.readUInt32BE(0x00201424),
+    romBytes.readUInt32BE(0x00201428),
+    romBytes.readUInt32BE(0x0020142C),
+  ], [0x03E00008, 0x27BD0018, 0x00000000, 0x00000000, 0x00000000],
+  'func_002013D0 return, delay slot, or alignment-padding evidence drift');
+  assert.strictEqual(
+    sha256Buffer(romBytes.subarray(0x002013D0, 0x00201424)),
+    '18ACA89C612392942718624B1792D58238FAB2AC1FE6F3F95D6777D6AF2E11B1',
+    'func_002013D0 executable-body hash drift',
+  );
+  assert.strictEqual(
+    sha256Buffer(romBytes.subarray(0x00201424, 0x00201430)),
+    '15EC7BF0B50732B49F8228E07D24365338F9E3AB994B00AF08E5A3BFFE55FD8B',
+    'func_002013D0 alignment-padding hash drift',
+  );
+  const wrapperCallRom = 0x00200170;
+  const wrapperCallSlice = model.slices.find((slice) => (
+    slice.executable && wrapperCallRom >= slice.romStart && wrapperCallRom < slice.romEndExclusive
+  ));
+  assert.ok(wrapperCallSlice && wrapperCallSlice.overlayDescriptorId === 10,
+    'func_002013D0 accepted call-site placement drift');
+  const wrapperCallPc = wrapperCallSlice.vramStart + (wrapperCallRom - wrapperCallSlice.romStart);
+  assert.strictEqual(romBytes.readUInt32BE(wrapperCallRom), 0x0C06F7D0,
+    'func_002013D0 accepted call instruction drift');
+  assert.strictEqual(directControlTarget(romBytes.readUInt32BE(wrapperCallRom), wrapperCallPc),
+    wrapperOwner.slices[0].vramStart, 'func_002013D0 accepted entry target drift');
+  const wrapperPaddingTargets = [];
+  for (const slice of model.slices.filter((candidate) => (
+    candidate.executable && candidate.overlayDescriptorId === 10 && candidate.overlaySection === 'text'
+  ))) {
+    for (let romAddress = slice.romStart; romAddress < slice.romEndExclusive; romAddress += 4) {
+      const pc = slice.vramStart + (romAddress - slice.romStart);
+      const target = directControlTarget(romBytes.readUInt32BE(romAddress), pc);
+      if (target !== null && target >= wrapperOwner.slices[1].vramStart
+          && target < wrapperOwner.slices[1].vramEndExclusive) {
+        wrapperPaddingTargets.push(romAddress);
+      }
+    }
+  }
+  assert.deepStrictEqual(wrapperPaddingTargets, [],
+    'accepted descriptor-10 direct control flow enters func_002013D0 alignment padding');
 
   const comparatorOwner = model.rows[4033];
   assert.deepStrictEqual(comparatorOwner.slices.map((slice) => ({
@@ -706,6 +833,8 @@ function main() {
   assert.ok(p0910MapInputs[0].includes('objects/assembly/chunk_004.o'), 'p0910 is not linked from accepted assembly chunk 4');
 
   const layout = JSON.parse(fs.readFileSync(path.join(output, 'layout.json'), 'utf8'));
+  assert.deepStrictEqual(layout.fixedOverlayNonExecutableRanges, model.fixedOverlayNonExecutableRanges,
+    'layout fixed-overlay non-executable-range summary drift');
   assert.deepStrictEqual(layout.nonDescriptorLoadSlabs, model.nonDescriptorLoadSlabs, 'layout load-slab summary drift');
   for (const expected of expectedOwners) {
     assert.strictEqual(layout.owners[expected.rowIndex].slices[0].loadSlabId, 'scenario-loader-00195410', `layout load-slab ID drift: p${expected.rowIndex}`);
@@ -713,6 +842,9 @@ function main() {
   assert.strictEqual(layout.owners[810].primaryId, 'primary:4b3693504d495f021786', 'layout changed p0810 source ownership');
   assert.strictEqual(layout.owners[810].slices.length, 2, 'layout p0810 placement slice count drift');
   assert.strictEqual(layout.owners[810].slices[1].executableRangeId, 'cold-boot-entry-stubs-00040e80', 'layout lost p0810 tail executable treatment');
+  assert.strictEqual(layout.owners[3758].slices.length, 2, 'layout lost func_002013D0 function/padding split');
+  assert.strictEqual(layout.owners[3758].slices[0].nonExecutableRangeId, null, 'layout marked func_002013D0 instructions non-executable');
+  assert.strictEqual(layout.owners[3758].slices[1].nonExecutableRangeId, 'func-002013d0-alignment-padding', 'layout lost func_002013D0 padding treatment');
   assert.strictEqual(layout.owners[4033].slices.length, 2, 'layout lost func_0021C8DC function/padding split');
   assert.strictEqual(layout.owners[4033].slices[0].nonExecutableRangeId, null, 'layout marked func_0021C8DC instructions non-executable');
   assert.strictEqual(layout.owners[4033].slices[1].nonExecutableRangeId, 'func-0021c8dc-alignment-padding', 'layout lost func_0021C8DC padding treatment');
@@ -724,6 +856,8 @@ function main() {
   assert.ok(linkerScript.includes('.ob64.r0910 0x8016F11C : AT(0x0004501C)'), 'p0910 linker VMA/LMA relationship drift');
   assert.ok(linkerScript.includes('.ob64.r1289 0x80197B70 : AT(0x00066E10)'), 'p1289 descriptor-0 linker placement drift');
   assert.ok(linkerScript.includes('.ob64.r3063 0x802150BC : AT(0x0019554C)'), 'p3063 linker VMA/LMA relationship drift');
+  assert.ok(linkerScript.includes('.ob64.r3758.s0 0x801BDF40 : AT(0x002013D0)'), 'func_002013D0 instruction linker placement drift');
+  assert.ok(linkerScript.includes('.ob64.r3758.s1 0x801BDF94 : AT(0x00201424)'), 'func_002013D0 padding linker placement drift');
   assert.ok(linkerScript.includes('.ob64.r4033.s0 0x801D960C : AT(0x0021C8DC)'), 'func_0021C8DC instruction linker placement drift');
   assert.ok(linkerScript.includes('.ob64.r4033.s1 0x801D9698 : AT(0x0021C968)'), 'func_0021C8DC padding linker placement drift');
   assert.ok(linkerScript.includes('.ob64.r4158 0x801E6B20 : AT(0x00229DF0)'), 'func_0021CBC4 auxiliary-owner linker placement drift');
@@ -796,6 +930,43 @@ function main() {
     verifyElfAgainstModel(model, parseElf32BigEndian(coldBootHeadProgramHeaderExecutionDrift));
   }));
 
+  const wrapperTextSlice = wrapperOwner.slices[0];
+  const wrapperPaddingSlice = wrapperOwner.slices[1];
+  const wrapperTextSection = baselineElf.sections.find((candidate) => candidate.name === wrapperTextSlice.sectionName);
+  const wrapperPaddingSection = baselineElf.sections.find((candidate) => candidate.name === wrapperPaddingSlice.sectionName);
+  if (!wrapperTextSection || !wrapperPaddingSection) fail('func_002013D0 function/padding ELF sections are missing');
+  assert.ok((wrapperTextSection.flags & 4) !== 0, 'func_002013D0 instruction section is not executable');
+  assert.strictEqual(wrapperPaddingSection.flags & 4, 0, 'func_002013D0 alignment padding is executable');
+  const wrapperPaddingExecutionDrift = Buffer.from(elfBytes);
+  wrapperPaddingExecutionDrift.writeUInt32BE(wrapperPaddingSection.flags | 4, wrapperPaddingSection.headerOffset + 8);
+  results.push(expectRejection('func_002013D0 executable padding section', /ELF section execution flag drift/, () => {
+    verifyElfAgainstModel(model, parseElf32BigEndian(wrapperPaddingExecutionDrift));
+  }));
+  const wrapperPaddingPlacementDrift = Buffer.from(elfBytes);
+  wrapperPaddingPlacementDrift.writeUInt32BE(wrapperPaddingSection.address + 4, wrapperPaddingSection.headerOffset + 12);
+  results.push(expectRejection('func_002013D0 padding VMA placement', /ELF section VRAM placement drift/, () => {
+    verifyElfAgainstModel(model, parseElf32BigEndian(wrapperPaddingPlacementDrift));
+  }));
+  const wrapperPaddingLoadHeader = baselineElf.programHeaders.find((candidate) => (
+    candidate.type === 1
+    && candidate.vaddr === wrapperPaddingSlice.vramStart
+    && candidate.paddr === wrapperPaddingSlice.romStart
+    && candidate.fileSize === wrapperPaddingSlice.bytes
+  ));
+  if (!wrapperPaddingLoadHeader) fail('func_002013D0 padding load header is missing');
+  const wrapperPaddingProgramHeaderOffset = baselineElf.header.phoff
+    + wrapperPaddingLoadHeader.index * baselineElf.header.phentsize;
+  const wrapperPaddingProgramHeaderExecutionDrift = Buffer.from(elfBytes);
+  wrapperPaddingProgramHeaderExecutionDrift.writeUInt32BE(5, wrapperPaddingProgramHeaderOffset + 24);
+  results.push(expectRejection('func_002013D0 executable padding PT_LOAD', /ELF program-header execution flag drift: \.ob64\.r3758\.s1/, () => {
+    verifyElfAgainstModel(model, parseElf32BigEndian(wrapperPaddingProgramHeaderExecutionDrift));
+  }));
+  const wrapperPaddingLmaDrift = Buffer.from(elfBytes);
+  wrapperPaddingLmaDrift.writeUInt32BE(wrapperPaddingLoadHeader.paddr + 4, wrapperPaddingProgramHeaderOffset + 12);
+  results.push(expectRejection('func_002013D0 padding ROM placement', /ELF load address drift/, () => {
+    verifyElfAgainstModel(model, parseElf32BigEndian(wrapperPaddingLmaDrift));
+  }));
+
   const comparatorTextSlice = comparatorOwner.slices[0];
   const comparatorPaddingSlice = comparatorOwner.slices[1];
   const comparatorTextSection = baselineElf.sections.find((candidate) => candidate.name === comparatorTextSlice.sectionName);
@@ -844,6 +1015,63 @@ function main() {
   slabLmaDrift.writeUInt32BE(slabLoadHeader.paddr + 4, slabProgramHeaderOffset + 12);
   results.push(expectRejection('load-slab ROM LMA placement', /ELF load address drift/, () => {
     verifyElfAgainstModel(model, parseElf32BigEndian(slabLmaDrift));
+  }));
+
+  results.push(expectRejection('fixed-overlay non-executable-range count', /count drift/, () => {
+    validateFixedOverlayNonExecutableRanges(
+      overlayRangeFixture([validOverlayNonExecutableRange()], 2),
+      [validTestOverlay()],
+    );
+  }));
+  results.push(expectRejection('malformed fixed-overlay non-executable-range list', /count drift/, () => {
+    validateFixedOverlayNonExecutableRanges({
+      rom: { bytes: 0x10000 },
+      expected: { fixedOverlayNonExecutableRanges: 1 },
+      fixedOverlayNonExecutableRanges: {},
+    }, [validTestOverlay()]);
+  }));
+  results.push(expectRejection('fixed-overlay non-executable-range unexpected field', /is malformed/, () => {
+    validateFixedOverlayNonExecutableRanges(
+      overlayRangeFixture([validOverlayNonExecutableRange({ permissive: true })]),
+      [validTestOverlay()],
+    );
+  }));
+  results.push(expectRejection('fixed-overlay non-executable-range reserved ID', /invalid or repeated/, () => {
+    validateFixedOverlayNonExecutableRanges(
+      overlayRangeFixture([validOverlayNonExecutableRange()]),
+      [validTestOverlay()],
+      ['overlay-padding-range'],
+    );
+  }));
+  results.push(expectRejection('fixed-overlay non-executable-range alignment', /safe aligned integer/, () => {
+    validateFixedOverlayNonExecutableRanges(
+      overlayRangeFixture([validOverlayNonExecutableRange({ romStart: 0x2102 })]),
+      [validTestOverlay()],
+    );
+  }));
+  results.push(expectRejection('fixed-overlay non-executable-range descriptor', /outside its descriptor/, () => {
+    validateFixedOverlayNonExecutableRanges(
+      overlayRangeFixture([validOverlayNonExecutableRange({ overlayDescriptorId: 4 })]),
+      [validTestOverlay()],
+    );
+  }));
+  results.push(expectRejection('fixed-overlay non-executable-range section', /placement is malformed/, () => {
+    validateFixedOverlayNonExecutableRanges(
+      overlayRangeFixture([validOverlayNonExecutableRange({ overlaySection: 'data-rodata' })]),
+      [validTestOverlay()],
+    );
+  }));
+  results.push(expectRejection('fixed-overlay non-executable-range escaped text', /escaped overlay text/, () => {
+    validateFixedOverlayNonExecutableRanges(
+      overlayRangeFixture([validOverlayNonExecutableRange({ romStart: 0x217C, romEndExclusive: 0x2184 })]),
+      [validTestOverlay()],
+    );
+  }));
+  results.push(expectRejection('overlapping fixed-overlay non-executable ranges', /ranges overlap/, () => {
+    validateFixedOverlayNonExecutableRanges(overlayRangeFixture([
+      validOverlayNonExecutableRange(),
+      validOverlayNonExecutableRange({ id: 'second-overlay-padding-range', romStart: 0x2108, romEndExclusive: 0x2118 }),
+    ]), [validTestOverlay()]);
   }));
 
   results.push(expectRejection('malformed load-slab endpoint', /safe aligned integer/, () => {

@@ -1916,6 +1916,16 @@ function verifyPhase8Layout(phase8, layout, replacements) {
       || !sameJson(layout.phase8MatchingCTargets.map((target) => target.symbol), phase8.targets.map((target) => target.symbol))) {
     fail('Phase 8 external layout summary drift');
   }
+  const expectedFixedOverlayNonExecutableRanges = phase8.model.fixedOverlayNonExecutableRanges.map((range) => ({
+    id: range.id,
+    overlayDescriptorId: range.overlayDescriptorId,
+    overlaySection: range.overlaySection,
+    romStart: range.romStart,
+    romEndExclusive: range.romEndExclusive,
+  }));
+  if (!sameJson(layout.fixedOverlayNonExecutableRanges, expectedFixedOverlayNonExecutableRanges)) {
+    fail('Phase 8 external fixed-overlay non-executable-range summary drift');
+  }
   for (const target of phase8.targets) {
     const textOwners = targetTextOwners(target);
     const retainedAssemblySlices = targetRetainedAssemblySlices(target);

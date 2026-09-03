@@ -11,7 +11,9 @@ Rev 0 decomp configuration lives here.
 - `splat/splat64-0.34.0.lock.json` - authenticated runtime and package identities.
 - `splat/splat64-0.34.0.provenance.json` - authenticated artifact provenance.
 - `phase7/conventional-build.json` - pinned conventional assembly, runtime-placement, and linker
-  contract. Its `nonDescriptorLoadSlabs` records describe evidence-backed ROM ranges that are
+  contract. Its `fixedOverlayNonExecutableRanges` records carve directly evidenced padding from
+  code-class rows inside a specific fixed descriptor and overlay section, without changing the
+  accepted source owner. Its `nonDescriptorLoadSlabs` records describe evidence-backed ROM ranges that are
   manually loaded at a different runtime VMA without a fixed overlay descriptor. An optional
   slab-local `executableRanges` list records narrowly evidenced executable treatment without
   changing the accepted source owner or its source classification. A slab-local

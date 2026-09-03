@@ -14,12 +14,22 @@
     "primaryRows": 7242,
     "assemblyOwners": 6184,
     "dataOwners": 1058,
-    "linkSlices": 7253,
-    "splitOwners": 11,
+    "linkSlices": 7254,
+    "splitOwners": 12,
     "overlayReservations": 19,
+    "fixedOverlayNonExecutableRanges": 1,
     "nonDescriptorLoadSlabs": 5,
     "rspRows": 13
   },
+  "fixedOverlayNonExecutableRanges": [
+    {
+      "id": "func-002013d0-alignment-padding",
+      "overlayDescriptorId": 10,
+      "overlaySection": "text",
+      "romStart": 2102308,
+      "romEndExclusive": 2102320
+    }
+  ],
   "nonDescriptorLoadSlabs": [
     {
       "id": "scenario-loader-00195410",

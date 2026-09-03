@@ -299,6 +299,13 @@ function writeLayout(model, output) {
     rows: model.rows.length,
     slices: model.slices.length,
     representedBytes: model.config.rom.bytes,
+    fixedOverlayNonExecutableRanges: model.fixedOverlayNonExecutableRanges.map((range) => ({
+      id: range.id,
+      overlayDescriptorId: range.overlayDescriptorId,
+      overlaySection: range.overlaySection,
+      romStart: range.romStart,
+      romEndExclusive: range.romEndExclusive,
+    })),
     nonDescriptorLoadSlabs: model.nonDescriptorLoadSlabs.map((slab) => ({
       id: slab.id,
       kind: slab.kind,

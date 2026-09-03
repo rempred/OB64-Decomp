@@ -261,6 +261,75 @@ function validateNonDescriptorLoadSlabs(config, overlays = []) {
   return normalized;
 }
 
+function validateFixedOverlayNonExecutableRanges(config, overlays = [], reservedRangeIds = []) {
+  const ranges = config.fixedOverlayNonExecutableRanges;
+  const expectedCount = config.expected && config.expected.fixedOverlayNonExecutableRanges;
+  if (!Array.isArray(ranges) || !Number.isSafeInteger(expectedCount) || expectedCount < 0
+      || ranges.length !== expectedCount) {
+    fail('fixed-overlay non-executable-range count drift');
+  }
+  if (!config.rom || !Number.isSafeInteger(config.rom.bytes) || config.rom.bytes <= 0) {
+    fail('ROM size is invalid for fixed-overlay non-executable-range validation');
+  }
+  if (!Array.isArray(overlays)) fail('fixed-overlay reservation census is malformed');
+
+  const ids = new Set(reservedRangeIds);
+  const normalized = ranges.map((range, rangeIndex) => {
+    const expectedKeys = [
+      'id',
+      'overlayDescriptorId',
+      'overlaySection',
+      'romEndExclusive',
+      'romStart',
+    ];
+    if (!range || typeof range !== 'object' || Array.isArray(range)
+        || JSON.stringify(Object.keys(range).sort()) !== JSON.stringify(expectedKeys)) {
+      fail(`fixed-overlay non-executable range ${rangeIndex} is malformed`);
+    }
+    if (typeof range.id !== 'string' || !/^[A-Za-z0-9][A-Za-z0-9._-]*$/.test(range.id)
+        || ids.has(range.id)) {
+      fail(`fixed-overlay non-executable-range ID is invalid or repeated: ${String(range.id)}`);
+    }
+    ids.add(range.id);
+    if (!Number.isSafeInteger(range.overlayDescriptorId) || range.overlayDescriptorId < 0
+        || range.overlaySection !== 'text') {
+      fail(`fixed-overlay non-executable-range placement is malformed: ${range.id}`);
+    }
+    for (const endpoint of ['romStart', 'romEndExclusive']) {
+      if (!Number.isSafeInteger(range[endpoint]) || range[endpoint] % 4 !== 0) {
+        fail(`fixed-overlay non-executable-range endpoint is not a safe aligned integer: ${range.id}.${endpoint}`);
+      }
+    }
+    if (range.romStart < 0 || range.romEndExclusive > config.rom.bytes
+        || range.romEndExclusive <= range.romStart) {
+      fail(`fixed-overlay non-executable range is invalid: ${range.id}`);
+    }
+    const containing = overlays.filter((overlay) => (
+      overlay.descriptor_id === range.overlayDescriptorId
+      && range.romStart >= overlay.rom_start
+      && range.romEndExclusive <= overlay.rom_end_exclusive
+    ));
+    if (containing.length !== 1) {
+      fail(`fixed-overlay non-executable range is outside its descriptor: ${range.id}`);
+    }
+    const overlay = containing[0];
+    if (range.romStart < overlay.rom_start || range.romEndExclusive > overlay.text_rom_end_exclusive) {
+      fail(`fixed-overlay non-executable range escaped overlay text: ${range.id}`);
+    }
+    return { ...range };
+  });
+  for (let leftIndex = 0; leftIndex < normalized.length; leftIndex += 1) {
+    const left = normalized[leftIndex];
+    for (let rightIndex = leftIndex + 1; rightIndex < normalized.length; rightIndex += 1) {
+      const right = normalized[rightIndex];
+      if (rangesIntersect(left.romStart, left.romEndExclusive, right.romStart, right.romEndExclusive)) {
+        fail(`fixed-overlay non-executable ranges overlap: ${left.id}, ${right.id}`);
+      }
+    }
+  }
+  return normalized;
+}
+
 function verifyAcceptedInputHashes(config) {
   const records = [];
   for (const [relative, expected] of Object.entries(config.acceptedInputSha256)) {
@@ -318,6 +387,15 @@ function loadAcceptedModel() {
   if (linkerInputs.schemaVersion !== 1 || linkerInputs.splatPrimaryRows.length !== semantic.rows.length) fail('accepted linker input schema drift');
   if (overlays.length !== config.expected.overlayReservations) fail('accepted overlay reservation count drift');
   const nonDescriptorLoadSlabs = validateNonDescriptorLoadSlabs(config, overlays);
+  const loadSlabRangeIds = nonDescriptorLoadSlabs.flatMap((slab) => [
+    ...slab.executableRanges.map((range) => range.id),
+    ...slab.nonExecutableRanges.map((range) => range.id),
+  ]);
+  const fixedOverlayNonExecutableRanges = validateFixedOverlayNonExecutableRanges(
+    config,
+    overlays,
+    loadSlabRangeIds,
+  );
   const loadSlabExecutableRanges = nonDescriptorLoadSlabs.flatMap((slab) => (
     slab.executableRanges.map((range) => ({ ...range, loadSlabId: slab.id }))
   ));
@@ -417,6 +495,11 @@ function loadAcceptedModel() {
         }
       }
     }
+    for (const range of fixedOverlayNonExecutableRanges) {
+      for (const boundary of [range.romStart, range.romEndExclusive]) {
+        if (boundary > row.romStart && boundary < row.romEndExclusive) cuts.add(boundary);
+      }
+    }
     const orderedCuts = [...cuts].sort((a, b) => a - b);
     if (orderedCuts.length > 2) splitOwners += 1;
     const rowSlices = [];
@@ -431,11 +514,14 @@ function loadAcceptedModel() {
       const partialExecutableRanges = loadSlabExecutableRanges.filter((range) => rangesIntersect(romStart, romEndExclusive, range.romStart, range.romEndExclusive) && !containingExecutableRanges.includes(range));
       const containingNonExecutableRanges = loadSlabNonExecutableRanges.filter((range) => romStart >= range.romStart && romEndExclusive <= range.romEndExclusive);
       const partialNonExecutableRanges = loadSlabNonExecutableRanges.filter((range) => rangesIntersect(romStart, romEndExclusive, range.romStart, range.romEndExclusive) && !containingNonExecutableRanges.includes(range));
+      const containingFixedOverlayNonExecutableRanges = fixedOverlayNonExecutableRanges.filter((range) => romStart >= range.romStart && romEndExclusive <= range.romEndExclusive);
+      const partialFixedOverlayNonExecutableRanges = fixedOverlayNonExecutableRanges.filter((range) => rangesIntersect(romStart, romEndExclusive, range.romStart, range.romEndExclusive) && !containingFixedOverlayNonExecutableRanges.includes(range));
       if (partial.length || containing.length > 1) fail(`overlay placement is not unique for row ${row.index}, slice ${sliceIndex}`);
       if (partialSlabs.length || containingSlabs.length > 1) fail(`non-descriptor load-slab placement is not unique for row ${row.index}, slice ${sliceIndex}`);
       if (containing.length && containingSlabs.length) fail(`slice has both fixed-overlay and non-descriptor load-slab placement: row ${row.index}, slice ${sliceIndex}`);
       if (partialExecutableRanges.length || containingExecutableRanges.length > 1) fail(`non-descriptor load-slab executable treatment is not unique for row ${row.index}, slice ${sliceIndex}`);
       if (partialNonExecutableRanges.length || containingNonExecutableRanges.length > 1) fail(`non-descriptor load-slab non-executable treatment is not unique for row ${row.index}, slice ${sliceIndex}`);
+      if (partialFixedOverlayNonExecutableRanges.length || containingFixedOverlayNonExecutableRanges.length > 1) fail(`fixed-overlay non-executable treatment is not unique for row ${row.index}, slice ${sliceIndex}`);
       if (containingExecutableRanges.length === 1 && (containingSlabs.length !== 1 || containingExecutableRanges[0].loadSlabId !== containingSlabs[0].id)) {
         fail(`non-descriptor load-slab executable treatment escaped its placement: row ${row.index}, slice ${sliceIndex}`);
       }
@@ -444,6 +530,10 @@ function loadAcceptedModel() {
       }
       if (containingExecutableRanges.length && containingNonExecutableRanges.length) {
         fail(`slice has both executable and non-executable load-slab treatment: row ${row.index}, slice ${sliceIndex}`);
+      }
+      if (containingFixedOverlayNonExecutableRanges.length
+          && (containingExecutableRanges.length || containingNonExecutableRanges.length)) {
+        fail(`slice has multiple placement-specific execution treatments: row ${row.index}, slice ${sliceIndex}`);
       }
 
       let placementKind;
@@ -471,6 +561,13 @@ function loadAcceptedModel() {
         placementKind = 'rom-only';
         vramStart = romStart;
       }
+      if (containingFixedOverlayNonExecutableRanges.length === 1) {
+        const range = containingFixedOverlayNonExecutableRanges[0];
+        if (placementKind !== 'overlay' || overlayDescriptorId !== range.overlayDescriptorId
+            || overlaySection !== range.overlaySection) {
+          fail(`fixed-overlay non-executable treatment escaped its placement: row ${row.index}, slice ${sliceIndex}`);
+        }
+      }
       const sourceClassExecutable = row.primaryClass === 'code' && row.processorClass !== 'rsp';
       if (sourceClassExecutable && containingExecutableRanges.length) {
         fail(`non-descriptor load-slab executable range redundantly covers a code-class slice: row ${row.index}, slice ${sliceIndex}`);
@@ -478,8 +575,12 @@ function loadAcceptedModel() {
       if (!sourceClassExecutable && containingNonExecutableRanges.length) {
         fail(`non-descriptor load-slab non-executable range redundantly covers a non-code slice: row ${row.index}, slice ${sliceIndex}`);
       }
+      if (!sourceClassExecutable && containingFixedOverlayNonExecutableRanges.length) {
+        fail(`fixed-overlay non-executable range redundantly covers a non-code slice: row ${row.index}, slice ${sliceIndex}`);
+      }
       const executableRangeId = containingExecutableRanges.length === 1 ? containingExecutableRanges[0].id : null;
-      const nonExecutableRangeId = containingNonExecutableRanges.length === 1 ? containingNonExecutableRanges[0].id : null;
+      const nonExecutableRange = containingNonExecutableRanges[0] || containingFixedOverlayNonExecutableRanges[0] || null;
+      const nonExecutableRangeId = nonExecutableRange ? nonExecutableRange.id : null;
       const executable = (sourceClassExecutable || executableRangeId !== null) && nonExecutableRangeId === null;
       const slice = {
         ordinal: slices.length,
@@ -523,6 +624,7 @@ function loadAcceptedModel() {
     assemblyManifest,
     romProfile,
     overlays,
+    fixedOverlayNonExecutableRanges,
     nonDescriptorLoadSlabs,
     parts,
     rows,
@@ -532,6 +634,7 @@ function loadAcceptedModel() {
       dataOwners,
       splitOwners,
       rspRows,
+      fixedOverlayNonExecutableRanges: fixedOverlayNonExecutableRanges.length,
       nonDescriptorLoadSlabs: nonDescriptorLoadSlabs.length,
     },
   };
@@ -1053,6 +1156,16 @@ function verifyOutput(model, options) {
       romEndExclusive: range.romEndExclusive,
     })),
   }));
+  const expectedFixedOverlayNonExecutableRanges = model.fixedOverlayNonExecutableRanges.map((range) => ({
+    id: range.id,
+    overlayDescriptorId: range.overlayDescriptorId,
+    overlaySection: range.overlaySection,
+    romStart: range.romStart,
+    romEndExclusive: range.romEndExclusive,
+  }));
+  if (JSON.stringify(layout.fixedOverlayNonExecutableRanges) !== JSON.stringify(expectedFixedOverlayNonExecutableRanges)) {
+    fail('external fixed-overlay non-executable-range summary drift');
+  }
   if (JSON.stringify(layout.nonDescriptorLoadSlabs) !== JSON.stringify(expectedSlabs)) fail('external load-slab summary drift');
   if (!Array.isArray(layout.owners) || layout.owners.length !== model.rows.length) fail('external layout owner census drift');
   for (const row of model.rows) {
@@ -1101,6 +1214,7 @@ function verifyOutput(model, options) {
       linkSlices: model.slices.length,
       splitOwners: model.counts.splitOwners,
       overlayReservations: model.overlays.length,
+      fixedOverlayNonExecutableRanges: model.counts.fixedOverlayNonExecutableRanges,
       nonDescriptorLoadSlabs: model.counts.nonDescriptorLoadSlabs,
       representedBytes: elfResult.representedBytes,
       loadHeaders: elfResult.loadHeaderCount,
@@ -1139,6 +1253,7 @@ module.exports = {
   runAsmDifferProof,
   sha256Buffer,
   sha256File,
+  validateFixedOverlayNonExecutableRanges,
   validateNonDescriptorLoadSlabs,
   verifyElfAgainstModel,
   verifyMap,
