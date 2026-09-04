@@ -1,6 +1,6 @@
 # High Attack Battle Stream Families — Director Plan
 
-Status: **Waves 1-3 integrated; Wave 3 has one parked Pure-C retry; Wave 4 ready**
+Status: **Waves 1-4 integrated; Waves 3-4 retain Pure-C retries; Wave 4 focused continuation active**
 
 Date: 2026-09-02
 
@@ -33,8 +33,14 @@ This plan does not design or install that modified-game migration.
 - The 12 non-executable alignment bytes after `func_002013D0` remain in the accepted retained assembly slice.
 - `func_001FFE80` is exact `HYBRID_C`: 788 bytes are compiler output from C, one eight-byte inline-assembly fragment selects two moves, and one zero-instruction constraint influences allocation.
 - The preserved `func_001FFE80` Pure-C candidate is four bytes short because KMC coalesces a zero-offset record alias and changes a delay-slot/register decision. Reopen it when new KMC lifetime evidence, a matching neighboring source pattern, or a Pure-C alias/lifetime technique can test that decision.
-- Post-integration verification passed at 459 exact `PURE_C` functions / 31,904 bytes and 62 exact `HYBRID_C` functions / 33,724 bytes; the full ROM is exact.
-- The next active family is Wave 4, actor snapshot and interrupt control.
+- 2026-09-04: Wave 4's accepted results and preserved research were integrated on `main` at `bd4d8da612a405b325ec173d3dcb9890ae80a9be`.
+- Shared bridge `func_0021C3B0` is exact `PURE_C` (512 bytes).
+- `func_002158E4` is exact `HYBRID_C` (236 bytes). Its assembler mechanism is a zero-byte empty constraint that resolves a three-word KMC scheduling tie after sustained Pure-C source-shape experiments. It remains a visible Pure-C retry and does not count as Matching C.
+- `func_002159D0` has an exact-length 800-byte Pure-C candidate. Its remaining differences are the inherited three-word scheduler tie and a two-word branch-orientation difference.
+- `func_00217BA8` has an exact-length 1,032-byte Pure-C candidate. After relocation masking, only the inherited three scheduler words remain.
+- `func_00215CF0` has a 3,236/3,400-byte Pure-C candidate with the exact retail `0x140` frame; 41 instructions and seven CFG blocks remain to reconstruct.
+- Post-integration verification passed at 460 exact `PURE_C` functions / 32,416 bytes and 63 exact `HYBRID_C` functions / 33,960 bytes; the full ROM is exact.
+- Wave 4 remains the active family because all three unresolved candidates have practical, bounded retry paths. Do not start Wave 5 yet.
 
 ## Director decisions
 
@@ -192,12 +198,12 @@ associated interrupt/menu control paths.
 
 | Function | Bytes | Priority | Current status |
 |---|---:|---|---|
-| `func_002158E4` | 236 | `FAMILY` | `ASM` |
-| **`func_002159D0`** | 800 | `DIRECT` | `ASM` |
-| **`func_00215CF0`** | 3,400 | `SUPPORT` | `ASM` |
-| **`func_00217BA8`** | 1,032 | `SUPPORT` | `ASM` |
+| `func_002158E4` | 236 | `FAMILY` | exact `HYBRID_C`; zero emitted assembler bytes; Pure-C retry visible |
+| **`func_002159D0`** | 800 | `DIRECT` | preserved exact-length `PURE_C` candidate; focused retry active |
+| **`func_00215CF0`** | 3,400 | `SUPPORT` | preserved 3,236-byte `PURE_C` candidate; focused retry active |
+| **`func_00217BA8`** | 1,032 | `SUPPORT` | preserved exact-length `PURE_C` candidate; focused retry active |
 
-Wave 4 also owns the first full attempt for shared bridge `func_0021C3B0`.
+Wave 4 also owns shared bridge `func_0021C3B0`, now exact `PURE_C`.
 The worker must preserve the retail ordering around candidate selection, marker
 writes, state writes, and stream advancement.
 
@@ -306,7 +312,7 @@ duplicated.
 
 | Function | Bytes | First full attempt | Current status |
 |---|---:|---:|---|
-| `func_0021C3B0` | 512 | Wave 4 | `ASM` |
+| `func_0021C3B0` | 512 | Wave 4 | exact `PURE_C` |
 | `func_0021EAF0` | 128 | Wave 8 | `ASM` |
 | `func_002224F4` | 60 | Wave 5 | `ASM` |
 | `func_0022257C` | 136 | Wave 6 | `ASM` |
