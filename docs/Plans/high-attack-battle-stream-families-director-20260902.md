@@ -1,6 +1,6 @@
 # High Attack Battle Stream Families — Director Plan
 
-Status: **Waves 1-4 integrated; Waves 3-4 retain Pure-C retries; Wave 4 focused continuation active**
+Status: **Waves 1-4 integrated; Waves 3-4 retain Pure-C retries; Wave 4 single-function continuation active**
 
 Date: 2026-09-02
 
@@ -36,11 +36,11 @@ This plan does not design or install that modified-game migration.
 - 2026-09-04: Wave 4's accepted results and preserved research were integrated on `main` at `bd4d8da612a405b325ec173d3dcb9890ae80a9be`.
 - Shared bridge `func_0021C3B0` is exact `PURE_C` (512 bytes).
 - `func_002158E4` is exact `HYBRID_C` (236 bytes). Its assembler mechanism is a zero-byte empty constraint that resolves a three-word KMC scheduling tie after sustained Pure-C source-shape experiments. It remains a visible Pure-C retry and does not count as Matching C.
-- `func_002159D0` has an exact-length 800-byte Pure-C candidate. Its remaining differences are the inherited three-word scheduler tie and a two-word branch-orientation difference.
-- `func_00217BA8` has an exact-length 1,032-byte Pure-C candidate. After relocation masking, only the inherited three scheduler words remain.
-- `func_00215CF0` has a 3,236/3,400-byte Pure-C candidate with the exact retail `0x140` frame; 41 instructions and seven CFG blocks remain to reconstruct.
-- Post-integration verification passed at 460 exact `PURE_C` functions / 32,416 bytes and 63 exact `HYBRID_C` functions / 33,960 bytes; the full ROM is exact.
-- Wave 4 remains the active family because all three unresolved candidates have practical, bounded retry paths. Do not start Wave 5 yet.
+- `func_002159D0` is exact `HYBRID_C` (800 bytes). Its zero-byte empty constraint resolves the same exhausted three-word KMC scheduling tie; the best exact-length Pure-C candidate remains preserved for later retry.
+- `func_00217BA8` is exact `HYBRID_C` (1,032 bytes). Its zero-byte empty constraint resolves the same exhausted three-word KMC scheduling tie; the best exact-length Pure-C candidate remains preserved for later retry.
+- `func_00215CF0` now has an exact-length 3,400-byte/850-instruction Pure-C candidate with the retail `0x140` frame and 293 recognized relocations. It has 169 CFG blocks versus retail's 177 and 691 aligned instruction differences. Continue CFG reconstruction; this is not a demonstrated compiler blocker.
+- Post-integration verification passed at 460 exact `PURE_C` functions / 32,416 bytes and 65 exact `HYBRID_C` functions / 35,792 bytes; the full ROM is exact.
+- Wave 4 remains the active family solely for `func_00215CF0`. Do not start Wave 5 while its current block-by-block reconstruction remains practical.
 
 ## Director decisions
 
@@ -199,9 +199,9 @@ associated interrupt/menu control paths.
 | Function | Bytes | Priority | Current status |
 |---|---:|---|---|
 | `func_002158E4` | 236 | `FAMILY` | exact `HYBRID_C`; zero emitted assembler bytes; Pure-C retry visible |
-| **`func_002159D0`** | 800 | `DIRECT` | preserved exact-length `PURE_C` candidate; focused retry active |
-| **`func_00215CF0`** | 3,400 | `SUPPORT` | preserved 3,236-byte `PURE_C` candidate; focused retry active |
-| **`func_00217BA8`** | 1,032 | `SUPPORT` | preserved exact-length `PURE_C` candidate; focused retry active |
+| **`func_002159D0`** | 800 | `DIRECT` | exact `HYBRID_C`; zero emitted assembler bytes; Pure-C retry preserved |
+| **`func_00215CF0`** | 3,400 | `SUPPORT` | preserved exact-length `PURE_C` candidate; single-function continuation active |
+| **`func_00217BA8`** | 1,032 | `SUPPORT` | exact `HYBRID_C`; zero emitted assembler bytes; Pure-C retry preserved |
 
 Wave 4 also owns shared bridge `func_0021C3B0`, now exact `PURE_C`.
 The worker must preserve the retail ordering around candidate selection, marker
