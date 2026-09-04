@@ -5017,6 +5017,21 @@
         { "offset": "0x00000018", "type": "R_MIPS_26", "symbol": "func_0004813C", "section": ".rel.text" },
         { "offset": "0x00000020", "type": "R_MIPS_26", "symbol": "func_000466f4", "section": ".rel.text" }
       ]
+    },
+    {
+      "symbol": "func_0021824C",
+      "expectedRelocations": [
+        { "offset": "0x0000005C", "type": "R_MIPS_26", "symbol": ".text", "section": ".rel.text" },
+        { "offset": "0x0000007C", "type": "R_MIPS_26", "symbol": ".text", "section": ".rel.text" },
+        { "offset": "0x00000098", "type": "R_MIPS_26", "symbol": ".text", "section": ".rel.text" },
+        { "offset": "0x000000B8", "type": "R_MIPS_26", "symbol": ".text", "section": ".rel.text" },
+        { "offset": "0x000000E4", "type": "R_MIPS_26", "symbol": ".text", "section": ".rel.text" },
+        { "offset": "0x000000F4", "type": "R_MIPS_26", "symbol": ".text", "section": ".rel.text" },
+        { "offset": "0x00000108", "type": "R_MIPS_26", "symbol": ".text", "section": ".rel.text" },
+        { "offset": "0x00000128", "type": "R_MIPS_26", "symbol": "func_0020C478", "section": ".rel.text" },
+        { "offset": "0x00000134", "type": "R_MIPS_26", "symbol": "func_0020BFF8", "section": ".rel.text" },
+        { "offset": "0x00000144", "type": "R_MIPS_26", "symbol": "func_0020C24C", "section": ".rel.text" }
+      ]
     }
   ]
 }
