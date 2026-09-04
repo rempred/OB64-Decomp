@@ -77,7 +77,7 @@ The first wave is committed and pushed through `80c817e`.
 | Follow-up | Owner | Current scope |
 |---|---|---|
 | Warm-diff profiling | Existing authenticated-object-reuse task | Accepted through `e03a7dd`; three warm runs average 49.0 seconds, with 19.1 seconds in source classification/preprocessing. Use this measurement to assess the next optimization. |
-| Scheduler trace | Existing allocator-study task | Six-case parity-checked result committed at `352f5d4` and in independent review; no new source experiment has started. |
+| Scheduler trace and source probe | Existing allocator-study task | Six-case result at `352f5d4` passed independent review without findings. Design one semantics-supported probe for the smallest baseline; coordinate execution around the changing compilation helpers. |
 | Shared-header support | Authenticated headers and shared-source pilot | Implementation released after profiling review: authenticated compilation inputs and dependencies, header-free compatibility gate, then the four-function pilot with structural audit and independent review. |
 | Native consumables review | Rebuild Director | Phase 5B review returned three bounded defects in provenance, description lengths and healing-token synchronization; the original implementer is correcting them in the existing editor worktree. |
 | Editor startup and export structure | Astra, after the accepted Phase 5B handback | Measure startup and ROM initialization, then defer justified dataset loading and extract one coherent export responsibility. |
@@ -98,9 +98,10 @@ worktree; integration onto `main` remains coordinated around the structural inpu
 1. Use the accepted [warm-diff profile](../matching-c/warm-diff-profile.md) to guide one justified
    optimization. Coordinate any classification reuse with the shared-header input/dependency
    contract rather than developing competing cache paths, and measure the resulting effect.
-   Complete the finite review of the [scheduler trace](../matching-c/allocator-scheduler-trace.md)
-   before selecting another bounded source experiment. Preserve the exact baseline and distinguish
-   target-local success from family generalization.
+   Use the accepted [scheduler trace](../matching-c/allocator-scheduler-trace.md) to select one
+   semantics-supported source experiment for the smallest baseline. State the predicted compiler
+   change before execution and stop on unchanged relevant state or a regressed emitted result.
+   Preserve the exact baseline and distinguish target-local success from family generalization.
 2. Establish an authenticated preprocessing/dependency contract before a shared-interface pilot.
    Current production passes self-contained C directly to KMC cc1, and header dependencies are not
    established in build/cache identity. Treat that prerequisite as structural work with audit and

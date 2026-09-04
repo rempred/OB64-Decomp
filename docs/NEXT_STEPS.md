@@ -7,9 +7,9 @@ This file is the active queue only. Changing counts belong in `node tools/status
 Use the [matching methods improvement plan](Plans/matching-methods-improvement-20260904.md)
 for the active shared-header compilation-input/dependency work and its structural acceptance gates.
 Warm-diff profiling is accepted; use its measured preprocessing cost to guide coherent authenticated
-reuse and measure the result. The completed research-compiler scheduler trace is in independent
-review before another bounded source experiment. Preserve the pinned production compiler and all
-matching acceptance rules.
+reuse and measure the result. Use the accepted research-compiler scheduler trace to guide a bounded
+source experiment; current ownership and progress remain in that plan. Preserve the pinned
+production compiler and all matching acceptance rules.
 
 Coordinate editor changes with the native rebuild. Existing source-matching targets remain
 assigned to their current tasks; optional tooling hardening does not block their normal matching loop.
