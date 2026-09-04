@@ -6,6 +6,20 @@ splitting, and ROM compare tooling belong here.
 Matching tests should compare generated outputs against local `baserom/` inputs
 without requiring the ROM to be committed.
 
+For routine tooling changes, run the explicit regression manifest from the
+repository root:
+
+```powershell
+node tools/test.js
+```
+
+Use `node tools/test.js --list` to inspect the required suites. Missing required
+files and failing suites make the command fail. The runner needs the normal
+local configuration and canonical baserom; it does not run a canonical build,
+full-ROM verifier, or structural audit. Run `node tools/verify.js` separately
+before integrating matching-tool changes. The specialized suites below remain
+available for their assigned work.
+
 `node tests/diff_exactness.js` checks final linked-byte exactness independently
 from asm-differ aliases. It also covers malformed target-section failures and
 the final-linked-byte requirement for relocated targets.

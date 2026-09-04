@@ -1,726 +1,361 @@
-# OB64 Decomp — Canonical Workflow
+# OB64 Decomp — Canonical Matching Workflow
 
-## Goal
+This document defines the ordinary function-matching loop for *Ogre Battle 64:
+Person of Lordly Caliber*, US Rev 0. It assumes the accepted structural model and
+toolchain are correct and keeps them unchanged.
 
-Produce a reproducible source tree for *Ogre Battle 64: Person of Lordly Caliber* US Rev 0.
+Read [the agent guide](../AGENTS.md) first. Source classification is defined by
+[the source policy](SOURCE_POLICY.md). If the work changes a boundary, segment,
+overlay, placement, executable extent, linker ownership rule, or toolchain
+contract, stop using this ordinary workflow and follow
+[the structural audit](AUDIT.md).
 
-For the matching baseline, source must rebuild the canonical normalized retail ROM byte-for-byte.
+## The short path
 
-The workflow intentionally separates:
-
-1. **matching evidence** — did the source produce the retail machine code?
-2. **source evidence** — is the claimed C actually C rather than embedded assembly?
-3. **structural evidence** — are boundaries, overlays, placement, and ownership correct?
-4. **semantic evidence** — do we understand what the code means?
-
-Do not make an ordinary matching-C contribution carry all four evidence burdens.
-
----
-
-## Acceptance Principle
-
-For an ordinary function to count as matching C:
-
-```text
-KNOWN REV 0 BASEROM
-        +
-PINNED MATCHING TOOLCHAIN
-        +
-PURE_C SOURCE
-        +
-ORIGINAL ASM TARGET EXCLUDED
-        +
-C OBJECT IS SOLE LINKED OWNER
-        +
-TARGET ADDRESS/SIZE CORRECT
-        +
-RELOCATION POLICY SATISFIED
-        +
-LINKED TARGET BYTES EXACT
-        +
-COMPLETE ROM EXACT
-        =
-MATCHING C ACCEPTED
-```
-
-This is machine-verifiable. A separate human or AI reviewer is not required to prove the
-machine-code match.
-
-A matching result does **not** prove a descriptive function name, field name, comment, or gameplay
-explanation.
-
----
-
-## Canonical Concepts
-
-### Baseline
-
-`BASELINE` means the accepted structural assembly/data build that reconstructs retail Rev 0.
-
-It owns the accepted:
-
-- ROM identity;
-- section/segment model;
-- overlay model;
-- function/data owner model;
-- linker layout; and
-- toolchain contract.
-
-Historical Phase 5A/5B/6/7 terminology remains in some retained implementation
-internals and archives, but normal contributors do not need it.
-
-### Current
-
-`CURRENT` means `BASELINE` with zero or more accepted assembly owners replaced by C sources.
-
-The complete `CURRENT` matching build must still equal the retail ROM exactly.
-
----
-
-## Evidence Classes
-
-### Matching evidence
-
-A target is exact when:
-
-- the original assembly implementation for that target is not linked;
-- the replacement object is the sole linked owner;
-- the linked bytes equal the baserom target bytes; and
-- the complete ROM equals the baserom.
-
-The verifier should also check accepted address/size and normalized relocations.
-
-### Source evidence
-
-Source classification is defined in `docs/SOURCE_POLICY.md`.
-
-An exact `.c` file can be `HYBRID_C`. Exact output alone does not make it decompiled C.
-
-Only exact `PURE_C` targets contribute to matching-C progress.
-
-### Compiler assembly and source-to-object evidence
-
-The build classifies every active target before compilation. `UNKNOWN` and `ASM` reject before the
-matching compiler runs. The source class is unchanged by later toolchain stages.
-
-The authenticated Windows KMC GCC 2.7.2 compiler emits `<symbol>.compiler.s`. The build preserves
-that file untouched. Ordinarily it derives `<symbol>.s` only by replacing the sole `.text`
-directive with the accepted target-section directive. A target-specific reviewed linkage contract
-may instead assign the exact compiler-emitted `.text` regions and one read-only switch-table
-`.rodata` region to accepted output sections. That contract fixes section type/flags, alignment,
-size, object and linked hashes, normalized relocations, ROM/VMA placement, and ownership. The
-assignment changes section directives only; instructions, labels, table entries, and relocations
-remain untouched. If the table replaces only a prefix of an accepted assembly data row, the
-contract preserves the remainder through a unique read-only `PROGBITS` input section with exact
-bytes, ROM/VMA placement, and assembly ownership; conventional `.data` and `.bss` vessels reject.
-The pinned GNU 2.6 assembler consumes the section-assigned file directly.
-
-Each active target retains these reviewable artifacts:
-
-1. untouched compiler assembly in `<symbol>.compiler.s`;
-2. section-adjusted assembly in `<symbol>.s`;
-3. a raw GNU 2.6 source object containing load-relevant relocation evidence;
-4. a link input object with discarded ancillary sections removed; and
-5. a deterministic `<symbol>.source-object-proof.json` record.
-
-Strict verification independently recreates the contracted section assignment and proof. The proof records
-the source-policy result, compiler and assembler identities/flags, artifact hashes, target-section
-bytes, load-relevant relocations, visible ancillary differences, linked bytes, and final owner.
-It explicitly records that compiler assembly was not rewritten.
-
-GNU 2.6 omits the procedure-descriptor relocation emitted by the former production assembler.
-Procedure metadata is discarded before the final link, so the historical records are retained as
-retired ancillary evidence rather than silently compared as active relocations. Every relocation
-against the accepted target section remains mandatory by offset, type, and normalized
-symbol/value semantics.
-
-### Structural evidence
-
-Function boundaries, overlay descriptors, linker placement, executable/data classification, and
-toolchain/layout changes are structural.
-
-Structural changes use `docs/AUDIT.md`.
-
-### Semantic evidence
-
-Names and behavioral explanations need evidence appropriate to the claim.
-
-Static evidence may justify a cautious supported alias. Runtime trace, controlled mutation, or
-recognized SDK/library proof is required before replacing an address-based symbol with a canonical
-semantic name.
-
-Semantic work is not a prerequisite for exact C output.
-
-### Symbol-naming sidecar
-
-Naming accompanies normal matching work but does not gate it. Keep the accepted target symbol,
-usually `func_XXXXXXXX`, unless a canonical semantic name has already been established. Matching
-machine code does not by itself prove a name.
-
-Use exactly three naming classes:
-
-1. `CANDIDATE` — imported external lead; never used canonically.
-2. `SUPPORTED_ALIAS` — independently supported by static evidence.
-3. `CANONICAL` — established by runtime evidence, controlled mutation, or recognized SDK/library
-   proof.
-
-During matching, use existing `CANONICAL` names and preserve useful naming evidence. As a routine
-sidecar, the decomp agent should attempt to promote the target to `SUPPORTED_ALIAS` by independently
-checking its body, callers, callees, strings, and data accesses. External names begin as `CANDIDATE`;
-local static confirmation may promote them to `SUPPORTED_ALIAS`, but only the `CANONICAL` class may
-replace a build symbol. Insufficient naming evidence does not block Matching C; leave the function
-address-named and continue. Perform canonical renames as scoped semantic changes and rerun the normal
-target and complete-ROM verifiers.
-
----
-
-## Normal Matching-C Loop
-
-### 1. Select an accepted target
-
-Choose an existing accepted owner.
-
-Prefer targets that remove a LordlyCaliber hook/limitation or unlock a high-value call graph.
-Do not optimize the queue primarily for count of easy matching functions.
-
-If the accepted boundary looks wrong, stop and create a structural task rather than silently
-changing it during matching.
-
-### 2. Write the C reconstruction
-
-Create or adjust the target under `src/`.
-
-The original assembly remains the comparison/fallback owner.
-
-Use disassembly, call graphs, known structs, constants, static data, and existing research as
-inputs. Weird-but-valid C is allowed when needed to reproduce historical compiler output.
-
-Do not paste assembly into C to obtain a match. See `docs/SOURCE_POLICY.md`.
-
-### 3. Iterate with the diff tool
-
-Canonical interface:
-
-```text
-node tools/diff.js <symbol>
-```
-
-The diff command is a development aid. It should:
-
-- resolve the target from the accepted model;
-- compile the current source with the pinned compiler;
-- compare the final linked target bytes directly with the baserom;
-- report the asm-differ score and raw-byte result separately; and
-- provide actionable asm-differ output.
-
-`EXACT` requires a nonempty pairwise decoded-instruction match and equal final linked bytes. Raw
-linked-byte comparison is authoritative; decoded output is a development aid. Missing, duplicate,
-malformed, or wrong-sized linked sections fail with `ERROR`.
-
-Intermediate diff output is generated evidence and is not committed.
-
-For a difficult candidate, an ignored scratch loop may compile with the same
-authenticated compiler, exact production flags, sole accepted section-name
-adjustment, and pinned assembler, then compare the resulting target-section
-words with the baserom. This can make focused C experiments faster when the
-canonical diff rejects an intermediate wrong-sized candidate. It is diagnostic
-only: it does not prove linker ownership, linked addresses, relocation handling,
-or complete-ROM equality and never replaces `diff.js` or `verify.js`.
-
-In particular, raw-object `j` and `jal` words may differ before linking because
-their final addresses are supplied through relocations. Treat an otherwise-close
-raw object as a reason to run the canonical linked diff, not as a completed
-match.
-
-#### Matching workbench (optional research aid)
-
-`tools/match.js` automates that ignored scratch work without changing the
-canonical matching rules:
+After the one-time local setup in [the repository README](../README.md):
 
 ```text
 node tools/match.js doctor
-node tools/match.js inspect <symbol>
-node tools/match.js history <symbol>
-node tools/match.js best <symbol>
-node tools/match.js watch <symbol> --source <candidate.c>
-node tools/match.js classify <candidate-id>
-node tools/match.js compare <candidate-id> <candidate-id>
-node tools/match.js case-cfg <candidate-id> --case-map <map.json> --actual-dispatch <offset> --actual-body <offset> --actual-tail <name=offset>
-node tools/match.js preserve <candidate-id> --note "reason"
-```
-
-`watch` compiles a hand-edited candidate. `classify` reopens one candidate and
-its latest run, while `compare` compares two successfully compiled candidates
-for the same exact target. For a large command dispatcher, `case-cfg` can use a
-reviewed command map and explicit shared-tail offsets to compare bounded regions
-by command entry. It normalizes registers and supported relocations, reports
-block/call/successor/tail parity per command, and fails closed when dispatch
-resolution is ambiguous. Its region totals may include shared interior blocks
-once per command and are not whole-function metrics. A schema-2 command map may
-bind one exact candidate ID/source hash to its reviewed actual dispatch, body,
-and shared-tail offsets. The generated report then records the candidate and run
-IDs, both expected and actual specifications, the literal actual inputs, and a
-run-independent comparison-result digest. Required, duplicated, ambiguous, or
-changed actual inputs fail instead of falling back to the expected map.
-
-`preserve` is the one command above that writes tracked files: it copies a
-deliberately selected blocked candidate and a short dossier into the archive. It
-does not activate or promote the target. Preserved source identity covers every
-source byte, including trailing whitespace. Do not clean up a preserved file
-while retaining its candidate ID or hashes. When an exact archived input needs
-a Git whitespace exception, scope `whitespace=-blank-at-eol` to that one tracked
-path; do not weaken repository-wide checking. Any source edit is a successor
-candidate and requires a new identity, comparison, and dossier references.
-
-`prepare` exports the function from the current accepted model, invokes the
-pinned m2c revision, compiles generated drafts with the authenticated KMC/GNU
-toolchain, and classifies each scratch-object difference:
-
-```text
-# One ordinary structured draft
-node tools/match.js prepare <symbol> --variant structured
-
-# The complete configured ruleset ensemble (the default)
-node tools/match.js prepare <symbol>
-
-# A selected subset; --variant may be repeated
-node tools/match.js prepare <symbol> --variant structured --variant gotos
-```
-
-Context is generated for inspection by default but is not passed to m2c unless
-`--with-context` is explicit. `--no-context` skips its generation, and
-`--no-compile` stops after generation. Generated C, objects, reports, and SQLite
-experiment history remain under ignored `build/matching/`. A repeated successful
-compile is reused exactly; a failed compile can be retried after its environment
-is repaired.
-
-Candidate identity is exact target plus exact source. Generation path, variant,
-and tool arguments are separate observations, so the same C found in two ways
-does not incur two compiles or lose its provenance.
-
-The configured ensemble contains ordinary m2c modes plus narrow calibrated
-post-generation hypotheses. Select one explicitly when testing a particular
-idea:
-
-```text
-node tools/match.js prepare <symbol> --variant structured --no-context
-node tools/match.js prepare <symbol> --variant structured-abi-gaps --no-context
-node tools/match.js prepare <symbol> --variant structured-load-first --no-context
-node tools/match.js prepare <symbol> --variant structured-return-flow --no-context
-node tools/match.js prepare <symbol> --variant structured-cursor-steps --no-context
-node tools/match.js prepare <symbol> --variant structured-masked-local --no-context
-node tools/match.js prepare <symbol> --variant gotos --no-context
-node tools/match.js prepare <symbol> --variant stack --no-context
-```
-
-`structured-abi-gaps` preserves a literal missing general-purpose argument slot
-in m2c's `arg0` through `arg3` numbering. `structured-load-first` tests one
-exact three-statement shape where the retail schedule requires a cursor byte to
-be loaded before an independent zero store. The other calibrated passes test
-direct returns instead of a narrow result temporary, explicit byte-cursor
-advances, and a separately materialized masked comparison. Each refuses
-unrecognized source shapes rather than guessing. `gotos` and `stack` are the
-pinned m2c goto-only and stack-structure modes, not post-generation rewrites.
-
-Treat these rulesets as an ensemble. A pass may be retained when it produces an
-exact function no other pass finds even if it loses functions covered by
-another pass. Do not replace the baseline with the apparent best single pass.
-Sweep summaries record every exact function/ruleset/candidate-ID membership,
-per-ruleset gains and losses against the first pass, ruleset-unique functions,
-and the deduplicated ensemble total. The legacy `exactBytes` field counts exact
-variant runs and may count one function more than once; use
-`summary.ensemble.exactTargetCount` for the function total. Full membership is
-available with `sweep-status --include-targets`; default output is bounded.
-
-Rulesets with identical m2c arguments share one m2c invocation. Identical exact
-source produced by several rulesets is compiled once within that preparation
-while every generation observation remains recorded. These remain candidate
-generators; exact output still enters the normal review, linked diff, and
-verification path.
-
-Batch sweeps are checkpointed after every function and resume an interrupted
-run. Bare `sweep` selects every currently unsolved ordinary target and runs the
-full configured ensemble, so use an explicit bound unless that is genuinely
-intended:
-
-```text
-node tools/match.js sweep --max-size 64 --leaf-only --limit 200
-node tools/match.js sweep --set smallest-leaves-200 --variant structured --no-context
-node tools/match.js sweep-status
-node tools/match.js sweep-status --include-targets
-```
-
-The fixed `smallest-leaves-200` set is a reproducible calibration corpus and
-includes already solved members. General sweeps omit active matching targets
-unless `--include-solved` is supplied. Use `summary.ensemble.exactTargetCount`,
-not the legacy exact-variant-run counter, for the number of distinct exact
-functions.
-
-The workbench can also expose related code, bounded callsite/type clues, target
-queues, and compiler dumps:
-
-```text
-node tools/match.js family build
-node tools/match.js family <symbol>
-node tools/match.js family list --tier exact --include-members
-node tools/match.js context <symbol>
-node tools/match.js rank --lane leverage
-node tools/match.js rank --explain <symbol>
-node tools/match.js probe <symbol> --source <candidate.c>
-node tools/match.js probe <symbol> --candidate <candidate-id>
-node tools/match.js probe compare <left-report.json> <right-report.json>
-```
-
-Callsite context is generated by default for inspection but is not passed to
-m2c unless `--with-context` is explicit. The pilot found that inferred
-prototypes can help some functions and hurt others. `context --runtime` is an
-optional read-only Total Resolver lookup; normal workbench use needs neither
-Total Resolver nor Project64.
-
-`family` tiers are leads, not proof that two placements share source or
-meaning. Its relocation-normalized tier only ignores external `J`/`JAL` target
-fields; it does not infer raw `HI16`/`LO16` relocation intent. `probe` output is
-never acceptance-eligible, including output from the
-accepted compiler. A research compiler supplied to `probe` is labeled even
-more strictly and cannot enter `diff` or `verify` through this interface.
-
-Default results are bounded. Request complete detail deliberately with the
-relevant `--include-details`, `--include-source`, `--include-members`,
-`--include-context`, or `--include-targets` option; use `--json` for structured
-output.
-
-Adding source under `src/` and activating a target remain deliberate
-human/agent actions followed by the canonical linked diff and both verification
-gates below. Scratch `exact-bytes` is a strong lead, not a match.
-
-### 4. Verify the target
-
-Canonical interface:
-
-```text
-node tools/verify.js --target <symbol> --require-pure
-```
-
-For the requested symbol, the verifier must:
-
-1. verify baserom identity;
-2. verify matching compiler/toolchain identity;
-3. resolve the accepted structural owner uniquely;
-4. classify the translation unit using `docs/SOURCE_POLICY.md`;
-5. compile the source;
-6. remove/exclude the corresponding original assembly target from the linked build;
-7. prove the C object is the sole linker-map owner of the target section;
-8. verify accepted address and size;
-9. derive and compare normalized relocation information according to policy;
-10. compare final linked target bytes directly with the baserom;
-11. build the complete current ROM; and
-12. compare the complete current ROM byte-for-byte with the baserom.
-
-`--require-pure` must fail if the source class is not `PURE_C`, even when output is exact.
-
-Expected summary:
-
-```text
-OB64 Decomp Verification
-
-Baserom identity ........ PASS
-Toolchain ................ PASS
-Structural owner ......... PASS
-Source policy ............ PURE_C
-C linker ownership ....... PASS
-Target placement ......... PASS
-Relocations .............. PASS
-Target bytes ............. EXACT
-Full ROM ................. EXACT
-
-RESULT: MATCHING C
-```
-
-An exact hybrid should instead report:
-
-```text
-Source policy ............ HYBRID_C
-Target bytes ............. EXACT
-Full ROM ................. EXACT
-
-RESULT: MATCHING HYBRID
-```
-
-and `--require-pure` must return failure.
-
-A `HYBRID_C` allowance is permission to keep an intermediate or fallback, not automatic permission
-to finish the target and move on. Treat an exact hybrid as final only when either:
-
-- evidence indicates that the function most likely requires assembly inherently; or
-- a documented pure-C attempt has reached a concrete blocker that cannot be solved with the
-  current tools and information.
-
-Large size, difficult register allocation or scheduling, and exact hybrid output are not sufficient
-on their own. If neither condition applies, keep the target active and continue the pure-C work.
-When an exception does apply, record the evidence or blocker and continue to label the result
-`MATCHING HYBRID`, never matching C.
-
-### 5. Verify integrated current state
-
-Before merging/integrating a set of changes:
-
-```text
-node tools/verify.js
-```
-
-This verifies all active C/hybrid replacements and the complete ROM.
-
-Legacy hybrid targets may allow the overall exact baseline to pass, but status must list them
-separately from pure matching C.
-
-### 6. Commit
-
-Commit the source and the smallest configuration change necessary to activate it.
-
-Git records source history. Do not create separate ordinary-function promotion manifests,
-checkpoint receipts, worker lifecycle receipts, frozen accepted trees, or independent matching
-review packages.
-
----
-
-## Target Configuration
-
-The long-term target configuration should contain only facts that cannot be derived safely from the
-accepted structural model.
-
-Preferred shape:
-
-```json
-{
-  "symbol": "func_0000B33C",
-  "source": "src/boot/boot_resource_pool_acquire_release.c"
-}
-```
-
-Derive where possible:
-
-- ROM start/end;
-- VRAM;
-- target size;
-- section name;
-- owner/chunk/row identity;
-- overlay descriptor;
-- original assembly path;
-- expected retail bytes;
-- source and original-assembly hashes;
-- expected text hash; and
-- normalized relocation records.
-
-If a symbol address or link alias is genuinely needed, prefer a shared canonical symbol table over
-duplicating it per target.
-
-Historical ancillary metadata may remain recorded while the active contract derives load-relevant
-facts from GNU 2.6 source objects. Do not delete trusted evidence before the derived replacement has
-been proven equivalent.
-
----
-
-## Relocation Policy
-
-Relocation equality is retained because the decomp is intended for source-level modification, not
-only historical byte reproduction.
-
-The verifier derives normalized load-relevant relocations from the GNU 2.6 source object and
-compares them with the reviewed accepted contract. Discarded ancillary metadata remains visible in
-the source-to-object report but is not treated as a ROM or modification-relevant relocation.
-
-`config/matching-c-linkage.json` is the active reviewed linkage contract. It contains one shared
-absolute-symbol registry, per-target relocation lists, any explicit compiler text-function
-partition, and any target-specific audited auxiliary switch-table section contract. Historical targets may still read
-an equivalent contract from the frozen `config/phase8/matching-c.json` compatibility record while
-that evidence is migrated. New targets must not be added to that legacy file.
-
-An explicit `compilerTextFunctions` list is permitted only when untouched compiler output emits
-multiple `STT_FUNC` symbols that exactly and gaplessly partition one accepted text owner. The first
-record remains the accepted global owner symbol at offset zero. Every additional compiler symbol
-must remain local and carry reviewed entry evidence; the list does not create another accepted
-owner, boundary, or public alias. The verifier checks the exact symbol census, offsets, sizes,
-bindings, visibility, section, linked addresses, and complete owner bytes.
-
-Multiple active C targets may contribute ordered read-only switch-table fragments to the same
-accepted auxiliary row only under a complete shared-row contract. The fragments must occur in
-link order, cover the row from its accepted start without gaps or overlaps, use the same read-only
-section shape, and leave at most one exact assembly tail after the final fragment. The original
-assembly owner is removed once; final map and program-header checks still require one complete
-read-only output row with exact retail bytes.
-
-If a target produces exact final bytes but relocation structure differs, report it explicitly.
-Do not silently count it as fully mod-ready pure C.
-
-`tools/diff.js <symbol>` is allowed to compile the selected target before its contract exists. It
-prints and records the exact candidate relocations, but labels them `MISSING` and does not accept
-them. Review that candidate against the source and canonical linked result, then add an explicit
-entry to `config/matching-c-linkage.json`; use an empty list when the reviewed object has no load-relevant
-relocations. `tools/verify.js` fails closed if the entry is absent or if the object changes.
-
-Internal absolute `j`/`jal` relocations are normalized to `.text`. External function or data names
-must resolve through the shared registry or an actual linked definition. Never guess records from
-instruction text or copy them from another target.
-
----
-
-## Commands
-
-The normal human/agent interface should converge on:
-
-```text
-node tools/build.js
-node tools/diff.js <symbol>
-node tools/verify.js [--target <symbol>] [--require-pure]
-node tools/status.js
-node tools/audit.js
-```
-
-The optional research interface is:
-
-```text
-node tools/match.js --help
-```
-
-### `build`
-
-Build the current source tree.
-
-It uses some Phase 7/8-named compatibility libraries internally. Those
-historical implementation names are not user-facing workflow concepts.
-
-### `diff`
-
-Fast per-target matching loop.
-
-### `verify`
-
-Normal exactness/ownership/source-policy gate.
-
-### `status`
-
-Derive current progress from the accepted model and source classifier.
-
-At minimum report:
-
-- exact `PURE_C` functions and bytes;
-- exact `HYBRID_C` functions and bytes;
-- assembly/non-C owners;
-- nonmatching/experimental C if tracked separately; and
-- full-ROM exact status.
-
-Do not source these counts from prose documentation.
-
-### `audit`
-
-Heavy structural verification. See `docs/AUDIT.md`.
-
-### `match`
-
-Optional generated research workbench. It may prepare candidates and write
-ignored experiment state, but it is not part of canonical acceptance and is not
-required by `build`, `diff`, `verify`, or `status`. Run
-`node tools/match.js --help` for its current command and option surface.
-
----
-
-## Local Tool Paths
-
-Tracked configuration owns expected tool identities/versions/hashes, not Joe-specific absolute
-paths.
-
-Machine-local paths should come from one ignored local config or documented environment variables
-resolved by a shared helper.
-
-`config/local-tools.json` must set `powershellRuntimeRoot` to the root of the authenticated pinned
-Windows PowerShell runtime. That root contains
-`System32/WindowsPowerShell/v1.0/powershell.exe` and
-`System.Management.Automation.dll`. `OB64_POWERSHELL_RUNTIME_ROOT` is the environment override.
-Normal commands pass this path through every build and verification layer and isolate the child
-PowerShell version check with the matching `WINDIR` and `DEVPATH`; they do not depend on the
-machine's ambient, updateable PowerShell installation.
-
-Normal commands should not require users or agents to paste a long set of compiler/Splat/asm-differ
-paths on every invocation.
-
-Do not weaken tool identity checks merely to simplify path handling.
-
----
-
-## Parallel Agents
-
-Work in the current checkout and branch unless Joe explicitly directs creation of
-a branch or worktree.
-
-Use `docs/templates/matching-c-agent-prompt-guide.md` when assigning an ordinary
-one-function matching task, especially to a worker that benefits from a short,
-explicit diff-and-verify loop.
-
-A worker:
-
-```text
-select target
-→ write C
-→ diff
-→ verify target
+→ node tools/build.js
+→ choose one accepted target
+→ write or adjust its C source
+→ node tools/diff.js <symbol>
+→ iterate from the linked diff
+→ node tools/verify.js --target <symbol> --require-pure
+→ after integration, node tools/verify.js
 → commit
 ```
 
-Integration:
+`match.js doctor` is a setup check for the optional research workbench. It needs
+the normalized baserom, the configured production compiler/assembler chain, and
+the pinned m2c checkout. It does not install any dependency and it does not
+verify a source match.
+
+## Acceptance boundary
+
+The project keeps four kinds of evidence separate:
+
+1. **Matching evidence:** did the linked replacement and complete ROM reproduce
+   retail bytes?
+2. **Source evidence:** is the source `PURE_C`, `HYBRID_C`, `ASM`, or `UNKNOWN`?
+3. **Structural evidence:** are the accepted owner, boundary, placement, and
+   linker model correct?
+4. **Semantic evidence:** what does the code mean?
+
+An ordinary function counts as matching C only when all of these are true:
 
 ```text
-rebase/merge onto latest canonical
-→ node tools/verify.js
-→ accept if exact
+verified Rev 0 baserom
++ authenticated pinned toolchain
++ PURE_C source
++ original assembly target excluded from the current link
++ C object is the sole linked owner
++ accepted address and size
++ reviewed load-relevant relocations
++ exact linked target bytes
++ exact complete ROM
+= accepted matching C
 ```
 
-No additional Highway/Lane/Lease/Checkpoint orchestration is part of decomp evidence.
+An exact match does not prove a descriptive name, comment, field meaning, or
+gameplay explanation. An exact `HYBRID_C` replacement remains matching hybrid;
+it is not matching C and does not contribute to the matching-C count.
 
----
+`BASELINE` is the accepted assembly/data build and structural model that
+reconstructs retail Rev 0. `CURRENT` is that baseline with zero or more accepted
+assembly owners replaced by C objects. `CURRENT` must always remain byte-exact
+with the canonical ROM.
 
-## Modified Builds
+## One-time setup
 
-Retail matching and mod behavior are different acceptance problems.
+The README lists every local prerequisite. In summary, provide the supported
+ROM and authenticated host, compiler, PowerShell, Splat, asm-differ, GNU
+Binutils, preprocessing, and m2c dependencies. Then create the ignored local
+configuration and normalize the ROM:
 
-For a modification:
-
-```text
-exact retail baseline
-→ intentional source change
-→ build modified ROM
-→ changed-byte/layout validation
-→ emulator/runtime proof
+```powershell
+if (-not (Test-Path config/local-tools.json)) {
+  Copy-Item config/local-tools.example.json config/local-tools.json
+}
+# If copied above, replace its normal-work placeholders.
+node tools/verify_baserom.js
+node tools/match.js doctor
+node tools/build.js
 ```
 
-Do not require a modified ROM to equal retail.
+The normalization command auto-selects a sole ROM under `baserom/`. If the ROM
+exists only at the external path recorded as `romInput`, pass that path directly
+with `node tools/verify_baserom.js --input <rom>`; the standalone normalizer does
+not load `config/local-tools.json`.
 
-Do not use the existence of a matching baseline as proof that a modification behaves correctly.
+`workRoot` must be outside the repository. `phase5aRoot` is audit-only. The
+repository authenticates supplied tools against tracked contracts; it does not
+download or install them.
 
----
+`tools/build.js` creates or reuses a valid accepted structural baseline, builds
+all active C replacements, and requires the complete current ROM to equal the
+canonical normalized baserom. A build failure caused by tool or ROM identity is
+a setup failure to fix, not a verification rule to bypass.
 
-## Nonmatching C
+## Normal matching loop
 
-Nonmatching pure C can be useful for understanding a subsystem or prototyping a future modification,
-but it is not part of the retail exact baseline unless the build explicitly supports such a mode.
+### 1. Select an accepted target
 
-Label it honestly.
+Work on one assigned target at a time. Use the priorities in
+[NEXT_STEPS.md](NEXT_STEPS.md); prefer work that removes a LordlyCaliber hook or
+limitation or unlocks a high-value call graph. Function count is a status metric,
+not the optimization target.
 
-Do not lower exact matching requirements merely because a source reconstruction is semantically
-good.
+Confirm that the symbol resolves to one unambiguous accepted logical target with
+its complete text-owner mapping, ROM placement, runtime placement, size, and
+original assembly. A legitimate logical target can span multiple preserved
+owner rows; use its reviewed mapping as-is. Do not reject that mapping or infer
+a new boundary from a plausible disassembly during an ordinary match. If the
+accepted target or placement appears wrong or ambiguous, stop and open a
+structural task.
 
----
+The optional workbench can inspect or rank accepted targets:
 
-## Progress Priority
+```powershell
+node tools/match.js inspect <symbol>
+node tools/match.js rank --lane leverage
+node tools/match.js rank --explain <symbol>
+```
 
-The project should prefer decompilation that reduces LordlyCaliber's dependence on runtime hooks
-and hard-coded workarounds.
+Rankings and family relationships are leads, not structural or semantic proof.
 
-Priority order:
+### 2. Reconstruct and activate the source
 
-1. code directly intercepted/patched by LordlyCaliber;
-2. dependencies needed to replace those hooks with source-level changes;
-3. code behind current editor limits;
-4. foundational subsystem code that unlocks several future targets;
-5. opportunistic easy matches.
+Create or adjust the target under `src/`. Use the accepted disassembly, callers,
+callees, constants, static data, existing types, and relevant repository
+research. Prefer the simplest plausible C, then run an early diff. Awkward but
+valid C is allowed when it is needed to reproduce the historical compiler's
+output.
 
-Matching-function count is a status metric, not the optimization target.
+Keep the accepted target symbol unless a `CANONICAL` semantic name is already
+established. The original assembly file remains tracked as reference and
+fallback, but an active current build must exclude its target and link only the
+C replacement.
+
+For a new active target, add the smallest record to
+`config/matching-c-targets.json`:
+
+```json
+{ "symbol": "func_XXXXXXXX", "source": "src/path/func_XXXXXXXX.c" }
+```
+
+Do not duplicate derivable placement, byte, boundary, or owner facts in that
+record. Never add a new target to the frozen compatibility file
+`config/phase8/matching-c.json`.
+
+Do not paste instructions into C or use register-asm bindings, raw-code
+injection, naked-function mechanisms, or section tricks to force a match. The
+source-policy tool classifies assembler escape hatches mechanically. If the
+assignment requires matching C, the final source must be `PURE_C`.
+
+### 3. Iterate with the canonical linked diff
+
+Run:
+
+```powershell
+node tools/diff.js <symbol>
+```
+
+`diff.js` prepares the active replacement objects, freshly compiles the
+requested target with the authenticated compiler, and links a fresh current
+layout at the accepted placements. It reports instruction diagnostics
+separately from the raw linked-byte result. The linked-byte result is
+authoritative. `EXACT` requires a nonempty pairwise decoded-instruction match and
+equal final linked bytes. Missing, duplicate, malformed, or wrong-sized linked
+sections fail.
+
+For responsiveness, the diff path may reuse authenticated cached objects from
+ignored `build/diff-object-cache/` for unchanged sibling targets. Its cache key
+covers the sibling's exact source and source-policy result, accepted
+target/linkage contract, compiler and assembler identities and flags,
+object-processing implementation, and every restored artifact. A missing,
+stale, malformed, or tampered entry is rejected and rebuilt. The requested
+target is always compiled fresh, and every diff still freshly constructs and
+links the current layout before comparing it. The summary reports sibling
+cache hits, misses, rebuilds, and compiler invocations.
+
+Cache reuse is a development optimization only. `verify.js` and CURRENT
+verification do not import that cache; they independently perform the fresh
+final recompilation and complete-ROM check and remain mandatory.
+
+Use the instruction diff to make one evidence-driven source change at a time.
+Source order, control-flow shape, integer widths, expression grouping,
+temporaries, and live ranges can change the old compiler's output. Do not force
+register allocation with assembly.
+
+Generated diff reports and compiler outputs are ignored evidence. Do not commit
+them.
+
+#### Diagnostic boundary
+
+Raw scratch-object words can differ even when the linked instructions do not.
+In particular, `j` and `jal` addresses are supplied through relocations. A
+scratch score, CFG class, manual word comparison, isolated diagnostic link, or
+workbench result labeled exact is useful only for choosing the next experiment.
+None proves sole linker ownership, accepted relocation handling, final target
+placement, or complete-ROM equality.
+
+Use [the optional workbench reference](MATCHING_WORKBENCH.md) for candidate
+generation, experiment history, bounded comparisons, and its diagnostic limits.
+The canonical `diff.js` and `verify.js` gates remain required.
+
+### 4. Review relocation evidence
+
+Load-relevant relocation equality is part of acceptance because the repository
+must support later source modifications, not only reproduce one historical byte
+sequence.
+
+For a newly activated target, `diff.js` may show
+`Relocation contract ........ MISSING` and print the candidate relocations. This
+is expected discovery output, not acceptance. Review the object and linked
+result, then add the smallest exact per-target entry to
+`config/matching-c-linkage.json`. Use an explicit empty relocation list when the
+reviewed object has none.
+
+Do not guess a relocation from disassembled instruction text or copy another
+target's record. Internal absolute `j`/`jal` relocations normalize to `.text`.
+External function and data symbols must resolve through the shared registry or
+an actual linked definition. Exact final bytes with a different or missing
+relocation contract are not an accepted mod-ready pure-C replacement.
+
+Rerun `diff.js` after adding the reviewed contract. Strict verification fails if
+the entry is absent or if the compiled object later changes.
+
+### 5. Run the target gate
+
+When the linked diff is exact, run:
+
+```powershell
+node tools/source_policy.js --target <symbol>
+node tools/verify.js --target <symbol> --require-pure
+```
+
+The standalone source-policy command is a useful focused check. The verifier
+independently performs the authoritative classification and then:
+
+1. authenticates the baserom and pinned toolchain;
+2. resolves the accepted structural owner uniquely;
+3. compiles the source and recreates its source-to-object proof;
+4. excludes the original assembly target;
+5. proves sole C-object ownership in the linker map;
+6. checks address, size, and reviewed load-relevant relocations;
+7. compares the final linked target bytes with the baserom; and
+8. compares the complete rebuilt ROM byte-for-byte with the baserom.
+
+The target option is not a partial-ROM check. The requested pure-C result is
+accepted only when the command ends with `RESULT: MATCHING C`. `--require-pure`
+must fail for `HYBRID_C`, even when the target and full ROM are exact.
+
+### 6. Integrate and commit
+
+Preserve unrelated work in a shared checkout. Before committing or accepting an
+integrated change, run:
+
+```powershell
+node tools/verify.js
+git diff --check
+git status --short --branch
+```
+
+The complete verifier checks all active replacements and the full ROM. Commit
+only the source and smallest necessary configuration or evidence change. Git is
+the integration record; ordinary matches do not need promotion manifests,
+checkpoint receipts, frozen accepted trees, or separate review packages.
+
+When the contribution changes matching tools or their contracts, also run the
+required routine tooling manifest:
+
+```powershell
+node tools/test.js
+```
+
+Use `node tools/test.js --list` to inspect its explicit suite list. The routine
+runner is not a canonical build, complete-ROM verifier, or structural audit, so
+it supplements rather than replaces `verify.js`.
+
+Run `node tools/status.js` after a valid verification state to derive current
+`PURE_C`, `HYBRID_C`, and remaining-owner counts. Do not copy changing counts
+into prose documents.
+
+## Advanced linkage contracts
+
+Most targets need only one compiler-emitted text function. A reviewed linkage
+contract may additionally handle any of these established cases without
+rewriting compiler instructions or data:
+
+- one logical C target gaplessly replacing multiple contiguous preserved text
+  owners under `config/matching-c-multi-owner.json`;
+- multiple compiler-emitted local functions that gaplessly partition one
+  accepted text owner; or
+- one read-only compiler-emitted switch-table fragment assigned to an accepted
+  auxiliary row, with at most one exact preserved assembly tail.
+
+Such a contract must pin the complete symbol or fragment census, section shape,
+alignment, bytes, hashes, load-relevant relocations, placement, and ownership.
+Local functions do not become new accepted owners or exported aliases. Adjacent
+fragments sharing one auxiliary row must cover it in linker order without gaps
+or overlaps. Writable, executable, conventional `.data`/`.bss`, uncontracted
+tails, and rewritten compiler output reject.
+
+The production path retains the untouched `<symbol>.compiler.s`, the
+section-assigned `<symbol>.s`, the raw GNU 2.6 object, the stripped link input,
+and a deterministic source-object proof. Strict verification recreates that
+proof. See [the source policy](SOURCE_POLICY.md) and
+[the toolchain reference](TOOLCHAIN.md) for the detailed compiler-assembly
+contract.
+
+## Naming sidecar
+
+Naming does not gate a machine-code match. Use exactly these evidence classes:
+
+1. `CANDIDATE` — an external lead; never a canonical build name.
+2. `SUPPORTED_ALIAS` — independently supported by static evidence.
+3. `CANONICAL` — established by runtime evidence, controlled mutation, or
+   recognized SDK/library proof.
+
+During matching, inspect the body, callers, callees, strings, and data accesses
+for a possible `SUPPORTED_ALIAS`, but leave the build symbol address-named when
+evidence is insufficient. Only a `CANONICAL` name may replace it. Perform a
+canonical rename as a scoped semantic change and rerun the normal target and
+complete-ROM verifiers.
+
+## Stop or change workflows
+
+Stop the ordinary loop and report the concrete evidence when:
+
+- the baserom or pinned toolchain cannot be authenticated;
+- the accepted owner cannot be resolved uniquely;
+- the boundary, overlay, placement, executable classification, or linker model
+  appears wrong;
+- original assembly may still be linked or C ownership is ambiguous;
+- target placement, relocation structure, target bytes, or full-ROM bytes
+  differ at a claimed completion point;
+- source classification is `UNKNOWN`; or
+- a semantic claim exceeds the available evidence.
+
+Open a structural task for structural changes. Keep a nonmatching pure-C
+reconstruction clearly labeled outside the exact baseline. An exact
+`HYBRID_C` fallback is final for a pure-C assignment only when the function most
+likely requires assembly inherently or a genuine pure-C attempt has a concrete,
+documented blocker. Size, scheduling difficulty, or exact hybrid bytes alone are
+not sufficient.
+
+For a modified game, begin from a known-exact retail baseline, make the
+intentional change, and use changed-byte, layout, and emulator/runtime tests.
+Modified-ROM acceptance must not require retail equality, and retail equality
+does not prove modified behavior.
+
+## Optional references
+
+- [MATCHING_WORKBENCH.md](MATCHING_WORKBENCH.md) — generated candidate research,
+  history, diagnostics, sweeps, and limits.
+- [KMC_GCC_MATCHING_NOTES.md](KMC_GCC_MATCHING_NOTES.md) — reproduced,
+  target-scoped compiler matching observations.
+- [templates/matching-c-agent-prompt-guide.md](templates/matching-c-agent-prompt-guide.md)
+  — a concise prompt for an assigned one-function task.
+- [tools/README.md](../tools/README.md) — repository tool index.

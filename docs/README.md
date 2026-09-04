@@ -28,6 +28,8 @@ have graduated from parent-workspace experiments into decomp knowledge.
 - `TOOLCHAIN.md` - authenticated KMC GCC 2.7.2 / GNU Binutils 2.6 production
   setup and verification.
 - `WORKFLOW.md` - source-replacement and evidence loop.
+- `MATCHING_WORKBENCH.md` - optional candidate generation, diagnostic comparison,
+  experiment history, and compiler probes; scratch results are not acceptance.
 - `templates/matching-c-agent-prompt-guide.md` - concise guidance and a copyable
   prompt for ordinary one-function matching workers.
 - `KMC_GCC_MATCHING_NOTES.md` - scoped, experimentally reproduced compiler
