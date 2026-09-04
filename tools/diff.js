@@ -6,7 +6,6 @@ const path = require('path');
 const {
   ROOT,
   assertBuildLocations,
-  compileTarget,
   copyPhase7Objects,
   linkPhase8,
   runTargetAsmDiffer,
@@ -17,6 +16,7 @@ const {
   writeObjectManifest,
 } = require('./lib/phase8_matching_c');
 const { classifyTargetSources } = require('./lib/source_policy');
+const { compileDiffTargets } = require('./lib/diff_object_cache');
 const {
   ensureBaseline,
   prepareContext,
@@ -69,7 +69,7 @@ function main(argv = process.argv.slice(2)) {
     asmDifferRoot: context.localTools.asmDifferRoot,
   };
   const runtime = verifyRuntimeTools(context.phase8.model, runtimeOptions);
-  verifyCompiler(context.phase8, context.localTools.compiler);
+  const compilerIdentity = verifyCompiler(context.phase8, context.localTools.compiler);
   const sourcePolicy = classifyTargetSources(context.phase8.targets);
   const classificationBySymbol = new Map(sourcePolicy.targets.map((record) => [record.symbol, record]));
   const phase7 = verifyPhase7Input(context.phase8, baseline.phase7Output);
@@ -79,21 +79,19 @@ function main(argv = process.argv.slice(2)) {
     output,
     runtime.tools['mips-kmc-elf-objcopy.exe'].path,
   );
-  const compiled = new Map();
-  for (const candidate of context.phase8.targets) {
-    compiled.set(candidate.symbol, compileTarget(
-      context.phase8,
-      candidate,
-      output,
-      context.localTools.compiler,
-      runtime.tools['mips-kmc-elf-as.exe'].path,
-      runtime.tools['mips-kmc-elf-objcopy.exe'].path,
-      {
-        enforceAcceptedContract: candidate.symbol !== target.symbol,
-        classification: classificationBySymbol.get(candidate.symbol),
-      },
-    ));
-  }
+  const targetCompilation = compileDiffTargets({
+    phase8: context.phase8,
+    requestedTarget: target,
+    output,
+    compiler: context.localTools.compiler,
+    assemblerPath: runtime.tools['mips-kmc-elf-as.exe'].path,
+    objcopyPath: runtime.tools['mips-kmc-elf-objcopy.exe'].path,
+    verifiedCompiler: compilerIdentity,
+    assembler: runtime.tools['mips-kmc-elf-as.exe'],
+    objcopy: runtime.tools['mips-kmc-elf-objcopy.exe'],
+    classificationBySymbol,
+  });
+  const { compiled } = targetCompilation;
   const objectManifest = writeObjectManifest(output, replacement.linkedObjects, context.phase8, replacement.replacements, compiled);
   writeLayout(context.phase8, phase7, output, replacement.replacements);
   linkPhase8(context.phase8, output, objectManifest, runtime.tools);
@@ -117,6 +115,7 @@ function main(argv = process.argv.slice(2)) {
     sourceClass: targetSourcePolicy.class,
     sourcePolicyDigest: targetSourcePolicy.digest,
     toolchain: context.phase8.toolchain.identity,
+    objectCache: targetCompilation.cache,
     output,
     object: compiled.get(target.symbol),
     relocationContract: {
@@ -141,6 +140,8 @@ function main(argv = process.argv.slice(2)) {
   console.log(`Linked target SHA-256 ...... ${comparison.linkedTargetSha256}`);
   console.log(`Expected target SHA-256 .... ${comparison.expectedTargetSha256}`);
   console.log(`Relocation contract ........ ${target.relocationContractSource === 'missing-diff-only' ? 'MISSING' : relocationContractMatches ? 'MATCH' : 'DIFFERS'}`);
+  console.log(`Sibling object cache ....... ${targetCompilation.cache.hits} hit / ${targetCompilation.cache.misses} miss / ${targetCompilation.cache.rebuilt} rebuilt`);
+  console.log(`Compiler invocations ....... ${targetCompilation.cache.compilerInvocations} (requested target always fresh)`);
   if (!relocationContractMatches) {
     console.log('Candidate relocations .......');
     console.log(JSON.stringify(candidateRelocations, null, 2));
