@@ -82,17 +82,43 @@ function fieldFacts(infos) {
   });
 }
 
+function directJalDelaySlot(infos, callIndex) {
+  const call = infos[callIndex];
+  if (!call || call.op !== 0x03 || call.control !== 'jump' || !call.call
+      || call.conditional || call.indirect || call.target === null) return null;
+  const instruction = callIndex + 1;
+  const info = infos[instruction];
+  if (!info || !Number.isInteger(info.word)
+      || info.pc !== ((call.pc + 4) >>> 0)
+      || info.control !== null || info.call) return null;
+  return { info, instruction };
+}
+
+function preparationFact(info, instruction, delaySlot) {
+  return {
+    instruction,
+    pc: info.pc,
+    text: info.text,
+    delaySlot,
+  };
+}
+
 function callsiteFacts(caller, infos, callIndex, entries) {
   const call = infos[callIndex];
   const targetMatches = call.target === null ? [] : entries.get(call.target) || [];
+  const delaySlot = directJalDelaySlot(infos, callIndex);
   const argumentFacts = [];
   for (const register of ARGUMENT_REGISTERS) {
-    let fact = null;
-    for (let index = callIndex - 1; index >= Math.max(0, callIndex - 12); index -= 1) {
-      const usage = registerUsage(infos[index]);
-      if (usage.writes.includes(register)) {
-        fact = { instruction: index, pc: infos[index].pc, text: infos[index].text };
-        break;
+    let fact = delaySlot && registerUsage(delaySlot.info).writes.includes(register)
+      ? preparationFact(delaySlot.info, delaySlot.instruction, true)
+      : null;
+    if (!fact) {
+      for (let index = callIndex - 1; index >= Math.max(0, callIndex - 12); index -= 1) {
+        const usage = registerUsage(infos[index]);
+        if (usage.writes.includes(register)) {
+          fact = preparationFact(infos[index], index, false);
+          break;
+        }
       }
     }
     argumentFacts.push({
@@ -108,12 +134,26 @@ function callsiteFacts(caller, infos, callIndex, entries) {
     if (info.memory && !info.memory.load && info.rs === 29 && info.signedImmediate >= 16) {
       stackArguments.push({
         instruction: index,
+        pc: info.pc,
         offset: info.signedImmediate,
         width: info.memory.width,
         text: info.text,
+        delaySlot: false,
         confidence: 'bounded-linear-predecessor-candidate',
       });
     }
+  }
+  if (delaySlot && delaySlot.info.memory && !delaySlot.info.memory.load
+      && delaySlot.info.rs === 29 && delaySlot.info.signedImmediate >= 16) {
+    stackArguments.push({
+      instruction: delaySlot.instruction,
+      pc: delaySlot.info.pc,
+      offset: delaySlot.info.signedImmediate,
+      width: delaySlot.info.memory.width,
+      text: delaySlot.info.text,
+      delaySlot: true,
+      confidence: 'bounded-linear-predecessor-candidate',
+    });
   }
   const returnWindow = [];
   for (let index = callIndex + 2; index < Math.min(infos.length, callIndex + 6); index += 1) {
