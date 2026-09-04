@@ -440,7 +440,7 @@ function main() {
 
     const cacheRoot = path.join(scratch, 'cache');
     let runIndex = 0;
-    function runDiff() {
+    function runDiff(profile = null) {
       const output = path.join(scratch, `output-${runIndex++}`);
       fs.mkdirSync(output, { recursive: true });
       const invocations = [];
@@ -460,6 +460,7 @@ function main() {
         cacheSeal: fixtureSeal(keyInputs),
         verifyCacheSeal: () => {},
         verifyTargetSource: () => {},
+        profile,
       });
       return { result, invocations, output };
     }
@@ -480,6 +481,31 @@ function main() {
       && warm.result.cache.rebuilt === 0 && warm.result.cache.compilerInvocations === 1
       && warm.invocations.length === 1 && warm.invocations[0].symbol === requested.symbol,
     'warm run did not compile only the requested target');
+    const measuredStages = [];
+    const profiledWarm = runDiff({
+      measure(name, callback) {
+        measuredStages.push(name);
+        return callback();
+      },
+    });
+    assert(profiledWarm.result.cache.hits === warm.result.cache.hits
+      && profiledWarm.result.cache.misses === warm.result.cache.misses
+      && profiledWarm.result.cache.rebuilt === warm.result.cache.rebuilt
+      && profiledWarm.result.cache.compilerInvocations === warm.result.cache.compilerInvocations
+      && profiledWarm.invocations.length === warm.invocations.length,
+    'profiling hook changed warm cache behavior');
+    for (const expectedStage of [
+      'object-cache.seal-initial-verify',
+      'object-cache.requested-compile',
+      'object-cache.source-and-key',
+      'object-cache.entry-validate',
+      'object-cache.artifact-copy',
+      'object-cache.output-validate',
+      'object-cache.final-source-sweep',
+      'object-cache.final-seal-verify',
+    ]) {
+      assert(measuredStages.includes(expectedStage), `profiling hook omitted ${expectedStage}`);
+    }
 
     const siblingInputs = commonKeyInputs(phase8, sibling, classifications.get(sibling.symbol));
     const siblingEntry = cacheEntryFor(cacheRoot, siblingInputs);
@@ -727,6 +753,7 @@ function main() {
       invalidEntriesRebuilt: 10,
       siblingIsolation: true,
       requestedTargetAlwaysFresh: true,
+      profileHookBehaviorPreserved: true,
       multiOwnerAssemblerRequired: true,
       sourceMutationRejectedBeforePublish: true,
       firstPublisherCollisionAdopted: true,

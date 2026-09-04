@@ -35,6 +35,7 @@ const IMPLEMENTATION_FILES = Object.freeze([
   'tools/diff.js',
   'tools/lib/active_targets.js',
   'tools/lib/diff_object_cache.js',
+  'tools/lib/diff_profile.js',
   'tools/lib/elf_text_split.js',
   'tools/lib/phase7_conventional.js',
   'tools/lib/phase8_matching_c.js',
@@ -50,6 +51,12 @@ const ACTIVE_CONFIGURATION_FILES = Object.freeze([
 
 function fail(message) {
   throw new Error(`diff object cache: ${message}`);
+}
+
+function profileMeasure(options, name, callback) {
+  return options.profile && typeof options.profile.measure === 'function'
+    ? options.profile.measure(name, callback)
+    : callback();
 }
 
 function normalizePath(value) {
@@ -892,7 +899,7 @@ function compileOrReuseTarget(options) {
     compile = compileTarget,
     inspectArtifacts = inspectCompiledTargetArtifacts,
   } = options;
-  const seal = options.cacheSeal || createCacheSeal(options);
+  const seal = options.cacheSeal || profileMeasure(options, 'object-cache.seal-create', () => createCacheSeal(options));
   const verifySeal = options.verifyCacheSeal || verifyCacheSeal;
   const verifySource = options.verifyTargetSource || verifyTargetSourceIdentity;
   const sealManagedByCaller = options.sealManagedByCaller === true;
@@ -901,33 +908,38 @@ function compileOrReuseTarget(options) {
     implementationIdentities: seal.implementationIdentities,
     sourcePolicyConfigIdentity: seal.sourcePolicyConfigIdentity,
   };
-  if (!sealManagedByCaller) verifySeal(seal);
-  verifySource(target);
-  const keyMaterial = createCacheKeyMaterial(sealedOptions);
-  const cached = tryCacheEntry({
+  if (!sealManagedByCaller) profileMeasure(options, 'object-cache.seal-verify', () => verifySeal(seal));
+  const keyMaterial = profileMeasure(options, 'object-cache.source-and-key', () => {
+    verifySource(target);
+    return createCacheKeyMaterial(sealedOptions);
+  });
+  const cached = profileMeasure(options, 'object-cache.entry-validate', () => tryCacheEntry({
     cacheRoot,
     keyMaterial,
     target,
     classification,
     phase8,
     inspectArtifacts,
-  });
+  }));
   if (cached.hit) {
-    const files = copyArtifactsToOutput({
+    const files = profileMeasure(options, 'object-cache.artifact-copy', () => copyArtifactsToOutput({
       cacheRoot,
       entry: cached.entry,
       target,
       output,
       identities: cached.identities,
+    }));
+    const copied = profileMeasure(options, 'object-cache.output-validate', () => {
+      const inspected = inspectArtifacts({ phase8, target, classification, files });
+      if (!sameValue(inspected, cached.compiled)) fail(`copied cache evidence drift: ${target.symbol}`);
+      return inspected;
     });
-    const copied = inspectArtifacts({ phase8, target, classification, files });
-    if (!sameValue(copied, cached.compiled)) fail(`copied cache evidence drift: ${target.symbol}`);
-    verifySource(target);
-    if (!sealManagedByCaller) verifySeal(seal);
+    profileMeasure(options, 'object-cache.source-postcheck', () => verifySource(target));
+    if (!sealManagedByCaller) profileMeasure(options, 'object-cache.seal-verify', () => verifySeal(seal));
     return { compiled: copied, cache: { status: 'hit', key: cached.key, reason: null } };
   }
 
-  const freshlyCompiled = compile(
+  const freshlyCompiled = profileMeasure(options, 'object-cache.sibling-compile', () => compile(
     phase8,
     target,
     output,
@@ -935,13 +947,18 @@ function compileOrReuseTarget(options) {
     assemblerPath,
     objcopyPath,
     { enforceAcceptedContract: true, classification },
-  );
-  verifySource(target);
-  verifySeal(seal);
+  ));
+  profileMeasure(options, 'object-cache.sibling-postcheck', () => {
+    verifySource(target);
+    verifySeal(seal);
+  });
   const sourceFiles = outputArtifactFiles(output, target);
-  const inspected = inspectArtifacts({ phase8, target, classification, files: sourceFiles });
-  if (!sameValue(freshlyCompiled, inspected)) fail(`fresh compiler artifact metadata drift: ${target.symbol}`);
-  publishCacheEntry({
+  const inspected = profileMeasure(options, 'object-cache.output-validate', () => {
+    const result = inspectArtifacts({ phase8, target, classification, files: sourceFiles });
+    if (!sameValue(freshlyCompiled, result)) fail(`fresh compiler artifact metadata drift: ${target.symbol}`);
+    return result;
+  });
+  profileMeasure(options, 'object-cache.entry-publish', () => publishCacheEntry({
     cacheRoot,
     keyMaterial,
     target,
@@ -951,9 +968,9 @@ function compileOrReuseTarget(options) {
     compiled: inspected,
     inspectArtifacts,
     renameEntry: options.renameEntry,
-  });
-  verifySource(target);
-  if (!sealManagedByCaller) verifySeal(seal);
+  }));
+  profileMeasure(options, 'object-cache.source-postcheck', () => verifySource(target));
+  if (!sealManagedByCaller) profileMeasure(options, 'object-cache.seal-verify', () => verifySeal(seal));
   return {
     compiled: inspected,
     cache: {
@@ -983,10 +1000,10 @@ function compileDiffTargets(options) {
   const entries = [];
   let requestedCount = 0;
   let compilerInvocations = 0;
-  const seal = options.cacheSeal || createCacheSeal(options);
+  const seal = options.cacheSeal || profileMeasure(options, 'object-cache.seal-create', () => createCacheSeal(options));
   const verifySeal = options.verifyCacheSeal || verifyCacheSeal;
   const verifySource = options.verifyTargetSource || verifyTargetSourceIdentity;
-  verifySeal(seal);
+  profileMeasure(options, 'object-cache.seal-initial-verify', () => verifySeal(seal));
   const sealedOptions = {
     ...options,
     cacheSeal: seal,
@@ -998,8 +1015,8 @@ function compileDiffTargets(options) {
     const classification = classificationBySymbol.get(target.symbol);
     if (target.symbol === requestedTarget.symbol) {
       requestedCount += 1;
-      verifySource(target);
-      const result = compile(
+      profileMeasure(options, 'object-cache.requested-source-precheck', () => verifySource(target));
+      const result = profileMeasure(options, 'object-cache.requested-compile', () => compile(
         phase8,
         target,
         output,
@@ -1007,9 +1024,11 @@ function compileDiffTargets(options) {
         assemblerPath,
         objcopyPath,
         { enforceAcceptedContract: false, classification },
-      );
-      verifySource(target);
-      verifySeal(seal);
+      ));
+      profileMeasure(options, 'object-cache.requested-postcheck', () => {
+        verifySource(target);
+        verifySeal(seal);
+      });
       compiled.set(target.symbol, result);
       compilerInvocations += 1;
       entries.push({ symbol: target.symbol, status: 'requested-fresh', key: null, reason: null });
@@ -1028,8 +1047,10 @@ function compileDiffTargets(options) {
   if (requestedCount !== 1 || compiled.size !== phase8.targets.length) {
     fail(`requested target compilation census drift: ${requestedTarget.symbol}`);
   }
-  for (const target of phase8.targets) verifySource(target);
-  verifySeal(seal);
+  profileMeasure(options, 'object-cache.final-source-sweep', () => {
+    for (const target of phase8.targets) verifySource(target);
+  });
+  profileMeasure(options, 'object-cache.final-seal-verify', () => verifySeal(seal));
   const count = (status) => entries.filter((entry) => entry.status === status).length;
   return {
     compiled,
