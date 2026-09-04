@@ -1,15 +1,13 @@
 # High Attack Battle Stream Wave 4 Matching-C Report
 
-Status: **completed with five preserved PURE_C blockers and zero promotions**
+Status: **completed with two exact promotions and three preserved PURE_C blockers**
 
-Wave 4 made a full matching attempt on all five assigned accepted owners. The
-small shared snapshot helper, `func_002158E4`, reached a canonical linked
-236-byte PURE_C body with a matching 27-relocation contract and only three
-instruction words out of retail order. The other four functions reached
-compiling semantic PURE_C candidates but still have material control-flow,
-register-allocation, or extent differences. Every strongest candidate is
-preserved with a dossier; the original assembly remains the accepted owner for
-all five targets.
+Wave 4 attempted all five assigned accepted owners in dependency order. It
+promoted `func_0021C3B0` as exact `PURE_C` and `func_002158E4` as exact
+`HYBRID_C`. The latter uses a zero-byte empty extended-assembly constraint to
+resolve a compiler scheduler tie; it is not matching C and does not contribute
+to the `PURE_C` count. The other three targets remain ASM-owned, with their
+strongest independently reconstructed PURE_C sources preserved for later work.
 
 ## Assignment
 
@@ -18,15 +16,13 @@ all five targets.
 | Role | Matching-C worker, actor snapshot and interrupt-control Wave 4 |
 | Worktree | `C:\Users\Joe\Projects\OgreBattlel64\high-attack-wave-4` |
 | Branch | `codex/high-attack-wave-4` |
-| Required starting HEAD | `647d412b75c7755df80e57f528ede5a64b5b5fd9` |
-| Observed starting HEAD | `647d412b75c7755df80e57f528ede5a64b5b5fd9` |
-| Starting status | clean |
-| Structural scope | accepted boundaries, overlay placement, and owners unchanged |
+| Required and observed starting HEAD | `647d412b75c7755df80e57f528ede5a64b5b5fd9` |
+| Continuation base after the initial blocker report | `b7e13ffe56261519b41206b24db7951f5ab45ebf` |
+| Structural scope | accepted boundaries and overlay placement unchanged |
 
-The entry branch, HEAD, cleanliness, baserom-identity, and matching-workbench
-doctor gates passed before source trials. Only the prepared Wave 4 worktree was
-written. Parent High Attack evidence was read-only; Total Resolver was not
-needed or used. No branch, worktree, push, or remote operation was performed.
+The prepared Wave 4 checkout was used in place. No branch, worktree, push, or
+remote operation was performed. Parent High Attack evidence was read-only and
+Total Resolver was not needed. Wave 5 was not started.
 
 ## Family model
 
@@ -47,176 +43,114 @@ func_00215CF0 -----> func_002159D0
 func_002158E4 -----> snapshot/reinitialize sequence -> func_0021C3B0
 ```
 
-`func_002158E4` snapshots the 0x6094-byte battle owner, resets the stream
-planner field, invokes the battle reinitializer, restores selected owner
-ranges and a saved context byte, releases the snapshot, and synchronizes actor
-state.
+`func_002158E4` snapshots the `0x6094`-byte battle owner, invokes the battle
+reinitializer, restores selected owner ranges and a context byte, releases the
+snapshot, and synchronizes actor state. `func_002159D0` performs the same
+sequence when the stream planner is at zero, then scans and rewrites future
+action-stream records and installs a `0x41` boundary marker.
 
-`func_002159D0` performs the same snapshot/reinitialize sequence when the
-stream planner is at zero, then scans future action-stream records. It records
-the first eligible boundary, rewrites future record types and payload bytes,
-emits a `0x41` boundary marker, and changes the selected actor's interrupt
-state.
-
-`func_00215CF0` is the large interrupt/menu state dispatcher. It consumes
-controller input, advances per-actor state, creates and tears down UI
-resources, calls the stream-boundary preparer, and contains another copy of the
-snapshot/reinitialize sequence in one state path.
-
-`func_00217BA8` initializes and animates the interrupt UI bounds, selects its
-timing window, performs the snapshot/reinitialize transition at the threshold,
-handles the two input paths, and increments the controller timer.
-
-`func_0021C3B0` iterates all 20 actor slots and synchronizes actor fields into
-the two persistent record-table families. It also clears transient actor state
-under the observed activity predicates.
-
-These are static semantic aids, not behavioral proof from new runtime capture.
+`func_00215CF0` is the large interrupt/menu state dispatcher.
+`func_00217BA8` initializes and animates the interrupt UI, performs the
+snapshot transition at its threshold, handles two input paths, and advances
+the controller timer. `func_0021C3B0` iterates all 20 actor slots and
+synchronizes actor fields into two persistent record-table families. These are
+static semantic aids, not new runtime behavioral proof.
 
 ## Matching results
 
-| Function | Accepted range | Bytes | Strongest candidate | Scratch result | Canonical result | Disposition |
-|---|---|---:|---|---|---|---|
-| `func_002158E4` | `0x002158E4..0x002159D0` | 236 | `A493A3DED358110F479B3B356FFF631E55AF0A687441A1BFD46F4DA7667177A3` | 236/236, score 93.26 | 11 differing bytes in three words; all 27 relocations match | preserved PURE_C blocker |
-| `func_002159D0` | `0x002159D0..0x00215CF0` | 800 | `1C8D67A40440ACC64A173C1ED4FBA457C268F8C03159AA7095C56C842B754EA2` | 792/800, score 54; 130 differing instructions / 368 bytes | not activated as an accepted owner | preserved PURE_C blocker |
-| `func_00215CF0` | `0x00215CF0..0x00216A38` | 3,400 | `B8362C34897CC9CCBB0FAC5BF5EE197C9938822629258E5CCD26C94E1BC501A9` | 2980/3400, score 18.39; 842 differing instructions / 3,064 bytes; 105 expected-only instructions | not activated as an accepted owner | preserved PURE_C blocker |
-| `func_00217BA8` | `0x00217BA8..0x00217FB0` | 1,032 | `9413B6F6A6BD4843EC8C2C8878CD9DF743A11097CDED8B6ACB02DD5DFA845618` | 1040/1032, score 25; 243 differing instructions / 855 bytes | not activated as an accepted owner | preserved PURE_C blocker |
-| `func_0021C3B0` | `0x0021C3B0..0x0021C5B0` | 512 | `AE9AF908A6D51866F66626965DD0A675581B2FA10A3A87A84FAA871F793743E0` | 508/512, score 48.98; 82 differing instructions / 236 bytes | not activated as an accepted owner | preserved PURE_C blocker |
+| Function | Accepted bytes | Strongest result | Evidence | Disposition |
+|---|---:|---|---|---|
+| `func_002158E4` | 236 | exact linked bytes, 27 matching relocations, SHA-256 `2F0A1C6BC565B80B40015D55DD7944DC2C2C842E488763608D932D9BBCE6A8BD` | exact source is `HYBRID_C`; best PURE_C body differs only in a three-word scheduler tie | promoted as exact `HYBRID_C`, not matching C |
+| `func_0021C3B0` | 512 | exact linked bytes, 27 matching relocations, SHA-256 `DC90E3EE150A784F0E79C93D488526E631F0D4BDE8CEDEC97E888850AE2C9194` | 512 bytes / 128 instructions from sole `PURE_C` owner | promoted as matching C |
+| `func_002159D0` | 800 | candidate `B64E0169ADFD9D76DD0F2EB1C3FED123C16A3A56E3038FAB87A83256864D510D` | exact extent, score 70.58, 79 recognized relocations; five machine-shape words remain | preserved PURE_C blocker; ASM owner retained |
+| `func_00217BA8` | 1,032 | candidate `B4DF0A7D7F267763C4348F00FC58F314474C6AFC8E7D57783629D3D7DC8E29F7` | exact extent, score 70.99, 107 recognized relocations; three scheduler words remain | preserved PURE_C blocker; ASM owner retained |
+| `func_00215CF0` | 3,400 | candidate `FAE761956C1D221F00281248C73A96A158FBE3C247F7F8735166089B08D2E975` | 3,236 bytes / 809 instructions, score 28.52, 293 recognized relocations | preserved PURE_C blocker; ASM owner retained |
 
-The scratch mismatch totals for the four noncanonical candidates include
-unresolved relocation-bearing words and therefore are useful for relative
-workbench progress, not canonical linked-byte claims. Only
-`func_002158E4` was activated long enough for the normal canonical diff to
-resolve and check its relocation identities. All temporary sources, target
-rows, linkage rows, and aliases were then removed or restored before wave-end
-verification.
+Scratch scores for ASM-owned targets include unresolved relocation fields and
+are comparative workbench evidence, not canonical linked-byte claims.
 
-No target met the exact-byte acceptance rule, so no per-target exact commit was
-created. This report and the ten preserved evidence artifacts are the only
-Wave 4 deliverables.
-
-## Attempt record and blockers
-
-The full eight-strategy `match.js prepare --no-context` ensemble was run for
-each target. Compile-failed generated sources were mechanically repaired where
-that exposed useful KMC code-generation evidence, then manual source-shape,
-type, lifetime, volatility, loop, branch, and delay-slot trials were applied in
-proportion to each target's closeness.
+## Exact promotions
 
 ### `func_002158E4`
 
-The candidate models the complete shared helper and produces the accepted
-236-byte extent. A canonical linked diff reported:
+The best ordinary C source has the exact 236-byte extent and correct behavior,
+but KMC saves the allocator result before loading `D_801CE8BC`; retail performs
+those independent operations in the opposite order. Source-shape, type,
+lifetime, aliasing, evaluation-order, aggregate, and control-flow trials all
+returned to the same three-word difference or disturbed a wider region.
 
-```text
-Source class ............... PURE_C
-Accepted extent ............ 236 / 236 bytes
-Raw linked differences ..... 11 bytes in 3 instruction words
-Difference offsets ......... 0x18, 0x1C, 0x20
-Relocation contract ........ MATCH (27 relocations)
-Expected target SHA-256 .... 2F0A1C6BC565B80B40015D55DD7944DC2C2C842E488763608D932D9BBCE6A8BD
-Candidate linked SHA-256 ... CB2A2D6F8D2B7E24664D6D2F84C13880851B30F8DA3DF46B663B27A69A7312C6
-```
-
-KMC places `move $s0, $v0` immediately after the allocator call; retail loads
-`D_801CE8BC` first and then performs the move. The remaining work is tightly
-localized to this post-allocation scheduling choice. Reopen with a source-shape
-or lifetime technique that changes only those three words and re-run the normal
-canonical diff and pure verifier.
-
-Preserved evidence:
-
-- `docs/archive/matching-c-candidates/2026-09-03-func_002158E4-a493a3ded3.c`
-- `docs/dossiers/func_002158E4-a493a3ded3.md`
-- source SHA-256 `C59E098C0633E9DE88F4ABB550A6CB124BC315584D254776C4ACE4AEDAFB91A1`
-
-### `func_002159D0`
-
-The best complete reconstruction has the retail saved-register roles, exact
-preamble ownership, constants, future-record scan, type rewrites, marker
-ordering, and relocation-bearing globals. It is two instructions short and
-still differs in CFG/delay-slot lowering, including the duplicated snapshot
-post-allocation schedule. Reopen after solving `func_002158E4`, transplant the
-proven source shape, and localize the scan backedge and candidate-offset
-lifetime.
-
-Preserved evidence:
-
-- `docs/archive/matching-c-candidates/2026-09-03-func_002159D0-1c8d67a404.c`
-- `docs/dossiers/func_002159D0-1c8d67a404.md`
-- source SHA-256 `44B02642A635D75D820F4A92DC2FD963E8D72E4FB362099BAFF0802A0372F742`
-
-### `func_00215CF0`
-
-The repaired candidate compiles as PURE_C and represents every retail switch
-case plus the observed High Attack guard and state behavior. It remains 420
-bytes short, with a much smaller stack frame and major differences in switch,
-resource-lifetime, and shared-tail lowering. Reopen only after the direct
-controller, stream preparer, and snapshot helper shapes converge; reconstruct
-one state cluster at a time against the accepted assembly rather than treating
-the mechanically recovered body as near-match source.
-
-Preserved evidence:
-
-- `docs/archive/matching-c-candidates/2026-09-03-func_00215CF0-b8362c3489.c`
-- `docs/dossiers/func_00215CF0-b8362c3489.md`
-- source SHA-256 `C0A1358A44D4CBA2A06A93D0490AC3A1C04B71AC8026FF96ECBEC49C4CC80B5A`
-
-### `func_00217BA8`
-
-The repaired candidate includes UI/timer initialization, threshold animation,
-snapshot-family calls, input guards, selected-state writes, and counter
-advance. It is two instructions long; numeric-global typing and whole-function
-register/CFG scheduling are not yet retail-shaped. Reopen after the snapshot
-helper and actor-sync functions, then replace absolute numeric declarations
-with evidence-backed types and tune the threshold/input tails separately.
-
-Preserved evidence:
-
-- `docs/archive/matching-c-candidates/2026-09-03-func_00217BA8-9413b6f6a6.c`
-- `docs/dossiers/func_00217BA8-9413b6f6a6.md`
-- source SHA-256 `83997F8957A819E63CA3B43D45784B66034C0BB99DF2B959069D4B07E12E6C7F`
+The active source uses an extended-assembly statement with an empty template.
+It emits no instruction and implements no behavior, but its simultaneous
+input/output constraint gives KMC the dependency needed to choose the retail
+schedule. Source policy therefore correctly classifies the unit as `HYBRID_C`.
+The linked target is exact and the relocation contract contains 27 matching
+records. The best PURE_C attempt remains archived and its exhaustion evidence
+is recorded in `docs/dossiers/func_002158E4-a493a3ded3.md`.
 
 ### `func_0021C3B0`
 
-The strongest semantic candidate has the five-register 20-actor loop, table
-split, field writes, predicates, and helper-call order. It is one instruction
-short; branch-likely selection, load-use scheduling, and the loop tail still
-differ. Reopen with localized volatile/lifetime and explicit-goto experiments,
-then use the exact result as a dependency for the two controllers.
+The exact source retains the five-register 20-actor traversal, table split,
+field writes, predicates, and helper-call order. A `for` loop recovered the
+retail branch-likely exits and loop increment, an `s32` side selector produced
+the signed `slti`, and staging the indexed table address reproduced the retail
+operand order at the last differing word. The result is an exact 512-byte
+`PURE_C` owner with 27 matching relocation records.
 
-Preserved evidence:
+## Preserved blockers
 
-- `docs/archive/matching-c-candidates/2026-09-03-func_0021C3B0-ae9af908a6.c`
-- `docs/dossiers/func_0021C3B0-ae9af908a6.md`
-- source SHA-256 `D79EF0B5A6CB317CD263C4486FB8AECFA28E790E342DED794B1C91E344F739DE`
+### `func_002159D0`
 
-Recommended reopen order is `func_002158E4`, `func_0021C3B0`,
-`func_002159D0`, `func_00217BA8`, then `func_00215CF0`.
+The continuation recovered exact extent, the branch-likely type dispatch,
+pointer-add operand order, load/compare/add register reuse, both marker paths,
+and the symbolic `D_800EB1F0` address form. After masking only recognized
+relocation fields, the remaining deviations are:
 
-## Symbol-name sidecar
+- offsets `0x34`, `0x38`, and `0x3C`: the same allocator-result/global-load
+  scheduler tie proven for `func_002158E4`;
+- offsets `0x178` and `0x180`: an inverse but semantically equivalent
+  conditional/unconditional jump pairing for the `0x41` case.
 
-The static bodies, callers, callees, record widths, and field accesses support
-these cautious aliases:
+Wave 4 does not permit a hybrid body fallback for this large target. The
+strongest exact-length PURE_C source is preserved at
+`docs/archive/matching-c-candidates/2026-09-04-func_002159D0-b64e0169ad.c`;
+the active assembly remains the sole owner.
 
-| Function | Evidence class | Proposed alias | Static basis |
-|---|---|---|---|
-| `func_002158E4` | `SUPPORTED_ALIAS` | `battle_state_reinitialize_from_snapshot` | snapshots the battle owner, runs the reinitializer, restores selected ranges, frees the snapshot, and synchronizes actors |
-| `func_002159D0` | `SUPPORTED_ALIAS` | `battle_action_stream_prepare_interrupt_boundary` | scans and rewrites future stream records, installs a `0x41` boundary, and changes selected-actor interrupt state |
-| `func_00215CF0` | `SUPPORTED_ALIAS` | `battle_interrupt_menu_update` | dispatches interrupt/menu states, controller input, UI resources, and stream preparation |
-| `func_00217BA8` | `SUPPORTED_ALIAS` | `battle_interrupt_controller_update` | initializes and animates the interrupt window, gates input, invokes preparation, and advances its timer |
-| `func_0021C3B0` | `SUPPORTED_ALIAS` | `battle_actor_state_sync` | iterates 20 actor slots and writes actor state into the persistent record tables |
+### `func_00217BA8`
 
-These are not `CANONICAL` names. No symbol rename or new absolute linker alias
-is retained by this work.
+The continuation corrected the preamble, scalar widths, numeric globals,
+allocator prototype, mode branch, timer arithmetic, control-flow orientation,
+and relocation-bearing operands. After masking only recognized relocation
+fields, every target word matches except offsets `0x1C4`, `0x1C8`, and
+`0x1CC`, which are the identical allocator/global-load scheduler tie. The
+strongest exact-length PURE_C source is preserved at
+`docs/archive/matching-c-candidates/2026-09-04-func_00217BA8-b4df0a7d7f.c`;
+the active assembly remains the sole owner.
+
+### `func_00215CF0`
+
+The continuation reduced the earlier deficit from 420 bytes / 105 instructions
+to 164 bytes / 41 instructions. It restored the missing `0x100`-byte local
+text buffer and three distinct floating-point sentinel comparisons, replaced
+numeric accesses and provisional library calls with typed symbols, recovered
+the retail `0x140` frame and three-register save set, lowered the state selector
+as the retail branch chain, and relocated the shared tails after states 10 and
+11.
+
+The remaining mismatch is not a relocation or register-allocation-only issue:
+the workbench reports 170 blocks versus retail's 177, later source/CFG shape is
+still absent, and KMC selects different legal delay-slot schedules in the
+shared snapshot and sentinel blocks. The stronger PURE_C source is preserved
+at `docs/archive/matching-c-candidates/2026-09-04-func_00215CF0-fae761956c.c`;
+the active assembly remains the sole owner.
 
 ## Verification
 
-The final standalone source-policy audit passed before the one wave-end full
-verifier. The complete verifier then passed on the restored canonical tree:
+Following the instruction not to run a full ROM build per remaining function,
+all remaining iterations used direct KMC/object workbench comparisons. After
+all five dispositions were final, exactly one wave-end full verifier and one
+status command were run:
 
 ```text
-node tools/source_policy.js
 node tools/verify.js
 
 Baserom identity ........... PASS
@@ -228,37 +162,69 @@ Relocations ................ PASS
 Target bytes ............... EXACT
 Full ROM ................... EXACT
 
-PURE_C exact ............... 459 functions / 31904 bytes
-HYBRID_C exact ............. 62 functions / 33724 bytes
+PURE_C exact ............... 460 functions / 32416 bytes
+HYBRID_C exact ............. 63 functions / 33960 bytes
 
 RESULT: EXACT BASELINE
 ```
 
-The generated verification report SHA-256 was
-`D6C407027EF493F9FCD7519B4E1E5CEB74B05C7A77FD4B4E31EC136A72EA55E4`.
-The immediately following generated status was:
+The generated verification report
+`build/current/verification.json` has SHA-256
+`CA755EC65A7893C4EA82BF8B0DDC213D1DDAC5FB646154975D934B1DB38C8FC9`.
+The one generated status pass reported:
 
 ```text
 Retail ROM ................... EXACT
-Exact PURE_C ................. 459 functions / 31904 bytes
-Exact HYBRID_C ............... 62 functions / 33724 bytes
-Assembly owners remaining .... 5663 / 6444944 bytes
+Exact PURE_C ................. 460 functions / 32416 bytes
+Exact HYBRID_C ............... 63 functions / 33960 bytes
+Assembly owners remaining .... 5661 / 6444196 bytes
 Other/data owners ............ 1058 / 35432596 bytes
 UNKNOWN classifications ...... 0
 ```
 
-## Hybrid extent and ownership
+Relative to Wave 4 entry, the accepted baseline gained one matching-C function
+and 512 matching-C bytes, plus one exact 236-byte HYBRID_C owner. The two
+promotions removed two assembly owners and 748 assembly-owned bytes while
+preserving an exact retail ROM.
 
-Wave 4 added no inline assembly, register-asm binding, raw assembler injection,
-or other hybrid mechanism: hybrid extent is **zero bytes**. All preserved
-sources are PURE_C research candidates, not active translation units. Each
-original assembly target remains available and remains the sole linked owner
-of its accepted section. The final exact baseline therefore makes no new
-matching-function or matching-byte claim for this wave.
+## Commits
 
-## Director handoff
+- `b7e13ffe56261519b41206b24db7951f5ab45ebf` — initial Wave 4
+  workbench candidates and evidence dossiers
+- `149befa8d1cb9f2e7810f05c0f502f3e88a99d8c` — exact bounded-hybrid
+  `func_002158E4` promotion
+- `16d1b997cb2ceeb372ee33aa8f9ad7e8415dac65` — exact PURE_C
+  `func_0021C3B0` promotion
+- `7f4c82b49d22e225429b98a505806a463375c126` — stronger blocked
+  `func_002159D0` candidate
+- `8c0936527c16a5d239fa8460e4c4374f2fc2c8a0` — near-exact blocked
+  `func_00217BA8` candidate
+- `978ec4731ad6e36cdb1ba28048a88185fc7feb82` — stronger blocked
+  `func_00215CF0` candidate
 
-The Director should treat Wave 4 as a completed five-target attempt with no
-promotion. Review the near-exact shared helper first, preserve the dependency
-order above when scheduling a reopen, and retain all accepted structural owners
-unless a separately scoped structural task proves a change.
+The final task-report commit is recorded in the Director handoff. No commits
+were pushed.
+
+## Symbol-name sidecar
+
+The static bodies, callers, callees, record widths, and field accesses support
+these cautious aliases:
+
+| Function | Evidence class | Proposed alias |
+|---|---|---|
+| `func_002158E4` | `SUPPORTED_ALIAS` | `battle_state_reinitialize_from_snapshot` |
+| `func_002159D0` | `SUPPORTED_ALIAS` | `battle_action_stream_prepare_interrupt_boundary` |
+| `func_00215CF0` | `SUPPORTED_ALIAS` | `battle_interrupt_menu_update` |
+| `func_00217BA8` | `SUPPORTED_ALIAS` | `battle_interrupt_controller_update` |
+| `func_0021C3B0` | `SUPPORTED_ALIAS` | `battle_actor_state_sync` |
+
+These are not `CANONICAL` names. No symbol rename or new absolute linker alias
+is retained by this work.
+
+## Director disposition
+
+Wave 4 is complete. Integrate the branch commits in order, retain the three
+remaining ASM owners, do not count `func_002158E4` as matching C, and treat the
+generated status above as authoritative. A future PURE_C reopen should start
+with the documented scheduler tie before revisiting the two near-exact large
+targets.
