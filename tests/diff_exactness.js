@@ -197,8 +197,23 @@ function main() {
   rejections.push(expectRejection('malformed section range', /section bytes exceed file/, () => {
     compareLinkedTargetBytes(target, badRangeElf, expected);
   }));
-  rejections.push(expectRejection('wrong expected identity', /expected identity drift/, () => {
+  rejections.push(expectRejection('wrong canonical owner identity', /raw linked-target owner identity drift/, () => {
     compareLinkedTargetBytes(target, expectedElf, aliasEquivalent);
+  }));
+  const wrongAggregateIdentity = {
+    ...target,
+    expectedTextSha256: sha256(aliasEquivalent),
+    textOwners: [{
+      ...target,
+      ownerIndex: 0,
+      logicalOffset: 0,
+      logicalEnd: target.bytes,
+      vramEndNumber: target.vramStartNumber + target.bytes,
+      expectedTextSha256: target.expectedTextSha256,
+    }],
+  };
+  rejections.push(expectRejection('wrong aggregate expected identity', /raw linked-target expected identity drift/, () => {
+    compareLinkedTargetBytes(wrongAggregateIdentity, expectedElf, expected);
   }));
   rejections.push(expectRejection('malformed asm-differ result', /valid nonempty asm-differ score/, () => {
     summarizeTargetComparison({ rows: [], max_score: 0, current_score: 0 }, exactRaw, 'malformed fixture');
