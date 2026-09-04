@@ -4,13 +4,14 @@ This file is the active queue only. Changing counts belong in `node tools/status
 
 ## Matching methods follow-up
 
-Use the [matching methods improvement results](Plans/matching-methods-improvement-20260904.md)
-for bounded follow-ups: profile the remaining warm-diff cost, and use the documented research-compiler
-trace to resolve the scheduler's internal cost/LUID observations before proposing another family-wide
-source recipe. Preserve the pinned production compiler and all matching acceptance rules.
+Use the [matching methods improvement plan](Plans/matching-methods-improvement-20260904.md)
+for the active shared-header compilation-input/dependency work and its structural acceptance gates.
+Warm-diff profiling is accepted; use its measured preprocessing cost to guide coherent authenticated
+reuse and measure the result. The completed research-compiler scheduler trace is in independent
+review before another bounded source experiment. Preserve the pinned production compiler and all
+matching acceptance rules.
 
-Shared interfaces require the separate preprocessing/dependency-contract prerequisite described in
-that plan. Coordinate editor changes with the native rebuild. Existing source-matching targets remain
+Coordinate editor changes with the native rebuild. Existing source-matching targets remain
 assigned to their current tasks; optional tooling hardening does not block their normal matching loop.
 
 ## Structural follow-up: audit remaining manual-load slabs

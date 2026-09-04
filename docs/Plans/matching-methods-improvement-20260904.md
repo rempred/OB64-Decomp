@@ -71,15 +71,41 @@ Ordinary Git and the task conversations remain the integration record.
 
 ## Follow-up order
 
-1. Profile the remaining warm-diff time before another performance change, and use the bounded
-   [scheduler tracing experiment](../matching-c/allocator-owner-order-study.md#next-discriminating-experiment)
-   to resolve the internal cost/LUID observations before proposing another family-wide source recipe.
-   Preserve the existing exact baseline and distinguish target-local success from family generalization.
+Joe authorized the remaining implementation on 2026-09-04. Astra directs this work.
+The first wave is committed and pushed through `80c817e`.
+
+| Follow-up | Owner | Current scope |
+|---|---|---|
+| Warm-diff profiling | Existing authenticated-object-reuse task | Accepted through `e03a7dd`; three warm runs average 49.0 seconds, with 19.1 seconds in source classification/preprocessing. Use this measurement to assess the next optimization. |
+| Scheduler trace | Existing allocator-study task | Six-case parity-checked result committed at `352f5d4` and in independent review; no new source experiment has started. |
+| Shared-header support | Authenticated headers and shared-source pilot | Implementation released after profiling review: authenticated compilation inputs and dependencies, header-free compatibility gate, then the four-function pilot with structural audit and independent review. |
+| Native consumables review | Rebuild Director | Phase 5B review returned three bounded defects in provenance, description lengths and healing-token synchronization; the original implementer is correcting them in the existing editor worktree. |
+| Editor startup and export structure | Astra, after the accepted Phase 5B handback | Measure startup and ROM initialization, then defer justified dataset loading and extract one coherent export responsibility. |
+
+The existing implementation owners retain technical design authority. Reviewers independently
+identify defects in the assigned result; the director decides release scope. Optional hardening
+and unrelated pre-existing issues remain separate follow-ups. A completed result receives a
+finite review, and corrections return to its implementer.
+
+The matching investigations may proceed beside the separate native review. Timed benchmarks
+use a coordinated quiet interval. Structural build changes and editor changes wait for their
+respective dependencies and explicit file ownership. No new branch or worktree is required.
+
+The native review consumes its existing frozen decomp worktree, not decomp `main`, so it does
+not block shared-header implementation. High Attack Wave 5 matching has resumed in its existing
+worktree; integration onto `main` remains coordinated around the structural input-contract change.
+
+1. Use the accepted [warm-diff profile](../matching-c/warm-diff-profile.md) to guide one justified
+   optimization. Coordinate any classification reuse with the shared-header input/dependency
+   contract rather than developing competing cache paths, and measure the resulting effect.
+   Complete the finite review of the [scheduler trace](../matching-c/allocator-scheduler-trace.md)
+   before selecting another bounded source experiment. Preserve the exact baseline and distinguish
+   target-local success from family generalization.
 2. Establish an authenticated preprocessing/dependency contract before a shared-interface pilot.
    Current production passes self-contained C directly to KMC cc1, and header dependencies are not
    established in build/cache identity. Treat that prerequisite as structural work with audit and
    independent review. The four identical class-record views in `func_00043e88`, `func_00043edc`,
-   `func_00043f30` and `func_00043f84` are a possible later pilot; other partial declarations must
+   `func_00043f30` and `func_00043f84` are the assigned pilot; other partial declarations must
    not be combined from superficial similarity. Preserve cautious names and exact output.
 3. Coordinate with the native editor rebuild before changing overlapping editor files. Measure
    startup/download/parse cost, then implement bounded deferred dataset loading if the measurements
