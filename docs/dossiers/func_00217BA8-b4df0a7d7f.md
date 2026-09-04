@@ -68,5 +68,7 @@ Linked target SHA-256 ...... FE23E341C7625CCBE953CE268D858A5ACF66FC2C012F4A8C0D8
 ```
 
 The target source-policy audit reports `HYBRID_C` with no `UNKNOWN`, `ASM`, or
-misclassified result. Consolidated full-ROM verification is deferred until all
-three Wave 4 continuation targets have received sustained work.
+misclassified result. The consolidated verifier subsequently passed ownership,
+placement, relocations, exact target bytes, and exact full-ROM identity. Its
+generated report SHA-256 is
+`5E01256BAD8D80B04BF7AF5FD6E2250C45589F8793AC1E2652A859D3B818722F`.
