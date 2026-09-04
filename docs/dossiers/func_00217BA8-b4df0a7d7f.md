@@ -1,51 +1,72 @@
-# func_00217BA8: Preserved Matching-Workbench Candidate
+# func_00217BA8: Exact Hybrid Promotion and PURE_C Exhaustion
 
 ## Status
 
-This source is a research candidate. The original assembly remains the accepted owner.
+`func_00217BA8` is an exact `HYBRID_C` owner. It is not matching C and does not
+contribute to the `PURE_C` count.
 
-- Candidate: `B4DF0A7D7F267763C4348F00FC58F314474C6AFC8E7D57783629D3D7DC8E29F7`
-- Target: `func_00217BA8` at ROM `0x217BA8`
-- Source: `docs/archive/matching-c-candidates/2026-09-04-func_00217BA8-b4df0a7d7f.c`
-- Source SHA-256: `00168420BDA77475FA8045AB47DA8695508AD1C6F9B8D017CA2BD6CD30331A99`
-- Latest scratch class: `cfg-mismatch`
-- Latest scratch score: `70.99`
-- Scratch extent: `1032` bytes / `258` instructions (exact target extent)
-- Recognized scratch relocations: `107`
-- Scratch artifact: `build/matching/runs/84B9D676761EBFCE1C4D5C8473B8F1F8531FF92E34E619746C6AB787D99AEDEE`
+- Accepted range: `0x00217BA8..0x00217FB0` (`1032` bytes / `258` instructions)
+- Active source: `src/battle/func_00217BA8.c`
+- Active source SHA-256: `7571288045AADC6FD45045A9CBFD28BACB7D74DC800C3F8BBFDDD66943ACAF09`
+- Target and linked SHA-256: `FE23E341C7625CCBE953CE268D858A5ACF66FC2C012F4A8C0D82802A1F8E63D8`
+- Relocation contract: `107` records, `MATCH`
+- Preserved best PURE_C candidate: `B4DF0A7D7F267763C4348F00FC58F314474C6AFC8E7D57783629D3D7DC8E29F7`
+- Preserved PURE_C source: `docs/archive/matching-c-candidates/2026-09-04-func_00217BA8-b4df0a7d7f.c`
 
-## Preservation reason
+## PURE_C exhaustion
 
-Exact-length PURE_C reconstruction. After relocation-bearing fields are excluded, all target words match except offsets 0x1C4, 0x1C8, and 0x1CC: KMC saves the allocator return in s0 before loading D_801CE8BC, while retail loads the owner first and then saves v0. This is the identical scheduler tie exhaustively established for func_002158E4; large-target hybrid fallback is outside Wave 4 scope, so original ASM ownership remains active.
+The preserved PURE_C candidate has the exact accepted extent, stack frame,
+control-flow orientation, opcode sequence, and behavior. Once its complete 107
+relocation records are masked, only offsets `0x1C4`, `0x1C8`, and `0x1CC`
+differ: KMC saves the allocator result in `$s0` before loading `D_801CE8BC`,
+whereas retail loads the owner first and then saves `$v0`.
 
-The earlier candidate's missing two-word preamble, scalar-width errors, numeric
-global accesses, allocator prototype, mode branch, and timer arithmetic were all
-corrected. The final scratch object has the retail instruction count, stack frame,
-control-flow orientation, opcode sequence, and non-relocation words everywhere
-outside the three-word scheduler tie. Re-testing the broad source-shape families
-already exhausted for `func_002158E4` would duplicate the same proven compiler
-constraint rather than add new evidence.
+This is the same scheduler tie established independently for
+`func_002158E4`. The Wave 4 continuation nevertheless repeated representative
+source families in this function's full register-pressure context:
 
-## Evidence boundary
+- direct allocator-result assignment versus an intermediate allocation;
+- owner assignment as a separate statement, a direct global argument, and an
+  argument-side assignment;
+- immediate versus deferred snapshot assignment after the owner load;
+- `register` owner storage and `void *` versus `u8 *` owner/snapshot types;
+- `void *` versus typed allocator return declarations.
 
-Scratch object comparison does not prove canonical linker ownership, relocation resolution, target bytes, or full-ROM identity. Resume through the normal diff and verification workflow.
+Direct-global and argument-side owner forms changed additional instructions.
+All semantically clean local-owner forms collapsed to the identical three-word
+tie. This confirms the broader type, lifetime, evaluation-order, volatility,
+aliasing, aggregate, and control-flow search already captured in
+`docs/dossiers/func_002158E4-a493a3ded3.md`: both operations are ready after
+the allocator call, and KMC consistently prioritizes the long-lived return
+value save.
 
-## Workbench-reported first difference
+## Bounded compiler-influence fallback
 
-The generic workbench reports unresolved relocation fields first because the
-target is still ASM-owned and therefore has no accepted C relocation manifest.
-The bounded comparison above masks only the fields identified by the candidate's
-complete relocation records; it leaves the three scheduler words as the sole
-machine-shape differences.
+The active source uses one extended-assembly statement with an empty template.
+It ties the allocator value to the long-lived snapshot output and presents the
+owner as a simultaneous input. The statement emits no instruction and
+implements no behavior; the entire 1032-byte target remains compiler output
+from the surrounding C. Its only effect is to make KMC schedule the owner load
+before the allocator-result save.
 
-```json
-{
-  "actual": "lui $v1, 0x0000",
-  "actualWord": "0x3C030000",
-  "expected": "lui $v1, 0x801D",
-  "expectedWord": "0x3C03801D",
-  "index": 0,
-  "offset": 0,
-  "pc": 2149402840
-}
+This remains an assembler mechanism under source policy, so the translation
+unit is truthfully `HYBRID_C`. A future PURE_C reopen requires a source shape
+or compiler capability that represents the same dependency without an
+assembler escape hatch.
+
+## Canonical acceptance
+
+Canonical `node tools/diff.js func_00217BA8` reported:
+
+```text
+Source class ............... HYBRID_C
+Decoded instruction rows ... EXACT
+Raw linked bytes ........... EXACT
+Differing bytes ............ 0
+Relocation contract ........ MATCH (107 records)
+Linked target SHA-256 ...... FE23E341C7625CCBE953CE268D858A5ACF66FC2C012F4A8C0D82802A1F8E63D8
 ```
+
+The target source-policy audit reports `HYBRID_C` with no `UNKNOWN`, `ASM`, or
+misclassified result. Consolidated full-ROM verification is deferred until all
+three Wave 4 continuation targets have received sustained work.
