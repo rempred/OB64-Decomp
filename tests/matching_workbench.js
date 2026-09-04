@@ -52,6 +52,7 @@ const {
   MATCHING_ROOT,
   candidateRecord,
   compileArtifactDirectory,
+  compilePublicationRequiresReauthentication,
 } = require('../tools/lib/matching/compiler');
 const { compareProbes } = require('../tools/lib/matching/probe');
 const {
@@ -110,7 +111,7 @@ function classifierTests() {
   const nop = 0;
   const exact = bufferFromWords([rType(4, 5, 2, 0x21), jrRa, nop]);
   const exactComparison = compareMips(exact, Buffer.from(exact), { start: 0x80000000 });
-  assert(exactComparison.schemaVersion === 2 && exactComparison.primaryClass === 'exact-bytes', 'exact bytes were not schema-v2 exact');
+  assert(exactComparison.schemaVersion === 3 && exactComparison.primaryClass === 'exact-bytes', 'exact bytes were not schema-v3 exact');
   assert(exactComparison.differingInstructions === 0 && exactComparison.differingBytes === 0, 'exact mismatch counts were nonzero');
   assert(exactComparison.relocationMaskedExact, 'exact bytes lost relocation-masked compatibility');
   assert(exactComparison.labels[0].category === 'exact', 'exact evidence label was missing');
@@ -850,11 +851,33 @@ function sweepParallelismTests() {
   };
   const identityTargets = [{ targetId: 'TARGET-1' }, { targetId: 'TARGET-2' }];
   const identityM2c = { commit: 'COMMIT', tree: 'TREE' };
-  const identityOptions = { compile: true, generateContext: false, useContext: false, runtimeContext: false };
+  const identityOptions = {
+    compile: true,
+    generateContext: false,
+    useContext: false,
+    runtimeContext: false,
+    comparisonCurrentFingerprint: 'CURRENT-A',
+    comparisonEnvironmentId: 'ENVIRONMENT-A',
+  };
   const identityVariants = selectSweepVariants(identityWorkbench, ['structured-return-flow']);
   const oneJob = buildSweepIdentity(identityWorkbench, { maxSize: 256 }, identityTargets, identityVariants, { ...identityOptions, jobs: 1 }, identityM2c);
   const eightJobs = buildSweepIdentity(identityWorkbench, { maxSize: 256 }, identityTargets, identityVariants, { ...identityOptions, jobs: 8 }, identityM2c);
   assert(oneJob.sweepId === eightJobs.sweepId, 'worker count fragmented sweep identity');
+  assert(oneJob.normalizedSelector.generationContract.schemaVersion === 2
+      && oneJob.normalizedSelector.summaryContract === 5
+      && oneJob.normalizedSelector.generationContract.comparison.contract === 1
+      && oneJob.normalizedSelector.generationContract.comparison.currentFingerprint === 'CURRENT-A'
+      && oneJob.normalizedSelector.generationContract.comparison.environmentId === 'ENVIRONMENT-A'
+      && /^[A-F0-9]{64}$/.test(oneJob.normalizedSelector.generationContract.comparison.algorithmId),
+  'comparison algorithm identity was omitted from sweep invalidation');
+  const changedCurrent = buildSweepIdentity(identityWorkbench, { maxSize: 256 }, identityTargets,
+    identityVariants, { ...identityOptions, comparisonCurrentFingerprint: 'CURRENT-B' }, identityM2c);
+  assert(changedCurrent.sweepId !== oneJob.sweepId,
+    'changed CURRENT diagnostic provenance was omitted from sweep invalidation');
+  const changedEnvironment = buildSweepIdentity(identityWorkbench, { maxSize: 256 }, identityTargets,
+    identityVariants, { ...identityOptions, comparisonEnvironmentId: 'ENVIRONMENT-B' }, identityM2c);
+  assert(changedEnvironment.sweepId !== oneJob.sweepId,
+    'changed diagnostic build environment was omitted from sweep invalidation');
   const runtime = buildSweepIdentity(identityWorkbench, { maxSize: 256 }, identityTargets, identityVariants, { ...identityOptions, runtimeContext: true }, identityM2c);
   assert(runtime.sweepId !== oneJob.sweepId, 'runtime context was omitted from sweep identity');
   const changedWorkbench = JSON.parse(JSON.stringify(identityWorkbench));
@@ -979,7 +1002,15 @@ function storeTests() {
     assert(families.length === 1 && families[0].group_id === 'G1', 'failed family replacement partially altered the store');
 
     const sweep = {
-      sweepId: 'SWEEP-A', modelId: 'MODEL-A', selector: { fixture: true }, status: 'invalid',
+      sweepId: 'SWEEP-A', modelId: 'MODEL-A', selector: {
+        fixture: true,
+        compile: true,
+        generationContract: {
+          comparison: {
+            algorithmId: 'ALGORITHM-A', currentFingerprint: 'CURRENT-A', environmentId: 'ENVIRONMENT-A',
+          },
+        },
+      }, status: 'invalid',
       summary: { processed: 1 }, startedAt: '2026-08-22T00:00:00.000Z', finishedAt: '2026-08-22T00:00:01.000Z',
     };
     requestStore({ action: 'put_sweep', record: sweep }, options);
@@ -990,6 +1021,41 @@ function storeTests() {
     const restartedSweep = requestStore({ action: 'query', name: 'sweep_by_id', args: { sweepId: 'SWEEP-A' } }, options);
     assert(restartedSweep.started_at === '2026-08-22T01:00:00.000Z' && restartedSweep.finished_at === null,
       'restarted invalid sweep retained the prior attempt timing');
+    assert(restartedSweep.comparison_stale === 1 && restartedSweep.summary === null,
+      'unscoped compiled sweep exposed score-bearing summary evidence');
+    const currentSweep = requestStore({ action: 'query', name: 'sweep_by_id', args: {
+      sweepId: 'SWEEP-A', comparisonAlgorithmId: 'ALGORITHM-A', diagnosticCurrentFingerprint: 'CURRENT-A',
+      diagnosticEnvironmentId: 'ENVIRONMENT-A',
+    } }, options);
+    assert(currentSweep.comparison_stale === 0 && currentSweep.summary.processed === 0,
+      'current compiled sweep summary was suppressed');
+    for (const provenance of [
+      { comparisonAlgorithmId: 'ALGORITHM-B', diagnosticCurrentFingerprint: 'CURRENT-A', diagnosticEnvironmentId: 'ENVIRONMENT-A' },
+      { comparisonAlgorithmId: 'ALGORITHM-A', diagnosticCurrentFingerprint: 'CURRENT-B', diagnosticEnvironmentId: 'ENVIRONMENT-A' },
+      { comparisonAlgorithmId: 'ALGORITHM-A', diagnosticCurrentFingerprint: 'CURRENT-A', diagnosticEnvironmentId: 'ENVIRONMENT-B' },
+    ]) {
+      const staleSweep = requestStore({ action: 'query', name: 'sweep_by_id', args: {
+        sweepId: 'SWEEP-A', ...provenance,
+      } }, options);
+      const staleSweepList = requestStore({ action: 'query', name: 'sweeps', args: {
+        modelId: 'MODEL-A', limit: 20, ...provenance,
+      } }, options).find((row) => row.sweep_id === 'SWEEP-A');
+      assert([staleSweep, staleSweepList].every((row) => (
+        row.comparison_stale === 1 && row.summary === null
+      )), 'stale algorithm/CURRENT sweep summary remained score-bearing');
+    }
+    requestStore({ action: 'put_sweep', record: {
+      ...sweep,
+      sweepId: 'SWEEP-GENERATE-ONLY',
+      selector: { compile: false },
+      status: 'complete',
+      summary: { generated: 1 },
+    } }, options);
+    const generationOnlySweep = requestStore({
+      action: 'query', name: 'sweep_by_id', args: { sweepId: 'SWEEP-GENERATE-ONLY' },
+    }, options);
+    assert(generationOnlySweep.comparison_stale === 0 && generationOnlySweep.summary.generated === 1,
+      'generation-only sweep was incorrectly treated as stale comparison evidence');
 
     const failedCompile = {
       runId: 'RUN-FAILED', candidateId: 'CANDIDATE-A', cacheKey: 'CACHE-A', status: 'failed',
@@ -1014,6 +1080,105 @@ function storeTests() {
     } }, options);
     assert(!successfulRetry.cached && successfulRetry.run.status === 'compiled', 'failed compile cache prevented a repaired retry');
     assert(requestStore({ action: 'query', name: 'candidate_runs', args: { candidateId: 'CANDIDATE-A', limit: 20 } }, options).length === 2, 'compile retry did not retain the failed attempt');
+    requestStore({ action: 'put_comparison', record: {
+      comparisonId: 'COMPARISON-LEGACY', runId: 'RUN-PASS', primaryClass: 'cfg-mismatch',
+      exactBytes: false, relocationMaskedExact: false, score: 99.99,
+      details: { schemaVersion: 2, primaryClass: 'cfg-mismatch', score: 99.99 },
+      createdAt: '2026-08-22T00:00:02.100Z',
+    } }, options);
+    const currentAlgorithm = 'ALGORITHM-A';
+    const currentFingerprint = 'CURRENT-A';
+    const currentEnvironment = 'ENVIRONMENT-A';
+    const staleBest = requestStore({ action: 'query', name: 'best', args: { modelId: 'MODEL-A', symbol: 'fixture', limit: 20, includeDetails: true, comparisonAlgorithmId: currentAlgorithm, diagnosticCurrentFingerprint: currentFingerprint, diagnosticEnvironmentId: currentEnvironment } }, options)
+      .find((row) => row.run_id === 'RUN-PASS');
+    const staleHistory = requestStore({ action: 'query', name: 'history', args: { modelId: 'MODEL-A', symbol: 'fixture', limit: 20, includeDetails: true, comparisonAlgorithmId: currentAlgorithm, diagnosticCurrentFingerprint: currentFingerprint, diagnosticEnvironmentId: currentEnvironment } }, options)
+      .find((row) => row.run_id === 'RUN-PASS');
+    const staleClassify = requestStore({ action: 'query', name: 'candidate_runs', args: { candidateId: 'CANDIDATE-A', limit: 20, comparisonAlgorithmId: currentAlgorithm, diagnosticCurrentFingerprint: currentFingerprint, diagnosticEnvironmentId: currentEnvironment } }, options)
+      .find((row) => row.run_id === 'RUN-PASS');
+    const staleRank = requestStore({ action: 'query', name: 'compilation_summaries', args: { modelId: 'MODEL-A', comparisonAlgorithmId: currentAlgorithm, diagnosticCurrentFingerprint: currentFingerprint, diagnosticEnvironmentId: currentEnvironment } }, options)
+      .find((row) => row.run_id === 'RUN-PASS');
+    assert([staleBest, staleHistory, staleClassify, staleRank].every((row) => (
+      row.comparison_stale === 1 && row.primary_class === null && row.score === null
+    )), 'legacy comparison semantics influenced best/history/classify/rank query evidence');
+    const refreshedComparison = requestStore({ action: 'replace_comparison', record: {
+      comparisonId: 'COMPARISON-CURRENT', runId: 'RUN-PASS', primaryClass: 'immediate-or-signedness',
+      exactBytes: false, relocationMaskedExact: false, score: 42.5,
+      details: {
+        schemaVersion: 3,
+        comparisonContract: 1,
+        comparisonAlgorithmId: currentAlgorithm,
+        diagnosticCurrentFingerprint: currentFingerprint,
+        diagnosticEnvironmentConsulted: true,
+        diagnosticEnvironmentId: currentEnvironment,
+        acceptanceEligible: false,
+        diagnosticExactBytes: false,
+        rawObjectComparison: { exactBytes: false },
+      },
+      createdAt: '2026-08-22T00:00:02.200Z',
+    } }, options);
+    assert(refreshedComparison.comparison_id === 'COMPARISON-CURRENT'
+      && requestStore({ action: 'query', name: 'status', args: { modelId: 'MODEL-A' } }, options).compilations === 2,
+    'comparison refresh did not preserve the authentic compile run');
+    const currentRank = requestStore({ action: 'query', name: 'compilation_summaries', args: { modelId: 'MODEL-A', comparisonAlgorithmId: currentAlgorithm, diagnosticCurrentFingerprint: currentFingerprint, diagnosticEnvironmentId: currentEnvironment } }, options)
+      .find((row) => row.candidate_id === 'CANDIDATE-A' && row.primary_class);
+    assert(currentRank.primary_class === 'immediate-or-signedness' && currentRank.score === 42.5
+      && currentRank.comparison_stale === 0,
+    'current comparison contract did not replace stale ranking evidence');
+    const publicationRace = requestStore({ action: 'put_compile_result', compile: {
+      ...failedCompile,
+      runId: 'RUN-RACE-LOSER',
+      status: 'compiled',
+      objectText: Buffer.alloc(4).toString('base64'),
+      relocations: [],
+      createdAt: '2026-08-22T00:00:02.300Z',
+    }, comparison: {
+      comparisonId: 'COMPARISON-RACE-LOSER', runId: 'RUN-RACE-LOSER',
+      primaryClass: 'exact-bytes', exactBytes: true, relocationMaskedExact: true, score: 100,
+      details: {
+        schemaVersion: 3, comparisonContract: 1, comparisonAlgorithmId: 'ALGORITHM-B',
+        diagnosticCurrentFingerprint: 'CURRENT-B', diagnosticEnvironmentConsulted: true,
+        diagnosticEnvironmentId: 'ENVIRONMENT-B', acceptanceEligible: false,
+        diagnosticExactBytes: true, rawObjectComparison: { exactBytes: true },
+      },
+      createdAt: '2026-08-22T00:00:02.300Z',
+    } }, options);
+    assert(publicationRace.cached && publicationRace.run.run_id === 'RUN-PASS'
+      && publicationRace.comparison.comparison_id === 'COMPARISON-CURRENT'
+      && compilePublicationRequiresReauthentication(publicationRace),
+    'first-publisher compile collision did not require comparison reauthentication');
+    const unscopedComparison = requestStore({
+      action: 'query', name: 'candidate_runs', args: { candidateId: 'CANDIDATE-A', limit: 20 },
+    }, options).find((row) => row.run_id === 'RUN-PASS');
+    assert(unscopedComparison.comparison_stale === 1
+      && unscopedComparison.primary_class === null && unscopedComparison.score === null,
+    'score-bearing query without full comparison provenance admitted a stored score');
+    const changedAlgorithmRows = [
+      requestStore({ action: 'query', name: 'best', args: { modelId: 'MODEL-A', symbol: 'fixture', limit: 20, comparisonAlgorithmId: 'ALGORITHM-B', diagnosticCurrentFingerprint: currentFingerprint, diagnosticEnvironmentId: currentEnvironment } }, options),
+      requestStore({ action: 'query', name: 'history', args: { modelId: 'MODEL-A', symbol: 'fixture', limit: 20, comparisonAlgorithmId: 'ALGORITHM-B', diagnosticCurrentFingerprint: currentFingerprint, diagnosticEnvironmentId: currentEnvironment } }, options),
+      requestStore({ action: 'query', name: 'candidate_runs', args: { candidateId: 'CANDIDATE-A', limit: 20, comparisonAlgorithmId: 'ALGORITHM-B', diagnosticCurrentFingerprint: currentFingerprint, diagnosticEnvironmentId: currentEnvironment } }, options),
+      requestStore({ action: 'query', name: 'compilation_summaries', args: { modelId: 'MODEL-A', comparisonAlgorithmId: 'ALGORITHM-B', diagnosticCurrentFingerprint: currentFingerprint, diagnosticEnvironmentId: currentEnvironment } }, options),
+    ].map((rows) => rows.find((row) => row.run_id === 'RUN-PASS'));
+    assert(changedAlgorithmRows.every((row) => (
+      row.comparison_stale === 1 && row.primary_class === null && row.score === null
+    )), 'changed comparison algorithm influenced best/history/classify/rank evidence');
+    const changedCurrentRows = [
+      requestStore({ action: 'query', name: 'best', args: { modelId: 'MODEL-A', symbol: 'fixture', limit: 20, comparisonAlgorithmId: currentAlgorithm, diagnosticCurrentFingerprint: 'CURRENT-B', diagnosticEnvironmentId: currentEnvironment } }, options),
+      requestStore({ action: 'query', name: 'history', args: { modelId: 'MODEL-A', symbol: 'fixture', limit: 20, comparisonAlgorithmId: currentAlgorithm, diagnosticCurrentFingerprint: 'CURRENT-B', diagnosticEnvironmentId: currentEnvironment } }, options),
+      requestStore({ action: 'query', name: 'candidate_runs', args: { candidateId: 'CANDIDATE-A', limit: 20, comparisonAlgorithmId: currentAlgorithm, diagnosticCurrentFingerprint: 'CURRENT-B', diagnosticEnvironmentId: currentEnvironment } }, options),
+      requestStore({ action: 'query', name: 'compilation_summaries', args: { modelId: 'MODEL-A', comparisonAlgorithmId: currentAlgorithm, diagnosticCurrentFingerprint: 'CURRENT-B', diagnosticEnvironmentId: currentEnvironment } }, options),
+    ].map((rows) => rows.find((row) => row.run_id === 'RUN-PASS'));
+    assert(changedCurrentRows.every((row) => (
+      row.comparison_stale === 1 && row.primary_class === null && row.score === null
+    )), 'changed CURRENT provenance influenced best/history/classify/rank evidence');
+    const changedEnvironmentRows = [
+      requestStore({ action: 'query', name: 'best', args: { modelId: 'MODEL-A', symbol: 'fixture', limit: 20, comparisonAlgorithmId: currentAlgorithm, diagnosticCurrentFingerprint: currentFingerprint, diagnosticEnvironmentId: 'ENVIRONMENT-B' } }, options),
+      requestStore({ action: 'query', name: 'history', args: { modelId: 'MODEL-A', symbol: 'fixture', limit: 20, comparisonAlgorithmId: currentAlgorithm, diagnosticCurrentFingerprint: currentFingerprint, diagnosticEnvironmentId: 'ENVIRONMENT-B' } }, options),
+      requestStore({ action: 'query', name: 'candidate_runs', args: { candidateId: 'CANDIDATE-A', limit: 20, comparisonAlgorithmId: currentAlgorithm, diagnosticCurrentFingerprint: currentFingerprint, diagnosticEnvironmentId: 'ENVIRONMENT-B' } }, options),
+      requestStore({ action: 'query', name: 'compilation_summaries', args: { modelId: 'MODEL-A', comparisonAlgorithmId: currentAlgorithm, diagnosticCurrentFingerprint: currentFingerprint, diagnosticEnvironmentId: 'ENVIRONMENT-B' } }, options),
+    ].map((rows) => rows.find((row) => row.run_id === 'RUN-PASS'));
+    assert(changedEnvironmentRows.every((row) => (
+      row.comparison_stale === 1 && row.primary_class === null && row.score === null
+    )), 'changed diagnostic environment influenced best/history/classify/rank evidence');
     requestStore({ action: 'put_candidate', record: {
       candidateId: 'CANDIDATE-B', observationId: 'OBSERVATION-B', targetId: 'TARGET-A', sourceSha256: 'SOURCE-B', sourceText: 'void fixture(void) { int value; }',
       origin: 'fixture', metadata: {}, createdAt: '2026-08-22T00:00:03.000Z',
@@ -1065,10 +1230,34 @@ function acceptedModelTests() {
   const changedPlacementManifest = JSON.parse(JSON.stringify(workbench.modelManifest));
   changedPlacementManifest.conventionalBuild.sha256 = '0'.repeat(64);
   assert(digest(changedPlacementManifest) !== workbench.modelId, 'placement configuration drift did not invalidate the target model');
-  assert(workbench.targets.length === 4851, 'accepted function census drift');
-  assert(workbench.targets.filter((target) => target.symbolByteOffset === 0).length === 4848, 'ordinary target census drift');
+  const executableCodeRows = workbench.model.rows.filter((row) => (
+    row.primaryClass === 'code' && row.part && row.slices.length === 1 && row.slices[0].executable
+  ));
+  const continuationRows = executableCodeRows.filter((row) => (
+    /^func_[0-9a-f]{8}_chunk[0-9]+tail$/i.test(row.part.name)
+  ));
+  assert(workbench.targets.length === executableCodeRows.length - continuationRows.length,
+    'workbench target census does not equal accepted executable function heads minus validated continuation rows');
+  const prefixedTargets = workbench.targets.filter((target) => target.symbolByteOffset !== 0);
+  assert(workbench.targets.filter((target) => target.symbolByteOffset === 0).length
+      === workbench.targets.length - prefixedTargets.length
+      && prefixedTargets.every((target) => target.symbolByteOffset > 0
+        && target.entryVram === target.vramStart + target.symbolByteOffset),
+  'ordinary target census does not partition the accepted model by explicit pre-label owner prefixes');
   const memcpy = resolveTarget(workbench, 'memcpy_bytewise');
-  assert(memcpy.targetId === 'C4C13EF4BEF72C9F2C2B31A109F7E23760659FDFA0E7C39FA5C9E84F06AD71C7', 'target identity drifted outside an explicit target-model contract change');
+  assert(memcpy.romStart === 0x00010D70 && memcpy.romEndExclusive === 0x00010D98
+      && memcpy.vramStart === 0x80080970 && memcpy.bytes === 40
+      && memcpy.sectionName === '.ob64.r0174'
+      && memcpy.originalAssembly === 'asm/original/rev0/boot/memcpy_bytewise.s',
+  'memcpy accepted placement, extent, section, or owner provenance drifted');
+  const memcpyIdentityMetadata = Object.fromEntries(Object.entries(memcpy).filter(([key]) => ![
+    'activeMatchingSource', 'expectedBytes', 'row', 'targetId', 'modelId', 'expectedBytesSha256',
+  ].includes(key)));
+  assert(memcpy.targetId === digest({
+    modelId: workbench.modelId,
+    metadata: memcpyIdentityMetadata,
+    expectedBytesSha256: memcpy.expectedBytesSha256,
+  }), 'target identity no longer derives from the accepted model, structural metadata, and exact baserom bytes');
   const context = buildTargetContext(workbench, memcpy);
   assert(context.summary.argumentRegistersReadBeforeWrite.join(',') === '$a0,$a1,$a2', 'memcpy argument context drift');
   assert(context.fields.some((field) => field.baseArgument === 0 && field.access === 'store' && field.width === 1), 'memcpy destination-byte fact missing');
@@ -1080,11 +1269,15 @@ function acceptedModelTests() {
   assert(first.expectedBytes.equals(second.expectedBytes), 'known exact clone fixture drift');
   const straddler = resolveTarget(workbench, 'func_0021EBBC');
   assert(straddler.romStart === 0x0021EBBC && straddler.romEndExclusive === 0x002213DC && straddler.bytes === 10272, 'accepted straddler function range was truncated at a source-part boundary');
-  assert(straddler.vramStart === 0x0021EBBC && straddler.vramEndExclusive === 0x002213DC, 'accepted straddler placement is not contiguous');
+  assert(straddler.vramEndExclusive === straddler.vramStart + straddler.bytes,
+    'accepted straddler placement is not contiguous');
   assert(straddler.originalAssemblyParts?.length === 2
     && straddler.originalAssemblyParts[1].symbol === 'func_0021EBBC_chunk34tail', 'accepted straddler source-part provenance is missing');
   const straddlerAssembly = emitM2cAssembly(straddler, workbench);
-  assert(/nop # m2c analysis guard:[^\n]+\n\.L_0021F808:/.test(straddlerAssembly), 'm2c likely-branch/call-delay guard is missing');
+  const guardedLabel = `.L_${(straddler.vramStart + (0x0021F808 - straddler.romStart))
+    .toString(16).toUpperCase().padStart(8, '0')}:`;
+  assert(straddlerAssembly.includes(`nop # m2c analysis guard: keep an IDO likely-branch rewrite out of a call delay slot\n${guardedLabel}`),
+    'm2c likely-branch/call-delay guard is missing');
   const cutsceneParser = resolveTarget(workbench, 'func_00284288');
   const cutsceneEvidenceRoot = path.join(ROOT, 'docs', 'audit', 'evidence',
     '2026-08-31-func-00284288-preparatory');
@@ -1104,8 +1297,16 @@ function acceptedModelTests() {
   const archivedSha256 = crypto.createHash('sha256').update(archivedSource).digest('hex').toUpperCase();
   assert(archivedSha256 === archivedContract.sourceSha256,
     'func_00284288 archived successor source bytes changed without a new identity');
-  assert(candidateRecord(cutsceneParser, archivedSource).candidateId === archivedContract.candidateId,
-    'func_00284288 archived successor candidate ID no longer derives from its frozen bytes');
+  const replayedCandidate = candidateRecord(cutsceneParser, archivedSource);
+  assert(replayedCandidate.targetId === cutsceneParser.targetId
+      && replayedCandidate.sourceSha256 === archivedContract.sourceSha256
+      && replayedCandidate.candidateId === digest({
+        schemaVersion: 2,
+        targetId: cutsceneParser.targetId,
+        sourceSha256: archivedContract.sourceSha256,
+        sourceText: archivedSource,
+      }),
+  'func_00284288 current candidate identity no longer derives from the current target and frozen source bytes');
   const attributes = fs.readFileSync(path.join(ROOT, '.gitattributes'), 'utf8');
   assert(attributes.includes(`${archivedContract.source} whitespace=-blank-at-eol`),
     'func_00284288 archived successor lacks its exact-path whitespace policy');

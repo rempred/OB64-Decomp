@@ -252,6 +252,52 @@ def _put_comparison(connection: sqlite3.Connection, request: dict[str, Any]) -> 
     return _insert_exact(connection, "comparison", "comparison_id", record)
 
 
+def _replace_comparison(connection: sqlite3.Connection, request: dict[str, Any]) -> dict[str, Any]:
+    source = request["record"]
+    _require_keys(
+        source,
+        ("comparisonId", "runId", "primaryClass", "exactBytes", "relocationMaskedExact", "score", "details", "createdAt"),
+    )
+    run = connection.execute(
+        "SELECT status FROM compile_run WHERE run_id=?", (source["runId"],)
+    ).fetchone()
+    if run is None or run["status"] != "compiled":
+        raise ValueError(f"comparison replacement requires one compiled run: {source['runId']}")
+    collision = connection.execute(
+        "SELECT run_id FROM comparison WHERE comparison_id=?", (source["comparisonId"],)
+    ).fetchone()
+    if collision is not None and collision["run_id"] != source["runId"]:
+        raise ValueError(f"conflicting comparison identity {source['comparisonId']}")
+    record = {
+        "comparison_id": source["comparisonId"],
+        "run_id": source["runId"],
+        "primary_class": source["primaryClass"],
+        "exact_bytes": int(bool(source["exactBytes"])),
+        "relocation_masked_exact": int(bool(source["relocationMaskedExact"])),
+        "score": float(source["score"]),
+        "details_json": _json(source["details"]),
+        "created_at": source["createdAt"],
+    }
+    existing = connection.execute(
+        "SELECT comparison_id FROM comparison WHERE run_id=?", (source["runId"],)
+    ).fetchone()
+    if existing is None:
+        return _insert_exact(connection, "comparison", "comparison_id", record)
+    connection.execute(
+        """UPDATE comparison
+              SET comparison_id=?,primary_class=?,exact_bytes=?,relocation_masked_exact=?,score=?,details_json=?,created_at=?
+            WHERE run_id=?""",
+        (
+            record["comparison_id"], record["primary_class"], record["exact_bytes"],
+            record["relocation_masked_exact"], record["score"], record["details_json"],
+            record["created_at"], record["run_id"],
+        ),
+    )
+    return _row_dict(connection.execute(
+        "SELECT * FROM comparison WHERE run_id=?", (source["runId"],)
+    ).fetchone()) or {}
+
+
 def _put_compile_result(connection: sqlite3.Connection, request: dict[str, Any]) -> dict[str, Any]:
     compile_result = _put_compile(connection, {"record": request["compile"]})
     run_id = compile_result["run"]["run_id"]
@@ -355,6 +401,58 @@ def _query(connection: sqlite3.Connection, request: dict[str, Any]) -> Any:
     name = request["name"]
     args = request.get("args", {})
     limit = min(max(int(args.get("limit", 20)), 1), 200)
+    comparison_algorithm_id = args.get("comparisonAlgorithmId")
+    if comparison_algorithm_id is not None and (
+        not isinstance(comparison_algorithm_id, str) or not comparison_algorithm_id
+    ):
+        raise ValueError("comparisonAlgorithmId must be a nonempty string")
+    diagnostic_current_fingerprint = args.get("diagnosticCurrentFingerprint")
+    if diagnostic_current_fingerprint is not None and (
+        not isinstance(diagnostic_current_fingerprint, str) or not diagnostic_current_fingerprint
+    ):
+        raise ValueError("diagnosticCurrentFingerprint must be a nonempty string")
+    diagnostic_environment_id = args.get("diagnosticEnvironmentId")
+    if diagnostic_environment_id is not None and (
+        not isinstance(diagnostic_environment_id, str) or not diagnostic_environment_id
+    ):
+        raise ValueError("diagnosticEnvironmentId must be a nonempty string")
+    if (
+        comparison_algorithm_id is not None
+        and diagnostic_current_fingerprint is not None
+        and diagnostic_environment_id is not None
+    ):
+        comparison_provenance_clause = (
+            " AND json_extract(p.details_json,'$.comparisonAlgorithmId')=?"
+            " AND json_extract(p.details_json,'$.diagnosticCurrentFingerprint')=?"
+            " AND (COALESCE(json_extract(p.details_json,'$.diagnosticEnvironmentConsulted'),0)=0"
+            " OR json_extract(p.details_json,'$.diagnosticEnvironmentId')=?)"
+        )
+        comparison_provenance_params = (
+            comparison_algorithm_id, diagnostic_current_fingerprint, diagnostic_environment_id
+        )
+    else:
+        # Score-bearing comparisons are current only when the caller supplies
+        # both implementation and verified-CURRENT provenance. Runs and source
+        # history remain visible, but unscoped comparison scores stay stale.
+        comparison_provenance_clause = " AND 0"
+        comparison_provenance_params = ()
+    sweep_current_expression = "(json_extract(selector_json,'$.compile')=0"
+    sweep_current_params: tuple[Any, ...] = ()
+    if (
+        comparison_algorithm_id is not None
+        and diagnostic_current_fingerprint is not None
+        and diagnostic_environment_id is not None
+    ):
+        sweep_current_expression += (
+            " OR (json_extract(selector_json,'$.generationContract.comparison.algorithmId')=?"
+            " AND json_extract(selector_json,'$.generationContract.comparison.currentFingerprint')=?"
+            " AND json_extract(selector_json,'$.generationContract.comparison.environmentId')=?))"
+        )
+        sweep_current_params = (
+            comparison_algorithm_id, diagnostic_current_fingerprint, diagnostic_environment_id
+        )
+    else:
+        sweep_current_expression += ")"
     if name == "status":
         model_id = args.get("modelId")
         where = " WHERE model_id=?" if model_id else ""
@@ -374,24 +472,33 @@ def _query(connection: sqlite3.Connection, request: dict[str, Any]) -> Any:
         ).fetchone()[0]
         return {"targets": targets, "candidates": candidates, "compilations": compilations, "comparisons": comparisons}
     if name in ("history", "best"):
-        order = "p.exact_bytes DESC,p.relocation_masked_exact DESC,p.score DESC,r.created_at DESC" if name == "best" else "r.created_at DESC"
+        order = (
+            "CASE WHEN json_extract(p.details_json,'$.diagnosticExactBytes')=1 "
+            "AND p.primary_class='exact-bytes' THEN 1 ELSE 0 END DESC,"
+            "p.score DESC,p.exact_bytes DESC,p.relocation_masked_exact DESC,r.created_at DESC"
+            if name == "best" else "r.created_at DESC"
+        )
         model_clause = "t.model_id=? AND" if name == "best" else ""
         details_column = ",p.details_json" if args.get("includeDetails", False) else ""
         params = (
-            (args["modelId"], args["modelId"], args["symbol"], limit)
+            (args["modelId"], *comparison_provenance_params, args["modelId"], args["symbol"], limit)
             if name == "best"
-            else (args["modelId"], args["symbol"], limit)
+            else (args["modelId"], *comparison_provenance_params, args["symbol"], limit)
         )
         rows = connection.execute(
             f"""SELECT t.symbol,t.target_id,t.model_id,
                        CASE WHEN t.model_id=? THEN 0 ELSE 1 END AS is_stale,
                        c.candidate_id,c.origin,c.variant,c.source_sha256,
                        r.run_id,r.status,r.source_class,r.duration_ms,r.artifact_dir,r.created_at,
-                       p.primary_class,p.exact_bytes,p.relocation_masked_exact,p.score{details_column}
+                       p.primary_class,p.exact_bytes,p.relocation_masked_exact,p.score,
+                       CASE WHEN stored_p.run_id IS NOT NULL AND p.run_id IS NULL THEN 1 ELSE 0 END AS comparison_stale{details_column}
                   FROM target_snapshot t
                   JOIN candidate c ON c.target_id=t.target_id
                   LEFT JOIN compile_run r ON r.candidate_id=c.candidate_id
+                  LEFT JOIN comparison stored_p ON stored_p.run_id=r.run_id
                   LEFT JOIN comparison p ON p.run_id=r.run_id
+                    AND json_extract(p.details_json,'$.comparisonContract')=1
+                    {comparison_provenance_clause}
                  WHERE {model_clause} t.symbol=? COLLATE NOCASE
                  ORDER BY is_stale,{order} LIMIT ?""",
             params,
@@ -408,10 +515,15 @@ def _query(connection: sqlite3.Connection, request: dict[str, Any]) -> Any:
         return _row_dict(row)
     if name == "candidate_runs":
         rows = connection.execute(
-            """SELECT r.*,p.primary_class,p.exact_bytes,p.relocation_masked_exact,p.score,p.details_json
-                 FROM compile_run r LEFT JOIN comparison p ON p.run_id=r.run_id
+            f"""SELECT r.*,p.primary_class,p.exact_bytes,p.relocation_masked_exact,p.score,p.details_json,
+                       CASE WHEN stored_p.run_id IS NOT NULL AND p.run_id IS NULL THEN 1 ELSE 0 END AS comparison_stale
+                 FROM compile_run r
+                 LEFT JOIN comparison stored_p ON stored_p.run_id=r.run_id
+                 LEFT JOIN comparison p ON p.run_id=r.run_id
+                   AND json_extract(p.details_json,'$.comparisonContract')=1
+                   {comparison_provenance_clause}
                 WHERE r.candidate_id=? ORDER BY r.created_at DESC LIMIT ?""",
-            (args["candidateId"], limit),
+            (*comparison_provenance_params, args["candidateId"], limit),
         ).fetchall()
         return [_row_dict(row) for row in rows]
     if name == "candidate_observations":
@@ -489,27 +601,38 @@ def _query(connection: sqlite3.Connection, request: dict[str, Any]) -> Any:
         return _row_dict(row)
     if name == "compilation_summaries":
         rows = connection.execute(
-            """SELECT t.target_id,t.symbol,c.candidate_id,c.origin,c.variant,r.status,r.duration_ms,r.created_at,
+            f"""SELECT t.target_id,t.symbol,c.candidate_id,c.origin,c.variant,r.run_id,r.status,r.duration_ms,r.created_at,
                        CASE WHEN r.relocations_json IS NULL THEN NULL ELSE json_array_length(r.relocations_json) END AS relocation_count,
-                       p.primary_class,p.exact_bytes,p.relocation_masked_exact,p.score
+                       p.primary_class,p.exact_bytes,p.relocation_masked_exact,p.score,
+                       CASE WHEN stored_p.run_id IS NOT NULL AND p.run_id IS NULL THEN 1 ELSE 0 END AS comparison_stale
                   FROM target_snapshot t
                   LEFT JOIN candidate c ON c.target_id=t.target_id
                   LEFT JOIN compile_run r ON r.candidate_id=c.candidate_id
+                  LEFT JOIN comparison stored_p ON stored_p.run_id=r.run_id
                   LEFT JOIN comparison p ON p.run_id=r.run_id
+                    AND json_extract(p.details_json,'$.comparisonContract')=1
+                    {comparison_provenance_clause}
                  WHERE t.model_id=? ORDER BY t.symbol,r.created_at DESC""",
-            (args["modelId"],),
+            (*comparison_provenance_params, args["modelId"]),
         ).fetchall()
         return [_row_dict(row) for row in rows]
     if name == "sweeps":
         rows = connection.execute(
-            "SELECT * FROM sweep_run WHERE model_id=? ORDER BY started_at DESC LIMIT ?",
-            (args["modelId"], limit),
+            f"""SELECT sweep_id,model_id,selector_json,status,
+                       CASE WHEN {sweep_current_expression} THEN summary_json ELSE NULL END AS summary_json,
+                       started_at,finished_at,
+                       CASE WHEN {sweep_current_expression} THEN 0 ELSE 1 END AS comparison_stale
+                  FROM sweep_run WHERE model_id=? ORDER BY started_at DESC LIMIT ?""",
+            (*sweep_current_params, *sweep_current_params, args["modelId"], limit),
         ).fetchall()
         result = []
         include_targets = bool(args.get("includeTargets", False))
         target_limit = min(max(int(args.get("targetLimit", 5)), 0), 200)
         for row in rows:
             item = _row_dict(row) or {}
+            if "summary_json" in item:
+                item["summary"] = None
+                del item["summary_json"]
             summary = item.get("summary")
             if isinstance(summary, dict) and isinstance(summary.get("targets"), list) and not include_targets:
                 targets = summary.pop("targets")
@@ -519,9 +642,18 @@ def _query(connection: sqlite3.Connection, request: dict[str, Any]) -> Any:
         return result
     if name == "sweep_by_id":
         row = connection.execute(
-            "SELECT * FROM sweep_run WHERE sweep_id=?", (args["sweepId"],)
+            f"""SELECT sweep_id,model_id,selector_json,status,
+                       CASE WHEN {sweep_current_expression} THEN summary_json ELSE NULL END AS summary_json,
+                       started_at,finished_at,
+                       CASE WHEN {sweep_current_expression} THEN 0 ELSE 1 END AS comparison_stale
+                  FROM sweep_run WHERE sweep_id=?""",
+            (*sweep_current_params, *sweep_current_params, args["sweepId"]),
         ).fetchone()
-        return _row_dict(row)
+        result = _row_dict(row)
+        if result is not None and "summary_json" in result:
+            result["summary"] = None
+            del result["summary_json"]
+        return result
     raise ValueError(f"unknown query: {name}")
 
 
@@ -539,6 +671,8 @@ def dispatch(connection: sqlite3.Connection, request: dict[str, Any]) -> Any:
         return _put_compile(connection, request)
     if action == "put_comparison":
         return _put_comparison(connection, request)
+    if action == "replace_comparison":
+        return _replace_comparison(connection, request)
     if action == "put_compile_result":
         return _put_compile_result(connection, request)
     if action == "put_context":

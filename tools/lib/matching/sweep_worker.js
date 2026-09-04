@@ -2,6 +2,7 @@
 
 const { parentPort, workerData } = require('worker_threads');
 const { prepareCompilerSession } = require('./compiler');
+const { loadDiagnosticEnvironment } = require('./diagnostic_link');
 const { buildContextIndex } = require('./context');
 const { prepareAndCompile, validateM2cSnapshot } = require('./m2c');
 const { loadWorkbenchModel } = require('./target_model');
@@ -28,6 +29,18 @@ function initialize() {
   }
   assertSweepGenerationContract(workbench, variants, workerData, workerData.m2c, workerData.generationContractId);
   const compilerSession = workerData.compile ? prepareCompilerSession() : null;
+  if (compilerSession
+      && compilerSession.context.currentFingerprint !== workerData.comparisonCurrentFingerprint) {
+    const error = new Error('parallel sweep worker CURRENT provenance differs from the parent sweep contract');
+    error.code = 'SWEEP_INPUT_DRIFT';
+    throw error;
+  }
+  if (compilerSession
+      && loadDiagnosticEnvironment(compilerSession).identity !== workerData.comparisonEnvironmentId) {
+    const error = new Error('parallel sweep worker diagnostic environment differs from the parent sweep contract');
+    error.code = 'SWEEP_INPUT_DRIFT';
+    throw error;
+  }
   const contextIndex = workerData.generateContext ? buildContextIndex(workbench) : null;
   const localTools = compilerSession?.context.localTools || resolveLocalTools();
   const targets = new Map(workbench.targets.map((target) => [target.targetId, target]));

@@ -505,6 +505,99 @@ function relocationComparison(options, wordCount) {
       })(),
     },
     masks,
+    expectedEntries: expected.entries,
+    actualEntries: actual.entries,
+  };
+}
+
+function externalJumpSentinel(start, end) {
+  const region = start & 0xF0000000;
+  for (const offset of [0x0FFFFFFC, 0x00000000, 0x08000000]) {
+    const target = (region | offset) >>> 0;
+    if (target < start || target >= end) return target;
+  }
+  return null;
+}
+
+function jumpWordWithTarget(word, target) {
+  return ((word & 0xFC000000) | ((target >>> 2) & 0x03FFFFFF)) >>> 0;
+}
+
+function symbolicControlFlowWords(wordsInput, start, entries, sourceEvidence) {
+  const end = (start + wordsInput.length * 4) >>> 0;
+  const words = wordsInput.slice();
+  const byIndex = new Map();
+  for (const entry of entries) {
+    if (!entry.complete || !Number.isInteger(entry.offsetNumber) || entry.offsetNumber % 4 !== 0) continue;
+    const index = entry.offsetNumber / 4;
+    if (!byIndex.has(index)) byIndex.set(index, []);
+    byIndex.get(index).push(entry.record);
+  }
+  const resolvedInternal = [];
+  const abstractExternal = [];
+  const unresolved = [];
+  const sentinel = externalJumpSentinel(start, end);
+  for (const [index, records] of byIndex) {
+    if (index < 0 || index >= wordsInput.length) continue;
+    const info = instructionInfo(wordsInput[index], (start + index * 4) >>> 0);
+    if (!info.control) continue;
+    if (records.length !== 1) {
+      unresolved.push({ offset: index * 4, reason: 'multiple-control-relocations', count: records.length });
+      continue;
+    }
+    const record = records[0];
+    if (record.type !== 'R_MIPS_26' || (info.op !== 0x02 && info.op !== 0x03)) {
+      unresolved.push({ offset: index * 4, reason: 'unsupported-control-relocation', type: record.type });
+      continue;
+    }
+    if (record.symbol === '.text') {
+      const sectionOffset = ((wordsInput[index] & 0x03FFFFFF) << 2) >>> 0;
+      if (sectionOffset >= wordsInput.length * 4) {
+        unresolved.push({ offset: index * 4, reason: 'section-relative-target-out-of-range', sectionOffset });
+        continue;
+      }
+      const target = (start + sectionOffset) >>> 0;
+      words[index] = jumpWordWithTarget(wordsInput[index], target);
+      resolvedInternal.push({ offset: index * 4, sectionOffset, target });
+      continue;
+    }
+    if (sentinel === null) {
+      unresolved.push({
+        offset: index * 4,
+        reason: 'external-target-sentinel-unavailable',
+        symbol: record.symbol,
+      });
+      continue;
+    }
+    words[index] = jumpWordWithTarget(wordsInput[index], sentinel);
+    abstractExternal.push({ offset: index * 4, symbol: record.symbol });
+    unresolved.push({ offset: index * 4, reason: 'external-symbol-address-unresolved', symbol: record.symbol });
+  }
+  if (!sourceEvidence.available) {
+    for (let index = 0; index < wordsInput.length; index += 1) {
+      const info = instructionInfo(wordsInput[index], (start + index * 4) >>> 0);
+      if (info.op === 0x02 || info.op === 0x03) {
+        unresolved.push({
+          offset: index * 4,
+          reason: 'control-relocation-evidence-unavailable',
+        });
+      }
+    }
+  } else if (!sourceEvidence.complete) {
+    unresolved.push({ offset: null, reason: 'incomplete-relocation-evidence' });
+  }
+  return {
+    words,
+    evidence: {
+      mode: 'symbolic-relocations',
+      resolvedInternalCount: resolvedInternal.length,
+      resolvedInternalSamples: resolvedInternal.slice(0, EVIDENCE_SAMPLE_LIMIT),
+      abstractExternalCount: abstractExternal.length,
+      abstractExternalSamples: abstractExternal.slice(0, EVIDENCE_SAMPLE_LIMIT),
+      unresolvedCount: unresolved.length,
+      unresolvedSamples: unresolved.slice(0, EVIDENCE_SAMPLE_LIMIT),
+      addressIdentityProven: false,
+    },
   };
 }
 
@@ -572,9 +665,48 @@ function compareMips(expected, actual, options = {}) {
   const expectedWords = wordsFromBuffer(expected);
   const actualWords = wordsFromBuffer(actual);
   const sameLength = expectedWords.length === actualWords.length;
-  const expectedCfg = cfgForWords(expectedWords, start);
-  const actualCfg = cfgForWords(actualWords, start);
-  const cfgExact = sameLength && sameJson(cfgSignature(expectedCfg), cfgSignature(actualCfg));
+  const relocation = relocationComparison(options, actualWords.length);
+  const expectedRawCfg = cfgForWords(expectedWords, start);
+  const actualRawCfg = cfgForWords(actualWords, start);
+  const symbolicControlFlow = options.symbolicControlFlow === true
+    ? symbolicControlFlowWords(actualWords, start, relocation.actualEntries, relocation.evidence.actual)
+    : null;
+  const symbolicExpectedControlFlow = options.symbolicExpectedControlFlow === true
+    ? symbolicControlFlowWords(expectedWords, start, relocation.expectedEntries, relocation.evidence.expected)
+    : null;
+  const expectedCfg = symbolicExpectedControlFlow
+    ? cfgForWords(symbolicExpectedControlFlow.words, start)
+    : expectedRawCfg;
+  const actualCfg = symbolicControlFlow
+    ? cfgForWords(symbolicControlFlow.words, start)
+    : actualRawCfg;
+  const rawCfgExact = sameLength && sameJson(cfgSignature(expectedRawCfg), cfgSignature(actualRawCfg));
+  const comparedCfgExact = sameLength && sameJson(cfgSignature(expectedCfg), cfgSignature(actualCfg));
+  const unresolvedControlTargets = (symbolicControlFlow?.evidence.unresolvedCount || 0)
+    + (symbolicExpectedControlFlow?.evidence.unresolvedCount || 0);
+  const cfgExact = (symbolicControlFlow || symbolicExpectedControlFlow) && unresolvedControlTargets > 0
+    ? null
+    : comparedCfgExact;
+  const controlFlowEvidence = symbolicControlFlow || symbolicExpectedControlFlow ? {
+    mode: 'symbolic-relocations',
+    actual: symbolicControlFlow?.evidence || null,
+    expected: symbolicExpectedControlFlow?.evidence || null,
+    rawCfgExact,
+    symbolicCfgExact: comparedCfgExact,
+    unresolvedCount: unresolvedControlTargets,
+    addressIdentityProven: false,
+  } : {
+    mode: 'raw-words',
+    rawCfgExact,
+    symbolicCfgExact: null,
+    resolvedInternalCount: 0,
+    resolvedInternalSamples: [],
+    abstractExternalCount: 0,
+    abstractExternalSamples: [],
+    unresolvedCount: 0,
+    unresolvedSamples: [],
+    addressIdentityProven: exactBytes,
+  };
   const aligned = Math.min(expectedWords.length, actualWords.length);
   let opcodeMatches = 0;
   let opcodeDifferences = 0;
@@ -588,8 +720,8 @@ function compareMips(expected, actual, options = {}) {
   const differenceSamples = [];
   let firstDifference = null;
   for (let index = 0; index < aligned; index += 1) {
-    const expectedInfo = expectedCfg.infos[index];
-    const actualInfo = actualCfg.infos[index];
+    const expectedInfo = expectedRawCfg.infos[index];
+    const actualInfo = actualRawCfg.infos[index];
     const opcodeExact = opcodeKey(expectedInfo) === opcodeKey(actualInfo);
     if (opcodeExact) opcodeMatches += 1;
     else opcodeDifferences += 1;
@@ -625,7 +757,6 @@ function compareMips(expected, actual, options = {}) {
   if (firstDifference === null && !sameLength) firstDifference = { index: aligned, offset: aligned * 4, reason: 'length' };
   const differingInstructions = differingAlignedInstructions + Math.abs(expectedWords.length - actualWords.length);
   const differingBytes = byteDifferenceCount(expected, actual);
-  const relocation = relocationComparison(options, actualWords.length);
   const masked = sameLength ? expectedWords.map((word, index) => {
     const mask = relocation.masks.get(index) ?? 0xFFFFFFFF;
     return [word & mask, actualWords[index] & mask];
@@ -637,20 +768,20 @@ function compareMips(expected, actual, options = {}) {
   const expectedReg = registerNormalizedRepresentation(expected, start);
   const actualReg = registerNormalizedRepresentation(actual, start);
   const registerNormalizedExact = sameLength && expectedReg === actualReg;
-  const blockOpcodeMultisetsEqual = cfgExact && expectedCfg.blocks.every((block, index) => {
+  const blockOpcodeMultisetsEqual = cfgExact === true && expectedCfg.blocks.every((block, index) => {
     const left = block.words.map(opcodeKey).sort();
     const right = actualCfg.blocks[index].words.map(opcodeKey).sort();
     return sameJson(left, right);
   });
-  const blockWordMultisetsEqual = cfgExact && expectedCfg.blocks.every((block, index) => {
+  const blockWordMultisetsEqual = cfgExact === true && expectedCfg.blocks.every((block, index) => {
     const left = block.words.map((info) => info.word >>> 0).sort((a, b) => a - b);
     const right = actualCfg.blocks[index].words.map((info) => info.word >>> 0).sort((a, b) => a - b);
     return sameJson(left, right);
   });
-  const blockOpcodeOrderExact = cfgExact && expectedCfg.blocks.every((block, index) => (
+  const blockOpcodeOrderExact = cfgExact === true && expectedCfg.blocks.every((block, index) => (
     sameJson(block.words.map(opcodeKey), actualCfg.blocks[index].words.map(opcodeKey))
   ));
-  const blockWordOrderExact = cfgExact && expectedCfg.blocks.every((block, index) => (
+  const blockWordOrderExact = cfgExact === true && expectedCfg.blocks.every((block, index) => (
     sameJson(
       block.words.map((info) => info.word >>> 0),
       actualCfg.blocks[index].words.map((info) => info.word >>> 0),
@@ -658,11 +789,11 @@ function compareMips(expected, actual, options = {}) {
   ));
   const blockOpcodeReordered = blockOpcodeMultisetsEqual && !blockOpcodeOrderExact;
   const blockWordReordered = blockWordMultisetsEqual && !blockWordOrderExact;
-  const expectedFrame = frameFacts(expectedCfg.infos);
+  const expectedFrame = frameFacts(expectedRawCfg.infos);
   const actualFrame = frameFacts(actualCfg.infos);
   const frameMismatch = expectedFrame.frameSize !== actualFrame.frameSize || !sameJson(expectedFrame.stackOffsets, actualFrame.stackOffsets);
-  const expectedEntryShape = entryShapeFacts(expectedCfg, start, expected.length);
-  const actualEntryShape = entryShapeFacts(actualCfg, start, actual.length);
+  const expectedEntryShape = entryShapeFacts(expectedRawCfg, start, expected.length);
+  const actualEntryShape = entryShapeFacts(actualRawCfg, start, actual.length);
   const secondaryEntryOrDelaySlotUncertainty = !exactBytes && (
     expectedEntryShape.delaySlotTargetCount > 0 || actualEntryShape.delaySlotTargetCount > 0
       || expectedEntryShape.internalCallTargetCount > 0 || actualEntryShape.internalCallTargetCount > 0
@@ -672,12 +803,15 @@ function compareMips(expected, actual, options = {}) {
     && differingAlignedInstructions === memoryWidthOrSignednessDifferences;
   let primaryClass = 'mixed-or-unknown';
   let recommendation = 'inspect the first divergent block and reconstruct its C behavior';
-  if (exactBytes) {
-    primaryClass = 'exact-bytes';
-    recommendation = 'run canonical diff and verification before promotion';
-  } else if (!sameLength) {
+  if (!sameLength) {
     primaryClass = 'length-mismatch';
     recommendation = 'correct the function shape, boundary assumptions, or emitted prologue/epilogue';
+  } else if (cfgExact === null) {
+    primaryClass = 'control-flow-address-unresolved';
+    recommendation = 'resolve or link the reported control-flow relocations before changing branches or block structure';
+  } else if (exactBytes) {
+    primaryClass = 'exact-bytes';
+    recommendation = 'run canonical diff and verification before promotion';
   } else if (relocationMaskCompatible) {
     primaryClass = relocation.evidence.addendIdentity.proven
       ? 'relocation-identity-proven'
@@ -685,7 +819,7 @@ function compareMips(expected, actual, options = {}) {
     recommendation = relocation.evidence.addendIdentity.proven
       ? 'reproduce the accepted link and canonical ownership proof; normalized text relocation records and explicit addends are identical'
       : 'resolve and compare relocation symbols, sections, and addends before treating masked operands as exact';
-  } else if (!cfgExact || branchPolarityDifferences > 0) {
+  } else if (cfgExact === false || branchPolarityDifferences > 0) {
     primaryClass = 'cfg-mismatch';
     recommendation = 'correct branches, loops, early returns, or block ordering before tuning registers';
   } else if (registerNormalizedExact) {
@@ -774,12 +908,19 @@ function compareMips(expected, actual, options = {}) {
     ['symbol identity', 'section identity', 'addend construction', 'accepted relocation contract'],
     ['claiming relocation-only exactness', 'allocator tuning before relocation identity'],
   ));
-  if (!cfgExact && !exactBytes) labels.push(mismatchLabel(
+  if (cfgExact === false && !exactBytes) labels.push(mismatchLabel(
     'cfg-shape', 'moderate',
     'The bounded CFG signatures differ; this is consistent with branch, loop, early-return, or block-shape differences but does not establish semantic inequivalence.',
     { expectedBlocks: expectedCfg.blocks.length, actualBlocks: actualCfg.blocks.length, controlFlowDifferences },
     ['branch inversion', 'early return versus nested if', 'goto versus structured flow', 'loop form', 'branch-likely shape'],
     ['register allocation', 'scheduler-only tuning', 'arbitrary function-boundary changes'],
+  ));
+  if (cfgExact === null) labels.push(mismatchLabel(
+    'control-flow-address-unresolved', 'high',
+    'One or more relocation-bearing control targets remain unresolved. The diagnostic does not classify the CFG as equal or different.',
+    controlFlowEvidence,
+    ['authenticated isolated link', 'accepted symbol provenance', 'supported section-relative control relocation'],
+    ['branch or loop restructuring', 'claiming CFG mismatch', 'claiming exact linked bytes'],
   ));
   if (branchPolarityDifferences > 0) labels.push(mismatchLabel(
     'branch-polarity', 'moderate',
@@ -856,6 +997,7 @@ function compareMips(expected, actual, options = {}) {
     'relocation-identity-proven': 'relocation-records-identical',
     'relocation-mask-compatible': 'relocation-mask-compatible',
     'cfg-mismatch': !cfgExact ? 'cfg-shape' : 'branch-polarity',
+    'control-flow-address-unresolved': 'control-flow-address-unresolved',
     'register-allocation-only': 'register-allocation',
     'scheduling-or-block-order': 'scheduling-or-block-order',
     'stack-layout': 'stack-layout-or-offset-family',
@@ -866,9 +1008,15 @@ function compareMips(expected, actual, options = {}) {
   labels.sort((left, right) => (left.category === primaryCategory ? -1 : 0) - (right.category === primaryCategory ? -1 : 0));
   const opcodeRatio = aligned === 0 ? 0 : opcodeMatches / Math.max(expectedWords.length, actualWords.length);
   const lengthRatio = Math.min(expected.length, actual.length) / Math.max(expected.length, actual.length, 1);
-  const score = Math.round(10000 * (0.45 * opcodeRatio + 0.25 * (cfgExact ? 1 : 0) + 0.15 * lengthRatio + 0.15 * byteSimilarity(expected, actual))) / 100;
+  const cfgWeight = cfgExact === null ? 0 : 0.25;
+  const scoreWeight = 0.45 + cfgWeight + 0.15 + 0.15;
+  const scoreValue = 0.45 * opcodeRatio
+    + cfgWeight * (cfgExact ? 1 : 0)
+    + 0.15 * lengthRatio
+    + 0.15 * byteSimilarity(expected, actual);
+  const score = Math.round(10000 * scoreValue / scoreWeight) / 100;
   return {
-    schemaVersion: 2,
+    schemaVersion: 3,
     primaryClass,
     recommendation,
     labels,
@@ -880,6 +1028,8 @@ function compareMips(expected, actual, options = {}) {
     relocationEvidence: relocation.evidence,
     registerNormalizedExact,
     cfgExact,
+    rawCfgExact,
+    controlFlowEvidence,
     sameLength,
     score,
     expectedBytes: expected.length,

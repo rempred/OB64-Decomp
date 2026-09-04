@@ -12,6 +12,11 @@ const {
   validateM2cSnapshot,
 } = require('./m2c');
 const { targetMetrics } = require('./mips_analysis');
+const {
+  WORKBENCH_COMPARISON_CONTRACT,
+  comparisonAlgorithmIdentity,
+  loadDiagnosticEnvironment,
+} = require('./diagnostic_link');
 const { digest, loadWorkbenchModel } = require('./target_model');
 const { requestStore } = require('./store');
 const { buildContextIndex } = require('./context');
@@ -50,8 +55,12 @@ function summarizeTarget(result) {
       sharedCompileVariant: compilation.result?.sharedCompileVariant || null,
       primaryClass: comparison?.primaryClass || null,
       score: comparison?.score ?? null,
-      exactBytes: comparison?.exactBytes || false,
+      exactBytes: comparison?.exactBytes === true,
+      rawObjectExactBytes: comparison?.rawExactBytes ?? comparison?.exactBytes ?? false,
+      diagnosticExactBytes: comparison?.diagnosticExactBytes ?? null,
       relocationMaskedExact: comparison?.relocationMaskedExact || false,
+      evidenceMode: comparison?.evidenceMode || null,
+      acceptanceEligible: comparison?.acceptanceEligible === true,
       error: compilation.error || compilation.result?.compile?.stderr || null,
     };
   });
@@ -83,8 +92,15 @@ function sweepGenerationContract(workbench, variants, options, m2c) {
       || String(m2c.tree).toLowerCase() !== String(configured.tree).toLowerCase()) {
     throw new Error('resolved m2c identity does not match the workbench generation contract');
   }
+  if (options.compile !== false
+      && (typeof options.comparisonCurrentFingerprint !== 'string'
+        || !options.comparisonCurrentFingerprint
+        || typeof options.comparisonEnvironmentId !== 'string'
+        || !options.comparisonEnvironmentId)) {
+    throw new Error('compile-enabled sweep identity lacks current diagnostic provenance');
+  }
   return {
-    schemaVersion: 1,
+    schemaVersion: 2,
     adapterVersion: M2C_ADAPTER_VERSION,
     m2c: {
       repository: configured.repository,
@@ -99,6 +115,12 @@ function sweepGenerationContract(workbench, variants, options, m2c) {
       runtime: options.runtimeContext === true,
     },
     maximumCapturedOutputBytes: workbench.config.limits.maximumCapturedOutputBytes,
+    comparison: {
+      contract: WORKBENCH_COMPARISON_CONTRACT,
+      algorithmId: comparisonAlgorithmIdentity(),
+      currentFingerprint: options.compile === false ? null : options.comparisonCurrentFingerprint,
+      environmentId: options.compile === false ? null : options.comparisonEnvironmentId,
+    },
   };
 }
 
@@ -114,7 +136,7 @@ function buildSweepIdentity(workbench, selector, targets, variants, options, m2c
     useContext: options.useContext === true,
     runtimeContext: options.runtimeContext === true,
     generationContract,
-    summaryContract: 4,
+    summaryContract: 5,
   };
   return {
     normalizedSelector,
@@ -345,7 +367,22 @@ function validateSweepCompletion(expected, selector, options, m2c) {
     }
     const targets = selectSweepTargets(current, selector);
     const variants = selectSweepVariants(current, options.variantNames);
-    const observed = buildSweepIdentity(current, selector, targets, variants, options, m2c);
+    let completionOptions;
+    if (options.compile === false) {
+      completionOptions = {
+        ...options,
+        comparisonCurrentFingerprint: null,
+        comparisonEnvironmentId: null,
+      };
+    } else {
+      const completionSession = prepareCompilerSession(options);
+      completionOptions = {
+        ...options,
+        comparisonCurrentFingerprint: completionSession.context.currentFingerprint,
+        comparisonEnvironmentId: loadDiagnosticEnvironment(completionSession).identity,
+      };
+    }
+    const observed = buildSweepIdentity(current, selector, targets, variants, completionOptions, m2c);
     if (observed.sweepId !== expected.sweepId) {
       throw new Error(`sweep identity changed from ${expected.sweepId} to ${observed.sweepId}`);
     }
@@ -362,13 +399,25 @@ async function runSweep(workbench, selector = {}, options = {}) {
     throw new Error('parallel sweeps require --no-context so workers do not duplicate the context index');
   }
   syncTargets(workbench, storeOptions);
+  const diagnosticCompilerSession = options.compile === false ? null : prepareCompilerSession(options);
+  const effectiveOptions = {
+    ...options,
+    comparisonCurrentFingerprint: diagnosticCompilerSession?.context.currentFingerprint || null,
+    comparisonEnvironmentId: diagnosticCompilerSession
+      ? loadDiagnosticEnvironment(diagnosticCompilerSession).identity : null,
+  };
   const authenticatedM2c = resolveM2c(workbench, options);
   const targets = selectSweepTargets(workbench, selector);
   const variants = selectSweepVariants(workbench, options.variantNames);
   if (!variants.length) throw new Error('sweep selected no m2c variants');
-  const identity = buildSweepIdentity(workbench, selector, targets, variants, options, authenticatedM2c);
+  const identity = buildSweepIdentity(workbench, selector, targets, variants, effectiveOptions, authenticatedM2c);
   const { normalizedSelector, sweepId } = identity;
-  const existing = requestStore({ action: 'query', name: 'sweep_by_id', args: { sweepId } }, storeOptions);
+  const existing = requestStore({ action: 'query', name: 'sweep_by_id', args: {
+    sweepId,
+    comparisonAlgorithmId: comparisonAlgorithmIdentity(),
+    diagnosticCurrentFingerprint: effectiveOptions.comparisonCurrentFingerprint,
+    diagnosticEnvironmentId: effectiveOptions.comparisonEnvironmentId,
+  } }, storeOptions);
   if (existing?.status === 'complete') {
     return {
       schemaVersion: 1,
@@ -424,12 +473,14 @@ async function runSweep(workbench, selector = {}, options = {}) {
         generateContext: false,
         useContext: false,
         runtimeContext: false,
+        comparisonCurrentFingerprint: effectiveOptions.comparisonCurrentFingerprint,
+        comparisonEnvironmentId: effectiveOptions.comparisonEnvironmentId,
         m2c,
         storeOptions,
       }, checkpoint);
     } else {
       validateM2cSnapshot(m2c);
-      const compilerSession = options.compile === false ? null : prepareCompilerSession(options);
+      const compilerSession = diagnosticCompilerSession;
       const contextIndex = options.generateContext === false ? null : buildContextIndex(workbench);
       const localTools = compilerSession?.context.localTools || resolveLocalTools();
       for (const target of pendingTargets) {
@@ -445,7 +496,7 @@ async function runSweep(workbench, selector = {}, options = {}) {
         checkpoint({ symbol: target.symbol, bytes: target.bytes, ...summarizeTarget(result) });
       }
     }
-    validateSweepCompletion({ modelId: workbench.modelId, sweepId }, selector, options, m2c);
+    validateSweepCompletion({ modelId: workbench.modelId, sweepId }, selector, effectiveOptions, m2c);
     const finishedAt = new Date().toISOString();
     summary.durationMs = Date.parse(finishedAt) - Date.parse(startedAt);
     requestStore({ action: 'put_sweep', record: { sweepId, modelId: workbench.modelId, selector: normalizedSelector, status: 'complete', summary, startedAt, finishedAt } }, storeOptions);

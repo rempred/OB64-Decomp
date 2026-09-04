@@ -20,6 +20,10 @@ const {
 } = require('./lib/matching/compiler');
 const { compareMips, targetMetrics } = require('./lib/matching/mips_analysis');
 const {
+  comparisonAlgorithmIdentity,
+  loadDiagnosticEnvironment,
+} = require('./lib/matching/diagnostic_link');
+const {
   assertCandidateComparisonInputs,
   assertCandidateComparisonResult,
   compareCaseCfg,
@@ -38,6 +42,19 @@ const VALUE_OPTIONS = new Set([
   'actual-dispatch', 'actual-body', 'output', 'actual-tail',
 ]);
 const REPEAT_OPTIONS = new Set(['variant', 'actual-tail']);
+let comparisonQueryProvenanceCache = null;
+
+function comparisonQueryProvenance() {
+  if (!comparisonQueryProvenanceCache) {
+    const session = prepareCompilerSession();
+    comparisonQueryProvenanceCache = {
+      comparisonAlgorithmId: comparisonAlgorithmIdentity(),
+      diagnosticCurrentFingerprint: session.context.currentFingerprint,
+      diagnosticEnvironmentId: loadDiagnosticEnvironment(session).identity,
+    };
+  }
+  return comparisonQueryProvenanceCache;
+}
 
 function usage() {
   console.log(`Usage: node tools/match.js <command> [arguments]
@@ -327,6 +344,41 @@ function compactMismatchEvidence(comparison) {
   };
 }
 
+function compactDiagnosticEvidence(comparison) {
+  const raw = comparison?.rawObjectComparison;
+  const diagnostic = comparison?.diagnostic;
+  return {
+    comparisonContract: comparison?.comparisonContract ?? null,
+    evidenceMode: comparison?.evidenceMode || null,
+    acceptanceEligible: comparison?.acceptanceEligible === true,
+    rawObjectExactBytes: comparison?.rawExactBytes ?? raw?.exactBytes ?? null,
+    rawObjectRelocationMaskedExact: comparison?.rawRelocationMaskedExact
+      ?? raw?.relocationMaskedExact ?? null,
+    diagnosticExactBytes: comparison?.diagnosticExactBytes ?? null,
+    diagnosticRelocationMaskedExact: comparison?.diagnosticRelocationMaskedExact ?? null,
+    rawObject: raw ? {
+      primaryClass: raw.primaryClass,
+      score: raw.score,
+      cfgExact: raw.cfgExact,
+      firstDifference: raw.firstDifference,
+    } : null,
+    diagnostic: diagnostic ? {
+      status: diagnostic.status,
+      mode: diagnostic.mode,
+      code: diagnostic.code || null,
+      reason: diagnostic.reason || null,
+      control: diagnostic.control ? {
+        linkedBytesSha256: diagnostic.control.linkedBytesSha256,
+        durationMs: diagnostic.control.durationMs,
+      } : null,
+      candidate: diagnostic.candidate ? {
+        linkedBytesSha256: diagnostic.candidate.linkedBytesSha256,
+        durationMs: diagnostic.candidate.durationMs,
+      } : null,
+    } : null,
+  };
+}
+
 function publicCandidateRecord(record, options = {}) {
   const candidate = {
     candidateId: record.candidate.candidate_id,
@@ -352,7 +404,9 @@ function publicCandidateRecord(record, options = {}) {
       durationMs: run.duration_ms,
       artifactDir: run.artifact_dir,
       createdAt: run.created_at,
+      comparisonStale: Boolean(run.comparison_stale),
       ...(details ? compactMismatchEvidence(details) : {}),
+      ...(details ? compactDiagnosticEvidence(details) : {}),
       ...(options.includeDetails ? { details, tool: run.tool, stderr: run.stderr } : {}),
     };
   });
@@ -371,6 +425,7 @@ function compactComparison(comparison, includeDetails = false) {
   if (includeDetails) return comparison;
   return {
     schemaVersion: comparison.schemaVersion,
+    ...compactDiagnosticEvidence(comparison),
     primaryClass: comparison.primaryClass,
     recommendation: comparison.recommendation,
     exactBytes: comparison.exactBytes,
@@ -405,11 +460,15 @@ function comparisonSummary(result) {
   return {
     candidateId: result.candidate.candidateId,
     cached: result.cached,
+    comparisonRefreshed: result.comparisonRefreshed === true,
     status: result.compile.status,
     sourceClass: result.compile.source_class || result.compile.sourceClass,
     primaryClass: comparison?.primaryClass || result.comparison?.primary_class || null,
     score: comparison?.score ?? result.comparison?.score ?? null,
     exactScratchBytes: comparison?.exactBytes ?? Boolean(result.comparison?.exact_bytes),
+    diagnosticExactBytes: comparison?.diagnosticExactBytes ?? null,
+    evidenceMode: comparison?.evidenceMode || null,
+    rawObjectExactBytes: comparison?.rawExactBytes ?? comparison?.rawObjectComparison?.exactBytes ?? null,
     relocationMaskedExact: comparison?.relocationMaskedExact ?? Boolean(result.comparison?.relocation_masked_exact),
     ...compactMismatchEvidence(comparison),
     firstDifference: comparison?.firstDifference || null,
@@ -430,7 +489,11 @@ function variantSelection(workbench, names) {
 function latestCandidateRun(candidateId) {
   const candidate = requestStore({ action: 'query', name: 'candidate', args: { candidateId } });
   if (!candidate) throw new Error(`candidate does not exist: ${candidateId}`);
-  const runs = requestStore({ action: 'query', name: 'candidate_runs', args: { candidateId, limit: 20 } });
+  const runs = requestStore({ action: 'query', name: 'candidate_runs', args: {
+    candidateId,
+    limit: 20,
+    ...comparisonQueryProvenance(),
+  } });
   const observations = requestStore({ action: 'query', name: 'candidate_observations', args: { candidateId, limit: 20 } });
   return { candidate, observations, runs, run: runs.find((item) => item.status === 'compiled') || runs[0] || null };
 }
@@ -510,7 +573,12 @@ async function main(argv = process.argv.slice(2)) {
     if (positional.length !== 1) throw new Error('inspect requires one symbol');
     const target = resolveTarget(workbench, positional[0]);
     const families = requestStore({ action: 'query', name: 'families_for_target', args: { targetId: target.targetId, limit: numeric(options.limit, '--limit', 20) } });
-    const history = requestStore({ action: 'query', name: 'history', args: { modelId: workbench.modelId, symbol: target.symbol, limit: 5 } });
+    const history = requestStore({ action: 'query', name: 'history', args: {
+      modelId: workbench.modelId,
+      symbol: target.symbol,
+      limit: 5,
+      ...comparisonQueryProvenance(),
+    } });
     print({ target: publicTarget(target), metrics: targetMetrics(target.expectedBytes, target.vramStart), families, recentExperiments: history }, options);
     return;
   }
@@ -522,6 +590,7 @@ async function main(argv = process.argv.slice(2)) {
       symbol: target.symbol,
       limit: numeric(options.limit, '--limit', 20),
       includeDetails: true,
+      ...comparisonQueryProvenance(),
     } });
     const rows = storedRows.map((row) => {
       if (!row.details) return row;
@@ -529,6 +598,7 @@ async function main(argv = process.argv.slice(2)) {
       return {
         ...summary,
         ...compactMismatchEvidence(details),
+        ...compactDiagnosticEvidence(details),
         ...(options['include-details'] ? { details } : {}),
       };
     });
@@ -562,11 +632,24 @@ async function main(argv = process.argv.slice(2)) {
     if (left.candidate.target_id !== right.candidate.target_id) throw new Error('candidate comparison requires the same exact target identity');
     const target = workbench.targets.find((item) => item.targetId === left.candidate.target_id);
     if (!target) throw new Error('candidate comparison requires a target in the currently accepted model');
-    const comparison = compareMips(Buffer.from(left.run.object_text, 'base64'), Buffer.from(right.run.object_text, 'base64'), { start: target.vramStart });
+    const leftRelocationsAvailable = Array.isArray(left.run.relocations);
+    const rightRelocationsAvailable = Array.isArray(right.run.relocations);
+    const comparison = compareMips(Buffer.from(left.run.object_text, 'base64'), Buffer.from(right.run.object_text, 'base64'), {
+      start: target.vramStart,
+      expectedRelocations: left.run.relocations,
+      expectedRelocationsAvailable: leftRelocationsAvailable,
+      expectedRelocationsUnavailableReason: leftRelocationsAvailable ? undefined : 'left candidate relocation evidence is unavailable',
+      actualRelocations: right.run.relocations,
+      actualRelocationsAvailable: rightRelocationsAvailable,
+      actualRelocationsUnavailableReason: rightRelocationsAvailable ? undefined : 'right candidate relocation evidence is unavailable',
+      symbolicControlFlow: true,
+      symbolicExpectedControlFlow: true,
+    });
     print({
       left: { candidateId: positional[0], runId: left.run.run_id, createdAt: left.run.created_at, compilerSha256: left.run.tool?.compilerSha256 },
       right: { candidateId: positional[1], runId: right.run.run_id, createdAt: right.run.created_at, compilerSha256: right.run.tool?.compilerSha256 },
       comparison: compactComparison(comparison, options['include-details']),
+      evidenceBoundary: 'Candidate comparison uses raw objects plus symbolic relocation-aware CFG evidence; it does not prove linked addresses or matching acceptance.',
     }, options);
     return;
   }
@@ -716,6 +799,7 @@ async function main(argv = process.argv.slice(2)) {
   if (command === 'sweep-status') {
     if (positional.length) throw new Error('sweep-status takes no positional arguments');
     const includeTargets = options['include-targets'] === true;
+    const sweepProvenance = comparisonQueryProvenance();
     const storedSweeps = requestStore({
       action: 'query',
       name: 'sweeps',
@@ -724,11 +808,15 @@ async function main(argv = process.argv.slice(2)) {
         limit: numeric(options.limit, '--limit', 20),
         includeTargets,
         targetLimit: 5,
+        ...sweepProvenance,
       },
     });
     const sweeps = storedSweeps.map((sweep) => {
       if (includeTargets || sweep.summary?.ensemble) return boundedSweepResult(sweep, includeTargets, 5);
-      const complete = requestStore({ action: 'query', name: 'sweep_by_id', args: { sweepId: sweep.sweep_id } });
+      const complete = requestStore({ action: 'query', name: 'sweep_by_id', args: {
+        sweepId: sweep.sweep_id,
+        ...sweepProvenance,
+      } });
       return boundedSweepResult(complete, false, 5);
     });
     print({
@@ -781,6 +869,8 @@ async function main(argv = process.argv.slice(2)) {
       limit: options.explain ? workbench.targets.length : numeric(options.limit, '--limit', 20),
       skipFamilies: options['skip-families'],
       includeDetails: Boolean(options.explain),
+      comparisonCurrentFingerprint: comparisonQueryProvenance().diagnosticCurrentFingerprint,
+      comparisonEnvironmentId: comparisonQueryProvenance().diagnosticEnvironmentId,
     });
     if (options.explain) {
       const selected = report.entries.find((item) => item.symbol.toLowerCase() === options.explain.toLowerCase());

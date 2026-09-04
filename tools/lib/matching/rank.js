@@ -4,8 +4,9 @@ const fs = require('fs');
 const path = require('path');
 const { ROOT } = require('../phase7_conventional');
 const { targetMetrics } = require('./mips_analysis');
+const { comparisonAlgorithmIdentity, loadDiagnosticEnvironment } = require('./diagnostic_link');
 const { requestStore } = require('./store');
-const { syncTargets } = require('./compiler');
+const { prepareCompilerSession, syncTargets } = require('./compiler');
 const { buildContextIndex } = require('./context');
 
 const PRIORITIES_PATH = path.join(ROOT, 'config', 'matching-priorities.json');
@@ -69,7 +70,18 @@ function rankTargets(workbench, options = {}) {
   }
   const overrides = new Map(priorities.targets.map((record) => [record.symbol.toLowerCase(), record]));
   const subsystemById = new Map(priorities.subsystems.map((record) => [record.id, record]));
-  const compilations = latestByTarget(requestStore({ action: 'query', name: 'compilation_summaries', args: { modelId: workbench.modelId } }, storeOptions));
+  const querySession = options.comparisonCurrentFingerprint && options.comparisonEnvironmentId
+    ? null : prepareCompilerSession(options);
+  const comparisonCurrentFingerprint = options.comparisonCurrentFingerprint
+    || querySession.context.currentFingerprint;
+  const comparisonEnvironmentId = options.comparisonEnvironmentId
+    || loadDiagnosticEnvironment(querySession).identity;
+  const compilations = latestByTarget(requestStore({ action: 'query', name: 'compilation_summaries', args: {
+    modelId: workbench.modelId,
+    comparisonAlgorithmId: comparisonAlgorithmIdentity(),
+    diagnosticCurrentFingerprint: comparisonCurrentFingerprint,
+    diagnosticEnvironmentId: comparisonEnvironmentId,
+  } }, storeOptions));
   const families = options.skipFamilies ? new Map() : familyFacts(workbench, storeOptions);
   const contextIndex = buildContextIndex(workbench);
   const activeByName = new Map(workbench.targets.map((target) => [target.symbol.toLowerCase(), Boolean(target.activeMatchingSource)]));
