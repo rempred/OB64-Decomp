@@ -13,6 +13,7 @@ const ROUTINE_TESTS = [
   ['matching-context', 'tests/matching_context.js'],
   ['status-accounting', 'tests/status.js'],
   ['diff-exactness', 'tests/diff_exactness.js'],
+  ['diff-profile', 'tests/diff_profile.js'],
   ['matching-diagnostics', 'tests/matching_diagnostics.js'],
   ['diff-object-cache', 'tests/diff_object_cache.js'],
   ['matching-studies', 'tests/matching_studies.js'],

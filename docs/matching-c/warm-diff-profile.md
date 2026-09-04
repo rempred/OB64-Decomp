@@ -79,6 +79,14 @@ separately rather than treating the commit alone as the tree identity.
 | `tools/lib/diff_object_cache.js` SHA-256 | `F4535D8538169283AA7184ED5AF35FB886193BAB991463C046DADC66073289C7` |
 | `tools/lib/diff_profile.js` SHA-256 | `CA8F3A3708C1328F48A11A2FF38CD6F3929028EFC5B961E2C337EB9B8C3F09CB` |
 
+These are the historical implementation identities embedded in the retained
+measurement reports. A bounded post-measurement review correction subsequently
+changed only profiler failure attribution so a signal-terminated child is
+counted as failed. The retained runs precede that correction and were not
+relabeled or regenerated. None of their child processes failed or terminated by
+signal, so the correction does not alter their recorded durations, census, or
+exact outcomes.
+
 The timing reports also record the complete path-independent runtime, compiler,
 GNU 2.6 toolchain, source-policy preprocessor closure, and eight-file diff/cache
 implementation identities. Source-policy classification was 460 `PURE_C`, 66
@@ -144,7 +152,7 @@ hash, or model check would require a separate measurement.
 | Runtime authentication: `powershell.exe` | 1 | 0.576 | 1.9% |
 | Link ROM extraction: `mips-kmc-elf-objcopy.exe` | 1 | 0.465 | 1.5% |
 | Target comparison: `python.exe` | 1 | 0.420 | 1.4% |
-| All remaining child calls | 6 | 0.159 | 0.5% |
+| All remaining child calls | 5 | 0.159 | 0.5% |
 
 Code inspection explains the 528 source-policy calls as two authenticated
 preprocessor/dependency probes followed by one preprocessing invocation for

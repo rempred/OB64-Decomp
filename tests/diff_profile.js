@@ -71,6 +71,36 @@ function main() {
   assert.throws(() => profiler.measure('late', () => {}), /cannot measure after finish/);
   assert.strictEqual(executableName('/fixture/bin/tool.exe'), 'tool.exe');
 
+  let terminatedNow = 0;
+  const terminatedOriginalSpawnSync = () => {
+    terminatedNow += 7;
+    return { status: null, signal: 'SIGTERM', error: null };
+  };
+  const terminatedSpawnModule = { spawnSync: terminatedOriginalSpawnSync };
+  const terminatedProfiler = createDiffProfiler({
+    clock: () => terminatedNow,
+    spawnModule: terminatedSpawnModule,
+    startedAt: '2026-09-04T01:03:03.004Z',
+    finishedAt: '2026-09-04T01:03:04.004Z',
+  });
+  terminatedProfiler.installChildProcessObserver();
+  const terminated = terminatedProfiler.measure('signal-child', () => (
+    terminatedSpawnModule.spawnSync('C:\\fixture\\terminated.exe', [])
+  ));
+  assert.strictEqual(terminated.status, null);
+  assert.strictEqual(terminated.signal, 'SIGTERM');
+  const terminatedReport = terminatedProfiler.finish({ status: 'error', fixture: true });
+  assert.strictEqual(
+    terminatedSpawnModule.spawnSync,
+    terminatedOriginalSpawnSync,
+    'signal fixture spawnSync observer was not restored',
+  );
+  assert.deepStrictEqual(terminatedReport.childProcesses, [{
+    stage: 'signal-child', executable: 'terminated.exe', count: 1, totalMs: 7,
+    exclusiveMs: 7, minMs: 7, maxMs: 7, failures: 1,
+  }]);
+  assert.strictEqual(terminatedReport.stages[0].failures, 0, 'observer changed command behavior');
+
   assert.deepStrictEqual(parseArguments(['func_fixture']), {
     command: 'diff', profile: false, symbol: 'func_fixture',
   });
@@ -105,6 +135,7 @@ function main() {
     topLevelStageMs: report.topLevelStageMs,
     childProcessMs: report.childProcessMs,
     spawnObserverRestored: true,
+    signalTerminationCountedAsFailure: true,
     argumentModes: ['normal', 'profile'],
   }, null, 2));
 }

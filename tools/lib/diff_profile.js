@@ -105,7 +105,7 @@ function createDiffProfiler(options = {}) {
       let failed = false;
       try {
         result = originalSpawnSync.apply(this, args);
-        failed = Boolean(result && (result.error || (result.status !== null && result.status !== 0)));
+        failed = Boolean(result && (result.error || result.signal || result.status !== 0));
         return result;
       } catch (error) {
         failed = true;
