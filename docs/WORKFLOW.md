@@ -210,6 +210,13 @@ register allocation with assembly.
 Generated diff reports and compiler outputs are ignored evidence. Do not commit
 them.
 
+Use evidence from the current invocation. A failed diff can leave an older
+`build/diff/<symbol>.json` unchanged. Preserve the failing command's output and
+available `--profile` report; do not attribute the older JSON to that attempt.
+Before recording a candidate, confirm the report identifies the current source
+and compiled artifacts. Process exit and scalar diagnostic scores do not prove
+linked-byte equality or a matching relocation contract.
+
 #### Diagnostic boundary
 
 Raw scratch-object words can differ even when the linked instructions do not.

@@ -65,6 +65,12 @@ Edit a candidate outside canonical `src/` while experimenting, then compile it:
 node tools/match.js watch <symbol> --source <candidate.c>
 ```
 
+For a new target, perform scratch experiments before adding its activation record.
+An active target without a relocation contract can make `watch` fail during
+session preparation, before compilation. Use canonical `diff.js` to discover the
+actual relocations after activation, then review and record the exact contract.
+Do not guess a contract or remove an accepted target to bypass this check.
+
 When a source is promising, deliberately adapt it into `src/`, activate the
 target with the smallest configuration entry, and return to `diff.js`. Do not
 copy a workbench status label into a matching claim.
@@ -126,6 +132,12 @@ existing `exactScratchBytes` remain raw-object facts; `diagnosticExactBytes` is
 separate and can become true after an isolated link. `acceptanceEligible` is
 always false.
 
+Inspect the emitted relocation census separately from expected provenance.
+Missing expected provenance does not prove that the candidate emitted relocations.
+Current symbolic fallback wording can suggest unresolved relocations even when
+the actual census is zero. Preserve the conservative diagnostic result; use the
+census and provenance fields to explain its limits.
+
 When the isolated path is unavailable, `diagnostic.status`, `.code`, and
 `.reason` retain the concrete cause, such as a nonactive assembly owner, missing
 relocation contract, ROM-only or unknown placement, stale CURRENT evidence,
@@ -160,6 +172,10 @@ node tools/match.js prepare <symbol> --variant structured --variant gotos
 Context is generated for human inspection by default, but it is passed to m2c
 only with `--with-context`. Use `--no-context` to skip generation and
 `--no-compile` to stop after draft generation.
+
+An explicitly supplied context file is also passed to m2c. Inspect the recorded
+m2c arguments when determining which context a draft actually consumed.
+Generating context alone does not establish that it affected the draft.
 
 The configured variants are:
 
@@ -242,6 +258,13 @@ structure or semantics. `context --runtime` performs an optional read-only Total
 Resolver lookup. It does not start capture and requires neither a live
 Project64 session nor Project64 for normal workbench use. Read
 `../tools/total_resolver/AGENTS.md` before broader Total Resolver work.
+
+The current generated prototype uses bounded caller reads of `v0` to choose
+between `s32` and `void`. Absence of those reads does not prove a void return;
+floating-point and unused integer results can be missed. Field labels identify
+memory operations through argument-numbered registers, even after those registers
+were overwritten. Check the incoming value's lifetime before interpreting an
+`argN+offset` label as an argument field. Keep unsupported types and meanings unresolved.
 
 A bounded direct-call regression can be inspected with:
 
