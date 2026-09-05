@@ -113,6 +113,30 @@ function main() {
   if (JSON.stringify(firstSharedDigests) !== JSON.stringify(repeatedTargets.targets.map((target) => target.digest))) {
     throw new Error('repeated source classification changed target digests');
   }
+  const profileStages = [];
+  const profiledTargets = classifyTargetSources([
+    { symbol: 'ordinary_fixture', source: 'tests/fixtures/source-policy/ordinary.c', bytes: 4 },
+    { symbol: 'inline_fixture', source: 'tests/fixtures/source-policy/inline_asm.c', bytes: 4 },
+  ], {
+    preprocessor,
+    profile: {
+      measure(name, callback) {
+        profileStages.push(name);
+        return callback();
+      },
+    },
+  });
+  const stageCount = (name) => profileStages.filter((stage) => stage === name).length;
+  if (JSON.stringify(sharedTargets) !== JSON.stringify(profiledTargets)
+      || JSON.stringify(firstSharedDigests) !== JSON.stringify(profiledTargets.targets.map((target) => target.digest))
+      || stageCount('source-policy.resolve-preprocessor') !== 1
+      || stageCount('source-policy.classify-target') !== 2
+      || stageCount('source-policy.preprocessor') !== 2
+      || stageCount('source-policy.workspace-create') !== 2
+      || stageCount('source-policy.workspace-cleanup') !== 2
+      || stageCount('source-policy.census') !== 1) {
+    throw new Error('opt-in preparation profiling changed classification or omitted a bounded substage');
+  }
   const repositoryScratchBase = path.join(ROOT, 'build', 'tests');
   fs.mkdirSync(repositoryScratchBase, { recursive: true });
   const dependencyScratch = fs.mkdtempSync(path.join(repositoryScratchBase, 'source-policy-dependency-'));
@@ -296,6 +320,7 @@ function main() {
     deterministicMacroHiddenClassification: true,
     sharedClassification: sharedTargets.counts,
     repeatedClassificationInvariant: true,
+    optInPreparationProfiling: true,
     authenticatedCompilationInput: true,
     dependencyInvalidation,
     externalDependenciesRejected: true,

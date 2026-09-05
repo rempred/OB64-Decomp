@@ -11,7 +11,7 @@ const {
   profileOutputPath,
   writeProfileReport,
 } = require('../tools/lib/diff_profile');
-const { parseArguments } = require('../tools/diff');
+const { parseArguments, prepareContextOptions } = require('../tools/diff');
 
 function main() {
   let now = 0;
@@ -115,6 +115,14 @@ function main() {
   assert.throws(() => parseArguments(['--profile', '--profile', 'func_fixture']), /only once/);
   assert.throws(() => parseArguments(['--unknown', 'func_fixture']), /unknown option/);
 
+  const contextProfiler = { measure() {} };
+  assert.deepStrictEqual(prepareContextOptions('func_fixture'), {
+    allowMissingRelocationContracts: ['func_fixture'],
+  }, 'ordinary diff context options changed');
+  const profiledContextOptions = prepareContextOptions('func_fixture', contextProfiler);
+  assert.deepStrictEqual(profiledContextOptions.allowMissingRelocationContracts, ['func_fixture']);
+  assert.strictEqual(profiledContextOptions.profile, contextProfiler, 'diff profiler was not forwarded to context preparation');
+
   const scratch = fs.mkdtempSync(path.join(os.tmpdir(), 'ob64-diff-profile-'));
   try {
     const output = profileOutputPath(scratch, 'func_fixture', profiler.startedAt, 42);
@@ -137,6 +145,7 @@ function main() {
     spawnObserverRestored: true,
     signalTerminationCountedAsFailure: true,
     argumentModes: ['normal', 'profile'],
+    preparationProfilerForwarded: true,
   }, null, 2));
 }
 

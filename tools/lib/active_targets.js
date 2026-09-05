@@ -398,23 +398,77 @@ function resolveRelative(root, relative, label) {
   return path.join(root, ...safeRelative(relative, label).split('/'));
 }
 
-function rowContainsSymbol(row, symbol) {
-  if (!row.part || !row.part.file) return false;
-  if (String(row.part.name || '').toLowerCase() === symbol.toLowerCase()) return true;
-  const file = path.join(ROOT, ...row.part.file.split('/'));
-  if (!fs.existsSync(file)) return false;
-  const escaped = symbol.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-  return new RegExp(`(?:^|\\n)\\s*(?:\\.globl\\s+${escaped}\\s*(?:\\r?\\n)|${escaped}:)`, 'm').test(fs.readFileSync(file, 'utf8'));
+function cachedAssemblyText(row, cache) {
+  if (!(cache instanceof Map) || !row.part || typeof row.part.file !== 'string'
+      || !Number.isInteger(row.part.textBytes) || row.part.textBytes <= 0
+      || typeof row.part.sha256 !== 'string' || !SHA256.test(row.part.sha256)) {
+    fail('accepted row symbol-source cache input is malformed');
+  }
+  const file = resolveRelative(ROOT, row.part.file, 'accepted row symbol source');
+  const key = row.part.file;
+  const existing = cache.get(key);
+  if (existing) {
+    if (existing.file !== file || existing.bytes !== row.part.textBytes
+        || existing.sha256 !== row.part.sha256) {
+      fail(`accepted row symbol-source cache identity drift: ${row.part.file}`);
+    }
+    return existing.text;
+  }
+  if (!fs.existsSync(file) || !fs.statSync(file).isFile()) {
+    fail(`accepted row symbol source is missing: ${row.part.file}`);
+  }
+  const bytes = fs.readFileSync(file);
+  const sha256 = sha256Buffer(bytes);
+  if (bytes.length !== row.part.textBytes || sha256 !== row.part.sha256) {
+    fail(`accepted row symbol source identity drift: ${row.part.file}`);
+  }
+  const record = Object.freeze({
+    file,
+    bytes: bytes.length,
+    sha256,
+    text: bytes.toString('utf8'),
+  });
+  cache.set(key, record);
+  return record.text;
 }
 
-function resolveAcceptedRow(model, symbol) {
+function verifyRowSymbolSourceCache(cache) {
+  if (!(cache instanceof Map)) fail('accepted row symbol-source cache is malformed');
+  for (const [relative, record] of cache.entries()) {
+    const expectedFile = resolveRelative(ROOT, relative, 'accepted row symbol source');
+    const status = record && record.file === expectedFile && fs.existsSync(record.file)
+      ? fs.statSync(record.file)
+      : null;
+    if (!status || !status.isFile() || status.size !== record.bytes || sha256File(record.file) !== record.sha256) {
+      fail(`accepted row symbol source changed during target resolution: ${relative}`);
+    }
+  }
+  return true;
+}
+
+function rowContainsSymbol(row, symbol, sourceCache = null) {
+  if (!row.part || !row.part.file) return false;
+  if (String(row.part.name || '').toLowerCase() === symbol.toLowerCase()) return true;
+  const escaped = symbol.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  let text;
+  if (sourceCache) {
+    text = cachedAssemblyText(row, sourceCache);
+  } else {
+    const file = path.join(ROOT, ...row.part.file.split('/'));
+    if (!fs.existsSync(file)) return false;
+    text = fs.readFileSync(file, 'utf8');
+  }
+  return new RegExp(`(?:^|\\n)\\s*(?:\\.globl\\s+${escaped}\\s*(?:\\r?\\n)|${escaped}:)`, 'm').test(text);
+}
+
+function resolveAcceptedRow(model, symbol, sourceCache = null) {
   let candidates = [];
   const addressMatch = /^func_([0-9a-f]{8})$/i.exec(symbol);
   if (addressMatch) {
     const romStart = Number.parseInt(addressMatch[1], 16);
     candidates = model.rows.filter((row) => row.romStart === romStart);
   }
-  if (candidates.length !== 1) candidates = model.rows.filter((row) => rowContainsSymbol(row, symbol));
+  if (candidates.length !== 1) candidates = model.rows.filter((row) => rowContainsSymbol(row, symbol, sourceCache));
   if (candidates.length !== 1) fail(`active target does not resolve to one accepted structural owner: ${symbol}`);
   return candidates[0];
 }
@@ -443,7 +497,7 @@ function resolveCompilerTextFunctions(target, records) {
   return resolved;
 }
 
-function validateMultiOwnerConfig(config, expectedProfile, model, baserom) {
+function validateMultiOwnerConfig(config, expectedProfile, model, baserom, sourceCache = null) {
   if (!exactKeys(config, ['schemaVersion', 'profile', 'targets'])
       || config.schemaVersion !== 1 || config.profile !== expectedProfile
       || !Array.isArray(config.targets)) {
@@ -476,7 +530,7 @@ function validateMultiOwnerConfig(config, expectedProfile, model, baserom) {
     if (contracts.has(key)) fail(`matching-C multi-owner target is duplicated: ${contract.symbol}`);
     const rows = contract.ownerRows.map((rowIndex) => model.rows.find((row) => row.index === rowIndex));
     if (rows.some((row) => !row)) fail(`${label} references a missing accepted owner row`);
-    const firstResolved = resolveAcceptedRow(model, contract.symbol);
+    const firstResolved = resolveAcceptedRow(model, contract.symbol, sourceCache);
     if (firstResolved.index !== rows[0].index) fail(`${label} does not begin with the symbol's accepted owner`);
     for (const [ownerIndex, row] of rows.entries()) {
       const slice = row.slices && row.slices[0];
@@ -563,10 +617,10 @@ function validateMultiOwnerConfig(config, expectedProfile, model, baserom) {
   return contracts;
 }
 
-function resolveAcceptedRows(model, symbol, multiOwnerContracts = new Map()) {
+function resolveAcceptedRows(model, symbol, multiOwnerContracts = new Map(), sourceCache = null) {
   const contract = multiOwnerContracts.get(symbol.toLowerCase()) || null;
   if (contract) return { rows: contract.rows, owners: contract.owners, contract };
-  const row = resolveAcceptedRow(model, symbol);
+  const row = resolveAcceptedRow(model, symbol, sourceCache);
   const containingContracts = [...multiOwnerContracts.values()].filter((candidate) => (
     candidate.rows.some((owner) => owner.index === row.index)
   ));
@@ -829,6 +883,7 @@ function validateToolchainPin(pin) {
 
 function loadActiveTargetModel(options = {}) {
   const model = loadAcceptedModel();
+  const rowSymbolSourceCache = new Map();
   const minimal = readJson(CONFIG_PATH);
   const linkage = readJson(LINKAGE_CONFIG_PATH);
   const multiOwnerConfig = readJson(MULTI_OWNER_CONFIG_PATH);
@@ -903,6 +958,7 @@ function loadActiveTargetModel(options = {}) {
     minimal.profile,
     model,
     baserom,
+    rowSymbolSourceCache,
   );
   const overlayConfig = readJson(path.join(ROOT, 'config', 'overlays', 'us_rev0.json'));
   const compatibility = [];
@@ -922,7 +978,7 @@ function loadActiveTargetModel(options = {}) {
       legacyTarget,
       allowMissing.has(entry.symbol.toLowerCase()),
     );
-    const acceptedOwners = resolveAcceptedRows(model, entry.symbol, multiOwnerContracts);
+    const acceptedOwners = resolveAcceptedRows(model, entry.symbol, multiOwnerContracts, rowSymbolSourceCache);
     const rows = acceptedOwners.rows;
     const row = rows[0];
     const owners = acceptedOwners.owners;
@@ -1077,6 +1133,7 @@ function loadActiveTargetModel(options = {}) {
     }
   }
   validateAuxiliaryOwnerGroups(targets);
+  verifyRowSymbolSourceCache(rowSymbolSourceCache);
   return {
     config: { ...minimal, compiler: legacy.compiler },
     compatibility,
@@ -1129,4 +1186,5 @@ module.exports = {
   validateMultiOwnerConfig,
   validateNoActiveLinkSymbolShadows,
   validateToolchainPin,
+  verifyRowSymbolSourceCache,
 };

@@ -25,6 +25,15 @@ function sha256File(file) {
   return sha256Buffer(fs.readFileSync(file));
 }
 
+function profileMeasure(options, name, callback) {
+  const profile = options && options.profile;
+  if (profile === undefined || profile === null) return callback();
+  if (!profile || typeof profile.measure !== 'function') {
+    throw new Error('source-policy profile is malformed');
+  }
+  return profile.measure(name, callback);
+}
+
 function readJson(file) {
   return JSON.parse(fs.readFileSync(file, 'utf8'));
 }
@@ -508,10 +517,12 @@ function safeTemporaryDirectory(prefix) {
   return directory;
 }
 
-function preprocessSource(sourceFile, preprocessor, extraIncludeDirectories = []) {
+function preprocessSource(sourceFile, preprocessor, extraIncludeDirectories = [], options = {}) {
   let source;
   try {
-    source = regularRepositoryFile(sourceFile, 'source-policy source');
+    source = profileMeasure(options, 'source-policy.source-precheck', () => (
+      regularRepositoryFile(sourceFile, 'source-policy source')
+    ));
   } catch (error) {
     return { ok: false, error: error.message, args: [] };
   }
@@ -519,23 +530,27 @@ function preprocessSource(sourceFile, preprocessor, extraIncludeDirectories = []
     .map((item) => path.resolve(item));
   let normalizedIncludeDirectories;
   try {
-    normalizedIncludeDirectories = [...new Set(includeDirectories.map((directory) => {
-      const relative = repositoryRelative(directory, 'source-policy include directory');
-      if (!fs.existsSync(directory) || !fs.lstatSync(directory).isDirectory() || fs.lstatSync(directory).isSymbolicLink()) {
-        throw new Error(`source-policy include directory is not a regular directory: ${directory}`);
-      }
-      const realRoot = fs.realpathSync.native(ROOT);
-      const realDirectory = fs.realpathSync.native(directory);
-      const realRelative = path.relative(realRoot, realDirectory);
-      if (!realRelative || realRelative === '..' || realRelative.startsWith(`..${path.sep}`) || path.isAbsolute(realRelative)) {
-        throw new Error(`source-policy include directory resolves outside the repository: ${directory}`);
-      }
-      return relative;
-    }))];
+    normalizedIncludeDirectories = profileMeasure(options, 'source-policy.include-authentication', () => (
+      [...new Set(includeDirectories.map((directory) => {
+        const relative = repositoryRelative(directory, 'source-policy include directory');
+        if (!fs.existsSync(directory) || !fs.lstatSync(directory).isDirectory() || fs.lstatSync(directory).isSymbolicLink()) {
+          throw new Error(`source-policy include directory is not a regular directory: ${directory}`);
+        }
+        const realRoot = fs.realpathSync.native(ROOT);
+        const realDirectory = fs.realpathSync.native(directory);
+        const realRelative = path.relative(realRoot, realDirectory);
+        if (!realRelative || realRelative === '..' || realRelative.startsWith(`..${path.sep}`) || path.isAbsolute(realRelative)) {
+          throw new Error(`source-policy include directory resolves outside the repository: ${directory}`);
+        }
+        return relative;
+      }))]
+    ));
   } catch (error) {
     return { ok: false, error: error.message, args: [] };
   }
-  const scratch = safeTemporaryDirectory('ob64-source-policy-');
+  const scratch = profileMeasure(options, 'source-policy.workspace-create', () => (
+    safeTemporaryDirectory('ob64-source-policy-')
+  ));
   const dependencyFile = path.join(scratch, 'dependencies.d');
   const args = [
     ...preprocessor.flags,
@@ -545,12 +560,14 @@ function preprocessSource(sourceFile, preprocessor, extraIncludeDirectories = []
     source.identity.path,
   ];
   try {
-    const result = childProcess.spawnSync(preprocessor.path, args, {
-      cwd: ROOT,
-      encoding: null,
-      windowsHide: true,
-      maxBuffer: 64 * 1024 * 1024,
-    });
+    const result = profileMeasure(options, 'source-policy.preprocessor', () => (
+      childProcess.spawnSync(preprocessor.path, args, {
+        cwd: ROOT,
+        encoding: null,
+        windowsHide: true,
+        maxBuffer: 64 * 1024 * 1024,
+      })
+    ));
     if (result.status !== 0 || result.error || !fs.existsSync(dependencyFile)) {
       return {
         ok: false,
@@ -561,14 +578,22 @@ function preprocessSource(sourceFile, preprocessor, extraIncludeDirectories = []
         args,
       };
     }
-    const bytes = Buffer.from(result.stdout || Buffer.alloc(0));
+    const bytes = profileMeasure(options, 'source-policy.capture-output', () => (
+      Buffer.from(result.stdout || Buffer.alloc(0))
+    ));
     if (bytes.length === 0) return { ok: false, error: 'preprocessor produced an empty compilation input', args };
-    const dependencyPaths = parseDependencyFile(fs.readFileSync(dependencyFile, 'utf8'), preprocessor.dependencyTarget);
-    const dependencies = dependencyIdentities(dependencyPaths, source.file);
-    const currentSource = dependencies.find((record) => record.path.toLowerCase() === source.identity.path.toLowerCase());
-    if (!currentSource || currentSource.bytes !== source.identity.bytes || currentSource.sha256 !== source.identity.sha256) {
-      return { ok: false, error: 'authored source changed during preprocessing', args };
-    }
+    const dependencyPaths = profileMeasure(options, 'source-policy.depfile-parse', () => (
+      parseDependencyFile(fs.readFileSync(dependencyFile, 'utf8'), preprocessor.dependencyTarget)
+    ));
+    const dependencies = profileMeasure(options, 'source-policy.dependency-authentication', () => (
+      dependencyIdentities(dependencyPaths, source.file)
+    ));
+    const sourceUnchanged = profileMeasure(options, 'source-policy.source-postcheck', () => {
+      const currentSource = dependencies.find((record) => record.path.toLowerCase() === source.identity.path.toLowerCase());
+      return Boolean(currentSource && currentSource.bytes === source.identity.bytes
+        && currentSource.sha256 === source.identity.sha256);
+    });
+    if (!sourceUnchanged) return { ok: false, error: 'authored source changed during preprocessing', args };
     return {
       ok: true,
       bytes,
@@ -581,10 +606,12 @@ function preprocessSource(sourceFile, preprocessor, extraIncludeDirectories = []
   } catch (error) {
     return { ok: false, error: error.message, args };
   } finally {
-    if (path.dirname(path.resolve(scratch)).toLowerCase() !== path.resolve(os.tmpdir()).toLowerCase()) {
-      throw new Error('source-policy temporary cleanup target escaped the system temporary root');
-    }
-    fs.rmSync(scratch, { recursive: true, force: true });
+    profileMeasure(options, 'source-policy.workspace-cleanup', () => {
+      if (path.dirname(path.resolve(scratch)).toLowerCase() !== path.resolve(os.tmpdir()).toLowerCase()) {
+        throw new Error('source-policy temporary cleanup target escaped the system temporary root');
+      }
+      fs.rmSync(scratch, { recursive: true, force: true });
+    });
   }
 }
 
@@ -679,7 +706,10 @@ function classifySource(source, options = {}) {
     result.digest = resultDigest(result);
     return result;
   }
-  if (!fs.existsSync(sourceFile) || !fs.statSync(sourceFile).isFile()) {
+  const sourceExists = profileMeasure(options, 'source-policy.source-existence', () => (
+    fs.existsSync(sourceFile) && fs.statSync(sourceFile).isFile()
+  ));
+  if (!sourceExists) {
     const result = { class: SOURCE_CLASSES.UNKNOWN, source: shownSource, reasons: [], error: 'source file is missing' };
     result.digest = resultDigest(result);
     return result;
@@ -694,12 +724,18 @@ function classifySource(source, options = {}) {
     return result;
   }
 
-  const rawBytes = fs.readFileSync(sourceFile);
-  const rawText = rawBytes.toString('utf8');
-  const sourceSha256 = sha256Buffer(rawBytes);
+  const authored = profileMeasure(options, 'source-policy.authored-read-hash', () => {
+    const rawBytes = fs.readFileSync(sourceFile);
+    return {
+      rawBytes,
+      rawText: rawBytes.toString('utf8'),
+      sourceSha256: sha256Buffer(rawBytes),
+    };
+  });
+  const { rawBytes, rawText, sourceSha256 } = authored;
   let rawReasons;
   try {
-    rawReasons = scanSource(rawText, 'raw');
+    rawReasons = profileMeasure(options, 'source-policy.raw-scan', () => scanSource(rawText, 'raw'));
   } catch (error) {
     const result = {
       class: SOURCE_CLASSES.UNKNOWN,
@@ -714,7 +750,12 @@ function classifySource(source, options = {}) {
     return result;
   }
 
-  const preprocessed = preprocessSource(sourceFile, preprocessor, options.includeDirectories || []);
+  const preprocessed = preprocessSource(
+    sourceFile,
+    preprocessor,
+    options.includeDirectories || [],
+    { profile: options.profile },
+  );
   if (!preprocessed.ok) {
     const result = {
       class: SOURCE_CLASSES.UNKNOWN,
@@ -729,7 +770,10 @@ function classifySource(source, options = {}) {
     return result;
   }
 
-  if (!Buffer.from(preprocessed.text, 'utf8').equals(preprocessed.bytes)) {
+  const exactUtf8 = profileMeasure(options, 'source-policy.utf8-validation', () => (
+    Buffer.from(preprocessed.text, 'utf8').equals(preprocessed.bytes)
+  ));
+  if (!exactUtf8) {
     const result = {
       class: SOURCE_CLASSES.UNKNOWN,
       source: shownSource,
@@ -745,7 +789,9 @@ function classifySource(source, options = {}) {
 
   let preprocessedReasons;
   try {
-    preprocessedReasons = scanSource(preprocessed.text, 'preprocessed');
+    preprocessedReasons = profileMeasure(options, 'source-policy.preprocessed-scan', () => (
+      scanSource(preprocessed.text, 'preprocessed')
+    ));
   } catch (error) {
     const result = {
       class: SOURCE_CLASSES.UNKNOWN,
@@ -760,34 +806,38 @@ function classifySource(source, options = {}) {
     result.digest = resultDigest(result);
     return result;
   }
-  const reasons = [...rawReasons, ...preprocessedReasons];
-  const compilationInput = {
-    bytes: preprocessed.bytes.length,
-    sha256: sha256Buffer(preprocessed.bytes),
-  };
-  const dependencies = preprocessed.dependencies.filter((record) => (
-    record.path.toLowerCase() !== shownSource.toLowerCase()
-  ));
-  const result = {
-    class: reasons.length > 0 ? SOURCE_CLASSES.HYBRID_C : SOURCE_CLASSES.PURE_C,
-    source: shownSource,
-    sourceBytes: rawBytes.length,
-    sourceSha256,
-    preprocessedSha256: compilationInput.sha256,
-    compilationInput,
-    dependencies,
-    reasons,
-    preprocessor: preprocessorIdentity(preprocessor),
-  };
-  result.digest = resultDigest(result);
-  return attachCompilationInput(result, preprocessed.bytes);
+  return profileMeasure(options, 'source-policy.result-construction', () => {
+    const reasons = [...rawReasons, ...preprocessedReasons];
+    const compilationInput = {
+      bytes: preprocessed.bytes.length,
+      sha256: sha256Buffer(preprocessed.bytes),
+    };
+    const dependencies = preprocessed.dependencies.filter((record) => (
+      record.path.toLowerCase() !== shownSource.toLowerCase()
+    ));
+    const result = {
+      class: reasons.length > 0 ? SOURCE_CLASSES.HYBRID_C : SOURCE_CLASSES.PURE_C,
+      source: shownSource,
+      sourceBytes: rawBytes.length,
+      sourceSha256,
+      preprocessedSha256: compilationInput.sha256,
+      compilationInput,
+      dependencies,
+      reasons,
+      preprocessor: preprocessorIdentity(preprocessor),
+    };
+    result.digest = resultDigest(result);
+    return attachCompilationInput(result, preprocessed.bytes);
+  });
 }
 
 function classifyTargetSources(targets, options = {}) {
   if (!Array.isArray(targets) || targets.length === 0) throw new Error('active target source list is missing');
-  const preprocessor = options.preprocessor || resolvePreprocessor(options.config);
+  const preprocessor = profileMeasure(options, 'source-policy.resolve-preprocessor', () => (
+    options.preprocessor || resolvePreprocessor(options.config)
+  ));
   const symbols = new Set();
-  const records = targets.map((target) => {
+  const records = targets.map((target) => profileMeasure(options, 'source-policy.classify-target', () => {
     if (!target || typeof target.symbol !== 'string' || typeof target.source !== 'string'
         || !Number.isInteger(target.bytes) || target.bytes <= 0) {
       throw new Error('active target source metadata is malformed');
@@ -801,7 +851,7 @@ function classifyTargetSources(targets, options = {}) {
     const key = target.symbol.toLowerCase();
     if (symbols.has(key)) throw new Error(`active target source is duplicated: ${target.symbol}`);
     symbols.add(key);
-    const classification = classifySource(target.source, { preprocessor });
+    const classification = classifySource(target.source, { preprocessor, profile: options.profile });
     const record = {
       symbol: target.symbol,
       bytes: target.bytes,
@@ -811,14 +861,17 @@ function classifyTargetSources(targets, options = {}) {
       attachCompilationInput(record, classification[COMPILATION_INPUT_BYTES]);
     }
     return record;
+  }));
+  const { counts, bytes } = profileMeasure(options, 'source-policy.census', () => {
+    const resultCounts = {};
+    const resultBytes = {};
+    for (const name of Object.values(SOURCE_CLASSES)) {
+      const selected = records.filter((target) => target.class === name);
+      resultCounts[name] = selected.length;
+      resultBytes[name] = selected.reduce((sum, target) => sum + target.bytes, 0);
+    }
+    return { counts: resultCounts, bytes: resultBytes };
   });
-  const counts = {};
-  const bytes = {};
-  for (const name of Object.values(SOURCE_CLASSES)) {
-    const selected = records.filter((target) => target.class === name);
-    counts[name] = selected.length;
-    bytes[name] = selected.reduce((sum, target) => sum + target.bytes, 0);
-  }
   const unknown = records.filter((target) => target.class === SOURCE_CLASSES.UNKNOWN);
   if (unknown.length > 0) {
     throw new Error(`active target source classification is UNKNOWN: ${unknown.map((target) => target.symbol).join(', ')}`);

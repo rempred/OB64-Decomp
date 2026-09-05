@@ -337,7 +337,7 @@ function prepareContext(options = {}) {
   const phase8 = loadActiveTargetModel({
     allowMissingRelocationContracts: options.allowMissingRelocationContracts || [],
   });
-  const sourcePolicy = classifyTargetSources(phase8.targets);
+  const sourcePolicy = classifyTargetSources(phase8.targets, { profile: options.profile });
   const current = currentFingerprint(phase8, baseline, localTools, sourcePolicy);
   return {
     baserom,

@@ -65,6 +65,12 @@ function selectTarget(phase8, symbol) {
   return matches[0];
 }
 
+function prepareContextOptions(symbol, profiler = null) {
+  const options = { allowMissingRelocationContracts: [symbol] };
+  if (profiler) options.profile = profiler;
+  return options;
+}
+
 function comparisonLabel(comparison) {
   if (!comparison
       || typeof comparison.exact !== 'boolean'
@@ -237,9 +243,9 @@ function main(argv = process.argv.slice(2)) {
   if (profiler) profiler.installChildProcessObserver();
 
   try {
-    const context = measure('prepare-context', () => prepareContext({
-      allowMissingRelocationContracts: [parsed.symbol],
-    }));
+    const context = measure('prepare-context', () => prepareContext(
+      prepareContextOptions(parsed.symbol, profiler),
+    ));
     target = measure('select-target', () => selectTarget(context.phase8, parsed.symbol));
     if (profiler) profileFile = profileOutputPath(ROOT, target.symbol, profiler.startedAt);
     const baseline = measure('ensure-baseline', () => ensureBaseline(context, {
@@ -408,4 +414,4 @@ if (require.main === module) {
   }
 }
 
-module.exports = { comparisonLabel, main, parseArguments, selectTarget };
+module.exports = { comparisonLabel, main, parseArguments, prepareContextOptions, selectTarget };

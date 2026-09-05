@@ -20,6 +20,7 @@ const {
   validateMultiOwnerConfig,
   validateNoActiveLinkSymbolShadows,
   validateToolchainPin,
+  verifyRowSymbolSourceCache,
 } = require('../tools/lib/active_targets');
 const { ROOT, sha256File } = require('../tools/lib/phase7_conventional');
 const { writeJson } = require('../tools/lib/current_workflow');
@@ -39,6 +40,90 @@ function sameJson(left, right) {
 
 function main() {
   const active = loadActiveTargetModel();
+  const resolverScratchRoot = path.join(ROOT, 'build', 'tests');
+  fs.mkdirSync(resolverScratchRoot, { recursive: true });
+  const resolverScratch = fs.mkdtempSync(path.join(resolverScratchRoot, 'active-target-row-resolver-'));
+  let rowSymbolSourceReuse;
+  try {
+    const leftFile = path.join(resolverScratch, 'left.s');
+    const rightFile = path.join(resolverScratch, 'right.s');
+    fs.writeFileSync(leftFile, '.globl cached_alpha\ncached_alpha:\n.globl cached_bravo\ncached_bravo:\n');
+    fs.writeFileSync(rightFile, '.globl unrelated_symbol\nunrelated_symbol:\n');
+    const fixtureRow = (index, file) => ({
+      index,
+      romStart: 0x01000000 + (index * 4),
+      part: {
+        file: path.relative(ROOT, file).replace(/\\/g, '/'),
+        name: `fixture_owner_${index}`,
+        textBytes: fs.statSync(file).size,
+        sha256: sha256File(file),
+      },
+    });
+    const model = { rows: [fixtureRow(0, leftFile), fixtureRow(1, rightFile)] };
+    const sourceCache = new Map();
+    const originalReadFileSync = fs.readFileSync;
+    let fixtureReads = 0;
+    fs.readFileSync = function observedResolverRead(...args) {
+      if (typeof args[0] === 'string'
+          && path.dirname(path.resolve(args[0])).toLowerCase() === path.resolve(resolverScratch).toLowerCase()) {
+        fixtureReads += 1;
+      }
+      return originalReadFileSync.apply(this, args);
+    };
+    let alpha;
+    let bravo;
+    try {
+      alpha = resolveAcceptedRow(model, 'cached_alpha', sourceCache);
+      const readsAfterFirstCensus = fixtureReads;
+      bravo = resolveAcceptedRow(model, 'cached_bravo', sourceCache);
+      if (readsAfterFirstCensus !== 2 || fixtureReads !== readsAfterFirstCensus) {
+        throw new Error('row symbol resolver reread assembly text within one cache scope');
+      }
+    } finally {
+      fs.readFileSync = originalReadFileSync;
+    }
+    if (alpha.index !== 0 || bravo.index !== 0 || sourceCache.size !== 2
+        || !verifyRowSymbolSourceCache(sourceCache)) {
+      throw new Error('row symbol resolver reuse changed exact symbol resolution or cache census');
+    }
+
+    fs.writeFileSync(leftFile, fs.readFileSync(leftFile, 'utf8').replaceAll('cached_alpha', 'cached_gamma'));
+    const cacheMutationRejected = expectRejection(
+      'row symbol source changed during cached resolution',
+      () => verifyRowSymbolSourceCache(sourceCache),
+    );
+    model.rows[0] = fixtureRow(0, leftFile);
+    const freshCache = new Map();
+    const gamma = resolveAcceptedRow(model, 'cached_gamma', freshCache);
+    if (gamma.index !== 0 || !verifyRowSymbolSourceCache(freshCache)) {
+      throw new Error('fresh row symbol resolver cache hid a changed input from a later call');
+    }
+
+    fs.writeFileSync(rightFile, fs.readFileSync(rightFile, 'utf8')
+      .concat('.globl cached_gamma\ncached_gamma:\n'));
+    model.rows[1] = fixtureRow(1, rightFile);
+    const ambiguityRejected = expectRejection(
+      'cached row symbol ambiguity census',
+      () => resolveAcceptedRow(model, 'cached_gamma', new Map()),
+    );
+    const missingRejected = expectRejection(
+      'cached row symbol missing census',
+      () => resolveAcceptedRow(model, 'missing_cached_symbol', new Map()),
+    );
+    rowSymbolSourceReuse = {
+      firstCensusReads: fixtureReads,
+      cachedFiles: sourceCache.size,
+      cacheMutationRejected,
+      freshCallObservedChangedInput: true,
+      ambiguityRejected,
+      missingRejected,
+    };
+  } finally {
+    if (path.dirname(path.resolve(resolverScratch)) !== path.resolve(resolverScratchRoot)) {
+      throw new Error('active-target resolver scratch escaped its test root');
+    }
+    fs.rmSync(resolverScratch, { recursive: true, force: true });
+  }
   const baserom = fs.readFileSync(path.join(ROOT, 'build', 'baserom.us_rev0.z64'));
   const multiOwnerConfig = JSON.parse(fs.readFileSync(MULTI_OWNER_CONFIG_PATH, 'utf8'));
   const validatedMultiOwners = validateMultiOwnerConfig(
@@ -824,6 +909,7 @@ function main() {
     rejectedPaddingMutations,
     rejectedActiveLinkSymbolShadows,
     rejectedContractMutations,
+    rowSymbolSourceReuse,
     structuralFieldsEquivalent: true,
     sharedLinkSymbols: Object.keys(active.linkSymbols).length,
     loadRelevantRelocations,

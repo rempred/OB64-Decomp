@@ -1,12 +1,165 @@
 # Warm canonical diff profile
 
-Status: initially measured on 2026-09-04 and remeasured on 2026-09-05 after the
-authenticated shared-header/compilation-input contract was accepted. Both
-measurements used the existing opt-in profiler and changed no matching source,
-validation rule, linker rule, or verifier during their respective timing
-windows.
+Status: initially measured on 2026-09-04, remeasured after the authenticated
+shared-header/compilation-input contract, and investigated again on 2026-09-05
+against the integrated 532-target Wave 5 tree. The Wave 5 implementation is
+locally verified and awaiting independent review. No measurement changed
+matching source, linker ownership, compiler identity, or acceptance rules.
 
-## Post-header result
+## Integrated Wave 5 preparation result
+
+The 532-target Wave 5 investigation tested the prior run-scoped preprocessing
+workspace recommendation and rejected it: robust workspace reuse did not
+reduce measured host time. A CPU profile instead localized most of the
+remaining `loadActiveTargetModel` time to repeated reads of the same accepted
+assembly owners during semantic-symbol fallback. The retained change reuses
+authenticated assembly text only within one loader call and keeps the ordinary
+source-policy workspace fresh for every target.
+
+The implementation and measurements began from
+`f4257c9929d92b175002dbbd37ef52ce30b1d679`. Changes were uncommitted during
+the timing window, so the final implementation hashes and complete profiler
+metadata, rather than that Git commit alone, identify the measured tree.
+
+### Rejected preprocessing-workspace hypothesis
+
+Opt-in source-policy substages measured three unchanged 532-target baseline
+runs and three experimental shared-workspace runs. Both sets classified 466
+`PURE_C`, 66 `HYBRID_C`, zero `ASM`, and zero `UNKNOWN`; both retained the
+study's stable target-input identity digest
+`76D6BAB6835DC9F04270CABF9537372FE891152333309210C179448221E83D36`.
+
+| Classification boundary | Fresh workspace mean | Shared workspace mean | Change |
+| --- | ---: | ---: | ---: |
+| Total wall | 19.990390 s | 19.012492 s | -0.977898 s |
+| Preprocessor child wall | 18.704131 s | 17.721985 s | -0.982146 s |
+| In-process remainder | 1.286259 s | 1.290507 s | +0.004248 s |
+
+The total decrease is entirely explained by child-process variability; the
+in-process boundary became 4.248 milliseconds slower. In the fresh-workspace
+baseline, all 532 workspace creations averaged 0.128746 seconds and all
+cleanups averaged 0.173179 seconds. The robust shared design replaced that
+0.301924-second lifecycle with 0.000552 seconds of creation, 0.112217 seconds
+of per-target workspace leasing, 0.215611 seconds of depfile authentication,
+and 0.031361 seconds of cleanup. Depfile parsing also increased from 0.174947
+to 0.322378 seconds. These measurements do not support retaining workspace
+reuse, so the experiment was removed.
+
+The substage instrumentation remains because it is opt-in and useful for
+future diagnosis. It measures source prechecks, include authentication,
+workspace creation and cleanup, preprocessor execution, output capture,
+depfile parsing, dependency authentication, source postchecks, authored-source
+reads/hashes, raw and preprocessed scans, UTF-8 validation, result construction,
+preprocessor resolution, per-target classification, and the final census.
+Focused tests prove that supplying a profiler leaves the complete
+classification JSON and target digests unchanged. Ordinary diff preparation
+does not receive a profiler object.
+
+Generated A/B evidence is ignored under `build/warm-diff-profile/`:
+
+- `source_policy_baseline_per_target_workspace_1-20260905031125474-24656.json`
+- `source_policy_baseline_per_target_workspace_2-20260905031144514-24656.json`
+- `source_policy_baseline_per_target_workspace_3-20260905031205092-24656.json`
+- `source_policy_shared_workspace_1-20260905031544953-29676.json`
+- `source_policy_shared_workspace_2-20260905031603874-29676.json`
+- `source_policy_shared_workspace_3-20260905031622811-29676.json`
+
+### Retained active-target loader optimization
+
+A bounded pre-change CPU profile sampled 22.381 seconds while the surrounding
+loader invocation took 22.351 seconds. Inclusive samples placed 18.646 seconds
+(83.3%) in `rowContainsSymbol`, including 17.886 seconds in `readFileSync` and
+15.281 seconds in native UTF-8 reads. The path was reached by nine current
+non-address symbols: `memcpy_bytewise`,
+`boot_state_slot_noop_return_tail`, `set_dl_cursor`,
+`set_byte_800f918d`, `get_byte_800f918c`, `srand`, `__osPopThread`,
+`strlen`, and `strcat`. Each semantic fallback performed a complete ambiguity
+census and reread the same accepted assembly files.
+
+The retained implementation creates a new map inside each
+`loadActiveTargetModel` call. On first use of an accepted assembly owner, it
+resolves the confined repository path and verifies file type, byte count, and
+SHA-256 against the identity already authenticated by `loadAcceptedModel`.
+Later semantic lookups in that loader call reuse the immutable text while
+preserving the full candidate census and ambiguity failure. Before the loader
+returns, every reused file is freshly restatted and rehashed so an in-call
+mutation fails closed. The map is neither returned nor persisted; every later
+loader call authenticates and reads its own inputs. The address fast path,
+multi-owner contracts, selected-owner checks, and public resolver behavior
+without an explicitly supplied map are unchanged.
+
+Three invocations of the identical direct-loader measurement command were run
+before and after the change against the same 532-target inputs:
+
+| Direct `loadActiveTargetModel` wall | Run 1 | Run 2 | Run 3 | Mean | Range | Sample SD |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| Before | 23.174 s | 22.435 s | 21.039 s | 22.216 s | 2.135 s | 1.084 s |
+| After | 9.100 s | 9.493 s | 9.523 s | 9.372 s | 0.423 s | 0.236 s |
+
+The same-input mean decreased by 12.844 seconds, or 57.8%. This comparison
+supports the retained loader-local reuse. It does not establish a general
+filesystem speedup, and the three-sample size does not remove host/cache
+variability.
+
+The pre-change CPU profile is retained as ignored evidence at
+`build/warm-diff-profile/active-target-load-f4257c9.cpuprofile`.
+
+### Final full-diff measurement and exactness
+
+One untimed diff settled the final implementation generation with zero hits,
+531 misses, zero rebuilt entries, 532 compiler invocations, and exact target
+bytes. Exactly three subsequent warm profiles each had 531 hits, zero misses,
+zero rebuilt entries, and one fresh requested-target compiler invocation.
+
+| Metric | Run 1 | Run 2 | Run 3 | Mean | Min–max | Sample SD |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| Profiled total | 62.873 s | 61.829 s | 58.205 s | 60.969 s | 58.205–62.873 s | 2.450 s |
+| Child-process wall | 33.239 s | 32.528 s | 30.642 s | 32.136 s | 30.642–33.239 s | 1.342 s |
+| In-process remainder | 29.634 s | 29.301 s | 27.564 s | 28.833 s | 27.564–29.634 s | 1.112 s |
+| `prepare-context`, inclusive | 36.839 s | 35.429 s | 34.596 s | 35.621 s | 34.596–36.839 s | 1.134 s |
+| `prepare-context`, exclusive | 15.021 s | 14.068 s | 13.737 s | 14.275 s | 13.737–15.021 s | 0.667 s |
+| Per-target source classification | 21.738 s | 21.285 s | 20.783 s | 21.269 s | 20.783–21.738 s | 0.477 s |
+| 532 target preprocessor children | 19.760 s | 19.827 s | 19.378 s | 19.655 s | 19.378–19.827 s | 0.242 s |
+
+The full-diff profiles are an absolute Wave 5 result, not a causal comparison
+with the historical 76.931-second post-header mean below. The older sample had
+526 targets, different compilation inputs, a different CURRENT fingerprint,
+and a different object-cache generation. Only the direct 532-target loader
+comparison above is same-input before/after evidence for this change.
+
+Every final warm profile recorded these stable identities and outcomes:
+
+| Identity or outcome | Value |
+| --- | --- |
+| Baseline fingerprint | `56E27189080D91C8379A230080DCDE902DCC66331EFD4C848530CF9EEAA1D316` |
+| CURRENT fingerprint | `A62F87829ACA3FA37C77FF58EF0D3740B1569AD61F801A5174A0393F1AC0F069` |
+| Canonical ROM SHA-256 | `571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A` |
+| 532-target source-policy digest | `7BE6F31C034DB394F967A76D18C5E1A4C02DA4926DA22AA256984E42D8079160` |
+| Source-policy config SHA-256 | `DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3` |
+| `tools/lib/source_policy.js` SHA-256 | `61C540A1ACD051CF9EAAA71F821946A688CC0614B60994A647CA2C87EB41090F` |
+| `tools/lib/active_targets.js` SHA-256 | `1CA91F1E690EE6D6DA3E8E6B244536122DAA312967C23C1D011D8B45A4B2763D` |
+| `tools/diff.js` SHA-256 | `8319BF9F5BE2D50DC41660A7D8C752AECFAF219BABC97C4B00A9F0A30BD82520` |
+| Sibling-cache key digest | `D5AB4B90A468A1B478810DBF415C0DD5F0DDF6037571858D442616E892EA58DB` |
+| Sibling-cache entry/census digest | `4E7DCD1D6D2093C32496FFFCB93DDB065F3FB6A85A7324C8626730AB0C16849F` |
+| Source policy | 466 `PURE_C`, 66 `HYBRID_C`, 0 `ASM`, 0 `UNKNOWN` |
+| Diff outcome | 0 / 900; raw bytes exact; relocation contract match |
+| Linked and expected target SHA-256 | `26256054A9F77DAD786308548B96966D4E7A3385975A9E989CEE70DBF0268789` |
+
+Generated final evidence is ignored under `build/warm-diff-profile/`:
+
+- `func_000E5938-20260905033430470-26576.json`
+- `func_000E5938-20260905033543925-21716.json`
+- `func_000E5938-20260905033650720-8720.json`
+
+Focused `diff_profile`, `source_policy`, and `active_targets` tests passed. The
+routine `node tools/test.js` suite completed, `node tools/verify.js` reported an
+exact baseline and exact full ROM with 466 `PURE_C` and 66 `HYBRID_C` targets,
+and `node tools/audit.js` passed structural protections and CURRENT exact-ROM
+verification. The retained optimization does not cache preprocessing output,
+dependency identities, classifications, CURRENT state, objects, or linker
+results; those contracts remain fresh and unchanged.
+
+## Historical post-header result
 
 Three unchanged warm runs of `func_000E5938` at reviewed commit
 `7967afd848a6b3861d3ca9d6e38a191d9018f4af` averaged **76.931 seconds**.
@@ -169,7 +322,7 @@ samples; the profile does not assign the complete difference to the new file.
 No result justifies weakening dependency, artifact, copied-output, or seal
 validation.
 
-### Evidence boundary and recommendation
+### Evidence boundary and recommendation (superseded)
 
 Measured facts:
 
@@ -190,8 +343,8 @@ Code-path inference, not measured micro-attribution:
 - one or more of those host-side responsibilities is the likely source of most
   of the combined-stage increase, but the present profiler cannot rank them.
 
-The next bounded optimization should be a **run-scoped preprocessing context**
-for `classifyTargetSources`: authenticate invariant repository/include roots
+At this stage, the next bounded optimization was a **run-scoped preprocessing
+context** for `classifyTargetSources`: authenticate invariant repository/include roots
 once, allocate one safely bounded temporary workspace for the complete
 sequential classification pass, and use a fresh uniquely named depfile for each
 target within it. Keep every one of the 526 preprocessing invocations fresh;
@@ -202,17 +355,18 @@ compilation-input caching.
 
 Before accepting that change, add narrow substage timings for workspace setup,
 path validation, depfile parsing/dependency hashing, and cleanup, then repeat
-this same settlement-plus-three-run protocol. The measured upper opportunity is
-the 23.280-second host-side increase, not a promised saving. If the run-scoped
-context does not materially reduce that boundary, retain the contract and use
-the narrower timings to select the next host-side operation. No optimization
-was implemented by this measurement.
+this same settlement-plus-three-run protocol. The measured upper opportunity was
+the 23.280-second host-side increase, not a promised saving. The integrated
+Wave 5 investigation above subsequently performed that bounded test, found no
+host-side improvement, and removed the experiment. No optimization was
+implemented by this historical measurement.
 
 ## Pre-header baseline
 
 The remainder of this document preserves the initial three-run measurement and
-its then-current recommendation as historical evidence. The post-header result
-above supersedes that recommendation for the next optimization decision.
+its then-current recommendation as historical evidence. The historical
+post-header result superseded that recommendation at the time; the integrated
+Wave 5 result above now supersedes both for the next optimization decision.
 
 ## Pre-header method and measurement boundary
 
@@ -403,12 +557,13 @@ Bounded inference:
 ## Earlier recommendation (superseded)
 
 The initial measurement recommended the following diff-only classification
-cache. It is retained as historical context and is superseded by the
-post-header run-scoped preprocessing-context recommendation above.
+cache. It is retained as historical context and was superseded first by the
+historical post-header run-scoped preprocessing-context recommendation and then
+by the integrated Wave 5 result above.
 
 The proposed change was to add a diff-only classification cache beside, not
-inside the acceptance
-verifier. A safe entry should be keyed and sealed by at least:
+inside the acceptance verifier. A safe entry should be keyed and sealed by at
+least:
 
 - the exact raw source identity;
 - every included header or other preprocessing dependency identity;
