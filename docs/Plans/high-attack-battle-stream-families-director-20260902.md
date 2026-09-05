@@ -1,6 +1,6 @@
 # High Attack Battle Stream Families — Director Plan
 
-Status: **Waves 1-4 integrated; Waves 3-4 retain Pure-C retries; Wave 5 ready**
+Status: **Waves 1-5 integrated; Waves 3-4 retain Pure-C retries; Wave 5 structural follow-up required before Wave 6**
 
 Date: 2026-09-02
 
@@ -40,7 +40,14 @@ This plan does not design or install that modified-game migration.
 - `func_00217BA8` is exact `HYBRID_C` (1,032 bytes). Its zero-byte empty constraint resolves the same exhausted three-word KMC scheduling tie; the best exact-length Pure-C candidate remains preserved for later retry.
 - `func_00215CF0` is exact `HYBRID_C` (3,400 bytes). Exactly two zero-byte empty constraints resolve the exhausted allocator-result/global-owner scheduling blocker. Its best exact-length Pure-C candidate remains preserved for later compiler research.
 - Post-integration verification passed at 460 exact `PURE_C` functions / 32,416 bytes and 66 exact `HYBRID_C` functions / 39,192 bytes; the full ROM is exact.
-- Wave 4 is attempt-complete: its shared bridge is exact `PURE_C`, all four family owners are exact `HYBRID_C`, and every Pure-C retry remains visible. Wave 5 is next.
+- Wave 4 is attempt-complete: its shared bridge is exact `PURE_C`, all four family owners are exact `HYBRID_C`, and every Pure-C retry remains visible.
+- 2026-09-05: Wave 5's reviewed ordinary-match results were integrated on `main` at `9af92c8`.
+- `func_0021824C`, `func_0021840C`, `func_00218B58`, `func_0021B0A0`, and `func_0021B770` are exact `PURE_C` (3,572 family bytes combined).
+- Shared bridge `func_002224F4` is exact `PURE_C` (60 bytes). Wave 5 therefore added six exact Pure-C owners / 3,632 bytes.
+- `func_0021B438` retains an 828-byte Pure-C research candidate for its 824-byte owner. Promotion requires audited C ownership for two 60-entry switch-table ranges currently retained in `asm/original/rev0/lib/table_00229ab0.s`.
+- `func_0021B894` retains an exact-length 2,016-byte Pure-C research candidate. Promotion requires audited C ownership for its 11-entry switch-table range in the same retained assembly file.
+- Post-integration verification passed at 466 exact `PURE_C` functions / 36,048 bytes and 66 exact `HYBRID_C` functions / 39,192 bytes; the full ROM is exact.
+- Wave 5 ordinary matching is complete, but the family is not exact-complete. Resolve and independently review the two table-ownership contracts before starting Wave 6.
 
 ## Director decisions
 
@@ -214,16 +221,18 @@ The optional slot-zero High Attack site belongs to the final owner.
 
 | Function | Bytes | Priority | Current status |
 |---|---:|---|---|
-| `func_0021824C` | 396 | `FAMILY` | `ASM` |
-| **`func_0021840C`** | 944 | `SUPPORT` | `ASM` |
-| `func_00218B58` | 1,364 | `FAMILY` | `ASM` |
-| `func_0021B0A0` | 576 | `FAMILY` | `ASM` |
-| `func_0021B438` | 824 | `FAMILY` | `ASM` |
-| `func_0021B770` | 292 | `FAMILY` | `ASM` |
-| **`func_0021B894`** | 2,016 | `DIRECT`, optional patch | `ASM` |
+| `func_0021824C` | 396 | `FAMILY` | exact `PURE_C` |
+| **`func_0021840C`** | 944 | `SUPPORT` | exact `PURE_C` |
+| `func_00218B58` | 1,364 | `FAMILY` | exact `PURE_C` |
+| `func_0021B0A0` | 576 | `FAMILY` | exact `PURE_C` |
+| `func_0021B438` | 824 | `FAMILY` | `ASM`; Pure-C candidate preserved; switch-table ownership blocker |
+| `func_0021B770` | 292 | `FAMILY` | exact `PURE_C` |
+| **`func_0021B894`** | 2,016 | `DIRECT`, optional patch | `ASM`; exact-length Pure-C candidate preserved; switch-table ownership blocker |
 
-Wave 5 also owns the first full attempt for shared bridge `func_002224F4`.
+Wave 5 also owns shared bridge `func_002224F4`, now exact `PURE_C`.
 Do not infer slot-index or completion semantics from the patch description alone.
+Do not start Wave 6 until the two Wave 5 switch-table ownership blockers are
+resolved through the structural workflow or Joe explicitly changes the sequence.
 
 ## Wave 6: action-mode dispatch
 
@@ -314,7 +323,7 @@ duplicated.
 |---|---:|---:|---|
 | `func_0021C3B0` | 512 | Wave 4 | exact `PURE_C` |
 | `func_0021EAF0` | 128 | Wave 8 | `ASM` |
-| `func_002224F4` | 60 | Wave 5 | `ASM` |
+| `func_002224F4` | 60 | Wave 5 | exact `PURE_C` |
 | `func_0022257C` | 136 | Wave 6 | `ASM` |
 | `func_00222604` | 208 | Wave 6 | `ASM` |
 | **Total** | **1,044** |  |  |
