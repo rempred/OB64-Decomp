@@ -85,6 +85,9 @@ The first wave is committed and pushed through `80c817e`.
 
 The assigned maintenance queue is complete. High Attack continues under its own Director.
 Astra selects the next function family after High Attack's terminal report; further Editor refactoring is unassigned.
+Selection must consider which matching-C result enables a concrete Editor migration, alongside feasibility and shared-code value.
+New executable Rebuild migrations await accepted pure C for the retail functions they will change, plus verified interfaces and behavioral evidence.
+Existing accepted Rebuild products remain preserved in their separate worktrees.
 
 The existing implementation owners retain technical design authority. Reviewers independently
 identify defects in the assigned result; the director decides release scope. Optional hardening
