@@ -63,6 +63,13 @@ in a sequential queue. Wave 1 is the action-stream record-construction family.
 A large nonmatching research reconstruction can be more valuable than dozens of unrelated tiny
 matches, but the retail exact baseline must remain separate and honest.
 
+Joe authorized a parallel squad construction and deployment family in a fresh worktree on 2026-09-05.
+The initial targets are `func_001957D0`, `func_001960A8`, and `func_00105CC0`; the member builder
+and downstream pure-C helpers remain preserved. Astra High is the requested family Director.
+The worktree and tooling are prepared, but native task identity is pending and the assignment
+has not been activated. Parent `docs/Plans/squad-construction-director-current-state.md` owns
+launch and family status. High Attack retains its separate Director and existing scope.
+
 ### Tier 2 — Current LordlyCaliber limits
 
 Prioritize code governing:

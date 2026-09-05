@@ -84,7 +84,11 @@ The first wave is committed and pushed through `80c817e`.
 | Editor export structure | Completed; independently accepted | Editor `cb9e37d` extracts detached candidate creation and validated state adoption from `app.js`. Independent review passed all 38 tests and reproduced identical baseline-versus-subject exports for one Project edit through loopback and direct-file loading. Parent review: `wiki/after-action-reports/editor-export-structure-review-r1.md`. No correction is required. |
 
 The assigned maintenance queue is complete. High Attack continues under its own Director.
-Astra selects the next function family after High Attack's terminal report; further Editor refactoring is unassigned.
+Joe subsequently authorized a parallel squad construction and deployment family on 2026-09-05,
+with a fresh worktree and an Astra High Director. The worktree and tooling are ready; native task
+identity remains pending, so the assignment has not been activated. Parent
+`docs/Plans/squad-construction-director-current-state.md` owns the launch and family status.
+Further Editor refactoring is unassigned.
 Selection must consider which matching-C result enables a concrete Editor migration, alongside feasibility and shared-code value.
 New executable Rebuild migrations await accepted pure C for the retail functions they will change, plus verified interfaces and behavioral evidence.
 Existing accepted Rebuild products remain preserved in their separate worktrees.
@@ -107,7 +111,8 @@ The preparation result at `603c363` passed all routine suites, exact-ROM verific
 structural audit. Independent structural review accepted it without required corrections.
 The performance write hold and timing interval are released. High Attack Director now owns its
 ordinary implementation, review, integration, and authorized family publication. Astra handles
-cross-program conflicts and selects the family after High Attack. No new branch or worktree is authorized.
+cross-program conflicts. Joe's later authorization permits the one new squad construction worktree;
+it does not authorize additional branches or worktrees for its workers.
 
 1. Preserve the accepted [preparation optimization and profile](../matching-c/warm-diff-profile.md).
    Repeated assembly-text reads caused the measured model-loading cost; within-call authenticated
