@@ -76,9 +76,9 @@ The first wave is committed and pushed through `80c817e`.
 
 | Follow-up | Owner | Current scope |
 |---|---|---|
-| Warm-diff profiling | Existing authenticated-object-reuse task | Accepted through `e03a7dd`; three warm runs average 49.0 seconds, with 19.1 seconds in source classification/preprocessing. Use this measurement to assess the next optimization. |
+| Warm-diff profiling | Existing authenticated-object-reuse task | Earlier profile accepted through `e03a7dd`; three warm runs average 49.0 seconds, with 19.1 seconds in source classification/preprocessing. The bounded post-header comparison is running before Wave 5 integration; compare combined preparation/classification costs because stage ownership changed. |
 | Scheduler trace and source probe | Existing allocator-study task | Six-case trace accepted at `352f5d4`. The subsequent sequential-carrier probe reproduced the same emitted state and causal signature; independent artifact checks passed, and the experiment stopped. |
-| Shared-header support | Authenticated headers and shared-source pilot | Contract and four-function pilot committed at `4123be2`; all routine suites, structural audit and fresh exact-ROM verification passed. Independent structural review is pending. |
+| Shared-header support | Authenticated headers and shared-source pilot | Contract and four-function pilot at `4123be2`, with input confinement/source-identity and duplicate-dependency corrections at `7967afd`. All routine suites, structural audit and fresh exact-ROM verification passed. Independent structural review closed both findings with PASS; the contract is accepted. |
 | Native consumables review | Rebuild Director | Phase 5B accepted at Editor `4106740` without blocking findings. The native rebuild program is paused; its clean implementation worktree is released for later coordinated work. |
 | Editor startup and export structure | Astra, after matching-tool/header validation | Resume coordinated editor work, measure startup and ROM initialization, then defer justified dataset loading and extract one coherent export responsibility. |
 
@@ -92,8 +92,10 @@ use a coordinated quiet interval. Structural build changes and editor changes wa
 respective dependencies and explicit file ownership. No new branch or worktree is required.
 
 The native review consumes its existing frozen decomp worktree, not decomp `main`, so it does
-not block shared-header implementation. High Attack Wave 5 matching has resumed in its existing
-worktree; integration onto `main` remains coordinated around the structural input-contract change.
+not block matching-tool work. High Attack Wave 5 is complete and independently reviewed through
+`b8f4a5e` in its existing worktree. Its integration is held only for the bounded post-header
+measurement, then proceeds onto the accepted contract with routine tests and full verification.
+Optional performance implementation does not extend that integration hold.
 
 1. Use the accepted [warm-diff profile](../matching-c/warm-diff-profile.md) to guide one justified
    optimization. Coordinate any classification reuse with the shared-header input/dependency
@@ -103,12 +105,12 @@ worktree; integration onto `main` remains coordinated around the structural inpu
    baseline. Further allocator-family experiments require a new causal or semantic lead beyond a
    local carrier; no additional form or family sweep is assigned. This bounded negative result
    does not prove that a PURE_C solution is impossible.
-2. Establish an authenticated preprocessing/dependency contract before a shared-interface pilot.
-   Current production passes self-contained C directly to KMC cc1, and header dependencies are not
-   established in build/cache identity. Treat that prerequisite as structural work with audit and
-   independent review. The four identical class-record views in `func_00043e88`, `func_00043edc`,
-   `func_00043f30` and `func_00043f84` are the assigned pilot; other partial declarations must
-   not be combined from superficial similarity. Preserve cautious names and exact output.
+2. Preserve the accepted authenticated preprocessing/dependency contract and four-function
+   shared-interface pilot. Exact compiler-input bytes and complete local dependency identities
+   now participate in classification, compilation and reuse. The identical class-record views in
+   `func_00043e88`, `func_00043edc`, `func_00043f30` and `func_00043f84` share the reviewed header;
+   broader header migration is unassigned. Other partial declarations must not be combined from
+   superficial similarity. Preserve cautious names and exact output.
 3. Coordinate with the native editor rebuild before changing overlapping editor files. Measure
    startup/download/parse cost, then implement bounded deferred dataset loading if the measurements
    support it. Preserve feature initialization, errors and export behavior.

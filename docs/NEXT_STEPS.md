@@ -5,9 +5,9 @@ This file is the active queue only. Changing counts belong in `node tools/status
 ## Matching methods follow-up
 
 Use the [matching methods improvement plan](Plans/matching-methods-improvement-20260904.md)
-for the active shared-header compilation-input/dependency work and its structural acceptance gates.
-Warm-diff profiling is accepted; use its measured preprocessing cost to guide coherent authenticated
-reuse and measure the result. The scheduler trace and bounded carrier probe are complete; another
+for the accepted shared-header compilation-input/dependency contract and the active post-header
+warm-diff comparison. Use measured preprocessing cost to guide coherent authenticated reuse and
+measure the result. The scheduler trace and bounded carrier probe are complete; another
 allocator-family experiment needs a new causal or semantic lead. Current ownership and progress
 remain in that plan. Preserve the pinned production compiler and all matching acceptance rules.
 
