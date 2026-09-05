@@ -52,6 +52,10 @@ program history, lane history, promotion history, or archived research chronolog
 
 ### 1. Normal matching work
 
+Use Sol Max (`gpt-5.6-sol`, reasoning `max`) for ordinary matching workers and corrections,
+unless Joe explicitly assigns another model. Preserve explicitly assigned Astra experiments.
+Do not select Luna for ordinary matching without Joe's explicit instruction.
+
 Use the accepted structural owner as-is, reconstruct the function in C, and iterate with the linked diff.
 Run the final full-ROM build and normal verifier only after the complete assigned wave is ready.
 
