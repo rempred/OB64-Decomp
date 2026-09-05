@@ -171,7 +171,9 @@ sections fail.
 
 For responsiveness, the diff path may reuse authenticated cached objects from
 ignored `build/diff-object-cache/` for unchanged sibling targets. Its cache key
-covers the sibling's exact source and source-policy result, accepted
+and restored artifact set cover the sibling's authored source, exact
+preprocessed compiler input, complete repository-local dependency identities,
+source-policy result, accepted
 target/linkage contract, compiler and assembler identities and flags,
 object-processing implementation, and every restored artifact. A missing,
 stale, malformed, or tampered entry is rejected and rebuilt. The requested
@@ -302,10 +304,12 @@ fragments sharing one auxiliary row must cover it in linker order without gaps
 or overlaps. Writable, executable, conventional `.data`/`.bss`, uncontracted
 tails, and rewritten compiler output reject.
 
-The production path retains the untouched `<symbol>.compiler.s`, the
-section-assigned `<symbol>.s`, the raw GNU 2.6 object, the stripped link input,
-and a deterministic source-object proof. Strict verification recreates that
-proof. See [the source policy](SOURCE_POLICY.md) and
+The production path retains the exact authenticated KMC input at the target's
+source-relative path, the untouched `<symbol>.compiler.s`, the section-assigned
+`<symbol>.s`, the raw GNU 2.6 object, the stripped link input, and a
+deterministic source-object proof. Strict verification independently
+re-preprocesses the authored source, reauthenticates every dependency, and
+recreates that proof. See [the source policy](SOURCE_POLICY.md) and
 [the toolchain reference](TOOLCHAIN.md) for the detailed compiler-assembly
 contract.
 

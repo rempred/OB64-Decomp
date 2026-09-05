@@ -153,20 +153,30 @@ For each active C target:
 
 1. inspect the raw source;
 2. authenticate every executable in the preprocessing chain before invoking the preprocessor;
-3. preprocess using the matching compiler/preprocessor and accepted include configuration;
-4. inspect the preprocessed translation unit so assembler hidden in macros/headers is visible;
+3. preprocess once using the accepted include configuration while emitting an authenticated
+   dependency file from that same invocation;
+4. retain the exact preprocessor stdout bytes as the only input supplied to the matching KMC
+   compiler, and inspect those same bytes so assembler hidden in macros/headers is visible;
 5. ignore comments and string contents when looking for C-level assembler keywords, while retaining
    enough context to report the responsible source location;
 6. detect `asm`, `__asm`, `__asm__`, and equivalent accepted-compiler spellings;
 7. detect register-asm bindings;
 8. detect naked/section/alias mechanisms used to inject executable implementation;
 9. detect assembler-source inclusion or equivalent raw-code escape hatches;
-10. fail closed to `UNKNOWN` when preprocessing/classification cannot be completed.
+10. fail closed to `UNKNOWN` when preprocessing/classification or dependency authentication cannot
+    be completed.
 
 The preprocessing identity contract pins every required executable by role, path, byte size, and
 SHA-256. It also proves that the driver resolves the pinned preprocessing engine. A missing,
 changed, or unbound executable rejects before preprocessing. Source-policy reports record the
 complete executable identity set.
+
+The authored `.c` identity, repository-local header identities, and final compilation-input
+identity are separate evidence. Every depfile entry must resolve to a regular, nonsymlink file
+inside the repository. Missing, changed, duplicated, external, or escaping dependencies reject.
+The exact preprocessed bytes and dependency set participate in CURRENT, diff-cache, and workbench
+reuse identities; changing a header therefore invalidates every translation unit that consumed it
+even when its authored `.c` file is unchanged.
 
 The checker may produce generated JSON under `build/`, but the classification must be reproducible
 from tracked source and the pinned toolchain.
@@ -180,6 +190,8 @@ Tests must include at least:
 - `asm volatile(...)` → `HYBRID_C`;
 - `register int x asm("$2")` → `HYBRID_C`;
 - assembler introduced through a macro/header → `HYBRID_C`;
+- a repository-local header edit changes dependency, compilation-input, and CURRENT identities;
+- an external or escaping header dependency → `UNKNOWN`;
 - the word `asm` inside a comment → still `PURE_C`;
 - the word `asm` inside an ordinary string literal → still `PURE_C`;
 - a prohibited naked/section injection case → `HYBRID_C`;

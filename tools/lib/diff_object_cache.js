@@ -19,9 +19,13 @@ const {
   verifyAuxiliaryPaddingBytes,
   verifyCompilerTextFunctions,
 } = require('./phase8_matching_c');
+const {
+  compilationInputBytes,
+  verifyClassificationInputs,
+} = require('./source_policy');
 const { splitRelocatableTextSection } = require('./elf_text_split');
 
-const CACHE_SCHEMA_VERSION = 1;
+const CACHE_SCHEMA_VERSION = 2;
 const DEFAULT_CACHE_ROOT = path.join(ROOT, 'build', 'diff-object-cache');
 const SAFE_SYMBOL = /^[A-Za-z_.$][A-Za-z0-9_.$]*$/;
 const SHA256 = /^[0-9A-F]{64}$/;
@@ -182,16 +186,27 @@ function createCacheSeal(options) {
   const implementationIdentities = options.implementationIdentities || defaultImplementationIdentities();
   const sourcePolicyConfigIdentity = options.sourcePolicyConfigIdentity || defaultSourcePolicyConfigIdentity();
   const configurationIdentities = options.configurationIdentities || defaultConfigurationIdentities(options.phase8);
+  const preprocessor = canonicalValue(options.preprocessor, 'sealed source-policy preprocessor');
+  if (!preprocessor || !preprocessor.config || !Array.isArray(preprocessor.executables)
+      || preprocessor.executables.length < 2 || !sameValue(preprocessor.config, sourcePolicyConfigIdentity)) {
+    fail('sealed source-policy preprocessor identity is malformed');
+  }
   const executableFiles = [
     { role: 'compiler', path: path.resolve(options.compiler), ...executableIdentity(options.verifiedCompiler, 'compiler') },
     { role: 'assembler', path: path.resolve(options.assemblerPath), ...executableIdentity(options.assembler, 'assembler') },
     { role: 'objcopy', path: path.resolve(options.objcopyPath), ...executableIdentity(options.objcopy, 'objcopy') },
+    ...preprocessor.executables.map((record) => ({
+      role: `source-policy-${record.role}`,
+      path: path.resolve(ROOT, ...safeRelative(record.path, 'source-policy executable path').split('/')),
+      ...executableIdentity(record, `source-policy ${record.role}`),
+    })),
   ];
   return {
-    schemaVersion: 1,
+    schemaVersion: 2,
     implementationIdentities: canonicalValue(implementationIdentities, 'sealed implementation identities'),
     sourcePolicyConfigIdentity: canonicalValue(sourcePolicyConfigIdentity, 'sealed source-policy config identity'),
     configurationIdentities: canonicalValue(configurationIdentities, 'sealed configuration identities'),
+    preprocessor,
     executableFiles,
   };
 }
@@ -206,9 +221,11 @@ function verifyFileIdentity(file, expected, label) {
 }
 
 function verifyCacheSeal(seal) {
-  if (!seal || seal.schemaVersion !== 1
+  if (!seal || seal.schemaVersion !== 2
       || !Array.isArray(seal.implementationIdentities)
       || !Array.isArray(seal.configurationIdentities)
+      || !seal.preprocessor || !seal.preprocessor.config
+      || !Array.isArray(seal.preprocessor.executables)
       || !Array.isArray(seal.executableFiles)) {
     fail('cache seal is malformed');
   }
@@ -226,6 +243,9 @@ function verifyCacheSeal(seal) {
     seal.sourcePolicyConfigIdentity,
     `sealed source-policy config ${sourcePolicyRelative}`,
   );
+  if (!sameValue(seal.preprocessor.config, seal.sourcePolicyConfigIdentity)) {
+    fail('sealed source-policy preprocessor config identity drift');
+  }
   const roles = new Set();
   for (const record of seal.executableFiles) {
     if (!record || typeof record.role !== 'string' || roles.has(record.role)
@@ -235,11 +255,26 @@ function verifyCacheSeal(seal) {
     roles.add(record.role);
     verifyFileIdentity(record.path, record, `sealed ${record.role}`);
   }
-  if (!sameStringSet(roles, ['compiler', 'assembler', 'objcopy'])) fail('sealed executable role census drift');
+  const expectedRoles = [
+    'compiler',
+    'assembler',
+    'objcopy',
+    ...seal.preprocessor.executables.map((record) => `source-policy-${record.role}`),
+  ];
+  if (!sameStringSet(roles, expectedRoles)) fail('sealed executable role census drift');
+  for (const record of seal.preprocessor.executables) {
+    const role = `source-policy-${record.role}`;
+    const executable = seal.executableFiles.find((candidate) => candidate.role === role);
+    const relative = safeRelative(record.path, `sealed ${role} path`);
+    if (!executable || executable.path !== path.resolve(ROOT, ...relative.split('/'))
+        || executable.bytes !== record.bytes || executable.sha256 !== record.sha256) {
+      fail(`sealed ${role} identity drift`);
+    }
+  }
   return seal;
 }
 
-function verifyTargetSourceIdentity(target) {
+function verifyTargetSourceIdentity(target, classification) {
   if (!target || typeof target.source !== 'string' || typeof target.sourceSha256 !== 'string'
       || !SHA256.test(target.sourceSha256)) {
     fail('target source identity is malformed');
@@ -247,7 +282,16 @@ function verifyTargetSourceIdentity(target) {
   const relative = safeRelative(target.source, 'target source');
   const file = assertStrictDescendant(ROOT, path.join(ROOT, ...relative.split('/')), `target source ${target.symbol}`);
   verifyFileIdentity(file, { bytes: fs.existsSync(file) ? fs.statSync(file).size : -1, sha256: target.sourceSha256 }, `target source ${target.symbol}`);
-  return { path: relative, bytes: fs.statSync(file).size, sha256: target.sourceSha256 };
+  const identity = { path: relative, bytes: fs.statSync(file).size, sha256: target.sourceSha256 };
+  if (classification) {
+    validateClassification(target, classification);
+    try {
+      verifyClassificationInputs(classification);
+    } catch (error) {
+      fail(`${target.symbol} ${error.message}`);
+    }
+  }
+  return identity;
 }
 
 function projectTargetContract(target) {
@@ -281,8 +325,16 @@ function validateClassification(target, classification) {
       || classification.source !== target.source
       || classification.bytes !== target.bytes
       || classification.sourceSha256 !== target.sourceSha256
+      || !Number.isInteger(classification.sourceBytes) || classification.sourceBytes <= 0
       || typeof classification.preprocessedSha256 !== 'string'
       || !SHA256.test(classification.preprocessedSha256)
+      || !classification.compilationInput
+      || !Number.isInteger(classification.compilationInput.bytes) || classification.compilationInput.bytes <= 0
+      || typeof classification.compilationInput.sha256 !== 'string'
+      || !SHA256.test(classification.compilationInput.sha256)
+      || classification.preprocessedSha256 !== classification.compilationInput.sha256
+      || !Array.isArray(classification.dependencies)
+      || !classification.preprocessor || !classification.preprocessor.config
       || typeof classification.digest !== 'string' || !SHA256.test(classification.digest)
       || !['PURE_C', 'HYBRID_C'].includes(classification.class)) {
     fail(`fresh source-policy classification drift: ${target.symbol}`);
@@ -324,7 +376,9 @@ function createCacheKeyMaterial(options) {
         executable: compilerIdentity(verifiedCompiler),
         acceptedConfig: phase8.config.compiler,
         flags: [...compileFlags],
-        source: target.source,
+        source: 'authenticated-compilation-input',
+        sourcePath: target.source,
+        sourceSha256: classification.compilationInput.sha256,
         output: 'compiler-assembly',
       },
       sectionAdjustment: {
@@ -356,6 +410,7 @@ function artifactSpecifications(target) {
   }
   const symbol = target.symbol;
   const specs = [
+    { name: 'compilation-input.c', destination: safeRelative(target.source, 'compilation input destination') },
     { name: 'compiler.s', destination: `generated/c/${symbol}.compiler.s` },
     { name: 'adjusted.s', destination: `generated/c/${symbol}.s` },
     { name: 'source-object.o', destination: `objects/c/${symbol}.source-object.o` },
@@ -524,6 +579,12 @@ function inspectCompiledTargetArtifacts(options) {
   }
   const bytesByName = {};
   for (const spec of specs) bytesByName[spec.name] = readRegularFile(files[spec.name], `${target.symbol} ${spec.name}`);
+  const expectedInput = compilationInputBytes(classification);
+  if (!bytesByName['compilation-input.c'].equals(expectedInput)
+      || bytesByName['compilation-input.c'].length !== classification.compilationInput.bytes
+      || sha256Buffer(bytesByName['compilation-input.c']) !== classification.compilationInput.sha256) {
+    fail(`authenticated compilation input drift: ${target.symbol}`);
+  }
 
   const expectedAdjusted = adjustSectionAssembly(bytesByName['compiler.s'], target.sectionName, {
     auxiliarySections: target.auxiliarySections || [],
@@ -609,6 +670,11 @@ function inspectCompiledTargetArtifacts(options) {
     compilerAssemblySha256: sha256File(files['compiler.s']),
     linkedAssemblyRelative: `generated/c/${target.symbol}.s`,
     linkedAssemblySha256: sha256File(files['adjusted.s']),
+    compilationInput: {
+      path: target.source,
+      bytes: bytesByName['compilation-input.c'].length,
+      sha256: sha256Buffer(bytesByName['compilation-input.c']),
+    },
     sourceClass: classification.class,
     sourcePolicyDigest: classification.digest,
     compilerAssemblyRewritten: false,
@@ -910,7 +976,7 @@ function compileOrReuseTarget(options) {
   };
   if (!sealManagedByCaller) profileMeasure(options, 'object-cache.seal-verify', () => verifySeal(seal));
   const keyMaterial = profileMeasure(options, 'object-cache.source-and-key', () => {
-    verifySource(target);
+    verifySource(target, classification);
     return createCacheKeyMaterial(sealedOptions);
   });
   const cached = profileMeasure(options, 'object-cache.entry-validate', () => tryCacheEntry({
@@ -934,7 +1000,7 @@ function compileOrReuseTarget(options) {
       if (!sameValue(inspected, cached.compiled)) fail(`copied cache evidence drift: ${target.symbol}`);
       return inspected;
     });
-    profileMeasure(options, 'object-cache.source-postcheck', () => verifySource(target));
+    profileMeasure(options, 'object-cache.source-postcheck', () => verifySource(target, classification));
     if (!sealManagedByCaller) profileMeasure(options, 'object-cache.seal-verify', () => verifySeal(seal));
     return { compiled: copied, cache: { status: 'hit', key: cached.key, reason: null } };
   }
@@ -949,7 +1015,7 @@ function compileOrReuseTarget(options) {
     { enforceAcceptedContract: true, classification },
   ));
   profileMeasure(options, 'object-cache.sibling-postcheck', () => {
-    verifySource(target);
+    verifySource(target, classification);
     verifySeal(seal);
   });
   const sourceFiles = outputArtifactFiles(output, target);
@@ -969,7 +1035,7 @@ function compileOrReuseTarget(options) {
     inspectArtifacts,
     renameEntry: options.renameEntry,
   }));
-  profileMeasure(options, 'object-cache.source-postcheck', () => verifySource(target));
+  profileMeasure(options, 'object-cache.source-postcheck', () => verifySource(target, classification));
   if (!sealManagedByCaller) profileMeasure(options, 'object-cache.seal-verify', () => verifySeal(seal));
   return {
     compiled: inspected,
@@ -1015,7 +1081,7 @@ function compileDiffTargets(options) {
     const classification = classificationBySymbol.get(target.symbol);
     if (target.symbol === requestedTarget.symbol) {
       requestedCount += 1;
-      profileMeasure(options, 'object-cache.requested-source-precheck', () => verifySource(target));
+      profileMeasure(options, 'object-cache.requested-source-precheck', () => verifySource(target, classification));
       const result = profileMeasure(options, 'object-cache.requested-compile', () => compile(
         phase8,
         target,
@@ -1026,7 +1092,7 @@ function compileDiffTargets(options) {
         { enforceAcceptedContract: false, classification },
       ));
       profileMeasure(options, 'object-cache.requested-postcheck', () => {
-        verifySource(target);
+        verifySource(target, classification);
         verifySeal(seal);
       });
       compiled.set(target.symbol, result);
@@ -1048,7 +1114,7 @@ function compileDiffTargets(options) {
     fail(`requested target compilation census drift: ${requestedTarget.symbol}`);
   }
   profileMeasure(options, 'object-cache.final-source-sweep', () => {
-    for (const target of phase8.targets) verifySource(target);
+    for (const target of phase8.targets) verifySource(target, classificationBySymbol.get(target.symbol));
   });
   profileMeasure(options, 'object-cache.final-seal-verify', () => verifySeal(seal));
   const count = (status) => entries.filter((entry) => entry.status === status).length;

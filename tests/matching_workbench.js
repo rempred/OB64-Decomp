@@ -50,6 +50,7 @@ const {
 const { requestStore } = require('../tools/lib/matching/store');
 const {
   MATCHING_ROOT,
+  candidateCompileCacheKey,
   candidateRecord,
   compileArtifactDirectory,
   compilePublicationRequiresReauthentication,
@@ -739,6 +740,25 @@ function candidateIdentityTests() {
   const second = candidateRecord(target, 'void fixture(void) {}\n', { origin: 'manual', metadata: { pass: 2 } });
   assert(first.candidateId === second.candidateId, 'identical target and source were split by provenance');
   assert(first.observationId !== second.observationId, 'distinct candidate provenance observations were collapsed');
+  const session = { toolId: 'TOOL-FIXTURE' };
+  const relocationEvidence = { available: true, records: [] };
+  const sourcePolicy = {
+    digest: 'A'.repeat(64),
+    sourceSha256: first.sourceSha256,
+    compilationInput: { bytes: 20, sha256: 'B'.repeat(64) },
+    dependencies: [{ path: 'include/fixture.h', bytes: 8, sha256: 'C'.repeat(64) }],
+  };
+  const originalKey = candidateCompileCacheKey(session, target, first, sourcePolicy, relocationEvidence);
+  const changedHeaderKey = candidateCompileCacheKey(session, target, first, {
+    ...sourcePolicy,
+    dependencies: [{ ...sourcePolicy.dependencies[0], sha256: 'D'.repeat(64) }],
+  }, relocationEvidence);
+  const changedInputKey = candidateCompileCacheKey(session, target, first, {
+    ...sourcePolicy,
+    compilationInput: { ...sourcePolicy.compilationInput, sha256: 'E'.repeat(64) },
+  }, relocationEvidence);
+  assert(originalKey !== changedHeaderKey && originalKey !== changedInputKey,
+    'workbench compile cache ignored dependency or compilation-input identity');
 }
 
 function probeComparisonTests() {

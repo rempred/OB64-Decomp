@@ -9,6 +9,11 @@ const {
   sha256File,
 } = require('../tools/lib/phase7_conventional');
 const {
+  COMPILATION_INPUT_BYTES,
+  classifyTargetSources,
+  compilationInputBytes,
+} = require('../tools/lib/source_policy');
+const {
   artifactSpecifications,
   cacheEntryPath,
   canonicalJson,
@@ -118,20 +123,34 @@ function makeTarget(symbol, sourceHash, options = {}) {
 }
 
 function makeClassification(target, preprocessed = HASH.f, sourceClass = 'PURE_C') {
-  return {
+  const input = Buffer.from(`fixture compilation input:${target.symbol}:${preprocessed}\n`, 'utf8');
+  const inputSha256 = sha256Buffer(input);
+  const result = {
     symbol: target.symbol,
     bytes: target.bytes,
     class: sourceClass,
     source: target.source,
+    sourceBytes: 123,
     sourceSha256: target.sourceSha256,
-    preprocessedSha256: preprocessed,
+    preprocessedSha256: inputSha256,
+    compilationInput: { bytes: input.length, sha256: inputSha256 },
+    dependencies: [{ path: 'include/fixture.h', bytes: 17, sha256: preprocessed }],
     reasons: sourceClass === 'HYBRID_C'
       ? [{ stage: 'raw', code: 'assembler-keyword', token: 'asm', line: 1, column: 1 }]
       : [],
     preprocessor: {
+      config: { path: 'config/source-policy.json', bytes: 100, sha256: HASH.a },
       sha256: HASH.zero,
       version: 'fixture-cpp 1',
-      executables: [{ role: 'driver', path: 'fixture/cpp.exe', bytes: 10, sha256: HASH.zero }],
+      executables: [
+        { role: 'driver', path: 'fixture/cpp.exe', bytes: 10, sha256: HASH.zero },
+        { role: 'preprocessing-engine', path: 'fixture/cc1.exe', bytes: 20, sha256: HASH.one },
+      ],
+      flags: ['-P', '-undef', '-nostdinc'],
+      includeDirectories: ['include'],
+      dependencyMode: 'authenticated-depfile',
+      dependencyRoot: '.',
+      dependencyTarget: 'ob64-compilation-input',
       matchingCompiler: {
         executableSha256: HASH.one,
         manifestSha256: HASH.two,
@@ -140,6 +159,11 @@ function makeClassification(target, preprocessed = HASH.f, sourceClass = 'PURE_C
     },
     digest: sourceClass === 'HYBRID_C' ? HASH.three : HASH.two,
   };
+  Object.defineProperty(result, COMPILATION_INPUT_BYTES, {
+    enumerable: false,
+    value: input,
+  });
+  return result;
 }
 
 function makePhase8(targets) {
@@ -181,6 +205,7 @@ function commonKeyInputs(phase8, target, classification) {
     },
     assembler: { bytes: 2345, sha256: HASH.two },
     objcopy: { bytes: 3456, sha256: HASH.three },
+    preprocessor: clone(classification.preprocessor),
     sourcePolicyConfigIdentity: {
       path: 'config/source-policy.json', bytes: 100, sha256: HASH.a,
     },
@@ -197,10 +222,11 @@ function keyFor(inputs) {
 
 function fixtureSeal(inputs) {
   return {
-    schemaVersion: 1,
+    schemaVersion: 2,
     implementationIdentities: clone(inputs.implementationIdentities),
     sourcePolicyConfigIdentity: clone(inputs.sourcePolicyConfigIdentity),
     configurationIdentities: [],
+    preprocessor: clone(inputs.preprocessor),
     executableFiles: [],
   };
 }
@@ -255,6 +281,9 @@ function fakeInspect({ target, classification, files }) {
   if (fs.readFileSync(files['compiler.s'], 'utf8') !== expectedCompilerText(target)) {
     fail(`fake compiler assembly drift for ${target.symbol}`);
   }
+  if (!fs.readFileSync(files['compilation-input.c']).equals(compilationInputBytes(classification))) {
+    fail(`fake compilation input drift for ${target.symbol}`);
+  }
   if (fs.readFileSync(files['adjusted.s'], 'utf8') !== expectedAdjustedText(target)) {
     fail(`fake adjusted assembly drift for ${target.symbol}`);
   }
@@ -294,6 +323,11 @@ function fakeInspect({ target, classification, files }) {
     compilerAssemblySha256: sha256File(files['compiler.s']),
     linkedAssemblyRelative: `generated/c/${target.symbol}.s`,
     linkedAssemblySha256: sha256File(files['adjusted.s']),
+    compilationInput: {
+      path: target.source,
+      bytes: fs.statSync(files['compilation-input.c']).size,
+      sha256: sha256File(files['compilation-input.c']),
+    },
     sourceClass: classification.class,
     sourcePolicyDigest: classification.digest,
     compilerAssemblyRewritten: false,
@@ -307,6 +341,7 @@ function makeFakeCompiler(invocations) {
     invocations.push({ symbol: target.symbol, enforceAcceptedContract: options.enforceAcceptedContract });
     const files = outputArtifactFiles(output, target);
     for (const file of Object.values(files)) fs.mkdirSync(path.dirname(file), { recursive: true });
+    fs.writeFileSync(files['compilation-input.c'], compilationInputBytes(options.classification));
     fs.writeFileSync(files['compiler.s'], expectedCompilerText(target));
     fs.writeFileSync(files['adjusted.s'], expectedAdjustedText(target));
     fs.writeFileSync(files['source-object.o'], `${JSON.stringify(fakeObject(target, false))}\n`);
@@ -366,7 +401,13 @@ function main() {
       value.target.sourceSha256 = HASH.d;
       value.classification.sourceSha256 = HASH.d;
     }, 'own source drift');
-    mutateKey(baseInputs, (value) => { value.classification.preprocessedSha256 = HASH.d; }, 'preprocessing drift');
+    mutateKey(baseInputs, (value) => {
+      value.classification.preprocessedSha256 = HASH.d;
+      value.classification.compilationInput.sha256 = HASH.d;
+    }, 'preprocessing drift');
+    mutateKey(baseInputs, (value) => {
+      value.classification.dependencies[0].sha256 = HASH.d;
+    }, 'header dependency drift');
     mutateKey(baseInputs, (value) => {
       value.classification.class = 'HYBRID_C';
       value.classification.digest = HASH.three;
@@ -604,6 +645,9 @@ function main() {
     expectRebuild('corrupt artifact', () => {
       fs.appendFileSync(path.join(siblingEntry, 'artifacts', 'final.o'), 'corrupt');
     }, /identity drift/);
+    expectRebuild('compilation input tampering', () => {
+      fs.appendFileSync(path.join(siblingEntry, 'artifacts', 'compilation-input.c'), 'corrupt');
+    }, /identity drift/);
     expectRebuild('missing artifact', () => {
       fs.unlinkSync(path.join(siblingEntry, 'artifacts', 'source-object.o'));
     }, /file census drift/);
@@ -670,7 +714,8 @@ function main() {
     const poisonRequested = sourceBackedTarget('fixture_poison_requested', 'int fixture_poison_requested(void) { return 1; }\n');
     const poisonSibling = sourceBackedTarget('fixture_poison_sibling', 'int fixture_poison_sibling(void) { return 2; }\n');
     const poisonPhase8 = makePhase8([poisonRequested.target, poisonSibling.target]);
-    const poisonClassifications = new Map(poisonPhase8.targets.map((target) => [target.symbol, makeClassification(target)]));
+    const poisonSourcePolicy = classifyTargetSources(poisonPhase8.targets);
+    const poisonClassifications = new Map(poisonSourcePolicy.targets.map((record) => [record.symbol, record]));
     const poisonInputs = commonKeyInputs(poisonPhase8, poisonSibling.target, poisonClassifications.get(poisonSibling.target.symbol));
     const poisonCacheRoot = path.join(scratch, 'poison-cache');
     const poisonInvocations = [];
@@ -703,18 +748,36 @@ function main() {
     fs.mkdirSync(sealDirectory, { recursive: true });
     const implementationFile = path.join(sealDirectory, 'implementation.js');
     const configurationFile = path.join(sealDirectory, 'configuration.json');
-    const executableFiles = ['compiler.exe', 'assembler.exe', 'objcopy.exe'].map((name) => path.join(sealDirectory, name));
+    const executableFiles = ['compiler.exe', 'assembler.exe', 'objcopy.exe', 'cpp.exe', 'cc1.exe']
+      .map((name) => path.join(sealDirectory, name));
     fs.writeFileSync(implementationFile, 'implementation\n');
     fs.writeFileSync(configurationFile, '{}\n');
     for (const file of executableFiles) fs.writeFileSync(file, path.basename(file));
     const shownImplementation = path.relative(ROOT, implementationFile).replace(/\\/g, '/');
     const shownConfiguration = path.relative(ROOT, configurationFile).replace(/\\/g, '/');
     const seal = {
-      schemaVersion: 1,
+      schemaVersion: 2,
       implementationIdentities: [{ path: shownImplementation, bytes: fs.statSync(implementationFile).size, sha256: sha256File(implementationFile) }],
       sourcePolicyConfigIdentity: { path: shownConfiguration, bytes: fs.statSync(configurationFile).size, sha256: sha256File(configurationFile) },
       configurationIdentities: [{ path: shownConfiguration, bytes: fs.statSync(configurationFile).size, sha256: sha256File(configurationFile) }],
-      executableFiles: ['compiler', 'assembler', 'objcopy'].map((role, index) => ({
+      preprocessor: {
+        config: { path: shownConfiguration, bytes: fs.statSync(configurationFile).size, sha256: sha256File(configurationFile) },
+        executables: [
+          {
+            role: 'driver',
+            path: path.relative(ROOT, executableFiles[3]).replace(/\\/g, '/'),
+            bytes: fs.statSync(executableFiles[3]).size,
+            sha256: sha256File(executableFiles[3]),
+          },
+          {
+            role: 'preprocessing-engine',
+            path: path.relative(ROOT, executableFiles[4]).replace(/\\/g, '/'),
+            bytes: fs.statSync(executableFiles[4]).size,
+            sha256: sha256File(executableFiles[4]),
+          },
+        ],
+      },
+      executableFiles: ['compiler', 'assembler', 'objcopy', 'source-policy-driver', 'source-policy-preprocessing-engine'].map((role, index) => ({
         role,
         path: path.resolve(executableFiles[index]),
         bytes: fs.statSync(executableFiles[index]).size,
@@ -750,7 +813,7 @@ function main() {
         compilerInvocations: warm.result.cache.compilerInvocations,
         hits: warm.result.cache.hits,
       },
-      invalidEntriesRebuilt: 10,
+      invalidEntriesRebuilt: 11,
       siblingIsolation: true,
       requestedTargetAlwaysFresh: true,
       profileHookBehaviorPreserved: true,

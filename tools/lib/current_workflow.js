@@ -123,9 +123,14 @@ function baselineFingerprint(model, baserom) {
   });
 }
 
-function currentFingerprint(phase8, baseline, localTools) {
+function currentFingerprint(phase8, baseline, localTools, sourcePolicy) {
+  if (!sourcePolicy || sourcePolicy.schemaVersion !== 2 || sourcePolicy.status !== 'pass'
+      || !Array.isArray(sourcePolicy.targets) || sourcePolicy.targets.length !== phase8.targets.length) {
+    throw new Error('CURRENT fingerprint source-policy census is malformed');
+  }
+  const classificationBySymbol = new Map(sourcePolicy.targets.map((record) => [record.symbol, record]));
   return sha256Value({
-    schemaVersion: 4,
+    schemaVersion: 5,
     baseline,
     compilerSha256: sha256File(localTools.compiler),
     activeConfigSha256: sha256File(path.join(ROOT, 'config', 'matching-c-targets.json')),
@@ -139,21 +144,35 @@ function currentFingerprint(phase8, baseline, localTools) {
         expectedRelocations: target.expectedRelocations,
       })),
     },
-    sourcePolicyConfigSha256: sha256File(path.join(ROOT, 'config', 'source-policy.json')),
+    sourcePolicy: {
+      configSha256: sha256File(path.join(ROOT, 'config', 'source-policy.json')),
+      preprocessor: sourcePolicy.preprocessor,
+    },
     gnuBinutils26: phase8.toolchain.identity,
-    targets: phase8.targets.map((target) => ({
-      symbol: target.symbol,
-      source: target.source,
-      sourceSha256: target.sourceSha256,
-      textOwners: target.textOwners.map((owner) => ({
-        rowIndex: owner.rowIndex,
-        chunkIndex: owner.chunkIndex,
-        sectionName: owner.sectionName,
-        logicalOffset: owner.logicalOffset,
-        bytes: owner.bytes,
-        originalAssemblySha256: owner.originalAssemblySha256,
-      })),
-    })),
+    targets: phase8.targets.map((target) => {
+      const classification = classificationBySymbol.get(target.symbol);
+      if (!classification || classification.source !== target.source
+          || classification.sourceSha256 !== target.sourceSha256) {
+        throw new Error(`CURRENT fingerprint source-policy target drift: ${target.symbol}`);
+      }
+      return {
+        symbol: target.symbol,
+        source: target.source,
+        sourceBytes: classification.sourceBytes,
+        sourceSha256: target.sourceSha256,
+        sourcePolicyDigest: classification.digest,
+        compilationInput: classification.compilationInput,
+        dependencies: classification.dependencies,
+        textOwners: target.textOwners.map((owner) => ({
+          rowIndex: owner.rowIndex,
+          chunkIndex: owner.chunkIndex,
+          sectionName: owner.sectionName,
+          logicalOffset: owner.logicalOffset,
+          bytes: owner.bytes,
+          originalAssemblySha256: owner.originalAssemblySha256,
+        })),
+      };
+    }),
     implementation: hashFiles([
       'tools/build_phase8_matching_c.js',
       'tools/verify_phase8_matching_c.js',
@@ -181,7 +200,7 @@ function completeCurrent(directory, phase8) {
   } catch (_) {
     return false;
   }
-  if (!phase8 || report.schemaVersion !== 3 || report.status !== 'pass'
+  if (!phase8 || report.schemaVersion !== 4 || report.status !== 'pass'
       || !Array.isArray(report.targetReplacements) || report.targetReplacements.length !== phase8.targets.length) return false;
   for (const target of phase8.targets) {
     const record = report.targetReplacements.find((candidate) => candidate.symbol === target.symbol);
@@ -190,6 +209,7 @@ function completeCurrent(directory, phase8) {
       { path: record.linkedAssembly, sha256: record.linkedAssemblySha256 },
       { path: record.cObject, sha256: record.cObjectSha256 },
       ...(record.assemblerObject ? [{ path: record.assemblerObject, sha256: record.assemblerObjectSha256 }] : []),
+      record.compilationInput,
       record.sourceObjectProof,
     ];
     if (!record || identities.some((identity) => {
@@ -207,7 +227,7 @@ function retryRoot(preferred) {
 }
 
 function reusableCurrentState(context, state) {
-  return Boolean(state && state.schemaVersion === 3
+  return Boolean(state && state.schemaVersion === 4
     && state.fingerprint === context.currentFingerprint
     && state.baselineFingerprint === context.baselineFingerprint
     && completeCurrent(state.output, context.phase8));
@@ -230,8 +250,17 @@ function prepareContext(options = {}) {
   const phase8 = loadActiveTargetModel({
     allowMissingRelocationContracts: options.allowMissingRelocationContracts || [],
   });
-  const current = currentFingerprint(phase8, baseline, localTools);
-  return { baserom, baselineFingerprint: baseline, currentFingerprint: current, localTools, model, phase8 };
+  const sourcePolicy = classifyTargetSources(phase8.targets);
+  const current = currentFingerprint(phase8, baseline, localTools, sourcePolicy);
+  return {
+    baserom,
+    baselineFingerprint: baseline,
+    currentFingerprint: current,
+    localTools,
+    model,
+    phase8,
+    sourcePolicy,
+  };
 }
 
 function ensureBaseline(context, options = {}) {
@@ -293,7 +322,7 @@ function ensureCurrentBuild(context, options = {}) {
   ], 'CURRENT build');
   const report = readJson(path.join(output, 'build-report.json'));
   const state = {
-    schemaVersion: 3,
+    schemaVersion: 4,
     fingerprint: context.currentFingerprint,
     baselineFingerprint: context.baselineFingerprint,
     createdAt: new Date().toISOString(),
@@ -309,9 +338,9 @@ function ensureCurrentBuild(context, options = {}) {
   return { ...state, baseline, reused: false };
 }
 
-function classifyActiveTargets(phase8) {
+function classifyActiveTargets(phase8, preparedClassification = null) {
   const preprocessor = resolvePreprocessor();
-  const classification = classifyTargetSources(phase8.targets, { preprocessor });
+  const classification = preparedClassification || classifyTargetSources(phase8.targets, { preprocessor });
   const report = {
     ...classification,
     generatedAt: new Date().toISOString(),
@@ -338,10 +367,10 @@ function verifyFreshCompilation(context, build) {
     asmDifferRoot: context.localTools.asmDifferRoot,
   });
   verifyCompiler(context.phase8, context.localTools.compiler);
-  const sourcePolicy = classifyTargetSources(context.phase8.targets);
+  const sourcePolicy = context.sourcePolicy || classifyTargetSources(context.phase8.targets);
   const classificationBySymbol = new Map(sourcePolicy.targets.map((record) => [record.symbol, record]));
   const builtReport = readJson(build.report);
-  if (builtReport.schemaVersion !== 3 || !Array.isArray(builtReport.targetReplacements)) {
+  if (builtReport.schemaVersion !== 4 || !Array.isArray(builtReport.targetReplacements)) {
     throw new Error('CURRENT build report lacks source-to-object provenance');
   }
   const targets = [];
@@ -360,6 +389,7 @@ function verifyFreshCompilation(context, build) {
     if (!builtTarget || !fs.existsSync(builtObject) || sha256File(builtObject) !== compiled.objectSha256
         || builtTarget.compilerAssemblySha256 !== compiled.compilerAssemblySha256
         || builtTarget.linkedAssemblySha256 !== compiled.linkedAssemblySha256
+        || JSON.stringify(builtTarget.compilationInput) !== JSON.stringify(compiled.compilationInput)
         || builtTarget.sourceClass !== compiled.sourceClass
         || builtTarget.sourcePolicyDigest !== compiled.sourcePolicyDigest
         || builtTarget.compilerAssemblyRewritten !== false) {
@@ -374,17 +404,24 @@ function verifyFreshCompilation(context, build) {
       sectionAdjustedAssemblySha256: compiled.linkedAssemblySha256,
       sourceClass: compiled.sourceClass,
       sourcePolicyDigest: compiled.sourcePolicyDigest,
+      compilationInput: compiled.compilationInput,
+      dependencies: classificationBySymbol.get(target.symbol).dependencies,
       compilerAssemblyRewritten: false,
       relocations: compiled.relocations,
     });
   }
   const report = {
-    schemaVersion: 3,
+    schemaVersion: 4,
     status: 'pass',
     generatedAt: new Date().toISOString(),
     compilerSha256: sha256File(context.localTools.compiler),
     toolchain: context.phase8.toolchain.identity,
-    sourcePolicy: { counts: sourcePolicy.counts, bytes: sourcePolicy.bytes },
+    sourcePolicy: {
+      schemaVersion: sourcePolicy.schemaVersion,
+      preprocessor: sourcePolicy.preprocessor,
+      counts: sourcePolicy.counts,
+      bytes: sourcePolicy.bytes,
+    },
     output,
     targets,
   };
@@ -405,7 +442,7 @@ function verifyCurrent(context, options = {}) {
   ], 'CURRENT verification');
   onStep('Recompiling active sources for source-to-object identity');
   const freshCompilation = verifyFreshCompilation(context, build);
-  const sourcePolicy = classifyActiveTargets(context.phase8);
+  const sourcePolicy = classifyActiveTargets(context.phase8, context.sourcePolicy);
   const verification = readJson(VERIFICATION_REPORT_PATH);
   const state = {
     ...existingState(CURRENT_STATE_PATH),
@@ -436,6 +473,7 @@ module.exports = {
   STATE_ROOT,
   VERIFICATION_REPORT_PATH,
   classifyActiveTargets,
+  currentFingerprint,
   currentVerificationState,
   ensureBaseline,
   ensureCanonicalBaserom,

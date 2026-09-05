@@ -31,6 +31,7 @@ const {
 const {
   authenticateFreshRunArtifactDirectory,
   cachedCandidateArtifact,
+  candidateCompileCacheKey,
   candidateRecord,
   compileArtifactDirectory,
   compileAttemptIdentity,
@@ -38,6 +39,11 @@ const {
   resolveRunArtifactDirectory,
   sourceSnapshot,
 } = require('../tools/lib/matching/compiler');
+const {
+  classifySource,
+  compilationInputBytes,
+  resolvePreprocessor,
+} = require('../tools/lib/source_policy');
 const { ROOT, sha256File } = require('../tools/lib/phase7_conventional');
 const { digest } = require('../tools/lib/matching/target_model');
 
@@ -673,11 +679,14 @@ function compileCandidateCacheRejectionTests() {
   };
   const sourceText = 'void fixture(void) {}\n';
   const candidate = candidateRecord(target, sourceText);
+  const sourceFile = sourceSnapshot(target, sourceText, candidate.candidateId, matchingRoot);
   const objectText = target.expectedBytes.toString('base64');
   const tool = {};
+  const preprocessor = resolvePreprocessor();
   const session = {
     tool,
     toolId: 'TOOL',
+    preprocessor,
     context: { currentFingerprint: 'CURRENT', phase8: { targets: [] } },
   };
   const expectedRelocationEvidence = {
@@ -685,13 +694,12 @@ function compileCandidateCacheRejectionTests() {
     records: null,
     reason: 'target is not an accepted phase8 C target',
   };
-  const cacheKey = digest({
-    schemaVersion: 2,
-    candidateId: candidate.candidateId,
-    targetId: target.targetId,
-    toolId: session.toolId,
-    expectedRelocationEvidence,
-  });
+  const classification = classifySource(path.relative(ROOT, sourceFile).replace(/\\/g, '/'), { preprocessor });
+  classification.symbol = target.symbol;
+  classification.bytes = target.bytes;
+  const sourcePolicy = JSON.parse(JSON.stringify(classification));
+  const compileTool = { ...tool, candidateSourcePolicy: sourcePolicy };
+  const cacheKey = candidateCompileCacheKey(session, target, candidate, sourcePolicy, expectedRelocationEvidence);
   const cached = {
     run_id: runId,
     candidate_id: candidate.candidateId,
@@ -700,14 +708,16 @@ function compileCandidateCacheRejectionTests() {
     object_text: objectText,
     relocations: [],
     artifact_dir: path.relative(ROOT, runDirectory).replace(/\\/g, '/'),
-    tool,
+    tool: compileTool,
   };
   const storedComparison = {
     details: { schemaVersion: 2, exactBytes: true },
   };
   const storeRequest = (request) => {
     if (request.action === 'put_candidate') return {};
-    if (request.action === 'query' && request.name === 'compile_by_cache') return cached;
+    if (request.action === 'query' && request.name === 'compile_by_cache') {
+      return request.args.cacheKey === cached.cache_key ? cached : null;
+    }
     if (request.action === 'query' && request.name === 'comparison_for_run') return storedComparison;
     throw new Error(`unexpected synthetic store request: ${request.action}/${request.name || ''}`);
   };
@@ -721,21 +731,28 @@ function compileCandidateCacheRejectionTests() {
   const reportFile = path.join(runDirectory, 'workbench-report.json');
   const objectBytes = Buffer.from('authenticated-object');
   const report = {
-    schemaVersion: 1,
+    schemaVersion: 2,
     target: { targetId: target.targetId },
     candidate: { candidateId: candidate.candidateId },
     compile: {
       runId, candidateId: candidate.candidateId, cacheKey, status: 'compiled',
-      objectText, relocations: [], tool,
+      objectText, relocations: [], tool: compileTool,
     },
+    sourcePolicy,
     scratchContract: {
       artifacts: {
+        compilationInput: {
+          path: path.relative(ROOT, path.join(runDirectory, 'candidate.input.c')).replace(/\\/g, '/'),
+          bytes: classification.compilationInput.bytes,
+          sha256: classification.compilationInput.sha256,
+        },
         object: path.relative(ROOT, objectFile).replace(/\\/g, '/'),
         objectSha256: null,
       },
     },
   };
   try {
+    fs.writeFileSync(path.join(runDirectory, 'candidate.input.c'), compilationInputBytes(classification));
     fs.writeFileSync(objectFile, objectBytes);
     report.scratchContract.artifacts.objectSha256 = sha256File(objectFile);
     fs.writeFileSync(reportFile, JSON.stringify(report));
@@ -754,6 +771,12 @@ function compileCandidateCacheRejectionTests() {
     }));
     expectError(/report provenance is stale or malformed/, compile);
     fs.writeFileSync(reportFile, JSON.stringify(report));
+
+    const inputFile = path.join(runDirectory, 'candidate.input.c');
+    const inputBytes = fs.readFileSync(inputFile);
+    fs.appendFileSync(inputFile, 'drift');
+    expectError(/cached compilation input identity drift/, compile);
+    fs.writeFileSync(inputFile, inputBytes);
 
     const outsideObject = path.join(directory, 'outside-cache-object.o');
     fs.writeFileSync(outsideObject, objectBytes);

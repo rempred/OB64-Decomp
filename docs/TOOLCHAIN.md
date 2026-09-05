@@ -123,21 +123,30 @@ Source-policy preprocessing has a separate two-executable identity chain. The tr
 pins the `mips64-elf-cpp.exe` driver and its GCC 12.2 `cc1.exe` preprocessing engine by role, path,
 byte size, and SHA-256. The resolver confirms that the driver selects that exact engine before
 preprocessing. Missing, changed, or unbound executables fail closed, and both identities appear in
-source-policy evidence. This GCC 12.2 engine classifies source only; it is not the matching KMC
-compiler.
+source-policy evidence. One invocation emits both an authenticated depfile and the exact stdout
+bytes scanned by source policy. Those same bytes, without regeneration or rewriting, are the input
+to the matching KMC compiler. The GCC 12.2 engine is therefore the pinned preprocessing companion,
+not the matching code generator.
+
+Every preprocessing dependency must be a regular repository-local file. The build records the
+authored `.c` identity, each distinct header identity, and the final compilation-input identity
+separately. CURRENT fingerprints, diff object-cache keys, and workbench compile keys include that
+closure. External, missing, symlinked, or changed dependencies fail closed.
 
 For every active C or hybrid target, the build retains:
 
-1. untouched `<symbol>.compiler.s` output from KMC;
-2. `<symbol>.s`, derived only by replacing the sole `.text` directive with the accepted target
+1. the exact authenticated preprocessed KMC input at the target's source-relative path;
+2. untouched `<symbol>.compiler.s` output from KMC;
+3. `<symbol>.s`, derived only by replacing the sole `.text` directive with the accepted target
    section directive;
-3. the raw GNU 2.6 source object before ancillary-section removal;
-4. the linked object after removal of `.reginfo`, `.pdr`, `.comment`, and `.note`; and
-5. `<symbol>.source-object-proof.json`, independently reproducible from tracked inputs.
+4. the raw GNU 2.6 source object before ancillary-section removal;
+5. the linked object after removal of `.reginfo`, `.pdr`, `.comment`, and `.note`; and
+6. `<symbol>.source-object-proof.json`, independently reproducible from tracked inputs.
 
-The proof records source class, compiler and assembler identities/flags, artifact hashes, target
-bytes, accepted load-relevant relocations, ancillary differences, final linked bytes, and sole
-ownership. GNU 2.6 does not emit the former procedure-descriptor relocation. That retired
+The proof records authored-source, dependency, and compilation-input identities; source class;
+preprocessor, compiler, and assembler identities/flags; artifact hashes; target bytes; accepted
+load-relevant relocations; ancillary differences; final linked bytes; and sole ownership. GNU 2.6
+does not emit the former procedure-descriptor relocation. That retired
 metadata remains visible as historical ancillary evidence but is not part of the active
 load-relevant relocation contract.
 

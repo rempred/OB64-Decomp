@@ -76,7 +76,12 @@ source text. Generation origin, ruleset, parent candidate, and tool arguments
 are separate observations. The same C found through several routes is compiled
 once without losing provenance.
 
-The workbench stores successful compilation artifacts for exact-input reuse.
+The workbench stores successful compilation artifacts for exact-input reuse. A
+compile identity includes the authored candidate, exact preprocessed KMC input,
+and every repository-local header dependency. The scratch compiler consumes the
+retained `candidate.input.c` bytes that source policy scanned; it does not
+preprocess a second time. A header change invalidates reuse even when candidate
+source text is unchanged.
 Failed attempts remain visible and can be retried after an environmental repair.
 A change to the accepted target model creates a new model identity and makes old
 experiments stale rather than silently applying them to new structure.
@@ -368,12 +373,13 @@ research allowances only. Canonical build, diff, and verification reject
 auxiliary output without a reviewed contract that fixes its read-only section,
 bytes, relocations, placement, and ownership.
 
-Do not move active matching sources into shared headers as routine cleanup. The
-production path currently sends self-contained raw C to KMC `cc1`, no active
-target uses `#include`, and included-content dependency identities are not part
-of the production/workbench contract. Header support or preprocessing changes
-need a separate compiler/toolchain structural task and audit before canonical
-use.
+Shared headers are supported only through the authenticated preprocessing and
+dependency contract. Treat moving declarations into a header as cross-target
+work: keep the declaration's evidence strength unchanged, limit the consumer
+set deliberately, run exact diffs for every affected target, and finish with
+fresh CURRENT plus the structural audit. Do not consolidate merely similar or
+partial struct views as routine cleanup. External and symlinked includes are not
+accepted compiler inputs.
 
 Use `--include-details`, `--include-source`, `--include-members`,
 `--include-context`, or `--include-targets` only when complete rows are needed;

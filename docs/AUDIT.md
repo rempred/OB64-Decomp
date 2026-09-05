@@ -109,6 +109,9 @@ At minimum verify:
   remove the original row once, and leave no gap, overlap, duplicate tail, or second load segment;
 - active configuration/build code contains no retired compiler-assembly rewrite stage or modern
   Binutils dependency;
+- the pinned preprocessing executable closure, accepted include roots, exact compiler-input bytes,
+  and complete repository-local regular-file dependency identities are authenticated, recorded,
+  and independently reproduced; external or symlinked dependencies fail closed;
 - the project-owned ELF report and program-header checks retain exact section VMA/LMA, flags,
   sizes, and one-section load mapping; and
 - stale build, verification, current-state, proof, or audit schemas reject.

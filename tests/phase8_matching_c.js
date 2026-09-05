@@ -32,6 +32,7 @@ const {
   SOURCE_CLASSES,
   classifySource,
   classifyTargetSources,
+  compilationInputBytes,
   resolvePreprocessor,
 } = require('../tools/lib/source_policy');
 
@@ -80,8 +81,8 @@ function main() {
   const romBytes = fs.readFileSync(romFile);
   const mapText = fs.readFileSync(mapFile, 'utf8');
   const buildReport = readJson(path.join(output, 'build-report.json'));
-  if (buildReport.schemaVersion !== 3 || buildReport.status !== 'pass'
-      || buildReport.verification.schemaVersion !== 3 || buildReport.verification.status !== 'pass') {
+  if (buildReport.schemaVersion !== 4 || buildReport.status !== 'pass'
+      || buildReport.verification.schemaVersion !== 4 || buildReport.verification.status !== 'pass') {
     fail('Phase 8 source-to-object report schema drift');
   }
   const linkageInput = buildReport.acceptedInputs && buildReport.acceptedInputs.linkageConfig;
@@ -233,11 +234,15 @@ function main() {
     const proofFile = path.join(output, ...replacement.sourceObjectProof.path.split('/'));
     const proofBytes = fs.readFileSync(proofFile);
     const proof = readJson(proofFile);
-    if (proof.schemaVersion !== 2 || proof.kind !== 'ob64-source-to-object-load-evidence'
+    const compilerInput = fs.readFileSync(path.join(output, ...replacement.compilationInput.path.split('/')));
+    if (proof.schemaVersion !== 3 || proof.kind !== 'ob64-source-to-object-load-evidence'
         || proof.target.symbol !== target.symbol || proof.target.sourceClass !== classification.class
         || proof.target.sourcePolicyDigest !== classification.digest
+        || JSON.stringify(proof.target.compilationInput) !== JSON.stringify(classification.compilationInput)
+        || JSON.stringify(proof.target.dependencies) !== JSON.stringify(classification.dependencies)
         || proof.target.relocationContractSource !== target.relocationContractSource
         || proof.assemblyContract.compilerAssemblyRewritten !== false
+        || proof.assemblyContract.classifiedBytesAreCompilerInput !== true
         || proof.assemblyContract.auxiliarySectionCount !== target.auxiliarySections.length
         || !Array.isArray(proof.finalObject.auxiliarySections)
         || proof.finalObject.auxiliarySections.length !== target.auxiliarySections.length
@@ -245,6 +250,8 @@ function main() {
         || proof.finalTarget.auxiliarySections.length !== target.auxiliarySections.length
         || Object.prototype.hasOwnProperty.call(proof.assemblyContract, 'adapterApplied')
         || proof.artifacts.compilerAssembly.sha256 !== sha256Buffer(compilerAssembly)
+        || proof.artifacts.compilationInput.sha256 !== sha256Buffer(compilerInput)
+        || !compilerInput.equals(compilationInputBytes(classification))
         || proof.artifacts.sectionAdjustedAssembly.sha256 !== sha256Buffer(linkedAssembly)
         || proof.finalObject.textSha256 !== sha256Buffer(sourceText)
         || JSON.stringify(proof.finalObject.compilerTextFunctions) !== JSON.stringify(compilerTextFunctions)

@@ -4,12 +4,18 @@
 const fs = require('fs');
 const os = require('os');
 const path = require('path');
+const { currentFingerprint } = require('../tools/lib/current_workflow');
+const { resolveLocalTools } = require('../tools/lib/local_tools');
 const {
+  ROOT,
   SOURCE_CLASSES,
   classifySource,
   classifyTargetSources,
+  compilationInputBytes,
   loadPolicyConfig,
   resolvePreprocessor,
+  sha256Buffer,
+  verifyClassificationInputs,
 } = require('../tools/lib/source_policy');
 
 const FIXTURES = path.join(__dirname, 'fixtures', 'source-policy');
@@ -63,6 +69,13 @@ function main() {
         || !/^[0-9A-F]{64}$/.test(record.sha256))) {
     throw new Error('source-policy preprocessor executable closure is not authenticated');
   }
+  if (preprocessor.dependencyMode !== 'authenticated-depfile'
+      || preprocessor.dependencyRoot !== ROOT
+      || preprocessor.dependencyTarget !== 'ob64-compilation-input'
+      || JSON.stringify(preprocessor.flags) !== JSON.stringify(['-P', '-undef', '-nostdinc'])
+      || !preprocessor.configIdentity || preprocessor.configIdentity.path !== 'config/source-policy.json') {
+    throw new Error('source-policy compilation-input/dependency contract is not authenticated');
+  }
   const cases = [
     ['ordinary.c', SOURCE_CLASSES.PURE_C],
     ['inline_asm.c', SOURCE_CLASSES.HYBRID_C],
@@ -98,6 +111,102 @@ function main() {
   ], { preprocessor });
   if (JSON.stringify(firstSharedDigests) !== JSON.stringify(repeatedTargets.targets.map((target) => target.digest))) {
     throw new Error('repeated source classification changed target digests');
+  }
+  const repositoryScratchBase = path.join(ROOT, 'build', 'tests');
+  fs.mkdirSync(repositoryScratchBase, { recursive: true });
+  const dependencyScratch = fs.mkdtempSync(path.join(repositoryScratchBase, 'source-policy-dependency-'));
+  let dependencyInvalidation;
+  try {
+    const header = path.join(dependencyScratch, 'shared_value.h');
+    const source = path.join(dependencyScratch, 'candidate.c');
+    fs.writeFileSync(header, '#define SHARED_VALUE 1\n');
+    fs.writeFileSync(source, '#include "shared_value.h"\nint candidate(void) { return SHARED_VALUE; }\n');
+    const first = classifySource(source, { preprocessor });
+    if (first.class !== SOURCE_CLASSES.PURE_C || first.dependencies.length !== 1
+        || first.dependencies[0].path !== path.relative(ROOT, header).replace(/\\/g, '/')) {
+      throw new Error('repository-local header dependency was not authenticated');
+    }
+    const firstInput = compilationInputBytes(first);
+    if (firstInput.length !== first.compilationInput.bytes
+        || sha256Buffer(firstInput) !== first.compilationInput.sha256
+        || first.preprocessedSha256 !== first.compilationInput.sha256) {
+      throw new Error('classified bytes are not the authenticated compilation input');
+    }
+    verifyClassificationInputs(first);
+    const authoredSourceSha256 = first.sourceSha256;
+    fs.writeFileSync(header, '#define SHARED_VALUE 2\n');
+    const changed = classifySource(source, { preprocessor });
+    if (changed.class !== SOURCE_CLASSES.PURE_C || changed.sourceSha256 !== authoredSourceSha256
+        || changed.dependencies[0].sha256 === first.dependencies[0].sha256
+        || changed.compilationInput.sha256 === first.compilationInput.sha256
+        || changed.digest === first.digest) {
+      throw new Error('header edit did not invalidate dependency and compilation-input identities');
+    }
+    let staleRejected = false;
+    try {
+      verifyClassificationInputs(first);
+    } catch (error) {
+      staleRejected = /source dependency identity drift/.test(error.message);
+    }
+    if (!staleRejected) throw new Error('stale header-backed classification was accepted');
+    const fingerprintTarget = {
+      symbol: 'candidate',
+      source: first.source,
+      sourceSha256: first.sourceSha256,
+      relocationContractSource: 'test-fixture',
+      expectedRelocations: [],
+      textOwners: [],
+    };
+    const fingerprintPhase8 = {
+      config: { compiler: {} },
+      linkageConfigIdentity: {},
+      multiOwnerConfigIdentity: {},
+      toolchain: { identity: {} },
+      targets: [fingerprintTarget],
+    };
+    const policyFor = (classification) => ({
+      schemaVersion: 2,
+      status: 'pass',
+      preprocessor: classification.preprocessor,
+      targets: [{ symbol: fingerprintTarget.symbol, bytes: 4, ...classification }],
+    });
+    const localTools = resolveLocalTools();
+    const firstFingerprint = currentFingerprint(fingerprintPhase8, 'TEST-BASELINE', localTools, policyFor(first));
+    const changedFingerprint = currentFingerprint(fingerprintPhase8, 'TEST-BASELINE', localTools, policyFor(changed));
+    if (firstFingerprint === changedFingerprint) {
+      throw new Error('CURRENT fingerprint ignored a header dependency edit');
+    }
+
+    const externalScratch = fs.mkdtempSync(path.join(path.resolve(os.tmpdir()), 'ob64-source-policy-external-'));
+    try {
+      const externalHeader = path.join(externalScratch, 'external.h');
+      fs.writeFileSync(externalHeader, '#define EXTERNAL_VALUE 3\n');
+      const includePath = externalHeader.replace(/\\/g, '/');
+      const externalSource = path.join(dependencyScratch, 'external_candidate.c');
+      fs.writeFileSync(externalSource, `#include "${includePath}"\nint external_candidate(void) { return EXTERNAL_VALUE; }\n`);
+      const external = classifySource(externalSource, { preprocessor });
+      if (external.class !== SOURCE_CLASSES.UNKNOWN || !/escapes the repository/.test(external.error || '')) {
+        throw new Error('external preprocessing dependency did not fail closed');
+      }
+    } finally {
+      if (path.dirname(path.resolve(externalScratch)) !== path.resolve(os.tmpdir())) {
+        throw new Error('external dependency scratch escaped the system temporary directory');
+      }
+      fs.rmSync(externalScratch, { recursive: true, force: true });
+    }
+    dependencyInvalidation = {
+      authoredSourceSha256,
+      originalDependencySha256: first.dependencies[0].sha256,
+      changedDependencySha256: changed.dependencies[0].sha256,
+      originalCompilationInputSha256: first.compilationInput.sha256,
+      changedCompilationInputSha256: changed.compilationInput.sha256,
+      currentFingerprintChanged: true,
+    };
+  } finally {
+    if (path.dirname(path.resolve(dependencyScratch)) !== path.resolve(repositoryScratchBase)) {
+      throw new Error('dependency scratch escaped the repository test directory');
+    }
+    fs.rmSync(dependencyScratch, { recursive: true, force: true });
   }
   for (const escaped of ['../outside.c', path.resolve(FIXTURES, 'ordinary.c')]) {
     try {
@@ -167,6 +276,9 @@ function main() {
     deterministicMacroHiddenClassification: true,
     sharedClassification: sharedTargets.counts,
     repeatedClassificationInvariant: true,
+    authenticatedCompilationInput: true,
+    dependencyInvalidation,
+    externalDependenciesRejected: true,
     escapedPathsRejected: true,
     executableIdentityFailuresRejectedBeforePreprocessing: identityFailures,
   }, null, 2));

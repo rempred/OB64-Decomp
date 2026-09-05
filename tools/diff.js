@@ -18,7 +18,6 @@ const {
   writeLayout,
   writeObjectManifest,
 } = require('./lib/phase8_matching_c');
-const { classifyTargetSources } = require('./lib/source_policy');
 const {
   IMPLEMENTATION_FILES,
   compileDiffTargets,
@@ -109,8 +108,11 @@ function profileMetadata(options) {
   const sourceRecords = sourcePolicy.targets.map((record) => ({
     symbol: record.symbol,
     source: record.source,
+    sourceBytes: record.sourceBytes,
     sourceSha256: record.sourceSha256,
     preprocessedSha256: record.preprocessedSha256,
+    compilationInput: record.compilationInput,
+    dependencies: record.dependencies,
     class: record.class,
     digest: record.digest,
   })).sort((left, right) => left.symbol.localeCompare(right.symbol));
@@ -261,7 +263,7 @@ function main(argv = process.argv.slice(2)) {
       context.phase8,
       context.localTools.compiler,
     ));
-    const sourcePolicy = measure('classify-target-sources', () => classifyTargetSources(context.phase8.targets));
+    const sourcePolicy = measure('classify-target-sources', () => context.sourcePolicy);
     const classificationBySymbol = new Map(sourcePolicy.targets.map((record) => [record.symbol, record]));
     const phase7 = measure('verify-phase7-input', () => verifyPhase7Input(
       context.phase8,
@@ -283,6 +285,7 @@ function main(argv = process.argv.slice(2)) {
       verifiedCompiler: compilerIdentity,
       assembler: runtime.tools['mips-kmc-elf-as.exe'],
       objcopy: runtime.tools['mips-kmc-elf-objcopy.exe'],
+      preprocessor: sourcePolicy.preprocessor,
       classificationBySymbol,
       profile: profiler,
     }));
@@ -315,11 +318,13 @@ function main(argv = process.argv.slice(2)) {
     const relocationContractMatches = target.relocationContractSource !== 'missing-diff-only'
       && JSON.stringify(candidateRelocations) === JSON.stringify(target.expectedRelocations);
     const report = measure('build-diff-report', () => ({
-      schemaVersion: 3,
+      schemaVersion: 4,
       symbol: target.symbol,
       source: target.source,
       sourceClass: targetSourcePolicy.class,
       sourcePolicyDigest: targetSourcePolicy.digest,
+      compilationInput: targetSourcePolicy.compilationInput,
+      dependencies: targetSourcePolicy.dependencies,
       toolchain: context.phase8.toolchain.identity,
       objectCache: targetCompilation.cache,
       output,

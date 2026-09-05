@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 2,
+  "schemaVersion": 3,
   "matchingCompiler": {
     "manifest": "docs/external-intake/phase6-kmc-reproduction-20260801/reproduction-manifest.json",
     "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
@@ -22,6 +22,9 @@
       }
     ],
     "flags": ["-P", "-undef", "-nostdinc"],
-    "includeDirectories": ["include"]
+    "includeDirectories": ["include"],
+    "dependencyMode": "authenticated-depfile",
+    "dependencyRoot": ".",
+    "dependencyTarget": "ob64-compilation-input"
   }
 }

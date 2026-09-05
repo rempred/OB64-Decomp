@@ -35,6 +35,8 @@ const {
   POLICY_CONFIG_PATH,
   SOURCE_CLASSES,
   classifyTargetSources,
+  compilationInputBytes,
+  verifyClassificationInputs,
 } = require('./source_policy');
 
 function parseNumber(value, label) {
@@ -1077,16 +1079,29 @@ function validateTargetClassification(target, classification) {
       || classification.source !== target.source
       || classification.bytes !== target.bytes
       || classification.sourceSha256 !== target.sourceSha256
+      || !Number.isInteger(classification.sourceBytes) || classification.sourceBytes <= 0
+      || !classification.compilationInput || !Number.isInteger(classification.compilationInput.bytes)
+      || classification.compilationInput.bytes <= 0
+      || typeof classification.compilationInput.sha256 !== 'string'
+      || !/^[0-9A-F]{64}$/.test(classification.compilationInput.sha256)
+      || classification.preprocessedSha256 !== classification.compilationInput.sha256
+      || !Array.isArray(classification.dependencies)
+      || !classification.preprocessor || !classification.preprocessor.config
       || typeof classification.digest !== 'string'
       || !/^[0-9A-F]{64}$/.test(classification.digest)
       || ![SOURCE_CLASSES.PURE_C, SOURCE_CLASSES.HYBRID_C].includes(classification.class)) {
     fail('active target source classification drift: ' + target.symbol);
   }
+  try {
+    verifyClassificationInputs(classification);
+  } catch (error) {
+    fail(error.message + ': ' + target.symbol);
+  }
   return classification;
 }
 
 function validateTargetClassifications(phase8, sourcePolicy) {
-  if (!sourcePolicy || sourcePolicy.schemaVersion !== 1 || sourcePolicy.status !== 'pass'
+  if (!sourcePolicy || sourcePolicy.schemaVersion !== 2 || sourcePolicy.status !== 'pass'
       || !Array.isArray(sourcePolicy.targets) || sourcePolicy.targets.length !== phase8.targets.length) {
     fail('active target source-classification census drift');
   }
@@ -1128,7 +1143,21 @@ function compileTarget(phase8, target, output, compiler, assembler, objcopy, opt
     ? path.join(objectRoot, target.symbol + '.assembler-object.o')
     : proofObjectFile;
   const sourceRelative = safeRelative(target.source, 'target source');
-  run(compiler, [...phase8.config.compiler.compileFlags, '-o', compilerAssembly, sourceRelative], { cwd: ROOT });
+  const compilerInputFile = resolveRelative(output, sourceRelative, 'compiler input');
+  ensureDir(path.dirname(compilerInputFile));
+  if (fs.existsSync(compilerInputFile)) fail('KMC compiler input already exists: ' + target.symbol);
+  const compilerInputBytes = compilationInputBytes(classification);
+  fs.writeFileSync(compilerInputFile, compilerInputBytes, { flag: 'wx' });
+  if (fs.statSync(compilerInputFile).size !== classification.compilationInput.bytes
+      || sha256File(compilerInputFile) !== classification.compilationInput.sha256) {
+    fail('KMC compiler input identity drift: ' + target.symbol);
+  }
+  run(compiler, [...phase8.config.compiler.compileFlags, '-o', compilerAssembly, sourceRelative], { cwd: output });
+  try {
+    verifyClassificationInputs(classification);
+  } catch (error) {
+    fail(error.message + ': ' + target.symbol);
+  }
 
   const compilerBytes = fs.readFileSync(compilerAssembly);
   const linkedBytes = adjustSectionAssembly(compilerBytes, target.sectionName, {
@@ -1302,6 +1331,11 @@ function compileTarget(phase8, target, output, compiler, assembler, objcopy, opt
     compilerAssemblySha256: sha256File(compilerAssembly),
     linkedAssemblyRelative: 'generated/c/' + target.symbol + '.s',
     linkedAssemblySha256: sha256File(linkedAssembly),
+    compilationInput: {
+      path: sourceRelative,
+      bytes: compilerInputBytes.length,
+      sha256: sha256Buffer(compilerInputBytes),
+    },
     sourceClass: classification.class,
     sourcePolicyDigest: classification.digest,
     compilerAssemblyRewritten: false,
@@ -1337,10 +1371,19 @@ function fileIdentity(output, relative, label) {
 
 function deriveSourceObjectProof(phase8, target, output, classification, linkedElf, canonicalBaserom) {
   validateTargetClassification(target, classification);
+  const compilerInputRelative = target.source;
   const compilerRelative = 'generated/c/' + target.symbol + '.compiler.s';
   const sectionRelative = 'generated/c/' + target.symbol + '.s';
   const objectRelative = 'objects/c/' + target.symbol + '.source-object.o';
   const linkedObjectRelative = 'objects/c/' + target.symbol + '.o';
+  const compilerInputArtifact = fileIdentity(output, compilerInputRelative, 'KMC compilation input');
+  if (!sameJson(compilerInputArtifact, {
+    path: target.source,
+    bytes: classification.compilationInput.bytes,
+    sha256: classification.compilationInput.sha256,
+  })) {
+    fail('classified and compiled translation-unit bytes differ: ' + target.symbol);
+  }
   const compilerArtifact = fileIdentity(output, compilerRelative, 'compiler assembly');
   const sectionArtifact = fileIdentity(output, sectionRelative, 'section-adjusted assembly');
   const objectArtifact = fileIdentity(output, objectRelative, 'matching C object');
@@ -1477,14 +1520,17 @@ function deriveSourceObjectProof(phase8, target, output, classification, linkedE
   });
   const ancillary = allRelocations.filter((record) => !loadRelocationSections.has(record.section));
   const proof = {
-    schemaVersion: 2,
+    schemaVersion: 3,
     kind: 'ob64-source-to-object-load-evidence',
     target: {
       symbol: target.symbol,
       sectionName: target.sectionName,
       ownerSections: targetTextOwners(target).map((owner) => owner.sectionName),
       source: target.source,
+      sourceBytes: classification.sourceBytes,
       sourceSha256: target.sourceSha256,
+      dependencies: classification.dependencies,
+      compilationInput: classification.compilationInput,
       sourceClass: classification.class,
       sourcePolicyDigest: classification.digest,
       relocationContractSource: target.relocationContractSource,
@@ -1496,6 +1542,7 @@ function deriveSourceObjectProof(phase8, target, output, classification, linkedE
         executableSha256: phase8.config.compiler.executableSha256,
         flags: phase8.config.compiler.compileFlags,
       },
+      preprocessor: classification.preprocessor,
       assembler: phase8.toolchain.identity,
     },
     assemblyContract: {
@@ -1506,8 +1553,10 @@ function deriveSourceObjectProof(phase8, target, output, classification, linkedE
       auxiliarySectionCount: auxiliaryProofs.length,
       relocatableContainerSplit: targetTextOwners(target).length > 1,
       splitInstructionBytesRewritten: false,
+      classifiedBytesAreCompilerInput: true,
     },
     artifacts: {
+      compilationInput: compilerInputArtifact,
       compilerAssembly: compilerArtifact,
       sectionAdjustedAssembly: sectionArtifact,
       assemblerObject: assemblerArtifact,
@@ -1601,9 +1650,12 @@ function validateSourceObjectProofBytes(actualBytes, expectedBytes) {
   } catch (_) {
     fail('source-to-object proof is not valid JSON');
   }
-  if (!actual || actual.schemaVersion !== 2 || actual.kind !== 'ob64-source-to-object-load-evidence'
+  if (!actual || actual.schemaVersion !== 3 || actual.kind !== 'ob64-source-to-object-load-evidence'
       || !actual.target || !actual.toolchain || !actual.assemblyContract || !actual.artifacts
       || !actual.finalObject || !actual.finalTarget || actual.assemblyContract.compilerAssemblyRewritten !== false
+      || actual.assemblyContract.classifiedBytesAreCompilerInput !== true
+      || !actual.target.compilationInput || !Array.isArray(actual.target.dependencies)
+      || !actual.toolchain.preprocessor || !actual.artifacts.compilationInput
       || !Number.isInteger(actual.assemblyContract.auxiliarySectionCount)
       || typeof actual.assemblyContract.relocatableContainerSplit !== 'boolean'
       || actual.assemblyContract.splitInstructionBytesRewritten !== false
@@ -1641,6 +1693,8 @@ function verifySourceObjectProofs(phase8, options) {
       symbol: target.symbol,
       sourceClass: classification.class,
       sourcePolicyDigest: classification.digest,
+      compilationInput: classification.compilationInput,
+      dependencies: classification.dependencies,
       compilerAssemblyRewritten: false,
       auxiliarySections: derived.proof.finalObject.auxiliarySections.length,
       loadRelevantRelocations: derived.proof.finalObject.loadRelevantRelocationsNormalized.length
@@ -1657,6 +1711,7 @@ function verifySourceObjectProofs(phase8, options) {
     identity: phase8.toolchain.identity,
     sourcePolicy: {
       config: { path: normalizePath(path.relative(ROOT, POLICY_CONFIG_PATH)), sha256: sha256File(POLICY_CONFIG_PATH) },
+      preprocessor: sourcePolicy.preprocessor,
       counts: sourcePolicy.counts,
       bytes: sourcePolicy.bytes,
     },
@@ -2855,7 +2910,7 @@ function verifyPhase8Output(phase8, options) {
     canonicalBaserom,
   }));
   return {
-    schemaVersion: 3,
+    schemaVersion: 4,
     status: 'pass',
     counts: {
       primaryRows: phase8.model.rows.length,
@@ -2904,10 +2959,10 @@ function validateRecordedPhase8Build(phase8, options) {
   const output = path.resolve(options.output);
   const buildReport = options.buildReport;
   const verification = options.verification;
-  if (!buildReport || buildReport.schemaVersion !== 3 || buildReport.status !== 'pass') {
+  if (!buildReport || buildReport.schemaVersion !== 4 || buildReport.status !== 'pass') {
     fail('recorded Phase 8 build report did not pass');
   }
-  if (!verification || verification.schemaVersion !== 3 || verification.status !== 'pass') {
+  if (!verification || verification.schemaVersion !== 4 || verification.status !== 'pass') {
     fail('current Phase 8 verification result did not pass');
   }
   if (typeof options.compilerSha256 !== 'string' || buildReport.compiler.sha256 !== options.compilerSha256) {
@@ -2916,6 +2971,7 @@ function validateRecordedPhase8Build(phase8, options) {
   const recordedToolchain = buildReport.acceptedInputs && buildReport.acceptedInputs.gnuBinutils26;
   const recordedLinkage = buildReport.acceptedInputs && buildReport.acceptedInputs.linkageConfig;
   const recordedMultiOwner = buildReport.acceptedInputs && buildReport.acceptedInputs.multiOwnerConfig;
+  const recordedPolicy = buildReport.acceptedInputs && buildReport.acceptedInputs.sourcePolicy;
   if (!recordedToolchain
       || recordedToolchain.manifestPath !== phase8.toolchain.identity.manifestPath
       || recordedToolchain.manifestSha256 !== phase8.toolchain.identity.manifestSha256
@@ -2929,23 +2985,41 @@ function validateRecordedPhase8Build(phase8, options) {
       || recordedMultiOwner.path !== phase8.multiOwnerConfigIdentity.path
       || recordedMultiOwner.bytes !== phase8.multiOwnerConfigIdentity.bytes
       || recordedMultiOwner.sha256 !== phase8.multiOwnerConfigIdentity.sha256
+      || !recordedPolicy
+      || recordedPolicy.path !== normalizePath(path.relative(ROOT, POLICY_CONFIG_PATH))
+      || recordedPolicy.bytes !== fs.statSync(POLICY_CONFIG_PATH).size
+      || recordedPolicy.sha256 !== sha256File(POLICY_CONFIG_PATH)
       || JSON.stringify(buildReport.sourceObjectEvidence) !== JSON.stringify(verification.sourceObjectEvidence)) {
     fail('recorded toolchain, linkage contract, or source-to-object evidence drift');
   }
   const recordedSources = buildReport.acceptedInputs && buildReport.acceptedInputs.cSources;
+  const recordedDependencies = buildReport.acceptedInputs && buildReport.acceptedInputs.cDependencies;
   const recordedTargets = buildReport.targetReplacements;
   if (!Array.isArray(recordedSources) || recordedSources.length !== phase8.targets.length
+      || !Array.isArray(recordedDependencies)
       || !Array.isArray(recordedTargets) || recordedTargets.length !== phase8.targets.length) {
     fail('recorded Phase 8 source/object census drift');
+  }
+  const expectedDependencies = new Map();
+  for (const record of verification.sourceObjectEvidence.targets) {
+    for (const dependency of record.dependencies) expectedDependencies.set(dependency.path, dependency);
+  }
+  if (!sameJson(recordedDependencies, [...expectedDependencies.values()].sort((left, right) => left.path.localeCompare(right.path)))) {
+    fail('recorded Phase 8 preprocessing dependency census drift');
   }
   for (const target of phase8.targets) {
     const source = recordedSources.find((record) => record.path === target.source);
     const replacement = recordedTargets.find((record) => record.symbol === target.symbol);
     const verifiedTarget = verification.targets.find((record) => record.symbol === target.symbol);
-    if (!source || source.sha256 !== target.sourceSha256 || !replacement || !verifiedTarget
+    if (!source || source.bytes !== fs.statSync(path.join(ROOT, ...target.source.split('/'))).size
+        || source.sha256 !== target.sourceSha256 || !replacement || !verifiedTarget
         || replacement.source !== target.source || replacement.sourceSha256 !== target.sourceSha256
         || replacement.sourceClass !== verifiedTarget.sourceObjectEvidence.sourceClass
         || replacement.sourcePolicyDigest !== verifiedTarget.sourceObjectEvidence.sourcePolicyDigest
+        || !sameJson(replacement.compilationInput, {
+          path: target.source,
+          ...verifiedTarget.sourceObjectEvidence.compilationInput,
+        })
         || replacement.compilerAssemblyRewritten !== false
         || !sameJson(replacement.compilerTextFunctions, expectedCompilerTextFunctionEvidence(target))
         || !sameJson(verifiedTarget.compilerTextFunctions, expectedCompilerTextFunctionEvidence(target, true))
@@ -3040,6 +3114,7 @@ function validateRecordedPhase8Build(phase8, options) {
       ...(replacement.assemblerObject ? [[replacement.assemblerObject, replacement.assemblerObjectSha256, 'unsplit assembler object']] : []),
       [replacement.compilerAssembly, replacement.compilerAssemblySha256, 'compiler assembly'],
       [replacement.linkedAssembly, replacement.linkedAssemblySha256, 'section-adjusted assembly'],
+      [replacement.compilationInput.path, replacement.compilationInput.sha256, 'KMC compilation input'],
       [replacement.sourceObjectProof.path, replacement.sourceObjectProof.sha256, 'source-to-object proof'],
     ]) {
       const file = resolveRelative(output, relative, `recorded ${label}`);
@@ -3063,7 +3138,7 @@ function validateRecordedPhase8Build(phase8, options) {
   if (JSON.stringify(buildReport.verification.asmDiffer) !== JSON.stringify(verification.asmDiffer)) {
     fail('recorded Phase 8 asm-differ proof drift');
   }
-  return { schemaVersion: 3, status: 'pass' };
+  return { schemaVersion: 4, status: 'pass' };
 }
 
 function pathIndependentRuntime(runtime) {

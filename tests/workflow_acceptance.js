@@ -80,6 +80,11 @@ function main() {
   mutations.push(expectRejection('missing proof', () => validateRecordedPhase8Build(phase8, {
     output, buildReport: missingProof, verification: report.verification, compilerSha256: report.compiler.sha256,
   })));
+  const staleCompilationInputPath = clone(report);
+  staleCompilationInputPath.targetReplacements[0].compilationInput.path = 'src/incorrect-input.c';
+  mutations.push(expectRejection('compilation input path drift', () => validateRecordedPhase8Build(phase8, {
+    output, buildReport: staleCompilationInputPath, verification: report.verification, compilerSha256: report.compiler.sha256,
+  })));
   const hybridHashDrift = clone(report);
   const hybridReplacement = hybridHashDrift.targetReplacements.find((target) => target.symbol === hybrid.symbol);
   hybridReplacement.linkedAssemblySha256 = '0'.repeat(64);
@@ -112,7 +117,7 @@ function main() {
 
   const context = prepareContext();
   const reusable = {
-    schemaVersion: 3,
+    schemaVersion: 4,
     fingerprint: context.currentFingerprint,
     baselineFingerprint: context.baselineFingerprint,
     output,

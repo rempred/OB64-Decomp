@@ -3,10 +3,13 @@
 const childProcess = require('child_process');
 const crypto = require('crypto');
 const fs = require('fs');
+const os = require('os');
 const path = require('path');
 
 const ROOT = path.resolve(__dirname, '..', '..');
 const POLICY_CONFIG_PATH = path.join(ROOT, 'config', 'source-policy.json');
+const COMPILATION_INPUT_BYTES = Symbol('ob64CompilationInputBytes');
+const SHA256 = /^[0-9A-F]{64}$/;
 const SOURCE_CLASSES = Object.freeze({
   PURE_C: 'PURE_C',
   HYBRID_C: 'HYBRID_C',
@@ -53,7 +56,7 @@ function loadPolicyConfig() {
   const config = readJson(POLICY_CONFIG_PATH);
   const preprocessor = config.preprocessor;
   const requiredExecutables = preprocessor && preprocessor.requiredExecutables;
-  if (config.schemaVersion !== 2 || !config.matchingCompiler || !preprocessor
+  if (config.schemaVersion !== 3 || !config.matchingCompiler || !preprocessor
       || typeof preprocessor.path !== 'string' || preprocessor.path.length === 0
       || !Number.isInteger(preprocessor.bytes) || preprocessor.bytes <= 0
       || typeof preprocessor.sha256 !== 'string' || !/^[0-9A-F]{64}$/.test(preprocessor.sha256)
@@ -62,7 +65,11 @@ function loadPolicyConfig() {
       || requiredExecutables.some((record) => !validPinnedExecutable(record, true))
       || !Array.isArray(preprocessor.flags) || !preprocessor.flags.every((item) => typeof item === 'string')
       || !Array.isArray(preprocessor.includeDirectories)
-      || !preprocessor.includeDirectories.every((item) => typeof item === 'string')) {
+      || !preprocessor.includeDirectories.every((item) => typeof item === 'string' && item.length > 0)
+      || preprocessor.dependencyMode !== 'authenticated-depfile'
+      || preprocessor.dependencyRoot !== '.'
+      || typeof preprocessor.dependencyTarget !== 'string'
+      || !/^[A-Za-z0-9_.+-]+$/.test(preprocessor.dependencyTarget)) {
     throw new Error('source-policy configuration schema drift');
   }
   const roles = ['driver', ...requiredExecutables.map((record) => record.role)];
@@ -105,9 +112,15 @@ function sameExecutablePath(left, right) {
 
 function preprocessorIdentity(preprocessor) {
   return {
+    config: { ...preprocessor.configIdentity },
     sha256: preprocessor.sha256,
     version: preprocessor.version,
     executables: preprocessor.executables.map((record) => ({ ...record })),
+    flags: [...preprocessor.flags],
+    includeDirectories: preprocessor.includeDirectories.map((directory) => displayPath(directory)),
+    dependencyMode: preprocessor.dependencyMode,
+    dependencyRoot: '.',
+    dependencyTarget: preprocessor.dependencyTarget,
     matchingCompiler: { ...preprocessor.matchingCompiler },
   };
 }
@@ -157,6 +170,21 @@ function resolvePreprocessor(config = loadPolicyConfig()) {
   if (versionResult.status !== 0 || version !== config.preprocessor.version) {
     throw new Error(`source-policy preprocessor version drift: ${version || '<no version>'}`);
   }
+  const dependencyRoot = path.resolve(ROOT, config.preprocessor.dependencyRoot);
+  const realRoot = fs.realpathSync.native(ROOT);
+  if (!sameExecutablePath(dependencyRoot, realRoot)) {
+    throw new Error('source-policy dependency root drift');
+  }
+  const includeDirectories = config.preprocessor.includeDirectories.map((item) => path.resolve(ROOT, item));
+  for (const directory of includeDirectories) {
+    if (!fs.existsSync(directory) || !fs.statSync(directory).isDirectory()) {
+      throw new Error(`source-policy include directory is missing: ${directory}`);
+    }
+    const relative = path.relative(realRoot, fs.realpathSync.native(directory));
+    if (!relative || relative === '..' || relative.startsWith(`..${path.sep}`) || path.isAbsolute(relative)) {
+      throw new Error(`source-policy include directory escapes the repository: ${directory}`);
+    }
+  }
   return {
     path: driver.absolutePath,
     sha256: driver.identity.sha256,
@@ -166,7 +194,15 @@ function resolvePreprocessor(config = loadPolicyConfig()) {
       ...dependencies.map((dependency) => ({ ...dependency.resolved.identity })),
     ],
     flags: [...config.preprocessor.flags],
-    includeDirectories: config.preprocessor.includeDirectories.map((item) => path.resolve(ROOT, item)),
+    includeDirectories,
+    dependencyMode: config.preprocessor.dependencyMode,
+    dependencyRoot,
+    dependencyTarget: config.preprocessor.dependencyTarget,
+    configIdentity: {
+      path: displayPath(POLICY_CONFIG_PATH),
+      bytes: fs.statSync(POLICY_CONFIG_PATH).size,
+      sha256: sha256File(POLICY_CONFIG_PATH),
+    },
     matchingCompiler: {
       executableSha256: compiler.compiler.executableSha256,
       manifestSha256: config.matchingCompiler.manifestSha256,
@@ -385,38 +421,244 @@ function scanSource(source, stage) {
   return reasons;
 }
 
+function repositoryRelative(file, label) {
+  const resolved = path.resolve(file);
+  const relative = path.relative(ROOT, resolved);
+  if (!relative || relative === '..' || relative.startsWith(`..${path.sep}`) || path.isAbsolute(relative)) {
+    throw new Error(`${label} escapes the repository: ${resolved}`);
+  }
+  return normalizePath(relative);
+}
+
+function regularRepositoryFile(file, label) {
+  const resolved = path.resolve(file);
+  const relative = repositoryRelative(resolved, label);
+  if (!fs.existsSync(resolved)) throw new Error(`${label} is missing: ${resolved}`);
+  const status = fs.lstatSync(resolved);
+  if (!status.isFile() || status.isSymbolicLink()) throw new Error(`${label} is not a regular file: ${resolved}`);
+  const realRoot = fs.realpathSync.native(ROOT);
+  const realFile = fs.realpathSync.native(resolved);
+  const realRelative = path.relative(realRoot, realFile);
+  if (!realRelative || realRelative === '..' || realRelative.startsWith(`..${path.sep}`) || path.isAbsolute(realRelative)) {
+    throw new Error(`${label} resolves outside the repository: ${resolved}`);
+  }
+  return {
+    file: resolved,
+    identity: { path: relative, bytes: status.size, sha256: sha256File(resolved) },
+  };
+}
+
+function parseDependencyFile(text, expectedTarget) {
+  if (typeof text !== 'string' || typeof expectedTarget !== 'string') {
+    throw new Error('source-policy dependency output is malformed');
+  }
+  const logical = text.replace(/\\\r?\n/g, ' ').trim();
+  const prefix = `${expectedTarget}:`;
+  if (!logical.startsWith(prefix)) throw new Error('source-policy dependency target drift');
+  const body = logical.slice(prefix.length);
+  const tokens = [];
+  let token = '';
+  for (let index = 0; index < body.length; index += 1) {
+    const char = body[index];
+    if (/\s/.test(char)) {
+      if (token) {
+        tokens.push(token);
+        token = '';
+      }
+      continue;
+    }
+    if (char === '\\' && /\s/.test(body[index + 1] || '')) {
+      token += body[++index];
+      continue;
+    }
+    token += char;
+  }
+  if (token) tokens.push(token);
+  if (tokens.length === 0) throw new Error('source-policy dependency list is empty');
+  return tokens;
+}
+
+function dependencyIdentities(dependencyPaths, sourceFile) {
+  const records = [];
+  const seen = new Set();
+  for (const dependency of dependencyPaths) {
+    const resolved = path.isAbsolute(dependency) ? path.resolve(dependency) : path.resolve(ROOT, dependency);
+    const record = regularRepositoryFile(resolved, 'source-policy dependency');
+    const key = record.identity.path.toLowerCase();
+    if (seen.has(key)) continue;
+    seen.add(key);
+    records.push(record.identity);
+  }
+  const sourceRelative = repositoryRelative(sourceFile, 'source-policy source');
+  if (!seen.has(sourceRelative.toLowerCase())) {
+    throw new Error('source-policy dependency list omits the authored source');
+  }
+  records.sort((left, right) => left.path.localeCompare(right.path));
+  return records;
+}
+
+function safeTemporaryDirectory(prefix) {
+  const temporaryRoot = path.resolve(os.tmpdir());
+  const directory = fs.mkdtempSync(path.join(temporaryRoot, prefix));
+  if (path.dirname(path.resolve(directory)).toLowerCase() !== temporaryRoot.toLowerCase()) {
+    throw new Error('source-policy temporary directory escaped the system temporary root');
+  }
+  return directory;
+}
+
 function preprocessSource(sourceFile, preprocessor, extraIncludeDirectories = []) {
-  const includeDirectories = [path.dirname(sourceFile), ...preprocessor.includeDirectories, ...extraIncludeDirectories];
+  let source;
+  try {
+    source = regularRepositoryFile(sourceFile, 'source-policy source');
+  } catch (error) {
+    return { ok: false, error: error.message, args: [] };
+  }
+  const includeDirectories = [path.dirname(source.file), ...preprocessor.includeDirectories, ...extraIncludeDirectories]
+    .map((item) => path.resolve(item));
+  let normalizedIncludeDirectories;
+  try {
+    normalizedIncludeDirectories = [...new Set(includeDirectories.map((directory) => {
+      const relative = repositoryRelative(directory, 'source-policy include directory');
+      if (!fs.existsSync(directory) || !fs.lstatSync(directory).isDirectory() || fs.lstatSync(directory).isSymbolicLink()) {
+        throw new Error(`source-policy include directory is not a regular directory: ${directory}`);
+      }
+      const realRoot = fs.realpathSync.native(ROOT);
+      const realDirectory = fs.realpathSync.native(directory);
+      const realRelative = path.relative(realRoot, realDirectory);
+      if (!realRelative || realRelative === '..' || realRelative.startsWith(`..${path.sep}`) || path.isAbsolute(realRelative)) {
+        throw new Error(`source-policy include directory resolves outside the repository: ${directory}`);
+      }
+      return relative;
+    }))];
+  } catch (error) {
+    return { ok: false, error: error.message, args: [] };
+  }
+  const scratch = safeTemporaryDirectory('ob64-source-policy-');
+  const dependencyFile = path.join(scratch, 'dependencies.d');
   const args = [
     ...preprocessor.flags,
-    ...[...new Set(includeDirectories.map((item) => path.resolve(item)))].flatMap((item) => ['-I', item]),
-    sourceFile,
+    '-MD', '-MF', dependencyFile,
+    '-MT', preprocessor.dependencyTarget,
+    ...normalizedIncludeDirectories.flatMap((item) => ['-I', item]),
+    source.identity.path,
   ];
-  const result = childProcess.spawnSync(preprocessor.path, args, {
-    cwd: ROOT,
-    encoding: 'utf8',
-    windowsHide: true,
-    maxBuffer: 64 * 1024 * 1024,
-  });
-  if (result.status !== 0 || result.error) {
+  try {
+    const result = childProcess.spawnSync(preprocessor.path, args, {
+      cwd: ROOT,
+      encoding: null,
+      windowsHide: true,
+      maxBuffer: 64 * 1024 * 1024,
+    });
+    if (result.status !== 0 || result.error || !fs.existsSync(dependencyFile)) {
+      return {
+        ok: false,
+        error: result.error
+          ? String(result.error)
+          : Buffer.concat([result.stderr || Buffer.alloc(0), result.stdout || Buffer.alloc(0)]).toString('utf8').trim()
+            || `exit ${result.status}`,
+        args,
+      };
+    }
+    const bytes = Buffer.from(result.stdout || Buffer.alloc(0));
+    if (bytes.length === 0) return { ok: false, error: 'preprocessor produced an empty compilation input', args };
+    const dependencyPaths = parseDependencyFile(fs.readFileSync(dependencyFile, 'utf8'), preprocessor.dependencyTarget);
+    const dependencies = dependencyIdentities(dependencyPaths, source.file);
+    const currentSource = dependencies.find((record) => record.path.toLowerCase() === source.identity.path.toLowerCase());
+    if (!currentSource || currentSource.bytes !== source.identity.bytes || currentSource.sha256 !== source.identity.sha256) {
+      return { ok: false, error: 'authored source changed during preprocessing', args };
+    }
     return {
-      ok: false,
-      error: result.error ? String(result.error) : String(result.stderr || result.stdout || `exit ${result.status}`).trim(),
+      ok: true,
+      bytes,
+      text: bytes.toString('utf8'),
+      stderr: Buffer.from(result.stderr || Buffer.alloc(0)).toString('utf8'),
       args,
+      source: source.identity,
+      dependencies,
     };
+  } catch (error) {
+    return { ok: false, error: error.message, args };
+  } finally {
+    if (path.dirname(path.resolve(scratch)).toLowerCase() !== path.resolve(os.tmpdir()).toLowerCase()) {
+      throw new Error('source-policy temporary cleanup target escaped the system temporary root');
+    }
+    fs.rmSync(scratch, { recursive: true, force: true });
   }
-  return { ok: true, text: result.stdout, stderr: result.stderr, args };
+}
+
+function attachCompilationInput(result, bytes) {
+  Object.defineProperty(result, COMPILATION_INPUT_BYTES, {
+    configurable: false,
+    enumerable: false,
+    writable: false,
+    value: Buffer.from(bytes),
+  });
+  return result;
+}
+
+function compilationInputBytes(classification) {
+  const bytes = classification && classification[COMPILATION_INPUT_BYTES];
+  const identity = classification && classification.compilationInput;
+  if (!Buffer.isBuffer(bytes) || !identity || !Number.isInteger(identity.bytes)
+      || identity.bytes <= 0 || typeof identity.sha256 !== 'string' || !SHA256.test(identity.sha256)
+      || bytes.length !== identity.bytes || sha256Buffer(bytes) !== identity.sha256) {
+    throw new Error('source-policy compilation input bytes are missing or malformed');
+  }
+  return Buffer.from(bytes);
+}
+
+function verifyRecordedInput(record, label) {
+  if (!record || typeof record.path !== 'string' || !Number.isInteger(record.bytes) || record.bytes < 0
+      || typeof record.sha256 !== 'string' || !SHA256.test(record.sha256)) {
+    throw new Error(`${label} identity is malformed`);
+  }
+  const actual = regularRepositoryFile(path.join(ROOT, ...record.path.split('/')), label).identity;
+  if (actual.path !== record.path || actual.bytes !== record.bytes || actual.sha256 !== record.sha256) {
+    throw new Error(`${label} identity drift: ${record.path}`);
+  }
+  return actual;
+}
+
+function verifyClassificationInputs(classification, options = {}) {
+  if (!classification || typeof classification.source !== 'string'
+      || !Number.isInteger(classification.sourceBytes) || classification.sourceBytes < 0
+      || typeof classification.sourceSha256 !== 'string' || !SHA256.test(classification.sourceSha256)
+      || !Array.isArray(classification.dependencies)
+      || !classification.compilationInput || !Number.isInteger(classification.compilationInput.bytes)
+      || classification.compilationInput.bytes <= 0
+      || typeof classification.compilationInput.sha256 !== 'string'
+      || !SHA256.test(classification.compilationInput.sha256)) {
+    throw new Error('source-policy classification input contract is malformed');
+  }
+  verifyRecordedInput({
+    path: classification.source,
+    bytes: classification.sourceBytes,
+    sha256: classification.sourceSha256,
+  }, 'authored source');
+  const seen = new Set([classification.source.toLowerCase()]);
+  for (const dependency of classification.dependencies) {
+    if (seen.has(String(dependency && dependency.path).toLowerCase())) {
+      throw new Error('source-policy dependency identity is duplicated');
+    }
+    verifyRecordedInput(dependency, 'source dependency');
+    seen.add(dependency.path.toLowerCase());
+  }
+  if (options.requireBytes !== false) compilationInputBytes(classification);
+  return true;
 }
 
 function resultDigest(result) {
   const stable = {
     class: result.class,
     source: result.source,
+    sourceBytes: result.sourceBytes || null,
     sourceSha256: result.sourceSha256 || null,
     preprocessedSha256: result.preprocessedSha256 || null,
+    compilationInput: result.compilationInput || null,
+    dependencies: result.dependencies || [],
     reasons: result.reasons || [],
     error: result.error || null,
-    preprocessorIdentity: result.preprocessor ? preprocessorIdentity(result.preprocessor) : null,
+    preprocessorIdentity: result.preprocessor || null,
   };
   return sha256Buffer(Buffer.from(JSON.stringify(stable), 'utf8'));
 }
@@ -450,7 +692,9 @@ function classifySource(source, options = {}) {
     return result;
   }
 
-  const rawText = fs.readFileSync(sourceFile, 'utf8');
+  const rawBytes = fs.readFileSync(sourceFile);
+  const rawText = rawBytes.toString('utf8');
+  const sourceSha256 = sha256Buffer(rawBytes);
   let rawReasons;
   try {
     rawReasons = scanSource(rawText, 'raw');
@@ -458,7 +702,8 @@ function classifySource(source, options = {}) {
     const result = {
       class: SOURCE_CLASSES.UNKNOWN,
       source: shownSource,
-      sourceSha256: sha256Buffer(Buffer.from(rawText, 'utf8')),
+      sourceBytes: rawBytes.length,
+      sourceSha256,
       reasons: [],
       error: `raw source classification failed: ${error.message}`,
       preprocessor: preprocessorIdentity(preprocessor),
@@ -470,11 +715,26 @@ function classifySource(source, options = {}) {
   const preprocessed = preprocessSource(sourceFile, preprocessor, options.includeDirectories || []);
   if (!preprocessed.ok) {
     const result = {
-      class: rawReasons.length > 0 ? SOURCE_CLASSES.HYBRID_C : SOURCE_CLASSES.UNKNOWN,
+      class: SOURCE_CLASSES.UNKNOWN,
       source: shownSource,
-      sourceSha256: sha256Buffer(Buffer.from(rawText, 'utf8')),
+      sourceBytes: rawBytes.length,
+      sourceSha256,
       reasons: rawReasons,
       error: `preprocessing failed: ${preprocessed.error}`,
+      preprocessor: preprocessorIdentity(preprocessor),
+    };
+    result.digest = resultDigest(result);
+    return result;
+  }
+
+  if (!Buffer.from(preprocessed.text, 'utf8').equals(preprocessed.bytes)) {
+    const result = {
+      class: SOURCE_CLASSES.UNKNOWN,
+      source: shownSource,
+      sourceBytes: rawBytes.length,
+      sourceSha256,
+      reasons: rawReasons,
+      error: 'preprocessed compilation input is not exact UTF-8',
       preprocessor: preprocessorIdentity(preprocessor),
     };
     result.digest = resultDigest(result);
@@ -488,8 +748,9 @@ function classifySource(source, options = {}) {
     const result = {
       class: SOURCE_CLASSES.UNKNOWN,
       source: shownSource,
-      sourceSha256: sha256Buffer(Buffer.from(rawText, 'utf8')),
-      preprocessedSha256: sha256Buffer(Buffer.from(preprocessed.text, 'utf8')),
+      sourceBytes: rawBytes.length,
+      sourceSha256,
+      preprocessedSha256: sha256Buffer(preprocessed.bytes),
       reasons: rawReasons,
       error: `preprocessed source classification failed: ${error.message}`,
       preprocessor: preprocessorIdentity(preprocessor),
@@ -498,16 +759,26 @@ function classifySource(source, options = {}) {
     return result;
   }
   const reasons = [...rawReasons, ...preprocessedReasons];
+  const compilationInput = {
+    bytes: preprocessed.bytes.length,
+    sha256: sha256Buffer(preprocessed.bytes),
+  };
+  const dependencies = preprocessed.dependencies.filter((record) => (
+    record.path.toLowerCase() !== shownSource.toLowerCase()
+  ));
   const result = {
     class: reasons.length > 0 ? SOURCE_CLASSES.HYBRID_C : SOURCE_CLASSES.PURE_C,
     source: shownSource,
-    sourceSha256: sha256Buffer(Buffer.from(rawText, 'utf8')),
-    preprocessedSha256: sha256Buffer(Buffer.from(preprocessed.text, 'utf8')),
+    sourceBytes: rawBytes.length,
+    sourceSha256,
+    preprocessedSha256: compilationInput.sha256,
+    compilationInput,
+    dependencies,
     reasons,
     preprocessor: preprocessorIdentity(preprocessor),
   };
   result.digest = resultDigest(result);
-  return result;
+  return attachCompilationInput(result, preprocessed.bytes);
 }
 
 function classifyTargetSources(targets, options = {}) {
@@ -528,11 +799,16 @@ function classifyTargetSources(targets, options = {}) {
     const key = target.symbol.toLowerCase();
     if (symbols.has(key)) throw new Error(`active target source is duplicated: ${target.symbol}`);
     symbols.add(key);
-    return {
+    const classification = classifySource(target.source, { preprocessor });
+    const record = {
       symbol: target.symbol,
       bytes: target.bytes,
-      ...classifySource(target.source, { preprocessor }),
+      ...classification,
     };
+    if (classification[COMPILATION_INPUT_BYTES]) {
+      attachCompilationInput(record, classification[COMPILATION_INPUT_BYTES]);
+    }
+    return record;
   });
   const counts = {};
   const bytes = {};
@@ -550,7 +826,7 @@ function classifyTargetSources(targets, options = {}) {
     throw new Error(`active C target has ASM source class: ${assembly.map((target) => target.symbol).join(', ')}`);
   }
   return {
-    schemaVersion: 1,
+    schemaVersion: 2,
     status: 'pass',
     preprocessor: preprocessorIdentity(preprocessor),
     counts,
@@ -560,12 +836,16 @@ function classifyTargetSources(targets, options = {}) {
 }
 
 module.exports = {
+  COMPILATION_INPUT_BYTES,
   POLICY_CONFIG_PATH,
   ROOT,
   SOURCE_CLASSES,
   classifySource,
   classifyTargetSources,
+  compilationInputBytes,
+  dependencyIdentities,
   loadPolicyConfig,
+  parseDependencyFile,
   preprocessorIdentity,
   preprocessSource,
   resolvePreprocessor,
@@ -573,4 +853,5 @@ module.exports = {
   sha256Buffer,
   sha256File,
   tokenizeC,
+  verifyClassificationInputs,
 };

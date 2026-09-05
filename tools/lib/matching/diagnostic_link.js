@@ -185,8 +185,8 @@ function loadDiagnosticEnvironment(session, options = {}) {
           const expectedElf = buildReport?.verification?.outputs?.elf;
           const verifiedElf = verification?.verification?.outputs?.elf;
           const acceptedControls = acceptedControlArtifacts(output, buildReport);
-          if (buildReport.schemaVersion !== 3 || buildReport.status !== 'pass'
-              || verification.schemaVersion !== 3 || verification.status !== 'pass'
+          if (buildReport.schemaVersion !== 4 || buildReport.status !== 'pass'
+              || verification.schemaVersion !== 4 || verification.status !== 'pass'
               || verification.verification?.status !== 'pass'
               || !expectedElf || !verifiedElf
               || expectedElf.sha256 !== acceptedElfSha256

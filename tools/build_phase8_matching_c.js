@@ -153,6 +153,7 @@ function main() {
       compilerAssemblySha256: compiledTarget.compilerAssemblySha256,
       linkedAssembly: compiledTarget.linkedAssemblyRelative,
       linkedAssemblySha256: compiledTarget.linkedAssemblySha256,
+      compilationInput: compiledTarget.compilationInput,
       sourceClass: compiledTarget.sourceClass,
       sourcePolicyDigest: compiledTarget.sourcePolicyDigest,
       compilerAssemblyRewritten: compiledTarget.compilerAssemblyRewritten,
@@ -174,8 +175,18 @@ function main() {
     };
   });
 
+  const dependencyByPath = new Map();
+  for (const classification of sourcePolicy.targets) {
+    for (const dependency of classification.dependencies) {
+      const previous = dependencyByPath.get(dependency.path);
+      if (previous && JSON.stringify(previous) !== JSON.stringify(dependency)) {
+        fail(`preprocessing dependency identity conflicts: ${dependency.path}`);
+      }
+      dependencyByPath.set(dependency.path, dependency);
+    }
+  }
   const report = {
-    schemaVersion: 3,
+    schemaVersion: 4,
     status: 'pass',
     generator: 'tools/build_phase8_matching_c.js',
     acceptedInputs: {
@@ -203,6 +214,7 @@ function main() {
         sha256: sha256File(POLICY_CONFIG_PATH),
       },
       cSources: phase8.targets.map((target) => ({ path: target.source, bytes: fs.statSync(path.join(ROOT, target.source)).size, sha256: target.sourceSha256 })),
+      cDependencies: [...dependencyByPath.values()].sort((left, right) => left.path.localeCompare(right.path)),
       originalAssemblies: phase8.targets.flatMap((target) => target.textOwners.map((owner) => ({
         path: owner.originalAssembly,
         sha256: owner.originalAssemblySha256,

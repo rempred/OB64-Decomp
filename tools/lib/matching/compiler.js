@@ -19,7 +19,10 @@ const {
 } = require('../phase8_matching_c');
 const {
   classifySource,
+  compilationInputBytes,
+  preprocessorIdentity,
   resolvePreprocessor,
+  verifyClassificationInputs,
 } = require('../source_policy');
 const { prepareContext, writeJson } = require('../current_workflow');
 const {
@@ -137,8 +140,8 @@ function prepareCompilerSession(options = {}) {
     compilerSha256: sha256File(context.localTools.compiler),
     compilerFlags: context.phase8.config.compiler.compileFlags,
     assembler: context.phase8.toolchain.identity,
-    sourcePolicyPreprocessorSha256: preprocessor.sha256,
-    workbenchCompilerContract: 6,
+    sourcePolicyPreprocessor: preprocessorIdentity(preprocessor),
+    workbenchCompilerContract: 7,
   };
   return { context, runtime, preprocessor, tool, toolId: digest(tool) };
 }
@@ -215,23 +218,49 @@ function validateScratchSymbolOwnership(elf, textSection, rodataSections, reginf
   return owned;
 }
 
-function compileScratchCandidate({ session, target, sourceFile, artifactDir }) {
+function compileScratchCandidate({ session, target, sourceFile, artifactDir, classification = null }) {
   if (!session || !session.context || !session.runtime || !target
       || typeof target.symbol !== 'string' || typeof target.sectionName !== 'string'
       || typeof sourceFile !== 'string' || typeof artifactDir !== 'string') {
     throw new Error('scratch candidate compiler inputs are malformed');
   }
+  const candidateClassification = classification || classifySource(relative(sourceFile), {
+    preprocessor: session.preprocessor,
+  });
+  if (!['PURE_C', 'HYBRID_C'].includes(candidateClassification.class)) {
+    throw new Error(`scratch candidate source classification is ${candidateClassification.class}: ${candidateClassification.error || 'unsupported source'}`);
+  }
+  if (candidateClassification.source !== relative(sourceFile)
+      || candidateClassification.sourceSha256 !== sha256File(sourceFile)) {
+    throw new Error('scratch candidate authored-source identity drift');
+  }
+  verifyClassificationInputs(candidateClassification);
   ensureDirectory(artifactDir);
+  const compilerInput = path.join(artifactDir, 'candidate.input.c');
   const compilerAssembly = path.join(artifactDir, 'candidate.compiler.s');
   const adjustedAssembly = path.join(artifactDir, 'candidate.s');
   const objectFile = path.join(artifactDir, 'candidate.o');
+  const inputBytes = compilationInputBytes(candidateClassification);
+  if (fs.existsSync(compilerInput)) {
+    const status = fs.lstatSync(compilerInput);
+    if (!status.isFile() || status.isSymbolicLink() || !fs.readFileSync(compilerInput).equals(inputBytes)) {
+      throw new Error('scratch candidate compilation-input artifact collision');
+    }
+  } else {
+    fs.writeFileSync(compilerInput, inputBytes, { flag: 'wx' });
+  }
+  if (fs.statSync(compilerInput).size !== candidateClassification.compilationInput.bytes
+      || sha256File(compilerInput) !== candidateClassification.compilationInput.sha256) {
+    throw new Error('scratch candidate compilation-input identity drift');
+  }
   const compilerArgs = [
     ...session.context.phase8.config.compiler.compileFlags,
     '-o',
     compilerAssembly,
-    relative(sourceFile),
+    'candidate.input.c',
   ];
-  const compilerResult = run(session.context.localTools.compiler, compilerArgs, { cwd: ROOT });
+  const compilerResult = run(session.context.localTools.compiler, compilerArgs, { cwd: artifactDir });
+  verifyClassificationInputs(candidateClassification);
   const compilerBytes = fs.readFileSync(compilerAssembly);
   const adjustedBytes = adjustSectionAssembly(compilerBytes, target.sectionName, {
     allowAuxiliaryReadOnlySections: true,
@@ -338,7 +367,7 @@ function compileScratchCandidate({ session, target, sourceFile, artifactDir }) {
     ? elf.sections.find((section) => section.name === '.rel.rodata')
     : null;
   const scratchContract = {
-    schemaVersion: 1,
+    schemaVersion: 2,
     kind: 'single-function-scratch-object',
     primarySymbol: {
       name: primary.name,
@@ -371,10 +400,15 @@ function compileScratchCandidate({ session, target, sourceFile, artifactDir }) {
     },
     textRelocations: relocations,
     commands: {
-      compiler: { executable: session.context.localTools.compiler, args: compilerArgs, cwd: ROOT },
+      compiler: { executable: session.context.localTools.compiler, args: compilerArgs, cwd: artifactDir },
       assembler: { executable: assembler, args: assemblerArgs, cwd: artifactDir },
     },
     artifacts: {
+      compilationInput: {
+        path: relative(compilerInput),
+        bytes: inputBytes.length,
+        sha256: sha256Buffer(inputBytes),
+      },
       compilerAssembly: relative(compilerAssembly),
       adjustedAssembly: relative(adjustedAssembly),
       object: relative(objectFile),
@@ -593,14 +627,15 @@ function cachedCandidateArtifact(run, candidate, target, matchingRoot = MATCHING
     throw new Error('cached compilation report is not a plain run artifact');
   }
   const report = JSON.parse(fs.readFileSync(reportFile, 'utf8'));
-  if (report.schemaVersion !== 1 || report.target?.targetId !== target.targetId
+  if (report.schemaVersion !== 2 || report.target?.targetId !== target.targetId
       || report.candidate?.candidateId !== candidate.candidateId
       || report.compile?.runId !== run.run_id || report.compile?.cacheKey !== run.cache_key
       || report.compile?.candidateId !== candidate.candidateId
       || report.compile?.status !== 'compiled'
       || report.compile?.objectText !== run.object_text
       || canonicalJson(report.compile?.relocations) !== canonicalJson(run.relocations)
-      || canonicalJson(report.compile?.tool) !== canonicalJson(run.tool)) {
+      || canonicalJson(report.compile?.tool) !== canonicalJson(run.tool)
+      || canonicalJson(report.sourcePolicy) !== canonicalJson(run.tool?.candidateSourcePolicy)) {
     throw new Error('cached compilation report provenance is stale or malformed');
   }
   const record = report.scratchContract?.artifacts;
@@ -619,6 +654,24 @@ function cachedCandidateArtifact(run, candidate, target, matchingRoot = MATCHING
   }
   if (sha256File(objectFile) !== record.objectSha256) {
     throw new Error('cached object artifact identity drift');
+  }
+  const input = record.compilationInput;
+  const inputFile = input && typeof input.path === 'string'
+    ? path.resolve(ROOT, ...input.path.split('/'))
+    : null;
+  if (!input || !inputFile || inputFile !== path.join(directory, 'candidate.input.c')
+      || !Number.isInteger(input.bytes) || input.bytes <= 0
+      || typeof input.sha256 !== 'string' || !/^[A-F0-9]{64}$/.test(input.sha256)
+      || input.bytes !== report.sourcePolicy?.compilationInput?.bytes
+      || input.sha256 !== report.sourcePolicy?.compilationInput?.sha256
+      || !fs.existsSync(inputFile)) {
+    throw new Error('cached compilation input provenance is malformed');
+  }
+  const inputStat = fs.lstatSync(inputFile);
+  if (!inputStat.isFile() || inputStat.isSymbolicLink()
+      || path.dirname(fs.realpathSync(inputFile)) !== fs.realpathSync(directory)
+      || inputStat.size !== input.bytes || sha256File(inputFile) !== input.sha256) {
+    throw new Error('cached compilation input identity drift');
   }
   return { objectFile, objectSha256: record.objectSha256 };
 }
@@ -639,11 +692,47 @@ function compilePublicationRequiresReauthentication(stored) {
   return stored?.cached === true && stored.run?.status === 'compiled';
 }
 
+function candidateCompileCacheKey(session, target, candidate, sourcePolicy, expectedRelocationEvidence) {
+  if (!session || typeof session.toolId !== 'string' || !target || typeof target.targetId !== 'string'
+      || !candidate || typeof candidate.candidateId !== 'string'
+      || !sourcePolicy || typeof sourcePolicy.digest !== 'string') {
+    throw new Error('candidate compile cache-key inputs are malformed');
+  }
+  return digest({
+    schemaVersion: 3,
+    candidateId: candidate.candidateId,
+    targetId: target.targetId,
+    toolId: session.toolId,
+    sourcePolicy,
+    expectedRelocationEvidence,
+  });
+}
+
 function compileCandidate(workbench, target, sourceText, options = {}) {
   const storeOptions = options.storeOptions || {};
   const storeRequest = options.storeRequest || requestStore;
   const { candidate, sourceFile } = recordCandidate(workbench, target, sourceText, options);
   const session = options.session || prepareCompilerSession(options);
+  const targetForCompile = {
+    symbol: target.symbol,
+    source: relative(sourceFile),
+    sourceSha256: candidate.sourceSha256,
+    bytes: target.bytes,
+    sectionName: target.sectionName,
+  };
+  const classification = classifySource(targetForCompile.source, { preprocessor: session.preprocessor });
+  classification.symbol = target.symbol;
+  classification.bytes = target.bytes;
+  if (!['PURE_C', 'HYBRID_C'].includes(classification.class)) {
+    throw new Error(`matching candidate source classification is ${classification.class}: ${classification.error || 'unsupported source'}`);
+  }
+  if (classification.source !== targetForCompile.source
+      || classification.sourceSha256 !== candidate.sourceSha256) {
+    throw new Error('matching candidate authored-source identity drift');
+  }
+  verifyClassificationInputs(classification);
+  const sourcePolicy = JSON.parse(JSON.stringify(classification));
+  const compileTool = { ...session.tool, candidateSourcePolicy: sourcePolicy };
   const expectedRelocationEvidence = acceptedExpectedRelocationEvidence(session, target);
   const preparedDiagnostic = prepareTargetDiagnostic(
     session,
@@ -651,15 +740,15 @@ function compileCandidate(workbench, target, sourceText, options = {}) {
     expectedRelocationEvidence,
     options.diagnosticOptions || {},
   );
-  const cacheKey = digest({
-    schemaVersion: 2,
-    candidateId: candidate.candidateId,
-    targetId: target.targetId,
-    toolId: session.toolId,
+  const cacheKey = candidateCompileCacheKey(
+    session,
+    target,
+    candidate,
+    sourcePolicy,
     expectedRelocationEvidence,
-  });
+  );
   const cached = storeRequest({ action: 'query', name: 'compile_by_cache', args: { cacheKey } }, storeOptions);
-  if (cached && (cached.candidate_id !== candidate.candidateId || canonicalJson(cached.tool) !== canonicalJson(session.tool))) {
+  if (cached && (cached.candidate_id !== candidate.candidateId || canonicalJson(cached.tool) !== canonicalJson(compileTool))) {
     throw new Error(`compile cache digest collision for ${candidate.candidateId}`);
   }
   if (cached && cached.status === 'compiled') {
@@ -722,22 +811,10 @@ function compileCandidate(workbench, target, sourceText, options = {}) {
     options.matchingRoot || MATCHING_ROOT,
   );
   const started = Date.now();
-  const targetForCompile = {
-    symbol: target.symbol,
-    source: relative(sourceFile),
-    sourceSha256: candidate.sourceSha256,
-    bytes: target.bytes,
-    sectionName: target.sectionName,
-  };
-  const classification = {
-    symbol: target.symbol,
-    bytes: target.bytes,
-    ...classifySource(targetForCompile.source, { preprocessor: session.preprocessor }),
-  };
   let compileRecord;
   let comparisonRecord = null;
   try {
-    const result = compileScratchCandidate({ session, target, sourceFile, artifactDir });
+    const result = compileScratchCandidate({ session, target, sourceFile, artifactDir, classification });
     const objectText = result.objectText;
     compileRecord = {
       runId,
@@ -751,7 +828,7 @@ function compileCandidate(workbench, target, sourceText, options = {}) {
       stdout: result.stdout,
       stderr: result.stderr,
       durationMs: Date.now() - started,
-      tool: session.tool,
+      tool: compileTool,
       createdAt: attemptStartedAt,
     };
     const candidateArtifact = candidateArtifactFromScratch(result);
@@ -767,9 +844,10 @@ function compileCandidate(workbench, target, sourceText, options = {}) {
     });
     comparisonRecord = makeComparisonRecord(runId, comparison);
     writeJson(path.join(artifactDir, 'workbench-report.json'), {
-      schemaVersion: 1,
+      schemaVersion: 2,
       target: { symbol: target.symbol, targetId: target.targetId, expectedBytesSha256: target.expectedBytesSha256 },
       candidate: { ...candidate, sourceText: undefined },
+      sourcePolicy,
       compile: compileRecord,
       scratchContract: result.scratchContract,
       comparison,
@@ -788,13 +866,14 @@ function compileCandidate(workbench, target, sourceText, options = {}) {
       stdout: '',
       stderr: error.message,
       durationMs: Date.now() - started,
-      tool: session.tool,
+      tool: compileTool,
       createdAt: attemptStartedAt,
     };
     writeJson(path.join(artifactDir, 'workbench-report.json'), {
-      schemaVersion: 1,
+      schemaVersion: 2,
       target: { symbol: target.symbol, targetId: target.targetId },
       candidate: { ...candidate, sourceText: undefined },
+      sourcePolicy,
       compile: compileRecord,
     });
   }
@@ -825,6 +904,7 @@ function compileCandidate(workbench, target, sourceText, options = {}) {
 
 module.exports = {
   MATCHING_ROOT,
+  candidateCompileCacheKey,
   candidateRecord,
   compileArtifactDirectory,
   compileCandidate,

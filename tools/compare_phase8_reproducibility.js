@@ -51,7 +51,7 @@ function main() {
   const leftVerification = readJson(leftVerificationFile);
   const rightVerification = readJson(rightVerificationFile);
   for (const valueToCheck of [leftBuild, rightBuild, leftVerification, rightVerification]) {
-    if (valueToCheck.schemaVersion !== 3 || valueToCheck.status !== 'pass') fail('Phase 8 reproducibility input did not pass');
+    if (valueToCheck.schemaVersion !== 4 || valueToCheck.status !== 'pass') fail('Phase 8 reproducibility input did not pass');
   }
   if (JSON.stringify(leftBuild) !== JSON.stringify(rightBuild)) fail('path-independent Phase 8 build reports differ');
   if (JSON.stringify(leftVerification) !== JSON.stringify(rightVerification)) fail('path-independent Phase 8 verification reports differ');
@@ -68,10 +68,11 @@ function main() {
       ['compilerAssembly', 'compiler assembly'],
       ['linkedAssembly', 'section-adjusted assembly'],
     ]) compareArtifact(leftRoot, rightRoot, target[field], `${target.symbol} ${label}`);
+    compareArtifact(leftRoot, rightRoot, target.compilationInput && target.compilationInput.path, `${target.symbol} KMC compilation input`);
     compareArtifact(leftRoot, rightRoot, target.sourceObjectProof && target.sourceObjectProof.path, `${target.symbol} source-to-object proof`);
   }
   const result = {
-    schemaVersion: 3,
+    schemaVersion: 4,
     status: 'pass',
     reportsIdentical: true,
     buildReportSha256: sha256File(leftBuildFile),
