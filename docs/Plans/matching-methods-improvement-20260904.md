@@ -76,11 +76,11 @@ The first wave is committed and pushed through `80c817e`.
 
 | Follow-up | Owner | Current scope |
 |---|---|---|
-| Warm-diff profiling | Existing authenticated-object-reuse task | Post-header measurement completed at `7967afd`: three exact warm runs average 76.9 seconds versus 49.0 previously. The increase is mainly in host preparation/classification work; preprocessor child time stayed near 19 seconds. Wave 5 integration is verified; the bounded preparation study and within-pass workspace reuse experiment are released on current main. |
+| Preparation optimization | Existing authenticated-object-reuse task; completed | Independent structural review accepted `603c363`. Authenticated assembly text is reused within one model-load call. The same-input loader measurements average 22.216 seconds before and 9.372 after; final warm diffs average 60.969 seconds. The workspace-reuse hypothesis was rejected. No further optimization is assigned. |
 | Scheduler trace and source probe | Existing allocator-study task | Six-case trace accepted at `352f5d4`. The subsequent sequential-carrier probe reproduced the same emitted state and causal signature; independent artifact checks passed, and the experiment stopped. |
 | Shared-header support | Authenticated headers and shared-source pilot | Contract and four-function pilot at `4123be2`, with input confinement/source-identity and duplicate-dependency corrections at `7967afd`. All routine suites, structural audit and fresh exact-ROM verification passed. Independent structural review closed both findings with PASS; the contract is accepted. |
-| Native consumables review | Astra Director | Phase 5B accepted at Editor `4106740` without blocking findings. Astra has assumed native direction and completed the takeover review. Rebuild remains paused while Joe considers the proposed recovery/regeneration milestone. |
-| Editor startup and export structure | Astra, after matching-tool/header validation | Resume coordinated editor work, measure startup and ROM initialization, then defer justified dataset loading and extract one coherent export responsibility. |
+| Native recovery | Astra Director | Phase 5B at Editor `4106740` remains the accepted baseline. Recovery is active in the existing native and experimental Editor worktrees. Archive restoration and unchanged game-byte checks passed; source-regeneration analysis and independent acceptance remain outstanding. |
+| Editor startup and export structure | Astra, after recovery releases the Editor surface | Measure startup and ROM initialization, then defer justified dataset loading and extract one coherent export responsibility. Coordinate the owning Editor worktree before release. |
 
 The existing implementation owners retain technical design authority. Reviewers independently
 identify defects in the assigned result; the director decides release scope. Optional hardening
@@ -96,16 +96,17 @@ not block matching-tool work. Decomp director integrated the independently revie
 Wave 5 onto main through `9af92c8` and recorded closure at `677ccdb`. All 13 routine suites and
 fresh pre-integration verification passed; post-integration verification again passed every gate
 with exact target bytes and a byte-identical complete ROM. The final checkout was clean.
-The existing authenticated-object-reuse owner now holds the bounded preparation study and its
-coordinated build/timing interval. High Attack Wave 6 and its switch-table structural follow-ups
-remain held; no other task should mutate matching inputs or run canonical builds during this interval.
+The preparation result at `603c363` passed all routine suites, exact-ROM verification, and the
+structural audit. Independent structural review accepted it without required corrections.
+The performance write hold and timing interval are released. High Attack Director now owns its
+ordinary implementation, review, integration, and authorized family publication. Astra handles
+cross-program conflicts and selects the family after High Attack. No new branch or worktree is authorized.
 
-1. Use the accepted [warm-diff profile](../matching-c/warm-diff-profile.md) to guide one justified
-   optimization. First measure preparation substages and test a workspace reused within one
-   sequential classification pass. Preserve fresh preprocessing, exact compiler-input bytes,
-   dependency authentication and all final verification. The current data does not identify the
-   particular operation causing the host-side increase or promise a saving. Do not introduce a
-   competing classification/input cache as part of this bounded study.
+1. Preserve the accepted [preparation optimization and profile](../matching-c/warm-diff-profile.md).
+   Repeated assembly-text reads caused the measured model-loading cost; within-call authenticated
+   reuse reduced it. Fresh preprocessing, compilation-input bytes, dependency authentication,
+   and final verification remain unchanged. The workspace experiment did not improve host time
+   and was removed. Further performance work requires a new justified assignment.
    The accepted [scheduler trace](../matching-c/allocator-scheduler-trace.md) guided the completed
    [sequential-carrier probe](../matching-c/allocator-source-probe.md), which collapsed to the same
    baseline. Further allocator-family experiments require a new causal or semantic lead beyond a

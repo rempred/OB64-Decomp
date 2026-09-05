@@ -5,9 +5,9 @@ This file is the active queue only. Changing counts belong in `node tools/status
 ## Matching methods follow-up
 
 Use the [matching methods improvement plan](Plans/matching-methods-improvement-20260904.md)
-for the accepted shared-header compilation-input/dependency contract and completed post-header
-warm-diff comparison. Wave 5 integration is verified; the bounded preparation-work study is
-released to its existing owner. The scheduler trace and bounded carrier probe are complete; another
+for the accepted shared-header compilation-input/dependency contract and independently accepted
+preparation optimization at `603c363`. Wave 5 integration is verified; the performance ownership
+hold is released to continued High Attack work. The scheduler trace and carrier probe are complete; another
 allocator-family experiment needs a new causal or semantic lead. Current ownership and progress
 remain in that plan. Preserve the pinned production compiler and all matching acceptance rules.
 
