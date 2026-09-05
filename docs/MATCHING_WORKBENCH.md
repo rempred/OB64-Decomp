@@ -20,7 +20,7 @@ node tools/diff.js <symbol>
 Per-function results remain provisional. Do not run the full verifier per target
 or add a redundant final build. The completed-wave proof establishes the final
 linked targets, sole C ownership, reviewed relocations, source class, and
-complete-ROM identity. Preserve required independent review. See
+complete-ROM identity. Ordinary matching waves require no independent review. See
 [the canonical workflow](WORKFLOW.md).
 
 ## Setup

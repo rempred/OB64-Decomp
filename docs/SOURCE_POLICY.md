@@ -234,6 +234,8 @@ canonical linked diff per function. Keep those results provisional until the
 complete wave passes final verification. A single successful final wave report
 can supply the complete-ROM and ownership evidence for every included target.
 Every wave target must be present and `PURE_C` in that run's authoritative report.
+Ordinary matching acceptance requires no independent reviewer after these canonical gates pass.
+Source classification alone or a successful ROM build alone does not establish acceptance.
 Do not run full-ROM verification separately for each target to establish source class.
 The existing accepted baseline may contain hybrid sources; they remain separate
 from the wave's required pure-C results. See [WORKFLOW.md](WORKFLOW.md) for timing.

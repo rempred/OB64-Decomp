@@ -55,6 +55,13 @@ program history, lane history, promotion history, or archived research chronolog
 Use the accepted structural owner as-is, reconstruct the function in C, and iterate with the linked diff.
 Run the final full-ROM build and normal verifier only after the complete assigned wave is ready.
 
+Ordinary matching-wave completion does not require independent review. The canonical verifier,
+including every assigned target's `PURE_C` classification, ownership, placement, relocation,
+target-byte, and complete-ROM gates, establishes matching acceptance for its exact inputs.
+Structural, tooling/verification, and semantic changes retain their applicable review requirements.
+Recording actual per-target relocations under existing linker rules is ordinary matching work;
+reviewing that evidence does not require a separate reviewer.
+
 If the boundary or overlay mapping appears wrong, stop treating the task as ordinary matching
 work and open a structural task.
 
@@ -127,7 +134,7 @@ choose accepted target
 → record provisional candidate; continue with the next wave target
 → after the complete wave, run verify once on the combined result
 → confirm every wave target is PURE_C in that final report
-→ required review and completed-wave integration
+→ completed-wave integration; verify changed integration inputs
 ```
 
 Do not run `build.js`, `verify.js --target`, or equivalent full-ROM acceptance commands after each function.
@@ -137,7 +144,8 @@ Provisional function commits are allowed under the assigned commit policy; they 
 Do not split an assigned wave into single-function waves to preserve per-function full verification.
 Use one final verification report for all wave targets. Existing accepted hybrid sources may remain hybrid.
 Verify a changed integrated state at the completed-wave boundary; do not rerun solely for an unchanged commit or handoff.
-Independent final review and structural audit requirements remain applicable at their assigned boundaries.
+Do not add an independent source-review gate or review-only verifier repeat to ordinary matching waves.
+Structural audit and review requirements for changes outside ordinary matching remain applicable.
 A function task is accepted only when its requested source class and the completed wave's full-ROM gates pass.
 
 If exact output requires inline assembly, report `HYBRID_C exact` rather than calling the task
@@ -165,7 +173,7 @@ create either one. Work in the current checkout and branch by default.
 When Joe explicitly authorizes parallel branches or worktrees, use ordinary Git branches/worktrees.
 
 Each worker owns one target at a time and uses focused linked-diff and source-policy checks within its assigned wave.
-Small commits remain provisional until final wave verification and required review pass.
+Small commits remain provisional until final wave verification passes; ordinary waves need no independent review.
 Integrate the completed wave onto the newest canonical branch; verify the changed combined integration state.
 
 No Highway, Lane, Lease, Checkpoint, frozen-tree, promotion-receipt, or handoff protocol is

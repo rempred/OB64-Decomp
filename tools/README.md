@@ -35,6 +35,8 @@ Do not precede it with a redundant final build or loop `verify.js --target` over
 The target option still performs full-ROM verification and recompiles all active C replacements.
 One initial missing setup baseline is separate from the final wave gate.
 Verify changed integration inputs at the completed-wave boundary; reuse proof for unchanged handoffs.
+Ordinary matching waves require no independent review or review-only verifier repeat.
+Structural, tooling/verification, and semantic changes retain their applicable review requirements.
 No diagnostic or scratch command replaces final acceptance evidence.
 
 ## Routine tooling tests

@@ -63,6 +63,9 @@ Do not run `build.js` or `verify.js --target` after each function; `--target` st
 checks the complete ROM and recompiles every active C replacement.
 A successful matching-C result requires exact linked target bytes, sole C-object
 ownership, `PURE_C` source, and an exact complete ROM for the combined wave.
+Ordinary matching waves require no independent review; the canonical verifier
+and each wave target's final source classification establish matching acceptance.
+Structural, tooling/verification, and semantic changes retain their applicable review.
 Verify changed integration inputs at the completed-wave boundary. An unchanged
 commit or handoff does not require another full-ROM run.
 

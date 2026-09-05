@@ -25,7 +25,7 @@ node tools/match.js doctor
 → repeat for the remaining assigned wave targets
 → after the complete wave, node tools/verify.js once
 → confirm every wave target is PURE_C in the final report
-→ required review and completed-wave integration
+→ completed-wave integration; verify changed integration inputs
 ```
 
 `match.js doctor` is a setup check for the optional research workbench. It needs
@@ -42,6 +42,18 @@ Provisional function commits can preserve small source history without a final
 ROM build. They remain unaccepted until the combined wave passes its final gates.
 Do not redefine a multi-function wave as single-function waves to retain the old cadence.
 A genuinely standalone function assignment has one wave containing that function.
+
+Ordinary matching-wave completion does not require independent review. Passing
+the complete canonical verifier and confirming every assigned target is `PURE_C`
+establishes matching acceptance for those exact inputs. A ROM build alone is
+insufficient. Director intake confirms scope and the reported proof; it does
+not repeat the matching work or require another verifier for independent review.
+
+Structural changes, tooling or verification changes, and new semantic claims
+retain their applicable review requirements. Recording actual relocations under
+existing linker rules remains ordinary matching work. Reviewing that evidence
+does not require a separate reviewer. Route any change to the linker rules or
+accepted structural model through the structural workflow.
 
 ## Acceptance boundary
 
@@ -308,10 +320,10 @@ Do not use global `--require-pure` when the accepted baseline contains legitimat
 For a standalone one-function wave, `verify.js --target <symbol> --require-pure`
 can replace the one final command; it must not be followed by a duplicate full verifier.
 
-### 7. Review and integrate the completed wave
+### 7. Integrate the completed wave
 
-Preserve unrelated work in a shared checkout. Freeze the verified wave and route
-required independent review. Before recording any scoped commit, inspect:
+Preserve unrelated work in a shared checkout. Record the verified wave without
+an independent source-review gate. Before recording any scoped commit, inspect:
 
 ```powershell
 git diff --check
@@ -324,8 +336,8 @@ Integrate the completed wave onto the newest accepted canonical base.
 If integration changes the verified inputs, run one complete verifier on that
 combined final state before acceptance or publication. Do not integrate unfinished
 individual candidates as accepted results.
-Independent reviewers may reproduce the completed-wave proof at their review
-boundary; they must not require a full-ROM run for each member.
+Do not repeat unchanged completed-wave verification solely for independent review.
+Separate structural, tooling, or semantic assignments retain their required review.
 
 Commit only the source and smallest necessary configuration or evidence change. Git is
 the integration record; ordinary matches do not need promotion manifests,

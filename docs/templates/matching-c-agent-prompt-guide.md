@@ -136,8 +136,9 @@ Confirm every wave target is `PURE_C` in the authoritative report from that run.
 Do not loop the full verifier over targets or require it for intermediate commits.
 For a standalone one-function wave, the target purity option can replace the
 single final command; it must not add a second verifier run.
-Preserve required final independent review. Verify changed integration inputs
-at the completed-wave boundary, not after each function.
+Ordinary matching waves require no independent review or review-only verifier repeat.
+Verify changed integration inputs at the completed-wave boundary, not after each function.
+Separate structural, tooling, and semantic changes retain their applicable review requirements.
 
 The worker must stop and report the exact evidence if:
 
@@ -198,7 +199,8 @@ Work directly toward a match:
    It builds CURRENT when needed; do not run a redundant final build first.
    Confirm every wave target is PURE_C in its authoritative source-policy report.
    Preserve final ownership, placement, relocation, target-byte, and full-ROM evidence for the entire wave.
-   Leave required independent review and changed completed-wave integration verification to their assigned actors.
+   No independent review is required for this ordinary matching wave.
+   Leave changed completed-wave integration verification to its assigned actor.
 
 Do not claim success from a manual compile or partial byte comparison. If a
 structural issue, tool-identity failure, or apparent need for assembly blocks the
