@@ -85,8 +85,8 @@ The first wave is committed and pushed through `80c817e`.
 
 The assigned maintenance queue is complete. High Attack continues under its own Director.
 Joe subsequently authorized a parallel squad construction and deployment family on 2026-09-05,
-with a fresh worktree and an Astra High Director. The worktree and tooling are ready; native task
-identity remains pending, so the assignment has not been activated. Parent
+with a fresh worktree and an Astra High Director. Task `01a071fb-35e9-7c42-8b29-d0a16ed30f19`
+is active, and its activation delivery is verified. Parent
 `docs/Plans/squad-construction-director-current-state.md` owns the launch and family status.
 Further Editor refactoring is unassigned.
 Selection must consider which matching-C result enables a concrete Editor migration, alongside feasibility and shared-code value.

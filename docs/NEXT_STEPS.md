@@ -65,9 +65,9 @@ matches, but the retail exact baseline must remain separate and honest.
 
 Joe authorized a parallel squad construction and deployment family in a fresh worktree on 2026-09-05.
 The initial targets are `func_001957D0`, `func_001960A8`, and `func_00105CC0`; the member builder
-and downstream pure-C helpers remain preserved. Astra High is the requested family Director.
-The worktree and tooling are prepared, but native task identity is pending and the assignment
-has not been activated. Parent `docs/Plans/squad-construction-director-current-state.md` owns
+and downstream pure-C helpers remain preserved. Astra High directs the active family task
+`01a071fb-35e9-7c42-8b29-d0a16ed30f19` in its prepared worktree. Activation delivery is verified.
+Parent `docs/Plans/squad-construction-director-current-state.md` owns
 launch and family status. High Attack retains its separate Director and existing scope.
 
 ### Tier 2 — Current LordlyCaliber limits
