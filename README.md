@@ -42,24 +42,29 @@ verification commands do.
 the pinned m2c checkout. m2c is optional for `build`, `diff`, and `verify`, but it
 is part of the recommended matching setup check.
 
-For one assigned, accepted target, write or adjust its C source and use this
-loop:
+For each accepted target in the assigned wave, write or adjust its C source and use:
 
 ```powershell
 node tools/diff.js <symbol>
-node tools/verify.js --target <symbol> --require-pure
+node tools/source_policy.js --target <symbol>
 ```
 
-After integration, verify all active replacements and inspect generated status:
+Confirm exact linked bytes and the reviewed relocation contract. Keep each result
+provisional and continue through the complete wave. Then run the final verifier once:
 
 ```powershell
 node tools/verify.js
 node tools/status.js
 ```
 
-The target verifier still checks the complete ROM. A successful matching-C
-result requires exact linked target bytes, sole C-object ownership, `PURE_C`
-source, and an exact complete ROM.
+Confirm every wave target is `PURE_C` in the final authoritative report.
+The final verifier builds CURRENT when needed; do not run a redundant final build first.
+Do not run `build.js` or `verify.js --target` after each function; `--target` still
+checks the complete ROM and recompiles every active C replacement.
+A successful matching-C result requires exact linked target bytes, sole C-object
+ownership, `PURE_C` source, and an exact complete ROM for the combined wave.
+Verify changed integration inputs at the completed-wave boundary. An unchanged
+commit or handoff does not require another full-ROM run.
 
 Read [the canonical workflow](docs/WORKFLOW.md) before changing a target. It
 explains target selection, activation, relocation review, iteration, and stop
@@ -135,11 +140,11 @@ does not prove a descriptive function name, field name, or gameplay explanation.
 
 | Command | Purpose |
 | --- | --- |
-| `node tools/build.js` | Build the current source tree and require an exact complete ROM. |
+| `node tools/build.js` | Establish a missing setup baseline; final wave verification builds CURRENT when needed. Never run per function. |
 | `node tools/diff.js <symbol>` | Compile and link one active target; report instruction diagnostics and authoritative linked-byte equality. |
 | `node tools/source_policy.js --target <symbol>` | Classify one active source; classification alone does not prove a match. |
-| `node tools/verify.js --target <symbol> --require-pure` | Run the normal exact target, ownership, source-policy, and complete-ROM gate. |
-| `node tools/verify.js` | Verify all active replacements and the complete ROM after integration. |
+| `node tools/verify.js --target <symbol> --require-pure` | Full verifier with a target purity assertion; only an alternative final command for a standalone one-function wave. |
+| `node tools/verify.js` | Run once for the complete wave; check each wave target's final source class. Verify changed completed-wave integration inputs. |
 | `node tools/status.js` | Derive current exact-source counts from accepted generated state. |
 | `node tools/test.js` | Run the required routine tooling regression manifest; this does not replace canonical verification. |
 | `node tools/audit.js` | Run heavyweight structural verification for structural tasks. |

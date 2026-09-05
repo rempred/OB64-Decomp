@@ -52,8 +52,8 @@ program history, lane history, promotion history, or archived research chronolog
 
 ### 1. Normal matching work
 
-Use the accepted structural owner as-is, reconstruct the function in C, iterate with the diff
-tool, and run the normal verifier.
+Use the accepted structural owner as-is, reconstruct the function in C, and iterate with the linked diff.
+Run the final full-ROM build and normal verifier only after the complete assigned wave is ready.
 
 If the boundary or overlay mapping appears wrong, stop treating the task as ordinary matching
 work and open a structural task.
@@ -115,7 +115,7 @@ this policy unless pure-C conversion is the assigned task.
 
 See `docs/SOURCE_POLICY.md`.
 
-## Normal Function Task
+## Normal Matching Wave
 
 The normal loop is:
 
@@ -123,11 +123,22 @@ The normal loop is:
 choose accepted target
 → write/adjust C
 → diff <symbol>
-→ verify --target <symbol> --require-pure
-→ commit
+→ confirm mechanical PURE_C and exact relocation contract
+→ record provisional candidate; continue with the next wave target
+→ after the complete wave, run verify once on the combined result
+→ confirm every wave target is PURE_C in that final report
+→ required review and completed-wave integration
 ```
 
-A function task is done only when the requested acceptance class is achieved.
+Do not run `build.js`, `verify.js --target`, or equivalent full-ROM acceptance commands after each function.
+The final verifier builds CURRENT when needed; do not precede it with a redundant final build.
+An initial missing setup baseline may be built once. The linked diff remains a development check.
+Provisional function commits are allowed under the assigned commit policy; they do not establish matching-C acceptance.
+Do not split an assigned wave into single-function waves to preserve per-function full verification.
+Use one final verification report for all wave targets. Existing accepted hybrid sources may remain hybrid.
+Verify a changed integrated state at the completed-wave boundary; do not rerun solely for an unchanged commit or handoff.
+Independent final review and structural audit requirements remain applicable at their assigned boundaries.
+A function task is accepted only when its requested source class and the completed wave's full-ROM gates pass.
 
 If exact output requires inline assembly, report `HYBRID_C exact` rather than calling the task
 matching C.
@@ -153,8 +164,9 @@ create either one. Work in the current checkout and branch by default.
 
 When Joe explicitly authorizes parallel branches or worktrees, use ordinary Git branches/worktrees.
 
-Each worker owns one target at a time, verifies against its current base, commits a small result,
-then integrates onto the newest canonical branch. Re-run normal verification after integration.
+Each worker owns one target at a time and uses focused linked-diff and source-policy checks within its assigned wave.
+Small commits remain provisional until final wave verification and required review pass.
+Integrate the completed wave onto the newest canonical branch; verify the changed combined integration state.
 
 No Highway, Lane, Lease, Checkpoint, frozen-tree, promotion-receipt, or handoff protocol is
 required.

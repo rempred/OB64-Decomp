@@ -229,6 +229,15 @@ A task whose goal is “matching C” is accepted only when:
 
 If output is exact but source policy is `HYBRID_C`, report **MATCHING HYBRID**, not matching C.
 
+For ordinary matching waves, perform mechanical source classification and the
+canonical linked diff per function. Keep those results provisional until the
+complete wave passes final verification. A single successful final wave report
+can supply the complete-ROM and ownership evidence for every included target.
+Every wave target must be present and `PURE_C` in that run's authoritative report.
+Do not run full-ROM verification separately for each target to establish source class.
+The existing accepted baseline may contain hybrid sources; they remain separate
+from the wave's required pure-C results. See [WORKFLOW.md](WORKFLOW.md) for timing.
+
 ### Pure-C cleanup tasks
 
 When converting a legacy hybrid:

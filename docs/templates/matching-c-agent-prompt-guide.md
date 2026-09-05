@@ -1,14 +1,15 @@
 # Ordinary Matching-C Agent Prompt Guide
 
-Use this guide when assigning one accepted function to a worker for an exact
-`PURE_C` match. Structural corrections, semantic research, and subsystem-wide
-reconstruction need their own prompts.
+Use this guide when assigning accepted functions within an ordinary matching wave.
+Name the complete wave and its completion boundary. A standalone one-function
+assignment is one wave; do not split an existing wave to force per-function final builds.
+Structural corrections and semantic research need their own prompts.
 
 ## Before Writing the Prompt
 
 Give the worker a resolved task, not a target-selection problem. Include:
 
-- repository path and symbol;
+- repository path, symbol, complete wave target list, and wave identifier;
 - intended C source path;
 - accepted assembly/disassembly owner;
 - only the relevant dossier or subsystem notes;
@@ -29,7 +30,9 @@ inspect accepted target
 → write plausible C
 → node tools/diff.js <symbol>
 → change C in response to the concrete diff
-→ verify the exact result
+→ confirm PURE_C and exact relocation contract; record provisional candidate
+→ continue through the remaining wave targets
+→ run final full-ROM verification once for the complete wave
 ```
 
 Compiler assembly, object dumps, and small probes are useful when explaining a
@@ -114,19 +117,27 @@ For a newly activated target, `tools/diff.js` may report that its relocation
 contract is `MISSING` and print a candidate. That is expected discovery output,
 not a verifier failure. Review the candidate, add the smallest exact entry to
 `config/matching-c-linkage.json` (including an explicit empty list when there
-are no load-relevant relocations), and rerun the canonical diff and verifier.
+are no load-relevant relocations), and rerun the canonical diff.
+Run the final verifier only after the complete wave is ready.
 Never create a target record in the frozen `config/phase8/matching-c.json`.
 
 ## Completion and Stop Conditions
 
-An exact `PURE_C` task is complete only after all of these pass:
+Require these focused checks per function, including an exact reviewed relocation contract:
 
 ```text
 node tools/diff.js <symbol>
 node tools/source_policy.js --target <symbol>
-node tools/verify.js --target <symbol> --require-pure
-node tools/verify.js
 ```
+
+Intermediate results and small commits remain provisional. Once the complete
+wave is ready, run `node tools/verify.js` once on its combined final source.
+Confirm every wave target is `PURE_C` in the authoritative report from that run.
+Do not loop the full verifier over targets or require it for intermediate commits.
+For a standalone one-function wave, the target purity option can replace the
+single final command; it must not add a second verifier run.
+Preserve required final independent review. Verify changed integration inputs
+at the completed-wave boundary, not after each function.
 
 The worker must stop and report the exact evidence if:
 
@@ -141,16 +152,18 @@ help explain a blocker, but it must not be reported as a verified match.
 ## Copyable Prompt
 
 ```text
-Match `<symbol>` as exact `PURE_C` in:
+Match the assigned targets as `PURE_C` candidates for complete wave `<wave-id>` in:
 
 `<absolute repository path>`
 
 Target context:
+- Complete wave targets: `<symbols>`
+- Current target: `<symbol>`
 - C source: `<source path>`
 - Accepted assembly/disassembly: `<owner path>`
 - Relevant evidence: `<specific paths, or "none">`
 - Preserve these existing changes: `<paths, or "working tree is clean">`
-- Commit policy: `<commit after verification / do not commit>`
+- Commit policy: `<provisional scoped commits allowed / Director commits; do not commit>`
 
 Read `AGENTS.md`, `docs/WORKFLOW.md`, and `docs/SOURCE_POLICY.md`, followed only
 by the target-specific evidence above. For a difficult compiler-output match,
@@ -176,10 +189,16 @@ Work directly toward a match:
    answers a specific mismatch.
 5. Once exact, run:
    - `node tools/source_policy.js --target <symbol>`
-   - `node tools/verify.js --target <symbol> --require-pure`
-   - `node tools/verify.js`
    - `git diff --check`
    - `git status --short --branch`
+   Confirm the canonical diff report's exact linked bytes and reviewed relocation contract.
+6. Record the provisional candidate and continue with the next wave target.
+   Do not run `build.js`, `verify.js --target`, or a full-ROM acceptance gate per function.
+7. Once the complete wave is ready, run `node tools/verify.js` once.
+   It builds CURRENT when needed; do not run a redundant final build first.
+   Confirm every wave target is PURE_C in its authoritative source-policy report.
+   Preserve final ownership, placement, relocation, target-byte, and full-ROM evidence for the entire wave.
+   Leave required independent review and changed completed-wave integration verification to their assigned actors.
 
 Do not claim success from a manual compile or partial byte comparison. If a
 structural issue, tool-identity failure, or apparent need for assembly blocks the
@@ -187,7 +206,7 @@ task, stop and report the exact command, output, and smallest concrete blocker.
 Do not weaken the canonical verification path or treat a manually reproduced
 pipeline as a substitute for it.
 
-Keep changes limited to the target source and the smallest required target
+Keep changes limited to the assigned wave source and the smallest required target
 configuration update. Preserve unrelated work. In the final report, state the
 result, files changed, canonical command results, and any remaining uncertainty.
 ```

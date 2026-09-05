@@ -20,15 +20,22 @@ authority for command options.
 | `node tools/status.js` | Derive progress from accepted configuration and the current valid verification state. |
 | `node tools/audit.js` | Run heavyweight structural verification; this is not the ordinary function gate. |
 
-The minimum matching-C completion commands are:
+Within the assigned wave, use these focused commands per target:
 
 ```powershell
 node tools/diff.js <symbol>
-node tools/verify.js --target <symbol> --require-pure
-node tools/verify.js
+node tools/source_policy.js --target <symbol>
 ```
 
-No diagnostic or scratch command replaces them.
+Require exact linked bytes, mechanical `PURE_C`, and a matching reviewed relocation
+contract. Keep the candidate provisional and continue to the next wave target.
+At complete-wave completion, run `node tools/verify.js` once and confirm every wave
+target is `PURE_C` in its authoritative report. This command builds CURRENT when needed.
+Do not precede it with a redundant final build or loop `verify.js --target` over functions.
+The target option still performs full-ROM verification and recompiles all active C replacements.
+One initial missing setup baseline is separate from the final wave gate.
+Verify changed integration inputs at the completed-wave boundary; reuse proof for unchanged handoffs.
+No diagnostic or scratch command replaces final acceptance evidence.
 
 ## Routine tooling tests
 

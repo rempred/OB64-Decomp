@@ -16,20 +16,32 @@ After the one-time local setup in [the repository README](../README.md):
 
 ```text
 node tools/match.js doctor
-→ node tools/build.js
+→ establish a missing setup baseline once
 → choose one accepted target
 → write or adjust its C source
 → node tools/diff.js <symbol>
 → iterate from the linked diff
-→ node tools/verify.js --target <symbol> --require-pure
-→ after integration, node tools/verify.js
-→ commit
+→ confirm PURE_C and exact relocation contract; record a provisional candidate
+→ repeat for the remaining assigned wave targets
+→ after the complete wave, node tools/verify.js once
+→ confirm every wave target is PURE_C in the final report
+→ required review and completed-wave integration
 ```
 
 `match.js doctor` is a setup check for the optional research workbench. It needs
 the normalized baserom, the configured production compiler/assembler chain, and
 the pinned m2c checkout. It does not install any dependency and it does not
 verify a source match.
+
+Final full-ROM builds and strict verification occur at the end of a complete
+assigned wave, not after each function. `verify.js` builds CURRENT when needed;
+do not run a redundant final `build.js` first. The `--target` option still runs
+the complete verifier, so it is not a focused per-function alternative.
+
+Provisional function commits can preserve small source history without a final
+ROM build. They remain unaccepted until the combined wave passes its final gates.
+Do not redefine a multi-function wave as single-function waves to retain the old cadence.
+A genuinely standalone function assignment has one wave containing that function.
 
 ## Acceptance boundary
 
@@ -63,8 +75,8 @@ it is not matching C and does not contribute to the matching-C count.
 
 `BASELINE` is the accepted assembly/data build and structural model that
 reconstructs retail Rev 0. `CURRENT` is that baseline with zero or more accepted
-assembly owners replaced by C objects. `CURRENT` must always remain byte-exact
-with the canonical ROM.
+assembly owners replaced by C objects. An accepted `CURRENT` must remain byte-exact
+with the canonical ROM. Intermediate wave candidates do not establish a new accepted baseline.
 
 ## One-time setup
 
@@ -96,6 +108,9 @@ download or install them.
 all active C replacements, and requires the complete current ROM to equal the
 canonical normalized baserom. A build failure caused by tool or ROM identity is
 a setup failure to fix, not a verification rule to bypass.
+
+This setup baseline is a one-time prerequisite when missing. Do not repeat it
+for each target or when an authenticated existing baseline can be reused.
 
 ## Normal matching loop
 
@@ -183,7 +198,9 @@ cache hits, misses, rebuilds, and compiler invocations.
 
 Cache reuse is a development optimization only. `verify.js` and CURRENT
 verification do not import that cache; they independently perform the fresh
-final recompilation and complete-ROM check and remain mandatory.
+final recompilation and complete-ROM check at wave completion and remain mandatory.
+The diff's internal development link remains necessary for relocated target-byte
+comparison. It does not authorize a separate final ROM build or full verifier per function.
 
 Use the instruction diff to make one evidence-driven source change at a time.
 Source order, control-flow shape, integer widths, expression grouping,
@@ -204,7 +221,8 @@ placement, or complete-ROM equality.
 
 Use [the optional workbench reference](MATCHING_WORKBENCH.md) for candidate
 generation, experiment history, bounded comparisons, and its diagnostic limits.
-The canonical `diff.js` and `verify.js` gates remain required.
+The canonical `diff.js` check remains required per target. The `verify.js` gate
+remains required for the completed wave.
 
 ### 4. Review relocation evidence
 
@@ -228,17 +246,39 @@ relocation contract are not an accepted mod-ready pure-C replacement.
 Rerun `diff.js` after adding the reviewed contract. Strict verification fails if
 the entry is absent or if the compiled object later changes.
 
-### 5. Run the target gate
+### 5. Record a provisional target and continue the wave
 
 When the linked diff is exact, run:
 
 ```powershell
 node tools/source_policy.js --target <symbol>
-node tools/verify.js --target <symbol> --require-pure
 ```
 
-The standalone source-policy command is a useful focused check. The verifier
-independently performs the authoritative classification and then:
+Use the canonical diff report from the current source to confirm linked-byte
+`EXACT`, mechanical `PURE_C`, and a matching reviewed relocation contract.
+`diff.js` can complete while reporting differences or a missing contract;
+successful process exit alone does not establish these conditions.
+The diff already records mechanical source classification; a separate policy
+command is useful when that evidence needs a focused refresh.
+
+Record the source and evidence under the assigned commit policy, then continue
+with the next wave target. Describe this result as a provisional candidate with
+an exact linked diff. Do not report accepted matching C or advance accepted counts.
+Recheck affected candidates when later source or dependency changes invalidate their evidence.
+
+Do not run `build.js`, `verify.js`, `verify.js --target`, or equivalent full-ROM
+acceptance commands after each function. A difficult or blocked member remains
+unfinished; it does not silently reduce the wave's completion scope.
+
+### 6. Verify the complete wave
+
+After every assigned wave target is ready, run the complete verifier once:
+
+```powershell
+node tools/verify.js
+```
+
+The verifier builds CURRENT when needed, independently classifies sources, and then:
 
 1. authenticates the baserom and pinned toolchain;
 2. resolves the accepted structural owner uniquely;
@@ -249,23 +289,38 @@ independently performs the authoritative classification and then:
 7. compares the final linked target bytes with the baserom; and
 8. compares the complete rebuilt ROM byte-for-byte with the baserom.
 
-The target option is not a partial-ROM check. The requested pure-C result is
-accepted only when the command ends with `RESULT: MATCHING C`. `--require-pure`
-must fail for `HYBRID_C`, even when the target and full ROM are exact.
+Confirm every assigned wave target is present and `PURE_C` in this run's
+authoritative source-policy report. Use that same report and final ownership,
+placement, relocation, target-byte, and complete-ROM evidence for all wave members.
+The normal complete command reports `RESULT: EXACT BASELINE`; that result alone
+does not establish the requested source class of every wave member.
 
-### 6. Integrate and commit
+Do not loop `verify.js --target` over wave members. Each call repeats full-ROM
+verification and fresh compilation of all active C replacements.
+Do not use global `--require-pure` when the accepted baseline contains legitimate hybrids.
+For a standalone one-function wave, `verify.js --target <symbol> --require-pure`
+can replace the one final command; it must not be followed by a duplicate full verifier.
 
-Preserve unrelated work in a shared checkout. Before committing or accepting an
-integrated change, run:
+### 7. Review and integrate the completed wave
+
+Preserve unrelated work in a shared checkout. Freeze the verified wave and route
+required independent review. Before recording any scoped commit, inspect:
 
 ```powershell
-node tools/verify.js
 git diff --check
 git status --short --branch
 ```
 
-The complete verifier checks all active replacements and the full ROM. Commit
-only the source and smallest necessary configuration or evidence change. Git is
+The final report must identify the exact verified source, tool, and link inputs.
+A commit or unchanged handoff alone does not require another build or verifier.
+Integrate the completed wave onto the newest accepted canonical base.
+If integration changes the verified inputs, run one complete verifier on that
+combined final state before acceptance or publication. Do not integrate unfinished
+individual candidates as accepted results.
+Independent reviewers may reproduce the completed-wave proof at their review
+boundary; they must not require a full-ROM run for each member.
+
+Commit only the source and smallest necessary configuration or evidence change. Git is
 the integration record; ordinary matches do not need promotion manifests,
 checkpoint receipts, frozen accepted trees, or separate review packages.
 
@@ -325,8 +380,8 @@ Naming does not gate a machine-code match. Use exactly these evidence classes:
 During matching, inspect the body, callers, callees, strings, and data accesses
 for a possible `SUPPORTED_ALIAS`, but leave the build symbol address-named when
 evidence is insufficient. Only a `CANONICAL` name may replace it. Perform a
-canonical rename as a scoped semantic change and rerun the normal target and
-complete-ROM verifiers.
+canonical rename as a scoped semantic change and rerun the linked diff and
+source-policy checks. Include its complete-ROM proof in the final wave verification.
 
 ## Stop or change workflows
 
