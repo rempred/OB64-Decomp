@@ -37,6 +37,11 @@ The accepted mapping and remaining uncertainty are documented in
 Do not restart an easy-function matching farm merely to increase percentage. Choose targets by the
 amount of runtime-hook or workaround complexity they can remove.
 
+Each family plan covers the complete supported related family, including functions the Editor does
+not currently modify. A first wave limits execution order, not the plan's completion scope.
+Record accepted pure-C members as completed and shared members under their existing owners.
+Resolve or explicitly retain open family-discovery and structural dependencies before claiming the family is complete.
+
 Use `node tools/match.js rank --lane leverage` as an inspectable starting queue,
 then apply the reviewed subsystem priorities below. The workbench's scratch-exact
 results, ruleset-ensemble membership, and family siblings are leads to review,
@@ -69,6 +74,15 @@ and downstream pure-C helpers remain preserved. Astra High directs the active fa
 `01a071fb-35e9-7c42-8b29-d0a16ed30f19` in its prepared worktree. Activation delivery is verified.
 Parent `docs/Plans/squad-construction-director-current-state.md` owns
 launch and family status. High Attack retains its separate Director and existing scope.
+
+Joe authorized another independent worktree on 2026-09-05. Combat body selection and pose-resource
+handling use `codex/combat-body-resources`, based at `acf8d44`.
+The parent plan `docs/Plans/combat-body-resources-matching-family-20260905.md` records opening
+waves in accepted overlay descriptor 10 and the complete-family discovery scope.
+Related High Attack stream builders and carrier callers retain that Director's source ownership.
+The adjacent parent feature-coverage inventory distinguishes matching C from native generated assembly and data-only exports.
+Parent `docs/Plans/combat-body-resources-director-current-state.md` owns activation and implementation status.
+The first wave uses Joe's Astra Xhigh implementation and methodology-report experiment.
 
 ### Tier 2 — Current LordlyCaliber limits
 
