@@ -76,7 +76,7 @@ The first wave is committed and pushed through `80c817e`.
 
 | Follow-up | Owner | Current scope |
 |---|---|---|
-| Warm-diff profiling | Existing authenticated-object-reuse task | Earlier profile accepted through `e03a7dd`; three warm runs average 49.0 seconds, with 19.1 seconds in source classification/preprocessing. The bounded post-header comparison is running before Wave 5 integration; compare combined preparation/classification costs because stage ownership changed. |
+| Warm-diff profiling | Existing authenticated-object-reuse task | Post-header measurement completed at `7967afd`: three exact warm runs average 76.9 seconds versus 49.0 previously. The increase is mainly in host preparation/classification work; preprocessor child time stayed near 19 seconds. The next bounded study measures that work and tests reuse of a workspace within one classification pass after Wave 5 integration. |
 | Scheduler trace and source probe | Existing allocator-study task | Six-case trace accepted at `352f5d4`. The subsequent sequential-carrier probe reproduced the same emitted state and causal signature; independent artifact checks passed, and the experiment stopped. |
 | Shared-header support | Authenticated headers and shared-source pilot | Contract and four-function pilot at `4123be2`, with input confinement/source-identity and duplicate-dependency corrections at `7967afd`. All routine suites, structural audit and fresh exact-ROM verification passed. Independent structural review closed both findings with PASS; the contract is accepted. |
 | Native consumables review | Rebuild Director | Phase 5B accepted at Editor `4106740` without blocking findings. The native rebuild program is paused; its clean implementation worktree is released for later coordinated work. |
@@ -93,13 +93,17 @@ respective dependencies and explicit file ownership. No new branch or worktree i
 
 The native review consumes its existing frozen decomp worktree, not decomp `main`, so it does
 not block matching-tool work. High Attack Wave 5 is complete and independently reviewed through
-`b8f4a5e` in its existing worktree. Its integration is held only for the bounded post-header
-measurement, then proceeds onto the accepted contract with routine tests and full verification.
-Optional performance implementation does not extend that integration hold.
+`b8f4a5e` in its existing worktree. The bounded post-header measurement is complete and its
+integration hold is released. Decomp director owns rebase onto the accepted contract, routine
+tests, integration and full verification. Further performance implementation waits for that
+integration to finish so shared inputs stay stable during verification.
 
 1. Use the accepted [warm-diff profile](../matching-c/warm-diff-profile.md) to guide one justified
-   optimization. Coordinate any classification reuse with the shared-header input/dependency
-   contract rather than developing competing cache paths, and measure the resulting effect.
+   optimization. First measure preparation substages and test a workspace reused within one
+   sequential classification pass. Preserve fresh preprocessing, exact compiler-input bytes,
+   dependency authentication and all final verification. The current data does not identify the
+   particular operation causing the host-side increase or promise a saving. Do not introduce a
+   competing classification/input cache as part of this bounded study.
    The accepted [scheduler trace](../matching-c/allocator-scheduler-trace.md) guided the completed
    [sequential-carrier probe](../matching-c/allocator-source-probe.md), which collapsed to the same
    baseline. Further allocator-family experiments require a new causal or semantic lead beyond a
