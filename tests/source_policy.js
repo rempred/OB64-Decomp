@@ -12,6 +12,7 @@ const {
   classifySource,
   classifyTargetSources,
   compilationInputBytes,
+  dependencyIdentities,
   loadPolicyConfig,
   resolvePreprocessor,
   sha256Buffer,
@@ -217,6 +218,25 @@ function main() {
     }
     throw new Error(`escaped source path was accepted: ${escaped}`);
   }
+  const dependencySource = path.join(FIXTURES, 'ordinary.c');
+  const dependencyRelative = path.relative(ROOT, dependencySource).replace(/\\/g, '/');
+  const caseEquivalentDependency = dependencyRelative.replace(/^tests\//, 'TESTS/');
+  const duplicateDependencyRejections = [];
+  for (const [label, dependencyPaths] of [
+    ['exact duplicate', [dependencyRelative, dependencyRelative]],
+    ['case-equivalent duplicate', [dependencyRelative, caseEquivalentDependency]],
+  ]) {
+    try {
+      dependencyIdentities(dependencyPaths, dependencySource);
+    } catch (error) {
+      if (/dependency identity is duplicated/.test(error.message)) {
+        duplicateDependencyRejections.push(label);
+        continue;
+      }
+      throw error;
+    }
+    throw new Error(`${label} depfile identity was accepted`);
+  }
   const scratchBase = path.resolve(os.tmpdir());
   const scratch = fs.mkdtempSync(path.join(scratchBase, 'ob64-source-policy-identity-'));
   const driver = preprocessor.executables.find((record) => record.role === 'driver');
@@ -280,6 +300,7 @@ function main() {
     dependencyInvalidation,
     externalDependenciesRejected: true,
     escapedPathsRejected: true,
+    duplicateDependencyRejections,
     executableIdentityFailuresRejectedBeforePreprocessing: identityFailures,
   }, null, 2));
 }

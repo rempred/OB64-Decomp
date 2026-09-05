@@ -485,7 +485,9 @@ function dependencyIdentities(dependencyPaths, sourceFile) {
     const resolved = path.isAbsolute(dependency) ? path.resolve(dependency) : path.resolve(ROOT, dependency);
     const record = regularRepositoryFile(resolved, 'source-policy dependency');
     const key = record.identity.path.toLowerCase();
-    if (seen.has(key)) continue;
+    if (seen.has(key)) {
+      throw new Error(`source-policy dependency identity is duplicated: ${record.identity.path}`);
+    }
     seen.add(key);
     records.push(record.identity);
   }

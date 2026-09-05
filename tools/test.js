@@ -8,6 +8,7 @@ const path = require('path');
 const ROOT = path.resolve(__dirname, '..');
 const ROUTINE_TESTS = [
   ['source-policy', 'tests/source_policy.js'],
+  ['compilation-input-confinement', 'tests/compilation_input_confinement.js'],
   ['local-tools', 'tests/local_tools.js'],
   ['active-targets', 'tests/active_targets.js'],
   ['matching-context', 'tests/matching_context.js'],

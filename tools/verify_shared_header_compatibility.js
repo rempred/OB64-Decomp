@@ -11,6 +11,11 @@ const {
   sha256File,
   writeJson,
 } = require('./lib/phase8_matching_c');
+const {
+  acceptedCompilationInputIdentity,
+  confinedArtifactIdentity,
+  verifyCompilationInputArtifact,
+} = require('./lib/current_workflow');
 
 function usage() {
   console.log('Usage: node tools/verify_shared_header_compatibility.js --old <accepted-output> --new <candidate-output> --old-state <state.json> --report <json>');
@@ -27,17 +32,9 @@ function sameJson(left, right) {
 }
 
 function artifact(root, relative, expectedSha256, label) {
-  if (typeof relative !== 'string' || !relative || path.isAbsolute(relative)
-      || relative.replace(/\\/g, '/').startsWith('../')) {
-    fail(`${label} path is malformed`);
-  }
-  const file = path.join(root, ...relative.replace(/\\/g, '/').split('/'));
-  if (!fs.existsSync(file) || !fs.lstatSync(file).isFile() || fs.lstatSync(file).isSymbolicLink()) {
-    fail(`${label} is missing or not a regular file`);
-  }
-  const sha256 = sha256File(file);
-  if (expectedSha256 && sha256 !== expectedSha256) fail(`${label} recorded identity drift`);
-  return { file, bytes: fs.statSync(file).size, sha256 };
+  const result = confinedArtifactIdentity(root, relative, label);
+  if (expectedSha256 && result.sha256 !== expectedSha256) fail(`${label} recorded identity drift`);
+  return result;
 }
 
 function compareArtifact(oldRoot, newRoot, oldRecord, newRecord, field, hashField, label) {
@@ -52,6 +49,12 @@ function compareArtifact(oldRoot, newRoot, oldRecord, newRecord, field, hashFiel
 function targetOutcome(record) {
   const { sourceObjectEvidence: _sourceObjectEvidence, ...outcome } = record;
   return outcome;
+}
+
+function verifyTargetCompilationInput(root, target, sourcePolicyTarget) {
+  const label = `new ${target && target.symbol ? target.symbol : 'target'} authenticated compilation input`;
+  const expected = acceptedCompilationInputIdentity(target, sourcePolicyTarget, label);
+  return verifyCompilationInputArtifact(root, target && target.compilationInput, expected, label);
 }
 
 function main(argv = process.argv.slice(2)) {
@@ -115,6 +118,9 @@ function main(argv = process.argv.slice(2)) {
   for (const target of phase8.targets) {
     const oldTarget = oldReport.targetReplacements.find((record) => record.symbol === target.symbol);
     const newTarget = newReport.targetReplacements.find((record) => record.symbol === target.symbol);
+    const newPolicyMatches = Array.isArray(newReport.sourcePolicy?.targets)
+      ? newReport.sourcePolicy.targets.filter((record) => record.symbol === target.symbol)
+      : [];
     const oldOutcome = oldReport.verification.targets.find((record) => record.symbol === target.symbol);
     const newOutcome = newReport.verification.targets.find((record) => record.symbol === target.symbol);
     if (!oldTarget || !newTarget || !oldOutcome || !newOutcome
@@ -149,15 +155,8 @@ function main(argv = process.argv.slice(2)) {
         'assemblerObject', 'assemblerObjectSha256', `${target.symbol} assembler object`,
       )
       : null;
-    const compilationInput = artifact(
-      newRoot,
-      newTarget.compilationInput?.path,
-      newTarget.compilationInput?.sha256,
-      `new ${target.symbol} authenticated compilation input`,
-    );
-    if (compilationInput.bytes !== newTarget.compilationInput.bytes) {
-      fail(`new compilation-input byte count differs: ${target.symbol}`);
-    }
+    if (newPolicyMatches.length !== 1) fail(`new source-policy target does not resolve uniquely: ${target.symbol}`);
+    const compilationInput = verifyTargetCompilationInput(newRoot, newTarget, newPolicyMatches[0]);
     targets.push({
       symbol: target.symbol,
       source: target.source,
@@ -225,4 +224,4 @@ if (require.main === module) {
   }
 }
 
-module.exports = { main, targetOutcome };
+module.exports = { artifact, main, targetOutcome, verifyTargetCompilationInput };

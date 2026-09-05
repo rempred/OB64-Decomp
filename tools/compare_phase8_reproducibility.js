@@ -9,6 +9,11 @@ const {
   sha256File,
   writeJson,
 } = require('./lib/phase8_matching_c');
+const {
+  acceptedCompilationInputIdentity,
+  confinedArtifactIdentity,
+  verifyCompilationInputArtifact,
+} = require('./lib/current_workflow');
 
 function usage() {
   console.log('Usage: node tools/compare_phase8_reproducibility.js --left <phase8-output> --right <phase8-output> [--report <json>]');
@@ -21,17 +26,24 @@ function value(flag) {
 }
 
 function compareArtifact(leftRoot, rightRoot, relative, label) {
-  if (typeof relative !== 'string' || path.isAbsolute(relative) || relative.replace(/\\/g, '/').startsWith('../')) {
-    fail(`Phase 8 reproducibility ${label} path is malformed`);
-  }
-  const left = path.join(leftRoot, ...relative.replace(/\\/g, '/').split('/'));
-  const right = path.join(rightRoot, ...relative.replace(/\\/g, '/').split('/'));
-  if (!fs.existsSync(left) || !fs.existsSync(right)
-      || fs.statSync(left).size !== fs.statSync(right).size
-      || sha256File(left) !== sha256File(right)
-      || !fs.readFileSync(left).equals(fs.readFileSync(right))) {
+  const left = confinedArtifactIdentity(leftRoot, relative, `Phase 8 reproducibility left ${label}`);
+  const right = confinedArtifactIdentity(rightRoot, relative, `Phase 8 reproducibility right ${label}`);
+  if (left.bytes !== right.bytes || left.sha256 !== right.sha256
+      || !fs.readFileSync(left.file).equals(fs.readFileSync(right.file))) {
     fail(`Phase 8 reproducibility ${label} bytes differ: ${relative}`);
   }
+  return { left, right };
+}
+
+function compareTargetCompilationInput(leftRoot, rightRoot, target, sourcePolicyTarget) {
+  const label = `Phase 8 reproducibility ${target && target.symbol ? target.symbol : 'target'} KMC compilation input`;
+  const expected = acceptedCompilationInputIdentity(target, sourcePolicyTarget, label);
+  const left = verifyCompilationInputArtifact(leftRoot, target && target.compilationInput, expected, `left ${label}`);
+  const right = verifyCompilationInputArtifact(rightRoot, target && target.compilationInput, expected, `right ${label}`);
+  if (!fs.readFileSync(left.file).equals(fs.readFileSync(right.file))) {
+    fail(`${label} bytes differ: ${expected.path}`);
+  }
+  return { left, right };
 }
 
 function main() {
@@ -68,7 +80,11 @@ function main() {
       ['compilerAssembly', 'compiler assembly'],
       ['linkedAssembly', 'section-adjusted assembly'],
     ]) compareArtifact(leftRoot, rightRoot, target[field], `${target.symbol} ${label}`);
-    compareArtifact(leftRoot, rightRoot, target.compilationInput && target.compilationInput.path, `${target.symbol} KMC compilation input`);
+    const policyMatches = Array.isArray(leftBuild.sourcePolicy?.targets)
+      ? leftBuild.sourcePolicy.targets.filter((record) => record.symbol === target.symbol)
+      : [];
+    if (policyMatches.length !== 1) fail(`Phase 8 reproducibility source-policy target does not resolve uniquely: ${target.symbol}`);
+    compareTargetCompilationInput(leftRoot, rightRoot, target, policyMatches[0]);
     compareArtifact(leftRoot, rightRoot, target.sourceObjectProof && target.sourceObjectProof.path, `${target.symbol} source-to-object proof`);
   }
   const result = {
@@ -85,4 +101,6 @@ function main() {
   console.log(`Phase 8 reproducibility comparison: PASS (${result.buildReportSha256})`);
 }
 
-main();
+if (require.main === module) main();
+
+module.exports = { compareArtifact, compareTargetCompilationInput, main };

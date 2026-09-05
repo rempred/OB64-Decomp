@@ -26,6 +26,7 @@ const BASELINE_STATE_PATH = path.join(STATE_ROOT, 'baseline-state.json');
 const CURRENT_STATE_PATH = path.join(STATE_ROOT, 'state.json');
 const VERIFICATION_REPORT_PATH = path.join(STATE_ROOT, 'verification.json');
 const SOURCE_POLICY_REPORT_PATH = path.join(ROOT, 'build', 'source-policy', 'report.json');
+const SHA256 = /^[0-9A-F]{64}$/;
 
 function ensureDir(directory) {
   fs.mkdirSync(directory, { recursive: true });
@@ -42,6 +43,82 @@ function writeJson(file, value) {
 
 function sha256Value(value) {
   return crypto.createHash('sha256').update(JSON.stringify(value)).digest('hex').toUpperCase();
+}
+
+function canonicalArtifactPath(relative, label) {
+  if (typeof relative !== 'string' || !relative || path.isAbsolute(relative)) {
+    throw new Error(`${label} path is malformed`);
+  }
+  const shown = relative.replace(/\\/g, '/');
+  const normalized = path.posix.normalize(shown);
+  if (normalized !== shown || normalized === '.' || normalized === '..'
+      || normalized.startsWith('../') || path.posix.isAbsolute(normalized)) {
+    throw new Error(`${label} path is malformed`);
+  }
+  return normalized;
+}
+
+function confinedArtifactIdentity(root, relative, label) {
+  const resolvedRoot = path.resolve(root);
+  if (!fs.existsSync(resolvedRoot) || !fs.statSync(resolvedRoot).isDirectory()) {
+    throw new Error(`${label} root is missing or not a directory`);
+  }
+  const shown = canonicalArtifactPath(relative, label);
+  const file = path.resolve(resolvedRoot, ...shown.split('/'));
+  const lexicalRelative = path.relative(resolvedRoot, file);
+  if (!lexicalRelative || lexicalRelative === '..' || lexicalRelative.startsWith(`..${path.sep}`)
+      || path.isAbsolute(lexicalRelative)) {
+    throw new Error(`${label} escapes its root`);
+  }
+  if (!fs.existsSync(file)) throw new Error(`${label} is missing`);
+  const status = fs.lstatSync(file);
+  if (!status.isFile() || status.isSymbolicLink()) {
+    throw new Error(`${label} is not a regular nonsymlink file`);
+  }
+  const realRoot = fs.realpathSync.native(resolvedRoot);
+  const realFile = fs.realpathSync.native(file);
+  const canonicalRelative = path.relative(realRoot, realFile);
+  if (!canonicalRelative || canonicalRelative === '..' || canonicalRelative.startsWith(`..${path.sep}`)
+      || path.isAbsolute(canonicalRelative)) {
+    throw new Error(`${label} resolves outside its root`);
+  }
+  return {
+    path: shown,
+    file,
+    bytes: status.size,
+    sha256: sha256File(file),
+  };
+}
+
+function acceptedCompilationInputIdentity(target, sourcePolicyTarget, label) {
+  if (!target || !sourcePolicyTarget || typeof target.symbol !== 'string'
+      || typeof target.source !== 'string' || typeof target.sourceSha256 !== 'string'
+      || sourcePolicyTarget.symbol !== target.symbol || sourcePolicyTarget.source !== target.source
+      || sourcePolicyTarget.sourceSha256 !== target.sourceSha256
+      || !sourcePolicyTarget.compilationInput
+      || !Number.isInteger(sourcePolicyTarget.compilationInput.bytes)
+      || sourcePolicyTarget.compilationInput.bytes <= 0
+      || typeof sourcePolicyTarget.compilationInput.sha256 !== 'string'
+      || !SHA256.test(sourcePolicyTarget.compilationInput.sha256)) {
+    throw new Error(`${label} accepted target/source-policy identity is malformed or inconsistent`);
+  }
+  return {
+    path: target.source,
+    bytes: sourcePolicyTarget.compilationInput.bytes,
+    sha256: sourcePolicyTarget.compilationInput.sha256,
+  };
+}
+
+function verifyCompilationInputArtifact(root, recorded, expected, label) {
+  if (!recorded || !expected || recorded.path !== expected.path
+      || recorded.bytes !== expected.bytes || recorded.sha256 !== expected.sha256) {
+    throw new Error(`${label} identity differs from the accepted target/source-policy input`);
+  }
+  const artifact = confinedArtifactIdentity(root, recorded.path, label);
+  if (artifact.bytes !== recorded.bytes || artifact.sha256 !== recorded.sha256) {
+    throw new Error(`${label} recorded byte identity drift`);
+  }
+  return artifact;
 }
 
 function existingState(file) {
@@ -191,7 +268,7 @@ function completeBaseline(directory) {
     .every((relative) => fs.existsSync(path.join(directory, ...relative.split('/'))));
 }
 
-function completeCurrent(directory, phase8) {
+function completeCurrent(directory, phase8, sourcePolicy) {
   const required = ['phase8.elf', 'phase8.elf-report.json', 'phase8.map', 'phase8.us_rev0.z64', 'layout.json', 'build-report.json', 'objects/manifest.json'];
   if (!required.every((relative) => fs.existsSync(path.join(directory, ...relative.split('/'))))) return false;
   let report;
@@ -200,23 +277,33 @@ function completeCurrent(directory, phase8) {
   } catch (_) {
     return false;
   }
-  if (!phase8 || report.schemaVersion !== 4 || report.status !== 'pass'
+  if (!phase8 || !sourcePolicy || sourcePolicy.schemaVersion !== 2 || sourcePolicy.status !== 'pass'
+      || !Array.isArray(sourcePolicy.targets) || sourcePolicy.targets.length !== phase8.targets.length
+      || report.schemaVersion !== 4 || report.status !== 'pass'
       || !Array.isArray(report.targetReplacements) || report.targetReplacements.length !== phase8.targets.length) return false;
   for (const target of phase8.targets) {
     const record = report.targetReplacements.find((candidate) => candidate.symbol === target.symbol);
+    const policyMatches = sourcePolicy.targets.filter((candidate) => candidate.symbol === target.symbol);
     const identities = record && [
       { path: record.compilerAssembly, sha256: record.compilerAssemblySha256 },
       { path: record.linkedAssembly, sha256: record.linkedAssemblySha256 },
       { path: record.cObject, sha256: record.cObjectSha256 },
       ...(record.assemblerObject ? [{ path: record.assemblerObject, sha256: record.assemblerObjectSha256 }] : []),
-      record.compilationInput,
       record.sourceObjectProof,
     ];
-    if (!record || identities.some((identity) => {
-      if (!identity || typeof identity.path !== 'string' || typeof identity.sha256 !== 'string') return true;
-      const file = path.join(directory, ...identity.path.split('/'));
-      return !fs.existsSync(file) || !fs.statSync(file).isFile() || sha256File(file) !== identity.sha256;
-    })) return false;
+    if (!record || record.source !== target.source || record.sourceSha256 !== target.sourceSha256
+        || policyMatches.length !== 1) return false;
+    try {
+      const expectedInput = acceptedCompilationInputIdentity(target, policyMatches[0], `CURRENT ${target.symbol} compilation input`);
+      verifyCompilationInputArtifact(directory, record.compilationInput, expectedInput, `CURRENT ${target.symbol} compilation input`);
+      for (const identity of identities) {
+        if (!identity || typeof identity.path !== 'string' || typeof identity.sha256 !== 'string') return false;
+        const artifact = confinedArtifactIdentity(directory, identity.path, `CURRENT ${target.symbol} artifact`);
+        if (artifact.sha256 !== identity.sha256) return false;
+      }
+    } catch (_) {
+      return false;
+    }
   }
   return true;
 }
@@ -230,7 +317,7 @@ function reusableCurrentState(context, state) {
   return Boolean(state && state.schemaVersion === 4
     && state.fingerprint === context.currentFingerprint
     && state.baselineFingerprint === context.baselineFingerprint
-    && completeCurrent(state.output, context.phase8));
+    && completeCurrent(state.output, context.phase8, context.sourcePolicy));
 }
 
 function runtimeArgs(localTools) {
@@ -472,7 +559,10 @@ module.exports = {
   SOURCE_POLICY_REPORT_PATH,
   STATE_ROOT,
   VERIFICATION_REPORT_PATH,
+  acceptedCompilationInputIdentity,
   classifyActiveTargets,
+  completeCurrent,
+  confinedArtifactIdentity,
   currentFingerprint,
   currentVerificationState,
   ensureBaseline,
@@ -485,6 +575,7 @@ module.exports = {
   runtimeArgs,
   sha256Value,
   verifyCurrent,
+  verifyCompilationInputArtifact,
   verifyFreshCompilation,
   writeJson,
 };
