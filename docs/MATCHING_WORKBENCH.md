@@ -7,16 +7,20 @@ local experiment history.
 
 It cannot activate, promote, or accept a target. A high score, exact scratch
 object, exact isolated diagnostic link, matching CFG, or preserved candidate is
-still research evidence. Canonical acceptance always requires:
+still research evidence. Use the canonical development and complete-wave gates:
 
 ```text
 node tools/diff.js <symbol>
-node tools/verify.js --target <symbol> --require-pure
-node tools/verify.js
+→ confirm PURE_C and the exact reviewed relocation contract
+→ repeat for every assigned wave target
+→ after the complete wave, node tools/verify.js once
+→ confirm every wave target is PURE_C in the final report
 ```
 
-Those commands prove the final linked target, sole C ownership, reviewed
-relocations, source class, and complete-ROM identity. See
+Per-function results remain provisional. Do not run the full verifier per target
+or add a redundant final build. The completed-wave proof establishes the final
+linked targets, sole C ownership, reviewed relocations, source class, and
+complete-ROM identity. Preserve required independent review. See
 [the canonical workflow](WORKFLOW.md).
 
 ## Setup
