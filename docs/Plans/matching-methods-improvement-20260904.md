@@ -76,10 +76,10 @@ The first wave is committed and pushed through `80c817e`.
 
 | Follow-up | Owner | Current scope |
 |---|---|---|
-| Warm-diff profiling | Existing authenticated-object-reuse task | Post-header measurement completed at `7967afd`: three exact warm runs average 76.9 seconds versus 49.0 previously. The increase is mainly in host preparation/classification work; preprocessor child time stayed near 19 seconds. The next bounded study measures that work and tests reuse of a workspace within one classification pass after Wave 5 integration. |
+| Warm-diff profiling | Existing authenticated-object-reuse task | Post-header measurement completed at `7967afd`: three exact warm runs average 76.9 seconds versus 49.0 previously. The increase is mainly in host preparation/classification work; preprocessor child time stayed near 19 seconds. Wave 5 integration is verified; the bounded preparation study and within-pass workspace reuse experiment are released on current main. |
 | Scheduler trace and source probe | Existing allocator-study task | Six-case trace accepted at `352f5d4`. The subsequent sequential-carrier probe reproduced the same emitted state and causal signature; independent artifact checks passed, and the experiment stopped. |
 | Shared-header support | Authenticated headers and shared-source pilot | Contract and four-function pilot at `4123be2`, with input confinement/source-identity and duplicate-dependency corrections at `7967afd`. All routine suites, structural audit and fresh exact-ROM verification passed. Independent structural review closed both findings with PASS; the contract is accepted. |
-| Native consumables review | Rebuild Director | Phase 5B accepted at Editor `4106740` without blocking findings. The native rebuild program is paused; its clean implementation worktree is released for later coordinated work. |
+| Native consumables review | Astra Director | Phase 5B accepted at Editor `4106740` without blocking findings. Astra has assumed native direction and completed the takeover review. Rebuild remains paused while Joe considers the proposed recovery/regeneration milestone. |
 | Editor startup and export structure | Astra, after matching-tool/header validation | Resume coordinated editor work, measure startup and ROM initialization, then defer justified dataset loading and extract one coherent export responsibility. |
 
 The existing implementation owners retain technical design authority. Reviewers independently
@@ -91,12 +91,14 @@ The matching investigations may proceed beside the separate native review. Timed
 use a coordinated quiet interval. Structural build changes and editor changes wait for their
 respective dependencies and explicit file ownership. No new branch or worktree is required.
 
-The native review consumes its existing frozen decomp worktree, not decomp `main`, so it does
-not block matching-tool work. High Attack Wave 5 is complete and independently reviewed through
-`b8f4a5e` in its existing worktree. The bounded post-header measurement is complete and its
-integration hold is released. Decomp director owns rebase onto the accepted contract, routine
-tests, integration and full verification. Further performance implementation waits for that
-integration to finish so shared inputs stay stable during verification.
+The native program consumes its existing frozen decomp worktree, not decomp `main`, so it does
+not block matching-tool work. Decomp director integrated the independently reviewed High Attack
+Wave 5 onto main through `9af92c8` and recorded closure at `677ccdb`. All 13 routine suites and
+fresh pre-integration verification passed; post-integration verification again passed every gate
+with exact target bytes and a byte-identical complete ROM. The final checkout was clean.
+The existing authenticated-object-reuse owner now holds the bounded preparation study and its
+coordinated build/timing interval. High Attack Wave 6 and its switch-table structural follow-ups
+remain held; no other task should mutate matching inputs or run canonical builds during this interval.
 
 1. Use the accepted [warm-diff profile](../matching-c/warm-diff-profile.md) to guide one justified
    optimization. First measure preparation substages and test a workspace reused within one
