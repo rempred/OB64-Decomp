@@ -1,0 +1,9 @@
+{
+  "assignment": "worker-model-routing",
+  "assignmentRevision": 1,
+  "launchId": "WORKER-MODEL-ROUTING-20260906-01",
+  "receivingTaskId": "01a07262-aeca-7341-ad10-2dba705ff988",
+  "receivingTaskIdentity": "/root/sequential_process",
+  "hostId": "local",
+  "createdAt": "2026-09-06T18:57:45.7690700-04:00"
+}

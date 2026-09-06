@@ -7,7 +7,9 @@ Joe authorized this goal on 2026-09-06. No further push is authorized.
 ## Objective and authority
 
 Complete the remaining Combat, Squad, and High Attack plans in that order on main, using internal agents.
-Use Astra Medium workers, one active matching family and one production source/build writer at a time.
+Use Sol High (`gpt-5.6-sol`, `high`) for retrieval/data-seeking or parsing-only workers.
+Use Astra Medium (`gpt-6-astra`, `medium`) for implementation and research requiring reasoning, including mixed assignments.
+Keep one active matching family and one production source/build writer at a time. Director and reviewer model assignments remain separate.
 Preserve old worktrees, archives, accepted history, and the exact Rev 0 baseline.
 Do not create or use concurrent development branches/worktrees.
 Independent read-only research/review and explicitly disjoint documentation work may run alongside the current family.
@@ -74,3 +76,6 @@ Use the current session's permissions for repository and build operations; never
 - Fresh Astra Medium Combat discovery research is running alongside prerequisite review. It has no source, build, runtime or inventory-acceptance authority.
 - Sol Max prerequisite review is evaluating frozen scope `9322649` and process `86d3c0c` / parent `61ad769`. Ordinary source matching remains exempt from independent review.
 - Routing follow-up completed the current Combat and High Attack instructions without changing their tables, membership, discovery gates, retries or historical evidence. Its Focused check joins a later evidence review.
+- Routing correction is recorded at canonical `72382f5` and parent `22c652e`.
+- Joe revised worker-model routing: Sol High for retrieval/parsing only; Astra Medium for implementation or research requiring reasoning. `/root/sequential_process` is correcting current durable wording under a fresh assignment.
+- Worker-model correction completed in nine current policy documents. Link, whitespace and preservation checks passed; historical assignments and reviewer/Director rules remain intact.

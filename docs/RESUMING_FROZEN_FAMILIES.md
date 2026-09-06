@@ -3,7 +3,9 @@
 Main is the accepted starting point. Commit `497181d8a6ba4bc32c35a465fccd261abe2e0c69` contains the accepted Combat W1–W4 sources and combined tooling.
 The donor histories and inactive archive remain frozen.
 Current work follows [the sequential matching program](Plans/sequential-main-program.md): Combat, then Squad, then High Attack on `main`.
-Use internal Astra Medium workers with one active matching family and one production source/build writer.
+Use internal agents with one active matching family and one production source/build writer.
+Matching implementation and research requiring reasoning use Astra Medium; retrieval/data-seeking or parsing-only work uses Sol High.
+Mixed assignments containing implementation or substantive research reasoning use Astra Medium.
 Do not resume concurrent development worktrees. Archive contents alone do not authorize activation or establish acceptance.
 
 ## What is consolidated

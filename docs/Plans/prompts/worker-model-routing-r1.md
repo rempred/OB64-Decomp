@@ -1,7 +1,7 @@
 ---
 task_id: worker-model-routing
 revision: 1
-status: ready
+status: completed
 role: correction-worker
 review_level: Focused
 inventory_profile: NORMAL

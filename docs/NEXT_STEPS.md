@@ -5,7 +5,9 @@ This file is the active queue only. Changing counts belong in `node tools/status
 ## Sequential main program
 
 Use [the sequential matching program](Plans/sequential-main-program.md) for current authority and execution order.
-Complete Combat, then Squad, then High Attack on `main`, using internal Astra Medium workers.
+Complete Combat, then Squad, then High Attack on `main`, using internal agents.
+Matching implementation and research requiring reasoning use Astra Medium; retrieval/data-seeking or parsing-only work uses Sol High.
+Mixed assignments containing implementation or substantive research reasoning use Astra Medium.
 Keep one active matching family and one production source/build writer. Do not use concurrent development worktrees.
 Process correction, scope reconciliation, and compilation-group design precede the queued source work.
 Grouped pose feasibility remains research pending structural/tooling acceptance; it does not activate a source or complete Combat W5.

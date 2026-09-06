@@ -1,7 +1,9 @@
 # High Attack Battle Stream Families — Director Plan
 
 Current routing: [the sequential main program](sequential-main-program.md) governs execution and progress, with scope reconciliation pending.
-Complete Combat, then Squad, then High Attack on `main`, using internal Astra Medium workers.
+Complete Combat, then Squad, then High Attack on `main`, using internal agents.
+Matching implementation and research requiring reasoning use Astra Medium; retrieval/data-seeking or parsing-only work uses Sol High.
+Mixed assignments containing implementation or substantive research reasoning use Astra Medium.
 Keep one active matching family and one production source/build writer; preserve historical worktrees without concurrent development.
 Retain every member, Pure-C retry, discovery gate, and evidence record in this plan.
 Historical progress and classifications below are preserved snapshots, not recalculated current status or new acceptance.
@@ -77,7 +79,7 @@ These decisions govern every wave:
 15. Do not treat m2c output as the completed decompilation attempt.
 16. Permit family-scale research, shared types, and creative source experiments.
 17. Keep accepted owner boundaries and canonical source ownership unchanged.
-18. Use internal Astra Medium workers and collaboration handoffs; native top-level task transport is not required.
+18. Use internal agents with assignment-based worker models and collaboration handoffs; native top-level task transport is not required.
 
 Ordinary matching requires no independent source review after the canonical complete-wave gates pass.
 Structural, tooling/verification, semantic, and family-inventory work retain their applicable audit and independent review requirements.

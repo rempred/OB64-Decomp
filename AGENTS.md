@@ -52,9 +52,11 @@ program history, lane history, promotion history, or archived research chronolog
 
 ### 1. Normal matching work
 
-All workers use Astra Medium (`gpt-6-astra`, reasoning `medium`) for new assignments and future
-continuations, including matching, structural, research, correction, and integration work.
-This supersedes earlier worker model assignments unless Joe gives a later explicit exception.
+Choose worker models by the actual assignment, including future continuations.
+Use Sol High (`gpt-5.6-sol`, reasoning `high`) for retrieval/data-seeking or parsing-only work.
+Use Astra Medium (`gpt-6-astra`, reasoning `medium`) for implementation or research requiring reasoning.
+A mixed assignment containing implementation or substantive research reasoning uses Astra Medium.
+This supersedes earlier worker model rules unless Joe gives a later explicit instruction.
 Director and reviewer model assignments remain separate. Reuse existing eligible worker tasks.
 
 Use internal agents for this decomp program. Work on one matching family at a time on `main`,

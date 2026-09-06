@@ -12,7 +12,8 @@ contract, stop using this ordinary workflow and follow
 
 ## The short path
 
-Use internal Astra Medium workers on `main`, with one active matching family and one production source/build writer.
+Use internal Astra Medium workers for matching implementation on `main`, with one active matching family and one production source/build writer.
+Route retrieval/data-seeking or parsing-only assignments to Sol High under the agent guide's worker-model rule.
 Use [the sequential program](Plans/sequential-main-program.md) for current assignments and family order.
 Do not create or use concurrent development branches/worktrees. Preserve historical worktrees as read-only evidence.
 Independent read-only research/review and explicitly disjoint documentation work may proceed alongside the current family.
