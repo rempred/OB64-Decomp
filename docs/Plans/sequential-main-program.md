@@ -46,7 +46,7 @@ Unresolved research gates must be addressed before family completion, without si
 ## Execution order and current state
 
 1. Process correction: recorded at canonical `86d3c0c` and parent `61ad769`; remaining family routing correction is complete and in Director intake. Full-scope reconciliation and process review are active in `/root/sequential_prerequisites_review` against the frozen results.
-2. Compilation-group design: frozen at `5dad709`; independent review returned Revision required for `CGDR-001`, the raw `.reginfo` contract. Bounded correction is active in `/root/compilation_groups_design`; proportional re-review precedes implementation.
+2. Compilation-group design: frozen at `5dad709`; revision 2 corrects `CGDR-001`, the raw `.reginfo` contract. The correction is complete and in Director intake for proportional re-review before implementation.
 3. Bounded readability source experiment: pending prerequisite acceptance. Independent read-only preparation of the three boot hybrid conversions is active in `/root/boot_conversion_preparation`; source execution remains pending.
 4. Combat remaining source waves: pending. Independent static discovery is active in `/root/combat_discovery` using the existing family inventory.
 5. Squad remaining waves and research/structural gates: pending Combat closure.
@@ -82,3 +82,4 @@ Use the current session's permissions for repository and build operations; never
 - Design review completed with one finding, `CGDR-001`. Production is unchanged; the reviewed design cannot become an implementation dependency until the correction passes re-review.
 - Current worker-model policy is recorded at canonical `d1862bd` and parent `1c3be25`.
 - Fresh Astra Medium preparation of the three boot conversion leads is active, using only project and ROM evidence. It has no source or build authority.
+- The bounded `.reginfo` design correction completed, with direct preserved-object comparisons and no production change. Its raw/projected/stripped stages and required controls are ready for re-review.
