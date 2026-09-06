@@ -1,7 +1,7 @@
 ---
 task_id: sequential-routing
 revision: 1
-status: ready
+status: active
 role: correction-worker
 review_level: Focused
 inventory_profile: NORMAL
