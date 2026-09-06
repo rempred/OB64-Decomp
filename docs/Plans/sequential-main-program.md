@@ -39,13 +39,14 @@ Workers own technical execution; independent reviewers judge structural/tooling 
 - Parent `docs/reviews/combat-pose-split-padding-research-r1/research-report.md`, SHA256 `C1198AD8810DBBF437EF80114AEBB01E3748C3E011547EF26A2EA4A1776DE16F`.
 
 Historical statuses and worktree directives in those inputs do not override this goal.
-The full member/gate checklist will be recorded by scope reconciliation; generated status remains authoritative for changing counts.
+The accepted full member/gate checklist is [scope reconciliation](sequential-family-scope.md) with its [target manifest](sequential-family-targets.json).
+Its accepted review is [the prerequisite review](task-logs/sequential-prerequisites-review-r1.md); generated status remains authoritative for changing counts.
 Shared members are matched once by the current family when required, then reused by later families.
 Unresolved research gates must be addressed before family completion, without silently narrowing membership.
 
 ## Execution order and current state
 
-1. Process correction: recorded at canonical `86d3c0c` and parent `61ad769`; remaining family routing correction is complete and in Director intake. Full-scope reconciliation and process review are active in `/root/sequential_prerequisites_review` against the frozen results.
+1. Process and full-scope reconciliation: accepted by independent prerequisite review. Current routing and worker-model corrections are recorded at canonical `72382f5` / `d1862bd` and parent `22c652e` / `1c3be25` under Joe's newer directions.
 2. Compilation-group design: original `5dad709` plus correction `b87e908`, accepted review `0840b42`. Implementation is active in `/root/compilation_groups_design`, the sole production tooling/build writer. Its changed-input structural audit and independent review precede source activation.
 3. Bounded readability source experiment: pending prerequisite acceptance. Read-only preparation of the three boot hybrid conversions is complete and in Director intake; source execution remains pending.
 4. Combat remaining source waves: pending. Discovery review is active in `/root/combat_discovery_review` against `150c9fc`; Sol High data retrieval in `/root/combat_data_retrieval` supports the two remaining selector/fixed-image questions.
@@ -88,3 +89,4 @@ Use the current session's permissions for repository and build operations; never
 - Boot conversion preparation completed. It preserves historical attempt limits and identifies fresh plain-C comparisons needed under the current pinned toolchain.
 - Independent design re-review returned Accepted. `CGDR-001` is resolved; the reviewed combined design may now guide the sole tooling implementation writer.
 - Release `5c0507e` activates compilation-group implementation. Production C/ASM and the active replacement set remain unchanged; the new group registry stays empty until a separately completed source wave.
+- Prerequisite review returned Accepted after checking complete membership, origin lines, accepted proof, shared routing and process preservation. No correction or re-review is required.
