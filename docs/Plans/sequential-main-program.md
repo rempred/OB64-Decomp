@@ -49,7 +49,7 @@ Unresolved research gates must be addressed before family completion, without si
 1. Process and full-scope reconciliation: accepted by independent prerequisite review. Current routing and worker-model corrections are recorded at canonical `72382f5` / `d1862bd` and parent `22c652e` / `1c3be25` under Joe's newer directions.
 2. Compilation-group design: original `5dad709` plus correction `b87e908`, accepted review `0840b42`. Implementation is active in `/root/compilation_groups_design`, the sole production tooling/build writer. Its changed-input structural audit and independent review precede source activation.
 3. Bounded readability source experiment: pending prerequisite acceptance. Read-only preparation of the three boot hybrid conversions is complete and in Director intake; source execution remains pending.
-4. Combat remaining source waves: pending. Accepted discovery and citation CR-1 are propagated at parent `e445991`, adding seven inclusions and five shared integrations as supplemental source obligations. `/root/combat_discovery` is interpreting the frozen Sol High retrieval in research r2 for the two remaining selector/fixed-image questions.
+4. Combat remaining source waves: pending. Accepted discovery and citation CR-1 are propagated at parent `e445991`, adding seven inclusions and five shared integrations as supplemental source obligations. Discovery r2 is complete and review pending: proposed attack-label image-service exclusion; selector consumer provenance remains unresolved. Sol High is querying existing runtime knowledge separately.
 5. Squad remaining waves and research/structural gates: pending Combat closure.
 6. High Attack remaining waves and retained pure-C retries: pending Squad closure.
 7. Requirement-by-requirement final audit against current source and proof: pending.
@@ -95,3 +95,4 @@ Use the current session's permissions for repository and build operations; never
 - Release `5bdac86` dispatches accepted Combat scope propagation and remaining-gate research to eligible Astra Medium agents. Their writes are disjoint from the sole tooling writer.
 - Accepted Combat discovery propagation is recorded at parent `e445991`. Original wave/shared tables, bounded exclusions, and matching gates remain unchanged. Both unresolved discovery questions remain open.
 - Sol High read-only retrieval is checking the current Total Resolver knowledge database for existing selector execution evidence. No capture or database mutation is authorized.
+- Combat discovery r2 completed with exact attack-label extraction and draw-chain evidence, a proposed bounded image-service exclusion, and stronger selector table/control-flow limits. New conclusions await independent review; all matching obligations remain.
