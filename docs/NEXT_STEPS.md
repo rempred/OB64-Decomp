@@ -2,17 +2,26 @@
 
 This file is the active queue only. Changing counts belong in `node tools/status.js`, not here.
 
+## Sequential main program
+
+Use [the sequential matching program](Plans/sequential-main-program.md) for current authority and execution order.
+Complete Combat, then Squad, then High Attack on `main`, using internal Astra Medium workers.
+Keep one active matching family and one production source/build writer. Do not use concurrent development worktrees.
+Process correction, scope reconciliation, and compilation-group design precede the queued source work.
+Grouped pose feasibility remains research pending structural/tooling acceptance; it does not activate a source or complete Combat W5.
+Preserved donor histories remain frozen. [The restart index](RESUMING_FROZEN_FAMILIES.md) supplies retained inputs and unfinished gates.
+
 ## Matching methods follow-up
 
 Use the [matching methods improvement plan](Plans/matching-methods-improvement-20260904.md)
 for the accepted shared-header compilation-input/dependency contract and independently accepted
 preparation optimization at `603c363`. Earlier Wave 5 delivered subsets remain integrated;
 the frozen-family restart index below supplies current continuation boundaries. The scheduler trace and carrier probe are complete; another
-allocator-family experiment needs a new causal or semantic lead. Current ownership and progress
-remain in that plan. Preserve the pinned production compiler and all matching acceptance rules.
+allocator-family experiment needs a new causal or semantic lead. Route current ownership and progress
+through the sequential program. Preserve the pinned production compiler and all matching acceptance rules.
 
-Coordinate editor changes with the native rebuild. The three frozen families use the restart index below.
-Optional tooling proposals do not authorize their continuation.
+Coordinate editor changes with the native rebuild. Use the sequential program's concrete assignments for family continuation.
+Optional tooling proposals do not grant additional implementation authority.
 
 ## Structural follow-up: audit remaining manual-load slabs
 
@@ -68,10 +77,10 @@ in a sequential queue. Wave 1 is the action-stream record-construction family.
 A large nonmatching research reconstruction can be more valuable than dozens of unrelated tiny
 matches, but the retail exact baseline must remain separate and honest.
 
-The Squad, Combat body-resource, and High Attack families are frozen after accepted-only canonical intake.
+The Squad, Combat body-resource, and High Attack donor histories remain frozen after accepted-only canonical intake.
 Use [Resume the frozen matching families](RESUMING_FROZEN_FAMILIES.md) for inactive candidate sources, exact restart boundaries, and external prerequisites.
 Accepted code and shared capabilities are already in main at `497181d`; unfinished waves remain unaccepted.
-Future work needs a concrete release and must preserve complete-wave verification and the ordinary no-review rule.
+Current continuation follows the sequential program and must preserve complete-wave verification and the ordinary no-review rule.
 
 ### Tier 2 — Current LordlyCaliber limits
 

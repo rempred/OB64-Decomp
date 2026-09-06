@@ -12,6 +12,12 @@ contract, stop using this ordinary workflow and follow
 
 ## The short path
 
+Use internal Astra Medium workers on `main`, with one active matching family and one production source/build writer.
+Use [the sequential program](Plans/sequential-main-program.md) for current assignments and family order.
+Do not create or use concurrent development branches/worktrees. Preserve historical worktrees as read-only evidence.
+Independent read-only research/review and explicitly disjoint documentation work may proceed alongside the current family.
+Parent top-level task transport procedures do not apply to this decomp program.
+
 After the one-time local setup in [the repository README](../README.md):
 
 ```text
@@ -155,9 +161,12 @@ Rankings and family relationships are leads, not structural or semantic proof.
 
 Create or adjust the target under `src/`. Use the accepted disassembly, callers,
 callees, constants, static data, existing types, and relevant repository
-research. Prefer the simplest plausible C, then run an early diff. Awkward but
-valid C is allowed when it is needed to reproduce the historical compiler's
-output.
+research. Independently derive readable, structured C first, then run an early linked diff.
+Reuse evidence-backed shared types, fields, and constants where their layouts and meanings are supported.
+Keep uncertain meanings explicit; a byte match alone cannot establish them.
+Awkward but valid C is allowed when the historical compiler requires it.
+Explain necessary compiler workarounds near the affected source, with the observed reason.
+Ordinary readability cleanup under existing contracts uses the same wave gates without additional independent review.
 
 Keep the accepted target symbol unless a `CANONICAL` semantic name is already
 established. The original assembly file remains tracked as reference and
@@ -343,8 +352,12 @@ Commit only the source and smallest necessary configuration or evidence change. 
 the integration record; ordinary matches do not need promotion manifests,
 checkpoint receipts, frozen accepted trees, or separate review packages.
 
-When the contribution changes matching tools or their contracts, also run the
-required routine tooling manifest:
+Ordinary matchers must not edit shared tooling. Route independently justified representation defects
+to a separate structural/tooling assignment with its applicable audit and independent review.
+The remedy must preserve generic invariants and adversarial rejection. A single target's success
+does not justify symbol-specific bypasses, fabricated bytes, or source-policy/compiler exceptions.
+
+For that separately assigned tooling work, also run the required routine tooling manifest:
 
 ```powershell
 node tools/test.js
@@ -449,6 +462,6 @@ does not prove modified behavior.
 
 Strict outputs use linkage schema 4, source-object proof 4, layout 2, and build/verification/manifest 5. Each target carries independently derived textContract, objectEvidence, and linkEvidence. Stale outputs must be rebuilt. CURRENT fingerprints use version 6; verified state and fresh compilation use version 5.
 
-Ordinary section assignment and existing auxiliary contracts retain their behavior. The bounded nativeTextTail descriptor permits untouched compiler assembly with a 1132-byte function inside its 1136-byte, 16-aligned native text owner. The four zero bytes must come from assembler alignment. Full-owner bytes, sole ownership, relocations, and the entire ROM must still match. func_00204A70 remains inactive and ASM-owned.
+Ordinary section assignment and existing auxiliary contracts retain their behavior. The bounded nativeTextTail descriptor permits untouched compiler assembly with a 1132-byte function inside its 1136-byte, 16-aligned native text owner. The four zero bytes must come from assembler alignment. Full-owner bytes, sole ownership, relocations, and the entire ROM must still match. The art routine `func_00204A70` is active in the canonical target registry.
 
 Shared-header compatibility defaults to current version-5 evidence on both sides. Use `--historical-v3-v4` only for the retained historical migration; it cannot bridge older evidence into version 5.

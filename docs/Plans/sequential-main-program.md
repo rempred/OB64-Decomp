@@ -43,7 +43,7 @@ Unresolved research gates must be addressed before family completion, without si
 
 ## Execution order and current state
 
-1. Process correction and full-scope reconciliation: active in `/root/sequential_process` and `/root/sequential_scope`.
+1. Process correction: completed and in Director intake. Full-scope reconciliation remains active in `/root/sequential_scope`.
 2. Compilation-group design: active in `/root/compilation_groups_design`; implementation and audit/review pending.
 3. Bounded readability experiment and three hybrid-conversion investigations: pending prerequisite acceptance.
 4. Combat remaining waves and discovery: pending.
@@ -51,10 +51,9 @@ Unresolved research gates must be addressed before family completion, without si
 6. High Attack remaining waves and retained pure-C retries: pending Squad closure.
 7. Requirement-by-requirement final audit against current source and proof: pending.
 
-The initial read found canonical HEAD unchanged. Sandboxed Git status emitted global-ignore/cache access warnings, so complete inventory needs an authorized read where necessary.
+The initial canonical baseline is preserved. Authorized inventory and scoped Git reads resolved the earlier sandbox status warnings.
 Parent coordination history remains available; this program's new prompt/report/state records live in the canonical repository.
-Managed sandbox may require automatic approval for parent documentation, Git metadata, and authenticated external build outputs.
-Use the actual approval outcome; do not bypass a denial or weaken verification to avoid permissions.
+Use the current session's permissions for repository and build operations; never weaken verification to avoid a permission boundary.
 
 ## Activity
 
@@ -63,3 +62,7 @@ Use the actual approval outcome; do not bypass a denial or weaken verification t
 - Three bounded internal assignments prepared: process documentation, full-scope reconciliation, and read-only compilation-group design.
 - Scoped ready commit `46d78de`; all three Astra Medium internal workers dispatched with fresh contexts and disjoint writes.
 - Automatic approval allowed the scoped local Git commit. No human confirmation or external publication occurred.
+- Commit `e03ad22` records activation of the three prerequisite assignments.
+- Process worker completed four canonical process documents and three narrowly scoped parent insertions, with link and whitespace checks passing.
+- Design and scope workers resumed their existing assignments after a usage-limit interruption. Their partial outputs remain unaccepted.
+- Process documentation is being recorded as a coherent result; its Focused review may join the prerequisite evidence review.

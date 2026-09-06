@@ -1,7 +1,10 @@
 # Resume the frozen matching families
 
 Main is the accepted starting point. Commit `497181d8a6ba4bc32c35a465fccd261abe2e0c69` contains the accepted Combat W1–W4 sources and combined tooling.
-The three families remain frozen. This documentation and inactive archive do not release matching, structural work, or activation.
+The donor histories and inactive archive remain frozen.
+Current work follows [the sequential matching program](Plans/sequential-main-program.md): Combat, then Squad, then High Attack on `main`.
+Use internal Astra Medium workers with one active matching family and one production source/build writer.
+Do not resume concurrent development worktrees. Archive contents alone do not authorize activation or establish acceptance.
 
 ## What is consolidated
 
@@ -32,9 +35,12 @@ They are not new work in this archive.
 Its exact 364-byte body does not cover the accepted 372-byte owner. Ordinary section assignment omits eight bytes.
 Native assembly emits only four trailing bytes and shifts the entry by four bytes. Extending the art routine's native descriptor is not justified.
 The accepted diagnosis is a bounded negative, not matching acceptance or a mixed-ownership design.
-Five-function grouping research stopped before any grouped source or experiment. It has no positive or negative result.
+Later [five-function grouping research](../../docs/reviews/combat-pose-split-padding-research-r1/research-report.md)
+reproduced the complete group in an isolated native link, including the pose tail without moving entries.
+This is research with review pending, not accepted production representation or completed-wave proof.
+Grouped feasibility requires separate structural/tooling acceptance before production activation.
 
-A future authorized task must first resolve the complete owner representation while preserving entry, boundaries, source class, and sole ownership.
+The sequential program routes complete owner representation first, preserving entries, boundaries, source class, and sole ownership.
 Keep all eight W5 targets within the final completion gate; seven focused exact results do not complete the wave.
 The [retained Combat family plan](archive/matching-c-candidates/resumption-20260906/notes/combat-family-plan-f5a2d89a55.txt) supplies the wider inventory as a historical planning record.
 
@@ -84,7 +90,7 @@ It does not resolve the pose tail, finish nonexact sources, or implement pending
 
 The process study proposes reliable per-attempt diff results, clearer context/relocation uncertainty, portable fixtures, and phase timing.
 These remain proposals, not implementation assignments or new acceptance gates.
-After an explicit release, use current-run linked diffs and source classification, then one final verifier for the complete assigned wave.
+For sequential-program assignments, use current-run linked diffs and source classification, then one final verifier for the complete assigned wave.
 Ordinary matching needs no independent source review. Structural or verification changes retain their applicable audit and review.
 
 ## What remains outside Git

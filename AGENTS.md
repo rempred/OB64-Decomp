@@ -57,6 +57,10 @@ continuations, including matching, structural, research, correction, and integra
 This supersedes earlier worker model assignments unless Joe gives a later explicit exception.
 Director and reviewer model assignments remain separate. Reuse existing eligible worker tasks.
 
+Use internal agents for this decomp program. Work on one matching family at a time on `main`,
+with one production source/build writer. Parent top-level task transport requirements do not apply.
+Independent read-only research/review and explicitly disjoint documentation work may run alongside that writer.
+
 Use the accepted structural owner as-is, reconstruct the function in C, and iterate with the linked diff.
 Run the final full-ROM build and normal verifier only after the complete assigned wave is ready.
 
@@ -69,6 +73,16 @@ reviewing that evidence does not require a separate reviewer.
 
 If the boundary or overlay mapping appears wrong, stop treating the task as ordinary matching
 work and open a structural task.
+
+Ordinary matchers must not edit shared tooling. Route an independently justified representation defect
+as a separate structural/tooling assignment with its applicable audit and independent review.
+A remedy must preserve generic invariants and adversarial rejection. Passing one function does not
+justify symbol-specific bypasses, fabricated bytes, or source-policy/compiler exceptions.
+
+Independently derive readable C from the ROM and project evidence. Prefer structured control flow,
+evidence-backed shared types, fields, and constants, then run an early linked diff.
+Keep uncertain meanings explicit. Explain necessary compiler workarounds near the affected C.
+Ordinary readability cleanup under existing contracts uses the normal wave gates; it adds no review ceremony.
 
 ### 2. Structural work
 
@@ -169,17 +183,18 @@ Function size, compiler-scheduling difficulty, or exact hybrid bytes alone are n
 the evidence or blocker before advancing to the next target. Even when this exception applies, the
 result remains `HYBRID_C exact`; it is not matching C and does not count toward matching-C progress.
 
-## Parallel Work
+## Sequential Work
 
 Do not create a Git branch or worktree unless Joe explicitly directs you to create it. A request to
 parallelize work, delegate a task, make a commit, or continue autonomously is not authorization to
 create either one. Work in the current checkout and branch by default.
 
-When Joe explicitly authorizes parallel branches or worktrees, use ordinary Git branches/worktrees.
+Do not create or use concurrent development branches/worktrees for this decomp program.
+Preserve historical worktrees and their evidence. They are read-only inputs unless Joe changes this direction.
 
 Each worker owns one target at a time and uses focused linked-diff and source-policy checks within its assigned wave.
 Small commits remain provisional until final wave verification passes; ordinary waves need no independent review.
-Integrate the completed wave onto the newest canonical branch; verify the changed combined integration state.
+Record the completed wave on `main`; verify changed combined integration inputs.
 
 No Highway, Lane, Lease, Checkpoint, frozen-tree, promotion-receipt, or handoff protocol is
 required.
