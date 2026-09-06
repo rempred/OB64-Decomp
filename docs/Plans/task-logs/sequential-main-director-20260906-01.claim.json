@@ -1,0 +1,9 @@
+{
+  "agent": "/root",
+  "task": "sequential-main-program",
+  "createdUtc": "2026-09-06T18:43:32.4979948Z",
+  "nativeTask": "01a07262-aeca-7341-ad10-2dba705ff988",
+  "host": "local",
+  "canonicalBase": "5a60e43675a84e7332299337e6f00af97de2ff15",
+  "launch": "SEQUENTIAL-MAIN-DIRECTOR-20260906-01"
+}
