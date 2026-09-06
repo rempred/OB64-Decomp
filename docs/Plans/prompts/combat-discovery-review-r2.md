@@ -1,7 +1,7 @@
 ---
 task_id: combat-discovery-review
 revision: 2
-status: ready
+status: active
 role: reviewer
 review_level: Material
 inventory_profile: NORMAL
