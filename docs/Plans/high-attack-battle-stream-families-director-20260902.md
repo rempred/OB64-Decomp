@@ -1,6 +1,13 @@
 # High Attack Battle Stream Families — Director Plan
 
-Status: **Waves 1-5 integrated; Waves 3-4 retain Pure-C retries; Wave 5 structural follow-up required before Wave 6**
+Current routing: [the sequential main program](sequential-main-program.md) governs execution and progress, with scope reconciliation pending.
+Complete Combat, then Squad, then High Attack on `main`, using internal Astra Medium workers.
+Keep one active matching family and one production source/build writer; preserve historical worktrees without concurrent development.
+Retain every member, Pure-C retry, discovery gate, and evidence record in this plan.
+Historical progress and classifications below are preserved snapshots, not recalculated current status or new acceptance.
+No further push is authorized.
+
+Historical status: **Waves 1-5 integrated; Waves 3-4 retain Pure-C retries; Wave 5 structural follow-up required before Wave 6**
 
 Date: 2026-09-02
 
@@ -19,7 +26,7 @@ The primary goal is exact `PURE_C` for every listed function. The work must make
 the retail functions available for a later source-level High Attack migration.
 This plan does not design or install that modified-game migration.
 
-## Program progress
+## Historical program progress
 
 - 2026-09-03: Wave 1 was integrated on `main` at `2f51529767fd9c2415a83b72b1e5a34f917154b5`.
 - All 16 Wave 1 logical functions are exact `PURE_C` (2,924 executable bytes).
@@ -59,18 +66,21 @@ These decisions govern every wave:
 4. Do not stop after the highlighted High Attack target matches.
 5. Include family members that the current patch does not modify.
 6. Use one primary worker for each family to preserve context and shared types.
-7. Start each wave from a clean, recorded decomp commit.
-8. Let the Director create and prepare a worktree when Joe authorizes one.
-9. Let the Director review, integrate, and remove or retain completed worktrees.
+7. Record each wave's canonical base and preserve unrelated changes with explicit ownership.
+8. Use the current canonical `main` checkout; do not create or use concurrent development branches/worktrees.
+9. Let the Director handle scoped local commits and integration; preserve historical worktrees and evidence.
 10. Do not run a complete-ROM verifier after each edit, candidate, or individual function.
 11. Use the canonical linked diff for iteration.
-12. Run one complete verifier at worker handoff after all practical family work is complete.
-13. Run the complete verifier again after wave integration.
+12. Run one complete verifier after every assigned wave target is ready; confirm every target's required source class.
+13. Verify changed integration inputs at the completed-wave boundary; reuse unchanged proof without a handoff or review rebuild.
 14. Prefer `PURE_C` and continue a serious Pure-C attempt before considering hybrid output.
 15. Do not treat m2c output as the completed decompilation attempt.
 16. Permit family-scale research, shared types, and creative source experiments.
 17. Keep accepted owner boundaries and canonical source ownership unchanged.
-18. Create every worker and reviewer task under the `OB64 Decomp` Codex project, even when the task operates in a separately prepared external Git worktree. Do not use projectless task routing for this program.
+18. Use internal Astra Medium workers and collaboration handoffs; native top-level task transport is not required.
+
+Ordinary matching requires no independent source review after the canonical complete-wave gates pass.
+Structural, tooling/verification, semantic, and family-inventory work retain their applicable audit and independent review requirements.
 
 A worker must not stop because an automatic draft fails to compile or remains
 nonexact. The worker must repair the draft, reconstruct the logic, and iterate
@@ -333,33 +343,30 @@ remove the bridge from the program without direct contrary evidence.
 
 ## Director start gate
 
-Before Wave 1, the Director must:
+Before releasing a current wave, the Director must:
 
-1. Confirm `git status --short --branch` is clean.
+1. Inspect `git status --short --branch` and preserve attributable unrelated changes.
 2. Record the exact starting commit.
 3. Run `node tools/status.js`.
-4. Run `node tools/verify.js` once for the program baseline.
+4. Reuse an authenticated setup baseline; establish it once only if missing.
 5. Confirm one writer owns the selected checkout.
-6. Create a branch or worktree only with Joe's explicit authorization.
-7. Record any pre-existing worktree and branch before assigning it.
-8. Confirm the Wave 1 family still has the accepted boundaries listed here.
+6. Use canonical `main` without concurrent development branches/worktrees.
+7. Preserve historical worktrees as read-only evidence.
+8. Confirm the assigned family still has the accepted boundaries listed here.
 
-When the Director creates a worktree, the Director must also prepare its ignored
-local environment. A Git worktree does not inherit ignored tool bundles.
+The canonical checkout must retain its authenticated local environment:
 
-The prepared worktree must have:
-
-- an isolated `config/local-tools.json` with valid absolute paths;
+- `config/local-tools.json` with valid absolute paths;
 - access to the authenticated KMC compiler;
 - byte-identical authenticated GNU Binutils 2.6 tools;
 - the authenticated source-policy preprocessor bundle;
 - a valid Rev 0 baserom path or `OB64_ROM_INPUT` setting;
-- a unique external build or work root; and
+- the configured external build or work root; and
 - a passing `node tools/match.js doctor` result.
 
 A missing `as.exe`, `mips64-elf-cpp.exe`, ignored `.toolchains` directory, or
 local-tools file is an environment defect. It is not a C blocker. Never weaken
-tool identity checks to make a worktree run.
+tool identity checks to make the environment run.
 
 ## Normal family execution
 
@@ -375,7 +382,7 @@ For each family:
 6. Write a manual Pure-C reconstruction when generated drafts are insufficient.
 7. Run the canonical linked diff early.
 8. Change one source property in response to each concrete difference.
-9. Commit one linked-byte-exact target at a time, pending the wave-end complete verifier.
+9. Record each linked-byte-exact target provisionally under the Director's commit policy, pending complete-wave verification.
 10. Continue until every family member received a full attempt.
 
 Use this canonical loop for a final target candidate:
@@ -384,14 +391,14 @@ Use this canonical loop for a final target candidate:
 node tools/diff.js <symbol>
 node tools/source_policy.js --target <symbol>
 git diff --check
-commit the linked-byte-exact target
+record the provisional linked-byte-exact target for Director intake
 ```
 
 `tools/diff.js` is the normal per-function iteration and linked-byte check.
 `tools/verify.js --target` still builds and checks the complete current ROM.
 Workers must not run it after each exact function.
 
-After all practical family work is complete, the worker runs one batch gate:
+After every assigned wave target is ready, the worker runs one complete-wave gate:
 
 ```text
 node tools/verify.js
@@ -403,7 +410,11 @@ git status --short --branch
 This single wave-end run verifies the complete active result. Before that run,
 an exact linked diff is a provisional exact result, not final acceptance.
 
-After the Director integrates a wave, run:
+Confirm every assigned target is `PURE_C` in that run's authoritative policy report.
+Do not shrink the wave around blockers or split it into single-function waves to repeat final verification.
+The verifier builds CURRENT when needed; do not precede it with a redundant final build.
+
+If integration changes verified inputs, run one complete verifier on the combined state:
 
 ```text
 node tools/verify.js
@@ -412,7 +423,8 @@ git diff --check
 git status --short --branch
 ```
 
-The final status must be clean. The complete verifier must report an exact ROM.
+The complete verifier must report an exact ROM. Preserve unrelated work and verify scope before the Director's local commit.
+Unchanged commits and handoffs reuse the completed-wave proof without another verifier.
 
 ## Required matching effort
 
@@ -568,15 +580,9 @@ static family wave.
 
 ## Wave handoff and integration
 
-Before the terminal callback, the worker or reviewer must finish all file writes,
-verification, hashes, Git-status checks, task-log updates, and final-response
-preparation. The callback to the Director must be the task's last action. After
-the callback, the agent must run no command, call no tool, and write no file; it
-must end the task immediately.
-
-When a callback arrives, the Director checks the source task status. If the task
-is not yet finished, the Director does not freeze its files and checks again two
-minutes later.
+Before terminal handoff, finish assigned writes, verification, scope checks, and the report.
+Use collaboration to report completion or the precise blocker and release all assigned writes.
+The Director must confirm the release before intake or integration. Native task polling and callback transport are not required.
 
 The worker must report each family member as one of:
 
@@ -591,7 +597,7 @@ members. It must list every function. It must not omit a failed attempt.
 The worker must report the single wave-end complete-verifier result. The worker
 must not repeat a complete-ROM verifier once per exact function.
 
-Commit exact targets separately. Do not activate or commit nonmatching sources
+Leave changes for the Director's scoped commit policy. Do not activate or commit nonmatching sources
 as canonical implementations. Preserve selected research only through the
 documented workbench workflow.
 
@@ -599,8 +605,8 @@ The Director must review the full wave diff against its recorded base. The
 Director must preserve unrelated work and reject mixed provenance.
 
 The Director integrates only exact acceptable results onto the newest main
-branch. After integration, the Director reruns target checks affected by
-conflicts and the complete verifier.
+branch. If integration changes verified inputs, rerun affected linked checks and one complete verifier on the combined wave.
+An unchanged commit or handoff does not require another verifier or independent ordinary-source review.
 
 ## Family completion gate
 
@@ -612,14 +618,14 @@ A wave is exact-complete when:
 - every active source has sole linked ownership;
 - linked target bytes are exact;
 - the integrated complete ROM is exact; and
-- the final worktree is clean.
+- the completed wave is recorded coherently on main, with unrelated changes preserved and excluded from its scope.
 
 An attempt-complete wave can retain a parked blocker only under the blocker and
 retry policy above. It remains open in this plan.
 
 The complete Director program closes when all 74 listed functions are exact
-`PURE_C`, generated status is current, the complete ROM is exact, and main is
-clean. Any accepted Hybrid-C or ASM exception must remain visible and requires
+`PURE_C`, generated status is current, the complete ROM is exact, and the program's changes are coherently recorded on main.
+Preserve and exclude unrelated work. Any accepted Hybrid-C or ASM exception must remain visible and requires
 Joe's explicit decision before program closure.
 
 After this plan closes, create a separate modified-game plan for the source-level

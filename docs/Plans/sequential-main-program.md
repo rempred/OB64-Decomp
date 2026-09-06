@@ -43,7 +43,7 @@ Unresolved research gates must be addressed before family completion, without si
 
 ## Execution order and current state
 
-1. Process correction: recorded at canonical `86d3c0c` and parent `61ad769`; remaining family routing correction is active in `/root/sequential_process`. Full-scope reconciliation and process review are active in `/root/sequential_prerequisites_review` against the frozen results.
+1. Process correction: recorded at canonical `86d3c0c` and parent `61ad769`; remaining family routing correction is complete and in Director intake. Full-scope reconciliation and process review are active in `/root/sequential_prerequisites_review` against the frozen results.
 2. Compilation-group design: frozen at `5dad709`; independent design review is active in `/root/compilation_groups_review`. Implementation and structural audit/review remain pending.
 3. Bounded readability experiment and three hybrid-conversion investigations: pending prerequisite acceptance.
 4. Combat remaining source waves: pending. Independent static discovery is active in `/root/combat_discovery` using the existing family inventory.
@@ -73,3 +73,4 @@ Use the current session's permissions for repository and build operations; never
 - Scope reconciliation is frozen at `9322649`. Current plan routing is being corrected without changing its member ledger.
 - Fresh Astra Medium Combat discovery research is running alongside prerequisite review. It has no source, build, runtime or inventory-acceptance authority.
 - Sol Max prerequisite review is evaluating frozen scope `9322649` and process `86d3c0c` / parent `61ad769`. Ordinary source matching remains exempt from independent review.
+- Routing follow-up completed the current Combat and High Attack instructions without changing their tables, membership, discovery gates, retries or historical evidence. Its Focused check joins a later evidence review.
