@@ -1,7 +1,7 @@
 ---
 task_id: combat-discovery-propagation
 revision: 1
-status: active
+status: completed
 role: correction-worker
 review_level: Focused
 inventory_profile: NORMAL
