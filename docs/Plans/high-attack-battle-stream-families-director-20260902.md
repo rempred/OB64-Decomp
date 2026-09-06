@@ -1,6 +1,6 @@
 # High Attack Battle Stream Families — Director Plan
 
-Current routing: [the sequential main program](sequential-main-program.md) governs execution and progress, with scope reconciliation pending.
+Current routing: [the sequential main program](sequential-main-program.md) governs execution and progress through the independently accepted full-scope reconciliation.
 Complete Combat, then Squad, then High Attack on `main`, using internal agents.
 Matching implementation and research requiring reasoning use Astra Medium; retrieval/data-seeking or parsing-only work uses Sol High.
 Mixed assignments containing implementation or substantive research reasoning use Astra Medium.
