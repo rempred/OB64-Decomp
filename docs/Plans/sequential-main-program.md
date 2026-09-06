@@ -46,7 +46,7 @@ Unresolved research gates must be addressed before family completion, without si
 ## Execution order and current state
 
 1. Process correction: recorded at canonical `86d3c0c` and parent `61ad769`; remaining family routing correction is complete and in Director intake. Full-scope reconciliation and process review are active in `/root/sequential_prerequisites_review` against the frozen results.
-2. Compilation-group design: frozen at `5dad709`; revision 2 corrects `CGDR-001`, the raw `.reginfo` contract. The correction is complete and in Director intake for proportional re-review before implementation.
+2. Compilation-group design: original `5dad709` plus correction `b87e908`; proportional independent re-review is active in `/root/compilation_groups_review`. Implementation remains pending that verdict.
 3. Bounded readability source experiment: pending prerequisite acceptance. Independent read-only preparation of the three boot hybrid conversions is active in `/root/boot_conversion_preparation`; source execution remains pending.
 4. Combat remaining source waves: pending. Independent static discovery is active in `/root/combat_discovery` using the existing family inventory.
 5. Squad remaining waves and research/structural gates: pending Combat closure.
