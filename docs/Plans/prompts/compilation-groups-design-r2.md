@@ -1,7 +1,7 @@
 ---
 task_id: compilation-groups-design
 revision: 2
-status: ready
+status: active
 role: correction-worker
 review_level: Material
 inventory_profile: NORMAL
