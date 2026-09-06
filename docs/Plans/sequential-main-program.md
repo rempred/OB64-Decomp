@@ -48,7 +48,7 @@ Unresolved research gates must be addressed before family completion, without si
 1. Process correction: recorded at canonical `86d3c0c` and parent `61ad769`; remaining family routing correction is complete and in Director intake. Full-scope reconciliation and process review are active in `/root/sequential_prerequisites_review` against the frozen results.
 2. Compilation-group design: original `5dad709` plus correction `b87e908`; proportional independent re-review is active in `/root/compilation_groups_review`. Implementation remains pending that verdict.
 3. Bounded readability source experiment: pending prerequisite acceptance. Independent read-only preparation of the three boot hybrid conversions is active in `/root/boot_conversion_preparation`; source execution remains pending.
-4. Combat remaining source waves: pending. Independent static discovery is active in `/root/combat_discovery` using the existing family inventory.
+4. Combat remaining source waves: pending. Static discovery r1 is complete and in Director intake for independent review; selector consumer provenance and fixed-image draw-role gates remain open.
 5. Squad remaining waves and research/structural gates: pending Combat closure.
 6. High Attack remaining waves and retained pure-C retries: pending Squad closure.
 7. Requirement-by-requirement final audit against current source and proof: pending.
@@ -83,3 +83,4 @@ Use the current session's permissions for repository and build operations; never
 - Current worker-model policy is recorded at canonical `d1862bd` and parent `1c3be25`.
 - Fresh Astra Medium preparation of the three boot conversion leads is active, using only project and ROM evidence. It has no source or build authority.
 - The bounded `.reginfo` design correction completed, with direct preserved-object comparisons and no production change. Its raw/projected/stripped stages and required controls are ready for re-review.
+- Combat discovery r1 completed with boundary/shared inclusion proposals, all inventoried dispatch destinations accounted for, and bounded renderer/registration identities. No proposed membership is accepted before review.
