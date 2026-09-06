@@ -43,8 +43,8 @@ Unresolved research gates must be addressed before family completion, without si
 
 ## Execution order and current state
 
-1. Process correction: completed and in Director intake. Full-scope reconciliation remains active in `/root/sequential_scope`.
-2. Compilation-group design: active in `/root/compilation_groups_design`; implementation and audit/review pending.
+1. Process correction: recorded at canonical `86d3c0c` and parent `61ad769`; Focused review joins prerequisite review. Full-scope reconciliation remains active in `/root/sequential_scope`.
+2. Compilation-group design: completed by `/root/compilation_groups_design` and in Director intake for independent design review; implementation and audit/review pending.
 3. Bounded readability experiment and three hybrid-conversion investigations: pending prerequisite acceptance.
 4. Combat remaining waves and discovery: pending.
 5. Squad remaining waves and research/structural gates: pending Combat closure.
@@ -66,3 +66,5 @@ Use the current session's permissions for repository and build operations; never
 - Process worker completed four canonical process documents and three narrowly scoped parent insertions, with link and whitespace checks passing.
 - Design and scope workers resumed their existing assignments after a usage-limit interruption. Their partial outputs remain unaccepted.
 - Process documentation is being recorded as a coherent result; its Focused review may join the prerequisite evidence review.
+- Process commits preserve the parent's unrelated dropdown edits unstaged. No production source or build input changed.
+- Compilation-group design completed. The proposal and terminal report are frozen worker records; implementation is not yet dispatched.
