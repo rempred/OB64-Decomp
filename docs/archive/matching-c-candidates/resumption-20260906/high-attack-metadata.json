@@ -1,0 +1,5350 @@
+{
+  "family": "high-attack",
+  "donorHead": "d818fed6c7adf7a8664bb026bff183b68ad40d50",
+  "status": "INACTIVE REFERENCE; donor records are not current canonical activation or acceptance",
+  "sourceRegistries": [
+    {
+      "path": "config/matching-c-targets.json",
+      "rawSha256": "ED94543EB6715C7B5B45508BEAA41D2546D98EDF75E77F0CEF6C779BA000D418",
+      "gitBlob": "29df53020ba415f7ff06e72dc3dc281e6a754f30"
+    },
+    {
+      "path": "config/matching-c-linkage.json",
+      "rawSha256": "D4366AC399EE4DDEC03641A6FADF9423826BA6337DBE8345FB6843570EF8D2C8",
+      "gitBlob": "d46d8e940353ce49803fcd32af2c196096277979"
+    }
+  ],
+  "targets": [
+    {
+      "symbol": "func_0021B894",
+      "source": "src/battle/func_0021B894.c"
+    },
+    {
+      "symbol": "func_0022257C",
+      "source": "src/battle/func_0022257C.c"
+    },
+    {
+      "symbol": "func_00222604",
+      "source": "src/battle/func_00222604.c"
+    },
+    {
+      "symbol": "func_0022EDD4",
+      "source": "src/battle/func_0022EDD4.c"
+    },
+    {
+      "symbol": "func_0022A414",
+      "source": "src/battle/func_0022A414.c"
+    },
+    {
+      "symbol": "func_0022EC08",
+      "source": "src/battle/func_0022EC08.c"
+    },
+    {
+      "symbol": "func_0022A280",
+      "source": "src/battle/func_0022A280.c"
+    },
+    {
+      "symbol": "func_0022B06C",
+      "source": "src/battle/func_0022B06C.c"
+    },
+    {
+      "symbol": "func_0022BFF8",
+      "source": "src/battle/func_0022BFF8.c"
+    },
+    {
+      "symbol": "func_0022A7B8",
+      "source": "src/battle/func_0022A7B8.c"
+    },
+    {
+      "symbol": "func_0022A4E0",
+      "source": "src/battle/func_0022A4E0.c"
+    },
+    {
+      "symbol": "func_0022A964",
+      "source": "src/battle/func_0022A964.c"
+    },
+    {
+      "symbol": "func_0022ADFC",
+      "source": "src/battle/func_0022ADFC.c"
+    },
+    {
+      "symbol": "func_0022F2BC",
+      "source": "src/battle/func_0022F2BC.c"
+    },
+    {
+      "symbol": "func_0022C78C",
+      "source": "src/battle/func_0022C78C_pure.c"
+    }
+  ],
+  "linkageTargets": [
+    {
+      "symbol": "func_0022C78C",
+      "expectedRelocations": [
+        {
+          "offset": "0x00000044",
+          "type": "R_MIPS_26",
+          "symbol": "memset_00023780",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x0000004C",
+          "type": "R_MIPS_26",
+          "symbol": "func_00233ED4",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x0000009C",
+          "type": "R_MIPS_26",
+          "symbol": "func_0021D200",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000000BC",
+          "type": "R_MIPS_26",
+          "symbol": ".text",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000000C4",
+          "type": "R_MIPS_26",
+          "symbol": "func_0020C478",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000000E0",
+          "type": "R_MIPS_26",
+          "symbol": "func_002361EC",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000000EC",
+          "type": "R_MIPS_26",
+          "symbol": "func_002363FC",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000100",
+          "type": "R_MIPS_26",
+          "symbol": "func_002365BC",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000108",
+          "type": "R_MIPS_26",
+          "symbol": "rand",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000110",
+          "type": "R_MIPS_26",
+          "symbol": "rand",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000118",
+          "type": "R_MIPS_26",
+          "symbol": "rand",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000001B0",
+          "type": "R_MIPS_26",
+          "symbol": "func_00201584",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000001D0",
+          "type": "R_MIPS_26",
+          "symbol": "func_00201798",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000001E0",
+          "type": "R_MIPS_26",
+          "symbol": "func_001F0E64",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000001F0",
+          "type": "R_MIPS_26",
+          "symbol": "func_001F197C",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000001F8",
+          "type": "R_MIPS_26",
+          "symbol": "func_0020BFE4",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000214",
+          "type": "R_MIPS_26",
+          "symbol": "func_0022222C",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x0000021C",
+          "type": "R_MIPS_26",
+          "symbol": ".text",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000002A0",
+          "type": "R_MIPS_26",
+          "symbol": "func_0021D200",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000002B4",
+          "type": "R_MIPS_26",
+          "symbol": "func_0020BFE4",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000002D4",
+          "type": "R_MIPS_26",
+          "symbol": "func_0021D25C",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000002F0",
+          "type": "R_MIPS_26",
+          "symbol": "func_0021D25C",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000318",
+          "type": "R_MIPS_26",
+          "symbol": "func_0021D28C",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000368",
+          "type": "R_MIPS_26",
+          "symbol": "func_00201584",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x0000038C",
+          "type": "R_MIPS_26",
+          "symbol": "func_00201798",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x0000039C",
+          "type": "R_MIPS_26",
+          "symbol": "func_001F0E64",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000003AC",
+          "type": "R_MIPS_26",
+          "symbol": "func_001F197C",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000003B4",
+          "type": "R_MIPS_26",
+          "symbol": "func_0020BFE4",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000003E4",
+          "type": "R_MIPS_26",
+          "symbol": "func_0021D28C",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000003EC",
+          "type": "R_MIPS_26",
+          "symbol": ".text",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000414",
+          "type": "R_MIPS_26",
+          "symbol": "func_0021D28C",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x0000042C",
+          "type": "R_MIPS_26",
+          "symbol": "func_0020C448",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000434",
+          "type": "R_MIPS_26",
+          "symbol": "func_000454e0",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x0000046C",
+          "type": "R_MIPS_26",
+          "symbol": "func_0021D230",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000474",
+          "type": "R_MIPS_26",
+          "symbol": "func_0020BFE4",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000484",
+          "type": "R_MIPS_26",
+          "symbol": "func_0020D72C",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000004A8",
+          "type": "R_MIPS_26",
+          "symbol": "func_0021D2C0",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000004C0",
+          "type": "R_MIPS_26",
+          "symbol": "func_0020BFE4",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000004D4",
+          "type": "R_MIPS_26",
+          "symbol": ".text",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000004E0",
+          "type": "R_MIPS_26",
+          "symbol": "func_00201584",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000004F4",
+          "type": "R_MIPS_26",
+          "symbol": "func_0020BFF8",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000508",
+          "type": "R_MIPS_26",
+          "symbol": "func_0020BFE4",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000518",
+          "type": "R_MIPS_26",
+          "symbol": "func_0020D72C",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000540",
+          "type": "R_MIPS_26",
+          "symbol": "func_0021D2C0",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000558",
+          "type": "R_MIPS_26",
+          "symbol": "func_0020BFE4",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000588",
+          "type": "R_MIPS_26",
+          "symbol": "func_00237810",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000005A4",
+          "type": "R_MIPS_26",
+          "symbol": "func_00237750",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000005B8",
+          "type": "R_MIPS_26",
+          "symbol": "func_0020BFE4",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000005D8",
+          "type": "R_MIPS_26",
+          "symbol": "func_0021D200",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000600",
+          "type": "R_MIPS_26",
+          "symbol": "func_0021D25C",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000608",
+          "type": "R_MIPS_26",
+          "symbol": "func_0020C448",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000610",
+          "type": "R_MIPS_26",
+          "symbol": "func_00045480",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x0000062C",
+          "type": "R_MIPS_26",
+          "symbol": ".text",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x0000064C",
+          "type": "R_MIPS_26",
+          "symbol": "func_00237AF8",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000668",
+          "type": "R_MIPS_26",
+          "symbol": "func_00237890",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000680",
+          "type": "R_MIPS_26",
+          "symbol": "func_0022A4E0",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000688",
+          "type": "R_MIPS_26",
+          "symbol": ".text",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000006C0",
+          "type": "R_MIPS_26",
+          "symbol": "func_0022ADFC",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000006C8",
+          "type": "R_MIPS_26",
+          "symbol": "func_0020C2C0",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000006D8",
+          "type": "R_MIPS_26",
+          "symbol": "func_0020C014",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000006E8",
+          "type": "R_MIPS_26",
+          "symbol": "func_0020C104",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000006F8",
+          "type": "R_MIPS_26",
+          "symbol": "func_00233210",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000720",
+          "type": "R_MIPS_26",
+          "symbol": "func_0021D230",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000734",
+          "type": "R_MIPS_26",
+          "symbol": "func_0020C2C0",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000744",
+          "type": "R_MIPS_26",
+          "symbol": "func_0020C32C",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000760",
+          "type": "R_MIPS_26",
+          "symbol": "func_0023431C",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000768",
+          "type": "R_MIPS_26",
+          "symbol": ".text",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000774",
+          "type": "R_MIPS_26",
+          "symbol": "func_00201584",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000007D8",
+          "type": "R_MIPS_26",
+          "symbol": "func_001F0E64",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000007E8",
+          "type": "R_MIPS_26",
+          "symbol": "func_001F197C",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000800",
+          "type": "R_MIPS_26",
+          "symbol": "func_0021D230",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000854",
+          "type": "R_MIPS_26",
+          "symbol": "func_001F0E64",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000864",
+          "type": "R_MIPS_26",
+          "symbol": "func_001F197C",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x0000087C",
+          "type": "R_MIPS_26",
+          "symbol": "func_0021D230",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000008B4",
+          "type": "R_MIPS_26",
+          "symbol": "func_0020BFE4",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000008EC",
+          "type": "R_MIPS_26",
+          "symbol": "func_002223E0",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x0000090C",
+          "type": "R_MIPS_26",
+          "symbol": "func_0021D25C",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x0000092C",
+          "type": "R_MIPS_26",
+          "symbol": "func_0021D25C",
+          "section": ".rel.text"
+        }
+      ]
+    },
+    {
+      "symbol": "func_0022F2BC",
+      "expectedRelocations": [
+        {
+          "offset": "0x00000040",
+          "type": "R_MIPS_HI16",
+          "symbol": "D_801CE8C0",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000044",
+          "type": "R_MIPS_LO16",
+          "symbol": "D_801CE8C0",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000054",
+          "type": "R_MIPS_26",
+          "symbol": "func_0020C2C0",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000064",
+          "type": "R_MIPS_26",
+          "symbol": "func_0020C32C",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000088",
+          "type": "R_MIPS_HI16",
+          "symbol": "D_801CE8C0",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x0000008C",
+          "type": "R_MIPS_LO16",
+          "symbol": "D_801CE8C0",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000098",
+          "type": "R_MIPS_26",
+          "symbol": ".text",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000000B0",
+          "type": "R_MIPS_26",
+          "symbol": "func_0022EC08",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000000B8",
+          "type": "R_MIPS_26",
+          "symbol": ".text",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000000CC",
+          "type": "R_MIPS_26",
+          "symbol": "func_0022EDD4",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000000D4",
+          "type": "R_MIPS_26",
+          "symbol": ".text",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000000DC",
+          "type": "R_MIPS_HI16",
+          "symbol": "D_801CE8C0",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000000E0",
+          "type": "R_MIPS_LO16",
+          "symbol": "D_801CE8C0",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000138",
+          "type": "R_MIPS_26",
+          "symbol": "func_0021D200",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000154",
+          "type": "R_MIPS_26",
+          "symbol": ".text",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x0000015C",
+          "type": "R_MIPS_26",
+          "symbol": "func_00214BDC",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x0000016C",
+          "type": "R_MIPS_26",
+          "symbol": "func_0020C478",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000178",
+          "type": "R_MIPS_26",
+          "symbol": "func_0020C2C0",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000001B0",
+          "type": "R_MIPS_HI16",
+          "symbol": "D_801CE8C0",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000001B4",
+          "type": "R_MIPS_LO16",
+          "symbol": "D_801CE8C0",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000001D8",
+          "type": "R_MIPS_26",
+          "symbol": "func_0021D200",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000001F4",
+          "type": "R_MIPS_HI16",
+          "symbol": "D_801CE8BC",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000001F8",
+          "type": "R_MIPS_LO16",
+          "symbol": "D_801CE8BC",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000204",
+          "type": "R_MIPS_26",
+          "symbol": ".text",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x0000021C",
+          "type": "R_MIPS_HI16",
+          "symbol": "D_801CE8F8",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000220",
+          "type": "R_MIPS_LO16",
+          "symbol": "D_801CE8F8",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000228",
+          "type": "R_MIPS_HI16",
+          "symbol": "D_801CE8F8",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x0000022C",
+          "type": "R_MIPS_LO16",
+          "symbol": "D_801CE8F8",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000230",
+          "type": "R_MIPS_26",
+          "symbol": "func_0022EF50",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000244",
+          "type": "R_MIPS_26",
+          "symbol": "func_0020C120",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000254",
+          "type": "R_MIPS_26",
+          "symbol": "func_0022C78C",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x0000025C",
+          "type": "R_MIPS_26",
+          "symbol": ".text",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000264",
+          "type": "R_MIPS_26",
+          "symbol": "func_0022B1F4",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x0000026C",
+          "type": "R_MIPS_26",
+          "symbol": ".text",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x0000027C",
+          "type": "R_MIPS_26",
+          "symbol": "func_0022BFF8",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000284",
+          "type": "R_MIPS_26",
+          "symbol": ".text",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x0000028C",
+          "type": "R_MIPS_26",
+          "symbol": "func_0022D14C",
+          "section": ".rel.text"
+        }
+      ]
+    },
+    {
+      "symbol": "func_0022ADFC",
+      "expectedRelocations": [
+        {
+          "offset": "0x00000044",
+          "type": "R_MIPS_26",
+          "symbol": "func_0020C32C",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000068",
+          "type": "R_MIPS_26",
+          "symbol": "func_0022257C",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000080",
+          "type": "R_MIPS_26",
+          "symbol": ".text",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000088",
+          "type": "R_MIPS_26",
+          "symbol": ".text",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000000B8",
+          "type": "R_MIPS_26",
+          "symbol": "func_0021D2C0",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000000C0",
+          "type": "R_MIPS_26",
+          "symbol": "func_0022A414",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000000C8",
+          "type": "R_MIPS_26",
+          "symbol": ".text",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000000F0",
+          "type": "R_MIPS_26",
+          "symbol": "func_0021D2C0",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000000F8",
+          "type": "R_MIPS_26",
+          "symbol": "func_0020C104",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x0000011C",
+          "type": "R_MIPS_26",
+          "symbol": "func_0020D444",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x0000012C",
+          "type": "R_MIPS_26",
+          "symbol": "func_0020D444",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x0000016C",
+          "type": "R_MIPS_26",
+          "symbol": "func_0021D230",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000180",
+          "type": "R_MIPS_26",
+          "symbol": "func_0022257C",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000198",
+          "type": "R_MIPS_26",
+          "symbol": "func_0021D230",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000001F4",
+          "type": "R_MIPS_26",
+          "symbol": "func_0022A964",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000001FC",
+          "type": "R_MIPS_26",
+          "symbol": ".text",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000228",
+          "type": "R_MIPS_26",
+          "symbol": "func_0022A964",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000230",
+          "type": "R_MIPS_26",
+          "symbol": ".text",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x0000023C",
+          "type": "R_MIPS_26",
+          "symbol": "func_0022A280",
+          "section": ".rel.text"
+        }
+      ]
+    },
+    {
+      "symbol": "func_0022A964",
+      "expectedRelocations": [
+        {
+          "offset": "0x00000034",
+          "type": "R_MIPS_26",
+          "symbol": "func_0020C32C",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000058",
+          "type": "R_MIPS_26",
+          "symbol": "func_0021D230",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000078",
+          "type": "R_MIPS_26",
+          "symbol": "func_0022257C",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000080",
+          "type": "R_MIPS_26",
+          "symbol": ".text",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x0000008C",
+          "type": "R_MIPS_26",
+          "symbol": "func_0021D200",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x0000009C",
+          "type": "R_MIPS_26",
+          "symbol": "func_0020C310",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000000AC",
+          "type": "R_MIPS_26",
+          "symbol": "func_0020C2F4",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000000BC",
+          "type": "R_MIPS_26",
+          "symbol": "func_0020C32C",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000000D0",
+          "type": "R_MIPS_26",
+          "symbol": "func_0002CBCC",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000000D8",
+          "type": "R_MIPS_26",
+          "symbol": "func_0002CBCC",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000000E0",
+          "type": "R_MIPS_26",
+          "symbol": "func_0002CBCC",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000144",
+          "type": "R_MIPS_26",
+          "symbol": "func_0021D230",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000168",
+          "type": "R_MIPS_26",
+          "symbol": "func_0022257C",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000174",
+          "type": "R_MIPS_26",
+          "symbol": "func_0020C348",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x0000018C",
+          "type": "R_MIPS_26",
+          "symbol": "func_0021D230",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000001A8",
+          "type": "R_MIPS_26",
+          "symbol": "func_0020C32C",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000001C0",
+          "type": "R_MIPS_26",
+          "symbol": "func_0021D230",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000001D4",
+          "type": "R_MIPS_26",
+          "symbol": "func_0022257C",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000001EC",
+          "type": "R_MIPS_26",
+          "symbol": "func_0021D200",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000218",
+          "type": "R_MIPS_26",
+          "symbol": "func_002224F4",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000238",
+          "type": "R_MIPS_26",
+          "symbol": "func_0020C478",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000244",
+          "type": "R_MIPS_26",
+          "symbol": "func_0020C2C0",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000274",
+          "type": "R_MIPS_26",
+          "symbol": "func_00239AA4",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000294",
+          "type": "R_MIPS_26",
+          "symbol": "func_0021D25C",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000002A8",
+          "type": "R_MIPS_26",
+          "symbol": "func_0022257C",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000002C4",
+          "type": "R_MIPS_26",
+          "symbol": ".text",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000002D4",
+          "type": "R_MIPS_26",
+          "symbol": "func_0020C32C",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000002E4",
+          "type": "R_MIPS_26",
+          "symbol": "func_0020C2F4",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x0000030C",
+          "type": "R_MIPS_26",
+          "symbol": "func_0021D28C",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000320",
+          "type": "R_MIPS_26",
+          "symbol": "func_0022257C",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x0000034C",
+          "type": "R_MIPS_26",
+          "symbol": ".text",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x0000035C",
+          "type": "R_MIPS_26",
+          "symbol": "func_0020C32C",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x0000036C",
+          "type": "R_MIPS_26",
+          "symbol": "func_0020C2F4",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x0000037C",
+          "type": "R_MIPS_26",
+          "symbol": "func_0020C310",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000394",
+          "type": "R_MIPS_26",
+          "symbol": "func_0021D230",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000003A8",
+          "type": "R_MIPS_26",
+          "symbol": "func_0022257C",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000003D4",
+          "type": "R_MIPS_26",
+          "symbol": ".text",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000003DC",
+          "type": "R_MIPS_26",
+          "symbol": "func_0020C32C",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000003EC",
+          "type": "R_MIPS_26",
+          "symbol": "func_0020C2F4",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x0000040C",
+          "type": "R_MIPS_26",
+          "symbol": "func_0021D25C",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000418",
+          "type": "R_MIPS_26",
+          "symbol": ".text",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000420",
+          "type": "R_MIPS_26",
+          "symbol": "func_0020C310",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000440",
+          "type": "R_MIPS_26",
+          "symbol": "func_0021D25C",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000454",
+          "type": "R_MIPS_26",
+          "symbol": "func_0022257C",
+          "section": ".rel.text"
+        }
+      ]
+    },
+    {
+      "symbol": "func_0022A4E0",
+      "expectedRelocations": [
+        {
+          "offset": "0x00000018",
+          "type": "R_MIPS_26",
+          "symbol": "func_0020C24C",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000038",
+          "type": "R_MIPS_26",
+          "symbol": "func_0020C014",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000058",
+          "type": "R_MIPS_26",
+          "symbol": "func_0020D770",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000060",
+          "type": "R_MIPS_26",
+          "symbol": "func_0020C2C0",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000070",
+          "type": "R_MIPS_26",
+          "symbol": "func_0020C284",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000088",
+          "type": "R_MIPS_26",
+          "symbol": "func_0020D770",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000090",
+          "type": "R_MIPS_26",
+          "symbol": "func_0020C2C0",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000000A8",
+          "type": "R_MIPS_26",
+          "symbol": "func_0020D770",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000000B0",
+          "type": "R_MIPS_26",
+          "symbol": "func_0020C2C0",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000000D0",
+          "type": "R_MIPS_26",
+          "symbol": "func_0020D770",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000000D8",
+          "type": "R_MIPS_26",
+          "symbol": "func_0020C2C0",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000000E0",
+          "type": "R_MIPS_26",
+          "symbol": ".text",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000000F0",
+          "type": "R_MIPS_26",
+          "symbol": "func_0020D770",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000000FC",
+          "type": "R_MIPS_26",
+          "symbol": "func_0020C2C0",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x0000010C",
+          "type": "R_MIPS_26",
+          "symbol": "func_0020C284",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000124",
+          "type": "R_MIPS_26",
+          "symbol": "func_0020D770",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000130",
+          "type": "R_MIPS_26",
+          "symbol": "func_0020C2C0",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000140",
+          "type": "R_MIPS_26",
+          "symbol": "func_0020C284",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000160",
+          "type": "R_MIPS_26",
+          "symbol": ".text",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000178",
+          "type": "R_MIPS_26",
+          "symbol": "func_0020D770",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000180",
+          "type": "R_MIPS_26",
+          "symbol": "func_0020C2C0",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000190",
+          "type": "R_MIPS_26",
+          "symbol": ".text",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000198",
+          "type": "R_MIPS_26",
+          "symbol": "func_0020C284",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000001B0",
+          "type": "R_MIPS_26",
+          "symbol": "func_0020D770",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000001B8",
+          "type": "R_MIPS_26",
+          "symbol": "func_0020C2C0",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000001D0",
+          "type": "R_MIPS_26",
+          "symbol": "func_0020D770",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000001D8",
+          "type": "R_MIPS_26",
+          "symbol": "func_0020C2C0",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000001F8",
+          "type": "R_MIPS_26",
+          "symbol": "func_0020D770",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000200",
+          "type": "R_MIPS_26",
+          "symbol": "func_0020C2C0",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000208",
+          "type": "R_MIPS_26",
+          "symbol": ".text",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000218",
+          "type": "R_MIPS_26",
+          "symbol": "func_0020D770",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000224",
+          "type": "R_MIPS_26",
+          "symbol": "func_0020C2C0",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000234",
+          "type": "R_MIPS_26",
+          "symbol": "func_0020C284",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x0000024C",
+          "type": "R_MIPS_26",
+          "symbol": "func_0020D770",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000258",
+          "type": "R_MIPS_26",
+          "symbol": "func_0020C2C0",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000268",
+          "type": "R_MIPS_26",
+          "symbol": "func_0020C284",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x0000028C",
+          "type": "R_MIPS_26",
+          "symbol": "func_0020D770",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000298",
+          "type": "R_MIPS_26",
+          "symbol": "func_0020C2C0",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000002A8",
+          "type": "R_MIPS_26",
+          "symbol": "func_0020C284",
+          "section": ".rel.text"
+        }
+      ]
+    },
+    {
+      "symbol": "func_0022A7B8",
+      "expectedRelocations": [
+        {
+          "offset": "0x00000028",
+          "type": "R_MIPS_26",
+          "symbol": "func_0020C104",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x0000007C",
+          "type": "R_MIPS_26",
+          "symbol": ".text",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000088",
+          "type": "R_MIPS_26",
+          "symbol": "func_0020D444",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x0000009C",
+          "type": "R_MIPS_26",
+          "symbol": "func_0020D444",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000000F4",
+          "type": "R_MIPS_26",
+          "symbol": ".text",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000114",
+          "type": "R_MIPS_26",
+          "symbol": "func_0022A414",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x0000011C",
+          "type": "R_MIPS_26",
+          "symbol": ".text",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x0000013C",
+          "type": "R_MIPS_26",
+          "symbol": "func_002224F4",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x0000015C",
+          "type": "R_MIPS_26",
+          "symbol": "func_0020C478",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000168",
+          "type": "R_MIPS_26",
+          "symbol": "func_0020C2C0",
+          "section": ".rel.text"
+        }
+      ]
+    },
+    {
+      "symbol": "func_0022BFF8",
+      "expectedRelocations": [
+        {
+          "offset": "0x00000040",
+          "type": "R_MIPS_26",
+          "symbol": "memset_00023780",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000048",
+          "type": "R_MIPS_26",
+          "symbol": "func_00233F38",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000098",
+          "type": "R_MIPS_26",
+          "symbol": "func_0021D200",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000000B8",
+          "type": "R_MIPS_26",
+          "symbol": ".text",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000000C0",
+          "type": "R_MIPS_26",
+          "symbol": "func_0020C478",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000000D8",
+          "type": "R_MIPS_26",
+          "symbol": "func_00201798",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000000F0",
+          "type": "R_MIPS_26",
+          "symbol": "func_0022257C",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000000F8",
+          "type": "R_MIPS_26",
+          "symbol": "func_0020BFE4",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000148",
+          "type": "R_MIPS_26",
+          "symbol": ".text",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000174",
+          "type": "R_MIPS_26",
+          "symbol": "func_0020C448",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x0000018C",
+          "type": "R_MIPS_26",
+          "symbol": "func_000454e0",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000001D0",
+          "type": "R_MIPS_26",
+          "symbol": "func_0021D200",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000001E8",
+          "type": "R_MIPS_26",
+          "symbol": "func_002361EC",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000001F4",
+          "type": "R_MIPS_26",
+          "symbol": "func_002363FC",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000208",
+          "type": "R_MIPS_26",
+          "symbol": "func_002365BC",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000210",
+          "type": "R_MIPS_26",
+          "symbol": "rand",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000218",
+          "type": "R_MIPS_26",
+          "symbol": "rand",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000220",
+          "type": "R_MIPS_26",
+          "symbol": "rand",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x0000027C",
+          "type": "R_MIPS_26",
+          "symbol": "func_0021D230",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000284",
+          "type": "R_MIPS_26",
+          "symbol": "func_0020BFE4",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000002A8",
+          "type": "R_MIPS_26",
+          "symbol": "func_0021D28C",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000002B0",
+          "type": "R_MIPS_26",
+          "symbol": ".text",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000002D4",
+          "type": "R_MIPS_26",
+          "symbol": "func_0021D28C",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000002F8",
+          "type": "R_MIPS_26",
+          "symbol": "func_0020BFE4",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000308",
+          "type": "R_MIPS_26",
+          "symbol": "func_0020D72C",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000314",
+          "type": "R_MIPS_26",
+          "symbol": "func_0020D72C",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x0000033C",
+          "type": "R_MIPS_26",
+          "symbol": "func_0021D2C0",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000354",
+          "type": "R_MIPS_26",
+          "symbol": "func_00237750",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000364",
+          "type": "R_MIPS_26",
+          "symbol": "func_0020BFE4",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000388",
+          "type": "R_MIPS_26",
+          "symbol": ".text",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000394",
+          "type": "R_MIPS_26",
+          "symbol": "func_00237810",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000003A8",
+          "type": "R_MIPS_26",
+          "symbol": "func_0020BFE4",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000003C8",
+          "type": "R_MIPS_26",
+          "symbol": "func_0021D200",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000003F0",
+          "type": "R_MIPS_26",
+          "symbol": "func_0021D25C",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000404",
+          "type": "R_MIPS_26",
+          "symbol": "func_00045480",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000420",
+          "type": "R_MIPS_26",
+          "symbol": ".text",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000440",
+          "type": "R_MIPS_26",
+          "symbol": "func_00237AF8",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x0000045C",
+          "type": "R_MIPS_26",
+          "symbol": "func_00237890",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000470",
+          "type": "R_MIPS_26",
+          "symbol": "func_0022A4E0",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000478",
+          "type": "R_MIPS_26",
+          "symbol": ".text",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000004B0",
+          "type": "R_MIPS_26",
+          "symbol": "func_0022ADFC",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000004B8",
+          "type": "R_MIPS_26",
+          "symbol": "func_0020BFE4",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000004C8",
+          "type": "R_MIPS_26",
+          "symbol": "func_0020D72C",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000004D4",
+          "type": "R_MIPS_26",
+          "symbol": "func_0020D72C",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000504",
+          "type": "R_MIPS_26",
+          "symbol": "func_0021D2C0",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x0000050C",
+          "type": "R_MIPS_26",
+          "symbol": "func_0020C2C0",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x0000051C",
+          "type": "R_MIPS_26",
+          "symbol": "func_0020C014",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x0000052C",
+          "type": "R_MIPS_26",
+          "symbol": "func_0020C104",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x0000053C",
+          "type": "R_MIPS_26",
+          "symbol": "func_00233210",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000568",
+          "type": "R_MIPS_26",
+          "symbol": "func_0021D230",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x0000057C",
+          "type": "R_MIPS_26",
+          "symbol": "func_0020C2C0",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x0000058C",
+          "type": "R_MIPS_26",
+          "symbol": "func_0020C32C",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000005A8",
+          "type": "R_MIPS_26",
+          "symbol": "func_0023431C",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000005C4",
+          "type": "R_MIPS_26",
+          "symbol": ".text",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000005D0",
+          "type": "R_MIPS_26",
+          "symbol": "func_00201584",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000005D8",
+          "type": "R_MIPS_26",
+          "symbol": "func_0020BFE4",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000600",
+          "type": "R_MIPS_26",
+          "symbol": "func_00201584",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000630",
+          "type": "R_MIPS_26",
+          "symbol": "func_0021D230",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000650",
+          "type": "R_MIPS_26",
+          "symbol": "func_0022257C",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000660",
+          "type": "R_MIPS_26",
+          "symbol": "func_00201584",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000674",
+          "type": "R_MIPS_26",
+          "symbol": "func_0020BFE4",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000684",
+          "type": "R_MIPS_26",
+          "symbol": "func_0020BFF8",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000698",
+          "type": "R_MIPS_26",
+          "symbol": "func_0020D72C",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000006A4",
+          "type": "R_MIPS_26",
+          "symbol": "func_0020D72C",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000006C8",
+          "type": "R_MIPS_26",
+          "symbol": "func_0021D2C0",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000006DC",
+          "type": "R_MIPS_26",
+          "symbol": "func_0021D230",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000006F8",
+          "type": "R_MIPS_26",
+          "symbol": "func_0022257C",
+          "section": ".rel.text"
+        }
+      ]
+    },
+    {
+      "symbol": "func_0021B894",
+      "expectedRelocations": [
+        {
+          "offset": "0x00000000",
+          "type": "R_MIPS_HI16",
+          "symbol": "D_801CE8BC",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000004",
+          "type": "R_MIPS_LO16",
+          "symbol": "D_801CE8BC",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000050",
+          "type": "R_MIPS_26",
+          "symbol": ".text",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000074",
+          "type": "R_MIPS_26",
+          "symbol": ".text",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000088",
+          "type": "R_MIPS_26",
+          "symbol": ".text",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000090",
+          "type": "R_MIPS_26",
+          "symbol": "func_00208D80",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000098",
+          "type": "R_MIPS_26",
+          "symbol": "func_002071F4",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000000A0",
+          "type": "R_MIPS_26",
+          "symbol": "func_001F0B40",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000000A8",
+          "type": "R_MIPS_HI16",
+          "symbol": "D_800E8100",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000000AC",
+          "type": "R_MIPS_LO16",
+          "symbol": "D_800E8100",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000000BC",
+          "type": "R_MIPS_26",
+          "symbol": "func_0020BF7C",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000000CC",
+          "type": "R_MIPS_HI16",
+          "symbol": "D_801936E0",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000000D0",
+          "type": "R_MIPS_LO16",
+          "symbol": "D_801936E0",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000000DC",
+          "type": "R_MIPS_HI16",
+          "symbol": "D_801CE8BC",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000000E0",
+          "type": "R_MIPS_LO16",
+          "symbol": "D_801CE8BC",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000104",
+          "type": "R_MIPS_HI16",
+          "symbol": "D_801976D8",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000108",
+          "type": "R_MIPS_LO16",
+          "symbol": "D_801976D8",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x0000010C",
+          "type": "R_MIPS_HI16",
+          "symbol": "D_800EB1F0",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000110",
+          "type": "R_MIPS_LO16",
+          "symbol": "D_800EB1F0",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000118",
+          "type": "R_MIPS_HI16",
+          "symbol": "D_801976D8",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x0000011C",
+          "type": "R_MIPS_LO16",
+          "symbol": "D_801976D8",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000120",
+          "type": "R_MIPS_26",
+          "symbol": "func_00208DC8",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000128",
+          "type": "R_MIPS_26",
+          "symbol": "func_0021B0A0",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000130",
+          "type": "R_MIPS_26",
+          "symbol": "func_002215D0",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000138",
+          "type": "R_MIPS_26",
+          "symbol": "func_00226AFC",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000140",
+          "type": "R_MIPS_26",
+          "symbol": "func_0025FCB4",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000148",
+          "type": "R_MIPS_26",
+          "symbol": "func_0021B438",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000150",
+          "type": "R_MIPS_26",
+          "symbol": "func_0021B2E0",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000158",
+          "type": "R_MIPS_26",
+          "symbol": "func_001FFE80",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000160",
+          "type": "R_MIPS_26",
+          "symbol": "func_001F1E18",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000168",
+          "type": "R_MIPS_26",
+          "symbol": "func_0005a0f4",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000170",
+          "type": "R_MIPS_26",
+          "symbol": "func_00208EB0",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000178",
+          "type": "R_MIPS_26",
+          "symbol": ".text",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000180",
+          "type": "R_MIPS_26",
+          "symbol": "func_00208D80",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000188",
+          "type": "R_MIPS_26",
+          "symbol": "func_00215CF0",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000190",
+          "type": "R_MIPS_26",
+          "symbol": "func_002071F4",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000198",
+          "type": "R_MIPS_26",
+          "symbol": "func_001F0B40",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000001A0",
+          "type": "R_MIPS_HI16",
+          "symbol": "D_800E8100",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000001A4",
+          "type": "R_MIPS_LO16",
+          "symbol": "D_800E8100",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000001B4",
+          "type": "R_MIPS_26",
+          "symbol": "func_0020BF7C",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000001C4",
+          "type": "R_MIPS_HI16",
+          "symbol": "D_801936E0",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000001C8",
+          "type": "R_MIPS_LO16",
+          "symbol": "D_801936E0",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000001D4",
+          "type": "R_MIPS_HI16",
+          "symbol": "D_801CE8BC",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000001D8",
+          "type": "R_MIPS_LO16",
+          "symbol": "D_801CE8BC",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000001EC",
+          "type": "R_MIPS_26",
+          "symbol": ".text",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000001F4",
+          "type": "R_MIPS_26",
+          "symbol": "func_00208D80",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000001FC",
+          "type": "R_MIPS_HI16",
+          "symbol": "D_801CE8BC",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000200",
+          "type": "R_MIPS_LO16",
+          "symbol": "D_801CE8BC",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000218",
+          "type": "R_MIPS_HI16",
+          "symbol": ".rodata",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000220",
+          "type": "R_MIPS_LO16",
+          "symbol": ".rodata",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x0000022C",
+          "type": "R_MIPS_26",
+          "symbol": "func_00217BA8",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000234",
+          "type": "R_MIPS_26",
+          "symbol": ".text",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x0000023C",
+          "type": "R_MIPS_26",
+          "symbol": "func_0021840C",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000244",
+          "type": "R_MIPS_26",
+          "symbol": ".text",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x0000024C",
+          "type": "R_MIPS_26",
+          "symbol": "func_00218B58",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000254",
+          "type": "R_MIPS_26",
+          "symbol": ".text",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x0000025C",
+          "type": "R_MIPS_26",
+          "symbol": "func_00219470",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000264",
+          "type": "R_MIPS_26",
+          "symbol": ".text",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x0000026C",
+          "type": "R_MIPS_26",
+          "symbol": "func_00219A14",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000274",
+          "type": "R_MIPS_26",
+          "symbol": ".text",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x0000027C",
+          "type": "R_MIPS_26",
+          "symbol": "func_00219F0C",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000284",
+          "type": "R_MIPS_26",
+          "symbol": ".text",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x0000028C",
+          "type": "R_MIPS_26",
+          "symbol": "func_0021A438",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000294",
+          "type": "R_MIPS_26",
+          "symbol": ".text",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x0000029C",
+          "type": "R_MIPS_26",
+          "symbol": "func_0021A5C8",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000002A4",
+          "type": "R_MIPS_26",
+          "symbol": ".text",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000002AC",
+          "type": "R_MIPS_26",
+          "symbol": "func_0021A9B4",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000002B4",
+          "type": "R_MIPS_26",
+          "symbol": "func_002071F4",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000002BC",
+          "type": "R_MIPS_26",
+          "symbol": "func_001F0B40",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000002C4",
+          "type": "R_MIPS_HI16",
+          "symbol": "D_801CE8BC",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000002C8",
+          "type": "R_MIPS_LO16",
+          "symbol": "D_801CE8BC",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000002DC",
+          "type": "R_MIPS_HI16",
+          "symbol": "D_800E8100",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000002E0",
+          "type": "R_MIPS_LO16",
+          "symbol": "D_800E8100",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000002F0",
+          "type": "R_MIPS_26",
+          "symbol": "func_0020BF7C",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000300",
+          "type": "R_MIPS_HI16",
+          "symbol": "D_801936E0",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000304",
+          "type": "R_MIPS_LO16",
+          "symbol": "D_801936E0",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000310",
+          "type": "R_MIPS_HI16",
+          "symbol": "D_801CE8BC",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000314",
+          "type": "R_MIPS_LO16",
+          "symbol": "D_801CE8BC",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000338",
+          "type": "R_MIPS_HI16",
+          "symbol": "D_801976D8",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x0000033C",
+          "type": "R_MIPS_LO16",
+          "symbol": "D_801976D8",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000340",
+          "type": "R_MIPS_HI16",
+          "symbol": "D_800EB1F0",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000344",
+          "type": "R_MIPS_LO16",
+          "symbol": "D_800EB1F0",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x0000034C",
+          "type": "R_MIPS_HI16",
+          "symbol": "D_801976D8",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000350",
+          "type": "R_MIPS_LO16",
+          "symbol": "D_801976D8",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000354",
+          "type": "R_MIPS_26",
+          "symbol": "func_00208DC8",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x0000035C",
+          "type": "R_MIPS_26",
+          "symbol": "func_0021B0A0",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000364",
+          "type": "R_MIPS_26",
+          "symbol": "func_002215D0",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x0000036C",
+          "type": "R_MIPS_26",
+          "symbol": "func_00226AFC",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000374",
+          "type": "R_MIPS_26",
+          "symbol": "func_0025FCB4",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x0000037C",
+          "type": "R_MIPS_26",
+          "symbol": "func_0021B438",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000384",
+          "type": "R_MIPS_26",
+          "symbol": "func_0021B2E0",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x0000038C",
+          "type": "R_MIPS_26",
+          "symbol": "func_001FFE80",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000394",
+          "type": "R_MIPS_26",
+          "symbol": "func_001F1E18",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x0000039C",
+          "type": "R_MIPS_26",
+          "symbol": "func_00208EB0",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000003A4",
+          "type": "R_MIPS_26",
+          "symbol": ".text",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000003E4",
+          "type": "R_MIPS_26",
+          "symbol": "func_0020BF6C",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x0000042C",
+          "type": "R_MIPS_26",
+          "symbol": ".text",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000438",
+          "type": "R_MIPS_HI16",
+          "symbol": "D_801CE8BC",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x0000043C",
+          "type": "R_MIPS_LO16",
+          "symbol": "D_801CE8BC",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x0000044C",
+          "type": "R_MIPS_HI16",
+          "symbol": "D_80193672",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000450",
+          "type": "R_MIPS_LO16",
+          "symbol": "D_80193672",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000460",
+          "type": "R_MIPS_HI16",
+          "symbol": "D_801CE8BC",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000464",
+          "type": "R_MIPS_LO16",
+          "symbol": "D_801CE8BC",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000478",
+          "type": "R_MIPS_HI16",
+          "symbol": "D_80193673",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x0000047C",
+          "type": "R_MIPS_LO16",
+          "symbol": "D_80193673",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x0000048C",
+          "type": "R_MIPS_HI16",
+          "symbol": "D_80193670",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000490",
+          "type": "R_MIPS_LO16",
+          "symbol": "D_80193670",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x0000049C",
+          "type": "R_MIPS_26",
+          "symbol": "func_0020C810",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000004BC",
+          "type": "R_MIPS_HI16",
+          "symbol": "D_801CE8BC",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000004C0",
+          "type": "R_MIPS_LO16",
+          "symbol": "D_801CE8BC",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000004D4",
+          "type": "R_MIPS_HI16",
+          "symbol": "D_80193672",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000004D8",
+          "type": "R_MIPS_LO16",
+          "symbol": "D_80193672",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000004E0",
+          "type": "R_MIPS_HI16",
+          "symbol": "D_80193672",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000004E4",
+          "type": "R_MIPS_26",
+          "symbol": ".text",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000004E8",
+          "type": "R_MIPS_LO16",
+          "symbol": "D_80193672",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000004F4",
+          "type": "R_MIPS_26",
+          "symbol": "func_0020C32C",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000504",
+          "type": "R_MIPS_HI16",
+          "symbol": "D_801CE8BC",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000508",
+          "type": "R_MIPS_LO16",
+          "symbol": "D_801CE8BC",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x0000051C",
+          "type": "R_MIPS_HI16",
+          "symbol": "D_80193672",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000520",
+          "type": "R_MIPS_LO16",
+          "symbol": "D_80193672",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000528",
+          "type": "R_MIPS_26",
+          "symbol": ".text",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000538",
+          "type": "R_MIPS_26",
+          "symbol": "func_0020C32C",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000548",
+          "type": "R_MIPS_HI16",
+          "symbol": "D_801CE8BC",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x0000054C",
+          "type": "R_MIPS_LO16",
+          "symbol": "D_801CE8BC",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000560",
+          "type": "R_MIPS_HI16",
+          "symbol": "D_80193672",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000564",
+          "type": "R_MIPS_LO16",
+          "symbol": "D_80193672",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000574",
+          "type": "R_MIPS_26",
+          "symbol": "func_0020C788",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000594",
+          "type": "R_MIPS_HI16",
+          "symbol": "D_801CE8BC",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000598",
+          "type": "R_MIPS_LO16",
+          "symbol": "D_801CE8BC",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000005AC",
+          "type": "R_MIPS_HI16",
+          "symbol": "D_80193673",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000005B0",
+          "type": "R_MIPS_LO16",
+          "symbol": "D_80193673",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000005B8",
+          "type": "R_MIPS_26",
+          "symbol": ".text",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000005C8",
+          "type": "R_MIPS_26",
+          "symbol": "func_0020C32C",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000005D8",
+          "type": "R_MIPS_HI16",
+          "symbol": "D_801CE8BC",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000005DC",
+          "type": "R_MIPS_LO16",
+          "symbol": "D_801CE8BC",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000005F0",
+          "type": "R_MIPS_HI16",
+          "symbol": "D_80193673",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000005F4",
+          "type": "R_MIPS_LO16",
+          "symbol": "D_80193673",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000005FC",
+          "type": "R_MIPS_26",
+          "symbol": ".text",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x0000060C",
+          "type": "R_MIPS_26",
+          "symbol": "func_0020C32C",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x0000061C",
+          "type": "R_MIPS_HI16",
+          "symbol": "D_801CE8BC",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000620",
+          "type": "R_MIPS_LO16",
+          "symbol": "D_801CE8BC",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000634",
+          "type": "R_MIPS_HI16",
+          "symbol": "D_80193673",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000638",
+          "type": "R_MIPS_LO16",
+          "symbol": "D_80193673",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000648",
+          "type": "R_MIPS_26",
+          "symbol": "func_0020BF6C",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000658",
+          "type": "R_MIPS_26",
+          "symbol": "func_0020C478",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x0000066C",
+          "type": "R_MIPS_26",
+          "symbol": "func_0020BFF8",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x0000067C",
+          "type": "R_MIPS_26",
+          "symbol": "func_0020C2C0",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x0000068C",
+          "type": "R_MIPS_26",
+          "symbol": "func_0020C32C",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000006B4",
+          "type": "R_MIPS_HI16",
+          "symbol": "D_80193670",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000006B8",
+          "type": "R_MIPS_LO16",
+          "symbol": "D_80193670",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000006C8",
+          "type": "R_MIPS_26",
+          "symbol": "func_00041674",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000006D0",
+          "type": "R_MIPS_26",
+          "symbol": "func_0021B770",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000006D8",
+          "type": "R_MIPS_26",
+          "symbol": "func_0020BD5C",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000006E0",
+          "type": "R_MIPS_26",
+          "symbol": ".text",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000006E8",
+          "type": "R_MIPS_26",
+          "symbol": ".text",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000006F8",
+          "type": "R_MIPS_26",
+          "symbol": "func_0021C3B0",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000700",
+          "type": "R_MIPS_26",
+          "symbol": "func_002224F4",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000708",
+          "type": "R_MIPS_26",
+          "symbol": "func_0020BF6C",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000718",
+          "type": "R_MIPS_HI16",
+          "symbol": "D_801976E8",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x0000071C",
+          "type": "R_MIPS_LO16",
+          "symbol": "D_801976E8",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000724",
+          "type": "R_MIPS_HI16",
+          "symbol": "D_80195560",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000728",
+          "type": "R_MIPS_LO16",
+          "symbol": "D_80195560",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x0000073C",
+          "type": "R_MIPS_HI16",
+          "symbol": "g_func_001957D0_source_records",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000740",
+          "type": "R_MIPS_LO16",
+          "symbol": "g_func_001957D0_source_records",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x0000076C",
+          "type": "R_MIPS_HI16",
+          "symbol": "D_80195560",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000774",
+          "type": "R_MIPS_LO16",
+          "symbol": "D_80195560",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x0000077C",
+          "type": "R_MIPS_26",
+          "symbol": "memset_00023780",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000798",
+          "type": "R_MIPS_26",
+          "symbol": "memset_00023780",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000007A0",
+          "type": "R_MIPS_HI16",
+          "symbol": "D_80193671",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000007A4",
+          "type": "R_MIPS_LO16",
+          "symbol": "D_80193671",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000007A8",
+          "type": "R_MIPS_HI16",
+          "symbol": "D_801976E8",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000007AC",
+          "type": "R_MIPS_LO16",
+          "symbol": "D_801976E8",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000007B0",
+          "type": "R_MIPS_HI16",
+          "symbol": "D_801CE8BC",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000007B4",
+          "type": "R_MIPS_LO16",
+          "symbol": "D_801CE8BC",
+          "section": ".rel.text"
+        }
+      ],
+      "auxiliarySections": [
+        {
+          "kind": "switch-table",
+          "compilerSection": ".rodata",
+          "outputSection": ".ob64.r4156",
+          "sectionType": "SHT_PROGBITS",
+          "sectionFlags": [
+            "SHF_ALLOC"
+          ],
+          "alignment": 8,
+          "romStart": "0x00229D80",
+          "romEndExclusive": "0x00229DAC",
+          "vramStart": "0x801E6AB0",
+          "vramEndExclusive": "0x801E6ADC",
+          "bytes": 44,
+          "entries": 11,
+          "expectedObjectSha256": "CDCCFAB2A276DADE9D5E3C9F9632B2678B96507014C84CF6050EA362339B2CFB",
+          "expectedLinkedSha256": "42757E1FE9D22CBDEB1E110F3F89C7D0CD64BC060D568AF4435E8B976D580AC8",
+          "preservedPrefix": {
+            "inputSection": ".ob64.r4156.prefix",
+            "sectionType": "SHT_PROGBITS",
+            "sectionFlags": [
+              "SHF_ALLOC"
+            ],
+            "alignment": 1,
+            "romStart": "0x00229AB0",
+            "romEndExclusive": "0x00229D80",
+            "vramStart": "0x801E67E0",
+            "vramEndExclusive": "0x801E6AB0",
+            "bytes": 720,
+            "expectedSha256": "CB816839E1BA5C1576D5298608792EB2B5423EA3B44F665FE698586B061E8105",
+            "ownerOriginalAssembly": "asm/original/rev0/lib/table_00229ab0.s",
+            "ownerOriginalAssemblySha256": "98B488929FB83B3D2E3791FEA9A08AD871FB14E5E94A84CA7F337D0BC3A49516"
+          },
+          "compilerOccurrences": [
+            {
+              "label": ".L42",
+              "offset": "0x00000000",
+              "bytes": 44,
+              "entries": 11,
+              "alignment": 8,
+              "alignmentDirectives": [
+                3,
+                2
+              ],
+              "expectedObjectSha256": "CDCCFAB2A276DADE9D5E3C9F9632B2678B96507014C84CF6050EA362339B2CFB",
+              "expectedLinkedSha256": "42757E1FE9D22CBDEB1E110F3F89C7D0CD64BC060D568AF4435E8B976D580AC8"
+            }
+          ],
+          "sourceObjectPrefix": {
+            "sectionType": "SHT_PROGBITS",
+            "sectionFlags": [
+              "SHF_ALLOC"
+            ],
+            "alignment": 8,
+            "bytes": 48,
+            "expectedSha256": "D39249F134005B2551738163AE0A2509071828218752808E52951F99D5809506",
+            "prefixOffset": "0x00000000",
+            "prefixBytes": 44,
+            "expectedPrefixSha256": "CDCCFAB2A276DADE9D5E3C9F9632B2678B96507014C84CF6050EA362339B2CFB",
+            "trailingPaddingOffset": "0x0000002C",
+            "trailingPaddingBytes": 4,
+            "expectedTrailingPaddingSha256": "DF3F619804A92FDB4057192DC43DD748EA778ADC52BC498CE80524C014B81119"
+          },
+          "preservedTail": {
+            "inputSection": ".ob64.r4156.tail",
+            "sectionType": "SHT_PROGBITS",
+            "sectionFlags": [
+              "SHF_ALLOC"
+            ],
+            "alignment": 1,
+            "romStart": "0x00229DAC",
+            "romEndExclusive": "0x00229DB0",
+            "vramStart": "0x801E6ADC",
+            "vramEndExclusive": "0x801E6AE0",
+            "bytes": 4,
+            "expectedSha256": "DF3F619804A92FDB4057192DC43DD748EA778ADC52BC498CE80524C014B81119",
+            "ownerOriginalAssembly": "asm/original/rev0/lib/table_00229ab0.s",
+            "ownerOriginalAssemblySha256": "98B488929FB83B3D2E3791FEA9A08AD871FB14E5E94A84CA7F337D0BC3A49516"
+          },
+          "expectedRelocations": [
+            {
+              "offset": "0x00000000",
+              "type": "R_MIPS_32",
+              "symbol": ".text",
+              "addend": "0x0000022C",
+              "section": ".rel.rodata"
+            },
+            {
+              "offset": "0x00000004",
+              "type": "R_MIPS_32",
+              "symbol": ".text",
+              "addend": "0x0000023C",
+              "section": ".rel.rodata"
+            },
+            {
+              "offset": "0x00000008",
+              "type": "R_MIPS_32",
+              "symbol": ".text",
+              "addend": "0x0000024C",
+              "section": ".rel.rodata"
+            },
+            {
+              "offset": "0x0000000C",
+              "type": "R_MIPS_32",
+              "symbol": ".text",
+              "addend": "0x0000025C",
+              "section": ".rel.rodata"
+            },
+            {
+              "offset": "0x00000010",
+              "type": "R_MIPS_32",
+              "symbol": ".text",
+              "addend": "0x0000026C",
+              "section": ".rel.rodata"
+            },
+            {
+              "offset": "0x00000014",
+              "type": "R_MIPS_32",
+              "symbol": ".text",
+              "addend": "0x0000027C",
+              "section": ".rel.rodata"
+            },
+            {
+              "offset": "0x00000018",
+              "type": "R_MIPS_32",
+              "symbol": ".text",
+              "addend": "0x0000028C",
+              "section": ".rel.rodata"
+            },
+            {
+              "offset": "0x0000001C",
+              "type": "R_MIPS_32",
+              "symbol": ".text",
+              "addend": "0x000002B4",
+              "section": ".rel.rodata"
+            },
+            {
+              "offset": "0x00000020",
+              "type": "R_MIPS_32",
+              "symbol": ".text",
+              "addend": "0x000002B4",
+              "section": ".rel.rodata"
+            },
+            {
+              "offset": "0x00000024",
+              "type": "R_MIPS_32",
+              "symbol": ".text",
+              "addend": "0x0000029C",
+              "section": ".rel.rodata"
+            },
+            {
+              "offset": "0x00000028",
+              "type": "R_MIPS_32",
+              "symbol": ".text",
+              "addend": "0x000002AC",
+              "section": ".rel.rodata"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "symbol": "func_0022A280",
+      "expectedRelocations": [
+        {
+          "offset": "0x0000003C",
+          "type": "R_MIPS_26",
+          "symbol": "func_002224F4",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x0000005C",
+          "type": "R_MIPS_26",
+          "symbol": "func_0020C478",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000068",
+          "type": "R_MIPS_26",
+          "symbol": "func_0020C2C0",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000098",
+          "type": "R_MIPS_26",
+          "symbol": "func_00239AA4",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000000B8",
+          "type": "R_MIPS_26",
+          "symbol": "func_0021D25C",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000000CC",
+          "type": "R_MIPS_26",
+          "symbol": "func_0022257C",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000000E8",
+          "type": "R_MIPS_26",
+          "symbol": ".text",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000000FC",
+          "type": "R_MIPS_26",
+          "symbol": "func_0022257C",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000108",
+          "type": "R_MIPS_26",
+          "symbol": "func_0020C1B4",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000128",
+          "type": "R_MIPS_26",
+          "symbol": "func_0021D230",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000130",
+          "type": "R_MIPS_26",
+          "symbol": ".text",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000144",
+          "type": "R_MIPS_26",
+          "symbol": "func_0021D230",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000158",
+          "type": "R_MIPS_26",
+          "symbol": "func_0021D230",
+          "section": ".rel.text"
+        }
+      ]
+    },
+    {
+      "symbol": "func_0022EC08",
+      "expectedRelocations": [
+        {
+          "offset": "0x00000070",
+          "type": "R_MIPS_26",
+          "symbol": "func_0021D200",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000088",
+          "type": "R_MIPS_26",
+          "symbol": "func_0002CBCC",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000090",
+          "type": "R_MIPS_26",
+          "symbol": "func_0002CBCC",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000098",
+          "type": "R_MIPS_26",
+          "symbol": "func_0002CBCC",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000000FC",
+          "type": "R_MIPS_26",
+          "symbol": "func_0021D230",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000120",
+          "type": "R_MIPS_26",
+          "symbol": "func_0022257C",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x0000012C",
+          "type": "R_MIPS_26",
+          "symbol": "func_0020C310",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000144",
+          "type": "R_MIPS_26",
+          "symbol": "func_0021D230",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000158",
+          "type": "R_MIPS_26",
+          "symbol": "func_0022257C",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000160",
+          "type": "R_MIPS_26",
+          "symbol": ".text",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000168",
+          "type": "R_MIPS_26",
+          "symbol": "func_0020C348",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000180",
+          "type": "R_MIPS_26",
+          "symbol": "func_0021D230",
+          "section": ".rel.text"
+        }
+      ]
+    },
+    {
+      "symbol": "func_0022A414",
+      "expectedRelocations": [
+        {
+          "offset": "0x0000000C",
+          "type": "R_MIPS_26",
+          "symbol": "func_0020C014",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000068",
+          "type": "R_MIPS_26",
+          "symbol": ".text",
+          "section": ".rel.text"
+        }
+      ]
+    },
+    {
+      "symbol": "func_0022257C",
+      "expectedRelocations": [
+        {
+          "offset": "0x00000058",
+          "type": "R_MIPS_26",
+          "symbol": "func_001F0E64",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x0000006C",
+          "type": "R_MIPS_26",
+          "symbol": "func_001F197C",
+          "section": ".rel.text"
+        }
+      ]
+    },
+    {
+      "symbol": "func_00222604",
+      "expectedRelocations": [
+        {
+          "offset": "0x00000020",
+          "type": "R_MIPS_26",
+          "symbol": "func_0020BF98",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000038",
+          "type": "R_MIPS_26",
+          "symbol": "func_0020C014",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000050",
+          "type": "R_MIPS_26",
+          "symbol": "func_0020BFF8",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000084",
+          "type": "R_MIPS_26",
+          "symbol": "func_0020C0E8",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x0000008C",
+          "type": "R_MIPS_26",
+          "symbol": ".text",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000098",
+          "type": "R_MIPS_26",
+          "symbol": "func_00045e5c",
+          "section": ".rel.text"
+        }
+      ]
+    },
+    {
+      "symbol": "func_0022EDD4",
+      "expectedRelocations": [
+        {
+          "offset": "0x00000070",
+          "type": "R_MIPS_26",
+          "symbol": "func_0021D200",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000088",
+          "type": "R_MIPS_26",
+          "symbol": "func_0002CBCC",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000090",
+          "type": "R_MIPS_26",
+          "symbol": "func_0002CBCC",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000098",
+          "type": "R_MIPS_26",
+          "symbol": "func_0002CBCC",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000000FC",
+          "type": "R_MIPS_26",
+          "symbol": "func_0021D230",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000120",
+          "type": "R_MIPS_26",
+          "symbol": "func_0022257C",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x0000012C",
+          "type": "R_MIPS_26",
+          "symbol": "func_0020C348",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000144",
+          "type": "R_MIPS_26",
+          "symbol": "func_0021D230",
+          "section": ".rel.text"
+        }
+      ]
+    },
+    {
+      "symbol": "func_0022B06C",
+      "expectedRelocations": [
+        {
+          "offset": "0x00000014",
+          "type": "R_MIPS_26",
+          "symbol": "func_0020C2C0",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000044",
+          "type": "R_MIPS_HI16",
+          "symbol": ".rodata",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x0000004C",
+          "type": "R_MIPS_LO16",
+          "symbol": ".rodata",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000058",
+          "type": "R_MIPS_26",
+          "symbol": "func_0020C32C",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000070",
+          "type": "R_MIPS_26",
+          "symbol": "func_002224F4",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000090",
+          "type": "R_MIPS_26",
+          "symbol": "func_0020C478",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x0000009C",
+          "type": "R_MIPS_26",
+          "symbol": "func_0020C2C0",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000000C0",
+          "type": "R_MIPS_26",
+          "symbol": ".text",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000000DC",
+          "type": "R_MIPS_26",
+          "symbol": ".text",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000000F8",
+          "type": "R_MIPS_26",
+          "symbol": ".text",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000110",
+          "type": "R_MIPS_26",
+          "symbol": ".text",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000118",
+          "type": "R_MIPS_26",
+          "symbol": "func_0021D784",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000120",
+          "type": "R_MIPS_26",
+          "symbol": ".text",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000128",
+          "type": "R_MIPS_26",
+          "symbol": "func_0021D7A8",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000130",
+          "type": "R_MIPS_26",
+          "symbol": ".text",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000150",
+          "type": "R_MIPS_26",
+          "symbol": "func_0021D7CC",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000158",
+          "type": "R_MIPS_26",
+          "symbol": ".text",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000160",
+          "type": "R_MIPS_26",
+          "symbol": "func_0020C1B4",
+          "section": ".rel.text"
+        }
+      ],
+      "auxiliarySections": [
+        {
+          "kind": "switch-table",
+          "compilerSection": ".rodata",
+          "outputSection": ".ob64.r4248",
+          "sectionType": "SHT_PROGBITS",
+          "sectionFlags": [
+            "SHF_ALLOC"
+          ],
+          "alignment": 8,
+          "romStart": "0x00239EC0",
+          "romEndExclusive": "0x00239EE8",
+          "vramStart": "0x801F6BF0",
+          "vramEndExclusive": "0x801F6C18",
+          "bytes": 40,
+          "entries": 10,
+          "expectedObjectSha256": "D88F1C5871652822691B42B87C2DF38C893F9A495DD4B9BB5B6F95BF97E3B0F7",
+          "expectedLinkedSha256": "FBAF73F76C89E326E556F8FDEEC7D7B7EC823DF2CC0319F70A48907EEDECA4C6",
+          "preservedTail": {
+            "inputSection": ".ob64.r4248.tail",
+            "sectionType": "SHT_PROGBITS",
+            "sectionFlags": [
+              "SHF_ALLOC"
+            ],
+            "alignment": 1,
+            "romStart": "0x00239EE8",
+            "romEndExclusive": "0x0023A3A0",
+            "vramStart": "0x801F6C18",
+            "vramEndExclusive": "0x801F70D0",
+            "bytes": 1208,
+            "expectedSha256": "D150F06F8F055AF6DCB65804E42B76A795983126F92CAA9D2BBA1BCFB3A9D526",
+            "ownerOriginalAssembly": "asm/original/rev0/lib/table_00239ec0.s",
+            "ownerOriginalAssemblySha256": "DB6B37FC1619F6541AC8FD469202CCE1A11A3B0686BAC43C0CF2AD7B1EFF10FF"
+          },
+          "expectedRelocations": [
+            {
+              "offset": "0x00000000",
+              "type": "R_MIPS_32",
+              "symbol": ".text",
+              "addend": "0x00000170",
+              "section": ".rel.rodata"
+            },
+            {
+              "offset": "0x00000004",
+              "type": "R_MIPS_32",
+              "symbol": ".text",
+              "addend": "0x00000058",
+              "section": ".rel.rodata"
+            },
+            {
+              "offset": "0x00000008",
+              "type": "R_MIPS_32",
+              "symbol": ".text",
+              "addend": "0x000000E4",
+              "section": ".rel.rodata"
+            },
+            {
+              "offset": "0x0000000C",
+              "type": "R_MIPS_32",
+              "symbol": ".text",
+              "addend": "0x00000118",
+              "section": ".rel.rodata"
+            },
+            {
+              "offset": "0x00000010",
+              "type": "R_MIPS_32",
+              "symbol": ".text",
+              "addend": "0x00000128",
+              "section": ".rel.rodata"
+            },
+            {
+              "offset": "0x00000014",
+              "type": "R_MIPS_32",
+              "symbol": ".text",
+              "addend": "0x00000160",
+              "section": ".rel.rodata"
+            },
+            {
+              "offset": "0x00000018",
+              "type": "R_MIPS_32",
+              "symbol": ".text",
+              "addend": "0x000000C8",
+              "section": ".rel.rodata"
+            },
+            {
+              "offset": "0x0000001C",
+              "type": "R_MIPS_32",
+              "symbol": ".text",
+              "addend": "0x00000174",
+              "section": ".rel.rodata"
+            },
+            {
+              "offset": "0x00000020",
+              "type": "R_MIPS_32",
+              "symbol": ".text",
+              "addend": "0x00000100",
+              "section": ".rel.rodata"
+            },
+            {
+              "offset": "0x00000024",
+              "type": "R_MIPS_32",
+              "symbol": ".text",
+              "addend": "0x00000138",
+              "section": ".rel.rodata"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "referencedDonorSymbols": [
+    {
+      "name": "D_80193670",
+      "address": "0x80193670"
+    },
+    {
+      "name": "D_80193671",
+      "address": "0x80193671"
+    },
+    {
+      "name": "D_80193672",
+      "address": "0x80193672"
+    },
+    {
+      "name": "D_80193673",
+      "address": "0x80193673"
+    },
+    {
+      "name": "D_80195560",
+      "address": "0x80195560"
+    },
+    {
+      "name": "D_801CE8BC",
+      "address": "0x801CE8BC"
+    },
+    {
+      "name": "D_801976D8",
+      "address": "0x801976D8"
+    },
+    {
+      "name": "D_801CE8C0",
+      "address": "0x801CE8C0"
+    },
+    {
+      "name": "D_800EB1F0",
+      "address": "0x800EB1F0"
+    },
+    {
+      "name": "func_00208DC8",
+      "address": "0x801C5938"
+    },
+    {
+      "name": "rand",
+      "address": "0x8009C7CC"
+    },
+    {
+      "name": "g_func_001957D0_source_records",
+      "address": "0x801971F0"
+    },
+    {
+      "name": "D_801976E8",
+      "address": "0x801976E8"
+    },
+    {
+      "name": "D_800E8100",
+      "address": "0x800E8100"
+    },
+    {
+      "name": "D_801936E0",
+      "address": "0x801936E0"
+    },
+    {
+      "name": "D_801CE8F8",
+      "address": "0x801CE8F8"
+    }
+  ],
+  "symbolDisposition": [
+    {
+      "name": "D_800E8100",
+      "canonicalTargetSource": null,
+      "canonicalSymbol": {
+        "name": "D_800E8100",
+        "address": "0x800E8100"
+      },
+      "donorSymbol": {
+        "name": "D_800E8100",
+        "address": "0x800E8100"
+      },
+      "canonicalAssemblyDefinitions": [],
+      "resolution": "canonical-input-present",
+      "canonicalAssemblyOwner": null
+    },
+    {
+      "name": "D_800EB1F0",
+      "canonicalTargetSource": null,
+      "canonicalSymbol": {
+        "name": "D_800EB1F0",
+        "address": "0x800EB1F0"
+      },
+      "donorSymbol": {
+        "name": "D_800EB1F0",
+        "address": "0x800EB1F0"
+      },
+      "canonicalAssemblyDefinitions": [],
+      "resolution": "canonical-input-present",
+      "canonicalAssemblyOwner": null
+    },
+    {
+      "name": "D_80193670",
+      "canonicalTargetSource": null,
+      "canonicalSymbol": null,
+      "donorSymbol": {
+        "name": "D_80193670",
+        "address": "0x80193670"
+      },
+      "canonicalAssemblyDefinitions": [],
+      "resolution": "donor-symbol-contract-required",
+      "canonicalAssemblyOwner": null
+    },
+    {
+      "name": "D_80193671",
+      "canonicalTargetSource": null,
+      "canonicalSymbol": null,
+      "donorSymbol": {
+        "name": "D_80193671",
+        "address": "0x80193671"
+      },
+      "canonicalAssemblyDefinitions": [],
+      "resolution": "donor-symbol-contract-required",
+      "canonicalAssemblyOwner": null
+    },
+    {
+      "name": "D_80193672",
+      "canonicalTargetSource": null,
+      "canonicalSymbol": null,
+      "donorSymbol": {
+        "name": "D_80193672",
+        "address": "0x80193672"
+      },
+      "canonicalAssemblyDefinitions": [],
+      "resolution": "donor-symbol-contract-required",
+      "canonicalAssemblyOwner": null
+    },
+    {
+      "name": "D_80193673",
+      "canonicalTargetSource": null,
+      "canonicalSymbol": null,
+      "donorSymbol": {
+        "name": "D_80193673",
+        "address": "0x80193673"
+      },
+      "canonicalAssemblyDefinitions": [],
+      "resolution": "donor-symbol-contract-required",
+      "canonicalAssemblyOwner": null
+    },
+    {
+      "name": "D_801936E0",
+      "canonicalTargetSource": null,
+      "canonicalSymbol": {
+        "name": "D_801936E0",
+        "address": "0x801936E0"
+      },
+      "donorSymbol": {
+        "name": "D_801936E0",
+        "address": "0x801936E0"
+      },
+      "canonicalAssemblyDefinitions": [],
+      "resolution": "canonical-input-present",
+      "canonicalAssemblyOwner": null
+    },
+    {
+      "name": "D_80195560",
+      "canonicalTargetSource": null,
+      "canonicalSymbol": {
+        "name": "D_80195560",
+        "address": "0x80195560"
+      },
+      "donorSymbol": {
+        "name": "D_80195560",
+        "address": "0x80195560"
+      },
+      "canonicalAssemblyDefinitions": [],
+      "resolution": "canonical-input-present",
+      "canonicalAssemblyOwner": null
+    },
+    {
+      "name": "D_801976D8",
+      "canonicalTargetSource": null,
+      "canonicalSymbol": {
+        "name": "D_801976D8",
+        "address": "0x801976D8"
+      },
+      "donorSymbol": {
+        "name": "D_801976D8",
+        "address": "0x801976D8"
+      },
+      "canonicalAssemblyDefinitions": [],
+      "resolution": "canonical-input-present",
+      "canonicalAssemblyOwner": null
+    },
+    {
+      "name": "D_801976E8",
+      "canonicalTargetSource": null,
+      "canonicalSymbol": {
+        "name": "D_801976E8",
+        "address": "0x801976E8"
+      },
+      "donorSymbol": {
+        "name": "D_801976E8",
+        "address": "0x801976E8"
+      },
+      "canonicalAssemblyDefinitions": [],
+      "resolution": "canonical-input-present",
+      "canonicalAssemblyOwner": null
+    },
+    {
+      "name": "D_801CE8BC",
+      "canonicalTargetSource": null,
+      "canonicalSymbol": {
+        "name": "D_801CE8BC",
+        "address": "0x801CE8BC"
+      },
+      "donorSymbol": {
+        "name": "D_801CE8BC",
+        "address": "0x801CE8BC"
+      },
+      "canonicalAssemblyDefinitions": [],
+      "resolution": "canonical-input-present",
+      "canonicalAssemblyOwner": null
+    },
+    {
+      "name": "D_801CE8C0",
+      "canonicalTargetSource": null,
+      "canonicalSymbol": {
+        "name": "D_801CE8C0",
+        "address": "0x801CE8C0"
+      },
+      "donorSymbol": {
+        "name": "D_801CE8C0",
+        "address": "0x801CE8C0"
+      },
+      "canonicalAssemblyDefinitions": [],
+      "resolution": "canonical-input-present",
+      "canonicalAssemblyOwner": null
+    },
+    {
+      "name": "D_801CE8F8",
+      "canonicalTargetSource": null,
+      "canonicalSymbol": null,
+      "donorSymbol": {
+        "name": "D_801CE8F8",
+        "address": "0x801CE8F8"
+      },
+      "canonicalAssemblyDefinitions": [],
+      "resolution": "donor-symbol-contract-required",
+      "canonicalAssemblyOwner": null
+    },
+    {
+      "name": "func_0002CBCC",
+      "canonicalTargetSource": "src/lib/rand.c",
+      "canonicalSymbol": null,
+      "donorSymbol": null,
+      "canonicalAssemblyDefinitions": [],
+      "resolution": "canonical-input-present",
+      "canonicalAssemblyOwner": null
+    },
+    {
+      "name": "func_00041674",
+      "canonicalTargetSource": null,
+      "canonicalSymbol": null,
+      "donorSymbol": null,
+      "canonicalAssemblyDefinitions": [],
+      "resolution": "canonical-input-present",
+      "canonicalAssemblyOwner": {
+        "name": "func_00041674",
+        "file": "asm/original/rev0/lib/func_00041674.s",
+        "romStart": "0x00041674",
+        "romEndExclusive": "0x00041910",
+        "rawSha256": "3BAB18843BDB2F138A5A264FBD134FD2DE44B28B1D325505920B9ECE1AE0510E"
+      }
+    },
+    {
+      "name": "func_00045480",
+      "canonicalTargetSource": "src/lib/func_00045480.c",
+      "canonicalSymbol": null,
+      "donorSymbol": null,
+      "canonicalAssemblyDefinitions": [],
+      "resolution": "canonical-input-present",
+      "canonicalAssemblyOwner": {
+        "name": "func_00045480",
+        "file": "asm/original/rev0/lib/func_00045480.s",
+        "romStart": "0x00045480",
+        "romEndExclusive": "0x00045498",
+        "rawSha256": "1F2B2DC1D73756BEA1B92A726BB7084C3036BF1311C8759B2C3D1D07FA6F1B38"
+      }
+    },
+    {
+      "name": "func_000454e0",
+      "canonicalTargetSource": "src/lib/func_000454e0.c",
+      "canonicalSymbol": null,
+      "donorSymbol": null,
+      "canonicalAssemblyDefinitions": [],
+      "resolution": "canonical-input-present",
+      "canonicalAssemblyOwner": {
+        "name": "func_000454e0",
+        "file": "asm/original/rev0/lib/func_000454e0.s",
+        "romStart": "0x000454E0",
+        "romEndExclusive": "0x00045514",
+        "rawSha256": "4F3CF06A85230CF41DB75E627093D9C91E72B33413496149D7AB2C0654FE3CA4"
+      }
+    },
+    {
+      "name": "func_00045e5c",
+      "canonicalTargetSource": null,
+      "canonicalSymbol": null,
+      "donorSymbol": null,
+      "canonicalAssemblyDefinitions": [],
+      "resolution": "canonical-input-present",
+      "canonicalAssemblyOwner": {
+        "name": "func_00045e5c",
+        "file": "asm/original/rev0/lib/func_00045e5c.s",
+        "romStart": "0x00045E5C",
+        "romEndExclusive": "0x00045F30",
+        "rawSha256": "09F0D9C2BA6A55D63D51C770D797806997F56FBD4C9FDA7000CB1C93E9C589B2"
+      }
+    },
+    {
+      "name": "func_0005a0f4",
+      "canonicalTargetSource": null,
+      "canonicalSymbol": null,
+      "donorSymbol": null,
+      "canonicalAssemblyDefinitions": [],
+      "resolution": "canonical-input-present",
+      "canonicalAssemblyOwner": {
+        "name": "func_0005a0f4",
+        "file": "asm/original/rev0/lib/func_0005a0f4.s",
+        "romStart": "0x0005A0F4",
+        "romEndExclusive": "0x0005AC70",
+        "rawSha256": "DAC4287B23165C9F381DC7D8C8E088F97BBF949F307CF43B0D02909BB1BA9D54"
+      }
+    },
+    {
+      "name": "func_001F0B40",
+      "canonicalTargetSource": null,
+      "canonicalSymbol": null,
+      "donorSymbol": null,
+      "canonicalAssemblyDefinitions": [],
+      "resolution": "canonical-input-present",
+      "canonicalAssemblyOwner": {
+        "name": "func_001F0B40",
+        "file": "asm/original/rev0/lib/func_001F0B40.s",
+        "romStart": "0x001F0B40",
+        "romEndExclusive": "0x001F0C24",
+        "rawSha256": "339C2CF15E6EE057A74078B92535119D29228CC8BA6F22D7E19CF5162A821AF2"
+      }
+    },
+    {
+      "name": "func_001F0E64",
+      "canonicalTargetSource": null,
+      "canonicalSymbol": null,
+      "donorSymbol": null,
+      "canonicalAssemblyDefinitions": [],
+      "resolution": "canonical-input-present",
+      "canonicalAssemblyOwner": {
+        "name": "func_001F0E64",
+        "file": "asm/original/rev0/lib/func_001F0E64.s",
+        "romStart": "0x001F0E64",
+        "romEndExclusive": "0x001F0F5C",
+        "rawSha256": "6C550E946082FFB1A35B5DBC1713D1566574BFE6A4F5804C2DC23EBCECC89575"
+      }
+    },
+    {
+      "name": "func_001F197C",
+      "canonicalTargetSource": "src/lib/func_001F197C.c",
+      "canonicalSymbol": null,
+      "donorSymbol": null,
+      "canonicalAssemblyDefinitions": [],
+      "resolution": "canonical-input-present",
+      "canonicalAssemblyOwner": {
+        "name": "func_001F197C",
+        "file": "asm/original/rev0/lib/func_001F197C.s",
+        "romStart": "0x001F197C",
+        "romEndExclusive": "0x001F1D5C",
+        "rawSha256": "6ECD941B871B7B056184DEF22CDFCC20006DBDAA458BDCF2B2B0861D437C579D"
+      }
+    },
+    {
+      "name": "func_001F1E18",
+      "canonicalTargetSource": null,
+      "canonicalSymbol": null,
+      "donorSymbol": null,
+      "canonicalAssemblyDefinitions": [],
+      "resolution": "canonical-input-present",
+      "canonicalAssemblyOwner": {
+        "name": "func_001F1E18",
+        "file": "asm/original/rev0/lib/func_001F1E18.s",
+        "romStart": "0x001F1E18",
+        "romEndExclusive": "0x001F1F20",
+        "rawSha256": "BFCDDE328C230E186B97A7625E2C8AC819D6CF27DE175344F17CEE51B9F2E5BA"
+      }
+    },
+    {
+      "name": "func_001FFE80",
+      "canonicalTargetSource": "src/lib/func_001FFE80.c",
+      "canonicalSymbol": null,
+      "donorSymbol": null,
+      "canonicalAssemblyDefinitions": [],
+      "resolution": "canonical-input-present",
+      "canonicalAssemblyOwner": {
+        "name": "func_001FFE80",
+        "file": "asm/original/rev0/lib/func_001FFE80.s",
+        "romStart": "0x001FFE80",
+        "romEndExclusive": "0x0020019C",
+        "rawSha256": "8BE95D72294E363DEA1C404DCAA0F6E63862EB24173C661594A45D8B58C01B6E"
+      }
+    },
+    {
+      "name": "func_00201584",
+      "canonicalTargetSource": "src/lib/func_00201584.c",
+      "canonicalSymbol": null,
+      "donorSymbol": null,
+      "canonicalAssemblyDefinitions": [],
+      "resolution": "canonical-input-present",
+      "canonicalAssemblyOwner": {
+        "name": "func_00201584",
+        "file": "asm/original/rev0/lib/func_00201584.s",
+        "romStart": "0x00201584",
+        "romEndExclusive": "0x002015C8",
+        "rawSha256": "29DB3ADE423F43BF0A09A7480566E24F3519C380D48BF3A314156095905F037B"
+      }
+    },
+    {
+      "name": "func_00201798",
+      "canonicalTargetSource": "src/lib/func_00201798.c",
+      "canonicalSymbol": null,
+      "donorSymbol": null,
+      "canonicalAssemblyDefinitions": [],
+      "resolution": "canonical-input-present",
+      "canonicalAssemblyOwner": {
+        "name": "func_00201798",
+        "file": "asm/original/rev0/lib/func_00201798.s",
+        "romStart": "0x00201798",
+        "romEndExclusive": "0x00201838",
+        "rawSha256": "22D1FA3938D52B18FD2FF4622309774C576DD8D7715D45C39D7F690AC678F2BE"
+      }
+    },
+    {
+      "name": "func_002071F4",
+      "canonicalTargetSource": null,
+      "canonicalSymbol": null,
+      "donorSymbol": null,
+      "canonicalAssemblyDefinitions": [],
+      "resolution": "canonical-input-present",
+      "canonicalAssemblyOwner": {
+        "name": "func_002071F4",
+        "file": "asm/original/rev0/lib/func_002071F4.s",
+        "romStart": "0x002071F4",
+        "romEndExclusive": "0x002073CC",
+        "rawSha256": "29B54AC56E1FA2B6B36C55F205825D3414B1BD05D36A817011928031CA688AAB"
+      }
+    },
+    {
+      "name": "func_00208D80",
+      "canonicalTargetSource": "src/lib/func_00208D80.c",
+      "canonicalSymbol": null,
+      "donorSymbol": null,
+      "canonicalAssemblyDefinitions": [],
+      "resolution": "canonical-input-present",
+      "canonicalAssemblyOwner": {
+        "name": "func_00208D80",
+        "file": "asm/original/rev0/lib/func_00208D80.s",
+        "romStart": "0x00208D80",
+        "romEndExclusive": "0x00208DC8",
+        "rawSha256": "F540BCDECE47F934D603561B969522EF9AE20CA6F2F88BB170B8634EB5E4E1A5"
+      }
+    },
+    {
+      "name": "func_00208DC8",
+      "canonicalTargetSource": "src/lib/func_00208DC8.c",
+      "canonicalSymbol": null,
+      "donorSymbol": {
+        "name": "func_00208DC8",
+        "address": "0x801C5938"
+      },
+      "canonicalAssemblyDefinitions": [],
+      "resolution": "canonical-input-present",
+      "canonicalAssemblyOwner": {
+        "name": "func_00208DC8",
+        "file": "asm/original/rev0/lib/func_00208DC8.s",
+        "romStart": "0x00208DC8",
+        "romEndExclusive": "0x00208EB0",
+        "rawSha256": "826BF5D8FEA26C6560CB34E993E2A17BA44F63FA12256B1739AABA7A90103214"
+      }
+    },
+    {
+      "name": "func_00208EB0",
+      "canonicalTargetSource": null,
+      "canonicalSymbol": null,
+      "donorSymbol": null,
+      "canonicalAssemblyDefinitions": [],
+      "resolution": "canonical-input-present",
+      "canonicalAssemblyOwner": {
+        "name": "func_00208EB0",
+        "file": "asm/original/rev0/lib/func_00208EB0.s",
+        "romStart": "0x00208EB0",
+        "romEndExclusive": "0x00208F90",
+        "rawSha256": "7CE335970F9FBFF84CF58FCF5AE1FAE5355CA1AF9E86E198099D3626B5F61331"
+      }
+    },
+    {
+      "name": "func_0020BD5C",
+      "canonicalTargetSource": null,
+      "canonicalSymbol": null,
+      "donorSymbol": null,
+      "canonicalAssemblyDefinitions": [],
+      "resolution": "canonical-input-present",
+      "canonicalAssemblyOwner": {
+        "name": "func_0020BD5C",
+        "file": "asm/original/rev0/lib/func_0020BD5C.s",
+        "romStart": "0x0020BD5C",
+        "romEndExclusive": "0x0020BD8C",
+        "rawSha256": "9517B5D39174B810F0839BBCB0B0BDDD51090A41E9396A28CB1A38C4F8A6A64F"
+      }
+    },
+    {
+      "name": "func_0020BF6C",
+      "canonicalTargetSource": "src/lib/func_0020BF6C.c",
+      "canonicalSymbol": null,
+      "donorSymbol": null,
+      "canonicalAssemblyDefinitions": [],
+      "resolution": "canonical-input-present",
+      "canonicalAssemblyOwner": {
+        "name": "func_0020BF6C",
+        "file": "asm/original/rev0/lib/func_0020BF6C.s",
+        "romStart": "0x0020BF6C",
+        "romEndExclusive": "0x0020BF7C",
+        "rawSha256": "4A64A43B0FFAB25E808EFE1EBC832F642067969010FB87753F156F458A0D76A3"
+      }
+    },
+    {
+      "name": "func_0020BF7C",
+      "canonicalTargetSource": "src/lib/func_0020BF7C.c",
+      "canonicalSymbol": null,
+      "donorSymbol": null,
+      "canonicalAssemblyDefinitions": [],
+      "resolution": "canonical-input-present",
+      "canonicalAssemblyOwner": {
+        "name": "func_0020BF7C",
+        "file": "asm/original/rev0/lib/func_0020BF7C.s",
+        "romStart": "0x0020BF7C",
+        "romEndExclusive": "0x0020BF8C",
+        "rawSha256": "D1906457628ADD1458A287538037905762A9F55A5FC5AAAD2878E4553E0E8370"
+      }
+    },
+    {
+      "name": "func_0020BF98",
+      "canonicalTargetSource": "src/lib/func_0020BF98.c",
+      "canonicalSymbol": null,
+      "donorSymbol": null,
+      "canonicalAssemblyDefinitions": [],
+      "resolution": "canonical-input-present",
+      "canonicalAssemblyOwner": {
+        "name": "func_0020BF98",
+        "file": "asm/original/rev0/lib/func_0020BF98.s",
+        "romStart": "0x0020BF98",
+        "romEndExclusive": "0x0020BFA4",
+        "rawSha256": "07777586566A02DBA9E64CDE4C89E1A7BFBBD7A045E18A6D0B0A3F7048190851"
+      }
+    },
+    {
+      "name": "func_0020BFE4",
+      "canonicalTargetSource": "src/lib/func_0020BFE4.c",
+      "canonicalSymbol": null,
+      "donorSymbol": null,
+      "canonicalAssemblyDefinitions": [],
+      "resolution": "canonical-input-present",
+      "canonicalAssemblyOwner": {
+        "name": "func_0020BFE4",
+        "file": "asm/original/rev0/lib/func_0020BFE4.s",
+        "romStart": "0x0020BFE4",
+        "romEndExclusive": "0x0020BFF8",
+        "rawSha256": "FF4C13DFC1B030FB62E9D9279A895E671C5096971784818201A3C7A1C3DFA248"
+      }
+    },
+    {
+      "name": "func_0020BFF8",
+      "canonicalTargetSource": "src/lib/func_0020BFF8.c",
+      "canonicalSymbol": null,
+      "donorSymbol": null,
+      "canonicalAssemblyDefinitions": [],
+      "resolution": "canonical-input-present",
+      "canonicalAssemblyOwner": {
+        "name": "func_0020BFF8",
+        "file": "asm/original/rev0/lib/func_0020BFF8.s",
+        "romStart": "0x0020BFF8",
+        "romEndExclusive": "0x0020C014",
+        "rawSha256": "9888047448AD576BA7B6C39A4A42D1AF303BD09F5F430DC288E41E1006B85AAF"
+      }
+    },
+    {
+      "name": "func_0020C014",
+      "canonicalTargetSource": null,
+      "canonicalSymbol": null,
+      "donorSymbol": null,
+      "canonicalAssemblyDefinitions": [],
+      "resolution": "canonical-input-present",
+      "canonicalAssemblyOwner": {
+        "name": "func_0020C014",
+        "file": "asm/original/rev0/lib/func_0020C014.s",
+        "romStart": "0x0020C014",
+        "romEndExclusive": "0x0020C034",
+        "rawSha256": "A5608501FC97C5782297B3BDFD31FCC42898A068947B174D8057836F431418DB"
+      }
+    },
+    {
+      "name": "func_0020C0E8",
+      "canonicalTargetSource": null,
+      "canonicalSymbol": null,
+      "donorSymbol": null,
+      "canonicalAssemblyDefinitions": [],
+      "resolution": "canonical-input-present",
+      "canonicalAssemblyOwner": {
+        "name": "func_0020C0E8",
+        "file": "asm/original/rev0/lib/func_0020C0E8.s",
+        "romStart": "0x0020C0E8",
+        "romEndExclusive": "0x0020C104",
+        "rawSha256": "BC737400FD4E189A94CD929026A94876EC6D7E3B759DC599F9F04EFCEE852FB5"
+      }
+    },
+    {
+      "name": "func_0020C104",
+      "canonicalTargetSource": null,
+      "canonicalSymbol": null,
+      "donorSymbol": null,
+      "canonicalAssemblyDefinitions": [],
+      "resolution": "canonical-input-present",
+      "canonicalAssemblyOwner": {
+        "name": "func_0020C104",
+        "file": "asm/original/rev0/lib/func_0020C104.s",
+        "romStart": "0x0020C104",
+        "romEndExclusive": "0x0020C120",
+        "rawSha256": "0426292FABC786343D4196E5D6E888444CD554A3621D1883E64BD4B9276F408C"
+      }
+    },
+    {
+      "name": "func_0020C120",
+      "canonicalTargetSource": null,
+      "canonicalSymbol": null,
+      "donorSymbol": null,
+      "canonicalAssemblyDefinitions": [],
+      "resolution": "canonical-input-present",
+      "canonicalAssemblyOwner": {
+        "name": "func_0020C120",
+        "file": "asm/original/rev0/lib/func_0020C120.s",
+        "romStart": "0x0020C120",
+        "romEndExclusive": "0x0020C164",
+        "rawSha256": "63E13D9B8DD53481D06EDCFB40279B4567B40C1A3708D0A2C929B92A356D6AE7"
+      }
+    },
+    {
+      "name": "func_0020C1B4",
+      "canonicalTargetSource": null,
+      "canonicalSymbol": null,
+      "donorSymbol": null,
+      "canonicalAssemblyDefinitions": [],
+      "resolution": "canonical-input-present",
+      "canonicalAssemblyOwner": {
+        "name": "func_0020C1B4",
+        "file": "asm/original/rev0/lib/func_0020C1B4.s",
+        "romStart": "0x0020C1B4",
+        "romEndExclusive": "0x0020C1F8",
+        "rawSha256": "7D3063F149591FFCA54182479720E73A7AE02A11287E7096CB34AB56B20AA66C"
+      }
+    },
+    {
+      "name": "func_0020C24C",
+      "canonicalTargetSource": null,
+      "canonicalSymbol": null,
+      "donorSymbol": null,
+      "canonicalAssemblyDefinitions": [],
+      "resolution": "canonical-input-present",
+      "canonicalAssemblyOwner": {
+        "name": "func_0020C24C",
+        "file": "asm/original/rev0/lib/func_0020C24C.s",
+        "romStart": "0x0020C24C",
+        "romEndExclusive": "0x0020C284",
+        "rawSha256": "674334C7553954D1A7F0F6D72D501834DA42DD0201D2F1D5E29636B991AAC44F"
+      }
+    },
+    {
+      "name": "func_0020C284",
+      "canonicalTargetSource": null,
+      "canonicalSymbol": null,
+      "donorSymbol": null,
+      "canonicalAssemblyDefinitions": [],
+      "resolution": "canonical-input-present",
+      "canonicalAssemblyOwner": {
+        "name": "func_0020C284",
+        "file": "asm/original/rev0/lib/func_0020C284.s",
+        "romStart": "0x0020C284",
+        "romEndExclusive": "0x0020C2C0",
+        "rawSha256": "C2D2A44A34E50EFDCF6D0FCBC94A9EFD48FD8BF982F0E16D919FC00C64B8D5D9"
+      }
+    },
+    {
+      "name": "func_0020C2C0",
+      "canonicalTargetSource": null,
+      "canonicalSymbol": null,
+      "donorSymbol": null,
+      "canonicalAssemblyDefinitions": [],
+      "resolution": "canonical-input-present",
+      "canonicalAssemblyOwner": {
+        "name": "func_0020C2C0",
+        "file": "asm/original/rev0/lib/func_0020C2C0.s",
+        "romStart": "0x0020C2C0",
+        "romEndExclusive": "0x0020C2D8",
+        "rawSha256": "CFEB7881D0A7F5799D3368CDEEF3257FE5378D66F2B99942C9FF023BF4D0947D"
+      }
+    },
+    {
+      "name": "func_0020C2F4",
+      "canonicalTargetSource": null,
+      "canonicalSymbol": null,
+      "donorSymbol": null,
+      "canonicalAssemblyDefinitions": [],
+      "resolution": "canonical-input-present",
+      "canonicalAssemblyOwner": {
+        "name": "func_0020C2F4",
+        "file": "asm/original/rev0/lib/func_0020C2F4.s",
+        "romStart": "0x0020C2F4",
+        "romEndExclusive": "0x0020C310",
+        "rawSha256": "CE10BD95113487BBE9FED45B14A5542C6C95A5F199815AD3833A8BF879A86581"
+      }
+    },
+    {
+      "name": "func_0020C310",
+      "canonicalTargetSource": null,
+      "canonicalSymbol": null,
+      "donorSymbol": null,
+      "canonicalAssemblyDefinitions": [],
+      "resolution": "canonical-input-present",
+      "canonicalAssemblyOwner": {
+        "name": "func_0020C310",
+        "file": "asm/original/rev0/lib/func_0020C310.s",
+        "romStart": "0x0020C310",
+        "romEndExclusive": "0x0020C32C",
+        "rawSha256": "AE217F651EC488EB2861469A924C196A02BC7B5A3C390EA873D5AD65B61461B2"
+      }
+    },
+    {
+      "name": "func_0020C32C",
+      "canonicalTargetSource": null,
+      "canonicalSymbol": null,
+      "donorSymbol": null,
+      "canonicalAssemblyDefinitions": [],
+      "resolution": "canonical-input-present",
+      "canonicalAssemblyOwner": {
+        "name": "func_0020C32C",
+        "file": "asm/original/rev0/lib/func_0020C32C.s",
+        "romStart": "0x0020C32C",
+        "romEndExclusive": "0x0020C348",
+        "rawSha256": "B0681C6DA74205E76D8E709D3AC5CE1ADA317C5055EF4C160E89B9A736A1F32A"
+      }
+    },
+    {
+      "name": "func_0020C348",
+      "canonicalTargetSource": null,
+      "canonicalSymbol": null,
+      "donorSymbol": null,
+      "canonicalAssemblyDefinitions": [],
+      "resolution": "canonical-input-present",
+      "canonicalAssemblyOwner": {
+        "name": "func_0020C348",
+        "file": "asm/original/rev0/lib/func_0020C348.s",
+        "romStart": "0x0020C348",
+        "romEndExclusive": "0x0020C364",
+        "rawSha256": "912F4BA5F5EB5BEA96E5BECAF2B246BB0C9BEEB107C64C2BF7E7DD8F552447FD"
+      }
+    },
+    {
+      "name": "func_0020C448",
+      "canonicalTargetSource": null,
+      "canonicalSymbol": null,
+      "donorSymbol": null,
+      "canonicalAssemblyDefinitions": [],
+      "resolution": "canonical-input-present",
+      "canonicalAssemblyOwner": {
+        "name": "func_0020C448",
+        "file": "asm/original/rev0/lib/func_0020C448.s",
+        "romStart": "0x0020C448",
+        "romEndExclusive": "0x0020C478",
+        "rawSha256": "5A2A2F255171ACC2250EAE68032123F907272146560F075E2C58831572BC1217"
+      }
+    },
+    {
+      "name": "func_0020C478",
+      "canonicalTargetSource": "src/lib/func_0020C478.c",
+      "canonicalSymbol": null,
+      "donorSymbol": null,
+      "canonicalAssemblyDefinitions": [],
+      "resolution": "canonical-input-present",
+      "canonicalAssemblyOwner": {
+        "name": "func_0020C478",
+        "file": "asm/original/rev0/lib/func_0020C478.s",
+        "romStart": "0x0020C478",
+        "romEndExclusive": "0x0020C4B8",
+        "rawSha256": "95874F6C33E35C9EE687D843D03102A698CDBD571816C7FA9359C4987D06161D"
+      }
+    },
+    {
+      "name": "func_0020C788",
+      "canonicalTargetSource": null,
+      "canonicalSymbol": null,
+      "donorSymbol": null,
+      "canonicalAssemblyDefinitions": [],
+      "resolution": "canonical-input-present",
+      "canonicalAssemblyOwner": {
+        "name": "func_0020C788",
+        "file": "asm/original/rev0/lib/func_0020C788.s",
+        "romStart": "0x0020C788",
+        "romEndExclusive": "0x0020C810",
+        "rawSha256": "C1B8F1A2D7285BF27BB62DDD00D2B65A7B9CF352F3194D84408FA6DCC383BC39"
+      }
+    },
+    {
+      "name": "func_0020C810",
+      "canonicalTargetSource": null,
+      "canonicalSymbol": null,
+      "donorSymbol": null,
+      "canonicalAssemblyDefinitions": [],
+      "resolution": "canonical-input-present",
+      "canonicalAssemblyOwner": {
+        "name": "func_0020C810",
+        "file": "asm/original/rev0/lib/func_0020C810.s",
+        "romStart": "0x0020C810",
+        "romEndExclusive": "0x0020C89C",
+        "rawSha256": "3881F7D0AB15CC121900EBD5FDEF6C66E4A81E5B70B53BC1F36621991127933A"
+      }
+    },
+    {
+      "name": "func_0020D444",
+      "canonicalTargetSource": null,
+      "canonicalSymbol": null,
+      "donorSymbol": null,
+      "canonicalAssemblyDefinitions": [],
+      "resolution": "canonical-input-present",
+      "canonicalAssemblyOwner": {
+        "name": "func_0020D444",
+        "file": "asm/original/rev0/lib/func_0020D444.s",
+        "romStart": "0x0020D444",
+        "romEndExclusive": "0x0020D490",
+        "rawSha256": "E1135E840B50ABC26FD809D0138E3C034D882C4006AD6C35919A2AEC68ECE4AC"
+      }
+    },
+    {
+      "name": "func_0020D72C",
+      "canonicalTargetSource": null,
+      "canonicalSymbol": null,
+      "donorSymbol": null,
+      "canonicalAssemblyDefinitions": [],
+      "resolution": "canonical-input-present",
+      "canonicalAssemblyOwner": {
+        "name": "func_0020D72C",
+        "file": "asm/original/rev0/lib/func_0020D72C.s",
+        "romStart": "0x0020D72C",
+        "romEndExclusive": "0x0020D770",
+        "rawSha256": "12134A01E1142DF8705B674C63BE9479D7CAE5D19B6B84E11CF321F881D3659C"
+      }
+    },
+    {
+      "name": "func_0020D770",
+      "canonicalTargetSource": null,
+      "canonicalSymbol": null,
+      "donorSymbol": null,
+      "canonicalAssemblyDefinitions": [],
+      "resolution": "canonical-input-present",
+      "canonicalAssemblyOwner": {
+        "name": "func_0020D770",
+        "file": "asm/original/rev0/lib/func_0020D770.s",
+        "romStart": "0x0020D770",
+        "romEndExclusive": "0x0020D814",
+        "rawSha256": "C941409813EDA04E737AAD33BD6B08611F0F59B7C92AB0675E990339FCCC98BC"
+      }
+    },
+    {
+      "name": "func_00214BDC",
+      "canonicalTargetSource": null,
+      "canonicalSymbol": null,
+      "donorSymbol": null,
+      "canonicalAssemblyDefinitions": [],
+      "resolution": "canonical-input-present",
+      "canonicalAssemblyOwner": {
+        "name": "func_00214BDC",
+        "file": "asm/original/rev0/lib/func_00214BDC.s",
+        "romStart": "0x00214BDC",
+        "romEndExclusive": "0x00214D30",
+        "rawSha256": "EE148BC5AB30A8C2FF0F6FB7552541A4557054A4C48030A18F42F78F3DB4D025"
+      }
+    },
+    {
+      "name": "func_00215CF0",
+      "canonicalTargetSource": "src/battle/func_00215CF0.c",
+      "canonicalSymbol": null,
+      "donorSymbol": null,
+      "canonicalAssemblyDefinitions": [],
+      "resolution": "canonical-input-present",
+      "canonicalAssemblyOwner": {
+        "name": "func_00215CF0",
+        "file": "asm/original/rev0/lib/func_00215CF0.s",
+        "romStart": "0x00215CF0",
+        "romEndExclusive": "0x00216A38",
+        "rawSha256": "92072A039BCC5DB58214CCE013FD63DDBCE749EC6FFFAF069E6CA09AF66A3514"
+      }
+    },
+    {
+      "name": "func_00217BA8",
+      "canonicalTargetSource": "src/battle/func_00217BA8.c",
+      "canonicalSymbol": null,
+      "donorSymbol": null,
+      "canonicalAssemblyDefinitions": [],
+      "resolution": "canonical-input-present",
+      "canonicalAssemblyOwner": {
+        "name": "func_00217BA8",
+        "file": "asm/original/rev0/lib/func_00217BA8.s",
+        "romStart": "0x00217BA8",
+        "romEndExclusive": "0x00217FB0",
+        "rawSha256": "96532F9862369E5DD3C8507C14BB48DAC2D1FD3DB726D113B6ED00CEFE1DD5EC"
+      }
+    },
+    {
+      "name": "func_0021840C",
+      "canonicalTargetSource": "src/battle/func_0021840C.c",
+      "canonicalSymbol": null,
+      "donorSymbol": null,
+      "canonicalAssemblyDefinitions": [],
+      "resolution": "canonical-input-present",
+      "canonicalAssemblyOwner": {
+        "name": "func_0021840C",
+        "file": "asm/original/rev0/lib/func_0021840C.s",
+        "romStart": "0x0021840C",
+        "romEndExclusive": "0x002187BC",
+        "rawSha256": "431317650682654F66FFAF4CDA33FFA8AA8169E79FD44D0FE491F28ACED7CC07"
+      }
+    },
+    {
+      "name": "func_00218B58",
+      "canonicalTargetSource": "src/battle/func_00218B58.c",
+      "canonicalSymbol": null,
+      "donorSymbol": null,
+      "canonicalAssemblyDefinitions": [],
+      "resolution": "canonical-input-present",
+      "canonicalAssemblyOwner": {
+        "name": "func_00218B58",
+        "file": "asm/original/rev0/lib/func_00218B58.s",
+        "romStart": "0x00218B58",
+        "romEndExclusive": "0x002190AC",
+        "rawSha256": "81EF947C035DE8B67745A6F338E175A7168907CE5683184D3E18EDD380AEED93"
+      }
+    },
+    {
+      "name": "func_00219470",
+      "canonicalTargetSource": null,
+      "canonicalSymbol": null,
+      "donorSymbol": null,
+      "canonicalAssemblyDefinitions": [],
+      "resolution": "canonical-input-present",
+      "canonicalAssemblyOwner": {
+        "name": "func_00219470",
+        "file": "asm/original/rev0/lib/func_00219470.s",
+        "romStart": "0x00219470",
+        "romEndExclusive": "0x00219730",
+        "rawSha256": "33050032FF9B9A7609795780DCA7DE4064B2D2ED2F2232827E794BADF2D59AEF"
+      }
+    },
+    {
+      "name": "func_00219A14",
+      "canonicalTargetSource": null,
+      "canonicalSymbol": null,
+      "donorSymbol": null,
+      "canonicalAssemblyDefinitions": [],
+      "resolution": "canonical-input-present",
+      "canonicalAssemblyOwner": {
+        "name": "func_00219A14",
+        "file": "asm/original/rev0/lib/func_00219A14.s",
+        "romStart": "0x00219A14",
+        "romEndExclusive": "0x00219F0C",
+        "rawSha256": "42EF723377D58A9C64A4E359452DEC83799C84EBF3D2C0242FAEAD606A7E8F60"
+      }
+    },
+    {
+      "name": "func_00219F0C",
+      "canonicalTargetSource": null,
+      "canonicalSymbol": null,
+      "donorSymbol": null,
+      "canonicalAssemblyDefinitions": [],
+      "resolution": "canonical-input-present",
+      "canonicalAssemblyOwner": {
+        "name": "func_00219F0C",
+        "file": "asm/original/rev0/lib/func_00219F0C.s",
+        "romStart": "0x00219F0C",
+        "romEndExclusive": "0x0021A438",
+        "rawSha256": "1F0F345AAA764A607F74F57A51FDBCC995A059833B178C4C44F4D95784109417"
+      }
+    },
+    {
+      "name": "func_0021A438",
+      "canonicalTargetSource": null,
+      "canonicalSymbol": null,
+      "donorSymbol": null,
+      "canonicalAssemblyDefinitions": [],
+      "resolution": "canonical-input-present",
+      "canonicalAssemblyOwner": {
+        "name": "func_0021A438",
+        "file": "asm/original/rev0/lib/func_0021A438.s",
+        "romStart": "0x0021A438",
+        "romEndExclusive": "0x0021A5C8",
+        "rawSha256": "E213FA7BCD33E7559DF3F49EC616956585637C70C677EFB09178F190A82876AA"
+      }
+    },
+    {
+      "name": "func_0021A5C8",
+      "canonicalTargetSource": null,
+      "canonicalSymbol": null,
+      "donorSymbol": null,
+      "canonicalAssemblyDefinitions": [],
+      "resolution": "canonical-input-present",
+      "canonicalAssemblyOwner": {
+        "name": "func_0021A5C8",
+        "file": "asm/original/rev0/lib/func_0021A5C8.s",
+        "romStart": "0x0021A5C8",
+        "romEndExclusive": "0x0021A9B4",
+        "rawSha256": "F8A593E2532612F59B61FCEB88657A43916D00F032EB557B02C3D622F0D02FF4"
+      }
+    },
+    {
+      "name": "func_0021A9B4",
+      "canonicalTargetSource": null,
+      "canonicalSymbol": null,
+      "donorSymbol": null,
+      "canonicalAssemblyDefinitions": [],
+      "resolution": "canonical-input-present",
+      "canonicalAssemblyOwner": {
+        "name": "func_0021A9B4",
+        "file": "asm/original/rev0/lib/func_0021A9B4.s",
+        "romStart": "0x0021A9B4",
+        "romEndExclusive": "0x0021AE6C",
+        "rawSha256": "C9243DF174EB96A031CA30E1054263D0730BDC23BBD73D14EF703716BBDB4458"
+      }
+    },
+    {
+      "name": "func_0021B0A0",
+      "canonicalTargetSource": "src/battle/func_0021B0A0.c",
+      "canonicalSymbol": null,
+      "donorSymbol": null,
+      "canonicalAssemblyDefinitions": [],
+      "resolution": "canonical-input-present",
+      "canonicalAssemblyOwner": {
+        "name": "func_0021B0A0",
+        "file": "asm/original/rev0/lib/func_0021B0A0.s",
+        "romStart": "0x0021B0A0",
+        "romEndExclusive": "0x0021B2E0",
+        "rawSha256": "2BC023775AB55281DB80E781657613581900EF81C8E1459B22D54BF171F85C15"
+      }
+    },
+    {
+      "name": "func_0021B2E0",
+      "canonicalTargetSource": null,
+      "canonicalSymbol": null,
+      "donorSymbol": null,
+      "canonicalAssemblyDefinitions": [],
+      "resolution": "canonical-input-present",
+      "canonicalAssemblyOwner": {
+        "name": "func_0021B2E0",
+        "file": "asm/original/rev0/lib/func_0021B2E0.s",
+        "romStart": "0x0021B2E0",
+        "romEndExclusive": "0x0021B3E8",
+        "rawSha256": "261811FCA7FBBA3D3792FCB4B18492DC0687269735A798A7EB900FF2F8A97F7D"
+      }
+    },
+    {
+      "name": "func_0021B438",
+      "canonicalTargetSource": null,
+      "canonicalSymbol": null,
+      "donorSymbol": null,
+      "canonicalAssemblyDefinitions": [],
+      "resolution": "canonical-input-present",
+      "canonicalAssemblyOwner": {
+        "name": "func_0021B438",
+        "file": "asm/original/rev0/lib/func_0021B438.s",
+        "romStart": "0x0021B438",
+        "romEndExclusive": "0x0021B770",
+        "rawSha256": "BAEA834349FFC67063547DAFE4677A65D716BF0DD9A6A856AD4B598855D41CC5"
+      }
+    },
+    {
+      "name": "func_0021B770",
+      "canonicalTargetSource": "src/battle/func_0021B770.c",
+      "canonicalSymbol": null,
+      "donorSymbol": null,
+      "canonicalAssemblyDefinitions": [],
+      "resolution": "canonical-input-present",
+      "canonicalAssemblyOwner": {
+        "name": "func_0021B770",
+        "file": "asm/original/rev0/lib/func_0021B770.s",
+        "romStart": "0x0021B770",
+        "romEndExclusive": "0x0021B894",
+        "rawSha256": "F1C30C1E543520D7B6FAD78C14BC4E649418D17E73E883747F8BF03DECAC6DA8"
+      }
+    },
+    {
+      "name": "func_0021C3B0",
+      "canonicalTargetSource": "src/battle/func_0021C3B0.c",
+      "canonicalSymbol": null,
+      "donorSymbol": null,
+      "canonicalAssemblyDefinitions": [],
+      "resolution": "canonical-input-present",
+      "canonicalAssemblyOwner": {
+        "name": "func_0021C3B0",
+        "file": "asm/original/rev0/lib/func_0021C3B0.s",
+        "romStart": "0x0021C3B0",
+        "romEndExclusive": "0x0021C5B0",
+        "rawSha256": "AC26C88D9544519C726190CF86C8422D2290883E4E8A1F0E5FC8E3FD2F07DFB2"
+      }
+    },
+    {
+      "name": "func_0021D200",
+      "canonicalTargetSource": "src/battle/func_0021D200.c",
+      "canonicalSymbol": null,
+      "donorSymbol": null,
+      "canonicalAssemblyDefinitions": [],
+      "resolution": "canonical-input-present",
+      "canonicalAssemblyOwner": {
+        "name": "func_0021D200",
+        "file": "asm/original/rev0/lib/func_0021D200.s",
+        "romStart": "0x0021D200",
+        "romEndExclusive": "0x0021D230",
+        "rawSha256": "A89DBBD0B762A0E4F4F2BD0846F3FC794E25CE2E80EDE44AD29634CA1E93BDBE"
+      }
+    },
+    {
+      "name": "func_0021D230",
+      "canonicalTargetSource": "src/battle/func_0021D230.c",
+      "canonicalSymbol": null,
+      "donorSymbol": null,
+      "canonicalAssemblyDefinitions": [],
+      "resolution": "canonical-input-present",
+      "canonicalAssemblyOwner": {
+        "name": "func_0021D230",
+        "file": "asm/original/rev0/lib/func_0021D230.s",
+        "romStart": "0x0021D230",
+        "romEndExclusive": "0x0021D25C",
+        "rawSha256": "42E832A522137F5D4451E7E6C25AD429B81200E8B6D55614A54EAA020D58EF0A"
+      }
+    },
+    {
+      "name": "func_0021D25C",
+      "canonicalTargetSource": "src/battle/func_0021D25C.c",
+      "canonicalSymbol": null,
+      "donorSymbol": null,
+      "canonicalAssemblyDefinitions": [],
+      "resolution": "canonical-input-present",
+      "canonicalAssemblyOwner": {
+        "name": "func_0021D25C",
+        "file": "asm/original/rev0/lib/func_0021D25C.s",
+        "romStart": "0x0021D25C",
+        "romEndExclusive": "0x0021D28C",
+        "rawSha256": "2065F07A0FAA12FD8E896D981EC88184C3EA0AD79994663594DBA76CA2DA29BE"
+      }
+    },
+    {
+      "name": "func_0021D28C",
+      "canonicalTargetSource": "src/battle/func_0021D28C.c",
+      "canonicalSymbol": null,
+      "donorSymbol": null,
+      "canonicalAssemblyDefinitions": [],
+      "resolution": "canonical-input-present",
+      "canonicalAssemblyOwner": {
+        "name": "func_0021D28C",
+        "file": "asm/original/rev0/lib/func_0021D28C.s",
+        "romStart": "0x0021D28C",
+        "romEndExclusive": "0x0021D2C0",
+        "rawSha256": "2B369516683E15A50DCDED6719393B61BC4275FEAD0424D7D5123DDB9A8D1B0D"
+      }
+    },
+    {
+      "name": "func_0021D2C0",
+      "canonicalTargetSource": "src/battle/func_0021D2C0.c",
+      "canonicalSymbol": null,
+      "donorSymbol": null,
+      "canonicalAssemblyDefinitions": [],
+      "resolution": "canonical-input-present",
+      "canonicalAssemblyOwner": {
+        "name": "func_0021D2C0",
+        "file": "asm/original/rev0/lib/func_0021D2C0.s",
+        "romStart": "0x0021D2C0",
+        "romEndExclusive": "0x0021D2F8",
+        "rawSha256": "78A321DAED1285BCCB7396E225E18E36408CC40AE34FC0B4A2937283E9F57686"
+      }
+    },
+    {
+      "name": "func_0021D784",
+      "canonicalTargetSource": null,
+      "canonicalSymbol": null,
+      "donorSymbol": null,
+      "canonicalAssemblyDefinitions": [],
+      "resolution": "canonical-input-present",
+      "canonicalAssemblyOwner": {
+        "name": "func_0021D784",
+        "file": "asm/original/rev0/lib/func_0021D784.s",
+        "romStart": "0x0021D784",
+        "romEndExclusive": "0x0021D7A8",
+        "rawSha256": "11AFD541B7D45540FB9CB3629258D693FE53D7A87F7D43B63C1B5F880B94165C"
+      }
+    },
+    {
+      "name": "func_0021D7A8",
+      "canonicalTargetSource": null,
+      "canonicalSymbol": null,
+      "donorSymbol": null,
+      "canonicalAssemblyDefinitions": [],
+      "resolution": "canonical-input-present",
+      "canonicalAssemblyOwner": {
+        "name": "func_0021D7A8",
+        "file": "asm/original/rev0/lib/func_0021D7A8.s",
+        "romStart": "0x0021D7A8",
+        "romEndExclusive": "0x0021D7CC",
+        "rawSha256": "79AAB3E5A1D58104FBF37365062D11D59B91813E4EC3815C8331D0466FDD4E28"
+      }
+    },
+    {
+      "name": "func_0021D7CC",
+      "canonicalTargetSource": null,
+      "canonicalSymbol": null,
+      "donorSymbol": null,
+      "canonicalAssemblyDefinitions": [],
+      "resolution": "canonical-input-present",
+      "canonicalAssemblyOwner": {
+        "name": "func_0021D7CC",
+        "file": "asm/original/rev0/lib/func_0021D7CC.s",
+        "romStart": "0x0021D7CC",
+        "romEndExclusive": "0x0021D7F0",
+        "rawSha256": "4C6D354430797508665AF122224CF28AC7B0031520341E29BB14677771119EE9"
+      }
+    },
+    {
+      "name": "func_002215D0",
+      "canonicalTargetSource": null,
+      "canonicalSymbol": null,
+      "donorSymbol": null,
+      "canonicalAssemblyDefinitions": [],
+      "resolution": "canonical-input-present",
+      "canonicalAssemblyOwner": {
+        "name": "func_002215D0",
+        "file": "asm/original/rev0/lib/func_002215D0.s",
+        "romStart": "0x002215D0",
+        "romEndExclusive": "0x00222190",
+        "rawSha256": "E638D1D82D65D9F7461D1C7097B2D99CE9AF3D6D2D47572363206F2D60CC71C4"
+      }
+    },
+    {
+      "name": "func_0022222C",
+      "canonicalTargetSource": null,
+      "canonicalSymbol": null,
+      "donorSymbol": null,
+      "canonicalAssemblyDefinitions": [],
+      "resolution": "canonical-input-present",
+      "canonicalAssemblyOwner": {
+        "name": "func_0022222C",
+        "file": "asm/original/rev0/lib/func_0022222C.s",
+        "romStart": "0x0022222C",
+        "romEndExclusive": "0x00222344",
+        "rawSha256": "592DA2BC2B818557DDDCE980F1955BC2E04A8E4CA95542C6D5CDC803C74035B6"
+      }
+    },
+    {
+      "name": "func_002223E0",
+      "canonicalTargetSource": null,
+      "canonicalSymbol": null,
+      "donorSymbol": null,
+      "canonicalAssemblyDefinitions": [],
+      "resolution": "canonical-input-present",
+      "canonicalAssemblyOwner": {
+        "name": "func_002223E0",
+        "file": "asm/original/rev0/lib/func_002223E0.s",
+        "romStart": "0x002223E0",
+        "romEndExclusive": "0x002224F4",
+        "rawSha256": "137458F21D4E99F40BF0D26E16EF7F15F4A7D2A800B4311F6816935B183FD168"
+      }
+    },
+    {
+      "name": "func_002224F4",
+      "canonicalTargetSource": "src/battle/func_002224F4.c",
+      "canonicalSymbol": null,
+      "donorSymbol": null,
+      "canonicalAssemblyDefinitions": [],
+      "resolution": "canonical-input-present",
+      "canonicalAssemblyOwner": {
+        "name": "func_002224F4",
+        "file": "asm/original/rev0/lib/func_002224F4.s",
+        "romStart": "0x002224F4",
+        "romEndExclusive": "0x00222530",
+        "rawSha256": "E5CA34AAFF77EB232BC4D24DC0C90CBA8F17A4CF1F04287E92D674AFACD9F43E"
+      }
+    },
+    {
+      "name": "func_0022257C",
+      "canonicalTargetSource": null,
+      "canonicalSymbol": null,
+      "donorSymbol": null,
+      "canonicalAssemblyDefinitions": [],
+      "resolution": "canonical-input-present",
+      "canonicalAssemblyOwner": {
+        "name": "func_0022257C",
+        "file": "asm/original/rev0/lib/func_0022257C.s",
+        "romStart": "0x0022257C",
+        "romEndExclusive": "0x00222604",
+        "rawSha256": "01B95214E532C466BAA852BFB9013B0D19058C86A3A91E8E6C515B261F09DDE0"
+      }
+    },
+    {
+      "name": "func_00226AFC",
+      "canonicalTargetSource": null,
+      "canonicalSymbol": null,
+      "donorSymbol": null,
+      "canonicalAssemblyDefinitions": [],
+      "resolution": "canonical-input-present",
+      "canonicalAssemblyOwner": {
+        "name": "func_00226AFC",
+        "file": "asm/original/rev0/lib/func_00226AFC.s",
+        "romStart": "0x00226AFC",
+        "romEndExclusive": "0x00226D18",
+        "rawSha256": "8DE70D2E138D229559D2C0585D243427E1CD2FDF3CDFE2FE4408D47F2611AC4B"
+      }
+    },
+    {
+      "name": "func_0022A280",
+      "canonicalTargetSource": null,
+      "canonicalSymbol": null,
+      "donorSymbol": null,
+      "canonicalAssemblyDefinitions": [],
+      "resolution": "canonical-input-present",
+      "canonicalAssemblyOwner": {
+        "name": "func_0022A280",
+        "file": "asm/original/rev0/lib/func_0022A280.s",
+        "romStart": "0x0022A280",
+        "romEndExclusive": "0x0022A414",
+        "rawSha256": "EFE8B9F58F7621B405AB5EE41A0C064D459B607351A3DD1A7ACF32857BC4A2CD"
+      }
+    },
+    {
+      "name": "func_0022A414",
+      "canonicalTargetSource": null,
+      "canonicalSymbol": null,
+      "donorSymbol": null,
+      "canonicalAssemblyDefinitions": [],
+      "resolution": "canonical-input-present",
+      "canonicalAssemblyOwner": {
+        "name": "func_0022A414",
+        "file": "asm/original/rev0/lib/func_0022A414.s",
+        "romStart": "0x0022A414",
+        "romEndExclusive": "0x0022A4E0",
+        "rawSha256": "F85B47072B924FB61423E0162F08760CB1D41E1B71C0BC47793F675601540C25"
+      }
+    },
+    {
+      "name": "func_0022A4E0",
+      "canonicalTargetSource": null,
+      "canonicalSymbol": null,
+      "donorSymbol": null,
+      "canonicalAssemblyDefinitions": [],
+      "resolution": "canonical-input-present",
+      "canonicalAssemblyOwner": {
+        "name": "func_0022A4E0",
+        "file": "asm/original/rev0/lib/func_0022A4E0.s",
+        "romStart": "0x0022A4E0",
+        "romEndExclusive": "0x0022A7B8",
+        "rawSha256": "CB054222E401B29A7024A7FCBCE3CE17D9D6C33F842ABB43BDF850E5D13769AE"
+      }
+    },
+    {
+      "name": "func_0022A964",
+      "canonicalTargetSource": null,
+      "canonicalSymbol": null,
+      "donorSymbol": null,
+      "canonicalAssemblyDefinitions": [],
+      "resolution": "canonical-input-present",
+      "canonicalAssemblyOwner": {
+        "name": "func_0022A964",
+        "file": "asm/original/rev0/lib/func_0022A964.s",
+        "romStart": "0x0022A964",
+        "romEndExclusive": "0x0022ADFC",
+        "rawSha256": "BA1937D7A77C52AFE1F312C570CBE9AA1923FAFACF882EC789C87CDB8CE3711C"
+      }
+    },
+    {
+      "name": "func_0022ADFC",
+      "canonicalTargetSource": null,
+      "canonicalSymbol": null,
+      "donorSymbol": null,
+      "canonicalAssemblyDefinitions": [],
+      "resolution": "canonical-input-present",
+      "canonicalAssemblyOwner": {
+        "name": "func_0022ADFC",
+        "file": "asm/original/rev0/lib/func_0022ADFC.s",
+        "romStart": "0x0022ADFC",
+        "romEndExclusive": "0x0022B06C",
+        "rawSha256": "E33245CECFB855DD27C47061555E16756DB28CC46648D35037184D19F4DF62ED"
+      }
+    },
+    {
+      "name": "func_0022B1F4",
+      "canonicalTargetSource": null,
+      "canonicalSymbol": null,
+      "donorSymbol": null,
+      "canonicalAssemblyDefinitions": [],
+      "resolution": "canonical-input-present",
+      "canonicalAssemblyOwner": {
+        "name": "func_0022B1F4",
+        "file": "asm/original/rev0/lib/func_0022B1F4.s",
+        "romStart": "0x0022B1F4",
+        "romEndExclusive": "0x0022BFF8",
+        "rawSha256": "E95C054B2215FB0A8D8839B03555ED404DF386261BBAB6AA3C73BC039EB2233B"
+      }
+    },
+    {
+      "name": "func_0022BFF8",
+      "canonicalTargetSource": null,
+      "canonicalSymbol": null,
+      "donorSymbol": null,
+      "canonicalAssemblyDefinitions": [],
+      "resolution": "canonical-input-present",
+      "canonicalAssemblyOwner": {
+        "name": "func_0022BFF8",
+        "file": "asm/original/rev0/lib/func_0022BFF8.s",
+        "romStart": "0x0022BFF8",
+        "romEndExclusive": "0x0022C78C",
+        "rawSha256": "7A4BCEACCBB2CF3D2DB9C9BF791EB269C0BCB311B6C4235E853F97A6C735D066"
+      }
+    },
+    {
+      "name": "func_0022C78C",
+      "canonicalTargetSource": null,
+      "canonicalSymbol": null,
+      "donorSymbol": null,
+      "canonicalAssemblyDefinitions": [],
+      "resolution": "canonical-input-present",
+      "canonicalAssemblyOwner": {
+        "name": "func_0022C78C",
+        "file": "asm/original/rev0/lib/func_0022C78C.s",
+        "romStart": "0x0022C78C",
+        "romEndExclusive": "0x0022D14C",
+        "rawSha256": "37C8B0F829A36BA428A8BB436BB06E75A9B4BD6A9A698BDBAC23C18E989BD123"
+      }
+    },
+    {
+      "name": "func_0022D14C",
+      "canonicalTargetSource": null,
+      "canonicalSymbol": null,
+      "donorSymbol": null,
+      "canonicalAssemblyDefinitions": [],
+      "resolution": "canonical-input-present",
+      "canonicalAssemblyOwner": {
+        "name": "func_0022D14C",
+        "file": "asm/original/rev0/lib/func_0022D14C.s",
+        "romStart": "0x0022D14C",
+        "romEndExclusive": "0x0022EC08",
+        "rawSha256": "EF14D6581AE474F7ABA21C09568FDFA0C69AEBAC234C09A9EF90D573AE14A8D3"
+      }
+    },
+    {
+      "name": "func_0022EC08",
+      "canonicalTargetSource": null,
+      "canonicalSymbol": null,
+      "donorSymbol": null,
+      "canonicalAssemblyDefinitions": [],
+      "resolution": "canonical-input-present",
+      "canonicalAssemblyOwner": {
+        "name": "func_0022EC08",
+        "file": "asm/original/rev0/lib/func_0022EC08.s",
+        "romStart": "0x0022EC08",
+        "romEndExclusive": "0x0022EDD4",
+        "rawSha256": "045D60FC359413504FA647FAC43658D4E0321240EB6CE632137DBF45A7309533"
+      }
+    },
+    {
+      "name": "func_0022EDD4",
+      "canonicalTargetSource": null,
+      "canonicalSymbol": null,
+      "donorSymbol": null,
+      "canonicalAssemblyDefinitions": [],
+      "resolution": "canonical-input-present",
+      "canonicalAssemblyOwner": {
+        "name": "func_0022EDD4",
+        "file": "asm/original/rev0/lib/func_0022EDD4.s",
+        "romStart": "0x0022EDD4",
+        "romEndExclusive": "0x0022EF50",
+        "rawSha256": "175AC4CD1DA9D2583AD851879BAC69D16A6CC543A5913E49DF6EC7AAB6B98EF5"
+      }
+    },
+    {
+      "name": "func_0022EF50",
+      "canonicalTargetSource": null,
+      "canonicalSymbol": null,
+      "donorSymbol": null,
+      "canonicalAssemblyDefinitions": [],
+      "resolution": "canonical-input-present",
+      "canonicalAssemblyOwner": {
+        "name": "func_0022EF50",
+        "file": "asm/original/rev0/lib/func_0022EF50.s",
+        "romStart": "0x0022EF50",
+        "romEndExclusive": "0x0022F2BC",
+        "rawSha256": "5D9ECEF33A9946B3394F09D1E89A818DE6E83EBD524017F4E84FEB9376882776"
+      }
+    },
+    {
+      "name": "func_00233210",
+      "canonicalTargetSource": null,
+      "canonicalSymbol": null,
+      "donorSymbol": null,
+      "canonicalAssemblyDefinitions": [],
+      "resolution": "canonical-input-present",
+      "canonicalAssemblyOwner": {
+        "name": "func_00233210",
+        "file": "asm/original/rev0/lib/func_00233210.s",
+        "romStart": "0x00233210",
+        "romEndExclusive": "0x002333B4",
+        "rawSha256": "3CADFDD9C8B6BD057FD23175C6D706996CE88F386A7BCCA28CFD4CFD0BB6E4E3"
+      }
+    },
+    {
+      "name": "func_00233ED4",
+      "canonicalTargetSource": null,
+      "canonicalSymbol": null,
+      "donorSymbol": null,
+      "canonicalAssemblyDefinitions": [],
+      "resolution": "canonical-input-present",
+      "canonicalAssemblyOwner": {
+        "name": "func_00233ED4",
+        "file": "asm/original/rev0/lib/func_00233ED4.s",
+        "romStart": "0x00233ED4",
+        "romEndExclusive": "0x00233F38",
+        "rawSha256": "E7DA90B9B70188140A89C286F5D10352177CAB75145B56770B0810FD83C284DE"
+      }
+    },
+    {
+      "name": "func_00233F38",
+      "canonicalTargetSource": null,
+      "canonicalSymbol": null,
+      "donorSymbol": null,
+      "canonicalAssemblyDefinitions": [],
+      "resolution": "canonical-input-present",
+      "canonicalAssemblyOwner": {
+        "name": "func_00233F38",
+        "file": "asm/original/rev0/lib/func_00233F38.s",
+        "romStart": "0x00233F38",
+        "romEndExclusive": "0x00233F94",
+        "rawSha256": "27BA30ED38E5B994BDA6169C466955FE8127CC36ABF59EB1572A41E0960910F2"
+      }
+    },
+    {
+      "name": "func_0023431C",
+      "canonicalTargetSource": null,
+      "canonicalSymbol": null,
+      "donorSymbol": null,
+      "canonicalAssemblyDefinitions": [],
+      "resolution": "canonical-input-present",
+      "canonicalAssemblyOwner": {
+        "name": "func_0023431C",
+        "file": "asm/original/rev0/lib/func_0023431C.s",
+        "romStart": "0x0023431C",
+        "romEndExclusive": "0x002344B4",
+        "rawSha256": "1F94B2887DA8A9194F59EE76FC59C2679D431B71F488CF3DDE865DA847193AF1"
+      }
+    },
+    {
+      "name": "func_002361EC",
+      "canonicalTargetSource": null,
+      "canonicalSymbol": null,
+      "donorSymbol": null,
+      "canonicalAssemblyDefinitions": [],
+      "resolution": "canonical-input-present",
+      "canonicalAssemblyOwner": {
+        "name": "func_002361EC",
+        "file": "asm/original/rev0/lib/func_002361EC.s",
+        "romStart": "0x002361EC",
+        "romEndExclusive": "0x002363FC",
+        "rawSha256": "C176D452B0B5F97BAA8A3EC0B625170914D9928C08FDF7C1384FE99A02956EB0"
+      }
+    },
+    {
+      "name": "func_002363FC",
+      "canonicalTargetSource": null,
+      "canonicalSymbol": null,
+      "donorSymbol": null,
+      "canonicalAssemblyDefinitions": [],
+      "resolution": "canonical-input-present",
+      "canonicalAssemblyOwner": {
+        "name": "func_002363FC",
+        "file": "asm/original/rev0/lib/func_002363FC.s",
+        "romStart": "0x002363FC",
+        "romEndExclusive": "0x002365BC",
+        "rawSha256": "70A4C895EDA883C17466FAB4120E7E74509A12CCF6CCD2F79406949EC9BEAFAC"
+      }
+    },
+    {
+      "name": "func_002365BC",
+      "canonicalTargetSource": null,
+      "canonicalSymbol": null,
+      "donorSymbol": null,
+      "canonicalAssemblyDefinitions": [],
+      "resolution": "canonical-input-present",
+      "canonicalAssemblyOwner": {
+        "name": "func_002365BC",
+        "file": "asm/original/rev0/lib/func_002365BC.s",
+        "romStart": "0x002365BC",
+        "romEndExclusive": "0x0023683C",
+        "rawSha256": "36B376A311A7BBAA1D387A03E726AD0762E1A3B82AD9D16CE5BA074046699A24"
+      }
+    },
+    {
+      "name": "func_00237750",
+      "canonicalTargetSource": null,
+      "canonicalSymbol": null,
+      "donorSymbol": null,
+      "canonicalAssemblyDefinitions": [],
+      "resolution": "canonical-input-present",
+      "canonicalAssemblyOwner": {
+        "name": "func_00237750",
+        "file": "asm/original/rev0/lib/func_00237750.s",
+        "romStart": "0x00237750",
+        "romEndExclusive": "0x00237810",
+        "rawSha256": "0C4571C40522981E55491F63631569C36053C62E75C766E9793A987B66300A37"
+      }
+    },
+    {
+      "name": "func_00237810",
+      "canonicalTargetSource": null,
+      "canonicalSymbol": null,
+      "donorSymbol": null,
+      "canonicalAssemblyDefinitions": [],
+      "resolution": "canonical-input-present",
+      "canonicalAssemblyOwner": {
+        "name": "func_00237810",
+        "file": "asm/original/rev0/lib/func_00237810.s",
+        "romStart": "0x00237810",
+        "romEndExclusive": "0x00237890",
+        "rawSha256": "6960268C1D86914CAD59D30BD40AF3A460F3BFEBCF8871ACB13C8799CF2D9464"
+      }
+    },
+    {
+      "name": "func_00237890",
+      "canonicalTargetSource": null,
+      "canonicalSymbol": null,
+      "donorSymbol": null,
+      "canonicalAssemblyDefinitions": [],
+      "resolution": "canonical-input-present",
+      "canonicalAssemblyOwner": {
+        "name": "func_00237890",
+        "file": "asm/original/rev0/lib/func_00237890.s",
+        "romStart": "0x00237890",
+        "romEndExclusive": "0x002379AC",
+        "rawSha256": "9BCA0DB6878302F270D644624268A9274F75E5C28130698B138EB435C114ED2F"
+      }
+    },
+    {
+      "name": "func_00237AF8",
+      "canonicalTargetSource": null,
+      "canonicalSymbol": null,
+      "donorSymbol": null,
+      "canonicalAssemblyDefinitions": [],
+      "resolution": "canonical-input-present",
+      "canonicalAssemblyOwner": {
+        "name": "func_00237AF8",
+        "file": "asm/original/rev0/lib/func_00237AF8.s",
+        "romStart": "0x00237AF8",
+        "romEndExclusive": "0x00237D5C",
+        "rawSha256": "539AAA367042ADAC9985425B7F453BA782C3F8C2482298D21E741B6992B02731"
+      }
+    },
+    {
+      "name": "func_00239AA4",
+      "canonicalTargetSource": null,
+      "canonicalSymbol": null,
+      "donorSymbol": null,
+      "canonicalAssemblyDefinitions": [],
+      "resolution": "canonical-input-present",
+      "canonicalAssemblyOwner": {
+        "name": "func_00239AA4",
+        "file": "asm/original/rev0/lib/func_00239AA4.s",
+        "romStart": "0x00239AA4",
+        "romEndExclusive": "0x00239B74",
+        "rawSha256": "D9894D3360EF99C622F582047F664B60254F241103EA08DF108C2D937CD46C39"
+      }
+    },
+    {
+      "name": "func_0025FCB4",
+      "canonicalTargetSource": null,
+      "canonicalSymbol": null,
+      "donorSymbol": null,
+      "canonicalAssemblyDefinitions": [],
+      "resolution": "canonical-input-present",
+      "canonicalAssemblyOwner": {
+        "name": "func_0025FCB4",
+        "file": "asm/original/rev0/lib/func_0025FCB4.s",
+        "romStart": "0x0025FCB4",
+        "romEndExclusive": "0x0025FD00",
+        "rawSha256": "C323D42D1ABD67E5181C9BB320F596BC8D28070CFAF9F278D849D51AF3610B5F"
+      }
+    },
+    {
+      "name": "g_func_001957D0_source_records",
+      "canonicalTargetSource": null,
+      "canonicalSymbol": {
+        "name": "g_func_001957D0_source_records",
+        "address": "0x801971F0"
+      },
+      "donorSymbol": {
+        "name": "g_func_001957D0_source_records",
+        "address": "0x801971F0"
+      },
+      "canonicalAssemblyDefinitions": [],
+      "resolution": "canonical-input-present",
+      "canonicalAssemblyOwner": null
+    },
+    {
+      "name": "memset_00023780",
+      "canonicalTargetSource": null,
+      "canonicalSymbol": null,
+      "donorSymbol": null,
+      "canonicalAssemblyDefinitions": [],
+      "resolution": "canonical-input-present",
+      "canonicalAssemblyOwner": {
+        "name": "memset_00023780",
+        "file": "asm/original/rev0/lib/memset_00023780.s",
+        "romStart": "0x00023780",
+        "romEndExclusive": "0x00023820",
+        "rawSha256": "B9A741B8CD4DBF4DEAC7AF0B319B5C6E6C6EA22438C278FDFE4C420B53FD1963"
+      }
+    },
+    {
+      "name": "rand",
+      "canonicalTargetSource": null,
+      "canonicalSymbol": {
+        "name": "rand",
+        "address": "0x8009C7CC"
+      },
+      "donorSymbol": {
+        "name": "rand",
+        "address": "0x8009C7CC"
+      },
+      "canonicalAssemblyDefinitions": [],
+      "resolution": "canonical-input-present",
+      "canonicalAssemblyOwner": {
+        "name": "rand",
+        "file": "asm/original/rev0/lib/rand.s",
+        "romStart": "0x0002CBCC",
+        "romEndExclusive": "0x0002CC00",
+        "rawSha256": "6C7D402401BE543EC8341B3C1E8E9FCED766A2142D4CC5D2EF832DFD0867BC65"
+      }
+    }
+  ]
+}

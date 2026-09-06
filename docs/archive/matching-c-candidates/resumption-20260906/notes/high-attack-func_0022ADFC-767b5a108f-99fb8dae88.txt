@@ -1,0 +1,20 @@
+# func_0022ADFC: Preserved Matching-Workbench Candidate
+
+## Status
+
+This source is a research candidate. The original assembly remains the accepted owner.
+
+- Candidate: `767B5A108FACA753A502B9443CF6FF4219725AB072C4FACFD6BD858905355C41`
+- Target: `func_0022ADFC` at ROM `0x22ADFC`
+- Source: `docs/archive/matching-c-candidates/2026-09-06-func_0022ADFC-767b5a108f.c`
+- Source SHA-256: `AF18F83ED2C2C413AFFEEAE9D026E082C0899F5E9D48347D3BF99A8CEB5AB583`
+- Latest scratch class: `not compiled`
+- Latest scratch score: `not available`
+
+## Preservation reason
+
+r5 provisional PURE_C linked exact 624 bytes; actual 19-relocation contract matches; complete seventeen-owner wave verifier pending.
+
+## Evidence boundary
+
+Scratch object comparison does not prove canonical linker ownership, relocation resolution, target bytes, or full-ROM identity. Resume through the normal diff and verification workflow.

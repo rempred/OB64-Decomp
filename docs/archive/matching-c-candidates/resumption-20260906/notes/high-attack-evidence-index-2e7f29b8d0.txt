@@ -1,0 +1,176 @@
+# Revision 9 evidence index
+
+Subject root: C:/Users/Joe/Projects/OgreBattlel64/high-attack-wave-5.
+All relative paths below resolve there. Hashes are SHA-256. Generated objects, dumps, databases and proof reports stay ignored.
+This index records bounded research and provisional linked equality, not full-wave acceptance.
+
+## Identity and preserved inputs
+
+Assignment: C:/Users/Joe/Projects/OgreBattlel64/docs/Plans/prompts/high-attack-wave6-action-mode-dispatch-r9.md.
+Ready routing frozen parent ba033f3abc4b96b4562734780ab31efc0ab22e22; revision9, launchHA-W6-PUREC-09.
+Claim: C:/Users/Joe/Projects/OgreBattlel64/docs/Plans/task-logs/high-attack-wave6-action-mode-dispatch-r9-HA-W6-PUREC-09.claim.json.
+Exact log: C:/Users/Joe/Projects/OgreBattlel64/docs/Plans/task-logs/high-attack-wave6-action-mode-dispatch-r9.md.
+Worker01a07354-275e-7503-a806-276101985705, local; exclusive claim time2026-09-06T10:58:53.254Z.
+HEAD f80d2dfd1a6ea678ceea6a13389f01bc2fd75aaf; codex/high-attack-wave-5. Parent baseline d0bd9b9ecaaf4e306c0ecddabeb103d2babaefd9.
+
+- Original B1F4 draft:8E1348C7A2CA8B4653B22FF7A011DEA70EE0027F4758FC1318A8346DAD4B0B0F.
+- Original C78C draft:95CAC825DE830C31A08858A49288CEACD2E5FDC17EECF6FE167CC68A8FA19D0B.
+- Original D14C draft:9E6505EE978477253702FC970E99D0BFEBBB644199BF261B999DF12E988F59AB.
+- Original EF50 draft:EA0A30375F02ACF4039F5F307F0B18F71E0FD1A00389D12E47B88C4FAED41440.
+- Starting target configuration:9A4A9947436AED1F39EC681FC7BB4328897435542AEEA11796D9A219CBA85BB9.
+- Starting linkage configuration:0FDEBC39BACE0F9CCB892B63CBFE6B7188550A31571420F81D09B13C09F44C53.
+- Final config/matching-c-targets.json:ED94543EB6715C7B5B45508BEAA41D2546D98EDF75E77F0CEF6C779BA000D418.
+- Final config/matching-c-linkage.json:D4366AC399EE4DDEC03641A6FADF9423826BA6337DBE8345FB6843570EF8D2C8.
+- Production src/battle/func_0022C78C_pure.c:5F1020DA9FAFA524353CF1CAA3C2A4E371BB84F008E424A10DDE01B1FE9C3121.
+- Authenticated compiler executable:F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6.
+
+Read-only compiler source: C:/Users/Joe/.codex/ob64-phase6-kmc-20260801/clean-d/source/mips-gcc-2.7.2/.
+P01 interpretation uses optabs.c400..420; no compiler source or binary was modified.
+
+## Actual r9 inputs and compile runs
+
+Every listed run was freshly compiled (cached:false). Extent/frame/relocations are diagnostic metrics, not matching acceptance.
+Candidate sources are build/matching/targets/<symbol>/candidates/<candidate>.c.
+Reports are build/matching/runs/<run>/workbench-report.json. The candidate ID and source hash bind the actual input; report hashes bind the recorded outputs.
+
+### r9-e01-isolated-multiset
+
+- Candidate:`DD8923FEA66CA8B3EE48F800E1AA3A2FD04DCA5ECA0D10F49DCB68190DB69829`.
+- Run:`83D26E19AE6B2B195AE3460F6F088EBD4506E87D203492E6D63131822A2E1AF2`.
+- Actual source:`9F231400F3ABEE245ED0F1094D8C023EB210B2417CD098EB98B780CF9728D8ED`.
+- Report:`DCB2DE35E3D049CABC379614994DEBC4F05F796470768ADCB4E1858DE17C4F76`.
+- Mechanical source class:PURE_C; extent2496, frame240, relocations78.
+
+### r9-e02-expansion-identity
+
+- Candidate:`8A53EA38FB98498BCB1F057BDCCF819B6801188BBF16EDAF6D7CE546F4201445`.
+- Run:`275BFC27ACFDF60D0BA3D19E6D5387F642E06F72FCDDC791F447551FC98AD250`.
+- Actual source:`A926B30CD963AC5E63A9DD5B9740E281FD4B0DD50CDEC584F24432C3638DA637`.
+- Report:`FFF0D9BF9CACD4882DE74C96298FA34635320F407EF5631DEC9C6B8BF19E1123`.
+- Mechanical source class:PURE_C; extent2496, frame240, relocations78.
+
+### r9-e03-negated-subtract
+
+- Candidate:`1F0D555528840BB29C235B39F2908A33A71ED2CD418FF8214F693E13A49DCE90`.
+- Run:`E5EA5C07BD510D8304175BD6CAB4973861980C3CCA668606A0F754603316E46A`.
+- Actual source:`5F1020DA9FAFA524353CF1CAA3C2A4E371BB84F008E424A10DDE01B1FE9C3121`.
+- Report:`00BC978AC3F903E3DD86E5C2119B7B3384327999911D5EB505535B609D1F42B8`.
+- Mechanical source class:PURE_C; extent2496, frame240, relocations78.
+
+### r9-e04-isolated-tail-time
+
+- Candidate:`3E613B48C43D999448F77D221D1200D175441E7F3989938F97D39923F8F7B51D`.
+- Run:`FCF102FE514D73F54E8864EC937275388742347221848819B0310EB7CCA812D2`.
+- Actual source:`25C2B19614E7C99A026750897005399A09B71796C2652FFB338530C10AAB64ED`.
+- Report:`A8D94AF53396ABB768144DE06EAB6B05F40304078C0D6276D5A0E8F245A88AE1`.
+- Mechanical source class:PURE_C; extent3576, frame272, relocations103.
+
+### r9-e05-target-mode-priority
+
+- Candidate:`FAA98B99BB57E558CC4D51B86BD8B5689D9B39EA7DB7481EED2FEAD87D93B9B9`.
+- Run:`E08983650C58953A3DAC08D63EC1E6A4375AD7B1FC32DCB4239EAEEE8495A37C`.
+- Actual source:`933ADA83CD713A909D5EFD8BE2B68D6C41AF5FBEE84989A990CA2C76771966BA`.
+- Report:`C30E6E2CA6A3D082B4F292351DC5335037D906E3431AE1D2A3F4978435003513`.
+- Mechanical source class:PURE_C; extent6772, frame576, relocations181.
+
+### r9-e06-late-tail-recompute
+
+- Candidate:`892685FD7C19B1AE9E7A45AE2EB60AFE9D6181D8F3755D46A15D8F1BD9DB8EDD`.
+- Run:`6DC09657A49583C2DD42486B00A13B6426E12BEF4F1CABC2A29D1FBB54D6495E`.
+- Actual source:`DF5ECDEB174743E548398FFDFD25A397E490FB7AE9C756F035A0AD761AB3C4EC`.
+- Report:`B4963124E2A734DD0DC79DC9A1374365848241AB0D4C9D44DC84F6D3E62418DE`.
+- Mechanical source class:PURE_C; extent3588, frame272, relocations103.
+
+### r9-e07-measured-mode-threshold
+
+- Candidate:`DD6356C753F1AC57F223E26A962432D7F347397D4E546C645314372BC3049F2E`.
+- Run:`3E7D083FC2A6606EC8A9CAD42524DA84E9985CEDDC7DAD002781B039D1CE8E64`.
+- Actual source:`78DD9D9325EC0AD875768041E9517A7D224D92F947B68C7DEE4D15CD922986E4`.
+- Report:`40622E763E3C0F692DBAC6710EA296C50307F8EC072CF6052D006F2AF31B830A`.
+- Mechanical source class:PURE_C; extent6744, frame576, relocations181.
+
+### r9-r01-e01-lf
+
+- Candidate:`115F8A6A195A85A1CD8F2912903322A7DC7721FB335F52C46981A18E6DA81E9A`.
+- Run:`8569FEF68ADEFA9B516D6E7E9075DEF1DC22AA5EB7854DBAF164D14A5DECC158`.
+- Actual source:`14A71426E3B10C79ADAF574F5C9334EA315F2E7BBE1015734030DA673AD2FAF8`.
+- Report:`CFED9B9CFD9D991A746B4E02B2763DCAABE3105A4824DC0A06A7DCC0FD8114E0`.
+- Mechanical source class:PURE_C; extent2496, frame240, relocations78.
+
+### r9-r02-e06-lf
+
+- Candidate:`E9942D56C2C311471F06CFB0BD94ED9DD90443F57DF0C315002E0C1F170B4E35`.
+- Run:`C6A213C0618F7B3CDB9CFAE408D51AAED2FF9EBEE990DD62DDC0AB53DC958DD5`.
+- Actual source:`1411C451E5EA222839FA7403C25C25DF0DB4623C0B6111C7BDCE14BF5FBB3FB3`.
+- Report:`41089BABFFE57CAE4C38766C49F42E823076C3B1E9F20F59146F0DD91619F225`.
+- Mechanical source class:PURE_C; extent2496, frame240, relocations78.
+
+## Candidate-bound pass probes
+
+All three completed diagnostic probes have acceptanceEligible=false. Their source hashes match the specific E01/E05/E07 inputs respectively.
+Probe root: build/matching/targets/<symbol>/probes/<probe>/; report probe-report.json, dumps <symbol>.c.lreg/.greg.
+
+### P01 — func_0022C78C
+
+- Probe:`8A3758AA754C036C49A763A7B0C9B5EB3286167075D54B8F43B203027C487CB1`.
+- Source:`9F231400F3ABEE245ED0F1094D8C023EB210B2417CD098EB98B780CF9728D8ED`.
+- Report:`F275EB611420C608110C8633AFFCAAC848E2DED5B4FE061C0ACFCA79ADC20E84`.
+- Lreg:`FBA0CFE2360BEF1DDF88281EB8C089662E34DDB0DBBAE650D443C0A0F75D8895`.
+- Greg:`5231CFDE80009E45E724B738116700A900D5EF34A7F0F9AC0592456448C75A63`.
+
+### P02 — func_0022D14C
+
+- Probe:`FAB3F8677B15967C12C3E86575D6D758DEFAA00751A03C5CD051D449C947B832`.
+- Source:`933ADA83CD713A909D5EFD8BE2B68D6C41AF5FBEE84989A990CA2C76771966BA`.
+- Report:`867C57BF557FCF2376E1B9055EAA14C20FC8B166DDE5C38B0933B000F6F4E52E`.
+- Lreg:`0CDFF6089D55ECB7E2BF4E67F1BD604D9FF3EE6A1780F5A1749B017FA2584CBD`.
+- Greg:`2D3D321B43E4820768927F9F18186641D9D263A67648DBD72EF9588BECE85E43`.
+
+### P03 — func_0022D14C
+
+- Probe:`0F97294BD42563E766A0AC830133FDADF7F99F6D13E081E22582CF2EFB002DD8`.
+- Source:`78DD9D9325EC0AD875768041E9517A7D224D92F947B68C7DEE4D15CD922986E4`.
+- Report:`9B32A54B830CF0BFFAADC28F3AA389DF06A6F6E8354257CA53BAF2C827EF3E05`.
+- Lreg:`BC22248966357CA4D2E87F01AC2FF56EC4AF59C857CA4DA6BBC3C1C213E60D48`.
+- Greg:`DC7BF4851387CB221C9CF4DB76548CD9B0F133530B86FC65E1EEC875BA6939FF`.
+
+## Final C78C canonical linked comparison
+
+Final report: build/diff/func_0022C78C.json, SHA2561C079508CAADB2491F401F587BB328FA42A1F0FEBFE600EE4412AF2C64AE2CB7.
+Final output root: C:/Users/Joe/.codex/ob64-high-attack-wave-5/work/diff/func_0022C78C-1788692859591-97f414/.
+Discovery output root: C:/Users/Joe/.codex/ob64-high-attack-wave-5/work/diff/func_0022C78C-1788692750703-406b71/.
+Only the final invocation includes the recorded actual relocation contract. Source class PURE_C; contract matches=true with78 actual entries.
+
+- Final compilationInput15375 bytes:6EBE5CA49938E9DEBD4E8FAE62873F8BD097B79C9272A2383547DCF73B8B3376 (compiler-input identity, distinct from raw source hash).
+- Source-policy digest:F232A39E85C2FE73C1EF59B2E4E0D6C2BB7C057591E0509C8DFE9FFD10576CA7.
+- objects/c/func_0022C78C.o:24F76A50A674359292C0C83A147A2992774A51DFC6A6E2A99EFB14149116B965.
+- objects/c/func_0022C78C.source-object.o:35205D804479F3728FD7B97C29F2BD7FE177A98F826498036CDEEDCC0784D286.
+- generated/c/func_0022C78C.compiler.s:2C89E5DA20433E50F4DC615868FAF4427DEC779D65B67044AD17AC4CC477A907.
+- generated/c/func_0022C78C.s:81176F3B452DDD94363CD908D3224214292E0BC79C1D24BDF81ED1AFD1409015.
+- phase8.elf:D1E5FF232E9477B5D500027BCC32EBE28233DA5D832713E6E3EB863C072CACBA.
+- Linked and retail target2496 bytes:918EBB79A7B3E84D2BD49DCE9D8AB2A75838087EFEC02C49CFA291C161E21914.
+
+Ownership/placement: layout.json phase8MatchingCTargets C78C, comparison.owners[0], and phase8.map89578..89586.
+Single .ob64.r4175 C input, row4175/chunk34; ROM22C78C..22D14C, VMA801E94BC..801E9E7C. No auxiliary section.
+Full actual relocations reside in the final report object.relocations and the new linkage record; no fabricated list or schema change.
+Generated development ROM is an internal linked-diff output, not a final-wave complete-ROM acceptance claim.
+
+## Durable candidates and retained controls
+
+- docs/archive/matching-c-candidates/2026-09-06-func_0022C78C-1f0d555528.c and docs/dossiers/func_0022C78C-1f0d555528.md: E03 provisional exact.
+- docs/archive/matching-c-candidates/2026-09-06-func_0022B1F4-3e613b48c4.c and docs/dossiers/func_0022B1F4-3e613b48c4.md: E04 isolated nonexact tail control.
+- docs/archive/matching-c-candidates/2026-09-06-func_0022D14C-dd6356c753.c and docs/dossiers/func_0022D14C-dd6356c753.md: E07 nonexact wrapper-free priority control.
+
+Archive source hashes equal their candidate input hashes above. Rejected E02/E06 and partial E05 remain bound in ignored candidate/run storage and documented in the AAR/log; no previous archive was overwritten.
+B1F4 retained r7E16 candidate53EB588EC82F2A67E8EA751603EB72B40BAA5950D560F2AC0F313951F2E8EA29, run658A36DEB6E1D34A6F3F02FB100BF4482FF1B3E0055AC8D16B871DDA16067667, actual sourceBDD3B1A20DF1B8F7D2219775F665C93A4318238B00D09EE391F882C4965D6B18.
+D14C E40 input candidateCE5E96FBF6DACB4295686AA1CC75AEDE2CD84666B797A8CAE785A0B8519E28F4, runB9EB61FE5E63C2726D8D21A57E23C6F6FA5D35F6A1972EF608120B193E8EC755, actual sourceF4AC80631E1164C8EDBA986E6BEF71BC790C5AB03DDCDF93934936457C631A42.
+E39 comparison run0730A8CA9646D37493C17C6E648AE75F69AF79D596513A37FB4799A7A2A9E31B stays unchanged; its inputF1209A3616DD326B2C7CF1E698C02E3518F6194D7B29153396AA767ABF77DA86.
+
+## Reproduction and closure boundary
+
+Hypotheses precede experiments in the exact parent log. Scratch helper build/matching/HA-W6-PUREC-09/compile-loop.js pins current source/configuration/claim and compares all preexisting configuration values with HEAD.
+The read-only prior spill helper build/matching/HA-W6-PUREC-08/spill-map.js remains unchanged (A5AF3B303C5871159E75BB5BB8F27B4EB8956AB906E768353C1C9E4A203E91DC).
+It matches same-UID lreg/greg operands and inserted spill stores; argument and aggregate accesses are excluded when counting occupied spill slots.
+C78C word comparisons resolve actual relocations in the canonical diff. Scratch word comparisons alone skip actual relocation offsets and cannot establish acceptance.
+All owned processes completed and no further compile, final verifier, build or monitoring remains running. Final scope guard passed before callback. No prior terminal record was edited.
+

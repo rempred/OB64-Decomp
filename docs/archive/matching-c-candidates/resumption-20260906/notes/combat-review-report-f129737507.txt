@@ -1,0 +1,110 @@
+# Combat-body pose-tail diagnosis independent review
+
+Verdict: **Accepted with corrections**.
+
+Material result: the bounded negative diagnosis is technically supported. Independent recompilation, assembly, object inspection, relocation comparison, and isolated placement controls confirm that the ordinary path emits the exact 364-byte body at the accepted address but omits the eight-byte owner tail. The native path emits a 368-byte, 16-byte-aligned section with only four trailing zero bytes; at accepted address `0x801C1C1C`, the linker inserts four leading zero bytes and moves `func_002050AC` to `0x801C1C20`. Its coincidental 372-byte total is not the accepted owner image.
+
+Consequence: `func_002050AC` must remain inactive and ASM-owned. This review accepts no source match, mixed-ownership representation, structural implementation, representation design, matching wave, or complete-ROM result. W5 remains blocked and incomplete.
+
+Required Director action: the Director may propagate this bounded diagnosis, while applying or routing one coordination-only cleanup: supersede the frozen worker task log's stale opening `Status: in progress` line with a new correction record that points to its terminal completed state. Do not rewrite the frozen evidence package and do not promote the target or W5 wave.
+
+## Frozen subject
+
+- Parent diagnosis freeze: `59798c631145d8ea2b1aab37ee7997c7e15b8661`.
+- Execution source: `ef4689d56568ec54918e2cc4a85b2d9068b12d00`, branch `codex/combat-body-resources`, clean before and after review.
+- Worker report: 9,250 bytes, SHA-256 `1B8F148375BE19BEB7D32C5754BF888C002450AEADA21E17EDB644D755D065CA`.
+- Worker log: 3,107 bytes, SHA-256 `5E951EA82F497BBE6AA0AC49ADA59BEBCB67D751F419B9667FD56155738AB584`.
+- Worker evidence index: 5,798 bytes, SHA-256 `4E4B4CAB56C797E474E5E391E7643209ACCBA2509DC15F8C397C01CC4BF12B39`.
+- Worker terminal freeze: 1,327 bytes, SHA-256 `4A548889F34457FC6F489ABAF49BBEF769CAB46F713C233C3E0936F347FE792E`.
+- Worker terminal inventory: 8,950 bytes, SHA-256 `2E812BCF060869BF623D478345F541D73DD6725E63159B24371778A821D49476`; all 35 records rehashed successfully.
+- Authenticated predecessor: W5 parent freeze `6a869746572f4549466e43af8afc650e6e5e00e3`; all 225 records in inventory SHA-256 `A4EF767CB24A20F1BC2DB521566753B7B1F4CCAEAE7CE681DB793EF32AFF42FD` rehashed successfully.
+- Review claim: 276 bytes, SHA-256 `5D9912857C331F03C74A7C2BFDA2FE8BD8E6A475287E76276599B086903F23D3`.
+
+The parent commit blobs and current worker documents are LF-normalized identical. Their working-tree byte hashes above are separately bound by the worker terminal inventory and freeze.
+
+## Claims reviewed
+
+1. Accepted row 3811 and its immediate neighbors form the reported gapless extents, and all tracked original words equal the canonical ROM bytes.
+2. The retail owner consists of an exact 364-byte function body followed by eight zeros, with a normal return and delay instruction before the tail.
+3. Fresh authenticated compiler output reproduces the frozen compiler assembly exactly; ordinary section assignment reproduces the frozen adjusted assembly exactly.
+4. Native and ordinary objects preserve the same pre-relocation body and seven normalized relocations, while their section sizes, alignments, and tails differ as reported.
+5. At the accepted placement, neither existing representation emits the complete accepted owner; the current native descriptor rejects this symbol independently.
+6. The worker distinguishes local control-flow evidence from global reachability, observed zeros from original provenance, and current compiler-produced grouping research from historical source-grouping claims.
+7. The seven W5 candidates, four pre-existing stubs, inactive target, W5 predecessor, and unrelated High Attack work remain independent and unchanged by this diagnosis and review.
+
+## Review method
+
+The review independently resolved the accepted structural rows from the frozen source model and extracted their original `.word` records. It compared those bytes to the canonical normalized Rev 0 ROM, checked neighbor continuity, decoded all direct branches/jumps/calls in the 364-byte body, and recorded the return, delay slot, tail, and hashes.
+
+Using the exact frozen preprocessed input and unchanged authenticated KMC flags, the review ran a fresh compiler invocation, produced native and ordinary assembler inputs, and invoked the pinned GNU 2.6 assembler. Both objects were parsed independently for section shape, function symbols, bytes, and normalized relocations.
+
+Three isolated diagnostic links separated the competing explanations:
+
+- ordinary input at the accepted owner address;
+- native input at the same unaligned owner address; and
+- native input at the next aligned address as a one-variable alignment control.
+
+The review also invoked the current native-descriptor validator against `func_002050AC` and inspected the existing multi-function, multi-owner, auxiliary-section, and source-class contracts. These were diagnostic checks only; no descriptor, source, assembly, configuration, boundary, or build state was changed.
+
+## Results
+
+| Check | Result |
+| --- | --- |
+| Owner identity | Row 3811, primary `primary:1361631d93f7ce9912f7`, overlay descriptor 10, ROM `0x002050AC..0x00205220`, VRAM `0x801C1C1C..0x801C1D90`, 372 bytes |
+| Retail body | 364 bytes, SHA-256 `FF9D349F15A7E9B884473188785FA5421A36D7B6EF3D002E4B68887B0B5D6435` |
+| Retail tail | Eight zeros, SHA-256 `AF5570F5A1810B7AF78CAF4BC70A660F0DF51E42BAF91D4DE5B2328DE0E83DFC` |
+| Full owner | SHA-256 `AF5DB3993A7F19931071F0F3CB15B4A1E4ADB8565EAFBD2C97908DCA9FCDFC30` |
+| Local control edges | 21 decoded direct edges; none enters the eight-byte tail |
+| Compiler reproduction | Exact 2,464-byte assembly, SHA-256 `3380988EAA47D48EADA8697F62127540821B2A8CFD2B4CE4467433F934FA61CF` |
+| Ordinary adjustment | Exact 2,493-byte assembly, SHA-256 `9BA6D9E74C00606558D3B2A0B394A80DC864E77B069AAEEAE7019D4EA232E676` |
+| Native object | `.text`: 368 bytes, alignment 16; one 364-byte function; four trailing zeros; seven relocations |
+| Ordinary object | `.ob64.r3811`: 364 bytes, alignment 4; one 364-byte function; no tail; the same seven normalized relocations |
+| Ordinary accepted-address link | Function remains at `0x801C1C1C`; all 364 body bytes exact; output lacks eight owner bytes |
+| Native accepted-address link | Output is 372 bytes, but comprises four leading zeros + shifted 364-byte function + four trailing zeros; full owner and body-at-owner-start differ |
+| Native relocation consequence | Six byte positions in relocated local-jump encodings differ even when the shifted function body is compared at its symbol address |
+| Native aligned control | At `0x801C1C20`, no leading fill is inserted and output is 368 bytes; this isolates alignment behavior but uses the wrong accepted address and still supplies only four tail bytes |
+| Descriptor test | Rejected with `text contract: malformed or unapproved native descriptor: func_002050AC` |
+| Source preservation | Source remained clean at `ef4689d56568ec54918e2cc4a85b2d9068b12d00`; no full audit, full-ROM build, or final verifier ran |
+
+The independent structured result is [independent-review.json](C:/Users/Joe/.codex/ob64-editor-feature-matching-2/work/combat-body-pose-tail-diagnosis-review-r1/final-run/independent-review.json), 26,572 bytes, SHA-256 `06752E211E5F86D93F87DCE5B998B2C2C7BC76730142320A7464A1DE5CEECEC4`. Exact subprocess arguments and outcomes are in [commands.json](C:/Users/Joe/.codex/ob64-editor-feature-matching-2/work/combat-body-pose-tail-diagnosis-review-r1/final-run/commands.json), 4,707 bytes, SHA-256 `D656629DE6B1C0019BFF297C383F1BD79DDF9EA79FD0E4234F28877A4CF4DC5A`.
+
+## Admissible findings
+
+No material technical finding remains.
+
+### C1 — stale opening task-log status
+
+- Frozen subject: worker log SHA-256 `5E951EA82F497BBE6AA0AC49ADA59BEBCB67D751F419B9667FD56155738AB584`.
+- Direct observation: line 3 says `Status: in progress`; line 18 says `Status: completed, review pending`, and the report, inventory, and terminal freeze also say completed.
+- Material consequence: none for the technical diagnosis or evidence boundary. A reader or status scraper that stops at the first status line can report the terminal worker incorrectly.
+- Smallest correction boundary: add a Director-owned or separately routed superseding coordination record identifying line 3 as stale and the terminal completed state as authoritative. Preserve the frozen worker package unchanged.
+
+This is non-semantic: it changes no behavior, schema, structural interpretation, proof input, or evidence boundary. It therefore fits `Accepted with corrections` and does not require worker technical re-execution.
+
+## Reused frozen evidence
+
+The W5 predecessor remains admissible because its exact parent freeze, terminal blocked proof, and every one of its 225 inventory records were authenticated. It establishes the seven provisional candidate observations, four preserved pre-existing stubs, inactive ASM ownership for `func_002050AC`, and the deferred final verifier. The diagnosis freeze and its 35-record inventory establish that no production change followed. The review reran the compiler/object/link claims rather than relying on the worker's generated conclusions.
+
+High Attack remains an unrelated workstream. Nothing in the frozen diagnosis, execution source, or reviewer output modifies or accepts it, and no dependency on it is introduced.
+
+## Evidence limits
+
+- The local edge census does not prove the absence of whole-ROM indirect entries or data uses.
+- Eight observed zero bytes and a preceding return do not establish their original producer.
+- No original object, original linker map, or original compilation-unit boundary was authenticated.
+- The isolated links are controlled diagnostics, not production ownership or complete-ROM proof.
+- This review did not run runtime experiments, a heavyweight structural audit, a full build, the W5 final verifier, or a source-policy acceptance check for the inactive target.
+- Current-compiler grouping experiments could be legitimate future research, but they would not by themselves prove the historical source grouping.
+- An original-ASM remainder would be mixed ownership and cannot satisfy sole-C matching acceptance.
+
+## Documentation consequences
+
+No canonical domain document was changed. If the Director later records this result, it should state only the bounded negative: the existing ordinary and native mechanisms do not represent this frozen single-function owner, while tail provenance, global reachability, and viable future grouping or representation remain open.
+
+## Exact next route
+
+1. Propagate the diagnosis with C1 explicitly superseded through a bounded coordination correction; keep the frozen worker files immutable.
+2. Preserve `func_002050AC` as inactive and ASM-owned. Keep the seven W5 candidates provisional, the four stubs unchanged, and W5 blocked until all assigned targets meet their requested class and the combined final verifier passes.
+3. If sole-C acceptance is still required, route a separate bounded research task for concrete current-compiler grouping/alignment evidence. Do not describe a successful experiment as historical provenance without original evidence.
+4. Alternatively, route a structural design for an explicitly preserved original-ASM remainder. Such a design must report mixed ownership honestly and undergo the required audit and independent review; it cannot be counted as matching C.
+5. Keep High Attack independent; this review supplies no acceptance or dependency for that workstream.

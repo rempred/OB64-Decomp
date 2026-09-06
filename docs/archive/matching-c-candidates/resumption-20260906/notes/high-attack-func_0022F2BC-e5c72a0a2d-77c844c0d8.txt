@@ -1,0 +1,20 @@
+# func_0022F2BC: Preserved Matching-Workbench Candidate
+
+## Status
+
+This source is a research candidate. The original assembly remains the accepted owner.
+
+- Candidate: `E5C72A0A2D49519E2961BF45AFE4C5618DBF576C63A0747FA7423AE396F23513`
+- Target: `func_0022F2BC` at ROM `0x22F2BC`
+- Source: `docs/archive/matching-c-candidates/2026-09-06-func_0022F2BC-e5c72a0a2d.c`
+- Source SHA-256: `BB7081E6CDAE49E82044A6B9294C0F64FF0562E343B387372417191A07BEA231`
+- Latest scratch class: `not compiled`
+- Latest scratch score: `not available`
+
+## Preservation reason
+
+HA-W6-PUREC-04: PURE_C 704/708-byte F2BC, 37 actual relocations. Opcode alignment is missing the first owner-to-a0 move; probe contains it before later removal. Inactive, ordinary match unfinished, not exhausted.
+
+## Evidence boundary
+
+Scratch object comparison does not prove canonical linker ownership, relocation resolution, target bytes, or full-ROM identity. Resume through the normal diff and verification workflow.

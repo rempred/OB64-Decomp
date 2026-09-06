@@ -1,0 +1,20 @@
+# func_0022C78C: Preserved Matching-Workbench Candidate
+
+## Status
+
+This source is a research candidate. The original assembly remains the accepted owner.
+
+- Candidate: `164C166A2E0606DDCE66625648198CFE151C94ED63BCEBD1A3D3BB1413BDC289`
+- Target: `func_0022C78C` at ROM `0x22C78C`
+- Source: `docs/archive/matching-c-candidates/2026-09-06-func_0022C78C-164c166a2e.c`
+- Source SHA-256: `9FAFFF5814656B51CE3B151D537F879C9F3E92ED4877D8E8A13F31E900B3F0B6`
+- Latest scratch class: `not compiled`
+- Latest scratch score: `not available`
+
+## Preservation reason
+
+r5 diagnostic PURE_C successor: 2496-byte extent and 624 opcode keys aligned; 84 nonrelocated word differences remain. Scalar locals, final return-duration carrier and structured zero clamp. Not activated or wave accepted.
+
+## Evidence boundary
+
+Scratch object comparison does not prove canonical linker ownership, relocation resolution, target bytes, or full-ROM identity. Resume through the normal diff and verification workflow.

@@ -419,9 +419,30 @@ node tools/match.js --help
 
 ## Native text diagnostics
 
-Compiler contract 9, scratch/report schema 3, candidate cache schema 4, and comparison contract 2 invalidate earlier diagnostic evidence. Native mode resolves only from an authenticated active descriptor. It retains the full owner and tail separately from function bytes and prohibits scratch auxiliary or instruction-legalization allowances. The production func_00204A70 remains inactive, so ordinary scratch output cannot claim the native accepted contract. Isolated diagnostic links remain ineligible for production acceptance.
+Compiler contract 9, scratch/report schema 3, candidate cache schema 4, and comparison contract 2 invalidate earlier diagnostic evidence. Native mode resolves only from an authenticated active descriptor. It retains the full owner and tail separately from function bytes and prohibits scratch auxiliary or instruction-legalization allowances. The production func_00204A70 is active PURE_C at accepted canonical 497181d. Other targets cannot claim its target-specific native contract. Isolated diagnostic links remain ineligible for production acceptance.
 
 Native fresh, cached, and diagnostic objects share the rejection of nonzero COMMON storage and nonempty writable sections.
 Native diagnostic links require exactly the intended text load, with no extra load segment.
 
 Native scratch reports retain compiler-assembly, assembler-input, and raw-object identities. Cached native diagnostics recheck those identities, untouched input, section shape, complete function census, and relocations.
+
+## Accepted representation capabilities
+
+These capabilities are available together in canonical `497181d`. A capability does not activate another target or accept an incomplete wave.
+The [frozen-family restart index](RESUMING_FROZEN_FAMILIES.md) identifies retained candidates and their remaining blockers.
+
+| Observed shape or failure | Accepted mechanism | Implementation / correction | Focused reference |
+|---|---|---|---|
+| Art function plus four native text bytes | Target-specific `nativeTextTail`; untouched compiler assembly, complete owner and allocation proof | `3abe047` + `6b83756` | `tools/lib/text_contract.js`, `tests/native_text_tail.js`; only `func_00204A70` |
+| Original data before/after compiler tables | `preservedPrefix` / `preservedTail` | `8fb0097` | `tests/func_0021B438_0021B894_switch_tables.js` |
+| Repeated compiler table sections | Ordered `compilerOccurrences` with grammar and real relocations | `8fb0097` | Same switch-table suite |
+| Table prefix of an aligned source section | `sourceObjectPrefix`, with authenticated producer grammar | `a4c46b6` + `4b017ff` | Same switch-table suite; explicit extra words are not padding |
+| Equivalent occurrence objects with different key order | Deep equality for recorded occurrence evidence; arrays/material values remain strict | `bdbef28` | `tests/phase8_matching_c.js` |
+| Necessary zero alignment between compiler tables | `compilerOccurrences[].paddingBefore` | `d77600e` | `tests/auxiliary_internal_padding.js` |
+| Original data between C table fragments | `preservedInteriorBefore`, literal whole-row relocation-free boundary | `6e0ccd3` | [Interior contract](AUXILIARY_INTERIOR_ASSEMBLY.md), `tests/auxiliary_interior.js` |
+| Resource-load code using ROM-only addresses | `resource-loader-0022a280` in existing `nonDescriptorLoadSlabs`, rows 4166–4248 | `efb1725` | `tests/phase7_conventional_build.js`; preserve proven full-load endpoints |
+| Audit rejects already accepted Squad migration | Current PURE_C/activity/owner checks, including p3066 active | `497181d` | `tests/audit_squad_migration.js` |
+
+Compiler alignment bytes, original retained bytes, function text, and relocated table entries are distinct evidence classes.
+Use the accepted contract that fits the actual producer. Missing fields or a different target-specific shape require diagnosis, not analogy-based widening.
+The pose parser's eight-byte tail remains unsupported by the current native mechanism. Scratch exactness never replaces the canonical wave verifier.

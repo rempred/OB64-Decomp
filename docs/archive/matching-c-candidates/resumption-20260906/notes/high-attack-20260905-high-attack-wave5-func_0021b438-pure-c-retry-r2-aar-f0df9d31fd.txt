@@ -1,0 +1,149 @@
+# After-action report: High Attack Wave 5 `func_0021B438` Pure-C retry revision 2
+
+Date: 2026-09-05
+
+Status: **blocked; no evidence-backed revision-2 source experiment**
+
+## Outcome
+
+`func_0021B438` was not activated or promoted. The task evaluated the newly completed exact B894
+source as neighboring compiler evidence and found that its successful source techniques do not
+map to either of B438's measured saved-register allocation cycles.
+
+The preserved revision-1 E41 candidate remains the best result. B438 remains assembly owned;
+B894 remains exact and unchanged; no source, configuration, structural rule, test, tool, or active
+ownership record changed. The complete verifier was intentionally not rerun because the active
+build state did not change.
+
+## Host-interruption recovery
+
+The PC shut down unexpectedly after the assignment, claim, task log, and input identities had been
+authenticated, but before a candidate was written or compiled. Recovery checks established:
+
+- the immutable claim and task log were intact;
+- claim SHA-256 and every identity field matched the revision-2 assignment;
+- High Attack was clean at the required commit
+  `7ac7bba25d0f2d1f26bc51f308a8712065411c12` on `codex/high-attack-wave-5`;
+- the revision-2 diagnostic root and active B438 C source were absent; and
+- no partial runtime or High Attack write needed repair.
+
+Work resumed directly at the saved compiler-output comparison. No experiment or verification was
+repeated merely because of the restart.
+
+## New evidence examined
+
+The comparison used:
+
+- B438's preserved E41 C source, compiler assembly, workbench report, flow/global probe, original
+  assembly, dossier, and revision-1 evidence;
+- the exact current B894 C source and compiler assembly;
+- B894 revision-2 experiments E3 through E12 and the accepted revision-3 proof; and
+- the current exact matching target/linkage configuration and CURRENT verification state.
+
+The current B894 source is 10,471 bytes, SHA-256
+`C3DE40CE5ED2A44FFDD9B2CD88FC39B9E9E3537C7539F773286636000BCCDB98`. It remains exact and
+`PURE_C`; no B894 path differs from its completion commit.
+
+## Why B894's successful reuse does not transfer
+
+B894 E6 reused `temp_s0_30`. That scalar carries an early dispatch byte in retail `$s0`, dies,
+and is later reset as a five-record loop index that retail also places in `$s0`. The two roles are
+nonoverlapping, and the target already demonstrates the shared hard-register identity. Reusing one
+C scalar therefore supplied the compiler with the exact affinity that retail exhibits.
+
+B438's remaining inner cycle is different:
+
+- strongest adjustment is live in retail `$s4` from its initialization through the final actor
+  convergence;
+- other slot is live in `$s3` for the three-entry actor scan; and
+- other cursor is live in `$s2` across that same scan.
+
+These values overlap. The E41 probe measures the accumulator at 43 weighted references / 131
+instructions, cursor at 19 / 82, and slot at 19 / 83. GCC therefore allocates the accumulator
+first and emits candidate `$s2/$s3/$s4`; retail needs `$s4/$s2/$s3`. There is no earlier or later
+independent `$s2`, `$s3`, or `$s4` target role to reuse. Every semantically available B438 scalar
+either overlaps the trio or belongs to a caller-register/stack role whose reuse would add a
+target-visible saved-register operation.
+
+The outer cycle also has no disjoint reuse surface. Owner classification, other classification,
+and the outer cursor overlap. E41's reversible owner-value pair puts the cursor in exact `$fp` but
+overshoots the desired priority interval, yielding owner `$s6` and other `$s7` instead of retail
+owner `$s7` and other `$s6`.
+
+## Assessment of the remaining B894 changes
+
+B894's other successful changes solve mismatch families absent from E41:
+
+1. Duplicating a counter initialization inside branch arms ended an accidental lifetime across a
+   call. B438's disputed values intentionally survive nested calls.
+2. A persistent volatile pointer fixed repeated global byte read/modify/write base materialization.
+   B438 contains no equivalent family, and its exact stack arrangement depends on the current
+   nonvolatile owner plus split cursor update.
+3. Moving two initializations fixed delay-slot and address-materialization scheduling. E41 already
+   matches every opcode, delay slot, stack offset, width, and branch polarity.
+4. A genuine `for`/`continue` loop preserved B894's branch-likely and duplicate increments. B438
+   previously tested indexed and explicit bottom-tested versions of the corresponding inner loop;
+   GCC emitted the same object, and E41's CFG is already exact.
+5. An in-place address update fixed a commutative operand register. B438's remaining executable
+   differences are coherent saved-register cycles rather than an address-expression edge.
+
+This comparison falsified the leading interpretation that B894 supplied one untested B438
+lifetime/control-flow transformation.
+
+## Why no source experiment was run
+
+The assignment allowed a bounded retry only if the neighboring exact source yielded a concrete,
+untested hypothesis. Compiling a reuse of `owner_value`, `other_value`, `other_index`, `other_slot`,
+`other_cursor`, `owner_cursor`, `actor`, or the shared switch temporary would knowingly violate
+the measured interference graph or create a retail-visible operation. Repeating loop spellings,
+copy boundaries, initialization ordering, or volatile-pointer methods would duplicate revision-1
+experiments without new evidence.
+
+The correct fail-closed action was therefore to stop before source mutation. No diagnostics root
+was created and no candidate ID or run belongs to revision 2.
+
+## Preserved result
+
+- Candidate: `02E189CF797BA816F2129C643244CFD17A90E9DC89BCAB0998B6B6445464DBF3`
+- Run: `build/matching/runs/DA8E0708E5F616DF17BE8E1FC6057E618F1BD098DEA05C141D03F12AEBAE3DC5`
+- Source: `docs/archive/matching-c-candidates/2026-09-05-func_0021B438-02e189cf79.c`
+- Source SHA-256: `924CF427DF75DEBE6BB907F76E8544826C4DFC4E713131BC8BEEA292A41DEB96`
+- Source class: `PURE_C`
+- Scratch result: 824 bytes / 206 instructions, score 97.67
+- Differences: 52 aligned instructions / 96 bytes; 31 register fields and 17 immediates
+- Exact families: opcodes, stack offsets, memory widths/signedness, branch polarities, symbolic CFG
+
+The two exact 240-byte compiler occurrences `.L23` and `.L50`, combined 480-byte object, and
+linked auxiliary bytes remain authenticated by the preserved revision-1 evidence. Revision 2 did
+not create a replacement candidate.
+
+## Verification disposition
+
+The existing CURRENT state at fingerprint
+`18B1504B6B01233443C45FA527A9FBBEB36505075961BE287827EFEB37C56D92` remains a passing exact
+baseline. It contains 467 `PURE_C` targets / 38,064 bytes, 66 `HYBRID_C` targets / 39,192 bytes,
+zero `UNKNOWN`, and the canonical 41,943,040-byte ROM SHA-256
+`571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A`.
+
+No target or complete verifier was run. That is deliberate: B438 stayed inactive and the active
+Wave 5 state was unchanged, so a fresh full build would add no acceptance evidence.
+
+## Canonical naming
+
+This task added compiler-allocation evidence only. Retain the cautious name `func_0021B438`.
+
+## Reopen condition
+
+Reopen with new compiler evidence or a `PURE_C` form that can cross one measured priority edge
+without retained instructions or changes to B438's exact opcode, CFG, stack, width,
+branch-polarity, and auxiliary-table surface. Specifically, it must place owner value between
+other value and cursor, or make the inner cursor and slot allocate ahead of the accumulator while
+still producing retail `$s2/$s3/$s4`. Any promoted result must pass exact linked diff and the one
+complete Wave 5 verifier.
+
+## Write inventory
+
+High Attack writes are limited to this AAR and its sibling revision-2 evidence index. Parent-root
+writes are limited to the immutable claim and revision-2 task log. There are no source, target,
+linkage, B894, assembly, test, tool, boundary, overlay, compiler, worktree, branch, commit, push,
+publication, or emulator changes.

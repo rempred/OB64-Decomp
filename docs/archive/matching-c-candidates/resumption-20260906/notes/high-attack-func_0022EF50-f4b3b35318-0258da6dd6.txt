@@ -1,0 +1,34 @@
+# func_0022EF50: Preserved Matching-Workbench Candidate
+
+## Status
+
+This source is a research candidate. The original assembly remains the accepted owner.
+
+- Candidate: `F4B3B353182F46E32074D171F25A6057FB54B8C9E6C888DE6F39950DD7DFE14F`
+- Target: `func_0022EF50` at ROM `0x22EF50`
+- Source: `docs/archive/matching-c-candidates/2026-09-06-func_0022EF50-f4b3b35318.c`
+- Source SHA-256: `3D7DC9F4744CF4777E954546498000005943C5E5FB07C394E8E028F4A62BE423`
+- Latest scratch class: `control-flow-address-unresolved`
+- Latest scratch score: `98.06`
+
+## Preservation reason
+
+HA-W6-PUREC-07 E10: PURE_C876 frame80, zero non-relocated text-word differences;29 text relocations,7 rodata relocations/32-byte rodata. Branch-local logical absorption survives early jumps then folds after, restoring native final selection branch. Diagnostic ONLY: actual relocation resolution/auxiliary ownership and final full-ROM gates not yet accepted; no activation authorized.
+
+## Evidence boundary
+
+Scratch object comparison does not prove canonical linker ownership, relocation resolution, target bytes, or full-ROM identity. Resume through the normal diff and verification workflow.
+
+## First recorded difference
+
+```json
+{
+  "actual": "jal 0x80000000",
+  "actualWord": "0x0C000000",
+  "expected": "jal 0x801C9FA4",
+  "expectedWord": "0x0C0727E9",
+  "index": 10,
+  "offset": 40,
+  "pc": 2149498024
+}
+```

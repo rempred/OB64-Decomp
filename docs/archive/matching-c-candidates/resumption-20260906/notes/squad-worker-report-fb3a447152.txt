@@ -1,0 +1,85 @@
+# Supply-preset initializer PURE_C r1
+
+Blocked: func_00195D9C has a mechanically PURE_C draft, but the canonical path rejects its compiler-emitted switch table. Existing linkage rules cannot preserve the accepted data prefix before that table. The Director must route the missing linkage capability before ordinary matching can resume.
+
+No provisional exact result or matching-C acceptance is claimed. This is a tooling/ownership boundary, not evidence that the function inherently requires assembly.
+
+## Scope and baseline
+
+Assignment squad-supply-preset-initializer-pure-c r1; launch SQUAD-SUPPLY-INIT-W01. Worker 01a07221-e676-7360-b6af-2d5df26834a3, host local.
+
+Worktree: `C:\Users\Joe\.codex\worktrees\0d91\OB64 Decomp`. Existing branch: codex/squad-construction-matching. Starting and ending HEAD: 4ce520b12cf2fec53411fa4ad620c90fb6dd8eac. Parent HEAD at claim: c4a9ecef200aba38534813a6efa704fe5fe68461.
+
+The source tree and index were clean. Seven predecessor sources and both registries matched activation evidence. Fresh exclusive claim creation occurred at 2026-09-06T13:46:26.0293094Z, before other writes, followed by readback. No competing matching process or pre-existing fresh record was identified.
+
+The accepted model resolved one complete code owner: p3065, primary:24759d81bf2427035068, scenario-loader-00195410, section .ob64.r3065. The related data remains p3067, primary:48eeb57c98201bb32288, nonexecutable .ob64.r3067.
+
+| Semantic name | Game meaning | Address | Address space | Evidence role |
+|---|---|---|---|---|
+| Supply-preset initializer | Supported supply role; unknown presets remain unresolved | [0x00195D9C,0x001960A8) | z64 ROM offsets | Complete 780-byte code owner |
+| Initializer placement | Same code owner | [0x8021590C,0x80215C18) | Scenario-loader runtime virtual addresses | Accepted placement |
+| Protected data owner | Mixed existing data and strings | [0x00197738,0x001977E0) | z64 ROM offsets | Complete 168-byte p3067 owner |
+| Protected data placement | Same data owner | [0x802172A8,0x80217350) | Scenario-loader runtime virtual addresses | Accepted placement |
+| Internal dispatch table | Six destinations inside the initializer | [0x001977C0,0x001977D8) | z64 ROM offsets | Table starts 136 bytes into p3067 |
+| Dispatch-table placement | Same table | [0x80217330,0x80217348) | Scenario-loader runtime virtual addresses | Reference address load |
+
+The table has a 136-byte prefix and eight-byte tail within its preserved data owner. Internal labels remain part of p3065, not separate functions.
+
+## Attempt and direct evidence
+
+The draft was independently derived from the original instruction sequence and existing project interfaces. It uses ordinary C switches for the three preset stages. Unknown values retain the default paths; no new meaning or validation behavior is claimed.
+
+Command: `node tools/diff.js func_00195D9C`.
+
+It exited 1 with: `KMC target assembly section grammar drift: .ob64.r3065`.
+
+The untouched compiler assembly contains one `.rodata` section with six `.word` local-label entries. It returns to `.text` for the case bodies. This directly reproduces the expected kind of compiler switch table, but not an accepted linked result.
+
+Output: `C:\Users\Joe\.codex\ob64-squad-construction\work\diff\func_00195D9C-1788702419857-6999a7`.
+
+No `build/diff/func_00195D9C.json` exists. Compilation stopped before section assignment and object/link comparison. There is no current object identity, sole-C-owner proof, relocation MATCH, or target-byte equality to report.
+
+Focused command `node tools/source_policy.js --target func_00195D9C` passed PURE_C. Source classification alone does not establish matching acceptance.
+
+## Why ordinary linkage cannot complete this attempt
+
+Read-only inspection found no existing auxiliary contract for this target or data owner.
+
+`tools/lib/phase8_matching_c.js:129` rejects additional compiler sections without an auxiliary contract. Its supported auxiliary path assigns a compiler-emitted `.rodata` fragment to an accepted data section.
+
+`tools/lib/active_targets.js:133` defines exact auxiliary keys, including preservedTail but no preserved-prefix representation. `tools/lib/active_targets.js:837` starts group coverage at the accepted owner's ROM and runtime start. The following gap check requires the first compiler fragment to start there.
+
+A contract beginning at the actual table leaves a 136-byte gap and therefore cannot pass those unchanged rules. Existing shared-fragment support does not help: this prefix is preserved assembly data, not another contracted compiler switch table.
+
+Extending the switch-table fragment backward would classify unrelated data and strings as local-label relocations. That violates the existing table contract and the assigned preservation boundary. Splitting or reassigning p3067 would change the protected data owner.
+
+Removing the switch table would no longer reproduce the reference dispatch instructions. Rewriting compiler output, fabricating table entries, and changing the validator are prohibited. No such workaround was attempted.
+
+The Director should route a narrowly scoped linkage-support task that preserves the existing data owner, prefix, table, and tail. Applicable tooling/structural verification and review remain separate from this ordinary matching assignment. This report does not authorize that work or predict that the remaining C instructions already match.
+
+Evidence grade: Verified for the observed compiler-section rejection and current validator limitation. Broader impossibility of PURE_C is not claimed.
+
+## Artifact identities
+
+SHA256 identities:
+
+- src/lib/func_00195D9C.c: 2BA44C8DF52E2505F27A861938805DC0E38CFC1B79D4A0DF2C931099EDB9114C.
+- Authenticated compiler input, 3756 bytes: A5EE2F62BDA39BC305569B294BEA2CA2162BCA071684C73D199B8341F730CD39.
+- Untouched generated/c/func_00195D9C.compiler.s: 0EF523D4ED7DAC817B5F1D1E874998D6DF97B27C0058A6C6E1E6FCC531E744D1.
+- build/source-policy/report.json: 6D287235AE28BC934E005314B11D36FE7590294AB41710F6102C6400D6D0109F.
+- config/matching-c-targets.json: 8D60E9C6EF5BAC3C921BB72CDF7F34B94DC401AC78732EEE84CD088AECA67804.
+- Unchanged config/matching-c-linkage.json: 222803D6B617F9430B3F7E6F18E57E3F6A544FD0EBB3126692FF2010F0E77BE9.
+- Original function assembly: A6D30F071CA898424A46B7454F4AB663A4DEB13AB7DD060CDEE657610F3A5603.
+- Protected data_00197738.s: 75513E70F400B2A85AA5D1D70C796853B2BEF504021305B54F6640704176204B.
+- Unchanged tools/lib/active_targets.js: 1CA91F1E690EE6D6DA3E8E6B244536122DAA312967C23C1D011D8B45A4B2763D.
+- Unchanged tools/lib/phase8_matching_c.js: D2FE05DCE4AF72CE6535F19F37B52286903A6382DBB1F579E16390EAE55CE8E0.
+
+## Preservation and handoff state
+
+Only the new draft source and its ordinary activation entry changed. All seven predecessor sources, earlier activation entries, linkage registry, inspected tools, and protected data remain byte-identical to HEAD. Original function assembly remains available. git diff --check passed.
+
+The draft and activation remain uncommitted and unfinished. The active worktree does not establish a new exact baseline and will still reject this target. No fallback switch was performed. The Director must control its disposition during routing.
+
+No final build/verifier, ordinary reviewer, diagnostic compiler expansion, tool/data-owner change, later target, canonical mutation, staging, commit, publication, runtime, Editor work, delegation, or branch/worktree creation occurred. Every assigned decomp shell invocation sourced the Squad session.
+
+No canonical documentation change is proposed beyond Director-owned routing. Report and log are finalized before one blocked callback. Later delivery confirmation belongs only in the final response.

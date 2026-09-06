@@ -1,0 +1,34 @@
+# func_0022ADFC: Preserved Matching-Workbench Candidate
+
+## Status
+
+This source is a research candidate. The original assembly remains the accepted owner.
+
+- Candidate: `68BBBEE39E35B6E056533EC8EA2930FDB76833619D0226E85E6BDA5F7D9ECC14`
+- Target: `func_0022ADFC` at ROM `0x22ADFC`
+- Source: `docs/archive/matching-c-candidates/2026-09-06-func_0022ADFC-68bbbee39e.c`
+- Source SHA-256: `8E47FF7BBA2D58146DFD49B0CB0E41754F9FAEABB9D77ED1E15DE8CF252E84CC`
+- Latest scratch class: `control-flow-address-unresolved`
+- Latest scratch score: `96.92`
+
+## Preservation reason
+
+HA-W6-PUREC-03: ADFC corrected initial forwarded pointer, signed helper arguments, bridge pointer contract and mask-loop increment. Correct 624-byte extent; remaining mismatch mainly saved-register allocation. Direct carrier and byte-cast variants did not improve. Source not accepted; continue focused linked diff and compiler lifetime analysis after structural prerequisite.
+
+## Evidence boundary
+
+Scratch object comparison does not prove canonical linker ownership, relocation resolution, target bytes, or full-ROM identity. Resume through the normal diff and verification workflow.
+
+## First recorded difference
+
+```json
+{
+  "actual": "sw $s7, 0x3C($sp)",
+  "actualWord": "0xAFB7003C",
+  "expected": "sw $s5, 0x34($sp)",
+  "expectedWord": "0xAFB50034",
+  "index": 1,
+  "offset": 4,
+  "pc": 2149481264
+}
+```

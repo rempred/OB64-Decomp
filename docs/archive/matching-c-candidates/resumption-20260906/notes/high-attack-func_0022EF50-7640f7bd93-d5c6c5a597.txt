@@ -1,0 +1,20 @@
+# func_0022EF50: Preserved Matching-Workbench Candidate
+
+## Status
+
+This source is a research candidate. The original assembly remains the accepted owner.
+
+- Candidate: `7640F7BD93904859DC1C5269B45D776E6C32D9404A9F2DF1E30AC5568903A364`
+- Target: `func_0022EF50` at ROM `0x22EF50`
+- Source: `docs/archive/matching-c-candidates/2026-09-06-func_0022EF50-7640f7bd93.c`
+- Source SHA-256: `EA0A30375F02ACF4039F5F307F0B18F71E0FD1A00389D12E47B88C4FAED41440`
+- Latest scratch class: `not compiled`
+- Latest scratch score: `not available`
+
+## Preservation reason
+
+HA-W6-PUREC-04: PURE_C 876-byte EF50, three nonrelocated text words differ; actual seven-entry table plus four trailing padding bytes. Inactive, not accepted.
+
+## Evidence boundary
+
+Scratch object comparison does not prove canonical linker ownership, relocation resolution, target bytes, or full-ROM identity. Resume through the normal diff and verification workflow.

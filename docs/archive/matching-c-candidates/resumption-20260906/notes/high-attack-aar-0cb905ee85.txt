@@ -1,0 +1,77 @@
+# EF50 auxiliary ownership: blocked before production mutation
+
+Accepted mechanisms cannot retain the 64-byte assembly interval between B06C and EF50 within their shared data row.
+Separate tooling authority is required. No EF50 activation, source tuning, configuration change, canonical link, full build, or audit was performed.
+
+## Identity and scope
+
+- Assignment: `high-attack-wave6-ef50-auxiliary-structural`, revision 1; launch `HA-W6-EF50-AUX-01`.
+- Worker: `01a073b7-2265-7580-a386-0b4bff7e94b3`, local, Astra Medium.
+- Worktree: `C:\Users\Joe\Projects\OgreBattlel64\high-attack-wave-5`, branch `codex/high-attack-wave-5`.
+- Subject HEAD: `377bb3f9a3760879d05eb92d024ec9dd45d3be06`.
+- Result: blocked diagnosis, not structural acceptance or matching-C acceptance.
+
+## Observations
+
+The exact r7 archive, compiler assembly, object, workbench report, and earlier observation were authenticated against their supplied hashes.
+Fresh pinned compilation reproduced the archived compilation input, compiler assembly, and object hashes exactly.
+The source-policy tool classified the archive `PURE_C`.
+
+Actual ELF records contain 29 text relocations and seven data relocations.
+The data relocations are seven `R_MIPS_32` records at offsets 0 through 24, each targeting the text section.
+The final four bytes are zero alignment padding, not an eighth entry.
+
+Independent relocation arithmetic reproduced all 876 retail text bytes and all 32 retail data bytes.
+The authenticated historical exact ELF supplied external symbol addresses only.
+It does not establish acceptance for the current active source state. No canonical linking was attempted.
+
+The accepted slab is `resource-loader-0022a280`, not the historical RAM comments in the original assembly.
+The complete 1248-byte original assembly table was reconstructed from its words and compared exactly with the normalized baserom.
+
+| Required contribution | z64 ROM interval, end exclusive | RAM start | Bytes |
+|---|---|---|---:|
+| Accepted B06C C table | `0x00239EC0..0x00239EE8` | `0x801F6BF0` | 40 |
+| Retained assembly between C tables | `0x00239EE8..0x00239F28` | `0x801F6C18` | 64 |
+| Prospective EF50 C table and padding | `0x00239F28..0x00239F48` | `0x801F6C58` | 32 |
+| Retained final assembly | `0x00239F48..0x0023A3A0` | `0x801F6C78` | 1112 |
+
+The middle 64 bytes contain two D14C-associated tables, separated by four zero bytes.
+D14C dispatches load their bases using `lui 0x801F` and indexed loads with displacements `0x6C18` and `0x6C30`.
+Their five and ten entries respectively point inside D14C's accepted text interval.
+EF50 independently loads the seven-entry table at displacement `0x6C58`.
+This is static dispatch evidence, not a new gameplay interpretation or D14C activation.
+
+## Existing-mechanism rejection witnesses
+
+The original B06C group passes validation unchanged.
+The actual EF50 table and final tail pass normalization and individual resolution in memory.
+Group ownership fails because the retained middle assembly interval cannot be represented.
+
+| In-memory alternative | Existing rejection |
+|---|---|
+| Keep B06C's accepted 1208-byte tail and add EF50 | `nonfinal shared auxiliary fragment owns an assembly tail` |
+| Remove B06C's tail and leave EF50's final tail | `shared auxiliary fragments have a gap or overlap` |
+| Assign the interior 64 bytes as EF50's retained prefix | `auxiliary baserom range is malformed` |
+| Trim B06C's retained tail to those 64 bytes | `auxiliary baserom range is malformed` |
+
+`resolveAuxiliarySectionContracts` requires a prefix to begin at the accepted row start and a tail to end at the row end.
+`validateAuxiliaryOwnerGroups` permits a prefix only on the first fragment and a tail only on the last fragment.
+It requires contiguous C fragments between them.
+Accepted compiler-padding support describes compiler-produced zero alignment bytes; it cannot claim these nonzero D14C-associated assembly bytes.
+
+## Conclusion and next authority
+
+The missing capability is an independently retained assembly interval between C auxiliary fragments inside one accepted data row.
+It must preserve exact ROM/RAM placement, original assembly identity, sole ownership, and complete byte coverage.
+Adding that capability requires separately authorized tooling work and independent structural review.
+This worker did not expand shared tooling, split accepted boundaries, fabricate entries, or weaken validation.
+
+## Preservation and limits
+
+The diagnostic compared 7002 protected source, assembly, configuration, tool, test, and disclosed draft file entries before and after execution.
+Every hash remained unchanged; the tracked diff remained empty.
+B06C, the other active sources, all four inactive drafts, and accepted padding tooling were preserved.
+Only this report package, the assigned parent claim/log, and new ignored scratch diagnostics were written.
+No commits, task creation, runtime work, or integration occurred.
+
+The Director must freeze and route this diagnosis. Independent review remains pending; this report grants no ownership or wave acceptance.

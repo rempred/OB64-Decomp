@@ -1,0 +1,174 @@
+# Combat body selection and pose-resource matching family
+
+Status: in progress; waves 1–3 are accepted. Wave 4 r2 is active; later waves, discovery, and integration remain unfinished.
+Joe requested another worktree for an Editor feature family on 2026-09-05.
+This family develops original C for combat body selection and pose-resource handling.
+It can proceed independently of High Attack and squad deployment.
+Joe requires every related function in the family plan, not only functions the Editor currently modifies.
+
+## Worktree
+
+- Path: `C:\Users\Joe\Projects\OgreBattlel64\editor-feature-matching-2`.
+- Branch: `codex/combat-body-resources`.
+- Starting commit: `acf8d44932ea7749436305c191c3abe731a0c155`, accepted canonical main at creation.
+- Dedicated output root: `C:\Users\Joe\.codex\ob64-editor-feature-matching-2\work`.
+- Session script: `C:\Users\Joe\.codex\ob64-editor-feature-matching-2\session.ps1`.
+- Overall Director: Astra task `01a07262-aeca-7341-ad10-2dba705ff988`, host `local`.
+
+The checkout was clean after setup.
+Ignored local configuration, normalized Rev 0 ROM, and pinned tool bundles were supplied.
+No existing build state, cache, or workbench database was copied.
+`node tools/match.js doctor` passed in the new worktree.
+Its normalized ROM SHA-256 is `571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A`.
+Astra High Director reservation: `01a07254-6bdb-77c3-8aaf-fd96f922b537`, title `Combat body resources Director`.
+The saved task project is canonical decomp; all assigned implementation commands must use the existing worktree above.
+No second worktree is required or authorized.
+
+Before decomp commands in every new PowerShell invocation:
+
+```powershell
+. 'C:\Users\Joe\.codex\ob64-editor-feature-matching-2\session.ps1'
+```
+
+The first Astra Xhigh implementation worker must obtain the normal exact baseline in this isolated worktree.
+Setup authentication is not a substitute for full-ROM matching acceptance.
+
+## Purpose and evidence
+
+`func_00201798` selects a body program using class, action, and raw mode.
+`func_002015C8` selects the class/body pose-resource handle.
+`func_00201BAC` loads and publishes resource tables used by these consumers.
+The later chain follows frame tokens through resource descriptors and rendering.
+
+These are useful source interfaces for future animation changes; matching alone does not approve a changed animation or visual compatibility.
+Read applicable agent guides, the ordinary decomp workflow and source policy, and committed parent `docs/combat-animation-system.md`.
+Read the accepted `20260728-combat-sprite-art-fighter-selector28-frame-token-art-chain-static-aar.md` for the bounded renderer chain.
+The key selection and chain evidence is already committed in the parent repository.
+Pre-existing dirty animation-document and corpus changes are not dependencies or authority for this family.
+
+## Complete family scope and discovery
+
+The plan covers body selection, loading and table publication, program/frame interpretation, resource and art resolution, rendering, and cleanup.
+Direct integrations and shared owners must remain visible in the plan even when another Director performs their matching.
+The initial targets below are opening work, not the complete family boundary.
+Expand through supported call and data relationships; do not infer membership solely from adjacency or include every transitive engine dependency.
+For each discovered member, record its accepted owner, source class, relationship, current Director, and remaining acceptance gate.
+List already accepted pure-C members as completed; do not rematch them.
+Keep unresolved indirect dispatch, entry ownership, and family-relevant edges as explicit discovery work.
+
+Family completion requires every supported family member to reach accepted `PURE_C` and every discovery question to be resolved with evidence.
+A difficult function, unchanged Editor use, or another Director's pending work does not remove a member from the completion scope.
+Shared family members must be integrated before claiming this family is complete.
+General engine utilities outside the family can retain accepted assembly ownership under verified interfaces.
+
+## Full-family roadmap
+
+The [complete direct/static inventory](combat-body-resources-family-inventory-20260905.md) records 78 supported members and eight boundary candidates at the source base.
+Six supported members are already accepted pure C; the remaining 72 use assembly.
+Already matched members remain completed context, not new work assignments.
+The member inventory also records shared owners, direct integrations, bounded exclusions, and mandatory indirect/data discovery.
+The census is not claimed exhaustive until those discovery gates close.
+The opening selector wave resolves to unique executable owners in fixed overlay descriptor 10.
+Accepted descriptor 10 spans z64 ROM `0x001F0A30..0x00213B10`, with text ending at `0x00211D20`.
+Its runtime base is `0x801AD5A0`.
+Do not substitute older research extents for the accepted model.
+
+| Wave | Scope | Members at inventory base |
+|---|---|---:|
+| 1 | Selector leaves and class/action/body selection | 9 |
+| 2 | Program selection and frame consumption | 5 |
+| 3 | Resource publication and layout | 6 |
+| 4 | Decoded art conversion | 10 |
+| 5 | Pose metadata and parser API | 12 |
+| 6 | Pose-pool lifecycle and accessors | 15 |
+| 7 | Descriptor resolution and compositing | 7 |
+| 8 | Draw consumers and body integration | 14 |
+
+Exact member identities, current classifications, and runtime extents are in the linked inventory.
+Wave numbers organize implementation; they do not prevent justified dependency-driven sequencing.
+The first wave establishes related selector interfaces; target count is not its acceptance criterion.
+The assigned implementer should choose source forms and local sequencing from evidence.
+One source writer works on one target at a time.
+
+Joe's current cadence requires authenticated linked diff, mechanical PURE_C, and exact reviewed relocation checks per function.
+Per-function commits are provisional wave candidates, not final matching-C acceptance.
+Do not run build.js, verify.js including --target, or equivalent strict CURRENT/full-ROM verification after each function.
+Do not divide a planned wave into single-function waves to preserve the old cadence.
+At the completed-wave boundary, run the complete verifier once on the combined source state; it builds CURRENT when needed.
+Inspect the authoritative final policy report for PURE_C on every wave target.
+Do not loop target verification or use global --require-pure against legitimate pre-existing hybrids.
+Retain exact ownership, placement, relocation, target-byte, and full-ROM requirements for ordinary matching acceptance through Director intake.
+Do not launch or wait for independent ordinary-source review or repeat final verification solely for review.
+Structural, tooling/verification, semantic, and family-inventory results retain their applicable independent review.
+Changed integration inputs require a completed-wave exact-ROM gate. Commits and unchanged handoffs reuse existing proof.
+The initial missing setup baseline and diff's internal development link are separate from repeated final acceptance builds.
+Current Joe direction overrides older worktree-local cadence instructions; overall Astra owns shared canonical workflow edits.
+
+## First-wave Astra experiment
+
+Joe explicitly assigned the first implementation wave to Astra on Xhigh effort.
+The Director must create one Astra Xhigh worker for all nine selector targets in inventory wave 1.
+The worker must perform the actual matching and report on the methodology from that experience.
+The Director remains Astra High; independent reviewers use the standing Sol Max preference.
+Joe subsequently assigned wave 2 to the same Astra Xhigh worker, `01a0726f-cf07-7fe0-a816-05176408b871`.
+The [wave 2 r2 assignment](prompts/combat-body-programs-wave2-astra-r2.md) is completed in the same Astra Xhigh worker.
+Wave 2 source `a86c4ecdeafcc56f60a5b548f5712e8c2009dbfa` passed one complete canonical verifier and Director identity/scope intake.
+All five targets are PURE_C, with sole ownership, accepted placement, reviewed relocations, exact target bytes, and an exact complete ROM.
+The final verifier completed at `2026-09-05T22:26:51.855Z`; its evidence index is `docs/Plans/task-logs/combat-body-programs-wave2-astra-r2-evidence-index.md`.
+The accepted corrected package is `wiki/after-action-reports/combat-body-methods-whitespace-correction-r2/` in parent, committed at `9f1e79b`.
+Joe's latest worker-only instruction requires Astra Medium for all future worker turns and later worker assignments.
+The same worker task receives that override for [wave 3 resource publication and layout](prompts/combat-body-publication-wave3-sol-r1.md).
+Its six targets retain accepted ownership, including the folded preamble and internal label in `func_00201D24`.
+Wave 3 completed at source `45cadde2a68ffaa1241a8a98f27e95d75c4f2c4b` with one exact complete-ROM verifier and fresh compilation proof.
+All six targets passed final PURE_C, sole ownership, placement, relocation, target-byte checks, and Director identity/scope intake.
+Its frozen evidence index is `docs/Plans/task-logs/combat-body-publication-wave3-sol-r1-evidence-index.md`.
+Wave 3 parent freeze is `cfd7126b7a21655fbc06c438cf4fa2ea42f7c53b`.
+The same worker returned a blocked result for [Wave 4 decoded-art conversion](prompts/combat-body-art-wave4-astra-r1.md).
+All ten inventory W4 targets remain within their accepted owners; one combined verifier follows the complete wave.
+Seven candidates are committed provisionally at `87299d32f9dd7beaba69fbf4dfd7318f208a58dc`; three targets remain unfinished.
+The `func_00204A70` scratch result raises a trailing alignment/owner-extent question, preserved in parent freeze `40906d6fd39d10daf9e7c83916c83a1e78c88d20`.
+The active [r2 continuation](prompts/combat-body-art-wave4-astra-r2.md) permits existing-mechanism diagnostics and ordinary work on the remaining targets.
+Any new structural/compiler/tool contract requires separate scope, audit, and review before implementation.
+No complete-wave verifier ran, and no W4 candidate has final matching-C acceptance.
+
+The first wave has two required outputs: normal accepted matching C and a full methods report.
+The report must connect findings to actual attempts, commands, diagnostics, source changes, and verification results.
+It must explain useful methods, failed hypotheses, iteration costs, onboarding and worktree friction, and limitations of the evidence.
+It must identify tool or process corrections that would help future Sol workers, with concrete examples and priorities.
+Each proposed change must explain the defect or wasted work, a bounded correction, and how to verify the improvement without weakening acceptance.
+Separate reproduced defects from supported hypotheses and optional improvements.
+Do not turn one small selector wave into a claim about all large-function or scheduler problems.
+
+The worker must use the normal tools sufficiently to assess them through real work, and may choose its source-reconstruction methods.
+It must not implement unassigned shared-tool, ownership, compiler, or structural changes merely to make the wave pass.
+Route findings requiring such changes through the Director to overall Astra.
+The independent reviewer judges whether the methods report's claims follow from evidence; ordinary source acceptance uses complete-wave canonical proof.
+Overall Astra decides which general improvements to release before later Sol waves.
+Do not start wave 2 before overall Astra completes the experiment's methods intake and releases execution.
+Source-policy and exact-ROM gates remain unchanged; expensive compute does not change acceptance.
+
+## Boundaries and acceptance
+
+Preserve the accepted `func_00201D24` boundary and its internal `func_00201D2C` label.
+If sole ownership cannot be represented under existing rules, route a bounded structural task before changing those rules.
+Use the accepted 3,800-byte `func_001F7ADC` extent; its older assembly comment describes 3,808 bytes.
+The expanded direct/static conversion chain supports `func_00203414` as a family member.
+Qualify every remaining boundary candidate from the full inventory before including or excluding it from final implementation scope.
+
+Record `func_002267A8`, related stream builders in `func_0021C*`, and their `0x0022/0x0023` carrier callers as shared integration dependencies where evidence connects them.
+Their existing High Attack ownership must remain intact; this worktree must not duplicate their source work.
+Record the coverage of neighboring `func_00201108` and `func_002013D0` instead of omitting them from the family map.
+Do not import its pending prefix, alignment, or ownership changes.
+Preserve the active Squad construction Director's targets and outputs.
+
+Normal acceptance requires mechanical `PURE_C`, sole C ownership, exact linked target bytes, and an exact complete retail ROM.
+Preserve compiler identity, structural foundations, clean-room rules, and original assembly fallback.
+Source recovery does not authorize Editor migration, new runtime behavior, live emulation, or additional worktrees.
+Independent review applies to structural, tooling/verification, semantic, inventory, and experiment-methods results; workers retain implementation choice.
+Integrate onto the latest accepted canonical main with normal verification and coordinate actual shared-main/ref writes.
+Joe's standing decomp push authority applies after accepted family integration, never to unaccepted work or forced history changes.
+
+The [Director assignment](prompts/combat-body-resources-director-r1.md) controls activation and implementation authority.
+The Director owns the full family plan, first-wave experiment, later workers, reviews, and integration.
+
+Related inventory: [Editor feature matching-C coverage](editor-feature-matching-c-coverage-20260905.md).

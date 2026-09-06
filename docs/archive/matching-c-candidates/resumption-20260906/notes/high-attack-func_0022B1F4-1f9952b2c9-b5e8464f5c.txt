@@ -1,0 +1,20 @@
+# func_0022B1F4: Preserved Matching-Workbench Candidate
+
+## Status
+
+This source is a research candidate. The original assembly remains the accepted owner.
+
+- Candidate: `1F9952B2C9E9A59C8EA80DDBECFDC74F7F3AF7ED8ED38B9AD321CB524D675C2C`
+- Target: `func_0022B1F4` at ROM `0x22B1F4`
+- Source: `docs/archive/matching-c-candidates/2026-09-06-func_0022B1F4-1f9952b2c9.c`
+- Source SHA-256: `8E1348C7A2CA8B4653B22FF7A011DEA70EE0027F4758FC1318A8346DAD4B0B0F`
+- Latest scratch class: `not compiled`
+- Latest scratch score: `not available`
+
+## Preservation reason
+
+HA-W6-PUREC-04: PURE_C 3576/3588-byte B1F4, 103 actual relocations and 866/897 opcode keys. Ordinary matching remains unfinished; no exhaustion claim.
+
+## Evidence boundary
+
+Scratch object comparison does not prove canonical linker ownership, relocation resolution, target bytes, or full-ROM identity. Resume through the normal diff and verification workflow.

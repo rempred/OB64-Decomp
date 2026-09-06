@@ -1,0 +1,20 @@
+# func_0022D14C: Preserved Matching-Workbench Candidate
+
+## Status
+
+This source is a research candidate. The original assembly remains the accepted owner.
+
+- Candidate: `81AC35C22A86D54CA38F04B71C06553E349F839E80DB3AE4E8F2DCF1134909EB`
+- Target: `func_0022D14C` at ROM `0x22D14C`
+- Source: `docs/archive/matching-c-candidates/2026-09-06-func_0022D14C-81ac35c22a.c`
+- Source SHA-256: `9E6505EE978477253702FC970E99D0BFEBBB644199BF261B999DF12E988F59AB`
+- Latest scratch class: `not compiled`
+- Latest scratch score: `not available`
+
+## Preservation reason
+
+HA-W6-PUREC-04: cleaned valid D14C source, PURE_C 6732/6844 bytes with actual two-table output and internal four-byte alignment gap; inactive, structural routing and further matching required.
+
+## Evidence boundary
+
+Scratch object comparison does not prove canonical linker ownership, relocation resolution, target bytes, or full-ROM identity. Resume through the normal diff and verification workflow.

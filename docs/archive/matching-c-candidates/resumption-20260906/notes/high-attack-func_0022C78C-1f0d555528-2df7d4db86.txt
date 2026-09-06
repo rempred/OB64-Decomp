@@ -1,0 +1,20 @@
+# func_0022C78C: Preserved Matching-Workbench Candidate
+
+## Status
+
+This source is a provisional PURE_C replacement in the current ordinary target configuration. Original assembly is preserved as reference/fallback. Full-wave acceptance remains deferred.
+
+- Candidate: `1F0D555528840BB29C235B39F2908A33A71ED2CD418FF8214F693E13A49DCE90`
+- Target: `func_0022C78C` at ROM `0x22C78C`
+- Source: `docs/archive/matching-c-candidates/2026-09-06-func_0022C78C-1f0d555528.c`
+- Source SHA-256: `5F1020DA9FAFA524353CF1CAA3C2A4E371BB84F008E424A10DDE01B1FE9C3121`
+- Bound scratch source class: `PURE_C`; run `E5EA5C07BD510D8304175BD6CAB4973861980C3CCA668606A0F754603316E46A`.
+- Canonical linked diff: exact2496 target bytes; relocation contract matches all78 actual entries. See the r9 AAR/index for exact-input evidence, not an aggregate score.
+
+## Preservation reason
+
+HA-W6-PUREC-09 E03: canonical C78C linked diff EXACT, PURE_C, 78 actual relocations MATCH, sole row4175 C input. Provisional original-wave result only; no final-wave verifier or matching acceptance.
+
+## Evidence boundary
+
+Scratch object comparison does not prove canonical linker ownership, relocation resolution, target bytes, or full-ROM identity. Resume through the normal diff and verification workflow.

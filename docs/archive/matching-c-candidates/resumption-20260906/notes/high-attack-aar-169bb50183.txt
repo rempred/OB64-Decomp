@@ -1,0 +1,96 @@
+# High Attack Wave 6 — revision 9 bounded continuation
+
+Launch HA-W6-PUREC-09; worker01a07354-275e-7503-a806-276101985705, local, Astra Medium.
+Subject C:/Users/Joe/Projects/OgreBattlel64/high-attack-wave-5; branch codex/high-attack-wave-5.
+Starting and ending HEAD f80d2dfd1a6ea678ceea6a13389f01bc2fd75aaf. Changes remain uncommitted.
+Disposition: blocked original wave; bounded research complete, not matching acceptance.
+
+## Outcome
+
+C78C now has an ordinary provisional PURE_C replacement with exact canonical linked target bytes and an exact actual relocation contract.
+All2496 bytes and624 decoded rows agree; zero differing bytes/words. The C object is the sole row4175 input at the accepted placement.
+No complete-ROM acceptance gate ran. This is not yet matching-C acceptance or completion of the original seventeen-owner wave.
+
+B1F4 remains inactive/nonexact. A useful isolated pre-branch timestamp control is preserved, but it retains the timestamp across the call instead of recomputing it.
+D14C remains inactive, diagnostic-only and nonexact. A wrapper-free successor recovers target/mode priorities with the same occupied spill map; it is not a whole-function match.
+EF50 remains assigned, inactive and parked. Its source and exact diagnostic evidence were not tuned or replaced.
+
+## C78C: isolate scheduling, then operand expansion
+
+R01/R02 freshly compile LF-normalized r8 E01/E06 archives, authenticating the actual Git-equivalent bytes.
+Both are PURE_C2496/frame240/78 relocations and reproduce their two/eight differing-word controls. No old filesystem hash was inherited as fresh proof.
+E01 adds an isolated multi-set buffer/add temporary, avoiding the prior reused-carrier lifetime coupling. Native load order and later sum registers recover; one reversed addition remains at0x450.
+Bound P01 shows the reversal already in RTL insn718. Read-only compiler optabs.c400..420 swaps commutative operands when target equals op1; pseudo-number sorting is not the supported cause.
+E02's distinct absorption-identity operand regresses to19 differing words, including earlier allocation; reject it.
+E03 uses separate unsigned negation and noncommutative subtraction. Expansion preserves base-first order and combine removes the negation, yielding the required addition without new words.
+E03 has zero nonrelocated differences, then passes canonical linked comparison with all relocations resolved.
+
+Production source is src/battle/func_0022C78C_pure.c, leaving the original untracked func_0022C78C.c unchanged.
+Only its target entry and actual78 R_MIPS_26 relocation entries were added. Seven relocations normalize internal .text jumps. No auxiliary contract or registry change was needed.
+The discovery diff reported the initially missing contract; the second diff reports contract MATCH and exact bytes.
+The nonzero aggregate asm-differ score630 does not contradict exact pairwise/raw comparison:624 decoded rows and raw target bytes are exact. No score-based acceptance is asserted.
+
+Final map lines89578..89586 show only objects/c/func_0022C78C.o in .ob64.r4175, size0x9C0.
+ROM interval[0x22C78C,0x22D14C), VMA[0x801E94BC,0x801E9E7C), logical offset0, row4175/chunk34.
+Original fallback asm/original/rev0/lib/func_0022C78C.s remains available; comparison/original/chunk_034.o is comparison evidence, not a second linked section owner.
+The final invocation freshly compiled the requested C input with546 sibling cache hits and zero misses; no redundant full build or final verifier ran.
+
+## B1F4: tail controls, not extent-based progress
+
+E04 starts from retained r7E16 and isolates pre-branch timestamp calculation from r7E20's separate duration carrier.
+PURE_C3576/frame272/103 relocations; only14 words in0xD08..0xD40 change relative to that baseline. Earlier words, including the corrected coupled loop and spill accesses, are unchanged.
+Timestamp moves before code selection, but remains ins0 across event8. Preserve this control separately from the retained r7 baseline.
+E06 attempts late recomputation with unsigned negation/subtraction. It reaches native extent3588 but remains frame272 versus native280 and has554 nonrelocated differing words.
+Earlier code changes too. Reject E06; no pass-level cause is claimed without a bound probe.
+The established twelve occupied spill slots remain evidence against inventing an omitted accessed local. No filler storage was added.
+Next measured question: bind E04's cross-call timestamp lifetime and identify why it stays retained despite the native recomputation, while preserving its preceding exact-to-control output. The unaccessed frame difference remains separate and unresolved.
+
+## D14C: wrapper-free weighted-reference control
+
+E05 starts from the exact stored r7E40 source, with no artificial wrapper. Two target/mode absorption identities are placed in the genuine action loop.
+P02 measures target216 at161/1186 references/live-length versus outputword114 at15/50. Target recoverss3 and outputword s4.
+Mode97 only reaches31/721, below index179 at33/725: index keepsfp and mode occupies stack492. Thus the coupled prediction was only partly met.
+E07 adds one further identity based on that measured threshold, not a blind name sweep.
+P03 measures mode33/721 versus index33/725, and target167/1186. Mode now occupiesfp; index spills516. Same-UID lreg/greg insn2298 explicitly maps mode97 to hard30.
+All24 occupied slots persist. Leading pseudo78..94 offsets are348,356,364,372,380,388,396,404,412,420,428,439,444,455,460,471,476.
+Trailing E07 slots:96/sp1EC484,98/base492,99/auxiliary500,100/excluded508,179/index516,984/compiler-copy524,1027/compiler-USE-only532.
+This is the E39 role map without artificial wrapper weighting; the preexisting compiler USE-only slot does not justify a semantic local.
+E07 is PURE_C6744/frame576/181 relocations versus native6844/frame616. Whole-object comparison against E39 has263 differing words at equal offsets, first0xBF4; the entire preceding byte prefix agrees with that control, not necessarily retail.
+E05 and E07 differ in extent, so raw same-offset difference counts between them are not an alignment-quality claim.
+Preserve E07 as a useful separate successor. Next measured question: localize its later whole-function differences from0xBF4 onward against native CFG/scheduling evidence, without assuming recovered early register roles imply exactness. Structural authority is still required before any D14C activation.
+
+## Every assigned target remains in the original wave
+
+| Target | Disposition |
+| --- | --- |
+|func_0022A280|Protected active owner unchanged; final combined gate deferred|
+|func_0022A414|Protected active owner unchanged; final combined gate deferred|
+|func_0022A4E0|Protected active owner unchanged; final combined gate deferred|
+|func_0022A7B8|Protected active owner unchanged; final combined gate deferred|
+|func_0022A964|Protected active owner unchanged; final combined gate deferred|
+|func_0022ADFC|Protected active owner unchanged; final combined gate deferred|
+|func_0022B06C|Protected active source/table/remainder unchanged|
+|func_0022B1F4|Inactive/nonexact; retained r7 baseline and new E04 tail control|
+|func_0022BFF8|Protected active owner unchanged; final combined gate deferred|
+|func_0022C78C|New provisional PURE_C linked-exact replacement; actual contract MATCH|
+|func_0022D14C|Inactive/nonexact, diagnostic-only; E07 wrapper-free control preserved|
+|func_0022EC08|Protected active owner unchanged; final combined gate deferred|
+|func_0022EDD4|Protected active owner unchanged; final combined gate deferred|
+|func_0022EF50|Assigned/inactive/parked; no source or diagnostic change|
+|func_0022F2BC|Protected active owner unchanged; final combined gate deferred|
+|func_0022257C|Protected active bridge unchanged; final combined gate deferred|
+|func_00222604|Protected active bridge unchanged; final combined gate deferred|
+
+EF50 needs interior retained-assembly ownership support, not zero-padding treatment, between B06C and EF50.
+Combat owns COMMON correction. Future interior-assembly work is reserved for the existing HighAttack structural worker after accepted COMMON re-review and release of ordinary source/build ownership.
+This corrects the older r8 ownership wording without editing that frozen report. No structural work or COMMON polling occurred in r9.
+
+## Scope and closure
+
+Protected-input guards passed: exact claim identity, unchanged HEAD/branch, no staged changes, four original draft hashes unchanged, no tracked changes outside the two authorized configurations.
+Removing only C78C from both parsed configurations reproduces their starting-HEAD values exactly. The new production source is hash-pinned.
+Original assembly, all preexisting active sources/configuration records, EF50/B06C, B894/B438, shared tools/tests/schema and prior terminal records are preserved.
+New deliverables are the C78C production source/configuration additions, three candidate archives/dossiers and this AAR/index. Parent writes are restricted to the fresh claim and exact r9 log.
+All owned compilation, probe, diff and preservation processes completed; the compiler helper exited normally before handoff.
+No commit, integration, push, new task/subagent/branch/worktree, runtime operation, final-wave verifier or full-ROM acceptance build occurred.
+No target omission, wave split, hybrid substitution, waiver or pure-C impossibility/exhaustion claim follows this bounded pass.

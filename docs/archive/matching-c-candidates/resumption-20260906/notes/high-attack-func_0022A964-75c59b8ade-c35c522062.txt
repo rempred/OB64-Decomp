@@ -1,0 +1,34 @@
+# func_0022A964: Preserved Matching-Workbench Candidate
+
+## Status
+
+This source is a research candidate. The original assembly remains the accepted owner.
+
+- Candidate: `75C59B8ADE7C6C8EA8FB74D7E0323FA60CAC13F03723893632C99E1733AD4800`
+- Target: `func_0022A964` at ROM `0x22A964`
+- Source: `docs/archive/matching-c-candidates/2026-09-06-func_0022A964-75c59b8ade.c`
+- Source SHA-256: `4FB921F654E6360F64EBB8CF5C447B304561134E370CA273F3FA127F70B79CF8`
+- Latest scratch class: `control-flow-address-unresolved`
+- Latest scratch score: `69.88`
+
+## Preservation reason
+
+HA-W6-PUREC-03: repaired A964 prototypes, unsigned random arithmetic, scan increment timing and unified time carrier. Correct 1176-byte scratch extent; source is PURE_C but instruction/control flow remains nonexact. Not exhausted: compare branch joins before allocator tuning. Wave handoff is blocked by independent table-ownership prerequisite, not by a claim that pure C is impossible.
+
+## Evidence boundary
+
+Scratch object comparison does not prove canonical linker ownership, relocation resolution, target bytes, or full-ROM identity. Resume through the normal diff and verification workflow.
+
+## First recorded difference
+
+```json
+{
+  "actual": "addiu $sp, $sp, -0x40",
+  "actualWord": "0x27BDFFC0",
+  "expected": "addiu $sp, $sp, -0x38",
+  "expectedWord": "0x27BDFFC8",
+  "index": 0,
+  "offset": 0,
+  "pc": 2149480084
+}
+```

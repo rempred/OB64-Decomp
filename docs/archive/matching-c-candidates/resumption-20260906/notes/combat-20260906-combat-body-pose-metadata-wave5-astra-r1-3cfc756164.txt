@@ -1,0 +1,58 @@
+# Combat pose metadata/parser W5 - Astra r1
+
+Status: **blocked**. Seven independently matched PURE_C candidates are provisionally committed at ef4689d56568ec54918e2cc4a85b2d9068b12d00. The eighth target, func_002050AC, lacks representation of eight bytes in its accepted owner.
+The full eight-target wave is incomplete. **No final verifier or full-ROM build ran.** Source/build ownership is released for separate structural diagnosis; no further worker source/build writes are authorized.
+
+## Scope and current result
+
+Execution uses C:\Users\Joe\Projects\OgreBattlel64\editor-feature-matching-2 on codex/combat-body-resources.
+The accepted W4 starting commit is e5846010aec6c435ab42ddaa4b25f74fe0fdad57.
+Canonical main, Squad outputs, emulators, shared tooling, and structural contracts remain outside scope.
+
+| Target | Accepted owner bytes | Current state |
+| --- | ---: | --- |
+| func_00204EE0 | 68 | provisional exact PURE_C candidate |
+| func_00204F34 | 376 | provisional exact PURE_C candidate |
+| func_002050AC | 372 | blocked: exact 364-byte body; 8-byte accepted owner tail unsupported |
+| func_00205230 | 164 | provisional exact PURE_C candidate |
+| func_002052D4 | 164 | provisional exact PURE_C candidate |
+| func_00205378 | 268 | provisional exact PURE_C candidate |
+| func_00205484 | 388 | provisional exact PURE_C candidate |
+| func_00205608 | 280 | provisional exact PURE_C candidate |
+
+All seven provisional candidates have mechanical PURE_C classification, exact canonical linked bytes, sole C map contributions, and exact actual relocations in their individual candidate proofs. Their original assembly remains available and contributes no candidate target bytes. func_002050AC remains inactive and ASM-owned.
+The source and both registry identities are recorded in [the candidate check](C:/Users/Joe/.codex/ob64-editor-feature-matching-2/work/combat-body-pose-metadata-wave5-astra-r1/func_00205608-candidate-ready.json).
+These are provisional matching observations. Complete-ROM acceptance awaits the combined final verifier.
+
+## Method and limits
+
+For func_00204EE0, the first draft preserved size and frame but changed the null-return branch layout.
+An explicit result local and offset-first address sum restored all non-relocation words.
+An authenticated isolated link then checked the external call and internal jump destinations.
+Canonical diff confirmed all 68 bytes and both relocations exactly.
+For func_00204F34, the first C draft matched all non-relocation words. The observed byte-table address 0x801CEEE0 is expressed directly, so no new absolute symbol or data relocation is introduced. An authenticated isolated link resolved all eight call/jump relocations; canonical diff confirmed all 376 bytes.
+func_002050AC has an exact isolated 364-byte PURE_C body with seven exact relocations, but remains ASM-owned: the accepted 372-byte owner includes eight zero bytes beyond the function. Current ordinary compilation omits that tail, and nativeTextTail is bounded to another named target. No boundary or tool repair was attempted. This is a concrete representation blocker, not an accepted matching-C result.
+For func_00205230, the original loop and output offsets were reconstructed in ordinary C; attempt details are in the watch records and task log.
+For func_002052D4, original assembly establishes the same loop using output offsets4 and12. The first draft changes only those offsets and the function name from the preceding independently derived C. Candidate proof is collected independently for its accepted owner.
+For func_00205378, the observed hidden output pointer, four-word initialization at0x801D03A0, stack-held extrema, and final output copy motivate an ordinary16-byte struct return. The absolute-address draft used ori where retail uses addiu; the symbolic second draft uses the ordinary D_801D03A0 linkage definition independently derived from the original LUI/addiu pair. Task-local preactivation review checks both paired HI16/LO16 operands and both control relocations. No stronger field names or runtime claims are introduced.
+For func_00205484, the original helper calls, index remapping, record stride, signed and unsigned loads, and float conversion operations drive the C reconstruction. The first draft placed the zero-result block last. A shared result with explicit else restored the original block order; a third snapshot only indents the else body consistently. Output names remain numeric.
+For func_00205608, the original280-byte owner accepts a direct handle and uses the same record loads and float operations, with direct field5 assignment and no index-byte store. The C draft preserves those observed differences.
+The numeric asm-differ score is informational; decoded pairwise equality and raw linked bytes govern exactness.
+No stronger semantic function name or runtime behavior is claimed.
+
+All four pre-existing PURE_C stubs and accepted prior sources are unchanged.
+No branch, worktree, task, subagent, staging, commit, publication, emulator operation, or full-ROM verification was performed by this worker.
+No compiler flag, source-policy, linker, or owner-boundary change was made.
+No canonical-domain documentation change is proposed by this ordinary matching result.
+
+See [the evidence index](C:/Users/Joe/Projects/OgreBattlel64/docs/Plans/task-logs/combat-body-pose-metadata-wave5-astra-r1-evidence-index.md) for commands, candidate identities, actual relocation evidence, and preservation checks.
+
+## Terminal blocker and ownership release
+
+func_002050AC row3811 covers ROM0x002050AC..0x00205220 (372 bytes). Its scratch C and isolated link reproduce the first364 bytes and all seven control relocations exactly. The emitted object has no tail. Retail bytes0x00205218..0x00205220 are eight zeros. Their origin is not established by this ordinary task.
+
+The existing nativeTextTail descriptor is explicitly limited to func_00204A70. Extending it by analogy, inserting padding, or changing a boundary/tool/compiler contract is outside this assignment. Separate diagnosis must establish the complete owner, tail origin, and compiler output shape before proposing a representation. The exact body is research evidence only; it does not satisfy the372-byte assignment.
+
+[Terminal proof](C:/Users/Joe/.codex/ob64-editor-feature-matching-2/work/combat-body-pose-metadata-wave5-astra-r1/terminal-blocked-proof.json) binds the seven provisional commits, source hashes, candidate proofs, original owner, body-only link, retail tail hash, preserved stubs, and final clean HEAD. The terminal inventory binds all task evidence and referenced artifacts by byte size and SHA-256.
+
+All 6962 protected baseline files and all prior candidate sources were rechecked unchanged. Source/build ownership is released with this immutable blocked handoff. No full-ROM acceptance or completed matching-C wave is claimed. Callback sends during candidate work succeeded, but bounded native readback omitted packet bodies; exact delivery could not be confirmed from readback and messages were not resent.

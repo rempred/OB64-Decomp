@@ -1,0 +1,34 @@
+# func_0022D14C: Preserved Matching-Workbench Candidate
+
+## Status
+
+This source is a research candidate. The original assembly remains the accepted owner.
+
+- Candidate: `DD6356C753F1AC57F223E26A962432D7F347397D4E546C645314372BC3049F2E`
+- Target: `func_0022D14C` at ROM `0x22D14C`
+- Source: `docs/archive/matching-c-candidates/2026-09-06-func_0022D14C-dd6356c753.c`
+- Source SHA-256: `78DD9D9325EC0AD875768041E9517A7D224D92F947B68C7DEE4D15CD922986E4`
+- Latest scratch class: `length-mismatch`
+- Latest scratch score: `39.63`
+
+## Preservation reason
+
+HA-W6-PUREC-09 E07: wrapper-free target/mode priority control; bound P03 confirms mode33/721 beats index33/725, index spills516 while mode unspilled; target s3/outputword s4. PURE_C6744/frame576/181, still globally nonexact and diagnostic-only; no activation or acceptance.
+
+## Evidence boundary
+
+Scratch object comparison does not prove canonical linker ownership, relocation resolution, target bytes, or full-ROM identity. Resume through the normal diff and verification workflow.
+
+## First recorded difference
+
+```json
+{
+  "actual": "addiu $sp, $sp, -0x240",
+  "actualWord": "0x27BDFDC0",
+  "expected": "addiu $sp, $sp, -0x268",
+  "expectedWord": "0x27BDFD98",
+  "index": 0,
+  "offset": 0,
+  "pc": 2149490300
+}
+```

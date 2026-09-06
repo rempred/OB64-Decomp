@@ -1,0 +1,244 @@
+# AAR — High Attack Wave 5 `func_0021B894` Pure-C retry revision 3
+
+Status: **completed; worker evidence ready for fresh independent matching review**
+
+Assignment: `high-attack-wave5-func-0021b894-pure-c-retry`, revision 3, launch
+`HA-W5-B894-PUREC-03`.
+
+Receiving task: `01a06dbb-8eb5-7df2-878d-496d14bdc722` on host `local`.
+
+## Outcome
+
+The paused B894 ordinary attempt is worker-complete. The accepted verifier correction and
+independent Critical structural review supplied complete-verifier and heavyweight-audit evidence
+for the unchanged frozen candidate. Reconciliation confirms that B894 is mechanically `PURE_C`,
+is the sole linked C owner of its exact 2,016-byte target, satisfies the accepted text and
+auxiliary relocation contracts, and participates in a byte-identical canonical US Rev 0 ROM.
+
+This is a worker disposition, not independent Matching-C acceptance. B894 is **review-pending**.
+Wave 5 remains open because `func_0021B438` remains inactive ASM with a nonexact preserved
+Pure-C candidate. Wave 6 must not start from this handoff.
+
+## Scope and activation
+
+The workstation shut down unexpectedly before revision-3 artifacts were created. Recovery found
+the High Attack checkout clean at the assigned branch and commit, with neither the new claim nor
+the new evidence paths present. The parent repository had advanced only through the Director's
+continuation-dispatch documentation, outside the worker write envelope.
+
+The worker created and authenticated the revision-3 claim before any other task write:
+
+- claim:
+  `C:\Users\Joe\Projects\OgreBattlel64\docs\Plans\task-logs\high-attack-wave5-func-0021b894-pure-c-retry-r3-HA-W5-B894-PUREC-03.claim.json`;
+- claim SHA-256:
+  `E830E4D0F066AC9BC262E3969E710500DA43C2CA6C40CF6FA4C5E52931518EDC`; and
+- identity: assignment revision 3, launch `HA-W5-B894-PUREC-03`, receiving task
+  `01a06dbb-8eb5-7df2-878d-496d14bdc722`, host `local`.
+
+No task, subagent, branch, worktree, commit, push, publication, emulator session, source
+experiment, or structural edit was created.
+
+## Method
+
+The continuation used a proof-reuse method required by the current canonical workflow:
+
+1. authenticate the assigned High Attack HEAD and all candidate/correction/review commits;
+2. prove the candidate source and both active matching configuration files are byte-identical to
+   the frozen candidate commit;
+3. prove the correction tool, regression tests, focused fixture, fallback assembly, and
+   generated reports retain the identities accepted by structural review;
+4. parse the existing authoritative source-policy, fresh-compilation, build, verification, and
+   audit records without regenerating them;
+5. reconcile the eight Wave 5 members, including absence of active C records for B438; and
+6. produce a new evidence-only handoff for separate matching review.
+
+Because every relevant input was unchanged and the accepted proof already covered the same
+combined active source state, no build or verifier was rerun. In particular, this revision did
+not run `build.js`, `verify.js --target`, the complete verifier, or a redundant heavyweight
+audit.
+
+## Identity and preservation results
+
+High Attack remained on branch `codex/high-attack-wave-5` at
+`6163df44630188416f33d240b64ed273a00b6337`. These accepted inputs are ancestors:
+
+- frozen candidate `3cba02e8a8f2ef4e4113292ee0c271f239680989`;
+- verifier correction `bdbef2817d24b45eecb1afff97b7419a190d9132`; and
+- independent Critical structural review
+  `a4d50c317eccc7847389d60bc486cccac023fe18`.
+
+The frozen-input Git diff for B894 source, target configuration, and linkage configuration was
+empty. The only tracked delta from the accepted review to assigned HEAD was
+`docs/Plans/high-attack-battle-stream-families-director-20260902.md`.
+
+| Reproduction input | SHA-256 |
+| --- | --- |
+| `src/battle/func_0021B894.c` | `C3DE40CE5ED2A44FFDD9B2CD88FC39B9E9E3537C7539F773286636000BCCDB98` |
+| `config/matching-c-targets.json` | `D4AF77C60B381393BAD55D4DEDF72FD973C1D443DFF1F382CA28BBC873E09181` |
+| `config/matching-c-linkage.json` | `A212DD9CB3AE2790BAE4BB21A86030DD1EA7044709171D29410DD4DBA8D7A0AD` |
+| `tools/lib/phase8_matching_c.js` | `BC211C9115159379EF5EB7519B81A99B8CA5BA2E015FEDD8AFF3BDBF753CF530` |
+| `tests/phase8_matching_c.js` | `74E9D6DB8F868599129DC8CE1BE7208537917349A7FFE8BBCBC0470FD58DF862` |
+| Focused B438/B894 test | `81DBDDC78A932FCD447DB688621D7333D562C0CA2418009CBE952D03481F063B` |
+| Original B894 assembly fallback | `6A2B7FD3358254EB5F8DF02906654E0162BF4ADBE3937B7DE18AF904E9211CA6` |
+
+The build report records the same B894 source, target-config, and linkage-config identities. The
+reviewed tool and test hashes also remain exact.
+
+## B894 completion evidence
+
+The final generated source-policy record classifies `src/battle/func_0021B894.c` as `PURE_C`
+with no reasons. Its source SHA-256 is
+`C3DE40CE5ED2A44FFDD9B2CD88FC39B9E9E3537C7539F773286636000BCCDB98`,
+and its compilation-input SHA-256 is
+`BA2166B7991F3439945D01D7E56669B55A951F9D7BDE44D93395D42B1E32EC1B`.
+No compiler-assembly rewrite occurred.
+
+The final verification record establishes:
+
+- `.ob64.r4028`, 2,016 bytes / 504 instructions;
+- sole owner `objects/c/func_0021B894.o`;
+- 174 exact canonical text relocations;
+- zero differing bytes and zero differing instruction words;
+- linked and expected text SHA-256
+  `FF6A3C62CB024F13D2DA495BC59E3F0750B337A0842FA39C4BFE5535B8CA37ED`; and
+- retained original assembly fallback
+  `asm/original/rev0/lib/func_0021B894.s`.
+
+The accepted auxiliary contract establishes:
+
+- one `.L42` compiler occurrence at offset zero;
+- 44 compiler-owned bytes, eleven entries, alignment 8, ordered directives `[3, 2]`, and eleven
+  ordered relocations;
+- exact compiler object-prefix SHA-256
+  `CDCCFAB2A276DADE9D5E3C9F9632B2678B96507014C84CF6050EA362339B2CFB`;
+- exact linked auxiliary SHA-256
+  `42757E1FE9D22CBDEB1E110F3F89C7D0CD64BC060D568AF4435E8B976D580AC8`;
+- complete 48-byte aligned source-object SHA-256
+  `D39249F134005B2551738163AE0A2509071828218752808E52951F99D5809506`;
+- retained 720-byte assembly prefix SHA-256
+  `CB816839E1BA5C1576D5298608792EB2B5423EA3B44F665FE698586B061E8105`; and
+- retained four-byte assembly tail SHA-256
+  `DF3F619804A92FDB4057192DC43DD748EA778ADC52BC498CE80524C014B81119`.
+
+The source-object proof is 114,982 bytes with SHA-256
+`A74C07182A44726793F43BC5F8DD3DE67CD509BB6CDC1F6FD140177D0CA96753`.
+The assembly-owned auxiliary pieces still belong to
+`asm/original/rev0/lib/table_00229ab0.s`, SHA-256
+`98B488929FB83B3D2E3791FEA9A08AD871FB14E5E94A84CA7F337D0BC3A49516`.
+
+## Reused completed-wave proof
+
+The accepted current state has fingerprint
+`18B1504B6B01233443C45FA527A9FBBEB36505075961BE287827EFEB37C56D92`
+and was verified at `2026-09-05T19:17:02.841Z`.
+
+| Artifact | Result | SHA-256 |
+| --- | --- | --- |
+| Build report | pass | `FA01A2039211C5A60060EF35F0645065079770C0AFBD4A009EFDEC9DE1DD3AD4` |
+| Verification report | pass | `A4E541AAED34C2F2195D74603F2EFA051C0874A50D26E525578F8311C983D632` |
+| Fresh-compilation report | pass | `6CB8EE0DADCB2DFD7766A50651CE8BA58B1986F25E8E558327DDA69D28388E90` |
+| Source-policy report | pass | `1E6A69EFC72AABCB5E3358EDA77070A9E71A8E9F7995A30BB101A42E0D3BB296` |
+| Audit report | `AUDIT PASS` | `6800C7CF8CE027E96E31CC1202BF68C526DEFD87BBEB05B87A3F3F9277C2B346` |
+| Complete-verifier review log | `RESULT: EXACT BASELINE` | `DA85977F4AAB3830B0FE952264DC76356719091B830A7E3D7755D0C6D79F338E` |
+| Heavy-audit review log | `RESULT: AUDIT PASS` | `132EC63F02EB7F627208EC9688E18CB3C0413910D6E5C037D5EBE811261A9E5C` |
+| Canonical rebuilt ROM | 41,943,040 bytes, exact | `571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A` |
+
+The verification census records 533 C owners, 534 C text owners, five auxiliary owners, 533
+source-object proofs, 4,111 load-relevant relocations, zero ancillary relocations, and zero
+compiler-assembly rewrites.
+
+Generated status for this combined state is 467 exact `PURE_C` functions / 38,064 bytes, 66
+exact `HYBRID_C` functions / 39,192 bytes, 5,651 assembly owners / 6,432,784 bytes, 1,058
+other/data owners / 35,432,596 bytes, and zero `UNKNOWN` classifications.
+
+## Wave 5 reconciliation
+
+| Member | Bytes | Disposition |
+| --- | ---: | --- |
+| `func_0021824C` | 396 | exact `PURE_C` |
+| `func_0021840C` | 944 | exact `PURE_C` |
+| `func_00218B58` | 1,364 | exact `PURE_C` |
+| `func_0021B0A0` | 576 | exact `PURE_C` |
+| `func_0021B438` | 824 | unresolved `ASM`, inactive |
+| `func_0021B770` | 292 | exact `PURE_C` |
+| `func_0021B894` | 2,016 | exact `PURE_C`; worker-completed, matching-review pending |
+| shared `func_002224F4` | 60 | exact `PURE_C` |
+
+The seven active exact C owners cover 5,648 bytes including the shared bridge. Active target,
+linkage-owner, source-policy, fresh-compilation, build-replacement, and verification records all
+exclude B438, preserving its assembly ownership.
+
+## B438 remains the Wave 5 blocker
+
+B438 candidate
+`02E189CF797BA816F2129C643244CFD17A90E9DC89BCAB0998B6B6445464DBF3`
+remains preserved under run
+`build/matching/runs/DA8E0708E5F616DF17BE8E1FC6057E618F1BD098DEA05C141D03F12AEBAE3DC5`.
+Its source SHA-256 is
+`924CF427DF75DEBE6BB907F76E8544826C4DFC4E713131BC8BEEA292A41DEB96`.
+
+The candidate reproduces the exact 824-byte extent, 206 instructions, opcode sequence, symbolic
+CFG, stack layout, widths/signedness, branch polarities, and accepted table surface, but 96
+linked bytes remain different across 52 aligned instructions. Two coupled saved-register
+allocation cycles are the remaining nonrelocation blocker.
+
+Reopen only with new compiler evidence or a `PURE_C` spelling that crosses one measured
+allocation edge without changing the proven opcode/CFG/table surface: place the owner value
+between the other value and outer cursor, or split the terminal strongest-adjustment uses late
+enough to order the other cursor/slot first. B438 must then pass exact linked-target and
+completed-wave full-ROM verification before promotion.
+
+## Evidence boundaries
+
+The evidence supports machine-code exactness, source classification, linker ownership,
+auxiliary ownership, and complete-ROM equality for B894. The accepted Critical review supports
+the structural verifier correction only. This AAR does not substitute for the new independent
+matching review required by the assignment.
+
+No behavioral claim was needed or made. The cautious names `func_0021B894`, `func_0021B438`,
+and the other existing symbols remain unchanged.
+
+## Changed surfaces and hygiene
+
+High Attack writes are limited to:
+
+- `docs/matching-c/high-attack-wave5-func_0021b894-pure-c-retry-r3-20260905/evidence-index.md`; and
+- this AAR.
+
+Parent writes are limited to the revision-3 claim and exact revision-3 task log. Unrelated parent
+changes were preserved. No file was staged.
+
+Five command wrappers failed before producing their intended result: one piped a raw
+PowerShell `foreach` expression, one used unparenthesized `Join-Path` calls inside an array, and
+one encoded a tab as a literal escape in an exact review-delta assertion. A fourth repeated the
+raw-`foreach` pipeline mistake in a hash-only formatter. A fifth malformed the metadata-log patch
+wrapper, which patch verification rejected atomically. All five left the filesystem unchanged.
+After reauthenticating the claim, branch, HEAD, and assigned High Attack state, the corrected
+bounded checks completed, including the final document scan. These failures have no consequence
+for the candidate or proof. No substantive identity, ownership, byte, policy, relocation,
+verifier, or audit check failed.
+
+No protocol deviation changed the assigned subject. Recovery after the workstation shutdown
+used the existing task, branch, and checkout. No new diagnostic directory was needed, and no
+generated proof was replaced.
+
+## Review handoff
+
+Evidence index:
+`docs/matching-c/high-attack-wave5-func_0021b894-pure-c-retry-r3-20260905/evidence-index.md`.
+
+Fresh independent matching review should:
+
+1. authenticate this evidence package and the unchanged candidate/correction/review ancestry;
+2. independently inspect B894 source class, exact target bytes and relocations, sole C ownership,
+   the 44-byte/eleven-relocation compiler prefix, retained assembly prefix/tail, and reused
+   canonical-ROM evidence;
+3. keep the accepted structural-review verdict separate from the matching verdict; and
+4. accept or reject B894 without changing the explicit B438 blocker or starting Wave 6.
+
+If the review accepts B894, the Director may update the active Wave 5 plan and queue to record
+B894 matching closure while leaving Wave 5 open for B438. Generated status remains authoritative
+for global counts; do not manually duplicate those counts across canonical documents.
+
+Terminal worker verdict: **completed; B894 ordinary completion evidence is review-pending under
+accepted unchanged-input full-wave proof. Wave 5 remains open because B438 is unresolved ASM.**

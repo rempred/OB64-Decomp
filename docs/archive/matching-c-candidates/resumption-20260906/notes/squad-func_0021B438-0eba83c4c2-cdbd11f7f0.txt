@@ -1,0 +1,38 @@
+# func_0021B438: Preserved Matching-Workbench Candidate
+
+## Status
+
+This source is a research candidate. The original assembly remains the accepted owner.
+
+- Candidate: `0EBA83C4C21334464107DFDA1437F5552C2B6CDA7C475D9F71A7C525EA42756E`
+- Target: `func_0021B438` at ROM `0x21B438`
+- Source: `docs/archive/matching-c-candidates/2026-09-05-func_0021B438-0eba83c4c2.c`
+- Source SHA-256: `4221E414D878CE0B8AE359D199BF5BAAE166FB36F26FE092D75EA2BD883AF34D`
+- Latest scratch class: `length-mismatch`
+- Latest scratch score: `46.76`
+- Scratch text extent: `828` bytes / `207` instructions versus retail `824` bytes / `206` instructions
+- Scratch frame size: exact at `0x58`
+
+## Preservation reason
+
+Wave 5 strongest PURE_C reconstruction; 828 versus 824 bytes, score 46.76. The remaining extra body instruction is associated with the second switch-table address formation, while register and stack allocation also differ.
+
+Exact promotion is blocked at the ownership boundary: the retail function loads two 60-entry switch tables at runtime addresses `0x801E68D0` and `0x801E69C0`. Their accepted ROM owners are the shared assembly ranges `0x00229BA0..0x00229C90` and `0x00229C90..0x00229D80` in `asm/original/rev0/lib/table_00229ab0.s`. Letting this C translation unit emit and own those tables would be structural work outside the assigned ordinary-match scope.
+
+## Evidence boundary
+
+Scratch object comparison does not prove canonical linker ownership, relocation resolution, target bytes, or full-ROM identity. Resume through the normal diff and verification workflow.
+
+## First recorded difference
+
+```json
+{
+  "actual": "jal 0x80000000",
+  "actualWord": "0x0C000000",
+  "expected": "jal 0x801C8FE8",
+  "expectedWord": "0x0C0723FA",
+  "index": 12,
+  "offset": 48,
+  "pc": 2149417368
+}
+```

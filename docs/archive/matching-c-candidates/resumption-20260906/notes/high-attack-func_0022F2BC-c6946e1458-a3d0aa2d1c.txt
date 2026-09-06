@@ -1,0 +1,20 @@
+# func_0022F2BC: Preserved Matching-Workbench Candidate
+
+## Status
+
+This source is a research candidate. The original assembly remains the accepted owner.
+
+- Candidate: `C6946E1458C2FE2E0132240452DE2166E184C40E3816C8C369C694D7A01F893F`
+- Target: `func_0022F2BC` at ROM `0x22F2BC`
+- Source: `docs/archive/matching-c-candidates/2026-09-06-func_0022F2BC-c6946e1458.c`
+- Source SHA-256: `92B9076EA91059E329A2049AF682CB9E67FF056F9F3929944128F8954B32BB6E`
+- Latest scratch class: `not compiled`
+- Latest scratch score: `not available`
+
+## Preservation reason
+
+r5 provisional PURE_C linked exact 708 bytes; actual 37-relocation contract matches; complete seventeen-owner wave verifier pending.
+
+## Evidence boundary
+
+Scratch object comparison does not prove canonical linker ownership, relocation resolution, target bytes, or full-ROM identity. Resume through the normal diff and verification workflow.

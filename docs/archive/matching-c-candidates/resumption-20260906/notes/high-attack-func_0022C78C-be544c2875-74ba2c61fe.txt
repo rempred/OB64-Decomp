@@ -1,0 +1,34 @@
+# func_0022C78C: Preserved Matching-Workbench Candidate
+
+## Status
+
+This source is a research candidate. The original assembly remains the accepted owner.
+
+- Candidate: `BE544C28756F056A289B028FF5B485805702CCF51028C672FC61C13DDDDDF6AD`
+- Target: `func_0022C78C` at ROM `0x22C78C`
+- Source: `docs/archive/matching-c-candidates/2026-09-06-func_0022C78C-be544c2875.c`
+- Source SHA-256: `587C01EA0FA38026E7D2BD138DFFA5F4AC829B3F1AFAC3AD3B50A25A133203B1`
+- Latest scratch class: `control-flow-address-unresolved`
+- Latest scratch score: `98.05`
+
+## Preservation reason
+
+HA-W6-PUREC-08 E06 isolated load-order lead: PURE_C2496/frame240/78 relocations; eight nonrelocated differences remain. Keep E01 as best combined candidate. No activation or acceptance.
+
+## Evidence boundary
+
+Scratch object comparison does not prove canonical linker ownership, relocation resolution, target bytes, or full-ROM identity. Resume through the normal diff and verification workflow.
+
+## First recorded difference
+
+```json
+{
+  "actual": "jal 0x80000000",
+  "actualWord": "0x0C000000",
+  "expected": "jal 0x80093380",
+  "expectedWord": "0x0C024CE0",
+  "index": 17,
+  "offset": 68,
+  "pc": 2149487872
+}
+```

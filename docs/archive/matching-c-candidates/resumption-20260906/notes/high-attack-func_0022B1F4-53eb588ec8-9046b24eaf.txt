@@ -1,0 +1,34 @@
+# func_0022B1F4: Preserved Matching-Workbench Candidate
+
+## Status
+
+This source is a research candidate. The original assembly remains the accepted owner.
+
+- Candidate: `53EB588EC82F2A67E8EA751603EB72B40BAA5950D560F2AC0F313951F2E8EA29`
+- Target: `func_0022B1F4` at ROM `0x22B1F4`
+- Source: `docs/archive/matching-c-candidates/2026-09-06-func_0022B1F4-53eb588ec8.c`
+- Source SHA-256: `BDD3B1A20DF1B8F7D2219775F665C93A4318238B00D09EE391F882C4965D6B18`
+- Latest scratch class: `length-mismatch`
+- Latest scratch score: `45.09`
+
+## Preservation reason
+
+HA-W6-PUREC-07 E16 diagnostic successor: late-combine absorption preserves ordinary loop, native base+0x50 loads, count reload0x94/subtract1, s0 base/s1 index/s3 next pointer. PURE_C3576 versus3588/frame272 versus280/103relocs, other scheduling and tail differences remain. No activation or full-wave acceptance.
+
+## Evidence boundary
+
+Scratch object comparison does not prove canonical linker ownership, relocation resolution, target bytes, or full-ROM identity. Resume through the normal diff and verification workflow.
+
+## First recorded difference
+
+```json
+{
+  "actual": "addiu $sp, $sp, -0x110",
+  "actualWord": "0x27BDFEF0",
+  "expected": "addiu $sp, $sp, -0x118",
+  "expectedWord": "0x27BDFEE8",
+  "index": 0,
+  "offset": 0,
+  "pc": 2149482276
+}
+```

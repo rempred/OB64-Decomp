@@ -1,0 +1,28 @@
+# Compiler-grouping research wind-down
+
+Status: blocked (stopped by superseding Joe freeze instruction; research incomplete).
+
+Source HEAD: ef4689d56568ec54918e2cc4a85b2d9068b12d00. Branch: codex/combat-body-resources. Execution checkout: C:\Users\Joe\Projects\OgreBattlel64\editor-feature-matching-2. Git status --porcelain: empty (clean). No production changes were made.
+
+Completed: created the fresh claim, authenticated the starting baseline and 7,702 tracked file identities, rehashed predecessor inventories (35 diagnosis, 225 Wave 5, 42 review records), and recorded the five-function grouping hypothesis. These are preparation records, not grouping feasibility evidence.
+
+Incomplete: no grouped C input was written; no grouping compiler, assembler, linker, relocation, byte comparison, source classification, full build, audit, or verifier experiment was run. The proposed contiguous group func_00204EE0, func_00204F24, func_00204F2C, func_00204F34, func_002050AC remains untested. No positive or negative grouping conclusion is established.
+
+Acceptance: research is unreviewed and incomplete; no new matching or structural acceptance. Existing frozen predecessor results retain their prior status.
+
+Process state: no assignment-owned background process or probe is running; the last command was a completed read-only prompt/script inspection, followed by wind-down inventory/status reads. No broader process census was performed. No additional experiments will start.
+
+Ownership: diagnostic ownership released at 2026-09-06T13:57:45.179Z. All worktrees, branches, production inputs, frozen predecessors, baseline files, and the existing plan text are preserved. Remaining research requires a new instruction.
+
+## Exact assignment paths
+
+- C:/Users/Joe/.codex/ob64-editor-feature-matching-2/work/combat-body-pose-grouping-research-astra-r1/baseline.js
+- C:/Users/Joe/.codex/ob64-editor-feature-matching-2/work/combat-body-pose-grouping-research-astra-r1/baseline.json
+- C:/Users/Joe/Projects/OgreBattlel64/docs/Plans/task-logs/combat-body-pose-grouping-research-astra-r1-COMBAT-BODY-POSE-GROUPING-01.claim.json
+- C:/Users/Joe/Projects/OgreBattlel64/docs/Plans/task-logs/combat-body-pose-grouping-research-astra-r1.md
+- C:/Users/Joe/Projects/OgreBattlel64/wiki/after-action-reports/20260906-combat-body-pose-grouping-research-astra-r1.md
+- C:/Users/Joe/Projects/OgreBattlel64/docs/Plans/task-logs/combat-body-pose-grouping-research-astra-r1-evidence-index.md
+- C:/Users/Joe/.codex/ob64-editor-feature-matching-2/work/combat-body-pose-grouping-research-astra-r1/terminal-inventory.json
+- C:/Users/Joe/.codex/ob64-editor-feature-matching-2/work/combat-body-pose-grouping-research-astra-r1/terminal-freeze.json
+
+Only the log was updated during wind-down; this report, evidence index, terminal inventory and terminal freeze were added. The two baseline files and claim were created during preparation and are preserved. No execution-checkout paths changed.

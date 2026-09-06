@@ -1,0 +1,34 @@
+# func_0022A414: Preserved Matching-Workbench Candidate
+
+## Status
+
+This source is a research candidate. The original assembly remains the accepted owner.
+
+- Candidate: `D75767F1EF0E7645C8DCDF0BCA0977E3A3BFC9469C7C5F23DBAF989889842141`
+- Target: `func_0022A414` at ROM `0x22A414`
+- Source: `docs/archive/matching-c-candidates/2026-09-05-func_0022A414-d75767f1ef.c`
+- Source SHA-256: `76D65C62C2D908EE392EE24BA7C540FF3D7F83509877F651F755F4CD2C771B07`
+- Latest scratch class: `control-flow-address-unresolved`
+- Latest scratch score: `99.41`
+
+## Preservation reason
+
+PURE_C compiler output is instruction-for-instruction compatible after relocation masking; canonical linked diff leaves one R_MIPS_26 internal jump encoded at ROM VMA because accepted row r4167 lacks the combat overlay runtime placement. Preserve for reopening after independent structural correction.
+
+## Evidence boundary
+
+Scratch object comparison does not prove canonical linker ownership, relocation resolution, target bytes, or full-ROM identity. Resume through the normal diff and verification workflow.
+
+## First recorded difference
+
+```json
+{
+  "actual": "jal 0x00000000",
+  "actualWord": "0x0C000000",
+  "expected": "jal 0x001C8B84",
+  "expectedWord": "0x0C0722E1",
+  "index": 3,
+  "offset": 12,
+  "pc": 2270240
+}
+```

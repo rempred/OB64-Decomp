@@ -1,0 +1,34 @@
+# func_0021B438: Preserved Matching-Workbench Candidate
+
+## Status
+
+This source is a research candidate. The original assembly remains the accepted owner.
+
+- Candidate: `02E189CF797BA816F2129C643244CFD17A90E9DC89BCAB0998B6B6445464DBF3`
+- Target: `func_0021B438` at ROM `0x21B438`
+- Source: `docs/archive/matching-c-candidates/2026-09-05-func_0021B438-02e189cf79.c`
+- Source SHA-256: `924CF427DF75DEBE6BB907F76E8544826C4DFC4E713131BC8BEEA292A41DEB96`
+- Latest scratch class: `control-flow-address-unresolved`
+- Latest scratch score: `97.67`
+
+## Preservation reason
+
+Wave 5 Pure-C retry best: exact 824-byte/206-instruction opcode, CFG, stack, width, and branch surface; blocked on two measured saved-register allocation cycles.
+
+## Evidence boundary
+
+Scratch object comparison does not prove canonical linker ownership, relocation resolution, target bytes, or full-ROM identity. Resume through the normal diff and verification workflow.
+
+## First recorded difference
+
+```json
+{
+  "actual": "jal 0x80000000",
+  "actualWord": "0x0C000000",
+  "expected": "jal 0x801C8FE8",
+  "expectedWord": "0x0C0723FA",
+  "index": 12,
+  "offset": 48,
+  "pc": 2149417368
+}
+```

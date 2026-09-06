@@ -1,0 +1,355 @@
+# Squad construction and deployment family map
+
+Status: accepted for bounded static planning; the opening wave is accepted, integrated, and published.
+The reviewed family contains 113 functions and one data owner at the accepted source baseline.
+It covers supported construction, deployment, lifecycle, movement, formation, pursuit, route, and carried-supply relationships.
+Membership includes functions without current Editor patches.
+Only the original constructor, normal loader, and alternate dispatcher have implementation authority.
+Overall Astra must release each later concrete scope.
+
+## Accepted evidence and limits
+
+Source baseline: `ba0d637df800f5e382a907f2ca13f97e777e01a7`.
+The [frontier inventory](../reviews/squad-family-frontier-correction-r1/inventory-report.md) at `27d2feb` fixes membership, placements, owners, and boundary evidence.
+The [frontier review](../reviews/squad-family-frontier-review-r1/review-report.md) at `f6dd788` accepts the rooted boundary and external dispositions.
+The [class correction](../reviews/squad-family-class-correction-r1/correction-report.md) at `e69e417` controls the original planning source-class snapshot.
+The [class review](../reviews/squad-family-class-review-r1/review-report.md) at `f6ed614de4bd3fbdb75b4cb06732dfca6bcca586` accepts those technical corrections.
+The [original inventory](../reviews/squad-family-closure-inventory-r1/inventory-report.md) at `a3fb9bc` supplies the original member extents referenced by the frontier inventory.
+Its [provenance correction](../reviews/squad-family-inventory-provenance-correction-r1/evidence-index.md) at `66aafe0` fixes the accepted mechanical evidence identities.
+
+These references establish a static planning snapshot, not changing matching-progress totals.
+Generated source-policy and verification reports remain authoritative for source classes and accepted output.
+The accepted snapshot has fourteen active C owners: nine `PURE_C` and five `HYBRID_C`.
+Other dispositions contain 71 core assembly, 19 shared or unresolved, and nine deferred owners.
+Exact hybrid output does not count as matching C.
+Preserve completed pure-C interfaces; remaining hybrids stay distinct source work.
+
+A member needs a rooted call or supported structural relationship plus family-record behavior or necessary family policy.
+Generic memory, math, resource, rendering, audio, class-growth, object, and private route services remain interfaces.
+Shared record use alone does not make every consumer a family member.
+Accepted static `jal` calls define the direct-call boundary; indirect calls and unresolved overlay entries remain explicit limits.
+Semantic names retain their supported grades; matching output does not strengthen their meanings.
+No runtime, Editor, structural, or shared-tool work follows from membership alone.
+
+## Initial authorized wave
+
+All three passed combined worktree verification and canonical integration verification.
+Canonical `24d0818e8cda0a9d186420cceb5adfe581a4eb93` is published to `origin/main`.
+The [integration report](../reviews/squad-canonical-integration-verification-r1/worker-report.md) records exact full-ROM and per-target evidence.
+The static inventory totals below remain historical snapshots; generated reports own changing progress totals.
+
+| Target and supported role | Current source | Accepted z64 ROM range | Accepted runtime range | Editor value and dependencies | Limits |
+|---|---|---|---|---|---|
+| `func_001957D0`: group constructor | `PURE_C` exact | `0x001957D0..0x00195D9C` | `0x80215340..0x8021590C` | Original template-to-group construction; uses the accepted member builder and finalizer alias | Special class path, pool exhaustion, and some fields remain uncertain |
+| `func_001960A8`: normal deployment loader | `PURE_C` exact | `0x001960A8..0x00197738` | `0x80215C18..0x802172A8` | ESET rows, template selection, placement, routes, and supplies; directly calls the constructor | Broader loader behavior exceeds the minimum squad override slice |
+| `func_00105CC0`: map/update dispatcher | `PURE_C` exact | `0x00105CC0..0x00106CE0` | `0x801B1580..0x801B25A0` | Alternate construction plus validation, activation, and movement dispatch | The alternate construction trigger is not established as reinforcement or spawning |
+
+The first two targets use accepted slab `scenario-loader-00195410`.
+The dispatcher uses accepted overlay descriptor 7. Other owner placements follow the accepted inventory evidence.
+All ranges in this plan are end-exclusive.
+
+The implementation sequence remains constructor, normal deployment loader, then alternate dispatcher.
+Only one source writer may work in the assigned worktree.
+
+## Current wave verification cadence
+
+Joe requires final ROM build and strict verification only at the end of a complete ordinary matching wave.
+The existing opening wave contains all three initial targets; do not split it into single-function waves.
+Per-function gates are authenticated canonical linked diff, mechanical `PURE_C` classification, and exact reviewed relocation checks.
+Successful individual functions remain provisional wave candidates until final combined verification passes and Director intake confirms proof and scope.
+The Director may freeze provisional candidates and continue the rest of the wave.
+
+Do not run `tools/build.js`, `tools/verify.js`, target-scoped strict verification, or equivalent full-ROM gates after each function.
+The canonical diff's internal development link remains permitted.
+At the completed wave's final combined source state, run the complete verifier once; it builds CURRENT when needed.
+Check the authoritative final policy for `PURE_C` on every wave target.
+Do not loop target verifiers or use global `--require-pure` against legitimate baseline hybrids.
+Final acceptance still requires sole C ownership, accepted placement, exact relocations, exact target bytes, and complete-ROM equality.
+Changed final integration inputs require the completed-wave exact-ROM gate.
+Unchanged source/tool/link inputs reuse proof; a commit or unchanged handoff alone does not trigger another full run.
+Ordinary matching-wave completion requires no separate independent function/source review.
+Do not wait for that review or repeat the completed-wave verifier solely for review.
+Director intake checks reported proof and scope; it does not redo technical matching.
+Structural, tooling/verification, semantic, and family-inventory work retain their applicable independent review requirements.
+The completed one-time setup baseline does not create a per-function full-build obligation.
+This current Joe instruction overrides older local workflow cadence; overall Astra owns canonical shared-document updates.
+
+## Complete member ledger
+
+Every reviewed function appears once below.
+Accepted extents, owner identifiers, runtime placement, and original assembly references remain in the linked frozen inventories.
+The `func_0011B344` class and disposition use current mechanical evidence.
+
+| Category and source state | Semantic name and symbol | Planning disposition |
+|---|---|---|
+| Active C | Class-pair supply-capacity contribution (`func_00043100`) | `PURE_C`; completed shared interface. |
+| Active C | Member class/stat initializer (`func_0004501C`) | `PURE_C`; completed construction interface. |
+| Active C | Consumable master accessor (`func_00045440`) | `PURE_C`; completed item interface. |
+| Active C | Member equipment helper (`func_000454c8`) | `PURE_C`; completed construction interface. |
+| Active C | Wake cleanup helper A (`func_001072B8`) | `HYBRID_C`; shared cleanup interface. |
+| Active C | Site-event broad owner (`func_0010DDB4`) | `HYBRID_C`; keep outside ordinary waves. |
+| Active C | Source-threshold helper (`func_0012E950`) | `PURE_C`; completed movement interface. |
+| Active C | Scenario-mode classifier (`func_00130794`) | `PURE_C`; completed deployment interface. |
+| Active C | Immediate member initializer (`func_00195410`) | `PURE_C`; completed construction owner. |
+| Active C | Squad member builder (`func_0019554C`) | `PURE_C`; completed construction owner. |
+| Active C | Squad group constructor (`func_001957D0`) | `PURE_C`; accepted opening-wave result. |
+| Active C | Map-unit update dispatcher (`func_00105CC0`) | `PURE_C`; accepted opening-wave result. |
+| Core assembly | Active-unit recount (`func_001094BC`) | scheduler and pursuit wave. |
+| Core assembly | Pursuit candidate-list builder (`func_0010A128`) | scheduler and pursuit wave. |
+| Core assembly | Section 3 latch setter (`func_0010A718`) | scheduler and pursuit wave. |
+| Core assembly | Section 3 latch transfer (`func_0010ADB8`) | scheduler and pursuit wave. |
+| Core assembly | Placement helper (`func_00120BBC`) | structural hold. |
+| Core assembly | Wake primitive (`func_00121DA8`) | wake and condition wave. |
+| Core assembly | Section 2 node handler (`func_00121F38`) | wake and condition wave. |
+| Core assembly | Direct Section 3 evaluator (`func_00123458`) | wake and condition wave. |
+| Core assembly | Kind-2 activation resolver (`func_001237F0`) | wake and condition wave. |
+| Core assembly | Revive-supply consumer (`func_00123E38`) | carried-supply wave. |
+| Core assembly | Heal-supply consumer (`func_00124018`) | carried-supply wave. |
+| Core assembly | Fruit-supply consumer (`func_00124328`) | carried-supply wave. |
+| Core assembly | Runtime supply controller (`func_00124B98`) | research gate before source work. |
+| Core assembly | Pursuit nearest-target scanner (`func_00128AD0`) | scheduler and pursuit wave. |
+| Core assembly | Pursuit target writer (`func_00128BF4`) | scheduler and pursuit wave. |
+| Core assembly | Deployment-state initializer (`func_00128E80`) | construction and deployment wave. |
+| Core assembly | Constructor finalizer (`func_00129068`) | construction and deployment wave. |
+| Core assembly | Five-member aggregate finalizer (`func_001291B4`) | construction and deployment wave. |
+| Core assembly | Map-unit object initializer (`func_0012967C`) | construction and deployment wave. |
+| Core assembly | Movement stepping helper (`func_0012B440`) | movement wave. |
+| Core assembly | Group movement consumer (`func_0012BC64`) | movement wave. |
+| Core assembly | Route-descriptor target owner (`func_0012D170`) | movement wave. |
+| Core assembly | Source-unit validity helper (`func_0012DA10`) | wake and condition wave. |
+| Core assembly | Carried-supply compactor (`func_00131388`) | carried-supply wave. |
+| Core assembly | Carried-supply capacity owner (`func_0014F300`) | carried-supply wave. |
+| Core assembly | Supply-preset initializer (`func_00195D9C`) | construction and supply waves. |
+| Active C | Normal deployment loader (`func_001960A8`) | `PURE_C`; accepted opening-wave result. |
+| Shared or unresolved | Runtime inventory reader (`func_000C9850`) | assembly boundary interface. |
+| Shared or unresolved | Wake cleanup helper B (`func_0010746C`) | cleanup interface. |
+| Shared or unresolved | Route cleanup helper (`func_00118D0C`) | cleanup interface. |
+| Shared or unresolved | Supply branch helper A (`func_00124520`) | research gate. |
+| Shared or unresolved | Supply branch helper B (`func_0012469C`) | research gate. |
+| Shared or unresolved | Source active-flag writer (`func_00129948`) | source-record interface. |
+| Shared or unresolved | Terminal and supply teardown owner (`func_0012A958`) | complete-owner planning boundary. |
+| Shared or unresolved | Movement geometry helper (`func_0012B1C4`) | movement research gate. |
+| Shared or unresolved | Movement auxiliary owner (`func_0012D6FC`) | movement research gate. |
+| Shared or unresolved | Secondary source-member eligibility helper (`func_0012DA9C`) | scripted and site interface. |
+| Shared or unresolved | Formation-member count helper (`func_0012E8EC`) | formation interface. |
+| Shared or unresolved | Formation-row lookup (`func_0012E968`) | It returns the outer formation row. |
+| Shared or unresolved | Map-coordinate converter (`func_0012EA80`) | coordinate interface. |
+| Shared or unresolved | Encoded-item inventory writer (`func_00130E60`) | cross-owner structural hold. |
+| Shared or unresolved | Runtime reference-table service (`func_00131B50`) | assembly boundary interface. |
+| Deferred scripted or broad | Scripted-tier dispatcher (`func_00101DDC`) | deferred broad owner. |
+| Deferred scripted or broad | Scripted activation owner (`func_00119454`) | deferred broad owner. |
+| Core assembly; `ASM` | Formation-row signature mapper (`func_00040f88`) | Finalizers and terminal teardown call it. Place in the construction wave. |
+| Core assembly; `ASM` | Runtime member-pool initializer (`func_00041c20`) | The member builder and normal loader call it. Place in the construction wave. |
+| Active C; `PURE_C` | Member level-up owner (`func_00044aa4`) | The class/stat initializer calls it. Preserve the completed C interface. |
+| Core assembly; `ASM` | Formation-target field resolver A (`func_00106F34`) | Three movement owners call it. Place in the movement wave. |
+| Core assembly; `ASM` | Formation-target field resolver B (`func_001070F4`) | The target-state reset helper calls it. Place in the movement wave. |
+| Core assembly; `ASM` | Nearest candidate selector (`func_0010766C`) | The dispatcher calls it for candidate state. Place in the pursuit wave. |
+| Shared or unresolved; `ASM` | Route-buffer allocator (`func_00107D60`) | Route owners call this buffer interface. Retain it as shared assembly. |
+| Shared or unresolved; `ASM` | Route-path builder (`func_00107E38`) | Route owners call this path interface. Retain it as shared assembly. |
+| Core assembly; `ASM` | Map-unit flag-clear sweep (`func_00109C04`) | Site owners clear one map-unit flag through it. Keep in the deferred site lane. |
+| Core assembly; `ASM` | Pursuit-state evaluator (`func_00109C3C`) | The candidate builder and site owner call it. Place in the pursuit wave. |
+| Deferred scripted or broad; `ASM` | Scripted pair cleanup owner (`func_00118E44`) | The scripted activation owner calls it. Keep the scripted lane deferred. |
+| Deferred scripted or broad; `ASM` | Scripted source/supply handler (`func_001191CC`) | It handles source, supply, and activation state. Keep the scripted lane deferred. |
+| Shared or unresolved; `ASM` | Route interpolation wrapper (`func_0011AB74`) | Movement owners use the route-state wrapper. Retain it as shared assembly. |
+| Shared or unresolved; `ASM` | Route interpolation buffer builder (`func_0011AECC`) | Route owners attach interpolation buffers through it. Retain it as shared assembly. |
+| Active C; `HYBRID_C` | Route-state deallocator (`func_0011B344`) | Cleanup and movement owners call it. Retain the exact hybrid owner; pure-C conversion remains future work. |
+| Deferred scripted or broad; `ASM` | Site map-unit broad owner (`func_0011BB4C`) | The site-event owner calls this broad map-unit path. Keep the site lane deferred. |
+| Deferred scripted or broad; `ASM` | Site map-unit state reset (`func_0011D8D4`) | The site map-unit owner calls it. Keep the site lane deferred. |
+| Core assembly; `ASM` | Map-unit reset initializer A (`func_00120CF0`) | The dispatcher calls it during map-unit state reset. Place in the wake wave. |
+| Core assembly; `ASM` | Map-unit reset initializer B (`func_00121724`) | The dispatcher calls it during map-unit state reset. Place in the wake wave. |
+| Core assembly; `ASM` | Pursuit-resource rebuild helper (`func_00125298`) | The movement-state owner calls it for pursuit resources. Place in the movement wave. |
+| Core assembly; `ASM` | Map-unit movement-state owner A (`func_00125460`) | It operates map-unit position, route, and target fields. Place in the movement wave. |
+| Core assembly; `ASM` | Map-unit movement-state owner B (`func_00125F84`) | The dispatcher calls this broad movement-state owner. Place after movement research gates. |
+| Core assembly; `ASM` | Formation-position dispatcher (`func_00126770`) | It uses formation-row and member-position helpers. Place in the movement wave. |
+| Core assembly; `ASM` | Map-unit position normalizer (`func_00126D24`) | Dispatcher and movement owners call it. Place in the movement wave. |
+| Deferred scripted or broad; `ASM` | Scripted map-unit pair movement owner (`func_00127154`) | The scripted activation owner calls this broad pair path. Keep the scripted lane deferred. |
+| Core assembly; `ASM` | Nearest active-unit distance scan (`func_00127D30`) | Dispatcher and target reset paths call it. Place in the pursuit wave. |
+| Core assembly; `ASM` | Target-state reset helper (`func_00127EAC`) | Dispatcher and movement paths call it. Place in the pursuit wave. |
+| Core assembly; `ASM` | Movement-target eligibility owner (`func_00128050`) | Target selectors call this eligibility policy. Place in the pursuit wave. |
+| Core assembly; `ASM` | Movement cell-placement evaluator (`func_001284C4`) | The movement-cell selector calls it. Place in the pursuit wave. |
+| Core assembly; `ASM` | Route-state cleanup wrapper (`func_00128980`) | The dispatcher calls it for route cleanup. Place in the pursuit wave. |
+| Core assembly; `ASM` | Movement-cell selection helper (`func_001289BC`) | Movement-state owners call its cell-selection policy. Place in the pursuit wave. |
+| Core assembly; `ASM` | Movement-target selection wrapper (`func_00128D50`) | The dispatcher calls this target-selection wrapper. Place in the pursuit wave. |
+| Core assembly; `ASM` | Movement-target reset owner (`func_00128DDC`) | The dispatcher calls its reset path. Place in the pursuit wave. |
+| Core assembly; `ASM` | Alternate deployment aggregate initializer (`func_00129268`) | The scripted deployment initializer calls it. Place in the deployment wave. |
+| Deferred scripted or broad; `ASM` | Scripted deployment mode initializer (`func_00129978`) | The broad scripted-tier dispatcher calls it. Keep the scripted lane deferred. |
+| Core assembly; `ASM` | Pursuit-candidate list teardown (`func_0012A050`) | It frees the map-unit candidate-list field. Place in the pursuit wave. |
+| Core assembly; `ASM` | Source/map-unit teardown owner (`func_0012A828`) | The dispatcher calls it during source and map-unit teardown. Place in the wake lifecycle wave. |
+| Core assembly; `ASM` | Route and movement state owner (`func_0012C788`) | Route owners call its map-unit movement path. Place in the movement wave. |
+| Core assembly; `ASM` | Route-group flag predicate (`func_0012DB2C`) | The dispatcher calls it; it scans one route row and member map-unit flags. Place in the wake wave. |
+| Core assembly; `ASM` | Normal source-record slot lookup (`func_0012E7E8`) | Scripted and site owners query normal source-record slots. Place in the record wave. |
+| Core assembly; `ASM` | Formation member-position lookup (`func_0012E9F4`) | Terminal and formation paths require the inner member position. Place in the record wave. |
+| Core assembly; `ASM` | Source-record clear/copy helper (`func_0012ECDC`) | The scripted activation owner calls its source-record operations. Place in the record wave. |
+| Core assembly; `ASM` | Source-member status scan (`func_0012F010`) | The scripted activation owner calls this source-member policy. Place in the record wave. |
+| Core assembly; `ASM` | Route-descriptor maintenance owner (`func_0012F140`) | Site and scripted owners call its route-row maintenance. Place in the record wave. |
+| Core assembly; `ASM` | Route-descriptor status query (`func_0012F530`) | Site and scripted dispatchers query route-row state. Place in the record wave. |
+| Core assembly; `ASM` | Source-to-map-unit activation owner (`func_0012F8C0`) | Site and scripted paths activate map units through it. Place in the wake lifecycle wave. |
+| Active C; `HYBRID_C` | Selected-group alignment average (`func_0012FBB8`) | Site and scripted owners call it. Preserve the current hybrid interface. |
+| Core assembly; `ASM` | Pursuit-candidate membership test (`func_0012FB64`) | Movement owners test the candidate list through it. Place in the pursuit wave. |
+| Deferred scripted or broad; `ASM` | Scripted source/map-unit maintenance owner (`func_0012FE58`) | Scripted deployment calls this broad maintenance path. Keep the scripted lane deferred. |
+| Core assembly; `ASM` | Map-unit route cleanup wrapper (`func_001305B4`) | Scripted and movement paths call its cleanup behavior. Place in the movement wave. |
+| Core assembly; `ASM` | Special-scenario placement owner (`func_001307D4`) | It contains four placement calls. Hold it with the placement entry gate. |
+| Core assembly; `ASM` | Carried-supply membership test (`func_00131480`) | The dispatcher calls it; it scans all ten carried-supply bytes. Place in the supply wave. |
+| Core assembly; `ASM` | Map-unit distance/state evaluator (`func_00131828`) | Movement owners call it with map-unit state. Place in the movement wave. |
+| Core assembly; `ASM` | Map-unit class-slot initializer (`func_0013A3D8`) | The site map-unit owner calls its class and position setup. Keep in the deferred site lane. |
+| Core assembly; `ASM` | Candidate terrain-policy helper A (`func_0013A558`) | Candidate and supply policy call this terrain helper. Place in the pursuit research wave. |
+| Core assembly; `ASM` | Candidate terrain-policy helper B (`func_0013AA40`) | Candidate and supply policy call this terrain helper. Place in the pursuit research wave. |
+| Core assembly; `ASM` | Candidate terrain-policy helper C (`func_0013B350`) | Candidate and supply policy call this terrain helper. Place in the pursuit research wave. |
+
+### Route-state deallocator placement
+
+| Semantic name and symbol | Current class | Accepted placement | Owner | Disposition |
+|---|---|---|---|---|
+| Route-state deallocator (`func_0011B344`) | `HYBRID_C` | z64 `0x0011B344..0x0011B430`; live `0x801C6C04..0x801C6CF0` | `p2327`, `primary:f48582b4599a6e92049b` | Retain exact hybrid output; pure-C conversion requires separate authority. |
+
+The placement label, numeric ranges, owner, and semantic name retain their accepted values.
+Current policy and fixed verification evidence establish the hybrid class.
+
+## Data-owner disposition
+
+The supply dispatch data owner remains `data_00197738`.
+Its owner range is z64 `0x00197738..0x001977E0` and live `0x802172A8..0x80217350`.
+Its dispatch table occupies z64 `0x001977C0..0x001977D8` and live `0x80217330..0x80217348`.
+Accepted owner `p3067`, `primary:48eeb57c98201bb32288`, remains unchanged.
+
+The supply initializer uses the table for internal labels in its own owner.
+The table does not create six function owners.
+No new global data owner was found in the rooted frontier.
+
+## Placement caller closure
+
+Placement helper `func_00120BBC` starts at live `0x801CC47C`.
+Every accepted caller targets live `0x801CC480`, which is start plus four.
+
+| Caller owner | Call-site z64 ROM offsets | Calls | Disposition |
+|---|---|---:|---|
+| Map-unit update dispatcher (`func_00105CC0`) | `0x00106BA0` | 1 | Retained opening-wave owner; placement edge held. |
+| Special-scenario placement owner (`func_001307D4`) | `0x00130AB8`, `0x00130AEC`, `0x00130B60`, `0x00130BEC` | 4 | Added owner; hold with placement entry. |
+| Normal deployment loader (`func_001960A8`) | `0x00196CE8` | 1 | Retained opening-wave owner; placement edge held. |
+
+The exhaustive accepted assembly scan therefore closes the known direct caller account at three owners and six call instructions.
+It does not resolve whether the skipped word is a folded preamble, separate entry, or linkage defect.
+
+## External direct-call boundaries
+
+All 97 external direct targets retain explicit interface dispositions.
+These are outside the member ledger; unresolved entries do not become accepted function owners.
+
+| Edge group | Exact targets | Disposition and boundary reason |
+|---|---|---|
+| Allocation, free, memory, and application binary interface | live `0x80070F30`, `0x800712C4`, `0x80093380`; `func_00023940`, `func_0002e138` | Retain as engine interfaces. These targets do not own family records or family policy. |
+| Unmapped early engine interfaces | live `0x8007938C`, `0x80079618`, `0x80090010`, `0x800900C0`, `0x80093060`, `0x8009C550`, `0x8009C5E0`, `0x8009C780`, `0x8009C7CC`, `0x8009D3C0`, `0x800EA604`, `0x800EA6B0` | Retain as unresolved edge-only interfaces. No accepted evidence promotes family behavior at these entries. |
+| Unresolved overlay interfaces | live `0x801CD860`, `0x801DCF90`, `0x801DD244`, `0x801DD2B0`, `0x8020CE00` | Retain as unresolved edge-only interfaces. Targets `0x801DD244` and `0x801DD2B0` lie inside `p4062`, not at accepted function boundaries. |
+| Math, geometry, and coordinate services | live `0x80092DB0`; `func_00020bf0`, `func_00022e60`, `func_0002d220`, `func_0002d3e0`, `func_0002de50`, `func_000F315C`, `func_000F3428`, `func_00106CE0`, `func_00106E48`, `func_00118500` | Retain as shared computation. Calls do not make these general algorithms family owners. |
+| Generic tables, bitsets, state, and dispatch | `func_000415fc`, `func_00041638`, `func_00045d78`, `func_0004813c`, `func_00048294`, `func_0005c090`, `func_0005c110`, `func_000ec838`, `func_000f6b10`, `func_00105498`, `func_00113C28`, `func_00118644` | Retain as cross-domain interfaces. Their callers supply family values, but the targets do not own family records. |
+| Member-growth private helpers | `func_000457e4`, `func_00045820`, `func_00045840`, `func_0004585c`, `func_00045878`, `func_00045898`, `func_000458b8` | Stop beneath the completed level-up interface. These are private class-growth calculations. |
+| Runtime inventory and item-service private frontier | `func_00041098`, `func_00045460`, `func_000ae30c`, `func_000b1f00`, `func_000b1f4c`, `func_000b4a70`, `func_000b4b08`, `func_000b4bb8`, `func_000b6b70`, `func_000b6ba8`, `func_000b8a94`, `func_000b8aec`, `func_000b8b60`, `func_000b8d70`, `func_000b8e70`, `func_000b9234`, `func_000bc464`, `func_000bc7e4`, `func_000bc828`, `func_000c4650`, `func_000c4a40`, `func_000c54c0`, `func_000c6fe8`, `func_000c8d28`, `func_000c8f04`, `func_001CE070` | Stop beneath the shared runtime inventory reader. Item and resource behavior is not squad-family policy. |
+| Route-algorithm private frontier | `func_00107850`, `func_001079EC`, `func_00107C58`, `func_0011A540`, `func_0011A9B8`, `func_0011ABD4`, `func_0011AE34` | Stop beneath the retained route interfaces. These functions implement generic interpolation and path algorithms. |
+| General object and cross-domain record services | `func_00131050`, `func_0013109C`, `func_00147BDC`, `func_00147D44`, `func_00147E28`, `func_00147FB8` | Retain as object, list, or character-domain interfaces. Their family callers do not transfer ownership. |
+| Rewards, presentation, audio, and rendering | `func_00132B80`, `func_0015DF10`, `func_0015FB14`, `func_001F0A30`, `func_00213B50`, `func_00228A00` | Exclude from the family. Direct rewards and presentation effects remain separate product domains. |
+
+These ten groups contain exactly 97 targets.
+The lists are exhaustive for accepted direct `jal` targets from the corrected row set.
+Indirect calls and jump-table destinations remain a stated static coverage limit.
+
+## Direct-data frontier
+
+The rooted rows directly touch source records, map-unit objects, route descriptors, formation rows, and carried supplies.
+Those data references support the added roles in the member ledger.
+
+Same-table consumers outside the rooted call frontier have these dispositions:
+
+| Data-sharing owner | Data relationship | Disposition |
+|---|---|---|
+| `func_0012DC0C` | Builds and orders a sentinel-terminated map-unit list. | Cross-domain consumer; no rooted family call edge. |
+| `func_001314D0` | Searches equipment or identifiers in a normal source record. | Character or equipment consumer; not carried-supply policy. |
+| `func_0019510C`, `func_001A2990` | Build active-object lists in other overlay paths. | Parallel consumers; no rooted family control edge. |
+| `func_001461D4` | Performs a dynamic active-object pointer lookup. | Generic object service; retain outside. |
+| `func_001A7AC0`, `func_001A80EC`, `func_00214D30` | Read or update source-record member slots in other overlays. | Cross-overlay consumers; no rooted family control edge. |
+| `func_0020F9AC` | Scans the ten carried-supply bytes. | Presentation or consumer boundary; it does not own supply policy. |
+
+Shared use of a record does not make every consumer an implementation-family member.
+This rule keeps reverse data scans from importing unrelated gameplay overlays.
+
+## Continuation planning
+
+The finalizer `func_00129068` remains the next continuation priority after the opening wave's accepted milestone.
+The Director must prepare that bounded assignment for overall Astra's release.
+The following groups are planning only; none extends current implementation authority.
+Preserve all completed `PURE_C` members and their accepted linkage without rematching.
+Retain remaining `HYBRID_C` members until separately authorized source work passes its complete-wave gates.
+Treat `func_0011B344` as future pure-C work.
+
+### Wave 2: construction, deployment, and records
+
+Group `func_00041c20`, `func_00128E80`, `func_00129068`, `func_001291B4`, `func_00129268`, and `func_0012967C`.
+Then group `func_0012E7E8`, `func_0012E9F4`, `func_0012ECDC`, and `func_0012F010`.
+Add `func_00195D9C` only after the loader interface freezes.
+Retain `func_00040f88` as the shared formation-row mapper.
+
+### Wave 3: wake, conditions, and lifecycle
+
+Group `func_00120CF0`, `func_00121724`, `func_00121DA8`, `func_00121F38`, and `func_00123458`.
+Then group `func_001237F0`, `func_0012DA10`, `func_0012DB2C`, `func_0012A828`, and `func_0012F8C0`.
+Preserve open meanings for route flag `0x00020000` and the finalizer return byte.
+
+### Wave 4: scheduler and pursuit
+
+Group `func_001094BC`, `func_0010ADB8`, `func_0010A718`, `func_0010A128`, and `func_00109C3C`.
+Research `func_0013A558`, `func_0013AA40`, and `func_0013B350` before source conversion.
+Then group the candidate, eligibility, selection, reset, and target-writing owners.
+Include `func_0010766C`, `func_0012A050`, and `func_0012FB64` in that interface review.
+
+### Wave 5: routes and movement
+
+Close `func_0012B1C4` and `func_0012D6FC` before source conversion.
+Review the route interfaces `func_00107D60`, `func_00107E38`, `func_0011AB74`, and `func_0011AECC` together.
+Then group the map-unit movement owners in the member ledger with `func_0012D170`, `func_0012B440`, and `func_0012BC64`.
+Preserve the accepted movement-consumer extent through z64 `0x0012C788`.
+
+### Wave 6: carried-supply lifecycle
+
+Group `func_0014F300`, `func_00131480`, the three supply consumers, and `func_00131388`.
+Research `func_00124B98`, `func_00124520`, and `func_0012469C` before source work.
+Keep `func_00130E60` shared until a reviewed complete-owner plan resolves its split ownership.
+
+### Held and deferred lanes
+
+Hold `func_00120BBC` and `func_001307D4` for placement-entry structural review.
+Defer `func_00101DDC`, `func_00119454`, and the seven other scripted or site owners marked deferred in the member ledger.
+Keep `func_0010DDB4` outside ordinary waves.
+No deferred row receives implementation authority from this plan.
+
+Each later implementation wave must use the same complete-wave cadence.
+Per-function results remain provisional until the combined wave gate and Director proof intake.
+
+## Structural and semantic gates
+
+| Gate | Current condition | Required next action | Actor |
+|---|---|---|---|
+| Placement entry | Six calls target live `0x801CC480`; owner start is live `0x801CC47C`. | Resolve the entry boundary before source conversion. | Structural worker, then reviewer |
+| Encoded-item inventory writer | `func_00130E60` spans accepted owners `p2449` and `p2450`. | Define a complete-owner plan before conversion. | Director, structural worker, then reviewer |
+| Finalizer return | The constructor stores `func_00129068`'s return at source-record `+0x18`. | Preserve the store without naming the field. | Every implementation worker |
+| Route-group flag | `func_0012DB2C` tests map-unit flag `0x00020000`. | Preserve the literal meaning until research names it. | Research worker, then reviewer |
+| Scripted lane | Accepted functions mix family behavior with mission maintenance. | Prove complete owner scope and Editor value before release. | Research worker, then Director |
+| Supply controller | Later choice and timing remain unresolved. | Close controller policy before its source wave. | Research worker, then reviewer |
+| Movement auxiliaries | `func_0012B1C4` and `func_0012D6FC` remain incomplete interfaces. | Close both interfaces before movement conversion. | Research worker, then reviewer |
+
+## Remaining completion conditions
+
+- Release later implementation scopes through overall Astra before source work starts.
+- Confirm accepted owner, complete extent, and placement for each released target.
+- Resolve the held placement entry before converting either held placement owner.
+- Preserve the encoded-item writer's two-owner gate and the finalizer's unnamed source-record byte `+0x18`.
+- Preserve route flag `0x00020000` without assigning unsupported meaning.
+- Complete movement-interface and supply-policy research before their gated source work.
+- Justify complete scripted/site owner scope and benefit before release.
+- Preserve normal-drop initialization in the loader and keep direct-event and creature rewards outside this family.
+- Keep hybrid results outside matching-C counts until canonical verification establishes `PURE_C`.
+- Reinspect affected call/data boundaries when accepted source changes invalidate this static inventory.
+- Verify every complete implementation wave and changed integration inputs under the canonical workflow.
+- Complete Director proof intake and authorized integration/publication without an ordinary-source reviewer gate.
+
+The family boundary is accepted within the stated static limits.
+Future runtime evidence can expose additional relevant members.
+Implementation completion remains separate from planning acceptance.

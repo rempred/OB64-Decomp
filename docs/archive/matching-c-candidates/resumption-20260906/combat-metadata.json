@@ -1,0 +1,341 @@
+{
+  "family": "combat",
+  "donorHead": "ef4689d56568ec54918e2cc4a85b2d9068b12d00",
+  "status": "INACTIVE REFERENCE; donor records are not current canonical activation or acceptance",
+  "sourceRegistries": [
+    {
+      "path": "config/matching-c-targets.json",
+      "rawSha256": "93851F4C7AC1F97B5A020B4D47E772E14C84D1448D7291C9B0A75BAB8E9E895A",
+      "gitBlob": "e11d22fe28bc851faeff35d673e38c4c0f1f37a0"
+    },
+    {
+      "path": "config/matching-c-linkage.json",
+      "rawSha256": "11A2FB3783EA27A845FEBA0056B761DFC6CF26C8BB12AA34B8B081D0F74D2D87",
+      "gitBlob": "f003fcd7c24b3138d19da3fe46a25f08152ad27c"
+    }
+  ],
+  "targets": [
+    {
+      "symbol": "func_00204EE0",
+      "source": "src/lib/func_00204EE0.c"
+    },
+    {
+      "symbol": "func_00204F34",
+      "source": "src/lib/func_00204F34.c"
+    },
+    {
+      "symbol": "func_00205230",
+      "source": "src/lib/func_00205230.c"
+    },
+    {
+      "symbol": "func_002052D4",
+      "source": "src/lib/func_002052D4.c"
+    },
+    {
+      "symbol": "func_00205378",
+      "source": "src/lib/func_00205378.c"
+    },
+    {
+      "symbol": "func_00205484",
+      "source": "src/lib/func_00205484.c"
+    },
+    {
+      "symbol": "func_00205608",
+      "source": "src/lib/func_00205608.c"
+    }
+  ],
+  "linkageTargets": [
+    {
+      "symbol": "func_00204EE0",
+      "expectedRelocations": [
+        {
+          "offset": "0x0000000C",
+          "type": "R_MIPS_26",
+          "symbol": "func_00206174",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000020",
+          "type": "R_MIPS_26",
+          "symbol": ".text",
+          "section": ".rel.text"
+        }
+      ]
+    },
+    {
+      "symbol": "func_00204F34",
+      "expectedRelocations": [
+        {
+          "offset": "0x00000030",
+          "type": "R_MIPS_26",
+          "symbol": "func_002015C8",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000038",
+          "type": "R_MIPS_26",
+          "symbol": "func_00206174",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000054",
+          "type": "R_MIPS_26",
+          "symbol": ".text",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000000AC",
+          "type": "R_MIPS_26",
+          "symbol": ".text",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000000BC",
+          "type": "R_MIPS_26",
+          "symbol": ".text",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000000D0",
+          "type": "R_MIPS_26",
+          "symbol": ".text",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000000F4",
+          "type": "R_MIPS_26",
+          "symbol": ".text",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x0000012C",
+          "type": "R_MIPS_26",
+          "symbol": ".text",
+          "section": ".rel.text"
+        }
+      ]
+    },
+    {
+      "symbol": "func_00205230",
+      "expectedRelocations": [
+        {
+          "offset": "0x0000003C",
+          "type": "R_MIPS_26",
+          "symbol": "func_00205608",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000070",
+          "type": "R_MIPS_26",
+          "symbol": ".text",
+          "section": ".rel.text"
+        }
+      ]
+    },
+    {
+      "symbol": "func_002052D4",
+      "expectedRelocations": [
+        {
+          "offset": "0x0000003C",
+          "type": "R_MIPS_26",
+          "symbol": "func_00205608",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000070",
+          "type": "R_MIPS_26",
+          "symbol": ".text",
+          "section": ".rel.text"
+        }
+      ]
+    },
+    {
+      "symbol": "func_00205378",
+      "expectedRelocations": [
+        {
+          "offset": "0x00000024",
+          "type": "R_MIPS_HI16",
+          "symbol": "D_801D03A0",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000028",
+          "type": "R_MIPS_LO16",
+          "symbol": "D_801D03A0",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x0000005C",
+          "type": "R_MIPS_26",
+          "symbol": "func_00205608",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000000C4",
+          "type": "R_MIPS_26",
+          "symbol": ".text",
+          "section": ".rel.text"
+        }
+      ]
+    },
+    {
+      "symbol": "func_00205484",
+      "expectedRelocations": [
+        {
+          "offset": "0x00000020",
+          "type": "R_MIPS_26",
+          "symbol": "func_002015C8",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000040",
+          "type": "R_MIPS_26",
+          "symbol": "func_0020626C",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000058",
+          "type": "R_MIPS_26",
+          "symbol": ".text",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000078",
+          "type": "R_MIPS_26",
+          "symbol": "func_002060EC",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000094",
+          "type": "R_MIPS_26",
+          "symbol": ".text",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000000B0",
+          "type": "R_MIPS_26",
+          "symbol": ".text",
+          "section": ".rel.text"
+        }
+      ]
+    },
+    {
+      "symbol": "func_00205608",
+      "expectedRelocations": [
+        {
+          "offset": "0x0000001C",
+          "type": "R_MIPS_26",
+          "symbol": "func_002060EC",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000038",
+          "type": "R_MIPS_26",
+          "symbol": ".text",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000054",
+          "type": "R_MIPS_26",
+          "symbol": ".text",
+          "section": ".rel.text"
+        }
+      ]
+    }
+  ],
+  "referencedDonorSymbols": [
+    {
+      "name": "D_801D03A0",
+      "address": "0x801D03A0"
+    }
+  ],
+  "symbolDisposition": [
+    {
+      "name": "D_801D03A0",
+      "canonicalTargetSource": null,
+      "canonicalSymbol": null,
+      "donorSymbol": {
+        "name": "D_801D03A0",
+        "address": "0x801D03A0"
+      },
+      "canonicalAssemblyDefinitions": [],
+      "resolution": "donor-symbol-contract-required",
+      "canonicalAssemblyOwner": null
+    },
+    {
+      "name": "func_002015C8",
+      "canonicalTargetSource": "src/lib/func_002015C8.c",
+      "canonicalSymbol": null,
+      "donorSymbol": null,
+      "canonicalAssemblyDefinitions": [],
+      "resolution": "canonical-input-present",
+      "canonicalAssemblyOwner": {
+        "name": "func_002015C8",
+        "file": "asm/original/rev0/lib/func_002015C8.s",
+        "romStart": "0x002015C8",
+        "romEndExclusive": "0x0020161C",
+        "rawSha256": "23C6A4EA4EFF6FF3FB71B0927BA866575CADD03FEED22F4D72CEC09DA113A4DE"
+      }
+    },
+    {
+      "name": "func_00205608",
+      "canonicalTargetSource": null,
+      "canonicalSymbol": null,
+      "donorSymbol": null,
+      "canonicalAssemblyDefinitions": [],
+      "resolution": "canonical-input-present",
+      "canonicalAssemblyOwner": {
+        "name": "func_00205608",
+        "file": "asm/original/rev0/lib/func_00205608.s",
+        "romStart": "0x00205608",
+        "romEndExclusive": "0x00205720",
+        "rawSha256": "A774D317421EE6F3F0A3C76174222559A6BE7F4626A81EFDD2655BB1EA1DF462"
+      }
+    },
+    {
+      "name": "func_002060EC",
+      "canonicalTargetSource": null,
+      "canonicalSymbol": null,
+      "donorSymbol": null,
+      "canonicalAssemblyDefinitions": [],
+      "resolution": "canonical-input-present",
+      "canonicalAssemblyOwner": {
+        "name": "func_002060EC",
+        "file": "asm/original/rev0/lib/func_002060EC.s",
+        "romStart": "0x002060EC",
+        "romEndExclusive": "0x00206130",
+        "rawSha256": "998C1081649CEBF9596287817CE200D4339CD232AE2EF2DD442272656C47EA5B"
+      }
+    },
+    {
+      "name": "func_00206174",
+      "canonicalTargetSource": null,
+      "canonicalSymbol": null,
+      "donorSymbol": null,
+      "canonicalAssemblyDefinitions": [],
+      "resolution": "canonical-input-present",
+      "canonicalAssemblyOwner": {
+        "name": "func_00206174",
+        "file": "asm/original/rev0/lib/func_00206174.s",
+        "romStart": "0x00206174",
+        "romEndExclusive": "0x002061B8",
+        "rawSha256": "C951EB8449C5E9B3DF89C627973272629E49373EBF6C4E5CBB5C3AC630E785F1"
+      }
+    },
+    {
+      "name": "func_0020626C",
+      "canonicalTargetSource": null,
+      "canonicalSymbol": null,
+      "donorSymbol": null,
+      "canonicalAssemblyDefinitions": [],
+      "resolution": "canonical-input-present",
+      "canonicalAssemblyOwner": {
+        "name": "func_0020626C",
+        "file": "asm/original/rev0/lib/func_0020626C.s",
+        "romStart": "0x0020626C",
+        "romEndExclusive": "0x002062D0",
+        "rawSha256": "BE8FBD618BDE1BFE604670E95FB982914F809D7F4CAEDD45AD901DB1B374E286"
+      }
+    }
+  ]
+}

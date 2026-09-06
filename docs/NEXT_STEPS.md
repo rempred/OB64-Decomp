@@ -6,13 +6,13 @@ This file is the active queue only. Changing counts belong in `node tools/status
 
 Use the [matching methods improvement plan](Plans/matching-methods-improvement-20260904.md)
 for the accepted shared-header compilation-input/dependency contract and independently accepted
-preparation optimization at `603c363`. Wave 5 integration is verified; the performance ownership
-hold is released to continued High Attack work. The scheduler trace and carrier probe are complete; another
+preparation optimization at `603c363`. Earlier Wave 5 delivered subsets remain integrated;
+the frozen-family restart index below supplies current continuation boundaries. The scheduler trace and carrier probe are complete; another
 allocator-family experiment needs a new causal or semantic lead. Current ownership and progress
 remain in that plan. Preserve the pinned production compiler and all matching acceptance rules.
 
-Coordinate editor changes with the native rebuild. Existing source-matching targets remain
-assigned to their current tasks; optional tooling hardening does not block their normal matching loop.
+Coordinate editor changes with the native rebuild. The three frozen families use the restart index below.
+Optional tooling proposals do not authorize their continuation.
 
 ## Structural follow-up: audit remaining manual-load slabs
 
@@ -68,21 +68,10 @@ in a sequential queue. Wave 1 is the action-stream record-construction family.
 A large nonmatching research reconstruction can be more valuable than dozens of unrelated tiny
 matches, but the retail exact baseline must remain separate and honest.
 
-Joe authorized a parallel squad construction and deployment family in a fresh worktree on 2026-09-05.
-The initial targets are `func_001957D0`, `func_001960A8`, and `func_00105CC0`; the member builder
-and downstream pure-C helpers remain preserved. Astra High directs the active family task
-`01a071fb-35e9-7c42-8b29-d0a16ed30f19` in its prepared worktree. Activation delivery is verified.
-Parent `docs/Plans/squad-construction-director-current-state.md` owns
-launch and family status. High Attack retains its separate Director and existing scope.
-
-Joe authorized another independent worktree on 2026-09-05. Combat body selection and pose-resource
-handling use `codex/combat-body-resources`, based at `acf8d44`.
-The parent plan `docs/Plans/combat-body-resources-matching-family-20260905.md` records opening
-waves in accepted overlay descriptor 10 and the complete-family discovery scope.
-Related High Attack stream builders and carrier callers retain that Director's source ownership.
-The adjacent parent feature-coverage inventory distinguishes matching C from native generated assembly and data-only exports.
-Parent `docs/Plans/combat-body-resources-director-current-state.md` owns activation and implementation status.
-The first wave uses Joe's Astra Xhigh implementation and methodology-report experiment.
+The Squad, Combat body-resource, and High Attack families are frozen after accepted-only canonical intake.
+Use [Resume the frozen matching families](RESUMING_FROZEN_FAMILIES.md) for inactive candidate sources, exact restart boundaries, and external prerequisites.
+Accepted code and shared capabilities are already in main at `497181d`; unfinished waves remain unaccepted.
+Future work needs a concrete release and must preserve complete-wave verification and the ordinary no-review rule.
 
 ### Tier 2 — Current LordlyCaliber limits
 

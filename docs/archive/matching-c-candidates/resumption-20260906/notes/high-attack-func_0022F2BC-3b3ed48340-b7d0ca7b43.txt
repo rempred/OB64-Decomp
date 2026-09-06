@@ -1,0 +1,20 @@
+# func_0022F2BC: Preserved Matching-Workbench Candidate
+
+## Status
+
+This source is a research candidate. The original assembly remains the accepted owner.
+
+- Candidate: `3B3ED48340DAA5A0322E1D0AA44FAB15FF4470213A6D8D20693E1DCD525829BC`
+- Target: `func_0022F2BC` at ROM `0x22F2BC`
+- Source: `docs/archive/matching-c-candidates/2026-09-06-func_0022F2BC-3b3ed48340.c`
+- Source SHA-256: `01F865FE38380FC269321F7BBDCF2F1717F6B5ACAC2FBB0F3760441A107258E1`
+- Latest scratch class: `not compiled`
+- Latest scratch score: `not available`
+
+## Preservation reason
+
+HA-W6-PUREC-03: F2BC repairs pointer-sized store hypothesis to observed byte store at 801CE8F8, preserves scan increment after call, and models timing loads explicitly. 684-byte nonexact PURE_C scratch vs 708 retail. Four dispatch routes mapped separately. Not exhausted; reconcile shared return/timing joins before allocation.
+
+## Evidence boundary
+
+Scratch object comparison does not prove canonical linker ownership, relocation resolution, target bytes, or full-ROM identity. Resume through the normal diff and verification workflow.
