@@ -94,3 +94,4 @@ Use the current session's permissions for repository and build operations; never
 - Sol High retrieved the exact `0x00391270` resource, decoded-corpus reference records and bounded selector-form misses. These are literal facts for Astra research, not new semantic conclusions.
 - Release `5bdac86` dispatches accepted Combat scope propagation and remaining-gate research to eligible Astra Medium agents. Their writes are disjoint from the sole tooling writer.
 - Accepted Combat discovery propagation is recorded at parent `e445991`. Original wave/shared tables, bounded exclusions, and matching gates remain unchanged. Both unresolved discovery questions remain open.
+- Sol High read-only retrieval is checking the current Total Resolver knowledge database for existing selector execution evidence. No capture or database mutation is authorized.
