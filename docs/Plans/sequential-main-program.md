@@ -46,7 +46,7 @@ Unresolved research gates must be addressed before family completion, without si
 ## Execution order and current state
 
 1. Process correction: recorded at canonical `86d3c0c` and parent `61ad769`; remaining family routing correction is complete and in Director intake. Full-scope reconciliation and process review are active in `/root/sequential_prerequisites_review` against the frozen results.
-2. Compilation-group design: frozen at `5dad709`; independent design review is active in `/root/compilation_groups_review`. Implementation and structural audit/review remain pending.
+2. Compilation-group design: frozen at `5dad709`; independent review returned Revision required for `CGDR-001`, the raw `.reginfo` contract. Bounded design correction and proportional re-review precede implementation.
 3. Bounded readability experiment and three hybrid-conversion investigations: pending prerequisite acceptance.
 4. Combat remaining source waves: pending. Independent static discovery is active in `/root/combat_discovery` using the existing family inventory.
 5. Squad remaining waves and research/structural gates: pending Combat closure.
@@ -79,3 +79,4 @@ Use the current session's permissions for repository and build operations; never
 - Routing correction is recorded at canonical `72382f5` and parent `22c652e`.
 - Joe revised worker-model routing: Sol High for retrieval/parsing only; Astra Medium for implementation or research requiring reasoning. `/root/sequential_process` is correcting current durable wording under a fresh assignment.
 - Worker-model correction completed in nine current policy documents. Link, whitespace and preservation checks passed; historical assignments and reviewer/Director rules remain intact.
+- Design review completed with one finding, `CGDR-001`. Production is unchanged; the reviewed design cannot become an implementation dependency until the correction passes re-review.
