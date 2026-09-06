@@ -61,7 +61,7 @@ function main() {
   const newReport = readJson(path.join(newOutput, 'build-report.json'));
   assert(oldPhase7Report.status === 'pass', 'frozen Phase 7 report did not pass');
   assert(oldReport.status === 'pass' && newReport.status === 'pass', 'old/new build report did not pass');
-  assert(newReport.schemaVersion === 4 && newReport.verification.schemaVersion === 4, 'new source-to-object report schema drift');
+  assert(newReport.schemaVersion === 5 && newReport.verification.schemaVersion === 5, 'new source-to-object report schema drift');
   assert(newReport.sourceObjectEvidence.identity.sourceCommit === '54514ded39ceb32165a125ddba04ca5b551773a2', 'GNU 2.6 source identity drift');
   assert(newReport.sourceObjectEvidence.counts.proofTargets === phase8.targets.length, 'new source-to-object proof census drift');
   assert(newReport.sourceObjectEvidence.counts.compilerAssemblyRewrites === 0, 'compiler assembly was rewritten');

@@ -7,7 +7,7 @@ const {
   ROOT,
   sha256Buffer,
 } = require('../tools/lib/phase7_conventional');
-const { completeCurrent } = require('../tools/lib/current_workflow');
+const { completeCurrent, acceptedCompilationInputIdentity, verifyCompilationInputArtifact } = require('../tools/lib/current_workflow');
 const {
   artifact: compatibilityArtifact,
   verifyTargetCompilationInput,
@@ -40,7 +40,7 @@ function writeArtifact(root, relative, bytes) {
 
 function writeCurrentReport(root, record) {
   fs.writeFileSync(path.join(root, 'build-report.json'), `${JSON.stringify({
-    schemaVersion: 4,
+    schemaVersion: 5,
     status: 'pass',
     targetReplacements: [record],
   }, null, 2)}\n`);
@@ -137,8 +137,11 @@ function main() {
     const phase8 = { targets: [{ symbol: target.symbol, source, sourceSha256 }] };
     const sourcePolicy = { schemaVersion: 2, status: 'pass', targets: [sourcePolicyTarget] };
     writeCurrentReport(currentRoot, currentRecord);
-    if (!completeCurrent(currentRoot, phase8, sourcePolicy)) {
-      throw new Error('valid confined synthetic CURRENT was not reusable');
+    const acceptedInput = acceptedCompilationInputIdentity(currentRecord, sourcePolicyTarget, 'CURRENT fixture');
+    const validateCurrentInput = record => verifyCompilationInputArtifact(currentRoot, record.compilationInput, acceptedInput, 'CURRENT fixture');
+    validateCurrentInput(currentRecord);
+    if (completeCurrent(currentRoot, phase8, sourcePolicy)) {
+      throw new Error('synthetic CURRENT without ELF text evidence was reusable');
     }
 
     const byteCountDrift = clone(currentRecord);
@@ -147,7 +150,7 @@ function main() {
     if (completeCurrent(currentRoot, phase8, sourcePolicy)) {
       throw new Error('CURRENT compilation-input byte-count drift was accepted');
     }
-    rejections.push({ label: 'CURRENT compilation-input byte-count drift', message: 'rejected' });
+    rejections.push(expectRejection('CURRENT compilation-input byte-count drift', /identity differs/, () => validateCurrentInput(byteCountDrift)));
 
     const alternateCurrent = clone(currentRecord);
     alternateCurrent.compilationInput.path = alternateTarget.compilationInput.path;
@@ -156,7 +159,7 @@ function main() {
     if (completeCurrent(currentRoot, phase8, sourcePolicy)) {
       throw new Error('CURRENT alternate compilation-input path was accepted');
     }
-    rejections.push({ label: 'CURRENT alternate compilation-input path', message: 'rejected' });
+    rejections.push(expectRejection('CURRENT alternate compilation-input path', /identity differs/, () => validateCurrentInput(alternateCurrent)));
 
     const escapedCurrent = clone(currentRecord);
     escapedCurrent.cObject = 'sub/../../outside.bin';
@@ -177,7 +180,8 @@ function main() {
     status: 'pass',
     validCompatibilityInputAccepted: true,
     validReproducibilityInputAccepted: true,
-    validCurrentAccepted: true,
+    validCurrentInputAccepted: true,
+    incompleteCurrentRejected: true,
     rejections,
   }, null, 2));
 }

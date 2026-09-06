@@ -300,11 +300,11 @@ function verifyProductionCutover() {
     for (const pattern of forbidden) if (pattern.test(text)) throw new Error(`retired production dependency returned in ${relative}: ${pattern}`);
   }
   const phase8 = loadPhase8Model();
-  if (phase8.targets.some((target) => target.rowIndex === 3066)) throw new Error('p3066 was activated by the toolchain migration');
+  const squadMigration = require('../tools/audit').validateSquadMigrationModel(phase8.targets);
   if (phase8.targets.some((target) => target.expectedRelocations.some((relocation) => relocation.section === '.rel.pdr'))) {
     throw new Error('discarded .pdr metadata remains in the active load-relevant relocation contract');
   }
-  return { name: 'productionCutoverHasNoAdapterOrModernBinutils', ok: true, inspectedFiles: activeFiles.length, p3066Inactive: true };
+  return { name: 'productionCutoverHasNoAdapterOrModernBinutils', ok: true, inspectedFiles: activeFiles.length, ...squadMigration };
 }
 
 function main() {

@@ -486,8 +486,8 @@ function comparisonInvalidationTests() {
   };
   const current = {
     details: {
-      schemaVersion: 3,
-      comparisonContract: 1,
+      schemaVersion: 4,
+      comparisonContract: 2,
       comparisonAlgorithmId: 'ALGORITHM-A',
       diagnosticCurrentFingerprint: 'CURRENT-A',
       acceptanceEligible: false,
@@ -527,7 +527,7 @@ function comparisonInvalidationTests() {
 function cachedArtifactSecurityTests() {
   const testsRoot = path.join(ROOT, 'build', 'tests');
   fs.mkdirSync(testsRoot, { recursive: true });
-  const directory = fs.mkdtempSync(path.join(testsRoot, 'matching-diagnostic-security-'));
+  const directory = fs.mkdtempSync(path.join(testsRoot, 'mds-'));
   const outsideAncestor = fs.mkdtempSync(path.join(os.tmpdir(), 'ob64-matching-ancestor-'));
   const matchingRoot = path.join(directory, 'matching');
   const runId = 'A'.repeat(64);
@@ -578,7 +578,7 @@ function cachedArtifactSecurityTests() {
     const secondAttempt = compileAttemptIdentity('CACHE', sameClock, 'NONCE-B');
     assert(firstAttempt !== secondAttempt,
       'same-clock compile attempts did not receive collision-resistant identities');
-    const exclusiveRoot = path.join(directory, 'exclusive-matching');
+    const exclusiveRoot = path.join(directory, 'ex');
     fs.mkdirSync(exclusiveRoot);
     const exclusiveRun = authenticateFreshRunArtifactDirectory(firstAttempt, exclusiveRoot);
     expectError(/fresh compilation artifact directory already exists/, () => (
@@ -731,7 +731,7 @@ function compileCandidateCacheRejectionTests() {
   const reportFile = path.join(runDirectory, 'workbench-report.json');
   const objectBytes = Buffer.from('authenticated-object');
   const report = {
-    schemaVersion: 2,
+    schemaVersion: 3,
     target: { targetId: target.targetId },
     candidate: { candidateId: candidate.candidateId },
     compile: {

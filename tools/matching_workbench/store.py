@@ -497,7 +497,7 @@ def _query(connection: sqlite3.Connection, request: dict[str, Any]) -> Any:
                   LEFT JOIN compile_run r ON r.candidate_id=c.candidate_id
                   LEFT JOIN comparison stored_p ON stored_p.run_id=r.run_id
                   LEFT JOIN comparison p ON p.run_id=r.run_id
-                    AND json_extract(p.details_json,'$.comparisonContract')=1
+                    AND json_extract(p.details_json,'$.comparisonContract')=2
                     {comparison_provenance_clause}
                  WHERE {model_clause} t.symbol=? COLLATE NOCASE
                  ORDER BY is_stale,{order} LIMIT ?""",
@@ -520,7 +520,7 @@ def _query(connection: sqlite3.Connection, request: dict[str, Any]) -> Any:
                  FROM compile_run r
                  LEFT JOIN comparison stored_p ON stored_p.run_id=r.run_id
                  LEFT JOIN comparison p ON p.run_id=r.run_id
-                   AND json_extract(p.details_json,'$.comparisonContract')=1
+                   AND json_extract(p.details_json,'$.comparisonContract')=2
                    {comparison_provenance_clause}
                 WHERE r.candidate_id=? ORDER BY r.created_at DESC LIMIT ?""",
             (*comparison_provenance_params, args["candidateId"], limit),
@@ -610,7 +610,7 @@ def _query(connection: sqlite3.Connection, request: dict[str, Any]) -> Any:
                   LEFT JOIN compile_run r ON r.candidate_id=c.candidate_id
                   LEFT JOIN comparison stored_p ON stored_p.run_id=r.run_id
                   LEFT JOIN comparison p ON p.run_id=r.run_id
-                    AND json_extract(p.details_json,'$.comparisonContract')=1
+                    AND json_extract(p.details_json,'$.comparisonContract')=2
                     {comparison_provenance_clause}
                  WHERE t.model_id=? ORDER BY t.symbol,r.created_at DESC""",
             (*comparison_provenance_params, args["modelId"]),

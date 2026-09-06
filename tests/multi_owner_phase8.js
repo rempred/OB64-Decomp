@@ -202,8 +202,8 @@ function main() {
     replacement.replacements,
     compiled,
   );
-  writeLayout(phase8, phase7, output, replacement.replacements);
   linkPhase8(phase8, output, manifest, runtime.tools);
+  writeLayout(phase8, phase7, output, replacement.replacements);
   const sourceObjectProofs = writeSourceObjectProofs(phase8, { output, compiled, sourcePolicy });
   const verification = verifyPhase8Output(phase8, {
     output,

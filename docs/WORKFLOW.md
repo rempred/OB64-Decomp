@@ -368,14 +368,21 @@ rewriting compiler instructions or data:
   owners under `config/matching-c-multi-owner.json`;
 - multiple compiler-emitted local functions that gaplessly partition one
   accepted text owner; or
-- one read-only compiler-emitted switch-table fragment assigned to an accepted
-  auxiliary row, with at most one exact preserved assembly tail.
+- read-only compiler-emitted switch-table fragments assigned to one accepted
+  auxiliary row, interleaved with explicitly contracted retained original assembly.
 
 Such a contract must pin the complete symbol or fragment census, section shape,
 alignment, bytes, hashes, load-relevant relocations, placement, and ownership.
-Local functions do not become new accepted owners or exported aliases. Adjacent
-fragments sharing one auxiliary row must cover it in linker order without gaps
-or overlaps. Writable, executable, conventional `.data`/`.bss`, uncontracted
+Local functions do not become new accepted owners or exported aliases.
+C fragments and explicit retained ASM intervals must cover the complete auxiliary row in order without gaps or overlaps.
+Only the first fragment may retain an exterior prefix; only the final fragment may retain the single exterior tail.
+Noninitial fragments may contract an immediately preceding interval through `preservedInteriorBefore`.
+Retained interiors support literal data only: the whole original row must have no nonempty REL/RELA sections targeting it.
+This restriction includes relocations outside the retained interval; generated retained objects must also have no actual relocations.
+Retained bytes remain ASM, not compiler padding or matching-C progress.
+See [the accepted retained-interior contract](AUXILIARY_INTERIOR_ASSEMBLY.md) for its full restrictions and review evidence.
+Tooling acceptance neither activates a production owner nor accepts an unfinished matching wave.
+Writable, executable, conventional `.data`/`.bss`, uncontracted
 tails, and rewritten compiler output reject.
 
 The production path retains the exact authenticated KMC input at the target's
@@ -437,3 +444,11 @@ does not prove modified behavior.
 - [templates/matching-c-agent-prompt-guide.md](templates/matching-c-agent-prompt-guide.md)
   — a concise prompt for an assigned one-function task.
 - [tools/README.md](../tools/README.md) — repository tool index.
+
+## Text representation evidence
+
+Strict outputs use linkage schema 4, source-object proof 4, layout 2, and build/verification/manifest 5. Each target carries independently derived textContract, objectEvidence, and linkEvidence. Stale outputs must be rebuilt. CURRENT fingerprints use version 6; verified state and fresh compilation use version 5.
+
+Ordinary section assignment and existing auxiliary contracts retain their behavior. The bounded nativeTextTail descriptor permits untouched compiler assembly with a 1132-byte function inside its 1136-byte, 16-aligned native text owner. The four zero bytes must come from assembler alignment. Full-owner bytes, sole ownership, relocations, and the entire ROM must still match. func_00204A70 remains inactive and ASM-owned.
+
+Shared-header compatibility defaults to current version-5 evidence on both sides. Use `--historical-v3-v4` only for the retained historical migration; it cannot bridge older evidence into version 5.

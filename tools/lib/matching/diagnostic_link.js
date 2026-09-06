@@ -2,6 +2,7 @@
 
 const crypto = require('crypto');
 const fs = require('fs');
+const textContract = require('../text_contract');
 const path = require('path');
 const {
   ROOT,
@@ -16,8 +17,8 @@ const { currentVerificationState } = require('../current_workflow');
 const { compareMips } = require('./mips_analysis');
 const { canonicalJson, digest } = require('./target_model');
 
-const WORKBENCH_COMPARISON_CONTRACT = 1;
-const DIAGNOSTIC_LINK_CONTRACT = 1;
+const WORKBENCH_COMPARISON_CONTRACT = 2;
+const DIAGNOSTIC_LINK_CONTRACT = 2;
 const SUPPORTED_TEXT_RELOCATIONS = new Set(['R_MIPS_26', 'R_MIPS_HI16', 'R_MIPS_LO16']);
 const LINKABLE_PLACEMENTS = new Set(['early-boot-linear', 'non-descriptor-load-slab', 'overlay']);
 const MAX_ALIGNMENT_TAIL = 12;
@@ -34,6 +35,8 @@ const COMPARISON_ALGORITHM_FILES = Object.freeze([
   path.join(__dirname, '..', 'current_workflow.js'),
   path.join(__dirname, '..', 'phase7_conventional.js'),
   path.join(__dirname, '..', 'phase8_matching_c.js'),
+  path.join(__dirname, '..', 'auxiliary_interior.js'),
+  path.join(__dirname, '..', 'text_contract.js'),
   path.join(ROOT, 'tools', 'matching_workbench', 'store.py'),
 ]);
 let algorithmIdentity = null;
@@ -185,8 +188,8 @@ function loadDiagnosticEnvironment(session, options = {}) {
           const expectedElf = buildReport?.verification?.outputs?.elf;
           const verifiedElf = verification?.verification?.outputs?.elf;
           const acceptedControls = acceptedControlArtifacts(output, buildReport);
-          if (buildReport.schemaVersion !== 4 || buildReport.status !== 'pass'
-              || verification.schemaVersion !== 4 || verification.status !== 'pass'
+          if (buildReport.schemaVersion !== 5 || buildReport.status !== 'pass'
+              || verification.schemaVersion !== 5 || verification.status !== 'pass'
               || verification.verification?.status !== 'pass'
               || !expectedElf || !verifiedElf
               || expectedElf.sha256 !== acceptedElfSha256
@@ -281,7 +284,7 @@ function normalizeRelocationList(records) {
 
 function validateDiagnosticObjectStructure(elf, target) {
   if (elf.header.type !== 1 || elf.header.machine !== 8) throw new Error('diagnostic input is not a relocatable MIPS ELF');
-  const sections = elf.sections.filter((section) => section.name === target.sectionName);
+  const sections = elf.sections.filter((section) => section.name === textContract.inputSection(target, target.sectionName));
   if (sections.length !== 1) throw new Error('diagnostic object target section count is not one');
   const section = sections[0];
   if (section.type !== 1 || section.flags !== 6 || section.alignment < 4) {
@@ -322,6 +325,7 @@ function objectEvidence(objectFile, target, expectations = {}) {
     throw new Error('diagnostic object artifact identity drift');
   }
   const elf = parseElfFile(objectFile);
+  if (target.nativeTextTail) textContract.nativeObjectAllocationEvidence(elf);
   const { section, owner } = validateDiagnosticObjectStructure(elf, target);
   const sectionBytes = Buffer.from(elfSectionBytes(elf, section));
   const text = Buffer.from(sectionBytes.subarray(0, owner.size));
@@ -335,7 +339,7 @@ function objectEvidence(objectFile, target, expectations = {}) {
   const relocations = relocationRecords(elf, {
     symbol: target.symbol,
     bytes: owner.size,
-    sectionName: target.sectionName,
+    sectionName: textContract.inputSection(target, target.sectionName),
     compilerTextFunctions: [{ symbol: target.symbol, offsetNumber: 0 }],
     auxiliarySections: [],
   });
@@ -344,6 +348,12 @@ function objectEvidence(objectFile, target, expectations = {}) {
     throw new Error('diagnostic object relocations differ from recorded compilation evidence');
   }
   assertSupportedRelocations(relocations);
+  if (target.nativeTextTail) {
+    const contract = textContract.resolveTextContract(target);
+    textContract.tailEvidence(contract, textContract.ownerEvidence(elf, contract), relocations);
+    if (!textContract.same(textContract.functionCensus(elf, [section]), contract.compilerTextFunctions)
+        || elf.symbols.filter((symbol) => symbol.symbolType === 2).length !== 1) throw new Error('native diagnostic function census drift');
+  }
   return { objectFile, objectSha256, elf, section, owner, text, tail, relocations };
 }
 
@@ -356,7 +366,7 @@ function exactAcceptedTargetBytes(environment, target) {
   ));
   if (owners.length !== 1) throw new Error('accepted linked target symbol is missing or ambiguous');
   const owner = owners[0];
-  if (owner.value !== target.vramStart || owner.size !== target.bytes || owner.binding !== 1
+  if (owner.value !== target.vramStart || owner.size !== (target.nativeTextTail ? target.nativeTextTail.functionBytes : target.bytes) || owner.binding !== 1
       || owner.visibility !== 0 || target.vramStart < section.address
       || target.vramStart + target.bytes > section.address + section.size) {
     throw new Error('accepted linked target placement or ownership differs from the target model');
@@ -368,7 +378,9 @@ function exactAcceptedTargetBytes(environment, target) {
 }
 
 function prepareTargetDiagnostic(session, target, expectedRelocationEvidence, options = {}) {
+  if (target) target = textContract.bindWorkbenchTarget(session, target);
   const baseIdentity = {
+    textContract: target?.nativeTextTail ? textContract.resolveTextContract(target) : null,
     schemaVersion: 1,
     comparisonContract: WORKBENCH_COMPARISON_CONTRACT,
     diagnosticLinkContract: DIAGNOSTIC_LINK_CONTRACT,
@@ -438,12 +450,13 @@ function prepareTargetDiagnostic(session, target, expectedRelocationEvidence, op
         || !/^[A-F0-9]{64}$/i.test(replacement.sourceObjectSha256)) {
       throw new Error('accepted control object lacks authenticated SHA-256 provenance');
     }
+    textContract.validateRecords(replacement, textContract.recordsForTarget(activeMatches[0], environment.output, textContract.linkContext(environment.output, fs.readFileSync(session.context.baserom.path), environment.acceptedElf)), 'diagnostic accepted control');
     const sourceObjectFile = resolveContained(environment.output, replacement.sourceObject, 'accepted source object');
     const control = objectEvidence(sourceObjectFile, target, {
       objectSha256: replacement.sourceObjectSha256,
       relocations: expectedRelocationEvidence.records,
     });
-    if (control.owner.size !== target.bytes) {
+    if (control.owner.size !== (target.nativeTextTail ? target.nativeTextTail.functionBytes : target.bytes)) {
       throw new Error('accepted control object extent is incompatible with the target');
     }
     if (canonicalJson(normalizeRelocationList(replacement.relocations))
@@ -584,7 +597,7 @@ function linkOne(session, target, object, environment, artifactDir, label) {
     'SECTIONS',
     '{',
     `  ${target.sectionName} 0x${target.vramStart.toString(16).toUpperCase()} : AT(0x1000)`,
-    `  { *(${target.sectionName}) }`,
+    `  { "${path.basename(linkInput)}"(${textContract.inputSection(target, target.sectionName)}) }`,
     '}',
     ...resolution.definitions,
     '',
@@ -607,12 +620,12 @@ function linkOne(session, target, object, environment, artifactDir, label) {
   const linker = session.runtime.tools['mips-kmc-elf-ld.exe'].path;
   const args = [
     ...session.context.phase8.model.config.binutils.linkerFlags,
-    '-T', script,
-    '-o', output,
-    stripped.objectFile,
+    '-T', path.basename(script),
+    '-o', path.basename(output),
+    path.basename(stripped.objectFile),
   ];
   const started = Date.now();
-  run(linker, args, { cwd: ROOT });
+  run(linker, args, { cwd: artifactDir });
   for (const file of [script, output, linkInput]) assertPlainDiagnosticOutput(file, artifactDir);
   if (sha256File(script) !== linkerScriptSha256
       || sha256File(linkInput) !== stripped.objectSha256) {
@@ -635,7 +648,16 @@ function linkOne(session, target, object, environment, artifactDir, label) {
     throw new Error('diagnostic link retained auxiliary allocated ownership');
   }
   const sectionBytes = Buffer.from(elfSectionBytes(linked, section));
-  const bytes = Buffer.from(sectionBytes.subarray(0, owner.size));
+  if (target.nativeTextTail) {
+    const contract = textContract.resolveTextContract(target);
+    textContract.tailEvidence(contract, textContract.ownerEvidence(linked, contract, true), object.relocations);
+    const loads = linked.programHeaders.filter(load => load.type === 1);
+    if (loads.length !== 1 || loads[0].vaddr !== target.vramStart || loads[0].paddr !== 0x1000
+        || loads[0].fileSize !== target.bytes || loads[0].memorySize !== target.bytes || loads[0].flags !== 5) {
+      throw new Error('native diagnostic linked load census drift');
+    }
+  }
+  const bytes = Buffer.from(target.nativeTextTail ? sectionBytes : sectionBytes.subarray(0, owner.size));
   const tail = Buffer.from(sectionBytes.subarray(owner.size));
   if (tail.length > MAX_ALIGNMENT_TAIL || tail.length % 4 !== 0 || tail.some((byte) => byte !== 0)) {
     throw new Error('diagnostic link emitted nontrivial bytes outside the target owner');
@@ -646,6 +668,8 @@ function linkOne(session, target, object, environment, artifactDir, label) {
     bytes,
     evidence: {
       kind: 'authenticated-isolated-link',
+      textContract: target.nativeTextTail ? textContract.resolveTextContract(target) : null,
+      fullOwner: { bytes: sectionBytes.length, sha256: sha256Buffer(sectionBytes), functionBytes: owner.size, tailBytes: tail.length, tailSha256: sha256Buffer(tail) },
       acceptanceEligible: false,
       linkerSha256: sha256File(linker),
       objcopySha256: sha256File(objcopy),
@@ -668,6 +692,13 @@ function linkOne(session, target, object, environment, artifactDir, label) {
   };
 }
 
+function nativeComparisonSummary(target, actual, linked) {
+  if (!target.nativeTextTail) return null;
+  const expected = target.expectedBytes.subarray(0, target.nativeTextTail.functionBytes);
+  const bytes = actual.subarray(0, target.nativeTextTail.functionBytes);
+  return { mode: linked ? 'linked-function' : 'raw-function', expectedBytes: expected.length, actualBytes: bytes.length,
+    exactBytes: expected.equals(bytes), expectedSha256: sha256Buffer(expected), actualSha256: sha256Buffer(bytes), acceptanceEligible: false };
+}
 function symbolicFallback(target, objectText, comparisonOptions, rawComparison, prepared, failure) {
   const selected = compareMips(target.expectedBytes, objectText, {
     ...comparisonOptions,
@@ -702,12 +733,15 @@ function symbolicFallback(target, objectText, comparisonOptions, rawComparison, 
     || prepared.details?.environmentIdentity || null;
   return {
     ...selected,
-    schemaVersion: 3,
+    schemaVersion: 4,
     comparisonContract: WORKBENCH_COMPARISON_CONTRACT,
     comparisonAlgorithmId: prepared.comparisonAlgorithmId,
     diagnosticCurrentFingerprint: prepared.currentFingerprint,
     diagnosticEnvironmentConsulted: diagnosticEnvironmentId !== null,
     diagnosticEnvironmentId,
+    textContract: target.nativeTextTail ? textContract.resolveTextContract(target) : null,
+    functionComparison: nativeComparisonSummary(target, objectText, false),
+    fullOwnerComparison: target.nativeTextTail ? { available: false, reason: 'symbolic comparison contains function bytes only' } : null,
     evidenceMode: 'symbolic-object',
     acceptanceEligible: false,
     primaryClass,
@@ -809,12 +843,15 @@ function resolvedDiagnosticComparison({
     || prepared.details?.environmentIdentity || null;
   return {
     ...selected,
-    schemaVersion: 3,
+    schemaVersion: 4,
     comparisonContract: WORKBENCH_COMPARISON_CONTRACT,
     comparisonAlgorithmId: prepared.comparisonAlgorithmId,
     diagnosticCurrentFingerprint: prepared.currentFingerprint,
     diagnosticEnvironmentConsulted: diagnosticEnvironmentId !== null,
     diagnosticEnvironmentId,
+    textContract: target.nativeTextTail ? textContract.resolveTextContract(target) : null,
+    functionComparison: nativeComparisonSummary(target, linkedBytes, true),
+    fullOwnerComparison: target.nativeTextTail ? { exactBytes: selected.exactBytes, expectedBytes: target.bytes, actualBytes: linkedBytes.length, tail: candidateEvidence.fullOwner } : null,
     evidenceMode: 'authenticated-isolated-link',
     acceptanceEligible: false,
     primaryClass: identityMismatchClass || selected.primaryClass,
@@ -934,7 +971,7 @@ function compareCandidateDiagnostic({
 function comparisonIsCurrent(record, prepared) {
   const details = record?.details || record;
   return Boolean(details
-    && details.schemaVersion === 3
+    && details.schemaVersion === 4
     && details.comparisonContract === WORKBENCH_COMPARISON_CONTRACT
     && details.comparisonAlgorithmId === prepared.comparisonAlgorithmId
     && details.diagnosticCurrentFingerprint === prepared.currentFingerprint

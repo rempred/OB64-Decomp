@@ -1,6 +1,7 @@
 'use strict';
 
 const { targetTextOwners } = require('./phase8_matching_c');
+const { projectInterior } = require('./auxiliary_interior');
 
 function fail(message) {
   throw new Error(`status ownership accounting failed: ${message}`);
@@ -75,6 +76,7 @@ function summarizeAcceptedOwnership(model, targets) {
   }
 
   const claimsByRow = new Map();
+  const retainedAuxiliaryByRow = new Map();
   const symbols = new Set();
   let textOwnerCount = 0;
   let auxiliaryFragmentCount = 0;
@@ -86,6 +88,57 @@ function summarizeAcceptedOwnership(model, targets) {
     }
     if (!claimsByRow.has(row.index)) claimsByRow.set(row.index, []);
     claimsByRow.get(row.index).push(claim);
+  }
+
+  function addRetainedAuxiliary(row, slice, auxiliary, kind, targetSymbol) {
+    const capitalized = kind[0].toUpperCase() + kind.slice(1);
+    const bytes = auxiliary[`owner${capitalized}Bytes`] || 0;
+    if (bytes === 0) return;
+    const record = {
+      kind,
+      symbol: targetSymbol,
+      sectionName: auxiliary.outputSection,
+      inputSection: auxiliary[`owner${capitalized}Section`],
+      alignment: auxiliary[`owner${capitalized}Alignment`],
+      sha256: auxiliary[`owner${capitalized}Sha256`],
+      romStart: auxiliary[`owner${capitalized}RomStartNumber`],
+      romEndExclusive: auxiliary[`owner${capitalized}RomEndNumber`],
+      vramStart: auxiliary[`owner${capitalized}VramStartNumber`],
+      vramEndExclusive: auxiliary[`owner${capitalized}VramEndNumber`],
+      bytes,
+      originalAssembly: auxiliary.ownerOriginalAssembly,
+      originalAssemblySha256: auxiliary.ownerOriginalAssemblySha256,
+    };
+    const expectedBoundaryStart = kind === 'prefix' ? slice.romStart : auxiliary.romEndNumber;
+    const expectedBoundaryEnd = kind === 'prefix' ? auxiliary.romStartNumber : slice.romEndExclusive;
+    const expectedVramStart = kind === 'prefix' ? slice.vramStart : auxiliary.vramEndNumber;
+    const expectedVramEnd = kind === 'prefix' ? auxiliary.vramStartNumber : slice.vramEndExclusive;
+    if (record.inputSection !== `${auxiliary.outputSection}.${kind}`
+        || !Number.isInteger(record.alignment) || record.alignment < 1
+        || (record.alignment & (record.alignment - 1)) !== 0
+        || typeof record.sha256 !== 'string' || record.sha256.length === 0
+        || !Number.isInteger(record.romStart) || !Number.isInteger(record.romEndExclusive)
+        || record.romStart !== expectedBoundaryStart || record.romEndExclusive !== expectedBoundaryEnd
+        || record.romEndExclusive - record.romStart !== bytes
+        || !Number.isInteger(record.vramStart) || !Number.isInteger(record.vramEndExclusive)
+        || record.vramStart !== expectedVramStart || record.vramEndExclusive !== expectedVramEnd
+        || record.vramEndExclusive - record.vramStart !== bytes) {
+      fail(`retained auxiliary ${kind} extent drift: ${targetSymbol} ${auxiliary.outputSection}`);
+    }
+    addRetainedRecord(row, record);
+  }
+
+  function addRetainedRecord(row, record) {
+    if (!retainedAuxiliaryByRow.has(row.index)) retainedAuxiliaryByRow.set(row.index, []);
+    const retained = retainedAuxiliaryByRow.get(row.index);
+    if (retained.some((candidate) => (
+      candidate.sectionName === record.sectionName
+      && candidate.romStart < record.romEndExclusive
+      && candidate.romEndExclusive > record.romStart
+    ))) {
+      fail(`retained auxiliary overlap: row ${row.index}`);
+    }
+    retained.push(record);
   }
 
   for (const target of targets) {
@@ -145,6 +198,42 @@ function summarizeAcceptedOwnership(model, targets) {
           || auxiliary.romEndNumber - auxiliary.romStartNumber !== auxiliary.bytes) {
         fail(`target auxiliary owner extent drift: ${target.symbol} ${auxiliary.outputSection}`);
       }
+      if (auxiliary.sourceObjectPrefix) {
+        const selection = auxiliary.sourceObjectPrefix;
+        if (selection.prefixOffsetNumber !== 0
+            || selection.prefixBytes !== auxiliary.bytes
+            || selection.trailingPaddingOffsetNumber !== auxiliary.bytes
+            || selection.bytes !== selection.prefixBytes + selection.trailingPaddingBytes
+            || selection.trailingPaddingBytes !== auxiliary.ownerTailBytes
+            || selection.expectedPrefixSha256 !== auxiliary.expectedObjectSha256
+            || selection.expectedTrailingPaddingSha256 !== auxiliary.ownerTailSha256) {
+          fail(`target auxiliary source-object prefix accounting drift: ${target.symbol} ${auxiliary.outputSection}`);
+        }
+      }
+      addRetainedAuxiliary(row, slice, auxiliary, 'prefix', target.symbol);
+      addRetainedAuxiliary(row, slice, auxiliary, 'tail', target.symbol);
+      const interior = projectInterior(auxiliary);
+      if (interior) {
+        if (interior.inputSection !== `${auxiliary.outputSection}.interior_${interior.romStart.toString(16).toUpperCase().padStart(8, '0')}`
+            || interior.sectionType !== 'SHT_PROGBITS'
+            || JSON.stringify(interior.sectionFlags) !== JSON.stringify(['SHF_ALLOC'])
+            || interior.alignment !== 1 || !/^[0-9A-F]{64}$/.test(interior.sha256)
+            || !Number.isInteger(interior.bytes) || interior.bytes <= 0
+            || ![interior.romStart, interior.romEndExclusive, interior.vramStart, interior.vramEndExclusive].every(Number.isInteger)
+            || interior.romStart <= slice.romStart || interior.romEndExclusive !== auxiliary.romStartNumber
+            || interior.romEndExclusive - interior.romStart !== interior.bytes
+            || interior.vramEndExclusive !== auxiliary.vramStartNumber
+            || interior.vramStart - slice.vramStart !== interior.romStart - slice.romStart
+            || interior.vramEndExclusive - interior.vramStart !== interior.bytes
+            || interior.ownerOriginalAssembly !== row.part.file
+            || interior.ownerOriginalAssemblySha256 !== row.part.sha256
+            || JSON.stringify(interior.expectedRelocations) !== '[]') {
+          fail(`retained auxiliary interior identity or extent drift: ${target.symbol}`);
+        }
+        addRetainedRecord(row, { ...interior, kind: 'interior', symbol: target.symbol,
+          sectionName: auxiliary.outputSection, originalAssembly: interior.ownerOriginalAssembly,
+          originalAssemblySha256: interior.ownerOriginalAssemblySha256 });
+      }
       addClaim(row, slice, {
         kind: 'auxiliary',
         symbol: target.symbol,
@@ -182,6 +271,25 @@ function summarizeAcceptedOwnership(model, targets) {
       slice,
       claims.filter((claim) => claim.sectionName === slice.sectionName),
     ));
+    const retainedAuxiliary = (retainedAuxiliaryByRow.get(row.index) || [])
+      .sort((left, right) => left.romStart - right.romStart);
+    const auxiliaryClaimSections = new Set(claims
+      .filter((claim) => claim.kind === 'auxiliary')
+      .map((claim) => claim.sectionName));
+    const auxiliaryFragments = fragments.filter((fragment) => auxiliaryClaimSections.has(fragment.sectionName));
+    if (JSON.stringify(auxiliaryFragments.map((fragment) => ({
+      sectionName: fragment.sectionName,
+      romStart: fragment.romStart,
+      romEndExclusive: fragment.romEndExclusive,
+      bytes: fragment.bytes,
+    }))) !== JSON.stringify(retainedAuxiliary.map((fragment) => ({
+      sectionName: fragment.sectionName,
+      romStart: fragment.romStart,
+      romEndExclusive: fragment.romEndExclusive,
+      bytes: fragment.bytes,
+    })))) {
+      fail(`retained auxiliary coverage drift: row ${row.index}`);
+    }
     const bytes = fragments.reduce((sum, fragment) => sum + fragment.bytes, 0);
     const claimedBytes = claims.reduce((sum, claim) => sum + claim.bytes, 0);
     if (bytes + claimedBytes !== row.bytes) fail(`replacement byte accounting drift: row ${row.index}`);
@@ -203,6 +311,13 @@ function summarizeAcceptedOwnership(model, targets) {
       textOwners: textOwnerCount,
       auxiliaryFragments: auxiliaryFragmentCount,
       bytes: replacementBytes,
+    },
+    retainedAuxiliary: {
+      fragments: [...retainedAuxiliaryByRow.values()].reduce((sum, records) => sum + records.length, 0),
+      bytes: [...retainedAuxiliaryByRow.values()].flat()
+        .reduce((sum, record) => sum + record.bytes, 0),
+      records: [...retainedAuxiliaryByRow.values()].flat()
+        .sort((left, right) => left.romStart - right.romStart),
     },
   };
 }

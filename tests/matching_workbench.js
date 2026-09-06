@@ -885,7 +885,7 @@ function sweepParallelismTests() {
   assert(oneJob.sweepId === eightJobs.sweepId, 'worker count fragmented sweep identity');
   assert(oneJob.normalizedSelector.generationContract.schemaVersion === 2
       && oneJob.normalizedSelector.summaryContract === 5
-      && oneJob.normalizedSelector.generationContract.comparison.contract === 1
+      && oneJob.normalizedSelector.generationContract.comparison.contract === 2
       && oneJob.normalizedSelector.generationContract.comparison.currentFingerprint === 'CURRENT-A'
       && oneJob.normalizedSelector.generationContract.comparison.environmentId === 'ENVIRONMENT-A'
       && /^[A-F0-9]{64}$/.test(oneJob.normalizedSelector.generationContract.comparison.algorithmId),
@@ -1124,8 +1124,8 @@ function storeTests() {
       comparisonId: 'COMPARISON-CURRENT', runId: 'RUN-PASS', primaryClass: 'immediate-or-signedness',
       exactBytes: false, relocationMaskedExact: false, score: 42.5,
       details: {
-        schemaVersion: 3,
-        comparisonContract: 1,
+        schemaVersion: 4,
+        comparisonContract: 2,
         comparisonAlgorithmId: currentAlgorithm,
         diagnosticCurrentFingerprint: currentFingerprint,
         diagnosticEnvironmentConsulted: true,
@@ -1155,7 +1155,7 @@ function storeTests() {
       comparisonId: 'COMPARISON-RACE-LOSER', runId: 'RUN-RACE-LOSER',
       primaryClass: 'exact-bytes', exactBytes: true, relocationMaskedExact: true, score: 100,
       details: {
-        schemaVersion: 3, comparisonContract: 1, comparisonAlgorithmId: 'ALGORITHM-B',
+        schemaVersion: 4, comparisonContract: 2, comparisonAlgorithmId: 'ALGORITHM-B',
         diagnosticCurrentFingerprint: 'CURRENT-B', diagnosticEnvironmentConsulted: true,
         diagnosticEnvironmentId: 'ENVIRONMENT-B', acceptanceEligible: false,
         diagnosticExactBytes: true, rawObjectComparison: { exactBytes: true },

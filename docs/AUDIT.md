@@ -105,8 +105,14 @@ At minimum verify:
   exactly one global owner symbol, and keeps every reviewed secondary entry local;
 - a partially replaced auxiliary data row retains exact remainder bytes, placement, and assembly
   ownership through a unique read-only input section rather than `.data` or `.bss`;
-- multiple C switch-table fragments sharing one accepted auxiliary row are contiguous and ordered,
-  remove the original row once, and leave no gap, overlap, duplicate tail, or second load segment;
+- C switch-table fragments and explicit retained original-ASM intervals completely cover their accepted auxiliary row in address order;
+- auxiliary coverage removes the original row contribution once, retains its authenticated fallback, and leaves no gap, overlap, or duplicate tail;
+- only the first auxiliary fragment may retain an exterior prefix, and only the final fragment may retain the exterior tail;
+- retained interiors contain literal data from a whole original row with no nonempty REL/RELA sections targeting it, even outside retained intervals;
+- generated retained interval objects are read-only, alignment-one `PROGBITS`, with no actual relocations or named non-section symbols;
+- map order, full object paths, addresses, sizes, sole ownership, and ELF row bytes agree without changing the load-segment model;
+- producer, manifest, layout, source-object proof, CURRENT/cache, recorded-build, and status evidence agree on the complete retained-interior contract;
+- retained ASM remains distinct from compiler padding and matching-C accounting, as detailed in [AUXILIARY_INTERIOR_ASSEMBLY.md](AUXILIARY_INTERIOR_ASSEMBLY.md);
 - active configuration/build code contains no retired compiler-assembly rewrite stage or modern
   Binutils dependency;
 - the pinned preprocessing executable closure, accepted include roots, exact compiler-input bytes,
@@ -148,8 +154,12 @@ The audit must also protect the `func_0002CD70` OR-encoding regression. The targ
 `HYBRID_C`, retain its accepted target hash, and contain `0x00801025` at offsets `+0x004` and
 `+0x028`.
 
-The audit must also prove p3066 remains inactive unless a separate accepted matching task changes
-its ownership.
+The audit pins the accepted Squad migration at canonical `24d0818`: p3063, p3064, and p3066
+are active `PURE_C` owners with their accepted target hashes and sole C contributions.
+Missing or duplicate owners, a changed source class, changed bytes, or retained target assembly reject.
+The report records all three source classes and target hashes, and reports `p3066Active: true`.
+Run `node tests/audit_squad_migration.js` for the focused positive and invalid-state controls.
+The complete verifier still establishes placement, relocations, fresh source proof, and exact ROM bytes.
 
 ---
 
@@ -157,6 +167,13 @@ its ownership.
 
 Structural changes require independent review because a wrong boundary/overlay/linker model can
 mislead many later functions even when local byte comparisons look plausible.
+
+Ordinary matching waves require no independent review after their canonical verifier gates pass.
+Use focused linked-diff and source-policy checks per target, then one final verifier after the complete wave is ready.
+Recording actual per-target relocations under existing linker rules remains ordinary matching work without a separate reviewer.
+Verify changed combined integration inputs; do not repeat the verifier solely for review or an unchanged commit or handoff.
+Tooling acceptance does not activate a production owner or accept an unfinished matching wave.
+See [WORKFLOW.md](WORKFLOW.md); structural, tooling/verification, and semantic changes retain their applicable review requirements.
 
 Independent review should focus on the structural delta and its smallest useful falsifiers.
 
@@ -198,3 +215,7 @@ part of every function match.
 Do not remove or weaken retained structural checks merely to reduce the
 displayed command count. A future replacement is itself structural work and
 must prove equivalent coverage before the old gate is retired.
+
+## Native text evidence
+
+Audit schema 4 requires complete textContract, objectEvidence, and linkEvidence on every active target. Native fixtures exercise untouched compiler input, exact section and function censuses, native alignment, zero tail, sole object contribution, load mapping, and full-owner exactness. Malformed and stale evidence must fail independently of identical reports. The retained nonexact Combat candidate must remain a negative control. Tooling acceptance does not accept the unfinished Combat source wave.

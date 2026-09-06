@@ -349,6 +349,9 @@ function compactDiagnosticEvidence(comparison) {
   const diagnostic = comparison?.diagnostic;
   return {
     comparisonContract: comparison?.comparisonContract ?? null,
+    textContract: comparison?.textContract || diagnostic?.candidate?.textContract || null,
+    functionComparison: comparison?.functionComparison || null,
+    fullOwnerComparison: comparison?.fullOwnerComparison || null,
     evidenceMode: comparison?.evidenceMode || null,
     acceptanceEligible: comparison?.acceptanceEligible === true,
     rawObjectExactBytes: comparison?.rawExactBytes ?? raw?.exactBytes ?? null,
@@ -373,6 +376,7 @@ function compactDiagnosticEvidence(comparison) {
       } : null,
       candidate: diagnostic.candidate ? {
         linkedBytesSha256: diagnostic.candidate.linkedBytesSha256,
+        fullOwner: diagnostic.candidate.fullOwner || null,
         durationMs: diagnostic.candidate.durationMs,
       } : null,
     } : null,

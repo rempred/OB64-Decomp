@@ -2,6 +2,11 @@
 
 const fs = require('fs');
 const path = require('path');
+const { isDeepStrictEqual } = require('util');
+const {
+  projectInterior, interiorRecord, interiorRecords, buildInteriorObject, verifyInteriorArtifacts,
+} = require('./auxiliary_interior');
+const textContract = require('./text_contract');
 const {
   ROOT,
   SHIM_TEXT,
@@ -12,6 +17,7 @@ const {
   fail,
   hex,
   normalizePath,
+  parseElf32BigEndian,
   parseElfFile,
   readJson,
   renderLinkerScript,
@@ -29,6 +35,8 @@ const {
   LINKAGE_CONFIG_PATH,
   MULTI_OWNER_CONFIG_PATH,
   loadActiveTargetModel,
+  compilerOccurrencePaddingBytes,
+  validateAuxiliaryOwnerGroups,
 } = require('./active_targets');
 const { splitRelocatableTextSection } = require('./elf_text_split');
 const {
@@ -47,6 +55,10 @@ function parseNumber(value, label) {
 
 function sameJson(left, right) {
   return JSON.stringify(left) === JSON.stringify(right);
+}
+
+function sameCompilerOccurrenceEvidence(left, right) {
+  return isDeepStrictEqual(left, right);
 }
 
 function safeRelative(relative, label) {
@@ -100,28 +112,80 @@ function adjustSectionAssembly(compilerAssembly, sectionName, options = {}) {
   }
   let adjusted = text;
   if (auxiliarySections.length > 0) {
+    const auxiliary = auxiliarySections[0];
+    const compilerOccurrences = auxiliary && auxiliary.compilerOccurrences;
+    const hasSourceObjectPrefix = auxiliary && Object.prototype.hasOwnProperty.call(
+      auxiliary,
+      'sourceObjectPrefix',
+    );
+    if (hasSourceObjectPrefix && compilerOccurrences === undefined) {
+      fail('KMC target source-object prefix compiler grammar is missing: ' + sectionName);
+    }
+    const occurrenceCount = compilerOccurrences === undefined ? 1 : compilerOccurrences.length;
+    const minimumCompilerOccurrences = hasSourceObjectPrefix ? 1 : 2;
     if (auxiliarySections.length !== 1
-        || auxiliarySections[0].compilerSection !== '.rodata'
-        || typeof auxiliarySections[0].outputSection !== 'string'
-        || !/^\.ob64\.r[0-9]+(?:\.s[0-9]+)?$/.test(auxiliarySections[0].outputSection)
+        || auxiliary.compilerSection !== '.rodata'
+        || typeof auxiliary.outputSection !== 'string'
+        || !/^\.ob64\.r[0-9]+(?:\.s[0-9]+)?$/.test(auxiliary.outputSection)
         || auxiliarySections[0].outputSection === sectionName
         || options.legalizeCop1BinaryInstructions === true
-        || textMatches.length !== 2
+        || (compilerOccurrences !== undefined && (
+          !Array.isArray(compilerOccurrences)
+            || compilerOccurrences.length < minimumCompilerOccurrences
+        ))
+        || textMatches.length !== occurrenceCount + 1
         || broadTextMatches.length !== textMatches.length
-        || explicitSectionLines.length !== 1
+        || explicitSectionLines.length !== occurrenceCount
         || shorthandDataSections.length !== 0) {
       fail('KMC target auxiliary-section grammar drift: ' + sectionName);
     }
-    const explicit = explicitSectionLines[0];
-    const exactSection = /^[ \t]+(\.[A-Za-z0-9_.]+)[ \t]*$/.exec(explicit[1]);
-    if (!exactSection
-        || exactSection[1] !== auxiliarySections[0].compilerSection
-        || !(textMatches[0].index < explicit.index && explicit.index < textMatches[1].index)) {
-      fail('KMC target auxiliary-section grammar drift: ' + sectionName);
+    let occurrenceCursor = 0;
+    for (const [occurrenceIndex, explicit] of explicitSectionLines.entries()) {
+      const exactSection = /^[ \t]+(\.[A-Za-z0-9_.]+)[ \t]*$/.exec(explicit[1]);
+      if (!exactSection
+          || exactSection[1] !== auxiliary.compilerSection
+          || !(textMatches[occurrenceIndex].index < explicit.index
+            && explicit.index < textMatches[occurrenceIndex + 1].index)) {
+        fail('KMC target auxiliary-section grammar drift: ' + sectionName);
+      }
+      if (compilerOccurrences === undefined) continue;
+      const occurrence = compilerOccurrences[occurrenceIndex];
+      if (!occurrence || typeof occurrence.label !== 'string' || !/^\.L[0-9]+$/.test(occurrence.label)
+          || !Array.isArray(occurrence.alignmentDirectives)
+          || !Number.isInteger(occurrence.entries) || occurrence.entries <= 0
+          || occurrence.bytes !== occurrence.entries * 4) {
+        fail('KMC target auxiliary occurrence contract drift: ' + sectionName);
+      }
+      const block = text.slice(explicit.index + explicit[0].length, textMatches[occurrenceIndex + 1].index);
+      const meaningfulLines = block.split(/\r?\n/).map((line) => line.trim())
+        .filter((line) => line.length > 0 && !line.startsWith('#'));
+      const labelLine = occurrence.label + ':';
+      const labelIndex = meaningfulLines.indexOf(labelLine);
+      const declarationMatches = text.match(new RegExp(
+        '^[ \\t]*' + occurrence.label.replace('.', '\\.') + ':[ \\t]*(?:\\r)?$',
+        'gm',
+      )) || [];
+      const alignmentDirectives = meaningfulLines.slice(0, labelIndex).map((line) => {
+        const match = /^\.align[ \t]+([0-9]+)$/.exec(line);
+        return match ? Number.parseInt(match[1], 10) : null;
+      });
+      const words = meaningfulLines.slice(labelIndex + 1);
+      if (labelIndex < 0
+          || declarationMatches.length !== 1
+          || !sameJson(alignmentDirectives, occurrence.alignmentDirectives)
+          || words.length !== occurrence.entries
+          || words.some((line) => !/^\.word[ \t]+\.L[0-9]+$/.test(line))) {
+        fail('KMC target auxiliary occurrence grammar drift: ' + sectionName + ' ' + occurrence.label);
+      }
+      const paddingBytes = compilerOccurrencePaddingBytes(occurrence, occurrenceCursor, sectionName);
+      occurrenceCursor += paddingBytes + occurrence.bytes;
+    }
+    if (compilerOccurrences !== undefined && occurrenceCursor !== auxiliary.bytes) {
+      fail('KMC target auxiliary occurrence extent drift: ' + sectionName);
     }
     adjusted = adjusted.replace(
-      /^[ \t]*\.section\b[^\r\n]*(\r?)$/m,
-      (_, carriageReturn) => `.section ${auxiliarySections[0].outputSection},"a",@progbits${carriageReturn}`,
+      /^[ \t]*\.section\b[^\r\n]*(\r?)$/gm,
+      (_, carriageReturn) => `.section ${auxiliary.outputSection},"a",@progbits${carriageReturn}`,
     );
     adjusted = adjusted.replace(
       /^[ \t]*\.text[ \t]*(\r?)$/gm,
@@ -399,6 +463,23 @@ function compareLinkedTargetBytes(target, linkedElf, canonicalBaserom) {
 }
 
 function verifyAuxiliaryPaddingBytes(bytes, auxiliary, label) {
+  let internalPaddingBytes = 0;
+  if (auxiliary && Array.isArray(auxiliary.compilerOccurrences)) {
+    let cursor = 0;
+    for (const occurrence of auxiliary.compilerOccurrences) {
+      const size = compilerOccurrencePaddingBytes(occurrence, cursor, label);
+      if (size > 0 && (!Buffer.isBuffer(bytes)
+          || !bytes.subarray(cursor, cursor + size).equals(Buffer.alloc(size))
+          || sha256Buffer(bytes.subarray(cursor, cursor + size)) !== occurrence.paddingBefore.expectedSha256)) {
+        fail('auxiliary internal alignment padding bytes drift: ' + label);
+      }
+      internalPaddingBytes += size;
+      cursor += size + occurrence.bytes;
+    }
+    if (cursor !== auxiliary.bytes || auxiliary.trailingPaddingBytes !== 0) {
+      fail('auxiliary compiler-occurrence padding coverage drift: ' + label);
+    }
+  }
   if (!Buffer.isBuffer(bytes)
       || !auxiliary
       || !Number.isInteger(auxiliary.bytes)
@@ -406,12 +487,12 @@ function verifyAuxiliaryPaddingBytes(bytes, auxiliary, label) {
       || !Number.isInteger(auxiliary.trailingPaddingBytes)
       || auxiliary.entryBytes < 0
       || auxiliary.trailingPaddingBytes < 0
-      || auxiliary.entryBytes + auxiliary.trailingPaddingBytes !== auxiliary.bytes
+      || auxiliary.entryBytes + internalPaddingBytes + auxiliary.trailingPaddingBytes !== auxiliary.bytes
       || bytes.length !== auxiliary.bytes
       || typeof auxiliary.expectedTrailingPaddingSha256 !== 'string') {
     fail('auxiliary trailing-padding metadata is malformed: ' + label);
   }
-  const padding = Buffer.from(bytes.subarray(auxiliary.entryBytes));
+  const padding = Buffer.from(bytes.subarray(auxiliary.bytes - auxiliary.trailingPaddingBytes));
   const expectedPadding = Buffer.alloc(auxiliary.trailingPaddingBytes);
   const paddingSha256 = sha256Buffer(padding);
   if (padding.length !== auxiliary.trailingPaddingBytes
@@ -424,6 +505,314 @@ function verifyAuxiliaryPaddingBytes(bytes, auxiliary, label) {
     trailingPaddingBytes: padding.length,
     trailingPaddingSha256: paddingSha256,
   };
+}
+
+function projectAuxiliarySourceObjectPrefix(auxiliary) {
+  const selection = auxiliary && auxiliary.sourceObjectPrefix;
+  if (!selection) return null;
+  return {
+    sectionType: selection.sectionType,
+    sectionFlags: selection.sectionFlags,
+    alignment: selection.alignment,
+    bytes: selection.bytes,
+    expectedSha256: selection.expectedSha256,
+    prefixOffset: selection.prefixOffset,
+    prefixBytes: selection.prefixBytes,
+    expectedPrefixSha256: selection.expectedPrefixSha256,
+    trailingPaddingOffset: selection.trailingPaddingOffset,
+    trailingPaddingBytes: selection.trailingPaddingBytes,
+    expectedTrailingPaddingSha256: selection.expectedTrailingPaddingSha256,
+  };
+}
+
+function expectedAuxiliarySourceObjectPrefixEvidence(auxiliary) {
+  const selection = projectAuxiliarySourceObjectPrefix(auxiliary);
+  if (!selection) return undefined;
+  return {
+    sectionType: selection.sectionType,
+    sectionFlags: selection.sectionFlags,
+    alignment: selection.alignment,
+    bytes: selection.bytes,
+    sha256: selection.expectedSha256,
+    acceptedSha256: selection.expectedSha256,
+    prefixOffset: selection.prefixOffset,
+    prefixBytes: selection.prefixBytes,
+    prefixSha256: selection.expectedPrefixSha256,
+    acceptedPrefixSha256: selection.expectedPrefixSha256,
+    trailingPaddingOffset: selection.trailingPaddingOffset,
+    trailingPaddingBytes: selection.trailingPaddingBytes,
+    trailingPaddingSha256: selection.expectedTrailingPaddingSha256,
+    acceptedTrailingPaddingSha256: selection.expectedTrailingPaddingSha256,
+    relocationSection: '.rel' + auxiliary.outputSection,
+    relocationCount: auxiliary.expectedRelocations.length,
+    relocationsWithinPrefix: true,
+  };
+}
+
+function auxiliaryRelocationSection(elf, section, auxiliary, label) {
+  const expectedName = '.rel' + auxiliary.outputSection;
+  const named = elf.sections.filter((candidate) => candidate.name === expectedName);
+  const owners = elf.sections.filter((candidate) => candidate.type === 9 && candidate.info === section.index);
+  if (named.length !== 1 || owners.length !== 1 || named[0] !== owners[0]
+      || named[0].type !== 9 || named[0].entrySize !== 8
+      || named[0].size !== auxiliary.expectedRelocations.length * 8
+      || named[0].link <= 0 || !elf.sections[named[0].link]
+      || elf.sections[named[0].link].type !== 2) {
+    fail('auxiliary relocation-section placement drift: ' + label);
+  }
+  const raw = rawRelocationRecords(elf).filter((record) => record.section === expectedName);
+  if (raw.length !== auxiliary.expectedRelocations.length
+      || raw.some((record, index) => record.offset !== auxiliary.expectedRelocations[index].offset)) {
+    fail('auxiliary relocation-section order drift: ' + label);
+  }
+  return named[0];
+}
+
+function verifyAuxiliarySourceObjectSection(elf, target, auxiliary, label) {
+  const selection = auxiliary.sourceObjectPrefix || null;
+  const expectedBytes = selection ? selection.bytes : auxiliary.bytes;
+  const sections = elf.sections.filter((section) => section.name === auxiliary.outputSection);
+  if (sections.length !== 1
+      || sections[0].type !== 1
+      || sections[0].flags !== 2
+      || sections[0].address !== 0
+      || sections[0].alignment !== auxiliary.alignment
+      || sections[0].size !== expectedBytes) {
+    fail('KMC auxiliary source-object section shape drift: ' + label);
+  }
+  const section = sections[0];
+  const sourceBytes = Buffer.from(elfSectionBytes(elf, section));
+  const relocationSection = auxiliaryRelocationSection(elf, section, auxiliary, label);
+  const relocations = auxiliaryRelocationRecords(elf, target, auxiliary);
+  if (!sameJson(relocations, auxiliary.expectedRelocations)) {
+    fail('KMC auxiliary source-object relocation contract drift: ' + label);
+  }
+  if (!selection) {
+    const padding = verifyAuxiliaryPaddingBytes(sourceBytes, auxiliary, label);
+    if (sha256Buffer(sourceBytes) !== auxiliary.expectedObjectSha256) {
+      fail('KMC auxiliary source-object bytes drift: ' + label);
+    }
+    return {
+      section,
+      sourceBytes,
+      selectedBytes: sourceBytes,
+      relocations,
+      relocationSection,
+      padding,
+      sourceObjectPrefix: null,
+    };
+  }
+  if (selection.sectionType !== auxiliary.sectionType
+      || !sameJson(selection.sectionFlags, auxiliary.sectionFlags)
+      || selection.alignment !== auxiliary.alignment
+      || selection.prefixOffsetNumber !== 0
+      || selection.prefixBytes !== auxiliary.bytes
+      || selection.trailingPaddingOffsetNumber !== selection.prefixBytes
+      || selection.bytes !== selection.prefixBytes + selection.trailingPaddingBytes
+      || selection.trailingPaddingBytes <= 0
+      || selection.bytes % selection.alignment !== 0) {
+    fail('auxiliary source-object prefix contract drift: ' + label);
+  }
+  const selectedBytes = Buffer.from(sourceBytes.subarray(
+    selection.prefixOffsetNumber,
+    selection.prefixOffsetNumber + selection.prefixBytes,
+  ));
+  const trailingPadding = Buffer.from(sourceBytes.subarray(selection.trailingPaddingOffsetNumber));
+  const padding = verifyAuxiliaryPaddingBytes(selectedBytes, auxiliary, label + ' linked prefix');
+  if (sourceBytes.length !== selection.bytes
+      || sha256Buffer(sourceBytes) !== selection.expectedSha256
+      || selectedBytes.length !== selection.prefixBytes
+      || sha256Buffer(selectedBytes) !== selection.expectedPrefixSha256
+      || selection.expectedPrefixSha256 !== auxiliary.expectedObjectSha256
+      || trailingPadding.length !== selection.trailingPaddingBytes
+      || !trailingPadding.equals(Buffer.alloc(selection.trailingPaddingBytes))
+      || sha256Buffer(trailingPadding) !== selection.expectedTrailingPaddingSha256
+      || auxiliary.ownerTailBytes !== selection.trailingPaddingBytes
+      || auxiliary.ownerTailSha256 !== selection.expectedTrailingPaddingSha256) {
+    fail('auxiliary source-object prefix bytes drift: ' + label);
+  }
+  return {
+    section,
+    sourceBytes,
+    selectedBytes,
+    relocations,
+    relocationSection,
+    padding,
+    sourceObjectPrefix: {
+      sectionType: selection.sectionType,
+      sectionFlags: selection.sectionFlags,
+      alignment: selection.alignment,
+      bytes: sourceBytes.length,
+      sha256: sha256Buffer(sourceBytes),
+      acceptedSha256: selection.expectedSha256,
+      prefixOffset: selection.prefixOffset,
+      prefixBytes: selectedBytes.length,
+      prefixSha256: sha256Buffer(selectedBytes),
+      acceptedPrefixSha256: selection.expectedPrefixSha256,
+      trailingPaddingOffset: selection.trailingPaddingOffset,
+      trailingPaddingBytes: trailingPadding.length,
+      trailingPaddingSha256: sha256Buffer(trailingPadding),
+      acceptedTrailingPaddingSha256: selection.expectedTrailingPaddingSha256,
+      relocationSection: relocationSection.name,
+      relocationCount: relocations.length,
+      relocationsWithinPrefix: true,
+    },
+  };
+}
+
+function verifyAuxiliaryLinkedObjectSection(elf, target, auxiliary, label) {
+  const sections = elf.sections.filter((section) => section.name === auxiliary.outputSection);
+  if (sections.length !== 1
+      || sections[0].type !== 1
+      || sections[0].flags !== 2
+      || sections[0].address !== 0
+      || sections[0].alignment !== auxiliary.alignment
+      || sections[0].size !== auxiliary.bytes) {
+    fail('linked auxiliary object section shape drift: ' + label);
+  }
+  const section = sections[0];
+  const bytes = Buffer.from(elfSectionBytes(elf, section));
+  const relocationSection = auxiliaryRelocationSection(elf, section, auxiliary, label);
+  const relocations = auxiliaryRelocationRecords(elf, target, auxiliary);
+  const padding = verifyAuxiliaryPaddingBytes(bytes, auxiliary, label);
+  if (sha256Buffer(bytes) !== auxiliary.expectedObjectSha256
+      || !sameJson(relocations, auxiliary.expectedRelocations)) {
+    fail('linked auxiliary object bytes or relocations drift: ' + label);
+  }
+  return { section, bytes, relocations, relocationSection, padding };
+}
+
+function selectAuxiliarySourceObjectPrefixes(input, target) {
+  if (!Buffer.isBuffer(input) || !target || !Array.isArray(target.auxiliarySections)) {
+    fail('auxiliary source-object prefix selection input is malformed');
+  }
+  const selected = target.auxiliarySections.filter((auxiliary) => auxiliary.sourceObjectPrefix);
+  if (selected.length === 0) return { buffer: Buffer.from(input), selections: [] };
+  const sourceElf = parseElf32BigEndian(input);
+  if (sourceElf.header.type !== 1 || sourceElf.header.phnum !== 0 || sourceElf.header.phoff !== 0) {
+    fail('auxiliary source-object prefix selection requires one relocatable ELF object');
+  }
+  const output = Buffer.from(input);
+  const headers = new Set();
+  const sourceEvidence = selected.map((auxiliary) => {
+    const evidence = verifyAuxiliarySourceObjectSection(
+      sourceElf,
+      target,
+      auxiliary,
+      target.symbol + ' ' + auxiliary.outputSection + ' prefix-selection source',
+    );
+    if (headers.has(evidence.section.headerOffset)) {
+      fail('auxiliary source-object prefix selection is ambiguous: ' + target.symbol);
+    }
+    headers.add(evidence.section.headerOffset);
+    const sourceStart = evidence.section.offset;
+    const sourceEnd = sourceStart + evidence.sourceBytes.length;
+    const overlaps = sourceElf.sections.filter((section) => (
+      section.index !== evidence.section.index
+      && section.type !== 8
+      && section.size > 0
+      && section.offset < sourceEnd
+      && section.offset + section.size > sourceStart
+    ));
+    if (overlaps.length !== 0) {
+      fail('auxiliary source-object prefix selection overlaps another section: ' + target.symbol);
+    }
+    output.writeUInt32BE(auxiliary.bytes, evidence.section.headerOffset + 20);
+    return { auxiliary, evidence };
+  });
+  const linkedElf = parseElf32BigEndian(output);
+  const selections = sourceEvidence.map(({ auxiliary, evidence }) => {
+    const linked = verifyAuxiliaryLinkedObjectSection(
+      linkedElf,
+      target,
+      auxiliary,
+      target.symbol + ' ' + auxiliary.outputSection + ' selected link object',
+    );
+    if (!linked.bytes.equals(evidence.selectedBytes)
+        || !sameJson(linked.relocations, evidence.relocations)) {
+      fail('auxiliary source-object prefix selection changed accepted prefix evidence: ' + target.symbol);
+    }
+    return {
+      outputSection: auxiliary.outputSection,
+      sourceObjectPrefix: evidence.sourceObjectPrefix,
+      linkedBytes: linked.bytes.length,
+      linkedSha256: sha256Buffer(linked.bytes),
+      loadRelevantRelocationsNormalized: linked.relocations,
+    };
+  });
+  return { buffer: output, selections };
+}
+
+function verifyAuxiliaryCompilerOccurrences(bytes, relocations, auxiliary, label, linkedBytes = null) {
+  if (auxiliary.compilerOccurrences === undefined) return null;
+  const minimumCompilerOccurrences = auxiliary.sourceObjectPrefix ? 1 : 2;
+  if (!Buffer.isBuffer(bytes) || bytes.length !== auxiliary.bytes
+      || !Array.isArray(relocations)
+      || (linkedBytes !== null && (!Buffer.isBuffer(linkedBytes) || linkedBytes.length !== auxiliary.bytes))
+      || !Array.isArray(auxiliary.compilerOccurrences)
+      || auxiliary.compilerOccurrences.length < minimumCompilerOccurrences) {
+    fail('auxiliary compiler-occurrence metadata is malformed: ' + label);
+  }
+  let cursor = 0;
+  let entryCount = 0;
+  const labels = new Set();
+  verifyAuxiliaryPaddingBytes(bytes, auxiliary, label);
+  if (linkedBytes !== null) verifyAuxiliaryPaddingBytes(linkedBytes, auxiliary, label + ' linked');
+  const evidence = auxiliary.compilerOccurrences.map((occurrence, occurrenceIndex) => {
+    const paddingBytes = compilerOccurrencePaddingBytes(occurrence, cursor, label);
+    if (!occurrence || typeof occurrence.label !== 'string' || !/^\.L[0-9]+$/.test(occurrence.label)
+        || labels.has(occurrence.label)
+        || occurrence.offsetNumber !== cursor + paddingBytes
+        || occurrence.endOffsetNumber !== occurrence.offsetNumber + occurrence.bytes
+        || occurrence.offsetNumber % occurrence.alignment !== 0
+        || occurrence.bytes !== occurrence.entries * 4
+        || !Array.isArray(occurrence.expectedRelocations)) {
+      fail(`auxiliary compiler occurrence ${occurrenceIndex} contract drift: ${label}`);
+    }
+    const occurrenceBytes = Buffer.from(bytes.subarray(occurrence.offsetNumber, occurrence.endOffsetNumber));
+    const linkedOccurrenceBytes = linkedBytes === null
+      ? null
+      : Buffer.from(linkedBytes.subarray(occurrence.offsetNumber, occurrence.endOffsetNumber));
+    const occurrenceRelocations = relocations.filter((relocation) => {
+      const offset = Number.parseInt(relocation.offset.slice(2), 16);
+      return offset >= occurrence.offsetNumber && offset < occurrence.endOffsetNumber;
+    });
+    if (occurrenceBytes.length !== occurrence.bytes
+        || sha256Buffer(occurrenceBytes) !== occurrence.expectedObjectSha256
+        || (linkedOccurrenceBytes !== null && (
+          linkedOccurrenceBytes.length !== occurrence.bytes
+          || sha256Buffer(linkedOccurrenceBytes) !== occurrence.expectedLinkedSha256
+        ))
+        || occurrenceRelocations.length !== occurrence.entries
+        || !sameJson(occurrenceRelocations, occurrence.expectedRelocations)) {
+      fail(`auxiliary compiler occurrence ${occurrence.label} bytes or relocations drift: ${label}`);
+    }
+    labels.add(occurrence.label);
+    cursor = occurrence.endOffsetNumber;
+    entryCount += occurrence.entries;
+    return {
+      label: occurrence.label,
+      offset: occurrence.offset,
+      bytes: occurrence.bytes,
+      entries: occurrence.entries,
+      alignment: occurrence.alignment,
+      alignmentDirectives: occurrence.alignmentDirectives,
+      ...(occurrence.paddingBefore ? { paddingBefore: { ...occurrence.paddingBefore } } : {}),
+      objectSha256: sha256Buffer(occurrenceBytes),
+      acceptedObjectSha256: occurrence.expectedObjectSha256,
+      expectedLinkedSha256: occurrence.expectedLinkedSha256,
+      ...(linkedOccurrenceBytes === null ? {} : {
+        linkedSha256: sha256Buffer(linkedOccurrenceBytes),
+        rawLinkedBytesExact: true,
+      }),
+      loadRelevantRelocationsNormalized: occurrenceRelocations,
+    };
+  });
+  if (cursor !== auxiliary.bytes
+      || entryCount !== auxiliary.entries || relocations.length !== entryCount) {
+    fail('auxiliary compiler occurrences do not exactly cover the logical section: ' + label);
+  }
+  return evidence;
 }
 
 function compareLinkedAuxiliaryBytes(target, auxiliary, linkedElf, canonicalBaserom) {
@@ -604,47 +993,83 @@ function targetsByChunk(phase8) {
   return result;
 }
 
-function auxiliaryTailRelative(chunkIndex, outputSection, extension) {
+function auxiliaryRetainedRelative(chunkIndex, outputSection, kind, extension) {
+  if (!['prefix', 'tail'].includes(kind)) fail('auxiliary retained-fragment kind is malformed');
   const chunkName = String(chunkIndex).padStart(3, '0');
   const suffix = outputSection.replace(/^\.ob64\./, '').replace(/\./g, '_');
-  return 'objects/assembly/auxiliary/chunk_' + chunkName + '_' + suffix + '_tail.' + extension;
+  return 'objects/assembly/auxiliary/chunk_' + chunkName + '_' + suffix + '_' + kind + '.' + extension;
 }
 
-function validateAuxiliaryTailObject(elf, auxiliary, expectedBytes) {
+function auxiliaryTailRelative(chunkIndex, outputSection, extension) {
+  return auxiliaryRetainedRelative(chunkIndex, outputSection, 'tail', extension);
+}
+
+function auxiliaryRetainedContract(auxiliary, kind) {
+  if (!auxiliary || !['prefix', 'tail'].includes(kind)) {
+    fail('auxiliary retained-fragment contract is malformed');
+  }
+  const capitalized = kind[0].toUpperCase() + kind.slice(1);
+  const bytes = auxiliary[`owner${capitalized}Bytes`] || 0;
+  const boundaryRom = kind === 'prefix' ? auxiliary.romStartNumber : auxiliary.romEndNumber;
+  const boundaryVram = kind === 'prefix' ? auxiliary.vramStartNumber : auxiliary.vramEndNumber;
+  return {
+    kind,
+    inputSection: bytes > 0 ? auxiliary[`owner${capitalized}Section`] : null,
+    alignment: bytes > 0 ? auxiliary[`owner${capitalized}Alignment`] : 1,
+    bytes,
+    sha256: bytes > 0 ? auxiliary[`owner${capitalized}Sha256`] : sha256Buffer(Buffer.alloc(0)),
+    romStart: bytes > 0 ? auxiliary[`owner${capitalized}RomStartNumber`] : boundaryRom,
+    romEndExclusive: bytes > 0 ? auxiliary[`owner${capitalized}RomEndNumber`] : boundaryRom,
+    vramStart: bytes > 0 ? auxiliary[`owner${capitalized}VramStartNumber`] : boundaryVram,
+    vramEndExclusive: bytes > 0 ? auxiliary[`owner${capitalized}VramEndNumber`] : boundaryVram,
+  };
+}
+
+function validateAuxiliaryRetainedObject(elf, auxiliary, expectedBytes, kind) {
+  const retained = auxiliaryRetainedContract(auxiliary, kind);
   if (!Buffer.isBuffer(expectedBytes)
-      || expectedBytes.length !== auxiliary.ownerTailBytes
-      || sha256Buffer(expectedBytes) !== auxiliary.ownerTailSha256
-      || auxiliary.ownerTailSection !== auxiliary.outputSection + '.tail'
-      || ['.data', '.bss', '.text', '.rodata'].includes(auxiliary.ownerTailSection)) {
-    fail('auxiliary preserved-tail contract drift: ' + auxiliary.outputSection);
+      || retained.bytes <= 0
+      || expectedBytes.length !== retained.bytes
+      || sha256Buffer(expectedBytes) !== retained.sha256
+      || retained.inputSection !== auxiliary.outputSection + '.' + kind
+      || ['.data', '.bss', '.text', '.rodata'].includes(retained.inputSection)) {
+    fail(`auxiliary preserved-${kind} contract drift: ` + auxiliary.outputSection);
   }
   if (elf.sections.some((section) => ['.data', '.bss'].includes(section.name))) {
-    fail('auxiliary preserved-tail object contains a forbidden conventional data section: ' + auxiliary.outputSection);
+    fail(`auxiliary preserved-${kind} object contains a forbidden conventional data section: ` + auxiliary.outputSection);
   }
-  const sections = elf.sections.filter((section) => section.name === auxiliary.ownerTailSection);
+  const sections = elf.sections.filter((section) => section.name === retained.inputSection);
   const unexpectedAllocated = elf.sections.filter((section) => (
-    section.size > 0 && (section.flags & 2) !== 0 && section.name !== auxiliary.ownerTailSection
+    section.size > 0 && (section.flags & 2) !== 0 && section.name !== retained.inputSection
   ));
   if (sections.length !== 1
       || sections[0].type !== 1
       || sections[0].flags !== 2
-      || sections[0].alignment !== auxiliary.ownerTailAlignment
-      || sections[0].size !== auxiliary.ownerTailBytes
+      || sections[0].alignment !== retained.alignment
+      || sections[0].size !== retained.bytes
       || unexpectedAllocated.length !== 0) {
-    fail('auxiliary preserved-tail object shape drift: ' + auxiliary.outputSection);
+    fail(`auxiliary preserved-${kind} object shape drift: ` + auxiliary.outputSection);
   }
   const bytes = Buffer.from(elfSectionBytes(elf, sections[0]));
-  if (!bytes.equals(expectedBytes) || sha256Buffer(bytes) !== auxiliary.ownerTailSha256) {
-    fail('auxiliary preserved-tail object bytes drift: ' + auxiliary.outputSection);
+  if (!bytes.equals(expectedBytes) || sha256Buffer(bytes) !== retained.sha256) {
+    fail(`auxiliary preserved-${kind} object bytes drift: ` + auxiliary.outputSection);
   }
   return {
-    inputSection: auxiliary.ownerTailSection,
+    inputSection: retained.inputSection,
     sectionType: 'SHT_PROGBITS',
     sectionFlags: ['SHF_ALLOC'],
     alignment: sections[0].alignment,
     bytes: bytes.length,
     sha256: sha256Buffer(bytes),
   };
+}
+
+function validateAuxiliaryPrefixObject(elf, auxiliary, expectedBytes) {
+  return validateAuxiliaryRetainedObject(elf, auxiliary, expectedBytes, 'prefix');
+}
+
+function validateAuxiliaryTailObject(elf, auxiliary, expectedBytes) {
+  return validateAuxiliaryRetainedObject(elf, auxiliary, expectedBytes, 'tail');
 }
 
 function copyPhase7Objects(phase8, phase7, output, objcopy) {
@@ -700,7 +1125,10 @@ function copyPhase7Objects(phase8, phase7, output, objcopy) {
       }
     }
     const originalAuxiliaryOwners = [];
-    for (const members of auxiliaryGroups.values()) {
+    for (const unorderedMembers of auxiliaryGroups.values()) {
+      const members = [...unorderedMembers].sort((left, right) => (
+        left.auxiliary.ownerFragmentIndex - right.auxiliary.ownerFragmentIndex
+      ));
       const first = members[0];
       const auxiliaryMatches = originalElf.sections.filter((section) => section.name === first.auxiliary.outputSection);
       if (auxiliaryMatches.length !== 1
@@ -723,6 +1151,13 @@ function copyPhase7Objects(phase8, phase7, output, objcopy) {
           fail('original fallback auxiliary bytes drift: ' + member.target.symbol + ' ' + member.auxiliary.outputSection);
         }
       }
+      const prefixContract = auxiliaryRetainedContract(first.auxiliary, 'prefix');
+      const prefixOffset = prefixContract.romStart - first.auxiliary.ownerRomStartNumber;
+      const prefixBytes = Buffer.from(ownerBytes.subarray(prefixOffset, prefixOffset + prefixContract.bytes));
+      if (prefixBytes.length !== prefixContract.bytes
+          || sha256Buffer(prefixBytes) !== prefixContract.sha256) {
+        fail('original fallback shared auxiliary prefix drift: ' + first.target.symbol + ' ' + first.auxiliary.outputSection);
+      }
       const final = members[members.length - 1];
       const tailOffset = final.auxiliary.ownerTailRomStartNumber - final.auxiliary.ownerRomStartNumber;
       const tailBytes = Buffer.from(ownerBytes.subarray(tailOffset));
@@ -736,6 +1171,9 @@ function copyPhase7Objects(phase8, phase7, output, objcopy) {
         auxiliary: final.auxiliary,
         section: auxiliaryMatches[0],
         ownerBytes,
+        prefixTarget: first.target,
+        prefixAuxiliary: first.auxiliary,
+        prefixBytes,
         tailBytes,
       });
     }
@@ -780,8 +1218,112 @@ function copyPhase7Objects(phase8, phase7, output, objcopy) {
       }
     }
 
+    const auxiliaryPrefixes = [];
     const auxiliaryTails = [];
+    const auxiliaryInteriors = [];
     for (const owner of originalAuxiliaryOwners) {
+      for (const member of owner.members.filter(({ auxiliary }) => auxiliary.preservedInteriorBefore)) {
+        auxiliaryInteriors.push(buildInteriorObject(member.target, member.auxiliary, output,
+          fallbackObject, objcopy, loadCanonicalBaserom(phase8)));
+      }
+      const firstMember = owner.members[0];
+      const prefixContract = auxiliaryRetainedContract(firstMember.auxiliary, 'prefix');
+      let prefixArtifacts = {
+        inputSection: null,
+        sectionType: 'SHT_PROGBITS',
+        sectionFlags: ['SHF_ALLOC'],
+        alignment: prefixContract.alignment,
+        binaryRelative: null,
+        binarySha256: null,
+        objectRelative: null,
+        objectSha256: null,
+      };
+      if (owner.prefixBytes.length > 0) {
+        const retainedRoot = path.join(output, 'objects', 'assembly', 'auxiliary');
+        ensureDir(retainedRoot);
+        const binaryRelative = auxiliaryRetainedRelative(
+          chunkIndex,
+          firstMember.auxiliary.outputSection,
+          'prefix',
+          'bin',
+        );
+        const objectRelative = auxiliaryRetainedRelative(
+          chunkIndex,
+          firstMember.auxiliary.outputSection,
+          'prefix',
+          'o',
+        );
+        const binaryFile = resolveRelative(output, binaryRelative, 'auxiliary preserved-prefix binary');
+        const objectFile = resolveRelative(output, objectRelative, 'auxiliary preserved-prefix object');
+        fs.writeFileSync(binaryFile, owner.prefixBytes);
+        fs.copyFileSync(fallbackObject, objectFile);
+        const retainedElfMetadata = new Set(['.symtab', '.strtab', '.shstrtab']);
+        const seedRemovals = originalElf.sections
+          .filter((section) => section.name && !retainedElfMetadata.has(section.name))
+          .map((section) => '--remove-section=' + section.name);
+        run(objcopy, [
+          '--strip-all',
+          ...seedRemovals,
+          objectRelative,
+        ], { cwd: output });
+        run(objcopy, [
+          '--add-section=' + prefixContract.inputSection + '=' + binaryRelative,
+          '--set-section-flags=' + prefixContract.inputSection + '=alloc,load,readonly,data,contents',
+          objectRelative,
+        ], { cwd: output });
+        const prefixElf = parseElfFile(objectFile);
+        const prefixEvidence = validateAuxiliaryPrefixObject(prefixElf, firstMember.auxiliary, owner.prefixBytes);
+        prefixArtifacts = {
+          ...prefixEvidence,
+          binaryRelative,
+          binarySha256: sha256File(binaryFile),
+          objectRelative,
+          objectSha256: sha256File(objectFile),
+        };
+      }
+      auxiliaryPrefixes.push({
+        symbol: firstMember.target.symbol,
+        outputSection: firstMember.auxiliary.outputSection,
+        inputSection: prefixArtifacts.inputSection,
+        sectionType: prefixArtifacts.sectionType,
+        sectionFlags: prefixArtifacts.sectionFlags,
+        alignment: prefixArtifacts.alignment,
+        prefixBytes: owner.prefixBytes.length,
+        prefixSha256: prefixContract.sha256,
+        romStart: prefixContract.romStart,
+        romEndExclusive: prefixContract.romEndExclusive,
+        vramStart: prefixContract.vramStart,
+        vramEndExclusive: prefixContract.vramEndExclusive,
+        ownerOriginalAssembly: firstMember.auxiliary.ownerOriginalAssembly,
+        ownerOriginalAssemblySha256: firstMember.auxiliary.ownerOriginalAssemblySha256,
+        binaryRelative: prefixArtifacts.binaryRelative,
+        binarySha256: prefixArtifacts.binarySha256,
+        objectRelative: prefixArtifacts.objectRelative,
+        objectSha256: prefixArtifacts.objectSha256,
+      });
+      for (const member of owner.members.slice(1)) {
+        const emptyPrefix = auxiliaryRetainedContract(member.auxiliary, 'prefix');
+        auxiliaryPrefixes.push({
+          symbol: member.target.symbol,
+          outputSection: member.auxiliary.outputSection,
+          inputSection: null,
+          sectionType: 'SHT_PROGBITS',
+          sectionFlags: ['SHF_ALLOC'],
+          alignment: emptyPrefix.alignment,
+          prefixBytes: 0,
+          prefixSha256: emptyPrefix.sha256,
+          romStart: emptyPrefix.romStart,
+          romEndExclusive: emptyPrefix.romEndExclusive,
+          vramStart: emptyPrefix.vramStart,
+          vramEndExclusive: emptyPrefix.vramEndExclusive,
+          ownerOriginalAssembly: member.auxiliary.ownerOriginalAssembly,
+          ownerOriginalAssemblySha256: member.auxiliary.ownerOriginalAssemblySha256,
+          binaryRelative: null,
+          binarySha256: null,
+          objectRelative: null,
+          objectSha256: null,
+        });
+      }
       for (const member of owner.members.slice(0, -1)) {
         auxiliaryTails.push({
           symbol: member.target.symbol,
@@ -893,7 +1435,9 @@ function copyPhase7Objects(phase8, phase7, output, objcopy) {
       prunedSha256: sha256File(linkedChunk),
       preservedTargetChunkSections: originalSections.length,
       targets: chunkTargets,
+      auxiliaryPrefixes,
       auxiliaryTails,
+      auxiliaryInteriors,
     };
     replacements.set(chunkIndex, replacement);
   }
@@ -993,7 +1537,7 @@ function verifyCompilerTextFunctions(elf, target, section, linked = false) {
 function relocationRecords(elf, target) {
   const owners = targetTextOwners(target);
   const targetSections = owners.map((owner) => {
-    const matches = elf.sections.filter((section) => section.name === owner.sectionName);
+    const matches = elf.sections.filter((section) => section.name === textContract.inputSection(target, owner.sectionName));
     if (matches.length !== 1) fail('target relocation section owner drift: ' + target.symbol + ' ' + owner.sectionName);
     return { owner, section: matches[0] };
   });
@@ -1007,7 +1551,7 @@ function relocationRecords(elf, target) {
     if (sections.length !== 1) fail('auxiliary relocation section owner drift: ' + target.symbol);
     auxiliaryBySectionIndex.set(sections[0].index, auxiliary);
   }
-  const relocationOwners = new Map(owners.map((owner) => ['.rel' + owner.sectionName, owner]));
+  const relocationOwners = new Map(owners.map((owner) => ['.rel' + textContract.inputSection(target, owner.sectionName), owner]));
   const records = rawRelocationRecords(elf)
     .filter((record) => relocationOwners.has(record.section))
     .map((record) => {
@@ -1053,7 +1597,11 @@ function auxiliaryRelocationRecords(elf, target, auxiliary) {
     .filter((record) => record.section === '.rel' + auxiliary.outputSection)
     .map((record) => {
       const offset = Number.parseInt(record.offset.slice(2), 16);
-      if (offset < 0 || offset + 4 > auxiliary.entryBytes || offset % 4 !== 0
+      const isEntry = auxiliary.compilerOccurrences
+        ? auxiliary.compilerOccurrences.some((occurrence) => offset >= occurrence.offsetNumber
+          && offset + 4 <= occurrence.endOffsetNumber)
+        : offset + 4 <= auxiliary.entryBytes;
+      if (offset < 0 || !isEntry || offset + 4 > auxiliaryBytes.length || offset % 4 !== 0
           || record.type !== 'R_MIPS_32'
           || record.symbolType !== 3
           || !targetBySectionIndex.has(record.symbolSectionIndex)
@@ -1160,7 +1708,7 @@ function compileTarget(phase8, target, output, compiler, assembler, objcopy, opt
   }
 
   const compilerBytes = fs.readFileSync(compilerAssembly);
-  const linkedBytes = adjustSectionAssembly(compilerBytes, target.sectionName, {
+  const linkedBytes = textContract.assemblerInput(compilerBytes, target, adjustSectionAssembly, {
     allowAuxiliaryReadOnlySections: options.allowAuxiliaryReadOnlySections === true,
     auxiliarySections: acceptedAuxiliarySections,
     legalizeCop1BinaryInstructions: options.legalizeCop1BinaryInstructions === true,
@@ -1189,7 +1737,7 @@ function compileTarget(phase8, target, output, compiler, assembler, objcopy, opt
   }
   const elf = parseElfFile(proofObjectFile);
   const ownerSectionRecords = targetTextOwners(target).map((owner) => {
-    const sections = elf.sections.filter((section) => section.name === owner.sectionName);
+    const sections = elf.sections.filter((section) => section.name === textContract.inputSection(target, owner.sectionName));
     if (sections.length !== 1 || sections[0].type !== 1 || (sections[0].flags & 6) !== 6
         || sections[0].size !== owner.bytes) {
       fail('KMC target object section shape drift: ' + target.symbol + ' ' + owner.sectionName);
@@ -1217,46 +1765,60 @@ function compileTarget(phase8, target, output, compiler, assembler, objcopy, opt
       fail('KMC target object continuation symbol drift: ' + target.symbol + ' ' + record.owner.symbol);
     }
   }
+  if (target.nativeTextTail) textContract.nativeObjectAllocationEvidence(elf);
   for (const name of ['.data', '.bss']) {
     const section = elf.sections.find((candidate) => candidate.name === name);
     if (section && section.size !== 0) fail('KMC target unexpectedly owns ' + name + ' bytes: ' + target.symbol);
   }
   const auxiliaryRecords = [];
   for (const auxiliary of acceptedAuxiliarySections) {
-    const matches = elf.sections.filter((section) => section.name === auxiliary.outputSection);
-    if (matches.length !== 1
-        || matches[0].type !== 1
-        || matches[0].flags !== 2
-        || matches[0].alignment !== auxiliary.alignment
-        || matches[0].size !== auxiliary.bytes) {
-      fail('KMC auxiliary object section shape drift: ' + target.symbol + ' ' + auxiliary.outputSection);
-    }
-    const bytes = Buffer.from(elfSectionBytes(elf, matches[0]));
-    const paddingEvidence = verifyAuxiliaryPaddingBytes(
-      bytes,
+    const sourceEvidence = verifyAuxiliarySourceObjectSection(
+      elf,
+      target,
       auxiliary,
       target.symbol + ' ' + auxiliary.outputSection + ' source object',
     );
-    if (sha256Buffer(bytes) !== auxiliary.expectedObjectSha256) {
-      fail('KMC auxiliary object bytes drift: ' + target.symbol + ' ' + auxiliary.outputSection);
-    }
-    const auxiliaryRelocations = auxiliaryRelocationRecords(elf, target, auxiliary);
-    if (!sameJson(auxiliaryRelocations, auxiliary.expectedRelocations)) {
-      fail('KMC auxiliary relocation contract drift: ' + target.symbol + ' ' + auxiliary.outputSection);
-    }
+    const bytes = sourceEvidence.selectedBytes;
+    const paddingEvidence = sourceEvidence.padding;
+    const auxiliaryRelocations = sourceEvidence.relocations;
+    const compilerOccurrences = verifyAuxiliaryCompilerOccurrences(
+      bytes,
+      auxiliaryRelocations,
+      auxiliary,
+      target.symbol + ' ' + auxiliary.outputSection + ' source object',
+    );
     auxiliaryRecords.push({
       compilerSection: auxiliary.compilerSection,
       outputSection: auxiliary.outputSection,
       bytes: bytes.length,
       sha256: sha256Buffer(bytes),
-      alignment: matches[0].alignment,
-      flags: matches[0].flags,
+      alignment: sourceEvidence.section.alignment,
+      flags: sourceEvidence.section.flags,
       relocations: auxiliaryRelocations,
       ...paddingEvidence,
+      ...(sourceEvidence.sourceObjectPrefix === null ? {} : {
+        sourceObjectPrefix: sourceEvidence.sourceObjectPrefix,
+      }),
+      ...(compilerOccurrences === null ? {} : { compilerOccurrences }),
+      ...(auxiliary.preservedPrefix ? {
+        preservedPrefix: {
+          inputSection: auxiliary.ownerPrefixSection,
+          alignment: auxiliary.ownerPrefixAlignment,
+          bytes: auxiliary.ownerPrefixBytes,
+          sha256: auxiliary.ownerPrefixSha256,
+          romStart: auxiliary.ownerPrefixRomStartNumber,
+          romEndExclusive: auxiliary.ownerPrefixRomEndNumber,
+          vramStart: auxiliary.ownerPrefixVramStartNumber,
+          vramEndExclusive: auxiliary.ownerPrefixVramEndNumber,
+          ownerOriginalAssembly: auxiliary.ownerOriginalAssembly,
+          ownerOriginalAssemblySha256: auxiliary.ownerOriginalAssemblySha256,
+        },
+      } : {}),
+      retainedInteriorBefore: projectInterior(auxiliary),
     });
   }
   const acceptedAllocSections = new Set([
-    ...targetTextOwners(target).map((owner) => owner.sectionName),
+    ...targetTextOwners(target).map((owner) => textContract.inputSection(target, owner.sectionName)),
     ...acceptedAuxiliarySections.map((auxiliary) => auxiliary.outputSection),
     '.reginfo',
   ]);
@@ -1266,7 +1828,7 @@ function compileTarget(phase8, target, output, compiler, assembler, objcopy, opt
   if (enforceAcceptedContract && unexpectedAllocSections.length > 0) {
     fail('KMC target owns an uncontracted allocated section: ' + target.symbol + ' ' + unexpectedAllocSections[0].name);
   }
-  const relocations = relocationRecords(elf, target);
+  const relocations = relocationRecords(elf, textContract.inputTarget(target));
   if (enforceAcceptedContract && !sameJson(relocations, target.expectedRelocations)) {
     fail('KMC target relocation contract drift: ' + target.symbol);
   }
@@ -1278,9 +1840,19 @@ function compileTarget(phase8, target, output, compiler, assembler, objcopy, opt
     normalizePath(path.relative(output, proofObjectFile)),
     normalizePath(path.relative(output, objectFile)),
   ], { cwd: output });
+  if (acceptedAuxiliarySections.some((auxiliary) => auxiliary.sourceObjectPrefix)) {
+    const selection = selectAuxiliarySourceObjectPrefixes(fs.readFileSync(objectFile), target);
+    if (selection.selections.length !== acceptedAuxiliarySections.filter((auxiliary) => (
+      auxiliary.sourceObjectPrefix
+    )).length) {
+      fail('auxiliary source-object prefix selection census drift: ' + target.symbol);
+    }
+    fs.writeFileSync(objectFile, selection.buffer);
+  }
   const linkedObjectElf = parseElfFile(objectFile);
+  if (target.nativeTextTail) textContract.nativeObjectAllocationEvidence(linkedObjectElf, false);
   const linkedTextBytes = Buffer.concat(targetTextOwners(target).map((owner) => {
-    const linkedSections = linkedObjectElf.sections.filter((section) => section.name === owner.sectionName);
+    const linkedSections = linkedObjectElf.sections.filter((section) => section.name === textContract.inputSection(target, owner.sectionName));
     if (linkedSections.length !== 1 || linkedSections[0].size !== owner.bytes) {
       fail('ancillary-section removal changed target owner shape: ' + target.symbol + ' ' + owner.sectionName);
     }
@@ -1289,7 +1861,7 @@ function compileTarget(phase8, target, output, compiler, assembler, objcopy, opt
   if (!linkedTextBytes.equals(textBytes)) {
     fail('ancillary-section removal changed target bytes: ' + target.symbol);
   }
-  const linkedPrimarySection = linkedObjectElf.sections.find((section) => section.name === target.sectionName);
+  const linkedPrimarySection = linkedObjectElf.sections.find((section) => section.name === textContract.inputSection(target, target.sectionName));
   if (!sameJson(
     verifyCompilerTextFunctions(linkedObjectElf, target, linkedPrimarySection),
     compilerTextFunctions,
@@ -1297,7 +1869,7 @@ function compileTarget(phase8, target, output, compiler, assembler, objcopy, opt
     fail('ancillary-section removal changed compiler text-function evidence: ' + target.symbol);
   }
   for (const [ownerIndex, owner] of targetTextOwners(target).entries()) {
-    const linkedSection = linkedObjectElf.sections.find((section) => section.name === owner.sectionName);
+    const linkedSection = linkedObjectElf.sections.find((section) => section.name === textContract.inputSection(target, owner.sectionName));
     const expectedSymbol = ownerIndex === 0 ? target.symbol : owner.symbol;
     const linkedSymbols = linkedObjectElf.symbols.filter((symbol) => symbol.name === expectedSymbol);
     const expectedSize = ownerIndex === 0 ? primaryCompilerFunctionBytes(target) : 0;
@@ -1308,18 +1880,28 @@ function compileTarget(phase8, target, output, compiler, assembler, objcopy, opt
     }
   }
   for (const auxiliary of acceptedAuxiliarySections) {
-    const sourceSection = elf.sections.find((section) => section.name === auxiliary.outputSection);
-    const linkedMatches = linkedObjectElf.sections.filter((section) => section.name === auxiliary.outputSection);
-    if (linkedMatches.length !== 1
-        || linkedMatches[0].type !== sourceSection.type
-        || linkedMatches[0].flags !== sourceSection.flags
-        || linkedMatches[0].alignment !== sourceSection.alignment
-        || !Buffer.from(elfSectionBytes(linkedObjectElf, linkedMatches[0])).equals(elfSectionBytes(elf, sourceSection))
-        || !sameJson(auxiliaryRelocationRecords(linkedObjectElf, target, auxiliary), auxiliary.expectedRelocations)) {
+    const sourceEvidence = verifyAuxiliarySourceObjectSection(
+      elf,
+      target,
+      auxiliary,
+      target.symbol + ' ' + auxiliary.outputSection + ' source object after ancillary removal',
+    );
+    const linkedEvidence = verifyAuxiliaryLinkedObjectSection(
+      linkedObjectElf,
+      target,
+      auxiliary,
+      target.symbol + ' ' + auxiliary.outputSection + ' final link object',
+    );
+    if (linkedEvidence.section.type !== sourceEvidence.section.type
+        || linkedEvidence.section.flags !== sourceEvidence.section.flags
+        || linkedEvidence.section.alignment !== sourceEvidence.section.alignment
+        || !linkedEvidence.bytes.equals(sourceEvidence.selectedBytes)
+        || !sameJson(linkedEvidence.relocations, sourceEvidence.relocations)) {
       fail('ancillary-section removal changed auxiliary evidence: ' + target.symbol + ' ' + auxiliary.outputSection);
     }
   }
   return {
+    ...textContract.recordsForTarget(target, output),
     symbol: target.symbol,
     objectRelative: 'objects/c/' + target.symbol + '.o',
     objectSha256: sha256File(objectFile),
@@ -1395,7 +1977,7 @@ function deriveSourceObjectProof(phase8, target, output, classification, linkedE
     ? fileIdentity(output, assemblerRelative, 'unsplit assembler object')
     : null;
   const compilerBytes = fs.readFileSync(resolveRelative(output, compilerRelative, 'compiler assembly'));
-  const expectedSectionBytes = adjustSectionAssembly(compilerBytes, target.sectionName, {
+  const expectedSectionBytes = textContract.assemblerInput(compilerBytes, target, adjustSectionAssembly, {
     auxiliarySections: target.auxiliarySections || [],
   });
   const actualSectionBytes = fs.readFileSync(resolveRelative(output, sectionRelative, 'section-adjusted assembly'));
@@ -1419,8 +2001,9 @@ function deriveSourceObjectProof(phase8, target, output, classification, linkedE
     }
   }
   const objectElf = parseElfFile(resolveRelative(output, objectRelative, 'matching C object'));
+  const linkedObjectElf = parseElfFile(resolveRelative(output, linkedObjectRelative, 'linked matching C object'));
   const objectOwnerSections = targetTextOwners(target).map((owner) => {
-    const objectSections = objectElf.sections.filter((section) => section.name === owner.sectionName);
+    const objectSections = objectElf.sections.filter((section) => section.name === textContract.inputSection(target, owner.sectionName));
     if (objectSections.length !== 1 || objectSections[0].type !== 1 || (objectSections[0].flags & 6) !== 6
         || objectSections[0].size !== owner.bytes) {
       fail('source-to-object proof section shape drift: ' + target.symbol + ' ' + owner.sectionName);
@@ -1445,9 +2028,9 @@ function deriveSourceObjectProof(phase8, target, output, classification, linkedE
     objectOwnerSections[0].section,
   );
   const allRelocations = rawRelocationRecords(objectElf);
-  const loadRelocationSections = new Set(targetTextOwners(target).map((owner) => '.rel' + owner.sectionName));
+  const loadRelocationSections = new Set(targetTextOwners(target).map((owner) => '.rel' + textContract.inputSection(target, owner.sectionName)));
   const rawLoadRelevant = allRelocations.filter((record) => loadRelocationSections.has(record.section));
-  const normalizedLoadRelevant = relocationRecords(objectElf, target);
+  const normalizedLoadRelevant = relocationRecords(objectElf, textContract.inputTarget(target));
   if (!sameJson(normalizedLoadRelevant, target.expectedRelocations)) {
     fail('source-to-object load-relevant relocation drift: ' + target.symbol);
   }
@@ -1456,27 +2039,36 @@ function deriveSourceObjectProof(phase8, target, output, classification, linkedE
   if (linkedTextSections.length !== 1) fail('source-to-object linked text owner drift: ' + target.symbol);
   const linkedTextFunctions = verifyCompilerTextFunctions(linkedElf, target, linkedTextSections[0], true);
   const auxiliaryProofs = (target.auxiliarySections || []).map((auxiliary) => {
-    const sections = objectElf.sections.filter((section) => section.name === auxiliary.outputSection);
-    if (sections.length !== 1
-        || sections[0].type !== 1
-        || sections[0].flags !== 2
-        || sections[0].alignment !== auxiliary.alignment
-        || sections[0].size !== auxiliary.bytes) {
-      fail('source-to-object auxiliary section shape drift: ' + target.symbol + ' ' + auxiliary.outputSection);
-    }
-    const bytes = Buffer.from(elfSectionBytes(objectElf, sections[0]));
-    const paddingEvidence = verifyAuxiliaryPaddingBytes(
-      bytes,
+    const sourceEvidence = verifyAuxiliarySourceObjectSection(
+      objectElf,
+      target,
       auxiliary,
       target.symbol + ' ' + auxiliary.outputSection + ' proof object',
     );
+    const linkedObjectEvidence = verifyAuxiliaryLinkedObjectSection(
+      linkedObjectElf,
+      target,
+      auxiliary,
+      target.symbol + ' ' + auxiliary.outputSection + ' linked proof object',
+    );
+    const bytes = sourceEvidence.selectedBytes;
+    const paddingEvidence = sourceEvidence.padding;
     const relocationSection = '.rel' + auxiliary.outputSection;
     loadRelocationSections.add(relocationSection);
     const rawRelocations = allRelocations.filter((record) => record.section === relocationSection);
-    const normalizedRelocations = auxiliaryRelocationRecords(objectElf, target, auxiliary);
+    const normalizedRelocations = sourceEvidence.relocations;
     const linkedComparison = compareLinkedAuxiliaryBytes(target, auxiliary, linkedElf, canonicalBaserom);
+    const compilerOccurrences = verifyAuxiliaryCompilerOccurrences(
+      bytes,
+      normalizedRelocations,
+      auxiliary,
+      target.symbol + ' ' + auxiliary.outputSection + ' source-object proof',
+      linkedComparison.linkedBytes,
+    );
     if (sha256Buffer(bytes) !== auxiliary.expectedObjectSha256
         || !sameJson(normalizedRelocations, auxiliary.expectedRelocations)
+        || !linkedObjectEvidence.bytes.equals(bytes)
+        || !sameJson(linkedObjectEvidence.relocations, normalizedRelocations)
         || linkedComparison.linkedSha256 !== auxiliary.expectedLinkedSha256
         || linkedComparison.expectedSha256 !== auxiliary.expectedLinkedSha256
         || linkedComparison.rawBytesExact !== true) {
@@ -1499,6 +2091,18 @@ function deriveSourceObjectProof(phase8, target, output, classification, linkedE
       loadRelevantRelocationsRaw: rawRelocations,
       loadRelevantRelocationsNormalized: normalizedRelocations,
       acceptedLoadRelevantRelocations: auxiliary.expectedRelocations,
+      ...(sourceEvidence.sourceObjectPrefix === null ? {} : {
+        sourceObjectPrefix: sourceEvidence.sourceObjectPrefix,
+        linkedObjectSection: {
+          sectionType: auxiliary.sectionType,
+          sectionFlags: auxiliary.sectionFlags,
+          alignment: linkedObjectEvidence.section.alignment,
+          bytes: linkedObjectEvidence.bytes.length,
+          sha256: sha256Buffer(linkedObjectEvidence.bytes),
+          loadRelevantRelocationsNormalized: linkedObjectEvidence.relocations,
+        },
+      }),
+      ...(compilerOccurrences === null ? {} : { compilerOccurrences }),
       finalPlacement: {
         romStart: auxiliary.romStart,
         romEndExclusive: auxiliary.romEndExclusive,
@@ -1512,6 +2116,25 @@ function deriveSourceObjectProof(phase8, target, output, classification, linkedE
         ownerSectionBytes: auxiliary.ownerSectionBytes,
         ownerSymbol: auxiliary.ownerSymbol,
         ownerSymbolVram: hex(auxiliary.ownerSymbolVram),
+        ...(auxiliary.preservedInteriorBefore ? {
+          retainedInteriorBefore: verifyInteriorArtifacts(target, auxiliary, output, canonicalBaserom, linkedElf),
+        } : {}),
+        ...(auxiliary.preservedPrefix ? {
+          retainedPrefix: {
+            inputSection: auxiliary.ownerPrefixSection,
+            sectionType: 'SHT_PROGBITS',
+            sectionFlags: ['SHF_ALLOC'],
+            alignment: auxiliary.ownerPrefixAlignment,
+            bytes: auxiliary.ownerPrefixBytes,
+            sha256: auxiliary.ownerPrefixSha256,
+            romStart: auxiliary.ownerPrefixRomStartNumber,
+            romEndExclusive: auxiliary.ownerPrefixRomEndNumber,
+            vramStart: auxiliary.ownerPrefixVramStartNumber,
+            vramEndExclusive: auxiliary.ownerPrefixVramEndNumber,
+            ownerOriginalAssembly: auxiliary.ownerOriginalAssembly,
+            ownerOriginalAssemblySha256: auxiliary.ownerOriginalAssemblySha256,
+          },
+        } : {}),
       },
       linkedSha256: linkedComparison.linkedSha256,
       expectedLinkedSha256: auxiliary.expectedLinkedSha256,
@@ -1519,8 +2142,15 @@ function deriveSourceObjectProof(phase8, target, output, classification, linkedE
     };
   });
   const ancillary = allRelocations.filter((record) => !loadRelocationSections.has(record.section));
+  const basePermittedAdjustment = auxiliaryProofs.length === 0
+    ? 'replace the sole .text directive with the accepted target section directive'
+    : auxiliaryProofs.some((auxiliary) => Array.isArray(auxiliary.compilerOccurrences))
+      ? 'assign each ordered .text region and repeated contracted .rodata occurrence to their accepted logical output sections'
+      : 'assign the two .text regions and sole contracted .rodata region to their accepted output sections';
+  const sourceObjectPrefixSelections = auxiliaryProofs.filter((auxiliary) => auxiliary.sourceObjectPrefix).length;
   const proof = {
-    schemaVersion: 3,
+    ...textContract.recordsForTarget(target, output, textContract.linkContext(output, canonicalBaserom, linkedElf)),
+    schemaVersion: 4,
     kind: 'ob64-source-to-object-load-evidence',
     target: {
       symbol: target.symbol,
@@ -1547,10 +2177,12 @@ function deriveSourceObjectProof(phase8, target, output, classification, linkedE
     },
     assemblyContract: {
       compilerAssemblyRewritten: false,
-      permittedAdjustment: auxiliaryProofs.length === 0
-        ? 'replace the sole .text directive with the accepted target section directive'
-        : 'assign the two .text regions and sole contracted .rodata region to their accepted output sections',
+      permittedAdjustment: target.nativeTextTail ? 'none; untouched native compiler assembly'
+        : sourceObjectPrefixSelections > 0
+          ? basePermittedAdjustment + '; authenticate the complete aligned auxiliary source-object section and select only its declared zero-offset prefix for linkage'
+          : basePermittedAdjustment,
       auxiliarySectionCount: auxiliaryProofs.length,
+      ...(sourceObjectPrefixSelections > 0 ? { sourceObjectPrefixSelections } : {}),
       relocatableContainerSplit: targetTextOwners(target).length > 1,
       splitInstructionBytesRewritten: false,
       classifiedBytesAreCompilerInput: true,
@@ -1623,6 +2255,10 @@ function writeSourceObjectProofs(phase8, options) {
   const linkedElf = parseElfFile(path.join(output, 'phase8.elf'));
   const canonicalBaserom = loadCanonicalBaserom(phase8);
   const proofs = new Map();
+  const nativeContext = textContract.linkContext(output, canonicalBaserom, linkedElf);
+  for (const target of phase8.targets.filter(value => value.nativeTextTail)) {
+    textContract.recordsForTarget(target, output, nativeContext);
+  }
   for (const target of phase8.targets) {
     const compiled = options.compiled.get(target.symbol);
     const classification = classificationBySymbol.get(target.symbol);
@@ -1650,7 +2286,8 @@ function validateSourceObjectProofBytes(actualBytes, expectedBytes) {
   } catch (_) {
     fail('source-to-object proof is not valid JSON');
   }
-  if (!actual || actual.schemaVersion !== 3 || actual.kind !== 'ob64-source-to-object-load-evidence'
+  if (!actual || actual.schemaVersion !== 4 || actual.kind !== 'ob64-source-to-object-load-evidence'
+      || !actual.textContract || !actual.objectEvidence || !actual.linkEvidence
       || !actual.target || !actual.toolchain || !actual.assemblyContract || !actual.artifacts
       || !actual.finalObject || !actual.finalTarget || actual.assemblyContract.compilerAssemblyRewritten !== false
       || actual.assemblyContract.classifiedBytesAreCompilerInput !== true
@@ -1666,6 +2303,33 @@ function validateSourceObjectProofBytes(actualBytes, expectedBytes) {
       || !Array.isArray(actual.finalTarget.auxiliarySections)
       || Object.prototype.hasOwnProperty.call(actual.assemblyContract, 'adapterApplied')) {
     fail('source-to-object proof schema drift');
+  }
+  const selectedAuxiliary = actual.finalObject.auxiliarySections.filter((record) => (
+    record && Object.prototype.hasOwnProperty.call(record, 'sourceObjectPrefix')
+  ));
+  const hasSelectionCount = Object.prototype.hasOwnProperty.call(
+    actual.assemblyContract,
+    'sourceObjectPrefixSelections',
+  );
+  if ((selectedAuxiliary.length === 0 && hasSelectionCount)
+      || (selectedAuxiliary.length > 0 && (
+        !hasSelectionCount
+        || actual.assemblyContract.sourceObjectPrefixSelections !== selectedAuxiliary.length
+        || selectedAuxiliary.some((record) => (
+          !record.sourceObjectPrefix
+          || record.sourceObjectPrefix.prefixOffset !== '0x00000000'
+          || record.sourceObjectPrefix.prefixBytes !== record.objectBytes
+          || record.sourceObjectPrefix.trailingPaddingOffset
+            !== `0x${record.objectBytes.toString(16).toUpperCase().padStart(8, '0')}`
+          || record.sourceObjectPrefix.bytes
+            !== record.objectBytes + record.sourceObjectPrefix.trailingPaddingBytes
+          || record.sourceObjectPrefix.relocationsWithinPrefix !== true
+          || !record.linkedObjectSection
+          || record.linkedObjectSection.bytes !== record.objectBytes
+          || record.linkedObjectSection.sha256 !== record.objectSha256
+        ))
+      ))) {
+    fail('source-to-object proof prefix-selection schema drift');
   }
   if (!actualBytes.equals(expectedBytes)) fail('source-to-object proof differs from independent reconstruction');
   return actual;
@@ -1690,6 +2354,9 @@ function verifySourceObjectProofs(phase8, options) {
       fail(error.message + ': ' + target.symbol);
     }
     records.push({
+      textContract: derived.proof.textContract,
+      objectEvidence: derived.proof.objectEvidence,
+      linkEvidence: derived.proof.linkEvidence,
       symbol: target.symbol,
       sourceClass: classification.class,
       sourcePolicyDigest: classification.digest,
@@ -1730,6 +2397,9 @@ function verifySourceObjectProofs(phase8, options) {
 }
 
 function writeObjectManifest(output, linkedObjects, phase8, replacements, compiledBySymbol) {
+  for (const target of phase8.targets.filter(value => value.nativeTextTail)) {
+    textContract.validateRecords(compiledBySymbol.get(target.symbol), textContract.recordsForTarget(target, output), 'native manifest');
+  }
   const objects = [];
   const addedCTargets = new Set();
   const chunkTargets = targetsByChunk(phase8);
@@ -1753,12 +2423,56 @@ function writeObjectManifest(output, linkedObjects, phase8, replacements, compil
           bytes: fs.statSync(cFile).size,
           sha256: sha256File(cFile),
           ownerKind: 'matching-c-target',
+          textContract: compiled.textContract,
+          objectEvidence: compiled.objectEvidence,
           targetSection: target.sectionName,
           targetSections: targetTextOwners(target).map((owner) => owner.sectionName),
           ownerRows: targetTextOwners(target).map((owner) => owner.rowIndex),
           targetSymbol: target.symbol,
           auxiliarySections: target.auxiliarySections.map((auxiliary) => auxiliary.outputSection),
+          ...(target.auxiliarySections.some((auxiliary) => auxiliary.sourceObjectPrefix) ? {
+            auxiliarySourceObjectPrefixes: target.auxiliarySections
+              .filter((auxiliary) => auxiliary.sourceObjectPrefix)
+              .map((auxiliary) => ({
+                outputSection: auxiliary.outputSection,
+                sourceObject: compiled.proofObjectRelative,
+                sourceObjectSha256: compiled.proofObjectSha256,
+                linkedObject: compiled.objectRelative,
+                linkedObjectSha256: compiled.objectSha256,
+                ...projectAuxiliarySourceObjectPrefix(auxiliary),
+              })),
+          } : {}),
         });
+      }
+      for (const prefix of replacement.auxiliaryPrefixes || []) {
+        if (!prefix.objectRelative) continue;
+        const prefixFile = resolveRelative(output, prefix.objectRelative, 'auxiliary preserved-prefix object');
+        objects.push({
+          path: prefix.objectRelative,
+          bytes: fs.statSync(prefixFile).size,
+          sha256: sha256File(prefixFile),
+          ownerKind: 'accepted-assembly-auxiliary-prefix',
+          targetSymbol: prefix.symbol,
+          outputSection: prefix.outputSection,
+          inputSection: prefix.inputSection,
+          sectionType: prefix.sectionType,
+          sectionFlags: prefix.sectionFlags,
+          alignment: prefix.alignment,
+          prefixBytes: prefix.prefixBytes,
+          prefixSha256: prefix.prefixSha256,
+          romStart: prefix.romStart,
+          romEndExclusive: prefix.romEndExclusive,
+          vramStart: prefix.vramStart,
+          vramEndExclusive: prefix.vramEndExclusive,
+          ownerOriginalAssembly: prefix.ownerOriginalAssembly,
+          ownerOriginalAssemblySha256: prefix.ownerOriginalAssemblySha256,
+        });
+      }
+      for (const interior of replacement.auxiliaryInteriors || []) {
+        const file = resolveRelative(output, interior.objectRelative, 'retained interior object');
+        objects.push({ path: interior.objectRelative, bytes: fs.statSync(file).size, sha256: sha256File(file),
+          ownerKind: 'accepted-assembly-auxiliary-interior', targetSymbol: interior.symbol,
+          retainedInterior: interior });
       }
       for (const tail of replacement.auxiliaryTails) {
         if (!tail.objectRelative) continue;
@@ -1797,7 +2511,7 @@ function writeObjectManifest(output, linkedObjects, phase8, replacements, compil
   });
   const manifestFile = path.join(output, 'objects', 'manifest.json');
   writeJson(manifestFile, {
-    schemaVersion: 4,
+    schemaVersion: 5,
     generator: 'tools/build_phase8_matching_c.js',
     targets: phase8.targets.map((target) => target.symbol),
     linkedObjects: objects,
@@ -1814,6 +2528,8 @@ function writeObjectManifest(output, linkedObjects, phase8, replacements, compil
 
 function writeLayout(phase8, phase7, output, replacements) {
   const layout = readJson(phase7.files.layout);
+  const canonicalBaserom = loadCanonicalBaserom(phase8);
+  const textLinkContext = textContract.linkContext(output, canonicalBaserom);
   for (const target of phase8.targets) {
     const retainedAssemblySlices = targetRetainedAssemblySlices(target);
     for (const textOwner of targetTextOwners(target)) {
@@ -1832,6 +2548,13 @@ function writeLayout(phase8, phase7, output, replacements) {
           || owner.slices.length !== retainedForOwner.length + 1) {
         fail('Phase 7 target layout row drift: ' + target.symbol + ' ' + textOwner.sectionName);
       }
+      const representation = textContract.recordsForTarget(target, output, textLinkContext);
+      const ownerIndex = targetTextOwners(target).findIndex(record => record.sectionName === textOwner.sectionName);
+      const ownerRepresentation = { textContract: representation.textContract.owners[ownerIndex],
+        objectEvidence: { raw: representation.objectEvidence.rawOwners[ownerIndex], stripped: representation.objectEvidence.strippedOwners[ownerIndex] },
+        linkEvidence: { owner: representation.linkEvidence.owners[ownerIndex], map: representation.linkEvidence.mapContributions[ownerIndex] } };
+      owner.textRepresentations = [...(owner.textRepresentations || []), ownerRepresentation];
+      Object.assign(matchingSlices[0], ownerRepresentation);
       owner.baseInputKind = owner.inputKind;
       owner.inputKind = retainedForOwner.length > 0 ? 'mixed-matching-c-and-assembly' : 'matching-c';
       owner.source = target.source;
@@ -1868,9 +2591,11 @@ function writeLayout(phase8, phase7, output, replacements) {
       }
     }
   }
+  layout.schemaVersion = 2;
   layout.generator = 'tools/build_phase8_matching_c.js';
   layout.phase8MatchingCTargets = phase8.targets.map((target) => {
     return {
+      ...textContract.recordsForTarget(target, output, textLinkContext),
       symbol: target.symbol,
       rowIndex: target.rowIndex,
       sectionName: target.sectionName,
@@ -1897,13 +2622,21 @@ function writeLayout(phase8, phase7, output, replacements) {
   });
   layout.phase8AuxiliarySections = phase8.targets.flatMap((target) => target.auxiliarySections.map((auxiliary) => {
     const replacement = replacements.get(auxiliary.ownerChunkIndex);
+    const prefix = replacement.auxiliaryPrefixes.find((record) => (
+      record.symbol === target.symbol && record.outputSection === auxiliary.outputSection
+    ));
     const tail = replacement.auxiliaryTails.find((record) => (
       record.symbol === target.symbol && record.outputSection === auxiliary.outputSection
     ));
-    if (!tail) fail('Phase 8 auxiliary preserved-tail record is missing: ' + target.symbol);
+    if (!prefix || !tail) fail('Phase 8 auxiliary retained-fragment record is missing: ' + target.symbol);
     return {
       symbol: target.symbol,
       compilerSection: auxiliary.compilerSection,
+      ...(auxiliary.compilerOccurrences ? { compilerOccurrences: auxiliary.compilerOccurrences } : {}),
+      retainedInteriorBefore: interiorRecord(target, auxiliary),
+      ...(auxiliary.sourceObjectPrefix ? {
+        sourceObjectPrefix: projectAuxiliarySourceObjectPrefix(auxiliary),
+      } : {}),
       outputSection: auxiliary.outputSection,
       ownerRowIndex: auxiliary.ownerRowIndex,
       romStart: auxiliary.romStartNumber,
@@ -1914,6 +2647,14 @@ function writeLayout(phase8, phase7, output, replacements) {
       entryBytes: auxiliary.entryBytes,
       trailingPaddingBytes: auxiliary.trailingPaddingBytes,
       trailingPaddingSha256: auxiliary.expectedTrailingPaddingSha256,
+      acceptedAssemblyPrefixBytes: prefix.prefixBytes,
+      acceptedAssemblyPrefixObject: prefix.objectRelative,
+      acceptedAssemblyPrefixInputSection: prefix.inputSection,
+      acceptedAssemblyPrefixSha256: prefix.prefixSha256,
+      acceptedAssemblyPrefixRomStart: prefix.romStart,
+      acceptedAssemblyPrefixRomEndExclusive: prefix.romEndExclusive,
+      acceptedAssemblyPrefixVramStart: prefix.vramStart,
+      acceptedAssemblyPrefixVramEndExclusive: prefix.vramEndExclusive,
       acceptedAssemblyTailBytes: tail.tailBytes,
       acceptedAssemblyTailObject: tail.objectRelative,
       acceptedAssemblyTailInputSection: tail.inputSection,
@@ -1960,7 +2701,7 @@ function sameAcceptedLayoutSliceStructure(layoutSlice, acceptedSlice, expectedIn
 }
 
 function verifyPhase8Layout(phase8, layout, replacements) {
-  if (layout.schemaVersion !== 1
+  if (layout.schemaVersion !== 2
       || layout.rows !== phase8.model.rows.length
       || layout.slices !== phase8.model.slices.length
       || layout.representedBytes !== phase8.model.config.rom.bytes
@@ -2016,6 +2757,12 @@ function verifyPhase8Layout(phase8, layout, replacements) {
           || layoutTargetOwner.fallbackObject !== replacements.get(textOwner.chunkIndex).fallbackRelative) {
         fail('Phase 8 external layout target drift: ' + target.symbol + ' ' + textOwner.sectionName);
       }
+      const ownerIndex = textOwners.findIndex(owner => owner.sectionName === textOwner.sectionName);
+      const expectedRepresentation = { textContract: layoutTarget.textContract?.owners[ownerIndex],
+        objectEvidence: { raw: layoutTarget.objectEvidence?.rawOwners[ownerIndex], stripped: layoutTarget.objectEvidence?.strippedOwners[ownerIndex] },
+        linkEvidence: { owner: layoutTarget.linkEvidence?.owners[ownerIndex], map: layoutTarget.linkEvidence?.mapContributions[ownerIndex] } };
+      textContract.validateRecords(layoutOwner.textRepresentations?.find(record => record.textContract?.outputSection === textOwner.sectionName), expectedRepresentation, 'layout owner');
+      textContract.validateRecords(layoutOwner.slices?.find(record => record.sectionName === textOwner.sectionName), expectedRepresentation, 'layout slice');
       if (retainedForOwner.length > 0) {
         if (!Array.isArray(layoutOwner.slices) || layoutOwner.slices.length !== retainedForOwner.length + 1) {
           fail('Phase 8 external mixed layout slice census drift: ' + target.symbol);
@@ -2046,11 +2793,23 @@ function verifyPhase8Layout(phase8, layout, replacements) {
       }
     }
     for (const auxiliary of target.auxiliarySections) {
+      const prefix = auxiliaryRetainedContract(auxiliary, 'prefix');
+      const replacement = replacements.get(auxiliary.ownerChunkIndex);
+      const recordedPrefix = replacement && replacement.auxiliaryPrefixes.find((record) => (
+        record.symbol === target.symbol && record.outputSection === auxiliary.outputSection
+      ));
+      const recordedTail = replacement && replacement.auxiliaryTails.find((record) => (
+        record.symbol === target.symbol && record.outputSection === auxiliary.outputSection
+      ));
       const layoutAuxiliary = layout.phase8AuxiliarySections.find((record) => (
         record.symbol === target.symbol && record.outputSection === auxiliary.outputSection
       ));
-      if (!layoutAuxiliary
+      if (!layoutAuxiliary || !recordedPrefix || !recordedTail
+          || !isDeepStrictEqual(layoutAuxiliary.retainedInteriorBefore, interiorRecord(target, auxiliary))
           || layoutAuxiliary.compilerSection !== auxiliary.compilerSection
+          || !sameJson(layoutAuxiliary.compilerOccurrences, auxiliary.compilerOccurrences)
+          || !sameJson(layoutAuxiliary.sourceObjectPrefix,
+            auxiliary.sourceObjectPrefix ? projectAuxiliarySourceObjectPrefix(auxiliary) : undefined)
           || layoutAuxiliary.ownerRowIndex !== auxiliary.ownerRowIndex
           || layoutAuxiliary.romStart !== auxiliary.romStartNumber
           || layoutAuxiliary.romEndExclusive !== auxiliary.romEndNumber
@@ -2060,7 +2819,16 @@ function verifyPhase8Layout(phase8, layout, replacements) {
           || layoutAuxiliary.entryBytes !== auxiliary.entryBytes
           || layoutAuxiliary.trailingPaddingBytes !== auxiliary.trailingPaddingBytes
           || layoutAuxiliary.trailingPaddingSha256 !== auxiliary.expectedTrailingPaddingSha256
+          || layoutAuxiliary.acceptedAssemblyPrefixBytes !== prefix.bytes
+          || layoutAuxiliary.acceptedAssemblyPrefixObject !== recordedPrefix.objectRelative
+          || layoutAuxiliary.acceptedAssemblyPrefixInputSection !== prefix.inputSection
+          || layoutAuxiliary.acceptedAssemblyPrefixSha256 !== prefix.sha256
+          || layoutAuxiliary.acceptedAssemblyPrefixRomStart !== prefix.romStart
+          || layoutAuxiliary.acceptedAssemblyPrefixRomEndExclusive !== prefix.romEndExclusive
+          || layoutAuxiliary.acceptedAssemblyPrefixVramStart !== prefix.vramStart
+          || layoutAuxiliary.acceptedAssemblyPrefixVramEndExclusive !== prefix.vramEndExclusive
           || layoutAuxiliary.acceptedAssemblyTailBytes !== auxiliary.ownerTailBytes
+          || layoutAuxiliary.acceptedAssemblyTailObject !== recordedTail.objectRelative
           || layoutAuxiliary.acceptedAssemblyTailInputSection !== auxiliary.ownerTailSection
           || layoutAuxiliary.acceptedAssemblyTailSha256 !== auxiliary.ownerTailSha256
           || layoutAuxiliary.acceptedAssemblyTailRomStart !== auxiliary.ownerTailRomStartNumber
@@ -2074,11 +2842,12 @@ function verifyPhase8Layout(phase8, layout, replacements) {
   return layout;
 }
 
-function linkPhase8(phase8, output, objectManifest, tools) {
-  const linkerRoot = path.join(output, 'linker');
-  ensureDir(linkerRoot);
-  const linkerScript = path.join(linkerRoot, 'phase8.ld');
-  const responseFile = path.join(linkerRoot, 'objects.rsp');
+function renderPhase8LinkerScript(phase8, objectManifest) {
+  if (!phase8 || !Array.isArray(phase8.targets)
+      || !objectManifest || !Array.isArray(objectManifest.linkedObjects)) {
+    fail('Phase 8 linker input contract is malformed');
+  }
+  const auxiliaryGroups = validateAuxiliaryOwnerGroups(phase8.targets);
   const aliases = new Map();
   for (const [symbol, value] of Object.entries(phase8.linkSymbols || {})) {
     if (!/^[A-Za-z_.$][A-Za-z0-9_.$]*$/.test(symbol)) fail('unsafe Phase 8 link alias: ' + symbol);
@@ -2097,6 +2866,19 @@ function linkPhase8(phase8, output, objectManifest, tools) {
   }
   const aliasText = [...aliases.entries()].sort((left, right) => left[0].localeCompare(right[0])).map(([symbol, value]) => symbol + ' = ' + hex(value) + ';');
   let linkerText = renderLinkerScript(phase8.model);
+  for (const target of phase8.targets.filter((entry) => entry.nativeTextTail)) {
+    textContract.resolveTextContract(target);
+    const selector = '    *(' + target.sectionName + ')';
+    if (linkerText.split(selector).length !== 2) fail('native input selector is ambiguous');
+    linkerText = linkerText.replace(selector, '    objects/c/' + target.symbol + '.o(.text)');
+  }
+  if (phase8.targets.some(target => target.nativeTextTail)) {
+    // GNU 2.6 otherwise places the empty native BSS orphan after the final overlay BSS.
+    // Native object validation requires this input to contain no bytes.
+    const emptyBss = phase8.targets.filter(target => target.nativeTextTail)
+      .map(target => '    objects/c/' + target.symbol + '.o(.bss)').join('\n');
+    linkerText = linkerText.replace('  /DISCARD/ :', '  .bss 0 (NOLOAD) : {\n' + emptyBss + '\n  }\n  /DISCARD/ :');
+  }
   const assignedAuxiliaryOwners = new Set();
   for (const target of phase8.targets) {
     for (const auxiliary of target.auxiliarySections) {
@@ -2116,6 +2898,18 @@ function linkPhase8(phase8, output, objectManifest, tools) {
       );
     }
   }
+  for (const prefix of objectManifest.linkedObjects.filter((record) => record.ownerKind === 'accepted-assembly-auxiliary-prefix')) {
+    const selector = `    *(${prefix.outputSection})`;
+    const occurrences = linkerText.split(selector).length - 1;
+    if (occurrences !== 1
+        || prefix.inputSection !== prefix.outputSection + '.prefix'
+        || ['.data', '.bss'].includes(prefix.inputSection)
+        || prefix.sectionType !== 'SHT_PROGBITS'
+        || !sameJson(prefix.sectionFlags, ['SHF_ALLOC'])) {
+      fail('auxiliary preserved-prefix linker selector drift: ' + prefix.targetSymbol + ' ' + prefix.outputSection);
+    }
+    linkerText = linkerText.replace(selector, `    ${prefix.path}(${prefix.inputSection})\n${selector}`);
+  }
   for (const tail of objectManifest.linkedObjects.filter((record) => record.ownerKind === 'accepted-assembly-auxiliary-tail')) {
     const selector = `    *(${tail.outputSection})`;
     const occurrences = linkerText.split(selector).length - 1;
@@ -2128,7 +2922,35 @@ function linkPhase8(phase8, output, objectManifest, tools) {
     }
     linkerText = linkerText.replace(selector, `${selector}\n    ${tail.path}(${tail.inputSection})`);
   }
-  fs.writeFileSync(linkerScript, linkerText + (aliasText.length ? '\n' + aliasText.join('\n') + '\n' : ''));
+  for (const members of auxiliaryGroups.values()) {
+    if (!members.some(({ auxiliary }) => auxiliary.preservedInteriorBefore)) continue;
+    const selector = `    *(${members[0].auxiliary.outputSection})`;
+    const inputs = [];
+    for (const { target, auxiliary } of members) {
+      const expected = interiorRecord(target, auxiliary);
+      if (expected) {
+        const owners = objectManifest.linkedObjects.filter((record) => record.ownerKind === 'accepted-assembly-auxiliary-interior'
+          && record.targetSymbol === target.symbol && record.retainedInterior?.outputSection === auxiliary.outputSection);
+        if (owners.length !== 1 || owners[0].path !== expected.objectRelative
+            || !Object.entries(expected).every(([key, value]) => isDeepStrictEqual(owners[0].retainedInterior[key], value))) {
+          fail('retained interior linker ownership drift');
+        }
+        inputs.push(`    ${expected.objectRelative}(${expected.inputSection})`);
+      }
+      inputs.push(`    objects/c/${target.symbol}.o(${auxiliary.outputSection})`);
+    }
+    if (linkerText.split(selector).length !== 2) fail('retained interior linker selector drift');
+    linkerText = linkerText.replace(selector, inputs.join('\n'));
+  }
+  return linkerText + (aliasText.length ? '\n' + aliasText.join('\n') + '\n' : '');
+}
+
+function linkPhase8(phase8, output, objectManifest, tools) {
+  const linkerRoot = path.join(output, 'linker');
+  ensureDir(linkerRoot);
+  const linkerScript = path.join(linkerRoot, 'phase8.ld');
+  const responseFile = path.join(linkerRoot, 'objects.rsp');
+  fs.writeFileSync(linkerScript, renderPhase8LinkerScript(phase8, objectManifest));
   fs.writeFileSync(responseFile, objectManifest.linkedObjects.map((record) => record.path).join('\n') + '\n');
   const elfFile = path.join(output, 'phase8.elf');
   const mapFile = path.join(output, 'phase8.map');
@@ -2338,7 +3160,7 @@ function verifyTargetMapOwner(target, mapText) {
       }
     }
     const block = lines.slice(heading, end);
-    const contributions = block.filter((line) => new RegExp('^\\s+' + escaped + '\\s+.*\\sobjects/').test(line));
+    const contributions = block.filter((line) => new RegExp('^\\s+' + escapeRegex(textContract.inputSection(target, owner.sectionName)) + '\\s+.*\\sobjects/').test(line));
     const forbiddenOwner = 'objects/assembly/chunk_' + String(owner.chunkIndex).padStart(3, '0') + '.o';
     if (contributions.length !== 1 || !contributions[0].includes(expectedOwner)
         || block.some((line) => line.includes(forbiddenOwner))) {
@@ -2390,7 +3212,7 @@ function verifyTargetMapOwner(target, mapText) {
   };
 }
 
-function verifyAuxiliaryMapOwner(target, auxiliary, tail, mapText) {
+function verifyAuxiliaryMapOwner(target, auxiliary, tail, mapText, prefix = null) {
   const escaped = escapeRegex(auxiliary.outputSection);
   const lines = mapText.split(/\r?\n/);
   const heading = lines.findIndex((line) => new RegExp('^' + escaped + '\\s').test(line));
@@ -2434,6 +3256,45 @@ function verifyAuxiliaryMapOwner(target, auxiliary, tail, mapText) {
   if (collisions.length > 0) {
     fail('auxiliary linker-map ownership collision: ' + target.symbol + ' ' + auxiliary.outputSection);
   }
+  const prefixContract = auxiliaryRetainedContract(auxiliary, 'prefix');
+  if (prefixContract.bytes > 0) {
+    if (!prefix
+        || prefix.inputSection !== prefixContract.inputSection
+        || prefix.sectionType !== 'SHT_PROGBITS'
+        || !sameJson(prefix.sectionFlags, ['SHF_ALLOC'])
+        || prefix.alignment !== prefixContract.alignment
+        || prefix.prefixBytes !== prefixContract.bytes
+        || prefix.prefixSha256 !== prefixContract.sha256
+        || prefix.romStart !== prefixContract.romStart
+        || prefix.romEndExclusive !== prefixContract.romEndExclusive
+        || prefix.vramStart !== prefixContract.vramStart
+        || prefix.vramEndExclusive !== prefixContract.vramEndExclusive
+        || prefix.ownerOriginalAssembly !== auxiliary.ownerOriginalAssembly
+        || prefix.ownerOriginalAssemblySha256 !== auxiliary.ownerOriginalAssemblySha256) {
+      fail('auxiliary accepted assembly prefix contract drift: ' + target.symbol + ' ' + auxiliary.outputSection);
+    }
+    const prefixContributions = contributions.filter((record) => (
+      record.inputSection === prefix.inputSection
+      && record.owner.includes(prefix.objectRelative)
+    ));
+    if (prefixContributions.length !== 1
+        || prefixContributions[0].address !== prefixContract.vramStart
+        || prefixContributions[0].bytes !== prefixContract.bytes) {
+      fail('auxiliary accepted assembly prefix placement drift: ' + target.symbol + ' ' + auxiliary.outputSection);
+    }
+    const prefixCollisions = contributions.filter((record) => (
+      record !== prefixContributions[0]
+      && record.bytes > 0
+      && record.address < prefixContract.vramEndExclusive
+      && record.address + record.bytes > prefixContract.vramStart
+    ));
+    if (prefixCollisions.length > 0) {
+      fail('auxiliary preserved-prefix ownership collision: ' + target.symbol + ' ' + auxiliary.outputSection);
+    }
+  } else if ((auxiliary.ownerFragmentIndex || 0) === 0
+      && contributions.some((record) => record.inputSection === auxiliary.outputSection + '.prefix')) {
+    fail('unexpected auxiliary prefix contribution: ' + target.symbol + ' ' + auxiliary.outputSection);
+  }
   if (tail.tailBytes > 0) {
     if (tail.inputSection !== auxiliary.ownerTailSection
         || tail.sectionType !== 'SHT_PROGBITS'
@@ -2475,6 +3336,10 @@ function verifyAuxiliaryMapOwner(target, auxiliary, tail, mapText) {
   return {
     linkedOwner: expectedOwner,
     contribution: cContributions[0].line,
+    prefixOwner: prefixContract.bytes > 0 ? prefix.objectRelative : null,
+    prefixContribution: prefixContract.bytes > 0
+      ? contributions.find((record) => record.inputSection === prefix.inputSection && record.owner.includes(prefix.objectRelative)).line
+      : null,
     tailOwner: tail.objectRelative,
     tailContribution: tail.tailBytes > 0
       ? contributions.find((record) => record.inputSection === tail.inputSection && record.owner.includes(tail.objectRelative)).line
@@ -2482,12 +3347,53 @@ function verifyAuxiliaryMapOwner(target, auxiliary, tail, mapText) {
   };
 }
 
+function verifyInteriorGroupMapOwners(phase8, mapText) {
+  for (const members of validateAuxiliaryOwnerGroups(phase8.targets).values()) {
+    if (!members.some(({ auxiliary }) => auxiliary.preservedInteriorBefore)) continue;
+    const auxiliary = members[0].auxiliary;
+    const expected = [];
+    const firstPrefix = auxiliaryRetainedContract(auxiliary, 'prefix');
+    if (firstPrefix.bytes > 0) expected.push({ section: firstPrefix.inputSection, address: firstPrefix.vramStart,
+      bytes: firstPrefix.bytes, owner: auxiliaryRetainedRelative(auxiliary.ownerChunkIndex, auxiliary.outputSection, 'prefix', 'o') });
+    for (const member of members) {
+      const interior = interiorRecord(member.target, member.auxiliary);
+      if (interior) expected.push({ section: interior.inputSection, address: interior.vramStart,
+        bytes: interior.bytes, owner: interior.objectRelative });
+      expected.push({ section: member.auxiliary.outputSection, address: member.auxiliary.vramStartNumber,
+        bytes: member.auxiliary.bytes, owner: `objects/c/${member.target.symbol}.o` });
+    }
+    const last = members[members.length - 1].auxiliary;
+    const tail = auxiliaryRetainedContract(last, 'tail');
+    if (tail.bytes > 0) expected.push({ section: tail.inputSection, address: tail.vramStart,
+      bytes: tail.bytes, owner: auxiliaryTailRelative(last.ownerChunkIndex, last.outputSection, 'o') });
+    const lines = mapText.split(/\r?\n/);
+    const headings = lines.map((line, index) => new RegExp(`^${escapeRegex(auxiliary.outputSection)}\\s`).test(line) ? index : -1)
+      .filter((index) => index >= 0);
+    if (headings.length !== 1) fail('retained interior row map heading census drift');
+    let end = headings[0] + 1;
+    while (end < lines.length && !/^(?:\.[A-Za-z0-9_.]+|\/DISCARD\/)\s/.test(lines[end])) end += 1;
+    const actual = lines.slice(headings[0] + 1, end).map((line) => {
+      const match = /^\s+(\.[A-Za-z0-9_.]+)\s+(?:0x)?([0-9A-Fa-f]+)\s+(?:0x)?([0-9A-Fa-f]+)\s+(.+)$/.exec(line);
+      if (!match) return null;
+      const owner = /^[0-9A-Fa-f]+\s+2\*\*\d+\s+elf32-bigmips\s+(\S+)\(overhead \d+ bytes\)$/.exec(match[4].trim());
+      if (!owner) fail('retained interior map contribution grammar drift');
+      return { section: match[1], address: parseInt(match[2], 16), bytes: parseInt(match[3], 16),
+        owner: owner[1].replace(/\\/g, '/') };
+    }).filter(Boolean);
+    if (!isDeepStrictEqual(actual, expected)) fail('retained interior row map has missing, duplicate, reordered or contradictory owners');
+  }
+}
+
 function verifyObjectManifest(output, phase8) {
   const manifestFile = path.join(output, 'objects', 'manifest.json');
   if (!fs.existsSync(manifestFile)) fail('Phase 8 object manifest is missing');
   const manifest = readJson(manifestFile);
+  for (const target of phase8.targets) {
+    const record = manifest.linkedObjects?.find((entry) => entry.targetSymbol === target.symbol && entry.ownerKind === 'matching-c-target');
+    textContract.validateRecords(record, textContract.recordsForTarget(target, output), 'manifest');
+  }
   const expectedPruned = new Set([...targetsByChunk(phase8).keys()]);
-  if (manifest.schemaVersion !== 4
+  if (manifest.schemaVersion !== 5
       || !Array.isArray(manifest.linkedObjects)
       || !Array.isArray(manifest.comparisonObjects)
       || !Array.isArray(manifest.targets)
@@ -2502,23 +3408,73 @@ function verifyObjectManifest(output, phase8) {
   }
   const cOwners = manifest.linkedObjects.filter((record) => record.ownerKind === 'matching-c-target');
   const prunedOwners = manifest.linkedObjects.filter((record) => record.ownerKind === 'accepted-assembly-chunk-with-targets-removed');
+  const auxiliaryPrefixOwners = manifest.linkedObjects.filter((record) => record.ownerKind === 'accepted-assembly-auxiliary-prefix');
   const auxiliaryTailOwners = manifest.linkedObjects.filter((record) => record.ownerKind === 'accepted-assembly-auxiliary-tail');
+  const auxiliaryInteriorOwners = manifest.linkedObjects.filter((record) => record.ownerKind === 'accepted-assembly-auxiliary-interior');
+  const expectedInteriors = interiorRecords(phase8.targets);
+  if (auxiliaryInteriorOwners.length !== expectedInteriors.length) fail('retained interior manifest census drift');
+  for (const expected of expectedInteriors) {
+    const matches = auxiliaryInteriorOwners.filter((record) => record.targetSymbol === expected.symbol
+      && record.retainedInterior?.outputSection === expected.outputSection);
+    if (matches.length !== 1 || matches[0].path !== expected.objectRelative
+        || manifest.linkedObjects.filter((record) => record.path === expected.objectRelative).length !== 1
+        || !Object.entries(expected).every(([key, value]) => isDeepStrictEqual(matches[0].retainedInterior[key], value))
+        || matches[0].retainedInterior.objectSha256 !== matches[0].sha256
+        || matches[0].retainedInterior.binarySha256 !== expected.sha256) fail('retained interior manifest identity drift');
+  }
+  const expectedAuxiliaryPrefixes = phase8.targets.flatMap((target) => (
+    target.auxiliarySections.filter((auxiliary) => (auxiliary.ownerPrefixBytes || 0) > 0)
+  ));
   const expectedAuxiliaryTails = phase8.targets.flatMap((target) => (
     target.auxiliarySections.filter((auxiliary) => auxiliary.ownerTailBytes > 0)
   ));
   if (cOwners.length !== phase8.targets.length
       || prunedOwners.length !== expectedPruned.size
+      || auxiliaryPrefixOwners.length !== expectedAuxiliaryPrefixes.length
       || auxiliaryTailOwners.length !== expectedAuxiliaryTails.length
       || manifest.comparisonObjects.length !== expectedPruned.size) {
     fail('Phase 8 target ownership census drift');
   }
   for (const target of phase8.targets) {
     const cOwner = cOwners.find((record) => record.targetSymbol === target.symbol);
+    const expectedSourceObjectPrefixes = target.auxiliarySections
+      .filter((auxiliary) => auxiliary.sourceObjectPrefix)
+      .map((auxiliary) => ({
+        outputSection: auxiliary.outputSection,
+        sourceObject: 'objects/c/' + target.symbol + '.source-object.o',
+        sourceObjectSha256: sha256File(path.join(output, 'objects', 'c', target.symbol + '.source-object.o')),
+        linkedObject: 'objects/c/' + target.symbol + '.o',
+        linkedObjectSha256: sha256File(path.join(output, 'objects', 'c', target.symbol + '.o')),
+        ...projectAuxiliarySourceObjectPrefix(auxiliary),
+      }));
     if (!cOwner || cOwner.targetSection !== target.sectionName
         || !sameJson(cOwner.targetSections, targetTextOwners(target).map((owner) => owner.sectionName))
         || !sameJson(cOwner.ownerRows, targetTextOwners(target).map((owner) => owner.rowIndex))
-        || !sameJson(cOwner.auxiliarySections, target.auxiliarySections.map((auxiliary) => auxiliary.outputSection))) {
+        || !sameJson(cOwner.auxiliarySections, target.auxiliarySections.map((auxiliary) => auxiliary.outputSection))
+        || (expectedSourceObjectPrefixes.length === 0
+          ? Object.prototype.hasOwnProperty.call(cOwner, 'auxiliarySourceObjectPrefixes')
+          : !sameJson(cOwner.auxiliarySourceObjectPrefixes, expectedSourceObjectPrefixes))) {
       fail('Phase 8 matching C object ownership manifest drift: ' + target.symbol);
+    }
+    for (const auxiliary of target.auxiliarySections.filter((record) => (record.ownerPrefixBytes || 0) > 0)) {
+      const prefixOwner = auxiliaryPrefixOwners.find((record) => (
+        record.targetSymbol === target.symbol && record.outputSection === auxiliary.outputSection
+      ));
+      if (!prefixOwner
+          || prefixOwner.inputSection !== auxiliary.ownerPrefixSection
+          || prefixOwner.sectionType !== 'SHT_PROGBITS'
+          || !sameJson(prefixOwner.sectionFlags, ['SHF_ALLOC'])
+          || prefixOwner.alignment !== auxiliary.ownerPrefixAlignment
+          || prefixOwner.prefixBytes !== auxiliary.ownerPrefixBytes
+          || prefixOwner.prefixSha256 !== auxiliary.ownerPrefixSha256
+          || prefixOwner.romStart !== auxiliary.ownerPrefixRomStartNumber
+          || prefixOwner.romEndExclusive !== auxiliary.ownerPrefixRomEndNumber
+          || prefixOwner.vramStart !== auxiliary.ownerPrefixVramStartNumber
+          || prefixOwner.vramEndExclusive !== auxiliary.ownerPrefixVramEndNumber
+          || prefixOwner.ownerOriginalAssembly !== auxiliary.ownerOriginalAssembly
+          || prefixOwner.ownerOriginalAssemblySha256 !== auxiliary.ownerOriginalAssemblySha256) {
+        fail('Phase 8 auxiliary prefix ownership manifest drift: ' + target.symbol + ' ' + auxiliary.outputSection);
+      }
     }
     for (const auxiliary of target.auxiliarySections.filter((record) => record.ownerTailBytes > 0)) {
       const tailOwner = auxiliaryTailOwners.find((record) => (
@@ -2578,6 +3534,7 @@ function verifyPhase8Output(phase8, options) {
   const verificationModel = phase8VerificationModel(phase8);
   const elfResult = verifyElfAgainstModel(verificationModel, elf);
   const mapText = fs.readFileSync(files.map, 'utf8');
+  verifyInteriorGroupMapOwners(phase8, mapText);
   const mapResult = verifyMap(phase8.model, mapText);
   const romResult = verifyRom(phase8.model, fs.readFileSync(files.rom));
   const canonicalBaserom = loadCanonicalBaserom(phase8);
@@ -2585,6 +3542,37 @@ function verifyPhase8Output(phase8, options) {
   const replacements = options.replacements || new Map([...targetsByChunk(phase8).entries()].map(([chunkIndex, chunkTargets]) => [chunkIndex, {
     linkedChunkRelative: 'objects/assembly/chunk_' + String(chunkIndex).padStart(3, '0') + '.o',
     fallbackRelative: 'comparison/original/chunk_' + String(chunkIndex).padStart(3, '0') + '.o',
+    auxiliaryInteriors: interiorRecords(chunkTargets).filter((record) => {
+      const target = chunkTargets.find((candidate) => candidate.symbol === record.symbol);
+      return target.auxiliarySections.find((auxiliary) => auxiliary.outputSection === record.outputSection).ownerChunkIndex === chunkIndex;
+    }),
+    auxiliaryPrefixes: chunkTargets.flatMap((target) => target.auxiliarySections
+      .filter((auxiliary) => auxiliary.ownerChunkIndex === chunkIndex)
+      .map((auxiliary) => {
+        const prefix = auxiliaryRetainedContract(auxiliary, 'prefix');
+        return {
+          symbol: target.symbol,
+          outputSection: auxiliary.outputSection,
+          inputSection: prefix.inputSection,
+          sectionType: 'SHT_PROGBITS',
+          sectionFlags: ['SHF_ALLOC'],
+          alignment: prefix.alignment,
+          prefixBytes: prefix.bytes,
+          prefixSha256: prefix.sha256,
+          romStart: prefix.romStart,
+          romEndExclusive: prefix.romEndExclusive,
+          vramStart: prefix.vramStart,
+          vramEndExclusive: prefix.vramEndExclusive,
+          ownerOriginalAssembly: auxiliary.ownerOriginalAssembly,
+          ownerOriginalAssemblySha256: auxiliary.ownerOriginalAssemblySha256,
+          binaryRelative: prefix.bytes > 0
+            ? auxiliaryRetainedRelative(chunkIndex, auxiliary.outputSection, 'prefix', 'bin')
+            : null,
+          objectRelative: prefix.bytes > 0
+            ? auxiliaryRetainedRelative(chunkIndex, auxiliary.outputSection, 'prefix', 'o')
+            : null,
+        };
+      })),
     auxiliaryTails: chunkTargets.flatMap((target) => target.auxiliarySections
       .filter((auxiliary) => auxiliary.ownerChunkIndex === chunkIndex)
       .map((auxiliary) => ({
@@ -2615,7 +3603,11 @@ function verifyPhase8Output(phase8, options) {
     }))),
   }]));
   const targetResults = [];
+  const textLayout = readJson(files.layout);
+  const textLinkContext = { canonicalBaserom, elf, mapText };
   for (const target of phase8.targets) {
+    const representation = textContract.recordsForTarget(target, output, textLinkContext);
+    textContract.validateRecords(textLayout.phase8MatchingCTargets?.find((record) => record.symbol === target.symbol), representation, 'layout');
     const cObject = path.join(output, 'objects', 'c', target.symbol + '.o');
     const ownerFiles = targetTextOwners(target).map((owner) => {
       const replacement = replacements.get(owner.chunkIndex);
@@ -2663,12 +3655,18 @@ function verifyPhase8Output(phase8, options) {
     }
 
     const cElf = parseElfFile(cObject);
-    const cSection = cElf.sections.find((section) => section.name === target.sectionName);
+    const sourceObjectElf = parseElfFile(path.join(
+      output,
+      'objects',
+      'c',
+      target.symbol + '.source-object.o',
+    ));
+    const cSection = cElf.sections.find((section) => section.name === textContract.inputSection(target, target.sectionName));
     if (!cSection) fail('recorded C object target section is missing: ' + target.symbol);
     verifyCompilerTextFunctions(cElf, target, cSection);
     const ownerResults = ownerFiles.map((record, ownerIndex) => {
       const { owner } = record;
-      const cSections = cElf.sections.filter((section) => section.name === owner.sectionName);
+      const cSections = cElf.sections.filter((section) => section.name === textContract.inputSection(target, owner.sectionName));
       if (cSections.length !== 1 || cSections[0].size !== owner.bytes) {
         fail('recorded C object target section shape drift: ' + target.symbol + ' ' + owner.sectionName);
       }
@@ -2771,30 +3769,48 @@ function verifyPhase8Output(phase8, options) {
       const tail = auxiliaryReplacement.auxiliaryTails.find((record) => (
         record.symbol === target.symbol && record.outputSection === auxiliary.outputSection
       ));
-      if (!tail) fail('auxiliary preserved-tail record is missing: ' + target.symbol + ' ' + auxiliary.outputSection);
+      const prefix = auxiliaryReplacement.auxiliaryPrefixes.find((record) => (
+        record.symbol === target.symbol && record.outputSection === auxiliary.outputSection
+      ));
+      if (!prefix || !tail) fail('auxiliary retained-fragment record is missing: ' + target.symbol + ' ' + auxiliary.outputSection);
       const linkedComparison = compareLinkedAuxiliaryBytes(target, auxiliary, elf, canonicalBaserom);
       if (!linkedComparison.rawBytesExact
           || linkedComparison.linkedSha256 !== auxiliary.expectedLinkedSha256
           || linkedComparison.expectedSha256 !== auxiliary.expectedLinkedSha256) {
         fail('linked auxiliary bytes differ from the accepted ROM reference: ' + target.symbol + ' ' + auxiliary.outputSection);
       }
-      const auxiliaryMapOwner = verifyAuxiliaryMapOwner(target, auxiliary, tail, mapText);
-      const cAuxiliarySections = cElf.sections.filter((section) => section.name === auxiliary.outputSection);
-      if (cAuxiliarySections.length !== 1
-          || cAuxiliarySections[0].type !== 1
-          || cAuxiliarySections[0].flags !== 2
-          || cAuxiliarySections[0].alignment !== auxiliary.alignment
-          || cAuxiliarySections[0].size !== auxiliary.bytes) {
-        fail('recorded C object auxiliary evidence drift: ' + target.symbol + ' ' + auxiliary.outputSection);
+      const auxiliaryMapOwner = verifyAuxiliaryMapOwner(target, auxiliary, tail, mapText, prefix);
+      const retainedInteriorBefore = verifyInteriorArtifacts(target, auxiliary, output, canonicalBaserom, elf);
+      const recordedInteriors = auxiliaryReplacement.auxiliaryInteriors || [];
+      const expectedInterior = interiorRecord(target, auxiliary);
+      const matches = recordedInteriors.filter((record) => record.symbol === target.symbol && record.outputSection === auxiliary.outputSection);
+      if (matches.length !== (expectedInterior ? 1 : 0) || (expectedInterior
+          && !Object.entries(expectedInterior).every(([key, value]) => isDeepStrictEqual(matches[0][key], value)))) {
+        fail('retained interior replacement record drift');
       }
-      const cAuxiliaryBytes = Buffer.from(elfSectionBytes(cElf, cAuxiliarySections[0]));
-      verifyAuxiliaryPaddingBytes(
-        cAuxiliaryBytes,
+      const sourceAuxiliaryEvidence = verifyAuxiliarySourceObjectSection(
+        sourceObjectElf,
+        target,
+        auxiliary,
+        target.symbol + ' ' + auxiliary.outputSection + ' verified source object',
+      );
+      const cAuxiliaryEvidence = verifyAuxiliaryLinkedObjectSection(
+        cElf,
+        target,
         auxiliary,
         target.symbol + ' ' + auxiliary.outputSection + ' verified C object',
       );
-      if (sha256Buffer(cAuxiliaryBytes) !== auxiliary.expectedObjectSha256
-          || !sameJson(auxiliaryRelocationRecords(cElf, target, auxiliary), auxiliary.expectedRelocations)) {
+      const cAuxiliaryBytes = cAuxiliaryEvidence.bytes;
+      const auxiliaryRelocations = cAuxiliaryEvidence.relocations;
+      const compilerOccurrences = verifyAuxiliaryCompilerOccurrences(
+        cAuxiliaryBytes,
+        auxiliaryRelocations,
+        auxiliary,
+        target.symbol + ' ' + auxiliary.outputSection + ' verified C object',
+        linkedComparison.linkedBytes,
+      );
+      if (!cAuxiliaryBytes.equals(sourceAuxiliaryEvidence.selectedBytes)
+          || !sameJson(auxiliaryRelocations, sourceAuxiliaryEvidence.relocations)) {
         fail('recorded C object auxiliary evidence drift: ' + target.symbol + ' ' + auxiliary.outputSection);
       }
       const fallbackAuxiliarySections = fallbackElf.sections.filter((section) => section.name === auxiliary.outputSection);
@@ -2819,6 +3835,34 @@ function verifyPhase8Output(phase8, options) {
         fail('original assembly auxiliary table remains a linked owner: ' + target.symbol + ' ' + auxiliary.outputSection);
       }
       const fallbackOwnerBytes = Buffer.from(elfSectionBytes(fallbackElf, fallbackAuxiliarySections[0]));
+      const prefixContract = auxiliaryRetainedContract(auxiliary, 'prefix');
+      const prefixOffset = prefixContract.romStart - auxiliary.ownerRomStartNumber;
+      const expectedPrefixBytes = Buffer.from(fallbackOwnerBytes.subarray(
+        prefixOffset,
+        prefixOffset + prefixContract.bytes,
+      ));
+      if (prefix.prefixBytes !== expectedPrefixBytes.length
+          || sha256Buffer(expectedPrefixBytes) !== prefixContract.sha256) {
+        fail('accepted assembly auxiliary prefix size or bytes drift: ' + target.symbol + ' ' + auxiliary.outputSection);
+      }
+      let prefixBinarySha256 = null;
+      let prefixObjectSha256 = null;
+      if (prefix.prefixBytes > 0) {
+        const prefixBinary = resolveRelative(output, prefix.binaryRelative, 'auxiliary preserved-prefix binary');
+        const prefixObject = resolveRelative(output, prefix.objectRelative, 'auxiliary preserved-prefix object');
+        if (!fs.existsSync(prefixBinary) || !fs.existsSync(prefixObject)) {
+          fail('auxiliary preserved-prefix artifact is missing: ' + target.symbol);
+        }
+        const prefixBinaryBytes = fs.readFileSync(prefixBinary);
+        prefixBinarySha256 = sha256Buffer(prefixBinaryBytes);
+        prefixObjectSha256 = sha256File(prefixObject);
+        if (!prefixBinaryBytes.equals(expectedPrefixBytes)
+            || (prefix.binarySha256 && prefixBinarySha256 !== prefix.binarySha256)
+            || (prefix.objectSha256 && prefixObjectSha256 !== prefix.objectSha256)) {
+          fail('auxiliary preserved-prefix artifact identity drift: ' + target.symbol);
+        }
+        validateAuxiliaryPrefixObject(parseElfFile(prefixObject), auxiliary, expectedPrefixBytes);
+      }
       const tailOffset = auxiliary.ownerTailRomStartNumber - auxiliary.ownerRomStartNumber;
       const expectedTailBytes = Buffer.from(fallbackOwnerBytes.subarray(
         tailOffset,
@@ -2834,8 +3878,10 @@ function verifyPhase8Output(phase8, options) {
         validateAuxiliaryTailObject(tailElf, auxiliary, expectedTailBytes);
       }
       auxiliaryResults.push({
+        retainedInteriorBefore,
         kind: auxiliary.kind,
         compilerSection: auxiliary.compilerSection,
+        ...(compilerOccurrences === null ? {} : { compilerOccurrences }),
         outputSection: auxiliary.outputSection,
         romStart: auxiliary.romStartNumber,
         romEndExclusive: auxiliary.romEndNumber,
@@ -2847,12 +3893,30 @@ function verifyPhase8Output(phase8, options) {
         trailingPaddingSha256: auxiliary.expectedTrailingPaddingSha256,
         alignment: auxiliary.alignment,
         objectSha256: auxiliary.expectedObjectSha256,
+        ...(sourceAuxiliaryEvidence.sourceObjectPrefix === null ? {} : {
+          sourceObjectPrefix: sourceAuxiliaryEvidence.sourceObjectPrefix,
+        }),
         linkedSha256: linkedComparison.linkedSha256,
         expectedLinkedSha256: auxiliary.expectedLinkedSha256,
         rawBytesExact: linkedComparison.rawBytesExact,
         ownerRowIndex: auxiliary.ownerRowIndex,
         linkedOwner: auxiliaryMapOwner.linkedOwner,
         mapContribution: auxiliaryMapOwner.contribution,
+        acceptedAssemblyPrefixBytes: prefix.prefixBytes,
+        acceptedAssemblyPrefixInputSection: prefix.inputSection,
+        acceptedAssemblyPrefixSha256: prefix.prefixSha256,
+        acceptedAssemblyPrefixRomStart: prefix.romStart,
+        acceptedAssemblyPrefixRomEndExclusive: prefix.romEndExclusive,
+        acceptedAssemblyPrefixVramStart: prefix.vramStart,
+        acceptedAssemblyPrefixVramEndExclusive: prefix.vramEndExclusive,
+        acceptedAssemblyPrefixOwner: auxiliaryMapOwner.prefixOwner,
+        acceptedAssemblyPrefixMapContribution: auxiliaryMapOwner.prefixContribution,
+        ...(prefix.prefixBytes > 0 ? {
+          acceptedAssemblyPrefixBinary: prefix.binaryRelative,
+          acceptedAssemblyPrefixBinarySha256: prefixBinarySha256,
+          acceptedAssemblyPrefixObject: prefix.objectRelative,
+          acceptedAssemblyPrefixObjectSha256: prefixObjectSha256,
+        } : {}),
         acceptedAssemblyTailBytes: tail.tailBytes,
         acceptedAssemblyTailInputSection: tail.inputSection,
         acceptedAssemblyTailSha256: tail.tailSha256,
@@ -2869,6 +3933,7 @@ function verifyPhase8Output(phase8, options) {
     if (!sourceObjectTarget) fail('verified source-to-object target record is missing: ' + target.symbol);
 
     targetResults.push({
+      ...representation,
       symbol: target.symbol,
       source: target.source,
       originalAssemblyFallback: target.originalAssembly,
@@ -2910,7 +3975,7 @@ function verifyPhase8Output(phase8, options) {
     canonicalBaserom,
   }));
   return {
-    schemaVersion: 4,
+    schemaVersion: 5,
     status: 'pass',
     counts: {
       primaryRows: phase8.model.rows.length,
@@ -2959,10 +4024,10 @@ function validateRecordedPhase8Build(phase8, options) {
   const output = path.resolve(options.output);
   const buildReport = options.buildReport;
   const verification = options.verification;
-  if (!buildReport || buildReport.schemaVersion !== 4 || buildReport.status !== 'pass') {
+  if (!buildReport || buildReport.schemaVersion !== 5 || buildReport.status !== 'pass') {
     fail('recorded Phase 8 build report did not pass');
   }
-  if (!verification || verification.schemaVersion !== 4 || verification.status !== 'pass') {
+  if (!verification || verification.schemaVersion !== 5 || verification.status !== 'pass') {
     fail('current Phase 8 verification result did not pass');
   }
   if (typeof options.compilerSha256 !== 'string' || buildReport.compiler.sha256 !== options.compilerSha256) {
@@ -2995,6 +4060,7 @@ function validateRecordedPhase8Build(phase8, options) {
   const recordedSources = buildReport.acceptedInputs && buildReport.acceptedInputs.cSources;
   const recordedDependencies = buildReport.acceptedInputs && buildReport.acceptedInputs.cDependencies;
   const recordedTargets = buildReport.targetReplacements;
+  const textLinkContext = textContract.linkContext(output, loadCanonicalBaserom(phase8));
   if (!Array.isArray(recordedSources) || recordedSources.length !== phase8.targets.length
       || !Array.isArray(recordedDependencies)
       || !Array.isArray(recordedTargets) || recordedTargets.length !== phase8.targets.length) {
@@ -3010,7 +4076,14 @@ function validateRecordedPhase8Build(phase8, options) {
   for (const target of phase8.targets) {
     const source = recordedSources.find((record) => record.path === target.source);
     const replacement = recordedTargets.find((record) => record.symbol === target.symbol);
+    textContract.validateRecords(replacement, textContract.recordsForTarget(target, output, textLinkContext), 'build report');
     const verifiedTarget = verification.targets.find((record) => record.symbol === target.symbol);
+    const expectedInteriors = interiorRecords([target]).map((record) => ({ ...record,
+      binarySha256: sha256File(path.join(output, record.binaryRelative)),
+      objectSha256: sha256File(path.join(output, record.objectRelative)) }));
+    if (!replacement || !isDeepStrictEqual(replacement.auxiliaryInteriors, expectedInteriors)) {
+      fail('recorded Phase 8 retained interior artifact census or identity drift: ' + target.symbol);
+    }
     if (!source || source.bytes !== fs.statSync(path.join(ROOT, ...target.source.split('/'))).size
         || source.sha256 !== target.sourceSha256 || !replacement || !verifiedTarget
         || replacement.source !== target.source || replacement.sourceSha256 !== target.sourceSha256
@@ -3057,10 +4130,43 @@ function validateRecordedPhase8Build(phase8, options) {
       }
     }
     for (const auxiliary of target.auxiliarySections) {
+      const prefix = auxiliaryRetainedContract(auxiliary, 'prefix');
+      const expectedCompiledOccurrences = auxiliary.compilerOccurrences && auxiliary.compilerOccurrences.map((occurrence) => ({
+        label: occurrence.label,
+        offset: occurrence.offset,
+        bytes: occurrence.bytes,
+        entries: occurrence.entries,
+        alignment: occurrence.alignment,
+        alignmentDirectives: occurrence.alignmentDirectives,
+        ...(occurrence.paddingBefore ? { paddingBefore: { ...occurrence.paddingBefore } } : {}),
+        objectSha256: occurrence.expectedObjectSha256,
+        acceptedObjectSha256: occurrence.expectedObjectSha256,
+        expectedLinkedSha256: occurrence.expectedLinkedSha256,
+        loadRelevantRelocationsNormalized: occurrence.expectedRelocations,
+      }));
+      const expectedVerifiedOccurrences = expectedCompiledOccurrences && expectedCompiledOccurrences.map((occurrence) => ({
+        ...occurrence,
+        linkedSha256: occurrence.expectedLinkedSha256,
+        rawLinkedBytesExact: true,
+      }));
+      const expectedCompiledPrefix = auxiliary.preservedPrefix ? {
+        inputSection: prefix.inputSection,
+        alignment: prefix.alignment,
+        bytes: prefix.bytes,
+        sha256: prefix.sha256,
+        romStart: prefix.romStart,
+        romEndExclusive: prefix.romEndExclusive,
+        vramStart: prefix.vramStart,
+        vramEndExclusive: prefix.vramEndExclusive,
+        ownerOriginalAssembly: auxiliary.ownerOriginalAssembly,
+        ownerOriginalAssemblySha256: auxiliary.ownerOriginalAssemblySha256,
+      } : undefined;
+      const expectedSourceObjectPrefix = expectedAuxiliarySourceObjectPrefixEvidence(auxiliary);
       const compiledAuxiliary = replacement.auxiliarySections.find((record) => record.outputSection === auxiliary.outputSection);
       const recordedTail = replacement.auxiliaryTails.find((record) => record.outputSection === auxiliary.outputSection);
       const verifiedAuxiliary = verifiedTarget.auxiliarySections.find((record) => record.outputSection === auxiliary.outputSection);
       if (!compiledAuxiliary
+          || !isDeepStrictEqual(compiledAuxiliary.retainedInteriorBefore, projectInterior(auxiliary))
           || compiledAuxiliary.compilerSection !== auxiliary.compilerSection
           || compiledAuxiliary.bytes !== auxiliary.bytes
           || compiledAuxiliary.sha256 !== auxiliary.expectedObjectSha256
@@ -3070,6 +4176,9 @@ function validateRecordedPhase8Build(phase8, options) {
           || compiledAuxiliary.alignment !== auxiliary.alignment
           || compiledAuxiliary.flags !== 2
           || !sameJson(compiledAuxiliary.relocations, auxiliary.expectedRelocations)
+          || !sameCompilerOccurrenceEvidence(compiledAuxiliary.compilerOccurrences, expectedCompiledOccurrences)
+          || !sameJson(compiledAuxiliary.preservedPrefix, expectedCompiledPrefix)
+          || !sameJson(compiledAuxiliary.sourceObjectPrefix, expectedSourceObjectPrefix)
           || !recordedTail
           || recordedTail.symbol !== target.symbol
           || recordedTail.inputSection !== auxiliary.ownerTailSection
@@ -3093,6 +4202,31 @@ function validateRecordedPhase8Build(phase8, options) {
           || verifiedAuxiliary.trailingPaddingBytes !== auxiliary.trailingPaddingBytes
           || verifiedAuxiliary.trailingPaddingSha256 !== auxiliary.expectedTrailingPaddingSha256
           || verifiedAuxiliary.objectSha256 !== auxiliary.expectedObjectSha256
+          || !sameCompilerOccurrenceEvidence(verifiedAuxiliary.compilerOccurrences, expectedVerifiedOccurrences)
+          || !sameJson(verifiedAuxiliary.sourceObjectPrefix, expectedSourceObjectPrefix)
+          || verifiedAuxiliary.acceptedAssemblyPrefixBytes !== prefix.bytes
+          || verifiedAuxiliary.acceptedAssemblyPrefixInputSection !== prefix.inputSection
+          || verifiedAuxiliary.acceptedAssemblyPrefixSha256 !== prefix.sha256
+          || verifiedAuxiliary.acceptedAssemblyPrefixRomStart !== prefix.romStart
+          || verifiedAuxiliary.acceptedAssemblyPrefixRomEndExclusive !== prefix.romEndExclusive
+          || verifiedAuxiliary.acceptedAssemblyPrefixVramStart !== prefix.vramStart
+          || verifiedAuxiliary.acceptedAssemblyPrefixVramEndExclusive !== prefix.vramEndExclusive
+          || (prefix.bytes > 0 && (
+            verifiedAuxiliary.acceptedAssemblyPrefixBinary !== auxiliaryRetainedRelative(
+              auxiliary.ownerChunkIndex,
+              auxiliary.outputSection,
+              'prefix',
+              'bin',
+            )
+            || verifiedAuxiliary.acceptedAssemblyPrefixObject !== auxiliaryRetainedRelative(
+              auxiliary.ownerChunkIndex,
+              auxiliary.outputSection,
+              'prefix',
+              'o',
+            )
+            || typeof verifiedAuxiliary.acceptedAssemblyPrefixBinarySha256 !== 'string'
+            || typeof verifiedAuxiliary.acceptedAssemblyPrefixObjectSha256 !== 'string'
+          ))
           || verifiedAuxiliary.linkedSha256 !== auxiliary.expectedLinkedSha256
           || verifiedAuxiliary.rawBytesExact !== true
           || verifiedAuxiliary.linkedOwner !== replacement.cObject) {
@@ -3138,7 +4272,7 @@ function validateRecordedPhase8Build(phase8, options) {
   if (JSON.stringify(buildReport.verification.asmDiffer) !== JSON.stringify(verification.asmDiffer)) {
     fail('recorded Phase 8 asm-differ proof drift');
   }
-  return { schemaVersion: 4, status: 'pass' };
+  return { schemaVersion: 5, status: 'pass' };
 }
 
 function pathIndependentRuntime(runtime) {
@@ -3171,15 +4305,24 @@ module.exports = {
   phase8VerificationModel,
   readJson,
   relocationRecords,
+  rawRelocationRecords,
+  renderPhase8LinkerScript,
+  sameCompilerOccurrenceEvidence,
   runTargetAsmDiffer,
+  selectAuxiliarySourceObjectPrefixes,
   sha256File,
   summarizeTargetComparison,
   targetAsmDifferMaxLines,
   targetRetainedAssemblySlices,
   targetTextOwners,
   validateRecordedPhase8Build,
+  validateAuxiliaryPrefixObject,
+  validateAuxiliaryRetainedObject,
   validateAuxiliaryTailObject,
+  verifyAuxiliaryCompilerOccurrences,
+  verifyAuxiliaryLinkedObjectSection,
   verifyAuxiliaryPaddingBytes,
+  verifyAuxiliarySourceObjectSection,
   validateSourceObjectProofBytes,
   validateTargetClassifications,
   verifyCompilerTextFunctions,
@@ -3192,6 +4335,7 @@ module.exports = {
   verifyRuntimeTools,
   verifyTargetMapOwner,
   verifyAuxiliaryMapOwner,
+  verifyInteriorGroupMapOwners,
   writeJson,
   writeSourceObjectProofs,
   writeLayout,

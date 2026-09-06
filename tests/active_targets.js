@@ -2,6 +2,8 @@
 'use strict';
 
 const fs = require('fs');
+const assert = require('assert');
+const textContract = require('../tools/lib/text_contract');
 const path = require('path');
 const {
   CONFIG_PATH,
@@ -22,7 +24,7 @@ const {
   validateToolchainPin,
   verifyRowSymbolSourceCache,
 } = require('../tools/lib/active_targets');
-const { ROOT, sha256File } = require('../tools/lib/phase7_conventional');
+const { ROOT, sha256Buffer, sha256File } = require('../tools/lib/phase7_conventional');
 const { writeJson } = require('../tools/lib/current_workflow');
 
 function expectRejection(name, callback) {
@@ -300,6 +302,26 @@ function main() {
     ['unexpected field', { ...pin, selector: 'latest' }],
   ].map(([name, mutation]) => expectRejection(name, () => validateToolchainPin(mutation)));
   const linkage = active.linkageConfig;
+  const nativeEntry = { symbol: 'func_00204A70', expectedRelocations: [], nativeTextTail: textContract.nativeDescriptor() };
+  const nativeBase = linkage.targets.filter(target => target.symbol !== nativeEntry.symbol);
+  const nativeConfig = { ...linkage, targets: [...nativeBase, nativeEntry] };
+  validateLinkageConfig(nativeConfig, active.minimalConfig.profile);
+  for (const mutate of [
+    value => { value.extra = true; }, value => { delete value.nativeTextTail.tail; },
+    value => { value.nativeTextTail.tail.extra = true; }, value => { value.nativeTextTail.inputShape.alignment = 4; },
+    value => { value.nativeTextTail.outputShape.flags = 7; }, value => { value.nativeTextTail.functionBytes = 1136; },
+    value => { value.nativeTextTail.tail.sha256 = '0'.repeat(64); }, value => { value.nativeTextTail.tail.origin = 'linker-fill'; },
+    value => { value.nativeTextTail.inputShape.extra = true; }, value => { value.nativeTextTail.outputShape.extra = true; },
+    value => { value.nativeTextTail = null; }, value => { value.symbol = 'func_00204A74'; },
+    value => { value.auxiliarySections = []; }, value => { value.compilerTextFunctions = []; },
+  ]) {
+    const malformed = JSON.parse(JSON.stringify(nativeEntry)); mutate(malformed);
+    expectRejection('native descriptor mutation', () => validateLinkageConfig({ ...linkage, targets: [...nativeBase, malformed] }, active.minimalConfig.profile));
+  }
+  expectRejection('duplicate native owner', () => validateLinkageConfig(
+    { ...linkage, targets: [...nativeBase, nativeEntry, nativeEntry] }, active.minimalConfig.profile));
+  // The isolated mutation model does not modify an accepted production activation.
+  assert.notStrictEqual(nativeConfig.targets, linkage.targets);
   validateLinkageConfig(linkage, active.minimalConfig.profile);
   const canaryEntry = linkage.targets.find((entry) => entry.symbol === 'func_00283E14');
   const canaryTarget = active.targets.find((target) => target.symbol === 'func_00283E14');
@@ -329,6 +351,68 @@ function main() {
     ownerOriginalAssembly: 'asm/original/rev0/lib/table_00286B90.s',
     ownerOriginalAssemblySha256: '458B0517364A95A1700DEEBE79DB27EC82505DA987F2BD24B3BE5DA05853E539',
   };
+  const canaryAuxiliaryRaw = canaryEntry.auxiliarySections[0];
+  const canaryObjectBytes = Buffer.alloc(canaryAuxiliaryRaw.bytes);
+  for (const relocation of canaryAuxiliaryRaw.expectedRelocations) {
+    canaryObjectBytes.writeUInt32BE(
+      Number.parseInt(relocation.addend.slice(2), 16),
+      Number.parseInt(relocation.offset.slice(2), 16),
+    );
+  }
+  const canaryLinkedBytes = Buffer.from(baserom.subarray(0x00286B90, 0x00286BB0));
+  const repeatedOccurrenceFixture = {
+    ...canaryAuxiliaryRaw,
+    compilerOccurrences: [0, 1].map((index) => ({
+      label: index === 0 ? '.L10' : '.L20',
+      offset: index === 0 ? '0x00000000' : '0x00000010',
+      bytes: 16,
+      entries: 4,
+      alignment: 8,
+      alignmentDirectives: [3, 2],
+      expectedObjectSha256: sha256Buffer(canaryObjectBytes.subarray(index * 16, (index + 1) * 16)),
+      expectedLinkedSha256: sha256Buffer(canaryLinkedBytes.subarray(index * 16, (index + 1) * 16)),
+    })),
+  };
+  const normalizedRepeatedOccurrence = normalizeAuxiliarySectionContracts(
+    [repeatedOccurrenceFixture],
+    canaryTarget.symbol,
+    'canonical repeated-rodata fixture',
+  )[0];
+  if (normalizedRepeatedOccurrence.compilerOccurrences.length !== 2
+      || normalizedRepeatedOccurrence.compilerOccurrences[0].offsetNumber !== 0
+      || normalizedRepeatedOccurrence.compilerOccurrences[1].offsetNumber !== 16
+      || normalizedRepeatedOccurrence.compilerOccurrences.some((record) => record.expectedRelocations.length !== 4)) {
+    throw new Error('repeated compiler occurrence normalization drift');
+  }
+  const resolveRepeatedOccurrenceMutation = (record) => resolveAuxiliarySectionContracts(
+    active.model,
+    baserom,
+    canaryTarget,
+    normalizeAuxiliarySectionContracts(
+      [record],
+      canaryTarget.symbol,
+      'mutated repeated-rodata fixture',
+    ),
+  );
+  const mutateRepeatedOccurrence = (mutate) => {
+    const changed = JSON.parse(JSON.stringify(repeatedOccurrenceFixture));
+    mutate(changed);
+    return changed;
+  };
+  const rejectedRepeatedOccurrenceMutations = [
+    ['single occurrence', (record) => record.compilerOccurrences.pop(), normalizeAuxiliarySectionContracts],
+    ['duplicate label', (record) => { record.compilerOccurrences[1].label = record.compilerOccurrences[0].label; }, normalizeAuxiliarySectionContracts],
+    ['reordered', (record) => record.compilerOccurrences.reverse(), normalizeAuxiliarySectionContracts],
+    ['gap', (record) => { record.compilerOccurrences[1].offset = '0x00000014'; }, normalizeAuxiliarySectionContracts],
+    ['overlap', (record) => { record.compilerOccurrences[1].offset = '0x0000000C'; }, normalizeAuxiliarySectionContracts],
+    ['alignment directives', (record) => { record.compilerOccurrences[1].alignmentDirectives = [2]; }, normalizeAuxiliarySectionContracts],
+    ['object hash', (record) => { record.compilerOccurrences[0].expectedObjectSha256 = '0'.repeat(64); }, resolveAuxiliarySectionContracts],
+    ['linked hash', (record) => { record.compilerOccurrences[1].expectedLinkedSha256 = '0'.repeat(64); }, resolveAuxiliarySectionContracts],
+  ].map(([name, mutate, validator]) => expectRejection(`repeated auxiliary ${name}`, () => {
+    const changed = mutateRepeatedOccurrence(mutate);
+    if (validator === resolveAuxiliarySectionContracts) resolveRepeatedOccurrenceMutation(changed);
+    else normalizeAuxiliarySectionContracts([changed], canaryTarget.symbol, 'mutated repeated-rodata fixture');
+  }));
   const compilerTextFixture = [
     {
       symbol: canaryTarget.symbol,
@@ -535,6 +619,113 @@ function main() {
       || normalizedLegacyUnpaddedFixture.bytes !== 28) {
     throw new Error('legacy unpadded auxiliary switch-table compatibility drift');
   }
+  const alignedPrefixBytes = Buffer.from(canaryObjectBytes.subarray(0, 28));
+  const alignedSourceBytes = Buffer.concat([alignedPrefixBytes, Buffer.alloc(4)]);
+  const zeroWordSha256 = sha256Buffer(Buffer.alloc(4));
+  const alignedSourceObjectPrefixFixture = {
+    ...canaryAuxiliaryRaw,
+    romEndExclusive: '0x00286BAC',
+    vramEndExclusive: '0x8022ABDC',
+    bytes: 28,
+    entries: 7,
+    expectedObjectSha256: sha256Buffer(alignedPrefixBytes),
+    expectedLinkedSha256: sha256Buffer(canaryLinkedBytes.subarray(0, 28)),
+    preservedTail: {
+      ...canonicalTailFixture,
+      romStart: '0x00286BAC',
+      romEndExclusive: '0x00286BB0',
+      vramStart: '0x8022ABDC',
+      vramEndExclusive: '0x8022ABE0',
+      bytes: 4,
+      expectedSha256: zeroWordSha256,
+    },
+    expectedRelocations: canaryAuxiliaryRaw.expectedRelocations.slice(0, 7),
+    compilerOccurrences: [{
+      label: '.L10',
+      offset: '0x00000000',
+      bytes: 28,
+      entries: 7,
+      alignment: 8,
+      alignmentDirectives: [3, 2],
+      expectedObjectSha256: sha256Buffer(alignedPrefixBytes),
+      expectedLinkedSha256: sha256Buffer(canaryLinkedBytes.subarray(0, 28)),
+    }],
+    sourceObjectPrefix: {
+      sectionType: 'SHT_PROGBITS',
+      sectionFlags: ['SHF_ALLOC'],
+      alignment: 8,
+      bytes: 32,
+      expectedSha256: sha256Buffer(alignedSourceBytes),
+      prefixOffset: '0x00000000',
+      prefixBytes: 28,
+      expectedPrefixSha256: sha256Buffer(alignedPrefixBytes),
+      trailingPaddingOffset: '0x0000001C',
+      trailingPaddingBytes: 4,
+      expectedTrailingPaddingSha256: zeroWordSha256,
+    },
+  };
+  const alignedSourceObjectPrefixConfig = {
+    ...linkage,
+    targets: linkage.targets.map((entry) => entry.symbol === canaryEntry.symbol ? {
+      ...entry,
+      auxiliarySections: [alignedSourceObjectPrefixFixture],
+    } : entry),
+  };
+  const normalizedAlignedSourceObjectPrefix = validateLinkageConfig(
+    alignedSourceObjectPrefixConfig,
+    active.minimalConfig.profile,
+  ).targets.get(canaryEntry.symbol.toLowerCase()).auxiliarySections[0];
+  if (!normalizedAlignedSourceObjectPrefix.sourceObjectPrefix
+      || normalizedAlignedSourceObjectPrefix.compilerOccurrences.length !== 1
+      || normalizedAlignedSourceObjectPrefix.compilerOccurrences[0].label !== '.L10'
+      || normalizedAlignedSourceObjectPrefix.compilerOccurrences[0].expectedRelocations.length !== 7
+      || normalizedAlignedSourceObjectPrefix.entryBytes !== 28
+      || normalizedAlignedSourceObjectPrefix.trailingPaddingBytes !== 0
+      || normalizedAlignedSourceObjectPrefix.sourceObjectPrefix.bytes !== 32
+      || normalizedAlignedSourceObjectPrefix.sourceObjectPrefix.prefixOffsetNumber !== 0
+      || normalizedAlignedSourceObjectPrefix.sourceObjectPrefix.prefixBytes !== 28
+      || normalizedAlignedSourceObjectPrefix.sourceObjectPrefix.trailingPaddingOffsetNumber !== 28
+      || normalizedAlignedSourceObjectPrefix.sourceObjectPrefix.trailingPaddingBytes !== 4) {
+    throw new Error('aligned auxiliary source-object prefix normalization drift');
+  }
+  const mutateAlignedSourceObjectPrefix = (mutate) => {
+    const changed = JSON.parse(JSON.stringify(alignedSourceObjectPrefixConfig));
+    const record = changed.targets.find((entry) => entry.symbol === canaryEntry.symbol).auxiliarySections[0];
+    mutate(record);
+    return changed;
+  };
+  const rejectedSourceObjectPrefixMutations = [
+    ['missing compiler grammar', (record) => { delete record.compilerOccurrences; }],
+    ['empty compiler grammar', (record) => { record.compilerOccurrences = []; }],
+    ['missing field', (record) => { delete record.sourceObjectPrefix.expectedSha256; }],
+    ['unexpected field', (record) => { record.sourceObjectPrefix.selector = 'prefix'; }],
+    ['section type', (record) => { record.sourceObjectPrefix.sectionType = 'SHT_NOBITS'; }],
+    ['section flags', (record) => { record.sourceObjectPrefix.sectionFlags = ['SHF_ALLOC', 'SHF_WRITE']; }],
+    ['alignment', (record) => { record.sourceObjectPrefix.alignment = 4; }],
+    ['nonzero offset', (record) => { record.sourceObjectPrefix.prefixOffset = '0x00000004'; }],
+    ['short prefix', (record) => { record.sourceObjectPrefix.prefixBytes = 24; }],
+    ['prefix identity', (record) => { record.sourceObjectPrefix.expectedPrefixSha256 = '0'.repeat(64); }],
+    ['overlapping tail', (record) => { record.sourceObjectPrefix.trailingPaddingOffset = '0x00000018'; }],
+    ['out-of-bounds tail', (record) => {
+      record.sourceObjectPrefix.trailingPaddingOffset = '0x00000020';
+    }],
+    ['tail size', (record) => { record.sourceObjectPrefix.trailingPaddingBytes = 8; }],
+    ['whole size', (record) => { record.sourceObjectPrefix.bytes = 36; }],
+    ['nonpadding tail identity', (record) => {
+      record.sourceObjectPrefix.expectedTrailingPaddingSha256 = '0'.repeat(64);
+    }],
+    ['assembly tail identity', (record) => { record.preservedTail.expectedSha256 = '0'.repeat(64); }],
+    ['logical padding overlap', (record) => {
+      record.trailingPaddingBytes = 4;
+      record.expectedTrailingPaddingSha256 = zeroWordSha256;
+    }],
+    ['relocation outside prefix', (record) => {
+      record.expectedRelocations[6].offset = '0x0000001C';
+    }],
+  ].map(([name, mutate]) => expectRejection(`source-object prefix ${name}`, () => validateLinkageConfig(
+    mutateAlignedSourceObjectPrefix(mutate),
+    active.minimalConfig.profile,
+  )));
   const secondOwnerRow = resolveAcceptedRow(active.model, 'func_002861C8');
   const secondOwnerSlice = secondOwnerRow.slices.find((slice) => slice.executable);
   if (!secondOwnerSlice) throw new Error('func_002861C8 accepted executable slice is missing');
@@ -906,7 +1097,9 @@ function main() {
     rejectedAuxiliaryMutations,
     rejectedLoadSlabAuxiliaryMutations,
     rejectedSharedAuxiliaryMutations,
+    rejectedRepeatedOccurrenceMutations,
     rejectedPaddingMutations,
+    rejectedSourceObjectPrefixMutations,
     rejectedActiveLinkSymbolShadows,
     rejectedContractMutations,
     rowSymbolSourceReuse,

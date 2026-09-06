@@ -207,3 +207,16 @@ The accepted configuration uses Splat 0.34.0 at commit
 `config/splat/splat64-0.34.0.lock.json` and
 `config/splat/splat64-0.34.0.provenance.json`. Machine-specific paths in those records are not
 portable installation instructions.
+
+## Native text representation
+
+The reviewed nativeTextTail descriptor separates native `.text` input from its accepted `.ob64` output owner. Its input and output are executable, nonwritable PROGBITS with 16-byte alignment. Compiler output is the exact assembler input; no padding directive, instruction legalization, or auxiliary allowance is permitted. Existing ancillary removal remains unchanged. A native object-specific selector preserves the output owner and load mapping. GNU 2.6 requires explicit placement of its empty `.bss` input; native validation rejects any nonempty writable allocation. This empty selector does not reserve runtime bytes.
+
+Native object evidence uses schema 2. Raw and stripped objects reject nonzero `SHN_COMMON`, `SHN_MIPS_ACOMMON`, and `SHN_MIPS_SCOMMON` storage before manifest publication.
+The same allocation check applies to diff-cache inspection, fresh scratch compilation, cached scratch objects, and diagnostic objects.
+Native link evidence uses schema 2. It authenticates the exact object-specific empty `.bss` map selector and zero-sized writable placement.
+Before layout or source-object proof publication, it checks every allocated section and load against the accepted model.
+Unexpected writable output, COMMON allocation, or additional loads reject even when ROM bytes remain exact.
+Ordinary object and link evidence retain schema 1. CURRENT and diff-cache implementation identities invalidate stale results.
+
+Evidence records retain complete artifact roles, section shapes, function census, relocations, tail identity, and map ownership. The descriptor grants no PURE_C classification or exactness exemption.

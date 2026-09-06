@@ -18,7 +18,7 @@
     "splitOwners": 12,
     "overlayReservations": 19,
     "fixedOverlayNonExecutableRanges": 1,
-    "nonDescriptorLoadSlabs": 5,
+    "nonDescriptorLoadSlabs": 6,
     "rspRows": 13
   },
   "fixedOverlayNonExecutableRanges": [
@@ -84,6 +84,14 @@
           "romEndExclusive": 2214256
         }
       ]
+    },
+    {
+      "id": "resource-loader-0022a280",
+      "kind": "loader-dma",
+      "romStart": 2269824,
+      "romEndExclusive": 2335648,
+      "vramStart": 2149478320,
+      "vramEndExclusive": 2149544144
     }
   ],
   "acceptedInputSha256": {

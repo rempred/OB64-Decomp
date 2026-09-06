@@ -638,6 +638,36 @@ This is structural work. Follow `docs/AUDIT.md` and the current auxiliary
 section rules in `docs/WORKFLOW.md`. A scratch workbench allowance is not a
 canonical ownership contract.
 
+Repeated `compilerOccurrences` may include `paddingBefore` on a noninitial
+occurrence, with exactly `offset` (eight-digit uppercase hex), `bytes`, and
+`expectedSha256`. This describes only the zero bytes necessarily emitted by
+that occurrence's ordered `.align` directives after the previous occurrence.
+Omit it when no gap is required. It cannot describe entries, explicit data,
+leading padding, arbitrary holes, or relocations. Every occurrence retains its
+own label, offset, entry count, byte hashes and real relocation census.
+`entryBytes` remains `entries * 4`; the complete auxiliary section also includes
+the separately claimed internal padding. Repeated-occurrence contracts still
+exclude logical trailing padding; the existing authenticated source-object
+prefix selection is unchanged.
+
+Compiler grammar, source and linked objects, canonical bytes, and reconstructed
+proof evidence must agree on these extents and bytes. Cache identity includes
+the full occurrence contract and implementation identities; restoration
+reconstructs occurrence evidence and rejects omitted or stale padding records.
+This capability does not activate an inactive candidate or establish retail
+placement. `tests/auxiliary_internal_padding.js` exercises a synthetic 60-byte
+entry census in a 64-byte section, without creating a retail target contract.
+
+### Retained interior assembly implementation
+
+The independently accepted retained-interior assembly capability is documented in
+[AUXILIARY_INTERIOR_ASSEMBLY.md](AUXILIARY_INTERIOR_ASSEMBLY.md), including its frozen review evidence.
+Explicit original-ASM intervals may interleave C fragments only with complete, ordered, gap-free coverage of the accepted auxiliary row.
+This supports literal data only: the whole original row must have no nonempty REL/RELA sections targeting it, including outside retained intervals.
+Generated retained objects must also contain no actual relocations.
+Retained ASM is not compiler alignment padding and never increases matching-C accounting.
+Accepted tooling does not activate a production ownership contract or accept the unfinished matching wave.
+
 ### Placement before control-flow invention
 
 A runtime address in a split comment is not necessarily the accepted load-slab
@@ -704,9 +734,10 @@ structural task proves a concrete layout or ownership benefit. See
   not as a C mismatch, and never weaken the pins to get past it.
 - Status counts are generated (`tools/status.js`, source-policy report); never
   hand-maintain them in prose docs.
-- Target verification still checks the complete current ROM. Re-run the full
-  verifier after integration because shared symbols and auxiliary owners can
-  collide only in the combined active set.
+- Final verification checks the complete current ROM once the assigned wave is ready, not after each function.
+  Confirm every assigned target is `PURE_C` in that report; ordinary matching requires no independent review.
+  Verify changed combined integration inputs because shared symbols and auxiliary owners can collide in the combined active set.
+  Do not repeat verification solely for an unchanged commit, handoff, or review. See [WORKFLOW.md](WORKFLOW.md).
 - Stage only your own files when committing. Concurrent sessions share the
   checkout; unrelated modified files may appear mid-run — leave them for their
   owner.

@@ -103,3 +103,15 @@ falsifier, calls and relocations, custom sections, macros/conditionals, linker L
 behavior, binary extraction, an exact tracked assembly chunk, and retired-dependency rejection.
 Integration tests recreate source-to-object proofs, distinguish load-relevant from discarded
 ancillary relocations, reject stale schemas, and protect the `func_0002CD70` OR words.
+
+`node tests/native_text_tail.js` compiles an isolated HYBRID_C native-tail fixture through the real KMC/GNU producers, links alongside an ordinary target, and verifies the complete retail ROM. It exercises native scratch compilation and malformed evidence/tail rejection without creating CURRENT receipts or production descriptors. Compilation-input confinement tests authenticate inputs directly and reject synthetic CURRENT outputs lacking ELF evidence; artifact-backed CURRENT acceptance remains covered by workflow acceptance and the audit.
+
+Add `--candidate <retained-attempt04.c>` to the native fixture command for the authenticated 68-word negative control. The test requires its frozen source hash, preserves the input, rejects its full ROM, and records native scratch evidence separately.
+
+The native fixture also adds one ordinary uninitialized global to its test inputs.
+Real compilation must reject COMMON storage before producing a link object or manifest.
+Raw, stripped, cache, scratch, and diagnostic consumers must independently reject the admitted object.
+A linked replay must reject unexpected writable allocation before layout or any source-object proof is published.
+The unchanged exact fixture authenticates empty object-specific BSS placement and the complete load census.
+
+`node tests/current_verified_companions.js --state <state.json>` checks real fresh-compilation and verification companions against their build. It rejects changed object evidence, nonexact owners, stale schemas, missing targets, and source-class drift. CURRENT reuse requires those records to agree.

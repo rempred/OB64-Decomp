@@ -2,6 +2,7 @@
 'use strict';
 
 const fs = require('fs');
+const textContract = require('./lib/text_contract');
 const path = require('path');
 const { resolveLocalTools } = require('./lib/local_tools');
 const {
@@ -28,6 +29,54 @@ function parseArgs(argv) {
     phase5aRoot = path.resolve(argv[++index]);
   }
   return { help: false, phase5aRoot };
+}
+
+// These migrated owners were accepted on canonical main at 24d0818.
+// Keep the historical migration canary, but pin the accepted PURE_C state.
+const SQUAD_MIGRATION = [
+    ['p3063', 'func_0019554C', 3063, '5985A5DFC866D4EFFB58C0E412AA76A8E0AE8DA0EF19BB8E44A6BF278C2A5E2B'],
+    ['p3064', 'func_001957D0', 3064, 'E05EF7BF474667F4586C0674C4F55DCEF161A2D0E0070BA2D46A870EB79D146B'],
+    ['p3066', 'func_001960A8', 3066, '9C56D2EDC784BCE4B789A3A5FE3A0226C10F9EC60CDD90DD27A2A41C834F46F6'],
+];
+
+function validateSquadMigrationModel(targets) {
+  for (const [, symbol, rowIndex, hash] of SQUAD_MIGRATION) {
+    const matches = targets.filter((target) => target.symbol === symbol || target.rowIndex === rowIndex);
+    if (matches.length !== 1 || matches[0].symbol !== symbol || matches[0].rowIndex !== rowIndex
+        || matches[0].source !== `src/lib/${symbol}.c` || matches[0].expectedTextSha256 !== hash) {
+      throw new Error(`p3063/p3064/p3066 migration gate failed: model ${symbol}`);
+    }
+  }
+  return { p3066Active: true };
+}
+
+function validateSquadMigration(targets, verifiedTargets) {
+  validateSquadMigrationModel(targets);
+  const result = {};
+  for (const [key, symbol, rowIndex, hash] of SQUAD_MIGRATION) {
+    const modelRows = targets.filter((target) => target.symbol === symbol || target.rowIndex === rowIndex);
+    const records = verifiedTargets.filter((target) => target.symbol === symbol || target.rowIndex === rowIndex);
+    const target = modelRows[0];
+    const record = records[0];
+    if (modelRows.length !== 1 || records.length !== 1
+        || target.symbol !== symbol || target.rowIndex !== rowIndex
+        || record.symbol !== symbol || record.rowIndex !== rowIndex
+        || record.sourceObjectEvidence?.sourceClass !== 'PURE_C'
+        || record.linkedTargetSha256 !== hash || record.expectedTargetSha256 !== hash
+        || record.rawBytesExact !== true
+        || record.sectionName !== `.ob64.r${rowIndex}`
+        || record.linkedOwner !== `objects/c/${symbol}.o`
+        || !Array.isArray(record.owners) || record.owners.length !== 1
+        || record.owners[0].rowIndex !== rowIndex
+        || record.owners[0].sectionName !== record.sectionName
+        || record.owners[0].rawBytesExact !== true
+        || record.owners[0].linkedSha256 !== hash || record.owners[0].expectedSha256 !== hash
+        || !Array.isArray(record.retainedAssemblySlices) || record.retainedAssemblySlices.length !== 0) {
+      throw new Error(`p3063/p3064/p3066 migration gate failed: ${symbol}`);
+    }
+    result[key] = { sourceClass: record.sourceObjectEvidence.sourceClass, targetSha256: record.linkedTargetSha256 };
+  }
+  return { ...result, p3066Active: true };
 }
 
 function main(argv = process.argv.slice(2)) {
@@ -91,16 +140,18 @@ function main(argv = process.argv.slice(2)) {
       || func2cd70Gate.instructionWords.offset028 !== '0x00801025') {
     throw new Error('func_0002CD70 hybrid target gate failed');
   }
-  const p3063 = current.verification.verification.targets.find((target) => target.symbol === 'func_0019554C');
-  const p3064 = current.verification.verification.targets.find((target) => target.symbol === 'func_001957D0');
-  if (!p3063 || p3063.sourceObjectEvidence.sourceClass !== 'PURE_C'
-      || p3063.linkedTargetSha256 !== '5985A5DFC866D4EFFB58C0E412AA76A8E0AE8DA0EF19BB8E44A6BF278C2A5E2B'
-      || !p3064 || p3064.sourceObjectEvidence.sourceClass !== 'HYBRID_C'
-      || context.phase8.targets.some((target) => target.rowIndex === 3066)) {
-    throw new Error('p3063/p3064/p3066 migration gate failed');
-  }
+  const squadMigration = validateSquadMigration(context.phase8.targets, current.verification.verification.targets);
+  const textRepresentations = sourceObjectEvidence.targets.map((record) => {
+    const target = context.phase8.targets.find((entry) => entry.symbol === record.symbol);
+    textContract.validateRecords(record, { textContract: textContract.resolveTextContract(target) }, 'audit');
+    if (!record.objectEvidence || !record.linkEvidence || record.linkEvidence.fullOwnerExact !== true) {
+      throw new Error('audit text representation evidence is incomplete');
+    }
+    return { symbol: target.symbol, mode: record.textContract.mode, textContractSha256: textContract.hash(record.textContract) };
+  });
   const report = {
-    schemaVersion: 3,
+    schemaVersion: 4,
+    textRepresentations,
     status: 'pass',
     completedAt: new Date().toISOString(),
     structuralReport: 'build/setup/verify-setup-report.json',
@@ -124,9 +175,7 @@ function main(argv = process.argv.slice(2)) {
       activePdrRelocations: 0,
     },
     func0002CD70: func2cd70Gate,
-    p3063: { sourceClass: p3063.sourceObjectEvidence.sourceClass, targetSha256: p3063.linkedTargetSha256 },
-    p3064: { sourceClass: p3064.sourceObjectEvidence.sourceClass, targetSha256: p3064.linkedTargetSha256 },
-    p3066Active: false,
+    ...squadMigration,
     func002861C8Structure,
   };
   const reportFile = path.join(ROOT, 'build', 'audit', 'report.json');
@@ -148,4 +197,4 @@ if (require.main === module) {
   }
 }
 
-module.exports = { main, parseArgs };
+module.exports = { main, parseArgs, validateSquadMigration, validateSquadMigrationModel };

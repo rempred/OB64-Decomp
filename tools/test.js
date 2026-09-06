@@ -7,10 +7,12 @@ const path = require('path');
 
 const ROOT = path.resolve(__dirname, '..');
 const ROUTINE_TESTS = [
+  ['audit-squad-migration', 'tests/audit_squad_migration.js'],
   ['source-policy', 'tests/source_policy.js'],
   ['compilation-input-confinement', 'tests/compilation_input_confinement.js'],
   ['local-tools', 'tests/local_tools.js'],
   ['active-targets', 'tests/active_targets.js'],
+  ['auxiliary-interior', 'tests/auxiliary_interior.js'],
   ['matching-context', 'tests/matching_context.js'],
   ['status-accounting', 'tests/status.js'],
   ['diff-exactness', 'tests/diff_exactness.js'],

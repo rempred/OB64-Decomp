@@ -90,8 +90,8 @@ function main() {
     replacement.replacements,
     compiled,
   );
-  writeLayout(phase8, phase7, args.output, replacement.replacements);
   const linked = linkPhase8(phase8, args.output, objectManifest, runtime.tools);
+  writeLayout(phase8, phase7, args.output, replacement.replacements);
   const sourceObjectProofs = writeSourceObjectProofs(phase8, {
     output: args.output,
     compiled,
@@ -162,6 +162,9 @@ function main() {
         bytes: sourceObjectProofs.get(target.symbol).bytes,
         sha256: sourceObjectProofs.get(target.symbol).sha256,
       },
+      textContract: compiledTarget.textContract,
+      objectEvidence: compiledTarget.objectEvidence,
+      linkEvidence: verifiedTarget.linkEvidence,
       objectTextSha256: compiledTarget.textSha256,
       objectTextOwners: compiledTarget.textOwners,
       splitContract: compiledTarget.splitContract,
@@ -169,6 +172,9 @@ function main() {
       compilerTextFunctions: compiledTarget.compilerTextFunctions,
       relocations: compiledTarget.relocations,
       auxiliarySections: compiledTarget.auxiliarySections,
+      auxiliaryInteriors: [...replacement.replacements.values()].flatMap((record) => (
+        record.auxiliaryInteriors.filter((interior) => interior.symbol === target.symbol)
+      )),
       auxiliaryTails: [...replacement.replacements.values()].flatMap((record) => (
         record.auxiliaryTails.filter((tail) => tail.symbol === target.symbol)
       )),
@@ -186,7 +192,7 @@ function main() {
     }
   }
   const report = {
-    schemaVersion: 4,
+    schemaVersion: 5,
     status: 'pass',
     generator: 'tools/build_phase8_matching_c.js',
     acceptedInputs: {

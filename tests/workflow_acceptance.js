@@ -117,13 +117,16 @@ function main() {
 
   const context = prepareContext();
   const reusable = {
-    schemaVersion: 4,
+    schemaVersion: 5,
     fingerprint: context.currentFingerprint,
     baselineFingerprint: context.baselineFingerprint,
     output,
   };
   if (!reusableCurrentState(context, reusable)) throw new Error('valid current state was not reusable');
   if (reusableCurrentState(context, { ...reusable, fingerprint: '0'.repeat(64) })) throw new Error('stale current fingerprint was reusable');
+  if (reusableCurrentState(context, { ...reusable, verifiedAt: new Date().toISOString() })) {
+    throw new Error('verified CURRENT without authenticated verification and fresh-compilation reports was reusable');
+  }
 
   console.log(JSON.stringify({
     status: 'pass',

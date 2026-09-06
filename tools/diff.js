@@ -303,13 +303,13 @@ function main(argv = process.argv.slice(2)) {
       replacement.replacements,
       compiled,
     ));
+    measure('link-phase8', () => linkPhase8(context.phase8, output, objectManifest, runtime.tools));
     measure('write-layout', () => writeLayout(
       context.phase8,
       phase7,
       output,
       replacement.replacements,
     ));
-    measure('link-phase8', () => linkPhase8(context.phase8, output, objectManifest, runtime.tools));
     const comparison = measure('compare-target', () => runTargetAsmDiffer(context.phase8, target, {
       output,
       asmDifferRoot: context.localTools.asmDifferRoot,
@@ -324,7 +324,7 @@ function main(argv = process.argv.slice(2)) {
     const relocationContractMatches = target.relocationContractSource !== 'missing-diff-only'
       && JSON.stringify(candidateRelocations) === JSON.stringify(target.expectedRelocations);
     const report = measure('build-diff-report', () => ({
-      schemaVersion: 4,
+      schemaVersion: 5,
       symbol: target.symbol,
       source: target.source,
       sourceClass: targetSourcePolicy.class,
@@ -335,6 +335,7 @@ function main(argv = process.argv.slice(2)) {
       objectCache: targetCompilation.cache,
       output,
       object: compiled.get(target.symbol),
+      ...require('./lib/text_contract').recordsForTarget(target, output, require('./lib/phase8_matching_c').loadCanonicalBaserom(context.phase8)),
       relocationContract: {
         source: target.relocationContractSource,
         matches: relocationContractMatches,

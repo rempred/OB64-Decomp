@@ -57,7 +57,7 @@ function main() {
     verification,
     compilerSha256: compiler.sha256,
   });
-  const result = { schemaVersion: 4, status: 'pass', output: '.', verification };
+  const result = { schemaVersion: 5, status: 'pass', output: '.', verification };
   if (reportFile) writeJson(reportFile, result);
   console.log(`Phase 8 matching C verification: PASS (${verification.outputs.rom.sha256})`);
 }

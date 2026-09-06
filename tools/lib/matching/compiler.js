@@ -2,6 +2,7 @@
 
 const crypto = require('crypto');
 const fs = require('fs');
+const textContract = require('../text_contract');
 const path = require('path');
 const {
   ROOT,
@@ -141,7 +142,7 @@ function prepareCompilerSession(options = {}) {
     compilerFlags: context.phase8.config.compiler.compileFlags,
     assembler: context.phase8.toolchain.identity,
     sourcePolicyPreprocessor: preprocessorIdentity(preprocessor),
-    workbenchCompilerContract: 7,
+    workbenchCompilerContract: 9,
   };
   return { context, runtime, preprocessor, tool, toolId: digest(tool) };
 }
@@ -202,7 +203,7 @@ function validateScratchSymbolOwnership(elf, textSection, rodataSections, reginf
     }
     const markerSection = elf.sections[symbol.sectionIndex];
     if (symbol.name === 'gcc2_compiled.' && markerSection?.name === '.text'
-        && markerSection.type === 1 && markerSection.flags === 6 && markerSection.size === 0
+        && markerSection.type === 1 && markerSection.flags === 6 && (markerSection.size === 0 || markerSection.index === textSection.index)
         && symbol.binding === 0 && symbol.symbolType === 1 && symbol.size === 0 && symbol.value === 0) {
       owned.push(evidence);
       continue;
@@ -224,6 +225,7 @@ function compileScratchCandidate({ session, target, sourceFile, artifactDir, cla
       || typeof sourceFile !== 'string' || typeof artifactDir !== 'string') {
     throw new Error('scratch candidate compiler inputs are malformed');
   }
+  target = textContract.bindWorkbenchTarget(session, target);
   const candidateClassification = classification || classifySource(relative(sourceFile), {
     preprocessor: session.preprocessor,
   });
@@ -262,9 +264,8 @@ function compileScratchCandidate({ session, target, sourceFile, artifactDir, cla
   const compilerResult = run(session.context.localTools.compiler, compilerArgs, { cwd: artifactDir });
   verifyClassificationInputs(candidateClassification);
   const compilerBytes = fs.readFileSync(compilerAssembly);
-  const adjustedBytes = adjustSectionAssembly(compilerBytes, target.sectionName, {
-    allowAuxiliaryReadOnlySections: true,
-    legalizeCop1BinaryInstructions: true,
+  const adjustedBytes = textContract.assemblerInput(compilerBytes, target, adjustSectionAssembly, target.nativeTextTail ? {} : {
+    allowAuxiliaryReadOnlySections: true, legalizeCop1BinaryInstructions: true,
   });
   fs.writeFileSync(adjustedAssembly, adjustedBytes);
   const assembler = session.runtime.tools['mips-kmc-elf-as.exe'].path;
@@ -276,8 +277,9 @@ function compileScratchCandidate({ session, target, sourceFile, artifactDir, cla
   ];
   const assemblerResult = run(assembler, assemblerArgs, { cwd: artifactDir });
   const elf = parseElfFile(objectFile);
+  if (target.nativeTextTail) textContract.nativeObjectAllocationEvidence(elf);
 
-  const textSections = elf.sections.filter((section) => section.name === target.sectionName);
+  const textSections = elf.sections.filter((section) => section.name === textContract.inputSection(target, target.sectionName));
   if (textSections.length !== 1) throw new Error('scratch object target section count is not one');
   const textSection = textSections[0];
   if (textSection.type !== 1 || (textSection.flags & 6) !== 6 || (textSection.flags & 1) !== 0) {
@@ -347,7 +349,7 @@ function compileScratchCandidate({ session, target, sourceFile, artifactDir, cla
   const relocationTarget = {
     symbol: target.symbol,
     bytes: primary.size,
-    sectionName: target.sectionName,
+    sectionName: textContract.inputSection(target, target.sectionName),
     compilerTextFunctions: [{ symbol: target.symbol, offsetNumber: 0 }],
     auxiliarySections: rodataSections.length === 1
       ? [{ compilerSection: '.rodata', outputSection: '.rodata' }]
@@ -366,8 +368,19 @@ function compileScratchCandidate({ session, target, sourceFile, artifactDir, cla
   const rodataRelocationSection = rodata
     ? elf.sections.find((section) => section.name === '.rel.rodata')
     : null;
+  const nativeContract = target.nativeTextTail ? textContract.resolveTextContract(target) : null;
+  if (nativeContract) {
+    const owners = textContract.ownerEvidence(elf, nativeContract);
+    textContract.tailEvidence(nativeContract, owners, relocations);
+    if (!textContract.same(textContract.functionCensus(elf, [textSection]), nativeContract.compilerTextFunctions)
+        || elf.symbols.filter((symbol) => symbol.symbolType === 2).length !== 1 || rodataSections.length) {
+      throw new Error('native scratch function or allocated ownership drift');
+    }
+  }
   const scratchContract = {
-    schemaVersion: 2,
+    schemaVersion: 3,
+    textContract: nativeContract,
+    fullOwner: { bytes: textSectionBytes.length, sha256: sha256Buffer(textSectionBytes), tailBytes: tail.length },
     kind: 'single-function-scratch-object',
     primarySymbol: {
       name: primary.name,
@@ -403,7 +416,13 @@ function compileScratchCandidate({ session, target, sourceFile, artifactDir, cla
       compiler: { executable: session.context.localTools.compiler, args: compilerArgs, cwd: artifactDir },
       assembler: { executable: assembler, args: assemblerArgs, cwd: artifactDir },
     },
+    assemblyProvenance: {
+      schemaVersion: 1, mode: nativeContract ? 'untouched-native-text' : 'section-assigned',
+      compilerAssembly: { path: relative(compilerAssembly), bytes: compilerBytes.length, sha256: sha256Buffer(compilerBytes) },
+      assemblerInput: { path: relative(adjustedAssembly), bytes: adjustedBytes.length, sha256: sha256Buffer(adjustedBytes) },
+    },
     artifacts: {
+      rawObject: { path: relative(objectFile), bytes: fs.statSync(objectFile).size, sha256: sha256File(objectFile) },
       compilationInput: {
         path: relative(compilerInput),
         bytes: inputBytes.length,
@@ -617,6 +636,36 @@ function candidateArtifactFromScratch(result) {
   return { objectFile: path.resolve(ROOT, ...record.object.split('/')), objectSha256: record.objectSha256 };
 }
 
+function verifyNativeScratchProvenance(scratch, target, directory) {
+  const contract = textContract.resolveTextContract(target);
+  if (!target.nativeTextTail || scratch?.schemaVersion !== 3 || !textContract.same(scratch.textContract, contract)
+      || scratch.assemblyProvenance?.schemaVersion !== 1 || scratch.assemblyProvenance?.mode !== 'untouched-native-text') {
+    throw new Error('cached native scratch contract is stale or malformed');
+  }
+  for (const [role, name] of [['compilerAssembly', 'candidate.compiler.s'], ['assemblerInput', 'candidate.s']]) {
+    const identity = textContract.artifact(directory, name);
+    const expected = { ...identity, path: relative(path.join(directory, name)) };
+    if (!textContract.same(scratch.assemblyProvenance[role], expected)) throw new Error('cached native assembly identity drift');
+  }
+  if (!fs.readFileSync(path.join(directory, 'candidate.compiler.s')).equals(fs.readFileSync(path.join(directory, 'candidate.s')))) {
+    throw new Error('cached native compiler output was rewritten');
+  }
+  const identity = textContract.artifact(directory, 'candidate.o');
+  if (!textContract.same(scratch.artifacts.rawObject, { ...identity, path: relative(path.join(directory, 'candidate.o')) })) {
+    throw new Error('cached native raw object identity drift');
+  }
+  const elf = parseElfFile(path.join(directory, 'candidate.o'));
+  const owners = textContract.ownerEvidence(elf, contract);
+  textContract.nativeObjectAllocationEvidence(elf);
+  if (!textContract.same(scratch.fullOwner, { bytes: owners[0].bytes.length, sha256: owners[0].record.sha256, tailBytes: contract.tail.bytes })) {
+    throw new Error('cached native full-owner evidence drift');
+  }
+  const relocations = relocationRecords(elf, textContract.inputTarget(target));
+  textContract.tailEvidence(contract, owners, relocations);
+  if (!textContract.same(textContract.functionCensus(elf, owners.map(owner => owner.section)), contract.compilerTextFunctions)
+      || elf.symbols.filter(symbol => symbol.symbolType === 2).length !== 1
+      || !textContract.same(relocations, scratch.textRelocations)) throw new Error('cached native object census drift');
+}
 function cachedCandidateArtifact(run, candidate, target, matchingRoot = MATCHING_ROOT) {
   const directory = resolveRunArtifactDirectory(run, matchingRoot);
   const reportFile = path.join(directory, 'workbench-report.json');
@@ -627,7 +676,7 @@ function cachedCandidateArtifact(run, candidate, target, matchingRoot = MATCHING
     throw new Error('cached compilation report is not a plain run artifact');
   }
   const report = JSON.parse(fs.readFileSync(reportFile, 'utf8'));
-  if (report.schemaVersion !== 2 || report.target?.targetId !== target.targetId
+  if (report.schemaVersion !== 3 || report.target?.targetId !== target.targetId
       || report.candidate?.candidateId !== candidate.candidateId
       || report.compile?.runId !== run.run_id || report.compile?.cacheKey !== run.cache_key
       || report.compile?.candidateId !== candidate.candidateId
@@ -673,6 +722,7 @@ function cachedCandidateArtifact(run, candidate, target, matchingRoot = MATCHING
       || inputStat.size !== input.bytes || sha256File(inputFile) !== input.sha256) {
     throw new Error('cached compilation input identity drift');
   }
+  if (target.nativeTextTail) verifyNativeScratchProvenance(report.scratchContract, target, directory);
   return { objectFile, objectSha256: record.objectSha256 };
 }
 
@@ -699,7 +749,8 @@ function candidateCompileCacheKey(session, target, candidate, sourcePolicy, expe
     throw new Error('candidate compile cache-key inputs are malformed');
   }
   return digest({
-    schemaVersion: 3,
+    schemaVersion: 4,
+    textContract: (() => { const bound = textContract.bindWorkbenchTarget(session, target); return bound.nativeTextTail ? textContract.resolveTextContract(bound) : null; })(),
     candidateId: candidate.candidateId,
     targetId: target.targetId,
     toolId: session.toolId,
@@ -713,6 +764,7 @@ function compileCandidate(workbench, target, sourceText, options = {}) {
   const storeRequest = options.storeRequest || requestStore;
   const { candidate, sourceFile } = recordCandidate(workbench, target, sourceText, options);
   const session = options.session || prepareCompilerSession(options);
+  target = textContract.bindWorkbenchTarget(session, target);
   const targetForCompile = {
     symbol: target.symbol,
     source: relative(sourceFile),
@@ -844,7 +896,7 @@ function compileCandidate(workbench, target, sourceText, options = {}) {
     });
     comparisonRecord = makeComparisonRecord(runId, comparison);
     writeJson(path.join(artifactDir, 'workbench-report.json'), {
-      schemaVersion: 2,
+      schemaVersion: 3,
       target: { symbol: target.symbol, targetId: target.targetId, expectedBytesSha256: target.expectedBytesSha256 },
       candidate: { ...candidate, sourceText: undefined },
       sourcePolicy,
@@ -870,7 +922,7 @@ function compileCandidate(workbench, target, sourceText, options = {}) {
       createdAt: attemptStartedAt,
     };
     writeJson(path.join(artifactDir, 'workbench-report.json'), {
-      schemaVersion: 2,
+      schemaVersion: 3,
       target: { symbol: target.symbol, targetId: target.targetId },
       candidate: { ...candidate, sourceText: undefined },
       sourcePolicy,
@@ -910,6 +962,7 @@ module.exports = {
   compileCandidate,
   compileScratchCandidate,
   cachedCandidateArtifact,
+  verifyNativeScratchProvenance,
   candidateArtifactFromScratch,
   compileAttemptIdentity,
   authenticateFreshRunArtifactDirectory,

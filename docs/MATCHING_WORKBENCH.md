@@ -416,3 +416,12 @@ for the current option surface:
 ```powershell
 node tools/match.js --help
 ```
+
+## Native text diagnostics
+
+Compiler contract 9, scratch/report schema 3, candidate cache schema 4, and comparison contract 2 invalidate earlier diagnostic evidence. Native mode resolves only from an authenticated active descriptor. It retains the full owner and tail separately from function bytes and prohibits scratch auxiliary or instruction-legalization allowances. The production func_00204A70 remains inactive, so ordinary scratch output cannot claim the native accepted contract. Isolated diagnostic links remain ineligible for production acceptance.
+
+Native fresh, cached, and diagnostic objects share the rejection of nonzero COMMON storage and nonempty writable sections.
+Native diagnostic links require exactly the intended text load, with no extra load segment.
+
+Native scratch reports retain compiler-assembly, assembler-input, and raw-object identities. Cached native diagnostics recheck those identities, untouched input, section shape, complete function census, and relocations.

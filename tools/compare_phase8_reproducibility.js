@@ -2,6 +2,8 @@
 'use strict';
 
 const fs = require('fs');
+const textContract = require('./lib/text_contract');
+const { loadPhase8Model, loadCanonicalBaserom } = require('./lib/phase8_matching_c');
 const path = require('path');
 const {
   fail,
@@ -63,7 +65,18 @@ function main() {
   const leftVerification = readJson(leftVerificationFile);
   const rightVerification = readJson(rightVerificationFile);
   for (const valueToCheck of [leftBuild, rightBuild, leftVerification, rightVerification]) {
-    if (valueToCheck.schemaVersion !== 4 || valueToCheck.status !== 'pass') fail('Phase 8 reproducibility input did not pass');
+    if (valueToCheck.schemaVersion !== 5 || valueToCheck.status !== 'pass') fail('Phase 8 reproducibility input did not pass');
+  }
+  const model = loadPhase8Model();
+  const baserom = loadCanonicalBaserom(model);
+  for (const [root, build] of [[leftRoot, leftBuild], [rightRoot, rightBuild]]) {
+    const linkContext = textContract.linkContext(root, baserom);
+    if (build.targetReplacements?.length !== model.targets.length) fail('reproducibility target census drift');
+    for (const target of model.targets) {
+      const matches = build.targetReplacements.filter((record) => record.symbol === target.symbol);
+      if (matches.length !== 1) fail('reproducibility target does not resolve uniquely');
+      textContract.validateRecords(matches[0], textContract.recordsForTarget(target, root, linkContext), 'reproducibility');
+    }
   }
   if (JSON.stringify(leftBuild) !== JSON.stringify(rightBuild)) fail('path-independent Phase 8 build reports differ');
   if (JSON.stringify(leftVerification) !== JSON.stringify(rightVerification)) fail('path-independent Phase 8 verification reports differ');
@@ -80,6 +93,7 @@ function main() {
       ['compilerAssembly', 'compiler assembly'],
       ['linkedAssembly', 'section-adjusted assembly'],
     ]) compareArtifact(leftRoot, rightRoot, target[field], `${target.symbol} ${label}`);
+    if (target.assemblerObject) compareArtifact(leftRoot, rightRoot, target.assemblerObject, `${target.symbol} unsplit assembler object`);
     const policyMatches = Array.isArray(leftBuild.sourcePolicy?.targets)
       ? leftBuild.sourcePolicy.targets.filter((record) => record.symbol === target.symbol)
       : [];
@@ -88,7 +102,7 @@ function main() {
     compareArtifact(leftRoot, rightRoot, target.sourceObjectProof && target.sourceObjectProof.path, `${target.symbol} source-to-object proof`);
   }
   const result = {
-    schemaVersion: 4,
+    schemaVersion: 5,
     status: 'pass',
     reportsIdentical: true,
     buildReportSha256: sha256File(leftBuildFile),

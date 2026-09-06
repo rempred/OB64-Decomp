@@ -2,6 +2,8 @@
 
 const fs = require('fs');
 const path = require('path');
+const { normalizeInterior, resolveInterior } = require('./auxiliary_interior');
+const { normalizeNativeTextTail, resolveTextContract } = require('./text_contract');
 const {
   ROOT,
   fail,
@@ -19,8 +21,10 @@ const TOOLCHAIN_BUILD_PATH = path.join(ROOT, 'config', 'gnu-binutils-2.6-build.j
 const SAFE_LINK_SYMBOL = /^[A-Za-z_.$][A-Za-z0-9_.$]*$/;
 const LOAD_RELOCATION_TYPES = new Set(['R_MIPS_26', 'R_MIPS_HI16', 'R_MIPS_LO16']);
 const AUXILIARY_OUTPUT_SECTION = /^\.ob64\.r[0-9]+(?:\.s[0-9]+)?$/;
+const AUXILIARY_PREFIX_SECTION = /^\.ob64\.r[0-9]+(?:\.s[0-9]+)?\.prefix$/;
 const AUXILIARY_TAIL_SECTION = /^\.ob64\.r[0-9]+(?:\.s[0-9]+)?\.tail$/;
 const SHA256 = /^[0-9A-F]{64}$/;
+const LOCAL_COMPILER_LABEL = /^\.L[0-9]+$/;
 const COMPILER_TEXT_ENTRY_EVIDENCE = new Set(['owner', 'internal-call-only', 'fixed-address-call']);
 const COMPILER_TEXT_ENTRY_BINDINGS = new Set(['GLOBAL', 'LOCAL']);
 
@@ -123,6 +127,38 @@ function normalizeCompilerTextFunctions(records, targetSymbol, label) {
   });
 }
 
+// A gap is permitted only when the compiler's alignment directives require it.
+// It is not a switch-table entry and must never acquire a relocation.
+function compilerOccurrencePaddingBytes(occurrence, cursor, label) {
+  if (!occurrence || !Number.isInteger(cursor) || cursor < 0
+      || !Array.isArray(occurrence.alignmentDirectives) || occurrence.alignmentDirectives.length === 0
+      || occurrence.alignmentDirectives.some((power) => !Number.isInteger(power) || power < 0 || power > 4)
+      || 2 ** Math.max(...occurrence.alignmentDirectives) !== occurrence.alignment) {
+    fail(`${label} compiler alignment metadata is malformed`);
+  }
+  let aligned = cursor;
+  for (const power of occurrence.alignmentDirectives) {
+    const alignment = 2 ** power;
+    aligned += (alignment - (aligned % alignment)) % alignment;
+  }
+  const bytes = aligned - cursor;
+  const padding = occurrence.paddingBefore;
+  if (bytes === 0) {
+    if (Object.prototype.hasOwnProperty.call(occurrence, 'paddingBefore')) {
+      fail(`${label} has unneeded internal alignment padding`);
+    }
+  } else if (!exactKeys(padding, ['offset', 'bytes', 'expectedSha256'])
+      || padding.offset !== `0x${cursor.toString(16).toUpperCase().padStart(8, '0')}`
+      || padding.bytes !== bytes || bytes % 4 !== 0
+      || padding.expectedSha256 !== sha256Buffer(Buffer.alloc(bytes))) {
+    fail(`${label} internal alignment padding is malformed`);
+  }
+  if (occurrence.offset !== `0x${aligned.toString(16).toUpperCase().padStart(8, '0')}`) {
+    fail(`${label} compiler occurrences have a gap, overlap, or alignment drift`);
+  }
+  return bytes;
+}
+
 function normalizeAuxiliarySectionContracts(contracts, targetSymbol, label) {
   if (contracts === undefined) return [];
   if (!Array.isArray(contracts) || contracts.length === 0) fail(`${label} is not a nonempty array`);
@@ -148,11 +184,22 @@ function normalizeAuxiliarySectionContracts(contracts, targetSymbol, label) {
       'preservedTail',
       'expectedRelocations',
     ];
+    const hasPreservedPrefix = Object.prototype.hasOwnProperty.call(contract, 'preservedPrefix');
+    const hasInterior = Object.prototype.hasOwnProperty.call(contract, 'preservedInteriorBefore');
+    const hasCompilerOccurrences = Object.prototype.hasOwnProperty.call(contract, 'compilerOccurrences');
+    const hasSourceObjectPrefix = Object.prototype.hasOwnProperty.call(contract, 'sourceObjectPrefix');
     const hasTrailingPaddingBytes = Object.prototype.hasOwnProperty.call(contract, 'trailingPaddingBytes');
     const hasTrailingPaddingHash = Object.prototype.hasOwnProperty.call(contract, 'expectedTrailingPaddingSha256');
-    const contractKeys = hasTrailingPaddingBytes && hasTrailingPaddingHash
-      ? [...baseKeys, 'trailingPaddingBytes', 'expectedTrailingPaddingSha256']
-      : baseKeys;
+    const contractKeys = [
+      ...baseKeys,
+      ...(hasPreservedPrefix ? ['preservedPrefix'] : []),
+      ...(hasInterior ? ['preservedInteriorBefore'] : []),
+      ...(hasCompilerOccurrences ? ['compilerOccurrences'] : []),
+      ...(hasSourceObjectPrefix ? ['sourceObjectPrefix'] : []),
+      ...(hasTrailingPaddingBytes && hasTrailingPaddingHash
+        ? ['trailingPaddingBytes', 'expectedTrailingPaddingSha256']
+        : []),
+    ];
     if (hasTrailingPaddingBytes !== hasTrailingPaddingHash
         || !exactKeys(contract, contractKeys)
         || contract.kind !== 'switch-table'
@@ -182,13 +229,49 @@ function normalizeAuxiliarySectionContracts(contracts, targetSymbol, label) {
         || (hasTrailingPaddingBytes && trailingPaddingBytes <= 0)
         || trailingPaddingBytes % 4 !== 0
         || (hasTrailingPaddingBytes && trailingPaddingBytes !== alignmentPaddingBytes)
-        || contract.bytes !== entryBytes + trailingPaddingBytes
+        || (!hasCompilerOccurrences && contract.bytes !== entryBytes + trailingPaddingBytes)
         || typeof expectedTrailingPaddingSha256 !== 'string'
         || !SHA256.test(expectedTrailingPaddingSha256)) {
       fail(`${contractLabel} trailing alignment padding is malformed`);
     }
     if (sha256Buffer(Buffer.alloc(trailingPaddingBytes)) !== expectedTrailingPaddingSha256) {
       fail(`${contractLabel} trailing alignment padding is malformed`);
+    }
+    const prefix = hasPreservedPrefix ? contract.preservedPrefix : null;
+    const interior = hasInterior ? normalizeInterior(contract.preservedInteriorBefore, contract) : null;
+    if (interior && prefix !== null) fail(`${contractLabel} has contradictory prefix and interior owners`);
+    if (hasPreservedPrefix && (!exactKeys(prefix, [
+      'inputSection',
+      'sectionType',
+      'sectionFlags',
+      'alignment',
+      'romStart',
+      'romEndExclusive',
+      'vramStart',
+      'vramEndExclusive',
+      'bytes',
+      'expectedSha256',
+      'ownerOriginalAssembly',
+      'ownerOriginalAssemblySha256',
+    ])
+        || prefix.inputSection !== `${contract.outputSection}.prefix`
+        || !AUXILIARY_PREFIX_SECTION.test(prefix.inputSection)
+        || ['.data', '.bss', '.text', '.rodata'].includes(prefix.inputSection)
+        || prefix.sectionType !== 'SHT_PROGBITS'
+        || !sameJson(prefix.sectionFlags, ['SHF_ALLOC'])
+        || !Number.isInteger(prefix.alignment) || prefix.alignment < 1
+        || prefix.alignment > 16 || (prefix.alignment & (prefix.alignment - 1)) !== 0
+        || typeof prefix.romStart !== 'string' || !/^0x[0-9A-F]{8}$/.test(prefix.romStart)
+        || typeof prefix.romEndExclusive !== 'string' || !/^0x[0-9A-F]{8}$/.test(prefix.romEndExclusive)
+        || typeof prefix.vramStart !== 'string' || !/^0x[0-9A-F]{8}$/.test(prefix.vramStart)
+        || typeof prefix.vramEndExclusive !== 'string' || !/^0x[0-9A-F]{8}$/.test(prefix.vramEndExclusive)
+        || !Number.isInteger(prefix.bytes) || prefix.bytes <= 0
+        || typeof prefix.expectedSha256 !== 'string' || !SHA256.test(prefix.expectedSha256)
+        || typeof prefix.ownerOriginalAssembly !== 'string' || path.isAbsolute(prefix.ownerOriginalAssembly)
+        || prefix.ownerOriginalAssembly.split('/').includes('..')
+        || typeof prefix.ownerOriginalAssemblySha256 !== 'string'
+        || !SHA256.test(prefix.ownerOriginalAssemblySha256))) {
+      fail(`${contractLabel} preserved prefix is malformed`);
     }
     const tail = contract.preservedTail;
     if (tail !== null && (!exactKeys(tail, [
@@ -224,10 +307,75 @@ function normalizeAuxiliarySectionContracts(contracts, targetSymbol, label) {
         || !SHA256.test(tail.ownerOriginalAssemblySha256))) {
       fail(`${contractLabel} preserved tail is malformed`);
     }
+    let sourceObjectPrefix;
+    if (hasSourceObjectPrefix) {
+      if (!hasCompilerOccurrences) {
+        fail(`${contractLabel} source-object prefix compiler grammar is missing`);
+      }
+      const selection = contract.sourceObjectPrefix;
+      if (!exactKeys(selection, [
+        'sectionType',
+        'sectionFlags',
+        'alignment',
+        'bytes',
+        'expectedSha256',
+        'prefixOffset',
+        'prefixBytes',
+        'expectedPrefixSha256',
+        'trailingPaddingOffset',
+        'trailingPaddingBytes',
+        'expectedTrailingPaddingSha256',
+      ])
+          || selection.sectionType !== contract.sectionType
+          || !sameJson(selection.sectionFlags, contract.sectionFlags)
+          || selection.alignment !== contract.alignment
+          || !Number.isInteger(selection.bytes) || selection.bytes <= contract.bytes
+          || typeof selection.expectedSha256 !== 'string' || !SHA256.test(selection.expectedSha256)
+          || typeof selection.prefixOffset !== 'string' || !/^0x[0-9A-F]{8}$/.test(selection.prefixOffset)
+          || !Number.isInteger(selection.prefixBytes) || selection.prefixBytes <= 0
+          || typeof selection.expectedPrefixSha256 !== 'string' || !SHA256.test(selection.expectedPrefixSha256)
+          || typeof selection.trailingPaddingOffset !== 'string'
+          || !/^0x[0-9A-F]{8}$/.test(selection.trailingPaddingOffset)
+          || !Number.isInteger(selection.trailingPaddingBytes) || selection.trailingPaddingBytes <= 0
+          || typeof selection.expectedTrailingPaddingSha256 !== 'string'
+          || !SHA256.test(selection.expectedTrailingPaddingSha256)) {
+        fail(`${contractLabel} source-object prefix is malformed`);
+      }
+      const prefixOffsetNumber = parseNumber(selection.prefixOffset, `${contractLabel} source-object prefix offset`);
+      const trailingPaddingOffsetNumber = parseNumber(
+        selection.trailingPaddingOffset,
+        `${contractLabel} source-object trailing-padding offset`,
+      );
+      const requiredSourcePadding = (contract.alignment - (contract.bytes % contract.alignment)) % contract.alignment;
+      if (prefixOffsetNumber !== 0
+          || selection.prefixBytes !== contract.bytes
+          || selection.expectedPrefixSha256 !== contract.expectedObjectSha256
+          || trailingPaddingOffsetNumber !== selection.prefixBytes
+          || selection.trailingPaddingBytes !== requiredSourcePadding
+          || selection.bytes !== selection.prefixBytes + selection.trailingPaddingBytes
+          || selection.bytes % selection.alignment !== 0
+          || trailingPaddingBytes !== 0
+          || tail === null
+          || tail.bytes !== selection.trailingPaddingBytes
+          || tail.expectedSha256 !== selection.expectedTrailingPaddingSha256
+          || sha256Buffer(Buffer.alloc(selection.trailingPaddingBytes))
+            !== selection.expectedTrailingPaddingSha256) {
+        fail(`${contractLabel} source-object prefix does not describe exact terminal alignment padding`);
+      }
+      sourceObjectPrefix = {
+        ...selection,
+        prefixOffsetNumber,
+        trailingPaddingOffsetNumber,
+      };
+    }
     const romStart = parseNumber(contract.romStart, `${contractLabel} ROM start`);
     const romEndExclusive = parseNumber(contract.romEndExclusive, `${contractLabel} ROM end`);
     const vramStart = parseNumber(contract.vramStart, `${contractLabel} VMA start`);
     const vramEndExclusive = parseNumber(contract.vramEndExclusive, `${contractLabel} VMA end`);
+    const prefixRomStart = prefix === null ? romStart : parseNumber(prefix.romStart, `${contractLabel} prefix ROM start`);
+    const prefixRomEndExclusive = prefix === null ? romStart : parseNumber(prefix.romEndExclusive, `${contractLabel} prefix ROM end`);
+    const prefixVramStart = prefix === null ? vramStart : parseNumber(prefix.vramStart, `${contractLabel} prefix VMA start`);
+    const prefixVramEndExclusive = prefix === null ? vramStart : parseNumber(prefix.vramEndExclusive, `${contractLabel} prefix VMA end`);
     const tailRomStart = tail === null ? romEndExclusive : parseNumber(tail.romStart, `${contractLabel} tail ROM start`);
     const tailRomEndExclusive = tail === null ? romEndExclusive : parseNumber(tail.romEndExclusive, `${contractLabel} tail ROM end`);
     const tailVramStart = tail === null ? vramEndExclusive : parseNumber(tail.vramStart, `${contractLabel} tail VMA start`);
@@ -236,6 +384,14 @@ function normalizeAuxiliarySectionContracts(contracts, targetSymbol, label) {
         || vramEndExclusive - vramStart !== contract.bytes
         || romStart % contract.alignment !== 0
         || vramStart % contract.alignment !== 0
+        || (prefix !== null && (
+          prefixRomEndExclusive - prefixRomStart !== prefix.bytes
+          || prefixVramEndExclusive - prefixVramStart !== prefix.bytes
+          || prefixRomStart % prefix.alignment !== 0
+          || prefixVramStart % prefix.alignment !== 0
+          || prefixRomEndExclusive !== romStart
+          || prefixVramEndExclusive !== vramStart
+        ))
         || (tail !== null && (
           tailRomEndExclusive - tailRomStart !== tail.bytes
           || tailVramEndExclusive - tailVramStart !== tail.bytes
@@ -251,10 +407,82 @@ function normalizeAuxiliarySectionContracts(contracts, targetSymbol, label) {
       `${contractLabel} relocations`,
     );
     if (expectedRelocations.length !== contract.entries
-        || expectedRelocations.some((record, relocationIndex) => (
+        || (!hasCompilerOccurrences && expectedRelocations.some((record, relocationIndex) => (
           Number.parseInt(record.offset.slice(2), 16) !== relocationIndex * 4
-        ))) {
+        )))) {
       fail(`${contractLabel} switch-table entry census is malformed`);
+    }
+    let compilerOccurrences;
+    if (hasCompilerOccurrences) {
+      const minimumCompilerOccurrences = hasSourceObjectPrefix ? 1 : 2;
+      if (!Array.isArray(contract.compilerOccurrences)
+          || contract.compilerOccurrences.length < minimumCompilerOccurrences
+          || trailingPaddingBytes !== 0) {
+        fail(`${contractLabel} compiler occurrences are malformed`);
+      }
+      const labels = new Set();
+      let occurrenceCursor = 0;
+      let occurrenceEntries = 0;
+      compilerOccurrences = contract.compilerOccurrences.map((occurrence, occurrenceIndex) => {
+        const occurrenceLabel = `${contractLabel} compiler occurrence ${occurrenceIndex}`;
+        if (!exactKeys(occurrence, [
+          'label',
+          'offset',
+          'bytes',
+          'entries',
+          'alignment',
+          'alignmentDirectives',
+          'expectedObjectSha256',
+          'expectedLinkedSha256',
+          ...(Object.prototype.hasOwnProperty.call(occurrence, 'paddingBefore') ? ['paddingBefore'] : []),
+        ])
+            || typeof occurrence.label !== 'string' || !LOCAL_COMPILER_LABEL.test(occurrence.label)
+            || labels.has(occurrence.label)
+            || typeof occurrence.offset !== 'string' || !/^0x[0-9A-F]{8}$/.test(occurrence.offset)
+            || !Number.isInteger(occurrence.bytes) || occurrence.bytes <= 0 || occurrence.bytes % 4 !== 0
+            || !Number.isInteger(occurrence.entries) || occurrence.entries <= 0
+            || occurrence.bytes !== occurrence.entries * 4
+            || !Number.isInteger(occurrence.alignment) || occurrence.alignment < 4
+            || occurrence.alignment > 16 || (occurrence.alignment & (occurrence.alignment - 1)) !== 0
+            || !Array.isArray(occurrence.alignmentDirectives) || occurrence.alignmentDirectives.length === 0
+            || occurrence.alignmentDirectives.some((power) => !Number.isInteger(power) || power < 0 || power > 4)
+            || 2 ** Math.max(...occurrence.alignmentDirectives) !== occurrence.alignment
+            || typeof occurrence.expectedObjectSha256 !== 'string' || !SHA256.test(occurrence.expectedObjectSha256)
+            || typeof occurrence.expectedLinkedSha256 !== 'string' || !SHA256.test(occurrence.expectedLinkedSha256)) {
+          fail(`${occurrenceLabel} is malformed`);
+        }
+        const offsetNumber = parseNumber(occurrence.offset, `${occurrenceLabel} offset`);
+        const endOffsetNumber = offsetNumber + occurrence.bytes;
+        const paddingBytes = compilerOccurrencePaddingBytes(occurrence, occurrenceCursor, occurrenceLabel);
+        if (offsetNumber !== occurrenceCursor + paddingBytes
+            || offsetNumber % occurrence.alignment !== 0
+            || endOffsetNumber > contract.bytes) {
+          fail(`${contractLabel} compiler occurrences have a gap, overlap, or alignment drift`);
+        }
+        const occurrenceRelocations = expectedRelocations.filter((relocation) => {
+          const offset = Number.parseInt(relocation.offset.slice(2), 16);
+          return offset >= offsetNumber && offset < endOffsetNumber;
+        });
+        if (occurrenceRelocations.length !== occurrence.entries
+            || occurrenceRelocations.some((relocation, relocationIndex) => (
+              Number.parseInt(relocation.offset.slice(2), 16) !== offsetNumber + relocationIndex * 4
+            ))) {
+          fail(`${contractLabel} compiler occurrence relocation census is malformed`);
+        }
+        labels.add(occurrence.label);
+        occurrenceCursor = endOffsetNumber;
+        occurrenceEntries += occurrence.entries;
+        return {
+          ...occurrence,
+          offsetNumber,
+          endOffsetNumber,
+          expectedRelocations: occurrenceRelocations,
+        };
+      });
+      if (occurrenceCursor !== contract.bytes || occurrenceEntries !== contract.entries
+          || Math.max(...compilerOccurrences.map((occurrence) => occurrence.alignment)) !== contract.alignment) {
+        fail(`${contractLabel} compiler occurrences do not exactly cover the logical auxiliary section`);
+      }
     }
     if (compilerSections.has(contract.compilerSection)) {
       fail(`${label} repeats compiler section ${contract.compilerSection}`);
@@ -266,6 +494,7 @@ function normalizeAuxiliarySectionContracts(contracts, targetSymbol, label) {
     outputSections.add(contract.outputSection);
     return {
       ...contract,
+      ...(interior ? { preservedInteriorBefore: interior } : {}),
       entryBytes,
       trailingPaddingBytes,
       expectedTrailingPaddingSha256,
@@ -273,6 +502,17 @@ function normalizeAuxiliarySectionContracts(contracts, targetSymbol, label) {
       romEndNumber: romEndExclusive,
       vramStartNumber: vramStart,
       vramEndNumber: vramEndExclusive,
+      ...(hasPreservedPrefix ? {
+        preservedPrefix: {
+          ...prefix,
+          romStartNumber: prefixRomStart,
+          romEndNumber: prefixRomEndExclusive,
+          vramStartNumber: prefixVramStart,
+          vramEndNumber: prefixVramEndExclusive,
+        },
+      } : {}),
+      ...(hasCompilerOccurrences ? { compilerOccurrences } : {}),
+      ...(hasSourceObjectPrefix ? { sourceObjectPrefix } : {}),
       preservedTail: tail === null ? null : {
         ...tail,
         romStartNumber: tailRomStart,
@@ -287,7 +527,7 @@ function normalizeAuxiliarySectionContracts(contracts, targetSymbol, label) {
 
 function validateLinkageConfig(linkage, expectedProfile) {
   if (!exactKeys(linkage, ['schemaVersion', 'profile', 'symbols', 'targets'])
-      || linkage.schemaVersion !== 3 || linkage.profile !== expectedProfile
+      || linkage.schemaVersion !== 4 || linkage.profile !== expectedProfile
       || !Array.isArray(linkage.symbols) || !Array.isArray(linkage.targets)) {
     fail('matching-C linkage configuration schema or profile drift');
   }
@@ -310,6 +550,7 @@ function validateLinkageConfig(linkage, expectedProfile) {
       'expectedRelocations',
       ...(entry && Object.prototype.hasOwnProperty.call(entry, 'compilerTextFunctions') ? ['compilerTextFunctions'] : []),
       ...(entry && Object.prototype.hasOwnProperty.call(entry, 'auxiliarySections') ? ['auxiliarySections'] : []),
+      ...(entry && Object.prototype.hasOwnProperty.call(entry, 'nativeTextTail') ? ['nativeTextTail'] : []),
     ];
     if (!exactKeys(entry, expectedKeys)
         || typeof entry.symbol !== 'string' || !SAFE_LINK_SYMBOL.test(entry.symbol)) {
@@ -317,8 +558,13 @@ function validateLinkageConfig(linkage, expectedProfile) {
     }
     const key = entry.symbol.toLowerCase();
     if (targets.has(key)) fail(`matching-C linkage target is duplicated: ${entry.symbol}`);
+    const nativeTextTail = normalizeNativeTextTail(entry.nativeTextTail, entry.symbol);
+    if (nativeTextTail && (entry.compilerTextFunctions !== undefined || entry.auxiliarySections !== undefined)) {
+      fail('native text cannot combine auxiliary or multi-function contracts');
+    }
     targets.set(key, {
       symbol: entry.symbol,
+      nativeTextTail,
       expectedRelocations: normalizeRelocationRecords(
         entry.expectedRelocations,
         entry.symbol,
@@ -360,6 +606,7 @@ function selectRelocationContract(symbol, canonicalTarget, legacyTarget, allowMi
     return {
       expectedRelocations: canonicalTarget.expectedRelocations,
       compilerTextFunctions: canonicalTarget.compilerTextFunctions,
+      nativeTextTail: canonicalTarget.nativeTextTail,
       auxiliarySections: canonicalTarget.auxiliarySections,
       source: 'canonical',
       canonicalLegacyEquivalent: legacyRelocations ? true : null,
@@ -475,6 +722,12 @@ function resolveAcceptedRow(model, symbol, sourceCache = null) {
 
 function resolveCompilerTextFunctions(target, records) {
   if (!Array.isArray(records)) fail(`compiler text-function contract is malformed: ${target.symbol}`);
+  if (target.nativeTextTail) {
+    resolveTextContract(target);
+    if (records.length !== 0) fail('native text cannot have additional compiler functions');
+    return [{ symbol: target.symbol, offset: '0x00000000', offsetNumber: 0,
+      bytes: 1132, binding: 'GLOBAL', entryEvidence: 'owner' }];
+  }
   const resolved = records.length === 0 ? [{
     symbol: target.symbol,
     offset: '0x00000000',
@@ -706,6 +959,7 @@ function resolveAuxiliarySectionContracts(model, baserom, target, contracts) {
       fail(`auxiliary output section is not one accepted read-only data owner: ${target.symbol} ${contract.outputSection}`);
     }
     const slice = slices[0];
+    if (contract.preservedInteriorBefore) resolveInterior(contract.preservedInteriorBefore, row, slice, baserom);
     if (contract.outputSection === target.sectionName
         || contract.romStartNumber < row.romStart
         || contract.vramStartNumber < slice.vramStart
@@ -718,8 +972,18 @@ function resolveAuxiliarySectionContracts(model, baserom, target, contracts) {
     if (!fs.existsSync(ownerFile) || !fs.statSync(ownerFile).isFile() || sha256File(ownerFile) !== row.part.sha256) {
       fail(`accepted auxiliary original assembly identity drift: ${target.symbol} ${contract.outputSection}`);
     }
+    const prefix = contract.preservedPrefix || null;
     const tail = contract.preservedTail;
     if (contract.romStartNumber < 0 || contract.romEndNumber > baserom.length
+        || (prefix !== null && (
+          prefix.romStartNumber < 0
+          || prefix.romEndNumber !== contract.romStartNumber
+          || prefix.vramEndNumber !== contract.vramStartNumber
+          || prefix.romStartNumber !== row.romStart
+          || prefix.vramStartNumber !== slice.vramStart
+          || prefix.ownerOriginalAssembly !== row.part.file
+          || prefix.ownerOriginalAssemblySha256 !== row.part.sha256
+        ))
         || (tail !== null && (
           tail.romEndNumber > baserom.length
           || tail.romEndNumber !== row.romEndExclusive
@@ -734,20 +998,40 @@ function resolveAuxiliarySectionContracts(model, baserom, target, contracts) {
     for (const [index, relocation] of contract.expectedRelocations.entries()) {
       const offset = Number.parseInt(relocation.offset.slice(2), 16);
       const addend = Number.parseInt(relocation.addend.slice(2), 16);
-      if (offset !== index * 4 || offset + 4 > contract.entryBytes || addend >= target.bytes) {
+      const isEntry = contract.compilerOccurrences
+        ? contract.compilerOccurrences.some((occurrence) => offset >= occurrence.offsetNumber
+          && offset + 4 <= occurrence.endOffsetNumber && offset % 4 === 0)
+        : offset === index * 4 && offset + 4 <= contract.entryBytes;
+      if (!isEntry || addend >= target.bytes) {
         fail(`auxiliary local-label relocation is outside its accepted text owner: ${target.symbol} ${contract.outputSection}`);
       }
       objectBytes.writeUInt32BE(addend >>> 0, offset);
       relocatedBytes.writeUInt32BE((target.vramStartNumber + addend) >>> 0, offset);
     }
     const retailBytes = Buffer.from(baserom.subarray(contract.romStartNumber, contract.romEndNumber));
+    const retailPrefixBytes = prefix === null
+      ? Buffer.alloc(0)
+      : Buffer.from(baserom.subarray(prefix.romStartNumber, prefix.romEndNumber));
     const retailTailBytes = tail === null
       ? Buffer.alloc(0)
       : Buffer.from(baserom.subarray(tail.romStartNumber, tail.romEndNumber));
     const expectedZeroPadding = Buffer.alloc(contract.trailingPaddingBytes);
-    const objectPadding = Buffer.from(objectBytes.subarray(contract.entryBytes));
-    const linkedPadding = Buffer.from(relocatedBytes.subarray(contract.entryBytes));
-    const retailPadding = Buffer.from(retailBytes.subarray(contract.entryBytes));
+    const trailingPaddingOffset = contract.bytes - contract.trailingPaddingBytes;
+    const objectPadding = Buffer.from(objectBytes.subarray(trailingPaddingOffset));
+    const linkedPadding = Buffer.from(relocatedBytes.subarray(trailingPaddingOffset));
+    const retailPadding = Buffer.from(retailBytes.subarray(trailingPaddingOffset));
+    const sourceObjectBytes = contract.sourceObjectPrefix
+      ? Buffer.concat([objectBytes, Buffer.alloc(contract.sourceObjectPrefix.trailingPaddingBytes)])
+      : objectBytes;
+    const sourceObjectPrefixBytes = contract.sourceObjectPrefix
+      ? Buffer.from(sourceObjectBytes.subarray(
+        contract.sourceObjectPrefix.prefixOffsetNumber,
+        contract.sourceObjectPrefix.prefixOffsetNumber + contract.sourceObjectPrefix.prefixBytes,
+      ))
+      : objectBytes;
+    const sourceObjectTrailingPadding = contract.sourceObjectPrefix
+      ? Buffer.from(sourceObjectBytes.subarray(contract.sourceObjectPrefix.trailingPaddingOffsetNumber))
+      : Buffer.alloc(0);
     if (objectPadding.length !== contract.trailingPaddingBytes
         || linkedPadding.length !== contract.trailingPaddingBytes
         || retailPadding.length !== contract.trailingPaddingBytes
@@ -758,17 +1042,58 @@ function resolveAuxiliarySectionContracts(model, baserom, target, contracts) {
         || sha256Buffer(linkedPadding) !== contract.expectedTrailingPaddingSha256
         || sha256Buffer(retailPadding) !== contract.expectedTrailingPaddingSha256
         || sha256Buffer(objectBytes) !== contract.expectedObjectSha256
+        || (contract.sourceObjectPrefix && (
+          sourceObjectBytes.length !== contract.sourceObjectPrefix.bytes
+          || sha256Buffer(sourceObjectBytes) !== contract.sourceObjectPrefix.expectedSha256
+          || sourceObjectPrefixBytes.length !== contract.sourceObjectPrefix.prefixBytes
+          || !sourceObjectPrefixBytes.equals(objectBytes)
+          || sha256Buffer(sourceObjectPrefixBytes) !== contract.sourceObjectPrefix.expectedPrefixSha256
+          || sourceObjectTrailingPadding.length !== contract.sourceObjectPrefix.trailingPaddingBytes
+          || !sourceObjectTrailingPadding.equals(Buffer.alloc(contract.sourceObjectPrefix.trailingPaddingBytes))
+          || sha256Buffer(sourceObjectTrailingPadding)
+            !== contract.sourceObjectPrefix.expectedTrailingPaddingSha256
+          || !sourceObjectTrailingPadding.equals(retailTailBytes)
+        ))
         || sha256Buffer(relocatedBytes) !== contract.expectedLinkedSha256
         || sha256Buffer(retailBytes) !== contract.expectedLinkedSha256
         || !relocatedBytes.equals(retailBytes)
+        || (prefix !== null && (
+          retailPrefixBytes.length !== prefix.bytes
+          || sha256Buffer(retailPrefixBytes) !== prefix.expectedSha256
+        ))
         || (tail !== null && (
           retailTailBytes.length !== tail.bytes
           || sha256Buffer(retailTailBytes) !== tail.expectedSha256
         ))) {
       fail(`auxiliary switch-table bytes or relocation semantics drift: ${target.symbol} ${contract.outputSection}`);
     }
+    const compilerOccurrences = contract.compilerOccurrences && contract.compilerOccurrences.map((occurrence) => {
+      if (occurrence.paddingBefore) {
+        const padding = occurrence.paddingBefore;
+        const offset = parseNumber(padding.offset, 'internal padding offset');
+        for (const bytes of [objectBytes, relocatedBytes, retailBytes]) {
+          const actual = bytes.subarray(offset, offset + padding.bytes);
+          if (!actual.equals(Buffer.alloc(padding.bytes)) || sha256Buffer(actual) !== padding.expectedSha256) {
+            fail(`auxiliary internal alignment padding drift: ${target.symbol} ${contract.outputSection}`);
+          }
+        }
+      }
+      const objectOccurrence = Buffer.from(objectBytes.subarray(occurrence.offsetNumber, occurrence.endOffsetNumber));
+      const linkedOccurrence = Buffer.from(relocatedBytes.subarray(occurrence.offsetNumber, occurrence.endOffsetNumber));
+      const retailOccurrence = Buffer.from(retailBytes.subarray(occurrence.offsetNumber, occurrence.endOffsetNumber));
+      if (objectOccurrence.length !== occurrence.bytes
+          || linkedOccurrence.length !== occurrence.bytes
+          || retailOccurrence.length !== occurrence.bytes
+          || sha256Buffer(objectOccurrence) !== occurrence.expectedObjectSha256
+          || sha256Buffer(linkedOccurrence) !== occurrence.expectedLinkedSha256
+          || !linkedOccurrence.equals(retailOccurrence)) {
+        fail(`auxiliary compiler occurrence bytes drift: ${target.symbol} ${contract.outputSection} ${occurrence.label}`);
+      }
+      return { ...occurrence };
+    });
     return {
       ...contract,
+      ...(compilerOccurrences ? { compilerOccurrences } : {}),
       ownerRowIndex: row.index,
       ownerPrimaryId: row.primaryId,
       ownerChunkIndex: row.part.chunkIndex,
@@ -781,6 +1106,16 @@ function resolveAuxiliarySectionContracts(model, baserom, target, contracts) {
       ownerOriginalAssemblySha256: row.part.sha256,
       ownerSymbol: row.part.name,
       ownerSymbolVram: slice.vramStart + row.part.symbolByteOffset,
+      ...(prefix === null ? {} : {
+        ownerPrefixSection: prefix.inputSection,
+        ownerPrefixAlignment: prefix.alignment,
+        ownerPrefixBytes: prefix.bytes,
+        ownerPrefixSha256: prefix.expectedSha256,
+        ownerPrefixRomStartNumber: prefix.romStartNumber,
+        ownerPrefixRomEndNumber: prefix.romEndNumber,
+        ownerPrefixVramStartNumber: prefix.vramStartNumber,
+        ownerPrefixVramEndNumber: prefix.vramEndNumber,
+      }),
       ownerTailSection: tail === null ? null : tail.inputSection,
       ownerTailAlignment: tail === null ? 1 : tail.alignment,
       ownerTailBytes: tail === null ? 0 : tail.bytes,
@@ -836,8 +1171,37 @@ function validateAuxiliaryOwnerGroups(targets) {
     }
     let romCursor = first.ownerRomStartNumber;
     let vramCursor = first.ownerVramStartNumber;
+    const interiorSections = new Set();
     for (const [index, member] of members.entries()) {
       const { auxiliary } = member;
+      const interior = auxiliary.preservedInteriorBefore;
+      if (interior) {
+        if (index === 0 || interiorSections.has(interior.inputSection)
+            || interior.romStartNumber !== romCursor || interior.vramStartNumber !== vramCursor
+            || interior.romEndNumber !== auxiliary.romStartNumber
+            || interior.vramEndNumber !== auxiliary.vramStartNumber) {
+          fail(`retained interior assembly coverage or ownership drift: ${first.outputSection}`);
+        }
+        interiorSections.add(interior.inputSection);
+        romCursor = interior.romEndNumber;
+        vramCursor = interior.vramEndNumber;
+      }
+      const prefixBytes = auxiliary.ownerPrefixBytes || 0;
+      if (index === 0) {
+        const prefixRomStart = prefixBytes > 0 ? auxiliary.ownerPrefixRomStartNumber : auxiliary.romStartNumber;
+        const prefixRomEnd = prefixBytes > 0 ? auxiliary.ownerPrefixRomEndNumber : auxiliary.romStartNumber;
+        const prefixVramStart = prefixBytes > 0 ? auxiliary.ownerPrefixVramStartNumber : auxiliary.vramStartNumber;
+        const prefixVramEnd = prefixBytes > 0 ? auxiliary.ownerPrefixVramEndNumber : auxiliary.vramStartNumber;
+        if (prefixRomStart !== romCursor || prefixVramStart !== vramCursor
+            || prefixRomEnd - prefixRomStart !== prefixBytes
+            || prefixVramEnd - prefixVramStart !== prefixBytes) {
+          fail(`shared auxiliary retained prefix does not begin the accepted owner: ${first.outputSection}`);
+        }
+        romCursor = prefixRomEnd;
+        vramCursor = prefixVramEnd;
+      } else if (prefixBytes !== 0 || auxiliary.ownerPrefixSection) {
+        fail(`noninitial shared auxiliary fragment owns an assembly prefix: ${first.outputSection}`);
+      }
       if (auxiliary.romStartNumber !== romCursor || auxiliary.vramStartNumber !== vramCursor) {
         fail(`shared auxiliary fragments have a gap or overlap: ${first.outputSection}`);
       }
@@ -1050,7 +1414,8 @@ function loadActiveTargetModel(options = {}) {
       descriptorRawSha256: descriptor ? descriptor.rawSha256 : null,
       expectedTextSha256,
       expectedRelocations: relocationContract.expectedRelocations,
-      compilerTextFunctionsExplicit: relocationContract.compilerTextFunctions.length > 0,
+      nativeTextTail: relocationContract.nativeTextTail || null,
+      compilerTextFunctionsExplicit: Boolean(relocationContract.nativeTextTail) || relocationContract.compilerTextFunctions.length > 0,
       compilerTextFunctions: [],
       auxiliarySections: [],
       relocationContractSource: relocationContract.source,
@@ -1170,6 +1535,7 @@ module.exports = {
   TOOLCHAIN_CONFIG_PATH,
   TOOLCHAIN_BUILD_PATH,
   loadActiveTargetModel,
+  compilerOccurrencePaddingBytes,
   normalizeAuxiliaryRelocationRecords,
   normalizeAuxiliarySectionContracts,
   normalizeCompilerTextFunctions,

@@ -59,3 +59,7 @@ it, and rerun the applicable verification gate.
 
 Treat the Phase 7, Phase 8, lock, and provenance records as frozen contracts.
 Change them only through a new reviewed result.
+
+## Native text linkage contract
+
+`matching-c-linkage.json` schema 4 permits one exact-key nativeTextTail descriptor, bounded to func_00204A70 and accepted owner row 3806. It records native `.text`, output `.ob64.r3806`, input/output type 1, flags 6, alignment 16, extent 1136, function extent 1132, and the reviewed four-byte zero tail. Unknown keys, altered placement, other symbols, auxiliary sections, or explicit compiler-function partitions reject. No production descriptor is installed while this target is inactive. Existing relocation and activation entries retain their meaning.

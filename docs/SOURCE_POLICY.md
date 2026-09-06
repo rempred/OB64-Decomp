@@ -84,10 +84,21 @@ entries, or relocations. Any preserved assembly remainder uses a uniquely named 
 writable, executable, or uncontracted tail sections reject. The pinned GNU 2.6 assembler consumes
 the section-assigned file directly.
 
-When adjacent target-specific `.rodata` fragments share one accepted auxiliary row, their
-contracts must cover that row in linker order without gaps or overlaps. Only the final fragment may
-retain the single exact assembly tail. This shared-row representation does not change the accepted
-data boundary or turn either fragment into an independent structural owner.
+When target-specific `.rodata` fragments share one accepted auxiliary row, C and explicit retained
+original-ASM contributions must cover the complete row in linker order without gaps or overlaps.
+Only the first fragment may retain an exterior prefix; only the final fragment may retain the single exact assembly tail.
+A noninitial fragment may declare its immediately preceding original-ASM interval through `preservedInteriorBefore`.
+Multiple interiors require separate contracts, with exact original-source identity, bytes, ROM/RAM placement, and explicit empty relocation evidence.
+The existing same-chunk, accepted-row, alignment, compiler-occurrence, and source-object-prefix restrictions remain unchanged.
+This representation neither changes the accepted data boundary nor creates independent structural owners.
+
+Retained interiors support literal original data only.
+The whole original row must have no nonempty REL/RELA sections targeting it, including relocations outside the retained interval.
+Generated retained objects must also contain no actual relocations or named non-section symbols.
+Their interval sections remain allocated, read-only `PROGBITS` with alignment one; relocations are never silently stripped or fabricated.
+Retained bytes remain `ASM`, distinct from compiler alignment padding, and never increase matching-C accounting.
+See [the accepted retained-interior contract](AUXILIARY_INTERIOR_ASSEMBLY.md) for the complete producer and verification requirements.
+Acceptance of this tooling does not activate production ownership or accept an unfinished matching wave.
 
 Source-to-object proof verifies the untouched compiler-assembly hash, section-adjusted hash,
 assembler identity and flags, raw object identity, target bytes, and load-relevant relocations.
@@ -289,3 +300,7 @@ ASM/other ................ remaining accepted owners
 Do not call `PURE_C + HYBRID_C` “matching C.”
 
 If desired, call the combined set “exact source replacements,” but keep the classes visible.
+
+## Native text and source class
+
+Native assembler alignment is representation evidence, independent of source classification. A generated inline-assembly fixture remains HYBRID_C even when its full ROM is exact. A native PURE_C match still requires sole C ownership, exact complete owner bytes including its tail, accepted relocations, and an exact complete retail ROM.

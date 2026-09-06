@@ -112,7 +112,7 @@ function main() {
   verifyMap(model, mapText);
 
   const results = [];
-  assert.strictEqual(model.counts.nonDescriptorLoadSlabs, 5, 'accepted load-slab count drift');
+  assert.strictEqual(model.counts.nonDescriptorLoadSlabs, 6, 'accepted load-slab count drift');
   assert.strictEqual(model.counts.fixedOverlayNonExecutableRanges, 1, 'accepted fixed-overlay non-executable-range count drift');
   assert.strictEqual(model.slices.length, 7254, 'accepted link-slice count drift');
   assert.strictEqual(model.counts.splitOwners, 12, 'accepted split-owner count drift');
@@ -177,6 +177,15 @@ function main() {
       romStart: 0x0021C968,
       romEndExclusive: 0x0021C970,
     }],
+  }, {
+    id: 'resource-loader-0022a280',
+    kind: 'loader-dma',
+    romStart: 0x0022A280,
+    romEndExclusive: 0x0023A3A0,
+    vramStart: 0x801E6FB0,
+    vramEndExclusive: 0x801F70D0,
+    executableRanges: [],
+    nonExecutableRanges: [],
   }], 'accepted load-slab record drift');
 
   const actionStreamSlab = model.nonDescriptorLoadSlabs.find((slab) => slab.id === 'resource-loader-00213b10');
@@ -217,11 +226,74 @@ function main() {
     [0x0004E664, 0x3C05801D], [0x0004E668, 0x24A50840],
     [0x0004E66C, 0x3C060023], [0x0004E670, 0x24C6A280],
     [0x0004E674, 0x0C027694], [0x0004E678, 0x00C43023],
-    [0x0004E6CC, 0x3C040023], [0x0004E6D0, 0x2484A280],
-    [0x0004E6D4, 0x3C05801E], [0x0004E6D8, 0x24A56FB0],
   ]);
   for (const [romAddress, word] of actionStreamLoaderWords) {
     assert.strictEqual(romBytes.readUInt32BE(romAddress), word, `action-stream loader operand drift at 0x${romAddress.toString(16)}`);
+  }
+
+  const combatActionSlab = model.nonDescriptorLoadSlabs.find((slab) => slab.id === 'resource-loader-0022a280');
+  assert.ok(combatActionSlab, 'combat-action resource load slab is missing');
+  assert.strictEqual(combatActionSlab.romEndExclusive - combatActionSlab.romStart, 0x10120, 'combat-action slab ROM length drift');
+  assert.strictEqual(combatActionSlab.vramEndExclusive - combatActionSlab.vramStart, 0x10120, 'combat-action slab VRAM length drift');
+  assert.strictEqual(combatActionSlab.vramStart - combatActionSlab.romStart, 0x7FFBCD30, 'combat-action slab start delta drift');
+  assert.strictEqual(combatActionSlab.vramEndExclusive - combatActionSlab.romEndExclusive, 0x7FFBCD30, 'combat-action slab end delta drift');
+  const combatActionRows = model.rows.filter((row) => (
+    row.romStart < combatActionSlab.romEndExclusive
+    && row.romEndExclusive > combatActionSlab.romStart
+  ));
+  assert.strictEqual(combatActionRows.length, 83, 'combat-action slab owner count drift');
+  assert.strictEqual(combatActionRows[0].index, 4166, 'combat-action slab first owner drift');
+  assert.strictEqual(combatActionRows[0].romStart, combatActionSlab.romStart, 'combat-action slab first boundary drift');
+  assert.strictEqual(combatActionRows.at(-1).index, 4248, 'combat-action slab final owner drift');
+  assert.strictEqual(combatActionRows.at(-1).romEndExclusive, combatActionSlab.romEndExclusive, 'combat-action slab final boundary drift');
+  for (const row of combatActionRows) {
+    for (const slice of row.slices) {
+      assert.strictEqual(slice.placementKind, 'non-descriptor-load-slab', `combat-action slab placement drift: ${slice.sectionName}`);
+      assert.strictEqual(slice.loadSlabId, combatActionSlab.id, `combat-action slab identity drift: ${slice.sectionName}`);
+      assert.strictEqual(slice.overlayDescriptorId, null, `fixed descriptor leaked into combat-action slab: ${slice.sectionName}`);
+      assert.strictEqual(slice.vramStart, slice.romStart + 0x7FFBCD30, `combat-action slab VMA start drift: ${slice.sectionName}`);
+      assert.strictEqual(slice.vramEndExclusive, slice.romEndExclusive + 0x7FFBCD30, `combat-action slab VMA end drift: ${slice.sectionName}`);
+    }
+  }
+  for (const rowIndex of [4165, 4249]) {
+    const row = model.rows[rowIndex];
+    assert.ok(row && row.slices.every((slice) => slice.loadSlabId !== combatActionSlab.id), `p${rowIndex} crossed a combat-action slab endpoint`);
+  }
+  assert.strictEqual(combatActionRows.filter((row) => row.primaryClass === 'code').length, 78,
+    'combat-action slab code-owner count drift');
+  const combatActionDataRows = combatActionRows.filter((row) => row.primaryClass === 'data');
+  assert.deepStrictEqual(combatActionDataRows.map((row) => row.index), [4244, 4245, 4246, 4247, 4248],
+    'combat-action slab data-owner extent drift');
+  for (const row of combatActionDataRows) {
+    assert.strictEqual(row.inputKind, 'tracked-assembly', `combat-action data owner input drift: p${row.index}`);
+    assert.ok(row.slices.every((slice) => !slice.executable), `combat-action data owner became executable: p${row.index}`);
+  }
+
+  const combatActionLoaderWords = new Map([
+    [0x0004E69C, 0x3C04801E], [0x0004E6A0, 0x24846FB0],
+    [0x0004E6A4, 0x3C05801F], [0x0004E6A8, 0x24A568D0],
+    [0x0004E6CC, 0x3C040023], [0x0004E6D0, 0x2484A280],
+    [0x0004E6D4, 0x3C05801E], [0x0004E6D8, 0x24A56FB0],
+    [0x0004E6DC, 0x3C060024], [0x0004E6E0, 0x24C6A3A0],
+    [0x0004E6E4, 0x0C027694], [0x0004E6E8, 0x00C43023],
+  ]);
+  for (const [romAddress, word] of combatActionLoaderWords) {
+    assert.strictEqual(romBytes.readUInt32BE(romAddress), word, `combat-action loader operand drift at 0x${romAddress.toString(16)}`);
+  }
+
+  const combatActionTargets = [
+    { rowIndex: 4178, romStart: 0x0022EDD4, romEndExclusive: 0x0022EF50, vramStart: 0x801EBB04, vramEndExclusive: 0x801EBC80 },
+    { rowIndex: 4242, romStart: 0x00239B74, romEndExclusive: 0x00239B84, vramStart: 0x801F68A4, vramEndExclusive: 0x801F68B4 },
+    { rowIndex: 4243, romStart: 0x00239B84, romEndExclusive: 0x00239B94, vramStart: 0x801F68B4, vramEndExclusive: 0x801F68C4 },
+  ];
+  for (const expected of combatActionTargets) {
+    const row = model.rows[expected.rowIndex];
+    assert.ok(row, `Wave 6 structural owner is missing: p${expected.rowIndex}`);
+    assert.strictEqual(row.romStart, expected.romStart, `Wave 6 owner ROM start drift: p${expected.rowIndex}`);
+    assert.strictEqual(row.romEndExclusive, expected.romEndExclusive, `Wave 6 owner ROM end drift: p${expected.rowIndex}`);
+    assert.strictEqual(row.slices[0].vramStart, expected.vramStart, `Wave 6 owner VMA start drift: p${expected.rowIndex}`);
+    assert.strictEqual(row.slices.at(-1).vramEndExclusive, expected.vramEndExclusive, `Wave 6 owner VMA end drift: p${expected.rowIndex}`);
+    assert.ok(row.slices.every((slice) => slice.loadSlabId === combatActionSlab.id), `Wave 6 owner slab drift: p${expected.rowIndex}`);
   }
 
   const wave1Targets = [

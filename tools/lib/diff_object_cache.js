@@ -2,7 +2,9 @@
 
 const crypto = require('crypto');
 const fs = require('fs');
+const textContract = require('./text_contract');
 const path = require('path');
+const { projectInterior } = require('./auxiliary_interior');
 const {
   ROOT,
   elfSectionBytes,
@@ -16,7 +18,10 @@ const {
   compileTarget,
   relocationRecords,
   targetTextOwners,
+  verifyAuxiliaryCompilerOccurrences,
+  verifyAuxiliaryLinkedObjectSection,
   verifyAuxiliaryPaddingBytes,
+  verifyAuxiliarySourceObjectSection,
   verifyCompilerTextFunctions,
 } = require('./phase8_matching_c');
 const {
@@ -25,7 +30,7 @@ const {
 } = require('./source_policy');
 const { splitRelocatableTextSection } = require('./elf_text_split');
 
-const CACHE_SCHEMA_VERSION = 2;
+const CACHE_SCHEMA_VERSION = 3;
 const DEFAULT_CACHE_ROOT = path.join(ROOT, 'build', 'diff-object-cache');
 const SAFE_SYMBOL = /^[A-Za-z_.$][A-Za-z0-9_.$]*$/;
 const SHA256 = /^[0-9A-F]{64}$/;
@@ -38,12 +43,14 @@ const OBJCOPY_FLAGS = Object.freeze([
 const IMPLEMENTATION_FILES = Object.freeze([
   'tools/diff.js',
   'tools/lib/active_targets.js',
+  'tools/lib/auxiliary_interior.js',
   'tools/lib/diff_object_cache.js',
   'tools/lib/diff_profile.js',
   'tools/lib/elf_text_split.js',
   'tools/lib/phase7_conventional.js',
   'tools/lib/phase8_matching_c.js',
   'tools/lib/source_policy.js',
+  'tools/lib/text_contract.js',
 ]);
 const ACTIVE_CONFIGURATION_FILES = Object.freeze([
   'config/matching-c-targets.json',
@@ -381,7 +388,9 @@ function createCacheKeyMaterial(options) {
         sourceSha256: classification.compilationInput.sha256,
         output: 'compiler-assembly',
       },
+      textContract: textContract.resolveTextContract(target),
       sectionAdjustment: {
+        mode: target.nativeTextTail ? 'untouched-native-text' : 'section-assigned',
         allowAuxiliaryReadOnlySections: false,
         auxiliarySections: target.auxiliarySections || [],
         legalizeCop1BinaryInstructions: false,
@@ -389,10 +398,13 @@ function createCacheKeyMaterial(options) {
       assembler: {
         executable: executableIdentity(assembler, 'assembler'),
         flags: [...assemblerFlags],
-        input: 'adjusted-assembly',
+        input: target.nativeTextTail ? 'untouched-compiler-assembly' : 'adjusted-assembly',
         output: targetTextOwners(target).length > 1 ? 'assembler-object' : 'source-object',
       },
       textSplit: targetTextOwners(target).length > 1,
+      auxiliarySourceObjectPrefixSelection: (target.auxiliarySections || [])
+        .filter((auxiliary) => auxiliary.sourceObjectPrefix)
+        .map((auxiliary) => auxiliary.outputSection),
       objcopy: {
         executable: executableIdentity(objcopy, 'objcopy'),
         flags: [...OBJCOPY_FLAGS],
@@ -508,7 +520,7 @@ function validateOwnerSymbols(elf, target, ownerSections, linked = false) {
 
 function inspectOwnerSections(elf, target, label) {
   return targetTextOwners(target).map((owner) => {
-    const sections = elf.sections.filter((section) => section.name === owner.sectionName);
+    const sections = elf.sections.filter((section) => section.name === textContract.inputSection(target, owner.sectionName));
     if (sections.length !== 1 || sections[0].type !== 1 || (sections[0].flags & 6) !== 6
         || sections[0].size !== owner.bytes) {
       fail(`${label} target section shape drift: ${target.symbol} ${owner.sectionName}`);
@@ -517,36 +529,59 @@ function inspectOwnerSections(elf, target, label) {
   });
 }
 
-function inspectAuxiliarySections(elf, target, label) {
+function inspectAuxiliarySections(elf, target, label, sourceObject = false) {
   return (target.auxiliarySections || []).map((auxiliary) => {
-    const sections = elf.sections.filter((section) => section.name === auxiliary.outputSection);
-    if (sections.length !== 1 || sections[0].type !== 1 || sections[0].flags !== 2
-        || sections[0].alignment !== auxiliary.alignment || sections[0].size !== auxiliary.bytes) {
-      fail(`${label} auxiliary section shape drift: ${target.symbol} ${auxiliary.outputSection}`);
-    }
-    const bytes = Buffer.from(elfSectionBytes(elf, sections[0]));
-    const padding = verifyAuxiliaryPaddingBytes(
+    const evidence = sourceObject
+      ? verifyAuxiliarySourceObjectSection(
+        elf,
+        target,
+        auxiliary,
+        `${target.symbol} ${auxiliary.outputSection} cached ${label}`,
+      )
+      : verifyAuxiliaryLinkedObjectSection(
+        elf,
+        target,
+        auxiliary,
+        `${target.symbol} ${auxiliary.outputSection} cached ${label}`,
+      );
+    const bytes = sourceObject ? evidence.selectedBytes : evidence.bytes;
+    const padding = evidence.padding;
+    const relocations = evidence.relocations;
+    const compilerOccurrences = verifyAuxiliaryCompilerOccurrences(
       bytes,
+      relocations,
       auxiliary,
       `${target.symbol} ${auxiliary.outputSection} cached ${label}`,
     );
-    if (sha256Buffer(bytes) !== auxiliary.expectedObjectSha256) {
-      fail(`${label} auxiliary bytes drift: ${target.symbol} ${auxiliary.outputSection}`);
-    }
-    const relocations = auxiliaryRelocationRecords(elf, target, auxiliary);
-    if (!sameValue(relocations, auxiliary.expectedRelocations)) {
-      fail(`${label} auxiliary relocations drift: ${target.symbol} ${auxiliary.outputSection}`);
-    }
     return {
       compilerSection: auxiliary.compilerSection,
       outputSection: auxiliary.outputSection,
       bytes: bytes.length,
       sha256: sha256Buffer(bytes),
-      alignment: sections[0].alignment,
-      flags: sections[0].flags,
+      alignment: evidence.section.alignment,
+      flags: evidence.section.flags,
       relocations,
       ...padding,
-      section: sections[0],
+      ...(sourceObject && evidence.sourceObjectPrefix !== null ? {
+        sourceObjectPrefix: evidence.sourceObjectPrefix,
+      } : {}),
+      ...(compilerOccurrences === null ? {} : { compilerOccurrences }),
+      retainedInteriorBefore: projectInterior(auxiliary),
+      ...(auxiliary.preservedPrefix ? {
+        preservedPrefix: {
+          inputSection: auxiliary.ownerPrefixSection,
+          alignment: auxiliary.ownerPrefixAlignment,
+          bytes: auxiliary.ownerPrefixBytes,
+          sha256: auxiliary.ownerPrefixSha256,
+          romStart: auxiliary.ownerPrefixRomStartNumber,
+          romEndExclusive: auxiliary.ownerPrefixRomEndNumber,
+          vramStart: auxiliary.ownerPrefixVramStartNumber,
+          vramEndExclusive: auxiliary.ownerPrefixVramEndNumber,
+          ownerOriginalAssembly: auxiliary.ownerOriginalAssembly,
+          ownerOriginalAssemblySha256: auxiliary.ownerOriginalAssemblySha256,
+        },
+      } : {}),
+      section: evidence.section,
       rawBytes: bytes,
     };
   });
@@ -554,7 +589,7 @@ function inspectAuxiliarySections(elf, target, label) {
 
 function validateAllocatedSections(elf, target, allowReginfo, label) {
   const accepted = new Set([
-    ...targetTextOwners(target).map((owner) => owner.sectionName),
+    ...targetTextOwners(target).map((owner) => textContract.inputSection(target, owner.sectionName)),
     ...(target.auxiliarySections || []).map((auxiliary) => auxiliary.outputSection),
     ...(allowReginfo ? ['.reginfo'] : []),
   ]);
@@ -586,7 +621,7 @@ function inspectCompiledTargetArtifacts(options) {
     fail(`authenticated compilation input drift: ${target.symbol}`);
   }
 
-  const expectedAdjusted = adjustSectionAssembly(bytesByName['compiler.s'], target.sectionName, {
+  const expectedAdjusted = textContract.assemblerInput(bytesByName['compiler.s'], target, adjustSectionAssembly, {
     auxiliarySections: target.auxiliarySections || [],
   });
   if (!bytesByName['adjusted.s'].equals(expectedAdjusted)) {
@@ -611,19 +646,21 @@ function inspectCompiledTargetArtifacts(options) {
   }
 
   const sourceElf = parseElfFile(files['source-object.o']);
+  if (target.nativeTextTail) textContract.nativeObjectAllocationEvidence(sourceElf);
   const sourceOwners = inspectOwnerSections(sourceElf, target, 'source object');
   const textBytes = Buffer.concat(sourceOwners.map((record) => record.bytes));
   if (textBytes.length !== target.bytes) fail(`source object text extent drift: ${target.symbol}`);
   const compilerTextFunctions = verifyCompilerTextFunctions(sourceElf, target, sourceOwners[0].section);
   validateOwnerSymbols(sourceElf, target, sourceOwners);
   validateAllocatedSections(sourceElf, target, true, 'source object');
-  const relocations = relocationRecords(sourceElf, target);
+  const relocations = relocationRecords(sourceElf, textContract.inputTarget(target));
   if (!sameValue(relocations, target.expectedRelocations)) {
     fail(`source object relocation contract drift: ${target.symbol}`);
   }
-  const sourceAuxiliary = inspectAuxiliarySections(sourceElf, target, 'source object');
+  const sourceAuxiliary = inspectAuxiliarySections(sourceElf, target, 'source object', true);
 
   const finalElf = parseElfFile(files['final.o']);
+  if (target.nativeTextTail) textContract.nativeObjectAllocationEvidence(finalElf, false);
   const forbiddenFinalSections = ['.reginfo', '.pdr', '.comment', '.note']
     .filter((name) => finalElf.sections.some((section) => section.name === name));
   if (forbiddenFinalSections.length > 0) {
@@ -643,7 +680,7 @@ function inspectCompiledTargetArtifacts(options) {
   }
   validateOwnerSymbols(finalElf, target, finalOwners);
   validateAllocatedSections(finalElf, target, false, 'final object');
-  const finalRelocations = relocationRecords(finalElf, target);
+  const finalRelocations = relocationRecords(finalElf, textContract.inputTarget(target));
   if (!sameValue(finalRelocations, relocations)) {
     fail(`final object changed target relocations: ${target.symbol}`);
   }
@@ -659,6 +696,11 @@ function inspectCompiledTargetArtifacts(options) {
   }
 
   return {
+    textContract: textContract.resolveTextContract(target),
+    objectEvidence: textContract.deriveObjectEvidence(target, null, {
+      compilationInput: files['compilation-input.c'], compilerAssembly: files['compiler.s'], assemblerInput: files['adjusted.s'],
+      rawObject: files['source-object.o'], strippedObject: files['final.o'], unsplitAssemblerObject: files['assembler-object.o'],
+    }),
     symbol: target.symbol,
     objectRelative: `objects/c/${target.symbol}.o`,
     objectSha256: sha256File(files['final.o']),

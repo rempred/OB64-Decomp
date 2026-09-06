@@ -38,6 +38,8 @@ function makeRow(index, romStart, segments, inputKind = 'tracked-assembly') {
       sectionName: `.ob64.r${index}.s${sliceIndex}`,
       romStart: cursor,
       romEndExclusive: cursor + segment.bytes,
+      vramStart: 0x80000000 + cursor,
+      vramEndExclusive: 0x80000000 + cursor + segment.bytes,
       bytes: segment.bytes,
       executable: segment.executable,
       inputKind,
@@ -76,15 +78,19 @@ function textOwner(row, sliceIndex, ownerIndex, logicalOffset) {
   };
 }
 
-function auxiliaryFragment(row, offset, bytes, ownerFragmentIndex, ownerFragmentCount, tailBytes) {
+function auxiliaryFragment(row, offset, bytes, ownerFragmentIndex, ownerFragmentCount, tailBytes, prefixBytes = 0) {
   const slice = row.slices[0];
   const romStartNumber = row.romStart + offset;
   const romEndNumber = romStartNumber + bytes;
+  const vramStartNumber = 0x80000000 + romStartNumber;
+  const vramEndNumber = vramStartNumber + bytes;
   return {
     outputSection: slice.sectionName,
     bytes,
     romStartNumber,
     romEndNumber,
+    vramStartNumber,
+    vramEndNumber,
     ownerRowIndex: row.index,
     ownerPrimaryId: row.primaryId,
     ownerChunkIndex: row.part.chunkIndex,
@@ -95,9 +101,22 @@ function auxiliaryFragment(row, offset, bytes, ownerFragmentIndex, ownerFragment
     ownerOriginalAssemblySha256: row.part.sha256,
     ownerFragmentIndex,
     ownerFragmentCount,
+    ownerPrefixSection: prefixBytes > 0 ? `${slice.sectionName}.prefix` : null,
+    ownerPrefixAlignment: 1,
+    ownerPrefixBytes: prefixBytes,
+    ownerPrefixSha256: prefixBytes > 0 ? `PREFIX-${row.index}` : null,
+    ownerPrefixRomStartNumber: romStartNumber - prefixBytes,
+    ownerPrefixRomEndNumber: romStartNumber,
+    ownerPrefixVramStartNumber: vramStartNumber - prefixBytes,
+    ownerPrefixVramEndNumber: vramStartNumber,
+    ownerTailSection: tailBytes > 0 ? `${slice.sectionName}.tail` : null,
+    ownerTailAlignment: 1,
     ownerTailBytes: tailBytes,
+    ownerTailSha256: tailBytes > 0 ? `TAIL-${row.index}` : null,
     ownerTailRomStartNumber: romEndNumber,
     ownerTailRomEndNumber: romEndNumber + tailBytes,
+    ownerTailVramStartNumber: vramEndNumber,
+    ownerTailVramEndNumber: vramEndNumber + tailBytes,
   };
 }
 
@@ -132,7 +151,7 @@ function main() {
     makeTarget('single_target', [singleOwner], [auxiliaryFragment(rows[5], 0, 8, 0, 2, 0)]),
     makeTarget('multi_target', [multiOwnerFirst, multiOwnerSecond], [auxiliaryFragment(rows[5], 8, 4, 1, 2, 8)]),
     makeTarget('split_target', [splitOwner], [
-      auxiliaryFragment(rows[6], 0, 12, 0, 1, 4),
+      auxiliaryFragment(rows[6], 4, 12, 0, 1, 0, 4),
       auxiliaryFragment(rows[8], 0, 16, 0, 1, 0),
     ]),
   ];
@@ -144,6 +163,8 @@ function main() {
   assert(result.replacements.textOwners === 4, 'multi-owner text census collapsed to target count');
   assert(result.replacements.auxiliaryFragments === 4, 'auxiliary fragment census drift');
   assert(result.replacements.bytes === 76, 'replacement byte census drift');
+  assert(result.retainedAuxiliary.fragments === 2 && result.retainedAuxiliary.bytes === 12,
+    'retained auxiliary fragment accounting drift');
 
   const remainingByRow = new Map(result.assembly.rows.map((row) => [row.rowIndex, row]));
   assert(remainingByRow.get(0).bytes === 16, 'unreplaced assembly owner disappeared');
@@ -156,9 +177,47 @@ function main() {
     && remainingByRow.get(5).fragments[0].romStart === rows[5].romEndExclusive - 8,
     'retained auxiliary tail disappeared');
   assert(remainingByRow.get(6).bytes === 4
-    && remainingByRow.get(6).fragments[0].romStart === rows[6].romEndExclusive - 4,
-    'single auxiliary-prefix retained tail disappeared');
+    && remainingByRow.get(6).fragments[0].romStart === rows[6].romStart,
+    'single auxiliary retained prefix disappeared');
   assert(!remainingByRow.has(8), 'fully replaced auxiliary owner remained in assembly accounting');
+
+  const alignedTextRow = makeRow(9, 0x108C, [{ bytes: 8, executable: true }]);
+  const alignedDataRow = makeRow(10, 0x1094, [{ bytes: 48, executable: false }]);
+  const alignedAuxiliary = auxiliaryFragment(alignedDataRow, 0, 44, 0, 1, 4);
+  alignedAuxiliary.expectedObjectSha256 = 'OBJECT-PREFIX-10';
+  alignedAuxiliary.sourceObjectPrefix = {
+    sectionType: 'SHT_PROGBITS',
+    sectionFlags: ['SHF_ALLOC'],
+    alignment: 8,
+    bytes: 48,
+    expectedSha256: 'WHOLE-SOURCE-OBJECT-10',
+    prefixOffset: '0x00000000',
+    prefixOffsetNumber: 0,
+    prefixBytes: 44,
+    expectedPrefixSha256: alignedAuxiliary.expectedObjectSha256,
+    trailingPaddingOffset: '0x0000002C',
+    trailingPaddingOffsetNumber: 44,
+    trailingPaddingBytes: 4,
+    expectedTrailingPaddingSha256: alignedAuxiliary.ownerTailSha256,
+  };
+  const alignedTargets = [makeTarget(
+    'aligned_prefix_target',
+    [textOwner(alignedTextRow, 0, 0, 0)],
+    [alignedAuxiliary],
+  )];
+  const alignedResult = summarizeAcceptedOwnership(
+    { rows: [alignedTextRow, alignedDataRow] },
+    alignedTargets,
+  );
+  assert(alignedResult.replacements.textOwners === 1
+      && alignedResult.replacements.auxiliaryFragments === 1
+      && alignedResult.replacements.bytes === 52,
+  'aligned source-object prefix inflated replacement accounting');
+  assert(alignedResult.retainedAuxiliary.fragments === 1
+      && alignedResult.retainedAuxiliary.bytes === 4
+      && alignedResult.assembly.owners === 1
+      && alignedResult.assembly.bytes === 4,
+  'aligned source-object prefix did not preserve the assembly tail accounting');
 
   const legacyPrimaryRows = new Set(targets.map((target) => target.rowIndex));
   const legacyAssembly = rows.filter((row) => (
@@ -185,6 +244,44 @@ function main() {
       summarizeAcceptedOwnership({ rows }, wrongTextSource);
     }));
   }
+
+  const missingPrefix = JSON.parse(JSON.stringify(targets));
+  Object.assign(missingPrefix[2].auxiliarySections[0], {
+    ownerPrefixSection: null,
+    ownerPrefixBytes: 0,
+  });
+  rejectedMutations.push(expectRejection('missing retained auxiliary prefix', /retained auxiliary coverage drift/, () => {
+    summarizeAcceptedOwnership({ rows }, missingPrefix);
+  }));
+
+  const gappedPrefix = JSON.parse(JSON.stringify(targets));
+  gappedPrefix[2].auxiliarySections[0].ownerPrefixRomStartNumber += 1;
+  gappedPrefix[2].auxiliarySections[0].ownerPrefixVramStartNumber += 1;
+  rejectedMutations.push(expectRejection('gapped retained auxiliary prefix', /retained auxiliary prefix extent drift/, () => {
+    summarizeAcceptedOwnership({ rows }, gappedPrefix);
+  }));
+
+  const misplacedPrefixVram = JSON.parse(JSON.stringify(targets));
+  misplacedPrefixVram[2].auxiliarySections[0].ownerPrefixVramStartNumber += 4;
+  misplacedPrefixVram[2].auxiliarySections[0].ownerPrefixVramEndNumber += 4;
+  rejectedMutations.push(expectRejection('misplaced retained auxiliary prefix VMA', /retained auxiliary prefix extent drift/, () => {
+    summarizeAcceptedOwnership({ rows }, misplacedPrefixVram);
+  }));
+
+  const duplicatedRetainedFragment = JSON.parse(JSON.stringify(targets));
+  const duplicated = duplicatedRetainedFragment[2].auxiliarySections[0];
+  Object.assign(duplicated, {
+    ownerTailSection: `${duplicated.outputSection}.tail`,
+    ownerTailBytes: 4,
+    ownerTailSha256: 'DUPLICATE',
+    ownerTailRomStartNumber: duplicated.romStartNumber,
+    ownerTailRomEndNumber: duplicated.romStartNumber + 4,
+    ownerTailVramStartNumber: duplicated.vramStartNumber,
+    ownerTailVramEndNumber: duplicated.vramStartNumber + 4,
+  });
+  rejectedMutations.push(expectRejection('overlapping retained auxiliary fragments', /retained auxiliary tail extent drift|retained auxiliary overlap/, () => {
+    summarizeAcceptedOwnership({ rows }, duplicatedRetainedFragment);
+  }));
 
   const missingAssemblyPart = JSON.parse(JSON.stringify(rows));
   missingAssemblyPart[1].part = null;
@@ -216,6 +313,24 @@ function main() {
     }));
   }
 
+  for (const [name, mutate] of [
+    ['prefix offset', (selection) => { selection.prefixOffsetNumber = 4; }],
+    ['prefix bytes', (selection) => { selection.prefixBytes = 40; }],
+    ['trailing offset', (selection) => { selection.trailingPaddingOffsetNumber = 40; }],
+    ['trailing bytes', (selection) => { selection.trailingPaddingBytes = 8; }],
+    ['whole bytes', (selection) => { selection.bytes = 52; }],
+    ['prefix identity', (selection) => { selection.expectedPrefixSha256 = 'WRONG'; }],
+    ['tail identity', (selection) => { selection.expectedTrailingPaddingSha256 = 'WRONG'; }],
+  ]) {
+    const changed = JSON.parse(JSON.stringify(alignedTargets));
+    mutate(changed[0].auxiliarySections[0].sourceObjectPrefix);
+    rejectedMutations.push(expectRejection(
+      `aligned source-object ${name}`,
+      /source-object prefix accounting drift/,
+      () => summarizeAcceptedOwnership({ rows: [alignedTextRow, alignedDataRow] }, changed),
+    ));
+  }
+
   console.log(JSON.stringify({
     status: 'pass',
     legacyPrimaryRowAccounting: { owners: legacyAssembly.length, bytes: legacyBytes },
@@ -225,6 +340,13 @@ function main() {
       retainedRows: [...remainingByRow.keys()],
       textOwnersConsumed: result.replacements.textOwners,
       auxiliaryFragmentsConsumed: result.replacements.auxiliaryFragments,
+      retainedAuxiliaryFragments: result.retainedAuxiliary.fragments,
+      retainedAuxiliaryBytes: result.retainedAuxiliary.bytes,
+    },
+    alignedSourceObjectPrefixAccounting: {
+      replacementBytes: alignedResult.replacements.bytes,
+      retainedAssemblyBytes: alignedResult.assembly.bytes,
+      retainedAuxiliaryBytes: alignedResult.retainedAuxiliary.bytes,
     },
     otherData: result.otherData,
     failClosedMutations: rejectedMutations,

@@ -257,9 +257,16 @@ function fakeObject(target, final = false) {
         name: auxiliary.outputSection,
         type: auxiliary.sectionType,
         flags: auxiliary.sectionFlags,
-        bytes: auxiliary.bytes,
+        bytes: !final && auxiliary.sourceObjectPrefix
+          ? auxiliary.sourceObjectPrefix.bytes
+          : auxiliary.bytes,
         relocations: auxiliary.expectedRelocations,
+        compilerOccurrences: auxiliary.compilerOccurrences,
+        prefix: auxiliary.preservedPrefix,
         tail: auxiliary.preservedTail,
+        ...(!final && auxiliary.sourceObjectPrefix ? {
+          sourceObjectPrefix: auxiliary.sourceObjectPrefix,
+        } : {}),
       })),
     ],
     relocations: target.expectedRelocations,
@@ -430,29 +437,92 @@ function main() {
       auxiliarySections: withAuxiliaryFixture(),
     });
     function withAuxiliaryFixture() {
+      const expectedRelocations = [0, 1, 2].map((index) => ({
+        offset: `0x${(index * 4).toString(16).toUpperCase().padStart(8, '0')}`,
+        type: 'R_MIPS_32',
+        symbol: '.text',
+        addend: `0x${(index * 4).toString(16).toUpperCase().padStart(8, '0')}`,
+        section: '.rel.rodata',
+      }));
       return [{
         kind: 'switch-table',
         compilerSection: '.rodata',
         outputSection: '.ob64.r0500',
         sectionType: 'SHT_PROGBITS',
         sectionFlags: ['SHF_ALLOC'],
-        alignment: 4,
-        bytes: 4,
-        entries: 1,
+        alignment: 8,
+        bytes: 12,
+        entries: 3,
         expectedObjectSha256: HASH.a,
         expectedLinkedSha256: HASH.b,
+        preservedPrefix: {
+          inputSection: '.ob64.r0500.prefix',
+          bytes: 4,
+          expectedSha256: HASH.zero,
+        },
         preservedTail: {
           inputSection: '.ob64.r0500.tail',
           bytes: 4,
-          expectedSha256: HASH.c,
+          expectedSha256: sha256Buffer(Buffer.alloc(4)),
         },
-        expectedRelocations: [{ offset: '0x00000000', type: 'R_MIPS_32', symbol: '.text', addend: '0x00000000', section: '.rel.rodata' }],
-        entryBytes: 4,
+        expectedRelocations,
+        compilerOccurrences: [
+          {
+            label: '.L10',
+            offset: '0x00000000',
+            offsetNumber: 0,
+            endOffsetNumber: 8,
+            bytes: 8,
+            entries: 2,
+            alignment: 8,
+            alignmentDirectives: [3],
+            expectedObjectSha256: HASH.one,
+            expectedLinkedSha256: HASH.three,
+            expectedRelocations: expectedRelocations.slice(0, 2),
+          },
+          {
+            label: '.L20',
+            offset: '0x00000008',
+            offsetNumber: 8,
+            endOffsetNumber: 12,
+            bytes: 4,
+            entries: 1,
+            alignment: 4,
+            alignmentDirectives: [2],
+            expectedObjectSha256: HASH.two,
+            expectedLinkedSha256: HASH.d,
+            expectedRelocations: expectedRelocations.slice(2),
+          },
+        ],
+        sourceObjectPrefix: {
+          sectionType: 'SHT_PROGBITS',
+          sectionFlags: ['SHF_ALLOC'],
+          alignment: 8,
+          bytes: 16,
+          expectedSha256: HASH.e,
+          prefixOffset: '0x00000000',
+          prefixOffsetNumber: 0,
+          prefixBytes: 12,
+          expectedPrefixSha256: HASH.a,
+          trailingPaddingOffset: '0x0000000C',
+          trailingPaddingOffsetNumber: 12,
+          trailingPaddingBytes: 4,
+          expectedTrailingPaddingSha256: sha256Buffer(Buffer.alloc(4)),
+        },
+        entryBytes: 12,
         trailingPaddingBytes: 0,
-        expectedTrailingPaddingSha256: HASH.d,
+        expectedTrailingPaddingSha256: sha256Buffer(Buffer.alloc(0)),
+        ownerPrefixSection: '.ob64.r0500.prefix',
+        ownerPrefixAlignment: 1,
+        ownerPrefixBytes: 4,
+        ownerPrefixSha256: HASH.zero,
+        ownerPrefixRomStartNumber: 0x1FFC,
+        ownerPrefixRomEndNumber: 0x2000,
+        ownerPrefixVramStartNumber: 0x80001FFC,
+        ownerPrefixVramEndNumber: 0x80002000,
         ownerTailSection: '.ob64.r0500.tail',
         ownerTailBytes: 4,
-        ownerTailSha256: HASH.c,
+        ownerTailSha256: sha256Buffer(Buffer.alloc(4)),
       }];
     }
     const auxiliaryPhase8 = makePhase8([withAuxiliary]);
@@ -461,6 +531,22 @@ function main() {
     mutateKey(auxiliaryInputs, (value) => {
       value.target.auxiliarySections[0].ownerTailSha256 = HASH.e;
     }, 'auxiliary remainder drift');
+    mutateKey(auxiliaryInputs, (value) => {
+      value.target.auxiliarySections[0].ownerPrefixSha256 = HASH.e;
+    }, 'auxiliary retained-prefix drift');
+    mutateKey(auxiliaryInputs, (value) => {
+      value.target.auxiliarySections[0].compilerOccurrences[0].expectedObjectSha256 = HASH.e;
+    }, 'auxiliary compiler-occurrence drift');
+    mutateKey(auxiliaryInputs, (value) => {
+      value.target.auxiliarySections[0].sourceObjectPrefix.expectedSha256 = HASH.zero;
+    }, 'auxiliary complete source-object identity drift');
+    mutateKey(auxiliaryInputs, (value) => {
+      value.target.auxiliarySections[0].sourceObjectPrefix.expectedPrefixSha256 = HASH.zero;
+    }, 'auxiliary selected source-object prefix identity drift');
+    const auxiliaryKeyMaterial = createCacheKeyMaterial(auxiliaryInputs);
+    assert(canonicalJson(auxiliaryKeyMaterial.commands.auxiliarySourceObjectPrefixSelection)
+        === canonicalJson(['.ob64.r0500']),
+    'aligned auxiliary source-object selection command was omitted from the cache key');
 
     const siblingBefore = keyFor(commonKeyInputs(phase8, sibling, classifications.get(sibling.symbol)));
     const requestedBefore = keyFor(commonKeyInputs(phase8, requested, classifications.get(requested.symbol)));
@@ -695,6 +781,34 @@ function main() {
       && auxiliaryRebuild.invocations.some((entry) => entry.symbol === auxiliary.symbol),
     'auxiliary-section artifact tampering did not rebuild');
 
+    const rebuiltAuxiliaryObject = JSON.parse(fs.readFileSync(auxiliaryFile, 'utf8'));
+    rebuiltAuxiliaryObject.sections.find((section) => section.name === '.ob64.r0500')
+      .compilerOccurrences[0].bytes = 12;
+    fs.writeFileSync(auxiliaryFile, `${JSON.stringify(rebuiltAuxiliaryObject)}\n`);
+    updateArtifactIdentity(auxiliaryEntry, 'source-object.o');
+    const occurrenceRebuild = runDiff();
+    const occurrenceRecord = occurrenceRebuild.result.cache.entries.find((entry) => entry.symbol === auxiliary.symbol);
+    assert(occurrenceRecord.status === 'rebuilt' && /section metadata drift|object evidence drift/.test(occurrenceRecord.reason)
+      && occurrenceRebuild.invocations.some((entry) => entry.symbol === auxiliary.symbol),
+    'auxiliary compiler-occurrence artifact tampering did not rebuild');
+
+    for (const [field, label] of [
+      ['expectedSha256', 'complete source-object'],
+      ['expectedPrefixSha256', 'selected source-object prefix'],
+    ]) {
+      const rebuiltSourceObject = JSON.parse(fs.readFileSync(auxiliaryFile, 'utf8'));
+      rebuiltSourceObject.sections.find((section) => section.name === '.ob64.r0500')
+        .sourceObjectPrefix[field] = HASH.zero;
+      fs.writeFileSync(auxiliaryFile, `${JSON.stringify(rebuiltSourceObject)}\n`);
+      updateArtifactIdentity(auxiliaryEntry, 'source-object.o');
+      const selectionRebuild = runDiff();
+      const selectionRecord = selectionRebuild.result.cache.entries.find((entry) => entry.symbol === auxiliary.symbol);
+      assert(selectionRecord.status === 'rebuilt'
+          && /section metadata drift|object evidence drift/.test(selectionRecord.reason)
+          && selectionRebuild.invocations.some((entry) => entry.symbol === auxiliary.symbol),
+      `auxiliary ${label} artifact tampering did not rebuild`);
+    }
+
     fs.unlinkSync(path.join(multiEntry, 'artifacts', 'assembler-object.o'));
     const multiRebuild = runDiff();
     const multiRecord = multiRebuild.result.cache.entries.find((entry) => entry.symbol === multi.symbol);
@@ -797,6 +911,16 @@ function main() {
     assert(projectedAuxiliary && projectedAuxiliary.expectedRelocations.length > 0
       && Object.prototype.hasOwnProperty.call(projectedAuxiliary, 'ownerTailBytes'),
     'real auxiliary target cache contract omitted relocations or remainder ownership');
+    const projectedRepeated = projectTargetContract(auxiliary).auxiliarySections[0];
+    assert(projectedRepeated.ownerPrefixBytes === 4
+      && projectedRepeated.compilerOccurrences.length === 2
+      && projectedRepeated.compilerOccurrences.reduce((sum, occurrence) => (
+        sum + occurrence.expectedRelocations.length
+      ), 0) === 3
+      && projectedRepeated.sourceObjectPrefix.bytes === 16
+      && projectedRepeated.sourceObjectPrefix.prefixBytes === 12
+      && projectedRepeated.sourceObjectPrefix.trailingPaddingBytes === 4,
+    'retained-prefix, repeated compiler-occurrence, or aligned source-object cache contract was omitted');
     for (const acceptanceFile of ['tools/verify.js', 'tools/lib/current_workflow.js']) {
       assert(!fs.readFileSync(path.join(ROOT, ...acceptanceFile.split('/')), 'utf8').includes('diff_object_cache'),
         `${acceptanceFile} imported the diagnostic cache`);
@@ -813,7 +937,7 @@ function main() {
         compilerInvocations: warm.result.cache.compilerInvocations,
         hits: warm.result.cache.hits,
       },
-      invalidEntriesRebuilt: 11,
+      invalidEntriesRebuilt: 14,
       siblingIsolation: true,
       requestedTargetAlwaysFresh: true,
       profileHookBehaviorPreserved: true,
@@ -822,6 +946,7 @@ function main() {
       firstPublisherCollisionAdopted: true,
       transientWindowsRenameRetried: true,
       sealedConfigurationDriftRejected: true,
+      alignedSourceObjectPrefixEvidencePreserved: true,
       realContractsChecked: [realMulti.symbol, realAuxiliary.symbol],
     }, null, 2));
   } finally {
