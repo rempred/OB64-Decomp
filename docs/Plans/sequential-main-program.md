@@ -49,7 +49,7 @@ Unresolved research gates must be addressed before family completion, without si
 1. Process and full-scope reconciliation: accepted by independent prerequisite review. Current routing and worker-model corrections are recorded at canonical `72382f5` / `d1862bd` and parent `22c652e` / `1c3be25` under Joe's newer directions.
 2. Compilation-group design: original `5dad709` plus correction `b87e908`, accepted review `0840b42`. Implementation is active in `/root/compilation_groups_design`, the sole production tooling/build writer. Its changed-input structural audit and independent review precede source activation.
 3. Bounded readability source experiment: pending prerequisite acceptance. Read-only preparation of the three boot hybrid conversions is complete and in Director intake; source execution remains pending.
-4. Combat remaining source waves: pending. Discovery `150c9fc` is Accepted with corrections: pin citation CR-1 during scope propagation. Sol High data retrieval is complete; its exact decoded records await Astra interpretation for the two remaining selector/fixed-image questions.
+4. Combat remaining source waves: pending. Discovery `150c9fc` is Accepted with corrections. `/root/sequential_process` is propagating accepted scope and citation CR-1. `/root/combat_discovery` is interpreting the frozen Sol High retrieval in research r2 for the two remaining selector/fixed-image questions.
 5. Squad remaining waves and research/structural gates: pending Combat closure.
 6. High Attack remaining waves and retained pure-C retries: pending Squad closure.
 7. Requirement-by-requirement final audit against current source and proof: pending.
@@ -92,3 +92,4 @@ Use the current session's permissions for repository and build operations; never
 - Prerequisite review returned Accepted after checking complete membership, origin lines, accepted proof, shared routing and process preservation. No correction or re-review is required.
 - Combat discovery review accepts the proposed static/saved-placement dispositions with one citation-only correction, CR-1. No additional research re-review is required for that cleanup; remaining selector/fixed-image gates stay open.
 - Sol High retrieved the exact `0x00391270` resource, decoded-corpus reference records and bounded selector-form misses. These are literal facts for Astra research, not new semantic conclusions.
+- Release `5bdac86` dispatches accepted Combat scope propagation and remaining-gate research to eligible Astra Medium agents. Their writes are disjoint from the sole tooling writer.
