@@ -43,8 +43,8 @@ Unresolved research gates must be addressed before family completion, without si
 
 ## Execution order and current state
 
-1. Process correction and full-scope reconciliation: preparing.
-2. Compilation-group design, implementation, audit/review: preparing design only.
+1. Process correction and full-scope reconciliation: active in `/root/sequential_process` and `/root/sequential_scope`.
+2. Compilation-group design: active in `/root/compilation_groups_design`; implementation and audit/review pending.
 3. Bounded readability experiment and three hybrid-conversion investigations: pending prerequisite acceptance.
 4. Combat remaining waves and discovery: pending.
 5. Squad remaining waves and research/structural gates: pending Combat closure.
@@ -61,3 +61,5 @@ Use the actual approval outcome; do not bypass a denial or weaken verification t
 - 2026-09-06: Active goal read back. Prior interaction supplied a prompt only; this is the first executing goal turn.
 - Read current instructions, canonical baseline, family restart boundaries, Combat/Squad plans, High Attack plan, and pose research.
 - Three bounded internal assignments prepared: process documentation, full-scope reconciliation, and read-only compilation-group design.
+- Scoped ready commit `46d78de`; all three Astra Medium internal workers dispatched with fresh contexts and disjoint writes.
+- Automatic approval allowed the scoped local Git commit. No human confirmation or external publication occurred.
