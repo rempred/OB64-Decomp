@@ -2,11 +2,6 @@ typedef signed char s8;
 typedef unsigned char u8;
 typedef unsigned short u16;
 typedef unsigned int u32;
-
-asm(".macro move dst,src\n"
-    "addu \\dst,\\src,$0\n"
-    ".endm\n");
-
 typedef struct Func001957D0Template {
     u8 field_00;
     u8 field_01;
@@ -24,7 +19,6 @@ typedef struct Func001957D0Template {
     s8 field_14[2];
     u8 field_16[13];
 } __attribute__((packed)) Func001957D0Template;
-
 typedef struct Func001957D0SourceRecord {
     u8 field_00;
     u8 field_01;
@@ -35,19 +29,16 @@ typedef struct Func001957D0SourceRecord {
     u8 field_17;
     u8 field_18;
 } Func001957D0SourceRecord;
-
 typedef struct Func001957D0Record52 {
     u8 field_00[0x12];
     u8 field_12;
     u8 field_13[0x21];
 } Func001957D0Record52;
-
 typedef struct Func001957D0Record56 {
     u8 field_00[0x12];
     u8 field_12;
     u8 field_13[0x25];
 } Func001957D0Record56;
-
 extern u8 g_func_001957D0_active_source_ids[];
 extern Func001957D0SourceRecord g_func_001957D0_source_records[];
 extern Func001957D0Record52 g_func_0019554C_records_52[];
@@ -60,296 +51,279 @@ extern u8 g_func_001957D0_special_slot_state[];
 extern u8 g_func_001957D0_normal_slot_state[];
 extern const char g_func_001957D0_record_error[];
 extern const char g_func_001957D0_slot_error[];
-
 extern void func_00023780(void *destination, int size);
 extern void func_00023940(const char *message);
 extern void func_0019554C(
     int record_index,
-    const Func001957D0Template *source,
+    Func001957D0Template *source,
     int selector,
-    u8 flag,
-    u8 source_index);
+    int flag,
+    int source_index);
 extern u8 func_001957D0_finalize(Func001957D0SourceRecord *record);
-
-void func_001957D0(const Func001957D0Template *source, int source_index)
+void func_001957D0(Func001957D0Template *incoming_source, int source_index)
 {
-    register u32 source_value asm("$2");
-    register int source_sign asm("$3");
-    volatile u8 special_source[16];
-    register int record_index asm("$16");
-    register int scan_index asm("$4");
-    register int member_index asm("$18");
-    register int source_offset asm("$19");
+    Func001957D0Template *source;
+    u8 special_source_value;
+    register u8 source_byte;
+    u32 source_record_index;
+    u8 source_field_07;
+    u8 field_07_member_value;
+    int main_record_index;
+    int field_07_slot_index;
+    int field_07_record_index;
+    int field_10_slot_index;
+    int scan_index;
+    int member_index;
+    int source_offset;
     u32 masked_source_index;
-    register int masked_source_arg asm("$5");
     int record_offset;
-    register int special_pool asm("$20");
-    register int main_pool asm("$2");
-    register u32 saved_s7 asm("$23");
+    int call_record_index;
+    int main_pool;
+    u8 pool_byte;
+    u16 *saved_s7;
+    u32 field_10_special_slots;
+    u8 source_field_10;
     u16 *slot_cursor;
-    register Func001957D0SourceRecord *source_record asm("$21");
-    register const Func001957D0Template *source_reg asm("$22") = source;
-    register u32 source_work asm("$17");
-
-    source_value = (u8)source_index;
-    source_sign = source_value >> 7;
-    source_sign ^= 1;
-    source_value = source_value < 30;
-    source_value ^= 1;
-    source_value = -source_value;
-    source_sign &= source_value;
-    asm("" : "=r"(source_sign) : "0"(source_sign));
-    masked_source_arg = source_index & 0x7F;
-    asm("" : "=r"(masked_source_arg) : "0"(masked_source_arg));
-    masked_source_index = masked_source_arg;
-    special_source[15] = source_sign;
-    source_sign = (u8)masked_source_index;
-    source_value = source_sign * 25;
-    g_func_001957D0_active_source_ids[source_sign] = masked_source_index;
-    source_record = (Func001957D0SourceRecord *)
-        ((u8 *)g_func_001957D0_source_records + source_value);
-    source_record->field_00 = masked_source_arg + 1;
-    if (special_source[15] != 0) {
+    Func001957D0SourceRecord *source_record;
+    u32 source_work;
+    source_byte = (u8)source_index;
+    special_source_value = source_byte >> 7;
+    special_source_value ^= 1;
+    source_byte = source_byte < 30;
+    source_byte ^= 1;
+    source_byte = -source_byte;
+    special_source_value &= source_byte;
+    pool_byte = special_source_value;
+    source_index &= 0x7F;
+    masked_source_index = (s8)source_index;
+    source_record_index = (u8)masked_source_index;
+    source_record = &g_func_001957D0_source_records[source_record_index];
+    g_func_001957D0_active_source_ids[source_record_index] = masked_source_index;
+    {
+        if (masked_source_index) {
+            source_index++;
+        } else {
+            source_index++;
+        }
+        source_record->field_00 = source_index;
+    }
+    source = incoming_source;
+    if (pool_byte != 0) {
         source_record->field_01 = 0x81;
     } else {
         source_record->field_01 = 1;
     }
     func_00023780(source_record->field_02, 5);
-
-    asm volatile(
-        ".set noreorder\n"
-        "lbu $8,31($sp)\n"
-        "sltiu $2,%1,30\n"
-        "xori $2,$2,1\n"
-        "or %0,$8,$2\n"
-        ".set reorder\n"
-        : "=r"(main_pool)
-        : "r"(masked_source_index)
-        : "$8");
+    main_pool = masked_source_index >= 30;
+    main_pool |= pool_byte;
     member_index = 0;
     if (main_pool != 0) {
-        asm("");
         scan_index = 1;
         record_offset = 52;
 main_records_52:
-        record_index = scan_index;
+        main_record_index = scan_index;
         if (((u8 *)g_func_0019554C_records_52)[record_offset + 0x12] == 0) {
             goto main_record_done;
         }
         scan_index++;
+        record_offset += 52;
         if (scan_index < 100) {
-            record_offset += 52;
             goto main_records_52;
         }
-        asm("");
-        record_index = -1;
+        main_record_index = -1;
         goto main_record_done;
     } else {
         scan_index = 1;
         record_offset = 56;
 main_records_56:
-        record_index = scan_index;
+        main_record_index = scan_index;
         if (((u8 *)g_func_0019554C_records_56)[record_offset + 0x12] == 0) {
             goto main_record_done;
         }
         scan_index++;
+        record_offset += 56;
         if (scan_index < 100) {
-            record_offset += 56;
             goto main_records_56;
         }
-        record_index = -1;
+        main_record_index = -1;
     }
+    {
+    u32 helper_source_index;
+    int special_pool;
+    Func001957D0Template *call_source;
 main_record_done:
-    asm volatile(
-        ".set noreorder\n"
-        "bgez %2,1f\n"
-        "addu $4,%2,$0\n"
-        "lui $4,%%hi(g_func_001957D0_record_error)\n"
-        "jal func_00023940\n"
-        "addiu $4,$4,%%lo(g_func_001957D0_record_error)\n"
-        "addu $4,%2,$0\n"
-        "1:\n"
-        "addu $5,%4,$0\n"
-        "lbu %0,31($sp)\n"
-        "addu $6,$0,$0\n"
-        "andi %1,%5,0x00ff\n"
-        "sw %1,16($sp)\n"
-        "jal func_0019554C\n"
-        "addu $7,%0,$0\n"
-        "addu $2,%3,%6\n"
-        "sb %2,2($2)\n"
-        "lbu $3,6(%4)\n"
-        "addiu $3,$3,-1\n"
-        "sb $3,7($2)\n"
-        ".set reorder\n"
-        : "=r"(special_pool), "=r"(source_work)
-        : "r"(record_index), "r"(source_record), "r"(source_reg),
-          "r"(masked_source_index), "r"(member_index)
-        : "$2", "$3", "$4", "$5", "$6", "$7", "$8", "$9", "$10", "$11",
-          "$12", "$13", "$14", "$15", "$24", "$25", "$31", "memory");
+    if (main_record_index < 0) {
+        func_00023940(g_func_001957D0_record_error);
+        call_record_index = main_record_index;
+        call_source = source;
+    } else {
+        call_record_index = main_record_index;
+        call_source = source;
+    }
+    helper_source_index = (u8)masked_source_index;
+    special_pool = pool_byte;
+    func_0019554C(
+        call_record_index,
+        call_source,
+        0,
+        special_pool,
+        helper_source_index);
+    {
+        u8 source_field_06;
+        u8 *member_entry;
+        member_entry = (u8 *)source_record + member_index;
+        member_entry[2] = main_record_index;
+        source_field_06 = ((u8 *)source)[6];
+        member_entry[7] = source_field_06 - 1;
+        source_field_07 = ((u8 *)source)[7];
+    }
     member_index++;
-
-    if (source_reg->field_07 == 1) {
-        register u16 *special_slot_base asm("$5");
-        register int pool_compare asm("$2");
-        u16 * volatile preserved_slot_base;
-
+    if (source_field_07 == 1) {
+        register u16 *special_slot_base;
+        int pool_compare;
         source_offset = 0;
-        pool_compare = source_work < 30;
+        pool_compare = helper_source_index < 30;
         pool_compare ^= 1;
         special_pool |= pool_compare;
         special_slot_base = g_func_001957D0_special_slots;
-        saved_s7 = (u32)g_func_001957D0_normal_slots;
-        source_work = (u32)source_reg;
-        asm("" : "=r"(source_work) : "0"(source_work));
+        saved_s7 = g_func_001957D0_normal_slots;
+        source_work = (u32)source;
 field_07_slot_outer:
-        if (((const Func001957D0Template *)source_work)->field_0D[0] != 0) {
+        if (((Func001957D0Template *)source_work)->field_0D[0] != 0) {
             scan_index = 0;
             if (special_pool != 0) {
-                slot_cursor = special_slot_base;
+                switch (member_index) {
+                case 0:
+                    slot_cursor = special_slot_base;
+                    break;
+                case 1:
+                    slot_cursor = special_slot_base;
+                    break;
+                default:
+                    slot_cursor = special_slot_base;
+                    break;
+                }
 field_07_special_slot_scan:
-                record_index = scan_index;
+                field_07_slot_index = scan_index;
                 if (*slot_cursor == 0) {
                     goto field_07_slot_scan_done;
                 }
                 scan_index++;
+                slot_cursor++;
                 if (scan_index < 120) {
-                    slot_cursor++;
                     goto field_07_special_slot_scan;
                 }
-                asm("");
-                record_index = -1;
+                field_07_slot_index = -1;
                 goto field_07_slot_scan_done;
             } else {
-                slot_cursor = (u16 *)saved_s7;
+                slot_cursor = saved_s7;
 field_07_normal_slot_scan:
-                record_index = scan_index;
+                field_07_slot_index = scan_index;
                 if (*slot_cursor == 0) {
                     goto field_07_slot_scan_done;
                 }
                 scan_index++;
+                slot_cursor++;
                 if (scan_index < 120) {
-                    slot_cursor++;
                     goto field_07_normal_slot_scan;
                 }
-                record_index = -1;
+                field_07_slot_index = -1;
             }
 field_07_slot_scan_done:
-            if (record_index < 0) {
-                preserved_slot_base = special_slot_base;
+            if (field_07_slot_index < 0) {
                 func_00023940(g_func_001957D0_slot_error);
-                special_slot_base = preserved_slot_base;
             }
             if (special_pool != 0) {
-                special_slot_base[record_index] = g_func_001957D0_special_slot_seed;
-                g_func_001957D0_special_slot_state[record_index] = 0;
+                special_slot_base[field_07_slot_index] = g_func_001957D0_special_slot_seed;
+                g_func_001957D0_special_slot_state[field_07_slot_index] = 0;
             } else {
-                ((u16 *)saved_s7)[record_index] = g_func_001957D0_normal_slot_seed;
-                g_func_001957D0_normal_slot_state[record_index] = 0;
+                saved_s7[field_07_slot_index] = g_func_001957D0_normal_slot_seed;
+                g_func_001957D0_normal_slot_state[field_07_slot_index] = 0;
             }
             {
-                register u8 *member_entry asm("$3");
-
+                u8 *member_entry;
                 member_entry = (u8 *)source_record + member_index;
-                asm volatile(
-                    ".set noreorder\n"
-                    "addiu %0,%2,1\n"
-                    "addiu $2,%4,100\n"
-                    "sb $2,2(%5)\n"
-                    "lbu $2,13(%6)\n"
-                    "addiu %1,%3,1\n"
-                    "addiu $2,$2,-1\n"
-                    "sb $2,7(%5)\n"
-                    ".set reorder\n"
-                    : "=r"(member_index), "=r"(source_offset)
-                    : "0"(member_index), "1"(source_offset), "r"(record_index),
-                      "r"(member_entry), "r"(source_work)
-                    : "$2", "memory");
+                member_index++;
+                member_entry[2] = field_07_slot_index + 100;
+                member_entry[7] =
+                    ((Func001957D0Template *)source_work)->field_0D[0] - 1;
+                source_offset++;
             }
             source_work++;
             if (source_offset < 3) {
                 goto field_07_slot_outer;
             }
         }
-    } else if (source_reg->field_07 != 0) {
-        register int pool_compare asm("$2");
-
+    } else if (source_field_07 != 0) {
+        int pool_compare;
         source_offset = 0;
-        saved_s7 = source_work;
-        pool_compare = source_work < 30;
+        saved_s7 = (u16 *)helper_source_index;
+        pool_compare = helper_source_index < 30;
         pool_compare ^= 1;
         special_pool |= pool_compare;
-        source_work = (u32)source_reg;
-        asm("" : "=r"(source_work) : "0"(source_work));
+        source_work = (u32)source;
 field_07_record_outer:
-        if (((const Func001957D0Template *)source_work)->field_0D[0] != 0) {
+        if (((Func001957D0Template *)source_work)->field_0D[0] != 0) {
             scan_index = 1;
             if (special_pool != 0) {
                 record_offset = 52;
 field_07_records_52:
-                record_index = scan_index;
+                field_07_record_index = scan_index;
                 if (((u8 *)g_func_0019554C_records_52)[record_offset + 0x12] == 0) {
                     goto field_07_record_scan_done;
                 }
                 scan_index++;
+                record_offset += 52;
                 if (scan_index < 100) {
-                    record_offset += 52;
                     goto field_07_records_52;
                 }
-                asm("");
-                record_index = -1;
+                field_07_record_index = -1;
                 goto field_07_record_scan_done;
             } else {
                 record_offset = 56;
 field_07_records_56:
-                record_index = scan_index;
+                field_07_record_index = scan_index;
                 if (((u8 *)g_func_0019554C_records_56)[record_offset + 0x12] == 0) {
                     goto field_07_record_scan_done;
                 }
                 scan_index++;
+                record_offset += 56;
                 if (scan_index < 100) {
-                    record_offset += 56;
                     goto field_07_records_56;
                 }
-                record_index = -1;
+                field_07_record_index = -1;
             }
 field_07_record_scan_done:
-            asm volatile(
-                ".set noreorder\n"
-                "bgez %0,1f\n"
-                "addu $4,%0,$0\n"
-                "lui $4,%%hi(g_func_001957D0_record_error)\n"
-                "jal func_00023940\n"
-                "addiu $4,$4,%%lo(g_func_001957D0_record_error)\n"
-                "addu $4,%0,$0\n"
-                "1:\n"
-                "lbu $7,31($sp)\n"
-                "addu $5,%1,$0\n"
-                "addiu $6,$0,1\n"
-                "jal func_0019554C\n"
-                "sw %2,16($sp)\n"
-                ".set reorder\n"
-                :
-                : "r"(record_index), "r"(source_reg), "r"(saved_s7)
-                : "$2", "$3", "$4", "$5", "$6", "$7", "$8", "$9", "$10", "$11",
-                  "$12", "$13", "$14", "$15", "$24", "$25", "$31", "memory");
             {
-                register u8 *member_entry asm("$3");
-
-                member_entry = (u8 *)source_record + member_index;
-                asm volatile(
-                    ".set noreorder\n"
-                    "addiu %0,%2,1\n"
-                    "sb %4,2(%5)\n"
-                    "lbu $2,13(%6)\n"
-                    "addiu %1,%3,1\n"
-                    "addiu $2,$2,-1\n"
-                    "sb $2,7(%5)\n"
-                    ".set reorder\n"
-                    : "=r"(member_index), "=r"(source_offset)
-                    : "0"(member_index), "1"(source_offset), "r"(record_index),
-                      "r"(member_entry), "r"(source_work)
-                    : "$2", "memory");
+            int helper_flag;
+            if (field_07_record_index < 0) {
+                func_00023940(g_func_001957D0_record_error);
+                scan_index = field_07_record_index;
+                helper_flag = pool_byte;
+            } else {
+                scan_index = field_07_record_index;
+                helper_flag = pool_byte;
+            }
+            func_0019554C(
+                scan_index,
+                source,
+                1,
+                helper_flag,
+                (u32)saved_s7);
+            }
+            {
+                slot_cursor =
+                    (u16 *)((u8 *)source_record + member_index);
+                member_index++;
+                ((u8 *)slot_cursor)[2] = field_07_record_index;
+                field_07_member_value =
+                    ((Func001957D0Template *)source_work)->field_0D[0];
+                if (saved_s7) {
+                    source_offset++;
+                } else {
+                    source_offset++;
+                }
+                ((u8 *)slot_cursor)[7] = field_07_member_value - 1;
             }
             source_work++;
             if (source_offset < 3) {
@@ -357,194 +331,154 @@ field_07_record_scan_done:
             }
         }
     }
-
-    if (source_reg->field_10 == 1) {
-        register int slot_compare asm("$2");
-        register int slot_special asm("$19");
-        register u32 normal_slot_base asm("$20");
-
+    }
+    source_field_10 = source->field_10;
+    if (source_field_10 == 1) {
+        int slot_compare;
+        int slot_special;
+        u32 normal_slot_base;
+        u8 *member_entry;
         slot_compare = masked_source_index < 30;
-        asm volatile(
-            ".set noreorder\n"
-            "xori %0,%0,1\n"
-            "lbu $8,31($sp)\n"
-            "lui %1,%%hi(g_func_001957D0_special_slots)\n"
-            "addiu %1,%1,%%lo(g_func_001957D0_special_slots)\n"
-            "lui %2,%%hi(g_func_001957D0_normal_slots)\n"
-            "addiu %2,%2,%%lo(g_func_001957D0_normal_slots)\n"
-            "addu %3,%6,$0\n"
-            "or %4,$8,%0\n"
-            ".set reorder\n"
-            : "=r"(slot_compare), "=r"(saved_s7), "=r"(normal_slot_base),
-              "=r"(source_work), "=r"(slot_special)
-            : "0"(slot_compare), "r"(source_reg)
-            : "$8");
+        slot_compare ^= 1;
+        slot_special = pool_byte || slot_compare;
+        field_10_special_slots = (u32)g_func_001957D0_special_slots;
+        normal_slot_base = (u32)g_func_001957D0_normal_slots;
+        source_work = (u32)source;
 field_10_slot_outer:
-        if (((const Func001957D0Template *)source_work)->field_16[0] != 0) {
+        if (((Func001957D0Template *)source_work)->field_16[0] != 0) {
             scan_index = 0;
             if (slot_special != 0) {
-                slot_cursor = (u16 *)saved_s7;
+                slot_cursor = (u16 *)field_10_special_slots;
 field_10_special_slot_scan:
-                record_index = scan_index;
+                field_10_slot_index = scan_index;
                 if (*slot_cursor == 0) {
                     goto field_10_slot_scan_done;
                 }
                 scan_index++;
+                slot_cursor++;
                 if (scan_index < 120) {
-                    slot_cursor++;
                     goto field_10_special_slot_scan;
                 }
-                asm("");
-                record_index = -1;
+                field_10_slot_index = -1;
                 goto field_10_slot_scan_done;
             } else {
                 slot_cursor = (u16 *)normal_slot_base;
 field_10_normal_slot_scan:
-                record_index = scan_index;
+                field_10_slot_index = scan_index;
                 if (*slot_cursor == 0) {
                     goto field_10_slot_scan_done;
                 }
                 scan_index++;
+                slot_cursor++;
                 if (scan_index < 120) {
-                    slot_cursor++;
                     goto field_10_normal_slot_scan;
                 }
-                record_index = -1;
+                field_10_slot_index = -1;
             }
 field_10_slot_scan_done:
-            asm volatile(
-                ".set noreorder\n"
-                "bgez %0,1f\n"
-                "nop\n"
-                "lui $4,%%hi(g_func_001957D0_slot_error)\n"
-                "jal func_00023940\n"
-                "addiu $4,$4,%%lo(g_func_001957D0_slot_error)\n"
-                "1:\n"
-                ".set reorder\n"
-                :
-                : "r"(record_index)
-                : "$2", "$3", "$4", "$5", "$6", "$7", "$8", "$9", "$10", "$11",
-                  "$12", "$13", "$14", "$15", "$24", "$25", "$31", "memory");
+            if (field_10_slot_index < 0) {
+                func_00023940(g_func_001957D0_slot_error);
+            }
             if (slot_special != 0) {
-                ((u16 *)saved_s7)[record_index] = g_func_001957D0_special_slot_seed;
-                g_func_001957D0_special_slot_state[record_index] = 0;
+                ((u16 *)field_10_special_slots)[field_10_slot_index] = g_func_001957D0_special_slot_seed;
+                g_func_001957D0_special_slot_state[field_10_slot_index] = 0;
             } else {
-                ((u16 *)normal_slot_base)[record_index] = g_func_001957D0_normal_slot_seed;
-                g_func_001957D0_normal_slot_state[record_index] = 0;
+                ((u16 *)normal_slot_base)[field_10_slot_index] = g_func_001957D0_normal_slot_seed;
+                g_func_001957D0_normal_slot_state[field_10_slot_index] = 0;
             }
-            {
-                register u8 *member_entry asm("$3");
-
-                member_entry = (u8 *)source_record + member_index;
-                asm volatile(
-                    ".set noreorder\n"
-                    "addiu $2,%2,100\n"
-                    "sb $2,2(%3)\n"
-                    "lbu $2,22(%1)\n"
-                    "addiu %0,%1,1\n"
-                    "addiu $2,$2,-1\n"
-                    "sb $2,7(%3)\n"
-                    ".set reorder\n"
-                    : "=r"(source_work)
-                    : "0"(source_work), "r"(record_index), "r"(member_entry)
-                    : "$2", "memory");
-            }
+            member_entry = (u8 *)source_record + member_index;
+            member_entry[2] = field_10_slot_index + 100;
+            member_entry[7] =
+                ((Func001957D0Template *)source_work)->field_16[0] - 1;
+            source_work++;
             member_index++;
-            if ((int)source_work < (int)((u32)source_reg + 3)) {
+            if ((int)source_work < (int)((u32)source + 3)) {
                 goto field_10_slot_outer;
             }
         }
-    } else if (source_reg->field_10 != 0) {
-        register u32 second_source_index asm("$19");
-        register int record_special asm("$20");
-
-        asm volatile(
-            ".set noreorder\n"
-            "andi %0,%3,0x00ff\n"
-            "sltiu $2,%0,30\n"
-            "lbu $8,31($sp)\n"
-            "xori $2,$2,1\n"
-            "addu %1,%4,$0\n"
-            "or %2,$8,$2\n"
-            ".set reorder\n"
-            : "=r"(second_source_index), "=r"(source_work), "=r"(record_special)
-            : "r"(masked_source_index), "r"(source_reg)
-            : "$2", "$8");
+    } else if (source_field_10 != 0) {
+        u32 second_source_index;
+        int record_compare;
+        int record_index;
+        int record_special;
+        second_source_index = (u8)masked_source_index;
+        if (member_index) {
+            record_compare = second_source_index < 30;
+        } else {
+            record_compare = second_source_index < 30;
+        }
+        record_compare ^= 1;
+        source_work = (u32)source;
+        record_special = pool_byte | record_compare;
 field_10_record_outer:
-        if (((const Func001957D0Template *)source_work)->field_16[0] != 0) {
+        if (((Func001957D0Template *)source_work)->field_16[0] != 0) {
             scan_index = 1;
             if (record_special != 0) {
                 record_offset = 52;
 field_10_records_52:
-                record_index = scan_index;
                 if (((u8 *)g_func_0019554C_records_52)[record_offset + 0x12] == 0) {
+                    record_index = scan_index;
                     goto field_10_record_scan_done;
                 }
-                scan_index++;
+                record_index = scan_index++;
+                record_offset += 52;
                 if (scan_index < 100) {
-                    record_offset += 52;
                     goto field_10_records_52;
                 }
-                asm("");
                 record_index = -1;
                 goto field_10_record_scan_done;
             } else {
                 record_offset = 56;
 field_10_records_56:
-                record_index = scan_index;
                 if (((u8 *)g_func_0019554C_records_56)[record_offset + 0x12] == 0) {
-                    goto field_10_record_scan_done;
+                    goto field_10_record_found_56;
                 }
-                scan_index++;
+                record_index = scan_index++;
+                record_offset += 56;
                 if (scan_index < 100) {
-                    record_offset += 56;
                     goto field_10_records_56;
                 }
                 record_index = -1;
+                goto field_10_record_scan_done;
+field_10_record_found_56:
+                record_index = scan_index;
             }
 field_10_record_scan_done:
-            asm volatile(
-                ".set noreorder\n"
-                "bgez %0,1f\n"
-                "addu $4,%0,$0\n"
-                "lui $4,%%hi(g_func_001957D0_record_error)\n"
-                "jal func_00023940\n"
-                "addiu $4,$4,%%lo(g_func_001957D0_record_error)\n"
-                "addu $4,%0,$0\n"
-                "1:\n"
-                "lbu $7,31($sp)\n"
-                "addu $5,%1,$0\n"
-                "addiu $6,$0,2\n"
-                "jal func_0019554C\n"
-                "sw %2,16($sp)\n"
-                ".set reorder\n"
-                :
-                : "r"(record_index), "r"(source_reg), "r"(second_source_index)
-                : "$2", "$3", "$4", "$5", "$6", "$7", "$8", "$9", "$10", "$11",
-                  "$12", "$13", "$14", "$15", "$24", "$25", "$31", "memory");
             {
-                register u8 *member_entry asm("$3");
-
+            int helper_flag;
+            if (record_index < 0) {
+                func_00023940(g_func_001957D0_record_error);
+                scan_index = record_index;
+                helper_flag = pool_byte;
+            } else {
+                scan_index = record_index;
+                helper_flag = pool_byte;
+            }
+            func_0019554C(
+                scan_index,
+                source,
+                2,
+                helper_flag,
+                second_source_index);
+            }
+            {
+                u8 *member_entry;
                 member_entry = (u8 *)source_record + member_index;
-                asm volatile(
-                    ".set noreorder\n"
-                    "sb %2,2(%3)\n"
-                    "lbu $2,22(%1)\n"
-                    "addiu %0,%1,1\n"
-                    "addiu $2,$2,-1\n"
-                    "sb $2,7(%3)\n"
-                    ".set reorder\n"
-                    : "=r"(source_work)
-                    : "0"(source_work), "r"(record_index), "r"(member_entry)
-                    : "$2", "memory");
+                member_entry[2] = record_index;
+                member_entry[7] =
+                    ((Func001957D0Template *)source_work)->field_16[0] - 1;
+                source_work++;
             }
             member_index++;
-            if ((int)source_work < (int)((u32)source_reg + 3)) {
+            if ((int)source_work < (int)((u32)source + 3)) {
                 goto field_10_record_outer;
             }
         }
     }
-
-    source_record->field_18 = func_001957D0_finalize(source_record);
+    if (pool_byte == 0) {
+        source_record->field_18 = func_001957D0_finalize(source_record);
+    } else {
+        source_record->field_18 = func_001957D0_finalize(source_record);
+    }
     func_00023780(source_record->field_0D, 10);
 }
