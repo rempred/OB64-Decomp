@@ -46,7 +46,7 @@ Unresolved research gates must be addressed before family completion, without si
 ## Execution order and current state
 
 1. Process correction: recorded at canonical `86d3c0c` and parent `61ad769`; remaining family routing correction is complete and in Director intake. Full-scope reconciliation and process review are active in `/root/sequential_prerequisites_review` against the frozen results.
-2. Compilation-group design: original `5dad709` plus correction `b87e908`; proportional independent re-review is active in `/root/compilation_groups_review`. Implementation remains pending that verdict.
+2. Compilation-group design: original `5dad709` plus correction `b87e908` accepted by independent re-review. Tooling implementation is next, followed by its changed-input structural audit and independent review.
 3. Bounded readability source experiment: pending prerequisite acceptance. Read-only preparation of the three boot hybrid conversions is complete and in Director intake; source execution remains pending.
 4. Combat remaining source waves: pending. Discovery review is active in `/root/combat_discovery_review` against `150c9fc`; Sol High data retrieval in `/root/combat_data_retrieval` supports the two remaining selector/fixed-image questions.
 5. Squad remaining waves and research/structural gates: pending Combat closure.
@@ -86,3 +86,4 @@ Use the current session's permissions for repository and build operations; never
 - Combat discovery r1 completed with boundary/shared inclusion proposals, all inventoried dispatch destinations accounted for, and bounded renderer/registration identities. No proposed membership is accepted before review.
 - Fresh Sol Max Combat discovery review and Sol High resource/decoded-data retrieval are active on disjoint evidence paths. Data retrieval supplies facts for later Astra interpretation.
 - Boot conversion preparation completed. It preserves historical attempt limits and identifies fresh plain-C comparisons needed under the current pinned toolchain.
+- Independent design re-review returned Accepted. `CGDR-001` is resolved; the reviewed combined design may now guide the sole tooling implementation writer.
