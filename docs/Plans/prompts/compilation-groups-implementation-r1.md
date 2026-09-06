@@ -1,7 +1,7 @@
 ---
 task_id: compilation-groups-implementation
 revision: 1
-status: draft
+status: ready
 role: worker
 review_level: Critical
 inventory_profile: NORMAL
@@ -12,13 +12,13 @@ workspace_claim: C:/Users/Joe/Projects/OgreBattlel64/OB64 Decomp/docs/Plans/task
 
 # Implement general compilation-group support
 
-Draft only. The Director must bind the accepted design re-review before activation.
+Implement the independently accepted design within the scope below.
 
 Read canonical and parent AGENTS.md, parent docs/Worker-workflow.md, canonical docs/WORKFLOW.md, docs/SOURCE_POLICY.md, docs/AUDIT.md and docs/Plans/sequential-main-program.md.
 Use the eligible original Astra Medium design worker for implementation. Director /root, native task 01a07262-aeca-7341-ad10-2dba705ff988, local.
 The design is docs/Plans/compilation-groups-design.md at 5dad709 plus its correction docs/Plans/compilation-groups-design-r2.md at b87e908.
-Accepted design-review dependency: pending Director intake; this draft grants no execution authority.
-Production baseline remains accepted consolidation 497181d with documentation-only successors before this assignment.
+Accepted design-review dependency: 0840b422bc131f1db0cd204b875eb640d94f55c5, docs/Plans/task-logs/compilation-groups-design-review-r2.md, verdict Accepted.
+Production baseline remains accepted consolidation 497181d with documentation-only successors through 0840b42. Read and record the exact current HEAD before writing.
 
 Implement the accepted general producer/member contract, preserving every accepted owner and public entry while authenticating native compiler output.
 The motivating pose group is a fixture, not authority for a symbol-specific exception or production source activation.
