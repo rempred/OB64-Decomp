@@ -18,6 +18,9 @@ The worker first preserves the interrupted renderer trial and restores its best 
 All fourteen targets remain required. The worker may now use the bounded diagnostic guidance in ordinary source experiments.
 Every additional diagnostic input must retain its own agreement check against the pinned production compiler before trace interpretation.
 W8 R2 now has all fourteen C owners active, but four remain nonexact and the final wave verifier has not run.
+The current thirteen new C sources, two headers, two configuration deltas and W8 work records are preserved provisionally in Git.
+Source-owner intake found only thirteen new target records and eighteen referenced literal data symbols; existing linkage records remain unchanged.
+This preservation does not accept W8 or replace the exact W7 baseline. Resolver edits remain outside the matching commit.
 The source worker has restored its best candidates and paused experiments for [isolated endpoint reproduction research](prompts/combat-7adc-endpoint-reproducer-r1.md).
 That research must first control the two source differences in the retained 7ADC pair. It cannot alter production inputs or establish matching acceptance.
 The complete [preserved DB10 survey](task-logs/combat-db10-preserved-allocation-survey-r1.md) found at most three non-emitting homes across its 93-input corpus.

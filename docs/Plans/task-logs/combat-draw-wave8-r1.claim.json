@@ -1,0 +1,32 @@
+{
+  "taskId": "combat-draw-wave8",
+  "assignmentRevision": 1,
+  "launchId": "COMBAT-DRAW-WAVE8-20260907-01",
+  "receivingTaskId": "/root/boot_materializer_reasoning",
+  "hostId": "local",
+  "directorTaskId": "/root",
+  "directorNativeTaskId": "01a07262-aeca-7341-ad10-2dba705ff988",
+  "createdAt": "2026-09-07T10:50:06.3731178Z",
+  "startingHead": "e5c87a0a3bb9999cbb2260db0a3b590a25fc96b4",
+  "readyCommit": "589025bb1499a97731e4563568bc6d7cdf21c7ee",
+  "activationCommit": "bcb41b7685245fc8c1a2ba69891b603a80bc2ff3",
+  "acceptedSource": "469a1416918592749d61dc34e3e079796f7b673c",
+  "acceptedCurrent": "2626DA69447FDA51B53CC4B0F6D740B516E43D12A5CB346B09E775493929632C",
+  "scope": [
+    "func_001F3C00",
+    "func_001F5654",
+    "func_001F6098",
+    "func_001F7ADC",
+    "func_001F89B4",
+    "func_001FCB28",
+    "func_001FD56C",
+    "func_0020BFF8",
+    "func_0020C014",
+    "func_0020C034",
+    "func_0020C448",
+    "func_0020C4B8",
+    "func_002103EC",
+    "func_0020DB10"
+  ],
+  "ownership": "Sole production matching source/build writer; all fourteen members; held Resolver inputs excluded"
+}

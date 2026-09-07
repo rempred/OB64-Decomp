@@ -8,6 +8,7 @@
     "buildProvenanceSha256": "6B5C9B582F95B546E9AEDFD44A76E4F4D756AD0DF658D02EA96CCF503CEB1BD7"
   },
   "targets": [
+    { "symbol": "func_001F3C00", "source": "src/lib/func_001F3C00.c" },
     { "symbol": "func_001F1218", "source": "src/lib/func_001F1218.c" },
     { "symbol": "func_001F197C", "source": "src/lib/func_001F197C.c" },
     { "symbol": "func_000E5938", "source": "src/overlays/descriptor_02/func_000E5938.c" },
@@ -678,6 +679,54 @@
     {
       "symbol": "func_00208900",
       "source": "src/lib/func_00208900.c"
+    },
+    {
+      "symbol": "func_0020C014",
+      "source": "src/lib/func_0020C014.c"
+    },
+    {
+      "symbol": "func_0020C034",
+      "source": "src/lib/func_0020C034.c"
+    },
+    {
+      "symbol": "func_0020C448",
+      "source": "src/lib/func_0020C448.c"
+    },
+    {
+      "symbol": "func_002103EC",
+      "source": "src/lib/func_002103EC.c"
+    },
+    {
+      "symbol": "func_001F89B4",
+      "source": "src/lib/func_001F89B4.c"
+    },
+    {
+      "symbol": "func_0020C4B8",
+      "source": "src/lib/func_0020C4B8.c"
+    },
+    {
+      "symbol": "func_001FCB28",
+      "source": "src/lib/func_001FCB28.c"
+    },
+    {
+      "symbol": "func_001FD56C",
+      "source": "src/lib/func_001FD56C.c"
+    },
+    {
+      "symbol": "func_001F5654",
+      "source": "src/lib/func_001F5654.c"
+    },
+    {
+      "symbol": "func_001F6098",
+      "source": "src/lib/func_001F6098.c"
+    },
+    {
+      "symbol": "func_0020DB10",
+      "source": "src/lib/func_0020DB10.c"
+    },
+    {
+      "symbol": "func_001F7ADC",
+      "source": "src/lib/func_001F7ADC.c"
     }
   ]
 }
