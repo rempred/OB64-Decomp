@@ -52,4 +52,5 @@ Own the fresh claim, docs/Plans/task-logs/combat-pool-wave6-r1.md as report/log,
 Create the complete claim atomically before writes and record the exact accepted starting inputs.
 You are not alone; preserve other agents' read-only research and disjoint documentation work.
 Return the complete scope, source identities, focused results, final proof, and any concrete blockers to /root.
+Use direct collaboration messages only; never native Codex-app sends or readbacks.
 Release all writes at terminal handoff. No agents, live runtime, branches/worktrees, staging, commits, or push.
