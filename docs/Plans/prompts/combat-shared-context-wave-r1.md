@@ -25,6 +25,7 @@ Preserve the accepted executable-versus-padding disposition for func_002013D0; d
 The retained context candidate had a four-byte alias/lifetime mismatch. Treat this as measured prior evidence, not impossibility.
 Accepted boot conversion 523d460 provides new KMC lifetime/coalescing evidence to justify a fresh pure-C attempt.
 Read its R2 report and independently test any applicable technique against this target's ROM behavior and linked output.
+Use docs/Plans/task-logs/combat-context-retry-preparation-r1.md at dff8b8c as untested preparation, not accepted source or semantics.
 Do not transfer field meanings or C expression from external decompilation sources.
 Prefer structured, evidence-backed C. Explain necessary measured compiler workarounds near their source.
 

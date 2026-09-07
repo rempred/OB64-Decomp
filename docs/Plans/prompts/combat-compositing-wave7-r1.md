@@ -15,6 +15,7 @@ workspace_claim: C:/Users/Joe/Projects/OgreBattlel64/OB64 Decomp/docs/Plans/task
 Draft only; no execution authority. The Director must bind the accepted preceding source wave and sole production source/build ownership before activation.
 Use Astra Medium. Director /root, native task 01a07262-aeca-7341-ad10-2dba705ff988, local.
 Read canonical and parent AGENTS.md, parent docs/Worker-workflow.md, canonical docs/WORKFLOW.md, docs/SOURCE_POLICY.md, docs/Plans/sequential-main-program.md, and the parent Combat plan and inventory.
+Reuse docs/Plans/task-logs/combat-compositing-inputs-r1.md and its hashed literal package; authenticate relevant current inputs before implementation.
 
 Complete all seven original descriptor-resolution/compositing members as PURE_C:
 func_00206340, func_00206888, func_00206BE0, func_00207658, func_00207E30, func_00208508, func_00208900.
@@ -32,3 +33,4 @@ Preserve concrete unresolved mismatches and failed hypotheses honestly; a hybrid
 Own the fresh claim, docs/Plans/task-logs/combat-compositing-wave7-r1.md and ignored build/combat-compositing-wave7-r1/.
 Create the complete claim atomically before writes, recording exact accepted baseline and full assigned scope. You are not alone; preserve independent research and disjoint documentation work.
 No agents, runtime control, staging, commits, push, branches or worktrees. Return complete-wave proof and any blocker to /root, then release writes.
+Report directly through collaboration.send_message; never native app sends or readbacks.
