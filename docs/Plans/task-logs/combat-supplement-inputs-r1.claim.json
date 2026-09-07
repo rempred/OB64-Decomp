@@ -1,0 +1,9 @@
+{
+  "task_id": "combat-supplement-inputs",
+  "assignment_revision": 1,
+  "launch_id": "COMBAT-SUPPLEMENT-INPUTS-20260907-01",
+  "receiving_task_id": "/root/combat_data_retrieval",
+  "host_id": "local",
+  "director_task_id": "01a07262-aeca-7341-ad10-2dba705ff988",
+  "creation_time": "2026-09-07T00:04:39.1288595-04:00"
+}

@@ -15,6 +15,8 @@ workspace_claim: C:/Users/Joe/Projects/OgreBattlel64/OB64 Decomp/docs/Plans/task
 Draft only. Director /root must bind the exact accepted preceding source state, dependency order and sole production ownership before activation. Native Director task 01a07262-aeca-7341-ad10-2dba705ff988, local. Use Astra Medium.
 Read both AGENTS.md files, parent docs/Worker-workflow.md, canonical docs/WORKFLOW.md, docs/SOURCE_POLICY.md, docs/Plans/sequential-main-program.md and the parent Combat plan/inventory's accepted discovery supplement.
 Accepted scope authority: research/review and parent propagation e445991, preserved by r2 propagation f940a28. These are supplemental members, not replacements for any original W1–W8 or High Attack shared owner.
+Reuse docs/Plans/task-logs/combat-supplement-inputs-r1.md and its hashed twelve-member literal package.
+Authenticate relevant current inputs before implementation; its accepted extraction baseline is d70fd853fdffacf71290b24763e010a549276a55.
 
 Complete the seven supported inclusions and five required shared integrations as one twelve-target PURE_C wave:
 func_001F0E64, func_002071F4, func_002073CC, func_00207A70, func_00207C08, func_0020CBDC, func_0020D590,
