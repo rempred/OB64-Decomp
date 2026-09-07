@@ -1,7 +1,7 @@
 ---
 task_id: compilation-groups-documentation
 revision: 2
-status: ready
+status: active
 role: correction-worker
 review_level: Focused
 inventory_profile: NORMAL
