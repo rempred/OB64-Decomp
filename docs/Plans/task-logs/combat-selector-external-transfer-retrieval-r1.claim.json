@@ -1,0 +1,17 @@
+{
+  "task_id": "combat-selector-external-transfer-retrieval",
+  "assignment_revision": 1,
+  "launch_id": "COMBAT-SELECTOR-EXTERNAL-TRANSFER-RETRIEVAL-20260907-01",
+  "receiving_task_id": "/root/combat_data_retrieval",
+  "host_id": "local",
+  "director_task_id": "01a07262-aeca-7341-ad10-2dba705ff988",
+  "creation_time": "2026-09-07T03:41:52.3660849-04:00",
+  "inputs": {
+    "assignment_commit": "e9f99598e183135e9eaf2930fb1737f9210e9c59",
+    "accepted_discovery_commit": "1f68aa001c612e2a7ce160e0cdf1d83a0c8b2048",
+    "accepted_discovery_review_commit": "024a9710425d6652dfc91857666b532006d1c54e",
+    "normalized_rom_sha256": "571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A",
+    "selector_rom_range": "0x00201778..0x00201798",
+    "selector_ram_range": "0x801BE2E8..0x801BE308"
+  }
+}
