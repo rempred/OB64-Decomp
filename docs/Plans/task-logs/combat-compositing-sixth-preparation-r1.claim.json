@@ -1,0 +1,13 @@
+{
+  "task_id": "combat-compositing-sixth-preparation",
+  "assignment_revision": 1,
+  "launch_id": "COMBAT-COMPOSITING-SIXTH-PREPARATION-20260907-01",
+  "receiving_task_id": "/root/boot_conversion_preparation",
+  "director_task_id": "/root",
+  "director_native_task_id": "01a07262-aeca-7341-ad10-2dba705ff988",
+  "host_id": "local",
+  "creation_time": "2026-09-07T08:10:33.5805817Z",
+  "starting_head": "97a5957c2946bb64064de3faa7ecd017feb2903f",
+  "accepted_baseline": "0e1191013aeebed2929c9caff7c1f139169ad7f3",
+  "input_package_sha256": "F376C9304E9CB3AAC2B76886EBE0CACCF271D700D31191F6E8D05A56E7720E2B"
+}
