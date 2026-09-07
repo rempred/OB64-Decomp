@@ -1,7 +1,7 @@
 ---
 task_id: combat-draw-5654-packet-preparation
 revision: 1
-status: ready
+status: active
 role: worker
 review_level: Focused
 inventory_profile: NORMAL
