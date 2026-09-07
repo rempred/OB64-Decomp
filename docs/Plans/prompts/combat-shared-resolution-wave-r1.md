@@ -20,7 +20,13 @@ This is a sequential Combat shared prerequisite. It creates no concurrent High A
 Complete all seven original High Attack W7 members as PURE_C:
 func_0022F580, func_00230A9C, func_002317C8, func_00231CC0, func_00232280, func_00232458, func_00232D7C.
 
-Use the literal input package frozen at 6cdf6afed32b3362fdda98d8eb4cfe831b690786: docs/Plans/task-logs/combat-shared-resolution-inputs-r1.md, SHA256 004C80ECB0D91243525F7C5C52C1D11A76A6411926CF0190126D91DA7686446D; build/combat-shared-resolution-inputs-r1/resolution-inputs.json, SHA256 97EBF95C1AB96ADB26FD684AF78384F34068C55537A45C1198763C2D864EC12C. Extraction used accepted W7 source 469a1416918592749d61dc34e3e079796f7b673c. Reauthenticate these inputs against the preceding accepted action-mode baseline before implementation; this preparation does not activate the wave or establish matching acceptance.
+Use build/combat-shared-input-alias-correction-r1/resolution-inputs-corrected.json, SHA256 0EFA3D1990C347FBCCFCA32666FE6430BFDD0491E780B43D4F91CC68787BC1B1.
+Correction 740732e18b1f3e5808b167572662473918d35c2d changes only forty-five per-call alias arrays from the frozen retrieval at 6cdf6afed32b3362fdda98d8eb4cfe831b690786.
+Report: docs/Plans/task-logs/combat-shared-input-alias-correction-r1.md; SHA256 0CF8D2C24D4894C79A1109A9C71D5F47A8AE1A662C75053684008804D6E453AB.
+All other evidence and the accepted W7 extraction baseline 469a1416918592749d61dc34e3e079796f7b673c remain unchanged.
+Same-address aliases establish no new callee, execution, or ownership claim.
+Reauthenticate these inputs against the preceding accepted action-mode baseline before implementation.
+This preparation supports separately assigned read-only work; it does not activate the wave or establish matching acceptance.
 
 Preserve func_00230A9C as the complete declared 3,372-byte logical owner at ROM 0x00230A9C..0x002317C8: its 1,380-byte chunk-34 head and 1,992-byte chunk-35 continuation remain one assigned function. The original High Attack table's 1,380-byte entry describes the head. A head-only result does not complete this target. Keep both original assembly parts available until canonical replacement handling is proven under the accepted contracts.
 

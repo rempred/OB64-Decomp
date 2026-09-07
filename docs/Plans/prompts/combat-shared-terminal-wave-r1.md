@@ -17,13 +17,21 @@ Use Astra Medium. Director /root, native task 01a07262-aeca-7341-ad10-2dba705ff9
 Read both AGENTS.md files, parent docs/Worker-workflow.md, canonical WORKFLOW.md and SOURCE_POLICY.md, the sequential program, accepted scope/shared-member reconciliation, and the controlling High Attack plan.
 This is a sequential Combat shared prerequisite. It creates no concurrent High Attack family, branch, worktree or production writer. The later family reuses accepted results.
 
-Reuse the completed literal input retrieval at 44fba4a847ea197cdca76b1d04be905e245a508e.
-Report: docs/Plans/task-logs/combat-shared-terminal-inputs-r1.md; SHA256 46E98A06292E9E09F5A61C93B89596B145D2872B5D2F456249AD8BA3E5EBDE4C.
-Package: build/combat-shared-terminal-inputs-r1/terminal-inputs.json; SHA256 E933CE792D1F52440F242605C20F485CA1A9BABDA516F762C63D2A92386569D5.
-It preserves all fifteen complete owners, sixteen original assembly parts, existing accepted placement, and the nonaccepted EBBC research candidate.
-The Director authenticated all thirty-six source identities and the candidate's line-ending-normalized equality to its accepted-baseline Git blob.
-This package supports separately assigned read-only preparation; it does not activate source implementation or accept matching C.
+Use the corrected literal package at build/combat-shared-input-alias-correction-r1/terminal-inputs-corrected.json.
+Package SHA256: 8129EAC6B6E5C93C22741B7C0407094987222040436E1719D7E9474B5373AA3E.
+Correction 740732e18b1f3e5808b167572662473918d35c2d changes only forty-two per-call alias arrays from the frozen retrieval at 44fba4a847ea197cdca76b1d04be905e245a508e.
+Report: docs/Plans/task-logs/combat-shared-input-alias-correction-r1.md; SHA256 0CF8D2C24D4894C79A1109A9C71D5F47A8AE1A662C75053684008804D6E453AB.
+Original owners, parts, placement, source identities, candidate records, and extraction baseline remain unchanged.
+Same-address aliases establish no new callee, execution, or ownership claim.
+The package supports separately assigned read-only preparation; it does not activate source implementation or accept matching C.
 Before implementation, reauthenticate its inputs against the preceding accepted resolution/action-mode baselines and bind sole production ownership.
+
+For the complete EBBC owner, reuse preparation 9cbd996b05f8bdbc393dda0fbfb61151ac0c65c8.
+Report: docs/Plans/task-logs/combat-terminal-ebbc-preparation-r1.md; SHA256 C678D309B66EB84F8E1997BA4276FAF95CC3CF3C78DE4E607CB9EF0A7888D87F.
+Evidence: build/combat-terminal-ebbc-preparation-r1/evidence.json; SHA256 27877F54E6FBCAD2989A13818FD70B4FE3FA6D746E21C6244209969BCA209199.
+It preserves the full dispatch and continuation, real buffer footprints, internal-label hazards, and existing table-owner prerequisites.
+The retained C remains a nonaccepted navigation aid. Reconstruct and check its declarations and control flow before tuning compiler output.
+No table partition or representation change is activated by the note; route any demonstrated requirement under the existing structural/tooling rules.
 
 Complete all fifteen original High Attack W8 members as PURE_C:
 func_0021D7F0, func_0021DCA4, func_0021E070, func_0021E2C4, func_0021E50C, func_0021E99C, func_0021EBBC, func_002213DC, func_002215D0, func_00222190, func_0022222C, func_00222344, func_002223E0, func_00222530, func_0021EAF0.
