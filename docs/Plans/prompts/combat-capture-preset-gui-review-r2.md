@@ -1,7 +1,7 @@
 ---
 task_id: combat-capture-preset-gui-review
 revision: 2
-status: active
+status: completed
 role: reviewer
 review_level: Focused
 inventory_profile: NORMAL
