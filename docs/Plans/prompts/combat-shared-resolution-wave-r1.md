@@ -40,6 +40,15 @@ Preserve these actual reads and complete row coverage; this preparation authoriz
 Route any demonstrated structural or representation change through its separate audit and review.
 
 Preserve func_00230A9C as the complete declared 3,372-byte logical owner at ROM 0x00230A9C..0x002317C8: its 1,380-byte chunk-34 head and 1,992-byte chunk-35 continuation remain one assigned function. The original High Attack table's 1,380-byte entry describes the head. A head-only result does not complete this target. Keep both original assembly parts available until canonical replacement handling is proven under the accepted contracts.
+Reuse its complete preparation at b1147672f1912961a321be3e0b445960a6c13c8f.
+Report: docs/Plans/task-logs/combat-resolution-a9c-preparation-r1.md; SHA256 008903B1619E74035832E644D43F66BA9D6F94CC9C65AA4EC1CA1174E4F689D0.
+Evidence: build/combat-resolution-a9c-preparation-r1/evidence.json; SHA256 BD540D7ADA7AD1293459E9AA4E5584D4DA4A8DE8E794365F706622949A51B011.
+Preserve its complete seam transfers, real copied state, evaluator output, generator distinction, and floating-point conversion chain.
+Settle the path-specific evaluator output bound or actual aliasing before choosing declarations; the eight-byte clear does not establish capacity.
+Its ten-word float lookup at ROM 0x00239BA0 spans existing zero_fill_00239b94 and float_00239ba4 owners.
+Preserve both complete data rows and actual reads; the consumed footprint authorizes no partition or row merge.
+The retained constant-branch call bytes remain part of the matching target, regardless of the recorded execution condition.
+This note establishes neither a source workaround nor matching, semantic, or structural acceptance.
 
 The package records existing saved placement through resource-loader-0022a280, separately from assembly decode-comment aids. It also records bounded absences of active C/linkage/group contracts and retained archive candidates. Use the accepted placement record, preserve uncertainty in literal references, and do not infer new runtime or structural claims from the package.
 
