@@ -1,0 +1,9 @@
+{
+  "task_id": "combat-capture-input-parsing",
+  "assignment_revision": 1,
+  "launch_id": "COMBAT-CAPTURE-INPUT-PARSING-20260907-01",
+  "receiving_task_id": "/root/combat_data_retrieval",
+  "host_id": "local",
+  "director_task_id": "01a07262-aeca-7341-ad10-2dba705ff988",
+  "creation_time": "2026-09-06T21:15:27.9387741-04:00"
+}
