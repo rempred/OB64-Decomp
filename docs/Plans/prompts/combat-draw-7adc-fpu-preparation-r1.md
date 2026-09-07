@@ -1,7 +1,7 @@
 ---
 task_id: combat-draw-7adc-fpu-preparation
 revision: 1
-status: ready
+status: active
 role: worker
 review_level: Focused
 inventory_profile: NORMAL
