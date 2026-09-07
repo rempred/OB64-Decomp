@@ -1,7 +1,7 @@
 ---
 task_id: combat-capture-preset-gui
 revision: 3
-status: draft
+status: ready
 role: worker
 review_level: Focused
 inventory_profile: NORMAL
@@ -12,7 +12,14 @@ workspace_claim: C:/Users/Joe/Projects/OgreBattlel64/OB64 Decomp/docs/Plans/task
 
 # Correct the reviewed capture startup issue
 
-Draft only. Bind the completed independent verdict and exact findings before activation.
+Independent review R1 returned Revision required and is frozen at 2d94fe8.
+Report docs/Plans/task-logs/combat-capture-preset-gui-review-r1.md SHA256 9315A722FE657A4AAF6A892492881BC151ACD51D6452525D29202E68E21F9782.
+Review package build/total-resolver/combat-capture-preset-gui-review-r1/ has manifest SHA256 41228FAA83977945A25C68C3FB7FB9A81BAA206B0B6D9E56AF6E19451EAA74A8.
+The reviewer released all writes. You now have sole production tooling ownership; W5 remains paused.
+Confirmed finding: before-ROM startup omits configured generic instruction watches while profile metadata advertises them.
+Follow the frozen report's exact correction route and use its isolated falsifier as regression evidence.
+Prove Combat before-ROM installation, recording and removal of both generic and focused watches.
+Preserve unaffected R1 review results for a proportional correction re-review.
 Use Astra Medium /root/combat_discovery. Director /root, native task 01a07262-aeca-7341-ad10-2dba705ff988, local.
 This continues R2 at 986ce56. Preserve all completed R1/R2 and review records unchanged.
 Read both AGENTS.md files, parent docs/Worker-workflow.md, Total Resolver maintenance instructions, and the completed review.
