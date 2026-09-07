@@ -1,7 +1,7 @@
 ---
 task_id: combat-capture-startup-correction
 revision: 1
-status: draft
+status: ready
 role: worker
 review_level: Critical
 inventory_profile: NORMAL
@@ -12,7 +12,11 @@ workspace_claim: C:/Users/Joe/Projects/OgreBattlel64/OB64 Decomp/docs/Plans/task
 
 # Correct capture startup and preserve failed-start evidence offline
 
-Draft only; no execution authority. Activate only after the matching writer releases production ownership and the Director confirms ownership in both repositories.
+W7 is accepted at canonical main 469a1416918592749d61dc34e3e079796f7b673c and its worker has explicitly released all production writes.
+Use that commit as the canonical source baseline. Its sole normal verifier passed with CURRENT 2626DA69447FDA51B53CC4B0F6D740B516E43D12A5CB346B09E775493929632C.
+The frozen W7 report is docs/Plans/task-logs/combat-compositing-wave7-r1.md, SHA256 7CE8CE89D543759DB99DB10B1831165E686C12D24ABE1F0756AE7824C7B0CCFA.
+The Director resolved the canonical and parent Git roots, confirmed all prior internal writers released, reauthenticated the exact parent bridge bytes below, and found the assigned claim/report/output paths absent.
+This assignment now owns the stated Total Resolver production surfaces and the exact parent bridge path. No other production writer is active; W8 waits for this tooling handoff and required review.
 The Director selects the existing hash-bound protocol-0.17 bridge as the proposed starting lineage for this correction.
 Parent baseline is f940a2825ac97453746d3e9cef9c5cabc60a8dd2; the pre-existing bridge SHA256 is recorded below.
 Read the provenance result at 4fe8e8bb655dc16e9c6325370efdcd9f63bd5b75, docs/Plans/task-logs/combat-bridge-provenance-retrieval-r1.md.
@@ -22,7 +26,7 @@ The future tooling review must cover the complete parent HEAD-to-result bridge d
 No parent integration is accepted until that coherent result passes fresh independent review. No further historical authorship search is required.
 At activation, authenticate the selected bytes and confirm no current owner overlaps the exact bridge path.
 If the source changed or ownership overlaps, preserve it and return the exact conflict. Do not overwrite another lineage.
-Use Astra Medium. Director /root, native task 01a07262-aeca-7341-ad10-2dba705ff988, local.
+Use Astra Medium in eligible worker /root/compilation_groups_design. Director /root, native task 01a07262-aeca-7341-ad10-2dba705ff988, local.
 Read both AGENTS.md files, parent docs/Worker-workflow.md, tools/total_resolver/AGENTS.md, README.md, docs/total-resolver/persistent-coverage-decision.md and the relevant current recorder/session/bridge documentation.
 Starting diagnosis: docs/Plans/task-logs/combat-capture-startup-r4.md at d977238. Its wire reproduction is research input to independently confirm, not a substitute for correction verification or review.
 Recorded parent bridge SHA256: 1133A66C5C5743B8B40F1CC410A6EB8A64639CAC2E750B74F6DFBC48186EBF1F. Recorded deployed port-64656 script SHA256: 7F87A8EA02DE7DA566AC201C32BFEC4FCCC7FA114F91C44D6E88FCFCD8DEEAC7. Authenticate current inputs before relying on these historical bindings.
