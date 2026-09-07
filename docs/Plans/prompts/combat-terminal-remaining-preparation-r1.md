@@ -1,7 +1,7 @@
 ---
 task_id: combat-terminal-remaining-preparation
 revision: 1
-status: draft
+status: ready
 role: worker
 review_level: Focused
 inventory_profile: NORMAL
@@ -12,10 +12,10 @@ workspace_claim: C:/Users/Joe/Projects/OgreBattlel64/OB64 Decomp/docs/Plans/task
 
 # Prepare the remaining terminal owners and bridge
 
-Draft only; bind current coordination and the completed six-helper preparation before activation.
-Use Astra Medium in /root/sequential_scope for bounded read-only matching preparation.
+Use Astra Medium in /root/boot_conversion_preparation for bounded read-only matching preparation.
 Director is /root, native task 01a07262-aeca-7341-ad10-2dba705ff988, local.
-Accepted source baseline remains W7 469a1416918592749d61dc34e3e079796f7b673c until replaced before delivery.
+Coordination baseline is e727c1af4b1d4dec9e7d354c9b1a349d4d869348.
+Accepted source baseline is W7 469a1416918592749d61dc34e3e079796f7b673c.
 Read both AGENTS.md files, parent docs/Worker-workflow.md, the sequential program, and combat-shared-terminal-wave-r1.md.
 Read the relevant accepted research-aide index entry; reuse unchanged required guides already read.
 
@@ -34,7 +34,7 @@ Prepare complete-owner implementation notes for the remaining eight members of t
 
 This assignment covers 4,580 bytes and includes the retained bridge.
 It must not redefine the original fifteen-member production wave or the bridge's existing family disposition.
-Once activated, this permits read-only preparation only; W8 remains the sole production wave.
+This permits read-only preparation only; W8 remains the sole production wave.
 Future source implementation requires the complete seven-member resolution wave and preceding seventeen-member action-mode prerequisite.
 
 Use build/combat-shared-input-alias-correction-r1/terminal-inputs-corrected.json.
@@ -56,10 +56,12 @@ Record actual literal table/data references and any guarded destinations using a
 Identify missing production prerequisites without designing or activating a partition, boundary change, or shared-tool remedy.
 Same-address aliases establish no new callee, runtime context, ownership, or semantic meaning.
 
-Reuse EBBC and the completed six-helper preparation only for directly shared interfaces and caller context.
+Reuse EBBC preparation only for directly shared interfaces and caller context.
 EBBC report at 9cbd996b05f8bdbc393dda0fbfb61151ac0c65c8 is docs/Plans/task-logs/combat-terminal-ebbc-preparation-r1.md.
 Report SHA256: C678D309B66EB84F8E1997BA4276FAF95CC3CF3C78DE4E607CB9EF0A7888D87F.
 Do not repeat EBBC reconstruction or silently strengthen its outstanding table and storage limits.
+Six other terminal helpers are being prepared independently by /root/sequential_scope.
+Do not read its mutable report as authority or duplicate its complete-owner analysis.
 Earlier resolution notes cite several of these helper interfaces; reauthenticate relevant contracts without repeating those callers' analyses.
 Do not expand this assignment to unassigned owners.
 
@@ -73,7 +75,7 @@ Must not invent storage, padding, missing initializers, source-policy exceptions
 Route demonstrated representation requirements separately under existing structural/tooling rules.
 
 Create and read back the complete fresh claim atomically before other writes.
-Record receiver /root/sequential_scope separately from Director/native identity, host, model, revision, launch, and baselines.
+Record receiver /root/boot_conversion_preparation separately from Director/native identity, host, model, revision, launch, and baselines.
 Own only the claim, docs/Plans/task-logs/combat-terminal-remaining-preparation-r1.md, and ignored build/combat-terminal-remaining-preparation-r1/.
 You are not alone; preserve W8 source/build work, held Resolver files, disjoint coordination, and frozen records.
 Must not edit source/configuration/shared tools or run compiler/build/diff/source-policy/verifier commands.
