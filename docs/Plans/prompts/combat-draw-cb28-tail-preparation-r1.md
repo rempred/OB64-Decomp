@@ -1,7 +1,7 @@
 ---
 task_id: combat-draw-cb28-tail-preparation
 revision: 1
-status: ready
+status: active
 role: worker
 review_level: Focused
 inventory_profile: NORMAL
