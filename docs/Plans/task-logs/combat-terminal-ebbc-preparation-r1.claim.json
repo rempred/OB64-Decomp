@@ -1,0 +1,16 @@
+{
+  "task_id": "combat-terminal-ebbc-preparation",
+  "assignment_revision": 1,
+  "launch_id": "COMBAT-TERMINAL-EBBC-PREPARATION-20260907-01",
+  "receiving_task_id": "/root/sequential_scope",
+  "director_task_id": "/root",
+  "director_native_task_id": "01a07262-aeca-7341-ad10-2dba705ff988",
+  "host_id": "local",
+  "model": "gpt-6-astra",
+  "reasoning": "medium",
+  "ready_commit": "1f25a7f3d9c7124564c3a57c70ae1244cf4eef61",
+  "activation_commit": "9f368071dca99396faf02a03365b891edee29f67",
+  "coordination_baseline": "6278e64d389bf0bf510111f26a747e1925a8a388",
+  "accepted_source_baseline": "469a1416918592749d61dc34e3e079796f7b673c",
+  "creation_time": "2026-09-07T14:37:31.5487909Z"
+}
