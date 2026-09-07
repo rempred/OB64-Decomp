@@ -31,6 +31,10 @@ Its twelve-byte initializer begins at ROM 0x00239F44 and crosses the proposed EF
 Its forty-byte dispatcher table begins at ROM 0x00239F50 inside the retained tail.
 Preserve those bytes, reads, and complete row coverage when reviewing the actual production partition.
 This preparation authorizes no structural change and does not add F580 source conversion to the seventeen-member wave.
+The later 232458 consumer also reads the adjacent forty-byte table at ROM 0x00239F78.
+Its preparation is frozen at 65c715d3593bb594cedcbcd1941a75f68782f471 in docs/Plans/task-logs/combat-resolution-remaining-preparation-r1.md.
+Report SHA256: E99F48DC21B003730F5F961B88C39FC9A60C6A64F2B6F5421152F2F14CE4F3DD.
+Carry this read into the separate table audit while preserving the original seventeen-member source wave.
 Use the committed A414 source's authenticated func_0020C014 call identity; do not invent an older unresolved alias. A D14C placement proxy is not exact C.
 Existing accepted prefix, repeated-section, alignment, retained-interior and provenance contracts must be distinguished from missing source or production evidence. Do not propose a tool change merely because a candidate differs.
 

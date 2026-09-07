@@ -50,6 +50,16 @@ Preserve both complete data rows and actual reads; the consumed footprint author
 The retained constant-branch call bytes remain part of the matching target, regardless of the recorded execution condition.
 This note establishes neither a source workaround nor matching, semantic, or structural acceptance.
 
+Reuse the remaining five complete-owner preparations at 65c715d3593bb594cedcbcd1941a75f68782f471.
+Report: docs/Plans/task-logs/combat-resolution-remaining-preparation-r1.md; SHA256 E99F48DC21B003730F5F961B88C39FC9A60C6A64F2B6F5421152F2F14CE4F3DD.
+Evidence: build/combat-resolution-remaining-preparation-r1/evidence.json; SHA256 09C9D1032E83150BC38BE126D1668C41FAEBC44353E22CAA72ACF97F576CF240.
+Preserve all five owners, the six complete 0x24-byte records, recursive retries, and coordinator calls across the seven-member wave.
+The 232458 dispatcher consumes forty bytes at ROM 0x00239F78, immediately after F580's table in row 4248.
+Bind actual preceding table ownership and complete row coverage; this footprint authorizes no new partition or overlap.
+The preparation's broad resumption sentence adds no requirement to prove recursion termination or free-record availability before ordinary matching.
+Keep those uncertainties as behavioral evidence limits and preserve original retries, side effects, and missing guards.
+Resolve storage bounds or actual aliasing only where proposed C declarations depend on them; do not invent capacities or guards.
+
 The package records existing saved placement through resource-loader-0022a280, separately from assembly decode-comment aids. It also records bounded absences of active C/linkage/group contracts and retained archive candidates. Use the accepted placement record, preserve uncertainty in literal references, and do not infer new runtime or structural claims from the package.
 
 This full wave is the explicit action-resolution prerequisite for the later shared terminal wave. Preserve its original seven-member boundary rather than treating a subset of shared consumers as wave completion.
