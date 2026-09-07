@@ -1,7 +1,7 @@
 ---
 task_id: combat-selector-observation-preparation
 revision: 1
-status: draft
+status: ready
 role: worker
 review_level: Material
 inventory_profile: NORMAL
@@ -12,14 +12,14 @@ workspace_claim: C:/Users/Joe/Projects/OgreBattlel64/OB64 Decomp/docs/Plans/task
 
 # Prepare a concrete selector-provenance observation
 
-Draft only. The Director must freeze the completed current-knowledge retrieval before activation.
-
 Read canonical and parent AGENTS.md, parent docs/Worker-workflow.md, and tools/total_resolver/AGENTS.md.
 Read the Total Resolver README, persistent-coverage decision, current implementation status, and applicable capture/module documentation.
 Use the eligible Astra Medium Combat researcher; this assignment requires interpretation and research reasoning.
 Director: /root, native task 01a07262-aeca-7341-ad10-2dba705ff988, local.
 Your completed r2 report is frozen at 1f68aa0 and remains under independent review.
-Completed current-knowledge retrieval subject: pending Director intake. This draft grants no execution authority.
+Completed current-knowledge retrieval is frozen at 6b89bf345d2399c98191573f3774c1d164f46601; the worker released all writes.
+Read docs/Plans/task-logs/combat-selector-runtime-retrieval-r1.md and its exact ignored build/combat-selector-runtime-retrieval-r1/ package.
+The retrieval.json SHA256 is 59C104ECCE02494E1F0F47DE15394269F688B361F9AC2705B5AFC41CA9408C13.
 
 Interpret the bounded current-knowledge result without converting absent records into a dead-code or non-execution claim.
 Determine the smallest practical next observation that can resolve func_00201778's consumer provenance.
