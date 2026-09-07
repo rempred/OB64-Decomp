@@ -1,0 +1,16 @@
+{
+  "task_id": "combat-resolution-f580-preparation",
+  "assignment_revision": 1,
+  "launch_id": "COMBAT-RESOLUTION-F580-PREPARATION-20260907-01",
+  "receiving_task_id": "/root/sequential_scope",
+  "director_task_id": "/root",
+  "director_native_task_id": "01a07262-aeca-7341-ad10-2dba705ff988",
+  "host_id": "local",
+  "model": "gpt-6-astra",
+  "reasoning": "medium",
+  "ready_commit": "caa154f815b5d006142587bb9d0d6e28d9d00ac8",
+  "activation_commit": "d37ff1046e0451b65fe45f685b092eceff1ee2a1",
+  "coordination_baseline": "287e0e02020e11547b3dcde0295be99637b04b39",
+  "accepted_source_baseline": "469a1416918592749d61dc34e3e079796f7b673c",
+  "creation_time": "2026-09-07T15:10:42.1998773Z"
+}
