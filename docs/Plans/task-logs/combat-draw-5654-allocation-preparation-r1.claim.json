@@ -1,0 +1,23 @@
+{
+  "task_id": "combat-draw-5654-allocation-preparation",
+  "revision": 1,
+  "launch_id": "COMBAT-DRAW-5654-ALLOCATION-PREPARATION-20260907-01",
+  "receiver": "/root/boot_conversion_preparation",
+  "director": "/root",
+  "director_native_task": "01a07262-aeca-7341-ad10-2dba705ff988",
+  "host": "local",
+  "model": "gpt-6-astra",
+  "reasoning": "medium",
+  "ready": "5f0ae5e6cf95ffeb541d642a867e62bc0d2065d9",
+  "activation": "8d5903eda64ae5194d03ffdaae11aa49448e33d7",
+  "coordination_baseline": "c80eaed3fa1ff5f2e95f77855fb760a49cbbb8da",
+  "source_baseline": "469a1416918592749d61dc34e3e079796f7b673c",
+  "owner_note_freeze": "db42f5b7ccc543d40fbce727a8cc06974a361c56",
+  "scope": "Frozen mutable-y and mutable-branch-y accumulated/right/row/y allocation and one bounded discriminator or limitation",
+  "writes": [
+    "docs/Plans/task-logs/combat-draw-5654-allocation-preparation-r1.claim.json",
+    "docs/Plans/task-logs/combat-draw-5654-allocation-preparation-r1.md",
+    "build/combat-draw-5654-allocation-preparation-r1/"
+  ],
+  "created_utc": "2026-09-07T12:56:10.9165956Z"
+}
