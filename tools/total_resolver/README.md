@@ -214,8 +214,7 @@ Each focused row starts with the `live-unreviewed` state.
 
 ### Combat preset
 
-The **Next focused capture preset** dropdown defaults to **Combat: selector investigation
-(60 seconds)**. Choosing a preset changes only the next **Start Selected Preset** action;
+The **Next focused capture preset** dropdown defaults to **Combat: selector investigation**. Choosing a preset changes only the next **Start Selected Preset** action;
 it does not change a running capture. **Start Coverage Only** retains ordinary coverage
 without focused watches. The effective profile and target definitions are saved in the
 session manifest, diagnostic log and query metadata. Existing cutscene captures and CLI
@@ -228,11 +227,12 @@ resolved from the selected knowledge rather than assumed by the recorder. The ta
 uses its full reviewed signature, all-invocation sampling, zero stack words and no
 pointer snapshots. No argument meaning is presumed.
 
-Combat automatically stops instrumentation after a 60-second observation budget from
-instrumentation readiness; normal manual stop remains available. Startup, bridge calls,
-shutdown and bounded draining can extend total wall time. Stopping never pauses gameplay.
-A miss is limited to this window and route. Queue capacity, loss checks, recorder-owned
-cleanup and deferred GUI ingestion use the normal capture contract.
+Combat capture has no duration limit and does not stop on a hit. Select **Stop Capture**
+when finished. Explicit shutdown or an existing terminal error can also end capture.
+Stopping removes only recorder-owned instrumentation and never pauses gameplay.
+Ordinary RPC and bounded cleanup/drain safety timeouts still apply; they are not capture
+duration limits. Queue capacity, loss checks and deferred GUI ingestion use the normal
+capture contract. A miss describes only the observed route and start-to-stop window.
 
 Generic instruction hits at reused overlay addresses are raw leads until connected to a
 signature-qualified invocation. An entry or RA alone does not prove caller or target

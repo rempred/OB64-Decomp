@@ -41,7 +41,7 @@ from .sessions import (
 
 CAPTURE_GUI_DEFAULT_PORT = 64656
 FOCUSED_PRESET_LABELS = {
-    "Combat: selector investigation (60 seconds)": COMBAT_SELECTOR_PROFILE_ID,
+    "Combat: selector investigation": COMBAT_SELECTOR_PROFILE_ID,
     "Cutscene Studio": CUTSCENE_STUDIO_PROFILE_ID,
 }
 
@@ -501,7 +501,7 @@ def launch_capture_gui(
     bind_profile_selector(preset_selector, preset_value, controller)
     ttk.Label(connection_frame, text=(
         "Presets add focused observations to normal coverage. Selection affects the next start only. "
-        "Combat stops after 60 seconds; a hit does not establish selector behavior or caller origin."
+        "Capture continues until Stop; a hit does not establish selector behavior or caller origin."
     ), wraplength=830).grid(row=3, column=0, columnspan=4, sticky="w", padx=6)
 
     button_frame = ttk.Frame(connection_frame)

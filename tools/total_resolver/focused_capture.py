@@ -117,7 +117,6 @@ class ResolvedFocusedProfile:
     description: str
     watches: tuple[ResolvedFocusedWatch, ...]
     instruction_context: bool = False
-    maximum_seconds: int | None = None
 
     def instruction_watches(self) -> tuple[Any, ...]:
         # Import lazily: recorder consumes resolved focused watch definitions.
@@ -157,9 +156,6 @@ class ResolvedFocusedProfile:
                 "Raw events at retained ranges require contemporaneous signature/invocation qualification; "
                 "an entry or RA alone does not prove caller or target origin"
             )
-        if self.maximum_seconds is not None:
-            result["maximumSeconds"] = self.maximum_seconds
-            result["capturePolicy"]["budget"] = "from instrumentation readiness; shutdown and drain may extend wall time"
         return result
 
 
@@ -344,5 +340,4 @@ def resolve_focused_profile(
         ),
         tuple(resolved),
         instruction_context=combat,
-        maximum_seconds=60 if combat else None,
     )

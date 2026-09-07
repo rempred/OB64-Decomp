@@ -15,7 +15,7 @@ from tools.total_resolver.capture_gui import (
 )
 from tools.total_resolver.recorder import Pj64CaptureRecorder, RecorderSettings
 from tools.total_resolver.capture_db import CaptureStore
-from tools.total_resolver.sessions import _run_capture_window, _metadata, SessionConnection
+from tools.total_resolver.sessions import _metadata, SessionConnection
 from tools.total_resolver.tests.test_focused_capture import TARGET_STARTS
 from tools.total_resolver.tests.test_recorder import FakeClient, FakeClock, make_rom, metadata
 
@@ -63,7 +63,8 @@ class CombatPresetTests(unittest.TestCase):
         self.assertEqual(cutscene.instruction_watches(),())
         self.assertNotIn('maximumSeconds',cutscene.to_dict())
         self.assertNotIn('instructionContextWatches',cutscene.to_dict())
-        self.assertEqual(combat.to_dict()['maximumSeconds'],60)
+        self.assertNotIn('maximumSeconds',combat.to_dict())
+        self.assertNotIn('budget',combat.to_dict()['capturePolicy'])
         self.assertIn('before the jr-ra delay slot',combat.to_dict()['capturePolicy']['returnPhase'])
 
     def test_identity_and_placement_rejections(self):
@@ -115,18 +116,28 @@ class CombatPresetTests(unittest.TestCase):
         recorder.stop_instrumentation()
         self.assertEqual([c.args[0] for c in client.remove_watch.call_args_list],[2,1])
 
-    def test_budget_stops_without_runtime_control_and_cutscene_stays_unbounded(self):
-        profile=resolve_focused_profile(self.db,COMBAT_SELECTOR_PROFILE_ID)
-        recorder=Mock()
-        def run(**kw):
-            self.assertFalse(kw['should_stop']())
-            self.assertTrue(kw['should_stop']())
-        recorder.run.side_effect=run
-        with patch('tools.total_resolver.sessions.time.monotonic',side_effect=[100,159,160]):
-            _run_capture_window(recorder,profile)
-        recorder=Mock()
-        _run_capture_window(recorder,resolve_focused_profile(self.db,CUTSCENE_STUDIO_PROFILE_ID))
-        recorder.run.assert_called_once_with()
+    def test_combat_continues_past_old_budget_until_manual_stop(self):
+        profile = resolve_focused_profile(self.db, COMBAT_SELECTOR_PROFILE_ID)
+        identity = make_rom(self.root / 'runtime.z64')
+        client = FakeClient(self.root / 'runtime.z64')
+        store = CaptureStore.create(self.root / 'manual/capture.sqlite', metadata(identity))
+        self.addCleanup(store.close_connection)
+        clock = FakeClock()
+        recorder = Pj64CaptureRecorder(client, store, RecorderSettings(
+            identity['normalizedSha256'], focused_watches=profile.watches,
+            watches=profile.instruction_watches(),
+        ), clock=clock)
+        # Each poll represents activity and advances beyond the removed 60-second cap.
+        def poll():
+            clock.now_ns += 100 * 1_000_000_000
+            if recorder.poll_once.call_count == 4:
+                store.request_stop()
+            return SimpleNamespace(remaining=0, stored_events=1)
+        recorder.poll_once = Mock(side_effect=poll)
+        self.assertEqual(recorder.run(), 4)
+        self.assertGreater(clock.now_ns, 400 * 1_000_000_000)
+        self.assertTrue(store.stop_requested())
+        self.assertEqual(client.commands, [])
 
     def test_metadata_preserves_effective_preset_and_instruction_context(self):
         profile=resolve_focused_profile(self.db,COMBAT_SELECTOR_PROFILE_ID)

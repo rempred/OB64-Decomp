@@ -428,15 +428,6 @@ def list_open_sessions(root: Path) -> list[SessionLocation]:
     return result
 
 
-def _run_capture_window(recorder: Pj64CaptureRecorder, profile: ResolvedFocusedProfile | None) -> None:
-    """Keep optional preset duration independent of ordinary user stop requests."""
-    if profile is not None and profile.maximum_seconds is not None:
-        deadline = time.monotonic() + profile.maximum_seconds
-        recorder.run(should_stop=lambda: time.monotonic() >= deadline)
-    else:
-        recorder.run()
-
-
 def _metadata(
     preflight: Any,
     connection: SessionConnection,
@@ -851,7 +842,7 @@ def run_session_worker(
             bridgeEpoch=recorder.preflight.bridge_epoch if recorder.preflight else None,
         )
         _write_active(location, state)
-        _run_capture_window(recorder, focused_profile)
+        recorder.run()
         recorder.stop_instrumentation()
         recorder.drain_to_empty()
         terminal = recorder.append_terminal_event("closed")
