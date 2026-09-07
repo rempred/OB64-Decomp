@@ -22,6 +22,7 @@ Convert func_002158E4, func_002159D0, func_00215CF0 and func_00217BA8 to PURE_C.
 Preserve accepted shared bridge func_0021C3B0 and include it in the same final wave gate.
 The existing hybrid owners use zero-byte assembler constraints; exact hybrid bytes do not complete the pure-C assignment.
 Reuse prior failure evidence and independently derive source from retail and accepted project evidence.
+Read docs/Plans/task-logs/combat-actor-retry-preparation-r1.md (SHA256 39D46ADD050168C55072925DAF03E4384FFC725A2975106F7BCF8A43137EA7B7). It reconciles retained controls and proposes an untested source-lifetime experiment; it supplies no new matching, semantic or structural acceptance. Independently test its applicability and avoid repeating already falsified forms.
 Accepted boot lifetime/coalescing evidence and completed context retry may supply concrete new hypotheses; test their applicability independently.
 Preserve retail ordering around candidate selection, marker/state writes and stream advancement.
 Keep uncertain record meanings explicit; prefer supported types and structured control flow.

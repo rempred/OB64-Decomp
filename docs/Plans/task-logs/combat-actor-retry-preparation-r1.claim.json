@@ -1,0 +1,10 @@
+{
+  "assignment_revision": 1,
+  "director_task_id": "/root",
+  "task_id": "combat-actor-retry-preparation",
+  "director_native_task_id": "01a07262-aeca-7341-ad10-2dba705ff988",
+  "receiving_task_id": "/root/boot_conversion_preparation",
+  "launch_id": "COMBAT-ACTOR-RETRY-PREPARATION-20260907-01",
+  "creation_time": "2026-09-07T04:43:35.6499312Z",
+  "host_id": "local"
+}
