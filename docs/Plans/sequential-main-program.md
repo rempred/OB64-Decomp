@@ -47,7 +47,7 @@ Unresolved research gates must be addressed before family completion, without si
 ## Execution order and current state
 
 1. Process and full-scope reconciliation: accepted by independent prerequisite review. Current routing and worker-model corrections are recorded at canonical `72382f5` / `d1862bd` and parent `22c652e` / `1c3be25` under Joe's newer directions.
-2. Compilation-group design: original `5dad709` plus correction `b87e908`, accepted review `0840b42`. Implementation `45904b5` passed its changed-input structural audit, CURRENT verification, and fresh compilation. Fresh independent Sol Max review is active in `/root/compilation_groups_implementation_review`; source activation remains pending that verdict.
+2. Compilation-group support: implementation `45904b5` passed its changed-input structural audit, CURRENT verification, fresh compilation, and independent implementation review. The verdict is Accepted with no material findings. The registry remains empty until a completed source wave activates its accepted group contract.
 3. Bounded readability source experiment: pending prerequisite acceptance. Read-only preparation of the three boot hybrid conversions is complete and in Director intake; source execution remains pending.
 4. Combat remaining source waves: pending. Accepted discovery at parent `e445991` adds seven inclusions and five shared integrations. Parent `f940a28` propagates accepted r2 and closes the fixed-image gate at static scope. Selector consumer provenance remains unresolved; Astra is preparing a bounded observer adapter without runtime use.
 5. Squad remaining waves and research/structural gates: pending Combat closure.
@@ -110,3 +110,4 @@ Use the current session's permissions for repository and build operations; never
 - The ignored selector observer adapter completed with fourteen offline/synthetic tests. Its report and package await joint fresh Critical review with the preparation claims. Runtime inputs, ownership, availability, and per-run user approval remain unset; no observation is accepted.
 - Adapter `8949896` and preparation `8f58be1` are under fresh joint Critical review in `/root/combat_selector_observer_review`. The review is offline and cannot authorize a capture by itself.
 - Sol High is retrieving bounded existing vanilla-state metadata to make later input selection concrete. File labels do not establish ROM provenance or a selector trigger.
+- Compilation-group implementation review returned Accepted with no material findings after frozen-input reconciliation, independent focused tests, and legacy regression checks. Ordinary source waves may now use the accepted tooling without an added source-review gate.

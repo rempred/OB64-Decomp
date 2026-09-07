@@ -1,7 +1,7 @@
 ---
 task_id: compilation-groups-implementation-review
 revision: 1
-status: active
+status: completed
 role: reviewer
 review_level: Critical
 inventory_profile: NORMAL
