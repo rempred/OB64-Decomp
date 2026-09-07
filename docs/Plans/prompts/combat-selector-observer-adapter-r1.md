@@ -1,7 +1,7 @@
 ---
 task_id: combat-selector-observer-adapter
 revision: 1
-status: ready
+status: active
 role: worker
 review_level: Critical
 inventory_profile: NORMAL
