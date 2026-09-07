@@ -1,7 +1,7 @@
 ---
 task_id: workflow-current-version-correction
 revision: 1
-status: active
+status: completed
 role: correction-worker
 review_level: Focused
 inventory_profile: NORMAL

@@ -461,7 +461,7 @@ does not prove modified behavior.
 
 ## Text representation evidence
 
-Strict outputs use linkage schema 4, source-object proof 4, layout 2, and build/verification/manifest 5. Each target carries independently derived textContract, objectEvidence, and linkEvidence. Stale outputs must be rebuilt. CURRENT fingerprints use version 6; verified state and fresh compilation use version 5.
+Strict outputs use linkage schema 4, source-object proof 4, layout 2, and build/verification/manifest 5. Each target carries independently derived textContract, objectEvidence, and linkEvidence. Stale outputs must be rebuilt. CURRENT fingerprints use version 7; verified state and fresh compilation use version 5.
 
 Ordinary section assignment and existing auxiliary contracts retain their behavior. The bounded nativeTextTail descriptor permits untouched compiler assembly with a 1132-byte function inside its 1136-byte, 16-aligned native text owner. The four zero bytes must come from assembler alignment. Full-owner bytes, sole ownership, relocations, and the entire ROM must still match. The art routine `func_00204A70` is active in the canonical target registry.
 

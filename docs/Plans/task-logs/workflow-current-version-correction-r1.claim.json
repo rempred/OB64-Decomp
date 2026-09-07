@@ -1,0 +1,14 @@
+{
+  "assignment": "workflow-current-version-correction",
+  "assignmentRevision": 1,
+  "launchId": "WORKFLOW-CURRENT-VERSION-CORRECTION-20260907-01",
+  "receivingTaskIdentity": "/root/sequential_process",
+  "receivingTaskId": "01a07262-aeca-7341-ad10-2dba705ff988",
+  "directorIdentity": "/root",
+  "directorNativeTaskId": "01a07262-aeca-7341-ad10-2dba705ff988",
+  "hostId": "local",
+  "sourceBaseline": "469a1416918592749d61dc34e3e079796f7b673c",
+  "readyCommit": "ce7a10d84f5486ded7c7dc3e1de2a706eef2fb8d",
+  "activationCommit": "266a529afa5e46f483a5c45d74a61da5d30cf8ec",
+  "createdAt": "2026-09-07T07:07:46.8743475-04:00"
+}
