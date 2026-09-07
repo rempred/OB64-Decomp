@@ -15,6 +15,8 @@ workspace_claim: C:/Users/Joe/Projects/OgreBattlel64/OB64 Decomp/docs/Plans/task
 Draft only; no execution authority. The Director must bind accepted prerequisite waves, current exact source baseline and sole production ownership before activation.
 Use Astra Medium. Director /root, native task 01a07262-aeca-7341-ad10-2dba705ff988, local.
 Read canonical and parent AGENTS.md, parent docs/Worker-workflow.md, canonical docs/WORKFLOW.md, docs/SOURCE_POLICY.md, docs/Plans/sequential-main-program.md, and the parent Combat plan and inventory.
+Reuse docs/Plans/task-logs/combat-draw-inputs-r1.md with its combat-draw-inputs-r2.md citation correction and unchanged hashed literal package.
+Authenticate relevant current inputs before implementation; the package's accepted extraction baseline is d70fd853fdffacf71290b24763e010a549276a55.
 
 Complete all fourteen original draw/body integration members as PURE_C:
 func_001F3C00, func_001F5654, func_001F6098, func_001F7ADC, func_001F89B4,
@@ -36,3 +38,4 @@ Preserve meaningful failed attempts and concrete blockers; do not silently skip 
 Own the fresh claim, docs/Plans/task-logs/combat-draw-wave8-r1.md and ignored build/combat-draw-wave8-r1/.
 Create the complete claim atomically before writes. Record the exact baseline and full assigned scope. You are not alone; preserve others' disjoint work.
 No agents, runtime control, staging, commits, push, branches or worktrees. Return complete-wave proof and any blocker to /root, then release writes.
+Report directly through collaboration.send_message to /root; never native app sends or readbacks.

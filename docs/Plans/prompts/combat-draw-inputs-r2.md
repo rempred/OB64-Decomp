@@ -1,7 +1,7 @@
 ---
 task_id: combat-draw-inputs
 revision: 2
-status: active
+status: completed
 role: correction-worker
 review_level: Focused
 inventory_profile: NORMAL
