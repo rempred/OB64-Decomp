@@ -3163,8 +3163,6 @@
     { "symbol": "func_00145DC8", "expectedRelocations": [] },
     { "symbol": "func_00145DD0", "expectedRelocations": [] },
     { "symbol": "func_001497D0", "expectedRelocations": [] },
-    { "symbol": "func_00204F24", "expectedRelocations": [] },
-    { "symbol": "func_00204F2C", "expectedRelocations": [] },
     { "symbol": "func_00205220", "expectedRelocations": [] },
     { "symbol": "func_00205228", "expectedRelocations": [] },
     { "symbol": "func_0023B234", "expectedRelocations": [] },
@@ -8032,6 +8030,29 @@
           "origin": "native-assembler-section-alignment"
         }
       }
+    },
+    {
+      "symbol": "func_00205608",
+      "expectedRelocations": [
+        {
+          "offset": "0x0000001C",
+          "type": "R_MIPS_26",
+          "symbol": "func_002060EC",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000038",
+          "type": "R_MIPS_26",
+          "symbol": ".text",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000054",
+          "type": "R_MIPS_26",
+          "symbol": ".text",
+          "section": ".rel.text"
+        }
+      ]
     }
   ]
 }
