@@ -17,6 +17,10 @@ Use Astra Medium. Director /root, native task 01a07262-aeca-7341-ad10-2dba705ff9
 Read canonical and parent AGENTS.md, parent docs/Worker-workflow.md, canonical docs/WORKFLOW.md, docs/SOURCE_POLICY.md, docs/Plans/sequential-main-program.md, and the parent Combat plan and inventory.
 Reuse docs/Plans/task-logs/combat-draw-inputs-r1.md with its combat-draw-inputs-r2.md citation correction and unchanged hashed literal package.
 Authenticate relevant current inputs before implementation; the package's accepted extraction baseline is d70fd853fdffacf71290b24763e010a549276a55.
+For func_001F7ADC, reuse the bounded reconstruction note at 4c2040179f6107da52bffa5f26a66a82ef9b5bc2.
+Report: docs/Plans/task-logs/combat-draw-owner-preparation-r1.md; SHA256 7B620349FD35C2F93C83FEB786D50D06688468837043C492FF9661F41FDB75F7.
+Evidence: build/combat-draw-owner-preparation-r1/evidence.json; SHA256 D307D4C2EF8785AE6827D29AF14E4917AEF2B4A0E8AC278A505069605F56C677.
+The note supplies uncompiled guidance from the complete accepted owner, not a candidate or new semantic/structural acceptance.
 
 Complete all fourteen original draw/body integration members as PURE_C:
 func_001F3C00, func_001F5654, func_001F6098, func_001F7ADC, func_001F89B4,
