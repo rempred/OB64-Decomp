@@ -426,14 +426,22 @@ Native diagnostic links require exactly the intended text load, with no extra lo
 
 Native scratch reports retain compiler-assembly, assembler-input, and raw-object identities. Cached native diagnostics recheck those identities, untouched input, section shape, complete function census, and relocations.
 
+Compilation groups use a separate accepted producer contract; they do not extend the art function's standalone native descriptor.
+The optional standalone workbench rejects grouped members until it supports complete group candidates.
+For an assigned group source wave, edit its one authored translation unit and use `node tools/diff.js <member>`.
+The canonical diff compiles that complete group once, freshly links all active members, and compares the selected complete owner.
+Use [the group workflow](WORKFLOW.md#compilation-group-workflow) for admission and complete-wave verification; scratch results do not bypass producer checks.
+
 ## Accepted representation capabilities
 
-These capabilities are available together in canonical `497181d`. A capability does not activate another target or accept an incomplete wave.
+The earlier capabilities were consolidated at canonical `497181d`; compilation groups were added at `45904b5` and accepted by review `31dc838`.
+A capability does not activate another target or accept an incomplete wave.
 The [frozen-family restart index](RESUMING_FROZEN_FAMILIES.md) identifies retained candidates and their remaining blockers.
 
 | Observed shape or failure | Accepted mechanism | Implementation / correction | Focused reference |
 |---|---|---|---|
 | Art function plus four native text bytes | Target-specific `nativeTextTail`; untouched compiler assembly, complete owner and allocation proof | `3abe047` + `6b83756` | `tools/lib/text_contract.js`, `tests/native_text_tail.js`; only `func_00204A70` |
+| Contiguous single-function owners requiring shared native section context | One authenticated compilation-group producer, existing public entries/owners, optional terminal padding only in the final owner | `45904b5`; Accepted review `31dc838` | [Group contract](SOURCE_POLICY.md#compilation-groups), [implementation review](Plans/task-logs/compilation-groups-implementation-review-r1.md), `tests/compilation_groups.js` |
 | Original data before/after compiler tables | `preservedPrefix` / `preservedTail` | `8fb0097` | `tests/func_0021B438_0021B894_switch_tables.js` |
 | Repeated compiler table sections | Ordered `compilerOccurrences` with grammar and real relocations | `8fb0097` | Same switch-table suite |
 | Table prefix of an aligned source section | `sourceObjectPrefix`, with authenticated producer grammar | `a4c46b6` + `4b017ff` | Same switch-table suite; explicit extra words are not padding |
@@ -445,4 +453,10 @@ The [frozen-family restart index](RESUMING_FROZEN_FAMILIES.md) identifies retain
 
 Compiler alignment bytes, original retained bytes, function text, and relocated table entries are distinct evidence classes.
 Use the accepted contract that fits the actual producer. Missing fields or a different target-specific shape require diagnosis, not analogy-based widening.
-The pose parser's eight-byte tail remains unsupported by the current native mechanism. Scratch exactness never replaces the canonical wave verifier.
+The first group mode admits contiguous single-function owners in one placement context; art-native, continuation/multi-owner, local-function, auxiliary, and mixed-slice combinations reject.
+Classification covers the complete authenticated translation unit; all members inherit its class and retain separate acceptance results.
+The accepted producer preserves native bytes, public entries, relocation semantics, and sole object ownership without inventing retail compilation-unit boundaries.
+The reviewed production group registry is empty. Activate all members only through a separately assigned complete source wave.
+The mixed pose fixture proves the bounded group mechanism, not production activation or completed Combat W5 acceptance.
+The pose tail is not an extension of standalone art-native support. Scratch exactness never replaces the canonical complete-wave verifier.
+Ordinary matching needs no independent source review; structural/tooling changes retain their applicable audit and review requirements.

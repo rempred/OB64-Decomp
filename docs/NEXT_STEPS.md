@@ -9,8 +9,10 @@ Complete Combat, then Squad, then High Attack on `main`, using internal agents.
 Matching implementation and research requiring reasoning use Astra Medium; retrieval/data-seeking or parsing-only work uses Sol High.
 Mixed assignments containing implementation or substantive research reasoning use Astra Medium.
 Keep one active matching family and one production source/build writer. Do not use concurrent development worktrees.
-Process correction, scope reconciliation, and compilation-group design precede the queued source work.
-Grouped pose feasibility remains research pending structural/tooling acceptance; it does not activate a source or complete Combat W5.
+Compilation-group implementation `45904b5` is accepted by [independent review](Plans/task-logs/compilation-groups-implementation-review-r1.md) at `31dc838`.
+Use the [accepted group workflow](WORKFLOW.md#compilation-group-workflow) for separately assigned source waves within its first-mode limits.
+The reviewed production group registry is empty. Tooling acceptance and the isolated pose fixture do not activate sources or complete Combat W5.
+Activate all group members together in the assigned complete wave, with one final verifier and no additional ordinary source-review gate.
 Preserved donor histories remain frozen. [The restart index](RESUMING_FROZEN_FAMILIES.md) supplies retained inputs and unfinished gates.
 
 ## Matching methods follow-up

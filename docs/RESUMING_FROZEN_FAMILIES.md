@@ -34,15 +34,22 @@ The four existing return stubs `func_00204F24`, `func_00204F2C`, `func_00205220`
 They are not new work in this archive.
 
 [The pose-parser source](archive/matching-c-candidates/resumption-20260906/sources/func_002050AC-bd72a064f2bf.c) is the frozen authored candidate `D27193C8…`, SHA-256 `BD72A064F2BF152F654FEEC95F83F87D24995B7531E35F390A432A743A0D2971`.
-Its exact 364-byte body does not cover the accepted 372-byte owner. Ordinary section assignment omits eight bytes.
-Native assembly emits only four trailing bytes and shifts the entry by four bytes. Extending the art routine's native descriptor is not justified.
+In the frozen standalone experiment, its exact 364-byte body did not cover the accepted 372-byte owner. Ordinary section assignment omitted eight bytes.
+Standalone native assembly emitted only four trailing bytes and shifted the entry by four bytes. Extending the art routine's native descriptor is not justified.
 The accepted diagnosis is a bounded negative, not matching acceptance or a mixed-ownership design.
 Later [five-function grouping research](../../docs/reviews/combat-pose-split-padding-research-r1/research-report.md)
 reproduced the complete group in an isolated native link, including the pose tail without moving entries.
-This is research with review pending, not accepted production representation or completed-wave proof.
-Grouped feasibility requires separate structural/tooling acceptance before production activation.
+That isolated research remains distinct from production source acceptance.
+Compilation-group implementation `45904b5` now has [Accepted independent review](Plans/task-logs/compilation-groups-implementation-review-r1.md) at `31dc838`.
+Its accepted first mode supplies one native compiler producer for contiguous single-function owners in one placement context.
+It preserves every existing owner and public entry, with optional native terminal padding only in the final owner.
+It cannot combine art-native, continuation/multi-owner, local-function, auxiliary, or mixed-slice contracts.
+The reviewed production registry is empty; neither tooling acceptance nor the mixed pose fixture activates these archived sources.
 
-The sequential program routes complete owner representation first, preserving entries, boundaries, source class, and sole ownership.
+The sequential program must assign complete-group source activation separately under [the group workflow](WORKFLOW.md#compilation-group-workflow).
+Edit the group's one translation unit and run `node tools/diff.js <member>`; the canonical diff compiles its whole group once.
+The standalone workbench rejects grouped members until it supports complete group candidates.
+Preserve entries, boundaries, source class, relocation contracts, sole ownership, and complete owner bytes.
 Keep all eight W5 targets within the final completion gate; seven focused exact results do not complete the wave.
 The [retained Combat family plan](archive/matching-c-candidates/resumption-20260906/notes/combat-family-plan-f5a2d89a55.txt) supplies the wider inventory as a historical planning record.
 
@@ -87,8 +94,9 @@ The newer source calls `func_0020C014(arg0)`. Preserve prototype uncertainty rat
 ## Available capabilities and remaining proposals
 
 Use [the capability map](MATCHING_WORKBENCH.md#accepted-representation-capabilities) before routing a structural/tooling blocker.
-Updating to main propagates accepted native text, COMMON rejection, auxiliary prefix/occurrence/padding/interior support, and the 83-row resource-load placement.
-It does not resolve the pose tail, finish nonexact sources, or implement pending diagnostic improvements.
+Main includes accepted native text, COMMON rejection, auxiliary prefix/occurrence/padding/interior support, the 83-row resource-load placement, and first-mode compilation groups.
+The accepted group producer addresses the demonstrated grouped pose representation; standalone art-native widening remains unsupported.
+This does not activate inactive sources, finish nonexact candidates, complete a matching wave, or implement pending diagnostic improvements.
 
 The process study proposes reliable per-attempt diff results, clearer context/relocation uncertainty, portable fixtures, and phase timing.
 These remain proposals, not implementation assignments or new acceptance gates.
