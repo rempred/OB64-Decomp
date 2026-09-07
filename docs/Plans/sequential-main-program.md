@@ -13,6 +13,7 @@ Keep one active matching family and one production source/build writer at a time
 Preserve old worktrees, archives, accepted history, and the exact Rev 0 baseline.
 Do not create or use concurrent development branches/worktrees.
 Independent read-only research/review and explicitly disjoint documentation work may run alongside the current family.
+Internal workers and reviewers report directly to `/root` through the collaboration tools. Do not send duplicate Codex-app messages or perform native callback readbacks; the parent top-level transport procedure does not apply to this program.
 The Director assigns work, checks scope and lifecycle, commits coherent results, and routes required review.
 Workers own technical execution; independent reviewers judge structural/tooling and applicable research changes.
 
@@ -124,3 +125,4 @@ Use the current session's permissions for repository and build operations; never
 - Release `070bc6d` activates fresh Astra Medium `/root/boot_materializer_reasoning` as sole production source/build writer for boot wave R2. It must solve the remaining materializer source mismatch and retain all three targets in one final acceptance gate. R1 is superseded; its terminal evidence remains unchanged.
 - Shared-dispatch research completed and released writes. It recovers the existing W6 r3 four-route map and qualifies it against bounded original owners, without changing membership or source acceptance. The completed report awaits applicable independent review before its new qualifications become accepted dependencies.
 - Shared-dispatch research is frozen at `b062808`; release `c36ab00` activates its fresh Focused independent review. Review concerns static research claims, with no production build or ordinary matching review required.
+- Joe identified a prolonged worker wait. The data worker confirmed a redundant Codex-app terminal send/read had stalled; the Director cancelled it and resumed the already authorized copy. Prior parsing was already frozen at `9323e90`. Active agents were reminded to report through direct collaboration, with no duplicate native status-message approval or readback.
