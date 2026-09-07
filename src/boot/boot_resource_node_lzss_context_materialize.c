@@ -26,52 +26,40 @@ extern void *g_resource_context_output;
 
 void func_00009EFC(ResourceNode *node)
 {
-    register u32 zero asm("$0");
-    register u32 first_result asm("$2");
-
-    node = (ResourceNode *)((u32)node + zero);
-    asm volatile (
-        ".set noreorder\n"
-        "lw $4,12($16)\n"
-        "jal func_00009CB4\n"
-        "addu $5,$0,$0\n"
-        ".set reorder\n"
-        : "=r"(first_result)
-        :
-        : "memory");
-    node->field_0C = (void *)first_result;
+    node->field_0C = func_00009CB4(node->field_0C, 0);
     if (g_boot_resource_context->field_04 == 0) {
         if (node->field_04 == 0) {
             node->field_08 = func_0002DEF4(node->field_00);
             if (node->field_08 != 0) {
                 func_0002DFB8(
-                    (node->field_04 = (void *)((u32)func_00001330(node->field_08 + zero) + zero)),
+                    (node->field_04 = func_00001330(node->field_08)),
                     node->field_00);
             }
         }
         if (node->field_04 != 0) {
-            register u32 size asm("$2");
-            register u32 arg asm("$4");
+            u32 size;
 
-            asm volatile (
-                ".set noreorder\n"
-                "jal func_0000ABE0\n"
-                "lw $4,4($16)\n"
-                ".set reorder\n"
-                : "=r"(size)
-                :
-                : "memory");
-            arg = size + zero;
-            g_boot_resource_context->field_08 = arg;
-            g_boot_resource_context->field_04 = func_00001330(arg);
-            func_0000A510((void *)((u32)g_boot_resource_context->field_04 + zero), node->field_04);
+            size = func_0000ABE0(node->field_04);
+            g_boot_resource_context->field_08 = size;
+            g_boot_resource_context->field_04 = func_00001330(size);
+            func_0000A510(g_boot_resource_context->field_04, node->field_04);
             g_boot_resource_context->field_0C = 2;
         }
     }
     {
-        register u32 output asm("$3");
+        ResourceContext *context = g_boot_resource_context;
+        u32 output = context->field_08;
 
-        output = g_boot_resource_context->field_08;
-        g_resource_context_output = (void *)output;
+        /* KMC 2.7.2: keep context live through output's register allocation.
+         * The late jump pass merges these identical stores and removes the
+         * condition, leaving one unconditional load/store with output in v1.
+         * A direct assignment reuses v0 for output. This is no null guard:
+         * the field read above still requires a valid context.
+         */
+        if (context) {
+            g_resource_context_output = (void *)output;
+        } else {
+            g_resource_context_output = (void *)output;
+        }
     }
 }
