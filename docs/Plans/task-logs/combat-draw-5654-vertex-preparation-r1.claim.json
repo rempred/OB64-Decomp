@@ -1,0 +1,23 @@
+{
+  "task_id": "combat-draw-5654-vertex-preparation",
+  "revision": 1,
+  "launch_id": "COMBAT-DRAW-5654-VERTEX-PREPARATION-20260907-01",
+  "receiver": "/root/boot_conversion_preparation",
+  "director": "/root",
+  "director_native_task": "01a07262-aeca-7341-ad10-2dba705ff988",
+  "host": "local",
+  "model": "gpt-6-astra",
+  "reasoning": "medium",
+  "ready": "4f7f0bd06f5be0134bd71e2b91a0da7aec9e2c55",
+  "activation": "2d0ad363827b4cb6fa4b0399966c54cb0ceabfb5",
+  "coordination_baseline": "7d18cf4054aac1d34c36340288ec7675dc8b7d19",
+  "source_baseline": "469a1416918592749d61dc34e3e079796f7b673c",
+  "owner_note_freeze": "db42f5b7ccc543d40fbce727a8cc06974a361c56",
+  "scope": "Frozen branch-mutate-narrow and branch-complete-vertices bottom-y arithmetic, full/narrowed y allocation, third-call suffix sharing only",
+  "writes": [
+    "docs/Plans/task-logs/combat-draw-5654-vertex-preparation-r1.claim.json",
+    "docs/Plans/task-logs/combat-draw-5654-vertex-preparation-r1.md",
+    "build/combat-draw-5654-vertex-preparation-r1/"
+  ],
+  "created_utc": "2026-09-07T13:11:11.0225228Z"
+}
