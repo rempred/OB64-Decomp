@@ -1,0 +1,14 @@
+{
+  "task_id": "combat-draw-cb28-tail-preparation",
+  "assignment_revision": 1,
+  "launch_id": "COMBAT-DRAW-CB28-TAIL-PREPARATION-20260907-01",
+  "receiving_task_id": "/root/boot_conversion_preparation",
+  "director_task_id": "/root",
+  "director_native_task_id": "01a07262-aeca-7341-ad10-2dba705ff988",
+  "host_id": "local",
+  "creation_time": "2026-09-07T11:31:45.9387735Z",
+  "starting_head": "8b0b5e37556a2b1915dcd71fd5ca45b58f281d3c",
+  "coordination_baseline": "f8f89c852142e2007b57ddd918deb8541ed5c631",
+  "accepted_source_baseline": "469a1416918592749d61dc34e3e079796f7b673c",
+  "frozen_preparation": "ebe0e85b5295fc6ca76d5850a3fef209a4b224f5"
+}
