@@ -1,7 +1,7 @@
 ---
 task_id: combat-selector-indirect-jr-review
 revision: 1
-status: ready
+status: active
 role: reviewer
 review_level: Material
 inventory_profile: NORMAL
