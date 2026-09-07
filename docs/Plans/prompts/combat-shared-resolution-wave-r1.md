@@ -28,6 +28,17 @@ Same-address aliases establish no new callee, execution, or ownership claim.
 Reauthenticate these inputs against the preceding accepted action-mode baseline before implementation.
 This preparation supports separately assigned read-only work; it does not activate the wave or establish matching acceptance.
 
+Reuse complete F580 preparation at 87a8e9ebb3bc3932cb7dff0a8e85e4a40ef0fd1c.
+Report: docs/Plans/task-logs/combat-resolution-f580-preparation-r1.md; SHA256 8BF67422AE0FFD1DA0A02F2EFE6B8EB6C9811D6ABE9BF35C2B994A4B7E806EB7.
+Evidence: build/combat-resolution-f580-preparation-r1/evidence.json; SHA256 26950953679541DE11BFAA132315CDC5804B44FAA9E3AFAF661FFE8655F2CE25.
+Its complete 5,404-byte owner, escaped-storage obligations, helper contracts, and guarded dispatcher support reconstruction under the preceding accepted baseline.
+Establish descriptor and output count bounds before choosing concrete local declarations; frame spacing does not establish capacity.
+Bind actual preceding action-mode table ownership before assigning F580 auxiliary data.
+Its twelve-byte initializer at ROM 0x00239F44 crosses the proposed EF50 padding/tail boundary.
+Its forty-byte dispatcher table at ROM 0x00239F50 lies within the retained table_00239ec0 tail.
+Preserve these actual reads and complete row coverage; this preparation authorizes no partition or overlap.
+Route any demonstrated structural or representation change through its separate audit and review.
+
 Preserve func_00230A9C as the complete declared 3,372-byte logical owner at ROM 0x00230A9C..0x002317C8: its 1,380-byte chunk-34 head and 1,992-byte chunk-35 continuation remain one assigned function. The original High Attack table's 1,380-byte entry describes the head. A head-only result does not complete this target. Keep both original assembly parts available until canonical replacement handling is proven under the accepted contracts.
 
 The package records existing saved placement through resource-loader-0022a280, separately from assembly decode-comment aids. It also records bounded absences of active C/linkage/group contracts and retained archive candidates. Use the accepted placement record, preserve uncertainty in literal references, and do not infer new runtime or structural claims from the package.
