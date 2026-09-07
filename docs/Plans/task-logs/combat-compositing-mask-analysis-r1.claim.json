@@ -1,0 +1,12 @@
+{
+  "assignment": "combat-compositing-mask-analysis",
+  "assignmentRevision": 1,
+  "launchId": "COMBAT-COMPOSITING-MASK-ANALYSIS-20260907-01",
+  "receivingTaskId": "/root/compilation_groups_design",
+  "directorAgent": "/root",
+  "directorTaskId": "01a07262-aeca-7341-ad10-2dba705ff988",
+  "hostId": "local",
+  "createdAt": "2026-09-07T03:20:55.6969795-04:00",
+  "sourceSha256": "062762E67A14B2DF5367EFF67C53F00A678192AAC093297F92DC3D9B8BCFD5FE",
+  "assemblySha256": "483A1C7B635BBBA12F8812159746E374F77870CB857F7E27F2FC623DC9293BA9"
+}
