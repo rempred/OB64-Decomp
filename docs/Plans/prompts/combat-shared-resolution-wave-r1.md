@@ -20,6 +20,12 @@ This is a sequential Combat shared prerequisite. It creates no concurrent High A
 Complete all seven original High Attack W7 members as PURE_C:
 func_0022F580, func_00230A9C, func_002317C8, func_00231CC0, func_00232280, func_00232458, func_00232D7C.
 
+Use the literal input package frozen at 6cdf6afed32b3362fdda98d8eb4cfe831b690786: docs/Plans/task-logs/combat-shared-resolution-inputs-r1.md, SHA256 004C80ECB0D91243525F7C5C52C1D11A76A6411926CF0190126D91DA7686446D; build/combat-shared-resolution-inputs-r1/resolution-inputs.json, SHA256 97EBF95C1AB96ADB26FD684AF78384F34068C55537A45C1198763C2D864EC12C. Extraction used accepted W7 source 469a1416918592749d61dc34e3e079796f7b673c. Reauthenticate these inputs against the preceding accepted action-mode baseline before implementation; this preparation does not activate the wave or establish matching acceptance.
+
+Preserve func_00230A9C as the complete declared 3,372-byte logical owner at ROM 0x00230A9C..0x002317C8: its 1,380-byte chunk-34 head and 1,992-byte chunk-35 continuation remain one assigned function. The original High Attack table's 1,380-byte entry describes the head. A head-only result does not complete this target. Keep both original assembly parts available until canonical replacement handling is proven under the accepted contracts.
+
+The package records existing saved placement through resource-loader-0022a280, separately from assembly decode-comment aids. It also records bounded absences of active C/linkage/group contracts and retained archive candidates. Use the accepted placement record, preserve uncertainty in literal references, and do not infer new runtime or structural claims from the package.
+
 This full wave is the explicit action-resolution prerequisite for the later shared terminal wave. Preserve its original seven-member boundary rather than treating a subset of shared consumers as wave completion.
 Reuse supported action-mode types and relationships from the preceding accepted wave. Do not infer field or gameplay meanings from labels, patch descriptions, or numeric constants.
 Authenticate retained candidate inputs against the current accepted owners; preserve failed hypotheses and unresolved comparisons honestly.
