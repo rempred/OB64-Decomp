@@ -46,6 +46,7 @@ Shared members are matched once by the current family when required, then reused
 The [shared-member reconciliation](task-logs/combat-shared-membership-r1.md) at `58906b6` consolidates existing accepted dispositions and retained source obligations. It introduces no new exclusion; its package suggestions remain scheduling proposals.
 The [context retry preparation](task-logs/combat-context-retry-preparation-r1.md) supplies three untested source hypotheses for the retained hybrid. It does not accept new matching or semantic claims; the later source worker must test them within the complete three-member wave.
 The [controller retry preparation](task-logs/combat-controller-retry-preparation-r1.md) reconciles retained allocation and table evidence for the later eight-member shared wave. Its proposed compiler-priority experiment remains untested, with no new source or structural acceptance.
+The [shared-table preparation](task-logs/combat-shared-table-preparation-r1.md) proposes a bounded B06C/EF50 ownership assignment using existing contracts. The combined production partition remains unapproved and requires its applicable structural audit and independent review. All seventeen original action-mode wave members remain required.
 Unresolved research gates must be addressed before family completion, without silently narrowing membership.
 
 ## Execution order and current state
