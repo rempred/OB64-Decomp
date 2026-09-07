@@ -1,0 +1,8 @@
+{
+  "host_id": "local",
+  "receiving_task_id": "/root/db10_allocation_trace",
+  "assignment_revision": 1,
+  "creation_time": "2026-09-07T22:34:47.2907060Z",
+  "task_id": "combat-7adc-endpoint-reproducer",
+  "launch_id": "COMBAT-7ADC-ENDPOINT-REPRODUCER-20260907-01"
+}

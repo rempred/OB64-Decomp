@@ -21,8 +21,9 @@ W8 R2 now has all fourteen C owners active, but four remain nonexact and the fin
 The current thirteen new C sources, two headers, two configuration deltas and W8 work records are preserved provisionally in Git.
 Source-owner intake found only thirteen new target records and eighteen referenced literal data symbols; existing linkage records remain unchanged.
 This preservation does not accept W8 or replace the exact W7 baseline. Resolver edits remain outside the matching commit.
-The source worker has restored its best candidates and paused experiments for [isolated endpoint reproduction research](prompts/combat-7adc-endpoint-reproducer-r1.md).
-That research must first control the two source differences in the retained 7ADC pair. It cannot alter production inputs or establish matching acceptance.
+The source worker has restored its best candidates and paused experiments while the completed [endpoint reproducer](task-logs/combat-7adc-endpoint-reproducer-r1.md) receives [independent research review](prompts/combat-7adc-endpoint-reproducer-review-r1.md).
+The report supplies four complete controls and a smaller candidate pair, with failed reductions and source/pass correlation limits preserved.
+Its new research claims remain unaccepted pending review; no new matching source recipe or production change follows from completion alone.
 The complete [preserved DB10 survey](task-logs/combat-db10-preserved-allocation-survey-r1.md) found at most three non-emitting homes across its 93-input corpus.
 This bounded negative result supplies no missing-home recipe, retail allocation history or impossibility claim.
 
