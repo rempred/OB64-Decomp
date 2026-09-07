@@ -170,7 +170,7 @@ def build_parser() -> argparse.ArgumentParser:
     )
     start.add_argument(
         "--focused-profile",
-        help="add an exact owner-focused capture profile (for example cutscene-studio-v1)",
+        help="add an exact owner-focused capture profile (cutscene-studio-v1 or combat-selector-v1)",
     )
 
     knowledge = commands.add_parser(

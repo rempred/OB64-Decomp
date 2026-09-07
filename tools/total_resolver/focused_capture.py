@@ -19,6 +19,10 @@ from .identities import read_normalized_rom
 
 
 CUTSCENE_STUDIO_PROFILE_ID = "cutscene-studio-v1"
+COMBAT_SELECTOR_PROFILE_ID = "combat-selector-v1"
+COMBAT_SELECTOR_SIGNATURE = bytes.fromhex(
+    "3C03801D8C6306880004104000441021004510210062182103E0000890620000"
+)
 FOCUSED_PROFILE_VERSION = 1
 SIGNATURE_BYTE_COUNT = 32
 
@@ -49,6 +53,8 @@ class FocusedTarget:
     sample_mode: str
     pointers: tuple[PointerSnapshotSpec, ...]
     stack_words: int = 32
+    expected_signature: bytes | None = None
+    expected_size: int | None = None
 
     def __post_init__(self) -> None:
         if not self.target_id or any(character.isspace() for character in self.target_id):
@@ -110,9 +116,26 @@ class ResolvedFocusedProfile:
     profile_version: int
     description: str
     watches: tuple[ResolvedFocusedWatch, ...]
+    instruction_context: bool = False
+    maximum_seconds: int | None = None
+
+    def instruction_watches(self) -> tuple[Any, ...]:
+        # Import lazily: recorder consumes resolved focused watch definitions.
+        from .recorder import WatchSpec
+
+        if not self.instruction_context:
+            return ()
+        return tuple(WatchSpec(
+            f"{watch.watch_id}-instructions", "exec", watch.live_start,
+            watch.live_end_exclusive - watch.live_start, "live-kseg",
+            f"{watch.target_id} instruction context",
+            "Raw register context; unqualified without a connected signature-confirmed invocation",
+            f"total-resolver:focused-profile:{self.profile_id}:v{self.profile_version}",
+            "up to eight instruction events per ordinary selector invocation; reused overlay may differ",
+        ) for watch in self.watches)
 
     def to_dict(self) -> dict[str, Any]:
-        return {
+        result = {
             "schema": "ob64-total-resolver-focused-profile.v1",
             "profileId": self.profile_id,
             "profileVersion": self.profile_version,
@@ -127,6 +150,17 @@ class ResolvedFocusedProfile:
                 "returnPhase": "before the jr-ra delay slot executes",
             },
         }
+
+        if self.instruction_context:
+            result["instructionContextWatches"] = [item.__dict__ for item in self.instruction_watches()]
+            result["capturePolicy"]["instructionContext"] = (
+                "Raw events at retained ranges require contemporaneous signature/invocation qualification; "
+                "an entry or RA alone does not prove caller or target origin"
+            )
+        if self.maximum_seconds is not None:
+            result["maximumSeconds"] = self.maximum_seconds
+            result["capturePolicy"]["budget"] = "from instrumentation readiness; shutdown and drain may extend wall time"
+        return result
 
 
 def _pointer(register: str, size: int, label: str) -> PointerSnapshotSpec:
@@ -191,7 +225,7 @@ _CUTSCENE_TARGETS = (
 
 
 def supported_focused_profiles() -> tuple[str, ...]:
-    return (CUTSCENE_STUDIO_PROFILE_ID,)
+    return (CUTSCENE_STUDIO_PROFILE_ID, COMBAT_SELECTOR_PROFILE_ID)
 
 
 def _meta(connection: sqlite3.Connection) -> dict[str, str]:
@@ -212,7 +246,7 @@ def resolve_focused_profile(
     guessed live address.
     """
 
-    if profile_id != CUTSCENE_STUDIO_PROFILE_ID:
+    if profile_id not in supported_focused_profiles():
         raise ValueError(f"unsupported focused capture profile: {profile_id}")
     metadata = _meta(connection)
     schema_version = int(metadata.get("schemaVersion", "0"))
@@ -224,7 +258,13 @@ def resolve_focused_profile(
     rom_path = Path(metadata.get("romPath", ""))
     rom = read_normalized_rom(rom_path)
     resolved: list[ResolvedFocusedWatch] = []
-    for target in _CUTSCENE_TARGETS:
+    combat = profile_id == COMBAT_SELECTOR_PROFILE_ID
+    targets = (FocusedTarget(
+        "selector-byte-accessor", "Uninterpreted selector invocation", 0x00201778,
+        "all", (), stack_words=0, expected_signature=COMBAT_SELECTOR_SIGNATURE,
+        expected_size=32,
+    ),) if combat else _CUTSCENE_TARGETS
+    for target in targets:
         function = connection.execute(
             "SELECT * FROM static_function WHERE z64_start=?",
             (target.z64_start,),
@@ -240,6 +280,10 @@ def resolve_focused_profile(
         signature = rom[target.z64_start : target.z64_start + signature_size]
         if len(signature) < 4:
             raise ValueError(f"focused target {target.target_id} has no complete entry opcode")
+        if target.expected_size is not None and z64_end - target.z64_start != target.expected_size:
+            raise ValueError(f"focused target {target.target_id} size differs from reviewed identity")
+        if target.expected_signature is not None and signature != target.expected_signature:
+            raise ValueError(f"focused target {target.target_id} signature differs from reviewed identity")
         placements: dict[tuple[int, int], Mapping[str, Any]] = {}
         for placement in connection.execute(
             "SELECT * FROM function_placement_fact WHERE function_id=? "
@@ -255,6 +299,8 @@ def resolve_focused_profile(
             )
             physical_end = physical_start + (z64_end - target.z64_start)
             if not 0 <= physical_start < physical_end <= RDRAM_SIZE:
+                continue
+            if physical_end > int(placement["destination_physical_end_exclusive"]):
                 continue
             placements.setdefault((physical_start, physical_end), placement)
         if not placements:
@@ -291,9 +337,12 @@ def resolve_focused_profile(
     return ResolvedFocusedProfile(
         profile_id,
         FOCUSED_PROFILE_VERSION,
-        (
+        ("Bounded selector invocation and instruction context; consumer provenance remains unresolved"
+         if combat else
             "Cutscene state capture around exact environment, Director, HUFF, pose, and "
             "matrix owners; routine changes are detected automatically"
         ),
         tuple(resolved),
+        instruction_context=combat,
+        maximum_seconds=60 if combat else None,
     )

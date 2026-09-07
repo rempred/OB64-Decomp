@@ -20,7 +20,9 @@ from typing import Any, Callable, Mapping, Sequence
 
 from .knowledge import selected_knowledge_database
 from .knowledge_ingest import ingest_session
-from .focused_capture import CUTSCENE_STUDIO_PROFILE_ID
+from .focused_capture import (
+    CUTSCENE_STUDIO_PROFILE_ID, COMBAT_SELECTOR_PROFILE_ID, supported_focused_profiles,
+)
 from .inventory import resolve_active_project64_binary
 from .pj64_client import DEFAULT_HOST, Pj64Client
 from .schema import utc_now
@@ -38,6 +40,22 @@ from .sessions import (
 
 
 CAPTURE_GUI_DEFAULT_PORT = 64656
+FOCUSED_PRESET_LABELS = {
+    "Combat: selector investigation (60 seconds)": COMBAT_SELECTOR_PROFILE_ID,
+    "Cutscene Studio": CUTSCENE_STUDIO_PROFILE_ID,
+}
+
+
+def bind_profile_selector(widget: Any, variable: Any, controller: Any) -> None:
+    """Bind selection to durable controller state without touching an active session."""
+    labels = {value: key for key, value in FOCUSED_PRESET_LABELS.items()}
+    variable.set(labels[controller.selected_focused_profile])
+
+    def selected(_event: Any = None) -> None:
+        controller.select_focused_profile(FOCUSED_PRESET_LABELS[variable.get()])
+
+    widget.bind("<<ComboboxSelected>>", selected)
+
 
 
 def default_gui_log_path() -> Path:
@@ -137,6 +155,7 @@ class CaptureWorkflowController:
         self.log = log or CaptureGuiLog()
         self.session_id: str | None = active_session_id(self.root)
         self.project64_process: subprocess.Popen[bytes] | None = None
+        self.selected_focused_profile = CUTSCENE_STUDIO_PROFILE_ID
         self.log.write(
             "Controller initialized",
             details={
@@ -254,9 +273,19 @@ class CaptureWorkflowController:
         self.log.write("Session status refreshed", details=result)
         return result
 
+    def select_focused_profile(self, profile_id: str) -> None:
+        if profile_id not in supported_focused_profiles():
+            raise ValueError(f"unsupported focused capture profile: {profile_id}")
+        self.selected_focused_profile = profile_id
+
     def start(
-        self, *, before_rom: bool = False, focused: bool = False
+        self, *, before_rom: bool = False, focused: bool = False,
+        focused_profile_id: str | None = None,
     ) -> dict[str, Any]:
+        profile_id = (focused_profile_id if focused_profile_id is not None
+                      else self.selected_focused_profile if focused else None)
+        if profile_id is not None and profile_id not in supported_focused_profiles():
+            raise ValueError(f"unsupported focused capture profile: {profile_id}")
         current = self.refresh() if self.session_id is not None else None
         if (
             current is not None
@@ -272,8 +301,8 @@ class CaptureWorkflowController:
             details={
                 "beforeRom": before_rom,
                 "launchesProject64": False,
-                "captureMode": "focused-research" if focused else "manual-play",
-                "focusedProfile": CUTSCENE_STUDIO_PROFILE_ID if focused else None,
+                "captureMode": "focused-research" if profile_id is not None else "manual-play",
+                "focusedProfile": profile_id,
             },
         )
         try:
@@ -283,7 +312,7 @@ class CaptureWorkflowController:
                 knowledge_database=self._knowledge(),
                 before_rom=before_rom,
                 auto_ingest=False,
-                focused_profile_id=(CUTSCENE_STUDIO_PROFILE_ID if focused else None),
+                focused_profile_id=profile_id,
             )
         except Exception as exc:
             self.log.exception("Capture start", exc)
@@ -420,6 +449,7 @@ def launch_capture_gui(
         connection=connection,
         log=log,
     )
+    controller.select_focused_profile(COMBAT_SELECTOR_PROFILE_ID)
     window = tk.Tk()
     window.title("OB64 Total Resolver Capture")
     window.geometry("900x790")
@@ -459,8 +489,23 @@ def launch_capture_gui(
         variable=before_rom,
     ).grid(row=1, column=0, columnspan=4, sticky="w", padx=6, pady=6)
 
+    preset_value = tk.StringVar()
+    ttk.Label(connection_frame, text="Next focused capture preset:").grid(
+        row=2, column=0, sticky="w", padx=6, pady=6,
+    )
+    preset_selector = ttk.Combobox(
+        connection_frame, textvariable=preset_value,
+        values=tuple(FOCUSED_PRESET_LABELS), state="readonly", width=47,
+    )
+    preset_selector.grid(row=2, column=1, columnspan=3, sticky="w", padx=6, pady=6)
+    bind_profile_selector(preset_selector, preset_value, controller)
+    ttk.Label(connection_frame, text=(
+        "Presets add focused observations to normal coverage. Selection affects the next start only. "
+        "Combat stops after 60 seconds; a hit does not establish selector behavior or caller origin."
+    ), wraplength=830).grid(row=3, column=0, columnspan=4, sticky="w", padx=6)
+
     button_frame = ttk.Frame(connection_frame)
-    button_frame.grid(row=2, column=0, columnspan=4, sticky="w", padx=6, pady=6)
+    button_frame.grid(row=4, column=0, columnspan=4, sticky="w", padx=6, pady=6)
 
     note_frame = ttk.LabelFrame(outer, text="Context note (while capture is running)")
     note_frame.pack(fill="x", pady=(10, 0))
@@ -505,6 +550,7 @@ def launch_capture_gui(
 
     def set_busy(value: bool) -> None:
         busy.set(value)
+        preset_selector.configure(state="disabled" if value else "readonly")
         for widget in (
             launch_button,
             check_button,
@@ -598,20 +644,21 @@ def launch_capture_gui(
 
     start_button = ttk.Button(
         button_frame,
-        text="Start Capture",
+        text="Start Coverage Only",
         command=start_capture,
     )
     start_button.pack(side="left", padx=6)
     def start_focused_capture() -> None:
         arm_before_rom = bool(before_rom.get())
+        selected_profile = controller.selected_focused_profile
         run_async(
             "Starting focused capture",
-            lambda: controller.start(before_rom=arm_before_rom, focused=True),
+            lambda: controller.start(before_rom=arm_before_rom, focused_profile_id=selected_profile),
         )
 
     focused_start_button = ttk.Button(
         button_frame,
-        text="Start Focused Capture",
+        text="Start Selected Preset",
         command=start_focused_capture,
     )
     focused_start_button.pack(side="left", padx=6)

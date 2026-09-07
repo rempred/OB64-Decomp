@@ -161,7 +161,7 @@ Use this procedure for a normal capture:
 
 1. Start Project64.
 2. Select **Check Bridge**.
-3. Select **Start Capture**.
+3. Select **Start Coverage Only** (or choose a preset and select **Start Selected Preset**).
 4. Play the applicable game content.
 5. Select **Stop Capture**.
 6. Enter a clear session name and optional notes.
@@ -185,7 +185,7 @@ It does not write to game memory.
 Focused Capture adds state evidence to the normal coverage stream.
 It uses the same staging database and the same knowledge database.
 
-Focused Capture watches exact retained placements for these owners:
+The **Cutscene Studio** preset (`cutscene-studio-v1`) watches exact retained placements for these owners:
 
 - The Stage builder
 - The environment loaders
@@ -211,6 +211,40 @@ Project64 saves a return snapshot immediately before `jr ra` executes its delay 
 Floating-point register values give numeric context.
 They do not preserve exact NaN payload bits.
 Each focused row starts with the `live-unreviewed` state.
+
+### Combat preset
+
+The **Next focused capture preset** dropdown defaults to **Combat: selector investigation
+(60 seconds)**. Choosing a preset changes only the next **Start Selected Preset** action;
+it does not change a running capture. **Start Coverage Only** retains ordinary coverage
+without focused watches. The effective profile and target definitions are saved in the
+session manifest, diagnostic log and query metadata. Existing cutscene captures and CLI
+profile selection remain compatible.
+
+`combat-selector-v1` adds one signature-qualified entry/return target for `func_00201778`
+(ROM z64 `0x00201778..0x00201798`) and a separate 32-byte generic instruction-context
+watch at each exact retained placement. The known placement is live `0x801BE2E8`; it is
+resolved from the selected knowledge rather than assumed by the recorder. The target
+uses its full reviewed signature, all-invocation sampling, zero stack words and no
+pointer snapshots. No argument meaning is presumed.
+
+Combat automatically stops instrumentation after a 60-second observation budget from
+instrumentation readiness; normal manual stop remains available. Startup, bridge calls,
+shutdown and bounded draining can extend total wall time. Stopping never pauses gameplay.
+A miss is limited to this window and route. Queue capacity, loss checks, recorder-owned
+cleanup and deferred GUI ingestion use the normal capture contract.
+
+Generic instruction hits at reused overlay addresses are raw leads until connected to a
+signature-qualified invocation. An entry or RA alone does not prove caller or target
+origin. Focused return is before the `jr ra` delay slot, where this function loads v0;
+it is not the final returned byte. Caller/target provenance needs connected callsite,
+delay, target and definition/load evidence; stronger behavioral naming needs additional
+result/use evidence. All observations remain `live-unreviewed`.
+
+The frozen task-local selector adapter's API hashes become stale when these production
+modules change. Do not edit that frozen package or treat its earlier review as acceptance
+of changed APIs. The reviewed production Combat preset is the replacement route after
+independent acceptance. Selecting or launching the GUI does not authorize a capture.
 
 ### Command-line workflow
 
