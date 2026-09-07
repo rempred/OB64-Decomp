@@ -1,7 +1,7 @@
 ---
 task_id: combat-draw-001f5654-preparation
 revision: 1
-status: active
+status: completed
 role: worker
 review_level: Focused
 inventory_profile: NORMAL
