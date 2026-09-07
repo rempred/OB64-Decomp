@@ -97,3 +97,4 @@ Use the current session's permissions for repository and build operations; never
 - Sol High read-only retrieval is checking the current Total Resolver knowledge database for existing selector execution evidence. No capture or database mutation is authorized.
 - Combat discovery r2 completed with exact attack-label extraction and draw-chain evidence, a proposed bounded image-service exclusion, and stronger selector table/control-flow limits. New conclusions await independent review; all matching obligations remain.
 - Discovery r2 is frozen at `1f68aa0`; the independent Sol Max Combat reviewer is evaluating that completed subject under review r2.
+- Current selector knowledge retrieval completed: verified ledger 17 contains two placement facts and no selector execution/caller records. This bounded retrieval does not close the gate or prove non-execution.
