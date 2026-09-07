@@ -1,7 +1,7 @@
 ---
 task_id: boot-conversion-wave
 revision: 1
-status: draft
+status: ready
 role: worker
 review_level: Focused
 inventory_profile: NORMAL
@@ -12,11 +12,11 @@ workspace_claim: C:/Users/Joe/Projects/OgreBattlel64/OB64 Decomp/docs/Plans/task
 
 # Attempt all three boot hybrid conversions in one wave
 
-Draft only. The Director must bind accepted tooling, the completed readability experiment, and sole production ownership before activation.
+The readability worker has released all source/build writes. This assignment grants sole production ownership for the three-target boot conversion wave.
 
 Read canonical and parent AGENTS.md, parent docs/Worker-workflow.md, canonical docs/WORKFLOW.md, docs/SOURCE_POLICY.md and docs/Plans/sequential-main-program.md.
 Use the eligible original Astra Medium boot-preparation worker. Director /root, native task 01a07262-aeca-7341-ad10-2dba705ff988, local.
-Accepted tooling/source baseline: pending Director intake. This draft grants no execution authority.
+Accepted source baseline: `81340e1`, the completed readability wave. Its final proof is preserved under `build/readability-wave-r1/`, with CURRENT fingerprint `DB5D230370D66813C424F62AB2AC3AC9AACD0D83DC2D46097EB18952B5455CDF` and final verification SHA-256 `265DAFB0D3031DBA41D62545F9B3B976740A72A8B08DF5C8B44B49C4740A22AE`. Accepted compilation-group tooling is implementation `45904b5`, reviewed Accepted at `31dc838`. Later disjoint documentation commits do not change this production baseline.
 Use docs/Plans/boot-conversion-preparation-r1.md at 1da3877 as a hypothesis and evidence index; independently check the ROM/source facts needed for implementation.
 
 Perform serious independent pure-C conversion attempts for the complete three-target wave:
