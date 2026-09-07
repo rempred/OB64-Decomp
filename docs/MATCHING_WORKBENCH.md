@@ -456,7 +456,7 @@ Use the accepted contract that fits the actual producer. Missing fields or a dif
 The first group mode admits contiguous single-function owners in one placement context; art-native, continuation/multi-owner, local-function, auxiliary, and mixed-slice combinations reject.
 Classification covers the complete authenticated translation unit; all members inherit its class and retain separate acceptance results.
 The accepted producer preserves native bytes, public entries, relocation semantics, and sole object ownership without inventing retail compilation-unit boundaries.
-The reviewed production group registry is empty. Activate all members only through a separately assigned complete source wave.
+Tooling review subject `45904b5` had an empty production group registry. Activate all members together through a separately assigned source wave; activation remains provisional until the complete-wave verifier passes.
 The mixed pose fixture proves the bounded group mechanism, not production activation or completed Combat W5 acceptance.
 The pose tail is not an extension of standalone art-native support. Scratch exactness never replaces the canonical complete-wave verifier.
 Ordinary matching needs no independent source review; structural/tooling changes retain their applicable audit and review requirements.

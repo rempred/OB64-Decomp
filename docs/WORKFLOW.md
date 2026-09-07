@@ -469,7 +469,7 @@ Shared-header compatibility defaults to current version-5 evidence on both sides
 
 ## Compilation-group workflow
 
-General compilation-group tooling does not activate a source wave. The production registry is initially empty. Reviewed activation must name every member together and retain all existing owner boundaries and public entries.
+General compilation-group tooling does not activate a source wave. A separately assigned source wave must activate every group member together and retain all existing owner boundaries and public entries. Activation is provisional until the complete wave passes the canonical verifier; ordinary activation under accepted contracts requires no additional independent source review.
 
 Edit the group's one authored translation unit, then run `node tools/diff.js <member>`. The diff compiles the requested member's whole group once. Unchanged sibling groups use one authenticated producer cache bundle, with member views validated against that bundle. Cache schema 4 includes group contracts, all authenticated source dependencies and producer implementations. CURRENT fingerprint version 7 includes the group registry.
 

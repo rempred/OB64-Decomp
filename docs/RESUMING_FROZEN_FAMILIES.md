@@ -44,7 +44,7 @@ Compilation-group implementation `45904b5` now has [Accepted independent review]
 Its accepted first mode supplies one native compiler producer for contiguous single-function owners in one placement context.
 It preserves every existing owner and public entry, with optional native terminal padding only in the final owner.
 It cannot combine art-native, continuation/multi-owner, local-function, auxiliary, or mixed-slice contracts.
-The reviewed production registry is empty; neither tooling acceptance nor the mixed pose fixture activates these archived sources.
+Tooling review subject `45904b5` had an empty production group registry; neither that acceptance nor its mixed pose fixture activated the archived sources.
 
 The sequential program must assign complete-group source activation separately under [the group workflow](WORKFLOW.md#compilation-group-workflow).
 Edit the group's one translation unit and run `node tools/diff.js <member>`; the canonical diff compiles its whole group once.

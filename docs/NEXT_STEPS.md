@@ -11,7 +11,7 @@ Mixed assignments containing implementation or substantive research reasoning us
 Keep one active matching family and one production source/build writer. Do not use concurrent development worktrees.
 Compilation-group implementation `45904b5` is accepted by [independent review](Plans/task-logs/compilation-groups-implementation-review-r1.md) at `31dc838`.
 Use the [accepted group workflow](WORKFLOW.md#compilation-group-workflow) for separately assigned source waves within its first-mode limits.
-The reviewed production group registry is empty. Tooling acceptance and the isolated pose fixture do not activate sources or complete Combat W5.
+Tooling acceptance and isolated group fixtures do not establish production source activation or completed-wave matching acceptance.
 Activate all group members together in the assigned complete wave, with one final verifier and no additional ordinary source-review gate.
 Preserved donor histories remain frozen. [The restart index](RESUMING_FROZEN_FAMILIES.md) supplies retained inputs and unfinished gates.
 

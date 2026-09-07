@@ -307,7 +307,7 @@ Native assembler alignment is representation evidence, independent of source cla
 
 ## Compilation groups
 
-A compilation group is one C producer for several existing function targets. The version-1 registry is `config/matching-c-compilation-groups.json`. A grouped target uses `{ "symbol": "func_XXXXXXXX", "compilationGroup": "group_id" }` instead of a standalone source record. The registry remains empty until a separately assigned complete source wave activates all members together.
+A compilation group is one C producer for several existing function targets. The version-1 registry is `config/matching-c-compilation-groups.json`. A grouped target uses `{ "symbol": "func_XXXXXXXX", "compilationGroup": "group_id" }` instead of a standalone source record. A separately assigned source wave must activate all group members together; registry activation alone does not establish completed-wave matching acceptance.
 
 The group record fixes its source, ordered public functions, accepted owner rows, native text shape/hash, terminal alignment bytes and complete group-relative relocation semantics. Owner placement and fallback identities come from the accepted structural model. The initial mode admits contiguous single-function owners in one placement context, with optional native terminal padding only in the final owner. It cannot combine art-native, continuation, local-function or auxiliary contracts.
 
