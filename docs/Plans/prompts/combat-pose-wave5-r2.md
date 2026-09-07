@@ -1,7 +1,7 @@
 ---
 task_id: combat-pose-wave5
 revision: 2
-status: draft
+status: ready
 role: worker
 review_level: Focused
 inventory_profile: NORMAL
@@ -12,7 +12,11 @@ workspace_claim: C:/Users/Joe/Projects/OgreBattlel64/OB64 Decomp/docs/Plans/task
 
 # Resume the complete Combat pose wave after GUI work
 
-Draft only. Director /root must bind accepted GUI tooling, its completed launch, current source baseline and sole production ownership before activation.
+GUI tooling 03063b4 is Accepted by independent review b30a6c5. Completed GUI launch is frozen at f40eec6.
+The GUI remains open for Joe; no agent capture was started. All tooling and launch ownership is released.
+You now own the sole production source/build role on main. The GUI and its runtime state remain outside your scope.
+The last accepted matching source wave remains boot integration 523d460; intervening tooling changes do not alter matching foundations.
+Director checked the inactive pose source remains SHA256 9F66F026AED5C65C6AF25D46090E19961F850C00242332789D5AE59842CD7398.
 Use the eligible Astra Medium W5 worker /root/boot_materializer_reasoning. Director native task 01a07262-aeca-7341-ad10-2dba705ff988, local.
 Read canonical and parent AGENTS.md, parent docs/Worker-workflow.md, canonical docs/WORKFLOW.md, docs/SOURCE_POLICY.md, docs/Plans/sequential-main-program.md, parent Combat plan/inventory and docs/RESUMING_FROZEN_FAMILIES.md.
 This replaces curtailed W5 R1, whose report and inactive source are frozen at 43d0821. R1 stopped only for Joe's GUI priority and released all writes.
