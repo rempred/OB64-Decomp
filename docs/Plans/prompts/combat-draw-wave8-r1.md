@@ -1,7 +1,7 @@
 ---
 task_id: combat-draw-wave8
 revision: 1
-status: active
+status: superseded
 role: worker
 review_level: Focused
 inventory_profile: NORMAL

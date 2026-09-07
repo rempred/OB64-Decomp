@@ -10,7 +10,9 @@ Joe transferred the program from task `01a07262-aeca-7341-ad10-2dba705ff988` on 
 The previous task is idle. Its preserved history, accepted results, unfinished W8 sources and failed experiments remain controlling inputs.
 The current task resumes the same complete goal; no family, wave, review requirement or held runtime boundary is removed.
 Production source writes are paused while the isolated [DB10 allocation trace](prompts/combat-db10-allocation-trace-r1.md) runs.
-That assignment cannot change production compiler inputs or establish matching acceptance. A new source continuation will bind the preserved complete W8 scope.
+That assignment cannot change production compiler inputs or establish matching acceptance.
+The complete [W8 continuation](prompts/combat-draw-wave8-r2.md) is assigned to `/root/combat_draw_continuation` for initial recovery.
+Its production writes wait for diagnostic write-release. The continuation preserves all fourteen targets and restores the renderer's interrupted failed trial first.
 
 Complete the remaining Combat, Squad, and High Attack plans in that order on main, using internal agents.
 Use Sol High (`gpt-5.6-sol`, `high`) for retrieval/data-seeking or parsing-only workers.
