@@ -1,0 +1,19 @@
+{
+  "assignment": "combat-capture-startup-correction",
+  "revision": 2,
+  "launchId": "COMBAT-CAPTURE-STARTUP-CORRECTION-20260907-02",
+  "receivingTaskId": "/root/compilation_groups_design",
+  "directorAgent": "/root",
+  "directorTaskId": "01a07262-aeca-7341-ad10-2dba705ff988",
+  "hostId": "local",
+  "createdAt": "2026-09-07T06:34:36.6221941-04:00",
+  "canonicalBaseline": "bcfc6f2ef08bdb1b3ba28999d8436b66246de058",
+  "matchingBaseline": "469a1416918592749d61dc34e3e079796f7b673c",
+  "activationCommit": "0284e7dd402a4f35dda5f4c6ebf599a0404d2580",
+  "parentBaseline": "f940a2825ac97453746d3e9cef9c5cabc60a8dd2",
+  "inputs": {
+    "harness": "6DA2D3F7E9F44E1AC0C378E16B9EBE008112376A845B20C6D6B7FF439572E787",
+    "bridge": "BF798A2E941D0FD25116633220AA84AFEC421597730308E9B824B6D131EDD771",
+    "wireTest": "E7680C094BBED6C27E3C60613648230D5778C2B126FB1339FF00A2BD9C2A7901"
+  }
+}

@@ -1,7 +1,7 @@
 ---
 task_id: combat-capture-startup-correction
 revision: 2
-status: active
+status: blocked
 role: correction-worker
 review_level: Critical
 inventory_profile: NORMAL
