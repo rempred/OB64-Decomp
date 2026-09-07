@@ -1,0 +1,16 @@
+{
+  "task_id": "combat-terminal-helper-preparation",
+  "assignment_revision": 1,
+  "launch_id": "COMBAT-TERMINAL-HELPER-PREPARATION-20260907-01",
+  "receiving_task_id": "/root/sequential_scope",
+  "director_task_id": "/root",
+  "director_native_task_id": "01a07262-aeca-7341-ad10-2dba705ff988",
+  "host_id": "local",
+  "model": "gpt-6-astra",
+  "reasoning": "medium",
+  "ready_commit": "2f76aceb8a129209b9c07283bc084991ee0d9aa1",
+  "activation_commit": "e5401be79ffeabb94752620d29e5a51bd5e20ca7",
+  "coordination_baseline": "a8db883e982a32a752b56daf3f297402a6f0d88c",
+  "accepted_source_baseline": "469a1416918592749d61dc34e3e079796f7b673c",
+  "creation_time": "2026-09-07T15:58:47.7383361Z"
+}
