@@ -1,7 +1,7 @@
 ---
 task_id: combat-pose-wave5
 revision: 2
-status: completed
+status: superseded
 role: worker
 review_level: Focused
 inventory_profile: NORMAL
