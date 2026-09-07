@@ -1,10 +1,16 @@
 # Sequential matching program
 
 Status: active. Baseline: published main `5a60e43675a84e7332299337e6f00af97de2ff15`.
-Director: `/root`, task `01a07262-aeca-7341-ad10-2dba705ff988`, local.
+Director: `/root`, task `01a07dad-52c1-7cb0-9913-d9f7afa91281`, local.
 Joe authorized this goal on 2026-09-06. No further push is authorized.
 
 ## Objective and authority
+
+Joe transferred the program from task `01a07262-aeca-7341-ad10-2dba705ff988` on 2026-09-07 after its compaction transport failure.
+The previous task is idle. Its preserved history, accepted results, unfinished W8 sources and failed experiments remain controlling inputs.
+The current task resumes the same complete goal; no family, wave, review requirement or held runtime boundary is removed.
+Production source writes are paused while the isolated [DB10 allocation trace](prompts/combat-db10-allocation-trace-r1.md) runs.
+That assignment cannot change production compiler inputs or establish matching acceptance. A new source continuation will bind the preserved complete W8 scope.
 
 Complete the remaining Combat, Squad, and High Attack plans in that order on main, using internal agents.
 Use Sol High (`gpt-5.6-sol`, `high`) for retrieval/data-seeking or parsing-only workers.
