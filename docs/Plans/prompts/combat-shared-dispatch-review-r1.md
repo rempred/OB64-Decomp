@@ -1,7 +1,7 @@
 ---
 task_id: combat-shared-dispatch-review
 revision: 1
-status: ready
+status: active
 role: reviewer
 review_level: Focused
 inventory_profile: NORMAL
