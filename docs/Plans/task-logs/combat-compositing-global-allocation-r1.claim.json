@@ -1,0 +1,12 @@
+{
+  "assignment": "combat-compositing-global-allocation",
+  "assignmentRevision": 1,
+  "launchId": "COMBAT-COMPOSITING-GLOBAL-ALLOCATION-20260907-01",
+  "receivingTaskId": "/root/compilation_groups_design",
+  "directorAgent": "/root",
+  "directorTaskId": "01a07262-aeca-7341-ad10-2dba705ff988",
+  "hostId": "local",
+  "createdAt": "2026-09-07T03:48:04.8329179-04:00",
+  "sourceA": "2E92D4672DBAFCE7D436E302F8DCAF75473301BDCC3F72EC6CC3B40E3EC6AC1C",
+  "sourceB": "75B5F285E4C1FFA3553FE4B742A52480D5938ECAB468FD5C579A70BADA260634"
+}
