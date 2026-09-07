@@ -1,0 +1,21 @@
+{
+  "task_id": "combat-compositing-wave7",
+  "assignment_revision": 1,
+  "launch_id": "COMBAT-COMPOSITING-WAVE7-20260907-01",
+  "receiving_task_id": "/root/boot_materializer_reasoning",
+  "host_id": "local",
+  "creation_time": "2026-09-07T05:16:04.8042223Z",
+  "starting_head": "a967d19cd27ec3e7b617b72c9880fd0682adc786",
+  "branch": "main",
+  "accepted_baseline": "0e1191013aeebed2929c9caff7c1f139169ad7f3",
+  "accepted_current": "DAD795A0D8732CDB0CC8FF5A99A48F98DB8249E2D323B96B8CD665DF87453CF6",
+  "targets": [
+    "func_00206340",
+    "func_00206888",
+    "func_00206BE0",
+    "func_00207658",
+    "func_00207E30",
+    "func_00208508",
+    "func_00208900"
+  ]
+}

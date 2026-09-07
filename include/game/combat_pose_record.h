@@ -1,8 +1,7 @@
 #ifndef COMBAT_POSE_RECORD_H
 #define COMBAT_POSE_RECORD_H
 
-typedef unsigned int u32;
-typedef unsigned short u16;
+#include "combat_types.h"
 
 /* Common decoded prefix written by func_00205484 and func_00205608. */
 typedef struct CombatPoseRecord {

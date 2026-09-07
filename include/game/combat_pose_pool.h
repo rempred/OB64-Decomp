@@ -1,8 +1,7 @@
 #ifndef COMBAT_POSE_POOL_H
 #define COMBAT_POSE_POOL_H
 
-typedef unsigned int u32;
-typedef unsigned short u16;
+#include "combat_types.h"
 typedef unsigned char u8;
 
 /* The pool routines traverse records at a 0xB0-byte stride. Field names
