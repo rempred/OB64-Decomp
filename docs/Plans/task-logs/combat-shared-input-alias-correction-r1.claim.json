@@ -1,0 +1,19 @@
+{
+  "task_id": "combat-shared-input-alias-correction",
+  "assignment_revision": 1,
+  "launch_id": "COMBAT-SHARED-INPUT-ALIAS-CORRECTION-20260907-01",
+  "receiving_task_id": "/root/combat_data_retrieval",
+  "director_task_id": "01a07262-aeca-7341-ad10-2dba705ff988",
+  "host_id": "local",
+  "model": "gpt-5.6-sol",
+  "reasoning_effort": "high",
+  "creation_time": "2026-09-07T10:53:31.2383093-04:00",
+  "inputs": {
+    "ready_commit": "070db8450ed088eafe8aef34827c5f8312dbc00d",
+    "activation_commit": "985728467e99154e4d9cc66f7d2ab41423c55dbf",
+    "coordination_baseline": "9cbd996b05f8bdbc393dda0fbfb61151ac0c65c8",
+    "accepted_source_baseline": "469a1416918592749d61dc34e3e079796f7b673c",
+    "terminal_freeze": "44fba4a847ea197cdca76b1d04be905e245a508e",
+    "resolution_freeze": "6cdf6afed32b3362fdda98d8eb4cfe831b690786"
+  }
+}
