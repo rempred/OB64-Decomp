@@ -275,6 +275,13 @@ Wave 6 also owns the first full attempts for shared bridges
 The worker must map the four dispatch modes before tuning large owners. Shared
 types can be tested across the family, but each accepted owner stays separate.
 
+The preserved W6 r3 route map is now independently qualified in the
+[shared-dispatch report](task-logs/combat-shared-dispatch-research-r1.md),
+[Accepted at review](task-logs/combat-shared-dispatch-review-r1.md) (`5defa3d`).
+Use that bounded static map and its bridge-interface constraints before tuning.
+It preserves all seventeen W6 members and proves no runtime reachability, gameplay names,
+original C types, source match, or new structural contract.
+
 ## Wave 7: action candidate selection and resolution
 
 This family covers action planning, candidate selection, and resolution. It
