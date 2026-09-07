@@ -17,6 +17,8 @@ Use Astra Medium. Director /root, native task 01a07262-aeca-7341-ad10-2dba705ff9
 Read both AGENTS.md files, parent docs/Worker-workflow.md, canonical WORKFLOW.md and SOURCE_POLICY.md.
 Read the sequential program, accepted scope, shared-member reconciliation at 58906b6, and original High Attack W5 plan.
 Read the frozen restart index and its B438/B894 source, metadata and evidence references.
+Read docs/Plans/task-logs/combat-controller-retry-preparation-r1.md as untested preparation, not accepted candidate or structural proof.
+Reconcile its proposed experiment with preserved prior trials before repeating a compiler attempt.
 This is required sequential Combat shared work, not concurrent High Attack production.
 
 Preserve the complete original eight-member High Attack W5 boundary:
