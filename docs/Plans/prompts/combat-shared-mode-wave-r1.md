@@ -21,7 +21,7 @@ Complete all seventeen original High Attack W6 members as PURE_C:
 func_0022257C, func_00222604, func_0022A280, func_0022A414, func_0022A4E0, func_0022A7B8, func_0022A964, func_0022ADFC, func_0022B06C, func_0022B1F4, func_0022BFF8, func_0022C78C, func_0022D14C, func_0022EC08, func_0022EDD4, func_0022EF50, func_0022F2BC.
 
 Reuse the accepted shared-dispatch research/review and its four-route limits before source tuning. Frozen donor-active sources and isolated exact probes remain provisional until the current whole-wave gate passes.
-Retain B1F4 and D14C as explicit source retries. Read the frozen mode-owner retry preparation once completed and bound by the Director; its new hypotheses must be independently tested.
+Retain B1F4 and D14C as explicit source retries. Read docs/Plans/task-logs/combat-mode-owner-retry-preparation-r1.md, SHA256 26C6BAE4FFAC8FDAB6FE5982FAFD92EE3C9A97BAE8E3DF29D955D79ADB1035CB. Its preserved controls and proposed evidence probes supply no new source or structural acceptance; independently test new hypotheses against current authenticated inputs.
 The reviewed B06C/EF50 preparation establishes compatibility only. Combined production ownership requires the separately assigned structural result and accepted review; do not activate an unapproved partition within ordinary matching.
 Use the committed A414 source's authenticated func_0020C014 call identity; do not invent an older unresolved alias. A D14C placement proxy is not exact C.
 Existing accepted prefix, repeated-section, alignment, retained-interior and provenance contracts must be distinguished from missing source or production evidence. Do not propose a tool change merely because a candidate differs.
