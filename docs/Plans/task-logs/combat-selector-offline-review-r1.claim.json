@@ -1,0 +1,10 @@
+{
+  "task_id": "combat-selector-offline-review",
+  "assignment_revision": 1,
+  "launch_id": "COMBAT-SELECTOR-OFFLINE-REVIEW-20260907-01",
+  "receiving_task_id": "/root/combat_shared_dispatch_review",
+  "director_task_id": "/root",
+  "director_native_task_id": "01a07262-aeca-7341-ad10-2dba705ff988",
+  "host_id": "local",
+  "created_at": "2026-09-07T04:55:04.8674062+00:00"
+}
