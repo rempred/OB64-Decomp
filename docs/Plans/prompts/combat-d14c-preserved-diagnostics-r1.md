@@ -1,7 +1,7 @@
 ---
 task_id: combat-d14c-preserved-diagnostics
 revision: 1
-status: ready
+status: active
 role: worker
 review_level: Material
 inventory_profile: NORMAL
