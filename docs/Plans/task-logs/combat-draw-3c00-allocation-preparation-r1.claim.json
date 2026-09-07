@@ -1,0 +1,16 @@
+{
+  "task_id": "combat-draw-3c00-allocation-preparation",
+  "assignment_revision": 1,
+  "launch_id": "COMBAT-DRAW-3C00-ALLOCATION-PREPARATION-20260907-01",
+  "receiving_task_id": "/root/sequential_scope",
+  "director_task_id": "/root",
+  "director_native_task_id": "01a07262-aeca-7341-ad10-2dba705ff988",
+  "host_id": "local",
+  "model": "gpt-6-astra",
+  "reasoning": "medium",
+  "ready_commit": "fc1c9217dee795fbd32f69ba9434d1f9bede302c",
+  "activation_commit": "407e0c7c25a94e5fe538075a9997751e1ba7e302",
+  "coordination_baseline": "7a5e1b65b40e2a16e29ad79ec8f0e7d03bf781af",
+  "accepted_source_baseline": "469a1416918592749d61dc34e3e079796f7b673c",
+  "creation_time": "2026-09-07T16:32:53.3557016Z"
+}
