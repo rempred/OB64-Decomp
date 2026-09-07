@@ -1,0 +1,13 @@
+{
+  "assignment": "combat-draw-integration-preparation",
+  "assignmentRevision": 1,
+  "launchId": "COMBAT-DRAW-INTEGRATION-PREPARATION-20260907-01",
+  "receivingTaskId": "/root/compilation_groups_design",
+  "directorAgent": "/root",
+  "directorTaskId": "01a07262-aeca-7341-ad10-2dba705ff988",
+  "hostId": "local",
+  "createdAt": "2026-09-07T05:24:59.7787070-04:00",
+  "inputPackageSha256": "4340C97DE145E1970D62F909B443894ACECFF3742F544D9BB41CCE0A9263025D",
+  "productionBaseline": "0e1191013aeebed2929c9caff7c1f139169ad7f3",
+  "extractionBaseline": "d70fd853fdffacf71290b24763e010a549276a55"
+}
