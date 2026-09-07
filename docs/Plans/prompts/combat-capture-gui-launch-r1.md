@@ -1,7 +1,7 @@
 ---
 task_id: combat-capture-gui-launch
 revision: 1
-status: draft
+status: ready
 role: worker
 review_level: Focused
 inventory_profile: NORMAL
@@ -12,7 +12,12 @@ workspace_claim: C:/Users/Joe/Projects/OgreBattlel64/OB64 Decomp/docs/Plans/task
 
 # Open the reviewed Capture GUI
 
-Draft only. Bind accepted implementation, review and released ownership before activation.
+Accepted implementation is 03063b4, including manual-duration correction 986ce56 and initial preset d9e80f0.
+Independent review R2 at b30a6c5 is Accepted and resolves R1 finding F1.
+Review report docs/Plans/task-logs/combat-capture-preset-gui-review-r2.md SHA256 11184999494ABFB6C7C85658DB17D03B7298C666FDACAC9CD856DC64BDA59ED6.
+Its manifest SHA256 is 4C5409FF6077A90C2D0A1362DF427F08AEE2ECAE54F6EED61026D8EB0E176EED.
+Authenticate the seven current tooling paths against the unchanged R3 artifact manifest before launch.
+Worker and reviewer have released all writes. You own only this GUI launch and its fresh records.
 Use Astra Medium /root/combat_discovery. Director /root, native task 01a07262-aeca-7341-ad10-2dba705ff988, local.
 Joe requests launching the finished Capture GUI. This launch is already authorized; no further confirmation is required.
 Read both AGENTS.md files, parent docs/Worker-workflow.md, and Total Resolver capture/maintenance instructions.
