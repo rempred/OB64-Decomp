@@ -25,6 +25,10 @@ For func_002071F4, func_002073CC, func_00207A70 and func_00207C08, optional comp
 Report: docs/Plans/task-logs/combat-supplement-compositing-preparation-r1.md; SHA256 FB70EC8DD42FEBF59E1721338647B67CFE38BB88BB1EAB9F6C210103B7517566.
 Its evidence table binds all six JSON files under build/combat-supplement-compositing-preparation-r1/, including each complete owner, accepted W7 dependencies and manifest checks.
 The uncompiled notes preserve byte counters, allocation layout, field publication and distinct cleanup order. Reauthenticate against the preceding accepted source and retain every stated limit; this guidance adds no source, semantic or structural acceptance and no independent matching review.
+For the remaining seven original supplement owners and func_001F0C24, complete-owner guidance is frozen at 912b92dea07afa389f932cbef26718a0806c2499.
+Report: docs/Plans/task-logs/combat-supplement-integration-preparation-r1.md; SHA256 354C607E54CD677E3C1F9DF7A7374E28ADAA610860C90A56E36AFA150D0692A2.
+Its evidence table binds ten JSON files under build/combat-supplement-integration-preparation-r1/, covering all eight complete owners and the accepted W7 helper/source dependencies.
+Reuse its bounded ABI, indexing, call-order and service-packing guidance only after reauthentication against the preceding accepted source. The notes preserve the service's accepted exclusion and full-wave scheduling; they add no semantic, structural or matching acceptance or independent review gate.
 
 Complete the seven supported inclusions and five required shared integrations:
 func_001F0E64, func_002071F4, func_002073CC, func_00207A70, func_00207C08, func_0020CBDC, func_0020D590,
