@@ -1,7 +1,7 @@
 ---
 task_id: boot-conversion-wave
 revision: 1
-status: blocked
+status: superseded
 role: worker
 review_level: Focused
 inventory_profile: NORMAL

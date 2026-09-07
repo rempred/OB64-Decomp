@@ -1,7 +1,7 @@
 ---
 task_id: boot-conversion-wave
 revision: 2
-status: ready
+status: active
 role: worker
 review_level: Focused
 inventory_profile: NORMAL
