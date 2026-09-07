@@ -43,6 +43,7 @@ Historical statuses and worktree directives in those inputs do not override this
 The accepted full member/gate checklist is [scope reconciliation](sequential-family-scope.md) with its [target manifest](sequential-family-targets.json).
 Its accepted review is [the prerequisite review](task-logs/sequential-prerequisites-review-r1.md); generated status remains authoritative for changing counts.
 Shared members are matched once by the current family when required, then reused by later families.
+The [shared-member reconciliation](task-logs/combat-shared-membership-r1.md) at `58906b6` consolidates existing accepted dispositions and retained source obligations. It introduces no new exclusion; its package suggestions remain scheduling proposals.
 Unresolved research gates must be addressed before family completion, without silently narrowing membership.
 
 ## Execution order and current state
