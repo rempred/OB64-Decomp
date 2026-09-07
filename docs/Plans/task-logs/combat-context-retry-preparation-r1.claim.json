@@ -1,0 +1,8 @@
+{
+  "assignment_revision": 1,
+  "host_id": "local",
+  "task_id": "combat-context-retry-preparation",
+  "launch_id": "COMBAT-CONTEXT-RETRY-PREPARATION-20260907-01",
+  "creation_time": "2026-09-07T03:33:22.0575912Z",
+  "receiving_task_id": "/root/boot_conversion_preparation"
+}
