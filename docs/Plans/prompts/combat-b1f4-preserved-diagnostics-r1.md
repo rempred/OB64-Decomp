@@ -1,7 +1,7 @@
 ---
 task_id: combat-b1f4-preserved-diagnostics
 revision: 1
-status: active
+status: completed
 role: worker
 review_level: Material
 inventory_profile: NORMAL
