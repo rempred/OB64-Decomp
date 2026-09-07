@@ -33,7 +33,7 @@ Use only its recorded dependencies and bounded referenced project evidence neede
 Read production C/types/configuration through baseline Git blobs. Mutable W7 sources, linkage and compiler outputs remain excluded.
 Do not inspect external personal decomp source, comments or comparison excerpts.
 
-The source worker will implement208508, then208900, then return to the preserved nonexact207E30 candidate within W7.
+The source worker will implement func_00208508, then func_00208900, then return to the preserved nonexact func_00207E30 candidate within W7.
 Exclude fifth-owner allocation/copy research and sixth-owner reconstruction; their existing notes remain separate inputs for the source worker.
 Do not alter the current thirteen-target supplemental-wave draft or any future wave's membership.
 This preparation establishes no new semantic/structural acceptance or matching result and adds no independent matching review.
