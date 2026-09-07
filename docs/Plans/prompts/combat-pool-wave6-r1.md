@@ -16,6 +16,7 @@ Draft only. The Director must bind accepted W5, the current exact baseline, and 
 
 Read canonical and parent AGENTS.md, parent docs/Worker-workflow.md, and canonical docs/WORKFLOW.md and docs/SOURCE_POLICY.md.
 Read docs/Plans/sequential-main-program.md and the parent Combat plan and family inventory.
+Reuse docs/Plans/task-logs/combat-pool-inputs-r1.md and its literal input package; bind current accepted inputs before source execution.
 Use Astra Medium for matching implementation.
 Director: /root, native task 01a07262-aeca-7341-ad10-2dba705ff988, local.
 Accepted prerequisite/source baseline: pending Director intake. This draft grants no execution authority.
