@@ -1,0 +1,12 @@
+{
+  "assignment": "combat-compositing-fast-loop",
+  "assignmentRevision": 1,
+  "launchId": "COMBAT-COMPOSITING-FAST-LOOP-20260907-01",
+  "receivingTaskId": "/root/compilation_groups_design",
+  "directorAgent": "/root",
+  "directorTaskId": "01a07262-aeca-7341-ad10-2dba705ff988",
+  "hostId": "local",
+  "createdAt": "2026-09-07T04:37:04.3700844-04:00",
+  "inputSourceSha256": "4EE397F4A55054F73CAAE92C396A087D320C79B734393566F9DEC6BC6C018710",
+  "inputAssemblySha256": "A7A682F1860A173E763C309D9B676E83C0D1AE7CC1DCACDBF9EC409CF9A6AF87"
+}
