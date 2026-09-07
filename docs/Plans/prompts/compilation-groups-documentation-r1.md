@@ -1,7 +1,7 @@
 ---
 task_id: compilation-groups-documentation
 revision: 1
-status: draft
+status: ready
 role: correction-worker
 review_level: Focused
 inventory_profile: NORMAL
@@ -12,12 +12,12 @@ workspace_claim: C:/Users/Joe/Projects/OgreBattlel64/OB64 Decomp/docs/Plans/task
 
 # Propagate accepted compilation-group capability into current navigation
 
-Draft only. The Director must bind accepted independent implementation review before activation.
-
 Read canonical and parent AGENTS.md, parent docs/Worker-workflow.md, and canonical docs/Plans/sequential-main-program.md.
 Use the eligible Astra Medium documentation worker for implementation.
 Director: /root, native task 01a07262-aeca-7341-ad10-2dba705ff988, local.
-Implementation subject: 45904b5. Accepted review dependency: pending Director intake; this draft grants no execution authority.
+Implementation subject: 45904b577d67de81acad661a0c8286e01c43ee4c.
+Accepted review: 31dc8386b2e131d2e67e4e60768ab0b85fbd38b6, docs/Plans/task-logs/compilation-groups-implementation-review-r1.md.
+The verdict is Accepted with no material findings. Preserve its explicit first-mode and production-activation limits.
 
 Update current queue, restart guidance, and capability navigation to reflect only the accepted compilation-group capability and limits.
 Keep inactive sources, source activation, and completed-wave matching acceptance distinct from tooling acceptance.

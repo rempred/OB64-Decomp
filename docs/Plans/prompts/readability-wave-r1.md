@@ -1,7 +1,7 @@
 ---
 task_id: readability-wave
 revision: 1
-status: draft
+status: ready
 role: worker
 review_level: Focused
 inventory_profile: NORMAL
@@ -12,11 +12,12 @@ workspace_claim: C:/Users/Joe/Projects/OgreBattlel64/OB64 Decomp/docs/Plans/task
 
 # Run the bounded independent readability experiment
 
-Draft only. The Director must record accepted tooling implementation and sole production ownership before activation.
-
 Read canonical and parent AGENTS.md, parent docs/Worker-workflow.md, canonical docs/WORKFLOW.md, docs/SOURCE_POLICY.md and docs/Plans/sequential-main-program.md.
 Use Astra Medium for implementation. Director /root, native task 01a07262-aeca-7341-ad10-2dba705ff988, local.
-Tooling/baseline dependency: pending Director intake. This draft grants no execution authority.
+Tooling implementation 45904b577d67de81acad661a0c8286e01c43ee4c is independently Accepted at 31dc8386b2e131d2e67e4e60768ab0b85fbd38b6.
+Read docs/Plans/task-logs/compilation-groups-implementation-review-r1.md for that dependency and its exact proof boundary.
+The accepted production baseline retains 564 targets and the exact Rev 0 ROM; source/configuration is unchanged through 31dc838.
+You own the sole production source/build writer role for this wave. The tooling worker and reviewer have released all writes.
 
 Independently improve readability of these three existing accepted C targets as one complete experiment wave:
 - func_00044130, src/lib/func_00044130.c;
