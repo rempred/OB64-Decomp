@@ -13,11 +13,11 @@ from tools.total_resolver.focused_capture import (
 from tools.total_resolver.capture_gui import (
     CaptureWorkflowController, CaptureGuiLog, bind_profile_selector, FOCUSED_PRESET_LABELS,
 )
-from tools.total_resolver.recorder import Pj64CaptureRecorder, RecorderSettings
+from tools.total_resolver.recorder import Pj64CaptureRecorder, RecorderSettings, verify_pre_rom_preflight
 from tools.total_resolver.capture_db import CaptureStore
 from tools.total_resolver.sessions import _metadata, SessionConnection
 from tools.total_resolver.tests.test_focused_capture import TARGET_STARTS
-from tools.total_resolver.tests.test_recorder import FakeClient, FakeClock, make_rom, metadata
+from tools.total_resolver.tests.test_recorder import FakeClient, FakeClock, PoweredOffFakeClient, make_rom, metadata
 
 
 class CombatPresetTests(unittest.TestCase):
@@ -115,6 +115,59 @@ class CombatPresetTests(unittest.TestCase):
         self.assertEqual(len(rows),2)
         recorder.stop_instrumentation()
         self.assertEqual([c.args[0] for c in client.remove_watch.call_args_list],[2,1])
+
+    def test_before_rom_installs_records_and_removes_both_combat_watches(self):
+        profile = resolve_focused_profile(self.db, COMBAT_SELECTOR_PROFILE_ID)
+        identity = make_rom(self.root / 'cold.z64')
+        client = PoweredOffFakeClient(self.root / 'cold.z64')
+        client.remove_watch = Mock(wraps=client.remove_watch)
+        store = CaptureStore.create(self.root / 'cold/capture.sqlite', metadata(identity))
+        self.addCleanup(store.close_connection)
+        recorder = Pj64CaptureRecorder(client, store, RecorderSettings(
+            identity['normalizedSha256'], focused_watches=profile.watches,
+            watches=profile.instruction_watches(),
+        ), clock=FakeClock())
+        recorder.arm_before_rom(verify_pre_rom_preflight(client, identity))
+        self.assertNotIn('watch', client.commands)
+        recorder.await_cold_boot_start()
+        self.assertIn('watch', client.commands)
+        self.assertIn('focused watch', client.commands)
+        rows = store.connection.execute(
+            "SELECT watch_id FROM watch_definition WHERE definition_source LIKE 'total-resolver:focused-profile:combat%'"
+        ).fetchall()
+        self.assertEqual({row[0] for row in rows},
+                         {profile.watches[0].watch_id, profile.instruction_watches()[0].watch_id})
+        recorder.stop_instrumentation()
+        self.assertEqual([call.args[0] for call in client.remove_watch.call_args_list], [2, 1])
+        removed = store.connection.execute(
+            "SELECT removed_sequence FROM watch_definition WHERE definition_source LIKE 'total-resolver:focused-profile:combat%'"
+        ).fetchall()
+        self.assertTrue(all(row[0] is not None for row in removed))
+
+    def test_both_start_modes_roll_back_generic_watch_when_focused_install_fails(self):
+        profile = resolve_focused_profile(self.db, COMBAT_SELECTOR_PROFILE_ID)
+        identity = make_rom(self.root / 'failure.z64')
+        for before_rom in (False, True):
+            with self.subTest(before_rom=before_rom):
+                client = (PoweredOffFakeClient if before_rom else FakeClient)(self.root / 'failure.z64')
+                client.install_focused_watch = Mock(side_effect=RuntimeError('focused install rejected'))
+                client.remove_watch = Mock(wraps=client.remove_watch)
+                store = CaptureStore.create(self.root / str(before_rom) / 'capture.sqlite', metadata(identity))
+                self.addCleanup(store.close_connection)
+                recorder = Pj64CaptureRecorder(client, store, RecorderSettings(
+                    identity['normalizedSha256'], focused_watches=profile.watches,
+                    watches=profile.instruction_watches(),
+                ), clock=FakeClock())
+                with self.assertRaisesRegex(RuntimeError, 'focused install rejected'):
+                    if before_rom:
+                        recorder.arm_before_rom(verify_pre_rom_preflight(client, identity))
+                        recorder.await_cold_boot_start()
+                    else:
+                        recorder.start()
+                client.remove_watch.assert_called_once_with(1)
+                self.assertFalse(recorder.started)
+                self.assertFalse(client.capture_enabled)
+                self.assertFalse(client.dma_enabled)
 
     def test_combat_continues_past_old_budget_until_manual_stop(self):
         profile = resolve_focused_profile(self.db, COMBAT_SELECTOR_PROFILE_ID)

@@ -728,9 +728,14 @@ class Pj64CaptureRecorder:
         self._capture_enabled = True
         self._dma_enabled = True
         self._cold_boot_armed = False
-        self._record_native_watch_definitions(trace)
-        self._install_focused_watches()
-        self.poll_once(_startup_drain=True)
+        try:
+            self._record_native_watch_definitions(trace)
+            self._install_configured_watches()
+            self.poll_once(_startup_drain=True)
+        except Exception:
+            self._started = False
+            self._rollback_instrumentation_start()
+            raise
 
     def _record_native_watch_definitions(self, trace: Mapping[str, Any]) -> None:
         trace_callback_id = trace.get("callbackId")
@@ -832,6 +837,11 @@ class Pj64CaptureRecorder:
         if not isinstance(dma_response.get("dma"), Mapping):
             raise BridgeProtocolError("DMA start response omitted DMA state")
         self.client.dma_set_rom_range(self.settings.dma_rom_start, self.settings.dma_rom_end)
+
+        self._install_configured_watches()
+
+    def _install_configured_watches(self) -> None:
+        """Install the same owned generic and focused watches after either baseline."""
 
         for spec in self.settings.watches:
             try:
