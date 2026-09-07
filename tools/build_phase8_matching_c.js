@@ -196,6 +196,7 @@ function main() {
     status: 'pass',
     generator: 'tools/build_phase8_matching_c.js',
     acceptedInputs: {
+      compilationGroupConfig: phase8.groupConfigIdentity,
       phase7Model: phase8.model.inputFiles,
       phase8Config: { bytes: fs.statSync(CONFIG_PATH).size, sha256: sha256File(CONFIG_PATH) },
       linkageConfig: {

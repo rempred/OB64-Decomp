@@ -7,6 +7,7 @@ const path = require('path');
 const { isDeepStrictEqual } = require('util');
 const { interiorRecords, buildInteriorObject } = require('./auxiliary_interior');
 const textContract = require('./text_contract');
+const compilationGroups = require('./compilation_groups');
 const {
   ROOT,
   loadAcceptedModel,
@@ -210,12 +211,13 @@ function currentFingerprint(phase8, baseline, localTools, sourcePolicy) {
   }
   const classificationBySymbol = new Map(sourcePolicy.targets.map((record) => [record.symbol, record]));
   return sha256Value({
-    schemaVersion: 6,
+    schemaVersion: 7,
     baseline,
     compilerSha256: sha256File(localTools.compiler),
     activeConfigSha256: sha256File(path.join(ROOT, 'config', 'matching-c-targets.json')),
     linkageConfig: phase8.linkageConfigIdentity,
     multiOwnerConfig: phase8.multiOwnerConfigIdentity,
+    compilationGroupConfig: phase8.groupConfigIdentity,
     compatibilityBridge: {
       compiler: phase8.config.compiler,
       targets: phase8.targets.map((target) => ({
@@ -262,6 +264,7 @@ function currentFingerprint(phase8, baseline, localTools, sourcePolicy) {
       'tools/lib/auxiliary_interior.js',
       'tools/lib/text_contract.js',
       'tools/lib/elf_text_split.js',
+      'tools/lib/compilation_groups.js',
       'tools/lib/current_workflow.js',
       'tools/lib/source_policy.js',
       'tools/verify.js',
@@ -312,7 +315,7 @@ function completeCurrent(directory, phase8, sourcePolicy) {
       const manifest = readJson(path.join(directory, 'objects/manifest.json'));
       if (layout.schemaVersion !== 2 || manifest.schemaVersion !== 5) return false;
       textContract.validateRecords(layout.phase8MatchingCTargets?.find((r) => r.symbol === target.symbol), representation, 'CURRENT layout');
-      textContract.validateRecords(manifest.linkedObjects?.find((r) => r.targetSymbol === target.symbol && r.ownerKind === 'matching-c-target'),
+      textContract.validateRecords(compilationGroups.manifestMembers(manifest.linkedObjects, phase8).find((r) => r.targetSymbol === target.symbol && r.ownerKind === 'matching-c-target'),
         { textContract: representation.textContract, objectEvidence: representation.objectEvidence }, 'CURRENT manifest');
       const expectedInteriors = interiorRecords([target]);
       if (expectedInteriors.length > 0 || record.auxiliaryInteriors !== undefined) {
@@ -532,7 +535,7 @@ function verifyFreshCompilation(context, build) {
     );
     const builtTarget = builtReport.targetReplacements.find((record) => record.symbol === target.symbol);
     textContract.validateRecords(builtTarget, { textContract: compiled.textContract, objectEvidence: compiled.objectEvidence }, 'fresh compilation');
-    const builtObject = path.join(build.output, 'objects', 'c', `${target.symbol}.o`);
+    const builtObject = path.join(build.output, compilationGroups.objectPath(target));
     if (!builtTarget || !fs.existsSync(builtObject) || sha256File(builtObject) !== compiled.objectSha256
         || builtTarget.compilerAssemblySha256 !== compiled.compilerAssemblySha256
         || builtTarget.linkedAssemblySha256 !== compiled.linkedAssemblySha256

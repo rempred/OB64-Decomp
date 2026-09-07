@@ -12,6 +12,7 @@ const ROUTINE_TESTS = [
   ['compilation-input-confinement', 'tests/compilation_input_confinement.js'],
   ['local-tools', 'tests/local_tools.js'],
   ['active-targets', 'tests/active_targets.js'],
+  ['compilation-groups', 'tests/compilation_groups.js'],
   ['auxiliary-interior', 'tests/auxiliary_interior.js'],
   ['matching-context', 'tests/matching_context.js'],
   ['status-accounting', 'tests/status.js'],

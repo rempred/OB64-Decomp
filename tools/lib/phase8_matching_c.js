@@ -7,6 +7,7 @@ const {
   projectInterior, interiorRecord, interiorRecords, buildInteriorObject, verifyInteriorArtifacts,
 } = require('./auxiliary_interior');
 const textContract = require('./text_contract');
+const compilationGroups = require('./compilation_groups');
 const {
   ROOT,
   SHIM_TEXT,
@@ -1535,6 +1536,7 @@ function verifyCompilerTextFunctions(elf, target, section, linked = false) {
 }
 
 function relocationRecords(elf, target) {
+  if (target.compilationGroup) return compilationGroups.memberRelocations(target, elf);
   const owners = targetTextOwners(target);
   const targetSections = owners.map((owner) => {
     const matches = elf.sections.filter((section) => section.name === textContract.inputSection(target, owner.sectionName));
@@ -1676,6 +1678,7 @@ function validateTargetClassifications(phase8, sourcePolicy) {
 }
 
 function compileTarget(phase8, target, output, compiler, assembler, objcopy, options = {}) {
+  if (target.compilationGroup) return compilationGroups.compile(phase8, target, output, compiler, assembler, objcopy, options);
   const enforceAcceptedContract = options.enforceAcceptedContract !== false;
   const acceptedAuxiliarySections = target.auxiliarySections || [];
   const classification = validateTargetClassification(target, options.classification);
@@ -1903,15 +1906,15 @@ function compileTarget(phase8, target, output, compiler, assembler, objcopy, opt
   return {
     ...textContract.recordsForTarget(target, output),
     symbol: target.symbol,
-    objectRelative: 'objects/c/' + target.symbol + '.o',
+    objectRelative: compilationGroups.objectPath(target),
     objectSha256: sha256File(objectFile),
-    proofObjectRelative: 'objects/c/' + target.symbol + '.source-object.o',
+    proofObjectRelative: compilationGroups.objectPath(target, '.source-object.o'),
     proofObjectSha256: sha256File(proofObjectFile),
-    assemblerObjectRelative: splitResult ? 'objects/c/' + target.symbol + '.assembler-object.o' : null,
+    assemblerObjectRelative: splitResult ? compilationGroups.objectPath(target, '.assembler-object.o') : null,
     assemblerObjectSha256: splitResult ? sha256File(assemblerObjectFile) : null,
-    compilerAssemblyRelative: 'generated/c/' + target.symbol + '.compiler.s',
+    compilerAssemblyRelative: compilationGroups.assemblyPath(target),
     compilerAssemblySha256: sha256File(compilerAssembly),
-    linkedAssemblyRelative: 'generated/c/' + target.symbol + '.s',
+    linkedAssemblyRelative: compilationGroups.assemblyPath(target, '.s'),
     linkedAssemblySha256: sha256File(linkedAssembly),
     compilationInput: {
       path: sourceRelative,
@@ -1954,10 +1957,10 @@ function fileIdentity(output, relative, label) {
 function deriveSourceObjectProof(phase8, target, output, classification, linkedElf, canonicalBaserom) {
   validateTargetClassification(target, classification);
   const compilerInputRelative = target.source;
-  const compilerRelative = 'generated/c/' + target.symbol + '.compiler.s';
-  const sectionRelative = 'generated/c/' + target.symbol + '.s';
-  const objectRelative = 'objects/c/' + target.symbol + '.source-object.o';
-  const linkedObjectRelative = 'objects/c/' + target.symbol + '.o';
+  const compilerRelative = compilationGroups.assemblyPath(target);
+  const sectionRelative = compilationGroups.assemblyPath(target, '.s');
+  const objectRelative = compilationGroups.objectPath(target, '.source-object.o');
+  const linkedObjectRelative = compilationGroups.objectPath(target);
   const compilerInputArtifact = fileIdentity(output, compilerInputRelative, 'KMC compilation input');
   if (!sameJson(compilerInputArtifact, {
     path: target.source,
@@ -1970,8 +1973,8 @@ function deriveSourceObjectProof(phase8, target, output, classification, linkedE
   const sectionArtifact = fileIdentity(output, sectionRelative, 'section-adjusted assembly');
   const objectArtifact = fileIdentity(output, objectRelative, 'matching C object');
   const linkedObjectArtifact = fileIdentity(output, linkedObjectRelative, 'linked matching C object');
-  const assemblerRelative = targetTextOwners(target).length > 1
-    ? 'objects/c/' + target.symbol + '.assembler-object.o'
+  const assemblerRelative = target.compilationGroup || targetTextOwners(target).length > 1
+    ? compilationGroups.objectPath(target, '.assembler-object.o')
     : null;
   const assemblerArtifact = assemblerRelative
     ? fileIdentity(output, assemblerRelative, 'unsplit assembler object')
@@ -1986,7 +1989,9 @@ function deriveSourceObjectProof(phase8, target, output, classification, linkedE
   }
 
   if (assemblerArtifact) {
-    const reproduced = splitRelocatableTextSection(
+    const reproduced = target.compilationGroup ? compilationGroups.project(
+      fs.readFileSync(resolveRelative(output, assemblerRelative, 'native assembler object')), target.compilationGroup)
+      : splitRelocatableTextSection(
       fs.readFileSync(resolveRelative(output, assemblerRelative, 'unsplit assembler object')),
       target.sectionName,
       targetTextOwners(target).map((owner) => ({
@@ -2141,7 +2146,8 @@ function deriveSourceObjectProof(phase8, target, output, classification, linkedE
       rawBytesExact: linkedComparison.rawBytesExact,
     };
   });
-  const ancillary = allRelocations.filter((record) => !loadRelocationSections.has(record.section));
+  const ancillary = allRelocations.filter((record) => !loadRelocationSections.has(record.section)
+    && !(target.compilationGroup && target.compilationGroup.owners.some(owner => record.section === '.rel' + owner.sectionName)));
   const basePermittedAdjustment = auxiliaryProofs.length === 0
     ? 'replace the sole .text directive with the accepted target section directive'
     : auxiliaryProofs.some((auxiliary) => Array.isArray(auxiliary.compilerOccurrences))
@@ -2177,13 +2183,13 @@ function deriveSourceObjectProof(phase8, target, output, classification, linkedE
     },
     assemblyContract: {
       compilerAssemblyRewritten: false,
-      permittedAdjustment: target.nativeTextTail ? 'none; untouched native compiler assembly'
+      permittedAdjustment: target.nativeTextTail || target.compilationGroup ? 'none; untouched native compiler assembly'
         : sourceObjectPrefixSelections > 0
           ? basePermittedAdjustment + '; authenticate the complete aligned auxiliary source-object section and select only its declared zero-offset prefix for linkage'
           : basePermittedAdjustment,
       auxiliarySectionCount: auxiliaryProofs.length,
       ...(sourceObjectPrefixSelections > 0 ? { sourceObjectPrefixSelections } : {}),
-      relocatableContainerSplit: targetTextOwners(target).length > 1,
+      relocatableContainerSplit: Boolean(target.compilationGroup) || targetTextOwners(target).length > 1,
       splitInstructionBytesRewritten: false,
       classifiedBytesAreCompilerInput: true,
     },
@@ -2510,16 +2516,17 @@ function writeObjectManifest(output, linkedObjects, phase8, replacements, compil
     };
   });
   const manifestFile = path.join(output, 'objects', 'manifest.json');
+  const producerObjects = compilationGroups.collapseManifest(objects, phase8);
   writeJson(manifestFile, {
     schemaVersion: 5,
     generator: 'tools/build_phase8_matching_c.js',
     targets: phase8.targets.map((target) => target.symbol),
-    linkedObjects: objects,
+    linkedObjects: producerObjects,
     comparisonObjects,
   });
   return {
     file: manifestFile,
-    linkedObjects: objects,
+    linkedObjects: producerObjects,
     comparisonObjects,
     sha256: sha256File(manifestFile),
     bytes: fs.statSync(manifestFile).size,
@@ -2574,7 +2581,7 @@ function writeLayout(phase8, phase7, output, replacements) {
               originalAssemblyFallback: textOwner.originalAssembly,
               matchingCSymbol: target.symbol,
               matchingCLogicalOffset: textOwner.logicalOffset,
-              linkedOwner: 'objects/c/' + target.symbol + '.o',
+              linkedOwner: compilationGroups.objectPath(target),
             };
           }
           const retained = retainedForOwner.find((candidate) => candidate.sectionName === slice.sectionName);
@@ -2777,7 +2784,7 @@ function verifyPhase8Layout(phase8, layout, replacements) {
             || matchingSlice.originalAssemblyFallback !== textOwner.originalAssembly
             || matchingSlice.matchingCSymbol !== target.symbol
             || matchingSlice.matchingCLogicalOffset !== textOwner.logicalOffset
-            || matchingSlice.linkedOwner !== 'objects/c/' + target.symbol + '.o') {
+            || matchingSlice.linkedOwner !== compilationGroups.objectPath(target)) {
           fail('Phase 8 external mixed layout C-slice drift: ' + target.symbol + ' ' + textOwner.sectionName);
         }
         for (const retained of retainedForOwner) {
@@ -2872,11 +2879,16 @@ function renderPhase8LinkerScript(phase8, objectManifest) {
     if (linkerText.split(selector).length !== 2) fail('native input selector is ambiguous');
     linkerText = linkerText.replace(selector, '    objects/c/' + target.symbol + '.o(.text)');
   }
-  if (phase8.targets.some(target => target.nativeTextTail)) {
+  for (const target of phase8.targets.filter(entry => entry.compilationGroup)) {
+    const selector = '    *(' + target.sectionName + ')';
+    if (linkerText.split(selector).length !== 2) fail('group input selector is ambiguous');
+    linkerText = linkerText.replace(selector, '    ' + compilationGroups.objectPath(target) + '(' + target.sectionName + ')');
+  }
+  if (phase8.targets.some(target => target.nativeTextTail || target.compilationGroup)) {
     // GNU 2.6 otherwise places the empty native BSS orphan after the final overlay BSS.
     // Native object validation requires this input to contain no bytes.
-    const emptyBss = phase8.targets.filter(target => target.nativeTextTail)
-      .map(target => '    objects/c/' + target.symbol + '.o(.bss)').join('\n');
+    const emptyBss = [...new Set(phase8.targets.filter(target => target.nativeTextTail || target.compilationGroup)
+      .map(target => '    ' + compilationGroups.objectPath(target) + '(.bss)'))].join('\n');
     linkerText = linkerText.replace('  /DISCARD/ :', '  .bss 0 (NOLOAD) : {\n' + emptyBss + '\n  }\n  /DISCARD/ :');
   }
   const assignedAuxiliaryOwners = new Set();
@@ -3147,7 +3159,7 @@ function escapeRegex(value) {
 
 function verifyTargetMapOwner(target, mapText) {
   const lines = mapText.split(/\r?\n/);
-  const expectedOwner = 'objects/c/' + target.symbol + '.o';
+  const expectedOwner = compilationGroups.objectPath(target);
   const owners = targetTextOwners(target).map((owner, ownerIndex) => {
     const escaped = escapeRegex(owner.sectionName);
     const heading = lines.findIndex((line) => new RegExp('^' + escaped + '\\s').test(line));
@@ -3225,7 +3237,7 @@ function verifyAuxiliaryMapOwner(target, auxiliary, tail, mapText, prefix = null
     }
   }
   const block = lines.slice(heading, end);
-  const expectedOwner = 'objects/c/' + target.symbol + '.o';
+  const expectedOwner = compilationGroups.objectPath(target);
   const contributionPattern = /^\s+(\.[A-Za-z0-9_.]+)\s+(?:0x)?([0-9A-Fa-f]+)\s+(?:0x)?([0-9A-Fa-f]+)\s+(.+)$/;
   const contributions = block.map((line) => {
     const match = contributionPattern.exec(line);
@@ -3388,8 +3400,9 @@ function verifyObjectManifest(output, phase8) {
   const manifestFile = path.join(output, 'objects', 'manifest.json');
   if (!fs.existsSync(manifestFile)) fail('Phase 8 object manifest is missing');
   const manifest = readJson(manifestFile);
+  const memberObjects = compilationGroups.manifestMembers(manifest.linkedObjects, phase8);
   for (const target of phase8.targets) {
-    const record = manifest.linkedObjects?.find((entry) => entry.targetSymbol === target.symbol && entry.ownerKind === 'matching-c-target');
+    const record = memberObjects.find((entry) => entry.targetSymbol === target.symbol && entry.ownerKind === 'matching-c-target');
     textContract.validateRecords(record, textContract.recordsForTarget(target, output), 'manifest');
   }
   const expectedPruned = new Set([...targetsByChunk(phase8).keys()]);
@@ -3406,7 +3419,7 @@ function verifyObjectManifest(output, phase8) {
       fail('Phase 8 object identity drift: ' + record.path);
     }
   }
-  const cOwners = manifest.linkedObjects.filter((record) => record.ownerKind === 'matching-c-target');
+  const cOwners = memberObjects.filter((record) => record.ownerKind === 'matching-c-target');
   const prunedOwners = manifest.linkedObjects.filter((record) => record.ownerKind === 'accepted-assembly-chunk-with-targets-removed');
   const auxiliaryPrefixOwners = manifest.linkedObjects.filter((record) => record.ownerKind === 'accepted-assembly-auxiliary-prefix');
   const auxiliaryTailOwners = manifest.linkedObjects.filter((record) => record.ownerKind === 'accepted-assembly-auxiliary-tail');
@@ -3441,10 +3454,10 @@ function verifyObjectManifest(output, phase8) {
       .filter((auxiliary) => auxiliary.sourceObjectPrefix)
       .map((auxiliary) => ({
         outputSection: auxiliary.outputSection,
-        sourceObject: 'objects/c/' + target.symbol + '.source-object.o',
-        sourceObjectSha256: sha256File(path.join(output, 'objects', 'c', target.symbol + '.source-object.o')),
-        linkedObject: 'objects/c/' + target.symbol + '.o',
-        linkedObjectSha256: sha256File(path.join(output, 'objects', 'c', target.symbol + '.o')),
+        sourceObject: compilationGroups.objectPath(target, '.source-object.o'),
+        sourceObjectSha256: sha256File(path.join(output, compilationGroups.objectPath(target, '.source-object.o'))),
+        linkedObject: compilationGroups.objectPath(target),
+        linkedObjectSha256: sha256File(path.join(output, compilationGroups.objectPath(target))),
         ...projectAuxiliarySourceObjectPrefix(auxiliary),
       }));
     if (!cOwner || cOwner.targetSection !== target.sectionName
@@ -3608,7 +3621,7 @@ function verifyPhase8Output(phase8, options) {
   for (const target of phase8.targets) {
     const representation = textContract.recordsForTarget(target, output, textLinkContext);
     textContract.validateRecords(textLayout.phase8MatchingCTargets?.find((record) => record.symbol === target.symbol), representation, 'layout');
-    const cObject = path.join(output, 'objects', 'c', target.symbol + '.o');
+    const cObject = path.join(output, compilationGroups.objectPath(target));
     const ownerFiles = targetTextOwners(target).map((owner) => {
       const replacement = replacements.get(owner.chunkIndex);
       if (!replacement) fail('Phase 8 target replacement chunk is missing: ' + target.symbol + ' ' + owner.sectionName);
@@ -3655,12 +3668,7 @@ function verifyPhase8Output(phase8, options) {
     }
 
     const cElf = parseElfFile(cObject);
-    const sourceObjectElf = parseElfFile(path.join(
-      output,
-      'objects',
-      'c',
-      target.symbol + '.source-object.o',
-    ));
+    const sourceObjectElf = parseElfFile(path.join(output, compilationGroups.objectPath(target, '.source-object.o')));
     const cSection = cElf.sections.find((section) => section.name === textContract.inputSection(target, target.sectionName));
     if (!cSection) fail('recorded C object target section is missing: ' + target.symbol);
     verifyCompilerTextFunctions(cElf, target, cSection);
@@ -4023,6 +4031,7 @@ function verifyPhase8Output(phase8, options) {
 function validateRecordedPhase8Build(phase8, options) {
   const output = path.resolve(options.output);
   const buildReport = options.buildReport;
+  if (!sameJson(buildReport?.acceptedInputs?.compilationGroupConfig, phase8.groupConfigIdentity)) fail('recorded compilation group registry drift');
   const verification = options.verification;
   if (!buildReport || buildReport.schemaVersion !== 5 || buildReport.status !== 'pass') {
     fail('recorded Phase 8 build report did not pass');
@@ -4325,6 +4334,7 @@ module.exports = {
   verifyAuxiliarySourceObjectSection,
   validateSourceObjectProofBytes,
   validateTargetClassifications,
+  validateTargetClassification,
   verifyCompilerTextFunctions,
   verifyCompiler,
   verifySourceObjectProofs,

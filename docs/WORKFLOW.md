@@ -466,3 +466,13 @@ Strict outputs use linkage schema 4, source-object proof 4, layout 2, and build/
 Ordinary section assignment and existing auxiliary contracts retain their behavior. The bounded nativeTextTail descriptor permits untouched compiler assembly with a 1132-byte function inside its 1136-byte, 16-aligned native text owner. The four zero bytes must come from assembler alignment. Full-owner bytes, sole ownership, relocations, and the entire ROM must still match. The art routine `func_00204A70` is active in the canonical target registry.
 
 Shared-header compatibility defaults to current version-5 evidence on both sides. Use `--historical-v3-v4` only for the retained historical migration; it cannot bridge older evidence into version 5.
+
+## Compilation-group workflow
+
+General compilation-group tooling does not activate a source wave. The production registry is initially empty. Reviewed activation must name every member together and retain all existing owner boundaries and public entries.
+
+Edit the group's one authored translation unit, then run `node tools/diff.js <member>`. The diff compiles the requested member's whole group once. Unchanged sibling groups use one authenticated producer cache bundle, with member views validated against that bundle. Cache schema 4 includes group contracts, all authenticated source dependencies and producer implementations. CURRENT fingerprint version 7 includes the group registry.
+
+The canonical diff compares the selected complete owner and freshly links all active members. Group admission requires its reviewed raw text and relocation contract. Changing that contract is explicit provisional source-wave work; failed producer checks must not be described as an exact diff. The optional standalone workbench rejects grouped members until it supports complete group candidates.
+
+Strict verification recreates group artifacts and retains separate member proofs. One group object contributes each accepted owner section exactly once. A complete wave receives one final verifier; neither tooling acceptance nor a successful isolated group fixture accepts production members.

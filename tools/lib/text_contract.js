@@ -46,6 +46,7 @@ function textOwners(target) {
   }];
 }
 function resolveTextContract(target) {
+  if (target.compilationGroup) return require('./compilation_groups').contract(target);
   const native = target.nativeTextTail ? normalizeNativeTextTail(target.nativeTextTail, target.symbol) : null;
   const owners = textOwners(target);
   if (native && (owners.length !== 1 || target.rowIndex !== 3806 || target.sectionName !== native.outputSection
@@ -79,6 +80,9 @@ function resolveTextContract(target) {
   };
 }
 function bindWorkbenchTarget(session, target) {
+  if (target.compilationGroup || (session?.context?.phase8?.targets || []).some(entry => entry.symbol === target.symbol && entry.compilationGroup)) {
+    fail('group workbench requires a complete group candidate; use canonical diff with the group source');
+  }
   const matches = (session?.context?.phase8?.targets || []).filter((entry) => entry.symbol === target.symbol && entry.nativeTextTail);
   if (matches.length === 0) {
     if (target.nativeTextTail) fail('workbench native descriptor is not active');
@@ -99,6 +103,11 @@ function inputTarget(target) {
 }
 function inputSection(target, outputSection) { return target.nativeTextTail ? '.text' : outputSection; }
 function assemblerInput(compilerBytes, target, adjust, options = {}) {
+  if (target.compilationGroup) {
+    if (options.allowAuxiliaryReadOnlySections || options.legalizeCop1BinaryInstructions || options.auxiliarySections?.length) fail('group assembly allowances');
+    adjust(compilerBytes, target.sectionName, {});
+    return Buffer.from(compilerBytes);
+  }
   if (!target.nativeTextTail) return adjust(compilerBytes, target.sectionName, options);
   resolveTextContract(target);
   if (options.allowAuxiliaryReadOnlySections || options.legalizeCop1BinaryInstructions || (options.auxiliarySections || []).length) {
@@ -196,19 +205,21 @@ function nativeLinkedAllocationEvidence(target, elf, mapText) {
   const sortLoads = loads => loads.map(load => JSON.stringify(loadRecord(load))).sort();
   const loads = elf.programHeaders.filter(load => load.type === 1);
   if (!same(sortLoads(loads), sortLoads([...expected.values()].map(value => value.load)))) fail('native linked load census drift');
-  const objectPath = 'objects/c/' + target.symbol + '.o';
+  const objectPath = require('./compilation_groups').objectPath(target);
   const lines = mapText.split(/\r?\n/);
   const starts = lines.map((line, index) => /^\.bss\s/.test(line) ? index : -1).filter(index => index >= 0);
   if (starts.length !== 1 || !/^\.bss\s+0+\s+0+\s+0+\s+2\*\*4\s+alloc\s*$/.test(lines[starts[0]])) fail('native empty BSS map shape');
   let end = starts[0] + 1;
   while (end < lines.length && !/^\S/.test(lines[end])) end++;
   const block = lines.slice(starts[0] + 1, end).filter(line => line.trim());
-  if (!same(block.map(line => line.trim().replace(/\\/g, '/')), ['from ' + objectPath + '(.bss)'])) fail('native empty BSS object selector');
+  const emptySelectors = (target.nativeEmptyBssObjects || [objectPath]).map(value => 'from ' + value + '(.bss)');
+  if (!same(block.map(line => line.trim().replace(/\\/g, '/')), emptySelectors)) fail('native empty BSS object selector');
   return { schemaVersion: 1, emptyWritablePlacement: { objectPath, inputSection: '.bss', outputSection: '.bss', address: 0, bytes: 0 },
     emptySections, allocatedSectionCount: seen.size, loadCount: loads.length, loadCensusSha256: hash(sortLoads(loads)),
     unexpectedAllocationCount: 0, unexpectedLoadCount: 0 };
 }
 function deriveObjectEvidence(target, root, artifactFiles = null) {
+  if (target.compilationGroup) return require('./compilation_groups').evidence(target, root, artifactFiles);
   const identity = (role, relative) => artifactFiles
     ? { ...artifact(path.dirname(artifactFiles[role]), path.basename(artifactFiles[role])), path: relative }
     : artifact(root, relative);
@@ -256,10 +267,10 @@ function deriveLinkEvidence(target, root, canonicalBaserom) {
   const contract = resolveTextContract(target), elf = context.elf;
   const records = ownerEvidence(elf, contract, true);
   const mapText = context.mapText;
-  const allocation = target.nativeTextTail ? nativeLinkedAllocationEvidence(target, elf, mapText) : null;
+  const allocation = target.nativeTextTail || target.compilationGroup ? nativeLinkedAllocationEvidence(target, elf, mapText) : null;
   require('./phase8_matching_c').verifyTargetMapOwner(target, mapText);
   const lines = mapText.split(/\r?\n/);
-  const objectPath = 'objects/c/' + target.symbol + '.o';
+  const objectPath = require('./compilation_groups').objectPath(target);
   const mapContributions = contract.owners.map((owner) => {
     const start = lines.findIndex((line) => line.startsWith(owner.outputSection + ' '));
     if (start < 0) fail('map owner missing');
@@ -290,7 +301,7 @@ function deriveLinkEvidence(target, root, canonicalBaserom) {
       loadIndex: loads[0].index, expectedSha256: sha256Buffer(retail), rawBytesExact: record.bytes.equals(retail) };
   });
   const functions = functionCensus(elf, records.map((record) => record.section), true);
-  if (target.nativeTextTail && !same(functions, contract.compilerTextFunctions)) fail('linked native function census');
+  if ((target.nativeTextTail || target.compilationGroup) && !same(functions, contract.compilerTextFunctions)) fail('linked native function census');
   const objectEvidence = deriveObjectEvidence(target, root);
   const tail = tailEvidence(contract, records, objectEvidence.normalizedRelocations);
   if (tail && !records[0].bytes.subarray(tail.offset).equals(canonicalBaserom.subarray(target.romStartNumber + tail.offset, target.romEndNumber))) fail('linked retail tail mismatch');

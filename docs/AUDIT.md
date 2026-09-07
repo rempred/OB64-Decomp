@@ -219,3 +219,15 @@ must prove equivalent coverage before the old gate is retired.
 ## Native text evidence
 
 Audit schema 4 requires complete textContract, objectEvidence, and linkEvidence on every active target. Native fixtures exercise untouched compiler input, exact section and function censuses, native alignment, zero tail, sole object contribution, load mapping, and full-owner exactness. Malformed and stale evidence must fail independently of identical reports. The retained nonexact Combat candidate must remain a negative control. Tooling acceptance does not accept the unfinished Combat source wave.
+
+## Compilation-group audit evidence
+
+The group registry is an authenticated CURRENT/build input. A stale report without its identity rejects. Group text contracts use schema 2 and group object evidence uses schema 3; legacy representation schemas retain their existing meaning. CURRENT fingerprint version 7 and diff-cache schema 4 invalidate prior reuse inputs.
+
+For each active group, audit the complete native, projected and stripped object evidence. Verify exact `.reginfo` shape and reference closure before removal, payload preservation during projection and absence after stripping. Verify complete compiler function and marker censuses, native tail provenance, unchanged projected bytes, original section-symbol anchors and relocation addends. Keep all accepted owner sections and one-section PT_LOAD mappings.
+
+Require one linked producer object with complete ordered member records, individual fallback exclusion, public entries, source classes and full-owner hashes. Count functions and owner bytes once per member; report compilation producers separately. All current and baseline complete-ROM gates remain mandatory.
+
+`node tests/compilation_groups.js` covers unrelated pure-C call/address and zero-tail groups, two link placements, source/cache artifact agreement and bounded malformed inputs. `node tests/compilation_groups_phase8.js` exercises the designated pose research group with art-native coexistence through an isolated full-ROM link and strict proof. Its source and artifacts remain ignored. It does not activate production targets. Existing native, multi-owner and multi-function tests retain their contracts.
+
+The accepted design is `docs/Plans/compilation-groups-design.md` with `docs/Plans/compilation-groups-design-r2.md`. Implementation acceptance requires a completed changed-input structural audit and independent review. Ordinary matching waves gain no additional review gate.

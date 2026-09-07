@@ -26,6 +26,8 @@ function main() {
   printLine('Assembly owners remaining ', `${ownership.assembly.owners} / ${ownership.assembly.bytes} bytes`);
   printLine('Other/data owners ', `${ownership.otherData.owners} / ${ownership.otherData.bytes} bytes`);
   printLine('UNKNOWN classifications ', policy.counts.UNKNOWN);
+  printLine('Compilation producers ', new Set(context.phase8.targets.map(target => target.compilationGroup
+    ? 'group:' + target.compilationGroup.id : 'target:' + target.symbol)).size);
   if (!verification.exact) printLine('Classified active targets ', `${context.phase8.targets.length} (run node tools/verify.js)`);
 }
 

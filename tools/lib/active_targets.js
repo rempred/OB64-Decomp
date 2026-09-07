@@ -1251,6 +1251,9 @@ function loadActiveTargetModel(options = {}) {
   const minimal = readJson(CONFIG_PATH);
   const linkage = readJson(LINKAGE_CONFIG_PATH);
   const multiOwnerConfig = readJson(MULTI_OWNER_CONFIG_PATH);
+  const groupSupport = require('./compilation_groups');
+  const groupConfig = readJson(groupSupport.CONFIG_PATH);
+  const compilationGroups = groupSupport.registry(groupConfig, model.config.profile);
   const legacy = readJson(LEGACY_CONFIG_PATH);
   if (minimal.schemaVersion !== 3 || minimal.profile !== model.config.profile || !Array.isArray(minimal.targets) || minimal.targets.length === 0
       || !minimal.toolchain || typeof minimal.toolchain !== 'object') {
@@ -1327,7 +1330,11 @@ function loadActiveTargetModel(options = {}) {
   const overlayConfig = readJson(path.join(ROOT, 'config', 'overlays', 'us_rev0.json'));
   const compatibility = [];
   const usedCanonicalContracts = new Set();
-  const targets = minimal.targets.map((entry, targetIndex) => {
+  const targets = minimal.targets.map((authoredEntry, targetIndex) => {
+    const groupReference = authoredEntry?.compilationGroup;
+    const group = groupReference && compilationGroups.find(candidate => candidate.id === groupReference);
+    if (groupReference && (!group || !exactKeys(authoredEntry, ['symbol', 'compilationGroup']))) fail('invalid compilation group producer reference');
+    const entry = group ? { symbol: authoredEntry.symbol, source: group.source } : authoredEntry;
     if (!entry || typeof entry.symbol !== 'string' || typeof entry.source !== 'string' || Object.keys(entry).some((key) => !['symbol', 'source'].includes(key))) {
       fail(`active target entry ${targetIndex} is not minimal symbol/source metadata`);
     }
@@ -1336,7 +1343,9 @@ function loadActiveTargetModel(options = {}) {
     const legacyTarget = legacyMatches[0] || null;
     const canonicalTarget = reviewedLinkage.targets.get(entry.symbol.toLowerCase()) || null;
     if (canonicalTarget) usedCanonicalContracts.add(entry.symbol.toLowerCase());
-    const relocationContract = selectRelocationContract(
+    if (group && canonicalTarget) fail('group member cannot combine standalone linkage contracts');
+    const relocationContract = group ? { expectedRelocations: [], compilerTextFunctions: [], auxiliarySections: [],
+      source: 'compilation-group', canonicalLegacyEquivalent: null } : selectRelocationContract(
       entry.symbol,
       canonicalTarget,
       legacyTarget,
@@ -1389,6 +1398,7 @@ function loadActiveTargetModel(options = {}) {
         || sha256Buffer(baserom.subarray(owner.romStartNumber, owner.romEndNumber)),
     }));
     const target = {
+      ...(group ? { compilationGroupId: group.id } : {}),
       symbol: entry.symbol,
       source: entry.source,
       targetIndex,
@@ -1472,6 +1482,12 @@ function loadActiveTargetModel(options = {}) {
     return target;
   });
 
+  groupSupport.bind(compilationGroups, targets);
+  if (compilationGroups.length) {
+    const paths = [...new Set(targets.filter(target => target.nativeTextTail || target.compilationGroup).map(target => groupSupport.objectPath(target)))];
+    for (const target of targets) target.nativeEmptyBssObjects = paths;
+  }
+
   validateNoActiveLinkSymbolShadows(targets, reviewedLinkage.linkSymbols);
 
   for (const key of reviewedLinkage.targets.keys()) {
@@ -1512,6 +1528,9 @@ function loadActiveTargetModel(options = {}) {
       sha256: sha256File(LINKAGE_CONFIG_PATH),
     },
     multiOwnerConfig,
+    compilationGroups,
+    groupConfigIdentity: { path: path.relative(ROOT, groupSupport.CONFIG_PATH).replace(/\\/g, '/'),
+      bytes: fs.statSync(groupSupport.CONFIG_PATH).size, sha256: sha256File(groupSupport.CONFIG_PATH) },
     multiOwnerConfigIdentity: {
       path: path.relative(ROOT, MULTI_OWNER_CONFIG_PATH).replace(/\\/g, '/'),
       bytes: fs.statSync(MULTI_OWNER_CONFIG_PATH).size,

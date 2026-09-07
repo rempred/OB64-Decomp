@@ -304,3 +304,15 @@ If desired, call the combined set “exact source replacements,” but keep the 
 ## Native text and source class
 
 Native assembler alignment is representation evidence, independent of source classification. A generated inline-assembly fixture remains HYBRID_C even when its full ROM is exact. A native PURE_C match still requires sole C ownership, exact complete owner bytes including its tail, accepted relocations, and an exact complete retail ROM.
+
+## Compilation groups
+
+A compilation group is one C producer for several existing function targets. The version-1 registry is `config/matching-c-compilation-groups.json`. A grouped target uses `{ "symbol": "func_XXXXXXXX", "compilationGroup": "group_id" }` instead of a standalone source record. The registry remains empty until a separately assigned complete source wave activates all members together.
+
+The group record fixes its source, ordered public functions, accepted owner rows, native text shape/hash, terminal alignment bytes and complete group-relative relocation semantics. Owner placement and fallback identities come from the accepted structural model. The initial mode admits contiguous single-function owners in one placement context, with optional native terminal padding only in the final owner. It cannot combine art-native, continuation, local-function or auxiliary contracts.
+
+The pinned compiler assembly is unchanged. A separate ELF metadata projection copies native text into existing owner sections. It preserves instruction bytes, encoded addends, public function symbols and the group-base section anchor. Projected alignment is derived from native alignment and owner offset; exact ROM/RAM equations prohibit fill or movement. All members link from one C object and retain individual acceptance results.
+
+The raw and projected objects admit exactly one pinned `.reginfo`: type `0x70000006`, flags `2`, size `24`, alignment `4`, address/link/info zero and entry size `1`. Its payload identity must agree across projection. Only its unnamed local section symbol is allowed; relocation targets or references reject. The existing pinned ancillary-removal sequence removes it before linking. Stripped and linked evidence must show no `.reginfo`, with unchanged owner bytes, public functions and load relocations. Other uncontracted allocation and nonzero COMMON reject.
+
+Classification uses the complete authenticated translation unit once per producer. Every member inherits its class. An assembler escape in any part makes the whole group HYBRID_C; UNKNOWN rejects. Group producers and native padding never increase the function count. Member results count only after all complete-wave and full-ROM gates pass.

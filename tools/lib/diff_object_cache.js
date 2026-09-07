@@ -3,6 +3,7 @@
 const crypto = require('crypto');
 const fs = require('fs');
 const textContract = require('./text_contract');
+const compilationGroups = require('./compilation_groups');
 const path = require('path');
 const { projectInterior } = require('./auxiliary_interior');
 const {
@@ -30,7 +31,7 @@ const {
 } = require('./source_policy');
 const { splitRelocatableTextSection } = require('./elf_text_split');
 
-const CACHE_SCHEMA_VERSION = 3;
+const CACHE_SCHEMA_VERSION = 4;
 const DEFAULT_CACHE_ROOT = path.join(ROOT, 'build', 'diff-object-cache');
 const SAFE_SYMBOL = /^[A-Za-z_.$][A-Za-z0-9_.$]*$/;
 const SHA256 = /^[0-9A-F]{64}$/;
@@ -47,6 +48,7 @@ const IMPLEMENTATION_FILES = Object.freeze([
   'tools/lib/diff_object_cache.js',
   'tools/lib/diff_profile.js',
   'tools/lib/elf_text_split.js',
+  'tools/lib/compilation_groups.js',
   'tools/lib/phase7_conventional.js',
   'tools/lib/phase8_matching_c.js',
   'tools/lib/source_policy.js',
@@ -56,6 +58,7 @@ const ACTIVE_CONFIGURATION_FILES = Object.freeze([
   'config/matching-c-targets.json',
   'config/matching-c-linkage.json',
   'config/matching-c-multi-owner.json',
+  'config/matching-c-compilation-groups.json',
   'config/phase8/matching-c.json',
   'config/source-policy.json',
 ]);
@@ -390,7 +393,7 @@ function createCacheKeyMaterial(options) {
       },
       textContract: textContract.resolveTextContract(target),
       sectionAdjustment: {
-        mode: target.nativeTextTail ? 'untouched-native-text' : 'section-assigned',
+        mode: target.nativeTextTail || target.compilationGroup ? 'untouched-native-text' : 'section-assigned',
         allowAuxiliaryReadOnlySections: false,
         auxiliarySections: target.auxiliarySections || [],
         legalizeCop1BinaryInstructions: false,
@@ -398,10 +401,10 @@ function createCacheKeyMaterial(options) {
       assembler: {
         executable: executableIdentity(assembler, 'assembler'),
         flags: [...assemblerFlags],
-        input: target.nativeTextTail ? 'untouched-compiler-assembly' : 'adjusted-assembly',
-        output: targetTextOwners(target).length > 1 ? 'assembler-object' : 'source-object',
+        input: target.nativeTextTail || target.compilationGroup ? 'untouched-compiler-assembly' : 'adjusted-assembly',
+        output: target.compilationGroup || targetTextOwners(target).length > 1 ? 'assembler-object' : 'source-object',
       },
-      textSplit: targetTextOwners(target).length > 1,
+      textSplit: Boolean(target.compilationGroup) || targetTextOwners(target).length > 1,
       auxiliarySourceObjectPrefixSelection: (target.auxiliarySections || [])
         .filter((auxiliary) => auxiliary.sourceObjectPrefix)
         .map((auxiliary) => auxiliary.outputSection),
@@ -420,14 +423,14 @@ function artifactSpecifications(target) {
   if (!target || typeof target.symbol !== 'string' || !SAFE_SYMBOL.test(target.symbol)) {
     fail('artifact target symbol is malformed');
   }
-  const symbol = target.symbol;
+  const symbol = compilationGroups.stem(target);
   const specs = [
     { name: 'compilation-input.c', destination: safeRelative(target.source, 'compilation input destination') },
     { name: 'compiler.s', destination: `generated/c/${symbol}.compiler.s` },
     { name: 'adjusted.s', destination: `generated/c/${symbol}.s` },
     { name: 'source-object.o', destination: `objects/c/${symbol}.source-object.o` },
   ];
-  if (targetTextOwners(target).length > 1) {
+  if (target.compilationGroup || targetTextOwners(target).length > 1) {
     specs.push({ name: 'assembler-object.o', destination: `objects/c/${symbol}.assembler-object.o` });
   }
   specs.push({ name: 'final.o', destination: `objects/c/${symbol}.o` });
@@ -448,7 +451,9 @@ function cacheEntryPath(cacheRoot, target, key) {
     fail('cache target symbol is malformed');
   }
   if (typeof key !== 'string' || !SHA256.test(key)) fail('cache key is malformed');
-  return path.join(path.resolve(cacheRoot), target.symbol, key);
+  const producer = target.compilationGroup ? 'group-' + target.compilationGroup.id : target.symbol;
+  if (!(target.compilationGroup ? /^group-[a-z][a-z0-9_-]{0,63}$/.test(producer) : SAFE_SYMBOL.test(producer))) fail('cache producer identity is malformed');
+  return path.join(path.resolve(cacheRoot), producer, key);
 }
 
 function assertStrictDescendant(root, candidate, label) {
@@ -606,6 +611,19 @@ function validateAllocatedSections(elf, target, allowReginfo, label) {
 }
 
 function inspectCompiledTargetArtifacts(options) {
+  if (options.target.compilationGroup) {
+    const files = options.files;
+    const classification = options.classification;
+    verifyTargetSourceIdentity(options.target, classification);
+    const result = compilationGroups.compiledMember(options.target, null, classification, {
+      compilationInput: files['compilation-input.c'], compilerAssembly: files['compiler.s'],
+      assemblerInput: files['adjusted.s'], rawObject: files['source-object.o'],
+      strippedObject: files['final.o'], unsplitAssemblerObject: files['assembler-object.o'],
+    });
+    const input = fs.readFileSync(files['compilation-input.c']);
+    if (!input.equals(compilationInputBytes(classification))) fail('group cache compilation input drift');
+    return result;
+  }
   const { phase8, target, classification, files } = options;
   validateClassification(target, classification);
   const specs = artifactSpecifications(target);
@@ -1108,6 +1126,7 @@ function compileDiffTargets(options) {
   const entries = [];
   let requestedCount = 0;
   let compilerInvocations = 0;
+  const groupProducers = new Set();
   const seal = options.cacheSeal || profileMeasure(options, 'object-cache.seal-create', () => createCacheSeal(options));
   const verifySeal = options.verifyCacheSeal || verifyCacheSeal;
   const verifySource = options.verifyTargetSource || verifyTargetSourceIdentity;
@@ -1121,6 +1140,33 @@ function compileDiffTargets(options) {
   };
   for (const target of phase8.targets) {
     const classification = classificationBySymbol.get(target.symbol);
+    if (target.compilationGroup) {
+      const id = target.compilationGroup.id;
+      if (target.symbol === requestedTarget.symbol) requestedCount++;
+      if (groupProducers.has(id)) {
+        compiled.set(target.symbol, compilationGroups.compiledMember(target, output, classification));
+        entries.push({ symbol: target.symbol, status: 'producer-member', key: null, reason: id });
+      } else {
+        groupProducers.add(id);
+        const leader = phase8.targets.find(value => value.symbol === target.compilationGroup.members[0].symbol);
+        if (!leader || !leader.compilationGroup || leader.compilationGroup.id !== id) fail('missing group cache producer');
+        const producerClassification = classificationBySymbol.get(leader.symbol);
+        verifySource(target, classification);
+        if (requestedTarget.compilationGroup?.id === id) {
+          compile(phase8, leader, output, compiler, assemblerPath, objcopyPath, { classification: producerClassification });
+          compilerInvocations++;
+          entries.push({ symbol: target.symbol, status: 'requested-fresh', key: null, reason: id });
+        } else {
+          const result = compileOrReuseTarget({ ...sealedOptions, target: leader, classification: producerClassification, compile });
+          if (result.cache.status !== 'hit') compilerInvocations++;
+          entries.push({ symbol: target.symbol, ...result.cache });
+        }
+        compiled.set(target.symbol, compilationGroups.compiledMember(target, output, classification));
+        verifySeal(seal);
+        verifySource(target, classification);
+      }
+      continue;
+    }
     if (target.symbol === requestedTarget.symbol) {
       requestedCount += 1;
       profileMeasure(options, 'object-cache.requested-source-precheck', () => verifySource(target, classification));

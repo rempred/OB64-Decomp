@@ -187,6 +187,7 @@ function buildSectionList(parsed, input, source, relocation, owners, relocationG
           oldIndex: original.index,
           name: owner.sectionName,
           size: owner.bytes,
+          alignment: owner.alignment || original.alignment,
           data: Buffer.from(input.subarray(
             source.offset + owner.logicalOffset,
             source.offset + owner.logicalEnd,
@@ -497,4 +498,53 @@ function splitRelocatableTextSection(input, sourceSectionName, requestedOwners) 
 
 module.exports = {
   splitRelocatableTextSection,
+  projectNativeTextOwners,
 };
+
+// Separate from the legacy continuation contract: compiler public symbols already
+// exist and must retain their sizes. Only ELF placement metadata is projected.
+function projectNativeTextOwners(input, requestedOwners) {
+  const parsed = parseRelocatable(input);
+  const matches = parsed.sections.filter(section => section.name === '.text');
+  if (matches.length !== 1) fail('native text section census');
+  const source = matches[0];
+  if (source.type !== SHT_PROGBITS || source.flags !== 6 || source.address !== 0
+      || source.size <= 0 || source.size % 4 || source.alignment < 4
+      || (source.alignment & (source.alignment - 1))) fail('native text section shape');
+  const owners = normalizeOwners(requestedOwners, source.size);
+  if (owners.some(owner => owner.symbol || parsed.sections.some(section => section.name === owner.sectionName))) {
+    fail('native projection cannot synthesize symbols or replace existing sections');
+  }
+  for (const owner of owners) {
+    let alignment = source.alignment;
+    while (owner.logicalOffset % alignment) alignment /= 2;
+    owner.alignment = alignment;
+  }
+  const rels = parsed.sections.filter(section => section.info === source.index && [4, 9].includes(section.type));
+  if (rels.length > 1 || (rels.length && (rels[0].name !== '.rel.text'
+      || rels[0].type !== SHT_REL || rels[0].entrySize !== REL_BYTES))) fail('native relocation section shape');
+  const relocation = rels[0] || null;
+  if (relocation) {
+    const bytes = sectionBytes(input, relocation);
+    for (let index = 0; index < bytes.length; index += REL_BYTES) {
+      const offset = bytes.readUInt32BE(index), type = bytes.readUInt32BE(index + 4) & 255;
+      const owner = ownerForOffset(owners, offset);
+      if (offset % 4 || offset + 4 > owner.logicalEnd || ![4, 5, 6].includes(type)) {
+        fail('native relocation width, place or type');
+      }
+    }
+  }
+  const groups = relocation ? splitRelocations(sectionBytes(input, relocation), owners)
+    : new Map(owners.map(owner => [owner.sectionName, Buffer.alloc(0)]));
+  const list = buildSectionList(parsed, input, source, relocation, owners, groups);
+  rewriteSymbolTables(list, source, owners);
+  rewriteSectionReferences(list, relocation);
+  const shstr = rebuildSectionNames(list, parsed.shstrIndex);
+  const buffer = serialize(input, parsed, list, shstr);
+  const result = parseRelocatable(buffer);
+  const bytes = owners.map(owner => sectionBytes(buffer, result.sections.find(section => section.name === owner.sectionName)));
+  if (!Buffer.concat(bytes).equals(sectionBytes(input, source))) fail('native projection changed text bytes');
+  return { buffer, sourceSection: '.text', sourceBytes: source.size, owners,
+    relocationSections: owners.map(owner => ({ sectionName: '.rel' + owner.sectionName,
+      entries: groups.get(owner.sectionName).length / REL_BYTES })) };
+}

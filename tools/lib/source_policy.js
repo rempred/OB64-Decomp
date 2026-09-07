@@ -837,6 +837,7 @@ function classifyTargetSources(targets, options = {}) {
     options.preprocessor || resolvePreprocessor(options.config)
   ));
   const symbols = new Set();
+  const producers = new Map();
   const records = targets.map((target) => profileMeasure(options, 'source-policy.classify-target', () => {
     if (!target || typeof target.symbol !== 'string' || typeof target.source !== 'string'
         || !Number.isInteger(target.bytes) || target.bytes <= 0) {
@@ -851,7 +852,12 @@ function classifyTargetSources(targets, options = {}) {
     const key = target.symbol.toLowerCase();
     if (symbols.has(key)) throw new Error(`active target source is duplicated: ${target.symbol}`);
     symbols.add(key);
-    const classification = classifySource(target.source, { preprocessor, profile: options.profile });
+    const producer = target.compilationGroup ? target.compilationGroup.id : null;
+    const prior = producer && producers.get(producer);
+    const groupIdentity = producer ? JSON.stringify(target.compilationGroup) : null;
+    if (prior && (prior.source !== target.source || prior.groupIdentity !== groupIdentity)) throw new Error('compilation group source/contract drift');
+    const classification = prior?.classification || classifySource(target.source, { preprocessor, profile: options.profile });
+    if (producer && !prior) producers.set(producer, { source: target.source, classification, groupIdentity });
     const record = {
       symbol: target.symbol,
       bytes: target.bytes,
