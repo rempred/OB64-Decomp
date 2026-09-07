@@ -1,0 +1,16 @@
+{
+  "task_id": "combat-resolution-remaining-preparation",
+  "assignment_revision": 1,
+  "launch_id": "COMBAT-RESOLUTION-REMAINING-PREPARATION-20260907-01",
+  "receiving_task_id": "/root/sequential_scope",
+  "director_task_id": "/root",
+  "director_native_task_id": "01a07262-aeca-7341-ad10-2dba705ff988",
+  "host_id": "local",
+  "model": "gpt-6-astra",
+  "reasoning": "medium",
+  "ready_commit": "17e7baf13148fd64b71fb11119745cd11b7decb8",
+  "activation_commit": "0104458a846a19bfe4fb802b531952766f577fd5",
+  "coordination_baseline": "c2f547aa8ff3705ea7675dd748d7eb94157959b0",
+  "accepted_source_baseline": "469a1416918592749d61dc34e3e079796f7b673c",
+  "creation_time": "2026-09-07T15:43:16.7105217Z"
+}
