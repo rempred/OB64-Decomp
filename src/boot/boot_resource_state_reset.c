@@ -23,15 +23,8 @@ void func_00003798(void)
     g_resource_state_byte_3 = 0;
     g_resource_state_byte_2 = 0;
     g_resource_state_byte_1 = 0;
-    asm volatile (".set noreorder\n"
-                  ".set noat\n"
-                  "lui $at,%%hi(g_resource_state_byte_0)\n"
-                  : : : "memory");
+    g_resource_state_byte_0 = 0;
     replacement = func_000016C4(resource);
-    asm volatile ("sb $0,%%lo(g_resource_state_byte_0)($at)\n"
-                  ".set at\n"
-                  ".set reorder\n"
-                  : : : "memory");
     g_resource_state_pointer = replacement;
     g_resource_state_word = 0;
 }

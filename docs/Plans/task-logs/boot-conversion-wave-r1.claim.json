@@ -1,0 +1,8 @@
+{
+  "task_id": "boot-conversion-wave",
+  "assignment_revision": 1,
+  "launch_id": "BOOT-CONVERSION-WAVE-20260906-01",
+  "receiving_task_id": "/root/boot_conversion_preparation",
+  "host_id": "local",
+  "creation_time": "2026-09-07T01:13:19.1835841Z"
+}
