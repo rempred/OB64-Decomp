@@ -1,0 +1,12 @@
+{
+  "assignment": "combat-selector-indirect-jr-review",
+  "assignmentRevision": 1,
+  "launchId": "COMBAT-SELECTOR-INDIRECT-JR-REVIEW-20260907-01",
+  "receivingTaskId": "/root/compilation_groups_implementation_review",
+  "directorTaskId": "01a07262-aeca-7341-ad10-2dba705ff988",
+  "hostId": "local",
+  "subjectCommit": "3d485f05be1a3831bf4b2328164fcb85cb180c6c",
+  "subjectReportSha256": "76C00D2C87C6F22C1F88A3E6257822467232F385331A75DD0D93AE606271E11F",
+  "subjectEvidenceSha256": "4C796091B9316139A4DF7615C94028D2C0705F05FA3FFD211606A4F372C34C04",
+  "createdAt": "2026-09-07T07:19:37.205Z"
+}
