@@ -1,0 +1,25 @@
+{
+  "task_id": "combat-draw-3c00-register-choice",
+  "revision": 1,
+  "launch_id": "COMBAT-DRAW-3C00-REGISTER-CHOICE-20260907-01",
+  "receiver": "/root/boot_conversion_preparation",
+  "director": "/root",
+  "director_native_task": "01a07262-aeca-7341-ad10-2dba705ff988",
+  "host": "local",
+  "model": "gpt-6-astra",
+  "reasoning": "medium",
+  "ready": "e86bce1059a7114a8436c61e3c91ab2d1129111f",
+  "activation": "6b20ae6242bac4b713fcf06d5bf63601d1b34240",
+  "coordination_baseline": "39a6cdfb8887020a4be05016f04c10ecff1e7fc7",
+  "source_baseline": "469a1416918592749d61dc34e3e079796f7b673c",
+  "writes": [
+    "docs/Plans/task-logs/combat-draw-3c00-register-choice-r1.claim.json",
+    "docs/Plans/task-logs/combat-draw-3c00-register-choice-r1.md",
+    "build/combat-draw-3c00-register-choice-r1/"
+  ],
+  "scope": "Frozen companion/u1 register choices only; no production or compiler execution",
+  "created_utc": "2026-09-07T16:57:36.2635295Z",
+  "status": "completed",
+  "writes_released": true,
+  "completed_utc": "2026-09-07T17:03:43.2507766Z"
+}
