@@ -10,10 +10,13 @@ Joe transferred the program from task `01a07262-aeca-7341-ad10-2dba705ff988` on 
 The previous task is idle. Its preserved history, accepted results, unfinished W8 sources and failed experiments remain controlling inputs.
 The current task resumes the same complete goal; no family, wave, review requirement or held runtime boundary is removed.
 The isolated [DB10 allocation trace](prompts/combat-db10-allocation-trace-r1.md) is complete and has released all writes.
-Its report is under independent diagnostic review; it changes no production compiler input or matching acceptance.
+Its [independent review](task-logs/combat-db10-allocation-trace-review-r1.md) is Accepted with no findings.
+The reviewed controls establish candidate-specific allocation ordering and distinguish compiler-only homes from an added accessed spill.
+They establish no retail compiler history, general compiler equivalence, production compiler change or matching acceptance.
 The complete [W8 continuation](prompts/combat-draw-wave8-r2.md) now releases sole production source/build ownership to `/root/combat_draw_continuation`.
 The worker first preserves the interrupted renderer trial and restores its best candidate, then continues ordinary source work.
-All fourteen targets remain required. The worker must wait for accepted diagnostic review before relying on the new allocation findings.
+All fourteen targets remain required. The worker may now use the bounded diagnostic guidance in ordinary source experiments.
+Every additional diagnostic input must retain its own agreement check against the pinned production compiler before trace interpretation.
 
 Complete the remaining Combat, Squad, and High Attack plans in that order on main, using internal agents.
 Use Sol High (`gpt-5.6-sol`, `high`) for retrieval/data-seeking or parsing-only workers.

@@ -1,7 +1,7 @@
 ---
 task_id: combat-db10-allocation-trace-review
 revision: 1
-status: active
+status: completed
 role: reviewer
 review_level: Focused
 inventory_profile: NORMAL
