@@ -17,6 +17,10 @@ Read both AGENTS.md files, parent docs/Worker-workflow.md, canonical docs/WORKFL
 Accepted scope authority: research/review and parent propagation e445991, preserved by r2 propagation f940a28. These are supplemental members, not replacements for any original W1–W8 or High Attack shared owner.
 Reuse docs/Plans/task-logs/combat-supplement-inputs-r1.md and its hashed twelve-member literal package.
 Authenticate relevant current inputs before implementation; its accepted extraction baseline is d70fd853fdffacf71290b24763e010a549276a55.
+For func_0020CBDC, optional complete-owner guidance is frozen at 25e3106fc17c8e98a6122069b50345a2bab4815d.
+Report: docs/Plans/task-logs/combat-supplement-cbdc-preparation-r1.md; SHA256 3926D90E9392A8111193FA2B6EB459AAB709AA503A346251302C065397DDC6CB.
+Evidence: build/combat-supplement-cbdc-preparation-r1/func_0020CBDC.json; SHA256 DB5F5559ACB66319BE9EBFBAA3CF2F32F38EB7E7F023A0F59B1F26381E2CE7DE.
+The note uses accepted W7 inputs and supplies uncompiled branch, field-width and call-order guidance. Reauthenticate against the preceding accepted source before implementation. Its copied historical twelve-row extraction does not reduce this thirteen-target wave; it grants no new semantic, structural or matching acceptance.
 
 Complete the seven supported inclusions and five required shared integrations:
 func_001F0E64, func_002071F4, func_002073CC, func_00207A70, func_00207C08, func_0020CBDC, func_0020D590,
