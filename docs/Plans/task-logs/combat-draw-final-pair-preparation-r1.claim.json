@@ -1,0 +1,14 @@
+{
+  "task_id": "combat-draw-final-pair-preparation",
+  "assignment_revision": 1,
+  "launch_id": "COMBAT-DRAW-FINAL-PAIR-PREPARATION-20260907-01",
+  "receiving_task_id": "/root/boot_conversion_preparation",
+  "director_task_id": "/root",
+  "director_native_task_id": "01a07262-aeca-7341-ad10-2dba705ff988",
+  "host_id": "local",
+  "creation_time": "2026-09-07T10:48:22.0825143Z",
+  "starting_head": "e5c87a0a3bb9999cbb2260db0a3b590a25fc96b4",
+  "accepted_baseline": "469a1416918592749d61dc34e3e079796f7b673c",
+  "extraction_baseline": "d70fd853fdffacf71290b24763e010a549276a55",
+  "package_sha256": "4340C97DE145E1970D62F909B443894ACECFF3742F544D9BB41CCE0A9263025D"
+}
