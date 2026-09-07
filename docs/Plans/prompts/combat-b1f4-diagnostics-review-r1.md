@@ -1,7 +1,7 @@
 ---
 task_id: combat-b1f4-diagnostics-review
 revision: 1
-status: active
+status: completed
 role: reviewer
 review_level: Material
 inventory_profile: NORMAL
