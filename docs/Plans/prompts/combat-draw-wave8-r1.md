@@ -21,6 +21,10 @@ For func_001F7ADC, reuse the bounded reconstruction note at 4c2040179f6107da52bf
 Report: docs/Plans/task-logs/combat-draw-owner-preparation-r1.md; SHA256 7B620349FD35C2F93C83FEB786D50D06688468837043C492FF9661F41FDB75F7.
 Evidence: build/combat-draw-owner-preparation-r1/evidence.json; SHA256 D307D4C2EF8785AE6827D29AF14E4917AEF2B4A0E8AC278A505069605F56C677.
 The note supplies uncompiled guidance from the complete accepted owner, not a candidate or new semantic/structural acceptance.
+For func_001F3C00, reuse the complete-owner preparation frozen at a8c784cc45c2793c2f762e7c290d97a516a13118.
+Report: docs/Plans/task-logs/combat-draw-entry-preparation-r1.md; SHA256 9BD2C4A8D50934B4984D2F1EFDBD1EAB26CEA71FC089DE5E2EB3D3D832067BD5.
+Evidence: build/combat-draw-entry-preparation-r1/evidence.json; SHA256 D8DB135176CDA6F917ABBBF7E3185DAD8D66A18F65B5DCD9DBE6829507E96041.
+This is likewise bounded uncompiled guidance, with the conditional group-2 interface and all existing acceptance gates preserved.
 
 Complete all fourteen original draw/body integration members as PURE_C:
 func_001F3C00, func_001F5654, func_001F6098, func_001F7ADC, func_001F89B4,
