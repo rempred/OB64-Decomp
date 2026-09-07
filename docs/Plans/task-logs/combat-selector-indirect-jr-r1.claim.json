@@ -1,0 +1,14 @@
+{
+  "task_id": "combat-selector-indirect-jr",
+  "assignment_revision": 1,
+  "launch_id": "COMBAT-SELECTOR-INDIRECT-JR-20260907-01",
+  "receiving_task_id": "/root/boot_conversion_preparation",
+  "director_task_id": "/root",
+  "director_native_task_id": "01a07262-aeca-7341-ad10-2dba705ff988",
+  "host_id": "local",
+  "creation_time": "2026-09-07T07:12:24.3707223Z",
+  "starting_head": "670ec6404a0ae55bda842ffc2ffe885204137b0b",
+  "ready_commit": "d15a9aa",
+  "accepted_discovery": "1f68aa001c612e2a7ce160e0cdf1d83a0c8b2048",
+  "accepted_review": "024a9710425d6652dfc91857666b532006d1c54e"
+}
