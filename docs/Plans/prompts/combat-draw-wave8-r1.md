@@ -29,6 +29,10 @@ For func_0020DB10, reuse the complete integration-owner preparation frozen at e8
 Report: docs/Plans/task-logs/combat-draw-integration-preparation-r1.md; SHA256 6479A82EE8DD2690AD302745C12590A3D5FE542F3223A57FFBAEACC1540A8096.
 Evidence: build/combat-draw-integration-preparation-r1/evidence.json; SHA256 7F0FF78ECAF3171D283534F9EAA5CDF77038703FC7D50CD6F05AF5E51912BA0E.
 The construction, work-list and dependency notes preserve observed bounds and call ordering without new semantic or source acceptance.
+For func_001F6098, reuse the complete-owner preparation frozen at a3f4c5729b0c5a23a9e842a44aab2bd6a13de41a.
+Report: docs/Plans/task-logs/combat-draw-alternate-preparation-r1.md; SHA256 40C8F2F76B6B13AE1E394D4F36BE721EBA742BFD67DCD684845D77B29D5339DF.
+Evidence: build/combat-draw-alternate-preparation-r1/evidence.json; SHA256 B153D84704ACAC5521DE875A30067B5D57DB0058761751F0ABFF05F272E6C46B.
+Its format gate, two-image arithmetic and component-lifetime distinctions are bounded uncompiled guidance; preserve their stated limits and all existing gates.
 
 Complete all fourteen original draw/body integration members as PURE_C:
 func_001F3C00, func_001F5654, func_001F6098, func_001F7ADC, func_001F89B4,
