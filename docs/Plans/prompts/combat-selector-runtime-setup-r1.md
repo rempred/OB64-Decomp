@@ -1,7 +1,7 @@
 ---
 task_id: combat-selector-runtime-setup
 revision: 1
-status: active
+status: blocked
 role: worker
 review_level: Focused
 inventory_profile: NORMAL
