@@ -12,9 +12,16 @@ workspace_claim: C:/Users/Joe/Projects/OgreBattlel64/OB64 Decomp/docs/Plans/task
 
 # Correct capture startup and preserve failed-start evidence offline
 
-Draft only; no execution authority. Activate only after the current matching wave has released the sole production source/build surface and the Director binds accepted baselines and ownership in both repositories.
-The parent bridge currently has pre-existing uncommitted changes. Its bytes still match the R4/config identity below, but that is not permission to absorb unrelated history. Reconcile attribution and the integration boundary before authorizing that surface. Do not stage or commit the existing parent delta merely because it shares this path.
-Read the literal provenance result at 4fe8e8bb655dc16e9c6325370efdcd9f63bd5b75, docs/Plans/task-logs/combat-bridge-provenance-retrieval-r1.md. The current blob is absent from reachable parent history; narrower dependency authentication does not provide an implementation-acceptance record for the whole delta. This draft does not resolve that separate intake boundary.
+Draft only; no execution authority. Activate only after the matching writer releases production ownership and the Director confirms ownership in both repositories.
+The Director selects the existing hash-bound protocol-0.17 bridge as the proposed starting lineage for this correction.
+Parent baseline is f940a2825ac97453746d3e9cef9c5cabc60a8dd2; the pre-existing bridge SHA256 is recorded below.
+Read the provenance result at 4fe8e8bb655dc16e9c6325370efdcd9f63bd5b75, docs/Plans/task-logs/combat-bridge-provenance-retrieval-r1.md.
+Its authoring task and full implementation acceptance remain unknown. Do not infer either from narrower dependency authentication.
+Preserve that original input and distinguish its pre-existing delta from this task's correction in the evidence package.
+The future tooling review must cover the complete parent HEAD-to-result bridge delta, including the pre-existing changes.
+No parent integration is accepted until that coherent result passes fresh independent review. No further historical authorship search is required.
+At activation, authenticate the selected bytes and confirm no current owner overlaps the exact bridge path.
+If the source changed or ownership overlaps, preserve it and return the exact conflict. Do not overwrite another lineage.
 Use Astra Medium. Director /root, native task 01a07262-aeca-7341-ad10-2dba705ff988, local.
 Read both AGENTS.md files, parent docs/Worker-workflow.md, tools/total_resolver/AGENTS.md, README.md, docs/total-resolver/persistent-coverage-decision.md and the relevant current recorder/session/bridge documentation.
 Starting diagnosis: docs/Plans/task-logs/combat-capture-startup-r4.md at d977238. Its wire reproduction is research input to independently confirm, not a substitute for correction verification or review.
@@ -26,7 +33,7 @@ For future startup failures, preserve owned evidence and close interrupted consi
 For already-closed interrupted failures, provide a bounded, explicitly invoked residual-export path if needed by the confirmed design. It must preserve the closed record, require established failed-start ownership and the same epoch with no active owner, export raw ordered evidence and sequence/drop/status identities to a fresh ignored sidecar, and fail closed on conflicts. It must not ingest, reopen the frozen session, assert continuity or globally clear a queue.
 Choose the implementation and test method. Exercise the actual wire parser and lifecycle paths with meaningful synthetic/adversarial controls, preserving failed attempts. Fake clients that never execute the real parser are insufficient. Separate offline acceptance from deployment and live recovery.
 
-At activation, own the narrowly necessary Total Resolver recorder/session/CLI code, tests and correction documentation, plus the explicitly reconciled parent tools/project64/ob64_pj64_bridge.js delta. No matching C, ASM, linker/compiler/source-policy rules or accepted structural inputs may change.
+At activation, own the narrowly necessary Total Resolver recorder/session/CLI code, tests and correction documentation, plus parent tools/project64/ob64_pj64_bridge.js under the explicit lineage above. No matching C, ASM, linker/compiler/source-policy rules or accepted structural inputs may change.
 Do not alter the external deployed script or native executable, reload/restart Project64 or GUI, query/drain a live queue, start/stop capture, or open/change the real session or knowledge databases. Joe deferred runtime work. Synthetic test databases under the owned ignored root are permitted.
 Do not update activeBridge.sha256 or activeNativeRuntime.bridgeScriptSha256 as though unperformed deployment were complete. Return exact source/deployment candidates and a coherent identity-update proposal for the separate reviewed deployment step. No C++ rebuild or broader runtime rewrite is authorized without independently established need and fresh scope.
 Preserve the already-frozen failed records, baseline evidence and interruption status. Live residual preservation/export, script deployment, identity binding, reload and readiness authentication require a later separately bound assignment before any newly approved capture.
