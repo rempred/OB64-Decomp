@@ -14,6 +14,7 @@ workspace_claim: C:/Users/Joe/Projects/OgreBattlel64/OB64 Decomp/docs/Plans/task
 
 Draft only; no execution authority. Activate only after the current matching wave has released the sole production source/build surface and the Director binds accepted baselines and ownership in both repositories.
 The parent bridge currently has pre-existing uncommitted changes. Its bytes still match the R4/config identity below, but that is not permission to absorb unrelated history. Reconcile attribution and the integration boundary before authorizing that surface. Do not stage or commit the existing parent delta merely because it shares this path.
+Read the literal provenance result at 4fe8e8bb655dc16e9c6325370efdcd9f63bd5b75, docs/Plans/task-logs/combat-bridge-provenance-retrieval-r1.md. The current blob is absent from reachable parent history; narrower dependency authentication does not provide an implementation-acceptance record for the whole delta. This draft does not resolve that separate intake boundary.
 Use Astra Medium. Director /root, native task 01a07262-aeca-7341-ad10-2dba705ff988, local.
 Read both AGENTS.md files, parent docs/Worker-workflow.md, tools/total_resolver/AGENTS.md, README.md, docs/total-resolver/persistent-coverage-decision.md and the relevant current recorder/session/bridge documentation.
 Starting diagnosis: docs/Plans/task-logs/combat-capture-startup-r4.md at d977238. Its wire reproduction is research input to independently confirm, not a substitute for correction verification or review.
