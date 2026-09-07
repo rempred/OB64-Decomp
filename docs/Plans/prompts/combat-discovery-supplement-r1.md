@@ -23,7 +23,11 @@ func_001F0E64, func_002071F4, func_002073CC, func_00207A70, func_00207C08, func_
 func_0020C908, func_0020FC7C, func_0021088C, func_0021062C, func_00210930.
 Also complete the separately retained attack-label service func_001F0C24 in the same thirteen-target PURE_C wave.
 Its accepted exclusion from the body/pose family remains unchanged; this is a source-scheduling assignment, not a new family disposition.
-Director activation must bind the completed combat-attack-label-inputs-r1 retrieval and authenticate its relevant inputs against the preceding accepted source state.
+Use docs/Plans/task-logs/combat-attack-label-inputs-r1.md, frozen at ea3148eda4799ee4761b937f8922f22ad6409db0.
+Report SHA256: 40D6733A8F276A29D01C9FA93DD51B0627BE1C6F4FFAE685D56C7687E3E1D402.
+Package build/combat-attack-label-inputs-r1/inputs.json SHA256: CD691D017AE127FFEFCC319E4E063E712E43D62A3260A28A309D4F2CA88B1364.
+Its original owner is the complete 480-byte asm/original/rev0/lib/func_001F0C24.s.
+Authenticate these baseline inputs against the preceding accepted source state before implementation.
 That routine has no existing accepted C target/linkage record or retained candidate in the searched manifests.
 Derive its source and actual relocation contract under existing matching rules; do not invent missing candidate evidence.
 Retain every original family/shared obligation and unresolved selector consumer-provenance gate. This wave does not establish Combat completion or runtime semantics.
