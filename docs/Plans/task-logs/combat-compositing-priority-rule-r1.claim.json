@@ -1,0 +1,12 @@
+{
+  "assignment": "combat-compositing-priority-rule",
+  "assignmentRevision": 1,
+  "launchId": "COMBAT-COMPOSITING-PRIORITY-RULE-20260907-01",
+  "receivingTaskId": "/root/compilation_groups_design",
+  "directorAgent": "/root",
+  "directorTaskId": "01a07262-aeca-7341-ad10-2dba705ff988",
+  "hostId": "local",
+  "createdAt": "2026-09-07T04:08:35.6849127-04:00",
+  "inputReportSha256": "491BCAFA349A92319AFBE1F8A45184CDDDFED9542434E3C9193F6303EA02D80D",
+  "inputEvidenceSha256": "15F98ADC28AAF30015952096BE2560AA2B6C23C89C899766EAB20627A0EF5865"
+}
