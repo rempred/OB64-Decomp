@@ -28,41 +28,31 @@ int func_00044238(int arg0, int arg1, int arg2)
     }
 
     arg2 &= 0xFF;
-    if (arg2 != 0) {
-        goto nonzero_slot;
+    if (arg2 == 0) {
+        value = classes[selected_class & 0xFF].field_0C;
+        if (value != 0xFF) {
+            result = value;
+            /* KMC folds this arm into the return and removes a retail jump
+             * without this canceling pair. The pair emits no arithmetic. */
+            result++;
+            result--;
+        } else {
+            result = classes[alternate_class].field_0C;
+        }
+    } else if (arg2 == 1) {
+        value = classes[selected_class & 0xFF].field_0E;
+        if (value != 0xFF) {
+            result = value;
+        } else {
+            result = classes[alternate_class].field_0E;
+        }
+    } else {
+        value = classes[selected_class & 0xFF].field_10;
+        if (value != 0xFF) {
+            result = value;
+        } else {
+            result = classes[alternate_class].field_10;
+        }
     }
-
-    value = classes[selected_class & 0xFF].field_0C;
-    if (value != 0xFF) {
-        result = value;
-        result++;
-        result--;
-        goto done;
-    }
-    result = classes[alternate_class].field_0C;
-    goto done;
-
-nonzero_slot:
-    if (arg2 != 1) {
-        goto field_10_slot;
-    }
-
-    value = classes[selected_class & 0xFF].field_0E;
-    if (value != 0xFF) {
-        result = value;
-        goto done;
-    }
-    result = classes[alternate_class].field_0E;
-    goto done;
-
-field_10_slot:
-    value = classes[selected_class & 0xFF].field_10;
-    if (value != 0xFF) {
-        result = value;
-        goto done;
-    }
-    result = classes[alternate_class].field_10;
-
-done:
     return result;
 }
