@@ -17,6 +17,11 @@ The complete [W8 continuation](prompts/combat-draw-wave8-r2.md) now releases sol
 The worker first preserves the interrupted renderer trial and restores its best candidate, then continues ordinary source work.
 All fourteen targets remain required. The worker may now use the bounded diagnostic guidance in ordinary source experiments.
 Every additional diagnostic input must retain its own agreement check against the pinned production compiler before trace interpretation.
+W8 R2 now has all fourteen C owners active, but four remain nonexact and the final wave verifier has not run.
+The source worker has restored its best candidates and paused experiments for [isolated endpoint reproduction research](prompts/combat-7adc-endpoint-reproducer-r1.md).
+That research must first control the two source differences in the retained 7ADC pair. It cannot alter production inputs or establish matching acceptance.
+The complete [preserved DB10 survey](task-logs/combat-db10-preserved-allocation-survey-r1.md) found at most three non-emitting homes across its 93-input corpus.
+This bounded negative result supplies no missing-home recipe, retail allocation history or impossibility claim.
 
 Complete the remaining Combat, Squad, and High Attack plans in that order on main, using internal agents.
 Use Sol High (`gpt-5.6-sol`, `high`) for retrieval/data-seeking or parsing-only workers.
