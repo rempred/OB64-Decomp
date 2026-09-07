@@ -1,7 +1,7 @@
 ---
 task_id: combat-compositing-wave7-second-look
 revision: 1
-status: ready
+status: active
 role: worker
 review_level: Focused
 inventory_profile: NORMAL
