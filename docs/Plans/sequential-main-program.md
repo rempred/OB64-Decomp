@@ -73,6 +73,8 @@ The [capture-startup correction](prompts/combat-capture-startup-correction-r1.md
 6. High Attack remaining waves and retained pure-C retries: pending Squad closure.
 7. Requirement-by-requirement final audit against current source and proof: pending.
 
+Within active W7, the sole source worker will preserve the nonexact `func_00207E30` candidate, implement `func_00208508` and `func_00208900`, then return to `func_00207E30`. This changes only the order of work within the existing seven-member assignment. The preserved candidate and its actual relocation record remain provisional. All seven targets still require the single final complete-wave verifier; no partial acceptance or additional source wave is created.
+
 The initial canonical baseline is preserved. Authorized inventory and scoped Git reads resolved the earlier sandbox status warnings.
 Parent coordination history remains available; this program's new prompt/report/state records live in the canonical repository.
 Use the current session's permissions for repository and build operations; never weaken verification to avoid a permission boundary.
