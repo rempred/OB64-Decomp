@@ -104,3 +104,4 @@ Use the current session's permissions for repository and build operations; never
 - Implementation is frozen at `45904b5` and its independent Sol Max reviewer is active under release `1bbf0b8`. No new production writer or source activation has started.
 - Combat discovery r2 review returned Accepted with no corrections. Propagate the bounded attack-label image-service exclusion and preserve the selector gate; later runtime retrieval is outside that frozen verdict.
 - `/root/sequential_process` is propagating the accepted r2 verdict under release `51cb8ba`; source scope and the unresolved selector gate remain preserved.
+- Selector observation preparation completed: existing recorder APIs can support a proposed bounded method. Its proposal remains review pending; a validated adapter, reachable runtime, legitimate route, and per-run user approval remain prerequisites. No capture or production-tool change occurred.
