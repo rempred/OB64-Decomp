@@ -25,6 +25,12 @@ Retain B1F4 and D14C as explicit source retries. Read docs/Plans/task-logs/comba
 For D14C, reuse docs/Plans/task-logs/combat-d14c-preserved-diagnostics-r1.md and its Accepted diagnostic review at 3af6d486901a4e5e1a085bd325fb81140623cc46. The candidate cursor form exists in initial RTL; the index first materializes as s3 between local and global allocation. Neither is a proven root cause or retail compiler-stage history. The proposed expression test is untested; the complete 6,844-byte owner, frame/text residuals and separate table gate remain required. Do not treat bounded loop correspondence as whole-function equivalence or activation authority.
 For B1F4, reuse docs/Plans/task-logs/combat-b1f4-preserved-diagnostics-r1.md and its Accepted diagnostic review at c06f5d4c962a2d21b5b000270dae92fd700fe436. The E16 jump-to-first-CSE reuse boundary does not transfer to E04 without its own authenticated passes and final-assembly correspondence. The frame gap remains unexplained. A first-CSE discriminator tests the observed E16 mechanism only; it is not a universal source recipe or acceptance rule. Preserve the complete 3,588-byte owner and all original gates.
 The reviewed B06C/EF50 preparation establishes compatibility only. Combined production ownership requires the separately assigned structural result and accepted review; do not activate an unapproved partition within ordinary matching.
+Carry the later F580 consumer's existing data reads into that structural assignment.
+Use docs/Plans/task-logs/combat-resolution-f580-preparation-r1.md at 87a8e9ebb3bc3932cb7dff0a8e85e4a40ef0fd1c, SHA256 8BF67422AE0FFD1DA0A02F2EFE6B8EB6C9811D6ABE9BF35C2B994A4B7E806EB7.
+Its twelve-byte initializer begins at ROM 0x00239F44 and crosses the proposed EF50 padding/tail boundary.
+Its forty-byte dispatcher table begins at ROM 0x00239F50 inside the retained tail.
+Preserve those bytes, reads, and complete row coverage when reviewing the actual production partition.
+This preparation authorizes no structural change and does not add F580 source conversion to the seventeen-member wave.
 Use the committed A414 source's authenticated func_0020C014 call identity; do not invent an older unresolved alias. A D14C placement proxy is not exact C.
 Existing accepted prefix, repeated-section, alignment, retained-interior and provenance contracts must be distinguished from missing source or production evidence. Do not propose a tool change merely because a candidate differs.
 
