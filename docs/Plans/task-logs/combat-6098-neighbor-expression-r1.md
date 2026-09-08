@@ -1,0 +1,43 @@
+# 6098 neighbor expression comparison R1
+
+Status: completed, bounded negative result. Assignment COMBAT-6098-NEIGHBOR-EXPRESSION-20260908-01; worker /root/combat_6098_neighbor_expression; main at e53936b9435aac06e43e445faac6daccc6e00947. Claim created exclusively and read back. Ownership is limited to this report, claim, and ignored build/combat-6098-neighbor-expression-r1/. Existing source/Resolver and other task changes are unrelated and preserved.
+
+Plan: compare frozen C and retail expression families, then inspect retained compiler evidence only where it distinguishes a new source lead from already failed controls. Leading interpretation is missing expression-induced temporary allocation; alternative is an unrecovered compiler/source lifetime effect with no neighbor analogue. A neighbor lead requires matching real operations and a demonstrably distinct source expression. Static similarity alone does not prove frame causality. No builds or source edits are assigned.
+
+## Result and identities
+
+No genuinely unexamined, evidence-backed source lead for the 48-byte frame gap was found in these neighbors. This is a corpus-bounded negative answer, not pure-C impossibility or original-source identification. Findings are ordinary static matching guidance, review pending; no reusable semantic or compiler claim is accepted here.
+
+The copied 6098 source is D76444B2C4AF7AD44E40DA2F68456E894355AA9F1B6BF4D44F4B792DC10097E1; 5654 is 87C22940F14C0E4CCCC6D392DFA6C9A43C2A3819B7E57D5666E55A8B91E22227; 7ADC is F3F90BD828DE9141A6E48D4BBBF4691F3A5B6C60C828CE9B2F8289408457B518. The supplied R2 report matches F1FCC8D7C3D3CA03F17BB7D17C7F0BFEF8C361B4D1A5FADDD7DA4FA18F3F4208. Mutable source observations were frozen before comparison. The Director later reported production color-guard work; it is excluded and no current production identity is inferred after that notification.
+
+The existing 5654 diff records PURE_C, input 3A3F696D9F28B78E860F723B0E583373E9BBE8456FF818761459B12AB750B22C and zero differing words. The 7ADC named exact-endpoint-lifetimes proof binds its copied authored identity, PURE_C input 8DE583C180A8804036CCB57AF06D9F4650E579EBFF8E0C5AEC7CDCA77CFF9C81 and zero differing words. These are retained focused-exact W8 candidates, not completed-wave matching acceptance. No source-policy or verification operation was run here.
+
+## Expression comparison
+
+All instruction addresses below are canonical z64 ROM addresses. Full original reference files and bounded annotated windows are copied under the owned evidence root; no overlay address conversion is derived here.
+
+| Family | Evidence and consequence |
+|---|---|
+| Four corner arguments | 5654 and 6098 share left=(short)x0, rightVertex=(short)(right-1), and separately narrowed u endpoints. Their complete vertex bodies are textually equal after whitespace removal and substituting 6098's !(flags & 2) with 5654's !flip. 6098 ROM1F69B0..1F69E4 and 5654 ROM1F5C18..1F5C48 show shift16/arithmetic-shift16 narrowing. The real helper interface takes int arguments and its C implementation separately narrows and stores halfwords. A short parameter prototype or early narrowing of every full coordinate would not recover additional evidenced state. |
+| Full y versus narrowed y | Both sources keep branch-local full y=top-accumulated, pass (short)y twice, then nextY=y+1 and bottomY=(short)(nextY-strip). Retail 5654 ROM1F5CB8/1F5CBC and 6098's corresponding vertex window preserve add-one/subtract before narrowing. This source distinction was already recovered. Current6098 retained allocation evidence identifies separate branch units484/486/485 and520/522/521, locally allocated without homes. The older5654 mutable-y report uses a different source; its pseudo numbers and allocation outcome cannot be transferred to the exact neighbor. |
+| Primary packet words | The entire primary FD18/F518/E6/F4/E7/F518/F2 source sequence is textually identical in5654 and6098. Width-minus-one packing in6098 ROM1F6C2C..1F6C3C and1F6CCC..1F6CDC uses subtract1, shift2, maskFFF, shift12. The shared FIELD macro casts to an unsigned word before masking/shifting; packet truncation to12 bits is distinct from signed16 vertex narrowing. Replacing these with7ADC helper/scoping forms is an already explored spelling class, not missing operations. |
+| Overlapping strip updates | 5654 and6098 both advance accumulated/normal row by strip-1, reduce remaining by strip-1, clamp the flipped successor below zero, and stop at remaining<2. Named intermediate updates already preserve the retail arithmetic. 7ADC instead uses row+strip, bottom=top-accumulated-strip, remaining-=strip and remaining==strip termination. ROM1F82B8,1F82D4..1F82E0 and1F8318..1F8334 establish that difference. Its vertices are emitted in a separate pass with paired subsequent vertices, so transplanting its update or endpoint geometry changes real values. |
+| Secondary image coordinates | Only6098 in this comparison uses x0+secondary.width/2 and sourceY+secondary.height/2+secondaryOffset+row. ROM1F6D54..1F6D8C loads unsigned dimensions, logically halves them, adds the full signed-coordinate values, then packs. Load x uses shift1 while size x uses shift2. The repeated secondary line words use primary header width, with arithmetic half shifts at1F6D24 and1F6E24; the two named int half-width locals already represent that distinction. 7ADC's unsigned WIDTH-return/line_field path is not evidence for replacing those operations or their signed source values. |
+
+The comparison script records both textual equality checks as true. They establish existing shared expression spelling, not equality of all surrounding lifetimes. 5654 saves the masked flip bit; 6098 retains full flags for the bit2 tests. That existing difference does not identify additional unaccessed scalar objects.
+
+## Compiler and domain limits
+
+The frozen6098 analysis/agreement and actual retained initial RTL/lreg/pinned assembly remain the applicable compiler package: all23 homes are accessed and its frame is408. This task did not redo aggregate sizes, home mapping or instrumentation. The previously established two groups of three unaccessed retail positions remain unexplained.
+
+The retained7ADC endpoint work demonstrates candidate-specific endpoint/row lifetime and scheduling effects around repeated WIDTH calls, with real packed consumers. It supplies no original6098 allocation history and no mechanism predicting six extra unused homes. Its older current-best/compound-stage dumps are explicitly not the final exact source; no exact-neighbor pass allocation numbers are attributed to them. Exact-source original-retail compiler lifetime evidence is unavailable for all three routines.
+
+Image width/height are unsigned16; decoded coordinate fields have signed integer interfaces and the decoder/domain evidence already bounds their recovered origins. Signed source coordinates are not proved nonnegative. Even where vertex storage discards high bits, the full6098 x0 and sourceY still feed secondary packets. Packet masks establish low-bit encoding, not permission to strengthen all arithmetic types or assume all shifted values are positive. All signed-overflow and helper-side-effect equivalence limits of existing C remain; no new broad arithmetic equivalence claim is made.
+
+A supported new lead would need a real6098 operation or call-crossing lifetime absent from D764, together with evidence distinguishing its allocation effect from the stopped aggregate, array, wrapper, scope, predicate and line-helper controls. This bounded comparison supplies neither. Another analogous spelling trial would add no new evidence, so none is proposed. Color guards currently owned by the production worker are outside this comparison.
+
+## Verification and release
+
+Ran only read-only Git inventory, file reads/hashes, and python build/combat-6098-neighbor-expression-r1/compare.py. The latter performs offline extraction and source comparisons; comparison.json records results and inputs.json records complete file identities. No compilation, decompiler, source variant, tooling change, runtime/Resolver, Git mutation, branch/worktree, push or child agent occurred. One broad filename search was unnecessarily noisy but caused no writes and supplied no scientific conclusion.
+
+Useful preliminary findings were sent directly to Director and production owner. Only this claim/report and the assigned ignored root were written. All fourteen W8 targets and the single final complete-wave verifier remain required. All commands are complete and all assigned writes are released at terminal collaboration handoff; this report and claim are frozen afterward.
