@@ -7,9 +7,12 @@ Joe authorized this goal on 2026-09-06. No further push is authorized.
 ## Objective and authority
 
 Joe transferred the program from task `01a07262-aeca-7341-ad10-2dba705ff988` on 2026-09-07 after its compaction transport failure.
-Joe also requested a bounded [angr analysis trial](prompts/angr-analysis-trial-r1.md) beside m2c, with [accepted-input retrieval](prompts/angr-trial-input-retrieval-r1.md). It runs on isolated copies and cannot change production or replace existing matching gates.
+Joe's bounded [angr analysis trial](task-logs/angr-analysis-trial-r1.md) beside m2c is complete, with frozen [accepted inputs](task-logs/angr-trial-input-retrieval-r1.md).
+Its [independent review](task-logs/angr-analysis-trial-review-r1.md) is Accepted at `60a57160` with no findings.
+The recommendation rejects adoption as a maintained optional analysis or escalation tool for the current workflow: tested successes add no new matching lead, and actual hard-case floating-point execution is unsupported.
+The isolated environment remains replay evidence. No shared integration, compiler change, new matching gate or broader impossibility claim follows; m2c remains primary.
 The [independent project references](task-logs/angr-trial-reference-r1.md) are complete and frozen at `d5e70e12`, before angr results were read.
-The trial uses isolated copies. The source owner resumes the existing W8 assignment with preserved best inputs; trial claims await independent review.
+The source owner retains the existing W8 assignment and preserved best inputs. The angr evaluation does not change the complete sequential goal or any source acceptance requirement.
 The previous task is idle. Its preserved history, accepted results, unfinished W8 sources and failed experiments remain controlling inputs.
 The current task resumes the same complete goal; no family, wave, review requirement or held runtime boundary is removed.
 The isolated [DB10 allocation trace](prompts/combat-db10-allocation-trace-r1.md) is complete and has released all writes.
