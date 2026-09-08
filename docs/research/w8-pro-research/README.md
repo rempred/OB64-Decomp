@@ -6,6 +6,8 @@ The source hashes originally listed were local preserved-file hashes. The eviden
 
 The [local intake of returned Pro findings](local-intake.md) resolves that identity question and records which suggested experiments remain distinct from the preserved private corpus.
 
+The later [generic-probe audit intake](probe-audit-intake.md) records reproduced diagnostic input/cache/comparison defects, their limits, and a bounded repair recommendation. It also reconciles the assessment with completed R8 experiments.
+
 ## Start here
 
 1. Read [the research request](research-request.md), then [the evidence brief](evidence-brief.md).
