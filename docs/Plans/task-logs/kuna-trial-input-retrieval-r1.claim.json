@@ -1,0 +1,11 @@
+{
+  "agent": "/root/db10_alias_inventory",
+  "task": "kuna-trial-input-retrieval",
+  "assignmentRevision": 1,
+  "receivingTask": "/root",
+  "createdUtc": "2026-09-08T03:29:20.3317336Z",
+  "nativeTask": "01a07dad-52c1-7cb0-9913-d9f7afa91281",
+  "host": "local",
+  "canonicalBase": "7fcfae384aed4f006b4b4d2c02d179d39404e75d",
+  "launch": "KUNA-TRIAL-INPUT-RETRIEVAL-20260907-01"
+}
