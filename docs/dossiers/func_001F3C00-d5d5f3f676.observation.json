@@ -1,0 +1,130 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "D5D5F3F6760874097C7F08925DB1E2AE530060687BD1967679B9113F0DC2A736",
+  "observationId": "32ED6223ACE57C454BC49C9D7C3347052BEDD5DA58F977950557498A94E249C0",
+  "symbol": "func_001F3C00",
+  "authored": {
+    "context": "Preserved end of a connected optional-packet hybrid constraint sequence derived from D037. This is the exact predecessor for the isolated primary-opcode point experiment, not a one-change comparison with D037.",
+    "effects": [
+      "hybrid-source-pair",
+      "packet-ordering",
+      "shared-tail",
+      "extent-deficit"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 1408,
+          "path": "include/game/combat_draw_commands.h",
+          "sha256": "0B78FA9F31CD5980AA803E52E85CDC3A767896D2F943593036CCC2C9E357A31B"
+        },
+        {
+          "bytes": 362,
+          "path": "include/game/combat_draw.h",
+          "sha256": "DEA4C4DDDEA3D523C088558D41D15EDFCCC28C9467F48DA03E779F4F2F1A0B08"
+        },
+        {
+          "bytes": 868,
+          "path": "include/game/combat_pose_record.h",
+          "sha256": "3ECFF3EEA02A4A2AB76E7E489B00ECDB2FFA2511382E95CD936F376509457815"
+        },
+        {
+          "bytes": 109,
+          "path": "include/game/combat_types.h",
+          "sha256": "DD2B627C22F084DB4F668D27E8DE3C3F3D8FDFC352F690034FE3E1A5655959D6"
+        }
+      ],
+      "expandedSha256": "7486AA090DB0D222AFC51F8B01EEA6924EABBD3E9A66EE3A0D1C6A45524282CD",
+      "sourceSha256": "2BCE57E2B341AF4C01CD5723E1EFFEB7F234A5FF29ACEC86474C9585D6399D8A"
+    },
+    "label": "w8-r12-3c00-optional-row-mask-predecessor",
+    "observedEffect": "Private linked result is HYBRID_C, 6736 bytes/frame 504, 1357 differing bytes/392 words and 302 relocations. Exact-input diagnostics agree with the pinned compiler. The optional packet constraints correct local scheduling, while final OR sharing leaves the source four bytes short.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "docs/Plans/task-logs/combat-3c00-hybrid-opcode-pair-r12.md",
+        "sha256": "02687AAA7C48A8858B79677A5A80FA56B5F0BB599470BD776E71607B537E1346"
+      }
+    ],
+    "relatedCandidateIds": [
+      "519474319F673191AB26EE7A6C12B47195ED7D6859F26C9A5DD4C2E4461C7C23"
+    ],
+    "remainingFailure": "Nonexact inactive intermediate; primary packet and earlier register/order residuals remain. Relocation count alone is not a canonical relocation-contract proof. No focused or full-wave acceptance is established.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Retain the companion, endpoint, row and optional-opcode constraints as the input needed to reproduce the remaining shared final C OR and four-byte extent deficit."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 1408,
+        "path": "include/game/combat_draw_commands.h",
+        "sha256": "0B78FA9F31CD5980AA803E52E85CDC3A767896D2F943593036CCC2C9E357A31B"
+      },
+      {
+        "bytes": 362,
+        "path": "include/game/combat_draw.h",
+        "sha256": "DEA4C4DDDEA3D523C088558D41D15EDFCCC28C9467F48DA03E779F4F2F1A0B08"
+      },
+      {
+        "bytes": 868,
+        "path": "include/game/combat_pose_record.h",
+        "sha256": "3ECFF3EEA02A4A2AB76E7E489B00ECDB2FFA2511382E95CD936F376509457815"
+      },
+      {
+        "bytes": 109,
+        "path": "include/game/combat_types.h",
+        "sha256": "DD2B627C22F084DB4F668D27E8DE3C3F3D8FDFC352F690034FE3E1A5655959D6"
+      }
+    ],
+    "expanded": {
+      "bytes": 27023,
+      "sha256": "7486AA090DB0D222AFC51F8B01EEA6924EABBD3E9A66EE3A0D1C6A45524282CD"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "HYBRID_C",
+    "sourceSha256": "2BCE57E2B341AF4C01CD5723E1EFFEB7F234A5FF29ACEC86474C9585D6399D8A"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-08-func_001F3C00-d5d5f3f676.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

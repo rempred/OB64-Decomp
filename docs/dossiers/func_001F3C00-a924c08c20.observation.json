@@ -1,0 +1,128 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "A924C08C2068D6CF2797E12AF8A532B9435D53CBDBB9ABD84108D4E3E04CA8F3",
+  "observationId": "4360991A7CF956AA8DF12BF1672BE6BCE29BDA95897261FA6926E8AFF18E4351",
+  "symbol": "func_001F3C00",
+  "authored": {
+    "context": "One controlled change from the preserved optional-row-mask predecessor: apply the existing optional-branch opcode point representation to the primary F200 word construction.",
+    "effects": [
+      "hybrid-source-pair",
+      "packet-ordering",
+      "distinct-c-tails",
+      "extent-restored"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 1408,
+          "path": "include/game/combat_draw_commands.h",
+          "sha256": "0B78FA9F31CD5980AA803E52E85CDC3A767896D2F943593036CCC2C9E357A31B"
+        },
+        {
+          "bytes": 362,
+          "path": "include/game/combat_draw.h",
+          "sha256": "DEA4C4DDDEA3D523C088558D41D15EDFCCC28C9467F48DA03E779F4F2F1A0B08"
+        },
+        {
+          "bytes": 868,
+          "path": "include/game/combat_pose_record.h",
+          "sha256": "3ECFF3EEA02A4A2AB76E7E489B00ECDB2FFA2511382E95CD936F376509457815"
+        },
+        {
+          "bytes": 109,
+          "path": "include/game/combat_types.h",
+          "sha256": "DD2B627C22F084DB4F668D27E8DE3C3F3D8FDFC352F690034FE3E1A5655959D6"
+        }
+      ],
+      "expandedSha256": "15AA8C45A1D19E10BD4F3E1E1B4D2A1DFDFFE8DED664CC48B1EE1565425F4A4D",
+      "sourceSha256": "E91A123F5B908611DE29073AAD43EA392FD3E9CA6C40BAEE613C9B63C269468E"
+    },
+    "label": "w8-r12-3c00-primary-opcode-separate-c-tails",
+    "observedEffect": "Private result restores 6740 bytes/frame 504 and distinct final C OR operations, with 792 differing bytes/243 words and 302 relocations. Exact-input diagnostics agree with the pinned compiler. The optional packet retains only a three-word cursor/line ordering residual; the added template emits no explicit instruction.",
+    "parentCandidateId": "D5D5F3F6760874097C7F08925DB1E2AE530060687BD1967679B9113F0DC2A736",
+    "references": [
+      {
+        "path": "docs/Plans/task-logs/combat-3c00-hybrid-opcode-pair-r12.md",
+        "sha256": "02687AAA7C48A8858B79677A5A80FA56B5F0BB599470BD776E71607B537E1346"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Earlier tag-store register differences and primary packet differences remain. Aggregate byte mismatch exceeds active D037, so this remains an inactive mechanism example. Other inherited assembly exists; the source is HYBRID_C. No canonical focused or completed-wave acceptance is claimed.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "After publishing the next primary command cursor, constrain the real F200 constant to register 2 with one empty volatile tied template and memory boundary, then OR it into the existing rowField and store using ordinary C."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 1408,
+        "path": "include/game/combat_draw_commands.h",
+        "sha256": "0B78FA9F31CD5980AA803E52E85CDC3A767896D2F943593036CCC2C9E357A31B"
+      },
+      {
+        "bytes": 362,
+        "path": "include/game/combat_draw.h",
+        "sha256": "DEA4C4DDDEA3D523C088558D41D15EDFCCC28C9467F48DA03E779F4F2F1A0B08"
+      },
+      {
+        "bytes": 868,
+        "path": "include/game/combat_pose_record.h",
+        "sha256": "3ECFF3EEA02A4A2AB76E7E489B00ECDB2FFA2511382E95CD936F376509457815"
+      },
+      {
+        "bytes": 109,
+        "path": "include/game/combat_types.h",
+        "sha256": "DD2B627C22F084DB4F668D27E8DE3C3F3D8FDFC352F690034FE3E1A5655959D6"
+      }
+    ],
+    "expanded": {
+      "bytes": 27249,
+      "sha256": "15AA8C45A1D19E10BD4F3E1E1B4D2A1DFDFFE8DED664CC48B1EE1565425F4A4D"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "HYBRID_C",
+    "sourceSha256": "E91A123F5B908611DE29073AAD43EA392FD3E9CA6C40BAEE613C9B63C269468E"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-08-func_001F3C00-a924c08c20.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
