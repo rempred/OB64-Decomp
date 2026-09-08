@@ -1,0 +1,131 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "FAC5B3749336CD1A6D6A0FB432EA778D0F2D36066F2C03DC08888960D66596A5",
+  "observationId": "3DCC565A43BB7F41C6C6F8A5CD6FB4E53C5DD78AFA10F73663B10AC39D36337B",
+  "symbol": "func_001F3C00",
+  "authored": {
+    "context": "Bounded R7 integer-endpoint pair after eight common surrounding deletions. Full vertex/packet/row-loop core is byte-identical to this side of the archived R7 source. Research function intentionally omits game effects.",
+    "effects": [
+      "endpoint-spill",
+      "paired-reduction",
+      "cursor-localization"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 1408,
+          "path": "include/game/combat_draw_commands.h",
+          "sha256": "0B78FA9F31CD5980AA803E52E85CDC3A767896D2F943593036CCC2C9E357A31B"
+        },
+        {
+          "bytes": 362,
+          "path": "include/game/combat_draw.h",
+          "sha256": "DEA4C4DDDEA3D523C088558D41D15EDFCCC28C9467F48DA03E779F4F2F1A0B08"
+        },
+        {
+          "bytes": 868,
+          "path": "include/game/combat_pose_record.h",
+          "sha256": "3ECFF3EEA02A4A2AB76E7E489B00ECDB2FFA2511382E95CD936F376509457815"
+        },
+        {
+          "bytes": 109,
+          "path": "include/game/combat_types.h",
+          "sha256": "DD2B627C22F084DB4F668D27E8DE3C3F3D8FDFC352F690034FE3E1A5655959D6"
+        }
+      ],
+      "expandedSha256": "5FADA4D324249C1734D16E0965EBD87AB7E89666BE7EE96144D106CF5E466DC6",
+      "sourceSha256": "DF3912621EAECBE788149534D2E6D5486BAE125EC32DE50B397B1AAB2000A13D"
+    },
+    "label": "w8-reduced-int-shared",
+    "observedEffect": "New authenticated paired study: frame480; uniquely mapped endpoint650 has HOME428 with2 emitted stores and5 loads. IDs/offsets are bound only to these source/expanded hashes.",
+    "parentCandidateId": "7E434EC440AC7F8F0BA23E03BFD7A3B5374771FBEE0857D0109CE3D25AD0215D",
+    "references": [
+      {
+        "path": "tools/matching_studies/w8-paired-reduction.js",
+        "sha256": "611E8DF3357157E2F6E562633EE1C21D88CC1E33585628AFB82B67D8894BAF55"
+      },
+      {
+        "path": "docs/Plans/task-logs/combat-draw-wave8-r7.md",
+        "sha256": "E9F4516ACC6BACF650C222D659FE77AF2EAD65376F70635AA708C64580702E69"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Research allocation predicate only: no game-behavior equivalence or matching acceptance. Reduction is bounded, not minimal; D037 locality transfer remains the known non-improving context.",
+    "role": "pair-baseline",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Remove matrix setup, four leading packets, optional preload, color-mask adjustment, per-item color adjustment, scale adjustment, scale command and final packets. Add no replacement values or padding."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 1408,
+        "path": "include/game/combat_draw_commands.h",
+        "sha256": "0B78FA9F31CD5980AA803E52E85CDC3A767896D2F943593036CCC2C9E357A31B"
+      },
+      {
+        "bytes": 362,
+        "path": "include/game/combat_draw.h",
+        "sha256": "DEA4C4DDDEA3D523C088558D41D15EDFCCC28C9467F48DA03E779F4F2F1A0B08"
+      },
+      {
+        "bytes": 868,
+        "path": "include/game/combat_pose_record.h",
+        "sha256": "3ECFF3EEA02A4A2AB76E7E489B00ECDB2FFA2511382E95CD936F376509457815"
+      },
+      {
+        "bytes": 109,
+        "path": "include/game/combat_types.h",
+        "sha256": "DD2B627C22F084DB4F668D27E8DE3C3F3D8FDFC352F690034FE3E1A5655959D6"
+      }
+    ],
+    "expanded": {
+      "bytes": 21569,
+      "sha256": "5FADA4D324249C1734D16E0965EBD87AB7E89666BE7EE96144D106CF5E466DC6"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "DF3912621EAECBE788149534D2E6D5486BAE125EC32DE50B397B1AAB2000A13D"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-08-func_001F3C00-fac5b37493.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
