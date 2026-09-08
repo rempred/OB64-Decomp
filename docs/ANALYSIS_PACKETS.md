@@ -2,7 +2,7 @@
 
 The standalone packet command prepares both default decompiler outputs for a difficult accepted function. m2c remains the primary matching-C generator.
 Both outputs are hypotheses. They do not prove original types, array sizes, variable lifetimes, callee effects, semantic equivalence or matching acceptance.
-Implementation review is pending. This command is outside the normal compile, linked diff and verifier paths.
+Implementation `5d57f140` passed [independent Material review](Plans/task-logs/analysis-packets-review-r1.md) at `4f4ce3d6`. This command is outside the normal compile, linked diff and verifier paths.
 
 ## Local configuration
 

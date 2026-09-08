@@ -169,6 +169,14 @@ Awkward but valid C is allowed when the historical compiler requires it.
 Explain necessary compiler workarounds near the affected source, with the observed reason.
 Ordinary readability cleanup under existing contracts uses the same wave gates without additional independent review.
 
+At analysis intake for a large or difficult function, prepare or reuse the default Kuna and m2c
+outputs with the accepted [standalone analysis-packet command](ANALYSIS_PACKETS.md).
+It generates both interpretations from authenticated retail inputs and caches them by input,
+tool and option identities. Keep m2c primary and treat both outputs as hypotheses. Request an
+alternate Kuna transformation only for a specific ambiguity. Unsupported inputs and missing or
+failed tools remain explicit; packet generation is outside compilation and acceptance checks
+and does not become a prerequisite for the normal build.
+
 Keep the accepted target symbol unless a `CANONICAL` semantic name is already
 established. The original assembly file remains tracked as reference and
 fallback, but an active current build must exclude its target and link only the
