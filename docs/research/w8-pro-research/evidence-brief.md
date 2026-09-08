@@ -15,11 +15,13 @@ The cc1 artifact does not preprocess directives. The authenticated external comp
 
 Separate three measurements: complete linked target-byte differences; native instruction/word comparisons that may exclude relocations; and heuristic upstream permutation scores. They are not interchangeable. A correct frame or extent alone is not a match. Each instrumented diagnostic input needs its own output agreement with the pinned compiler before interpreting its trace.
 
-| Target | Current source SHA-256 | Recorded residual |
+| Target | Local preserved source SHA-256 | Recorded residual |
 |---|---|---|
 | 3C00 | `D03797FD04EEE60592E0644A837E09308568D3E82448883997A10A85DA7F91F5` | Focused linked difference: 770 bytes / 261 words; accepted extent 6740 bytes; frame 504 |
 | 6098 | `D76444B2C4AF7AD44E40DA2F68456E894355AA9F1B6BF4D44F4B792DC10097E1` | Focused linked difference: 56 bytes / 46 words; frame 408 versus retail 456 |
 | DB10 | `5BF6ACF3CEF8F4A229AA143CCEB76376AC333B455BB1EDA18E9296476D791FD3` | Frame 552 versus retail 560; separate six-word cyclic initialization ordering difference |
+
+Publication identity correction, 2026-09-08: 6098's Git blob at `3815708b` has SHA-256 `9ADAB5907450AC0EFAA458D0375056BFC0F2992162CAC9C089C8BFCD042C24CD` (13,671 bytes; Git blob `9c80d0cd94cdff4cc794b0b0281b733ce4695ee5`). The local/frozen D764 source is 13,673 bytes and differs only in CRLF endings at lines 83 and 309; the other 307 line endings are LF. Normalizing those two endings gives the exact published blob. Both sources were independently processed through the unchanged authenticated source-policy/preprocessor path during research intake: each is PURE_C and produces the identical 18,208-byte frozen compiler input, SHA-256 `DDD67BBE5FC0CD363CED8B62EB65E12105AB36A55B1CE69029FBD4E5065A4BA6`. All four dependency hashes agree with the frozen policy. This resolves source/input correspondence without relabeling the two different authored byte hashes. No compilation or full-ROM verifier was repeated. Bounded local evidence is `build/w8-pro-research-intake-20260908/6098-identity.json`.
 
 The byte/word figures are the reports' respective comparison metrics, not arithmetic conversions. Do not borrow an older DB10 source's linked score for current 5BF6. The [R7 terminal handback](../../Plans/task-logs/combat-draw-wave8-r7.md) preserves these qualifications.
 

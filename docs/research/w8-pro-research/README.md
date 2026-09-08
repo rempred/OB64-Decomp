@@ -2,6 +2,10 @@
 
 Prepared 2026-09-08 from repository commit `3815708b`. This package summarizes existing evidence; it introduces no new compiler, semantic, structural or matching acceptance claim. The three source hashes were checked during preparation. No compiler experiment or ROM verification was repeated.
 
+The source hashes originally listed were local preserved-file hashes. The evidence brief now separately identifies the published 6098 Git blob and documents its two-line newline-only difference from frozen D764, with exact authenticated expanded-input equality. Use the published hash when checking a GitHub download.
+
+The [local intake of returned Pro findings](local-intake.md) resolves that identity question and records which suggested experiments remain distinct from the preserved private corpus.
+
 ## Start here
 
 1. Read [the research request](research-request.md), then [the evidence brief](evidence-brief.md).
