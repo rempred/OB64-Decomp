@@ -1,0 +1,11 @@
+{
+  "task_id": "combat-draw-wave8",
+  "revision": 7,
+  "launch_id": "COMBAT-DRAW-WAVE8-20260908-07",
+  "receiver": "/root/combat_draw_continuation",
+  "director": "/root",
+  "host": "local",
+  "release": "9a018362f3fa11836c003a0d48176f969415ed04",
+  "created_at": "2026-09-08T08:25:12.3981890Z",
+  "ownership": "Sole production source/build writer; prompt-scoped R7 source and evidence only"
+}
