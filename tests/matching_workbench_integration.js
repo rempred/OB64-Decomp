@@ -42,6 +42,11 @@ function assertLengthCandidate(compilation, target, relation, label) {
 }
 
 function main() {
+  const parent = path.join(ROOT, 'build/tests/matching-workbench-integration');
+  fs.mkdirSync(parent, { recursive: true });
+  const matchingRoot = fs.mkdtempSync(path.join(parent, 'run-'));
+  const storeOptions = { database: path.join(matchingRoot, 'workbench.sqlite') };
+  console.log(`Integration output: ${matchingRoot}`);
   const workbench = loadWorkbenchModel();
   const target = resolveTarget(workbench, 'memcpy_bytewise');
   const ruleSetNames = [
@@ -55,8 +60,9 @@ function main() {
   const variants = workbench.config.m2c.variants.filter((variant) => ruleSetNames.includes(variant.name));
   const compilerSession = prepareCompilerSession();
   const contextIndex = buildContextIndex(workbench);
-  syncTargets(workbench);
+  syncTargets(workbench, storeOptions);
   const result = prepareAndCompile(workbench, target, {
+    matchingRoot, storeOptions,
     variants,
     compilerSession,
     contextIndex,
@@ -79,7 +85,7 @@ function main() {
     throw new Error('identical ruleset source did not share the baseline compile');
   }
   const candidateId = compilations[0].candidate.candidateId;
-  const observations = requestStore({ action: 'query', name: 'candidate_observations', args: { candidateId, limit: 200 } });
+  const observations = requestStore({ action: 'query', name: 'candidate_observations', args: { candidateId, limit: 200 } }, storeOptions);
   const observedVariants = new Set(observations.map((observation) => observation.variant));
   if (ruleSetNames.some((name) => !observedVariants.has(name))) {
     throw new Error('shared candidate compile lost ruleset provenance');
@@ -184,6 +190,7 @@ void *memcpy_bytewise(void *destination, const void *source, unsigned int bytes)
 }
 `;
   const compileScratchFixture = (source, variant) => compileCandidate(workbench, target, source, {
+    matchingRoot, storeOptions,
     origin: 'matching-workbench-integration',
     variant,
     session: compilerSession,
@@ -216,6 +223,7 @@ void *memcpy_bytewise(void *destination, const void *source, unsigned int bytes)
   'scratch compiler accepted unexpected COMMON writable storage');
 
   const repeated = prepareAndCompile(workbench, target, {
+    matchingRoot, storeOptions,
     variants,
     compilerSession,
     contextIndex,

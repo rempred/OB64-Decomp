@@ -25,6 +25,23 @@ complete-ROM identity. Ordinary matching waves require no independent review. Se
 
 ## Setup
 
+Active compilation groups remain visible as individual accepted function targets.
+Each view reports the actual shared source, producer identifier, complete ordered
+membership and selected member index. This live producer state does not change
+the function's retail target identity or stored structural record.
+
+Inspection, context and history support these member views. Use `rank
+--include-solved` or `rank --explain <member>` to include active entries. Active
+source presence is workflow state; it does not establish matching acceptance.
+
+`scratchCompilation` reports standalone candidate support separately from the
+existing owner-prefix eligibility field. Grouped prepare, watch and probe
+requests reject before generation, candidate storage or compilation. Automatic
+sweeps exclude grouped members and report their reasons in `excludedTargets`,
+including with `--include-solved` and the smallest-leaves preset. Complete-group
+scratch candidates remain unsupported. Edit the shared source and use canonical
+`node tools/diff.js <member>` for whole-group source work.
+
 The workbench uses the same normalized baserom and authenticated production
 compiler, assembler, preprocessing, and host tools as the normal workflow. It
 also needs the m2c commit and tree pinned in

@@ -56,6 +56,14 @@ available, also run:
 node tests/matching_workbench_integration.js
 ```
 
+This suite uses a fresh `build/tests/matching-workbench-integration/run-*`
+directory for its database, generated drafts and compiled artifacts. Group
+consumer admission checks also run through `tests/matching_workbench.js`.
+`tests/compilation_groups.js` writes fresh fixtures under
+`build/tests/compilation-groups/`; it authenticates production sources and
+configuration before and after execution. Active-target reports use fresh
+`build/tests/active-targets/run-*` directories.
+
 The integration fixture authenticates the real local m2c/KMC/GNU chain,
 generates and scratch-compiles `memcpy_bytewise` to exact bytes, exercises a
 multi-ruleset preparation with shared generation/compilation, and verifies

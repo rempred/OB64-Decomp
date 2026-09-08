@@ -12,11 +12,13 @@ const { loadToolchainConfig, assertToolchainAvailable, runTool } = require('../t
 const { same } = require('../tools/lib/text_contract');
 function main() {
   const phase8 = loadActiveTargetModel();
-  assert.equal(phase8.compilationGroups.length, 0, 'this tooling fixture must not activate production groups');
+  const protectedInputs = [g.CONFIG_PATH, path.join(p7.ROOT, 'config/matching-c-targets.json'),
+    ...phase8.targets.map(target => path.join(p7.ROOT, target.source))];
+  const protectedHashes = new Map(protectedInputs.map(file => [file, p7.sha256File(file)]));
   const local = JSON.parse(fs.readFileSync(path.join(p7.ROOT, 'config/local-tools.json')));
   const compiler = p8.verifyCompiler(phase8, local.compiler);
   const tools = assertToolchainAvailable(loadToolchainConfig());
-  const evidenceRoot = path.join(p7.ROOT, 'build/compilation-groups-implementation-r1');
+  const evidenceRoot = path.join(p7.ROOT, 'build/tests/compilation-groups');
   fs.mkdirSync(evidenceRoot, { recursive: true });
   const root = fs.mkdtempSync(path.join(evidenceRoot, 'focused-'));
   const cases = [];
@@ -152,6 +154,7 @@ function main() {
   fixture('calls', 'extern int external_call(int); extern int external_word;\nint group_first(int x) { return external_call(x) + external_word; }\nint group_second(int x) { return group_first(x) + 7; }\n');
   fixture('zero_tail', 'int group_zero_a(void) { return 0; }\nint group_zero_b(void) { return 1; }\n');
   assert(cases.some(c=>c.tailBytes===0));
+  for (const [file, hash] of protectedHashes) assert.equal(p7.sha256File(file), hash, `fixture changed production input: ${file}`);
   fs.writeFileSync(path.join(root,'report.json'),JSON.stringify({status:'pass',compiler,cases},null,2));
   console.log(JSON.stringify({status:'pass',root,cases},null,2));
 }

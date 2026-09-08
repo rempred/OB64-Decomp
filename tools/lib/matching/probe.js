@@ -8,6 +8,7 @@ const { verifyCompiler } = require('../phase8_matching_c');
 const { prepareContext, writeJson } = require('../current_workflow');
 const { canonicalJson, digest } = require('./target_model');
 const { MATCHING_ROOT } = require('./compiler');
+const { assertScratchCapability } = require('./target_model');
 
 const PASSES = Object.freeze([
   ['rtl', '-dr', '.rtl'],
@@ -26,7 +27,9 @@ const PASSES = Object.freeze([
 ]);
 
 function runProbe(workbench, target, sourceText, options = {}) {
+  assertScratchCapability(workbench, target, options.context?.phase8?.targets);
   const context = options.context || prepareContext();
+  assertScratchCapability(workbench, target, context.phase8?.targets);
   const researchCompiler = options.researchCompiler ? path.resolve(options.researchCompiler) : null;
   const compiler = researchCompiler || context.localTools.compiler;
   if (!fs.existsSync(compiler) || !fs.statSync(compiler).isFile()) throw new Error(`probe compiler is missing: ${compiler}`);

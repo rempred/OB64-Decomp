@@ -1043,7 +1043,27 @@ function main() {
     }
     loadRelevantRelocations += target.expectedRelocations.length;
     retiredPdrRelocations += target.legacyAncillaryRelocations.length;
-    if (!['canonical', 'legacy-compatibility'].includes(target.relocationContractSource)) {
+    if (target.relocationContractSource === 'compilation-group') {
+      const groupSupport = require('../tools/lib/compilation_groups');
+      const group = target.compilationGroup;
+      const members = groupSupport.members(active, target);
+      if (!group || members.length !== group.members.length
+          || members.some((member, index) => !member || member.source !== group.source
+            || member.symbol !== group.members[index].symbol || member.groupMemberIndex !== index
+            || member.rowIndex !== group.members[index].ownerRowIndex
+            || member.compilationGroup !== group)) {
+        throw new Error(`compilation-group relocation binding drift: ${target.symbol}`);
+      }
+      const owner = group.owners[target.groupMemberIndex];
+      const relevant = group.relocations.filter(rel => rel.offset >= owner.groupOffset && rel.offset < owner.groupOffset + owner.bytes);
+      const types = { 4: 'R_MIPS_26', 5: 'R_MIPS_HI16', 6: 'R_MIPS_LO16' };
+      if (relevant.length !== target.expectedRelocations.length || relevant.some((rel, i) => {
+        const actual = target.expectedRelocations[i];
+        return Number(actual.offset) !== rel.offset - owner.groupOffset || actual.groupOffset !== rel.offset
+          || actual.type !== types[rel.type] || actual.symbol !== rel.symbol || actual.symbolValue !== rel.symbolValue
+          || actual.symbolSection !== rel.symbolSection || actual.word !== rel.word || actual.section !== '.rel.text';
+      })) throw new Error(`group-relative relocation evidence drift: ${target.symbol}`);
+    } else if (!['canonical', 'legacy-compatibility'].includes(target.relocationContractSource)) {
       throw new Error(`unreviewed relocation contract entered strict model: ${target.symbol}`);
     }
   }
@@ -1110,7 +1130,9 @@ function main() {
     compilerAssemblyAdapterRetired: true,
     compatibility: active.compatibility,
   };
-  const reportFile = path.join(ROOT, 'build', 'workflow-migration', 'active-targets.json');
+  const evidenceRoot = path.join(ROOT, 'build/tests/active-targets');
+  fs.mkdirSync(evidenceRoot, { recursive: true });
+  const reportFile = path.join(fs.mkdtempSync(path.join(evidenceRoot, 'run-')), 'active-targets.json');
   writeJson(reportFile, report);
   console.log(JSON.stringify({ status: 'pass', targets: active.targets.length, report: reportFile }, null, 2));
 }

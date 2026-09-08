@@ -33,6 +33,7 @@ const {
 } = require('./diagnostic_link');
 const { canonicalJson, digest, targetRecord } = require('./target_model');
 const { requestStore } = require('./store');
+const { assertScratchCapability } = require('./target_model');
 
 const MATCHING_ROOT = path.join(ROOT, 'build', 'matching');
 const SCRATCH_TEXT_TAIL_ALIGNMENT_LIMIT = 12;
@@ -444,6 +445,7 @@ function compileScratchCandidate({ session, target, sourceFile, artifactDir, cla
 }
 
 function recordCandidate(workbench, target, sourceText, options = {}) {
+  assertScratchCapability(workbench, target);
   const storeOptions = options.storeOptions || {};
   if (options.syncTargets !== false) syncTargets(workbench, storeOptions);
   const candidate = candidateRecord(target, sourceText, options);
@@ -760,6 +762,7 @@ function candidateCompileCacheKey(session, target, candidate, sourcePolicy, expe
 }
 
 function compileCandidate(workbench, target, sourceText, options = {}) {
+  assertScratchCapability(workbench, target, options.session?.context?.phase8?.targets);
   const storeOptions = options.storeOptions || {};
   const storeRequest = options.storeRequest || requestStore;
   const { candidate, sourceFile } = recordCandidate(workbench, target, sourceText, options);

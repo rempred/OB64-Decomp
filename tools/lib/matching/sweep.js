@@ -1,4 +1,5 @@
 'use strict';
+const { assertScratchCapability, isActiveTarget, scratchCapability } = require('./target_model');
 
 const path = require('path');
 const { Worker } = require('worker_threads');
@@ -25,9 +26,14 @@ const { resolveLocalTools } = require('../local_tools');
 const SWEEP_WORKER = path.join(__dirname, 'sweep_worker.js');
 
 function selectSweepTargets(workbench, selector = {}) {
+  for (const symbol of selector.symbols || []) {
+    const target = workbench.targets.find(item => item.symbol.toLowerCase() === symbol.toLowerCase());
+    if (target) assertScratchCapability(workbench, target);
+  }
   let targets = workbench.targets.filter((target) => target.symbolByteOffset === 0);
+  targets = targets.filter(target => scratchCapability(workbench, target).supported);
   if (!selector.includeSolved && selector.set !== 'smallest-leaves-200') {
-    targets = targets.filter((target) => !target.activeMatchingSource);
+    targets = targets.filter((target) => !isActiveTarget(target));
   }
   const metrics = new Map(targets.map((target) => [target.targetId, targetMetrics(target.expectedBytes, target.vramStart)]));
   if (selector.leafOnly) targets = targets.filter((target) => metrics.get(target.targetId).leaf);
@@ -393,6 +399,9 @@ function validateSweepCompletion(expected, selector, options, m2c) {
 }
 
 async function runSweep(workbench, selector = {}, options = {}) {
+  const targets = selectSweepTargets(workbench, selector);
+  const excludedTargets = workbench.targets.filter(target => !scratchCapability(workbench, target).supported)
+    .map(target => ({ symbol: target.symbol, ...scratchCapability(workbench, target) }));
   const storeOptions = options.storeOptions || {};
   const jobs = normalizeSweepJobs(options.jobs || 1);
   if (jobs > 1 && options.generateContext !== false) {
@@ -407,7 +416,6 @@ async function runSweep(workbench, selector = {}, options = {}) {
       ? loadDiagnosticEnvironment(diagnosticCompilerSession).identity : null,
   };
   const authenticatedM2c = resolveM2c(workbench, options);
-  const targets = selectSweepTargets(workbench, selector);
   const variants = selectSweepVariants(workbench, options.variantNames);
   if (!variants.length) throw new Error('sweep selected no m2c variants');
   const identity = buildSweepIdentity(workbench, selector, targets, variants, effectiveOptions, authenticatedM2c);
@@ -427,6 +435,7 @@ async function runSweep(workbench, selector = {}, options = {}) {
       startedAt: existing.started_at,
       finishedAt: existing.finished_at,
       summary: existing.summary,
+      excludedTargets,
       resumed: false,
       cached: true,
     };
@@ -434,6 +443,7 @@ async function runSweep(workbench, selector = {}, options = {}) {
   const resumable = existing?.status === 'running' ? existing : null;
   const startedAt = resumable?.started_at || new Date().toISOString();
   const emptySummary = {
+    excludedTargets,
     selected: targets.length,
     processed: 0,
     generated: 0,

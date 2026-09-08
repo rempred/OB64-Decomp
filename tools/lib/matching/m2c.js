@@ -1,4 +1,5 @@
 'use strict';
+const { assertScratchCapability } = require('./target_model');
 
 const childProcess = require('child_process');
 const crypto = require('crypto');
@@ -636,11 +637,12 @@ function groupGenerationVariants(variants) {
 }
 
 function runM2c(workbench, target, options = {}) {
+  assertScratchCapability(workbench, target, options.compilerSession?.context?.phase8?.targets);
   // Sweeps authenticate m2c once before dispatching targets. Reuse that
   // immutable identity instead of spawning three git probes for every target.
   const m2c = options.m2c || resolveM2c(workbench, options);
   const localTools = options.localTools || resolveLocalTools();
-  const targetRoot = path.join(MATCHING_ROOT, 'targets', target.symbol, 'prepare');
+  const targetRoot = path.join(options.matchingRoot || MATCHING_ROOT, 'targets', target.symbol, 'prepare');
   fs.mkdirSync(targetRoot, { recursive: true });
   const assemblyFile = path.join(targetRoot, `${target.symbol}.s`);
   const assembly = emitM2cAssembly(target, workbench);
@@ -719,6 +721,7 @@ function runM2c(workbench, target, options = {}) {
 }
 
 function prepareAndCompile(workbench, target, options = {}) {
+  assertScratchCapability(workbench, target, options.compilerSession?.context?.phase8?.targets);
   if (options.syncTargets !== false) syncTargets(workbench, options.storeOptions || {});
   const generated = runM2c(workbench, target, options);
   const compilations = [];
@@ -741,6 +744,7 @@ function prepareAndCompile(workbench, target, options = {}) {
         variant: result.variant,
         metadata,
         storeOptions: options.storeOptions,
+        matchingRoot: options.matchingRoot,
         syncTargets: false,
       });
       compilations.push({
@@ -757,6 +761,7 @@ function prepareAndCompile(workbench, target, options = {}) {
         variant: result.variant,
         metadata,
         storeOptions: options.storeOptions,
+        matchingRoot: options.matchingRoot,
         syncTargets: false,
       });
       const shared = compiledSources.get(result.source);
@@ -778,6 +783,7 @@ function prepareAndCompile(workbench, target, options = {}) {
       metadata,
       session: options.compilerSession,
       storeOptions: options.storeOptions,
+      matchingRoot: options.matchingRoot,
       syncTargets: false,
     });
     compiledSources.set(result.source, { variant: result.variant, result: compiled });

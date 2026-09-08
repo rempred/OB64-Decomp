@@ -3,10 +3,45 @@
 const crypto = require('crypto');
 const fs = require('fs');
 const path = require('path');
+const { loadActiveTargetModel } = require('../active_targets');
+// Keep scratch admission in this sealed comparison-algorithm input.
+const GROUP_REASON = 'group workbench requires a complete group candidate; use canonical diff with the group source';
+const LIVE_TARGET_FIELDS = ['activeMatchingSource', 'activeMatchingProducer', 'scratchCompilation'];
+
+function isActiveTarget(target) {
+  return Boolean(target.activeMatchingProducer || target.activeMatchingSource);
+}
+
+function scratchCapability(workbench, target, sessionTargets = []) {
+  // Stored target records deliberately omit live producer state.
+  const key = String(target.symbol || '').toLowerCase();
+  const active = workbench?.activeTargetsBySymbol?.get(key);
+  const live = workbench?.bySymbol?.get(key);
+  const sessionTarget = sessionTargets.find(value => value.symbol.toLowerCase() === key);
+  if ([target, live, active, sessionTarget].some(value => value?.compilationGroup
+      || value?.activeMatchingProducer?.kind === 'compilation-group')) {
+    return { supported: false, code: 'complete-group-candidate-required', reason: GROUP_REASON };
+  }
+  return { supported: true, code: null, reason: null };
+}
+
+function assertScratchCapability(workbench, target, sessionTargets) {
+  const capability = scratchCapability(workbench, target, sessionTargets);
+  if (!capability.supported) throw new Error(capability.reason);
+}
+
+function producerView(active) {
+  if (!active) return null;
+  if (!active.compilationGroup) return { kind: 'standalone', source: active.source };
+  return {
+    kind: 'compilation-group', id: active.compilationGroup.id, source: active.source,
+    memberIndex: active.groupMemberIndex,
+    members: active.compilationGroup.members.map(member => ({ ...member })),
+  };
+}
 const {
   CONFIG_PATH: PHASE7_CONFIG_PATH,
   ROOT,
-  loadAcceptedModel,
   sha256Buffer,
   sha256File,
 } = require('../phase7_conventional');
@@ -89,19 +124,10 @@ function compositeFunctionRows(model) {
 function loadWorkbenchModel(options = {}) {
   const config = readJson(CONFIG_PATH);
   if (config.schemaVersion !== 1 || config.databaseSchemaVersion !== 2) throw new Error('matching workbench configuration schema drift');
-  const model = loadAcceptedModel();
+  const activeModel = loadActiveTargetModel();
+  const model = activeModel.model;
   const baserom = options.requireBaserom === false ? null : loadBaserom(model);
-  const active = readJson(ACTIVE_PATH);
-  if (active.schemaVersion !== 3 || !Array.isArray(active.targets)) throw new Error('active matching target configuration schema drift');
-  const activeSymbols = new Set();
-  for (const target of active.targets) {
-    const symbol = String(target?.symbol || '').toLowerCase();
-    if (!symbol || activeSymbols.has(symbol) || typeof target.source !== 'string' || !target.source) {
-      throw new Error('active matching target record is malformed or duplicated');
-    }
-    activeSymbols.add(symbol);
-  }
-  const activeBySymbol = new Map((active.targets || []).map((target) => [target.symbol.toLowerCase(), target]));
+  const activeBySymbol = new Map(activeModel.targets.map(target => [target.symbol.toLowerCase(), target]));
   const modelManifest = {
     schemaVersion: 1,
     targetModelContract: 4,
@@ -166,6 +192,8 @@ function loadWorkbenchModel(options = {}) {
       return {
         ...metadata,
         activeMatchingSource: activeBySymbol.get(symbol.toLowerCase())?.source || null,
+        activeMatchingProducer: producerView(activeBySymbol.get(symbol.toLowerCase())),
+        scratchCompilation: scratchCapability({ activeTargetsBySymbol: activeBySymbol }, { symbol }),
         targetId,
         modelId,
         expectedBytes: expected,
@@ -179,7 +207,7 @@ function loadWorkbenchModel(options = {}) {
     if (bySymbol.has(key)) throw new Error(`accepted function symbol is duplicated: ${target.symbol}`);
     bySymbol.set(key, target);
   }
-  return { config, model, modelId, modelManifest, baserom, targets, bySymbol };
+  return { config, model, modelId, modelManifest, baserom, targets, bySymbol, activeTargetsBySymbol: activeBySymbol };
 }
 
 function resolveTarget(workbench, symbol) {
@@ -191,7 +219,7 @@ function resolveTarget(workbench, symbol) {
 function targetRecord(target, observedAt = new Date().toISOString()) {
   if (!target.expectedBytes) throw new Error('target record requires canonical expected bytes');
   const metadata = Object.fromEntries(Object.entries(target).filter(([key]) => ![
-    'activeMatchingSource', 'expectedBytes', 'row', 'targetId', 'modelId', 'expectedBytesSha256',
+    ...LIVE_TARGET_FIELDS, 'expectedBytes', 'row', 'targetId', 'modelId', 'expectedBytesSha256',
   ].includes(key)));
   return {
     targetId: target.targetId,
@@ -223,11 +251,14 @@ function publicTarget(target) {
     ...(target.originalAssemblyParts ? { originalAssemblyParts: target.originalAssemblyParts } : {}),
     expectedBytesSha256: target.expectedBytesSha256,
     activeMatchingSource: target.activeMatchingSource,
+    activeMatchingProducer: target.activeMatchingProducer,
+    scratchCompilation: target.scratchCompilation,
     ordinaryMatchingEligible: target.symbolByteOffset === 0,
   };
 }
 
 module.exports = {
+  LIVE_TARGET_FIELDS, assertScratchCapability, isActiveTarget, producerView, scratchCapability,
   ACTIVE_PATH,
   BASEROM_PATH,
   CONFIG_PATH,

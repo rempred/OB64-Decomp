@@ -1240,8 +1240,9 @@ function storeTests() {
   }
 }
 
-function acceptedModelTests() {
+async function acceptedModelTests() {
   const workbench = loadWorkbenchModel();
+  await require('./matching_group_consumers').run(workbench);
   assert(workbench.modelManifest.targetModelContract === 4, 'target-model contract drift');
   assert(JSON.stringify(workbench.modelManifest.conventionalBuild) === JSON.stringify({
     path: 'config/phase7/conventional-build.json',
@@ -1271,7 +1272,7 @@ function acceptedModelTests() {
       && memcpy.originalAssembly === 'asm/original/rev0/boot/memcpy_bytewise.s',
   'memcpy accepted placement, extent, section, or owner provenance drifted');
   const memcpyIdentityMetadata = Object.fromEntries(Object.entries(memcpy).filter(([key]) => ![
-    'activeMatchingSource', 'expectedBytes', 'row', 'targetId', 'modelId', 'expectedBytesSha256',
+    ...require('../tools/lib/matching/target_model').LIVE_TARGET_FIELDS, 'expectedBytes', 'row', 'targetId', 'modelId', 'expectedBytesSha256',
   ].includes(key)));
   assert(memcpy.targetId === digest({
     modelId: workbench.modelId,
@@ -1401,7 +1402,7 @@ async function main() {
   sweepParallelismTests();
   await sweepWorkerLifecycleTests();
   storeTests();
-  acceptedModelTests();
+  await acceptedModelTests();
   console.log('Matching workbench tests: PASS');
 }
 

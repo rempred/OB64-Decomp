@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 'use strict';
+const { assertScratchCapability } = require('./lib/matching/target_model');
 
 const fs = require('fs');
 const path = require('path');
@@ -552,6 +553,10 @@ async function main(argv = process.argv.slice(2)) {
   const parsed = parseArgs(argv.slice(1));
   const { positional, options } = parsed;
   const workbench = loadWorkbenchModel();
+  if (['prepare', 'watch', 'probe'].includes(command) && positional[0]
+      && !(command === 'probe' && positional[0] === 'compare')) {
+    assertScratchCapability(workbench, resolveTarget(workbench, positional[0]));
+  }
   if (options['no-context'] && options['with-context']) throw new Error('--no-context and --with-context cannot be combined');
   if (options['no-context'] && options.runtime) throw new Error('--runtime requires context generation');
   if (command === 'doctor') {
@@ -873,6 +878,7 @@ async function main(argv = process.argv.slice(2)) {
       limit: options.explain ? workbench.targets.length : numeric(options.limit, '--limit', 20),
       skipFamilies: options['skip-families'],
       includeDetails: Boolean(options.explain),
+      includeSolved: Boolean(options['include-solved'] || options.explain),
       comparisonCurrentFingerprint: comparisonQueryProvenance().diagnosticCurrentFingerprint,
       comparisonEnvironmentId: comparisonQueryProvenance().diagnosticEnvironmentId,
     });

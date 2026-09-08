@@ -1,4 +1,5 @@
 'use strict';
+const { isActiveTarget } = require('./target_model');
 
 const fs = require('fs');
 const path = require('path');
@@ -84,8 +85,8 @@ function rankTargets(workbench, options = {}) {
   } }, storeOptions));
   const families = options.skipFamilies ? new Map() : familyFacts(workbench, storeOptions);
   const contextIndex = buildContextIndex(workbench);
-  const activeByName = new Map(workbench.targets.map((target) => [target.symbol.toLowerCase(), Boolean(target.activeMatchingSource)]));
-  const entries = workbench.targets.filter((target) => options.includeSolved || !target.activeMatchingSource).map((target) => {
+  const activeByName = new Map(workbench.targets.map((target) => [target.symbol.toLowerCase(), isActiveTarget(target)]));
+  const entries = workbench.targets.filter((target) => options.includeSolved || !isActiveTarget(target)).map((target) => {
     const metrics = targetMetrics(target.expectedBytes, target.vramStart);
     const manual = overrides.get(target.symbol.toLowerCase()) || null;
     const targetFamilies = families.get(target.targetId) || [];
@@ -153,6 +154,8 @@ function rankTargets(workbench, options = {}) {
     return {
       symbol: target.symbol,
       targetId: target.targetId,
+      activeMatchingProducer: target.activeMatchingProducer,
+      scratchCompilation: target.scratchCompilation,
       bytes: target.bytes,
       value: Math.round(value * 10) / 10,
       matchability: Math.round(matchability * 10) / 10,
