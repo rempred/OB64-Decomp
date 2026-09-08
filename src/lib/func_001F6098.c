@@ -86,7 +86,13 @@ int func_001F6098(DrawObject *object, DrawImage *secondary, int mode, int amount
     int remaining, nextRemaining, nextAccumulated, nextNormalRow;
     int row, u0, u1;
     int x0, alpha;
+    /* HYBRID_C: opaque assembly lifetimes reserve the six unaccessed reload
+       homes in the retail frame. Pure C currently omits these two groups;
+       they are not game values or identified original locals. Keep sourceY
+       between the groups. The empty templates emit no loads or stores. */
+    int frameBefore0, frameBefore1, frameBefore2;
     int sourceY, halfWidth, renderHalfWidth;
+    int frameAfter0, frameAfter1, frameAfter2;
 
     actor = object->actor;
     poseId = object->field4E;
@@ -98,6 +104,9 @@ int func_001F6098(DrawObject *object, DrawImage *secondary, int mode, int amount
     if (factor == 0) {
         return 0;
     }
+    asm volatile (""
+        : "=g" (frameBefore0), "=g" (frameBefore1), "=g" (frameBefore2),
+          "=g" (frameAfter0), "=g" (frameAfter1), "=g" (frameAfter2));
     PAIR(0xE7000000, 0);
     PAIR(0xE7000000, 0);
     PAIR(0xE3000A01, 0x00100000);
@@ -155,6 +164,10 @@ int func_001F6098(DrawObject *object, DrawImage *secondary, int mode, int amount
     }
     index = 0;
     while (1) {
+        /* Retain the opaque lifetimes across calls and the loop backedge. */
+        asm volatile ("" :
+            : "g" (frameBefore0), "g" (frameBefore1), "g" (frameBefore2),
+              "g" (frameAfter0), "g" (frameAfter1), "g" (frameAfter2));
         bit10 = func_0020C034(actor);
         if (!func_00205484(firstId, secondId, bit10, func_0020BFF8(actor),
                            poseId, index, &decoded)) {
@@ -193,6 +206,14 @@ int func_001F6098(DrawObject *object, DrawImage *secondary, int mode, int amount
             func_00201E38(secondary->format, secondary->width);
             remaining = header->height;
             x0 = decoded.record.field_04;
+            {
+                /* Constrain only this real value transition. A function-wide
+                   binding changes later packet scheduling. No instruction is
+                   needed for the matching input/output identity. */
+                register int boundX asm("$23");
+                asm ("" : "=r" (boundX) : "0" (x0));
+                x0 = boundX;
+            }
             top = -decoded.record.field_08;
             right = decoded.record.field_0C + x0;
             flags = decoded.record.field_14;
