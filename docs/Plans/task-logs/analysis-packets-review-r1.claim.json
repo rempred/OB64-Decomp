@@ -1,0 +1,8 @@
+{
+  "created_at": "2026-09-08T05:13:49.0991174Z",
+  "host_id": "local",
+  "receiving_task_id": "/root/db10_trace_review",
+  "task_id": "analysis-packets-review",
+  "launch_id": "ANALYSIS-PACKETS-REVIEW-20260908-01",
+  "assignment_revision": 1
+}
