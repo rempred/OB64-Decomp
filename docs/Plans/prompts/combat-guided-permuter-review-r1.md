@@ -1,7 +1,7 @@
 ---
 task_id: combat-guided-permuter-review
 revision: 1
-status: ready
+status: active
 role: reviewer
 review_level: Material
 inventory_profile: NORMAL
