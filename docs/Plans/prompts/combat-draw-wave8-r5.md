@@ -1,7 +1,7 @@
 ---
 task_id: combat-draw-wave8
 revision: 5
-status: draft
+status: ready
 role: worker
 review_level: Focused
 inventory_profile: NORMAL
@@ -13,7 +13,7 @@ supersedes: combat-draw-wave8-r4
 
 # Continue W8 through supported intermediate source forms
 
-Director `/root` assigns existing Astra Medium `/root/combat_draw_continuation` the same complete fourteen-target source wave. This draft grants no write or compilation authority until the Director explicitly activates it after the standalone tooling worker releases all writes. R4's source handback is frozen at `8251e8cf`; no source from that pass was selected as the current best.
+Director `/root` assigns existing Astra Medium `/root/combat_draw_continuation` the same complete fourteen-target source wave. R4's source handback is frozen at `8251e8cf`; no source from that pass was selected as the current best. The standalone tooling implementation has released all writes and is frozen at `5d57f140479f01e3ecd1bd80bae4185834ac40d8`. Director intake confirmed all twenty W8 source/shared inputs still match R4. You receive sole production source/build ownership upon explicit activation; the independent tooling reviewer has no production write authority.
 
 Read parent/canonical AGENTS.md, parent Worker-workflow.md, canonical WORKFLOW.md, SOURCE_POLICY.md, NEXT_STEPS.md and the current sequential program. Joe's clarification at `376d04b4` and `fe1b4eae` controls this continuation: an immediate score improvement is not required. Prior reports' rejected inputs are not selected as current best; that alone does not falsify their source structures. Keep frozen reports unchanged and distinguish input-specific findings from broader hypothesis conclusions.
 

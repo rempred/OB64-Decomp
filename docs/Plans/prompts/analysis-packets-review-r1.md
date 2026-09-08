@@ -1,7 +1,7 @@
 ---
 task_id: analysis-packets-review
 revision: 1
-status: draft
+status: ready
 role: reviewer
 review_level: Material
 inventory_profile: NORMAL
@@ -12,7 +12,7 @@ workspace_claim: C:/Users/Joe/Projects/OgreBattlel64/OB64 Decomp/docs/Plans/task
 
 # Review standalone default Kuna and m2c packets
 
-This draft is inert. Director `/root` must bind the completed implementation commit, terminal report and evidence manifest before activation. Existing independent reviewer `/root/db10_trace_review` is reserved under the standing reviewer model assignment. The implementation worker must first release all writes; the reviewer may not diagnose or correct an unfinished implementation.
+Director `/root` assigns existing independent reviewer `/root/db10_trace_review` under the standing reviewer model assignment. The completed implementation is frozen at `5d57f140479f01e3ecd1bd80bae4185834ac40d8`; all worker writes are released and no process remains. Its report `docs/Plans/task-logs/analysis-packets-implementation-r1.md` has SHA256 `4E2F1828E864962BE08EDC3E49DE40A6AF6F073E6B7EA569F7B3CBE34B07EC3A`. The ignored evidence root is `build/analysis-packets-implementation-r1/`, manifest SHA256 `A4C9EB6B30C21D596826761B31F79344201A2EC59C300C70F6086993A6F42AF9`. The changed-file index SHA256 is `F0B9B20DD24A3B92D17014A21960C8BFDDFBC98EAA223762C592EEE57CD5DB00`; Director intake checked all eight listed file sizes/hashes and all twenty unchanged W8 inputs. The worker reports40/40 focused checks and12/16 routine suites; `routine-baseline.json` SHA256 `72B36E63E95F9AED79FA48DFC6B607DF7EB2FF7854D36082194EE09A7754135A` binds its failure-attribution claim. These are review inputs, not a Director technical verdict.
 
 Read parent/canonical AGENTS.md, parent Reviewer-workflow.md, canonical WORKFLOW.md, SOURCE_POLICY.md, AUDIT.md and the standing goal's analysis-packet requirement. Read the completed implementation prompt/report, new usage documentation, and accepted Kuna trial/review that bound the original analysis method and its limitations. The user added automatic default Kuna/m2c packets at difficult-function intake while retaining m2c as primary, both outputs as hypotheses and alternate transformations only for specific ambiguities. This is optional analysis tooling outside the canonical compile/link/acceptance path.
 
