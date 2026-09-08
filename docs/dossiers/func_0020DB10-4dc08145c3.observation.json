@@ -1,0 +1,87 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "4DC08145C3B4A8434666A5A4C2A6411E97B29D08B4461D7B4355B3A6B8620E79",
+  "observationId": "877590D1C010E060861C9C9084C7A4D8DB6D4B5051B190170A6F7AEEECD32C6C",
+  "symbol": "func_0020DB10",
+  "authored": {
+    "context": "Staged countdown index at top of an explicit loop, real index>=20 break, and offset derived from index*248 instead of a separate offset recurrence.",
+    "effects": [
+      "dependent-induction-recognized",
+      "five-accessed-homes",
+      "frame-size-not-allocation-identity"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "06A1F6661D02363AA2793F14A52EA09AE3DAF11AE030AB168886951140C3AA26",
+      "sourceSha256": "FCCFB80EEB0EB31DD1CBF6BE0CA9D2AEB2D87173332C9E56824806D5EAEE7AF9"
+    },
+    "label": "r10-staged-offset-before-bound",
+    "observedEffect": "Before-bound:5564/frame560,824 bytes/247 words differ; FIVE accessed plus three unused homes. Loop recognizes/reduces dependent GIVs and a generated address GIV has actual spill accesses. After-bound control:5552/frame544,877/256 and3+3, no dependent GIV recognition. Both pin/tracer comparisons agree.",
+    "parentCandidateId": "FCE4806774C3B389896279857E2B26F36E5891D04777A1A1B95950BA373F3F16",
+    "references": [
+      {
+        "path": "docs/Plans/task-logs/combat-draw-wave8-r10.md",
+        "sha256": "E71F2CEF6615882E8737972F9C23AD08F03BF67186535EEE43FF76EC08EC7F48"
+      }
+    ],
+    "relatedCandidateIds": [
+      "92917D08C4D84AA8C633DA8E4F4B9E6A56189AD45D89586835F065AE03FF6777"
+    ],
+    "remainingFailure": "Wrong extent and allocation roles. Frame560 comes from an extra accessed address home, unlike the four-accessed/four-unused batch-loop sources. Source placement effect does not itself prove the internal cant_derive flag.",
+    "role": "counterexample",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Compute the real offset immediately before the bound test. Moving that same assignment immediately after the test is the exact paired placement control."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 26568,
+      "sha256": "06A1F6661D02363AA2793F14A52EA09AE3DAF11AE030AB168886951140C3AA26"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "FCCFB80EEB0EB31DD1CBF6BE0CA9D2AEB2D87173332C9E56824806D5EAEE7AF9"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-08-func_0020DB10-4dc08145c3.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

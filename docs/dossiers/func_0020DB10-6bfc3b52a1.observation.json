@@ -1,0 +1,87 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "6BFC3B52A10EA78B08C5A77750D44D1379AD02605313A90B5A2518F56C9115D2",
+  "observationId": "7D91653F8C14084A036FEBD9284543D8A9532EE80CC5FEBBF1A33A21CDDAEFDF",
+  "symbol": "func_0020DB10",
+  "authored": {
+    "context": "Exact named-old-value source context with the same declarations, postincrement and submission.",
+    "effects": [
+      "old-value-use-removed",
+      "entry-predicate-hoisted",
+      "three-unused-homes"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "C87AA03A25735CF6B0A106A41DF70CB10705EE33F7FDCA57082D47E0E5674096",
+      "sourceSha256": "465625403352BB15A0576EC51B58709E526E36791DAAE1BADB805D8632AB1B1C"
+    },
+    "label": "r10-named-old-new-index",
+    "observedEffect": "5548/frame552,99 bytes/46 words differ; four accessed plus three non-emitting homes. Complete raw text and relocation list equal unnamed postincrement control, whose canonical PURE_C diff has exact209 relocations. Pin/tracer agrees. Naming alone does not retain the extra home.",
+    "parentCandidateId": "6D3B02845B46DCC807232A66EA04410982F5778552163897A97A3EC3C68C7B74",
+    "references": [
+      {
+        "path": "docs/Plans/task-logs/combat-draw-wave8-r10.md",
+        "sha256": "E71F2CEF6615882E8737972F9C23AD08F03BF67186535EEE43FF76EC08EC7F48"
+      }
+    ],
+    "relatedCandidateIds": [
+      "BEF61CB3BF44026A10A7B353E81AD8B3679404D864224268B769FBDBE20781B3"
+    ],
+    "remainingFailure": "The unused entry predicate is lost and retail frame560 is not reproduced; this is a counterexample to a naming-only explanation.",
+    "role": "counterexample",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Only index the next resource with actorIndex+run instead of actorIndex+additional+1."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 26489,
+      "sha256": "C87AA03A25735CF6B0A106A41DF70CB10705EE33F7FDCA57082D47E0E5674096"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "465625403352BB15A0576EC51B58709E526E36791DAAE1BADB805D8632AB1B1C"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-08-func_0020DB10-6bfc3b52a1.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

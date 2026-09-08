@@ -1,6 +1,6 @@
-# W8 source continuation R10 — active
+# W8 source continuation R10 — recorded
 
-The continuing matching goal activates `/root/w8_research_intake` (Astra Medium) as the sole production source/build writer on current `main`, starting from `36ee6692`. The [R9 findings](../task-logs/combat-draw-wave8-r9.md) and all earlier evidence remain frozen. The complete Combat → Squad → High Attack scope remains required.
+The continuing matching goal activated `/root/w8_research_intake` (Astra Medium) as the sole production source/build writer on `main`, starting from `36ee6692`. The [R10 source sequence](../task-logs/combat-draw-wave8-r10.md) is now recorded, with five useful states preserved through normal research intake. All twenty baseline inputs are restored and all source/build/report writes released to the Director. No new production best or matching acceptance was established. The complete fourteen-target W8 wave and Combat → Squad → High Attack scope remain required; current continuation ownership and source questions are in [the sequential program](../sequential-main-program.md).
 
 Read the normal repository guides, current research intake, relevant source/assembly and the R9 liveness pair. Preserve the twenty R8 source/shared inputs, including D764's exact local bytes. Own one target at a time, new ignored `build/combat-draw-wave8-r10/`, a concise R10 task log and useful curated source records. The Director owns program status. No shared tooling, structural/compiler contracts, runtime/Resolver, branches/worktrees or publication is included.
 

@@ -1,0 +1,86 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "BEF61CB3BF44026A10A7B353E81AD8B3679404D864224268B769FBDBE20781B3",
+  "observationId": "A3B2C62AAB083074F0827B45087FD2F1BFA113B08B2AA2A4FAE886B4575CE850",
+  "symbol": "func_0020DB10",
+  "authored": {
+    "context": "Full 5BF6 DB10 context; a single total-run recurrence starts zero and uses a real old-value snapshot.",
+    "effects": [
+      "post-comparison-old-value-live",
+      "four-unused-homes"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "751BCE44D7C5540B69772059722364CAEC9CE33510A7E7BFEB7839984C3CADA1",
+      "sourceSha256": "D7D90E6349B60CE30F98C5AF66A46384512D1D09BC94BB4D1680894DC182D725"
+    },
+    "label": "r10-named-old-value",
+    "observedEffect": "5552/frame560,446 bytes/130 words differ, four accessed plus four non-emitting homes. Pin/tracer emission agrees; flow retains old value after comparison and combine leaves a local unused predicate. Canonical diff rejects extent.",
+    "parentCandidateId": "6D3B02845B46DCC807232A66EA04410982F5778552163897A97A3EC3C68C7B74",
+    "references": [
+      {
+        "path": "docs/Plans/task-logs/combat-draw-wave8-r10.md",
+        "sha256": "E71F2CEF6615882E8737972F9C23AD08F03BF67186535EEE43FF76EC08EC7F48"
+      }
+    ],
+    "relatedCandidateIds": [
+      "51A6102B90CDF7D28AE5845402FD93011C2F320F19A6B39CE25EA6A6DBE4AF6F"
+    ],
+    "remainingFailure": "A snapshot move and shifted indexing remain; frame560 is not matching acceptance.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Use (additional=run++)<count-1 and resources[actorIndex+additional+1], then submit and advance by run."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 26500,
+      "sha256": "751BCE44D7C5540B69772059722364CAEC9CE33510A7E7BFEB7839984C3CADA1"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "D7D90E6349B60CE30F98C5AF66A46384512D1D09BC94BB4D1680894DC182D725"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-08-func_0020DB10-bef61cb3bf.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

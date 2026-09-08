@@ -1,0 +1,85 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "FCE4806774C3B389896279857E2B26F36E5891D04777A1A1B95950BA373F3F16",
+  "observationId": "CE05CA93D51972D5CCA61EFA12410F1561FFF818555EBC19F53F2BEC609FA5B1",
+  "symbol": "func_0020DB10",
+  "authored": {
+    "context": "Original 5BF6 batch logic and sortOffset recurrence; only sort index origin changes.",
+    "effects": [
+      "generated-index-initialization",
+      "countdown-eliminated",
+      "register-role-mismatch"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "86ABC578BFF7AE0F8D2CE06872C6BB6EBCA8FE4D09C046AD449EB3C05AD6EF58",
+      "sourceSha256": "4815FB7BDF8BA02E2A16E637792CCA4112A64544935963FCED22B5A2B0BDD708"
+    },
+    "label": "r10-sort-staged-countdown",
+    "observedEffect": "Canonical PURE_C result:5548/frame552,100 bytes/88 words differ, exact209 relocations. Loop recognizes benefit4, reduces the ascending GIV and eliminates countdown. Generated zero follows hoisted bases, with scheduling placing it before the last base spill. Pin/tracer agrees.",
+    "parentCandidateId": "6D3B02845B46DCC807232A66EA04410982F5778552163897A97A3EC3C68C7B74",
+    "references": [
+      {
+        "path": "docs/Plans/task-logs/combat-draw-wave8-r10.md",
+        "sha256": "E71F2CEF6615882E8737972F9C23AD08F03BF67186535EEE43FF76EC08EC7F48"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Generated index and other real quantities receive different registers; source-derived initialization order alone does not match the retail preheader.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Start unsigned actorsRemaining=20; compute actorIndex=-actorsRemaining then actorIndex+=20 in the while condition, decrement remaining at the original tail."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 26497,
+      "sha256": "86ABC578BFF7AE0F8D2CE06872C6BB6EBCA8FE4D09C046AD449EB3C05AD6EF58"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "4815FB7BDF8BA02E2A16E637792CCA4112A64544935963FCED22B5A2B0BDD708"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-08-func_0020DB10-fce4806774.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
