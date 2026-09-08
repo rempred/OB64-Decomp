@@ -36,11 +36,12 @@ const { buildFamilyAtlas } = require('./lib/matching/family');
 const { buildContextIndex, storeTargetContext } = require('./lib/matching/context');
 const { rankTargets } = require('./lib/matching/rank');
 const { compareProbes, runProbe } = require('./lib/matching/probe');
+const { importResearch, observations: researchObservations, preserveResearch } = require('./lib/matching/research');
 
 const VALUE_OPTIONS = new Set([
   'limit', 'source', 'candidate', 'variant', 'm2c-root', 'set', 'max-size',
   'lane', 'note', 'research-compiler', 'passes', 'jobs', 'case-map', 'source-origin',
-  'actual-dispatch', 'actual-body', 'output', 'actual-tail',
+  'actual-dispatch', 'actual-body', 'output', 'actual-tail', 'observation', 'effect',
 ]);
 const REPEAT_OPTIONS = new Set(['variant', 'actual-tail']);
 let comparisonQueryProvenanceCache = null;
@@ -70,7 +71,9 @@ Core:
   compare <candidate-id> <candidate-id>
   case-cfg <candidate-id> --case-map <map.json> --actual-dispatch <offset> --actual-body <offset>
            --actual-tail <name=offset>... [--output <report.json>]
-  preserve <candidate-id> --note <reason>
+  import <symbol> --source <candidate.c> --observation <curated.json>
+  observations <symbol> [--effect <tag>] [--limit N]
+  preserve <candidate-id> --note <reason> [--observation <observation-id>]
 
 Generation:
   prepare <symbol> [--variant <ruleset>]... [--with-context|--no-context] [--runtime] [--no-compile] [--m2c-root <path>]
@@ -503,7 +506,8 @@ function latestCandidateRun(candidateId) {
   return { candidate, observations, runs, run: runs.find((item) => item.status === 'compiled') || runs[0] || null };
 }
 
-function preserveCandidate(workbench, candidateId, note) {
+function preserveCandidate(workbench, candidateId, note, observationId) {
+  if (observationId) return preserveResearch(workbench, candidateId, observationId, note);
   if (!note) throw new Error('preserve requires --note describing why the candidate is useful');
   const { candidate, run } = latestCandidateRun(candidateId);
   const target = workbench.targets.find((item) => item.targetId === candidate.target_id);
@@ -524,7 +528,7 @@ function preserveCandidate(workbench, candidateId, note) {
     '',
     '## Status',
     '',
-    'This source is a research candidate. The original assembly remains the accepted owner.',
+    'This source is a research candidate. Preservation does not change current source ownership or establish matching acceptance.',
     '',
     `- Candidate: \`${candidateId}\``,
     `- Target: \`${target.symbol}\` at ROM \`0x${target.romStart.toString(16).toUpperCase()}\``,
@@ -553,7 +557,7 @@ async function main(argv = process.argv.slice(2)) {
   const parsed = parseArgs(argv.slice(1));
   const { positional, options } = parsed;
   const workbench = loadWorkbenchModel();
-  if (['prepare', 'watch', 'probe'].includes(command) && positional[0]
+  if (['prepare', 'watch', 'probe', 'import'].includes(command) && positional[0]
       && !(command === 'probe' && positional[0] === 'compare')) {
     assertScratchCapability(workbench, resolveTarget(workbench, positional[0]));
   }
@@ -578,6 +582,18 @@ async function main(argv = process.argv.slice(2)) {
     return;
   }
   initialize(workbench);
+  if (command === 'import') {
+    if (positional.length !== 1 || !options.source || !options.observation) throw new Error('import requires <symbol> --source <candidate.c> --observation <curated.json>');
+    const target = resolveTarget(workbench, positional[0]);
+    print(importResearch(workbench, target, path.resolve(options.source), JSON.parse(fs.readFileSync(path.resolve(options.observation), 'utf8')), { syncTargets: false }), options);
+    return;
+  }
+  if (command === 'observations') {
+    if (positional.length !== 1) throw new Error('observations requires one symbol');
+    const target = resolveTarget(workbench, positional[0]);
+    print({symbol:target.symbol, observations:researchObservations(target, options.effect, numeric(options.limit, '--limit', 20))}, options);
+    return;
+  }
   if (command === 'inspect') {
     if (positional.length !== 1) throw new Error('inspect requires one symbol');
     const target = resolveTarget(workbench, positional[0]);
@@ -747,7 +763,7 @@ async function main(argv = process.argv.slice(2)) {
   }
   if (command === 'preserve') {
     if (positional.length !== 1) throw new Error('preserve requires one candidate id');
-    print(preserveCandidate(workbench, positional[0], options.note), options);
+    print(preserveCandidate(workbench, positional[0], options.note, options.observation), options);
     return;
   }
   if (command === 'prepare') {

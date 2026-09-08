@@ -1,5 +1,36 @@
 # Optional Matching Workbench
 
+## Import and retrieve authored research
+
+`node tools/match.js import <symbol> --source <repo-relative.c> --observation <authored.json> --json`
+records an existing independently authored candidate and a tagged observation. It authenticates
+the exact source, expanded input, dependency closure and references through source policy;
+it preprocesses but does not invoke KMC code generation or record a compile run. Grouped
+targets are excluded. No schema migration is needed: candidates and observations use the existing store.
+
+The version 1 authored JSON contains `label`, `role`, `context`, `sourceChange`, `effects`,
+`observedEffect`, `remainingFailure`, `selectedBest`, `parentCandidateId`, `relatedCandidateIds`,
+`references` (path/SHA-256) and `expected` (source/expanded SHA-256 and dependency records).
+See the [five-state pilot](research/w8-pro-research/reuse-pilot.md) for complete examples.
+Parent and related IDs must already exist for the same target and identify distinct candidates.
+Claims are authored annotations; computed source class, preprocessor and file identities are separate.
+Roles and `selectedBest` describe research state and never establish matching acceptance.
+
+`node tools/match.js observations <symbol> --effect <tag> --limit 20 --json` retrieves bounded
+research observations (limit 1–200). `preserve <candidateId> --observation <observationId>
+--note "context"` exports the exact C, selected observation envelope and neutral dossier.
+Preservation rechecks current scratch eligibility, original include context and preprocessor;
+the archive must independently preprocess to the identical expanded input and dependency closure.
+Sibling files in a generated source snapshot reject. Expanded C and compiler dumps remain ignored.
+Existing preservation without `--observation` retains its prior route.
+
+Exported observation envelopes contain `.authored` plus authenticated metadata. To re-import,
+extract `.authored` to ignored temporary JSON and pass the archived C as `--source`, in parent/related
+dependency order. Fresh import recomputes identities/provenance; candidate IDs stay stable for
+the same target/source, while observation IDs may change with source path. The pilot includes
+a complete recipe requiring no historical build directory. Replay uses the ordinary research
+`probe <symbol> --source <archived.c>` command and retains all its authentication rules.
+
 `tools/match.js` is a generated research layer for finding and improving C
 candidates. It resolves accepted US Rev 0 targets, generates drafts with pinned
 m2c, compiles scratch candidates with the authenticated KMC/GNU chain, and keeps

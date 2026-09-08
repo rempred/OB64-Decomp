@@ -1,0 +1,126 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "519474319F673191AB26EE7A6C12B47195ED7D6859F26C9A5DD4C2E4461C7C23",
+  "observationId": "5BB2B3D31FC7325F15B5F3DA6168F51C9F5CBB0DA6D7609070F657ABBD27AC5A",
+  "symbol": "func_001F3C00",
+  "authored": {
+    "context": "Current D037 emitted-best 3C00 context: distinct int primaryEnd and preserved D037 strip/row/tile/vertex histories.",
+    "effects": [
+      "cursor-localization",
+      "d037-transfer"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 1408,
+          "path": "include/game/combat_draw_commands.h",
+          "sha256": "0B78FA9F31CD5980AA803E52E85CDC3A767896D2F943593036CCC2C9E357A31B"
+        },
+        {
+          "bytes": 362,
+          "path": "include/game/combat_draw.h",
+          "sha256": "DEA4C4DDDEA3D523C088558D41D15EDFCCC28C9467F48DA03E779F4F2F1A0B08"
+        },
+        {
+          "bytes": 868,
+          "path": "include/game/combat_pose_record.h",
+          "sha256": "3ECFF3EEA02A4A2AB76E7E489B00ECDB2FFA2511382E95CD936F376509457815"
+        },
+        {
+          "bytes": 109,
+          "path": "include/game/combat_types.h",
+          "sha256": "DD2B627C22F084DB4F668D27E8DE3C3F3D8FDFC352F690034FE3E1A5655959D6"
+        }
+      ],
+      "expandedSha256": "7DE6F8E24A17F19CB56105D1C2897C8252710112B1BE96AEE163177C98EC5102",
+      "sourceSha256": "D03797FD04EEE60592E0644A837E09308568D3E82448883997A10A85DA7F91F5"
+    },
+    "label": "d037-control",
+    "observedEffect": "R8 linked fidelity:6740 bytes/frame504,770 differing bytes/261 words,302 relocations;29 accessed homes and23 static WIDTH calls.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "docs/Plans/task-logs/combat-draw-wave8-r8.md",
+        "sha256": "C00F650A98B05E16008F39D4D1B4EEFCCB99E461409FF17E71126F69FFDB62B0"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Still nonexact and W8 unaccepted; selectedBest means current emitted-best research state only.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Unchanged D037 control for transfer of the R7 locality relation."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 1408,
+        "path": "include/game/combat_draw_commands.h",
+        "sha256": "0B78FA9F31CD5980AA803E52E85CDC3A767896D2F943593036CCC2C9E357A31B"
+      },
+      {
+        "bytes": 362,
+        "path": "include/game/combat_draw.h",
+        "sha256": "DEA4C4DDDEA3D523C088558D41D15EDFCCC28C9467F48DA03E779F4F2F1A0B08"
+      },
+      {
+        "bytes": 868,
+        "path": "include/game/combat_pose_record.h",
+        "sha256": "3ECFF3EEA02A4A2AB76E7E489B00ECDB2FFA2511382E95CD936F376509457815"
+      },
+      {
+        "bytes": 109,
+        "path": "include/game/combat_types.h",
+        "sha256": "DD2B627C22F084DB4F668D27E8DE3C3F3D8FDFC352F690034FE3E1A5655959D6"
+      }
+    ],
+    "expanded": {
+      "bytes": 26085,
+      "sha256": "7DE6F8E24A17F19CB56105D1C2897C8252710112B1BE96AEE163177C98EC5102"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "D03797FD04EEE60592E0644A837E09308568D3E82448883997A10A85DA7F91F5"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-08-func_001F3C00-519474319f.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

@@ -532,6 +532,32 @@ def _query(connection: sqlite3.Connection, request: dict[str, Any]) -> Any:
             (args["candidateId"], limit),
         ).fetchall()
         return [_row_dict(row) for row in rows]
+    if name == "research_observations":
+        target_id = args.get("targetId")
+        observation_id = args.get("observationId")
+        effect = args.get("effect")
+        for value in (target_id, observation_id):
+            if value is not None and (not isinstance(value, str) or len(value) != 64 or any(c not in "0123456789ABCDEF" for c in value)):
+                raise ValueError("research target/observation identity is malformed")
+        if target_id is None:
+            raise ValueError("research observations require a target identity")
+        clauses = ["c.target_id=?", "o.origin='research-import'", "json_extract(o.metadata_json,'$.research.schemaVersion')=1"]
+        params = [target_id]
+        if observation_id is not None:
+            clauses.append("o.observation_id=?")
+            params.append(observation_id)
+        if effect is not None:
+            if not isinstance(effect, str) or not 1 <= len(effect) <= 64 or not effect[0].isascii() or not effect[0].islower() or any(c not in "abcdefghijklmnopqrstuvwxyz0123456789-" for c in effect):
+                raise ValueError("research effect tag is malformed")
+            clauses.append("EXISTS (SELECT 1 FROM json_each(o.metadata_json,'$.research.authored.effects') tag WHERE tag.value=?)")
+            params.append(effect)
+        rows = connection.execute(
+            "SELECT o.*,c.source_sha256,t.symbol FROM candidate_observation o "
+            "JOIN candidate c ON c.candidate_id=o.candidate_id JOIN target_snapshot t ON t.target_id=c.target_id "
+            "WHERE " + " AND ".join(clauses) + " ORDER BY o.created_at DESC,o.observation_id LIMIT ?",
+            (*params, limit),
+        ).fetchall()
+        return [_row_dict(row) for row in rows]
     if name == "families_for_target":
         rows = connection.execute(
             """SELECT g.group_id,g.model_id,g.tier,g.member_count,g.metadata_json,m.ordinal

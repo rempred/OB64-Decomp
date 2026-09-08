@@ -1,0 +1,126 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "7FA66212D41385A31D5EEB18FE9C3DBEBC73037D92458C279B7E0AFFB95D3865",
+  "observationId": "C98DA8B10291DBF3815BEF44DEA6789CD98AC837EDA64BD23859518E5EF83AFD",
+  "symbol": "func_001F3C00",
+  "authored": {
+    "context": "Same R7 E1/P1/T0 source context as the integer/shared baseline.",
+    "effects": [
+      "endpoint-spill",
+      "short-endpoint"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 1408,
+          "path": "include/game/combat_draw_commands.h",
+          "sha256": "0B78FA9F31CD5980AA803E52E85CDC3A767896D2F943593036CCC2C9E357A31B"
+        },
+        {
+          "bytes": 362,
+          "path": "include/game/combat_draw.h",
+          "sha256": "DEA4C4DDDEA3D523C088558D41D15EDFCCC28C9467F48DA03E779F4F2F1A0B08"
+        },
+        {
+          "bytes": 868,
+          "path": "include/game/combat_pose_record.h",
+          "sha256": "3ECFF3EEA02A4A2AB76E7E489B00ECDB2FFA2511382E95CD936F376509457815"
+        },
+        {
+          "bytes": 109,
+          "path": "include/game/combat_types.h",
+          "sha256": "DD2B627C22F084DB4F668D27E8DE3C3F3D8FDFC352F690034FE3E1A5655959D6"
+        }
+      ],
+      "expandedSha256": "67FDA4F044A97476771F803BE27D71D02D422F3DC3F655BA70116795C3CEDCB8",
+      "sourceSha256": "18110DDA0820A21E5F1182975EBAF929792893B8AB85FA004EDB474289D9B807"
+    },
+    "label": "r7-short-shared",
+    "observedEffect": "Frozen trace: frame504 and29 accessed homes; narrowing removes the endpoint spill even without cursor localization.",
+    "parentCandidateId": "7E434EC440AC7F8F0BA23E03BFD7A3B5374771FBEE0857D0109CE3D25AD0215D",
+    "references": [
+      {
+        "path": "docs/Plans/task-logs/combat-draw-wave8-r7.md",
+        "sha256": "E9F4516ACC6BACF650C222D659FE77AF2EAD65376F70635AA708C64580702E69"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Extent6720 and nonexact bytes; narrowed endpoint remains. This is the nearest counterexample to treating a smaller frame as proof of integer-endpoint locality.",
+    "role": "counterexample",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Narrow consumed masked endpoint to unsigned short while retaining shared outer completion."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 1408,
+        "path": "include/game/combat_draw_commands.h",
+        "sha256": "0B78FA9F31CD5980AA803E52E85CDC3A767896D2F943593036CCC2C9E357A31B"
+      },
+      {
+        "bytes": 362,
+        "path": "include/game/combat_draw.h",
+        "sha256": "DEA4C4DDDEA3D523C088558D41D15EDFCCC28C9467F48DA03E779F4F2F1A0B08"
+      },
+      {
+        "bytes": 868,
+        "path": "include/game/combat_pose_record.h",
+        "sha256": "3ECFF3EEA02A4A2AB76E7E489B00ECDB2FFA2511382E95CD936F376509457815"
+      },
+      {
+        "bytes": 109,
+        "path": "include/game/combat_types.h",
+        "sha256": "DD2B627C22F084DB4F668D27E8DE3C3F3D8FDFC352F690034FE3E1A5655959D6"
+      }
+    ],
+    "expanded": {
+      "bytes": 26076,
+      "sha256": "67FDA4F044A97476771F803BE27D71D02D422F3DC3F655BA70116795C3CEDCB8"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "18110DDA0820A21E5F1182975EBAF929792893B8AB85FA004EDB474289D9B807"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-08-func_001F3C00-7fa66212d4.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
