@@ -24,9 +24,9 @@ This preservation does not accept W8 or replace the exact W7 baseline. Resolver 
 The source worker continues ordinary W8 source work; the [endpoint reproducer](task-logs/combat-7adc-endpoint-reproducer-r1.md) has passed [independent research review](task-logs/combat-7adc-endpoint-reproducer-review-r1.md) with no findings.
 Four complete controls isolate endpoint spelling from row-store form, and the smaller pair retains the stronger call-order distinction and live packed stores.
 The worker may use this candidate-specific lifetime guidance, retaining failed reductions and source/pass correlation limits. It supplies no retail history or new matching recipe.
-The [guided probe search](task-logs/combat-7adc-guided-endpoint-search-r1.md) is complete and under [independent review](prompts/combat-7adc-guided-endpoint-search-review-r1.md).
+The [guided probe search](task-logs/combat-7adc-guided-endpoint-search-r1.md) has passed [independent review](task-logs/combat-7adc-guided-endpoint-search-review-r1.md) with no findings.
 Its four-form search yields a partial format-one source lead with explicit register residuals; it is not an improved matching candidate or full desired-order success.
-New research guidance remains unaccepted pending review; any production source integration retains ordinary matching gates.
+The production owner may now use its candidate-specific guidance to test the remaining row/pointer lifetimes and common-branch endpoint residuals. Any source integration retains ordinary matching gates.
 3C00's later controlled cursor/tile-value combination retains the accepted extent and improves its focused linked comparison to 804 differing bytes; it remains provisional and nonexact.
 The complete [preserved DB10 survey](task-logs/combat-db10-preserved-allocation-survey-r1.md) found at most three non-emitting homes across its 93-input corpus.
 This bounded negative result supplies no missing-home recipe, retail allocation history or impossibility claim.
