@@ -1,0 +1,13 @@
+{
+  "task": "combat-draw-wave8",
+  "revision": 8,
+  "worker": "/root/w8_research_intake",
+  "status": "terminal-unresolved",
+  "scope": "sole production source/build writer; bounded D037 then DB10 experiments",
+  "commit": "8b63cfde",
+  "allFourteenTargetsRequired": true,
+  "released": true,
+  "liveProcesses": [],
+  "noSourceSelected": true,
+  "finishedAt": "2026-09-08T14:52:31.062Z"
+}

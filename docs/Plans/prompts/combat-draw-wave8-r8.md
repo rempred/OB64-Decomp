@@ -1,7 +1,7 @@
 ---
 task_id: combat-draw-wave8
 revision: 8
-status: active
+status: completed-unresolved
 role: worker
 review_level: Focused
 inventory_profile: NORMAL
@@ -12,6 +12,8 @@ supersedes: combat-draw-wave8-r7
 ---
 
 # Continue the complete W8 from the preserved best source context
+
+Terminal status: the [R8 experiment report](../task-logs/combat-draw-wave8-r8.md) completes the bounded authorized trials without selecting a new best. All production/source/build/report writes are released. Further source work needs a new assignment; all fourteen W8 acceptance obligations remain.
 
 Activation, 2026-09-08: Joe explicitly requested the two distinct experiments identified in [local Pro research intake](../../research/w8-pro-research/local-intake.md). Director `/root` activates the existing eligible Astra Medium internal worker `/root/w8_research_intake` as sole production source/build writer for this continuation. This supersedes the historical worker identity below. First test the D037 outer final-cursor relation, then the DB10 zero-based additional-member counter; add only the proposed isolating controls if the initial results justify them. The already-covered 6098 proposal is not repeated. Return the bounded experimental result without treating it as W8 completion. All fourteen targets and final combined acceptance gates remain unchanged. The parent `Worker-workflow.md` path is absent in this checkout; repository AGENTS/WORKFLOW govern, with no parent task-transport ceremony required.
 
