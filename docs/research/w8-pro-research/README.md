@@ -8,7 +8,7 @@ The [local intake of returned Pro findings](local-intake.md) resolves that ident
 
 The later [generic-probe audit intake](probe-audit-intake.md) records reproduced diagnostic input/cache/comparison defects, their limits, and a bounded repair recommendation. It also reconciles the assessment with completed R8 experiments.
 
-The [execution plan](../../Plans/probe-repair-and-w8-reuse.md) tracks the local response to that audit. The generic probe repair passed independent review. The [five-source reuse pilot](reuse-pilot.md) now supplies exact authored R7 pairs, their nearest counterexample and the R8 D037 transfer comparison, with curated observations and fresh-store replay instructions. These follow-up changes are local until explicitly published; the original remote research baseline remains identified below.
+The [execution plan](../../Plans/probe-repair-and-w8-reuse.md) tracks the local response to that audit. The generic probe repair and [five-source reuse pilot](reuse-pilot.md) passed independent review. The pilot supplies exact authored R7 pairs, their nearest counterexample and the R8 D037 transfer comparison, with curated observations and fresh-store replay instructions. The [paired-reduction study](paired-reduction.md) removes 64 lines per side while retaining the real R7 endpoint spill distinction; its two additional archived sources make that narrower result replayable. D037 remains the best emitted match and an explicit transfer limit. These follow-up changes are local until explicitly published; the original remote research baseline remains identified below.
 
 ## Start here
 
@@ -27,7 +27,7 @@ The [execution plan](../../Plans/probe-repair-and-w8-reuse.md) tracks the local 
 
 The renderer sources include [combat_draw.h](../../../include/game/combat_draw.h), [combat_draw_commands.h](../../../include/game/combat_draw_commands.h) and [combat_pose_record.h](../../../include/game/combat_pose_record.h). Read these before inferring argument types, side effects or macro evaluation order.
 
-Required repository rules are [AGENTS.md](../../../AGENTS.md), [WORKFLOW.md](../../WORKFLOW.md), and [SOURCE_POLICY.md](../../SOURCE_POLICY.md). Current sequencing is in [the program plan](../../Plans/sequential-main-program.md). R8 is complete; the [short next source intake](../../Plans/prompts/combat-draw-wave8-r9.md) is prepared pending completion of the audit follow-up. The web research request does not activate that local source assignment.
+Required repository rules are [AGENTS.md](../../../AGENTS.md), [WORKFLOW.md](../../WORKFLOW.md), and [SOURCE_POLICY.md](../../SOURCE_POLICY.md). Current sequencing is in [the program plan](../../Plans/sequential-main-program.md). R8 is complete; the [short next source intake](../../Plans/prompts/combat-draw-wave8-r9.md) incorporates the audit follow-up. The web research request does not activate that local source assignment.
 
 ## What is available remotely
 
