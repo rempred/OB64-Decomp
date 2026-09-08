@@ -18,7 +18,9 @@ It covers the three solved controls and 215CF0 plus current 3C00. Its [independe
 The recommendation supports optional manual second opinions beside m2c: default Kuna preserves a real 3C00 pointer relation lost by the raw m2c draft.
 Current D037 already preserves that relation, so no matching improvement or iteration reduction is claimed. Explicit MIPS64 runs and inferred types retain the report's limits.
 No canonical/shared integration, automatic compilation or new matching gate follows. R2 has now released all production and report writes to the Director.
-Joe's follow-up timing and analysis-packet proposal is under a bounded [cost/history assessment](prompts/kuna-cost-history-assessment-r1.md). That read-only assessment does not implement a shared adapter.
+Joe's bounded [cost/history assessment](task-logs/kuna-cost-history-assessment-r1.md) is complete. Recorded 3C00 Kuna execution took 0.333 seconds, excluding preparation and inspection.
+Its retained source already represented the pointer relationship before the later 845/804/770 improvements; elapsed history does not measure counterfactual hours saved.
+The assessment supports proposing cached automatic raw outputs at large/difficult-function analysis intake. It does not implement or accept a shared adapter, change builds, or add a matching gate.
 The previous task is idle. Its preserved history, accepted results, unfinished W8 sources and failed experiments remain controlling inputs.
 The current task resumes the same complete goal; no family, wave, review requirement or held runtime boundary is removed.
 The isolated [DB10 allocation trace](prompts/combat-db10-allocation-trace-r1.md) is complete and has released all writes.
@@ -27,7 +29,7 @@ The reviewed controls establish candidate-specific allocation ordering and disti
 They establish no retail compiler history, general compiler equivalence, production compiler change or matching acceptance.
 The complete [W8 R3 continuation](prompts/combat-draw-wave8-r3.md) releases sole production source/build ownership to Astra Medium `/root/db10_allocation_trace`.
 The frozen [R2 handback](task-logs/combat-draw-wave8-r2.md) at `a0655dac` preserves all fourteen current sources and the six header/configuration identities; Director intake confirmed their hashes.
-R2 preserved the interrupted renderer trial and restored the best inputs. Its former source worker now performs only the disjoint cost/history assessment.
+R2 preserved the interrupted renderer trial and restored the best inputs. Its former source worker has completed and released the disjoint cost/history assessment.
 All fourteen targets remain required. The worker may now use the bounded diagnostic guidance in ordinary source experiments.
 Every additional diagnostic input must retain its own agreement check against the pinned production compiler before trace interpretation.
 W8 R2 has all fourteen C owners active; 3C00, 6098 and DB10 remain nonexact, and the final wave verifier has not run.
