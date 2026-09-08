@@ -12,7 +12,7 @@ workspace_claim: C:/Users/Joe/Projects/OgreBattlel64/OB64 Decomp/docs/Plans/task
 
 # Correct generic workbench handling of accepted compilation groups
 
-This assignment is prepared but not activated. Do not create a claim or write files before explicit Director activation. W8 R6 still owns the production source/build surface. Activation requires its explicit release and a fresh absence check on this assignment's claim/report/root.
+W8 R6 has released all production/build/report writes and processes. Its terminal handback is frozen at `fba8ef7c94e3c2da548a8a8546aebc7ac29df113`. Director intake authenticated all 746 evidence entries and twenty unchanged current source/shared inputs. Preserve `build/combat-draw-wave8-r6/terminal-current-inputs.json`, SHA256 `3DA17CD6DC1D14E48831EFF87B7F2AD8A91364D227D91FB59E0812D40D29EE3B`, as the source/configuration baseline. The wave remains incomplete; no source writer may resume before your production-tool release. Do not create a claim or write files before explicit Director activation and its fresh claim/report/root absence check.
 
 Upon activation, Director `/root` assigns existing Astra Medium `/root/db10_allocation_trace` sole production shared-tool/build ownership for this bounded correction. It fixes the independently observed reader/consumer defect and stale tests; it is not a workaround for any nonmatching function.
 
