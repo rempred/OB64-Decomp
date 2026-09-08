@@ -25,6 +25,7 @@ No canonical/shared integration, automatic compilation or new matching gate foll
 Joe's bounded [cost/history assessment](task-logs/kuna-cost-history-assessment-r1.md) is complete. Recorded 3C00 Kuna execution took 0.333 seconds, excluding preparation and inspection.
 Its retained source already represented the pointer relationship before the later 845/804/770 improvements; elapsed history does not measure counterfactual hours saved.
 Joe has now made cached default Kuna/m2c analysis packets a standing goal requirement above. A shared adapter has not been implemented or accepted; compiler/build machinery and matching gates remain unchanged.
+The separate [standalone packet implementation](prompts/analysis-packets-implementation-r1.md) is active in Astra Medium `/root/db10_allocation_trace` under release `1f93ca8f`. It owns new analysis-only tooling and its evidence, with independent Material review required before normal use. It has no matching-source, compiler or canonical build/verification authority; the complete unresolved W8 remains preserved.
 The previous task is idle. Its preserved history, accepted results, unfinished W8 sources and failed experiments remain controlling inputs.
 The current task resumes the same complete goal; no family, wave, review requirement or held runtime boundary is removed.
 The isolated [DB10 allocation trace](prompts/combat-db10-allocation-trace-r1.md) is complete and has released all writes.
