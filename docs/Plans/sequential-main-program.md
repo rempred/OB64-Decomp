@@ -6,6 +6,8 @@ Joe authorized this goal on 2026-09-06 and explicitly authorized committing and 
 
 Recovery on 2026-09-08 confirmed that the predecessor and its W8 worker are idle. The committed R7 terminal handback controls over stale interrupted-turn commentary: all writes and processes were released, all twenty source/shared inputs were preserved, and no new best or complete-wave acceptance was established. R8 is prepared at `6e45744e` but has not been activated; its fresh source assignment must precede production writes. The immediate continuation is to assess R7's actual cursor-lifetime observations in preserved best 3C00 context D037, retaining all fourteen W8 targets and the complete Combat → Squad → High Attack scope.
 
+Subsequent activation, 2026-09-08: Joe requested the distinct Pro-research experiments after [local intake](../research/w8-pro-research/local-intake.md). R8 is now active under sole source/build worker `/root/w8_research_intake` (Astra Medium): D037 outer cursor localization, followed by the DB10 additional-member counter and justified isolating controls. The 6098 duplicated-tail proposal was already tried and will not be repeated. This supersedes the recovery-time unactivated status above; the complete W8 wave and all later family obligations remain intact.
+
 The two remaining Resolver test files were preserved separately as provisional startup-wire regressions. `python -m unittest tools.total_resolver.tests.test_startup_wire` passed during recovery. This preservation does not accept the unfinished Resolver correction or authorize its held protocol changes. No ROM verifier was repeated for this documentation/test preservation; W8's final combined verifier remains outstanding.
 
 ## Objective and authority
