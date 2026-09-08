@@ -1,6 +1,6 @@
-# W8 next source continuation — prepared, not active
+# W8 source continuation R9 — active
 
-This is a short technical intake for the next authorized source continuation. It does not activate a writer. Current ownership is in [the sequential program](../sequential-main-program.md); the [project-wide research intake](../matching-research-rollout.md) is accepted. The complete Combat → Squad → High Attack program remains required.
+Joe activated this source continuation on 2026-09-08 by asking to continue the matching goal plan. `/root/w8_research_intake` (Astra Medium) is the sole source/build writer, starting with 3C00 and continuing the complete assigned W8 wave. Current ownership is in [the sequential program](../sequential-main-program.md); the [project-wide research intake](../matching-research-rollout.md) is accepted. The complete Combat → Squad → High Attack program remains required.
 
 ## Read and authenticate
 
