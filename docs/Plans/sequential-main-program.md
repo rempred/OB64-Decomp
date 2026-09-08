@@ -30,7 +30,8 @@ New research guidance remains unaccepted pending review; any production source i
 3C00's later controlled cursor/tile-value combination retains the accepted extent and improves its focused linked comparison to 804 differing bytes; it remains provisional and nonexact.
 The complete [preserved DB10 survey](task-logs/combat-db10-preserved-allocation-survey-r1.md) found at most three non-emitting homes across its 93-input corpus.
 This bounded negative result supplies no missing-home recipe, retail allocation history or impossibility claim.
-Disjoint [DB10 initialization locating](prompts/combat-db10-initialization-residual-r1.md) now addresses the separately retained instruction-order residual using existing evidence; the source owner is reconciling 6098 scalar homes.
+The completed [DB10 initialization locating](task-logs/combat-db10-initialization-residual-r1.md) identifies one outer-counter clear before five otherwise identical base-setup operations; current `.loop` output first contains that adjacent order.
+It supplies no new tested source recipe and leaves the frame gap separate. 6098's existing map accounts for two three-slot groups; its bounded unsigned-predicate control produced no new comparison-only homes and the best source is restored.
 
 Complete the remaining Combat, Squad, and High Attack plans in that order on main, using internal agents.
 Use Sol High (`gpt-5.6-sol`, `high`) for retrieval/data-seeking or parsing-only workers.

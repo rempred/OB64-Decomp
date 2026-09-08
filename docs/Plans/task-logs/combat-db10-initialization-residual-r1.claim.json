@@ -1,0 +1,8 @@
+{
+  "task_id": "combat-db10-initialization-residual",
+  "receiving_task_id": "/root/db10_allocation_trace",
+  "launch_id": "COMBAT-DB10-INITIALIZATION-RESIDUAL-20260907-01",
+  "host_id": "local",
+  "creation_time": "2026-09-08T01:20:18.2233821Z",
+  "assignment_revision": 1
+}
