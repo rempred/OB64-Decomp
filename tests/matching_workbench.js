@@ -55,7 +55,6 @@ const {
   compileArtifactDirectory,
   compilePublicationRequiresReauthentication,
 } = require('../tools/lib/matching/compiler');
-const { compareProbes } = require('../tools/lib/matching/probe');
 const {
   adjustSectionAssembly,
   legalizeCop1BinaryAssembly,
@@ -762,23 +761,7 @@ function candidateIdentityTests() {
 }
 
 function probeComparisonTests() {
-  const directory = fs.mkdtempSync(path.join(os.tmpdir(), 'ob64-match-probe-'));
-  const left = path.join(directory, 'left');
-  const right = path.join(directory, 'right');
-  fs.mkdirSync(left);
-  fs.mkdirSync(right);
-  try {
-    const report = { schemaVersion: 1, probeId: 'PROBE', dumps: [{ name: 'fixture.rtl' }] };
-    fs.writeFileSync(path.join(left, 'probe-report.json'), JSON.stringify({ ...report, probeId: 'LEFT' }));
-    fs.writeFileSync(path.join(right, 'probe-report.json'), JSON.stringify({ ...report, probeId: 'RIGHT' }));
-    fs.writeFileSync(path.join(left, 'fixture.rtl'), 'same\n');
-    fs.writeFileSync(path.join(right, 'fixture.rtl'), 'same\n');
-    assert(compareProbes(path.join(left, 'probe-report.json'), path.join(right, 'probe-report.json')).firstDivergentPass === null, 'equal compiler probes diverged');
-    fs.writeFileSync(path.join(right, 'fixture.rtl'), 'different\n');
-    assert(compareProbes(path.join(left, 'probe-report.json'), path.join(right, 'probe-report.json')).firstDivergentPass === 'rtl', 'first compiler probe divergence was not identified');
-  } finally {
-    fs.rmSync(directory, { recursive: true, force: true });
-  }
+  require('./matching_probe').runUnitTests();
 }
 
 function ensembleSummaryTests() {

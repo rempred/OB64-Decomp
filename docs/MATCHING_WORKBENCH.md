@@ -350,6 +350,7 @@ Use a probe only to answer a specific compiler-pass question:
 ```powershell
 node tools/match.js probe <symbol> --source <candidate.c>
 node tools/match.js probe <symbol> --candidate <candidate-id>
+node tools/match.js probe <symbol> --candidate <candidate-id> --source-origin <original.c>
 node tools/match.js probe compare <left-report.json> <right-report.json>
 ```
 
@@ -358,6 +359,44 @@ compiler. A compiler supplied with `--research-compiler` is confined to the
 probe interface and cannot enter `build`, `diff`, or `verify`. Alternative flags
 or compilers need bounded evidence; a better scratch score is not authority to
 change the pinned production contract.
+
+Probes use the existing authenticated source-policy preprocessing path and compile
+its exact expanded bytes. Explicit or active sources keep their original quoted-include
+directory. Stored candidates use immutable text snapshots and their recorded source
+directory; `--source-origin` supplies or disambiguates that directory without reading
+the origin file as candidate source. With no known origin, only the snapshot directory
+and configured project include paths are available. Sources and dependencies must stay
+inside the repository under the normal source-policy rules. Candidate snapshots retain
+their own filename for filename-sensitive macros such as `__FILE__`.
+
+Schema-3 probe identities bind source/dependency/preprocessor identities, exact expanded
+bytes, compiler identity and designation, effective flags, requested passes, and probe
+implementation identities. Every request reauthenticates/preprocesses the current inputs;
+a cache hit skips the compiler only. Reuse and comparison check the retained authored
+source, expanded source, assembly, and every requested nonempty dump, including the
+artifact census and report digest. Missing/tampered/failed/incomplete caches reject;
+preserve the affected ignored cache directory outside its keyed location before retrying.
+Old probe reports must be regenerated, not relabeled. A failed new compilation returns
+a failed report and CLI exit 2; it cannot become a complete cache hit.
+
+Report identities also validate required record shapes and cross-field bindings,
+including preprocessing/source-policy digests and source-class reasons. The stored
+filename must be `probe-report.json`, its directory basename must equal `probeId`, and
+the public source/expanded-source/assembly paths must point to that actual directory's
+`authored.c`, `input.c`, and `output.s`. To copy historical evidence within the repository,
+preserve the complete keyed directory and artifact bytes, rebase only those three public
+paths to the new directory, and recompute the report digest; the identity and `probeId`
+remain unchanged. Snapshot input directories must contain only `authored.c`, preventing
+extra sibling headers from shadowing the original source directory. This census is
+checked before preprocessing and on live rechecks, including cache requests.
+
+Comparisons authenticate the retained artifacts rather than requiring historical source
+headers or compiler binaries to still match today's files. They expose input, target,
+compiler, flags, implementation and requested-pass differences. Cross-compiler research
+comparison remains allowed. `firstTextualDivergence` (also returned through the legacy
+`firstDivergentPass` alias) identifies unequal dump text, with missing pass coverage
+reported separately. Pseudo/UID numbers remain intact; textual divergence does not
+establish the origin or cause of a matching difference.
 
 See [the KMC matching notes](KMC_GCC_MATCHING_NOTES.md) for reproduced,
 scope-limited source-shape observations. Treat those observations as experiment

@@ -39,7 +39,7 @@ const { compareProbes, runProbe } = require('./lib/matching/probe');
 
 const VALUE_OPTIONS = new Set([
   'limit', 'source', 'candidate', 'variant', 'm2c-root', 'set', 'max-size',
-  'lane', 'note', 'research-compiler', 'passes', 'jobs', 'case-map',
+  'lane', 'note', 'research-compiler', 'passes', 'jobs', 'case-map', 'source-origin',
   'actual-dispatch', 'actual-body', 'output', 'actual-tail',
 ]);
 const REPEAT_OPTIONS = new Set(['variant', 'actual-tail']);
@@ -897,13 +897,31 @@ async function main(argv = process.argv.slice(2)) {
     }
     if (positional.length !== 1) throw new Error('probe requires one symbol');
     const target = resolveTarget(workbench, positional[0]);
-    let sourceText;
-    if (options.source) sourceText = fs.readFileSync(path.resolve(options.source), 'utf8');
-    else if (options.candidate) sourceText = latestCandidateRun(options.candidate).candidate.source_text;
-    else if (target.activeMatchingSource) sourceText = fs.readFileSync(path.join(ROOT, ...target.activeMatchingSource.split('/')), 'utf8');
+    if (options.source && options.candidate) throw new Error('probe --source and --candidate cannot be combined');
+    let sourceText, sourcePath, sourceOrigin;
+    if (options.source) {
+      sourcePath = path.resolve(options.source);
+      sourceText = fs.readFileSync(sourcePath, 'utf8');
+    } else if (options.candidate) {
+      const record = latestCandidateRun(options.candidate);
+      if (record.candidate.target_id !== target.targetId) throw new Error('probe candidate belongs to a different target');
+      sourceText = record.candidate.source_text;
+      const origins = [...new Set([record.candidate.metadata?.sourcePath,
+        ...record.observations.map(item => item.metadata?.sourcePath)]
+        .filter(Boolean).map(item => path.dirname(path.resolve(ROOT, item))))];
+      if (!options['source-origin'] && origins.length > 1) throw new Error('probe candidate has multiple source directories; specify --source-origin <original.c>');
+      sourceOrigin = options['source-origin'] || (origins.length ? path.join(origins[0], 'candidate.c') : undefined);
+      if (sourceOrigin) sourceOrigin = path.resolve(ROOT, sourceOrigin);
+    } else if (target.activeMatchingSource) {
+      sourcePath = path.join(ROOT, ...target.activeMatchingSource.split('/'));
+      sourceText = fs.readFileSync(sourcePath, 'utf8');
+    }
     else throw new Error('probe requires --source or --candidate for a target without active matching C');
+    if (options['source-origin'] && !options.candidate) throw new Error('probe --source-origin is only for --candidate text');
     const passes = options.passes ? options.passes.split(',').map((item) => item.trim()).filter(Boolean) : null;
-    print(runProbe(workbench, target, sourceText, { passes, researchCompiler: options['research-compiler'] }), options);
+    const report = runProbe(workbench, target, sourceText, { passes, sourcePath, sourceOrigin, researchCompiler: options['research-compiler'] });
+    print(report, options);
+    if (report.status !== 'complete') process.exitCode = 2;
     return;
   }
   throw new Error(`unknown matching workbench command: ${command}`);
