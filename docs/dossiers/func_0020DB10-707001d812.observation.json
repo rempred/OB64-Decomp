@@ -1,0 +1,85 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "707001D81201801813054DB32FFD4C0D00C7FCE39CD436325C30D0107A452CFB",
+  "observationId": "F44C2926AE0B047C0087906F246960A37707BA66C8273886543E7A69D2533643",
+  "symbol": "func_0020DB10",
+  "authored": {
+    "context": "Same captured raw flag word and deduplication consumers as the snapshot source.",
+    "effects": [
+      "call-boundary-normalization",
+      "two-across-call-flags",
+      "base-spill-restored"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "166654C93BE1994B0757D06B612D167080F6C7924EBD14EB1F0A18A625C6F2DB",
+      "sourceSha256": "650DFB5526A01E06861CA1C0CB3891C541181ACFD5B229D4B4DC2FA666AB84D9"
+    },
+    "label": "r11-staged-call-boundary-flags",
+    "observedEffect": "5564/frame552, 682 bytes/229 words differ, four accessed plus three unused homes. Raw snapshot becomes caller-only; normalized flags cross the call, post-call extractions disappear, and a base spill returns. Pin/tracer agrees; source base now blocks register19 and sort index remains30.",
+    "parentCandidateId": "13E72DD5E60573C99E90DAF0F5B473582E4FBB29DA09CE37CD0919CF03228A48",
+    "references": [
+      {
+        "path": "docs/Plans/task-logs/combat-draw-wave8-r11.md",
+        "sha256": "66C0AD862EE812169CC902AEEE5AF3987A61DB6EDB090C9C430AAA0CAF4FE8C6"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Extent stays wrong despite removal of post-call extraction. Storage and allocation tradeoffs do not establish an exact source.",
+    "role": "counterexample",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Immediately before the key call, normalize two insertion-only flags and reuse them for final stores; raw snapshot is no longer needed across the call."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 26662,
+      "sha256": "166654C93BE1994B0757D06B612D167080F6C7924EBD14EB1F0A18A625C6F2DB"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "650DFB5526A01E06861CA1C0CB3891C541181ACFD5B229D4B4DC2FA666AB84D9"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-08-func_0020DB10-707001d812.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

@@ -1,0 +1,87 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "E8C0C11BB03D0E6E02088680D4B20284EEA022811B7D51781F2B200F5C43B82A",
+  "observationId": "24703C5F23FA3C080544C04863F9151835BC56B4087E353FE58D2F76F807DF04",
+  "symbol": "func_0020DB10",
+  "authored": {
+    "context": "Single across-call snapshot retains only the two actually consumed flag bits.",
+    "effects": [
+      "packed-two-bit-flags",
+      "extraction-cost-reduced",
+      "wrong-relocations-full-extent"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "DD6B243DD4C733E19F8E340D460F20CD504FF3EEF36B08B34999F7BEB4C6D1DB",
+      "sourceSha256": "49DA833AD4F05479DE34247729ABAA5099FC9F16707B5D2033A3C57E5FD53E6C"
+    },
+    "label": "r11-staged-packed-flags",
+    "observedEffect": "5548/frame544, 429 bytes/152 words differ, three accessed plus three unused homes. Saves16 bytes relative to raw snapshot; pin/tracer agrees. The complete relocation list differs from baseline despite count209.",
+    "parentCandidateId": "13E72DD5E60573C99E90DAF0F5B473582E4FBB29DA09CE37CD0919CF03228A48",
+    "references": [
+      {
+        "path": "docs/Plans/task-logs/combat-draw-wave8-r11.md",
+        "sha256": "66C0AD862EE812169CC902AEEE5AF3987A61DB6EDB090C9C430AAA0CAF4FE8C6"
+      }
+    ],
+    "relatedCandidateIds": [
+      "707001D81201801813054DB32FFD4C0D00C7FCE39CD436325C30D0107A452CFB"
+    ],
+    "remainingFailure": "Correct extent alone is insufficient: frame, allocation, full bytes and relocation contract differ. Packed call-boundary control remains private at5556/frame552.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Capture ((u32)FLAGS(actor)>>8)&5u; consumers use &1u and >>2, preserving both original Boolean values."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 26545,
+      "sha256": "DD6B243DD4C733E19F8E340D460F20CD504FF3EEF36B08B34999F7BEB4C6D1DB"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "49DA833AD4F05479DE34247729ABAA5099FC9F16707B5D2033A3C57E5FD53E6C"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-08-func_0020DB10-e8c0c11bb0.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

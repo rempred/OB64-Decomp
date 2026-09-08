@@ -1,0 +1,86 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "FD3ED7315AC6DB8436FF97FDAEEB30A67778B6D77CB6FA2F4A574D2228585C7C",
+  "observationId": "C1A953ACDF7D9CC814C716CB53B8BE7108562D9FF24C082535F03FE64DE373DD",
+  "symbol": "func_0020DB10",
+  "authored": {
+    "context": "R10 staged before-bound derived-address source, with its original counter context retained.",
+    "effects": [
+      "generated-address-spill-removed",
+      "snapshot-storage-transfer"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "EF3E2BA15C572C3B459248DF43648A38D51889E33CA402D61DFE857F5CC1F439",
+      "sourceSha256": "B6008461A45EDDA5079B5C98137555785EA985EA0486F2D067B3EECE39179F8B"
+    },
+    "label": "r11-address-flags-snapshot",
+    "observedEffect": "5580/frame552, 862 bytes/263 words differ, four accessed plus three unused homes versus parent five accessed plus three unused. Dependent GIV reductions remain and generated-address HOME disappears. Pin/tracer agrees.",
+    "parentCandidateId": "4DC08145C3B4A8434666A5A4C2A6411E97B29D08B4461D7B4355B3A6B8620E79",
+    "references": [
+      {
+        "path": "docs/Plans/task-logs/combat-draw-wave8-r11.md",
+        "sha256": "66C0AD862EE812169CC902AEEE5AF3987A61DB6EDB090C9C430AAA0CAF4FE8C6"
+      }
+    ],
+    "relatedCandidateIds": [
+      "13E72DD5E60573C99E90DAF0F5B473582E4FBB29DA09CE37CD0919CF03228A48"
+    ],
+    "remainingFailure": "This validates a real storage-demand transfer but worsens extent and bytes. It does not reproduce retail four-accessed/four-unused allocation.",
+    "role": "transfer-result",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Apply only the same raw FLAGS snapshot/extraction change to the sort block."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 26613,
+      "sha256": "EF3E2BA15C572C3B459248DF43648A38D51889E33CA402D61DFE857F5CC1F439"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "B6008461A45EDDA5079B5C98137555785EA985EA0486F2D067B3EECE39179F8B"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-08-func_0020DB10-fd3ed7315a.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

@@ -1,0 +1,84 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "810C6DD6B8521858EBA539BE270151632887FD759A7CBE49758A24FDA56A51CC",
+  "observationId": "D1B91B4AAD7D3AB78B658508A6D2DD8896990B7BDCD24CE8AB61616236FC97AA",
+  "symbol": "func_0020DB10",
+  "authored": {
+    "context": "R10 staged-countdown DB10 source, preserving original batch and policy counters.",
+    "effects": [
+      "independent-update-identity",
+      "staged-allocation-improved"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "AF2EEE1AD2CE8ADF9F146F04DEA7F0B8978FFB4BD084F72052801EA749EDADBD",
+      "sourceSha256": "10990657593479448AFEC139C72067E17D389365B5B7990A947CB1CE76E0CCDC"
+    },
+    "label": "r11-staged-update-index",
+    "observedEffect": "Canonical focused PURE_C result: 5548/frame552, 72 differing bytes/60 words, exact209 relocations. Pin/tracer agrees; batch and update conflict/statistics union separates. Count allocates18, batch17, update19, generated sort index remains30.",
+    "parentCandidateId": "FCE4806774C3B389896279857E2B26F36E5891D04777A1A1B95950BA373F3F16",
+    "references": [
+      {
+        "path": "docs/Plans/task-logs/combat-draw-wave8-r11.md",
+        "sha256": "66C0AD862EE812169CC902AEEE5AF3987A61DB6EDB090C9C430AAA0CAF4FE8C6"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Baseline5BF6 remains41 bytes/28 words and selected. The genuine batch/count conflict and retail frame/allocation mismatch remain.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Only final update traversal gets block-local u32 updateIndex; initialization, values, arguments, casts, bounds and offset recurrence remain unchanged."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 26527,
+      "sha256": "AF2EEE1AD2CE8ADF9F146F04DEA7F0B8978FFB4BD084F72052801EA749EDADBD"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "10990657593479448AFEC139C72067E17D389365B5B7990A947CB1CE76E0CCDC"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-08-func_0020DB10-810c6dd6b8.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

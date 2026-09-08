@@ -1,0 +1,85 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "13E72DD5E60573C99E90DAF0F5B473582E4FBB29DA09CE37CD0919CF03228A48",
+  "observationId": "CA5D7B3EB5227820A0E3F72FA364594F4C5077552F6AE230790064D1EA28552B",
+  "symbol": "func_0020DB10",
+  "authored": {
+    "context": "Staged/update-only source; both original flag values are required by deduplication, the key call and insertion.",
+    "effects": [
+      "single-across-call-flags-word",
+      "base-spill-removed",
+      "repeated-flag-extraction"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "ABC212AC49D70F21D18C6CFE3FD78C2953A1B5687B89C30B51BDFA8B7FF40901",
+      "sourceSha256": "68ACA2CD3E0E03EC69464CB6053045E001C4584DB10B82C35F4BF2D6FFB260B7"
+    },
+    "label": "r11-staged-flags-snapshot",
+    "observedEffect": "5564/frame544, 739 bytes/231 words differ, three accessed plus three unused homes. Snapshot occupies19 across the call; sort index gets23. One base spill disappears. Pin/tracer agrees; canonical focused diff rejects extent. Original adjacent loads were already coalesced, so no saved-load claim.",
+    "parentCandidateId": "810C6DD6B8521858EBA539BE270151632887FD759A7CBE49758A24FDA56A51CC",
+    "references": [
+      {
+        "path": "docs/Plans/task-logs/combat-draw-wave8-r11.md",
+        "sha256": "66C0AD862EE812169CC902AEEE5AF3987A61DB6EDB090C9C430AAA0CAF4FE8C6"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Repeated extraction and altered register/relocation layout remain; frame544 is not retail560. No actor-field reload after the call is authorized by this result.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Capture FLAGS(actor) once immediately after variant; extract bits8/10 only from the captured word at existing consumers, including after the key call."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 26572,
+      "sha256": "ABC212AC49D70F21D18C6CFE3FD78C2953A1B5687B89C30B51BDFA8B7FF40901"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "68ACA2CD3E0E03EC69464CB6053045E001C4584DB10B82C35F4BF2D6FFB260B7"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-08-func_0020DB10-13e72dd5e6.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
