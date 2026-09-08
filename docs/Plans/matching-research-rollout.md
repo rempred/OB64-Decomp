@@ -2,7 +2,9 @@
 
 Joe authorized this rollout on 2026-09-08 after identifying the gap between the accepted W8 pilot and routine use across the project. The [earlier repair/reuse plan](probe-repair-and-w8-reuse.md) remains complete; this assignment integrates its general capabilities into future matching.
 
-Status: active. Sole shared-tool/build writer: `/root/w8_research_intake` (Astra Medium). Director `/root` owns AGENTS.md, WORKFLOW.md and program status. Independent reviewer `/root/probe_independent_review` owns its review report. Work stays on current `main`; production sources and the twenty restored W8 inputs remain unchanged.
+Status: complete and accepted at `8191ed57` plus read-only correction `1eb6d68e`, with [independent review](task-logs/matching-research-rollout-review-r1.md). All implementation and review writes/processes are released. General matching intake and recording guidance now apply across the project on current `main`. Director's final hash check confirms all twenty restored W8 inputs remain unchanged. Commits are local and unpushed.
+
+The [implementation report](task-logs/research-intake-rollout-r1.md) records the passing workbench suite, focused intake controls, prepare/watch output checks, and a real packet cache hit that picked up a new observation with no decompiler invocation. General matching guidance is in AGENTS.md and WORKFLOW.md; reference commands are in MATCHING_WORKBENCH.md and ANALYSIS_PACKETS.md. Guarded local-store reads leave files unchanged; pending writes or unsupported platforms make that optional supplement unavailable while archive discovery continues. The current 427 MB store took 6.819 seconds to inspect with the full guard.
 
 ## Deliverable
 

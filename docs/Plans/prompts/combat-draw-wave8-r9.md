@@ -1,12 +1,12 @@
 # W8 next source continuation — prepared, not active
 
-This is a short technical intake for the next authorized source continuation. It does not activate a writer. Current ownership and tool acceptance are in [the execution plan](../probe-repair-and-w8-reuse.md). The complete Combat → Squad → High Attack program remains required.
+This is a short technical intake for the next authorized source continuation. It does not activate a writer. Current ownership is in [the sequential program](../sequential-main-program.md); the [project-wide research intake](../matching-research-rollout.md) is accepted. The complete Combat → Squad → High Attack program remains required.
 
 ## Read and authenticate
 
 Read repository AGENTS.md, WORKFLOW.md, SOURCE_POLICY.md and NEXT_STEPS.md, then the relevant source/assembly and selected experiment context below. Use the workbench's authenticated input/tool checks and the last source handback to protect current bests. Historical coordination reports, parent transport rules, claim files and complete review chronology are not required technical intake.
 
-The source baseline is the twenty restored R8 source/shared inputs recorded in `build/combat-draw-wave8-r8/terminal-current-inputs.json`. Local 6098 D764 and its published LF blob have distinct authored hashes but identical authenticated expanded input; see [the identity correction](../../research/w8-pro-research/evidence-brief.md). Preserve exact local best bytes separately before experiments. Use only tools already accepted in the execution plan, and keep original assembly references available.
+The source baseline is the twenty restored R8 source/shared inputs recorded in `build/combat-draw-wave8-r8/terminal-current-inputs.json`. Local 6098 D764 and its published LF blob have distinct authored hashes but identical authenticated expanded input; see [the identity correction](../../research/w8-pro-research/evidence-brief.md). Preserve exact local best bytes separately before experiments. Use the accepted shared tools and current research intake under WORKFLOW.md, and keep original assembly references available.
 
 ## Current source questions
 
