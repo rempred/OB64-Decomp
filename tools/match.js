@@ -36,7 +36,8 @@ const { buildFamilyAtlas } = require('./lib/matching/family');
 const { buildContextIndex, storeTargetContext } = require('./lib/matching/context');
 const { rankTargets } = require('./lib/matching/rank');
 const { compareProbes, runProbe } = require('./lib/matching/probe');
-const { importResearch, observations: researchObservations, preserveResearch } = require('./lib/matching/research');
+const { importResearch, observations: researchObservations, preserveResearch, captureIdentities } = require('./lib/matching/research');
+const { presentation: researchPresentation, loadIntakeModel } = require('./lib/matching/intake');
 
 const VALUE_OPTIONS = new Set([
   'limit', 'source', 'candidate', 'variant', 'm2c-root', 'set', 'max-size',
@@ -71,8 +72,9 @@ Core:
   compare <candidate-id> <candidate-id>
   case-cfg <candidate-id> --case-map <map.json> --actual-dispatch <offset> --actual-body <offset>
            --actual-tail <name=offset>... [--output <report.json>]
-  import <symbol> --source <candidate.c> --observation <curated.json>
+  import <symbol> --source <candidate.c> --observation <curated.json> [--capture-identities]
   observations <symbol> [--effect <tag>] [--limit N]
+  intake <symbol> [--limit N]
   preserve <candidate-id> --note <reason> [--observation <observation-id>]
 
 Generation:
@@ -125,7 +127,7 @@ function parseArgs(argv) {
       }
     } else if ([
       'json', 'no-context', 'with-context', 'no-compile', 'leaf-only', 'runtime', 'skip-families',
-      'include-targets', 'include-details', 'include-source', 'include-members', 'include-context', 'include-solved',
+      'include-targets', 'include-details', 'include-source', 'include-members', 'include-context', 'include-solved', 'capture-identities',
     ].includes(name)) {
       options[name] = true;
     } else throw new Error(`unknown option: --${name}`);
@@ -556,6 +558,11 @@ async function main(argv = process.argv.slice(2)) {
   const command = argv[0];
   const parsed = parseArgs(argv.slice(1));
   const { positional, options } = parsed;
+  if(command==='intake'){
+    if(positional.length!==1)throw new Error('intake requires one symbol');
+    const model=loadIntakeModel(),target=resolveTarget(model,positional[0]);
+    print(researchPresentation(target.symbol,{workbench:model,limit:numeric(options.limit,'--limit',20)}),options);return;
+  }
   const workbench = loadWorkbenchModel();
   if (['prepare', 'watch', 'probe', 'import'].includes(command) && positional[0]
       && !(command === 'probe' && positional[0] === 'compare')) {
@@ -585,7 +592,9 @@ async function main(argv = process.argv.slice(2)) {
   if (command === 'import') {
     if (positional.length !== 1 || !options.source || !options.observation) throw new Error('import requires <symbol> --source <candidate.c> --observation <curated.json>');
     const target = resolveTarget(workbench, positional[0]);
-    print(importResearch(workbench, target, path.resolve(options.source), JSON.parse(fs.readFileSync(path.resolve(options.observation), 'utf8')), { syncTargets: false }), options);
+    const claims=JSON.parse(fs.readFileSync(path.resolve(options.observation),'utf8'));
+    const authored=options['capture-identities']?captureIdentities(path.resolve(options.source),claims):claims;
+    print(importResearch(workbench, target, path.resolve(options.source), authored, { syncTargets: false }), options);
     return;
   }
   if (command === 'observations') {
@@ -639,7 +648,7 @@ async function main(argv = process.argv.slice(2)) {
       metadata: { sourcePath: portableSourcePath(sourceFile) },
       syncTargets: false,
     });
-    print(comparisonSummary(result), options);
+    print({...comparisonSummary(result),researchIntake:researchPresentation(target.symbol,{workbench})}, options);
     if (result.compile.status !== 'compiled') process.exitCode = 2;
     return;
   }
@@ -785,6 +794,7 @@ async function main(argv = process.argv.slice(2)) {
     print({
       symbol: target.symbol,
       assemblyFile: path.relative(ROOT, result.assemblyFile).replace(/\\/g, '/'),
+      researchIntake:researchPresentation(target.symbol,{workbench}),
       contextFile: result.contextFile ? path.relative(ROOT, result.contextFile).replace(/\\/g, '/') : null,
       generation: result.results.map((item) => ({
         variant: item.variant,

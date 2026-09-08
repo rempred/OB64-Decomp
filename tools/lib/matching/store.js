@@ -19,7 +19,7 @@ function pythonPath(options = {}) {
 function requestStore(request, options = {}) {
   const database = path.resolve(options.database || DATABASE);
   const python = pythonPath(options);
-  const result = childProcess.spawnSync(python, [BRIDGE, '--database', database, '--schema', SCHEMA], {
+  const result = childProcess.spawnSync(python, [BRIDGE, '--database', database, '--schema', SCHEMA, ...(options.readOnly ? ['--read-only'] : [])], {
     cwd: ROOT,
     encoding: 'utf8',
     input: JSON.stringify(request),

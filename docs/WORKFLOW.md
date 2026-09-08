@@ -25,6 +25,7 @@ After the one-time local setup in [the repository README](../README.md):
 node tools/match.js doctor
 → establish a missing setup baseline once
 → choose one accepted target
+→ consult its current research intake
 → write or adjust its C source
 → node tools/diff.js <symbol>
 → iterate from the linked diff
@@ -158,6 +159,27 @@ node tools/match.js rank --explain <symbol>
 
 Rankings and family relationships are leads, not structural or semantic proof.
 
+Before starting or resuming the target, consult its current research intake:
+
+```powershell
+node tools/match.js intake <symbol>
+```
+
+This presents relevant archived source observations and available local history, including
+source context, effects, remaining failures and related candidates. Read the exact useful
+pair or counterexample before repeating or extending an experiment. Compare its source context
+with the current best; an effect observed in another context is a hypothesis for transfer.
+Missing history is a normal result. Reference-only, stale, malformed or unavailable evidence
+must retain that status; it does not establish a current observation or silently mean there
+was no prior work. Check parent/comparison relation status separately from source validity.
+
+Matching preparation/watch results and standalone analysis-packet results also present fresh
+research intake. If that current presentation has already been read, do not repeat the lookup.
+The lookup uses tracked records on a fresh checkout and can supplement them from an existing
+local store. It performs no code generation or source activation. Optional history problems
+do not block the ordinary compile, linked diff or final verifier. See the
+[workbench reference](MATCHING_WORKBENCH.md) for commands and evidence-state details.
+
 ### 2. Reconstruct and activate the source
 
 Create or adjust the target under `src/`. Use the accepted disassembly, callers,
@@ -255,6 +277,30 @@ available `--profile` report; do not attribute the older JSON to that attempt.
 Before recording a candidate, confirm the report identifies the current source
 and compiled artifacts. Process exit and scalar diagnostic scores do not prove
 linked-byte equality or a matching relocation contract.
+
+#### Record useful experiments
+
+When an experiment changes the next useful source question, record its exact source and a
+short observation through the [shared research commands](MATCHING_WORKBENCH.md). State the
+starting context, source change, observed effect and remaining failure; link the relevant
+evidence and parent or comparison candidate. Use identity capture to compute source,
+preprocessed-input, dependency and reference hashes rather than transcribing them by hand.
+The effect and interpretation remain authored claims, separate from those computed identities.
+Archive discovery is read-only. When using an archived parent/comparison ID that is absent
+from the local store, import its needed records first using the reference's reimport recipe;
+do not migrate unrelated history merely to record a new experiment.
+
+Preserve a small useful set: the best emitted match, a source pair demonstrating a useful
+effect, and the nearest counterexample when one exists. A worse candidate can be worth keeping
+when it distinguishes a mechanism. Export actionable sources and observations for future
+checkouts; generated assembly, dumps and bulk evidence remain ignored. Do not archive every
+trial, invent a counterexample or update several status documents for each observation.
+For grouped sources, retain the complete producer context and existing group restrictions;
+reading a member's history does not authorize single-member import or compilation.
+
+At handback, link those records and state the next unresolved source question. An observation,
+preservation action or `selectedBest` label does not establish matching acceptance. Continue
+the same linked-diff loop and complete-wave verifier; ordinary source work gains no review gate.
 
 #### Diagnostic boundary
 

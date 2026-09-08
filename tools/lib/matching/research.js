@@ -154,4 +154,19 @@ function preserveResearch(workbench,candidateId,observationId,note,options={}) {
   }
   return {...paths,candidateId,observationId,compiled:false,acceptanceEligible:false};
 }
-module.exports={importResearch,observations,preserveResearch,validateObservation};
+function authenticateEvidence(classification,authored,authenticated) {
+  if(!authenticated?.preprocessor)throw new Error('research authenticated metadata is malformed');
+  authenticateClassification(classification,authored,authenticated.preprocessor);
+  const actual={sourceSha256:classification.sourceSha256,expanded:classification.compilationInput,
+    dependencies:classification.dependencies,sourceClass:classification.class,preprocessor:classification.preprocessor};
+  if(!same(authenticated,actual))throw new Error('research authenticated identity drift');
+}
+function captureIdentities(sourceFile,claims) {
+  if(!claims||typeof claims!=='object'||Object.hasOwn(claims,'expected'))throw new Error('capture-identities requires authored claims without computed expected fields');
+  if(!Array.isArray(claims.references)||claims.references.some(r=>!r||Object.keys(r).join(',')!=='path'||!canonicalPath(r.path)))throw new Error('capture-identities requires path-only references; supplied hashes cannot be replaced');
+  const classification=policy.classifySource(regular(sourceFile));
+  const authored={...claims,references:claims.references.map(r=>({path:r.path,sha256:sha256File(regular(path.join(ROOT,r.path)))})),
+    expected:{sourceSha256:classification.sourceSha256,expandedSha256:classification.compilationInput?.sha256,dependencies:classification.dependencies}};
+  validateObservation(authored);authenticateClassification(classification,authored);return authored;
+}
+module.exports={importResearch,observations,preserveResearch,validateObservation,authenticateEvidence,captureIdentities,regular,canonicalPath};

@@ -1,5 +1,67 @@
 # Optional Matching Workbench
 
+## Research intake
+
+`node tools/match.js intake <symbol> --limit 20 --json` reads preserved dossier observations
+and supplements them with the optional local store. It neither generates code nor initializes
+a missing database. A missing ROM permits reference-only discovery; a present invalid ROM
+still fails canonical authentication. This path does not modify accepted target identities.
+
+Normal `prepare` and the one-shot `watch` result include fresh `researchIntake`. Standalone
+analysis packets include the same presentation on cache misses and hits. Archived research
+never becomes compiler input or a decompiler context oracle automatically. The current active
+source hash and `matchesCurrentSource` are separate from an author's historical `selectedBest`.
+
+Each record reports context, effect, remaining failure, exact source/dossier links and parent/
+related IDs. `valid` means the candidate binds to the current exact target and its source,
+expanded input, headers, preprocessor and references agree. It does not verify authored claims.
+`reference-only` means that file closure agrees but ROM-dependent candidate/target identity
+cannot be verified. `stale`, `malformed`, `target-mismatch` and `unavailable` are explicit limits.
+Archive observation IDs remain opaque historical provenance: the original source-path metadata
+needed to recompute them is not in the envelope. Candidate IDs are independently checked when
+the ROM is available. Relations separately report `verified`, `unverified` or `invalid`; a missing
+or foreign predecessor is not silently accepted as a verified pair.
+
+Missing stores and empty history are normal visible states. Corrupt stores and failed discovery
+are distinct from no history. Counts and truncation are explicit (display limit 1–200; optional
+store query at most 200). Matching archive records are authenticated before display truncation.
+Groups can read history, with current-producer applicability stated; existing single-member
+compile/import/preserve exclusions remain unchanged. Optional history failure cannot turn a
+successful decompiler packet into matching acceptance or failure.
+
+For a new useful observation, write authored claims with path-only references and omit
+`expected`, then run:
+
+```text
+node tools/match.js import <symbol> --source <candidate.c> --observation <claims.json> --capture-identities --json
+node tools/match.js preserve <candidateId> --observation <observationId> --note "Why this context is useful"
+```
+
+`--capture-identities` computes source/expanded/dependency and reference hashes with the
+existing source policy, then uses the normal validated import route. It rejects supplied
+`expected` or reference hashes instead of silently replacing stale identity data. Claims,
+effects, selected-best role and parent/related IDs remain authored. Without the option, the
+existing fully specified observation format and strict checks are unchanged.
+
+Minimal claims example (replace the statements with the actual observation):
+
+```json
+{
+  "schemaVersion": 1,
+  "label": "descriptive-state",
+  "role": "effect-example",
+  "context": "The relevant source context.",
+  "sourceChange": "The bounded change made.",
+  "effects": ["observed-effect-tag"],
+  "observedEffect": "What the recorded evidence showed.",
+  "remainingFailure": "What is still unresolved.",
+  "selectedBest": false,
+  "parentCandidateId": null,
+  "relatedCandidateIds": [],
+  "references": [{"path": "docs/path-to-existing-evidence.md"}]
+}
+```
+
 ## Import and retrieve authored research
 
 `node tools/match.js import <symbol> --source <repo-relative.c> --observation <authored.json> --json`

@@ -6,6 +6,22 @@ const { makeElf, validateElf } = require('./elf');
 const { parse } = require('./cli');
 const repo = path.resolve(__dirname, '../..');
 const tests = [];
+function runIntakeRefresh(config,output) {
+  const cp=require('child_process'),{loadWorkbenchModel,resolveTarget}=require('../lib/matching/target_model');
+  const {candidateRecord}=require('../lib/matching/compiler'),{captureIdentities}=require('../lib/matching/research');
+  const policy=require('../lib/source_policy'),workbench=loadWorkbenchModel(),target=resolveTarget(workbench,'func_0020BFF8');
+  const root=confinedBuild(output);fs.mkdirSync(root,{recursive:true});const fixture=fs.mkdtempSync(path.join(root,'intake-'));
+  const options={symbol:target.symbol,config:path.resolve(config),out:path.join(fixture,'packets')};
+  const first=prepare(options),manifest=fileHash(path.join(first.directory,'manifest.json'));
+  const source=path.join(fixture,'authored.c');fs.writeFileSync(source,'#include "game/combat_types.h"\nu32 intake_fixture(u32 v) { return v+1; }\n');
+  const label=path.basename(fixture),authored=captureIdentities(source,{schemaVersion:1,label,role:'effect-example',context:'Temporary cross-family packet intake fixture.',sourceChange:'Fresh authored fixture.',effects:['intake-refresh'],observedEffect:'A recorded research claim.',remainingFailure:'No matching acceptance.',selectedBest:false,parentCandidateId:null,relatedCandidateIds:[],references:[{path:'docs/Plans/task-logs/combat-draw-wave8-r7.md'}]});
+  const c=policy.classifySource(source),metadata={schemaVersion:1,symbol:target.symbol,candidateId:candidateRecord(target,fs.readFileSync(source,'utf8')).candidateId,observationId:'A'.repeat(64),source:path.relative(repo,source).replace(/\\/g,'/'),authored,authenticated:{sourceSha256:c.sourceSha256,expanded:c.compilationInput,dependencies:c.dependencies,sourceClass:c.class,preprocessor:c.preprocessor}};
+  const file=path.join(repo,'docs/dossiers',target.symbol+'-'+label+'.observation.json');fs.writeFileSync(file,JSON.stringify(metadata),{flag:'wx'});
+  const spawn=cp.spawnSync;let decompilerCalls=0;
+  cp.spawnSync=function(exe,args,...rest){if(String(exe).toLowerCase().includes('kuna')||args.some(x=>String(x).includes('python_runner.py'))){decompilerCalls++;throw Error('cache refresh invoked decompiler');}return spawn.call(this,exe,args,...rest);};
+  try{const hit=prepare(options);assert.equal(hit.cache,'hit');assert.equal(hit.directory,first.directory);assert.equal(fileHash(path.join(hit.directory,'manifest.json')),manifest);assert(hit.researchIntake.observations.some(x=>x.label===label&&x.validity==='valid'));assert.equal(decompilerCalls,0);const result={cache:'hit',freshObservation:true,decompilerCalls,directory:first.directory};fs.writeFileSync(path.join(fixture,'intake-refresh.json'),JSON.stringify(result,null,2));console.log(JSON.stringify(result));return result;}
+  finally{cp.spawnSync=spawn;fs.unlinkSync(file);}
+}
 function check(name, callback) { callback(); tests.push({ name, status: 'pass' }); }
 function reject(name, callback) { check(name, () => assert.throws(callback)); }
 function main() {
@@ -95,4 +111,5 @@ function main() {
   fs.writeFileSync(path.join(out, 'results.json'), JSON.stringify({ tests, results }, null, 2));
   console.log(JSON.stringify({ status: 'pass', tests: tests.length, directory: out, resultSha256: fileHash(path.join(out, 'results.json')) }, null, 2));
 }
-try { main(); } catch (error) { console.error(error.stack); console.error(JSON.stringify(tests)); process.exitCode = 1; }
+if(require.main===module)try { main(); } catch (error) { console.error(error.stack); console.error(JSON.stringify(tests)); process.exitCode = 1; }
+module.exports={runIntakeRefresh};

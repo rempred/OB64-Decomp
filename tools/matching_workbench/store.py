@@ -532,6 +532,17 @@ def _query(connection: sqlite3.Connection, request: dict[str, Any]) -> Any:
             (args["candidateId"], limit),
         ).fetchall()
         return [_row_dict(row) for row in rows]
+    if name == "research_intake":
+        import re
+        symbol = args.get("symbol")
+        if not isinstance(symbol, str) or not re.fullmatch(r"[A-Za-z_][A-Za-z0-9_]*", symbol):
+            raise ValueError("invalid intake symbol")
+        return [_row_dict(row) for row in connection.execute(
+            """SELECT o.*, c.source_text, c.source_sha256, c.target_id, t.symbol
+               FROM candidate_observation o JOIN candidate c ON c.candidate_id=o.candidate_id
+               JOIN target_snapshot t ON t.target_id=c.target_id
+               WHERE t.symbol=? AND o.origin='research-import'
+               ORDER BY o.created_at DESC, o.observation_id LIMIT ?""", (symbol, limit)).fetchall()]
     if name == "research_observations":
         target_id = args.get("targetId")
         observation_id = args.get("observationId")
@@ -716,12 +727,16 @@ def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--database", required=True)
     parser.add_argument("--schema", required=True)
+    parser.add_argument("--read-only", action="store_true")
     args = parser.parse_args()
     database = Path(args.database).resolve()
     schema = Path(args.schema).resolve()
-    database.parent.mkdir(parents=True, exist_ok=True)
+    if not args.read_only:
+        database.parent.mkdir(parents=True, exist_ok=True)
     request = json.load(sys.stdin)
-    connection = sqlite3.connect(database, timeout=30.0)
+    if args.read_only and request.get("action") != "query":
+        raise ValueError("read-only store only permits queries")
+    connection = sqlite3.connect(database.as_uri() + "?mode=ro", uri=True, timeout=30.0) if args.read_only else sqlite3.connect(database, timeout=30.0)
     connection.row_factory = sqlite3.Row
     connection.execute("PRAGMA foreign_keys=ON")
     connection.execute("PRAGMA busy_timeout=30000")
@@ -733,6 +748,8 @@ def main() -> None:
     except sqlite3.OperationalError:
         version = None
     if request.get("action") == "init" or version != "2":
+        if args.read_only:
+            raise RuntimeError(f"matching workbench schema drift: {version}")
         connection.executescript(schema.read_text(encoding="utf-8"))
         version = connection.execute(
             "SELECT value FROM metadata WHERE key='schemaVersion'"

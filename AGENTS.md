@@ -86,6 +86,13 @@ evidence-backed shared types, fields, and constants, then run an early linked di
 Keep uncertain meanings explicit. Explain necessary compiler workarounds near the affected C.
 Ordinary readability cleanup under existing contracts uses the normal wave gates; it adds no review ceremony.
 
+At the start or resumption of a matching target, consult its current research intake under
+`docs/WORKFLOW.md`. Reuse relevant exact source pairs, useful intermediates and counterexamples;
+check their source context and evidence status before treating an observation as applicable.
+Record discoveries that will change a future experiment through the shared research commands,
+with a concise source change, observed effect and remaining failure. Keep the best source
+recoverable. This does not require archiving every trial or reading the complete historical record.
+
 Experiments need not improve the score at every step. Preserve the current best candidate while
 allowing evidence-backed sequences of related source changes through temporary regressions.
 An experiment that produces worse bytes, extent, frame size or allocation is not selected as

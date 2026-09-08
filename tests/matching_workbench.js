@@ -1386,6 +1386,8 @@ async function main() {
   await sweepWorkerLifecycleTests();
   storeTests();
   require('./matching_research').run();
+  require('./matching_intake').run();
+  await require('./matching_intake').runCli();
   await acceptedModelTests();
   console.log('Matching workbench tests: PASS');
 }

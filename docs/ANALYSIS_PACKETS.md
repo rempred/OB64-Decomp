@@ -26,6 +26,16 @@ Executable, script/spec, environment and imported-module identities are cache ev
 
 ## Prepare a packet
 
+Preparation returns a fresh `researchIntake` alongside the packet result, including cache hits.
+It discovers preserved authored experiments and the optional workbench store using the
+[shared intake rules](MATCHING_WORKBENCH.md#research-intake). Context/effects, residual failures,
+source links, current-source comparison, relation verification and stale/unavailable records
+remain explicit. This presentation is not part of raw decompiler input or the immutable packet
+manifest/cache identity. Adding an observation refreshes the returned history without rerunning
+Kuna or m2c. Tool implementation changes still invalidate caches under the existing rules.
+Optional history errors do not alter packet status or exit semantics; existing packet, ROM,
+tool and cache authentication failures retain their normal behavior.
+
 ```powershell
 node tools/analysis_packet/cli.js prepare func_001F6098 --config build/analysis-packets/local-tools.json --out build/analysis-packets/cache
 ```
