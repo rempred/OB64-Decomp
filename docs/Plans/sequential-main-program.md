@@ -8,6 +8,7 @@ Joe authorized this goal on 2026-09-06. No further push is authorized.
 
 Joe transferred the program from task `01a07262-aeca-7341-ad10-2dba705ff988` on 2026-09-07 after its compaction transport failure.
 Joe also requested a bounded [angr analysis trial](prompts/angr-analysis-trial-r1.md) beside m2c, with [accepted-input retrieval](prompts/angr-trial-input-retrieval-r1.md). It runs on isolated copies and cannot change production or replace existing matching gates.
+The source owner is temporarily preparing [independent project-reference questions](prompts/angr-trial-reference-r1.md) while the trial environment is set up; W8 best inputs remain restored and no production source work overlaps this reference task.
 The previous task is idle. Its preserved history, accepted results, unfinished W8 sources and failed experiments remain controlling inputs.
 The current task resumes the same complete goal; no family, wave, review requirement or held runtime boundary is removed.
 The isolated [DB10 allocation trace](prompts/combat-db10-allocation-trace-r1.md) is complete and has released all writes.
