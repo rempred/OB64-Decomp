@@ -6,8 +6,8 @@ Authorized by Joe on 2026-09-08: follow the supplied overall assessment and its 
 
 | Stage | Deliverable and completion check | Status |
 |---|---|---|
-| 1. Generic probe | Authenticated expanded inputs, complete cache identity/artifact checks, trustworthy comparison provenance and explicit textual divergence; adversarial tests, real pinned-chain control, independent review | Active; sole shared-tool writer `/root/w8_research_intake` |
-| 2. Reuse pilot | Register and preserve a small R7 source pair, nearest counterexample and R8 transfer comparison in the existing candidate system; expose context, change, observation and remaining error; independently review any shared-tool changes | Read-only input retrieval; implementation waits for stage 1 release |
+| 1. Generic probe | Authenticated expanded inputs, complete cache identity/artifact checks, trustworthy comparison provenance and explicit textual divergence; adversarial tests, real pinned-chain control, independent review | Accepted at `492c99c0`; [independent review](task-logs/probe-repair-review-r1.md) |
+| 2. Reuse pilot | Register and preserve a small R7 source pair, nearest counterexample and R8 transfer comparison in the existing candidate system; expose context, change, observation and remaining error; independently review any shared-tool changes | Active; sole shared-tool writer `/root/w8_research_intake`; five exact source states retrieved |
 | 3. Paired reduction trial | One bounded R7 cursor/endpoint pair, meaningful allocation/access predicate, preserved controls and full-function transfer check or explicit limit; no general reduction framework | Pending stages 1–2 |
 | 4. Research intake | Short current-context entry point and directly relevant source states; record observed preparation/compile/interpretation/reporting time for this continuation without invented percentages | Integrated into the pilot/report |
 
