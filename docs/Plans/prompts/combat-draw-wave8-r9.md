@@ -16,7 +16,7 @@ The source baseline is the twenty restored R8 source/shared inputs recorded in `
 | `func_001F6098` | local D764 source under `src/lib/func_001F6098.c` | The published/frozen identity question is resolved. R5 already tested branch-local short texture state with duplicated final calls. Vertex scheduling and the unexplained unused retail frame positions remain distinct questions. Do not repeat that exact source form as new work. |
 | `func_0020DB10` | 5BF6 source under `src/lib/func_0020DB10.c` | R8 additional-member counting creates the fourth non-emitting home with real homes unchanged, but adds code and changes relocation offsets. The guarded-do control is worse; `run+1<count` loses the new home. Preserve this intermediate for a distinct source relation. ActorIndex-clear/preheader order remains independently unresolved; biased machine address bases are not valid one-before-array C pointers. |
 
-The concise evidence entry point is [the research handoff](../../research/w8-pro-research/README.md). The [R8 report](../task-logs/combat-draw-wave8-r8.md) contains the latest bounded source tests. Consult only the directly relevant earlier pair/control when deciding whether a proposed input is distinct.
+The concise evidence entry point is [the research handoff](../../research/w8-pro-research/README.md). The [five-source pilot](../../research/w8-pro-research/reuse-pilot.md) supplies exact 3C00 source pairs, context and effect queries without reconstructing R7 history. The [R8 report](../task-logs/combat-draw-wave8-r8.md) contains the latest bounded source tests. Consult only the directly relevant earlier pair/control when deciding whether a proposed input is distinct.
 
 ## Experiment and completion rules
 
