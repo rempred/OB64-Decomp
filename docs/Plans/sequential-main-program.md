@@ -6,6 +6,10 @@ Joe authorized this goal on 2026-09-06. No further push is authorized.
 
 ## Objective and authority
 
+Joe added the following standing goal requirement on 2026-09-08:
+
+Automatically include default Kuna and m2c outputs in prepared analysis packets for large or difficult functions. Keep m2c as the primary matching-C generator and treat both outputs as hypotheses. Request alternate Kuna transformations only for a specific ambiguity. Use authenticated accepted mappings and cache outputs with their input, tool and option identities. Keep packet generation outside compilation, linking and acceptance checks; it must not become a prerequisite for the normal build or automatically adopt generated C. Any shared implementation retains the existing tooling review requirement. This addition preserves the complete Combat, Squad and High Attack scope and every existing matching gate.
+
 Joe transferred the program from task `01a07262-aeca-7341-ad10-2dba705ff988` on 2026-09-07 after its compaction transport failure.
 Joe's bounded [angr analysis trial](task-logs/angr-analysis-trial-r1.md) beside m2c is complete, with frozen [accepted inputs](task-logs/angr-trial-input-retrieval-r1.md).
 Its [independent review](task-logs/angr-analysis-trial-review-r1.md) is Accepted at `60a57160` with no findings.
@@ -20,18 +24,19 @@ Current D037 already preserves that relation, so no matching improvement or iter
 No canonical/shared integration, automatic compilation or new matching gate follows. R2 has now released all production and report writes to the Director.
 Joe's bounded [cost/history assessment](task-logs/kuna-cost-history-assessment-r1.md) is complete. Recorded 3C00 Kuna execution took 0.333 seconds, excluding preparation and inspection.
 Its retained source already represented the pointer relationship before the later 845/804/770 improvements; elapsed history does not measure counterfactual hours saved.
-The assessment supports proposing cached automatic raw outputs at large/difficult-function analysis intake. It does not implement or accept a shared adapter, change builds, or add a matching gate.
+Joe has now made cached default Kuna/m2c analysis packets a standing goal requirement above. A shared adapter has not been implemented or accepted; compiler/build machinery and matching gates remain unchanged.
 The previous task is idle. Its preserved history, accepted results, unfinished W8 sources and failed experiments remain controlling inputs.
 The current task resumes the same complete goal; no family, wave, review requirement or held runtime boundary is removed.
 The isolated [DB10 allocation trace](prompts/combat-db10-allocation-trace-r1.md) is complete and has released all writes.
 Its [independent review](task-logs/combat-db10-allocation-trace-review-r1.md) is Accepted with no findings.
 The reviewed controls establish candidate-specific allocation ordering and distinguish compiler-only homes from an added accessed spill.
 They establish no retail compiler history, general compiler equivalence, production compiler change or matching acceptance.
-The complete [W8 R3 continuation](prompts/combat-draw-wave8-r3.md) releases sole production source/build ownership to Astra Medium `/root/db10_allocation_trace`.
+The complete [W8 R3 continuation](prompts/combat-draw-wave8-r3.md) has released all production source/build and report writes. Its unresolved handback is frozen at `119e4a08`.
 The frozen [R2 handback](task-logs/combat-draw-wave8-r2.md) at `a0655dac` preserves all fourteen current sources and the six header/configuration identities; Director intake confirmed their hashes.
 R2 preserved the interrupted renderer trial and restored the best inputs. Its former source worker has completed and released the disjoint cost/history assessment.
-R3 starts with a real row-end value lifetime control in 3C00. Astra Medium [DB10 predicate-origin reading](prompts/combat-db10-predicate-origins-r1.md) runs alongside it, using frozen inputs without compilation or production writes.
-Astra Medium [6098 neighbor-expression reading](prompts/combat-6098-neighbor-expression-r1.md) compares its real expressions with focused-exact 5654/7ADC candidates. It owns no production writes or compilation and does not promote those provisional targets to completed-wave acceptance.
+R3 retained six unsuccessful controls and restored all fourteen sources and six shared inputs; Director intake verified all twenty identities. No focused or full verifier ran in R3.
+The completed [DB10 predicate-origin reading](task-logs/combat-db10-predicate-origins-r1.md) and [6098 neighbor-expression reading](task-logs/combat-6098-neighbor-expression-r1.md) are frozen at the same commit. They supply no new source recipe and do not establish pure-C impossibility.
+The ready [W8 R4 continuation](prompts/combat-draw-wave8-r4.md) retains the complete source wave and assigns a new Kuna interpretation of 6098 to Astra Medium `/root/db10_allocation_trace`. The disjoint [DB10 Kuna reader](prompts/combat-db10-kuna-guidance-r1.md) is assigned to Astra Medium `/root/combat_draw_continuation`, with no production writes or compilation. These extend the accepted optional analysis use to two previously untested blockers; they do not implement shared tooling.
 All fourteen targets remain required. The worker may now use the bounded diagnostic guidance in ordinary source experiments.
 Every additional diagnostic input must retain its own agreement check against the pinned production compiler before trace interpretation.
 W8 R2 has all fourteen C owners active; 3C00, 6098 and DB10 remain nonexact, and the final wave verifier has not run.
