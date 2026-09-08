@@ -1,0 +1,85 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "51A6102B90CDF7D28AE5845402FD93011C2F320F19A6B39CE25EA6A6DBE4AF6F",
+  "observationId": "E665D09429A86BD56FFB1DFB0AD94F72DFAB40846B68E66903A2BBFF0FED65FC",
+  "symbol": "func_0020DB10",
+  "authored": {
+    "context": "Same full DB10 function and resource consumers as5BF6; real additional-members counter starts zero and total run starts one.",
+    "effects": [
+      "four-unused-homes",
+      "retail-frame-restored",
+      "extra-induction-remains"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "BC619080177D27FF57DACBE00AAD7A2B585E60907DFC302901E201F6EBA2EE7A",
+      "sourceSha256": "2E7C11795E7181916FE5279D5C78D7BC41A67875A76A5C0E888EA8CED49CC7AE"
+    },
+    "label": "r9-db10-consumed-additional-derived-total",
+    "observedEffect": "Canonical focused comparison:5548/frame560,69 differing bytes/23 words, PURE_C and exact209 relocations. Four accessed plus four non-emitting homes, with pinned/tracer emission agreement. All differing words lie in six preheader order and17 grouping words.",
+    "parentCandidateId": "6D3B02845B46DCC807232A66EA04410982F5778552163897A97A3EC3C68C7B74",
+    "references": [
+      {
+        "path": "docs/Plans/task-logs/combat-draw-wave8-r9.md",
+        "sha256": "8BA7E5C20C2C207EE152BAAE2DB638E3F74F830391020C8001468A1188E565BA"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Correct extent/frame and unused-home count do not establish matching. Extra emitted induction work and preheader order remain.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Guard additional<count-1, then additional++ and run=additional+1; resource indexing, submission and actor advance use run."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 26567,
+      "sha256": "BC619080177D27FF57DACBE00AAD7A2B585E60907DFC302901E201F6EBA2EE7A"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "2E7C11795E7181916FE5279D5C78D7BC41A67875A76A5C0E888EA8CED49CC7AE"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-08-func_0020DB10-51a6102b90.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

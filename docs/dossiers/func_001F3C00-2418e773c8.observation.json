@@ -1,0 +1,128 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "2418E773C8A8FFA7864B2A539B7E2D1DBBF67F87F97CF40B6F7F8494B44D8F2D",
+  "observationId": "FD8867C3E9F8F72A09900D5BC440C8057F55C5C6083BA1AFF5B995541ADECED6",
+  "symbol": "func_001F3C00",
+  "authored": {
+    "context": "D037 branch-local completion with full-width strip, shared rowField, and separate late updates retained.",
+    "effects": [
+      "width-call-tail-restored",
+      "register-role-mismatch"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 1408,
+          "path": "include/game/combat_draw_commands.h",
+          "sha256": "0B78FA9F31CD5980AA803E52E85CDC3A767896D2F943593036CCC2C9E357A31B"
+        },
+        {
+          "bytes": 362,
+          "path": "include/game/combat_draw.h",
+          "sha256": "DEA4C4DDDEA3D523C088558D41D15EDFCCC28C9467F48DA03E779F4F2F1A0B08"
+        },
+        {
+          "bytes": 868,
+          "path": "include/game/combat_pose_record.h",
+          "sha256": "3ECFF3EEA02A4A2AB76E7E489B00ECDB2FFA2511382E95CD936F376509457815"
+        },
+        {
+          "bytes": 109,
+          "path": "include/game/combat_types.h",
+          "sha256": "DD2B627C22F084DB4F668D27E8DE3C3F3D8FDFC352F690034FE3E1A5655959D6"
+        }
+      ],
+      "expandedSha256": "A300A9202DD6D9EDEFC37D68995D2E5C4F8A98C33B2FE46833BAD203620C019C",
+      "sourceSha256": "74734CACF450537293C5814A0CF7B9EA5D13AE608209BC680157936D392C3519"
+    },
+    "label": "r9-d037-local-primary-end-reuse",
+    "observedEffect": "6732/frame504,1451 differing bytes/427 words. WIDTH calls remain23 through jump2 instead of22 in localized recomputation.29 accessed homes, pinned/tracer emission agreement. Canonical focused diff rejects extent.",
+    "parentCandidateId": "5D960029406B6FA7F0A2CD3A5F98669F10E51D87193531A2DAFF6EC27B3AFD29",
+    "references": [
+      {
+        "path": "docs/Plans/task-logs/combat-draw-wave8-r9.md",
+        "sha256": "8BA7E5C20C2C207EE152BAAE2DB638E3F74F830391020C8001468A1188E565BA"
+      }
+    ],
+    "relatedCandidateIds": [
+      "519474319F673191AB26EE7A6C12B47195ED7D6859F26C9A5DD4C2E4461C7C23"
+    ],
+    "remainingFailure": "Endpoint reuse fixes the tail discriminator but not full-function register roles or complete bytes; original D037 remains selected.",
+    "role": "transfer-result",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Change only primaryEnd masked recomputation to primaryEnd=endField."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 1408,
+        "path": "include/game/combat_draw_commands.h",
+        "sha256": "0B78FA9F31CD5980AA803E52E85CDC3A767896D2F943593036CCC2C9E357A31B"
+      },
+      {
+        "bytes": 362,
+        "path": "include/game/combat_draw.h",
+        "sha256": "DEA4C4DDDEA3D523C088558D41D15EDFCCC28C9467F48DA03E779F4F2F1A0B08"
+      },
+      {
+        "bytes": 868,
+        "path": "include/game/combat_pose_record.h",
+        "sha256": "3ECFF3EEA02A4A2AB76E7E489B00ECDB2FFA2511382E95CD936F376509457815"
+      },
+      {
+        "bytes": 109,
+        "path": "include/game/combat_types.h",
+        "sha256": "DD2B627C22F084DB4F668D27E8DE3C3F3D8FDFC352F690034FE3E1A5655959D6"
+      }
+    ],
+    "expanded": {
+      "bytes": 26226,
+      "sha256": "A300A9202DD6D9EDEFC37D68995D2E5C4F8A98C33B2FE46833BAD203620C019C"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "74734CACF450537293C5814A0CF7B9EA5D13AE608209BC680157936D392C3519"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-08-func_001F3C00-2418e773c8.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

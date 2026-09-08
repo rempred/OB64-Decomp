@@ -1,0 +1,86 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "15EADCD53D056CF6F08E5F14EA1731C77085109657733D11D817DE33D872264A",
+  "observationId": "56C030A37DA42603767542A0DDC1A5C1C6E974200CD48B9EEF1DE5EFF835E29E",
+  "symbol": "func_0020DB10",
+  "authored": {
+    "context": "Nearest same-function dual-counter control to the consumed-additional source.",
+    "effects": [
+      "initial-additional-value-dies",
+      "three-unused-homes"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "FF334DA1D585C32597A014234436C6BE343D75BC0F5D21E5D25B2B6FB57114DB",
+      "sourceSha256": "ABCFB9ECE602C3EE922FF1306D0CE8BA54BA6EC45FAD0EEB6AA03CC5F4E14332"
+    },
+    "label": "r9-db10-overwritten-additional-counterexample",
+    "observedEffect": "5552/frame552,428 differing bytes/132 words, four accessed plus three non-emitting homes; pinned/tracer emission agreement. Entry additional becomes dead in flow and the fourth non-emitting USE does not survive.",
+    "parentCandidateId": "6D3B02845B46DCC807232A66EA04410982F5778552163897A97A3EC3C68C7B74",
+    "references": [
+      {
+        "path": "docs/Plans/task-logs/combat-draw-wave8-r9.md",
+        "sha256": "8BA7E5C20C2C207EE152BAAE2DB638E3F74F830391020C8001468A1188E565BA"
+      }
+    ],
+    "relatedCandidateIds": [
+      "51A6102B90CDF7D28AE5845402FD93011C2F320F19A6B39CE25EA6A6DBE4AF6F"
+    ],
+    "remainingFailure": "Wrong extent and frame; this isolates value-use history but does not identify original retail variables or reject all total-run formulations.",
+    "role": "counterexample",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Update run++ and derive additional=run-1 instead of incrementing additional and deriving run."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 26560,
+      "sha256": "FF334DA1D585C32597A014234436C6BE343D75BC0F5D21E5D25B2B6FB57114DB"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "ABCFB9ECE602C3EE922FF1306D0CE8BA54BA6EC45FAD0EEB6AA03CC5F4E14332"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-08-func_0020DB10-15eadcd53d.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

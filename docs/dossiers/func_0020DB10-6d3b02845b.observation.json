@@ -1,0 +1,83 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "6D3B02845B46DCC807232A66EA04410982F5778552163897A97A3EC3C68C7B74",
+  "observationId": "DC975222F5C66D1EED6AC31A4BD4FF74526FF991D1E32A9142AC6D7D2BD3B8B7",
+  "symbol": "func_0020DB10",
+  "authored": {
+    "context": "Current 5BF6 source with explicit dedup guard, original total-run grouping loop and count-guarded submission.",
+    "effects": [
+      "baseline-three-unused-homes"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "08561F8CD28616666538499F3F86CD3BB4A58D38B608DB0872742DFF5DCC375D",
+      "sourceSha256": "5BF6ACF3CEF8F4A229AA143CCEB76376AC333B455BB1EDA18E9296476D791FD3"
+    },
+    "label": "r9-db10-selected-baseline",
+    "observedEffect": "5548-byte linked extent, frame552,41 differing bytes/28 words; four accessed and three non-emitting homes. Exact209-entry relocation contract.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "docs/Plans/task-logs/combat-draw-wave8-r9.md",
+        "sha256": "8BA7E5C20C2C207EE152BAAE2DB638E3F74F830391020C8001468A1188E565BA"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Retail frame560 has an additional non-emitting slot; six preheader ordering words and grouping differences remain.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Unchanged selected mismatch baseline."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 26443,
+      "sha256": "08561F8CD28616666538499F3F86CD3BB4A58D38B608DB0872742DFF5DCC375D"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "5BF6ACF3CEF8F4A229AA143CCEB76376AC333B455BB1EDA18E9296476D791FD3"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-08-func_0020DB10-6d3b02845b.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

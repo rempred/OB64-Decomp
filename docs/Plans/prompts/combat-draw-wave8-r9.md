@@ -1,6 +1,6 @@
-# W8 source continuation R9 — active
+# W8 source continuation R9 — first sequence recorded
 
-Joe activated this source continuation on 2026-09-08 by asking to continue the matching goal plan. `/root/w8_research_intake` (Astra Medium) is the sole source/build writer, starting with 3C00 and continuing the complete assigned W8 wave. Current ownership is in [the sequential program](../sequential-main-program.md); the [project-wide research intake](../matching-research-rollout.md) is accepted. The complete Combat → Squad → High Attack program remains required.
+Joe activated this source continuation on 2026-09-08 by asking to continue the matching goal plan. `/root/w8_research_intake` (Astra Medium) completed the [first source sequence](../task-logs/combat-draw-wave8-r9.md), restored all twenty baseline inputs, and released all source/build/report writes to the Director. The new DB10 liveness pair and 3C00 endpoint transfer are preserved through normal research intake; neither establishes matching acceptance. Current ownership and the next source question are in [the sequential program](../sequential-main-program.md). The complete fourteen-target W8 wave and Combat → Squad → High Attack program remain required; this source boundary does not narrow that assignment.
 
 ## Read and authenticate
 
