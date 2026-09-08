@@ -1,0 +1,90 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "5E32372EB7D2700CB8DD9358788543667CB86F54444E4D5ACB4F1830C847D90C",
+  "observationId": "6FF2C52183BEAFB3C8D26F1C79FE41A343D1925C0435C3764301598F27CB4652",
+  "symbol": "func_0020DB10",
+  "authored": {
+    "context": "Final R12 DB10 under Joe's explicit minimal HYBRID_C exact permission for W8. Connected descendant of the local-base pair after real backward-cursor reconstruction and bounded removal of temporary constraints. Canonical focused proof passes; the one combined fourteen-target verifier is pending at this record.",
+    "effects": [
+      "focused-target-exact",
+      "assembly-minimized",
+      "frame-exact",
+      "preheader-order-restored",
+      "relocation-contract-exact"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "D2DC36CC1E0718535997A08FA6FD6148D85406B6DE6FD28EAAA26FB5E21D8C9F",
+      "sourceSha256": "9F388B973CA8BA7937495B5438A3D2E94A32B064C26132A823F769591CB07274"
+    },
+    "label": "r12-minimized-focused-exact-hybrid",
+    "observedEffect": "Canonical focused report EC0A7D5124CC48E7859BD0F227E67C3AC4A5402B639B4A6AD735C6929F3CD2E4 confirms 5548 bytes,sole objects/c/func_0020DB10.o,no fallback/fill,exact placement,all209 relocation words and existing contract MATCH,zero different target bytes/words. Final exact-input pinned/tracer agreement confirms frame560 and expected eight-home layout. Source has2 register bindings,3 empty templates and1 explicit real move instruction.",
+    "parentCandidateId": "9969B0360A74A7B4C4B60B90AB3FA4A6A99C3AF7FFD405FF52FB01B5F94208AF",
+    "references": [
+      {
+        "path": "docs/Plans/task-logs/combat-db10-minimal-hybrid-r12.md",
+        "sha256": "B98A76DD9B01CE112CF39D37D0F8FAAD4FCB02D6675945F20F3E267625AF2F4E"
+      }
+    ],
+    "relatedCandidateIds": [
+      "6D3B02845B46DCC807232A66EA04410982F5778552163897A97A3EC3C68C7B74",
+      "74E438BF1334DEFC30153687D36D119DD48B94A39F6AF26D2937FB774351FDC0"
+    ],
+    "remainingFailure": "Full W8 acceptance remains pending its one combined verifier. HYBRID_C does not count as matching C. Original pure-C unused-home/preheader history remains unresolved; current minimization does not prove global minimality or inherent assembly requirements.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Consume actual predecessor bases immediately in guarded unsigned backward cursors; preserve shared context/resource preheader values, their declaration order and the real index-clear after their stores. Remove all three temporary address bindings and both load-input points after C retains their effect. Keep only sourceBase22/resourceCursor5 bindings, the real clear with memory ordering and three empty reservation templates."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 28655,
+      "sha256": "D2DC36CC1E0718535997A08FA6FD6148D85406B6DE6FD28EAAA26FB5E21D8C9F"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "HYBRID_C",
+    "sourceSha256": "9F388B973CA8BA7937495B5438A3D2E94A32B064C26132A823F769591CB07274"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-08-func_0020DB10-5e32372eb7.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

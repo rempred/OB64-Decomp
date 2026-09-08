@@ -1,8 +1,8 @@
 # Combat draw W8 R12 — minimal hybrid continuation
 
-Joe authorized the smallest assembly intervention for the three unresolved W8 targets on 2026-09-08. The eleven focused-exact PURE_C controls remain unchanged. R12 is active; no target or wave acceptance is claimed.
+Joe authorized the smallest assembly intervention for the three unresolved W8 targets on 2026-09-08. The eleven focused-exact PURE_C controls remain unchanged. W8 is complete: the single normal verifier passes all fourteen targets and the complete ROM, with eleven PURE_C and three HYBRID_C targets. The hybrids are exact source replacements, not matching C.
 
-All twenty R8 inputs were authenticated and preserved under ignored `build/combat-draw-wave8-r12/starting-inputs/`, including exact local D764 bytes. The current 3C00 default analysis packet was reused from its authenticated cache with refreshed intake. After canonical proof,6098 is the provisional exact hybrid; the other nineteen protected inputs remain unchanged. Original pure-C sources remain recovery references.
+All twenty R8 inputs were authenticated and preserved under ignored `build/combat-draw-wave8-r12/starting-inputs/`, including exact local D764 bytes. The current 3C00 default analysis packet was reused from its authenticated cache with refreshed intake. The final authorized source changes are 3C00,6098 and DB10; only the actual 3C00 relocation list changed. Original pure-C sources remain recovery references.
 
 ## 3C00
 
@@ -10,7 +10,7 @@ The first controls bind real values in D037. Private results compare the complet
 
 | Input under `build/combat-draw-wave8-r12/3c00/` | Bytes / frame | Different bytes / words | Observation |
 | --- | ---: | ---: | --- |
-| d037-control | 6740 / 504 | 770 / 261 | Exact pure-C reference reproduced. |
+| d037-control | 6740 / 504 | 770 / 261 | D037 reference output reproduced. |
 | d037-strip-bound | 6720 / 488 | 2736 / 774 | Direct hard $30 strip binding perturbs frame and permits incompatible hard-register reuse; unselected. |
 | d037-companion-bound | 6740 / 504 | 765 / 254 | One $22 companion binding; canonical focused diff confirms HYBRID_C and exact relocation contract. |
 | d037-companion-u1-bound | 6740 / 504 | 788 / 255 | Adds $23 short endpoint binding; desired principal register roles appear, but normalization and packet differences remain. |
@@ -87,6 +87,40 @@ Only two nonempty assembly templates remain: the real companion-pointer ADDU (ea
 
 The first readable proof input is DC0CD1BC51B2088CD21D7FD937D336C6C9A7280DF8312DD8371DF40BA53F6AB4. A comment-only correction produces final source SHA 627B8E1DDD076AB292711B230E99C877496190066D79267578F59A9843471D69; both have identical expanded input 17C196C2D870931979FF9EE3960AF23BFDFA5DC5DFF80DDB5159B798C312D4A5, four dependencies and preprocessor identity. Private evidence is `3c00/hybrid-readable/` and `3c00-traces/hybrid-readable/`; minimization inputs/summaries use `min-binding-*`, `min-operation-*`, and `min-empty-*`. Canonical focused verification now passes HYBRID_C exact: 6740 bytes, sole objects/c/func_001F3C00.o owner, no fallback, exact placement and all 302 linked relocation words. The first focused run took 129258 ms and exposed the old D037 relocation offsets; only this target's actual list was updated (302 entries, 48 removed/48 added, unchanged type/symbol inventory). The required refreshed diff took 107840 ms with one target compiler invocation and 601 sibling cache hits. Final proof: `3c00/hybrid-final-contract/focused.json`. Linked and expected SHA-256 are 458A6CB397B154CCC0CBE12CAEF4456A711C676E6B269F32A8DEE2490522925A.
 
-## Current boundary
+## DB10 local bases and exact hybrid
 
-No shared tooling, flags, compiler identity or ownership rules changed. Only the actual func_001F3C00 relocation list changed under existing linkage rules. Only ignored local experiment helpers were adjusted to admit the mechanically classified HYBRID_C class already supported by source policy. No runtime or full-ROM verifier ran. The final 3C00 source is active provisionally alongside exact 6098. All twenty current-protected inputs authenticate; the only changes from original recovery inputs are those two C sources and the 3C00-only linkage record. D037/D764 pure-C recovery bytes remain preserved. DB10 remains 5BF6 pending its continuation. The complete fourteen-target W8 wave remains required; final verification waits until every member is ready.
+The narrow source-array revert and early reservation declarations preserve real context/resource predecessor identities. Their remaining extra homes were caused by serial loop-motion profitability: removing context/resource from the movable list admitted variant/flag10, then flag8. This was not duplicated address identity. The guarded LA control keeps two bases local but emits two instructions per address and promotes flag8 next; it is unselected.
+
+| Private input | Extent / frame | Different bytes / words | Result |
+|---|---:|---:|---|
+| sort-offset-first | 5564 / 576 | 814 / 251 | Correct original preheader; two extra accessed homes. |
+| inner-address-tied | 5560 / 560 | 905 / 480 | Correct eight-home layout; three base copies remain. |
+| inner-cursors-array-stores | 5548 / 560 | 337 / 320 | Real backward cursors remove copies; actor/index register priorities exchange. |
+| inner-five-plain-flag8 | 5548 / 560 | 14 / 4 | Ordinary flag8 base restores priorities; two load/address pairs remain reversed. |
+| inner-five-load-inputs | 5548 / 560 | 0 / 0 | Input-only constraints recover ordering without extra loads. |
+| hybrid-readable | 5548 / 560 | 0 / 0 | Final bounded simplification and comments; canonical focus passes. |
+
+All rows have 209 actual relocations and per-input pinned/tracer agreement. The completed search bound and five actual predecessor cursors retain the original array stores and shift semantics. Integer address arithmetic avoids forming a C pointer before an array; dereferences remain inside the original nonempty shift guard. The current total-run batching bound is unchanged.
+
+Minimization removes all three transient base bindings and both load points once the ordinary cursor representation retains the required history. Two bindings remain: actual source-array base22 and actual resource cursor5. Their separate removal controls regress. Three empty reservation templates and one real index-clear instruction remain; removing the saved-register exclusion loses the required frame, while excluding30 is unnecessary and was removed. Flattening the ordinary base temporaries also regresses and is not selected. An intermediate base-removal selector made one unchanged-input replay; it is not counted as a distinct removal. These are bounded necessity controls, not a global minimum claim.
+
+Final private source is 9F388B973CA8BA7937495B5438A3D2E94A32B064C26132A823F769591CB07274 under `db10/hybrid-readable/`; its trace is `db10-traces/hybrid-readable/`. Earlier exact26F2 and every rejected control remain immutable. The two grouped minimization commands took 6964 and 3417 ms wall time, including their preprocessing/compiler/link/trace calls; other reasoning and reporting time is unmeasured.
+
+Canonical DB10 focus passes on the final source in 105841 ms: HYBRID_C, sole objects/c/func_0020DB10.o owner, no fallback or fill, exact placement, all 209 relocation words and unchanged existing relocation contract. Linked/expected SHA-256 is A47D14C3227F9FAD494097A03496A8759DE3C1A19E00324012CD541C53732EB7; expanded input is D2DC36CC1E0718535997A08FA6FD6148D85406B6DE6FD28EAAA26FB5E21D8C9F. Proof: `db10/hybrid-readable/focused.json`. The heuristic score is 1140, while decoded pairwise rows and complete linked bytes are exact; score alone is not acceptance.
+
+## Completed wave
+
+The one normal `node tools/verify.js` invocation exited 0 with EXACT BASELINE. It includes the CURRENT build, canonical ownership/placement/relocation/target-byte checks, full-ROM comparison, fresh recompilation and final source policy. Wall time was approximately 1215 seconds, measured from process creation to the verified-state timestamp; this includes all command phases, not reasoning time. No redundant build or verifier ran.
+
+The exact fourteen-target census is 11 PURE_C plus 3 HYBRID_C (func_001F3C00,func_001F6098,func_0020DB10). Every target has one C owner, no original fallback/fill, accepted placement, exact relocation words, zero differing bytes and words, and fresh source/object identity. All twenty current-protected inputs authenticate. The only recovery differences are the three C sources and the 3C00-only actual relocation record. D037/D764/5BF6 recovery bytes remain preserved. No shared tooling, flags, compiler identity, structural contract, ownership rule or runtime changed.
+
+ROM: 41943040 bytes, SHA-256 571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A. CURRENT fingerprint: 9878C600CE8BAE6574C9A7410AD891954E2017B8C6221441DC8F10AB442FF51B.
+
+Immutable ignored evidence under `build/combat-draw-wave8-r12/`:
+
+- `final-verification.json`: 106C508ED41DF29185C380F40CF489D22B0B2A6289BAD883777C116A6B7C60A4.
+- `final-fresh-compilation.json`: 07607B6FEF43E4066826FAC1D638A5063180B491D9A1D7A1BC207EF66FC1DE20.
+- `final-source-policy.json`: 99A9D35B4BE6CE698AC0D93E41E0275798B1B0AD76143230FAA89D0BF28C0E12.
+- `final-wave-census.json` binds each of the fourteen source hashes, classes, owners, placements, relocation counts and expanded inputs. `final-verify.stdout.txt` records the successful invocation; stderr is empty.
+
+All source/build/report writes and processes are released for integration. No commit or push was performed by this worker.
