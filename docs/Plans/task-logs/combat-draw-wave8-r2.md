@@ -1,11 +1,44 @@
 # Combat draw W8 R2
 
-In progress. The Director released production writes and compilation at `e29eec8a`. The complete fourteen-target wave remains assigned to this sole source/build writer.
+Terminal continuation handback: R2 work is closed and all production source/build and R2 report writes are released to the Director. The fourteen-target wave is NOT accepted or reduced; a successor must retain its complete combined gate. See terminal current-state section below. Production was originally released at `e29eec8a`.
 The interrupted source differs from R1's last progress note for the larger renderer. Preserve its failed control before restoring the documented best.
 
 Launch: `COMBAT-DRAW-WAVE8-20260907-02`. Receiver: `/root/combat_draw_continuation`. Director: `/root`, local task `01a07dad-52c1-7cb0-9913-d9f7afa91281`.
 Starting HEAD: `e585a9e86865126657db936fb45d8b80dae45296`, on `main`.
 The fresh claim was created atomically and read back before this report.
+
+## Terminal current state and release
+
+Director requested lifecycle closure at HEAD `1ec4c01fe6ff17686c6b09d1c552adc170484e96`, on main. No new source experiment, compiler, linked diff or full verifier was run for this handback. Existing reference tasks and their reports remain frozen. This is not matching acceptance or a smaller wave.
+
+All fourteen C targets are still uniquely active in `config/matching-c-targets.json`. All fourteen remain required in **one final complete-wave verifier** after the three nonexact targets are ready. The nine R1 focused results, accepted BFF8 and R2 focused-exact7ADC do not replace that combined gate. No final W8 full-ROM verification exists. Do not precede the eventual verifier with a redundant full build or run it per target.
+
+Current source identity authority is `build/combat-draw-wave8-r2/terminal-current-inputs.json`, SHA11FEBD182262EA63CC44024D22E58E382A35B6476EBC376331C7D64F5F06B3ED. It lists all14 exact source paths/hashes and relevant headers/configs. Current key sources are:
+
+| Source under src/lib | SHA256 | Retained state |
+|---|---|---|
+| func_001F3C00.c | D03797FD04EEE60592E0644A837E09308568D3E82448883997A10A85DA7F91F5 |6740/frame504/native209; focused770bytes/261words different |
+| func_001F6098.c | D76444B2C4AF7AD44E40DA2F68456E894355AA9F1B6BF4D44F4B792DC10097E1 |4148/frame408/native46; focused56bytes/46words different; retail frame456 |
+| func_001F7ADC.c | F3F90BD828DE9141A6E48D4BBBF4691F3A5B6C60C828CE9B2F8289408457B518 |3800/frame368; focused full-target exact PURE_C; provisional until combined gate |
+| func_0020DB10.c | 5BF6ACF3CEF8F4A229AA143CCEB76376AC333B455BB1EDA18E9296476D791FD3 |5548/frame552/native28; retail frame560; older A2CF linked evidence is not current5BF6 proof |
+
+Current `config/matching-c-targets.json` SHAA4B90F26118839FA4A6556259DCD13B0B769D4A7E30B1283C1E19E9822CCF634; `config/matching-c-linkage.json` SHAE8482937F1EABA9211452299622029B57D0BB66BA2EB86A96BFA3DAFECD424F5. Current combat_draw.h SHADEA4C4DDDEA3D523C088558D41D15EDFCCC28C9467F48DA03E779F4F2F1A0B08 and combat_draw_commands.h SHA0B78FA9F31CD5980AA803E52E85CDC3A767896D2F943593036CCC2C9E357A31B remain unchanged.
+
+Already preserved proof locations/hashes are bound by `terminal-proof-locations.json`, SHAE89B601527125A09406971C120DC6EAB17F323B6F391FBBBD6686E2F2E3D450F. In particular:
+
+- R2 `func_001F3C00.distinct-primary-packed-endpoint.diff.json` SHADB532F9509A41873DD35497CF7047A2D0404EEE01CE4A4C360CB84819340048B; raw-evidence660890A9ED3D3089197CD7526031722EF1FA7EEECC6B4D62A9961D123F02E22E. Current linked2248CF47DF1FC28EC79516412C7BE10E0D0192420C86ECF0938E20720B79651E differs from retail458A6CB397B154CCC0CBE12CAEF4456A711C676E6B269F32A8DEE2490522925A.
+- R2 `func_001F7ADC.exact-endpoint-lifetimes.diff.json` SHA002617A169C1E6C835FDF5FFCD95922566C40123D4450C1981FC4421C572559E and `.proof.json` SHAE233BD5B433E71B6E24C0EF8190E340CB7A7AED244249F44A91F823F473105DB. Source/input identity, sole3800-byte C contribution, fallback0/fill0,180 matching relocations and full raw target equality are bound there. Expanded input8DE583C180A8804036CCB57AF06D9F4650E579EBFF8E0C5AEC7CDCA77CFF9C81; linked/retailD07D465232BA1A56C673AC0F2C99E708D6EE381F9A3ED152A6F34CDC9BFFC547.
+- R1 `func_001F6098.parked.diff.json` SHA807F27A56DCB381B14E903F953919DA06B4CB6AA947F3F5AD15746E2A624E177 binds expandedDDD67BBE5FC0CD363CED8B62EB65E12105AB36A55B1CE69029FBD4E5065A4BA6. R1 DB10 `null-first-peer-flags.diff.json` is explicitly older A2CF evidence. The nine R1 named target `.diff.json` files and the accepted historical BFF8 full-wave report are indexed without rewriting or rerunning them. Preserve each report's exact input identity; do not silently reassign earlier proof to changed inputs.
+
+Three concrete residuals and stopped branches:
+
+1. **3C00:** D037 correctly represents separate primaryEnd local s0, companion end s2, packet row s3, tile/u1 s7, header s4 and geometry row s5. Companion/strip remain s8/s6 versus retail s6/s8; sync/render and size cursors remain s0/s1 versus retail s1/s0. Preserve original null position, two predecessor size loads, adjacent8/C stores, explicit fulltile and shared tail. Delayed-null on both older and D037 contexts regressed and moved the null instruction; separate primary row regressed; shared size cursor changed end allocation; sync/render transfer reunified at sched→lreg with byte-identical object. Named controls, reasons, native objects and per-input pinned-agreed passes remain in R2. No missing real additional cursor lifetime is established; a new source form needs evidence beyond another scope/copy spelling.
+2. **6098:** exact48-byte retail frame excess maps to two groups of three8-byte positions around final sourceY and decoded-address homes. Current five rounded aggregates40/64/8/24/16 and23 scalar homes all have bounded caller/callee access evidence; current trace has no comparison-only homes. The retained aggregate/slot map and domain analysis are already complete for the examined corpus. Existing unsigned-predicate, wrapper, scope and extra-array hypotheses provided no lead; do not pad/enlarge objects or invent comparisons. Preserve D764 and its accepted-helper/source-domain limits.
+3. **DB10:** current frame is8 bytes short and outer actorIndex clear precedes five base-setup instructions rather than following them. Context/resource machine bases5C/A4 are biased predecessor-address arithmetic, not valid element-zero C pointers. The93-input survey found at most three comparison-only homes; larger frames add accessed storage. New guarded source/context/resource aliases preserved the actual variant across key call but produced5612/frame576/native260 and an extra accessed address home, still wrong clear/source-base order. Named older source/context/variant aliases are a different unguarded control. Stopped guard/lifetime/combination/alias classes are not grounds for another blind retry or dummy storage.
+
+Use named source/compiler/pass/proof packages rather than assuming generic latest `*.raw-evidence.json`, `*.compiler.s` or native files represent the restored best: trial scripts overwrite generic artifacts while named controls remain intact. Frozen research/tool-evaluation reports may support only their accepted bounded conclusions; they do not alter source ownership, compiler identity or matching gates.
+
+**Terminal release:** `/root/combat_draw_continuation` explicitly releases all production source/build authority and all R2 report/evidence writes to Director `/root`. No process, compilation or verifier is running. No successor is activated by this worker. This R2 report and its terminal indexes are now frozen; future work requires the Director's successor routing. All14 W8 targets, unrelated held Resolver edits, other families and the single final combined gate remain preserved.
 
 ## Recovered scope
 
