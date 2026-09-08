@@ -1,0 +1,8 @@
+{
+  "host_id": "local",
+  "launch_id": "ANGR-ANALYSIS-TRIAL-20260907-01",
+  "receiving_task_id": "/root/db10_allocation_trace",
+  "creation_time": "2026-09-08T02:30:49.7961435Z",
+  "task_id": "angr-analysis-trial",
+  "assignment_revision": 1
+}
