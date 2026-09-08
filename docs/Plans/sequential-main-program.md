@@ -1,8 +1,12 @@
 # Sequential matching program
 
 Status: active. Baseline: published main `5a60e43675a84e7332299337e6f00af97de2ff15`.
-Director: `/root`, task `01a07dad-52c1-7cb0-9913-d9f7afa91281`, local.
-Joe authorized this goal on 2026-09-06. No further push is authorized.
+Director: `/root`, current recovery task, local. Predecessor: `01a07dad-52c1-7cb0-9913-d9f7afa91281`.
+Joe authorized this goal on 2026-09-06 and explicitly authorized committing and pushing the repository during recovery on 2026-09-08. This is a one-time publication authorization.
+
+Recovery on 2026-09-08 confirmed that the predecessor and its W8 worker are idle. The committed R7 terminal handback controls over stale interrupted-turn commentary: all writes and processes were released, all twenty source/shared inputs were preserved, and no new best or complete-wave acceptance was established. R8 is prepared at `6e45744e` but has not been activated; its fresh source assignment must precede production writes. The immediate continuation is to assess R7's actual cursor-lifetime observations in preserved best 3C00 context D037, retaining all fourteen W8 targets and the complete Combat → Squad → High Attack scope.
+
+The two remaining Resolver test files were preserved separately as provisional startup-wire regressions. `python -m unittest tools.total_resolver.tests.test_startup_wire` passed during recovery. This preservation does not accept the unfinished Resolver correction or authorize its held protocol changes. No ROM verifier was repeated for this documentation/test preservation; W8's final combined verifier remains outstanding.
 
 ## Objective and authority
 
