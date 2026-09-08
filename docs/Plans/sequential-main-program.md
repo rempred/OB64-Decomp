@@ -35,7 +35,9 @@ The complete [preserved DB10 survey](task-logs/combat-db10-preserved-allocation-
 This bounded negative result supplies no missing-home recipe, retail allocation history or impossibility claim.
 The completed [DB10 initialization locating](task-logs/combat-db10-initialization-residual-r1.md) identifies one outer-counter clear before five otherwise identical base-setup operations; current `.loop` output first contains that adjacent order.
 It supplies no new tested source recipe and leaves the frame gap separate. 6098's existing map accounts for two three-slot groups; its bounded unsigned-predicate control produced no new comparison-only homes and the best source is restored.
-While production 7ADC work continues, [retained DB10 base-control locating](prompts/combat-db10-retained-base-control-r1.md) checks the existing failed named-base control's order and extra accessed spill without new experiments or a repeated corpus survey.
+The completed [retained DB10 base-control locating](task-logs/combat-db10-retained-base-control-r1.md) confirms that the failed named control still lacks the desired order and its extra spill preserves the real masked variant across a call.
+It corrects the predecessor's source-association precision: current sp+0x5C/sp+0xA4 are biased preceding-element address bases, while the natural context/resource array starts are sp+0x60/sp+0xA8. Prior instruction/order facts remain unchanged.
+The named control aliases a different pointer set on an older source; its missing raw object limits relocation/extent comparison. Any proposed current-source trial must first check preserved experiments and retain valid C pointer arithmetic.
 
 Complete the remaining Combat, Squad, and High Attack plans in that order on main, using internal agents.
 Use Sol High (`gpt-5.6-sol`, `high`) for retrieval/data-seeking or parsing-only workers.
