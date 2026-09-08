@@ -1,0 +1,8 @@
+{
+  "host_id": "local",
+  "creation_time": "2026-09-08T01:03:27.7093682Z",
+  "launch_id": "COMBAT-7ADC-GUIDED-ENDPOINT-SEARCH-20260907-01",
+  "assignment_revision": 1,
+  "task_id": "combat-7adc-guided-endpoint-search",
+  "receiving_task_id": "/root/db10_allocation_trace"
+}
