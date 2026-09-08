@@ -86,6 +86,13 @@ evidence-backed shared types, fields, and constants, then run an early linked di
 Keep uncertain meanings explicit. Explain necessary compiler workarounds near the affected C.
 Ordinary readability cleanup under existing contracts uses the normal wave gates; it adds no review ceremony.
 
+Experiments need not improve the score at every step. Preserve the current best candidate while
+allowing evidence-backed sequences of related source changes through temporary regressions.
+An experiment that produces worse bytes, extent, frame size or allocation is not selected as
+the current best; that result alone does not disprove its underlying structure. Eliminate a
+hypothesis only when stronger evidence contradicts it, and state that evidence separately from
+candidate selection. Final matching acceptance still requires every canonical gate.
+
 ### 2. Structural work
 
 Structural work changes or validates boundaries, segments, overlays, linker layout, executable

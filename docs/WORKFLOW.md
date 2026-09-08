@@ -206,6 +206,15 @@ authoritative. `EXACT` requires a nonempty pairwise decoded-instruction match an
 equal final linked bytes. Missing, duplicate, malformed, or wrong-sized linked
 sections fail.
 
+Do not require every experiment to improve the score immediately. Keep the best known candidate
+separate from exploratory source snapshots, and allow a supported hypothesis to be tested through
+several related changes even when an intermediate result regresses. Record what the experiment
+tests and what its result establishes. Prefer "not selected as the current best" for a worse
+candidate. A worse score or nonmatching extent rules out that exact candidate for acceptance;
+it does not by itself rule out the underlying control-flow or lifetime hypothesis. Closing that
+hypothesis requires stronger, stated evidence. Preserve useful intermediate forms and follow-up
+questions without weakening final byte, ownership, source-class or full-ROM requirements.
+
 For responsiveness, the diff path may reuse authenticated cached objects from
 ignored `build/diff-object-cache/` for unchanged sibling targets. Its cache key
 and restored artifact set cover the sibling's authored source, exact

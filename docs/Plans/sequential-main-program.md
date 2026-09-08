@@ -10,6 +10,8 @@ Joe added the following standing goal requirement on 2026-09-08:
 
 Automatically include default Kuna and m2c outputs in prepared analysis packets for large or difficult functions. Keep m2c as the primary matching-C generator and treat both outputs as hypotheses. Request alternate Kuna transformations only for a specific ambiguity. Use authenticated accepted mappings and cache outputs with their input, tool and option identities. Keep packet generation outside compilation, linking and acceptance checks; it must not become a prerequisite for the normal build or automatically adopt generated C. Any shared implementation retains the existing tooling review requirement. This addition preserves the complete Combat, Squad and High Attack scope and every existing matching gate.
 
+Joe also clarified that experimentation must not require an immediately improving score. Preserve the current best while allowing supported sequences through temporary regressions. Earlier reports' "rejected" candidates remain unselected exact inputs; the underlying structure remains open unless stronger evidence contradicts it. Frozen reports are unchanged. Future source assignments must distinguish candidate selection from hypothesis elimination and preserve all final acceptance gates.
+
 Joe transferred the program from task `01a07262-aeca-7341-ad10-2dba705ff988` on 2026-09-07 after its compaction transport failure.
 Joe's bounded [angr analysis trial](task-logs/angr-analysis-trial-r1.md) beside m2c is complete, with frozen [accepted inputs](task-logs/angr-trial-input-retrieval-r1.md).
 Its [independent review](task-logs/angr-analysis-trial-review-r1.md) is Accepted at `60a57160` with no findings.
