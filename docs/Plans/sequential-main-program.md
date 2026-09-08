@@ -32,7 +32,8 @@ The worker may use this candidate-specific lifetime guidance, retaining failed r
 The [guided probe search](task-logs/combat-7adc-guided-endpoint-search-r1.md) has passed [independent review](task-logs/combat-7adc-guided-endpoint-search-review-r1.md) with no findings.
 Its four-form search yields a partial format-one source lead with explicit register residuals; it is not an improved matching candidate or full desired-order success.
 The production owner may now use its candidate-specific guidance to test the remaining row/pointer lifetimes and common-branch endpoint residuals. Any source integration retains ordinary matching gates.
-3C00's later controlled cursor/tile-value combination retains the accepted extent and improves its focused linked comparison to 804 differing bytes; it remains provisional and nonexact.
+3C00's selected distinct-primary-endpoint source D03797FD04EEE60592E0644A837E09308568D3E82448883997A10A85DA7F91F5 retains the accepted extent and improves its focused linked comparison to 770 differing bytes and 261 words.
+Its source class is PURE_C and actual relocations match; target bytes remain nonexact, so the result stays provisional.
 The complete [preserved DB10 survey](task-logs/combat-db10-preserved-allocation-survey-r1.md) found at most three non-emitting homes across its 93-input corpus.
 This bounded negative result supplies no missing-home recipe, retail allocation history or impossibility claim.
 The completed [DB10 initialization locating](task-logs/combat-db10-initialization-residual-r1.md) identifies one outer-counter clear before five otherwise identical base-setup operations; current `.loop` output first contains that adjacent order.
@@ -43,7 +44,8 @@ The named control aliases a different pointer set on an older source; its missin
 Sol High [alias-input retrieval](task-logs/combat-db10-alias-input-retrieval-r1.md) is complete. Its initial 123-file snapshot found the old alias form; its refreshed 125-file snapshot also includes the later authorized guarded alias trial and expanded input, with exact frozen copies.
 This is literal bounded source-text retrieval, not semantic/source acceptance, and adds no ordinary matching review gate. The guarded source/context/resource trial failed and was restored as recorded in R2.
 Two 3C00 lifetime controls changed global allocation but worsened output; current best and focused-exact 7ADC are restored. Completed [competing-value locating](task-logs/combat-3c00-competing-values-r1.md) binds the full arrangement, including packed endField in s3 and tileOffset in s2.
-Retail shows separate companion and primary endpoint value histories. The production owner will test a narrow primary-end lifetime split on current 7F823, preserving original null initialization, packet-row state and the existing tail; older broader failures remain retained.
+Retail shows separate companion and primary endpoint value histories. The narrow primary-end lifetime split improved the selected source while preserving null initialization, packet-row state and the existing tail.
+The delayed-null combination and shared-size-cursor control failed; selected D037 is restored. Remaining companion/strip and command-cursor assignments need a new evidence-backed source lead.
 
 Complete the remaining Combat, Squad, and High Attack plans in that order on main, using internal agents.
 Use Sol High (`gpt-5.6-sol`, `high`) for retrieval/data-seeking or parsing-only workers.

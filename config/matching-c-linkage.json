@@ -2276,19 +2276,19 @@
           "section": ".rel.text"
         },
         {
-          "offset": "0x000017E8",
+          "offset": "0x000017EC",
           "type": "R_MIPS_26",
           "symbol": "func_00201E9C",
           "section": ".rel.text"
         },
         {
-          "offset": "0x00001810",
+          "offset": "0x00001814",
           "type": "R_MIPS_HI16",
           "symbol": "D_800E9BA0",
           "section": ".rel.text"
         },
         {
-          "offset": "0x00001814",
+          "offset": "0x00001818",
           "type": "R_MIPS_LO16",
           "symbol": "D_800E9BA0",
           "section": ".rel.text"

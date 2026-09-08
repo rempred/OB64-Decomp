@@ -336,6 +336,7 @@ next_row:
                 sizeEnd = 0x01000000 | FIELD((row + strip - 1) * 4, 0, 12);
             } else {
                 int rowField, endField, tileOffset;
+                int primaryEnd;
                 CombatDrawCommand *companionCommand;
                 CombatDrawCommand *companionSizeCommand;
                 u32 companionTile;
@@ -373,14 +374,14 @@ next_row:
                 PAIR(0xF5100000 | line_field(WIDTH(header) * 2), 0x07000000);
                 rowField = row * 4 & 0xFFF;
                 PAIR(0xE6000000, 0);
-                PAIR(0xF4000000 | rowField, FIELD((WIDTH(header) - 1) * 4, 12, 12) | ((endField = (row + strip - 1) * 4 & 0xFFF) | 0x07000000));
+                PAIR(0xF4000000 | rowField, FIELD((WIDTH(header) - 1) * 4, 12, 12) | ((primaryEnd = (row + strip - 1) * 4 & 0xFFF) | 0x07000000));
                 PAIR(0xE7000000, 0);
                 PAIR(0xF5100000 | line_field(WIDTH(header) * 2), 0x01000000);
                 sizeCommand = D_800E9BA0;
                 D_800E9BA0 = sizeCommand + 1;
                 sizeCommand->first = 0xF2000000 | rowField;
                 sizeWidth = FIELD((WIDTH(header) - 1) * 4, 12, 12);
-                sizeEnd = endField | 0x01000000;
+                sizeEnd = primaryEnd | 0x01000000;
             }
             sizeCommand->second = sizeWidth | sizeEnd;
 triangles:
