@@ -31,6 +31,7 @@ The complete [W8 R3 continuation](prompts/combat-draw-wave8-r3.md) releases sole
 The frozen [R2 handback](task-logs/combat-draw-wave8-r2.md) at `a0655dac` preserves all fourteen current sources and the six header/configuration identities; Director intake confirmed their hashes.
 R2 preserved the interrupted renderer trial and restored the best inputs. Its former source worker has completed and released the disjoint cost/history assessment.
 R3 starts with a real row-end value lifetime control in 3C00. Astra Medium [DB10 predicate-origin reading](prompts/combat-db10-predicate-origins-r1.md) runs alongside it, using frozen inputs without compilation or production writes.
+Astra Medium [6098 neighbor-expression reading](prompts/combat-6098-neighbor-expression-r1.md) compares its real expressions with focused-exact 5654/7ADC candidates. It owns no production writes or compilation and does not promote those provisional targets to completed-wave acceptance.
 All fourteen targets remain required. The worker may now use the bounded diagnostic guidance in ordinary source experiments.
 Every additional diagnostic input must retain its own agreement check against the pinned production compiler before trace interpretation.
 W8 R2 has all fourteen C owners active; 3C00, 6098 and DB10 remain nonexact, and the final wave verifier has not run.
