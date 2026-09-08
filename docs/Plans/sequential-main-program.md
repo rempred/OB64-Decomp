@@ -17,7 +17,10 @@ The complete [W8 continuation](prompts/combat-draw-wave8-r2.md) now releases sol
 The worker first preserves the interrupted renderer trial and restores its best candidate, then continues ordinary source work.
 All fourteen targets remain required. The worker may now use the bounded diagnostic guidance in ordinary source experiments.
 Every additional diagnostic input must retain its own agreement check against the pinned production compiler before trace interpretation.
-W8 R2 now has all fourteen C owners active, but four remain nonexact and the final wave verifier has not run.
+W8 R2 has all fourteen C owners active; 3C00, 6098 and DB10 remain nonexact, and the final wave verifier has not run.
+7ADC now has focused PURE_C exact output from source F3F90BD828DE9141A6E48D4BBBF4691F3A5B6C60C828CE9B2F8289408457B518.
+Its sole 3800-byte C contribution, all 180 actual relocations and complete target bytes match; R2 preserves the exact proof and failed controls.
+This remains provisional until the single complete W8 verifier passes. The source owner returns to 3C00 allocation-class observations.
 The current thirteen new C sources, two headers, two configuration deltas and W8 work records are preserved provisionally in Git.
 Source-owner intake found only thirteen new target records and eighteen referenced literal data symbols; existing linkage records remain unchanged.
 This preservation does not accept W8 or replace the exact W7 baseline. Resolver edits remain outside the matching commit.

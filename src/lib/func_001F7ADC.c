@@ -191,11 +191,15 @@ int func_001F7ADC(void *object, float referenceX, float scaleInput,
                  (u32)D_80197178);
             D_80197178 += count;
             for (count = 0; count < vertexCount; count += 2) {
-                int endField, rowField;
+                /* Keep the row shared across formats, but each packed endpoint
+                 * local to its two packet consumers. This preserves the pinned
+                 * compiler's register allocation and final common store tail. */
+                int rowField;
                 CombatDrawCommand *sizeCommand;
                 CombatDrawCommand *renderCommand;
                 u32 renderWord;
                 if (header->format == 3) {
+                    int endField;
                     CombatDrawCommand *renderCommand;
                     u32 renderWord;
                     rowField = row * 4;
@@ -207,9 +211,8 @@ int func_001F7ADC(void *object, float referenceX, float scaleInput,
                         CombatDrawCommand *command = D_800E9BA0++;
                         u32 width;
                         command->first = 0xF4000000 | rowField;
-                        endField = row + strip;
                         width = FIELD((WIDTH() - 1) * 4, 12, 12);
-                        endField = (endField - 1) * 4;
+                        endField = (row + strip - 1) * 4;
                         endField &= 0xFFF;
                         {
                             u32 loadEnd = endField | 0x07000000;
@@ -227,9 +230,12 @@ int func_001F7ADC(void *object, float referenceX, float scaleInput,
                     sizeCommand = D_800E9BA0;
                     renderCommand[1].first = renderWord | 0xF5180000;
                     renderCommand[1].second = 0;
-                    goto tile_size;
+                    D_800E9BA0 = sizeCommand + 1;
+                    SIZE_ROW(sizeCommand, rowField);
+                    sizeCommand->second = FIELD((WIDTH() - 1) * 4, 12, 12) | endField;
+                    goto strip_triangles;
                 } else if (header->format == 1) {
-                    int endField, rowField;
+                    int endField;
                     CombatDrawCommand *loadCommand;
 
                 CombatDrawCommand *renderCommand;
@@ -247,9 +253,8 @@ int func_001F7ADC(void *object, float referenceX, float scaleInput,
                         CombatDrawCommand *command = loadCommand + 1;
                         u32 width;
                         command->first = 0xF4000000 | rowField;
-                        endField = row + strip;
                         width = FIELD((WIDTH() - 1) * 4, 12, 12);
-                        endField = (endField - 1) * 4;
+                        endField = (row + strip - 1) * 4;
                         endField &= 0xFFF;
                         {
                             u32 loadEnd = endField | 0x07000000;
@@ -271,6 +276,7 @@ int func_001F7ADC(void *object, float referenceX, float scaleInput,
                     loadCommand->second = FIELD((WIDTH() - 1) * 4, 12, 12) | endField;
                     goto strip_triangles;
                 } else {
+                    int endField;
                     CombatDrawCommand *renderCommand;
                     u32 renderWord;
                     rowField = row * 4;
@@ -282,9 +288,8 @@ int func_001F7ADC(void *object, float referenceX, float scaleInput,
                         CombatDrawCommand *command = D_800E9BA0++;
                         u32 width;
                         command->first = 0xF4000000 | rowField;
-                        endField = row + strip;
                         width = FIELD((WIDTH() - 1) * 2, 12, 12);
-                        endField = (endField - 1) * 4;
+                        endField = (row + strip - 1) * 4;
                         endField &= 0xFFF;
                         {
                             u32 loadEnd = endField | 0x07000000;
@@ -302,12 +307,11 @@ int func_001F7ADC(void *object, float referenceX, float scaleInput,
                     sizeCommand = D_800E9BA0;
                     renderCommand[1].first = renderWord | 0xF5800000;
                     renderCommand[1].second = 0;
-                    goto tile_size;
+                    D_800E9BA0 = sizeCommand + 1;
+                    SIZE_ROW(sizeCommand, rowField);
+                    sizeCommand->second = FIELD((WIDTH() - 1) * 4, 12, 12) | endField;
+                    goto strip_triangles;
                 }
-tile_size:
-                D_800E9BA0 = sizeCommand + 1;
-                SIZE_ROW(sizeCommand, rowField);
-                sizeCommand->second = FIELD((WIDTH() - 1) * 4, 12, 12) | endField;
 strip_triangles:
                 PAIR(FIELD(count * 2, 16, 8) |
                      FIELD((count + 3) * 2, 8, 8) | FIELD((count + 1) * 2, 0, 8) | 0x06000000,
