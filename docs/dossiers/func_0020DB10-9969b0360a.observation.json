@@ -1,0 +1,88 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "9969B0360A74A7B4C4B60B90AB3FA4A6A99C3AF7FFD405FF52FB01B5F94208AF",
+  "observationId": "1B42F54859AEDFAF5C0C3CC8F2151F42CA933EDF9056EA5D8EA5FBEF3E748051",
+  "symbol": "func_0020DB10",
+  "authored": {
+    "context": "Controlled descendant of sort-offset-first. The previous context/resource identity and preheader corrections remain. An actual nonempty-shift guard contains the three remaining real predecessor-address constraints. Production remains 5BF6 at this record.",
+    "effects": [
+      "local-base-lifetimes",
+      "frame-restored",
+      "extra-accessed-homes-removed",
+      "address-copies-remain"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "C6C75F9B169EB443E68E7E36A6E8F3DF16B2CC242168DE7057CBD49418BF23AC",
+      "sourceSha256": "A60F6741BDB31A25E6261B7577AC3D78335E4E957689045A1738482E599E2C59"
+    },
+    "label": "r12-local-predecessor-tied-addresses",
+    "observedEffect": "Private result:5560 bytes/frame560,905 different bytes/480 words,209 relocations,pinned/tracer agreement. Correct eight-home layout returns: only460/468/484/492 accessed,476/500/508/516 non-emitting. The three real bases stay local without explicit address instructions, but three copies and allocation changes remain.",
+    "parentCandidateId": "4430D4011D5EDBDD1970B686E9B18E3FDC31DDC9A01BCDD113EF8FB7D366ECCE",
+    "references": [
+      {
+        "path": "docs/Plans/task-logs/combat-db10-local-base-pair-r12.md",
+        "sha256": "6718E09EAEA30667BC0AE700D6FF6D38F5ACEF092F38B8B5D2A9B99C6B560919"
+      }
+    ],
+    "relatedCandidateIds": [
+      "74E438BF1334DEFC30153687D36D119DD48B94A39F6AF26D2937FB774351FDC0"
+    ],
+    "remainingFailure": "Three excess instructions, allocation/order differences and nonexact target bytes remain. This is not selected as current best and establishes no canonical ownership/full-ROM acceptance. A following real-cursor experiment is separate. The worse byte score does not reject the demonstrated local-home mechanism.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Pass each ordinary unsigned variant/flag10/flag8 predecessor address as a separate adjacent input through a volatile empty tied output, consumed by its existing predecessor read. Preserve separate arrays and compiler-owned storage. Include all three bases because an intervening guarded two-base control lets flag8 become the next hoisted base."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 27814,
+      "sha256": "C6C75F9B169EB443E68E7E36A6E8F3DF16B2CC242168DE7057CBD49418BF23AC"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "HYBRID_C",
+    "sourceSha256": "A60F6741BDB31A25E6261B7577AC3D78335E4E957689045A1738482E599E2C59"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-08-func_0020DB10-9969b0360a.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
