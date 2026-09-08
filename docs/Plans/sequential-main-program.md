@@ -30,6 +30,7 @@ They establish no retail compiler history, general compiler equivalence, product
 The complete [W8 R3 continuation](prompts/combat-draw-wave8-r3.md) releases sole production source/build ownership to Astra Medium `/root/db10_allocation_trace`.
 The frozen [R2 handback](task-logs/combat-draw-wave8-r2.md) at `a0655dac` preserves all fourteen current sources and the six header/configuration identities; Director intake confirmed their hashes.
 R2 preserved the interrupted renderer trial and restored the best inputs. Its former source worker has completed and released the disjoint cost/history assessment.
+R3 starts with a real row-end value lifetime control in 3C00. Astra Medium [DB10 predicate-origin reading](prompts/combat-db10-predicate-origins-r1.md) runs alongside it, using frozen inputs without compilation or production writes.
 All fourteen targets remain required. The worker may now use the bounded diagnostic guidance in ordinary source experiments.
 Every additional diagnostic input must retain its own agreement check against the pinned production compiler before trace interpretation.
 W8 R2 has all fourteen C owners active; 3C00, 6098 and DB10 remain nonexact, and the final wave verifier has not run.
