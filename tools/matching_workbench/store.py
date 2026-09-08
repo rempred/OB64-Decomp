@@ -723,6 +723,67 @@ def dispatch(connection: sqlite3.Connection, request: dict[str, Any]) -> Any:
     raise ValueError(f"unknown action: {action}")
 
 
+def _immutable_query(database: Path, request: dict[str, Any]) -> Any:
+    """Read a quiescent Windows store without creating SQLite WAL/SHM files."""
+    import ctypes
+    import hashlib
+    import os
+
+    # Ordinary SQLite mode=ro can create WAL/SHM. Immutable mode must not ignore
+    # pending transactions: deny writable database handles throughout the read,
+    # and authenticate all preexisting sidecars before and after it.
+    if os.name != "nt":
+        raise RuntimeError("optional store unavailable: strict immutable read guard requires Windows")
+    kernel = ctypes.WinDLL("kernel32", use_last_error=True)
+    kernel.CreateFileW.argtypes = [ctypes.c_wchar_p, ctypes.c_ulong, ctypes.c_ulong,
+                                  ctypes.c_void_p, ctypes.c_ulong, ctypes.c_ulong, ctypes.c_void_p]
+    kernel.CreateFileW.restype = ctypes.c_void_p
+    kernel.CloseHandle.argtypes = [ctypes.c_void_p]
+    handle = kernel.CreateFileW(str(database), 0x80000000, 1, None, 3, 0x80, None)
+    if handle == ctypes.c_void_p(-1).value:
+        raise RuntimeError("optional store unavailable: cannot establish quiescent read guard: "
+                           + str(ctypes.WinError(ctypes.get_last_error())))
+
+    def census() -> dict[str, Any]:
+        states = {}
+        for suffix in ("", "-wal", "-shm", "-journal"):
+            file = Path(str(database) + suffix)
+            if not file.exists():
+                states[suffix] = None
+                continue
+            if file.is_symlink() or not file.is_file():
+                raise RuntimeError("optional store unavailable: unsafe database sidecar")
+            stat = file.stat()
+            digest = hashlib.sha256()
+            with file.open("rb") as stream:
+                for chunk in iter(lambda: stream.read(1024 * 1024), b""):
+                    digest.update(chunk)
+            after = file.stat()
+            if (stat.st_size, stat.st_mtime_ns) != (after.st_size, after.st_mtime_ns):
+                raise RuntimeError("optional store unavailable: state changed during authentication")
+            states[suffix] = (stat.st_size, stat.st_mtime_ns, digest.hexdigest())
+        return states
+
+    try:
+        before = census()
+        if any(before[suffix] and before[suffix][0] for suffix in ("-wal", "-journal")):
+            raise RuntimeError("optional store unavailable: nonempty WAL or rollback journal")
+        connection = sqlite3.connect(database.as_uri() + "?mode=ro&immutable=1", uri=True, timeout=0)
+        try:
+            connection.row_factory = sqlite3.Row
+            row = connection.execute("SELECT value FROM metadata WHERE key='schemaVersion'").fetchone()
+            if row is None or row[0] != "2":
+                raise RuntimeError("matching workbench schema drift")
+            result = dispatch(connection, request)
+        finally:
+            connection.close()
+        if census() != before:
+            raise RuntimeError("optional store unavailable: main/sidecar state changed during read")
+        return result
+    finally:
+        kernel.CloseHandle(handle)
+
+
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--database", required=True)
@@ -736,7 +797,12 @@ def main() -> None:
     request = json.load(sys.stdin)
     if args.read_only and request.get("action") != "query":
         raise ValueError("read-only store only permits queries")
-    connection = sqlite3.connect(database.as_uri() + "?mode=ro", uri=True, timeout=30.0) if args.read_only else sqlite3.connect(database, timeout=30.0)
+    if args.read_only:
+        result = _immutable_query(database, request)
+        json.dump({"ok": True, "result": result}, sys.stdout, sort_keys=True)
+        sys.stdout.write("\n")
+        return
+    connection = sqlite3.connect(database, timeout=30.0)
     connection.row_factory = sqlite3.Row
     connection.execute("PRAGMA foreign_keys=ON")
     connection.execute("PRAGMA busy_timeout=30000")

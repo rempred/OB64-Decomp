@@ -25,6 +25,13 @@ or foreign predecessor is not silently accepted as a verified pair.
 Missing stores and empty history are normal visible states. Corrupt stores and failed discovery
 are distinct from no history. Counts and truncation are explicit (display limit 1–200; optional
 store query at most 200). Matching archive records are authenticated before display truncation.
+Optional SQLite reads use immutable mode under a Windows handle that denies concurrent writes
+and deletion. Main database and WAL/SHM/journal census, sizes and hashes must agree before and
+after the query. Preexisting unchanged SHM and empty WAL are allowed; nonempty WAL/journal or
+a concurrent writable handle makes the store unavailable. No sidecars are created or cleaned up.
+Other platforms currently report this optional store guard unavailable; archival discovery remains
+usable. Full database hashing is intentional (measured 6.819 s for a complete real 427 MB-store
+intake lookup, including source authentication); no persistent history cache hides changed evidence.
 Groups can read history, with current-producer applicability stated; existing single-member
 compile/import/preserve exclusions remain unchanged. Optional history failure cannot turn a
 successful decompiler packet into matching acceptance or failure.

@@ -58,3 +58,23 @@ Measured times above are actual check/packet measurements, not an allocation of 
 reporting time. Overall preparation and interpretation were not separately instrumented.
 Ready for independent shared-tool review; all implementation/build/report writes and processes
 are released at terminal handback. Parent owns integration and final acceptance.
+
+## Read-only store correction
+
+Independent review found that SQLite `mode=ro` could create WAL/SHM sidecars despite leaving
+the main database unchanged. The corrected path holds a Windows read handle denying writes
+and deletion, opens SQLite with `mode=ro&immutable=1`, and compares main/sidecar census,
+sizes, timestamps and SHA-256 before/after. Existing SHM plus empty/absent WAL is permitted
+unchanged; nonempty WAL or rollback journal rejects, as does a concurrent writable handle.
+No global sidecars were deleted or modified to obtain a successful result. Unsupported platforms
+explicitly report optional-store unavailability rather than silently use an unguarded immutable read.
+
+`node tests/matching_intake.js`: 24 controls pass in 13.370 s, zero KMC calls, plus prepare/watch
+output wiring. New controls inspect the full main/sidecar census and hashes for clean databases,
+preexisting SHM+empty WAL, nonempty WAL/journal, and concurrent writable handles. The actual
+427 MB workbench lookup completed in 6.819 s, retaining seven valid archives and two stale local
+observations with store supplementation available. Evidence is in
+`build/research-intake-rollout-r1/immutable-cli.json` and `tests-1DYGsA/`.
+This focused correction does not alter decompiler/cache behavior; the prior full suite and real
+packet cache-refresh results above remain recorded. All twenty protected source inputs remain
+unchanged. Corrected tooling/docs/report writes are released for reviewer retest.
