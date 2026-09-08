@@ -1,0 +1,8 @@
+{
+  "host_id": "local",
+  "launch_id": "KUNA-ANALYSIS-TRIAL-20260907-01",
+  "receiving_task_id": "/root/db10_allocation_trace",
+  "task_id": "kuna-analysis-trial",
+  "assignment_revision": 1,
+  "creation_time": "2026-09-08T03:26:25.8565957Z"
+}
