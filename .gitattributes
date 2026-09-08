@@ -23,3 +23,8 @@
 # suppress blank-at-EOL diagnostics. Other whitespace checks remain enabled.
 docs/archive/matching-c-candidates/2026-08-31-func_00284288-e8eb93fecb.c whitespace=-blank-at-eol
 docs/archive/matching-c-candidates/2026-08-31-func_00284288-9ed0fdee46.c whitespace=-blank-at-eol
+
+# These paired authored sources include inherited mixed line endings. Their
+# authenticated archival identities require preserving every byte.
+docs/archive/matching-c-candidates/2026-09-08-func_001F6098-c0a4f8b866.c -text
+docs/archive/matching-c-candidates/2026-09-08-func_001F6098-df6c8749cc.c -text
