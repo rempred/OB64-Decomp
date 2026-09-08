@@ -13,6 +13,9 @@ The recommendation rejects adoption as a maintained optional analysis or escalat
 The isolated environment remains replay evidence. No shared integration, compiler change, new matching gate or broader impossibility claim follows; m2c remains primary.
 The [independent project references](task-logs/angr-trial-reference-r1.md) are complete and frozen at `d5e70e12`, before angr results were read.
 The source owner retains the existing W8 assignment and preserved best inputs. The angr evaluation does not change the complete sequential goal or any source acceptance requirement.
+Joe now requests a separate [Kuna second-decompiler trial](prompts/kuna-analysis-trial-r1.md), with [additional input retrieval](prompts/kuna-trial-input-retrieval-r1.md) and [independent references](prompts/kuna-trial-reference-r1.md).
+It reuses the three solved controls and 215CF0, adding current 3C00. Source trials pause while the source owner freezes references; isolated setup and analysis may proceed.
+No canonical Kuna integration is authorized. A tested second interpretation must show its benefit and retain all ordinary source and complete-wave gates.
 The previous task is idle. Its preserved history, accepted results, unfinished W8 sources and failed experiments remain controlling inputs.
 The current task resumes the same complete goal; no family, wave, review requirement or held runtime boundary is removed.
 The isolated [DB10 allocation trace](prompts/combat-db10-allocation-trace-r1.md) is complete and has released all writes.
