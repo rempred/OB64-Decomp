@@ -337,27 +337,38 @@ next_row:
             } else {
                 int rowField, endField, tileOffset;
                 CombatDrawCommand *companionCommand;
+                CombatDrawCommand *companionSizeCommand;
                 u32 companionTile;
                 if (companion->format == 0) {
                     PAIR(0xFD880000 | FIELD((WIDTH(companion) >> 1) - 1, 0, 12), (u32)((u8 *)companion + 8));
                     PAIR(FIELD(((WIDTH(companion) >> 1) + 7) >> 3, 9, 9) | ((tileOffset = tileBytes / 8 & 511) | 0xF5880000), 0x07000000);
                     PAIR(0xE6000000, 0);
                     PAIR(0xF4000000 | (rowField = row * 4 & 0xFFF), FIELD((WIDTH(companion) - 1) * 2, 12, 12) | ((endField = (row + strip - 1) * 4 & 0xFFF) | 0x07000000));
-                    PAIR(0xE7000000, 0);
                     companionCommand = D_800E9BA0++;
-                    companionTile = FIELD(((WIDTH(companion) >> 1) + 7) >> 3, 9, 9) | ((tileBytes / 8 & 511) | 0xF5800000);
+                    companionCommand->first = 0xE7000000;
+                    companionCommand->second = 0;
+                    ++D_800E9BA0;
+                    companionTile = WIDTH(companion);
+                    companionSizeCommand = D_800E9BA0;
+                    companionTile = FIELD(((companionTile >> 1) + 7) >> 3, 9, 9) | ((tileBytes / 8 & 511) | 0xF5800000);
                 } else {
                     PAIR(0xFD880000 | FIELD(WIDTH(companion) - 1, 0, 12), (u32)((u8 *)companion + 8));
-                    PAIR(FIELD((WIDTH(companion) + 7) >> 3, 9, 9) | ((tileOffset = tileBytes / 8 & 511) | 0xF5880000), 0x07000000);
+                    PAIR(FIELD((WIDTH(companion) + 7) >> 3, 9, 9) | (tileOffset = (tileBytes / 8 & 511) | 0xF5880000), 0x07000000);
                     PAIR(0xE6000000, 0);
                     PAIR(0xF4000000 | (rowField = row * 4 & 0xFFF), FIELD((WIDTH(companion) - 1) * 4, 12, 12) | ((endField = (row + strip - 1) * 4 & 0xFFF) | 0x07000000));
-                    PAIR(0xE7000000, 0);
                     companionCommand = D_800E9BA0++;
-                    companionTile = FIELD((WIDTH(companion) + 7) >> 3, 9, 9) | ((tileOffset = tileBytes / 8 & 511) | 0xF5880000);
+                    companionCommand->first = 0xE7000000;
+                    companionCommand->second = 0;
+                    ++D_800E9BA0;
+                    companionTile = WIDTH(companion);
+                    companionSizeCommand = D_800E9BA0;
+                    companionTile = FIELD((companionTile + 7) >> 3, 9, 9) | (tileOffset = (tileBytes / 8 & 511) | 0xF5880000);
                 }
-                companionCommand->first = companionTile;
-                companionCommand->second = 0;
-                PAIR(0xF2000000 | rowField, FIELD((WIDTH(companion) - 1) * 4, 12, 12) | endField);
+                companionCommand[1].first = companionTile;
+                companionCommand[1].second = 0;
+                D_800E9BA0 = companionSizeCommand + 1;
+                companionSizeCommand->first = 0xF2000000 | rowField;
+                companionSizeCommand->second = FIELD((WIDTH(companion) - 1) * 4, 12, 12) | endField;
                 PAIR(0xFD100000 | FIELD(WIDTH(header) - 1, 0, 12), (u32)(image + 8));
                 PAIR(0xF5100000 | line_field(WIDTH(header) * 2), 0x07000000);
                 rowField = row * 4 & 0xFFF;

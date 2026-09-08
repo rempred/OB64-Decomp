@@ -152,3 +152,51 @@ Current source/input identities are EE2731479C73A8BFCB7CCD4CF5B95AD0DD80E058821B
 Retained source/input identities are 9664CDE9AF7F83001D93D7620CEA50248A4F4F54C6BF8FECCC11D0C61CEBF162 / B0F82DECC65FDC38B8E9B87C999B573BD68E33EF133F22F4F0AE3CAF787F4743.
 Three current source spans are205–221,245–261,280–296, corresponding to retail endpoint sequences09D8/09DC,0B3C/0B40,0CE0/0CE4. Retained source spans203–220,244–261,280–297 are recorded separately.
 No source/config edits, compilation, verifier, or ownership transfer occurred in this locating step. All four best sources remain restored; all14 remain assigned.
+
+## 3C00 adjacent companion command pointer
+
+After the endpoint research froze, Director released production3C00 work using existing accepted evidence only. Current6740-byte candidate copies the final companion pointer in WIDTH delay slots1548/16AC and uses0/4 stores; retail retains the preceding E700 pointer and stores at8/C.
+Two new source-backed controls reuse this actual adjacent pointer with explicit cursor publication, separately retaining the full nonzeroF588 word. They produce6732/6720 bytes, frame504,317/316 native differences. Neither changes companion initialization froms8 to retails6.
+A third control keeps postincrement publication with the adjacent pointer and returns6740/frame504/235 native differences. It provides no score improvement. All three named packages remain preserved; selected ADB119... source is restored and its linked/config proof remains current.
+No endpoint-reproducer causal finding was used, and no canonical diff/full verifier ran in these trials.
+The extent-neutral companion-reused-sync-postincrement variant corrects the two delay-slot pointer copies and final8/C addressing, although its aggregate235 score ties best. It is retained as a distinct addressing lead, not discarded by score.
+Two subsequent full-tile assignment controls preserve both source computations. Applying it to both formats yields6764/frame504/648 and spills the companion pointer (initial store at194). Restricting it to nonzero yields6732/frame504/326, retains the final tileBytes reload, and removes late F588 reconstruction; companion initialization remains s8. Neither meets extent or improves the saved-register assignment. All five new controls are preserved, and ADB119... is restored.
+
+## 3C00 controlled cursor lifetime
+
+Three preserved inputs (current-shared-tail, retained-adjacency, retained-nonzero-full) received fresh pinned/tracer agreement. All begin with one common next-F2 cursor load UID3060 after join3050 and stores3053/3056. Combine preserves it; sched places it before the stores while retaining its post-join position. No branch-load merge follows from these inputs; earlier merge wording was imprecise.
+A new branch-size-cursor source explicitly captures the actual pointer in both predecessors. It gives6740/frame504/native236 and pinned agreement. Loads2821/3054 into pseudo924 survive through greg (s1); jump2 retains only3054. This is the first observed two-to-one transition, specific to that control.
+The next source preserves WIDTH return as the actual field accumulator, captures the next cursor, then packs the branch-specific field. This gives6748/frame504/native309 and pinned agreement. Its two loads2802/3035 survivejump2; companion register remainss8.
+Combining that real lifetime with independently tested nonzero full-tile representation gives6740/frame504/native232. Both cursor loads survivejump2, lateF588 reconstruction is absent, and the final tileBytes reload remains. Adjacent final stores remain8/C; saved-register differences persist.
+New source7F823700DD804DF6C261FC1BBD665BA3B5DA91DBCE0CB4A34F659A70079BE7DF is retained as companion-distinct-cursor-full-tile with its complete source/compiler/native package. The actual relocation record is refreshed; focused session26156 is running. Prior ADB119... package/proof remains frozen.
+3c00-traces/cursor-transition-index.json binds all six independent inputs and every retained pass file. No new instrumentation, endpoint-reproducer finding, full verifier or padding was used.
+Focused session26156 completed in133.709 seconds: PURE_C,6740-byte accepted C owner, actual relocation contract MATCH,804 linked differing bytes/287 words (previous ADB119 proof845/296).
+Linked SHA278D2B349C5E46403A215D3A607DE565E4E1FF90B8C550BD6B79F82458127FDD; expected458A6CB397B154CCC0CBE12CAEF4456A711C676E6B269F32A8DEE2490522925A. Expected raw-mismatch assertion preserves nonacceptance.
+Named companion-distinct-cursor-full-tile.diff.json/.log bind the new7F823... current source. It is the selected improved3C00 input; all other best sources remain unchanged. No full verifier occurred.
+
+Correction to earlier saved-register shorthand: current s6 at0F10 is u1 (HI pseudo114), not accumulated. Current companion100→s8, u1 HI114→s6 and strip115→s7 correspond to retails6/s7/s8. Accumulated is pseudo97, initialized atsp18C by UID1851. The earlier accumulated-scope control therefore does not address this rotation.
+u1 is assigned only zero or decoded field_0C minus one, then consumed by rightU=(short)u1. Its definition-to-narrowing lifetime overlaps strip initialization. Subsequent source controls will address that actual conversion/lifetime, not add references or reinterpret its meaning.
+Four controls now address the corrected u1 role. Deferring u1 narrowing (or both u0/u1) to the existing final short casts, and making u1 item-local, each preserve6740/frame504/native232 and the s8/s6/s7 assignment.
+Moving u1's sole rightU conversion immediately before strip initialization yields6740/frame504/native257: u1 moves to s2, but companion remains s8 and strip s7. This changes the targeted lifetime without yielding the retail assignment. All controls are preserved, and current7F823... is restored with its focused/config evidence unchanged.
+
+## Reviewed 7ADC endpoint continuation
+
+The endpoint independent review authenticated as2647D558F61AA60BEEA7D8B3B972DAF15512177FC277C64DB6F79E5CF9E37337 and its worker report asCA73AFBB9EEC6B0F360365BBE93B23FA66914EFB17B3C6356D46AD2D44E8DD34; both were read completely after Director acceptance7abb3277.
+The reviewed result remains candidate-specific. Four complete controls isolate row stores; the selected smaller pair retains four calls and two actual packed stores. No complete matching recipe or retail compiler history is inferred.
+Director is routing isolated probe alternatives separately. Initial production continuation therefore maps complete-function values without replaying source controls.
+For current EE273... input, common endpoint452 is s2 and common row453 is s3. Format-one endpoint537 is s3, row538 is s1 and loadCommand539 is s2; retail requires the format-one endpoint/row exchange.
+Current .flow records endpoint537 with21uses across61instructions, two deaths and3calls; row538 has18uses across76instructions and3calls. .lreg locally assigns row538 to17, leaving endpoint537 for global allocation. Temporary decrement destinations513/587/672 each have6uses across2instructions and no crossed calls; all receive localv1.
+This mapping is bound by the existing current-best trace package and endpoint locating manifest. The isolated researcher received the untested separated pre-call sum versus packed endpoint class to avoid duplicate experiments. No source trial from new research has yet been activated here; EE273... remains unchanged.
+
+Director assigned the separate format-one row allocation question while the isolated researcher owns endpoint-state alternatives. Candidate descriptions were coordinated directly to avoid duplicate trials.
+One new complete-function control introduces scaledRow before image WIDTH and assigns masked rowField afterward, leaving endpoint arithmetic and both SIZE_ROW invocations unchanged. Result3800/frame368/native15 with fresh pinned agreement; no improvement.
+Initial scaledRow pseudo539 copy disappears in cse. Temporary544 carries the shift and row538 receives its mask; local allocation assigns both the same register17. Endpoint537 remains global19. This retained separation does not change the final row/endpoint allocation.
+The precise remaining observation is local-allocation eligibility/quantity handling of row538 versus twice-dying endpoint537; no further unchanged scope/cast controls or artificial basic blocks are justified by this result. Current EE273... is restored,3C00 remains7F823..., and no focused/full verifier was run for this failed control.
+
+## 7ADC local-allocation eligibility observation
+
+At Director request, authenticated existing local-alloc.c against external clean-d source: both DCCD6C6DFE4857552457578EB96A1E507EFD4BAC22DE627C9502CEC8B4605CE2. Existing flow.c likewise matches external source at4EB4B4B2388FDFC557ED93681CBB48C3B4B44667F6DA863EEA8ECF7AB8637679.
+Local-alloc lines471–477 explicitly require a single basic block and exactly one death, plus a register-class condition, assigning eligible reg_qty=-2 and excluded reg_qty=-1. Its quantity-combination check1759–1775 rejects ineligible pseudos. Source comments describe local allocation as registers born/dying once within one block.
+Current endpoint537 and row538 both reside inblock45 with GR_REGS or none. Both flow and lreg show two deaths for endpoint537. Row538 has one death: flow.c2888–2893 omits the death-count phrase exactly when the count equals1. Endpoint death notes are UID1546 at subtraction and1681 at finalpayload; row dies at1649 finalrowstore.
+These source/pass facts align with observed local row538→17 and globally assigned endpoint537→19. They do not capture event-time reg_qty: update_equiv_regs runs before the eligibility loop (line408), and no new instrumentation was added. The separated-row control assigning temp544 and row538 to17 is consistent with quantity tying, not an independently captured tie event.
+R2/7adc-local-eligibility/evidence.json binds exact source/pass hashes, excerpts and death nodes. The isolated endpoint researcher received the observation and corrected finalpayload UID1681. No source/compiler edit, source trial, or canonical verification occurred in this bounded locating step; current best inputs remain restored.
