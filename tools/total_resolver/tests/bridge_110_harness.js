@@ -11,6 +11,7 @@ const ALLOCATED_RDRAM_SIZE = 0x00800000;
 let serverInstance = null;
 let nextCallbackId = 1;
 let memoryBlockReads = 0;
+let stackMemoryReads = 0;
 let frontierFixture = null;
 let nativePrevious = null;
 let nativePreviousPrevious = null;
@@ -129,7 +130,11 @@ const context = {
     },
     mem: {
         ramSize: ALLOCATED_RDRAM_SIZE,
-        u8: zeroProxy, u16: zeroProxy, u32: zeroProxy,
+        u8: zeroProxy, u16: zeroProxy, u32: new Proxy({}, { get: (_target, key) => {
+            const address = Number(key);
+            if (address >= 0x80002000 && address < 0x80002200) stackMemoryReads += 1;
+            return 0;
+        } }),
         s8: zeroProxy, s16: zeroProxy, s32: zeroProxy,
         getblock(_address, length) {
             memoryBlockReads += 1;
@@ -599,6 +604,34 @@ if (focusedEvents.length !== 2 || focusedEvents[0].focusedRole !== 'entry' ||
 }
 command('unwatch ' + focusedWatch.id);
 
+// These lines come from the real Python serializer, not a duplicated wire recipe.
+const wireCases = process.argv[3] ? JSON.parse(fsNode.readFileSync(process.argv[3], 'utf8')) : [];
+for (const item of wireCases) {
+    const watch = command(item.line).watch;
+    const before = stackMemoryReads;
+    emitOpcode(0x80001000, 0);
+    emitOpcode(0x80001008, 0x03E00008);
+    const captured = command('drain 8').events.filter((event) => event.kind === 'focused-exec');
+    if (captured.length !== 2 || captured.some((event) => event.stack.words.length !== item.count) ||
+            stackMemoryReads - before !== item.count * 2) {
+        throw new Error('serialized focused stack count/read mismatch: ' + JSON.stringify(item));
+    }
+    command('unwatch ' + watch.id);
+}
+if (wireCases.length) {
+    const prefix = wireCases[0].line.replace(/[^ ]+$/, '');
+    for (const bad of ['-1', '1.5', '1junk', '129', 'true', 'NaN', 'Infinity', '+1', '1e1', '']) {
+        let rejected = false;
+        try { command(prefix + bad); } catch (error) { rejected = true; }
+        if (!rejected) throw new Error('malformed stack count accepted: ' + bad);
+    }
+    for (const bad of ['drain 0', 'unwatch 0']) {
+        let rejected = false;
+        try { command(bad); } catch (error) { rejected = true; }
+        if (!rejected) throw new Error('positive-only command regressed: ' + bad);
+    }
+}
+
 context.pj64.romInfo = null;
 context.mem.ramSize = 0;
 // The prior cold-boot capture was cancelled, so reload a fresh frontier before
@@ -661,4 +694,5 @@ process.stdout.write(JSON.stringify({
         (total, event) => total + event.callHitCount, 0),
     markerContextWindows: markerContextEvents.length,
     focusedContextEvents: focusedEvents.length,
+    serializedStackCases: wireCases.length,
 }));
