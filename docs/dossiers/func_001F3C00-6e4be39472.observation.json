@@ -1,0 +1,130 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "6E4BE39472FA67D29B09121CA24902B289F416A108AA9BE1CAF5FD4BF560C744",
+  "observationId": "6E63E53D283DA16EECCF2BFB144A0CFE71D9C9AE2657F37388BE7165C120FF2A",
+  "symbol": "func_001F3C00",
+  "authored": {
+    "context": "W8 R12, explicit permission for minimal HYBRID_C exact. Final source committed as 2c5e43a1; final focused proof after actual target relocation offsets were recorded. Connected descendant of the observed tileBytes read pair; multiple subsequent source changes, not a single-variable experiment.",
+    "effects": [
+      "focused-target-exact",
+      "assembly-minimized",
+      "observed-read-retained",
+      "relocation-contract-exact"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 1408,
+          "path": "include/game/combat_draw_commands.h",
+          "sha256": "0B78FA9F31CD5980AA803E52E85CDC3A767896D2F943593036CCC2C9E357A31B"
+        },
+        {
+          "bytes": 362,
+          "path": "include/game/combat_draw.h",
+          "sha256": "DEA4C4DDDEA3D523C088558D41D15EDFCCC28C9467F48DA03E779F4F2F1A0B08"
+        },
+        {
+          "bytes": 868,
+          "path": "include/game/combat_pose_record.h",
+          "sha256": "3ECFF3EEA02A4A2AB76E7E489B00ECDB2FFA2511382E95CD936F376509457815"
+        },
+        {
+          "bytes": 109,
+          "path": "include/game/combat_types.h",
+          "sha256": "DD2B627C22F084DB4F668D27E8DE3C3F3D8FDFC352F690034FE3E1A5655959D6"
+        }
+      ],
+      "expandedSha256": "17C196C2D870931979FF9EE3960AF23BFDFA5DC5DFF80DDB5159B798C312D4A5",
+      "sourceSha256": "627B8E1DDD076AB292711B230E99C877496190066D79267578F59A9843471D69"
+    },
+    "label": "r12-minimized-focused-exact-hybrid",
+    "observedEffect": "Final authenticated compiler input 17C196C2D870931979FF9EE3960AF23BFDFA5DC5DFF80DDB5159B798C312D4A5 yields 6740 bytes and a 504-byte frame. Canonical focused report B89EB451F5D418D8FA6BB7480CE8845657609161F620D7AF93A4153B97448560 confirms zero differing linked bytes/words, sole C object ownership, all 302 actual relocations and matching contract. Final source has 10 register bindings, 15 empty templates and two one-instruction templates (ADDU and SLL). Earlier comment-equivalent input has pinned/tracer agreement and identical compiler input.",
+    "parentCandidateId": "895C79C4DF0891BF7665E020F6DF6364FA7C55CB99F94C6286E81B4B2C6FCF9E",
+    "references": [
+      {
+        "path": "docs/Plans/task-logs/combat-3c00-minimal-hybrid-r12.md",
+        "sha256": "F7CF423B7866C49681D407570BBCA13E2F377BDA0E731D85EE2B0200AFE41B0D"
+      }
+    ],
+    "relatedCandidateIds": [
+      "519474319F673191AB26EE7A6C12B47195ED7D6859F26C9A5DD4C2E4461C7C23"
+    ],
+    "remainingFailure": "Full fourteen-target W8 verification is still pending DB10. HYBRID_C does not count as matching C. Original pure-C packet allocation/order and redundant-read history remain unresolved; bounded context-dependent minimization does not establish globally minimal assembly or pure-C impossibility.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Retain the real tileBytes input at the normalization boundary, express DE packet state selection and observed cursor reads in C, correct row/mask and opcode-tail source order, then remove unnecessary fixed bindings, instruction templates and empty constraints through sequential exact controls."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 1408,
+        "path": "include/game/combat_draw_commands.h",
+        "sha256": "0B78FA9F31CD5980AA803E52E85CDC3A767896D2F943593036CCC2C9E357A31B"
+      },
+      {
+        "bytes": 362,
+        "path": "include/game/combat_draw.h",
+        "sha256": "DEA4C4DDDEA3D523C088558D41D15EDFCCC28C9467F48DA03E779F4F2F1A0B08"
+      },
+      {
+        "bytes": 868,
+        "path": "include/game/combat_pose_record.h",
+        "sha256": "3ECFF3EEA02A4A2AB76E7E489B00ECDB2FFA2511382E95CD936F376509457815"
+      },
+      {
+        "bytes": 109,
+        "path": "include/game/combat_types.h",
+        "sha256": "DD2B627C22F084DB4F668D27E8DE3C3F3D8FDFC352F690034FE3E1A5655959D6"
+      }
+    ],
+    "expanded": {
+      "bytes": 29725,
+      "sha256": "17C196C2D870931979FF9EE3960AF23BFDFA5DC5DFF80DDB5159B798C312D4A5"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "HYBRID_C",
+    "sourceSha256": "627B8E1DDD076AB292711B230E99C877496190066D79267578F59A9843471D69"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-08-func_001F3C00-6e4be39472.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
