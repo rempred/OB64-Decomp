@@ -1,7 +1,7 @@
 ---
 task_id: combat-3c00-cursor-context-guidance
 revision: 1
-status: ready
+status: active
 role: worker
 review_level: Focused
 inventory_profile: NORMAL
