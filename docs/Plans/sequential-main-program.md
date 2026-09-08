@@ -39,7 +39,8 @@ The completed [retained DB10 base-control locating](task-logs/combat-db10-retain
 It corrects the predecessor's source-association precision: current sp+0x5C/sp+0xA4 are biased preceding-element address bases, while the natural context/resource array starts are sp+0x60/sp+0xA8. Prior instruction/order facts remain unchanged.
 The named control aliases a different pointer set on an older source; its missing raw object limits relocation/extent comparison. Any proposed current-source trial must first check preserved experiments and retain valid C pointer arithmetic.
 Sol High [alias-input retrieval](prompts/combat-db10-alias-input-retrieval-r1.md) is checking the bounded preserved source paths for literal alias/guard combinations while the production owner continues 3C00; it supplies no source or semantic acceptance.
-Two 3C00 lifetime controls changed global allocation but worsened output; current best and focused-exact 7ADC are restored. Separate [competing-value locating](prompts/combat-3c00-competing-values-r1.md) maps the geometry/packet-row conflicts before more 3C00 source trials.
+Two 3C00 lifetime controls changed global allocation but worsened output; current best and focused-exact 7ADC are restored. Completed [competing-value locating](task-logs/combat-3c00-competing-values-r1.md) binds the full arrangement, including packed endField in s3 and tileOffset in s2.
+Retail shows separate companion and primary endpoint value histories. The production owner will test a narrow primary-end lifetime split on current 7F823, preserving original null initialization, packet-row state and the existing tail; older broader failures remain retained.
 
 Complete the remaining Combat, Squad, and High Attack plans in that order on main, using internal agents.
 Use Sol High (`gpt-5.6-sol`, `high`) for retrieval/data-seeking or parsing-only workers.
