@@ -1,0 +1,9 @@
+{
+  "agent": "/root/db10_alias_inventory",
+  "task": "combat-db10-alias-input-retrieval",
+  "createdUtc": "2026-09-08T01:57:37.3604717Z",
+  "nativeTask": "01a07dad-52c1-7cb0-9913-d9f7afa91281",
+  "host": "local",
+  "canonicalBase": "f0977e40c0aeb40bc92f6564d01181d65f3afbf8",
+  "launch": "COMBAT-DB10-ALIAS-INPUT-RETRIEVAL-20260907-01"
+}
