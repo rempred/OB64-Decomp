@@ -1,7 +1,7 @@
 ---
 task_id: combat-register-allocation-trace-assessment
 revision: 1
-status: ready
+status: active
 role: worker
 review_level: Focused
 inventory_profile: NORMAL
