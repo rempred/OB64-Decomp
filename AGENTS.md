@@ -57,7 +57,10 @@ Use Sol High (`gpt-5.6-sol`, reasoning `high`) for retrieval/data-seeking or par
 Use Astra Medium (`gpt-6-astra`, reasoning `medium`) for implementation or research requiring reasoning.
 A mixed assignment containing implementation or substantive research reasoning uses Astra Medium.
 This supersedes earlier worker model rules unless Joe gives a later explicit instruction.
-Director and reviewer model assignments remain separate. Reuse existing eligible worker tasks.
+Director and reviewer model assignments remain separate. Prefer a fresh implementation agent at
+wave boundaries and when accumulated context obscures the current assignment. Reuse eligible
+agents within a coherent assignment; preserve useful results and release source/build ownership
+before transferring work to a fresh agent.
 
 Use internal agents for this decomp program. Work on one matching family at a time on `main`,
 with one production source/build writer. Parent top-level task transport requirements do not apply.
