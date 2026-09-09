@@ -1,5 +1,9 @@
 # Combat supplement R3: fresh worker continuation
 
+R3 source work is released after the D590/C908 pair. Its focused results and
+unresolved FC7C source are preserved; [R4](combat-discovery-supplement-r4.md) now
+continues the same thirteen-target wave. The final combined verifier has not run.
+
 Continue the same complete thirteen-target supplement on `main` from local source commit
 `5043bf2c5e0a687ea6061a7166509ba68afbfd6d`. The fresh Astra Medium worker
 `/root/combat_supplement_r3` owns production source/build/configuration work after the Director's

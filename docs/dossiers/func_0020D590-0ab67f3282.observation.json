@@ -1,0 +1,96 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "0AB67F32820E35606278921E18D04A358F34AEBC5B72FACFF2D2F8DA7ECB9390",
+  "observationId": "1EDB33C8716A65764D1762B499B0D46A86770F0634929F6E770199578814297C",
+  "symbol": "func_0020D590",
+  "authored": {
+    "context": "Complete D590 retry loop with accepted structure-return ABI. Private source observations and canonical focused proof remain distinct from full-wave acceptance.",
+    "effects": [
+      "retry-loop-context",
+      "call-delay-scheduling"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 109,
+          "path": "include/game/combat_types.h",
+          "sha256": "DD2B627C22F084DB4F668D27E8DE3C3F3D8FDFC352F690034FE3E1A5655959D6"
+        }
+      ],
+      "expandedSha256": "29FA82C4898C94099212B2A245EB2274D9864AFDF89B8A4023D0910BD0A8D8A6",
+      "sourceSha256": "3DC4854463313FA8CD6966490100BBF998684C43E9F942110F379F06E137625C"
+    },
+    "label": "do-loop-abi",
+    "observedEffect": "Private PURE_C:200 bytes/frame88,63 differing bytes in20 words,three actual relocations. The increment schedules into the call delay slot.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "docs/Plans/task-logs/combat-d590-retry-loop-pair-r3.md",
+        "sha256": "614BF325613C1F72B3EECBE8AED586A7C05C868816FCCFCF64A7ED916357F148"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Nonexact extent and backedge scheduling. The successful index value is dead after loop exit.",
+    "role": "counterexample",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Use the ABI-normalized do-loop with index increment after every call, before checking the low-byte success result."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 109,
+        "path": "include/game/combat_types.h",
+        "sha256": "DD2B627C22F084DB4F668D27E8DE3C3F3D8FDFC352F690034FE3E1A5655959D6"
+      }
+    ],
+    "expanded": {
+      "bytes": 1204,
+      "sha256": "29FA82C4898C94099212B2A245EB2274D9864AFDF89B8A4023D0910BD0A8D8A6"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "3DC4854463313FA8CD6966490100BBF998684C43E9F942110F379F06E137625C"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-09-func_0020D590-0ab67f3282.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

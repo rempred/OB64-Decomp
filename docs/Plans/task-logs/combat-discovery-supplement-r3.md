@@ -86,3 +86,20 @@ Fresh intake reports no observations. The complete64-byte owner includes the ori
 
 
 10930 corrected canonical focused and source-policy checks exited0: PURE_C, sole64-byte C contribution, all10 relocation words exact, no fallback/fill. Final reports are frozen under00210930/initial. This completes the provisional1088C/1062C/10930 batch; FC7C remains inactive and unresolved. No full-wave verifier has run. The two changed production JSON registries are normalized to LF with exact parsed-record equality; all four new production C files already use LF. No verification rule or record meaning changed, and no focused rerun was made solely for newline normalization. All processes and SQLite are released for provisional preservation. Remaining source queue:0020D590,0020C908,002071F4,002073CC,00207A70,00207C08,001F0C24;0020FC7C remains required pending a supported resolution.
+
+
+## D590 current candidate
+
+Fresh intake reports no archived observations. The complete196-byte owner, accepted metadata-helper declaration and four-int CombatPoseBounds structure-return ABI are used. The pointer is dereferenced before null-conditional flag queries, the retry remains unbounded until the low return byte equals1, and the returned bounds.low08 is negated with32-bit wraparound. No output byte initialization or invented error branch was added.
+
+The source with a do-loop advances the dead-on-success index before its predicate, allowing scheduling into the call delay and producing200 bytes. An explicit success break before the retry increment recovers the exact196-byte/frame88 sequence. The ABI-normalized nearest control3DC4854463313FA8CD6966490100BBF998684C43E9F942110F379F06E137625C and exact991935A92784B9989F7857FF21306D58C0CE74D571E9B48EF3F5AFB246DCB4C1 are preserved under0020D590/do-loop-abi and break-loop. Three actual relocations are recorded; canonical focused check is running.
+
+
+D590 canonical focused and source-policy checks exited0: PURE_C, sole196-byte C owner, zero differing bytes/words, all3 linked relocation words exact, no fallback/fill. Both reports are frozen under0020D590/break-loop. No process remains; provisional pending the complete wave.
+
+
+## C908 focused result and pair release
+
+Fresh intake reports no observations. The accepted352-byte owner and existing D_80195560/func_80093380 mappings are used. Source computes the full32-bit52-byte table stride, retains unsigned byte/halfword loads and ordered field stores, narrows only the final index byte, and preserves the late null-conditional kind predicate and three distinct flag updates. Its first sourceD57B67BD6EBF6D710CFD0A8BE9A30697A0B5636FCBE40147A0E408C84A5656FA is privately exact352 bytes/frame32. Canonical focused and source-policy checks exited0: PURE_C, sole352-byte C contribution, all4 relocation words exact, no fallback/fill, zero differing target bytes/words. Frozen final source/focus/policy are under0020C908/initial. The completed compile was not rerun at continuation.
+
+D590 and C908 are released together for provisional preservation; no processes or SQLite operations remain. No full-wave verifier has run. The next compositing cluster is71F4,73CC,7A70,7C08, followed by0C24; FC7C remains required, inactive and unresolved. The W7 compositing preparation and current dependency deltas were read, but no new71F4 source experiment or default analysis packet was started.

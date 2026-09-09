@@ -1,0 +1,98 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "D44D539C3E01A9A49F266C9ED3538C05510DC0A753D2AE86BB933FA543E9E3BC",
+  "observationId": "A07E1A56CA5C85118D7BFEC982D0551EFEEF43D4AFDDF6F51A1CB385C6CEBD37",
+  "symbol": "func_0020D590",
+  "authored": {
+    "context": "Complete D590 retry loop with accepted structure-return ABI. Private source observations and canonical focused proof remain distinct from full-wave acceptance.",
+    "effects": [
+      "retry-loop-context",
+      "call-delay-scheduling"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 109,
+          "path": "include/game/combat_types.h",
+          "sha256": "DD2B627C22F084DB4F668D27E8DE3C3F3D8FDFC352F690034FE3E1A5655959D6"
+        }
+      ],
+      "expandedSha256": "63C3BDEE1D31E84A2EF354D6A7387684B154B397756AA0B2A22CE00D8B85C2A0",
+      "sourceSha256": "991935A92784B9989F7857FF21306D58C0CE74D571E9B48EF3F5AFB246DCB4C1"
+    },
+    "label": "break-loop",
+    "observedEffect": "Canonical focused PURE_C EXACT:196 bytes/frame88,sole C owner,no fallback/fill,accepted placement,three exact relocation words and contract.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "docs/Plans/task-logs/combat-d590-retry-loop-pair-r3.md",
+        "sha256": "614BF325613C1F72B3EECBE8AED586A7C05C868816FCCFCF64A7ED916357F148"
+      }
+    ],
+    "relatedCandidateIds": [
+      "0AB67F32820E35606278921E18D04A358F34AEBC5B72FACFF2D2F8DA7ECB9390"
+    ],
+    "remainingFailure": "Complete thirteen-target supplement verifier remains pending; focused exactness is provisional.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Use an unconditional loop with an explicit success break before the retry index increment, preserving helper ABI and all arguments."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 109,
+        "path": "include/game/combat_types.h",
+        "sha256": "DD2B627C22F084DB4F668D27E8DE3C3F3D8FDFC352F690034FE3E1A5655959D6"
+      }
+    ],
+    "expanded": {
+      "bytes": 1222,
+      "sha256": "63C3BDEE1D31E84A2EF354D6A7387684B154B397756AA0B2A22CE00D8B85C2A0"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "991935A92784B9989F7857FF21306D58C0CE74D571E9B48EF3F5AFB246DCB4C1"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-09-func_0020D590-d44d539c3e.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
