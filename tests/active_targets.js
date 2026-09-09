@@ -169,6 +169,13 @@ function main() {
   }
   const splitRowContracts = [
     {
+      symbol: 'func_0020FC7C', rowIndex: 3934, rowBytes: 324,
+      textSection: '.ob64.r3934.s0', textRomStart: 0x0020FC7C, textRomEnd: 0x0020FDBC,
+      textVramStart: 0x801CC7EC, textVramEnd: 0x801CC92C, textBytes: 320,
+      paddingSection: '.ob64.r3934.s1', paddingRomEnd: 0x0020FDC0,
+      paddingVramEnd: 0x801CC930, paddingBytes: 4, paddingRangeId: 'func-0020fc7c-retained-tail',
+    },
+    {
       symbol: 'func_002013D0',
       rowIndex: 3758,
       rowBytes: 96,

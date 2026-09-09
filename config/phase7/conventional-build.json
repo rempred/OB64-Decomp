@@ -14,14 +14,21 @@
     "primaryRows": 7242,
     "assemblyOwners": 6184,
     "dataOwners": 1058,
-    "linkSlices": 7254,
-    "splitOwners": 12,
+    "linkSlices": 7255,
+    "splitOwners": 13,
     "overlayReservations": 19,
-    "fixedOverlayNonExecutableRanges": 1,
+    "fixedOverlayNonExecutableRanges": 2,
     "nonDescriptorLoadSlabs": 6,
     "rspRows": 13
   },
   "fixedOverlayNonExecutableRanges": [
+    {
+      "id": "func-0020fc7c-retained-tail",
+      "overlayDescriptorId": 10,
+      "overlaySection": "text",
+      "romStart": 2162108,
+      "romEndExclusive": 2162112
+    },
     {
       "id": "func-002013d0-alignment-padding",
       "overlayDescriptorId": 10,

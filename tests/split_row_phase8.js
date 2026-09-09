@@ -36,6 +36,45 @@ const { SOURCE_CLASSES, classifyTargetSources } = require('../tools/lib/source_p
 
 const FIXTURES = [
   {
+    symbol: 'func_0020FC7C', generatedSource: 'build/split-row-phase8-test/func_0020FC7C_exact_fixture.c',
+    rowIndex: 3934, rowBytes: 324, textSection: '.ob64.r3934.s0', textBytes: 320,
+    paddingSection: '.ob64.r3934.s1', paddingBytes: 4,
+    paddingRomStart: 0x0020FDBC, paddingRomEnd: 0x0020FDC0,
+    paddingRangeId: 'func-0020fc7c-retained-tail',
+    expectedRelocations: [
+  {
+    "offset": "0x00000024",
+    "type": "R_MIPS_26",
+    "symbol": ".text",
+    "section": ".rel.text"
+  },
+  {
+    "offset": "0x00000044",
+    "type": "R_MIPS_26",
+    "symbol": ".text",
+    "section": ".rel.text"
+  },
+  {
+    "offset": "0x00000088",
+    "type": "R_MIPS_26",
+    "symbol": ".text",
+    "section": ".rel.text"
+  },
+  {
+    "offset": "0x000000F4",
+    "type": "R_MIPS_26",
+    "symbol": "func_0020FA04",
+    "section": ".rel.text"
+  },
+  {
+    "offset": "0x00000110",
+    "type": "R_MIPS_26",
+    "symbol": "func_001F0E64",
+    "section": ".rel.text"
+  }
+],
+  },
+  {
     symbol: 'func_002013D0',
     generatedSource: 'build/split-row-phase8-test/func_002013D0_exact_fixture.c',
     rowIndex: 3758,
@@ -108,7 +147,51 @@ function expectRejection(label, pattern, callback) {
 }
 
 function writeExactFixtureSource(fixture) {
-  const lines = fixture.symbol === 'func_002013D0' ? [
+  const lines = fixture.symbol === 'func_0020FC7C' ? [
+  "#include \"game/combat_types.h\"",
+  "",
+  "typedef struct SupplementFlagRecord {",
+  "    void *children[3];",
+  "    unsigned char field_0C[0x34];",
+  "    u32 flags;",
+  "} SupplementFlagRecord;",
+  "struct Func001F0E64Record;",
+  "extern void func_001F0E64(struct Func001F0E64Record *, u32);",
+  "extern void func_0020FA04(SupplementFlagRecord *, int);",
+  "",
+  "static __inline__ int flag(SupplementFlagRecord *record, int bit)",
+  "{",
+  "    if (!record) return 0;",
+  "    return (record->flags >> bit) & 1;",
+  "}",
+  "",
+  "void func_0020FC7C(SupplementFlagRecord *record)",
+  "{",
+  "    u32 selector = 0;",
+  "    int code = 0;",
+  "    u32 index;",
+  "    if (flag(record, 3)) {",
+  "        code = 9;",
+  "        selector = 0x20;",
+  "    } else if (!flag(record, 3) && flag(record, 2)) {",
+  "        code = 5;",
+  "        selector = 0x22;",
+  "    } else if (!flag(record, 3) && !flag(record, 2) && flag(record, 4)) {",
+  "        code = 1;",
+  "        selector = 0;",
+  "    }",
+  "    if (code) {",
+  "        func_0020FA04(record, code);",
+  "        for (index = 0; index < 3; index++) {",
+  "            void *child = record->children[index];",
+  "            if (child) {",
+  "                func_001F0E64((struct Func001F0E64Record *)((unsigned char *)child + 0x44), selector);",
+  "            }",
+  "        }",
+  "    }",
+  "}",
+  ""
+] : fixture.symbol === 'func_002013D0' ? [
     'typedef unsigned char u8;',
     'typedef signed int s32;',
     '',
@@ -332,8 +415,8 @@ function runFixture(context, baseline, acceptedLayout, baserom, fixture) {
     replacement.replacements,
     compiled,
   );
-  writeLayout(phase8, phase7, output, replacement.replacements);
   linkPhase8(phase8, output, manifest, runtime.tools);
+  writeLayout(phase8, phase7, output, replacement.replacements);
   const sourceObjectProofs = writeSourceObjectProofs(phase8, { output, compiled, sourcePolicy });
   const verification = verifyPhase8Output(phase8, {
     output,
@@ -410,6 +493,17 @@ function runFixture(context, baseline, acceptedLayout, baserom, fixture) {
     )),
   ];
 
+  if (fixture.expectedRelocations.length) {
+    const changedTarget = {
+      ...target,
+      expectedRelocations: target.expectedRelocations.map((record, index) => index === 0
+        ? { ...record, offset: '0x00000000' } : record),
+    };
+    rejectedMutations.push(expectRejection('load-relevant relocation contract', /source-to-object load-relevant relocation drift/, () => {
+      writeSourceObjectProofs({ ...phase8, targets: [changedTarget], target: changedTarget }, { output, compiled, sourcePolicy });
+    }));
+  }
+
   const byteMutation = Buffer.from(linkedRom);
   byteMutation[retained[0].romStartNumber] ^= 0x01;
   rejectedMutations.push(expectRejection('retained assembly byte', /linked ROM SHA-256 drift/, () => {
@@ -438,7 +532,7 @@ function runFixture(context, baseline, acceptedLayout, baserom, fixture) {
       verifyPhase8Layout(phase8, extentMutation, replacement.replacements);
     }));
   }
-  if (fixture.paddingRangeId === 'func-002013d0-alignment-padding') {
+  if (phase8.model.fixedOverlayNonExecutableRanges.some((range) => range.id === fixture.paddingRangeId)) {
     const rangeSummaryMutation = JSON.parse(JSON.stringify(layout));
     const range = rangeSummaryMutation.fixedOverlayNonExecutableRanges
       .find((candidate) => candidate.id === fixture.paddingRangeId);
@@ -468,7 +562,8 @@ function runFixture(context, baseline, acceptedLayout, baserom, fixture) {
       structuralSlice[acceptedField] = contradictoryScalar(structuralSlice[acceptedField]);
       rejectedMutations.push(expectRejection(
         `${role} accepted ${acceptedField}`,
-        rejectionPattern,
+        acceptedSlice.sectionName === fixture.textSection && acceptedField === 'sectionName'
+          ? /^text contract: layout slice textContract drift$/ : rejectionPattern,
         () => verifyPhase8Layout(phase8, structuralMutation, replacement.replacements),
       ));
     }

@@ -112,12 +112,134 @@ function main() {
   verifyMap(model, mapText);
 
   const results = [];
+  // FC7C's retained word is justified by its accepted entry/return/successor
+  // evidence. Scan complete raw descriptor text, including non-executable slices;
+  // negative direct-edge/pointer results do not resolve computed transfers.
+  const fc7cRangeId = 'func-0020fc7c-retained-tail';
+  function verifyFc7cBoundary(candidateModel, bytes) {
+    const owner = candidateModel.rows[3934];
+    assert.strictEqual(owner.romStart, 0x0020FC7C, 'FC7C original owner start drift');
+    assert.strictEqual(owner.romEndExclusive, 0x0020FDC0, 'FC7C original owner end drift');
+    assert.strictEqual(owner.bytes, 324, 'FC7C original owner size drift');
+    assert.strictEqual(candidateModel.rows[3935].romStart, 0x0020FDC0, 'FC7C successor boundary drift');
+    assert.deepStrictEqual(owner.slices.map((slice) => ({
+      sectionName: slice.sectionName, romStart: slice.romStart, romEndExclusive: slice.romEndExclusive,
+      vramStart: slice.vramStart, vramEndExclusive: slice.vramEndExclusive, bytes: slice.bytes,
+      executable: slice.executable, nonExecutableRangeId: slice.nonExecutableRangeId,
+      overlayDescriptorId: slice.overlayDescriptorId, overlaySection: slice.overlaySection,
+    })), [{
+      sectionName: '.ob64.r3934.s0', romStart: 0x0020FC7C, romEndExclusive: 0x0020FDBC,
+      vramStart: 0x801CC7EC, vramEndExclusive: 0x801CC92C, bytes: 320,
+      executable: true, nonExecutableRangeId: null, overlayDescriptorId: 10, overlaySection: 'text',
+    }, {
+      sectionName: '.ob64.r3934.s1', romStart: 0x0020FDBC, romEndExclusive: 0x0020FDC0,
+      vramStart: 0x801CC92C, vramEndExclusive: 0x801CC930, bytes: 4,
+      executable: false, nonExecutableRangeId: fc7cRangeId, overlayDescriptorId: 10, overlaySection: 'text',
+    }], 'FC7C slice boundary/provenance drift');
+    assert.deepStrictEqual([0x0020FDB4, 0x0020FDB8, 0x0020FDBC, 0x0020FDC0]
+      .map((address) => bytes.readUInt32BE(address)),
+    [0x03E00008, 0x27BD0020, 0, 0x27BDFFC0], 'FC7C return/delay/tail/successor word drift');
+    assert.strictEqual(sha256Buffer(bytes.subarray(0x0020FC7C, 0x0020FDBC)),
+      '015B00C840AF2FC03DAB3688EA6A1E006A1DEC78BBB3F3D47D2ADEC1735DDD3E', 'FC7C prefix hash drift');
+    assert.strictEqual(sha256Buffer(bytes.subarray(0x0020FC7C, 0x0020FDC0)),
+      '251481811BADC2DDE2541F271D42EBB61BD8398DABB20A32A35B8CA65AEC58E6', 'FC7C whole-row hash drift');
+  }
+  function fc7cDirectTarget(word, pc) {
+    const op = word >>> 26, rs = (word >>> 21) & 31, rt = (word >>> 16) & 31;
+    if (op === 1 && ![0, 1, 2, 3, 16, 17, 18, 19].includes(rt)) {
+      assert.ok([8, 9, 10, 11, 12, 14].includes(rt), 'FC7C scan reserved REGIMM encoding');
+      return null; // Immediate traps are not PC-relative branches.
+    }
+    if ([16, 17, 18].includes(op) && rs === 8) {
+      assert.ok(rt <= 3, 'FC7C scan reserved coprocessor branch selector');
+      return (pc + 4 + ((word << 16) >> 16) * 4) >>> 0;
+    }
+    if ([6, 7, 22, 23].includes(op)) assert.strictEqual(rt, 0, 'FC7C scan reserved integer branch selector');
+    assert.notStrictEqual(op, 19, 'FC7C scan reserved opcode 0x13');
+    return directControlTarget(word, pc);
+  }
+  function scanFc7cTail(bytes) {
+    const descriptor = model.overlays.find((overlay) => overlay.descriptor_id === 10);
+    assert.strictEqual(descriptor.rom_start, 0x001F0A30, 'FC7C descriptor start drift');
+    assert.strictEqual(descriptor.text_rom_end_exclusive, 0x00211D20, 'FC7C descriptor text end drift');
+    assert.strictEqual(descriptor.vram_start, 0x801AD5A0, 'FC7C descriptor VMA drift');
+    const hits = [], counts = { words: 0, direct: 0, indirect: 0 };
+    for (let address = descriptor.rom_start; address < descriptor.text_rom_end_exclusive; address += 4) {
+      const word = bytes.readUInt32BE(address);
+      const pc = descriptor.vram_start + address - descriptor.rom_start;
+      const target = fc7cDirectTarget(word, pc);
+      counts.words += 1;
+      if (target !== null) counts.direct += 1;
+      if (word >>> 26 === 0 && [8, 9].includes(word & 63)) counts.indirect += 1;
+      if (target === 0x801CC92C) hits.push(address);
+    }
+    assert.deepStrictEqual(hits, [], 'FC7C direct control flow enters retained tail');
+    return counts;
+  }
+  function checkFc7cPointers(bytes) {
+    const hits = [];
+    for (let address = 0; address < bytes.length; address += 4) {
+      if (bytes.readUInt32BE(address) === 0x801CC92C) hits.push(address);
+    }
+    assert.deepStrictEqual(hits, [], 'FC7C aligned ROM pointer enters retained tail');
+  }
+  verifyFc7cBoundary(model, romBytes);
+  assert.deepStrictEqual(scanFc7cTail(romBytes), { words: 33980, direct: 3919, indirect: 338 }, 'FC7C full raw-text scan census drift');
+  checkFc7cPointers(romBytes);
+  const branchControls = [
+    ...[4, 5, 6, 7, 20, 21, 22, 23].map((op) => op * 0x4000000),
+    ...[0, 1, 2, 3, 16, 17, 18, 19].map((rt) => 0x04000000 + rt * 0x10000),
+    ...[16, 17, 18].flatMap((op) => [0, 1, 2, 3].map((rt) => op * 0x4000000 + 8 * 0x200000 + rt * 0x10000)),
+    ...[2, 3].map((op) => op * 0x4000000 + ((0x801CC92C >>> 2) & 0x03FFFFFF)),
+  ];
+  assert.strictEqual(branchControls.length, 30, 'FC7C branch-family control census drift');
+  for (const word of branchControls) assert.strictEqual(fc7cDirectTarget(word, 0x801CC928), 0x801CC92C, 'FC7C branch-family target control failed');
+  // Each actual raw-text scan must reject an injected tail entry, including a
+  // source inside an already non-executable slice excluded by the older scan.
+  for (const sourceRom of [0x0020FC7C, 0x00201424]) {
+    const changed = Buffer.from(romBytes);
+    const pc = 0x801AD5A0 + sourceRom - 0x001F0A30;
+    changed.writeUInt32BE((0x10000000 | (((0x801CC92C - pc - 4) / 4) & 0xFFFF)) >>> 0, sourceRom);
+    results.push(expectRejection(`FC7C injected direct tail entry from ${sourceRom.toString(16)}`, /FC7C direct control flow enters retained tail/, () => scanFc7cTail(changed)));
+  }
+  for (const [label, address] of [['return', 0x0020FDB4], ['delay', 0x0020FDB8], ['tail', 0x0020FDBC], ['successor', 0x0020FDC0]]) {
+    const changed = Buffer.from(romBytes); changed[address] ^= 1;
+    results.push(expectRejection(`FC7C ${label} word`, /FC7C return\/delay\/tail\/successor word drift/, () => verifyFc7cBoundary(model, changed)));
+  }
+  const changedSuccessor = JSON.parse(JSON.stringify(model)); changedSuccessor.rows[3935].romStart += 4;
+  results.push(expectRejection('FC7C accepted successor boundary', /FC7C successor boundary drift/, () => verifyFc7cBoundary(changedSuccessor, romBytes)));
+  const changedPointer = Buffer.from(romBytes); changedPointer.writeUInt32BE(0x801CC92C, 0);
+  results.push(expectRejection('FC7C materialized aligned tail pointer', /FC7C aligned ROM pointer enters retained tail/, () => checkFc7cPointers(changedPointer)));
+  for (const [label, offset, value, pattern] of [
+    ['tail section execution', 8, 6, /ELF section execution flag drift/],
+    ['tail VMA', 12, 0x801CC930, /ELF section VRAM placement drift/],
+  ]) {
+    const section = baselineElf.sections.find((candidate) => candidate.name === '.ob64.r3934.s1');
+    assert.ok(section, 'FC7C retained-tail ELF section missing');
+    assert.strictEqual(section.flags, 2, 'FC7C retained-tail ELF flags drift');
+    const changed = Buffer.from(elfBytes); changed.writeUInt32BE(value, section.headerOffset + offset);
+    results.push(expectRejection(`FC7C ${label}`, pattern, () => verifyElfAgainstModel(model, parseElf32BigEndian(changed))));
+  }
+  const fc7cTailHeaders = baselineElf.programHeaders.filter((header) => header.type === 1 && header.vaddr === 0x801CC92C && header.paddr === 0x0020FDBC && header.fileSize === 4);
+  assert.strictEqual(fc7cTailHeaders.length, 1, 'FC7C retained-tail PT_LOAD census drift');
+  assert.strictEqual(fc7cTailHeaders[0].flags, 4, 'FC7C retained-tail PT_LOAD flags drift');
+  for (const [label, offset, value, pattern] of [
+    ['tail PT_LOAD execution', 24, 5, /ELF program-header execution flag drift/],
+    ['tail LMA', 12, 0x0020FDC0, /ELF load address drift/],
+  ]) {
+    const changed = Buffer.from(elfBytes);
+    changed.writeUInt32BE(value, baselineElf.header.phoff + fc7cTailHeaders[0].index * baselineElf.header.phentsize + offset);
+    results.push(expectRejection(`FC7C ${label}`, pattern, () => verifyElfAgainstModel(model, parseElf32BigEndian(changed))));
+  }
   assert.strictEqual(model.counts.nonDescriptorLoadSlabs, 6, 'accepted load-slab count drift');
-  assert.strictEqual(model.counts.fixedOverlayNonExecutableRanges, 1, 'accepted fixed-overlay non-executable-range count drift');
-  assert.strictEqual(model.slices.length, 7254, 'accepted link-slice count drift');
-  assert.strictEqual(model.counts.splitOwners, 12, 'accepted split-owner count drift');
+  assert.strictEqual(model.counts.fixedOverlayNonExecutableRanges, 2, 'accepted fixed-overlay non-executable-range count drift');
+  assert.strictEqual(model.slices.length, 7255, 'accepted link-slice count drift');
+  assert.strictEqual(model.counts.splitOwners, 13, 'accepted split-owner count drift');
   assert.strictEqual(model.overlays.length, 19, 'fixed-descriptor count drift');
   assert.deepStrictEqual(model.fixedOverlayNonExecutableRanges, [{
+    id: 'func-0020fc7c-retained-tail', overlayDescriptorId: 10, overlaySection: 'text',
+    romStart: 0x0020FDBC, romEndExclusive: 0x0020FDC0,
+  }, {
     id: 'func-002013d0-alignment-padding',
     overlayDescriptorId: 10,
     overlaySection: 'text',

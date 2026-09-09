@@ -1,6 +1,9 @@
 # Complete the shared context wave within Combat prerequisites
 
-Draft only. Bind the preceding accepted source wave and sole production ownership before activation.
+Held at Joe's 2026-09-09 wind-down; do not activate until he explicitly resumes.
+The preceding thirteen-target supplement is accepted. Fresh worker
+`/root/combat_shared_context_r1` completed read-only preparation only. Bind the
+accepted committed baseline and sole production ownership at future activation.
 Use a fresh internal Astra Medium worker on current main. Director: /root.
 Read repository AGENTS.md, docs/WORKFLOW.md, docs/SOURCE_POLICY.md and
 docs/NEXT_STEPS.md, then the current sequential-program status and the relevant
@@ -12,7 +15,9 @@ Keep the complete original three-member High Attack W3 boundary:
 func_001FFE80, func_002013D0, and func_00201108.
 Convert func_001FFE80 to PURE_C and preserve the two accepted PURE_C sibling implementations under their accepted ownership contracts.
 Preserve the accepted executable-versus-padding disposition for func_002013D0; do not revise it during ordinary matching.
-The retained context candidate had a four-byte alias/lifetime mismatch. Treat this as measured prior evidence, not impossibility.
+The retained pure-C context control emits 792 bytes versus the accepted 796-byte owner,
+with allocation and scheduling differences as well as the extent deficit. Treat this
+as measured prior evidence, not four isolated differing bytes or impossibility.
 Accepted boot conversion 523d460 provides new KMC lifetime/coalescing evidence to justify a fresh pure-C attempt.
 Read its R2 report and independently test any applicable technique against this target's ROM behavior and linked output.
 Use docs/Plans/task-logs/combat-context-retry-preparation-r1.md at dff8b8c as untested preparation, not accepted source or semantics.

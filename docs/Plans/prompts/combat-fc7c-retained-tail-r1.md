@@ -1,8 +1,11 @@
 # FC7C retained-tail structural assignment
 
-Status: ready for Director activation. Source baseline: `5ae68e14`. R4 has
-released all source/build/configuration, process and SQLite ownership. The
-Director will send the sole writer the final documentation commit at activation.
+Status: complete and independently accepted on 2026-09-09. Source baseline:
+`5ae68e14`; structural delta reviewed against `32d9e08d`. The integrated audit
+and all thirteen supplement normal gates pass. See the
+[implementation report](../../audit/2026-09-09-func-0020fc7c-retained-tail-implementation.md)
+and [accepted review](../../audit/2026-09-09-func-0020fc7c-retained-tail-independent-review.md).
+All writes and processes are released. The assignment below is retained as scope history.
 Use an internal Astra Medium worker on current `main`; no branch or worktree.
 
 Read `AGENTS.md`, `docs/AUDIT.md`, relevant `docs/WORKFLOW.md` and source-policy
