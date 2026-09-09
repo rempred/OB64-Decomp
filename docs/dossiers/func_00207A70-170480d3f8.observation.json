@@ -1,0 +1,109 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "170480D3F88553B8B8A0786E2C5A95A77E722A001A0C01693D8AC3C40C448286",
+  "observationId": "F15D0CFB54CF468318B3B6424B058F1253E9875AE0CCFC998A44A801C0F9D01E",
+  "symbol": "func_00207A70",
+  "authored": {
+    "context": "Complete7A70 typed shared-record source traverses20records, with array and fixed10-pointer cleanup loops and reloads across calls.",
+    "effects": [
+      "index-lifetime"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 1233,
+          "path": "include/game/combat_pose_pool.h",
+          "sha256": "A7F8F0A2D927F54EB1E49A9BBD771E43CA9A58435BACA9D6C6F5530C0FCE35A1"
+        },
+        {
+          "bytes": 109,
+          "path": "include/game/combat_types.h",
+          "sha256": "DD2B627C22F084DB4F668D27E8DE3C3F3D8FDFC352F690034FE3E1A5655959D6"
+        }
+      ],
+      "expandedSha256": "D4DF916427249711A3839296DCF19CC277F9CA51A6495D256FA2662C7EF2AF8A",
+      "sourceSha256": "930BCD5298C5CA5FBB9672D8203485B57B192F45CD5A6273BF65946E24F2DAC3"
+    },
+    "label": "shared-cleanup-loop-index",
+    "observedEffect": "A001 has correct408bytes/frame48 but21words differ by s1/s2 allocation. A004 matches all408private linked bytes with24relocations.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "build/combat-discovery-supplement-r4/00207A70/A001/result.json",
+        "sha256": "C27E9D38AA9D65AA228CD529C748CBC099811FDA37C113D74B870F810D6833DB"
+      },
+      {
+        "path": "build/combat-discovery-supplement-r4/00207A70/A004/result.json",
+        "sha256": "4833FF9E8CA1C097EB6B580E443C96E49EA6FD40B1AB6BBC8A84850A6710077D"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Canonical focused check pending; complete13-target wave remains incomplete.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Reuse one signed int index for both loops. First comparison remains unsigned because field18 is u32."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 1233,
+        "path": "include/game/combat_pose_pool.h",
+        "sha256": "A7F8F0A2D927F54EB1E49A9BBD771E43CA9A58435BACA9D6C6F5530C0FCE35A1"
+      },
+      {
+        "bytes": 109,
+        "path": "include/game/combat_types.h",
+        "sha256": "DD2B627C22F084DB4F668D27E8DE3C3F3D8FDFC352F690034FE3E1A5655959D6"
+      }
+    ],
+    "expanded": {
+      "bytes": 2167,
+      "sha256": "D4DF916427249711A3839296DCF19CC277F9CA51A6495D256FA2662C7EF2AF8A"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "930BCD5298C5CA5FBB9672D8203485B57B192F45CD5A6273BF65946E24F2DAC3"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-09-func_00207A70-170480d3f8.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

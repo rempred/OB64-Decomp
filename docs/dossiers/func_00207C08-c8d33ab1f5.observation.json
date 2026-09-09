@@ -1,0 +1,106 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "C8D33AB1F5E70C398873D56E99E76130B5BDD780753CC4CA6AAA972E50E45977",
+  "observationId": "14FBF4E2BA8B35E3CA0F7B6B963D44359B5AFBDAE1558723714C9C9816E926C7",
+  "symbol": "func_00207C08",
+  "authored": {
+    "context": "Complete independently derived source in the pinned R4 shared-header context. Read the fixed source-pair note before transferring an effect; private measurements, focused canonical proof and complete-wave acceptance are distinct.",
+    "effects": [
+      "source-context",
+      "instruction-scheduling"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 1233,
+          "path": "include/game/combat_pose_pool.h",
+          "sha256": "A7F8F0A2D927F54EB1E49A9BBD771E43CA9A58435BACA9D6C6F5530C0FCE35A1"
+        },
+        {
+          "bytes": 109,
+          "path": "include/game/combat_types.h",
+          "sha256": "DD2B627C22F084DB4F668D27E8DE3C3F3D8FDFC352F690034FE3E1A5655959D6"
+        }
+      ],
+      "expandedSha256": "AEEC2EA839EC857BCBF6335BF8139AE6B232AAC023546D952D0276D1D24520CF",
+      "sourceSha256": "414D31C4E614421BD9E5E37FA5E6C3674282354A19C6112CA8C959E773F60B99"
+    },
+    "label": "r4-portable-final",
+    "observedEffect": "Canonical focused PURE_C EXACT: 552 bytes, sole C contribution without fallback/fill, exact target bytes and all 42 actual relocations. Complete thirteen-target wave acceptance remains pending.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "docs/Plans/task-logs/combat-supplement-compositing-source-pairs-r4.md",
+        "sha256": "7BFBC85C79BCB4C2A690A6BA56F85B86B763831C6D9DE0651420D0F0082CFE49"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Single complete thirteen-target verifier pending, including FC7C structural resolution.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "First structured source reuses the earlier index arrangement while retaining this complete owner's key comparison and unconditional cleanup call order."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 1233,
+        "path": "include/game/combat_pose_pool.h",
+        "sha256": "A7F8F0A2D927F54EB1E49A9BBD771E43CA9A58435BACA9D6C6F5530C0FCE35A1"
+      },
+      {
+        "bytes": 109,
+        "path": "include/game/combat_types.h",
+        "sha256": "DD2B627C22F084DB4F668D27E8DE3C3F3D8FDFC352F690034FE3E1A5655959D6"
+      }
+    ],
+    "expanded": {
+      "bytes": 2670,
+      "sha256": "AEEC2EA839EC857BCBF6335BF8139AE6B232AAC023546D952D0276D1D24520CF"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "414D31C4E614421BD9E5E37FA5E6C3674282354A19C6112CA8C959E773F60B99"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-09-func_00207C08-c8d33ab1f5.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

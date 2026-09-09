@@ -1,0 +1,98 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "3484B0F46465738FC141DFA99B2F625A1C28D0EFE1E462D0CFC12AA42DB7CFFD",
+  "observationId": "5F922420666AF7CF5F0E426250C2ED563E62F1442A13158414200BE8C6ACE3D1",
+  "symbol": "func_001F0C24",
+  "authored": {
+    "context": "Complete independently derived source in the pinned R4 shared-header context. Read the fixed source-pair note before transferring an effect; private measurements, focused canonical proof and complete-wave acceptance are distinct.",
+    "effects": [
+      "source-context",
+      "instruction-scheduling"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 109,
+          "path": "include/game/combat_types.h",
+          "sha256": "DD2B627C22F084DB4F668D27E8DE3C3F3D8FDFC352F690034FE3E1A5655959D6"
+        }
+      ],
+      "expandedSha256": "1E8A6D9D16C1D2454FDF4C1EF9865CD82476507AC7E81E8D5D31AFBC3EE24695",
+      "sourceSha256": "2A5B8F538BE3E9703D3961D46E785CDE60B846301EC0E776866DF2D07EB04D9E"
+    },
+    "label": "r4-portable-final",
+    "observedEffect": "Canonical focused PURE_C EXACT: 480 bytes, sole C contribution without fallback/fill, exact target bytes and all 13 actual relocations. Complete thirteen-target wave acceptance remains pending.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "docs/Plans/task-logs/combat-supplement-compositing-source-pairs-r4.md",
+        "sha256": "7BFBC85C79BCB4C2A690A6BA56F85B86B763831C6D9DE0651420D0F0082CFE49"
+      }
+    ],
+    "relatedCandidateIds": [
+      "29F5D9E635119D496426500D19EC3A3A3EEB4A99C3E26E01295DE6FA5655672C"
+    ],
+    "remainingFailure": "Single complete thirteen-target verifier pending, including FC7C structural resolution.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Use the same (selected << 3) + (selected << 2) expression for lookup and publication, retaining the volatile scan and original load/store order."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 109,
+        "path": "include/game/combat_types.h",
+        "sha256": "DD2B627C22F084DB4F668D27E8DE3C3F3D8FDFC352F690034FE3E1A5655959D6"
+      }
+    ],
+    "expanded": {
+      "bytes": 2191,
+      "sha256": "1E8A6D9D16C1D2454FDF4C1EF9865CD82476507AC7E81E8D5D31AFBC3EE24695"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "2A5B8F538BE3E9703D3961D46E785CDE60B846301EC0E776866DF2D07EB04D9E"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-09-func_001F0C24-3484b0f464.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

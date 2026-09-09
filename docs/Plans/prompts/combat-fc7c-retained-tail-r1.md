@@ -1,7 +1,8 @@
 # FC7C retained-tail structural assignment
 
-Status: prepared, not active. The Director must bind the current committed source
-baseline and release the R4 production source/build writer before activation.
+Status: ready for Director activation. Source baseline: `5ae68e14`. R4 has
+released all source/build/configuration, process and SQLite ownership. The
+Director will send the sole writer the final documentation commit at activation.
 Use an internal Astra Medium worker on current `main`; no branch or worktree.
 
 Read `AGENTS.md`, `docs/AUDIT.md`, relevant `docs/WORKFLOW.md` and source-policy

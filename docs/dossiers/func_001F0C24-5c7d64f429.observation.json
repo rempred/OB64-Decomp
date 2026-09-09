@@ -1,0 +1,108 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "5C7D64F4293F7BA0CFD349B011EF72015006595586A12436D2501F0F894A510B",
+  "observationId": "FAB6430F58DE28642E44F9DD009F4DAC058AC8D1B7C0D8B737D218DCE5FF25A1",
+  "symbol": "func_001F0C24",
+  "authored": {
+    "context": "Complete480-byte0C24 service; unsigned full-width key/row products, repeated row helpers, original byte reloads and partial final groups.",
+    "effects": [
+      "scan-address-hoisting",
+      "address-operand-order"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 109,
+          "path": "include/game/combat_types.h",
+          "sha256": "DD2B627C22F084DB4F668D27E8DE3C3F3D8FDFC352F690034FE3E1A5655959D6"
+        }
+      ],
+      "expandedSha256": "35B1BB0EB0F4198344312E25E8688E81DBB845C447668FF28AA88B52751C0907",
+      "sourceSha256": "B09861DE43E29664013DB690FB7CF818C6245B57EA9DDE9C1DAD0868FD09E836"
+    },
+    "label": "cache-scan-field-offset-and-address-spelling",
+    "observedEffect": "A010 leaves3 preheader scheduling words. A011 index traversal leaves one2-byte address-order residual. A015 shifts only lookup and retains an extra induction. A016 uses matching shift/add at both sites and privately matches480bytes/frame48/13relocations.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "build/combat-discovery-supplement-r4/001F0C24/A010/result.json",
+        "sha256": "6969EEA6076526AA927C0F6CE25E244CB51211A374D66798F20522252E738A2F"
+      },
+      {
+        "path": "build/combat-discovery-supplement-r4/001F0C24/A011/result.json",
+        "sha256": "52C34A0D3350971439EE220B2F4DC3949BD64075FD8B5B7D9F7D1F62C7B37700"
+      },
+      {
+        "path": "build/combat-discovery-supplement-r4/001F0C24/A015/result.json",
+        "sha256": "7A754EDC3F24436A7DB27F5B882833866D4FDD2A270CB7067B45B6C8F1CAFA02"
+      },
+      {
+        "path": "build/combat-discovery-supplement-r4/001F0C24/A016/result.json",
+        "sha256": "7C75421DFA665277784364C0E4F1CFF39846A35EB849CCA6131813B3FC5D85C1"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Final focused canonical check pending; FC7C unresolved and full13-target verifier not run.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Use volatile first-scan view with explicit pointer read before retention store and early index increment. Express12-byte selected-slot address as matching shift/add at both lookup and publication."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 109,
+        "path": "include/game/combat_types.h",
+        "sha256": "DD2B627C22F084DB4F668D27E8DE3C3F3D8FDFC352F690034FE3E1A5655959D6"
+      }
+    ],
+    "expanded": {
+      "bytes": 2115,
+      "sha256": "35B1BB0EB0F4198344312E25E8688E81DBB845C447668FF28AA88B52751C0907"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "B09861DE43E29664013DB690FB7CF818C6245B57EA9DDE9C1DAD0868FD09E836"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-09-func_001F0C24-5c7d64f429.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
