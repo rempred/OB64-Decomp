@@ -1,6 +1,8 @@
 # Combat supplement: thirteen-target source wave
 
-Draft pending the completed W8 verifier and Director activation. The current production source/build writer still owns W8. This draft grants no concurrent source ownership.
+Activated by the Director after completed W8 integration at `821b0d351d2b42b2ee800d795fb51bc2a35e13c9`. `/root/w8_research_intake` (Astra Medium) is the sole production source/build writer for this complete wave. Its W8 assignment has released all writes and processes; independent readers retain no production ownership.
+
+The accepted preceding source is bound by `build/combat-draw-wave8-r12/final-wave-census.json` and its frozen verification, fresh-compilation and policy companions, recorded in the [completed W8 report](../task-logs/combat-draw-wave8-r12.md). That single verifier passed all fourteen W8 members and the exact complete Rev0 ROM. Its canonical report SHA-256 is `106C508ED41DF29185C380F40CF489D22B0B2A6289BAD883777C116A6B7C60A4`. Authenticate the relevant current source/header and original owner inputs before implementation; the unchanged integration commit does not require another verifier.
 
 Continue on `main` with one Astra Medium source/build writer and one target at a time. Complete all thirteen PURE_C targets:
 
