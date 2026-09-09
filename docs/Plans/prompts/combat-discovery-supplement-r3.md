@@ -1,7 +1,7 @@
 # Combat supplement R3: fresh worker continuation
 
 Continue the same complete thirteen-target supplement on `main` from local source commit
-`2d7f82ec02777c7bbe63198a8aaeaedeca8ea855`. The fresh Astra Medium worker
+`5043bf2c5e0a687ea6061a7166509ba68afbfd6d`. The fresh Astra Medium worker
 `/root/combat_supplement_r3` owns production source/build/configuration work after the Director's
 explicit release. The outgoing R2 worker has released all writes and processes. Its
 [terminal report](../task-logs/combat-discovery-supplement-r2.md) and ignored
@@ -19,24 +19,48 @@ W8 is accepted at `821b0d351d2b42b2ee800d795fb51bc2a35e13c9` through its
 [single completed verifier](../task-logs/combat-draw-wave8-r12.md). Preserve those sources;
 unchanged source or a worker refresh does not require repeating its verifier.
 
-`func_001F0E64` is provisionally focused-exact HYBRID_C under the specific Director decision in
-[R2](combat-discovery-supplement-r2.md). Its committed source SHA-256 is
+Joe judged the previous `func_001F0E64` hybrid decision premature on 2026-09-08. Its final-class
+exception is withdrawn. Reopen this target as PURE_C before resuming CBDC. The previous
+[R2 decision](combat-discovery-supplement-r2.md) and experiment records remain historical
+evidence, not current completion authority. The exact hybrid remains available as fallback;
+its committed source SHA-256 is
 `0C3B8385D4ECBEC09A1345B998A15BF61D170ED94DB05F1C6E1425ED975654A8`.
-One real-value register binding, with no asm template or explicit instruction, preserves the full
-input domain. The [curated source comparisons](../task-logs/combat-0e64-value-width-r2.md)
-retain the pure-C blocker, best input and necessity control. Preserve this result. The other
-twelve targets are PURE_C assignments. No supplement final full-ROM verifier has run.
+The [curated source comparisons](../task-logs/combat-0e64-value-width-r2.md) retain the previous
+pure best, a failed conversion and the binding-removal control. Their measured SI/HI conflict
+applies to those inputs; the limited set of source variants did not establish that other
+pure-C dataflow arrangements were exhausted. Keep all thirteen targets assigned PURE_C.
+No supplement final full-ROM verifier has run.
 
-Resume `func_0020CBDC` using the complete retail owner, accepted placement, relevant shared
+Start renewed 0E64 work with current intake, the complete retail owner and the preserved pure
+best `8F8DFB18711540E97B0425E9CE4D886E09F6D1740C9F10421016237B2CE3642E`.
+Identify distinct untested approaches, using fresh independent reasoning to challenge the
+earlier stopping conclusion. Preserve the full-width zero predicate, low-byte sentinel,
+ordered random calls, unsigned operations and original stores/calls. Do not narrow the input
+domain or merely repeat the covered SI/HI spellings. Assess what an experiment tests and what
+it leaves open; a trial count, near-exact score or one failed approach is not sufficient reason
+to stop. Preserve useful intermediates and return a concrete account of remaining approaches
+if work stalls. This remains the ordinary source loop, with no added acceptance-review gate.
+
+CBDC's improved provisional source is safely committed at the baseline above, SHA-256
+`C1A1C2FE82C95D9AA234D6A165F268F215155B8BB7C1D9A7B674D78F9A879A57`.
+Its private PURE_C comparison has the correct 2136-byte extent, frame 80 and 93 differing bytes
+in 62 words. The actual 80 relocation entries are recorded. Preserve this source and its
+[R3 report](../task-logs/combat-discovery-supplement-r3.md) while reopening 0E64. The earlier
+200-byte/93-word canonical result is separately bound and must not be attributed to this
+newer source. CBDC remains nonexact and unaccepted; return to its remaining frame/lifetime
+questions after the renewed 0E64 work.
+
+For subsequent `func_0020CBDC` continuation, use the complete retail owner, accepted placement, relevant shared
 headers, [preparation](../task-logs/combat-supplement-cbdc-preparation-r1.md), accepted C4B8 ABI,
 and R2 terminal report. The unselected private first draft is
 `build/combat-discovery-supplement-r2/0020CBDC/first/authored.c`, SHA-256
 `B1B8E759F4B7811E35169DD070A17068FDF9E26455F579809A6EF736B5F8E6AD`.
-It is PURE_C but nonexact: 2164 bytes versus 2136 retail, frame 88, 1337 differing bytes in
-420 words and 77 actual relocations. Its first difference is at offset 0x184. It has not been
-activated and has no canonical focused result. Preserve its exact prefix and paired constructor
-semantics while testing the null-helper branch form and separate count, slot and table cursors.
-These are source questions, not established fixes.
+This historical starting source is PURE_C but nonexact: 2164 bytes versus 2136 retail, frame 88,
+1337 differing bytes in 420 words and 77 actual relocations. Its first difference is at offset
+0x184. At the R2 boundary it had not been activated and had no canonical focused result.
+Current CBDC state follows the committed R3 paragraph above. Its null-helper and cursor-update
+comparisons are now recorded in research intake; do not repeat those completed experiments as
+new questions. Preserve the recovered paired-constructor semantics and current best.
 
 Reuse the authenticated default Kuna/m2c packet and intake referenced in R2's terminal report;
 do not regenerate unchanged inputs. Both decompilers provide hypotheses. Independently derive
@@ -71,8 +95,8 @@ commit, push or create branches/worktrees. Independent readers may assist under 
 model rules but may not write production sources or run competing builds.
 
 Use focused linked diffs and mechanical source classification during iteration. After all
-thirteen targets are ready, run one final `node tools/verify.js`, then confirm each required
-source class, sole C ownership, placement, actual relocations, exact target bytes and complete
+thirteen targets are ready, run one final `node tools/verify.js`, then confirm all thirteen are
+PURE_C with sole C ownership, placement, actual relocations, exact target bytes and complete
 Rev0 ROM in that report. No per-function full verifier, redundant preceding build or independent
 ordinary source-review gate. HYBRID_C exact remains separate from matching-C counts.
 
