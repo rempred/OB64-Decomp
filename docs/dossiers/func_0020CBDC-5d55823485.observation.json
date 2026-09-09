@@ -1,0 +1,97 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "5D558234854AB1D9D287848769DDD729857477A72DFEA6F5064A165A2032DD1D",
+  "observationId": "6495A070B516AF48B4637E58842A69B1A37564E6D270DA31A8C533D3DE07EE15",
+  "symbol": "func_0020CBDC",
+  "authored": {
+    "context": "CBDC loop source pair. Complete source retained; this measured allocation improvement remains an intermediate with a worse score. Compiler-source reasoning supplied the hypothesis but does not prove pass-level identities.",
+    "effects": [
+      "branch-local-cursor-update",
+      "allocation-recovered",
+      "nonmonotonic-intermediate"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 109,
+          "path": "include/game/combat_types.h",
+          "sha256": "DD2B627C22F084DB4F668D27E8DE3C3F3D8FDFC352F690034FE3E1A5655959D6"
+        }
+      ],
+      "expandedSha256": "BF4D40036463040C2F4B9F1ECA9CE39BEC899B925AB6C1F0C40F049B788B9092",
+      "sourceSha256": "DAD0103CFA9E8F9C66F72D15749D29F9F74030364D9126A2B60CEB37319BADD7"
+    },
+    "label": "factor-read-order",
+    "observedEffect": "Private PURE_C result: 2180 bytes/frame 80, 1309 differing bytes/411 words, 80 candidate relocations. Extra derived secondary-slot pointer remains; provides the source context for the branch-local cursor-update comparison.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "docs/Plans/task-logs/combat-cbdc-cursor-step-pair-r3.md",
+        "sha256": "F97248D6AE59D909AD35CEC4C9A20E83E2BDB85CAE7021B801AFF443005C4F06"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Target remains nonexact with wrong extent, loop allocation and instruction-order differences. No canonical ownership or completed-wave acceptance. This is a candidate-specific pair, not a general source rule.",
+    "role": "pair-baseline",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Retain the common slot-cursor update after the real mode-store conditional, with the complete factor-read-order source context."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 109,
+        "path": "include/game/combat_types.h",
+        "sha256": "DD2B627C22F084DB4F668D27E8DE3C3F3D8FDFC352F690034FE3E1A5655959D6"
+      }
+    ],
+    "expanded": {
+      "bytes": 13394,
+      "sha256": "BF4D40036463040C2F4B9F1ECA9CE39BEC899B925AB6C1F0C40F049B788B9092"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "DAD0103CFA9E8F9C66F72D15749D29F9F74030364D9126A2B60CEB37319BADD7"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-09-func_0020CBDC-5d55823485.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

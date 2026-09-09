@@ -28,3 +28,9 @@ docs/archive/matching-c-candidates/2026-08-31-func_00284288-9ed0fdee46.c whitesp
 # authenticated archival identities require preserving every byte.
 docs/archive/matching-c-candidates/2026-09-08-func_001F6098-c0a4f8b866.c -text
 docs/archive/matching-c-candidates/2026-09-08-func_001F6098-df6c8749cc.c -text
+
+# CBDC source comparisons retain the authored line endings bound by their observations.
+docs/archive/matching-c-candidates/2026-09-09-func_0020CBDC-ee88c7be30.c -text whitespace=cr-at-eol
+docs/archive/matching-c-candidates/2026-09-09-func_0020CBDC-10022d5ff5.c -text whitespace=cr-at-eol
+docs/archive/matching-c-candidates/2026-09-09-func_0020CBDC-5d55823485.c -text whitespace=cr-at-eol
+docs/archive/matching-c-candidates/2026-09-09-func_0020CBDC-d750ecf109.c -text whitespace=cr-at-eol
