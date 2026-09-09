@@ -20,10 +20,11 @@ W8 is accepted at `821b0d351d2b42b2ee800d795fb51bc2a35e13c9` through its
 unchanged source or a worker refresh does not require repeating its verifier.
 
 Joe judged the previous `func_001F0E64` hybrid decision premature on 2026-09-08. Its final-class
-exception is withdrawn. Reopen this target as PURE_C before resuming CBDC. The previous
+exception was withdrawn and the renewed work now has a canonical focused PURE_C exact result.
+Preserve that result and resume CBDC. The previous
 [R2 decision](combat-discovery-supplement-r2.md) and experiment records remain historical
-evidence, not current completion authority. The exact hybrid remains available as fallback;
-its committed source SHA-256 is
+evidence, not current completion authority. The former exact hybrid remains in Git/history;
+its historical source SHA-256 is
 `0C3B8385D4ECBEC09A1345B998A15BF61D170ED94DB05F1C6E1425ED975654A8`.
 The [curated source comparisons](../task-logs/combat-0e64-value-width-r2.md) retain the previous
 pure best, a failed conversion and the binding-removal control. Their measured SI/HI conflict
@@ -31,24 +32,26 @@ applies to those inputs; the limited set of source variants did not establish th
 pure-C dataflow arrangements were exhausted. Keep all thirteen targets assigned PURE_C.
 No supplement final full-ROM verifier has run.
 
-Start renewed 0E64 work with current intake, the complete retail owner and the preserved pure
-best `8F8DFB18711540E97B0425E9CE4D886E09F6D1740C9F10421016237B2CE3642E`.
-Identify distinct untested approaches, using fresh independent reasoning to challenge the
-earlier stopping conclusion. Preserve the full-width zero predicate, low-byte sentinel,
-ordered random calls, unsigned operations and original stores/calls. Do not narrow the input
-domain or merely repeat the covered SI/HI spellings. Assess what an experiment tests and what
-it leaves open; a trial count, near-exact score or one failed approach is not sufficient reason
-to stop. Preserve useful intermediates and return a concrete account of remaining approaches
-if work stalls. This remains the ordinary source loop, with no added acceptance-review gate.
+Renewed work used the complete owner, current intake and fresh reasoning to test different
+dataflow contexts. Returning the complete unsigned random result, including remainder, from an
+inline helper resolves the mismatch while preserving the full input domain and all operations.
+Current source SHA-256 is `BF79F7DA363A79941DF1656F2303A3B3637B94681EC9D78026AEC1FDA40FFE07`.
+The [complete-result source pair](../task-logs/combat-0e64-complete-inline-result-r3.md) and
+`build/combat-discovery-supplement-r3/001F0E64/final-pure/` bind the exact source, PURE_C policy,
+sole C ownership, placement, five actual relocations and exact linked bytes. This is provisional
+until the full wave passes; do not repeat the completed work or revert to the historical hybrid.
+The earlier pure best and failed approaches remain in research intake. A trial count or a
+blocker in one source arrangement did not justify the previous stopping decision.
 
 CBDC's improved provisional source is safely committed at the baseline above, SHA-256
 `C1A1C2FE82C95D9AA234D6A165F268F215155B8BB7C1D9A7B674D78F9A879A57`.
 Its private PURE_C comparison has the correct 2136-byte extent, frame 80 and 93 differing bytes
 in 62 words. The actual 80 relocation entries are recorded. Preserve this source and its
-[R3 report](../task-logs/combat-discovery-supplement-r3.md) while reopening 0E64. The earlier
+[R3 report](../task-logs/combat-discovery-supplement-r3.md). The earlier
 200-byte/93-word canonical result is separately bound and must not be attributed to this
 newer source. CBDC remains nonexact and unaccepted; return to its remaining frame/lifetime
-questions after the renewed 0E64 work.
+questions now, preserving the useful frame-88 `conditional-step-while` intermediate alongside
+the current exact-extent best.
 
 For subsequent `func_0020CBDC` continuation, use the complete retail owner, accepted placement, relevant shared
 headers, [preparation](../task-logs/combat-supplement-cbdc-preparation-r1.md), accepted C4B8 ABI,

@@ -1,0 +1,96 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "C338DDC99C00B98C4399F9095AB058D95C21408100BBF2B66D53686F9687E554",
+  "observationId": "7B3367281F53E37BB52F04C41918DFFEC52D48946C1B6A659C0D29C65EF93377",
+  "symbol": "func_001F0E64",
+  "authored": {
+    "context": "Renewed 0E64 pure-C work after the earlier stopping conclusion was withdrawn. Full input domain, ordered calls and memory operations are preserved. This pair compares a partial helper result with its complete unsigned result.",
+    "effects": [
+      "complete-inline-result",
+      "selector-allocation"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 109,
+          "path": "include/game/combat_types.h",
+          "sha256": "DD2B627C22F084DB4F668D27E8DE3C3F3D8FDFC352F690034FE3E1A5655959D6"
+        }
+      ],
+      "expandedSha256": "49834546D3CEEBD7237B38661C7CA7FB2EA5096B3AC6DFDCBB85B25D47328815",
+      "sourceSha256": "FBA5B3393273D78679A1B6B607AD039AB2EB173B039794AEFA85680E0747906E"
+    },
+    "label": "inline-random-word",
+    "observedEffect": "Private PURE_C:248 bytes/frame32,31 differing bytes/14 words,5 candidate relocations. Random temporary allocation improves but the entry/predicate still differ.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "docs/Plans/task-logs/combat-0e64-complete-inline-result-r3.md",
+        "sha256": "CCC58F637A4F0170613C76A0A091A633A9F4AB33D94EA0E0059F77CB5EBCEA6C"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Nonexact target; helper extraction alone does not establish a match.",
+    "role": "pair-baseline",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Extract the complete three-call unsigned random-word construction into an inline helper; apply the remainder in its caller."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 109,
+        "path": "include/game/combat_types.h",
+        "sha256": "DD2B627C22F084DB4F668D27E8DE3C3F3D8FDFC352F690034FE3E1A5655959D6"
+      }
+    ],
+    "expanded": {
+      "bytes": 1446,
+      "sha256": "49834546D3CEEBD7237B38661C7CA7FB2EA5096B3AC6DFDCBB85B25D47328815"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "FBA5B3393273D78679A1B6B607AD039AB2EB173B039794AEFA85680E0747906E"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-09-func_001F0E64-c338ddc99c.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

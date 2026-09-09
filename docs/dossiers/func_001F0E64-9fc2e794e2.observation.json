@@ -1,0 +1,98 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "9FC2E794E2AB258121AD998EEE1A2E73F852BB51AC6B78EB7EEDA0554A303D6D",
+  "observationId": "C863E3117E4CB1AA205ECA736BC009DD1B82B173B685D1F4BAAE998951FBDFEC",
+  "symbol": "func_001F0E64",
+  "authored": {
+    "context": "Renewed 0E64 pure-C work after the earlier stopping conclusion was withdrawn. Full input domain, ordered calls and memory operations are preserved. This pair compares a partial helper result with its complete unsigned result.",
+    "effects": [
+      "complete-inline-result",
+      "selector-allocation"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 109,
+          "path": "include/game/combat_types.h",
+          "sha256": "DD2B627C22F084DB4F668D27E8DE3C3F3D8FDFC352F690034FE3E1A5655959D6"
+        }
+      ],
+      "expandedSha256": "20417EAD6B460942E32282A4A9A1B45307CF346BEE34F491AC463F4B8A3C8619",
+      "sourceSha256": "BF79F7DA363A79941DF1656F2303A3B3637B94681EC9D78026AEC1FDA40FFE07"
+    },
+    "label": "final-pure",
+    "observedEffect": "Canonical focused PURE_C EXACT:248 bytes, sole C owner, no fallback/fill, accepted placement,5 exact actual relocation words and contract,0 different bytes/words. Final source BF79F7DA... has no assembler mechanism.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "docs/Plans/task-logs/combat-0e64-complete-inline-result-r3.md",
+        "sha256": "CCC58F637A4F0170613C76A0A091A633A9F4AB33D94EA0E0059F77CB5EBCEA6C"
+      }
+    ],
+    "relatedCandidateIds": [
+      "5FA46C98A9C3F7449C84C3A956A4F3E0BB852509C3FBCCA3E9176F9C7BA13AE5"
+    ],
+    "remainingFailure": "Complete thirteen-target supplement verifier has not run; this is provisionally focused-exact PURE_C, not completed-wave acceptance.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Clean up the exact complete-result helper name and indentation, retain all full-width tests and operations, and explain the measured context near the C."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 109,
+        "path": "include/game/combat_types.h",
+        "sha256": "DD2B627C22F084DB4F668D27E8DE3C3F3D8FDFC352F690034FE3E1A5655959D6"
+      }
+    ],
+    "expanded": {
+      "bytes": 1434,
+      "sha256": "20417EAD6B460942E32282A4A9A1B45307CF346BEE34F491AC463F4B8A3C8619"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "BF79F7DA363A79941DF1656F2303A3B3637B94681EC9D78026AEC1FDA40FFE07"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-09-func_001F0E64-9fc2e794e2.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
