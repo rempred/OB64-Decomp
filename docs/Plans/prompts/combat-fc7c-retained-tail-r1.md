@@ -32,6 +32,21 @@ invent bytes, lower alignment/ownership checks, or add symbol-specific bypasses.
 If the existing generic machinery has a representation defect, report its concrete
 reproducer and required scope before editing shared production tooling.
 
+The bounded scope lookup found no production tooling change necessary. In
+`config/phase7/conventional-build.json`, add one exact range record using the current
+five-field schema and a unique ID such as `func-0020fc7c-retained-tail`. The current
+expected counts change from1 to2 fixed ranges,7254 to7255 link slices, and12 to13
+split owners; primary-row and assembly-owner counts remain unchanged. Revalidate
+these counts at activation rather than copying stale values blindly. Add only
+FC7C's ordinary target record and its preserved five actual relocations.
+
+Targeted coverage belongs in `tests/active_targets.js`,
+`tests/split_row_phase8.js` and `tests/phase7_conventional_build.js`. The end-to-end
+split-row fixture needs both its324/320/4 metadata and a correct FC7C case in
+`writeExactFixtureSource`; adding a fixture record alone currently selects the
+wrong existing source fallback. Preserve all existing fixture cases and mutation
+rejections. Do not alter shared production validators just to admit the new record.
+
 The required resulting representation is a320-byte executable C slice and a4-byte
 non-executable slice owned by the original assembly chunk, preserving the complete
 324-byte original row and exact bytes. Prove sole owners, RX/R section and PT_LOAD
@@ -41,6 +56,8 @@ nonempty coverage, keeping accepted013D0 and21C8DC behavior intact.
 
 Run the applicable structural audit and checks on the complete integrated inputs.
 Inspect the existing audit orchestration first to avoid redundant full builds.
+Current `tools/audit.js` calls `verifyCurrent`, which calls `ensureCurrentBuild`;
+do not precede that final changed-input audit with another full build or verifier.
 The supplement still contains all thirteen assigned targets. Once all its sources
 are ready, retain one final normal verifier proving every target's PURE_C class,
 ownership, placement, relocations, target bytes and full Rev0 ROM. If the structural
