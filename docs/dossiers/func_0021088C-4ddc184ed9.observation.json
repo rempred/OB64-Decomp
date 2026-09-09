@@ -1,0 +1,98 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "4DDC184ED9486EB0A5A1C5D53C3C34131763B70021C45997DD4145B8C30F6B8C",
+  "observationId": "45F1062F2DBA90D2EC22F8D1DAEC0747F52EDBFA76084F394927F81183BB6BE9",
+  "symbol": "func_0021088C",
+  "authored": {
+    "context": "Supplement scalar-width source contexts. Preserve whole sources and distinguish private comparisons, canonical focus and completed-wave acceptance.",
+    "effects": [
+      "scalar-width-context",
+      "source-comparison"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 109,
+          "path": "include/game/combat_types.h",
+          "sha256": "DD2B627C22F084DB4F668D27E8DE3C3F3D8FDFC352F690034FE3E1A5655959D6"
+        }
+      ],
+      "expandedSha256": "D77A2DB2C6503C758E7FFDCDB4F02B4150E7924D31BA082360879D8E609526CF",
+      "sourceSha256": "438DA2B41BCA3B48E0D784B6EB02F4B40DF1239389E4C6017CB165D6A83F6577"
+    },
+    "label": "final",
+    "observedEffect": "Canonical focused PURE_C EXACT:164 bytes/frame24,sole C owner,no fallback/fill,accepted placement,18 exact relocation words and contract. Comment-only cleanup has the same expanded input as the private exact word-offset source.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "docs/Plans/task-logs/combat-supplement-scalar-contexts-r3.md",
+        "sha256": "46CBCE1EB4EE32693F62477FE10416A1A7A7073902DB14F70E4D3243728ECAD5"
+      }
+    ],
+    "relatedCandidateIds": [
+      "A1D5FA18D46F41076693CA9D6CD91B94443C4FFF1680CB9E531C2B165173C1F5"
+    ],
+    "remainingFailure": "Complete thirteen-target supplement verifier remains pending; this focused exact source is provisional.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Widen the reused local offset from u16 to u32 and add an explanatory comment. Keep all three memory loads unsigned halfword, helper calls and pointer publication order unchanged."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 109,
+        "path": "include/game/combat_types.h",
+        "sha256": "DD2B627C22F084DB4F668D27E8DE3C3F3D8FDFC352F690034FE3E1A5655959D6"
+      }
+    ],
+    "expanded": {
+      "bytes": 919,
+      "sha256": "D77A2DB2C6503C758E7FFDCDB4F02B4150E7924D31BA082360879D8E609526CF"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "438DA2B41BCA3B48E0D784B6EB02F4B40DF1239389E4C6017CB165D6A83F6577"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-09-func_0021088C-4ddc184ed9.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

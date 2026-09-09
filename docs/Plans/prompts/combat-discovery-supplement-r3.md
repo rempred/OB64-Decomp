@@ -22,7 +22,7 @@ unchanged source or a worker refresh does not require repeating its verifier.
 Joe judged the previous `func_001F0E64` hybrid decision premature on 2026-09-08. Its final-class
 exception was withdrawn and the renewed work now has a canonical focused PURE_C exact result.
 Preserve that result. CBDC is now also provisionally focused-exact as recorded below; continue
-the remaining members, starting with `func_0020FC7C`. The previous
+the remaining members under the FC7C continuation status below. The previous
 [R2 decision](combat-discovery-supplement-r2.md) and experiment records remain historical
 evidence, not current completion authority. The former exact hybrid remains in Git/history;
 its historical source SHA-256 is
@@ -53,11 +53,25 @@ retain the useful intermediates and nearest counterexample. Earlier C1A1/53650 s
 nonexact reports remain historical inputs; do not restore them over the exact source or
 attribute their results to it. The complete thirteen-target final verifier remains pending.
 
-Proceed to `func_0020FC7C` with the existing complete-owner preparation and current research
-intake. Retain its accepted 324-byte owner including the trailing nop; the stale 320-byte
-assembly comment is not its boundary. Use the compatible opaque 0E64 declaration with a
-full-width unsigned selector. The remaining target list above stays intact; continue the
-other members under their existing preparation and dependency constraints.
+FC7C's current C source `C40F27E8925BCC501EB1F8D2A46BEC79A67393B274918BBA4C149A69A086D2BA`
+matches the first320 bytes, but its accepted324-byte owner includes a final nop absent from
+the compiler object. The focused check rejects the section shape. Its source, five actual
+relocations and failure artifacts are preserved under the R3 FC7C evidence directory; both
+live activation and linkage-target records are removed while the original ASM remains active.
+The accepted boundary is unchanged. Existing standalone native-tail handling is ineligible;
+the nearest aligned group start would import DB10 and twelve following owners, and current
+DB10 would make that producer hybrid. Do not expand group or tooling scope from this finding.
+The bounded [owner-tail assessment](../task-logs/combat-fc7c-owner-tail-assessment-r3.md)
+found no positive original alignment provenance or supported new source context. It authorizes
+no structural change. FC7C remains required PURE_C within this complete wave; it is not completed
+or dropped. Preserve its compatible opaque 0E64 declaration and full-width unsigned selector.
+
+1088C,1062C and10930 now also have canonical focused PURE_C exact results, with sole C ownership,
+accepted placements and all actual relocation words exact. Preserve their final sources and
+the [scalar-context comparisons](../task-logs/combat-supplement-scalar-contexts-r3.md); exact
+source/proof identities and the unchanged full-wave limit are in the R3 report and ignored
+`batch-1088c-1062c-10930.json` under its evidence root. Continue D590,C908,71F4,73CC,7A70,7C08,0C24
+under their existing preparation and dependency constraints, retaining unresolvedFC7C.
 
 For subsequent `func_0020CBDC` continuation, use the complete retail owner, accepted placement, relevant shared
 headers, [preparation](../task-logs/combat-supplement-cbdc-preparation-r1.md), accepted C4B8 ABI,

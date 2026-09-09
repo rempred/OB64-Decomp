@@ -1,0 +1,96 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "D181AA99C26995BED8C4131411C6287B71838B1D15F58D4C02F1C645D1AC13A1",
+  "observationId": "9522F463B8E2BA3F7D0A1A6B4068177D986FBDA2258F3E27F9C7A2F243F5D4EE",
+  "symbol": "func_0021062C",
+  "authored": {
+    "context": "Supplement scalar-width source contexts. Preserve whole sources and distinguish private comparisons, canonical focus and completed-wave acceptance.",
+    "effects": [
+      "scalar-width-context",
+      "source-comparison"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 109,
+          "path": "include/game/combat_types.h",
+          "sha256": "DD2B627C22F084DB4F668D27E8DE3C3F3D8FDFC352F690034FE3E1A5655959D6"
+        }
+      ],
+      "expandedSha256": "2434F95E1816DB6448C8702C70306CC1D4D2C53F3F971878960DCDBDEECF9AD9",
+      "sourceSha256": "061A538ACC885BB4DDF1364EDA2FB24BFE9F9DE229D8D204F593E797F18CF533"
+    },
+    "label": "initial",
+    "observedEffect": "Private PURE_C:260 bytes/frame0,one differing byte in one instruction,13 actual relocations. Emitted slti differs from retail sltiu.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "docs/Plans/task-logs/combat-supplement-scalar-contexts-r3.md",
+        "sha256": "46CBCE1EB4EE32693F62477FE10416A1A7A7073902DB14F70E4D3243728ECAD5"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Nonexact dispatch opcode; full-domain index arithmetic is also made explicit in the final source.",
+    "role": "counterexample",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Use the readable signed-selector switch and signed index subtraction in each short-circuit case."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 109,
+        "path": "include/game/combat_types.h",
+        "sha256": "DD2B627C22F084DB4F668D27E8DE3C3F3D8FDFC352F690034FE3E1A5655959D6"
+      }
+    ],
+    "expanded": {
+      "bytes": 847,
+      "sha256": "2434F95E1816DB6448C8702C70306CC1D4D2C53F3F971878960DCDBDEECF9AD9"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "061A538ACC885BB4DDF1364EDA2FB24BFE9F9DE229D8D204F593E797F18CF533"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-09-func_0021062C-d181aa99c2.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
