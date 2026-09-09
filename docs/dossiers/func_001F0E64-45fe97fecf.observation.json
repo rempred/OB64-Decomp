@@ -1,0 +1,98 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "45FE97FECF31A50B49B53621E0F45244A53FC3A63322DAF8A1B1B04D40F7FB95",
+  "observationId": "489891CC12E5EB14B3910C039BBCDEB9365DD3115CB854432F1748108220152B",
+  "symbol": "func_001F0E64",
+  "authored": {
+    "context": "Single-binding removal control for the full-width working-selector source. It is compared with the exact hybrid context and the separate near-exact pure reference; no direct ancestry to the near-exact halfword source is asserted.",
+    "effects": [
+      "binding-removal-counterexample",
+      "register-allocation-differs"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 109,
+          "path": "include/game/combat_types.h",
+          "sha256": "DD2B627C22F084DB4F668D27E8DE3C3F3D8FDFC352F690034FE3E1A5655959D6"
+        }
+      ],
+      "expandedSha256": "B99E43479B7737E3FB761ECB8F63E37CCB747370E687850EE9A683F0E38C01C0",
+      "sourceSha256": "F5F76A6B9C2E9BFF57CA2ADECFDCA5DDADACB12495FA4A400FFF68E57B25D209"
+    },
+    "label": "bound-removal",
+    "observedEffect": "PURE_C; private248 bytes/frame32,24 differing bytes/16 words,5 candidate relocations. The source keeps the complete input domain and all C computations.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "docs/Plans/task-logs/combat-0e64-value-width-r2.md",
+        "sha256": "FE741FF727C072CC43B28B08A445B4765EA37D4E40308A5E3452D18B33898993"
+      }
+    ],
+    "relatedCandidateIds": [
+      "26F8F2F7DC5F746B5498D38CF0895DD6FBEDE3C389D8DDCBB03C2BD4FF04FAC5"
+    ],
+    "remainingFailure": "Nonexact allocation/bytes remain. This establishes necessity of the binding in this tested context, not a universal impossibility of pure C.",
+    "role": "counterexample",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Remove the one register16 binding from the otherwise retained full-width working-selector implementation."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 109,
+        "path": "include/game/combat_types.h",
+        "sha256": "DD2B627C22F084DB4F668D27E8DE3C3F3D8FDFC352F690034FE3E1A5655959D6"
+      }
+    ],
+    "expanded": {
+      "bytes": 1373,
+      "sha256": "B99E43479B7737E3FB761ECB8F63E37CCB747370E687850EE9A683F0E38C01C0"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "F5F76A6B9C2E9BFF57CA2ADECFDCA5DDADACB12495FA4A400FFF68E57B25D209"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-09-func_001F0E64-45fe97fecf.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

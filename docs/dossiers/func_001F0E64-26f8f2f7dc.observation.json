@@ -1,0 +1,96 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "26F8F2F7DC5F746B5498D38CF0895DD6FBEDE3C389D8DDCBB03C2BD4FF04FAC5",
+  "observationId": "1D7E9386662D55CE88B69561A2178937E16C4B557A5BE9F46DC0F115D843B843",
+  "symbol": "func_001F0E64",
+  "authored": {
+    "context": "Best pure-C reference at the specific 0E64 authorization boundary, before the hybrid result. Eleven distinct C inputs had been measured. This input has authenticated diagnostic agreement and a private one-word residual.",
+    "effects": [
+      "one-word-residual",
+      "value-width-conflict"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 109,
+          "path": "include/game/combat_types.h",
+          "sha256": "DD2B627C22F084DB4F668D27E8DE3C3F3D8FDFC352F690034FE3E1A5655959D6"
+        }
+      ],
+      "expandedSha256": "6EDADA702CA7B728CB945ACB63D04D62C804CFD8D83C05172393ADB7AC28CBD1",
+      "sourceSha256": "8F8DFB18711540E97B0425E9CE4D886E09F6D1740C9F10421016237B2CE3642E"
+    },
+    "label": "halfword-signed-input",
+    "observedEffect": "PURE_C; private248-byte extent/frame32,2 differing bytes/1 word,5 candidate relocations. At0x28 the candidate tests original full-width a1 rather than the full bits physically materialized in s0. Authenticated initial RTL separates SI73 and HI77; their allocation conflict explains the register split.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "docs/Plans/task-logs/combat-0e64-value-width-r2.md",
+        "sha256": "FE741FF727C072CC43B28B08A445B4765EA37D4E40308A5E3452D18B33898993"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "The target remains nonexact and has no completed-wave acceptance. Testing the narrowed value would change the full input domain, including0x10000. No claim that pure C is inherently impossible.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Keep the full-width zero predicate separate from the signed halfword value used for the final stored result; preserve the random-call sequence, unsigned arithmetic, sentinel and original stores/calls."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 109,
+        "path": "include/game/combat_types.h",
+        "sha256": "DD2B627C22F084DB4F668D27E8DE3C3F3D8FDFC352F690034FE3E1A5655959D6"
+      }
+    ],
+    "expanded": {
+      "bytes": 1343,
+      "sha256": "6EDADA702CA7B728CB945ACB63D04D62C804CFD8D83C05172393ADB7AC28CBD1"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "8F8DFB18711540E97B0425E9CE4D886E09F6D1740C9F10421016237B2CE3642E"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-09-func_001F0E64-26f8f2f7dc.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

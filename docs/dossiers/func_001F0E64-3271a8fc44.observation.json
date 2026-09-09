@@ -1,0 +1,98 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "3271A8FC44C4470AA18BC637FBB38FE4A7856F8C33DC1E915EBAB309E2424DDE",
+  "observationId": "74B47C753E95A75909BED72E4306850F2B776080B724420BF16B5DBD3E946E5E",
+  "symbol": "func_001F0E64",
+  "authored": {
+    "context": "Full-domain-correct counterexample compared with the near-exact pure reference. It tests the independent reader's specific delayed-conversion discriminator; this relation records comparison, not asserted direct source ancestry.",
+    "effects": [
+      "late-conversion-counterexample",
+      "initial-copy-lost"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 109,
+          "path": "include/game/combat_types.h",
+          "sha256": "DD2B627C22F084DB4F668D27E8DE3C3F3D8FDFC352F690034FE3E1A5655959D6"
+        }
+      ],
+      "expandedSha256": "73A960870FC976FBBD69DE83D95647C36609F7E45D9A1337D91E2B5EF50296C1",
+      "sourceSha256": "39473792300D58E2CEC7E7D87BF357195474513D75B3E02A907D9AE6BD07E919"
+    },
+    "label": "late-halfword",
+    "observedEffect": "PURE_C; private248 bytes/frame32,119 differing bytes/38 words,5 candidate relocations. The original initial copy disappears and selector remains in a1. This source does not resolve the measured conflict.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "docs/Plans/task-logs/combat-0e64-value-width-r2.md",
+        "sha256": "FE741FF727C072CC43B28B08A445B4765EA37D4E40308A5E3452D18B33898993"
+      }
+    ],
+    "relatedCandidateIds": [
+      "26F8F2F7DC5F746B5498D38CF0895DD6FBEDE3C389D8DDCBB03C2BD4FF04FAC5"
+    ],
+    "remainingFailure": "Nonexact bytes/allocation remain; this control is unselected. It rejects this concrete transfer as a solution, not every possible pure-C reconstruction.",
+    "role": "counterexample",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Keep selector selection and its zero/sentinel tests full-width, then convert the chosen value to short before the later adjustment and stores."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 109,
+        "path": "include/game/combat_types.h",
+        "sha256": "DD2B627C22F084DB4F668D27E8DE3C3F3D8FDFC352F690034FE3E1A5655959D6"
+      }
+    ],
+    "expanded": {
+      "bytes": 1361,
+      "sha256": "73A960870FC976FBBD69DE83D95647C36609F7E45D9A1337D91E2B5EF50296C1"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "39473792300D58E2CEC7E7D87BF357195474513D75B3E02A907D9AE6BD07E919"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-09-func_001F0E64-3271a8fc44.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

@@ -1,0 +1,48 @@
+#include "game/combat_types.h"
+
+typedef struct Func001F0E64Record {
+    int field_00;
+    u16 field_04;
+    short field_06;
+    u16 field_08, field_0A;
+    u16 field_0C, field_0E, field_10;
+    unsigned char field_12[16];
+    unsigned char field_22[16];
+    unsigned char field_32[20];
+    unsigned char field_46, field_47, field_48;
+} Func001F0E64Record;
+
+extern int rand(void);
+extern void func_8009C970(void *, int, unsigned int);
+extern void func_80093380(void *, unsigned int);
+
+void func_001F0E64(Func001F0E64Record *record, u32 incomingSelector)
+{
+    u32 selector = incomingSelector;
+    u32 second, third;
+
+    /* Only the sentinel test narrows the incoming selector. */
+    if ((unsigned char)selector == 0xFF) return;
+    if (selector == 0 && (record->field_48 & 2)) {
+        selector = rand();
+        second = rand();
+        third = rand();
+        selector <<= 18;
+        selector &= 0x0C000000u;
+        second <<= 15;
+        selector |= second;
+        selector |= third;
+        selector %= 5u;
+    }
+    if (record->field_48 & 1) selector += 50;
+    record->field_04 = selector;
+    record->field_06 = -1;
+    record->field_08 = 0;
+    record->field_10 = 0;
+    record->field_0E = 0;
+    record->field_0C = 0;
+    record->field_46 = 0;
+    record->field_47 = 0;
+    func_8009C970(record->field_12, 0xFF, 16);
+    func_80093380(record->field_22, 16);
+}

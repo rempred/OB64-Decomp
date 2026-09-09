@@ -1,0 +1,100 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "9E76007C57D8789668F49F543B6404472ACCBE06A97594D8EFBC2BB25661D722",
+  "observationId": "DA123E7C54E5432775F6F991FEE38FE383286E7F161CE1F8AF51B75F8B1A1572",
+  "symbol": "func_001F0E64",
+  "authored": {
+    "context": "Final one-binding0E64 source after the Director's documented specific authorization at0a0d17a7. The other12 supplement targets remain PURE_C. Final comments preserve the first exact bound input's expanded compiler input.",
+    "effects": [
+      "focused-target-exact",
+      "single-binding",
+      "full-input-domain-preserved"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 109,
+          "path": "include/game/combat_types.h",
+          "sha256": "DD2B627C22F084DB4F668D27E8DE3C3F3D8FDFC352F690034FE3E1A5655959D6"
+        }
+      ],
+      "expandedSha256": "DDB1AC3AF949780428F5606104B86C097C7F521F3B7C7FBCC5CEFA38DB4E773B",
+      "sourceSha256": "0C3B8385D4ECBEC09A1345B998A15BF61D170ED94DB05F1C6E1425ED975654A8"
+    },
+    "label": "hybrid-final",
+    "observedEffect": "Canonical focused report9647DDBC6BCDB6776CFDC7E58A78E9F2A442F0204360AAF246AA69D22F1BB7CC confirms HYBRID_C,248 bytes,sole objects/c/func_001F0E64.o,no fallback/fill,accepted placement,all5 relocation words and contract MATCH,zero different linked bytes/words. Private frame32. One binding is retained; its removal control differs24 bytes/16 words.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "docs/Plans/task-logs/combat-0e64-value-width-r2.md",
+        "sha256": "FE741FF727C072CC43B28B08A445B4765EA37D4E40308A5E3452D18B33898993"
+      }
+    ],
+    "relatedCandidateIds": [
+      "26F8F2F7DC5F746B5498D38CF0895DD6FBEDE3C389D8DDCBB03C2BD4FF04FAC5",
+      "45FE97FECF31A50B49B53621E0F45244A53FC3A63322DAF8A1B1B04D40F7FB95"
+    ],
+    "remainingFailure": "The whole13-target supplement is still incomplete and requires its one final full-ROM verifier. This hybrid is not matching C. The original pure-C value/coalescing history remains unresolved; minimality is bounded to measured controls.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Keep the real working selector full-width and bind it to register16. Preserve every test, unsigned computation, call and store in C; add comments explaining the source-width issue. No assembly template or explicit instruction remains."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 109,
+        "path": "include/game/combat_types.h",
+        "sha256": "DD2B627C22F084DB4F668D27E8DE3C3F3D8FDFC352F690034FE3E1A5655959D6"
+      }
+    ],
+    "expanded": {
+      "bytes": 1393,
+      "sha256": "DDB1AC3AF949780428F5606104B86C097C7F521F3B7C7FBCC5CEFA38DB4E773B"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "HYBRID_C",
+    "sourceSha256": "0C3B8385D4ECBEC09A1345B998A15BF61D170ED94DB05F1C6E1425ED975654A8"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-09-func_001F0E64-9e76007c57.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
