@@ -8,6 +8,7 @@
     "buildProvenanceSha256": "6B5C9B582F95B546E9AEDFD44A76E4F4D756AD0DF658D02EA96CCF503CEB1BD7"
   },
   "targets": [
+    { "symbol": "func_0020CBDC", "source": "src/lib/func_0020CBDC.c" },
     { "symbol": "func_001F0E64", "source": "src/lib/func_001F0E64.c" },
     { "symbol": "func_001F3C00", "source": "src/lib/func_001F3C00.c" },
     { "symbol": "func_001F1218", "source": "src/lib/func_001F1218.c" },
