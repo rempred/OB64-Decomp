@@ -106,18 +106,16 @@ static __inline__ void finish_pair(SupplementActor *actor,
     secondary->primary = primary;
     primary->primary = primary;
 }
-/* The loop keeps the primary callback as a parameter and the other constants
- * local to preserve the measured temporary lifetimes. */
 static __inline__ void finish_loop_pair(SupplementActor *actor,
     SupplementChild *primary, SupplementChild *secondary,
     void (*firstCallback)(void),
-    int secondaryFactor)
+    int primaryFactor, int secondaryFactor)
 {
     secondary->actor = actor;
     primary->actor = actor;
     primary->callback = firstCallback;
     secondary->callback = func_001F89B4;
-    primary->field_34 = 255;
+    primary->field_34 = primaryFactor;
     secondary->field_34 = secondaryFactor;
     secondary->resource = actor->resource;
     primary->resource = secondary->resource;
@@ -171,7 +169,6 @@ void func_0020CBDC(SupplementActor *actor, int mode)
         int pairIndex = 0;
         int count = func_0020D444(actor->field_20, actor->field_22);
         while (pairIndex < count) {
-            /* Shared indexed addresses retain one cursor per array. */
             const int *offsets = D_801CEDFC + pairIndex * 2;
             SupplementActor *slots = (SupplementActor *)((unsigned char *)actor + pairIndex * 4);
             SupplementChild *primary, *secondary;
@@ -182,7 +179,7 @@ void func_0020CBDC(SupplementActor *actor, int mode)
             secondary = allocate_child(actor->resource, COORD(x, dx), actor->y, COORD(z, dz));
             secondaryFactor = D_801CE8FC;
             slots->child3 = secondary;
-            finish_loop_pair(actor, primary, secondary, func_001F7148, secondaryFactor);
+            finish_loop_pair(actor, primary, secondary, func_001F7148, 255, secondaryFactor);
             if (!mode) {
                 set_pair_mode(slots, 2);
             }

@@ -21,7 +21,8 @@ unchanged source or a worker refresh does not require repeating its verifier.
 
 Joe judged the previous `func_001F0E64` hybrid decision premature on 2026-09-08. Its final-class
 exception was withdrawn and the renewed work now has a canonical focused PURE_C exact result.
-Preserve that result and resume CBDC. The previous
+Preserve that result. CBDC is now also provisionally focused-exact as recorded below; continue
+the remaining members, starting with `func_0020FC7C`. The previous
 [R2 decision](combat-discovery-supplement-r2.md) and experiment records remain historical
 evidence, not current completion authority. The former exact hybrid remains in Git/history;
 its historical source SHA-256 is
@@ -43,15 +44,20 @@ until the full wave passes; do not repeat the completed work or revert to the hi
 The earlier pure best and failed approaches remain in research intake. A trial count or a
 blocker in one source arrangement did not justify the previous stopping decision.
 
-CBDC's improved provisional source is safely committed at the baseline above, SHA-256
-`C1A1C2FE82C95D9AA234D6A165F268F215155B8BB7C1D9A7B674D78F9A879A57`.
-Its private PURE_C comparison has the correct 2136-byte extent, frame 80 and 93 differing bytes
-in 62 words. The actual 80 relocation entries are recorded. Preserve this source and its
-[R3 report](../task-logs/combat-discovery-supplement-r3.md). The earlier
-200-byte/93-word canonical result is separately bound and must not be attributed to this
-newer source. CBDC remains nonexact and unaccepted; return to its remaining frame/lifetime
-questions now, preserving the useful frame-88 `conditional-step-while` intermediate alongside
-the current exact-extent best.
+CBDC now has canonical focused PURE_C exact source
+`0D0F25C035C238F7A7D43DA1837A1496E925ECAF385B283299D4748A2C05CE57`, 2136 bytes/frame 88,
+with all 80 actual relocation words exact and sole C ownership at the accepted placement.
+Preserve this result and the [R3 report](../task-logs/combat-discovery-supplement-r3.md).
+The [frame and initializer comparisons](../task-logs/combat-cbdc-loop-frame-and-initializer-r3.md)
+retain the useful intermediates and nearest counterexample. Earlier C1A1/53650 sources and
+nonexact reports remain historical inputs; do not restore them over the exact source or
+attribute their results to it. The complete thirteen-target final verifier remains pending.
+
+Proceed to `func_0020FC7C` with the existing complete-owner preparation and current research
+intake. Retain its accepted 324-byte owner including the trailing nop; the stale 320-byte
+assembly comment is not its boundary. Use the compatible opaque 0E64 declaration with a
+full-width unsigned selector. The remaining target list above stays intact; continue the
+other members under their existing preparation and dependency constraints.
 
 For subsequent `func_0020CBDC` continuation, use the complete retail owner, accepted placement, relevant shared
 headers, [preparation](../task-logs/combat-supplement-cbdc-preparation-r1.md), accepted C4B8 ABI,

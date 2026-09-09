@@ -1,0 +1,98 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "79C5026BBD2691002F8FD5B54C92E74288E6A56F7FA91488F222D7D57BF20CCD",
+  "observationId": "9FEAC2B1A21BB57D04F2A69E0DBE09674D9006F4050896CB8055224140435C26",
+  "symbol": "func_0020CBDC",
+  "authored": {
+    "context": "CBDC complete-frame and initializer source contexts. Preserve full sources and phase identities; private comparison, source classification, canonical focus and complete-wave acceptance remain distinct.",
+    "effects": [
+      "non-emitting-comparison-home",
+      "loop-entry-frame"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 109,
+          "path": "include/game/combat_types.h",
+          "sha256": "DD2B627C22F084DB4F668D27E8DE3C3F3D8FDFC352F690034FE3E1A5655959D6"
+        }
+      ],
+      "expandedSha256": "00A1231D13EB00024C0C6189AACDF65080CBB857634437A6541E95EC50E32258",
+      "sourceSha256": "53650FEC901E880F0064E456289E2EADD1C435379646D6A5B669F5ED5B16A0A9"
+    },
+    "label": "conditional-step-while",
+    "observedEffect": "Private PURE_C:2132 bytes/frame88,1308 differing bytes/424 words,80 relocations. All retail stack-access offsets match with no added local traffic. Authenticated probe shows abandoned comparison USE398 receives unused sp+2C home; setup moves and one filled delay slot shorten output.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "docs/Plans/task-logs/combat-cbdc-loop-frame-and-initializer-r3.md",
+        "sha256": "5773D556CFB464CF5EEBC91C1B54DC8E5D0B64F8BFE78B6C2842152B6692EE8A"
+      }
+    ],
+    "relatedCandidateIds": [
+      "5C520124B868585E1DC077B0AD4457A8655B18DF51673E32E51799979D6C4D9A"
+    ],
+    "remainingFailure": "Nonexact and smaller target. Useful frame intermediate despite worse score; not a missing constructor operation or acceptance.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Use a single signed-index while test instead of the explicit positive-count guard and do-loop, retaining the complete surrounding constructor context."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 109,
+        "path": "include/game/combat_types.h",
+        "sha256": "DD2B627C22F084DB4F668D27E8DE3C3F3D8FDFC352F690034FE3E1A5655959D6"
+      }
+    ],
+    "expanded": {
+      "bytes": 12496,
+      "sha256": "00A1231D13EB00024C0C6189AACDF65080CBB857634437A6541E95EC50E32258"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "53650FEC901E880F0064E456289E2EADD1C435379646D6A5B669F5ED5B16A0A9"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-09-func_0020CBDC-79c5026bbd.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

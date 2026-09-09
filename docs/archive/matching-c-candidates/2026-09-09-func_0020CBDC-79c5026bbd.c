@@ -75,13 +75,13 @@ static __inline__ int offset_kind(SupplementActor *actor)
     }
 }
 
-#define set_pair_mode(slots, number) { \
+#define set_pair_mode(slots, number) do { \
     SupplementChild *first = (slots)->child0; \
     SupplementChild *second = (slots)->child3; \
     int value = (number); \
     second->field_8C = value; \
     first->field_8C = value; \
-}
+} while (0)
 /* Coordinate additions retain the low 32 bits before the signed call ABI. */
 #define COORD(field, delta) ((int)((u32)actor->field + (u32)(delta)))
 static __inline__ SupplementChild *allocate_child(int resource, int x, int y, int z)
@@ -106,28 +106,10 @@ static __inline__ void finish_pair(SupplementActor *actor,
     secondary->primary = primary;
     primary->primary = primary;
 }
-/* The loop keeps the primary callback as a parameter and the other constants
- * local to preserve the measured temporary lifetimes. */
-static __inline__ void finish_loop_pair(SupplementActor *actor,
-    SupplementChild *primary, SupplementChild *secondary,
-    void (*firstCallback)(void),
-    int secondaryFactor)
-{
-    secondary->actor = actor;
-    primary->actor = actor;
-    primary->callback = firstCallback;
-    secondary->callback = func_001F89B4;
-    primary->field_34 = 255;
-    secondary->field_34 = secondaryFactor;
-    secondary->resource = actor->resource;
-    primary->resource = secondary->resource;
-    secondary->primary = primary;
-    primary->primary = primary;
-}
 #define FINISH_PAIR() finish_pair(actor, primary, secondary, func_001F7148, func_001F89B4, 255, secondaryFactor)
 /* Both calls reload actor coordinates; a shared captured position would hide
  * the allocator's opportunity to change them between calls. */
-#define ALLOC_PAIR(slot, dx, dy, dz) { \
+#define ALLOC_PAIR(slot, dx, dy, dz) do { \
     SupplementChild *primary, *secondary; \
     int secondaryFactor; \
     primary = allocate_child(actor->resource, COORD(x, dx), COORD(y, dy), COORD(z, dz)); \
@@ -136,7 +118,7 @@ static __inline__ void finish_loop_pair(SupplementActor *actor,
     secondaryFactor = D_801CE8FC; \
     ((SupplementChild **)actor)[(slot) + 3] = secondary; \
     FINISH_PAIR(); \
-}
+} while (0)
 
 void func_0020CBDC(SupplementActor *actor, int mode)
 {
@@ -170,10 +152,9 @@ void func_0020CBDC(SupplementActor *actor, int mode)
     if (kind1(actor)) {
         int pairIndex = 0;
         int count = func_0020D444(actor->field_20, actor->field_22);
+        const int *offsets = D_801CEDFC;
+        SupplementActor *slots = actor;
         while (pairIndex < count) {
-            /* Shared indexed addresses retain one cursor per array. */
-            const int *offsets = D_801CEDFC + pairIndex * 2;
-            SupplementActor *slots = (SupplementActor *)((unsigned char *)actor + pairIndex * 4);
             SupplementChild *primary, *secondary;
             int secondaryFactor;
             int dx = offsets[0], dz = offsets[1];
@@ -182,10 +163,14 @@ void func_0020CBDC(SupplementActor *actor, int mode)
             secondary = allocate_child(actor->resource, COORD(x, dx), actor->y, COORD(z, dz));
             secondaryFactor = D_801CE8FC;
             slots->child3 = secondary;
-            finish_loop_pair(actor, primary, secondary, func_001F7148, secondaryFactor);
+            FINISH_PAIR();
             if (!mode) {
                 set_pair_mode(slots, 2);
+                slots = (SupplementActor *)((unsigned char *)slots + 4);
+            } else {
+                slots = (SupplementActor *)((unsigned char *)slots + 4);
             }
+            offsets += 2;
             pairIndex++;
         }
     } else if (offset_kind(actor)) {
