@@ -419,7 +419,7 @@ function main() {
   const romBytes = fs.readFileSync(romFile);
   const mapText = fs.readFileSync(mapFile, 'utf8');
   const buildReport = readJson(path.join(output, 'build-report.json'));
-  if (buildReport.schemaVersion !== 5 || buildReport.status !== 'pass'
+  if (buildReport.schemaVersion !== 6 || buildReport.status !== 'pass'
       || buildReport.verification.schemaVersion !== 5 || buildReport.verification.status !== 'pass') {
     fail('Phase 8 source-to-object report schema drift');
   }

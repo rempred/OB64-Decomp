@@ -9,6 +9,7 @@ const {
   loadWorkbenchModel,
   publicTarget,
   resolveTarget,
+  historicalSymbols,
 } = require('./lib/matching/target_model');
 const {
   initializeStore,
@@ -512,7 +513,7 @@ function preserveCandidate(workbench, candidateId, note, observationId) {
   if (observationId) return preserveResearch(workbench, candidateId, observationId, note);
   if (!note) throw new Error('preserve requires --note describing why the candidate is useful');
   const { candidate, run } = latestCandidateRun(candidateId);
-  const target = workbench.targets.find((item) => item.targetId === candidate.target_id);
+  const target = [...workbench.targets, ...(workbench.logicalTargets || [])].find((item) => item.targetId === candidate.target_id);
   if (!target) throw new Error('candidate belongs to a stale or unknown target model');
   const date = new Date().toISOString().slice(0, 10);
   const short = candidateId.slice(0, 10).toLowerCase();
@@ -610,6 +611,7 @@ async function main(argv = process.argv.slice(2)) {
     const history = requestStore({ action: 'query', name: 'history', args: {
       modelId: workbench.modelId,
       symbol: target.symbol,
+      symbols: historicalSymbols(target),
       limit: 5,
       ...comparisonQueryProvenance(),
     } });
@@ -622,6 +624,7 @@ async function main(argv = process.argv.slice(2)) {
     const storedRows = requestStore({ action: 'query', name: command, args: {
       modelId: workbench.modelId,
       symbol: target.symbol,
+      symbols: historicalSymbols(target),
       limit: numeric(options.limit, '--limit', 20),
       includeDetails: true,
       ...comparisonQueryProvenance(),
@@ -664,7 +667,7 @@ async function main(argv = process.argv.slice(2)) {
     const right = latestCandidateRun(positional[1]);
     if (!left.run?.object_text || !right.run?.object_text) throw new Error('both candidates require successful object compilations');
     if (left.candidate.target_id !== right.candidate.target_id) throw new Error('candidate comparison requires the same exact target identity');
-    const target = workbench.targets.find((item) => item.targetId === left.candidate.target_id);
+    const target = [...workbench.targets, ...(workbench.logicalTargets || [])].find((item) => item.targetId === left.candidate.target_id);
     if (!target) throw new Error('candidate comparison requires a target in the currently accepted model');
     const leftRelocationsAvailable = Array.isArray(left.run.relocations);
     const rightRelocationsAvailable = Array.isArray(right.run.relocations);
@@ -696,7 +699,7 @@ async function main(argv = process.argv.slice(2)) {
     }
     const record = latestCandidateRun(positional[0]);
     if (!record.run?.object_text) throw new Error('case-cfg requires a successfully compiled candidate');
-    const target = workbench.targets.find((item) => item.targetId === record.candidate.target_id);
+    const target = [...workbench.targets, ...(workbench.logicalTargets || [])].find((item) => item.targetId === record.candidate.target_id);
     if (!target) throw new Error('case-cfg candidate target is stale or absent from the accepted model');
     const mapFile = path.resolve(options['case-map']);
     const map = JSON.parse(fs.readFileSync(mapFile, 'utf8'));

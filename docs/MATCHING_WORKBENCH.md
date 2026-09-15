@@ -1,5 +1,8 @@
 # Optional Matching Workbench
 
+See [logical functions and physical owners](LOGICAL_FUNCTIONS.md) for complete
+multi-body preparation, corrected entry aliases, coverage limits, and history identity.
+
 ## Research intake
 
 `node tools/match.js intake <symbol> --limit 20 --json` reads preserved dossier observations

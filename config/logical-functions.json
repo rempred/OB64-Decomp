@@ -1,0 +1,3935 @@
+{
+  "schemaVersion": 1,
+  "profile": "us-rev0",
+  "evidence": {
+    "review": "splat-function-recheck/case-review/review/FINAL.md",
+    "reviewSha256": "35AFD4691DADF3006374554FBA2171878636B1500DCFF1D6244717333A3BD4B9",
+    "caseIndexSha256": "E5B516468830C3F511929F350A41AE9227D1068945B4005CE8B50D6D0333DFAF"
+  },
+  "preservedProductionEnvelopes": [
+    {
+      "symbol": "func_000d0150",
+      "fragments": [
+        {
+          "rowIndex": 1877,
+          "romStart": 852304,
+          "romEndExclusive": 852872,
+          "file": "asm/original/rev0/lib/func_000d0150.s",
+          "sha256": "5AAFC7450940AB2912AD0FDCB10375F809F17AFAE2F8AF19E4032DC52F98EEEF"
+        }
+      ],
+      "compilerTextFunctions": [
+        {
+          "symbol": "func_000d0150",
+          "offset": "0x00000000",
+          "offsetNumber": 0,
+          "bytes": 568,
+          "binding": "GLOBAL",
+          "entryEvidence": "owner"
+        }
+      ],
+      "evidence": "Existing accepted compiler producer includes explicit alignment and retained next-body setup in its568B physical owner. This preserves that producer, not a standalone logical function claim."
+    }
+  ],
+  "padding": [
+    {
+      "romStart": 26840,
+      "romEndExclusive": 26848,
+      "expectedBytesSha256": "AF5570F5A1810B7AF78CAF4BC70A660F0DF51E42BAF91D4DE5B2328DE0E83DFC",
+      "evidence": "Reviewed executable-end/leading-padding distinction; canonical words are zero. Not a function."
+    },
+    {
+      "romStart": 69992,
+      "romEndExclusive": 70000,
+      "expectedBytesSha256": "AF5570F5A1810B7AF78CAF4BC70A660F0DF51E42BAF91D4DE5B2328DE0E83DFC",
+      "evidence": "Reviewed executable-end/leading-padding distinction; canonical words are zero. Not a function."
+    },
+    {
+      "romStart": 131932,
+      "romEndExclusive": 131936,
+      "expectedBytesSha256": "DF3F619804A92FDB4057192DC43DD748EA778ADC52BC498CE80524C014B81119",
+      "evidence": "Reviewed executable-end/leading-padding distinction; canonical words are zero. Not a function."
+    },
+    {
+      "romStart": 131944,
+      "romEndExclusive": 131952,
+      "expectedBytesSha256": "AF5570F5A1810B7AF78CAF4BC70A660F0DF51E42BAF91D4DE5B2328DE0E83DFC",
+      "evidence": "Reviewed executable-end/leading-padding distinction; canonical words are zero. Not a function."
+    },
+    {
+      "romStart": 150856,
+      "romEndExclusive": 150864,
+      "expectedBytesSha256": "AF5570F5A1810B7AF78CAF4BC70A660F0DF51E42BAF91D4DE5B2328DE0E83DFC",
+      "evidence": "Reviewed executable-end/leading-padding distinction; canonical words are zero. Not a function."
+    },
+    {
+      "romStart": 713368,
+      "romEndExclusive": 713376,
+      "expectedBytesSha256": "AF5570F5A1810B7AF78CAF4BC70A660F0DF51E42BAF91D4DE5B2328DE0E83DFC",
+      "evidence": "Reviewed executable-end/leading-padding distinction; canonical words are zero. Not a function."
+    },
+    {
+      "romStart": 757208,
+      "romEndExclusive": 757216,
+      "expectedBytesSha256": "AF5570F5A1810B7AF78CAF4BC70A660F0DF51E42BAF91D4DE5B2328DE0E83DFC",
+      "evidence": "Reviewed executable-end/leading-padding distinction; canonical words are zero. Not a function."
+    },
+    {
+      "romStart": 762548,
+      "romEndExclusive": 762560,
+      "expectedBytesSha256": "15EC7BF0B50732B49F8228E07D24365338F9E3AB994B00AF08E5A3BFFE55FD8B",
+      "evidence": "Reviewed executable-end/leading-padding distinction; canonical words are zero. Not a function."
+    },
+    {
+      "romStart": 852852,
+      "romEndExclusive": 852864,
+      "expectedBytesSha256": "15EC7BF0B50732B49F8228E07D24365338F9E3AB994B00AF08E5A3BFFE55FD8B",
+      "evidence": "Reviewed executable-end/leading-padding distinction; canonical words are zero. Not a function."
+    },
+    {
+      "romStart": 940380,
+      "romEndExclusive": 940384,
+      "expectedBytesSha256": "DF3F619804A92FDB4057192DC43DD748EA778ADC52BC498CE80524C014B81119",
+      "evidence": "Reviewed executable-end/leading-padding distinction; canonical words are zero. Not a function."
+    },
+    {
+      "romStart": 1182652,
+      "romEndExclusive": 1182656,
+      "expectedBytesSha256": "DF3F619804A92FDB4057192DC43DD748EA778ADC52BC498CE80524C014B81119",
+      "evidence": "Reviewed executable-end/leading-padding distinction; canonical words are zero. Not a function."
+    },
+    {
+      "romStart": 1212244,
+      "romEndExclusive": 1212256,
+      "expectedBytesSha256": "15EC7BF0B50732B49F8228E07D24365338F9E3AB994B00AF08E5A3BFFE55FD8B",
+      "evidence": "Reviewed executable-end/leading-padding distinction; canonical words are zero. Not a function."
+    },
+    {
+      "romStart": 1224196,
+      "romEndExclusive": 1224208,
+      "expectedBytesSha256": "15EC7BF0B50732B49F8228E07D24365338F9E3AB994B00AF08E5A3BFFE55FD8B",
+      "evidence": "Reviewed executable-end/leading-padding distinction; canonical words are zero. Not a function."
+    },
+    {
+      "romStart": 1433448,
+      "romEndExclusive": 1433456,
+      "expectedBytesSha256": "AF5570F5A1810B7AF78CAF4BC70A660F0DF51E42BAF91D4DE5B2328DE0E83DFC",
+      "evidence": "Reviewed executable-end/leading-padding distinction; canonical words are zero. Not a function."
+    },
+    {
+      "romStart": 2622676,
+      "romEndExclusive": 2622688,
+      "expectedBytesSha256": "15EC7BF0B50732B49F8228E07D24365338F9E3AB994B00AF08E5A3BFFE55FD8B",
+      "evidence": "Reviewed executable-end/leading-padding distinction; canonical words are zero. Not a function."
+    }
+  ],
+  "unavailableBodies": [
+    {
+      "romStart": 1540800,
+      "romEndExclusive": 1541148,
+      "evidence": {
+        "caseId": "entry:001782C0",
+        "status": "known-entry-or-ownership",
+        "rationale": "Source explicitly documents leading nop1782BC and setup at1782C0 before frame1782C8. Candidate reaches the sole return178414/18, coinciding with owner end. This is existing body after padding; unknown runtime mapping does not prevent that placement-independent conclusion."
+      },
+      "reason": "runtime-placement-unqualified"
+    },
+    {
+      "romStart": 1541200,
+      "romEndExclusive": 1542724,
+      "evidence": {
+        "caseId": "entry:00178450",
+        "status": "known-entry-or-ownership",
+        "rationale": "Source explicitly documents three leading padding words178444..4C, then setup and frame at178450/58. First body ends178A44 with balanced return178A3C/40. Detector extends through the next routine interior to179034; that oversized span is rejected. There is no additional entry created by skipping known padding."
+      },
+      "reason": "runtime-placement-unqualified"
+    },
+    {
+      "romStart": 1871952,
+      "romEndExclusive": 1871980,
+      "evidence": {
+        "caseId": "entry:001C9050",
+        "status": "known-entry-or-ownership",
+        "rationale": "Source explicitly preserves this mini-cluster with candidates1C904C/1C9050 and returns1C9064/1C906C. Skipping the leading nop gives the same wrapper, ending1C906C; a separate following no-op remains a distinct unresolved identity question. Placement of the JAL is unknown."
+      },
+      "reason": "runtime-placement-unqualified"
+    },
+    {
+      "romStart": 2831104,
+      "romEndExclusive": 2831508,
+      "evidence": {
+        "caseId": "accepted-primary",
+        "status": "accepted-primary-before-reviewed-secondary",
+        "rationale": "Preserved accepted primary entry; endpoint closes at JR ra plus delay slot before the earliest reviewed candidate. Unproven following candidates remain unknown coverage."
+      },
+      "reason": "runtime-placement-unqualified"
+    },
+    {
+      "romStart": 2831508,
+      "romEndExclusive": 2832132,
+      "evidence": {
+        "caseId": "entry:002B3494",
+        "status": "known-entry-or-ownership",
+        "rationale": "Source func_002B3300.s:11 already identifies3494/3498 as next-body preamble retained to fill the tile. v0 is loaded there and consumed by store2B34D4 before any redefinition, after new frame at349C. Complete following body returns36FC/3700. Logical start3494 is supported without claiming unproven runtime mapping; not an additional routine beyond349C."
+      },
+      "reason": "runtime-placement-unqualified"
+    }
+  ],
+  "bodies": [
+    {
+      "romStart": 4384,
+      "romEndExclusive": 4884,
+      "evidence": {
+        "caseId": "accepted-primary",
+        "status": "accepted-primary-before-reviewed-secondary",
+        "rationale": "Preserved accepted primary entry; endpoint closes at JR ra plus delay slot before the earliest reviewed candidate. Unproven following candidates remain unknown coverage."
+      },
+      "symbol": "func_00001120",
+      "aliases": [],
+      "expectedBytesSha256": "DBAD489B9AD8D5C688648DF7B90F00BBD116D1E3ADDCBCE104B1C356B704B488",
+      "fragments": [
+        {
+          "rowIndex": 3,
+          "romStart": 4384,
+          "romEndExclusive": 4884,
+          "ownerOffset": 0,
+          "bytes": 500,
+          "vramStart": 2147945760,
+          "sectionName": ".ob64.r0003",
+          "placementKind": "early-boot-linear",
+          "overlayDescriptorId": null,
+          "loadSlabId": null,
+          "file": "asm/original/rev0/boot/resource_arena_register.s",
+          "sha256": "CE01811BE28559AEA3A0DAC897E91603E20DEEA6FA759056370068090FB77141"
+        }
+      ]
+    },
+    {
+      "romStart": 4884,
+      "romEndExclusive": 4912,
+      "evidence": {
+        "caseId": "entry:00001314",
+        "status": "known-entry-or-ownership",
+        "rationale": "Seven-instruction leaf; last store is the return delay slot. Signed offsets from lui 0x800B resolve to 0x800AEDE0/2, correcting old dossier addresses 0x800BEDE0/2. The complete proposed body and predecessor return/delay slot were inspected against normalized ROM and physical source words. Mapped JAL target words reproduce under accepted source/target slices. No direct noncall entry from outside the body, shared tail, or cross-cut branch/jump is established by the mapped edge census. Existing dossier already preserves this secondary within one physical owner; logical independence does not require a new assembly file."
+      },
+      "symbol": "func_00001314",
+      "aliases": [],
+      "expectedBytesSha256": "C67858ACE8C06A17FEFE7B8D12782518353403E9727A74B175DD6E9EA585D827",
+      "fragments": [
+        {
+          "rowIndex": 3,
+          "romStart": 4884,
+          "romEndExclusive": 4912,
+          "ownerOffset": 500,
+          "bytes": 28,
+          "vramStart": 2147946260,
+          "sectionName": ".ob64.r0003",
+          "placementKind": "early-boot-linear",
+          "overlayDescriptorId": null,
+          "loadSlabId": null,
+          "file": "asm/original/rev0/boot/resource_arena_register.s",
+          "sha256": "CE01811BE28559AEA3A0DAC897E91603E20DEEA6FA759056370068090FB77141"
+        }
+      ]
+    },
+    {
+      "romStart": 6724,
+      "romEndExclusive": 7504,
+      "evidence": {
+        "caseId": "accepted-primary",
+        "status": "accepted-primary-before-reviewed-secondary",
+        "rationale": "Preserved accepted primary entry; endpoint closes at JR ra plus delay slot before the earliest reviewed candidate. Unproven following candidates remain unknown coverage."
+      },
+      "symbol": "func_00001A44",
+      "aliases": [],
+      "expectedBytesSha256": "4B896C082BE980500BF9B04BEF6CC2FE48309BDD65C027BA0665F5F299DDFCA5",
+      "fragments": [
+        {
+          "rowIndex": 10,
+          "romStart": 6724,
+          "romEndExclusive": 7504,
+          "ownerOffset": 0,
+          "bytes": 780,
+          "vramStart": 2147948100,
+          "sectionName": ".ob64.r0010",
+          "placementKind": "early-boot-linear",
+          "overlayDescriptorId": null,
+          "loadSlabId": null,
+          "file": "asm/original/rev0/boot/resource_realloc.s",
+          "sha256": "3CC279F2D305908237A797B96A5346B9A24F6B2DCD4958ADF2BF997D01DC6ACF"
+        }
+      ]
+    },
+    {
+      "romStart": 7504,
+      "romEndExclusive": 7656,
+      "evidence": {
+        "caseId": "entry:00001D50",
+        "status": "known-entry-or-ownership",
+        "rationale": "All conditional and absolute jumps reconverge at its own return; no predecessor frame dependency. The complete proposed body and predecessor return/delay slot were inspected against normalized ROM and physical source words. Mapped JAL target words reproduce under accepted source/target slices. No direct noncall entry from outside the body, shared tail, or cross-cut branch/jump is established by the mapped edge census. Existing dossier already preserves this secondary within one physical owner; logical independence does not require a new assembly file."
+      },
+      "symbol": "func_00001D50",
+      "aliases": [],
+      "expectedBytesSha256": "279D51A7B0CD8F8FBBF3850FB7F6EC0B823283C82DF62AC661168911AD385568",
+      "fragments": [
+        {
+          "rowIndex": 10,
+          "romStart": 7504,
+          "romEndExclusive": 7656,
+          "ownerOffset": 780,
+          "bytes": 152,
+          "vramStart": 2147948880,
+          "sectionName": ".ob64.r0010",
+          "placementKind": "early-boot-linear",
+          "overlayDescriptorId": null,
+          "loadSlabId": null,
+          "file": "asm/original/rev0/boot/resource_realloc.s",
+          "sha256": "3CC279F2D305908237A797B96A5346B9A24F6B2DCD4958ADF2BF997D01DC6ACF"
+        }
+      ]
+    },
+    {
+      "romStart": 7656,
+      "romEndExclusive": 7740,
+      "evidence": {
+        "caseId": "accepted-primary",
+        "status": "accepted-primary-before-reviewed-secondary",
+        "rationale": "Preserved accepted primary entry; endpoint closes at JR ra plus delay slot before the earliest reviewed candidate. Unproven following candidates remain unknown coverage."
+      },
+      "symbol": "func_00001DE8",
+      "aliases": [],
+      "expectedBytesSha256": "7BA58051A71D521189E71E92ED9CA9B397D6B9C6E8A75F10199475DE67ACB45A",
+      "fragments": [
+        {
+          "rowIndex": 11,
+          "romStart": 7656,
+          "romEndExclusive": 7740,
+          "ownerOffset": 0,
+          "bytes": 84,
+          "vramStart": 2147949032,
+          "sectionName": ".ob64.r0011",
+          "placementKind": "early-boot-linear",
+          "overlayDescriptorId": null,
+          "loadSlabId": null,
+          "file": "asm/original/rev0/boot/resource_tree_insert_find.s",
+          "sha256": "FFE15815807DBAF58EB3435E90FCB8287D8A5B430F85B98136B4595327E5283E"
+        }
+      ]
+    },
+    {
+      "romStart": 7740,
+      "romEndExclusive": 7796,
+      "evidence": {
+        "caseId": "entry:00001E3C",
+        "status": "known-entry-or-ownership",
+        "rationale": "Initial null test initializes v1; links at +0x10/+0x0C and key +0x18 are read without an inherited frame. The predecessor restores its 0x18 frame before this entry. All loop jumps remain inside the 56-byte helper. Raw re-decoding verifies 2 mapping-qualified incoming direct calls. No qualified non-call edge crosses the proposed entry and no qualified external direct edge enters its interior. Static references do not establish runtime execution. The source-layout dossier already records this body/preamble. The raw evidence reconfirms callable independence; this is not newly discovered source knowledge and does not invalidate deliberate physical grouping."
+      },
+      "symbol": "func_00001E3C",
+      "aliases": [],
+      "expectedBytesSha256": "AC1E2E9C4F3CC35698300F685EAB7DD5E9F577EE59206D84CC27CF3B43105EF8",
+      "fragments": [
+        {
+          "rowIndex": 11,
+          "romStart": 7740,
+          "romEndExclusive": 7796,
+          "ownerOffset": 84,
+          "bytes": 56,
+          "vramStart": 2147949116,
+          "sectionName": ".ob64.r0011",
+          "placementKind": "early-boot-linear",
+          "overlayDescriptorId": null,
+          "loadSlabId": null,
+          "file": "asm/original/rev0/boot/resource_tree_insert_find.s",
+          "sha256": "FFE15815807DBAF58EB3435E90FCB8287D8A5B430F85B98136B4595327E5283E"
+        }
+      ]
+    },
+    {
+      "romStart": 8196,
+      "romEndExclusive": 8820,
+      "evidence": {
+        "caseId": "accepted-primary",
+        "status": "accepted-primary-before-reviewed-secondary",
+        "rationale": "Preserved accepted primary entry; endpoint closes at JR ra plus delay slot before the earliest reviewed candidate. Unproven following candidates remain unknown coverage."
+      },
+      "symbol": "func_00002004",
+      "aliases": [],
+      "expectedBytesSha256": "1DF586BEDBEE4C3F80990E64ADFA6E399C40B4C638E1D8CA03FA901EBF429EEA",
+      "fragments": [
+        {
+          "rowIndex": 14,
+          "romStart": 8196,
+          "romEndExclusive": 8820,
+          "ownerOffset": 0,
+          "bytes": 624,
+          "vramStart": 2147949572,
+          "sectionName": ".ob64.r0014",
+          "placementKind": "early-boot-linear",
+          "overlayDescriptorId": null,
+          "loadSlabId": null,
+          "file": "asm/original/rev0/boot/resource_alloc_tree_scan.s",
+          "sha256": "7946AFB724A4931AD7C02EE994184B2AB3F2B567A6F063C09823CFA06DC0D1AB"
+        }
+      ]
+    },
+    {
+      "romStart": 8820,
+      "romEndExclusive": 8880,
+      "evidence": {
+        "caseId": "entry:00002274",
+        "status": "known-entry-or-ownership",
+        "rationale": "Null-input and traversal paths return locally. Caller must satisfy the nonnull-chain precondition. The complete proposed body and predecessor return/delay slot were inspected against normalized ROM and physical source words. Mapped JAL target words reproduce under accepted source/target slices. No direct noncall entry from outside the body, shared tail, or cross-cut branch/jump is established by the mapped edge census. Existing dossier already preserves this secondary within one physical owner; logical independence does not require a new assembly file."
+      },
+      "symbol": "func_00002274",
+      "aliases": [],
+      "expectedBytesSha256": "483AA96F5F459B6B10635C9753587257CF6992C190199FB1AE7ED11F6DDD5439",
+      "fragments": [
+        {
+          "rowIndex": 14,
+          "romStart": 8820,
+          "romEndExclusive": 8880,
+          "ownerOffset": 624,
+          "bytes": 60,
+          "vramStart": 2147950196,
+          "sectionName": ".ob64.r0014",
+          "placementKind": "early-boot-linear",
+          "overlayDescriptorId": null,
+          "loadSlabId": null,
+          "file": "asm/original/rev0/boot/resource_alloc_tree_scan.s",
+          "sha256": "7946AFB724A4931AD7C02EE994184B2AB3F2B567A6F063C09823CFA06DC0D1AB"
+        }
+      ]
+    },
+    {
+      "romStart": 10136,
+      "romEndExclusive": 11024,
+      "evidence": {
+        "caseId": "accepted-primary",
+        "status": "accepted-primary-before-reviewed-secondary",
+        "rationale": "Preserved accepted primary entry; endpoint closes at JR ra plus delay slot before the earliest reviewed candidate. Unproven following candidates remain unknown coverage."
+      },
+      "symbol": "func_00002798",
+      "aliases": [],
+      "expectedBytesSha256": "E6CE002AE6795248597C3D51C5E662A1AF1D8A769C0E40B6F9AC186609D24DB1",
+      "fragments": [
+        {
+          "rowIndex": 16,
+          "romStart": 10136,
+          "romEndExclusive": 11024,
+          "ownerOffset": 0,
+          "bytes": 888,
+          "vramStart": 2147951512,
+          "sectionName": ".ob64.r0016",
+          "placementKind": "early-boot-linear",
+          "overlayDescriptorId": null,
+          "loadSlabId": null,
+          "file": "asm/original/rev0/boot/boot_state_service_loop.s",
+          "sha256": "9259B3969244E333D0F8A9CCD3B3B257EB48BB5087CD1A0374F2D5C444E77831"
+        }
+      ]
+    },
+    {
+      "romStart": 11024,
+      "romEndExclusive": 11064,
+      "evidence": {
+        "caseId": "entry:00002B10",
+        "status": "known-entry-or-ownership",
+        "rationale": "The independent state load and unsigned range test need no predecessor registers. J at ROM 0x2B28 targets itself; it is not a tail call into a different function. Return and NOP delay slot close the 40-byte body. Raw re-decoding verifies 1 mapping-qualified incoming direct calls. No qualified non-call edge crosses the proposed entry and no qualified external direct edge enters its interior. Static references do not establish runtime execution. The source-layout dossier already records this body/preamble. The raw evidence reconfirms callable independence; this is not newly discovered source knowledge and does not invalidate deliberate physical grouping."
+      },
+      "symbol": "func_00002B10",
+      "aliases": [],
+      "expectedBytesSha256": "C129897552C5826FEAD0738D17E165170C0685A8D546AE4842DD479C075CE9C4",
+      "fragments": [
+        {
+          "rowIndex": 16,
+          "romStart": 11024,
+          "romEndExclusive": 11064,
+          "ownerOffset": 888,
+          "bytes": 40,
+          "vramStart": 2147952400,
+          "sectionName": ".ob64.r0016",
+          "placementKind": "early-boot-linear",
+          "overlayDescriptorId": null,
+          "loadSlabId": null,
+          "file": "asm/original/rev0/boot/boot_state_service_loop.s",
+          "sha256": "9259B3969244E333D0F8A9CCD3B3B257EB48BB5087CD1A0374F2D5C444E77831"
+        }
+      ]
+    },
+    {
+      "romStart": 13436,
+      "romEndExclusive": 13668,
+      "evidence": {
+        "caseId": "accepted-primary",
+        "status": "accepted-primary-before-reviewed-secondary",
+        "rationale": "Preserved accepted primary entry; endpoint closes at JR ra plus delay slot before the earliest reviewed candidate. Unproven following candidates remain unknown coverage."
+      },
+      "symbol": "func_0000347C",
+      "aliases": [],
+      "expectedBytesSha256": "5FA355466F15A0D05A5722823E214D5FE4352320E4F4F59B6F59F912C525A10E",
+      "fragments": [
+        {
+          "rowIndex": 23,
+          "romStart": 13436,
+          "romEndExclusive": 13668,
+          "ownerOffset": 0,
+          "bytes": 232,
+          "vramStart": 2147954812,
+          "sectionName": ".ob64.r0023",
+          "placementKind": "early-boot-linear",
+          "overlayDescriptorId": null,
+          "loadSlabId": null,
+          "file": "asm/original/rev0/boot/boot_mode_message_accumulator_update.s",
+          "sha256": "BBC16B43A9E489DCCAA8304EA544468EE832D6FDC928BD55967B4BE768250568"
+        }
+      ]
+    },
+    {
+      "romStart": 13668,
+      "romEndExclusive": 13964,
+      "evidence": {
+        "caseId": "entry:00003564",
+        "status": "known-entry-or-ownership",
+        "rationale": "Copies register arguments and reads incoming stack arguments at +0x10/+0x14/+0x18 without allocating a frame. This is normal leaf argument access, not inherited local stack state. Both modes converge on the byte store in the return delay slot. Raw re-decoding verifies 26 mapping-qualified incoming direct calls. No qualified non-call edge crosses the proposed entry and no qualified external direct edge enters its interior. Static references do not establish runtime execution. The source-layout dossier already records this body/preamble. The raw evidence reconfirms callable independence; this is not newly discovered source knowledge and does not invalidate deliberate physical grouping."
+      },
+      "symbol": "func_00003564",
+      "aliases": [],
+      "expectedBytesSha256": "4C7BC6FB87D21FF0DFFF600F64A1F6FC36747C6C0D84A801D862D923CEEE334B",
+      "fragments": [
+        {
+          "rowIndex": 23,
+          "romStart": 13668,
+          "romEndExclusive": 13964,
+          "ownerOffset": 232,
+          "bytes": 296,
+          "vramStart": 2147955044,
+          "sectionName": ".ob64.r0023",
+          "placementKind": "early-boot-linear",
+          "overlayDescriptorId": null,
+          "loadSlabId": null,
+          "file": "asm/original/rev0/boot/boot_mode_message_accumulator_update.s",
+          "sha256": "BBC16B43A9E489DCCAA8304EA544468EE832D6FDC928BD55967B4BE768250568"
+        }
+      ]
+    },
+    {
+      "romStart": 13964,
+      "romEndExclusive": 14204,
+      "evidence": {
+        "caseId": "accepted-primary",
+        "status": "accepted-primary-before-reviewed-secondary",
+        "rationale": "Preserved accepted primary entry; endpoint closes at JR ra plus delay slot before the earliest reviewed candidate. Unproven following candidates remain unknown coverage."
+      },
+      "symbol": "func_0000368C",
+      "aliases": [],
+      "expectedBytesSha256": "76EBC75DDDB272F675859A39F8A9D6FC1FFBD1C337497B54288294315B904246",
+      "fragments": [
+        {
+          "rowIndex": 24,
+          "romStart": 13964,
+          "romEndExclusive": 14204,
+          "ownerOffset": 0,
+          "bytes": 240,
+          "vramStart": 2147955340,
+          "sectionName": ".ob64.r0024",
+          "placementKind": "early-boot-linear",
+          "overlayDescriptorId": null,
+          "loadSlabId": null,
+          "file": "asm/original/rev0/boot/boot_resource_buffer_reset_flags.s",
+          "sha256": "B6E629BF209FBE63EA4A1B647925C512AA4F918FAB3BC623AC7D1B32AAA57926"
+        }
+      ]
+    },
+    {
+      "romStart": 14204,
+      "romEndExclusive": 14220,
+      "evidence": {
+        "caseId": "entry:0000377C",
+        "status": "known-entry-or-ownership",
+        "rationale": "Separate four-word setter with store in return delay slot. The complete proposed body and predecessor return/delay slot were inspected against normalized ROM and physical source words. Mapped JAL target words reproduce under accepted source/target slices. No direct noncall entry from outside the body, shared tail, or cross-cut branch/jump is established by the mapped edge census. Existing dossier already preserves this secondary within one physical owner; logical independence does not require a new assembly file."
+      },
+      "symbol": "func_0000377C",
+      "aliases": [],
+      "expectedBytesSha256": "969514172218417B8DAD9B3FF8572E261BFD8A9074C364E6488FC12361623D19",
+      "fragments": [
+        {
+          "rowIndex": 24,
+          "romStart": 14204,
+          "romEndExclusive": 14220,
+          "ownerOffset": 240,
+          "bytes": 16,
+          "vramStart": 2147955580,
+          "sectionName": ".ob64.r0024",
+          "placementKind": "early-boot-linear",
+          "overlayDescriptorId": null,
+          "loadSlabId": null,
+          "file": "asm/original/rev0/boot/boot_resource_buffer_reset_flags.s",
+          "sha256": "B6E629BF209FBE63EA4A1B647925C512AA4F918FAB3BC623AC7D1B32AAA57926"
+        }
+      ]
+    },
+    {
+      "romStart": 14220,
+      "romEndExclusive": 14232,
+      "evidence": {
+        "caseId": "entry:0000378C",
+        "status": "known-entry-or-ownership",
+        "rationale": "Three-word getter following setter return delay slot. The complete proposed body and predecessor return/delay slot were inspected against normalized ROM and physical source words. Mapped JAL target words reproduce under accepted source/target slices. No direct noncall entry from outside the body, shared tail, or cross-cut branch/jump is established by the mapped edge census. Existing dossier already preserves this secondary within one physical owner; logical independence does not require a new assembly file."
+      },
+      "symbol": "func_0000378C",
+      "aliases": [],
+      "expectedBytesSha256": "9C27A6EF380307C37DAEFF3EF83109FCBF04DA97AC2FA9761110654CC17AB16A",
+      "fragments": [
+        {
+          "rowIndex": 24,
+          "romStart": 14220,
+          "romEndExclusive": 14232,
+          "ownerOffset": 256,
+          "bytes": 12,
+          "vramStart": 2147955596,
+          "sectionName": ".ob64.r0024",
+          "placementKind": "early-boot-linear",
+          "overlayDescriptorId": null,
+          "loadSlabId": null,
+          "file": "asm/original/rev0/boot/boot_resource_buffer_reset_flags.s",
+          "sha256": "B6E629BF209FBE63EA4A1B647925C512AA4F918FAB3BC623AC7D1B32AAA57926"
+        }
+      ]
+    },
+    {
+      "romStart": 14328,
+      "romEndExclusive": 15264,
+      "evidence": {
+        "caseId": "accepted-primary",
+        "status": "accepted-primary-before-reviewed-secondary",
+        "rationale": "Preserved accepted primary entry; endpoint closes at JR ra plus delay slot before the earliest reviewed candidate. Unproven following candidates remain unknown coverage."
+      },
+      "symbol": "func_000037F8",
+      "aliases": [],
+      "expectedBytesSha256": "014F0F6F3178C9095558B392F4F08658CBE28CFEFB73820BDFD5D68698DDCBC9",
+      "fragments": [
+        {
+          "rowIndex": 26,
+          "romStart": 14328,
+          "romEndExclusive": 15264,
+          "ownerOffset": 0,
+          "bytes": 936,
+          "vramStart": 2147955704,
+          "sectionName": ".ob64.r0026",
+          "placementKind": "early-boot-linear",
+          "overlayDescriptorId": null,
+          "loadSlabId": null,
+          "file": "asm/original/rev0/boot/boot_resource_display_list_update.s",
+          "sha256": "704F88D86EB1E9014187611FA31DA01653C5DF32679BF091FC0289344B837199"
+        }
+      ]
+    },
+    {
+      "romStart": 15264,
+      "romEndExclusive": 15404,
+      "evidence": {
+        "caseId": "entry:00003BA0",
+        "status": "known-entry-or-ownership",
+        "rationale": "Leaf initializes its own cursor/constants and returns after final pointer store. The complete proposed body and predecessor return/delay slot were inspected against normalized ROM and physical source words. Mapped JAL target words reproduce under accepted source/target slices. No direct noncall entry from outside the body, shared tail, or cross-cut branch/jump is established by the mapped edge census. Existing dossier already preserves this secondary within one physical owner; logical independence does not require a new assembly file."
+      },
+      "symbol": "func_00003BA0",
+      "aliases": [],
+      "expectedBytesSha256": "D249B5A3763CFA7C6CB8CB8BFBC1E99FFB86D5D4C39D18C140D779C8AD6A4A73",
+      "fragments": [
+        {
+          "rowIndex": 26,
+          "romStart": 15264,
+          "romEndExclusive": 15404,
+          "ownerOffset": 936,
+          "bytes": 140,
+          "vramStart": 2147956640,
+          "sectionName": ".ob64.r0026",
+          "placementKind": "early-boot-linear",
+          "overlayDescriptorId": null,
+          "loadSlabId": null,
+          "file": "asm/original/rev0/boot/boot_resource_display_list_update.s",
+          "sha256": "704F88D86EB1E9014187611FA31DA01653C5DF32679BF091FC0289344B837199"
+        }
+      ]
+    },
+    {
+      "romStart": 17112,
+      "romEndExclusive": 17240,
+      "evidence": {
+        "caseId": "accepted-primary",
+        "status": "accepted-primary-before-reviewed-secondary",
+        "rationale": "Preserved accepted primary entry; endpoint closes at JR ra plus delay slot before the earliest reviewed candidate. Unproven following candidates remain unknown coverage."
+      },
+      "symbol": "func_000042D8",
+      "aliases": [],
+      "expectedBytesSha256": "56A985DFCB7CEFC0B88913F97E117A193528332ADBBD7EECB932C0C76405C39F",
+      "fragments": [
+        {
+          "rowIndex": 32,
+          "romStart": 17112,
+          "romEndExclusive": 17240,
+          "ownerOffset": 0,
+          "bytes": 128,
+          "vramStart": 2147958488,
+          "sectionName": ".ob64.r0032",
+          "placementKind": "early-boot-linear",
+          "overlayDescriptorId": null,
+          "loadSlabId": null,
+          "file": "asm/original/rev0/boot/boot_resource_window_cache_update.s",
+          "sha256": "04706B2E41FD7166430A6360B0B533261F9562C97FAE8F6BA2D192498D5AE24F"
+        }
+      ]
+    },
+    {
+      "romStart": 17240,
+      "romEndExclusive": 17364,
+      "evidence": {
+        "caseId": "entry:00004358",
+        "status": "known-entry-or-ownership",
+        "rationale": "Loads its own global state and computes base+0x3C. All comparison paths return through 0x43CC/0x43D0. It does not depend on the preceding updater frame. Raw re-decoding verifies 1 mapping-qualified incoming direct calls. No qualified non-call edge crosses the proposed entry and no qualified external direct edge enters its interior. Static references do not establish runtime execution. The source-layout dossier already records this body/preamble. The raw evidence reconfirms callable independence; this is not newly discovered source knowledge and does not invalidate deliberate physical grouping."
+      },
+      "symbol": "func_00004358",
+      "aliases": [],
+      "expectedBytesSha256": "42859B4EA6F30762B0BEF69AB2DC87B349DEC76D33AB4658A58E62A3DB85CCA9",
+      "fragments": [
+        {
+          "rowIndex": 32,
+          "romStart": 17240,
+          "romEndExclusive": 17364,
+          "ownerOffset": 128,
+          "bytes": 124,
+          "vramStart": 2147958616,
+          "sectionName": ".ob64.r0032",
+          "placementKind": "early-boot-linear",
+          "overlayDescriptorId": null,
+          "loadSlabId": null,
+          "file": "asm/original/rev0/boot/boot_resource_window_cache_update.s",
+          "sha256": "04706B2E41FD7166430A6360B0B533261F9562C97FAE8F6BA2D192498D5AE24F"
+        }
+      ]
+    },
+    {
+      "romStart": 23964,
+      "romEndExclusive": 24196,
+      "evidence": {
+        "caseId": "accepted-primary",
+        "status": "accepted-primary-before-reviewed-secondary",
+        "rationale": "Preserved accepted primary entry; endpoint closes at JR ra plus delay slot before the earliest reviewed candidate. Unproven following candidates remain unknown coverage."
+      },
+      "symbol": "func_00005D9C",
+      "aliases": [],
+      "expectedBytesSha256": "BABC1944B5B73300B8A585D238C0B5D70D3B2B7172FA6A9C6A2B16DEBE173FF8",
+      "fragments": [
+        {
+          "rowIndex": 55,
+          "romStart": 23964,
+          "romEndExclusive": 24196,
+          "ownerOffset": 0,
+          "bytes": 232,
+          "vramStart": 2147965340,
+          "sectionName": ".ob64.r0055",
+          "placementKind": "early-boot-linear",
+          "overlayDescriptorId": null,
+          "loadSlabId": null,
+          "file": "asm/original/rev0/boot/boot_resource_probe_record_checksum_signature.s",
+          "sha256": "39CD887BCB9B83EFA43F923C981F02C060F19CDDBB660C72CA3170F9A7125157"
+        }
+      ]
+    },
+    {
+      "romStart": 24196,
+      "romEndExclusive": 24260,
+      "evidence": {
+        "caseId": "entry:00005E84",
+        "status": "known-entry-or-ownership",
+        "rationale": "Initializes its own accumulator and 16-bit index; all loop paths reach seed addition and return mask. Separate predecessor epilogue and six direct calls support an independent leaf within a larger multi-body checksum owner. Raw re-decoding verifies 6 mapping-qualified incoming direct calls. No qualified non-call edge crosses the proposed entry and no qualified external direct edge enters its interior. Static references do not establish runtime execution. The source-layout dossier already records this body/preamble. The raw evidence reconfirms callable independence; this is not newly discovered source knowledge and does not invalidate deliberate physical grouping."
+      },
+      "symbol": "func_00005E84",
+      "aliases": [],
+      "expectedBytesSha256": "2F53FB4502AF2A68E1A54D68E6A4A99F0AFBF499813376F475C37555699697EE",
+      "fragments": [
+        {
+          "rowIndex": 55,
+          "romStart": 24196,
+          "romEndExclusive": 24260,
+          "ownerOffset": 232,
+          "bytes": 64,
+          "vramStart": 2147965572,
+          "sectionName": ".ob64.r0055",
+          "placementKind": "early-boot-linear",
+          "overlayDescriptorId": null,
+          "loadSlabId": null,
+          "file": "asm/original/rev0/boot/boot_resource_probe_record_checksum_signature.s",
+          "sha256": "39CD887BCB9B83EFA43F923C981F02C060F19CDDBB660C72CA3170F9A7125157"
+        }
+      ]
+    },
+    {
+      "romStart": 24320,
+      "romEndExclusive": 24416,
+      "evidence": {
+        "caseId": "entry:00005F00",
+        "status": "known-entry-or-ownership",
+        "rationale": "Independent byte and bit loops initialize t0/t1/v1. The preceding unseeded checksum leaf has returned at 0x5EF8/0x5EFC. Its own final seed-add and mask do not share a tail with that leaf. Raw re-decoding verifies 4 mapping-qualified incoming direct calls. No qualified non-call edge crosses the proposed entry and no qualified external direct edge enters its interior. Static references do not establish runtime execution. The source-layout dossier already records this body/preamble. The raw evidence reconfirms callable independence; this is not newly discovered source knowledge and does not invalidate deliberate physical grouping."
+      },
+      "symbol": "func_00005F00",
+      "aliases": [],
+      "expectedBytesSha256": "4F8AC88DBEAC951BF270E0A48F2C176C68E746512CCECCA3BFA468FD073F437E",
+      "fragments": [
+        {
+          "rowIndex": 55,
+          "romStart": 24320,
+          "romEndExclusive": 24416,
+          "ownerOffset": 356,
+          "bytes": 96,
+          "vramStart": 2147965696,
+          "sectionName": ".ob64.r0055",
+          "placementKind": "early-boot-linear",
+          "overlayDescriptorId": null,
+          "loadSlabId": null,
+          "file": "asm/original/rev0/boot/boot_resource_probe_record_checksum_signature.s",
+          "sha256": "39CD887BCB9B83EFA43F923C981F02C060F19CDDBB660C72CA3170F9A7125157"
+        }
+      ]
+    },
+    {
+      "romStart": 26084,
+      "romEndExclusive": 26404,
+      "evidence": {
+        "caseId": "accepted-primary",
+        "status": "accepted-primary-before-reviewed-secondary",
+        "rationale": "Preserved accepted primary entry; endpoint closes at JR ra plus delay slot before the earliest reviewed candidate. Unproven following candidates remain unknown coverage."
+      },
+      "symbol": "func_000065E4",
+      "aliases": [],
+      "expectedBytesSha256": "EBBEB021184C01E118E5AD9ACA56D4E06C60D88E9A9ED3766F154C96453C52C1",
+      "fragments": [
+        {
+          "rowIndex": 58,
+          "romStart": 26084,
+          "romEndExclusive": 26404,
+          "ownerOffset": 0,
+          "bytes": 320,
+          "vramStart": 2147967460,
+          "sectionName": ".ob64.r0058",
+          "placementKind": "early-boot-linear",
+          "overlayDescriptorId": null,
+          "loadSlabId": null,
+          "file": "asm/original/rev0/boot/boot_resource_table_mask_apply.s",
+          "sha256": "59C9C72EF37287D5B2814AF55636FB803B1041342A2A006EBF8EA38F2E1FF33D"
+        }
+      ]
+    },
+    {
+      "romStart": 26404,
+      "romEndExclusive": 26672,
+      "evidence": {
+        "caseId": "entry:00006724",
+        "status": "independent-entry-supported",
+        "rationale": "Source already contains func_00006724 at line95 after a complete return at671C/6720. Raw JAL at6278 targets80076324, mapping to6724 in the same early-boot image. Candidate owns a new0x30 frame and returns at6828/682C; this label is an independent routine, not an interior branch label."
+      },
+      "symbol": "func_00006724",
+      "aliases": [],
+      "expectedBytesSha256": "73EB46453BA2667B4354E0932A5DE67DB088FF1FAAA1A18100ECE3EF0A35A6AC",
+      "fragments": [
+        {
+          "rowIndex": 58,
+          "romStart": 26404,
+          "romEndExclusive": 26672,
+          "ownerOffset": 320,
+          "bytes": 268,
+          "vramStart": 2147967780,
+          "sectionName": ".ob64.r0058",
+          "placementKind": "early-boot-linear",
+          "overlayDescriptorId": null,
+          "loadSlabId": null,
+          "file": "asm/original/rev0/boot/boot_resource_table_mask_apply.s",
+          "sha256": "59C9C72EF37287D5B2814AF55636FB803B1041342A2A006EBF8EA38F2E1FF33D"
+        }
+      ]
+    },
+    {
+      "romStart": 26672,
+      "romEndExclusive": 26840,
+      "evidence": {
+        "caseId": "entry:00006830",
+        "status": "known-entry-or-ownership",
+        "rationale": "Own initialization and local return; two trailing zero words are padding, not necessary executable extent. This corrects the old dossier wording about not-already-covered bits. The complete proposed body and predecessor return/delay slot were inspected against normalized ROM and physical source words. Mapped JAL target words reproduce under accepted source/target slices. No direct noncall entry from outside the body, shared tail, or cross-cut branch/jump is established by the mapped edge census. Existing dossier already preserves this secondary within one physical owner; logical independence does not require a new assembly file."
+      },
+      "symbol": "func_00006830",
+      "aliases": [],
+      "expectedBytesSha256": "B546C1345D6F69ED7190C5DDAEFDC375FA41A1C618F230B4098C9C0A82E36699",
+      "fragments": [
+        {
+          "rowIndex": 58,
+          "romStart": 26672,
+          "romEndExclusive": 26840,
+          "ownerOffset": 588,
+          "bytes": 168,
+          "vramStart": 2147968048,
+          "sectionName": ".ob64.r0058",
+          "placementKind": "early-boot-linear",
+          "overlayDescriptorId": null,
+          "loadSlabId": null,
+          "file": "asm/original/rev0/boot/boot_resource_table_mask_apply.s",
+          "sha256": "59C9C72EF37287D5B2814AF55636FB803B1041342A2A006EBF8EA38F2E1FF33D"
+        }
+      ]
+    },
+    {
+      "romStart": 29228,
+      "romEndExclusive": 29272,
+      "evidence": {
+        "caseId": "accepted-primary",
+        "status": "accepted-primary-before-reviewed-secondary",
+        "rationale": "Preserved accepted primary entry; endpoint closes at JR ra plus delay slot before the earliest reviewed candidate. Unproven following candidates remain unknown coverage."
+      },
+      "symbol": "func_0000722C",
+      "aliases": [],
+      "expectedBytesSha256": "7091D0A9445BC4C008E52497CCBB96167E2A328FD359DE801E0A104333F6867E",
+      "fragments": [
+        {
+          "rowIndex": 64,
+          "romStart": 29228,
+          "romEndExclusive": 29272,
+          "ownerOffset": 0,
+          "bytes": 44,
+          "vramStart": 2147970604,
+          "sectionName": ".ob64.r0064",
+          "placementKind": "early-boot-linear",
+          "overlayDescriptorId": null,
+          "loadSlabId": null,
+          "file": "asm/original/rev0/boot/boot_resource_global_handle_slot_record_prepare.s",
+          "sha256": "F43CF9F4B631FF825B622F2379DAB784D9ED53BF5AD19FF9858FB7813A1D2520"
+        }
+      ]
+    },
+    {
+      "romStart": 29532,
+      "romEndExclusive": 29788,
+      "evidence": {
+        "caseId": "entry:0000735C",
+        "status": "known-entry-or-ownership",
+        "rationale": "Starts with argument copies and incoming stack halfwords, initializes a forward scan, and performs all stores before its own JR delay slot. The backward-selection sibling at 0x745C starts after this return, with no connecting branch. Raw re-decoding verifies 8 mapping-qualified incoming direct calls. No qualified non-call edge crosses the proposed entry and no qualified external direct edge enters its interior. Static references do not establish runtime execution. The source-layout dossier already records this body/preamble. The raw evidence reconfirms callable independence; this is not newly discovered source knowledge and does not invalidate deliberate physical grouping."
+      },
+      "symbol": "func_0000735C",
+      "aliases": [],
+      "expectedBytesSha256": "DC7A3D9D1D1909BD5D8DDE0CCB5BD0E51846892ABCCD00FB54B9AAF911BF5B4E",
+      "fragments": [
+        {
+          "rowIndex": 64,
+          "romStart": 29532,
+          "romEndExclusive": 29788,
+          "ownerOffset": 304,
+          "bytes": 256,
+          "vramStart": 2147970908,
+          "sectionName": ".ob64.r0064",
+          "placementKind": "early-boot-linear",
+          "overlayDescriptorId": null,
+          "loadSlabId": null,
+          "file": "asm/original/rev0/boot/boot_resource_global_handle_slot_record_prepare.s",
+          "sha256": "F43CF9F4B631FF825B622F2379DAB784D9ED53BF5AD19FF9858FB7813A1D2520"
+        }
+      ]
+    },
+    {
+      "romStart": 29788,
+      "romEndExclusive": 30048,
+      "evidence": {
+        "caseId": "entry:0000745C",
+        "status": "known-entry-or-ownership",
+        "rationale": "Loads all arguments independently and initializes its scan index to 4. Its record-selection loop and return are distinct from the forward allocator at 0x735C; identical store sequences do not establish a shared tail. Raw re-decoding verifies 5 mapping-qualified incoming direct calls. No qualified non-call edge crosses the proposed entry and no qualified external direct edge enters its interior. Static references do not establish runtime execution. The source-layout dossier already records this body/preamble. The raw evidence reconfirms callable independence; this is not newly discovered source knowledge and does not invalidate deliberate physical grouping."
+      },
+      "symbol": "func_0000745C",
+      "aliases": [],
+      "expectedBytesSha256": "E5A6502D8AF36584C454CFB93F9C349F28263E0ADE3DEDBE37F2A9C250187757",
+      "fragments": [
+        {
+          "rowIndex": 64,
+          "romStart": 29788,
+          "romEndExclusive": 30048,
+          "ownerOffset": 560,
+          "bytes": 260,
+          "vramStart": 2147971164,
+          "sectionName": ".ob64.r0064",
+          "placementKind": "early-boot-linear",
+          "overlayDescriptorId": null,
+          "loadSlabId": null,
+          "file": "asm/original/rev0/boot/boot_resource_global_handle_slot_record_prepare.s",
+          "sha256": "F43CF9F4B631FF825B622F2379DAB784D9ED53BF5AD19FF9858FB7813A1D2520"
+        }
+      ]
+    },
+    {
+      "romStart": 30568,
+      "romEndExclusive": 30676,
+      "evidence": {
+        "caseId": "accepted-primary",
+        "status": "accepted-primary-before-reviewed-secondary",
+        "rationale": "Preserved accepted primary entry; endpoint closes at JR ra plus delay slot before the earliest reviewed candidate. Unproven following candidates remain unknown coverage."
+      },
+      "symbol": "func_00007768",
+      "aliases": [],
+      "expectedBytesSha256": "1532803A0DBE8C14C31422A8D628AD9199FA47818244E42347B9C097BC7609EE",
+      "fragments": [
+        {
+          "rowIndex": 68,
+          "romStart": 30568,
+          "romEndExclusive": 30676,
+          "ownerOffset": 0,
+          "bytes": 108,
+          "vramStart": 2147971944,
+          "sectionName": ".ob64.r0068",
+          "placementKind": "early-boot-linear",
+          "overlayDescriptorId": null,
+          "loadSlabId": null,
+          "file": "asm/original/rev0/boot/boot_state_slot_pool_table_helpers.s",
+          "sha256": "3AF9ECD1D09B81754E3A05D823F770ED4437F1A2102641ABA950FCB89EC15D8A"
+        }
+      ]
+    },
+    {
+      "romStart": 30676,
+      "romEndExclusive": 30732,
+      "evidence": {
+        "caseId": "entry:000077D4",
+        "status": "known-entry-or-ownership",
+        "rationale": "Own index and table-base initialization follow the previous 0x18-frame return. The complete 56-byte leaf has a local loop and final return. Owner history produced exactly the preceding 108-byte routine, leaving this and later bodies unrepresented by those trials. Raw re-decoding verifies 7 mapping-qualified incoming direct calls. No qualified non-call edge crosses the proposed entry and no qualified external direct edge enters its interior. Static references do not establish runtime execution. The source-layout dossier already records this body/preamble. The raw evidence reconfirms callable independence; this is not newly discovered source knowledge and does not invalidate deliberate physical grouping."
+      },
+      "symbol": "func_000077D4",
+      "aliases": [],
+      "expectedBytesSha256": "7E26A7C00EC6BD2F1278F09429D1D4D2B5AF534FC0B2E8D80E7CF129501D5CAE",
+      "fragments": [
+        {
+          "rowIndex": 68,
+          "romStart": 30676,
+          "romEndExclusive": 30732,
+          "ownerOffset": 108,
+          "bytes": 56,
+          "vramStart": 2147972052,
+          "sectionName": ".ob64.r0068",
+          "placementKind": "early-boot-linear",
+          "overlayDescriptorId": null,
+          "loadSlabId": null,
+          "file": "asm/original/rev0/boot/boot_state_slot_pool_table_helpers.s",
+          "sha256": "3AF9ECD1D09B81754E3A05D823F770ED4437F1A2102641ABA950FCB89EC15D8A"
+        }
+      ]
+    },
+    {
+      "romStart": 30732,
+      "romEndExclusive": 30812,
+      "evidence": {
+        "caseId": "supplemental:0000780C",
+        "status": "supplemental-reviewed-body",
+        "rationale": "Fresh supplemental register/CFG adjudication supports a complete standalone80B leaf; runtime callers remain unproved.",
+        "reportSha256": "98C3667858FCF20D7460CB93CE0200C5480A8689F16E3FF9A32AF9741FD7FDE3"
+      },
+      "symbol": "func_0000780C",
+      "aliases": [],
+      "expectedBytesSha256": "09FC0B71AF32246C121F42EF5E22A657CB31AC204F2F2880CFA14014D3D358D5",
+      "fragments": [
+        {
+          "rowIndex": 68,
+          "romStart": 30732,
+          "romEndExclusive": 30812,
+          "ownerOffset": 164,
+          "bytes": 80,
+          "vramStart": 2147972108,
+          "sectionName": ".ob64.r0068",
+          "placementKind": "early-boot-linear",
+          "overlayDescriptorId": null,
+          "loadSlabId": null,
+          "file": "asm/original/rev0/boot/boot_state_slot_pool_table_helpers.s",
+          "sha256": "3AF9ECD1D09B81754E3A05D823F770ED4437F1A2102641ABA950FCB89EC15D8A"
+        }
+      ]
+    },
+    {
+      "romStart": 30812,
+      "romEndExclusive": 30868,
+      "evidence": {
+        "caseId": "entry:0000785C",
+        "status": "known-entry-or-ownership",
+        "rationale": "This independent 56-byte table-search leaf follows a different lookup ending at 0x7854/0x7858. Its own base and counter remove any need to inherit state from that preceding lookup. Raw re-decoding verifies 10 mapping-qualified incoming direct calls. No qualified non-call edge crosses the proposed entry and no qualified external direct edge enters its interior. Static references do not establish runtime execution. The source-layout dossier already records this body/preamble. The raw evidence reconfirms callable independence; this is not newly discovered source knowledge and does not invalidate deliberate physical grouping."
+      },
+      "symbol": "func_0000785C",
+      "aliases": [],
+      "expectedBytesSha256": "7FDCC358D278FCE9D5BA1B9B03CC8719FBFB9CAEF5903B31AC290C08A3522CF0",
+      "fragments": [
+        {
+          "rowIndex": 68,
+          "romStart": 30812,
+          "romEndExclusive": 30868,
+          "ownerOffset": 244,
+          "bytes": 56,
+          "vramStart": 2147972188,
+          "sectionName": ".ob64.r0068",
+          "placementKind": "early-boot-linear",
+          "overlayDescriptorId": null,
+          "loadSlabId": null,
+          "file": "asm/original/rev0/boot/boot_state_slot_pool_table_helpers.s",
+          "sha256": "3AF9ECD1D09B81754E3A05D823F770ED4437F1A2102641ABA950FCB89EC15D8A"
+        }
+      ]
+    },
+    {
+      "romStart": 30868,
+      "romEndExclusive": 31212,
+      "evidence": {
+        "caseId": "entry:00007894",
+        "status": "known-entry-or-ownership",
+        "rationale": "Initial global load and comparison lead to two complete pointer-write paths, both converging on the final store/return. No call or saved-register state is inherited from the preceding table search. Raw re-decoding verifies 1 mapping-qualified incoming direct calls. No qualified non-call edge crosses the proposed entry and no qualified external direct edge enters its interior. Static references do not establish runtime execution. The source-layout dossier already records this body/preamble. The raw evidence reconfirms callable independence; this is not newly discovered source knowledge and does not invalidate deliberate physical grouping."
+      },
+      "symbol": "func_00007894",
+      "aliases": [],
+      "expectedBytesSha256": "5BBF38726F699AA6E553E8EA6FBB5560A5C0904CF579D017B8E83EC42250E5DB",
+      "fragments": [
+        {
+          "rowIndex": 68,
+          "romStart": 30868,
+          "romEndExclusive": 31212,
+          "ownerOffset": 300,
+          "bytes": 344,
+          "vramStart": 2147972244,
+          "sectionName": ".ob64.r0068",
+          "placementKind": "early-boot-linear",
+          "overlayDescriptorId": null,
+          "loadSlabId": null,
+          "file": "asm/original/rev0/boot/boot_state_slot_pool_table_helpers.s",
+          "sha256": "3AF9ECD1D09B81754E3A05D823F770ED4437F1A2102641ABA950FCB89EC15D8A"
+        }
+      ]
+    },
+    {
+      "romStart": 35416,
+      "romEndExclusive": 35444,
+      "evidence": {
+        "caseId": "accepted-primary",
+        "status": "accepted-primary-before-reviewed-secondary",
+        "rationale": "Preserved accepted primary entry; endpoint closes at JR ra plus delay slot before the earliest reviewed candidate. Unproven following candidates remain unknown coverage."
+      },
+      "symbol": "func_00008A58",
+      "aliases": [],
+      "expectedBytesSha256": "13EC4769C910EDAEB27D42CFE7A03F0EB93079B1853EBA3A9B7D080DBBA44953",
+      "fragments": [
+        {
+          "rowIndex": 79,
+          "romStart": 35416,
+          "romEndExclusive": 35444,
+          "ownerOffset": 0,
+          "bytes": 28,
+          "vramStart": 2147976792,
+          "sectionName": ".ob64.r0079",
+          "placementKind": "early-boot-linear",
+          "overlayDescriptorId": null,
+          "loadSlabId": null,
+          "file": "asm/original/rev0/boot/boot_display_list_transform_wrapper_clamped_rect_emit.s",
+          "sha256": "8C2694A5E077FF121EA940F474CE4C80DFD7237CE4D813781533EB5506373C3F"
+        }
+      ]
+    },
+    {
+      "romStart": 35444,
+      "romEndExclusive": 36204,
+      "evidence": {
+        "caseId": "entry:00008A74",
+        "status": "known-entry-or-ownership",
+        "rationale": "Starts by preserving all four integer arguments in volatile registers; the preceding 28-byte wrapper has fully restored its frame. The complete 760-byte leaf ends with its own command store in the JR delay slot. Historical 28-byte outputs cover only that wrapper. Raw re-decoding verifies 8 mapping-qualified incoming direct calls. No qualified non-call edge crosses the proposed entry and no qualified external direct edge enters its interior. Static references do not establish runtime execution. The source-layout dossier already records this body/preamble. The raw evidence reconfirms callable independence; this is not newly discovered source knowledge and does not invalidate deliberate physical grouping."
+      },
+      "symbol": "func_00008A74",
+      "aliases": [],
+      "expectedBytesSha256": "3ADE7EC5DBE62BCA3A60911F06C4520D1B231A043C79FFD09F0CF92132ABC1EF",
+      "fragments": [
+        {
+          "rowIndex": 79,
+          "romStart": 35444,
+          "romEndExclusive": 36204,
+          "ownerOffset": 28,
+          "bytes": 760,
+          "vramStart": 2147976820,
+          "sectionName": ".ob64.r0079",
+          "placementKind": "early-boot-linear",
+          "overlayDescriptorId": null,
+          "loadSlabId": null,
+          "file": "asm/original/rev0/boot/boot_display_list_transform_wrapper_clamped_rect_emit.s",
+          "sha256": "8C2694A5E077FF121EA940F474CE4C80DFD7237CE4D813781533EB5506373C3F"
+        }
+      ]
+    },
+    {
+      "romStart": 37928,
+      "romEndExclusive": 38204,
+      "evidence": {
+        "caseId": "accepted-primary",
+        "status": "accepted-primary-before-reviewed-secondary",
+        "rationale": "Preserved accepted primary entry; endpoint closes at JR ra plus delay slot before the earliest reviewed candidate. Unproven following candidates remain unknown coverage."
+      },
+      "symbol": "func_00009428",
+      "aliases": [],
+      "expectedBytesSha256": "ACB5A69F2FC5B7787C0481A0CA172CD83DB50DB0BEBC44E49D608CD1F44EBEB2",
+      "fragments": [
+        {
+          "rowIndex": 82,
+          "romStart": 37928,
+          "romEndExclusive": 38204,
+          "ownerOffset": 0,
+          "bytes": 276,
+          "vramStart": 2147979304,
+          "sectionName": ".ob64.r0082",
+          "placementKind": "early-boot-linear",
+          "overlayDescriptorId": null,
+          "loadSlabId": null,
+          "file": "asm/original/rev0/boot/boot_display_list_vector_distance_and_transform_prefix.s",
+          "sha256": "14A0D7DDD5088941FC57C23A0D1BE3EBC9D007086C2FDCA9BFD32B4EB64C914D"
+        }
+      ]
+    },
+    {
+      "romStart": 38204,
+      "romEndExclusive": 38744,
+      "evidence": {
+        "caseId": "entry:0000953C",
+        "status": "known-entry-or-ownership",
+        "rationale": "Four global loads at 0x953C..0x9548 precede the 0xA8-frame setup at owner 0x954C. Both raw calls target 0x953C, and the first matrix pointer depends on those loads. Restores f20..f30 and RA, then restores SP in the JR delay slot at 0x9754. This body crosses an accepted owner cut; 0x954C is not its independent logical start. Raw re-decoding verifies 2 mapping-qualified incoming direct calls. No qualified non-call edge crosses the proposed entry and no qualified external direct edge enters its interior. Static references do not establish runtime execution. The source-layout dossier already records this body/preamble. The raw evidence reconfirms callable independence; this is not newly discovered source knowledge and does not invalidate deliberate physical grouping."
+      },
+      "symbol": "func_0000953C",
+      "aliases": [],
+      "expectedBytesSha256": "8726FCCCFE92A9D4E8074E787F3A43D27A640544F3A16ABF33C65FE1C1947B90",
+      "fragments": [
+        {
+          "rowIndex": 82,
+          "romStart": 38204,
+          "romEndExclusive": 38220,
+          "ownerOffset": 276,
+          "bytes": 16,
+          "vramStart": 2147979580,
+          "sectionName": ".ob64.r0082",
+          "placementKind": "early-boot-linear",
+          "overlayDescriptorId": null,
+          "loadSlabId": null,
+          "file": "asm/original/rev0/boot/boot_display_list_vector_distance_and_transform_prefix.s",
+          "sha256": "14A0D7DDD5088941FC57C23A0D1BE3EBC9D007086C2FDCA9BFD32B4EB64C914D"
+        },
+        {
+          "rowIndex": 83,
+          "romStart": 38220,
+          "romEndExclusive": 38744,
+          "ownerOffset": 0,
+          "bytes": 524,
+          "vramStart": 2147979596,
+          "sectionName": ".ob64.r0083",
+          "placementKind": "early-boot-linear",
+          "overlayDescriptorId": null,
+          "loadSlabId": null,
+          "file": "asm/original/rev0/boot/boot_display_list_transform_coefficients_sum_clear.s",
+          "sha256": "28E22714410B8B96C243572BF792FBF7391FDAA1A36E0F305E53E0082EC63FA6"
+        }
+      ]
+    },
+    {
+      "romStart": 38784,
+      "romEndExclusive": 38796,
+      "evidence": {
+        "caseId": "entry:00009780",
+        "status": "known-entry-or-ownership",
+        "rationale": "The three-word stub loads AT, returns, and performs the clear in the delay slot. The preceding sixteen-word sum routine returns at 0x9778/0x977C. A direct boot call targets the stub, so it is not padding. Raw re-decoding verifies 1 mapping-qualified incoming direct calls. No qualified non-call edge crosses the proposed entry and no qualified external direct edge enters its interior. Static references do not establish runtime execution. The source-layout dossier already records this body/preamble. The raw evidence reconfirms callable independence; this is not newly discovered source knowledge and does not invalidate deliberate physical grouping."
+      },
+      "symbol": "func_00009780",
+      "aliases": [],
+      "expectedBytesSha256": "40D29F4856F1639786532C6F2253161C01B9B6BA40190E77EF5E6BEF9AA27F19",
+      "fragments": [
+        {
+          "rowIndex": 83,
+          "romStart": 38784,
+          "romEndExclusive": 38796,
+          "ownerOffset": 564,
+          "bytes": 12,
+          "vramStart": 2147980160,
+          "sectionName": ".ob64.r0083",
+          "placementKind": "early-boot-linear",
+          "overlayDescriptorId": null,
+          "loadSlabId": null,
+          "file": "asm/original/rev0/boot/boot_display_list_transform_coefficients_sum_clear.s",
+          "sha256": "28E22714410B8B96C243572BF792FBF7391FDAA1A36E0F305E53E0082EC63FA6"
+        }
+      ]
+    },
+    {
+      "romStart": 41140,
+      "romEndExclusive": 41312,
+      "evidence": {
+        "caseId": "accepted-primary",
+        "status": "accepted-primary-before-reviewed-secondary",
+        "rationale": "Preserved accepted primary entry; endpoint closes at JR ra plus delay slot before the earliest reviewed candidate. Unproven following candidates remain unknown coverage."
+      },
+      "symbol": "func_0000A0B4",
+      "aliases": [],
+      "expectedBytesSha256": "6CD9474618972EE589116B0BBDFDCF129A9F261AA8FB0F3F5D331B435C941AB0",
+      "fragments": [
+        {
+          "rowIndex": 91,
+          "romStart": 41140,
+          "romEndExclusive": 41312,
+          "ownerOffset": 0,
+          "bytes": 172,
+          "vramStart": 2147982516,
+          "sectionName": ".ob64.r0091",
+          "placementKind": "early-boot-linear",
+          "overlayDescriptorId": null,
+          "loadSlabId": null,
+          "file": "asm/original/rev0/boot/boot_resource_node_recursive_insert_slot_search.s",
+          "sha256": "09ACE02838324F413DB8E787324DF11F8EDEF6191B5707A61DC34A906F3E1F2B"
+        }
+      ]
+    },
+    {
+      "romStart": 41312,
+      "romEndExclusive": 41368,
+      "evidence": {
+        "caseId": "entry:0000A160",
+        "status": "known-entry-or-ownership",
+        "rationale": "Entry-directed branch and jump are its own loop backedges, not shared entry evidence. The complete proposed body and predecessor return/delay slot were inspected against normalized ROM and physical source words. Mapped JAL target words reproduce under accepted source/target slices. No direct noncall entry from outside the body, shared tail, or cross-cut branch/jump is established by the mapped edge census. Existing dossier already preserves this secondary within one physical owner; logical independence does not require a new assembly file."
+      },
+      "symbol": "func_0000A160",
+      "aliases": [],
+      "expectedBytesSha256": "A902B9BE9EA0BA44CCF04663EFAC6782081EE17B3095DEFA7236B74014F8AA1F",
+      "fragments": [
+        {
+          "rowIndex": 91,
+          "romStart": 41312,
+          "romEndExclusive": 41368,
+          "ownerOffset": 172,
+          "bytes": 56,
+          "vramStart": 2147982688,
+          "sectionName": ".ob64.r0091",
+          "placementKind": "early-boot-linear",
+          "overlayDescriptorId": null,
+          "loadSlabId": null,
+          "file": "asm/original/rev0/boot/boot_resource_node_recursive_insert_slot_search.s",
+          "sha256": "09ACE02838324F413DB8E787324DF11F8EDEF6191B5707A61DC34A906F3E1F2B"
+        }
+      ]
+    },
+    {
+      "romStart": 42256,
+      "romEndExclusive": 44000,
+      "evidence": {
+        "caseId": "accepted-primary",
+        "status": "accepted-primary-before-reviewed-secondary",
+        "rationale": "Preserved accepted primary entry; endpoint closes at JR ra plus delay slot before the earliest reviewed candidate. Unproven following candidates remain unknown coverage."
+      },
+      "symbol": "func_0000A510",
+      "aliases": [],
+      "expectedBytesSha256": "7F20CB48A8442289ABBFCBD18ADEDEF05F657BCBB531FBAE0285CACC8A61F819",
+      "fragments": [
+        {
+          "rowIndex": 99,
+          "romStart": 42256,
+          "romEndExclusive": 44000,
+          "ownerOffset": 0,
+          "bytes": 1744,
+          "vramStart": 2147983632,
+          "sectionName": ".ob64.r0099",
+          "placementKind": "early-boot-linear",
+          "overlayDescriptorId": null,
+          "loadSlabId": null,
+          "file": "asm/original/rev0/boot/boot_lzss_decompress.s",
+          "sha256": "F9D559376403FE837D31C3DD7179315A882E2313599897211C5683A4114735B3"
+        }
+      ]
+    },
+    {
+      "romStart": 44000,
+      "romEndExclusive": 44044,
+      "evidence": {
+        "caseId": "entry:0000ABE0",
+        "status": "known-entry-or-ownership",
+        "rationale": "All four byte loads use a0; the OR in the JR delay slot completes the result. The preceding decompressor restores its 0x28 frame; its own direct call to this helper and calls from other owners establish independent use. Raw re-decoding verifies 31 mapping-qualified incoming direct calls. No qualified non-call edge crosses the proposed entry and no qualified external direct edge enters its interior. Static references do not establish runtime execution. The source-layout dossier already records this body/preamble. The raw evidence reconfirms callable independence; this is not newly discovered source knowledge and does not invalidate deliberate physical grouping."
+      },
+      "symbol": "func_0000ABE0",
+      "aliases": [],
+      "expectedBytesSha256": "058FAD433CE93A12BB5642DEBEBECD6D603EA8C6CFED44DD4D2EB99A330F62C3",
+      "fragments": [
+        {
+          "rowIndex": 99,
+          "romStart": 44000,
+          "romEndExclusive": 44044,
+          "ownerOffset": 1744,
+          "bytes": 44,
+          "vramStart": 2147985376,
+          "sectionName": ".ob64.r0099",
+          "placementKind": "early-boot-linear",
+          "overlayDescriptorId": null,
+          "loadSlabId": null,
+          "file": "asm/original/rev0/boot/boot_lzss_decompress.s",
+          "sha256": "F9D559376403FE837D31C3DD7179315A882E2313599897211C5683A4114735B3"
+        }
+      ]
+    },
+    {
+      "romStart": 46052,
+      "romEndExclusive": 47888,
+      "evidence": {
+        "caseId": "accepted-primary",
+        "status": "accepted-primary-before-reviewed-secondary",
+        "rationale": "Preserved accepted primary entry; endpoint closes at JR ra plus delay slot before the earliest reviewed candidate. Unproven following candidates remain unknown coverage."
+      },
+      "symbol": "func_0000B3E4",
+      "aliases": [],
+      "expectedBytesSha256": "93583CB744D6235B5ECD17DCC4EBC96C98CACD3FAE1984D4917BB3D85D49368B",
+      "fragments": [
+        {
+          "rowIndex": 106,
+          "romStart": 46052,
+          "romEndExclusive": 47888,
+          "ownerOffset": 0,
+          "bytes": 1836,
+          "vramStart": 2147987428,
+          "sectionName": ".ob64.r0106",
+          "placementKind": "early-boot-linear",
+          "overlayDescriptorId": null,
+          "loadSlabId": null,
+          "file": "asm/original/rev0/boot/boot_resource_tag_record_decode.s",
+          "sha256": "B3E6461505502CAE81A3CECA989E979B2E6751669FABC4ED7716CB92CF944EE3"
+        }
+      ]
+    },
+    {
+      "romStart": 47888,
+      "romEndExclusive": 47940,
+      "evidence": {
+        "caseId": "entry:0000BB10",
+        "status": "independent-entry-supported",
+        "rationale": "Own cursor initialization; byte loads and final OR feed local return. The complete proposed body and predecessor return/delay slot were inspected against normalized ROM and physical source words. Mapped JAL target words reproduce under accepted source/target slices. No direct noncall entry from outside the body, shared tail, or cross-cut branch/jump is established by the mapped edge census."
+      },
+      "symbol": "func_0000BB10",
+      "aliases": [],
+      "expectedBytesSha256": "97BF802C76C96BFFD1B7374411DF8F205B620D0B5279CE473B3A1C7BF2434793",
+      "fragments": [
+        {
+          "rowIndex": 106,
+          "romStart": 47888,
+          "romEndExclusive": 47940,
+          "ownerOffset": 1836,
+          "bytes": 52,
+          "vramStart": 2147989264,
+          "sectionName": ".ob64.r0106",
+          "placementKind": "early-boot-linear",
+          "overlayDescriptorId": null,
+          "loadSlabId": null,
+          "file": "asm/original/rev0/boot/boot_resource_tag_record_decode.s",
+          "sha256": "B3E6461505502CAE81A3CECA989E979B2E6751669FABC4ED7716CB92CF944EE3"
+        }
+      ]
+    },
+    {
+      "romStart": 47940,
+      "romEndExclusive": 48040,
+      "evidence": {
+        "caseId": "entry:0000BB44",
+        "status": "independent-entry-supported",
+        "rationale": "Separate cursor-reading leaf after previous return; no stack dependency. The complete proposed body and predecessor return/delay slot were inspected against normalized ROM and physical source words. Mapped JAL target words reproduce under accepted source/target slices. No direct noncall entry from outside the body, shared tail, or cross-cut branch/jump is established by the mapped edge census."
+      },
+      "symbol": "func_0000BB44",
+      "aliases": [],
+      "expectedBytesSha256": "93AAAF7A447F5EC26ECDFF9D13915E72672DC617016D09993FA2A2C7788A0749",
+      "fragments": [
+        {
+          "rowIndex": 106,
+          "romStart": 47940,
+          "romEndExclusive": 48040,
+          "ownerOffset": 1888,
+          "bytes": 100,
+          "vramStart": 2147989316,
+          "sectionName": ".ob64.r0106",
+          "placementKind": "early-boot-linear",
+          "overlayDescriptorId": null,
+          "loadSlabId": null,
+          "file": "asm/original/rev0/boot/boot_resource_tag_record_decode.s",
+          "sha256": "B3E6461505502CAE81A3CECA989E979B2E6751669FABC4ED7716CB92CF944EE3"
+        }
+      ]
+    },
+    {
+      "romStart": 48040,
+      "romEndExclusive": 48188,
+      "evidence": {
+        "caseId": "entry:0000BBA8",
+        "status": "independent-entry-supported",
+        "rationale": "Two local loops; all jumps stay within body; lowercase-presence flag initialized at entry. The complete proposed body and predecessor return/delay slot were inspected against normalized ROM and physical source words. Mapped JAL target words reproduce under accepted source/target slices. No direct noncall entry from outside the body, shared tail, or cross-cut branch/jump is established by the mapped edge census."
+      },
+      "symbol": "func_0000BBA8",
+      "aliases": [],
+      "expectedBytesSha256": "FC5833D88899F3CCC28E45C4143FBCF245827BEC7617498C93F2FFC52D06FB20",
+      "fragments": [
+        {
+          "rowIndex": 106,
+          "romStart": 48040,
+          "romEndExclusive": 48188,
+          "ownerOffset": 1988,
+          "bytes": 148,
+          "vramStart": 2147989416,
+          "sectionName": ".ob64.r0106",
+          "placementKind": "early-boot-linear",
+          "overlayDescriptorId": null,
+          "loadSlabId": null,
+          "file": "asm/original/rev0/boot/boot_resource_tag_record_decode.s",
+          "sha256": "B3E6461505502CAE81A3CECA989E979B2E6751669FABC4ED7716CB92CF944EE3"
+        }
+      ]
+    },
+    {
+      "romStart": 48188,
+      "romEndExclusive": 48268,
+      "evidence": {
+        "caseId": "entry:0000BC3C",
+        "status": "independent-entry-supported",
+        "rationale": "Own counted loop; final return/delay slot before next prologue. The complete proposed body and predecessor return/delay slot were inspected against normalized ROM and physical source words. Mapped JAL target words reproduce under accepted source/target slices. No direct noncall entry from outside the body, shared tail, or cross-cut branch/jump is established by the mapped edge census."
+      },
+      "symbol": "func_0000BC3C",
+      "aliases": [],
+      "expectedBytesSha256": "B3AE37E14DDA5C0404160101325E2A6D52351E6A5C7FB6A2EBBC7EE1295560C7",
+      "fragments": [
+        {
+          "rowIndex": 106,
+          "romStart": 48188,
+          "romEndExclusive": 48268,
+          "ownerOffset": 2136,
+          "bytes": 80,
+          "vramStart": 2147989564,
+          "sectionName": ".ob64.r0106",
+          "placementKind": "early-boot-linear",
+          "overlayDescriptorId": null,
+          "loadSlabId": null,
+          "file": "asm/original/rev0/boot/boot_resource_tag_record_decode.s",
+          "sha256": "B3E6461505502CAE81A3CECA989E979B2E6751669FABC4ED7716CB92CF944EE3"
+        }
+      ]
+    },
+    {
+      "romStart": 48792,
+      "romEndExclusive": 48968,
+      "evidence": {
+        "caseId": "accepted-primary",
+        "status": "accepted-primary-before-reviewed-secondary",
+        "rationale": "Preserved accepted primary entry; endpoint closes at JR ra plus delay slot before the earliest reviewed candidate. Unproven following candidates remain unknown coverage."
+      },
+      "symbol": "func_0000BE98",
+      "aliases": [],
+      "expectedBytesSha256": "26F56BB21C8E81E9CB681D2C4017387A0E956451B82A04CDCB0982D9034638F9",
+      "fragments": [
+        {
+          "rowIndex": 108,
+          "romStart": 48792,
+          "romEndExclusive": 48968,
+          "ownerOffset": 0,
+          "bytes": 176,
+          "vramStart": 2147990168,
+          "sectionName": ".ob64.r0108",
+          "placementKind": "early-boot-linear",
+          "overlayDescriptorId": null,
+          "loadSlabId": null,
+          "file": "asm/original/rev0/boot/boot_resource_op_dispatch.s",
+          "sha256": "34F4050DDE0AB4EE36036DD944E81522BBE11FBD50D3009AB97FC9BF127339DC"
+        }
+      ]
+    },
+    {
+      "romStart": 48968,
+      "romEndExclusive": 49040,
+      "evidence": {
+        "caseId": "entry:0000BF48",
+        "status": "known-entry-or-ownership",
+        "rationale": "BLEZ provides the zero/negative-length exit, constants 0x3A and 0x2F drive the loop, and the local JR/NOP closes it. The dispatch routine has returned before the entry. Raw re-decoding verifies 1 mapping-qualified incoming direct calls. No qualified non-call edge crosses the proposed entry and no qualified external direct edge enters its interior. Static references do not establish runtime execution. The source-layout dossier already records this body/preamble. The raw evidence reconfirms callable independence; this is not newly discovered source knowledge and does not invalidate deliberate physical grouping."
+      },
+      "symbol": "func_0000BF48",
+      "aliases": [],
+      "expectedBytesSha256": "5739089FE83239941E9895EF5E27418D8D5D68E7BFED38CD42AD5E0E98C69FBB",
+      "fragments": [
+        {
+          "rowIndex": 108,
+          "romStart": 48968,
+          "romEndExclusive": 49040,
+          "ownerOffset": 176,
+          "bytes": 72,
+          "vramStart": 2147990344,
+          "sectionName": ".ob64.r0108",
+          "placementKind": "early-boot-linear",
+          "overlayDescriptorId": null,
+          "loadSlabId": null,
+          "file": "asm/original/rev0/boot/boot_resource_op_dispatch.s",
+          "sha256": "34F4050DDE0AB4EE36036DD944E81522BBE11FBD50D3009AB97FC9BF127339DC"
+        }
+      ]
+    },
+    {
+      "romStart": 49936,
+      "romEndExclusive": 50692,
+      "evidence": {
+        "caseId": "accepted-primary",
+        "status": "accepted-primary-before-reviewed-secondary",
+        "rationale": "Preserved accepted primary entry; endpoint closes at JR ra plus delay slot before the earliest reviewed candidate. Unproven following candidates remain unknown coverage."
+      },
+      "symbol": "func_0000C310",
+      "aliases": [],
+      "expectedBytesSha256": "2892C3A95C2C6E7CAEBFBEE1CA5B879CFE4D25FDF48C20C38C9EF22BD844C3C3",
+      "fragments": [
+        {
+          "rowIndex": 113,
+          "romStart": 49936,
+          "romEndExclusive": 50692,
+          "ownerOffset": 0,
+          "bytes": 756,
+          "vramStart": 2147991312,
+          "sectionName": ".ob64.r0113",
+          "placementKind": "early-boot-linear",
+          "overlayDescriptorId": null,
+          "loadSlabId": null,
+          "file": "asm/original/rev0/boot/boot_decode_driver.s",
+          "sha256": "C0CDC252C6BC8493DCF7BF84C8199CCFCB7E29241675EABCD2B34196BB8D31DC"
+        }
+      ]
+    },
+    {
+      "romStart": 50692,
+      "romEndExclusive": 50780,
+      "evidence": {
+        "caseId": "entry:0000C604",
+        "status": "known-entry-or-ownership",
+        "rationale": "Self-contained table builder with initialized counters and local return. The complete proposed body and predecessor return/delay slot were inspected against normalized ROM and physical source words. Mapped JAL target words reproduce under accepted source/target slices. No direct noncall entry from outside the body, shared tail, or cross-cut branch/jump is established by the mapped edge census. Existing dossier already preserves this secondary within one physical owner; logical independence does not require a new assembly file."
+      },
+      "symbol": "func_0000C604",
+      "aliases": [],
+      "expectedBytesSha256": "EFDFB4D35D79743C83E1523C96F00831F13FF4E579DF3EFEBF8719B93E5A64B3",
+      "fragments": [
+        {
+          "rowIndex": 113,
+          "romStart": 50692,
+          "romEndExclusive": 50780,
+          "ownerOffset": 756,
+          "bytes": 88,
+          "vramStart": 2147992068,
+          "sectionName": ".ob64.r0113",
+          "placementKind": "early-boot-linear",
+          "overlayDescriptorId": null,
+          "loadSlabId": null,
+          "file": "asm/original/rev0/boot/boot_decode_driver.s",
+          "sha256": "C0CDC252C6BC8493DCF7BF84C8199CCFCB7E29241675EABCD2B34196BB8D31DC"
+        }
+      ]
+    },
+    {
+      "romStart": 50780,
+      "romEndExclusive": 51064,
+      "evidence": {
+        "caseId": "entry:0000C65C",
+        "status": "known-entry-or-ownership",
+        "rationale": "Own saved result in t1, refill loops and return; no caller frame dependency. The complete proposed body and predecessor return/delay slot were inspected against normalized ROM and physical source words. Mapped JAL target words reproduce under accepted source/target slices. No direct noncall entry from outside the body, shared tail, or cross-cut branch/jump is established by the mapped edge census. Existing dossier already preserves this secondary within one physical owner; logical independence does not require a new assembly file."
+      },
+      "symbol": "func_0000C65C",
+      "aliases": [],
+      "expectedBytesSha256": "8E467F610B462E3A0292C0DD66B99CF7DFBE04B3FD79AE13BB6A8CD0B0C8D74A",
+      "fragments": [
+        {
+          "rowIndex": 113,
+          "romStart": 50780,
+          "romEndExclusive": 51064,
+          "ownerOffset": 844,
+          "bytes": 284,
+          "vramStart": 2147992156,
+          "sectionName": ".ob64.r0113",
+          "placementKind": "early-boot-linear",
+          "overlayDescriptorId": null,
+          "loadSlabId": null,
+          "file": "asm/original/rev0/boot/boot_decode_driver.s",
+          "sha256": "C0CDC252C6BC8493DCF7BF84C8199CCFCB7E29241675EABCD2B34196BB8D31DC"
+        }
+      ]
+    },
+    {
+      "romStart": 51064,
+      "romEndExclusive": 51256,
+      "evidence": {
+        "caseId": "accepted-primary",
+        "status": "accepted-primary-before-reviewed-secondary",
+        "rationale": "Preserved accepted primary entry; endpoint closes at JR ra plus delay slot before the earliest reviewed candidate. Unproven following candidates remain unknown coverage."
+      },
+      "symbol": "func_0000C778",
+      "aliases": [],
+      "expectedBytesSha256": "FFD8E4F7A9B84F1076BA944F31C439AEC8AF0971E1912C71917A0914BCD5370D",
+      "fragments": [
+        {
+          "rowIndex": 114,
+          "romStart": 51064,
+          "romEndExclusive": 51256,
+          "ownerOffset": 0,
+          "bytes": 192,
+          "vramStart": 2147992440,
+          "sectionName": ".ob64.r0114",
+          "placementKind": "early-boot-linear",
+          "overlayDescriptorId": null,
+          "loadSlabId": null,
+          "file": "asm/original/rev0/boot/func_0000C778.s",
+          "sha256": "B6D378B3802B40ABAACEEBAE08CE9283C71EC36024C801DF9FBDBF3BC11F42E0"
+        }
+      ]
+    },
+    {
+      "romStart": 51256,
+      "romEndExclusive": 51512,
+      "evidence": {
+        "caseId": "entry:0000C838",
+        "status": "known-entry-or-ownership",
+        "rationale": "Entry clears window/count then fills; this is initialization, more precise than old bit-skip label. The complete proposed body and predecessor return/delay slot were inspected against normalized ROM and physical source words. Mapped JAL target words reproduce under accepted source/target slices. No direct noncall entry from outside the body, shared tail, or cross-cut branch/jump is established by the mapped edge census. Existing dossier already preserves this secondary within one physical owner; logical independence does not require a new assembly file."
+      },
+      "symbol": "func_0000C838",
+      "aliases": [],
+      "expectedBytesSha256": "949ACBBEB7680C7103397CEDD58139B8AEBB71E4208A4D82D2BA88C016E16E88",
+      "fragments": [
+        {
+          "rowIndex": 114,
+          "romStart": 51256,
+          "romEndExclusive": 51512,
+          "ownerOffset": 192,
+          "bytes": 256,
+          "vramStart": 2147992632,
+          "sectionName": ".ob64.r0114",
+          "placementKind": "early-boot-linear",
+          "overlayDescriptorId": null,
+          "loadSlabId": null,
+          "file": "asm/original/rev0/boot/func_0000C778.s",
+          "sha256": "B6D378B3802B40ABAACEEBAE08CE9283C71EC36024C801DF9FBDBF3BC11F42E0"
+        }
+      ]
+    },
+    {
+      "romStart": 51512,
+      "romEndExclusive": 51600,
+      "evidence": {
+        "caseId": "entry:0000C938",
+        "status": "known-entry-or-ownership",
+        "rationale": "Own scan pointer and return value initialization; leaf body independent of prior bit-window routine. The complete proposed body and predecessor return/delay slot were inspected against normalized ROM and physical source words. Mapped JAL target words reproduce under accepted source/target slices. No direct noncall entry from outside the body, shared tail, or cross-cut branch/jump is established by the mapped edge census. Existing dossier already preserves this secondary within one physical owner; logical independence does not require a new assembly file."
+      },
+      "symbol": "func_0000C938",
+      "aliases": [],
+      "expectedBytesSha256": "2D187D8C1DDB4D1AFFA1F91B3BC8DAFE55343BEEC72B718126451ADF6517E1F2",
+      "fragments": [
+        {
+          "rowIndex": 114,
+          "romStart": 51512,
+          "romEndExclusive": 51600,
+          "ownerOffset": 448,
+          "bytes": 88,
+          "vramStart": 2147992888,
+          "sectionName": ".ob64.r0114",
+          "placementKind": "early-boot-linear",
+          "overlayDescriptorId": null,
+          "loadSlabId": null,
+          "file": "asm/original/rev0/boot/func_0000C778.s",
+          "sha256": "B6D378B3802B40ABAACEEBAE08CE9283C71EC36024C801DF9FBDBF3BC11F42E0"
+        }
+      ]
+    },
+    {
+      "romStart": 56488,
+      "romEndExclusive": 57332,
+      "evidence": {
+        "caseId": "accepted-primary",
+        "status": "accepted-primary-before-reviewed-secondary",
+        "rationale": "Preserved accepted primary entry; endpoint closes at JR ra plus delay slot before the earliest reviewed candidate. Unproven following candidates remain unknown coverage."
+      },
+      "symbol": "func_0000DCA8",
+      "aliases": [],
+      "expectedBytesSha256": "A328160E28D2E249D8A9039B4017FD4219DA3B144AB7CB1D8C29A499ED52F05A",
+      "fragments": [
+        {
+          "rowIndex": 123,
+          "romStart": 56488,
+          "romEndExclusive": 57332,
+          "ownerOffset": 0,
+          "bytes": 844,
+          "vramStart": 2147997864,
+          "sectionName": ".ob64.r0123",
+          "placementKind": "early-boot-linear",
+          "overlayDescriptorId": null,
+          "loadSlabId": null,
+          "file": "asm/original/rev0/boot/boot_decode_huffman_tree_update.s",
+          "sha256": "DBB4B3667B80471B6DAE14F1F8EF93718A5823F039E475FB6F781CFD711A4316"
+        }
+      ]
+    },
+    {
+      "romStart": 57332,
+      "romEndExclusive": 57840,
+      "evidence": {
+        "caseId": "entry:0000DFF4",
+        "status": "known-entry-or-ownership",
+        "rationale": "All arms reconverge on local return; adaptive-Huffman interpretation remains static hypothesis. The complete proposed body and predecessor return/delay slot were inspected against normalized ROM and physical source words. Mapped JAL target words reproduce under accepted source/target slices. No direct noncall entry from outside the body, shared tail, or cross-cut branch/jump is established by the mapped edge census. Existing dossier already preserves this secondary within one physical owner; logical independence does not require a new assembly file."
+      },
+      "symbol": "func_0000DFF4",
+      "aliases": [],
+      "expectedBytesSha256": "B7E11F5835232E5AFD6F381170E0714B109BE553111CBB7102021A2FD6DD92E0",
+      "fragments": [
+        {
+          "rowIndex": 123,
+          "romStart": 57332,
+          "romEndExclusive": 57840,
+          "ownerOffset": 844,
+          "bytes": 508,
+          "vramStart": 2147998708,
+          "sectionName": ".ob64.r0123",
+          "placementKind": "early-boot-linear",
+          "overlayDescriptorId": null,
+          "loadSlabId": null,
+          "file": "asm/original/rev0/boot/boot_decode_huffman_tree_update.s",
+          "sha256": "DBB4B3667B80471B6DAE14F1F8EF93718A5823F039E475FB6F781CFD711A4316"
+        }
+      ]
+    },
+    {
+      "romStart": 58352,
+      "romEndExclusive": 59128,
+      "evidence": {
+        "caseId": "accepted-primary",
+        "status": "accepted-primary-before-reviewed-secondary",
+        "rationale": "Preserved accepted primary entry; endpoint closes at JR ra plus delay slot before the earliest reviewed candidate. Unproven following candidates remain unknown coverage."
+      },
+      "symbol": "func_0000E3F0",
+      "aliases": [],
+      "expectedBytesSha256": "2FC3D4573AFEE1882A114A7211D556E2183DD1688EB95FA3669359199606D734",
+      "fragments": [
+        {
+          "rowIndex": 125,
+          "romStart": 58352,
+          "romEndExclusive": 59128,
+          "ownerOffset": 0,
+          "bytes": 776,
+          "vramStart": 2147999728,
+          "sectionName": ".ob64.r0125",
+          "placementKind": "early-boot-linear",
+          "overlayDescriptorId": null,
+          "loadSlabId": null,
+          "file": "asm/original/rev0/boot/boot_decode_huffman_symbol.s",
+          "sha256": "84EFFB36F5685A26166D303E6ECAE9F348F287CAD37C1933152A457B8263257E"
+        }
+      ]
+    },
+    {
+      "romStart": 59128,
+      "romEndExclusive": 60056,
+      "evidence": {
+        "caseId": "entry:0000E6F8",
+        "status": "independent-entry-supported",
+        "rationale": "Predecessor returns atE6F0/E6F4. Four setup words atE6F8..E704 load a0 and v0, consumed atE714 after the acceptedE708 frame begins. The contiguous routine returns atEA90/EA94. Stored8007E2F8 at38B88 sits among coherent decoder pointers, corroborating the earlier entry. This extends the existingE708 logical body; it is not an additional whole routine beyond it."
+      },
+      "symbol": "func_0000E6F8",
+      "aliases": [
+        "func_0000E708"
+      ],
+      "expectedBytesSha256": "EE489B335A63D8CF2153DFD50351497D88B8B5A22021E4AD8DF0849986F9240A",
+      "fragments": [
+        {
+          "rowIndex": 125,
+          "romStart": 59128,
+          "romEndExclusive": 59144,
+          "ownerOffset": 776,
+          "bytes": 16,
+          "vramStart": 2148000504,
+          "sectionName": ".ob64.r0125",
+          "placementKind": "early-boot-linear",
+          "overlayDescriptorId": null,
+          "loadSlabId": null,
+          "file": "asm/original/rev0/boot/boot_decode_huffman_symbol.s",
+          "sha256": "84EFFB36F5685A26166D303E6ECAE9F348F287CAD37C1933152A457B8263257E"
+        },
+        {
+          "rowIndex": 126,
+          "romStart": 59144,
+          "romEndExclusive": 60056,
+          "ownerOffset": 0,
+          "bytes": 912,
+          "vramStart": 2148000520,
+          "sectionName": ".ob64.r0126",
+          "placementKind": "early-boot-linear",
+          "overlayDescriptorId": null,
+          "loadSlabId": null,
+          "file": "asm/original/rev0/boot/func_0000E708.s",
+          "sha256": "C5E0880005A4A87A2932338F9A5E769CBE39DCD01D6AE23BEF7C76224611D452"
+        }
+      ]
+    },
+    {
+      "romStart": 70000,
+      "romEndExclusive": 70080,
+      "evidence": {
+        "caseId": "entry:00011170",
+        "status": "known-entry-or-ownership",
+        "rationale": "Accepted source starts11168 with two nops, and already labels11170. Starting at either padding or11170 reaches the same body and frame. The source comment calls the earlier start a preamble, but raw bytes show only zeros: this is a padding/entry-label distinction, not a second routine."
+      },
+      "symbol": "func_00011170",
+      "aliases": [],
+      "expectedBytesSha256": "8ABCEA19E8EEB2D6A23B0695F8E2A4A976F3D0E1FE148753C824621480BBDFC5",
+      "fragments": [
+        {
+          "rowIndex": 179,
+          "romStart": 70000,
+          "romEndExclusive": 70080,
+          "ownerOffset": 8,
+          "bytes": 80,
+          "vramStart": 2148011376,
+          "sectionName": ".ob64.r0179",
+          "placementKind": "early-boot-linear",
+          "overlayDescriptorId": null,
+          "loadSlabId": null,
+          "file": "asm/original/rev0/lib/func_00011168.s",
+          "sha256": "D966ED934C29FD9F865A61F3E413CC301F048AA5FF76476E1E1A1041156CF402"
+        }
+      ]
+    },
+    {
+      "romStart": 131936,
+      "romEndExclusive": 131944,
+      "evidence": {
+        "caseId": "entry:00020360",
+        "status": "known-entry-or-ownership",
+        "rationale": "Accepted owner starts at 0x2035C with one NOP. This is the callable body of that same owner, ending 0x20368; two following NOPs are padding. The complete proposed body and predecessor return/delay slot were inspected against normalized ROM and physical source words. Mapped JAL target words reproduce under accepted source/target slices. No direct noncall entry from outside the body, shared tail, or cross-cut branch/jump is established by the mapped edge census."
+      },
+      "symbol": "func_00020360",
+      "aliases": [],
+      "expectedBytesSha256": "F39BB13DBB0F4E24CD4F313A4DF7D836D2382CF2265B7177F11735D31E0526B9",
+      "fragments": [
+        {
+          "rowIndex": 510,
+          "romStart": 131936,
+          "romEndExclusive": 131944,
+          "ownerOffset": 4,
+          "bytes": 8,
+          "vramStart": 2148073312,
+          "sectionName": ".ob64.r0510",
+          "placementKind": "early-boot-linear",
+          "overlayDescriptorId": null,
+          "loadSlabId": null,
+          "file": "asm/original/rev0/lib/func_0002035c.s",
+          "sha256": "613FA3ED4E9CE3BF6DAAA462117DAA139A9728CAEEC10D82BA7C6649A35E9BD1"
+        }
+      ]
+    },
+    {
+      "romStart": 149184,
+      "romEndExclusive": 149324,
+      "evidence": {
+        "caseId": "accepted-primary",
+        "status": "accepted-primary-before-reviewed-secondary",
+        "rationale": "Preserved accepted primary entry; endpoint closes at JR ra plus delay slot before the earliest reviewed candidate. Unproven following candidates remain unknown coverage."
+      },
+      "symbol": "func_000246C0",
+      "aliases": [],
+      "expectedBytesSha256": "2CEB92FE6F5611A51CB808A35CC2CEFE0F20EF3A550C84AA3F57058FFFCD57AC",
+      "fragments": [
+        {
+          "rowIndex": 573,
+          "romStart": 149184,
+          "romEndExclusive": 149324,
+          "ownerOffset": 0,
+          "bytes": 140,
+          "vramStart": 2148090560,
+          "sectionName": ".ob64.r0573",
+          "placementKind": "early-boot-linear",
+          "overlayDescriptorId": null,
+          "loadSlabId": null,
+          "file": "asm/original/rev0/lib/func_000246c0.s",
+          "sha256": "C317F79DBFCEB3DE423C0863DCA7F59F8D6DBE5719EC3A85B68C096AA7A81EEF"
+        }
+      ]
+    },
+    {
+      "romStart": 149324,
+      "romEndExclusive": 149412,
+      "evidence": {
+        "caseId": "entry:0002474C",
+        "status": "independent-entry-supported",
+        "rationale": "Own leaf entry after full preceding frame restoration; both list arms merge before local return. The complete proposed body and predecessor return/delay slot were inspected against normalized ROM and physical source words. Mapped JAL target words reproduce under accepted source/target slices. No direct noncall entry from outside the body, shared tail, or cross-cut branch/jump is established by the mapped edge census."
+      },
+      "symbol": "func_0002474C",
+      "aliases": [],
+      "expectedBytesSha256": "C694087D319B9CA9B7E2D6C72B1E4B8BEE279A91E008B315A9FF5521E6B2ADC1",
+      "fragments": [
+        {
+          "rowIndex": 573,
+          "romStart": 149324,
+          "romEndExclusive": 149412,
+          "ownerOffset": 140,
+          "bytes": 88,
+          "vramStart": 2148090700,
+          "sectionName": ".ob64.r0573",
+          "placementKind": "early-boot-linear",
+          "overlayDescriptorId": null,
+          "loadSlabId": null,
+          "file": "asm/original/rev0/lib/func_000246c0.s",
+          "sha256": "C317F79DBFCEB3DE423C0863DCA7F59F8D6DBE5719EC3A85B68C096AA7A81EEF"
+        }
+      ]
+    },
+    {
+      "romStart": 150624,
+      "romEndExclusive": 150832,
+      "evidence": {
+        "caseId": "accepted-primary",
+        "status": "accepted-primary-before-reviewed-secondary",
+        "rationale": "Preserved accepted primary entry; endpoint closes at JR ra plus delay slot before the earliest reviewed candidate. Unproven following candidates remain unknown coverage."
+      },
+      "symbol": "func_00024C60",
+      "aliases": [],
+      "expectedBytesSha256": "E0010E694C06FD2279938B9E94559B24594572A2C6ED82900B5E1E61C6D91F40",
+      "fragments": [
+        {
+          "rowIndex": 581,
+          "romStart": 150624,
+          "romEndExclusive": 150832,
+          "ownerOffset": 0,
+          "bytes": 208,
+          "vramStart": 2148092000,
+          "sectionName": ".ob64.r0581",
+          "placementKind": "early-boot-linear",
+          "overlayDescriptorId": null,
+          "loadSlabId": null,
+          "file": "asm/original/rev0/lib/func_00024c60.s",
+          "sha256": "55952F60D9717D30387C99850FFE5B29116E590C607EB1AC68AF0B1D80BC08DA"
+        }
+      ]
+    },
+    {
+      "romStart": 150832,
+      "romEndExclusive": 150856,
+      "evidence": {
+        "caseId": "entry:00024D30",
+        "status": "independent-entry-supported",
+        "rationale": "The complete executable leaf is 24 bytes, ending after the load in the return delay slot at 0x24D44. The two following zero words at 0x24D48/0x24D4C are trailing padding, not required helper instructions. Splat span includes them. Raw re-decoding verifies 2 mapping-qualified incoming direct calls. No qualified non-call edge crosses the proposed entry and no qualified external direct edge enters its interior. Static references do not establish runtime execution."
+      },
+      "symbol": "func_00024D30",
+      "aliases": [],
+      "expectedBytesSha256": "23E3D082760AF8A1A7639C44B6BBBC69BB4EC7A6C32CA6D629F7DE2CD5322C55",
+      "fragments": [
+        {
+          "rowIndex": 581,
+          "romStart": 150832,
+          "romEndExclusive": 150856,
+          "ownerOffset": 208,
+          "bytes": 24,
+          "vramStart": 2148092208,
+          "sectionName": ".ob64.r0581",
+          "placementKind": "early-boot-linear",
+          "overlayDescriptorId": null,
+          "loadSlabId": null,
+          "file": "asm/original/rev0/lib/func_00024c60.s",
+          "sha256": "55952F60D9717D30387C99850FFE5B29116E590C607EB1AC68AF0B1D80BC08DA"
+        }
+      ]
+    },
+    {
+      "romStart": 187984,
+      "romEndExclusive": 188140,
+      "evidence": {
+        "caseId": "accepted-primary",
+        "status": "accepted-primary-before-reviewed-secondary",
+        "rationale": "Preserved accepted primary entry; endpoint closes at JR ra plus delay slot before the earliest reviewed candidate. Unproven following candidates remain unknown coverage."
+      },
+      "symbol": "func_0002DE50",
+      "aliases": [],
+      "expectedBytesSha256": "EC90738201E961A0F04648E677DC0417857D3740FB54CC8638A0444BC536006B",
+      "fragments": [
+        {
+          "rowIndex": 737,
+          "romStart": 187984,
+          "romEndExclusive": 188140,
+          "ownerOffset": 0,
+          "bytes": 156,
+          "vramStart": 2148129360,
+          "sectionName": ".ob64.r0737",
+          "placementKind": "early-boot-linear",
+          "overlayDescriptorId": null,
+          "loadSlabId": null,
+          "file": "asm/original/rev0/lib/func_0002de50.s",
+          "sha256": "D0000870E8E2275BF90B6769747048A2A2C5BD3A778D04291AA5CB4972790003"
+        }
+      ]
+    },
+    {
+      "romStart": 188140,
+      "romEndExclusive": 188148,
+      "evidence": {
+        "caseId": "entry:0002DEEC",
+        "status": "independent-entry-supported",
+        "rationale": "Mapped JALs target the jr itself; preceding routine already returned. Independent empty stub, despite only two words. The complete proposed body and predecessor return/delay slot were inspected against normalized ROM and physical source words. Mapped JAL target words reproduce under accepted source/target slices. No direct noncall entry from outside the body, shared tail, or cross-cut branch/jump is established by the mapped edge census."
+      },
+      "symbol": "func_0002DEEC",
+      "aliases": [],
+      "expectedBytesSha256": "78AA5094D5EC7291C79F799C009D04F06C2F20187988E3DCC8D35EE5EFDBB378",
+      "fragments": [
+        {
+          "rowIndex": 737,
+          "romStart": 188140,
+          "romEndExclusive": 188148,
+          "ownerOffset": 156,
+          "bytes": 8,
+          "vramStart": 2148129516,
+          "sectionName": ".ob64.r0737",
+          "placementKind": "early-boot-linear",
+          "overlayDescriptorId": null,
+          "loadSlabId": null,
+          "file": "asm/original/rev0/lib/func_0002de50.s",
+          "sha256": "D0000870E8E2275BF90B6769747048A2A2C5BD3A778D04291AA5CB4972790003"
+        }
+      ]
+    },
+    {
+      "romStart": 188344,
+      "romEndExclusive": 188712,
+      "evidence": {
+        "caseId": "accepted-primary",
+        "status": "accepted-primary-before-reviewed-secondary",
+        "rationale": "Preserved accepted primary entry; endpoint closes at JR ra plus delay slot before the earliest reviewed candidate. Unproven following candidates remain unknown coverage."
+      },
+      "symbol": "func_0002DFB8",
+      "aliases": [],
+      "expectedBytesSha256": "B36C9627F44825C8436800E4794CF4657AF090454693AA24503CFFB56B6E276D",
+      "fragments": [
+        {
+          "rowIndex": 739,
+          "romStart": 188344,
+          "romEndExclusive": 188712,
+          "ownerOffset": 0,
+          "bytes": 368,
+          "vramStart": 2148129720,
+          "sectionName": ".ob64.r0739",
+          "placementKind": "early-boot-linear",
+          "overlayDescriptorId": null,
+          "loadSlabId": null,
+          "file": "asm/original/rev0/lib/func_0002dfb8.s",
+          "sha256": "6357DE49A57BBAFC8D26D130C01EE938A27BA7018607876E0F6938A187EA8CFD"
+        }
+      ]
+    },
+    {
+      "romStart": 188712,
+      "romEndExclusive": 188728,
+      "evidence": {
+        "caseId": "entry:0002E128",
+        "status": "independent-entry-supported",
+        "rationale": "LUI/ADDIU construct the constant independently, and the addition occurs in the JR delay slot. Preceding routine restores its 0x50 frame. Eight qualified direct references target this four-word leaf. Raw re-decoding verifies 8 mapping-qualified incoming direct calls. No qualified non-call edge crosses the proposed entry and no qualified external direct edge enters its interior. Static references do not establish runtime execution."
+      },
+      "symbol": "func_0002E128",
+      "aliases": [],
+      "expectedBytesSha256": "CB748A4C68F11BAF0FDF64F0B463E743D3D5C852075E9E9A69CDFA5D83626AC0",
+      "fragments": [
+        {
+          "rowIndex": 739,
+          "romStart": 188712,
+          "romEndExclusive": 188728,
+          "ownerOffset": 368,
+          "bytes": 16,
+          "vramStart": 2148130088,
+          "sectionName": ".ob64.r0739",
+          "placementKind": "early-boot-linear",
+          "overlayDescriptorId": null,
+          "loadSlabId": null,
+          "file": "asm/original/rev0/lib/func_0002dfb8.s",
+          "sha256": "6357DE49A57BBAFC8D26D130C01EE938A27BA7018607876E0F6938A187EA8CFD"
+        }
+      ]
+    },
+    {
+      "romStart": 265856,
+      "romEndExclusive": 265864,
+      "evidence": {
+        "caseId": "entry:00040E80",
+        "status": "known-entry-or-ownership",
+        "rationale": "Accepted cold-boot executable slice begins40E80 inside a coarse data owner and contains two jr/nop stubs. Pointer3864C=8016AF80 is followed by8016AF88 and8016AF90 in a compact record. The forced start is already structurally represented and not new missing code."
+      },
+      "symbol": "func_00040E80",
+      "aliases": [],
+      "expectedBytesSha256": "78AA5094D5EC7291C79F799C009D04F06C2F20187988E3DCC8D35EE5EFDBB378",
+      "fragments": [
+        {
+          "rowIndex": 810,
+          "romStart": 265856,
+          "romEndExclusive": 265864,
+          "ownerOffset": 2120,
+          "bytes": 8,
+          "vramStart": 2148970368,
+          "sectionName": ".ob64.r0810.s1",
+          "placementKind": "non-descriptor-load-slab",
+          "overlayDescriptorId": null,
+          "loadSlabId": "cold-boot-loader-00040e80",
+          "file": "asm/original/rev0/lib/data_00040638.s",
+          "sha256": "77487D24C0BAD0CE92D947DBD37A30906C325FE068128D14E325063FBFFDF4C0"
+        }
+      ]
+    },
+    {
+      "romStart": 265864,
+      "romEndExclusive": 265872,
+      "evidence": {
+        "caseId": "entry:00040E88",
+        "status": "known-entry-or-ownership",
+        "rationale": "Previous jr/nop terminates40E80; this has its own return. Pointer38650=8016AF88 is bracketed by sibling stub8016AF80 and known code entry8016AF90. Coherent entry record supports identity more strongly than a bare unreferenced return, although table storage mapping/consumer execution remain unproven. Both stub byte ranges are already included in the explicitly accepted cold-boot executable subrange; retain that ownership rather than count this as new missing code."
+      },
+      "symbol": "func_00040E88",
+      "aliases": [],
+      "expectedBytesSha256": "78AA5094D5EC7291C79F799C009D04F06C2F20187988E3DCC8D35EE5EFDBB378",
+      "fragments": [
+        {
+          "rowIndex": 810,
+          "romStart": 265864,
+          "romEndExclusive": 265872,
+          "ownerOffset": 2128,
+          "bytes": 8,
+          "vramStart": 2148970376,
+          "sectionName": ".ob64.r0810.s1",
+          "placementKind": "non-descriptor-load-slab",
+          "overlayDescriptorId": null,
+          "loadSlabId": "cold-boot-loader-00040e80",
+          "file": "asm/original/rev0/lib/data_00040638.s",
+          "sha256": "77487D24C0BAD0CE92D947DBD37A30906C325FE068128D14E325063FBFFDF4C0"
+        }
+      ]
+    },
+    {
+      "romStart": 265872,
+      "romEndExclusive": 266096,
+      "evidence": {
+        "caseId": "accepted-primary",
+        "status": "accepted-primary-before-reviewed-secondary",
+        "rationale": "Preserved accepted primary entry; endpoint closes at JR ra plus delay slot before the earliest reviewed candidate. Unproven following candidates remain unknown coverage."
+      },
+      "symbol": "func_00040E90",
+      "aliases": [],
+      "expectedBytesSha256": "CA1840EE7FA2BBEDE8828324C9B074E1EF694724A5B018F438E61F750F99943A",
+      "fragments": [
+        {
+          "rowIndex": 811,
+          "romStart": 265872,
+          "romEndExclusive": 266096,
+          "ownerOffset": 0,
+          "bytes": 224,
+          "vramStart": 2148970384,
+          "sectionName": ".ob64.r0811",
+          "placementKind": "non-descriptor-load-slab",
+          "overlayDescriptorId": null,
+          "loadSlabId": "cold-boot-loader-00040e80",
+          "file": "asm/original/rev0/lib/func_00040e90.s",
+          "sha256": "CE4FA696166B77633167397799E2D04DCD504BD0C3ADD0C3E0D68A6E64FAA61C"
+        }
+      ]
+    },
+    {
+      "romStart": 266096,
+      "romEndExclusive": 266120,
+      "evidence": {
+        "caseId": "entry:00040F70",
+        "status": "independent-entry-supported",
+        "rationale": "Six-word table lookup leaf after predecessor restores frame. Three mapped calls; two unmapped-source encodings excluded. The complete proposed body and predecessor return/delay slot were inspected against normalized ROM and physical source words. Mapped JAL target words reproduce under accepted source/target slices. No direct noncall entry from outside the body, shared tail, or cross-cut branch/jump is established by the mapped edge census."
+      },
+      "symbol": "func_00040F70",
+      "aliases": [],
+      "expectedBytesSha256": "CBA76954CDB580F6B0448E0A7BA8F2EF69262C78200DD181C20AD59CBF258B03",
+      "fragments": [
+        {
+          "rowIndex": 811,
+          "romStart": 266096,
+          "romEndExclusive": 266120,
+          "ownerOffset": 224,
+          "bytes": 24,
+          "vramStart": 2148970608,
+          "sectionName": ".ob64.r0811",
+          "placementKind": "non-descriptor-load-slab",
+          "overlayDescriptorId": null,
+          "loadSlabId": "cold-boot-loader-00040e80",
+          "file": "asm/original/rev0/lib/func_00040e90.s",
+          "sha256": "CE4FA696166B77633167397799E2D04DCD504BD0C3ADD0C3E0D68A6E64FAA61C"
+        }
+      ]
+    },
+    {
+      "romStart": 297164,
+      "romEndExclusive": 297228,
+      "evidence": {
+        "caseId": "accepted-primary",
+        "status": "accepted-primary-before-reviewed-secondary",
+        "rationale": "Preserved accepted primary entry; endpoint closes at JR ra plus delay slot before the earliest reviewed candidate. Unproven following candidates remain unknown coverage."
+      },
+      "symbol": "func_000488CC",
+      "aliases": [],
+      "expectedBytesSha256": "67037F80A3C1E88247591A083673B840997C0F656AF1667C31CC891343EC005E",
+      "fragments": [
+        {
+          "rowIndex": 1033,
+          "romStart": 297164,
+          "romEndExclusive": 297228,
+          "ownerOffset": 0,
+          "bytes": 64,
+          "vramStart": 2149001676,
+          "sectionName": ".ob64.r1033",
+          "placementKind": "non-descriptor-load-slab",
+          "overlayDescriptorId": null,
+          "loadSlabId": "cold-boot-loader-00040e80",
+          "file": "asm/original/rev0/lib/func_000488cc.s",
+          "sha256": "DBA86B974E527AE22A503B434461D32AFC98860E26F3F24D9C6DFB5D3E72EF93"
+        }
+      ]
+    },
+    {
+      "romStart": 297228,
+      "romEndExclusive": 297256,
+      "evidence": {
+        "caseId": "entry:0004890C",
+        "status": "independent-entry-supported",
+        "rationale": "The predecessor ends at 0x4890C after 64 bytes; this 28-byte leaf uses only its own global load and argument. Four same-image calls target runtime RAM 0x80172A0C. One other occurrence is only a matching JAL encoding from an unmapped source. The 64-versus-92 historical mismatch exactly equals the omitted helper length. Raw re-decoding verifies 4 mapping-qualified incoming direct calls. No qualified non-call edge crosses the proposed entry and no qualified external direct edge enters its interior. Static references do not establish runtime execution."
+      },
+      "symbol": "func_0004890C",
+      "aliases": [],
+      "expectedBytesSha256": "2AA92AB10DAFDD2E9236C6AFCE07ABF6166E857539BA7F833C02B4FAB5DBE596",
+      "fragments": [
+        {
+          "rowIndex": 1033,
+          "romStart": 297228,
+          "romEndExclusive": 297256,
+          "ownerOffset": 64,
+          "bytes": 28,
+          "vramStart": 2149001740,
+          "sectionName": ".ob64.r1033",
+          "placementKind": "non-descriptor-load-slab",
+          "overlayDescriptorId": null,
+          "loadSlabId": "cold-boot-loader-00040e80",
+          "file": "asm/original/rev0/lib/func_000488cc.s",
+          "sha256": "DBA86B974E527AE22A503B434461D32AFC98860E26F3F24D9C6DFB5D3E72EF93"
+        }
+      ]
+    },
+    {
+      "romStart": 301336,
+      "romEndExclusive": 301508,
+      "evidence": {
+        "caseId": "accepted-primary",
+        "status": "accepted-primary-before-reviewed-secondary",
+        "rationale": "Preserved accepted primary entry; endpoint closes at JR ra plus delay slot before the earliest reviewed candidate. Unproven following candidates remain unknown coverage."
+      },
+      "symbol": "func_00049918",
+      "aliases": [],
+      "expectedBytesSha256": "BFEEAC37ED57C855DCA1FADA37E7892A2A7588AB200BC737555E1CB4D39E0DEC",
+      "fragments": [
+        {
+          "rowIndex": 1060,
+          "romStart": 301336,
+          "romEndExclusive": 301508,
+          "ownerOffset": 0,
+          "bytes": 172,
+          "vramStart": 2149005848,
+          "sectionName": ".ob64.r1060",
+          "placementKind": "non-descriptor-load-slab",
+          "overlayDescriptorId": null,
+          "loadSlabId": "cold-boot-loader-00040e80",
+          "file": "asm/original/rev0/lib/func_00049918.s",
+          "sha256": "CE16B853536E9FA25D2F58712C6D3A6DC3438F49ECFD5D79E74F7B74F6953222"
+        }
+      ]
+    },
+    {
+      "romStart": 301508,
+      "romEndExclusive": 301516,
+      "evidence": {
+        "caseId": "entry:000499C4",
+        "status": "independent-entry-supported",
+        "rationale": "Previous framed routine returns at499BC/499C0. Four adjacent mapped code pointers at65280..6528C target4982C,49918,499C4,499CC; following word is12. Getter49820 returns8018F380, the accepted resident mapping of65280. This is a structured function-pointer record, not an isolated accidental word. Actual callback invocation is unobserved."
+      },
+      "symbol": "func_000499C4",
+      "aliases": [],
+      "expectedBytesSha256": "78AA5094D5EC7291C79F799C009D04F06C2F20187988E3DCC8D35EE5EFDBB378",
+      "fragments": [
+        {
+          "rowIndex": 1060,
+          "romStart": 301508,
+          "romEndExclusive": 301516,
+          "ownerOffset": 172,
+          "bytes": 8,
+          "vramStart": 2149006020,
+          "sectionName": ".ob64.r1060",
+          "placementKind": "non-descriptor-load-slab",
+          "overlayDescriptorId": null,
+          "loadSlabId": "cold-boot-loader-00040e80",
+          "file": "asm/original/rev0/lib/func_00049918.s",
+          "sha256": "CE16B853536E9FA25D2F58712C6D3A6DC3438F49ECFD5D79E74F7B74F6953222"
+        }
+      ]
+    },
+    {
+      "romStart": 713376,
+      "romEndExclusive": 713484,
+      "evidence": {
+        "caseId": "entry:000AE2A0",
+        "status": "known-entry-or-ownership",
+        "rationale": "Existing ownerAE298 begins with two zero padding words; AE2A0 is the first effective instruction of its only body. Own returnAE304/AE308 closes the accepted owner. No additional function is created by skipping padding."
+      },
+      "symbol": "func_000AE2A0",
+      "aliases": [],
+      "expectedBytesSha256": "ED23EC2EF6ECCD81BB3E3B7535232BA53B31BA8F1B7A19CA69B5292A0875FBF0",
+      "fragments": [
+        {
+          "rowIndex": 1608,
+          "romStart": 713376,
+          "romEndExclusive": 713484,
+          "ownerOffset": 8,
+          "bytes": 108,
+          "vramStart": 2149324864,
+          "sectionName": ".ob64.r1608",
+          "placementKind": "non-descriptor-load-slab",
+          "overlayDescriptorId": null,
+          "loadSlabId": "loader-dma-00087200",
+          "file": "asm/original/rev0/lib/func_000ae298.s",
+          "sha256": "D6F4123C728FF19F8FD937F4E855887B7F068F57C4FAF1BBF7A56ACCB54808C5"
+        }
+      ]
+    },
+    {
+      "romStart": 757216,
+      "romEndExclusive": 757272,
+      "evidence": {
+        "caseId": "entry:000B8DE0",
+        "status": "known-entry-or-ownership",
+        "rationale": "Existing owner begins with two NOPs at 0xB8DD8; actual called body initializes counters at 0xB8DE0. The complete proposed body and predecessor return/delay slot were inspected against normalized ROM and physical source words. Mapped JAL target words reproduce under accepted source/target slices. No direct noncall entry from outside the body, shared tail, or cross-cut branch/jump is established by the mapped edge census."
+      },
+      "symbol": "func_000B8DE0",
+      "aliases": [],
+      "expectedBytesSha256": "E6A1A9F2DC589641DE13140E4394F6D7E93800C0CC78747E5859EB077B04F75D",
+      "fragments": [
+        {
+          "rowIndex": 1695,
+          "romStart": 757216,
+          "romEndExclusive": 757272,
+          "ownerOffset": 8,
+          "bytes": 56,
+          "vramStart": 2149368704,
+          "sectionName": ".ob64.r1695",
+          "placementKind": "non-descriptor-load-slab",
+          "overlayDescriptorId": null,
+          "loadSlabId": "loader-dma-00087200",
+          "file": "asm/original/rev0/lib/func_000b8dd8.s",
+          "sha256": "FC4CF261ECF6BFD628101970082C9E49797434304FA94F14E1DD7A60A36C6EC3"
+        }
+      ]
+    },
+    {
+      "romStart": 762560,
+      "romEndExclusive": 763792,
+      "evidence": {
+        "caseId": "entry:000BA2C0",
+        "status": "known-entry-or-ownership",
+        "rationale": "Long but closed leaf CFG with initialized temporaries and local return. Accepted owner begins with three padding NOPs, not a separate function. The complete proposed body and predecessor return/delay slot were inspected against normalized ROM and physical source words. Mapped JAL target words reproduce under accepted source/target slices. No direct noncall entry from outside the body, shared tail, or cross-cut branch/jump is established by the mapped edge census."
+      },
+      "symbol": "func_000BA2C0",
+      "aliases": [],
+      "expectedBytesSha256": "507258E8AF375B0DE5B1C66644559DA61B6CA68AC77A156E6F72C4170136AD7C",
+      "fragments": [
+        {
+          "rowIndex": 1713,
+          "romStart": 762560,
+          "romEndExclusive": 763792,
+          "ownerOffset": 12,
+          "bytes": 1232,
+          "vramStart": 2149374048,
+          "sectionName": ".ob64.r1713",
+          "placementKind": "non-descriptor-load-slab",
+          "overlayDescriptorId": null,
+          "loadSlabId": "loader-dma-00087200",
+          "file": "asm/original/rev0/lib/func_000ba2b4.s",
+          "sha256": "A597B8BC7E0710156E48CFB908798434595F1A32F89B12890BB1C5225EDF8858"
+        }
+      ]
+    },
+    {
+      "romStart": 852304,
+      "romEndExclusive": 852852,
+      "evidence": {
+        "caseId": "accepted-primary",
+        "status": "accepted-primary-before-reviewed-secondary",
+        "rationale": "Preserved accepted primary entry; endpoint closes at JR ra plus delay slot before the earliest reviewed candidate. Unproven following candidates remain unknown coverage."
+      },
+      "symbol": "func_000D0150",
+      "aliases": [],
+      "expectedBytesSha256": "EBF33B614D81A575E12777814FAD236232D099A384D48A8C4FBD9F8803C50FBE",
+      "fragments": [
+        {
+          "rowIndex": 1877,
+          "romStart": 852304,
+          "romEndExclusive": 852852,
+          "ownerOffset": 0,
+          "bytes": 548,
+          "vramStart": 2149463792,
+          "sectionName": ".ob64.r1877",
+          "placementKind": "non-descriptor-load-slab",
+          "overlayDescriptorId": null,
+          "loadSlabId": "loader-dma-00087200",
+          "file": "asm/original/rev0/lib/func_000d0150.s",
+          "sha256": "5AAFC7450940AB2912AD0FDCB10375F809F17AFAE2F8AF19E4032DC52F98EEEF"
+        }
+      ]
+    },
+    {
+      "romStart": 852864,
+      "romEndExclusive": 854916,
+      "evidence": {
+        "caseId": "entry:000D0380",
+        "status": "known-entry-or-ownership",
+        "rationale": "Active func_000d0150.c explicitly retains the three alignment words and this two-word a2 preamble; next body reads a2 atD03A8. Prior independent review already explains it. Complete following routine returnsD0B7C/80. This is known retained ownership and does not establish a newly broken active match."
+      },
+      "symbol": "func_000D0380",
+      "aliases": [],
+      "expectedBytesSha256": "7E86DDF247BF6B1FD45EBEC8D4396B024E875F7CAEFD04A75BE07B54B80BC0A5",
+      "fragments": [
+        {
+          "rowIndex": 1877,
+          "romStart": 852864,
+          "romEndExclusive": 852872,
+          "ownerOffset": 560,
+          "bytes": 8,
+          "vramStart": 2149464352,
+          "sectionName": ".ob64.r1877",
+          "placementKind": "non-descriptor-load-slab",
+          "overlayDescriptorId": null,
+          "loadSlabId": "loader-dma-00087200",
+          "file": "asm/original/rev0/lib/func_000d0150.s",
+          "sha256": "5AAFC7450940AB2912AD0FDCB10375F809F17AFAE2F8AF19E4032DC52F98EEEF"
+        },
+        {
+          "rowIndex": 1878,
+          "romStart": 852872,
+          "romEndExclusive": 854916,
+          "ownerOffset": 0,
+          "bytes": 2044,
+          "vramStart": 2149464360,
+          "sectionName": ".ob64.r1878",
+          "placementKind": "non-descriptor-load-slab",
+          "overlayDescriptorId": null,
+          "loadSlabId": "loader-dma-00087200",
+          "file": "asm/original/rev0/lib/func_000d0388.s",
+          "sha256": "B39A8EE45B074B3EB35ADE2D8B18B77ADF431408CD88387CBE4890231D291B26"
+        }
+      ]
+    },
+    {
+      "romStart": 854916,
+      "romEndExclusive": 856332,
+      "evidence": {
+        "caseId": "entry:000D0B84",
+        "status": "known-entry-or-ownership",
+        "rationale": "Source func_000D0B8C_chunk12head.s:11 explicitly states that D0B84/88 loads a3 used atD0B98, held in predecessor to honor fixed straddler start. Full head/tail body endsD110C; internal jr v0 dispatches are not function endings. TableDBC98=801E4124 and sibling handler pointers corroborate logical setup address within the same accepted load slab. Known ownership constraint, not newly missing code."
+      },
+      "symbol": "func_000D0B84",
+      "aliases": [
+        "func_000D0B8C"
+      ],
+      "expectedBytesSha256": "1D95F84C21D61CC120C90F41F00E54368541F77825630BF2A626A234948C2C7A",
+      "fragments": [
+        {
+          "rowIndex": 1878,
+          "romStart": 854916,
+          "romEndExclusive": 854924,
+          "ownerOffset": 2044,
+          "bytes": 8,
+          "vramStart": 2149466404,
+          "sectionName": ".ob64.r1878",
+          "placementKind": "non-descriptor-load-slab",
+          "overlayDescriptorId": null,
+          "loadSlabId": "loader-dma-00087200",
+          "file": "asm/original/rev0/lib/func_000d0388.s",
+          "sha256": "B39A8EE45B074B3EB35ADE2D8B18B77ADF431408CD88387CBE4890231D291B26"
+        },
+        {
+          "rowIndex": 1879,
+          "romStart": 854924,
+          "romEndExclusive": 856064,
+          "ownerOffset": 0,
+          "bytes": 1140,
+          "vramStart": 2149466412,
+          "sectionName": ".ob64.r1879",
+          "placementKind": "non-descriptor-load-slab",
+          "overlayDescriptorId": null,
+          "loadSlabId": "loader-dma-00087200",
+          "file": "asm/original/rev0/lib/func_000D0B8C_chunk12head.s",
+          "sha256": "B810194357850236EA7725F48D8E299120E45097F204932BA84C3E653DB0F2FF"
+        },
+        {
+          "rowIndex": 1880,
+          "romStart": 856064,
+          "romEndExclusive": 856332,
+          "ownerOffset": 0,
+          "bytes": 268,
+          "vramStart": 2149467552,
+          "sectionName": ".ob64.r1880",
+          "placementKind": "non-descriptor-load-slab",
+          "overlayDescriptorId": null,
+          "loadSlabId": "loader-dma-00087200",
+          "file": "asm/original/rev0/lib/func_000D0B8C_chunk13tail.s",
+          "sha256": "084EBF026DA0F3C995914C16BFBC4EC2EE92018CFA28ACF14DA67694FD6FF746"
+        }
+      ]
+    },
+    {
+      "romStart": 940384,
+      "romEndExclusive": 940392,
+      "evidence": {
+        "caseId": "entry:000E5960",
+        "status": "known-entry-or-ownership",
+        "rationale": "Accepted ownerE595C contains one leading nop followed by this sole jr/nop body. Splat skips the leading zero; it has not found an extra routine within the owner. Padding ownership remains separate from whether this no-op is ever called."
+      },
+      "symbol": "func_000E5960",
+      "aliases": [],
+      "expectedBytesSha256": "78AA5094D5EC7291C79F799C009D04F06C2F20187988E3DCC8D35EE5EFDBB378",
+      "fragments": [
+        {
+          "rowIndex": 1973,
+          "romStart": 940384,
+          "romEndExclusive": 940392,
+          "ownerOffset": 4,
+          "bytes": 8,
+          "vramStart": 2149157856,
+          "sectionName": ".ob64.r1973",
+          "placementKind": "overlay",
+          "overlayDescriptorId": 2,
+          "loadSlabId": null,
+          "file": "asm/original/rev0/lib/func_000E595C.s",
+          "sha256": "B32A16CD1DCE5A3432E9570CF043050F1F998EB05C243905FF183DC1BF29F64C"
+        }
+      ]
+    },
+    {
+      "romStart": 972080,
+      "romEndExclusive": 974928,
+      "evidence": {
+        "caseId": "accepted-primary",
+        "status": "accepted-primary-before-reviewed-secondary",
+        "rationale": "Preserved accepted primary entry; endpoint closes at JR ra plus delay slot before the earliest reviewed candidate. Unproven following candidates remain unknown coverage."
+      },
+      "symbol": "func_000ED530",
+      "aliases": [],
+      "expectedBytesSha256": "BA1B3EAD1A7B82E4FBFF30FA4CB02AB8736E592855AE3A87FBE6549E410FD05A",
+      "fragments": [
+        {
+          "rowIndex": 2025,
+          "romStart": 972080,
+          "romEndExclusive": 974928,
+          "ownerOffset": 0,
+          "bytes": 2848,
+          "vramStart": 2149189584,
+          "sectionName": ".ob64.r2025",
+          "placementKind": "overlay",
+          "overlayDescriptorId": 3,
+          "loadSlabId": null,
+          "file": "asm/original/rev0/lib/func_000ed530.s",
+          "sha256": "D89DB422D4FA847C6BC79F223BC71F54062985BF93FA11219433D2CC371A41BC"
+        }
+      ]
+    },
+    {
+      "romStart": 974928,
+      "romEndExclusive": 974996,
+      "evidence": {
+        "caseId": "entry:000EE050",
+        "status": "known-entry-or-ownership",
+        "rationale": "Source func_000ed530.s:11 explicitly identifies the last8 bytes as the next function preamble; func_000ee058.s:11 records the same approach. LUI/LBU atEE050/54 defines v0 consumed by ANDI atEE078 after the new0x18 frame. Full body endsEE094. This is the existingEE058 body with its required earlier entry, not a separate extra initialization wrapper."
+      },
+      "symbol": "func_000EE050",
+      "aliases": [
+        "func_000EE058"
+      ],
+      "expectedBytesSha256": "166F9BD402D3481E116041E2C76EB834D234ECAF9094F000797B38553A99B9DD",
+      "fragments": [
+        {
+          "rowIndex": 2025,
+          "romStart": 974928,
+          "romEndExclusive": 974936,
+          "ownerOffset": 2848,
+          "bytes": 8,
+          "vramStart": 2149192432,
+          "sectionName": ".ob64.r2025",
+          "placementKind": "overlay",
+          "overlayDescriptorId": 3,
+          "loadSlabId": null,
+          "file": "asm/original/rev0/lib/func_000ed530.s",
+          "sha256": "D89DB422D4FA847C6BC79F223BC71F54062985BF93FA11219433D2CC371A41BC"
+        },
+        {
+          "rowIndex": 2026,
+          "romStart": 974936,
+          "romEndExclusive": 974996,
+          "ownerOffset": 0,
+          "bytes": 60,
+          "vramStart": 2149192440,
+          "sectionName": ".ob64.r2026",
+          "placementKind": "overlay",
+          "overlayDescriptorId": 3,
+          "loadSlabId": null,
+          "file": "asm/original/rev0/lib/func_000ee058.s",
+          "sha256": "F70670D35FBBD11C728F8F471D98BD86852C2B1CEFE3364614D58DDBD6EB0EDE"
+        }
+      ]
+    },
+    {
+      "romStart": 987988,
+      "romEndExclusive": 988924,
+      "evidence": {
+        "caseId": "accepted-primary",
+        "status": "accepted-primary-before-reviewed-secondary",
+        "rationale": "Preserved accepted primary entry; endpoint closes at JR ra plus delay slot before the earliest reviewed candidate. Unproven following candidates remain unknown coverage."
+      },
+      "symbol": "func_000F1354",
+      "aliases": [],
+      "expectedBytesSha256": "0B7D18B8905F76335B2E1B2EA7E96FB1EEF159D9AA0AF9512448CC33B9E3FD7F",
+      "fragments": [
+        {
+          "rowIndex": 2042,
+          "romStart": 987988,
+          "romEndExclusive": 988924,
+          "ownerOffset": 0,
+          "bytes": 936,
+          "vramStart": 2149205492,
+          "sectionName": ".ob64.r2042",
+          "placementKind": "overlay",
+          "overlayDescriptorId": 3,
+          "loadSlabId": null,
+          "file": "asm/original/rev0/lib/func_000F1354.s",
+          "sha256": "0941FD7CD03E493BC1CA4C242BFF00EB019077DC5ADB07C79196F2894D608F6F"
+        }
+      ]
+    },
+    {
+      "romStart": 988924,
+      "romEndExclusive": 989080,
+      "evidence": {
+        "caseId": "entry:000F16FC",
+        "status": "independent-entry-supported",
+        "rationale": "Leaf initializes all arithmetic from a global byte; MULT/MFHI is part of local constant arithmetic, not a call. The predecessor restores its 0xC8 frame and the new leaf has its own JR/store ending. Raw re-decoding verifies 1 mapping-qualified incoming direct calls. No qualified non-call edge crosses the proposed entry and no qualified external direct edge enters its interior. Static references do not establish runtime execution."
+      },
+      "symbol": "func_000F16FC",
+      "aliases": [],
+      "expectedBytesSha256": "F8CFDD53E556C10CDA6FAEE448F326DC45CF3380F0693FFAC2325886B4169677",
+      "fragments": [
+        {
+          "rowIndex": 2042,
+          "romStart": 988924,
+          "romEndExclusive": 989080,
+          "ownerOffset": 936,
+          "bytes": 156,
+          "vramStart": 2149206428,
+          "sectionName": ".ob64.r2042",
+          "placementKind": "overlay",
+          "overlayDescriptorId": 3,
+          "loadSlabId": null,
+          "file": "asm/original/rev0/lib/func_000F1354.s",
+          "sha256": "0941FD7CD03E493BC1CA4C242BFF00EB019077DC5ADB07C79196F2894D608F6F"
+        }
+      ]
+    },
+    {
+      "romStart": 1182656,
+      "romEndExclusive": 1182960,
+      "evidence": {
+        "caseId": "entry:00120BC0",
+        "status": "known-entry-or-ownership",
+        "rationale": "COP1 argument transfers precede its own 0x20 frame. Accepted owner has one leading NOP; no extra function implied. The complete proposed body and predecessor return/delay slot were inspected against normalized ROM and physical source words. Mapped JAL target words reproduce under accepted source/target slices. No direct noncall entry from outside the body, shared tail, or cross-cut branch/jump is established by the mapped edge census."
+      },
+      "symbol": "func_00120BC0",
+      "aliases": [],
+      "expectedBytesSha256": "1F9E4875B9EAF6D216A4F1F83CFF4A048D7216DA4956580FA9E3D49293FD9878",
+      "fragments": [
+        {
+          "rowIndex": 2351,
+          "romStart": 1182656,
+          "romEndExclusive": 1182960,
+          "ownerOffset": 4,
+          "bytes": 304,
+          "vramStart": 2149368960,
+          "sectionName": ".ob64.r2351",
+          "placementKind": "overlay",
+          "overlayDescriptorId": 7,
+          "loadSlabId": null,
+          "file": "asm/original/rev0/lib/func_00120BBC.s",
+          "sha256": "ABB7CD02C14D08061E2CC6D3E9FFBF87B6BD328D2B569EDADCAB1C63F3210660"
+        }
+      ]
+    },
+    {
+      "romStart": 1212256,
+      "romEndExclusive": 1212496,
+      "evidence": {
+        "caseId": "entry:00127F60",
+        "status": "known-entry-or-ownership",
+        "rationale": "Source explicitly documents leading three-nop gap127F54..5C then this single frameless body. Full local branch/J paths converge on128048 return. Candidate is the effective start of existing accepted owner, not a second function."
+      },
+      "symbol": "func_00127F60",
+      "aliases": [],
+      "expectedBytesSha256": "133F38BC597E82ACD4DCA6D661BEDC77623F9ECC83DD05086BE70C7D9C6CC65E",
+      "fragments": [
+        {
+          "rowIndex": 2388,
+          "romStart": 1212256,
+          "romEndExclusive": 1212496,
+          "ownerOffset": 12,
+          "bytes": 240,
+          "vramStart": 2149398560,
+          "sectionName": ".ob64.r2388",
+          "placementKind": "overlay",
+          "overlayDescriptorId": 7,
+          "loadSlabId": null,
+          "file": "asm/original/rev0/lib/func_00127F54.s",
+          "sha256": "AC85981D3A58ABDC8AAE02EB173CAFBE203C41829693A797E31920B4E227659C"
+        }
+      ]
+    },
+    {
+      "romStart": 1224208,
+      "romEndExclusive": 1224380,
+      "evidence": {
+        "caseId": "entry:0012AE10",
+        "status": "known-entry-or-ownership",
+        "rationale": "Source explicitly identifies three leading nops then recovered leaf reading a0/a1/a2. Its local branch/J paths and return12AEB4 are the existing owner body; no new routine beyond12AE04 ownership."
+      },
+      "symbol": "func_0012AE10",
+      "aliases": [],
+      "expectedBytesSha256": "5207C89ED74C32177FB51E584CC50937CF81F239761661B439A32DF7B3A25D17",
+      "fragments": [
+        {
+          "rowIndex": 2413,
+          "romStart": 1224208,
+          "romEndExclusive": 1224380,
+          "ownerOffset": 12,
+          "bytes": 172,
+          "vramStart": 2149410512,
+          "sectionName": ".ob64.r2413",
+          "placementKind": "overlay",
+          "overlayDescriptorId": 7,
+          "loadSlabId": null,
+          "file": "asm/original/rev0/lib/func_0012AE04.s",
+          "sha256": "41839B4D52DCADA62C6B0BF199AA6941F8BE3DE78035C1C561CE4144EC82FA64"
+        }
+      ]
+    },
+    {
+      "romStart": 1250912,
+      "romEndExclusive": 1251024,
+      "evidence": {
+        "caseId": "accepted-primary",
+        "status": "accepted-primary-before-reviewed-secondary",
+        "rationale": "Preserved accepted primary entry; endpoint closes at JR ra plus delay slot before the earliest reviewed candidate. Unproven following candidates remain unknown coverage."
+      },
+      "symbol": "func_00131660",
+      "aliases": [],
+      "expectedBytesSha256": "5FFB63CCD10B65D3F028999D4842D4900604B334B234E659B81900F75319C287",
+      "fragments": [
+        {
+          "rowIndex": 2458,
+          "romStart": 1250912,
+          "romEndExclusive": 1251024,
+          "ownerOffset": 0,
+          "bytes": 112,
+          "vramStart": 2149437216,
+          "sectionName": ".ob64.r2458",
+          "placementKind": "overlay",
+          "overlayDescriptorId": 7,
+          "loadSlabId": null,
+          "file": "asm/original/rev0/lib/func_00131660.s",
+          "sha256": "B578B61A23A46572DB944148AD5540F6A4B573F65F913B76F73428F434A0E3ED"
+        }
+      ]
+    },
+    {
+      "romStart": 1251024,
+      "romEndExclusive": 1251368,
+      "evidence": {
+        "caseId": "entry:001316D0",
+        "status": "independent-entry-supported",
+        "rationale": "Argument-derived table loads initialize all state. The 83-entry switch table at ROM 0x143028 (runtime RAM 0x801EE8E8) was decoded separately: every entry targets a block inside this body. All switch blocks converge on local classification/fallback logic and the final JR/NOP; none requires the predecessor frame. Raw re-decoding verifies 12 mapping-qualified incoming direct calls. No qualified non-call edge crosses the proposed entry and no qualified external direct edge enters its interior. Static references do not establish runtime execution."
+      },
+      "symbol": "func_001316D0",
+      "aliases": [],
+      "expectedBytesSha256": "067B425EA52488B2669CC732E8071D8C6A1F72E792B5D79932E61641A53EA160",
+      "fragments": [
+        {
+          "rowIndex": 2458,
+          "romStart": 1251024,
+          "romEndExclusive": 1251368,
+          "ownerOffset": 112,
+          "bytes": 344,
+          "vramStart": 2149437328,
+          "sectionName": ".ob64.r2458",
+          "placementKind": "overlay",
+          "overlayDescriptorId": 7,
+          "loadSlabId": null,
+          "file": "asm/original/rev0/lib/func_00131660.s",
+          "sha256": "B578B61A23A46572DB944148AD5540F6A4B573F65F913B76F73428F434A0E3ED"
+        }
+      ]
+    },
+    {
+      "romStart": 1251368,
+      "romEndExclusive": 1251656,
+      "evidence": {
+        "caseId": "accepted-primary",
+        "status": "accepted-primary-before-reviewed-secondary",
+        "rationale": "Preserved accepted primary entry; endpoint closes at JR ra plus delay slot before the earliest reviewed candidate. Unproven following candidates remain unknown coverage."
+      },
+      "symbol": "func_00131828",
+      "aliases": [],
+      "expectedBytesSha256": "19FFD8038F2461028C75C6D866F244F8844AF1FE56CF16AB0A428FE2F8869545",
+      "fragments": [
+        {
+          "rowIndex": 2459,
+          "romStart": 1251368,
+          "romEndExclusive": 1251656,
+          "ownerOffset": 0,
+          "bytes": 288,
+          "vramStart": 2149437672,
+          "sectionName": ".ob64.r2459",
+          "placementKind": "overlay",
+          "overlayDescriptorId": 7,
+          "loadSlabId": null,
+          "file": "asm/original/rev0/lib/func_00131828.s",
+          "sha256": "9C13057D68FF4F97B026883004B17ABF75B8542E417B17E3BCE2CAEDD73A262E"
+        }
+      ]
+    },
+    {
+      "romStart": 1251656,
+      "romEndExclusive": 1251716,
+      "evidence": {
+        "caseId": "entry:00131948",
+        "status": "independent-entry-supported",
+        "rationale": "Same-overlay table 0x143180 has 33 targets, all 0x131978 or 0x13197C; independent local boolean return. The complete proposed body and predecessor return/delay slot were inspected against normalized ROM and physical source words. Mapped JAL target words reproduce under accepted source/target slices. No direct noncall entry from outside the body, shared tail, or cross-cut branch/jump is established by the mapped edge census."
+      },
+      "symbol": "func_00131948",
+      "aliases": [],
+      "expectedBytesSha256": "177186DB8E34EDB749439B13B100522B7268DB63471FEFDB78D5E21B9A81BC78",
+      "fragments": [
+        {
+          "rowIndex": 2459,
+          "romStart": 1251656,
+          "romEndExclusive": 1251716,
+          "ownerOffset": 288,
+          "bytes": 60,
+          "vramStart": 2149437960,
+          "sectionName": ".ob64.r2459",
+          "placementKind": "overlay",
+          "overlayDescriptorId": 7,
+          "loadSlabId": null,
+          "file": "asm/original/rev0/lib/func_00131828.s",
+          "sha256": "9C13057D68FF4F97B026883004B17ABF75B8542E417B17E3BCE2CAEDD73A262E"
+        }
+      ]
+    },
+    {
+      "romStart": 1251716,
+      "romEndExclusive": 1251776,
+      "evidence": {
+        "caseId": "entry:00131984",
+        "status": "independent-entry-supported",
+        "rationale": "Same-overlay table 0x143208 has 23 targets, all 0x1319B4 or 0x1319B8. Unrelated-overlay pointer-shaped word is excluded. The complete proposed body and predecessor return/delay slot were inspected against normalized ROM and physical source words. Mapped JAL target words reproduce under accepted source/target slices. No direct noncall entry from outside the body, shared tail, or cross-cut branch/jump is established by the mapped edge census."
+      },
+      "symbol": "func_00131984",
+      "aliases": [],
+      "expectedBytesSha256": "77346457DDB8A4BD4677B5BC6703A5AFFC448B3DDCC7509BD6353B71F1779B3D",
+      "fragments": [
+        {
+          "rowIndex": 2459,
+          "romStart": 1251716,
+          "romEndExclusive": 1251776,
+          "ownerOffset": 348,
+          "bytes": 60,
+          "vramStart": 2149438020,
+          "sectionName": ".ob64.r2459",
+          "placementKind": "overlay",
+          "overlayDescriptorId": 7,
+          "loadSlabId": null,
+          "file": "asm/original/rev0/lib/func_00131828.s",
+          "sha256": "9C13057D68FF4F97B026883004B17ABF75B8542E417B17E3BCE2CAEDD73A262E"
+        }
+      ]
+    },
+    {
+      "romStart": 1251776,
+      "romEndExclusive": 1251824,
+      "evidence": {
+        "caseId": "entry:001319C0",
+        "status": "independent-entry-supported",
+        "rationale": "Same-overlay table 0x143268 has 24 targets, all 0x1319E4 or 0x1319E8; separate boolean leaf. The complete proposed body and predecessor return/delay slot were inspected against normalized ROM and physical source words. Mapped JAL target words reproduce under accepted source/target slices. No direct noncall entry from outside the body, shared tail, or cross-cut branch/jump is established by the mapped edge census."
+      },
+      "symbol": "func_001319C0",
+      "aliases": [],
+      "expectedBytesSha256": "CA817634D27F795E83FE3FA490085159C68F290991F0F7A3C83548CDD87FB538",
+      "fragments": [
+        {
+          "rowIndex": 2459,
+          "romStart": 1251776,
+          "romEndExclusive": 1251824,
+          "ownerOffset": 408,
+          "bytes": 48,
+          "vramStart": 2149438080,
+          "sectionName": ".ob64.r2459",
+          "placementKind": "overlay",
+          "overlayDescriptorId": 7,
+          "loadSlabId": null,
+          "file": "asm/original/rev0/lib/func_00131828.s",
+          "sha256": "9C13057D68FF4F97B026883004B17ABF75B8542E417B17E3BCE2CAEDD73A262E"
+        }
+      ]
+    },
+    {
+      "romStart": 1251824,
+      "romEndExclusive": 1251860,
+      "evidence": {
+        "caseId": "entry:001319F0",
+        "status": "independent-entry-supported",
+        "rationale": "Initialized false return and local threshold path; separate leaf after prior return. The complete proposed body and predecessor return/delay slot were inspected against normalized ROM and physical source words. Mapped JAL target words reproduce under accepted source/target slices. No direct noncall entry from outside the body, shared tail, or cross-cut branch/jump is established by the mapped edge census."
+      },
+      "symbol": "func_001319F0",
+      "aliases": [],
+      "expectedBytesSha256": "BF99E41C2D63BCFEFAA515617A29868A6C2CAFED18295CFB986333344DCA340C",
+      "fragments": [
+        {
+          "rowIndex": 2459,
+          "romStart": 1251824,
+          "romEndExclusive": 1251860,
+          "ownerOffset": 456,
+          "bytes": 36,
+          "vramStart": 2149438128,
+          "sectionName": ".ob64.r2459",
+          "placementKind": "overlay",
+          "overlayDescriptorId": 7,
+          "loadSlabId": null,
+          "file": "asm/original/rev0/lib/func_00131828.s",
+          "sha256": "9C13057D68FF4F97B026883004B17ABF75B8542E417B17E3BCE2CAEDD73A262E"
+        }
+      ]
+    },
+    {
+      "romStart": 1270268,
+      "romEndExclusive": 1271608,
+      "evidence": {
+        "caseId": "accepted-primary",
+        "status": "accepted-primary-before-reviewed-secondary",
+        "rationale": "Preserved accepted primary entry; endpoint closes at JR ra plus delay slot before the earliest reviewed candidate. Unproven following candidates remain unknown coverage."
+      },
+      "symbol": "func_001361FC",
+      "aliases": [],
+      "expectedBytesSha256": "23424BA6B6C39907B591B3F3E8C2150E85404893DD0471E94F58D2242E67A40C",
+      "fragments": [
+        {
+          "rowIndex": 2494,
+          "romStart": 1270268,
+          "romEndExclusive": 1271608,
+          "ownerOffset": 0,
+          "bytes": 1340,
+          "vramStart": 2149456572,
+          "sectionName": ".ob64.r2494",
+          "placementKind": "overlay",
+          "overlayDescriptorId": 7,
+          "loadSlabId": null,
+          "file": "asm/original/rev0/lib/func_001361FC.s",
+          "sha256": "DCA997BBFFF3ADE1D9B6B6D83CA9C56B4CBE8BF7DC9C22A6459B4301C8777490"
+        }
+      ]
+    },
+    {
+      "romStart": 1271608,
+      "romEndExclusive": 1272176,
+      "evidence": {
+        "caseId": "entry:00136738",
+        "status": "independent-entry-supported",
+        "rationale": "Independent leaf with internal division guards and local return; no cross-cut jump. The complete proposed body and predecessor return/delay slot were inspected against normalized ROM and physical source words. Mapped JAL target words reproduce under accepted source/target slices. No direct noncall entry from outside the body, shared tail, or cross-cut branch/jump is established by the mapped edge census."
+      },
+      "symbol": "func_00136738",
+      "aliases": [],
+      "expectedBytesSha256": "1196580448EC065B0A223241F5B01FB75FDA888134268C3A506AED7E049D9834",
+      "fragments": [
+        {
+          "rowIndex": 2494,
+          "romStart": 1271608,
+          "romEndExclusive": 1272176,
+          "ownerOffset": 1340,
+          "bytes": 568,
+          "vramStart": 2149457912,
+          "sectionName": ".ob64.r2494",
+          "placementKind": "overlay",
+          "overlayDescriptorId": 7,
+          "loadSlabId": null,
+          "file": "asm/original/rev0/lib/func_001361FC.s",
+          "sha256": "DCA997BBFFF3ADE1D9B6B6D83CA9C56B4CBE8BF7DC9C22A6459B4301C8777490"
+        }
+      ]
+    },
+    {
+      "romStart": 1433456,
+      "romEndExclusive": 1433468,
+      "evidence": {
+        "caseId": "entry:0015DF70",
+        "status": "known-entry-or-ownership",
+        "rationale": "Source already documents two leading alignment nops then this leaf. Candidate is first effective instruction in accepted15DF68 owner and shares its sole return."
+      },
+      "symbol": "func_0015DF70",
+      "aliases": [],
+      "expectedBytesSha256": "F0549430D974C0C48AF1E552CA053E9163B55FFBAFBCBBB1F9EBE2752B839251",
+      "fragments": [
+        {
+          "rowIndex": 2781,
+          "romStart": 1433456,
+          "romEndExclusive": 1433468,
+          "ownerOffset": 8,
+          "bytes": 12,
+          "vramStart": 2149633536,
+          "sectionName": ".ob64.r2781",
+          "placementKind": "overlay",
+          "overlayDescriptorId": 9,
+          "loadSlabId": null,
+          "file": "asm/original/rev0/lib/func_0015DF68.s",
+          "sha256": "9845805B76CF284F40ECB65B7A11CF77BD564515933C212A3BDEBF4B3EA0DE58"
+        }
+      ]
+    },
+    {
+      "romStart": 1843300,
+      "romEndExclusive": 1843448,
+      "evidence": {
+        "caseId": "accepted-primary",
+        "status": "accepted-primary-before-reviewed-secondary",
+        "rationale": "Preserved accepted primary entry; endpoint closes at JR ra plus delay slot before the earliest reviewed candidate. Unproven following candidates remain unknown coverage."
+      },
+      "symbol": "func_001C2064",
+      "aliases": [],
+      "expectedBytesSha256": "C729E14E6AA78C3813ABC532EA1242BA979838272332C8BB3C834B85962263E4",
+      "fragments": [
+        {
+          "rowIndex": 3360,
+          "romStart": 1843300,
+          "romEndExclusive": 1843448,
+          "ownerOffset": 0,
+          "bytes": 148,
+          "vramStart": 2149748564,
+          "sectionName": ".ob64.r3360",
+          "placementKind": "overlay",
+          "overlayDescriptorId": 18,
+          "loadSlabId": null,
+          "file": "asm/original/rev0/lib/func_001C2064.s",
+          "sha256": "BC3838656BD9A5B73D12D63A38EE3539F4100EBA4C5A32A3E5D2F185CB77932D"
+        }
+      ]
+    },
+    {
+      "romStart": 1843448,
+      "romEndExclusive": 1843536,
+      "evidence": {
+        "caseId": "entry:001C20F8",
+        "status": "independent-entry-supported",
+        "rationale": "Independent index checks and table-base setup precede all stores. The two fixed jumps target local spin loops, not external routines. Final halfword write in the JR delay slot completes this body before the following state-test helper. Raw re-decoding verifies 1 mapping-qualified incoming direct calls. No qualified non-call edge crosses the proposed entry and no qualified external direct edge enters its interior. Static references do not establish runtime execution."
+      },
+      "symbol": "func_001C20F8",
+      "aliases": [],
+      "expectedBytesSha256": "C46BBEBAF6E8F5D207AB7D2CB7EBA12C688FD2C0079FB671DD5C37362886F4F7",
+      "fragments": [
+        {
+          "rowIndex": 3360,
+          "romStart": 1843448,
+          "romEndExclusive": 1843536,
+          "ownerOffset": 148,
+          "bytes": 88,
+          "vramStart": 2149748712,
+          "sectionName": ".ob64.r3360",
+          "placementKind": "overlay",
+          "overlayDescriptorId": 18,
+          "loadSlabId": null,
+          "file": "asm/original/rev0/lib/func_001C2064.s",
+          "sha256": "BC3838656BD9A5B73D12D63A38EE3539F4100EBA4C5A32A3E5D2F185CB77932D"
+        }
+      ]
+    },
+    {
+      "romStart": 1843536,
+      "romEndExclusive": 1843564,
+      "evidence": {
+        "caseId": "entry:001C2150",
+        "status": "independent-entry-supported",
+        "rationale": "Computes its own address from a0, loads byte, XORs with 3 and returns equality through SLTIU in the JR delay slot. It is separately called immediately after the previous reset helper by the same caller. Raw re-decoding verifies 1 mapping-qualified incoming direct calls. No qualified non-call edge crosses the proposed entry and no qualified external direct edge enters its interior. Static references do not establish runtime execution."
+      },
+      "symbol": "func_001C2150",
+      "aliases": [],
+      "expectedBytesSha256": "35526A079EB82DDAA3FB043C827A17D243C3D3CE218308A7CEA34CAC074FEDA8",
+      "fragments": [
+        {
+          "rowIndex": 3360,
+          "romStart": 1843536,
+          "romEndExclusive": 1843564,
+          "ownerOffset": 236,
+          "bytes": 28,
+          "vramStart": 2149748800,
+          "sectionName": ".ob64.r3360",
+          "placementKind": "overlay",
+          "overlayDescriptorId": 18,
+          "loadSlabId": null,
+          "file": "asm/original/rev0/lib/func_001C2064.s",
+          "sha256": "BC3838656BD9A5B73D12D63A38EE3539F4100EBA4C5A32A3E5D2F185CB77932D"
+        }
+      ]
+    },
+    {
+      "romStart": 1898944,
+      "romEndExclusive": 1899032,
+      "evidence": {
+        "caseId": "accepted-primary",
+        "status": "accepted-primary-before-reviewed-secondary",
+        "rationale": "Preserved accepted primary entry; endpoint closes at JR ra plus delay slot before the earliest reviewed candidate. Unproven following candidates remain unknown coverage."
+      },
+      "symbol": "func_001CF9C0",
+      "aliases": [],
+      "expectedBytesSha256": "AC0EBFBEB6B63E055934A7748A8C25FD35FB03A62C105E19F2EBB5C375EAD295",
+      "fragments": [
+        {
+          "rowIndex": 3435,
+          "romStart": 1898944,
+          "romEndExclusive": 1899032,
+          "ownerOffset": 0,
+          "bytes": 88,
+          "vramStart": 2149160128,
+          "sectionName": ".ob64.r3435",
+          "placementKind": "overlay",
+          "overlayDescriptorId": 15,
+          "loadSlabId": null,
+          "file": "asm/original/rev0/lib/func_001CF9C0.s",
+          "sha256": "C5A4C9D01A85BF2994CB784B3B47C5E3FF30BF90DB4E2497DDF28028D783EE22"
+        }
+      ]
+    },
+    {
+      "romStart": 1899032,
+      "romEndExclusive": 1899104,
+      "evidence": {
+        "caseId": "entry:001CFA18",
+        "status": "independent-entry-supported",
+        "rationale": "Complete 72-byte leaf uses only its own global pointer loads and constants. The preceding 88-byte routine has returned. Historical 88-byte outputs versus the 160-byte owner omit exactly this helper. Raw re-decoding verifies 4 mapping-qualified incoming direct calls. No qualified non-call edge crosses the proposed entry and no qualified external direct edge enters its interior. Static references do not establish runtime execution."
+      },
+      "symbol": "func_001CFA18",
+      "aliases": [],
+      "expectedBytesSha256": "ACFF3F9DBDFB4A4EF82B9E6A4486A9F7B0660E6D2DDF17DA25DB94B5BB18C4D8",
+      "fragments": [
+        {
+          "rowIndex": 3435,
+          "romStart": 1899032,
+          "romEndExclusive": 1899104,
+          "ownerOffset": 88,
+          "bytes": 72,
+          "vramStart": 2149160216,
+          "sectionName": ".ob64.r3435",
+          "placementKind": "overlay",
+          "overlayDescriptorId": 15,
+          "loadSlabId": null,
+          "file": "asm/original/rev0/lib/func_001CF9C0.s",
+          "sha256": "C5A4C9D01A85BF2994CB784B3B47C5E3FF30BF90DB4E2497DDF28028D783EE22"
+        }
+      ]
+    },
+    {
+      "romStart": 1899104,
+      "romEndExclusive": 1900136,
+      "evidence": {
+        "caseId": "accepted-primary",
+        "status": "accepted-primary-before-reviewed-secondary",
+        "rationale": "Preserved accepted primary entry; endpoint closes at JR ra plus delay slot before the earliest reviewed candidate. Unproven following candidates remain unknown coverage."
+      },
+      "symbol": "func_001CFA60",
+      "aliases": [],
+      "expectedBytesSha256": "B6BD59DFB0AF75DDDD196250E866DE72F500CD3F0B5600E836366B7A305B5B2F",
+      "fragments": [
+        {
+          "rowIndex": 3436,
+          "romStart": 1899104,
+          "romEndExclusive": 1900136,
+          "ownerOffset": 0,
+          "bytes": 1032,
+          "vramStart": 2149160288,
+          "sectionName": ".ob64.r3436",
+          "placementKind": "overlay",
+          "overlayDescriptorId": 15,
+          "loadSlabId": null,
+          "file": "asm/original/rev0/lib/func_001CFA60.s",
+          "sha256": "3C7D22A0A2F110F6CE169A421E156B65DA77545B2CC4FF97999A725BDC650020"
+        }
+      ]
+    },
+    {
+      "romStart": 1900136,
+      "romEndExclusive": 1900860,
+      "evidence": {
+        "caseId": "entry:001CFE68",
+        "status": "independent-entry-supported",
+        "rationale": "Required 30.0f setup at 0x1CFE68/6C feeds div.s at 0x1CFEC0. Old next owner 0x1CFE70 skips setup; preceding jr/delay complete at 0x1CFE64. The complete proposed body and predecessor return/delay slot were inspected against normalized ROM and physical source words. Mapped JAL target words reproduce under accepted source/target slices. No direct noncall entry from outside the body, shared tail, or cross-cut branch/jump is established by the mapped edge census."
+      },
+      "symbol": "func_001CFE68",
+      "aliases": [
+        "func_001CFE70"
+      ],
+      "expectedBytesSha256": "082A3836866A42F7967CD141502B443235B76B32BB79E2BD787CA01FD291DB60",
+      "fragments": [
+        {
+          "rowIndex": 3436,
+          "romStart": 1900136,
+          "romEndExclusive": 1900144,
+          "ownerOffset": 1032,
+          "bytes": 8,
+          "vramStart": 2149161320,
+          "sectionName": ".ob64.r3436",
+          "placementKind": "overlay",
+          "overlayDescriptorId": 15,
+          "loadSlabId": null,
+          "file": "asm/original/rev0/lib/func_001CFA60.s",
+          "sha256": "3C7D22A0A2F110F6CE169A421E156B65DA77545B2CC4FF97999A725BDC650020"
+        },
+        {
+          "rowIndex": 3437,
+          "romStart": 1900144,
+          "romEndExclusive": 1900860,
+          "ownerOffset": 0,
+          "bytes": 716,
+          "vramStart": 2149161328,
+          "sectionName": ".ob64.r3437",
+          "placementKind": "overlay",
+          "overlayDescriptorId": 15,
+          "loadSlabId": null,
+          "file": "asm/original/rev0/lib/func_001CFE70.s",
+          "sha256": "34A2FC781FFB02D9A2ADCBC3519F05C0F528E233D47EC0E7F6A7F31DE32CEA09"
+        }
+      ]
+    },
+    {
+      "romStart": 1905724,
+      "romEndExclusive": 1906004,
+      "evidence": {
+        "caseId": "accepted-primary",
+        "status": "accepted-primary-before-reviewed-secondary",
+        "rationale": "Preserved accepted primary entry; endpoint closes at JR ra plus delay slot before the earliest reviewed candidate. Unproven following candidates remain unknown coverage."
+      },
+      "symbol": "func_001D143C",
+      "aliases": [],
+      "expectedBytesSha256": "EC9CAD477D7D2DD1538CA8E7E8B46DD5F8F123801F303E5A12543CC5A9770C07",
+      "fragments": [
+        {
+          "rowIndex": 3448,
+          "romStart": 1905724,
+          "romEndExclusive": 1906004,
+          "ownerOffset": 0,
+          "bytes": 280,
+          "vramStart": 2149166908,
+          "sectionName": ".ob64.r3448",
+          "placementKind": "overlay",
+          "overlayDescriptorId": 15,
+          "loadSlabId": null,
+          "file": "asm/original/rev0/lib/func_001D143C.s",
+          "sha256": "59EB3DC0CCB2640F015629455BAF38DAEB7C224EB269A0648DE1202754E93720"
+        }
+      ]
+    },
+    {
+      "romStart": 1906004,
+      "romEndExclusive": 1906296,
+      "evidence": {
+        "caseId": "entry:001D1554",
+        "status": "independent-entry-supported",
+        "rationale": "Independent leaf; lookup helper logic is inlined. Missing descriptor path still dereferences zero, so do not promise safe failure for arbitrary input. The complete proposed body and predecessor return/delay slot were inspected against normalized ROM and physical source words. Mapped JAL target words reproduce under accepted source/target slices. No direct noncall entry from outside the body, shared tail, or cross-cut branch/jump is established by the mapped edge census."
+      },
+      "symbol": "func_001D1554",
+      "aliases": [],
+      "expectedBytesSha256": "492C907E7A64EEE6CE1D534926E7F52CE3851C2A903EA1F14F869527D9154678",
+      "fragments": [
+        {
+          "rowIndex": 3448,
+          "romStart": 1906004,
+          "romEndExclusive": 1906296,
+          "ownerOffset": 280,
+          "bytes": 292,
+          "vramStart": 2149167188,
+          "sectionName": ".ob64.r3448",
+          "placementKind": "overlay",
+          "overlayDescriptorId": 15,
+          "loadSlabId": null,
+          "file": "asm/original/rev0/lib/func_001D143C.s",
+          "sha256": "59EB3DC0CCB2640F015629455BAF38DAEB7C224EB269A0648DE1202754E93720"
+        }
+      ]
+    },
+    {
+      "romStart": 1914860,
+      "romEndExclusive": 1915192,
+      "evidence": {
+        "caseId": "accepted-primary",
+        "status": "accepted-primary-before-reviewed-secondary",
+        "rationale": "Preserved accepted primary entry; endpoint closes at JR ra plus delay slot before the earliest reviewed candidate. Unproven following candidates remain unknown coverage."
+      },
+      "symbol": "func_001D37EC",
+      "aliases": [],
+      "expectedBytesSha256": "038EF4F0D98E9347CEB3160DCC9F93C54B43C37A0AB6309EA658893DA7C8F9A9",
+      "fragments": [
+        {
+          "rowIndex": 3460,
+          "romStart": 1914860,
+          "romEndExclusive": 1915192,
+          "ownerOffset": 0,
+          "bytes": 332,
+          "vramStart": 2149176044,
+          "sectionName": ".ob64.r3460",
+          "placementKind": "overlay",
+          "overlayDescriptorId": 15,
+          "loadSlabId": null,
+          "file": "asm/original/rev0/lib/func_001D37EC.s",
+          "sha256": "785D20016351A9FBAB0CB1626AE3E20B52A71B8AC31B9F42F844508833406777"
+        }
+      ]
+    },
+    {
+      "romStart": 1915192,
+      "romEndExclusive": 1915464,
+      "evidence": {
+        "caseId": "entry:001D3938",
+        "status": "independent-entry-supported",
+        "rationale": "Entry masks a0 and branches directly to its own return for zero. All stores and pointer advances are local; no saved-register or stack state crosses the preceding epilogue. Raw re-decoding verifies 1 mapping-qualified incoming direct calls. No qualified non-call edge crosses the proposed entry and no qualified external direct edge enters its interior. Static references do not establish runtime execution."
+      },
+      "symbol": "func_001D3938",
+      "aliases": [],
+      "expectedBytesSha256": "C1BFE6FA929A6EB4F98C0F06AB4893FE163AEEF1E26812C0E56A17998880DDD9",
+      "fragments": [
+        {
+          "rowIndex": 3460,
+          "romStart": 1915192,
+          "romEndExclusive": 1915464,
+          "ownerOffset": 332,
+          "bytes": 272,
+          "vramStart": 2149176376,
+          "sectionName": ".ob64.r3460",
+          "placementKind": "overlay",
+          "overlayDescriptorId": 15,
+          "loadSlabId": null,
+          "file": "asm/original/rev0/lib/func_001D37EC.s",
+          "sha256": "785D20016351A9FBAB0CB1626AE3E20B52A71B8AC31B9F42F844508833406777"
+        }
+      ]
+    },
+    {
+      "romStart": 1918720,
+      "romEndExclusive": 1918968,
+      "evidence": {
+        "caseId": "accepted-primary",
+        "status": "accepted-primary-before-reviewed-secondary",
+        "rationale": "Preserved accepted primary entry; endpoint closes at JR ra plus delay slot before the earliest reviewed candidate. Unproven following candidates remain unknown coverage."
+      },
+      "symbol": "func_001D4700",
+      "aliases": [],
+      "expectedBytesSha256": "3043A58D3A5512AA37DCB5AFFE84340131C42DE8FBF82CBAC87BB33C06B551A7",
+      "fragments": [
+        {
+          "rowIndex": 3463,
+          "romStart": 1918720,
+          "romEndExclusive": 1918968,
+          "ownerOffset": 0,
+          "bytes": 248,
+          "vramStart": 2149179904,
+          "sectionName": ".ob64.r3463",
+          "placementKind": "overlay",
+          "overlayDescriptorId": 15,
+          "loadSlabId": null,
+          "file": "asm/original/rev0/lib/func_001D4700.s",
+          "sha256": "D13FA3B4C1CF4B33AD74906CFE8F986A00455F5B660EFBC51095F63DF74E916D"
+        }
+      ]
+    },
+    {
+      "romStart": 1918968,
+      "romEndExclusive": 1919592,
+      "evidence": {
+        "caseId": "entry:001D47F8",
+        "status": "independent-entry-supported",
+        "rationale": "Starts with MTC1 from a1, independently dispatches on a0, and rejoins at the final JR/NOP. Unsigned float conversion sequences are local arithmetic. The preceding resource-loading routine has restored its frame. Raw re-decoding verifies 1 mapping-qualified incoming direct calls. No qualified non-call edge crosses the proposed entry and no qualified external direct edge enters its interior. Static references do not establish runtime execution."
+      },
+      "symbol": "func_001D47F8",
+      "aliases": [],
+      "expectedBytesSha256": "C173C5E187E1A7C9B20CCBB9BACF4A788F32D9FFF19A434DD282706CEDE07B8A",
+      "fragments": [
+        {
+          "rowIndex": 3463,
+          "romStart": 1918968,
+          "romEndExclusive": 1919592,
+          "ownerOffset": 248,
+          "bytes": 624,
+          "vramStart": 2149180152,
+          "sectionName": ".ob64.r3463",
+          "placementKind": "overlay",
+          "overlayDescriptorId": 15,
+          "loadSlabId": null,
+          "file": "asm/original/rev0/lib/func_001D4700.s",
+          "sha256": "D13FA3B4C1CF4B33AD74906CFE8F986A00455F5B660EFBC51095F63DF74E916D"
+        }
+      ]
+    },
+    {
+      "romStart": 1929744,
+      "romEndExclusive": 1929816,
+      "evidence": {
+        "caseId": "accepted-primary",
+        "status": "accepted-primary-before-reviewed-secondary",
+        "rationale": "Preserved accepted primary entry; endpoint closes at JR ra plus delay slot before the earliest reviewed candidate. Unproven following candidates remain unknown coverage."
+      },
+      "symbol": "func_001D7210",
+      "aliases": [],
+      "expectedBytesSha256": "677485DAC1AEBFF017D774EA99065802054814C5D2FDFDFF35522B61D3E9C72D",
+      "fragments": [
+        {
+          "rowIndex": 3478,
+          "romStart": 1929744,
+          "romEndExclusive": 1929816,
+          "ownerOffset": 0,
+          "bytes": 72,
+          "vramStart": 2149190928,
+          "sectionName": ".ob64.r3478",
+          "placementKind": "overlay",
+          "overlayDescriptorId": 15,
+          "loadSlabId": null,
+          "file": "asm/original/rev0/lib/func_001D7210.s",
+          "sha256": "D875938A3DAA5EA9F60174145E1A5C48256CC8D3FBCD39A9D63C2E13077D8AA0"
+        }
+      ]
+    },
+    {
+      "romStart": 1929816,
+      "romEndExclusive": 1930020,
+      "evidence": {
+        "caseId": "entry:001D7258",
+        "status": "independent-entry-supported",
+        "rationale": "Initializes loop/base itself; complete loop returns locally. The complete proposed body and predecessor return/delay slot were inspected against normalized ROM and physical source words. Mapped JAL target words reproduce under accepted source/target slices. No direct noncall entry from outside the body, shared tail, or cross-cut branch/jump is established by the mapped edge census."
+      },
+      "symbol": "func_001D7258",
+      "aliases": [],
+      "expectedBytesSha256": "17DAB3F894A6F1762B4A4555CCFA33D616757970D2F98181D8966627201892B4",
+      "fragments": [
+        {
+          "rowIndex": 3478,
+          "romStart": 1929816,
+          "romEndExclusive": 1930020,
+          "ownerOffset": 72,
+          "bytes": 204,
+          "vramStart": 2149191000,
+          "sectionName": ".ob64.r3478",
+          "placementKind": "overlay",
+          "overlayDescriptorId": 15,
+          "loadSlabId": null,
+          "file": "asm/original/rev0/lib/func_001D7210.s",
+          "sha256": "D875938A3DAA5EA9F60174145E1A5C48256CC8D3FBCD39A9D63C2E13077D8AA0"
+        }
+      ]
+    },
+    {
+      "romStart": 1951288,
+      "romEndExclusive": 1952308,
+      "evidence": {
+        "caseId": "accepted-primary",
+        "status": "accepted-primary-before-reviewed-secondary",
+        "rationale": "Preserved accepted primary entry; endpoint closes at JR ra plus delay slot before the earliest reviewed candidate. Unproven following candidates remain unknown coverage."
+      },
+      "symbol": "func_001DC638",
+      "aliases": [],
+      "expectedBytesSha256": "5EF3239682B31B1FD69E6E0FF1F0AD0574D2E66C2AE52A0C0C36F8CFE6817BE2",
+      "fragments": [
+        {
+          "rowIndex": 3517,
+          "romStart": 1951288,
+          "romEndExclusive": 1952308,
+          "ownerOffset": 0,
+          "bytes": 1020,
+          "vramStart": 2149212472,
+          "sectionName": ".ob64.r3517",
+          "placementKind": "overlay",
+          "overlayDescriptorId": 15,
+          "loadSlabId": null,
+          "file": "asm/original/rev0/lib/func_001DC638.s",
+          "sha256": "80342C11EE532B11AE37FC3F8C5A291D80513FD15272ED40BFD91452D8EFF5A5"
+        }
+      ]
+    },
+    {
+      "romStart": 1952308,
+      "romEndExclusive": 1952508,
+      "evidence": {
+        "caseId": "entry:001DCA34",
+        "status": "independent-entry-supported",
+        "rationale": "Each unsigned range test sets a return value in its delay slot and branches to the same local return. The final range is computed by mask. No predecessor state or stack is needed. Raw re-decoding verifies 8 mapping-qualified incoming direct calls. No qualified non-call edge crosses the proposed entry and no qualified external direct edge enters its interior. Static references do not establish runtime execution."
+      },
+      "symbol": "func_001DCA34",
+      "aliases": [],
+      "expectedBytesSha256": "6B4766B95AD5D4251DAFCC452FB43E9F263398967EF39914B51E5902C765B4A7",
+      "fragments": [
+        {
+          "rowIndex": 3517,
+          "romStart": 1952308,
+          "romEndExclusive": 1952508,
+          "ownerOffset": 1020,
+          "bytes": 200,
+          "vramStart": 2149213492,
+          "sectionName": ".ob64.r3517",
+          "placementKind": "overlay",
+          "overlayDescriptorId": 15,
+          "loadSlabId": null,
+          "file": "asm/original/rev0/lib/func_001DC638.s",
+          "sha256": "80342C11EE532B11AE37FC3F8C5A291D80513FD15272ED40BFD91452D8EFF5A5"
+        }
+      ]
+    },
+    {
+      "romStart": 1961484,
+      "romEndExclusive": 1962688,
+      "evidence": {
+        "caseId": "accepted-primary",
+        "status": "accepted-primary-before-reviewed-secondary",
+        "rationale": "Preserved accepted primary entry; endpoint closes at JR ra plus delay slot before the earliest reviewed candidate. Unproven following candidates remain unknown coverage."
+      },
+      "symbol": "func_001DEE0C",
+      "aliases": [],
+      "expectedBytesSha256": "E6A3ADC6EF7FE32C6F44AC54DC10CC7440D29F3664BC02F053F3A9E03D079A91",
+      "fragments": [
+        {
+          "rowIndex": 3532,
+          "romStart": 1961484,
+          "romEndExclusive": 1962688,
+          "ownerOffset": 0,
+          "bytes": 1204,
+          "vramStart": 2149222668,
+          "sectionName": ".ob64.r3532",
+          "placementKind": "overlay",
+          "overlayDescriptorId": 15,
+          "loadSlabId": null,
+          "file": "asm/original/rev0/lib/func_001DEE0C.s",
+          "sha256": "673A5B0A5DA8B4D02CBAC6010C43330E700E3F15378F47E8F41E8CFC05B26009"
+        }
+      ]
+    },
+    {
+      "romStart": 1962688,
+      "romEndExclusive": 1962924,
+      "evidence": {
+        "caseId": "entry:001DF2C0",
+        "status": "independent-entry-supported",
+        "rationale": "Loads object and input globals itself, preserves old selection in $a2, and converges on XOR/nonzero comparison before return. All branches stay inside the leaf; previous 0x30-frame routine has returned. Raw re-decoding verifies 1 mapping-qualified incoming direct calls. No qualified non-call edge crosses the proposed entry and no qualified external direct edge enters its interior. Static references do not establish runtime execution."
+      },
+      "symbol": "func_001DF2C0",
+      "aliases": [],
+      "expectedBytesSha256": "521AA9061A9B807E53CFB12CC6A50A9909CDA9490273C53911828C2AC2AC21B7",
+      "fragments": [
+        {
+          "rowIndex": 3532,
+          "romStart": 1962688,
+          "romEndExclusive": 1962924,
+          "ownerOffset": 1204,
+          "bytes": 236,
+          "vramStart": 2149223872,
+          "sectionName": ".ob64.r3532",
+          "placementKind": "overlay",
+          "overlayDescriptorId": 15,
+          "loadSlabId": null,
+          "file": "asm/original/rev0/lib/func_001DEE0C.s",
+          "sha256": "673A5B0A5DA8B4D02CBAC6010C43330E700E3F15378F47E8F41E8CFC05B26009"
+        }
+      ]
+    },
+    {
+      "romStart": 1968992,
+      "romEndExclusive": 1969752,
+      "evidence": {
+        "caseId": "accepted-primary",
+        "status": "accepted-primary-before-reviewed-secondary",
+        "rationale": "Preserved accepted primary entry; endpoint closes at JR ra plus delay slot before the earliest reviewed candidate. Unproven following candidates remain unknown coverage."
+      },
+      "symbol": "func_001E0B60",
+      "aliases": [],
+      "expectedBytesSha256": "8396743EE136753D663424C6BAF0970CCA85EC15A4D6CF2221F5A45DEFBE9676",
+      "fragments": [
+        {
+          "rowIndex": 3546,
+          "romStart": 1968992,
+          "romEndExclusive": 1969752,
+          "ownerOffset": 0,
+          "bytes": 760,
+          "vramStart": 2149230176,
+          "sectionName": ".ob64.r3546",
+          "placementKind": "overlay",
+          "overlayDescriptorId": 15,
+          "loadSlabId": null,
+          "file": "asm/original/rev0/lib/func_001E0B60.s",
+          "sha256": "5C3B9A379259D4509CF4388B5F20490B1E0D6938FC7BA2E62FB9554A557CFC81"
+        }
+      ]
+    },
+    {
+      "romStart": 1969752,
+      "romEndExclusive": 1970112,
+      "evidence": {
+        "caseId": "entry:001E0E58",
+        "status": "independent-entry-supported",
+        "rationale": "Initial null branch reaches the local JR. Two complete nibble scans initialize their own counters and use output pointers a1/a2. The second scan reverses byte addressing and retains the raw nibble-selection order; no stronger image semantics are assumed. Raw re-decoding verifies 1 mapping-qualified incoming direct calls. No qualified non-call edge crosses the proposed entry and no qualified external direct edge enters its interior. Static references do not establish runtime execution."
+      },
+      "symbol": "func_001E0E58",
+      "aliases": [],
+      "expectedBytesSha256": "9640E89F2425193CA63FB7AC305406B2458A99AA6517378690DEBD4C484BDCAE",
+      "fragments": [
+        {
+          "rowIndex": 3546,
+          "romStart": 1969752,
+          "romEndExclusive": 1970112,
+          "ownerOffset": 760,
+          "bytes": 360,
+          "vramStart": 2149230936,
+          "sectionName": ".ob64.r3546",
+          "placementKind": "overlay",
+          "overlayDescriptorId": 15,
+          "loadSlabId": null,
+          "file": "asm/original/rev0/lib/func_001E0B60.s",
+          "sha256": "5C3B9A379259D4509CF4388B5F20490B1E0D6938FC7BA2E62FB9554A557CFC81"
+        }
+      ]
+    },
+    {
+      "romStart": 2497828,
+      "romEndExclusive": 2497916,
+      "evidence": {
+        "caseId": "reviewed-continuation",
+        "status": "supported-logical-continuation",
+        "rationale": "Reviewed shared-register continuation; FINAL.md identifies the complete logical span."
+      },
+      "symbol": "func_00261D24",
+      "aliases": [
+        "func_00261D60"
+      ],
+      "expectedBytesSha256": "62A8849C3913632DEB1C865B6AD8230300594778F2A0518F2FF6E0F02C808A2E",
+      "fragments": [
+        {
+          "rowIndex": 4676,
+          "romStart": 2497828,
+          "romEndExclusive": 2497888,
+          "ownerOffset": 0,
+          "bytes": 60,
+          "vramStart": 2149634420,
+          "sectionName": ".ob64.r4676",
+          "placementKind": "overlay",
+          "overlayDescriptorId": 12,
+          "loadSlabId": null,
+          "file": "asm/original/rev0/lib/func_00261D24.s",
+          "sha256": "183329945A5DF9C73F1DDBDADA0A2E2865F27D722B9143068489C8E69290336C"
+        },
+        {
+          "rowIndex": 4677,
+          "romStart": 2497888,
+          "romEndExclusive": 2497916,
+          "ownerOffset": 0,
+          "bytes": 28,
+          "vramStart": 2149634480,
+          "sectionName": ".ob64.r4677",
+          "placementKind": "overlay",
+          "overlayDescriptorId": 12,
+          "loadSlabId": null,
+          "file": "asm/original/rev0/lib/func_00261D60.s",
+          "sha256": "DED3AE6140E03375E8D84DFF361B84DFE62C3CDE27E8784541EC5E5532CF4DA6"
+        }
+      ]
+    },
+    {
+      "romStart": 2516144,
+      "romEndExclusive": 2516928,
+      "evidence": {
+        "caseId": "reviewed-continuation",
+        "status": "supported-logical-continuation",
+        "rationale": "Reviewed shared-register continuation; FINAL.md identifies the complete logical span."
+      },
+      "symbol": "func_002664B0",
+      "aliases": [
+        "func_00266550"
+      ],
+      "expectedBytesSha256": "E29492F89012878518DF340AE771B3594B9B4773894B845DA73726D9A75CBE65",
+      "fragments": [
+        {
+          "rowIndex": 4753,
+          "romStart": 2516144,
+          "romEndExclusive": 2516304,
+          "ownerOffset": 0,
+          "bytes": 160,
+          "vramStart": 2149652736,
+          "sectionName": ".ob64.r4753",
+          "placementKind": "overlay",
+          "overlayDescriptorId": 12,
+          "loadSlabId": null,
+          "file": "asm/original/rev0/lib/func_002664b0.s",
+          "sha256": "E2ED5A39DD4B1756814D8DC230147BF532F376957B26FD8B017BAF9B815D0C6E"
+        },
+        {
+          "rowIndex": 4754,
+          "romStart": 2516304,
+          "romEndExclusive": 2516928,
+          "ownerOffset": 0,
+          "bytes": 624,
+          "vramStart": 2149652896,
+          "sectionName": ".ob64.r4754",
+          "placementKind": "overlay",
+          "overlayDescriptorId": 12,
+          "loadSlabId": null,
+          "file": "asm/original/rev0/lib/func_00266550.s",
+          "sha256": "2570803E6604EE4E8987FC4A22B40D5FCC9E3592445697177442EE56B5707BB6"
+        }
+      ]
+    },
+    {
+      "romStart": 2521384,
+      "romEndExclusive": 2521488,
+      "evidence": {
+        "caseId": "accepted-primary",
+        "status": "accepted-primary-before-reviewed-secondary",
+        "rationale": "Preserved accepted primary entry; endpoint closes at JR ra plus delay slot before the earliest reviewed candidate. Unproven following candidates remain unknown coverage."
+      },
+      "symbol": "func_00267928",
+      "aliases": [],
+      "expectedBytesSha256": "3620E752628723700E1421EE9E1BB97124E8F7A3990443B618075BD9728790CD",
+      "fragments": [
+        {
+          "rowIndex": 4774,
+          "romStart": 2521384,
+          "romEndExclusive": 2521488,
+          "ownerOffset": 0,
+          "bytes": 104,
+          "vramStart": 2149657976,
+          "sectionName": ".ob64.r4774",
+          "placementKind": "overlay",
+          "overlayDescriptorId": 12,
+          "loadSlabId": null,
+          "file": "asm/original/rev0/lib/func_00267928.s",
+          "sha256": "CC7DE6A725A2F059EF082983997540D026D971DB4B3C810F6574523CB000F166"
+        }
+      ]
+    },
+    {
+      "romStart": 2521488,
+      "romEndExclusive": 2522520,
+      "evidence": {
+        "caseId": "entry:00267990",
+        "status": "independent-entry-supported",
+        "rationale": "Required mtc1 a1,f4 at 0x267990 feeds first comparison at 0x2679B8. Old next owner 0x267994 skips it; full 0x10 frame/restore and local return span through 0x267D98. The complete proposed body and predecessor return/delay slot were inspected against normalized ROM and physical source words. Mapped JAL target words reproduce under accepted source/target slices. No direct noncall entry from outside the body, shared tail, or cross-cut branch/jump is established by the mapped edge census."
+      },
+      "symbol": "func_00267990",
+      "aliases": [
+        "func_00267994"
+      ],
+      "expectedBytesSha256": "9915A8CD9072C8870BBD161F9B9287B1620FBC735623707D3F6F0D34511E7447",
+      "fragments": [
+        {
+          "rowIndex": 4774,
+          "romStart": 2521488,
+          "romEndExclusive": 2521492,
+          "ownerOffset": 104,
+          "bytes": 4,
+          "vramStart": 2149658080,
+          "sectionName": ".ob64.r4774",
+          "placementKind": "overlay",
+          "overlayDescriptorId": 12,
+          "loadSlabId": null,
+          "file": "asm/original/rev0/lib/func_00267928.s",
+          "sha256": "CC7DE6A725A2F059EF082983997540D026D971DB4B3C810F6574523CB000F166"
+        },
+        {
+          "rowIndex": 4775,
+          "romStart": 2521492,
+          "romEndExclusive": 2522520,
+          "ownerOffset": 0,
+          "bytes": 1028,
+          "vramStart": 2149658084,
+          "sectionName": ".ob64.r4775",
+          "placementKind": "overlay",
+          "overlayDescriptorId": 12,
+          "loadSlabId": null,
+          "file": "asm/original/rev0/lib/func_00267994.s",
+          "sha256": "420180964A23E5306FDD49EB119855A21663AC8D94A74E127456B87F26635A86"
+        }
+      ]
+    },
+    {
+      "romStart": 2622688,
+      "romEndExclusive": 2623224,
+      "evidence": {
+        "caseId": "entry:002804E0",
+        "status": "known-entry-or-ownership",
+        "rationale": "Three owner-leading NOPs follow a prior complete epilogue; a mapped JAL targets the first meaningful instruction at 0x2804E0. The helper ends at 0x2806F8 after its return delay slot. The final eight bytes of accepted owner 0x2804D4 belong to the next callable preamble, so this is a logical-start/end correction within an existing owner, not merely an additional tail function. Raw re-decoding verifies 1 mapping-qualified incoming direct calls. No qualified non-call edge crosses the proposed entry and no qualified external direct edge enters its interior. Static references do not establish runtime execution."
+      },
+      "symbol": "func_002804E0",
+      "aliases": [],
+      "expectedBytesSha256": "467336B998055F08543213F0D1271C4CAF39E6599BB23A7C010D1B96B7EBF2DF",
+      "fragments": [
+        {
+          "rowIndex": 5036,
+          "romStart": 2622688,
+          "romEndExclusive": 2623224,
+          "ownerOffset": 12,
+          "bytes": 536,
+          "vramStart": 2149760336,
+          "sectionName": ".ob64.r5036",
+          "placementKind": "overlay",
+          "overlayDescriptorId": 16,
+          "loadSlabId": null,
+          "file": "asm/original/rev0/lib/func_002804D4.s",
+          "sha256": "C0241B2816C3821ED9ACEDD99B5D2D4B4154FFE8EF38D090278E34A54CF6B2CD"
+        }
+      ]
+    },
+    {
+      "romStart": 2623224,
+      "romEndExclusive": 2624308,
+      "evidence": {
+        "caseId": "entry:002806F8",
+        "status": "independent-entry-supported",
+        "rationale": "The LUI/ORI pair at 0x2806F8/0x2806FC initializes a3 to float-bit constant 0x3FAAAAAB for the first downstream call. Owner 0x280700 starts at frame allocation and omits this live argument setup. The complete body restores its 0x120 frame at 0x280B30; the following two JR/NOP stubs are separate bodies. Raw re-decoding verifies 1 mapping-qualified incoming direct calls. No qualified non-call edge crosses the proposed entry and no qualified external direct edge enters its interior. Static references do not establish runtime execution."
+      },
+      "symbol": "func_002806F8",
+      "aliases": [
+        "func_00280700"
+      ],
+      "expectedBytesSha256": "EDF8F1F19B8C9F4ECBBB41EA15D25B5AC1151671F8262F99CAB4CC76059040A5",
+      "fragments": [
+        {
+          "rowIndex": 5036,
+          "romStart": 2623224,
+          "romEndExclusive": 2623232,
+          "ownerOffset": 548,
+          "bytes": 8,
+          "vramStart": 2149760872,
+          "sectionName": ".ob64.r5036",
+          "placementKind": "overlay",
+          "overlayDescriptorId": 16,
+          "loadSlabId": null,
+          "file": "asm/original/rev0/lib/func_002804D4.s",
+          "sha256": "C0241B2816C3821ED9ACEDD99B5D2D4B4154FFE8EF38D090278E34A54CF6B2CD"
+        },
+        {
+          "rowIndex": 5037,
+          "romStart": 2623232,
+          "romEndExclusive": 2624308,
+          "ownerOffset": 0,
+          "bytes": 1076,
+          "vramStart": 2149760880,
+          "sectionName": ".ob64.r5037",
+          "placementKind": "overlay",
+          "overlayDescriptorId": 16,
+          "loadSlabId": null,
+          "file": "asm/original/rev0/lib/func_00280700.s",
+          "sha256": "20B8EDECF726665EEBC647BD8B5A8755B48DF25E1E58CE2F295F22F0498F71D7"
+        }
+      ]
+    }
+  ]
+}

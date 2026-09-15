@@ -3,7 +3,7 @@
 const fs=require('fs'),path=require('path');
 const {ROOT,sha256File}=require('../phase7_conventional');
 const {candidateRecord}=require('./compiler');
-const {digest,loadWorkbenchModel,resolveTarget,scratchCapability}=require('./target_model');
+const {digest,loadWorkbenchModel,resolveTarget,scratchCapability,historicalSymbols}=require('./target_model');
 const {DATABASE,requestStore}=require('./store');
 const {validateObservation,authenticateEvidence,regular,canonicalPath}=require('./research');
 const policy=require('../source_policy');
@@ -13,8 +13,8 @@ function assess(target,record){
  const result={origin:record.origin,metadata:record.metadataPath||null,validity:'malformed'};
  try {
   const e=record.envelope,a=validateObservation(e.authored);
-  if(e.schemaVersion!==1||e.symbol!==target.symbol||!hash(e.candidateId)||!hash(e.observationId)||!canonicalPath(e.source))throw new Error('malformed research envelope identity');
-  Object.assign(result,{candidateId:e.candidateId,observationId:e.observationId,source:e.source,
+  if(e.schemaVersion!==1||!historicalSymbols(target).includes(String(e.symbol).toLowerCase())||!hash(e.candidateId)||!hash(e.observationId)||!canonicalPath(e.source))throw new Error('malformed research envelope identity');
+  Object.assign(result,{recordedSymbol:e.symbol,candidateId:e.candidateId,observationId:e.observationId,source:e.source,
    dossier:record.metadataPath&&fs.existsSync(path.join(ROOT,record.metadataPath.replace(/\.observation\.json$/,'.md')))?record.metadataPath.replace(/\.observation\.json$/,'.md'):null,
    label:a.label,role:a.role,selectedBest:a.selectedBest,context:a.context,sourceChange:a.sourceChange,effects:a.effects,
    observedEffect:a.observedEffect,remainingFailure:a.remainingFailure,parentCandidateId:a.parentCandidateId,relatedCandidateIds:a.relatedCandidateIds});
@@ -43,17 +43,18 @@ function assess(target,record){
 function intake(workbench,target,options={}){
  const limit=options.limit??20;if(!Number.isSafeInteger(limit)||limit<1||limit>200)throw new Error('intake limit must be 1..200');
  const directory=options.archiveDirectory||path.join(ROOT,'docs/dossiers'),records=[],discovery=[],otherArchives=new Map();
+ const symbols=historicalSymbols(target);
  try{
   regular(directory,true);
   for(const name of fs.readdirSync(directory).filter(n=>n.endsWith('.observation.json')).sort()){
    const file=path.join(directory,name);
-   try{const envelope=JSON.parse(fs.readFileSync(regular(file),'utf8'));if(envelope.symbol===target.symbol)records.push({origin:'archive',metadataPath:relative(file),envelope});else {if(hash(envelope.candidateId))otherArchives.set(envelope.candidateId,{origin:'archive',metadataPath:relative(file),envelope});if(name.startsWith(target.symbol+'-'))discovery.push({path:relative(file),validity:'target-mismatch',reason:'filename and envelope symbol disagree'});}}
-   catch(error){if(name.startsWith(target.symbol+'-'))discovery.push({path:relative(file),validity:'malformed',reason:error.message});}
+   try{const envelope=JSON.parse(fs.readFileSync(regular(file),'utf8'));if(symbols.includes(String(envelope.symbol).toLowerCase()))records.push({origin:'archive',metadataPath:relative(file),envelope});else {if(hash(envelope.candidateId))otherArchives.set(envelope.candidateId,{origin:'archive',metadataPath:relative(file),envelope});if(symbols.some(symbol=>name.toLowerCase().startsWith(symbol+'-')))discovery.push({path:relative(file),validity:'target-mismatch',reason:'filename and envelope symbol disagree'});}}
+   catch(error){if(symbols.some(symbol=>name.toLowerCase().startsWith(symbol+'-')))discovery.push({path:relative(file),validity:'malformed',reason:error.message});}
   }
  }catch(error){discovery.push({path:relative(directory),validity:'unavailable',reason:error.message});}
  const database=path.resolve(options.database||DATABASE);let store={status:'missing'};
  if(fs.existsSync(database))try{
-  regular(database);const rows=requestStore({action:'query',name:'research_intake',args:{symbol:target.symbol,limit:200}},{database,readOnly:true});store={status:'available',records:rows.length,truncated:rows.length===200};
+  regular(database);const rows=symbols.flatMap(symbol=>requestStore({action:'query',name:'research_intake',args:{symbol,limit:200}},{database,readOnly:true}));store={status:'available',records:rows.length,truncated:rows.length>=200};
   for(const row of rows)records.push({origin:'store',targetId:row.target_id,stored:row,envelope:{schemaVersion:row.metadata?.research?.schemaVersion,symbol:row.symbol,candidateId:row.candidate_id,observationId:row.observation_id,source:row.metadata?.sourcePath,authored:row.metadata?.research?.authored,authenticated:row.metadata?.research?.authenticated}});
  }catch(error){store={status:'error',reason:error.message};}
  const assessed=records.map(r=>assess(target,r)),seen=new Set(),observations=[];
@@ -79,7 +80,7 @@ function intake(workbench,target,options={}){
  for(const row of observations)row.matchesCurrentSource=currentSource.sha256&&row.sourceSha256?row.sourceSha256===currentSource.sha256:null;
  const issues=discovery.length||store.status==='error';
  return {schemaVersion:1,symbol:target.symbol,targetId:target.expectedBytesSha256?target.targetId:null,targetBinding:target.expectedBytesSha256?'exact':'unavailable',status:observations.length?(issues?'partial':'found'):issues?'unavailable':'none',
-  currentSource,currentProducer:target.activeMatchingProducer||null,historyApplicability:capability.supported?'Research history only; validate applicability to current source context.':'Current target is grouped; prior standalone history is reference only and does not enable single-member compilation/import/preservation.',
+  currentSource,currentProducer:target.activeMatchingProducer||null,historyApplicability:capability.supported?'Research history only; validate applicability to current source context.':capability.code==='complete-group-candidate-required'?'Current target is grouped; prior standalone history is reference only and does not enable single-member compilation/import/preservation.':capability.reason,
   boundary:'Authored research claims, not recommendations or matching acceptance. Archive observation IDs are opaque provenance. Per-record validity and targetBinding report whether candidate identity and current source/header/preprocessor/reference closure could be checked; relations have separate verification status.',
   store,discovery,counts,total:observations.length,truncated:observations.length>limit,observations:observations.slice(0,limit)};
 }

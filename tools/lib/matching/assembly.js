@@ -39,9 +39,18 @@ function boundedSwitchEntryCount(infos, jrIndex, scaledRegister) {
   return null;
 }
 
+function guardedSlabSwitchEntryCount(infos, jrIndex, scaledRegister, target) {
+  const bound = infos[jrIndex - 6], guard = infos[jrIndex - 5], scale = infos[jrIndex - 4];
+  if (!bound || !guard || !scale || scale.op !== 0 || scale.funct !== 0 || scale.sa !== 2
+    || scale.rd !== scaledRegister || bound.op !== 0x0B || bound.rs !== scale.rt || bound.rt === 0 || bound.rt === bound.rs
+    || bound.immediate < 2 || bound.immediate > 1024 || guard.op !== 4 || guard.rs !== bound.rt
+    || guard.rt !== 0 || guard.target <= infos[jrIndex].pc + 4 || guard.target >= target.vramEndExclusive) return null;
+  return bound.immediate;
+}
+
 function discoverOverlayJumpTables(target, workbench, infos) {
   const overlay = overlayForTarget(target, workbench);
-  if (!overlay || !workbench.baserom) return [];
+  if ((!overlay && !target.loadSlabId) || !workbench.baserom) return [];
   const tables = [];
   const seen = new Set();
   for (let jrIndex = 4; jrIndex < infos.length; jrIndex += 1) {
@@ -57,15 +66,25 @@ function discoverOverlayJumpTables(target, workbench, infos) {
     if (indexedBase.rs === load.rs) scaledRegister = indexedBase.rt;
     else if (indexedBase.rt === load.rs) scaledRegister = indexedBase.rs;
     if (scaledRegister === null || scaledRegister === 0 || scaledRegister === load.rs) continue;
-    const entryCount = boundedSwitchEntryCount(infos, jrIndex, scaledRegister);
+    const entryCount = overlay ? boundedSwitchEntryCount(infos, jrIndex, scaledRegister)
+      : guardedSlabSwitchEntryCount(infos, jrIndex, scaledRegister, target);
     if (entryCount === null) continue;
     const tableVram = ((((high.immediate << 16) >>> 0) + load.signedImmediate) >>> 0);
-    if (tableVram < overlay.data_rodata_start
-        || tableVram + entryCount * 4 > overlay.data_rodata_end_exclusive) continue;
-    const tableRom = overlay.rom_start + (tableVram - overlay.vram_start);
-    if (tableRom < overlay.data_rodata_rom_start
-        || tableRom + entryCount * 4 > overlay.data_rodata_rom_end_exclusive
-        || tableRom + entryCount * 4 > workbench.baserom.length) continue;
+    let tableRom;
+    if (overlay) {
+      if (tableVram < overlay.data_rodata_start
+          || tableVram + entryCount * 4 > overlay.data_rodata_end_exclusive) continue;
+      tableRom = overlay.rom_start + (tableVram - overlay.vram_start);
+      if (tableRom < overlay.data_rodata_rom_start
+          || tableRom + entryCount * 4 > overlay.data_rodata_rom_end_exclusive) continue;
+    } else {
+      const slices = workbench.model.slices.filter(slice => !slice.executable
+        && slice.placementKind === target.placementKind && slice.loadSlabId === target.loadSlabId
+        && slice.vramStart <= tableVram && slice.vramEndExclusive >= tableVram + entryCount * 4);
+      if (slices.length !== 1) continue;
+      tableRom = slices[0].romStart + tableVram - slices[0].vramStart;
+    }
+    if (tableRom < 0 || tableRom + entryCount * 4 > workbench.baserom.length) continue;
     const targets = [];
     for (let index = 0; index < entryCount; index += 1) {
       const destination = workbench.baserom.readUInt32BE(tableRom + index * 4) >>> 0;
@@ -111,6 +130,18 @@ function m2cDelaySlotGuardLabels(infos, start, end) {
 
 function emitM2cAssembly(target, workbench) {
   if (!target.expectedBytes) throw new Error('m2c assembly export requires canonical target bytes');
+  if (target.logicalFunctions) {
+    const entries = target.logicalFunctions.map(body => ({ ...body, entryVram: target.vramStart + body.offset }));
+    const bodyWorkbench = { ...workbench, targets: [...entries,
+      ...workbench.targets.filter(other => !entries.some(entry => entry.entryVram === other.entryVram))] };
+    return `# logical envelope ${target.romStart.toString(16)}..${target.romEndExclusive.toString(16)}; complete=${target.logicalCoverageComplete}\n`
+      + entries.map(body => emitM2cAssembly({ ...target, symbol: body.symbol,
+        romStart: body.romStart, romEndExclusive: body.romEndExclusive,
+        vramStart: body.entryVram, vramEndExclusive: body.entryVram + body.bytes,
+        entryVram: body.entryVram, bytes: body.bytes, symbolByteOffset: 0,
+        logicalFunctions: null, expectedBytes: target.expectedBytes.subarray(body.offset, body.offset + body.bytes),
+      }, bodyWorkbench)).join('\n');
+  }
   if (target.symbolByteOffset !== 0) {
     throw new Error(`${target.symbol} has a ${target.symbolByteOffset}-byte pre-label owner prefix and is not an ordinary m2c target`);
   }

@@ -211,11 +211,11 @@ void *memcpy_bytewise(void *destination, const void *source, unsigned int bytes)
 
   const wrongSymbol = compileScratchFixture(wrongSymbolSource, 'scratch-wrong-symbol');
   requireCondition(wrongSymbol.compile.status === 'failed'
-    && /requested global function symbol is malformed/.test(wrongSymbol.compile.stderr),
+    && /malformed logical functions/.test(wrongSymbol.compile.stderr),
   'scratch compiler accepted a missing/wrong requested symbol');
   const secondaryFunction = compileScratchFixture(secondaryFunctionSource, 'scratch-secondary-function');
   requireCondition(secondaryFunction.compile.status === 'failed'
-    && /must contain exactly one function symbol/.test(secondaryFunction.compile.stderr),
+    && /function census differs/.test(secondaryFunction.compile.stderr),
   'scratch compiler accepted an unexpected secondary function');
   const commonStorage = compileScratchFixture(commonStorageSource, 'scratch-common-storage');
   requireCondition(commonStorage.compile.status === 'failed'

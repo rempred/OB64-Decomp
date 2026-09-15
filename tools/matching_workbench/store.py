@@ -472,6 +472,10 @@ def _query(connection: sqlite3.Connection, request: dict[str, Any]) -> Any:
         ).fetchone()[0]
         return {"targets": targets, "candidates": candidates, "compilations": compilations, "comparisons": comparisons}
     if name in ("history", "best"):
+        symbols = args.get("symbols", [args["symbol"]])
+        if not isinstance(symbols, list) or not symbols or len(symbols) > 32 or any(not isinstance(symbol, str) for symbol in symbols):
+            raise ValueError("invalid historical symbol list")
+        symbol_clause = "(" + " OR ".join("t.symbol=? COLLATE NOCASE" for _ in symbols) + ")"
         order = (
             "CASE WHEN json_extract(p.details_json,'$.diagnosticExactBytes')=1 "
             "AND p.primary_class='exact-bytes' THEN 1 ELSE 0 END DESC,"
@@ -481,9 +485,9 @@ def _query(connection: sqlite3.Connection, request: dict[str, Any]) -> Any:
         model_clause = "t.model_id=? AND" if name == "best" else ""
         details_column = ",p.details_json" if args.get("includeDetails", False) else ""
         params = (
-            (args["modelId"], *comparison_provenance_params, args["modelId"], args["symbol"], limit)
+            (args["modelId"], *comparison_provenance_params, args["modelId"], *symbols, limit)
             if name == "best"
-            else (args["modelId"], *comparison_provenance_params, args["symbol"], limit)
+            else (args["modelId"], *comparison_provenance_params, *symbols, limit)
         )
         rows = connection.execute(
             f"""SELECT t.symbol,t.target_id,t.model_id,
@@ -499,7 +503,7 @@ def _query(connection: sqlite3.Connection, request: dict[str, Any]) -> Any:
                   LEFT JOIN comparison p ON p.run_id=r.run_id
                     AND json_extract(p.details_json,'$.comparisonContract')=2
                     {comparison_provenance_clause}
-                 WHERE {model_clause} t.symbol=? COLLATE NOCASE
+                 WHERE {model_clause} {symbol_clause}
                  ORDER BY is_stale,{order} LIMIT ?""",
             params,
         ).fetchall()
@@ -541,7 +545,7 @@ def _query(connection: sqlite3.Connection, request: dict[str, Any]) -> Any:
             """SELECT o.*, c.source_text, c.source_sha256, c.target_id, t.symbol
                FROM candidate_observation o JOIN candidate c ON c.candidate_id=o.candidate_id
                JOIN target_snapshot t ON t.target_id=c.target_id
-               WHERE t.symbol=? AND o.origin='research-import'
+               WHERE t.symbol=? COLLATE NOCASE AND o.origin='research-import'
                ORDER BY o.created_at DESC, o.observation_id LIMIT ?""", (symbol, limit)).fetchall()]
     if name == "research_observations":
         target_id = args.get("targetId")

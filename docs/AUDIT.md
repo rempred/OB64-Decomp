@@ -218,11 +218,11 @@ must prove equivalent coverage before the old gate is retired.
 
 ## Native text evidence
 
-Audit schema 4 requires complete textContract, objectEvidence, and linkEvidence on every active target. Native fixtures exercise untouched compiler input, exact section and function censuses, native alignment, zero tail, sole object contribution, load mapping, and full-owner exactness. Malformed and stale evidence must fail independently of identical reports. The retained nonexact Combat candidate must remain a negative control. Tooling acceptance does not accept the unfinished Combat source wave.
+Audit schema 5 retains complete textContract, objectEvidence, and linkEvidence on every active target and records the logical-function registry identity. Native fixtures exercise untouched compiler input, exact section and function censuses, native alignment, zero tail, sole object contribution, load mapping, and full-owner exactness. Malformed and stale evidence must fail independently of identical reports. The retained nonexact Combat candidate must remain a negative control. Tooling acceptance does not accept the unfinished Combat source wave.
 
 ## Compilation-group audit evidence
 
-The group registry is an authenticated CURRENT/build input. A stale report without its identity rejects. Group text contracts use schema 2 and group object evidence uses schema 3; legacy representation schemas retain their existing meaning. CURRENT fingerprint version 7 and diff-cache schema 4 invalidate prior reuse inputs.
+The group and logical-function registries are authenticated CURRENT/build inputs. A stale report without their identities rejects. Group text contracts use schema 2 and group object evidence uses schema 3; legacy representation schemas retain their meaning. CURRENT fingerprint version 8, build-report schema 6, and diff-cache input identities invalidate prior reuse inputs. See [logical functions](LOGICAL_FUNCTIONS.md).
 
 For each active group, audit the complete native, projected and stripped object evidence. Verify exact `.reginfo` shape and reference closure before removal, payload preservation during projection and absence after stripping. Verify complete compiler function and marker censuses, native tail provenance, unchanged projected bytes, original section-symbol anchors and relocation addends. Keep all accepted owner sections and one-section PT_LOAD mappings.
 

@@ -211,13 +211,14 @@ function currentFingerprint(phase8, baseline, localTools, sourcePolicy) {
   }
   const classificationBySymbol = new Map(sourcePolicy.targets.map((record) => [record.symbol, record]));
   return sha256Value({
-    schemaVersion: 7,
+    schemaVersion: 8,
     baseline,
     compilerSha256: sha256File(localTools.compiler),
     activeConfigSha256: sha256File(path.join(ROOT, 'config', 'matching-c-targets.json')),
     linkageConfig: phase8.linkageConfigIdentity,
     multiOwnerConfig: phase8.multiOwnerConfigIdentity,
     compilationGroupConfig: phase8.groupConfigIdentity,
+    logicalFunctionConfig: phase8.logicalFunctionConfigIdentity,
     compatibilityBridge: {
       compiler: phase8.config.compiler,
       targets: phase8.targets.map((target) => ({
@@ -261,6 +262,7 @@ function currentFingerprint(phase8, baseline, localTools, sourcePolicy) {
       'tools/verify_phase8_matching_c.js',
       'tools/lib/phase8_matching_c.js',
       'tools/lib/active_targets.js',
+      'tools/lib/logical_functions.js',
       'tools/lib/auxiliary_interior.js',
       'tools/lib/text_contract.js',
       'tools/lib/elf_text_split.js',
@@ -288,7 +290,8 @@ function completeCurrent(directory, phase8, sourcePolicy) {
   }
   if (!phase8 || !sourcePolicy || sourcePolicy.schemaVersion !== 2 || sourcePolicy.status !== 'pass'
       || !Array.isArray(sourcePolicy.targets) || sourcePolicy.targets.length !== phase8.targets.length
-      || report.schemaVersion !== 5 || report.status !== 'pass'
+      || report.schemaVersion !== 6 || report.status !== 'pass'
+      || !isDeepStrictEqual(report.acceptedInputs?.logicalFunctionConfig, phase8.logicalFunctionConfigIdentity)
       || !Array.isArray(report.targetReplacements) || report.targetReplacements.length !== phase8.targets.length) return false;
   let textLinkContext;
   try { textLinkContext = textContract.linkContext(directory, require('./phase8_matching_c').loadCanonicalBaserom(phase8)); } catch (_) { return false; }
@@ -349,7 +352,7 @@ function retryRoot(preferred) {
 }
 
 function validateVerifiedCompanions(build, fresh, verified, output) {
-  if (build.schemaVersion !== 5 || build.status !== 'pass' || fresh.schemaVersion !== 5 || fresh.status !== 'pass'
+  if (build.schemaVersion !== 6 || build.status !== 'pass' || fresh.schemaVersion !== 5 || fresh.status !== 'pass'
       || verified.schemaVersion !== 5 || verified.status !== 'pass' || verified.output !== '.'
       || verified.verification?.schemaVersion !== 5 || verified.verification?.status !== 'pass'
       || !Array.isArray(build.targetReplacements) || !Array.isArray(fresh.targets)
@@ -519,7 +522,7 @@ function verifyFreshCompilation(context, build) {
   const sourcePolicy = context.sourcePolicy || classifyTargetSources(context.phase8.targets);
   const classificationBySymbol = new Map(sourcePolicy.targets.map((record) => [record.symbol, record]));
   const builtReport = readJson(build.report);
-  if (builtReport.schemaVersion !== 5 || !Array.isArray(builtReport.targetReplacements)) {
+  if (builtReport.schemaVersion !== 6 || !Array.isArray(builtReport.targetReplacements)) {
     throw new Error('CURRENT build report lacks source-to-object provenance');
   }
   const targets = [];

@@ -4031,9 +4031,10 @@ function verifyPhase8Output(phase8, options) {
 function validateRecordedPhase8Build(phase8, options) {
   const output = path.resolve(options.output);
   const buildReport = options.buildReport;
+  if (!sameJson(buildReport?.acceptedInputs?.logicalFunctionConfig, phase8.logicalFunctionConfigIdentity)) fail('recorded logical function registry drift');
   if (!sameJson(buildReport?.acceptedInputs?.compilationGroupConfig, phase8.groupConfigIdentity)) fail('recorded compilation group registry drift');
   const verification = options.verification;
-  if (!buildReport || buildReport.schemaVersion !== 5 || buildReport.status !== 'pass') {
+  if (!buildReport || buildReport.schemaVersion !== 6 || buildReport.status !== 'pass') {
     fail('recorded Phase 8 build report did not pass');
   }
   if (!verification || verification.schemaVersion !== 5 || verification.status !== 'pass') {

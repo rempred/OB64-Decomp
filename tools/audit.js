@@ -150,7 +150,8 @@ function main(argv = process.argv.slice(2)) {
     return { symbol: target.symbol, mode: record.textContract.mode, textContractSha256: textContract.hash(record.textContract) };
   });
   const report = {
-    schemaVersion: 4,
+    schemaVersion: 5,
+    logicalFunctionConfig: context.phase8.logicalFunctionConfigIdentity,
     textRepresentations,
     status: 'pass',
     completedAt: new Date().toISOString(),

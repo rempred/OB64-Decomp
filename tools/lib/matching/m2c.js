@@ -12,7 +12,7 @@ const { emitM2cAssembly } = require('./assembly');
 const { MATCHING_ROOT, compileCandidate, recordCandidate, syncTargets } = require('./compiler');
 const { renderM2cContext, storeTargetContext } = require('./context');
 
-const M2C_ADAPTER_VERSION = 11;
+const M2C_ADAPTER_VERSION = 12;
 const M2C_SNAPSHOT_PREFIX = 'ob64-m2c-snapshot-';
 
 const TYPE_PRELUDE = [
@@ -665,7 +665,7 @@ function runM2c(workbench, target, options = {}) {
     const argumentsList = [
       m2c.script,
       '--target', workbench.config.m2c.target,
-      '--function', target.symbol,
+      ...(target.logicalFunctions || [{ symbol: target.symbol }]).flatMap(body => ['--function', body.symbol]),
       '--globals', 'used',
       ...group.arguments,
     ];
@@ -685,7 +685,11 @@ function runM2c(workbench, target, options = {}) {
     const compilableSource = rawSource.trim() ? compilableM2cSource(rawSource) : rawSource;
     const durationMs = Date.now() - started;
     for (const variant of group.variants) {
-      const transformed = applyGenerationTransforms(compilableSource, variant.transforms || [], { symbol: target.symbol });
+      let transformed = { source: compilableSource, applied: [] };
+      for (const body of target.logicalFunctions || [{ symbol: target.symbol }]) {
+        const next = applyGenerationTransforms(transformed.source, variant.transforms || [], { symbol: body.symbol });
+        transformed = { source: next.source, applied: [...transformed.applied, ...next.applied] };
+      }
       const source = transformed.source;
       const sourceFile = path.join(targetRoot, `${target.symbol}.${variant.name}.c`);
       fs.writeFileSync(sourceFile, source, 'utf8');
@@ -707,6 +711,8 @@ function runM2c(workbench, target, options = {}) {
           applied: transformed.applied,
         },
         m2c,
+        logicalCoverage: target.logicalCoverage || null,
+        logicalCoverageComplete: target.logicalCoverageComplete ?? null,
       });
     }
   }

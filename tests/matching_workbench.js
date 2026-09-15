@@ -1226,7 +1226,7 @@ function storeTests() {
 async function acceptedModelTests() {
   const workbench = loadWorkbenchModel();
   await require('./matching_group_consumers').run(workbench);
-  assert(workbench.modelManifest.targetModelContract === 4, 'target-model contract drift');
+  assert(workbench.modelManifest.targetModelContract === 5, 'target-model contract drift');
   assert(JSON.stringify(workbench.modelManifest.conventionalBuild) === JSON.stringify({
     path: 'config/phase7/conventional-build.json',
     sha256: sha256File(PHASE7_CONFIG_PATH),
@@ -1240,8 +1240,10 @@ async function acceptedModelTests() {
   const continuationRows = executableCodeRows.filter((row) => (
     /^func_[0-9a-f]{8}_chunk[0-9]+tail$/i.test(row.part.name)
   ));
-  assert(workbench.targets.length === executableCodeRows.length - continuationRows.length,
-    'workbench target census does not equal accepted executable function heads minus validated continuation rows');
+  const mergedContinuationRows = workbench.logicalRegistry.bodies.filter(body => body.aliases.length
+    && body.fragments[0].ownerOffset === 0).reduce((count,body)=>count+body.fragments.length-1,0);
+  assert(workbench.targets.length === executableCodeRows.length - continuationRows.length - mergedContinuationRows,
+    'workbench target census does not equal physical heads minus validated logical continuations');
   const prefixedTargets = workbench.targets.filter((target) => target.symbolByteOffset !== 0);
   assert(workbench.targets.filter((target) => target.symbolByteOffset === 0).length
       === workbench.targets.length - prefixedTargets.length

@@ -32,6 +32,7 @@ const COMPARISON_ALGORITHM_FILES = Object.freeze([
   path.join(__dirname, 'mips_analysis.js'),
   path.join(__dirname, 'compiler.js'),
   path.join(__dirname, 'target_model.js'),
+  path.join(__dirname, '..', 'logical_functions.js'),
   path.join(__dirname, '..', 'current_workflow.js'),
   path.join(__dirname, '..', 'phase7_conventional.js'),
   path.join(__dirname, '..', 'phase8_matching_c.js'),
@@ -188,7 +189,7 @@ function loadDiagnosticEnvironment(session, options = {}) {
           const expectedElf = buildReport?.verification?.outputs?.elf;
           const verifiedElf = verification?.verification?.outputs?.elf;
           const acceptedControls = acceptedControlArtifacts(output, buildReport);
-          if (buildReport.schemaVersion !== 5 || buildReport.status !== 'pass'
+          if (buildReport.schemaVersion !== 6 || buildReport.status !== 'pass'
               || verification.schemaVersion !== 5 || verification.status !== 'pass'
               || verification.verification?.status !== 'pass'
               || !expectedElf || !verifiedElf

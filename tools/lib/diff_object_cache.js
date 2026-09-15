@@ -44,6 +44,7 @@ const OBJCOPY_FLAGS = Object.freeze([
 const IMPLEMENTATION_FILES = Object.freeze([
   'tools/diff.js',
   'tools/lib/active_targets.js',
+  'tools/lib/logical_functions.js',
   'tools/lib/auxiliary_interior.js',
   'tools/lib/diff_object_cache.js',
   'tools/lib/diff_profile.js',
@@ -56,6 +57,7 @@ const IMPLEMENTATION_FILES = Object.freeze([
 ]);
 const ACTIVE_CONFIGURATION_FILES = Object.freeze([
   'config/matching-c-targets.json',
+  'config/logical-functions.json',
   'config/matching-c-linkage.json',
   'config/matching-c-multi-owner.json',
   'config/matching-c-compilation-groups.json',

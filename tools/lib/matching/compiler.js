@@ -98,7 +98,7 @@ function candidateRecord(target, sourceText, options = {}) {
     origin: options.origin || 'manual-scratch',
     variant: options.variant || null,
     parentCandidateId: options.parentCandidateId || null,
-    metadata: options.metadata || {},
+    metadata: { ...(options.metadata || {}), ...(target.requestedSymbol ? { requestedSymbol: target.requestedSymbol } : {}) },
   };
   return {
     candidateId,
@@ -120,9 +120,9 @@ function syncTargets(workbench, storeOptions = {}, options = {}) {
     action: 'sync_targets',
     modelId: workbench.modelId,
     modelManifest: workbench.modelManifest,
-    targetCount: workbench.targets.length,
+    targetCount: workbench.targets.length + (workbench.logicalTargets || []).length,
     force: options.force === true,
-    records: workbench.targets.map((target) => targetRecord(target, observedAt)),
+    records: [...workbench.targets, ...(workbench.logicalTargets || [])].map((target) => targetRecord(target, observedAt)),
   }, storeOptions);
 }
 
@@ -143,7 +143,7 @@ function prepareCompilerSession(options = {}) {
     compilerFlags: context.phase8.config.compiler.compileFlags,
     assembler: context.phase8.toolchain.identity,
     sourcePolicyPreprocessor: preprocessorIdentity(preprocessor),
-    workbenchCompilerContract: 9,
+    workbenchCompilerContract: 10,
   };
   return { context, runtime, preprocessor, tool, toolId: digest(tool) };
 }
@@ -177,7 +177,7 @@ function scratchSymbolEvidence(symbol, elf) {
   };
 }
 
-function validateScratchSymbolOwnership(elf, textSection, rodataSections, reginfoSections, primary) {
+function validateScratchSymbolOwnership(elf, textSection, rodataSections, reginfoSections, primary, functions = [primary]) {
   const rodataIndexes = new Set(rodataSections.map((section) => section.index));
   const allowedSectionIndexes = new Set([
     textSection.index,
@@ -186,7 +186,7 @@ function validateScratchSymbolOwnership(elf, textSection, rodataSections, reginf
   ]);
   const owned = [];
   for (const symbol of elf.symbols) {
-    if (symbol === primary || symbol.sectionIndex === 0) continue;
+    if (functions.includes(symbol) || symbol.sectionIndex === 0) continue;
     const evidence = scratchSymbolEvidence(symbol, elf);
     if (symbol.symbolType === 4 && symbol.binding === 0 && symbol.sectionIndex === 0xFFF1) {
       continue;
@@ -220,7 +220,24 @@ function validateScratchSymbolOwnership(elf, textSection, rodataSections, reginf
   return owned;
 }
 
+function validateLogicalFunctionCensus(functions, expected, textSize) {
+  const ordered = [...functions].sort((a, b) => a.value - b.value);
+  if (ordered.length !== expected.length) throw new Error(`scratch object function census differs: expected ${expected.length}, found ${ordered.length}`);
+  let end = 0;
+  for (const [index, actual] of ordered.entries()) {
+    if (actual.name !== expected[index].symbol || actual.value !== end
+      || actual.binding !== 1 || actual.visibility !== 0 || actual.symbolType !== 2 || !Number.isInteger(actual.size)
+      || actual.size <= 0 || actual.size % 4 || actual.value + actual.size > textSize) {
+      throw new Error('scratch object has missing, reordered, overlapping, or malformed logical functions');
+    }
+    end += actual.size;
+  }
+  return end;
+}
+
 function compileScratchCandidate({ session, target, sourceFile, artifactDir, classification = null }) {
+  if (target?.placementKind === 'rom-only') throw new Error('scratch compilation requires qualified runtime placement');
+  if (target?.logicalFunctions && !target.logicalCoverageComplete) throw new Error('complete candidate blocked by unresolved logical coverage');
   if (!session || !session.context || !session.runtime || !target
       || typeof target.symbol !== 'string' || typeof target.sectionName !== 'string'
       || typeof sourceFile !== 'string' || typeof artifactDir !== 'string') {
@@ -293,9 +310,9 @@ function compileScratchCandidate({ session, target, sourceFile, artifactDir, cla
   const sectionFunctions = elf.symbols.filter((symbol) => (
     symbol.sectionIndex === textSection.index && symbol.symbolType === 2
   ));
-  if (sectionFunctions.length !== 1) {
-    throw new Error(`scratch object target section must contain exactly one function symbol; found ${sectionFunctions.length}`);
-  }
+  const expectedFunctions = target.logicalFunctions || [{ symbol: target.symbol }];
+  sectionFunctions.sort((a, b) => a.value - b.value);
+  const functionEnd = validateLogicalFunctionCensus(sectionFunctions, expectedFunctions, textSection.size);
   const primary = sectionFunctions[0];
   if (primary.name !== target.symbol || primary.value !== 0 || primary.binding !== 1
       || primary.visibility !== 0 || !Number.isInteger(primary.size) || primary.size <= 0
@@ -304,8 +321,8 @@ function compileScratchCandidate({ session, target, sourceFile, artifactDir, cla
   }
 
   const textSectionBytes = Buffer.from(elfSectionBytes(elf, textSection));
-  const objectText = Buffer.from(textSectionBytes.subarray(0, primary.size));
-  const tail = Buffer.from(textSectionBytes.subarray(primary.size));
+  const objectText = Buffer.from(target.logicalFunctions ? textSectionBytes : textSectionBytes.subarray(0, functionEnd));
+  const tail = Buffer.from(textSectionBytes.subarray(functionEnd));
   if (tail.length % 4 !== 0 || tail.length > SCRATCH_TEXT_TAIL_ALIGNMENT_LIMIT || tail.some((byte) => byte !== 0)) {
     throw new Error(`scratch object owns executable bytes outside the primary function: ${target.symbol}`);
   }
@@ -345,13 +362,14 @@ function compileScratchCandidate({ session, target, sourceFile, artifactDir, cla
     rodataSections,
     reginfoSections,
     primary,
+    sectionFunctions,
   );
 
   const relocationTarget = {
     symbol: target.symbol,
-    bytes: primary.size,
+    bytes: functionEnd,
     sectionName: textContract.inputSection(target, target.sectionName),
-    compilerTextFunctions: [{ symbol: target.symbol, offsetNumber: 0 }],
+    compilerTextFunctions: sectionFunctions.map(fn => ({ symbol: fn.name, offsetNumber: fn.value })),
     auxiliarySections: rodataSections.length === 1
       ? [{ compilerSection: '.rodata', outputSection: '.rodata' }]
       : [],
@@ -361,7 +379,7 @@ function compileScratchCandidate({ session, target, sourceFile, artifactDir, cla
     const offset = typeof relocation.offset === 'string'
       ? Number.parseInt(relocation.offset, 16)
       : relocation.offset;
-    if (!Number.isInteger(offset) || offset < 0 || offset % 4 !== 0 || offset + 4 > primary.size) {
+    if (!Number.isInteger(offset) || offset < 0 || offset % 4 !== 0 || offset + 4 > functionEnd) {
       throw new Error(`scratch object relocation escapes the primary function: ${target.symbol}`);
     }
   }
@@ -382,7 +400,9 @@ function compileScratchCandidate({ session, target, sourceFile, artifactDir, cla
     schemaVersion: 3,
     textContract: nativeContract,
     fullOwner: { bytes: textSectionBytes.length, sha256: sha256Buffer(textSectionBytes), tailBytes: tail.length },
-    kind: 'single-function-scratch-object',
+    kind: target.logicalFunctions ? 'logical-functions-scratch-object' : 'single-function-scratch-object',
+    logicalFunctions: sectionFunctions.map(fn => ({ symbol: fn.name, offset: fn.value, bytes: fn.size })),
+    logicalCoverageComplete: target.logicalCoverageComplete ?? null,
     primarySymbol: {
       name: primary.name,
       value: primary.value,
@@ -393,8 +413,10 @@ function compileScratchCandidate({ session, target, sourceFile, artifactDir, cla
     },
     textSection: {
       ...scratchSectionEvidence(textSection),
-      functionBytes: objectText.length,
-      functionSha256: sha256Buffer(objectText),
+      functionBytes: functionEnd,
+      functionSha256: sha256Buffer(textSectionBytes.subarray(0, functionEnd)),
+      comparedBytes: objectText.length,
+      comparedSha256: sha256Buffer(objectText),
       trailingAlignmentBytes: tail.length,
       trailingAlignmentSha256: sha256Buffer(tail),
       trailingAlignmentLimit: SCRATCH_TEXT_TAIL_ALIGNMENT_LIMIT,
@@ -706,6 +728,19 @@ function cachedCandidateArtifact(run, candidate, target, matchingRoot = MATCHING
   if (sha256File(objectFile) !== record.objectSha256) {
     throw new Error('cached object artifact identity drift');
   }
+  if (target.logicalFunctions) {
+    if (!target.logicalCoverageComplete) throw new Error('cached candidate has incomplete logical coverage');
+    const elf = parseElfFile(objectFile);
+    const sections = elf.sections.filter(section => section.name === textContract.inputSection(target, target.sectionName));
+    if (sections.length !== 1) throw new Error('cached logical text section census drift');
+    const section = sections[0];
+    const functions = elf.symbols.filter(symbol => symbol.sectionIndex === section.index && symbol.symbolType === 2);
+    const end = validateLogicalFunctionCensus(functions, target.logicalFunctions, section.size);
+    const bytes = Buffer.from(elfSectionBytes(elf, section));
+    const tail = bytes.subarray(end);
+    if (tail.length > SCRATCH_TEXT_TAIL_ALIGNMENT_LIMIT || tail.length % 4 || tail.some(byte => byte !== 0)
+      || bytes.toString('base64') !== run.object_text) throw new Error('cached logical text coverage drift');
+  }
   const input = record.compilationInput;
   const inputFile = input && typeof input.path === 'string'
     ? path.resolve(ROOT, ...input.path.split('/'))
@@ -958,6 +993,7 @@ function compileCandidate(workbench, target, sourceText, options = {}) {
 }
 
 module.exports = {
+  validateLogicalFunctionCensus,
   MATCHING_ROOT,
   candidateCompileCacheKey,
   candidateRecord,

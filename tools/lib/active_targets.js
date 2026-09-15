@@ -1320,6 +1320,8 @@ function loadActiveTargetModel(options = {}) {
     fail('canonical normalized baserom is missing or has drifted; run node tools/verify_baserom.js');
   }
   const baserom = fs.readFileSync(baseromFile);
+  const logicalSupport = require('./logical_functions');
+  const logicalRegistry = logicalSupport.loadRegistry(model, baserom);
   const multiOwnerContracts = validateMultiOwnerConfig(
     multiOwnerConfig,
     minimal.profile,
@@ -1440,6 +1442,7 @@ function loadActiveTargetModel(options = {}) {
       target,
       relocationContract.compilerTextFunctions,
     );
+    logicalSupport.assertActivationCompatible(logicalRegistry, entry.symbol, rows, target.compilerTextFunctions);
     target.auxiliarySections = resolveAuxiliarySectionContracts(
       model,
       baserom,
@@ -1529,6 +1532,7 @@ function loadActiveTargetModel(options = {}) {
     },
     multiOwnerConfig,
     compilationGroups,
+    logicalFunctionConfigIdentity: logicalRegistry.identity,
     groupConfigIdentity: { path: path.relative(ROOT, groupSupport.CONFIG_PATH).replace(/\\/g, '/'),
       bytes: fs.statSync(groupSupport.CONFIG_PATH).size, sha256: sha256File(groupSupport.CONFIG_PATH) },
     multiOwnerConfigIdentity: {

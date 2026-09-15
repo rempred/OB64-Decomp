@@ -96,6 +96,13 @@ Record discoveries that will change a future experiment through the shared resea
 with a concise source change, observed effect and remaining failure. Keep the best source
 recoverable. This does not require archiving every trial or reading the complete historical record.
 
+Agents must reconcile logical bodies, physical owners, and the C producer before tuning a target.
+Use current intake, relevant documentation, and full target disassembly to cross-check accepted metadata and generated output.
+Acceptance status does not resolve contradictory evidence by itself.
+Agents must check candidate C, whether generated or hand-authored, and the first comparison for every required body's coverage.
+Follow [the bounded coverage check](docs/WORKFLOW.md#check-target-coverage-before-tuning) when coverage or documentation conflicts.
+Preserve the best candidate and route supported structural/tooling defects to the Director; continue unaffected authorized work.
+
 Experiments need not improve the score at every step. Preserve the current best candidate while
 allowing evidence-backed sequences of related source changes through temporary regressions.
 An experiment that produces worse bytes, extent, frame size or allocation is not selected as

@@ -1,8 +1,8 @@
 # OB64 Decomp — Canonical Matching Workflow
 
 This document defines the ordinary function-matching loop for *Ogre Battle 64:
-Person of Lordly Caliber*, US Rev 0. It assumes the accepted structural model and
-toolchain are correct and keeps them unchanged.
+Person of Lordly Caliber*, US Rev 0. It uses the accepted structural model and
+toolchain and keeps them unchanged.
 
 Read [the agent guide](../AGENTS.md) first. Source classification is defined by
 [the source policy](SOURCE_POLICY.md). If the work changes a boundary, segment,
@@ -145,9 +145,8 @@ Confirm that the symbol resolves to one unambiguous accepted logical target with
 its complete text-owner mapping, ROM placement, runtime placement, size, and
 original assembly. A legitimate logical target can span multiple preserved
 owner rows; use its reviewed mapping as-is. Do not reject that mapping or infer
-a new boundary from a plausible disassembly during an ordinary match. If the
-accepted target or placement appears wrong or ambiguous, stop and open a
-structural task.
+a new boundary from a plausible disassembly during an ordinary match. For conflicting
+evidence, use the bounded coverage check below before routing a structural concern.
 
 The optional workbench can inspect or rank accepted targets:
 
@@ -179,6 +178,30 @@ The lookup uses tracked records on a fresh checkout and can supplement them from
 local store. It performs no code generation or source activation. Optional history problems
 do not block the ordinary compile, linked diff or final verifier. See the
 [workbench reference](MATCHING_WORKBENCH.md) for commands and evidence-state details.
+
+#### Check target coverage before tuning
+
+1. At intake or resumption, reconcile the current intake/dossier and relevant documentation with full target disassembly.
+   Identify callable bodies, physical owner fragments, and the C producer required by the assignment.
+   Use [logical-function selections and production boundaries](LOGICAL_FUNCTIONS.md) to distinguish scratch body coverage from production ownership.
+2. Before tuning, check candidate C, whether generated or hand-authored, and the first comparison.
+   Both must cover the expected byte interval and body census.
+   Every required body must be represented; a combined owner must not silently become only its first body.
+   Accepted metadata and generated output are evidence to cross-check, not substitutes for this reconciliation.
+3. For a strong unexplained length/body gap or contradictory documentation, the worker must investigate the target before further tuning.
+   Neighboring return-plus-independent-setup patterns and live setup outside the selection also require this bounded investigation.
+   Inspect adjacent instructions and relevant existing evidence only far enough to explain the discrepancy.
+   Account for delay slots, shared tails, padding, and the accepted producer contract.
+   A return alone does not prove a split. An ordinary length mismatch does not establish a structural defect.
+4. Preserve the best candidate. Record expected versus actual byte/body coverage through existing research records or handback.
+   Include the concrete evidence, competing explanation, and remaining uncertainty; reuse current records rather than creating a separate report requirement.
+   For an independently supported boundary or tool defect, route the evidence to the Director for a separate assignment.
+   Ordinary matchers must not change shared tools or owners. Continue unaffected authorized work.
+
+In reporting, distinguish a generated candidate, a manual source experiment, a compilation failure, and a compiled nonmatch.
+A compiled nonmatch requires successful compilation and current comparison evidence.
+An exact linked candidate remains provisional until the existing completed-wave gates establish an accepted match.
+This check adds no per-target full build, repository-wide rescan, or new acceptance gate.
 
 ### 2. Reconstruct and activate the source
 

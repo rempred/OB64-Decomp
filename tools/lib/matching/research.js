@@ -99,7 +99,7 @@ function observations(target,effect,limit=20,options={}) {
 function preserveResearch(workbench,candidateId,observationId,note,options={}) {
   if(!hash(candidateId)||!hash(observationId)||!text(note)) throw new Error('research preservation needs candidate, observation and note');
   const candidate=store(options,{action:'query',name:'candidate',args:{candidateId}});
-  const target=workbench.targets.find(t=>t.targetId===candidate?.target_id);
+  const target=[...workbench.targets,...(workbench.logicalTargets||[])].find(t=>t.targetId===candidate?.target_id);
   if(!target||candidateRecord(target,candidate.source_text).candidateId!==candidateId
     ||digest(Buffer.from(candidate.source_text,'utf8'))!==candidate.source_sha256) throw new Error('research candidate identity is stale or malformed');
   assertScratchCapability(workbench,target);
