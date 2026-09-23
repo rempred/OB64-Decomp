@@ -21,6 +21,8 @@ const ROUTINE_TESTS = [
   ['matching-diagnostics', 'tests/matching_diagnostics.js'],
   ['diff-object-cache', 'tests/diff_object_cache.js'],
   ['matching-studies', 'tests/matching_studies.js'],
+  ['compiler-curriculum', 'tests/compiler_curriculum.js'],
+  ['template-reuse', 'tests/template_reuse.js'],
   ['allocator-scheduler-trace', 'tests/allocator_scheduler_trace.js'],
   ['matching-workbench', 'tests/matching_workbench.js'],
 ];
