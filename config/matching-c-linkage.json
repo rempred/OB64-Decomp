@@ -2,6 +2,10 @@
   "schemaVersion": 4,
   "profile": "us-rev0",
   "symbols": [
+    { "name": "D_800AF0B0", "address": "0x800AF0B0" },
+    { "name": "D_8019A798", "address": "0x8019A798" },
+    { "name": "D_801F0CAC", "address": "0x801F0CAC" },
+    { "name": "func_00049aa0", "address": "0x80173BA0" },
     { "name": "D_801D06DC", "address": "0x801D06DC" },
     { "name": "D_801D06D8", "address": "0x801D06D8" },
     { "name": "D_801D06D4", "address": "0x801D06D4" },
@@ -682,6 +686,36 @@
     { "name": "D_801D0830", "address": "0x801D0830" }
   ],
   "targets": [
+    {
+      "symbol": "func_00113C60",
+      "expectedRelocations": [
+        { "offset": "0x00000000", "type": "R_MIPS_HI16", "symbol": "D_801F0CAC", "section": ".rel.text" },
+        { "offset": "0x00000004", "type": "R_MIPS_LO16", "symbol": "D_801F0CAC", "section": ".rel.text" },
+        { "offset": "0x00000010", "type": "R_MIPS_26", "symbol": "resource_free", "section": ".rel.text" },
+        { "offset": "0x00000018", "type": "R_MIPS_HI16", "symbol": "D_801F0CAC", "section": ".rel.text" },
+        { "offset": "0x0000001C", "type": "R_MIPS_LO16", "symbol": "D_801F0CAC", "section": ".rel.text" }
+      ]
+    },
+    {
+      "symbol": "func_0006e8a8",
+      "expectedRelocations": [
+        { "offset": "0x00000000", "type": "R_MIPS_HI16", "symbol": "D_8019A798", "section": ".rel.text" },
+        { "offset": "0x00000004", "type": "R_MIPS_LO16", "symbol": "D_8019A798", "section": ".rel.text" },
+        { "offset": "0x00000010", "type": "R_MIPS_26", "symbol": "resource_free", "section": ".rel.text" },
+        { "offset": "0x00000018", "type": "R_MIPS_HI16", "symbol": "D_8019A798", "section": ".rel.text" },
+        { "offset": "0x0000001C", "type": "R_MIPS_LO16", "symbol": "D_8019A798", "section": ".rel.text" }
+      ]
+    },
+    {
+      "symbol": "boot_resource_global_handle_release",
+      "expectedRelocations": [
+        { "offset": "0x00000000", "type": "R_MIPS_HI16", "symbol": "D_800AF0B0", "section": ".rel.text" },
+        { "offset": "0x00000004", "type": "R_MIPS_LO16", "symbol": "D_800AF0B0", "section": ".rel.text" },
+        { "offset": "0x00000010", "type": "R_MIPS_26", "symbol": "func_00049aa0", "section": ".rel.text" },
+        { "offset": "0x00000018", "type": "R_MIPS_HI16", "symbol": "D_800AF0B0", "section": ".rel.text" },
+        { "offset": "0x0000001C", "type": "R_MIPS_LO16", "symbol": "D_800AF0B0", "section": ".rel.text" }
+      ]
+    },
     {
       "symbol": "func_0020FC7C",
       "expectedRelocations": [

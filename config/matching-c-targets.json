@@ -755,6 +755,18 @@
     {
       "symbol": "func_001F0C24",
       "source": "src/lib/func_001F0C24.c"
+    },
+    {
+      "symbol": "boot_resource_global_handle_release",
+      "source": "src/boot/boot_resource_global_handle_release.c"
+    },
+    {
+      "symbol": "func_0006e8a8",
+      "source": "src/lib/func_0006e8a8.c"
+    },
+    {
+      "symbol": "func_00113C60",
+      "source": "src/lib/func_00113C60.c"
     }
   ]
 }
