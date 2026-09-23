@@ -53,6 +53,7 @@ HISTORICAL_INGEST_PROTOCOL_VERSIONS = (
     "0.14.0",
     "0.15.0",
     "0.16.0",
+    "0.17.0",
 )
 SUPPORTED_INGEST_PROTOCOL_VERSIONS = (
     *HISTORICAL_INGEST_PROTOCOL_VERSIONS,
@@ -1738,7 +1739,7 @@ def _validate_delta(delta: SessionDelta, meta: Mapping[str, str], rom: bytes) ->
     if activity is not None:
         activity_format_ok = (
             activity.frontier_format_version == FRONTIER_FORMAT_VERSION
-            if delta.protocol_version == BRIDGE_PROTOCOL_VERSION
+            if delta.protocol_version in {"0.17.0", BRIDGE_PROTOCOL_VERSION}
             else activity.frontier_format_version in {4, 5}
         )
         if (

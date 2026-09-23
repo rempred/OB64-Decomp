@@ -49,5 +49,5 @@ Phase 1 parity references.
 
 The maintained client and bridge first advanced to protocol `0.7.2`, then `0.8.0` for ordered
 execution/input capture and exact-content deduplication. The current implementation is protocol
-`0.17.0`; the frozen `0.6.8` hash above remains a historical migration input. See
+`0.18.0`; the frozen `0.6.8` hash above remains a historical migration input. See
 `docs/total-resolver/implementation-status.md` for current behavior.

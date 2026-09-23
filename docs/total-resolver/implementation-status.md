@@ -1,7 +1,7 @@
 # Total Resolver R3 implementation status
 
-Status: **Schema 5 factorized DMA and protocol 0.17 are implemented and locally verified**
-Updated: 2026-08-28
+Status: **Schema 5 factorized DMA and protocol 0.18 client are implemented; the selected knowledge remains protocol 0.17**
+Updated: 2026-09-23
 
 This page records the current implementation boundary. Total Resolver is a practical decompilation
 accelerator: it preserves exact machine structure conservatively, exposes useful candidates, and

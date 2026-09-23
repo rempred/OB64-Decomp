@@ -769,6 +769,7 @@ class KnowledgeTests(unittest.TestCase):
                 "0.14.0",
                 "0.15.0",
                 "0.16.0",
+                "0.17.0",
                 BRIDGE_PROTOCOL_VERSION,
             ),
         )
@@ -783,7 +784,7 @@ class KnowledgeTests(unittest.TestCase):
                             frontier_identity=delta.frontier_identity_at_start,
                             frontier_format_version=(
                                 FRONTIER_FORMAT_VERSION
-                                if version == BRIDGE_PROTOCOL_VERSION
+                                if version in {"0.17.0", BRIDGE_PROTOCOL_VERSION}
                                 else 5
                             ),
                             bridge_sequence=60,

@@ -101,7 +101,7 @@ def _verify_events(
     )
     structural_trace = session["bridge_version"] in {
         "0.10.0", "0.11.0", "0.12.0", "0.13.0", "0.14.0", "0.15.0",
-        "0.16.0", BRIDGE_PROTOCOL_VERSION
+        "0.16.0", "0.17.0", BRIDGE_PROTOCOL_VERSION
     }
     pair_ok = True
     dma_starts: dict[int, dict[str, Any]] = {}
@@ -470,7 +470,7 @@ def _verify_events(
         "exact stored bytes, lengths, fields, encodings, and event phases",
     )
     if capture_version >= 4 and session["bridge_version"] in {
-        "0.11.0", "0.12.0", "0.13.0", "0.14.0", "0.15.0", "0.16.0",
+        "0.11.0", "0.12.0", "0.13.0", "0.14.0", "0.15.0", "0.16.0", "0.17.0",
         BRIDGE_PROTOCOL_VERSION
     }:
         baseline_ok = len(baseline_sequences) == 1 and (

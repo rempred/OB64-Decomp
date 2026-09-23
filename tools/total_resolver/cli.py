@@ -170,7 +170,11 @@ def build_parser() -> argparse.ArgumentParser:
     )
     start.add_argument(
         "--focused-profile",
-        help="add an exact owner-focused capture profile (cutscene-studio-v1 or combat-selector-v1)",
+        help="add an exact owner-focused capture profile (cutscene-studio-v3; legacy cutscene-studio-v2/v1, combat-selector-v1, or dialogue-presentation-v1)",
+    )
+    start.add_argument(
+        "--dialogue-visual", action="store_true",
+        help="save bounded VI framebuffer PNG windows with the full cutscene-studio-v3 profile",
     )
 
     knowledge = commands.add_parser(
@@ -274,6 +278,12 @@ def build_parser() -> argparse.ArgumentParser:
     verify = session_commands.add_parser("verify", help="independently verify a closed session")
     verify.add_argument("session_id")
     _add_sessions_root(verify)
+
+    visual_verify = session_commands.add_parser(
+        "visual-verify", help="verify dialogue PNG windows against one closed capture"
+    )
+    visual_verify.add_argument("session_id")
+    _add_sessions_root(visual_verify)
 
     dedupe = session_commands.add_parser(
         "dedupe",
@@ -546,9 +556,13 @@ def _session(args: argparse.Namespace) -> int:
                 before_rom=args.before_rom,
                 auto_ingest=not args.defer_ingest,
                 focused_profile_id=args.focused_profile,
+                dialogue_visual=args.dialogue_visual,
             )
         elif args.session_command == "status":
             payload = session_status(args.session_id, root=args.root)
+        elif args.session_command == "visual-verify":
+            from .dialogue_visual import verify_dialogue_visual
+            payload = verify_dialogue_visual(sessions_root(args.root) / args.session_id)
         elif args.session_command in {"label", "mark", "note"}:
             marker_types = {
                 "label": "stable-state",

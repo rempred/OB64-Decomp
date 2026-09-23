@@ -5,6 +5,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 import hashlib
 import math
+import re
 from typing import Any, Mapping
 
 from .protocol import BridgeProtocolError, FRONTIER_FORMAT_VERSION
@@ -12,6 +13,9 @@ from .addressing import RDRAM_SIZE
 
 
 BRIDGE_STREAMS = frozenset({"watch", "dma", "trace", "input"})
+# The deployed bridge labels its focused-event wire contract as version 1,
+# independently of the selected profile definition version in the manifest.
+FOCUSED_EVENT_WIRE_VERSION = 1
 
 
 def _u32_hex_or_none(value: Any) -> bool:
@@ -302,7 +306,7 @@ def _validate_focused_event(payload: Mapping[str, Any]) -> None:
         or payload.get("orderingClaim")
         != "bridge-sequence-orders-focused-events;-frame-is-context"
         or payload.get("sampleMode") not in {"all", "first-per-frame"}
-        or payload.get("focusedProfileVersion") != 1
+        or payload.get("focusedProfileVersion") != FOCUSED_EVENT_WIRE_VERSION
     ):
         raise BridgeProtocolError("focused execution event lacks its exact trigger contract")
     for field in ("focusedProfileId", "focusedTargetId", "focusedInvocationId"):
@@ -774,6 +778,42 @@ def _validate_trace_or_input_event(
             raise BridgeProtocolError("incomplete marker context overstates its evidence")
     elif event_type == "focused-exec":
         _validate_focused_event(payload)
+    elif event_type == "visual-frame":
+        if (
+            payload.get("bridgeStream") != "watch"
+            or isinstance(payload.get("callbackId"), bool)
+            or not isinstance(payload.get("callbackId"), int)
+            or payload["callbackId"] < 0
+            or isinstance(payload.get("frameCount"), bool)
+            or not isinstance(payload.get("frameCount"), int)
+            or payload["frameCount"] < 0
+            or isinstance(payload.get("visualOrdinal"), bool)
+            or not isinstance(payload.get("visualOrdinal"), int)
+            or payload["visualOrdinal"] < 1
+            or payload.get("pixelSource") != "VI-origin-RDRAM-after-UpdateScreen"
+        ):
+            raise BridgeProtocolError("visual frame lacks its VI/order contract")
+    elif event_type == "visual-image-saved":
+        if (
+            payload.get("bridgeStream") != "watch"
+            or any(
+                isinstance(payload.get(field), bool)
+                or not isinstance(payload.get(field), int)
+                or payload[field] < 1
+                for field in ("visualOrdinal", "visualFrameSequence")
+            )
+            or isinstance(payload.get("callbackId"), bool)
+            or not isinstance(payload.get("callbackId"), int)
+            or payload["callbackId"] < 0
+            or isinstance(payload.get("frameCount"), bool)
+            or not isinstance(payload.get("frameCount"), int)
+            or payload["frameCount"] < 0
+            or not isinstance(payload.get("file"), str)
+            or not re.fullmatch(r"frame-[0-9]{6}\.png", payload["file"])
+            or not isinstance(payload.get("pngSha256"), str)
+            or not re.fullmatch(r"[0-9A-F]{64}", payload["pngSha256"])
+        ):
+            raise BridgeProtocolError("visual image lacks its saved PNG/order contract")
 
 
 def _validate_dma_event(payload: Mapping[str, Any], event_type: str, sequence: int) -> None:

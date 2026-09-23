@@ -796,6 +796,25 @@ class Pj64Client:
     def capture_framebuffer(self, path: str | Path) -> dict[str, Any]:
         return self._command("framebuffer " + _path_argument(path))
 
+    def configure_dialogue_visual(
+        self, directory: str | Path, *, before: int, after: int, max_triggers: int,
+    ) -> dict[str, Any]:
+        path = Path(directory)
+        if not path.is_absolute():
+            raise ValueError("dialogue visual directory must be absolute")
+        return self._command(
+            f"visualconfigure {_nonnegative(before, 'before', maximum=8)} "
+            f"{_nonnegative(after, 'after', maximum=30)} "
+            f"{_positive(max_triggers, 'max_triggers', maximum=80)} "
+            + _path_argument(path)
+        )
+
+    def dialogue_visual_status(self) -> dict[str, Any]:
+        return self._command("visualstatus")
+
+    def stop_dialogue_visual(self) -> dict[str, Any]:
+        return self._command("visualstop")
+
     def frame_hash(self) -> dict[str, Any]:
         return self._command("framehash")
 
@@ -916,6 +935,19 @@ class ObservationOnlyPj64Client:
 
     def capture_stop(self) -> dict[str, Any]:
         return self.__client.capture_stop()
+
+    def configure_dialogue_visual(
+        self, directory: str | Path, *, before: int, after: int, max_triggers: int,
+    ) -> dict[str, Any]:
+        return self.__client.configure_dialogue_visual(
+            directory, before=before, after=after, max_triggers=max_triggers,
+        )
+
+    def dialogue_visual_status(self) -> dict[str, Any]:
+        return self.__client.dialogue_visual_status()
+
+    def stop_dialogue_visual(self) -> dict[str, Any]:
+        return self.__client.stop_dialogue_visual()
 
     def cold_boot_arm(
         self, frontier_identity: str, expected_crc1: str, expected_crc2: str

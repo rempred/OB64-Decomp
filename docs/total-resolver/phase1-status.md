@@ -6,7 +6,7 @@ Started: 2026-08-17
 The maintained client lives in `tools/total_resolver/`. At the Phase 1 gate, every public bridge
 operation performed an exact `0.7.2` handshake before issuing its command, so a caller could not
 bypass protocol identity by omitting an explicit `connect()` call. The next acquisition gate used
-`0.8.0`; the current implementation is `0.17.0`.
+`0.8.0`; the current implementation is `0.18.0`.
 
 ## Implemented
 
@@ -61,5 +61,5 @@ The repo-local client was subsequently exercised against the live `ob64-core` ru
 `0.7.2`. Protocol mismatch tests failed closed, and the bridge harness proved global ordering,
 epoch changes, visible loss, and event-time DMA destination-byte handling. The maintained runtime
 then advanced to protocol `0.8.0`, adding ordered execution/input streams and exact-content
-deduplication. It has since reached protocol `0.17.0`; see
+deduplication. It has since reached protocol `0.18.0`; see
 `docs/total-resolver/implementation-status.md` for current behavior.

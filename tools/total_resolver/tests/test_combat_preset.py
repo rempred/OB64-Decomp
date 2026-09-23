@@ -7,7 +7,8 @@ from unittest.mock import Mock, patch
 from types import SimpleNamespace
 
 from tools.total_resolver.focused_capture import (
-    COMBAT_SELECTOR_PROFILE_ID, CUTSCENE_STUDIO_PROFILE_ID, COMBAT_SELECTOR_SIGNATURE,
+    COMBAT_SELECTOR_PROFILE_ID, CUTSCENE_STUDIO_PROFILE_ID,
+    CUTSCENE_STUDIO_V1_PROFILE_ID, COMBAT_SELECTOR_SIGNATURE,
     resolve_focused_profile,
 )
 from tools.total_resolver.capture_gui import (
@@ -53,7 +54,7 @@ class CombatPresetTests(unittest.TestCase):
 
     def test_distinct_presets_and_legacy_serialization(self):
         combat = resolve_focused_profile(self.db, COMBAT_SELECTOR_PROFILE_ID)
-        cutscene = resolve_focused_profile(self.db, CUTSCENE_STUDIO_PROFILE_ID)
+        cutscene = resolve_focused_profile(self.db, CUTSCENE_STUDIO_V1_PROFILE_ID)
         self.assertEqual(len(combat.watches),1)
         self.assertEqual(len(cutscene.watches),11)
         self.assertEqual(combat.watches[0].signature_bytes,COMBAT_SELECTOR_SIGNATURE)
@@ -230,6 +231,16 @@ class CombatPresetTests(unittest.TestCase):
             self.assertEqual(create.call_args.kwargs['focused_profile_id'],profile_id)
             self.assertFalse(create.call_args.kwargs['auto_ingest'])
             controller.session_id=None
+        controller.select_focused_profile(CUTSCENE_STUDIO_PROFILE_ID)
+        with patch('tools.total_resolver.capture_gui.create_session',return_value={'sessionId':'VISUAL'}) as create:
+            controller.start(focused=True,dialogue_visual=True)
+        self.assertTrue(create.call_args.kwargs['dialogue_visual'])
+        controller.session_id=None
+        controller.select_focused_profile(COMBAT_SELECTOR_PROFILE_ID)
+        with patch('tools.total_resolver.capture_gui.create_session') as create:
+            with self.assertRaisesRegex(ValueError,'Cutscene Studio'):
+                controller.start(focused=True,dialogue_visual=True)
+            create.assert_not_called()
 
 
 if __name__=='__main__':

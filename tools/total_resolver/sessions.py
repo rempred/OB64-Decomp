@@ -26,7 +26,13 @@ from .capture_db import (
     content_deduplication_stats,
 )
 from .contracts import CaptureMode, InterventionPolicy
-from .focused_capture import ResolvedFocusedProfile, resolve_focused_profile
+from .focused_capture import (
+    CUTSCENE_STUDIO_PROFILE_ID, ResolvedFocusedProfile, resolve_focused_profile,
+)
+from .dialogue_visual import (
+    AFTER_FRAMES, BEFORE_FRAMES, MAX_TRIGGERS,
+    verify_dialogue_visual, visual_capture_config, visual_capture_directory,
+)
 from .inventory import config_path, load_inventory, repository_root, sha256_file
 from .knowledge import (
     build_frontier,
@@ -434,6 +440,7 @@ def _metadata(
     session_id: str,
     frontier: Any,
     focused_profile: ResolvedFocusedProfile | None = None,
+    dialogue_visual: bool = False,
 ) -> SessionMetadata:
     decomp = _git_identity(repository_root())
     project64_root = _project64_root()
@@ -461,6 +468,10 @@ def _metadata(
     }
     if focused_profile is not None:
         static_sources["captureProfile"]["focusedCapture"] = focused_profile.to_dict()
+    if dialogue_visual:
+        if focused_profile is None or focused_profile.profile_id != CUTSCENE_STUDIO_PROFILE_ID:
+            raise ValueError("dialogue visual capture requires the full Cutscene Studio v3 profile")
+        static_sources["captureProfile"]["dialogueVisual"] = visual_capture_config()
     identity = preflight.rom_identity
     return SessionMetadata(
         session_id=session_id,
@@ -527,7 +538,10 @@ def create_session(
     before_rom: bool = False,
     auto_ingest: bool = True,
     focused_profile_id: str | None = None,
+    dialogue_visual: bool = False,
 ) -> dict[str, Any]:
+    if dialogue_visual and focused_profile_id != CUTSCENE_STUDIO_PROFILE_ID:
+        raise ValueError("dialogue visual capture requires the full Cutscene Studio v3 profile")
     resolved_root = sessions_root(root)
     resolved_root.mkdir(parents=True, exist_ok=True)
 
@@ -586,7 +600,10 @@ def create_session(
     location = session_location(resolved_root, session_id)
     store = CaptureStore.create(
         location.database,
-        _metadata(preflight, connection, session_id, frontier, focused_profile),
+        _metadata(
+            preflight, connection, session_id, frontier, focused_profile,
+            dialogue_visual=dialogue_visual,
+        ),
         mirror_events=False,
     )
     store.close_connection()
@@ -602,6 +619,7 @@ def create_session(
         beforeRom=before_rom,
         autoIngest=auto_ingest,
         focusedProfile=(focused_profile.profile_id if focused_profile is not None else None),
+        dialogueVisual=dialogue_visual,
     )
     _write_active(location, state)
 
@@ -613,6 +631,7 @@ def create_session(
             before_rom=before_rom,
             auto_ingest=auto_ingest,
             focused_profile_id=focused_profile_id,
+            dialogue_visual=dialogue_visual,
         )
         return {
             "sessionId": session_id,
@@ -648,6 +667,8 @@ def create_session(
         command += ("--defer-ingest",)
     if focused_profile_id is not None:
         command += ("--focused-profile", focused_profile_id)
+    if dialogue_visual:
+        command += ("--dialogue-visual",)
     popen_kwargs: dict[str, Any] = {
         "cwd": str(repository_root()),
         "stdin": subprocess.DEVNULL,
@@ -745,6 +766,7 @@ def run_session_worker(
     before_rom: bool = False,
     auto_ingest: bool = True,
     focused_profile_id: str | None = None,
+    dialogue_visual: bool = False,
 ) -> int:
     """Run one worker until a stop request or an evidence-breaking failure."""
 
@@ -786,6 +808,12 @@ def run_session_worker(
             raise BridgeProtocolError(
                 "the focused profile changed after session preparation; prepare a new session"
             )
+        stored_visual = static_sources.get("captureProfile", {}).get("dialogueVisual")
+        expected_visual = visual_capture_config() if dialogue_visual else None
+        if canonical_json(stored_visual) != canonical_json(expected_visual):
+            raise BridgeProtocolError(
+                "the dialogue visual setting changed after session preparation; prepare a new session"
+            )
     except Exception as exc:
         error = f"frontier preparation failed: {type(exc).__name__}: {exc}"
         state = _update_worker_state(location, "failed", pid=os.getpid(), error=error)
@@ -814,6 +842,8 @@ def run_session_worker(
     error: str | None = None
     verification: SessionVerification | None = None
     ingestion: dict[str, Any] | None = None
+    visual_evidence: dict[str, Any] | None = None
+    visual_running = False
     try:
         if before_rom:
             expected_identity = {
@@ -835,6 +865,17 @@ def run_session_worker(
             recorder.await_cold_boot_start()
         else:
             recorder.start()
+        if dialogue_visual:
+            visual_dir = visual_capture_directory(location.directory)
+            visual_dir.mkdir(parents=True, exist_ok=False)
+            visual_response = capture_client.configure_dialogue_visual(
+                visual_dir.resolve(), before=BEFORE_FRAMES, after=AFTER_FRAMES,
+                max_triggers=MAX_TRIGGERS,
+            )
+            visual_state = visual_response.get("visual")
+            if not isinstance(visual_state, Mapping) or visual_state.get("enabled") is not True:
+                raise BridgeProtocolError("bridge did not arm dialogue visual capture")
+            visual_running = True
         state = _update_worker_state(
             location,
             "running",
@@ -843,6 +884,9 @@ def run_session_worker(
         )
         _write_active(location, state)
         recorder.run()
+        if visual_running:
+            capture_client.stop_dialogue_visual()
+            visual_running = False
         recorder.stop_instrumentation()
         recorder.drain_to_empty()
         terminal = recorder.append_terminal_event("closed")
@@ -851,6 +895,10 @@ def run_session_worker(
         closure = "closed"
     except BaseException as exc:  # Ensure even Ctrl+C becomes an explicit interrupted session.
         error = f"{type(exc).__name__}: {exc}"
+        if visual_running:
+            with suppress(Exception):
+                capture_client.stop_dialogue_visual()
+            visual_running = False
         with suppress(Exception):
             store.set_continuity_broken(error)
         if recorder.started:
@@ -884,6 +932,12 @@ def run_session_worker(
             error = f"{error + '; ' if error else ''}finalization failed: {type(exc).__name__}: {exc}"
         finally:
             store.close_connection()
+
+    if dialogue_visual:
+        try:
+            visual_evidence = verify_dialogue_visual(location.directory)
+        except (OSError, ValueError, sqlite3.Error) as exc:
+            visual_evidence = {"result": "FAIL", "error": f"{type(exc).__name__}: {exc}"}
 
     if closure == "closed" and verification is not None and verification.ok:
         if knowledge_database is None:
@@ -928,6 +982,7 @@ def run_session_worker(
         error=error,
         verification=(verification.to_dict() if verification is not None else None),
         ingestion=ingestion,
+        visualEvidence=visual_evidence,
         knowledgeDatabase=(
             str(knowledge_database.resolve()) if knowledge_database is not None else None
         ),
@@ -1281,6 +1336,7 @@ def session_status(session_id: str | None = None, *, root: Path | None = None) -
         "knowledgeDatabase": state.get("knowledgeDatabase"),
         "frontier": state.get("frontier"),
         "ingestion": state.get("ingestion"),
+        "visualEvidence": state.get("visualEvidence"),
         "semanticContext": semantic_context,
     }
 

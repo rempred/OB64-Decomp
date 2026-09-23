@@ -1,7 +1,7 @@
 # Persistent structural delta capture
 
 Status: **implemented and independently verified**
-Scope: Total Resolver knowledge schema 5, frontier format 6, Project64 bridge protocol 0.17.0
+Scope: Total Resolver knowledge schema 5, frontier format 6, Project64 bridge protocol 0.18.0
 
 Schema 4 added focused entry/return state and bounded pointer-byte context. Protocol 0.16 moved the
 common exact-execution decision and ordered novel-event batching into native Project64. Schema 5

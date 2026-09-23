@@ -28,6 +28,36 @@ class BridgeEventTests(unittest.TestCase):
         value.update(updates)
         return value
 
+    def test_visual_frame_keeps_vi_count_and_order_without_pixel_payload(self) -> None:
+        frame = {
+            "kind": "visual-frame", "bridgeEpoch": "EPOCH-1",
+            "bridgeSequence": 1, "bridgeStream": "watch", "callbackId": 7,
+            "frameCount": 513, "visualOrdinal": 12,
+            "pixelSource": "VI-origin-RDRAM-after-UpdateScreen",
+        }
+        batch = parse_drain_response(self.envelope([frame], nextEventSequence=2))
+        self.assertEqual(batch.events[0].frame_number, 513)
+        self.assertEqual(batch.events[0].bridge_sequence, 1)
+        self.assertEqual(batch.events[0].payload["visualOrdinal"], 12)
+        with self.assertRaisesRegex(BridgeProtocolError, "VI/order contract"):
+            parse_drain_response(self.envelope([
+                {**frame, "visualOrdinal": True},
+            ], nextEventSequence=2))
+
+    def test_visual_image_event_binds_png_digest_to_ordered_frame(self) -> None:
+        saved = {
+            "kind": "visual-image-saved", "bridgeEpoch": "EPOCH-1",
+            "bridgeSequence": 2, "bridgeStream": "watch", "callbackId": 7,
+            "frameCount": 513, "visualOrdinal": 12, "visualFrameSequence": 1,
+            "file": "frame-000012.png", "pngSha256": "A" * 64,
+        }
+        batch = parse_drain_response(self.envelope([saved], nextEventSequence=3))
+        self.assertEqual(batch.events[0].payload["pngSha256"], "A" * 64)
+        with self.assertRaisesRegex(BridgeProtocolError, "saved PNG/order contract"):
+            parse_drain_response(self.envelope([
+                {**saved, "pngSha256": "abc"},
+            ], nextEventSequence=3))
+
     def test_global_order_unknown_fields_and_dma_bytes_are_preserved(self) -> None:
         content = bytes.fromhex("00112233")
         batch = parse_drain_response(

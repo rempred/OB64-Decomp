@@ -21,7 +21,8 @@ from typing import Any, Callable, Mapping, Sequence
 from .knowledge import selected_knowledge_database
 from .knowledge_ingest import ingest_session
 from .focused_capture import (
-    CUTSCENE_STUDIO_PROFILE_ID, COMBAT_SELECTOR_PROFILE_ID, supported_focused_profiles,
+    CUTSCENE_STUDIO_PROFILE_ID, COMBAT_SELECTOR_PROFILE_ID,
+    DIALOGUE_PRESENTATION_PROFILE_ID, supported_focused_profiles,
 )
 from .inventory import resolve_active_project64_binary
 from .pj64_client import DEFAULT_HOST, Pj64Client
@@ -43,6 +44,7 @@ CAPTURE_GUI_DEFAULT_PORT = 64656
 FOCUSED_PRESET_LABELS = {
     "Combat: selector investigation": COMBAT_SELECTOR_PROFILE_ID,
     "Cutscene Studio": CUTSCENE_STUDIO_PROFILE_ID,
+    "Dialogue presentation timing": DIALOGUE_PRESENTATION_PROFILE_ID,
 }
 
 
@@ -281,11 +283,14 @@ class CaptureWorkflowController:
     def start(
         self, *, before_rom: bool = False, focused: bool = False,
         focused_profile_id: str | None = None,
+        dialogue_visual: bool = False,
     ) -> dict[str, Any]:
         profile_id = (focused_profile_id if focused_profile_id is not None
                       else self.selected_focused_profile if focused else None)
         if profile_id is not None and profile_id not in supported_focused_profiles():
             raise ValueError(f"unsupported focused capture profile: {profile_id}")
+        if dialogue_visual and profile_id != CUTSCENE_STUDIO_PROFILE_ID:
+            raise ValueError("dialogue visual frames require the full Cutscene Studio preset")
         current = self.refresh() if self.session_id is not None else None
         if (
             current is not None
@@ -303,6 +308,7 @@ class CaptureWorkflowController:
                 "launchesProject64": False,
                 "captureMode": "focused-research" if profile_id is not None else "manual-play",
                 "focusedProfile": profile_id,
+                "dialogueVisual": dialogue_visual,
             },
         )
         try:
@@ -313,6 +319,7 @@ class CaptureWorkflowController:
                 before_rom=before_rom,
                 auto_ingest=False,
                 focused_profile_id=profile_id,
+                dialogue_visual=dialogue_visual,
             )
         except Exception as exc:
             self.log.exception("Capture start", exc)
@@ -460,6 +467,7 @@ def launch_capture_gui(
     )
     session_text = tk.StringVar(value=controller.session_id or "None")
     before_rom = tk.BooleanVar(value=False)
+    dialogue_visual = tk.BooleanVar(value=False)
     semantic_name = tk.StringVar()
     note_text = tk.StringVar()
     log_path_text = tk.StringVar(value=str(log.path))
@@ -504,8 +512,14 @@ def launch_capture_gui(
         "Capture continues until Stop; a hit does not establish selector behavior or caller origin."
     ), wraplength=830).grid(row=3, column=0, columnspan=4, sticky="w", padx=6)
 
+    ttk.Checkbutton(
+        connection_frame,
+        text="Save short dialogue VI frame windows (Cutscene Studio only)",
+        variable=dialogue_visual,
+    ).grid(row=4, column=0, columnspan=4, sticky="w", padx=6, pady=4)
+
     button_frame = ttk.Frame(connection_frame)
-    button_frame.grid(row=4, column=0, columnspan=4, sticky="w", padx=6, pady=6)
+    button_frame.grid(row=5, column=0, columnspan=4, sticky="w", padx=6, pady=6)
 
     note_frame = ttk.LabelFrame(outer, text="Context note (while capture is running)")
     note_frame.pack(fill="x", pady=(10, 0))
@@ -592,6 +606,8 @@ def launch_capture_gui(
             )
         else:
             session_text.set(controller.session_id or "None")
+            reported = value.get("status", value) if isinstance(value, Mapping) else value
+            visual = reported.get("visualEvidence") if isinstance(reported, Mapping) else None
             if (
                 isinstance(value, Mapping)
                 and value.get("action") == "launched-authenticated-project64"
@@ -604,12 +620,22 @@ def launch_capture_gui(
                 and value.get("action") == "already-running-from-this-gui"
             ):
                 status_text.set("Project64 launched by this GUI is already running.")
-            elif isinstance(value, Mapping) and "ingestion" in value:
+            elif isinstance(visual, Mapping) and visual.get("result") == "FAIL":
+                status_text.set(
+                    "Core capture preserved; dialogue visual verification failed. "
+                    "See the session log and visual-verify result."
+                )
+            elif isinstance(value, Mapping) and "status" in value and "ingestion" in value:
                 semantic_name.set("")
                 notes_box.delete("1.0", "end")
                 name_entry.focus_set()
                 status_text.set(
                     "Capture integrated successfully. Name and notes cleared for the next capture."
+                )
+            elif isinstance(visual, Mapping) and visual.get("result") == "PASS":
+                status_text.set(
+                    f"Capture closed; {visual.get('imageCount')} dialogue VI images verified. "
+                    "See the session status for details."
                 )
             elif isinstance(value, Mapping) and value.get("action") == "note-added":
                 note_text.set("")
@@ -651,9 +677,13 @@ def launch_capture_gui(
     def start_focused_capture() -> None:
         arm_before_rom = bool(before_rom.get())
         selected_profile = controller.selected_focused_profile
+        save_dialogue_frames = bool(dialogue_visual.get())
         run_async(
             "Starting focused capture",
-            lambda: controller.start(before_rom=arm_before_rom, focused_profile_id=selected_profile),
+            lambda: controller.start(
+                before_rom=arm_before_rom, focused_profile_id=selected_profile,
+                dialogue_visual=save_dialogue_frames,
+            ),
         )
 
     focused_start_button = ttk.Button(

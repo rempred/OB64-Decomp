@@ -111,7 +111,7 @@ class CaptureGuiControllerTests(unittest.TestCase):
             self.assertEqual(started["sessionId"], "FOCUSED-1")
             self.assertEqual(
                 create_mock.call_args.kwargs["focused_profile_id"],
-                "cutscene-studio-v1",
+                "cutscene-studio-v3",
             )
             self.assertFalse(create_mock.call_args.kwargs["auto_ingest"])
 

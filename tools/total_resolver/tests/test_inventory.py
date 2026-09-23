@@ -25,7 +25,7 @@ class InventoryTests(unittest.TestCase):
             inventory["project64"]["bridgeReference"]["role"], "historical-reference"
         )
         self.assertEqual(inventory["legacyResolver"]["role"], "historical-reference")
-        self.assertEqual(inventory["project64"]["activeBridge"]["protocolVersion"], "0.17.0")
+        self.assertEqual(inventory["project64"]["activeBridge"]["protocolVersion"], "0.18.0")
         self.assertEqual(inventory["project64"]["activeBridge"]["frontierFormatVersion"], 6)
         self.assertEqual(inventory["project64"]["activeBridge"]["queueModel"], "unified")
         native_sources = set(
@@ -43,7 +43,7 @@ class InventoryTests(unittest.TestCase):
         self.assertEqual(native["bridgePort"], 64656)
         self.assertEqual(
             native["bridgeScriptPath"],
-            "Bin/Win32/Release_totalresolver_64656/Scripts/000_ob64_pj64_bridge.js",
+            "Bin/Win32/Release_totalresolver_visual_64656/Scripts/000_ob64_pj64_bridge.js",
         )
         self.assertFalse(inventory["decompStaticSource"]["dirtyAtFreeze"])
 

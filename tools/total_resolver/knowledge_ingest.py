@@ -8,6 +8,7 @@ import sqlite3
 from typing import Any, Mapping
 
 from .capture_db import load_event_payload
+from .bridge_events import FOCUSED_EVENT_WIRE_VERSION
 from .derive_session import derive_session
 from .inventory import repository_root
 from .knowledge import (
@@ -59,6 +60,29 @@ def _integer(value: Any, field: str) -> int:
         except ValueError as exc:
             raise ValueError(f"{field} is not an integer") from exc
     raise ValueError(f"{field} is not an integer")
+
+
+def _focused_profile_version_from_wire(
+    event: Mapping[str, Any], configured_profile: Mapping[str, Any] | None,
+) -> int:
+    """Resolve the frozen profile definition behind a version-1 bridge event.
+
+    The bridge emits a fixed wire version, not the profile definition version.
+    Preserve that wire claim in the raw capture and bind the derived witness to
+    the exact profile ID/version frozen in its session configuration.
+    """
+
+    if _integer(event.get("focusedProfileVersion"), "focused event wire version") != FOCUSED_EVENT_WIRE_VERSION:
+        raise ValueError("focused event has an unsupported wire version")
+    if (
+        not isinstance(configured_profile, Mapping)
+        or event.get("focusedProfileId") != configured_profile.get("profileId")
+    ):
+        raise ValueError("focused event disagrees with its frozen profile ID")
+    version = configured_profile.get("profileVersion")
+    if isinstance(version, bool) or not isinstance(version, int) or version < 1:
+        raise ValueError("focused profile definition version is invalid")
+    return version
 
 
 def _optional_rows(product: SessionProduct, name: str) -> tuple[Mapping[str, Any], ...]:
@@ -520,7 +544,7 @@ def build_session_delta(
                     _integer(value.get("bridgeSequence"), "focused bridge sequence"),
                     value.get("frame"),
                     str(value.get("focusedProfileId")),
-                    _integer(value.get("focusedProfileVersion"), "focused profile version"),
+                    _focused_profile_version_from_wire(value, focused_profile),
                     str(value.get("focusedTargetId")),
                     str(value.get("focusedRole")),
                     str(value.get("focusedInvocationId")),

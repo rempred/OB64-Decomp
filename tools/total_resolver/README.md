@@ -1,6 +1,6 @@
 # Total Resolver R3
 
-Status: **Schema 5, factorized DMA knowledge, and protocol 0.17 are complete.**
+Status: **Schema 5, factorized DMA knowledge, and protocol 0.18 are implemented.**
 
 Total Resolver is a research tool for the exact-ROM decompilation project.
 It stores facts from accepted play sessions in one persistent knowledge database.
@@ -67,7 +67,7 @@ Never use computer control to start Project64.
 
 ## Bridge contract
 
-The repository client requires bridge protocol `0.17.0` and frontier format 6.
+The repository client requires bridge protocol `0.18.0` and frontier format 6.
 The client stops if a version or a capability does not agree.
 
 The bridge supplies these functions:
@@ -151,7 +151,7 @@ The authenticated local deployment uses port `64656`.
 The configured executable is:
 
 ```text
-C:\Users\Joe\Projects\project64\Bin\Win32\Release_totalresolver_64656\Project64-TR-CallAware.exe
+C:\Users\Joe\Projects\project64\Bin\Win32\Release_totalresolver_visual_64656\Project64-TR-CallAware.exe
 ```
 
 The launch button does not load a ROM.
@@ -185,7 +185,7 @@ It does not write to game memory.
 Focused Capture adds state evidence to the normal coverage stream.
 It uses the same staging database and the same knowledge database.
 
-The **Cutscene Studio** preset (`cutscene-studio-v1`) watches exact retained placements for these owners:
+The **Cutscene Studio** preset (`cutscene-studio-v3`) watches exact retained placements for these owners:
 
 - The Stage builder
 - The environment loaders
@@ -193,10 +193,11 @@ The **Cutscene Studio** preset (`cutscene-studio-v1`) watches exact retained pla
 - The HUFF functions
 - The actor pose functions
 - The sprite matrix builder
+- The dialogue draw and release callbacks
 
 A native opcode gate rejects unrelated PCs before JavaScript starts.
 Project64 checks the exact ROM entry signature before it saves state.
-Project64 saves each call from an owner with a low call rate.
+Project64 saves each call from the low-rate owners and both dialogue callbacks.
 For pose and matrix owners, Project64 saves a maximum of one call in each frame.
 
 Press **Add Note** when an important visual event occurs.
@@ -211,6 +212,45 @@ Project64 saves a return snapshot immediately before `jr ra` executes its delay 
 Floating-point register values give numeric context.
 They do not preserve exact NaN payload bits.
 Each focused row starts with the `live-unreviewed` state.
+
+### Dialogue presentation timing
+
+For a future Joe-approved capture, select **Cutscene Studio** to record dialogue timing
+alongside the existing cutscene owners, or **Dialogue presentation timing** to record
+only the two dialogue callbacks. Both presets watch the exact dialogue draw callback
+(`0x000E65DC`) and release callback (`0x000E6620`) at all retained placements and
+every invocation. Each callback's entry snapshot carries
+its slot index in `a0`; the draw callback changes `a0` before return. The first
+observed draw callback in a slot lifetime marks a display-submission attempt, and
+the release callback entry marks the start of resource-release handling. Use their
+bridge order and contextual frames to bracket presentation. A capture that starts
+mid-lifetime cannot establish the first draw, and a draw call does not prove that
+pixels reached the screen. The release watch fires before its final delay-slot
+store and before the caller finishes slot cleanup. Dialogue archive DMA
+is a separate load event and must not be labeled as textbox display time. The earlier
+`cutscene-studio-v1` and `cutscene-studio-v2` remain available for historical compatibility.
+Existing v1 sessions cannot gain dialogue callback timestamps retroactively, and no
+existing session can gain saved VI images retroactively.
+
+### Optional dialogue frame images
+
+With **Cutscene Studio** selected, check **Save short dialogue VI frame windows** before
+starting a capture. The `cutscene-studio-v3` preset retains all v2 cutscene watches and
+state snapshots whether or not this box is checked. The CLI equivalent is
+`session start --focused-profile cutscene-studio-v3 --dialogue-visual`.
+
+When enabled, the bridge saves PNGs for two preceding and six following VI frames
+around the first observed draw callback for each dialogue slot and its release
+callback. It records at most 40 triggers and 360 unique images under the session's
+ignored `dialogue-visual/` directory. `manifest.json` binds each image's VI frame
+count, bridge sequence, and PNG SHA-256 to ordered callback and image-save events. Run
+`session visual-verify SESSION_ID` after stop to check the images, consecutive VI
+windows, and callback links. Visual failures leave the ordinary capture intact.
+
+These PNGs show VI-origin RDRAM after graphics update. They can establish the first
+saved emulated framebuffer that contains a textbox; they do not establish the host
+renderer or monitor presentation instant. The 240/480-pixel height is inferred
+from VI width, so inspect the actual images before claiming visible content.
 
 ### Combat preset
 

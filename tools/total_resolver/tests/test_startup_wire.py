@@ -8,6 +8,7 @@ import tempfile
 import unittest
 
 from tools.total_resolver.pj64_client import Pj64Client
+from tools.total_resolver.inventory import resolve_active_project64_binary
 from tools.total_resolver.tests.test_pj64_client import ScriptedTransport
 
 
@@ -39,6 +40,16 @@ class StartupWireTests(unittest.TestCase):
             wire.write_text(json.dumps(cases), encoding="utf-8")
             result = subprocess.run(
                 [node, str(tests / "bridge_110_harness.js"), str(bridge), str(wire)],
+                check=True, capture_output=True, text=True,
+            )
+            self.assertEqual(json.loads(result.stdout)["serializedStackCases"], len(cases))
+            try:
+                deployed = resolve_active_project64_binary().bridge_path
+            except FileNotFoundError:
+                return  # Project64 is an optional external runtime.
+            self.assertIsNotNone(deployed)
+            result = subprocess.run(
+                [node, str(tests / "bridge_110_harness.js"), str(deployed), str(wire)],
                 check=True, capture_output=True, text=True,
             )
             self.assertEqual(json.loads(result.stdout)["serializedStackCases"], len(cases))

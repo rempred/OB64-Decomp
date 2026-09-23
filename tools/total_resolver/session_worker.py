@@ -20,6 +20,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--before-rom", action="store_true")
     parser.add_argument("--defer-ingest", action="store_true")
     parser.add_argument("--focused-profile")
+    parser.add_argument("--dialogue-visual", action="store_true")
     return parser
 
 
@@ -34,6 +35,7 @@ def main(argv: Sequence[str] | None = None) -> int:
         before_rom=args.before_rom,
         auto_ingest=not args.defer_ingest,
         focused_profile_id=args.focused_profile,
+        dialogue_visual=args.dialogue_visual,
     )
 
 

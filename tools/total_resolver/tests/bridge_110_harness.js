@@ -1,6 +1,7 @@
 'use strict';
 
 const fsNode = require('fs');
+const crypto = require('crypto');
 const vm = require('vm');
 
 const bridgePath = process.argv[2];
@@ -13,6 +14,8 @@ let nextCallbackId = 1;
 let memoryBlockReads = 0;
 let stackMemoryReads = 0;
 let frontierFixture = null;
+let visualRegistersEnabled = false;
+const visualFiles = new Map();
 let nativePrevious = null;
 let nativePreviousPrevious = null;
 const callbacks = {
@@ -24,6 +27,7 @@ const callbacks = {
     write: new Map(),
     dma: new Map(),
     snapshot: new Map(),
+    gfx: new Map(),
 };
 const native = {
     instructions: new Set(), edges: new Set(), calls: new Set(), dma: new Map(),
@@ -115,6 +119,12 @@ const context = {
     script: { keepalive() {}, timeout() {} },
     console: { log() {} },
     Server: FakeServer,
+    fs: { writefile(path, bytes) { visualFiles.set(path, bytes); } },
+    N64Image: class {
+        constructor() {}
+        toPNG() { return Buffer.from('bounded-visual-fixture'); }
+        static format() { return 0; }
+    },
     debug: { paused: false, breakhere() {}, resume() {} },
     pj64: {
         frameCount: 41,
@@ -132,6 +142,9 @@ const context = {
         ramSize: ALLOCATED_RDRAM_SIZE,
         u8: zeroProxy, u16: zeroProxy, u32: new Proxy({}, { get: (_target, key) => {
             const address = Number(key);
+            if (visualRegistersEnabled && address === 0xA4400004) return 0x1000;
+            if (visualRegistersEnabled && address === 0xA4400000) return 2;
+            if (visualRegistersEnabled && address === 0xA4400008) return 64;
             if (address >= 0x80002000 && address < 0x80002200) stackMemoryReads += 1;
             return 0;
         } }),
@@ -159,6 +172,7 @@ const context = {
         onwrite(_target, callback) { return register(callbacks.write, callback); },
         onpidmacompletefrontier(callback) { return register(callbacks.dma, callback); },
         onrdramsnapshot(callback) { return register(callbacks.snapshot, callback); },
+        ongfxupdate(callback) { return register(callbacks.gfx, callback); },
         loadcoveragefrontier(_path, identity, rom) {
             if (!frontierFixture || frontierFixture.identity !== identity || rom !== 'A'.repeat(64)) {
                 throw new Error('native fixture identity mismatch');
@@ -434,7 +448,7 @@ function canonicalFactCount(events) {
 
 const ping = command('ping');
 const initial = command('status');
-if (ping.version !== '0.17.0' || ping.frontierFormatVersion !== 6 ||
+if (ping.version !== '0.18.0' || ping.frontierFormatVersion !== 6 ||
     ping.rdramSize !== ALLOCATED_RDRAM_SIZE || ping.captureRdramSize !== RDRAM_SIZE ||
     initial.capture.enabled ||
     !ping.capabilities.includes('native-persistent-novelty-frontier-v6') ||
@@ -652,6 +666,60 @@ if (wrongRomState.state !== 'failed' || command('status').capture.enabled ||
 }
 command('coldboot cancel');
 
+// The opt-in visual lane keeps the focused cutscene watches and binds each saved
+// PNG to a particular VI callback through a later ordered digest event.
+context.pj64.romInfo = {
+    name: 'fixture', goodName: 'fixture', fileName: 'fixture.z64',
+    filePath: 'C:/fixture.z64', crc1: 0x12345678, crc2: 0x9ABCDEF0,
+};
+command('drain 256');
+const drawVisualWatch = command(
+    'focusedwatch 0x80005000 0x80005040 0x00000000 00000000 ' +
+    'cutscene-studio-v3 dialogue-draw-callback 1 0x00000000 first-per-frame ' +
+    'a0:16:dialogue-slot 8').watch;
+const releaseVisualWatch = command(
+    'focusedwatch 0x80005100 0x80005140 0x00000000 00000000 ' +
+    'cutscene-studio-v3 dialogue-release-callback 2 0x00000000 first-per-frame ' +
+    'a0:16:dialogue-slot 8').watch;
+visualRegistersEnabled = true;
+const armedVisual = command('visualconfigure 2 6 40 C:/visual').visual;
+if (!armedVisual.enabled || callbacks.gfx.size !== 1) {
+    throw new Error('visual hook was not armed');
+}
+for (let frame = 101; frame <= 109; frame += 1) {
+    context.pj64.frameCount = frame;
+    for (const [id, callback] of callbacks.gfx) callback({ callbackId: id, frameCount: frame });
+    if (frame === 103) emitOpcode(0x80005000, 0);
+}
+const stoppedVisual = command('visualstop').visual;
+if (stoppedVisual.enabled || callbacks.gfx.size !== 0) {
+    throw new Error('visual hook was not removed');
+}
+const visualManifest = JSON.parse(visualFiles.get('C:/visual/manifest.json'));
+const visualEvents = command('drain 256').events;
+const visualImages = visualEvents.filter((event) => event.kind === 'visual-image-saved');
+const visualFrames = visualEvents.filter((event) => event.kind === 'visual-frame');
+const visualTriggers = visualEvents.filter((event) => event.kind === 'focused-exec' &&
+    event.focusedTargetId === 'dialogue-draw-callback' && event.focusedRole === 'entry');
+if (visualManifest.failures.length || visualManifest.frames.length !== 9 ||
+        visualManifest.triggers.length !== 1 || visualFrames.length !== 9 ||
+        visualImages.length !== 9 || visualTriggers.length !== 1) {
+    throw new Error('visual window/event count differs: ' + JSON.stringify(visualManifest));
+}
+for (const saved of visualImages) {
+    const bytes = visualFiles.get('C:/visual/' + saved.file);
+    const digest = crypto.createHash('sha256').update(bytes).digest('hex').toUpperCase();
+    const record = visualManifest.frames.find((item) => item.ordinal === saved.visualOrdinal);
+    if (saved.pngSha256 !== digest || record.pngSha256 !== digest ||
+            record.imageEventSequence !== saved.bridgeSequence ||
+            record.bridgeSequence !== saved.visualFrameSequence) {
+        throw new Error('saved visual PNG digest/order differs');
+    }
+}
+command('unwatch ' + drawVisualWatch.id);
+command('unwatch ' + releaseVisualWatch.id);
+visualRegistersEnabled = false;
+
 const watch = command('watch exec 0x80001000 4 fixture').watch;
 for (let index = 0; index < 65540; index += 1) {
     callbacks.exec.get(watch.id)({ callbackId: watch.id, pc: 0x80001000 });
@@ -694,5 +762,6 @@ process.stdout.write(JSON.stringify({
         (total, event) => total + event.callHitCount, 0),
     markerContextWindows: markerContextEvents.length,
     focusedContextEvents: focusedEvents.length,
+    dialogueVisualImages: visualImages.length,
     serializedStackCases: wireCases.length,
 }));

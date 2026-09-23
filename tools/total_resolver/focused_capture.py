@@ -18,10 +18,19 @@ from .addressing import RDRAM_SIZE
 from .identities import read_normalized_rom
 
 
-CUTSCENE_STUDIO_PROFILE_ID = "cutscene-studio-v1"
+CUTSCENE_STUDIO_V1_PROFILE_ID = "cutscene-studio-v1"
+CUTSCENE_STUDIO_V2_PROFILE_ID = "cutscene-studio-v2"
+CUTSCENE_STUDIO_PROFILE_ID = "cutscene-studio-v3"
 COMBAT_SELECTOR_PROFILE_ID = "combat-selector-v1"
+DIALOGUE_PRESENTATION_PROFILE_ID = "dialogue-presentation-v1"
 COMBAT_SELECTOR_SIGNATURE = bytes.fromhex(
     "3C03801D8C6306880004104000441021004510210062182103E0000890620000"
+)
+DIALOGUE_DRAW_SIGNATURE = bytes.fromhex(
+    "3C04800E84847A363C05800E84A57A383C06800E84C67A3A3C07800E84E77A3C"
+)
+DIALOGUE_RELEASE_SIGNATURE = bytes.fromhex(
+    "00041080004410210002108000441021000210C03C01800F0022082190228359"
 )
 FOCUSED_PROFILE_VERSION = 1
 SIGNATURE_BYTE_COUNT = 32
@@ -219,9 +228,30 @@ _CUTSCENE_TARGETS = (
     ),
 )
 
+# Registration at z64 0xE59A4..0xE59C4 stores these draw/release callbacks in
+# the shared slot record (+0x18/+0x1C); watch entry a0 for the slot index.
+_DIALOGUE_PRESENTATION_TARGETS = (
+    FocusedTarget(
+        "dialogue-draw-callback", "Dialogue draw callback", 0x000E65DC,
+        "all", (), stack_words=0, expected_signature=DIALOGUE_DRAW_SIGNATURE,
+        expected_size=0x44,
+    ),
+    FocusedTarget(
+        "dialogue-release-callback", "Dialogue release callback", 0x000E6620,
+        "all", (), stack_words=0, expected_signature=DIALOGUE_RELEASE_SIGNATURE,
+        expected_size=0x30,
+    ),
+)
+
 
 def supported_focused_profiles() -> tuple[str, ...]:
-    return (CUTSCENE_STUDIO_PROFILE_ID, COMBAT_SELECTOR_PROFILE_ID)
+    return (
+        CUTSCENE_STUDIO_V1_PROFILE_ID,
+        CUTSCENE_STUDIO_V2_PROFILE_ID,
+        CUTSCENE_STUDIO_PROFILE_ID,
+        COMBAT_SELECTOR_PROFILE_ID,
+        DIALOGUE_PRESENTATION_PROFILE_ID,
+    )
 
 
 def _meta(connection: sqlite3.Connection) -> dict[str, str]:
@@ -255,11 +285,27 @@ def resolve_focused_profile(
     rom = read_normalized_rom(rom_path)
     resolved: list[ResolvedFocusedWatch] = []
     combat = profile_id == COMBAT_SELECTOR_PROFILE_ID
-    targets = (FocusedTarget(
-        "selector-byte-accessor", "Uninterpreted selector invocation", 0x00201778,
-        "all", (), stack_words=0, expected_signature=COMBAT_SELECTOR_SIGNATURE,
-        expected_size=32,
-    ),) if combat else _CUTSCENE_TARGETS
+    dialogue = profile_id == DIALOGUE_PRESENTATION_PROFILE_ID
+    cutscene_with_dialogue = profile_id in {
+        CUTSCENE_STUDIO_V2_PROFILE_ID, CUTSCENE_STUDIO_PROFILE_ID,
+    }
+    profile_version = (
+        3 if profile_id == CUTSCENE_STUDIO_PROFILE_ID else
+        2 if profile_id == CUTSCENE_STUDIO_V2_PROFILE_ID else
+        FOCUSED_PROFILE_VERSION
+    )
+    if combat:
+        targets = (FocusedTarget(
+            "selector-byte-accessor", "Uninterpreted selector invocation", 0x00201778,
+            "all", (), stack_words=0, expected_signature=COMBAT_SELECTOR_SIGNATURE,
+            expected_size=32,
+        ),)
+    elif dialogue:
+        targets = _DIALOGUE_PRESENTATION_TARGETS
+    elif cutscene_with_dialogue:
+        targets = _CUTSCENE_TARGETS + _DIALOGUE_PRESENTATION_TARGETS
+    else:
+        targets = _CUTSCENE_TARGETS
     for target in targets:
         function = connection.execute(
             "SELECT * FROM static_function WHERE z64_start=?",
@@ -311,7 +357,7 @@ def resolve_focused_profile(
                 ResolvedFocusedWatch(
                     watch_id=f"focused-{target.target_id}-{placement_ordinal}",
                     profile_id=profile_id,
-                    profile_version=FOCUSED_PROFILE_VERSION,
+                    profile_version=profile_version,
                     target_id=target.target_id,
                     label=target.label,
                     function_id=int(function["function_id"]),
@@ -332,9 +378,14 @@ def resolve_focused_profile(
         raise ValueError("focused capture profile resolved no exact live targets")
     return ResolvedFocusedProfile(
         profile_id,
-        FOCUSED_PROFILE_VERSION,
-        ("Bounded selector invocation and instruction context; consumer provenance remains unresolved"
-         if combat else
+        profile_version,
+        (
+            "Bounded selector invocation and instruction context; consumer provenance remains unresolved"
+            if combat else
+            "Dialogue draw-submission and release callbacks; archive load, display, and pixels remain distinct"
+            if dialogue else
+            "Cutscene state plus dialogue draw-submission and release callbacks; archive load and display remain distinct"
+            if cutscene_with_dialogue else
             "Cutscene state capture around exact environment, Director, HUFF, pose, and "
             "matrix owners; routine changes are detected automatically"
         ),

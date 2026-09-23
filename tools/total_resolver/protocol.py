@@ -8,15 +8,15 @@ from typing import Any, Mapping
 from .addressing import RDRAM_SIZE
 
 
-BRIDGE_PROTOCOL_VERSION = "0.17.0"
+BRIDGE_PROTOCOL_VERSION = "0.18.0"
 ACTIVITY_PROTOCOL_VERSIONS = frozenset(
-    {"0.14.0", "0.15.0", "0.16.0", BRIDGE_PROTOCOL_VERSION}
+    {"0.14.0", "0.15.0", "0.16.0", "0.17.0", BRIDGE_PROTOCOL_VERSION}
 )
 ATOMIC_CALL_PROTOCOL_VERSIONS = frozenset(
-    {"0.14.0", "0.15.0", "0.16.0", BRIDGE_PROTOCOL_VERSION}
+    {"0.14.0", "0.15.0", "0.16.0", "0.17.0", BRIDGE_PROTOCOL_VERSION}
 )
 FOCUSED_CAPTURE_PROTOCOL_VERSIONS = frozenset(
-    {"0.15.0", "0.16.0", BRIDGE_PROTOCOL_VERSION}
+    {"0.15.0", "0.16.0", "0.17.0", BRIDGE_PROTOCOL_VERSION}
 )
 FRONTIER_FORMAT_VERSION = 6
 
@@ -69,6 +69,7 @@ BRIDGE_CAPABILITIES = (
     "state-save-load",
     "controller-input-explicit",
     "framebuffer-capture",
+    "bounded-dialogue-visual-capture",
     "frame-hash",
     "memory-dump",
 )
