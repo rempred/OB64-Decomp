@@ -2,6 +2,16 @@
 
 This file is the active queue only. Changing counts belong in `node tools/status.js`, not here.
 
+## Current bounded assignment: boot decompression trial
+
+Joe's September 23 instruction temporarily selects the boot decompression family
+ahead of the standing program below. Its verified wave is complete; report the
+trial before starting another family. Licensed LHa source reuse is explicitly
+authorized for this library; custom game routines remain ROM-derived.
+The [trial report](audit/2026-09-23-boot-decompression-trial.md) records acceptance,
+unfinished owners and evidence-based next experiments. Unfinished code is not an
+accepted assembly exception.
+
 ## Sequential main program
 
 Use [the sequential matching program](Plans/sequential-main-program.md) for current authority and execution order.
@@ -27,23 +37,14 @@ through the sequential program. Preserve the pinned production compiler and all 
 Coordinate editor changes with the native rebuild. Use the sequential program's concrete assignments for family continuation.
 Optional tooling proposals do not grant additional implementation authority.
 
-## Structural follow-up: audit remaining manual-load slabs
+## Manual-load mapping prerequisite completed
 
-The accepted `scenario-loader-00195410` record proves the generic placement mechanism for a ROM
-range that retail manually DMA-loads to a different runtime VMA without a fixed overlay descriptor.
-Audit other `rom-only` executable owners against direct loader/DMA evidence before treating their
-ROM addresses as runtime addresses.
-
-- Add `nonDescriptorLoadSlabs` records only when exact ROM and runtime endpoints are proven and the
-  ranges have equal length.
-- Do not reuse the scenario-loader `+0x8007FB70` delta outside
-  `0x00195410..0x001977E0`, and do not invent fixed overlay descriptors for manual loads.
-- Preserve existing owner boundaries, ROM LMAs, segmentation, source ownership, and the 19 fixed
-  descriptors unless separate direct evidence proves one wrong.
-- Run the heavyweight structural audit and obtain independent review for every accepted mapping.
-
-The accepted mapping and remaining uncertainty are documented in
-`docs/audit/2026-08-07-func-0019554c-slab-placement-blocker.md`.
+The [September 23 mapping audit](audit/2026-09-23-manual-load-mapping-completion.md)
+completed the remaining executable placement records from direct loader evidence.
+Existing owner boundaries and fixed overlay descriptors remain preserved. Future
+mapping changes still require exact endpoints, independent review and the
+heavyweight structural audit; a known slab delta is not transferable to another
+ROM range without evidence.
 
 ## Matching priorities: optimize for LordlyCaliber leverage
 

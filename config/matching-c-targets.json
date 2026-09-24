@@ -787,6 +787,29 @@
     {
       "symbol": "func_001EA40C",
       "source": "src/lib/func_001EA40C.c"
-    }
+    },
+    {"symbol":"func_0000C990","source":"third_party/lha/ob64/copyfile.c"},
+    {"symbol":"func_0000CB4C","source":"third_party/lha/ob64/read_pt_len.c"},
+    {"symbol":"func_0000CEB8","source":"third_party/lha/ob64/read_c_len.c"},
+    {"symbol":"func_0000D248","source":"third_party/lha/ob64/decode_c_st1.c"},
+    {"symbol":"func_0000D600","source":"third_party/lha/ob64/decode_p_st1.c"},
+    {"symbol":"boot_decode_huffman_tree_reconstruct","source":"third_party/lha/ob64/start_c_dyn.c"},
+    {"symbol":"boot_decode_huffman_tree_init","source":"third_party/lha/ob64/decode_start_dyn.c"},
+    {"symbol":"boot_decode_huffman_tree_update","source":"third_party/lha/ob64/reconst.c"},
+    {"symbol":"boot_decode_huffman_tree_update_entry","source":"third_party/lha/ob64/make_new_node.c"},
+    {"symbol":"boot_decode_huffman_symbol","source":"third_party/lha/ob64/decode_dyn.c"},
+    {"symbol":"boot_decode_build_huffman_table","source":"third_party/lha/ob64/make_table.c"},
+    {"symbol":"boot_decode_huffman_init","source":"third_party/lha/ob64/decode_start_st0.c"},
+    {"symbol":"boot_decode_huffman_build_litlen_table","source":"third_party/lha/ob64/read_tree_c.c"},
+    {"symbol":"boot_decode_huffman_build_dist_table","source":"third_party/lha/ob64/decode_start_fix.c"},
+    {"symbol":"boot_decode_huffman_codelengths","source":"third_party/lha/ob64/decode_c_st0.c"},
+    {"symbol":"boot_decode_canonical_huffman_symbol","source":"third_party/lha/ob64/decode_p_st0.c"},
+    {"symbol":"func_0000F5A0","source":"third_party/lha/ob64/decode_lzs.c"},
+    {"symbol":"func_0000F618","source":"third_party/lha/ob64/decode_lz5.c"},
+    {"symbol":"func_0000F734","source":"third_party/lha/ob64/decode_start_lz5.c"},
+    {"symbol":"func_0000C310","source":"third_party/lha/ob64/decode.c"},
+    {"symbol":"func_0000C778","source":"third_party/lha/ob64/crcio.c"},
+    {"symbol":"boot_bitstream_descriptor_decode","source":"src/boot/boot_bitstream_descriptor_decode.c"},
+    {"symbol":"boot_bitstream_cursor_helpers","source":"src/boot/boot_bitstream_cursor_helpers.c"}
   ]
 }

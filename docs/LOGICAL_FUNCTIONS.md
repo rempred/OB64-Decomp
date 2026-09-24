@@ -54,7 +54,13 @@ compiler contract that deliberately includes next-function setup. Its physical
 fragments and compiler census must agree. This preserves an existing producer;
 it does not claim that its text is one standalone body.
 
-Multi-owner and compilation-group admission retain their restrictions.
+A reviewed multi-owner producer may contain a complete compiler-function partition independent
+of its physical owner cuts. Its first function is global and all secondary functions remain local.
+Projection preserves compiler sizes, bytes, relocations and the original section-symbol anchor;
+physical continuation labels are separately checked zero-size symbols, not compiler functions.
+Raw, projected and linked complete censuses reject omissions, invented functions and marker drift.
+Owner alignment and same-owner HI16/LO16 pairing restrictions remain in force.
+Compilation-group admission retains its separate one-function-per-owner restriction.
 Group members cannot be compiled individually through a logical alias.
 Activation still requires reviewed linkage, sole ownership, source policy,
 exact target bytes, and exact full-ROM verification.

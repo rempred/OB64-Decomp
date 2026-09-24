@@ -39,7 +39,7 @@ const {
   compilerOccurrencePaddingBytes,
   validateAuxiliaryOwnerGroups,
 } = require('./active_targets');
-const { splitRelocatableTextSection } = require('./elf_text_split');
+const { splitRelocatableTextSection, validateCompilerFunctionPartition } = require('./elf_text_split');
 const {
   POLICY_CONFIG_PATH,
   SOURCE_CLASSES,
@@ -330,10 +330,16 @@ function primaryCompilerFunctionBytes(target) {
     fail('primary compiler text-function contract is malformed: ' + (target && target.symbol));
   }
   if (targetTextOwners(target).length > 1) {
-    if (functions.length !== 1 || functions[0].bytes !== target.bytes) {
-      fail('multi-owner and multi-function target structures cannot be combined ambiguously: ' + target.symbol);
+    validateCompilerFunctionPartition(functions, target.bytes, target.symbol);
+    let end = 0;
+    for (const [index, owner] of targetTextOwners(target).entries()) {
+      if (owner.ownerIndex !== index || owner.logicalOffset !== end || !Number.isSafeInteger(owner.bytes)
+          || owner.bytes <= 0 || owner.bytes % 4 || owner.logicalEnd !== end + owner.bytes) {
+        fail('multi-owner compiler producer span drift: ' + target.symbol);
+      }
+      end += owner.bytes;
     }
-    return target.bytes;
+    if (end !== target.bytes) fail('multi-owner compiler producer coverage drift: ' + target.symbol);
   }
   return functions[0].bytes;
 }
@@ -1512,10 +1518,35 @@ function verifyCompilerTextFunctions(elf, target, section, linked = false) {
     fail('compiler text-function verification metadata is malformed: ' + target.symbol);
   }
   const base = linked ? target.vramStartNumber : 0;
+  const owners = targetTextOwners(target);
+  let sections = [section];
+  const boundarySymbols = new Set();
+  if (owners.length > 1) {
+    primaryCompilerFunctionBytes(target); // Authenticate both complete partitions.
+    sections = owners.map(owner => {
+      const matches = elf.sections.filter(candidate => candidate.name === textContract.inputSection(target, owner.sectionName));
+      if (matches.length !== 1 || matches[0].size !== owner.bytes
+          || (linked && matches[0].address !== owner.vramStartNumber)) fail('compiler text-function owner section drift: ' + target.symbol);
+      return matches[0];
+    });
+    if (section.index !== sections[0].index) fail('compiler text-function first owner drift: ' + target.symbol);
+    for (const [index, owner] of owners.entries()) {
+      if (index === 0) continue;
+      if (target.compilerTextFunctions.some(fn => fn.symbol === owner.symbol)) fail('compiler function collides with physical boundary symbol');
+      const matches = elf.symbols.filter(symbol => symbol.name === owner.symbol);
+      if (matches.length !== 1 || matches[0].sectionIndex !== sections[index].index
+          || matches[0].value !== (linked ? owner.vramStartNumber : 0) || matches[0].size !== 0
+          || matches[0].binding !== 1 || matches[0].symbolType !== 2 || matches[0].visibility !== 0) {
+        fail('compiler text-function physical boundary symbol drift: ' + target.symbol);
+      }
+      boundarySymbols.add(matches[0]);
+    }
+  }
   const allFunctions = elf.symbols.filter((symbol) => (
-    symbol.sectionIndex === section.index && symbol.symbolType === 2
+    sections.some(candidate => symbol.sectionIndex === candidate.index) && symbol.symbolType === 2
+      && !boundarySymbols.has(symbol)
   ));
-  const actual = target.compilerTextFunctionsExplicit
+  const actual = target.compilerTextFunctionsExplicit || owners.length > 1
     ? allFunctions
     : allFunctions.filter((symbol) => symbol.name === target.symbol);
   if (actual.length !== target.compilerTextFunctions.length) {
@@ -1525,8 +1556,14 @@ function verifyCompilerTextFunctions(elf, target, section, linked = false) {
   for (const expected of target.compilerTextFunctions) {
     const matches = actual.filter((symbol) => symbol.name === expected.symbol);
     const expectedBinding = expected.binding === 'GLOBAL' ? 1 : 0;
+    const ownerIndex = owners.length === 1 ? 0 : owners.findIndex(owner => (
+      expected.offsetNumber >= owner.logicalOffset && expected.offsetNumber < owner.logicalEnd
+    ));
+    const expectedValue = linked || owners.length === 1 ? base + expected.offsetNumber
+      : expected.offsetNumber - owners[ownerIndex].logicalOffset;
     if (matches.length !== 1
-        || matches[0].value !== base + expected.offsetNumber
+        || matches[0].sectionIndex !== sections[ownerIndex].index
+        || matches[0].value !== expectedValue
         || matches[0].size !== expected.bytes
         || matches[0].binding !== expectedBinding
         || matches[0].visibility !== 0) {
@@ -1734,8 +1771,9 @@ function compileTarget(phase8, target, output, compiler, assembler, objcopy, opt
         sectionName: owner.sectionName,
         bytes: owner.bytes,
         symbol: owner.symbol,
-        symbolSize: owner.ownerIndex === 0 ? target.bytes : 0,
+        symbolSize: owner.ownerIndex === 0 ? primaryCompilerFunctionBytes(target) : 0,
       })),
+      target.compilerTextFunctions.length > 1 ? target.compilerTextFunctions : null,
     );
     fs.writeFileSync(proofObjectFile, splitResult.buffer);
   }
@@ -1999,8 +2037,9 @@ function deriveSourceObjectProof(phase8, target, output, classification, linkedE
         sectionName: owner.sectionName,
         bytes: owner.bytes,
         symbol: owner.symbol,
-        symbolSize: owner.ownerIndex === 0 ? target.bytes : 0,
+        symbolSize: owner.ownerIndex === 0 ? primaryCompilerFunctionBytes(target) : 0,
       })),
+      target.compilerTextFunctions.length > 1 ? target.compilerTextFunctions : null,
     );
     if (!reproduced.buffer.equals(fs.readFileSync(resolveRelative(output, objectRelative, 'matching C object')))) {
       fail('source-to-object accepted-owner split is not independently reproducible: ' + target.symbol);
@@ -4338,6 +4377,7 @@ module.exports = {
   validateTargetClassifications,
   validateTargetClassification,
   verifyCompilerTextFunctions,
+  primaryCompilerFunctionBytes,
   verifyCompiler,
   verifySourceObjectProofs,
   verifyObjectManifest,

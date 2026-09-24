@@ -74,8 +74,12 @@ assembly byte-for-byte. Ordinarily the only generated change is replacement of t
 directive with the accepted target-section directive. A target-specific reviewed linkage contract
 may additionally assign the exact `.text` regions and one compiler-emitted read-only switch-table
 `.rodata` region per target to accepted output sections. A reviewed multi-function text contract
-may describe compiler-emitted local functions only when their exact offsets and sizes gaplessly
-partition the single accepted text owner; it cannot export a new symbol or split source ownership.
+may describe compiler-emitted local functions when their exact offsets and sizes gaplessly
+partition the accepted producer, including an explicitly reviewed contiguous multi-owner envelope.
+Physical owners remain unchanged. Compiler function sizes remain authentic across physical cuts;
+separately authenticated zero-size continuation symbols preserve existing physical owner labels.
+Only the first compiler function is global. This contract cannot export a new compiler entry or
+split source ownership.
 The auxiliary contract fixes the section's
 read-only `PROGBITS` shape, alignment, size, hashes, relocations, placement, and ownership. The
 assignment changes section directives only; it does not rewrite instructions, labels, table

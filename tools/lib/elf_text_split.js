@@ -89,7 +89,63 @@ function sectionBytes(buffer, section) {
     : Buffer.from(buffer.subarray(section.offset, section.offset + section.size));
 }
 
-function normalizeOwners(owners, sourceSectionBytes) {
+// Complete compiler functions and physical owners are separate partitions.
+// This opt-in contract never changes compiler bytes or function sizes.
+function validateCompilerFunctionPartition(functions, bytes, primarySymbol) {
+  if (!Array.isArray(functions) || functions.length === 0
+      || !Number.isSafeInteger(bytes) || bytes <= 0 || bytes % 4) fail('compiler function partition is malformed');
+  let cursor = 0;
+  const names = new Set();
+  for (const [index, fn] of functions.entries()) {
+    if (!fn || typeof fn.symbol !== 'string' || !SAFE_SYMBOL.test(fn.symbol) || names.has(fn.symbol)
+        || fn.offset !== `0x${cursor.toString(16).toUpperCase().padStart(8, '0')}`
+        || fn.offsetNumber !== cursor || !Number.isSafeInteger(fn.bytes) || fn.bytes <= 0 || fn.bytes % 4
+        || (index === 0 ? fn.symbol !== primarySymbol || fn.binding !== 'GLOBAL' || fn.entryEvidence !== 'owner'
+          : fn.binding !== 'LOCAL' || !['internal-call-only', 'fixed-address-call'].includes(fn.entryEvidence))) {
+      fail('compiler function partition drift');
+    }
+    names.add(fn.symbol);
+    cursor += fn.bytes;
+    if (!Number.isSafeInteger(cursor) || cursor > bytes) fail('compiler function partition exceeds owner span');
+  }
+  if (cursor !== bytes) fail('compiler function partition does not cover owner span');
+  return functions;
+}
+
+function verifySplitCompilerFunctions(input, parsed, source, owners, functions, projected) {
+  if (!functions) return;
+  const tables = parsed.sections.filter(section => section.type === SHT_SYMTAB);
+  if (tables.length !== 1) fail('compiler function symbol table census');
+  const table = { ...tables[0], data: sectionBytes(input, tables[0]) };
+  const strings = parsed.sections[table.link];
+  if (!strings) fail('compiler function string table is missing');
+  const symbols = symbolRecords(table, { ...strings, data: sectionBytes(input, strings) });
+  const sections = projected ? owners.map(owner => {
+    const matches = parsed.sections.filter(section => section.name === owner.sectionName);
+    if (matches.length !== 1) fail('compiler function owner section census');
+    return matches[0];
+  }) : [source];
+  const markers = new Set(owners.slice(1).map(owner => owner.symbol));
+  if (functions.some(fn => markers.has(fn.symbol))) fail('compiler function collides with physical boundary symbol');
+  if (!projected && symbols.some(symbol => markers.has(symbol.name))) fail('raw object already contains physical boundary symbol');
+  if (projected) verifyOwnerBoundarySymbols(input, parsed, owners);
+  const actual = symbols.filter(symbol => symbol.type === STT_FUNC
+    && sections.some(section => section.index === symbol.sectionIndex)
+    && !(projected && markers.has(symbol.name)));
+  if (actual.length !== functions.length) fail('complete compiler function census drift');
+  for (const fn of functions) {
+    const owner = ownerForOffset(owners, fn.offsetNumber);
+    const section = projected ? sections[owners.indexOf(owner)] : source;
+    const matches = symbols.filter(symbol => symbol.name === fn.symbol);
+    if (matches.length !== 1 || !actual.includes(matches[0])
+        || matches[0].sectionIndex !== section.index
+        || matches[0].value !== fn.offsetNumber - (projected ? owner.logicalOffset : 0)
+        || matches[0].size !== fn.bytes || matches[0].binding !== (fn.binding === 'GLOBAL' ? 1 : 0)
+        || matches[0].visibility !== 0) fail('compiler function projection drift');
+  }
+}
+
+function normalizeOwners(owners, sourceSectionBytes, compilerFunctions = null) {
   if (!Array.isArray(owners) || owners.length < 2) fail('owner list must contain at least two sections');
   const names = new Set();
   const symbols = new Set();
@@ -120,12 +176,19 @@ function normalizeOwners(owners, sourceSectionBytes) {
     return record;
   });
   if (logicalOffset !== sourceSectionBytes) fail('owner byte census does not equal the compiler text section');
+  if (compilerFunctions) {
+    if (compilerFunctions.length < 2 || !normalized.every(owner => owner.symbol)) fail('composed compiler census requires complete owner symbols');
+    validateCompilerFunctionPartition(compilerFunctions, sourceSectionBytes, normalized[0].symbol);
+    if (compilerFunctions.some(fn => normalized.slice(1).some(owner => owner.symbol === fn.symbol))) {
+      fail('compiler function collides with physical boundary symbol');
+    }
+  }
   const symbolizedOwners = normalized.filter((owner) => owner.symbol);
   if (symbolizedOwners.length !== 0 && symbolizedOwners.length !== normalized.length) {
     fail('owner boundary symbols must be specified for the complete owner census');
   }
   if (symbolizedOwners.length > 0
-      && (normalized[0].symbolSize !== sourceSectionBytes
+      && (normalized[0].symbolSize !== (compilerFunctions ? compilerFunctions[0].bytes : sourceSectionBytes)
         || normalized.slice(1).some((owner) => owner.symbolSize !== 0))) {
     fail('owner boundary symbol sizes do not preserve the logical function and continuation contract');
   }
@@ -144,15 +207,19 @@ function splitRelocations(bytes, owners) {
   if (bytes.length % REL_BYTES !== 0) fail('text relocation section size is malformed');
   const grouped = new Map(owners.map((owner) => [owner.sectionName, []]));
   const pendingHi16 = new Map();
-  let previousOffset = -1;
+  // GNU 2.6 may emit HI16, its delay-slot LO16, then an earlier R_MIPS_26.
+  // Relocation order is semantic: retain the native subsequence for each owner.
+  const places = new Set();
   for (let offset = 0; offset < bytes.length; offset += REL_BYTES) {
     const relocationOffset = bytes.readUInt32BE(offset);
     const info = bytes.readUInt32BE(offset + 4);
-    if (relocationOffset < previousOffset) fail('text relocations are not ordered');
-    previousOffset = relocationOffset;
+    if (relocationOffset % 4 !== 0 || places.has(relocationOffset)) fail('text relocation place is unaligned or duplicated');
+    places.add(relocationOffset);
     const owner = ownerForOffset(owners, relocationOffset);
+    if (relocationOffset + 4 > owner.logicalEnd) fail('text relocation exceeds its accepted owner');
     const symbolIndex = info >>> 8;
     const type = info & 0xff;
+    if (![2, 4, R_MIPS_HI16, R_MIPS_LO16].includes(type)) fail('unsupported text relocation type');
     if (type === R_MIPS_HI16) {
       if (!pendingHi16.has(symbolIndex)) pendingHi16.set(symbolIndex, []);
       pendingHi16.get(symbolIndex).push(owner.sectionName);
@@ -297,6 +364,7 @@ function symbolRecords(symbolTable, stringTable) {
       value: symbolTable.data.readUInt32BE(offset + 4),
       size: symbolTable.data.readUInt32BE(offset + 8),
       binding: symbolTable.data[offset + 12] >> 4,
+      visibility: symbolTable.data[offset + 13],
       type: symbolTable.data[offset + 12] & 0xf,
       sectionIndex: symbolTable.data.readUInt16BE(offset + 14),
     });
@@ -320,7 +388,7 @@ function preserveOwnerBoundarySymbols(sectionList, owners) {
     const matches = records.filter((record) => record.name === owner.symbol);
     if (ownerIndex === 0) {
       if (matches.length !== 1 || matches[0].value !== 0 || matches[0].size !== owner.symbolSize
-          || matches[0].binding !== STB_GLOBAL || matches[0].type !== STT_FUNC
+          || matches[0].binding !== STB_GLOBAL || matches[0].type !== STT_FUNC || matches[0].visibility !== 0
           || matches[0].sectionIndex !== ownerSection.index) {
         fail('logical function symbol does not match the first accepted owner');
       }
@@ -362,7 +430,7 @@ function verifyOwnerBoundarySymbols(input, parsed, owners) {
     const section = parsed.sections.find((candidate) => candidate.name === owner.sectionName);
     const matches = records.filter((record) => record.name === owner.symbol);
     if (!section || matches.length !== 1 || matches[0].value !== 0 || matches[0].size !== owner.symbolSize
-        || matches[0].binding !== STB_GLOBAL || matches[0].type !== STT_FUNC
+        || matches[0].binding !== STB_GLOBAL || matches[0].type !== STT_FUNC || matches[0].visibility !== 0
         || matches[0].sectionIndex !== section.index) {
       fail(`serialized owner boundary symbol drift: ${owner.symbol}`);
     }
@@ -432,7 +500,7 @@ function serialize(input, parsed, sectionList, shstrIndex) {
   return output;
 }
 
-function splitRelocatableTextSection(input, sourceSectionName, requestedOwners) {
+function splitRelocatableTextSection(input, sourceSectionName, requestedOwners, compilerFunctions = null) {
   if (typeof sourceSectionName !== 'string' || !OUTPUT_SECTION.test(sourceSectionName)) {
     fail('source section name is malformed');
   }
@@ -444,7 +512,8 @@ function splitRelocatableTextSection(input, sourceSectionName, requestedOwners) 
       || source.size <= 0 || source.size % 4 !== 0) {
     fail('source text section shape is malformed');
   }
-  const owners = normalizeOwners(requestedOwners, source.size);
+  const owners = normalizeOwners(requestedOwners, source.size, compilerFunctions);
+  verifySplitCompilerFunctions(input, parsed, source, owners, compilerFunctions, false);
   if (owners[0].sectionName !== sourceSectionName) fail('first owner must retain the assembler source section name');
   if (owners.slice(1).some((owner) => parsed.sections.some((section) => section.name === owner.sectionName))) {
     fail('a continuation output section already exists in the assembler object');
@@ -482,6 +551,7 @@ function splitRelocatableTextSection(input, sourceSectionName, requestedOwners) 
     fail('serialized owner sections do not reproduce the compiler text bytes');
   }
   verifyOwnerBoundarySymbols(buffer, reparsed, owners);
+  verifySplitCompilerFunctions(buffer, reparsed, source, owners, compilerFunctions, true);
   return {
     buffer,
     sourceSection: sourceSectionName,
@@ -497,6 +567,7 @@ function splitRelocatableTextSection(input, sourceSectionName, requestedOwners) 
 }
 
 module.exports = {
+  validateCompilerFunctionPartition,
   splitRelocatableTextSection,
   projectNativeTextOwners,
 };

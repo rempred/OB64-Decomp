@@ -24,6 +24,7 @@ const {
   verifyAuxiliaryPaddingBytes,
   verifyAuxiliarySourceObjectSection,
   verifyCompilerTextFunctions,
+  primaryCompilerFunctionBytes,
 } = require('./phase8_matching_c');
 const {
   compilationInputBytes,
@@ -496,19 +497,6 @@ function sameStringSet(actual, expected) {
   return JSON.stringify([...actual].sort()) === JSON.stringify([...expected].sort());
 }
 
-function primaryCompilerFunctionBytes(target) {
-  const functions = target.compilerTextFunctions;
-  if (!Array.isArray(functions) || functions.length === 0
-      || functions[0].symbol !== target.symbol
-      || !Number.isInteger(functions[0].bytes) || functions[0].bytes <= 0) {
-    fail(`primary compiler text-function contract is malformed: ${target.symbol}`);
-  }
-  if (targetTextOwners(target).length > 1
-      && (functions.length !== 1 || functions[0].bytes !== target.bytes)) {
-    fail(`multi-owner compiler text-function contract is malformed: ${target.symbol}`);
-  }
-  return functions[0].bytes;
-}
 
 function validateOwnerSymbols(elf, target, ownerSections, linked = false) {
   const base = linked ? target.vramStartNumber : 0;
@@ -657,8 +645,9 @@ function inspectCompiledTargetArtifacts(options) {
         sectionName: owner.sectionName,
         bytes: owner.bytes,
         symbol: owner.symbol,
-        symbolSize: owner.ownerIndex === 0 ? target.bytes : 0,
+        symbolSize: owner.ownerIndex === 0 ? primaryCompilerFunctionBytes(target) : 0,
       })),
+      target.compilerTextFunctions.length > 1 ? target.compilerTextFunctions : null,
     );
     if (!bytesByName['source-object.o'].equals(splitResult.buffer)) {
       fail(`split source-object bytes drift: ${target.symbol}`);

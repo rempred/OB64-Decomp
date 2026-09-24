@@ -101,8 +101,12 @@ At minimum verify:
 - compiler flags used for matching remain pinned;
 - untouched KMC compiler output differs from assembler input only by the accepted target-section
   assignment and any target-specific reviewed read-only auxiliary-section assignment;
-- an explicit multi-function compiler contract gaplessly covers one accepted text owner, retains
-  exactly one global owner symbol, and keeps every reviewed secondary entry local;
+- an explicit multi-function compiler contract gaplessly covers its accepted producer envelope,
+  retains exactly one global compiler owner symbol, and keeps every secondary compiler entry local;
+- a composed multi-owner producer independently conserves complete physical-owner and compiler-function
+  partitions, authentic compiler function sizes across owner cuts, raw/projected/linked function censuses,
+  and separately authenticated zero-size physical continuation symbols; legacy splitter rejection,
+  original relocation anchors, alignment and same-owner HI16/LO16 pairing guards remain enforced;
 - a partially replaced auxiliary data row retains exact remainder bytes, placement, and assembly
   ownership through a unique read-only input section rather than `.data` or `.bss`;
 - C switch-table fragments and explicit retained original-ASM intervals completely cover their accepted auxiliary row in address order;

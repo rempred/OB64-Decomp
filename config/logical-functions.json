@@ -658,6 +658,204 @@
       ]
     },
     {
+      "romStart": 17364,
+      "romEndExclusive": 17488,
+      "evidence": {
+        "caseId": "boot-trial:func_000043D4",
+        "status": "supplemental-reviewed-body",
+        "rationale": "Independent argument/global setup, closed flow and complete return support each of the six cursor helper bodies in the unchanged800-byte physical owner. No noncall flow crosses a cut. Absence of a known caller is not asserted as a global reachability result. Independently reviewed in docs/audit/2026-09-23-boot-decode-body-census.md; this registry grants no partial-owner activation or export."
+      },
+      "symbol": "func_000043D4",
+      "aliases": [],
+      "expectedBytesSha256": "B6B7261F369D3AF46358469814E53DE8EDE6472E84E610EAA9128AF7D2D61647",
+      "fragments": [
+        {
+          "rowIndex": 33,
+          "romStart": 17364,
+          "romEndExclusive": 17488,
+          "ownerOffset": 0,
+          "bytes": 124,
+          "vramStart": 2147958740,
+          "sectionName": ".ob64.r0033",
+          "placementKind": "early-boot-linear",
+          "overlayDescriptorId": null,
+          "loadSlabId": null,
+          "file": "asm/original/rev0/boot/boot_bitstream_cursor_helpers.s",
+          "sha256": "276022AA7F9992CF834B002C9F130ECFAF22EC4CD7569C53E1EFE67F38E819CC"
+        }
+      ]
+    },
+    {
+      "romStart": 17488,
+      "romEndExclusive": 17536,
+      "evidence": {
+        "caseId": "boot-trial:func_00004450",
+        "status": "supplemental-reviewed-body",
+        "rationale": "Independent argument/global setup, closed flow and complete return support each of the six cursor helper bodies in the unchanged800-byte physical owner. No noncall flow crosses a cut. Absence of a known caller is not asserted as a global reachability result. Independently reviewed in docs/audit/2026-09-23-boot-decode-body-census.md; this registry grants no partial-owner activation or export."
+      },
+      "symbol": "func_00004450",
+      "aliases": [],
+      "expectedBytesSha256": "C15CA33287D5FF18450C872ED664742E0F1048A07B101D65FB8E6BB7D600ED77",
+      "fragments": [
+        {
+          "rowIndex": 33,
+          "romStart": 17488,
+          "romEndExclusive": 17536,
+          "ownerOffset": 124,
+          "bytes": 48,
+          "vramStart": 2147958864,
+          "sectionName": ".ob64.r0033",
+          "placementKind": "early-boot-linear",
+          "overlayDescriptorId": null,
+          "loadSlabId": null,
+          "file": "asm/original/rev0/boot/boot_bitstream_cursor_helpers.s",
+          "sha256": "276022AA7F9992CF834B002C9F130ECFAF22EC4CD7569C53E1EFE67F38E819CC"
+        }
+      ]
+    },
+    {
+      "romStart": 17536,
+      "romEndExclusive": 17648,
+      "evidence": {
+        "caseId": "boot-trial:func_00004480",
+        "status": "supplemental-reviewed-body",
+        "rationale": "Independent argument/global setup, closed flow and complete return support each of the six cursor helper bodies in the unchanged800-byte physical owner. No noncall flow crosses a cut. Absence of a known caller is not asserted as a global reachability result. Independently reviewed in docs/audit/2026-09-23-boot-decode-body-census.md; this registry grants no partial-owner activation or export."
+      },
+      "symbol": "func_00004480",
+      "aliases": [],
+      "expectedBytesSha256": "D47551AB290F48DC394AD3041FA34FF959C37FC7DA0771303CE51288A8148DB5",
+      "fragments": [
+        {
+          "rowIndex": 33,
+          "romStart": 17536,
+          "romEndExclusive": 17648,
+          "ownerOffset": 172,
+          "bytes": 112,
+          "vramStart": 2147958912,
+          "sectionName": ".ob64.r0033",
+          "placementKind": "early-boot-linear",
+          "overlayDescriptorId": null,
+          "loadSlabId": null,
+          "file": "asm/original/rev0/boot/boot_bitstream_cursor_helpers.s",
+          "sha256": "276022AA7F9992CF834B002C9F130ECFAF22EC4CD7569C53E1EFE67F38E819CC"
+        }
+      ]
+    },
+    {
+      "romStart": 17648,
+      "romEndExclusive": 17832,
+      "evidence": {
+        "caseId": "boot-trial:func_000044F0",
+        "status": "supplemental-reviewed-body",
+        "rationale": "Independent argument/global setup, closed flow and complete return support each of the six cursor helper bodies in the unchanged800-byte physical owner. No noncall flow crosses a cut. Absence of a known caller is not asserted as a global reachability result. Independently reviewed in docs/audit/2026-09-23-boot-decode-body-census.md; this registry grants no partial-owner activation or export."
+      },
+      "symbol": "func_000044F0",
+      "aliases": [],
+      "expectedBytesSha256": "7478B9652B77246B758FA24582688C7E1100F5D22CA60B0C68246FF9D919C0B8",
+      "fragments": [
+        {
+          "rowIndex": 33,
+          "romStart": 17648,
+          "romEndExclusive": 17832,
+          "ownerOffset": 284,
+          "bytes": 184,
+          "vramStart": 2147959024,
+          "sectionName": ".ob64.r0033",
+          "placementKind": "early-boot-linear",
+          "overlayDescriptorId": null,
+          "loadSlabId": null,
+          "file": "asm/original/rev0/boot/boot_bitstream_cursor_helpers.s",
+          "sha256": "276022AA7F9992CF834B002C9F130ECFAF22EC4CD7569C53E1EFE67F38E819CC"
+        }
+      ]
+    },
+    {
+      "romStart": 17832,
+      "romEndExclusive": 17964,
+      "evidence": {
+        "caseId": "boot-trial:func_000045A8",
+        "status": "supplemental-reviewed-body",
+        "rationale": "Independent argument/global setup, closed flow and complete return support each of the six cursor helper bodies in the unchanged800-byte physical owner. No noncall flow crosses a cut. Absence of a known caller is not asserted as a global reachability result. Independently reviewed in docs/audit/2026-09-23-boot-decode-body-census.md; this registry grants no partial-owner activation or export."
+      },
+      "symbol": "func_000045A8",
+      "aliases": [],
+      "expectedBytesSha256": "A614936F813B8292BC4942934EDB424731DC68B518E217C2C03F70491C2DCCDC",
+      "fragments": [
+        {
+          "rowIndex": 33,
+          "romStart": 17832,
+          "romEndExclusive": 17964,
+          "ownerOffset": 468,
+          "bytes": 132,
+          "vramStart": 2147959208,
+          "sectionName": ".ob64.r0033",
+          "placementKind": "early-boot-linear",
+          "overlayDescriptorId": null,
+          "loadSlabId": null,
+          "file": "asm/original/rev0/boot/boot_bitstream_cursor_helpers.s",
+          "sha256": "276022AA7F9992CF834B002C9F130ECFAF22EC4CD7569C53E1EFE67F38E819CC"
+        }
+      ]
+    },
+    {
+      "romStart": 17964,
+      "romEndExclusive": 18164,
+      "evidence": {
+        "caseId": "boot-trial:func_0000462C",
+        "status": "supplemental-reviewed-body",
+        "rationale": "Independent argument/global setup, closed flow and complete return support each of the six cursor helper bodies in the unchanged800-byte physical owner. No noncall flow crosses a cut. Absence of a known caller is not asserted as a global reachability result. Independently reviewed in docs/audit/2026-09-23-boot-decode-body-census.md; this registry grants no partial-owner activation or export."
+      },
+      "symbol": "func_0000462C",
+      "aliases": [],
+      "expectedBytesSha256": "7B50B74C2321C7B5E4459B46BBC95C4B6CB4C98A1894356A1AA4A54BF335E473",
+      "fragments": [
+        {
+          "rowIndex": 33,
+          "romStart": 17964,
+          "romEndExclusive": 18164,
+          "ownerOffset": 600,
+          "bytes": 200,
+          "vramStart": 2147959340,
+          "sectionName": ".ob64.r0033",
+          "placementKind": "early-boot-linear",
+          "overlayDescriptorId": null,
+          "loadSlabId": null,
+          "file": "asm/original/rev0/boot/boot_bitstream_cursor_helpers.s",
+          "sha256": "276022AA7F9992CF834B002C9F130ECFAF22EC4CD7569C53E1EFE67F38E819CC"
+        }
+      ]
+    },
+    {
+      "romStart": 18580,
+      "romEndExclusive": 19128,
+      "evidence": {
+        "caseId": "boot-trial:func_00004894",
+        "status": "supplemental-reviewed-body",
+        "rationale": "The encoder flow begins before the historical frame label; the branch at48C4 executes frame setup48C8 in its delay slot. All paths close at the return/delay pair4AB0/4AB4. The following16bytes remain unknown coverage, not padding or an admitted empty function. Independently reviewed in docs/audit/2026-09-23-boot-decode-body-census.md; this registry grants no partial-owner activation or export."
+      },
+      "symbol": "boot_bitstream_descriptor_encode",
+      "aliases": [
+        "func_00004894"
+      ],
+      "expectedBytesSha256": "AABF35EE3B8D15BF7EEA61EAB76BA4A76BC06C68FC854600EEF4FBE00ADD1E07",
+      "fragments": [
+        {
+          "rowIndex": 35,
+          "romStart": 18580,
+          "romEndExclusive": 19128,
+          "ownerOffset": 0,
+          "bytes": 548,
+          "vramStart": 2147959956,
+          "sectionName": ".ob64.r0035",
+          "placementKind": "early-boot-linear",
+          "overlayDescriptorId": null,
+          "loadSlabId": null,
+          "file": "asm/original/rev0/boot/boot_bitstream_descriptor_encode.s",
+          "sha256": "C7934F8897549A5DDBBF619F5A7C459621B1E6AE68FC08E0758611393B866A28"
+        }
+      ]
+    },
+    {
       "romStart": 23964,
       "romEndExclusive": 24196,
       "evidence": {
@@ -1317,6 +1515,62 @@
       ]
     },
     {
+      "romStart": 44044,
+      "romEndExclusive": 44848,
+      "evidence": {
+        "caseId": "boot-trial:func_0000AC0C",
+        "status": "supplemental-reviewed-body",
+        "rationale": "Fresh arguments, independent state derivation, closed control flow and complete return support this supplementary body inside the unchanged custom LZSS physical owner. Size selection reads header[2..3] for modes0..2 and entry[0..1] otherwise. No runtime-use claim follows from this static census. Independently reviewed in docs/audit/2026-09-23-boot-decode-body-census.md; this registry grants no partial-owner activation or export."
+      },
+      "symbol": "func_0000AC0C",
+      "aliases": [],
+      "expectedBytesSha256": "9D2787023D1CF24F3B4208D71663A0997360971ADCBA85CCE9FD784A4CC6C419",
+      "fragments": [
+        {
+          "rowIndex": 99,
+          "romStart": 44044,
+          "romEndExclusive": 44848,
+          "ownerOffset": 1788,
+          "bytes": 804,
+          "vramStart": 2147985420,
+          "sectionName": ".ob64.r0099",
+          "placementKind": "early-boot-linear",
+          "overlayDescriptorId": null,
+          "loadSlabId": null,
+          "file": "asm/original/rev0/boot/boot_lzss_decompress.s",
+          "sha256": "F9D559376403FE837D31C3DD7179315A882E2313599897211C5683A4114735B3"
+        }
+      ]
+    },
+    {
+      "romStart": 44848,
+      "romEndExclusive": 44924,
+      "evidence": {
+        "caseId": "boot-trial:func_0000AF30",
+        "status": "supplemental-reviewed-body",
+        "rationale": "Fresh arguments, independent state derivation, closed control flow and complete return support this supplementary body inside the unchanged custom LZSS physical owner. Size selection reads header[2..3] for modes0..2 and entry[0..1] otherwise. No runtime-use claim follows from this static census. Independently reviewed in docs/audit/2026-09-23-boot-decode-body-census.md; this registry grants no partial-owner activation or export."
+      },
+      "symbol": "func_0000AF30",
+      "aliases": [],
+      "expectedBytesSha256": "F333AFFD104B01258A74EB783EC316C181F7A9FD0B5263B00E6EB49D436D1B41",
+      "fragments": [
+        {
+          "rowIndex": 99,
+          "romStart": 44848,
+          "romEndExclusive": 44924,
+          "ownerOffset": 2592,
+          "bytes": 76,
+          "vramStart": 2147986224,
+          "sectionName": ".ob64.r0099",
+          "placementKind": "early-boot-linear",
+          "overlayDescriptorId": null,
+          "loadSlabId": null,
+          "file": "asm/original/rev0/boot/boot_lzss_decompress.s",
+          "sha256": "F9D559376403FE837D31C3DD7179315A882E2313599897211C5683A4114735B3"
+        }
+      ]
+    },
+    {
       "romStart": 46052,
       "romEndExclusive": 47888,
       "evidence": {
@@ -1805,6 +2059,174 @@
           "loadSlabId": null,
           "file": "asm/original/rev0/boot/func_0000E708.s",
           "sha256": "C5E0880005A4A87A2932338F9A5E769CBE39DCD01D6AE23BEF7C76224611D452"
+        }
+      ]
+    },
+    {
+      "romStart": 62880,
+      "romEndExclusive": 62968,
+      "evidence": {
+        "caseId": "boot-trial:func_0000F5A0",
+        "status": "supplemental-reviewed-body",
+        "rationale": "The method6/7 callback table at ROM38BB4..38BC8 establishes these six callable entries, whose independent state setup and complete returns were checked against canonical ROM. The driver consumes method*12 callback triples and calls their +0/+4/+8 fields. No noncall flow crosses these body cuts. Independently reviewed in docs/audit/2026-09-23-boot-decode-body-census.md; this registry grants no partial-owner activation or export."
+      },
+      "symbol": "func_0000F5A0",
+      "aliases": [],
+      "expectedBytesSha256": "F09CD7E2169E262A7B3030A147A1FD61F79A62B3055746F35C496B12F122611E",
+      "fragments": [
+        {
+          "rowIndex": 132,
+          "romStart": 62880,
+          "romEndExclusive": 62968,
+          "ownerOffset": 0,
+          "bytes": 88,
+          "vramStart": 2148004256,
+          "sectionName": ".ob64.r0132",
+          "placementKind": "early-boot-linear",
+          "overlayDescriptorId": null,
+          "loadSlabId": null,
+          "file": "asm/original/rev0/boot/boot_decode_read_block_header.s",
+          "sha256": "DAADC8C41CA883C614A82B134A44CC53DA9BF8A84EF2A7455DDDE925B5A41464"
+        }
+      ]
+    },
+    {
+      "romStart": 62968,
+      "romEndExclusive": 63000,
+      "evidence": {
+        "caseId": "boot-trial:func_0000F5F8",
+        "status": "supplemental-reviewed-body",
+        "rationale": "The method6/7 callback table at ROM38BB4..38BC8 establishes these six callable entries, whose independent state setup and complete returns were checked against canonical ROM. The driver consumes method*12 callback triples and calls their +0/+4/+8 fields. No noncall flow crosses these body cuts. Independently reviewed in docs/audit/2026-09-23-boot-decode-body-census.md; this registry grants no partial-owner activation or export."
+      },
+      "symbol": "func_0000F5F8",
+      "aliases": [],
+      "expectedBytesSha256": "55A476D8B35B4C1F180691060A6F282BCD77629E5227BB029E3D70D1804EE504",
+      "fragments": [
+        {
+          "rowIndex": 132,
+          "romStart": 62968,
+          "romEndExclusive": 63000,
+          "ownerOffset": 88,
+          "bytes": 32,
+          "vramStart": 2148004344,
+          "sectionName": ".ob64.r0132",
+          "placementKind": "early-boot-linear",
+          "overlayDescriptorId": null,
+          "loadSlabId": null,
+          "file": "asm/original/rev0/boot/boot_decode_read_block_header.s",
+          "sha256": "DAADC8C41CA883C614A82B134A44CC53DA9BF8A84EF2A7455DDDE925B5A41464"
+        }
+      ]
+    },
+    {
+      "romStart": 63000,
+      "romEndExclusive": 63028,
+      "evidence": {
+        "caseId": "boot-trial:func_0000F618",
+        "status": "supplemental-reviewed-body",
+        "rationale": "The method6/7 callback table at ROM38BB4..38BC8 establishes these six callable entries, whose independent state setup and complete returns were checked against canonical ROM. The driver consumes method*12 callback triples and calls their +0/+4/+8 fields. No noncall flow crosses these body cuts. Independently reviewed in docs/audit/2026-09-23-boot-decode-body-census.md; this registry grants no partial-owner activation or export."
+      },
+      "symbol": "func_0000F618",
+      "aliases": [],
+      "expectedBytesSha256": "31DD39849AD1D8DA1960EEB6C7DE5326DAA5B0B9A63BC5EF10F929793308582E",
+      "fragments": [
+        {
+          "rowIndex": 133,
+          "romStart": 63000,
+          "romEndExclusive": 63028,
+          "ownerOffset": 0,
+          "bytes": 28,
+          "vramStart": 2148004376,
+          "sectionName": ".ob64.r0133",
+          "placementKind": "early-boot-linear",
+          "overlayDescriptorId": null,
+          "loadSlabId": null,
+          "file": "asm/original/rev0/boot/boot_decode_read_packed_code.s",
+          "sha256": "1BCE5822756136EAD497D5E29A2E4B83FE4366C00095944EB14292D1B5264AC6"
+        }
+      ]
+    },
+    {
+      "romStart": 63028,
+      "romEndExclusive": 63252,
+      "evidence": {
+        "caseId": "boot-trial:func_0000F634",
+        "status": "supplemental-reviewed-body",
+        "rationale": "The method6/7 callback table at ROM38BB4..38BC8 establishes these six callable entries, whose independent state setup and complete returns were checked against canonical ROM. The driver consumes method*12 callback triples and calls their +0/+4/+8 fields. No noncall flow crosses these body cuts. Independently reviewed in docs/audit/2026-09-23-boot-decode-body-census.md; this registry grants no partial-owner activation or export."
+      },
+      "symbol": "func_0000F634",
+      "aliases": [],
+      "expectedBytesSha256": "C9076FB1861018B2954B0A9159143AA0FB6DF3A40DB565FA76DE65E5FC65B59E",
+      "fragments": [
+        {
+          "rowIndex": 133,
+          "romStart": 63028,
+          "romEndExclusive": 63252,
+          "ownerOffset": 28,
+          "bytes": 224,
+          "vramStart": 2148004404,
+          "sectionName": ".ob64.r0133",
+          "placementKind": "early-boot-linear",
+          "overlayDescriptorId": null,
+          "loadSlabId": null,
+          "file": "asm/original/rev0/boot/boot_decode_read_packed_code.s",
+          "sha256": "1BCE5822756136EAD497D5E29A2E4B83FE4366C00095944EB14292D1B5264AC6"
+        }
+      ]
+    },
+    {
+      "romStart": 63252,
+      "romEndExclusive": 63284,
+      "evidence": {
+        "caseId": "boot-trial:func_0000F714",
+        "status": "supplemental-reviewed-body",
+        "rationale": "The method6/7 callback table at ROM38BB4..38BC8 establishes these six callable entries, whose independent state setup and complete returns were checked against canonical ROM. The driver consumes method*12 callback triples and calls their +0/+4/+8 fields. No noncall flow crosses these body cuts. Independently reviewed in docs/audit/2026-09-23-boot-decode-body-census.md; this registry grants no partial-owner activation or export."
+      },
+      "symbol": "func_0000F714",
+      "aliases": [],
+      "expectedBytesSha256": "18404BB26218F652DA8E5C003AF973BB6056ECA9E15BAAE46C0F7A3B3E65E7C5",
+      "fragments": [
+        {
+          "rowIndex": 133,
+          "romStart": 63252,
+          "romEndExclusive": 63284,
+          "ownerOffset": 252,
+          "bytes": 32,
+          "vramStart": 2148004628,
+          "sectionName": ".ob64.r0133",
+          "placementKind": "early-boot-linear",
+          "overlayDescriptorId": null,
+          "loadSlabId": null,
+          "file": "asm/original/rev0/boot/boot_decode_read_packed_code.s",
+          "sha256": "1BCE5822756136EAD497D5E29A2E4B83FE4366C00095944EB14292D1B5264AC6"
+        }
+      ]
+    },
+    {
+      "romStart": 63284,
+      "romEndExclusive": 63496,
+      "evidence": {
+        "caseId": "boot-trial:func_0000F734",
+        "status": "supplemental-reviewed-body",
+        "rationale": "The method6/7 callback table at ROM38BB4..38BC8 establishes these six callable entries, whose independent state setup and complete returns were checked against canonical ROM. The driver consumes method*12 callback triples and calls their +0/+4/+8 fields. No noncall flow crosses these body cuts. Independently reviewed in docs/audit/2026-09-23-boot-decode-body-census.md; this registry grants no partial-owner activation or export."
+      },
+      "symbol": "func_0000F734",
+      "aliases": [],
+      "expectedBytesSha256": "9651DCF827E1AD98C7EC98E16791345FD46883AE5D9106B3E82DB31ADAED9AC8",
+      "fragments": [
+        {
+          "rowIndex": 134,
+          "romStart": 63284,
+          "romEndExclusive": 63496,
+          "ownerOffset": 0,
+          "bytes": 212,
+          "vramStart": 2148004660,
+          "sectionName": ".ob64.r0134",
+          "placementKind": "early-boot-linear",
+          "overlayDescriptorId": null,
+          "loadSlabId": null,
+          "file": "asm/original/rev0/boot/boot_decode_init_mtf_tables.s",
+          "sha256": "2A4D915D9AD6064594BCB4F89F93D8D980AC2F6CADCE88EEBD0523977582CE78"
         }
       ]
     },

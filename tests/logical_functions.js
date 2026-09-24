@@ -115,7 +115,7 @@ for(const changed of [functions.slice(0,1),[functions[1],functions[0]].map((f,i)
   functions.map((f,i)=>({...f,value:i?8:0})),functions.map((f,i)=>({...f,value:i?16:0}))]) {
   assert.throws(()=>validateLogicalFunctionCensus(changed,[{symbol:'first'},{symbol:'second'}],40),/census|malformed/);controls++;
 }
-assert.equal(loadActiveTargetModel().targets.length,627);
+assert.equal(loadActiveTargetModel().targets.length,650);
 const fixtureRoot=fs.mkdtempSync(path.resolve('build/logical-functions-test-'));
 const interiorFile=path.join(fixtureRoot,'interior.s');
 fs.writeFileSync(interiorFile,'.text\n.word 0\n.Linterior:\n.word 0\n');
