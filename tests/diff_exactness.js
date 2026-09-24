@@ -6,6 +6,7 @@ const fs = require('fs');
 const path = require('path');
 const { parseElf32BigEndian } = require('../tools/lib/phase7_conventional');
 const {
+  compareLinkedAuxiliaryBytes,
   compareLinkedTargetBytes,
   summarizeTargetComparison,
   targetAsmDifferMaxLines,
@@ -29,9 +30,15 @@ function align4(value) {
 }
 
 function makeElf(sectionName, vramStart, sectionBuffers, options = {}) {
-  const names = Buffer.from(`\0${sectionName}\0.shstrtab\0`, 'utf8');
-  const nameOffset = 1;
-  const shstrNameOffset = 1 + Buffer.byteLength(sectionName, 'utf8') + 1;
+  const sectionNames = options.sectionNames || sectionBuffers.map(() => sectionName);
+  const nameOffsets = [];
+  let nameBytes = 1;
+  for (const name of sectionNames) {
+    nameOffsets.push(nameBytes);
+    nameBytes += Buffer.byteLength(name, 'utf8') + 1;
+  }
+  const names = Buffer.from(`\0${sectionNames.join('\0')}\0.shstrtab\0`, 'utf8');
+  const shstrNameOffset = nameBytes;
   const programTableOffset = 52;
   let cursor = programTableOffset + sectionBuffers.length * 32;
   const records = sectionBuffers.map((bytes) => {
@@ -67,13 +74,14 @@ function makeElf(sectionName, vramStart, sectionBuffers, options = {}) {
     buffer.writeUInt32BE(1, programHeader);
     buffer.writeUInt32BE(options.loadOffset === undefined ? record.offset : options.loadOffset, programHeader + 4);
     buffer.writeUInt32BE((options.loadVaddr === undefined ? vramStart : options.loadVaddr) >>> 0, programHeader + 8);
-    buffer.writeUInt32BE((options.paddr === undefined ? 0 : options.paddr) >>> 0, programHeader + 12);
+    const paddr = options.paddrs ? options.paddrs[index] : (options.paddr === undefined ? 0 : options.paddr);
+    buffer.writeUInt32BE(paddr >>> 0, programHeader + 12);
     buffer.writeUInt32BE(options.loadFileSize === undefined ? record.bytes.length : options.loadFileSize, programHeader + 16);
     buffer.writeUInt32BE(options.loadMemorySize === undefined ? record.bytes.length : options.loadMemorySize, programHeader + 20);
     buffer.writeUInt32BE(options.loadFlags === undefined ? 5 : options.loadFlags, programHeader + 24);
     buffer.writeUInt32BE(0x1000, programHeader + 28);
     const header = sectionTableOffset + (index + 1) * 40;
-    buffer.writeUInt32BE(nameOffset, header);
+    buffer.writeUInt32BE(nameOffsets[index], header);
     buffer.writeUInt32BE(options.type === undefined ? 1 : options.type, header + 4);
     buffer.writeUInt32BE(options.flags === undefined ? 6 : options.flags, header + 8);
     buffer.writeUInt32BE((options.address === undefined ? vramStart : options.address) >>> 0, header + 12);
@@ -111,6 +119,96 @@ function expectRejection(name, pattern, callback) {
     return { name, message: error.message };
   }
   fail(`${name} was accepted`);
+}
+
+function checkSharedVramLoads(target, firstBytes, secondBytes, rejections) {
+  const sectionNames = ['.ob64.overlay_a', '.ob64.overlay_b'];
+  const paddrs = [0, 0x40];
+  const payloads = [firstBytes, secondBytes];
+  const rom = Buffer.alloc(paddrs[1] + secondBytes.length);
+  payloads.forEach((bytes, index) => bytes.copy(rom, paddrs[index]));
+  const owners = payloads.map((bytes, index) => ({
+    ...target,
+    symbol: `fixture_overlay_${index}`,
+    sectionName: sectionNames[index],
+    bytes: bytes.length,
+    romStartNumber: paddrs[index],
+    romEndNumber: paddrs[index] + bytes.length,
+    expectedTextSha256: sha256(bytes),
+  }));
+  for (const kind of ['text', 'auxiliary']) {
+    const make = () => {
+      const elf = makeElf(sectionNames[0], target.vramStartNumber, payloads, {
+        sectionNames,
+        paddrs,
+        ...(kind === 'auxiliary' ? { flags: 2, loadFlags: 4 } : {}),
+      });
+      // Supply the independent owner-symbol contract for the auxiliary comparator.
+      elf.symbols = owners.map((owner, index) => ({
+        name: owner.symbol, sectionIndex: index + 1, value: owner.vramStartNumber, binding: 1,
+      }));
+      return elf;
+    };
+    const compare = (elf, index = 0) => {
+      const owner = owners[index];
+      if (kind === 'text') return compareLinkedTargetBytes(owner, elf, rom);
+      return compareLinkedAuxiliaryBytes(target, {
+        kind: 'switch-table',
+        outputSection: owner.sectionName,
+        ownerSectionBytes: owner.bytes,
+        ownerRomStartNumber: owner.romStartNumber,
+        ownerVramStartNumber: owner.vramStartNumber,
+        ownerSymbol: owner.symbol,
+        ownerSymbolVram: owner.vramStartNumber,
+        alignment: 4,
+        vramStartNumber: owner.vramStartNumber,
+        romStartNumber: owner.romStartNumber,
+        romEndNumber: owner.romEndNumber,
+        bytes: owner.bytes,
+        entryBytes: owner.bytes,
+        trailingPaddingBytes: 0,
+        expectedTrailingPaddingSha256: sha256(Buffer.alloc(0)),
+      }, elf, rom);
+    };
+    const elf = make();
+    for (const index of [0, 1]) {
+      assert(compare(elf, index).rawBytesExact, `${kind} shared-VRAM owner ${index} was not exact`);
+    }
+    elf.programHeaders.reverse();
+    for (const index of [0, 1]) {
+      assert(compare(elf, index).rawBytesExact, `${kind} load selection depends on header order`);
+    }
+    const changedBytes = make();
+    changedBytes.buffer[changedBytes.sections[1].offset] ^= 1;
+    assert(!compare(changedBytes).rawBytesExact, `${kind} shared-VRAM byte mismatch was hidden`);
+
+    for (const [name, overrides] of [
+      ['duplicate ROM identity', { offset: 0x1000 }],
+      ['duplicate file identity', { paddr: 0x1000 }],
+      ['duplicate full identity', {}],
+    ]) {
+      const duplicate = make();
+      duplicate.programHeaders.push({ ...duplicate.programHeaders[0], ...overrides });
+      rejections.push(expectRejection(`${kind} ${name}`, /load-header count drift/, () => compare(duplicate)));
+    }
+    const vramOnly = make();
+    vramOnly.programHeaders[0].offset = 0x1000;
+    vramOnly.programHeaders[0].paddr = 0x1000;
+    rejections.push(expectRejection(`${kind} VRAM-only identity`, /load-header count drift/, () => compare(vramOnly)));
+
+    for (const [field, value] of [
+      ['offset', 0x1000],
+      ['vaddr', target.vramStartNumber + 4],
+      ['paddr', 4],
+      ['fileSize', firstBytes.length + 4],
+      ['memorySize', firstBytes.length + 4],
+      ['flags', kind === 'text' ? 4 : 5],
+    ]) {
+      const malformed = make();
+      malformed.programHeaders[0][field] = value;
+      rejections.push(expectRejection(`${kind} wrong load ${field}`, /load placement drift/, () => compare(malformed)));
+    }
+  }
 }
 
 function main() {
@@ -158,6 +256,7 @@ function main() {
   assert(!compareLinkedTargetBytes(relocatedTarget, relocatableObjectElf, relocatedExpected).rawBytesExact, 'unresolved relocatable object substituted for linked bytes');
 
   const rejections = [];
+  checkSharedVramLoads(target, expected, aliasEquivalent, rejections);
   assert(targetAsmDifferMaxLines({ bytes: 9132 }) === 2283, 'large target asm-differ extent was truncated');
   rejections.push(expectRejection('unaligned asm-differ extent', /target byte extent is malformed/, () => {
     targetAsmDifferMaxLines({ bytes: 9130 });
@@ -246,6 +345,7 @@ function main() {
       label: comparisonLabel(exactSummary),
     },
     relocatedFinalLinkedBytes: true,
+    sharedVramDistinctRomOwners: ['text', 'auxiliary'],
     failClosedMutations: rejections,
   }, null, 2));
 }

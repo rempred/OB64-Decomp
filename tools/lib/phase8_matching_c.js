@@ -387,9 +387,10 @@ function compareLinkedTargetBytes(target, linkedElf, canonicalBaserom) {
         || !Number.isInteger(section.offset) || section.offset < 0) {
       fail('raw linked-target section shape drift: ' + target.symbol + ' ' + owner.sectionName);
     }
+    // Overlays may share VRAM; identify the load by ROM or file position, then
+    // validate every placement field below. Either identity must remain unique.
     const targetLoads = linkedElf.programHeaders.filter((header) => header && header.type === 1 && (
-      header.vaddr === owner.vramStartNumber
-      || header.paddr === owner.romStartNumber
+      header.paddr === owner.romStartNumber
       || header.offset === section.offset
     ));
     if (targetLoads.length !== 1) fail('raw linked-target load-header count drift: ' + target.symbol + ' ' + owner.sectionName);
@@ -835,9 +836,9 @@ function compareLinkedAuxiliaryBytes(target, auxiliary, linkedElf, canonicalBase
       || !Number.isInteger(section.offset) || section.offset < 0) {
     fail('raw linked-auxiliary section shape drift: ' + target.symbol);
   }
+  // Overlays may share VRAM; retain conflicting ROM/file identities as failures.
   const loads = linkedElf.programHeaders.filter((header) => header && header.type === 1 && (
-    header.vaddr === auxiliary.ownerVramStartNumber
-    || header.paddr === auxiliary.ownerRomStartNumber
+    header.paddr === auxiliary.ownerRomStartNumber
     || header.offset === section.offset
   ));
   if (loads.length !== 1) fail('raw linked-auxiliary load-header count drift: ' + target.symbol);
