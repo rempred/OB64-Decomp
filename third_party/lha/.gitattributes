@@ -1,0 +1,2 @@
+# Preserve authenticated upstream bytes, including EUC-JP and legacy whitespace.
+upstream/** -text -whitespace
