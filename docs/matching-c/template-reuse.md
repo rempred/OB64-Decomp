@@ -47,18 +47,31 @@ G1 is research evidence. For activation, add the target to
 candidate's own compiled object. Then run `diff.js` per target and one wave
 `verify.js`.
 
+An exact byte sequence does not establish an original source-function boundary.
+Reconcile the selected logical body, its physical owners, neighboring control flow,
+and known entries before activation; see [logical functions](../LOGICAL_FUNCTIONS.md).
+
 First results:
 
 - Wave 1 (`cf163c96`) accepted five functions: `func_001EA40C` and
   `func_001CE174` (overlay copies of combat-draw functions), `func_001E9E00`,
   `func_001F9170` and `func_0022431C`. The three global-clear wrappers
   (`7aba960c`) were accepted in the same study.
-- Two G1 candidates are blocked by gates outside ordinary matching:
-  - `func_000E595C`: its accepted owner row is 12 bytes but the function
-    body is 8 bytes.
-  - `func_0006f47c`: the raw linked-target load-header check matches headers
-    by VRAM. Overlays 1 and 15 both place an owner at 0x8019898C, so the check
-    finds two.
+- Two G1 candidates remain outside that completed wave:
+  - `func_0006f47c`: checker fix `44574962` resolves the shared-VRAM ambiguity
+    between overlays 1 and 15 using ROM/file identity while preserving all exact
+    placement checks. Its original failing linked artifact is 192/192 bytes exact.
+    Independent review, routine tests and the full structural audit passed; the
+    candidate itself has not been activated.
+  - `func_000E595C`: preserved row 1973 spans `0xE595C..0xE5968` (12 bytes).
+    The existing logical registry marks `0xE595C..0xE5960` as padding and selects
+    `func_000E5960` at `0xE5960..0xE5968` (8 bytes, return plus delay slot).
+    Independent investigations agree on this representation mismatch. Neighboring
+    control flow provides no discovered shared-return edge, but neither an exact C
+    match nor an unreferenced return sequence proves a separate original function.
+    The alignment explanation remains an inference. Keep all 12 physical bytes;
+    activation requires reviewed boundary/ownership evidence and generic handling
+    of leading padding in the existing slice and entry-admission contracts.
 
 ## Register-allocation oracle (`tools/matching_studies/regalloc_oracle/`)
 
