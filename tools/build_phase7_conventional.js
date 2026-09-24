@@ -94,10 +94,39 @@ function renderSectionDirective(slice) {
 
 const ANCILLARY_REMOVAL_FLAGS = ['--remove-section=.reginfo', '--remove-section=.pdr', '--remove-section=.comment', '--remove-section=.note'];
 
+function zeroWidthLinkGap(lines) {
+  let blockComment = false;
+  for (const line of lines) {
+    let tokens = '';
+    for (let index = 0; index < line.length; index += 1) {
+      const pair = line.slice(index, index + 2);
+      if (blockComment) {
+        if (pair === '*/') { blockComment = false; index += 1; }
+      } else if (line[index] === '#') {
+        // A block-comment delimiter inside a line comment has no effect.
+        break;
+      } else if (pair === '/*') {
+        blockComment = true;
+        tokens += ' ';
+        index += 1;
+      } else {
+        tokens += line[index];
+      }
+    }
+    if (!/^\s*(?:(?:[A-Za-z_.$][A-Za-z0-9_.$]*|[0-9]+)\s*:\s*)*$/.test(tokens)) return false;
+  }
+  return !blockComment;
+}
+
 function transformTrackedPart(row) {
   const part = row.part;
   const sourceFile = path.join(ROOT, part.file.replace(/\//g, path.sep));
   const sourceBuffer = fs.readFileSync(sourceFile);
+  return transformTrackedPartSource(row, sourceBuffer);
+}
+
+function transformTrackedPartSource(row, sourceBuffer) {
+  const part = row.part;
   if (sourceBuffer.length !== part.textBytes || sha256Buffer(sourceBuffer) !== part.sha256) fail(`tracked assembly source drift: ${part.file}`);
   const source = sourceBuffer.toString('utf8');
   const lines = source.split(/\r?\n/);
@@ -107,19 +136,32 @@ function transformTrackedPart(row) {
   const wordLines = lines.map((line, index) => ({ line, index })).filter(({ line }) => wordDirective.test(line));
   if (wordLines.length * 4 !== row.bytes) fail(`tracked assembly word count drift: ${part.file}`);
   const cutOffsets = new Map(row.slices.slice(1).map((slice) => [slice.romStart - row.romStart, slice]));
-  for (const [offset] of cutOffsets) {
+  const cutLines = new Map();
+  for (const [offset, slice] of cutOffsets) {
     if (offset % 4 !== 0 || offset <= 0 || offset >= row.bytes) fail(`unaligned tracked assembly link cut: ${part.file}`);
     const currentWord = wordLines[offset / 4];
     const priorWord = wordLines[offset / 4 - 1];
     const between = lines.slice(priorWord.index + 1, currentWord.index);
-    if (between.some((line) => /^\s*[A-Za-z_.$][A-Za-z0-9_.$]*\s*:/.test(line))) fail(`tracked label crosses a link-only slice: ${part.file}`);
+    // A label between words names the following word. Switch sections before
+    // that label, or it would keep the preceding slice's unrelated runtime VMA.
+    // Only zero-width labels/comments may cross this insertion point: moving
+    // alignment, size expressions or other directives could change semantics.
+    if (!zeroWidthLinkGap(between)) {
+      fail(`unsupported tracked assembly at link cut: ${part.file}`);
+    }
+    cutLines.set(priorWord.index + 1, slice);
   }
 
   const hasOwnerLabel = new RegExp(`^\\s*${escapeRegex(part.name)}\\s*:`, 'm').test(source);
   const output = [];
   let wordIndex = 0;
   let activeSlice = row.slices[0];
-  for (const line of lines) {
+  for (const [lineIndex, line] of lines.entries()) {
+    const nextSlice = cutLines.get(lineIndex);
+    if (nextSlice) {
+      activeSlice = nextSlice;
+      output.push('', ...renderSectionDirective(activeSlice), `.globl __ob64_row_${String(row.index).padStart(4, '0')}_slice_${activeSlice.sliceIndex}`, `__ob64_row_${String(row.index).padStart(4, '0')}_slice_${activeSlice.sliceIndex}:`);
+    }
     if (/^\s*\.text\s*(?:#.*)?$/.test(line)) {
       output.push(
         ...renderSectionDirective(activeSlice),
@@ -130,12 +172,6 @@ function transformTrackedPart(row) {
       continue;
     }
     if (wordDirective.test(line)) {
-      const byteOffset = wordIndex * 4;
-      const nextSlice = cutOffsets.get(byteOffset);
-      if (nextSlice) {
-        activeSlice = nextSlice;
-        output.push('', ...renderSectionDirective(activeSlice), `.globl __ob64_row_${String(row.index).padStart(4, '0')}_slice_${activeSlice.sliceIndex}`, `__ob64_row_${String(row.index).padStart(4, '0')}_slice_${activeSlice.sliceIndex}:`);
-      }
       wordIndex += 1;
     }
     output.push(line);
@@ -454,4 +490,6 @@ function main() {
   console.log(`ROM: ${linked.romFile}`);
 }
 
-main();
+if (require.main === module) main();
+
+module.exports = { transformTrackedPart, transformTrackedPartSource };

@@ -1,0 +1,163 @@
+[
+  {
+    "id": "boot-resource-loader-0003f1b0",
+    "romStart": "0x3F1B0",
+    "romEndExclusive": "0x40E80",
+    "vramStart": "0x800E9C20",
+    "callRom": "0x239C"
+  },
+  {
+    "id": "cold-boot-loader-00071280",
+    "romStart": "0x71280",
+    "romEndExclusive": "0x79730",
+    "vramStart": "0x8019A7A0",
+    "callRom": "0x516C4"
+  },
+  {
+    "id": "cold-boot-loader-00079730",
+    "romStart": "0x79730",
+    "romEndExclusive": "0x87200",
+    "vramStart": "0x8019A7A0",
+    "callRom": "0x5153C"
+  },
+  {
+    "id": "scenario-loader-00165fc0",
+    "romStart": "0x165FC0",
+    "romEndExclusive": "0x171EA0",
+    "vramStart": "0x80214F80",
+    "callRom": "0x10B090"
+  },
+  {
+    "id": "scenario-loader-00171ea0",
+    "romStart": "0x171EA0",
+    "romEndExclusive": "0x177ED0",
+    "vramStart": "0x80214F80",
+    "callRom": "0x103524"
+  },
+  {
+    "id": "scenario-loader-00177ed0",
+    "romStart": "0x177ED0",
+    "romEndExclusive": "0x17F9C0",
+    "vramStart": "0x80214F80",
+    "callRom": "0x10B4BC"
+  },
+  {
+    "id": "scenario-loader-0017f9c0",
+    "romStart": "0x17F9C0",
+    "romEndExclusive": "0x188B60",
+    "vramStart": "0x80214F80",
+    "callRom": "0x10F474"
+  },
+  {
+    "id": "scenario-loader-00188b60",
+    "romStart": "0x188B60",
+    "romEndExclusive": "0x18F100",
+    "vramStart": "0x80214F80",
+    "callRom": "0x10B700"
+  },
+  {
+    "id": "scenario-loader-0018f100",
+    "romStart": "0x18F100",
+    "romEndExclusive": "0x195410",
+    "vramStart": "0x80214F80",
+    "callRom": "0x10BA60"
+  },
+  {
+    "id": "scenario-loader-001977e0",
+    "romStart": "0x1977E0",
+    "romEndExclusive": "0x19C760",
+    "vramStart": "0x80214F80",
+    "callRom": "0x10BB80"
+  },
+  {
+    "id": "scenario-loader-0019c760",
+    "romStart": "0x19C760",
+    "romEndExclusive": "0x1A2C20",
+    "vramStart": "0x80214F80",
+    "callRom": "0x10B5EC"
+  },
+  {
+    "id": "scenario-loader-001a2c20",
+    "romStart": "0x1A2C20",
+    "romEndExclusive": "0x1A4C10",
+    "vramStart": "0x80214F80",
+    "callRom": "0x10361C"
+  },
+  {
+    "id": "scenario-loader-001a4c10",
+    "romStart": "0x1A4C10",
+    "romEndExclusive": "0x1A9290",
+    "vramStart": "0x80214F80",
+    "callRom": "0x10BC9C"
+  },
+  {
+    "id": "scenario-loader-001a9290",
+    "romStart": "0x1A9290",
+    "romEndExclusive": "0x1B2670",
+    "vramStart": "0x80214F80",
+    "callRom": "0x10C1F8"
+  },
+  {
+    "id": "scenario-loader-001b2670",
+    "romStart": "0x1B2670",
+    "romEndExclusive": "0x1BA050",
+    "vramStart": "0x80214F80",
+    "callRom": "0x139924"
+  },
+  {
+    "id": "ovl18-table-loader-001c3300",
+    "romStart": "0x1C3300",
+    "romEndExclusive": "0x1C9050",
+    "vramStart": "0x8022A840",
+    "tableRom": "0x001C2EF4"
+  },
+  {
+    "id": "ovl18-table-loader-001c9050",
+    "romStart": "0x1C9050",
+    "romEndExclusive": "0x1CE070",
+    "vramStart": "0x8022A840",
+    "tableRom": "0x001C2F1C"
+  },
+  {
+    "id": "cold-boot-loader-0023a3a0",
+    "romStart": "0x23A3A0",
+    "romEndExclusive": "0x23B220",
+    "vramStart": "0x801D0840",
+    "callRom": "0x4D6A4"
+  },
+  {
+    "id": "cold-boot-loader-0023b220",
+    "romStart": "0x23B220",
+    "romEndExclusive": "0x2447A0",
+    "vramStart": "0x801E6FB0",
+    "callRom": "0x4DB44"
+  },
+  {
+    "id": "cold-boot-loader-002447a0",
+    "romStart": "0x2447A0",
+    "romEndExclusive": "0x24BCA0",
+    "vramStart": "0x801D0840",
+    "callRom": "0x4E218"
+  },
+  {
+    "id": "resource-dispatcher-00286bd0",
+    "romStart": "0x286BD0",
+    "romEndExclusive": "0x29A4C0",
+    "vramStart": "0x8022AC90",
+    "callRom": "0x2829D4"
+  },
+  {
+    "id": "resource-dispatcher-002a8d20",
+    "romStart": "0x2A8D20",
+    "romEndExclusive": "0x2AE3C0",
+    "vramStart": "0x802395C0",
+    "callRom": "0x282920"
+  },
+  {
+    "id": "resource-dispatcher-002ae3c0",
+    "romStart": "0x2AE3C0",
+    "romEndExclusive": "0x2B8BA0",
+    "vramStart": "0x802395C0",
+    "callRom": "0x282B34"
+  }
+]

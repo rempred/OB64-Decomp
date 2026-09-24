@@ -14,11 +14,11 @@
     "primaryRows": 7242,
     "assemblyOwners": 6184,
     "dataOwners": 1058,
-    "linkSlices": 7255,
-    "splitOwners": 13,
+    "linkSlices": 7257,
+    "splitOwners": 15,
     "overlayReservations": 19,
     "fixedOverlayNonExecutableRanges": 2,
-    "nonDescriptorLoadSlabs": 6,
+    "nonDescriptorLoadSlabs": 29,
     "rspRows": 13
   },
   "fixedOverlayNonExecutableRanges": [
@@ -99,6 +99,190 @@
       "romEndExclusive": 2335648,
       "vramStart": 2149478320,
       "vramEndExclusive": 2149544144
+    },
+    {
+      "id": "boot-resource-loader-0003f1b0",
+      "kind": "loader-dma",
+      "romStart": 258480,
+      "romEndExclusive": 265856,
+      "vramStart": 2148441120,
+      "vramEndExclusive": 2148448496
+    },
+    {
+      "id": "cold-boot-loader-00071280",
+      "kind": "loader-dma",
+      "romStart": 463488,
+      "romEndExclusive": 497456,
+      "vramStart": 2149164960,
+      "vramEndExclusive": 2149198928
+    },
+    {
+      "id": "cold-boot-loader-00079730",
+      "kind": "loader-dma",
+      "romStart": 497456,
+      "romEndExclusive": 553472,
+      "vramStart": 2149164960,
+      "vramEndExclusive": 2149220976
+    },
+    {
+      "id": "scenario-loader-00165fc0",
+      "kind": "loader-dma",
+      "romStart": 1466304,
+      "romEndExclusive": 1515168,
+      "vramStart": 2149666688,
+      "vramEndExclusive": 2149715552
+    },
+    {
+      "id": "scenario-loader-00171ea0",
+      "kind": "loader-dma",
+      "romStart": 1515168,
+      "romEndExclusive": 1539792,
+      "vramStart": 2149666688,
+      "vramEndExclusive": 2149691312
+    },
+    {
+      "id": "scenario-loader-00177ed0",
+      "kind": "loader-dma",
+      "romStart": 1539792,
+      "romEndExclusive": 1571264,
+      "vramStart": 2149666688,
+      "vramEndExclusive": 2149698160
+    },
+    {
+      "id": "scenario-loader-0017f9c0",
+      "kind": "loader-dma",
+      "romStart": 1571264,
+      "romEndExclusive": 1608544,
+      "vramStart": 2149666688,
+      "vramEndExclusive": 2149703968
+    },
+    {
+      "id": "scenario-loader-00188b60",
+      "kind": "loader-dma",
+      "romStart": 1608544,
+      "romEndExclusive": 1634560,
+      "vramStart": 2149666688,
+      "vramEndExclusive": 2149692704
+    },
+    {
+      "id": "scenario-loader-0018f100",
+      "kind": "loader-dma",
+      "romStart": 1634560,
+      "romEndExclusive": 1659920,
+      "vramStart": 2149666688,
+      "vramEndExclusive": 2149692048
+    },
+    {
+      "id": "scenario-loader-001977e0",
+      "kind": "loader-dma",
+      "romStart": 1669088,
+      "romEndExclusive": 1689440,
+      "vramStart": 2149666688,
+      "vramEndExclusive": 2149687040
+    },
+    {
+      "id": "scenario-loader-0019c760",
+      "kind": "loader-dma",
+      "romStart": 1689440,
+      "romEndExclusive": 1715232,
+      "vramStart": 2149666688,
+      "vramEndExclusive": 2149692480
+    },
+    {
+      "id": "scenario-loader-001a2c20",
+      "kind": "loader-dma",
+      "romStart": 1715232,
+      "romEndExclusive": 1723408,
+      "vramStart": 2149666688,
+      "vramEndExclusive": 2149674864
+    },
+    {
+      "id": "scenario-loader-001a4c10",
+      "kind": "loader-dma",
+      "romStart": 1723408,
+      "romEndExclusive": 1741456,
+      "vramStart": 2149666688,
+      "vramEndExclusive": 2149684736
+    },
+    {
+      "id": "scenario-loader-001a9290",
+      "kind": "loader-dma",
+      "romStart": 1741456,
+      "romEndExclusive": 1779312,
+      "vramStart": 2149666688,
+      "vramEndExclusive": 2149704544
+    },
+    {
+      "id": "scenario-loader-001b2670",
+      "kind": "loader-dma",
+      "romStart": 1779312,
+      "romEndExclusive": 1810512,
+      "vramStart": 2149666688,
+      "vramEndExclusive": 2149697888
+    },
+    {
+      "id": "ovl18-table-loader-001c3300",
+      "kind": "loader-dma",
+      "romStart": 1848064,
+      "romEndExclusive": 1871952,
+      "vramStart": 2149754944,
+      "vramEndExclusive": 2149778832
+    },
+    {
+      "id": "ovl18-table-loader-001c9050",
+      "kind": "loader-dma",
+      "romStart": 1871952,
+      "romEndExclusive": 1892464,
+      "vramStart": 2149754944,
+      "vramEndExclusive": 2149775456
+    },
+    {
+      "id": "cold-boot-loader-0023a3a0",
+      "kind": "loader-dma",
+      "romStart": 2335648,
+      "romEndExclusive": 2339360,
+      "vramStart": 2149386304,
+      "vramEndExclusive": 2149390016
+    },
+    {
+      "id": "cold-boot-loader-0023b220",
+      "kind": "loader-dma",
+      "romStart": 2339360,
+      "romEndExclusive": 2377632,
+      "vramStart": 2149478320,
+      "vramEndExclusive": 2149516592
+    },
+    {
+      "id": "cold-boot-loader-002447a0",
+      "kind": "loader-dma",
+      "romStart": 2377632,
+      "romEndExclusive": 2407584,
+      "vramStart": 2149386304,
+      "vramEndExclusive": 2149416256
+    },
+    {
+      "id": "resource-dispatcher-00286bd0",
+      "kind": "loader-dma",
+      "romStart": 2649040,
+      "romEndExclusive": 2729152,
+      "vramStart": 2149756048,
+      "vramEndExclusive": 2149836160
+    },
+    {
+      "id": "resource-dispatcher-002a8d20",
+      "kind": "loader-dma",
+      "romStart": 2788640,
+      "romEndExclusive": 2810816,
+      "vramStart": 2149815744,
+      "vramEndExclusive": 2149837920
+    },
+    {
+      "id": "resource-dispatcher-002ae3c0",
+      "kind": "loader-dma",
+      "romStart": 2810816,
+      "romEndExclusive": 2853792,
+      "vramStart": 2149815744,
+      "vramEndExclusive": 2149858720
     }
   ],
   "acceptedInputSha256": {

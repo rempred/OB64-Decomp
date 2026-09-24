@@ -4,6 +4,8 @@
 const assert = require('assert');
 const fs = require('fs');
 const path = require('path');
+const { verifyCompletedMappings, runMutations: runMappingMutations } = require('./manual_load_mappings');
+const { runTests: testTrackedAssemblySlices } = require('./tracked_assembly_slices');
 const {
   fail,
   loadAcceptedModel,
@@ -110,6 +112,14 @@ function main() {
   verifyElfAgainstModel(model, baselineElf);
   verifyRom(model, romBytes);
   verifyMap(model, mapText);
+
+  testTrackedAssemblySlices(model);
+  // A preserved interior entry at a load boundary must name the incoming slice,
+  // even when the preceding word loads to a completely different runtime area.
+  const crossingEntry = baselineElf.symbols.filter(symbol => symbol.name === 'func_001C9050' && symbol.sectionIndex !== 0);
+  assert.strictEqual(crossingEntry.length, 1);
+  assert.strictEqual(crossingEntry[0].value, 0x8022A840);
+  assert.strictEqual(baselineElf.sections[crossingEntry[0].sectionIndex].name, model.rows[3413].slices[1].sectionName);
 
   const results = [];
   // FC7C's retained word is justified by its accepted entry/return/successor
@@ -231,10 +241,10 @@ function main() {
     changed.writeUInt32BE(value, baselineElf.header.phoff + fc7cTailHeaders[0].index * baselineElf.header.phentsize + offset);
     results.push(expectRejection(`FC7C ${label}`, pattern, () => verifyElfAgainstModel(model, parseElf32BigEndian(changed))));
   }
-  assert.strictEqual(model.counts.nonDescriptorLoadSlabs, 6, 'accepted load-slab count drift');
+  assert.strictEqual(model.counts.nonDescriptorLoadSlabs, 29, 'accepted load-slab count drift');
   assert.strictEqual(model.counts.fixedOverlayNonExecutableRanges, 2, 'accepted fixed-overlay non-executable-range count drift');
-  assert.strictEqual(model.slices.length, 7255, 'accepted link-slice count drift');
-  assert.strictEqual(model.counts.splitOwners, 13, 'accepted split-owner count drift');
+  assert.strictEqual(model.slices.length, 7257, 'accepted link-slice count drift');
+  assert.strictEqual(model.counts.splitOwners, 15, 'accepted split-owner count drift');
   assert.strictEqual(model.overlays.length, 19, 'fixed-descriptor count drift');
   assert.deepStrictEqual(model.fixedOverlayNonExecutableRanges, [{
     id: 'func-0020fc7c-retained-tail', overlayDescriptorId: 10, overlaySection: 'text',
@@ -246,7 +256,7 @@ function main() {
     romStart: 0x00201424,
     romEndExclusive: 0x00201430,
   }], 'accepted fixed-overlay non-executable-range record drift');
-  assert.deepStrictEqual(model.nonDescriptorLoadSlabs, [{
+  assert.deepStrictEqual(model.nonDescriptorLoadSlabs.slice(0, 6), [{
     id: 'scenario-loader-00195410',
     kind: 'loader-dma',
     romStart: 0x00195410,
@@ -309,6 +319,9 @@ function main() {
     executableRanges: [],
     nonExecutableRanges: [],
   }], 'accepted load-slab record drift');
+
+  results.push({ name: 'complete-manual-load-placement', ...verifyCompletedMappings(model, romBytes),
+    negativeControls: runMappingMutations(model, romBytes) });
 
   const actionStreamSlab = model.nonDescriptorLoadSlabs.find((slab) => slab.id === 'resource-loader-00213b10');
   assert.ok(actionStreamSlab, 'action-stream resource load slab is missing');
@@ -819,9 +832,9 @@ function main() {
     assert.strictEqual(loadHeaderForSlice.length, 1, `VMA/LMA load header drift: p${expected.rowIndex}`);
   }
   assert.strictEqual(expectedOwners.reduce((sum, owner) => sum + owner.romEndExclusive - owner.romStart, 0), 0x23D0, 'load-slab owner coverage drift');
-  for (const rowIndex of [3061, 3068]) {
+  for (const [rowIndex, slabId] of [[3061, 'scenario-loader-0018f100'], [3068, 'scenario-loader-001977e0']]) {
     const row = model.rows[rowIndex];
-    assert.ok(row && row.slices.every((slice) => slice.loadSlabId === null && slice.placementKind !== 'non-descriptor-load-slab'), `p${rowIndex} entered the load slab`);
+    assert.ok(row && row.slices.every((slice) => slice.loadSlabId === slabId && slice.placementKind === 'non-descriptor-load-slab'), `p${rowIndex} neighboring load placement drift`);
   }
 
   const p0810 = model.rows[810];
@@ -847,10 +860,10 @@ function main() {
     sectionName: '.ob64.r0810.s0',
     romStart: 0x00040638,
     romEndExclusive: 0x00040E80,
-    vramStart: 0x00040638,
-    vramEndExclusive: 0x00040E80,
-    placementKind: 'rom-only',
-    loadSlabId: null,
+    vramStart: 0x800EB0A8,
+    vramEndExclusive: 0x800EB8F0,
+    placementKind: 'non-descriptor-load-slab',
+    loadSlabId: 'boot-resource-loader-0003f1b0',
     executable: false,
     executableRangeId: null,
   }, 'p0810 head placement drift');
@@ -1045,7 +1058,7 @@ function main() {
   assert.strictEqual(layout.owners[910].inputKind, 'tracked-assembly', 'layout activated p0910 C');
 
   const linkerScript = renderLinkerScript(model);
-  assert.ok(linkerScript.includes('.ob64.r0810.s0 0x00040638 : AT(0x00040638)'), 'p0810 head linker placement drift');
+  assert.ok(linkerScript.includes('.ob64.r0810.s0 0x800EB0A8 : AT(0x00040638)'), 'p0810 head linker placement drift');
   assert.ok(linkerScript.includes('.ob64.r0810.s1 0x8016AF80 : AT(0x00040E80)'), 'p0810 tail linker VMA/LMA relationship drift');
   assert.ok(linkerScript.includes('.ob64.r0910 0x8016F11C : AT(0x0004501C)'), 'p0910 linker VMA/LMA relationship drift');
   assert.ok(linkerScript.includes('.ob64.r1289 0x80197B70 : AT(0x00066E10)'), 'p1289 descriptor-0 linker placement drift');

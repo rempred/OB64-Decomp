@@ -30,14 +30,24 @@ rejects(c => c.padding[0].expectedBytesSha256 = '0'.repeat(64), /padding hash/);
 rejects(c => c.padding[0].romEndExclusive = workbench.baserom.length + 4, /invalid padding/);
 rejects(c => c.preservedProductionEnvelopes.push(clone(c.preservedProductionEnvelopes[0])), /preserved producer/);
 rejects(c => c.preservedProductionEnvelopes[0].compilerTextFunctions[0].bytes -= 4, /coverage drift/);
-rejects(c => c.unavailableBodies[0].reason = 'assumed-map', /unavailable/);
+rejects(c => c.unavailableBodies.push({ ...c.bodies[0], reason: 'assumed-map' }), /unavailable/);
+rejects(c => c.unavailableBodies.push({ ...c.bodies.shift(), reason: 'runtime-placement-unqualified' }), /qualified placement/);
+assert.equal(workbench.logicalRegistry.unavailableBodies.length, 0);
+for (const [start,end] of [[0x1782C0,0x17841C],[0x178450,0x178A44],[0x1C9050,0x1C906C],
+  [0x2B3300,0x2B3494],[0x2B3494,0x2B3704]]) {
+  const body=workbench.logicalRegistry.bodies.find(body=>body.romStart===start);
+  assert(body);assert.equal(body.romEndExclusive,end);
+  assert(body.fragments.every(fragment=>fragment.placementKind==='non-descriptor-load-slab'));
+}
+assert.throws(()=>registry.intersections(workbench.model,0x1C904C,0x1C9074),/unqualified|placement/);controls++;
 const unqualified = clone(workbench.model);
 unqualified.rows.find(row => row.index === config.bodies[0].fragments[0].rowIndex).slices[0].placementKind = 'rom-only';
 assert.throws(() => registry.loadRegistry(unqualified, workbench.baserom), /unqualified/); controls++;
 const spans = [[0xe6f8,0xea98,'func_0000E708'],[0xd0b84,0xd110c,'func_000D0B8C'],
   [0xee050,0xee094,'func_000EE058'],[0x1cfe68,0x1d013c,'func_001CFE70'],
   [0x261d24,0x261d7c,'func_00261D60'],[0x2664b0,0x2667c0,'func_00266550'],
-  [0x267990,0x267d98,'func_00267994'],[0x2806f8,0x280b34,'func_00280700']];
+  [0x267990,0x267d98,'func_00267994'],[0x2806f8,0x280b34,'func_00280700'],
+  [0x2b3494,0x2b3704,'func_002B349C']];
 for (const [start,end,alias] of spans) {
   const target = targetModel.resolveTarget(workbench, alias.toLowerCase());
   assert.equal(target.romStart,start); assert.equal(target.romEndExclusive,end);
@@ -105,7 +115,7 @@ for(const changed of [functions.slice(0,1),[functions[1],functions[0]].map((f,i)
   functions.map((f,i)=>({...f,value:i?8:0})),functions.map((f,i)=>({...f,value:i?16:0}))]) {
   assert.throws(()=>validateLogicalFunctionCensus(changed,[{symbol:'first'},{symbol:'second'}],40),/census|malformed/);controls++;
 }
-assert.equal(loadActiveTargetModel().targets.length,619);
+assert.equal(loadActiveTargetModel().targets.length,627);
 const fixtureRoot=fs.mkdtempSync(path.resolve('build/logical-functions-test-'));
 const interiorFile=path.join(fixtureRoot,'interior.s');
 fs.writeFileSync(interiorFile,'.text\n.word 0\n.Linterior:\n.word 0\n');
@@ -128,4 +138,4 @@ assert.equal(history.length,1);assert.equal(history[0].symbol,'func_00261D60');a
 assert.equal(history[0].target_id,oldTarget.targetId);
 const researchRows=requestStore({action:'query',name:'research_intake',args:{symbol:'func_00261d60',limit:10}},storeOptions);
 assert.equal(researchRows.length,1);assert.equal(researchRows[0].symbol,'func_00261D60');
-console.log(`logical functions: eight spans, four complete envelopes, helper store/alias history and ${controls} negative controls pass`);
+console.log(`logical functions: nine spans, five newly placed bodies, four complete envelopes, helper store/alias history and ${controls} negative controls pass`);

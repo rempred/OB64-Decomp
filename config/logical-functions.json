@@ -123,58 +123,7 @@
       "evidence": "Reviewed executable-end/leading-padding distinction; canonical words are zero. Not a function."
     }
   ],
-  "unavailableBodies": [
-    {
-      "romStart": 1540800,
-      "romEndExclusive": 1541148,
-      "evidence": {
-        "caseId": "entry:001782C0",
-        "status": "known-entry-or-ownership",
-        "rationale": "Source explicitly documents leading nop1782BC and setup at1782C0 before frame1782C8. Candidate reaches the sole return178414/18, coinciding with owner end. This is existing body after padding; unknown runtime mapping does not prevent that placement-independent conclusion."
-      },
-      "reason": "runtime-placement-unqualified"
-    },
-    {
-      "romStart": 1541200,
-      "romEndExclusive": 1542724,
-      "evidence": {
-        "caseId": "entry:00178450",
-        "status": "known-entry-or-ownership",
-        "rationale": "Source explicitly documents three leading padding words178444..4C, then setup and frame at178450/58. First body ends178A44 with balanced return178A3C/40. Detector extends through the next routine interior to179034; that oversized span is rejected. There is no additional entry created by skipping known padding."
-      },
-      "reason": "runtime-placement-unqualified"
-    },
-    {
-      "romStart": 1871952,
-      "romEndExclusive": 1871980,
-      "evidence": {
-        "caseId": "entry:001C9050",
-        "status": "known-entry-or-ownership",
-        "rationale": "Source explicitly preserves this mini-cluster with candidates1C904C/1C9050 and returns1C9064/1C906C. Skipping the leading nop gives the same wrapper, ending1C906C; a separate following no-op remains a distinct unresolved identity question. Placement of the JAL is unknown."
-      },
-      "reason": "runtime-placement-unqualified"
-    },
-    {
-      "romStart": 2831104,
-      "romEndExclusive": 2831508,
-      "evidence": {
-        "caseId": "accepted-primary",
-        "status": "accepted-primary-before-reviewed-secondary",
-        "rationale": "Preserved accepted primary entry; endpoint closes at JR ra plus delay slot before the earliest reviewed candidate. Unproven following candidates remain unknown coverage."
-      },
-      "reason": "runtime-placement-unqualified"
-    },
-    {
-      "romStart": 2831508,
-      "romEndExclusive": 2832132,
-      "evidence": {
-        "caseId": "entry:002B3494",
-        "status": "known-entry-or-ownership",
-        "rationale": "Source func_002B3300.s:11 already identifies3494/3498 as next-body preamble retained to fill the tile. v0 is loaded there and consumed by store2B34D4 before any redefinition, after new frame at349C. Complete following body returns36FC/3700. Logical start3494 is supported without claiming unproven runtime mapping; not an additional routine beyond349C."
-      },
-      "reason": "runtime-placement-unqualified"
-    }
-  ],
+  "unavailableBodies": [],
   "bodies": [
     {
       "romStart": 4384,
@@ -3096,6 +3045,62 @@
       ]
     },
     {
+      "romStart": 1540800,
+      "romEndExclusive": 1541148,
+      "evidence": {
+        "caseId": "entry:001782C0",
+        "status": "known-entry-or-ownership",
+        "rationale": "Source explicitly documents leading nop1782BC and setup at1782C0 before frame1782C8. Candidate reaches the sole return178414/18, coinciding with owner end. This is existing body after padding; that placement-independent conclusion is preserved. Runtime placement qualified by the 2026-09-23 manual-load mapping audit; body endpoints are unchanged."
+      },
+      "symbol": "func_001782C0",
+      "aliases": [],
+      "expectedBytesSha256": "66466458E68636EF67BC75BBEDE6649080ED740040298E384178819D2518A0E5",
+      "fragments": [
+        {
+          "rowIndex": 2948,
+          "romStart": 1540800,
+          "romEndExclusive": 1541148,
+          "ownerOffset": 4,
+          "bytes": 348,
+          "vramStart": 2149667696,
+          "sectionName": ".ob64.r2948",
+          "placementKind": "non-descriptor-load-slab",
+          "overlayDescriptorId": null,
+          "loadSlabId": "scenario-loader-00177ed0",
+          "file": "asm/original/rev0/lib/func_001782BC.s",
+          "sha256": "7A1D03E0C5B302034416334CC2E66828FE5F756C2EEC90F6EB5D1B7E5C4D1C52"
+        }
+      ]
+    },
+    {
+      "romStart": 1541200,
+      "romEndExclusive": 1542724,
+      "evidence": {
+        "caseId": "entry:00178450",
+        "status": "known-entry-or-ownership",
+        "rationale": "Source explicitly documents three leading padding words178444..4C, then setup and frame at178450/58. First body ends178A44 with balanced return178A3C/40. Detector extends through the next routine interior to179034; that oversized span is rejected. There is no additional entry created by skipping known padding. Runtime placement qualified by the 2026-09-23 manual-load mapping audit; body endpoints are unchanged."
+      },
+      "symbol": "func_00178450",
+      "aliases": [],
+      "expectedBytesSha256": "A0E0F5E1C86602B43DEF24729A676D2FB06685AD69EDC509E231208CF3D66828",
+      "fragments": [
+        {
+          "rowIndex": 2950,
+          "romStart": 1541200,
+          "romEndExclusive": 1542724,
+          "ownerOffset": 12,
+          "bytes": 1524,
+          "vramStart": 2149668096,
+          "sectionName": ".ob64.r2950",
+          "placementKind": "non-descriptor-load-slab",
+          "overlayDescriptorId": null,
+          "loadSlabId": "scenario-loader-00177ed0",
+          "file": "asm/original/rev0/lib/func_00178444.s",
+          "sha256": "4CE062927560C184905363FBDF0873C3B99B60549B81B015073C0561FF212BCC"
+        }
+      ]
+    },
+    {
       "romStart": 1843300,
       "romEndExclusive": 1843448,
       "evidence": {
@@ -3176,6 +3181,34 @@
           "loadSlabId": null,
           "file": "asm/original/rev0/lib/func_001C2064.s",
           "sha256": "BC3838656BD9A5B73D12D63A38EE3539F4100EBA4C5A32A3E5D2F185CB77932D"
+        }
+      ]
+    },
+    {
+      "romStart": 1871952,
+      "romEndExclusive": 1871980,
+      "evidence": {
+        "caseId": "entry:001C9050",
+        "status": "known-entry-or-ownership",
+        "rationale": "Source explicitly preserves this mini-cluster with candidates1C904C/1C9050 and returns1C9064/1C906C. Skipping the leading nop gives the same wrapper, ending1C906C; a separate following no-op remains a distinct unresolved identity question. The reviewed load record now qualifies the JAL placement. Runtime placement qualified by the 2026-09-23 manual-load mapping audit; body endpoints are unchanged."
+      },
+      "symbol": "func_001C9050",
+      "aliases": [],
+      "expectedBytesSha256": "8149DCE45667F842E5CE4A8B6ED56FC7FB5B58FC6D20E150C6BD069D74D324FE",
+      "fragments": [
+        {
+          "rowIndex": 3413,
+          "romStart": 1871952,
+          "romEndExclusive": 1871980,
+          "ownerOffset": 4,
+          "bytes": 28,
+          "vramStart": 2149754944,
+          "sectionName": ".ob64.r3413.s1",
+          "placementKind": "non-descriptor-load-slab",
+          "overlayDescriptorId": null,
+          "loadSlabId": "ovl18-table-loader-001c9050",
+          "file": "asm/original/rev0/lib/func_001C904C.s",
+          "sha256": "BA06B56DBFCE674641B37D12333259EE8942ED247BF27C962AE8EF97E418535B"
         }
       ]
     },
@@ -3928,6 +3961,78 @@
           "loadSlabId": null,
           "file": "asm/original/rev0/lib/func_00280700.s",
           "sha256": "20B8EDECF726665EEBC647BD8B5A8755B48DF25E1E58CE2F295F22F0498F71D7"
+        }
+      ]
+    },
+    {
+      "romStart": 2831104,
+      "romEndExclusive": 2831508,
+      "evidence": {
+        "caseId": "accepted-primary",
+        "status": "accepted-primary-before-reviewed-secondary",
+        "rationale": "Preserved accepted primary entry; endpoint closes at JR ra plus delay slot before the earliest reviewed candidate. Unproven following candidates remain unknown coverage. Runtime placement qualified by the 2026-09-23 manual-load mapping audit; body endpoints are unchanged."
+      },
+      "symbol": "func_002B3300",
+      "aliases": [],
+      "expectedBytesSha256": "3FAA33BABAF9FE5E4BE90606F334801E94D05CA0F11116EEFC6187CE83EAA3F0",
+      "fragments": [
+        {
+          "rowIndex": 5557,
+          "romStart": 2831104,
+          "romEndExclusive": 2831508,
+          "ownerOffset": 0,
+          "bytes": 404,
+          "vramStart": 2149836032,
+          "sectionName": ".ob64.r5557",
+          "placementKind": "non-descriptor-load-slab",
+          "overlayDescriptorId": null,
+          "loadSlabId": "resource-dispatcher-002ae3c0",
+          "file": "asm/original/rev0/lib/func_002B3300.s",
+          "sha256": "5F58A0B61F2F5E7784A14BA9D5F8440B3DD5B653C59FA5CB61E7D86EEA20FF65"
+        }
+      ]
+    },
+    {
+      "romStart": 2831508,
+      "romEndExclusive": 2832132,
+      "evidence": {
+        "caseId": "entry:002B3494",
+        "status": "known-entry-or-ownership",
+        "rationale": "Source func_002B3300.s:11 already identifies3494/3498 as next-body preamble retained to fill the tile. v0 is loaded there and consumed by store2B34D4 before any redefinition, after new frame at349C. Complete following body returns36FC/3700. Logical start3494 is supported under its now-qualified runtime mapping; not an additional routine beyond349C. Runtime placement qualified by the 2026-09-23 manual-load mapping audit; body endpoints are unchanged."
+      },
+      "symbol": "func_002B3494",
+      "aliases": [
+        "func_002B349C"
+      ],
+      "expectedBytesSha256": "874C6C62263B00DCABC316A378453C38ADA78F8E3E29511D7491DFB645D72AC1",
+      "fragments": [
+        {
+          "rowIndex": 5557,
+          "romStart": 2831508,
+          "romEndExclusive": 2831516,
+          "ownerOffset": 404,
+          "bytes": 8,
+          "vramStart": 2149836436,
+          "sectionName": ".ob64.r5557",
+          "placementKind": "non-descriptor-load-slab",
+          "overlayDescriptorId": null,
+          "loadSlabId": "resource-dispatcher-002ae3c0",
+          "file": "asm/original/rev0/lib/func_002B3300.s",
+          "sha256": "5F58A0B61F2F5E7784A14BA9D5F8440B3DD5B653C59FA5CB61E7D86EEA20FF65"
+        },
+        {
+          "rowIndex": 5558,
+          "romStart": 2831516,
+          "romEndExclusive": 2832132,
+          "ownerOffset": 0,
+          "bytes": 616,
+          "vramStart": 2149836444,
+          "sectionName": ".ob64.r5558",
+          "placementKind": "non-descriptor-load-slab",
+          "overlayDescriptorId": null,
+          "loadSlabId": "resource-dispatcher-002ae3c0",
+          "file": "asm/original/rev0/lib/func_002B349C.s",
+          "sha256": "D65745272965B433D549F56ABDA2AA11E4C95F46370447CB4A0DBC424BE3A99D"
         }
       ]
     }
