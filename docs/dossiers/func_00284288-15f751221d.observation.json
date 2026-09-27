@@ -1,0 +1,98 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "15F751221D0F8CB563EF0DC586440037165450362BE4BFF67BA717662928D471",
+  "observationId": "2D9D0C2F44EF8DD5C48874CC8D39C639C167A9ACD573CF6D6E7DB5ACF68B338F",
+  "symbol": "func_00284288",
+  "authored": {
+    "context": "Dispatcher wave3, complete 8000-byte accepted body and pinned compiler/flags. Both required full-word helper interfaces compile byte-identically. The production draft has an early canonical section-shape failure; the present successor remains research-only.",
+    "effects": [
+      "control-flow",
+      "alias-analysis",
+      "scheduling",
+      "register-lifetime"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "1E002C455B7254175A96CE4AF33B46B7A3CCCAC69BECC9F8538C9EAAF35FA285",
+      "sourceSha256": "1A67DB5CD7D0A47E224031DDACD6CA1FAB054886384F75767A8E044958084FCF"
+    },
+    "label": "silentcrane-dispatcher-indexed-arguments-shared-increments-20260927",
+    "observedEffect": "Pinned isolated native output is1998 words, with1995/2000 opcode/register-aligned words. The array-element arguments carry GCC2.7.2 MEM_IN_STRUCT_P and allow both argument loads above the fixed-global byte store while retaining the separate store load. A shared increment prevents premature merging of5D/80000006 call pairs; late scheduling then fills the appropriate call delay slots. All command bodies remain represented.",
+    "parentCandidateId": "C129573C0DE05120FC223D770E260CB063052916F3F0359317E06E599A48BEC6",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_00284288.s",
+        "sha256": "0973E4AFEDC1F1816BF0DAB3B8577CEB8C23EF5EAEC0DB9C6EE77ADE0A98A0D5"
+      },
+      {
+        "path": "config/logical-functions.json",
+        "sha256": "747933476C433A4882B8C000C750E32680F9825A850A3504949FFFE9011D689D"
+      },
+      {
+        "path": "src/lib/func_0029DF04.c",
+        "sha256": "EEB082C205ECA4B6968E7838722EB3DD8816FDCAA2A84889573D6C32E530AAB7"
+      },
+      {
+        "path": "src/lib/func_002A053C.c",
+        "sha256": "BA15CEFB837E4961A2FDD7AA53D11C9208685DEDDD1A2284E5FFE01D1C102513"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Not exact: case8's out-of-line skip tail is missing, the95/8E exit is shorter by one instruction, and80000005's branch delay slot differs. The diagnostic masks local branch/jump displacements, so matching alignment is not fixed-offset byte proof or canonical acceptance.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Use a for-loop for the shared command increment, structured mode arms with shared cursor updates, scalar parser state, late vector byte offset, direct early returns and post-call scan resets. Keep two source call pairs at5D/80000006 by placing the latter's increment after its whole if/else. Spell5D call inputs as array elements while retaining its store read as a cast dereference; move60's cursor update after the call. Remove unused labels/locals without changing output."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 40931,
+      "sha256": "1E002C455B7254175A96CE4AF33B46B7A3CCCAC69BECC9F8538C9EAAF35FA285"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "1A67DB5CD7D0A47E224031DDACD6CA1FAB054886384F75767A8E044958084FCF"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-27-func_00284288-15f751221d.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

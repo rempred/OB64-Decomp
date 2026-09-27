@@ -1,0 +1,84 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "192395F445F94FBE6DF137BA87F00030D853F98E4D7313B766528194CCA0C9E0",
+  "observationId": "C31CC074BD7770E257DF8C2EA4FB9ACD0EFA39B078E9D0553CBFE8F70A4ADEC9",
+  "symbol": "func_000E5968",
+  "authored": {
+    "context": "Accepted one-owner setup func_000E5968 at ROM0xE5968..0xE659C/runtime0x80198BE8..0x8019981C. Complete disassembly and current intake read; no prior observations. Roster verifier inputs remain fixed while this preparation stays in scratch.",
+    "effects": [
+      "coverage",
+      "data-layout"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "A5CA838DAF918F52E55EC187BBEECED4F7DFC500D8C5B5CCEF2859DBF23D26A4",
+      "sourceSha256": "6A4136E91FE08365C4733A54A401535BD35CE05A644CC37F53A0C7D342CC29BD"
+    },
+    "label": "silentcrane-setup-complete-initial-20260927",
+    "observedEffect": "Pinned scratch compilation covers the whole body with frame32 and790 native decoded words versus781 retail. Initial address materialization, alias/reload behavior, branch trees and register lifetimes differ. No canonical source activation or acceptance.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_000E5968.s",
+        "sha256": "AAA820E696277FD1419B1335FCED69F433CEC6DBCDD2A1676C01703207EBC74D"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Not exact. Canonical focused diff, relocation contract and complete two-target dialogue-wave verification remain required. Source names do not claim new runtime semantics.",
+    "role": "pair-baseline",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Independently derive all 781 target words as complete C: callback setup, archive selection, text dimensions, portrait/presets, combined coordinate test, step divisor, pointer placement and both edge clamps. Cross-check m2c/Kuna against complete disassembly; correct their /7 reconstruction and combined word load."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 13327,
+      "sha256": "A5CA838DAF918F52E55EC187BBEECED4F7DFC500D8C5B5CCEF2859DBF23D26A4"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "6A4136E91FE08365C4733A54A401535BD35CE05A644CC37F53A0C7D342CC29BD"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-27-func_000E5968-192395f445.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

@@ -14,8 +14,8 @@
     ".L_80229E98",
     ".L_8022A178"
   ],
-  "guardedAssemblySha256": "7B38A93AF48701C039294E206333FBD8C32F5AFA862F84853D7C4AA778BDACB2",
-  "unguardedAssemblySha256": "EF14137FDF049997ABE7F5BC7CC7D931B0414B564C6AF76095D4AF3325E137EF",
+  "guardedAssemblySha256": "E6BC778511B9A3DF2EB6E38F4EB481A693007690A2C7426831B9C083B0B5F630",
+  "unguardedAssemblySha256": "74A5DEE05A4DF2E875792FCCC8A54BCE94BEA020E03EFDAF2A65A2E795EA73CE",
   "unguardedExpectedFailure": "Label ._m2c_.L_8022A178before refers to a delay slot; this is currently not supported.",
   "reproducer": "node tools/reproduce_func_00284288_m2c_delay_slot.js --m2c-root <pinned-m2c-checkout>",
   "workaround": "Insert a synthetic nop immediately before each guarded label in m2c's analysis input only; retail bytes and candidate C are unchanged."

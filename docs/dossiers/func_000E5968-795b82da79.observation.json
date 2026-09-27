@@ -1,0 +1,85 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "795B82DA79CBA19EDF9A02467BCE515A9CE562B371937B0FBE357D46309B5676",
+  "observationId": "BC1307207F52FD1F29E888E95082AB4D6796819033562EA43050BB52055BB028",
+  "symbol": "func_000E5968",
+  "authored": {
+    "context": "Dialogue setup full accepted body; fixed pinned compiler and flags. Diagnostic source is not active and is not accepted.",
+    "effects": [
+      "control-flow",
+      "register-lifetime",
+      "alias-reload"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "7B4FE8E14B11BD010F1CAF333D957A46707790CB18DA39BDAC6804D81294B1B9",
+      "sourceSha256": "4B02887080C3F24F3F3B6A2DF5A2B811893E71CB171194911129F607F1F7F111"
+    },
+    "label": "silentcrane-setup-loop-header-complete-alignment-20260927",
+    "observedEffect": "Pinned scratch compilation and isolated linking align every one of 781 retail opcode/register words, including exact prefix negative offsets, saved register order, initial zero, full interior and epilogue. The only additional instructions are bne s0,zero plus nop immediately after memset; native alignment adds three trailing nops. This shows the missing context is a real basic-block boundary before the call, beyond a literal do/while(0) note.",
+    "parentCandidateId": "896C067B582E95CF8B1AEFC74D22FBCF1880263C862843EC78AF4C838C786D24",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_000E5968.s",
+        "sha256": "AAA820E696277FD1419B1335FCED69F433CEC6DBCDD2A1676C01703207EBC74D"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "783 function words versus 781 retail; redundant loop branch still present. This is a mechanism example, not a selected exact candidate. Research alignment ignores branch/jump displacement and is not canonical matching acceptance.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Use a family header/callback record and put only the initial memset in a do/while conditioned on the already-null archive pointer. Header flag updates precede callback writes in source."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 10911,
+      "sha256": "7B4FE8E14B11BD010F1CAF333D957A46707790CB18DA39BDAC6804D81294B1B9"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "4B02887080C3F24F3F3B6A2DF5A2B811893E71CB171194911129F607F1F7F111"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-27-func_000E5968-795b82da79.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

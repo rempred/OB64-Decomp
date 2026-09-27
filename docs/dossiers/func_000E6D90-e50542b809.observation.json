@@ -1,0 +1,86 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "E50542B809B1ED23ACF93CF547FFDBEB2DC298EAFE14A2A0031BA8B5139BF58F",
+  "observationId": "1BC35B17486B13838392BD8F2320372CB920056D5719049BF1BD0C5D9CC961A2",
+  "symbol": "func_000E6D90",
+  "authored": {
+    "context": "Renderer func_000E6D90, accepted single body ROM0xE6D90..0xE87F8/runtime0x8019A010..0x8019BA78,1690 instructions. Complete disassembly and m2c hypothesis read; Kuna background output cross-checked. Sources independently reconstruct the complete rendering phases and restore all nine arguments at E8268 and E864C; typed expressions remain provisional. Fixed production compiler contract unchanged.",
+    "effects": [
+      "control-flow",
+      "register-lifetime",
+      "alias-reload",
+      "operand-width"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "A5C3AD88DE2CFF1FAC315E2E1DD160401AEFDAA19089560EF54C4CCCF33DBAAC",
+      "sourceSha256": "1468303145EE915061A67322FE55F5D7E2B783431783C316751466F4C0964D5E"
+    },
+    "label": "silentcrane-render-text-int-coordinates-20260927",
+    "observedEffect": "Authenticated workbench compilation is PURE_C and nonexact, score38.64 in symbolic-object mode with458 relocations. Isolated linked alignment1356/1690 opcode/register words,1724 native words, retail frame48. Font style/address relation matches locally. Public portrait-loader signature consistency is open: this caller currently declares full-width parameters; the accepted helper still declares bytes. Scratch full-width helper plus explicit byte casts emits identical assembly; consult Fable and update consistently before activation.",
+    "parentCandidateId": "3981819B5B50DB9F8324A3C0ED49FF2919F19FCE2D9F1AAF0AD8477B198E901A",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_000E6D90.s",
+        "sha256": "F388E1B0AD063DAE299425E08496A19AD96C6127F4C484A2384F501D797976C2"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Not exact; complete canonical linked diff, actual relocation contract, sole ownership and full two-member dialogue wave verification remain required. Scratch alignment ignores branch/jump displacements and is not matching acceptance.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Capture bare-window line arguments before style selection, describe the font control bytes in a small record, and retain full32-bit text coordinate results rather than truncating them."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 17699,
+      "sha256": "A5C3AD88DE2CFF1FAC315E2E1DD160401AEFDAA19089560EF54C4CCCF33DBAAC"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "1468303145EE915061A67322FE55F5D7E2B783431783C316751466F4C0964D5E"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-27-func_000E6D90-e50542b809.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

@@ -9,7 +9,7 @@ const { verifyPhase5aProduct } = require('./lib/phase5b_phase5a');
 const ROOT = path.resolve(__dirname, '..');
 const PRODUCT = path.join(ROOT, 'docs', 'external-intake', 'phase5-boundary-segment-reconciliation-static-20260731');
 const EXPECTED = {
-  overlayConfigSha256: 'D4F1FB177822334EB748D6D62B342FB813D8825FEDD912057CF651EB616A5FB6',
+  overlayConfigSha256: 'AF454D26C8453ED2393731A4C19C4D23E655B0601BF102D9A3D55731101BFB9B',
   rows: 7242,
   bytes: 41943040,
   unresolvedSegments: 5,

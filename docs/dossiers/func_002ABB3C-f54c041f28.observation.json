@@ -1,0 +1,86 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "F54C041F28696968252AEB1565C4E9C7E4127939C43D04C66DE3BD1F46C159D5",
+  "observationId": "335E6029A13133F981DC6F838DEE939146C9BDB5A1C7C365DD8B9888CC9720CD",
+  "symbol": "func_002ABB3C",
+  "authored": {
+    "context": "Successor of the indexed guarded slot loop. Exact source also compiled by match.js watch with mechanical PURE_C classification. All scratch production compiler/assembler flags unchanged.",
+    "effects": [
+      "conditional-set",
+      "loop-hoisting",
+      "spill-order",
+      "delay-slot"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "25EC13E4934887DFB7E40CB82D278CA1BED209239E24EFD22E2E14AF78268F6C",
+      "sourceSha256": "F148F43A451FE6F61D29F8DF658DA632AD9BD9C27E0D7B73BB11CC6C8E0C78F7"
+    },
+    "label": "silentcrane-placement-raw-flag-control-flow-20260927",
+    "observedEffect": "266 words, 144-byte frame, all stack offsets and register assignments agree with retail. The flag remains a raw spilled parameter at0x3C and reload uses t0. Every instruction apart from relocations and the branch/delay pair at+0x33C agrees in the native scratch comparison. Workbench watch reports PURE_C, symbolic-object evidence, no size/stack/register-width mismatch; its unresolved relocations are not a linked proof.",
+    "parentCandidateId": "F8661037EBF0574F4224FCD441C79D12143ADB5EE3F500A133355F491302BB87",
+    "references": [
+      {
+        "path": "docs/dossiers/func_002ABB3C-near-match-20260926.md",
+        "sha256": "92BDDC26C96223AD33C4C2B8838614466C5E4F8CD8A9DCF251235B3FC61904D2"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "At+0x33C the candidate uses beq OR-result,zero to the common allow test with move v0,zero in its delay slot; retail uses beql directly to default placement with sw s3,16(sp). Diagnostic best only; not active, not accepted. A final repeated OR guard fixes these two words but changes global allocation: constant1 uses16 refs/live420(priority64/420), OR uses5 refs/live65(priority10/65), narrowly swapping s5/s6. force_movables at compiler loop.c1222-1223 aggregates lifetime/doubles savings for the direct AND dependency, explaining why the original single expression hoists raw flag comparison. There is no duplicate flag comparison.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Remove exploratory want[3] storage and restore want[2] plus the plain flagC parameter. In the false arm of the first actor condition, initialize allow=0, conditionally assign (flip==1)&(flagC==0) only for modes -9/-6, then branch on allow. Reverse the independent want initialization stores to member then leader."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 4131,
+      "sha256": "25EC13E4934887DFB7E40CB82D278CA1BED209239E24EFD22E2E14AF78268F6C"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "F148F43A451FE6F61D29F8DF658DA632AD9BD9C27E0D7B73BB11CC6C8E0C78F7"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-27-func_002ABB3C-f54c041f28.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

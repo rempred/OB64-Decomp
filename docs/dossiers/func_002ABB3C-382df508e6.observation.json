@@ -1,0 +1,85 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "382DF508E67A8389A5A839A72FD645C8018301C42F60E617EBD9ECBAADCE0B15",
+  "observationId": "C67B2ED5C73744748132251D63020294995BC2430A7C9F93854764BCED9D037E",
+  "symbol": "func_002ABB3C",
+  "authored": {
+    "context": "Starting from the exact preserved baseline source. Slots remain volatile and class-filter ladder unchanged. Related intermediates tested array expansion alone and eager bitwise conjunction alone.",
+    "effects": [
+      "loop-hoisting",
+      "addressable-local",
+      "boolean-conjunction"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "818BA6E98D42DE672422A96B5902283B50E6240503480E4EA502C6726353F631",
+      "sourceSha256": "D33DDAF49291833EC62D61700FA258EC8DB1F570A490583EC893492D9B46F48E"
+    },
+    "label": "silentcrane-placement-addressable-flag-bitand-20260927",
+    "observedEffect": "Successful diagnostic compile retains lw from sp+0x3C, sltu and AND inside the inner loop, matching the retail location of these operations. Array expansion alone emits short-circuit branches; adding eager bitwise conjunction recovers the retail Boolean instruction shape. Combined diagnostic has frame136,262 decoded rows and192 non-reloc differences; it is not selected over the baseline.",
+    "parentCandidateId": "CDC5DB9F1FBEBEFE93489B6A9D4C161D45222BC8CCBB239F15EDB8FD8BC84041",
+    "references": [
+      {
+        "path": "docs/dossiers/func_002ABB3C-near-match-20260926.md",
+        "sha256": "92BDDC26C96223AD33C4C2B8838614466C5E4F8CD8A9DCF251235B3FC61904D2"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Mode==-6 still hoists out of outer loop; slots-base hoist/spill and allocation/delay-slot differences remain. This worse whole-function score does not disprove the addressable-storage interpretation. Explicit base variants and bitwise OR variants were also unselected; their scratch sources remain recoverable.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Expand want from two to four s32 words; store flagC in want[3]; use eager ((flip==1) & (want[3]==0)) in the placement condition."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 3979,
+      "sha256": "818BA6E98D42DE672422A96B5902283B50E6240503480E4EA502C6726353F631"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "D33DDAF49291833EC62D61700FA258EC8DB1F570A490583EC893492D9B46F48E"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-27-func_002ABB3C-382df508e6.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

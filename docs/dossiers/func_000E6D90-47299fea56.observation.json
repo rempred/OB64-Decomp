@@ -1,0 +1,86 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "47299FEA5675F5EA042DB5EA7D14B7059551E191811BB002B1409772041C78CB",
+  "observationId": "6BB09A6DC99F790D17A8F5A9D55ED5A63C3D4B74BB38EC9E05913CC91C74A017",
+  "symbol": "func_000E6D90",
+  "authored": {
+    "context": "Renderer func_000E6D90, accepted single body ROM0xE6D90..0xE87F8/runtime0x8019A010..0x8019BA78,1690 instructions. Complete disassembly and m2c hypothesis read; Kuna background output cross-checked. Sources independently reconstruct the complete rendering phases and restore all nine arguments at E8268 and E864C; typed expressions remain provisional. Fixed production compiler contract unchanged.",
+    "effects": [
+      "control-flow",
+      "register-lifetime",
+      "alias-reload",
+      "operand-width"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "603E479E720625FBC4F5234C62C36D50C64DF253E40BC015503135330506ABE6",
+      "sourceSha256": "5015E09700E26839DDBE9193F3E669EE610654DFC9410A6FC4E7771ACE7AC320"
+    },
+    "label": "silentcrane-render-initial-20260927",
+    "observedEffect": "All phases present; pinned compiler emits1624 native words with frame312. Nested expression arguments duplicate coordinate transformations and cause excessive temporary storage. Corrected m2c omissions are present, but neither extent nor frame matches.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_000E6D90.s",
+        "sha256": "F388E1B0AD063DAE299425E08496A19AD96C6127F4C484A2384F501D797976C2"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Not exact; complete canonical linked diff, actual relocation contract, sole ownership and full two-member dialogue wave verification remain required. Scratch alignment ignores branch/jump displacements and is not matching acceptance.",
+    "role": "pair-baseline",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "First full structured renderer draft, based on the complete ROM and shared dialogue layout; named coordinate expressions and ten background display-list commands."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 23030,
+      "sha256": "603E479E720625FBC4F5234C62C36D50C64DF253E40BC015503135330506ABE6"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "5015E09700E26839DDBE9193F3E669EE610654DFC9410A6FC4E7771ACE7AC320"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-27-func_000E6D90-47299fea56.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

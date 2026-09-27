@@ -1,0 +1,86 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "D1F72ECC11CC0D322ED94C3C9E64792DA62C640A81844941BAED88E033FA681E",
+  "observationId": "FD6CEBDB9ADF1D49A6048184C1BD73BF03DF6FB7B266D3FE688420649FA926DC",
+  "symbol": "func_000E6D90",
+  "authored": {
+    "context": "Renderer func_000E6D90, accepted single body ROM0xE6D90..0xE87F8/runtime0x8019A010..0x8019BA78,1690 instructions. Complete disassembly and m2c hypothesis read; Kuna background output cross-checked. Sources independently reconstruct the complete rendering phases and restore all nine arguments at E8268 and E864C; typed expressions remain provisional. Fixed production compiler contract unchanged.",
+    "effects": [
+      "control-flow",
+      "register-lifetime",
+      "alias-reload",
+      "operand-width"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "08DC7D188ED70E3D2062964F9D4F1830D2FB75BF017649EF33758E42A0777B19",
+      "sourceSha256": "C78A076C46AAF0F5E83090DB36B713442039216D0D7C5D01B55DB803A35A7F95"
+    },
+    "label": "silentcrane-render-coordinate-stages-20260927",
+    "observedEffect": "Frame falls312 to retail48, without compiler flag changes or omitted phases.1828 native words versus1690; isolated opcode/register alignment997. This is a useful intermediate despite larger extent.",
+    "parentCandidateId": "47299FEA5675F5EA042DB5EA7D14B7059551E191811BB002B1409772041C78CB",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_000E6D90.s",
+        "sha256": "F388E1B0AD063DAE299425E08496A19AD96C6127F4C484A2384F501D797976C2"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Not exact; complete canonical linked diff, actual relocation contract, sole ownership and full two-member dialogue wave verification remain required. Scratch alignment ignores branch/jump displacements and is not matching acceptance.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Evaluate nested transformations in explicit stages, then pass all9 concrete drawing arguments."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 17869,
+      "sha256": "08DC7D188ED70E3D2062964F9D4F1830D2FB75BF017649EF33758E42A0777B19"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "C78A076C46AAF0F5E83090DB36B713442039216D0D7C5D01B55DB803A35A7F95"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-27-func_000E6D90-d1f72ecc11.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

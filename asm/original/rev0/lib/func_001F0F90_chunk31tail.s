@@ -8,8 +8,8 @@
 .set noreorder
 .text
 
-/* Straddler tail: continuation of a function whose entry is in the previous 64 KiB chunk. Incoming straddler-tail: continues func_001F0F9C (prologue in chunk 30 @0x1F0F9C). Returns jr$ra@0x1F1024 + delay nop@0x1F1028. */
-func_001F0F9C_chunk31tail:
+/* Straddler tail: continuation of a function whose entry is in the previous 64 KiB chunk. Incoming straddler-tail: continues func_001F0F90 (true entry in chunk 30 @0x1F0F90; parent prologue label func_001F0F9C @0x1F0F9C). Returns jr$ra@0x1F1024 + delay nop@0x1F1028. */
+func_001F0F90_chunk31tail:
 rev0_code_001F1000:
 /* 0x001F1000 0x80260C00 0x00461021 */ .word 0x00461021 # addu $v0, $v0, $a2
 /* 0x001F1004 0x80260C04 0x0806B6E4 */ .word 0x0806B6E4 # j 0x801ADB90

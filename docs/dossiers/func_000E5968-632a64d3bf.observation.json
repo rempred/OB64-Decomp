@@ -1,0 +1,87 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "632A64D3BF8A82CAD1AE44DCB8A38CD7FEAF11023B625A83CB667A99DFDF0B2F",
+  "observationId": "11DCBF7CB0F9D6055663E602B7D0EF6A0C942598C8B3021B97C777ADF56951B8",
+  "symbol": "func_000E5968",
+  "authored": {
+    "context": "Complete dialogue wave prepared under the unchanged compiler, owner, placement and source-policy contracts. Renderer is provisionally exact; full wave acceptance still requires the combined verifier.",
+    "effects": [
+      "control-flow",
+      "register-lifetime",
+      "alias-reload"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "ABD6877B492ED3B88191924B7E2AE41F6CBF35A08FFA7DAD5ED2801651E0AADE",
+      "sourceSha256": "548FA6D505F046D6D65161E2F7F5B88D92DB0DFCA7F4F0D7463D22B1B080BA67"
+    },
+    "label": "silentcrane-setup-byte-range-context-exact-20260927",
+    "observedEffect": "Pinned scratch compilation and isolated linking reproduce all 3124 target bytes, SHA256 F681A58ADD89EA811CE1D164C08BD6638D5BD707340B12AF2CE40DF8BB7D5CC6, including entry, frame, every body, and epilogue. The source construct contains no assembler escape and has exactly one clear call for every byte value.",
+    "parentCandidateId": "795B82DA79CBA19EDF9A02467BCE515A9CE562B371937B0FBE357D46309B5676",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_000E5968.s",
+        "sha256": "AAA820E696277FD1419B1335FCED69F433CEC6DBCDD2A1676C01703207EBC74D"
+      }
+    ],
+    "relatedCandidateIds": [
+      "896C067B582E95CF8B1AEFC74D22FBCF1880263C862843EC78AF4C838C786D24"
+    ],
+    "remainingFailure": "No target-byte failure in the isolated research link. Canonical focused evidence and the combined dialogue-wave verifier establish production acceptance separately; an import is not a verification result.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Use the family header/callback record and a documented single-execution clear block with a taken exit testing bit 8 of an unsigned byte. The nonempty unreachable tail preserves a CSE block boundary; combine and later jump cleanup remove all loop machinery. Correct the E6620 callback prototype and format the final source."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 11328,
+      "sha256": "ABD6877B492ED3B88191924B7E2AE41F6CBF35A08FFA7DAD5ED2801651E0AADE"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "548FA6D505F046D6D65161E2F7F5B88D92DB0DFCA7F4F0D7463D22B1B080BA67"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-27-func_000E5968-632a64d3bf.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

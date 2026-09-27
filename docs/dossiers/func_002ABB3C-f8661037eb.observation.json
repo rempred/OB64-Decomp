@@ -1,0 +1,86 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "F8661037EBF0574F4224FCD441C79D12143ADB5EE3F500A133355F491302BB87",
+  "observationId": "E5F67B2A6500B1BDB15B9B66C4C7AA948E6F2434AA5C2ECA7E5A5C996CF9EDE0",
+  "symbol": "func_002ABB3C",
+  "authored": {
+    "context": "Successor of the preserved addressable-flag/eager-AND pair. Compiler and assembler flags are the existing pinned scratch chain. This remains diagnostic: no canonical linked comparison or acceptance yet.",
+    "effects": [
+      "induction-variable",
+      "loop-hoisting",
+      "spill-order",
+      "delay-slot"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "EE369273A70EFAD2A02392E493FB858ED4AC35FAA1212BB97FABDE577EC72089",
+      "sourceSha256": "74959EA4DF1F4815B54B73883AE4BFA40907B8F8DC7AA3A65381B01388CFC789"
+    },
+    "label": "silentcrane-placement-indexed-loop-20260927",
+    "observedEffect": "266 decoded words and frame144 match retail dimensions. Desired raw mode spill0x44, seenLeader0x4C, normalized isNine temp0x5C and base0x64 are reproduced; all continue branch-likely choices and slot-call scheduling now agree. Rough index comparison reports21 differences including3 unresolved internal jumps and32 aligned relocation rows. This is the current best diagnostic source.",
+    "parentCandidateId": "382DF508E67A8389A5A839A72FD645C8018301C42F60E617EBD9ECBAADCE0B15",
+    "references": [
+      {
+        "path": "docs/dossiers/func_002ABB3C-near-match-20260926.md",
+        "sha256": "92BDDC26C96223AD33C4C2B8838614466C5E4F8CD8A9DCF251235B3FC61904D2"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "s5/s6 assignments are swapped, initial store ordering differs and flag load usesv0 rather than spilled-pseudo t0. want[4]/want[3] is an explicit exploratory addressability hypothesis, not established original source structure; restoring raw parameter currently hoists its normalization. No target is active or accepted. Same indexed for-loop without the explicit guard has265words; reusing j reverses the earlier 28-count loop, so distinct indices matter.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Compute only isSix=(mode==-6) before the inner loop, preserving the isNine disjunction inside. Use a distinct slotIndex, guard slots[0]==-1, and traverse slots[slotIndex] in a do/while with slotIndex incremented at its tail. Array address strength reduction now creates the hoisted base."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 4059,
+      "sha256": "EE369273A70EFAD2A02392E493FB858ED4AC35FAA1212BB97FABDE577EC72089"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "74959EA4DF1F4815B54B73883AE4BFA40907B8F8DC7AA3A65381B01388CFC789"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-27-func_002ABB3C-f8661037eb.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

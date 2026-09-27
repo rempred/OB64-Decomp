@@ -1,0 +1,86 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "3FBB255650D36F74933F6EDC70FD0457CEA393BD02FE265D2198398DDD19BFAC",
+  "observationId": "F504FC6B28DCA8A09F50530D1792D952D6F3243CE3E4466AECE7A2FC8DC54D57",
+  "symbol": "func_000E5968",
+  "authored": {
+    "context": "Roster wave passed and reports are saved. Complete accepted setup body at ROM0xE5968..0xE659C/runtime0x80198BE8..0x8019981C. This scratch candidate remains unaccepted.",
+    "effects": [
+      "control-flow",
+      "register-lifetime",
+      "alias-reload",
+      "operand-width"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "19F0B088943BCFB4FC7AA08C6781A475A36B0E6401661FCF8CDB9FD4E4AA7285",
+      "sourceSha256": "F0A16BA99C80E32CEA125BC4C88F198D2C9F346BB7BA287A315A8B00ABEEB0D2"
+    },
+    "label": "silentcrane-setup-body-context-20260927",
+    "observedEffect": "Research-only projection aligns720/781 opcode/register words with782 native words including alignment padding. Frame24 still differs from retail32, so this is a useful body intermediate rather than accepted output. Most interior body regions now align; remaining clusters are callback prefix/archive lifetime, one height multiply scheduling move, geometry temporary lifetimes, and frame.",
+    "parentCandidateId": "268CD84A1784762CDD7DC3D303813C62C17DDEB3A73D4DDDBC426FEB7E6446F8",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_000E5968.s",
+        "sha256": "AAA820E696277FD1419B1335FCED69F433CEC6DBCDD2A1676C01703207EBC74D"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Not exact. Scratch projection ignores jump/branch displacement only and is not canonical acceptance. Keep dimension-chain archived best recoverable; current body improvements need integration with correct prefix and geometry before canonical activation.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Group command parameters, stage the text lookup before portrait stores with a stable state pointer, use style-selected row spacing, model speed as a record byte with a short-lived clamp, reuse a full-width preset temporary, and keep state snapshots across final pointer field stores."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 10337,
+      "sha256": "19F0B088943BCFB4FC7AA08C6781A475A36B0E6401661FCF8CDB9FD4E4AA7285"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "F0A16BA99C80E32CEA125BC4C88F198D2C9F346BB7BA287A315A8B00ABEEB0D2"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-27-func_000E5968-3fbb255650.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

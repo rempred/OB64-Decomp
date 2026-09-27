@@ -1,0 +1,86 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "268CD84A1784762CDD7DC3D303813C62C17DDEB3A73D4DDDBC426FEB7E6446F8",
+  "observationId": "EC51ADB170370C984444B8772C3450D4F1DAB2549B4750AC9C6BE64518D012BF",
+  "symbol": "func_000E5968",
+  "authored": {
+    "context": "Roster wave passed and reports are saved. Complete accepted setup body at ROM0xE5968..0xE659C/runtime0x80198BE8..0x8019981C. This scratch candidate remains unaccepted.",
+    "effects": [
+      "control-flow",
+      "register-lifetime",
+      "alias-reload",
+      "operand-width"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "1FD02FDC6873D1291943E6DDA6DD64D5021281B773A6FCAB5ED575CDCBD2E925",
+      "sourceSha256": "BDF4AA9072A585C18055E93DE05929CEEAB2786C234BD244EBB95472A3285ED6"
+    },
+    "label": "silentcrane-setup-dimension-chain-20260927",
+    "observedEffect": "Pinned scratch link: frame32,790 native words,635 aligned opcode/register words. FLAGS read/modify/write plus -98 derived width address now reproduces retail locally; prefix and other body differences remain. A separate-height view gives786/627 and is not selected solely for extent.",
+    "parentCandidateId": "D819019D73E2B744BC0A5DF03796448A84350B1C37A4F2AC44FA223C1384A430",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_000E5968.s",
+        "sha256": "AAA820E696277FD1419B1335FCED69F433CEC6DBCDD2A1676C01703207EBC74D"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Not exact. Canonical focused diff, relocation contract and complete two-target dialogue-wave verification remain required. Source names do not claim new runtime semantics.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Represent width/height and flags in one record and keep dimension stores as chained assignments around conditional expressions."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 9972,
+      "sha256": "1FD02FDC6873D1291943E6DDA6DD64D5021281B773A6FCAB5ED575CDCBD2E925"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "BDF4AA9072A585C18055E93DE05929CEEAB2786C234BD244EBB95472A3285ED6"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-27-func_000E5968-268cd84a17.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

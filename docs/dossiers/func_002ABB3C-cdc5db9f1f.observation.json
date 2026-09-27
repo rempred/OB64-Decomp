@@ -1,0 +1,84 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "CDC5DB9F1FBEBEFE93489B6A9D4C161D45222BC8CCBB239F15EDB8FD8BC84041",
+  "observationId": "1D2A3F18A4562EF89CF39AC4217F70EB589896EFBC47B131AEE1A52BC43AE8D6",
+  "symbol": "func_002ABB3C",
+  "authored": {
+    "context": "Archived roster-placement near-match, self-contained C; current intake had no stored records. Compared with accepted complete 1064-byte owner; default Kuna and m2c packets also read.",
+    "effects": [
+      "retained-baseline",
+      "loop-hoisting"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "284E85F0EF06BFD3D2F391A9744A3CE002CD56507E4FCD6B77EF7615FF228598",
+      "sourceSha256": "A800FD645BC58BA2F4A60CEACFF93FE34A49699EE45BD91251296A8D18D87B93"
+    },
+    "label": "silentcrane-placement-start-20260927",
+    "observedEffect": "Fresh diagnostic compile succeeded: frame136, 262 decoded candidate rows versus266 retail;188 index-aligned non-relocation differing rows and14 aligned relocation-only rows. -dL: inner loop89 real insns; flagC comparison and its Boolean AND move to the inner preheader; mode==-6 also moves out of the outer loop.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "docs/dossiers/func_002ABB3C-near-match-20260926.md",
+        "sha256": "92BDDC26C96223AD33C4C2B8838614466C5E4F8CD8A9DCF251235B3FC61904D2"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Not an exact candidate. Retail frame144 includes a spilled slots-base address; retail keeps flagC comparison/AND inside the inner loop and mode==-6 inside the outer loop. Diagnostic score is not linked-byte or acceptance proof.",
+    "role": "pair-baseline",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "No source change: preserve the exact archived starting candidate before related storage and Boolean experiments."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 3950,
+      "sha256": "284E85F0EF06BFD3D2F391A9744A3CE002CD56507E4FCD6B77EF7615FF228598"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "A800FD645BC58BA2F4A60CEACFF93FE34A49699EE45BD91251296A8D18D87B93"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-27-func_002ABB3C-cdc5db9f1f.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

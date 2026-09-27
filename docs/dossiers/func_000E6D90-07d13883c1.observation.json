@@ -1,0 +1,86 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "07D13883C1EBAE2FC466DA0EFB53446BA235F32D6ECCA970C08D3BE1C337DF81",
+  "observationId": "9A8A0A2F77E027C8D987B7FF788D0E96AEA2763A0479A0C706983B90A1B154DD",
+  "symbol": "func_000E6D90",
+  "authored": {
+    "context": "Renderer func_000E6D90, accepted single body ROM0xE6D90..0xE87F8/runtime0x8019A010..0x8019BA78,1690 instructions. Complete disassembly and m2c hypothesis read; Kuna background output cross-checked. Sources independently reconstruct the complete rendering phases and restore all nine arguments at E8268 and E864C; typed expressions remain provisional. Fixed production compiler contract unchanged.",
+    "effects": [
+      "control-flow",
+      "register-lifetime",
+      "alias-reload",
+      "operand-width"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "A94531721597FF091EDF79528978DD035CF9A15B4DB9D63C0E96C7BEC523CC7A",
+      "sourceSha256": "8C24BCE5FC535A7E76E9570E2A756DF3B2E88334920C521D244A4AED4D74A750"
+    },
+    "label": "silentcrane-render-exact-20260927",
+    "observedEffect": "Canonical focused diff confirms PURE_C, sole6760-byte C owner, all target bytes exact and all451 linked relocation words exact. Linked SHA49103FF0D9621CF97B837EA54015CCA7157D96D73185C774C837C0330B363832. The four actual relocated load/address records were refreshed from the observed candidate after this source change. Fable203 explains sched1 single-set birthing priority as the mechanism behind the corrected load order.",
+    "parentCandidateId": "F769F68A253202F1DAEE4C3CD1F31AA235D6D4F7431546631937A081DEB457E7",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_000E6D90.s",
+        "sha256": "F388E1B0AD063DAE299425E08496A19AD96C6127F4C484A2384F501D797976C2"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Provisional exact target; the complete two-member dialogue wave and changed portrait helper still require one combined full-ROM verifier after setup is ready.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "In the first text arm, retain the raw clip-left load in a separate block-scoped rawX before assigning TEXT_X(rawX) to x. This distinguishes the single-set input from the adjusted coordinate."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 17549,
+      "sha256": "A94531721597FF091EDF79528978DD035CF9A15B4DB9D63C0E96C7BEC523CC7A"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "8C24BCE5FC535A7E76E9570E2A756DF3B2E88334920C521D244A4AED4D74A750"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-27-func_000E6D90-07d13883c1.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

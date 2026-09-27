@@ -1,0 +1,87 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "BA31E907560F9B1ED923204F30E6932E17D972E453156FED6F353535404FDE19",
+  "observationId": "EB2856786A2288644B815D9D339214225BE4EE969339C6FFC6B37212CF843273",
+  "symbol": "func_002ABB3C",
+  "authored": {
+    "context": "Successor of the complete two-word nonmatch under the unchanged pinned compiler and accepted structural owner.",
+    "effects": [
+      "control-flow",
+      "register-allocation",
+      "loop-motion"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "241F3E4D9EC474D22E3F8FCF0C8E9F1E655D205E6C388731AB12CD40308E3F55",
+      "sourceSha256": "322B3C5F92045C69D153B33C671E6BCCCD51B9923DE3109B70C2926C0C6DAA8D"
+    },
+    "label": "silentcrane-placement-exact-scenario-arms-20260927",
+    "observedEffect": "Canonical focused diff is PURE_C, all 1064 linked bytes and 266 decoded instruction words exact, frame 144 and all 36 relocations MATCH. Target SHA C929DF3AAF03D0DE0969C4EC5ACBBCBB3307E6C35FAB22597F40097CFE1B4604. The extra source assignment changes the weighted reference priority of constant 1, restoring the saved-register allocation; several scenario partitions also reproduce exact bytes, so original grouping is not uniquely established.",
+    "parentCandidateId": "F54C041F28696968252AEB1565C4E9C7E4127939C43D04C66DE3BD1F46C159D5",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_002ABB3C.s",
+        "sha256": "0B53681CCAC308788A9ADEA7A438DD98AEDBE3FE1E185F29DB8E74B672E1ED93"
+      }
+    ],
+    "relatedCandidateIds": [
+      "F8661037EBF0574F4224FCD441C79D12143ADB5EE3F500A133355F491302BB87"
+    ],
+    "remainingFailure": "No target differences remain. Matching acceptance still requires the one final verifier for the complete three-target roster wave.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Use a conditional assignment to an independently initialized allow temporary for the direct default edge; separate the six scenario cases into four-case and two-case arms with one flip assignment each. Preserve indexed do/while slots, outer mode test and filter initialization order."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 4111,
+      "sha256": "241F3E4D9EC474D22E3F8FCF0C8E9F1E655D205E6C388731AB12CD40308E3F55"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "322B3C5F92045C69D153B33C671E6BCCCD51B9923DE3109B70C2926C0C6DAA8D"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-27-func_002ABB3C-ba31e90756.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

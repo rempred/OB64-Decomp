@@ -1,0 +1,93 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "9A8A7E8F08DB342586F7AF472F3E85EB8241851133242FF762E92622C0EC1F0A",
+  "observationId": "3FAE20C1E30D4AB34CC3AADC8FF8C8784753BA08DF41A34D5C12E9EBE9930614",
+  "symbol": "func_00284288",
+  "authored": {
+    "context": "Third authorized wave; dispatcher accepted owner ROM00284288..002861C8, 8000 bytes. Frozen 9ED source is research only. Pinned compiler and flags remain unchanged. All changes here are isolated scratch; no production activation or completed-wave acceptance.",
+    "effects": [
+      "control-flow",
+      "register-lifetime",
+      "instruction-selection"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "B8B9445C6884F626D7C2BCE481B364287EEAFECECFC67F9284FCB9EF384D64D7",
+      "sourceSha256": "B8B9445C6884F626D7C2BCE481B364287EEAFECECFC67F9284FCB9EF384D64D7"
+    },
+    "label": "silentcrane-dispatcher-explicit-control-noop-20260927",
+    "observedEffect": "Restores retail pivot sequence5D,22,8,etc. Isolated aligned words rise1226 to1449 of2000; native candidate2002 to1982 words. This is evidence for compiler switch context, not a newly claimed behavior.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "docs/archive/matching-c-candidates/2026-08-31-func_00284288-9ed0fdee46.c",
+        "sha256": "958986E6E7A4E933D10B8A41B8F4020C798282DEFC3B3E8A1D38C322FA279062"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_00284288.s",
+        "sha256": "0973E4AFEDC1F1816BF0DAB3B8577CEB8C23EF5EAEC0DB9C6EE77ADE0A98A0D5"
+      },
+      {
+        "path": "config/logical-functions.json",
+        "sha256": "747933476C433A4882B8C000C750E32680F9825A850A3504949FFFE9011D689D"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Not byte-exact: cursor allocation, temporary lifetimes, tail merging and several body instruction sequences still differ. Research alignment ignores local branch/jump displacements, retains actual external JAL destinations, and is not canonical acceptance.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Add explicit no-op case0x80000002 while preserving every existing case and the default behavior. GCC stmt.c group_case_nodes/balance_case_nodes gives this low signed node a pivot weight."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 50256,
+      "sha256": "B8B9445C6884F626D7C2BCE481B364287EEAFECECFC67F9284FCB9EF384D64D7"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "B8B9445C6884F626D7C2BCE481B364287EEAFECECFC67F9284FCB9EF384D64D7"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-27-func_00284288-9a8a7e8f08.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

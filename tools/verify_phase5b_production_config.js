@@ -9,7 +9,7 @@ const path = require('path');
 const { verifyPhase5aProduct } = require('./lib/phase5b_phase5a');
 
 const ROOT = path.resolve(__dirname, '..');
-const EXPECTED = { rows: 7242, bytes: 41943040, unresolvedSegments: 5, unresolvedFunctions: 6154, overlayHash: 'D4F1FB177822334EB748D6D62B342FB813D8825FEDD912057CF651EB616A5FB6' };
+const EXPECTED = { rows: 7242, bytes: 41943040, unresolvedSegments: 5, unresolvedFunctions: 6154, overlayHash: 'AF454D26C8453ED2393731A4C19C4D23E655B0601BF102D9A3D55731101BFB9B' };
 const absolutePath = /(?:^[A-Za-z]:[\\/]|^\\\\|^\/|C:\\Users\\)/m;
 
 function sha256(file) { return crypto.createHash('sha256').update(fs.readFileSync(file)).digest('hex').toUpperCase(); }

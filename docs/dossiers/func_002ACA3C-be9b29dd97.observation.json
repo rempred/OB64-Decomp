@@ -1,0 +1,85 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "BE9B29DD97A4A91CD7B0A9738F213829A4A303D20BBB08CB1ED883464ECFBB45",
+  "observationId": "F17BD0BE10CE5EC672214349CE1EAF2B58DDE9FA72AAC38D0BA3BB22BA62410F",
+  "symbol": "func_002ACA3C",
+  "authored": {
+    "context": "Successor of the complete initial appender draft; same body coverage and pinned compiler chain. Canonical source and observed25 relocations are active provisionally, with complete roster-wave verification pending.",
+    "effects": [
+      "register-lifetime",
+      "call-lifetime",
+      "operand-order"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "F641F8060939CA8A3674AAADCED6A92DC4AE60E26CA27D1B2710248CA7BA0EFB",
+      "sourceSha256": "8B78DA043BA05F57E9CB48A3ACF72E16D1B302CDBC60C83549CD66F6DD711BC8"
+    },
+    "label": "silentcrane-appender-exact-lifetimes-20260927",
+    "observedEffect": "Canonical diff reports PURE_C, all1228 linked bytes and307 decoded instructions exact, targetSHA A096F8CBEE2020328DE162150885475072DACDD0FC937E5044F4F96C9592EE62. Frame528 matches. Native .text padding disappears in the normal owner section. The25 actual relocations were reviewed/recorded and the model loader reproduces their exact contract.",
+    "parentCandidateId": "D2E210F9FD1EFAC7698EC19CF98870026EF7FF9A08088DE5B182FF30F587F311",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_002ACA3C.s",
+        "sha256": "53F96441941DC295F3D3C03525BA6FA387398E9A84C99049BE90DD98A2983C53"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "No target-byte difference remains. Complete roster wave still needs its one final canonical verifier; this provisional exact linked candidate is not full-ROM matching acceptance. Semantic names beyond offsets and observed data flow remain unclaimed.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Separate unit/candidate/current row pointers between the three phases and separate final scan index. Put unit/tag/flag values on the left of equality checks; initialize insertion index before the key-helper call so it survives that call. Keep six parallel18-word arrays and the full retail grouping bounds."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 5082,
+      "sha256": "F641F8060939CA8A3674AAADCED6A92DC4AE60E26CA27D1B2710248CA7BA0EFB"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "8B78DA043BA05F57E9CB48A3ACF72E16D1B302CDBC60C83549CD66F6DD711BC8"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-27-func_002ACA3C-be9b29dd97.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

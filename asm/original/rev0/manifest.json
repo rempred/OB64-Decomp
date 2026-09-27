@@ -33361,13 +33361,13 @@
           "sha256": "847A2AA67E2CC6949AADE1FEBE9CC0659F757B2DBF15AFC1A7067AD8889BEC03"
         },
         {
-          "name": "func_001F0F9C",
-          "file": "asm/original/rev0/lib/func_001F0F9C.s",
+          "name": "func_001F0F90",
+          "file": "asm/original/rev0/lib/func_001F0F90.s",
           "romStart": "0x001F0F90",
           "romEndExclusive": "0x001F1000",
           "bytes": 112,
-          "textBytes": 2915,
-          "sha256": "5829286079452E470CB6CE3559F014E7D5A23BACE199FAF3DDB3786B075522D0"
+          "textBytes": 3363,
+          "sha256": "79F47F14554CF85B83CDE3B4396DC5AA185F332F9E7ED39986A5BE41A3DDE3EF"
         }
       ],
       "textBytes": 1317093,
@@ -33381,13 +33381,13 @@
       "sourceReportFile": "build/original-mips/rev0/code_001F1000_00201000.s",
       "parts": [
         {
-          "name": "func_001F0F9C_chunk31tail",
-          "file": "asm/original/rev0/lib/func_001F0F9C_chunk31tail.s",
+          "name": "func_001F0F90_chunk31tail",
+          "file": "asm/original/rev0/lib/func_001F0F90_chunk31tail.s",
           "romStart": "0x001F1000",
           "romEndExclusive": "0x001F102C",
           "bytes": 44,
-          "textBytes": 1353,
-          "sha256": "FC711C9934D2C89E052A8FD73C41A08F1510BF884D255B2D4BD2BE37819BD417"
+          "textBytes": 1402,
+          "sha256": "CA1A3EF6EE7C8D2ACBD9F97FCFFE1EB231A43C06A8BA2091DB7F3D0548E5F844"
         },
         {
           "name": "func_001F102C",

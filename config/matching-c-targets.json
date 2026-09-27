@@ -810,6 +810,14 @@
     {"symbol":"func_0000C310","source":"third_party/lha/ob64/decode.c"},
     {"symbol":"func_0000C778","source":"third_party/lha/ob64/crcio.c"},
     {"symbol":"boot_bitstream_descriptor_decode","source":"src/boot/boot_bitstream_descriptor_decode.c"},
-    {"symbol":"boot_bitstream_cursor_helpers","source":"src/boot/boot_bitstream_cursor_helpers.c"}
+    {"symbol":"boot_bitstream_cursor_helpers","source":"src/boot/boot_bitstream_cursor_helpers.c"},
+    {"symbol":"func_000ead04","source":"src/lib/func_000ead04.c"},
+    {"symbol":"func_002B4D58","source":"src/lib/func_002B4D58.c"},
+    {"symbol":"func_002ACF08","source":"src/lib/func_002ACF08.c"},
+    {"symbol":"func_002ABB3C","source":"src/lib/func_002ABB3C.c"},
+    {"symbol":"func_002ACA3C","source":"src/lib/func_002ACA3C.c"},
+    { "symbol": "func_000E6D90", "source": "src/lib/func_000E6D90.c" },
+    { "symbol": "func_000E5968", "source": "src/lib/func_000E5968.c" },
+    { "symbol": "func_00284288", "source": "src/lib/func_00284288.c" }
   ]
 }

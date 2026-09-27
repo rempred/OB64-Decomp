@@ -1,0 +1,84 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "D2E210F9FD1EFAC7698EC19CF98870026EF7FF9A08088DE5B182FF30F587F311",
+  "observationId": "56CE1C5266E78B62AFEDF74321301B01897FAB35B1EBBCD5F5E1602E7B3A7A0F",
+  "symbol": "func_002ACA3C",
+  "authored": {
+    "context": "First complete independently authored draft from retail307-word body and authenticated m2c/Kuna hypotheses. Includes preset append, object pairs, sorted descriptor arrays, grouped calls and final row pass. Callee identities were mapped through accepted model; C0E8 reads only a0 despite m2c proposing an extra argument.",
+    "effects": [
+      "register-lifetime",
+      "complete-body"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "FE0D35A378BE8A3B32457565A49B663DE3D1D376AE21BE858F373AFACB6DD5AC",
+      "sourceSha256": "A3B23C80D4A6E5552D618DD23AD87A2FEC64F3E0617CB3EB8C82BB23F08C0693"
+    },
+    "label": "silentcrane-appender-initial-20260927",
+    "observedEffect": "Native scratch compile covers the full body with308 decoded rows including native .text padding, frame520 versus retail528, and248 rough non-relocation differences. Not a linked result.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_002ACA3C.s",
+        "sha256": "53F96441941DC295F3D3C03525BA6FA387398E9A84C99049BE90DD98A2983C53"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Shared row-pointer/index lifetimes displace the retail callee-saved assignments. Equality operand order and insertion-index initialization relative to the key-helper call also differ.",
+    "role": "pair-baseline",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Initial structured C with six parallel18-word arrays and a single row pointer reused through phases."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 4932,
+      "sha256": "FE0D35A378BE8A3B32457565A49B663DE3D1D376AE21BE858F373AFACB6DD5AC"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "A3B23C80D4A6E5552D618DD23AD87A2FEC64F3E0617CB3EB8C82BB23F08C0693"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-27-func_002ACA3C-d2e210f9fd.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

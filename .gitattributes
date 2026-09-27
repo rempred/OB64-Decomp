@@ -35,3 +35,45 @@ docs/archive/matching-c-candidates/2026-09-09-func_0020CBDC-10022d5ff5.c -text w
 docs/archive/matching-c-candidates/2026-09-09-func_0020CBDC-5d55823485.c -text whitespace=cr-at-eol
 docs/archive/matching-c-candidates/2026-09-09-func_0020CBDC-d750ecf109.c -text whitespace=cr-at-eol
 docs/archive/matching-c-candidates/2026-09-09-func_0020CBDC-79c5026bbd.c -text whitespace=cr-at-eol
+
+# September 27 accepted inputs and research captures retain their recorded bytes.
+# Production inputs use explicit CRLF checkout; immutable captures keep raw bytes.
+config/matching-c-linkage.json text eol=crlf
+config/matching-c-targets.json text eol=crlf
+docs/Plans/task-logs/silentcrane-six-target-assignment-20260927.md -text whitespace=cr-at-eol
+docs/archive/matching-c-candidates/2026-09-26-func_002ABB3C-near-match.c -text whitespace=cr-at-eol
+docs/archive/matching-c-candidates/2026-09-27-func_000E5968-268cd84a17.c -text whitespace=cr-at-eol
+docs/archive/matching-c-candidates/2026-09-27-func_000E5968-3fbb255650.c -text whitespace=cr-at-eol
+docs/archive/matching-c-candidates/2026-09-27-func_000E5968-632a64d3bf.c -text whitespace=cr-at-eol
+docs/archive/matching-c-candidates/2026-09-27-func_000E5968-795b82da79.c -text whitespace=cr-at-eol
+docs/archive/matching-c-candidates/2026-09-27-func_000E5968-896c067b58.c -text whitespace=cr-at-eol
+docs/archive/matching-c-candidates/2026-09-27-func_000E5968-d819019d73.c -text whitespace=cr-at-eol
+docs/archive/matching-c-candidates/2026-09-27-func_000E5968-e22ddf7a14.c -text whitespace=cr-at-eol
+docs/archive/matching-c-candidates/2026-09-27-func_000E6D90-07d13883c1.c -text whitespace=cr-at-eol
+docs/archive/matching-c-candidates/2026-09-27-func_000E6D90-3981819b5b.c -text whitespace=cr-at-eol
+docs/archive/matching-c-candidates/2026-09-27-func_000E6D90-47299fea56.c -text whitespace=cr-at-eol
+docs/archive/matching-c-candidates/2026-09-27-func_000E6D90-a6670dabef.c -text whitespace=cr-at-eol
+docs/archive/matching-c-candidates/2026-09-27-func_000E6D90-d1f72ecc11.c -text whitespace=cr-at-eol
+docs/archive/matching-c-candidates/2026-09-27-func_000E6D90-e50542b809.c -text whitespace=cr-at-eol
+docs/archive/matching-c-candidates/2026-09-27-func_000E6D90-f769f68a25.c -text whitespace=cr-at-eol
+docs/archive/matching-c-candidates/2026-09-27-func_00284288-15f751221d.c -text whitespace=cr-at-eol
+docs/archive/matching-c-candidates/2026-09-27-func_00284288-8ae460f13e.c -text whitespace=cr-at-eol
+docs/archive/matching-c-candidates/2026-09-27-func_00284288-9a8a7e8f08.c -text whitespace=cr-at-eol
+docs/archive/matching-c-candidates/2026-09-27-func_00284288-c129573c0d.c -text whitespace=cr-at-eol
+docs/archive/matching-c-candidates/2026-09-27-func_002ABB3C-382df508e6.c -text whitespace=cr-at-eol
+docs/archive/matching-c-candidates/2026-09-27-func_002ABB3C-ba31e90756.c -text whitespace=cr-at-eol
+docs/archive/matching-c-candidates/2026-09-27-func_002ABB3C-cdc5db9f1f.c -text whitespace=cr-at-eol
+docs/archive/matching-c-candidates/2026-09-27-func_002ABB3C-f54c041f28.c -text whitespace=cr-at-eol
+docs/archive/matching-c-candidates/2026-09-27-func_002ABB3C-f8661037eb.c -text whitespace=cr-at-eol
+docs/archive/matching-c-candidates/2026-09-27-func_002ACA3C-be9b29dd97.c -text whitespace=cr-at-eol
+docs/audit/2026-09-27-func-001f0f90-true-entry.md -text whitespace=cr-at-eol
+src/lib/func_000E5968.c text eol=crlf
+src/lib/func_000E6D90.c text eol=crlf
+src/lib/func_000ead04.c text eol=crlf
+src/lib/func_00284288.c text eol=crlf
+src/lib/func_002ABB3C.c text eol=crlf
+src/lib/func_002ACA3C.c text eol=crlf
+src/lib/func_002B4D58.c text eol=crlf
+
+# Blank context lines are part of this preserved unified patch.
+docs/archive/matching-c-candidates/2026-09-26-func_001F0F90-true-entry-label.patch whitespace=-blank-at-eol

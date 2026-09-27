@@ -9,6 +9,8 @@
 .text
 
 /* Straddler head: this function begins here and continues into the next 64 KiB chunk. OUTGOING straddler-head. TRUE entry is a read-before-write preamble at 0x001F0F90 (lui $v1,0x801D @1F0F90; lw $v1,-0x1744 @1F0F94; lw $v0,0x56C0 @1F0F98) feeding the parent prologue addiu $sp,-0x8 @0x001F0F9C. No jr$ra before 0x001F1000; internal j 0x801ADB54; CONTINUES into chunk 31 (returns at 0x001F1024). */
+/* True entry 0x001F0F90 (read-before-write preamble: lui $v1,0x801D; lw $v1,-0x1744($v1) = D_801CE8BC; lw $v0,0x56C0($v1); consumed by the beq at 0x001F0FA0). Retail callers jal 0x801ADB00 (e.g. func_002ACF08). The parent-DB boundary func_001F0F9C below is kept as an inner label; it is not the entry. Preamble-orphan fold recorded in scripts/ob64_function_corrections_rev0.json (parentStart 0x001F0F9C, decompStart 0x001F0F90). */
+func_001F0F90:
 /* 0x001F0F90 0x80260B90 0x3C03801D */ .word 0x3C03801D # lui $v1, 0x801D
 /* 0x001F0F94 0x80260B94 0x8C63E8BC */ .word 0x8C63E8BC # lw $v1, -0x1744($v1)
 /* 0x001F0F98 0x80260B98 0x8C6256C0 */ .word 0x8C6256C0 # lw $v0, 0x56C0($v1)

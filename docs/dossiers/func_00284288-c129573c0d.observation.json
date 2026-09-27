@@ -1,0 +1,93 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "C129573C0DE05120FC223D770E260CB063052916F3F0359317E06E599A48BEC6",
+  "observationId": "92C1A88862D00B2585FF26AB1F7137A71157AD4C2C6BE3AB4197B42A006DCB14",
+  "symbol": "func_00284288",
+  "authored": {
+    "context": "Third authorized wave; dispatcher accepted owner ROM00284288..002861C8, 8000 bytes. Frozen 9ED source is research only. Pinned compiler and flags remain unchanged. All changes here are isolated scratch; no production activation or completed-wave acceptance.",
+    "effects": [
+      "control-flow",
+      "register-lifetime",
+      "instruction-selection"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "49BF6ADC60D4215E3E8DFB6A596CC0705C471908D33A098F41E1B30E5511A77A",
+      "sourceSha256": "9266D5F5B843E3615CEAEF4152001FDEAF5AC8217D7D42D8398CB34A1A155379"
+    },
+    "label": "silentcrane-dispatcher-refined-bodies-20260927",
+    "observedEffect": "Pinned isolated compilation: retail frame120, cursor s1, constants s6/s7/f20, scalar spill slots3C/44, full command coverage. 1994native words with1950/2000 aligned; remaining differences are conditional exits, tail merge and local scheduling. Full-word helper interfaces independently compile to identical original helper assembly. Source is provisional, not accepted.",
+    "parentCandidateId": "9A8A7E8F08DB342586F7AF472F3E85EB8241851133242FF762E92622C0EC1F0A",
+    "references": [
+      {
+        "path": "docs/archive/matching-c-candidates/2026-08-31-func_00284288-9ed0fdee46.c",
+        "sha256": "958986E6E7A4E933D10B8A41B8F4020C798282DEFC3B3E8A1D38C322FA279062"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_00284288.s",
+        "sha256": "0973E4AFEDC1F1816BF0DAB3B8577CEB8C23EF5EAEC0DB9C6EE77ADE0A98A0D5"
+      },
+      {
+        "path": "config/logical-functions.json",
+        "sha256": "747933476C433A4882B8C000C750E32680F9825A850A3504949FFFE9011D689D"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Not byte-exact: cursor allocation, temporary lifetimes, tail merging and several body instruction sequences still differ. Research alignment ignores local branch/jump displacements, retains actual external JAL destinations, and is not canonical acceptance.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Replace the goto loop with guarded do/while and literal invariants; use separate scalar stop/scan locals, duplicated source free/find tails, stable call inputs, staged float arguments, byte-loop row snapshot, explicit pointer offset association and full-word interfaces. Correct the 8000000A read-before-increment context after an unselected experiment exposed its dependence."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 44602,
+      "sha256": "49BF6ADC60D4215E3E8DFB6A596CC0705C471908D33A098F41E1B30E5511A77A"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "9266D5F5B843E3615CEAEF4152001FDEAF5AC8217D7D42D8398CB34A1A155379"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-27-func_00284288-c129573c0d.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
