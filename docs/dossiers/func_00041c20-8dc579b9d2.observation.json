@@ -1,0 +1,91 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "8DC579B9D22D3E407372918268190722D49544BD125DE6A2CEDAD8BBEA4FCBB1",
+  "observationId": "B0325938FE3E4EFD31F0E8036F4CBF477D351680C1AD75D40B08C336304211D6",
+  "symbol": "func_00041c20",
+  "authored": {
+    "context": "The accepted 608-byte func_00041c20 owner has its fallback table copy near the epilogue. Retail uses separate values for the code byte range test and subtraction, and decrements the attempt counter immediately after releasing the resource. The earlier complete C source placed fallback before the main loop and had 110 differing linked words.",
+    "effects": [
+      "pure-c",
+      "exact-owner-extent",
+      "retail-frame",
+      "complete-body-census",
+      "linked-nonmatch"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "6C469BC309DA139BB8B19891B1B5491A4E1CBF830C5DF1030C45514FE1F8BF89",
+      "sourceSha256": "B5F1DE0DF29F1354F083FDFDBA71507500F137849E58012CEA1747DF5EB2080C"
+    },
+    "label": "member-pool-inverted-range-signed-code",
+    "observedEffect": "Authenticated scratch compilation emits 608 bytes/152 instructions, the retail 72-byte frame and zero missing/extra instructions. Temporary canonical focused link confirms a sole PURE_C producer at the accepted owner and improves the result to 42 differing words/122 bytes, versus 110 words/389 bytes for the previous selected source. The temporary target and three direct-address symbols were removed after the diff. No relocation contract or full-ROM verifier ran.",
+    "parentCandidateId": "88AC21ED1F10677A4DE526FF9386D91DA184F096D506B2E674C529F016801D3B",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_00041c20.s",
+        "sha256": "2BE1C683B49A8A41E827C4BA113568A6BE9B3382F57BEDDF54D664FB5944EF0E"
+      },
+      {
+        "path": "docs/archive/matching-c-candidates/2026-09-29-func_00041c20-88ac21ed1f.c",
+        "sha256": "299647EAB370ADB11E761BC92633CC8F382FE80CE71B311EE73FD3A414BB395E"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "The candidate remains nonexact. Retail's three-key load uses one shared base register, while this source produces independent direct loads; the duplicate scan tail also differs. Separately combining an aggregate key copy and duplicate counter preserved size but regressed to 71 linked words/236 bytes, so neither combined result is selected. Continue with source-level register-lifetime and duplicate-loop control experiments; original ASM remains the production owner.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Put the main loop in the true arm of the short-code or narrow-special-code condition, move fallback to the final else arm, use a signed integer local for the loaded code with explicit byte casts for the unsigned range and table index, and decrement the attempt counter immediately after resource release."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 2746,
+      "sha256": "6C469BC309DA139BB8B19891B1B5491A4E1CBF830C5DF1030C45514FE1F8BF89"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "B5F1DE0DF29F1354F083FDFDBA71507500F137849E58012CEA1747DF5EB2080C"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-29-func_00041c20-8dc579b9d2.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
