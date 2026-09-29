@@ -1,0 +1,94 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "EA299B64C4B8ED656B080938D4CB7081BA0A22DBAF1D48EA0E38638E2D34B563",
+  "observationId": "AD62F086107BABCAACCCCD4E4613AD3047627D76B5F7FE5A6D6578C56D8724AB",
+  "symbol": "func_001977E0",
+  "authored": {
+    "context": "The D819B881 source aligns every switch destination and the full text extent, but state 2 branches to the start of a shared tick increment with a nop delay slot. Retail state 2 already loads tick, computes tick+1 in its branch delay at function offset 0x524, and enters the shared tail at its store, z64 0x0019887C.",
+    "effects": [
+      "pure-c",
+      "retail-frame",
+      "exact-text-extent",
+      "all-state-entry-placement",
+      "state2-delay-slot",
+      "shared-tail-entry"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "1322D5B28876557F0883F9567381406E651D207A8AF967252B68D1245D9CD55C",
+      "sourceSha256": "1E10C2A41D7882FCFC1815C8EA53548085558E773125699D1B0D090BEBA15925"
+    },
+    "label": "shop-state2-shared-tick-store-entry",
+    "observedEffect": "Direct pinned compiler and assembler output preserves all sixteen retail switch destinations, 4580 bytes/1145 instructions and frame 112. State 2 now emits the retail lui/lbu/sltiu/bne sequence with addiu v0,v1,1 in the branch delay and the exact shared-store target offset 0x109C. Authenticated watch EA299B64C4B8ED656B080938D4CB7081BA0A22DBAF1D48EA0E38638E2D34B563 classifies PURE_C with zero expected-only/actual-only instructions, 2235 differing symbolic bytes and score 70.07, improving from D819B881's 2251/69.79.",
+    "parentCandidateId": "D819B88115C184E8216C84C860D239B0BBE78565D1F1A08910F14C0A68DC456A",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_001977E0.s",
+        "sha256": "95D9F4D4D4B3E8D0E83E44D1BE2E35F2C40F2DDB9A318BB247E375DD3DC906F6"
+      },
+      {
+        "path": "docs/archive/matching-c-candidates/2026-09-29-func_001977E0-d819b88115.c",
+        "sha256": "F1DD469388D6CFA53B016097E3D960D667AF1B1016AA4C42E835DB95D1573E4D"
+      }
+    ],
+    "relatedCandidateIds": [
+      "EEDB25F8CE9680CCBD63D9015C75FA52E1148B7E243F95DC4D9DB13F25576E8F"
+    ],
+    "remainingFailure": "State 2's local instruction pocket now fits, but the whole owner still differs broadly in opcodes, registers and control flow. Directly storing tick inside state 2 instead of sharing the store enlarged the owner by twelve bytes, so that counterexample was not selected. The separate switch table still lacks an approved C auxiliary ownership contract; original ASM stays production and no canonical linked result or completed-wave verifier has run.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Represent the shared tick tail with an increment path and a separate store label. In state 2, retain its loaded tick in a local, calculate the next tick, and jump directly to the store label. Other incrementing states enter before the shared calculation. Leave all other state bodies unchanged."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 21623,
+      "sha256": "1322D5B28876557F0883F9567381406E651D207A8AF967252B68D1245D9CD55C"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "1E10C2A41D7882FCFC1815C8EA53548085558E773125699D1B0D090BEBA15925"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-29-func_001977E0-ea299b64c4.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
