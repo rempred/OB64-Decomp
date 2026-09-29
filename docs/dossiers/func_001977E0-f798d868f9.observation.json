@@ -1,0 +1,90 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "F798D868F9E8D66DBB2BD9574B923C30BD485BC48D273891B1346CFF39E95946",
+  "observationId": "8F97304DA7A02880157C9E3BF474BAF944CA2EA50F89D3A45BE0ACF1CF62CA4E",
+  "symbol": "func_001977E0",
+  "authored": {
+    "context": "The preceding readable candidate AAB407F64CCFAFA24ADDBEB74680B982BF761DD69B7A823925CEC3B5DFDB8716 emitted 4480 bytes/1120 instructions, frame 0x60, with two separate func_0019B710 calls. Retail's common epilogue reads the motion flags first, tests bit one before loading the widget, then shares one rectangle-update call across the two directions.",
+    "effects": [
+      "pure-c",
+      "flag-first-tail",
+      "shared-widget-call",
+      "body-extent-improvement"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "1F46953A5DA8A1897C24C872EE0D48F3FAA419BB76BAE637DE8EF6261B84572A",
+      "sourceSha256": "74A3BE091E12DED4C3E883EF27C0C82C0622F373B2EC0DE369364F57AB46178E"
+    },
+    "label": "flag-first-shared-widget-motion-tail",
+    "observedEffect": "The authenticated pinned scratch compiler emits PURE_C at 4504 bytes/1126 instructions, frame 0x60, against retail 4580/1145 and frame 0x70. It has zero candidate-only and 19 expected-only instructions, improving the prior 25-instruction shortfall by six, and 3751 symbolic differing bytes versus 3766. Declaring the motion flag as a separate global shortened this form to 4496/1124, so that control is not selected.",
+    "parentCandidateId": "AAB407F64CCFAFA24ADDBEB74680B982BF761DD69B7A823925CEC3B5DFDB8716",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_001977E0.s",
+        "sha256": "95D9F4D4D4B3E8D0E83E44D1BE2E35F2C40F2DDB9A318BB247E375DD3DC906F6"
+      },
+      {
+        "path": "docs/archive/matching-c-candidates/2026-09-29-func_001977E0-aab407f64c.c",
+        "sha256": "E245CC7B260D1636B7165D41B79C6E4B24AA9C4AA86768399C8F3BBCD0A7AB96"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "The source remains 76 bytes short with broad register, control-flow and relocation-bearing differences; no canonical linked diff can pass the unapproved separate switch-table owner. Continue case-by-case body and frame reconciliation in scratch, retain original ASM as production, and defer full-ROM verification until the complete two-member shop wave is ready.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Use a local copy of the motion flags, retain the second-bit test, load the widget inside each direction, and converge both paths on one rectangle-update call. Preserve the clamp-only flag clearing and the ability to try bit two when bit one is set but the widget is null."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 21072,
+      "sha256": "1F46953A5DA8A1897C24C872EE0D48F3FAA419BB76BAE637DE8EF6261B84572A"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "74A3BE091E12DED4C3E883EF27C0C82C0622F373B2EC0DE369364F57AB46178E"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-29-func_001977E0-f798d868f9.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

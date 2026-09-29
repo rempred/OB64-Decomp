@@ -1,0 +1,89 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "AAB407F64CCFAFA24ADDBEB74680B982BF761DD69B7A823925CEC3B5DFDB8716",
+  "observationId": "9218672C13E1A1F742E2A971C29EAAF1C69B5AAB05F40896662EA6A328C7586E",
+  "symbol": "func_001977E0",
+  "authored": {
+    "context": "The independently derived sixteen-state source 8F0E60C15EB5ECC428CD6182EAE16338F60F65D48FAC1E03C0F1FB49D1BAA054 emitted one call site for func_0019B710 even though retail has separate calls in states four and nine. GCC tail-merged calls whose pointer arguments were two adjacent fields of one aggregate. The retail body is 4580 bytes/1145 instructions with a 0x70 frame.",
+    "effects": [
+      "pure-c",
+      "two-retail-helper-call-sites",
+      "source-lifetime-representation"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "8D3816D098E014AF6C545625E4AFD70A9B7A7918D51F7E810752CC7CFAC6A539",
+      "sourceSha256": "E245CC7B260D1636B7165D41B79C6E4B24AA9C4AA86768399C8F3BBCD0A7AB96"
+    },
+    "label": "separate-quantity-and-pending-globals",
+    "observedEffect": "The pinned scratch compiler emits two func_0019B710 call sites, as retail does, and remains PURE_C at 4480 bytes/1120 instructions with frame 0x60 and zero candidate-only instructions. Symbolic differing bytes fall from 3796 to 3766, while 25 retail instructions remain absent. Splitting the whole inventory object, the UI object, or both instead made the text shorter, although the inventory split moved the frame to 0x68; those forms are not selected.",
+    "parentCandidateId": "8F0E60C15EB5ECC428CD6182EAE16338F60F65D48FAC1E03C0F1FB49D1BAA054",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_001977E0.s",
+        "sha256": "95D9F4D4D4B3E8D0E83E44D1BE2E35F2C40F2DDB9A318BB247E375DD3DC906F6"
+      },
+      {
+        "path": "docs/archive/matching-c-candidates/2026-09-29-func_001977E0-8f0e60c15e.c",
+        "sha256": "9D8237D5869E1EE105851514F4A8D06ADAA29C71ABB826146BA7F903FD67F765"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "This candidate is still 100 bytes short with broad instruction-shape differences and no canonical linked comparison. The compiler-generated 64-byte switch table needs approved structural auxiliary ownership before production diff. Keep original ASM active, preserve the exact provisional func_0019BE40 producer, and defer the two-member shop wave verifier.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Represent the independently observed quantity byte at 0x8021A123 and pending byte at 0x8021A124 as separate typed globals, ending the preceding inventory aggregate at last_category. Leave all state behavior, remaining aggregate fields, and the dense switch unchanged."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 20798,
+      "sha256": "8D3816D098E014AF6C545625E4AFD70A9B7A7918D51F7E810752CC7CFAC6A539"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "E245CC7B260D1636B7165D41B79C6E4B24AA9C4AA86768399C8F3BBCD0A7AB96"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-29-func_001977E0-aab407f64c.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
