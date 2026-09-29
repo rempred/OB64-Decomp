@@ -1,0 +1,97 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "88AC21ED1F10677A4DE526FF9386D91DA184F096D506B2E674C529F016801D3B",
+  "observationId": "0165A93F7A2B2A1E64EB26856E438C8B493447E219DDC2BD94AAA16804BFD4CA",
+  "symbol": "func_00041c20",
+  "authored": {
+    "context": "Retail func_00041c20 decrements the 32-attempt limit immediately after freeing the decoded resource, before either duplicate scan. The first full-body candidate deferred the subtraction until after both scans and allocated the counter to s8 rather than retail s4.",
+    "effects": [
+      "pure-c",
+      "retail-counter-register",
+      "retail-decrement-placement",
+      "exact-owner-extent",
+      "linked-nonmatch"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "B00C321271F543CED3E1A6E3C2A41F6ABF30FE39700DF771A6A88042EE0FBFA7",
+      "sourceSha256": "299647EAB370ADB11E761BC92633CC8F382FE80CE71B311EE73FD3A414BB395E"
+    },
+    "label": "member-pool-early-attempt-decrement",
+    "observedEffect": "Authenticated scratch compilation keeps the 608-byte/152-instruction PURE_C owner and 72-byte frame, now allocates attempts to s4 and places its decrement immediately after resource_free as retail does. Focused canonical linked diff confirms sole C owner but still differs in 110 words/392 bytes, versus 110 words/389 bytes for the selected first source. The typed three-key aggregate combined with this change remains 616 bytes/154 instructions and frame 80, so the early decrement alone does not remove its base-pointer spill. No relocation contract or full-ROM verifier ran; temporary source/config activation was removed.",
+    "parentCandidateId": "CE9D30CCBCE57AD5F4D1B7F5B8CA631997C6CAB4E71BBD9D1C0428DCE61F8B8E",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_00041c20.s",
+        "sha256": "2BE1C683B49A8A41E827C4BA113568A6BE9B3382F57BEDDF54D664FB5944EF0E"
+      },
+      {
+        "path": "docs/archive/matching-c-candidates/2026-09-29-func_00041c20-ce9d30ccbc.c",
+        "sha256": "E771D3C2ADCF21808410BFC698D8183616C8EB53EDF660F725A7D0481D39164E"
+      },
+      {
+        "path": "docs/archive/matching-c-candidates/2026-09-29-func_00041c20-624c555b90.c",
+        "sha256": "EF5EE6CE29BA4BFA6292C064309FA0BFAA8D565A6F34FED0CEAC210CD5C28E39"
+      }
+    ],
+    "relatedCandidateIds": [
+      "624C555B90DC56B9B7BC7770DA6DFFBE82427270ECBC95343CEFB736932EB442"
+    ],
+    "remainingFailure": "The early timing is supported but this isolated candidate is not selected as the best linked result. It can be combined with a source-level way to keep the three-key block copy without an extra pointer spill. The first source remains best; original ASM production is active.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Decrement attempts after resource_free and retain only attempts &= -duplicate after the scans, preserving the bounded retry condition and all other C logic."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 2736,
+      "sha256": "B00C321271F543CED3E1A6E3C2A41F6ABF30FE39700DF771A6A88042EE0FBFA7"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "299647EAB370ADB11E761BC92633CC8F382FE80CE71B311EE73FD3A414BB395E"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-29-func_00041c20-88ac21ed1f.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
