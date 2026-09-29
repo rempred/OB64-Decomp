@@ -1,0 +1,93 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "0C5B7F9E5F22473E2AF44F4C4781A422083CE83DCEC01192226A6921F49A5908",
+  "observationId": "C0C9C750BBA88E3B05710DE200E17D7DD33B5CE87CA311CB56EEC87DCFE158BF",
+  "symbol": "func_0019BE40",
+  "authored": {
+    "context": "The prior complete PURE_C shop producer candidate linked with seven differing words/12 bytes: site-index high/low register order, archive-base addition operand order, and the equipment output +14 base versus store offsets.",
+    "effects": [
+      "pure-c",
+      "complete-body-census",
+      "exact-owner-extent",
+      "retail-frame",
+      "linked-exact",
+      "relocation-contract-match",
+      "wave-verification-pending"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "57473CE0EC7A7EF8DEBD6C4D485A3A56E3745A5E6C542BDF5AE7D1E72AA7BDE6",
+      "sourceSha256": "6D58DD5B17A2F53A4983A04770C032BFA681D93EAE8C8437A0E00624792D4C86"
+    },
+    "label": "shop-producer-exact-pure-c",
+    "observedEffect": "Current canonical focused diff reports EXACT decoded rows and EXACT raw linked bytes for the sole 432-byte .ob64.r3090 C owner at the accepted placement, with no original assembly fallback contribution. The source-policy tool classifies PURE_C. All fourteen observed relocations were reviewed and recorded; the focused relocation contract reports MATCH and each linked relocation word equals retail. Linked target SHA-256 is 64AFE84BB2DD7C6A5A0B59CC19A348A27FD2B9F8971EE2A1B54B41679AB00405.",
+    "parentCandidateId": "412072CA091E5C61B15D1222ACB93EC65ADCA345541DA722B8155433E236504F",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_0019BE40.s",
+        "sha256": "9A86E145C5EA2DBA7AC03B24D43ABBE55C5E7FE39781DA1534040A96F5874751"
+      },
+      {
+        "path": "docs/archive/matching-c-candidates/2026-09-29-func_0019BE40-412072ca09.c",
+        "sha256": "DEC54770BF6B76FD4604F423DBB6709A748EB23BBFE8AC20F6232AF48D6F7916"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "This is provisional until the complete two-member shop inventory wave, including func_001977E0, passes the normal final verifier and complete-ROM equality. No independent review or per-function full-ROM verification is required for this ordinary match.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Accumulate the high site-index byte before adding the low byte, accumulate the 32-bit shop archive header address from its byte offset, and start the strength-reduced equipment index at seven rather than adding seven at each store. Keep the archive offset loop and both halfword writes."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 2400,
+      "sha256": "57473CE0EC7A7EF8DEBD6C4D485A3A56E3745A5E6C542BDF5AE7D1E72AA7BDE6"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "6D58DD5B17A2F53A4983A04770C032BFA681D93EAE8C8437A0E00624792D4C86"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-29-func_0019BE40-0c5b7f9e5f.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

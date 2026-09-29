@@ -1,0 +1,92 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "412072CA091E5C61B15D1222ACB93EC65ADCA345541DA722B8155433E236504F",
+  "observationId": "3F2439E81C274F54EC948AA6A4BE18A84B283630CCE57407F98348A7DF0DE5AB",
+  "symbol": "func_0019BE40",
+  "authored": {
+    "context": "The preceding offset-index loop recovered the retail shop producer loop shape but linked with 32 differing words/42 bytes. Its explicit equipment cursor was live early and displaced the archive and list pointers from retail's registers.",
+    "effects": [
+      "pure-c",
+      "complete-body-census",
+      "exact-owner-extent",
+      "retail-frame",
+      "retail-pointer-registers",
+      "linked-nonmatch"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "8DDD0A80FBC779A04C91271198797ADE2D5BDD67724F3C3A28D11FA333ADE1C0",
+      "sourceSha256": "DEC54770BF6B76FD4604F423DBB6709A748EB23BBFE8AC20F6232AF48D6F7916"
+    },
+    "label": "shop-producer-strength-reduced-output-index",
+    "observedEffect": "Authenticated scratch emits PURE_C, 432 bytes/108 instructions, the retail 32-byte frame, five register-field differences and one opcode difference after symbolic alignment. Temporary canonical link confirms sole C ownership and reduces the residual to seven linked words/12 bytes. The archive return now uses t0, the list base a3, and the output pointer a0, matching retail. The seven words are three site-index byte/register words at offsets 0xAC/0xB0/0xB4, one commutative archive-base addition at 0xE8, the output-base setup at 0x14C, and two output stores at 0x160/0x174. Candidate has fourteen relocs and no reviewed contract.",
+    "parentCandidateId": "F3A24ACC67AFE6B753D376DF64E4641FAC6CB9A67D22A890D82BB95DB0B0B34D",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_0019BE40.s",
+        "sha256": "9A86E145C5EA2DBA7AC03B24D43ABBE55C5E7FE39781DA1534040A96F5874751"
+      },
+      {
+        "path": "docs/archive/matching-c-candidates/2026-09-29-func_0019BE40-f3a24acc67.c",
+        "sha256": "DF9F89D00FBDC86BABF682579988DB2EFF32F3560D052AEF6FA3064831DE4956"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "The site-index high/low loads use v1/a0 instead of retail a0/v1; shop_archive + 2*shop_index emits the reverse register operand order at 0xE8; and the generated output pointer remains the list base with +14 store offsets rather than adding 14 once in the branch delay slot. Exact target bytes and complete-wave verification remain absent. Original ASM is production.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Keep the archive offset induction loop and replace the explicit output cursor with a zero-based equipment item index used in combined[7 + equipment_index]. The pinned compiler strength-reduces that index into an output pointer."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 2208,
+      "sha256": "8DDD0A80FBC779A04C91271198797ADE2D5BDD67724F3C3A28D11FA333ADE1C0"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "DEC54770BF6B76FD4604F423DBB6709A748EB23BBFE8AC20F6232AF48D6F7916"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-29-func_0019BE40-412072ca09.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

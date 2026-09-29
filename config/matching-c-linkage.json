@@ -143,6 +143,8 @@
     {"name": "D_80197710", "address": "0x80197710"},
     {"name": "D_801977D8", "address": "0x801977D8"},
     {"name": "D_801E7E16", "address": "0x801E7E16"},
+    {"name": "D_801E7E15", "address": "0x801E7E15"},
+    {"name": "D_80219F20", "address": "0x80219F20"},
     {"name": "D_801F0D28", "address": "0x801F0D28"},
     {"name": "D_801F0E0C", "address": "0x801F0E0C"},
     {"name": "D_801F0E0D", "address": "0x801F0E0D"},
@@ -789,6 +791,25 @@
     { "name": "D_8019E20C", "address": "0x8019E20C" }
   ],
   "targets": [
+    {
+      "symbol": "func_0019BE40",
+      "expectedRelocations": [
+        { "offset": "0x00000018", "type": "R_MIPS_26", "symbol": "resource_alloc", "section": ".rel.text" },
+        { "offset": "0x00000024", "type": "R_MIPS_HI16", "symbol": "D_80219F20", "section": ".rel.text" },
+        { "offset": "0x00000028", "type": "R_MIPS_LO16", "symbol": "D_80219F20", "section": ".rel.text" },
+        { "offset": "0x0000002C", "type": "R_MIPS_26", "symbol": "memset_00023780", "section": ".rel.text" },
+        { "offset": "0x00000034", "type": "R_MIPS_HI16", "symbol": "D_8018F481", "section": ".rel.text" },
+        { "offset": "0x00000038", "type": "R_MIPS_LO16", "symbol": "D_8018F481", "section": ".rel.text" },
+        { "offset": "0x00000050", "type": "R_MIPS_HI16", "symbol": "D_801E7E15", "section": ".rel.text" },
+        { "offset": "0x00000058", "type": "R_MIPS_LO16", "symbol": "D_801E7E15", "section": ".rel.text" },
+        { "offset": "0x00000060", "type": "R_MIPS_26", "symbol": "boot_command_stream_dispatch", "section": ".rel.text" },
+        { "offset": "0x0000007C", "type": "R_MIPS_26", "symbol": "boot_command_stream_dispatch", "section": ".rel.text" },
+        { "offset": "0x00000098", "type": "R_MIPS_26", "symbol": "boot_command_stream_dispatch", "section": ".rel.text" },
+        { "offset": "0x000000DC", "type": "R_MIPS_HI16", "symbol": "D_80219F20", "section": ".rel.text" },
+        { "offset": "0x000000E0", "type": "R_MIPS_LO16", "symbol": "D_80219F20", "section": ".rel.text" },
+        { "offset": "0x00000190", "type": "R_MIPS_26", "symbol": "boot_command_stream_resource_node_dispatch", "section": ".rel.text" }
+      ]
+    },
     {
       "symbol": "func_0012967C",
       "expectedRelocations": [
