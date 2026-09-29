@@ -794,7 +794,11 @@
     { "name": "D_8019E1F8", "address": "0x8019E1F8" },
     { "name": "D_8019E20C", "address": "0x8019E20C" },
     { "name": "D_8021A114", "address": "0x8021A114" },
-    { "name": "D_8021A11A", "address": "0x8021A11A" }
+    { "name": "D_8021A11A", "address": "0x8021A11A" },
+    { "name": "D_80196A30", "address": "0x80196A30" },
+    { "name": "D_80196A32", "address": "0x80196A32" },
+    { "name": "D_80196A33", "address": "0x80196A33" },
+    { "name": "func_8016C5BC", "address": "0x8016C5BC" }
   ],
   "targets": [
     {
@@ -804,6 +808,18 @@
         { "offset": "0x00000010", "type": "R_MIPS_LO16", "symbol": "D_8021A11A", "section": ".rel.text" },
         { "offset": "0x00000024", "type": "R_MIPS_HI16", "symbol": "D_8021A114", "section": ".rel.text" },
         { "offset": "0x0000002C", "type": "R_MIPS_LO16", "symbol": "D_8021A114", "section": ".rel.text" }
+      ]
+    },
+    {
+      "symbol": "func_0019BD14",
+      "expectedRelocations": [
+        { "offset": "0x00000008", "type": "R_MIPS_HI16", "symbol": "D_80196A30", "section": ".rel.text" },
+        { "offset": "0x0000000C", "type": "R_MIPS_LO16", "symbol": "D_80196A30", "section": ".rel.text" },
+        { "offset": "0x00000014", "type": "R_MIPS_HI16", "symbol": "D_80196A32", "section": ".rel.text" },
+        { "offset": "0x00000018", "type": "R_MIPS_LO16", "symbol": "D_80196A32", "section": ".rel.text" },
+        { "offset": "0x00000020", "type": "R_MIPS_HI16", "symbol": "D_80196A33", "section": ".rel.text" },
+        { "offset": "0x00000024", "type": "R_MIPS_LO16", "symbol": "D_80196A33", "section": ".rel.text" },
+        { "offset": "0x0000004C", "type": "R_MIPS_26", "symbol": "func_8016C5BC", "section": ".rel.text" }
       ]
     },
     {

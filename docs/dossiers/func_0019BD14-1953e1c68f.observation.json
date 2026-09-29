@@ -1,0 +1,94 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "1953E1C68F0E9A6A14DCAC10F7684DEDA29847763E5A1DEB1B500432FF16FC54",
+  "observationId": "8ABF5339B0A9CAFBD9191F3000EF28182ABB066B8B8028AF2A59AA3E18547264",
+  "symbol": "func_0019BD14",
+  "authored": {
+    "context": "The accepted 192-byte func_0019BD14 owner initializes a four-byte year/month/day record, repeatedly calls the shop-context date-advance entry, compares it with three RAM fields, counts at most 9999 advances, and clamps a 30000 plus 20-times-count price at 60000. The first full-body C covered the owner but emitted 200 bytes and moved/narrowed captured RAM values differently from retail.",
+    "effects": [
+      "pure-c",
+      "exact-text-extent",
+      "retail-frame",
+      "date-loop",
+      "exact-linked-bytes",
+      "reviewed-relocations"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "5C7C3A8DF5A91D3A7EBE8C88D842ACDE750B9C421608A0DCF97B5CCC8F6A18F2",
+      "sourceSha256": "1C6C30C11B72A3858A7237FC2099A59BAED6A996D37999B3D83C1383553E85ED"
+    },
+    "label": "shop-special-price-date-loop",
+    "observedEffect": "Authenticated scratch watch of the same source shape before the RAM-symbol spelling correction reported PURE_C, 192 bytes/48 instructions, frame 48, zero missing or extra instructions and zero opcode/register/stack differences. After correcting the three symbols, the current canonical focused linked diff reports EXACT decoded rows and raw linked bytes, sole 192-byte C contribution in .ob64.r3088 with zero fallback, and target SHA-256 E8B92240B4763ABE0369EC8126C3FEC1775F952225745147C6F1CE3A47767E0D. Seven actual object relocations are reviewed against the retail words; the final contract rerun is recorded separately in the current diff report.",
+    "parentCandidateId": "8909ECF3B10D87AAF03BED8A52C088ECB50F3F9CA50F16CF4C8D95B90340DB16",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_0019BD14.s",
+        "sha256": "A61330FA8D1EDEF4F0D4DC420454BC6AEE6A3C662C0A2763490DA9468CEE18A4"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_000424bc.s",
+        "sha256": "08A1D529B0FA61B9995F9133BAFF21A456A99D3DD79B8B04F9D714F4C2243D09"
+      }
+    ],
+    "relatedCandidateIds": [
+      "D65A1911D5CE3E7C0E68A219B85E261A32FDC0A1420B8CCD2385785E6A6B36D7"
+    ],
+    "remainingFailure": "This remains provisional until the shop utility wave also matches func_0019B26C and passes one combined complete-ROM verifier. The date-derived price formula is supported statically; runtime menu behavior and exact array-capacity behavior are not established here. The earlier producer/splitter wave remains open.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Capture the three narrow RAM fields in s32 locals so the pinned compiler loads them directly into s3/s2/s1, use a shared price local to reproduce the retail clamp branch and return copy, and place the saved-value operand first in each symmetric date comparison. Correct the source symbols to retail's 0x80196A30/32/33 addresses and name the context-specific call by its observed live address 0x8016C5BC."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 903,
+      "sha256": "5C7C3A8DF5A91D3A7EBE8C88D842ACDE750B9C421608A0DCF97B5CCC8F6A18F2"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "1C6C30C11B72A3858A7237FC2099A59BAED6A996D37999B3D83C1383553E85ED"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-29-func_0019BD14-1953e1c68f.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
