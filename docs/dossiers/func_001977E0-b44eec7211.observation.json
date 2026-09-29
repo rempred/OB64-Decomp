@@ -1,0 +1,93 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "B44EEC721120DE0D5E089E4CF82B7A698161DAD5F6FD29E6AFBD97FB19F8FAE3",
+  "observationId": "B520AC909B06DA8A902241F9FD7E5C885E280B1A067F3934182E4F1EF4DBA15E",
+  "symbol": "func_001977E0",
+  "authored": {
+    "context": "The state-5 branch-local funds source matches state 5's opcode sequence, but state 6 loads the selected ID before completing its indexed selector-to-resource calculation. Retail performs that calculation first and loads the selected ID immediately before its helper call.",
+    "effects": [
+      "pure-c",
+      "retail-frame",
+      "exact-text-extent",
+      "all-state-entry-placement",
+      "case6-call-argument-timing"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "7EE84DC84CE7B85A340F4EB31E5E62962F0A339132C831056AFA628AD8E271D1",
+      "sourceSha256": "3A43A301D2D2FDC751A724086518FFD9119A05F855792906296FA0C4A9DEC8A0"
+    },
+    "label": "shop-state6-selected-id-call-timing",
+    "observedEffect": "Direct pinned compiler and assembler output preserves all retail state destinations, 4580 bytes/1145 instructions and frame 112; state 6 now has the complete retail 34-instruction opcode sequence. Authenticated watch B44EEC721120DE0D5E089E4CF82B7A698161DAD5F6FD29E6AFBD97FB19F8FAE3 classifies PURE_C with zero expected-only/actual-only instructions, 2174 differing symbolic bytes and score 71.28, improving from 9A5E84DC's 2195/70.82.",
+    "parentCandidateId": "9A5E84DC62DC14C92189355A02FF9391CE4E6541D789B41984031E9D1E4E22A5",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_001977E0.s",
+        "sha256": "95D9F4D4D4B3E8D0E83E44D1BE2E35F2C40F2DDB9A318BB247E375DD3DC906F6"
+      },
+      {
+        "path": "docs/archive/matching-c-candidates/2026-09-29-func_001977E0-9a5e84dc62.c",
+        "sha256": "048BBA508E802B69E2A240EFFBE0664A3BC89453587A91BC4D3C02B9D10F8FC9"
+      }
+    ],
+    "relatedCandidateIds": [
+      "EA299B64C4B8ED656B080938D4CB7081BA0A22DBAF1D48EA0E38638E2D34B563"
+    ],
+    "remainingFailure": "The source remains far from an exact linked target. Large opcode and register differences remain in state 0, state 3, states 7/8 and terminal motion, despite the local state-5/6 opcode matches. The separate 16-entry table has no approved auxiliary ownership contract, so original ASM remains production and no completed-wave verifier has run.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Remove the early selected-ID local in state 6 and read the selected ID directly as the helper's argument after publishing the selected resource pointer. Keep the branch-local funds pointers and shared tick-store entry."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 21672,
+      "sha256": "7EE84DC84CE7B85A340F4EB31E5E62962F0A339132C831056AFA628AD8E271D1"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "3A43A301D2D2FDC751A724086518FFD9119A05F855792906296FA0C4A9DEC8A0"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-29-func_001977E0-b44eec7211.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

@@ -1,0 +1,93 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "9A5E84DC62DC14C92189355A02FF9391CE4E6541D789B41984031E9D1E4E22A5",
+  "observationId": "E061372F12DF5F978846AA0A0FB53DE8A4958D9FABC615BD55BC51A1B307A6B1",
+  "symbol": "func_001977E0",
+  "authored": {
+    "context": "The EA299B64 source has the retail state layout and state-2 shared-store branch, but state 5 performs currency subtraction through direct global loads and stores. Retail forms the address of the same currency word separately in its ten-item and one-item branches and retains that address through each load and store.",
+    "effects": [
+      "pure-c",
+      "retail-frame",
+      "exact-text-extent",
+      "all-state-entry-placement",
+      "case5-address-lifetime"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "AD697AC0C0FDDCF1CE89144CFA034E586DA7BE450962D712AE1BF2FA7DA8EFEE",
+      "sourceSha256": "048BBA508E802B69E2A240EFFBE0664A3BC89453587A91BC4D3C02B9D10F8FC9"
+    },
+    "label": "shop-state5-branch-local-funds-pointer",
+    "observedEffect": "Direct pinned compiler and assembler output preserves all state destinations, 4580 bytes/1145 instructions and frame 112, while matching the full 53-instruction retail opcode sequence in state 5. Authenticated watch 9A5E84DC62DC14C92189355A02FF9391CE4E6541D789B41984031E9D1E4E22A5 classifies PURE_C with zero expected-only/actual-only instructions, 2195 differing symbolic bytes and score 70.82, improving from EA299B64's 2235/70.07.",
+    "parentCandidateId": "EA299B64C4B8ED656B080938D4CB7081BA0A22DBAF1D48EA0E38638E2D34B563",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_001977E0.s",
+        "sha256": "95D9F4D4D4B3E8D0E83E44D1BE2E35F2C40F2DDB9A318BB247E375DD3DC906F6"
+      },
+      {
+        "path": "docs/archive/matching-c-candidates/2026-09-29-func_001977E0-ea299b64c4.c",
+        "sha256": "1E10C2A41D7882FCFC1815C8EA53548085558E773125699D1B0D090BEBA15925"
+      }
+    ],
+    "relatedCandidateIds": [
+      "D819B88115C184E8216C84C860D239B0BBE78565D1F1A08910F14C0A68DC456A"
+    ],
+    "remainingFailure": "A single pointer shared across both branches shortened the owner by eight bytes and shifted later states; it is not selected. The branch-local form still has broad nonexact register/control-flow differences outside this pocket. The separate switch table lacks an approved auxiliary ownership contract; original ASM stays production and no linked acceptance or completed-wave verifier has run.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Use a branch-local pointer to the observed currency global in each state-5 price branch, then subtract through that pointer. Keep the two branches separate and leave all other state bodies unchanged."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 21693,
+      "sha256": "AD697AC0C0FDDCF1CE89144CFA034E586DA7BE450962D712AE1BF2FA7DA8EFEE"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "048BBA508E802B69E2A240EFFBE0664A3BC89453587A91BC4D3C02B9D10F8FC9"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-29-func_001977E0-9a5e84dc62.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
