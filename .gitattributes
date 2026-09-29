@@ -29,6 +29,7 @@ docs/archive/matching-c-candidates/2026-08-31-func_00284288-9ed0fdee46.c whitesp
 docs/archive/matching-c-candidates/2026-09-08-func_001F6098-c0a4f8b866.c -text
 docs/archive/matching-c-candidates/2026-09-08-func_001F6098-df6c8749cc.c -text
 docs/archive/matching-c-candidates/2026-09-29-func_001F6098-3151062665.c -text
+docs/archive/matching-c-candidates/2026-09-29-func_001977E0-e2100feb45.c -text whitespace=-blank-at-eol,cr-at-eol
 
 # CBDC source comparisons retain the authored line endings bound by their observations.
 docs/archive/matching-c-candidates/2026-09-09-func_0020CBDC-ee88c7be30.c -text whitespace=cr-at-eol
