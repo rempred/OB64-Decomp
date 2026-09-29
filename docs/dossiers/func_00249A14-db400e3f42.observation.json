@@ -1,0 +1,99 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "DB400E3F422D9691C929B891C4B63C1B7C24A117FD731D0AD36FBE7747E0FA11",
+  "observationId": "37CCB7560FB0411C85F7D1E27B1DB44FC06B1AA8388BB78EC6A2B2BBC92F3E5A",
+  "symbol": "func_00249A14",
+  "authored": {
+    "context": "The accepted original func_00249A14 text is one 900-byte executable row .ob64.r4390. The full disassembly loads the 0x021AE74C enemydat link, follows its inner key through the two-argument resource loader, copies a 35-byte record, builds transient slots, and calls func_00249290. Current research intake has no earlier candidate. The accepted func_001960A8 loader and parent enemy-template evidence establish the shared link key, but do not accept this owner.",
+    "effects": [
+      "pure-c",
+      "complete-body-coverage",
+      "two-argument-loader-contract",
+      "descriptor-copy-explicit",
+      "nonexact-stack-frame"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "7C20F4943802C0A0DBFFCDB2E836F8A615EF7E0D3CBABCC04D8F3BEF354D3289",
+      "sourceSha256": "DD549FA36C1BD2788509D0264CF09FDDEA6F1300393DFD887331E87E20CD72B3"
+    },
+    "label": "scenario-link-consumer-readable-first-owner",
+    "observedEffect": "Authenticated scratch compilation classifies PURE_C and emits a single 912-byte owner (228 instructions) against retail's 900 bytes (225 instructions). The first symbolic comparison has zero expected-only instructions and three actual-only instructions, so every required body is represented. It remains broadly different: 221 aligned instruction differences, 182 opcode differences, 208 register-field differences, 23 memory-width/signedness differences, and 22 stack-offset differences. The compiler frame is 216 bytes versus retail's 184. A struct-assignment control called memcpy twice and emitted 872 bytes; explicit independent field loads remove those calls. A nonvolatile descriptor control merged the second four-word read and emitted only 880 bytes. The direct symbolic descriptor form is the current recoverable source; no canonical linked diff or full-ROM verifier was run.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_00249A14.s",
+        "sha256": "64F2ACC3BFCF3C16477296FFBD96D64C29DA155A0287BCDFC6FD9C3B0CCEFB5D"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_0002DFB8.s",
+        "sha256": "6357DE49A57BBAFC8D26D130C01EE938A27BA7018607876E0F6938A187EA8CFD"
+      },
+      {
+        "path": "src/lib/func_001960A8.c",
+        "sha256": "8F53D7CCC48131CB842683D65A65001A2DFDB242D634547BCE1242B843A31874"
+      },
+      {
+        "path": "docs/dossiers/lib-chunk35-231000-241000.md",
+        "sha256": "10DC064A1739B70F378AB8E730399CD4DC6BA4FDC6E770EEE042A5798EE4B03D"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "The source is a broad compiled nonmatch, not matching C. Its extra spills of the staged base, lookup-table pointer, option and flag sustain the 216-byte frame, and prologue/load scheduling differs. The owner remains original ASM; source, config, ownership, and accepted ROM inputs are unchanged. Reconcile register lifetimes and stack allocations against the full disassembly before any activation or claim. The two-target link-consumer wave also includes unresolved func_0023A5EC and protects accepted func_001960A8 and func_0019554C.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Independently express the complete owner in C with a typed pair of 16-byte archive inputs, separate staged/selection/source-record buffers, the two-argument func_0002DFB8 interface verified in its retail body, and the two group/slot loops. Use a named volatile descriptor symbol to retain both retail four-word reads while leaving field meanings cautious."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 4632,
+      "sha256": "7C20F4943802C0A0DBFFCDB2E836F8A615EF7E0D3CBABCC04D8F3BEF354D3289"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "DD549FA36C1BD2788509D0264CF09FDDEA6F1300393DFD887331E87E20CD72B3"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-29-func_00249A14-db400e3f42.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

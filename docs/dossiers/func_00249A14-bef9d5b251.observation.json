@@ -1,0 +1,90 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "BEF9D5B25184CBA8557F7956A8295B9EA4EF60B0915AE0BD6E41EA1C1F99BB4C",
+  "observationId": "527791FA229E6AF5C2AE6057E5E3BD55A6CA5B59A3CA842852CB6B7C67D2C84F",
+  "symbol": "func_00249A14",
+  "authored": {
+    "context": "The full retail func_00249A14 owner reuses s2 for the first inner and later outer loop counters, and s3 for the first outer and later inner counters. The first readable source used separate counter locals in the later loops and retained a 216-byte frame.",
+    "effects": [
+      "pure-c",
+      "loop-counter-reuse",
+      "length-regression",
+      "stack-frame-unchanged"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "1630F9E4194F7D4E5EA0B97820BE6E779D2CE1E23418E7F1A23297DBEDC570DF",
+      "sourceSha256": "816DB095A5FE0927C94AC952ED77783AE36F9D40204108D9EFEE30CED7B8FDB8"
+    },
+    "label": "scenario-loop-counter-reuse-regresses",
+    "observedEffect": "Authenticated scratch compilation remains PURE_C and covers the owner body, with zero expected-only instructions. It reduces extra instructions from three to two (908 bytes versus the prior 912), but the symbolic comparison worsens from 221 to 225 aligned differing instructions and the frame stays 216 bytes rather than retail's 184. The source change alone does not solve the register-lifetime or stack layout mismatch. No linked diff or full verifier ran.",
+    "parentCandidateId": "DB400E3F422D9691C929B891C4B63C1B7C24A117FD731D0AD36FBE7747E0FA11",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_00249A14.s",
+        "sha256": "64F2ACC3BFCF3C16477296FFBD96D64C29DA155A0287BCDFC6FD9C3B0CCEFB5D"
+      },
+      {
+        "path": "docs/archive/matching-c-candidates/2026-09-29-func_00249A14-db400e3f42.c",
+        "sha256": "DD549FA36C1BD2788509D0264CF09FDDEA6F1300393DFD887331E87E20CD72B3"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "The current recoverable best remains the separate-counter DB400E3F source. The counter reuse is a structurally plausible but rejected local experiment; investigate other live values and spills before retesting it in a different source context. Production remains ASM and the two-target scenario link-consumer wave is incomplete.",
+    "role": "counterexample",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Reuse the first loop's member counter as the second loop's outer slot index, and reuse its group counter as the second loop's inner comparison index. Leave the descriptor, transient buffers and calls unchanged."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 4600,
+      "sha256": "1630F9E4194F7D4E5EA0B97820BE6E779D2CE1E23418E7F1A23297DBEDC570DF"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "816DB095A5FE0927C94AC952ED77783AE36F9D40204108D9EFEE30CED7B8FDB8"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-29-func_00249A14-bef9d5b251.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
