@@ -1,0 +1,92 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "8F5E1FEA724AA904A5058BB187CACE035B697034D4704A0D9B709950BB51C081",
+  "observationId": "B69BA9FF6129E54403B404FD8C28FE4A0ED65C455C78577F5EE874D3B6DE6D26",
+  "symbol": "func_00249A14",
+  "authored": {
+    "context": "The f3 source is one instruction short with the retail 184-byte frame. Retail separately hoists sp+0x10 as the staged base and sp+0x36 as the comparison-output base in the second stage.",
+    "effects": [
+      "pure-c",
+      "exact-owner-extent",
+      "output-base-retained",
+      "frame-regression",
+      "linked-nonmatch",
+      "relocation-discovery"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "CD584AC636C746C6C823B4942617CD74A3E79E0FE658985E651DDF137692AC6E",
+      "sourceSha256": "992DE2FFAA8BD004820DDE99F58710DAE59D613E1F7D6743BFDB6E377703C89F"
+    },
+    "label": "scenario-exact-extent-output-base-frame-regression",
+    "observedEffect": "Authenticated scratch watch emits 900 bytes/225 instructions and zero body-census omissions, but the frame expands to 192 and 170 aligned symbolic instructions differ. Temporary ordinary C activation for a canonical focused diff produced one 900-byte .ob64.r4390 C owner, source class PURE_C, 149 differing linked words/382 bytes, and a missing per-target relocation contract with 27 candidate records. No complete-wave verifier ran. The temporary source/target/symbol registration was removed and exact ASM production ownership restored.",
+    "parentCandidateId": "FDC0F3683C9500BE4C1FF975D638F7FE8966CCE7CB9AF15EBAC0245C2BEEF681",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_00249A14.s",
+        "sha256": "64F2ACC3BFCF3C16477296FFBD96D64C29DA155A0287BCDFC6FD9C3B0CCEFB5D"
+      },
+      {
+        "path": "docs/archive/matching-c-candidates/2026-09-29-func_00249A14-010bff4878.c",
+        "sha256": "06FEAF1C06254AC11B5761190D2B69A748C373883B0CDDC893CA28BC9B545FAB"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "The frame remains eight bytes too large and linked bytes broadly differ. A function-scope declaration, register qualifier, typed u16 output pointer, and embedding the flag in a second-descriptor scratch struct emitted the same frame/text. Do not select this as current best or claim matching C. Reconcile the observed output-base role with a frame-184 source shape, then rerun focused linked diff on a corrected candidate.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Retain an explicit output-base pointer at staged+0x26 across the second-stage comparison calls, while keeping the f3 slot re-derivation and other source contracts."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 4365,
+      "sha256": "CD584AC636C746C6C823B4942617CD74A3E79E0FE658985E651DDF137692AC6E"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "992DE2FFAA8BD004820DDE99F58710DAE59D613E1F7D6743BFDB6E377703C89F"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-29-func_00249A14-8f5e1fea72.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

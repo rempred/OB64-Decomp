@@ -1,0 +1,92 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "FDC0F3683C9500BE4C1FF975D638F7FE8966CCE7CB9AF15EBAC0245C2BEEF681",
+  "observationId": "234AB2BC689AC820DBD765F326669237B0807A7F628319D0FA156D6E6FD60B49",
+  "symbol": "func_00249A14",
+  "authored": {
+    "context": "The accepted original func_00249A14 owner is .ob64.r4390, 900 bytes with a 184-byte frame. The selected 010BFF48 source represented the complete body but emitted 912 bytes and a 192-byte frame. Retail masks group/member/slot indices to byte width and re-derives the slot pointer before the final helper call.",
+    "effects": [
+      "pure-c",
+      "retail-frame",
+      "byte-width-indices",
+      "slot-rederivation",
+      "complete-body-coverage",
+      "length-improved"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "D36FC7DA19F1163DE1A9C1D3E16ABB7C52CF4C0CBA3EE386C2E7CE15B974EB03",
+      "sourceSha256": "BDA7439EE9C7DC3E855A6F9F78C21D752C13856FBD136ACE9F8D68B5ECE6FDE3"
+    },
+    "label": "scenario-byte-width-loops-and-slot-rederivation",
+    "observedEffect": "Authenticated scratch watch emits PURE_C, 896 bytes/224 instructions versus retail 900/225, with frame 184, zero actual-only and one expected-only instruction in the symbolic alignment. This improves extent and frame from 010BFF48. The remaining 206 aligned symbolic instruction differences are broad. The compiler assembly has the expected second-stage slot re-derivation, but not exact text.",
+    "parentCandidateId": "010BFF4878D41A8660B8972A966DA005EA1DD977D5BFECBD4719A11925CA6387",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_00249A14.s",
+        "sha256": "64F2ACC3BFCF3C16477296FFBD96D64C29DA155A0287BCDFC6FD9C3B0CCEFB5D"
+      },
+      {
+        "path": "docs/archive/matching-c-candidates/2026-09-29-func_00249A14-010bff4878.c",
+        "sha256": "06FEAF1C06254AC11B5761190D2B69A748C373883B0CDDC893CA28BC9B545FAB"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "The target remains one instruction short and has broad register/opcode/control differences. No canonical linked diff was run on this shorter candidate, and no full-ROM verifier ran. Production was restored to ASM after a separate exact-size diagnostic candidate failed its linked diff; the two-target scenario wave remains open.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Starting from 010BFF48, mask the entry index, take the class byte once after the first lookup, assign match in every branch, use masked first-stage group/member indices with an explicit selector re-read, and re-derive the stage-two slot pointer before func_00249290. Keep the typed nonvolatile descriptor copies and named class table."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 4303,
+      "sha256": "D36FC7DA19F1163DE1A9C1D3E16ABB7C52CF4C0CBA3EE386C2E7CE15B974EB03"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "BDA7439EE9C7DC3E855A6F9F78C21D752C13856FBD136ACE9F8D68B5ECE6FDE3"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-29-func_00249A14-fdc0f3683c.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
