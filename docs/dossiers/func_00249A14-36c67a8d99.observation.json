@@ -1,0 +1,89 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "36C67A8D991BA5BABAAB93275630C5C08707E453004C04F9AF2CF83EAC3678A7",
+  "observationId": "68327F710F97D46D83F4AE7F2C9F9D42E21B17E64A894F159751FE8E87FC4C53",
+  "symbol": "func_00249A14",
+  "authored": {
+    "context": "Retail func_00249A14 reads the first-stage selector twice, with the second load after slot field writes and the slot-count increment. The current 900-byte/225-instruction typed scratch source CSEs that value and stores it early. A prior volatile reread forced the load but grew the owner to 912 bytes.",
+    "effects": [
+      "pure-c",
+      "first-stage-alias-control",
+      "identical-object-counterexample"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "91D38C4AF05BFE3A419A4644FE5250181983B9A293801C4A769A46D20F9E7B30",
+      "sourceSha256": "5742A341BA80EEF7CCF6FF7D8A86C8E867B75AB6B256C3C15B087BD404FE6C4C"
+    },
+    "label": "scenario-first-stage-byte-view-alias-control",
+    "observedEffect": "Authenticated pinned-compiler watch emitted the same PURE_C comparison as the typed scratch parent: 900 bytes/225 instructions, zero actual-only and zero expected-only, 131 aligned symbolic differences and 335 differing symbolic bytes. The candidate.o SHA-256 of both sources is 900FE7298BC6AECB18A4B4C5737DF544D67525AFF768D927BD8FB22F08780EF6. This byte-view spelling does not force a late selector reload or change any instruction.",
+    "parentCandidateId": "A715BAAF13B62DC3EE16871321748783CA80859A289C3C0C13E32732C3BA9E1A",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_00249A14.s",
+        "sha256": "64F2ACC3BFCF3C16477296FFBD96D64C29DA155A0287BCDFC6FD9C3B0CCEFB5D"
+      },
+      {
+        "path": "docs/dossiers/func_00249A14-a715baaf13.md",
+        "sha256": "86B7E4D78084C4175EAF9E71CC2690CE6C4143B8F1DEDCE247465047714866D9"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "The current parent remains 107 linked instruction words/274 bytes nonexact in its prior focused canonical diff, with the original ASM active and no accepted relocation contract. The late first-stage selector read, second-stage branch allocation and both-target scenario wave remain unresolved; no new canonical linked diff or final verifier ran for this byte-identical control.",
+    "role": "counterexample",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Address only the first-stage source group and destination slot through byte pointers to the same ScenarioRecordScratch object at their observed offsets, instead of through distinct named array fields, to test whether loss of field separation changes alias analysis."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 4623,
+      "sha256": "91D38C4AF05BFE3A419A4644FE5250181983B9A293801C4A769A46D20F9E7B30"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "5742A341BA80EEF7CCF6FF7D8A86C8E867B75AB6B256C3C15B087BD404FE6C4C"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-29-func_00249A14-36c67a8d99.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
