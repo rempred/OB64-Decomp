@@ -1,0 +1,96 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "6FC96450ED8D10666F3C334D120E941E3396BA0A85E08E64AD33E6B3CEE91F04",
+  "observationId": "45239F0EDFD14D48CFE3505D68D791387BEAFECDE5044A55B2EA19E59CD3A02A",
+  "symbol": "func_0023A5EC",
+  "authored": {
+    "context": "Retail func_0023A5EC computes each newly allocated resource-row index from the row address and D_80195560 using 0xC4EC4EC5, mult, mflo and arithmetic shift by two. The previous C draft divided a byte-address difference by 0x34 and the pinned compiler emitted a full unsigned reciprocal division sequence instead. Static row stepping and the adjacent builder identify a 0x34-byte row stride.",
+    "effects": [
+      "pure-c",
+      "evidence-backed-row-type",
+      "retail-reciprocal-pattern",
+      "retail-frame-size"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "B904B0855F98D49818732BCE4F1FF7946C33830985DA7F100FB360C6CE23511E",
+      "sourceSha256": "85CE477DEC92B242A454A2E9E0D8221389BE09E716D0716A9BE0BDA7B07FF8B1"
+    },
+    "label": "scenario-typed-52-byte-row-difference",
+    "observedEffect": "Authenticated pinned-compiler watch emitted the retail 0xC4EC4EC5 low-word multiply, mflo and sra row-index sequence in the initial and optional paths. The partial-output source remained 2640 bytes/660 instructions, frame 128, zero actual-only and three expected-only instructions against retail 2652/663; differing bytes fell only from 2233 to 2231 amid broad alignment differences. The all-output-pointer spelling with the same typed row index was 2568/642 at frame 128, so the type alone does not restore repeated-case extent.",
+    "parentCandidateId": "5738E2E9560CC90072507363CAC31C016E8F20FB59AE394EBEFEBC17CF7AF328",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_0023A5EC.s",
+        "sha256": "7150A449FC53B900146EB17649873381E2CBDD19DE8BCBB626C881ED2949FBCF"
+      },
+      {
+        "path": "docs/dossiers/func_0023A5EC-5738e2e956.md",
+        "sha256": "6CDD1E075280F2153233EFCC8B5764A27CAA1890A202132AB1A971236A5103FF"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_0023A3A0.s",
+        "sha256": "DC2B516C80313C8C3BACF011358E032A687556F94FFF1271C65AF04BC111DC37"
+      }
+    ],
+    "relatedCandidateIds": [
+      "55CD566C52701009B1B450A49AF7D26B553DFF4AE25BF3F0BCF6CCD97B633CE9"
+    ],
+    "remainingFailure": "The candidate is still 12 bytes short with broad register, opcode and control-address differences, and has no accepted linked relocation contract. The casted subtraction assumes both mapped addresses refer to one row table; formal source provenance and fields require reconciliation before production. Original ASM remains active, and no final scenario wave verifier ran.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Introduce an opaque 0x34-byte ResourceRow type and compute the row index by subtracting ResourceRow pointers. Retain the first-row marker, partial output-base alias and indexed initial output counter."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 9537,
+      "sha256": "B904B0855F98D49818732BCE4F1FF7946C33830985DA7F100FB360C6CE23511E"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "85CE477DEC92B242A454A2E9E0D8221389BE09E716D0716A9BE0BDA7B07FF8B1"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-29-func_0023A5EC-6fc96450ed.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
