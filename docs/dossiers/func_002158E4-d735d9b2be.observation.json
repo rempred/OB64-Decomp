@@ -1,0 +1,97 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "D735D9B2BE70CBD406D66B03DE25ED317DEF36A6B72DDB0028BAFC3D1571FE98",
+  "observationId": "E3FA7CCC7927D7B5B6EC0606C9D4E308E0E184576724196891F617CFABC8271A",
+  "symbol": "func_002158E4",
+  "authored": {
+    "context": "The complete 236-byte archived PURE_C control has the correct owner and 27 relocations but saves the allocator return before loading the owner global. The actor retry preparation proposed one owner-conditioned duplicate local transfer as a possible late-removed lifetime barrier.",
+    "effects": [
+      "pure-c",
+      "owner-transfer-branch-neutral",
+      "scheduler-order-unresolved"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "6FF06496D642CE5E4FE4914BC73F315168BE12EE0CA1D2B5E5C5BFFAE082990D",
+      "sourceSha256": "2CB810185D63E1D95646A8FF7438271EDE182D32B405BF1F65D010375599DF13"
+    },
+    "label": "owner-conditioned-local-transfer-neutral",
+    "observedEffect": "A current-run workbench watch classified the complete trial as PURE_C and nonexact, with scheduling-or-block-order as its primary mismatch class. Direct compilation with the authenticated pinned cc1 and production flags emitted the same assembly instructions as the retained PURE_C control, differing only in the non-code .file directive. The allocator result is still moved to s0 before the owner global is loaded, so the proposed branch does not resolve the known three-instruction order.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_002158E4.s",
+        "sha256": "AC99C5DE4D7E8486559918E7F3078450E7DDA05475162B70A94D252035D9C1C6"
+      },
+      {
+        "path": "docs/archive/matching-c-candidates/2026-09-03-func_002158E4-a493a3ded3.c",
+        "sha256": "C59E098C0633E9DE88F4ABB550A6CB124BC315584D254776C4ACE4AEDAFB91A1"
+      },
+      {
+        "path": "docs/Plans/task-logs/combat-actor-retry-preparation-r1.md",
+        "sha256": "39D46ADD050168C55072925DAF03E4384FFC725A2975106F7BCF8A43137EA7B7"
+      },
+      {
+        "path": "docs/Plans/task-logs/combat-actor-branch-diagnostics-r1.md",
+        "sha256": "AE816EFCF1246A0BA3812FDF6CD2F28AC94CF768DAAFFE847BB9E0CFEF8E3665"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "The retail owner loads D_801CE8BC before moving the allocator result to s0 at z64 0x002158FC..0x00215904. The trial adds no new causal distinction and should not be propagated unchanged to the three larger actor targets. The active exact HYBRID_C remains the fallback; no completed-wave verifier was run.",
+    "role": "counterexample",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "After allocation, load the owner global into the existing local, then assign allocation to snapshot in both arms of an owner-null condition; leave context clearing and every later call outside that condition in their established order."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 1155,
+      "sha256": "6FF06496D642CE5E4FE4914BC73F315168BE12EE0CA1D2B5E5C5BFFAE082990D"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "2CB810185D63E1D95646A8FF7438271EDE182D32B405BF1F65D010375599DF13"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-29-func_002158E4-d735d9b2be.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
