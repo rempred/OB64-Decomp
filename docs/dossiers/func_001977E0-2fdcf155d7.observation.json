@@ -1,0 +1,93 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "2FDCF155D7CE62D61688055CCD4D263D61212785E4A61C1D5E091E8A07D59ADB",
+  "observationId": "565B1A8C85B39DE55F1190AEE3949A7EF1D5482E55760BE73D64D90A28215153",
+  "symbol": "func_001977E0",
+  "authored": {
+    "context": "The FE94EBBA source lays out result and flag branches close to retail, but it initializes the moving slot pointer before checking whether the slot count is positive. Retail masks the helper's byte result, zeros the count field, branches on the count and only then constructs the slot pointer.",
+    "effects": [
+      "pure-c",
+      "retail-frame",
+      "exact-text-extent",
+      "all-state-entry-placement",
+      "case7-signed-count-guard"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "AC9B5F12DC80C784C79777CADC42CE3D5672964900AB9301B5C9166743386B08",
+      "sourceSha256": "8D2441B419127E21059E2816DEAFD42AB66633B6E66AC84595A01A92A39A4B61"
+    },
+    "label": "shop-state7-positive-count-slot-scan",
+    "observedEffect": "Direct pinned compiler and assembler output preserves the full 4580-byte/1145-instruction owner, frame 112 and all sixteen retail switch destinations. The positive guard delays slot-pointer setup until the scan path, while the word-sized count changes its branch from beqz to the retail blez form. Authenticated watch 2FDCF155D7CE62D61688055CCD4D263D61212785E4A61C1D5E091E8A07D59ADB classifies PURE_C with zero expected-only/actual-only instructions, 1876 differing symbolic bytes and score 78.13, versus FE94EBBA's 1886/78.09.",
+    "parentCandidateId": "FE94EBBA2047E1C7AE93EC9FAA4CAC17CE34A24D96BC7A2C98AE51995087CA06",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_001977E0.s",
+        "sha256": "95D9F4D4D4B3E8D0E83E44D1BE2E35F2C40F2DDB9A318BB247E375DD3DC906F6"
+      },
+      {
+        "path": "docs/archive/matching-c-candidates/2026-09-29-func_001977E0-fe94ebba20.c",
+        "sha256": "59977CBC635EA625B760EB912F202D132F75900470D139EBD80953131207317B"
+      }
+    ],
+    "relatedCandidateIds": [
+      "B44EEC721120DE0D5E089E4CF82B7A698161DAD5F6FD29E6AFBD97FB19F8FAE3"
+    ],
+    "remainingFailure": "The state-7 zero-field store still schedules into the guarded branch delay rather than before it; the candidate count lives in a1 rather than retail v1, and state-7/8 retains 22 local opcode mismatches. The signed word local is a code-shape hypothesis grounded in retail's blez, not proof of the original declaration. Broader states 0, 3 and terminal motion remain nonexact. Original ASM and table ownership stay production; no canonical linked acceptance or completed-wave verifier has run.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Put the slot-pointer assignment and scan loop inside an explicit positive-count guard, and carry the byte-valued helper result in a word-sized signed loop bound. Preserve the numeric index and moving slot cursor inside the guarded loop."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 21753,
+      "sha256": "AC9B5F12DC80C784C79777CADC42CE3D5672964900AB9301B5C9166743386B08"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "8D2441B419127E21059E2816DEAFD42AB66633B6E66AC84595A01A92A39A4B61"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-29-func_001977E0-2fdcf155d7.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

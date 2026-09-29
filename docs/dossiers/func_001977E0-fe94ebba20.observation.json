@@ -1,0 +1,94 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "FE94EBBA2047E1C7AE93EC9FAA4CAC17CE34A24D96BC7A2C98AE51995087CA06",
+  "observationId": "D3DE528144073470B3B26C0F9DDAA3B220FDB0CEB87C453E23DAA8F7ED47E8C7",
+  "symbol": "func_001977E0",
+  "authored": {
+    "context": "The B44EEC72 source has exact owner and state intervals but orders the state-7/8 dialog result 3 before result 1. Retail tests result 1 first, and when state 7 has an empty-slot path, its zero flag falls through into the slot scan while nonzero branches to the short cancellation path. The C state-7 field_03 access also causes GCC to retain an address based on the prompt field through the menu call.",
+    "effects": [
+      "pure-c",
+      "retail-frame",
+      "exact-text-extent",
+      "all-state-entry-placement",
+      "case7-branch-layout",
+      "case7-field-address"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "7872B4A712BBDDE2A9882D83C19D000EED6E6132EF651C8F11D49D5621EFF8B1",
+      "sourceSha256": "59977CBC635EA625B760EB912F202D132F75900470D139EBD80953131207317B"
+    },
+    "label": "shop-state7-result-and-empty-slot-fallthrough",
+    "observedEffect": "The result-order control CB8B95029EF82B0FB8EF596D6355369EE8907285B8BBA206C86D94D4E8E96F24 reduced authenticated differing symbolic bytes from 2174 to 2068. The count-byte address control C030B6E5A5A18AAF2D9D6AD9B294A1B3A58D4D0E68E76A229D4592F98CCAF440 reduced them to 2021 and restored the retail opcode shape of the initial menu-call setup. Authenticated watch FE94EBBA2047E1C7AE93EC9FAA4CAC17CE34A24D96BC7A2C98AE51995087CA06 on the integrated source reports PURE_C, 4580 bytes/1145 instructions, frame 112, all sixteen retail state destinations, zero expected-only/actual-only instructions, 1886 differing symbolic bytes and score 78.09. The state-7/8 local opcode mismatches fell from 128 to 23 across the sequence.",
+    "parentCandidateId": "B44EEC721120DE0D5E089E4CF82B7A698161DAD5F6FD29E6AFBD97FB19F8FAE3",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_001977E0.s",
+        "sha256": "95D9F4D4D4B3E8D0E83E44D1BE2E35F2C40F2DDB9A318BB247E375DD3DC906F6"
+      },
+      {
+        "path": "docs/archive/matching-c-candidates/2026-09-29-func_001977E0-b44eec7211.c",
+        "sha256": "3A43A301D2D2FDC751A724086518FFD9119A05F855792906296FA0C4A9DEC8A0"
+      }
+    ],
+    "relatedCandidateIds": [
+      "EA299B64C4B8ED656B080938D4CB7081BA0A22DBAF1D48EA0E38638E2D34B563"
+    ],
+    "remainingFailure": "The slot scan still hoists its pointer setup before the zero-count branch, and wider register/control-flow differences persist in states 0, 3 and terminal motion. The independent field_03 symbol is a compiler-shaping view of the observed physical byte, not a name or volatility claim. The table's auxiliary ownership contract is unresolved; original ASM remains production and no canonical linked result or completed-wave verifier has run.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Test dialog result 1 before result 3, address the observed state-7 field_03 byte independently, and write the nested flag condition with its zero/scan path first. Preserve all other state bodies, the full shared tick tail, and the independent widget/price views."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 21659,
+      "sha256": "7872B4A712BBDDE2A9882D83C19D000EED6E6132EF651C8F11D49D5621EFF8B1"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "59977CBC635EA625B760EB912F202D132F75900470D139EBD80953131207317B"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-29-func_001977E0-fe94ebba20.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
