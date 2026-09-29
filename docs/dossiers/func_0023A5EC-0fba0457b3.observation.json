@@ -1,0 +1,93 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "0FBA0457B39BC0495FAAD322F62B27AC61973874780C869BEA27E4BC023FD367",
+  "observationId": "7274E52FE3E57DB9804D4F049C02DFBD6C94BC087082813009FB2709E02CE9CF",
+  "symbol": "func_0023A5EC",
+  "authored": {
+    "context": "Retail func_0023A5EC keeps a record/group pointer after resource_free and uses a 128-byte frame. A natural named pointer control reached exact extent but added saved s7 and grew the frame to 136 bytes. GoldOx's bounded Agent Mail 434 suggested reducing the separate global-address lifetime by deriving new rows from the same D_80195560 base used for the row quotient.",
+    "effects": [
+      "pure-c",
+      "shared-row-base",
+      "record-group-pointer",
+      "retail-frame",
+      "compiler-lifetime-evidence"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "3C16F6F2CAB575AC4C2C3D328E28778596D82041C402F7662C59A6B0CAE15AC0",
+      "sourceSha256": "9B4824A370D5B319601E7F2C4E310E146DD864A93015B22BE7C230577992E714"
+    },
+    "label": "scenario-shared-row-base-restores-register-frame",
+    "observedEffect": "Authenticated pinned-compiler watch emitted PURE_C at 2640 bytes/660 instructions, frame 128, zero actual-only and three expected-only instructions. The record stack address is assigned to s1 in the resource_free delay slot, matching the retail register/frame shape at that site. A common named base avoids subtracting two separate global addresses, but the casted ResourceRow array's C provenance is not yet established. Aligned symbolic differences are 599 and differing bytes are 2059; the full body remains nonexact.",
+    "parentCandidateId": "43C929ABEE3C2AB0D8D30DE4C0D987FB7BD3ED0797D3CF4A63E6FD651D244445",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_0023A5EC.s",
+        "sha256": "7150A449FC53B900146EB17649873381E2CBDD19DE8BCBB626C881ED2949FBCF"
+      },
+      {
+        "path": "docs/dossiers/func_0023A5EC-43c929abee.md",
+        "sha256": "79308A554AE393E992690EDDF8D306EFF25AFE5D0187493EF5590E128F991B00"
+      }
+    ],
+    "relatedCandidateIds": [
+      "C40B7A302B2E55AA76415DEE27E42864F0D5FC4C48B52F72653D34F582905539"
+    ],
+    "remainingFailure": "The owner is twelve bytes short with broad opcode/register/address differences and no accepted linked relocation contract. Initial field loads, repeated optional records and the typed row-array declaration remain unresolved. Original ASM stays production; both scenario targets and the final wave verifier remain open.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Use one advancing group pointer after the record copy, set each new output row to D_80195560 + 0x34, and form the 52-byte ResourceRow pointer difference against that same base. Keep the retail unsigned maximum clamp and existing scan form."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 9332,
+      "sha256": "3C16F6F2CAB575AC4C2C3D328E28778596D82041C402F7662C59A6B0CAE15AC0"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "9B4824A370D5B319601E7F2C4E310E146DD864A93015B22BE7C230577992E714"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-29-func_0023A5EC-0fba0457b3.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

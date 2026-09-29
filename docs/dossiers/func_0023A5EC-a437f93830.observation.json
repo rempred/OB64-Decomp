@@ -1,0 +1,89 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "A437F938305494452F317FF2D545ACCFF41A8E17D743CD9D7878C984122E716A",
+  "observationId": "F8CF81FCAA7AF2BDC8E92D7B537CFA4FF0CC2E40317426891AC9198646C97789",
+  "symbol": "func_0023A5EC",
+  "authored": {
+    "context": "The selected readable source declares D_80195560 as a 52-byte ResourceRow array, but still reads D_801955A5 and writes D_80195593 as separately named fixed-address aliases. Their addresses equal row 1 byte 0x11 and row 0 byte 0x33, respectively. The row-array candidate emits 2644/661, frame 128, with two expected-only instructions.",
+    "effects": [
+      "pure-c",
+      "row-field-alias",
+      "relocation-spelling-control"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "4D4203C0B75B5423A5AA56D3ED6308F89B8BAB15F49A724DE5CBB3DF43DBDED4",
+      "sourceSha256": "6A3B8377F476C3529504ABE72A6951972A37D84BCE64BC0B5591CB32B2F03185"
+    },
+    "label": "scenario-row-alias-field-relocation-spelling",
+    "observedEffect": "Authenticated pinned-compiler watch still emitted PURE_C at 2644 bytes/661 instructions, two expected-only, zero actual-only, 573 aligned symbolic differences and 1889 differing bytes. Comparing the compiler assembly against the selected row-array control shows only eight fixed-address load spellings changed from D_801955A5 to D_80195560+69 and one marker store changed from D_80195593 to D_80195560+51. The instruction shape did not change; the object differs because relocation symbols/addends differ.",
+    "parentCandidateId": "35E35CD55E50697313ADE9DE766214AC0D90E0D701EBF8F9D076D7D62E48E1E0",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_0023A5EC.s",
+        "sha256": "7150A449FC53B900146EB17649873381E2CBDD19DE8BCBB626C881ED2949FBCF"
+      },
+      {
+        "path": "docs/dossiers/func_0023A5EC-35e35cd55e.md",
+        "sha256": "2F9C08CB7DE023DA480347BB5CD535A4602EBF08E0CF87E25AC0FA4BD681443F"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "The eight-byte shortfall and broad code differences remain. This alias spelling could alter the exact relocation contract and has no canonical linked acceptance; keep the original alias names in the selected source until the target is ready for a focused linked review. Original ASM and the two-target scenario wave remain open.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Read the occupied flag through D_80195560[1].bytes[0x11] and write the first selected row's marker through D_80195560[(u8)selected_index].bytes[0x33], retaining the typed row loop and all other source logic."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 9716,
+      "sha256": "4D4203C0B75B5423A5AA56D3ED6308F89B8BAB15F49A724DE5CBB3DF43DBDED4"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "6A3B8377F476C3529504ABE72A6951972A37D84BCE64BC0B5591CB32B2F03185"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-29-func_0023A5EC-a437f93830.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

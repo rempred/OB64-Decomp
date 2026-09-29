@@ -1,0 +1,86 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "EDFCFA42D6997FE50BAF933F6DBE44767F2E2219A3B46F51F4BD8D2E317023FD",
+  "observationId": "437ECA0D2DD04AE7FB2A1A19927913AB4DCE0D7B71ECE48B2AB9AF8FB78DFE30",
+  "symbol": "func_0023A5EC",
+  "authored": {
+    "context": "The shared-row-base C source recovered the retail frame and s1 record pointer but emitted 2640/660, three instructions short. Retail loads the initial record's adjustment and two big-endian halfwords before its kind branch, while the macro read them in its non-kind-1 arm.",
+    "effects": [
+      "pure-c",
+      "initial-field-preload",
+      "retail-frame",
+      "body-coverage"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "6D138372F8C4D71A438A17490F60AABF074B7AE6645B4232078775DD35ED9A65",
+      "sourceSha256": "813A6869AC51DBD83DEE95CE50E5E0CEF2F57C18B6ADC99339B851A751769B42"
+    },
+    "label": "scenario-initial-field-preload-body-coverage",
+    "observedEffect": "Authenticated pinned-compiler watch emitted PURE_C at 2648 bytes/662 instructions, frame 128, zero actual-only and one expected-only instruction. The initial field reads now occur before the kind branch. Aligned symbolic differences are 594 and differing bytes are 1991. Alternate READ_BE16 addition and uncast spellings compiled identically.",
+    "parentCandidateId": "0FBA0457B39BC0495FAAD322F62B27AC61973874780C869BEA27E4BC023FD367",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_0023A5EC.s",
+        "sha256": "7150A449FC53B900146EB17649873381E2CBDD19DE8BCBB626C881ED2949FBCF"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "The body is four bytes short with broad alignment and allocation differences. The source is research-only, has no accepted linked relocation contract, and does not close either scenario target or the wave verifier.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Split the initial record from the optional-case macro and preload its adjustment and two halfwords before testing the initial kind; keep optional cases in the shared macro."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 9701,
+      "sha256": "6D138372F8C4D71A438A17490F60AABF074B7AE6645B4232078775DD35ED9A65"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "813A6869AC51DBD83DEE95CE50E5E0CEF2F57C18B6ADC99339B851A751769B42"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-29-func_0023A5EC-edfcfa42d6.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

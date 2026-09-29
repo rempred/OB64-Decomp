@@ -1,0 +1,88 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "F2C573E8166BA00C021E6788F2CCF337CA352B1DE338C67A983AED2744B341D5",
+  "observationId": "949C35CC5B6C14AE9AF7C50CC9131F2CE584D808DFA85145CC6A7CCB06663392",
+  "symbol": "func_0023A5EC",
+  "authored": {
+    "context": "The preloaded initial-fields intermediate had one expected-only instruction but an extra initial-kind mask before the kind branch. Retail directly uses the zero-extended byte kind value for that branch.",
+    "effects": [
+      "pure-c",
+      "initial-kind-word",
+      "retail-frame",
+      "shared-row-base"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "89E20535FFBA2C6F888048A3FD574868A1C3F12E858E64A08AF4424FFBD2F3A8",
+      "sourceSha256": "854799D050C3D94107950C805BD98574DF492C9FED82B72CFED0433C84ECCE4F"
+    },
+    "label": "scenario-word-kind-load-register-shape",
+    "observedEffect": "Authenticated pinned-compiler watch emitted PURE_C at 2644 bytes/661 instructions, frame 128, zero actual-only and two expected-only instructions. The redundant andi before the kind branch disappears. Aligned symbolic differences improve from 594 to 573 and differing bytes from 1991 to 1889, so this is the selected current readable symbolic source despite being eight bytes short. Widening initial_adjustment to s32 instead emitted 2636/659 with four expected-only instructions, although its differing bytes fell to 1878; retain the s8 expression.",
+    "parentCandidateId": "EDFCFA42D6997FE50BAF933F6DBE44767F2E2219A3B46F51F4BD8D2E317023FD",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_0023A5EC.s",
+        "sha256": "7150A449FC53B900146EB17649873381E2CBDD19DE8BCBB626C881ED2949FBCF"
+      }
+    ],
+    "relatedCandidateIds": [
+      "0FBA0457B39BC0495FAAD322F62B27AC61973874780C869BEA27E4BC023FD367"
+    ],
+    "remainingFailure": "The owner is eight bytes short; 573 aligned symbolic differences, broad source/record scheduling and casted row-array C provenance remain. No canonical linked or relocation acceptance has been claimed. Original ASM stays production; the two-target scenario wave remains open.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Keep the initial preloads and declare initial_kind as s32 while retaining the signed 8-bit adjustment, preserving the shared row base and advancing group pointer."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 9702,
+      "sha256": "89E20535FFBA2C6F888048A3FD574868A1C3F12E858E64A08AF4424FFBD2F3A8"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "854799D050C3D94107950C805BD98574DF492C9FED82B72CFED0433C84ECCE4F"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-29-func_0023A5EC-f2c573e816.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

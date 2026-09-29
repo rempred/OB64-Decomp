@@ -1,0 +1,90 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "35E35CD55E50697313ADE9DE766214AC0D90E0D701EBF8F9D076D7D62E48E1E0",
+  "observationId": "0414C69A78C45F959EDB8FDB106C8DA965AB6D8A19541A4E0C52A417607B0AAF",
+  "symbol": "func_0023A5EC",
+  "authored": {
+    "context": "The readable shared-base source reproduced the retail 128-byte frame and s1 record pointer, but declared D_80195560 as bytes then subtracted ResourceRow pointers cast from those bytes. That cast did not establish an actual ResourceRow array in C.",
+    "effects": [
+      "pure-c",
+      "typed-row-array",
+      "same-array-pointer-difference",
+      "identical-object-control"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "02B5E264B438E05EF9C08D47C504E0D627FC005894FB6FC32FD8EDE98D5E88CF",
+      "sourceSha256": "F91FD77F5A539742322EFB65973E8DC1B516124E1CE67C3A0720D09D6B409B08"
+    },
+    "label": "scenario-typed-row-array-same-object",
+    "observedEffect": "Authenticated pinned-compiler watch emitted PURE_C at 2644 bytes/661 instructions, frame 128, two expected-only and zero actual-only instructions, 573 aligned symbolic differences and 1889 differing bytes. The compiled candidate.o SHA-256 is 5356154A251F552D4661B974CE9AA2FDF5601D0FEE3659CA2DE541152C322B24, byte-identical to the prior casted-row source. The row quotient now uses pointer subtraction within a declared ResourceRow array instead of casting a byte array to a row array.",
+    "parentCandidateId": "F2C573E8166BA00C021E6788F2CCF337CA352B1DE338C67A983AED2744B341D5",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_0023A5EC.s",
+        "sha256": "7150A449FC53B900146EB17649873381E2CBDD19DE8BCBB626C881ED2949FBCF"
+      },
+      {
+        "path": "docs/dossiers/func_0023A5EC-f2c573e816.md",
+        "sha256": "C17D31E04C60ECC98CA6305F83E9D9295FC650D526CECD6A067C694AFFDAA5CD"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "The eight-byte text shortfall and broad register/address scheduling remain. Other fixed-address aliases into the row table still need source-level reconciliation. This is research-only with no canonical linked or relocation acceptance; original ASM and the two-target scenario wave remain open.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Declare D_80195560 as an array of 52-byte ResourceRow objects, use ResourceRow pointers for the repeated row search and increment, pass each row's bytes to the record builder, and take the row difference within the declared array."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 9576,
+      "sha256": "02B5E264B438E05EF9C08D47C504E0D627FC005894FB6FC32FD8EDE98D5E88CF"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "F91FD77F5A539742322EFB65973E8DC1B516124E1CE67C3A0720D09D6B409B08"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-29-func_0023A5EC-35e35cd55e.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
