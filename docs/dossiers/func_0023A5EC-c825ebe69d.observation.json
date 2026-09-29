@@ -1,0 +1,92 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "C825EBE69D628CEF565F28BECFA14FC00F830B75500713ADA9FFE5228D243685",
+  "observationId": "1EB32BD6AF8F47D03F035AEDF0B4BF4EB2946ABA64C43B2AF6317CB72C21FEA1",
+  "symbol": "func_0023A5EC",
+  "authored": {
+    "context": "The natural named record-pointer source emits retail-sized text but allocates one extra saved register and a 136-byte frame. Retail reuses saved s1 for the resource record index before memcpy and the stack-record pointer after resource_free. This is a diagnostic test of whether one source variable can force that handoff, not a proposed readable production representation.",
+    "effects": [
+      "pure-c",
+      "register-reuse-diagnostic",
+      "retail-frame-size",
+      "pointer-integer-cast-not-selected"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "E17D1B37C327327CE15E8D541A7E1B2743E3AE45EAA84312DB3E499681223C7F",
+      "sourceSha256": "FEEDAE4616FEBA8FDF58591EFE87B950EEDBEFC8D3D40F9B3FE5F09C64FD64DD"
+    },
+    "label": "scenario-index-to-record-pointer-register-reuse-diagnostic",
+    "observedEffect": "Authenticated pinned-compiler watch emitted PURE_C at 2644 bytes/661 instructions, frame 128, zero actual-only and two expected-only instructions. It placed the stack-record pointer assignment in the resource_free delay slot and reused s3 for the earlier record index and later pointer, confirming the allocation mechanism. It did not recover retail s1, and aligned symbolic differences were 607 with 2066 differing bytes; the ordinary scan-best source remains more readable and has 603 symbolic differences.",
+    "parentCandidateId": "C40B7A302B2E55AA76415DEE27E42864F0D5FC4C48B52F72653D34F582905539",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_0023A5EC.s",
+        "sha256": "7150A449FC53B900146EB17649873381E2CBDD19DE8BCBB626C881ED2949FBCF"
+      },
+      {
+        "path": "docs/dossiers/func_0023A5EC-c40b7a302b.md",
+        "sha256": "AEF0A5750E4A9EF3249FB0881F7698F8079E9C1EC3EF24DAE3A09AE537FB1ADF"
+      }
+    ],
+    "relatedCandidateIds": [
+      "43C929ABEE3C2AB0D8D30DE4C0D987FB7BD3ED0797D3CF4A63E6FD651D244445"
+    ],
+    "remainingFailure": "Pointer-to-integer and integer-to-pointer casts are implementation-defined and weaken source quality; this control is not selected. It remains eight bytes short with broad machine-code differences, no accepted relocation contract and no production activation. A readable type/structure explanation for retail s1 reuse is still needed.",
+    "role": "counterexample",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "After resource_free, overwrite the now-dead s32 record_index parameter with the 32-bit stack-record address and cast it back to a byte pointer at later record uses; retain the unsigned final clamp. This intentionally tests register reuse across the two phases."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 9446,
+      "sha256": "E17D1B37C327327CE15E8D541A7E1B2743E3AE45EAA84312DB3E499681223C7F"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "FEEDAE4616FEBA8FDF58591EFE87B950EEDBEFC8D3D40F9B3FE5F09C64FD64DD"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-29-func_0023A5EC-c825ebe69d.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
