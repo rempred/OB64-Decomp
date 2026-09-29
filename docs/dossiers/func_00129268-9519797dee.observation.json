@@ -1,0 +1,90 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "9519797DEE41FF6D1CC377FF85C5260E540A522D7CB2FAE88F47020D5D9DBC7A",
+  "observationId": "339A5F9C3E4AA62EB3DBC33FBDFD86280C560694DCDF02D03BA1D8E17646F947",
+  "symbol": "func_00129268",
+  "authored": {
+    "context": "The bit-field pre-sweep candidate reproduces the retail flag tests and masks but has three excess instructions. In each later member scan, retail loads the row member byte directly into a3; the first bit-field candidate loads v1 then copies it to a3.",
+    "effects": [
+      "pure-c",
+      "retail-direct-a3-member-loads",
+      "reduced-owner-extent",
+      "oversize-owner"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "DFB2A726429EE5AEC510A1CDB5246F976B3B2EE101D2AA63C52AB2AEA01D5894",
+      "sourceSha256": "186441198567B484FEC080D1384D597B3A5D312603FAED4F6F2995621007E93E"
+    },
+    "label": "deployment-integer-member-id",
+    "observedEffect": "Authenticated scratch emits lbu a3 directly in both member scans and removes their two move-a3 copies. The complete PURE_C symbol becomes 1048 bytes/262 instructions, one instruction larger than the accepted 1044/261 owner, with the retail 96-byte frame. Giving the two scan loops separately named signed counters compiles to the same shape. No canonical link or full-ROM verifier ran for the oversized candidate.",
+    "parentCandidateId": "B4FD4F468D034EBEE54262663C35AC413262DB771FD3DB1706F6538ED067CEF9",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_00129268.s",
+        "sha256": "FBC63B32484865CCBDCF9539476A6DB85EEBBEEE290EC6299667CDAB10B1660B"
+      },
+      {
+        "path": "docs/archive/matching-c-candidates/2026-09-29-func_00129268-b4fd4f468d.c",
+        "sha256": "CA80E8004C94B5654EE0E6CC32102BD9FD19E217DCFC411498F4EDE395A47B01"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "One extra instruction remains, associated with the row/scan control shape. Preserve the bit-field pre-sweep and direct a3 loads while finding an ordinary-C expression that restores exact extent and caller-saved scan-counter allocation. The exact-size shared-counter source remains selected; original ASM is production.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Use an integer local for the row's zero-extended member ID in both member-scan paths, preserving 0xFF sentinel comparisons and the existing runtime-unit equality test."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 4437,
+      "sha256": "DFB2A726429EE5AEC510A1CDB5246F976B3B2EE101D2AA63C52AB2AEA01D5894"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "186441198567B484FEC080D1384D597B3A5D312603FAED4F6F2995621007E93E"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-29-func_00129268-9519797dee.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

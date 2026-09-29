@@ -1,0 +1,91 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "5EF1602205DD355A149C66858896B137BF9E59B48665C74859B43CE72CA2BEDE",
+  "observationId": "5A3ED53AFB05BE6A199AB12D7A10F5C7A439AF66E26484BFD17F6EF793A6B45F",
+  "symbol": "func_00129268",
+  "authored": {
+    "context": "The bit-field pre-sweep plus signed integer member-ID source reproduces retail flag masks and direct a3 member loads but is one instruction larger than the accepted 1044-byte func_00129268 owner. Retail's ten-row loop has a bottom test after incrementing row index and deployment offset.",
+    "effects": [
+      "pure-c",
+      "complete-body-census",
+      "exact-owner-extent",
+      "retail-frame",
+      "linked-nonmatch"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "F1019EDE30D06FF75B0E6A4F5538EACC54B67555DCED0D089425C2F9F92810EA",
+      "sourceSha256": "CC229B213BFC37FCAC1D0D44B1643E72D472321C184C88EB891612E8F2B4F6D5"
+    },
+    "label": "deployment-bitfield-bottom-tested-rows",
+    "observedEffect": "Authenticated scratch emits 1044 bytes/261 instructions, the retail 96-byte frame and zero missing/extra instructions. Temporary canonical focused link confirms sole PURE_C ownership with 45 differing instruction words/79 bytes and 54 candidate relocations, versus 176 words/551 bytes for the prior linked best. Every remaining linked difference is a saved/caller register assignment or initialization order; no target-byte or full-ROM exactness is claimed. No reviewed relocation contract or complete-wave verifier ran. Temporary source/config activation was removed afterward.",
+    "parentCandidateId": "9519797DEE41FF6D1CC377FF85C5260E540A522D7CB2FAE88F47020D5D9DBC7A",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_00129268.s",
+        "sha256": "FBC63B32484865CCBDCF9539476A6DB85EEBBEEE290EC6299667CDAB10B1660B"
+      },
+      {
+        "path": "docs/archive/matching-c-candidates/2026-09-29-func_00129268-9519797dee.c",
+        "sha256": "186441198567B484FEC080D1384D597B3A5D312603FAED4F6F2995621007E93E"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "The ten-row initialization puts zero in s5 before the s4/s8/s7/s6 setup instead of after it. The aggregate loop initializes s0 and s1 in the opposite order. The two member scans use s1 for slot, a0 for unit index, a2 for array pointer and v1 for flags, where retail uses t0, v1, a0 and a2 respectively. Preserve this source as linked best; original ASM remains production.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Write the ten-row iteration as a bottom-tested loop with explicit row and byte-offset increments after the active-row body. Retain the nested bit-field pre-sweep and integer member-ID locals in both matching scans."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 4425,
+      "sha256": "F1019EDE30D06FF75B0E6A4F5538EACC54B67555DCED0D089425C2F9F92810EA"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "CC229B213BFC37FCAC1D0D44B1643E72D472321C184C88EB891612E8F2B4F6D5"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-29-func_00129268-5ef1602205.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

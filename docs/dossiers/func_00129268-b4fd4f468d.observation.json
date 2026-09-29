@@ -1,0 +1,91 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "B4FD4F468D034EBEE54262663C35AC413262DB771FD3DB1706F6538ED067CEF9",
+  "observationId": "B2BD82A3426611663F4587E25FEB7C748C3CD6DDD6570E96BEA7130380F9C3BD",
+  "symbol": "func_00129268",
+  "authored": {
+    "context": "The exact-size full-body candidate for func_00129268 combines two pre-sweep flag tests and two clear masks. Retail has separate 0x10 and 0x01 branches, two AND masks -0x41 and -0x81 with one final word store, and a 25-byte-stride source-record byte clear.",
+    "effects": [
+      "pure-c",
+      "retail-pre-sweep-flag-tests",
+      "retail-pre-sweep-two-masks",
+      "retail-single-word-store",
+      "oversize-owner"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "AD174E4EDD2F76048A1DE2617058FD97830EE0276F910D37E44087E3F7000DE3",
+      "sourceSha256": "CA80E8004C94B5654EE0E6CC32102BD9FD19E217DCFC411498F4EDE395A47B01"
+    },
+    "label": "deployment-pre-sweep-bitfield-clears",
+    "observedEffect": "Authenticated pinned-compiler scratch emits the retail pre-sweep 0x10/0x01 tests, hoisted -0x41/-0x81 masks, two AND operations with source-index load between, and one word store. The complete PURE_C symbol grows from 1044/261 to 1056 bytes/264 instructions, revealing three excess instructions elsewhere. The first two trial forms with explicit word compound stores or a source-flag pointer did not produce a selected owner. No canonical link or full-ROM verifier ran for this oversized candidate.",
+    "parentCandidateId": "6BCD039A94B5BC332B2CE2F97706B994D82065B1F47AF421420CFF33B8F9B532",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_00129268.s",
+        "sha256": "FBC63B32484865CCBDCF9539476A6DB85EEBBEEE290EC6299667CDAB10B1660B"
+      },
+      {
+        "path": "docs/archive/matching-c-candidates/2026-09-29-func_00129268-6bcd039a94.c",
+        "sha256": "86B7AB1A3EFA2322321CAB0498EF8218291825848A3D1CB7E4467BFF055E8B13"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "The later deployment scans still use the wrong member-ID and slot-counter register lifetimes. Remove three independently supported excess instructions while retaining the pre-sweep shape and accepted 1044-byte owner before canonical linking. Original ASM remains production.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Represent the low eight observed flag bits as a big-endian bit-field view over the same 32-bit word. In nested pre-sweep tests, clear bit 6 and bit 7 separately through that view; retain word access in the later matching paths."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 4435,
+      "sha256": "AD174E4EDD2F76048A1DE2617058FD97830EE0276F910D37E44087E3F7000DE3"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "CA80E8004C94B5654EE0E6CC32102BD9FD19E217DCFC411498F4EDE395A47B01"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-29-func_00129268-b4fd4f468d.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
