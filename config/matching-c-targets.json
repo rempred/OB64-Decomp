@@ -823,6 +823,7 @@
     {"symbol":"func_002ACA3C","source":"src/lib/func_002ACA3C.c"},
     { "symbol": "func_000E6D90", "source": "src/lib/func_000E6D90.c" },
     { "symbol": "func_000E5968", "source": "src/lib/func_000E5968.c" },
-    { "symbol": "func_00284288", "source": "src/lib/func_00284288.c" }
+    { "symbol": "func_00284288", "source": "src/lib/func_00284288.c" },
+    { "symbol": "func_0021B894", "source": "src/battle/func_0021B894.c" }
   ]
 }
