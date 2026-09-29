@@ -1,0 +1,87 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "702B715D88110EC0CE5A220E1CCF595B3E1682AC51BE0FB53C6DF4547FFCACCF",
+  "observationId": "3D45D1249E1F9DDFA1A99136223B683AB8CF9C10294B3960D6A57A70FC4B3BE0",
+  "symbol": "func_0019BE40",
+  "authored": {
+    "context": "The accepted sole shop producer owner is 432 bytes/108 instructions with a 32-byte frame. The prior complete C candidate emitted 428 bytes/107 instructions and retained the list pointer as the loop output cursor.",
+    "effects": [
+      "pure-c",
+      "complete-body-census",
+      "exact-owner-extent",
+      "retail-frame",
+      "linked-nonmatch"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "5D3DAADF0CB7BA5F3731CBEC394C11155C576FB7DEF701F4C68181BC1F3F8F8A",
+      "sourceSha256": "94F6B06C46BED364A54BF88EBA2A7E01113F80C7BF42AC64C2BD7A56C046F2FE"
+    },
+    "label": "shop-producer-separate-output-cursor",
+    "observedEffect": "Authenticated scratch emits PURE_C, 432 bytes/108 instructions and the retail 32-byte frame with zero missing/extra instructions. A temporary canonical focused link confirms sole C ownership of .ob64.r3090 at the accepted placement and finds 41 differing words/84 bytes, first differing byte at offset 0xAD. The candidate has 14 relocs without a reviewed contract. The early list/loader setup links word-for-word through offset 0xAC; the loop entry and later registers differ.",
+    "parentCandidateId": "48FD02B22001237FD967A1CF03F2FE0448D0852F6E11E5EB2AE0F3691CCE426A",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_0019BE40.s",
+        "sha256": "9A86E145C5EA2DBA7AC03B24D43ABBE55C5E7FE39781DA1534040A96F5874751"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "The output cursor addiu is scheduled before the seven literal stores rather than into the retail branch delay slot, and the archive pointer/list pointer choose different registers. Exact target bytes and relocation contract are absent. Continue source-level loop-entry and pointer-lifetime work; no full-wave verifier has run.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Use separate literal-list and equipment-output cursor locals while preserving the direct seven-item list, big-endian archive offsets, signed pointer comparison, and the two halfword writes in the equipment append loop."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 2241,
+      "sha256": "5D3DAADF0CB7BA5F3731CBEC394C11155C576FB7DEF701F4C68181BC1F3F8F8A"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "94F6B06C46BED364A54BF88EBA2A7E01113F80C7BF42AC64C2BD7A56C046F2FE"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-29-func_0019BE40-702b715d88.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
