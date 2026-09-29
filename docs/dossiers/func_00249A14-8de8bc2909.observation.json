@@ -1,0 +1,91 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "8DE8BC2909CEAE7F09B77A19CC1691220D02A6CC8E872323AA48221428A533B2",
+  "observationId": "701498A4B907B8B76A26A7DC16305D8E4B60B4706D83E7469C3BD5AFC4797823",
+  "symbol": "func_00249A14",
+  "authored": {
+    "context": "The selected s1h12 candidate has the accepted D_80187C42 symbol but recomputes class*72 for each lookup. Retail keeps that offset through four calls.",
+    "effects": [
+      "pure-c",
+      "class-offset-retained",
+      "loop-counter-reuse",
+      "frame-regression",
+      "length-regression"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "567CE71BCA6A6C2A73A13E5C894064396772E33D92F1E9F48AF26C7814CFD7E6",
+      "sourceSha256": "A40C48238FECEA864F755F1BE1DE41400356A5CC05CC0CBD6553D6987721AE9F"
+    },
+    "label": "scenario-class-offset-regression",
+    "observedEffect": "Authenticated scratch compilation retains the class offset in s1 and reduces aligned symbolic differences to 175, but the frame expands to 208 bytes, option and staged-base values spill, and text is shorter than retail by six instructions. This is a useful source-shaping counterexample, not a replacement for the selected candidate.",
+    "parentCandidateId": "010BFF4878D41A8660B8972A966DA005EA1DD977D5BFECBD4719A11925CA6387",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_00249A14.s",
+        "sha256": "64F2ACC3BFCF3C16477296FFBD96D64C29DA155A0287BCDFC6FD9C3B0CCEFB5D"
+      },
+      {
+        "path": "docs/archive/matching-c-candidates/2026-09-29-func_00249A14-bef9d5b251.c",
+        "sha256": "816DB095A5FE0927C94AC952ED77783AE36F9D40204108D9EFEE30CED7B8FDB8"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "The source does not cover six retail instructions in the symbolic alignment and remains a broad nonmatch. Recover option and staged-base register lifetimes before reusing this form. ASM production ownership is unchanged.",
+    "role": "counterexample",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Use one class_offset local derived from slot class and reuse the first-stage inner/outer counters in the second stage, matching the retail s2/s3 reuse. Keep the typed scratch aggregate and halfword reload."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 4425,
+      "sha256": "567CE71BCA6A6C2A73A13E5C894064396772E33D92F1E9F48AF26C7814CFD7E6"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "A40C48238FECEA864F755F1BE1DE41400356A5CC05CC0CBD6553D6987721AE9F"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-29-func_00249A14-8de8bc2909.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

@@ -1,0 +1,96 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "010BFF4878D41A8660B8972A966DA005EA1DD977D5BFECBD4719A11925CA6387",
+  "observationId": "E6F06F5BFADF7DDB9DC737D1B5C3B89B1A35CD5C1B5DBD8617CF245D9CA763EE",
+  "symbol": "func_00249A14",
+  "authored": {
+    "context": "The accepted original func_00249A14 owner is .ob64.r4390, 900 bytes. The first complete PURE_C candidate DB400E3F covers its one body but has a 216-byte frame. The retail entry copies a 16-byte descriptor twice, the later record-selection stage reloads a halfword after calls, and the class lookup uses relocated D_80187C42.",
+    "effects": [
+      "pure-c",
+      "descriptor-copy-recovered",
+      "retail-reload-expressed",
+      "symbolic-class-table",
+      "frame-improved",
+      "complete-body-coverage"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "AD9B096D007832FBDF1B66A8395C800B227526BB2249391C0536433690F09F6D",
+      "sourceSha256": "06FEAF1C06254AC11B5761190D2B69A748C373883B0CDDC893CA28BC9B545FAB"
+    },
+    "label": "scenario-link-consumer-corrected-interfaces-and-frame",
+    "observedEffect": "Authenticated scratch compilation emits PURE_C, 912 bytes/228 instructions against retail 900/225, with zero expected-only and three actual-only instructions. The frame is 192 bytes rather than the prior 216, and aligned symbolic differences are 207. The two descriptor reads survive; the named class table produces symbolic relocations. This remains a broad nonmatch, with no canonical linked diff or full-ROM verifier.",
+    "parentCandidateId": "DB400E3F422D9691C929B891C4B63C1B7C24A117FD731D0AD36FBE7747E0FA11",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_00249A14.s",
+        "sha256": "64F2ACC3BFCF3C16477296FFBD96D64C29DA155A0287BCDFC6FD9C3B0CCEFB5D"
+      },
+      {
+        "path": "config/matching-c-linkage.json",
+        "sha256": "794DA22DEBFF6DB9A2ECF872B6CED5EEE0B0AB13E22977D379016AC2151C7C73"
+      },
+      {
+        "path": "docs/archive/matching-c-candidates/2026-09-29-func_00249A14-db400e3f42.c",
+        "sha256": "DD549FA36C1BD2788509D0264CF09FDDEA6F1300393DFD887331E87E20CD72B3"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Retail frame is 184 bytes and target text is 900 bytes. The second-stage loop/register order remains far from retail. Production ownership stays ASM; the two-target scenario wave also needs func_0023A5EC.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Use nonvolatile typed descriptor assignments for both copies, reload the source halfword after comparisons, and index the accepted D_80187C42 symbol as 0x48-byte rows. Retain the complete two-stage record/slot processing and two-argument resource loader contract."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 4195,
+      "sha256": "AD9B096D007832FBDF1B66A8395C800B227526BB2249391C0536433690F09F6D"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "06FEAF1C06254AC11B5761190D2B69A748C373883B0CDDC893CA28BC9B545FAB"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-29-func_00249A14-010bff4878.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
