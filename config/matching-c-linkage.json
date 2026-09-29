@@ -792,9 +792,20 @@
     { "name": "D_800E7A58", "address": "0x800E7A58" },
     { "name": "D_800E91D0", "address": "0x800E91D0" },
     { "name": "D_8019E1F8", "address": "0x8019E1F8" },
-    { "name": "D_8019E20C", "address": "0x8019E20C" }
+    { "name": "D_8019E20C", "address": "0x8019E20C" },
+    { "name": "D_8021A114", "address": "0x8021A114" },
+    { "name": "D_8021A11A", "address": "0x8021A11A" }
   ],
   "targets": [
+    {
+      "symbol": "func_0019B21C",
+      "expectedRelocations": [
+        { "offset": "0x00000008", "type": "R_MIPS_HI16", "symbol": "D_8021A11A", "section": ".rel.text" },
+        { "offset": "0x00000010", "type": "R_MIPS_LO16", "symbol": "D_8021A11A", "section": ".rel.text" },
+        { "offset": "0x00000024", "type": "R_MIPS_HI16", "symbol": "D_8021A114", "section": ".rel.text" },
+        { "offset": "0x0000002C", "type": "R_MIPS_LO16", "symbol": "D_8021A114", "section": ".rel.text" }
+      ]
+    },
     {
       "symbol": "func_0019BE40",
       "expectedRelocations": [

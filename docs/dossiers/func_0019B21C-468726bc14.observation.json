@@ -1,0 +1,91 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "468726BC14E43D625FFC4BA903821750FD4CBB2D20E7E843B1A0C1F0F50B72DB",
+  "observationId": "AF25505DA77596C303FD18213049922F1AB49FBAE79A8FCA57E778BD64051228",
+  "symbol": "func_0019B21C",
+  "authored": {
+    "context": "The complete accepted 80-byte func_0019B21C owner indexes the signed ordered-category byte at D_8021A11A and accumulates that many unsigned category-count bytes from D_8021A114. Initial C with an s32 count emitted 76 bytes; narrowing count to s8 restored extent and frame but left the two zero-initialization moves exchanged.",
+    "effects": [
+      "pure-c",
+      "exact-text-extent",
+      "retail-frame",
+      "category-signed-byte",
+      "byte-accumulator",
+      "exact-linked-bytes",
+      "reviewed-relocations"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "C11B8B9C7E1272B179175F14B8084D707C28EDB09ADB85236A92577EF5288E5B",
+      "sourceSha256": "6D2A95F955B178D601C41F2C94267456FEC1007D5813DFC2ECA42A068839D873"
+    },
+    "label": "shop-category-prefix-byte-accumulator",
+    "observedEffect": "Authenticated watch 468726BC14E43D625FFC4BA903821750FD4CBB2D20E7E843B1A0C1F0F50B72DB reports PURE_C, complete 80-byte/20-instruction scratch body, 8-byte frame, no missing or extra instructions, zero opcode/register/stack differences, and only four relocation-placeholder word differences. The current canonical focused linked diff for src/lib/func_0019B21C.c reports EXACT decoded rows and linked bytes, sole 80-byte C contribution at .ob64.r3078 with no fallback, target SHA-256 99EC41AA26A317F1BCFF2E29CE24204AEDC2559A0DDC8C4D78BA34B78B48B5ED, and MATCH for the four reviewed HI16/LO16 relocations.",
+    "parentCandidateId": "DBDD9D23F228A41307F284EB1F0FBB991EAEF294A9AE60B5B04D16B130335C8E",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_0019B21C.s",
+        "sha256": "C7786172CB8A9320B2AA79FFAEBED5CD255A2EAEB73D674FD48A546F8C4E531E"
+      }
+    ],
+    "relatedCandidateIds": [
+      "CC5BBD867C1929499DC59B44B1335D85C880F304E5261B6D2EF572DE148E9C88"
+    ],
+    "remainingFailure": "This is a provisional target result only. The three-member downstream shop utility wave also requires func_0019B26C and func_0019BD14, followed by one combined final verifier. The earlier producer/splitter wave remains open because func_001977E0 is still nonexact scratch and its separately owned table cannot be activated through an unapproved structural change.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Retain the signed-byte category count and use a u8 accumulator for the returned sum, while keeping the bounded index as s32 and the ordinary forward loop."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 359,
+      "sha256": "C11B8B9C7E1272B179175F14B8084D707C28EDB09ADB85236A92577EF5288E5B"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "6D2A95F955B178D601C41F2C94267456FEC1007D5813DFC2ECA42A068839D873"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-29-func_0019B21C-468726bc14.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
