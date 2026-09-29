@@ -1,0 +1,101 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "9D9281EB687EA6034967F9A2A46C4D8EC46D01A3CA254058757FC26E464E2D9F",
+  "observationId": "DB741A65790A1B76F9C78F672189BF023307C705A1B8D7A302CB80C8564362EC",
+  "symbol": "func_0021B438",
+  "authored": {
+    "context": "The retained E41 B438 PURE_C candidate has the exact 824-byte text extent and two-table shape but its if-statement absolute-value expressions do not produce retail's two abssi2 instruction patterns at z64 0x0021B68C..0x0021B6A0. GoldOx's Agent Mail guidance ID 401 identified the specific source-level pattern; Sol reconstructed it independently from the project source and retail disassembly.",
+    "effects": [
+      "pure-c",
+      "abssi2-pattern",
+      "owner-length-824",
+      "auxiliary-tables-retained",
+      "register-differences-reduced"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "BD8B14A66AF42F009F454363F7C1EF954D412C9854C0805F4B5404DDB154E69E",
+      "sourceSha256": "46917B2B01CBE14FB21DFED70FC79D6AF80FC199C4B01321BF99DEAEEE2FBFC7"
+    },
+    "label": "retail-abssi2-ternary-improves-b438",
+    "observedEffect": "A current-run authenticated workbench watch classified the new source PURE_C and compiled a 824-byte, 206-instruction logical owner with no expected-only or actual-only instruction. Compared with retail, its symbolic object has zero opcode, branch-polarity, stack-offset, and memory-width/signedness mismatches; register-field differences fall from E41's historical 31 to 26 and aligned instruction differences from 52 to 47. The two 240-byte .rodata tables together have raw SHA-256 FA3509166739A476B9FE7D429B60665FC8BC54AA81746DC954A28314727A97DA, identical to E41 and the accepted fixture. All 120 auxiliary R_MIPS_32 records are identical to E41 after normalizing the compiler-adjusted text-section name. No production source, linkage, or full-ROM acceptance input changed.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_0021B438.s",
+        "sha256": "BAEA834349FFC67063547DAFE4677A65D716BF0DD9A6A856AD4B598855D41CC5"
+      },
+      {
+        "path": "docs/archive/matching-c-candidates/resumption-20260906/sources/func_0021B438-924cf427df75.c",
+        "sha256": "924CF427DF75DEBE6BB907F76E8544826C4DFC4E713131BC8BEEA292A41DEB96"
+      },
+      {
+        "path": "tests/func_0021B438_0021B894_switch_tables.js",
+        "sha256": "81DBDDC78A932FCD447DB688621D7333D562C0CA2418009CBE952D03481F063B"
+      },
+      {
+        "path": "docs/Plans/task-logs/combat-controller-retry-preparation-r1.md",
+        "sha256": "EEF80512A68C017FC28F651634C03F210E595267D4CBE64B7020EC0A6143DAA4"
+      }
+    ],
+    "relatedCandidateIds": [
+      "6123332D2A94D817E9D24018C332F5F9378717FB3BDB846187B1D605B4D4587E"
+    ],
+    "remainingFailure": "The owner remains nonexact: 47 aligned symbolic instruction differences and 26 register-field differences remain; raw relocation-bearing addresses cannot be judged exact without approved ownership and a canonical linked diff. The outer owner/other and inner strongest/cursor/slot register-priority cycles remain. This source is the best recoverable pure-C research candidate, not matching C. B894's separate structural activation still needs Astra approval; W5's eight-member final verifier remains pending.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Express the absolute values of strongest_adjustment and distance as nonnegative-test ternaries, each selecting the original value or its negation, instead of initializing a result then conditionally negating that result. Leave all other E41 source and the reversible outer owner-value pair unchanged."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 6048,
+      "sha256": "BD8B14A66AF42F009F454363F7C1EF954D412C9854C0805F4B5404DDB154E69E"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "46917B2B01CBE14FB21DFED70FC79D6AF80FC199C4B01321BF99DEAEEE2FBFC7"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-29-func_0021B438-9d9281eb68.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

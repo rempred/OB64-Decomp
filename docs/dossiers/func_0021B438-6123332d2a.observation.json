@@ -1,0 +1,99 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "6123332D2A94D817E9D24018C332F5F9378717FB3BDB846187B1D605B4D4587E",
+  "observationId": "FEF6E0E26B23BF3C2962E4325C219A0DBF97715D7DC84C370ABCF4D25811F49E",
+  "symbol": "func_0021B438",
+  "authored": {
+    "context": "The retained E41 PURE_C source emits the 824-byte logical B438 body and two 60-entry switch tables but retains saved-register allocation cycles. The controller retry preparation proposed replacing the reversible owner-value pair with a condition on the initialized owner value and identical loop-update continuations.",
+    "effects": [
+      "pure-c",
+      "owner-predicate-late-removed",
+      "length-regression",
+      "allocation-regression",
+      "switch-table-target-shift"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "866A13C3EE0A0DB41F6E6C496A63B4CB73CC9B571BF5FC3436FC1D6C9CA32732",
+      "sourceSha256": "C5BEAD61F6E80ABAB6FE5594F3A47302382EFDFBBA17B7239541EE87B32E81B9"
+    },
+    "label": "outer-owner-condition-duplicates-continuation",
+    "observedEffect": "A current-run authenticated workbench watch classified the trial PURE_C but reported a symbolic-object length mismatch. Direct pinned cc1 and GNU 2.6 assembly show the logical function grows from E41's 824 bytes to 828 bytes. Register allocations, stack layout, and final branch shape change broadly. Both objects retain a 480-byte .rodata section: the first 240-byte table is raw-identical, while every 16-byte row of the second 240-byte table differs from E41, beginning with target offsets shifted by 8. The predicate is absent from final assembly, but its intermediate compiler effect does not match retail. No production source, owner partition, or full-ROM acceptance input changed.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_0021B438.s",
+        "sha256": "BAEA834349FFC67063547DAFE4677A65D716BF0DD9A6A856AD4B598855D41CC5"
+      },
+      {
+        "path": "docs/archive/matching-c-candidates/resumption-20260906/sources/func_0021B438-924cf427df75.c",
+        "sha256": "924CF427DF75DEBE6BB907F76E8544826C4DFC4E713131BC8BEEA292A41DEB96"
+      },
+      {
+        "path": "docs/Plans/task-logs/combat-controller-retry-preparation-r1.md",
+        "sha256": "EEF80512A68C017FC28F651634C03F210E595267D4CBE64B7020EC0A6143DAA4"
+      },
+      {
+        "path": "tests/func_0021B438_0021B894_switch_tables.js",
+        "sha256": "81DBDDC78A932FCD447DB688621D7333D562C0CA2418009CBE952D03481F063B"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "B438 still lacks exact PURE_C. The conditional continuation fails the required 824-byte extent and second-table target bytes before any linked acceptance test. Keep E41 as the best available pure-C research source and the original ASM as production owner. Its auxiliary table shape fits existing tooling, but activating a split of accepted row 4156 requires structural approval and audit. The complete eight-member W5 wave remains open.",
+    "role": "counterexample",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Replace the comma-expression outer do-while condition with an owner_value != 0 conditional expression whose two arms each perform the existing two +2 cursor updates, slot increment, and bottom test."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 6362,
+      "sha256": "866A13C3EE0A0DB41F6E6C496A63B4CB73CC9B571BF5FC3436FC1D6C9CA32732"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "C5BEAD61F6E80ABAB6FE5594F3A47302382EFDFBBA17B7239541EE87B32E81B9"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-29-func_0021B438-6123332d2a.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
