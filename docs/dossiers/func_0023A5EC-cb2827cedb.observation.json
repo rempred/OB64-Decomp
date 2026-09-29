@@ -1,0 +1,89 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "CB2827CEDBCC29B309731A5CCC7A7AAC026C024BBE98BD8F65DEE655BF1652EA",
+  "observationId": "1F9BF39FB5E6D0DB68C9AD62A8E413E46D1861309596A95C7DB91BF1FD3F5EA5",
+  "symbol": "func_0023A5EC",
+  "authored": {
+    "context": "Retail func_0023A5EC tests scan values with positive nonzero and less-than-100 predicates combined by and, increments the numeric scan counter in both the invalid skip and valid path, and then checks counter < 5. The typed-row partial-output PURE_C source retains the two increment paths but compiles the early invalid guard as an inverted predicate and strength-reduces the counter into a pointer.",
+    "effects": [
+      "pure-c",
+      "retail-validity-opcodes",
+      "merged-increment-counterexample"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "7E6FB5381BAAB008947A8E85EA6EBB7D386AE56477F7DE728C6CD6F0B53079A5",
+      "sourceSha256": "B77E3F27091DCB1F4DE2DFE0CDBF3E5325E7E37D422A12B99CE59EDDFDDD9541"
+    },
+    "label": "scenario-positive-scan-validity-shape",
+    "observedEffect": "Authenticated pinned-compiler watch emitted the retail sltu/sltiu/and validity sequence, reducing aligned opcode differences from 567 to 553 and differing bytes from 2231 to 2197. It merged the two increments into one pointer increment, however, yielding 2632 bytes/658 instructions, frame 128, zero actual-only and five expected-only instructions versus the parent 2640/660 and three expected-only. A positive predicate with an explicit continue on the invalid arm compiled back to the parent object byte-identically.",
+    "parentCandidateId": "6FC96450ED8D10666F3C334D120E941E3396BA0A85E08E64AD33E6B3CEE91F04",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_0023A5EC.s",
+        "sha256": "7150A449FC53B900146EB17649873381E2CBDD19DE8BCBB626C881ED2949FBCF"
+      },
+      {
+        "path": "docs/dossiers/func_0023A5EC-6fc96450ed.md",
+        "sha256": "89A35A5FCDFCB8FA3F64BC620CCDB0C2C6DC38D524685AC2FCCEC70EB3B15E3E"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "The scan still uses a moving pointer/end pointer instead of retail's saved numeric counter; the merged increment loses two instructions. Repeated cases and linked bytes remain broadly nonmatching, with ASM active and no final scenario verifier.",
+    "role": "counterexample",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Express scan validity as value > 0 && value < 100 with explicit increments in both the valid and invalid arms, keeping all row and output logic unchanged."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 9540,
+      "sha256": "7E6FB5381BAAB008947A8E85EA6EBB7D386AE56477F7DE728C6CD6F0B53079A5"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "B77E3F27091DCB1F4DE2DFE0CDBF3E5325E7E37D422A12B99CE59EDDFDDD9541"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-29-func_0023A5EC-cb2827cedb.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
