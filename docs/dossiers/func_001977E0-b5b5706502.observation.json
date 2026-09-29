@@ -1,0 +1,93 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "B5B5706502EB1F802D1B4AE17BCCFEF5C645E9768D99BC17C23B72BDD8FC0119",
+  "observationId": "C2A3BDDEA94B3F450D1401F541BE9BE001005850E6DE5B5F20DA3C47A5808AE6",
+  "symbol": "func_001977E0",
+  "authored": {
+    "context": "The exact-extent full-body control uses one shared eligibility call. Retail case 3 sets the consumable or equipment argument locally, stores each branch's price, and joins at the eligibility call. The callee masks its second argument to a byte on entry.",
+    "effects": [
+      "pure-c",
+      "retail-frame",
+      "case3-purchase-interval",
+      "interface-evidence",
+      "shared-call-shape"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "197C3E295DDA609694C0DF0D06424C318DA29F56B828068217E20D5FDE91CBAF",
+      "sourceSha256": "79A568F927C920EBEF3007CDCB284C223B7531833DBA080B967B5FD97678579B"
+    },
+    "label": "shop-case3-branch-local-eligibility-and-price",
+    "observedEffect": "Direct pinned compiler and assembler controls emit a retail-sized 848-byte state-3 interval, including its 460-byte buy path, and a 652-byte state-7/8 interval. Authenticated watch B5B5706502EB1F802D1B4AE17BCCFEF5C645E9768D99BC17C23B72BDD8FC0119 classifies the clean source PURE_C, with 4588 bytes/1147 instructions, frame 112, two actual-only and zero expected-only instructions, and 3795 differing symbolic bytes.",
+    "parentCandidateId": "1A443754C13922698566AAB86A7FCFEA21AA8BF28D97BB1FDC200844771844FE",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_001977E0.s",
+        "sha256": "95D9F4D4D4B3E8D0E83E44D1BE2E35F2C40F2DDB9A318BB247E375DD3DC906F6"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_0019B26C.s",
+        "sha256": "FCC2DFF7BBDE33CAAD309B0F1D4D1386B1620B443C73F08BA6A213460E33C8C4"
+      }
+    ],
+    "relatedCandidateIds": [
+      "6A3CDC988770DE1D9E9C4AE4A0E78965E1826F184CC95D138B2F229CC3CCAA84"
+    ],
+    "remainingFailure": "The complete owner is two instructions longer than retail. Earlier state intervals are longer while later motion and cleanup code is shorter; opcode, control-flow, and register differences remain broad. The distinct price-word declaration is a compiler-shaping alias, not evidence that the original source used two names. Original ASM and table ownership stay production; no canonical linked result or completed-wave verifier follows.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Correct the eligibility prototype to (u16,u8); express the eligibility call in each source branch and let GCC cross-jump it; use the existing independent price-word address in the equipment branch so GCC retains each price store before the joined call."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 21084,
+      "sha256": "197C3E295DDA609694C0DF0D06424C318DA29F56B828068217E20D5FDE91CBAF"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "79A568F927C920EBEF3007CDCB284C223B7531833DBA080B967B5FD97678579B"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-29-func_001977E0-b5b5706502.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

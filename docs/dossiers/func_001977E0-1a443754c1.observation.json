@@ -1,0 +1,92 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "1A443754C13922698566AAB86A7FCFEA21AA8BF28D97BB1FDC200844771844FE",
+  "observationId": "6752F7C328A49457D91757E0A8B5CFB5CF7560CB3EC71BC2D02C0D269F025A76",
+  "symbol": "func_001977E0",
+  "authored": {
+    "context": "The prior 6A3CDC98 full sixteen-state source emitted 4576 bytes/1144 instructions with the retail 112-byte frame. The accepted original owner is 4580 bytes/1145 instructions, and the 16-entry table is a separate accepted data row.",
+    "effects": [
+      "pure-c",
+      "retail-frame",
+      "exact-text-extent",
+      "full-body-coverage"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "BD8867BA9B8D3B66CB766010EB3B882DCF57B9EE013919EC9012989A777B51C2",
+      "sourceSha256": "B9C91BFB95AC00A978E7DAA9C8E4D522F535F49A0C19D23A7B94D442D5CB9AAA"
+    },
+    "label": "shop-full-body-exact-extent-source-control",
+    "observedEffect": "Authenticated watch 1A443754C13922698566AAB86A7FCFEA21AA8BF28D97BB1FDC200844771844FE classifies this readable source PURE_C and emits exactly 4580 bytes/1145 instructions with frame 112 and zero expected-only or actual-only instructions. The state-7/8 interval is 652 bytes as in retail. This is an extent and body-coverage milestone only: the symbolic comparison still differs in 3740 bytes and broad opcode, register, and control-flow details.",
+    "parentCandidateId": "6A3CDC988770DE1D9E9C4AE4A0E78965E1826F184CC95D138B2F229CC3CCAA84",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_001977E0.s",
+        "sha256": "95D9F4D4D4B3E8D0E83E44D1BE2E35F2C40F2DDB9A318BB247E375DD3DC906F6"
+      },
+      {
+        "path": "docs/archive/matching-c-candidates/2026-09-29-func_001977E0-6a3cdc9887.c",
+        "sha256": "974B3EDA5FB993C49F18B94EC9D7DF7C767598D3BA28B95F6A78702E3E6871F8"
+      }
+    ],
+    "relatedCandidateIds": [
+      "5C165CDD75ECA97B867F399297D63D01CFA9513341E5B229D2668BB73E1C7597"
+    ],
+    "remainingFailure": "The source declaration of func_0019B26C still gives its second argument word width; the callee's retail entry masks a1 to a byte. A corrected branch-local call form is preserved separately. The scratch object is far from a linked exact match. The switch table has no approved auxiliary ownership contract, so the original ASM remains production and no completed-wave verifier has run.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Use branch-local quantity stores through the independently addressed object pointer in state 7; keep state 1's selector, start, and count as word-sized locals loaded from byte tables; and advance an ordered-category output pointer in state 0. Preserve the separately signed row accesses and the case-3 publication order from the earlier full-body source."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 21081,
+      "sha256": "BD8867BA9B8D3B66CB766010EB3B882DCF57B9EE013919EC9012989A777B51C2"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "B9C91BFB95AC00A978E7DAA9C8E4D522F535F49A0C19D23A7B94D442D5CB9AAA"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-29-func_001977E0-1a443754c1.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
