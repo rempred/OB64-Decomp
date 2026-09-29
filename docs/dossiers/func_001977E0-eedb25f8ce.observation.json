@@ -1,0 +1,93 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "EEDB25F8CE9680CCBD63D9015C75FA52E1148B7E243F95DC4D9DB13F25576E8F",
+  "observationId": "A1ED2E9930CB00426A4E399ECB6F997429441837AB66D4D43DC49E52B244152E",
+  "symbol": "func_001977E0",
+  "authored": {
+    "context": "The shared-tick source aligns most state entries but is six terminal instructions short. Retail checks the widget pointer, then reloads the same global pointer for each motion-direction field read and again for the final rectangle call. The former local widget pointer lets the compiler reuse the initial read.",
+    "effects": [
+      "pure-c",
+      "retail-frame",
+      "exact-text-extent",
+      "widget-pointer-provenance",
+      "state-entry-placement"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "C1CBBB70EFBE0EB0A56D3E0F0ED9C896FCC21A4B59870358011365D82DBFB5E0",
+      "sourceSha256": "941067A04E648471FDCC382658BB2B5F705A05F2D3E887D281D37E8C20A3BE9F"
+    },
+    "label": "shop-widget-pointer-reloads-complete-extent",
+    "observedEffect": "Pinned compiler output restores the six missing terminal instructions without moving any state entry: full text 4580 bytes/1145 instructions, 112-byte frame. Authenticated watch EEDB25F8CE9680CCBD63D9015C75FA52E1148B7E243F95DC4D9DB13F25576E8F classifies PURE_C with zero expected-only and actual-only instructions, 2681 differing symbolic bytes, and score 57.79. States 0-4 and 13-15 start at retail offsets; only state 5 is four bytes short, state 9 four bytes short, and the shared 10-12 interval eight bytes long.",
+    "parentCandidateId": "62DED515D9612AF6B9C8229CEF19F986A51E0C35DE097FA5E530625F3A548F70",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_001977E0.s",
+        "sha256": "95D9F4D4D4B3E8D0E83E44D1BE2E35F2C40F2DDB9A318BB247E375DD3DC906F6"
+      },
+      {
+        "path": "docs/archive/matching-c-candidates/2026-09-29-func_001977E0-62ded515d9.c",
+        "sha256": "4527AD780161703174076A3DDD43A0D188D5FD246ABCCDBEA0C4AB6780A1E38D"
+      }
+    ],
+    "relatedCandidateIds": [
+      "40216BB8856920D75C652F935CAE2BF431EA471CB30159445DE70950716E3B8F"
+    ],
+    "remainingFailure": "A text-length match and improved symbolic score do not establish linked target bytes. The object still differs broadly in opcodes, register allocation, and control flow, and the 16-entry switch table has no approved auxiliary C ownership contract. The independent widget-pointer name is a compiler-shaping alias for the same physical global, not proof of original naming. Original ASM remains production; no completed-wave verifier has run. A common flag-store source experiment shrank the tail and was not selected.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Read the widget field and final rectangle-call pointer through an independent global view of the same observed address, while retaining the local pointer for null checks. Keep the shared tick tail and explicit state-1 maximum merge."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 21342,
+      "sha256": "C1CBBB70EFBE0EB0A56D3E0F0ED9C896FCC21A4B59870358011365D82DBFB5E0"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "941067A04E648471FDCC382658BB2B5F705A05F2D3E887D281D37E8C20A3BE9F"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-29-func_001977E0-eedb25f8ce.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

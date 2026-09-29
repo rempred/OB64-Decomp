@@ -1,0 +1,93 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "62DED515D9612AF6B9C8229CEF19F986A51E0C35DE097FA5E530625F3A548F70",
+  "observationId": "6A0AC9C6CE33E706DA328D1C4D5E04F6977495B98632195605AA867F3F36DAE9",
+  "symbol": "func_001977E0",
+  "authored": {
+    "context": "The 40216BB8 full-body source matches state-0 and total text lengths but inlines tick increments in states 1, 2, 6, 13 and 15. Retail branches from these states to one tick increment at z64 0x00198870 before the shared widget-motion tail. Retail state 1 also joins two maximum-value branches before the loop increment.",
+    "effects": [
+      "pure-c",
+      "retail-frame",
+      "shared-tick-control",
+      "state-entry-placement",
+      "case1-branch-shape"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "4274C456129DDD888D23ED4CC9240B013D78153E4EE855C2E68E8AFE0D37ECF8",
+      "sourceSha256": "4527AD780161703174076A3DDD43A0D188D5FD246ABCCDBEA0C4AB6780A1E38D"
+    },
+    "label": "shop-shared-tick-tail-and-case1-merge",
+    "observedEffect": "Pinned compiler control places states 0-4, 13, 14 and 15 at their retail entry offsets and emits the retail 112-byte frame. Authenticated watch 62DED515D9612AF6B9C8229CEF19F986A51E0C35DE097FA5E530625F3A548F70 reports PURE_C, 4556 bytes/1139 instructions, six expected-only and zero actual-only instructions, 2789 differing symbolic bytes, and score 55.59. It substantially improves the cross-state control alignment over 40216BB8, despite shortening the terminal region.",
+    "parentCandidateId": "40216BB8856920D75C652F935CAE2BF431EA471CB30159445DE70950716E3B8F",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_001977E0.s",
+        "sha256": "95D9F4D4D4B3E8D0E83E44D1BE2E35F2C40F2DDB9A318BB247E375DD3DC906F6"
+      },
+      {
+        "path": "docs/archive/matching-c-candidates/2026-09-29-func_001977E0-40216bb885.c",
+        "sha256": "94AE694E8CB69154E6FD64B75D96F169D61E2282F8725C85DB9210C596A20291"
+      }
+    ],
+    "relatedCandidateIds": [
+      "B5B5706502EB1F802D1B4AE17BCCFEF5C645E9768D99BC17C23B72BDD8FC0119"
+    ],
+    "remainingFailure": "The owner remains six instructions short, largely in widget-motion handling. State 5 and 9 intervals are four bytes short while states 10-12 are eight bytes long. The comparison still has broad opcode/register/control-flow differences; no linked exactness or completed-wave verification follows. The original ASM and separate table remain production.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Express the state-1 maximum selection with explicit if/else assignment to a shared next value. Route the five states' tick increments to one labeled tail after the switch, with non-incrementing states entering the motion tail directly."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 21298,
+      "sha256": "4274C456129DDD888D23ED4CC9240B013D78153E4EE855C2E68E8AFE0D37ECF8"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "4527AD780161703174076A3DDD43A0D188D5FD246ABCCDBEA0C4AB6780A1E38D"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-29-func_001977E0-62ded515d9.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
