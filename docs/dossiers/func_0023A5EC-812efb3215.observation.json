@@ -1,0 +1,86 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "812EFB32159FA22FEB6BDD082EA244C93FFE3721DD84C1DA2FA9175A4BEB2DC9",
+  "observationId": "79BD79461F57E1028C32AFDB68BAE932228B65D4F4391F3877D29DDB0BB18418",
+  "symbol": "func_0023A5EC",
+  "authored": {
+    "context": "Retail func_0023A5EC constructs the five-value scan base from the saved D_801974DE output pointer minus 0x2EE, yielding D_801971F0. The previous source names D_801971F0 separately and emits a fresh address materialization. This is a static address relationship, not evidence that the two separately declared C globals form one defined array object.",
+    "effects": [
+      "pure-c",
+      "shared-address-relationship",
+      "symbolic-improvement",
+      "pointer-provenance-unresolved"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "4DB2EF24E1B026CDFAB1F7DBBC2C3BAE7F942DEE3BEFF1CE8788734233C0F28C",
+      "sourceSha256": "47D99F6BF84707862F97EF1C64D807095CF83F387F59ADA96C12FC3314B2AB0D"
+    },
+    "label": "scenario-scan-base-from-output-pointer",
+    "observedEffect": "Authenticated pinned-compiler watch emitted PURE_C at 2640 bytes/660 instructions, frame 128, zero actual-only and three expected-only instructions. Relative to the 2644/661 exact-scan source, aligned symbolic differences fell from 603 to 576, differing bytes from 2067 to 1914, and opcode differences from 522 to 476. The compiler uses output as a base but forms the -0x2EE offset after the row multiply, unlike retail's addiu-before-addu order. A named scan_base local moved the offset earlier but regressed differing bytes to 1929 at the same extent.",
+    "parentCandidateId": "C40B7A302B2E55AA76415DEE27E42864F0D5FC4C48B52F72653D34F582905539",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_0023A5EC.s",
+        "sha256": "7150A449FC53B900146EB17649873381E2CBDD19DE8BCBB626C881ED2949FBCF"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "The scratch pointer subtraction crosses separately declared C globals and is not source-policy or C-provenance acceptance evidence. A common backing object or safe address representation is needed before production. The owner remains 12 bytes short with broad nonexact linked behavior and no accepted relocation contract; ASM and the open scenario wave remain unchanged.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Compute the pre-index scan pointer from the saved output pointer minus 0x2EE plus the 25-byte row offset, keeping the exact-scan source form otherwise unchanged."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 9281,
+      "sha256": "4DB2EF24E1B026CDFAB1F7DBBC2C3BAE7F942DEE3BEFF1CE8788734233C0F28C"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "47D99F6BF84707862F97EF1C64D807095CF83F387F59ADA96C12FC3314B2AB0D"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-29-func_0023A5EC-812efb3215.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

@@ -1,0 +1,94 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "C40B7A302B2E55AA76415DEE27E42864F0D5FC4C48B52F72653D34F582905539",
+  "observationId": "DD4BB8073CC613D39183B81DABA2C1902739B878DA121C7C07F1AA0BA9C16834",
+  "symbol": "func_0023A5EC",
+  "authored": {
+    "context": "Retail func_0023A5EC scans five values with a numeric saved counter, positive nonzero/under-100 predicate, branch-likely skip increment, unsigned less-than-five test, and later reuses the counter for output slots. The prior typed 25-byte row source recovered numeric indexing but retained an inverted predicate. GoldOx's advisory Agent Mail 431, corrected for z64 addresses in 432, supplied a bounded compiler-tested source form; Sol independently checked it against the original disassembly and pinned workbench.",
+    "effects": [
+      "pure-c",
+      "numeric-scan-index",
+      "retail-positive-validity",
+      "retail-branch-delay",
+      "counter-reuse",
+      "typed-candidate-row"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "199B80D7A762AB4DD7DD4E429777689109E39B5A7E148544E279532A8F7F8B48",
+      "sourceSha256": "CDCD3B7F5AA104A2CFB4E12F0C926A352EBBB9CBDF4157477E0415A8590492A1"
+    },
+    "label": "scenario-pinned-compiler-exact-scan-form",
+    "observedEffect": "Authenticated pinned-compiler watch emitted PURE_C at 2644 bytes/661 instructions, frame 128, zero actual-only and two expected-only instructions against retail 2652/663. The scan now uses saved s2 for i, a1 for maximum and a2 for the precomputed row; it emits the retail validity AND, beql skip with increment in its delay slot, unsigned <5 test, and reuses s2 across resource calls/output. The early numeric-counter reset occupies the resource_free delay slot. Aligned symbolic differences fell from 653 in the typed-row parent to 603, differing bytes from 2231 to 2067, and opcode differences from 567 to 522. The external address and surrounding setup still differ; this is not a linked exact result.",
+    "parentCandidateId": "6FC96450ED8D10666F3C334D120E941E3396BA0A85E08E64AD33E6B3CEE91F04",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_0023A5EC.s",
+        "sha256": "7150A449FC53B900146EB17649873381E2CBDD19DE8BCBB626C881ED2949FBCF"
+      },
+      {
+        "path": "docs/dossiers/func_0023A5EC-6fc96450ed.md",
+        "sha256": "89A35A5FCDFCB8FA3F64BC620CCDB0C2C6DC38D524685AC2FCCEC70EB3B15E3E"
+      }
+    ],
+    "relatedCandidateIds": [
+      "78B5FFAC6EA361C82348828E6B8CA0ABFF490CF3F8AC4E015343F7F1A716EDCA"
+    ],
+    "remainingFailure": "The owner is eight bytes short with broad surrounding opcode/register/address differences, including the scan-base construction and first resource-record pointer lifetime. The source is not active C and lacks an accepted relocation contract; the two-target scenario wave has not run final verification. The exact original assembly remains production.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Precompute a byte row pointer from D_801976DC times 25, read *(scan_row + i + 2), express the positive validity test inside the body, type i as u32 and reuse it after reset as the output counter, and declare D_80193BD3 as 0x38-byte rows."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 9277,
+      "sha256": "199B80D7A762AB4DD7DD4E429777689109E39B5A7E148544E279532A8F7F8B48"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "CDCD3B7F5AA104A2CFB4E12F0C926A352EBBB9CBDF4157477E0415A8590492A1"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-29-func_0023A5EC-c40b7a302b.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

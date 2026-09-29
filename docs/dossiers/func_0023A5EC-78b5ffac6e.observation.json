@@ -1,0 +1,93 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "78B5FFAC6EA361C82348828E6B8CA0ABFF490CF3F8AC4E015343F7F1A716EDCA",
+  "observationId": "121D9462B6618EE7DD3E0653D6DFD19373B95D894A80E97B8B77F1C6AC80E657",
+  "symbol": "func_0023A5EC",
+  "authored": {
+    "context": "Retail func_0023A5EC forms a D_801971F0 row base using D_801976DC times 25, adds a five-value numeric scan counter, and increments that counter separately on the invalid skip and valid paths. The prior flat-array PURE_C source strength-reduced the scan into a moving pointer and end pointer. The accepted owner is 2652 bytes/663 instructions with a 128-byte frame; original ASM is active.",
+    "effects": [
+      "pure-c",
+      "evidence-backed-scan-row-type",
+      "numeric-scan-index",
+      "separate-scan-increments",
+      "near-owner-extent"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "69A70C9A5075759EF9B81D7A9E4FF7C43118059262D73C9912BAE2F55FBD9BCD",
+      "sourceSha256": "18591F33B55FD9AC1719D10DA3E08CE274FC1863B05D329B61FE55379177B473"
+    },
+    "label": "scenario-typed-25-byte-scan-row",
+    "observedEffect": "Authenticated pinned-compiler watch emitted a numeric scan index with a precomputed 25-byte row base and separate skip/valid increments, matching the retail induction-variable shape. The PURE_C symbol is 2648 bytes/662 instructions, frame 128, zero actual-only and one expected-only instruction, compared with 2640/660 and three expected-only for the flat-array parent. Aligned opcode differences fell from 567 to 546 and differing bytes from 2231 to 2175, but 645 aligned symbolic instructions still differ. Changing to a positive validity branch emitted retail's sltu/sltiu/and test but merged the increments and fell back to 2640/660. A bitwise positive-validity early guard compiled byte-identically to this source.",
+    "parentCandidateId": "6FC96450ED8D10666F3C334D120E941E3396BA0A85E08E64AD33E6B3CEE91F04",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_0023A5EC.s",
+        "sha256": "7150A449FC53B900146EB17649873381E2CBDD19DE8BCBB626C881ED2949FBCF"
+      },
+      {
+        "path": "docs/dossiers/func_0023A5EC-6fc96450ed.md",
+        "sha256": "89A35A5FCDFCB8FA3F64BC620CCDB0C2C6DC38D524685AC2FCCEC70EB3B15E3E"
+      }
+    ],
+    "relatedCandidateIds": [
+      "CB2827CEDBCC29B309731A5CCC7A7AAC026C024BBE98BD8F65DEE655BF1652EA"
+    ],
+    "remainingFailure": "The owner remains one instruction short with broad register, opcode, address and repeated-case differences. Its validity predicate is still inverted relative to retail, and no canonical linked relocation contract has been established. The 25-byte row type is structural source evidence, not a behavioral claim or matching acceptance. No production activation or full scenario wave verifier ran.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Express D_801971F0 as 25-byte rows and index row[D_801976DC][2 + i], retaining the earlier 52-byte ResourceRow pointer difference, first-row marker and partial output-base alias."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 9535,
+      "sha256": "69A70C9A5075759EF9B81D7A9E4FF7C43118059262D73C9912BAE2F55FBD9BCD"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "18591F33B55FD9AC1719D10DA3E08CE274FC1863B05D329B61FE55379177B473"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-29-func_0023A5EC-78b5ffac6e.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
