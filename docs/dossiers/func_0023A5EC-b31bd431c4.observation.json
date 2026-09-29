@@ -1,0 +1,92 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "B31BD431C41EDB478860A4FF2FADFD9684E0058055F825B37F374522B1DB8E08",
+  "observationId": "7F2BFFB6E7A6F306AD6A97E31AC78979146DF98EAD1F67AB79BA5024E44DCF79",
+  "symbol": "func_0023A5EC",
+  "authored": {
+    "context": "Retail func_0023A5EC initializes an output slot counter to zero before the first record and increments it before optional groups. The first-row marker is independently established from the original disassembly. The direct-global output spelling avoids the separate output-base alias lifetime.",
+    "effects": [
+      "pure-c",
+      "retail-row-marker",
+      "output-counter-lifetime",
+      "near-owner-extent"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "C944889425628AB7C97F634BC5A81B39BEF4887628C588D92842FD1BEB6520F6",
+      "sourceSha256": "48FCD19A8A80C74EAA3B0126C9F554C258989D8A6A28BDCB00063D3D2F20FEA7"
+    },
+    "label": "scenario-marker-direct-output-counter",
+    "observedEffect": "Authenticated pinned-compiler watch emitted PURE_C at 2648 bytes/662 instructions against retail 2652/663, with no actual-only and one expected-only instruction. Its frame remains 120 versus retail 128, and 644 aligned symbolic instructions still differ. This is closer in extent than the direct-output marker control (2636/659) but is not an exact or linked candidate.",
+    "parentCandidateId": "78715813F88EF89C22D8B06A54628EC5A884F2B2F0C2400B1F3D1AB6FC7E0BF6",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_0023A5EC.s",
+        "sha256": "7150A449FC53B900146EB17649873381E2CBDD19DE8BCBB626C881ED2949FBCF"
+      },
+      {
+        "path": "docs/dossiers/func_0023A5EC-3122ed3dc5.md",
+        "sha256": "5B343B485CDA19B03345CB03A2988FFCBBE5557174171CC82AF69186576FE137"
+      }
+    ],
+    "relatedCandidateIds": [
+      "5738E2E9560CC90072507363CAC31C016E8F20FB59AE394EBEFEBC17CF7AF328"
+    ],
+    "remainingFailure": "The eight-byte frame deficit, saved-register choices, scan and optional-case scheduling, and broad symbolic differences remain. The result has no production ownership or accepted relocation contract and has not entered the final two-target scenario verifier.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "With the first-row marker present, initialize output_count to zero before table setup; use it for the first selected-index and count-byte output stores, then increment rather than assigning one."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 9383,
+      "sha256": "C944889425628AB7C97F634BC5A81B39BEF4887628C588D92842FD1BEB6520F6"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "48FCD19A8A80C74EAA3B0126C9F554C258989D8A6A28BDCB00063D3D2F20FEA7"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-29-func_0023A5EC-b31bd431c4.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

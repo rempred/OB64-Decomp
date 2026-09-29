@@ -1,0 +1,92 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "5738E2E9560CC90072507363CAC31C016E8F20FB59AE394EBEFEBC17CF7AF328",
+  "observationId": "0BC03C671486CD4F4A2BD328361B244705C107057DF5C61DF8487B0A1AC16D14",
+  "symbol": "func_0023A5EC",
+  "authored": {
+    "context": "Retail func_0023A5EC keeps an output-base pointer and initializes the output slot counter to zero before clearing output tables. Its first selected-index and count-byte stores use that counter, then increment it before the optional groups. The earlier partial output-pointer alias had a retail-sized frame but omitted the first-row marker.",
+    "effects": [
+      "pure-c",
+      "retail-row-marker",
+      "output-counter-lifetime",
+      "retail-frame-size"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "52E5A8B6DE9216D943BF51FEBFDB9596DE337EA8E3C18A31014A3C81751011A7",
+      "sourceSha256": "54B32267FE396E012D06DD75AF6209AD2FF36A4F744D3A1970E63164C3ED8618"
+    },
+    "label": "scenario-marker-output-pointer-counter",
+    "observedEffect": "Authenticated pinned-compiler watch emitted PURE_C at 2640 bytes/660 instructions with a 128-byte frame, no actual-only instructions and three expected-only instructions against retail 2652/663. The pointer-plus-marker control without indexed first stores was 2632/658 with the same frame and five expected-only instructions. Despite the closer extent, aligned symbolic differences remain 653 and the result is not linked exact.",
+    "parentCandidateId": "8E08A5A14D7CB110E0F8F831D7515E2D3332FF67F4EE3940DC7524A8C8648C28",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_0023A5EC.s",
+        "sha256": "7150A449FC53B900146EB17649873381E2CBDD19DE8BCBB626C881ED2949FBCF"
+      },
+      {
+        "path": "docs/dossiers/func_0023A5EC-8e08a5a14d.md",
+        "sha256": "890415A59C2722C90FE7820B396064A2A7C536DC77B60A68C797D6C23959F7C3"
+      }
+    ],
+    "relatedCandidateIds": [
+      "78715813F88EF89C22D8B06A54628EC5A884F2B2F0C2400B1F3D1AB6FC7E0BF6"
+    ],
+    "remainingFailure": "Three instructions and broad register, opcode, address and scheduling differences remain. The owner is not active C and has no accepted relocation contract; a complete scenario wave verifier is premature. The exact ASM owner remains production.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Combine the retail-observed first-row marker with the retained partial output-base alias; initialize output_count to zero before table setup, index the first selected and count stores through it, and increment it before optional groups."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 9393,
+      "sha256": "52E5A8B6DE9216D943BF51FEBFDB9596DE337EA8E3C18A31014A3C81751011A7"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "54B32267FE396E012D06DD75AF6209AD2FF36A4F744D3A1970E63164C3ED8618"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-29-func_0023A5EC-5738e2e956.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

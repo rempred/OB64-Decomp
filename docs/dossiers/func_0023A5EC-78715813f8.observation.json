@@ -1,0 +1,89 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "78715813F88EF89C22D8B06A54628EC5A884F2B2F0C2400B1F3D1AB6FC7E0BF6",
+  "observationId": "D60718FA032E89D2CF10D151D43AD9C11AA32A384EB9E4649748C5265CFDEC6A",
+  "symbol": "func_0023A5EC",
+  "authored": {
+    "context": "The accepted func_0023A5EC owner is 2652 bytes with a 128-byte frame. The earlier full-body PURE_C draft has exact direct-call coverage but omits the retail store at z64 0x0023A938 to D_80195593 indexed by the newly allocated row. The original assembly remains the production owner.",
+    "effects": [
+      "pure-c",
+      "retail-row-marker",
+      "body-coverage-improvement"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "AA08D1E5EF3DB9205C7FBF7DB5A4211D9BDFCFE7DC53724DE66932A2AF6C7FF3",
+      "sourceSha256": "F6B3E556B94FC101DFD1D3DC38B8E9D9805804C49F496C97306C4F861BC2E1D7"
+    },
+    "label": "scenario-initial-row-marker",
+    "observedEffect": "Authenticated pinned-compiler watch emitted PURE_C at 2636 bytes/659 instructions, 10 instructions more than the 2596-byte early-selector/split-scan control. Expected-only instructions fell from 14 to 4, with no actual-only instructions. The frame remained 120 bytes versus retail 128. The remaining four-instruction extent gap equals the two absent saved-register save/restore pairs, though alignment is still broad and this is not a linked exact candidate.",
+    "parentCandidateId": "3122ED3DC54C687D634551BA5ED2A82FED104178EDB3958579B89B7B38E4FC60",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_0023A5EC.s",
+        "sha256": "7150A449FC53B900146EB17649873381E2CBDD19DE8BCBB626C881ED2949FBCF"
+      },
+      {
+        "path": "docs/dossiers/func_0023A5EC-3122ed3dc5.md",
+        "sha256": "5B343B485CDA19B03345CB03A2988FFCBBE5557174171CC82AF69186576FE137"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "The C owner remains 16 bytes short with a smaller frame and hundreds of symbolic differences. The first marker write is retail-observed, but source register lifetimes, scan indexing, repeated optional-case scheduling, and relocation contract still need work. No production activation or final verifier occurred.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "In the first record's non-kind-1 allocation path, store 2 to D_80195593 at the byte-narrowed selected row index times the 0x34 row stride. Leave the six optional records unchanged."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 9332,
+      "sha256": "AA08D1E5EF3DB9205C7FBF7DB5A4211D9BDFCFE7DC53724DE66932A2AF6C7FF3"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "F6B3E556B94FC101DFD1D3DC38B8E9D9805804C49F496C97306C4F861BC2E1D7"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-29-func_0023A5EC-78715813f8.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
