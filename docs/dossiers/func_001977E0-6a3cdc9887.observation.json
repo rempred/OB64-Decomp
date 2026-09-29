@@ -1,0 +1,93 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "6A3CDC988770DE1D9E9C4AE4A0E78965E1826F184CC95D138B2F229CC3CCAA84",
+  "observationId": "D33558D7BF160BC85FD883A81B9DB9D0CD57767A345D16038C03741376B5E3E1",
+  "symbol": "func_001977E0",
+  "authored": {
+    "context": "The previous readable 5C165CDD source emits 4532/1133 with the retail 112-byte frame but is 48 text bytes short. A case-entry census confines the case-3 interval gap to its first-item purchase path: 408 candidate bytes against 460 retail bytes; the following navigation/redraw interval has equal 388-byte extent. Retail stores the equipment ID before the special-price helper, loads the selected ID globally for the purchase-eligibility helper, reads the status byte after the currency comparison, and stores price separately on the consumable and equipment paths.",
+    "effects": [
+      "pure-c",
+      "retail-frame",
+      "case3-purchase-order",
+      "case3-global-reload",
+      "body-extent-improvement"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "9DBDC994E6D6E5C1A3B893F427E785E2159A340FB4C9616763A11C75E0358370",
+      "sourceSha256": "974B3EDA5FB993C49F18B94EC9D7DF7C767598D3BA28B95F6A78702E3E6871F8"
+    },
+    "label": "shop-case3-purchase-global-publication-order",
+    "observedEffect": "Direct pinned-compiler controls grew the first-item interval from 408 to 452 bytes, with its following 388-byte navigation/redraw interval unchanged. The selected equipment-ID store now precedes the special-price helper; the compiled eligibility helper receives a global halfword load, and the status test emits a fresh byte load. Authenticated watch 6A3CDC988770DE1D9E9C4AE4A0E78965E1826F184CC95D138B2F229CC3CCAA84 classifies the clean readable source PURE_C and emits 4576 bytes/1144 instructions, frame 112, zero candidate-only and one expected-only instruction. Symbolic comparison differs in 3737 bytes, 85 more than 5C165CDD because the shifted layout realigns broadly; no canonical linked result follows.",
+    "parentCandidateId": "5C165CDD75ECA97B867F399297D63D01CFA9513341E5B229D2668BB73E1C7597",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_001977E0.s",
+        "sha256": "95D9F4D4D4B3E8D0E83E44D1BE2E35F2C40F2DDB9A318BB247E375DD3DC906F6"
+      },
+      {
+        "path": "docs/archive/matching-c-candidates/2026-09-29-func_001977E0-5c165cdd75.c",
+        "sha256": "7E8882CD2FF66041619431DC8801EB4CED7B10B6905105842D09FDA656037CDB"
+      }
+    ],
+    "relatedCandidateIds": [
+      "5EA2D85E49FC434755A4E717A4CA74C5402FCDF2647AB04EF1466AD11F0BAC2F"
+    ],
+    "remainingFailure": "One instruction is still missing in overall text extent. The first-item purchase interval is two instructions short while other regions contribute one extra; register, control-flow and address differences remain broad. GCC schedules the category-cursor load into the offset helper's call delay slot, before the helper, unlike retail's post-call load. The 64-byte switch table remains separately assembly-owned with no approved auxiliary contract for this target; original ASM stays production and the two-member shop wave has not run its final verifier.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Publish selected_id inside each first-item branch, before the special-price call on the equipment path; load the helper's selected-ID argument from the published global; use a separately addressed volatile status-byte read for retail's post-comparison reload; read the equipment branch's category-row index after its category-offset helper; and store price inside each branch instead of at their join. Retain the full sixteen-state source, branch-local signed row loads, explicit case-7 index and pointer, single case-12 guard and independently addressed inventory regions."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 20873,
+      "sha256": "9DBDC994E6D6E5C1A3B893F427E785E2159A340FB4C9616763A11C75E0358370"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "974B3EDA5FB993C49F18B94EC9D7DF7C767598D3BA28B95F6A78702E3E6871F8"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-29-func_001977E0-6a3cdc9887.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
