@@ -1,0 +1,89 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "A482FFB36417D322C1BF70BE2C277A090415CAB9A3A56E73A5CD5E931488007C",
+  "observationId": "6DACAAC35E472E409302D240C4C738412798C72B0AA6150162852B7D36630916",
+  "symbol": "func_00129268",
+  "authored": {
+    "context": "The selected func_00129268 PURE_C source has exact 1044-byte extent and 96-byte frame, but its prior canonical link differs in 20 register bytes across both runtime scans. GoldOx's Agent Mail 428/429 identified a register priority issue: the flags value takes v1 ahead of the scan counter and cursor. A row-address lifetime before the flags OR was a plausible source-level way to make flags conflict with v1.",
+    "effects": [
+      "pure-c",
+      "runtime-row-pointer",
+      "register-lifetime-counterexample"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "564BF404328377884B8DF74C8AD6E170C17345AABDA89D3E9D5EEAD59CA2AAA9",
+      "sourceSha256": "8459FC809DD173C95CC17452D4E1DDBE7F7A7D3FFD576850F3A85684F975E8CC"
+    },
+    "label": "deployment-runtime-shared-row-pointer-regression",
+    "observedEffect": "Authenticated pinned-compiler watch emitted PURE_C but shrank the owner to 1024 bytes/256 instructions, leaving five expected-only and zero actual-only instructions with 229 aligned symbolic differences and 753 differing symbolic bytes. A broader scratch form that reused the pointer for all subsequent row accesses shortened further to 880/220, 41 expected-only. Neither preserves the exact-size surface required for the 20-byte register residual.",
+    "parentCandidateId": "726821885F3EF962DB67D689DBA5529FC6EA5787F306854835F4FD37A5709FAE",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_00129268.s",
+        "sha256": "FBC63B32484865CCBDCF9539476A6DB85EEBBEEE290EC6299667CDAB10B1660B"
+      },
+      {
+        "path": "docs/dossiers/func_00129268-726821885f.md",
+        "sha256": "9F3FD4AAED79CFC7E45C1054F2198DDDE92AE2557154D7F0E5B52993340A6158"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "The source change is not selectable; it alters optimizer structure far beyond the desired scan register allocation. Retain the 726821885f source as best, with original ASM production, 20 linked bytes unresolved and no six-member wave verifier. A future experiment must preserve the repeated row calculation and exact text extent while changing the flags conflict or priority.",
+    "role": "counterexample",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "In both runtime scans, form a D_801971F1 source-row pointer before the flags word store and use it for the first row-byte update, while retaining direct row accesses for the later flag test and alternate branch."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 4590,
+      "sha256": "564BF404328377884B8DF74C8AD6E170C17345AABDA89D3E9D5EEAD59CA2AAA9"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "8459FC809DD173C95CC17452D4E1DDBE7F7A7D3FFD576850F3A85684F975E8CC"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-29-func_00129268-a482ffb364.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
