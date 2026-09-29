@@ -1,0 +1,90 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "624C555B90DC56B9B7BC7770DA6DFFBE82427270ECBC95343CEFB736932EB442",
+  "observationId": "81F00C05B46A403694DCE933934F85D0EE1D62CCF16E415580FF74F039251417",
+  "symbol": "func_00041c20",
+  "authored": {
+    "context": "The initial full-body func_00041c20 C candidate copied the three D_8018FEAC words through three absolute loads, whereas retail uses one address base and a three-word stack block copy before indexed decoding.",
+    "effects": [
+      "pure-c",
+      "aggregate-block-copy",
+      "frame-regression",
+      "length-regression"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "B400EB86226B5D2A4C02926AE20FE4A8D1E6FAB14DE6BDBA06ACAE1B7AEFE589",
+      "sourceSha256": "EF5EE6CE29BA4BFA6292C064309FA0BFAA8D565A6F34FED0CEAC210CD5C28E39"
+    },
+    "label": "member-pool-three-key-aggregate-spill",
+    "observedEffect": "Authenticated scratch compilation emits the retail-style one-base three-word load/store block, but spills the key-array base at sp+36, expands the frame from 72 to 80 bytes, and emits 616 bytes/154 instructions against retail 608/152. Explicitly deriving a stack address after the copy compiled identically. The earlier integer-local byte-cast range test also compiled identically to the first candidate. No production source or owner changed.",
+    "parentCandidateId": "CE9D30CCBCE57AD5F4D1B7F5B8CA631997C6CAB4E71BBD9D1C0428DCE61F8B8E",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_00041c20.s",
+        "sha256": "2BE1C683B49A8A41E827C4BA113568A6BE9B3382F57BEDDF54D664FB5944EF0E"
+      },
+      {
+        "path": "docs/archive/matching-c-candidates/2026-09-29-func_00041c20-ce9d30ccbc.c",
+        "sha256": "E771D3C2ADCF21808410BFC698D8183616C8EB53EDF660F725A7D0481D39164E"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "The aggregate source does not retain the retail frame or extent. It is a source-level block-copy clue only; first-range code shape, register lifetimes and duplicate-loop control remain unresolved. Keep the first full-body source as current best.",
+    "role": "counterexample",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Use a typed three-word ResourceKeys aggregate and assign it from the source global, leaving all other control flow unchanged."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 2719,
+      "sha256": "B400EB86226B5D2A4C02926AE20FE4A8D1E6FAB14DE6BDBA06ACAE1B7AEFE589"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "EF5EE6CE29BA4BFA6292C064309FA0BFAA8D565A6F34FED0CEAC210CD5C28E39"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-29-func_00041c20-624c555b90.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
