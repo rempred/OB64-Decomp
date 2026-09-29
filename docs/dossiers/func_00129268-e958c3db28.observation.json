@@ -1,0 +1,92 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "E958C3DB288D3EC0817823140EBCD8044C71A2859D818D4CE52F0A65297F25FD",
+  "observationId": "B642B82EA805E8B6BDFB674F4A48B9C64B7F99A6D0E611493F70672073918833",
+  "symbol": "func_00129268",
+  "authored": {
+    "context": "The first func_00129268 source represented both duplicated runtime-matching paths and the accepted two-instruction preamble, but compiled 22 instructions short. Retail recomputes absolute source-record flag addresses in each path; the first draft reused a g_func_001957D0_source_records pointer and the just-written flag byte. D_801971F1 is an existing accepted alias for the same byte at record offset one.",
+    "effects": [
+      "pure-c",
+      "preamble-covered",
+      "exact-owner-extent",
+      "retail-frame",
+      "full-body-census",
+      "linked-nonmatch"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "0E09EC768EE201CAC931E46F05EB2598DCC48E067D536511E65FC0A248A4B34D",
+      "sourceSha256": "94A785D4478D9C41B00B4FECA630714354FCA3682F65005FE3AC0F8ED1E2C5C6"
+    },
+    "label": "deployment-aggregate-flag-alias-full-extent",
+    "observedEffect": "Authenticated scratch compilation now emits exactly 1,044 bytes/261 instructions for the accepted .ob64.r2403 owner with the retail 96-byte frame and zero missing/extra instructions. Aligned symbolic differences fall to 206. Temporary focused canonical linked diff confirms sole PURE_C owner and 54 candidate relocations, but reports 189 differing words/578 bytes and no per-target relocation contract. The first differing linked word is at owner offset 0xC, after the two-instruction preamble and stack allocation. The temporary source/target activation was removed; original ASM production remains active. No full-ROM verifier ran.",
+    "parentCandidateId": "560C98903B8C6125F91FE4F04A1B8401FEB1EEEA3C84C961275CF6252551D071",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_00129268.s",
+        "sha256": "FBC63B32484865CCBDCF9539476A6DB85EEBBEEE290EC6299667CDAB10B1660B"
+      },
+      {
+        "path": "docs/archive/matching-c-candidates/2026-09-29-func_00129268-560c98903b.c",
+        "sha256": "56779AE85C0A68E71C727DC26439DC7BF4474CBF2A0C4CA8A50C8FE753FDCD7F"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Saved-register and pre-sweep code shape differ from retail, and the duplicated matching paths remain broadly nonexact. Preserve the exact-extent source while testing supported source-lifetime and alias forms; do not treat exact extent as matching C. The six-member construction wave remains incomplete.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Use D_801971F1 as a 25-byte-stride flag alias in the pre-sweep and both runtime-matching paths, retaining g_func_001957D0_source_records for the five-member aggregate call inputs."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 4147,
+      "sha256": "0E09EC768EE201CAC931E46F05EB2598DCC48E067D536511E65FC0A248A4B34D"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "94A785D4478D9C41B00B4FECA630714354FCA3682F65005FE3AC0F8ED1E2C5C6"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-29-func_00129268-e958c3db28.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

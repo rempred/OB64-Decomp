@@ -1,0 +1,116 @@
+typedef unsigned char u8;
+typedef unsigned int u32;
+typedef signed int s32;
+
+typedef struct { u8 bytes[25]; } SourceRecord25;
+typedef struct { u8 bytes[11]; } DeploymentRow11;
+typedef struct {
+    u32 flags;
+    u8 source_index;
+} RuntimeUnit;
+
+extern s32 D_801F367C;
+extern RuntimeUnit *D_801F0CB0[];
+extern DeploymentRow11 D_801969B8[];
+extern SourceRecord25 g_func_001957D0_source_records[];
+extern u8 func_00129068(u8 *record);
+extern s32 func_00040f88(s32, s32, s32, s32, s32);
+
+void func_00129268(void)
+{
+    s32 row_index;
+    s32 deployment_index;
+    s32 deployment_offset;
+
+    for (row_index = 0; row_index < D_801F367C; row_index++) {
+        RuntimeUnit *unit = D_801F0CB0[row_index];
+        u32 flags = unit->flags;
+        if ((flags & 0x10) && !(flags & 1)) {
+            unit->flags = flags & ~0xC0;
+            g_func_001957D0_source_records[unit->source_index].bytes[1] &= ~2;
+        }
+    }
+
+    for (deployment_index = 0, deployment_offset = 0;
+         deployment_index < 10;
+         deployment_index++, deployment_offset += 11) {
+        DeploymentRow11 *row = (DeploymentRow11 *)((u8 *)D_801969B8 + deployment_offset);
+        u8 values[5];
+        s32 slot;
+
+        if (!(row->bytes[1] & 1)) {
+            continue;
+        }
+
+        for (slot = 0; slot < 5; slot++) {
+            u8 member_id = row->bytes[slot + 2];
+            if (member_id == 0xFF) {
+                values[slot] = 0;
+            } else {
+                values[slot] = func_00129068(g_func_001957D0_source_records[member_id].bytes);
+            }
+        }
+        row->bytes[9] = func_00040f88(values[0], values[1], values[2],
+                                       values[3], values[4]);
+
+        if (!(row->bytes[1] & 0x80)) {
+            for (slot = 0; slot < 5; slot++) {
+                u8 member_id = row->bytes[slot + 2];
+                s32 unit_index;
+                if (member_id == 0xFF) {
+                    continue;
+                }
+                for (unit_index = 0; unit_index < D_801F367C; unit_index++) {
+                    RuntimeUnit *unit = D_801F0CB0[unit_index];
+                    u32 flags = unit->flags;
+                    if (!(flags & 8) || unit->source_index != member_id) {
+                        continue;
+                    }
+                    unit->flags = flags | 0x40;
+                    if (slot == 0) {
+                        SourceRecord25 *source = &g_func_001957D0_source_records[unit->source_index];
+                        unit->flags = flags | 0xC0;
+                        source->bytes[1] |= 2;
+                        if (source->bytes[1] & 4) {
+                            row->bytes[1] |= 4;
+                        } else {
+                            row->bytes[1] &= ~4;
+                        }
+                    } else {
+                        g_func_001957D0_source_records[unit->source_index].bytes[1] &= ~2;
+                    }
+                    break;
+                }
+            }
+        } else {
+            for (slot = 0; slot < 5; slot++) {
+                u8 member_id = row->bytes[slot + 2];
+                s32 unit_index;
+                if (member_id == 0xFF) {
+                    continue;
+                }
+                for (unit_index = 0; unit_index < D_801F367C; unit_index++) {
+                    RuntimeUnit *unit = D_801F0CB0[unit_index];
+                    u32 flags = unit->flags;
+                    if ((flags & 8) || unit->source_index != member_id) {
+                        continue;
+                    }
+                    unit->flags = flags | 0x40;
+                    if (slot == 0) {
+                        SourceRecord25 *source = &g_func_001957D0_source_records[unit->source_index];
+                        unit->flags = flags | 0xC0;
+                        source->bytes[1] |= 2;
+                        if (source->bytes[1] & 4) {
+                            row->bytes[1] |= 4;
+                        } else {
+                            row->bytes[1] &= ~4;
+                        }
+                    } else {
+                        g_func_001957D0_source_records[unit->source_index].bytes[1] &= ~2;
+                    }
+                    break;
+                }
+            }
+        }
+    }
+}
