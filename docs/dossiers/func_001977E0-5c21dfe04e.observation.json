@@ -1,0 +1,94 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "5C21DFE04E3C909390D7B75A6327B083C2E50E0A35E4A87119F9D78749A6EE59",
+  "observationId": "82FC56E70087AC37ABADAE292E6B928FAF6FC93445A270CA1DB0A6CC53C59D53",
+  "symbol": "func_001977E0",
+  "authored": {
+    "context": "The selected BC2D8589 source reads the state-8 slot count and quantity bytes before creating the UI object. Retail constructs the object first, then loads both bytes and publishes the new object pointer before comparing quantity with count. The early C reads keep two values in saved registers across the eleven-argument creation call.",
+    "effects": [
+      "pure-c",
+      "retail-frame",
+      "exact-text-extent",
+      "all-state-entry-placement",
+      "postcall-input-timing",
+      "case7-8-opcode-order"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "BAF4DA16D50670C74B58BB33DDB7B7D72A3CA30CDF533BE84ABAF6E0A340E965",
+      "sourceSha256": "0E882A4940E199CFFBDF375A59472BA9CC904EFAD0CB0E2514DBB224D5DB47EB"
+    },
+    "label": "shop-state8-postcreation-count-and-quantity-reads",
+    "observedEffect": "Direct pinned object inspection restores the retail object-call setup and subsequent byte-load/store order, reducing state-7/8 opcode mismatches from 22 to 12. Authenticated watch 5C21DFE04E3C909390D7B75A6327B083C2E50E0A35E4A87119F9D78749A6EE59 reports PURE_C, full 4580-byte/1145-instruction text extent, 112-byte frame, all sixteen retail switch destinations, zero expected-only/actual-only instructions, 1599 differing symbolic bytes and score 84.63 versus BC2D's 1639/83.93. Its aligned stack-offset mismatch count falls from five to zero.",
+    "parentCandidateId": "BC2D85890DEE36781464F186C43C171C6E1C84EE73AC04289F35F4D13D2A1E19",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_001977E0.s",
+        "sha256": "95D9F4D4D4B3E8D0E83E44D1BE2E35F2C40F2DDB9A318BB247E375DD3DC906F6"
+      },
+      {
+        "path": "docs/archive/matching-c-candidates/2026-09-29-func_001977E0-bc2d85890d.c",
+        "sha256": "3B44EC3300C2AAFC0E8B1830CC61D478689A98CA2AA3048E7B4CE59D0FEF6FE1"
+      }
+    ],
+    "relatedCandidateIds": [
+      "A3911F6DF06EF5E9F16CDCB2601A0C311FC672C081F2F819084710F36BD97A2D"
+    ],
+    "remainingFailure": "The state-7 positive-count scan still has twelve local opcode differences around the zero store and guarded pointer setup; state 0 and terminal motion remain broad mismatches. The after-call reads are justified by retail instruction order, but no runtime claim about object-creation side effects follows. Original ASM and separate dispatch table remain production; auxiliary C table ownership, exact linked bytes, relocation contract and completed-wave verifier gates remain unresolved.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Declare the two byte locals before the creation call but assign them immediately after it, preserving the branch-local reload of the newly published object pointer for the quantity store. Leave other states and the separate table owner unchanged."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 22300,
+      "sha256": "BAF4DA16D50670C74B58BB33DDB7B7D72A3CA30CDF533BE84ABAF6E0A340E965"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "0E882A4940E199CFFBDF375A59472BA9CC904EFAD0CB0E2514DBB224D5DB47EB"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-29-func_001977E0-5c21dfe04e.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

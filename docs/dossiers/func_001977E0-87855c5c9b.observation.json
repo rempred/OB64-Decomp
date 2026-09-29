@@ -1,0 +1,100 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "87855C5C9B81D66E6E547329607EBF7AD5B4249D9594E411042D48916FD2B7EC",
+  "observationId": "87A31F57B3346CEDBE774BE419E317C6B6A5D8DFAB97935F48A0B1A085A9072F",
+  "symbol": "func_001977E0",
+  "authored": {
+    "context": "The authenticated 5C21DFE0 splitter source retains the state-7/8 post-creation reads but captures its first combined-list cursor before three clear calls, coalesces the two array bases with moving cursors, and passes a phantom argument to func_0019BB34. GoldOx's advisory mail ID 445 identified a natural source form for the base/cursor lifetimes and the no-argument call. Sol independently checked the full func_0019BB34 retail body: it overwrites a0 before reading it, while the splitter's retail call has no a0 setup and places the category-cursor zero store in the delay slot.",
+    "effects": [
+      "pure-c",
+      "retail-frame",
+      "exact-text-extent",
+      "all-state-entry-placement",
+      "postclear-list-reload",
+      "base-cursor-lifetimes",
+      "noarg-interface",
+      "single-row-cursor"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "2D8CADDD06C8D2A8FA419957DF13F9FFDB755B519B00F1BAEC90D14106EE49DA",
+      "sourceSha256": "0BEEA96CE052A8EEDCD016925ACD2219E35C3748998F92CAFC2305B95CFF445A"
+    },
+    "label": "shop-state0-base-cursor-and-noarg-interface-handoff",
+    "observedEffect": "A direct pinned compiler/assembler probe of build/sol-five-family/shop-splitter-integrated-state0-state8.c emits 4580 bytes/1145 instructions, frame 112, and all sixteen retail switch destinations. Object disassembly shows the state-0 base/cursor copies at function offsets 0xA4 and 0xA8, and the no-argument call at 0x1A4 with the zero store in its delay slot, as in retail. A direct opcode-only census over existing retail and scratch object words counted four state-0 opcode differences versus 105 in 5C21, and 55 full-owner differences versus 156 in 5C21. These are scratch diagnostics, not linked-byte acceptance. An authenticated workbench watch of this integrated source was interrupted before a result was delivered; no authenticated score is claimed.",
+    "parentCandidateId": "5C21DFE04E3C909390D7B75A6327B083C2E50E0A35E4A87119F9D78749A6EE59",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_001977E0.s",
+        "sha256": "95D9F4D4D4B3E8D0E83E44D1BE2E35F2C40F2DDB9A318BB247E375DD3DC906F6"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_0019BB34.s",
+        "sha256": "112872429A1145AA9063222F73639F851F41F9BBEC19EAFB35F27C7DDC20F9B9"
+      },
+      {
+        "path": "docs/archive/matching-c-candidates/2026-09-29-func_001977E0-5c21dfe04e.c",
+        "sha256": "0E882A4940E199CFFBDF375A59472BA9CC904EFAD0CB0E2514DBB224D5DB47EB"
+      }
+    ],
+    "relatedCandidateIds": [
+      "A3911F6DF06EF5E9F16CDCB2601A0C311FC672C081F2F819084710F36BD97A2D"
+    ],
+    "remainingFailure": "The four state-0 opcode differences, register/address/relocation differences throughout the owner, state-7 scan, terminal motion, and separately owned 16-entry switch table remain unresolved. The direct opcode census ignores operand and relocation equality. Original ASM and table remain production; no focused canonical linked result or complete-wave verifier acceptance exists for this source.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Retain the early original-list pointer for resource release, reload the current list pointer after the three clears, name both array bases, copy them to moving cursors inside the nonempty branch in consumable-then-equipment order, reuse the equipment-count variable for category counting after func_0019B800, declare and call func_0019BB34 with no arguments, and initialize each typed category row through row_base[row_index]. Preserve 5C21's post-creation state-7/8 byte reads."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 22511,
+      "sha256": "2D8CADDD06C8D2A8FA419957DF13F9FFDB755B519B00F1BAEC90D14106EE49DA"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "0BEEA96CE052A8EEDCD016925ACD2219E35C3748998F92CAFC2305B95CFF445A"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-29-func_001977E0-87855c5c9b.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
