@@ -1,0 +1,136 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "3151062665B7968ED7FC37D5ECBBD858D9763BC9B08FCA53B81E6EFB40C06DEB",
+  "observationId": "171C8FAA90D01BDCE801E2B097792BD7C9A11ED3831AAF53139EBBE1F5BF2483",
+  "symbol": "func_001F6098",
+  "authored": {
+    "context": "The current canonical W8 func_001F6098 target has sole row 3700, z64 [0x001F6098,0x001F70CC), 4148 retail bytes, 456-byte frame, and exact HYBRID_C production source. The archived D76444B2 pure-C source is independently authored and covers the full logical body but its September 8 research observation is target-mismatch under the current accepted model. Its source and expanded-input SHA-256 still agree with the archived observation.",
+    "effects": [
+      "pure-c",
+      "current-target-recompile",
+      "owner-length-mismatch",
+      "frame-short-48"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 1408,
+          "path": "include/game/combat_draw_commands.h",
+          "sha256": "0B78FA9F31CD5980AA803E52E85CDC3A767896D2F943593036CCC2C9E357A31B"
+        },
+        {
+          "bytes": 362,
+          "path": "include/game/combat_draw.h",
+          "sha256": "DEA4C4DDDEA3D523C088558D41D15EDFCCC28C9467F48DA03E779F4F2F1A0B08"
+        },
+        {
+          "bytes": 868,
+          "path": "include/game/combat_pose_record.h",
+          "sha256": "3ECFF3EEA02A4A2AB76E7E489B00ECDB2FFA2511382E95CD936F376509457815"
+        },
+        {
+          "bytes": 109,
+          "path": "include/game/combat_types.h",
+          "sha256": "DD2B627C22F084DB4F668D27E8DE3C3F3D8FDFC352F690034FE3E1A5655959D6"
+        }
+      ],
+      "expandedSha256": "DDD67BBE5FC0CD363CED8B62EB65E12105AB36A55B1CE69029FBD4E5065A4BA6",
+      "sourceSha256": "D76444B2C4AF7AD44E40DA2F68456E894355AA9F1B6BF4D44F4B792DC10097E1"
+    },
+    "label": "current-6098-pure-reference-recompile",
+    "observedEffect": "Current authenticated workbench watch compiled PURE_C candidate 3151062665B7968ED7FC37D5ECBBD858D9763BC9B08FCA53B81E6EFB40C06DEB with a 4168-byte/1042-instruction function symbol, five instructions beyond retail's 4148/1037, and a 408-byte frame versus retail 456. Source SHA-256 D76444B2... and expanded input SHA-256 DDD67BBE... match the historical archived pair, but the old 4148-byte/46-word linked result is not current acceptance evidence. The full owner disassembly has one framed body, a main decoded-pose loop, draw/vertex packet construction and one epilogue; the pure source retains those logical regions.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_001F6098.s",
+        "sha256": "63304127A1DECEDF5AD1253390FEEB1A68D54A4B237EFFA71CDD006143722924"
+      },
+      {
+        "path": "docs/dossiers/func_001F6098-c0a4f8b866.md",
+        "sha256": "E756013813ABF9F9665D5D7022F796F0017B2143282CFCA3DE6EB4446AEFB052"
+      },
+      {
+        "path": "docs/Plans/task-logs/combat-6098-minimal-hybrid-r12.md",
+        "sha256": "5EF050130AA0262991B8AB2B59B71CA0935144A4E2A00A5828213419AE0EB10D"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "The current pure source fails the exact owner extent before a linked diff, lacks 48 bytes of retail frame reservations, and does not establish the saved-register/point-register choices. The active hybrid's six opaque asm-tied homes and one point register binding remain exact HYBRID_C, not matching C. A future pure source must explain real lifetimes and pass the complete W8 wave gates; no structural or tooling defect is inferred from this stale historical observation.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Recompile the unchanged archived PURE_C source against the current accepted target and authenticated pinned compiler; no source or production ownership edit."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 1408,
+        "path": "include/game/combat_draw_commands.h",
+        "sha256": "0B78FA9F31CD5980AA803E52E85CDC3A767896D2F943593036CCC2C9E357A31B"
+      },
+      {
+        "bytes": 362,
+        "path": "include/game/combat_draw.h",
+        "sha256": "DEA4C4DDDEA3D523C088558D41D15EDFCCC28C9467F48DA03E779F4F2F1A0B08"
+      },
+      {
+        "bytes": 868,
+        "path": "include/game/combat_pose_record.h",
+        "sha256": "3ECFF3EEA02A4A2AB76E7E489B00ECDB2FFA2511382E95CD936F376509457815"
+      },
+      {
+        "bytes": 109,
+        "path": "include/game/combat_types.h",
+        "sha256": "DD2B627C22F084DB4F668D27E8DE3C3F3D8FDFC352F690034FE3E1A5655959D6"
+      }
+    ],
+    "expanded": {
+      "bytes": 18208,
+      "sha256": "DDD67BBE5FC0CD363CED8B62EB65E12105AB36A55B1CE69029FBD4E5065A4BA6"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "D76444B2C4AF7AD44E40DA2F68456E894355AA9F1B6BF4D44F4B792DC10097E1"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-29-func_001F6098-3151062665.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
