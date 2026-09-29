@@ -1,0 +1,89 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "658423BC4BF0309A6F3A679C54089DD9B05AF172F35FF8DEB8D8C6A73FA1D9ED",
+  "observationId": "FFCF5036231137F830ED294C391114DFB56C1EDD5C6B404A64089F2720A1BE25",
+  "symbol": "func_001FFE80",
+  "authored": {
+    "context": "The plain current-source control compiles PURE_C but emits 792 bytes and coalesces the record/core alias.",
+    "effects": [
+      "pure-c",
+      "owner-length-792",
+      "branch-slot-core-copy"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "9FCDD728424305017B38DBCBD468652F6B49744AEAB2F0D50E142B670193D7B8",
+      "sourceSha256": "C6D5904863A9E147BD7B5C4F352ED80FA1C6C9359A51EC4447B9427F4CAF9FB3"
+    },
+    "label": "late-original-position-use",
+    "observedEffect": "The workbench compiled PURE_C at 792 bytes. The generated compiler assembly now places move $4,$18, the record-to-core copy, in the flag branch delay slot. It still defers the entry-to-a3 copy until after the sum guard and loads the original position directly into a2, so the retail pre-sum copies remain missing. Its authenticated-isolated-link comparison is nonexact; its score is not directly comparable with the plain control's symbolic-object score.",
+    "parentCandidateId": "9EDC78CF1B5B1C2BEE5EFBA5D3DD160349070462479603B09DCA899584BB18D1",
+    "references": [
+      {
+        "path": "docs/Plans/task-logs/combat-context-retry-preparation-r1.md",
+        "sha256": "12660CEA27BB09C7A3169E08014F6CA7CD965C07ECAF9CD35A55598B6AE91638"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_001FFE80.s",
+        "sha256": "8BE95D72294E363DEA1C404DCAA0F6E63862EB24173C661594A45D8B58C01B6E"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "The owner remains four bytes short with second-loop register and control-flow differences and the final-call scheduling mismatch. No source, relocation, or ROM acceptance follows.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Keep the original position in a separate initialized local, compute the signed 32-bit sum separately, and put identical nonnegative-sum guards in both arms of a condition on the original position."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 7723,
+      "sha256": "9FCDD728424305017B38DBCBD468652F6B49744AEAB2F0D50E142B670193D7B8"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "C6D5904863A9E147BD7B5C4F352ED80FA1C6C9359A51EC4447B9427F4CAF9FB3"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-29-func_001FFE80-658423bc4b.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

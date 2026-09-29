@@ -1,0 +1,91 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "591839A7BEE79DC751214265E918A4EA477A8FBF103155ADAFC3E0BF31A96B48",
+  "observationId": "360A5748FA29FF17EA6508F32C1820F43E5D47A82B450485110C74349046DB09",
+  "symbol": "func_001FFE80",
+  "authored": {
+    "context": "The late-original-position trial emits the desired record-to-core branch-slot move but remains 792 bytes and defers the entry-to-a3 copy.",
+    "effects": [
+      "pure-c",
+      "same-compiler-object",
+      "entry-condition-no-new-effect"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "54D3DD6359C706D9CD70B9F4666AE09C7404EA2A4DF04EFD45C32F9963860019",
+      "sourceSha256": "C7540BD22519CFA4935F8D3059FCFC0F3CEF58E9604D0D018BC775280D80AFA0"
+    },
+    "label": "entry-condition-converges",
+    "observedEffect": "The workbench compiled PURE_C at 792 bytes. Its candidate.o and compiler assembly SHA-256 exactly equal the late-original-position trial's artifacts (object 863AFF61B3DD67E9AEB3DD41AA03C1DC35316173E47531E21DAAA64F052F8AAF; compiler assembly 89405B82B0CF5DC5A1D5F3FBCE3D3134D51CBE20A10ADF6A27D59EAC651D84AC). The entry condition did not bring the entry-to-a3 copy before the sum or resolve any remaining mismatch.",
+    "parentCandidateId": "9EDC78CF1B5B1C2BEE5EFBA5D3DD160349070462479603B09DCA899584BB18D1",
+    "references": [
+      {
+        "path": "docs/Plans/task-logs/combat-context-retry-preparation-r1.md",
+        "sha256": "12660CEA27BB09C7A3169E08014F6CA7CD965C07ECAF9CD35A55598B6AE91638"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_001FFE80.s",
+        "sha256": "8BE95D72294E363DEA1C404DCAA0F6E63862EB24173C661594A45D8B58C01B6E"
+      }
+    ],
+    "relatedCandidateIds": [
+      "658423BC4BF0309A6F3A679C54089DD9B05AF172F35FF8DEB8D8C6A73FA1D9ED"
+    ],
+    "remainingFailure": "The same 792-byte nonmatching output and final-call scheduling remain. A superficially different late condition is not an independent compiler effect or a matching result.",
+    "role": "counterexample",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Starting from the plain current-source control, compute the signed sum separately and duplicate the identical nonnegative-sum guard under a condition on the initialized entry pointer instead of the original position."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 7724,
+      "sha256": "54D3DD6359C706D9CD70B9F4666AE09C7404EA2A4DF04EFD45C32F9963860019"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "C7540BD22519CFA4935F8D3059FCFC0F3CEF58E9604D0D018BC775280D80AFA0"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-29-func_001FFE80-591839a7be.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
