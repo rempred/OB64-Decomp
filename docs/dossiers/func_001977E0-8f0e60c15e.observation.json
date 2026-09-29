@@ -1,0 +1,90 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "8F0E60C15EB5ECC428CD6182EAE16338F60F65D48FAC1E03C0F1FB49D1BAA054",
+  "observationId": "FB86E280343C089CB9403193B326AE3F892871BFDF648C53CEA96367BE2DD869",
+  "symbol": "func_001977E0",
+  "authored": {
+    "context": "The accepted func_001977E0 code owner is z64 [0x001977E0,0x001989C4), 4580 bytes and 1145 instructions including its two-word preamble. The separate 64-byte retail table at [0x0019C5C0,0x0019C600) dispatches sixteen states to thirteen in-owner destinations. The provisional exact PURE_C list producer func_0019BE40 is the other member of the still-open shop wave.",
+    "effects": [
+      "pure-c",
+      "full-body-readable",
+      "sixteen-state-coverage",
+      "external-table-ownership-gate"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "B0013402445174F08A57A61D43D4C8314355724E0D35A4C4E3DB728357C6689D",
+      "sourceSha256": "9D8237D5869E1EE105851514F4A8D06ADAA29C71ABB826146BA7F903FD67F765"
+    },
+    "label": "independent-sixteen-state-readable-baseline",
+    "observedEffect": "The pinned scratch workbench compiles the source as PURE_C at 4480 bytes/1120 instructions, frame 0x60, versus retail 4580/1145, frame 0x70. The symbolic comparison has no candidate-only instructions, 25 expected-only instructions, 3796 differing bytes, and a 33.94 score. All 61 retail external call sites are represented by source operations; the compiler shares one duplicated sound call, emitting 60 call sites. Provisional canonical activation stopped before linking with KMC target assembly section grammar drift because the dense switch emits .rodata and this target has no auxiliary-section contract. Activation was removed without changing the accepted configuration; the original ASM remains active.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_001977E0.s",
+        "sha256": "95D9F4D4D4B3E8D0E83E44D1BE2E35F2C40F2DDB9A318BB247E375DD3DC906F6"
+      },
+      {
+        "path": "docs/Plans/task-logs/sol-five-family-resumption-20260929.md",
+        "sha256": "6799F400C4E6F263E446D407BAFB983CB4B5CB6EB11FC6727C525E9363ABE577"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "The C text remains 100 bytes short with broad opcode, register and control-flow differences. The compiler-generated switch table needs separately approved structural auxiliary ownership before canonical linked comparison or acceptance; do not change table ownership, shared tools or verifier within this ordinary match. Continue source-level work in scratch and preserve the original ASM fallback. No full-ROM verifier has run for this wave.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Independently derive readable typed C for all sixteen state arms and the shared widget-motion tail from the original owner and table. Correct the state-three input width to lhu and call the special-price helper without arguments, as the retail caller and callee show."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 21001,
+      "sha256": "B0013402445174F08A57A61D43D4C8314355724E0D35A4C4E3DB728357C6689D"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "9D8237D5869E1EE105851514F4A8D06ADAA29C71ABB826146BA7F903FD67F765"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-29-func_001977E0-8f0e60c15e.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
