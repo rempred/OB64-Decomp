@@ -1,0 +1,89 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "55CD566C52701009B1B450A49AF7D26B553DFF4AE25BF3F0BCF6CCD97B633CE9",
+  "observationId": "0C1FAEF91F9BEDBAE320C63A2339F86BE278F7C82E512EBD991CB6E868F20A90",
+  "symbol": "func_0023A5EC",
+  "authored": {
+    "context": "Retail func_0023A5EC keeps an output-base pointer across the first record and six optional records. The preserved marker-plus-indexed-counter PURE_C source uses the pointer for the first record but spells each optional output store against the global name. A previous all-option pointer trial without the row marker shortened the compiled owner.",
+    "effects": [
+      "pure-c",
+      "output-base-lifetime",
+      "text-shortening-counterexample"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "C34535032B940AE2D38A3566651A4CAAF0374529A602A9F6A80DA1E32992DB00",
+      "sourceSha256": "B7D0B358B88FE3C3418A83B83A29FD2B6BB65EFA330ED4870C475D5012CAF1DC"
+    },
+    "label": "scenario-all-option-output-base-alias",
+    "observedEffect": "Authenticated pinned-compiler watch emitted PURE_C at 2568 bytes/642 instructions and a 128-byte frame against retail 2652/663. It has zero actual-only and 21 expected-only instructions, versus 2640/660 and three expected-only instructions in the partial output-pointer control. Symbolic aligned differences were 635 but length and opcode differences remain broad. A uniform pointer spelling alone does not reproduce the retail repeated-case code.",
+    "parentCandidateId": "5738E2E9560CC90072507363CAC31C016E8F20FB59AE394EBEFEBC17CF7AF328",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_0023A5EC.s",
+        "sha256": "7150A449FC53B900146EB17649873381E2CBDD19DE8BCBB626C881ED2949FBCF"
+      },
+      {
+        "path": "docs/dossiers/func_0023A5EC-5738e2e956.md",
+        "sha256": "6CDD1E075280F2153233EFCC8B5764A27CAA1890A202132AB1A971236A5103FF"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "The C owner is 84 bytes short, has no linked acceptance or relocation contract, and the case-specific register and control lifetimes remain unrecovered. The exact original assembly stays active; no final scenario wave verifier occurred.",
+    "role": "counterexample",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Use the same named output-base pointer in both optional selected-index and count-byte stores across all six option cases, while retaining the first-row marker and indexed counter."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 9345,
+      "sha256": "C34535032B940AE2D38A3566651A4CAAF0374529A602A9F6A80DA1E32992DB00"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "B7D0B358B88FE3C3418A83B83A29FD2B6BB65EFA330ED4870C475D5012CAF1DC"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-29-func_0023A5EC-55cd566c52.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

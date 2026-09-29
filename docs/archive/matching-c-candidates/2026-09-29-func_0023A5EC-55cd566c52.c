@@ -1,0 +1,177 @@
+typedef signed char s8;
+typedef unsigned char u8;
+typedef unsigned short u16;
+typedef signed int s32;
+typedef unsigned int u32;
+
+typedef struct ResourceArchiveInput {
+    u32 field_00;
+    u32 field_04;
+    u8 *field_08;
+    u32 field_0C;
+} ResourceArchiveInput;
+
+extern ResourceArchiveInput D_801D16B0;
+extern u8 D_80193670, D_80193671, D_80193672;
+extern u8 D_801936A8;
+extern u16 D_80197B60;
+extern u8 D_801976E8, D_801976DC, D_801976D8;
+extern u8 D_801971F0[];
+extern u8 D_80193BD3[];
+extern u8 D_80195560[];
+extern u8 D_80195593[];
+extern u8 D_801953F0[];
+extern u16 D_80195576;
+extern u16 D_801953F2;
+extern u16 D_801953F4[];
+extern u8 D_801954E4[];
+extern u8 D_80195594[];
+extern u8 D_801955A5;
+extern u8 D_801974DE[];
+
+extern void *func_0002DFB8(void *destination, u32 key);
+extern u32 func_0002DEF4(u32 key);
+extern void resource_free(void *resource);
+extern void boot_resource_archive_load_many(ResourceArchiveInput *first,
+                                            ResourceArchiveInput *second, s32 count);
+extern void memcpy_aligned(void *destination, const void *source, s32 count);
+extern void memset_00023780(void *destination, s32 count);
+extern void func_0023A3A0(u8 *row, u8 kind, s32 adjustment,
+                          u16 field_a, u16 field_b);
+extern void func_00048294(void);
+extern void func_0004813c(s32 value);
+extern void func_000466f4(void);
+
+#define READ_BE16(p) ((u16)(((u16)(p)[0] << 8) | (p)[1]))
+
+/* Every optional source count constructs another output index. */
+#define RESOLVE_SOURCE(group, kind, limit, result, initial) do {            \
+    if ((kind) == 1) {                                                      \
+        u32 free_index = 0;                                                 \
+        while (free_index < 0x78 && (D_801954E4[free_index] & 1)) {         \
+            free_index++;                                                   \
+        }                                                                   \
+        D_801953F4[free_index] = D_801953F2;                               \
+        D_801954E4[free_index] = 1;                                        \
+        (result) = (s32)free_index + 0x64;                                  \
+    } else {                                                                \
+        u8 *row = D_80195594;                                               \
+        if (D_801955A5 != 0) {                                              \
+            do { row += 0x34; } while (row[0x11] != 0);                    \
+        }                                                                   \
+        func_0023A3A0(row, (kind), (s8)(group)[1] + (limit),               \
+                      READ_BE16((group) + 2), READ_BE16((group) + 4));     \
+        (result) = (s32)(((u32)row - (u32)D_80195560) / 0x34);             \
+        if (initial) {                                                       \
+            D_80195593[(u8)(result) * 0x34] = 2;                            \
+        }                                                                    \
+    }                                                                       \
+} while (0)
+
+#define EMIT_OPTION(group, kind, field, limit, output_count) do {           \
+    if ((group)[field] != 0) {                                               \
+        s32 selected_index;                                                 \
+        RESOLVE_SOURCE((group), (kind), (limit), selected_index, 0);         \
+        output[(output_count) + 2] = (u8)selected_index;                    \
+        output[(output_count) + 7] = (u8)((group)[field] - 1);               \
+        (output_count)++;                                                   \
+    }                                                                       \
+} while (0)
+
+void func_0023A5EC(void)
+{
+    u8 record[0x23];
+    ResourceArchiveInput first, second;
+    u32 *link;
+    u32 inner_key;
+    s32 record_index;
+    s32 limit;
+    s32 maximum;
+    s32 output_count;
+    s32 selected_index;
+    s32 i;
+    const u8 *group;
+    u8 selector = D_80193672;
+    u8 *state = &D_801976E8;
+    u8 *output = D_801974DE;
+
+    record_index = (D_80193670 << 8) | D_80193671;
+    limit = 0x63;
+    if (D_80197B60 != 0) {
+        record_index = D_80197B60 & 0x7FFF;
+    }
+    if ((*state) == 0x1E) {
+        return;
+    }
+
+    first = D_801D16B0;
+    second = D_801D16B0;
+    link = (u32 *)func_0002DFB8(0, 0x021AE74C);
+    inner_key = *link;
+    resource_free(link);
+    first.field_0C = func_0002DEF4(inner_key);
+    first.field_08 = (u8 *)func_0002DFB8(0, inner_key);
+    second.field_04 = 0;
+    boot_resource_archive_load_many(&first, &second, 1);
+    resource_free(first.field_08);
+    memcpy_aligned(record, second.field_08 + record_index * 0x23, 0x23);
+    resource_free(second.field_08);
+
+    (*state) = 0x1E;
+    maximum = 0;
+    for (i = 0; i < 5; i++) {
+        u8 value = D_801971F0[D_801976DC * 0x19 + 2 + i];
+        if (value == 0 || value >= 0x64) {
+            continue;
+        }
+        {
+            u8 candidate = D_80193BD3[value * 0x38];
+            if (maximum < candidate) {
+                maximum = candidate;
+            }
+        }
+    }
+    if (maximum < limit) {
+        limit = maximum;
+    }
+
+    output_count = 0;
+    memset_00023780(D_80195560, 0x141C);
+    memset_00023780(D_801953F0, 0x16C);
+    D_801953F0[0] = 0x78;
+    D_801953F0[1] = 0x78;
+    func_0023A3A0(D_80195560, 1, limit, 0, 0);
+    D_801953F2 = D_80195576;
+    memset_00023780(output, 0x19);
+
+    RESOLVE_SOURCE(record, record[0], limit, selected_index, 1);
+    output[output_count + 2] = (u8)selected_index;
+    output[1] = 0x81;
+    output[0xC] = selector;
+    output[output_count + 7] = (u8)(record[6] - 1);
+
+    output_count++;
+    group = record + 7;
+    if (group[0] != 0) {
+        EMIT_OPTION(group, group[0], 6, limit, output_count);
+        EMIT_OPTION(group, group[0], 7, limit, output_count);
+        EMIT_OPTION(group, group[0], 8, limit, output_count);
+    }
+    group = record + 16;
+    if (group[0] != 0) {
+        EMIT_OPTION(group, group[0], 6, limit, output_count);
+        EMIT_OPTION(group, group[0], 7, limit, output_count);
+        EMIT_OPTION(group, group[0], 8, limit, output_count);
+    }
+
+    if (D_801976D8 & 8) {
+        D_801936A8 = 0x44;
+        func_00048294();
+        func_0004813c(8);
+        func_000466f4();
+    }
+}
+
+#undef EMIT_OPTION
+#undef RESOLVE_SOURCE
+#undef READ_BE16
