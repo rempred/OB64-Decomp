@@ -1,0 +1,101 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "1D2EF51FA26B8F766C430D2297CEF567765BDBF6B5518F09FC8BF027793286A9",
+  "observationId": "CBC101C74BDAC3D3F0C86F5056162BAE0B4F7AF89B8D88F99BB026DFC3CF9A3A",
+  "symbol": "func_001FFE80",
+  "authored": {
+    "context": "The prior near matches inherited a four-argument func_001F0E64 declaration from an m2c draft. The accepted callee and two other accepted callers establish a two-argument record/selector interface; the retail FFE80 call only sets a0 and a1. Correcting that interface removes a phantom signed-short argument conversion and exposes a closer pure-C source form.",
+    "effects": [
+      "corrected-interface",
+      "pure-c",
+      "owner-length-796",
+      "relocations-match",
+      "four-word-residual"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "B1BE40289949D60A5B72808FFDB9A47BFA6BF8CF6B3B0D3C1F1EA2C80C39731A",
+      "sourceSha256": "F8210F68675F474BEA19F3DDDB17C5EFAEE9B51E0B6275822554EE1EB78B139B"
+    },
+    "label": "corrected-two-argument-four-word-residual",
+    "observedEffect": "Current-run source policy classified PURE_C. The canonical focused linked diff accepted the 796-byte sole C owner and exact 54-relocation contract. Four linked instruction words/four bytes differ at z64 0x00200028, 0x0020002C, 0x00200048 and 0x00200054: the candidate allocates the entry pointer to a2 and original position to a3, opposite retail. Every other owner word matches. No complete-ROM verifier was run because linked target bytes are nonexact.",
+    "parentCandidateId": "AD333CD96F0C5AD0D49A2F658A4414E77956A05BDCA694736B1060BAF1DA550A",
+    "references": [
+      {
+        "path": "src/lib/func_001F0E64.c",
+        "sha256": "BF79F7DA363A79941DF1656F2303A3B3637B94681EC9D78026AEC1FDA40FFE07"
+      },
+      {
+        "path": "src/lib/func_0020CBDC.c",
+        "sha256": "0D0F25C035C238F7A7D43DA1837A1496E925ECAF385B283299D4748A2C05CE57"
+      },
+      {
+        "path": "src/lib/func_0020FC7C.c",
+        "sha256": "C40F27E8925BCC501EB1F8D2A46BEC79A67393B274918BBA4C149A69A086D2BA"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_001FFE80.s",
+        "sha256": "8BE95D72294E363DEA1C404DCAA0F6E63862EB24173C661594A45D8B58C01B6E"
+      }
+    ],
+    "relatedCandidateIds": [
+      "EE558BA970EFADA10E93E2E2376CD042E5709BF0BB52F721F0B6C4A12A4DB19F"
+    ],
+    "remainingFailure": "The a2/a3 allocation swap remains. Moving the reset-base load after the two zero stores fixes register allocation in a scratch compile but changes retail instruction order and introduces a load hazard; moving the entry copy before the guard places its move too early. Neither is an exact replacement. The current production source remains the exact HYBRID_C fallback.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Declare and call func_001F0E64 with record and u32 selector only; type the preserved original-position local as s16, cast the signed position into it before the separate sum, and order the entry copy, original-position copy, saved offset and sum while retaining the two previously measured compiler-shaping joins."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 7813,
+      "sha256": "B1BE40289949D60A5B72808FFDB9A47BFA6BF8CF6B3B0D3C1F1EA2C80C39731A"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "F8210F68675F474BEA19F3DDDB17C5EFAEE9B51E0B6275822554EE1EB78B139B"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-29-func_001FFE80-1d2ef51fa2.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
