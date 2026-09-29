@@ -1,0 +1,85 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "524F3ECDB3CF915DE2F3D4104BF183A21D039C804E5B7B2EFBF53533D68B994C",
+  "observationId": "22310ED8B7E3D744F5E3004F87E8B3A2AD7C7D98E920A9B1C83AC613ED7F7757",
+  "symbol": "func_0021B438",
+  "authored": {
+    "context": "The retained B438 source uses an outer-loop owner-value increment and decrement that cancel in source but influence pinned GCC global register allocation. The owner-comparison-order successor improves one branch operand and remains 824 bytes.",
+    "effects": [
+      "pure-c",
+      "owner-length-824",
+      "register-allocation-regressed"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "5D7CE81793F4C001411A3FB57F5E98B8DC7CD62DA95A5CFDF141BC500EA80AD7",
+      "sourceSha256": "43CCEFDC0B68C0896477168FAC838CDD2A34F58549AC54B223499BDF8C0B43F9"
+    },
+    "label": "remove-reversible-owner-value-pair-regresses-b438",
+    "observedEffect": "Authenticated pinned-compiler watch still emits PURE_C and the exact 824-byte/206-instruction extent with zero opcode differences, but symbolic aligned instruction differences increase from 46 to 48 and register-field differences increase from 25 to 27.",
+    "parentCandidateId": "C3902FE42E82E41B73C2B1FB52F807AE2CD2D39CD78956F1DCED7968BB0F3DE7",
+    "references": [
+      {
+        "path": "docs/archive/matching-c-candidates/2026-09-29-func_0021B438-9d9281eb68.c",
+        "sha256": "46917B2B01CBE14FB21DFED70FC79D6AF80FC199C4B01321BF99DEAEEE2FBFC7"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "The removal alone does not close the register-priority cycles and is not selected as the best source. It does not disprove a more natural lifetime arrangement that lowers owner-value priority while preserving other live ranges.",
+    "role": "counterexample",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Remove the canceling owner_value increment/decrement pair from the outer loop continuation while retaining owner == other."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 6013,
+      "sha256": "5D7CE81793F4C001411A3FB57F5E98B8DC7CD62DA95A5CFDF141BC500EA80AD7"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "43CCEFDC0B68C0896477168FAC838CDD2A34F58549AC54B223499BDF8C0B43F9"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-29-func_0021B438-524f3ecdb3.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

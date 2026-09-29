@@ -1,0 +1,85 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "C3902FE42E82E41B73C2B1FB52F807AE2CD2D39CD78956F1DCED7968BB0F3DE7",
+  "observationId": "6F5C4D9ABEC1F04A2E34B3022DF12A329B7AD1F87625954D4FEBCF012C95CA8C",
+  "symbol": "func_0021B438",
+  "authored": {
+    "context": "The accepted B438 physical owner is 824 bytes and the retained best PURE_C research candidate already has the required body extent and switch-table shape. Retail compares the owner and other group at the branch site with the owner pointer as the first C operand's register. The prior source expressed the equality in the reverse order.",
+    "effects": [
+      "pure-c",
+      "owner-length-824",
+      "register-differences-reduced"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "89A530B5AF7A477A0B0BBFD7670B326C6252DCAA9B361F3A0846992390AC08B6",
+      "sourceSha256": "C701C3A136D2E8FAC62A5CA6659C286EB6ECE75A1C2E625A87B2813DD0A6BB66"
+    },
+    "label": "owner-comparison-order-improves-b438",
+    "observedEffect": "Authenticated pinned-compiler watch emits PURE_C with the same 824-byte/206-instruction owner. Symbolic aligned instruction differences fall from 47 to 46 and register-field differences from 26 to 25, with zero opcode differences. The change fixes the retail beql operand ordering at the group equality site.",
+    "parentCandidateId": "9D9281EB687EA6034967F9A2A46C4D8EC46D01A3CA254058757FC26E464E2D9F",
+    "references": [
+      {
+        "path": "docs/archive/matching-c-candidates/2026-09-29-func_0021B438-9d9281eb68.c",
+        "sha256": "46917B2B01CBE14FB21DFED70FC79D6AF80FC199C4B01321BF99DEAEEE2FBFC7"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "The owner is nonexact with 46 symbolic instruction differences and unresolved external relocation addresses. The outer owner/other and inner adjustment/cursor/slot register-priority cycles remain. Original ASM remains the production owner; no complete-wave verification is claimed.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Change only the group identity expression from other == owner to owner == other in the retained abssi2-ternary source."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 6048,
+      "sha256": "89A530B5AF7A477A0B0BBFD7670B326C6252DCAA9B361F3A0846992390AC08B6"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "C701C3A136D2E8FAC62A5CA6659C286EB6ECE75A1C2E625A87B2813DD0A6BB66"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-29-func_0021B438-c3902fe42e.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

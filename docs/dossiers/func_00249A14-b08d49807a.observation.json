@@ -1,0 +1,90 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "B08D49807A2D763EEAA0341222A84AD78CC40C4CA91865F1455DF1E3EF1B148A",
+  "observationId": "948DE8C6FF2079460E39FCE565A64CC39CED55760D23FF7F508E74F5362544E2",
+  "symbol": "func_00249A14",
+  "authored": {
+    "context": "The current selected func_00249A14 PURE_C research source A715BAAF13 emits the exact 900-byte/225-instruction owner and retail 184-byte frame but links with 107 differing words. Retail first-stage slot construction loads the source flag once for the guard and again after the slot stores; the selected source reuses the first load.",
+    "effects": [
+      "pure-c",
+      "second-flag-load",
+      "length-regression",
+      "linked-unchecked"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "4E3D163E9DE5A9B32001C6EB4695F255D9A227E0365D06C2EF824942A1EFAF27",
+      "sourceSha256": "200D64B3C2D6B19F60C74D0E87F57A1E25DB9819150EE9DB30A574802B9E9BF6"
+    },
+    "label": "scenario-slot-flag-volatile-reread",
+    "observedEffect": "Authenticated scratch watch compiled PURE_C candidate B08D49807A2D763EEAA0341222A84AD78CC40C4CA91865F1455DF1E3EF1B148A. Compiler assembly emits a second lbu for the source flag, but schedules it before the final slot halfword store, unlike retail. The owner grows from 900/225 to 912 bytes/228 instructions; the 184-byte frame and 27 candidate relocations remain. Symbolic comparison has 183 differing instructions and three actual-only instructions. No canonical linked diff was run.",
+    "parentCandidateId": "A715BAAF13B62DC3EE16871321748783CA80859A289C3C0C13E32732C3BA9E1A",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_00249A14.s",
+        "sha256": "64F2ACC3BFCF3C16477296FFBD96D64C29DA155A0287BCDFC6FD9C3B0CCEFB5D"
+      },
+      {
+        "path": "docs/archive/matching-c-candidates/2026-09-29-func_00249A14-a715baaf13.c",
+        "sha256": "1B8F7BF7099566E142499352ECD4FADD52E4C36BB094C6C50433A26249FC2B2C"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "The local reload hypothesis is supported by retail's two lbu instructions, but this source is not selected: extent and broader allocation/store ordering regress. Combine only with a separately supported source change if it restores the 900-byte body and retail load/store order. Keep A715BAAF13 as best research source and original ASM production; the two-target scenario wave remains open.",
+    "role": "counterexample",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Introduce one const volatile u8 pointer to the source slot flag for its guard and the later slot[1] store, keeping the typed descriptors, resource-link path, two-stage loops and four class-table symbols fixed."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 4661,
+      "sha256": "4E3D163E9DE5A9B32001C6EB4695F255D9A227E0365D06C2EF824942A1EFAF27"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "200D64B3C2D6B19F60C74D0E87F57A1E25DB9819150EE9DB30A574802B9E9BF6"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-29-func_00249A14-b08d49807a.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
