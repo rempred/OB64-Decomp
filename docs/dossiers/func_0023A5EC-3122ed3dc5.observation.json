@@ -1,0 +1,90 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "3122ED3DC54C687D634551BA5ED2A82FED104178EDB3958579B89B7B38E4FC60",
+  "observationId": "2C4EF4C676C6A5523F3B44225CF205A164023748853599E09C30E9CF2FA1A073",
+  "symbol": "func_0023A5EC",
+  "authored": {
+    "context": "The first readable func_0023A5EC PURE_C body is 2580/645 with a 120-byte frame against retail 2652/663 and a 128-byte frame. Retail loads D_80193672 before long-running resource calls, retains a D_801976E8 pointer, and increments the five-value scan counter in separate skip and ordinary paths.",
+    "effects": [
+      "pure-c",
+      "early-selector-lifetime",
+      "split-scan-increments",
+      "owner-length-improved"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "E2A4C59920E353692EF364355B4A297D9E03AEF6E1A945228FC7DDA797F98BEA",
+      "sourceSha256": "5E2108D6D2FC270A757F615003709EC3F0D1BD8C2712E3FD7A9403721BAD2611"
+    },
+    "label": "scenario-early-selector-state-split-scan",
+    "observedEffect": "Authenticated pinned-compiler watch emits PURE_C, 2596 bytes/649 instructions, with zero actual-only and 14 expected-only instructions versus the initial source's 2580/645 and 18 expected-only. Symbolic aligned differences are 636. The frame remains 120 bytes, so this is not an exact owner.",
+    "parentCandidateId": "E17A495D9DE0C08F262AEC8F93DF4BA8594CF54A3769C756D85DB7DFABCDAC6E",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_0023A5EC.s",
+        "sha256": "7150A449FC53B900146EB17649873381E2CBDD19DE8BCBB626C881ED2949FBCF"
+      },
+      {
+        "path": "docs/archive/matching-c-candidates/2026-09-29-func_0023A5EC-e17a495d9d.c",
+        "sha256": "BE43EAB378EAFDEBE01B058E9D15BFCE5AC2416820D55789124475F6A79765FC"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "The C body is 56 bytes short and the frame is eight bytes short. The scan still strength-reduces its index to a pointer and the complete optional-case output is broadly nonmatching. No production activation, relocation contract, or full-ROM verifier is claimed.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Load D_80193672 into a saved selector local before the resource path; use a named pointer for the scenario state byte; express the invalid scan value as an early continue, leaving all six optional source cases intact."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 8915,
+      "sha256": "E2A4C59920E353692EF364355B4A297D9E03AEF6E1A945228FC7DDA797F98BEA"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "5E2108D6D2FC270A757F615003709EC3F0D1BD8C2712E3FD7A9403721BAD2611"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-29-func_0023A5EC-3122ed3dc5.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

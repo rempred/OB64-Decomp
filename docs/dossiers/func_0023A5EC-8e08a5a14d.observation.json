@@ -1,0 +1,90 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "8E08A5A14D7CB110E0F8F831D7515E2D3332FF67F4EE3940DC7524A8C8648C28",
+  "observationId": "A16CEAC1A718299B84B588C8E045CAACAEB04568F1CFCCDAD7FFA4D56C4126E4",
+  "symbol": "func_0023A5EC",
+  "authored": {
+    "context": "The early selector, persistent state pointer, and split-scan research source emits a 2596-byte body but has a 120-byte frame. Retail holds the output table base in a saved register across the initial record construction and later cases.",
+    "effects": [
+      "pure-c",
+      "retail-frame-128",
+      "saved-output-base",
+      "partial-alias-probe"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "63869FA4B435AE90D491F3E81533641FF4418E0337DE499A8D39EB6ED7A0DE41",
+      "sourceSha256": "86A1B73ECCA0B976F07A9EB6E023DFBE4F72267374D9DE244F4E86F94656838B"
+    },
+    "label": "scenario-partial-output-alias-recovers-frame",
+    "observedEffect": "Authenticated pinned-compiler watch emits PURE_C, a 128-byte frame, 2592 bytes/648 instructions, zero actual-only and 15 expected-only instructions. Symbolic aligned differences remain 636. The output-base local claims another saved register and shifts the record frame toward the retail layout.",
+    "parentCandidateId": "3122ED3DC54C687D634551BA5ED2A82FED104178EDB3958579B89B7B38E4FC60",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_0023A5EC.s",
+        "sha256": "7150A449FC53B900146EB17649873381E2CBDD19DE8BCBB626C881ED2949FBCF"
+      },
+      {
+        "path": "docs/archive/matching-c-candidates/2026-09-29-func_0023A5EC-e17a495d9d.c",
+        "sha256": "BE43EAB378EAFDEBE01B058E9D15BFCE5AC2416820D55789124475F6A79765FC"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "The source mixes a local output alias with direct symbol references to isolate allocation; it is a diagnostic intermediate, not the selected readable C. The body is 60 bytes short and broadly nonmatching. Original ASM remains sole production owner and the two-target scenario wave remains open.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Add a named output-table pointer for the clear and first output-record stores, leaving the optional-case macro's direct output symbol references unchanged as a bounded allocator probe."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 8925,
+      "sha256": "63869FA4B435AE90D491F3E81533641FF4418E0337DE499A8D39EB6ED7A0DE41"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "86A1B73ECCA0B976F07A9EB6E023DFBE4F72267374D9DE244F4E86F94656838B"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-29-func_0023A5EC-8e08a5a14d.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
