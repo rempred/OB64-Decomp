@@ -1,0 +1,86 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "EE558BA970EFADA10E93E2E2376CD042E5709BF0BB52F721F0B6C4A12A4DB19F",
+  "observationId": "87359EAEE89AF040991CA1198849567FFB62CEB1DAF923C711949775B0A1FDC2",
+  "symbol": "func_001FFE80",
+  "authored": {
+    "context": "F2 has an exact 796-byte owner and relocations but reverses load, sum, and copy registers within the second-loop pocket. GoldOx identified a signed-halfword cast that keeps the original-position copy through first CSE; Sol reconstructed the source from the existing F2 candidate and checked the canonical linked output.",
+    "effects": [
+      "pure-c",
+      "owner-length-796",
+      "relocations-match",
+      "six-register-word-residual"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "4407B5FA4874CFF29978C0F9EEF62B75AEAEA9A5C271EB6611FA29A3B630838A",
+      "sourceSha256": "B07DFB671F8C63C53644244061C460B88D004BF7360D62619352338B27C1D3E2"
+    },
+    "label": "signed-copy-six-register-word-residual",
+    "observedEffect": "Current-run source policy classified PURE_C. The canonical focused linked diff accepted the 796-byte owner and all 54 relocations. Six linked words (seven bytes) still differ, confined to z64 0x00200020, 0x00200024, 0x0020002C, 0x00200030, 0x00200034 and 0x00200038. The candidate has retail instruction order, but assigns position to v1 and offset to v0, the opposite of retail; every differing word in this pocket reflects that register swap. All other owner words match.",
+    "parentCandidateId": "5C05ECC3645FE49426FACF5E3D82C87A466A1ED173B7A5A939EA5EF552183D55",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_001FFE80.s",
+        "sha256": "8BE95D72294E363DEA1C404DCAA0F6E63862EB24173C661594A45D8B58C01B6E"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Linked target bytes are nonexact and no completed-wave verifier was run. The joined flag and sum guards are compiler-shaping, semantically identical arms; they need explanatory comments if an exact source form is selected.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Copy the already signed position as (s16)temp_v0_118 before a destructive position-plus-offset update, preserving both existing compiler-shaping joins and assigning the entry and saved offset before the copy."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 7912,
+      "sha256": "4407B5FA4874CFF29978C0F9EEF62B75AEAEA9A5C271EB6611FA29A3B630838A"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "B07DFB671F8C63C53644244061C460B88D004BF7360D62619352338B27C1D3E2"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-29-func_001FFE80-ee558ba970.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

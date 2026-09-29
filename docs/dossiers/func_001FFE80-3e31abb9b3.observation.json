@@ -1,0 +1,85 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "3E31ABB9B38A0761FBA00567F9A87FF847EB1D4D7F6C1E976F9FBD31A83D1E0D",
+  "observationId": "60970D9BD5B15122CB0FBBC02E9A142A4D96AA8D4580AB033782CEF077D0B2BE",
+  "symbol": "func_001FFE80",
+  "authored": {
+    "context": "The 796-byte F2 PURE_C candidate retains the original-position copy only when the copy follows the signed sum and the sum guard has a late join. This bounded trial instead defines the same copy in two frame-controlled arms before the sum.",
+    "effects": [
+      "pure-c",
+      "first-cse-join-collapse",
+      "owner-length-792"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "29559BD353C7D6B5301B85A802E66A08E05455149066E632F673C520B11076D2",
+      "sourceSha256": "811CB75960C2570A42248833D81BBBB7E657720060B34E5A6E49B7B6259904E2"
+    },
+    "label": "early-duplicate-copy-collapses-in-first-cse",
+    "observedEffect": "Current-run workbench watch classified PURE_C and compiled a 792-byte owner (198 instructions), missing one instruction relative to the 796-byte retail owner. Authenticated compiler probes show two a2 copies and their condition in the jump dump, but the first CSE dump has already folded the arms to one a2 copy before the sum. The later object again lacks the needed move. This refutes the proposed pre-sum identical-arm lifetime barrier for this candidate.",
+    "parentCandidateId": "5C05ECC3645FE49426FACF5E3D82C87A466A1ED173B7A5A939EA5EF552183D55",
+    "references": [
+      {
+        "path": "docs/Plans/task-logs/sol-five-family-resumption-20260929.md",
+        "sha256": "525F5C13CC84CA8ECEF4087978970BCABA45CEFB47E4B495C5847FA9B7B28EB7"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "The source is not an exact linked candidate and cannot be accepted as matching C. The F2 parent retains the best observed owner length and relocation match with a six-word linked residual.",
+    "role": "counterexample",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Assign the original position to temp_a2_122 in both arms of a condition on the already loaded frame before computing the signed position-plus-offset sum; retain the F2 late sum guard."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 8042,
+      "sha256": "29559BD353C7D6B5301B85A802E66A08E05455149066E632F673C520B11076D2"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "811CB75960C2570A42248833D81BBBB7E657720060B34E5A6E49B7B6259904E2"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-29-func_001FFE80-3e31abb9b3.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

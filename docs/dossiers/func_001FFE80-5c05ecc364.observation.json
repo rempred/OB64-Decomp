@@ -1,0 +1,92 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "5C05ECC3645FE49426FACF5E3D82C87A466A1ED173B7A5A939EA5EF552183D55",
+  "observationId": "CCFD9B0371E20600AC6C9CCDC6E4DC38A1230ACCE5583D057C39B4CE24A87736",
+  "symbol": "func_001FFE80",
+  "authored": {
+    "context": "The accepted exact production fallback is HYBRID_C. Earlier PURE_C controls emit only 792 of the 796 owner bytes. GoldOx supplied scratch pass-dump evidence for a source-level CSE and scheduling hypothesis; this candidate was independently reconstructed from the current source and tested with the canonical linked diff.",
+    "effects": [
+      "pure-c",
+      "owner-length-796",
+      "relocations-match",
+      "six-word-residual"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "F82FBF2BBB568F53D4F7F45CA34160F880FA8ED0F5B0D635AA0CFD7D1A0D9DED",
+      "sourceSha256": "03E68D1946DC267256472DD2A08E0D637AB4714B3C5FE2372E115978DA89FBDD"
+    },
+    "label": "complete-owner-six-word-residual",
+    "observedEffect": "Current-run source policy classified PURE_C. The canonical focused linked diff accepted the 796-byte .ob64.r3750 owner and exact 54-relocation contract. It compared all 199 decoded instruction rows and found six differing linked words (ten bytes), confined to z64 0x00200020, 0x00200024, 0x0020002C, 0x00200030, 0x00200034 and 0x00200038. The candidate loads offset before position, saves offset before the sum, forms the sum in v1, and delays the original-position copy to the bgez slot. Retail requires the opposite two load/register orders and copies before the sum.",
+    "parentCandidateId": "658423BC4BF0309A6F3A679C54089DD9B05AF172F35FF8DEB8D8C6A73FA1D9ED",
+    "references": [
+      {
+        "path": "docs/Plans/task-logs/combat-context-retry-preparation-r1.md",
+        "sha256": "12660CEA27BB09C7A3169E08014F6CA7CD965C07ECAF9CD35A55598B6AE91638"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_001FFE80.s",
+        "sha256": "8BE95D72294E363DEA1C404DCAA0F6E63862EB24173C661594A45D8B58C01B6E"
+      }
+    ],
+    "relatedCandidateIds": [
+      "9EDC78CF1B5B1C2BEE5EFBA5D3DD160349070462479603B09DCA899584BB18D1"
+    ],
+    "remainingFailure": "Linked target bytes are nonexact in the six-word pocket, so no complete-ROM verifier was run and no matching-C acceptance follows. The two identical-arm conditions are compiler-shaping devices whose exact current effect needs explanation near any eventual production source.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Remove both assembler mechanisms; assign the core alias before the flag guard; use identical guard outcomes under the already loaded frame value; save the offset and compute the signed sum before copying the entry and original position; use identical nonnegative-sum guards under the already loaded record pointer."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 7920,
+      "sha256": "F82FBF2BBB568F53D4F7F45CA34160F880FA8ED0F5B0D635AA0CFD7D1A0D9DED"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "03E68D1946DC267256472DD2A08E0D637AB4714B3C5FE2372E115978DA89FBDD"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-29-func_001FFE80-5c05ecc364.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

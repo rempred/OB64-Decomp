@@ -1,0 +1,86 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "AD333CD96F0C5AD0D49A2F658A4414E77956A05BDCA694736B1060BAF1DA550A",
+  "observationId": "F30594B002CB5194780B0FEFDD3F3C54494167F363094BC3007A399D9165A1AF",
+  "symbol": "func_001FFE80",
+  "authored": {
+    "context": "The casted position copy in the destructive form keeps the desired instruction structure with a six-word register swap. This non-destructive sum tests whether separate position and sum temporaries recover the retail v0/v1 allocation.",
+    "effects": [
+      "pure-c",
+      "owner-length-796",
+      "relocations-match",
+      "seven-word-residual"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "1C3524AC6B943E5EC58079E06930D1C7601AD0BB42B0B28FF8DCE1673018A14E",
+      "sourceSha256": "A30BDAC5B1656619AA9ED896506751C599F53A6E8152F98664D48DB2C63261E3"
+    },
+    "label": "signed-copy-nondestructive-allocation-counterexample",
+    "observedEffect": "Current-run source policy classified PURE_C. The canonical focused linked diff accepted the 796-byte owner and all 54 relocations, but seven linked words (seven bytes) differ. At z64 0x00200030 the candidate uses a2 as the sum source instead of v0. The other six differences reflect s3/s4 allocation at z64 0x001FFFD0, 0x001FFFDC, 0x00200008, 0x00200038, 0x00200088 and 0x002000A4. This form does not improve the whole owner over the destructive cast candidate.",
+    "parentCandidateId": "5C05ECC3645FE49426FACF5E3D82C87A466A1ED173B7A5A939EA5EF552183D55",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_001FFE80.s",
+        "sha256": "8BE95D72294E363DEA1C404DCAA0F6E63862EB24173C661594A45D8B58C01B6E"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Linked target bytes are nonexact; no completed-wave verifier was run. The exact production hybrid source remains restored.",
+    "role": "counterexample",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Use (s16)temp_v0_118 for the a2 copy before a separate temp_v0_121 position-plus-offset sum; assign the entry first and save the offset after the sum, with both F2 joins retained."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 7925,
+      "sha256": "1C3524AC6B943E5EC58079E06930D1C7601AD0BB42B0B28FF8DCE1673018A14E"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "A30BDAC5B1656619AA9ED896506751C599F53A6E8152F98664D48DB2C63261E3"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-29-func_001FFE80-ad333cd96f.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
