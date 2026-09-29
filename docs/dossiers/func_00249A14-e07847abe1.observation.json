@@ -1,0 +1,98 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "E07847ABE13347C3BC1060685EC881274C16D3EA19B02DAA9FE6624490BF7106",
+  "observationId": "81BB28888AC7EBD3ABB0FDBD906AA135D4003F0CEACDBE61A4C93AD600747062",
+  "symbol": "func_00249A14",
+  "authored": {
+    "context": "The accepted original func_00249A14 owner .ob64.r4390 is 900 bytes with a 184-byte frame. The previous 8F5E1FEA diagnostic source held the two retail second-stage frame bases and produced exact text extent, but reserved a 192-byte frame. The accepted registry names all four class-table halfword columns at D_80187C42/44/46/48.",
+    "effects": [
+      "pure-c",
+      "exact-owner-extent",
+      "retail-frame",
+      "retail-register-roles",
+      "four-class-table-relocations",
+      "linked-nonmatch"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "A81C6C9AD991016038FEACCAB941A32E80154357016BCFFC0A3572B6059F563D",
+      "sourceSha256": "F4B1C63DCC4B37EE97E764746601BF96D5BDE6DFF57A7006B44A35DB84153546"
+    },
+    "label": "scenario-exact-extent-retail-frame-relocation-aliases",
+    "observedEffect": "Authenticated scratch watch emits one 900-byte/225-instruction PURE_C body, zero body-census omissions, frame 184 with vars=128, option in s8, flag at sp+143, staged base s6, output base s7, class offset s1 and value s0. There are still 157 aligned symbolic differences. Temporary canonical focused linked diff confirmed sole 900-byte .ob64.r4390 C owner, but 136 differing linked words/364 bytes and a missing per-target relocation contract with 27 candidate records. The four table alias names appeared in the candidate relocations. No full-ROM verifier ran.",
+    "parentCandidateId": "8F5E1FEA724AA904A5058BB187CACE035B697034D4704A0D9B709950BB51C081",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_00249A14.s",
+        "sha256": "64F2ACC3BFCF3C16477296FFBD96D64C29DA155A0287BCDFC6FD9C3B0CCEFB5D"
+      },
+      {
+        "path": "config/matching-c-linkage.json",
+        "sha256": "794DA22DEBFF6DB9A2ECF872B6CED5EEE0B0AB13E22977D379016AC2151C7C73"
+      },
+      {
+        "path": "docs/archive/matching-c-candidates/2026-09-29-func_00249A14-8f5e1fea72.c",
+        "sha256": "992DE2FFAA8BD004820DDE99F58710DAE59D613E1F7D6743BFDB6E377703C89F"
+      }
+    ],
+    "relatedCandidateIds": [
+      "FDC0F3683C9500BE4C1FF975D638F7FE8966CCE7CB9AF15EBAC0245C2BEEF681"
+    ],
+    "remainingFailure": "Linked bytes remain broadly different; exact extent and frame do not establish matching C. Source/config activation and the temporary D_801D7C78 symbol entry were removed after the diff, restoring original ASM production. The next source work is the first-stage pointer/source-record geometry and second-stage compare/branch shape, then another focused linked diff. The two-target scenario wave is incomplete.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Use u8 slot_count and slot_index instead of s32 for the byte-width second-stage loop comparison, retaining s32 group and member. Express the four class-table columns through their four accepted relocation symbols, preserving the same 0x48-byte row stride. Keep the typed descriptor, resource-link, masked indices, complete match assignment, output-base pointer and final slot re-derivation."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 4463,
+      "sha256": "A81C6C9AD991016038FEACCAB941A32E80154357016BCFFC0A3572B6059F563D"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "F4B1C63DCC4B37EE97E764746601BF96D5BDE6DFF57A7006B44A35DB84153546"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-29-func_00249A14-e07847abe1.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

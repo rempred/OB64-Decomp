@@ -1,0 +1,96 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "E17A495D9DE0C08F262AEC8F93DF4BA8594CF54A3769C756D85DB7DFABCDAC6E",
+  "observationId": "19A616C1B5E14055E872E380A3BA8F28775B0FDFDBFEB9A87BE99B65D03094D7",
+  "symbol": "func_0023A5EC",
+  "authored": {
+    "context": "Accepted sole original func_0023A5EC owner .ob64.r4250 covers z64 0x0023A5EC..0x0023B048, 2652 bytes, with a four-instruction read-before-write preamble folded into the framed body. The accepted cold-boot load slab maps it to RAM 0x801D0A8C..0x801D14E8, so old assembly-comment VMA 0x802AAxxx is not the accepted placement and j 0x801D0DAC and similar targets are internal. Current research intake had no prior candidates. The generated structured draft fails compilation due false loader arity, inconsistent helper prototypes and pointer arithmetic.",
+    "effects": [
+      "pure-c",
+      "full-call-census",
+      "resource-link-interface",
+      "internal-jump-placement",
+      "first-full-body-source",
+      "nonexact-frame"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "B70FB956552850268E0762DE6A53769A9F4C1CDCEB1E3EACD17B6AC5043F79AC",
+      "sourceSha256": "BE43EAB378EAFDEBE01B058E9D15BFCE5AC2416820D55789124475F6A79765FC"
+    },
+    "label": "scenario-table-builder-first-readable-owner",
+    "observedEffect": "Authenticated scratch watch compiles PURE_C and emits 2580 bytes/645 instructions against retail 2652/663. Its symbolic first comparison has zero actual-only and 18 expected-only instructions. Both original and candidate contain exactly 22 direct calls: eight record-builder calls, three resource frees, three clears, two resource loads, and the same six other calls. The C frame is 120 bytes against retail 128. Every major logical case is represented but the code is a broad nonmatch with 640 aligned symbolic instruction differences.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_0023A5EC.s",
+        "sha256": "7150A449FC53B900146EB17649873381E2CBDD19DE8BCBB626C881ED2949FBCF"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_0023A3A0.s",
+        "sha256": "DC2B516C80313C8C3BACF011358E032A687556F94FFF1271C65AF04BC111DC37"
+      },
+      {
+        "path": "config/overlays/us_rev0.json",
+        "sha256": "AF454D26C8453ED2393731A4C19C4D23E655B0601BF102D9A3D55731101BFB9B"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "The source is 18 instructions short with broad scheduling/register/control differences and an eight-byte frame gap. The original assembly owner remains active; no source/config activation, canonical linked diff or full-ROM verifier ran. Check case-by-case stores and branch coverage before tuning, then recover retail unrolling and frame allocation. The two-target scenario wave also includes unresolved func_00249A14.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Independently reconstruct a readable C owner with the two-argument 0x021AE74C resource link, typed paired 16-byte archive inputs, 35-byte record, five-value maximum scan, global-table initialization, initial record construction, six explicitly expanded optional record cases, and final conditional calls. Use the adjacent accepted func_0023A3A0 physical owner for its five-argument record-builder interface, without claiming field semantics."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 8814,
+      "sha256": "B70FB956552850268E0762DE6A53769A9F4C1CDCEB1E3EACD17B6AC5043F79AC"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "BE43EAB378EAFDEBE01B058E9D15BFCE5AC2416820D55789124475F6A79765FC"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-29-func_0023A5EC-e17a495d9d.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
