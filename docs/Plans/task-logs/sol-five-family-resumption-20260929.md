@@ -1,5 +1,13 @@
 # Sol five-family decomp resumption
 
+## Current cursor after B894 integration
+
+The scoped B894 structural activation is on local `main` at `4e92ae6b`. Its `PURE_C` text owner and 44-byte switch-table contribution are exact in the focused diff and in the structural audit (`build/audit/report.json`, PASS; CURRENT ROM SHA-256 `571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A`). Astra's independent review found no issue and is recorded in `astra-b894-structural-review-20260929.md`. No unchanged commit verifier repeat is needed. Combat W5 remains open: B438 is still ASM, and the best retained `PURE_C` research source is `docs/archive/matching-c-candidates/2026-09-29-func_0021B438-9d9281eb68.c`, exact in owner extent and both table shapes but nonexact in register allocation. Resume B438 source work under the existing contract; do not run the eight-member wave verifier until B438 is ready.
+
+The first shop producer/splitter wave also remains open. The producer `func_0019BE40` is provisional exact `PURE_C` at `07daff2d`; the splitter `func_001977E0` is still original ASM. The splitter's current intake was empty. Its accepted single owner covers contiguous z64 `[0x001977E0,0x001989C4)` (4,580 bytes/1,145 instructions), including the two-instruction preamble; the 16-entry table at `[0x0019C5C0,0x0019C600)` points to thirteen distinct in-owner runtime destinations. An analysis-only table-annotated m2c input recovered all sixteen case arms, while the default Kuna packet treated the indirect dispatch as a call and the default m2c packet failed to find the table. The table-assistance packet guard rejects this non-descriptor load slab; it was left unchanged. The preserved [typed scratch counterexample](../../archive/matching-c-candidates/2026-09-29-func_001977E0-ae30eb8da8.c) and observation `4A09653F6429C0AD57AD3FDC962356DA6524D3E7281FFB576923098B2AABDDE5` compile `PURE_C` but emit 4,468 bytes/1,117 instructions and a 0x50 frame versus retail 4,580/1,145 and 0x70. It has unreviewed pointer semantics and no linked acceptance. Next shop work is independently deriving complete readable C from the accepted owner and dispatch table, then an early focused linked diff; no shop final verifier has run.
+
+The following sections retain earlier experiments and snapshots. This current cursor supersedes older statements that B894 awaits activation.
+
 Current checkout: `main` at `8012b84a` before this session's research records. Sol/BoldTower is the sole production source/build writer. The queued order is Combat/High Attack, scenario loading, squad lifecycle, shop inventory, then combat animation. This note records the current cursor; it does not narrow any family's membership.
 
 ## Current wave and accepted baseline

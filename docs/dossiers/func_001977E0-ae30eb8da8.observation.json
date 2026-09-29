@@ -1,0 +1,91 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "AE30EB8DA88E639048040D2C847F3EE0B0AFE9B37683B67A18485909A1A5CBE5",
+  "observationId": "4A09653F6429C0AD57AD3FDC962356DA6524D3E7281FFB576923098B2AABDDE5",
+  "symbol": "func_001977E0",
+  "authored": {
+    "context": "Accepted func_001977E0 is a single 4,580-byte/1,145-instruction code owner at .ob64.r3068, with a two-instruction read-before-write preamble, 0x70 frame and 16-entry accepted data table at 0x0019C5C0. Intake had no prior observations. The normal structured m2c and default packet m2c failed to identify the indirect jump; Kuna represented it as a call and omitted cases.",
+    "effects": [
+      "pure-c",
+      "compiled-nonmatch",
+      "short-owner",
+      "frame-mismatch",
+      "full-case-source-coverage"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "652CCF0F4CBDD93CE39A632A3607793EE2D553972EC54B9149E800B1230D9A01",
+      "sourceSha256": "D39F620D01355000621378E8AF51B3A7A90004BF811EFFC37832ACB35CC87AC6"
+    },
+    "label": "shop-splitter-table-assisted-typed-scratch",
+    "observedEffect": "Authenticated workbench watch compiled PURE_C candidate AE30EB8DA88E639048040D2C847F3EE0B0AFE9B37683B67A18485909A1A5CBE5. Source has cases 0 through 15 and a common tail. Emitted 4,468 bytes/1,117 instructions with a 0x50 frame versus retail 4,580/1,145 and 0x70: 28 expected-only instructions, no actual-only instructions, 1,120 differing instructions/3,930 differing bytes in symbolic-object comparison. Candidate emitted 99 relocations; accepted expected relocation provenance is unavailable before activation. This is not a canonical linked match.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_001977E0.s",
+        "sha256": "95D9F4D4D4B3E8D0E83E44D1BE2E35F2C40F2DDB9A318BB247E375DD3DC906F6"
+      },
+      {
+        "path": "asm/original/rev0/lib/table_0019C5C0.s",
+        "sha256": "2EF3D03450BA37265BA662C304830B51024EE08638004793C0C7B08A094E3CFC"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "The generated source still contains unverified pointer widths and incorrect cursor scaling; register allocation, frame, and machine-body coverage differ broadly. It is a diagnostic counterexample only. Independently derive readable complete C from the accepted ROM owner and all table destinations, then do an early canonical linked diff after source and ownership contracts are ready. No shop wave final verifier ran.",
+    "role": "counterexample",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Use an ignored analysis-only copy of the full accepted disassembly with a jtbl label and all 16 retail target words from the accepted table, then run pinned m2c with valid-syntax/deterministic flags. Add scalar widths for the observed shop state bytes and neutralize two incomplete generated prototypes so the result scratch-compiles. This is a generated hypothesis, not independently authored production C."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 23339,
+      "sha256": "652CCF0F4CBDD93CE39A632A3607793EE2D553972EC54B9149E800B1230D9A01"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "D39F620D01355000621378E8AF51B3A7A90004BF811EFFC37832ACB35CC87AC6"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-29-func_001977E0-ae30eb8da8.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
