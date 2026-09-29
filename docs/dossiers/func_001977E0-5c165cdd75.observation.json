@@ -1,0 +1,94 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "5C165CDD75ECA97B867F399297D63D01CFA9513341E5B229D2668BB73E1C7597",
+  "observationId": "A4B19CE3F16C8574EE530FFB35C6E9297FD313ACBB393A6E12826508C4994682",
+  "symbol": "func_001977E0",
+  "authored": {
+    "context": "The preserved 5EA2D85E case-3 source restores separate signed row-index reads and refreshes source cursor expressions, but emits 4528/1132 with a 96-byte frame versus retail 4580/1145 and a 112-byte frame. GoldOx's Agent Mail 439 attributed the frame gap to two additional combine-created USE-only pseudos, not stack locals or spills. Retail case 7 tracks both a numeric index and an advancing slot pointer; retail case 12 has a single zero-quantity guard before its scan.",
+    "effects": [
+      "pure-c",
+      "retail-frame",
+      "case7-dual-cursor",
+      "case12-single-guard",
+      "inventory-address-aliases",
+      "body-extent-improvement"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "7C44E2C74352A9CD4F63280CB455B2F4E10DFF030DA1CDC48451F554029DCD81",
+      "sourceSha256": "7E8882CD2FF66041619431DC8801EB4CED7B10B6905105842D09FDA656037CDB"
+    },
+    "label": "shop-splitter-retail-frame-and-three-case-source-shape",
+    "observedEffect": "Direct pinned cc1 diagnostics isolate the two frame contributions: the dual case-7 cursor increases combine USE-only pseudos from two to three and the separate final-category global increases them from three to four. The resulting .frame is 112 bytes with vars=32, regs=8/0 and args=48, matching retail; no new stack load or store appears in the variable reservation. Authenticated workbench watch 5C165CDD75ECA97B867F399297D63D01CFA9513341E5B229D2668BB73E1C7597 classifies the clean readable source PURE_C and emits 4532 bytes/1133 instructions, zero candidate-only and twelve expected-only instructions, 3652 symbolic differing bytes, improving the F798 readable source by seven instructions and 99 symbolic differing bytes while restoring the frame.",
+    "parentCandidateId": "5EA2D85E49FC434755A4E717A4CA74C5402FCDF2647AB04EF1466AD11F0BAC2F",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_001977E0.s",
+        "sha256": "95D9F4D4D4B3E8D0E83E44D1BE2E35F2C40F2DDB9A318BB247E375DD3DC906F6"
+      },
+      {
+        "path": "docs/archive/matching-c-candidates/2026-09-29-func_001977E0-5ea2d85e49.c",
+        "sha256": "722EEB47F9C02543A918AD3CC16BC344BABE62DC63CB19420AC89E44C6D893C8"
+      }
+    ],
+    "relatedCandidateIds": [
+      "F798D868F9E8D66DBB2BD9574B923C30BD485BC48D273891B1346CFF39E95946"
+    ],
+    "remainingFailure": "The source remains 48 text bytes short with broad opcode, register and branch-layout differences; its cursor reads near helper calls still require retail timing review. The retail 64-byte switch table remains separately assembly-owned, so no canonical linked acceptance can be claimed. Continue per-case source reconstruction and existing-contract scratch comparison, then seek Astra's structural ownership approval for a concrete exact-text activation. Original ASM remains production and the two-member shop wave has not had a full-ROM verifier.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Keep a numeric index and moving slot cursor in the case-7 free-slot scan; remove case 12's redundant outer nonzero guard while retaining its bounded loop; express the inventory counts, ordered bytes, consumables, category cursor and final-category byte through independently addressed aliases. Retain the case-3 branch-local signed row loads and refreshed category-cursor expressions. Clean duplicate declarations and add concise comments without changing emitted code."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 20731,
+      "sha256": "7C44E2C74352A9CD4F63280CB455B2F4E10DFF030DA1CDC48451F554029DCD81"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "7E8882CD2FF66041619431DC8801EB4CED7B10B6905105842D09FDA656037CDB"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-29-func_001977E0-5c165cdd75.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
