@@ -1,0 +1,91 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "E32DD899EE13A95C9BAB32077FD7C26F2FDE7F9F5948C27679ACC1B9BB7F6734",
+  "observationId": "0C3642C9C171CE9E49CED8F56C0A1BABD81CCBEA47C0F7D1CB7072852CF8D110",
+  "symbol": "func_001977E0",
+  "authored": {
+    "context": "The selected 2FDCF155 source has the full owner and switch placement, but in state 3 its shared price-store statement lets the pinned compiler prepare the selected-ID call argument before publishing the price. Retail publishes the price first in the equipment branch after the special-price or ordinary price path rejoins.",
+    "effects": [
+      "pure-c",
+      "retail-frame",
+      "exact-text-extent",
+      "all-state-entry-placement",
+      "case3-price-store-order"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "631ECDF020E9512399E2AC94EB3C7140673940FA9B7BFAC4DBC719F93929D49C",
+      "sourceSha256": "D80274E2A7CEE70FA5ED00134625AFA1F967C9FDD7EA006753B18D6FB5BC0B5B"
+    },
+    "label": "shop-state3-branch-local-price-publication",
+    "observedEffect": "Direct pinned compilation puts the price store before the selected-ID load and reduces state-3 opcode mismatches from 90 to 86. Authenticated watch E32DD899EE13A95C9BAB32077FD7C26F2FDE7F9F5948C27679ACC1B9BB7F6734 reports PURE_C, 4580 bytes/1145 instructions, frame 112, all sixteen retail dispatch destinations, zero expected-only/actual-only instructions, 1865 differing symbolic bytes and score 78.39 versus the parent's 1876/78.13.",
+    "parentCandidateId": "2FDCF155D7CE62D61688055CCD4D263D61212785E4A61C1D5E091E8A07D59ADB",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_001977E0.s",
+        "sha256": "95D9F4D4D4B3E8D0E83E44D1BE2E35F2C40F2DDB9A318BB247E375DD3DC906F6"
+      },
+      {
+        "path": "docs/archive/matching-c-candidates/2026-09-29-func_001977E0-2fdcf155d7.c",
+        "sha256": "8D2441B419127E21059E2816DEAFD42AB66633B6E66AC84595A01A92A39A4B61"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "The state-3 prompt and navigation branch order remains nonretail, as do state 0, state 7/8 and terminal motion. The price alias denotes an observed physical word and compiler-shaping source view, not an independently named semantic field. Original ASM and separate table ownership remain production; no canonical linked exactness or combined wave verifier has run.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Write the observed price word through the independent price address separately inside the special-price and ordinary equipment-price branches, then reload the published selected ID for the eligibility call. Preserve the consumable-price branch and all other states."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 21726,
+      "sha256": "631ECDF020E9512399E2AC94EB3C7140673940FA9B7BFAC4DBC719F93929D49C"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "D80274E2A7CEE70FA5ED00134625AFA1F967C9FDD7EA006753B18D6FB5BC0B5B"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-29-func_001977E0-e32dd899ee.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
