@@ -1,0 +1,90 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "2359B5C63A9F5153D69BED34B852681069CD768759A80CCD705BD609D3F40E8C",
+  "observationId": "1BD635DB541826D62D0DBE7468D1E5EAE5D387C8E421A12FE83FB13EE2990EEF",
+  "symbol": "func_00041c20",
+  "authored": {
+    "context": "Retail func_00041c20 hoists a mode-one constant to s8 before the resource-key copy and branches around the second duplicate scan with a boolean sltu in the delay slot. The exact-size key-copy/counter source places its mode-one constant inside the second-scan preheader, rotating saved registers and shifting the first scan in the linked result.",
+    "effects": [
+      "pure-c",
+      "retail-mode-one-hoist",
+      "retail-mode-index-registers",
+      "oversize-owner"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "B286282B6B5ACDE3192A26F582B40B35F19CF94A1345A071F78C148C132585E2",
+      "sourceSha256": "EC13FA6A0ED3EC56679E0A9600982736DB1729AC32286E4D0BE6D934AC8EDE8B"
+    },
+    "label": "member-pool-second-scan-loop-guard",
+    "observedEffect": "Authenticated scratch compilation hoists li s8,1 before the resource-key copy, keeps mode in s7 and record index in s6, and emits the retail one-base three-word key copy. It adds a per-iteration sltu/and guard at the end of the second scan, so the symbol becomes 612 bytes/153 instructions against retail 608/152. The first-scan branch delay slot instead initializes the candidate index. No canonical link or full-ROM verifier ran for this oversized candidate.",
+    "parentCandidateId": "C989943C82247158DC2462C13E17E0B2AACC4D6AA29F333776B19AFDC69982A4",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_00041c20.s",
+        "sha256": "2BE1C683B49A8A41E827C4BA113568A6BE9B3382F57BEDDF54D664FB5944EF0E"
+      },
+      {
+        "path": "docs/archive/matching-c-candidates/2026-09-29-func_00041c20-c989943c82.c",
+        "sha256": "D0EC392C261DE6C65914362BB17A0AE0D8E9F99AC0E8DC8CF34536066C3FB78E"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Find a source control form that retains this early constant-one lifetime while moving the duplicate gate outside the second scan loop and restoring the retail sltu delay slot. The selected linked-best source remains the 42-word signed-range candidate, and original ASM remains production.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Make duplicate == 0 part of the second scan's for-loop continuation condition instead of an enclosing if, retaining the same bounded scan and immediate break on a match."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 2761,
+      "sha256": "B286282B6B5ACDE3192A26F582B40B35F19CF94A1345A071F78C148C132585E2"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "EC13FA6A0ED3EC56679E0A9600982736DB1729AC32286E4D0BE6D934AC8EDE8B"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-29-func_00041c20-2359b5c63a.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
