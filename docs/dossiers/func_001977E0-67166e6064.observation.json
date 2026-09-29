@@ -1,0 +1,92 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "67166E6064162AC6869F7A4FAB2166EE8BB19073B58A3800B483783C0CBB5173",
+  "observationId": "396F86140B1EEAF466929887A08A0C88BFB02D366F9EEACE568EA67020D595FB",
+  "symbol": "func_001977E0",
+  "authored": {
+    "context": "The live-pointer source fits state 0 and the full text extent but carries its initial current pointer from before the three clear calls. Retail loads the current pointer from the global after the third clear call, distinct from the original allocation pointer retained for resource_free.",
+    "effects": [
+      "pure-c",
+      "retail-frame",
+      "post-clear-pointer-load",
+      "body-extent-regression"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "AA24B435AD43824DFBD629F65679A45C0B348C365687D9A1E50887A2CCD29036",
+      "sourceSha256": "11D5E9BACD0648ADD3AC21B675742D710378EBA060E0704DF03AF97201668B7D"
+    },
+    "label": "shop-list-pointer-post-clear-timing-control",
+    "observedEffect": "Pinned compiler output moves the current-pointer global load after the clear calls as in retail. Authenticated watch 67166E6064162AC6869F7A4FAB2166EE8BB19073B58A3800B483783C0CBB5173 emits 4584 bytes/1146 instructions, 112-byte frame, one actual-only and zero expected-only instructions, 3761 differing symbolic bytes and score 33.73. Moving the category-count initialization after the split and reusing the equipment-count C local produced the same object extent and case boundaries.",
+    "parentCandidateId": "40216BB8856920D75C652F935CAE2BF431EA471CB30159445DE70950716E3B8F",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_001977E0.s",
+        "sha256": "95D9F4D4D4B3E8D0E83E44D1BE2E35F2C40F2DDB9A318BB247E375DD3DC906F6"
+      },
+      {
+        "path": "docs/archive/matching-c-candidates/2026-09-29-func_001977E0-40216bb885.c",
+        "sha256": "94AE694E8CB69154E6FD64B75D96F169D61E2282F8725C85DB9210C596A20291"
+      }
+    ],
+    "relatedCandidateIds": [
+      "B5B5706502EB1F802D1B4AE17BCCFEF5C645E9768D99BC17C23B72BDD8FC0119"
+    ],
+    "remainingFailure": "The post-clear assignment changes allocator lifetimes and leaves state 0 four bytes long, with worse whole-owner symbolic alignment. The source more closely reflects the observed load timing but does not displace the exact-extent emitted best. Both remain scratch research; original ASM and table stay production without a completed-wave verifier.",
+    "role": "counterexample",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Declare the current pointer before the clear calls but assign it from the global after the third clear, immediately before splitting the list. Leave the original allocation pointer, branch-local helper calls, and all other state bodies unchanged."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 21136,
+      "sha256": "AA24B435AD43824DFBD629F65679A45C0B348C365687D9A1E50887A2CCD29036"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "11D5E9BACD0648ADD3AC21B675742D710378EBA060E0704DF03AF97201668B7D"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-29-func_001977E0-67166e6064.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
