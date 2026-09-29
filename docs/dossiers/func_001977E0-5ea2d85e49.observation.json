@@ -1,0 +1,90 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "5EA2D85E49FC434755A4E717A4CA74C5402FCDF2647AB04EF1466AD11F0BAC2F",
+  "observationId": "6510C268501978451238565C40D3D750F35514954AC35C783B34392149D42A34",
+  "symbol": "func_001977E0",
+  "authored": {
+    "context": "The selected readable F798D868 source covers all sixteen shop states but emits 4504/1126, frame 96, versus retail 4580/1145, frame 112. Retail's case-3 first-item branches each load a signed category-row index. Its redraw path reads the category cursor again around the sound, resource-free and category-offset calls; the prior C held one redraw cursor local through them.",
+    "effects": [
+      "pure-c",
+      "case3-row-load-coverage",
+      "case3-cursor-read-coverage",
+      "body-extent-improvement"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "9D1F418E738AA18F3B382A32EB9044FF371BFBDDF0B1002683D56602B3DBA1B4",
+      "sourceSha256": "722EEB47F9C02543A918AD3CC16BC344BABE62DC63CB19420AC89E44C6D893C8"
+    },
+    "label": "shop-case3-fresh-cursor-and-branch-row-loads",
+    "observedEffect": "The pinned compiler emits 4528 bytes/1132 instructions, frame 96. Both first-item branches now emit signed lh row-index loads, and case 3 grows from 768 to 792 bytes versus retail's 848. Authenticated watch 5EA2D85E49FC434755A4E717A4CA74C5402FCDF2647AB04EF1466AD11F0BAC2F reports PURE_C, zero candidate-only, 13 expected-only instructions and 3761 symbolic differing bytes; this is six fewer missing instructions but ten more differing bytes than F798D868. The GCC-scheduled cursor loads near resource_free and func_802189BC still occupy call delay slots rather than every retail post-call position.",
+    "parentCandidateId": "F798D868F9E8D66DBB2BD9574B923C30BD485BC48D273891B1346CFF39E95946",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_001977E0.s",
+        "sha256": "95D9F4D4D4B3E8D0E83E44D1BE2E35F2C40F2DDB9A318BB247E375DD3DC906F6"
+      },
+      {
+        "path": "docs/archive/matching-c-candidates/2026-09-29-func_001977E0-f798d868f9.c",
+        "sha256": "74A3BE091E12DED4C3E883EF27C0C82C0622F373B2EC0DE369364F57AB46178E"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "The source remains 52 bytes short, with broad symbolic differences and a 16-byte frame gap. The shop table is still separately assembly-owned, so no canonical linked acceptance exists. Reconcile case-3 load timing and other per-case source/alias shapes before a structural table-owner activation; keep original ASM in production and defer complete-ROM verification until both shop wave members are ready.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Read the category row's signed first index separately in the consumable and equipment branches. Remove the single redraw cursor local and refer to the category cursor at each later use, retaining both item-render calls and their distinct modes."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 21386,
+      "sha256": "9D1F418E738AA18F3B382A32EB9044FF371BFBDDF0B1002683D56602B3DBA1B4"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "722EEB47F9C02543A918AD3CC16BC344BABE62DC63CB19420AC89E44C6D893C8"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-29-func_001977E0-5ea2d85e49.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
