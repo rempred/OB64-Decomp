@@ -848,6 +848,10 @@
     { "symbol": "func_00128980", "source": "src/lib/func_00128980.c" },
     { "symbol": "func_0012FB64", "source": "src/lib/func_0012FB64.c" },
     { "symbol": "func_0012A050", "source": "src/lib/func_0012A050.c" },
-    { "symbol": "func_00128D50", "source": "src/lib/func_00128D50.c" }
+    { "symbol": "func_00128D50", "source": "src/lib/func_00128D50.c" },
+    { "symbol": "func_00128DDC", "source": "src/lib/func_00128DDC.c" },
+    { "symbol": "func_00128BF4", "source": "src/lib/func_00128BF4.c" },
+    { "symbol": "func_00127EAC", "source": "src/lib/func_00127EAC.c" },
+    { "symbol": "func_001289BC", "source": "src/lib/func_001289BC.c" }
   ]
 }

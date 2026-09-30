@@ -1,0 +1,100 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "DB5C70BFEABF7FE02DD3018E05D318A4062167DD55BC58626723C48BA90E4132",
+  "observationId": "39D4BBC2019F645E793106323885924D97840315897AF77D1EDE6142D37E4876",
+  "symbol": "func_001289BC",
+  "authored": {
+    "context": "MagentaTiger sole production source/build owner on main2eda4e81. The entire thirteen-member pursuit group remains open; ordinary focused diffs do not establish complete-wave matching acceptance.",
+    "effects": [
+      "body-coverage",
+      "float-interface",
+      "wrapping-counter",
+      "output-capture",
+      "store-scheduling",
+      "canonical-relocations"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "EF4CAE0FB72DFD39070B89C7914C99FFA53BEB19775C6B068022C9541343903F",
+      "sourceSha256": "E8BB2DDB8C067955D6B987C150C459A6DF4A2D4B18A95AAB5D79F026E9534BE5"
+    },
+    "label": "branch-local-counter-full-owner-linked-exact",
+    "observedEffect": "Untouched pinned cc1/GAS emits PURE_C276 bytes/69 instructions/frame32 with zero aligned relocation-masked differences. The compiler merges the branch-local word stores in the retail position before helper argument setup. Canonical focused diff proves one276-byte sole C contribution to .ob64.r2393 at ROM0x001289BC..0x00128AD0/live0x801D427C..0x801D4390, no fallback/fill, all17 actual relocations MATCH, zero differing linked bytes/words, target SHA969EE1B385DC7D528395DCD6F377C0C3D5D40E4D4C232E9684B425C69247D368. The two internal jumps and every global/helper relocation are actual compiler records, and compilerAssemblyRewritten is false.",
+    "parentCandidateId": "4ED2A583D92B47B190D1FF3808AB7E12265F1E6A9215FBE9E308D25C0C75D1E0",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_001289BC.s",
+        "sha256": "BB1FECEF6C005D7008153FBB7C4370CA5FC746F06764ABED60ECA309EDA4052D"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_00106ce0.s",
+        "sha256": "13890C7CD0AC8CC212EA78D39DB53576FE858FCFDFA3B48728006E44F4CD8790"
+      },
+      {
+        "path": "src/lib/func_00121F38.c",
+        "sha256": "A404831AFF9006C3C9467DC3ED74D621B357B313889E18CA7C1B21CEAE4D14AE"
+      },
+      {
+        "path": "docs/WORKFLOW.md",
+        "sha256": "0ACD259116DEC62C74C01CC49291B8A4377734FCD49281BBDD9FC5D7455598EA"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Provisional development exactness only. The complete thirteen-member pursuit group still needs every source/full-producer gate and its one final full-ROM verifier. No capacity, runtime global cadence, byte ABI or original source-history claim follows.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Place each genuine global counter update in its owning branch; on the negative valid-query branch, retain the field94 float publication before D_801EACD0=10. Preserve the separate invalid-query read/decrement, destructive local, explicit unsigned decrement wrap, captured output pair, all five call interfaces and later state-byte operations. Explain the compiler publication requirement near the C."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 1813,
+      "sha256": "EF4CAE0FB72DFD39070B89C7914C99FFA53BEB19775C6B068022C9541343903F"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "E8BB2DDB8C067955D6B987C150C459A6DF4A2D4B18A95AAB5D79F026E9534BE5"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-30-func_001289BC-db5c70bfea.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

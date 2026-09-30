@@ -1,0 +1,96 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "B212BFAA4472EE87ECC2470B5EA18A54C132D5A50AAF9E3F5E5C2FC754914E82",
+  "observationId": "1F13650115440DD05C3F18847E76204BCB1FDA8749E934F2B72CDC1CC5F7D79E",
+  "symbol": "func_00127D30",
+  "authored": {
+    "context": "MagentaTiger sole source/build writer on main2eda4e81. Current p2385 logical/physical360-byte frameless body, initial empty intake and all90 original words were reconciled before reconstruction. The complete thirteen-member pursuit group remains open; original ASM is production for this target.",
+    "effects": [
+      "body-coverage",
+      "bank-address",
+      "single-list-load",
+      "initialization-lifetime",
+      "register-allocation",
+      "lookup-order"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "E8DB08DCDFD84FC2D419AECB488A3507DFB8BC7F76C7E7D3E0995AD599E038D3",
+      "sourceSha256": "C1C7A4FFBBD98965D5D16569F570995D51C9818E8BB6871DEADBFDA5FEA452F8"
+    },
+    "label": "full-body-initial-repeated-list-load",
+    "observedEffect": "Untouched pinned cc1/GAS emits PURE_C376 bytes/94 instructions/frame0, four instructions longer than retail360/90. Logical required bodies are represented, but repeated list reads and early scalar lifetimes change CFG/setup and allocation. The rough generator had lost both float arithmetic paths and used typed s32 pointer+=4 for an actual four-byte increment; this independent source restores float bodies and uses cursor++.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_00127D30.s",
+        "sha256": "FAFDC1E597AE11D455A03A84B1C65FAB603BE5A3C4628CEF7B7147117C3BAB2C"
+      },
+      {
+        "path": "src/lib/func_00127EAC.c",
+        "sha256": "CCE664F619BB34623DF1C70458905221DBBA73B2579E74BE864FFF067037DFC0"
+      },
+      {
+        "path": "docs/WORKFLOW.md",
+        "sha256": "0ACD259116DEC62C74C01CC49291B8A4377734FCD49281BBDD9FC5D7455598EA"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Broad nonmatch; no activation or canonical linked diff. This source is a meaningful precursor, not current best or semantic proof of table capacities/domains.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Independently derive bank pointer from D_800E7AC3 plus4*selector-0x33, current-record12-byte point stride, squared-distance ceiling4050, special0x204/current80 branch,0x31 candidate mask, byte column and64-byte-row u16 lookup, ordered<=distance selection and list-position return. Preserve numeric fields and byte/word domains. The first form initializes best/position before distance setup and writes the list read in both for guard and body."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 2191,
+      "sha256": "E8DB08DCDFD84FC2D419AECB488A3507DFB8BC7F76C7E7D3E0995AD599E038D3"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "C1C7A4FFBBD98965D5D16569F570995D51C9818E8BB6871DEADBFDA5FEA452F8"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-30-func_00127D30-b212bfaa44.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

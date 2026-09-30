@@ -1,0 +1,100 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "4ED2A583D92B47B190D1FF3808AB7E12265F1E6A9215FBE9E308D25C0C75D1E0",
+  "observationId": "7BAB5EDD5D2F353C56BA369F4022726F7DC89194C360D4B2EE136797B3FCB5C7",
+  "symbol": "func_001289BC",
+  "authored": {
+    "context": "MagentaTiger sole production source/build owner on main2eda4e81. The entire thirteen-member pursuit group remains open; ordinary focused diffs do not establish complete-wave matching acceptance.",
+    "effects": [
+      "body-coverage",
+      "float-interface",
+      "wrapping-counter",
+      "output-capture",
+      "store-scheduling",
+      "canonical-relocations"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "F2194F350F208A1E8A964B68BDD567E1EED5FCCCA18A42EFEBA595EF29BDC766",
+      "sourceSha256": "61C06BC34809FEA9D0C01605ED64497714F5E0F8F4FFCF76E3A5263B747A8A03"
+    },
+    "label": "single-counter-captured-outputs-common-publication",
+    "observedEffect": "Mechanically PURE_C under untouched pinned cc1/GAS,276 bytes/69 instructions/frame32 with eight local bytes. The original first draft had ten aligned relocation-masked differences; the destructive counter removes three register words, and captured output values remove three load/store ordering words. Only four instruction-order words remain: the common D_801EACD0 HI/store is scheduled after the first two helper argument preparations instead of before them. All five calls and remaining source operations are covered. Volatile publication expands to280 and a volatile global view moves more setup before the store; neither is selected. Pointer/named-step controls do not close the four-word residual.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_001289BC.s",
+        "sha256": "BB1FECEF6C005D7008153FBB7C4370CA5FC746F06764ABED60ECA309EDA4052D"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_00106ce0.s",
+        "sha256": "13890C7CD0AC8CC212EA78D39DB53576FE858FCFDFA3B48728006E44F4CD8790"
+      },
+      {
+        "path": "src/lib/func_00121F38.c",
+        "sha256": "A404831AFF9006C3C9467DC3ED74D621B357B313889E18CA7C1B21CEAE4D14AE"
+      },
+      {
+        "path": "docs/WORKFLOW.md",
+        "sha256": "0ACD259116DEC62C74C01CC49291B8A4377734FCD49281BBDD9FC5D7455598EA"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Nonexact source intermediate only. Not canonical-linked or production-selected; the matching branch-local publication source is separate. Do not infer global timing semantics or stronger runtime field meanings.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Independently derive the complete controller, using the documented f32 query and preserving its -1 comparison including unordered behavior, both global-counter read paths, float-pointer helper with third f32 step1.0, output-helper success gate, both height queries, B8 upper-nibble gate and final B9 publication. Reuse one counter local destructively and capture both returned stack floats before either unit field is written. Keep a shared global word publication after the branch and unsigned32-bit decrement arithmetic."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 1819,
+      "sha256": "F2194F350F208A1E8A964B68BDD567E1EED5FCCCA18A42EFEBA595EF29BDC766"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "61C06BC34809FEA9D0C01605ED64497714F5E0F8F4FFCF76E3A5263B747A8A03"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-30-func_001289BC-4ed2a583d9.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

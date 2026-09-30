@@ -1,0 +1,103 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "40321EE890306BC8D272851A64D5432989281DEDAA6AC15EA3AAFA2845B01017",
+  "observationId": "7478E06C30080A38479FE49122D8A80DA122D8B01509F6DBD39720E0F39FFA5D",
+  "symbol": "func_00127D30",
+  "authored": {
+    "context": "MagentaTiger sole production source/build writer on main2eda4e81. All90 required original words and p2385 full360-byte frameless owner were reconciled before source work. Original ASM remains production and the complete thirteen-member pursuit wave remains open.",
+    "effects": [
+      "body-coverage",
+      "bank-address",
+      "single-list-load",
+      "initialization-lifetime",
+      "register-allocation",
+      "lookup-order",
+      "flat-row-stride"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "8F4A4991AE6D27024F3BEDAF8B21A5FA024F92E6E1D88487CB621A1C0E38B826",
+      "sourceSha256": "96200BFAE10361CB8B84F6D14BD4BAC4B27C0A2FE455979BE4E82B8C10474F49"
+    },
+    "label": "separate-bank-flat-row-full-loop-frontier",
+    "observedEffect": "Untouched pinned cc1/GAS emits PURE_C360 bytes/90 instructions/frame0. Focused raw relocation-masked comparison has eight differences, all within first0x24 bytes; every later required word agrees, including unit in a0, candidate in a1, row-add order, both float-distance paths and full exception/selection/backedge/return bodies. Normal watch40321EE890306BC8D272851A64D5432989281DEDAA6AC15EA3AAFA2845B01017 reports compiled PURE_C, score95.46,14 symbolic instruction differences/37 bytes with zero actual-only/expected-only instructions; these broader symbolic figures include unresolved relocation expression differences and are not linked acceptance. GoldOx497 independently explains the previous shared-address local-byte conflict and input copy. Root reproduces eight prologue differences, not the advisers four. Shared-anchor byte-view, pointer-index/add-order and volatile selector/byte-compare controls retain364/frame0 and the copy; separate volatile selector leaves360/eight and is not selected.",
+    "parentCandidateId": "C793512024E8CE76874EB1F520485E216F1E3B9A1A443543AE1348CBD970552E",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_00127D30.s",
+        "sha256": "FAFDC1E597AE11D455A03A84B1C65FAB603BE5A3C4628CEF7B7147117C3BAB2C"
+      },
+      {
+        "path": "docs/dossiers/func_00127D30-c793512024.md",
+        "sha256": "D29B50C39365C0FCB13426C847F3615D5BF1E9F6665F6E29350ED31AF52846D5"
+      },
+      {
+        "path": "src/lib/func_00127EAC.c",
+        "sha256": "CCE664F619BB34623DF1C70458905221DBBA73B2579E74BE864FFF067037DFC0"
+      },
+      {
+        "path": "docs/WORKFLOW.md",
+        "sha256": "0ACD259116DEC62C74C01CC49291B8A4377734FCD49281BBDD9FC5D7455598EA"
+      }
+    ],
+    "relatedCandidateIds": [
+      "B212BFAA4472EE87ECC2470B5EA18A54C132D5A50AAF9E3F5E5C2FC754914E82"
+    ],
+    "remainingFailure": "The prologue bank-address dependency, placement/order and eight raw words remain nonexact. No canonical activation, linked-byte claim, full-ROM proof, semantic column/capacity claim, tool defect or HYBRID fallback. Preserve the364-byte source as the causal predecessor; continue unaffected AD0 work while retaining all thirteen wave members.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Separate the D_800E7AC3 byte load from the integer bank-address expression &D_800E7AC3-0x33. Express the known64-byte row stride through a flat u16 pointer advanced by unit+0x70 shifted five, then apply the byte column separately. This avoids inventing a32-column runtime domain or pointer-bank capacity. Keep the complete late-initialized, single-loaded-index loop and list-position return from the preceding364-byte source."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 2215,
+      "sha256": "8F4A4991AE6D27024F3BEDAF8B21A5FA024F92E6E1D88487CB621A1C0E38B826"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "96200BFAE10361CB8B84F6D14BD4BAC4B27C0A2FE455979BE4E82B8C10474F49"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-30-func_00127D30-40321ee890.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

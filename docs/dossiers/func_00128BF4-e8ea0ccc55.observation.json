@@ -1,0 +1,100 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "E8EA0CCC5578E9CEB1002703221ED09D2D1FB8DA5521C003DFD914671524EB25",
+  "observationId": "CD87137CEFDDBB986A7FDEB91B7A88F878DF61753F92E2A6583339DB3E2DA23B",
+  "symbol": "func_00128BF4",
+  "authored": {
+    "context": "MagentaTiger sole source/build owner on main2eda4e81; complete thirteen-member pursuit group remains open. Current accepted p2395 owner and empty initial intake were reconciled against all73 original words before independently deriving C.",
+    "effects": [
+      "body-coverage",
+      "word-interface",
+      "snapshot-lifetime",
+      "repeated-target-loads",
+      "register-allocation",
+      "counterexamples"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "F92706AA3CD128CA1B04A8F9392B0A3B1C953DB799BD5C372DDE31C1174D6DF2",
+      "sourceSha256": "2AD6653AC64A665AFBADAB91107CB2BDBAEF5BE6C673C5BE3D385FAA1E610495"
+    },
+    "label": "word-mode-complete-register-swap",
+    "observedEffect": "Untouched pinned cc1/GAS mechanically PURE_C emits292 bytes/73 instructions/frame56, vars24 and four saved GPRs. All instructions, stack offsets, float copies, widths, signs, control branches and four target reloads agree except seven aligned relocation-masked register-field words: index is saved in s2 and mode in s1 instead of retail index s1/mode s2. Register keywords, a simple index copy, later mode copies, unsigned-word mode, direct snapshot assignments, compound masks and equivalent goto guards do not close this residual. An entry mode copy adds a saved register, grows to304 bytes/frame64 and is not selected.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_00128BF4.s",
+        "sha256": "43E717156F5F8F6A2AE9833E47D19AE244C98E24ABB03632CD414D9368E3DD2D"
+      },
+      {
+        "path": "src/lib/func_00105CC0.c",
+        "sha256": "D3F6DBDAF9EEC6492556346FFD5980A685689E9491410B1A4C0FCBAB7C64A083"
+      },
+      {
+        "path": "src/lib/func_00128D50.c",
+        "sha256": "7193E0BDFC4A690572701745D7C386FA6156723A43836A88B68CBE54D21B941C"
+      },
+      {
+        "path": "docs/WORKFLOW.md",
+        "sha256": "0ACD259116DEC62C74C01CC49291B8A4377734FCD49281BBDD9FC5D7455598EA"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "This full-size source is a nonexact research source pair, not canonical linked acceptance or production-selected C. The genuine earlier-index-store control is being checked separately. All thirteen assigned pursuit members share the final full-ROM gate; no ABI byte narrowing, runtime-domain or capacity claim follows.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Derive the full word-sized (unit,index,mode) interface, initial flag/reset call, both mode==0 snapshots, all byte/word publications and masks, and the four deliberately repeated current-index/target-pointer reads. Keep the original s32 mode predicate for all word values rather than narrowing it from two observed literal callers. This first source places the genuine +0x84 target-index assignment after +0x91/+0x20/+0x24 publications."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 1835,
+      "sha256": "F92706AA3CD128CA1B04A8F9392B0A3B1C953DB799BD5C372DDE31C1174D6DF2"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "2AD6653AC64A665AFBADAB91107CB2BDBAEF5BE6C673C5BE3D385FAA1E610495"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-30-func_00128BF4-e8ea0ccc55.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

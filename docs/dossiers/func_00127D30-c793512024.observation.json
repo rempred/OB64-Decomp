@@ -1,0 +1,96 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "C793512024E8CE76874EB1F520485E216F1E3B9A1A443543AE1348CBD970552E",
+  "observationId": "4E81C84019E192D5D71BFDDA8CC89F0BB1B6AF6B49CD1F9E4DF822842E485EA4",
+  "symbol": "func_00127D30",
+  "authored": {
+    "context": "MagentaTiger sole source/build writer on main2eda4e81. Current p2385 logical/physical360-byte frameless body, initial empty intake and all90 original words were reconciled before reconstruction. The complete thirteen-member pursuit group remains open; original ASM is production for this target.",
+    "effects": [
+      "body-coverage",
+      "bank-address",
+      "single-list-load",
+      "initialization-lifetime",
+      "register-allocation",
+      "lookup-order"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "7B22B092F250B4D0D622F09CD4D2E1F3B180AD88B2D8B9CD733E30E01AF263C6",
+      "sourceSha256": "06C96F4BE9519E4A0C25D76C1AA018928F8A800A277FA519E7762B171537BB9E"
+    },
+    "label": "single-load-late-init-allocation-frontier",
+    "observedEffect": "Untouched pinned cc1/GAS emits PURE_C364 bytes/91 instructions/frame0, one instruction beyond the accepted360-byte owner. Normal watch C793512024E8CE76874EB1F520485E216F1E3B9A1A443543AE1348CBD970552E reports zero expected-only and one actual-only instruction, score23.53 with89 symbolic instruction differences/285 bytes; these are aligned diagnostic counts, not proof that only one opcode differs. Retained lreg: unit pseudo72 has20 refs/live76, candidate107 has10/live22; greg allocates107 before72, hard4/a0 versus hard5/a1, so entry copies incoming a0 to a1. Local initial-byte compare temp87 also occupies hard4. Original uses unit a0/candidate a1. Type/register/declaration/target-scope/guard/indexing controls remain neutral. Integer row-address control changes a separate add-order residual without closing allocation.",
+    "parentCandidateId": "B212BFAA4472EE87ECC2470B5EA18A54C132D5A50AAF9E3F5E5C2FC754914E82",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_00127D30.s",
+        "sha256": "FAFDC1E597AE11D455A03A84B1C65FAB603BE5A3C4628CEF7B7147117C3BAB2C"
+      },
+      {
+        "path": "src/lib/func_00127EAC.c",
+        "sha256": "CCE664F619BB34623DF1C70458905221DBBA73B2579E74BE864FFF067037DFC0"
+      },
+      {
+        "path": "docs/WORKFLOW.md",
+        "sha256": "0ACD259116DEC62C74C01CC49291B8A4377734FCD49281BBDD9FC5D7455598EA"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Nonexact complete-body research frontier, never production-activated or canonical-linked. The input/candidate allocation, early setup and row-add order remain source-level failures. GoldOx receives the concrete bounded question; no tooling defect, ownership contradiction, inherent-assembly finding or HYBRID fallback follows. Keep the complete thirteen-member pursuit wave open and continue unaffected work.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Initialize best=-1 and position=0 after initial distance setup. Carry a single loaded list index through the loop header/backedge and retain one four-byte pointer increment plus list-position increment on each continuing path. Keep all bank/lookup/float/exception operations. Do not change the pointer/word ABI or the original owners."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 2273,
+      "sha256": "7B22B092F250B4D0D622F09CD4D2E1F3B180AD88B2D8B9CD733E30E01AF263C6"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "06C96F4BE9519E4A0C25D76C1AA018928F8A800A277FA519E7762B171537BB9E"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-30-func_00127D30-c793512024.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
