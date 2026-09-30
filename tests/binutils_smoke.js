@@ -3,6 +3,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { verifyInputBufferShift } = require('./binutils_input_overlap');
 const {
   ROOT,
   ensureDir,
@@ -317,6 +318,7 @@ function main() {
   const checks = [
     verifyToolIdentities(config),
     ...verifyPrimitiveAssembly(config),
+    verifyInputBufferShift(config, path.join(SMOKE_ROOT, 'input-buffer-shift')),
     verifyLinkerAndBinaryLma(config),
     verifyFirstTrackedChunk(config),
     verifyProductionCutover(),

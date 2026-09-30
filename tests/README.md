@@ -34,11 +34,20 @@ node tests/func_002A0EF0_structure.js
 node tests/local_tools.js
 node tests/source_policy.js
 node tests/binutils_smoke.js
+node tests/gnu_binutils_pin_refresh.js
 node tests/word_asm_smoke.js
 node tests/matching_workbench.js
 node tests/compiler_text_functions.js
 node tests/func_002861C8_structure.js
 ```
+
+`tests/binutils_smoke.js` includes the generic KMC input-buffer overlap regression in
+`tests/binutils_input_overlap.js`: 256 filename/comment/line-ending variants retain the exact
+single/double multiply encodings, existing hazard NOP, and relocation; 32 malformed-register
+cases must reject. The former assembler fails this test. The pin-refresh suite uses isolated
+fixtures to check bounded dependent-hash updates, preserved unrelated configuration and formatting,
+idempotence, and rejection of stale/tampered/incomplete bundles or build records. It never changes
+the active contracts or runs a ROM build.
 
 `tests/matching_workbench.js` covers deterministic mismatch classes,
 collision-safe family grouping, exact target/context fixtures, store

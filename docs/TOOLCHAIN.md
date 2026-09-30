@@ -62,11 +62,28 @@ and rejects a nonempty work or bundle root.
 After a successful build, populate the ignored local root from the authenticated bundle. Do not
 commit tool binaries or generated compiler output.
 
+When approving a changed binary identity, first review the primary build manifest and reproduce
+the complete bundle in two distinct clean work/output roots. Refresh dependent pins from those
+authenticated bytes with:
+
+```powershell
+node tools/refresh_gnu_binutils_pins.js --bundle <first-bundle> --second-bundle <second-bundle>
+node tools/refresh_gnu_binutils_pins.js --bundle <first-bundle> --second-bundle <second-bundle> --write
+```
+
+The first command reports the proposed delta. The second updates only existing toolchain hash
+fields in the Phase 7 and matching-target contracts, preserving unrelated content. It checks both
+complete bundles and their build records against the reviewed primary manifest; it cannot approve
+a new executable identity. Build records are unsigned, so independent execution/review remains
+necessary. Use a stable source/build window and preserve backups: interrupted dependent-file writes
+may leave inconsistent pins that fail validation until refresh is rerun. Structural audit and
+independent review remain required before accepting the change.
+
 ## Patches and structural scope
 
 The source build carries one host-compatibility patch and three narrow, opt-in target patches:
 
-- modern MSYS2 host compilation compatibility;
+- modern MSYS2 host compilation compatibility and overlap-safe KMC input-buffer shifting;
 - one allocated output section per `PT_LOAD`, dynamically sized program-header storage, and exact
   output-section LMA mapping;
 - binary extraction in LMA order, required by fixed ROM loads and overlapping runtime overlays;
@@ -75,6 +92,19 @@ The source build carries one host-compatibility patch and three narrow, opt-in t
 Their paths, scopes, and hashes are in `config/gnu-binutils-2.6-build.json`. These patches preserve
 the already accepted placement model; they do not authorize new boundaries, overlays, segments,
 owners, or executable ranges.
+
+The KMC GAS reader inserts a hazard NOP by shifting instruction text forward five bytes. Its
+`bcopy` macro expands to `memcpy`, which is invalid for that overlapping shift and can corrupt
+operands depending on filename/comment length. The host/runtime patch uses `memmove` at that one
+site. Hazard detection, inserted NOPs, input instructions and production flags remain unchanged.
+The regression covers filename/comment offsets, LF/CRLF, single/double multiplies, exact encodings
+and relocations, and malformed registers. See the
+[recovery note](Plans/task-logs/astra-gnu-as-input-recovery-20260930.md) for acceptance evidence.
+
+The concluded `tools/matching_studies/allocator_source_probe.js` experiment remains bound to its
+historical pre-fix assembler and retained artifacts. It is not a production or routine-test entry
+point; its manual replay will reject the replacement assembler. A new experiment must establish
+successor evidence rather than change that historical pin alone.
 
 GNU ld 2.6 predates the modern `PHDRS` path used by the former linker. The production linker script
 therefore uses GNU 2.6 syntax, and the patched BFD backend emits and verifies one load segment per
@@ -177,6 +207,7 @@ Run the focused toolchain suite from the repository root:
 
 ```powershell
 node tests/binutils_smoke.js
+node tests/gnu_binutils_pin_refresh.js
 node tests/active_targets.js
 node tests/local_tools.js
 node tests/source_policy.js

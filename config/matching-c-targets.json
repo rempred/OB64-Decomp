@@ -5,7 +5,7 @@
     "manifest": "config/toolchain.json",
     "manifestSha256": "EC642F5AEB318853BE699010E3B2BB43F186EE13C9761B5DB4A668A1BE9D0015",
     "buildProvenance": "config/gnu-binutils-2.6-build.json",
-    "buildProvenanceSha256": "6B5C9B582F95B546E9AEDFD44A76E4F4D756AD0DF658D02EA96CCF503CEB1BD7"
+    "buildProvenanceSha256": "86299428600F428E032CC2219C1D26EEDD38FF0F436805B0E87FDE1D3EDF910F"
   },
   "targets": [
     { "symbol": "func_0012E9F4", "source": "src/lib/func_0012E9F4.c" },
