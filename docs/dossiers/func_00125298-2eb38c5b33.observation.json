@@ -1,0 +1,94 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "2EB38C5B33B57885F5454E96942C6DD792BFEDDEB88DB30FE2D3896A99C32A7E",
+  "observationId": "876E43525357B67DCA1BBFB99424A2D15F220CE5D50CF8C80CD9660FA263FE93",
+  "symbol": "func_00125298",
+  "authored": {
+    "context": "Receiving Sol MagentaTiger gpt-6.1-sol max, sole production source/build writer on mainaa082125. Complete twenty-member W5 remains open. Fresh empty curated intake, full456-byte/114-word/frame48 sole accepted owner reconciled against original instructions and current analysis hypotheses. Original five calls, two returns, ordered c.le.s comparison, repeated auxA0/3C reads, per-iteration dimension-product reloads and ignored helper result are present. No runtime/capacity claim or shared-tool change.",
+    "effects": [
+      "body-coverage",
+      "source-lifetime",
+      "compiler-observation",
+      "interface-evidence"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "7F0B2A13FE5574C9B2B535A25F6EAA53B822B2D2649E6FB3959A7E31EE0ED7D2",
+      "sourceSha256": "0506F71141F9ABC590B9DE9DF861E6DB3AF98BE159A757FBEF2CE9A55AD7468B"
+    },
+    "label": "direct-global-products-exact",
+    "observedEffect": "Untouched scratch456/114/frame48 haszero masked word differences. Focused canonical diff is PURE_C, decoded/raw linked bytes EXACT, expected target SHA7EF44208AF26F754A956F8AC920040E9D198F057FE748D7E5B4BD8C8EEADCBE4 and relocation MATCH. Initial hypothetical hypotf name failed the link; corrected actual SDK symbol and relocation record pass. This is provisional only; the combined twenty-member final verifier remains pending.",
+    "parentCandidateId": "A01BC7CCCDF19F2AC87CC376B65261E2B95AF298559802511623A07E567273F0",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_00125298.s",
+        "sha256": "575F70F8714553527968591FA5DE32D88EF91BDDF7A357CC49B7142028C257A4"
+      },
+      {
+        "path": "src/lib/hypotf.c",
+        "sha256": "EAE34C8B3C30DA41BDC98C7BABC83F9ACDE73EB2AECAABAE0E16FEA9B67059AB"
+      },
+      {
+        "path": "docs/Plans/task-logs/astra-movement-interface-review-20260930.md",
+        "sha256": "69671F555059EFE5C291B4B6FA69726B31BC7EEF40081A1B878A57B132A2338C"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Research-only C observation, not complete twenty-member wave acceptance. Original SDK/memory and callee interfaces remain protected; final full-ROM verifier has not run.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Use the two adjacent global words directly at allocation and each clear guard, letting the pinned loop optimizer produce separate allocation and clear-loop address lifetimes. Remove the unused local pointer and call the retained SDK function by its actual symbol func_0002CB80. Preserve buffer/auxiliary reloads, ordered <= comparison, all original calls and return behavior."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 2441,
+      "sha256": "7F0B2A13FE5574C9B2B535A25F6EAA53B822B2D2649E6FB3959A7E31EE0ED7D2"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "0506F71141F9ABC590B9DE9DF861E6DB3AF98BE159A757FBEF2CE9A55AD7468B"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-30-func_00125298-2eb38c5b33.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

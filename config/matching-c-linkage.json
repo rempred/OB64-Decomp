@@ -832,7 +832,8 @@
     { "name": "D_801F36D8", "address": "0x801F36D8" },
     { "name": "D_801F0DB4", "address": "0x801F0DB4" },
     { "name": "D_801F0DB0", "address": "0x801F0DB0" },
-    { "name": "D_801EE0A0", "address": "0x801EE0A0" }
+    { "name": "D_801EE0A0", "address": "0x801EE0A0" },
+    { "name": "D_801EE710", "address": "0x801EE710" }
   ],
   "targets": [
     {
@@ -40919,6 +40920,27 @@
       "symbol": "func_0011AB74",
       "expectedRelocations": [
         { "offset": "0x0000004C", "type": "R_MIPS_26", "symbol": "func_0011A9B8", "section": ".rel.text" }
+      ]
+    },
+    {
+      "symbol": "func_00125298",
+      "expectedRelocations": [
+        { "offset": "0x00000030", "type": "R_MIPS_26", "symbol": "resource_free", "section": ".rel.text" },
+        { "offset": "0x00000064", "type": "R_MIPS_26", "symbol": ".text", "section": ".rel.text" },
+        { "offset": "0x00000078", "type": "R_MIPS_HI16", "symbol": "D_801F0CB0", "section": ".rel.text" },
+        { "offset": "0x00000080", "type": "R_MIPS_LO16", "symbol": "D_801F0CB0", "section": ".rel.text" },
+        { "offset": "0x000000AC", "type": "R_MIPS_26", "symbol": "func_0002CB80", "section": ".rel.text" },
+        { "offset": "0x000000B4", "type": "R_MIPS_HI16", "symbol": "D_801F3A38", "section": ".rel.text" },
+        { "offset": "0x000000B8", "type": "R_MIPS_LO16", "symbol": "D_801F3A38", "section": ".rel.text" },
+        { "offset": "0x000000F0", "type": "R_MIPS_HI16", "symbol": "D_801F0DA8", "section": ".rel.text" },
+        { "offset": "0x000000F4", "type": "R_MIPS_LO16", "symbol": "D_801F0DA8", "section": ".rel.text" },
+        { "offset": "0x00000108", "type": "R_MIPS_26", "symbol": "resource_alloc", "section": ".rel.text" },
+        { "offset": "0x00000128", "type": "R_MIPS_HI16", "symbol": "D_801EE710", "section": ".rel.text" },
+        { "offset": "0x0000012C", "type": "R_MIPS_26", "symbol": "func_00023940", "section": ".rel.text" },
+        { "offset": "0x00000130", "type": "R_MIPS_LO16", "symbol": "D_801EE710", "section": ".rel.text" },
+        { "offset": "0x00000134", "type": "R_MIPS_26", "symbol": ".text", "section": ".rel.text" },
+        { "offset": "0x00000198", "type": "R_MIPS_26", "symbol": "func_801D0880", "section": ".rel.text" },
+        { "offset": "0x000001A0", "type": "R_MIPS_26", "symbol": ".text", "section": ".rel.text" }
       ]
     }
   ]

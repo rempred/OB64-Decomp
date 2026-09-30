@@ -1,0 +1,94 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "A01BC7CCCDF19F2AC87CC376B65261E2B95AF298559802511623A07E567273F0",
+  "observationId": "90EE747EA9EBFE105236899E77A8795CFEA8B6C8AA7BB2E15F9C7C92D4CC9124",
+  "symbol": "func_00125298",
+  "authored": {
+    "context": "Receiving Sol MagentaTiger gpt-6.1-sol max, sole production source/build writer on mainaa082125. Complete twenty-member W5 remains open. Fresh empty curated intake, full456-byte/114-word/frame48 sole accepted owner reconciled against original instructions and current analysis hypotheses. Original five calls, two returns, ordered c.le.s comparison, repeated auxA0/3C reads, per-iteration dimension-product reloads and ignored helper result are present. No runtime/capacity claim or shared-tool change.",
+    "effects": [
+      "body-coverage",
+      "source-lifetime",
+      "compiler-observation",
+      "interface-evidence"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "F633124A60CFFDD5F1E5DCE51A8F1631751AA1629FD81E13D4F3CDFF9A929E07",
+      "sourceSha256": "17E32F372430CDF4075936604D3BA87CE090C85064CAF49DC74C29311F8718BD"
+    },
+    "label": "post-distance-view-frontier",
+    "observedEffect": "Restores456/114/frame48 with15 masked raw differences. Two constant+4 loads, address initialization position, missing loop-local address copy and loop field registers remain nonexact. Struct/numeric/integer/prefix views are neutral; walking dimensions and mixed global/local phases regress. Authenticated GCC cse.c find_best_addr folds non-REG addresses before class lookup; labels reset known symbol equivalences, explaining the straight-line/loop difference without a cost-model defect.",
+    "parentCandidateId": "5C320F4733D21AD734F0DAB8C37B84389C3C0AAD6C12380191802E0F6DFCCA93",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_00125298.s",
+        "sha256": "575F70F8714553527968591FA5DE32D88EF91BDDF7A357CC49B7142028C257A4"
+      },
+      {
+        "path": "src/lib/hypotf.c",
+        "sha256": "EAE34C8B3C30DA41BDC98C7BABC83F9ACDE73EB2AECAABAE0E16FEA9B67059AB"
+      },
+      {
+        "path": "docs/Plans/task-logs/astra-movement-interface-review-20260930.md",
+        "sha256": "69671F555059EFE5C291B4B6FA69726B31BC7EEF40081A1B878A57B132A2338C"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Research-only C observation, not complete twenty-member wave acceptance. Original SDK/memory and callee interfaces remain protected; final full-ROM verifier has not run.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Initialize the local dimension address in the successful distance branch, before the existing-buffer test. Preserve all dimension-value reloads and control behavior."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 2495,
+      "sha256": "F633124A60CFFDD5F1E5DCE51A8F1631751AA1629FD81E13D4F3CDFF9A929E07"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "17E32F372430CDF4075936604D3BA87CE090C85064CAF49DC74C29311F8718BD"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-30-func_00125298-a01bc7cccd.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
