@@ -1,0 +1,86 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "909F76207A2648D8F0421C6A32127B355C3D7E11516E4FCB761A8C4F28064122",
+  "observationId": "E1957A58026F0AEFEFF4A6A2AAFA7C3840EB87497313764C80FC923D67FD9BE6",
+  "symbol": "func_00121F38",
+  "authored": {
+    "context": "Sole Sol production ownership on main. Full accepted121F38 owner and complete wake group120CF0/121724/121DA8/121F38/123458 remain unchanged. GoldOx mail464 identified by-value publication and per-point order; Sol independently replayed it from the ROM. Scoped/direct volatile forms are compiler-workaround diagnostics, not evidence of asynchronous state. Shared tooling, compiler, boundary, data owners and all activation gates remain unchanged.",
+    "effects": [
+      "publication-lifetimes",
+      "body-coverage",
+      "bound-reloads",
+      "compiler-tail-sharing"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "C1A43DB9C666A704C11DB6443D54762D25BE0A92A666A11DF176B110DFA57366",
+      "sourceSha256": "F0826D0D446DBEA95205DBF9AD9D46528C12AF00BB97425B0B481E5E2C469995"
+    },
+    "label": "wake-by-value-publication-control",
+    "observedEffect": "Pinned PURE_C diagnostic emits4756/1189/frame136 with regs8/6, all ten c.eq.s/five c.lt.d/eighteen calls/nine cleanup calls. Pre-call captures match retail. Nonvolatile inlined grid work reuses the four bounds for multiple points, removing36 bound reads and exposing longer shared conversion tails. Generated fixed-slot geometry addressing still needs reconciliation; this is a control, not a complete machine-code replacement.",
+    "parentCandidateId": "07C63D1E39B6BD969FC92DBC2D29778E5AA6BC823E00DCBF30A672687D3EFC98",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_00121F38.s",
+        "sha256": "64EEC410B9BBD243180EB3479BED875748AB9AA5AAEDC0DEA0ACF4587E9E56C9"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "121F38 and123458 remain ASM production/nonexact PURE_C research. The first3 wave members remain provisional canonical linked-exact. Preserve the complete five-target wave and run its one final verifier only after every member is ready. These observations neither select a worse trial as best nor eliminate the underlying lifetime structure.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Use separate count1/count2/count3 by-value publishers, storing each point before its packed-cell expression and retaining nine mode/count cases."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 16637,
+      "sha256": "C1A43DB9C666A704C11DB6443D54762D25BE0A92A666A11DF176B110DFA57366"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "F0826D0D446DBEA95205DBF9AD9D46528C12AF00BB97425B0B481E5E2C469995"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-30-func_00121F38-909f76207a.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

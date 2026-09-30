@@ -1,0 +1,85 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "F3B40D74A053F0F4A25EAB4101C22242C3C243C6FEEE48F6D8FEBEF8E272C76C",
+  "observationId": "E4F40682F2EFF4003C0D8379F2ED9BCDECF8303CD499E172378A8E4AA1E8D7B7",
+  "symbol": "func_00121F38",
+  "authored": {
+    "context": "Sole MagentaTiger source/build ownership on main. Accepted boundaries, compiler, shared tooling, data owners and the complete five-member wave120CF0/121724/121DA8/121F38/123458 are preserved. Bounds and point structs are compiler-supported typed views, not proofs of original declarations or runtime provenance.",
+    "effects": [
+      "typed-view",
+      "backup-indexing",
+      "body-coverage"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "60F89B8422D156F8FF1318E9F9AB688D2F61BA04C6E6A086FA6D82A5B94CD7E5",
+      "sourceSha256": "E32E37D68AB627FCEEA25A27C4DCA164E049991CB6729FD0A2EF3B55521D2011"
+    },
+    "label": "wake-typed-backup-index",
+    "observedEffect": "Pinned PURE_C diagnostic emits5408/frame136/regs7/6 versus corrected flat-pointer control5396. Typed point/member indexing retains all three count-minus-one decrements, original load displacements and base-add ordering. It matches1307/1352 normalized diagnostic words,54 aligned masked differences; first pointer and mode2/count2 store scheduling remain nonexact. All15 comparisons/18 calls/nine cleanup cases remain.",
+    "parentCandidateId": "07C63D1E39B6BD969FC92DBC2D29778E5AA6BC823E00DCBF30A672687D3EFC98",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_00121F38.s",
+        "sha256": "64EEC410B9BBD243180EB3479BED875748AB9AA5AAEDC0DEA0ACF4587E9E56C9"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Complete wake wave remains open pending123458 and its one combined final verifier. Four linked-exact production candidates are provisional; no full-ROM acceptance is inherited from the prior record/formation wave.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Use one nonvolatile16-byte bounds view and correct fixed callback/first-point nudge slots; express the final backup through a12-byte point array at owner+0x28 and cells at+0x58."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 24068,
+      "sha256": "60F89B8422D156F8FF1318E9F9AB688D2F61BA04C6E6A086FA6D82A5B94CD7E5"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "E32E37D68AB627FCEEA25A27C4DCA164E049991CB6729FD0A2EF3B55521D2011"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-30-func_00121F38-f3b40d74a0.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

@@ -1,0 +1,85 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "A0E9C5953C251735CE82481AA0B955DFF3776F665C2E323356A0B2FB8AE04EFD",
+  "observationId": "FA844BE1930872AE1D5EBFB45D089FF778A27C6795FFEBE9BCD63B2E93B8155E",
+  "symbol": "func_00121F38",
+  "authored": {
+    "context": "Sole MagentaTiger source/build ownership on main. Accepted boundaries, compiler, shared tooling, data owners and the complete five-member wave120CF0/121724/121DA8/121F38/123458 are preserved. Bounds and point structs are compiler-supported typed views, not proofs of original declarations or runtime provenance.",
+    "effects": [
+      "store-lifetimes",
+      "allocation",
+      "body-coverage"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "47794A63577C215FAD6D133A7BACAC1B33BDA2975355AEFE7B714D176BC5FE65",
+      "sourceSha256": "8158B91E20187071E9381A275156E188CE1D5EEB571E958F2EED9F1356615A9E"
+    },
+    "label": "wake-mode2-store-lifetime",
+    "observedEffect": "Pinned PURE_C diagnostic remains5408/frame136 but restores that complete reset/publication tail. Aligned masked differences decrease54 to35 and normalized matched words1307 to1317. Normal shared watchA0E9C5953C251735CE82481AA0B955DFF3776F665C2E323356A0B2FB8AE04EFD, before activation, reported symbolic-object97.73/290 differing symbolic instructions/602 bytes with no actual-only or expected-only instructions. Remaining diagnostic hunks are the count/height-pointer register swap and first stack-store folding. This control is not linked exact.",
+    "parentCandidateId": "F3B40D74A053F0F4A25EAB4101C22242C3C243C6FEEE48F6D8FEBEF8E272C76C",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_00121F38.s",
+        "sha256": "64EEC410B9BBD243180EB3479BED875748AB9AA5AAEDC0DEA0ACF4587E9E56C9"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Complete wake wave remains open pending123458 and its one combined final verifier. Four linked-exact production candidates are provisional; no full-ROM acceptance is inherited from the prior record/formation wave.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Move the mode2/count2 count store before its flag chain in C, preserving each observed operation and its value."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 24068,
+      "sha256": "47794A63577C215FAD6D133A7BACAC1B33BDA2975355AEFE7B714D176BC5FE65"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "8158B91E20187071E9381A275156E188CE1D5EEB571E958F2EED9F1356615A9E"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-30-func_00121F38-a0e9c5953c.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

@@ -1,0 +1,84 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "F740AC7D357E3B7D3EAA9491B731BFA2D2CCD15498615561225070DBE22EB803",
+  "observationId": "66032C69ED68383A4A221211D3753380AE6C3722633A6A38A7E9CF852C829D46",
+  "symbol": "func_00121F38",
+  "authored": {
+    "context": "Sole MagentaTiger source/build ownership on main. Accepted boundaries, compiler, shared tooling, data owners and the complete five-member wave120CF0/121724/121DA8/121F38/123458 are preserved. Bounds and point structs are compiler-supported typed views, not proofs of original declarations or runtime provenance.",
+    "effects": [
+      "body-coverage",
+      "slot-counterexample"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "509E81799E208C5442B1EE930F65563C674CFFC940C20FD62A14C04FAD309F9E",
+      "sourceSha256": "6CB7D605BC001A1524AA28231A8CA86496E9BFA31EEAE99026A614EF026CB2CC"
+    },
+    "label": "wake-f740-slot-counterexample",
+    "observedEffect": "ROM words contradict the prior claim that F740 had corrected fixed count-one nudge slots. The second/third count-one paths load/store the first staging point at SP+0x10/+0x18, while callback12EA80 outputs are fixed slots0/3/6. F740 instead used3/6 for the latter nudges and a counted callback destination; it was never activated. Its5436-byte/frame136 diagnostic is a compiler control with these coverage/slot defects, not a full equivalent body.",
+    "parentCandidateId": "E028D9D1C2310C1021C084D3B1BBC449E7C01C8DDAD08B97EB197517D63193E4",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_00121F38.s",
+        "sha256": "64EEC410B9BBD243180EB3479BED875748AB9AA5AAEDC0DEA0ACF4587E9E56C9"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Complete wake wave remains open pending123458 and its one combined final verifier. Four linked-exact production candidates are provisional; no full-ROM acceptance is inherited from the prior record/formation wave.",
+    "role": "counterexample",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Leave F740 source unchanged; supersede its earlier interpretation of count-one nudge and callback slots."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 24115,
+      "sha256": "509E81799E208C5442B1EE930F65563C674CFFC940C20FD62A14C04FAD309F9E"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "6CB7D605BC001A1524AA28231A8CA86496E9BFA31EEAE99026A614EF026CB2CC"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-30-func_00121F38-f740ac7d35.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

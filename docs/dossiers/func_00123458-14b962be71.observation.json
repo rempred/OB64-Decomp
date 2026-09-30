@@ -1,0 +1,85 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "14B962BE71F628D3A419FADA6631CFC5E2597F1C674C8AA6B479394F4E0348AE",
+  "observationId": "868B59CE7154B40AED24CAC46B8CEAA348315819D44F7657555FF6C55B720282",
+  "symbol": "func_00123458",
+  "authored": {
+    "context": "Sole MagentaTiger source/build ownership on main. Accepted boundaries, compiler, shared tooling, data owners and the complete five-member wave120CF0/121724/121DA8/121F38/123458 are preserved. Bounds and point structs are compiler-supported typed views, not proofs of original declarations or runtime provenance.",
+    "effects": [
+      "bound-load-order",
+      "event-pointer",
+      "rectangle-tail"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "FBCF68AD10C254655BF5A60101A9DE4CCD6AAC3F256567D55CA1479E0F1EC54A",
+      "sourceSha256": "2A1B5C64F17DCDBEF7279294D7DCA3DC441DE60B659A6CAF039EDE43870623A0"
+    },
+    "label": "wake-rectangle-preload-control",
+    "observedEffect": "Pinned PURE_C diagnostic924/frame24/231 words versus retail920/230; the persistent event pointer removes one independent address materialization from the932-byte first-destructive control, reaching928/232. Full bound preloads retain the observed load-before-branch topology and remove another instruction to924/231. The two FP producer allocations and table-offset liveness remain nonexact. All required event kinds and the sole edge-only call remain covered.",
+    "parentCandidateId": "33F265C2846CDC18C555B448288204D4819878F5A3F2E1CE4FD6E214A941565F",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_00123458.s",
+        "sha256": "B012FF2E6C61BD7209D10510A7F3D915BA93F1D02CA0F6CB39DCA53DA310C351"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Complete wake wave remains open pending123458 and its one combined final verifier. Four linked-exact production candidates are provisional; no full-ROM acceptance is inherited from the prior record/formation wave.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Starting from the separate-validity/first-destructive source, retain a pointer to the event bits and load both remaining rectangle bounds before the first comparison."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 4414,
+      "sha256": "FBCF68AD10C254655BF5A60101A9DE4CCD6AAC3F256567D55CA1479E0F1EC54A"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "2A1B5C64F17DCDBEF7279294D7DCA3DC441DE60B659A6CAF039EDE43870623A0"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-30-func_00123458-14b962be71.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

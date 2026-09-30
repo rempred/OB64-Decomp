@@ -1,0 +1,85 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "E51F8617A84996A53DDA9A43557776081F07ADD37EEC46741F1B0333E57D5B36",
+  "observationId": "E1BA297369D20690A81EC2FA4ABBBD18C8642311A471EFB449AE7B5A12205C51",
+  "symbol": "func_00123458",
+  "authored": {
+    "context": "Sole MagentaTiger source/build ownership on main. Accepted boundaries, compiler, shared tooling, data owners and the complete five-member wave120CF0/121724/121DA8/121F38/123458 are preserved. Bounds and point structs are compiler-supported typed views, not proofs of original declarations or runtime provenance.",
+    "effects": [
+      "offset-lifetimes",
+      "exact-extent-control",
+      "allocation"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "C2C9DB3ADE13717FDD6DCE77A0CAE735688D2E6C879E16A0DBE397C0B31F1621",
+      "sourceSha256": "29372E0CDAA4B0DB8A903C6318BADACBA7D498DEE6F2E241CF68CAA5D678F255"
+    },
+    "label": "wake-rectangle-offset-control",
+    "observedEffect": "Pinned PURE_C diagnostic920/230/frame24 reaches retail extent, but188 aligned masked words differ and normalized matching is140/230. The byte offset is v1 with a t0 copy and kind is a1 rather than retail a2/v1; the unit save/copy moves early, FP outputs/division delay slots differ. This is an exact-extent effect example, not selected best or production activation. Uniform bounds struct and inline axis/rectangle controls still overshare producers; ordinary source/ABI reconstruction remains open.",
+    "parentCandidateId": "14B962BE71F628D3A419FADA6631CFC5E2597F1C674C8AA6B479394F4E0348AE",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_00123458.s",
+        "sha256": "B012FF2E6C61BD7209D10510A7F3D915BA93F1D02CA0F6CB39DCA53DA310C351"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Complete wake wave remains open pending123458 and its one combined final verifier. Four linked-exact production candidates are provisional; no full-ROM acceptance is inherited from the prior record/formation wave.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Carry row-minus-one separately from its explicit ten-byte offset, addressing all six field aliases as byte arrays while retaining the first-destructive producer, preloaded bounds and event pointer."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 4392,
+      "sha256": "C2C9DB3ADE13717FDD6DCE77A0CAE735688D2E6C879E16A0DBE397C0B31F1621"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "29372E0CDAA4B0DB8A903C6318BADACBA7D498DEE6F2E241CF68CAA5D678F255"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-30-func_00123458-e51f8617a8.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

@@ -1,0 +1,86 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "E028D9D1C2310C1021C084D3B1BBC449E7C01C8DDAD08B97EB197517D63193E4",
+  "observationId": "427C678E7C44674B07159B599DA494ED8D3AEC915BFBCECFD8C1281B9E04D2B4",
+  "symbol": "func_00121F38",
+  "authored": {
+    "context": "Sole Sol production ownership on main. Full accepted121F38 owner and complete wake group120CF0/121724/121DA8/121F38/123458 remain unchanged. GoldOx mail464 identified by-value publication and per-point order; Sol independently replayed it from the ROM. Scoped/direct volatile forms are compiler-workaround diagnostics, not evidence of asynchronous state. Shared tooling, compiler, boundary, data owners and all activation gates remain unchanged.",
+    "effects": [
+      "publication-lifetimes",
+      "body-coverage",
+      "bound-reloads",
+      "compiler-tail-sharing"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "6C5B153133AC9A56BBA440FC943EFA3317C84D0B37E38C2E6033777678AEEE3B",
+      "sourceSha256": "0B7539E327F075E7CC0C77BD57F72A9762B14717D22A21E68D7C9C22CBEB1F88"
+    },
+    "label": "wake-scoped-bound-address-control",
+    "observedEffect": "Pinned PURE_C diagnostic emits5400/1350/frame136/regs7/6 and retains all fifteen comparisons/eighteen calls/nine cleanup cases. Every point reloads each bound, but address casts materialize four lui/addiu address registers per publisher and reuse their addresses. Count1 adds16 bytes and count3 saves16 relative to retail address construction. Count-one nudge slot spelling is still a generated control; do not transfer it as an exact body.",
+    "parentCandidateId": "909F76207A2648D8F0421C6A32127B355C3D7E11516E4FCB761A8C4F28064122",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_00121F38.s",
+        "sha256": "64EEC410B9BBD243180EB3479BED875748AB9AA5AAEDC0DEA0ACF4587E9E56C9"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "121F38 and123458 remain ASM production/nonexact PURE_C research. The first3 wave members remain provisional canonical linked-exact. Preserve the complete five-target wave and run its one final verifier only after every member is ready. These observations neither select a worse trial as best nor eliminate the underlying lifetime structure.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Restore counted current/predecessor destinations and fixed height-argument slots; specialize all nine publisher modes, use explicit nudge delta lifetimes, and take scoped volatile bound snapshots inside the grid helper."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 23657,
+      "sha256": "6C5B153133AC9A56BBA440FC943EFA3317C84D0B37E38C2E6033777678AEEE3B"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "0B7539E327F075E7CC0C77BD57F72A9762B14717D22A21E68D7C9C22CBEB1F88"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-30-func_00121F38-e028d9d1c2.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
