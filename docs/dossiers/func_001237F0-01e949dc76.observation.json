@@ -1,0 +1,102 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "01E949DC7610216553621263C36E01655EE76A4494266E2EDF8DA507B57740B7",
+  "observationId": "CC7C6BF1330A8163AF5E13C144AF69D5EB07F54810AA15D56BE3BA732C8A8052",
+  "symbol": "func_001237F0",
+  "authored": {
+    "context": "MagentaTiger sole production writer on main after4a700fc0. Accepted full p2368/.ob64.r2368 ROM1237F0..123E38, live801CF0B0..801CF6F8,1608 bytes/402 words/frame48. Second lifecycle group1237F0/12DA10/12DB2C/12A828/12F8C0 retains all five; other four are provisional linked-exact PURE_C. The first wake five remains separate and open on123458. Names and byte/stride views stay conservative; no runtime reachability is claimed.",
+    "effects": [
+      "body-coverage",
+      "late-sharing",
+      "allocation",
+      "linked-diff"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "1C47EC9A756F30AED6873C19087BAF80D7DE356B268DEBC4274AE7C1C86D606D",
+      "sourceSha256": "64BEBD4F76580AE2A4EE2F01BDA4F1FCB1E6E4A20964A82808F5D0279F57BA8D"
+    },
+    "label": "linked-exact-extent-control",
+    "observedEffect": "Pinned PURE_C has the exact1608/402 extent and48-byte frame, but eight physical evaluator sites and41 total calls rather than retail7/40. Paths remain mutually exclusive; physical call-site count is not a claim of an additional call on an execution path. The early canonical focused diff proves sole complete p2368 C ownership at accepted placement, with original fallback excluded, but reports131 linked instruction words/430 bytes different, first byte offset0x92, target SHA94804FE4820E85EAAB5D5FF25FE7550B22231D549FF2B6ED782689773252E9DC versus retail9BDE90C8E4312B68957EB7877D73D459437F2CB07F0C1885E1BDE56AD359CA4E. Candidate relocations were observed, no exact relocation contract was accepted. Temporary activation was restored byte-for-byte and original ASM remains production. This is the selected linked research best, not an accepted replacement.",
+    "parentCandidateId": "68F42F07F239BEACF8096C44ECB9F569939CBE7998AA4FD65245D11F620FB36D",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_001237F0.s",
+        "sha256": "2AF2AE9A346C4E4118368FB30BE56D688EB79FFF8189C0106D8981D0D24F82C2"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_00123458.s",
+        "sha256": "B012FF2E6C61BD7209D10510A7F3D915BA93F1D02CA0F6CB39DCA53DA310C351"
+      },
+      {
+        "path": "src/lib/func_0012E8EC.c",
+        "sha256": "51036F90F4D79F528B45EAE539D5ECCDBE2E54ABDBB1A09E33551F96901F3BF2"
+      },
+      {
+        "path": "docs/WORKFLOW.md",
+        "sha256": "0ACD259116DEC62C74C01CC49291B8A4377734FCD49281BBDD9FC5D7455598EA"
+      },
+      {
+        "path": "docs/Plans/sequential-family-scope.md",
+        "sha256": "53A5C993B1330797813762DC9D7591D6600A2C41C6683DABEBC0DAAA36DCD7A0"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "1237F0 remains nonexact ASM production; terminal control sharing and register allocation remain open. No completed-wave verifier or HYBRID fallback is claimed. Preserve these exact sources and current linked evidence before new experiments. No source-policy, compiler flag, boundary, table-owner or verification exception is supported.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Use repeated logical AND/OR terminal evaluation and wide byte-loaded fallback/result locals; retain the first shared final evaluator block with its negative gate form."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 7318,
+      "sha256": "1C47EC9A756F30AED6873C19087BAF80D7DE356B268DEBC4274AE7C1C86D606D"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "64BEBD4F76580AE2A4EE2F01BDA4F1FCB1E6E4A20964A82808F5D0279F57BA8D"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-30-func_001237F0-01e949dc76.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
