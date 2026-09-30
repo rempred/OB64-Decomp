@@ -1,0 +1,118 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "5FC2843C970E5950881B134DC37604BFE29502BD6DFF7D42C325FF761157AECB",
+  "observationId": "8565DCA7607349C86FC7EEB7F89831E0842CBB48D26FE932EA69DE25EB483F83",
+  "symbol": "func_0013AA40",
+  "authored": {
+    "context": "MagentaTiger on main d69ecb4c. Research all three documented terrain-policy helpers before the first complete W4 group1094BC/10ADB8/10A718/10A128/109C3C. This is conservative static interface research, not production conversion or accepted semantic naming. Each function has a unique complete accepted owner in overlay descriptor7; all original assembly and shared data owners remain active.",
+    "effects": [
+      "body-coverage",
+      "interface-characterization",
+      "ordered-flag-queries",
+      "shared-table-ownership"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "715DFC2605D044A02C4569004195D26A7741E65A5EF8ADB209D619FEE066A139",
+      "sourceSha256": "4231CEDA36759B8F94487B4FA2A209BA528DFDB556F3EB4B2D925ABCDA8651B8"
+    },
+    "label": "complete-ordered-flag-query-research",
+    "observedEffect": "The prepared complete stream authenticates against the accepted target SHA and every dispatch pointer equals the original tracked data word under overlay7. Bounded static instruction evaluation visits all580 words. The independent C control-flow model agrees on both Boolean output bytes and every ordered flag-query trace across150528 representative byte-class/independent-read-outcome paths, with at most7 reads on a path. The class partition includes every in-range selector, normalization values, and invalid representatives; guarded range/default inspection accounts for the remaining byte values. These are static source observations, not live traces. Pinned compiler mechanically classifies PURE_C and emits1460 bytes/frame32 versus retail2320/frame40; this deliberately shared readable query source is nonexact. All three helpers together use26 tables/337 four-byte pointers (A55810 including801F0660, AA4010, B3506) across accepted p2607-p2611, with cross-function sharing in p2607 and p2609. No active auxiliary C contract covers those owners.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_0013AA40.s",
+        "sha256": "C8B1DD5C920C94238EEA968AF78E122E82D111A53447BE791B388EE87999C2E7"
+      },
+      {
+        "path": "asm/original/rev0/lib/table_00144C58.s",
+        "sha256": "1CA9A5DF80BAD6EDB8BA4A84C98D791E944A09D8D90666925479ED66A2952892"
+      },
+      {
+        "path": "asm/original/rev0/lib/table_00144E58.s",
+        "sha256": "2B6A4B883A5CD1B31FE77587F545E2AF959EEC9424C06C0CD1452952B8F82EF5"
+      },
+      {
+        "path": "asm/original/rev0/lib/table_00145138.s",
+        "sha256": "36DDA31EA67384B3B73DB9E34C7139A09CA64BC2814B3D13009BAF8EAE517A77"
+      },
+      {
+        "path": "config/overlays/us_rev0.json",
+        "sha256": "AF454D26C8453ED2393731A4C19C4D23E655B0601BF102D9A3D55731101BFB9B"
+      },
+      {
+        "path": "src/lib/func_0005c110.c",
+        "sha256": "F12A31C458890DE03CCDAFEEC149C5E7F27E344AE5B4E47AB8105E907A05711B"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_0010A128.s",
+        "sha256": "843479EFA27DFE160DF3F9142F7F8C178106CF07FD99E6DA15AB8E8A9EFEB6A5"
+      },
+      {
+        "path": "docs/Plans/sequential-family-scope.md",
+        "sha256": "53A5C993B1330797813762DC9D7591D6600A2C41C6683DABEBC0DAAA36DCD7A0"
+      },
+      {
+        "path": "docs/WORKFLOW.md",
+        "sha256": "0ACD259116DEC62C74C01CC49291B8A4377734FCD49281BBDD9FC5D7455598EA"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "No linked-exact replacement, auxiliary ownership activation, full-ROM acceptance, runtime stage reachability, terrain identity, or original source declaration is established. All three remain ASM production. Any future production switch-table replacement requires a separate Director structural assignment, complete accepted-owner coverage, audit/review, and matching gates. The static interface research is available to preserve scheduler and supply-consumer dependencies; it does not close broader family semantics.",
+    "role": "pair-baseline",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Independently reconstruct every guarded nested byte switch and default path from accepted ROM instructions/table destinations. Keep ordered flag queries, including repeated reads, shared zero/one publication tails, and s32 input declarations with explicit byte views. first input byte0 becomes18. Query only accepted func0005c110, flag bank4-10, and write the first output byte before the second."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 9422,
+      "sha256": "715DFC2605D044A02C4569004195D26A7741E65A5EF8ADB209D619FEE066A139"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "4231CEDA36759B8F94487B4FA2A209BA528DFDB556F3EB4B2D925ABCDA8651B8"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-30-func_0013AA40-5fc2843c97.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
