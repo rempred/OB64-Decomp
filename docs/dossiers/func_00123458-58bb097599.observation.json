@@ -1,0 +1,97 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "58BB09759937BE4C993CF3C63C0C4DCF25CDE92AFBC69E6F1E421D70C719F44C",
+  "observationId": "2289B697B98C36EBC10ADA01D1F19BADCEAD8810DCA611D1D063D7F48E840A42",
+  "symbol": "func_00123458",
+  "authored": {
+    "context": "MagentaTiger sole production writer on main; complete five-member wake wave120CF0/121724/121DA8/121F38/123458 stays open. Four provisional linked-exact owners do not establish complete-wave acceptance. All compiler flags, owner rows and fallback ASM remain unchanged.",
+    "effects": [
+      "flag-lifetimes",
+      "allocation",
+      "negative-abi-control"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "5DCED9E32C3F061421DFFB7C30FB053485ECFEE828CFEAB566A5089D6AA2C5DC",
+      "sourceSha256": "638CA1806AF0A237326E4E70633B5070507CF1939F59CA48A098FDCBC2B5A3EE"
+    },
+    "label": "scoped-flag-frontier",
+    "observedEffect": "Pinned PURE_C diagnostic remains920/frame24/230 words and188 aligned relocation-masked differences; normalized diagnostic LCS increases140 to146 by restoring separate kind26/21 flag lifetimes. It is not linked exact and is an effect example, not a selected replacement. Byte/short promoted-index parameter controls emit924/frame24 and do not solve allocation; all seven observed direct callers use lbu values, which does not establish a narrowed ABI. The production interface remains unchanged. Bound scalar type changes and declaration reorders are neutral.",
+    "parentCandidateId": "E51F8617A84996A53DDA9A43557776081F07ADD37EEC46741F1B0333E57D5B36",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_00123458.s",
+        "sha256": "B012FF2E6C61BD7209D10510A7F3D915BA93F1D02CA0F6CB39DCA53DA310C351"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_001237F0.s",
+        "sha256": "2AF2AE9A346C4E4118368FB30BE56D688EB79FFF8189C0106D8981D0D24F82C2"
+      },
+      {
+        "path": "docs/WORKFLOW.md",
+        "sha256": "0ACD259116DEC62C74C01CC49291B8A4377734FCD49281BBDD9FC5D7455598EA"
+      },
+      {
+        "path": "docs/Plans/sequential-family-scope.md",
+        "sha256": "53A5C993B1330797813762DC9D7591D6600A2C41C6683DABEBC0DAAA36DCD7A0"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "123458 remains nonexact ASM production. No final verifier is run for this incomplete wave. Preserve baseline33F265C2846CDC18C555B448288204D4819878F5A3F2E1CE4FD6E214A941565F and the exact-extent control; continue the documented separate lifecycle group under unchanged interfaces.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Keep the existing explicit-offset/preloaded-bound source; scope each event flag word to its own kind26/21/22 arm."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 4436,
+      "sha256": "5DCED9E32C3F061421DFFB7C30FB053485ECFEE828CFEAB566A5089D6AA2C5DC"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "638CA1806AF0A237326E4E70633B5070507CF1939F59CA48A098FDCBC2B5A3EE"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-30-func_00123458-58bb097599.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

@@ -1,0 +1,92 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "DC5D1145F233119910B3DBE8610591AEF0878B7647F2961B1665D550F7C06D5E",
+  "observationId": "660D04236BB73FA2A2957F766D0C2226A46A218C58F5E991957A1145DF8D9737",
+  "symbol": "func_0012F8C0",
+  "authored": {
+    "context": "MagentaTiger sole production writer on main. Full accepted owner and empty curated intake were reconciled; stale ASM760-byte comment is superseded by its explicit interval and169 words,676 bytes. The complete group1237F0/12DA10/12DB2C/12A828/12F8C0 is retained. Numerical row/flag views are static compiler-compatible interfaces, not broader gameplay proof.",
+    "effects": [
+      "loop-invariants",
+      "body-coverage"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "60BFED0DE3C5D867B93F054E8A95F6C028CF95988C1B24061B6C0A65D4D0514B",
+      "sourceSha256": "53E5D30EB10BE4D883F9F6A56578A78119E696A178F1F6D548345488339C209F"
+    },
+    "label": "structured-clear-loop-control",
+    "observedEffect": "Pinned PURE_C first comparison has full169-instruction retail coverage but emits700/175/frame56/regs10 versus676/169/frame48/regs7. Loop dump reports39 real clear-loop instructions and hoists the flag masks; four saved mask values raise the frame and displace the table pointer. Numeric bit-fields and inline reset helpers are neutral controls, not remedies. All3 external calls,2 internal row-search jumps and both publication stores are represented.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_0012F8C0.s",
+        "sha256": "A9DA7F703A731B676FEF872E28425B11C4F4C3A174C0C5643FE5A0B179267432"
+      },
+      {
+        "path": "src/lib/func_0012E968.c",
+        "sha256": "595A644B903F2EBB8FE7A3B4064AC43C68CB3156E5541B3BAE33452026E06664"
+      },
+      {
+        "path": "docs/WORKFLOW.md",
+        "sha256": "0ACD259116DEC62C74C01CC49291B8A4377734FCD49281BBDD9FC5D7455598EA"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "The lifecycle group remains open until1237F0 is ready and its one combined final verifier passes. The earlier five-member wake group remains P4/R1. No structural, compiler, shared-tool or data-owner change occurred.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Independently derive the complete inline row search, four-slot count, reverse clear loop and two-byte publication tail with a structured do/while clear loop."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 3081,
+      "sha256": "60BFED0DE3C5D867B93F054E8A95F6C028CF95988C1B24061B6C0A65D4D0514B"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "53E5D30EB10BE4D883F9F6A56578A78119E696A178F1F6D548345488339C209F"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-30-func_0012F8C0-dc5d1145f2.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

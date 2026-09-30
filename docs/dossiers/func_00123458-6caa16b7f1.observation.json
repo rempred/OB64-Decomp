@@ -1,0 +1,98 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "6CAA16B7F11111DA7F2525349FC80E3F4CC582819C84A4B4646B378B2CFEE680",
+  "observationId": "6CC710001B2DC61BC39717CA16C3D6311548A5752456AD65532B3D8385CA8D8C",
+  "symbol": "func_00123458",
+  "authored": {
+    "context": "MagentaTiger sole production writer on main; complete five-member wake wave120CF0/121724/121DA8/121F38/123458 stays open. Four provisional linked-exact owners do not establish complete-wave acceptance. All compiler flags, owner rows and fallback ASM remain unchanged.",
+    "effects": [
+      "float-lifetimes",
+      "late-sharing",
+      "compiler-counterexample",
+      "body-coverage"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "6DD9C7C43EEADA2AD11D882D35B5AA4E3F5E7F57D86DDB57C7DA392C1727A9E9",
+      "sourceSha256": "495CE49B9FE8D94594958419D76D608297C284AF7664F4968FAEF3BE8F61B1C4"
+    },
+    "label": "local-coordinate-counterexample",
+    "observedEffect": "Pinned PURE_C diagnostic regresses extent920 to868/frame24/217 words, while normalized LCS rises140 to178. Z and scale now allocate to retail f4/f8, but X stays f2 and cast scratch is f0; late sharing merges the X arithmetic suffix too early. GCC2.7.2 fix_truncsfsi2 uses allocator SF scratch, not hard-coded f0. The local allocator excludes live inputs and selects legal even FP regs in ascending order; retail live X in f0 therefore explains its f2 scratch. Plain register declarations, explicit X min/max/span loads and most raw-X ordering controls collapse to this same object; aggregate and volatile-local controls add stack state/frame32, and span/max reuse may restore duplication but emits936 or868 with wrong allocation. These results reject the tested spellings, not the underlying two-producer structure. No supported tooling defect or inherent assembly conclusion is established. Static 801DD2B0 alias bodies do not consume incoming a1 before overwrite, so no second parameter was added; runtime overlay provenance remains unresolved.",
+    "parentCandidateId": "E51F8617A84996A53DDA9A43557776081F07ADD37EEC46741F1B0333E57D5B36",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_00123458.s",
+        "sha256": "B012FF2E6C61BD7209D10510A7F3D915BA93F1D02CA0F6CB39DCA53DA310C351"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_001237F0.s",
+        "sha256": "2AF2AE9A346C4E4118368FB30BE56D688EB79FFF8189C0106D8981D0D24F82C2"
+      },
+      {
+        "path": "docs/WORKFLOW.md",
+        "sha256": "0ACD259116DEC62C74C01CC49291B8A4377734FCD49281BBDD9FC5D7455598EA"
+      },
+      {
+        "path": "docs/Plans/sequential-family-scope.md",
+        "sha256": "53A5C993B1330797813762DC9D7591D6600A2C41C6683DABEBC0DAAA36DCD7A0"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "123458 remains nonexact ASM production. No final verifier is run for this incomplete wave. Preserve baseline33F265C2846CDC18C555B448288204D4819878F5A3F2E1CE4FD6E214A941565F and the exact-extent control; continue the documented separate lifecycle group under unchanged interfaces.",
+    "role": "counterexample",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Move scaled floats into each coordinate-producer block, cast them there, and retain the shared integer rectangle tail plus arm-local flag words."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 4545,
+      "sha256": "6DD9C7C43EEADA2AD11D882D35B5AA4E3F5E7F57D86DDB57C7DA392C1727A9E9"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "495CE49B9FE8D94594958419D76D608297C284AF7664F4968FAEF3BE8F61B1C4"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-30-func_00123458-6caa16b7f1.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

@@ -1,0 +1,93 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "BE7BA9E1D93F35156EEE7385DA54E8D1827FE49739FD1A87EB6352CBA0AB763E",
+  "observationId": "D560803883516827F476D215B125E98F785EE80F0DD6FD8385340505DB34E266",
+  "symbol": "func_0012DA10",
+  "authored": {
+    "context": "MagentaTiger sole production writer on main; second documented lifecycle group1237F0/12DA10/12DB2C/12A828/12F8C0 retains complete membership. Current intake has no curated observations; older m2c experiment model IDs are stale and do not establish current acceptance. Full original body and accepted sole owner were reconciled.",
+    "effects": [
+      "structured-join",
+      "table-path-order",
+      "body-coverage"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "C15F1A5A580EA1A12941F30BAD41E8EB9835F6C6BC20828010D82370F4480318",
+      "sourceSha256": "DFD2FF12225318C9411C08BAFAE4ABA50B19DCABD6F7409106199E71687B90A1"
+    },
+    "label": "direct-table-return-control",
+    "observedEffect": "Pinned PURE_C first comparison covers the full35-instruction/140-byte leaf with zero frame, but GCC reverses the two table paths, producing13 aligned relocation-masked differences. Three table addresses, both bounds tests and the complete return are represented.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_0012DA10.s",
+        "sha256": "53F7B763D67F3ED15DE7590BB136556BCD0263A14F3898AF454D099CD6B40851"
+      },
+      {
+        "path": "docs/WORKFLOW.md",
+        "sha256": "0ACD259116DEC62C74C01CC49291B8A4377734FCD49281BBDD9FC5D7455598EA"
+      },
+      {
+        "path": "docs/Plans/sequential-family-scope.md",
+        "sha256": "53A5C993B1330797813762DC9D7591D6600A2C41C6683DABEBC0DAAA36DCD7A0"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Lifecycle wave remains open; its one final verifier waits until all five assigned members are ready. Earlier wake group P4/R1 also stays open and current checkout has no inherited final-ROM proof.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Return directly from the low-source-index table arm, then return from the second table arm."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 584,
+      "sha256": "C15F1A5A580EA1A12941F30BAD41E8EB9835F6C6BC20828010D82370F4480318"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "DFD2FF12225318C9411C08BAFAE4ABA50B19DCABD6F7409106199E71687B90A1"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-30-func_0012DA10-be7ba9e1d9.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

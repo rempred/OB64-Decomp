@@ -1,0 +1,93 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "93199DE3C17D41EBA04AB14B7CA8CE74809118D7E83AF8CE20EC9E184B841863",
+  "observationId": "C7109D65EC7AF9E4D16F5C49D4599DC7EE7D0ADA160055C222B2ED48513AF20B",
+  "symbol": "func_0012F8C0",
+  "authored": {
+    "context": "MagentaTiger sole production writer on main. Full accepted owner and empty curated intake were reconciled; stale ASM760-byte comment is superseded by its explicit interval and169 words,676 bytes. The complete group1237F0/12DA10/12DB2C/12A828/12F8C0 is retained. Numerical row/flag views are static compiler-compatible interfaces, not broader gameplay proof.",
+    "effects": [
+      "canonical-linked-exact",
+      "body-coverage",
+      "compiler-workaround"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "7AFEE7873A5DFA253AD1E020D6ACEF4765824051688ECDE7BEBD609BA7F4AF07",
+      "sourceSha256": "2136F5990552778C76B1038488E94AB8A747DFA88A43DD166C8CD4960D569FC4"
+    },
+    "label": "readable-lifecycle-provisional-exact",
+    "observedEffect": "Canonical linked diff is PURE_C, complete676-byte sole C owner at accepted.r2439/live801DB180, zero fallback/fill, all25 actual reviewed relocation words exact and zero differing bytes/words, SHA-2565B5F85F3082BE65811A22608A80339F2D454826583A44ACD7EA5407315C505EA. Entire169-instruction body and original48-byte frame are preserved. Provisional within the unchanged five-member lifecycle group;1237F0 is still ASM and no final verifier has run.",
+    "parentCandidateId": "B07B88A18F821ECBE08591A89612EECD37D976A104F58911C3E0FE5867D3CE8A",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_0012F8C0.s",
+        "sha256": "A9DA7F703A731B676FEF872E28425B11C4F4C3A174C0C5643FE5A0B179267432"
+      },
+      {
+        "path": "src/lib/func_0012E968.c",
+        "sha256": "595A644B903F2EBB8FE7A3B4064AC43C68CB3156E5541B3BAE33452026E06664"
+      },
+      {
+        "path": "docs/WORKFLOW.md",
+        "sha256": "0ACD259116DEC62C74C01CC49291B8A4377734FCD49281BBDD9FC5D7455598EA"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "The lifecycle group remains open until1237F0 is ready and its one combined final verifier passes. The earlier five-member wake group remains P4/R1. No structural, compiler, shared-tool or data-owner change occurred.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Start the final counter after the query and before its pointers; retain the explicit clear-loop back edge, sentinel/table lifetimes and shared row publication view, then remove unused aliases and explain the compiler requirement locally."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 3226,
+      "sha256": "7AFEE7873A5DFA253AD1E020D6ACEF4765824051688ECDE7BEBD609BA7F4AF07"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "2136F5990552778C76B1038488E94AB8A747DFA88A43DD166C8CD4960D569FC4"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-30-func_0012F8C0-93199de3c1.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
