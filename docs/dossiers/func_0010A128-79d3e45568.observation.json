@@ -1,0 +1,90 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "79D3E455689E7E96F5C5668BDE1EF9FDD32FAC11D415F4EDFF7547425FC29433",
+  "observationId": "242EED95B60157CC3050DE851BC3B128BCC1C068BFFA1C754802BABDF24278BF",
+  "symbol": "func_0010A128",
+  "authored": {
+    "context": "MagentaTiger / receiving Sol gpt-6.1-sol max, sole production source/build writer on main b9d4c60e. Accepted generic assembler repair f4e23395; authenticated AS0589F2ADEC34E8BD99F550AF91B1D8868B71904D0D0F8117CA247DF899B8C938 and unchanged cc1. First W4 group remains the complete five-member1094BC/10ADB8/10A718/10A128/109C3C group. The separate complete thirteen-member pursuit group also remains open. No final verifier is authorized by an incomplete group.",
+    "effects": [
+      "body-coverage",
+      "source-lifetime",
+      "register-allocation",
+      "repaired-assembler-context"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "552D2510D23907DCB90099DBB5D890ADE95FC8FCE49EE1F25C46A59AE5F6F4B6",
+      "sourceSha256": "628EFE3C015BDC1B3CCAE8D7122F77BB7A2C63917411B4221BC1277569FD234D"
+    },
+    "label": "repaired-as-complete-scheduler-baseline",
+    "observedEffect": "Mechanically PURE_C. Untouched pinned cc1/repaired GAS emits1512 bytes/378 instructions/frame392, vars288 and ten-GPR/six-FPR saves, versus retail1520/380/frame392;293 aligned relocation-masked raw words differ. Historical scratch COP1 transformation emitted1504/376 and its raw assembler failed. The new assembler recovers two real hazard NOPs; all ten float gates, nine calls, reciprocal scan and51-word terminated list are covered.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_0010A128.s",
+        "sha256": "843479EFA27DFE160DF3F9142F7F8C178106CF07FD99E6DA15AB8E8A9EFEB6A5"
+      },
+      {
+        "path": "docs/WORKFLOW.md",
+        "sha256": "0ACD259116DEC62C74C01CC49291B8A4377734FCD49281BBDD9FC5D7455598EA"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Complete nonexact research baseline, original ASM retained. No current canonical linked relocation/owner proof or full-wave verifier. Raw and research-transformed metrics are distinct.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Reproduce the previously preserved complete scheduler source without altering its C expression or raw assembly. Historical8CDAF88F75 is a source precursor, not a formal same-target parent after the accepted AS identity change."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 7308,
+      "sha256": "552D2510D23907DCB90099DBB5D890ADE95FC8FCE49EE1F25C46A59AE5F6F4B6"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "628EFE3C015BDC1B3CCAE8D7122F77BB7A2C63917411B4221BC1277569FD234D"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-30-func_0010A128-79d3e45568.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

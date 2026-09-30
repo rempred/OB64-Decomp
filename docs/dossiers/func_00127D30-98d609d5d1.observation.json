@@ -1,0 +1,90 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "98D609D5D14719CAE3DB86AEFA448B68BECB53DE2836D88916461DB146D6168F",
+  "observationId": "02C6C5B561091EFAA04487E7C9061D802720B648B92D51CDAEE05102133E04BF",
+  "symbol": "func_00127D30",
+  "authored": {
+    "context": "MagentaTiger / receiving Sol gpt-6.1-sol max, sole production source/build writer on main b9d4c60e. Accepted generic assembler repair f4e23395; authenticated AS0589F2ADEC34E8BD99F550AF91B1D8868B71904D0D0F8117CA247DF899B8C938 and unchanged cc1. First W4 group remains the complete five-member1094BC/10ADB8/10A718/10A128/109C3C group. The separate complete thirteen-member pursuit group also remains open. No final verifier is authorized by an incomplete group.",
+    "effects": [
+      "body-coverage",
+      "source-lifetime",
+      "register-allocation",
+      "repaired-assembler-context"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "8F4A4991AE6D27024F3BEDAF8B21A5FA024F92E6E1D88487CB621A1C0E38B826",
+      "sourceSha256": "96200BFAE10361CB8B84F6D14BD4BAC4B27C0A2FE455979BE4E82B8C10474F49"
+    },
+    "label": "repaired-as-complete-loop-frontier",
+    "observedEffect": "Untouched repaired compiler/GAS emits360/90/frame0 with eight masked raw differences, all in offsets0x000..0x020; EVERY subsequent loop and return word agrees. Genuine shared byte/word lifetimes are neutral or worse; address compound-assignment controls emit364/frame0 or368/frame8. The updated-address forms therefore are not selected. GoldOx497 traced byte20 local allocation; no closing C form or tooling defect was established.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_00127D30.s",
+        "sha256": "FAFDC1E597AE11D455A03A84B1C65FAB603BE5A3C4628CEF7B7147117C3BAB2C"
+      },
+      {
+        "path": "docs/WORKFLOW.md",
+        "sha256": "0ACD259116DEC62C74C01CC49291B8A4377734FCD49281BBDD9FC5D7455598EA"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Original ASM production; nonexact prologue still prevents activation and full thirteen-member pursuit-wave acceptance. No bank capacity, row-column domain, ABI narrowing, fake reference or structural exception follows. Historical source proof is a prose precursor across the accepted AS identity change.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Reproduce the full frameless list-position source with a separate selector-bank anchor and explicit flat u16 row pointer. Preserve all float paths, special0x204/4 exception, full-width record fields, carried index and actual list-position return. No C-expression change from historical40321EE890 is needed for this new authenticated target context."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 2215,
+      "sha256": "8F4A4991AE6D27024F3BEDAF8B21A5FA024F92E6E1D88487CB621A1C0E38B826"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "96200BFAE10361CB8B84F6D14BD4BAC4B27C0A2FE455979BE4E82B8C10474F49"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-30-func_00127D30-98d609d5d1.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

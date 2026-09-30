@@ -1,0 +1,90 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "81BECBADCBC191C111592CBE72EC4054A1DB04965DF63CA7533519ED50B51080",
+  "observationId": "1567DBDEFE6D808D53433C526162406331D3916464695E81047E39DCC94DC874",
+  "symbol": "func_00109C3C",
+  "authored": {
+    "context": "MagentaTiger / receiving Sol gpt-6.1-sol max, sole production source/build writer on main b9d4c60e. Accepted generic assembler repair f4e23395; authenticated AS0589F2ADEC34E8BD99F550AF91B1D8868B71904D0D0F8117CA247DF899B8C938 and unchanged cc1. First W4 group remains the complete five-member1094BC/10ADB8/10A718/10A128/109C3C group. The separate complete thirteen-member pursuit group also remains open. No final verifier is authorized by an incomplete group.",
+    "effects": [
+      "body-coverage",
+      "source-lifetime",
+      "register-allocation",
+      "repaired-assembler-context"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "4294FD3F0984C34A379288C00A9A38004F2EFB3F6E1C08F60B5943027540F4E6",
+      "sourceSha256": "C52C36F3540C693F9A831F86E7626466BF81195EA3A1B743808CFD11EEFD81AD"
+    },
+    "label": "repaired-as-complete-consumer-frontier",
+    "observedEffect": "Untouched repaired compiler/GAS now emits1260 bytes/315 instructions with148 aligned masked raw differences, versus retail1260/315. Frame56/vars16 remains short of retail72. The old research scratch input omitted two hazard NOPs and measured1252 bytes. Named point snapshots and four named double bounds are neutral at1256/314/frame56 in the separate materialized-bound control; no missing required body is indicated by these frame/allocation differences.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_00109C3C.s",
+        "sha256": "049A333BAAEB87344C2E216680042C5C4B3A8493659887E2C4512755399EE406"
+      },
+      {
+        "path": "docs/WORKFLOW.md",
+        "sha256": "0ACD259116DEC62C74C01CC49291B8A4377734FCD49281BBDD9FC5D7455598EA"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Nonexact emitted source frontier, original ASM retained. First float allocation/scheduling, frame lifetimes and final point-bank address/coloring remain. No artificial padding, changed callback capacity, current canonical linked proof or complete five-member verifier.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Recompile the complete current at-use bounds source under the authenticated repaired assembler, retaining all record/query/publication/point paths, numeric masks, three-float callback and protected unresolved live interfaces. C expressions are unchanged from the historical32F6261DA9 source."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 6590,
+      "sha256": "4294FD3F0984C34A379288C00A9A38004F2EFB3F6E1C08F60B5943027540F4E6"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "C52C36F3540C693F9A831F86E7626466BF81195EA3A1B743808CFD11EEFD81AD"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-30-func_00109C3C-81becbadcb.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
