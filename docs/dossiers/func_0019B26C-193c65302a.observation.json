@@ -1,0 +1,84 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "193C65302A4BE8BBC9F24AB40C7A9DF43EA446D21F02C2ABC87980BBAC0A83F5",
+  "observationId": "7D5FD6658D5823DA5D6070B57829C361C03F70E043E02462F3EEB58AD7C0CBE7",
+  "symbol": "func_0019B26C",
+  "authored": {
+    "context": "Independent full-owner C for func_0019B26C with separate branch-local price variables and word-sized slot-clamp temporaries; preserved control before replacing the final in-place if caps.",
+    "effects": [
+      "quantity-cap-tail-shape",
+      "full-body-nonexact-extent"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "50CCA46EB3252B829ED9D4F8212399A5357A784DE00DDE4A3A491DB56AF8D6D7",
+      "sourceSha256": "E38E93FF710F36F307E8DFE1DC127C5677E9D21952AD005950926379A86196A6"
+    },
+    "label": "shop-quantity-in-place-cap-control",
+    "observedEffect": "Pinned scratch compiler/assembler diagnostics emit 584 bytes/146 instructions with the retail 32-byte frame. Both item-kind paths, all three calls and the shared return are present. Canonical diff for this source rejects section-shape drift. The value-producing ternary successor restores 600 bytes/150 instructions; this control demonstrates the tail-shape effect rather than a missing logical body.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_0019B26C.s",
+        "sha256": "FCC2DFF7BBDE33CAAD309B0F1D4D1386B1620B443C73F08BA6A213460E33C8C4"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Four-instruction short section cannot replace the accepted 600-byte owner; no linked-byte or complete-ROM acceptance is claimed for this control.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Use if (quantity * price > 99999) quantity = 99999 / price in both item-kind branches."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 1835,
+      "sha256": "50CCA46EB3252B829ED9D4F8212399A5357A784DE00DDE4A3A491DB56AF8D6D7"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "E38E93FF710F36F307E8DFE1DC127C5677E9D21952AD005950926379A86196A6"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-30-func_0019B26C-193c65302a.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

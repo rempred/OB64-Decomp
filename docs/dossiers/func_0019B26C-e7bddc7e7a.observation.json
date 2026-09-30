@@ -1,0 +1,89 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "E7BDDC7E7AEA6E4ED6103857CCD764C6E91A5C435F9265535CC4790D2BF9261B",
+  "observationId": "781AFDEEC012F329726CC8BCD699C27DF20DD16711DD305DAAD6FCE224E2D6BD",
+  "symbol": "func_0019B26C",
+  "authored": {
+    "context": "The full-owner in-place-cap control has branch-local prices, word-sized slot-clamp temporaries, 584-byte extent and the original frame. Original assembly and the func_0019A294 caller support u16 item ID, byte kind and byte quantity result.",
+    "effects": [
+      "quantity-cap-tail-shape",
+      "retail-owner-extent",
+      "exact-linked-candidate"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "6D63015C2AE08095B48AFAC8CF16B463D22FADF247740E6753CCCF55E686DC2C",
+      "sourceSha256": "870D9F7985A038FC3A6273CAF7343CD6CD01D7FDF41D1FAFDDE583185F3D4928"
+    },
+    "label": "shop-quantity-value-producing-cap",
+    "observedEffect": "Pinned compiler emits the full 600-byte/150-instruction owner and 32-byte frame. The canonical focused diff reports PURE_C, exact decoded rows, zero differing linked words/bytes, sole .ob64.r3079 C contribution and zero fallback. All 22 actual object relocations have exact linked retail words and were recorded under the existing contract rules.",
+    "parentCandidateId": "193C65302A4BE8BBC9F24AB40C7A9DF43EA446D21F02C2ABC87980BBAC0A83F5",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_0019B26C.s",
+        "sha256": "FCC2DFF7BBDE33CAAD309B0F1D4D1386B1620B443C73F08BA6A213460E33C8C4"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_0019A294.s",
+        "sha256": "BA5BB95F0E19A1D6F14BDB14C8432BF3868BB811ED9EB5D687B150271E9A58D2"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "This provisional source still requires its recorded relocation-contract rerun and the combined final verifier for the unchanged three-member shop utility wave before matching-C acceptance.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Replace each final in-place cap with quantity = quantity * price > 99999 ? 99999 / price : quantity, retaining distinct branch-local price lifetimes and reload of the first table price after the slot call."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 1799,
+      "sha256": "6D63015C2AE08095B48AFAC8CF16B463D22FADF247740E6753CCCF55E686DC2C"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "870D9F7985A038FC3A6273CAF7343CD6CD01D7FDF41D1FAFDDE583185F3D4928"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-30-func_0019B26C-e7bddc7e7a.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

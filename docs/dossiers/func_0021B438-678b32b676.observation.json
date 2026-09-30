@@ -1,0 +1,85 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "678B32B676FE0591DDBA191B10193EFFB093DDBAE2E46C60C70812347C948BA7",
+  "observationId": "CDCE8FF138FEF5234DB7B87613F1720DECB4EEAD6CC012BD1293B19C005D7DE9",
+  "symbol": "func_0021B438",
+  "authored": {
+    "context": "Current C3902FE42E best has the complete 824-byte/206-instruction B438 body, 88-byte frame and two 60-entry tables. Its remaining saved-register cycles concern owner/other values and strongest-adjustment/cursor/slot. Current intake validates its preserved source.",
+    "effects": [
+      "owner-pointer-lifetime-change",
+      "owner-length-regressed",
+      "full-body-preserved"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "28C26A4069DDAB90A9AD26F6433903ECF34D91CCC63DAC1F25CEF1542042D58D",
+      "sourceSha256": "28C26A4069DDAB90A9AD26F6433903ECF34D91CCC63DAC1F25CEF1542042D58D"
+    },
+    "label": "typed-owner-slot-cursor-changes-lifetimes",
+    "observedEffect": "Mechanical PURE_C and direct pinned compiler/assembler diagnostics emit 828 bytes/207 instructions with the same 88-byte frame. The compiler keeps owner in s8 before the first flag test and spills the owner cursor to the stack, reversing the retail owner/cursor lifetime arrangement. Both-cursor typing has the same regression. Other-cursor-only typing and a register qualifier on strongest_adjustment retain the baseline 824-byte instruction words and 25 aligned relocation-masked differences. Diagnostic alignment of the 828-byte trial is broadly shifted and is not a linked score.",
+    "parentCandidateId": "C3902FE42E82E41B73C2B1FB52F807AE2CD2D39CD78956F1DCED7968BB0F3DE7",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_0021B438.s",
+        "sha256": "BAEA834349FFC67063547DAFE4677A65D716BF0DD9A6A856AD4B598855D41CC5"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "The 828-byte source cannot replace the accepted 824-byte owner and is not selected. C3902FE42E remains best; the result does not eliminate typed-cursor or loop-lifetime hypotheses in other source contexts. No production, table-ownership or complete W5 verifier change occurred. GoldOx received the specific allocator question in mail 454; no tooling defect is supported.",
+    "role": "counterexample",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Represent only owner_cursor as ActorSlot * with one actor pointer field and increment by one slot, replacing the equivalent two +2 byte increments; leave the inner cursor and all logical paths unchanged."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 6097,
+      "sha256": "28C26A4069DDAB90A9AD26F6433903ECF34D91CCC63DAC1F25CEF1542042D58D"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "28C26A4069DDAB90A9AD26F6433903ECF34D91CCC63DAC1F25CEF1542042D58D"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-30-func_0021B438-678b32b676.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
