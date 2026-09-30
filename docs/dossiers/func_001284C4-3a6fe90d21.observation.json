@@ -1,0 +1,91 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "3A6FE90D2144B469EC5A441C636F006513AAA22F92D8BDA0BAD81144ABEB7B0F",
+  "observationId": "8418DAB7CE0A432AD3C8DC7B320C37CA159DEF940BC30C7EC8B42B288542D2F2",
+  "symbol": "func_001284C4",
+  "authored": {
+    "context": "MagentaTiger sole production source/build writer on mainf4e23395, with ordinary provisional AD0/28050 source/config additions. Astra accepted the generic GNU AS repair after independent review and one structural audit; AS0589F2ADEC34E8BD99F550AF91B1D8868B71904D0D0F8117CA247DF899B8C938, unchanged authenticated cc1. The full thirteen-member pursuit wave remains open.",
+    "effects": [
+      "body-coverage",
+      "source-lifetime",
+      "register-allocation",
+      "native-section-extent",
+      "repaired-assembler-context"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "A8F961A11FA41AAF7892EC85AC9C6557B7D9EB91EBDE5B5A3DD13A81667C5179",
+      "sourceSha256": "6CA9C7C20979C69B1E5661259BA19DC07418E0B9FC17D34820C99E587F97AFA1"
+    },
+    "label": "layout-and-first-read-effect-example",
+    "observedEffect": "The nonvolatile layout control emits1188/frame56; its three changed first-bound words and one missing hazard NOP shift subsequent code. The isolated first-read control restores1192/298/frame56 and has eight raw differences, all0xB8..0xD4; the rest agrees after masks. It materializes a GPR address and still loads the bound in f0 after the multiply, so it does not close retail f4 allocation. A global volatile minimum alias grows1212; first-bound boolean grows1212; initial scalar minimum is neutral; reuse in first grid shrinks1184. No canonical activation or linked comparison followed.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_001284C4.s",
+        "sha256": "9C3465B0088F694048265A3F1154BC61C87BAE779787E2C1D34CFC533B92AB04"
+      },
+      {
+        "path": "docs/WORKFLOW.md",
+        "sha256": "0ACD259116DEC62C74C01CC49291B8A4377734FCD49281BBDD9FC5D7455598EA"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Effect example only, not selected readable best or accepted bank/column capacity. Initial scheduling/address register differences remain; semantic index domains stay unresolved and original ASM remains production.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Apply independently reconstructed GoldOx505 leads: separate first inside flag, else-arm coordinate zeros, layout-only pointer-bank12/pad3/selector view and2-D row-stride spellings. Mark only the first bound load through a volatile view to retain its address work. Leave the layout/domain inference explicit rather than treating it as runtime evidence."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 4425,
+      "sha256": "A8F961A11FA41AAF7892EC85AC9C6557B7D9EB91EBDE5B5A3DD13A81667C5179"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "6CA9C7C20979C69B1E5661259BA19DC07418E0B9FC17D34820C99E587F97AFA1"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-30-func_001284C4-3a6fe90d21.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

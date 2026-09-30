@@ -817,7 +817,13 @@
     { "name": "D_801EE630", "address": "0x801EE630" },
     { "name": "D_801953F4", "address": "0x801953F4" },
     { "name": "D_801974DE", "address": "0x801974DE" },
-    { "name": "D_801EACD0", "address": "0x801EACD0" }
+    { "name": "D_801EACD0", "address": "0x801EACD0" },
+    { "name": "D_801F3A38", "address": "0x801F3A38" },
+    { "name": "D_801EE808", "address": "0x801EE808" },
+    { "name": "func_801F6B64", "address": "0x801F6B64" },
+    { "name": "func_8009CFE0", "address": "0x8009CFE0" },
+    { "name": "D_801EE810", "address": "0x801EE810" },
+    { "name": "D_801EE818", "address": "0x801EE818" }
   ],
   "targets": [
     {
@@ -40745,6 +40751,44 @@
         { "offset": "0x000000C8", "type": "R_MIPS_HI16", "symbol": "D_800E7AB9", "section": ".rel.text" },
         { "offset": "0x000000CC", "type": "R_MIPS_LO16", "symbol": "D_800E7AB9", "section": ".rel.text" },
         { "offset": "0x000000D8", "type": "R_MIPS_26", "symbol": "func_000F315C", "section": ".rel.text" }
+      ]
+    },
+    {
+      "symbol": "func_00128AD0",
+      "expectedRelocations": [
+        { "offset": "0x00000018", "type": "R_MIPS_HI16", "symbol": "D_801F3A38", "section": ".rel.text" },
+        { "offset": "0x0000001C", "type": "R_MIPS_LO16", "symbol": "D_801F3A38", "section": ".rel.text" },
+        { "offset": "0x00000054", "type": "R_MIPS_26", "symbol": ".text", "section": ".rel.text" },
+        { "offset": "0x00000088", "type": "R_MIPS_HI16", "symbol": "D_801F0CB0", "section": ".rel.text" },
+        { "offset": "0x0000008C", "type": "R_MIPS_LO16", "symbol": "D_801F0CB0", "section": ".rel.text" }
+      ]
+    },
+    {
+      "symbol": "func_00128050",
+      "expectedRelocations": [
+        { "offset": "0x00000050", "type": "R_MIPS_HI16", "symbol": "D_801EE808", "section": ".rel.text" },
+        { "offset": "0x00000054", "type": "R_MIPS_LO16", "symbol": "D_801EE808", "section": ".rel.text" },
+        { "offset": "0x00000074", "type": "R_MIPS_HI16", "symbol": "D_801F0CB0", "section": ".rel.text" },
+        { "offset": "0x0000007C", "type": "R_MIPS_LO16", "symbol": "D_801F0CB0", "section": ".rel.text" },
+        { "offset": "0x00000094", "type": "R_MIPS_26", "symbol": "func_801F6B64", "section": ".rel.text" },
+        { "offset": "0x000000D0", "type": "R_MIPS_HI16", "symbol": "D_801F3A38", "section": ".rel.text" },
+        { "offset": "0x000000D4", "type": "R_MIPS_LO16", "symbol": "D_801F3A38", "section": ".rel.text" },
+        { "offset": "0x000000E4", "type": "R_MIPS_26", "symbol": ".text", "section": ".rel.text" },
+        { "offset": "0x000000EC", "type": "R_MIPS_HI16", "symbol": "D_801F3A38", "section": ".rel.text" },
+        { "offset": "0x000000F0", "type": "R_MIPS_LO16", "symbol": "D_801F3A38", "section": ".rel.text" },
+        { "offset": "0x00000158", "type": "R_MIPS_26", "symbol": ".text", "section": ".rel.text" },
+        { "offset": "0x0000017C", "type": "R_MIPS_26", "symbol": ".text", "section": ".rel.text" },
+        { "offset": "0x000001C4", "type": "R_MIPS_26", "symbol": ".text", "section": ".rel.text" },
+        { "offset": "0x000001D0", "type": "R_MIPS_26", "symbol": ".text", "section": ".rel.text" },
+        { "offset": "0x000001D8", "type": "R_MIPS_26", "symbol": "func_8009CFE0", "section": ".rel.text" },
+        { "offset": "0x000001E0", "type": "R_MIPS_HI16", "symbol": "D_801EE810", "section": ".rel.text" },
+        { "offset": "0x000001E4", "type": "R_MIPS_LO16", "symbol": "D_801EE810", "section": ".rel.text" },
+        { "offset": "0x00000260", "type": "R_MIPS_26", "symbol": ".text", "section": ".rel.text" },
+        { "offset": "0x000002A4", "type": "R_MIPS_26", "symbol": ".text", "section": ".rel.text" },
+        { "offset": "0x00000374", "type": "R_MIPS_HI16", "symbol": "D_801EE818", "section": ".rel.text" },
+        { "offset": "0x00000378", "type": "R_MIPS_LO16", "symbol": "D_801EE818", "section": ".rel.text" },
+        { "offset": "0x000003A4", "type": "R_MIPS_26", "symbol": ".text", "section": ".rel.text" },
+        { "offset": "0x0000043C", "type": "R_MIPS_26", "symbol": ".text", "section": ".rel.text" }
       ]
     }
   ]

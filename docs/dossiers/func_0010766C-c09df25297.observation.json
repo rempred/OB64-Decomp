@@ -1,0 +1,91 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "C09DF25297C82A0C40AFFA526C1351BE3D45326F5E0EDF90F5C050BAC8F37CA5",
+  "observationId": "4F8F44FD2FD7A85AAAC3A3DA0AB7834FFF7A4ECEC0FD76D0C7018A031144D8D3",
+  "symbol": "func_0010766C",
+  "authored": {
+    "context": "MagentaTiger sole production source/build writer on mainf4e23395, with ordinary provisional AD0/28050 source/config additions. Astra accepted the generic GNU AS repair after independent review and one structural audit; AS0589F2ADEC34E8BD99F550AF91B1D8868B71904D0D0F8117CA247DF899B8C938, unchanged authenticated cc1. The full thirteen-member pursuit wave remains open.",
+    "effects": [
+      "body-coverage",
+      "source-lifetime",
+      "register-allocation",
+      "native-section-extent",
+      "repaired-assembler-context"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "1B6C840FA91F0228AAB5EAC2863D66EC5B1EF6CF20FC3FE4522B1AC9AC92521C",
+      "sourceSha256": "C82631CBC67A123295ECEDCC3323D77B2276659B1D9D0ADFA491066C2C5C6E49"
+    },
+    "label": "full-executable-separate-pointer-control",
+    "observedEffect": "Untouched repaired compiler/GAS emits476 executable bytes/119 instructions/frame24; five masked register words differ only at the final selected-target load/uses. Full original owner is484/121 words including two trailing alignment zeros. Normal watchC09DF25297C82A0C40AFFA526C1351BE3D45326F5E0EDF90F5C050BAC8F37CA5:12 symbolic differences/29 bytes, two expected-only instructions. All required executable bodies are covered.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_0010766C.s",
+        "sha256": "9F95149A051F7DA59C698A3977FB1FF4B154C859824FC9B139DC6F24C74C0554"
+      },
+      {
+        "path": "docs/WORKFLOW.md",
+        "sha256": "0ACD259116DEC62C74C01CC49291B8A4377734FCD49281BBDD9FC5D7455598EA"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Nonexact source-pair control, original ASM retained. Selected-pointer allocation and complete producer/tail coverage remain unresolved; no activation or ownership exception.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Derive the complete nearest-index scan with506.25f threshold,0x11 mask, full-width IDs, both ordered normalization loops and8-way quantized comparison; publish+0x1C andflag2 only on a difference. Use separate block-local target pointers for scan and selected target. Three direct calls in accepted105CC0 use no return value; its M2C_UNK declaration remains unchanged."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 1897,
+      "sha256": "1B6C840FA91F0228AAB5EAC2863D66EC5B1EF6CF20FC3FE4522B1AC9AC92521C"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "C82631CBC67A123295ECEDCC3323D77B2276659B1D9D0ADFA491066C2C5C6E49"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-30-func_0010766C-c09df25297.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

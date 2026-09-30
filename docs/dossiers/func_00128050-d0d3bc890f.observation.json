@@ -1,0 +1,91 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "D0D3BC890FEA1D1907FD353326C62975A4A98403DD043F15EC32DC31972600F2",
+  "observationId": "258F673F8D3FA2287B34A339E9EC97E835BB01AB16F54EFCDBF2D70E116B5FED",
+  "symbol": "func_00128050",
+  "authored": {
+    "context": "MagentaTiger sole production source/build writer on mainf4e23395, with ordinary provisional AD0/28050 source/config additions. Astra accepted the generic GNU AS repair after independent review and one structural audit; AS0589F2ADEC34E8BD99F550AF91B1D8868B71904D0D0F8117CA247DF899B8C938, unchanged authenticated cc1. The full thirteen-member pursuit wave remains open.",
+    "effects": [
+      "body-coverage",
+      "source-lifetime",
+      "register-allocation",
+      "native-section-extent",
+      "repaired-assembler-context"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "E84EFC3982D0FDF7A390DCF3FC1F7B2E08EB0A4194D1FF20A2B619BE8534300C",
+      "sourceSha256": "C07DBD90D1C045A6BD05390C0D557E70431CA250C0F470AA396A63CBDB0CF0BA"
+    },
+    "label": "complete-float-body-null-return-control",
+    "observedEffect": "Repaired untouched raw cc1/GAS emits1144 bytes/286 instructions/frame72 against1140/285 retail, with251 aligned masked differences. Normal research watchD0D3BC890FEA1D1907FD353326C62975A4A98403DD043F15EC32DC31972600F2 uses the existing scratch compiler transformation and reports1140/246 symbolic words805 bytes; scratch and untouched assembler metrics are distinct. Required float bodies, including the unusual two dz additions in the filter, are represented.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_00128050.s",
+        "sha256": "C517C00B7A852D9EF244856A9FC519BE1CF41D45F11E011163A28FD2B86965B0"
+      },
+      {
+        "path": "docs/WORKFLOW.md",
+        "sha256": "0ACD259116DEC62C74C01CC49291B8A4377734FCD49281BBDD9FC5D7455598EA"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Nonexact source-pair predecessor; never activated. Broad null-path/count-lifetime layout differences remain and scratch comparison is not canonical acceptance.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Independently restore all float/filter/cardinal/atan/normalization/averaging bodies missing from the rough generator. Use the full-width list and numeric interfaces, but initialize count before the null-list check and return immediately on a null list."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 3825,
+      "sha256": "E84EFC3982D0FDF7A390DCF3FC1F7B2E08EB0A4194D1FF20A2B619BE8534300C"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "C07DBD90D1C045A6BD05390C0D557E70431CA250C0F470AA396A63CBDB0CF0BA"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-30-func_00128050-d0d3bc890f.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

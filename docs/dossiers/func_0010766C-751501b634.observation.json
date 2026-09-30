@@ -1,0 +1,91 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "751501B634D105908C31F95E4168C2CBD6E6CF956BEBCE3573095D5C56A26989",
+  "observationId": "6169165E35813CF2A31B7D2367793318262632F4C8D119A5F0C5DCED5E4F4C4D",
+  "symbol": "func_0010766C",
+  "authored": {
+    "context": "MagentaTiger sole production source/build writer on mainf4e23395, with ordinary provisional AD0/28050 source/config additions. Astra accepted the generic GNU AS repair after independent review and one structural audit; AS0589F2ADEC34E8BD99F550AF91B1D8868B71904D0D0F8117CA247DF899B8C938, unchanged authenticated cc1. The full thirteen-member pursuit wave remains open.",
+    "effects": [
+      "body-coverage",
+      "source-lifetime",
+      "register-allocation",
+      "native-section-extent",
+      "repaired-assembler-context"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "26CAC20521162280817F6D784408DDD2396E6A2DB2D1A90C3E24C785218D1B4A",
+      "sourceSha256": "AE294DA3187114334B8172436C60D273A38779513A1F2395476DEF1F08EE4BCD"
+    },
+    "label": "shared-pointer-executable-exact-owner-tail-open",
+    "observedEffect": "Untouched repaired compiler/GAS emits the complete476-byte/119-instruction executable body/frame24 with zero masked words. Raw native.text is480/alignment16, includes four native zeros, SHA A5A9F38ADE407EB02D835ADAFF083A7EDE9998DCE1EE1DA7D2B01E3B19000BA8. The actual research assigned section.ob64.r2236 is476/alignment4 with zero tail bytes, SHA81230DF8354FDDEE5E5F5C6500830B8F5756BCA448187CC49CA6219960F4C857. Thus raw native padding is distinct from current canonical representation: all eight accepted tail bytes remain unproduced by that assigned section. Normal watch751501B634D105908C31F95E4168C2CBD6E6CF956BEBCE3573095D5C56A26989 has only seven symbolic relocation words plus two expected-only tail instructions,23 bytes total.",
+    "parentCandidateId": "C09DF25297C82A0C40AFFA526C1351BE3D45326F5E0EDF90F5C050BAC8F37CA5",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_0010766C.s",
+        "sha256": "9F95149A051F7DA59C698A3977FB1FF4B154C859824FC9B139DC6F24C74C0554"
+      },
+      {
+        "path": "docs/WORKFLOW.md",
+        "sha256": "0ACD259116DEC62C74C01CC49291B8A4377734FCD49281BBDD9FC5D7455598EA"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Original ASM production, complete484-byte owner not covered. No canonical linked/full-ROM claim, fabricated padding, linker fill, neighbor authorization or supported tooling-defect finding. Retain the whole thirteen-member wave gate; any native producer investigation is a separate structural scope.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Reuse one genuine function-scope target pointer in the scan and final chosen-record path. Keep a C89 block around final float declarations after its assignment. This preserves the target pointer lifetime used in both retail paths without an artificial reference or ABI narrowing."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 1927,
+      "sha256": "26CAC20521162280817F6D784408DDD2396E6A2DB2D1A90C3E24C785218D1B4A"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "AE294DA3187114334B8172436C60D273A38779513A1F2395476DEF1F08EE4BCD"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-30-func_0010766C-751501b634.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
