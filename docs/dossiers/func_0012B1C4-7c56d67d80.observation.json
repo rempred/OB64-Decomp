@@ -1,0 +1,94 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "7C56D67D801ADF8E7B2CA07CB8405CF12B184F8A2A6DE5CD1A47636268BE10C2",
+  "observationId": "D47415089355DF0AB60B50B9804EF8947311B7D31BB39827349EA7CFA5C13DB3",
+  "symbol": "func_0012B1C4",
+  "authored": {
+    "context": "MagentaTiger / receiving Sol gpt-6.1-sol max, sole production source/build writer on main598f5e7b. Joe authorizes the full twenty-member W5 movement/routes scope, with the documented B1C4/D6FC and four-route-interface research gates preserved. Accepted generic assembler repairf4e23395; authenticated AS0589F2ADEC34E8BD99F550AF91B1D8868B71904D0D0F8117CA247DF899B8C938 and unchanged cc1. Current complete bodies are reconciled to accepted owners, including D6FC788 rather than its stale1072 header. Original ASM remains production; these are research observations, not completed-wave acceptance.",
+    "effects": [
+      "body-coverage",
+      "source-lifetime",
+      "register-allocation",
+      "interface-evidence"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "C39C8344EC5A0D5DA52C76F6E1029A7D5F75FECEE967B748DF2BB024B010B7FB",
+      "sourceSha256": "4D4D23F935025AB4CBB1591E9D89FF4D051FAA9125F2991621B14A31B3850A52"
+    },
+    "label": "complete-geometry-exact-instructions",
+    "observedEffect": "Untouched compiler/repaired GAS emits exactly636/159/frame64 with ZERO relocation-masked raw instruction-word differences. Both original calls and every required body are covered. Positive-loop-only control emits604/151 with24 differences; late step alone632/158; ordered counter guards alone616/154. Their combined readable source restores retail instructions. Mechanical PURE_C is confirmed by the probe; numeric relocation operands still require canonical linked proof.",
+    "parentCandidateId": "B19101DF73F3E402AD9337C5E9F7494CDF890545CD350D88E92EE435A56249A0",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_0012B1C4.s",
+        "sha256": "3FACE2B393F662EB94F1293B90D1A653614A2A2C911CE08EBEEA53079FBEA653"
+      },
+      {
+        "path": "docs/WORKFLOW.md",
+        "sha256": "0ACD259116DEC62C74C01CC49291B8A4377734FCD49281BBDD9FC5D7455598EA"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_0012BC64.s",
+        "sha256": "0F00C29D44857FDE1BD8B3E8F40210941A53A2F242DD7B8A04434845CE8E7C62"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Exact instruction research only, not matching C. Original ASM production and the movement-interface review gate remain until recorded closure; full twenty-member wave still open.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Cache only the positive normalization accumulator, keep the negative loop memory reloads, assign the genuine f32 step on both original paths before the counter test, and preserve the two ordered timer guards with a common interpolation label. This keeps retail separate signed guards rather than the compiler-folded unsigned range test."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 2799,
+      "sha256": "C39C8344EC5A0D5DA52C76F6E1029A7D5F75FECEE967B748DF2BB024B010B7FB"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "4D4D23F935025AB4CBB1591E9D89FF4D051FAA9125F2991621B14A31B3850A52"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-30-func_0012B1C4-7c56d67d80.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

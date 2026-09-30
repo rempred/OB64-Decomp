@@ -1,0 +1,94 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "2F7B79BA6F1B03ED24105ACA9BC2C7D03F08993023FB0E1F6F172FC11994D8B1",
+  "observationId": "060E23DE463DEB0631BF3FEA385BC5614A35652FD1E7A214D5E273355830DAB0",
+  "symbol": "func_0012D6FC",
+  "authored": {
+    "context": "MagentaTiger / receiving Sol gpt-6.1-sol max, sole production source/build writer on main598f5e7b. Joe authorizes the full twenty-member W5 movement/routes scope, with the documented B1C4/D6FC and four-route-interface research gates preserved. Accepted generic assembler repairf4e23395; authenticated AS0589F2ADEC34E8BD99F550AF91B1D8868B71904D0D0F8117CA247DF899B8C938 and unchanged cc1. Current complete bodies are reconciled to accepted owners, including D6FC788 rather than its stale1072 header. Original ASM remains production; these are research observations, not completed-wave acceptance.",
+    "effects": [
+      "body-coverage",
+      "source-lifetime",
+      "register-allocation",
+      "interface-evidence"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "C252CA984851E4A43CA7688ABF92C8F0B15B5D3E83B2BC518379B9E9D890A6AA",
+      "sourceSha256": "281229918E787901A2CE36179BEF41D2BEBDF5B659D572AC140966C207FD169E"
+    },
+    "label": "complete-auxiliary-one-addition-frontier",
+    "observedEffect": "Untouched compiler/repaired GAS emits788/197/frame40 with ONE aligned masked raw difference at0x164: retailaddu a1,a1,a0 versus candidateaddu a1,a0,a1. Shared auxiliary pointer restores the late move and full extent. u8 selector restores entry argument moves; field-lvalue assignment preserves the V0 publication store. Named anchor/pointer/signed-index/declaration/scope controls leave the last addition reversed. GoldOx515 identifies named-anchor CSE commutation, not a tool defect.",
+    "parentCandidateId": "93F69D038D6B9244491F53B9A24B7051BC2A3C9B99DDB5A4AD2435067B5A00F9",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_0012D6FC.s",
+        "sha256": "3E8D54A08787DAD5B9F5ECFB76FD146F4F74F4D0072C25061B3C2EE93DAB8A0A"
+      },
+      {
+        "path": "docs/WORKFLOW.md",
+        "sha256": "0ACD259116DEC62C74C01CC49291B8A4377734FCD49281BBDD9FC5D7455598EA"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_0012BC64.s",
+        "sha256": "0F00C29D44857FDE1BD8B3E8F40210941A53A2F242DD7B8A04434845CE8E7C62"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Nonexact effect frontier, original ASM production. The u8 interface reflects observed low-byte use rather than a capacity claim; numerical alias/addend and complete-wave linked gates remain.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Use the flat numeric auxiliary view, share its genuine pointer between the allocate and route-extraction paths, preserve success after failure cleanup, publish the original allocation result through the assignment expression, name the last width/height product, and express the selector as u8 with a separately widened row before shifting6. Complete body uses only the selector low byte and the direct caller loads it with lbu."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 5694,
+      "sha256": "C252CA984851E4A43CA7688ABF92C8F0B15B5D3E83B2BC518379B9E9D890A6AA"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "281229918E787901A2CE36179BEF41D2BEBDF5B659D572AC140966C207FD169E"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-30-func_0012D6FC-2f7b79ba6f.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

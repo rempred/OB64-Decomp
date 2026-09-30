@@ -1,0 +1,94 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "19B778F2113E9211E660F795E504F1A2CD8E7E928460CFED9F9F22B6F4274A2F",
+  "observationId": "F7FAD760E1A1539B46ED954F3B0316743FBC4B7A77323DBAD1038A23E651906E",
+  "symbol": "func_0012D6FC",
+  "authored": {
+    "context": "MagentaTiger / receiving Sol gpt-6.1-sol max, sole production source/build writer on main598f5e7b. Joe authorizes the full twenty-member W5 movement/routes scope, with the documented B1C4/D6FC and four-route-interface research gates preserved. Accepted generic assembler repairf4e23395; authenticated AS0589F2ADEC34E8BD99F550AF91B1D8868B71904D0D0F8117CA247DF899B8C938 and unchanged cc1. Current complete bodies are reconciled to accepted owners, including D6FC788 rather than its stale1072 header. Original ASM remains production; these are research observations, not completed-wave acceptance.",
+    "effects": [
+      "body-coverage",
+      "source-lifetime",
+      "register-allocation",
+      "interface-evidence"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "5F33ED1D401D18F954A6C234E9D48E751270699ECB0E4D059BBAC3FA99B5B8E8",
+      "sourceSha256": "87081DCEC5232238D6014DB1FC5DBDCC3848F281F81C885B3814CE56B0C95CDC"
+    },
+    "label": "complete-auxiliary-exact-instructions",
+    "observedEffect": "Independent untouched compiler/repaired GAS replay emits EXACT788 bytes/197 instructions/frame40 with ZERO relocation-masked raw word differences. Multiplication lets CSE materialize the symbolic bank+0x33 shared base, preservingaddu a1,a1,a0 and the original plain dereference after DB4 publication. Shift spelling has11 differences; signed-index and ignored-void-return controls with multiplication also emit identical instructions. Candidate remains mechanically PURE_C.",
+    "parentCandidateId": "FC1F7868075488778F84302AA6BE47237921AAC2344A759CA66DA3288E35886A",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_0012D6FC.s",
+        "sha256": "3E8D54A08787DAD5B9F5ECFB76FD146F4F74F4D0072C25061B3C2EE93DAB8A0A"
+      },
+      {
+        "path": "docs/WORKFLOW.md",
+        "sha256": "0ACD259116DEC62C74C01CC49291B8A4377734FCD49281BBDD9FC5D7455598EA"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_0012BC64.s",
+        "sha256": "0F00C29D44857FDE1BD8B3E8F40210941A53A2F242DD7B8A04434845CE8E7C62"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Exact instruction research only, original ASM remains production until the movement-interface gate is recorded and canonical linked ownership/placement/actual relocations prove exact target bytes. Full twenty-member movement wave remains open; no final verifier.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Retain the flat byte bank and multiply its nonnegative byte index by4 for the pointer-entry address. The four-byte scale and selector+0x33/base800E7A90 are directly evidenced by the original shared800E7AC3/-0x33 address calculation. Preserve all auxiliary lifetimes, publication/failure order, typed low-byte selector and untouched18-call body."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 5608,
+      "sha256": "5F33ED1D401D18F954A6C234E9D48E751270699ECB0E4D059BBAC3FA99B5B8E8"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "87081DCEC5232238D6014DB1FC5DBDCC3848F281F81C885B3814CE56B0C95CDC"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-30-func_0012D6FC-19b778f211.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

@@ -1,0 +1,94 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "93F69D038D6B9244491F53B9A24B7051BC2A3C9B99DDB5A4AD2435067B5A00F9",
+  "observationId": "87FCBD8E03C5F8D0516B738C61D9AE9F598DA421DB2A43F9C28F5D1A8D2A14BE",
+  "symbol": "func_0012D6FC",
+  "authored": {
+    "context": "MagentaTiger / receiving Sol gpt-6.1-sol max, sole production source/build writer on main598f5e7b. Joe authorizes the full twenty-member W5 movement/routes scope, with the documented B1C4/D6FC and four-route-interface research gates preserved. Accepted generic assembler repairf4e23395; authenticated AS0589F2ADEC34E8BD99F550AF91B1D8868B71904D0D0F8117CA247DF899B8C938 and unchanged cc1. Current complete bodies are reconciled to accepted owners, including D6FC788 rather than its stale1072 header. Original ASM remains production; these are research observations, not completed-wave acceptance.",
+    "effects": [
+      "body-coverage",
+      "source-lifetime",
+      "register-allocation",
+      "interface-evidence"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "72DEAE6579BDB521F867D9608AC4D1BE331EBEB75E7B3A448589B32D1589EF76",
+      "sourceSha256": "52A0E78D204FD249206D4CAA0EE0608DF5345D435616095F1D2E3D5468ED2911"
+    },
+    "label": "complete-auxiliary-typed-baseline",
+    "observedEffect": "Mechanically PURE_C; untouched compiler/GAS emits772 bytes/193 instructions/frame40 with142 aligned masked raw differences. The struct view lets GCC move dimension reads ahead of the retail initialization stores; current-pointer lifetime and cleanup/dispatch shape also differ. Full original197-word body coverage is checked, including publication despite a null allocation and all cleanup paths.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_0012D6FC.s",
+        "sha256": "3E8D54A08787DAD5B9F5ECFB76FD146F4F74F4D0072C25061B3C2EE93DAB8A0A"
+      },
+      {
+        "path": "docs/WORKFLOW.md",
+        "sha256": "0ACD259116DEC62C74C01CC49291B8A4377734FCD49281BBDD9FC5D7455598EA"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_0012BC64.s",
+        "sha256": "0F00C29D44857FDE1BD8B3E8F40210941A53A2F242DD7B8A04434845CE8E7C62"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Nonexact research baseline, original ASM production. Typed field names are numeric views, not semantic or capacity acceptance. Shared route interfaces and canonical relocation/owner gates remain.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Independently derive the complete64-byte auxiliary allocation, four subordinate allocation sizes, globals publication on allocation failure, four guarded failure frees plus root free, existing-state dispatch, route extraction and four unconditional completion frees. Preserve untouched34/38 record words and all original18 call sites after control merging."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 4432,
+      "sha256": "72DEAE6579BDB521F867D9608AC4D1BE331EBEB75E7B3A448589B32D1589EF76"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "52A0E78D204FD249206D4CAA0EE0608DF5345D435616095F1D2E3D5468ED2911"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-30-func_0012D6FC-93f69d038d.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
