@@ -1,0 +1,122 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "32F6261DA9A39B41359A4968CC8E83D3CC3FBBDD0B96502EF851ACA1664F1F1A",
+  "observationId": "D5109E8D26AA23526C91E549EDC79ED039AF40CA6161AF88AAC041D7C1193C66",
+  "symbol": "func_00109C3C",
+  "authored": {
+    "context": "MagentaTiger on main aa43acf2; complete first W4 group1094BC/10ADB8/10A718/10A128/109C3C. Fresh intakes were empty and all five accepted owners/full disassemblies were reconciled before derivation. Independent terrain-policy static research is preserved; current changes are source research only.",
+    "effects": [
+      "body-coverage",
+      "complete-wave-membership",
+      "compiler-shape",
+      "preserved-interface"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "42EC8E24329993F0D8986AFBD384D4802B0CCAE416D082F48D6DE6F9389E519D",
+      "sourceSha256": "574C4733169E43F6376C4C5FFED40CC9138CEE2A40E5597DE245905B13B239CA"
+    },
+    "label": "complete-record-and-point-scans",
+    "observedEffect": "Mechanically PURE_C; the existing workbench COP1 scratch allowance emits1252 bytes/313 words/frame56 versus retail1260/315/frame72, with296 aligned relocation-masked word differences. The first actual canonical focused diff assembled this input but rejected target section shape before linking; both temporary configuration files and source activation were restored exactly. A separate raw input with the same legal instructions rejects mul.d, extending the already supported byte-position-sensitive assembler reproduction. Positive/goto guard, direct-coordinate and inline-radius controls leave frame56. EA80 writes three float outputs; no wider output extent is inferred to pad the stack.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_00109C3C.s",
+        "sha256": "049A333BAAEB87344C2E216680042C5C4B3A8493659887E2C4512755399EE406"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_0012EA80.s",
+        "sha256": "9798E004BB5532421EBF4CC86DF6F32F09FEA6BEF4EC6E1EB0B66F45DADF3847"
+      },
+      {
+        "path": "src/lib/func_001960A8.c",
+        "sha256": "8F53D7CCC48131CB842683D65A65001A2DFDB242D634547BCE1242B843A31874"
+      },
+      {
+        "path": "asm/original/rev0/lib/table_00142858.s",
+        "sha256": "5ED972BA6A08F13F8407816A89634806A098AB4E76EDF45330A9A67EF14ED30B"
+      },
+      {
+        "path": "asm/original/rev0/lib/table_001428A8.s",
+        "sha256": "9D8ECEA8F9D25B071265106CD5B0CFE98CDEF148E928F63AEA97C944A3763207"
+      },
+      {
+        "path": "asm/original/rev0/lib/float_00142850.s",
+        "sha256": "93A4CA524DA1B76D7D35012FD1208212D4C3685587CDC535198E32256EE5F0E9"
+      },
+      {
+        "path": "config/overlays/us_rev0.json",
+        "sha256": "AF454D26C8453ED2393731A4C19C4D23E655B0601BF102D9A3D55731101BFB9B"
+      },
+      {
+        "path": "docs/Plans/sequential-family-scope.md",
+        "sha256": "53A5C993B1330797813762DC9D7591D6600A2C41C6683DABEBC0DAAA36DCD7A0"
+      },
+      {
+        "path": "docs/Plans/task-logs/combat-db10-allocation-trace-review-r1.md",
+        "sha256": "04119A344C0F5ADEA9CFBA832BD3AEC966749876121CD842DC967C7132341424"
+      },
+      {
+        "path": "docs/WORKFLOW.md",
+        "sha256": "0ACD259116DEC62C74C01CC49291B8A4377734FCD49281BBDD9FC5D7455598EA"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "The source is nonexact and ASM remains the production owner. No complete-wave verifier has run. Canonical ownership, complete producer extent including any originally owned padding, actual relocation contract, exact linked target bytes and full-ROM identity remain required. Original switch-table/constant/zero owners and unresolved live-edge semantics remain protected. Any future auxiliary table activation is a separate Director structural task with audit and independent review. The generic pinned-assembler defect has Sol/GoldOx agreement and was escalated to SilentCrane; existing scratch legalizers are not a production exception. No ABI narrowing, stronger behavioral claim, capacities, branch/worktree, compiler change or HYBRID fallback follows.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Independently recover both complete scans, all nine ordered float comparisons including the mixed double/float distance gate, all nine calls, field74/78/7C publication and terminal cleanup. Scope the two flags reads separately. Use actual unresolved DD244/DD2B0 edges without inferred extra arguments."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 6602,
+      "sha256": "42EC8E24329993F0D8986AFBD384D4802B0CCAE416D082F48D6DE6F9389E519D"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "574C4733169E43F6376C4C5FFED40CC9138CEE2A40E5597DE245905B13B239CA"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-30-func_00109C3C-32f6261da9.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
