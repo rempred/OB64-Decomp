@@ -1,0 +1,97 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "AA8A24ECA5FC9C3F310F38B4B5E7491716756EEB2019DE88E35FFE1CC3F45B89",
+  "observationId": "B1B06F62292F0FDA0BC274F3012338A2F6A9CAAABF7331E435B96DCF42F8F6B4",
+  "symbol": "func_00107D60",
+  "authored": {
+    "context": "MagentaTiger / receiving Sol gpt-6.1-sol max, sole production source/build writer on main cf0adca6. Full twenty-member W5 wave, existing static interface prerequisite closed at bea1f7f6. Complete216-byte owner and all54 original words reconciled, with fresh empty intake and current m2c/Kuna hypotheses checked against the full original body.",
+    "effects": [
+      "body-coverage",
+      "interface-evidence",
+      "compiler-observation"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "5EAEBEC3A05CFB14E1DF7ED74F948191B95F19495BFDE00636A62183207F16E8",
+      "sourceSha256": "FC226C56EC656C5A29C48F52F638E2C04B1893300A2F8096C49AEAEC3A6E37A4"
+    },
+    "label": "complete-route-list-exact-instructions",
+    "observedEffect": "Mechanically PURE_C. Untouched pinned compiler/repaired assembler emits216 bytes/54 instruction words/frame32 with ZERO relocation-masked differences on the first comparison. Both original calls, internal jumps, diagnostic self-loop, final predecessor load and normal pointer return are covered. Seven actual relocations require canonical linked checking.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_00107D60.s",
+        "sha256": "7198E949723AF6FA713C94E7D7A24EAA9502068CD6E6BA4F91DCE12D9D1D80A4"
+      },
+      {
+        "path": "asm/original/rev0/lib/rodata_001427E0.s",
+        "sha256": "90B6691ABB055EC3DE876879F50CFA298D38BAFEA446ABDCDBF2363D24E2CA7F"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_00023940.s",
+        "sha256": "E70E6982F9967462CD542A89D1A356DC30124FFBC3ADDB41E41D543ED6A93B1F"
+      },
+      {
+        "path": "docs/Plans/task-logs/astra-movement-interface-review-20260930.md",
+        "sha256": "69671F555059EFE5C291B4B6FA69726B31BC7EEF40081A1B878A57B132A2338C"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Exact instruction research only. Canonical sole ownership/placement/actual relocations and the complete twenty-member final verifier remain required. No new runtime behavior or error guard is claimed.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Independently derive the two endpoint paths, predecessor count loop, signed >=4096 diagnostic plus permanent self-loop, unchecked allocation of (count+1)*4, terminal -1 and complete backward fill. The original diagnostic string has one %d; its preserved second argument is the current predecessor. Keep the accepted numeric diagnostic function and resource_alloc interfaces."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 940,
+      "sha256": "5EAEBEC3A05CFB14E1DF7ED74F948191B95F19495BFDE00636A62183207F16E8"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "FC226C56EC656C5A29C48F52F638E2C04B1893300A2F8096C49AEAEC3A6E37A4"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-30-func_00107D60-aa8a24eca5.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

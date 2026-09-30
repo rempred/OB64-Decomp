@@ -1,0 +1,94 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "C373CAB785F07EA26E2E9DE60D65256E6E7A2B06D53393C5A32BBD10875FCD1F",
+  "observationId": "1E176CAA13FDB9668110FC79FF2ECCCD61E4CB3939A7AA20551BC94502E7DE63",
+  "symbol": "func_00106F34",
+  "authored": {
+    "context": "MagentaTiger / receiving Sol gpt-6.1-sol max, sole production source/build writer on main cf0adca6. Full twenty-member W5 movement wave; static interface prerequisite closed by Astra at bea1f7f6. Accepted compiler and repaired assembler unchanged. Complete accepted 448-byte owner reconciled against all original 112 words before tuning.",
+    "effects": [
+      "body-coverage",
+      "source-lifetime",
+      "register-allocation",
+      "compiler-observation"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "46C2CF72931B9D5E408FC06C148F3EFB1C1C49FB6A280BB2ED751EBD6A2D5234",
+      "sourceSha256": "9359FE6A296DDC7250F7303EB4202C5EF313A6464969FE8DD98A210CFAAA0FBE"
+    },
+    "label": "indexed-signed-end-exact-instructions",
+    "observedEffect": "Mechanical PURE_C. Untouched pinned compiler/repaired assembler emits all448 bytes/112 instruction words/frame0 with ZERO aligned relocation-masked differences. Count BIV elimination now uses the record-address GIV and original end bound. Entry-tested forms add code and register changes; the do form preserves the original unconditional first iteration and closes all six count differences.",
+    "parentCandidateId": "ABB5E0560408BD456B8ECE5993A9AECB94B0F98A1862153BFF095AAF37BE6325",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_00106F34.s",
+        "sha256": "ED785C253D036CE7AEDB1A76A107DA873C5BF86F643CAE805CB123BCED7A6DC4"
+      },
+      {
+        "path": "docs/WORKFLOW.md",
+        "sha256": "0ACD259116DEC62C74C01CC49291B8A4377734FCD49281BBDD9FC5D7455598EA"
+      },
+      {
+        "path": "docs/Plans/task-logs/astra-movement-interface-review-20260930.md",
+        "sha256": "69671F555059EFE5C291B4B6FA69726B31BC7EEF40081A1B878A57B132A2338C"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Research observation, not completed-wave acceptance. Canonical linked ownership, actual relocations, placement and full twenty-member final verification remain required. No capacity, runtime residency or reachability claim.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Retain indexed record views in a do loop and test the updated signed record address against signed unit+12, exactly preserving the original signed pointer end comparison. The original base and index are genuine loop operands; no synthetic memory use, volatile field or compiler escape is introduced."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 1610,
+      "sha256": "46C2CF72931B9D5E408FC06C148F3EFB1C1C49FB6A280BB2ED751EBD6A2D5234"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "9359FE6A296DDC7250F7303EB4202C5EF313A6464969FE8DD98A210CFAAA0FBE"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-30-func_00106F34-c373cab785.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

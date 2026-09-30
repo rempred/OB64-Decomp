@@ -1,0 +1,94 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "E8F8A2706F31F247FE2B13A0DEFD67927E4E77B6893CC2E6224BCEFFE11FEAF1",
+  "observationId": "792EB702992049DD2D662B79F61DB18B81F0028E686777A784BAD31A3D43DAFE",
+  "symbol": "func_001070F4",
+  "authored": {
+    "context": "MagentaTiger / receiving Sol gpt-6.1-sol max, sole production source/build writer on main cf0adca6. Full twenty-member W5 movement scope; static interface prerequisite closed at bea1f7f6. Full accepted452-byte leaf owner and all113 words reconciled, including one field at unit64, eight neighbor choices and original signed cursor end test. Untouched pinned compiler/repaired assembler; no scratch rewriting.",
+    "effects": [
+      "body-coverage",
+      "compiler-observation",
+      "source-lifetime",
+      "register-allocation"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "C57D57DAE94D7D62BDA1AC16EECE26A3CEBF506B6006492F2F25050457A89546",
+      "sourceSha256": "596ADD48F8CC89AAABC2777B4E15264F7B3B5603AACD3D4992744C4DE06F9223"
+    },
+    "label": "indexed-two-word-prologue-frontier",
+    "observedEffect": "Mechanical PURE_C; untouched output452/113/frame0 with TWO masked differences at0x10/0x14. Retail sets initial cursor t0=a0+12 before end t1=a0+16; compiler reverses those two independent instructions. Every later instruction matches. Loop dump hoists end at insn332 before reduced record-address GIV initialization338. Saved end controls add a third difference; integer/word-pointer/byte-offset/multiply and first-relative row controls are neutral. Current-cursor end control grows456. Specific source-level blocker sent to verified GoldOx; no tooling defect.",
+    "parentCandidateId": "E94C2C8E26E7B1EDA492DA90F11AD8311694439811590E1E859E7DAF7FDFED26",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_001070F4.s",
+        "sha256": "85940CD6A2316A0C9AD89F28CD137B25AAAFF6118952D7D94DDA53D47F2E90B2"
+      },
+      {
+        "path": "docs/WORKFLOW.md",
+        "sha256": "0ACD259116DEC62C74C01CC49291B8A4377734FCD49281BBDD9FC5D7455598EA"
+      },
+      {
+        "path": "docs/Plans/task-logs/astra-movement-interface-review-20260930.md",
+        "sha256": "69671F555059EFE5C291B4B6FA69726B31BC7EEF40081A1B878A57B132A2338C"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Original ASM remains production. Complete movement wave remains open without final verifier. No canonical linked replacement, capacity, runtime reachability or compiler defect claim.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Reuse independently verified indexed record-view mechanism from106F34, starting record index3 and preserving signed address end unit+16 in a do loop."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 1610,
+      "sha256": "C57D57DAE94D7D62BDA1AC16EECE26A3CEBF506B6006492F2F25050457A89546"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "596ADD48F8CC89AAABC2777B4E15264F7B3B5603AACD3D4992744C4DE06F9223"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-30-func_001070F4-e8f8a2706f.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

@@ -1,0 +1,94 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "E94C2C8E26E7B1EDA492DA90F11AD8311694439811590E1E859E7DAF7FDFED26",
+  "observationId": "C81B92FB1DA82784B38182C4186AC4EEF7F1FB3813125C0107A1052DCC335DFD",
+  "symbol": "func_001070F4",
+  "authored": {
+    "context": "MagentaTiger / receiving Sol gpt-6.1-sol max, sole production source/build writer on main cf0adca6. Full twenty-member W5 movement scope; static interface prerequisite closed at bea1f7f6. Full accepted452-byte leaf owner and all113 words reconciled, including one field at unit64, eight neighbor choices and original signed cursor end test. Untouched pinned compiler/repaired assembler; no scratch rewriting.",
+    "effects": [
+      "body-coverage",
+      "compiler-observation",
+      "source-lifetime",
+      "register-allocation"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "44858F3A7EDC27652D4D8F33549AE1C144D8641F3CACD27901A3914735E88F20",
+      "sourceSha256": "29D8A5C219E99B958320A83ED1DFA61E47230AA6D588688258B9A5F0BDAE1B95"
+    },
+    "label": "full-pointer-baseline",
+    "observedEffect": "Mechanical PURE_C; untouched output452/113/frame0 with four masked differences. GCC replaces the basic cursor with field-address GIV: cursor/end become unit+100/unit+104 and the field58 load/store become field0. All other instructions match.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_001070F4.s",
+        "sha256": "85940CD6A2316A0C9AD89F28CD137B25AAAFF6118952D7D94DDA53D47F2E90B2"
+      },
+      {
+        "path": "docs/WORKFLOW.md",
+        "sha256": "0ACD259116DEC62C74C01CC49291B8A4377734FCD49281BBDD9FC5D7455598EA"
+      },
+      {
+        "path": "docs/Plans/task-logs/astra-movement-interface-review-20260930.md",
+        "sha256": "69671F555059EFE5C291B4B6FA69726B31BC7EEF40081A1B878A57B132A2338C"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Original ASM remains production. Complete movement wave remains open without final verifier. No canonical linked replacement, capacity, runtime reachability or compiler defect claim.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Independently derive complete opaque-record pointer loop from unit+C to unit+10 with conditional field58 access, full word70 row selector and shared bank/row interface. Retain all eight original guards and first-matching neighbor priority."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 1536,
+      "sha256": "44858F3A7EDC27652D4D8F33549AE1C144D8641F3CACD27901A3914735E88F20"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "29D8A5C219E99B958320A83ED1DFA61E47230AA6D588688258B9A5F0BDAE1B95"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-30-func_001070F4-e94c2c8e26.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
