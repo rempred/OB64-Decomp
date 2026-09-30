@@ -1,0 +1,102 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "3942EBF479762CD34F6E2DAEE84DE932C092C8FB86AD7575A475CEE035F236BC",
+  "observationId": "C99528F072D80BC94BED7CDADEA668BC890A76E0C9529627A5155A9B0B9BB629",
+  "symbol": "func_00125F84",
+  "authored": {
+    "context": "MagentaTiger receiving Sol, gpt-6.1-sol max, sole production source/build writer on maindeaa5aa1. Twenty-member W5 remains open. Fresh empty intake and both authenticated m2c/Kuna hypotheses were checked against every original word. Accepted p2378 is2028 bytes/live801D1844..801D2030, comprising506 executable words plus one original alignment zero after the return delay. All29 original call sites and three FP equality compares are covered. Original ASM remains production; its owned tail is not silently removed or fabricated. Numeric64-byte auxiliary views reuse acceptedD6 interfaces; full-word selector is passed to25460 only in the existing-aux branch.",
+    "effects": [
+      "body-coverage",
+      "source-lifetime",
+      "compiler-observation",
+      "interface-evidence"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "FA8F906857763494046773D67A90C5233330EC2FE75E76CB7B4F1E19440B96E4",
+      "sourceSha256": "D4024EC907BD366022B25A8E61EE41E4887B250FB52D173C5092BF4FC7108BD8"
+    },
+    "label": "late-path-informative-regression",
+    "observedEffect": "2028 executable bytes/507words/frame56 with474 raw masked differences. This is an informative lifetime regression, not selected: an extra executable instruction does not establish production of the original zero tail. Entry ordered exits alone produce2020/505/490. The two controls do not disprove either source lifetime.",
+    "parentCandidateId": "42D6B3BBEA299001C26967BD7FAE2F9C1A28B747FC1970EB74AEBEC9198EDC34",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_00125F84.s",
+        "sha256": "45B10E883A8315F95446D5E845814EF9E606D064BE18575F94CCFE83B771A26A"
+      },
+      {
+        "path": "src/lib/func_0012D6FC.c",
+        "sha256": "E961C5B38E460DEDE4B3334C75BDB7198DC02DF6436934551B08776917085B31"
+      },
+      {
+        "path": "src/lib/func_00107D60.c",
+        "sha256": "FC226C56EC656C5A29C48F52F638E2C04B1893300A2F8096C49AEAEC3A6E37A4"
+      },
+      {
+        "path": "src/lib/func_00125298.c",
+        "sha256": "0506F71141F9ABC590B9DE9DF861E6DB3AF98BE159A757FBEF2CE9A55AD7468B"
+      },
+      {
+        "path": "docs/Plans/task-logs/astra-movement-interface-review-20260930.md",
+        "sha256": "69671F555059EFE5C291B4B6FA69726B31BC7EEF40081A1B878A57B132A2338C"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Nonexact PURE_C research, with an explicitly unsupplied four-byte owned tail. No sole-C ownership, canonical linked relocations/bytes or full-ROM acceptance. Preserve original ASM fallback and complete twenty-member wave. A future natural full-producer/table/tail proposal requires its evidence and Astra structural approval; no tooling defect or assembly fallback is claimed.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Initialize the actual route-result pointer immediately after the existing-aux pointer reload rather than at entry. Keep zero on every path reaching the result join."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 12332,
+      "sha256": "FA8F906857763494046773D67A90C5233330EC2FE75E76CB7B4F1E19440B96E4"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "D4024EC907BD366022B25A8E61EE41E4887B250FB52D173C5092BF4FC7108BD8"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-30-func_00125F84-3942ebf479.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

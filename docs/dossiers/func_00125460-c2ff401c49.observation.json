@@ -1,0 +1,106 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "C2FF401C49A5C9817A005CB7701F4B199B7D1E5984DBDD925D78B3C9C9A741A8",
+  "observationId": "7966833DEF9BD48AA45E0A91555463135594AE8E7AC08BCF5BF62B9412381040",
+  "symbol": "func_00125460",
+  "authored": {
+    "context": "Receiving Sol MagentaTiger gpt-6.1-sol max, sole production source/build writer on maindeaa5aa1. Complete twenty-member movement wave remains open. Fresh empty intake; full2852-byte/713-word/frame104 owner reconciled to complete original instructions and m2c/Kuna hypotheses. All23 call sites and13 float compares are covered: record interpolation/step, linear/snap endpoint paths, direction normalization, orientation rollback, cleanup/completion, list/grid publication, all flag/callback paths and unsigned-clamped/signed-decrement timer. The direct25F84 caller ignores the result; m2c's inferred float return is an unrelated residual f0 value. Height callees consume the full selector word in their104-byte stride; no byte narrowing is selected. No table/owner/tooling change.",
+    "effects": [
+      "body-coverage",
+      "source-lifetime",
+      "compiler-observation",
+      "interface-evidence"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "6CFD139EF0995FC5EA4DF498635530AC5FF0F89B9A26B6F0D21B27727CEDA778",
+      "sourceSha256": "2E09A3991995955A7001A96E6303136BE55DEA21AD78C9C07A4C86899E12CE9D"
+    },
+    "label": "negative-predicate-intermediate",
+    "observedEffect": "2844/711/frame104 with364 aligned masked raw differences versus the selected2840/710/359. The compiler exposes a distinct boolean phase; it recovers one instruction but is not independently selected because raw differences increase. The equivalent nested goto is neutral; a positive helper adds six words and a byte-return helper adds seven.",
+    "parentCandidateId": "11BC3A356926E27C0ECAAE069A050D063A5C41DF717E9D41955BDD5AB88C2E23",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_00125460.s",
+        "sha256": "8FDFB978D9A7F9A5A66CA7361AB01E3D84BE1306F2CF92D7E4AE3B2D4F180BE3"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_00125F84.s",
+        "sha256": "45B10E883A8315F95446D5E845814EF9E606D064BE18575F94CCFE83B771A26A"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_000F315C.s",
+        "sha256": "301497F58EE1CF799F7045F54A846745685F04A40D2440904F32654B3D7C2216"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_000F3428.s",
+        "sha256": "00C6742C7D2F6C8CD2D90E02CB213469009C28594FB0078542988D03BC10FAAD"
+      },
+      {
+        "path": "src/lib/func_0011AB74.c",
+        "sha256": "EACA65A46836E348FF54B4D2A37E64BAA2866A9694C370408035D8F21B8FCACF"
+      },
+      {
+        "path": "docs/Plans/task-logs/astra-movement-interface-review-20260930.md",
+        "sha256": "69671F555059EFE5C291B4B6FA69726B31BC7EEF40081A1B878A57B132A2338C"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Nonexact PURE_C research; original ASM remains production. No canonical sole-C ownership, actual linked relocation or full-ROM acceptance for this target. Preserve all twenty wave members, protected interfaces, E38 table/tail and131828 full five-body owner. Source-level instruction/register/control-flow differences remain; no supported tooling defect or inherent-assembly conclusion.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Put the observed short-circuit endpoint preservation predicate in an ordinary inline s32 helper: idbyte4<30 and unsigned(byte92-1)<2. Negate its returned truth at the existing branch. No field reads, flags, stores or callback paths are added."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 17216,
+      "sha256": "6CFD139EF0995FC5EA4DF498635530AC5FF0F89B9A26B6F0D21B27727CEDA778"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "2E09A3991995955A7001A96E6303136BE55DEA21AD78C9C07A4C86899E12CE9D"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-30-func_00125460-c2ff401c49.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
