@@ -40898,6 +40898,22 @@
         { "offset": "0x00000064", "type": "R_MIPS_26", "symbol": ".text", "section": ".rel.text" },
         { "offset": "0x00000070", "type": "R_MIPS_26", "symbol": "resource_alloc", "section": ".rel.text" }
       ]
+    },
+    {
+      "symbol": "func_001070F4",
+      "expectedRelocations": [
+        { "offset": "0x00000004", "type": "R_MIPS_HI16", "symbol": "D_800E7A90", "section": ".rel.text" },
+        { "offset": "0x00000008", "type": "R_MIPS_LO16", "symbol": "D_800E7A90", "section": ".rel.text" },
+        { "offset": "0x0000002C", "type": "R_MIPS_HI16", "symbol": "D_801F36D8", "section": ".rel.text" },
+        { "offset": "0x00000030", "type": "R_MIPS_LO16", "symbol": "D_801F36D8", "section": ".rel.text" },
+        { "offset": "0x0000007C", "type": "R_MIPS_26", "symbol": ".text", "section": ".rel.text" },
+        { "offset": "0x000000A8", "type": "R_MIPS_26", "symbol": ".text", "section": ".rel.text" },
+        { "offset": "0x000000D0", "type": "R_MIPS_26", "symbol": ".text", "section": ".rel.text" },
+        { "offset": "0x000000F8", "type": "R_MIPS_26", "symbol": ".text", "section": ".rel.text" },
+        { "offset": "0x00000124", "type": "R_MIPS_26", "symbol": ".text", "section": ".rel.text" },
+        { "offset": "0x00000150", "type": "R_MIPS_26", "symbol": ".text", "section": ".rel.text" },
+        { "offset": "0x0000017C", "type": "R_MIPS_26", "symbol": ".text", "section": ".rel.text" }
+      ]
     }
   ]
 }

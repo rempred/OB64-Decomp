@@ -1,0 +1,94 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "D8A9089D40692EFFA101722407C6A316F2DDBAAF29CA8DFCF398A141B6F87E4C",
+  "observationId": "65CA6B37E81B078519148BCA3B85E98727935B9E3591DD4E35DFC1C3AA08FA50",
+  "symbol": "func_001070F4",
+  "authored": {
+    "context": "MagentaTiger / receiving Sol gpt-6.1-sol max, sole production source/build writer on main 0a6248a8. Full twenty-member W5 movement scope; static interface prerequisite closed at bea1f7f6. Full accepted452-byte leaf owner and all113 words reconciled, including one field at unit64, eight neighbor choices and original signed cursor end test. Untouched pinned compiler/repaired assembler; no scratch rewriting.",
+    "effects": [
+      "body-coverage",
+      "compiler-observation",
+      "source-lifetime",
+      "register-allocation"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "8AF85F99B95E1CE7BEB7387E67875F75A4051FAE0452200CF7FB2E25F0C467ED",
+      "sourceSha256": "3E8DF01A6533ADED28F4F1A0DB553C4C2EB9E27D723EC54BF19D8F165A0271D0"
+    },
+    "label": "counter-unprofitable-shift-frontier",
+    "observedEffect": "Untouched output452/113/frame0 with seven masked differences. Cursor GIV reduces, but the separate shift GIV has benefit0 after update cost and is rejected. all_reduced is cleared; a later flow pass deletes the dead scale but does not retry BIV elimination. Scaled comparison gives six differences; narrow counters add four or six instructions.",
+    "parentCandidateId": "E8F8A2706F31F247FE2B13A0DEFD67927E4E77B6893CC2E6224BCEFFE11FEAF1",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_001070F4.s",
+        "sha256": "85940CD6A2316A0C9AD89F28CD137B25AAAFF6118952D7D94DDA53D47F2E90B2"
+      },
+      {
+        "path": "docs/WORKFLOW.md",
+        "sha256": "0ACD259116DEC62C74C01CC49291B8A4377734FCD49281BBDD9FC5D7455598EA"
+      },
+      {
+        "path": "docs/Plans/task-logs/astra-movement-interface-review-20260930.md",
+        "sha256": "69671F555059EFE5C291B4B6FA69726B31BC7EEF40081A1B878A57B132A2338C"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Original ASM remains production. Complete movement wave remains open without final verifier. No canonical linked replacement, capacity, runtime reachability or compiler defect claim.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Replace the explicit signed end address with the genuine signed record counter condition offset<4, keeping the cached cursor load and store. GoldOx529 identifies the all-reduced counter-elimination condition; independently replay the suggested counter form."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 1560,
+      "sha256": "8AF85F99B95E1CE7BEB7387E67875F75A4051FAE0452200CF7FB2E25F0C467ED"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "3E8DF01A6533ADED28F4F1A0DB553C4C2EB9E27D723EC54BF19D8F165A0271D0"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-30-func_001070F4-d8a9089d40.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
