@@ -1,0 +1,85 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "E46C9E676DCC771039C4B31DCB7AB906C366DEB6BB2D554A8CE3793DEE7AABEA",
+  "observationId": "40614C10DC5CF18835184979A68823DD4A54ADB2B779DCBF420DB6D092F9686E",
+  "symbol": "func_001FFE80",
+  "authored": {
+    "context": "Derived directly from 1D2EF51FA26B8F766C430D2297CEF567765BDBF6B5518F09FC8BF027793286A9, with the independently corrected two-argument func_001F0E64 interface. The retained older c1-short-alias control used the four-argument generated artifact and did not settle this corrected source pair.",
+    "effects": [
+      "corrected-interface",
+      "short-alias-converges",
+      "four-word-register-residual"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "1AC26A95FDF413D17B99BAF9F259EF2F58A67483D611C2DA39AC615FD5DB639C",
+      "sourceSha256": "AD9252E12D441220C3365EBDCA0ED5DDC7041E62FA8315D0862AD781330659F6"
+    },
+    "label": "corrected-two-argument-extra-short-alias",
+    "observedEffect": "Authenticated PURE_C scratch diagnostic still emits the complete 796-byte/199-instruction owner and 152-byte frame. The executable sequence converges to the 1D2 baseline, retaining only the same four relocation-masked differences at offsets 1A8, 1AC, 1C8 and 1D4: position and entry pointer use a3/a2 rather than a2/a3. Early-entry and late-entry-condition controls were also previously rerun with the corrected interface and converged. Moving the short assignment after the sum changes 21 words; delaying it to the reset path shortens to 792 bytes and changes scheduling.",
+    "parentCandidateId": "1D2EF51FA26B8F766C430D2297CEF567765BDBF6B5518F09FC8BF027793286A9",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_001FFE80.s",
+        "sha256": "8BE95D72294E363DEA1C404DCAA0F6E63862EB24173C661594A45D8B58C01B6E"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "The source-only alias does not resolve the documented global-allocation priority mismatch. Keep 1D2 as the readable best and the existing exact hybrid in production. No linked-exact PURE_C, completed-wave acceptance or tooling defect is claimed.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Introduce a named s16 intermediate between the position word and its reset-path short copy, leaving expression order and the two-argument helper unchanged."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 7881,
+      "sha256": "1AC26A95FDF413D17B99BAF9F259EF2F58A67483D611C2DA39AC615FD5DB639C"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "AD9252E12D441220C3365EBDCA0ED5DDC7041E62FA8315D0862AD781330659F6"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-30-func_001FFE80-e46c9e676d.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

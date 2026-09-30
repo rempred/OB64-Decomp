@@ -1,0 +1,92 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "CFE16A8DB3BF42A8DF2D838A09955ABEDC3E9829F8E43D0879015C17253ABFE0",
+  "observationId": "270C8B76FA0C317611CA7BBBB8335907CA2FC2167CE0DC66198EEA9033B8E16F",
+  "symbol": "func_0021B438",
+  "authored": {
+    "context": "The structured-other-loop 1AC5 source has the complete logical B438 body but emits 828 bytes because loop optimization hoists the second switch-table address. GoldOx mail455 gives a 123-real-insn no-hoist threshold. The FFE80 EE558 source pair independently demonstrates word-sized copies assigned through a signed-halfword cast.",
+    "effects": [
+      "signed-copy-survives-cse1",
+      "cast-folds-by-combine",
+      "loop-hoist-threshold-control",
+      "full-body-preserved"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "C0E1F9AF6176485830F887491851644251800E794B6833940B115F71A2CDB312",
+      "sourceSha256": "049420E33BA4B56075DA85EF72CBB46D49E019B50D7937F5B6DE8C135784A3DB"
+    },
+    "label": "signed-coordinate-copy-loop-hoist-control",
+    "observedEffect": "Mechanical PURE_C, direct pinned compiler/assembler diagnostics: 828 bytes/207 instructions, frame88. The .loop report has121 real insns in the other-index loop and still moves the second table address; final instruction text contains no narrowing shifts or extra coordinate copies. Inner strongest/cursor/slot becomes retail s4/s2/s3, but the hoisted table adds one instruction. This is a target-only diagnostic, not a canonical link.",
+    "parentCandidateId": "1AC5DAC7BE7FEFB667C4F8D364EBF9E38D4A487ED27A1639D3572C34F53A9D34",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_0021B438.s",
+        "sha256": "BAEA834349FFC67063547DAFE4677A65D716BF0DD9A6A856AD4B598855D41CC5"
+      },
+      {
+        "path": "docs/archive/matching-c-candidates/2026-09-29-func_001FFE80-ee558ba970.c",
+        "sha256": "B07DFB671F8C63C53644244061C460B88D004BF7360D62619352338B27C1D3E2"
+      }
+    ],
+    "relatedCandidateIds": [
+      "C3902FE42E82E41B73C2B1FB52F807AE2CD2D39CD78956F1DCED7968BB0F3DE7"
+    ],
+    "remainingFailure": "One instruction beyond the accepted824-byte owner. Both saved-value priority and coordinate/division register representatives remain wrong. The related successor raises loop-time count by a reversible bounded coordinate update; original ASM and shared tables remain production.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Load each signed x/y coordinate into a word temporary and copy it through (s16) into another word temporary before the original forward/reverse distance expressions. Keep the structured other-index loop and original updates; no extra coordinate arithmetic is introduced."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 6374,
+      "sha256": "C0E1F9AF6176485830F887491851644251800E794B6833940B115F71A2CDB312"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "049420E33BA4B56075DA85EF72CBB46D49E019B50D7937F5B6DE8C135784A3DB"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-30-func_0021B438-cfe16a8db3.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

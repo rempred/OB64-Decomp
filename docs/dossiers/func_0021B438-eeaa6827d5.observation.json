@@ -1,0 +1,93 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "EEAA6827D55FC1626A460E649895B79B4B1DCAB27D4AF24C21DEDA98CA180D5A",
+  "observationId": "719F49773F28FCD951F8D93214F5460620DFC96645EE527FADF687B29FEFCABF",
+  "symbol": "func_0021B438",
+  "authored": {
+    "context": "Signed coordinate copy control CFE16 keeps121 loop-time real insns and hoists the second table address. GoldOx mail455 identifies the123 threshold; C390 remains the retained readable production-retry source, with original B438 ASM and both table owners active.",
+    "effects": [
+      "loop-hoist-threshold-crossed",
+      "cast-and-arithmetic-fold-by-combine",
+      "retail-inner-saved-registers",
+      "exact-scratch-extent",
+      "diagnostic-compiler-workaround"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "0FE47EC3BE1A392E118A9D26E0366E0FD02BD01FFB1620EE7368FCF59992EED2",
+      "sourceSha256": "95C997CA020C0C6556A1A8ADBC5E117E778A11B63E5BB7879ADACF7203B8021A"
+    },
+    "label": "structured-loop-123-insn-allocator-diagnostic",
+    "observedEffect": "Authenticated watch EEAA6827 emits PURE_C824 bytes/206 instructions, frame88,0 extra/missing instructions,37 aligned symbolic differences/76 symbolic bytes,0 opcode or stack-offset differences, and16 register-field differences. Direct raw relocation-masked diagnostics agree on16 register words:4 owner/other value words,8 signed-coordinate operand words,4 signed-halving words. The .loop report has123 real insns and does not hoist the second table address; final text has no extra cast or reversible update instructions. The coordinate swaps are introduced by the copy form; C390 already matches that coordinate pocket.",
+    "parentCandidateId": "CFE16A8DB3BF42A8DF2D838A09955ABEDC3E9829F8E43D0879015C17253ABFE0",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_0021B438.s",
+        "sha256": "BAEA834349FFC67063547DAFE4677A65D716BF0DD9A6A856AD4B598855D41CC5"
+      },
+      {
+        "path": "docs/archive/matching-c-candidates/2026-09-29-func_001FFE80-ee558ba970.c",
+        "sha256": "B07DFB671F8C63C53644244061C460B88D004BF7360D62619352338B27C1D3E2"
+      }
+    ],
+    "relatedCandidateIds": [
+      "C3902FE42E82E41B73C2B1FB52F807AE2CD2D39CD78956F1DCED7968BB0F3DE7"
+    ],
+    "remainingFailure": "Nonexact diagnostic source, not selected for production or as the readable best. C390 remains recoverable; this preserves evidence that loop-time shape can recover the structured loop extent and inner register cycle. Seek a source-grounded representation/lifetime before relying on these devices. Owner-value priority, coordinate/division representatives, both table ownership and full W5 gates remain unresolved. GoldOx advisory458 agrees this is a diagnostic; no tooling defect or acceptance gate change.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Add a reversible dy +=1; dy -=1 immediately before the distance guard, retaining the structured other-index loop, word-sized signed coordinate copies and preexisting outer continuation devices. This explicitly tests compiler optimization thresholds; it is not a claim about retail source history."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 6434,
+      "sha256": "0FE47EC3BE1A392E118A9D26E0366E0FD02BD01FFB1620EE7368FCF59992EED2"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "95C997CA020C0C6556A1A8ADBC5E117E778A11B63E5BB7879ADACF7203B8021A"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-30-func_0021B438-eeaa6827d5.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

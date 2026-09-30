@@ -1,0 +1,85 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "B2F56796E3670CCDD1D4E308B643518387941BCB9F494EFD93DF3C7DD30C3565",
+  "observationId": "AEA2F878CA06D59277B9F7E1B624B16F07514BC21A945ECC85B64B338959032C",
+  "symbol": "func_0012E8EC",
+  "authored": {
+    "context": "The complete nine-member Squad record/formation wave is open. Current intake was empty; full original disassembly and accepted unique ownership were reconciled before independent C derivation.",
+    "effects": [
+      "unsigned-control",
+      "complete-body-coverage",
+      "source-shape-control"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "CFAD8D63AF99C8DF4EFFAC72C120227C30DCB2970B37D4E920907F8FA8A79DA9",
+      "sourceSha256": "87A3BC3468C4F36B6AAE3EB6454948A8D06595698148446FFAFA56811791CF3E"
+    },
+    "label": "record-formation-unsigned-control",
+    "observedEffect": "The complete 100-byte/frame24 diagnostic differs in one relocation-masked word: unsigned sltu comparison versus retail signed slt. The callee is E968 at live 801DA228, not the neighboring E950.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_0012E8EC.s",
+        "sha256": "940315BDDEB83ECE8310C529C7FAF8C8027C46B24A0DE23994A4B601D96C5EEC"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Provisional candidate only. The complete unchanged nine-member wave needs one normal final verifier with all PURE_C, ownership, placement, relocation, target-byte and full-ROM gates; other open waves are unchanged.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Count non-FF entries with a five-byte advancing cursor and ordinary pointer comparison."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 496,
+      "sha256": "CFAD8D63AF99C8DF4EFFAC72C120227C30DCB2970B37D4E920907F8FA8A79DA9"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "87A3BC3468C4F36B6AAE3EB6454948A8D06595698148446FFAFA56811791CF3E"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-30-func_0012E8EC-b2f56796e3.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

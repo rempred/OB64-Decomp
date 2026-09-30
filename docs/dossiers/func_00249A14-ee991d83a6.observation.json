@@ -1,0 +1,86 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "EE991D83A697473FD3DB0F0E70442007350313D5B8CBEF5ED7D3401F252AE98D",
+  "observationId": "2A4503D6E54986E5CE7BBB0210D41D28732AA33503B622781BC199D694889505",
+  "symbol": "func_00249A14",
+  "authored": {
+    "context": "A715 is the retained readable900-byte Scenario candidate, frame184, and107 prior linked words different. Its first-stage selector guard/store omits the retail late reload. The source still covers both groups, record staging, four selector tables and the apply tail.",
+    "effects": [
+      "selector-reload-effect",
+      "owner-length-regressed",
+      "first-stage-scheduling-regressed",
+      "full-body-preserved"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "4C32EFEED95ECAA41E8BA70D58270CCD2D86E3A6B5762EF13E8A602C182F10B8",
+      "sourceSha256": "4C32EFEED95ECAA41E8BA70D58270CCD2D86E3A6B5762EF13E8A602C182F10B8"
+    },
+    "label": "volatile-scenario-group-selector-reload-counterexample",
+    "observedEffect": "Authenticated watch candidateEE991D83 emits PURE_C908 bytes/227 instructions with frame184,2 actual-only and0 expected-only rows,178 aligned symbolic differences and569 differing symbolic bytes. The selector guard reload occurs too early relative to the two halfword stores; ordinary byte sums also become OR-shaped and allocation/store scheduling regresses. A final-load-only volatile view emits the same908-byte shape in direct scratch diagnostics.",
+    "parentCandidateId": "A715BAAF13B62DC3EE16871321748783CA80859A289C3C0C13E32732C3BA9E1A",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_00249A14.s",
+        "sha256": "64F2ACC3BFCF3C16477296FFBD96D64C29DA155A0287BCDFC6FD9C3B0CCEFB5D"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "The908-byte source is not selected; A715 remains the900-byte best. This disproves this complete volatile qualification as a closing form in its current context, not the broader alias/reload hypothesis. No canonical linked acceptance or completed two-target Scenario wave follows.",
+    "role": "counterexample",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Qualify the first-stage source_group byte pointer as const volatile u8 * so the selector and group fields reload rather than relying on earlier cached values; retain the existing typed frame and all logical paths."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 4632,
+      "sha256": "4C32EFEED95ECAA41E8BA70D58270CCD2D86E3A6B5762EF13E8A602C182F10B8"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "4C32EFEED95ECAA41E8BA70D58270CCD2D86E3A6B5762EF13E8A602C182F10B8"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-30-func_00249A14-ee991d83a6.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

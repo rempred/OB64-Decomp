@@ -1,0 +1,85 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "6F9D5839E985A0C6582B2781C6A5E1DE9FB26FDE36F3AB47E3C87E74EE582BA3",
+  "observationId": "00816991566EFCD815CA796478FE4A762816CC5486B8F7BFBF0A53CB2189496F",
+  "symbol": "func_0012F140",
+  "authored": {
+    "context": "The complete nine-member Squad record/formation wave is open. Current intake was empty; full original disassembly and accepted unique ownership were reconciled before independent C derivation.",
+    "effects": [
+      "two-word-frontier",
+      "complete-body-coverage",
+      "source-shape-control"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "555120144FBCFCDE0E8147E34572F9569DBA1D9271B5714B82588932A8F4F829",
+      "sourceSha256": "45332EE63CED0262FD445AD238DA24D9E8C6A9ADB3A6AFEA41579877ED2CB914"
+    },
+    "label": "record-formation-two-word-frontier",
+    "observedEffect": "Pinned diagnostic emits full 1008-byte/252-instruction/frame56 owner. Only offsets 288/28C exchange the flags lw and FF7F lui; every other relocation-masked word matches. Field snapshots, local copies and changed store/clear forms have not selected an improvement.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_0012F140.s",
+        "sha256": "A6676225E461ED27D4708561BBFD0F669ECB56ECE2CB062BFD36371EE1CF01C2"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "The two scheduling words remain nonexact; no production activation or matching acceptance. GoldOx source advice was requested; no tooling defect is supported.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Derive complete C with the two inlined formation searches, six separate word flag clears, all cleanup calls and terminal row updates."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 4909,
+      "sha256": "555120144FBCFCDE0E8147E34572F9569DBA1D9271B5714B82588932A8F4F829"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "45332EE63CED0262FD445AD238DA24D9E8C6A9ADB3A6AFEA41579877ED2CB914"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-30-func_0012F140-6f9d5839e9.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

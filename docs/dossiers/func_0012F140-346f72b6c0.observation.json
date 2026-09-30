@@ -1,0 +1,85 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "346F72B6C0F094B6581F9330102C403579B4A2C46F27C4471C990C16BD0FFCDD",
+  "observationId": "88241CB2EC2B0D2A6FB53FA4B25E52B0E6468B8F9C3C1944DDF6866AC7C7CB6C",
+  "symbol": "func_0012F140",
+  "authored": {
+    "context": "The complete nine-member Squad record/formation wave is open. Current intake was empty; full original disassembly and accepted unique ownership were reconciled before independent C derivation.",
+    "effects": [
+      "reset-order",
+      "complete-body-coverage",
+      "selected-source"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "08D1F33D83C1B1F1529489C05BB8CD04A99B3B3BD3B8BC48BB1092C80A9457E7",
+      "sourceSha256": "FEA927D7489EC900DFE9A397ACBE4C501254A528EC388EF7B227E19D13CB97F4"
+    },
+    "label": "record-formation-reset-order",
+    "observedEffect": "Pinned diagnostic emits full 1008-byte/252-instruction/frame56 owner with zero aligned relocation-masked word differences. The canonical focused linked comparison is pending; acceptance is not yet claimed.",
+    "parentCandidateId": "6F9D5839E985A0C6582B2781C6A5E1DE9FB26FDE36F3AB47E3C87E74EE582BA3",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_0012F140.s",
+        "sha256": "A6676225E461ED27D4708561BBFD0F669ECB56ECE2CB062BFD36371EE1CF01C2"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Provisional candidate only. The complete unchanged nine-member wave needs one normal final verifier with all PURE_C, ownership, placement, relocation, target-byte and full-ROM gates; other open waves are unchanged.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Use the same 92, 91, 84, 80 reset-field store order in the unit branch as in the member branch, independently reproducing GoldOx mail 460 source advice."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 4909,
+      "sha256": "08D1F33D83C1B1F1529489C05BB8CD04A99B3B3BD3B8BC48BB1092C80A9457E7"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "FEA927D7489EC900DFE9A397ACBE4C501254A528EC388EF7B227E19D13CB97F4"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-30-func_0012F140-346f72b6c0.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
