@@ -1,0 +1,94 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "A68F6CBE19F496BF2CD2CAD52F08BF4027E93608C47B0C0F5BEA303FCBFCFB1A",
+  "observationId": "5A16C6D3A113243D8CE2BF51228CEF124C66552B8ECE643BE7482458617A4D87",
+  "symbol": "func_0011AECC",
+  "authored": {
+    "context": "MagentaTiger / receiving Sol gpt-6.1-sol max, sole production source/build writer on main306c7fa7. Full twenty-member W5 movement wave, existing static prerequisite closed at bea1f7f6. Fresh empty intake and complete1144/286/frame160 owner reconciled to full original body. Current m2c/Kuna hypotheses cross-checked; missing double sqrt instruction is restored with the authenticated compiler spelling __builtin_fsqrt from c-decl.c3193. Untouched compiler/repaired assembler; no scratch rewrite.",
+    "effects": [
+      "body-coverage",
+      "source-lifetime",
+      "compiler-observation",
+      "interface-evidence"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "C86CB898B465EC8A745CFABCCB9B509182072C090E46E4895D8E2E8941F150A5",
+      "sourceSha256": "2703DE5052F269035673D75776A1C2D751F87F3E1307DB35AADF7A3AF0288FBF"
+    },
+    "label": "complete-typed-builder-baseline",
+    "observedEffect": "Mechanical PURE_C. Untouched source emits1120/280/frame160 with174 masked raw differences versus1144/286/frame160. All original thirteen calls and float/control bodies are present after correcting the formerly unrecognized __builtin_sqrt spelling. Array/endpoint folding, count phase and floating-constant lifetimes differ.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_0011AECC.s",
+        "sha256": "26B4009AC3947B869EC3C9E7411FDD6C65A00BAF246F26C79A3A7053F9839565"
+      },
+      {
+        "path": "asm/original/rev0/lib/sqrt_f64.s",
+        "sha256": "0800ECB63A28DA90DDE61099824617A4B473777314133C34DCCA81B084030412"
+      },
+      {
+        "path": "docs/Plans/task-logs/astra-movement-interface-review-20260930.md",
+        "sha256": "69671F555059EFE5C291B4B6FA69726B31BC7EEF40081A1B878A57B132A2338C"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Nonexact PURE_C research; original ASM production. No canonical linked ownership/relocation/full-ROM acceptance. Preserve SDK/memory/interpolation interfaces, no extra allocation guards, and the complete twenty-member final-wave gate.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Independently derive the complete count/early-return path, root plus five array allocations, original diagnostic/unchecked failure continuation, signed quotient/remainder256 coordinate conversion, both endpoint paths, cumulative double square root with fallback, normalization, both coefficient calls, mixed interpolation, distance/step and unitA4 publication. Record00/04/08/0C/10 are f32 pointers;14 is full count,18 float and1C word."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 3589,
+      "sha256": "C86CB898B465EC8A745CFABCCB9B509182072C090E46E4895D8E2E8941F150A5"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "2703DE5052F269035673D75776A1C2D751F87F3E1307DB35AADF7A3AF0288FBF"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-30-func_0011AECC-a68f6cbe19.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

@@ -1,0 +1,93 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "9E3A78B71E6F910A94FC862866855367121838ABC4379CDF9815DFB98E71804D",
+  "observationId": "B6AFFBC0094A9F6EFA9B8BDBC00BB96AF7A98789691CDF91909D78362013764E",
+  "symbol": "func_0011AECC",
+  "authored": {
+    "context": "Receiving Sol MagentaTiger, gpt-6.1-sol max, sole production source/build writer on main306c7fa7. Complete twenty-member W5 stays open. Full1144/286/frame160 accepted body and thirteen call sites reconciled; pinned compiler and accepted repaired assembler used untouched, no assembly rewriting. Record00/04/08/0C/10 are f32 arrays,14 full count,18 f32 step and1C word. The protected sqrt/hypot/interpolation interfaces remain intact.",
+    "effects": [
+      "body-coverage",
+      "source-lifetime",
+      "compiler-observation"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "8D2CCF10C6C931B2AFF8DD8523445919974CFA5740346B1553171EB3F0E87986",
+      "sourceSha256": "3ADAC84559056362A61A99F8FD391389F8E6CA77F23C611537EB5CF1297F5108"
+    },
+    "label": "reused-float-tail",
+    "observedEffect": "Full1144/286/frame160 with32 masked raw word differences, versus1132/283/93. The entire final interpolation/distance/step/publication tail now matches raw retail words; cached0.01f across two calls is eliminated. A named local that is not overwritten is neutral; a single combined step expression leaves three final FPR differences.",
+    "parentCandidateId": "FBE14A1D0917A247BB3F6590E8AA34D2242CAF492F2A229E1370C06D265E8750",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_0011AECC.s",
+        "sha256": "26B4009AC3947B869EC3C9E7411FDD6C65A00BAF246F26C79A3A7053F9839565"
+      },
+      {
+        "path": "src/lib/func_0011AB74.c",
+        "sha256": "EACA65A46836E348FF54B4D2A37E64BAA2866A9694C370408035D8F21B8FCACF"
+      },
+      {
+        "path": "docs/Plans/task-logs/astra-movement-interface-review-20260930.md",
+        "sha256": "69671F555059EFE5C291B4B6FA69726B31BC7EEF40081A1B878A57B132A2338C"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Nonexact PURE_C research. Original ASM remains the production owner; no canonical linked relocation, ownership or full-ROM acceptance. Remaining coordinate, endpoint and array-capture allocation/scheduling differences are source-level blockers, not evidence of a tooling defect. The complete twenty-member final verifier remains pending.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Pass a genuine named f32 local to interpolation, overwrite it with hypotf result, then assign division separately from multiply45/divide3840. GoldOx533 identified the bounded REG-argument/reused-local observation; Sol independently derived and replayed it under the unchanged ABI."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 3968,
+      "sha256": "8D2CCF10C6C931B2AFF8DD8523445919974CFA5740346B1553171EB3F0E87986"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "3ADAC84559056362A61A99F8FD391389F8E6CA77F23C611537EB5CF1297F5108"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-30-func_0011AECC-9e3a78b71e.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
