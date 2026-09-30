@@ -1,0 +1,85 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "6D6AC34E03C48F8A5B76B59F6B7A12B18A48162F1ADF376C249F6BD678950216",
+  "observationId": "7553267191970E04881FFE7688A4B86FFB3C13959E88A19948F5F928229714F8",
+  "symbol": "func_00123458",
+  "authored": {
+    "context": "The complete five-member wake/conditions wave is open. Fresh intake was empty. Unique accepted full owners, qualified runtime mappings and complete disassemblies were reconciled before derivation. Original ASM remains available; no shared tooling, compiler, boundary or table owner changed.",
+    "effects": [
+      "first-rectangle-destructive-control",
+      "body-coverage",
+      "compiler-lifetimes"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "22CD82B556E41301880A3C309354ED2AE8990DB25765411624D750C3107B1E60",
+      "sourceSha256": "97FE7B1D25BDBC00D2E109A2A589E64D974C3208807F1ED76A5D9289B392880E"
+    },
+    "label": "wake-first-rectangle-destructive-control",
+    "observedEffect": "The complete diagnostic grows to932 bytes/233 instructions/frame24, with158 aligned relocation-masked word differences. Destructive spelling affects tail sharing and allocation; this source is not selected. Applying it to both producers instead shortens to876 bytes, so a uniform whole-owner rewrite is not established.",
+    "parentCandidateId": "33F265C2846CDC18C555B448288204D4819878F5A3F2E1CE4FD6E214A941565F",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_00123458.s",
+        "sha256": "B012FF2E6C61BD7209D10510A7F3D915BA93F1D02CA0F6CB39DCA53DA310C351"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Only the first three members are provisional canonical linked-exact PURE_C. Both larger owners remain nonexact; keep the full five-member wave open and run one normal final verifier only when all five are ready. Semantic discovery and the other unfinished five-family waves remain separate.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Separate the aggregate validity guards and destructively update the first rectangle producer's float temporaries."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 4282,
+      "sha256": "22CD82B556E41301880A3C309354ED2AE8990DB25765411624D750C3107B1E60"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "97FE7B1D25BDBC00D2E109A2A589E64D974C3208807F1ED76A5D9289B392880E"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-30-func_00123458-6d6ac34e03.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

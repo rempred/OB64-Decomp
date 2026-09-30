@@ -1,0 +1,85 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "6DDE23881927C4F90E61D15CE199806501FB90A6474716016F94885014AE5DD0",
+  "observationId": "C6528FD7DE25539FA5B91DE06D7E0F16EF8AC41333FEB433642FEB0D50000ABE",
+  "symbol": "func_00120CF0",
+  "authored": {
+    "context": "The complete five-member wake/conditions wave is open. Fresh intake was empty. Unique accepted full owners, qualified runtime mappings and complete disassemblies were reconciled before derivation. Original ASM remains available; no shared tooling, compiler, boundary or table owner changed.",
+    "effects": [
+      "byte-view-exact",
+      "body-coverage",
+      "compiler-lifetimes"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "90AF04047E7D23F3EEBEA2AC81C227422E98AD90E34D024E8157898D1C4E1047",
+      "sourceSha256": "4398C2AAB0E081BDF97E72FE460296915F0B4BE5499441157ABDBE4F495DE4E6"
+    },
+    "label": "wake-byte-view-exact",
+    "observedEffect": "Canonical focused diff is PURE_C and exact for the complete sole 288-byte .ob64.r2352 C owner, frame48, zero fill/fallback and all nine actual reviewed relocations.",
+    "parentCandidateId": "1535BD86C5B224117749B66C0F8FA15D33AE39F03D334D124BBB92F6EECB480E",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_00120CF0.s",
+        "sha256": "CF52296911801CA33D32495CEACEDC0E14FBD1C592BD1D96836C833A6111BABF"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Only the first three members are provisional canonical linked-exact PURE_C. Both larger owners remain nonexact; keep the full five-member wave open and run one normal final verifier only when all five are ready. Semantic discovery and the other unfinished five-family waves remain separate.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Keep observed field offsets through typed byte views and retain destructive float updates."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 1348,
+      "sha256": "90AF04047E7D23F3EEBEA2AC81C227422E98AD90E34D024E8157898D1C4E1047"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "4398C2AAB0E081BDF97E72FE460296915F0B4BE5499441157ABDBE4F495DE4E6"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-30-func_00120CF0-6dde238819.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

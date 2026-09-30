@@ -1,0 +1,85 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "A370439E96C7ED1E695F09F1AA3F5B43AB5B820EBEE0876CDCA8EE992F71FCA4",
+  "observationId": "2DBC570793ECFECE61AA5A5F9029C60D09BAEF6FF715C8FAF3ADB04EE0A565D9",
+  "symbol": "func_00121F38",
+  "authored": {
+    "context": "The complete five-member wake/conditions wave is open. Fresh intake was empty. Unique accepted full owners, qualified runtime mappings and complete disassemblies were reconciled before derivation. Original ASM remains available; no shared tooling, compiler, boundary or table owner changed.",
+    "effects": [
+      "constant-count-coverage-control",
+      "body-coverage",
+      "compiler-lifetimes"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "38B8EE3E27F8E36F3786D86A639A9F0E8D0167989974330D3A5ECBC383747F95",
+      "sourceSha256": "D1EB9CB6BE41B1DEE2307428EC9FEE1A1817C30A936FFA46230AF7275FC0387D"
+    },
+    "label": "wake-constant-count-coverage-control",
+    "observedEffect": "Compiled diagnostic has 4512 bytes/1128 instructions/frame80, eighteen calls including all nine publication branches, but only six single equalities and three double comparisons. The constant count form omits the two count1 nudge bodies and two epsilon aliases. It fails complete required-body coverage and must not be tuned or activated as the complete owner.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_00121F38.s",
+        "sha256": "64EEC410B9BBD243180EB3479BED875748AB9AA5AAEDC0DEA0ACF4587E9E56C9"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Only the first three members are provisional canonical linked-exact PURE_C. Both larger owners remain nonexact; keep the full five-member wave open and run one normal final verifier only when all five are ready. Semantic discovery and the other unfinished five-family waves remain separate.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Resolve the fifteen retail c.eq.s/c.lt.d instruction names in an ignored input copy and materialize the primary ROM-derived output with three contiguous float points. Retain its inferred constant count2/count3 source."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 27703,
+      "sha256": "38B8EE3E27F8E36F3786D86A639A9F0E8D0167989974330D3A5ECBC383747F95"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "D1EB9CB6BE41B1DEE2307428EC9FEE1A1817C30A936FFA46230AF7275FC0387D"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-30-func_00121F38-a370439e96.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

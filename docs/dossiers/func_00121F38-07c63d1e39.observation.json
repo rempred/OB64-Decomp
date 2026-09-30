@@ -1,0 +1,85 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "07C63D1E39B6BD969FC92DBC2D29778E5AA6BC823E00DCBF30A672687D3EFC98",
+  "observationId": "AA6801525922B6BD998E711D5FD0019C1040309BAFC7413F39F69476BB39FECE",
+  "symbol": "func_00121F38",
+  "authored": {
+    "context": "The complete five-member wake/conditions wave is open. Fresh intake was empty. Unique accepted full owners, qualified runtime mappings and complete disassemblies were reconciled before derivation. Original ASM remains available; no shared tooling, compiler, boundary or table owner changed.",
+    "effects": [
+      "increment-mask-best",
+      "body-coverage",
+      "compiler-lifetimes"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "029EE9356FE0EC1B8F1CDD830C48CEAB4D0B76D6CFF16F68CAF105392F9E908C",
+      "sourceSha256": "70027E36F1E3FDFA60F941CEBDC075DA134FE8E91B6EBEAFADA7A0D7140A4D97"
+    },
+    "label": "wake-increment-mask-best",
+    "observedEffect": "Pinned PURE_C diagnostic emits 4908 bytes/1227 instructions/frame80 versus retail5408/1352/frame136. Bounded source/assembly census now includes all nine publication paths, all five nudge paths, ten c.eq.s, five c.lt.d, all five literal epsilon references and all eighteen external calls. All eighteen calls retain their existing interfaces. Broad byte/register/control differences remain. No linked-exact result or source-history claim follows.",
+    "parentCandidateId": "A370439E96C7ED1E695F09F1AA3F5B43AB5B820EBEE0876CDCA8EE992F71FCA4",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_00121F38.s",
+        "sha256": "64EEC410B9BBD243180EB3479BED875748AB9AA5AAEDC0DEA0ACF4587E9E56C9"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Only the first three members are provisional canonical linked-exact PURE_C. Both larger owners remain nonexact; keep the full five-member wave open and run one normal final verifier only when all five are ready. Semantic discovery and the other unfinished five-family waves remain separate.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Replace inferred count2/count3 constants with actual increments and their variable predicates; split all nine terminal flag updates into four word operations."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 28735,
+      "sha256": "029EE9356FE0EC1B8F1CDD830C48CEAB4D0B76D6CFF16F68CAF105392F9E908C"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "70027E36F1E3FDFA60F941CEBDC075DA134FE8E91B6EBEAFADA7A0D7140A4D97"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-30-func_00121F38-07c63d1e39.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
