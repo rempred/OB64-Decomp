@@ -1,0 +1,94 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "2A1E5F91E3FD382AE6F6514431FE92E0D6580EA1EB85AE1E687C2909FB20D354",
+  "observationId": "19825E59FE9B8BFD35975FD4D2E6E46C7C5458662BDAA01266D10B0059333A57",
+  "symbol": "func_0011AECC",
+  "authored": {
+    "context": "Complete11AECC producer plus11AB74 wrapper and newly derived full125460 consumer reconciled on main868126f6. Earlier record1C word type encoded only the producer's zero store; it did not prove an integer field. Consumer retail offsets060/0FC..120/4E0 use lwc1/add.s/swc1 for record1C. Original ASM remains production for both nonexact targets.",
+    "effects": [
+      "body-coverage",
+      "source-lifetime",
+      "compiler-observation",
+      "interface-evidence"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "9A1CD8462D3BBD4AC7961BC96A7DEB4E1342C68299E2CEDFAE8B86C81EF8494F",
+      "sourceSha256": "D34073D9C5F3832BB225F881C4EE465004D12DC830FE7A7346DE24C630163CE9"
+    },
+    "label": "consumer-proven-float-record",
+    "observedEffect": "Untouched PURE_C1144/286/frame160 with the same16 masked raw differences as9BEB7988E3. Type and SDK-symbol corrections are instruction-neutral; no linked acceptance follows. The builtin double-sqrt fallback will still need its actual protected SDK address resolved through existing linkage rules before canonical linking.",
+    "parentCandidateId": "9BEB7988E310524BB3FE618D1FD19FD8F34371837A16457777FCAE84C2AEB56F",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_00125460.s",
+        "sha256": "8FDFB978D9A7F9A5A66CA7361AB01E3D84BE1306F2CF92D7E4AE3B2D4F180BE3"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_0011AECC.s",
+        "sha256": "26B4009AC3947B869EC3C9E7411FDD6C65A00BAF246F26C79A3A7053F9839565"
+      },
+      {
+        "path": "src/lib/hypotf.c",
+        "sha256": "EAE34C8B3C30DA41BDC98C7BABC83F9ACDE73EB2AECAABAE0E16FEA9B67059AB"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Nonexact PURE_C research; original ASM remains production. No canonical sole-C ownership, actual linked relocation or full-ROM acceptance for this target. Preserve all twenty wave members, protected interfaces, E38 table/tail and131828 full five-body owner. Source-level instruction/register/control-flow differences remain; no supported tooling defect or inherent-assembly conclusion.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Refine record1C to f32 and initialize0.0f; name the protected Euclidean SDK call by its actual func_0002CB80 symbol. Other arrays/count/step and all13 producer calls remain unchanged."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 4115,
+      "sha256": "9A1CD8462D3BBD4AC7961BC96A7DEB4E1342C68299E2CEDFAE8B86C81EF8494F"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "D34073D9C5F3832BB225F881C4EE465004D12DC830FE7A7346DE24C630163CE9"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-30-func_0011AECC-2a1e5f91e3.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

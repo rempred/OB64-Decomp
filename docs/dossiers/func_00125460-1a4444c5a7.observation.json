@@ -1,0 +1,106 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "1A4444C5A7CF86E8599A5F3124F56BDF098CDDCE0BD2C06528C67E8E85B6CBAB",
+  "observationId": "F0A0F5E82CC4186BE9FF1CE3246D5EB7A4365B04779D2A46914E09040DD8F376",
+  "symbol": "func_00125460",
+  "authored": {
+    "context": "Receiving Sol MagentaTiger gpt-6.1-sol max, sole production source/build writer on main868126f6. Complete twenty-member movement wave remains open. Fresh empty intake; full2852-byte/713-word/frame104 owner reconciled to complete original instructions and m2c/Kuna hypotheses. All23 call sites and13 float compares are covered: record interpolation/step, linear/snap endpoint paths, direction normalization, orientation rollback, cleanup/completion, list/grid publication, all flag/callback paths and unsigned-clamped/signed-decrement timer. The direct25F84 caller ignores the result; m2c's inferred float return is an unrelated residual f0 value. Height callees consume the full selector word in their104-byte stride; no byte narrowing is selected. No table/owner/tooling change.",
+    "effects": [
+      "body-coverage",
+      "source-lifetime",
+      "compiler-observation",
+      "interface-evidence"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "0AE109943E8E6383BBAEE542241237D8A214868E99277CAA3FDBCAE3192E3869",
+      "sourceSha256": "5430CDBD556732C5EC84B87346DA303E99F205DA88FA7FD192503AD7DD0A2DBA"
+    },
+    "label": "named-step-frame-recovery",
+    "observedEffect": "Restores retail frame104 and7GPR/6FPR saved set, emits2716/679 with619 raw masked differences. The extra floating constant lifetime moves saved Z to a GPR and restores the original leading backup/register pattern. Raw-word/union backup controls alone did not recover the frame.",
+    "parentCandidateId": "5112AEB8D942101D5C7320F0DBEC3EA86C556DC9A9FFCDB75347BF3AC67C9AEB",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_00125460.s",
+        "sha256": "8FDFB978D9A7F9A5A66CA7361AB01E3D84BE1306F2CF92D7E4AE3B2D4F180BE3"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_00125F84.s",
+        "sha256": "45B10E883A8315F95446D5E845814EF9E606D064BE18575F94CCFE83B771A26A"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_000F315C.s",
+        "sha256": "301497F58EE1CF799F7045F54A846745685F04A40D2440904F32654B3D7C2216"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_000F3428.s",
+        "sha256": "00C6742C7D2F6C8CD2D90E02CB213469009C28594FB0078542988D03BC10FAAD"
+      },
+      {
+        "path": "src/lib/func_0011AB74.c",
+        "sha256": "EACA65A46836E348FF54B4D2A37E64BAA2866A9694C370408035D8F21B8FCACF"
+      },
+      {
+        "path": "docs/Plans/task-logs/astra-movement-interface-review-20260930.md",
+        "sha256": "69671F555059EFE5C291B4B6FA69726B31BC7EEF40081A1B878A57B132A2338C"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Nonexact PURE_C research; original ASM remains production. No canonical sole-C ownership, actual linked relocation or full-ROM acceptance for this target. Preserve all twenty wave members, protected interfaces, E38 table/tail and131828 full five-body owner. Source-level instruction/register/control-flow differences remain; no supported tooling defect or inherent-assembly conclusion.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Name the genuine0.01171875f step between distance and the speed callback; keep it live for comparison and scaling. Preserve all operations, without extra references or inline assembly."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 15763,
+      "sha256": "0AE109943E8E6383BBAEE542241237D8A214868E99277CAA3FDBCAE3192E3869"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "5430CDBD556732C5EC84B87346DA303E99F205DA88FA7FD192503AD7DD0A2DBA"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-30-func_00125460-1a4444c5a7.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
