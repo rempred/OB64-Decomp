@@ -1,0 +1,97 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "1C143243C0FFEF7D39989B62ACCF87B45BE378F55C6A44F3F991D96D7C87A413",
+  "observationId": "CD3387CB86E86EBFCA2FFDF886618943CEBA6423D712BDC3915F137E35C3209E",
+  "symbol": "func_0012A050",
+  "authored": {
+    "context": "MagentaTiger sole source/build writer on main529e727c; all thirteen remaining W4 pursuit members share one still-open wave. Full original word census reconciles the two pre-prologue count-load instructions within the accepted336-byte p2408 owner.",
+    "effects": [
+      "body-coverage",
+      "loop-setup",
+      "pointer-stride",
+      "address-cse",
+      "cursor-lifetime",
+      "register-allocation",
+      "frame"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "94422B33B4996C7460EADA78ABFA93ABB84D6B7DAF60E9C5D40A1253DDF0A837",
+      "sourceSha256": "2FAA20ADB002030002B775899BDDBBFCEA9B60EAC26C574CF249609DCEFED65C"
+    },
+    "label": "indexed-units-shared-row-cursor",
+    "observedEffect": "Untouched pinned cc1/GAS PURE_C emits336 bytes/84 instructions with the retail40-byte frame, including both pre-prologue count loads. All five loops and six calls are covered. Exactly seven aligned relocation-masked words differ, all in the52-byte row/flag cursor s0/s2 allocation; all other words and the later25-byte cursor already agree. Earlier explicit unit-pointer guard control produced frame32; direct indexed iteration restores the real compiler-derived eight-byte frame home without arbitrary padding.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_0012A050.s",
+        "sha256": "F74BD77207610BB9B622AB1E8A8F49677495B7A5F8C8183B5FC0D04D67012213"
+      },
+      {
+        "path": "src/lib/func_001960A8.c",
+        "sha256": "8F53D7CCC48131CB842683D65A65001A2DFDB242D634547BCE1242B843A31874"
+      },
+      {
+        "path": "docs/WORKFLOW.md",
+        "sha256": "0ACD259116DEC62C74C01CC49291B8A4377734FCD49281BBDD9FC5D7455598EA"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Nonexact research intermediate; not selected or canonical-linked. Numeric strides/bounds and the partial +0xA8 interface are static observations, not runtime discovery or capacity claims.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Derive all five loops independently from the full ROM body. Index D_801F0CB0 directly so the pinned loop pass strength-reduces its pointer after the count guard. Keep the second region base as a u32 address before its two byte offsets. Reverse-index the120 halfwords from D_801953F4[119] to[0], matching live801954E2 down through801953F4 without a typed-pointer byte/element stride error. Keep the post-clear bit7 publication and all six clear/free/interface calls. This intermediate still reuses one record cursor for the52-byte and25-byte loops."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 1722,
+      "sha256": "94422B33B4996C7460EADA78ABFA93ABB84D6B7DAF60E9C5D40A1253DDF0A837"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "2FAA20ADB002030002B775899BDDBBFCEA9B60EAC26C574CF249609DCEFED65C"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-30-func_0012A050-1c143243c0.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

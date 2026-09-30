@@ -814,7 +814,9 @@
     { "name": "D_801EE618", "address": "0x801EE618" },
     { "name": "D_801EE620", "address": "0x801EE620" },
     { "name": "D_801EE628", "address": "0x801EE628" },
-    { "name": "D_801EE630", "address": "0x801EE630" }
+    { "name": "D_801EE630", "address": "0x801EE630" },
+    { "name": "D_801953F4", "address": "0x801953F4" },
+    { "name": "D_801974DE", "address": "0x801974DE" }
   ],
   "targets": [
     {
@@ -40640,6 +40642,53 @@
         { "offset": "0x0000021C", "type": "R_MIPS_26", "symbol": "func_0012E968", "section": ".rel.text" },
         { "offset": "0x00000274", "type": "R_MIPS_HI16", "symbol": "D_801969C2", "section": ".rel.text" },
         { "offset": "0x0000027C", "type": "R_MIPS_LO16", "symbol": "D_801969C2", "section": ".rel.text" }
+      ]
+    },
+    {
+      "symbol": "func_00128980",
+      "expectedRelocations": [
+        { "offset": "0x0000001C", "type": "R_MIPS_26", "symbol": "func_001072B8", "section": ".rel.text" }
+      ]
+    },
+    {
+      "symbol": "func_0012FB64",
+      "expectedRelocations": [
+        { "offset": "0x0000000C", "type": "R_MIPS_26", "symbol": ".text", "section": ".rel.text" },
+        { "offset": "0x00000030", "type": "R_MIPS_HI16", "symbol": "D_801F0CB0", "section": ".rel.text" },
+        { "offset": "0x00000038", "type": "R_MIPS_LO16", "symbol": "D_801F0CB0", "section": ".rel.text" }
+      ]
+    },
+    {
+      "symbol": "func_0012A050",
+      "expectedRelocations": [
+        { "offset": "0x00000000", "type": "R_MIPS_HI16", "symbol": "D_801F367C", "section": ".rel.text" },
+        { "offset": "0x00000004", "type": "R_MIPS_LO16", "symbol": "D_801F367C", "section": ".rel.text" },
+        { "offset": "0x00000024", "type": "R_MIPS_HI16", "symbol": "D_801F0CB0", "section": ".rel.text" },
+        { "offset": "0x00000028", "type": "R_MIPS_LO16", "symbol": "D_801F0CB0", "section": ".rel.text" },
+        { "offset": "0x00000030", "type": "R_MIPS_26", "symbol": "func_0010746C", "section": ".rel.text" },
+        { "offset": "0x00000044", "type": "R_MIPS_26", "symbol": "resource_free", "section": ".rel.text" },
+        { "offset": "0x00000050", "type": "R_MIPS_26", "symbol": "memset_00023780", "section": ".rel.text" },
+        { "offset": "0x00000058", "type": "R_MIPS_HI16", "symbol": "D_801F367C", "section": ".rel.text" },
+        { "offset": "0x0000005C", "type": "R_MIPS_LO16", "symbol": "D_801F367C", "section": ".rel.text" },
+        { "offset": "0x00000074", "type": "R_MIPS_HI16", "symbol": "D_80195560", "section": ".rel.text" },
+        { "offset": "0x00000078", "type": "R_MIPS_LO16", "symbol": "D_80195560", "section": ".rel.text" },
+        { "offset": "0x00000088", "type": "R_MIPS_26", "symbol": "memset_00023780", "section": ".rel.text" },
+        { "offset": "0x000000B4", "type": "R_MIPS_HI16", "symbol": "D_801953F4", "section": ".rel.text" },
+        { "offset": "0x000000B8", "type": "R_MIPS_LO16", "symbol": "D_801953F4", "section": ".rel.text" },
+        { "offset": "0x000000D0", "type": "R_MIPS_HI16", "symbol": "D_801974DE", "section": ".rel.text" },
+        { "offset": "0x000000D4", "type": "R_MIPS_LO16", "symbol": "D_801974DE", "section": ".rel.text" },
+        { "offset": "0x000000DC", "type": "R_MIPS_26", "symbol": "memset_00023780", "section": ".rel.text" },
+        { "offset": "0x000000F8", "type": "R_MIPS_HI16", "symbol": "D_801969B8", "section": ".rel.text" },
+        { "offset": "0x000000FC", "type": "R_MIPS_LO16", "symbol": "D_801969B8", "section": ".rel.text" },
+        { "offset": "0x00000104", "type": "R_MIPS_HI16", "symbol": "D_801969B9", "section": ".rel.text" },
+        { "offset": "0x0000010C", "type": "R_MIPS_LO16", "symbol": "D_801969B9", "section": ".rel.text" },
+        { "offset": "0x0000011C", "type": "R_MIPS_26", "symbol": "memset_00023780", "section": ".rel.text" }
+      ]
+    },
+    {
+      "symbol": "func_00128D50",
+      "expectedRelocations": [
+        { "offset": "0x0000000C", "type": "R_MIPS_26", "symbol": "func_00128050", "section": ".rel.text" }
       ]
     }
   ]

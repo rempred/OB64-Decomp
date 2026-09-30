@@ -1,0 +1,92 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "3A6CA7D4CCBE29DDADB1F83A0EF03E169748DF71CC890F39031E07BC363DD9EE",
+  "observationId": "D85774A1E86F7239574029537F409393244BD1A55B9818FF566FAD2595E00FFA",
+  "symbol": "func_0012FB64",
+  "authored": {
+    "context": "MagentaTiger is sole source/build writer on main529e727c. The complete thirteen-member remaining pursuit group is open; these focused checks do not establish complete-wave acceptance.",
+    "effects": [
+      "body-coverage",
+      "named-constant-lifetime",
+      "register-allocation",
+      "canonical-relocations",
+      "sole-owner",
+      "target-bytes"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "1D1B6458AF8E46BD6D35AE2FB0E265A533AB9C01A3C8A6990794EFB82C434548",
+      "sourceSha256": "D790305FDF16DEBF96C38B0E7484631926D13710FB02F097D8460AD4DF6C7A3F"
+    },
+    "label": "named-terminator-full-owner-linked-exact",
+    "observedEffect": "Mechanically PURE_C. Untouched pinned cc1/GAS emits84 bytes/21 instructions/frame0 with zero aligned relocation-masked word differences. Canonical focused diff passes full sole C ownership of .ob64.r2440 at ROM0x0012FB64..0x0012FBB8/live0x801DB424..0x801DB478: one84-byte contribution, no fallback, no fill, all3 actual relocations match (internal R_MIPS_26 zero-exit and D_801F0CB0 HI/LO), zero differing linked words/bytes. Target SHA AC87A8E12A3DDBAFD3D12B6317CA7D7E612525EDDF988D712AAF0347A5512EA6. The final zero word is an architectural return delay slot and remains produced, not added padding. Source assembly mode is section-assigned with compilerAssemblyRewritten false.",
+    "parentCandidateId": "BF522F9FB69529220C7D16C266DB5526E84BF5EBC1C26081EBC12DB8DB6F93F8",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_0012FB64.s",
+        "sha256": "F75274BB19147C30335D3507673286950DDB6C86B9A6E679233E339EFEA38965"
+      },
+      {
+        "path": "docs/WORKFLOW.md",
+        "sha256": "0ACD259116DEC62C74C01CC49291B8A4377734FCD49281BBDD9FC5D7455598EA"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Provisional exact PURE_C development candidate only. The other twelve assigned pursuit members and one combined final full-ROM verifier still gate complete-wave acceptance. No runtime list-domain, capacity or stronger field/name claim follows.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Name the -1 terminator as an s32 local before the null check/search, retaining its lifetime across both list tests. Keep the post-search table query and the complete four-byte cursor stride from the parent source. Explain the compiler lifetime requirement near the C."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 629,
+      "sha256": "1D1B6458AF8E46BD6D35AE2FB0E265A533AB9C01A3C8A6990794EFB82C434548"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "D790305FDF16DEBF96C38B0E7484631926D13710FB02F097D8460AD4DF6C7A3F"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-30-func_0012FB64-3a6ca7d4cc.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

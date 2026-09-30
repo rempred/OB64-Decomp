@@ -1,0 +1,91 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "BF522F9FB69529220C7D16C266DB5526E84BF5EBC1C26081EBC12DB8DB6F93F8",
+  "observationId": "0C0A32DB4C597047D8065BA8969E004251BA935ACDC0DED16FC8B3D4AB415CE3",
+  "symbol": "func_0012FB64",
+  "authored": {
+    "context": "MagentaTiger is sole source/build writer on main529e727c. The complete thirteen-member remaining pursuit group is open; these focused checks do not establish complete-wave acceptance.",
+    "effects": [
+      "body-coverage",
+      "pointer-stride",
+      "loop-exit",
+      "address-lifetime",
+      "register-allocation"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "53CEBF53BAD9C168236D038B7905FDEB27D5FAB42C1EA9C8D890A77CA59C5EDE",
+      "sourceSha256": "CC8DE75545987512154EAE4FF04769DF51F772A76F7CE9420A9D844DE27349DF"
+    },
+    "label": "lookup-after-search-literal-terminator",
+    "observedEffect": "Mechanically PURE_C. Untouched pinned cc1/GAS scratch has84 bytes/21 instructions/frame0, covering the complete original owner including its return delay slot. Keeping the table lookup after the search removes the hoisted lookup/address work, but five aligned relocation-masked words differ: the initial list/value allocation, sentinel setup placement and the null-exit delay differ. All list/null/terminator/index/0x31 tests are represented.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_0012FB64.s",
+        "sha256": "F75274BB19147C30335D3507673286950DDB6C86B9A6E679233E339EFEA38965"
+      },
+      {
+        "path": "docs/WORKFLOW.md",
+        "sha256": "0ACD259116DEC62C74C01CC49291B8A4377734FCD49281BBDD9FC5D7455598EA"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "This useful intermediate is nonexact and was not production-selected or canonical-linked. The s32 return type and unchecked index/list domain remain literal interfaces; observed0/1 outputs do not narrow the ABI. The complete thirteen-member wave is open.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Independently reconstruct the full framed-free list search with one s32 load per four-byte entry. Test the literal -1 terminator before comparing the requested index; break on the index, and calculate the runtime-table address only after the search succeeds. Correct the rough generated pointer +=4 into cursor++: the assembly increment is four bytes, not four s32 elements."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 599,
+      "sha256": "53CEBF53BAD9C168236D038B7905FDEB27D5FAB42C1EA9C8D890A77CA59C5EDE"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "CC8DE75545987512154EAE4FF04769DF51F772A76F7CE9420A9D844DE27349DF"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-30-func_0012FB64-bf522f9fb6.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

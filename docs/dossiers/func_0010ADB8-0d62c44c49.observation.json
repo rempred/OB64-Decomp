@@ -1,0 +1,122 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "0D62C44C49035EB2F7EBFBA5027B718141C4886D26EB72A7E32753B7C2CC7CDD",
+  "observationId": "54F8443B50CD2631D90D27A36171976BD5E83ADC4D79D1E4E33DB2B8C4E67C23",
+  "symbol": "func_0010ADB8",
+  "authored": {
+    "context": "MagentaTiger sole source/build owner on main529e727c; complete first W4 five-member wave remains open and ASM production is unchanged. GoldOx488 provided grounded table/count/mask/use-site and duplicated-case14 allocation observations; root independently reconstructed the source from the complete ROM body and project evidence, then replayed it with pinned tools.",
+    "effects": [
+      "body-coverage",
+      "record-layout",
+      "halfword-lifetime",
+      "positive-gate",
+      "loop-hoisting",
+      "register-allocation",
+      "isolated-relocations",
+      "table-payload"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "B15C633F378B6AEAAE4A4EE7DD1923E709FB37418842524D028FA489FAB9BB8C",
+      "sourceSha256": "71D6824C6046CFD058BA4C972860EE8A379BE2F72DA05C31C1AC0334F08328DA"
+    },
+    "label": "record-table-halfword-mask-body-exact",
+    "observedEffect": "Mechanically PURE_C. Unmodified pinned cc1/GAS raw scratch emits640 executable bytes/160 instructions/frame40 and zero aligned relocation-masked word differences. Normal watch0D62C44C49035EB2F7EBFBA5027B718141C4886D26EB72A7E32753B7C2CC7CDD has zero opcode/register/stack/control-polarity differences;24 symbolic instruction differences comprise22 relocation/immediate comparisons and two originally owned tail words. A bounded actual pinned-ld research link at the accepted live code/table addresses authenticates the normalized Rev0 ROM and reproduces every executable byte, SHA0EB2E56BDF7595F571573F2408F20314AE60DBE117C875B3DE006DB83E27D42A, and all19 table pointers, payload SHA C23AB7DBA3F199E62A37191E1A8F71A1E8209CB16D2DBA772C8F21A196105A5B. Its80-byte allocated table section contains76 pointer bytes plus4 native alignment zeros. All22 text relocations, including both internal jumps and table HI/LO, are actual compiler relocations. The record loop has125 early real insns; matched constants/table/count and use-site addresses move in retail order. No opcode or padding was fabricated.",
+    "parentCandidateId": "C28C05A4AB3F32FBC7A2A9C719B69A6A5F5A57FE597FB01F54495EA7362E664D",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_0010ADB8.s",
+        "sha256": "C69EFDED327529E204859110E61CC5A6C07C2A89A6A441C41871E6227586FC6C"
+      },
+      {
+        "path": "asm/original/rev0/lib/table_001428A8.s",
+        "sha256": "9D8ECEA8F9D25B071265106CD5B0CFE98CDEF148E928F63AEA97C944A3763207"
+      },
+      {
+        "path": "src/lib/func_001960A8.c",
+        "sha256": "8F53D7CCC48131CB842683D65A65001A2DFDB242D634547BCE1242B843A31874"
+      },
+      {
+        "path": "config/overlays/us_rev0.json",
+        "sha256": "AF454D26C8453ED2393731A4C19C4D23E655B0601BF102D9A3D55731101BFB9B"
+      },
+      {
+        "path": "docs/WORKFLOW.md",
+        "sha256": "0ACD259116DEC62C74C01CC49291B8A4377734FCD49281BBDD9FC5D7455598EA"
+      },
+      {
+        "path": "docs/AUDIT.md",
+        "sha256": "764C5921A6A3987667FFA832EA76B25EB853E8322455E67F420251D564E7C97D"
+      },
+      {
+        "path": "docs/MATCHING_WORKBENCH.md",
+        "sha256": "01421AA168252E82DC7531020B96BE7C3BD411C2AA3AB30FFDB9B3091BB383DB"
+      },
+      {
+        "path": "docs/Plans/compilation-groups-design.md",
+        "sha256": "BE38B960535FA8EAA710358168F6281FDC2AB0263D0B6661368EE2B42A96B379"
+      },
+      {
+        "path": "docs/Plans/compilation-groups-design-r2.md",
+        "sha256": "BEEC1A063C84EFDFD593B01A04801CD0995F863FAE2396AC32986362ECEEA03A"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "This is executable-body and pointer-payload agreement in an isolated research link, not canonical matching acceptance. The accepted648-byte p2253 owner also contains8 trailing zero bytes, not produced by this640-byte C section. The76-byte table p2554 has no approved auxiliary contract; its80-byte raw section/prefix and adjacent p2555 zero owner require their proper independent contract. Existing native group mode requires contiguous/native-aligned owners and no auxiliary sections, so it is not directly applicable to this standalone unaligned/table-bearing owner. Preserve all original owners, raw padding, compiler identity and generic/adversarial gates while routing the representation/activation to SilentCrane. No shared tool/config/owner change, full verifier, PURE_C wave acceptance, runtime capacity, resource ID validation or inherent-ASM/hybrid exception follows.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Use a per-TU table view with count at0, sixteen ten-byte rows occupying the bytes before the established masks at0xA2/0xA4; reference count directly in both guards; derive a u16 mask from the unchecked loaded ID; use the actual mask fields at their case-local use sites; keep case14 as its own positive eligible gate/test/OR instead of falling through. Use readable compound publications. Explain both the compiler allocation need and the unresolved resource/shift domain near the C."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 3119,
+      "sha256": "B15C633F378B6AEAAE4A4EE7DD1923E709FB37418842524D028FA489FAB9BB8C"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "71D6824C6046CFD058BA4C972860EE8A379BE2F72DA05C31C1AC0334F08328DA"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-30-func_0010ADB8-0d62c44c49.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
