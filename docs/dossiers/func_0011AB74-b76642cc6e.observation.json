@@ -1,0 +1,93 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "B76642CC6E3219B0B0D28F999F310772A60C9443D4B89465783A3FC83B671FD8",
+  "observationId": "10CDAC64EC1953846EB83FA570CA295ADEDD95B4F2D0F0FA9834B4533C9924F3",
+  "symbol": "func_0011AB74",
+  "authored": {
+    "context": "MagentaTiger / receiving Sol gpt-6.1-sol max, sole production source/build writer on main b7c636c2. Full twenty-member W5 movement wave; existing static interface prerequisite closed at bea1f7f6. Fresh intake empty, full96-byte/24-word owner and original caller ABI reconciled against current analysis hypotheses. Untouched pinned compiler/repaired assembler.",
+    "effects": [
+      "body-coverage",
+      "interface-evidence",
+      "compiler-observation"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "2704D7CB9697900F803B1D69EEF4B8A1EBE0A6B3CBD1D5CE33FBDFE9F027BEC5",
+      "sourceSha256": "EACA65A46836E348FF54B4D2A37E64BAA2866A9694C370408035D8F21B8FCACF"
+    },
+    "label": "complete-typed-mixed-abi-wrapper-exact-instructions",
+    "observedEffect": "Untouched corrected source remains mechanically PURE_C and emits exactly96/24/frame48 with ZERO masked differences and one call relocation. Type correction changes no generated instruction; exact instruction output alone did not validate the earlier names/types. Full builder/caller evidence supplies the bounded static types.",
+    "parentCandidateId": "2A12277F1FF6DC33DA92428D3FF6B180D9343D740C11B416229BE7AA006847BC",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_0011AB74.s",
+        "sha256": "4757C81D5D3B01B3EC11001AB1F18799C64EA37E7821F0AA691D6126A3F9A708"
+      },
+      {
+        "path": "docs/Plans/task-logs/astra-movement-interface-review-20260930.md",
+        "sha256": "69671F555059EFE5C291B4B6FA69726B31BC7EEF40081A1B878A57B132A2338C"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_0011AECC.s",
+        "sha256": "26B4009AC3947B869EC3C9E7411FDD6C65A00BAF246F26C79A3A7053F9839565"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Exact instruction research only. Canonical sole ownership, placement, actual call relocation and complete twenty-member final verification remain required. No new capacity, runtime interpolation or universal return-value claim.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Reconcile all five array slots and the count against the complete AECC builder: record08 is the third allocated f32 array, record14 stores the full count, and00/04/0C/10 are the other f32 array pointers. Correct the protected interpolation prototype and numeric field types while retaining the original f12/A1/A2/A3 interface and repeated unit+A4 reads. The prior byte-exact prototype misnamed08 as a count and treated14 as a pointer; it is retained only as an instruction-equivalent type counterexample."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 839,
+      "sha256": "2704D7CB9697900F803B1D69EEF4B8A1EBE0A6B3CBD1D5CE33FBDFE9F027BEC5"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "EACA65A46836E348FF54B4D2A37E64BAA2866A9694C370408035D8F21B8FCACF"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-30-func_0011AB74-b76642cc6e.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

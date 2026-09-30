@@ -1,0 +1,89 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "2A12277F1FF6DC33DA92428D3FF6B180D9343D740C11B416229BE7AA006847BC",
+  "observationId": "6161C1D330C1EA9530D0FADF466E63A299355173B84EC6421F7833AF28527D7B",
+  "symbol": "func_0011AB74",
+  "authored": {
+    "context": "MagentaTiger / receiving Sol gpt-6.1-sol max, sole production source/build writer on main b7c636c2. Full twenty-member W5 movement wave; existing static interface prerequisite closed at bea1f7f6. Fresh intake empty, full96-byte/24-word owner and original caller ABI reconciled against current analysis hypotheses. Untouched pinned compiler/repaired assembler.",
+    "effects": [
+      "body-coverage",
+      "interface-evidence",
+      "compiler-observation"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "197646FAD0CA842C92B1DA143E756EF113EFABF292DEBD315EE92E43D98FB53F",
+      "sourceSha256": "87D4C43D048BA7C9011D6407C9BA9C02AEBDB6BBEEEE0F97E1338C379C62D347"
+    },
+    "label": "complete-mixed-abi-wrapper-exact-instructions",
+    "observedEffect": "Mechanically PURE_C. First untouched comparison emits exactly96 bytes/24 words/frame48 with ZERO relocation-masked instruction differences and one call relocation. All original reads, five outgoing stack slots, mixed ABI and return body are covered. Generator integer-only hypotheses are incomplete ABI evidence; the source uses the independently reviewed float interface.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_0011AB74.s",
+        "sha256": "4757C81D5D3B01B3EC11001AB1F18799C64EA37E7821F0AA691D6126A3F9A708"
+      },
+      {
+        "path": "docs/Plans/task-logs/astra-movement-interface-review-20260930.md",
+        "sha256": "69671F555059EFE5C291B4B6FA69726B31BC7EEF40081A1B878A57B132A2338C"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Exact instruction research only. Canonical sole ownership, placement, actual call relocation and complete twenty-member final verification remain required. No new capacity, runtime interpolation or universal return-value claim.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Independently derive the complete wrapper with first f32 argument in f12, unit in a1 and two output pointers in a2/a3. Capture the original first record pointer, pass its word08 in a3 and its field00 in the first stack slot, while retaining four subsequent unit+A4 re-reads for fields04/0C/10/14. Numeric pointer views preserve all five outgoing stack words without stronger field names."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 849,
+      "sha256": "197646FAD0CA842C92B1DA143E756EF113EFABF292DEBD315EE92E43D98FB53F"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "87D4C43D048BA7C9011D6407C9BA9C02AEBDB6BBEEEE0F97E1338C379C62D347"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-30-func_0011AB74-2a12277f1f.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
