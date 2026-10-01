@@ -1,0 +1,93 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "CCBC698FA704F7F6EDB3F87728FCF93EBCDAE6C7828FD1DF6339E59211B0FD0F",
+  "observationId": "5A59A5044966B965FCF15C24AC7620AC33EE398EA9EC745E7A34814A0A69B1F2",
+  "symbol": "func_0014F300",
+  "authored": {
+    "context": "Joe-authorized Sol MagentaTiger/gpt-6.1-sol max remains sole production source/build writer on main975a1384. Full252-byte/63-word p2702 ROM14F300..14F3FC/live801FE190..801FE28C is reconciled, including all original calls/branches and return delay. Original ASM fallback remains preserved. Eight provisional focused-exact members now share one open TEN-member W6 wave; no final-wave verifier/full-ROM proof. Source/ABI/placement/toolchain inputs otherwise unchanged.",
+    "effects": [
+      "body-coverage",
+      "source-lifetime",
+      "compiler-observation"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "6B305CB0FDD0927F81DF0ED48B49CC2C44D9A8D6FF1375A73A3569585C22A2C9",
+      "sourceSha256": "1E7DBF704714C3F2163B636F82837B7FB329FB3F1B6F2A8B50DB88308B3669D1"
+    },
+    "label": "actual-classifier-result-consumed-in-each-class-table-branch",
+    "observedEffect": "Mechanical PURE_C pinned native252/63/frame40 vars0 GP5/FP0 args16, zero masked words. Sum pseudo74 increases from10 refs/live41/cross1 call to14/live42/cross2 source calls; pointer induction changes10/live32 to10/live33. Priority now allocates sumS0/cursorS1 before later tail merging; all12 saved-register words close, with one final emitted call. A control that duplicates both source calls but collects their byte into one common result carrier retains the original12 register differences, so duplicating source call sites alone is insufficient. Exactly one canonical focused check confirms complete sole252-byte C ownership, all5 actual relocations, no tail/fill/fallback/instruction rewrite and every linked byte exact. SourceSHA1E7DBF704714C3F2163B636F82837B7FB329FB3F1B6F2A8B50DB88308B3669D1; authenticated CPP1046 bytes SHA6B305CB0FDD0927F81DF0ED48B49CC2C44D9A8D6FF1375A73A3569585C22A2C9; targetSHAD35C66EC5C5DC2E5191868DCB25CA7757E13EC9C09C268CEFB9A275CEBD2676F; reportSHA892398D531F3B468FB7A814885F588CC47A22E5024FA7923F933A37244C8BD92. Existing D_801971F2 registry binding is reused without new aliases.",
+    "parentCandidateId": "A492E68527C47A67263511885E0630687DF33F8D89DD6F7BFAFBC678DDA1158C",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_0014F300.s",
+        "sha256": "8190C959C7C7A826754F1EFBF9ACA4A1C472647CE5809B6CCC752C4FD1A669AB"
+      },
+      {
+        "path": "src/lib/func_00043100.c",
+        "sha256": "FF83BDF50BEF827CFF55D1DCDC4A853BD2FD623B197ACAED7BD92DF354794CEF"
+      },
+      {
+        "path": "docs/Plans/task-logs/sol-squad-supply-policy-intake-20261001.md",
+        "sha256": "3003D0F5D5675F6846199E4FF9BA260AB3C4A5812DC2E4BDB3A93CE1DC6F017E"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Provisional focused exact only; the complete ten-member W6 final verifier/full-ROM gate remains open with B98 and469C producer gates. This is no ABI narrowing, historical-type/capacity/runtime claim, independent-review requirement, supported tooling defect or hybrid substitution.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Consume the real classifier byte result in each mutually exclusive class-table branch instead of joining the class arguments before summation. Keep both actual pointer/address calculations, the accepted two-argument byte-result helper, broad word function input/result, internal byte/halfword normalization and real five-slot loop. Compiler tail merging produces only one emitted classifier call. Remove unused extern declarations and explain the lifetime form near the C. No dummy operation, extra runtime call/read, register binding, volatile, padding or structural change."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 1046,
+      "sha256": "6B305CB0FDD0927F81DF0ED48B49CC2C44D9A8D6FF1375A73A3569585C22A2C9"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "1E7DBF704714C3F2163B636F82837B7FB329FB3F1B6F2A8B50DB88308B3669D1"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-01-func_0014F300-ccbc698fa7.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

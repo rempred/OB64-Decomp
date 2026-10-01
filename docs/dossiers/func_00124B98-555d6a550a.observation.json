@@ -1,0 +1,89 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "555D6A550A08BFE978E75F69B24833FACDAF97FA88D05EBA7858139E16B38AA9",
+  "observationId": "C94C1D372F298BA865951BBA1FC5FB45EE5E8FCDB177D4C4D05BC0E884E61E1C",
+  "symbol": "func_00124B98",
+  "authored": {
+    "context": "Joe-authorized Sol MagentaTiger/gpt-6.1-sol max remains sole production source/build writer on main975a1384. Astra602 bounded469C activation is frozen through one structural audit/review. These are permitted disjoint private source experiments only; no B98 production/config/tool inputs changed. Original p2374 remains1064 bytes:1060 executable plus4 original zeros, and original B98 ASM remains production. Full TEN-member W6 wave remains open; no normal final-wave verifier.",
+    "effects": [
+      "body-coverage",
+      "source-lifetime",
+      "compiler-observation"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "761CBB3961981AE83AA3CD8A974D8CBC5B994C4AE9CEFDEE73A25456E6C0F49B",
+      "sourceSha256": "80BE28E2C151D98AEEAB7E1585E934F6A7264EEB4D12E38BE3EAFE0DA44F4199"
+    },
+    "label": "real-point-call-arms-close-reloads-leave-store-order",
+    "observedEffect": "Mechanical PURE_C, native1060/265/frame112,5 aligned relocation-masked words: both original Y/Z reload words close, but the three point stores move ahead of the real flag AND/store at+298..2A8. The original saved GP roles remain. Qualifying only the flag read/store or only the three point stores as volatile retains these same5 words. Pinned sched.c read/true/anti/output-dependence treats a pair of volatile memories as dependent, so either qualifier alone does not supply the required relative store dependency.",
+    "parentCandidateId": "6B3665271026B5D0D05F566D439B165DC436DA0A337095225D5CDC29EA132C9B",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_00124B98.s",
+        "sha256": "32914F39CD1D63198E7F9B555F87ABABC72D56379F32B323342B0E7EF379005E"
+      },
+      {
+        "path": "docs/Plans/task-logs/sol-squad-supply-policy-intake-20261001.md",
+        "sha256": "3003D0F5D5675F6846199E4FF9BA260AB3C4A5812DC2E4BDB3A93CE1DC6F017E"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Informative5-word store-order counterexample, not selected. Original4-byte tail remains unproduced under the canonical standalone representation; no linked/canonical ownership or full-ROM acceptance.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Capture the real X/Y/Z values and invoke the existing1072B8 callback in both mutually exclusive actual point-adjustment arms. Leave the common clearing/publication stages after the arms. Compiler tail-merges the two C sites into one emitted callback. No runtime callback or memory access is added."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 5499,
+      "sha256": "761CBB3961981AE83AA3CD8A974D8CBC5B994C4AE9CEFDEE73A25456E6C0F49B"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "80BE28E2C151D98AEEAB7E1585E934F6A7264EEB4D12E38BE3EAFE0DA44F4199"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-01-func_00124B98-555d6a550a.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

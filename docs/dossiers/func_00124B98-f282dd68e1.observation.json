@@ -1,0 +1,89 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "F282DD68E124C5046DE1C8A3D25E4F85A5A72046F632D42F5B35E4A943737AFE",
+  "observationId": "F07566AAAC2EEFF3414EC07308A1230D7324B55194AF27D2F76A7FAB6A915E38",
+  "symbol": "func_00124B98",
+  "authored": {
+    "context": "Joe-authorized Sol MagentaTiger/gpt-6.1-sol max remains sole production source/build writer on main975a1384. Astra609 admits this specific source workaround under current source-quality rules, after bounded read-only access/control review and GoldOx608 correction of the supposed no-volatile ban. This is not canonical matching or group activation. Astra602 standalone469C inputs remain frozen through the ONE audit/integration review; full TEN-member W6 stays open and original B98 ASM remains production.",
+    "effects": [
+      "body-coverage",
+      "source-lifetime",
+      "compiler-observation"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "57AB15871FB0E0F35ADE2091BC4278E51E668D568D2D5DC7CCBB91C4EC80A65A",
+      "sourceSha256": "11FADCFC2F9DEA529A1426BA5AD4A017725D498DABB7B39617EF4654F52A6ED2"
+    },
+    "label": "ordered-real-accesses-with-pinned-compiler-arm-explanation",
+    "observedEffect": "Comment-adjusted sourceSHA 11FADCFC2F9DEA529A1426BA5AD4A017725D498DABB7B39617EF4654F52A6ED2 remains mechanical PURE_C1060/265/frame112/zero native masked words; all25 actual pinned ld relocations and entire executable body remain exact atSHA FDE131EFE4110518760A589BE4603B93F0A3C654BF630BA452AC13B04E661CB9. Source, CPP, compiler/as/object/actual-link identities are freshly bound to the changed private source. Neither types, widths, offsets, access count, actual control flow nor callback count changes. Native standalone.text1072 has12 natural zeros; canonical accepted owner still needs only4 and remains gated. Astra609 accepts the transparent specific source form, with no production or tooling activation.",
+    "parentCandidateId": "5D4C54D75F276AEA0FE99AE204ECD2D537C168AFE985569C876FE68740A6EB9A",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_00124B98.s",
+        "sha256": "32914F39CD1D63198E7F9B555F87ABABC72D56379F32B323342B0E7EF379005E"
+      },
+      {
+        "path": "docs/Plans/task-logs/sol-squad-supply-policy-intake-20261001.md",
+        "sha256": "3003D0F5D5675F6846199E4FF9BA260AB3C4A5812DC2E4BDB3A93CE1DC6F017E"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Commented source quality is admitted, but canonical sole-owner/source-object/full1064-owner/placement/full-ROM acceptance remains open. B98 stays ASM in production. Generic group+fixed-row auxiliary composition is explicitly agreed by GoldOx605/Sol606 and accepted as the next structural dependency by Astra609, without implementation release. Full TEN-member W6 final verifier remains pending.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Add Astra609 requested nearby explanation that the two genuine capture/callback arms preserve the pinned-compiler observed X/Y/Z reload pattern and later merge to one emitted callback. Preserve the existing qualifier explanation and all code. No original-qualifier/source-spelling, historical-TU, atomicity, synchronization or new runtime claim."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 5535,
+      "sha256": "57AB15871FB0E0F35ADE2091BC4278E51E668D568D2D5DC7CCBB91C4EC80A65A"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "11FADCFC2F9DEA529A1426BA5AD4A017725D498DABB7B39617EF4654F52A6ED2"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-01-func_00124B98-f282dd68e1.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

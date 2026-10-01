@@ -1,0 +1,104 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "358802933FDC9FCD58518888E91683943668F78743F1F24892A28F18FD87176F",
+  "observationId": "C040D8980A54FA7D52ACA5B74832E20C1E13C9DB490EE08F7DE4357E2AD146F5",
+  "symbol": "func_00124B98",
+  "authored": {
+    "context": "Joe-authorized Sol MagentaTiger/gpt-6.1-sol max remains sole production source/build writer on main975a1384. Astra609 admits this specific source workaround under current source-quality rules, after bounded read-only access/control review and GoldOx608 correction of the supposed no-volatile ban. This is not canonical matching or group activation. Astra602 standalone469C inputs remain frozen through the ONE audit/integration review; full TEN-member W6 stays open and original B98 ASM remains production.",
+    "effects": [
+      "body-coverage",
+      "compiler-observation"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "9986F313CF416BF7889ECFCE4F639693167F4594A212F6E16FFE2BBB9E0269F9",
+      "sourceSha256": "5F005B9E1B6AB900BE631C131C5D8C4CEDA0BE30A09F3EA150FADB481410A067"
+    },
+    "label": "commented-authenticated-three-function-native-producer",
+    "observedEffect": "Mechanical PURE_C; three actual native function symbols at offsets0/380/1656 with executable sizes380/1276/1060. Native16-aligned.text is2720 bytes:2716 executable plus4 natural terminal zero bytes. Complete native producer, all77 actual text relocations and46 actual table relocations are pinned-as/ld linked; ROM124520..124FC0 is entirely exact, including B98 complete1064-byte owner and original4-byte tail. Full native textSHA 86EE425454232FF939C1CD97EFDE3D7D2D9043F9147A3C870E5CC61BE2C79572. Native.rodata192 has two real92-byte tables, actual4+4 alignment zeros and rawSHA B5B04628570CC379AB545FDD9568866A4E7CDCC2362CDB5674DEC392A65AEEDB; both linked payload hashes equal original. Geometry and source evidence are not historical-TU proof. Existing group and auxiliary-projection contracts explicitly reject composition, independently verified by GoldOx605. Comment-adjusted group sourceSHA 5F005B9E1B6AB900BE631C131C5D8C4CEDA0BE30A09F3EA150FADB481410A067 retains all2720 actual native text bytes exact atSHA 86EE425454232FF939C1CD97EFDE3D7D2D9043F9147A3C870E5CC61BE2C79572, both92-byte table payload hashes and raw192-byte native RO SHA B5B04628570CC379AB545FDD9568866A4E7CDCC2362CDB5674DEC392A65AEEDB. Changed source/CPP/compiler/object/link identities are bound afresh; no code bytes or geometry changes.",
+    "parentCandidateId": "D44323B538A1611F947C0A3A60F62F000A28A94AC6B677C24788DA3B146B36BE",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_00124520.s",
+        "sha256": "B32A95FC7E7EC17DDC998963B67C687B56EF42DC7494004C8E2C33D36C529DE6"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_0012469C.s",
+        "sha256": "FEAA711C7596AB7790E2A1DD658A92CE81255CD1DDEB5B775A4C478400B3681D"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_00124B98.s",
+        "sha256": "32914F39CD1D63198E7F9B555F87ABABC72D56379F32B323342B0E7EF379005E"
+      },
+      {
+        "path": "asm/original/rev0/lib/table_00142D88.s",
+        "sha256": "C430DAD420C03F0718EF3C51D8F405F98B9B27A174E07BC3929E37040A2DB7D5"
+      },
+      {
+        "path": "asm/original/rev0/lib/table_00142DE8.s",
+        "sha256": "B548A17B485FC1F47273FB815744ACA634A0D3A7AE4A566E6D7A2ADE119AA70E"
+      },
+      {
+        "path": "docs/Plans/task-logs/sol-squad-469c-two-table-owner-proposal-20261001.md",
+        "sha256": "8E65C61EA4B300735FF780B0C0BB3830E176537C7841961A859C8FE9841C9D9A"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Informative complete native-producer research, not selected for production. Astra609 admits the specific source form and accepts the jointly supported composition gap, but implementation/activation is not released before the current602 standalone audit/integration review. Existing group and auxiliary contracts reject composition. All accepted rows/ASM fallbacks and current frozen production inputs stay unchanged. Canonical source/object/owner/placement/full-ROM gates and full TEN-member wave remain open.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Combine the independently derived real24520,469C,B98 functions into one private C translation unit in original order. Deduplicate identical typedefs/UNIT macro, preserve469C accepted D_801F0D98 array declaration and use its actual first element in B98 scalar expressions. Compiler input/assembly remains untouched, with no dummy function, prefix, added operation, fabricated padding or boundary change. The B98 form retains paired volatile views only on actual existing flag/point accesses; this remains research pending source-quality reconciliation. Add only the Astra609 nearby callback-arm explanation to the B98 component. The specific qualifier/control form is now admitted under current source-quality rules; group representation and activation remain separate."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 13040,
+      "sha256": "9986F313CF416BF7889ECFCE4F639693167F4594A212F6E16FFE2BBB9E0269F9"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "5F005B9E1B6AB900BE631C131C5D8C4CEDA0BE30A09F3EA150FADB481410A067"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-01-func_00124B98-358802933f.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
