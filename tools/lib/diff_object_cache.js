@@ -3,6 +3,7 @@
 const crypto = require('crypto');
 const fs = require('fs');
 const textContract = require('./text_contract');
+const auxiliaryProjection = require('./auxiliary_projection');
 const compilationGroups = require('./compilation_groups');
 const path = require('path');
 const { projectInterior } = require('./auxiliary_interior');
@@ -47,6 +48,7 @@ const IMPLEMENTATION_FILES = Object.freeze([
   'tools/lib/active_targets.js',
   'tools/lib/logical_functions.js',
   'tools/lib/auxiliary_interior.js',
+  'tools/lib/auxiliary_projection.js',
   'tools/lib/diff_object_cache.js',
   'tools/lib/diff_profile.js',
   'tools/lib/elf_text_split.js',
@@ -405,7 +407,7 @@ function createCacheKeyMaterial(options) {
         executable: executableIdentity(assembler, 'assembler'),
         flags: [...assemblerFlags],
         input: target.nativeTextTail || target.compilationGroup ? 'untouched-compiler-assembly' : 'adjusted-assembly',
-        output: target.compilationGroup || targetTextOwners(target).length > 1 ? 'assembler-object' : 'source-object',
+        output: target.auxiliaryProjection || target.compilationGroup || targetTextOwners(target).length > 1 ? 'assembler-object' : 'source-object',
       },
       textSplit: Boolean(target.compilationGroup) || targetTextOwners(target).length > 1,
       auxiliarySourceObjectPrefixSelection: (target.auxiliarySections || [])
@@ -433,7 +435,7 @@ function artifactSpecifications(target) {
     { name: 'adjusted.s', destination: `generated/c/${symbol}.s` },
     { name: 'source-object.o', destination: `objects/c/${symbol}.source-object.o` },
   ];
-  if (target.compilationGroup || targetTextOwners(target).length > 1) {
+  if (target.auxiliaryProjection || target.compilationGroup || targetTextOwners(target).length > 1) {
     specs.push({ name: 'assembler-object.o', destination: `objects/c/${symbol}.assembler-object.o` });
   }
   specs.push({ name: 'final.o', destination: `objects/c/${symbol}.o` });
@@ -637,6 +639,7 @@ function inspectCompiledTargetArtifacts(options) {
   }
 
   let splitResult = null;
+  if (target.auxiliaryProjection && !auxiliaryProjection.project(bytesByName['assembler-object.o'], target).buffer.equals(bytesByName['source-object.o'])) fail('projected source-object bytes drift');
   if (targetTextOwners(target).length > 1) {
     splitResult = splitRelocatableTextSection(
       bytesByName['assembler-object.o'],
@@ -715,8 +718,8 @@ function inspectCompiledTargetArtifacts(options) {
     objectSha256: sha256File(files['final.o']),
     proofObjectRelative: `objects/c/${target.symbol}.source-object.o`,
     proofObjectSha256: sha256File(files['source-object.o']),
-    assemblerObjectRelative: splitResult ? `objects/c/${target.symbol}.assembler-object.o` : null,
-    assemblerObjectSha256: splitResult ? sha256File(files['assembler-object.o']) : null,
+    assemblerObjectRelative: target.auxiliaryProjection || splitResult ? `objects/c/${target.symbol}.assembler-object.o` : null,
+    assemblerObjectSha256: target.auxiliaryProjection || splitResult ? sha256File(files['assembler-object.o']) : null,
     compilerAssemblyRelative: `generated/c/${target.symbol}.compiler.s`,
     compilerAssemblySha256: sha256File(files['compiler.s']),
     linkedAssemblyRelative: `generated/c/${target.symbol}.s`,

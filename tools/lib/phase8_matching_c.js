@@ -7,6 +7,7 @@ const {
   projectInterior, interiorRecord, interiorRecords, buildInteriorObject, verifyInteriorArtifacts,
 } = require('./auxiliary_interior');
 const textContract = require('./text_contract');
+const auxiliaryProjection = require('./auxiliary_projection');
 const compilationGroups = require('./compilation_groups');
 const {
   ROOT,
@@ -1728,7 +1729,7 @@ function compileTarget(phase8, target, output, compiler, assembler, objcopy, opt
   const linkedAssembly = path.join(generatedRoot, target.symbol + '.s');
   const objectFile = path.join(objectRoot, target.symbol + '.o');
   const proofObjectFile = path.join(objectRoot, target.symbol + '.source-object.o');
-  const assemblerObjectFile = targetTextOwners(target).length > 1
+  const assemblerObjectFile = target.auxiliaryProjection || targetTextOwners(target).length > 1
     ? path.join(objectRoot, target.symbol + '.assembler-object.o')
     : proofObjectFile;
   const sourceRelative = safeRelative(target.source, 'target source');
@@ -1763,6 +1764,9 @@ function compileTarget(phase8, target, output, compiler, assembler, objcopy, opt
   ], { cwd: output });
 
   let splitResult = null;
+  if (target.auxiliaryProjection) {
+    fs.writeFileSync(proofObjectFile, auxiliaryProjection.project(fs.readFileSync(assemblerObjectFile), target).buffer);
+  }
   if (targetTextOwners(target).length > 1) {
     splitResult = splitRelocatableTextSection(
       fs.readFileSync(assemblerObjectFile),
@@ -1949,8 +1953,8 @@ function compileTarget(phase8, target, output, compiler, assembler, objcopy, opt
     objectSha256: sha256File(objectFile),
     proofObjectRelative: compilationGroups.objectPath(target, '.source-object.o'),
     proofObjectSha256: sha256File(proofObjectFile),
-    assemblerObjectRelative: splitResult ? compilationGroups.objectPath(target, '.assembler-object.o') : null,
-    assemblerObjectSha256: splitResult ? sha256File(assemblerObjectFile) : null,
+    assemblerObjectRelative: target.auxiliaryProjection || splitResult ? compilationGroups.objectPath(target, '.assembler-object.o') : null,
+    assemblerObjectSha256: target.auxiliaryProjection || splitResult ? sha256File(assemblerObjectFile) : null,
     compilerAssemblyRelative: compilationGroups.assemblyPath(target),
     compilerAssemblySha256: sha256File(compilerAssembly),
     linkedAssemblyRelative: compilationGroups.assemblyPath(target, '.s'),
@@ -2012,7 +2016,7 @@ function deriveSourceObjectProof(phase8, target, output, classification, linkedE
   const sectionArtifact = fileIdentity(output, sectionRelative, 'section-adjusted assembly');
   const objectArtifact = fileIdentity(output, objectRelative, 'matching C object');
   const linkedObjectArtifact = fileIdentity(output, linkedObjectRelative, 'linked matching C object');
-  const assemblerRelative = target.compilationGroup || targetTextOwners(target).length > 1
+  const assemblerRelative = target.auxiliaryProjection || target.compilationGroup || targetTextOwners(target).length > 1
     ? compilationGroups.objectPath(target, '.assembler-object.o')
     : null;
   const assemblerArtifact = assemblerRelative
@@ -2028,7 +2032,9 @@ function deriveSourceObjectProof(phase8, target, output, classification, linkedE
   }
 
   if (assemblerArtifact) {
-    const reproduced = target.compilationGroup ? compilationGroups.project(
+    const reproduced = target.auxiliaryProjection ? auxiliaryProjection.project(
+      fs.readFileSync(resolveRelative(output, assemblerRelative, 'native auxiliary assembler object')), target)
+      : target.compilationGroup ? compilationGroups.project(
       fs.readFileSync(resolveRelative(output, assemblerRelative, 'native assembler object')), target.compilationGroup)
       : splitRelocatableTextSection(
       fs.readFileSync(resolveRelative(output, assemblerRelative, 'unsplit assembler object')),
@@ -2199,6 +2205,7 @@ function deriveSourceObjectProof(phase8, target, output, classification, linkedE
     schemaVersion: 4,
     kind: 'ob64-source-to-object-load-evidence',
     target: {
+      ...(target.auxiliaryProjection ? { auxiliaryProjection: target.auxiliaryProjection } : {}),
       symbol: target.symbol,
       sectionName: target.sectionName,
       ownerSections: targetTextOwners(target).map((owner) => owner.sectionName),
@@ -2223,13 +2230,15 @@ function deriveSourceObjectProof(phase8, target, output, classification, linkedE
     },
     assemblyContract: {
       compilerAssemblyRewritten: false,
-      permittedAdjustment: target.nativeTextTail || target.compilationGroup ? 'none; untouched native compiler assembly'
+      permittedAdjustment: target.auxiliaryProjection ? 'assign native compiler occurrences to the first auxiliary anchor; project complete payload rows while retaining original ASM padding'
+        : target.nativeTextTail || target.compilationGroup ? 'none; untouched native compiler assembly'
         : sourceObjectPrefixSelections > 0
           ? basePermittedAdjustment + '; authenticate the complete aligned auxiliary source-object section and select only its declared zero-offset prefix for linkage'
           : basePermittedAdjustment,
       auxiliarySectionCount: auxiliaryProofs.length,
+      ...(target.auxiliaryProjection ? { auxiliaryProjection: true } : {}),
       ...(sourceObjectPrefixSelections > 0 ? { sourceObjectPrefixSelections } : {}),
-      relocatableContainerSplit: Boolean(target.compilationGroup) || targetTextOwners(target).length > 1,
+      relocatableContainerSplit: Boolean(target.auxiliaryProjection) || Boolean(target.compilationGroup) || targetTextOwners(target).length > 1,
       splitInstructionBytesRewritten: false,
       classifiedBytesAreCompilerInput: true,
     },
@@ -2349,6 +2358,34 @@ function validateSourceObjectProofBytes(actualBytes, expectedBytes) {
       || !Array.isArray(actual.finalTarget.auxiliarySections)
       || Object.prototype.hasOwnProperty.call(actual.assemblyContract, 'adapterApplied')) {
     fail('source-to-object proof schema drift');
+  }
+  const projected = actual.target.auxiliaryProjection;
+  const projectionEvidence = actual.objectEvidence.auxiliaryProjection;
+  if (projected || projectionEvidence || actual.assemblyContract.auxiliaryProjection || actual.objectEvidence.schemaVersion === 4) {
+    const projectionKeys = ['schemaVersion', 'contract', 'retained', 'implementationSha256',
+      'nativeSections', 'nativeSymbols', 'nativeRelocationSections', 'nativeObjectSha256',
+      'projectedObjectSha256', 'nativeSectionSha256', 'nativeRelocations', 'references',
+      'payloadBytes', 'checkOnlyBytes'];
+    const projectionHashes = ['implementationSha256', 'nativeObjectSha256', 'projectedObjectSha256', 'nativeSectionSha256'];
+    if (!projected || actual.assemblyContract.auxiliaryProjection !== true || actual.objectEvidence.schemaVersion !== 4
+        || !textContract.exactKeys(projectionEvidence, projectionKeys) || projectionEvidence.schemaVersion !== 1
+        || projectionHashes.some(key => typeof projectionEvidence[key] !== 'string' || !/^[0-9A-F]{64}$/.test(projectionEvidence[key]))
+        || !isDeepStrictEqual(projected, projectionEvidence.contract)
+        || !Array.isArray(projectionEvidence.nativeRelocations) || !Array.isArray(projectionEvidence.references)
+        || !Array.isArray(projectionEvidence.retained) || !Array.isArray(projectionEvidence.nativeSections)
+        || !Array.isArray(projectionEvidence.nativeSymbols) || !Array.isArray(projectionEvidence.nativeRelocationSections)
+        || !actual.artifacts.assemblerObject || !actual.artifacts.object || !actual.objectEvidence.artifacts
+        || projectionEvidence.nativeObjectSha256 !== actual.artifacts.assemblerObject.sha256
+        || projectionEvidence.projectedObjectSha256 !== actual.artifacts.object.sha256
+        || projectionEvidence.nativeSectionSha256 !== projected.expectedObjectSha256
+        || !isDeepStrictEqual(actual.artifacts.assemblerObject, actual.objectEvidence.artifacts.unsplitAssemblerObject)
+        || !isDeepStrictEqual(actual.artifacts.object, actual.objectEvidence.artifacts.rawObject)
+        || !Array.isArray(actual.linkEvidence.auxiliaryProjectionRetained)
+        || actual.assemblyContract.relocatableContainerSplit !== true
+        || projectionEvidence.payloadBytes !== actual.finalObject.auxiliarySections.reduce((sum, row) => sum + row.objectBytes, 0)
+        || projectionEvidence.payloadBytes + projectionEvidence.checkOnlyBytes !== projected.bytes) {
+      fail('source-to-object auxiliary projection evidence schema drift');
+    }
   }
   const selectedAuxiliary = actual.finalObject.auxiliarySections.filter((record) => (
     record && Object.prototype.hasOwnProperty.call(record, 'sourceObjectPrefix')
@@ -4335,6 +4372,7 @@ function pathIndependentRuntime(runtime) {
 }
 
 module.exports = {
+  deriveSourceObjectProof,
   CONFIG_PATH,
   LINKAGE_CONFIG_PATH,
   MULTI_OWNER_CONFIG_PATH,

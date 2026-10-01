@@ -1,4 +1,5 @@
 'use strict';
+const auxiliaryProjection = require('./auxiliary_projection');
 
 const fs = require('fs');
 const path = require('path');
@@ -103,6 +104,10 @@ function inputTarget(target) {
 }
 function inputSection(target, outputSection) { return target.nativeTextTail ? '.text' : outputSection; }
 function assemblerInput(compilerBytes, target, adjust, options = {}) {
+  if (target.auxiliaryProjection) {
+    if (options.allowAuxiliaryReadOnlySections || options.legalizeCop1BinaryInstructions) fail("projection cannot use scratch allowances");
+    return auxiliaryProjection.assembly(compilerBytes, target, adjust);
+  }
   if (target.compilationGroup) {
     if (options.allowAuxiliaryReadOnlySections || options.legalizeCop1BinaryInstructions || options.auxiliarySections?.length) fail('group assembly allowances');
     adjust(compilerBytes, target.sectionName, {});
@@ -231,13 +236,19 @@ function deriveObjectEvidence(target, root, artifactFiles = null) {
     assemblerInput: identity('assemblerInput', 'generated/c/' + symbol + '.s'),
     rawObject: identity('rawObject', 'objects/c/' + symbol + '.source-object.o'),
     strippedObject: identity('strippedObject', 'objects/c/' + symbol + '.o'),
-    unsplitAssemblerObject: textOwners(target).length > 1 ? identity('unsplitAssemblerObject', 'objects/c/' + symbol + '.assembler-object.o') : null,
+    unsplitAssemblerObject: target.auxiliaryProjection || textOwners(target).length > 1 ? identity('unsplitAssemblerObject', 'objects/c/' + symbol + '.assembler-object.o') : null,
   };
   const { adjustSectionAssembly, relocationRecords, rawRelocationRecords } = require('./phase8_matching_c');
   const compiler = fs.readFileSync(fileFor('compilerAssembly', artifacts.compilerAssembly));
   const input = fs.readFileSync(fileFor('assemblerInput', artifacts.assemblerInput));
   if (!assemblerInput(compiler, target, adjustSectionAssembly, { auxiliarySections: target.auxiliarySections || [] }).equals(input)) fail('assembler input provenance');
   const raw = parseElfFile(fileFor('rawObject', artifacts.rawObject)), stripped = parseElfFile(fileFor('strippedObject', artifacts.strippedObject));
+  let projectionEvidence = null;
+  if (target.auxiliaryProjection) {
+    const result = auxiliaryProjection.project(fs.readFileSync(fileFor("unsplitAssemblerObject", artifacts.unsplitAssemblerObject)), target);
+    if (!result.buffer.equals(fs.readFileSync(fileFor("rawObject", artifacts.rawObject)))) fail("auxiliary raw-to-projected reconstruction");
+    projectionEvidence = result.evidence;
+  }
   const allocation = native ? { raw: nativeObjectAllocationEvidence(raw), stripped: nativeObjectAllocationEvidence(stripped, false) } : null;
   const rawOwners = ownerEvidence(raw, contract), strippedOwners = ownerEvidence(stripped, contract);
   if (!same(rawOwners.map((r) => r.record), strippedOwners.map((r) => r.record))) fail('ancillary removal changed owners');
@@ -251,7 +262,8 @@ function deriveObjectEvidence(target, root, artifactFiles = null) {
   const loadSections = new Set([...contract.owners.map((owner) => '.rel' + owner.inputSection), ...(target.auxiliarySections || []).map((section) => '.rel' + section.outputSection)]);
   const tail = tailEvidence(contract, rawOwners, normalizedRelocations);
   tailEvidence(contract, strippedOwners, normalizedRelocations);
-  return { schemaVersion: native ? 2 : 1, ...(native ? { allocation } : {}), textContractSha256: hash(contract), artifacts,
+  return { schemaVersion: projectionEvidence ? 4 : native ? 2 : 1, ...(native ? { allocation } : {}),
+    ...(projectionEvidence ? { auxiliaryProjection: projectionEvidence } : {}), textContractSha256: hash(contract), artifacts,
     rawOwners: rawOwners.map((r) => r.record), strippedOwners: strippedOwners.map((r) => r.record), rawFunctions, strippedFunctions,
     rawRelocations: rawRelocations.filter((r) => loadSections.has(r.section)), normalizedRelocations,
     discardedAncillaryRelocations: rawRelocations.filter((r) => !loadSections.has(r.section)), tail,
@@ -323,7 +335,8 @@ function deriveLinkEvidence(target, root, canonicalBaserom) {
     return { ...record, rawWord: rawBytes.readUInt32BE(offset), linkedWord: linkedBytes.readUInt32BE(offset),
       expectedWord: retailBytes.readUInt32BE(offset), linkedWordExact: linkedBytes.readUInt32BE(offset) === retailBytes.readUInt32BE(offset) };
   });
-  return { schemaVersion: target.nativeTextTail ? 2 : 1, ...(allocation ? { allocation } : {}), textContractSha256: hash(contract), owners, mapContributions, functions,
+  return { schemaVersion: target.nativeTextTail ? 2 : 1, ...(allocation ? { allocation } : {}),
+    ...(target.auxiliaryProjection ? { auxiliaryProjectionRetained: auxiliaryProjection.linkedEvidence(target, root, context) } : {}), textContractSha256: hash(contract), owners, mapContributions, functions,
     relocations, nonRelocationWordsUnchanged: unchangedWords, tail, fullOwnerExact: owners.every((owner) => owner.rawBytesExact) };
 }
 

@@ -567,6 +567,7 @@ function splitRelocatableTextSection(input, sourceSectionName, requestedOwners, 
 }
 
 module.exports = {
+  parseRelocatable, sectionBytes, buildSectionList, rewriteSymbolTables, rewriteSectionReferences, rebuildSectionNames, serialize,
   validateCompilerFunctionPartition,
   splitRelocatableTextSection,
   projectNativeTextOwners,

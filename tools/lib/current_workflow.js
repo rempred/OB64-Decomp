@@ -264,6 +264,7 @@ function currentFingerprint(phase8, baseline, localTools, sourcePolicy) {
       'tools/lib/active_targets.js',
       'tools/lib/logical_functions.js',
       'tools/lib/auxiliary_interior.js',
+      'tools/lib/auxiliary_projection.js',
       'tools/lib/text_contract.js',
       'tools/lib/elf_text_split.js',
       'tools/lib/compilation_groups.js',

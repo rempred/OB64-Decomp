@@ -222,6 +222,11 @@ must prove equivalent coverage before the old gate is retired.
 
 ## Native text evidence
 
+The explicit [fixed-row auxiliary projection](AUXILIARY_PROJECTION.md) additionally
+requires complete native section/symbol/relocation census, independently reproduced
+ELF projection, unchanged first-payload anchor/addends, and full retained original
+ASM row ownership. Its check-only padding contributes no matching-C bytes.
+
 Audit schema 5 retains complete textContract, objectEvidence, and linkEvidence on every active target and records the logical-function registry identity. Native fixtures exercise untouched compiler input, exact section and function censuses, native alignment, zero tail, sole object contribution, load mapping, and full-owner exactness. Malformed and stale evidence must fail independently of identical reports. The retained nonexact Combat candidate must remain a negative control. Tooling acceptance does not accept the unfinished Combat source wave.
 
 ## Compilation-group audit evidence

@@ -1,4 +1,5 @@
 'use strict';
+const auxiliaryProjection = require('./auxiliary_projection');
 
 const fs = require('fs');
 const path = require('path');
@@ -159,7 +160,7 @@ function compilerOccurrencePaddingBytes(occurrence, cursor, label) {
   return bytes;
 }
 
-function normalizeAuxiliarySectionContracts(contracts, targetSymbol, label) {
+function normalizeAuxiliarySectionContracts(contracts, targetSymbol, label, projection = null) {
   if (contracts === undefined) return [];
   if (!Array.isArray(contracts) || contracts.length === 0) fail(`${label} is not a nonempty array`);
   const compilerSections = new Set();
@@ -484,7 +485,7 @@ function normalizeAuxiliarySectionContracts(contracts, targetSymbol, label) {
         fail(`${contractLabel} compiler occurrences do not exactly cover the logical auxiliary section`);
       }
     }
-    if (compilerSections.has(contract.compilerSection)) {
+    if (!projection && compilerSections.has(contract.compilerSection)) {
       fail(`${label} repeats compiler section ${contract.compilerSection}`);
     }
     if (outputSections.has(contract.outputSection)) {
@@ -551,6 +552,7 @@ function validateLinkageConfig(linkage, expectedProfile) {
       ...(entry && Object.prototype.hasOwnProperty.call(entry, 'compilerTextFunctions') ? ['compilerTextFunctions'] : []),
       ...(entry && Object.prototype.hasOwnProperty.call(entry, 'auxiliarySections') ? ['auxiliarySections'] : []),
       ...(entry && Object.prototype.hasOwnProperty.call(entry, 'nativeTextTail') ? ['nativeTextTail'] : []),
+      ...(entry && Object.prototype.hasOwnProperty.call(entry, 'auxiliaryProjection') ? ['auxiliaryProjection'] : []),
     ];
     if (!exactKeys(entry, expectedKeys)
         || typeof entry.symbol !== 'string' || !SAFE_LINK_SYMBOL.test(entry.symbol)) {
@@ -562,7 +564,12 @@ function validateLinkageConfig(linkage, expectedProfile) {
     if (nativeTextTail && (entry.compilerTextFunctions !== undefined || entry.auxiliarySections !== undefined)) {
       fail('native text cannot combine auxiliary or multi-function contracts');
     }
+    const projectedAuxiliaries = normalizeAuxiliarySectionContracts(entry.auxiliarySections, entry.symbol,
+      `matching-C linkage target ${entry.symbol} auxiliary sections`, entry.auxiliaryProjection);
+    const projection = auxiliaryProjection.normalize(entry.auxiliaryProjection, projectedAuxiliaries);
+    if (projection && (nativeTextTail || entry.compilerTextFunctions !== undefined)) fail("auxiliary projection incompatible text contract");
     targets.set(key, {
+      ...(projection ? { auxiliaryProjection: projection } : {}),
       symbol: entry.symbol,
       nativeTextTail,
       expectedRelocations: normalizeRelocationRecords(
@@ -575,11 +582,7 @@ function validateLinkageConfig(linkage, expectedProfile) {
         entry.symbol,
         `matching-C linkage target ${entry.symbol} compiler text functions`,
       ),
-      auxiliarySections: normalizeAuxiliarySectionContracts(
-        entry.auxiliarySections,
-        entry.symbol,
-        `matching-C linkage target ${entry.symbol} auxiliary sections`,
-      ),
+      auxiliarySections: projectedAuxiliaries,
     });
   }
   return { config: linkage, linkSymbols, targets };
@@ -608,6 +611,7 @@ function selectRelocationContract(symbol, canonicalTarget, legacyTarget, allowMi
       compilerTextFunctions: canonicalTarget.compilerTextFunctions,
       nativeTextTail: canonicalTarget.nativeTextTail,
       auxiliarySections: canonicalTarget.auxiliarySections,
+      ...(canonicalTarget.auxiliaryProjection ? { auxiliaryProjection: canonicalTarget.auxiliaryProjection } : {}),
       source: 'canonical',
       canonicalLegacyEquivalent: legacyRelocations ? true : null,
     };
@@ -1430,6 +1434,7 @@ function loadActiveTargetModel(options = {}) {
       compilerTextFunctionsExplicit: Boolean(relocationContract.nativeTextTail) || relocationContract.compilerTextFunctions.length > 0,
       compilerTextFunctions: [],
       auxiliarySections: [],
+      ...(relocationContract.auxiliaryProjection ? { auxiliaryProjection: relocationContract.auxiliaryProjection } : {}),
       relocationContractSource: relocationContract.source,
       legacyAncillaryRelocations: legacyTarget ? (legacyTarget.expectedRelocations || []).filter((record) => record.section === '.rel.pdr') : [],
       sourceSha256: sha256File(sourceFile),
@@ -1449,6 +1454,7 @@ function loadActiveTargetModel(options = {}) {
       target,
       relocationContract.auxiliarySections,
     );
+    if (target.auxiliaryProjection) target.auxiliaryProjectionRetained = auxiliaryProjection.retainedBindings(target, model, baserom);
     const comparisons = legacyTarget ? [
       assertEquivalent(entry.symbol, 'primaryId', target.primaryId, legacyTarget.primaryId),
       assertEquivalent(entry.symbol, 'rowIndex', target.rowIndex, legacyTarget.rowIndex),
@@ -1517,6 +1523,7 @@ function loadActiveTargetModel(options = {}) {
     }
   }
   validateAuxiliaryOwnerGroups(targets);
+  auxiliaryProjection.validateCensus(targets);
   verifyRowSymbolSourceCache(rowSymbolSourceCache);
   return {
     config: { ...minimal, compiler: legacy.compiler },

@@ -2,6 +2,7 @@
 
 const { targetTextOwners } = require('./phase8_matching_c');
 const { projectInterior } = require('./auxiliary_interior');
+const auxiliaryProjection = require('./auxiliary_projection');
 
 function fail(message) {
   throw new Error(`status ownership accounting failed: ${message}`);
@@ -68,6 +69,7 @@ function summarizeAcceptedOwnership(model, targets) {
     fail('accepted model or active target census is malformed');
   }
 
+  auxiliaryProjection.validateCensus(targets);
   const seenRows = new Set();
   const rowsByIndex = new Map();
   for (const row of model.rows) {
@@ -182,6 +184,7 @@ function summarizeAcceptedOwnership(model, targets) {
     if (!Array.isArray(target.auxiliarySections)) {
       fail(`target auxiliary owner census drift: ${target.symbol}`);
     }
+    if (target.auxiliaryProjection) auxiliaryProjection.checkTarget(target);
     for (const auxiliary of target.auxiliarySections) {
       const row = auxiliary && rowsByIndex.get(auxiliary.ownerRowIndex);
       if (!row) fail(`target auxiliary owner row is missing: ${target.symbol}`);
