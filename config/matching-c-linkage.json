@@ -41316,6 +41316,12 @@
         { "offset": "0x0000001C", "type": "R_MIPS_LO16", "symbol": "D_801971FD", "section": ".rel.text" },
         { "offset": "0x00000034", "type": "R_MIPS_26", "symbol": ".text", "section": ".rel.text" }
       ]
+    },
+    {
+      "symbol": "func_00131388",
+      "expectedRelocations": [
+        { "offset": "0x00000014", "type": "R_MIPS_26", "symbol": "func_00023780", "section": ".rel.text" }
+      ]
     }
   ]
 }
