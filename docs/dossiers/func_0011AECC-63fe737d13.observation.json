@@ -1,0 +1,101 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "63FE737D13EA778E127EF3F147504FD94DCD0EB6936831F44F17DDBA0B3EA93B",
+  "observationId": "117B76687348658DB64DC3AAEAE8F0C3896A7D572F157C3AF88C1ED1F668F5F8",
+  "symbol": "func_0011AECC",
+  "authored": {
+    "context": "Sol MagentaTiger / gpt-6.1-sol max, sole production source/build writer on maine949d04f. Resumed current intake and complete original disassembly confirm the accepted one1144-byte/286-word/frame160 owner. RouteRecord.field1C remains consumer-proven f32; all existing helper interfaces, unchecked counts, ordered arithmetic and allocator/cleanup behavior remain unchanged. Original ASM remains production; full20 W5 gate remains open.",
+    "effects": [
+      "body-coverage",
+      "source-lifetime",
+      "compiler-observation"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "F1BDC11D6374F02779138F2A7F1A3F3FB480DCC9F6271347E192B7D2FCA733A3",
+      "sourceSha256": "59A066DFF3E2782AF533E957E7D0DFD879566FACC0F64B71B31E2182D4FD133F"
+    },
+    "label": "actual-pointer-capture-stage",
+    "observedEffect": "Untouched pinned native PURE_C diagnostic remains1144/286/frame160,vars32,10GP/6FP,args40 and all13 physical calls. Offset-aligned relocation-masked differences improve16 to13: the three capture-order words at270/274/278 now match, including field04's existing sp+34 home after field08/field00 loads. Saved GP/FP roles and all three pointer homes remain exact. Remaining differences are eight caller-register words in signed quotient/remainder calculation and five caller-register words in endpoint addresses. Pointer and register-qualified/union-word staging controls each close the same three words; the ordinary pointer-stage source is selected. This observation is candidate allocator evidence, not original RTL or linked proof.",
+    "parentCandidateId": "2A1E5F91E3FD382AE6F6514431FE92E0D6580EA1EB85AE1E687C2909FB20D354",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_0011AECC.s",
+        "sha256": "26B4009AC3947B869EC3C9E7411FDD6C65A00BAF246F26C79A3A7053F9839565"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_00125460.s",
+        "sha256": "8FDFB978D9A7F9A5A66CA7361AB01E3D84BE1306F2CF92D7E4AE3B2D4F180BE3"
+      },
+      {
+        "path": "docs/Plans/task-logs/astra-movement-interface-review-20260930.md",
+        "sha256": "69671F555059EFE5C291B4B6FA69726B31BC7EEF40081A1B878A57B132A2338C"
+      },
+      {
+        "path": "docs/Plans/task-logs/sol-movement-interface-research-20260930.md",
+        "sha256": "C05D70BCCCCB9B293F72928F3C47A28F874BAF40E1BEB264FA35226A5C242C8D"
+      },
+      {
+        "path": "docs/SOURCE_POLICY.md",
+        "sha256": "8D5D4110E8001EDD37D1FA47AC253D828016236DE69D34DB65F31D0416681829"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Nonexact PURE_C research;13 masked word differences and no linked acceptance. Remaining point/quotient and endpoint temporary allocation pairs are unresolved. No supported tool defect, compiler exception or inherent-assembly conclusion. Original ASM remains production and all20 W5 members retain their full-wave final gate.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Capture the actual second-array pointer in a short-lived local, load the third and first arrays, then bind the captured pointer to its later used second-array variable. This preserves pointer values and original reads while separating the real capture and later-use lifetimes; no artificial use or reference is added."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 4188,
+      "sha256": "F1BDC11D6374F02779138F2A7F1A3F3FB480DCC9F6271347E192B7D2FCA733A3"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "59A066DFF3E2782AF533E957E7D0DFD879566FACC0F64B71B31E2182D4FD133F"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-01-func_0011AECC-63fe737d13.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

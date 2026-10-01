@@ -1,0 +1,103 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "835EECADC4628BA57A1665AAA3CA546929C53BDA0AD9BA666C86D5279A8C7902",
+  "observationId": "25700F132B4DBB1883BE41EEBDBE4EABBA07C6B917F91CF896FC297D843F801E",
+  "symbol": "func_0011AECC",
+  "authored": {
+    "context": "Sol MagentaTiger / gpt-6.1-sol max, sole production source/build writer on main e949d04f. Accepted AECC owner remains 1144 bytes/286 instructions/frame160. All thirteen calls and required logical body phases remain covered. Record.field1C remains consumer-proven f32. Original ASM remains production and the complete twenty-member W5 wave remains open.",
+    "effects": [
+      "body-coverage",
+      "source-lifetime",
+      "compiler-observation"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "62A06B22F7DB4D5C8B6A72E6873F826F27C187D7FE496C0F01012076F97AF503",
+      "sourceSha256": "8939CFB961E055B3AFEB00280FADDBED3B087484939B3B4970562249F1A5709E"
+    },
+    "label": "inline-used-quotient-coordinate-effect",
+    "observedEffect": "Native1144/286/frame160, vars32,10GP/6FP,args40 and all13 calls;25 masked word differences. The point is now v1 and the adjusted dividend/quotient a0, closing the eight coordinate temporary-role differences of the selected11 source. Saved route/index/scale roles change and the Z destination load/add schedule moves, so this whole-owner result regresses. Capturing the Z destination before that helper restores saved roles but reintroduces the earlier coordinate swap, with12 differences including a commuted destination ADD. Those are distinct controls; the captured form does not close the point pair. ASCII observation text avoids a reproduced Windows input-decoding identity drift; the existing preservation gate rejected the altered metadata and no shared tools or identities were changed.",
+    "parentCandidateId": "A50AF17CECD60C2ED2E34AB494037DD8B1F5D95CB1BEE8853649B8AFB9CA6579",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_0011AECC.s",
+        "sha256": "26B4009AC3947B869EC3C9E7411FDD6C65A00BAF246F26C79A3A7053F9839565"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_00125460.s",
+        "sha256": "8FDFB978D9A7F9A5A66CA7361AB01E3D84BE1306F2CF92D7E4AE3B2D4F180BE3"
+      },
+      {
+        "path": "docs/Plans/task-logs/astra-movement-interface-review-20260930.md",
+        "sha256": "69671F555059EFE5C291B4B6FA69726B31BC7EEF40081A1B878A57B132A2338C"
+      },
+      {
+        "path": "docs/Plans/task-logs/sol-movement-interface-research-20260930.md",
+        "sha256": "C05D70BCCCCB9B293F72928F3C47A28F874BAF40E1BEB264FA35226A5C242C8D"
+      },
+      {
+        "path": "docs/SOURCE_POLICY.md",
+        "sha256": "8D5D4110E8001EDD37D1FA47AC253D828016236DE69D34DB65F31D0416681829"
+      }
+    ],
+    "relatedCandidateIds": [
+      "F55028B207943AB0583C7C055174998B900C769A3EC4BB00D1FE4C54EF279515"
+    ],
+    "remainingFailure": "Unselected effect example, not linked acceptance. Best A50AF17CEC remains at11 native masked differences. The inline-only result leaves25 whole-owner differences; a closing real-value form has not been found. No supported compiler defect, original RTL claim, source-policy exception or full-wave verifier follows.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Express the actual signed Z quotient through a normal inline value/256 helper while retaining the direct X remainder, separate used endpoint pointers and actual second-array capture stage. No extra incoming argument, reference-only use, guard or arithmetic change is introduced."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 4415,
+      "sha256": "62A06B22F7DB4D5C8B6A72E6873F826F27C187D7FE496C0F01012076F97AF503"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "8939CFB961E055B3AFEB00280FADDBED3B087484939B3B4970562249F1A5709E"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-01-func_0011AECC-835eecadc4.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

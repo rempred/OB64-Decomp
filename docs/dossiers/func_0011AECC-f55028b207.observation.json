@@ -1,0 +1,101 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "F55028B207943AB0583C7C055174998B900C769A3EC4BB00D1FE4C54EF279515",
+  "observationId": "1AB04AE0337333F893EE816932CD3A61F6F52C7AF982AE3445A56DA6FBC024CC",
+  "symbol": "func_0011AECC",
+  "authored": {
+    "context": "Sol MagentaTiger / gpt-6.1-sol max, sole production source/build writer on maine949d04f. Resumed current intake and complete original disassembly confirm the accepted one1144-byte/286-word/frame160 owner. RouteRecord.field1C remains consumer-proven f32; all existing helper interfaces, unchecked counts, ordered arithmetic and allocator/cleanup behavior remain unchanged. Original ASM remains production; full20 W5 gate remains open.",
+    "effects": [
+      "body-coverage",
+      "source-lifetime",
+      "compiler-observation"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "67D55DAD80DBF5F65E634B6E9BA13872D87FE19D9D21DC6F93509DDEAEC32292",
+      "sourceSha256": "17DB88C25C4DDAD34BA9417005BA4BBF53AD3423BC9941C0C7451B396C07792B"
+    },
+    "label": "early-used-full-cell-division-input",
+    "observedEffect": "Native1148/287/frame160,vars32,10GP/6FP,args40 and all13 calls. Returnedpoint now begins in v1, a partial retail-role improvement, but a second real copy is emitted, the array-destination role changes, and201 offset-aligned masked differences result from the extra word and changed allocation. This is unselected; no missing logical body or boundary change is introduced. Explicit mutating remainder/quotient variants eliminate/add other words or reorder arithmetic, not a closing form.",
+    "parentCandidateId": "A50AF17CECD60C2ED2E34AB494037DD8B1F5D95CB1BEE8853649B8AFB9CA6579",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_0011AECC.s",
+        "sha256": "26B4009AC3947B869EC3C9E7411FDD6C65A00BAF246F26C79A3A7053F9839565"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_00125460.s",
+        "sha256": "8FDFB978D9A7F9A5A66CA7361AB01E3D84BE1306F2CF92D7E4AE3B2D4F180BE3"
+      },
+      {
+        "path": "docs/Plans/task-logs/astra-movement-interface-review-20260930.md",
+        "sha256": "69671F555059EFE5C291B4B6FA69726B31BC7EEF40081A1B878A57B132A2338C"
+      },
+      {
+        "path": "docs/Plans/task-logs/sol-movement-interface-research-20260930.md",
+        "sha256": "C05D70BCCCCB9B293F72928F3C47A28F874BAF40E1BEB264FA35226A5C242C8D"
+      },
+      {
+        "path": "docs/SOURCE_POLICY.md",
+        "sha256": "8D5D4110E8001EDD37D1FA47AC253D828016236DE69D34DB65F31D0416681829"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Effect example only; native extent1148 exceeds retail1144 and output is nonexact. The partial return-role effect does not establish the retail quotient allocation or original source history. Current best11 is preserved; no tool defect, ABI enlargement or linked acceptance.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Retain the complete best endpoint/capture phases and copy the actual full cell word into a used division-input local immediately after the callback; use it in the Z quotient while the original cell word supplies X remainder."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 4306,
+      "sha256": "67D55DAD80DBF5F65E634B6E9BA13872D87FE19D9D21DC6F93509DDEAEC32292"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "17DB88C25C4DDAD34BA9417005BA4BBF53AD3423BC9941C0C7451B396C07792B"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-01-func_0011AECC-f55028b207.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
