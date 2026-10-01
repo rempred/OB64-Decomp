@@ -1,0 +1,106 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "E69401FDE72804EEDF1D61CF11F9E18453594D1E45C2F2785B501EB03316ADA3",
+  "observationId": "7584C84AB18C19D8E6E265C7EB828971345FA21671B5D6DE3F9D04F67412B9BD",
+  "symbol": "func_0012B440",
+  "authored": {
+    "context": "Sol MagentaTiger/gpt-6.1-sol max, sole production source/build writer on main4f857cef. Fresh empty intake, both authenticated hypotheses and all521 original words reconcile complete p2416/2084-byte/frame96 owner at801D6D00..801D7524. The direct BC64 caller0012C334 supplies two unit pointers, full-word selector from byte09, current/requested three-float points and bypass word; it consumes signed1/2/-1/-2. Source retains all10 calls,21 SF comparisons and one DF comparison, initial origin quantization, ordered-negative bounds, selector-dependent halfword row and32-byte compatibility row, primary small-step/snap, complete secondary angular construction and small-step/snap, final first-unit fallback, shared publication and original unchecked coordinate arithmetic. Runtime ranges, capacities, flags and semantic names remain unstrengthened. SDK norm/trig/height interfaces and original data owners remain unchanged.",
+    "effects": [
+      "body-coverage",
+      "source-lifetime",
+      "compiler-observation",
+      "interface-evidence"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "FF81454240181413C998D39830DFE295699B46B9438B2808E517BF3AAD7D9D40",
+      "sourceSha256": "C1FE1CF7052906ACC1D3A1D2A5DBE84F6A806EF0EB6899D713C8BAF5ECC30463"
+    },
+    "label": "complete-publication-and-local-status",
+    "observedEffect": "Native2068/517/frame88/404 masked differences (vars16,8GP/3FP). Removes excess saved GP and restores3 words. Initial float allocation still differs: lowX/factor/highX/highZ allocations and highX/goalZ sharing leave3 saved FP pairs versus4. Spatial/paired declarations, staged arithmetic, bounds array/record/byte views, nested negative bounds, volatile origin read and shared actual Z accumulator are neutral for this frontier. Existing volatile bound read adds one word and regresses; late path-status assignment also regresses2072/495. Shared watch E69401FDE72804EEDF1D61CF11F9E18453594D1E45C2F2785B501EB03316ADA3 has scratch2060/515/1553 symbolic bytes because its legalizer omits2 hazard NOPs; it is distinct from untouched native2068/517 evidence.",
+    "parentCandidateId": "6B575C70091E50B0E4B4358A9AD5196FF61057FE47F08034630CF3E459AC0698",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_0012B440.s",
+        "sha256": "69B339CAA95D01A504BC650D44D776BEB719D059D2B0AB4335AA8EBD235E430A"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_0012BC64.s",
+        "sha256": "0F00C29D44857FDE1BD8B3E8F40210941A53A2F242DD7B8A04434845CE8E7C62"
+      },
+      {
+        "path": "asm/original/rev0/lib/float_00142F40.s",
+        "sha256": "72D0AA4FE02E9E732C296E1C9A823389EB8C1FAD7827A02935616B1A9A03327E"
+      },
+      {
+        "path": "src/lib/func_00126D24.c",
+        "sha256": "08074EE47971E3B358FEAF9FB43D08BF6CE84B319C9CE3ED2F630F292AC64381"
+      },
+      {
+        "path": "docs/Plans/task-logs/sol-movement-interface-research-20260930.md",
+        "sha256": "C05D70BCCCCB9B293F72928F3C47A28F874BAF40E1BEB264FA35226A5C242C8D"
+      },
+      {
+        "path": "docs/SOURCE_POLICY.md",
+        "sha256": "8D5D4110E8001EDD37D1FA47AC253D828016236DE69D34DB65F31D0416681829"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Nonexact PURE_C research, not linked acceptance. GoldOx received the specific initial float allocation/source-lifetime blocker: native shares highX/goalZ and saves3 FP pairs, retail keeps distinct values/saves4, with remaining scheduling/status/address differences. No supported tooling defect, structural change or inherent-assembly conclusion. Original ASM remains production; complete20-member W5 wave and its one full-ROM verifier stay open.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Use complete publication arms and separate actual path status lifetimes; compiler shares the publication tail. Keep every status assignment and full signed return."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 7463,
+      "sha256": "FF81454240181413C998D39830DFE295699B46B9438B2808E517BF3AAD7D9D40"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "C1FE1CF7052906ACC1D3A1D2A5DBE84F6A806EF0EB6899D713C8BAF5ECC30463"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-01-func_0012B440-e69401fde7.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

@@ -1,0 +1,106 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "D5D709065860B5C623FCF369859E79E0884371635A226376A7DB83D5CF1B69EF",
+  "observationId": "9F78391C297DC1425E1C46F5ECA155339082B245DCAD6FB85823F6B33F5A6349",
+  "symbol": "func_0012B440",
+  "authored": {
+    "context": "Sol MagentaTiger/gpt-6.1-sol max, sole production source/build writer on main4f857cef. Fresh empty intake, both authenticated hypotheses and all521 original words reconcile complete p2416/2084-byte/frame96 owner at801D6D00..801D7524. The direct BC64 caller0012C334 supplies two unit pointers, full-word selector from byte09, current/requested three-float points and bypass word; it consumes signed1/2/-1/-2. Source retains all10 calls,21 SF comparisons and one DF comparison, initial origin quantization, ordered-negative bounds, selector-dependent halfword row and32-byte compatibility row, primary small-step/snap, complete secondary angular construction and small-step/snap, final first-unit fallback, shared publication and original unchecked coordinate arithmetic. Runtime ranges, capacities, flags and semantic names remain unstrengthened. SDK norm/trig/height interfaces and original data owners remain unchanged.",
+    "effects": [
+      "body-coverage",
+      "source-lifetime",
+      "compiler-observation",
+      "interface-evidence"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "C49ABDF05E33D9EC3EEE4E373F97CB5EC781E72647BB62A50152B167F1D7CBE8",
+      "sourceSha256": "6FCE63B748D69F38B49960D09A248D04208A80224B2D54FEC0298FA030A98961"
+    },
+    "label": "complete-stepper-baseline",
+    "observedEffect": "Native2140/535/frame88/510 offset-aligned masked differences. Scalar output-point values are promoted; combined floating predicates create boolean temporaries. All real paths/calls/comparisons are represented, with no missing logical body.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_0012B440.s",
+        "sha256": "69B339CAA95D01A504BC650D44D776BEB719D059D2B0AB4335AA8EBD235E430A"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_0012BC64.s",
+        "sha256": "0F00C29D44857FDE1BD8B3E8F40210941A53A2F242DD7B8A04434845CE8E7C62"
+      },
+      {
+        "path": "asm/original/rev0/lib/float_00142F40.s",
+        "sha256": "72D0AA4FE02E9E732C296E1C9A823389EB8C1FAD7827A02935616B1A9A03327E"
+      },
+      {
+        "path": "src/lib/func_00126D24.c",
+        "sha256": "08074EE47971E3B358FEAF9FB43D08BF6CE84B319C9CE3ED2F630F292AC64381"
+      },
+      {
+        "path": "docs/Plans/task-logs/sol-movement-interface-research-20260930.md",
+        "sha256": "C05D70BCCCCB9B293F72928F3C47A28F874BAF40E1BEB264FA35226A5C242C8D"
+      },
+      {
+        "path": "docs/SOURCE_POLICY.md",
+        "sha256": "8D5D4110E8001EDD37D1FA47AC253D828016236DE69D34DB65F31D0416681829"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Nonexact PURE_C research, not linked acceptance. GoldOx received the specific initial float allocation/source-lifetime blocker: native shares highX/goalZ and saves3 FP pairs, retail keeps distinct values/saves4, with remaining scheduling/status/address differences. No supported tooling defect, structural change or inherent-assembly conclusion. Original ASM remains production; complete20-member W5 wave and its one full-ROM verifier stay open.",
+    "role": "pair-baseline",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Independently derive complete source with numeric unit fields, signed six-word interface, actual two-float norm ABI, explicit ordered bounds and compatibility helper."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 6082,
+      "sha256": "C49ABDF05E33D9EC3EEE4E373F97CB5EC781E72647BB62A50152B167F1D7CBE8"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "6FCE63B748D69F38B49960D09A248D04208A80224B2D54FEC0298FA030A98961"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-01-func_0012B440-d5d7090658.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
