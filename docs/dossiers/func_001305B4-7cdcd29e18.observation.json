@@ -1,0 +1,104 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "7CDCD29E18EFE7E859296D16C70DC508FD080BDDA0647AE2DA3E45614B963B15",
+  "observationId": "C8BE43381D79AFEBE5A70C55E91C77731456C4CA94C5188A037F8E30DFED5DE6",
+  "symbol": "func_001305B4",
+  "authored": {
+    "context": "Receiving Sol MagentaTiger/gpt-6.1-sol max, sole production source/build writer on mainabd0bf54. Fresh empty intake, both authenticated decompiler hypotheses and every original instruction reconcile full p2444/480bytes/120words/frame24/live801DBE74..801DC054. Both descriptor queries use the original25-byte selector,56/52-byte rows, u16 value and byte1B bit4; no capacity/meaning beyond the static strides is asserted. Original0746C helper consumes one unit pointer; residual a1/a2 are not promoted to inputs. The complete cleanup/snapshot/flags/byte-reset/publication path and sole callback are covered; original ASM remains production.",
+    "effects": [
+      "body-coverage",
+      "source-lifetime",
+      "compiler-observation",
+      "interface-evidence"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "B3BBA2A34EE4EBD0C95A2C1BBEFEEAD93D69A77C35D3446091C4BC5E93E95E4B",
+      "sourceSha256": "EAD8D0BD92774485B96D2A1F608EEA3F23EFE6CE4C1727D644846266B95D70CF"
+    },
+    "label": "initialized-independent-flag-values",
+    "observedEffect": "Untouched native PURE_C emits the complete 480-byte/120-word/frame24 owner with zero aligned relocation-masked differences. Both flag reads now have genuine separately initialized source values; allocation and snapshot/store scheduling match retail. This is a diagnostic pending canonical linked bytes and actual relocations. The old 661B42D49B control was invalid because publishedFlags was uninitialized; correction observation 66A7DED35607B653DCC2C7704AFB94EF51B7B7A28557D668347F5EAC4459308D supersedes 4C6AA0B0E683A9F5FDB02F2E1B02ADD29466E86574425E5BFE8E1A91C39CEA6D. The old frame32/117 result is not meaningful two-phase evidence.",
+    "parentCandidateId": "48507BA85F15F528F1C4CFEB91DAD7C45F206FE53B56B55C73C19D197A83B01D",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_001305B4.s",
+        "sha256": "A1238E6DE4A7E46E47AAE601E80754AB9CE3F5ECF758D78AD08A6941B07FF756"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_0010746C.s",
+        "sha256": "AC6F95B1851F60EC964FBCAD1B0B05852957BD6718DC672301C0C786D1F09BB8"
+      },
+      {
+        "path": "docs/SOURCE_POLICY.md",
+        "sha256": "8D5D4110E8001EDD37D1FA47AC253D828016236DE69D34DB65F31D0416681829"
+      },
+      {
+        "path": "docs/archive/matching-c-candidates/2026-10-01-func_001305B4-661b42d49b.c",
+        "sha256": "5F69A8BAED4916FD427A9F90AB1B42F574D5A4D28765F37C75B4586E7B0D74BF"
+      },
+      {
+        "path": "docs/dossiers/func_001305B4-661b42d49b.observation.json",
+        "sha256": "EE957F71D077839F78FD67F6D88DD3057F1CA6D3D133231A2E5164BC5B375BD8"
+      }
+    ],
+    "relatedCandidateIds": [
+      "661B42D49BCDE3A4D26FE8E516BC312D554A6D0E8047C0BCC39C8622FCFD9BC3"
+    ],
+    "remainingFailure": "Provisional raw exactness only until focused canonical source/ownership/placement/actual-relocation/linked-byte checks. No full20-member W5 verifier has run. Original ASM remains the preserved reference/fallback. Volatile is a compiler workaround, without an original-qualifier or concurrency claim. The invalid historical observation is explicitly superseded by 66A7DED35607B653DCC2C7704AFB94EF51B7B7A28557D668347F5EAC4459308D.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Normalize private source line endings and assert each replacement. Assign the actual second flag-word read to publishedFlags, distinct from the first flags value. Keep the original two reads/two stores, three float snapshots, identifier snapshot, reset order, short-circuit descriptor queries and sole actual one-argument cleanup callback. Add a local explanation of the standard-C volatile-view compiler workaround."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 2664,
+      "sha256": "B3BBA2A34EE4EBD0C95A2C1BBEFEEAD93D69A77C35D3446091C4BC5E93E95E4B"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "EAD8D0BD92774485B96D2A1F608EEA3F23EFE6CE4C1727D644846266B95D70CF"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-01-func_001305B4-7cdcd29e18.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

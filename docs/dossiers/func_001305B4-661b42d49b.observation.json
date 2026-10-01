@@ -1,0 +1,102 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "661B42D49BCDE3A4D26FE8E516BC312D554A6D0E8047C0BCC39C8622FCFD9BC3",
+  "observationId": "4C6AA0B0E683A9F5FDB02F2E1B02ADD29466E86574425E5BFE8E1A91C39CEA6D",
+  "symbol": "func_001305B4",
+  "authored": {
+    "context": "Receiving Sol MagentaTiger/gpt-6.1-sol max, sole production source/build writer on mainabd0bf54. Fresh empty intake, both authenticated decompiler hypotheses and every original instruction reconcile full p2444/480bytes/120words/frame24/live801DBE74..801DC054. Both descriptor queries use the original25-byte selector,56/52-byte rows, u16 value and byte1B bit4; no capacity/meaning beyond the static strides is asserted. Original0746C helper consumes one unit pointer; residual a1/a2 are not promoted to inputs. The complete cleanup/snapshot/flags/byte-reset/publication path and sole callback are covered; original ASM remains production.",
+    "effects": [
+      "body-coverage",
+      "source-lifetime",
+      "compiler-observation",
+      "interface-evidence"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "9C56C72C8CC37D4DA639ADB032664334AA55515844D53226AA4686E7EB627007",
+      "sourceSha256": "5F69A8BAED4916FD427A9F90AB1B42F574D5A4D28765F37C75B4586E7B0D74BF"
+    },
+    "label": "split-flag-lifetime-regression",
+    "observedEffect": "484/121/frame32 with117 raw masked differences; saved S1/frame growth and allocation regress. This is an informative effect example, not selected. Qualifying only the second read is476/119/35; byte alias and union controls do not restore the read/order. These results alone do not establish the original source declarations.",
+    "parentCandidateId": "48507BA85F15F528F1C4CFEB91DAD7C45F206FE53B56B55C73C19D197A83B01D",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_001305B4.s",
+        "sha256": "A1238E6DE4A7E46E47AAE601E80754AB9CE3F5ECF758D78AD08A6941B07FF756"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_0010746C.s",
+        "sha256": "AC6F95B1851F60EC964FBCAD1B0B05852957BD6718DC672301C0C786D1F09BB8"
+      },
+      {
+        "path": "src/lib/func_00126D24.c",
+        "sha256": "08074EE47971E3B358FEAF9FB43D08BF6CE84B319C9CE3ED2F630F292AC64381"
+      },
+      {
+        "path": "docs/SOURCE_POLICY.md",
+        "sha256": "8D5D4110E8001EDD37D1FA47AC253D828016236DE69D34DB65F31D0416681829"
+      },
+      {
+        "path": "docs/Plans/task-logs/astra-movement-interface-review-20260930.md",
+        "sha256": "69671F555059EFE5C291B4B6FA69726B31BC7EEF40081A1B878A57B132A2338C"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Nonexact PURE_C research. No sole-C ownership, canonical relocation/target/full-ROM acceptance or production activation. Preserve the complete20-member W5 gate. Compiler workaround qualification is not a claim of original C qualifiers or runtime concurrency. No supported shared-tool defect or inherent-assembly conclusion.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Separate first and published flag values into distinct source locals while retaining the same volatile view and all real operations."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 2655,
+      "sha256": "9C56C72C8CC37D4DA639ADB032664334AA55515844D53226AA4686E7EB627007"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "5F69A8BAED4916FD427A9F90AB1B42F574D5A4D28765F37C75B4586E7B0D74BF"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-01-func_001305B4-661b42d49b.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

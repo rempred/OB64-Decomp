@@ -1,0 +1,94 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "70A94855FA95B8BE5A704A82E38F1F1F8000F8BEB113B804DB3640DE479C5878",
+  "observationId": "2645FE551DFBA127B26098245D0AF029C7CF3B7A11D7705E82CE61620CC14377",
+  "symbol": "func_00118D0C",
+  "authored": {
+    "context": "Receiving Sol MagentaTiger/gpt-6.1-sol max, sole production source/build writer on main abd0bf54. Fresh empty research intake, both authenticated m2c/Kuna hypotheses and all78 original words reconcile the complete p2308/312-byte/frame48 owner, live801C45CC..801C4704. The selected range starts at0 or30 and terminates at50; the callback consumes one pointer and is retained H func_001072B8 at801B2B78, not neighboring1070F4. No null guard or expanded capacities are added. Unit byte04 is reloaded in eligible peer comparisons across callbacks, then loaded once for the tail signed-byte search; the original tail branch returns to the table load after that unit-byte load. All three sentinel publications are covered.",
+    "effects": [
+      "body-coverage",
+      "source-lifetime",
+      "compiler-observation",
+      "interface-evidence"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "B831820B2340FF14A8C296B5EC852F0684B7DDA99C905B4C473585CB84F46BA7",
+      "sourceSha256": "0E55F94E07F5D604A8933CACEB05B72FD16869A3DEEBC0486A25C7D44E1E79F5"
+    },
+    "label": "paired-range-bounds",
+    "observedEffect": "Native PURE_C312/78/frame48, zero aligned relocation-masked word differences. A named fixed bound alone also restores312/frame48 but leaves21 masked differences; pairing the actual selected bounds restores the initial branch and saved-register allocation. Explicit first=0 in the other arm is neutral. The complete peer loop, one callback and signed-byte/sentinel tail remain covered.",
+    "parentCandidateId": "7E7309F8FF5FE14514F3B907A613F66DE1C931D0B2D3D701C73B3D27F4EC1EBD",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_00118D0C.s",
+        "sha256": "EF9139D479165FD6A330330C82ABF151963A4EAF3BF66115DDBA42679EA6183E"
+      },
+      {
+        "path": "src/lib/func_001072B8.c",
+        "sha256": "E981D005A2721AEF9EB1E5D49C09CC045E5139AC43A20F218309347B027C706D"
+      },
+      {
+        "path": "docs/Plans/task-logs/astra-movement-interface-review-20260930.md",
+        "sha256": "69671F555059EFE5C291B4B6FA69726B31BC7EEF40081A1B878A57B132A2338C"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Provisional research only until focused canonical source/ownership/placement/actual-relocation/linked-byte checks. No complete20-member movement W5 verifier has run; original ASM remains preserved. Static numeric slot bounds do not establish runtime completeness or larger capacities.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Use a distinct limit local and assign both real range bounds in their selection arms. Both upper bounds are the observed50; no fabricated dependency or extra input is introduced. Explain the source form beside the bound selection."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 1337,
+      "sha256": "B831820B2340FF14A8C296B5EC852F0684B7DDA99C905B4C473585CB84F46BA7"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "0E55F94E07F5D604A8933CACEB05B72FD16869A3DEEBC0486A25C7D44E1E79F5"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-01-func_00118D0C-70a94855fa.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

@@ -1,0 +1,102 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "48507BA85F15F528F1C4CFEB91DAD7C45F206FE53B56B55C73C19D197A83B01D",
+  "observationId": "1F432E1A9665A3EAAB3452797663539313F4951A745BADADBDF250437126C89B",
+  "symbol": "func_001305B4",
+  "authored": {
+    "context": "Receiving Sol MagentaTiger/gpt-6.1-sol max, sole production source/build writer on mainabd0bf54. Fresh empty intake, both authenticated decompiler hypotheses and every original instruction reconcile full p2444/480bytes/120words/frame24/live801DBE74..801DC054. Both descriptor queries use the original25-byte selector,56/52-byte rows, u16 value and byte1B bit4; no capacity/meaning beyond the static strides is asserted. Original0746C helper consumes one unit pointer; residual a1/a2 are not promoted to inputs. The complete cleanup/snapshot/flags/byte-reset/publication path and sole callback are covered; original ASM remains production.",
+    "effects": [
+      "body-coverage",
+      "source-lifetime",
+      "compiler-observation",
+      "interface-evidence"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "2AB1CF0BCFAFFF8B6EC0F63054B1F64BE9DEF0041DAD28E093E4E01BE0D0D07F",
+      "sourceSha256": "3E06A4DC7791911E162DBF32D6A714ABCBA70D009CB57EF9CA498C62704757C9"
+    },
+    "label": "observed-flag-read-frontier",
+    "observedEffect": "Selected untouched PURE_C480/120/frame24 with17 raw masked differences, prefix through14C exact. The full target extent and two original word reads are restored. Remaining differences concern flag/identifier registers and tail scheduling. Direct volatile casts, post-call pointer creation, register keyword and lexical flag shadowing are neutral; qualifying snapshots worsens21.",
+    "parentCandidateId": "A4E6E6BE7B9A3F7D47A93C0A3B56EE9D19A1F4FA0DA96BEC94E89E1D2078EB8F",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_001305B4.s",
+        "sha256": "A1238E6DE4A7E46E47AAE601E80754AB9CE3F5ECF758D78AD08A6941B07FF756"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_0010746C.s",
+        "sha256": "AC6F95B1851F60EC964FBCAD1B0B05852957BD6718DC672301C0C786D1F09BB8"
+      },
+      {
+        "path": "src/lib/func_00126D24.c",
+        "sha256": "08074EE47971E3B358FEAF9FB43D08BF6CE84B319C9CE3ED2F630F292AC64381"
+      },
+      {
+        "path": "docs/SOURCE_POLICY.md",
+        "sha256": "8D5D4110E8001EDD37D1FA47AC253D828016236DE69D34DB65F31D0416681829"
+      },
+      {
+        "path": "docs/Plans/task-logs/astra-movement-interface-review-20260930.md",
+        "sha256": "69671F555059EFE5C291B4B6FA69726B31BC7EEF40081A1B878A57B132A2338C"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Nonexact PURE_C research. No sole-C ownership, canonical relocation/target/full-ROM acceptance or production activation. Preserve the complete20-member W5 gate. Compiler workaround qualification is not a claim of original C qualifiers or runtime concurrency. No supported shared-tool defect or inherent-assembly conclusion.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Use a local volatile u32 view for the already explicit two flag reads and two flag stores in the publication tail. This standard-C compiler workaround prevents forwarding of the original second read; it adds no memory access absent from retail and claims no original qualifier or concurrency policy."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 2630,
+      "sha256": "2AB1CF0BCFAFFF8B6EC0F63054B1F64BE9DEF0041DAD28E093E4E01BE0D0D07F"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "3E06A4DC7791911E162DBF32D6A714ABCBA70D009CB57EF9CA498C62704757C9"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-01-func_001305B4-48507ba85f.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
