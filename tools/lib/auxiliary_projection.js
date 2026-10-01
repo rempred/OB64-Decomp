@@ -84,12 +84,13 @@ function checkTarget(target) {
   return contract;
 }
 function retainedBindings(target, model, baserom) {
-  const contract = checkTarget(target);
+  const contract = composed(target.compilationGroup) ? normalize(target.compilationGroup.auxiliary.projection, target.compilationGroup.auxiliary.sections) : checkTarget(target);
   if (!contract) return [];
-  const first = target.auxiliarySections[0];
+  const sections = composed(target.compilationGroup) ? target.compilationGroup.auxiliary.sections : target.auxiliarySections;
+  const first = sections[0];
   const anchor = model.rows.flatMap(row => row.slices || []).find(slice => slice.sectionName === first.outputSection);
   if (!anchor) fail('missing anchor placement');
-  for (const auxiliary of target.auxiliarySections) {
+  for (const auxiliary of sections) {
     const rows = model.rows.filter(row => (row.slices || []).some(slice => slice.sectionName === auxiliary.outputSection));
     const slice = rows.length === 1 && rows[0].slices.length === 1 ? rows[0].slices[0] : null;
     if (!slice || slice.placementKind !== anchor.placementKind || slice.overlayDescriptorId !== anchor.overlayDescriptorId
@@ -120,13 +121,16 @@ function retainedBindings(target, model, baserom) {
 }
 function validateBindings(target, model, baserom) {
   const derived = retainedBindings(target, model, baserom);
-  if (!same(derived, target.auxiliaryProjectionRetained)) fail('retained binding evidence drift');
+  const recorded = composed(target.compilationGroup) ? target.compilationGroup.auxiliary.retained : target.auxiliaryProjectionRetained;
+  if (!same(derived, recorded)) fail('retained binding evidence drift');
   return derived;
 }
 function validateCensus(targets) {
-  for (const target of targets.filter(value => value.auxiliaryProjection)) {
-    checkTarget(target);
-    for (const zero of target.auxiliaryProjection.segments.filter(segment => segment.kind === 'zero')) {
+  for (const target of targets.filter(value => value.auxiliaryProjection || composed(value.compilationGroup))) {
+    const contract = composed(target.compilationGroup) ? target.compilationGroup.auxiliary.projection : checkTarget(target);
+    if (composed(target.compilationGroup) && !same(target.auxiliarySections,
+      target.symbol === target.compilationGroup.auxiliary.memberSymbol ? target.compilationGroup.auxiliary.sections : [])) fail('group auxiliary attribution census');
+    for (const zero of contract.segments.filter(segment => segment.kind === 'zero')) {
       if (targets.some(value => (value.auxiliarySections || []).some(auxiliary => auxiliary.outputSection === zero.ownerSection)
           || (value.textOwners || []).some(owner => owner.sectionName === zero.ownerSection))) fail('check-only row also has a C owner');
     }
@@ -325,3 +329,200 @@ function linkedEvidence(target, root, context) {
   });
 }
 module.exports = { normalize, checkTarget, retainedBindings, validateBindings, validateCensus, assembly, project, linkedEvidence };
+
+function composed(group) { return group?.mode === 'native-text-readonly-owner-projection'; }
+function assertCompleteGroupRows(group) {
+  if (!composed(group)) fail('group mode');
+  const contract = normalize(group.auxiliary.projection, group.auxiliary.sections);
+  const first = group.auxiliary.sections[0];
+  for (const [index, table] of payloads(contract).entries()) {
+    const section = group.auxiliary.sections[index];
+    if (section.ownerSectionBytes !== section.bytes || section.ownerPrefixBytes || section.ownerTailBytes
+        || section.romStartNumber !== section.ownerRomStartNumber || section.romEndNumber !== section.ownerRomEndNumber
+        || section.vramStartNumber !== section.ownerVramStartNumber || section.vramEndNumber !== section.ownerVramEndNumber
+        || section.romStartNumber - first.romStartNumber !== table.offset
+        || section.vramStartNumber - first.vramStartNumber !== table.offset) fail('group complete payload rows/spacing');
+  }
+}
+function groupGrammar(compiler, group, adjust) {
+  if (!composed(group)) fail('missing composed producer mode');
+  const contract = normalize(group.auxiliary.projection, group.auxiliary.sections);
+  let end = 0;
+  const occurrences = payloads(contract).map(segment => {
+    const occurrence = { label: segment.label, offset: hex(segment.offset), bytes: segment.bytes, entries: segment.bytes / 4,
+      alignment: contract.alignment, alignmentDirectives: segment.alignmentDirectives,
+      ...(segment.offset > end ? { paddingBefore: { offset: hex(end), bytes: segment.offset - end,
+        expectedSha256: hash(Buffer.alloc(segment.offset - end)) } } : {}) };
+    end = segment.offset + segment.bytes;
+    return occurrence;
+  });
+  // Grammar validation only: the returned section-assigned bytes are discarded.
+  // The producer's actual assembler input is the untouched compiler buffer.
+  adjust(compiler, group.owners[0].sectionName, { auxiliarySections: [{ compilerSection: '.rodata',
+    outputSection: payloads(contract)[0].outputSection, bytes: end, compilerOccurrences: occurrences }] });
+}
+function groupReadonlyNames(group, stage) {
+  return ['raw', 'text-projected'].includes(stage) ? ['.rodata'] : group.auxiliary.sections.map(value => value.outputSection);
+}
+function groupCensus(elf, group, stage) {
+  if (!composed(group)) fail('missing composed producer');
+  const contract = normalize(group.auxiliary.projection, group.auxiliary.sections);
+  assertCompleteGroupRows(group);
+  if (contract.bytes > elf.buffer.length) fail('group read-only footprint exceeds object');
+  const zeroSegments = contract.segments.filter(value => value.kind === 'zero');
+  if (!Array.isArray(group.auxiliary.retained) || group.auxiliary.retained.length !== zeroSegments.length) fail('group retained binding census');
+  for (const [index, zero] of zeroSegments.entries()) {
+    const record = group.auxiliary.retained[index];
+    if (!record || Object.entries(zero).some(([key, value]) => !same(record[key], value))
+        || typeof record.originalAssembly !== 'string' || path.isAbsolute(record.originalAssembly)
+        || record.originalAssembly.split(/[\\/]/).includes('..')
+        || sha256File(path.join(ROOT, record.originalAssembly)) !== record.originalAssemblySha256) fail('group retained source binding');
+  }
+  const tables = payloads(contract), native = ['raw', 'text-projected'].includes(stage);
+  const attributed = group.functions.find(value => value.symbol === group.auxiliary.memberSymbol);
+  if (!attributed) fail('group auxiliary attribution');
+  const textNames = stage === 'raw' ? ['.text'] : group.owners.map(owner => owner.sectionName);
+  const textOffset = section => stage === 'raw' ? (section?.name === '.text' ? 0 : null)
+    : (group.owners.find(owner => owner.sectionName === section?.name)?.groupOffset ?? null);
+  const textAnchor = elf.sections.find(section => section.name === textNames[0]);
+  const roNames = groupReadonlyNames(group, stage);
+  const roSections = roNames.map(name => {
+    const matches = elf.sections.filter(section => section.name === name);
+    if (matches.length !== 1) fail('group read-only section census');
+    return matches[0];
+  });
+  const rawBytes = Buffer.alloc(contract.bytes);
+  for (const [index, section] of roSections.entries()) {
+    const bytes = native ? contract.bytes : tables[index].bytes;
+    if (section.type !== 1 || section.flags !== 2 || section.address !== 0 || section.size !== bytes
+        || section.alignment !== contract.alignment) fail('group read-only shape');
+    Buffer.from(elfSectionBytes(elf, section)).copy(rawBytes, native ? 0 : tables[index].offset);
+  }
+  if (hash(rawBytes) !== contract.expectedObjectSha256) fail('group native read-only identity');
+  for (const segment of contract.segments.filter(value => value.kind === 'zero')) {
+    if (!rawBytes.subarray(segment.offset, segment.offset + segment.bytes).every(byte => byte === 0)) fail('group native padding');
+  }
+  const roAnchor = roSections[0];
+  const symbols = elf.symbols.filter(symbol => roSections.some(section => section.index === symbol.sectionIndex));
+  const anchorSymbol = symbols.find(symbol => symbol.sectionIndex === roAnchor.index);
+  // Pinned objcopy materializes one ordinary section symbol for each output
+  // section. Only the preserved first symbol is allowed to anchor references.
+  if (!anchorSymbol || symbols.length !== (stage === 'stripped' ? roSections.length : 1)
+      || symbols.some(symbol => symbol.symbolType !== 3 || symbol.name !== '' || symbol.value || symbol.size || symbol.binding || symbol.visibility)
+      || roSections.some(section => symbols.filter(symbol => symbol.sectionIndex === section.index).length !==
+        (stage === 'stripped' || section.index === roAnchor.index ? 1 : 0))) fail('group read-only anchor/symbol census');
+  const relocations = require('./compilation_groups').relocations(elf);
+  const tableRelocations = [], references = [], places = new Set();
+  for (const relocation of relocations.filter(value => roSections.some(section => section.index === value.owner.index))) {
+    const ownerIndex = roSections.findIndex(section => section.index === relocation.owner.index);
+    const offset = relocation.place + (native ? 0 : tables[ownerIndex].offset);
+    const table = tables.find(value => offset >= value.offset && offset + 4 <= value.offset + value.bytes);
+    const symbol = relocation.symbol;
+    if (!table || offset % 4 || places.has(offset) || relocation.type !== 2 || symbol.sectionIndex !== textAnchor?.index
+        || symbol.symbolType !== 3 || symbol.name !== '' || symbol.value || symbol.size || symbol.binding || symbol.visibility) fail('group table relocation place/anchor');
+    places.add(offset);
+    const word = rawBytes.readUInt32BE(offset);
+    if (word < attributed.offset || word + 4 > attributed.offset + attributed.bytes) fail('group table target outside attributed function');
+    const auxiliary = group.auxiliary.sections.find(value => value.outputSection === table.outputSection);
+    const expected = auxiliary.expectedRelocations.find(value => Number(value.offset) === offset - table.offset);
+    if (!expected || Number(expected.addend) !== word) fail('group table relocation addend');
+    tableRelocations.push({ offset, type: 2, symbol: '.text', symbolValue: 0, word });
+  }
+  if (places.size !== tables.reduce((sum, table) => sum + table.bytes / 4, 0)) fail('group table relocation census');
+  const marker = elf.symbols.filter(symbol => symbol.name === 'gcc2_compiled.');
+  if (marker.length !== 1 || marker[0].symbolType !== 1 || marker[0].binding || marker[0].value || marker[0].size
+      || marker[0].visibility || marker[0].sectionIndex !== textAnchor?.index) fail('group compiler marker');
+  const pending = new Map();
+  const sourceMember = relocation => {
+    const start = textOffset(relocation.owner);
+    const position = start === null ? null : start + relocation.place;
+    return position === null ? null : group.functions.findIndex(value => position >= value.offset && position + 4 <= value.offset + value.bytes);
+  };
+  const inspectReference = (relocation, addend) => {
+    const destination = elf.sections[relocation.symbol.sectionIndex], destinationOffset = textOffset(destination);
+    if (destination?.index === roAnchor.index) {
+      if (relocation.symbol !== anchorSymbol || sourceMember(relocation) !== group.functions.indexOf(attributed)
+          || !tables.some(table => addend >= table.offset && addend + 4 <= table.offset + table.bytes)) fail('group auxiliary reference attribution/padding');
+      references.push({ ownerOffset: textOffset(relocation.owner), place: relocation.place, type: relocation.type, addend });
+    } else if (destinationOffset !== null) {
+      const targetOffset = destinationOffset + relocation.symbol.value + addend;
+      if (!group.functions.some(value => targetOffset >= value.offset && targetOffset < value.offset + value.bytes)) fail('group reference into text tail/outside functions');
+    } else if (roSections.some(section => section.index === destination?.index)) fail('group non-first read-only anchor');
+  };
+  for (const relocation of relocations) {
+    if (relocation.symbol === marker[0]) fail('group incoming compiler-marker reference');
+    if (roSections.some(section => section.index === relocation.owner.index)) continue;
+    if (relocation.place % 4 || relocation.place + 4 > relocation.owner.size) fail('group relocation place');
+    const word = elf.buffer.readUInt32BE(relocation.owner.offset + relocation.place);
+    const key = relocation.symbol.symbolTableIndex + ':' + relocation.symbol.symbolIndex;
+    if (relocation.type === 5) {
+      if (!pending.has(key)) pending.set(key, []);
+      pending.get(key).push({ relocation, high: word & 0xffff });
+    } else if (relocation.type === 6) {
+      const highs = pending.get(key);
+      if (!highs?.length) fail('group unmatched LO16');
+      for (const high of highs) {
+        if (high.relocation.owner.index !== relocation.owner.index || sourceMember(high.relocation) !== sourceMember(relocation)) fail('group cross-owner HI16/LO16');
+        inspectReference(relocation, ((high.high << 16) + ((word << 16) >> 16)) >>> 0);
+      }
+      pending.delete(key);
+    } else if ([2, 4].includes(relocation.type)) {
+      inspectReference(relocation, relocation.type === 2 ? word : (word & 0x03ffffff) * 4);
+    } else fail('group unsupported relocation type');
+  }
+  if (pending.size) fail('group unmatched HI16');
+  return { nativeSha256: hash(rawBytes), payloadBytes: tables.reduce((sum, table) => sum + table.bytes, 0),
+    tableRelocations, references, marker: { name: marker[0].name, value: marker[0].value, size: marker[0].size,
+      binding: marker[0].binding, symbolType: marker[0].symbolType, visibility: marker[0].visibility,
+      section: textAnchor.name } };
+}
+// Compare every section outside the RO transform by semantic section references.
+// Relocation r_info values, symbols and encoded words are conserved; only section
+// indices and file offsets may change as the section table grows.
+function conservedOutsideReadonly(elf, group) {
+  const omitted = new Set(['.rodata', '.rel.rodata', '.shstrtab', ...group.auxiliary.sections.flatMap(value => [value.outputSection, '.rel' + value.outputSection])]);
+  const sectionName = index => index > 0 && index < 0xff00 ? elf.sections[index]?.name : index;
+  const symbols = elf.symbols.map(symbol => ({ ...symbol, symbolTableIndex: sectionName(symbol.symbolTableIndex),
+    sectionIndex: sectionName(symbol.sectionIndex) === group.auxiliary.sections[0].outputSection ? '.rodata' : sectionName(symbol.sectionIndex) }));
+  const sections = elf.sections.filter(section => !omitted.has(section.name)).map(section => ({ name: section.name,
+    type: section.type, flags: section.flags, address: section.address, bytes: section.size, alignment: section.alignment,
+    entrySize: section.entrySize, link: sectionName(section.link), info: section.type === 9 ? sectionName(section.info) : section.info,
+    sha256: section.type === 2 ? null : hash(Buffer.from(elfSectionBytes(elf, section))) }));
+  return { flags: elf.header.flags, sections, symbols };
+}
+function projectGroupReadonly(input, group) {
+  const before = parseElf32BigEndian(input);
+  require('./compilation_groups').validateObject(before, group, 'text-projected');
+  const parsed = elfTools.parseRelocatable(input), source = parsed.sections.find(section => section.name === '.rodata');
+  const rels = parsed.sections.filter(section => section.type === 9 && section.info === source.index);
+  if (rels.length !== 1 || rels[0].name !== '.rel.rodata') fail('group read-only relocation section');
+  const relocation = rels[0], tables = payloads(group.auxiliary.projection);
+  const owners = tables.map(table => ({ sectionName: table.outputSection, bytes: table.bytes,
+    logicalOffset: table.offset, logicalEnd: table.offset + table.bytes, alignment: group.auxiliary.projection.alignment }));
+  if (owners.some(owner => parsed.sections.some(section => section.name === owner.sectionName))) fail('group duplicate projected destination');
+  const grouped = new Map(owners.map(owner => [owner.sectionName, []]));
+  for (let offset = 0; offset < relocation.size; offset += 8) {
+    const record = Buffer.from(input.subarray(relocation.offset + offset, relocation.offset + offset + 8));
+    const place = record.readUInt32BE(0), owner = owners.find(value => place >= value.logicalOffset && place + 4 <= value.logicalEnd);
+    if (!owner) fail('group unmapped read-only relocation');
+    record.writeUInt32BE(place - owner.logicalOffset, 0); grouped.get(owner.sectionName).push(record);
+  }
+  const list = elfTools.buildSectionList(parsed, input, source, relocation, owners,
+    new Map([...grouped].map(([name, entries]) => [name, Buffer.concat(entries)])));
+  elfTools.rewriteSymbolTables(list, source, owners); elfTools.rewriteSectionReferences(list, relocation);
+  const shstr = elfTools.rebuildSectionNames(list, parsed.shstrIndex);
+  const buffer = elfTools.serialize(input, parsed, list, shstr), after = parseElf32BigEndian(buffer);
+  require('./compilation_groups').validateObject(after, group, 'projected');
+  if (!same(conservedOutsideReadonly(before, group), conservedOutsideReadonly(after, group))) fail('read-only projection changed prior text/metadata/symbol/relocation evidence');
+  return { buffer };
+}
+function completeObjectCensus(elf) {
+  return { header: elf.header, sections: elf.sections.map(section => ({ name: section.name, type: section.type,
+    flags: section.flags, address: section.address, size: section.size, alignment: section.alignment,
+    entrySize: section.entrySize, link: section.link, info: section.info,
+    sha256: hash(Buffer.from(elfSectionBytes(elf, section))) })), symbols: elf.symbols,
+    relocations: require('./compilation_groups').relocations(elf).map(relocation => ({ owner: relocation.owner.name,
+      place: relocation.place, type: relocation.type, symbol: relocation.symbol,
+      word: elf.buffer.readUInt32BE(relocation.owner.offset + relocation.place) })) };
+}
+Object.assign(module.exports, { composed, assertCompleteGroupRows, groupGrammar, groupReadonlyNames, groupCensus, projectGroupReadonly, conservedOutsideReadonly, completeObjectCensus });

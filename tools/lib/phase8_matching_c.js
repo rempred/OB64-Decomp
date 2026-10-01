@@ -1622,7 +1622,9 @@ function relocationRecords(elf, target) {
 }
 
 function auxiliaryRelocationRecords(elf, target, auxiliary) {
-  const targetSections = targetTextOwners(target).map((owner) => {
+  const auxiliaryTextOwners = auxiliaryProjection.composed(target.compilationGroup)
+    ? target.compilationGroup.owners.map(owner => ({ ...owner, logicalOffset: owner.groupOffset })) : targetTextOwners(target);
+  const targetSections = auxiliaryTextOwners.map((owner) => {
     const matches = elf.sections.filter((section) => section.name === owner.sectionName);
     if (matches.length !== 1) return null;
     return { owner, section: matches[0] };
@@ -2193,7 +2195,8 @@ function deriveSourceObjectProof(phase8, target, output, classification, linkedE
     };
   });
   const ancillary = allRelocations.filter((record) => !loadRelocationSections.has(record.section)
-    && !(target.compilationGroup && target.compilationGroup.owners.some(owner => record.section === '.rel' + owner.sectionName)));
+    && !(target.compilationGroup && target.compilationGroup.owners.some(owner => record.section === '.rel' + owner.sectionName))
+    && !(auxiliaryProjection.composed(target.compilationGroup) && target.compilationGroup.auxiliary.sections.some(section => record.section === '.rel' + section.outputSection)));
   const basePermittedAdjustment = auxiliaryProofs.length === 0
     ? 'replace the sole .text directive with the accepted target section directive'
     : auxiliaryProofs.some((auxiliary) => Array.isArray(auxiliary.compilerOccurrences))
@@ -2359,6 +2362,7 @@ function validateSourceObjectProofBytes(actualBytes, expectedBytes) {
       || Object.prototype.hasOwnProperty.call(actual.assemblyContract, 'adapterApplied')) {
     fail('source-to-object proof schema drift');
   }
+  compilationGroups.validateComposedProof(actual);
   const projected = actual.target.auxiliaryProjection;
   const projectionEvidence = actual.objectEvidence.auxiliaryProjection;
   if (projected || projectionEvidence || actual.assemblyContract.auxiliaryProjection || actual.objectEvidence.schemaVersion === 4) {

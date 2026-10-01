@@ -226,6 +226,9 @@ The explicit [fixed-row auxiliary projection](AUXILIARY_PROJECTION.md) additiona
 requires complete native section/symbol/relocation census, independently reproduced
 ELF projection, unchanged first-payload anchor/addends, and full retained original
 ASM row ownership. Its check-only padding contributes no matching-C bytes.
+Its [native compilation-group composition](GROUP_AUXILIARY_PROJECTION.md) also
+requires both conserved section anchors, group-relative addends, a complete
+intermediate text-projection artifact, and exactly one auxiliary attribution member.
 
 Audit schema 5 retains complete textContract, objectEvidence, and linkEvidence on every active target and records the logical-function registry identity. Native fixtures exercise untouched compiler input, exact section and function censuses, native alignment, zero tail, sole object contribution, load mapping, and full-owner exactness. Malformed and stale evidence must fail independently of identical reports. The retained nonexact Combat candidate must remain a negative control. Tooling acceptance does not accept the unfinished Combat source wave.
 

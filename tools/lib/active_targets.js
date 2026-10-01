@@ -919,6 +919,12 @@ function resolveAcceptedRows(model, symbol, multiOwnerContracts = new Map(), sou
 
 function resolveAuxiliarySectionContracts(model, baserom, target, contracts) {
   if (!Array.isArray(contracts)) fail(`auxiliary-section contract census is malformed: ${target.symbol}`);
+  const group = auxiliaryProjection.composed(target.compilationGroup) ? target.compilationGroup : null;
+  const attribution = group && group.functions.find(value => value.symbol === group.auxiliary.memberSymbol);
+  if (group && target.symbol !== attribution?.symbol) fail('group auxiliary attribution mismatch');
+  const referenceStart = group ? attribution.offset : 0;
+  const referenceEnd = group ? attribution.offset + attribution.bytes : target.bytes;
+  const referenceBase = group ? group.vramStart : target.vramStartNumber;
   return contracts.map((contract) => {
     const rows = model.rows.filter((row) => (
       Array.isArray(row.slices)
@@ -1006,11 +1012,11 @@ function resolveAuxiliarySectionContracts(model, baserom, target, contracts) {
         ? contract.compilerOccurrences.some((occurrence) => offset >= occurrence.offsetNumber
           && offset + 4 <= occurrence.endOffsetNumber && offset % 4 === 0)
         : offset === index * 4 && offset + 4 <= contract.entryBytes;
-      if (!isEntry || addend >= target.bytes) {
+      if (!isEntry || addend < referenceStart || addend + 4 > referenceEnd) {
         fail(`auxiliary local-label relocation is outside its accepted text owner: ${target.symbol} ${contract.outputSection}`);
       }
       objectBytes.writeUInt32BE(addend >>> 0, offset);
-      relocatedBytes.writeUInt32BE((target.vramStartNumber + addend) >>> 0, offset);
+      relocatedBytes.writeUInt32BE((referenceBase + addend) >>> 0, offset);
     }
     const retailBytes = Buffer.from(baserom.subarray(contract.romStartNumber, contract.romEndNumber));
     const retailPrefixBytes = prefix === null
@@ -1491,7 +1497,7 @@ function loadActiveTargetModel(options = {}) {
     return target;
   });
 
-  groupSupport.bind(compilationGroups, targets);
+  groupSupport.bind(compilationGroups, targets, { model, baserom });
   if (compilationGroups.length) {
     const paths = [...new Set(targets.filter(target => target.nativeTextTail || target.compilationGroup).map(target => groupSupport.objectPath(target)))];
     for (const target of targets) target.nativeEmptyBssObjects = paths;

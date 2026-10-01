@@ -15,6 +15,7 @@ const ROUTINE_TESTS = [
   ['compilation-groups', 'tests/compilation_groups.js'],
   ['auxiliary-interior', 'tests/auxiliary_interior.js'],
   ['auxiliary-projection', 'tests/auxiliary_projection.js'],
+  ['group-auxiliary-projection', 'tests/group_auxiliary_projection.js'],
   ['matching-context', 'tests/matching_context.js'],
   ['status-accounting', 'tests/status.js'],
   ['diff-exactness', 'tests/diff_exactness.js'],

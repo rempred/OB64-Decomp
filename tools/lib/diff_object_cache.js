@@ -438,6 +438,7 @@ function artifactSpecifications(target) {
   if (target.auxiliaryProjection || target.compilationGroup || targetTextOwners(target).length > 1) {
     specs.push({ name: 'assembler-object.o', destination: `objects/c/${symbol}.assembler-object.o` });
   }
+  if (auxiliaryProjection.composed(target.compilationGroup)) specs.push({ name: 'text-projected.o', destination: `objects/c/${symbol}.text-projected.o` });
   specs.push({ name: 'final.o', destination: `objects/c/${symbol}.o` });
   return specs;
 }
@@ -605,12 +606,17 @@ function validateAllocatedSections(elf, target, allowReginfo, label) {
 function inspectCompiledTargetArtifacts(options) {
   if (options.target.compilationGroup) {
     const files = options.files;
+    if (auxiliaryProjection.composed(options.target.compilationGroup)
+        && (!files || !sameStringSet(Object.keys(files), artifactSpecifications(options.target).map(spec => spec.name)))) {
+      fail('composed group artifact census');
+    }
     const classification = options.classification;
     verifyTargetSourceIdentity(options.target, classification);
     const result = compilationGroups.compiledMember(options.target, null, classification, {
       compilationInput: files['compilation-input.c'], compilerAssembly: files['compiler.s'],
       assemblerInput: files['adjusted.s'], rawObject: files['source-object.o'],
       strippedObject: files['final.o'], unsplitAssemblerObject: files['assembler-object.o'],
+      ...(auxiliaryProjection.composed(options.target.compilationGroup) ? { textProjectedObject: files['text-projected.o'] } : {}),
     });
     const input = fs.readFileSync(files['compilation-input.c']);
     if (!input.equals(compilationInputBytes(classification))) fail('group cache compilation input drift');

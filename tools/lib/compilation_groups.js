@@ -2,6 +2,7 @@
 
 // Compilation producers own artifacts; members retain accepted function ownership.
 const fs = require('fs');
+const auxiliary = require('./auxiliary_projection');
 const path = require('path');
 const { ROOT, parseElfFile, elfSectionBytes, sha256Buffer } = require('./phase7_conventional');
 const { projectNativeTextOwners } = require('./elf_text_split');
@@ -25,8 +26,16 @@ function registry(config, profile) {
   if (config.schemaVersion !== 1 || config.profile !== profile || !Array.isArray(config.groups)) fail('registry version/profile');
   const ids = new Set(), symbols = new Set(), sources = new Set();
   for (const group of config.groups) {
-    requireKeys(group, ['id', 'source', 'mode', 'members', 'text', 'functions', 'tail', 'relocations'], 'producer');
-    if (!SAFE_ID.test(group.id) || ids.has(group.id) || group.mode !== 'native-text-owner-projection'
+    requireKeys(group, ['id', 'source', 'mode', 'members', 'text', 'functions', 'tail', 'relocations',
+      ...(auxiliary.composed(group) ? ['auxiliary'] : [])], 'producer');
+    if (auxiliary.composed(group)) {
+      requireKeys(group.auxiliary, ['memberSymbol', 'sections', 'projection'], 'auxiliary producer');
+      if (!group.members.some(member => member.symbol === group.auxiliary.memberSymbol)) fail('auxiliary attribution');
+      const sections = require('./active_targets').normalizeAuxiliarySectionContracts(group.auxiliary.sections,
+        group.auxiliary.memberSymbol, 'group auxiliary', group.auxiliary.projection);
+      auxiliary.normalize(group.auxiliary.projection, sections);
+    }
+    if (!SAFE_ID.test(group.id) || ids.has(group.id) || (!auxiliary.composed(group) && group.mode !== 'native-text-owner-projection')
         || typeof group.source !== 'string' || !group.source.endsWith('.c') || sources.has(group.source)
         || path.isAbsolute(group.source) || group.source.includes('\\') || group.source.split('/').some(part => !part || part === '.' || part === '..')) fail('producer identity');
     ids.add(group.id); sources.add(group.source);
@@ -57,21 +66,21 @@ function registry(config, profile) {
       requireKeys(relocation, ['offset', 'type', 'symbol', 'symbolValue', 'symbolSection', 'word'], 'relocation');
       if (!integer(relocation.offset) || relocation.offset % 4 || relocation.offset <= previous || relocation.offset + 4 > end
           || ![4, 5, 6].includes(relocation.type) || typeof relocation.symbol !== 'string'
-          || !integer(relocation.symbolValue) || !['.text', 'UND', 'ABS'].includes(relocation.symbolSection)
+          || !integer(relocation.symbolValue) || ![...['.text', 'UND', 'ABS'], ...(auxiliary.composed(group) ? ['.rodata'] : [])].includes(relocation.symbolSection)
           || !integer(relocation.word) || relocation.word > 0xffffffff) fail('relocation contract');
       previous = relocation.offset;
     }
   }
   return config.groups;
 }
-function bind(groups, targets) {
+function bind(groups, targets, context = {}) {
   const assigned = new Set();
   for (const group of groups) {
     const selected = group.members.map(member => {
       const matches = targets.filter(target => target.symbol === member.symbol && target.compilationGroupId === group.id);
       if (matches.length !== 1) fail('indivisible member activation');
       const target = matches[0];
-      if (target.source !== group.source || target.rowIndex !== member.ownerRowIndex || target.nativeTextTail || target.multiOwner
+      if (target.source !== group.source || target.rowIndex !== member.ownerRowIndex || target.nativeTextTail || target.multiOwner || target.auxiliaryProjection
           || target.compilerTextFunctionsExplicit || target.auxiliarySections.length || target.textOwners.length !== 1
           || target.row.slices.length !== 1 || target.row.ambiguous !== false || target.row.primaryClass !== 'code') fail('member owner/mode conflict');
       return target;
@@ -104,6 +113,17 @@ function bind(groups, targets) {
         bytes: group.functions[index].bytes, binding: 'GLOBAL', entryEvidence: 'owner' }];
       target.expectedRelocations = expectedMemberRelocations(target);
     }
+    if (auxiliary.composed(group)) {
+      const member = selected.find(target => target.symbol === group.auxiliary.memberSymbol);
+      const active = require('./active_targets');
+      normalized.auxiliary = { ...group.auxiliary, sections: active.normalizeAuxiliarySectionContracts(group.auxiliary.sections,
+        member.symbol, 'group auxiliary', group.auxiliary.projection) };
+      normalized.auxiliary.sections = active.resolveAuxiliarySectionContracts(context.model, context.baserom, member, normalized.auxiliary.sections);
+      member.auxiliarySections = normalized.auxiliary.sections;
+      auxiliary.assertCompleteGroupRows(normalized);
+      normalized.auxiliary.retained = auxiliary.retainedBindings(member, context.model, context.baserom);
+    }
+
   }
   for (const target of targets) if (target.compilationGroupId && !assigned.has(target.symbol)) fail('unknown group reference');
 }
@@ -131,8 +151,9 @@ function allocation(elf, group, stage) {
   for (const sec of elf.sections) { if (sec.name && names.has(sec.name)) fail('duplicate section'); names.add(sec.name); }
   const projected = stage !== 'raw', stripped = stage === 'stripped';
   const textNames = projected ? group.owners.map(owner => owner.sectionName) : ['.text'];
+  const roNames = auxiliary.composed(group) ? auxiliary.groupReadonlyNames(group, stage) : [];
   for (const sec of elf.sections.filter(value => value.flags & 3)) {
-    if (textNames.includes(sec.name)) continue;
+    if (textNames.includes(sec.name) || roNames.includes(sec.name)) continue;
     if (sec.name === '.reginfo' && !stripped) continue;
     if (['.data', '.bss'].includes(sec.name) && sec.size === 0 && sec.flags === 3 && sec.address === 0
         && sec.alignment === 16 && sec.type === (sec.name === '.data' ? 1 : 8)) continue;
@@ -188,24 +209,34 @@ function census(elf, group, stage) {
     if (![4, 5, 6].includes(rel.type) || rel.place % 4 || rel.place + 4 > rel.owner.size || offset + 4 > group.tail.offset) fail('load relocation place/type');
     const destination = elf.sections[rel.symbol.sectionIndex];
     const destOffset = destination && offsetOf(destination);
-    let symbolSection = rel.symbol.sectionIndex === 0 ? 'UND' : rel.symbol.sectionIndex === 0xfff1 ? 'ABS' : destOffset !== undefined ? '.text' : null;
+    const roAnchor = auxiliary.composed(group) && destination?.name === auxiliary.groupReadonlyNames(group, stage)[0];
+    let symbolSection = roAnchor ? '.rodata' : rel.symbol.sectionIndex === 0 ? 'UND' : rel.symbol.sectionIndex === 0xfff1 ? 'ABS' : destOffset !== undefined ? '.text' : null;
     if (!symbolSection) fail('load relocation references ancillary section');
-    if (rel.symbol.symbolType === 3 && (!destination || destOffset !== 0 || rel.symbol.value !== 0)) fail('group section anchor drift');
-    return { offset, type: rel.type, symbol: rel.symbol.symbolType === 3 ? '.text' : rel.symbol.name,
+    if (rel.symbol.symbolType === 3 && (!destination || (!roAnchor && destOffset !== 0) || rel.symbol.value !== 0)) fail('group section anchor drift');
+    return { offset, type: rel.type, symbol: rel.symbol.symbolType === 3 ? (roAnchor ? '.rodata' : '.text') : rel.symbol.name,
       symbolValue: rel.symbol.value + (destOffset || 0), symbolSection, word: bytes.readUInt32BE(offset) };
   });
   if (!same(records, group.relocations)) fail('complete load relocation census');
   return { bytes: bytes.length, sha256: sha256Buffer(bytes), functions, relocations: records };
 }
 function validateObject(elf, group, stage) {
-  if (!['raw', 'projected', 'stripped'].includes(stage) || elf.header.type !== 1 || elf.header.machine !== 8
+  if (![...['raw', 'projected', 'stripped'], ...(auxiliary.composed(group) ? ['text-projected'] : [])].includes(stage) || elf.header.type !== 1 || elf.header.machine !== 8
       || elf.header.entry !== 0 || elf.header.phoff !== 0 || elf.header.phnum !== 0) fail('relocatable object header/stage');
   return { schemaVersion: 1, stage, groupSha256: hash(group), objectFlags: elf.header.flags,
-    metadata: allocation(elf, group, stage), ...census(elf, group, stage) };
+    metadata: allocation(elf, group, stage), ...census(elf, group, stage),
+    ...(auxiliary.composed(group) ? { auxiliary: auxiliary.groupCensus(elf, group, stage), completeCensus: auxiliary.completeObjectCensus(elf) } : {}) };
 }
 function project(input, group) {
   const raw = parseBuffer(input), rawEvidence = validateObject(raw, group, 'raw');
   const result = projectNativeTextOwners(input, group.owners.map(owner => ({ sectionName: owner.sectionName, bytes: owner.bytes })));
+  if (auxiliary.composed(group)) {
+    const intermediate = validateObject(parseBuffer(result.buffer), group, 'text-projected');
+    if (!same(rawEvidence.metadata, intermediate.metadata)) fail('text projection changed reginfo');
+    const final = auxiliary.projectGroupReadonly(result.buffer, group);
+    const projected = validateObject(parseBuffer(final.buffer), group, 'projected');
+    if (!same(rawEvidence.metadata, projected.metadata)) fail('read-only projection changed reginfo');
+    return { ...result, buffer: final.buffer, intermediate: result.buffer };
+  }
   const projected = validateObject(parseBuffer(result.buffer), group, 'projected');
   if (!same(rawEvidence.metadata, projected.metadata)) fail('projection changed reginfo');
   return result;
@@ -233,7 +264,7 @@ function expectedMemberRelocations(target) {
 function contract(target) {
   const tc = require('./text_contract'), group = target.compilationGroup, owner = group.owners[target.groupMemberIndex];
   const ordinary = tc.resolveTextContract({ ...target, compilationGroup: null });
-  return { ...ordinary, schemaVersion: 2, mode: 'native-text-owner-projection', producer: group,
+  return { ...ordinary, schemaVersion: auxiliary.composed(group) ? 3 : 2, mode: group.mode, producer: group,
     memberIndex: target.groupMemberIndex,
     owners: ordinary.owners.map(value => ({ ...value,
       expectedInputShape: { ...value.expectedInputShape, alignment: owner.alignment },
@@ -245,13 +276,18 @@ function evidence(target, root, files = null) {
   const artifacts = { compilationInput: artifact('compilationInput', target.source),
     compilerAssembly: artifact('compilerAssembly', assemblyPath(target)), assemblerInput: artifact('assemblerInput', assemblyPath(target, '.s')),
     rawObject: artifact('rawObject', objectPath(target, '.source-object.o')), strippedObject: artifact('strippedObject', objectPath(target)),
-    unsplitAssemblerObject: artifact('unsplitAssemblerObject', objectPath(target, '.assembler-object.o')) };
+    unsplitAssemblerObject: artifact('unsplitAssemblerObject', objectPath(target, '.assembler-object.o')),
+    ...(auxiliary.composed(group) ? { textProjectedObject: artifact('textProjectedObject', objectPath(target, '.text-projected.o')) } : {}) };
   const read = role => fs.readFileSync(files ? files[role] : path.join(root, artifacts[role].path));
   const compiler = read('compilerAssembly');
   if (!compiler.equals(read('assemblerInput'))) fail('compiler assembly was rewritten');
-  require('./phase8_matching_c').adjustSectionAssembly(compiler, target.sectionName, {});
+  if (auxiliary.composed(group)) auxiliary.groupGrammar(compiler, group, require('./phase8_matching_c').adjustSectionAssembly);
+  else require('./phase8_matching_c').adjustSectionAssembly(compiler, target.sectionName, {});
   const native = parseBuffer(read('unsplitAssemblerObject')), projected = parseBuffer(read('rawObject')), stripped = parseBuffer(read('strippedObject'));
-  const stages = { raw: validateObject(native, group, 'raw'), projected: validateObject(projected, group, 'projected'),
+  const reproduction = project(native.buffer, group);
+  if (auxiliary.composed(group) && !reproduction.intermediate.equals(read('textProjectedObject'))) fail('intermediate text projection is not reproducible');
+  const stages = { raw: validateObject(native, group, 'raw'),
+    ...(auxiliary.composed(group) ? { textProjected: validateObject(parseBuffer(reproduction.intermediate), group, 'text-projected') } : {}), projected: validateObject(projected, group, 'projected'),
     stripped: validateObject(stripped, group, 'stripped') };
   if (stages.raw.objectFlags !== stages.projected.objectFlags) fail('projection changed object flags');
   // Pinned GNU 2.6 objcopy drops raw assembler flag bits during ancillary
@@ -259,7 +295,7 @@ function evidence(target, root, files = null) {
   // that container change, while bytes, symbols and relocations stay exact.
   if (!same(stages.raw.metadata, stages.projected.metadata)) fail('projection metadata drift');
   // Independently inspect both objects in addition to deterministic writer replay.
-  if (!project(native.buffer, group).buffer.equals(projected.buffer)) fail('projection is not reproducible');
+  if (!reproduction.buffer.equals(projected.buffer)) fail('projection is not reproducible');
   const memberContract = contract(target), rawOwners = tc.ownerEvidence(projected, memberContract), strippedOwners = tc.ownerEvidence(stripped, memberContract);
   if (!same(rawOwners.map(value => value.record), strippedOwners.map(value => value.record))) fail('strip changed owner');
   const normalizedRelocations = memberRelocations(target, projected);
@@ -268,13 +304,21 @@ function evidence(target, root, files = null) {
   const strippedFunctions = tc.functionCensus(stripped, strippedOwners.map(value => value.section));
   if (!same(rawFunctions, strippedFunctions)) fail('strip changed member functions');
   const rawRelocations = require('./phase8_matching_c').rawRelocationRecords(projected);
-  return { schemaVersion: 3, textContractSha256: hash(memberContract), artifacts, producerStages: stages,
+  return { schemaVersion: auxiliary.composed(group) ? 5 : 3,
+    ...(auxiliary.composed(group) ? { composition: { schemaVersion: 1, groupSha256: hash(group),
+      nativeObjectSha256: sha256Buffer(native.buffer), textProjectedObjectSha256: sha256Buffer(reproduction.intermediate),
+      projectedObjectSha256: sha256Buffer(projected.buffer), strippedObjectSha256: sha256Buffer(stripped.buffer),
+      implementationSha256: require('./phase7_conventional').sha256File(require.resolve('./auxiliary_projection')),
+      auxiliaryContract: group.auxiliary,
+      conservedTextProjection: auxiliary.conservedOutsideReadonly(parseBuffer(reproduction.intermediate), group),
+      conservedFinalProjection: auxiliary.conservedOutsideReadonly(projected, group) } } : {}), textContractSha256: hash(memberContract), artifacts, producerStages: stages,
     rawOwners: rawOwners.map(value => value.record), strippedOwners: strippedOwners.map(value => value.record),
     rawFunctions, strippedFunctions, normalizedRelocations,
     rawRelocations: rawRelocations.filter(value => value.section === '.rel' + target.sectionName),
-    discardedAncillaryRelocations: rawRelocations.filter(value => !group.owners.some(owner => value.section === '.rel' + owner.sectionName)),
+    discardedAncillaryRelocations: rawRelocations.filter(value => !group.owners.some(owner => value.section === '.rel' + owner.sectionName)
+      && !(auxiliary.composed(group) && group.auxiliary.sections.some(section => value.section === '.rel' + section.outputSection))),
     tail: target.groupMemberIndex === group.members.length - 1 ? group.tail : null,
-    assemblyMode: 'untouched-native-text-owner-projection', compilerAssemblyRewritten: false };
+    assemblyMode: auxiliary.composed(group) ? 'untouched-native-text-readonly-owner-projection' : 'untouched-native-text-owner-projection', compilerAssemblyRewritten: false };
 }
 const compiledProducers = new Map();
 function compile(phase8, target, output, compiler, assembler, objcopy, options) {
@@ -298,10 +342,13 @@ function compile(phase8, target, output, compiler, assembler, objcopy, options) 
     p7.run(compiler, [...phase8.config.compiler.compileFlags, '-o', compilerFile, target.source], { cwd: output });
     policy.verifyClassificationInputs(classification);
     const bytes = fs.readFileSync(compilerFile);
-    p8.adjustSectionAssembly(bytes, target.sectionName, {});
+    if (auxiliary.composed(target.compilationGroup)) auxiliary.groupGrammar(bytes, target.compilationGroup, p8.adjustSectionAssembly);
+    else p8.adjustSectionAssembly(bytes, target.sectionName, {});
     fs.writeFileSync(adjustedFile, bytes, { flag: 'wx' });
     p7.run(assembler, [...phase8.model.config.binutils.compilerAssemblerFlags, '-o', rawFile, adjustedFile], { cwd: output });
-    fs.writeFileSync(projectedFile, project(fs.readFileSync(rawFile), target.compilationGroup).buffer, { flag: 'wx' });
+    const projection = project(fs.readFileSync(rawFile), target.compilationGroup);
+    fs.writeFileSync(projectedFile, projection.buffer, { flag: 'wx' });
+    if (auxiliary.composed(target.compilationGroup)) fs.writeFileSync(path.join(output, objectPath(target, '.text-projected.o')), projection.intermediate, { flag: 'wx' });
     p7.run(objcopy, ['--remove-section=.reginfo', '--remove-section=.pdr', '--remove-section=.comment', '--remove-section=.note', projectedFile, finalFile], { cwd: output });
     evidence(target, output);
     compiledProducers.set(key, identity);
@@ -324,7 +371,12 @@ function compiledMember(target, output, classification, files = null) {
     sourcePolicyDigest: classification.digest, compilerAssemblyRewritten: false, textBytes: bytes.length, textSha256: sha256Buffer(bytes),
     compilerTextFunctions: functions, textOwners: [{ sectionName: target.sectionName, logicalOffset: 0, bytes: bytes.length, sha256: sha256Buffer(bytes) }],
     splitContract: { sourceSection: '.text', sourceBytes: target.compilationGroup.text.bytes, owners: target.compilationGroup.owners },
-    relocations: memberRelocations(target, elf), auxiliarySections: [] };
+    relocations: memberRelocations(target, elf), auxiliarySections: target.auxiliarySections.map(section => {
+      const value = p8.verifyAuxiliarySourceObjectSection(elf, target, section, 'group member auxiliary');
+      return { compilerSection: section.compilerSection, outputSection: section.outputSection, bytes: value.selectedBytes.length,
+        sha256: sha256Buffer(value.selectedBytes), alignment: value.section.alignment, flags: value.section.flags,
+        relocations: value.relocations, ...value.padding, retainedInteriorBefore: null };
+    }) };
 }
 Object.assign(module.exports, { memberRelocations, contract, evidence, compile, compiledMember });
 
@@ -366,3 +418,189 @@ function manifestMembers(records, phase8) {
   return result;
 }
 Object.assign(module.exports, { collapseManifest, manifestMembers });
+
+function validateComposedProof(proof) {
+  const object = proof.objectEvidence, text = proof.textContract;
+  if (!auxiliary.composed(text?.producer) && object?.schemaVersion !== 5 && !object?.composition) return;
+  const group = text?.producer, value = object?.composition, artifacts = object?.artifacts;
+  const compositionKeys = ['schemaVersion', 'groupSha256', 'nativeObjectSha256', 'textProjectedObjectSha256',
+    'projectedObjectSha256', 'strippedObjectSha256', 'implementationSha256', 'auxiliaryContract',
+    'conservedTextProjection', 'conservedFinalProjection'];
+  if (!auxiliary.composed(group) || text.schemaVersion !== 3 || text.mode !== group.mode || object.schemaVersion !== 5
+      || !exactKeys(value, compositionKeys) || value.schemaVersion !== 1 || !artifacts
+      || !exactKeys(object.producerStages, ['raw', 'textProjected', 'projected', 'stripped'])
+      || !same(value.auxiliaryContract, group.auxiliary) || value.groupSha256 !== hash(group)
+      || !exactKeys(value.conservedTextProjection, ['flags', 'sections', 'symbols'])
+      || !Array.isArray(value.conservedTextProjection.sections) || !Array.isArray(value.conservedTextProjection.symbols)
+      || !same(value.conservedTextProjection, value.conservedFinalProjection)
+      || !Number.isInteger(text.memberIndex) || group.members[text.memberIndex]?.symbol !== proof.target.symbol
+      || !Array.isArray(proof.linkEvidence.auxiliaryProjectionRetained)
+      || !same(proof.artifacts.assemblerObject, artifacts.unsplitAssemblerObject)
+      || !same(proof.artifacts.object, artifacts.rawObject)
+      || !same(proof.artifacts.linkedObjectAfterAncillaryRemoval, artifacts.strippedObject)) fail('composed proof schema/artifact binding');
+  for (const [key, role] of [['nativeObjectSha256', 'unsplitAssemblerObject'], ['textProjectedObjectSha256', 'textProjectedObject'],
+    ['projectedObjectSha256', 'rawObject'], ['strippedObjectSha256', 'strippedObject']]) {
+    if (typeof value[key] !== 'string' || !SHA.test(value[key]) || value[key] !== artifacts[role]?.sha256) fail('composed proof object hash binding');
+  }
+  if (typeof value.implementationSha256 !== 'string' || !SHA.test(value.implementationSha256)) fail('composed proof implementation identity');
+  const expectedAux = group.auxiliary.memberSymbol === proof.target.symbol ? group.auxiliary.sections : [];
+  if (!same(proof.finalObject.auxiliarySections.map(section => section.outputSection), expectedAux.map(section => section.outputSection))) fail('composed proof auxiliary attribution');
+  for (const [key, stage] of Object.entries(object.producerStages)) {
+    const stageName = key === 'textProjected' ? 'text-projected' : key;
+    if (stage.stage !== stageName || stage.groupSha256 !== hash(group) || stage.sha256 !== group.text.sha256
+        || !same(stage.functions, group.functions) || !stage.auxiliary
+        || stage.auxiliary.nativeSha256 !== group.auxiliary.projection.expectedObjectSha256
+        || !same(stage.auxiliary.tableRelocations, object.producerStages.raw.auxiliary?.tableRelocations)
+        || !exactKeys(stage.completeCensus, ['header', 'sections', 'symbols', 'relocations'])
+        || !Array.isArray(stage.completeCensus.sections) || !Array.isArray(stage.completeCensus.symbols)
+        || !Array.isArray(stage.completeCensus.relocations)) fail('composed proof complete stage census');
+    validateComposedStage(stage, group, artifacts[{ raw: 'unsplitAssemblerObject', textProjected: 'textProjectedObject', projected: 'rawObject', stripped: 'strippedObject' }[key]]);
+  }
+  const retained = proof.linkEvidence.auxiliaryProjectionRetained;
+  if (retained.length !== group.auxiliary.retained.length) fail('composed retained link census');
+  for (const [index, binding] of group.auxiliary.retained.entries()) {
+    const record = retained[index], extra = ['objectPath', 'objectSha256', 'loadIndex', 'contributionCount', 'fullRowExact'];
+    if (!exactKeys(record, [...Object.keys(binding), ...extra])
+        || Object.keys(binding).some(key => !same(record[key], binding[key]))
+        || record.objectPath !== 'objects/assembly/chunk_' + String(binding.chunkIndex).padStart(3, '0') + '.o'
+        || typeof record.objectSha256 !== 'string' || !SHA.test(record.objectSha256)
+        || !integer(record.loadIndex) || record.contributionCount !== 1 || record.fullRowExact !== true) fail('composed retained link binding');
+  }
+  // Hash-only section evidence cannot replace independent object reproduction.
+  // Here it must still agree with the exact conservation census and every stage.
+  for (const key of ['textProjected', 'projected']) {
+    const stage = object.producerStages[key], census = stage.completeCensus;
+    const names = index => index > 0 && index < 0xff00 ? census.sections[index]?.name : index;
+    const omitted = new Set(['.rodata', '.rel.rodata', '.shstrtab', ...group.auxiliary.sections.flatMap(s => [s.outputSection, '.rel' + s.outputSection])]);
+    const conservation = { flags: stage.objectFlags, sections: census.sections.filter(s => !omitted.has(s.name)).map(s => ({
+      name: s.name, type: s.type, flags: s.flags, address: s.address, bytes: s.size, alignment: s.alignment,
+      entrySize: s.entrySize, link: names(s.link), info: s.type === 9 ? names(s.info) : s.info, sha256: s.type === 2 ? null : s.sha256 })),
+    symbols: census.symbols.map(s => ({ ...s, symbolTableIndex: names(s.symbolTableIndex),
+      sectionIndex: names(s.sectionIndex) === group.auxiliary.sections[0].outputSection ? '.rodata' : names(s.sectionIndex) })) };
+    if (!same(conservation, value[key === 'textProjected' ? 'conservedTextProjection' : 'conservedFinalProjection'])) fail('composed census conservation binding');
+  }
+  for (const owner of group.owners) {
+    const records = ['textProjected', 'projected', 'stripped'].map(key => object.producerStages[key].completeCensus.sections.find(s => s.name === owner.sectionName));
+    if (!records.every(record => same(record, records[0]))) fail('composed cross-stage text census');
+  }
+  if (!same(object.producerStages.raw.metadata, object.producerStages.textProjected.metadata)
+      || !same(object.producerStages.raw.metadata, object.producerStages.projected.metadata)) fail('composed cross-stage metadata');
+}
+
+function validateComposedStage(stage, group, artifact) {
+  const keys = ['schemaVersion', 'stage', 'groupSha256', 'objectFlags', 'metadata', 'bytes', 'sha256', 'functions', 'relocations', 'auxiliary', 'completeCensus'];
+  const uint = value => integer(value) && value <= 0xffffffff;
+  if (!exactKeys(stage, keys) || stage.schemaVersion !== 1 || !uint(stage.objectFlags)
+      || stage.bytes !== group.text.bytes || !same(stage.relocations, group.relocations)
+      || !exactKeys(stage.auxiliary, ['nativeSha256', 'payloadBytes', 'tableRelocations', 'references', 'marker'])) fail('composed stage schema/contract');
+  const c = stage.completeCensus, h = c.header;
+  if (!exactKeys(h, ['type', 'machine', 'entry', 'phoff', 'shoff', 'flags', 'ehsize', 'phentsize', 'phnum', 'shentsize', 'shnum', 'shstrndx'])
+      || Object.values(h).some(v => !uint(v)) || h.type !== 1 || h.machine !== 8 || h.entry || h.phoff || h.phnum
+      || h.flags !== stage.objectFlags || h.ehsize !== 52 || h.shentsize !== 40 || h.shnum !== c.sections.length
+      || !artifact || !exactKeys(artifact, ['path', 'bytes', 'sha256']) || typeof artifact.path !== 'string'
+      || !integer(artifact.bytes, 52) || !SHA.test(artifact.sha256) || h.shoff + h.shnum * 40 > artifact.bytes
+      || c.sections.length < 4 || c.sections[h.shstrndx]?.name !== '.shstrtab') fail('composed census header/artifact');
+  const names = new Set();
+  for (const s of c.sections) {
+    if (!exactKeys(s, ['name', 'type', 'flags', 'address', 'size', 'alignment', 'entrySize', 'link', 'info', 'sha256'])
+        || typeof s.name !== 'string' || names.has(s.name) || !SHA.test(s.sha256)
+        || ['type', 'flags', 'address', 'size', 'alignment', 'entrySize', 'link', 'info'].some(k => !uint(s[k]))
+        || s.size > artifact.bytes || s.link >= c.sections.length) fail('composed section census schema');
+    names.add(s.name);
+  }
+  const section = name => c.sections.find(s => s.name === name);
+  const raw = stage.stage === 'raw', nativeRO = raw || stage.stage === 'text-projected';
+  const textOffset = name => raw ? (name === '.text' ? 0 : undefined) : group.owners.find(o => o.sectionName === name)?.groupOffset;
+  const tables = group.auxiliary.projection.segments.filter(s => s.kind === 'payload');
+  const roOffset = name => nativeRO ? (name === '.rodata' ? 0 : undefined) : tables.find(t => t.outputSection === name)?.offset;
+  const textNames = raw ? ['.text'] : group.owners.map(o => o.sectionName);
+  const roNames = nativeRO ? ['.rodata'] : tables.map(t => t.outputSection);
+  for (const s of c.sections.filter(s => s.flags & 3)) {
+    if (textNames.includes(s.name) || roNames.includes(s.name) || (s.name === '.reginfo' && stage.stage !== 'stripped')) continue;
+    if (['.data', '.bss'].includes(s.name) && !s.size && s.flags === 3 && !s.address && s.alignment === 16
+        && s.type === (s.name === '.data' ? 1 : 8)) continue;
+    if (!raw && s.name === '.text' && !s.size && s.type === 1 && s.flags === 6) continue;
+    fail('composed allocated census');
+  }
+  for (const [index, name] of textNames.entries()) {
+    const s = section(name), owner = group.owners[index];
+    if (!s || s.type !== 1 || s.flags !== 6 || s.address || s.size !== (raw ? group.text.bytes : owner.bytes)
+        || s.alignment !== (raw ? group.text.alignment : owner.alignment) || (raw && s.sha256 !== group.text.sha256)) fail('composed text section binding');
+  }
+  for (const [index, name] of roNames.entries()) {
+    const s = section(name), contract = group.auxiliary.sections[index];
+    if (!s || s.type !== 1 || s.flags !== 2 || s.address || s.size !== (nativeRO ? group.auxiliary.projection.bytes : contract.bytes)
+        || s.alignment !== group.auxiliary.projection.alignment
+        || s.sha256 !== (nativeRO ? group.auxiliary.projection.expectedObjectSha256 : contract.expectedObjectSha256)) fail('composed read-only section binding');
+  }
+  const metadata = section('.reginfo');
+  if (stage.stage === 'stripped' ? metadata || stage.metadata !== null
+      : !metadata || !same(stage.metadata, Object.fromEntries(Object.entries(metadata).filter(([k]) => k !== 'name')))
+        || !same(Object.fromEntries(Object.entries(stage.metadata).filter(([k]) => k !== 'sha256')), REGINFO)) fail('composed metadata census binding');
+  const symbolKeys = ['symbolTableIndex', 'symbolIndex', 'name', 'value', 'size', 'binding', 'symbolType', 'visibility', 'sectionIndex'];
+  for (const [index, s] of c.sections.entries()) if (s.type === 2) {
+    const symbols = c.symbols.filter(v => v.symbolTableIndex === index);
+    if (s.entrySize !== 16 || symbols.length * 16 !== s.size || !symbols.length
+        || symbols.some((v, i) => v.symbolIndex !== i)) fail('composed symbol census extent');
+  }
+  for (const s of c.symbols) if (!exactKeys(s, symbolKeys) || typeof s.name !== 'string'
+      || symbolKeys.filter(k => k !== 'name').some(k => !uint(s[k])) || c.sections[s.symbolTableIndex]?.type !== 2
+      || (s.sectionIndex < 0xff00 && !c.sections[s.sectionIndex])) fail('composed symbol census schema');
+  for (const name of roNames) {
+    const symbols = c.symbols.filter(s => c.sections[s.sectionIndex]?.name === name);
+    if (symbols.length !== (name === roNames[0] || stage.stage === 'stripped' ? 1 : 0)
+        || symbols.some(s => s.name || s.value || s.size || s.binding || s.symbolType !== 3 || s.visibility)) fail('composed read-only symbol census');
+  }
+  const functions = c.symbols.filter(s => s.symbolType === 2).map(s => ({ symbol: s.name,
+    offset: textOffset(c.sections[s.sectionIndex]?.name) + s.value, bytes: s.size, binding: s.binding,
+    symbolType: s.symbolType, visibility: s.visibility })).sort((a, b) => a.offset - b.offset);
+  if (!same(functions, group.functions)) fail('composed function symbol binding');
+  const marker = c.symbols.filter(s => s.name === 'gcc2_compiled.');
+  if (marker.length !== 1 || marker[0].value || marker[0].size || marker[0].binding || marker[0].symbolType !== 1 || marker[0].visibility
+      || c.sections[marker[0].sectionIndex]?.name !== textNames[0]
+      || !same(stage.auxiliary.marker, { name: marker[0].name, value: 0, size: 0, binding: 0, symbolType: 1, visibility: 0, section: textNames[0] })) fail('composed marker binding');
+  for (const r of c.relocations) if (!exactKeys(r, ['owner', 'place', 'type', 'symbol', 'word']) || !section(r.owner)
+      || !uint(r.place) || r.place % 4 || r.place + 4 > section(r.owner).size || !uint(r.word) || ![2, 4, 5, 6].includes(r.type)
+      || !c.symbols.some(s => same(s, r.symbol)) || r.symbol.name === 'gcc2_compiled.') fail('composed relocation census schema');
+  for (const s of c.sections.filter(s => s.type === 9)) {
+    const records = c.relocations.filter(r => r.owner === c.sections[s.info]?.name);
+    if (s.entrySize !== 8 || records.length * 8 !== s.size || c.sections[s.link]?.type !== 2) fail('composed relocation section census');
+    const bytes = Buffer.alloc(records.length * 8);
+    records.forEach((r, i) => { bytes.writeUInt32BE(r.place, i * 8); bytes.writeUInt32BE((r.symbol.symbolIndex * 256 + r.type) >>> 0, i * 8 + 4); });
+    if (sha256Buffer(bytes) !== s.sha256) fail('composed relocation section identity');
+  }
+  if (c.relocations.some(r => c.sections.filter(s => s.type === 9 && c.sections[s.info]?.name === r.owner).length !== 1)) fail('composed relocation owner census');
+  const textRels = c.relocations.filter(r => textOffset(r.owner) !== undefined).map(r => {
+    const destination = c.sections[r.symbol.sectionIndex]?.name;
+    const base = textOffset(destination), isRO = destination === roNames[0];
+    const symbolSection = isRO ? '.rodata' : base !== undefined ? '.text' : r.symbol.sectionIndex === 0 ? 'UND' : r.symbol.sectionIndex === 0xfff1 ? 'ABS' : null;
+    return { offset: textOffset(r.owner) + r.place, type: r.type, symbol: r.symbol.symbolType === 3 ? symbolSection : r.symbol.name,
+      symbolValue: r.symbol.value + (base || 0), symbolSection, word: r.word };
+  });
+  if (!same(textRels, group.relocations)) fail('composed relocation group binding');
+  const tableRels = c.relocations.filter(r => roOffset(r.owner) !== undefined).map(r => ({ offset: roOffset(r.owner) + r.place,
+    type: r.type, symbol: c.sections[r.symbol.sectionIndex]?.name === textNames[0] && r.symbol.symbolType === 3 ? '.text' : null,
+    symbolValue: r.symbol.value, word: r.word }));
+  const expectedTables = tables.flatMap((t, i) => group.auxiliary.sections[i].expectedRelocations.map(r => ({ offset: t.offset + Number(r.offset), type: 2, symbol: '.text', symbolValue: 0, word: Number(r.addend) })));
+  if (!same(tableRels, expectedTables) || !same(stage.auxiliary.tableRelocations, expectedTables)
+      || stage.auxiliary.payloadBytes !== tables.reduce((sum, t) => sum + t.bytes, 0)
+      || c.relocations.length !== textRels.length + tableRels.length) fail('composed table census binding');
+  const references = [], pending = new Map();
+  for (const r of group.relocations) {
+    const key = r.symbolSection + ':' + r.symbol + ':' + r.symbolValue;
+    if (r.type === 5) { if (!pending.has(key)) pending.set(key, []); pending.get(key).push(r); }
+    else if (r.type === 6) {
+      if (!pending.get(key)?.length) fail('composed reference pair');
+      for (const high of pending.get(key)) if (r.symbolSection === '.rodata') {
+        const owner = raw ? 0 : group.owners.find(o => r.offset >= o.groupOffset && r.offset < o.groupOffset + o.bytes)?.groupOffset;
+        references.push({ ownerOffset: owner, place: r.offset - owner, type: 6, addend: (((high.word & 0xffff) << 16) + ((r.word << 16) >> 16)) >>> 0 });
+      }
+      pending.delete(key);
+    } else if (r.symbolSection === '.rodata') {
+      const owner = raw ? 0 : group.owners.find(o => r.offset >= o.groupOffset && r.offset < o.groupOffset + o.bytes)?.groupOffset;
+      references.push({ ownerOffset: owner, place: r.offset - owner, type: r.type, addend: (r.word & 0x03ffffff) * 4 });
+    }
+  }
+  if (pending.size || !same(stage.auxiliary.references, references)) fail('composed reference census binding');
+}
+Object.assign(module.exports, { validateComposedProof });
