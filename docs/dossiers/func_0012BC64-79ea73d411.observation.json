@@ -1,0 +1,114 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "79EA73D411C943C8FAEFBC556403BCEA5813B59C592A2AA82A763E19B3C570CE",
+  "observationId": "984B5D6E5CC7D7D5390F16BD6D67432FD22FFD8913A2A2065C80F58810225001",
+  "symbol": "func_0012BC64",
+  "authored": {
+    "context": "Sol MagentaTiger/gpt-6.1-sol max, sole production source/build writer on maind07bf0f5. Fresh intake, accepted p2417 and all713 original words reconcile one complete2852-byte/frame248 owner at801D7524..801D8048. Independently derived source covers all21 calls and six SF comparisons, member mapping/initialization, every first-pass movement/status/cleanup path, all second-pass trig/height calls and final leader cleanup. Accepted105CC0 gives point/group/state/initialized four-word interface. Original135 data words reconcile both9-by5 formation-record arrays and order rows in unchanged data owner; these are observed strides, not runtime capacities. AE34 takes one record argument, E950 retains signed-word input, direct A9B8 retains its existing mixed interpolation ABI, B440 returns signed statuses, and D24 is A0-only. Original ASM and data owners remain production.",
+    "effects": [
+      "body-coverage",
+      "source-lifetime",
+      "compiler-observation",
+      "interface-evidence"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "A2B46569123179238E3B50977DBAEA4BCEE7A418C33AA906036117BF1C40C13D",
+      "sourceSha256": "7585ECA45135EA4A83AE3FB8AED33D32A05A7B94779DF65189F0A61690B4EEB6"
+    },
+    "label": "volatile-index-home-control",
+    "observedEffect": "Native2836/709/frame232,vars104,10GP/6FP,args40;680 offset-aligned masked differences, unselected. Existing dumps show two packed four-byte MEM/v homes at104/108 replacing the natural first-base eight-byte home; this does not reproduce the two missing natural reload slots. Second-only volatile is2836/frame240/678 and retains the natural first spill. Qualification is a compiler experiment, without original qualifier or concurrency claims.",
+    "parentCandidateId": "ED42684E8C1B4E38A36187045198378C437098934CACB45790B397B1FCE6ED9F",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_0012BC64.s",
+        "sha256": "0F00C29D44857FDE1BD8B3E8F40210941A53A2F242DD7B8A04434845CE8E7C62"
+      },
+      {
+        "path": "asm/original/rev0/lib/data_0013DF90.s",
+        "sha256": "AE6FD2F040C00369C82CED0A067CAD78D334D38A5BB9D344FA5059E30D3F2FE2"
+      },
+      {
+        "path": "asm/original/rev0/lib/float_00142F40.s",
+        "sha256": "72D0AA4FE02E9E732C296E1C9A823389EB8C1FAD7827A02935616B1A9A03327E"
+      },
+      {
+        "path": "src/lib/func_00105CC0.c",
+        "sha256": "D3F6DBDAF9EEC6492556346FFD5980A685689E9491410B1A4C0FCBAB7C64A083"
+      },
+      {
+        "path": "src/lib/func_00126D24.c",
+        "sha256": "08074EE47971E3B358FEAF9FB43D08BF6CE84B319C9CE3ED2F630F292AC64381"
+      },
+      {
+        "path": "src/lib/func_0012E950.c",
+        "sha256": "A024E767C2658C4AC35BD95436C757CA14314107A2399A07ECB565115F1ABC5D"
+      },
+      {
+        "path": "docs/Plans/task-logs/sol-movement-interface-research-20260930.md",
+        "sha256": "C05D70BCCCCB9B293F72928F3C47A28F874BAF40E1BEB264FA35226A5C242C8D"
+      },
+      {
+        "path": "docs/SOURCE_POLICY.md",
+        "sha256": "8D5D4110E8001EDD37D1FA47AC253D828016236DE69D34DB65F31D0416681829"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Nonexact PURE_C research; native diagnostics are not linked acceptance. No supported tooling defect, structural change or inherent-assembly conclusion. Original ASM remains production. All twenty W5 members and their one final full-ROM verifier remain open.",
+    "role": "counterexample",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Use volatile local pointer objects for both real pass indices addresses as a bounded storage control; preserve direct indices[0] leader accesses."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 11557,
+      "sha256": "A2B46569123179238E3B50977DBAEA4BCEE7A418C33AA906036117BF1C40C13D"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "7585ECA45135EA4A83AE3FB8AED33D32A05A7B94779DF65189F0A61690B4EEB6"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-01-func_0012BC64-79ea73d411.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

@@ -1,0 +1,114 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "ED42684E8C1B4E38A36187045198378C437098934CACB45790B397B1FCE6ED9F",
+  "observationId": "4EDF82BE96B24D2E1DB94F4A06C9B550646369E9BE8AB480F8E16A5AA19FC008",
+  "symbol": "func_0012BC64",
+  "authored": {
+    "context": "Sol MagentaTiger/gpt-6.1-sol max, sole production source/build writer on maind07bf0f5. Fresh intake, accepted p2417 and all713 original words reconcile one complete2852-byte/frame248 owner at801D7524..801D8048. Independently derived source covers all21 calls and six SF comparisons, member mapping/initialization, every first-pass movement/status/cleanup path, all second-pass trig/height calls and final leader cleanup. Accepted105CC0 gives point/group/state/initialized four-word interface. Original135 data words reconcile both9-by5 formation-record arrays and order rows in unchanged data owner; these are observed strides, not runtime capacities. AE34 takes one record argument, E950 retains signed-word input, direct A9B8 retains its existing mixed interpolation ABI, B440 returns signed statuses, and D24 is A0-only. Original ASM and data owners remain production.",
+    "effects": [
+      "body-coverage",
+      "source-lifetime",
+      "compiler-observation",
+      "interface-evidence"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "82F34D8A58B674E2CD587A17E660EB75FA1D92BC344B5A74FBA8812D61FDF1FB",
+      "sourceSha256": "45735E3C2A5FB797D6C219EF56BE2B78D02B413A19BB887BCA67E0E9E47A1E48"
+    },
+    "label": "complete-flag-and-declaration-order",
+    "observedEffect": "Native2820/705/frame232,vars104,10GP/6FP,args40;632 offset-aligned masked differences. Separate4000 mask/boolean restores ANDI+SLTU and one actual spill-store; declaration order moves special to124 and stationary to132. Prior separate-mask source has633 differences, special132/stationary124. Whole original coverage remains. Native and original both retain21 calls/six SF comparisons/no compiler table. Read-only compiler dumps for separate-mask identify first indices base already naturally spilled at140; missing retail eight-byte homes are bypass and second-pass base, which currently receive hard registers. Both base initializers lack REG_EQUIV: a later MEM equivalent belongs to a loaded element, not the base. Authenticated reload1/function alignment paths explain natural eight-byte homes. GoldOx549 found no closing source form or supported defect; its possible pointer-rematerialization lead is corrected by these actual dump facts. Distinct counter/scope and real height-address controls do not close allocation. Shared watch ED42684E8C1B4E38A36187045198378C437098934CACB45790B397B1FCE6ED9F is PURE_C compiled but nonexact symbolic-object research:2812/703 scratch extent,670 differing instructions/2150 symbolic bytes. The scratch transformation omits two native hazard NOPs; native2820/705 and632 offset-masked differences remain separate diagnostic evidence.",
+    "parentCandidateId": "F4A6E0B9A73ABEABFF1B5B472CCC7F175E8E247575F5D7CC4684020C3F8E6B86",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_0012BC64.s",
+        "sha256": "0F00C29D44857FDE1BD8B3E8F40210941A53A2F242DD7B8A04434845CE8E7C62"
+      },
+      {
+        "path": "asm/original/rev0/lib/data_0013DF90.s",
+        "sha256": "AE6FD2F040C00369C82CED0A067CAD78D334D38A5BB9D344FA5059E30D3F2FE2"
+      },
+      {
+        "path": "asm/original/rev0/lib/float_00142F40.s",
+        "sha256": "72D0AA4FE02E9E732C296E1C9A823389EB8C1FAD7827A02935616B1A9A03327E"
+      },
+      {
+        "path": "src/lib/func_00105CC0.c",
+        "sha256": "D3F6DBDAF9EEC6492556346FFD5980A685689E9491410B1A4C0FCBAB7C64A083"
+      },
+      {
+        "path": "src/lib/func_00126D24.c",
+        "sha256": "08074EE47971E3B358FEAF9FB43D08BF6CE84B319C9CE3ED2F630F292AC64381"
+      },
+      {
+        "path": "src/lib/func_0012E950.c",
+        "sha256": "A024E767C2658C4AC35BD95436C757CA14314107A2399A07ECB565115F1ABC5D"
+      },
+      {
+        "path": "docs/Plans/task-logs/sol-movement-interface-research-20260930.md",
+        "sha256": "C05D70BCCCCB9B293F72928F3C47A28F874BAF40E1BEB264FA35226A5C242C8D"
+      },
+      {
+        "path": "docs/SOURCE_POLICY.md",
+        "sha256": "8D5D4110E8001EDD37D1FA47AC253D828016236DE69D34DB65F31D0416681829"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Nonexact PURE_C research; native diagnostics are not linked acceptance. No supported tooling defect, structural change or inherent-assembly conclusion. Original ASM remains production. All twenty W5 members and their one final full-ROM verifier remain open.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Use real selector switch with1..8 before0, ordinary pass index aliases, separate initial flag mask/boolean, and declare special before stationary."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 11639,
+      "sha256": "82F34D8A58B674E2CD587A17E660EB75FA1D92BC344B5A74FBA8812D61FDF1FB"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "45735E3C2A5FB797D6C219EF56BE2B78D02B413A19BB887BCA67E0E9E47A1E48"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-01-func_0012BC64-ed42684e8c.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
