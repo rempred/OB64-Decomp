@@ -1,0 +1,101 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "275898D93840580A87CF5714392EC27360A90A944BB0CFBDB9A8BAADC1818B3E",
+  "observationId": "5883D99A406A0E4D661D4378AB7598302B56551C42CBFEF6AA403D0AC025969E",
+  "symbol": "func_00123E38",
+  "authored": {
+    "context": "Sol MagentaTiger/gpt-6.1-sol max, sole production source/build writer on mainc3d21603. Joe retains all ten assigned W6 members. Empty current intake, accepted complete logical/physical owner and full original disassembly were reconciled before derivation. Only131480 and131388 have provisional canonical focused proofs; no complete W6 verifier. Original ASM remains production for this target. No source-policy, toolchain, owner, table or caller contract changes.",
+    "effects": [
+      "body-coverage",
+      "source-lifetime",
+      "compiler-observation"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "49BA8FEB3D4D2A48E1466E604868E0214D04128CEDF697B3FC818785DD606AF9",
+      "sourceSha256": "3B3C97CCB26C26885272D60378D3F3C47B5D89A2F06C535FA1CAF5DA901427A9"
+    },
+    "label": "guarded-complete-consumer-first-flag-test",
+    "observedEffect": "Pinned native480 bytes/120 instructions/frame48,args16,vars0,seven saved GPRs includingRA;19 aligned relocation-masked word differences against the complete480/frame56 retail owner. The guarded do scan removes three redundant entry instructions from the492/123/frame48 baseline. The first nested flag guard restores the retail ANDI/SLTU pair versus shift/ANDI. All remaining nonrelocated differences are16 frame/save words plus three cursor offset forms: ADDIU13/LBU0/SB0 versus MOVE/LBU13/SB13. All five calls and every required path are represented. Typed or integer cursor, count recheck and final guard controls are neutral; halfword count, explicit early return, indexed clear and cursor-minus-index compactor regress. No unused local or unsupported read is added to force the frame.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_00123E38.s",
+        "sha256": "EFF13C5233216604237BF685E0A49FD08022E65C5057AA947A781B5EE662C262"
+      },
+      {
+        "path": "src/lib/func_00131388.c",
+        "sha256": "B8469941189FA8FFB899712807738136C7A79CF4063E530442FB9BDD358CA7F5"
+      },
+      {
+        "path": "src/lib/func_00147FB8.c",
+        "sha256": "39B92C1079C1BE9FE87DFDD4248F25F5C0C2A74B29EF3DEE25AAE318C46BC51E"
+      },
+      {
+        "path": "src/lib/func_0015DF10.c",
+        "sha256": "2025F42016D2BD8D375D2546F03C283C05F3CA5FE11BB4C5F0F4305135AC3263"
+      },
+      {
+        "path": "docs/Plans/task-logs/sol-squad-supply-policy-intake-20261001.md",
+        "sha256": "3003D0F5D5675F6846199E4FF9BA260AB3C4A5812DC2E4BDB3A93CE1DC6F017E"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Nonexact PURE_C research. Retail frame56 and cursor base form remain open; no linked or relocation proof and no production activation. GoldOx has a bounded genuine source-blocker query; no supported tooling defect, assembly necessity or hybrid exception follows. Complete ten-member wave and final verifier remain pending.",
+    "role": "pair-baseline",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Independently derive the complete numeric consumer; retain a genuinely guarded do scan and nested first flag test, the low-byte F300 argument, unchanged word interfaces, flag clear, compactor and three notifications. Preserve the normalized result without assigning a behavioral name."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 2068,
+      "sha256": "49BA8FEB3D4D2A48E1466E604868E0214D04128CEDF697B3FC818785DD606AF9"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "3B3C97CCB26C26885272D60378D3F3C47B5D89A2F06C535FA1CAF5DA901427A9"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-01-func_00123E38-275898d938.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

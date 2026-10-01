@@ -1,0 +1,89 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "7C5CE8CDCA0D5A323C6530D07C5A2CE7677D3D86DD8166779F43E0A54FD0C42B",
+  "observationId": "390DC839A281EB75244EA614E400693944497CFF7B80FD40701B02977A625AB2",
+  "symbol": "func_0014F300",
+  "authored": {
+    "context": "Sol MagentaTiger/gpt-6.1-sol max, sole production source/build writer on mainc3d21603. Joe retains all ten assigned W6 members. Empty current intake, accepted complete logical/physical owner and full original disassembly were reconciled before derivation. Only131480 and131388 have provisional canonical focused proofs; no complete W6 verifier. Original ASM remains production for this target. No source-policy, toolchain, owner, table or caller contract changes.",
+    "effects": [
+      "body-coverage",
+      "source-lifetime",
+      "compiler-observation"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "10A13E93095A04BF0DEA243109C5E522F1C33A8B57227AE933FE3FE48640372C",
+      "sourceSha256": "9C80E4EBAE1A10C57F5DB12E061E52C6D3CB2512E9102DD38A62230039C1FD8D"
+    },
+    "label": "complete-five-member-capacity-named-class-bases",
+    "observedEffect": "Pinned native296 bytes/74 instructions/frame56,nine saved GPRs includingRA versus retail252/63/frame40;56 aligned masked differences. Named indexed bases are hoisted across the helper and increase saved values/frame. The complete logical loop and both numeric class-table paths are present; no capacity expansion or additional array access is proposed.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_0014F300.s",
+        "sha256": "8190C959C7C7A826754F1EFBF9ACA4A1C472647CE5809B6CCC752C4FD1A669AB"
+      },
+      {
+        "path": "src/lib/func_00043100.c",
+        "sha256": "FF83BDF50BEF827CFF55D1DCDC4A853BD2FD623B197ACAED7BD92DF354794CEF"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Nonexact PURE_C effect example, not selected. Native extent/frame/register changes remain and no canonical linked comparison or final W6 proof has run. No compiler, owner or interface change is authorized by the experiment.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Derive all five member-byte contributions using named class-byte arrays, literal52/56 strides and the accepted two-word class-pair helper. Zero contributes0; IDs at least100 contribute1; other IDs use the selected class table. Keep the initial byte-formal version as a source-effect counterexample, not a historical ABI assertion."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 1202,
+      "sha256": "10A13E93095A04BF0DEA243109C5E522F1C33A8B57227AE933FE3FE48640372C"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "9C80E4EBAE1A10C57F5DB12E061E52C6D3CB2512E9102DD38A62230039C1FD8D"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-01-func_0014F300-7c5ce8cdca.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

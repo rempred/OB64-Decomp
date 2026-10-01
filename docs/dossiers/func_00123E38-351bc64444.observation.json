@@ -1,0 +1,101 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "351BC644444F19EECCD348AFDE1B33D1169EFDFEFB316FCBB1A540F66565DE49",
+  "observationId": "61C71F058FBAC65162BF22061559D867A9070B32630F1DA5A537A1DB62F4AA96",
+  "symbol": "func_00123E38",
+  "authored": {
+    "context": "Sol MagentaTiger/gpt-6.1-sol max, sole production source/build writer on mainc3d21603. Joe retains all ten assigned W6 members. Empty current intake, accepted complete logical/physical owner and full original disassembly were reconciled before derivation. Only131480 and131388 have provisional canonical focused proofs; no complete W6 verifier. Original ASM remains production for this target. No source-policy, toolchain, owner, table or caller contract changes.",
+    "effects": [
+      "body-coverage",
+      "source-lifetime",
+      "compiler-observation"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "AE9F9AD0130BB0011992C446AFB4EB754A86834950ED08DE969DA71E678A9676",
+      "sourceSha256": "845BAF71270BD56D49355461538E07E498FF48C59D4B398654EF7FBAF9282EDD"
+    },
+    "label": "for-loop-separate-used-read-clear-pointers",
+    "observedEffect": "Pinned native480 bytes/120 instructions/frame56,vars8,args16,seven saved GPRs includingRA,zero aligned relocation-masked differences. GoldOx mail578 suggested the actual DEST_REG and duplicated-exit-test mechanism; Sol reproduced and inspected it. A single shared entry pointer was480/frame56/two differences because loop.c rejected its lifetime27 GIV as not worthwhile. Independent real read/clear pointers create two lifetime1 GIVs; loop.c combines and reduces both into one induction register, closing the MOVE and ADDIU backedge words. The real for-loop exit creates one combine USE-only pseudo and reload retains its8-byte home without an emitted load/store. Guarded DO had frame48. Removing redundant early counter initialization and outer scope, then adding readable comments/braces, remains native exact. The actual native object contains12 relocations; raw symbolic words are not linked acceptance.",
+    "parentCandidateId": "275898D93840580A87CF5714392EC27360A90A944BB0CFBDB9A8BAADC1818B3E",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_00123E38.s",
+        "sha256": "EFF13C5233216604237BF685E0A49FD08022E65C5057AA947A781B5EE662C262"
+      },
+      {
+        "path": "src/lib/func_00131388.c",
+        "sha256": "B8469941189FA8FFB899712807738136C7A79CF4063E530442FB9BDD358CA7F5"
+      },
+      {
+        "path": "src/lib/func_00147FB8.c",
+        "sha256": "39B92C1079C1BE9FE87DFDD4248F25F5C0C2A74B29EF3DEE25AAE318C46BC51E"
+      },
+      {
+        "path": "src/lib/func_0015DF10.c",
+        "sha256": "2025F42016D2BD8D375D2546F03C283C05F3CA5FE11BB4C5F0F4305135AC3263"
+      },
+      {
+        "path": "docs/Plans/task-logs/sol-squad-supply-policy-intake-20261001.md",
+        "sha256": "3003D0F5D5675F6846199E4FF9BA260AB3C4A5812DC2E4BDB3A93CE1DC6F017E"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Native-exact PURE_C source research, not canonical matching acceptance. The initial focused linked comparison is running for current source and recorded12 actual relocations; no ten-member final verifier has run. Original ASM remains available as fallback. No supported tooling defect, invented frame padding, original-source recovery assertion or hybrid exception follows.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Use the natural for-loop with one counter initialization and separate real read and clear destination pointer lifetimes. Preserve all literal predicates, stores, five call contracts and result calculation. No unused source buffer, dummy read, ABI widening or compiler escape is introduced."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 2016,
+      "sha256": "AE9F9AD0130BB0011992C446AFB4EB754A86834950ED08DE969DA71E678A9676"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "845BAF71270BD56D49355461538E07E498FF48C59D4B398654EF7FBAF9282EDD"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-01-func_00123E38-351bc64444.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
