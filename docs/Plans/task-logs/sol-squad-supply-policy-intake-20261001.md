@@ -69,8 +69,8 @@ When the current 08/10 coordinates equal the output point's first/third floats,
 the third output float is adjusted by the literal float bits `0x38D1B717`,
 using the comparison with `D_801F0DA4`. The retained hybrid
 `func_001072B8(unit)` is called. The path then writes byte91=0, word84=-1,
-word80=-1, halfword88=0, byte92=0 and clears bit 1; output coordinates are
-copied to 28/2C/30. Final writes include word20=1, byte91=2, halfword88=90,
+word80=-1, word88=0, byte92=0 and clears bit 1; output coordinates are
+copied to 28/2C/30. Final writes include byte20=1, byte91=2, word88=90,
 word24=1, word84=-1, clearing bits 4, 0x200 and 0x00800000, setting bit 2,
 and writing word58 from the truncated/normalized first and third coordinates
 with a factor of 64 for the third. These are literal stores, not assigned AI
@@ -91,7 +91,7 @@ at least 100 or selector 4 returns zero; no lower-bound guard is present.
 All reads use the 52-byte table: halfwords at 5578/5576 and byte5592, relative
 to `0x80190000 + 52*index`.
 
-| Selector | Float ratio | Signed byte threshold |
+| Selector | Float ratio | Signed-word threshold compared with an unsigned byte |
 |---|---:|---:|
 | 1 | 0.75 | 75 |
 | 2 | 0.5 | 75 |
@@ -165,8 +165,10 @@ inherent-assembly finding; no pure-C attempt or hybrid fallback is claimed.
 ## A958: complete teardown interface
 
 Source: [func_0012A958.s](../../../asm/original/rev0/lib/func_0012A958.s).
-The incoming A0 unit is retained through all 1,196 bytes. No deliberately
-assigned semantic return is visible. The accepted 105CC0 declaration currently
+The complete body consumes the incoming A0 unit. It initially retains that
+pointer in S2; the bit-0x80 branch repurposes S2 as a mask at 12ABAC and bypasses
+the later unit-clearing block. No deliberately assigned semantic return is
+visible. The accepted 105CC0 declaration currently
 uses an unknown word return and ignores it; this intake does not narrow that
 shared declaration.
 
@@ -183,7 +185,8 @@ For each counted carried byte from source +13, a nonzero ID searches forty
 four-byte rows at `D_80193AC0`; a matching row's nonzero byte02 is decremented,
 and the carried source byte is cleared regardless of a match.
 
-If unit bit 0x40 is clear, execution goes to the common clearing tail. If set,
+If unit bit 0x40 is clear, the branch delay clears byte91 and execution reaches
+the clearing block at 12ADB8..12ADCC. If set,
 `func_0012E968(unit)` chooses an 11-byte record at `D_801969B8` and
 `func_0012E9F4(unit)` supplies the following branch selector. With bit 0x80
 set, record.byte01 clears bits 0/2 and source.byte01 clears bit 1. Five record
@@ -195,12 +198,17 @@ IDs at +2..+6 except 0xFF address units through `D_801F0CB0`; their bits
 Without bit 0x80, selector 1 moves record+5 to +3, selector 2 moves +6 to +4,
 selector 3 clears +5 and selector 4 clears +6; each consumed source slot becomes
 0xFF. Other selectors make no such move. The original unit then clears
-0x40/0x4000/0x8000/0x10000. The five record bytes turn 0xFF into zero;
-other IDs pass their 25-byte source record to `func_00129068`, preserving its
-unnamed result contract. Live8016B088 supplies the low byte stored at record+9.
+0x40/0x4000/0x8000/0x10000. Each of the five record IDs yields a scratch byte at
+stack +18..+1C: zero for 0xFF, otherwise the low return byte of
+`func_00129068` called with that ID's 25-byte source record. This normalization
+does not rewrite record+2..+6. The five scratch values become all five arguments
+to live8016B088 (accepted `func_00040f88`); its low return byte is stored at
+record+9. The unnamed finalizer result contract remains preserved.
 `func_0012E8EC` receives the unit selected by record+2 and supplies the value
-subtracted from 11 for record+10. The common tail clears bytes91/92/90/98,
-writes float9C=-1, and calls `func_00128E80`. The original call/store order and
+subtracted from 11 for record+10. Both bit-0x40-set paths jump at 12AC70/12ADB0
+to 12ADD0, bypassing the unit-clearing block at 12ADB8..12ADCC. Only the
+bit-0x40-clear path clears bytes91/92/90/98 and writes float9C=-1. All paths
+reach the `func_00128E80` call at 12ADD0. The original call/store order and
 literal flags remain required.
 
 ## Requested gate disposition
@@ -212,9 +220,21 @@ gate or which bounded evidence is still required. Runtime choice/timing and
 selector reachability are explicitly unproved. Preserve all table owners,
 SDK/memory interfaces, retained hybrids and caller declarations.
 
-`func_00130E60` remains ASM across p2449/p2450 with no conversion or ownership
-change proposed. Please clarify its retained-interface disposition for this
-ten-member wave versus the broader family closure condition; it is not an
-additional wave member. Remaining ordinary W6 source work proceeds under Joe's
-existing assignment. One final combined verifier remains pending until all ten
-members are ready; this research intake establishes no matching acceptance.
+`func_00130E60` remains a shared ASM interface across p2449
+[130E60,131000), 416 bytes, and p2450 [131000,131050), 80 bytes: one complete
+496-byte logical body. Astra's review disposition in mails573/574 preserves
+both original contributions, entry and caller contracts. It is not an eleventh
+member and does not block this assigned ten-member wave's ordinary work or
+eventual canonical acceptance with the retained interface. Its complete-owner
+plan, structural audit/review and conversion remain OPEN broader Squad-family
+requirements; today's retained ASM is neither writer matching-C acceptance nor
+whole-family closure. No partial C activation or ownership change is proposed.
+
+Astra mail574 reports the independent review complete, with only the factual
+corrections now reflected above blocking the intake wording. Sol independently
+checked the cited full-body stores, jumps, stack destinations and all five
+arguments. No second independent review or build is required for those wording
+repairs; the corrected commit is being returned for prerequisite closure.
+Remaining ordinary W6 source work proceeds under Joe's existing assignment.
+One final combined verifier remains pending until all ten members are ready;
+this research intake establishes no matching acceptance.
