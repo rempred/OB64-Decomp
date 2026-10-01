@@ -1,0 +1,89 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "FD34D4672017970E815E0D2042D484CC4AAB0B85F57F23B198AAFD1496F71F32",
+  "observationId": "08A78A77C46F7DF6C41F5267AA6E475167A784B2612D074EFBA4B2B7BA3592B6",
+  "symbol": "func_0012469C",
+  "authored": {
+    "context": "Joe-authorized receiving Sol MagentaTiger, UUID01a0efa7-9455-7af0-a8e8-28175aa5eb31, actual gpt-6.1-sol max, sole production source/build writer on main7c5aa1d5. Fresh exact-bound intake738B605D76D17AB3ACCE3AE3FC94D459952C9AA297C3BFD073FC72FCD39BA02A was empty. All319 original words were read/reconciled: complete1276-byte p2373 owner ROM12469C..124B98 / descriptor7 live801CFF5C..801D0458, including the two-word pre-prologue count load and nine calls. Both original23-entry92-byte tables ROM142D88..142DE4 and142DE8..142E44 remain separate ASM owners. Astra576 closed only the bounded static policy prerequisite atc3d21603; literal default and structural ownership qualifications remain.",
+    "effects": [
+      "body-coverage",
+      "source-lifetime",
+      "compiler-observation"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "D6724A4C344FAEF56CAE8AE7F6BC41729F80FAD55A4DF4470E2F997553D2F5AE",
+      "sourceSha256": "6322BD27E14819C9D60C730F98BC3110B91027529341AF05FAC9A9658A499E52"
+    },
+    "label": "complete-two-scans-mutable-floats-constant-pointer-binding",
+    "observedEffect": "Mechanical PURE_C pinned native1276/319/frame120 vars40 GP9/FP3 args16,20 aligned relocation-masked words. All319 native instructions align except one saved-register allocation exchange: retail selectedS3/first boundsS4/second selectorS4 versus native selectedS4/first boundsS3/second selectorS3. All nine calls, both real defaultsSP+21/+23, pre-prologue count load and two23-entry compiler tables remain. Independent first-record addresses gave1280/frame120/217; late x/z captures178; separate overrides1272/172; f32 * const pointer binding with mutable pointee restored1276/20. Const float pointees hoist floats across calls and grow frame144, plain mutable pointer folds absolute field loads and loses extent. Both/first pointer-before-loop, ordered four bound captures, integer bound address, unsigned selection, early return/conditional result and separate loop indices all retain20. Actual separate phase selection closes selectedS3 but grows1280 and swaps unit/index roles; real final count/index reuse also grows1280, and selection in for-init contracts1272, so none selected. Struct field view contracts frame112/grows1284. Lreg selected75 has9 refs/live222/9 calls, first bounds120 has9 refs/live210/4 calls and wins .greg allocation priority; generated row-offset328 is already correctS2. Specific bounded source-level advice requested from GoldOx. Native .rodata192 contains two92-byte tables with4-byte alignment gaps, not accepted producers or linked proof.",
+    "parentCandidateId": "3DC13665D49F8FACD6A547CEBAAE664080B7686D9D3A06F92CAA703213B6ED49",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_0012469C.s",
+        "sha256": "FEAA711C7596AB7790E2A1DD658A92CE81255CD1DDEB5B775A4C478400B3681D"
+      },
+      {
+        "path": "docs/Plans/task-logs/sol-squad-supply-policy-intake-20261001.md",
+        "sha256": "3003D0F5D5675F6846199E4FF9BA260AB3C4A5812DC2E4BDB3A93CE1DC6F017E"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Still20 nonexact masked executable words, unverified actual relocations and separate structural table activation gate. The literal uninitialized default-byte form is qualified research under Astra576, not runtime semantic proof. ASM/body and both table owners remain production. No canonical focused diff, structural approval/audit/review or complete ten-member W6 verifier has run; the six other focused-exact candidates do not close the wave. No supported tooling defect or hybrid exception is claimed.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Express the first-record halfword/byte loads as separate integer addresses, capture x/z after their actual use in distance, separate the actual zero/kind1 override branches into common accept labels and bind a constant pointer with mutable float values inside each ordinary for-loop body. Every read, helper output byte and operation is retained; no synthetic read, arithmetic, padding, volatile, register binding or default initialization is added."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 6326,
+      "sha256": "D6724A4C344FAEF56CAE8AE7F6BC41729F80FAD55A4DF4470E2F997553D2F5AE"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "6322BD27E14819C9D60C730F98BC3110B91027529341AF05FAC9A9658A499E52"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-01-func_0012469C-fd34d46720.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

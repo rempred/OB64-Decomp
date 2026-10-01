@@ -1,0 +1,89 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "3DC13665D49F8FACD6A547CEBAAE664080B7686D9D3A06F92CAA703213B6ED49",
+  "observationId": "17FFA44DF8A6F0CCABDC56E92123BF64CC599C4D2FAB823285AA21C3EC6F2773",
+  "symbol": "func_0012469C",
+  "authored": {
+    "context": "Joe-authorized receiving Sol MagentaTiger, UUID01a0efa7-9455-7af0-a8e8-28175aa5eb31, actual gpt-6.1-sol max, sole production source/build writer on main7c5aa1d5. Fresh exact-bound intake738B605D76D17AB3ACCE3AE3FC94D459952C9AA297C3BFD073FC72FCD39BA02A was empty. All319 original words were read/reconciled: complete1276-byte p2373 owner ROM12469C..124B98 / descriptor7 live801CFF5C..801D0458, including the two-word pre-prologue count load and nine calls. Both original23-entry92-byte tables ROM142D88..142DE4 and142DE8..142E44 remain separate ASM owners. Astra576 closed only the bounded static policy prerequisite atc3d21603; literal default and structural ownership qualifications remain.",
+    "effects": [
+      "body-coverage",
+      "source-lifetime",
+      "compiler-observation"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "8DE740C57299A6BDFD1888EB38F2897B65D93EFCBBDCD68AFD345C811F9DCAEE",
+      "sourceSha256": "AC1243FF2725E583FCF420505FD912DF774BC0719C6E3FDC0711F4C09D070EFA"
+    },
+    "label": "complete-two-scan-literal-default-baseline",
+    "observedEffect": "Mechanical PURE_C pinned native1284/321/frame120 vars40 GP9/FP3 args16,302 aligned relocation-masked words. All required body paths, nine calls, pre-prologue count load and two compiler23-entry tables are represented; no substantially omitted body. Shared first-record address lifetime enables a wrong GIV base; early x/z captures rotate float temporaries; compound override guards materialize booleans. A guardedDO control restores1276/319 but contracts frame104, so not selected. This compiler result does not prove literal indeterminate default semantics or native table ownership.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_0012469C.s",
+        "sha256": "FEAA711C7596AB7790E2A1DD658A92CE81255CD1DDEB5B775A4C478400B3681D"
+      },
+      {
+        "path": "docs/Plans/task-logs/sol-squad-supply-policy-intake-20261001.md",
+        "sha256": "3003D0F5D5675F6846199E4FF9BA260AB3C4A5812DC2E4BDB3A93CE1DC6F017E"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Nonexact baseline, not selected. Extent, allocation and scheduling differ. Original ASM/table owners remain production; no canonical linked/relocation match, structural activation, full-ROM or final ten-member W6 acceptance, runtime/reachability claim, supported tooling defect or hybrid exception.",
+    "role": "pair-baseline",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Independently derive both complete candidate scans, the first36-byte source-record eligibility filter, ordered strict distance comparisons, all four ordered bounds tests, separate normalize operations, actual selector/bank/table compatibility, the three helper cases in each23-entry switch and final conditional output. Preserve literal default-byte testsSP+21/+23 with a real four-byte helper output array and no invented initializer or default skip. Keep the broad helper interface and protected production ASM unchanged."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 6053,
+      "sha256": "8DE740C57299A6BDFD1888EB38F2897B65D93EFCBBDCD68AFD345C811F9DCAEE"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "AC1243FF2725E583FCF420505FD912DF774BC0719C6E3FDC0711F4C09D070EFA"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-01-func_0012469C-3dc13665d4.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
