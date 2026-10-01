@@ -1,0 +1,114 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "CFDCE4DBBE58441B3A5B1983CDBE751D8512E526291D5B4FDD5DC44636FFCD43",
+  "observationId": "2BE88445E2187656D59E8D4EBED57B460DC23A0B6C6D5CC766BA314C20956E6E",
+  "symbol": "func_0012D170",
+  "authored": {
+    "context": "Sol MagentaTiger/gpt-6.1-sol max, sole production source/build writer on main8e1703d2. Fresh empty intake, both authenticated hypotheses and all355 original words reconcile the complete p2419/1420-byte/frame40 owner, live801D8A30..801D8FBC. Source retains all23 actual calls and one SF equality, initial flag clear/set phases, interpolation, B8/B9 gates, complete64-byte auxiliary/four-child allocation with unchanged34/38, global row/bank publication even when root allocation fails, nullable failure cleanup, ignored-result one-argument E38 build/state1, context-forwarding C788 path, both cleanup/publication paths, repeated slot-pointer point/index reads, predecessor-list extraction, unconditional success cleanup, AECC publication and6C state1. Current accepted105CC0 caller gives the four-word interface with u8 selector; E8EC,26D24 and1072B8 consume only the unit pointer, while06CE0 consumes two float pointers and one SF step. Residual m2c arguments are not promoted to inputs. Protected SDK/resource and H interfaces remain unchanged; no capacities, guards or runtime claims are enlarged.",
+    "effects": [
+      "body-coverage",
+      "source-lifetime",
+      "compiler-observation",
+      "interface-evidence"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "6C020ED2DE6D7659E5520FC80954ECD4B0630D9F7E074A70322353C9DDB6C784",
+      "sourceSha256": "153DA484E2445879497FE53FF62EEBEEAD86B49CC240E87F7363463B8F24D553"
+    },
+    "label": "allocation-and-dispatch-joins",
+    "observedEffect": "Native1408/352/frame40 with42 masked differences. The failure join alone improves148; the dispatch join closes block order and most code. Three remaining missing instructions come from sharing final-call argument preparation too early.",
+    "parentCandidateId": "34B69FB0140B04F48FE5A06AE40F31DC5117CA20479E9B0E0A12DB8514A9A781",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_0012D170.s",
+        "sha256": "4D3B319C1720D22F594C0E5B03230469A5608E07FDAA8C640D9556759F6A7348"
+      },
+      {
+        "path": "src/lib/func_00105CC0.c",
+        "sha256": "D3F6DBDAF9EEC6492556346FFD5980A685689E9491410B1A4C0FCBAB7C64A083"
+      },
+      {
+        "path": "src/lib/func_0012D6FC.c",
+        "sha256": "E961C5B38E460DEDE4B3334C75BDB7198DC02DF6436934551B08776917085B31"
+      },
+      {
+        "path": "src/lib/func_00126D24.c",
+        "sha256": "08074EE47971E3B358FEAF9FB43D08BF6CE84B319C9CE3ED2F630F292AC64381"
+      },
+      {
+        "path": "src/lib/func_0012E8EC.c",
+        "sha256": "51036F90F4D79F528B45EAE539D5ECCDBE2E54ABDBB1A09E33551F96901F3BF2"
+      },
+      {
+        "path": "src/lib/func_00107D60.c",
+        "sha256": "FC226C56EC656C5A29C48F52F638E2C04B1893300A2F8096C49AEAEC3A6E37A4"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_00107E38.s",
+        "sha256": "71A1ED33495FEE3655F55E173E06DFDF4CB1FE38C946DD698B8582C30FE4552C"
+      },
+      {
+        "path": "docs/SOURCE_POLICY.md",
+        "sha256": "8D5D4110E8001EDD37D1FA47AC253D828016236DE69D34DB65F31D0416681829"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Provisional complete PURE_C source research until focused canonical ownership/placement/actual-relocation/linked-byte checks. No full20-member movement W5 verifier has run. Original ASM remains preserved. No structural/tooling change or supported defect is involved. The local volatile qualifier is a compiler workaround, not evidence of original qualifiers or concurrent access.",
+    "role": "pair-baseline",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Use the original shared allocation-failure join with its actual nullable guard and place the allocation-ready/current reload before the existing E38 dispatch arm. Keep all real buffer checks and callbacks."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 8683,
+      "sha256": "6C020ED2DE6D7659E5520FC80954ECD4B0630D9F7E074A70322353C9DDB6C784"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "153DA484E2445879497FE53FF62EEBEEAD86B49CC240E87F7363463B8F24D553"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-01-func_0012D170-cfdce4dbbe.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

@@ -1,0 +1,122 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "1C5A366399F63174A51BEE985AE86EC84EA2BC7E5B4129EEDFD648B5D0D46527",
+  "observationId": "576F24E89F397A389DF56A106FC5027B492D4A06DCE93FDD1151C2BFF57AD55B",
+  "symbol": "func_00131828",
+  "authored": {
+    "context": "Sol MagentaTiger/gpt-6.1-sol max, sole production source/build writer on main8e1703d2. Empty initial intake and both default hypotheses were consulted; the default packet is partial/primary-only and m2c does not translate the actual ordered DF comparison. Every original owner instruction and all80 table words were independently read. Complete p2459/492-byte owner has five bodies at offsets0/288/348/408/456 with extents288/60/60/48/36, first GLOBAL and secondary LOCAL. Three original table owners have33/23/24 entries and separate four-byte zero words. The actual0.25 double is a distinct original data owner. Primary preserves flag78bit1/count gate, independent selector/descriptor tests, full36-byte row stride, protected312-byte one-index/one-Vec3f-output helper, SF differences/squares/sum followed by ordered DF threshold comparison, count reload,7C index and78 flag publication. Secondary numeric switches preserve their entire truth domains and final leaf preserves flag8/byte04 threshold30. Initial private drafts missed selector51 in the second switch; native table comparison caught this, and every preserved source here corrects it. No larger capacity or runtime-provenance claim follows.",
+    "effects": [
+      "body-coverage",
+      "source-lifetime",
+      "compiler-observation",
+      "interface-evidence"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "39809B44FF56E8A307E20844BFF15A62593917E3B1ACEFAB917E40B865FCD303",
+      "sourceSha256": "827EEC1A02C900186122D437F77C932D903FBFBE86956A95E99141E5DD8D9CFF"
+    },
+    "label": "for-loop-destination-offset",
+    "observedEffect": "Native488/frame72/vars24/110 aligned masked differences. DEST_REG strength reduction keeps the real offset induction, but index-zero initialization occupies the first flag-branch delay slot, removing one original word. Commuted loop bound and an independently refreshed count local are neutral; reusing index for a separate preguard grows504. The jump pass duplicates the real exit test; combine preserves a displaced death as USE of a new boolean pseudo, and reload gives that unallocated SImode pseudo an eight-byte-aligned home. No final load/store accesses that home. This ordinary compiler behavior supports no padded buffer or fabricated source local.",
+    "parentCandidateId": "C917A39564234EACFDCD3C0C3D2D89CCAD463ED8789A73035C3DA298B3CAF497",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_00131828.s",
+        "sha256": "9C13057D68FF4F97B026883004B17ABF75B8542E417B17E3BCE2CAEDD73A262E"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_0012EA80.s",
+        "sha256": "9798E004BB5532421EBF4CC86DF6F32F09FEA6BEF4EC6E1EB0B66F45DADF3847"
+      },
+      {
+        "path": "asm/original/rev0/lib/float_00143178.s",
+        "sha256": "C7D135BE14569BF3B989A2966E67ABA6692D340E304AD74D54B95C1C61A2AEA3"
+      },
+      {
+        "path": "asm/original/rev0/lib/table_00143180.s",
+        "sha256": "E4CC7FAD5BEB0C28F3B66913FAE869CE611F1E87979DC22E4EC8C1545389C6FD"
+      },
+      {
+        "path": "asm/original/rev0/lib/table_00143208.s",
+        "sha256": "C338B4BE76B356023555889A898218BD34FE8DB3ADBC194CA8EF97E140CEC583"
+      },
+      {
+        "path": "asm/original/rev0/lib/table_00143268.s",
+        "sha256": "7BE697A236CD9BEDA958907B593B74E216D83809FF4B60B1640017A875161EBD"
+      },
+      {
+        "path": "asm/original/rev0/lib/zero_fill_00143204.s",
+        "sha256": "8D5519FDC8A3FB4D3E26A109D4AEBE30B8122807EA2216A155284E6F70EE7ACC"
+      },
+      {
+        "path": "asm/original/rev0/lib/zero_fill_00143264.s",
+        "sha256": "05E0B961059AD818FDD1392FDEF589F6D2C418BE0A8838B5CC0137547449563F"
+      },
+      {
+        "path": "config/logical-functions.json",
+        "sha256": "747933476C433A4882B8C000C750E32680F9825A850A3504949FFFE9011D689D"
+      },
+      {
+        "path": "docs/LOGICAL_FUNCTIONS.md",
+        "sha256": "84CD01039DDFA822D445E7716E3FD8688EE7922DF6A4ABEFA11C3348468D5151"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Nonexact PURE_C complete-producer research only. Original ASM and table owners remain production. No compilerTextFunctions/auxiliary production contract is activated; Astra approval, applicable structural audit and independent review precede any ownership change. No canonical linked bytes/relocations or complete20-member W5 verifier pass. No supported tooling defect or inherent-assembly conclusion.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Independently replay GoldOx544 source advice: retain a for-loop with a genuine per-iteration recordOffset=index*36 local instead of adding the multiply directly into its pointer address."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 2997,
+      "sha256": "39809B44FF56E8A307E20844BFF15A62593917E3B1ACEFAB917E40B865FCD303"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "827EEC1A02C900186122D437F77C932D903FBFBE86956A95E99141E5DD8D9CFF"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-01-func_00131828-1c5a366399.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
