@@ -1,0 +1,106 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "CC93A50EB0A898B0450384F77613F2B7C2970DA7DACDCA03F1E41F2C8DD0A720",
+  "observationId": "C94F84B34E2A223229F33CB4367ED20013EBF70CC3E1E6E248B726E47D72B019",
+  "symbol": "func_00126D24",
+  "authored": {
+    "context": "Receiving Sol MagentaTiger/gpt-6.1-sol max, sole production source/build writer on maina7c35864. Full p2380/live801D25E4..801D2A14/1072bytes/268words/frame56 reconciled to every original word, both authenticated m2c/Kuna hypotheses and current empty intake. All eight calls and every required movement/countdown/publication path are covered. Height selectors use the full-word interface, with an actual byte argument widened at this caller. F34/F4 calls use their accepted one-unit definitions; no residual register is asserted as another input. The compatibility base is801EB520, correctly derived from the sign-extended original801F:B520 pair. Original ASM fallback and complete20-member wave remain protected.",
+    "effects": [
+      "body-coverage",
+      "source-lifetime",
+      "compiler-observation",
+      "interface-evidence"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "55598F07AB2DA88331237472EF34EDE1410E00423AB6790B604DDA3B78DB184F",
+      "sourceSha256": "0CC13EDB1DC7678D3AA04A8EF5E6AA05F302E5145585F9C790275B1DA48733B7"
+    },
+    "label": "typed-byte-compatibility-row",
+    "observedEffect": "1072/268/frame56 with37 raw masked differences. Restores the separate low-address add and full target extent. A captured byte-row view produces the same37; integer-flat arithmetic stays1068/165.",
+    "parentCandidateId": "67E6AAA5466177315585CEB71854E521E8E322053E9467E7CE864E84D9A16C86",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_00126D24.s",
+        "sha256": "45B4DE67712BD449C455A80E6FA87FB20CC3E6CFD1711AD5B16F2F2E85B6A5E8"
+      },
+      {
+        "path": "src/lib/func_00106F34.c",
+        "sha256": "D9916E6FBBE6C913672C6703DE35E46241057CAD30C73856DBAA369376AA3553"
+      },
+      {
+        "path": "src/lib/func_001070F4.c",
+        "sha256": "6A5179C1601024D8F5F5D36D6191CB126D55478DAF9D9B85F4A0AFA9C2B6B45C"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_000F315C.s",
+        "sha256": "301497F58EE1CF799F7045F54A846745685F04A40D2440904F32654B3D7C2216"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_000F3428.s",
+        "sha256": "00C6742C7D2F6C8CD2D90E02CB213469009C28594FB0078542988D03BC10FAAD"
+      },
+      {
+        "path": "docs/Plans/task-logs/astra-movement-interface-review-20260930.md",
+        "sha256": "69671F555059EFE5C291B4B6FA69726B31BC7EEF40081A1B878A57B132A2338C"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Research/provisional ordinary matching evidence only. Actual sole-owner/placement/relocation/linked bytes must pass the focused canonical check; final matching acceptance requires the one complete20-member wave verifier and full-ROM equality. No tooling, compiler, table ownership or boundary change is made. Static predicates/strides do not establish runtime capacity or reachability.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Represent only the observed32-byte compatibility-row stride with an unspecified first dimension. Index the two byte selectors separately. This is a read-only view of the original data owner, with no new table or entry-capacity claim."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 5445,
+      "sha256": "55598F07AB2DA88331237472EF34EDE1410E00423AB6790B604DDA3B78DB184F"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "0CC13EDB1DC7678D3AA04A8EF5E6AA05F302E5145585F9C790275B1DA48733B7"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-30-func_00126D24-cc93a50eb0.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

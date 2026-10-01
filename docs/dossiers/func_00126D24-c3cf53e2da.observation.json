@@ -1,0 +1,106 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "C3CF53E2DADEB7853557AA3A9B994DED15F4368D48E5C0091D76431743A240FE",
+  "observationId": "DBA1B1FB87D4815525FC8041A275145E63A674987170F9C3A559A376CE4F9CE0",
+  "symbol": "func_00126D24",
+  "authored": {
+    "context": "Receiving Sol MagentaTiger/gpt-6.1-sol max, sole production source/build writer on maina7c35864. Full p2380/live801D25E4..801D2A14/1072bytes/268words/frame56 reconciled to every original word, both authenticated m2c/Kuna hypotheses and current empty intake. All eight calls and every required movement/countdown/publication path are covered. Height selectors use the full-word interface, with an actual byte argument widened at this caller. F34/F4 calls use their accepted one-unit definitions; no residual register is asserted as another input. The compatibility base is801EB520, correctly derived from the sign-extended original801F:B520 pair. Original ASM fallback and complete20-member wave remain protected.",
+    "effects": [
+      "body-coverage",
+      "source-lifetime",
+      "compiler-observation",
+      "interface-evidence"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "C43A8D038B9C498029D6D71B062EA258CFFA1A7E85D1A3DF75AEED08953E4378",
+      "sourceSha256": "7209E241FB7E6FE9EA73EB059A901572895DA9F21C10A387036C66363BCBB686"
+    },
+    "label": "complete-controller-baseline",
+    "observedEffect": "Untouched PURE_C1060/265/frame56 with241 raw masked differences; all eight calls and complete logical paths remain. Six emitted FP compares versus seven originals expose compiler sharing of the two countdown conditions, not missing path coverage.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_00126D24.s",
+        "sha256": "45B4DE67712BD449C455A80E6FA87FB20CC3E6CFD1711AD5B16F2F2E85B6A5E8"
+      },
+      {
+        "path": "src/lib/func_00106F34.c",
+        "sha256": "D9916E6FBBE6C913672C6703DE35E46241057CAD30C73856DBAA369376AA3553"
+      },
+      {
+        "path": "src/lib/func_001070F4.c",
+        "sha256": "6A5179C1601024D8F5F5D36D6191CB126D55478DAF9D9B85F4A0AFA9C2B6B45C"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_000F315C.s",
+        "sha256": "301497F58EE1CF799F7045F54A846745685F04A40D2440904F32654B3D7C2216"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_000F3428.s",
+        "sha256": "00C6742C7D2F6C8CD2D90E02CB213469009C28594FB0078542988D03BC10FAAD"
+      },
+      {
+        "path": "docs/Plans/task-logs/astra-movement-interface-review-20260930.md",
+        "sha256": "69671F555059EFE5C291B4B6FA69726B31BC7EEF40081A1B878A57B132A2338C"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Research/provisional ordinary matching evidence only. Actual sole-owner/placement/relocation/linked bytes must pass the focused canonical check; final matching acceptance requires the one complete20-member wave verifier and full-ROM equality. No tooling, compiler, table ownership or boundary change is made. Static predicates/strides do not establish runtime capacity or reachability.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Independently derive the complete controller, ordered four-bound float gate/status, bank and row lookup, byte compatibility rows, movement/height paths, duplicated remaining-time sources, flag cleanup, endpoint callback and late indexed publication. Repair the omitted m2c FP predicates and callee residual-argument guesses."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 5167,
+      "sha256": "C43A8D038B9C498029D6D71B062EA258CFFA1A7E85D1A3DF75AEED08953E4378"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "7209E241FB7E6FE9EA73EB059A901572895DA9F21C10A387036C66363BCBB686"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-09-30-func_00126D24-c3cf53e2da.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
