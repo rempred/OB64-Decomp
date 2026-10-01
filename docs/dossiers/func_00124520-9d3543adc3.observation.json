@@ -1,0 +1,89 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "9D3543ADC356CB09D178438A53F3A963A135D8457C7C9AD6F5D1ECFC6BF81B35",
+  "observationId": "C572AFF6D153C8F17373FCB2627071AE9012F5A13D5C5374C0E052B55F9B458C",
+  "symbol": "func_00124520",
+  "authored": {
+    "context": "Sol MagentaTiger/gpt-6.1-sol max, sole production source/build writer on main7207094d. Current intake was empty for each target; full original logical/physical owners and current descriptor7 placement were reconciled before derivation. Astra576 closes only the bounded static policy/interface prerequisite atc3d21603. All ten W6 members and one final-wave verifier remain assigned; no new structural owner, table, compiler or caller contract is changed.",
+    "effects": [
+      "body-coverage",
+      "source-lifetime",
+      "compiler-observation"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "303F4F724C1143F924C7651369FE23FFDAC1CE2469156A55D86C001BDA6F02BF",
+      "sourceSha256": "D85F45E3B97EA9134926CBD04AE4EFC68CAC6C0F62B9712D6990E3B4835553F7"
+    },
+    "label": "numeric-predicate-unsigned-word-compound-guard",
+    "observedEffect": "Pinned PURE_C native408/102/frame0 versus retail380/95;89 aligned relocation-masked words differ. The general unsigned32-to-float conversion introduces a double conversion/correction path and read-only constant even though the actual input came from an unsigned16 load. The compound OR also materializes both predicates before branching. This source still covers all95 required retail instructions semantically; it does not establish a native, linked or relocation match.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_00124520.s",
+        "sha256": "B32A95FC7E7EC17DDC998963B67C687B56EF42DC7494004C8E2C33D36C529DE6"
+      },
+      {
+        "path": "docs/Plans/task-logs/sol-squad-supply-policy-intake-20261001.md",
+        "sha256": "3003D0F5D5675F6846199E4FF9BA260AB3C4A5812DC2E4BDB3A93CE1DC6F017E"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Nonexact source-effect baseline, not selected. Extent and instruction/control-flow differences remain. No auxiliary constant owner or compiler exception is activated, and no complete W6 verifier has run.",
+    "role": "pair-baseline",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Independently reconstruct every numeric selector case and both flag-dependent predicates, initially storing a loaded halfword in a u32 and spelling the two early rejections as one compound OR."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 1374,
+      "sha256": "303F4F724C1143F924C7651369FE23FFDAC1CE2469156A55D86C001BDA6F02BF"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "D85F45E3B97EA9134926CBD04AE4EFC68CAC6C0F62B9712D6990E3B4835553F7"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-01-func_00124520-9d3543adc3.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

@@ -1,0 +1,89 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "4C3BE879A3D268534BB399B2E0B138F6F1F3955C7FC512560F41B75F1CBF7F0F",
+  "observationId": "B25A0C56E241CE7CE5B562DC2FB0E1E90E2E0D44C373A046929FECBE91963A64",
+  "symbol": "func_00124B98",
+  "authored": {
+    "context": "Joe-authorized Sol MagentaTiger/gpt-6.1-sol max remains sole production source/build writer on main f7f625e6. Current B98 intake was empty; all266 original words were read and complete p2374 owner ROM124B98..124FC0 / descriptor7 live801D0458..801D0880 was reconciled. The logical body has1060 executable bytes includingJR/delay plus4 original zero bytes. Astra576 closes the qualified static policy prerequisite, not a new producer/table/tail or full-wave acceptance. Original ASM remains production.",
+    "effects": [
+      "body-coverage",
+      "source-lifetime",
+      "compiler-observation"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "DE66A223D28CDD6D1CA0F54AD38A5E33F8E6BCA4B4AF6D8D9CDC9B2BB658953F",
+      "sourceSha256": "336CB5E83F14A8BEFAC5222DCBAE57FE2E3D1B3BAC6C554BE68DE39F63487CA9"
+    },
+    "label": "separate-flag-stages-consumed-encounter-init-captured-backup",
+    "observedEffect": "Pinned PURE_C native1060/265/frame112 vars24 GP10/FP4 args16. Separate flag stages alone restore the two AND operations and reduce90 to16 masked words. Delaying encountered initialization restores the first two scheduled words (14). Capturing the actual Y backup reduces one further word (13), although its backup FPR roles and ordering differ; it is selected as best numerical result and the14-word form remains a useful private intermediate. Ordinary explicit backup captures and reordered point captures do not close the ordering; interleaving flag modifications with real byte/word stores expands1076 and is not selected. Remaining13 are seven backup-copy ordering/FPR words, two point reload-order words and four final byte/LI scheduling words. All other265 executable words align. The native object has not supplied a canonical accepted original4-byte tail producer.",
+    "parentCandidateId": "BCE934DAA870A80C6F857FAAD6E846CF8A2FD1B24F377DDE14128C3EA3AAFC72",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_00124B98.s",
+        "sha256": "32914F39CD1D63198E7F9B555F87ABABC72D56379F32B323342B0E7EF379005E"
+      },
+      {
+        "path": "docs/Plans/task-logs/sol-squad-supply-policy-intake-20261001.md",
+        "sha256": "3003D0F5D5675F6846199E4FF9BA260AB3C4A5812DC2E4BDB3A93CE1DC6F017E"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Not linked-exact and not production-activated. Original ASM retained; original tail/producer and relocation contracts remain gates before activation, and full ten-member W6 plus its one final verifier remain open. A bounded source-level ordering blocker was sent to verified GoldOx for read-only advice; no supported tooling defect or inherent-assembly/hybrid exception is claimed.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Spell the real final flag modifications as separate C statements, move the actual encountered initialization after the DA10 call, and capture the real old Y before the backup writes. Keep the same data reads/values, call order, broad helper contracts, original restore path and point operations; no artificial reads, padding, volatile or register binding is introduced."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 5354,
+      "sha256": "DE66A223D28CDD6D1CA0F54AD38A5E33F8E6BCA4B4AF6D8D9CDC9B2BB658953F"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "336CB5E83F14A8BEFAC5222DCBAE57FE2E3D1B3BAC6C554BE68DE39F63487CA9"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-01-func_00124B98-4c3be879a3.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

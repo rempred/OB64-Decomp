@@ -1,0 +1,89 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "BCE934DAA870A80C6F857FAAD6E846CF8A2FD1B24F377DDE14128C3EA3AAFC72",
+  "observationId": "61473FE83A6114C46AF1851429F00766DF0140A608648F378B07F5A86A6345C9",
+  "symbol": "func_00124B98",
+  "authored": {
+    "context": "Joe-authorized Sol MagentaTiger/gpt-6.1-sol max remains sole production source/build writer on main f7f625e6. Current B98 intake was empty; all266 original words were read and complete p2374 owner ROM124B98..124FC0 / descriptor7 live801D0458..801D0880 was reconciled. The logical body has1060 executable bytes includingJR/delay plus4 original zero bytes. Astra576 closes the qualified static policy prerequisite, not a new producer/table/tail or full-wave acceptance. Original ASM remains production.",
+    "effects": [
+      "body-coverage",
+      "source-lifetime",
+      "compiler-observation"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "1D2B4A0AAF52FB29CBA423DD1916DF8696304D83D31B6E703262592240F54A60",
+      "sourceSha256": "88F6A74495C823E0804DDA901DD3C4906D66245F3002130D75D2F3C0C53F72DD"
+    },
+    "label": "complete-controller-one-expression-flag-masks",
+    "observedEffect": "Mechanical PURE_C pinned native1052/263/frame112 (vars24 GP10/FP4 args16),90 aligned relocation-masked words against complete retail1064/266. Every1060-byte executable body path is represented. The two adjacent clears combine into one mask, contracting8 executable bytes and shifting the remaining words. Backup loads/stores, two point reloads and final byte/LI scheduling also differ. Native object output/padding is diagnostic, not accepted full-owner production.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_00124B98.s",
+        "sha256": "32914F39CD1D63198E7F9B555F87ABABC72D56379F32B323342B0E7EF379005E"
+      },
+      {
+        "path": "docs/Plans/task-logs/sol-squad-supply-policy-intake-20261001.md",
+        "sha256": "3003D0F5D5675F6846199E4FF9BA260AB3C4A5812DC2E4BDB3A93CE1DC6F017E"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Nonexact baseline, not selected. Linked bytes and all actual relocations have not been checked canonically; the original4-byte zero tail producer is not accepted, and complete ten-member W6/final verifier remains open. No runtime choice/reachability or stronger semantic name is established.",
+    "role": "pair-baseline",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Independently derive the full controller with its five-member scan, all signed-word helper interfaces, pre-call point captures, original numeric/width contracts, restore path and all calls. Initially express four final flag masks/OR as one expression."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 5226,
+      "sha256": "1D2B4A0AAF52FB29CBA423DD1916DF8696304D83D31B6E703262592240F54A60"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "88F6A74495C823E0804DDA901DD3C4906D66245F3002130D75D2F3C0C53F72DD"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-01-func_00124B98-bce934daa8.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

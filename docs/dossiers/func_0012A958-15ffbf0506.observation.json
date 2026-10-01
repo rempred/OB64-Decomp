@@ -1,0 +1,97 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "15FFBF0506E535A56228E47F9CDAA0C514F743B92AECF8C589D82D75917822D2",
+  "observationId": "C9AFFB98E3A06A4C32545FBCB5F16C16A034A58C6F5CDEC427015D745CBFAB8E",
+  "symbol": "func_0012A958",
+  "authored": {
+    "context": "Sol MagentaTiger/gpt-6.1-sol max, Joe-authorized sole production source/build writer on main f7f625e6. Fresh exact-bound intake40A99CC563828E9361EB1088BAE4229B91C4DE8911111726B34BF905A28EBEFC was empty. All299 original words and the full single p2412 owner ROM12A958..12AE04 / descriptor7 live801D6218..801D66C4 were read/reconciled; no boundary, table, helper ABI, compiler or caller changes. Astra576 closes only the corrected bounded static policy prerequisite. Original ASM remains production and all ten W6 members stay assigned.",
+    "effects": [
+      "body-coverage",
+      "source-lifetime",
+      "compiler-observation"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "AA0E1B2490B8DD088EB0D76A2C09404060FAE66A6D9DDD4FF656144B01397E2F",
+      "sourceSha256": "1E29767695E03452FDCF965ECC44C8B6CA0E2C28BEE484C5514FB5E4147395A5"
+    },
+    "label": "separate-class-addresses-staged-item-and-real-clear-lifetimes",
+    "observedEffect": "Pinned PURE_C native1196/299/frame80 vars16 GP9/FP0 args24,19 aligned relocation-masked words. Separate class row addresses restore8 bytes and the retail saved unit/formation register roles (1192/298,228 aligned words dominated by a later shift). Actual inventory-item staging restores the missing move and complete extent (1196/299,26); separate read/clear uses restore the carried cursor and13-byte access displacement (22); integer row address evaluation restores two ADD operand orders (20), and the actual final row entry pointer closes the third (19). Early item staging swaps its live item/cursor registers (24), typed-byte/unsigned first-member forms change the comparison opcode, and consumed-selector reuse grows1200/300 with128 masked words; none selected. Remaining19 are a first-loop low-table/member/entry register rotation (15 words) and four inventory word-copy/setup ordering words. All eight calls and every required path remain represented. Native result is diagnostic only.",
+    "parentCandidateId": "FC353842B0820D0FE08004C08AD97025168C863CF7C1E43D785C7F5377C3F1F4",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_0012A958.s",
+        "sha256": "22F7A88CAA1E9030124324E94B0A59DAABAEADCAF561F9662EC029598D6A2CCD"
+      },
+      {
+        "path": "docs/Plans/task-logs/sol-squad-supply-policy-intake-20261001.md",
+        "sha256": "3003D0F5D5675F6846199E4FF9BA260AB3C4A5812DC2E4BDB3A93CE1DC6F017E"
+      },
+      {
+        "path": "src/lib/func_00129068.c",
+        "sha256": "6EDCE4B4923AF0019B3A616490D73FB326325B8F2D0FBECB4D83DCE63268BB98"
+      },
+      {
+        "path": "src/lib/func_00040f88.c",
+        "sha256": "5BE68FFEA5197367F3D47222BAD609C9D4FA2345EC17D4495BFE8F24D5EBDDD7"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Still nonexact and ASM production retained. No canonical linked/relocation match, source activation or ten-member W6 final verifier. Static numeric qualification does not prove runtime choice/timing/reachability or full family closure; no supported tooling defect or hybrid exception is claimed.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Give each aligned52/56-byte class row a real address local; separate the nonzero item check from the actual inventory-item word; retain the real carried read and clear pointers in separate short lifetimes so GCC can reduce the index without adding13 to the cursor; express the actual row byte address in the two formation loops as integer address addition and retain a real final row entry pointer."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 5821,
+      "sha256": "AA0E1B2490B8DD088EB0D76A2C09404060FAE66A6D9DDD4FF656144B01397E2F"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "1E29767695E03452FDCF965ECC44C8B6CA0E2C28BEE484C5514FB5E4147395A5"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-01-func_0012A958-15ffbf0506.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

@@ -1,0 +1,89 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "6B3665271026B5D0D05F566D439B165DC436DA0A337095225D5CDC29EA132C9B",
+  "observationId": "E93D3775344DA8887E9546DED1496F3AEF886E6B72CF650953F3C6723742BA45",
+  "symbol": "func_00124B98",
+  "authored": {
+    "context": "Joe-authorized Sol MagentaTiger/gpt-6.1-sol max is sole production source/build writer on main f7f625e6. Current full p2374 owner is ROM124B98..124FC0 / descriptor7 live801D0458..801D0880:1060 executable bytes includingJR/delay plus4 original zero bytes. All266 original words were read. Astra576 closed the bounded static policy prerequisite, not producer/tail ownership. Original ASM production is retained and complete ten-member W6 remains assigned.",
+    "effects": [
+      "body-coverage",
+      "source-lifetime",
+      "compiler-observation"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "58FA653A11B47E30AAD53C16BA12D6C512664D6D446D56039D1EBCCBAB015D17",
+      "sourceSha256": "8BFD7C60BFD15D1535B5C9879A7918C36A25E35AC08BD25F4A525AC6CA9C0E69"
+    },
+    "label": "natural-backup-order-chained-byte-mode-and-word-index",
+    "observedEffect": "Mechanical PURE_C native1060/265/frame112 vars24 GP10/FP4 args16. Natural flags/BC/X/Y/Z/word backup ordering closes13 to6 masked words (sixteen to14 earlier encounter initialization already retained). Chained actual byte-mode/word-index assignment restores the four final byte/LI words, leaving only two swapped point reloads26C/270:retY f24 beforeZ f20, actualZ beforeY. All other265 executable words and every path/call align. Capturing point values separately in the two adjustment paths restores those reloads but moves all three actual publication stores before the first flag store (five residual words), so this control is not selected; source order alone did not close reloads. The native .text1072 has12 alignment-zero bytes beyond the1060 function, while the original owner has only4; a generic approved tail producer is still needed before activation. Native masked comparison is diagnostic, not a linked relocation or full-owner proof.",
+    "parentCandidateId": "4C3BE879A3D268534BB399B2E0B138F6F1F3955C7FC512560F41B75F1CBF7F0F",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_00124B98.s",
+        "sha256": "32914F39CD1D63198E7F9B555F87ABABC72D56379F32B323342B0E7EF379005E"
+      },
+      {
+        "path": "docs/Plans/task-logs/sol-squad-supply-policy-intake-20261001.md",
+        "sha256": "3003D0F5D5675F6846199E4FF9BA260AB3C4A5812DC2E4BDB3A93CE1DC6F017E"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Not linked-exact or production-activated. Two executable words, original4-byte tail/producer and actual relocation contracts remain open. No ten-member W6 final verifier/full-ROM proof, runtime policy/reachability proof, supported tooling defect or hybrid exception is claimed.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Put the genuine mark/index save before the X/Y/Z backup and final word copy, following GoldOx582 read-only advice and the already root-authored backup-x-first form; Sol reproduces all eight backup ordering/FPR words. Couple the actual byte20=1 and word24=1 through one chained assignment, using the assigned byte as the real word-store value. The original later word24 assignment is removed; no extra read/store, fabricated value, volatile, padding, ABI change or register binding occurs."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 5308,
+      "sha256": "58FA653A11B47E30AAD53C16BA12D6C512664D6D446D56039D1EBCCBAB015D17"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "8BFD7C60BFD15D1535B5C9879A7918C36A25E35AC08BD25F4A525AC6CA9C0E69"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-01-func_00124B98-6b36652710.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

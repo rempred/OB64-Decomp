@@ -1,0 +1,97 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "FC353842B0820D0FE08004C08AD97025168C863CF7C1E43D785C7F5377C3F1F4",
+  "observationId": "3D052E3F77055F4028D8B4F08AFAF09934D0588E9B2C8A538AD4B249F6DEAE94",
+  "symbol": "func_0012A958",
+  "authored": {
+    "context": "Sol MagentaTiger/gpt-6.1-sol max, Joe-authorized sole production source/build writer on main f7f625e6. Fresh exact-bound intake40A99CC563828E9361EB1088BAE4229B91C4DE8911111726B34BF905A28EBEFC was empty. All299 original words and the full single p2412 owner ROM12A958..12AE04 / descriptor7 live801D6218..801D66C4 were read/reconciled; no boundary, table, helper ABI, compiler or caller changes. Astra576 closes only the corrected bounded static policy prerequisite. Original ASM remains production and all ten W6 members stay assigned.",
+    "effects": [
+      "body-coverage",
+      "source-lifetime",
+      "compiler-observation"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "8B6496C25F6B997292032ABB8B394A84A1EC781B9775D28B5564BC9FAFD0B109",
+      "sourceSha256": "D603D4E1B72ACA7D610339CA0CC89F38A4EAB1F421F0F30D92471DA374B1A4B0"
+    },
+    "label": "complete-teardown-qualified-baseline",
+    "observedEffect": "Mechanical PURE_C pinned native1184/296/frame80 vars16 GP9/FP0 args24 versus retail1196/299. All eight calls and all required paths represented; no substantial omitted body exists. Direct combined class-address expressions hoist constant bases and rotate saved unit/row registers. Source40-set paths both bypass the91/92/90/98/f32-9C clearing block; record IDs are not rewritten by scratch normalization. No meaningful deliberate return is invented or shared unknown return declaration narrowed.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_0012A958.s",
+        "sha256": "22F7A88CAA1E9030124324E94B0A59DAABAEADCAF561F9662EC029598D6A2CCD"
+      },
+      {
+        "path": "docs/Plans/task-logs/sol-squad-supply-policy-intake-20261001.md",
+        "sha256": "3003D0F5D5675F6846199E4FF9BA260AB3C4A5812DC2E4BDB3A93CE1DC6F017E"
+      },
+      {
+        "path": "src/lib/func_00129068.c",
+        "sha256": "6EDCE4B4923AF0019B3A616490D73FB326325B8F2D0FBECB4D83DCE63268BB98"
+      },
+      {
+        "path": "src/lib/func_00040f88.c",
+        "sha256": "5BE68FFEA5197367F3D47222BAD609C9D4FA2345EC17D4495BFE8F24D5EBDDD7"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Nonexact baseline, not selected; extent, allocation and scheduling remain. No canonical linked diff, recorded relocation contract, activation, full-ROM acceptance or runtime policy/reachability proof.",
+    "role": "pair-baseline",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Independently reconstruct all first five-member/halfword paths, the source-below30 F300 call and carried-item clearing, both formation branches, the five actual scratch byte destinations and five-argument classifier, both bypasses of the unit-clearing tail and final void rebuild call. Directly express the aligned class-field addresses and keep the carried pointer explicit."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 5458,
+      "sha256": "8B6496C25F6B997292032ABB8B394A84A1EC781B9775D28B5564BC9FAFD0B109"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "D603D4E1B72ACA7D610339CA0CC89F38A4EAB1F421F0F30D92471DA374B1A4B0"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-01-func_0012A958-fc353842b0.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
