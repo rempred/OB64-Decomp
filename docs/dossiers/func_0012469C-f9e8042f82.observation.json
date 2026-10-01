@@ -1,0 +1,97 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "F9E8042F82CFB0A8425125B4D5AF1B8348A7E454E1F8E6DB6032ED1B2F73E897",
+  "observationId": "F653691EED10F2020F29825EB98B8A8CCB6004AD5BE5E3985FF7138A0790A52C",
+  "symbol": "func_0012469C",
+  "authored": {
+    "context": "Joe-authorized Sol MagentaTiger, UUID01a0efa7-9455-7af0-a8e8-28175aa5eb31, actual gpt-6.1-sol max, remains sole production source/build writer on main2faf1cb9. Latest production44b294db has seven focused-exact provisional members of the complete TEN-member W6 supply wave. Prior accepted inputs are reused unchanged. No final wave verifier/full-ROM proof has run. Original nonactive ASM and tables remain production; Astra576 closes only the bounded static prerequisite, not runtime/default or producer ownership qualifications.",
+    "effects": [
+      "body-coverage",
+      "source-lifetime",
+      "compiler-observation"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "5A83F4566C73BBB32500580FB01FC55F8B29C090A074D3D474464B08F01F2C32",
+      "sourceSha256": "5BE1C869536649A80B3C8196953E0F4019494D83ACE79E2BAF9F88B9672FD470"
+    },
+    "label": "first-scan-success-publishes-output-and-returns-before-fallback",
+    "observedEffect": "Mechanical PURE_C pinned native1276/319/frame120 vars40 GP9/FP3 args16, zero aligned relocation-masked words. All319 executable words, original pre-prologue count load, nine emitted calls and both real defaults SP+21/+23 align. Lreg selection pseudo75 increases from9 references/live222/cross9 calls to11/live226/cross10 calls; bounds120 remains9/live210/cross4. Global allocation now gives retail selectedS3/boundsS4 and restores all20 saved-register differences. The two actual source output sites tail-merge later. Count/index gates retain20; making the second output an early return leaves1 masked difference. Native .rodata has two genuine23-entry92-byte tables and two4-byte natural alignment gaps. Those bytes still need their real accepted ownership contract, not an inferred placement.",
+    "parentCandidateId": "FD34D4672017970E815E0D2042D484CC4AAB0B85F57F23B198AAFD1496F71F32",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_0012469C.s",
+        "sha256": "FEAA711C7596AB7790E2A1DD658A92CE81255CD1DDEB5B775A4C478400B3681D"
+      },
+      {
+        "path": "docs/Plans/task-logs/sol-squad-supply-policy-intake-20261001.md",
+        "sha256": "3003D0F5D5675F6846199E4FF9BA260AB3C4A5812DC2E4BDB3A93CE1DC6F017E"
+      },
+      {
+        "path": "asm/original/rev0/lib/table_00142D88.s",
+        "sha256": "C430DAD420C03F0718EF3C51D8F405F98B9B27A174E07BC3929E37040A2DB7D5"
+      },
+      {
+        "path": "asm/original/rev0/lib/table_00142DE8.s",
+        "sha256": "B548A17B485FC1F47273FB815744ACA634A0D3A7AE4A566E6D7A2ADE119AA70E"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Native masked zero is not actual linked relocation, sole-owner or full-ROM proof. Both original table owners and ASM body remain production pending Astra structural approval and applicable audit/review. Literal uninitialized default-byte qualification remains explicit. No runtime provenance, tooling defect, hybrid exception or ten-member W6 acceptance is claimed.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "On actual first-scan success, call the real output helper and return the selected index before the fallback scan. Leave fallback output publication in its actual second path. The compiler merges these mutually exclusive source calls into one emitted final call. Preserve both scans, strict comparisons, every actual load, helper output/default byte and both switches; no artificial reference, initialization, padding, volatile, register binding or interface change is added."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 6408,
+      "sha256": "5A83F4566C73BBB32500580FB01FC55F8B29C090A074D3D474464B08F01F2C32"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "5BE1C869536649A80B3C8196953E0F4019494D83ACE79E2BAF9F88B9672FD470"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-01-func_0012469C-f9e8042f82.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

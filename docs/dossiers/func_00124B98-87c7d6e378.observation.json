@@ -1,0 +1,89 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "87C7D6E378A7D189DBEB3F12AB3AE372DF770B00C23DB1422D2C4DB2338A2465",
+  "observationId": "EC7D461302873F3260BEF305D82B85FF6E4063D286DE6175BE02FF8BD72A53C7",
+  "symbol": "func_00124B98",
+  "authored": {
+    "context": "Joe-authorized Sol MagentaTiger, UUID01a0efa7-9455-7af0-a8e8-28175aa5eb31, actual gpt-6.1-sol max, remains sole production source/build writer on main2faf1cb9. Latest production44b294db has seven focused-exact provisional members of the complete TEN-member W6 supply wave. Prior accepted inputs are reused unchanged. No final wave verifier/full-ROM proof has run. Original nonactive ASM and tables remain production; Astra576 closes only the bounded static prerequisite, not runtime/default or producer ownership qualifications.",
+    "effects": [
+      "body-coverage",
+      "source-lifetime",
+      "compiler-observation"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "95495CEA0FE90CE1D41AF4F76551B424490DFE02AFE79F4F500E343998E3BAFD",
+      "sourceSha256": "7A3BC3DF6DDD889A009FA639AF11A6367BD083AB3B9D34F0954098A228512E4B"
+    },
+    "label": "working-y-reuses-real-z-adjustment-before-point-capture",
+    "observedEffect": "Mechanical PURE_C native1060/265/frame112 vars24 GP10/FP4 args16. The two previously swapped Y/Z reloads26C/270 now align, while only three adjustment words23C/248/260 differ because native working value uses savedf24 instead of retail temporaryf4. All other265 executable words align. This3-word control is an informative lifetime effect and does not replace the2-word best. Y/local alias controls also give3; chained point publication removes the working scalar and returns to2. X/Z reuse regress12/17 and are not selected. Native .text1072 still has12 alignment zeros after1060 executable bytes; original physical owner requires only4, whose producer gate remains open.",
+    "parentCandidateId": "6B3665271026B5D0D05F566D439B165DC436DA0A337095225D5CDC29EA132C9B",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_00124B98.s",
+        "sha256": "32914F39CD1D63198E7F9B555F87ABABC72D56379F32B323342B0E7EF379005E"
+      },
+      {
+        "path": "docs/Plans/task-logs/sol-squad-supply-policy-intake-20261001.md",
+        "sha256": "3003D0F5D5675F6846199E4FF9BA260AB3C4A5812DC2E4BDB3A93CE1DC6F017E"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Three masked adjustment differences and the original4-byte tail/producer contract remain open. No canonical linked proof or activation. Preserve the2-word best; no supported tooling defect, inherent-assembly claim, hybrid exception or ten-member acceptance follows.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Use the existing working Y scalar for the actual point-Z plus0.0001 calculation, strict upper-bound comparison and conditional store. Its later genuine Y point capture overwrites the completed adjustment. Keep the best source natural backup order and chained actual mode/index stores. No extra read, operation, initialization, publication, padding, volatile or register binding is added."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 5283,
+      "sha256": "95495CEA0FE90CE1D41AF4F76551B424490DFE02AFE79F4F500E343998E3BAFD"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "7A3BC3DF6DDD889A009FA639AF11A6367BD083AB3B9D34F0954098A228512E4B"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-01-func_00124B98-87c7d6e378.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

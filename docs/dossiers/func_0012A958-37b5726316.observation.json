@@ -1,0 +1,89 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "37B572631664D91400FC27F39DAADBB82D773808669EE8F481008AB51CAC9DCA",
+  "observationId": "EAFA852A7CCC86BC596CB6931D6066E06C50233F20A3EABD6AD7C987DFED733B",
+  "symbol": "func_0012A958",
+  "authored": {
+    "context": "Joe-authorized Sol MagentaTiger, UUID01a0efa7-9455-7af0-a8e8-28175aa5eb31, actual gpt-6.1-sol max, remains sole production source/build writer on main2faf1cb9. Latest production44b294db has seven focused-exact provisional members of the complete TEN-member W6 supply wave. Prior accepted inputs are reused unchanged. No final wave verifier/full-ROM proof has run. Original nonactive ASM and tables remain production; Astra576 closes only the bounded static prerequisite, not runtime/default or producer ownership qualifications.",
+    "effects": [
+      "body-coverage",
+      "source-lifetime",
+      "compiler-observation"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "BC54515E0275891CFF64DEB5969B46F38230CE20F29314C7F33AF97D9B0C8B55",
+      "sourceSha256": "6313C62326CEFB162AD54C60630DA9079E5AE719C7B705D5D846823BF1203F0D"
+    },
+    "label": "actual-inventory-item-reuses-finished-member-word",
+    "observedEffect": "Mechanical PURE_C pinned native1196/299/frame80 vars16 GP9/FP0 args24. The real disjoint scalar reuse reduces19 masked words to4, closing all15 first-loop register-rotation words. Four remaining words164..174 concern only the real later item/inventory/end setup order. The shared member pseudo has25 references/live26/dies4 before global allocation. The private D_80193AC2 address spelling is research only; production uses the existing D_80193AC0+2 registry binding.",
+    "parentCandidateId": "15FFBF0506E535A56228E47F9CDAA0C514F743B92AECF8C589D82D75917822D2",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_0012A958.s",
+        "sha256": "22F7A88CAA1E9030124324E94B0A59DAABAEADCAF561F9662EC029598D6A2CCD"
+      },
+      {
+        "path": "docs/Plans/task-logs/sol-squad-supply-policy-intake-20261001.md",
+        "sha256": "3003D0F5D5675F6846199E4FF9BA260AB3C4A5812DC2E4BDB3A93CE1DC6F017E"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "This intermediate has4 masked differences and no linked proof. It is not selected best. The exact successor retains the real disjoint lifetime and changes only actual setup order. Complete ten-member W6 remains open.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Reuse the actual first-loop member word for the later nonzero inventory item, after its member use is complete. Keep the genuine five classifier arguments/scratch bytes, all complete loops and the two clearing-tail bypasses. No extra read/store, dummy arithmetic, padding, volatile or register binding is introduced."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 5785,
+      "sha256": "BC54515E0275891CFF64DEB5969B46F38230CE20F29314C7F33AF97D9B0C8B55"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "6313C62326CEFB162AD54C60630DA9079E5AE719C7B705D5D846823BF1203F0D"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-01-func_0012A958-37b5726316.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
