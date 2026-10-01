@@ -1,0 +1,115 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "94030D7CDD258F03304761F28D7D791E77DC63838DB85E64A88A6FD741EF1032",
+  "observationId": "3590EC2FB5178713B434BE9F4A5497E8B3664F93D3680CBCCA26E086EE3E662B",
+  "symbol": "func_00126770",
+  "authored": {
+    "context": "Sol MagentaTiger/gpt-6.1-sol max, sole production source/build writer on main6a5a8d00. Fresh empty intake, both complete authenticated hypotheses and all365 original words reconcile accepted p2379 function00126770..00126D24/live801D2030..801D25E4,1460/frame32, plus separate p2579 table00142EA0..00142EC0/live801EE760..801EE780,32 bytes/eight pointers. Original header uniform-table wording is stale. Raw branch88 targets+578 default; table5/6 targets+554. The full required-body check caught and corrected an initial swapped5/6/default hypothesis before any preservation or activation; that incorrect source is not an accepted candidate. Complete valid source retains3 calls/27 SF comparisons, unchecked signed row/member results, eleven-byte group stride, leader flagsC000 fallbackAC, all eight selectors/default and ordered normalization including NaN behavior. AcceptedE968/E9F4 take unit pointers; E950 takes a signed word. No extra input, range guard, data capacity or runtime discovery is inferred. Original function/table ASM remain production. Astra559 is reviewing the concrete native source/descriptor under the existing generic auxiliary contract; activation awaits its applicable ownership gate.",
+    "effects": [
+      "body-coverage",
+      "source-lifetime",
+      "compiler-observation",
+      "table-ownership",
+      "interface-evidence"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "4D24F282059711AAF854F8D4952EB6B636632ABA0D6F4E40317737BA2D8C0A4C",
+      "sourceSha256": "6B6C0BFD64F55F72E0D08998D7755AD74F86EC46A3A45039C8BECBBF6A01A6F1"
+    },
+    "label": "native-exact-complete-function-and-table",
+    "observedEffect": "PURE_C native1460/365/frame32,vars0,4GP/0FP,args16;zero offset-aligned relocation-masked instruction differences. All3 calls/27 SF comparisons, all eight table addends and their R_MIPS_32/.text relocations are exact. Native alloc-only .rodata is32 bytes/alignment8, objectSHA7BF64B8FC448A680CD6BB93ECEA239A2C7B38174BED9F26026EEAD82D6800966; canonical linked tableSHA7C4A92CDA4E47ED2F17820231414AE20C068D7EE07E74E6040F5E5095454E141. Native text has20 actual relocations. The first-three named boundary raises its real allocation priority; the distinct fourth-case leader preserves its different needed lifetime. These explain native equality without synthetic use, literal byte construction, assembly injection or compiler-output rewriting. Private prospective descriptor uses only existing p2379/p2579 and existing generic single-table contract, without tail/prefix/padding/interior or new aliases. Structural review and canonical proof are still pending. Shared watch 94030D7CDD258F03304761F28D7D791E77DC63838DB85E64A88A6FD741EF1032 is PURE_C compiled symbolic-object research with relocationMaskedExact=true and20 unresolved relocation-bearing instructions/54 bytes different. It is not authenticated linked acceptance; auxiliary ownership remains gated.",
+    "parentCandidateId": "8395629D05723B6016AB1964BDAFB146EC94A6BABFECE12397A1F88F65A1059B",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_00126770.s",
+        "sha256": "C0496F916170EBD729E0FF9B0B0AF93197F686712C8DC988AE30F2E7DCB4CB97"
+      },
+      {
+        "path": "asm/original/rev0/lib/table_00142EA0.s",
+        "sha256": "C359A13D9495C30CE556961725DE93C9D5A045E322A4C9589F3A58F07B6B2195"
+      },
+      {
+        "path": "src/lib/func_0012E968.c",
+        "sha256": "595A644B903F2EBB8FE7A3B4064AC43C68CB3156E5541B3BAE33452026E06664"
+      },
+      {
+        "path": "src/lib/func_0012E9F4.c",
+        "sha256": "31E5161AE507D86E2E0728C2B81F401810D31EDC98A198DF4E90EC9C66FB4AE7"
+      },
+      {
+        "path": "src/lib/func_0012E950.c",
+        "sha256": "A024E767C2658C4AC35BD95436C757CA14314107A2399A07ECB565115F1ABC5D"
+      },
+      {
+        "path": "docs/Plans/task-logs/astra-movement-interface-review-20260930.md",
+        "sha256": "69671F555059EFE5C291B4B6FA69726B31BC7EEF40081A1B878A57B132A2338C"
+      },
+      {
+        "path": "docs/WORKFLOW.md",
+        "sha256": "0ACD259116DEC62C74C01CC49291B8A4377734FCD49281BBDD9FC5D7455598EA"
+      },
+      {
+        "path": "docs/SOURCE_POLICY.md",
+        "sha256": "8D5D4110E8001EDD37D1FA47AC253D828016236DE69D34DB65F31D0416681829"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Research only, not linked/full-ROM acceptance. The native-exact function/table proposal still requires the applicable structural ownership gate, sole-owner/placement/actual-relocation/linked-byte checks, audit/review, and the complete20-member movement wave final verifier. No tooling defect, compiler exception or broader capability is requested. Original ASM remains production.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Define the actual shared zero boundary immediately before first-three comparisons and retain a distinct scoped fourth-case leader value. Keep phase-specific base/offset arithmetic and normalization steps; document the compiler-sensitive real lifetimes near the source."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 4946,
+      "sha256": "4D24F282059711AAF854F8D4952EB6B636632ABA0D6F4E40317737BA2D8C0A4C"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "6B6C0BFD64F55F72E0D08998D7755AD74F86EC46A3A45039C8BECBBF6A01A6F1"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-01-func_00126770-94030d7cdd.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

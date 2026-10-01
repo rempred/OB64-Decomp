@@ -1,0 +1,101 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "913DC0AD6B15339DD7D362DB06D9B6C562F3ED8E3B36C00D964C9D97AFFC52D2",
+  "observationId": "1A3754F0F83FC22CB5DE97BCBB0186BA4EACBA5FF1F1470B666EC192BF34D57A",
+  "symbol": "func_00106F34",
+  "authored": {
+    "context": "Sol MagentaTiger/gpt-6.1-sol max, sole production source/build writer on main6a5a8d00. Current intake contains the accepted full448-byte one-input F34 source pair and useful pointer-lifetime controls; production source/body is unchanged. Astra9b779625 distinguishes consumed inputs from historical declaration arity and permits evidence-backed unused-argument hypotheses, while requiring compatible active callers and retaining production declarations. This private varying-arity hypothesis keeps one fixed unit pointer and consumes no variadic argument; D24 continues passing only its original unit pointer. No residual register expression or new memory input is invented. No production definition/declaration is changed.",
+    "effects": [
+      "interface-evidence",
+      "compiler-observation",
+      "source-policy"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "842720591D89059CD730B2154A4078418192ED46DFAB72CD6D752206EE8D37EC",
+      "sourceSha256": "8EF5A889DC8F7341B91492916ED3B9BCA61331BEDDC5203C0AC6721185FFA702"
+    },
+    "label": "unused-variadic-declaration-counterexample",
+    "observedEffect": "Mechanical PURE_C native F34 is464/116/frame0 rather than448/112/frame0,111 offset-aligned masked differences due to shifted layout. Its authentic compiler assembly adds four incoming argument-home stores: A1 at sp+4, A0 atsp+0, A2 atsp+8, A3 atsp+12. D24's declaration-only counterpart stays1072/268/frame56 withzero native masked differences. Thus this coherent varying-arity model preserves the caller but fails the complete callee; it is not selected. It does not prove historical one-formal arity or disprove every fixed-unused-formal hypothesis.",
+    "parentCandidateId": "C373CAB785F07EA26E2E9DE60D65256E6E7A2B06D53393C5A32BBD10875FCD1F",
+    "references": [
+      {
+        "path": "src/lib/func_00106F34.c",
+        "sha256": "D9916E6FBBE6C913672C6703DE35E46241057CAD30C73856DBAA369376AA3553"
+      },
+      {
+        "path": "src/lib/func_00126D24.c",
+        "sha256": "08074EE47971E3B358FEAF9FB43D08BF6CE84B319C9CE3ED2F630F292AC64381"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_00106F34.s",
+        "sha256": "ED785C253D036CE7AEDB1A76A107DA873C5BF86F643CAE805CB123BCED7A6DC4"
+      },
+      {
+        "path": "docs/Plans/task-logs/astra-f34-caller-interface-review-20261001.md",
+        "sha256": "28F3C87B1496050990BA37195B07E84AA530E907E05E1006059EC706B1B8F86F"
+      },
+      {
+        "path": "docs/SOURCE_POLICY.md",
+        "sha256": "8D5D4110E8001EDD37D1FA47AC253D828016236DE69D34DB65F31D0416681829"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Nonexact source-interface counterexample; no linked acceptance, original RTL claim, supported tooling defect, compiler exception or inherent-assembly conclusion. Current production one-argument declarations remain unchanged and the complete20-member movement wave remains open.",
+    "role": "counterexample",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Change only the private F34 definition to void func_00106F34(RuntimeUnit *unit, ...), leaving its complete accepted body intact. Check the corresponding private variadic declaration in unchanged one-argument D24."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 1640,
+      "sha256": "842720591D89059CD730B2154A4078418192ED46DFAB72CD6D752206EE8D37EC"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "8EF5A889DC8F7341B91492916ED3B9BCA61331BEDDC5203C0AC6721185FFA702"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-01-func_00106F34-913dc0ad6b.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

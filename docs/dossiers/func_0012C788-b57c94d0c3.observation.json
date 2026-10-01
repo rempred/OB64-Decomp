@@ -1,0 +1,113 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "B57C94D0C3B58E0D0E061ECC7648D6C3CBCC60875A83C6691D799CFFF8F15241",
+  "observationId": "C4713E3DB07AFAE8636911BEFFDF700F8A656C280EC97D416057591D8C133103",
+  "symbol": "func_0012C788",
+  "authored": {
+    "context": "Sol MagentaTiger / gpt-6.1-sol max, sole production source/build writer on main4e6c2588. Complete accepted p2418 remains one2536-byte/634-word/frame112 owner. Independently derived C preserves record/direct-goal movement, ordered float guards, rollback, completion/cleanup/pursuit and late revalidation. Native census retains all15 physical calls,15 SF comparisons and no compiler read-only table. Astra's F34 four-caller interface research9b779625 establishes that A0 consumption does not prove historical arity; current compatible one-argument declarations remain unchanged, and no universal wider view/target/flag model is established. The separate6770 table activation is accepted with its structural audit/review; the full20 W5 wave remains open.",
+    "effects": [
+      "body-coverage",
+      "source-lifetime",
+      "compiler-observation"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "196DBBC32B3C5E102C947787E4474001E041BA33AC02D79AA6676F9C28E51123",
+      "sourceSha256": "6AE31EBF070533EFD01ABA9D6D8E120F50823612792DA931FB2C360C400EB79A"
+    },
+    "label": "preclassified-real-completion-value",
+    "observedEffect": "Untouched pinned native compilation remains2536/634/frame112,vars8,9GP/6FP,args16, all15 calls/15 SF comparisons and no auxiliary table, reducing offset-aligned relocation-masked differences from89 to88. Source diff consists only of relocating these real completion definitions. The first constant1 now appears at0x23C; pursuit/publication register/scheduling differences and constructor transfer timing remain nonexact. This one-word improvement does not establish linked bytes or original source history. Source/data/interface inputs remain unchanged.",
+    "parentCandidateId": "AD164C6E532EA3F841C81CD2B4A99392292642E7972269640D01D1935DC2ECFF",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_0012C788.s",
+        "sha256": "5F3E097DCD55FCBCB3B16E8B72949E1255107714EA04EFEDC06389EB35D25329"
+      },
+      {
+        "path": "src/lib/func_00106F34.c",
+        "sha256": "D9916E6FBBE6C913672C6703DE35E46241057CAD30C73856DBAA369376AA3553"
+      },
+      {
+        "path": "src/lib/func_0011AB74.c",
+        "sha256": "EACA65A46836E348FF54B4D2A37E64BAA2866A9694C370408035D8F21B8FCACF"
+      },
+      {
+        "path": "src/lib/func_0012D6FC.c",
+        "sha256": "E961C5B38E460DEDE4B3334C75BDB7198DC02DF6436934551B08776917085B31"
+      },
+      {
+        "path": "src/lib/func_0012D170.c",
+        "sha256": "4F48F13074ABFCE35531D2806EEBBF1086DB8C6E86F9BB0DB691A8E53591B40A"
+      },
+      {
+        "path": "src/lib/func_0012FB64.c",
+        "sha256": "D790305FDF16DEBF96C38B0E7484631926D13710FB02F097D8460AD4DF6C7A3F"
+      },
+      {
+        "path": "docs/Plans/task-logs/astra-f34-caller-interface-review-20261001.md",
+        "sha256": "28F3C87B1496050990BA37195B07E84AA530E907E05E1006059EC706B1B8F86F"
+      },
+      {
+        "path": "docs/SOURCE_POLICY.md",
+        "sha256": "8D5D4110E8001EDD37D1FA47AC253D828016236DE69D34DB65F31D0416681829"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Nonexact PURE_C research only; native masked diagnostics are not linked proof. Original ASM remains production. Pursuit/publication lifetimes and compatible F34 caller-declaration evidence remain open. No supported tooling defect or inherent-assembly conclusion. All20 movement members and the single final full-ROM wave verifier remain unfinished.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Define the actual completion value as1 before the ordered minimumStep<distance branch; overwrite it with0 only on the partial-step path and retain1 on the snap path. Preserve every float operation, path and call, including unordered comparison behavior. This is a used control value, not an unused register-shaping reference."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 12708,
+      "sha256": "196DBBC32B3C5E102C947787E4474001E041BA33AC02D79AA6676F9C28E51123"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "6AE31EBF070533EFD01ABA9D6D8E120F50823612792DA931FB2C360C400EB79A"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-01-func_0012C788-b57c94d0c3.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
