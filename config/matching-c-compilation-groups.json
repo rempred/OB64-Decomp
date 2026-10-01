@@ -222,6 +222,1102 @@
           "word": 134217926
         }
       ]
+    },
+    {
+      "id": "squad_supply_end",
+      "source": "src/lib/squad_supply_end.c",
+      "mode": "native-text-readonly-owner-projection",
+      "members": [
+        {
+          "symbol": "func_00124520",
+          "ownerRowIndex": 2372
+        },
+        {
+          "symbol": "func_0012469C",
+          "ownerRowIndex": 2373
+        },
+        {
+          "symbol": "func_00124B98",
+          "ownerRowIndex": 2374
+        }
+      ],
+      "text": {
+        "section": ".text",
+        "bytes": 2720,
+        "alignment": 16,
+        "type": 1,
+        "flags": 6,
+        "sha256": "FA86AD9AC3982C4DD2C28446F141C3F7EEF49FD45EA2E2FDB48D167C8C06A673"
+      },
+      "functions": [
+        {
+          "symbol": "func_00124520",
+          "offset": 0,
+          "bytes": 380,
+          "binding": 1,
+          "symbolType": 2,
+          "visibility": 0
+        },
+        {
+          "symbol": "func_0012469C",
+          "offset": 380,
+          "bytes": 1276,
+          "binding": 1,
+          "symbolType": 2,
+          "visibility": 0
+        },
+        {
+          "symbol": "func_00124B98",
+          "offset": 1656,
+          "bytes": 1060,
+          "binding": 1,
+          "symbolType": 2,
+          "visibility": 0
+        }
+      ],
+      "tail": {
+        "offset": 2716,
+        "bytes": 4,
+        "sha256": "DF3F619804A92FDB4057192DC43DD748EA778ADC52BC498CE80524C014B81119",
+        "origin": "native-assembler-section-alignment"
+      },
+      "relocations": [
+        {
+          "offset": 24,
+          "type": 4,
+          "symbol": ".text",
+          "symbolValue": 0,
+          "symbolSection": ".text",
+          "word": 134217821
+        },
+        {
+          "offset": 56,
+          "type": 4,
+          "symbol": ".text",
+          "symbolValue": 0,
+          "symbolSection": ".text",
+          "word": 134217764
+        },
+        {
+          "offset": 76,
+          "type": 4,
+          "symbol": ".text",
+          "symbolValue": 0,
+          "symbolSection": ".text",
+          "word": 134217764
+        },
+        {
+          "offset": 96,
+          "type": 4,
+          "symbol": ".text",
+          "symbolValue": 0,
+          "symbolSection": ".text",
+          "word": 134217766
+        },
+        {
+          "offset": 116,
+          "type": 4,
+          "symbol": ".text",
+          "symbolValue": 0,
+          "symbolSection": ".text",
+          "word": 134217766
+        },
+        {
+          "offset": 136,
+          "type": 4,
+          "symbol": ".text",
+          "symbolValue": 0,
+          "symbolSection": ".text",
+          "word": 134217766
+        },
+        {
+          "offset": 236,
+          "type": 4,
+          "symbol": ".text",
+          "symbolValue": 0,
+          "symbolSection": ".text",
+          "word": 134217817
+        },
+        {
+          "offset": 380,
+          "type": 5,
+          "symbol": "D_801F1070",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006764032
+        },
+        {
+          "offset": 384,
+          "type": 6,
+          "symbol": "D_801F1070",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 2353135616
+        },
+        {
+          "offset": 472,
+          "type": 5,
+          "symbol": "D_800E7AC3",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1008009216
+        },
+        {
+          "offset": 476,
+          "type": 6,
+          "symbol": "D_800E7AC3",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 649396224
+        },
+        {
+          "offset": 484,
+          "type": 5,
+          "symbol": "D_801F0D98",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1007943680
+        },
+        {
+          "offset": 488,
+          "type": 6,
+          "symbol": "D_801F0D98",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 647233536
+        },
+        {
+          "offset": 548,
+          "type": 4,
+          "symbol": "func_0012EA80",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 736,
+          "type": 5,
+          "symbol": "D_801F36D8",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006895104
+        },
+        {
+          "offset": 740,
+          "type": 6,
+          "symbol": "D_801F36D8",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 612630528
+        },
+        {
+          "offset": 812,
+          "type": 5,
+          "symbol": "D_801F361C",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006764032
+        },
+        {
+          "offset": 816,
+          "type": 6,
+          "symbol": "D_801F361C",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 2353135616
+        },
+        {
+          "offset": 836,
+          "type": 5,
+          "symbol": "D_8018F481",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006764032
+        },
+        {
+          "offset": 840,
+          "type": 6,
+          "symbol": "D_8018F481",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 2420244480
+        },
+        {
+          "offset": 860,
+          "type": 5,
+          "symbol": ".rodata",
+          "symbolValue": 0,
+          "symbolSection": ".rodata",
+          "word": 1006698496
+        },
+        {
+          "offset": 868,
+          "type": 6,
+          "symbol": ".rodata",
+          "symbolValue": 0,
+          "symbolSection": ".rodata",
+          "word": 2351038464
+        },
+        {
+          "offset": 900,
+          "type": 4,
+          "symbol": "func_0013A558",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 908,
+          "type": 4,
+          "symbol": ".text",
+          "symbolValue": 0,
+          "symbolSection": ".text",
+          "word": 134217973
+        },
+        {
+          "offset": 936,
+          "type": 4,
+          "symbol": "func_0013AA40",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 944,
+          "type": 4,
+          "symbol": ".text",
+          "symbolValue": 0,
+          "symbolSection": ".text",
+          "word": 134217973
+        },
+        {
+          "offset": 972,
+          "type": 4,
+          "symbol": "func_0013B350",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 1000,
+          "type": 5,
+          "symbol": "D_801F1070",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006764032
+        },
+        {
+          "offset": 1004,
+          "type": 6,
+          "symbol": "D_801F1070",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 2353135616
+        },
+        {
+          "offset": 1036,
+          "type": 5,
+          "symbol": "D_801F1070",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006764032
+        },
+        {
+          "offset": 1040,
+          "type": 6,
+          "symbol": "D_801F1070",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 2353135616
+        },
+        {
+          "offset": 1068,
+          "type": 5,
+          "symbol": "D_800E7AC3",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1007943680
+        },
+        {
+          "offset": 1072,
+          "type": 6,
+          "symbol": "D_800E7AC3",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 647233536
+        },
+        {
+          "offset": 1080,
+          "type": 5,
+          "symbol": "D_801F0D98",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1007812608
+        },
+        {
+          "offset": 1084,
+          "type": 6,
+          "symbol": "D_801F0D98",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 642908160
+        },
+        {
+          "offset": 1100,
+          "type": 4,
+          "symbol": "func_0012EA80",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 1288,
+          "type": 5,
+          "symbol": "D_801F36D8",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006895104
+        },
+        {
+          "offset": 1292,
+          "type": 6,
+          "symbol": "D_801F36D8",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 612630528
+        },
+        {
+          "offset": 1364,
+          "type": 5,
+          "symbol": "D_801F361C",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006764032
+        },
+        {
+          "offset": 1368,
+          "type": 6,
+          "symbol": "D_801F361C",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 2353135616
+        },
+        {
+          "offset": 1388,
+          "type": 5,
+          "symbol": "D_8018F481",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006764032
+        },
+        {
+          "offset": 1392,
+          "type": 6,
+          "symbol": "D_8018F481",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 2420244480
+        },
+        {
+          "offset": 1412,
+          "type": 5,
+          "symbol": ".rodata",
+          "symbolValue": 0,
+          "symbolSection": ".rodata",
+          "word": 1006698496
+        },
+        {
+          "offset": 1420,
+          "type": 6,
+          "symbol": ".rodata",
+          "symbolValue": 0,
+          "symbolSection": ".rodata",
+          "word": 2351038560
+        },
+        {
+          "offset": 1452,
+          "type": 4,
+          "symbol": "func_0013A558",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 1460,
+          "type": 4,
+          "symbol": ".text",
+          "symbolValue": 0,
+          "symbolSection": ".text",
+          "word": 134218111
+        },
+        {
+          "offset": 1488,
+          "type": 4,
+          "symbol": "func_0013AA40",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 1496,
+          "type": 4,
+          "symbol": ".text",
+          "symbolValue": 0,
+          "symbolSection": ".text",
+          "word": 134218111
+        },
+        {
+          "offset": 1524,
+          "type": 4,
+          "symbol": "func_0013B350",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 1552,
+          "type": 5,
+          "symbol": "D_801F1070",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006764032
+        },
+        {
+          "offset": 1556,
+          "type": 6,
+          "symbol": "D_801F1070",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 2353135616
+        },
+        {
+          "offset": 1588,
+          "type": 4,
+          "symbol": "func_0012EA80",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 1740,
+          "type": 4,
+          "symbol": ".text",
+          "symbolValue": 0,
+          "symbolSection": ".text",
+          "word": 134218391
+        },
+        {
+          "offset": 1748,
+          "type": 4,
+          "symbol": ".text",
+          "symbolValue": 0,
+          "symbolSection": ".text",
+          "word": 134218391
+        },
+        {
+          "offset": 1816,
+          "type": 5,
+          "symbol": "D_801971F0",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006829568
+        },
+        {
+          "offset": 1820,
+          "type": 6,
+          "symbol": "D_801971F0",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 610467840
+        },
+        {
+          "offset": 1828,
+          "type": 4,
+          "symbol": "func_0012DA10",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 1916,
+          "type": 4,
+          "symbol": "func_00123E38",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 1988,
+          "type": 4,
+          "symbol": "func_00124018",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 2008,
+          "type": 4,
+          "symbol": "func_00124328",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 2072,
+          "type": 4,
+          "symbol": ".text",
+          "symbolValue": 0,
+          "symbolSection": ".text",
+          "word": 201326592
+        },
+        {
+          "offset": 2104,
+          "type": 4,
+          "symbol": ".text",
+          "symbolValue": 0,
+          "symbolSection": ".text",
+          "word": 134218359
+        },
+        {
+          "offset": 2112,
+          "type": 4,
+          "symbol": ".text",
+          "symbolValue": 0,
+          "symbolSection": ".text",
+          "word": 201326687
+        },
+        {
+          "offset": 2232,
+          "type": 5,
+          "symbol": "D_801F0DA4",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006698496
+        },
+        {
+          "offset": 2236,
+          "type": 6,
+          "symbol": "D_801F0DA4",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 3290431488
+        },
+        {
+          "offset": 2260,
+          "type": 4,
+          "symbol": ".text",
+          "symbolValue": 0,
+          "symbolSection": ".text",
+          "word": 134218296
+        },
+        {
+          "offset": 2284,
+          "type": 4,
+          "symbol": "func_001072B8",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        },
+        {
+          "offset": 2340,
+          "type": 5,
+          "symbol": "D_801F0D9C",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006698496
+        },
+        {
+          "offset": 2344,
+          "type": 6,
+          "symbol": "D_801F0D9C",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 3290562560
+        },
+        {
+          "offset": 2352,
+          "type": 5,
+          "symbol": "D_801F0DA4",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006698496
+        },
+        {
+          "offset": 2356,
+          "type": 6,
+          "symbol": "D_801F0DA4",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 3290431488
+        },
+        {
+          "offset": 2372,
+          "type": 5,
+          "symbol": "D_801F0D98",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006698496
+        },
+        {
+          "offset": 2376,
+          "type": 6,
+          "symbol": "D_801F0D98",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 3290562560
+        },
+        {
+          "offset": 2388,
+          "type": 5,
+          "symbol": "D_801F0DA0",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 1006698496
+        },
+        {
+          "offset": 2392,
+          "type": 6,
+          "symbol": "D_801F0DA0",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 3290431488
+        },
+        {
+          "offset": 2516,
+          "type": 4,
+          "symbol": ".text",
+          "symbolValue": 0,
+          "symbolSection": ".text",
+          "word": 134218391
+        },
+        {
+          "offset": 2604,
+          "type": 4,
+          "symbol": "func_00121DA8",
+          "symbolValue": 0,
+          "symbolSection": "UND",
+          "word": 201326592
+        }
+      ],
+      "auxiliary": {
+        "memberSymbol": "func_0012469C",
+        "sections": [
+          {
+            "kind": "switch-table",
+            "compilerSection": ".rodata",
+            "outputSection": ".ob64.r2572",
+            "sectionType": "SHT_PROGBITS",
+            "sectionFlags": [
+              "SHF_ALLOC"
+            ],
+            "alignment": 8,
+            "romStart": "0x00142D88",
+            "romEndExclusive": "0x00142DE4",
+            "vramStart": "0x801EE648",
+            "vramEndExclusive": "0x801EE6A4",
+            "bytes": 92,
+            "entries": 23,
+            "expectedObjectSha256": "4D271B39DE4B6BAEF69ED8B375D2C54CF23B444C6B0B9DDDC4E331150124F095",
+            "expectedLinkedSha256": "D1831D05D5E34A1EE6A2E9ED1EC10945F70116754F9B2E620C25598E1947D6FD",
+            "preservedTail": null,
+            "expectedRelocations": [
+              {
+                "offset": "0x00000000",
+                "type": "R_MIPS_32",
+                "symbol": ".text",
+                "addend": "0x00000370",
+                "section": ".rel.rodata"
+              },
+              {
+                "offset": "0x00000004",
+                "type": "R_MIPS_32",
+                "symbol": ".text",
+                "addend": "0x000003D4",
+                "section": ".rel.rodata"
+              },
+              {
+                "offset": "0x00000008",
+                "type": "R_MIPS_32",
+                "symbol": ".text",
+                "addend": "0x000003D4",
+                "section": ".rel.rodata"
+              },
+              {
+                "offset": "0x0000000C",
+                "type": "R_MIPS_32",
+                "symbol": ".text",
+                "addend": "0x000003D4",
+                "section": ".rel.rodata"
+              },
+              {
+                "offset": "0x00000010",
+                "type": "R_MIPS_32",
+                "symbol": ".text",
+                "addend": "0x000003D4",
+                "section": ".rel.rodata"
+              },
+              {
+                "offset": "0x00000014",
+                "type": "R_MIPS_32",
+                "symbol": ".text",
+                "addend": "0x000003D4",
+                "section": ".rel.rodata"
+              },
+              {
+                "offset": "0x00000018",
+                "type": "R_MIPS_32",
+                "symbol": ".text",
+                "addend": "0x000003D4",
+                "section": ".rel.rodata"
+              },
+              {
+                "offset": "0x0000001C",
+                "type": "R_MIPS_32",
+                "symbol": ".text",
+                "addend": "0x000003D4",
+                "section": ".rel.rodata"
+              },
+              {
+                "offset": "0x00000020",
+                "type": "R_MIPS_32",
+                "symbol": ".text",
+                "addend": "0x00000394",
+                "section": ".rel.rodata"
+              },
+              {
+                "offset": "0x00000024",
+                "type": "R_MIPS_32",
+                "symbol": ".text",
+                "addend": "0x00000394",
+                "section": ".rel.rodata"
+              },
+              {
+                "offset": "0x00000028",
+                "type": "R_MIPS_32",
+                "symbol": ".text",
+                "addend": "0x000003D4",
+                "section": ".rel.rodata"
+              },
+              {
+                "offset": "0x0000002C",
+                "type": "R_MIPS_32",
+                "symbol": ".text",
+                "addend": "0x000003D4",
+                "section": ".rel.rodata"
+              },
+              {
+                "offset": "0x00000030",
+                "type": "R_MIPS_32",
+                "symbol": ".text",
+                "addend": "0x000003B8",
+                "section": ".rel.rodata"
+              },
+              {
+                "offset": "0x00000034",
+                "type": "R_MIPS_32",
+                "symbol": ".text",
+                "addend": "0x000003D4",
+                "section": ".rel.rodata"
+              },
+              {
+                "offset": "0x00000038",
+                "type": "R_MIPS_32",
+                "symbol": ".text",
+                "addend": "0x000003D4",
+                "section": ".rel.rodata"
+              },
+              {
+                "offset": "0x0000003C",
+                "type": "R_MIPS_32",
+                "symbol": ".text",
+                "addend": "0x000003D4",
+                "section": ".rel.rodata"
+              },
+              {
+                "offset": "0x00000040",
+                "type": "R_MIPS_32",
+                "symbol": ".text",
+                "addend": "0x000003D4",
+                "section": ".rel.rodata"
+              },
+              {
+                "offset": "0x00000044",
+                "type": "R_MIPS_32",
+                "symbol": ".text",
+                "addend": "0x000003D4",
+                "section": ".rel.rodata"
+              },
+              {
+                "offset": "0x00000048",
+                "type": "R_MIPS_32",
+                "symbol": ".text",
+                "addend": "0x000003D4",
+                "section": ".rel.rodata"
+              },
+              {
+                "offset": "0x0000004C",
+                "type": "R_MIPS_32",
+                "symbol": ".text",
+                "addend": "0x000003D4",
+                "section": ".rel.rodata"
+              },
+              {
+                "offset": "0x00000050",
+                "type": "R_MIPS_32",
+                "symbol": ".text",
+                "addend": "0x000003D4",
+                "section": ".rel.rodata"
+              },
+              {
+                "offset": "0x00000054",
+                "type": "R_MIPS_32",
+                "symbol": ".text",
+                "addend": "0x00000394",
+                "section": ".rel.rodata"
+              },
+              {
+                "offset": "0x00000058",
+                "type": "R_MIPS_32",
+                "symbol": ".text",
+                "addend": "0x00000394",
+                "section": ".rel.rodata"
+              }
+            ]
+          },
+          {
+            "kind": "switch-table",
+            "compilerSection": ".rodata",
+            "outputSection": ".ob64.r2574",
+            "sectionType": "SHT_PROGBITS",
+            "sectionFlags": [
+              "SHF_ALLOC"
+            ],
+            "alignment": 8,
+            "romStart": "0x00142DE8",
+            "romEndExclusive": "0x00142E44",
+            "vramStart": "0x801EE6A8",
+            "vramEndExclusive": "0x801EE704",
+            "bytes": 92,
+            "entries": 23,
+            "expectedObjectSha256": "CB6B29AEDCE39748F07027435DA28E41C11F27A2E838B409577382C761767572",
+            "expectedLinkedSha256": "155C4F28E367E5C58B1A9D9E6A05CF08DDA645FAEA6AFF2BC9D415A0A980F790",
+            "preservedTail": null,
+            "expectedRelocations": [
+              {
+                "offset": "0x00000000",
+                "type": "R_MIPS_32",
+                "symbol": ".text",
+                "addend": "0x00000598",
+                "section": ".rel.rodata"
+              },
+              {
+                "offset": "0x00000004",
+                "type": "R_MIPS_32",
+                "symbol": ".text",
+                "addend": "0x000005FC",
+                "section": ".rel.rodata"
+              },
+              {
+                "offset": "0x00000008",
+                "type": "R_MIPS_32",
+                "symbol": ".text",
+                "addend": "0x000005FC",
+                "section": ".rel.rodata"
+              },
+              {
+                "offset": "0x0000000C",
+                "type": "R_MIPS_32",
+                "symbol": ".text",
+                "addend": "0x000005FC",
+                "section": ".rel.rodata"
+              },
+              {
+                "offset": "0x00000010",
+                "type": "R_MIPS_32",
+                "symbol": ".text",
+                "addend": "0x000005FC",
+                "section": ".rel.rodata"
+              },
+              {
+                "offset": "0x00000014",
+                "type": "R_MIPS_32",
+                "symbol": ".text",
+                "addend": "0x000005FC",
+                "section": ".rel.rodata"
+              },
+              {
+                "offset": "0x00000018",
+                "type": "R_MIPS_32",
+                "symbol": ".text",
+                "addend": "0x000005FC",
+                "section": ".rel.rodata"
+              },
+              {
+                "offset": "0x0000001C",
+                "type": "R_MIPS_32",
+                "symbol": ".text",
+                "addend": "0x000005FC",
+                "section": ".rel.rodata"
+              },
+              {
+                "offset": "0x00000020",
+                "type": "R_MIPS_32",
+                "symbol": ".text",
+                "addend": "0x000005BC",
+                "section": ".rel.rodata"
+              },
+              {
+                "offset": "0x00000024",
+                "type": "R_MIPS_32",
+                "symbol": ".text",
+                "addend": "0x000005BC",
+                "section": ".rel.rodata"
+              },
+              {
+                "offset": "0x00000028",
+                "type": "R_MIPS_32",
+                "symbol": ".text",
+                "addend": "0x000005FC",
+                "section": ".rel.rodata"
+              },
+              {
+                "offset": "0x0000002C",
+                "type": "R_MIPS_32",
+                "symbol": ".text",
+                "addend": "0x000005FC",
+                "section": ".rel.rodata"
+              },
+              {
+                "offset": "0x00000030",
+                "type": "R_MIPS_32",
+                "symbol": ".text",
+                "addend": "0x000005E0",
+                "section": ".rel.rodata"
+              },
+              {
+                "offset": "0x00000034",
+                "type": "R_MIPS_32",
+                "symbol": ".text",
+                "addend": "0x000005FC",
+                "section": ".rel.rodata"
+              },
+              {
+                "offset": "0x00000038",
+                "type": "R_MIPS_32",
+                "symbol": ".text",
+                "addend": "0x000005FC",
+                "section": ".rel.rodata"
+              },
+              {
+                "offset": "0x0000003C",
+                "type": "R_MIPS_32",
+                "symbol": ".text",
+                "addend": "0x000005FC",
+                "section": ".rel.rodata"
+              },
+              {
+                "offset": "0x00000040",
+                "type": "R_MIPS_32",
+                "symbol": ".text",
+                "addend": "0x000005FC",
+                "section": ".rel.rodata"
+              },
+              {
+                "offset": "0x00000044",
+                "type": "R_MIPS_32",
+                "symbol": ".text",
+                "addend": "0x000005FC",
+                "section": ".rel.rodata"
+              },
+              {
+                "offset": "0x00000048",
+                "type": "R_MIPS_32",
+                "symbol": ".text",
+                "addend": "0x000005FC",
+                "section": ".rel.rodata"
+              },
+              {
+                "offset": "0x0000004C",
+                "type": "R_MIPS_32",
+                "symbol": ".text",
+                "addend": "0x000005FC",
+                "section": ".rel.rodata"
+              },
+              {
+                "offset": "0x00000050",
+                "type": "R_MIPS_32",
+                "symbol": ".text",
+                "addend": "0x000005FC",
+                "section": ".rel.rodata"
+              },
+              {
+                "offset": "0x00000054",
+                "type": "R_MIPS_32",
+                "symbol": ".text",
+                "addend": "0x000005BC",
+                "section": ".rel.rodata"
+              },
+              {
+                "offset": "0x00000058",
+                "type": "R_MIPS_32",
+                "symbol": ".text",
+                "addend": "0x000005BC",
+                "section": ".rel.rodata"
+              }
+            ]
+          }
+        ],
+        "projection": {
+          "schemaVersion": 1,
+          "mode": "fixed-row-readonly-projection",
+          "compilerSection": ".rodata",
+          "bytes": 192,
+          "alignment": 8,
+          "expectedObjectSha256": "B5B04628570CC379AB545FDD9568866A4E7CDCC2362CDB5674DEC392A65AEEDB",
+          "segments": [
+            {
+              "kind": "payload",
+              "offset": 0,
+              "bytes": 92,
+              "outputSection": ".ob64.r2572",
+              "label": ".L49",
+              "alignmentDirectives": [
+                3,
+                2
+              ]
+            },
+            {
+              "kind": "zero",
+              "offset": 92,
+              "bytes": 4,
+              "ownerSection": ".ob64.r2573",
+              "ownerOffset": 0,
+              "ownerBytes": 4,
+              "expectedOwnerSha256": "DF3F619804A92FDB4057192DC43DD748EA778ADC52BC498CE80524C014B81119"
+            },
+            {
+              "kind": "payload",
+              "offset": 96,
+              "bytes": 92,
+              "outputSection": ".ob64.r2574",
+              "label": ".L74",
+              "alignmentDirectives": [
+                3,
+                2
+              ]
+            },
+            {
+              "kind": "zero",
+              "offset": 188,
+              "bytes": 4,
+              "ownerSection": ".ob64.r2575",
+              "ownerOffset": 0,
+              "ownerBytes": 12,
+              "expectedOwnerSha256": "15EC7BF0B50732B49F8228E07D24365338F9E3AB994B00AF08E5A3BFFE55FD8B"
+            }
+          ]
+        }
+      }
     }
   ]
 }
