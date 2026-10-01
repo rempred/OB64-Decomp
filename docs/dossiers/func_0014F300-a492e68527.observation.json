@@ -1,0 +1,93 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "A492E68527C47A67263511885E0630687DF33F8D89DD6F7BFAFBC678DDA1158C",
+  "observationId": "8CFA37A2BF7EF105FD91155A6E579A1F274F85AF15965925137CA56EC9D40594",
+  "symbol": "func_0014F300",
+  "authored": {
+    "context": "Sol MagentaTiger/gpt-6.1-sol max remains Joe-authorized sole production source/build writer on main36252580. The complete252-byte63-word single func_0014F300 ASM owner and current accepted source context were reread. Reuse the exact-bound original current intake and947B375263 source pair; no structural/compiler/tooling inputs changed. Preserve the broad signed-word input and word result, internal byte/halfword normalization, accepted43100 two-argument byte result and actual52/56-byte class addresses. All ten W6 members remain one open wave, with six other focused-exact provisional members and no final verifier.",
+    "effects": [
+      "body-coverage",
+      "source-lifetime",
+      "compiler-observation"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "7928381E68416D454C71BE9E9D93A5FEDBE2279FD31B317ECAF01823CAC12C2E",
+      "sourceSha256": "7976352EFDD37BB0D843D55BB3131F0BAA458C5785CF4D7318A99D0E9F009EA2"
+    },
+    "label": "halfword-reduction-byte-range-predicate-five-slot-for-loop",
+    "observedEffect": "Pinned mechanical PURE_C native252/63/frame40 vars0 GP5/FP0 args16,12 aligned masked words, all sumS1/cursorS0 versus retail sumS0/cursorS1. Word predicate with staged presence alone gives22 because it rotates member/predicate registers; the byte predicate closes the original SLTU/SLTIU/AND and V1/V0/A0 roles. Indexed do/for/consumed-source forms and the pointer loop with one common advance all give the same63 native instructions. No index home or extra mask is emitted. All body words except the one saved-register pair align. Late sum initialization with common advance reduces sum refs10/live42 to10/live32 and cursor refs14/live33 to10/live33, restoring saved roles but changing14 prefix words; initial sum between cursor/end keeps correct roles with12 prefix words. Those informative regressions are not dismissed as structural disproof. Explicit word accumulators with cast updates add two masks/260 bytes; staged working sum also grows260. Actual capturedoldsum and register keyword remain12. No canonical proof follows from a native masked comparison.",
+    "parentCandidateId": "8E1C259D04B1EB34D7ECD98154B53F1DC181857B56BAD3D964860678E2C88748",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_0014F300.s",
+        "sha256": "8190C959C7C7A826754F1EFBF9ACA4A1C472647CE5809B6CCC752C4FD1A669AB"
+      },
+      {
+        "path": "src/lib/func_00043100.c",
+        "sha256": "FF83BDF50BEF827CFF55D1DCDC4A853BD2FD623B197ACAED7BD92DF354794CEF"
+      },
+      {
+        "path": "docs/Plans/task-logs/sol-squad-supply-policy-intake-20261001.md",
+        "sha256": "3003D0F5D5675F6846199E4FF9BA260AB3C4A5812DC2E4BDB3A93CE1DC6F017E"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Still12 allocation differences, ASM production retained. No canonical linked/relocation match, activation or final ten-member W6 verifier/full-ROM proof. Bounded source-level advice requested from GoldOx on the allocator/prologue tradeoff; no supported tooling defect, inherent-assembly claim or hybrid exception.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Retain the real unsigned16 sum, stage the actual nonzero-member boolean and represent the normalized less-than100 predicate in an unsigned byte. Use the ordinary five-slot indexed for-loop with the same complete record/address/helper behavior. Do not add reads, synthetic arithmetic, padding, volatile, register bindings or capacity changes."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 1283,
+      "sha256": "7928381E68416D454C71BE9E9D93A5FEDBE2279FD31B317ECAF01823CAC12C2E"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "7976352EFDD37BB0D843D55BB3131F0BAA458C5785CF4D7318A99D0E9F009EA2"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-01-func_0014F300-a492e68527.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

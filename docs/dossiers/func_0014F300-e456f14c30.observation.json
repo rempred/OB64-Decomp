@@ -1,0 +1,93 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "E456F14C3075DCF831C4DAE03118378A0AFEC6AF971E8A343C6546D05EE77020",
+  "observationId": "618D95E95BFCE09D9CC4862FE0A31A9A03E157F33E94722F34B2AEA49A50CD49",
+  "symbol": "func_0014F300",
+  "authored": {
+    "context": "Sol MagentaTiger/gpt-6.1-sol max remains Joe-authorized sole production source/build writer on main36252580. The complete252-byte63-word single func_0014F300 ASM owner and current accepted source context were reread. Reuse the exact-bound original current intake and947B375263 source pair; no structural/compiler/tooling inputs changed. Preserve the broad signed-word input and word result, internal byte/halfword normalization, accepted43100 two-argument byte result and actual52/56-byte class addresses. All ten W6 members remain one open wave, with six other focused-exact provisional members and no final verifier. GoldOx589 reports no closing form or tooling defect; current HI sum is one10-reference pseudo, not an unexamined HI/SI split.",
+    "effects": [
+      "body-coverage",
+      "source-lifetime",
+      "compiler-observation"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "3A053C71882D1D4FCD170B32E322334B9B26AC8F9D62E5A5505C5EEF19A06B4F",
+      "sourceSha256": "5F87D4922773B204C6B4DAD220769F8839EFE3A654FD833311251F74A5F12B13"
+    },
+    "label": "common-cursor-advance-short-sum-restores-registers-prefix-open",
+    "observedEffect": "Pinned mechanical PURE_C native252/63/frame40,12 masked words confined to prefix004..034, with correct retail sumS0/cursorS1/endS2/choiceS3 and every body word044..FC aligned. The later actual sum lifetime and common advance reverse the global allocation ranking; initialization instruction UID/order now changes the entry schedule. The even later initialization gives14 prefix words, while moving initialization earlier returns the twelve saved-register differences. End-before-cursor yields13 prefix words with a changed endpoint construction; changing real entry order/table choice byte alters other saved roles and remains unselected. This is a recoverable source-lifetime/entry-schedule intermediate, not an emitted-best claim.",
+    "parentCandidateId": "A492E68527C47A67263511885E0630687DF33F8D89DD6F7BFAFBC678DDA1158C",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_0014F300.s",
+        "sha256": "8190C959C7C7A826754F1EFBF9ACA4A1C472647CE5809B6CCC752C4FD1A669AB"
+      },
+      {
+        "path": "src/lib/func_00043100.c",
+        "sha256": "FF83BDF50BEF827CFF55D1DCDC4A853BD2FD623B197ACAED7BD92DF354794CEF"
+      },
+      {
+        "path": "docs/Plans/task-logs/sol-squad-supply-policy-intake-20261001.md",
+        "sha256": "3003D0F5D5675F6846199E4FF9BA260AB3C4A5812DC2E4BDB3A93CE1DC6F017E"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Nonexact prefix scheduling remains, source not selected/activated. No canonical relocation/full-ROM proof or independent structural acceptance. Do not infer a compiler defect or use a synthetic sum read/register binding to cross priority.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Keep one real cursor advance after both contribution paths and initialize the actual sum after constructing the record cursor but before its end pointer. Preserve all original operations and broad interfaces."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 1333,
+      "sha256": "3A053C71882D1D4FCD170B32E322334B9B26AC8F9D62E5A5505C5EEF19A06B4F"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "5F87D4922773B204C6B4DAD220769F8839EFE3A654FD833311251F74A5F12B13"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-01-func_0014F300-e456f14c30.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

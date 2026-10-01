@@ -1,0 +1,93 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "8E1C259D04B1EB34D7ECD98154B53F1DC181857B56BAD3D964860678E2C88748",
+  "observationId": "DD6E5B85161354AF2576D8DB080047EDDFFA294B976E253BBEF51A0C8CE7FBB7",
+  "symbol": "func_0014F300",
+  "authored": {
+    "context": "Sol MagentaTiger/gpt-6.1-sol max remains Joe-authorized sole production source/build writer on main36252580. The complete252-byte63-word single func_0014F300 ASM owner and current accepted source context were reread. Reuse the exact-bound original current intake and947B375263 source pair; no structural/compiler/tooling inputs changed. Preserve the broad signed-word input and word result, internal byte/halfword normalization, accepted43100 two-argument byte result and actual52/56-byte class addresses. All ten W6 members remain one open wave, with six other focused-exact provisional members and no final verifier.",
+    "effects": [
+      "body-coverage",
+      "source-lifetime",
+      "compiler-observation"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "813AC674B925B6F62DBF557243A031AEF22D9C73978AA14AF0B9A147981F89F0",
+      "sourceSha256": "9C3CE3FB0BF69738589B8393FD8DCB49C42F7E18B64483E9F004FD64C1787A12"
+    },
+    "label": "halfword-accumulator-restores-conditional-increment",
+    "observedEffect": "Pinned mechanical PURE_C native252/63/frame40 vars0 GP5/FP0 args16,14 aligned relocation-masked words. The real halfword update prevents the word-accumulator branchless conversion and restores the retail branch-likely increment without extra masks. This closes17 to14. A signed-halfword control has the same native output, but the unsigned form is kept. Remaining14 are twelve sum/cursor register-field differences and two first-eligibility words. All63 required body instructions/paths remain represented.",
+    "parentCandidateId": "947B375263E4630FBCCE44882D8C5A1D44F6BA3F8B7680010B0F2A77EB0D47DF",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_0014F300.s",
+        "sha256": "8190C959C7C7A826754F1EFBF9ACA4A1C472647CE5809B6CCC752C4FD1A669AB"
+      },
+      {
+        "path": "src/lib/func_00043100.c",
+        "sha256": "FF83BDF50BEF827CFF55D1DCDC4A853BD2FD623B197ACAED7BD92DF354794CEF"
+      },
+      {
+        "path": "docs/Plans/task-logs/sol-squad-supply-policy-intake-20261001.md",
+        "sha256": "3003D0F5D5675F6846199E4FF9BA260AB3C4A5812DC2E4BDB3A93CE1DC6F017E"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Useful intermediate, not linked-exact or activated. Twelve saved-register and two eligibility words remain; no canonical relocation or full-wave acceptance, field/ABI narrowing, supported tooling defect or hybrid exception.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Use a real unsigned16 accumulator for the five-member reduction while retaining the broad function interface and all current addresses, predicates and helper arguments. The maximum possible five-byte contributions fit the accumulator, and the original result was already normalized to16 bits."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 1309,
+      "sha256": "813AC674B925B6F62DBF557243A031AEF22D9C73978AA14AF0B9A147981F89F0"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "9C3CE3FB0BF69738589B8393FD8DCB49C42F7E18B64483E9F004FD64C1787A12"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-01-func_0014F300-8e1c259d04.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
