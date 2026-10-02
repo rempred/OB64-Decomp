@@ -883,6 +883,14 @@
     { "symbol": "func_00124B98", "compilationGroup": "squad_supply_end" },
     { "symbol": "func_00129268", "source": "src/lib/func_00129268.c" },
     { "symbol": "func_0022B06C", "source": "src/battle/func_0022B06C.c" },
-    { "symbol": "func_0022EF50", "source": "src/battle/func_0022EF50.c" }
+    { "symbol": "func_0022EF50", "source": "src/battle/func_0022EF50.c" },
+    { "symbol": "func_0022257C", "source": "src/battle/func_0022257C.c" },
+    { "symbol": "func_00222604", "source": "src/battle/func_00222604.c" },
+    { "symbol": "func_0022A280", "source": "src/battle/func_0022A280.c" },
+    { "symbol": "func_0022A414", "source": "src/battle/func_0022A414.c" },
+    { "symbol": "func_0022A4E0", "source": "src/battle/func_0022A4E0.c" },
+    { "symbol": "func_0022A7B8", "source": "src/battle/func_0022A7B8.c" },
+    { "symbol": "func_0022A964", "source": "src/battle/func_0022A964.c" },
+    { "symbol": "func_0022ADFC", "source": "src/battle/func_0022ADFC.c" }
   ]
 }
