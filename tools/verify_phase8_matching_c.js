@@ -3,6 +3,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { withVerificationProfile, measure } = require('./lib/verification_profile');
 const {
   fail,
   loadPhase8Model,
@@ -15,7 +16,7 @@ const {
 } = require('./lib/phase8_matching_c');
 
 function usage() {
-  console.log('Usage: node tools/verify_phase8_matching_c.js --output <phase8-dir> --compiler <accepted-cc1.exe> --splat-python <python.exe> --splat-split <split.py> --asm-differ <checkout> [--powershell-runtime-root <pinned-windows-runtime>] [--report <json>]');
+  console.log('Usage: node tools/verify_phase8_matching_c.js --output <phase8-dir> --compiler <accepted-cc1.exe> --splat-python <python.exe> --splat-split <split.py> --asm-differ <checkout> [--powershell-runtime-root <pinned-windows-runtime>] [--report <json>] [--profile]');
 }
 
 function value(flag) {
@@ -29,6 +30,10 @@ function main() {
     usage();
     process.exit(0);
   }
+  return withVerificationProfile(process.argv.includes('--profile'), 'verify-phase8', runVerification);
+}
+
+function runVerification(profile) {
   const options = {
     output: value('--output'),
     compiler: value('--compiler'),
@@ -40,23 +45,24 @@ function main() {
   const reportFile = process.argv.includes('--report') ? value('--report') : null;
   const buildReportFile = path.join(options.output, 'build-report.json');
   if (!fs.existsSync(buildReportFile)) fail(`build report is missing: ${buildReportFile}`);
-  const phase8 = loadPhase8Model();
-  const runtime = verifyRuntimeTools(phase8.model, options);
-  const compiler = verifyCompiler(phase8, options.compiler);
-  const verification = verifyPhase8Output(phase8, {
+  const phase8 = measure(profile, 'load-target-model', () => loadPhase8Model());
+  const runtime = measure(profile, 'authenticate-runtime', () => verifyRuntimeTools(phase8.model, options));
+  const compiler = measure(profile, 'authenticate-compiler', () => verifyCompiler(phase8, options.compiler));
+  const verification = measure(profile, 'verify-output', () => verifyPhase8Output(phase8, {
+    profile,
     output: options.output,
     asmDifferRoot: options.asmDifferRoot,
     splatPython: options.splatPython,
     objdump: runtime.tools['mips-kmc-elf-objdump.exe'].path,
     objcopy: runtime.tools['mips-kmc-elf-objcopy.exe'].path,
-  });
+  }));
   const buildReport = readJson(buildReportFile);
-  validateRecordedPhase8Build(phase8, {
+  measure(profile, 'validate-recorded-build', () => validateRecordedPhase8Build(phase8, {
     output: options.output,
     buildReport,
     verification,
     compilerSha256: compiler.sha256,
-  });
+  }));
   const result = { schemaVersion: 5, status: 'pass', output: '.', verification };
   if (reportFile) writeJson(reportFile, result);
   console.log(`Phase 8 matching C verification: PASS (${verification.outputs.rom.sha256})`);

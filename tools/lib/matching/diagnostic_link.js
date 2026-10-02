@@ -38,6 +38,9 @@ const COMPARISON_ALGORITHM_FILES = Object.freeze([
   path.join(__dirname, '..', 'phase8_matching_c.js'),
   path.join(__dirname, '..', 'auxiliary_interior.js'),
   path.join(__dirname, '..', 'text_contract.js'),
+  path.join(__dirname, '..', 'prepared_link_view.js'),
+  path.join(__dirname, '..', 'verification_profile.js'),
+  path.join(__dirname, '..', 'diff_profile.js'),
   path.join(ROOT, 'tools', 'matching_workbench', 'store.py'),
 ]);
 let algorithmIdentity = null;
@@ -451,7 +454,8 @@ function prepareTargetDiagnostic(session, target, expectedRelocationEvidence, op
         || !/^[A-F0-9]{64}$/i.test(replacement.sourceObjectSha256)) {
       throw new Error('accepted control object lacks authenticated SHA-256 provenance');
     }
-    textContract.validateRecords(replacement, textContract.recordsForTarget(activeMatches[0], environment.output, textContract.linkContext(environment.output, fs.readFileSync(session.context.baserom.path), environment.acceptedElf)), 'diagnostic accepted control');
+    const linkContext = textContract.linkContext(environment.output, fs.readFileSync(session.context.baserom.path), environment.acceptedElf);
+    textContract.validateRecords(replacement, textContract.recordsForTarget(activeMatches[0], environment.output, linkContext), 'diagnostic accepted control');
     const sourceObjectFile = resolveContained(environment.output, replacement.sourceObject, 'accepted source object');
     const control = objectEvidence(sourceObjectFile, target, {
       objectSha256: replacement.sourceObjectSha256,
@@ -472,6 +476,7 @@ function prepareTargetDiagnostic(session, target, expectedRelocationEvidence, op
       controlObjectSha256: control.objectSha256,
       controlRelocations: control.relocations,
     });
+    textContract.finishLinkContext(linkContext);
     return {
       available: true,
       inputId,

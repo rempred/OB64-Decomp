@@ -16,9 +16,14 @@ authority for command options.
 | `node tools/build.js` | Build the accepted baseline plus active replacements and require an exact complete ROM. |
 | `node tools/diff.js <symbol>` | Compile and link one active target; show instruction diagnostics and linked-byte equality. |
 | `node tools/source_policy.js [--target <symbol>]` | Mechanically classify active source. |
-| `node tools/verify.js [--target <symbol>] [--require-pure]` | Run the canonical tool, source, ownership, placement, relocation, target-byte, and complete-ROM gate. |
+| `node tools/verify.js [--target <symbol>] [--require-pure] [--profile]` | Run the canonical tool, source, ownership, placement, relocation, target-byte, and complete-ROM gate. |
 | `node tools/status.js` | Derive progress from accepted configuration and the current valid verification state. |
-| `node tools/audit.js` | Run heavyweight structural verification; this is not the ordinary function gate. |
+| `node tools/audit.js [--profile]` | Run heavyweight structural verification; this is not the ordinary function gate. |
+
+`--profile` writes phase and child-process timings to ignored `build/verification-profile/`
+sidecars, including a separate profile for the strict verification subprocess. It does
+not change acceptance evidence or skip checks. `diff.js <symbol> --profile` remains
+the focused development profiler, writing under `build/warm-diff-profile/`.
 
 Within the assigned wave, use these focused commands per target:
 

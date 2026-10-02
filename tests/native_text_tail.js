@@ -178,6 +178,7 @@ function main() {
   assert.throws(() => tc.nativeLinkedAllocationEvidence(target, linkedContext.elf,
     map.replace(`from objects/c/${target.symbol}.o(.bss)`, 'from *(.bss)')), /native empty BSS object selector/);
   mutations.push('empty BSS wildcard selector');
+  tc.finishLinkContext(linkedContext);
   for (const [name, changed] of [
     ['map fallback owner', map.replaceAll(`objects/c/${target.symbol}.o`, 'objects/assembly/chunk_032.o')],
     ['map fill', map.replace(` from objects/c/${target.symbol}.o(.text)`, ` *fill* 4\n from objects/c/${target.symbol}.o(.text)`)],

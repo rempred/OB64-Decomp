@@ -4,6 +4,7 @@
 const fs = require('fs');
 const textContract = require('./lib/text_contract');
 const path = require('path');
+const { withVerificationProfile, measure } = require('./lib/verification_profile');
 const { resolveLocalTools } = require('./lib/local_tools');
 const {
   prepareContext,
@@ -15,20 +16,22 @@ const { ROOT, sha256Buffer } = require('./lib/phase7_conventional');
 const { verifyFunc002861C8Structure } = require('../tests/func_002861C8_structure');
 
 function usage() {
-  console.log('Usage: node tools/audit.js [--phase5a-root <accepted-evidence-root>]');
+  console.log('Usage: node tools/audit.js [--phase5a-root <accepted-evidence-root>] [--profile]');
 }
 
 function parseArgs(argv) {
   let phase5aRoot = null;
+  let profile = false;
   for (let index = 0; index < argv.length; index += 1) {
     const arg = argv[index];
-    if (arg === '--help' || arg === '-h') return { help: true, phase5aRoot: null };
+    if (arg === '--help' || arg === '-h') return { help: true, phase5aRoot: null, profile: false };
+    if (arg === '--profile' && !profile) { profile = true; continue; }
     if (arg !== '--phase5a-root' || phase5aRoot || !argv[index + 1] || argv[index + 1].startsWith('--')) {
       throw new Error(`invalid argument: ${arg}`);
     }
     phase5aRoot = path.resolve(argv[++index]);
   }
-  return { help: false, phase5aRoot };
+  return { help: false, phase5aRoot, profile };
 }
 
 // These migrated owners were accepted on canonical main at 24d0818.
@@ -85,7 +88,11 @@ function main(argv = process.argv.slice(2)) {
     usage();
     return;
   }
-  const context = prepareContext();
+  return withVerificationProfile(args.profile, 'audit', (profile) => runAudit(args, profile));
+}
+
+function runAudit(args, profile) {
+  const context = measure(profile, 'prepare-context', () => prepareContext({ profile }));
   const phase5aRoot = args.phase5aRoot || resolveLocalTools({ audit: true }).phase5aRoot;
   if (!fs.existsSync(phase5aRoot) || !fs.statSync(phase5aRoot).isDirectory()) {
     throw new Error(`accepted Phase 5A evidence root is missing: ${phase5aRoot}`);
@@ -93,10 +100,10 @@ function main(argv = process.argv.slice(2)) {
   console.log('OB64 Decomp Structural Audit');
   console.log('');
   console.log('Running structural ROM, coverage, overlay, ownership, and toolchain checks...');
-  runNode('verify_setup.js', ['--phase5a-root', phase5aRoot], 'structural audit');
-  const func002861C8Structure = verifyFunc002861C8Structure({ runMutations: true });
+  measure(profile, 'structural-checks', () => runNode('verify_setup.js', ['--phase5a-root', phase5aRoot], 'structural audit'));
+  const func002861C8Structure = measure(profile, 'func002861c8-structure', () => verifyFunc002861C8Structure({ runMutations: true }));
   console.log('Running CURRENT ownership and exact-ROM verification...');
-  const current = verifyCurrent(context);
+  const current = verifyCurrent(context, { profile });
   const sourceObjectEvidence = current.verification.verification.sourceObjectEvidence;
   if (!sourceObjectEvidence
       || sourceObjectEvidence.identity.sourceCommit !== '54514ded39ceb32165a125ddba04ca5b551773a2'

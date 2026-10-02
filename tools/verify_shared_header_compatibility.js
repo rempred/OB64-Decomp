@@ -193,6 +193,10 @@ function main(argv = process.argv.slice(2)) {
     });
   }
 
+  if (!historical) {
+    textContract.finishLinkContext(oldTextContext);
+    textContract.finishLinkContext(newTextContext);
+  }
   const report = {
     schemaVersion: historical ? 1 : 2,
     mode: historical ? 'historical-v3-v4' : 'current-v5-v5',

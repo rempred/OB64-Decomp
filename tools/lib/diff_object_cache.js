@@ -57,6 +57,8 @@ const IMPLEMENTATION_FILES = Object.freeze([
   'tools/lib/phase8_matching_c.js',
   'tools/lib/source_policy.js',
   'tools/lib/text_contract.js',
+  'tools/lib/prepared_link_view.js',
+  'tools/lib/verification_profile.js',
 ]);
 const ACTIVE_CONFIGURATION_FILES = Object.freeze([
   'config/matching-c-targets.json',

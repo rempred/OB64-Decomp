@@ -244,6 +244,7 @@ const wrongLinked = { ...linkedElf, buffer: Buffer.from(linkedElf.buffer) };
 const terminal = linkedElf.sections.find(section => section.name === '.ob64.r0005');
 wrongLinked.buffer[terminal.offset + terminal.size - 1] = 1;
 reject('changed final retained linked byte', () => projection.linkedEvidence(target, output, { ...linkContext, elf: wrongLinked }));
+tc.finishLinkContext(linkContext);
 
 for (const key of ['contract', 'nativeRelocations', 'references', 'retained']) {
   const forged = structuredClone(compiled.objectEvidence); delete forged.auxiliaryProjection[key];

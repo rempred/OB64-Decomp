@@ -183,6 +183,12 @@ const linked=p7.parseElfFile(path.join(output,'phase8.elf'));
 for(const target of targets)assert(p7.elfSectionBytes(linked,linked.sections.find(value=>value.name===target.sectionName)).equals(rom.subarray(target.romStartNumber,target.romEndNumber)));
 for(const section of attribution.auxiliarySections)assert(p8.compareLinkedAuxiliaryBytes(attribution,section,linked,rom).rawBytesExact);
 const proofs=targets.map((target,index)=>p8.deriveSourceObjectProof(phase8,target,output,classifications.targets[index],linked,rom));
+const sharedLink=require('../tools/lib/text_contract').linkContext(output,rom,linked);
+for(const [index,target] of targets.entries()){
+  const prepared=p8.deriveSourceObjectProof(phase8,target,output,classifications.targets[index],linked,rom,sharedLink);
+  assert(prepared.proofBytes.equals(proofs[index].proofBytes),'prepared and standalone proof bytes differ');
+}
+require('../tools/lib/text_contract').finishLinkContext(sharedLink);
 for(const proof of proofs)p8.validateSourceObjectProofBytes(proof.proofBytes,proof.proofBytes);
 const stripped=p7.parseElfFile(path.join(output,groups.objectPath(targets[0])));
 const strippedSymbols=stripped.sections.find(value=>value.type===2);

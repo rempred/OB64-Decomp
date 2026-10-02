@@ -2,21 +2,23 @@
 'use strict';
 
 const { SOURCE_CLASSES } = require('./lib/source_policy');
+const { withVerificationProfile, measure } = require('./lib/verification_profile');
 const {
   prepareContext,
   verifyCurrent,
 } = require('./lib/current_workflow');
 
 function usage() {
-  console.log('Usage: node tools/verify.js [--target <symbol>] [--require-pure]');
+  console.log('Usage: node tools/verify.js [--target <symbol>] [--require-pure] [--profile]');
 }
 
 function parseArgs(argv) {
-  const result = { help: false, requirePure: false, target: null };
+  const result = { help: false, requirePure: false, target: null, profile: false };
   for (let index = 0; index < argv.length; index += 1) {
     const arg = argv[index];
     if (arg === '--help' || arg === '-h') result.help = true;
     else if (arg === '--require-pure') result.requirePure = true;
+    else if (arg === '--profile' && !result.profile) result.profile = true;
     else if (arg === '--target') {
       if (result.target || !argv[index + 1] || argv[index + 1].startsWith('--')) throw new Error('invalid --target argument');
       result.target = argv[++index];
@@ -48,13 +50,17 @@ function main(argv = process.argv.slice(2)) {
     usage();
     return;
   }
+  return withVerificationProfile(args.profile, 'verify', (profile) => runVerification(args, profile));
+}
+
+function runVerification(args, profile) {
   console.log('OB64 Decomp Verification');
   console.log('');
-  const context = prepareContext();
+  const context = measure(profile, 'prepare-context', () => prepareContext({ profile }));
   if (args.target && !context.phase8.targets.some((target) => target.symbol.toLowerCase() === args.target.toLowerCase())) {
     throw new Error(`target does not resolve uniquely: ${args.target}`);
   }
-  const result = verifyCurrent(context, { onStep: (message) => console.log(`${message}...`) });
+  const result = verifyCurrent(context, { profile, onStep: (message) => console.log(`${message}...`) });
   const policyInvalid = result.sourcePolicy.counts.UNKNOWN > 0 || result.sourcePolicy.counts.ASM > 0;
   const selected = selectPolicyTargets(result.sourcePolicy, args.target);
   const pureVerdict = pureRequirementVerdict(selected, args.requirePure);

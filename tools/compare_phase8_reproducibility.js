@@ -77,6 +77,7 @@ function main() {
       if (matches.length !== 1) fail('reproducibility target does not resolve uniquely');
       textContract.validateRecords(matches[0], textContract.recordsForTarget(target, root, linkContext), 'reproducibility');
     }
+    textContract.finishLinkContext(linkContext);
   }
   if (JSON.stringify(leftBuild) !== JSON.stringify(rightBuild)) fail('path-independent Phase 8 build reports differ');
   if (JSON.stringify(leftVerification) !== JSON.stringify(rightVerification)) fail('path-independent Phase 8 verification reports differ');

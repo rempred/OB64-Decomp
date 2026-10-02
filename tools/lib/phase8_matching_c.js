@@ -7,6 +7,8 @@ const {
   projectInterior, interiorRecord, interiorRecords, buildInteriorObject, verifyInteriorArtifacts,
 } = require('./auxiliary_interior');
 const textContract = require('./text_contract');
+const preparedLink = require('./prepared_link_view');
+const { targetStage } = require('./verification_profile');
 const auxiliaryProjection = require('./auxiliary_projection');
 const compilationGroups = require('./compilation_groups');
 const {
@@ -1999,7 +2001,8 @@ function fileIdentity(output, relative, label) {
   };
 }
 
-function deriveSourceObjectProof(phase8, target, output, classification, linkedElf, canonicalBaserom) {
+function deriveSourceObjectProof(phase8, target, output, classification, linkedElf, canonicalBaserom, sharedLinkContext = null) {
+  if (sharedLinkContext && (sharedLinkContext.elf !== linkedElf || sharedLinkContext.canonicalBaserom !== canonicalBaserom)) fail('shared source proof link inputs differ');
   validateTargetClassification(target, classification);
   const compilerInputRelative = target.source;
   const compilerRelative = compilationGroups.assemblyPath(target);
@@ -2203,8 +2206,9 @@ function deriveSourceObjectProof(phase8, target, output, classification, linkedE
       ? 'assign each ordered .text region and repeated contracted .rodata occurrence to their accepted logical output sections'
       : 'assign the two .text regions and sole contracted .rodata region to their accepted output sections';
   const sourceObjectPrefixSelections = auxiliaryProofs.filter((auxiliary) => auxiliary.sourceObjectPrefix).length;
+  const linkContext = sharedLinkContext || textContract.linkContext(output, canonicalBaserom, linkedElf);
   const proof = {
-    ...textContract.recordsForTarget(target, output, textContract.linkContext(output, canonicalBaserom, linkedElf)),
+    ...textContract.recordsForTarget(target, output, linkContext),
     schemaVersion: 4,
     kind: 'ob64-source-to-object-load-evidence',
     target: {
@@ -2301,6 +2305,7 @@ function deriveSourceObjectProof(phase8, target, output, classification, linkedE
     },
   };
   const proofBytes = Buffer.from(`${JSON.stringify(proof, null, 2)}\n`, 'utf8');
+  if (!sharedLinkContext) textContract.finishLinkContext(linkContext);
   return { proof, proofBytes, rawComparison };
 }
 
@@ -2323,7 +2328,7 @@ function writeSourceObjectProofs(phase8, options) {
     if (!compiled || compiled.sourceClass !== classification.class || compiled.sourcePolicyDigest !== classification.digest) {
       fail('compiled target classification provenance drift: ' + target.symbol);
     }
-    const derived = deriveSourceObjectProof(phase8, target, output, classification, linkedElf, canonicalBaserom);
+    const derived = deriveSourceObjectProof(phase8, target, output, classification, linkedElf, canonicalBaserom, nativeContext);
     const proofRelative = 'generated/c/' + target.symbol + '.source-object-proof.json';
     const proofFile = resolveRelative(output, proofRelative, 'source-to-object proof');
     fs.writeFileSync(proofFile, derived.proofBytes);
@@ -2333,6 +2338,7 @@ function writeSourceObjectProofs(phase8, options) {
     compiled.sourceObjectProofBytes = record.bytes;
     compiled.sourceObjectProofSha256 = record.sha256;
   }
+  textContract.finishLinkContext(nativeContext);
   return proofs;
 }
 
@@ -2424,14 +2430,15 @@ function validateSourceObjectProofBytes(actualBytes, expectedBytes) {
 
 function verifySourceObjectProofs(phase8, options) {
   const output = path.resolve(options.output);
-  const sourcePolicy = classifyTargetSources(phase8.targets);
+  const sourcePolicy = classifyTargetSources(phase8.targets, { profile: options.profile });
   const classificationBySymbol = validateTargetClassifications(phase8, sourcePolicy);
   const linkedElf = options.linkedElf || parseElfFile(path.join(output, 'phase8.elf'));
   const canonicalBaserom = options.canonicalBaserom || loadCanonicalBaserom(phase8);
+  const proofLinkContext = options.linkContext || textContract.linkContext(output, canonicalBaserom, linkedElf);
   const records = [];
   for (const target of phase8.targets) {
     const classification = classificationBySymbol.get(target.symbol);
-    const derived = deriveSourceObjectProof(phase8, target, output, classification, linkedElf, canonicalBaserom);
+    const derived = deriveSourceObjectProof(phase8, target, output, classification, linkedElf, canonicalBaserom, proofLinkContext);
     const proofRelative = 'generated/c/' + target.symbol + '.source-object-proof.json';
     const proofFile = resolveRelative(output, proofRelative, 'source-to-object proof');
     if (!fs.existsSync(proofFile)) fail('source-to-object proof is missing: ' + target.symbol);
@@ -2461,6 +2468,7 @@ function verifySourceObjectProofs(phase8, options) {
       proof: { path: proofRelative, bytes: derived.proofBytes.length, sha256: sha256Buffer(derived.proofBytes) },
     });
   }
+  if (!options.linkContext) textContract.finishLinkContext(proofLinkContext);
   return {
     identity: phase8.toolchain.identity,
     sourcePolicy: {
@@ -2618,7 +2626,10 @@ function writeLayout(phase8, phase7, output, replacements) {
   const layout = readJson(phase7.files.layout);
   const canonicalBaserom = loadCanonicalBaserom(phase8);
   const textLinkContext = textContract.linkContext(output, canonicalBaserom);
+  const representations = new Map();
   for (const target of phase8.targets) {
+    const representation = textContract.recordsForTarget(target, output, textLinkContext);
+    representations.set(target, representation);
     const retainedAssemblySlices = targetRetainedAssemblySlices(target);
     for (const textOwner of targetTextOwners(target)) {
       const owner = layout.owners.find((item) => item.index === textOwner.rowIndex);
@@ -2636,7 +2647,6 @@ function writeLayout(phase8, phase7, output, replacements) {
           || owner.slices.length !== retainedForOwner.length + 1) {
         fail('Phase 7 target layout row drift: ' + target.symbol + ' ' + textOwner.sectionName);
       }
-      const representation = textContract.recordsForTarget(target, output, textLinkContext);
       const ownerIndex = targetTextOwners(target).findIndex(record => record.sectionName === textOwner.sectionName);
       const ownerRepresentation = { textContract: representation.textContract.owners[ownerIndex],
         objectEvidence: { raw: representation.objectEvidence.rawOwners[ownerIndex], stripped: representation.objectEvidence.strippedOwners[ownerIndex] },
@@ -2683,7 +2693,7 @@ function writeLayout(phase8, phase7, output, replacements) {
   layout.generator = 'tools/build_phase8_matching_c.js';
   layout.phase8MatchingCTargets = phase8.targets.map((target) => {
     return {
-      ...textContract.recordsForTarget(target, output, textLinkContext),
+      ...representations.get(target),
       symbol: target.symbol,
       rowIndex: target.rowIndex,
       sectionName: target.sectionName,
@@ -2753,6 +2763,7 @@ function writeLayout(phase8, phase7, output, replacements) {
       acceptedAssemblyTailVramEndExclusive: tail.vramEndExclusive,
     };
   }));
+  textContract.finishLinkContext(textLinkContext);
   writeJson(path.join(output, 'layout.json'), layout);
 }
 
@@ -3146,7 +3157,9 @@ function runTargetAsmDiffer(phase8, target, options) {
   const shim = path.join(proofRoot, 'watchdog.py');
   fs.writeFileSync(shim, SHIM_TEXT);
   const canonicalBaserom = options.canonicalBaserom || loadCanonicalBaserom(phase8);
-  const linkedElf = parseElfFile(path.join(output, 'phase8.elf'));
+  const linkContext = options.linkContext || textContract.linkContext(output, canonicalBaserom);
+  preparedLink.assertContext(linkContext, output);
+  const linkedElf = linkContext.elf;
   const rawComparison = compareLinkedTargetBytes(target, linkedElf, canonicalBaserom);
   const ownerComparisons = targetTextOwners(target).map((owner, ownerIndex) => {
     const runRoot = path.join(proofRoot, 'target-elf-' + target.symbol + '-owner-' + ownerIndex);
@@ -3222,6 +3235,7 @@ function runTargetAsmDiffer(phase8, target, options) {
   }
   const jsonFile = path.join(proofRoot, target.symbol + '.json');
   writeJson(jsonFile, { schemaVersion: 1, symbol: target.symbol, owners: ownerComparisons });
+  if (!options.linkContext) textContract.finishLinkContext(linkContext);
   return {
     symbol: target.symbol,
     sectionName: target.sectionName,
@@ -3230,7 +3244,7 @@ function runTargetAsmDiffer(phase8, target, options) {
     outputSha256: sha256File(jsonFile),
     shimSha256: sha256File(shim),
     objdumpCompatibilityShimSha256: sha256Buffer(Buffer.from(OBJDUMP_SHIM_TEXT)),
-    linkedElfSha256: sha256File(path.join(output, 'phase8.elf')),
+    linkedElfSha256: linkContext.elfSha256,
   };
 }
 
@@ -3239,20 +3253,12 @@ function escapeRegex(value) {
 }
 
 function verifyTargetMapOwner(target, mapText) {
-  const lines = mapText.split(/\r?\n/);
+  const mapView = typeof mapText === 'string' ? preparedLink.prepareMap(mapText) : mapText;
   const expectedOwner = compilationGroups.objectPath(target);
   const owners = targetTextOwners(target).map((owner, ownerIndex) => {
     const escaped = escapeRegex(owner.sectionName);
-    const heading = lines.findIndex((line) => new RegExp('^' + escaped + '\\s').test(line));
-    if (heading < 0) fail('target linker-map section is missing: ' + owner.sectionName);
-    let end = lines.length;
-    for (let index = heading + 1; index < lines.length; index += 1) {
-      if (/^\.ob64\.r\d{4}(?:\.s\d+)?\s/.test(lines[index])) {
-        end = index;
-        break;
-      }
-    }
-    const block = lines.slice(heading, end);
+    const block = preparedLink.mapBlock(mapView, owner.sectionName);
+    if (!block) fail('target linker-map section is missing: ' + owner.sectionName);
     const contributions = block.filter((line) => new RegExp('^\\s+' + escapeRegex(textContract.inputSection(target, owner.sectionName)) + '\\s+.*\\sobjects/').test(line));
     const forbiddenOwner = 'objects/assembly/chunk_' + String(owner.chunkIndex).padStart(3, '0') + '.o';
     if (contributions.length !== 1 || !contributions[0].includes(expectedOwner)
@@ -3273,16 +3279,8 @@ function verifyTargetMapOwner(target, mapText) {
   });
   const retainedAssemblySlices = targetRetainedAssemblySlices(target).map((retained) => {
     const escaped = escapeRegex(retained.sectionName);
-    const heading = lines.findIndex((line) => new RegExp('^' + escaped + '\\s').test(line));
-    if (heading < 0) fail('retained assembly linker-map section is missing: ' + retained.sectionName);
-    let end = lines.length;
-    for (let index = heading + 1; index < lines.length; index += 1) {
-      if (/^\.ob64\.r\d{4}(?:\.s\d+)?\s/.test(lines[index])) {
-        end = index;
-        break;
-      }
-    }
-    const block = lines.slice(heading, end);
+    const block = preparedLink.mapBlock(mapView, retained.sectionName);
+    if (!block) fail('retained assembly linker-map section is missing: ' + retained.sectionName);
     const contributions = block.filter((line) => new RegExp('^\\s+' + escaped + '\\s+.*\\sobjects/').test(line));
     const expectedAssemblyOwner = 'objects/assembly/chunk_' + String(retained.chunkIndex).padStart(3, '0') + '.o';
     if (contributions.length !== 1 || !contributions[0].includes(expectedAssemblyOwner)
@@ -3614,6 +3612,7 @@ function phase8VerificationModel(phase8) {
 }
 
 function verifyPhase8Output(phase8, options) {
+  const measure = options.profile ? options.profile.measure : (_name, callback) => callback();
   const output = path.resolve(options.output);
   const files = {
     elf: path.join(output, 'phase8.elf'),
@@ -3624,15 +3623,17 @@ function verifyPhase8Output(phase8, options) {
   };
   for (const file of Object.values(files)) if (!fs.existsSync(file)) fail('Phase 8 output is missing: ' + file);
 
-  const elf = parseElfFile(files.elf);
+  const canonicalBaserom = loadCanonicalBaserom(phase8);
+  const textLinkContext = measure('verify-prepare-linked-view', () => textContract.linkContext(output, canonicalBaserom));
+  const elf = textLinkContext.elf;
   const verificationModel = phase8VerificationModel(phase8);
   const elfResult = verifyElfAgainstModel(verificationModel, elf);
-  const mapText = fs.readFileSync(files.map, 'utf8');
+  const mapText = textLinkContext.mapText;
   verifyInteriorGroupMapOwners(phase8, mapText);
   const mapResult = verifyMap(phase8.model, mapText);
-  const romResult = verifyRom(phase8.model, fs.readFileSync(files.rom));
-  const canonicalBaserom = loadCanonicalBaserom(phase8);
-  const sourceObjectEvidence = verifySourceObjectProofs(phase8, { output, linkedElf: elf, canonicalBaserom });
+  const romResult = measure('verify-rom', () => verifyRom(phase8.model, fs.readFileSync(files.rom)));
+  const sourceObjectEvidence = measure('verify-source-object-proofs', () => verifySourceObjectProofs(phase8,
+    { output, linkedElf: elf, canonicalBaserom, linkContext: textLinkContext, profile: options.profile }));
   const replacements = options.replacements || new Map([...targetsByChunk(phase8).entries()].map(([chunkIndex, chunkTargets]) => [chunkIndex, {
     linkedChunkRelative: 'objects/assembly/chunk_' + String(chunkIndex).padStart(3, '0') + '.o',
     fallbackRelative: 'comparison/original/chunk_' + String(chunkIndex).padStart(3, '0') + '.o',
@@ -3698,7 +3699,6 @@ function verifyPhase8Output(phase8, options) {
   }]));
   const targetResults = [];
   const textLayout = readJson(files.layout);
-  const textLinkContext = { canonicalBaserom, elf, mapText };
   for (const target of phase8.targets) {
     const representation = textContract.recordsForTarget(target, output, textLinkContext);
     textContract.validateRecords(textLayout.phase8MatchingCTargets?.find((record) => record.symbol === target.symbol), representation, 'layout');
@@ -3717,7 +3717,7 @@ function verifyPhase8Output(phase8, options) {
       if (!fs.existsSync(file)) fail('Phase 8 target output is missing: ' + file);
     }
 
-    const mapOwner = verifyTargetMapOwner(target, mapText);
+    const mapOwner = verifyTargetMapOwner(target, textLinkContext.mapView);
     const rawComparison = compareLinkedTargetBytes(target, elf, canonicalBaserom);
     if (!rawComparison.rawBytesExact) fail('linked target bytes differ from the accepted ROM reference: ' + target.symbol);
     const linkedText = rawComparison.linkedBytes;
@@ -4055,15 +4055,16 @@ function verifyPhase8Output(phase8, options) {
   const layout = readJson(files.layout);
   verifyPhase8Layout(phase8, layout, replacements);
   const objectManifest = verifyObjectManifest(output, phase8);
-  const asmDiffer = phase8.targets.map((target) => runTargetAsmDiffer(phase8, target, {
+  const asmDiffer = phase8.targets.map((target) => measure(targetStage('verify-target', target.symbol), () => runTargetAsmDiffer(phase8, target, {
     output,
     asmDifferRoot: options.asmDifferRoot,
     python: options.splatPython,
     objdump: options.objdump,
     objcopy: options.objcopy,
     canonicalBaserom,
-  }));
-  return {
+    linkContext: textLinkContext,
+  })));
+  const verification = {
     schemaVersion: 5,
     status: 'pass',
     counts: {
@@ -4107,6 +4108,8 @@ function verifyPhase8Output(phase8, options) {
     },
     asmDiffer,
   };
+  measure('verify-linked-view-final-identity', () => textContract.finishLinkContext(textLinkContext));
+  return verification;
 }
 
 function validateRecordedPhase8Build(phase8, options) {
@@ -4363,6 +4366,7 @@ function validateRecordedPhase8Build(phase8, options) {
   if (JSON.stringify(buildReport.verification.asmDiffer) !== JSON.stringify(verification.asmDiffer)) {
     fail('recorded Phase 8 asm-differ proof drift');
   }
+  textContract.finishLinkContext(textLinkContext);
   return { schemaVersion: 5, status: 'pass' };
 }
 

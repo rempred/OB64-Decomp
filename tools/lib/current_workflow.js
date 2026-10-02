@@ -8,6 +8,7 @@ const { isDeepStrictEqual } = require('util');
 const { interiorRecords, buildInteriorObject } = require('./auxiliary_interior');
 const textContract = require('./text_contract');
 const compilationGroups = require('./compilation_groups');
+const { measure, targetStage } = require('./verification_profile');
 const {
   ROOT,
   loadAcceptedModel,
@@ -266,11 +267,14 @@ function currentFingerprint(phase8, baseline, localTools, sourcePolicy) {
       'tools/lib/auxiliary_interior.js',
       'tools/lib/auxiliary_projection.js',
       'tools/lib/text_contract.js',
+      'tools/lib/prepared_link_view.js',
       'tools/lib/elf_text_split.js',
       'tools/lib/compilation_groups.js',
       'tools/lib/current_workflow.js',
       'tools/lib/source_policy.js',
       'tools/verify.js',
+      'tools/lib/verification_profile.js',
+      'tools/lib/diff_profile.js',
     ]),
   });
 }
@@ -344,6 +348,7 @@ function completeCurrent(directory, phase8, sourcePolicy) {
       return false;
     }
   }
+  try { textContract.finishLinkContext(textLinkContext); } catch (_) { return false; }
   return true;
 }
 
@@ -506,21 +511,22 @@ function classifyActiveTargets(phase8, preparedClassification = null) {
   return report;
 }
 
-function verifyFreshCompilation(context, build) {
+function verifyFreshCompilation(context, build, options = {}) {
+  const profile = options.profile;
   const output = path.join(
     context.localTools.workRoot,
     'verification',
     `${context.currentFingerprint.slice(0, 24).toLowerCase()}-${Date.now()}`,
   );
   ensureDir(output);
-  const runtime = verifyRuntimeTools(context.phase8.model, {
+  const runtime = measure(profile, 'fresh-authenticate-runtime', () => verifyRuntimeTools(context.phase8.model, {
     powershellRuntimeRoot: context.localTools.powershellRuntimeRoot,
     splatPython: context.localTools.splatPython,
     splatSplit: context.localTools.splatSplit,
     asmDifferRoot: context.localTools.asmDifferRoot,
-  });
-  verifyCompiler(context.phase8, context.localTools.compiler);
-  const sourcePolicy = context.sourcePolicy || classifyTargetSources(context.phase8.targets);
+  }));
+  measure(profile, 'fresh-authenticate-compiler', () => verifyCompiler(context.phase8, context.localTools.compiler));
+  const sourcePolicy = context.sourcePolicy || classifyTargetSources(context.phase8.targets, { profile });
   const classificationBySymbol = new Map(sourcePolicy.targets.map((record) => [record.symbol, record]));
   const builtReport = readJson(build.report);
   if (builtReport.schemaVersion !== 6 || !Array.isArray(builtReport.targetReplacements)) {
@@ -528,7 +534,7 @@ function verifyFreshCompilation(context, build) {
   }
   const targets = [];
   for (const target of context.phase8.targets) {
-    const compiled = compileTarget(
+    const compiled = measure(profile, targetStage('fresh-compile', target.symbol), () => compileTarget(
       context.phase8,
       target,
       output,
@@ -536,7 +542,7 @@ function verifyFreshCompilation(context, build) {
       runtime.tools['mips-kmc-elf-as.exe'].path,
       runtime.tools['mips-kmc-elf-objcopy.exe'].path,
       { classification: classificationBySymbol.get(target.symbol) },
-    );
+    ));
     const builtTarget = builtReport.targetReplacements.find((record) => record.symbol === target.symbol);
     textContract.validateRecords(builtTarget, { textContract: compiled.textContract, objectEvidence: compiled.objectEvidence }, 'fresh compilation');
     const builtObject = path.join(build.output, compilationGroups.objectPath(target));
@@ -599,18 +605,20 @@ function verifyFreshCompilation(context, build) {
 }
 
 function verifyCurrent(context, options = {}) {
-  const build = ensureCurrentBuild(context, options);
+  const profile = options.profile;
+  const build = measure(profile, 'ensure-current', () => ensureCurrentBuild(context, options));
   const onStep = options.onStep || (() => {});
   onStep('Verifying ownership, placement, relocations, and exact bytes');
-  runNode('verify_phase8_matching_c.js', [
+  measure(profile, 'verify-current-output', () => runNode('verify_phase8_matching_c.js', [
     '--output', build.output,
     '--compiler', context.localTools.compiler,
     ...runtimeArgs(context.localTools),
     '--report', VERIFICATION_REPORT_PATH,
-  ], 'CURRENT verification');
+    ...(profile ? ['--profile'] : []),
+  ], 'CURRENT verification'));
   onStep('Recompiling active sources for source-to-object identity');
-  const freshCompilation = verifyFreshCompilation(context, build);
-  const sourcePolicy = classifyActiveTargets(context.phase8, context.sourcePolicy);
+  const freshCompilation = measure(profile, 'fresh-compilation', () => verifyFreshCompilation(context, build, { profile }));
+  const sourcePolicy = measure(profile, 'source-policy-report', () => classifyActiveTargets(context.phase8, context.sourcePolicy));
   const verification = readJson(VERIFICATION_REPORT_PATH);
   const state = {
     ...existingState(CURRENT_STATE_PATH),

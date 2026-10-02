@@ -1,5 +1,6 @@
 'use strict';
 const auxiliaryProjection = require('./auxiliary_projection');
+const preparedLink = require('./prepared_link_view');
 
 const fs = require('fs');
 const path = require('path');
@@ -216,12 +217,9 @@ function nativeLinkedAllocationEvidence(target, elf, mapText) {
   const loads = elf.programHeaders.filter(load => load.type === 1);
   if (!same(sortLoads(loads), sortLoads([...expected.values()].map(value => value.load)))) fail('native linked load census drift');
   const objectPath = require('./compilation_groups').objectPath(target);
-  const lines = mapText.split(/\r?\n/);
-  const starts = lines.map((line, index) => /^\.bss\s/.test(line) ? index : -1).filter(index => index >= 0);
-  if (starts.length !== 1 || !/^\.bss\s+0+\s+0+\s+0+\s+2\*\*4\s+alloc\s*$/.test(lines[starts[0]])) fail('native empty BSS map shape');
-  let end = starts[0] + 1;
-  while (end < lines.length && !/^\S/.test(lines[end])) end++;
-  const block = lines.slice(starts[0] + 1, end).filter(line => line.trim());
+  const mapBlock = preparedLink.mapBlock(mapText, '.bss', 'any', false, true);
+  if (!mapBlock || !/^\.bss\s+0+\s+0+\s+0+\s+2\*\*4\s+alloc\s*$/.test(mapBlock[0])) fail('native empty BSS map shape');
+  const block = mapBlock.slice(1).filter(line => line.trim());
   const emptySelectors = (target.nativeEmptyBssObjects || [objectPath]).map(value => 'from ' + value + '(.bss)');
   if (!same(block.map(line => line.trim().replace(/\\/g, '/')), emptySelectors)) fail('native empty BSS object selector');
   return { schemaVersion: 1, emptyWritablePlacement: { objectPath, inputSection: '.bss', outputSection: '.bss', address: 0, bytes: 0 },
@@ -276,24 +274,22 @@ function deriveObjectEvidence(target, root, artifactFiles = null) {
 }
 
 function linkContext(root, canonicalBaserom, elf = null) {
-  return { canonicalBaserom, elf: elf || parseElfFile(path.join(root, 'phase8.elf')), mapText: fs.readFileSync(path.join(root, 'phase8.map'), 'utf8') };
+  return preparedLink.linkContext(root, canonicalBaserom, elf);
 }
 function deriveLinkEvidence(target, root, canonicalBaserom) {
-  const context = Buffer.isBuffer(canonicalBaserom) ? linkContext(root, canonicalBaserom) : canonicalBaserom;
+  const owned = Buffer.isBuffer(canonicalBaserom);
+  const context = owned ? linkContext(root, canonicalBaserom) : canonicalBaserom;
+  if (context.mapView) preparedLink.assertContext(context, root);
   canonicalBaserom = context.canonicalBaserom;
   const contract = resolveTextContract(target), elf = context.elf;
   const records = ownerEvidence(elf, contract, true);
-  const mapText = context.mapText;
+  const mapText = context.mapView || context.mapText;
   const allocation = target.nativeTextTail || target.compilationGroup ? nativeLinkedAllocationEvidence(target, elf, mapText) : null;
   require('./phase8_matching_c').verifyTargetMapOwner(target, mapText);
-  const lines = mapText.split(/\r?\n/);
   const objectPath = require('./compilation_groups').objectPath(target);
   const mapContributions = contract.owners.map((owner) => {
-    const start = lines.findIndex((line) => line.startsWith(owner.outputSection + ' '));
-    if (start < 0) fail('map owner missing');
-    let end = start + 1;
-    while (end < lines.length && !/^\.ob64\.r\d/.test(lines[end])) end++;
-    const block = lines.slice(start, end);
+    const block = preparedLink.mapBlock(mapText, owner.outputSection, 'loose', true);
+    if (!block) fail('map owner missing');
     const contributions = block.map((line) => {
       const match = /^\s+(\.[\w.]+)\s+([0-9a-f]+)\s+([0-9a-f]+)\s+([0-9a-f]+)\s+2\*\*(\d+)\s+(.+)$/i.exec(line);
       return match ? { inputSection: match[1], vramStart: parseInt(match[2], 16), bytes: parseInt(match[3], 16),
@@ -340,9 +336,11 @@ function deriveLinkEvidence(target, root, canonicalBaserom) {
     return { ...record, rawWord: rawBytes.readUInt32BE(offset), linkedWord: linkedBytes.readUInt32BE(offset),
       expectedWord: retailBytes.readUInt32BE(offset), linkedWordExact: linkedBytes.readUInt32BE(offset) === retailBytes.readUInt32BE(offset) };
   });
-  return { schemaVersion: target.nativeTextTail ? 2 : 1, ...(allocation ? { allocation } : {}),
+  const result = { schemaVersion: target.nativeTextTail ? 2 : 1, ...(allocation ? { allocation } : {}),
     ...(target.auxiliaryProjection || auxiliaryProjection.composed(target.compilationGroup) ? { auxiliaryProjectionRetained: auxiliaryProjection.linkedEvidence(target, root, context) } : {}), textContractSha256: hash(contract), owners, mapContributions, functions,
     relocations, nonRelocationWordsUnchanged: unchangedWords, tail, fullOwnerExact: owners.every((owner) => owner.rawBytesExact) };
+  if (owned) preparedLink.finishLinkContext(context);
+  return result;
 }
 
 function recordsForTarget(target, root, baserom) {
@@ -357,5 +355,5 @@ function validateRecords(record, expected, label) {
 
 module.exports = { NATIVE_SYMBOL, NATIVE_SHAPE, TAIL_SHA256, exactKeys, same, hash, nativeDescriptor,
   normalizeNativeTextTail, resolveTextContract, bindWorkbenchTarget, inputTarget, inputSection, assemblerInput, artifact, shape,
-  linkContext, ownerEvidence, functionCensus, tailEvidence, nativeObjectAllocationEvidence, nativeLinkedAllocationEvidence,
+  linkContext, finishLinkContext: preparedLink.finishLinkContext, ownerEvidence, functionCensus, tailEvidence, nativeObjectAllocationEvidence, nativeLinkedAllocationEvidence,
   deriveObjectEvidence, deriveLinkEvidence, recordsForTarget, validateRecords };
