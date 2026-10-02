@@ -1,0 +1,102 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "9099D087EA84E8DDD96279F730D89E1E4F579C9C6FF7A2BA60423280B77873EC",
+  "observationId": "7781FF9219045D5820870EB45F92F72170696004DF6DA251F951248D900A7E86",
+  "symbol": "func_00249A14",
+  "authored": {
+    "context": "The complete900-byte/frame184 source87228F was three linked words/10bytes nonexact at+2BC/+2C0/+2C4: XOR/SLTIU/SLL instead of the retail branch/set-zero/set-four. GoldOx718 identifies a concrete jump-pass condition and reproduces a grounded word-result/index form; Sol reconstructs the change from its own saved project source and reproduces it under the normal pinned compiler and linker.",
+    "effects": [
+      "integer-mode",
+      "conditional-lowering",
+      "register-allocation",
+      "exact-linked-bytes"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "3097781784CD361E434259CC114EF3DE0C837F43264A01136DA3166A401F0011",
+      "sourceSha256": "7EADF27F4E48A2EE58B1C78813772474403D1F93D56AC8C139A6796EDE7EF26D"
+    },
+    "label": "scenario-fourth-probe-word-result-and-narrowed-index",
+    "observedEffect": "Source7EADF27F4E48A2EE58B1C78813772474403D1F93D56AC8C139A6796EDE7EF26D is mechanically PURE_C,900 bytes/225 instructions/frame184/27 actual relocations. All17 calls retain retail order and region extents. Native relocation-masked comparison has zero differences, and the fresh normal linked comparison has zero differing bytes/words, one complete.ob64.r4390 C contribution and zero fallback/fill. Every27 linked relocation words is exact. Linked SHA53B98AECA6C92115205FF4959FF737618399C6791E2BF437634BF0AE40DD0C3F equals retail. Normal probe1E3C7892A831866193FD2BF70A2412BEF7F7FD75697C47BCA1A9B2A00817A2C1 captures all13 passes. The assignment of the real probe to the word result leaves that result referenced in the fourth comparison, preserving the observed branch rather than the Boolean-to-four transform. The actual byte-index narrowing retains the retail result copy at the join. No original-C type is inferred. Existing descriptor binding801D7C78 maps toROM24BBD8, within the unchanged24BBD4..24BBEC original zero owner; no new data ownership is introduced. The ONE completed normal final verifier at2026-10-02T21:44:02.940Z establishes BOTH original Scenario members23A5EC/249A14 as PURE_C with complete sole ownership, placement, exact actual relocation contracts, linked bytes, independent fresh compilation and full-ROM equality. CURRENT6137EDDA9CC1823731A010FA38B73C896E74FCF3B985ADDD03844C1E7195E7F3; ROM41943040/SHA571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A. Ignoredscenario2-final-evidence.json binds the normal reports and unchanged scoped inputs.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "docs/archive/matching-c-candidates/2026-10-02-func_00249A14-87228f78d1.c",
+        "sha256": "325949E6FD1C6DA96EC66CC316D4956E801E46C579084E70AAA3BB91A7631E5E"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_00249A14.s",
+        "sha256": "64F2ACC3BFCF3C16477296FFBD96D64C29DA155A0287BCDFC6FD9C3B0CCEFB5D"
+      },
+      {
+        "path": "src/lib/func_000454c8.c",
+        "sha256": "600D537351C0F5ED9F4CC3ECB8EF92C764E50984D0A6CC0B31D3A81D022994A4"
+      },
+      {
+        "path": "asm/original/rev0/lib/zero_fill_0024bbd4.s",
+        "sha256": "0EB7715F4889198A622938ADEAD5DACBBF73EC570B6999DC5557A1AFCE07A5D5"
+      },
+      {
+        "path": "src/lib/func_00249A14.c",
+        "sha256": "7EADF27F4E48A2EE58B1C78813772474403D1F93D56AC8C139A6796EDE7EF26D"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "The complete assigned two-target matching wave is accepted. Broader Scenario loader/DMA interfaces, family reconciliation, runtime provenance and the downstream95D9C interface freeze remain open. The new result makes no semantic, capacity or new ownership claim and authorizes no push. Original assembly remains available. The next ordinary source target is Squad41c20 in its unchanged six-member wave.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Use a word-sized match local for the real fourth classifier result, compare that same value, then assign the actual0..4 selected slot. Narrow it to the separate byte index consumed by the selected-halfword store. Keep the first three classifier arms, all scratch overlap, loops and saved option unchanged. Explain the pinned-compiler branch/delay-slot ordering beside the affected C. This uses no dummy carrier, volatile, physical binding, extra call, helper declaration change or compiler switch."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 5179,
+      "sha256": "3097781784CD361E434259CC114EF3DE0C837F43264A01136DA3166A401F0011"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "7EADF27F4E48A2EE58B1C78813772474403D1F93D56AC8C139A6796EDE7EF26D"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-02-func_00249A14-9099d087ea.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

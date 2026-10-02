@@ -851,7 +851,11 @@
     { "name": "D_801D16B0", "address": "0x801D16B0" },
     { "name": "D_80195576", "address": "0x80195576" },
     { "name": "D_801955A5", "address": "0x801955A5" },
-    { "name": "D_801936A8", "address": "0x801936A8" }
+    { "name": "D_801936A8", "address": "0x801936A8" },
+    {
+      "name": "D_801D7C78",
+      "address": "0x801D7C78"
+    }
   ],
   "targets": [
     {
@@ -42420,6 +42424,173 @@
         { "offset": "0x00000A20", "type": "R_MIPS_LO16", "symbol": "D_801936A8", "section": ".rel.text" },
         { "offset": "0x00000A24", "type": "R_MIPS_26", "symbol": "func_0004813C", "section": ".rel.text" },
         { "offset": "0x00000A2C", "type": "R_MIPS_26", "symbol": "func_000466f4", "section": ".rel.text" }
+      ]
+    },
+    {
+      "symbol": "func_00249A14",
+      "expectedRelocations": [
+        {
+          "offset": "0x0000000C",
+          "type": "R_MIPS_HI16",
+          "symbol": "D_801D7C78",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000010",
+          "type": "R_MIPS_LO16",
+          "symbol": "D_801D7C78",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000088",
+          "type": "R_MIPS_26",
+          "symbol": "func_0002DFB8",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000094",
+          "type": "R_MIPS_26",
+          "symbol": "resource_free",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x0000009C",
+          "type": "R_MIPS_26",
+          "symbol": "func_0002DEF4",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000000AC",
+          "type": "R_MIPS_26",
+          "symbol": "func_0002DFB8",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000000C4",
+          "type": "R_MIPS_26",
+          "symbol": "boot_resource_archive_load_many",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000000D0",
+          "type": "R_MIPS_26",
+          "symbol": "resource_free",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000000F4",
+          "type": "R_MIPS_26",
+          "symbol": "memcpy_aligned",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000100",
+          "type": "R_MIPS_26",
+          "symbol": "resource_free",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x0000010C",
+          "type": "R_MIPS_26",
+          "symbol": "memset_00023780",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000210",
+          "type": "R_MIPS_26",
+          "symbol": "memset_00023780",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000234",
+          "type": "R_MIPS_26",
+          "symbol": "func_000454c8",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x0000024C",
+          "type": "R_MIPS_HI16",
+          "symbol": "D_80187C42",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000254",
+          "type": "R_MIPS_LO16",
+          "symbol": "D_80187C42",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000258",
+          "type": "R_MIPS_26",
+          "symbol": "func_000454c8",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000270",
+          "type": "R_MIPS_HI16",
+          "symbol": "D_80187C44",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000278",
+          "type": "R_MIPS_26",
+          "symbol": "func_000454c8",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x0000027C",
+          "type": "R_MIPS_LO16",
+          "symbol": "D_80187C44",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x0000028C",
+          "type": "R_MIPS_HI16",
+          "symbol": "D_80187C46",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000294",
+          "type": "R_MIPS_26",
+          "symbol": "func_000454c8",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000298",
+          "type": "R_MIPS_LO16",
+          "symbol": "D_80187C46",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000002A8",
+          "type": "R_MIPS_HI16",
+          "symbol": "D_80187C48",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000002B0",
+          "type": "R_MIPS_26",
+          "symbol": "func_000454c8",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x000002B4",
+          "type": "R_MIPS_LO16",
+          "symbol": "D_80187C48",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x0000031C",
+          "type": "R_MIPS_26",
+          "symbol": "func_00249290",
+          "section": ".rel.text"
+        },
+        {
+          "offset": "0x00000348",
+          "type": "R_MIPS_26",
+          "symbol": "func_002488D0",
+          "section": ".rel.text"
+        }
       ]
     }
   ]
