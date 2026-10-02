@@ -1,0 +1,101 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "3CE919BD384AA9DF64BA95AB430C73413404096540509671253F0362DC59A81C",
+  "observationId": "D76545E55658017158AA60217CF4D8A7DEFA0338FA7B1201B28EEB169D7A1003",
+  "symbol": "func_0023A5EC",
+  "authored": {
+    "context": "The corrected predecessor covers the full663-word owner, both any-count guards, and the first-marker store on BOTH initial allocation paths. Its entry still differs because the real state-base definition is initialized before the record-index override. The current source keeps that complete corrected body and changes only this definition timing.",
+    "effects": [
+      "register-allocation",
+      "scheduling",
+      "body-coverage"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "293EDB694128CA0145B92562611D37B14D8E2F01C98A4419849FEDCE2F871BA1",
+      "sourceSha256": "067A6E9E30E43BF4A69FBF4C89AE47EC0778FA9C23F5AEBC4FE503270D2C86EC"
+    },
+    "label": "scenario-state-base-first-use-timing",
+    "observedEffect": "Source067A6E9E is mechanically PURE_C,2652bytes/frame128/161text relocations and22 ordered calls with equal corresponding call-region lengths. All11 entry differences disappear. Normal current link proves one full2652-byte C contribution at.ob64.r4250 with zero fallback/fill, and137 words/368bytes differ; first mismatch+0x240. LinkedSHA354E73F0DEDDF2C79593B1B4EF59C85BAAB02C8EEB9C73A397A0464E87CEA379 versus retail0C893885B08C8C8A42810D57327BD7C86FBACA2DBDD286C1599868903563721C. Authenticated probeBAB1ED7697A4F2E6358F40F51F5EE475DCE7A0E1C7B13FF29512C63E7C329D6B captures all13passes. The corrected internal join at+0x2C8 remains exact. All ordinary temporary source/config/descriptor/RAM binding inputs were restored. A subsequent grounded packed-field-components control, source7ACB344D, stages each real high/low byte and adjustment in retail load order. It improves fieldB stack-store timing but makes kind directly use a1, eliminating the required move in each of all seven constructor call regions:2624bytes/frame128/161R,22 ordered calls, seven one-word deficits and473 aligned native differences. This shorter control is not selected and has no linked or acceptance claim.",
+    "parentCandidateId": "6E89D50C806A6096877217DCF0572833F653297FAAA69A9A16D5F39D9C011355",
+    "references": [
+      {
+        "path": "docs/archive/matching-c-candidates/2026-10-02-func_0023A5EC-6e89d50c80.c",
+        "sha256": "3BEBBBFF2F1C14A90EA7B9272CE6DD04B47B5BA8667E392830A5EF9CF73CF25D"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_0023A5EC.s",
+        "sha256": "7150A449FC53B900146EB17649873381E2CBDD19DE8BCBB626C881ED2949FBCF"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_0023A3A0.s",
+        "sha256": "DC2B516C80313C8C3BACF011358E032A687556F94FFF1271C65AF04BC111DC37"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_0023B048.s",
+        "sha256": "47A44193AF98B06DA100FC98AAA14B4EF7E81C4004A5594300C6DBDA283F3F45"
+      },
+      {
+        "path": "src/lib/func_001960A8.c",
+        "sha256": "8F53D7CCC48131CB842683D65A65001A2DFDB242D634547BCE1242B843A31874"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Initial and optional argument-load allocation, selected-index/output address and store ordering, actual relocation contract and full Scenario-wave acceptance remain open. Reading full incoming helper words does not independently prove original C formal types; the local word-valued declaration and current parsed values make no original-type or runtime claim. Both targets remain ASM production;249A14 retains its three-word conditional source/compiler blocker. No supported tooling defect, altered owner, final verifier, hybrid exception or new push.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Declare the real state pointer without an initializer, then assign &D_801976E8 after the record-index override and before the first state read. Preserve the corrected common initial marker, six optional constructor paths, existing byte views and word-valued local helper interface."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 10194,
+      "sha256": "293EDB694128CA0145B92562611D37B14D8E2F01C98A4419849FEDCE2F871BA1"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "067A6E9E30E43BF4A69FBF4C89AE47EC0778FA9C23F5AEBC4FE503270D2C86EC"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-02-func_0023A5EC-3ce919bd38.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
