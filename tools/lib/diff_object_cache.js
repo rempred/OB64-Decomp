@@ -50,6 +50,8 @@ const IMPLEMENTATION_FILES = Object.freeze([
   'tools/lib/auxiliary_interior.js',
   'tools/lib/auxiliary_projection.js',
   'tools/lib/diff_object_cache.js',
+  'tools/lib/diff_preprocess_cache.js',
+  'tools/lib/current_workflow.js',
   'tools/lib/diff_profile.js',
   'tools/lib/elf_text_split.js',
   'tools/lib/compilation_groups.js',
@@ -605,6 +607,12 @@ function validateAllocatedSections(elf, target, allowReginfo, label) {
   }
 }
 
+const inspectedArtifactBytes = new WeakMap();
+const EXPECTED_ARTIFACT_IDENTITIES = Symbol('expected-artifact-identities');
+const ARTIFACT_ROLES = Object.freeze({
+  'compilation-input.c': 'compilationInput', 'compiler.s': 'compilerAssembly', 'adjusted.s': 'assemblerInput',
+  'source-object.o': 'rawObject', 'final.o': 'strippedObject', 'assembler-object.o': 'unsplitAssemblerObject',
+});
 function inspectCompiledTargetArtifacts(options) {
   if (options.target.compilationGroup) {
     const files = options.files;
@@ -624,14 +632,29 @@ function inspectCompiledTargetArtifacts(options) {
     if (!input.equals(compilationInputBytes(classification))) fail('group cache compilation input drift');
     return result;
   }
+  const { target, files } = options;
+  const specs = artifactSpecifications(target);
+  if (!files || !sameStringSet(Object.keys(files), specs.map(spec => spec.name))) fail(`compiled artifact file census drift: ${target.symbol}`);
+  const roleFiles = Object.fromEntries(specs.map(spec => [ARTIFACT_ROLES[spec.name], files[spec.name]]));
+  return textContract.withObjectArtifactSnapshot(target, null, roleFiles,
+    snapshot => inspectCapturedTargetArtifacts(options, snapshot));
+}
+function inspectCapturedTargetArtifacts(options, snapshot) {
   const { phase8, target, classification, files } = options;
   validateClassification(target, classification);
   const specs = artifactSpecifications(target);
   if (!files || !sameStringSet(Object.keys(files), specs.map((spec) => spec.name))) {
     fail(`compiled artifact file census drift: ${target.symbol}`);
   }
-  const bytesByName = {};
-  for (const spec of specs) bytesByName[spec.name] = readRegularFile(files[spec.name], `${target.symbol} ${spec.name}`);
+  const captured = textContract.objectArtifactBytes(snapshot);
+  const bytesByName = Object.fromEntries(specs.map(spec => [spec.name, captured[ARTIFACT_ROLES[spec.name]]]));
+  if (options[EXPECTED_ARTIFACT_IDENTITIES]) {
+    for (const [index, spec] of specs.entries()) {
+      const bytes = bytesByName[spec.name];
+      const identity = { name: spec.name, destination: spec.destination, bytes: bytes.length, sha256: sha256Buffer(bytes) };
+      if (!sameValue(identity, options[EXPECTED_ARTIFACT_IDENTITIES][index])) fail(`cache artifact identity drift: ${target.symbol} ${spec.name}`);
+    }
+  }
   const expectedInput = compilationInputBytes(classification);
   if (!bytesByName['compilation-input.c'].equals(expectedInput)
       || bytesByName['compilation-input.c'].length !== classification.compilationInput.bytes
@@ -665,7 +688,9 @@ function inspectCompiledTargetArtifacts(options) {
     }
   }
 
-  const sourceElf = parseElfFile(files['source-object.o']);
+  const objectEvidence = textContract.deriveObjectEvidenceFromSnapshot(target, snapshot);
+  const inputs = textContract.objectInputs(objectEvidence);
+  const sourceElf = inputs.raw;
   if (target.nativeTextTail) textContract.nativeObjectAllocationEvidence(sourceElf);
   const sourceOwners = inspectOwnerSections(sourceElf, target, 'source object');
   const textBytes = Buffer.concat(sourceOwners.map((record) => record.bytes));
@@ -679,7 +704,7 @@ function inspectCompiledTargetArtifacts(options) {
   }
   const sourceAuxiliary = inspectAuxiliarySections(sourceElf, target, 'source object', true);
 
-  const finalElf = parseElfFile(files['final.o']);
+  const finalElf = inputs.stripped;
   if (target.nativeTextTail) textContract.nativeObjectAllocationEvidence(finalElf, false);
   const forbiddenFinalSections = ['.reginfo', '.pdr', '.comment', '.note']
     .filter((name) => finalElf.sections.some((section) => section.name === name));
@@ -715,23 +740,20 @@ function inspectCompiledTargetArtifacts(options) {
     }
   }
 
-  return {
+  const result = {
     textContract: textContract.resolveTextContract(target),
-    objectEvidence: textContract.deriveObjectEvidence(target, null, {
-      compilationInput: files['compilation-input.c'], compilerAssembly: files['compiler.s'], assemblerInput: files['adjusted.s'],
-      rawObject: files['source-object.o'], strippedObject: files['final.o'], unsplitAssemblerObject: files['assembler-object.o'],
-    }),
+    objectEvidence,
     symbol: target.symbol,
     objectRelative: `objects/c/${target.symbol}.o`,
-    objectSha256: sha256File(files['final.o']),
+    objectSha256: objectEvidence.artifacts.strippedObject.sha256,
     proofObjectRelative: `objects/c/${target.symbol}.source-object.o`,
-    proofObjectSha256: sha256File(files['source-object.o']),
+    proofObjectSha256: objectEvidence.artifacts.rawObject.sha256,
     assemblerObjectRelative: target.auxiliaryProjection || splitResult ? `objects/c/${target.symbol}.assembler-object.o` : null,
-    assemblerObjectSha256: target.auxiliaryProjection || splitResult ? sha256File(files['assembler-object.o']) : null,
+    assemblerObjectSha256: target.auxiliaryProjection || splitResult ? objectEvidence.artifacts.unsplitAssemblerObject.sha256 : null,
     compilerAssemblyRelative: `generated/c/${target.symbol}.compiler.s`,
-    compilerAssemblySha256: sha256File(files['compiler.s']),
+    compilerAssemblySha256: objectEvidence.artifacts.compilerAssembly.sha256,
     linkedAssemblyRelative: `generated/c/${target.symbol}.s`,
-    linkedAssemblySha256: sha256File(files['adjusted.s']),
+    linkedAssemblySha256: objectEvidence.artifacts.assemblerInput.sha256,
     compilationInput: {
       path: target.source,
       bytes: bytesByName['compilation-input.c'].length,
@@ -758,6 +780,8 @@ function inspectCompiledTargetArtifacts(options) {
     relocations,
     auxiliarySections: sourceAuxiliary.map(({ section, rawBytes, ...record }) => record),
   };
+  inspectedArtifactBytes.set(result, bytesByName);
+  return result;
 }
 
 function artifactIdentity(file, spec) {
@@ -814,6 +838,7 @@ function validateEntryDirectory(options) {
   }
   const files = {};
   const identities = [];
+  const captureDuringInspection = inspectArtifacts === inspectCompiledTargetArtifacts && !target.compilationGroup;
   for (const [index, spec] of specs.entries()) {
     const record = metadata.artifacts[index];
     if (!exactKeys(record, ['name', 'destination', 'bytes', 'sha256'])
@@ -823,12 +848,23 @@ function validateEntryDirectory(options) {
     }
     const file = path.join(artifactsDirectory, spec.name);
     assertExistingConfinement(cacheRoot, file, `cache artifact ${spec.name}`);
-    const identity = artifactIdentity(file, spec);
-    if (!sameValue(identity, record)) fail(`cache artifact identity drift: ${target.symbol} ${spec.name}`);
     files[spec.name] = file;
+    if (!captureDuringInspection) {
+      const identity = artifactIdentity(file, spec);
+      if (!sameValue(identity, record)) fail(`cache artifact identity drift: ${target.symbol} ${spec.name}`);
+      identities.push(identity);
+    }
+  }
+  const compiled = inspectArtifacts({ phase8, target, classification, files,
+    ...(captureDuringInspection ? { [EXPECTED_ARTIFACT_IDENTITIES]: metadata.artifacts } : {}) });
+  const captured = inspectedArtifactBytes.get(compiled);
+  if (captureDuringInspection && !captured) fail('artifact inspection did not produce its private byte snapshot');
+  for (const [index, spec] of (captureDuringInspection ? specs : []).entries()) {
+    const bytes = captured[spec.name];
+    const identity = { name: spec.name, destination: spec.destination, bytes: bytes.length, sha256: sha256Buffer(bytes) };
+    if (!sameValue(identity, metadata.artifacts[index])) fail(`cache artifact identity drift: ${target.symbol} ${spec.name}`);
     identities.push(identity);
   }
-  const compiled = inspectArtifacts({ phase8, target, classification, files });
   if (!sameValue(compiled, metadata.compiled)) fail(`cache compiled metadata drift: ${target.symbol}`);
   const canonicalMetadata = Buffer.from(`${JSON.stringify(metadata, null, 2)}\n`, 'utf8');
   if (!metadataBytes.equals(canonicalMetadata)) fail(`cache metadata encoding drift: ${target.symbol}`);
@@ -857,7 +893,7 @@ function ensureDirectory(directory) {
 }
 
 function copyArtifactsToOutput(options) {
-  const { cacheRoot, entry, target, output, identities } = options;
+  const { cacheRoot, entry, target, output, identities, captured } = options;
   const artifactsDirectory = path.join(entry, 'artifacts');
   const files = {};
   for (const [index, spec] of artifactSpecifications(target).entries()) {
@@ -867,13 +903,33 @@ function copyArtifactsToOutput(options) {
     const destination = assertStrictDescendant(output, path.join(output, ...relative.split('/')), `diff artifact ${spec.name}`);
     ensureDirectory(path.dirname(destination));
     if (fs.existsSync(destination)) fail(`diff artifact destination already exists: ${relative}`);
-    fs.copyFileSync(source, destination, fs.constants.COPYFILE_EXCL);
+    if (captured) {
+      const bytes = captured[spec.name];
+      if (!Buffer.isBuffer(bytes) || bytes.length !== identities[index].bytes || sha256Buffer(bytes) !== identities[index].sha256) {
+        fail(`captured diff artifact identity drift: ${target.symbol} ${spec.name}`);
+      }
+      fs.writeFileSync(destination, bytes, { flag: 'wx' });
+    } else fs.copyFileSync(source, destination, fs.constants.COPYFILE_EXCL);
     if (!sameValue(artifactIdentity(destination, spec), identities[index])) {
       fail(`copied diff artifact identity drift: ${target.symbol} ${spec.name}`);
     }
     files[spec.name] = destination;
   }
   return files;
+}
+
+// Private to one compileDiffTargets invocation; standalone callers cannot opt
+// out of their final identity check through the public seal-management option.
+const COPIED_HIT_ARTIFACTS = Symbol('copied-hit-artifacts');
+function verifyCopiedArtifacts(record) {
+  assertDirectory(record.output, 'diff output');
+  for (const identity of record.identities) {
+    const file = record.files[identity.name];
+    assertExistingConfinement(record.output, file, `copied diff artifact ${identity.name}`);
+    if (!sameValue(artifactIdentity(file, identity), identity)) {
+      fail(`copied diff artifact final identity drift: ${identity.name}`);
+    }
+  }
 }
 
 function removeCacheDirectory(cacheRoot, directory) {
@@ -1050,20 +1106,23 @@ function compileOrReuseTarget(options) {
     inspectArtifacts,
   }));
   if (cached.hit) {
+    // Own a snapshot of independently derived evidence, never metadata.compiled
+    // or an object retained by the inspector. Callers may add later proof fields.
+    const copied = structuredClone(cached.compiled);
+    const identities = structuredClone(cached.identities);
     const files = profileMeasure(options, 'object-cache.artifact-copy', () => copyArtifactsToOutput({
       cacheRoot,
       entry: cached.entry,
       target,
       output,
-      identities: cached.identities,
+      identities,
+      captured: inspectedArtifactBytes.get(cached.compiled),
     }));
-    const copied = profileMeasure(options, 'object-cache.output-validate', () => {
-      const inspected = inspectArtifacts({ phase8, target, classification, files });
-      if (!sameValue(inspected, cached.compiled)) fail(`copied cache evidence drift: ${target.symbol}`);
-      return inspected;
-    });
     profileMeasure(options, 'object-cache.source-postcheck', () => verifySource(target, classification));
     if (!sealManagedByCaller) profileMeasure(options, 'object-cache.seal-verify', () => verifySeal(seal));
+    const copiedArtifacts = { output: path.resolve(output), files, identities };
+    if (options[COPIED_HIT_ARTIFACTS]) options[COPIED_HIT_ARTIFACTS].push(copiedArtifacts);
+    else profileMeasure(options, 'object-cache.final-artifact-sweep', () => verifyCopiedArtifacts(copiedArtifacts));
     return { compiled: copied, cache: { status: 'hit', key: cached.key, reason: null } };
   }
 
@@ -1129,6 +1188,7 @@ function compileDiffTargets(options) {
   let requestedCount = 0;
   let compilerInvocations = 0;
   const groupProducers = new Set();
+  const copiedHitArtifacts = [];
   const seal = options.cacheSeal || profileMeasure(options, 'object-cache.seal-create', () => createCacheSeal(options));
   const verifySeal = options.verifyCacheSeal || verifyCacheSeal;
   const verifySource = options.verifyTargetSource || verifyTargetSourceIdentity;
@@ -1137,6 +1197,7 @@ function compileDiffTargets(options) {
     ...options,
     cacheSeal: seal,
     sealManagedByCaller: true,
+    [COPIED_HIT_ARTIFACTS]: copiedHitArtifacts,
     implementationIdentities: seal.implementationIdentities,
     sourcePolicyConfigIdentity: seal.sourcePolicyConfigIdentity,
   };
@@ -1207,6 +1268,9 @@ function compileDiffTargets(options) {
     for (const target of phase8.targets) verifySource(target, classificationBySymbol.get(target.symbol));
   });
   profileMeasure(options, 'object-cache.final-seal-verify', () => verifySeal(seal));
+  profileMeasure(options, 'object-cache.final-artifact-sweep', () => {
+    for (const record of copiedHitArtifacts) verifyCopiedArtifacts(record);
+  });
   const count = (status) => entries.filter((entry) => entry.status === status).length;
   return {
     compiled,

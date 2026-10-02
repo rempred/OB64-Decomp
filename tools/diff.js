@@ -4,6 +4,7 @@
 const crypto = require('crypto');
 const fs = require('fs');
 const path = require('path');
+const textContract = require('./lib/text_contract');
 const {
   ROOT,
   assertBuildLocations,
@@ -66,7 +67,7 @@ function selectTarget(phase8, symbol) {
 }
 
 function prepareContextOptions(symbol, profiler = null) {
-  const options = { allowMissingRelocationContracts: [symbol] };
+  const options = { allowMissingRelocationContracts: [symbol], diffPreprocessSymbol: symbol };
   if (profiler) options.profile = profiler;
   return options;
 }
@@ -172,6 +173,7 @@ function profileMetadata(options) {
       keyDigest: sha256Value(cacheKeys),
       entryDigest: sha256Value(cacheEntries),
     },
+    preprocessCache: context.diffPreprocess.stats,
     implementation: IMPLEMENTATION_FILES.map(fileIdentity),
     outcome: {
       exact: comparison.exact,
@@ -206,6 +208,7 @@ function printSummary(options) {
     target,
     targetCompilation,
     targetSourcePolicy,
+    preprocessCache,
   } = options;
   console.log('');
   console.log(`${target.symbol} ........ ${comparisonLabel(comparison)}`);
@@ -220,6 +223,7 @@ function printSummary(options) {
   console.log(`Relocation contract ........ ${target.relocationContractSource === 'missing-diff-only' ? 'MISSING' : relocationContractMatches ? 'MATCH' : 'DIFFERS'}`);
   console.log(`Sibling object cache ....... ${targetCompilation.cache.hits} hit / ${targetCompilation.cache.misses} miss / ${targetCompilation.cache.rebuilt} rebuilt`);
   console.log(`Compiler invocations ....... ${targetCompilation.cache.compilerInvocations} (requested target always fresh)`);
+  console.log(`Sibling CPP bytes .......... ${preprocessCache.hits} reused / ${preprocessCache.fresh} fresh (requested producer always fresh)`);
   if (!relocationContractMatches) {
     console.log('Candidate relocations .......');
     console.log(JSON.stringify(candidateRelocations, null, 2));
@@ -228,6 +232,10 @@ function printSummary(options) {
 }
 
 function main(argv = process.argv.slice(2)) {
+  return textContract.withObjectEvidenceMemo(() => runDiff(argv));
+}
+
+function runDiff(argv) {
   const parsed = parseArguments(argv);
   if (parsed.command === 'help') {
     usage();
@@ -240,6 +248,7 @@ function main(argv = process.argv.slice(2)) {
   let profileFinished = false;
   let target = null;
   let output = null;
+  let linkContext = null;
   if (profiler) profiler.installChildProcessObserver();
 
   try {
@@ -304,11 +313,15 @@ function main(argv = process.argv.slice(2)) {
       compiled,
     ));
     measure('link-phase8', () => linkPhase8(context.phase8, output, objectManifest, runtime.tools));
+    linkContext = measure('prepare-linked-evidence', () => textContract.linkContext(
+      output, require('./lib/phase8_matching_c').loadCanonicalBaserom(context.phase8),
+    ));
     measure('write-layout', () => writeLayout(
       context.phase8,
       phase7,
       output,
       replacement.replacements,
+      { linkContext, compiledBySymbol: compiled },
     ));
     const comparison = measure('compare-target', () => runTargetAsmDiffer(context.phase8, target, {
       output,
@@ -318,6 +331,8 @@ function main(argv = process.argv.slice(2)) {
       objcopy: runtime.tools['mips-kmc-elf-objcopy.exe'].path,
       relocations: compiled.get(target.symbol).relocations,
       requireExact: false,
+      linkContext,
+      canonicalBaserom: linkContext.canonicalBaserom,
     }));
     const targetSourcePolicy = classificationBySymbol.get(target.symbol);
     const candidateRelocations = compiled.get(target.symbol).relocations;
@@ -335,7 +350,7 @@ function main(argv = process.argv.slice(2)) {
       objectCache: targetCompilation.cache,
       output,
       object: compiled.get(target.symbol),
-      ...require('./lib/text_contract').recordsForTarget(target, output, require('./lib/phase8_matching_c').loadCanonicalBaserom(context.phase8)),
+      ...textContract.recordsForTarget(target, output, linkContext),
       relocationContract: {
         source: target.relocationContractSource,
         matches: relocationContractMatches,
@@ -344,6 +359,9 @@ function main(argv = process.argv.slice(2)) {
       },
       comparison,
     }));
+    measure('verify-linked-evidence-identity', () => textContract.finishLinkContext(linkContext));
+    linkContext = null;
+    measure('verify-preprocessing-identity', () => context.diffPreprocess.finish());
     const reportFile = path.join(ROOT, 'build', 'diff', `${target.symbol}.json`);
     measure('write-diff-report', () => writeJson(reportFile, report));
     measure('print-summary', () => printSummary({
@@ -354,6 +372,7 @@ function main(argv = process.argv.slice(2)) {
       target,
       targetCompilation,
       targetSourcePolicy,
+      preprocessCache: context.diffPreprocess.stats,
     }));
 
     if (profiler) {

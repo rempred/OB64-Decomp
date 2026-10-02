@@ -750,7 +750,10 @@ function classifySource(source, options = {}) {
     return result;
   }
 
-  const preprocessed = preprocessSource(
+  // A focused diff may supply authenticated sibling preprocessing bytes. The
+  // ordinary build/verifier path always uses fresh preprocessing. Classification
+  // (both raw and preprocessed scans) is still performed in this invocation.
+  const preprocessed = (options.preprocess || preprocessSource)(
     sourceFile,
     preprocessor,
     options.includeDirectories || [],
@@ -856,7 +859,9 @@ function classifyTargetSources(targets, options = {}) {
     const prior = producer && producers.get(producer);
     const groupIdentity = producer ? JSON.stringify(target.compilationGroup) : null;
     if (prior && (prior.source !== target.source || prior.groupIdentity !== groupIdentity)) throw new Error('compilation group source/contract drift');
-    const classification = prior?.classification || classifySource(target.source, { preprocessor, profile: options.profile });
+    const classification = prior?.classification || classifySource(target.source, {
+      preprocessor, profile: options.profile, preprocess: options.preprocess,
+    });
     if (producer && !prior) producers.set(producer, { source: target.source, classification, groupIdentity });
     const record = {
       symbol: target.symbol,

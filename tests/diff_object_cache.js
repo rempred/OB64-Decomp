@@ -18,6 +18,7 @@ const {
   cacheEntryPath,
   canonicalJson,
   compileDiffTargets,
+  compileOrReuseTarget,
   createCacheKeyMaterial,
   outputArtifactFiles,
   projectTargetContract,
@@ -567,10 +568,11 @@ function main() {
 
     const cacheRoot = path.join(scratch, 'cache');
     let runIndex = 0;
-    function runDiff(profile = null) {
+    function runDiff(profile = null, inspect = fakeInspect) {
       const output = path.join(scratch, `output-${runIndex++}`);
       fs.mkdirSync(output, { recursive: true });
       const invocations = [];
+      const inspections = [];
       const keyInputs = commonKeyInputs(phase8, sibling, classifications.get(sibling.symbol));
       const result = compileDiffTargets({
         ...keyInputs,
@@ -583,13 +585,13 @@ function main() {
         classificationBySymbol: classifications,
         cacheRoot,
         compile: makeFakeCompiler(invocations),
-        inspectArtifacts: fakeInspect,
+        inspectArtifacts: (options) => { inspections.push(Object.values(options.files)); return inspect(options); },
         cacheSeal: fixtureSeal(keyInputs),
         verifyCacheSeal: () => {},
         verifyTargetSource: () => {},
         profile,
       });
-      return { result, invocations, output };
+      return { result, invocations, output, inspections };
     }
 
     const cold = runDiff();
@@ -608,6 +610,40 @@ function main() {
       && warm.result.cache.rebuilt === 0 && warm.result.cache.compilerInvocations === 1
       && warm.invocations.length === 1 && warm.invocations[0].symbol === requested.symbol,
     'warm run did not compile only the requested target');
+    assert(warm.inspections.length === 3 && warm.inspections.every(files => files.every(file => file.startsWith(cacheRoot + path.sep))),
+      'warm hit artifacts were semantically inspected again after copying');
+    assert(canonicalJson([...warm.result.compiled]) === canonicalJson([...cold.result.compiled]), 'warm compiled map differs from cold');
+    for (const target of phase8.targets) for (const spec of artifactSpecifications(target)) {
+      assert(fs.readFileSync(outputArtifactFiles(cold.output, target)[spec.name]).equals(
+        fs.readFileSync(outputArtifactFiles(warm.output, target)[spec.name])), 'warm output bytes differ from cold');
+    }
+    // Inspector references must not remain aliases of returned evidence.
+    const inspectedReferences = [];
+    const isolatedWarm = runDiff({ measure(name, callback) {
+      const value = callback();
+      if (name === 'object-cache.artifact-copy') for (const record of inspectedReferences) record.sourceClass = 'CORRUPTED';
+      return value;
+    } }, options => { const record = fakeInspect(options); inspectedReferences.push(record); return record; });
+    assert(canonicalJson([...isolatedWarm.result.compiled]) === canonicalJson([...cold.result.compiled]), 'inspector alias changed cached compiled verdict');
+    expectError(/final identity drift/, () => runDiff({ measure(name, callback) {
+      const value = callback();
+      if (name === 'object-cache.final-source-sweep') {
+        const destination = outputArtifactFiles(path.join(scratch, `output-${runIndex - 1}`), sibling)['final.o'];
+        fs.appendFileSync(destination, 'changed after copy');
+      }
+      return value;
+    } }), 'copied artifact mutation before final batch sweep');
+    const standaloneOutput = path.join(scratch, 'standalone-hit'); fs.mkdirSync(standaloneOutput);
+    const standaloneInputs = commonKeyInputs(phase8, sibling, classifications.get(sibling.symbol));
+    expectError(/final identity drift/, () => compileOrReuseTarget({
+      ...standaloneInputs, output: standaloneOutput, cacheRoot, inspectArtifacts: fakeInspect,
+      cacheSeal: fixtureSeal(standaloneInputs), verifyCacheSeal: () => {},
+      verifyTargetSource: () => {}, sealManagedByCaller: true,
+      profile: { measure(name, callback) { const value = callback();
+        if (name === 'object-cache.source-postcheck') fs.appendFileSync(outputArtifactFiles(standaloneOutput, sibling)['final.o'], 'changed');
+        return value;
+      } },
+    }), 'standalone copied artifact mutation before return');
     const measuredStages = [];
     const profiledWarm = runDiff({
       measure(name, callback) {
@@ -627,7 +663,7 @@ function main() {
       'object-cache.source-and-key',
       'object-cache.entry-validate',
       'object-cache.artifact-copy',
-      'object-cache.output-validate',
+      'object-cache.final-artifact-sweep',
       'object-cache.final-source-sweep',
       'object-cache.final-seal-verify',
     ]) {

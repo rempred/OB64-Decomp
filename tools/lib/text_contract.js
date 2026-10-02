@@ -4,11 +4,74 @@ const preparedLink = require('./prepared_link_view');
 
 const fs = require('fs');
 const path = require('path');
-const { parseElfFile, elfSectionBytes, sha256Buffer } = require('./phase7_conventional');
+const { parseElfFile, parseElf32BigEndian, elfSectionBytes, sha256Buffer } = require('./phase7_conventional');
 
 const NATIVE_SYMBOL = 'func_00204A70';
 const TAIL_SHA256 = 'DF3F619804A92FDB4057192DC43DD748EA778ADC52BC498CE80524C014B81119';
 const NATIVE_SHAPE = Object.freeze({ type: 1, flags: 6, alignment: 16, bytes: 1136 });
+let objectMemo = null;
+const derivedInputs = new WeakMap();
+const artifactSnapshots = new WeakMap();
+function freezeEvidence(value) {
+  if (!value || typeof value !== 'object' || Buffer.isBuffer(value)) return value;
+  for (const child of Object.values(value)) freezeEvidence(child);
+  return Object.freeze(value);
+}
+// Enabled only around one synchronous focused diff. Every lookup still reads
+// and authenticates the actual artifacts; no report or disk cache can seed it.
+function withObjectEvidenceMemo(callback) {
+  const previous = objectMemo;
+  objectMemo = new Map();
+  try { return callback(); } finally { objectMemo = previous; }
+}
+function objectInputs(evidence) {
+  const inputs = derivedInputs.get(evidence);
+  if (!inputs) fail('object input provenance is unavailable');
+  // Keep parsed metadata immutable and backing buffers private. Consumers get
+  // their own buffers, so mutation cannot poison a later memo lookup.
+  return Object.fromEntries(['raw', 'stripped'].map(role => [role,
+    Object.freeze({ ...inputs[role], buffer: Buffer.from(inputs[role].buffer) })]));
+}
+function snapshotBinding(target) {
+  const excluded = new Set(['model', 'row', 'rows', 'descriptor', 'multiOwnerContract']);
+  const value = Object.fromEntries(Object.entries(target).filter(([key]) => !excluded.has(key)));
+  if (value.textOwners) value.textOwners = value.textOwners.map(({ row, ...owner }) => owner);
+  return hash(value);
+}
+function withObjectArtifactSnapshot(target, root, artifactFiles, callback) {
+  if (target.compilationGroup) fail('group artifact snapshot is unsupported');
+  const symbol = target.symbol;
+  const paths = {
+    compilationInput: target.source,
+    compilerAssembly: 'generated/c/' + symbol + '.compiler.s',
+    assemblerInput: 'generated/c/' + symbol + '.s',
+    rawObject: 'objects/c/' + symbol + '.source-object.o',
+    strippedObject: 'objects/c/' + symbol + '.o',
+    unsplitAssemblerObject: target.auxiliaryProjection || textOwners(target).length > 1
+      ? 'objects/c/' + symbol + '.assembler-object.o' : null,
+  };
+  const artifacts = {}, buffers = {};
+  const { confinedArtifactContents } = require('./current_workflow');
+  for (const [role, relative] of Object.entries(paths)) {
+    if (relative === null) { artifacts[role] = null; continue; }
+    const value = artifactFiles
+      ? confinedArtifactContents(path.dirname(artifactFiles[role]), path.basename(artifactFiles[role]), 'text evidence artifact')
+      : confinedArtifactContents(root, relative, 'text evidence artifact');
+    artifacts[role] = { path: relative, bytes: value.bytes, sha256: value.sha256 };
+    buffers[role] = value.contents;
+  }
+  const snapshot = Object.freeze({});
+  artifactSnapshots.set(snapshot, { target, binding: snapshotBinding(target), artifacts, buffers });
+  try { return callback(snapshot); } finally { artifactSnapshots.delete(snapshot); }
+}
+function capturedArtifacts(snapshot, target = null) {
+  const state = artifactSnapshots.get(snapshot);
+  if (!state || (target && (state.target !== target || state.binding !== snapshotBinding(target)))) fail('inactive or foreign artifact snapshot');
+  return state;
+}
+function objectArtifactBytes(snapshot) {
+  return Object.fromEntries(Object.entries(capturedArtifacts(snapshot).buffers).map(([role, bytes]) => [role, Buffer.from(bytes)]));
+}
 function fail(message) { throw new Error('text contract: ' + message); }
 function exactKeys(value, keys) {
   return value && typeof value === 'object' && !Array.isArray(value)
@@ -228,28 +291,29 @@ function nativeLinkedAllocationEvidence(target, elf, mapText) {
 }
 function deriveObjectEvidence(target, root, artifactFiles = null) {
   if (target.compilationGroup) return require('./compilation_groups').evidence(target, root, artifactFiles);
-  const identity = (role, relative) => artifactFiles
-    ? { ...artifact(path.dirname(artifactFiles[role]), path.basename(artifactFiles[role])), path: relative }
-    : artifact(root, relative);
-  const fileFor = (role, record) => artifactFiles ? artifactFiles[role] : path.join(root, record.path);
-  const contract = resolveTextContract(target), native = Boolean(target.nativeTextTail), symbol = target.symbol;
-  const artifacts = {
-    compilationInput: identity('compilationInput', target.source),
-    compilerAssembly: identity('compilerAssembly', 'generated/c/' + symbol + '.compiler.s'),
-    assemblerInput: identity('assemblerInput', 'generated/c/' + symbol + '.s'),
-    rawObject: identity('rawObject', 'objects/c/' + symbol + '.source-object.o'),
-    strippedObject: identity('strippedObject', 'objects/c/' + symbol + '.o'),
-    unsplitAssemblerObject: target.auxiliaryProjection || textOwners(target).length > 1 ? identity('unsplitAssemblerObject', 'objects/c/' + symbol + '.assembler-object.o') : null,
-  };
+  return withObjectArtifactSnapshot(target, root, artifactFiles, snapshot => deriveObjectEvidenceFromSnapshot(target, snapshot));
+}
+function deriveObjectEvidenceFromSnapshot(target, snapshot) {
+  const { artifacts, buffers } = capturedArtifacts(snapshot, target);
+  const contract = resolveTextContract(target), native = Boolean(target.nativeTextTail);
+  // Projection also authenticates retained model bindings; leave that uncommon
+  // path fresh rather than memoizing a partial projection/model contract.
+  const memoKey = objectMemo && !target.auxiliaryProjection
+    ? hash({ target: require('./diff_object_cache').projectTargetContract(target), contract, artifacts }) : null;
+  if (memoKey && objectMemo.has(memoKey)) return objectMemo.get(memoKey);
   const { adjustSectionAssembly, relocationRecords, rawRelocationRecords } = require('./phase8_matching_c');
-  const compiler = fs.readFileSync(fileFor('compilerAssembly', artifacts.compilerAssembly));
-  const input = fs.readFileSync(fileFor('assemblerInput', artifacts.assemblerInput));
+  const compiler = buffers.compilerAssembly;
+  const input = buffers.assemblerInput;
   if (!assemblerInput(compiler, target, adjustSectionAssembly, { auxiliarySections: target.auxiliarySections || [] }).equals(input)) fail('assembler input provenance');
-  const raw = parseElfFile(fileFor('rawObject', artifacts.rawObject)), stripped = parseElfFile(fileFor('strippedObject', artifacts.strippedObject));
+  const raw = parseElf32BigEndian(buffers.rawObject), stripped = parseElf32BigEndian(buffers.strippedObject);
+  if (sha256Buffer(compiler) !== artifacts.compilerAssembly.sha256
+      || sha256Buffer(input) !== artifacts.assemblerInput.sha256
+      || sha256Buffer(raw.buffer) !== artifacts.rawObject.sha256
+      || sha256Buffer(stripped.buffer) !== artifacts.strippedObject.sha256) fail('object inputs changed during derivation');
   let projectionEvidence = null;
   if (target.auxiliaryProjection) {
-    const result = auxiliaryProjection.project(fs.readFileSync(fileFor("unsplitAssemblerObject", artifacts.unsplitAssemblerObject)), target);
-    if (!result.buffer.equals(fs.readFileSync(fileFor("rawObject", artifacts.rawObject)))) fail("auxiliary raw-to-projected reconstruction");
+    const result = auxiliaryProjection.project(buffers.unsplitAssemblerObject, target);
+    if (!result.buffer.equals(buffers.rawObject)) fail("auxiliary raw-to-projected reconstruction");
     projectionEvidence = result.evidence;
   }
   const allocation = native ? { raw: nativeObjectAllocationEvidence(raw), stripped: nativeObjectAllocationEvidence(stripped, false) } : null;
@@ -265,18 +329,27 @@ function deriveObjectEvidence(target, root, artifactFiles = null) {
   const loadSections = new Set([...contract.owners.map((owner) => '.rel' + owner.inputSection), ...(target.auxiliarySections || []).map((section) => '.rel' + section.outputSection)]);
   const tail = tailEvidence(contract, rawOwners, normalizedRelocations);
   tailEvidence(contract, strippedOwners, normalizedRelocations);
-  return { schemaVersion: projectionEvidence ? 4 : native ? 2 : 1, ...(native ? { allocation } : {}),
+  const evidence = { schemaVersion: projectionEvidence ? 4 : native ? 2 : 1, ...(native ? { allocation } : {}),
     ...(projectionEvidence ? { auxiliaryProjection: projectionEvidence } : {}), textContractSha256: hash(contract), artifacts,
     rawOwners: rawOwners.map((r) => r.record), strippedOwners: strippedOwners.map((r) => r.record), rawFunctions, strippedFunctions,
     rawRelocations: rawRelocations.filter((r) => loadSections.has(r.section)), normalizedRelocations,
     discardedAncillaryRelocations: rawRelocations.filter((r) => !loadSections.has(r.section)), tail,
     assemblyMode: native ? 'untouched-native-text' : 'section-assigned', compilerAssemblyRewritten: false };
+  freezeEvidence(evidence);
+  derivedInputs.set(evidence, { raw: freezeEvidence(raw), stripped: freezeEvidence(stripped) });
+  if (memoKey) objectMemo.set(memoKey, evidence);
+  return evidence;
 }
 
 function linkContext(root, canonicalBaserom, elf = null) {
   return preparedLink.linkContext(root, canonicalBaserom, elf);
 }
 function deriveLinkEvidence(target, root, canonicalBaserom) {
+  return deriveLinkEvidenceFromObject(target, root, canonicalBaserom, deriveObjectEvidence(target, root));
+}
+// Private: evidence always comes from a fresh derivation in this invocation,
+// never a report or a caller-supplied cached verdict.
+function deriveLinkEvidenceFromObject(target, root, canonicalBaserom, objectEvidence) {
   const owned = Buffer.isBuffer(canonicalBaserom);
   const context = owned ? linkContext(root, canonicalBaserom) : canonicalBaserom;
   if (context.mapView) preparedLink.assertContext(context, root);
@@ -315,10 +388,11 @@ function deriveLinkEvidence(target, root, canonicalBaserom) {
   });
   const functions = functionCensus(elf, records.map((record) => record.section), true);
   if ((target.nativeTextTail || target.compilationGroup) && !same(functions, contract.compilerTextFunctions)) fail('linked native function census');
-  const objectEvidence = deriveObjectEvidence(target, root);
   const tail = tailEvidence(contract, records, objectEvidence.normalizedRelocations);
   if (tail && !records[0].bytes.subarray(tail.offset).equals(canonicalBaserom.subarray(target.romStartNumber + tail.offset, target.romEndNumber))) fail('linked retail tail mismatch');
-  const rawElf = parseElfFile(path.join(root, objectEvidence.artifacts.rawObject.path));
+  const rawElf = target.compilationGroup
+    ? parseElfFile(path.join(root, objectEvidence.artifacts.rawObject.path))
+    : objectInputs(objectEvidence).raw;
   const rawBytes = Buffer.concat(ownerEvidence(rawElf, contract).map(record => record.bytes));
   const linkedBytes = Buffer.concat(records.map(record => record.bytes));
   const retailBytes = Buffer.concat(contract.owners.map(owner => canonicalBaserom.subarray(owner.romStart, owner.romEndExclusive)));
@@ -339,13 +413,17 @@ function deriveLinkEvidence(target, root, canonicalBaserom) {
   const result = { schemaVersion: target.nativeTextTail ? 2 : 1, ...(allocation ? { allocation } : {}),
     ...(target.auxiliaryProjection || auxiliaryProjection.composed(target.compilationGroup) ? { auxiliaryProjectionRetained: auxiliaryProjection.linkedEvidence(target, root, context) } : {}), textContractSha256: hash(contract), owners, mapContributions, functions,
     relocations, nonRelocationWordsUnchanged: unchangedWords, tail, fullOwnerExact: owners.every((owner) => owner.rawBytesExact) };
+  for (const record of Object.values(objectEvidence.artifacts).filter(Boolean)) {
+    if (!same(artifact(root, record.path), record)) fail('object artifact changed during linked evidence');
+  }
   if (owned) preparedLink.finishLinkContext(context);
   return result;
 }
 
 function recordsForTarget(target, root, baserom) {
-  return { textContract: resolveTextContract(target), objectEvidence: deriveObjectEvidence(target, root),
-    ...(baserom ? { linkEvidence: deriveLinkEvidence(target, root, baserom) } : {}) };
+  const objectEvidence = deriveObjectEvidence(target, root);
+  return { textContract: resolveTextContract(target), objectEvidence,
+    ...(baserom ? { linkEvidence: deriveLinkEvidenceFromObject(target, root, baserom, objectEvidence) } : {}) };
 }
 function validateRecords(record, expected, label) {
   for (const key of Object.keys(expected)) {
@@ -354,6 +432,8 @@ function validateRecords(record, expected, label) {
 }
 
 module.exports = { NATIVE_SYMBOL, NATIVE_SHAPE, TAIL_SHA256, exactKeys, same, hash, nativeDescriptor,
+  withObjectEvidenceMemo, objectInputs,
+  withObjectArtifactSnapshot, objectArtifactBytes, deriveObjectEvidenceFromSnapshot,
   normalizeNativeTextTail, resolveTextContract, bindWorkbenchTarget, inputTarget, inputSection, assemblerInput, artifact, shape,
   linkContext, finishLinkContext: preparedLink.finishLinkContext, ownerEvidence, functionCensus, tailEvidence, nativeObjectAllocationEvidence, nativeLinkedAllocationEvidence,
   deriveObjectEvidence, deriveLinkEvidence, recordsForTarget, validateRecords };

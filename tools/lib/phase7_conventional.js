@@ -374,7 +374,8 @@ function expectedAssemblySymbolAddress(row) {
   return slice.vramStart + (romAddress - slice.romStart);
 }
 
-function loadAcceptedModel() {
+function loadAcceptedModel(options = {}) {
+  if (options.onAssemblySource !== undefined && typeof options.onAssemblySource !== 'function') fail('assembly source observer is malformed');
   const config = loadConfig();
   const inputFiles = verifyAcceptedInputHashes(config);
   const semantic = readJson(path.join(ROOT, 'config', 'splat', 'us_rev0.semantic.json'));
@@ -424,10 +425,17 @@ function loadAcceptedModel() {
     if (partByRange.has(key)) fail(`duplicate tracked assembly range: ${key}`);
     if (!/^[A-Za-z_.$][A-Za-z0-9_.$]*$/.test(part.name)) fail(`unsafe tracked assembly symbol: ${part.name}`);
     const sourceFile = path.join(ROOT, part.file.replace(/\//g, path.sep));
-    if (!fs.existsSync(sourceFile)) fail(`tracked assembly source is missing: ${part.file}`);
-    const sourceBuffer = fs.readFileSync(sourceFile);
+    let sourceBuffer;
+    try { sourceBuffer = fs.readFileSync(sourceFile); }
+    catch (error) {
+      if (error.code === 'ENOENT') fail(`tracked assembly source is missing: ${part.file}`);
+      throw error;
+    }
     if (sourceBuffer.length !== part.textBytes || sha256Buffer(sourceBuffer) !== part.sha256) fail(`tracked assembly source drift: ${part.file}`);
-    const lines = sourceBuffer.toString('utf8').split(/\r?\n/);
+    const sourceText = sourceBuffer.toString('utf8');
+    if (options.onAssemblySource) options.onAssemblySource(Object.freeze({ file: sourceFile, relative: part.file,
+      bytes: sourceBuffer.length, sha256: part.sha256, text: sourceText }));
+    const lines = sourceText.split(/\r?\n/);
     const labelPattern = new RegExp(`^\\s*${escapeRegex(part.name)}\\s*:`);
     const labelIndex = lines.findIndex((line) => labelPattern.test(line));
     const wordLines = lines.filter(isTrackedWordDirective);

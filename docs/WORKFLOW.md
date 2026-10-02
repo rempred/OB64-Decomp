@@ -280,8 +280,17 @@ target is always compiled fresh, and every diff still freshly constructs and
 links the current layout before comparing it. The summary reports sibling
 cache hits, misses, rebuilds, and compiler invocations.
 
+The diff also caches eligible sibling preprocessing output under ignored
+`build/cache/diff-preprocess/`. Reuse binds content hashes, the literal include
+closure and search-path inventories, tool/configuration identities, and the
+inherited environment. Unsupported directives, include mechanisms or volatile
+macros use fresh preprocessing. Source classification is recomputed from current
+source and expanded bytes; an end-of-run check rejects input drift. The requested
+producer, including all members of its compilation group, always preprocesses
+and compiles freshly. The summary reports reused and fresh CPP inputs.
+
 Cache reuse is a development optimization only. `verify.js` and CURRENT
-verification do not import that cache; they independently perform the fresh
+verification do not import either cache; they independently perform the fresh
 final recompilation and complete-ROM check at wave completion and remain mandatory.
 The diff's internal development link remains necessary for relocated target-byte
 comparison. It does not authorize a separate final ROM build or full verifier per function.

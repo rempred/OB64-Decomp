@@ -11,10 +11,9 @@ const compilationGroups = require('./compilation_groups');
 const { measure, targetStage } = require('./verification_profile');
 const {
   ROOT,
-  loadAcceptedModel,
   sha256File,
 } = require('./phase7_conventional');
-const { loadActiveTargetModel } = require('./active_targets');
+const { loadActiveTargetModelForContext, finishActiveTargetModelSources } = require('./active_targets');
 const { resolveLocalTools } = require('./local_tools');
 const {
   compileTarget,
@@ -63,7 +62,7 @@ function canonicalArtifactPath(relative, label) {
   return normalized;
 }
 
-function confinedArtifactIdentity(root, relative, label) {
+function confinedArtifactContents(root, relative, label) {
   const resolvedRoot = path.resolve(root);
   if (!fs.existsSync(resolvedRoot) || !fs.statSync(resolvedRoot).isDirectory()) {
     throw new Error(`${label} root is missing or not a directory`);
@@ -87,12 +86,20 @@ function confinedArtifactIdentity(root, relative, label) {
       || path.isAbsolute(canonicalRelative)) {
     throw new Error(`${label} resolves outside its root`);
   }
+  const contents = fs.readFileSync(file);
+  if (contents.length !== status.size) throw new Error(`${label} changed while reading`);
   return {
     path: shown,
     file,
     bytes: status.size,
-    sha256: sha256File(file),
+    sha256: require('./phase7_conventional').sha256Buffer(contents),
+    contents,
   };
+}
+
+function confinedArtifactIdentity(root, relative, label) {
+  const { contents, ...identity } = confinedArtifactContents(root, relative, label);
+  return identity;
 }
 
 function acceptedCompilationInputIdentity(target, sourcePolicyTarget, label) {
@@ -173,28 +180,15 @@ function hashFiles(relativeFiles) {
   });
 }
 
-function acceptedAssemblyIdentities(model) {
-  const identities = [];
-  const seen = new Set();
-  for (const row of model.rows) {
-    if (row.inputKind !== 'tracked-assembly' || !row.part || seen.has(row.part.file)) continue;
-    seen.add(row.part.file);
-    const file = path.join(ROOT, ...row.part.file.split('/'));
-    if (!fs.existsSync(file) || sha256File(file) !== row.part.sha256) {
-      throw new Error(`accepted assembly source identity drift: ${row.part.file}`);
-    }
-    identities.push({ path: row.part.file, sha256: row.part.sha256 });
-  }
-  identities.sort((left, right) => left.path.localeCompare(right.path));
-  return identities;
-}
-
-function baselineFingerprint(model, baserom) {
+function baselineFingerprint(phase8, baserom) {
+  // Consume the loader's private source bracket here: a complete fresh sweep
+  // authenticates the exact bytes used for symbol resolution and this identity.
+  const assemblySources = finishActiveTargetModelSources(phase8);
   return sha256Value({
     schemaVersion: 1,
     baserom: { bytes: baserom.bytes, sha256: baserom.sha256 },
-    acceptedInputs: model.inputFiles,
-    assemblySources: acceptedAssemblyIdentities(model),
+    acceptedInputs: phase8.model.inputFiles,
+    assemblySources,
     implementation: hashFiles([
       'config/phase7/conventional-build.json',
       'tools/run_phase7_splat.js',
@@ -401,15 +395,28 @@ function runtimeArgs(localTools) {
 }
 
 function prepareContext(options = {}) {
-  const localTools = resolveLocalTools({ audit: options.audit === true });
-  const baserom = ensureCanonicalBaserom(localTools);
-  const model = loadAcceptedModel();
-  const baseline = baselineFingerprint(model, baserom);
-  const phase8 = loadActiveTargetModel({
+  const profile = options.profile;
+  const localTools = measure(profile, 'prepare.local-tools', () => resolveLocalTools({ audit: options.audit === true }));
+  const baserom = measure(profile, 'prepare.baserom', () => ensureCanonicalBaserom(localTools));
+  const phase8 = measure(profile, 'prepare.active-target-model', () => loadActiveTargetModelForContext({
     allowMissingRelocationContracts: options.allowMissingRelocationContracts || [],
+  }));
+  // The active model already performs a fresh complete accepted-model load.
+  // Use that very object rather than parsing/authenticating a second copy.
+  const model = phase8.model;
+  const baseline = measure(profile, 'prepare.baseline-fingerprint', () => baselineFingerprint(phase8, baserom));
+  let diffPreprocess = null;
+  if (options.diffPreprocessSymbol !== undefined) {
+    const requested = phase8.targets.filter(target => target.symbol.toLowerCase() === String(options.diffPreprocessSymbol).toLowerCase());
+    if (requested.length !== 1) throw new Error('diff preprocessing target does not resolve uniquely');
+    // All members of a compilation group share this source; the whole producer
+    // therefore stays fresh even when a nonleader member was requested.
+    diffPreprocess = require('./diff_preprocess_cache').createDiffPreprocessCache({ requestedSources: [requested[0].source] });
+  }
+  const sourcePolicy = classifyTargetSources(phase8.targets, {
+    profile: options.profile, preprocess: diffPreprocess?.preprocess,
   });
-  const sourcePolicy = classifyTargetSources(phase8.targets, { profile: options.profile });
-  const current = currentFingerprint(phase8, baseline, localTools, sourcePolicy);
+  const current = measure(profile, 'prepare.current-fingerprint', () => currentFingerprint(phase8, baseline, localTools, sourcePolicy));
   return {
     baserom,
     baselineFingerprint: baseline,
@@ -418,6 +425,7 @@ function prepareContext(options = {}) {
     model,
     phase8,
     sourcePolicy,
+    ...(diffPreprocess ? { diffPreprocess } : {}),
   };
 }
 
@@ -659,6 +667,7 @@ module.exports = {
   classifyActiveTargets,
   completeCurrent,
   confinedArtifactIdentity,
+  confinedArtifactContents,
   currentFingerprint,
   currentVerificationState,
   ensureBaseline,

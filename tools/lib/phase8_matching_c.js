@@ -2513,10 +2513,14 @@ function writeObjectManifest(output, linkedObjects, phase8, replacements, compil
         addedCTargets.add(target.symbol);
         const compiled = compiledBySymbol.get(target.symbol);
         const cFile = resolveRelative(output, compiled.objectRelative, 'matching C object');
+        const cSha256 = sha256File(cFile);
+        if (cSha256 !== compiled.objectSha256 || cSha256 !== compiled.objectEvidence?.artifacts?.strippedObject?.sha256) {
+          fail('matching C object changed before manifest: ' + target.symbol);
+        }
         objects.push({
           path: compiled.objectRelative,
           bytes: fs.statSync(cFile).size,
-          sha256: sha256File(cFile),
+          sha256: cSha256,
           ownerKind: 'matching-c-target',
           textContract: compiled.textContract,
           objectEvidence: compiled.objectEvidence,
@@ -2622,13 +2626,18 @@ function writeObjectManifest(output, linkedObjects, phase8, replacements, compil
   };
 }
 
-function writeLayout(phase8, phase7, output, replacements) {
+function writeLayout(phase8, phase7, output, replacements, options = {}) {
   const layout = readJson(phase7.files.layout);
-  const canonicalBaserom = loadCanonicalBaserom(phase8);
-  const textLinkContext = textContract.linkContext(output, canonicalBaserom);
+  const textLinkContext = options.linkContext || textContract.linkContext(output, loadCanonicalBaserom(phase8));
+  preparedLink.assertContext(textLinkContext, output);
   const representations = new Map();
   for (const target of phase8.targets) {
     const representation = textContract.recordsForTarget(target, output, textLinkContext);
+    if (options.compiledBySymbol) {
+      textContract.validateRecords(options.compiledBySymbol.get(target.symbol), {
+        textContract: representation.textContract, objectEvidence: representation.objectEvidence,
+      }, 'diff layout compiled artifacts');
+    }
     representations.set(target, representation);
     const retainedAssemblySlices = targetRetainedAssemblySlices(target);
     for (const textOwner of targetTextOwners(target)) {
@@ -2763,7 +2772,7 @@ function writeLayout(phase8, phase7, output, replacements) {
       acceptedAssemblyTailVramEndExclusive: tail.vramEndExclusive,
     };
   }));
-  textContract.finishLinkContext(textLinkContext);
+  if (!options.linkContext) textContract.finishLinkContext(textLinkContext);
   writeJson(path.join(output, 'layout.json'), layout);
 }
 
@@ -3256,17 +3265,18 @@ function verifyTargetMapOwner(target, mapText) {
   const mapView = typeof mapText === 'string' ? preparedLink.prepareMap(mapText) : mapText;
   const expectedOwner = compilationGroups.objectPath(target);
   const owners = targetTextOwners(target).map((owner, ownerIndex) => {
-    const escaped = escapeRegex(owner.sectionName);
     const block = preparedLink.mapBlock(mapView, owner.sectionName);
     if (!block) fail('target linker-map section is missing: ' + owner.sectionName);
-    const contributions = block.filter((line) => new RegExp('^\\s+' + escapeRegex(textContract.inputSection(target, owner.sectionName)) + '\\s+.*\\sobjects/').test(line));
+    const contributionPattern = new RegExp('^\\s+' + escapeRegex(textContract.inputSection(target, owner.sectionName)) + '\\s+.*\\sobjects/');
+    const symbolPattern = new RegExp('\\s' + escapeRegex(target.symbol) + '$');
+    const contributions = block.filter((line) => contributionPattern.test(line));
     const forbiddenOwner = 'objects/assembly/chunk_' + String(owner.chunkIndex).padStart(3, '0') + '.o';
     if (contributions.length !== 1 || !contributions[0].includes(expectedOwner)
         || block.some((line) => line.includes(forbiddenOwner))) {
       fail('target linker-map owner is not the sole matching C object: ' + target.symbol + ' ' + owner.sectionName);
     }
     if (ownerIndex === 0
-        && !block.some((line) => new RegExp('\\s' + escapeRegex(target.symbol) + '$').test(line))) {
+        && !block.some((line) => symbolPattern.test(line))) {
       fail('target linker-map symbol is missing: ' + target.symbol);
     }
     return {
@@ -3281,7 +3291,8 @@ function verifyTargetMapOwner(target, mapText) {
     const escaped = escapeRegex(retained.sectionName);
     const block = preparedLink.mapBlock(mapView, retained.sectionName);
     if (!block) fail('retained assembly linker-map section is missing: ' + retained.sectionName);
-    const contributions = block.filter((line) => new RegExp('^\\s+' + escaped + '\\s+.*\\sobjects/').test(line));
+    const contributionPattern = new RegExp('^\\s+' + escaped + '\\s+.*\\sobjects/');
+    const contributions = block.filter((line) => contributionPattern.test(line));
     const expectedAssemblyOwner = 'objects/assembly/chunk_' + String(retained.chunkIndex).padStart(3, '0') + '.o';
     if (contributions.length !== 1 || !contributions[0].includes(expectedAssemblyOwner)
         || contributions[0].includes(expectedOwner)

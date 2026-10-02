@@ -59,7 +59,9 @@ function main() {
   const { b06, ef, bRaw, efRaw, original, resolve } = fixtureContracts(active, rom);
   const aux = ef.auxiliarySections[0];
   const row = active.model.rows.find((item) => item.index === 4248);
-  assert(!active.targets.some((target) => ['func_0022D14C', 'func_0022EF50'].includes(target.symbol)));
+  // EF50 was activated by the accepted table closure; D14C is still retained ASM.
+  assert(!active.targets.some((target) => target.symbol === 'func_0022D14C'));
+  assert(active.targets.some((target) => target.symbol === 'func_0022EF50'));
   assert.equal(resolve(b06, original)[0].ownerTailBytes, 1208);
   const tc = assertToolchainAvailable(loadToolchainConfig());
   const testRoot = process.env.OB64_INTERIOR_TEST_ROOT || path.join(ROOT, 'build/tests');

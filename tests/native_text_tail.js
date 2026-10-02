@@ -59,6 +59,54 @@ function main() {
     phase8, current, out, context.localTools.compiler, runtime.tools['mips-kmc-elf-as.exe'].path,
     runtime.tools['mips-kmc-elf-objcopy.exe'].path, { classification, enforceAcceptedContract });
   const compiled = new Map(phase8.targets.map((value, index) => [value.symbol, compile(value, output, policy.targets[index])]));
+  // A hit copies the bytes actually inspected. Later corruption of that cache
+  // entry cannot poison this output, and must cause a rebuild on the next use.
+  const snapshotCacheRoot = path.join(sourceRoot, 'snapshot-cache');
+  const snapshotClass = policy.targets.find(record => record.symbol === ordinary.symbol);
+  const snapshotFiles = diffCache.outputArtifactFiles(output, ordinary);
+  const snapshotOriginal = Object.fromEntries(Object.entries(snapshotFiles).map(([name, file]) => [name, fs.readFileSync(file)]));
+  const snapshotOptions = {
+    phase8, target: ordinary, classification: snapshotClass, cacheRoot: snapshotCacheRoot,
+    compiler: context.localTools.compiler, verifiedCompiler: p8.verifyCompiler(phase8, context.localTools.compiler),
+    assembler: runtime.tools['mips-kmc-elf-as.exe'], objcopy: runtime.tools['mips-kmc-elf-objcopy.exe'],
+    assemblerPath: runtime.tools['mips-kmc-elf-as.exe'].path,
+    objcopyPath: runtime.tools['mips-kmc-elf-objcopy.exe'].path, preprocessor: policy.preprocessor,
+  };
+  const snapshotKeyMaterial = diffCache.createCacheKeyMaterial(snapshotOptions);
+  const snapshotCompiled = diffCache.inspectCompiledTargetArtifacts({ phase8, target: ordinary, classification: snapshotClass, files: snapshotFiles });
+  diffCache.publishCacheEntry({ ...snapshotOptions, keyMaterial: snapshotKeyMaterial, sourceFiles: snapshotFiles, compiled: snapshotCompiled });
+  const snapshotEntry = diffCache.cacheEntryPath(snapshotCacheRoot, ordinary, diffCache.sha256Value(snapshotKeyMaterial));
+  const snapshotHitOutput = path.join(sourceRoot, 'snapshot-hit'); fs.mkdirSync(snapshotHitOutput);
+  let snapshotMutated = false;
+  const snapshotHit = diffCache.compileOrReuseTarget({ ...snapshotOptions, output: snapshotHitOutput,
+    compile: () => { throw new Error('valid captured hit unexpectedly compiled'); },
+    profile: { measure(name, callback) {
+      if (name === 'object-cache.artifact-copy' && !snapshotMutated) {
+        fs.appendFileSync(path.join(snapshotEntry, 'artifacts', 'source-object.o'), Buffer.from([0xA5]));
+        snapshotMutated = true;
+      }
+      return callback();
+    } },
+  });
+  assert(snapshotMutated); assert.equal(snapshotHit.cache.status, 'hit');
+  assert.deepStrictEqual(snapshotHit.compiled, snapshotCompiled);
+  for (const [name, file] of Object.entries(diffCache.outputArtifactFiles(snapshotHitOutput, ordinary))) {
+    assert(fs.readFileSync(file).equals(snapshotOriginal[name]), 'snapshot hit did not preserve inspected bytes: ' + name);
+  }
+  const snapshotRebuildOutput = path.join(sourceRoot, 'snapshot-rebuild'); fs.mkdirSync(snapshotRebuildOutput);
+  let snapshotRebuilds = 0;
+  const snapshotRebuilt = diffCache.compileOrReuseTarget({ ...snapshotOptions, output: snapshotRebuildOutput,
+    compile: (_phase8, cacheTarget, cacheOutput, _compiler, _as, _objcopy, compileOptions) => {
+      snapshotRebuilds++;
+      const files = diffCache.outputArtifactFiles(cacheOutput, cacheTarget);
+      for (const [name, file] of Object.entries(files)) {
+        fs.mkdirSync(path.dirname(file), { recursive: true }); fs.writeFileSync(file, snapshotOriginal[name]);
+      }
+      return diffCache.inspectCompiledTargetArtifacts({ phase8, target: cacheTarget, classification: compileOptions.classification, files });
+    },
+  });
+  assert.equal(snapshotRebuilt.cache.status, 'rebuilt'); assert.equal(snapshotRebuilds, 1);
+  assert.deepStrictEqual(snapshotRebuilt.compiled, snapshotCompiled);
   const commonRejections = [];
   function rejectCommon(source, label) {
     const commonSource = path.join(sourceRoot, label + '.c');
@@ -103,9 +151,25 @@ function main() {
     return { commonRaw, commonObject, scratchTarget, scratchDir };
   }
   const commonFixture = rejectCommon(sourceFile, 'common');
+  const ordinaryObject = path.join(output, compiled.get(ordinary.symbol).objectRelative);
+  const ordinaryBytes = fs.readFileSync(ordinaryObject);
+  try {
+    const changed = Buffer.from(ordinaryBytes); changed[changed.length - 1] ^= 1;
+    fs.writeFileSync(ordinaryObject, changed);
+    assert.throws(() => p8.writeObjectManifest(output, replacement.linkedObjects, phase8, replacement.replacements, compiled), /matching C object changed before manifest/);
+    assert(!fs.existsSync(path.join(output, 'objects/manifest.json')), 'changed object published a manifest');
+  } finally { fs.writeFileSync(ordinaryObject, ordinaryBytes); }
   const manifest = p8.writeObjectManifest(output, replacement.linkedObjects, phase8, replacement.replacements, compiled);
   p8.linkPhase8(phase8, output, manifest, runtime.tools);
   p8.writeLayout(phase8, phase7, output, replacement.replacements);
+  const originalLayout = fs.readFileSync(path.join(output, 'layout.json'));
+  const layoutContext = tc.linkContext(output, rom);
+  p8.writeLayout(phase8, phase7, output, replacement.replacements, { linkContext: layoutContext });
+  assert(fs.readFileSync(path.join(output, 'layout.json')).equals(originalLayout), 'shared layout context changed evidence');
+  // A caller-owned context remains live for subsequent target evidence and is
+  // closed by the caller only after every consumer has finished.
+  tc.recordsForTarget(target, output, layoutContext);
+  tc.finishLinkContext(layoutContext);
   p8.writeSourceObjectProofs(phase8, { output, compiled, sourcePolicy: policy });
   const verification = p8.verifyPhase8Output(phase8, { output, replacements: replacement.replacements,
     asmDifferRoot: context.localTools.asmDifferRoot, splatPython: context.localTools.splatPython,
@@ -146,6 +210,53 @@ function main() {
   }
   const rawPath = path.join(output, 'objects/c', target.symbol + '.source-object.o');
   const raw = fs.readFileSync(rawPath), elf = parseElfFile(rawPath), section = elf.sections.find(value => value.name === '.text');
+  let expiredSnapshot;
+  tc.withObjectArtifactSnapshot(target, output, null, snapshot => {
+    expiredSnapshot = snapshot;
+    const exposed = tc.objectArtifactBytes(snapshot);
+    exposed.rawObject[section.offset] ^= 1;
+    const captured = tc.deriveObjectEvidenceFromSnapshot(target, snapshot);
+    assert.equal(captured.artifacts.rawObject.sha256, sha256Buffer(raw), 'snapshot buffer escaped by alias');
+    assert.throws(() => tc.deriveObjectEvidenceFromSnapshot({ ...target }, snapshot), /foreign artifact snapshot/);
+    const prior = target.sourceSha256;
+    try {
+      target.sourceSha256 = 'A'.repeat(64);
+      assert.throws(() => tc.deriveObjectEvidenceFromSnapshot(target, snapshot), /foreign artifact snapshot/);
+    } finally { target.sourceSha256 = prior; }
+  });
+  assert.throws(() => tc.objectArtifactBytes(expiredSnapshot), /inactive/);
+  tc.withObjectEvidenceMemo(() => {
+    const first = tc.deriveObjectEvidence(target, output);
+    assert.strictEqual(tc.deriveObjectEvidence(target, output), first, 'identical authenticated artifacts missed private memo');
+    const exposed = tc.objectInputs(first);
+    exposed.raw.buffer[section.offset] ^= 1;
+    assert(tc.objectInputs(first).raw.buffer.equals(raw), 'consumer buffer mutation poisoned memo');
+    assert.throws(() => { first.artifacts.rawObject.sha256 = 'forged'; }, TypeError);
+    assert.notStrictEqual(tc.deriveObjectEvidence({ ...target, sourceSha256: 'A'.repeat(64) }, output), first,
+      'different target input contract shared a memo entry');
+    try {
+      const changed = Buffer.from(raw); changed[section.offset] ^= 1;
+      fs.writeFileSync(rawPath, changed);
+      assert.throws(() => tc.deriveObjectEvidence(target, output), /ancillary removal changed owners/);
+    } finally { fs.writeFileSync(rawPath, raw); }
+    assert.strictEqual(tc.deriveObjectEvidence(target, output), first);
+  });
+  const originalRead = fs.readFileSync;
+  let evidenceRawReads = 0;
+  const driftContext = tc.linkContext(output, rom);
+  try {
+    fs.readFileSync = function(file, ...args) {
+      const bytes = originalRead.call(this, file, ...args);
+      // Initial snapshot, then post-derivation identity check.
+      // Linked-word comparison consumes the authenticated private parsed copy.
+      if (typeof file === 'string' && path.resolve(file) === path.resolve(rawPath) && ++evidenceRawReads === 2) {
+        const changed = Buffer.from(bytes); changed[changed.length - 1] ^= 1; return changed;
+      }
+      return bytes;
+    };
+    assert.throws(() => tc.recordsForTarget(target, output, driftContext), /object artifact changed during linked evidence/);
+    mutations.push('object changed after evidence derivation');
+  } finally { fs.readFileSync = originalRead; tc.finishLinkContext(driftContext); }
   try {
     const changed = Buffer.from(raw); changed[section.offset + 1132] = 1; fs.writeFileSync(rawPath, changed);
     assert.throws(() => tc.deriveObjectEvidence(target, output)); mutations.push('nonzero raw tail');

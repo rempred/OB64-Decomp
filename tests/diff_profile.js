@@ -118,6 +118,7 @@ function main() {
   const contextProfiler = { measure() {} };
   assert.deepStrictEqual(prepareContextOptions('func_fixture'), {
     allowMissingRelocationContracts: ['func_fixture'],
+    diffPreprocessSymbol: 'func_fixture',
   }, 'ordinary diff context options changed');
   const profiledContextOptions = prepareContextOptions('func_fixture', contextProfiler);
   assert.deepStrictEqual(profiledContextOptions.allowMissingRelocationContracts, ['func_fixture']);

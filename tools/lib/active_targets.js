@@ -687,14 +687,66 @@ function verifyRowSymbolSourceCache(cache) {
   if (!(cache instanceof Map)) fail('accepted row symbol-source cache is malformed');
   for (const [relative, record] of cache.entries()) {
     const expectedFile = resolveRelative(ROOT, relative, 'accepted row symbol source');
-    const status = record && record.file === expectedFile && fs.existsSync(record.file)
-      ? fs.statSync(record.file)
-      : null;
+    let status = null;
+    if (record && record.file === expectedFile) {
+      try { status = fs.statSync(record.file); }
+      catch (error) { if (error.code !== 'ENOENT') throw error; }
+    }
     if (!status || !status.isFile() || status.size !== record.bytes || sha256File(record.file) !== record.sha256) {
       fail(`accepted row symbol source changed during target resolution: ${relative}`);
     }
   }
   return true;
+}
+
+const preparedModelSources = new WeakMap();
+const rowSymbolIndexes = new WeakMap();
+function completeAssemblySourceCensus(model, cache) {
+  if (!(cache instanceof Map) || !Array.isArray(model.parts) || !Array.isArray(model.rows)) fail('accepted assembly source census is malformed');
+  const fromParts = new Map(), fromRows = new Map();
+  function add(map, part) {
+    if (!part || typeof part.file !== 'string' || !Number.isInteger(part.textBytes) || part.textBytes <= 0 || !SHA256.test(part.sha256)) fail('accepted assembly part identity is malformed');
+    const identity = { bytes: part.textBytes, sha256: part.sha256 };
+    if (map.has(part.file) && !sameJson(map.get(part.file), identity)) fail('duplicate assembly file has conflicting identities');
+    map.set(part.file, identity);
+  }
+  for (const part of model.parts) add(fromParts, part);
+  for (const row of model.rows) if (row.inputKind === 'tracked-assembly') add(fromRows, row.part);
+  if (fromParts.size !== fromRows.size || cache.size !== fromRows.size) fail('accepted assembly source census is incomplete');
+  for (const [file, identity] of fromRows) {
+    const record = cache.get(file);
+    if (!sameJson(fromParts.get(file), identity) || !record || record.file !== resolveRelative(ROOT, file, 'accepted assembly source')
+        || record.bytes !== identity.bytes || record.sha256 !== identity.sha256) fail('accepted assembly source census identity drift');
+  }
+  return [...fromRows].map(([file, identity]) => ({ path: file, sha256: identity.sha256 })).sort((a, b) => a.path.localeCompare(b.path));
+}
+function indexRowSymbols(model, cache) {
+  const address = new Map(), names = new Map(), labels = new Map();
+  const append = (map, key, row) => { if (!map.has(key)) map.set(key, []); if (!map.get(key).includes(row)) map.get(key).push(row); };
+  for (const row of model.rows) {
+    append(address, row.romStart, row);
+    if (!row.part || !row.part.file) continue;
+    append(names, String(row.part.name || '').toLowerCase(), row);
+    for (const symbol of assemblySymbolNames(cachedAssemblyText(row, cache))) append(labels, symbol, row);
+  }
+  rowSymbolIndexes.set(model, { address, names, labels, cache });
+}
+function assemblySymbolNames(text) {
+  // The old matcher is case-sensitive for actual labels/globals, and permits
+  // whitespace (including newlines) after .globl. Keep both details exact.
+  const pattern = /(?:^|\n)\s*(?:\.globl\s+([A-Za-z_.$][A-Za-z0-9_.$]*)\s*(?:\r?\n)|([A-Za-z_.$][A-Za-z0-9_.$]*):)/gm;
+  return [...new Set([...text.matchAll(pattern)].map(match => match[1] || match[2]))];
+}
+function finishActiveTargetModelSources(phase8) {
+  const state = preparedModelSources.get(phase8);
+  if (!state) fail('active model source bracket is missing or already finished');
+  preparedModelSources.delete(phase8);
+  rowSymbolIndexes.delete(state.model);
+  if (phase8.model !== state.model || sha256Buffer(Buffer.from(JSON.stringify(state.model))) !== state.modelSha256) fail('accepted model changed during source bracket');
+  const identities = completeAssemblySourceCensus(state.model, state.cache);
+  verifyRowSymbolSourceCache(state.cache);
+  state.cache.clear();
+  return identities;
 }
 
 function rowContainsSymbol(row, symbol, sourceCache = null) {
@@ -713,6 +765,14 @@ function rowContainsSymbol(row, symbol, sourceCache = null) {
 }
 
 function resolveAcceptedRow(model, symbol, sourceCache = null) {
+  const index = rowSymbolIndexes.get(model);
+  if (index && SAFE_LINK_SYMBOL.test(symbol)) {
+    const match = /^func_([0-9a-f]{8})$/i.exec(symbol);
+    let candidates = match ? index.address.get(Number.parseInt(match[1], 16)) || [] : [];
+    if (candidates.length !== 1) candidates = [...new Set([...(index.names.get(symbol.toLowerCase()) || []), ...(index.labels.get(symbol) || [])])];
+    if (candidates.length !== 1) fail(`active target does not resolve to one accepted structural owner: ${symbol}`);
+    return candidates[0];
+  }
   let candidates = [];
   const addressMatch = /^func_([0-9a-f]{8})$/i.exec(symbol);
   if (addressMatch) {
@@ -835,7 +895,8 @@ function validateMultiOwnerConfig(config, expectedProfile, model, baserom, sourc
     const owners = rows.map((row) => {
       const slice = row.slices[0];
       const ownerFile = resolveRelative(ROOT, row.part.file, 'multi-owner original assembly');
-      if (!fs.existsSync(ownerFile) || !fs.statSync(ownerFile).isFile()
+      if (sourceCache) cachedAssemblyText(row, sourceCache);
+      else if (!fs.existsSync(ownerFile) || !fs.statSync(ownerFile).isFile()
           || sha256File(ownerFile) !== row.part.sha256) {
         fail(`${label} accepted original assembly identity drift`);
       }
@@ -979,7 +1040,9 @@ function resolveAuxiliarySectionContracts(model, baserom, target, contracts) {
       fail(`auxiliary output section placement drift: ${target.symbol} ${contract.outputSection}`);
     }
     const ownerFile = resolveRelative(ROOT, row.part.file, 'auxiliary original assembly');
-    if (!fs.existsSync(ownerFile) || !fs.statSync(ownerFile).isFile() || sha256File(ownerFile) !== row.part.sha256) {
+    const sourceCache = rowSymbolIndexes.get(model)?.cache;
+    if (sourceCache) cachedAssemblyText(row, sourceCache);
+    else if (!fs.existsSync(ownerFile) || !fs.statSync(ownerFile).isFile() || sha256File(ownerFile) !== row.part.sha256) {
       fail(`accepted auxiliary original assembly identity drift: ${target.symbol} ${contract.outputSection}`);
     }
     const prefix = contract.preservedPrefix || null;
@@ -1255,9 +1318,20 @@ function validateToolchainPin(pin) {
   return pin;
 }
 
-function loadActiveTargetModel(options = {}) {
-  const model = loadAcceptedModel();
+function loadActiveTargetModelInternal(options, deferFinish) {
   const rowSymbolSourceCache = new Map();
+  const model = loadAcceptedModel({ onAssemblySource(record) {
+    const prior = rowSymbolSourceCache.get(record.relative);
+    if (prior && (prior.file !== record.file || prior.bytes !== record.bytes || prior.sha256 !== record.sha256 || prior.text !== record.text)) fail('duplicate assembly observer identity drift');
+    rowSymbolSourceCache.set(record.relative, record);
+  } });
+  completeAssemblySourceCensus(model, rowSymbolSourceCache);
+  indexRowSymbols(model, rowSymbolSourceCache);
+  const assemblySource = (relative, expectedSha256) => {
+    const record = rowSymbolSourceCache.get(relative);
+    if (!record || record.file !== resolveRelative(ROOT, relative, 'assembly source') || record.sha256 !== expectedSha256) fail('assembly source callback identity drift');
+    return record.text;
+  };
   const minimal = readJson(CONFIG_PATH);
   const linkage = readJson(LINKAGE_CONFIG_PATH);
   const multiOwnerConfig = readJson(MULTI_OWNER_CONFIG_PATH);
@@ -1331,7 +1405,7 @@ function loadActiveTargetModel(options = {}) {
   }
   const baserom = fs.readFileSync(baseromFile);
   const logicalSupport = require('./logical_functions');
-  const logicalRegistry = logicalSupport.loadRegistry(model, baserom);
+  const logicalRegistry = logicalSupport.loadRegistry(model, baserom, undefined, assemblySource);
   const multiOwnerContracts = validateMultiOwnerConfig(
     multiOwnerConfig,
     minimal.profile,
@@ -1392,11 +1466,7 @@ function loadActiveTargetModel(options = {}) {
     const sourceFile = resolveRelative(ROOT, entry.source, 'target source');
     if (!fs.existsSync(sourceFile) || !fs.statSync(sourceFile).isFile()) fail(`active target source is missing: ${entry.symbol}`);
     for (const owner of acceptedOwners.owners) {
-      const originalAssemblyFile = resolveRelative(ROOT, owner.originalAssembly, 'original assembly');
-      if (!fs.existsSync(originalAssemblyFile)
-          || sha256File(originalAssemblyFile) !== owner.originalAssemblySha256) {
-        fail(`accepted original assembly identity drift: ${entry.symbol} ${owner.sectionName}`);
-      }
+      assemblySource(owner.originalAssembly, owner.originalAssemblySha256);
     }
     let descriptor = null;
     if (slice.overlayDescriptorId !== null) {
@@ -1453,7 +1523,7 @@ function loadActiveTargetModel(options = {}) {
       target,
       relocationContract.compilerTextFunctions,
     );
-    logicalSupport.assertActivationCompatible(logicalRegistry, entry.symbol, rows, target.compilerTextFunctions);
+    logicalSupport.assertActivationCompatible(logicalRegistry, entry.symbol, rows, target.compilerTextFunctions, assemblySource);
     target.auxiliarySections = resolveAuxiliarySectionContracts(
       model,
       baserom,
@@ -1530,8 +1600,7 @@ function loadActiveTargetModel(options = {}) {
   }
   validateAuxiliaryOwnerGroups(targets);
   auxiliaryProjection.validateCensus(targets);
-  verifyRowSymbolSourceCache(rowSymbolSourceCache);
-  return {
+  const phase8 = {
     config: { ...minimal, compiler: legacy.compiler },
     compatibility,
     descriptors: targets.map((target) => target.descriptor).filter(Boolean),
@@ -1561,7 +1630,16 @@ function loadActiveTargetModel(options = {}) {
     targets,
     target: targets[0],
   };
+  preparedModelSources.set(phase8, { model, cache: rowSymbolSourceCache,
+    modelSha256: sha256Buffer(Buffer.from(JSON.stringify(model))) });
+  if (!deferFinish) finishActiveTargetModelSources(phase8);
+  return phase8;
 }
+
+function loadActiveTargetModel(options = {}) { return loadActiveTargetModelInternal(options, false); }
+// Preparation-only API: the caller MUST consume finishActiveTargetModelSources
+// before using this model as authenticated context. Other callers use the loader above.
+function loadActiveTargetModelForContext(options = {}) { return loadActiveTargetModelInternal(options, true); }
 
 module.exports = {
   CONFIG_PATH,
@@ -1571,6 +1649,9 @@ module.exports = {
   TOOLCHAIN_CONFIG_PATH,
   TOOLCHAIN_BUILD_PATH,
   loadActiveTargetModel,
+  loadActiveTargetModelForContext,
+  finishActiveTargetModelSources,
+  assemblySymbolNames,
   compilerOccurrencePaddingBytes,
   normalizeAuxiliaryRelocationRecords,
   normalizeAuxiliarySectionContracts,
