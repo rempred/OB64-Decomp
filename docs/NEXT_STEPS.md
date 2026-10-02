@@ -2,6 +2,34 @@
 
 This file is the active queue only. Changing counts belong in `node tools/status.js`, not here.
 
+## Active tooling priority: focused diff throughput (Joe, 2026-10-02)
+
+First bring the normal warm focused linked diff toward **30 seconds**, working closely
+with Fable/Claude. The accepted first repair is recorded in
+[the throughput report](audit/2026-10-02-verification-throughput.md); its warm result was
+127.291 seconds. Use its measured bottlenecks, preserve canonical acceptance and
+content-based input authentication, and require focused adversarial tests, independent
+review and the applicable final audit. Coordinate shared-tool/build ownership with Sol;
+resume any paused matching work when the tooling change is accepted.
+
+After this priority is complete, continue the saved follow-up queue:
+
+1. Further verifier performance improvements toward 15 minutes, using measured phases.
+2. A faster diagnostic iteration loop where existing native tools are insufficient.
+3. Shared-type inventory and evidence-backed header consolidation.
+4. Documentation/intake budget and archive cleanup that preserves useful recoverable
+   source pairs and counterexamples.
+5. A reviewed ready-batch acceptance proposal preserving coupled producers, structural
+   dependencies and full-wave completion reporting; current wave rules still apply.
+6. Bounded permuter, duplicate-family and original-object-boundary experiments.
+
+**Deferred until Joe decides:** parallel decomp/search agents and a Linux toolchain
+host/CI. Joe clarified that bounded local compiler/preprocessor/tool-process concurrency
+is not part of the agent deferral; evaluate it under the usual tooling checks.
+This queue does not authorize cached
+acceptance verdicts, antivirus exclusions, a new equivalence source class, or deletion
+of useful research archives. Later items must not displace the focused-diff priority.
+
 ## Current bounded assignment: boot decompression trial
 
 Joe's September 23 instruction temporarily selects the boot decompression family
