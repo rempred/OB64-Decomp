@@ -1,7 +1,4 @@
-typedef unsigned char u8;
-typedef unsigned short u16;
-typedef unsigned int u32;
-typedef signed int s32;
+#include "game/shop_price_interface.h"
 
 extern u32 D_80196A6C;
 /* Price halfwords in the two tables have 12-byte and 32-byte row strides. */
@@ -11,7 +8,6 @@ extern u8 D_80193AC3[];
 extern u8 D_80196B03[];
 extern u16 func_8016B738(u16 item_id);
 extern u16 func_0016B6FC(u16 item_id);
-extern u32 func_0019BD14(void);
 
 u8 func_0019B26C(u16 item_id, u8 kind)
 {

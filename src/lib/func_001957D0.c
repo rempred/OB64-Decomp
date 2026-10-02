@@ -1,7 +1,5 @@
-typedef signed char s8;
-typedef unsigned char u8;
-typedef unsigned short u16;
-typedef unsigned int u32;
+#include "game/scenario_source_record.h"
+
 typedef struct Func001957D0Template {
     u8 field_00;
     u8 field_01;
@@ -19,16 +17,6 @@ typedef struct Func001957D0Template {
     s8 field_14[2];
     u8 field_16[13];
 } __attribute__((packed)) Func001957D0Template;
-typedef struct Func001957D0SourceRecord {
-    u8 field_00;
-    u8 field_01;
-    u8 field_02[5];
-    u8 field_07[5];
-    u8 field_0C;
-    u8 field_0D[10];
-    u8 field_17;
-    u8 field_18;
-} Func001957D0SourceRecord;
 typedef struct Func001957D0Record52 {
     u8 field_00[0x12];
     u8 field_12;
@@ -40,7 +28,6 @@ typedef struct Func001957D0Record56 {
     u8 field_13[0x25];
 } Func001957D0Record56;
 extern u8 g_func_001957D0_active_source_ids[];
-extern Func001957D0SourceRecord g_func_001957D0_source_records[];
 extern Func001957D0Record52 g_func_0019554C_records_52[];
 extern Func001957D0Record56 g_func_0019554C_records_56[];
 extern u16 g_func_001957D0_special_slots[];

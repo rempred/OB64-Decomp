@@ -1,7 +1,4 @@
-typedef unsigned char u8;
-typedef unsigned short u16;
-typedef unsigned int u32;
-typedef signed int s32;
+#include "game/shop_price_interface.h"
 
 typedef struct ShopDate {
     u16 year;

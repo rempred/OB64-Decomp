@@ -1,0 +1,128 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "132B3A9AA74BCCB8E7CCCE3C7064BB789E23CA2943BE4FFCF513AE1266CBAED6",
+  "observationId": "D50F46661F7857A89FE0FE7D3333F09CCE2C1A7E20C93287695767DA9E4626D8",
+  "symbol": "func_000490ec",
+  "authored": {
+    "context": "Joe approved one complete four-target shared-header cleanup wave. Two consumers have the identical address-named25-byte Scenario record/global declaration; Shop definition and caller agree on u32 func_0019BD14(void). Older source identities and linked exactness are reused as baseline evidence, without repeating unchanged final verification.",
+    "effects": [
+      "compiler-compatibility",
+      "header-layout",
+      "source-policy",
+      "exact-linked-bytes"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 219,
+          "path": "include/common/types.h",
+          "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+        },
+        {
+          "bytes": 405,
+          "path": "include/game/scenario_source_record.h",
+          "sha256": "32C1B9F2C5C013955490F7E2C7A11EA914158D21927BCB6F20877927E0E1FD51"
+        }
+      ],
+      "expandedSha256": "CAF3316029FECAF2FC4B01966377D222BB8C44251126BDF3DABCA48E0F15A8EB",
+      "sourceSha256": "4DDB2A98938AB45786EDD744864FBF905306B30C10B8E3E9F7ADA5D98708F3DC"
+    },
+    "label": "guarded-shared-record-and-pinned-typedef-compatibility",
+    "observedEffect": "Under authenticated external preprocessing and the pinned KMC compiler with unchanged target flags, all four include-order/self-containment/repeated-guard fixtures pass. Assertions establish8/16/32-bit alias sizes and signedness,32-bit target pointers, all eight Scenario offsets,25-byte size and50-byte two-record stride, and Shop prototype/definition agreement. Wrong width,signedness,padding,conflicting prototype,opaque sizeof and real authenticated header shadow reject with compiler exit33. The repeated identical local u8 typedef also rejects with redefinition, so modern-C assumptions about duplicate typedefs are inapplicable. All four focused links remain PURE_C/exact with original ownership,placement and71/7/7/22 relocation contracts. The ONE normal combined final verifier at2026-10-02T23:01:14.579Z freshly reproduces every active source, authenticates common header closure to exactly the four consumers and each game header to its exact pair, and proves full-ROM equality. CURRENTB93EA505296623EE1F17387DDB047D5715338A03855F8450B3DB15BE6C76E791; ROM41943040/SHA571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A. The advisory declaration checks remain compilerChecked:false: common/Shop supported subsets are clean; Scenario has zero conflicts and nine outside partial/raw global views flagged incomplete. Those remain local. Actual00023780 size declarations differ in int versus unsigned int; equal RAM80093380 does not establish formal signedness. F34 evidence likewise separates consumed a0 from supplied/residual outgoing registers. The refusal is retained, not normalized. Ignored header-pilot-final-evidence.json binds the actual probe outcomes, declaration reports,ten unchanged scoped inputs and final canonical reports.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "include/common/types.h",
+        "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+      },
+      {
+        "path": "include/game/scenario_source_record.h",
+        "sha256": "32C1B9F2C5C013955490F7E2C7A11EA914158D21927BCB6F20877927E0E1FD51"
+      },
+      {
+        "path": "include/game/shop_price_interface.h",
+        "sha256": "CDBB85D59650BF5EA20DCA338669762385903C5A83DA2A0B1D268DB251C11AAD"
+      },
+      {
+        "path": "src/lib/func_000490ec.c",
+        "sha256": "4DDB2A98938AB45786EDD744864FBF905306B30C10B8E3E9F7ADA5D98708F3DC"
+      },
+      {
+        "path": "src/lib/func_001957D0.c",
+        "sha256": "9F86647D56594FFCCF8929AE7B3E9E63D34A1CA6743A1C39B783EBED354BE9CC"
+      },
+      {
+        "path": "docs/Plans/task-logs/astra-f34-caller-interface-review-20261001.md",
+        "sha256": "28F3C87B1496050990BA37195B07E84AA530E907E05E1006059EC706B1B8F86F"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "The complete four-target ordinary header wave is accepted; this does not unify every source-record view or freeze broader loader/DMA/Shop interfaces. No new field meanings, capacities, structural ownership, compiler/source-policy exceptions, shared-tool edits or push. The original five-family program resumes41c20 with its entire six-member construction wave and all other protected/deferred gates unchanged.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Move the exact existing six signed/unsigned integer aliases to guarded self-contained common/types.h. Share only the unchanged Func001957D0SourceRecord/global between1957D0/0490ec and the existing BD14 declaration between its definition/B26C. Remove superseded local aliases in the same edit. Preserve every function body, field name, local packed template,52/56-byte view, date helper alias and uncertain interface."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 219,
+        "path": "include/common/types.h",
+        "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+      },
+      {
+        "bytes": 405,
+        "path": "include/game/scenario_source_record.h",
+        "sha256": "32C1B9F2C5C013955490F7E2C7A11EA914158D21927BCB6F20877927E0E1FD51"
+      }
+    ],
+    "expanded": {
+      "bytes": 1460,
+      "sha256": "CAF3316029FECAF2FC4B01966377D222BB8C44251126BDF3DABCA48E0F15A8EB"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "4DDB2A98938AB45786EDD744864FBF905306B30C10B8E3E9F7ADA5D98708F3DC"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-02-func_000490ec-132b3a9aa7.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
