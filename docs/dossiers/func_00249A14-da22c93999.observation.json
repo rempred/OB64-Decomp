@@ -1,0 +1,108 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "DA22C939995202C579DF7317FC9DFE0745C51A150E70D885206BDD9249A20255",
+  "observationId": "9416962A5C79E59BB2F92258E72A4ACB789BBAA5C7BF568BAB73D8DC3E74BDEE",
+  "symbol": "func_00249A14",
+  "authored": {
+    "context": "The mutable-pointer control restores retail first-stage loads/stores at904 bytes. Retail initializes the first outer counter before freeing the first archive and the slot count before freeing the second; it calculates the second-stage slot after clearing the selected buffer.",
+    "effects": [
+      "live-range",
+      "frame-allocation",
+      "load-order",
+      "store-order",
+      "memory-aliasing",
+      "argument-setup"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "17FD0A16895A61D7280BD0056ABDF30FCFD288CD9A597C9A56C4E9B0A690CA1F",
+      "sourceSha256": "296E9582553E4BA062AC68C9BBAEB8ED8A36E271763B02492AD30592B03A9E8F"
+    },
+    "label": "scenario-earlier-counters-post-clear-pointer-and-complete-object-views",
+    "observedEffect": "Source296E9582 is PURE_C,900 bytes/frame184, with27 candidate relocations and all17 retail-ordered native calls. Authenticated probe79D2F97714C5016136A6D1E37CBC94D7725FB92CB549305558925CDF033BA90B records all13 passes. Its native text and normalized relocations are identical to the preceding post-clear4C306851 control. A normal current focused link of296E9582 proves a sole900-byte C owner at.ob64.r4390, but still differs in95 words/221 bytes; linked SHA6F255888C6CA5E2B24D274BEB2FCB1EE18553399B3103543DCE0D2DD7E4FACC5 versus retail53B98AECA6C92115205FF4959FF737618399C6791E2BF437634BF0AE40DD0C3F. Relocation contract remains missing. The prior4C link took37.840s and this source40.986s, with727 sibling-object hits, one requested compilation,711 reused CPP inputs/17 fresh. Word counter cross-reuse produces900/frame192; byte-counter variants restore184 but alter code length/allocation. An actual fourth-class ternary is native-text/relocation identical in the tested frame-alias context. All temporary source/config/address activation was restored byte-for-byte.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "docs/archive/matching-c-candidates/2026-09-29-func_00249A14-a715baaf13.c",
+        "sha256": "1B8F7BF7099566E142499352ECD4FADD52E4C36BB094C6C50433A26249FC2B2C"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_00249A14.s",
+        "sha256": "64F2ACC3BFCF3C16477296FFBD96D64C29DA155A0287BCDFC6FD9C3B0CCEFB5D"
+      },
+      {
+        "path": "config/phase7/conventional-build.json",
+        "sha256": "B4CFB95C61E280EFADE330CA56FFAE1943A86AEF304177162B55271987F2A59E"
+      },
+      {
+        "path": "asm/original/rev0/lib/zero_fill_0024bbd4.s",
+        "sha256": "0EB7715F4889198A622938ADEAD5DACBBF73EC570B6999DC5557A1AFCE07A5D5"
+      },
+      {
+        "path": "src/lib/func_000454c8.c",
+        "sha256": "600D537351C0F5ED9F4CC3ECB8EF92C764E50984D0A6CC0B31D3A81D022994A4"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_00249290.s",
+        "sha256": "A8F62003C550B89C8580091C476F1AFA9E1AA8A12D36343811FDE368990E1930"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Saved-register/loop address allocation, first-loop delay scheduling and fourth-class merge remain nonexact. The exact extent/frame and call census do not establish original declarations or runtime provenance. No per-target relocation contract or completed-wave/full-ROM acceptance is claimed. Both249A14 and23A5EC remain ASM production; no new shared-tool change, structural owner or push.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Move those two existing scalar initializations to the observed earlier call boundaries and derive the second-stage slot after its clear. Preserve record overlap through the complete scratch-object byte view. Declare the four selected halfwords and locally observed helper widths, including the accepted word argument to000454c8; add no guard, memory operation, call, capacity or compiler escape."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 4644,
+      "sha256": "17FD0A16895A61D7280BD0056ABDF30FCFD288CD9A597C9A56C4E9B0A690CA1F"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "296E9582553E4BA062AC68C9BBAEB8ED8A36E271763B02492AD30592B03A9E8F"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-02-func_00249A14-da22c93999.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

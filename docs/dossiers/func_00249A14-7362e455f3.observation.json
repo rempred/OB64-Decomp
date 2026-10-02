@@ -1,0 +1,97 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "7362E455F340387129C1D0324FC152C75BA4651AE0992A0C3D564D49ABEFB53D",
+  "observationId": "29462BD2C52C4DF7B47DD430683EB5739B732DAFF94ADB37D0B97629D05B1C73",
+  "symbol": "func_00249A14",
+  "authored": {
+    "context": "The A715 source is a complete 900-byte/frame184 research translation. Current temporary normal activation with the evidence-backed descriptor alias reproduces 107 linked words/274 bytes different; it remains ASM production after exact restoration.",
+    "effects": [
+      "memory-aliasing",
+      "load-order",
+      "store-order"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "F59AB42D83CCB5B3D35BF3874CA932A18712D0BE155EB508EDA29DDE2D9ADB5F",
+      "sourceSha256": "9C560BB96334D0E0244BEB444D8D6AD13252791D91092CE6D267BF6E268AD754"
+    },
+    "label": "scenario-mutable-source-group-restores-late-selector-read",
+    "observedEffect": "Source9C560BB9 is mechanically PURE_C and emits904 bytes/frame184/27 text relocations. It restores the second selector load after the two halfword writes and before the slot-count increment/final byte store; all intervening field stores follow the retail order. Native masked differences are165, so it is not selected by score or extent. The descriptor address0x801D7C78 maps through the unchanged cold-boot-loader-002447a0 placement to ROM0x24BBD8: the sixteen copied bytes lie wholly inside the accepted24-byte zero_fill_0024bbd4 owner and equal ROM zeros. The ordinary alias closes the current unresolved-symbol link without a new data owner.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "docs/archive/matching-c-candidates/2026-09-29-func_00249A14-a715baaf13.c",
+        "sha256": "1B8F7BF7099566E142499352ECD4FADD52E4C36BB094C6C50433A26249FC2B2C"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_00249A14.s",
+        "sha256": "64F2ACC3BFCF3C16477296FFBD96D64C29DA155A0287BCDFC6FD9C3B0CCEFB5D"
+      },
+      {
+        "path": "config/phase7/conventional-build.json",
+        "sha256": "B4CFB95C61E280EFADE330CA56FFAE1943A86AEF304177162B55271987F2A59E"
+      },
+      {
+        "path": "asm/original/rev0/lib/zero_fill_0024bbd4.s",
+        "sha256": "0EB7715F4889198A622938ADEAD5DACBBF73EC570B6999DC5557A1AFCE07A5D5"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "The source is four bytes too long and has broad register/address/control differences. A recovered local load/store sequence is neither full owner equivalence nor a semantic alias/capacity proof. It was not activated for a linked result. Original ASM and both Scenario wave members remain open; no final verifier, structural change, tool defect or new push.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Remove only const from the first-stage source-group byte pointer. Preserve all loops, calls, fields, bounds and declarations."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 4617,
+      "sha256": "F59AB42D83CCB5B3D35BF3874CA932A18712D0BE155EB508EDA29DDE2D9ADB5F"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "9C560BB96334D0E0244BEB444D8D6AD13252791D91092CE6D267BF6E268AD754"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-02-func_00249A14-7362e455f3.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
