@@ -879,6 +879,7 @@
     { "symbol": "func_0012A958", "source": "src/lib/func_0012A958.c" },
     { "symbol": "func_0014F300", "source": "src/lib/func_0014F300.c" },
     { "symbol": "func_0012469C", "compilationGroup": "squad_supply_end" },
-    { "symbol": "func_00124B98", "compilationGroup": "squad_supply_end" }
+    { "symbol": "func_00124B98", "compilationGroup": "squad_supply_end" },
+    { "symbol": "func_00129268", "source": "src/lib/func_00129268.c" }
   ]
 }
