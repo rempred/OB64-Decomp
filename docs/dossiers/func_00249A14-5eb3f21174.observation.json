@@ -1,0 +1,108 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "5EB3F2117426BD1499733DFA555070C976DC8878BE751C8CFFB92BF3ECAB42C1",
+  "observationId": "171D01A668F845DB73262BE6905DF1171552637900CFF06B2112C48B5D4F76AB",
+  "symbol": "func_00249A14",
+  "authored": {
+    "context": "GoldOx701 proposed direct byte-record expressions with trailing while increments and crossed reuse of the two existing word counters. Sol independently reconstructed the complete loops using the scratch-object byte view for overlapping staged slots. The composed control emits900/frame184 and its normal temporary link differs33 words/86bytes, concentrated entirely in the entry and fourth-class flag.",
+    "effects": [
+      "live-range",
+      "loop-strength-reduction",
+      "register-allocation",
+      "load-order",
+      "delay-slot-order",
+      "argument-setup"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "6D54F3B1162B0D1447FD92EC3D2257E3F6E2A6627C8838B7AD78C3EEE797D3E1",
+      "sourceSha256": "1231F437CC57B6704841BB61AFBEDD89ADA7DB404900C53D35B84E74BC2F265C"
+    },
+    "label": "scenario-direct-record-crossed-loops-and-real-option-copy",
+    "observedEffect": "Source1231F437 is PURE_C,900 bytes/frame184/27text relocations. Compared with the composed900-byte source, the real option local changes29 native words and fixes the complete entry: the descriptor copies leave a1 live, use a3/t0, save s8 at+18 and transfer option at+7C. Only four native masked words remain, the final Boolean-to-four lowering and its redundant unsigned-byte extension. Every other word agrees under relocation masking. The real allocation/two-stage loop reconstruction retains all17 ordered calls, both stages and final apply path. Its source is an effect example; no separate linked acceptance is claimed.",
+    "parentCandidateId": "DA22C939995202C579DF7317FC9DFE0745C51A150E70D885206BDD9249A20255",
+    "references": [
+      {
+        "path": "docs/archive/matching-c-candidates/2026-10-02-func_00249A14-da22c93999.c",
+        "sha256": "296E9582553E4BA062AC68C9BBAEB8ED8A36E271763B02492AD30592B03A9E8F"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_00249A14.s",
+        "sha256": "64F2ACC3BFCF3C16477296FFBD96D64C29DA155A0287BCDFC6FD9C3B0CCEFB5D"
+      },
+      {
+        "path": "src/lib/func_000454c8.c",
+        "sha256": "600D537351C0F5ED9F4CC3ECB8EF92C764E50984D0A6CC0B31D3A81D022994A4"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_00249290.s",
+        "sha256": "A8F62003C550B89C8580091C476F1AFA9E1AA8A12D36343811FDE368990E1930"
+      },
+      {
+        "path": "config/phase7/conventional-build.json",
+        "sha256": "B4CFB95C61E280EFADE330CA56FFAE1943A86AEF304177162B55271987F2A59E"
+      },
+      {
+        "path": "asm/original/rev0/lib/zero_fill_0024bbd4.s",
+        "sha256": "0EB7715F4889198A622938ADEAD5DACBBF73EC570B6999DC5557A1AFCE07A5D5"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "The final fourth-class conditional is still xor/sltiu/sll plus andi rather than retail bne/move-zero/addiu-four/move. The selected signed-byte successor improves this. Both Scenario targets retain ASM production; no final verifier or new push.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Index the source record directly; use the real member/group counters in crossed second-stage roles and trailing while increments; address the four selected halfwords directly. Retain the actual option argument in one separate word local after the descriptor/flag assignments and use that local at the existing249290 call. No new memory access, guard, call, capacity, data owner or compiler escape."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 5025,
+      "sha256": "6D54F3B1162B0D1447FD92EC3D2257E3F6E2A6627C8838B7AD78C3EEE797D3E1"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "1231F437CC57B6704841BB61AFBEDD89ADA7DB404900C53D35B84E74BC2F265C"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-02-func_00249A14-5eb3f21174.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

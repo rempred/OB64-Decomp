@@ -1,0 +1,105 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "87228F78D1DBC35E4C269377C0E8DDC072DEDF5FEF7CCC27E768A9CBFFD573BB",
+  "observationId": "FE147F39FC464080476190D10F0D183D5CC8D7582533B122D93C77B2F23E2C0A",
+  "symbol": "func_00249A14",
+  "authored": {
+    "context": "The preceding real-option-copy source retains the complete900-byte/frame184 body and fixes all entry differences. Every match arm assigns only0,1,2,3,4, so signed-byte storage preserves the observed selected-class values.",
+    "effects": [
+      "integer-mode",
+      "register-allocation",
+      "conditional-lowering"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "2419F8C071F458A31C30C6248E12DC107B4EF9CC31E3D888C512AAA954F97B92",
+      "sourceSha256": "325949E6FD1C6DA96EC66CC316D4956E801E46C579084E70AAA3BB91A7631E5E"
+    },
+    "label": "scenario-three-linked-word-best-with-bounded-signed-match",
+    "observedEffect": "Source325949E6 is mechanically PURE_C,900 bytes/frame184/27text relocations, all17 retail-ordered calls and equal call-region lengths. Authenticated normal probe303038EE8FCB9A16A6C36ADA02485176FA1DA5C6C66FDDCF6987DA669A59603A captures all13 passes. The signed-byte local removes the redundant unsigned extension at+2C8; its value range is0..4 without any original-declaration claim. NORMAL CURRENT LINK proves the sole900-byte.ob64.r4390 C contribution at accepted placement and exactly3 differing words/10bytes: +2BC,+2C0,+2C4. LinkedSHA5AA2F72E912973ED248517BC309C38C30F8846F1DE12C3764EFE0D0820C53C0E versus retail53B98AECA6C92115205FF4959FF737618399C6791E2BF437634BF0AE40DD0C3F. The probe shows original branch/set-zero/set-four RTL becoming the Boolean sequence in the first jump pass; this is a source/compiler-lowering residual, not a supported tooling defect. Final-value reuse with a u8 match emits the prior four-word result and does not block conversion. Normal link took42.601s with727 sibling-object hits,711 reused CPP inputs, one fresh requested producer and no cache errors. Both original configuration byte strings and ASM production were restored after the link.",
+    "parentCandidateId": "5EB3F2117426BD1499733DFA555070C976DC8878BE751C8CFFB92BF3ECAB42C1",
+    "references": [
+      {
+        "path": "docs/archive/matching-c-candidates/2026-10-02-func_00249A14-da22c93999.c",
+        "sha256": "296E9582553E4BA062AC68C9BBAEB8ED8A36E271763B02492AD30592B03A9E8F"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_00249A14.s",
+        "sha256": "64F2ACC3BFCF3C16477296FFBD96D64C29DA155A0287BCDFC6FD9C3B0CCEFB5D"
+      },
+      {
+        "path": "src/lib/func_000454c8.c",
+        "sha256": "600D537351C0F5ED9F4CC3ECB8EF92C764E50984D0A6CC0B31D3A81D022994A4"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_00249290.s",
+        "sha256": "A8F62003C550B89C8580091C476F1AFA9E1AA8A12D36343811FDE368990E1930"
+      },
+      {
+        "path": "config/phase7/conventional-build.json",
+        "sha256": "B4CFB95C61E280EFADE330CA56FFAE1943A86AEF304177162B55271987F2A59E"
+      },
+      {
+        "path": "asm/original/rev0/lib/zero_fill_0024bbd4.s",
+        "sha256": "0EB7715F4889198A622938ADEAD5DACBBF73EC570B6999DC5557A1AFCE07A5D5"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "At+2BC,+2C0,+2C4 the candidate emits xor/sltiu/sll while retail emits bne/move-zero/addiu-four. The per-target relocation contract is still absent and neither Scenario member has complete-wave acceptance. GoldOx received this specific three-word source blocker with the real option-copy effect; no compiler switch, source-policy exception, structural edit, full-ROM verifier or new push.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Change only the match-result local from u8 to s8; retain the complete readable two-stage reconstruction, crossed counter reuse, real saved option, four selected halfwords and overlap-preserving scratch-object view."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 5025,
+      "sha256": "2419F8C071F458A31C30C6248E12DC107B4EF9CC31E3D888C512AAA954F97B92"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "325949E6FD1C6DA96EC66CC316D4956E801E46C579084E70AAA3BB91A7631E5E"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-02-func_00249A14-87228f78d1.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
