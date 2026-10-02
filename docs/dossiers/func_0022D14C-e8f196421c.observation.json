@@ -1,0 +1,96 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "E8F196421C6DAE4B43E67930691CE3D777AF07E2BFF7C83F25A0D43D8ACA751F",
+  "observationId": "623BB7C0089A264033A2C0CC6CDD7EDC7F5057BC7AFF873E65120E5F9307624D",
+  "symbol": "func_0022D14C",
+  "authored": {
+    "context": "336DE6 has ten source-level publication computations that late cross-jumping reduces to three physical stores. GoldOx664 identifies their extra references as part of the incorrect publication-loop allocation.",
+    "effects": [
+      "control-flow",
+      "global-allocation",
+      "live-range",
+      "cross-jumping"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "A9CDFFA7B96542E3A9487725EA247A65D60028821F20975B3C4AA994B3455870",
+      "sourceSha256": "DF07B58DB1AD667FAE2665EC1398DC5652CC584D4170CDBC7486BF12B1D0EDF2"
+    },
+    "label": "d14c-three-publication-stores-restore-time-base-register",
+    "observedEffect": "SourceDF07B58D is PURE_C and emits6788 bytes/frame616/178 text relocations and64-byte/15-relocation table. Official authenticated probe6E67B720CC6B9D9574C3CB63AE009FCB8114EFE1335653A2A4C8D7F57B215AC2 confirms time-base140 falls from57refs/live740 to45/live720 and moves from s5 to the original s7. Metadata97 is45/live719 and takes s5; index179 stays34/live724 and spills. The three have identical hard-register conflicts, so this identifies a real reference-count effect rather than a new machine register constraint. GoldOx666 independently reproduces extent/frame,22 time computations and3 physical stores. Ordinary register storage hints are native-text/relocation/table identical for both this source and B1F4's composed source. The real u16-array view for the early halfword walk and unused void-return interface corrections are native-identical to336DE6. Indexed early compaction E56790BF emits6772/frame624 with131 retail-ordered call addresses and retains the wrong time/metadata/index disposition; its while variant has the same native census. Direct-metadata compositionC4D9A04E has the same extent/frame/relocations/table and five reordered native words, rather than identical text. Common-call branch-payload control927A75D6 and its shared-store composition4E035F65 both emit6588/frame616, preserving131 call addresses but restoring substantial setup-placement deficits.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "docs/archive/matching-c-candidates/2026-10-02-func_0022D14C-336de667ce.c",
+        "sha256": "7A6DDDB897C9FF14FC94D2417B77DEECB25D2833751443CEFFFA611BCE0A751D"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_0022D14C.s",
+        "sha256": "EF14D6581AE474F7ABA21C09568FDFA0C69AEBAC234C09A9EF90D573AE14A8D3"
+      },
+      {
+        "path": "docs/Plans/task-logs/combat-d14c-preserved-diagnostics-r1.md",
+        "sha256": "C67BA3B53F4CB12FFBC8F85CCFBA645A265BA45548F43E627D916A1EB7B87DCD"
+      }
+    ],
+    "relatedCandidateIds": [
+      "336DE667CE9DF1BE589C121F47ACE7CC3E0F9EC1B6F0766D2CBCA7D97F5A7290"
+    ],
+    "remainingFailure": "Complete source remains56 bytes short and nonexact. Metadata is still allocated in s5 instead of reloaded from the original frame home; the index remains spilled. The original first loop spills two pointer walks that the current candidates keep. No enclosing memory object for the metadata has been established. Gold's volatile metadata counterexample is rejected as an unsupported ordering device and is not repeated. Frame, local opcode order and call-address census are diagnostics only; original ASM/table owners, full17 W6 and the separate64-byte D14C structural activation gate remain open. No tool defect, new contract, verifier or production activation is claimed.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Retain the two field94 stores that precede later callbacks, and direct the remaining actual publication paths to one shared field94 store. Explicitly bypass that store for unmatched/no-publication modes. Preserve all calls, their arguments, record mutation order relative to callbacks and the word Boolean carriers."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 41082,
+      "sha256": "A9CDFFA7B96542E3A9487725EA247A65D60028821F20975B3C4AA994B3455870"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "DF07B58DB1AD667FAE2665EC1398DC5652CC584D4170CDBC7486BF12B1D0EDF2"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-02-func_0022D14C-e8f196421c.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

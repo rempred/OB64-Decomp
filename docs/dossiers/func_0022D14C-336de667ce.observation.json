@@ -1,0 +1,96 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "336DE667CE9DF1BE589C121F47ACE7CC3E0F9EC1B6F0766D2CBCA7D97F5A7290",
+  "observationId": "52AF5E69322FA18BC9A77D1FB829EFB1B8EA00EA0A486C5C0C0092C4BBA0BDC0",
+  "symbol": "func_0022D14C",
+  "authored": {
+    "context": "20E109 removes unwanted byte-result shifts through complete379AC return-path evidence. Its first3E publication still uses a byte temporary, causing a hoisted default load, mask and shortened setup compared with the original real constant/default arms.",
+    "effects": [
+      "control-flow",
+      "argument-setup",
+      "cross-jumping",
+      "global-allocation"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "6969FBC0EF9C15EB7A52087E2F784ADF95E1DFF5C2938B453833A19AAFB25C37",
+      "sourceSha256": "7A6DDDB897C9FF14FC94D2417B77DEECB25D2833751443CEFFFA611BCE0A751D"
+    },
+    "label": "d14c-word-booleans-and-genuine-first-publication-arms",
+    "observedEffect": "Source7A6DDDB8 is PURE_C and emits6776 bytes/frame616/178 text relocations and64-byte/15-relocation table. All131 native call addresses remain in retail order. The first3E setup has all20 original opcodes in original order, with scratch t3/t4 allocation differences. Official probe5BC3F88A3B74773081E6AFE31AECF2DC0E95E9752FC605B0529E3531D5099E7C authenticates all13 passes. RTL confirms main publication index is179, time base140, metadata97. Lreg statistics are respectively34refs/live744,57/live740,45/live739; time base goes to s5 and metadata to s7 while index spills. Original has index in s5, time base in s7 and metadata frame reloads. Eliminating the redundant metadata copy (BE0D251A) emits6772/frame616/131 ordered calls and retains the wrong hard-register roles. Replacing the three introductory shared2C0 paths with direct calls (017AFE23) emits6816/frame616 but adds a physical call (132 versus131); this control is rejected and no call-region pairing is asserted for it.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "docs/archive/matching-c-candidates/2026-10-02-func_0022D14C-20e10958d5.c",
+        "sha256": "26D1AA6BA2C0C36CDB8623F7693E1CF26F5BB38B5E9CA47F5F2EE1546B253003"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_0022D14C.s",
+        "sha256": "EF14D6581AE474F7ABA21C09568FDFA0C69AEBAC234C09A9EF90D573AE14A8D3"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_002379AC.s",
+        "sha256": "1293B5B5BCB94CED93A2E37BE5F1BEADA23C56E601C47832BD3EFC05E4F58A95"
+      }
+    ],
+    "relatedCandidateIds": [
+      "20E10958D54F7FB7D8F56CA8387E1144A598C3DD3724AB38B8AC2A14E05308C9"
+    ],
+    "remainingFailure": "Complete source remains68 bytes short and nonexact, with a concrete publication-index/time/metadata allocation discrepancy, spill-placement and other control-flow differences. Exact local opcode order, frame size and call-address order do not prove a whole-owner match or original declarations. GoldOx has the specific source blocker. E07 and prior intermediates remain recoverable; original ASM/table owners, full17 W6 and the separate64-byte D14C structural gate remain unchanged. No new verifier, production activation, tool defect or shared-tool change is claimed.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Replace the first3E temporary selection with a real call in each constant/default arm. Preserve all preceding field stores, all later paths, natural loops, word Boolean carriers and the distinct existing code6/coords fallback."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 41577,
+      "sha256": "6969FBC0EF9C15EB7A52087E2F784ADF95E1DFF5C2938B453833A19AAFB25C37"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "7A6DDDB897C9FF14FC94D2417B77DEECB25D2833751443CEFFFA611BCE0A751D"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-02-func_0022D14C-336de667ce.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
