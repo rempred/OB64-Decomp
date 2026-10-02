@@ -7,6 +7,9 @@ const path = require('path');
 
 const ROOT = path.resolve(__dirname, '..');
 const ROUTINE_TESTS = [
+  ['cursor-budget', 'tests/cursor_budget.js'],
+  ['declaration-inventory', 'tests/declaration_inventory.js'],
+  ['matching-knowledge', 'tests/matching_knowledge.js'],
   ['audit-squad-migration', 'tests/audit_squad_migration.js'],
   ['source-policy', 'tests/source_policy.js'],
   ['compilation-input-confinement', 'tests/compilation_input_confinement.js'],

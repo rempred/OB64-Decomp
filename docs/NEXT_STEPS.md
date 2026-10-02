@@ -2,9 +2,19 @@
 
 This file is the active queue only. Changing counts belong in `node tools/status.js`, not here.
 
-## Active tooling priority: focused diff throughput (Joe, 2026-10-02)
+## Active assignment: knowledge and shared declarations (Joe, 2026-10-02)
 
-First bring the normal warm focused linked diff toward **30 seconds**, working closely
+Joe explicitly authorized implementing the reviewed
+[knowledge-reuse plan](Plans/knowledge-reuse-workflow-20261002.md). Deliver compact
+intake/current notes, evidenced compiler lessons and sibling retrieval, a scoped
+declaration inventory, and the two bounded shared-header pilots. Sol handed source/build
+ownership to Astra after the accepted Scenario wave at `249454cb`; the
+[current cursor](Plans/cursors/sol.md) preserves his next assignment and all open gates.
+Resume Sol for the header pilots and ordinary matching after the tooling interval.
+
+## Remaining tooling priority: focused diff throughput
+
+After the explicitly selected implementation above, bring the normal warm focused linked diff toward **30 seconds**, working closely
 with Fable/Claude. The latest validated serial reduction is recorded in
 [the focused-diff report](audit/2026-10-02-focused-diff-throughput.md): 43.627 seconds
 for the accepted control and 41.507–46.497 seconds for real linked nonmatches.
@@ -31,12 +41,18 @@ After this priority is complete, continue the saved follow-up queue:
    dependencies and full-wave completion reporting; current wave rules still apply.
 6. Bounded permuter, duplicate-family and original-object-boundary experiments.
 
+The [knowledge-reuse implementation plan](Plans/knowledge-reuse-workflow-20261002.md)
+specifies compact intake/current notes, cross-function compiler lessons, and narrow shared
+type/interface pilots, including build gates and maintenance. The latest implementation
+authorization above changes the execution order; the throughput goals remain unfinished.
+
 **Deferred until Joe decides:** parallel decomp agents working on functions and a Linux
 toolchain host/CI. Joe clarified that bounded local compiler/preprocessor/tool-process concurrency
 is not part of the agent deferral; evaluate it under the usual tooling checks.
 This queue does not authorize cached
 acceptance verdicts, antivirus exclusions, a new equivalence source class, or deletion
-of useful research archives. Later items must not displace the focused-diff priority.
+of useful research archives. After the explicitly selected work, later queue items must not
+displace the focused-diff priority without a new direction.
 
 ## Current bounded assignment: boot decompression trial
 

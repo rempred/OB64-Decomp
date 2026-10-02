@@ -167,7 +167,7 @@ function prepare(options) {
   const keyInputs = { schema: SCHEMA, metadata: input.metadata, assemblySha256: sha(Buffer.from(input.assembly)), tools, implementation: implementationIdentity(), environmentSha256: jsonHash(Object.entries(process.env).sort()), options: { kunaOption: options.kunaOption || null, reason: options.reason || null, timeoutMs, rawM2c: true } };
   const key = jsonHash(keyInputs), dir = path.join(output, options.symbol + '-' + key + (options.fresh ? '-' + crypto.randomUUID() : ''));
   fs.mkdirSync(output, { recursive: true });
-  if (fs.existsSync(dir)) { const packet = verifyCache(dir, key); return { directory: dir, cache: 'hit', status: packet.status, preparationSeconds: (Date.now() - start) / 1000, researchIntake: require('../lib/matching/intake').presentation(options.symbol) }; }
+  if (fs.existsSync(dir)) { const packet = verifyCache(dir, key); return { directory: dir, cache: 'hit', status: packet.status, preparationSeconds: (Date.now() - start) / 1000, researchIntake: require('../lib/matching/intake').presentation(options.symbol, options.intakeOptions || {}) }; }
   fs.mkdirSync(dir); // Exclusive creation prevents concurrent writers sharing a packet.
   fs.mkdirSync(path.join(dir, 'temp'));
   writeJson(path.join(dir, 'identity.json'), keyInputs); writeJson(path.join(dir, 'input.json'), { ...input.metadata, omittedAdapterGuards: input.omittedGuards });
@@ -220,6 +220,6 @@ function prepare(options) {
   const artifacts = tree(dir).files.filter(x => !x.path.startsWith('temp/'));
   writeJson(path.join(dir, 'manifest.json'), { schema: SCHEMA, key, files: artifacts });
   verifyCache(dir, key);
-  return { directory: dir, cache: 'miss', status: packet.status, preparationSeconds: packet.preparationSeconds, researchIntake: require('../lib/matching/intake').presentation(options.symbol) };
+  return { directory: dir, cache: 'miss', status: packet.status, preparationSeconds: packet.preparationSeconds, researchIntake: require('../lib/matching/intake').presentation(options.symbol, options.intakeOptions || {}) };
 }
 module.exports = { configure, prepare, selectInput, verifyCache, authenticateTools, confinedBuild, tree, fileHash, sha, jsonHash, SCHEMA };

@@ -38,12 +38,13 @@ const { buildContextIndex, storeTargetContext } = require('./lib/matching/contex
 const { rankTargets } = require('./lib/matching/rank');
 const { compareProbes, runProbe } = require('./lib/matching/probe');
 const { importResearch, observations: researchObservations, preserveResearch, captureIdentities } = require('./lib/matching/research');
-const { presentation: researchPresentation, loadIntakeModel } = require('./lib/matching/intake');
+const { presentation: researchPresentation, loadIntakeModel, formatHuman } = require('./lib/matching/intake');
+const { validateOptions: validateKnowledgeOptions } = require('./lib/matching/knowledge');
 
 const VALUE_OPTIONS = new Set([
   'limit', 'source', 'candidate', 'variant', 'm2c-root', 'set', 'max-size',
   'lane', 'note', 'research-compiler', 'passes', 'jobs', 'case-map', 'source-origin',
-  'actual-dispatch', 'actual-body', 'output', 'actual-tail', 'observation', 'effect',
+  'actual-dispatch', 'actual-body', 'output', 'actual-tail', 'observation', 'effect', 'cross-limit', 'symptom',
 ]);
 const REPEAT_OPTIONS = new Set(['variant', 'actual-tail']);
 let comparisonQueryProvenanceCache = null;
@@ -75,7 +76,7 @@ Core:
            --actual-tail <name=offset>... [--output <report.json>]
   import <symbol> --source <candidate.c> --observation <curated.json> [--capture-identities]
   observations <symbol> [--effect <tag>] [--limit N]
-  intake <symbol> [--limit N]
+  intake <symbol> [--limit N] [--cross-limit 0..3] [--symptom LABEL] [--include-details]
   preserve <candidate-id> --note <reason> [--observation <observation-id>]
 
 Generation:
@@ -98,6 +99,8 @@ Routine generated outputs stay under build/matching; preserve is the explicit
 tracked candidate/dossier export. Add --json for structured output.
 Use explicit --include-details, --include-members, --include-context, or
 --include-targets when the bounded default is not enough.
+For intake/prepare/watch, --include-details renders full JSON; --json always
+retains the full research object under the explicit --limit/truncation rules.
 
 prepare and sweep use the complete configured ruleset ensemble when --variant is
 omitted; repeat --variant to select a subset. Bare sweep selects every currently
@@ -169,6 +172,13 @@ function print(value, options = {}) {
   if (options.json) {
     console.log(JSON.stringify(value, null, 2));
     return;
+  }
+  if (!options['include-details'] && value?.researchIntake) {
+    const {researchIntake,...rest}=value;
+    console.log(JSON.stringify(rest,null,2)+'\n'+formatHuman(researchIntake));return;
+  }
+  if (!options['include-details'] && value?.observations && value?.boundary) {
+    console.log(formatHuman(value));return;
   }
   if (typeof value === 'string') console.log(value);
   else console.log(JSON.stringify(value, null, 2));
@@ -559,10 +569,12 @@ async function main(argv = process.argv.slice(2)) {
   const command = argv[0];
   const parsed = parseArgs(argv.slice(1));
   const { positional, options } = parsed;
+  const researchOptions=validateKnowledgeOptions({crossLimit:options['cross-limit']===undefined?0:nonnegativeInteger(options['cross-limit'],'--cross-limit'),
+    ...(options.symptom===undefined?{}:{symptom:options.symptom})});
   if(command==='intake'){
     if(positional.length!==1)throw new Error('intake requires one symbol');
     const model=loadIntakeModel(),target=resolveTarget(model,positional[0]);
-    print(researchPresentation(target.symbol,{workbench:model,limit:numeric(options.limit,'--limit',20)}),options);return;
+    print(researchPresentation(target.symbol,{workbench:model,limit:numeric(options.limit,'--limit',20),...researchOptions}),options);return;
   }
   const workbench = loadWorkbenchModel();
   if (['prepare', 'watch', 'probe', 'import'].includes(command) && positional[0]
@@ -651,7 +663,7 @@ async function main(argv = process.argv.slice(2)) {
       metadata: { sourcePath: portableSourcePath(sourceFile) },
       syncTargets: false,
     });
-    print({...comparisonSummary(result),researchIntake:researchPresentation(target.symbol,{workbench})}, options);
+    print({...comparisonSummary(result),researchIntake:researchPresentation(target.symbol,{workbench,...researchOptions})}, options);
     if (result.compile.status !== 'compiled') process.exitCode = 2;
     return;
   }
@@ -797,7 +809,7 @@ async function main(argv = process.argv.slice(2)) {
     print({
       symbol: target.symbol,
       assemblyFile: path.relative(ROOT, result.assemblyFile).replace(/\\/g, '/'),
-      researchIntake:researchPresentation(target.symbol,{workbench}),
+      researchIntake:researchPresentation(target.symbol,{workbench,...researchOptions}),
       contextFile: result.contextFile ? path.relative(ROOT, result.contextFile).replace(/\\/g, '/') : null,
       generation: result.results.map((item) => ({
         variant: item.variant,

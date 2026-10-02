@@ -5,10 +5,13 @@ Sol production ownership; it supersedes the pause and older queue below. The
 [complete eight-member completion/controller W5 and shared-table closure](task-logs/sol-combat-table-closure-20261002.md)
 passed one changed-input audit and independent final structural review. The
 table-specific hold on twelve W6 donors is released for current ordinary matching.
-The full seventeen-member W6 remains open: historical donor proof is not current
-acceptance, B1F4/D14C remain nonexact, and F2BC retains its missing symbol contract.
-Use the [current resumption note](task-logs/sol-five-family-resumption-20260929.md)
-for the active cursor; no new push is authorized.
+The full seventeen-member W6 remains open; its source and structural blockers remain
+in the [current Sol cursor](cursors/sol.md). The complete two-target Scenario wave
+passed its normal final verifier at `249454cb`. Joe has now authorized implementing
+the [knowledge and shared-declaration plan](knowledge-reuse-workflow-20261002.md).
+Astra owns the tooling interval; Sol resumes the bounded header pilots and ordinary
+decomp after resource release. The [long resumption note](task-logs/sol-five-family-resumption-20260929.md)
+is retained historical evidence. Use the short cursor for current work; no new push is authorized.
 
 ## Historical recovery snapshot, 2026-09-09 (superseded)
 

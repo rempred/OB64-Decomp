@@ -246,6 +246,13 @@ Independently derive canonical source from the ROM and project evidence.
 - Historical evidence may remain in Git/history/archive, but it is not required reading for normal
   work.
 - Do not update five documents merely because one more C function matched.
+- Each active worker has one live cursor under `docs/Plans/cursors/`, limited to 500 words.
+  It identifies the active/parked work, recoverable best source, next experiment, applicable
+  proof and blockers, with links to complete membership and evidence. Do not truncate an
+  assignment to meet the limit or keep updating a superseded historical note.
+- Workers preserve useful observations through the existing research commands. The Director
+  maintains the shared compiler-lesson index from those observations; index maintenance
+  does not add a review gate to ordinary matching.
 
 ## Fail-Closed Rules
 

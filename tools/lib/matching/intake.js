@@ -3,10 +3,11 @@
 const fs=require('fs'),path=require('path');
 const {ROOT,sha256File}=require('../phase7_conventional');
 const {candidateRecord}=require('./compiler');
-const {digest,loadWorkbenchModel,resolveTarget,scratchCapability,historicalSymbols}=require('./target_model');
+const {digest,loadWorkbenchModel,resolveTarget,scratchCapability,historicalSymbols,publicTarget}=require('./target_model');
 const {DATABASE,requestStore}=require('./store');
 const {validateObservation,authenticateEvidence,regular,canonicalPath}=require('./research');
 const policy=require('../source_policy');
+const {selectKnowledge}=require('./knowledge');
 const hash=x=>typeof x==='string'&&/^[A-F0-9]{64}$/.test(x);
 const relative=file=>path.relative(ROOT,file).replace(/\\/g,'/');
 function assess(target,record){
@@ -79,14 +80,68 @@ function intake(workbench,target,options={}){
  if(currentSource.path)try{currentSource.sha256=sha256File(regular(path.join(ROOT,currentSource.path)));currentSource.status='available';}catch(error){currentSource.status='unavailable';currentSource.reason=error.message;}
  for(const row of observations)row.matchesCurrentSource=currentSource.sha256&&row.sourceSha256?row.sourceSha256===currentSource.sha256:null;
  const issues=discovery.length||store.status==='error';
- return {schemaVersion:1,symbol:target.symbol,targetId:target.expectedBytesSha256?target.targetId:null,targetBinding:target.expectedBytesSha256?'exact':'unavailable',status:observations.length?(issues?'partial':'found'):issues?'unavailable':'none',
+ const report={schemaVersion:1,symbol:target.symbol,targetId:target.expectedBytesSha256?target.targetId:null,targetBinding:target.expectedBytesSha256?'exact':'unavailable',status:observations.length?(issues?'partial':'found'):issues?'unavailable':'none',
   currentSource,currentProducer:target.activeMatchingProducer||null,historyApplicability:capability.supported?'Research history only; validate applicability to current source context.':capability.code==='complete-group-candidate-required'?'Current target is grouped; prior standalone history is reference only and does not enable single-member compilation/import/preservation.':capability.reason,
   boundary:'Authored research claims, not recommendations or matching acceptance. Archive observation IDs are opaque provenance. Per-record validity and targetBinding report whether candidate identity and current source/header/preprocessor/reference closure could be checked; relations have separate verification status.',
   store,discovery,counts,total:observations.length,truncated:observations.length>limit,observations:observations.slice(0,limit)};
+ report.target=publicTarget(target);
+ // Assess every same-target row and relation before choosing human display rows.
+ report.presentation=compactSummary(report,observations);
+ try{report.knowledge=selectKnowledge(workbench,target,options,assess);}
+ catch(error){report.knowledge={schemaVersion:1,status:'unavailable',reason:error.message,siblings:[],lessons:[]};}
+ return report;
+}
+const short=(value,words=28)=>{const parts=String(value??'').trim().split(/\s+/);return parts.length>words?parts.slice(0,words).join(' ')+' … [full record]':String(value??'');};
+function compactSummary(report,all=report.observations||[]){
+ const ordered=[...all].sort((a,b)=>Number(b.matchesCurrentSource===true)-Number(a.matchesCurrentSource===true)
+   ||Number(b.selectedBest===true)-Number(a.selectedBest===true));
+ const selected=[];
+ function add(row){if(row&&!selected.includes(row)&&selected.length<5)selected.push(row);}
+ for(const row of ordered){add(row);for(const id of [row.parentCandidateId,...(row.relatedCandidateIds||[])])add(all.find(r=>r.candidateId===id));if(selected.length===5)break;}
+ return {schemaVersion:1,displayed:selected.length,omitted:Math.max(0,(report.total??all.length)-selected.length),
+   observations:selected.map(row=>({source:row.source||row.metadata,label:row.label,validity:row.validity,sourceClass:row.sourceClass,
+    metadata:row.metadata,dossier:row.dossier,currentSource:row.matchesCurrentSource===true,
+    selectedBest:row.selectedBest?'historical annotation; not an active-best claim':null,
+    context:short(row.context),sourceChange:short(row.sourceChange),observedEffect:short(row.observedEffect),remainingFailure:short(row.remainingFailure),
+    reason:short(row.reason),relations:row.relations?.status})),
+   detailCommand:`node tools/match.js intake ${report.symbol} --include-details --limit 200 --json`};
+}
+function formatHuman(report,{includeDetails=false}={}){
+ if(includeDetails)return JSON.stringify(report,null,2);
+ const s=report.presentation||compactSummary(report),t=report.target||{},lines=[`Research intake ${report.symbol||''}: ${report.status}`];
+ if(report.reason)lines.push(short(report.reason));
+ lines.push(`Target binding: ${report.targetBinding||'unavailable'}; owner: ${t.primaryId||t.sectionName||'unavailable'}; selection: ${t.selectionKind||'physical-owner'}.`);
+ if(t.logicalFunctions)lines.push(`Required bodies: ${t.logicalFunctions.map(x=>x.symbol||x.name||`${x.romStart}:${x.bytes}`).join(', ')}; coverage complete: ${t.logicalCoverageComplete}.`);
+ if(t.originalAssemblyParts)lines.push(`Physical owner references: ${t.originalAssemblyParts.map(x=>typeof x==='string'?x:JSON.stringify(x)).join(', ')}`);
+ lines.push(`Current source: ${report.currentSource?.path||'none'} (${report.currentSource?.status||'unavailable'}${report.currentSource?.sha256?'; '+report.currentSource.sha256.slice(0,12):''}).`);
+ if(report.currentSource?.reason)lines.push(`Current-source issue: ${short(report.currentSource.reason)}`);
+ if(report.currentProducer)lines.push(`Producer: ${report.currentProducer.kind}; ${report.currentProducer.source||''}${report.currentProducer.members?'; all members: '+report.currentProducer.members.map(x=>x.symbol||x).join(', '):''}.`);
+ if(report.historyApplicability)lines.push(report.historyApplicability);
+ lines.push(`Own history: ${report.total??0}; ${Object.entries(report.counts||{}).map(([k,v])=>`${k}=${v}`).join(', ')||'no assessed records'}. Store: ${report.store?.status||'unavailable'}${report.store?.truncated?' (query truncated)':''}.`);
+ if(report.store?.reason)lines.push(`Store issue: ${short(report.store.reason)}`);
+ for(const d of (report.discovery||[]).slice(0,3))lines.push(`Discovery ${d.validity}: ${d.path}; ${short(d.reason)}`);
+ if((report.discovery||[]).length>3)lines.push(`${report.discovery.length-3} further discovery issues in full detail.`);
+ for(const row of s.observations){
+  lines.push(`- ${row.label||'unlabeled'}: ${row.validity}${row.sourceClass?' / '+row.sourceClass:''}${row.currentSource?' / current source':''}${row.selectedBest?' / historical selected-best':''}; relations: ${row.relations||'none'}.`,
+   `  Source: ${row.source||'unavailable'}${row.dossier?'; dossier: '+row.dossier:''}`);
+  for(const [label,key] of [['Context','context'],['Change','sourceChange'],['Effect (authored)','observedEffect'],['Remaining / next question','remainingFailure'],['Issue','reason']])if(row[key])lines.push(`  ${label}: ${row[key]}`);
+ }
+ lines.push(`${s.omitted} own records omitted from compact display; JSON census limit truncated: ${Boolean(report.truncated)}.`);
+ const k=report.knowledge;
+ if(k){lines.push(`Cross-target discovery: ${k.status}${k.reason?'; '+short(k.reason):''}.`);
+  for(const row of k.siblings||[]){const o=row.observation;lines.push(`- Sibling ${row.symbol} (${row.tier}): ${row.validity}${row.sourceClass?' / '+row.sourceClass:''}; ${row.source||o?.source||o?.metadata||'unavailable'}.`,
+    `  ${row.normalizationLimit} ${row.applicability.reason}`);if(o)lines.push(`  Change: ${short(o.sourceChange)} Effect (authored): ${short(o.observedEffect)} Remaining: ${short(o.remainingFailure)}${o.reason?' Issue: '+short(o.reason):''}`);}
+  for(const row of k.lessons||[]){lines.push(`- Lesson ${row.id}: ${row.note}`,`  ${short(row.applicability,45)}`);for(const ref of row.references||[])lines.push(`  Reference (not authenticated observation): ${ref}`);for(const o of row.observations)lines.push(`  ${o.validity}: ${o.metadata}; ${short(o.reason||o.remainingFailure,20)}`);}
+  for(const d of (k.diagnostics||[]).slice(0,3))lines.push(`Cross discovery ${d.validity}: ${d.path||''}; ${short(d.reason)}`);
+  if((k.diagnostics||[]).length>3)lines.push(`${k.diagnostics.length-3} further cross discovery issues in full detail.`);
+  if(k.siblingsOmitted||k.lessonsOmitted)lines.push(`Further results: siblings=${k.siblingsOmitted}, lessons=${k.lessonsOmitted}.`);
+ }
+ lines.push('Research and source examples do not establish matching acceptance. Historical selected-best annotations do not identify the active best.',`Full detail: ${s.detailCommand}`);
+ return lines.join('\n');
 }
 function presentation(symbol,options={}){
  try{const workbench=options.workbench||loadIntakeModel();return intake(workbench,resolveTarget(workbench,symbol),options);}
  catch(error){return {symbol,status:'unavailable',reason:error.message,observations:[],boundary:'Optional research discovery failed; decompiler and matching status are unchanged.'};}
 }
 function loadIntakeModel(){return loadWorkbenchModel({requireBaserom:fs.existsSync(path.join(ROOT,'build/baserom.us_rev0.z64'))});}
-module.exports={intake,presentation,assess,loadIntakeModel};
+module.exports={intake,presentation,assess,loadIntakeModel,compactSummary,formatHuman};

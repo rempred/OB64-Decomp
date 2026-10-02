@@ -172,6 +172,28 @@ Missing history is a normal result. Reference-only, stale, malformed or unavaila
 must retain that status; it does not establish a current observation or silently mean there
 was no prior work. Check parent/comparison relation status separately from source validity.
 
+The human view is compact; use `--include-details` to expand it or `--json` for the full
+structured result within its explicit result limit. Do not read full histories by default.
+For a relevant source analogue or compiler symptom, request bounded additional evidence:
+
+```powershell
+node tools/match.js intake <symbol> --cross-limit 3
+node tools/match.js intake <symbol> --symptom register-allocation
+```
+
+These opt-in suggestions are research leads. A sibling's valid source does not prove transfer,
+and a recorded lesson does not prove its explanation applies to this target. Open the cited
+source pair before using it. Use an explicit symptom when no fresh candidate-bound diagnostic
+is available; never infer it from a stale diff report. This lookup is not part of every edit/diff.
+Family tiers remain distinct: exact bytes, relocation-normalized, register-normalized and
+structural. Donors are assessed under their own targets; grouped history remains reference-only
+for standalone reuse and HYBRID_C remains hybrid. Active source alone is not acceptance.
+The [lesson index](matching-c/compiler-lessons.json) links supported symptoms to existing notes
+and observations; unknown symptoms reject. It stores no copied measurements or acceptance
+verdicts. Full JSON retains same-target assessment, failures, relations and explicit census
+limits. The compact view shows at most five own-target rows; optional discovery adds at most
+three siblings and three lessons. No compiler corpus or persistent discovery service is run.
+
 Matching preparation/watch results and standalone analysis-packet results also present fresh
 research intake. If that current presentation has already been read, do not repeat the lookup.
 The lookup uses tracked records on a fresh checkout and can supplement them from an existing
@@ -333,6 +355,42 @@ reading a member's history does not authorize single-member import or compilatio
 At handback, link those records and state the next unresolved source question. An observation,
 preservation action or `selectedBest` label does not establish matching acceptance. Continue
 the same linked-diff loop and complete-wave verifier; ordinary source work gains no review gate.
+
+When a result would help another function, propose its lesson and evidence link in the ordinary
+handback. The Director owns `docs/matching-c/compiler-lessons.json`; the index points to existing
+measurements and interpretations rather than copying them into a second record. Supersede a
+wrong lesson with the correction while retaining the useful failed experiment. Name a suggestion
+actually opened and how it changed the experiment; merely displaying one is not recorded use.
+
+#### Keep the current cursor useful
+
+Use the worker's one live note under `docs/Plans/cursors/`, within the agent guide's budget.
+At a meaningful best-source change, blocker, wave completion or handoff, replace its current
+state: active and parked targets, best source, next discriminating experiment, applicable proof
+or provisional status, and unresolved gates. Link the full roster, source observations and wave
+plan. Generated status owns counts. A historical note referenced by hash remains byte-for-byte
+unchanged; designate the new cursor from the active plan instead of adding a freeze header.
+`node tests/cursor_budget.js` checks the live notes without truncating them or modifying history.
+
+#### Reuse shared declarations
+
+Use an existing supported header before inventing another local description. The advisory
+`node tools/declarations.js --target <symbol> --json` inventory distinguishes opaque forwards,
+concrete descriptions and unresolved differences; textual similarity is not layout or meaning.
+Follow [the shared-header convention](../include/README.md) for new headers. Keep different
+partial views, qualifiers and uncertain interfaces local until their evidence is reconciled.
+For nominated header consumers, use `node tools/declarations.js --header include/game/example.h
+--target func_XXXXXXXX --check --json`, repeating `--target` for the complete known set.
+This is a supported textual check, explicitly `compilerChecked: false`: exit 1 reports a
+conflict, exit 2 an incomplete scope or unsupported input, and exit 0 only a clean supported
+subset. Pinned-compiler fixtures and canonical source checks establish the compiler facts.
+
+For a shared-header edit, enumerate every affected producer using current dependency records
+and include/source context, including grouped producers. Check all affected consumers with the
+focused tools, then use one normal final verifier for the complete assigned header wave.
+Do not mix the first header adoption with unfinished matching changes. Existing dependency
+content hashes and include-resolution checks invalidate caches; no manual cache purge or new
+acceptance cache is needed. Exact C does not establish an original unused-argument signature.
 
 #### Diagnostic boundary
 

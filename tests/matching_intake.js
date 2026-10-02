@@ -5,7 +5,7 @@ const {loadWorkbenchModel,resolveTarget,targetRecord}=require('../tools/lib/matc
 const {candidateRecord}=require('../tools/lib/matching/compiler');
 const {requestStore}=require('../tools/lib/matching/store');
 const {captureIdentities}=require('../tools/lib/matching/research');
-const {intake,assess,presentation}=require('../tools/lib/matching/intake');
+const {intake,assess,presentation,formatHuman}=require('../tools/lib/matching/intake');
 const policy=require('../tools/lib/source_policy');
 function run(){
  const start=Date.now(),base=path.join(ROOT,'build/research-intake-rollout-r1');fs.mkdirSync(base,{recursive:true});const root=fs.mkdtempSync(path.join(base,'tests-')),archive=path.join(root,'archives'),database=path.join(root,'absent','store.sqlite');fs.mkdirSync(archive);
@@ -45,6 +45,7 @@ function run(){
   check('real archived IDs without ROM binding remain reference-only',()=>{const noRom=loadWorkbenchModel({requireBaserom:false}),r=intake(noRom,resolveTarget(noRom,'func_001F3C00'),{database});assert.equal(r.targetId,null);assert.equal(r.counts['reference-only'],13);assert(!r.counts['target-mismatch']);});
   check('grouped read allowed without mutation capability',()=>{const t={...a,compilationGroup:{id:'fixture'}};const r=intake(w,t,options);assert.equal(r.counts.valid,1);assert.match(r.historyApplicability,/grouped/);});
   check('foreign and missing relations explicitly qualified',()=>{const file=a.symbol+'-relation.observation.json',bad=clone(first);bad.authored.relatedCandidateIds=[second.candidateId,'B'.repeat(64)];write(file,bad);const r=intake(w,a,{...options,limit:1});assert(r.total>1);const all=intake(w,a,options).observations.find(x=>x.relatedCandidateIds?.length);assert.equal(all.relations.status,'invalid');assert.deepEqual(all.relations.items.map(x=>x.status),['invalid','unverified']);fs.unlinkSync(path.join(archive,file));});
+  check('compact human retains census and relation warnings beyond JSON limit',()=>{const bad=clone(first);bad.authored.relatedCandidateIds=[second.candidateId];write(a.symbol+'-compact.observation.json',bad);const r=intake(w,a,{...options,limit:1});assert.equal(r.observations.length,1);assert(r.presentation.displayed>1);assert(r.presentation.observations.some(x=>x.relations==='invalid'));assert.match(formatHuman(r),/relations: invalid/);assert.equal(r.knowledge.status,'disabled');assert.deepEqual(JSON.parse(formatHuman(r,{includeDetails:true})),JSON.parse(JSON.stringify(r)));fs.unlinkSync(path.join(archive,a.symbol+'-compact.observation.json'));});
   check('no-ROM duplicated ID uses per-row source identity',()=>{
    const different=path.join(root,'different.c');fs.writeFileSync(different,fs.readFileSync(source,'utf8').replace('v+1','v+2'));
    const other=clone(first),cls=policy.classifySource(different);other.source=path.relative(ROOT,different).replace(/\\/g,'/');other.authored=captureIdentities(different,claims);other.authenticated={sourceSha256:cls.sourceSha256,expanded:cls.compilationInput,dependencies:cls.dependencies,sourceClass:cls.class,preprocessor:cls.preprocessor};
@@ -59,22 +60,25 @@ function run(){
 async function runCli(){
  const vm=require('vm'),{createRequire}=require('module'),file=path.join(ROOT,'tools/match.js'),localRequire=createRequire(file),w=loadWorkbenchModel();
  const root=path.join(ROOT,'build/research-intake-rollout-r1');fs.mkdirSync(root,{recursive:true});const source=path.join(root,'cli-source.c');fs.writeFileSync(source,'int only_explicit_watch_input;\n');
- let history={status:'found',observations:[{source:'must-not-compile-this.c'}]},watchCalls=0,prepareCalls=0,initialized=0;
+ let history={status:'found',observations:[{source:'must-not-compile-this.c'}]},watchCalls=0,prepareCalls=0,initialized=0,intakeOptions;
  const result={candidate:{candidateId:'fixture'},compile:{status:'compiled',sourceClass:'PURE_C'},comparison:null};
  const mocks={
   './lib/matching/target_model':{...localRequire('./lib/matching/target_model'),loadWorkbenchModel:()=>w},
   './lib/matching/store':{...localRequire('./lib/matching/store'),initializeStore:()=>{initialized++;return {}; }},
   './lib/matching/compiler':{...localRequire('./lib/matching/compiler'),syncTargets:()=>({}),compileCandidate:(_w,t,text)=>{assert.equal(t.symbol,'func_0020BFF8');assert.equal(text,'int only_explicit_watch_input;\n');watchCalls++;return result;}},
   './lib/matching/m2c':{...localRequire('./lib/matching/m2c'),prepareAndCompile:(_w,t,options)=>{assert.equal(t.symbol,'func_0020BFF8');assert.equal(options.compile,false);assert(!Object.hasOwn(options,'researchIntake'));prepareCalls++;return {assemblyFile:source,contextFile:null,results:[],compilations:[]};}},
-  './lib/matching/intake':{...localRequire('./lib/matching/intake'),presentation:()=>history}
+  './lib/matching/intake':{...localRequire('./lib/matching/intake'),presentation:(_symbol,options)=>{intakeOptions=options;return history;}}
  };
  const module={exports:{}};vm.runInThisContext('(function(require,module,exports,__filename,__dirname){'+fs.readFileSync(file,'utf8').replace(/^#![^\n]*/, '')+'\n})',{filename:file})(name=>mocks[name]||localRequire(name),module,module.exports,file,path.dirname(file));
  const log=console.log,oldExit=process.exitCode,printed=[];console.log=text=>printed.push(JSON.parse(text));
  try{
   await module.exports.main(['prepare','func_0020BFF8','--no-context','--no-compile','--json']);assert.equal(printed.at(-1).researchIntake.status,'found');
+  const before=structuredClone(printed.at(-1));
+  await module.exports.main(['prepare','func_0020BFF8','--no-context','--no-compile','--include-details','--json','--cross-limit','0']);assert.deepEqual(printed.at(-1),before);assert.equal(intakeOptions.crossLimit,0);
   history={status:'unavailable',reason:'optional discovery fixture',observations:[]};
   await module.exports.main(['watch','func_0020BFF8','--source',source,'--json']);assert.equal(printed.at(-1).status,'compiled');assert.equal(printed.at(-1).researchIntake.status,'unavailable');assert.equal(process.exitCode,oldExit);
-  assert.equal(watchCalls,1);assert.equal(prepareCalls,1);assert.equal(initialized,2);
+  await assert.rejects(()=>module.exports.main(['intake','func_0020BFF8','--symptom','not-a-symptom','--json']),/unknown symptom/);
+  assert.equal(watchCalls,1);assert.equal(prepareCalls,2);assert.equal(initialized,3);
  }finally{console.log=log;process.exitCode=oldExit;}
  console.log('Intake prepare/watch output wiring: PASS');
 }
