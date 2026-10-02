@@ -1,0 +1,89 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "6C951F71A8F503A7F4A58B56E1011BAF83D1AD4B173375C8EF4676A172777D03",
+  "observationId": "9E4AFB807C8CB6D44208D78431EACF61A49F2871BBF6736BD775B33E43B1344C",
+  "symbol": "func_0023A5EC",
+  "authored": {
+    "context": "The selected complete source has60 linked words/142 bytes different:54 constructor scheduling words and six outer-kind guard register words. Its fresh B2B2C398 global dump gives guard pseudo220 a preference for argument register5 (a1). This is a source lifetime/coloring question, not a supported tooling defect.",
+    "effects": [
+      "register-allocation",
+      "scheduling",
+      "body-coverage"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "2965436554B14B3A07BB1AC97C26D08C421FA64A6AF3F2CCB16DD02F4BAE19D6",
+      "sourceSha256": "3A262EE53B50894BD3B9E8ACBB5856F2DF96F51EBB4F304AD183026315ECE736"
+    },
+    "label": "scenario-first-field-guard-reuse-tradeoff",
+    "observedEffect": "Source3A262EE5 is mechanically PURE_C,2652 bytes/frame128/161 text relocations, with all22 ordered calls and equal corresponding call-region lengths. Native relocation-masked comparison has74 differences. All six outer-kind guard words now match retail (a3); constructor allocation regresses, with fieldB going to v1 instead of a0 and adjustment occupying the kind-branch delay. The60-word/142-byte linked best remains selected. A separate explicit outer-kind capture (B3E156FD) and equivalent nested-guard control (A9ADB0F1) are byte-identical to that best native text and normalized relocations. Delaying the shared first-field calculation (D58E979E) makes109 native differences; copying the actual field into the shared temporary only at the constructor call (68466E0A) grows to2660 bytes and397 native differences. Neither control is selected. These negative selections do not disprove the genuine phase-sharing mechanism that fixes the guard registers.",
+    "parentCandidateId": "6CA3244354B73E48008AB9ACD3F003A8CC6BD8963AAB1F7A312511E5A67530CB",
+    "references": [
+      {
+        "path": "docs/archive/matching-c-candidates/2026-10-02-func_0023A5EC-6ca3244354.c",
+        "sha256": "119B0ABEB37F095565A075B138CA2E475044E066216EDA8ADBC9F48434C4E081"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_0023A5EC.s",
+        "sha256": "7150A449FC53B900146EB17649873381E2CBDD19DE8BCBB626C881ED2949FBCF"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "The combined constructor scheduling and guard-register result remains unresolved. This counterexample has no normal linked comparison, new compiler-pass probe or full-ROM acceptance claim; only its recorded native diagnostics and ordinary captured identities are used. Both Scenario members remain ASM production and assigned together. No shared-tool edit, physical-owner change, source-class exception, verifier or push.",
+    "role": "counterexample",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Share the actual first decoded-field word temporary with the real kind read during each separate outer-guard phase. The next constructor overwrites it with the actual field value; no dummy use, bound change, register binding or helper-interface change is added."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 10526,
+      "sha256": "2965436554B14B3A07BB1AC97C26D08C421FA64A6AF3F2CCB16DD02F4BAE19D6"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "3A262EE53B50894BD3B9E8ACBB5856F2DF96F51EBB4F304AD183026315ECE736"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-02-func_0023A5EC-6c951f71a8.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
