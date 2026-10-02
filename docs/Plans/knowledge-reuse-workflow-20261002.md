@@ -1,8 +1,11 @@
 # Reusable knowledge, concise intake, and shared declarations
 
-Status: implementation in progress under Joe's explicit go-ahead, 2026-10-02. Reviewed with
+Status: implemented and accepted under Joe's explicit go-ahead, 2026-10-02. Reviewed with
 GoldOx (Claude/Fable); final plan review is Agent Mail 717 and its seven corrections below
-are incorporated. Source/build ownership was released by Sol after Scenario commit `249454cb`.
+are incorporated. Tooling is accepted at `3f83b8b3`; the combined four-target header wave
+at `a225669e` passed its single final verifier at 23:01:14 UTC. Sol retains source/build ownership and
+resumes the original five-family program. Automatic cross-target suggestions remain withheld
+because the usefulness thresholds were not met; explicit lookup remains available.
 Director: SilentCrane. Joe requested this plan; this document does not itself change
 matching acceptance, source/build ownership, or the active implementation priority.
 
@@ -473,8 +476,9 @@ live emulator captures, new branches/worktrees or publication.
   not been silently omitted from that comparison.
 - Fixed own-target, cross-example and grouped intake displays fell from 6,068 / 5,562 / 2,709
   words to 820 / 861 / 867, with identical full same-target observations, counts, totals and
-  truncation. Added opt-in catalog/ranking cost was 131–151 ms; donor authentication was
-  measured separately. These single runs establish display reduction, not a runtime speedup.
+  truncation. Final nine-lesson opt-in catalog/ranking cost was 106–139 ms; current-valid donor
+  authentication was 129–149 ms separately. These single runs establish display reduction,
+  not a runtime speedup.
 - Detailed before/after and historical-cutoff evidence is ignored under
   `build/knowledge-workflow-20261002/replay/`. The routine test runner includes the new
   cursor budget, declaration fixtures and knowledge retrieval checks once each.
@@ -490,11 +494,34 @@ live emulator captures, new branches/worktrees or publication.
   `build/knowledge-workflow-20261002/routine-tests.log`. This includes 24 knowledge checks,
   23 declaration fixture groups, 25 intake checks and the existing regression suites.
   The separate real packet-cache refresh discovered a new dossier with no decompiler rerun.
-  Header pilots and final source integration remain pending at this tooling handoff.
+  Final review 733 confirmed the completed routine result.
 - Curated current-observation links now authenticate the two recent Scenario discoveries.
   The W8 localization/regression trio remains available as explicitly historical dossier
   references, with no claim of current target binding. No observation or source history was
   rewritten to make an index link appear valid.
+- Both header pilots passed as one complete wave: `func_001957D0`, `func_000490ec`,
+  `func_0019BD14` and `func_0019B26C`. Each remains PURE_C with unchanged function bodies,
+  sole C ownership, placement, actual relocations and exact target bytes. The one normal
+  final verifier completed at `2026-10-02T23:01:14.579Z`, including independent fresh
+  compilation and the exact 41,943,040-byte canonical ROM. No preceding full build,
+  per-function verifier or unchanged-result repeat ran.
+- The accepted headers are `common/types.h`, `game/scenario_source_record.h` and
+  `game/shop_price_interface.h`. Authenticated dependencies establish four common-header
+  consumers and two consumers for each game header. Four positive target-compiler probes
+  passed; six deliberately wrong layout/type/prototype/opaque-layout/shadowing controls
+  rejected. The compiler also rejected an identical repeated local typedef, now documented
+  in the shared-header guide. The [representative source-context record](../dossiers/func_000490ec-132b3a9aa7.md)
+  preserves these findings through the existing research system.
+- The Scenario textual check remains explicitly incomplete for nine outside partial/raw
+  global views, with no nominated-consumer conflict. They remain local, along with the
+  packed template, 52/56-byte records, date-helper alias and uncertain interfaces. Existing
+  `func_00023780` signedness and F34 supplied-versus-consumed evidence demonstrate refusal
+  to merge declarations merely because names or addresses coincide.
+- Final evidence: `build/sol-five-family/header-pilot-final-evidence.json`; its report, fresh
+  compilation, build, ROM and ten scoped-input hashes were checked against the files.
+  Sol continues `func_00041c20` and its full six-member Squad wave. The five-family program,
+  semantic uncertainties, later ClassEntry work, future ten-intake usefulness check and
+  30-second focused-diff/15-minute verifier goals remain open. No push was authorized or run.
 
 ## Consultation record
 

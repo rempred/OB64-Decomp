@@ -10,8 +10,9 @@ Suggested layout:
 
 New shared headers must be guarded and self-contained: include their required integer
 aliases instead of relying on declaration order in consumers. The common home is
-`common/types.h`. Remove superseded local aliases in the same adoption change; do not
-assume the pinned C89-era compiler permits duplicate identical typedefs. Test include
+`common/types.h`. Remove superseded local aliases in the same adoption change: the pinned
+KMC GCC 2.7.2 rejects even an identical local typedef after inclusion. Guarded repeat includes
+and both header orders passed the four-consumer pilot's compiler probes. Test include
 order and the complete affected producer set with the pinned compiler and normal wave gates.
 
 Legacy headers may still depend on cautious consumer-provided aliases where changing them

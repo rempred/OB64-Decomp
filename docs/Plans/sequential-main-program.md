@@ -9,8 +9,10 @@ The full seventeen-member W6 remains open; its source and structural blockers re
 in the [current Sol cursor](cursors/sol.md). The complete two-target Scenario wave
 passed its normal final verifier at `249454cb`. Joe has now authorized implementing
 the [knowledge and shared-declaration plan](knowledge-reuse-workflow-20261002.md).
-Astra owns the tooling interval; Sol resumes the bounded header pilots and ordinary
-decomp after resource release. The [long resumption note](task-logs/sol-five-family-resumption-20260929.md)
+The tooling interval is complete at `3f83b8b3`; both header pilots passed together in one
+full-ROM-verified four-target wave. Sol resumes ordinary decomp. Follow the
+[active queue](../NEXT_STEPS.md) and current cursor.
+The [long resumption note](task-logs/sol-five-family-resumption-20260929.md)
 is retained historical evidence. Use the short cursor for current work; no new push is authorized.
 
 ## Historical recovery snapshot, 2026-09-09 (superseded)
