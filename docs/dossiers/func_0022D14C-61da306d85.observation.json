@@ -1,0 +1,95 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "61DA306D85AFAE3D6EE5D2911AF1D99A75E0FF336786F5CA50057443B24A9E33",
+  "observationId": "68BAFC2D5A69877E2F71B1D6395031EDF526D21114953AEAB362EECAD5F139CD",
+  "symbol": "func_0022D14C",
+  "authored": {
+    "context": "The defined aggregate-base control3CED2FBE survives CSE but its final-loop base is eliminated by loop strength reduction. E07 stays production research best at6744/frame576; original complete owner is6844/frame616.",
+    "effects": [
+      "loop-strength-reduction",
+      "combine",
+      "address-expression"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "4414FE33C85C86CA547F6E9231EACF449B55E3E17007659EB9CACB0F18D2D072",
+      "sourceSha256": "79C28A7C512038F6D4311C709D3E4F3F57ADDFB82AD4D123594688B950EA82EB"
+    },
+    "label": "d14c-late-identity-keeps-real-base-displacement",
+    "observedEffect": "PURE_C source79C28A7C emits6744/frame576/181 text relocations and64-byte/15R table, with every normalized instruction/directive preceding the final-loop initializer identical to E07. Current authenticated probeD35F985E shows the identity active through CSE/loop (UID4411 OR,4413 AND), preventing base112 elimination; combine reduces it to a self move, removed before final output. Native code now initializes s2=sp+40 and uses all three152(s2) loads with no added identity instructions or extra cursor copy. E07's final-loop index still uses s3 and random/time values rotate s0/s1. A separate address-carrier controlE2AFFC03 produces an extra per-iteration cursor copy. Reusing only the ended main-loop index41417A4A or unifying all six separately reset indices816F6626 produces6772/frame576 and allocates the final index to s8, with earlier drift; neither is selected.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "docs/archive/matching-c-candidates/resumption-20260906/sources/func_0022D14C-78dd9d9325ec.c",
+        "sha256": "78DD9D9325EC0AD875768041E9517A7D224D92F947B68C7DEE4D15CD922986E4"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_0022D14C.s",
+        "sha256": "EF14D6581AE474F7ABA21C09568FDFA0C69AEBAC234C09A9EF90D573AE14A8D3"
+      },
+      {
+        "path": "docs/Plans/task-logs/combat-d14c-preserved-diagnostics-r1.md",
+        "sha256": "C67BA3B53F4CB12FFBC8F85CCFBA645A265BA45548F43E627D916A1EB7B87DCD"
+      }
+    ],
+    "relatedCandidateIds": [
+      "02185FF6361C79E55F14BC020482612E316193E8C2FD5DF8AEA2FFB9EAAAFEE2"
+    ],
+    "remainingFailure": "Nonexact local address repair; it does not solve the100-byte/frame40 deficits or allocation. The real counter-reuse controls refute that intervention as a repair, not the original loop semantics. Preserve E07 best and full ASM/table owners. No original-type, whole semantic-equivalence, linked acceptance or tooling-defect claim is made; full17-member W6 remains open.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "On the defined real aggregate cursor, carry its unchanged pointer bits through (cursor | index) & cursor and write the result back to that same cursor before the event2F call. The existing byte cursor still starts at the complete prefix object, advances4 and selects the same three real excluded-pointer accesses at+152. One register expression carries the real address; no extra object, memory access or call is introduced."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 42471,
+      "sha256": "4414FE33C85C86CA547F6E9231EACF449B55E3E17007659EB9CACB0F18D2D072"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "79C28A7C512038F6D4311C709D3E4F3F57ADDFB82AD4D123594688B950EA82EB"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-02-func_0022D14C-61da306d85.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

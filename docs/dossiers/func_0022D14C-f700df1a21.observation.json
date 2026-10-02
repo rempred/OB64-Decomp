@@ -1,0 +1,96 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "F700DF1A21DD26718FA4BFA072CB46BDE4B3603B154AF051F35990A4CDEA31C5",
+  "observationId": "0B360D8BEB16213BFA5A811F0D753CC4B36FEFDB040A13EDF1CFB1A5CB1D92F7",
+  "symbol": "func_0022D14C",
+  "authored": {
+    "context": "Natural-loop5C836C reproduces frame616, but its common publication setup differs from retail. Original assembly has branch-local known event codes and payloads in the four real selector groups.",
+    "effects": [
+      "control-flow",
+      "argument-setup",
+      "cross-jumping",
+      "frame-allocation"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "41B7107EC8EEBA5615FC5767A5FE59F8D36EC8337619B41C40C0BFE2E2965FDC",
+      "sourceSha256": "C92AEBE599D65E6146E1B258D865D784D1437C3953469217D9423516C0F9AD71"
+    },
+    "label": "d14c-direct-selection-publication-and-real-fallback-composition",
+    "observedEffect": "SourceC92AEBE5 emits6856 bytes/frame616/177 text relocations and64-byte/15-relocation table. All131 native call addresses occur in retail order. The previous substantial setup-region count deficits after B06C and the shared fallback no longer occur. Complete body remains12 bytes over retail. A separate full-helper evidence refinement26D1AA6B changes the 379AC caller return declaration and two Boolean carriers from s8 to s32; it removes22 unwanted sll24 instructions and emits6764/frame616/177R with131 retail-ordered calls. The latter is not selected by byte-size proximity; it identifies a type constraint for further reconstruction.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "docs/archive/matching-c-candidates/resumption-20260906/sources/func_0022D14C-78dd9d9325ec.c",
+        "sha256": "78DD9D9325EC0AD875768041E9517A7D224D92F947B68C7DEE4D15CD922986E4"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_0022D14C.s",
+        "sha256": "EF14D6581AE474F7ABA21C09568FDFA0C69AEBAC234C09A9EF90D573AE14A8D3"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_002379AC.s",
+        "sha256": "1293B5B5BCB94CED93A2E37BE5F1BEADA23C56E601C47832BD3EFC05E4F58A95"
+      }
+    ],
+    "relatedCandidateIds": [
+      "5C836C43357542AA94D0F4632F4A5626325CB6C15E2214293DC1B1E474DCFF8D"
+    ],
+    "remainingFailure": "Control-flow, register, spill-placement and other instruction differences remain; neither source is linked-exact. Frame and call-order diagnostics do not establish target placement, sole ownership or matching acceptance. Preserve E07 and original ASM/table owners; full17-member W6 and the separate64-byte D14C table-activation gate remain open. No shared-tool change or final verifier is involved.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Express known code/payload pairs through direct calls in their genuine selector arms. Preserve the distinct code6/coords.value shared fallback semantics; spell the case3 false-path call/store/exit directly rather than jumping into case4, without adding an operation to any path. Compose with the existing natural loops."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 41583,
+      "sha256": "41B7107EC8EEBA5615FC5767A5FE59F8D36EC8337619B41C40C0BFE2E2965FDC"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "C92AEBE599D65E6146E1B258D865D784D1437C3953469217D9423516C0F9AD71"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-02-func_0022D14C-f700df1a21.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

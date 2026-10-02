@@ -1,0 +1,96 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "02185FF6361C79E55F14BC020482612E316193E8C2FD5DF8AEA2FFB9EAAAFEE2",
+  "observationId": "156DD80CB51E275456F560F7F4FAFEE84B2887B8562BF49D61D9E23D088953E4",
+  "symbol": "func_0022D14C",
+  "authored": {
+    "context": "E07 complete source 78DD9D93 reproduces 6744 bytes/frame576/181 text relocations against the complete 6844-byte/frame616 owner. Current intake is empty. The previously reviewed final-loop base/field-displacement discrepancy predates allocation. Original ASM and auxiliary table ownership stay production.",
+    "effects": [
+      "address-expression",
+      "loop-strength-reduction"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "DBD0CCCD8BF886F97432813BBDC057F4D8AFED147E908171372E9386E3F2B2F6",
+      "sourceSha256": "3CED2FBE0866837C15E359EC5379CB24E6EB3D2367BD03E832FF7140CFB21AA2"
+    },
+    "label": "d14c-defined-aggregate-cursor-reduced-by-loop-pass",
+    "observedEffect": "Source 3CED2FBE is PURE_C and emits 6744 bytes/frame576/181 text relocations, with the unchanged 64-byte table/15 relocations. Current authenticated probe AA996244 preserves aggregate base fp+40 (UID4367) and all three selected-entry loads at cursor+152 (UID4416/4423/4430) through initial RTL and first CSE. The loop dump explicitly eliminates base induction variable112 and replaces those loads with derived cursor1157=base+152. Final code again initializes sp+192 and loads at displacement0. Full normalized instruction/directive comparison differs only in the order of the three final-loop setup instructions; all remaining lines, extent, frame and relocation census match E07.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "docs/archive/matching-c-candidates/resumption-20260906/sources/func_0022D14C-78dd9d9325ec.c",
+        "sha256": "78DD9D9325EC0AD875768041E9517A7D224D92F947B68C7DEE4D15CD922986E4"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_0022D14C.s",
+        "sha256": "EF14D6581AE474F7ABA21C09568FDFA0C69AEBAC234C09A9EF90D573AE14A8D3"
+      },
+      {
+        "path": "docs/Plans/task-logs/combat-d14c-preserved-diagnostics-r1.md",
+        "sha256": "C67BA3B53F4CB12FFBC8F85CCFBA645A265BA45548F43E627D916A1EB7B87DCD"
+      },
+      {
+        "path": "docs/Plans/task-logs/combat-d14c-diagnostics-review-r1.md",
+        "sha256": "0AE9087E4D4AC392AFDADF412DC3B5A1CCCC73D8343E539CDC11AD1B07E8AF56"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Nonexact diagnostic; the defined address formulation alone does not retain retail's base+152 representation through loop optimization and does not solve the 100-byte/frame40 deficits or index allocation. The earlier CSE-preservation hypothesis succeeds locally, but the proposed formulation is falsified as a complete fix. No tooling defect, missing memory operation, semantic equivalence or matching acceptance is established. The full seventeen-member W6 and separate D14C table activation gate remain open.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Change only the final excluded-entry cursor to a u8 pointer into the existing complete prefix aggregate. Initialize at prefix base, load each real excluded pointer at sizeof(packet)+sizeof(buffer)=152, and advance by sizeof(void*)=4. Existing slots are 152+4i within the 176-byte object for valid original indices 0..5; no new object, call, storage, capacity or loop condition is introduced."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 42304,
+      "sha256": "DBD0CCCD8BF886F97432813BBDC057F4D8AFED147E908171372E9386E3F2B2F6"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "3CED2FBE0866837C15E359EC5379CB24E6EB3D2367BD03E832FF7140CFB21AA2"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-02-func_0022D14C-02185ff636.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

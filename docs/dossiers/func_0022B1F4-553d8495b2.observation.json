@@ -1,0 +1,97 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "553D8495B2C53EA0D9580EC23D6DB82650C60026D5B71FEB7917BC7BD674F45D",
+  "observationId": "6B34FF431707DAA3C92BFE89DFED3AF91198EDF159990C65961D3C06CBB9FBD2",
+  "symbol": "func_0022B1F4",
+  "authored": {
+    "context": "Current intake is empty; E16 frozen source BDD3B1A2 reproduces3576/frame272/103R versus the complete3588/frame280 original owner. Reviewed preserved diagnostics identify first CSE as the event-time reuse boundary. No production source/owner change is made.",
+    "effects": [
+      "control-flow",
+      "value-lifetime",
+      "first-cse"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "9D3E04D93157CA2A727451A536E5AC44DC110A40577C691A4EC33A5E140CF179",
+      "sourceSha256": "7E1E806A65C51E9FB5A0762B3A4C4D4F1869E54DDD6405C4A0A8AD1C1C7D7013"
+    },
+    "label": "b1f4-real-selector-arms-restore-post-call-recomputation",
+    "observedEffect": "Selected experiment7E1E806A is PURE_C and emits3620/frame272/104textR, no table. Current authenticated probe7274157E confirms both event8 sums and the common post-call event9 sum survive first CSE (separate pseudos415/416,418/419 and421/422/423). Final assembly merges event8's call itself into one jal and recomputes base+offset with fresh stack156/164 reloads for event9. The duplicated argument setup and extra local jump remain; the eight-byte frame deficit is unchanged. Naming a shared event8_time temporary in both arms gives identical nonexact output at3620/frame272/104R.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "docs/archive/matching-c-candidates/resumption-20260906/sources/func_0022B1F4-bdd3b1a20df1.c",
+        "sha256": "BDD3B1A20DF1B8F7D2219775F665C93A4318238B00D09EE391F882C4965D6B18"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_0022B1F4.s",
+        "sha256": "E95C054B2215FB0A8D8839B03555ED404DF386261BBAB6AA3C73BC039EB2233B"
+      },
+      {
+        "path": "docs/Plans/task-logs/combat-b1f4-preserved-diagnostics-r1.md",
+        "sha256": "EABA8ADED92D93EB6D97A006F437DE5EBE0DB1B147C4696415B729286A5D9295"
+      },
+      {
+        "path": "docs/Plans/task-logs/combat-b1f4-diagnostics-review-r1.md",
+        "sha256": "B3638B59BC972D1744D117D12E78A53F38A5EF79787E6D85F11AAD028800879C"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Nonexact effect example; do not select over E16 or activate. It fixes the identified lifetime locally but adds argument setup; extent and frame remain wrong. This does not disprove the genuine branch structure and shows no supported tooling defect. Complete seventeen-member W6 and D14C's separate table gate remain open.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Move the real event8 call into both genuine record+4C selector arms with code7 or0xB. Keep one common, freshly written event9 expression after the join. Preserve every preceding field access, call, complete struct copy and real loop."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 20821,
+      "sha256": "9D3E04D93157CA2A727451A536E5AC44DC110A40577C691A4EC33A5E140CF179"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "7E1E806A65C51E9FB5A0762B3A4C4D4F1869E54DDD6405C4A0A8AD1C1C7D7013"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-02-func_0022B1F4-553d8495b2.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

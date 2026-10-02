@@ -1,0 +1,95 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "20E10958D54F7FB7D8F56CA8387E1144A598C3DD3724AB38B8AC2A14E05308C9",
+  "observationId": "F331CB642D9E1B20CE8DE671F0C7D0CAD4785DC74262FF2CA3817C369C874DB6",
+  "symbol": "func_0022D14C",
+  "authored": {
+    "context": "Complete379AC original body has only0/1 return values on every path. Original D14C directly moves these word results from v0 and tests them; its entire body contains no sll24. Direct-fallback sourceC92AEBE5 still declares the helper and its two Boolean carriers as s8, generating22 such shifts.",
+    "effects": [
+      "type-width",
+      "argument-and-result-carriers",
+      "instruction-selection"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "375E4F141E35203F13942FEC00B5A2DC3330FC85BDF9B33D6777564C078C2425",
+      "sourceSha256": "26D1AA6BA2C0C36CDB8623F7693E1CF26F5BB38B5E9CA47F5F2EE1546B253003"
+    },
+    "label": "d14c-word-boolean-carriers-from-full-helper-return-evidence",
+    "observedEffect": "Source26D1AA6B is PURE_C and emits6764 bytes/frame616/177 text relocations and64-byte/15-relocation table, with all131 call addresses in retail order. The22 sll24 instructions disappear; the original has none. The complete helper's0/1 results justify equal Boolean behavior for this bounded type refinement. Native output remains80 bytes short, versus the C92 source12 bytes over; proximity alone is not a selection criterion. This constrains the types and narrows the instruction-selection discrepancy without recovering original declarations.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "docs/archive/matching-c-candidates/2026-10-02-func_0022D14C-f700df1a21.c",
+        "sha256": "C92AEBE599D65E6146E1B258D865D784D1437C3953469217D9423516C0F9AD71"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_0022D14C.s",
+        "sha256": "EF14D6581AE474F7ABA21C09568FDFA0C69AEBAC234C09A9EF90D573AE14A8D3"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_002379AC.s",
+        "sha256": "1293B5B5BCB94CED93A2E37BE5F1BEADA23C56E601C47832BD3EFC05E4F58A95"
+      }
+    ],
+    "relatedCandidateIds": [
+      "F700DF1A21DD26718FA4BFA072CB46BDE4B3603B154AF051F35990A4CDEA31C5"
+    ],
+    "remainingFailure": "Complete source is nonexact with control-flow, register and spill-placement differences. No actual linked placement/ownership/relocation or full-ROM acceptance is claimed. E07 and C92 remain recoverable. Full17-member W6 and the separate64-byte D14C table-activation gate remain open. No shared-tool change, new call/read, artificial padding or final verifier is used.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Change only the caller's379AC return declaration and its two nonaddressable Boolean carriers from s8 to s32. Preserve all stores, conditions, helper calls, real publication arms, natural loops and table cases. The helper owner and implementation remain unchanged."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 41586,
+      "sha256": "375E4F141E35203F13942FEC00B5A2DC3330FC85BDF9B33D6777564C078C2425"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "26D1AA6BA2C0C36CDB8623F7693E1CF26F5BB38B5E9CA47F5F2EE1546B253003"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-02-func_0022D14C-20e10958d5.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

@@ -1,0 +1,100 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "5C836C43357542AA94D0F4632F4A5626325CB6C15E2214293DC1B1E474DCFF8D",
+  "observationId": "0BA61902D2BBE05AE677D8D866C930BD1E3E3F0B14BC24D8DBFF40F8EF50107E",
+  "symbol": "func_0022D14C",
+  "authored": {
+    "context": "E07 complete source78DD9D93 emits6744/frame576 against retail6844/frame616. B1F4's authenticated D86BC7 pair shows how a natural prechecked loop's copied entry predicate becomes a USE-only frame home. Test the same source-level mechanism on D14C's actual loops; no padding or new locals are proposed.",
+    "effects": [
+      "control-flow",
+      "loop-entry-duplication",
+      "combine",
+      "frame-allocation"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "F01720BA13542EA4A7B055E9BC7A15C88B5679F723A71711A7814D83D07118F3",
+      "sourceSha256": "15F4FDC8A9098405750DBDB2B09080A78EA46BDAF217EF643CC7A0EF55CF43A3"
+    },
+    "label": "d14c-natural-prechecked-loops-reproduce-retail-frame-size",
+    "observedEffect": "Final-loop-only source7FE3D9E3 is PURE_C,6744/frame584/181 text relocations; authenticated probe6A560619 records it. All-natural source15F4FDC8 emits6776/frame616/181 text relocations and64-byte/15R table; authenticated probe419C6F94 shows six predicate USE homes at532,540,548,556,564,572 after global allocation (UID4556,4559..4563). Five additional8-byte homes explain the current compiler's40-byte frame increase. All131 native call addresses occur in retail order. This reproduces the retail frame size, not original local placement. Separately, real branch-local publication source27FD8A62 emits6796/frame576/176R and restores setup-region sizes after B06C in three selector groups. Composition018CDCDA emits6796/frame616/176R, showing the extent effects do not simply add. Promoted word-carrier controlB27A9E03 emits6712/frame576 and is not selected.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "docs/archive/matching-c-candidates/resumption-20260906/sources/func_0022D14C-78dd9d9325ec.c",
+        "sha256": "78DD9D9325EC0AD875768041E9517A7D224D92F947B68C7DEE4D15CD922986E4"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_0022D14C.s",
+        "sha256": "EF14D6581AE474F7ABA21C09568FDFA0C69AEBAC234C09A9EF90D573AE14A8D3"
+      },
+      {
+        "path": "docs/Plans/task-logs/combat-mode-owner-retry-preparation-r1.md",
+        "sha256": "26C6BAE4FFAC8FDAB6FE5982FAFD92EE3C9A97BAE8E3DF29D955D79ADB1035CB"
+      },
+      {
+        "path": "docs/archive/matching-c-candidates/2026-10-02-func_0022B1F4-d86bc7d940.c",
+        "sha256": "7DD9B51638073AD1470E3BC4725D8BB5C2D491FF8CCC212D0150B0BF0E4202F0"
+      }
+    ],
+    "relatedCandidateIds": [
+      "61DA306D85AFAE3D6EE5D2911AF1D99A75E0FF336786F5CA50057443B24A9E33"
+    ],
+    "remainingFailure": "Complete owner remains nonexact: natural loops are68 bytes short, composed publication48 bytes short, with register, spill-placement and shared-publication CFG differences. Native call order/frame size do not establish control/dataflow equivalence, matching C, table ownership or full-ROM acceptance. Preserve E07 and all original ASM/table owners. No tool-contract defect or source exception is asserted; full17-member W6 and D14C's separate64-byte activation gate remain open.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "First replace the final excluded-entry if/do with a real indexed for, retaining its existing cursor and all loads/calls. Then express the other four prechecked if/do loops as ordinary while loops with their original index increments and body order. Hoisted initializers are only valid addresses of the existing aggregate or existing defined scalar values. Preserve the publication loop already written as for, distinct counters, bounds, helper calls, stores and all six capacities."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 41745,
+      "sha256": "F01720BA13542EA4A7B055E9BC7A15C88B5679F723A71711A7814D83D07118F3"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "15F4FDC8A9098405750DBDB2B09080A78EA46BDAF217EF643CC7A0EF55CF43A3"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-02-func_0022D14C-5c836c4335.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

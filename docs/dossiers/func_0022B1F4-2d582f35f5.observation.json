@@ -1,0 +1,95 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "2D582F35F5CD06A2B68C78EBB768F4177DC587584CEAD41E38C8E5C930E06550",
+  "observationId": "0137154F7C00AB169384F95E2A21812415E1F446F970636313BB9C0FC3110F49",
+  "symbol": "func_0022B1F4",
+  "authored": {
+    "context": "E16 complete source BDD3B1A2 reproduces3576/frame272/103 text relocations against the complete3588/frame280 owner. The earlier genuine two-call-arm experiment restores recomputation but duplicates argument setup. GoldOx mail656 proposes the real selector as one inline conditional argument; independently derived here from E16.",
+    "effects": [
+      "control-flow",
+      "first-cse",
+      "value-lifetime"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "6AD6309AA17F59ED1BDDB73A0919C4F5A9F78BAE0DB174E5C22C5029D51DD638",
+      "sourceSha256": "C61D848B4786A00EB680A1F32059BD13E4D5287FD8948A5103EC90C7C2009AAB"
+    },
+    "label": "b1f4-inline-real-selector-restores-merged-call-and-recomputation",
+    "observedEffect": "Current sourceC61D848B is PURE_C,3592 bytes/frame272/103 text relocations with no table. Authenticated probeBB561237 confirms event9 has new sums420/421/422 through first CSE after event8's call2191, rather than E16's reuse. Final output computes time directly into a1 before the comparison, merges event8's setup into one call, and freshly adds s6+s8 and stack9C/A4 for event9. The four-byte excess and eight-byte frame deficit remain. An explicit common output-store/0-or-1-return controlBD361149 removes physical duplicated publication but emits3580/frame272/103R, not an exact owner.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "docs/archive/matching-c-candidates/resumption-20260906/sources/func_0022B1F4-bdd3b1a20df1.c",
+        "sha256": "BDD3B1A20DF1B8F7D2219775F665C93A4318238B00D09EE391F882C4965D6B18"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_0022B1F4.s",
+        "sha256": "E95C054B2215FB0A8D8839B03555ED404DF386261BBAB6AA3C73BC039EB2233B"
+      },
+      {
+        "path": "docs/Plans/task-logs/combat-b1f4-preserved-diagnostics-r1.md",
+        "sha256": "EABA8ADED92D93EB6D97A006F437DE5EBE0DB1B147C4696415B729286A5D9295"
+      }
+    ],
+    "relatedCandidateIds": [
+      "553D8495B2C53EA0D9580EC23D6DB82650C60026D5B71FEB7917BC7BD674F45D"
+    ],
+    "remainingFailure": "Nonexact effect example; preserve the E16 best. Temporary-register assignment, shared-tail allocation, extent and frame remain unresolved. No extra storage, synthetic operation, original-declaration claim, current linked acceptance or tooling defect is asserted. Full seventeen-member W6 remains open.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Replace only the selector's default assignment and if statement with the same field+4C == 0x4A ? 7 : 0xB expression as event8's final argument. The call's time expression, single event8 call, common event9 expression and every preceding operation remain unchanged."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 20703,
+      "sha256": "6AD6309AA17F59ED1BDDB73A0919C4F5A9F78BAE0DB174E5C22C5029D51DD638"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "C61D848B4786A00EB680A1F32059BD13E4D5287FD8948A5103EC90C7C2009AAB"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-02-func_0022B1F4-2d582f35f5.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
