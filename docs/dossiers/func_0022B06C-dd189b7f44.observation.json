@@ -1,0 +1,102 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "DD189B7F44E7365D8E0D9B6FA3CF39779F02FC7456A338205EC0D6111EB287B2",
+  "observationId": "527076DC456B04C2D67D3B5E172E3A7E5EC298065E475191CC9FB691A7BD996F",
+  "symbol": "func_0022B06C",
+  "authored": {
+    "context": "Complete392-byte B06C code owner and40-byte/10-entry table are unchanged. Retained source6B0668 was reauthenticated through current reviewed1b50 tooling in normal watch20CC14D0, then independently checked with the pinned native compiler. Astra627 provisionally approves only the existing-contract production partition, not complete W6 acceptance.",
+    "effects": [
+      "body-coverage",
+      "readability",
+      "interface-reuse",
+      "compiler-observation"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "1B2BD4D931F2FFAE38AB0057CB0A6B0C36D8B112E9E775A2526FABC4A16009F0",
+      "sourceSha256": "1F6B201AC62EC7929019F8713D4B92F548B456EE9EA6052C6930E631112CC6A3"
+    },
+    "label": "readable-complete-b06c-current-native-reproduction",
+    "observedEffect": "Selected source1F6B201A remains mechanical PURE_C; native body392 bytes/frame32, native.text400 with8 terminal alignment bytes outside the primary, zero relocation-masked word differences,18 actual text relocations and10 actual table R_MIPS_32 entries. Native.rodata is40 bytes, rawSHA D88F1C5871652822691B42B87C2DF38C893F9A495DD4B9BB5B6F95BF97E3B0F7; all table target offsets equal retail. Source/interface readability changes do not change the native body/table producer.",
+    "parentCandidateId": "20CC14D07BF865990696EC534C518FDADF1BA31C6AEAE675713C2C7CC033CEFE",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_0022B06C.s",
+        "sha256": "38615E5CB5B9F986C4C8EC0DBB9F15C81E07851B5063331D9EB29D8C13B46846"
+      },
+      {
+        "path": "asm/original/rev0/lib/table_00239ec0.s",
+        "sha256": "DB6B37FC1619F6541AC8FD469202CCE1A11A3B0686BAC43C0CF2AD7B1EFF10FF"
+      },
+      {
+        "path": "src/lib/func_0020C478.c",
+        "sha256": "D42250CD0648E9D4F6F9E19383BB6E893FA8EA4E7B516B4DE63CEDC9481473E0"
+      },
+      {
+        "path": "docs/archive/matching-c-candidates/resumption-20260906/sources/func_0022B06C-6b0668990ac8.c",
+        "sha256": "6B0668990AC8B5AB535B002A81A734D12C5238A28906159713376FF93E1729D5"
+      },
+      {
+        "path": "docs/Plans/task-logs/combat-shared-table-preparation-r1.md",
+        "sha256": "993247922B278E76AE55EE749CBFF270A17EBD5B4E1954C01FF3F7F517248E0F"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Native diagnostics are not canonical acceptance. Approved provisional activation retains no B06C tail; EF50 owns the separate64-byte ASM interior and1112-byte final tail. Focused current link, one coherent changed-input structural audit and independent review remain required. Preserve all17 W6 members and earlier/later gates; this pair does not substitute for the full wave.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Rename unknown record/state parameters without strengthening their meanings, expand compact guards, explain the original case7 reset fallthrough, and use accepted C478's unsigned-index/pointer-return interface. Preserve every state arm, flag mask, call,20-record bound, load/store width and shared epilogue."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 2497,
+      "sha256": "1B2BD4D931F2FFAE38AB0057CB0A6B0C36D8B112E9E775A2526FABC4A16009F0"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "1F6B201AC62EC7929019F8713D4B92F548B456EE9EA6052C6930E631112CC6A3"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-02-func_0022B06C-dd189b7f44.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

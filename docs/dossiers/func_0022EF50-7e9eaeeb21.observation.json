@@ -1,0 +1,104 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "7E9EAEEB2144C7871344CC571A6B95F0893537B7FAF339CC625D25912CA016E9",
+  "observationId": "4FB7ECB1AF450AE05FE2D26B77F59A83FD812C852263A52A5ED15B66D943F247",
+  "symbol": "func_0022EF50",
+  "authored": {
+    "context": "Complete876-byte EF50 owner and32-byte table producer are unchanged. Archived source3D7D was reauthenticated in normal current watch8240C9C3 and native diagnostics. Its value-independent OR/AND selection expressions were retained as a recoverable baseline while testing actual selection-value forms. Astra627 authorizes the existing-contract structural production partition provisionally.",
+    "effects": [
+      "body-coverage",
+      "readability",
+      "real-value-selection",
+      "control-flow",
+      "compiler-observation",
+      "interface-reuse"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "A0E39CC175BD5A608747700A26CB96392F0CC640B871D5A255CA4052B9B40C20",
+      "sourceSha256": "BD36A8BE28AD94E8396E43E9CDAEAE74A2AF3657DB60BF69891EF3B8A08B131A"
+    },
+    "label": "direct-final-selection-arms-remove-opaque-ef50-expressions",
+    "observedEffect": "Plain constants joined through chosen_code preserve876/frame80 but yield3 native word differences at0x244..0x24C: the pinned compiler replaces the branch with arithmetic selection. Reusing the score local or widening chosen_code remains3 differences. Publishing the selected byte directly in the final two real arms restores zero masked differences. Removing the existing byte-local volatile reload separately shortens the body to872 and leaves24 differences; retain only the observed reload. Commented selected sourceBD36A8BE is mechanical PURE_C,876/frame80,29 text relocations,32 native.rodata bytes with7 real R_MIPS_32 entries and4 genuine terminal zeros. Raw tableSHA ED206C23C42DD4B750EDA13884D97901C23C8A9192FC159788B8A6DD4CFC84CE and all7 target offsets remain exact. No identity expressions, inline assembler, injected bytes or altered compiler rules remain in this source.",
+    "parentCandidateId": "8240C9C3F02C230CC2F57AC614407F9C40534C36DBB6AEA0931262246EBCCC51",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_0022EF50.s",
+        "sha256": "5D9ECEF33A9946B3394F09D1E89A818DE6E83EBD524017F4E84FEB9376882776"
+      },
+      {
+        "path": "asm/original/rev0/lib/table_00239ec0.s",
+        "sha256": "DB6B37FC1619F6541AC8FD469202CCE1A11A3B0686BAC43C0CF2AD7B1EFF10FF"
+      },
+      {
+        "path": "src/lib/func_0020C478.c",
+        "sha256": "D42250CD0648E9D4F6F9E19383BB6E893FA8EA4E7B516B4DE63CEDC9481473E0"
+      },
+      {
+        "path": "docs/archive/matching-c-candidates/resumption-20260906/sources/func_0022EF50-3d7dc9f4744c.c",
+        "sha256": "3D7DC9F4744CF4777E954546498000005943C5E5FB07C394E8E028F4A62BE423"
+      },
+      {
+        "path": "docs/Plans/task-logs/combat-shared-table-preparation-r1.md",
+        "sha256": "993247922B278E76AE55EE749CBFF270A17EBD5B4E1954C01FF3F7F517248E0F"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Current canonical linked proof and one coherent changed-input structural audit/review remain pending. EF50's native four-byte table alignment occupies the first4 bytes of F580's12-byte initializer; the other8 bytes and later tables remain original ASM. Preserve the64-byte retained interior,1112-byte tail, complete17-member W6 and unchanged original fallbacks. No runtime provenance or whole-wave acceptance follows from this source observation.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Replace generated names/access nesting and unused unknown typedefs with readable neutral record accesses and score/code locals. Reuse accepted C478 pointer-return/unsigned-index interface and pass its result as a pointer. Replace the two OR/AND identity expressions with direct selected_code=0x51/0x5D assignments followed by the existing common publication tail. Explain the observed branch-layout requirement and the one byte-local volatile reload that preserves retail's actual load; add no new access or side effect."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 5031,
+      "sha256": "A0E39CC175BD5A608747700A26CB96392F0CC640B871D5A255CA4052B9B40C20"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "BD36A8BE28AD94E8396E43E9CDAEAE74A2AF3657DB60BF69891EF3B8A08B131A"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-02-func_0022EF50-7e9eaeeb21.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
