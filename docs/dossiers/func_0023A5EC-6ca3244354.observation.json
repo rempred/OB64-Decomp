@@ -1,0 +1,105 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "6CA3244354B73E48008AB9ACD3F003A8CC6BD8963AAB1F7A312511E5A67530CB",
+  "observationId": "7DA5AE0A011AD93FCF3FA73FD1E455E8CD9B33CA0C32488F109B24753507F964",
+  "symbol": "func_0023A5EC",
+  "authored": {
+    "context": "GoldOx707 identifies specific source/RTL mechanisms from the saved 067A6E9E source. Sol independently reconstructs the proposed low-byte form from project source and complete retail disassembly; the complete corrected first-marker join and both any-count guards remain intact.",
+    "effects": [
+      "integer-mode",
+      "memory-aliasing",
+      "register-allocation",
+      "scheduling",
+      "body-coverage"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "C5E1650DEDE2002CC013CEE5783EE28D353FD703FF92D59D3170C503E33FC439",
+      "sourceSha256": "119B0ABEB37F095565A075B138CA2E475044E066216EDA8ADBC9F48434C4E081"
+    },
+    "label": "scenario-low-byte-lifetimes-and-mutable-record-view",
+    "observedEffect": "Mechanically PURE_C, 2652 bytes/frame128/161 text relocations and all22 ordered calls, with every corresponding call-region length equal. Normal current link has one complete C contribution at.ob64.r4250 with no fallback/fill and differs60 words/142 bytes; linked SHA20B2A66AE680B6A0410A8D0E1039B09EE196F952C33A547222E81E68CF63DF1B versus retail0C893885B08C8C8A42810D57327BD7C86FBACA2DBDD286C1599868903563721C. Constructor argument registers, add operand order, a2 load/add tie, the fieldB/a0 stack-store timing and every output-site tail now match. The corrected +2C8 jump destination remains exact. Restoring only const on this staged record pointer makes103 native differences; narrowing only the real low-byte locals to u8 makes74. These are context-specific source contrasts. GoldOx707 explains the pinned compiler unchanging-read scheduling, the split update tie and the separate low-byte lifetimes; its statement-order and u16-field negatives are advisory evidence in that staged context, not general rules. All ordinary temporary source/config/descriptor/RAM bindings were restored exactly. Authenticated probe B2B2C398D07CDBA3AA759412FA50624FBBE181864BB25B66080FF40A4F44DE17 captures all13 passes.",
+    "parentCandidateId": "3CE919BD384AA9DF64BA95AB430C73413404096540509671253F0362DC59A81C",
+    "references": [
+      {
+        "path": "docs/archive/matching-c-candidates/2026-10-02-func_0023A5EC-3ce919bd38.c",
+        "sha256": "067A6E9E30E43BF4A69FBF4C89AE47EC0778FA9C23F5AEBC4FE503270D2C86EC"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_0023A5EC.s",
+        "sha256": "7150A449FC53B900146EB17649873381E2CBDD19DE8BCBB626C881ED2949FBCF"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_0023A3A0.s",
+        "sha256": "DC2B516C80313C8C3BACF011358E032A687556F94FFF1271C65AF04BC111DC37"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_0023B048.s",
+        "sha256": "47A44193AF98B06DA100FC98AAA14B4EF7E81C4004A5594300C6DBDA283F3F45"
+      },
+      {
+        "path": "src/lib/func_0019554C.c",
+        "sha256": "4FBF235DB64C85E84A2AD7DF7118346749587FBB2986EE00DF613EF9C8D3E121"
+      }
+    ],
+    "relatedCandidateIds": [
+      "438B44FA1B0DEB3F1C997E5AC4605C222A6AFE3DA1392D62CF0C5DE7DF9B26D6"
+    ],
+    "remainingFailure": "The60 linked words comprise54 instruction-order differences in the seven constructors and six register-field words in the two outer-kind guards (a1 versus retail a3). Actual relocation-contract recording and both members complete Scenario-wave acceptance remain open. This source does not establish original C formal types, runtime reachability, residency or capacity.249A14 still has its three-word conditional blocker; both remain ASM production. No supported tooling defect, final verifier, hybrid exception, structural change or push.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Use the mutable stack-record pointer type, compute each BE field from a separate real low-byte local plus its directly read high byte, parse field A before field B, split the signed adjustment load and +=limit update, and write the four output expressions as base-first pointer additions. Preserve the word-valued local helper declaration and all original owners."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 10447,
+      "sha256": "C5E1650DEDE2002CC013CEE5783EE28D353FD703FF92D59D3170C503E33FC439"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "119B0ABEB37F095565A075B138CA2E475044E066216EDA8ADBC9F48434C4E081"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-02-func_0023A5EC-6ca3244354.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
