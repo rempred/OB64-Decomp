@@ -1,0 +1,101 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "D33CA0E72BF881AD1128A825CAC241D44A8AFE92A9EB35DE242F1EB355F0E664",
+  "observationId": "62ADAEA547965E70036C4905851B28DC074ECAE7ABC64CBBF11243D6F3D46AEE",
+  "symbol": "func_0022F2BC",
+  "authored": {
+    "context": "SilentCrane independently reconciled the ordinary D_801CE8F8 registry prerequisite under the existing renderer/validator contract. It creates no data owner and changes no descriptor, segmentation, original ASM, linker rule or tooling. Complete seventeen-member Combat W6 remains open.",
+    "effects": [
+      "body-coverage",
+      "interface-reuse",
+      "ordinary-symbol-contract"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "6E817CD2F887112D9E5FFDAB826196F108E5DEBFB56E257CA9D012D9C18FAF72",
+      "sourceSha256": "4033B195FE4212F98E6939A79E457EFAF5B0B0B2AB2BF757647484771597E91F"
+    },
+    "label": "complete-f2bc-current-linked-exact-ordinary-byte-symbol-contract",
+    "observedEffect": "Selected4033B195 is PURE_C, 708 bytes/177 instructions/frame40, with37 actual text relocations and no auxiliary table. Native.text720 has12 alignment bytes outside the primary. Focused canonical linking is exact SHA BE8E3AF1534DDFBA7430CE155ECC5E7A4136F67F125672DB02DDA866305537AE with MATCH relocation contract. Actual D_801CE8F8 records are HI16 at+0x21C, LO16 at+0x220, HI16 at+0x228 and LO16 at+0x22C. Retail F2BC ROM22F4D8/22F4DC loads this byte and22F4E4/22F4E8 stores its increment; EF50 ROM22EFB0/22EFB4 reads the same address. Accepted descriptor10 maps address801CE8F8 to z64ROM211D88 via1F0A30+[801CE8F8-801AD5A0], inside unchanged data_00211d7c.s [211D7C,2122A4), sourceSHA7C76DFF618CB3A8A51DC0BCD9DD1B34EFB94B392059022AF407A338CBDE2EEA6. Its original word at211D88 is02000000. Current registry collision check is empty.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_0022F2BC.s",
+        "sha256": "881948E3BC6BE5B746C351AA50820B8F8356A6FFEC19401F372271E6656F8477"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_0022EF50.s",
+        "sha256": "5D9ECEF33A9946B3394F09D1E89A818DE6E83EBD524017F4E84FEB9376882776"
+      },
+      {
+        "path": "asm/original/rev0/lib/data_00211d7c.s",
+        "sha256": "7C76DFF618CB3A8A51DC0BCD9DD1B34EFB94B392059022AF407A338CBDE2EEA6"
+      },
+      {
+        "path": "config/overlays/us_rev0.json",
+        "sha256": "AF454D26C8453ED2393731A4C19C4D23E655B0601BF102D9A3D55731101BFB9B"
+      },
+      {
+        "path": "docs/archive/matching-c-candidates/resumption-20260906/sources/func_0022F2BC-92b9076ea910.c",
+        "sha256": "92B9076EA91059E329A2049AF682CB9E67FF056F9F3929944128F8954B32BB6E"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Provisional focused proof only; B1F4/D14C remain nonexact and the complete W6 final verifier has not run. Address/access evidence does not establish runtime meaning, object layout, residency or reachability. D14C's later table-owner replacement retains its separate structural process.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Reuse the complete 92B9076E source with neutral parameter names, ordinary braces and accepted C478 unsigned index; retain extern u8 D_801CE8F8. Add only the confirmed name/address registry entry and this source's actually emitted relocation contract. Preserve original data ASM ownership."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 4842,
+      "sha256": "6E817CD2F887112D9E5FFDAB826196F108E5DEBFB56E257CA9D012D9C18FAF72"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "4033B195FE4212F98E6939A79E457EFAF5B0B0B2AB2BF757647484771597E91F"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-02-func_0022F2BC-d33ca0e72b.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

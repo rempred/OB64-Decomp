@@ -891,6 +891,11 @@
     { "symbol": "func_0022A4E0", "source": "src/battle/func_0022A4E0.c" },
     { "symbol": "func_0022A7B8", "source": "src/battle/func_0022A7B8.c" },
     { "symbol": "func_0022A964", "source": "src/battle/func_0022A964.c" },
-    { "symbol": "func_0022ADFC", "source": "src/battle/func_0022ADFC.c" }
+    { "symbol": "func_0022ADFC", "source": "src/battle/func_0022ADFC.c" },
+    { "symbol": "func_0022BFF8", "source": "src/battle/func_0022BFF8.c" },
+    { "symbol": "func_0022C78C", "source": "src/battle/func_0022C78C.c" },
+    { "symbol": "func_0022EC08", "source": "src/battle/func_0022EC08.c" },
+    { "symbol": "func_0022EDD4", "source": "src/battle/func_0022EDD4.c" },
+    { "symbol": "func_0022F2BC", "source": "src/battle/func_0022F2BC.c" }
   ]
 }
