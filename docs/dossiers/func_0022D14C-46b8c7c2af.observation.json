@@ -1,0 +1,89 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "46B8C7C2AF4C9AC98E029B3E7F3C599743F77C20DC0BF580EDAD094E215BE81A",
+  "observationId": "17585CABE2BDE5E46850520A6DE46C0BEFD342A87A78BB97669E72960A6DBF70",
+  "symbol": "func_0022D14C",
+  "authored": {
+    "context": "Current combined sourceCBF09D0A retains probability186 in s4 and helper94 in s8. Original consumers use unsigned hit comparison plus signed half/quarter probability scaling; the existing quarter arm already has a real working copy.",
+    "effects": [
+      "register-allocation",
+      "real-value-lifetime",
+      "copy-reuse"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "E7EBBB784A32179EB91B78CB7111CBBC1E8F95E4F92F8670C8D073E03336A18A",
+      "sourceSha256": "6C02E72B8B7C673A9631BFEA129C3B1A7A7803021A7486C1E3D896701CA3E687"
+    },
+    "label": "d14c-genuine-half-quarter-working-copy-spills-probability-counterexample",
+    "observedEffect": "46B8C7C2/source6C02E72B emits PURE_C6880/frame624/177textR; all131 call addresses remain ordered. Compared with baseline6872/frame616, both extent/frame grow8. Probe0C4CA279 maps probability186 to8refs/live86/cross9/order102, no hard assignment and native return stored atsp524; helper94 remains hard30(s8),18refs/live250/order101. Working copy190 becomes16refs/live36/cross3/order29/hard17(s1). Genuine shared copy changes the allocation order/spill set but does not give retail probabilitys8/helperword484. It is not selected.",
+    "parentCandidateId": "EAF0D068C63F357A1E664A3559A569DA701C631C58F0F793D15D70D91259513B",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_0022D14C.s",
+        "sha256": "EF14D6581AE474F7ABA21C09568FDFA0C69AEBAC234C09A9EF90D573AE14A8D3"
+      },
+      {
+        "path": "src/battle/func_0022B06C.c",
+        "sha256": "1F6B201AC62EC7929019F8713D4B92F548B456EE9EA6052C6930E631112CC6A3"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Wrong whole body/frame/register disposition; no canonical linked/owner/fullROM acceptance. The hypothesis that real denominator-copy reuse alone resolves the helper spill is falsified by this emitted result. Original-source uniqueness and other genuine lifetime structures remain unknown; baseline and all17/table gates preserved.",
+    "role": "counterexample",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Use that existing word as the actual half-arm denominator copy as well. Preserve every random/helper call, main probability, pointer/read order, arithmetic width and control predicate. Both arms are mutually exclusive; no new storage/address consumer/qualifier/fake weighting introduced."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 40316,
+      "sha256": "E7EBBB784A32179EB91B78CB7111CBBC1E8F95E4F92F8670C8D073E03336A18A"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "6C02E72B8B7C673A9631BFEA129C3B1A7A7803021A7486C1E3D896701CA3E687"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-03-func_0022D14C-46b8c7c2af.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

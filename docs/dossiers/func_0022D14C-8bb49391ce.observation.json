@@ -1,0 +1,91 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "8BB49391CEF7EE3A90F36014ACC3FD8AC04343FEBDA43BEE525D0A4B2BBAFA2F",
+  "observationId": "529504134B8C30FCCEB858E434F3FAE5F1E4FB9D35DB5CBE64145C2652BC7EBA",
+  "symbol": "func_0022D14C",
+  "authored": {
+    "context": "Unscaled shared working copy46B8C7C2 removes two probability references and spills probability rather than helper. Preserve baselineCBF09D0A and test one related genuine value-lifetime formulation instead of selecting that regression.",
+    "effects": [
+      "copy-reuse",
+      "real-value-lifetime",
+      "register-allocation"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "CB39A1DFC5C3352E9D1883DB7F1D3FCBFDB8E4B9B2111DD6EB7ACFF5D9E1A19D",
+      "sourceSha256": "B0454354E9EA11C8133F0ACCD5A31C6CE79067AC0BE7E896385402128F72129D"
+    },
+    "label": "d14c-shared-scaled-result-preserves-wrong-probability-preference",
+    "observedEffect": "8BB49391/sourceB0454354 emits PURE_C6876/frame616/177textR and all131 call addresses in order. Probe94B0D7A maps probability18610refs/live87/cross9/order99/hard20(s4); helper9418refs/live249/cross23/order103/hard30(s8); working19018refs/live36/cross3/order21/hard16(s0). All later conflicting allocnos still lack preference lines. Native7088DAD0 adds one word versus baseline and changes auxiliary table addends correspondingly; no linked/table acceptance is claimed. Maintaining the original ten probability references alone does not recover retails8 probability/helperword484.",
+    "parentCandidateId": "EAF0D068C63F357A1E664A3559A569DA701C631C58F0F793D15D70D91259513B",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_0022D14C.s",
+        "sha256": "EF14D6581AE474F7ABA21C09568FDFA0C69AEBAC234C09A9EF90D573AE14A8D3"
+      },
+      {
+        "path": "src/battle/func_0022B06C.c",
+        "sha256": "1F6B201AC62EC7929019F8713D4B92F548B456EE9EA6052C6930E631112CC6A3"
+      }
+    ],
+    "relatedCandidateIds": [
+      "46B8C7C2AF4C9AC98E029B3E7F3C599743F77C20DC0BF580EDAD094E215BE81A"
+    ],
+    "remainingFailure": "Wrong probability/helper homes and6876 versus6844-byte extent. Not selected. This specific scaled-result formulation fails; no general impossibility, original source uniqueness, tooling defect or semantic equivalence inferred. Baseline and full17/table gates remain open.",
+    "role": "counterexample",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Compute each actual random remainder using its existing random-result local, then store the real signed half/biased-quarter denominator result in the existing working word and compare the same unsigned values. Retain all three random calls, main probability, signed division/quarter bias, pointer/read order and every control path."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 40478,
+      "sha256": "CB39A1DFC5C3352E9D1883DB7F1D3FCBFDB8E4B9B2111DD6EB7ACFF5D9E1A19D"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "B0454354E9EA11C8133F0ACCD5A31C6CE79067AC0BE7E896385402128F72129D"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-03-func_0022D14C-8bb49391ce.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
