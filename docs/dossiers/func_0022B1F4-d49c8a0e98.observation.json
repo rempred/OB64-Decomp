@@ -1,0 +1,89 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "D49C8A0E98642CD0423AF1FE3A4EF223F19586906045AB87D357857DDEC35B8A",
+  "observationId": "D3AC4BBF4F2E031D1BA52144E94D93B679D975318EDFA842CACAAEF1C65B27CD",
+  "symbol": "func_0022B1F4",
+  "authored": {
+    "context": "Full-body7D81 terminal lifetime/control-flow intermediate has computed byte-address last-entry reads. Probe89FCCF4B shows first CSE sharing fp+32 with the final struct-copy destination; GoldOx815 proposed genuine member ARRAY_REF to fold offset80-4 into MEM.",
+    "effects": [
+      "address-calculation",
+      "common-subexpression",
+      "global-allocation"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "1C607A756DB2B09B0882E9B69DBF17E3A4EFE8CB729829FCE1243DED4CD3659E",
+      "sourceSha256": "48FA424D50CDE08975CD00A0C4BEA92AACE3E661D624EADB9CCAF384853C3027"
+    },
+    "label": "direct-last-member-array-ref-removes-final-copy-base-move",
+    "observedEffect": "D49C8A0E/watch memberrefs emits PURE_C3592/frame280/103 actual text relocations; all93 original external call addresses ordered. Final struct-copy extra base/move removed; native object text0AC3D687. 863/897 call-anchored text-LCS lines with branch/call destinations unresolved. Fresh official probe29F7E079 binds source48FA424D/expanded1C607A75. Separate last=data.buffer+sp94-1 control05AA9B68 is native-identical, so this syntactic pointer reassociation supplies no further effect.",
+    "parentCandidateId": "7D81A3B2A62685C64708C6759880D9D84F37CB99608114FD89FBF39118CC7B17",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_0022B1F4.s",
+        "sha256": "E95C054B2215FB0A8D8839B03555ED404DF386261BBAB6AA3C73BC039EB2233B"
+      },
+      {
+        "path": "src/lib/func_001F197C.c",
+        "sha256": "40370E8D97445A3CEE6641A31E494527CBE69DE39E7EA9B98B2D1EC81B727B39"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Unselected versus protected original-extent/frame F2C1C3DA. Two extra early publication stores, one missing guarded-call argument move, last-pointer arithmetic form/order and late t1/t2 spill parity remain; main output store cannot merge until registers agree. Inactive ASM target has symbolic-object evidence only, no linked/dataflow/semantic/ownership/whole-ROM acceptance. Full17 W6 and D14C structural table gates remain.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Replace all six last-entry byte-address read/pointer sites with data.buffer[sp94-1] and &data.buffer[sp94-1]. Keep the existing combined104-byte LocalData, all real reads/writes/loop paths and calls. Accepted197C initializes a nonnegative first output and at least one entry on defined valid return; arbitrary invalid programs, overflow and maximum capacity remain outside this static observation."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 19726,
+      "sha256": "1C607A756DB2B09B0882E9B69DBF17E3A4EFE8CB729829FCE1243DED4CD3659E"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "48FA424D50CDE08975CD00A0C4BEA92AACE3E661D624EADB9CCAF384853C3027"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-03-func_0022B1F4-d49c8a0e98.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
