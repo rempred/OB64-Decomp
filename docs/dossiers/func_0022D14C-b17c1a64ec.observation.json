@@ -1,0 +1,87 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "B17C1A64EC92F90CE2794E7768B5620E3050525FD61DA514DE8D6A9B13A47346",
+  "observationId": "BEC30AF0D4E1CFF47C715642A9F541C7D2B88F2B2F43021F8B27A058DF0655D6",
+  "symbol": "func_0022D14C",
+  "authored": {
+    "context": "Authentic probability/helper return mappings and complete required body reconciled; disjoint actual locals are reused without added carriers, qualifiers, ABI or compiler changes.",
+    "effects": [
+      "real-local-reuse",
+      "register-allocation",
+      "helper-spill"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "2FCD1B8BEB5E30A9759D678BB39C4EDEF7157EE2DA218E5E67613E71470F451A",
+      "sourceSha256": "0DA20F12B4A1A506139E5680F7107253632D7CFCB2D67D663549D0A9F7A8DDDE"
+    },
+    "label": "d14c-quarter-denominator-result-reuse-restores-local-arithmetic",
+    "observedEffect": "PURE_C6880/frame624/177textR; all131 original external call addresses ordered. Native textDAE15F11D3BA8ACF2D32AC5516E2CA0CD5FC38C592BD6DE7232946BED5E81683: restored quarter arithmetic order/register forms (divisorv1, mixedrandoma0, multu a0/v1, sra s1/s0/2 beforemfhi, remainder a0, sltu s1/a0/s1). Probabilitys8/helperword484/mode1arguments0/randomcaptures/actor/hit register forms persist. Frame remains624 and whole extent rises4 versus parent; result not selected whole-owner best. Native local scheduling effect measured; no new stage-probe/causal or linked-exactness claim.",
+    "parentCandidateId": "29AA3E6B71CAE58ADEF1D40DB74718EF6FAE1BE460C88C0CB5E12B30E1C65D0D",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_0022D14C.s",
+        "sha256": "EF14D6581AE474F7ABA21C09568FDFA0C69AEBAC234C09A9EF90D573AE14A8D3"
+      }
+    ],
+    "relatedCandidateIds": [
+      "EAF0D068C63F357A1E664A3559A569DA701C631C58F0F793D15D70D91259513B"
+    ],
+    "remainingFailure": "Whole owner6880/frame624 vs retail6844/frame616 remains nonexact, with compaction/address/other scheduling differences and canonical linked/sole ownership/placement/fresh/full-ROM gates open. Full17 wave plus approved native D14C table structural gates required; no component-sized wave accepted.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "From completed-word reuse component29AA, assign scaled quarter denominator to existing var_s1_844 immediately before real comparison, then assign comparison result to that same result local. Its u32 value and signed quarter calculation are unchanged; no added carrier or fake use."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 40299,
+      "sha256": "2FCD1B8BEB5E30A9759D678BB39C4EDEF7157EE2DA218E5E67613E71470F451A"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "0DA20F12B4A1A506139E5680F7107253632D7CFCB2D67D663549D0A9F7A8DDDE"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-03-func_0022D14C-b17c1a64ec.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
