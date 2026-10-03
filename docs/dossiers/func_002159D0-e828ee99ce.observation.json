@@ -1,0 +1,93 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "E828EE99CED8265EF310C9ED145793F4E9507FCE40D3BFDA4C1302952CA5B4F9",
+  "observationId": "ED3866A41417E4835BEAFF245391B1F27D120FEEEEA93E02F20A5FAFC4740A6D",
+  "symbol": "func_002159D0",
+  "authored": {
+    "context": "Current Actor pilot retains the original five-member wave. Production159D0 is the accepted exact hybrid, sole800-byte owner r4003. This source is byte-identical to the archived49A PURE_C reconstruction; current intake/body/producer evidence and complete original disassembly were reconciled before new experiments.",
+    "effects": [
+      "allocator-owner-order",
+      "full-body-control",
+      "private-production-parity"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "3BAA7508C704EB28F10E7E88FA1E78B53A03CF906CADAB5C2812B4D41EE43726",
+      "sourceSha256": "0069119A8570AB793446B1B77DB688871707BAF9B95516862C25D41A2285407D"
+    },
+    "label": "complete-49a-actor-control-reproduced-with-private-production-parity",
+    "observedEffect": "Private run2FE09E4604A33E36BD6E497351EBBB9B7C06E5792DC07B3B31C0B4D1970226B0 classifies PURE_C and emits800 bytes/frame40/79 relocations. Authenticated isolated and actual canonical linked target SHA both34783889500FC42BD2493917526D08E39080C4C77DA12B095B2A03CA96081C34. Both show11 unequal bytes in3 reordered instructions at34/38/3C; owner HI/LO relocation offsets are38/3C rather than34/38. Canonical map proves one complete C function, one contribution, zero fallback/fill and unchanged placement. Cold private preparation117823ms, compile122ms. Cold canonical link357.9s with729 sibling cache misses. Exact production source/config/siblings restored; verified CURRENT7E9 remains unchanged.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "docs/archive/matching-c-candidates/2026-09-04-func_002159D0-49a839eaea.c",
+        "sha256": "0069119A8570AB793446B1B77DB688871707BAF9B95516862C25D41A2285407D"
+      },
+      {
+        "path": "docs/dossiers/func_002159D0-b64e0169ad.md",
+        "sha256": "1D7AED0825B889B70928CED85897FB8275937CC2BFF3446016B9F658B70167BB"
+      },
+      {
+        "path": "docs/matching-c/allocator-scheduler-trace.md",
+        "sha256": "E389C2FF6D24DE5BD4A6E3855AC9F2E1B3EF6DFDB32FF4A4FCF27470C2FDC202"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Owner read remains after allocator-result save rather than before it. Raw bytes, relocation-masked bytes and linked diagnostics are nonexact; this baseline is research only, no new full-ROM verifier or Actor acceptance. Preserve the established byte-loop CFG workaround and all downstream behavior. Prior carrier/qualifier/prototype/argument-assignment forms remain negatives.",
+    "role": "pair-baseline",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "No new source change: reproduce the complete existing49A control under the accepted current private-check tooling, then temporarily activate it for one early normal canonical linked diff during a Director-confirmed quiet period, restoring the accepted hybrid exactly afterward."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 5261,
+      "sha256": "3BAA7508C704EB28F10E7E88FA1E78B53A03CF906CADAB5C2812B4D41EE43726"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "0069119A8570AB793446B1B77DB688871707BAF9B95516862C25D41A2285407D"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-03-func_002159D0-e828ee99ce.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

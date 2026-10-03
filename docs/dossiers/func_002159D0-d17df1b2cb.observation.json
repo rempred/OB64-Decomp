@@ -1,0 +1,98 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "D17DF1B2CBE2A2140FDB5AB5D426F12EA26F66C79505FB2268FED5B847AF7833",
+  "observationId": "675E3D313B078608C638556E2CB19F7881505868C455E3BB51BF3A64C362C87D",
+  "symbol": "func_002159D0",
+  "authored": {
+    "context": "The current complete49A159D0 PURE_C control has800 bytes/frame40/79R and only11 linked bytes different in the allocator-owner ordering pocket. Accepted FFE80 real-short reuse changed allocation priority across disjoint real ranges. That allocation result is a transfer lead, not proof that an Actor scheduling dependency will change.",
+    "effects": [
+      "real-local-reuse",
+      "register-allocation-change",
+      "allocator-owner-order",
+      "early-copy-collapse"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "38DF5B3BB98B824A5AB1565DE73E046A5718514012AC5E39358B3BC1D4BCAB27",
+      "sourceSha256": "EF7443E8D7EC9E992C6B6455B5E2F37F872E64D8483FBF9756AF65DD001E702F"
+    },
+    "label": "real-pointer-reuse-changes-allocation-but-return-transfer-collapses",
+    "observedEffect": "Private watch emits808 bytes/frame40/79R, PURE_C, authenticated isolated-link diagnostics,740 differing bytes/199 unequal aligned instructions due the shifted/changed body. All14 external call symbols and their sequence remain identical to the control. Watch27.511s, warm context6547ms with711 cached sibling CPP hits and one previous publication retry succeeding; compile99ms. Probe B7885D3DE193FF9BFB05CFC13B96D60AB1AF36ECF7D032FF5EEE1EACC625532C records initial return-save UID29 to pseudo82 before owner UID32, followed by post-owner snapshot transfer UID40 to pseudo83. By combine UID40 disappears; pseudo82 carries11refs/life39 across6calls, receives hard s1, while a third loop constant now requires s4, adding one save/restore pair. Final code still saves the return before owner LUI/LW. The intended separate late transfer did not survive; real reuse affected allocation without closing this dependency.",
+    "parentCandidateId": "E828EE99CED8265EF310C9ED145793F4E9507FCE40D3BFDA4C1302952CA5B4F9",
+    "references": [
+      {
+        "path": "docs/archive/matching-c-candidates/2026-09-04-func_002159D0-49a839eaea.c",
+        "sha256": "0069119A8570AB793446B1B77DB688871707BAF9B95516862C25D41A2285407D"
+      },
+      {
+        "path": "docs/dossiers/func_001FFE80-e81efbb7b5.md",
+        "sha256": "5FFDE1EEC496B2F8BFCC6D81132C192EDFD2371868DF80B245822D0A230D7ADB"
+      },
+      {
+        "path": "docs/Plans/task-logs/combat-actor-retry-preparation-r1.md",
+        "sha256": "39D46ADD050168C55072925DAF03E4384FFC725A2975106F7BCF8A43137EA7B7"
+      },
+      {
+        "path": "docs/matching-c/allocator-scheduler-trace.md",
+        "sha256": "E389C2FF6D24DE5BD4A6E3855AC9F2E1B3EF6DFDB32FF4A4FCF27470C2FDC202"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Do not select the worse candidate or propagate this exact source form. Keep the complete800-byte control recoverable. This observation rejects the proposed late-transfer mechanism for this mapping; worse output alone does not disprove all real-variable reuse. No canonical activation, final verifier, semantic claim, tooling defect, fabricated alias, padding or assembler escape. The original complete five-member Actor PURE_C wave stays open.",
+    "role": "transfer-result",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Reuse the actual void-pointer allocation temporary as the actual later stream context-pointer temporary after all snapshot copy/restoration/free operations. Remove only the separate temp_v0_83 declaration, replace its real definitions/uses with phase_pointer, and retain the original first-copy argument assignment. No added memory action, synthetic use, pointer arithmetic, qualifier, prototype, ABI or branch change."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 5256,
+      "sha256": "38DF5B3BB98B824A5AB1565DE73E046A5718514012AC5E39358B3BC1D4BCAB27"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "EF7443E8D7EC9E992C6B6455B5E2F37F872E64D8483FBF9756AF65DD001E702F"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-03-func_002159D0-d17df1b2cb.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
