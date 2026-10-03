@@ -1,0 +1,98 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "36E8F5B010B70276CC4CB923FD79F02A27A127A215B58462BC677A5D7ED2EB91",
+  "observationId": "F0813C46EC0B23C570E48A9C737BCB091E071170793EEE9949F33B8517B05FB7",
+  "symbol": "func_00217BA8",
+  "authored": {
+    "context": "Original complete1032-byte/frame32/107R17BA8 owner remains exact hybrid in production during private work. The retained complete pure reference and current source differ by the known allocator-owner scheduling site; full owner and threshold/state/input/restoration paths are reconciled. All three original allocator arguments remain.",
+    "effects": [
+      "pure-c",
+      "real-operation-duplication",
+      "owner-order-restored",
+      "production-linked-exact"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "CAC1480D9354889CA1402E13279F176450C3091326621A0A3D50BF8F19C034EF",
+      "sourceSha256": "87B6BCC824481FCD13C45F6FA5272E27D60836575332C946B3699229F79C0DA2"
+    },
+    "label": "real-operation-bit-branch-transfers-to-threshold-actor-production-exact",
+    "observedEffect": "First private17 trial is exact: run8AA5B4D71A57DFA55567673D1368D5FC07A2AD66E7B168D92F69558DCC525297, PURE_C/full1032/frame32/no tail, actual/expected107R complete and exact, rawExact=false/masked=true/authenticated-linked=true. Root normal production focused diff44.305s independently proves zero unequal bytes/words, targetSHAFE23E341C7625CCBE953CE268D858A5ACF66FC2C012F4A8C0D82802A1F8E63D8, all107 canonical relocations, complete sole C function/owner and accepted placement. Expanded source CAC1480D9354889CA1402E13279F176450C3091326621A0A3D50BF8F19C034EF agrees with the handoff. All original threshold/state/input branches and three allocator arguments are preserved. Accepted hybrid/protected inputs restored exactly afterward; no final-form compiler-stage lifetime is claimed.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "docs/dossiers/func_002158E4-fe58db22c0.md",
+        "sha256": "75C0DD969260820F283C7A673FC099C3C8B2443440DBA29133714FE7859F1666"
+      },
+      {
+        "path": "docs/archive/matching-c-candidates/2026-09-04-func_00217BA8-b4df0a7d7f.c",
+        "sha256": "00168420BDA77475FA8045AB47DA8695508AD1C6F9B8D017CA2BD6CD30331A99"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_00217BA8.s",
+        "sha256": "96532F9862369E5DD3C8507C14BB48DAC2D1FD3DB726D113B6ED00CEFE1DD5EC"
+      },
+      {
+        "path": "docs/Plans/task-logs/combat-actor-retry-preparation-r1.md",
+        "sha256": "39D46ADD050168C55072925DAF03E4384FFC725A2975106F7BCF8A43137EA7B7"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Provisional production-linked exact PURE_C; the entire original five-member Actor wave still awaits combined activation and one normal final verifier. Other sites require their own complete source/context evidence. No pointer-bit/runtime meaning, ABI change, tooling bypass, altered owner or per-function full-ROM build/verifier.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Transfer the measured158E4 real-operation duplication: remove the allocation carrier and empty assembly constraint, assign the allocator result directly to snapshot, read owner after allocation, and duplicate context clear/first copy/saved-byte load under an equivalent owner low-bit predicate. Both outcomes perform the same real operations. Keep all remaining source effects and comment the workaround without bit semantics."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 6124,
+      "sha256": "CAC1480D9354889CA1402E13279F176450C3091326621A0A3D50BF8F19C034EF"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "87B6BCC824481FCD13C45F6FA5272E27D60836575332C946B3699229F79C0DA2"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-03-func_00217BA8-36e8f5b010.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

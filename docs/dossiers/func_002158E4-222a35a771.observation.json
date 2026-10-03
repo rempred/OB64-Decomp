@@ -1,0 +1,97 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "222A35A77142A2BA31A1A28E10AC462FFA2158CAF2023803E83E27C9A4371768",
+  "observationId": "B4481B38EB61C2724B84693E481D9268D1D11C567BF64EA70BB66E6760CB97F5",
+  "symbol": "func_002158E4",
+  "authored": {
+    "context": "Complete original236-byte/frame32 Actor owner,27R; active exact hybrid remains accepted. The retained a493 source was reconciled with full ASM and current owner before new source experiments.",
+    "effects": [
+      "allocator-owner-order",
+      "full-body-control",
+      "private-production-parity"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "764A65FBD12335C46FBC52804A6712117F536522ABECE6CC441939B762947366",
+      "sourceSha256": "C59E098C0633E9DE88F4ABB550A6CB124BC315584D254776C4ACE4AEDAFB91A1"
+    },
+    "label": "complete-small-actor-control-current-private-production-parity",
+    "observedEffect": "PURE_C; complete236 bytes/frame32/27R; authenticated isolated and normal production link agree on11 unequal bytes/3 words18/1C/20, linked SHA CB2A2D6F8D2B7E24664D6D2F84C13880851B30F8DA3DF46B663B27A69A7312C6. Canonical map has one complete C contribution, no fallback/fill, accepted placement. Actual owner HI/LO offsets shift4bytes. Production source/config restored exactly. No final wave verifier.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "docs/Plans/task-logs/combat-actor-retry-preparation-r1.md",
+        "sha256": "39D46ADD050168C55072925DAF03E4384FFC725A2975106F7BCF8A43137EA7B7"
+      },
+      {
+        "path": "docs/Plans/task-logs/combat-actor-branch-diagnostics-r1.md",
+        "sha256": "AE816EFCF1246A0BA3812FDF6CD2F28AC94CF768DAAFFE847BB9E0CFEF8E3665"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_002158E4.s",
+        "sha256": "AC99C5DE4D7E8486559918E7F3078450E7DDA05475162B70A94D252035D9C1C6"
+      },
+      {
+        "path": "docs/matching-c/allocator-scheduler-trace.md",
+        "sha256": "E389C2FF6D24DE5BD4A6E3855AC9F2E1B3EF6DFDB32FF4A4FCF27470C2FDC202"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Return-save precedes owner LUI/LW. Control is nonexact research; matching acceptance and the original five-member PURE_C wave remain open.",
+    "role": "pair-baseline",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Reproduce the unchanged complete a493 control under current private tooling and one early normal canonical focused link, then restore the accepted hybrid exactly."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 1024,
+      "sha256": "764A65FBD12335C46FBC52804A6712117F536522ABECE6CC441939B762947366"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "C59E098C0633E9DE88F4ABB550A6CB124BC315584D254776C4ACE4AEDAFB91A1"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-03-func_002158E4-222a35a771.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

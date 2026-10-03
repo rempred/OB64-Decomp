@@ -1,0 +1,97 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "BF5E19C178481A0B77B6CE75CF9FB61927ECAF411EEC3D9EF6B9E4E30FFA7890",
+  "observationId": "B682AF8F189829019A91D152F051A2D841FA9A067CD62DE66819471DE1BDCE6F",
+  "symbol": "func_00215CF0",
+  "authored": {
+    "context": "Current standalone3400-byte/frame320/295R owner,850 instructions,57 external calls. Original complete20B pure reference and accepted current hybrid have been reconciled; earlier3236-byte incomplete sources are superseded.",
+    "effects": [
+      "allocator-owner-order",
+      "full-body-control",
+      "two-site-residual"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "F78C82FFA6E040DA86FFFF8B94B3634EDBB6C4C7A372809D18C85AA4613348F6",
+      "sourceSha256": "D577283569C3C7EE41332CA5281C161C6FB4362E27DCCA6068C7CCFD96ACF409"
+    },
+    "label": "complete-two-site-actor-pure-control-current-residual",
+    "observedEffect": "Fresh baseline watch85EC8274E1A45FEDF0F6E3E101063138F06044CABA58CE5863CADD57702D6655 emits PURE_C3400/frame320/295R with22 unequal linked bytes/6 instructions, exactly the two owner/save pockets4AC..4B8 andC4C..C58. Full850-instruction body and57 original external calls are retained.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "docs/Plans/task-logs/combat-actor-retry-preparation-r1.md",
+        "sha256": "39D46ADD050168C55072925DAF03E4384FFC725A2975106F7BCF8A43137EA7B7"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_00215CF0.s",
+        "sha256": "92072A039BCC5DB58214CCE013FD63DDBCE749EC6FFFAF069E6CA09AF66A3514"
+      },
+      {
+        "path": "docs/dossiers/func_002159D0-7a21444874.md",
+        "sha256": "FFDF3736300CA8717A2AB33E1B3C6363EEDC6D96EF27AA2F8C43137C05E4E1FD"
+      },
+      {
+        "path": "docs/dossiers/func_002158E4-fe58db22c0.md",
+        "sha256": "75C0DD969260820F283C7A673FC099C3C8B2443440DBA29133714FE7859F1666"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Both allocator-result saves precede owner loads. This baseline is nonexact research, not source acceptance; original five-member Actor wave remains open.",
+    "role": "pair-baseline",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Remove only both empty assembler constraints and allocation carriers from current typed source, assigning real snapshots directly. Preserve all original calls, state7 cursor split, one-argument55234 usage, ten-argument setup, merged stores and full body."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 22081,
+      "sha256": "F78C82FFA6E040DA86FFFF8B94B3634EDBB6C4C7A372809D18C85AA4613348F6"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "D577283569C3C7EE41332CA5281C161C6FB4362E27DCCA6068C7CCFD96ACF409"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-03-func_00215CF0-bf5e19c178.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

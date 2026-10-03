@@ -1,0 +1,97 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "D9C32D5CD0E1CD7B13ACA55E96DC9E7E9DA0036DAFBF05806535CF55D46186FB",
+  "observationId": "E38B782AB7BF6FCD3F79793FB0A1E14561104F52EF603781BCDF0FA3A6D2536C",
+  "symbol": "func_002158E4",
+  "authored": {
+    "context": "Small Actor control is complete236/frame32/27R with only allocator-owner residual. An equivalent owner-conditioned duplication of real operations is investigated after local-only duplication proved neutral.",
+    "effects": [
+      "real-operation-duplication",
+      "null-value-propagation",
+      "extra-branch"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "4733545AE1AD82317DBC6A85243567115047B9A3CE07DF9C456D8A2B9A79E112",
+      "sourceSha256": "9322DFAB41CB382DDDBA476A0EFD570ADF52FC4DDB8EF92A5DD32116CE9FCE12"
+    },
+    "label": "real-copy-save-duplication-null-arm-specializes-copy-argument",
+    "observedEffect": "Private watch29CECB9ED92E4ED81628F634FC079111E2018D5ACC1CED817E34E39BFE98AB49 emits244 bytes,197 unequal linked bytes/53 aligned instructions. The desired saved-register choices return, but the null arm propagates zero into the first copy argument and retains an extra branch. This is a source counterexample to using a full-null predicate for the exact recipe; not an assertion that operation duplication cannot work.",
+    "parentCandidateId": "222A35A77142A2BA31A1A28E10AC462FFA2158CAF2023803E83E27C9A4371768",
+    "references": [
+      {
+        "path": "docs/Plans/task-logs/combat-actor-retry-preparation-r1.md",
+        "sha256": "39D46ADD050168C55072925DAF03E4384FFC725A2975106F7BCF8A43137EA7B7"
+      },
+      {
+        "path": "docs/Plans/task-logs/combat-actor-branch-diagnostics-r1.md",
+        "sha256": "AE816EFCF1246A0BA3812FDF6CD2F28AC94CF768DAAFFE847BB9E0CFEF8E3665"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_002158E4.s",
+        "sha256": "AC99C5DE4D7E8486559918E7F3078450E7DDA05475162B70A94D252035D9C1C6"
+      },
+      {
+        "path": "docs/matching-c/allocator-scheduler-trace.md",
+        "sha256": "E389C2FF6D24DE5BD4A6E3855AC9F2E1B3EF6DFDB32FF4A4FCF27470C2FDC202"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Extra branch/value specialization makes this candidate nonexact. Keep the complete control and subsequent exact low-bit form. No bit/null runtime safety or gameplay meaning is inferred; no canonical activation/final verifier of this source.",
+    "role": "counterexample",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Assign allocator result directly to snapshot; read owner after allocation; duplicate context clear, first copy and saved-byte load in both arms of a full owner null predicate. All remaining behavior stays unchanged."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 1209,
+      "sha256": "4733545AE1AD82317DBC6A85243567115047B9A3CE07DF9C456D8A2B9A79E112"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "9322DFAB41CB382DDDBA476A0EFD570ADF52FC4DDB8EF92A5DD32116CE9FCE12"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-03-func_002158E4-d9c32d5cd0.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

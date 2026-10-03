@@ -82,6 +82,7 @@ void func_00215CF0(void) {
     u8 temp_v1_77;
     u8 var_v0_253;
     void *temp_a1_14;
+    void *temp_a1_328;
     void *temp_a1_853;
     void *temp_a2_410;
     void *temp_a2_76;
@@ -248,12 +249,9 @@ block_25:
                         (*(s8 *)((s8 *)(D_801CE8BC) + (0x6087))) = 1;
                         D_801CE8C4 = (s32) temp_s0_172;
                         temp_s0_325 = func_80070F30(0x6094);
-                        /* KMC workaround: this word-array clear and direct owner
-                         * argument restore retail instruction order at this site.
-                         * The allocator still precedes the owner read.
-                         */
-                        ((s32 *)D_801CE8C0)[0x205] = 0;
-                        func_00023460(D_801CE8BC, temp_s0_325, 0x6094);
+                        temp_a1_328 = D_801CE8BC;
+                        (*(s32 *)((s8 *)(D_801CE8C0) + (0x814))) = 0;
+                        func_00023460(temp_a1_328, temp_s0_325, 0x6094);
                         temp_s1_335 = (*(u8 *)((s8 *)(D_801CE8C0) + (0x82E)));
                         func_801EFAAC();
                         (*(u8 *)((s8 *)(D_801CE8C0) + (0x82E))) = temp_s1_335;
@@ -550,18 +548,9 @@ block_120:
 block_122:
         temp_s0_850 = func_80070F30(var_a0_resource);
         temp_a1_853 = D_801CE8BC;
-        /* KMC scheduling workaround: identical operations in both arms.
-         * The test disappears; no meaning is assigned to this owner bit.
-         */
-        if ((u32)temp_a1_853 & 1) {
-            (*(s32 *)((s8 *)(D_801CE8C0) + (0x814))) = 0;
-            func_00023460(temp_a1_853, temp_s0_850, 0x6094);
-            temp_s1_860 = (*(u8 *)((s8 *)(D_801CE8C0) + (0x82E)));
-        } else {
-            (*(s32 *)((s8 *)(D_801CE8C0) + (0x814))) = 0;
-            func_00023460(temp_a1_853, temp_s0_850, 0x6094);
-            temp_s1_860 = (*(u8 *)((s8 *)(D_801CE8C0) + (0x82E)));
-        }
+        (*(s32 *)((s8 *)(D_801CE8C0) + (0x814))) = 0;
+        func_00023460(temp_a1_853, temp_s0_850, 0x6094);
+        temp_s1_860 = (*(u8 *)((s8 *)(D_801CE8C0) + (0x82E)));
         func_801EFAAC();
         (*(u8 *)((s8 *)(D_801CE8C0) + (0x82E))) = temp_s1_860;
         func_00023460(temp_s0_850 + 0x1C4, D_801CE8BC + 0x1C4, 0x1360);
@@ -580,3 +569,4 @@ state_11_tail:
         }
         return;
 }
+

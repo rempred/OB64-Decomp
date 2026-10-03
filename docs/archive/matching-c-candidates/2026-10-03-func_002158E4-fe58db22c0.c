@@ -42,3 +42,7 @@ void func_002158E4(void)
     func_800712C4(snapshot);
     func_0021C3B0();
 }
+
+
+
+

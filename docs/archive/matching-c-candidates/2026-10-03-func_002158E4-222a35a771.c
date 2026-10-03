@@ -17,21 +17,9 @@ void func_002158E4(void)
 
     snapshot = func_80070F30(0x6094);
     owner = D_801CE8BC;
-    /* KMC scheduling workaround: keep these identical operations in both
-     * arms. A full null test propagates zero into the copy argument and
-     * leaves a branch; this bit test disappears and preserves retail order.
-     * The bit has no inferred meaning, and both paths perform the same work.
-     */
-    if ((unsigned int)owner & 1) {
-        *(int *)(D_801CE8C0 + 0x814) = 0;
-        func_00023460(owner, snapshot, 0x6094);
-        saved_value = D_801CE8C0[0x82E];
-    } else {
-        *(int *)(D_801CE8C0 + 0x814) = 0;
-        func_00023460(owner, snapshot, 0x6094);
-        saved_value = D_801CE8C0[0x82E];
-    }
-
+    *(int *)(D_801CE8C0 + 0x814) = 0;
+    func_00023460(owner, snapshot, 0x6094);
+    saved_value = D_801CE8C0[0x82E];
     func_801EFAAC();
     D_801CE8C0[0x82E] = saved_value;
     func_00023460(snapshot + 0x1C4, (u8 *)D_801CE8BC + 0x1C4, 0x1360);

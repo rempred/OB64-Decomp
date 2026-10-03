@@ -31,6 +31,14 @@ docs/archive/matching-c-candidates/2026-09-08-func_001F6098-df6c8749cc.c -text
 docs/archive/matching-c-candidates/2026-09-29-func_001F6098-3151062665.c -text
 docs/archive/matching-c-candidates/2026-09-29-func_001977E0-e2100feb45.c -text whitespace=-blank-at-eol,cr-at-eol
 
+# Actor research pairs retain raw line endings and EOF bytes bound by observations.
+docs/archive/matching-c-candidates/2026-10-03-func_002158E4-d9c32d5cd0.c -text whitespace=cr-at-eol,-blank-at-eof
+docs/archive/matching-c-candidates/2026-10-03-func_002158E4-fe58db22c0.c -text whitespace=cr-at-eol,-blank-at-eof
+docs/archive/matching-c-candidates/2026-10-03-func_00215CF0-5288d37cc8.c -text whitespace=cr-at-eol,-blank-at-eof
+docs/archive/matching-c-candidates/2026-10-03-func_00215CF0-bf5e19c178.c -text whitespace=cr-at-eol,-blank-at-eof
+docs/archive/matching-c-candidates/2026-10-03-func_00215CF0-fd09bdd799.c -text whitespace=cr-at-eol,-blank-at-eof
+docs/archive/matching-c-candidates/2026-10-03-func_00217BA8-36e8f5b010.c -text whitespace=cr-at-eol,-blank-at-eof
+
 # CBDC source comparisons retain the authored line endings bound by their observations.
 docs/archive/matching-c-candidates/2026-09-09-func_0020CBDC-ee88c7be30.c -text whitespace=cr-at-eol
 docs/archive/matching-c-candidates/2026-09-09-func_0020CBDC-10022d5ff5.c -text whitespace=cr-at-eol

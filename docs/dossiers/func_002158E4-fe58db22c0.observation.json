@@ -1,0 +1,100 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "FE58DB22C0808CC3EFD809D058B98BB9B22F2ACA46CF489A54FB7DCC632C6159",
+  "observationId": "CB7593E88FE7D9E4D37AE8EEA5C7854B8A0511E99D7FCDC7B3D047161655CF55",
+  "symbol": "func_002158E4",
+  "authored": {
+    "context": "Original five-member Actor wave; this target is the sole complete236-byte/frame32/27R owner. Best private source SHA560A3491355340EC2A1BCFAAC9A520C7D7DCAEC63E28B4BC5792E73F4121AE4C. Prior compiler trace establishes the return-copy/owner LUID tie; local-only duplicated transfer was neutral.",
+    "effects": [
+      "pure-c",
+      "real-operation-duplication",
+      "owner-order-restored",
+      "production-linked-exact"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "023F8FAD021378577BC8C31EFCEE0D7B30CD50AB9DD414C68063EEE6F6AA9794",
+      "sourceSha256": "560A3491355340EC2A1BCFAAC9A520C7D7DCAEC63E28B4BC5792E73F4121AE4C"
+    },
+    "label": "real-operation-bit-predicate-restores-owner-order-production-exact",
+    "observedEffect": "Ready private run3D8F8EC4FDA47B2454190CE675AB3DC86DFFFC6982F4A047E2697414BB80A9B8: PURE_C236/frame32,actual/expected27R exact,rawExact=false,rawRelocationMaskedExact=true,authenticated-isolated-link exact=true. Root early normal canonical link56.399s independently proves exact target SHA2F0A1C6BC565B80B40015D55DD7944DC2C2C842E488763608D932D9BBCE6A8BD,zero unequal bytes/words,all27 canonical relocations,complete sole C owner r4002,one contribution,zero fallback/fill and unchanged placement. Accepted hybrid/protected inputs restored exactly afterward. Store-anchored earlier probe retains branch/stores through schedule2 and removes branch by late-jump; the exact final form has no stage probe, so its elimination stage is explicitly unknown.",
+    "parentCandidateId": "222A35A77142A2BA31A1A28E10AC462FFA2158CAF2023803E83E27C9A4371768",
+    "references": [
+      {
+        "path": "docs/Plans/task-logs/combat-actor-retry-preparation-r1.md",
+        "sha256": "39D46ADD050168C55072925DAF03E4384FFC725A2975106F7BCF8A43137EA7B7"
+      },
+      {
+        "path": "docs/Plans/task-logs/combat-actor-branch-diagnostics-r1.md",
+        "sha256": "AE816EFCF1246A0BA3812FDF6CD2F28AC94CF768DAAFFE847BB9E0CFEF8E3665"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_002158E4.s",
+        "sha256": "AC99C5DE4D7E8486559918E7F3078450E7DDA05475162B70A94D252035D9C1C6"
+      },
+      {
+        "path": "docs/matching-c/allocator-scheduler-trace.md",
+        "sha256": "E389C2FF6D24DE5BD4A6E3855AC9F2E1B3EF6DFDB32FF4A4FCF27470C2FDC202"
+      }
+    ],
+    "relatedCandidateIds": [
+      "D9C32D5CD0E1CD7B13ACA55E96DC9E7E9DA0036DAFBF05806535CF55D46186FB"
+    ],
+    "remainingFailure": "Provisional production-linked exact PURE_C, not completed-wave matching acceptance. All original five members must become ready and pass one normal combined verifier. Other allocator sites have not yet been proven; no broader runtime or pointer-bit interpretation follows. Ignore accidental store-only-invalid source with uninitialized pointer. No full-ROM verification repeat for this publication.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Read owner after allocation, then duplicate the three existing operations (context+814 clear, first copy, saved-byte load) under an initialized-owner low-bit predicate. Both arms are identical. The low-bit test avoids the measured full-null argument specialization. Keep every other call/reload/restore/free/bridge and explain the compiler workaround without bit semantics."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 1227,
+      "sha256": "023F8FAD021378577BC8C31EFCEE0D7B30CD50AB9DD414C68063EEE6F6AA9794"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "560A3491355340EC2A1BCFAAC9A520C7D7DCAEC63E28B4BC5792E73F4121AE4C"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-03-func_002158E4-fe58db22c0.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

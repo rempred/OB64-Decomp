@@ -1,0 +1,104 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "7A21444874AA41280614471E582BEA66C7A3D1852B0795570A0F9D98B4761F4E",
+  "observationId": "CF9AEB92C45513F22224C59D515029ECFEDB2D7E49AA44858964690B7551DD13",
+  "symbol": "func_002159D0",
+  "authored": {
+    "context": "Original complete800-byte/frame40/79R159D0 Actor owner has a known three-word allocator-owner ordering residual in the faithful49A PURE_C control. Real-pointer reuse changed allocation but lost its late transfer; prior scalar carrier/argument-assignment forms were negative. GoldOx mail783 derives a distinct two-part hypothesis from the retained schedule1 trace and compiler source, rather than repeating the schedule2 LUID tie description.",
+    "effects": [
+      "word-element-access",
+      "direct-owner-argument",
+      "owner-order-restored",
+      "isolated-linked-exact"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "388F31A4C95FDC139AC3C57B3073D3218942261A9BB824461914D5199971E332",
+      "sourceSha256": "65DF800A9C113B244B4BCB253456EC5F41C5A82C5A649C9CA72F8D5D95F7D32F"
+    },
+    "label": "coupled-word-element-clear-direct-owner-argument-private-exact",
+    "observedEffect": "First coupled-form private watch31.065s (warm preparation7954ms) produces PURE_C/full800/frame40/79 relocations with rawRelocationMaskedExact=true, available authenticated isolated link exact=true and zero byte/instruction differences. Linked SHA3E34625B1C1630EA8A974ABF082D1AA19123E62D4A60B674D821DE3892BA06E8 equals retail; run3EBA612B6477CC9541CA32A7235EDCE2B59B19CE4152D0D69FF85BEBF6DF8D76. All original200 instructions/call/branch/marker/restoration coverage is present. Gold's hand analysis predicts the word element sets MEM_IN_STRUCT and direct argument permits combine to fold the owner load, removing its birthing priority and store anti-dependence. That detailed pass mechanism has not yet been measured for this exact source; neither half alone was compiled here. The combined emitted result is established, mechanism and cross-site transfer remain separately bounded.",
+    "parentCandidateId": "E828EE99CED8265EF310C9ED145793F4E9507FCE40D3BFDA4C1302952CA5B4F9",
+    "references": [
+      {
+        "path": "docs/dossiers/func_002159D0-e828ee99ce.md",
+        "sha256": "BC28721E9D37D6E4809F421E688E74B15811451BDDB253EB70E50A249B36FB1B"
+      },
+      {
+        "path": "docs/dossiers/func_002159D0-d17df1b2cb.md",
+        "sha256": "631960B77212E66C5D49FC1564E9AEA2CA3A59E82CF6B92628987EB4EC069D5A"
+      },
+      {
+        "path": "docs/matching-c/allocator-scheduler-trace.md",
+        "sha256": "E389C2FF6D24DE5BD4A6E3855AC9F2E1B3EF6DFDB32FF4A4FCF27470C2FDC202"
+      },
+      {
+        "path": "docs/Plans/task-logs/combat-actor-retry-preparation-r1.md",
+        "sha256": "39D46ADD050168C55072925DAF03E4384FFC725A2975106F7BCF8A43137EA7B7"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_002159D0.s",
+        "sha256": "C4E97E05CF28A4F97A58ACC38EDCF51362EC9ECC1B1BDA04DCD3BF2DC448F1A2"
+      }
+    ],
+    "relatedCandidateIds": [
+      "D17DF1B2CBE2A2140FDB5AB5D426F12EA26F66C79505FB2268FED5B847AF7833"
+    ],
+    "remainingFailure": "Private exact is provisional. Normal production focused linking waits for the Director's current CF0 worker drain; accepted hybrid and shared inputs stay unchanged. Entire original five-member Actor wave still requires combined activation and one normal final verifier. No runtime/resource alias or pointer-bit interpretation, source-flag exception, owner/table change, redundant full-ROM build or general recipe acceptance.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Spell the same real context word clear as ((s32*)D_801CE8C0)[0x205]=0 and load D_801CE8BC directly as the first copy argument. Remove only the now-unused owner local; keep the allocation/snapshot argument assignment, byte-loop workaround and entire remaining source/ABI. Allocator runs before the owner read. No struct/padding, fabricated alias, volatile access, helper contract or compiler/tool change."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 5206,
+      "sha256": "388F31A4C95FDC139AC3C57B3073D3218942261A9BB824461914D5199971E332"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "65DF800A9C113B244B4BCB253456EC5F41C5A82C5A649C9CA72F8D5D95F7D32F"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-03-func_002159D0-7a21444874.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

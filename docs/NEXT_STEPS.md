@@ -14,8 +14,11 @@ opt-in because its usefulness thresholds were not met.
 Sol retains sole production source/build ownership with one private candidate worker in a separate
 top-level chat monitored and coordinated by Astra. The
 complete six-member Squad construction wave and three-member Combat context wave are accepted
-at `75990627` and `5accc882`; do not repeat their unchanged verification. Next is the complete
-five-member Combat Actor wave under the authorized parallel candidate pilot. Use the
+at `75990627` and `5accc882`; do not repeat their unchanged verification. The complete
+[five-member Combat Actor wave](Plans/task-logs/sol-combat-actor-pure-wave-20261003.md)
+passed the normal combined verifier on October3 at13:21:11.919Z. Next is the complete
+seventeen-member action-mode W6, with Sol on B1F4 and Astra's top-level private worker on
+D14C after the bounded concurrency benchmark. Preserve D14C's separate table activation gate. Use the
 [current cursor](Plans/cursors/sol.md) for the best source, next experiment and all open gates.
 After ten ordinary target intakes, assess actual example use through existing handbacks;
 there is no scheduled maintenance task or extra ordinary-wave review gate.
