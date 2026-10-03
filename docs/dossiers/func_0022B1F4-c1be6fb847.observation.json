@@ -1,0 +1,90 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "C1BE6FB8473145F22F52A2CB071A3CA2B2688A5535FC411F31582166CF2812AF",
+  "observationId": "D3AA36656B8053990013E7D1C72A5F40D2F3DAC7113A7CF3DDCF7C6CE3F4E86B",
+  "symbol": "func_0022B1F4",
+  "authored": {
+    "context": "D49 direct last-entry member-array pair removes final copy extra move but folds pointer address before initial RTL. GoldOx817 constant-index PLUS_EXPR prediction was falsified by9356784F initialRTL; GoldOx823 identifies retail base as block-local. Two-step last-pointer reuse changes s0/flag lifetimes; shared actual scan pointer gives global95 a2 preference.",
+    "effects": [
+      "variable-lifetime",
+      "local-allocation",
+      "address-calculation",
+      "delay-slot-scheduling"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "DF1AD63C492E7A5E9498A1D3135A8839D571E0BF30645DE32EEE38B99FB16C5A",
+      "sourceSha256": "3CAE3C018278F6596710F91586D2180DBF2F0ACD41FB70C21F5BD3C34F781A29"
+    },
+    "label": "scoped-actual-copy-tail-base-restores-local-pointer-and-guard",
+    "observedEffect": "CurrentC1BE6FB8 watch emits PURE_C3596/frame280/103 actual text relocations; all93 external call addresses ordered. Both complete guard70 and pointer71 operation/register/order now agree with retail, including movea0,s2 guard slot, separate addiu v1,sp,6C and addu s1,v1,v0 in call delay. 867/897 call-anchored text-LCS lines, branch/call addresses unresolved. Official probe956A59C3/source3CAE3C01/expandedDF1AD63C: initialRTL1746base378=vsv69+76,1752last75=378+shift380; LREG378 is block-local, GREG uses v1; no claim about unavailable original intermediates.",
+    "parentCandidateId": "D49C8A0E98642CD0423AF1FE3A4EF223F19586906045AB87D357857DDEC35B8A",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_0022B1F4.s",
+        "sha256": "E95C054B2215FB0A8D8839B03555ED404DF386261BBAB6AA3C73BC039EB2233B"
+      },
+      {
+        "path": "src/lib/func_001F197C.c",
+        "sha256": "40370E8D97445A3CEE6641A31E494527CBE69DE39E7EA9B98B2D1EC81B727B39"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Unselected against protected original-extent F2C1C3DA. Two extra early publication stores remain (+8bytes), late t1/t2 reload parity from finalcopy86 and three minor scheduling sites prevent exactness. Global scanbase95/a2 and byte-selector controls regress or add masks and are not selected. No linked/dataflow/semantic/ownership/full-ROM acceptance; original17-member W6/D14C table gates remain.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "After the real spBF guard and action-value copy, use one short-lived actual copy-tail address local at fullLocalData+76, then add the actual sp94 count to form last. Keep all six genuine value ARRAY_REF sites, full104-byte object, loop/call/body coverage and shared inputs unchanged."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 19821,
+      "sha256": "DF1AD63C492E7A5E9498A1D3135A8839D571E0BF30645DE32EEE38B99FB16C5A"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "3CAE3C018278F6596710F91586D2180DBF2F0ACD41FB70C21F5BD3C34F781A29"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-03-func_0022B1F4-c1be6fb847.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
