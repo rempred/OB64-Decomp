@@ -536,6 +536,11 @@ table ownership and dependency gates intact. Work in the same checkout on `main`
 worktree or rebase is needed. The production writer alone integrates into `src/`, shared headers and
 configuration, publishes selected research, and runs canonical linking/verification.
 
+Joe's additional candidate worker runs in a separate top-level Codex chat under the Director's
+monitoring and coordination. Routine progress, stop notifications and blockers go to the Director,
+not the production writer. The Director relays only actionable integration or shared-input
+coordination. Do not attach this worker as a child of the production writer.
+
 For an assigned root such as `build/matching/actorhelper`:
 
 ```powershell
@@ -583,9 +588,10 @@ the linked comparison's top-level relocation availability may be false because l
 no relocation records.
 Null/unavailable evidence cannot become an exactness claim. Even an exact isolated link is provisional.
 
-Retain an early canonical linked check after the first complete candidate. The production writer
-coordinates a quiet period: stop new shared-input commands, drain those in flight, activate the candidate,
-run the normal focused diff, then restore any temporary activation before private checks resume.
+Retain an early canonical linked check after the first complete candidate. The Director coordinates
+a quiet period with the production writer: stop new shared-input commands, drain those in flight,
+confirm the candidate worker is quiet, then the production writer activates the candidate,
+runs the normal focused diff, and restores any temporary activation before private checks resume.
 Use the same coordination for later integration and tooling/header/configuration changes. Workers may
 continue private editing and reasoning during these periods. Refresh affected input/comparison evidence
 afterward; no automatic rebase, full build or acceptance repeat is required for unchanged inputs.
@@ -597,7 +603,8 @@ remain stopped throughout that verifier. Unsupported grouped/auxiliary scratch t
 do not invent missing relocation expectations or controls to make a target eligible.
 
 Keep one compact current note per worker. A candidate-only helper keeps its note in its private root;
-the production writer incorporates relevant continuation state into the existing live cursor. The
+the Director handles its continuation and relays integration-ready evidence. The production writer
+keeps the existing production cursor. The
 [parallel candidate plan](Plans/parallel-candidate-workers-20261002.md) records rollout evidence and
 limits; it adds no ordinary matching review or promotion protocol.
 

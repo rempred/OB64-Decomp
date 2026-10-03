@@ -11,7 +11,8 @@ independent review; the complete four-consumer header wave at `a225669e` passed 
 verifier, including fresh compilation and full-ROM equality. Cross-target lookup remains
 opt-in because its usefulness thresholds were not met.
 
-Sol retains sole production source/build ownership with one private candidate helper. The
+Sol retains sole production source/build ownership with one private candidate worker in a separate
+top-level chat monitored and coordinated by Astra. The
 complete six-member Squad construction wave and three-member Combat context wave are accepted
 at `75990627` and `5accc882`; do not repeat their unchanged verification. Next is the complete
 five-member Combat Actor wave under the authorized parallel candidate pilot. Use the
@@ -70,8 +71,9 @@ throughput goals remain unfinished.
 [reviewed parallel-candidate plan](Plans/parallel-candidate-workers-20261002.md): two private
 candidate workers in the same checkout, Sol-only production integration, coordinated linked
 checks and one final verifier per complete wave. Routine tests, independent review, the applicable
-audit and real accepted/nonmatching, rejection and knowledge-transfer checks passed. Sol
-coordinates the Actor pilot and its one internal helper. Native process parallelism is measured
+audit and real accepted/nonmatching, rejection and knowledge-transfer checks passed. Astra
+coordinates the Actor pilot's top-level candidate worker; routine updates stay away from Sol.
+Native process parallelism is measured
 separately from concurrent agent reasoning; serial remains the default.
 **Still deferred until Joe decides:** a Linux toolchain host/CI.
 This queue does not authorize cached
@@ -92,7 +94,7 @@ accepted assembly exception.
 ## Sequential main program
 
 Use [the sequential matching program](Plans/sequential-main-program.md) for current authority and execution order.
-Complete Combat, then Squad, then High Attack on `main`, using internal agents.
+Complete Combat, then Squad, then High Attack on `main`, using the currently assigned worker arrangement.
 Matching implementation and research requiring reasoning use Astra Medium; retrieval/data-seeking or parsing-only work uses Sol High.
 Mixed assignments containing implementation or substantive research reasoning use Astra Medium.
 Keep one active matching family and one production source/build writer. Do not use concurrent development worktrees.

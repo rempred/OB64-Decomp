@@ -1,11 +1,14 @@
 # Parallel candidate workers: implementation and pilot
 
 Status: implemented, independently reviewed by GoldOx and accepted by Astra for the initial
-two-worker pilot, 2026-10-03 UTC. Joe authorized implementation and rollout when ready. Sol
+two-worker pilot, 2026-10-03 UTC. Joe authorized implementation and rollout when ready. Joe's
+October 2 local-time correction assigns the additional worker to a top-level Codex chat monitored
+by Astra, with no routine worker messages to Sol. This supersedes the initial internal-helper
+transport below; the validated private-workbench implementation and acceptance gates are unchanged. Sol
 completed and committed his valid Combat context wave, then released shared resources for
 tooling validation. The checks below passed; Astra authorizes his explicit resumption after
-scoped local integration. Native checks remain serialized. No branch, worktree, monitor or
-heartbeat is part of this implementation.
+scoped local integration. Native checks remain serialized. The top-level worker uses a separate
+local stop monitor targeting Astra. No branch, worktree or scheduled heartbeat is needed.
 
 ## Intended result and boundaries
 
@@ -15,9 +18,10 @@ configuration. Sol owns coordinated early linked checks and sequential integrati
 runs the normal verifier once when the complete assigned wave is ready. Scratch results
 remain provisional and explicitly distinguish raw-object from linked evidence.
 
-Start with Sol plus one candidate-only helper, not a pool. Each owns one target at a time.
-Sol dispatches and coordinates that internal helper so requests for shared-input quiet periods
-and candidate integration stay with the production writer. Astra retains tooling approval.
+Start with Sol plus one candidate-only worker in a separate top-level Codex chat. Each owns
+one target at a time. Astra dispatches, monitors and coordinates the additional worker. Its routine
+progress, stops and blockers go to Astra; Sol receives only necessary integration or shared-input
+coordination. Sol remains the production writer and does not manage an internal helper.
 Keep a coupled compilation producer, its logical bodies, table ownership and required
 dependencies with one worker. Do not split a producer or redefine wave membership to
 manufacture independent work. If only one eligible unfinished target remains, finish it
@@ -133,7 +137,8 @@ Do not launch workers who must wait for Sol after every experiment.
 | --- | --- |
 | Production `src/`, shared headers, registries, build/verification outputs | Sol only |
 | First private candidate, DB, artifacts and compact cursor | Sol |
-| Second private candidate, DB, artifacts and compact cursor | Candidate helper only |
+| Second private candidate, DB, artifacts and compact cursor | Top-level candidate worker only |
+| Candidate-worker monitoring, progress, blockers and quiet-period coordination | Astra |
 | Shared tools and workflow rules | Astra coordinates a safe change boundary and review |
 | Shared research publication | Sol integrates selected observations with existing commands |
 | Guidance | Claude answers specific blockers; no routine per-function review |
@@ -143,8 +148,8 @@ check complete coverage early, then use hypothesis -> focused test -> evidence -
 experiment. Preserve the best candidate through regressions. No speculative shared type or
 prototype changes inside a private candidate become an accepted interface by implication.
 
-Sol assigns two independent targets and their exact producer scopes through existing
-coordination. The helper returns its best source path, existing candidate/run IDs, tested
+Astra assigns the two independent targets and their exact producer scopes through existing
+coordination. The candidate worker returns to Astra its best source path, existing candidate/run IDs, tested
 input context, `sourceClass`, `evidenceMode`, `rawExactBytes`, `rawRelocationMaskedExact`,
 actual relocation census and its expected-evidence status, coverage/extent, residual mismatch,
 relevant discoveries and blockers. Report `diagnosticExactBytes` as linked evidence only
@@ -169,7 +174,8 @@ temporary activation changes `phase8.targets` even if restored exactly later; it
 only inside a coordinated quiet period, never concurrently with a helper check.
 
 Retain the existing early linked-diff rule: after a first complete candidate and coverage
-check, pause new shared-input commands, drain in-flight checks, and let Sol run the ordinary
+check, Astra pauses the candidate worker's shared-input commands and confirms those in flight
+have drained, then coordinates with Sol to run the ordinary
 focused diff under his sole canonical ownership. Preserve its result and exactly restore any
 temporary activation before private checks resume. Repeat a coordinated linked check when
 evidence calls for it, including candidate readiness; it is not a full-ROM build. Authenticate
@@ -275,7 +281,9 @@ with its uncertainty; a single wave is preliminary evidence.
 Stop or reduce concurrency on an isolation failure, persistent contention, no independent
 work or excessive integration rework. Preserve both candidates, return to the existing
 single-writer loop and repair the concrete cause. Failure of this optional pilot must not
-leave Sol idle. No new monitor or heartbeat is needed.
+leave Sol idle. Reuse the local event-monitor design in a separate worker-specific directory,
+with fresh cursor/deduplication state and Astra as its only notification destination. No scheduled
+heartbeat or routine message to Sol is needed.
 
 Maintain private-command regression tests in the normal test runner. Shared-tool changes
 rerun affected concurrency/drift cases; ordinary matches do not. Keep implementation help
@@ -469,7 +477,7 @@ their exact bytes against retained copies. Original research stayed untouched. E
 
 Astra accepts the implementation after independent review, the applicable changed-input audit,
 29/29 routine suites and the real positive/negative checks above. Sol resumes as the sole
-production writer and assigns one internal Astra Medium helper to `func_002158E4` in
+production writer; Astra assigns one top-level Astra Medium candidate worker to `func_002158E4` in
 `build/matching/actorhelper/`; Sol owns `func_002159D0` in `build/matching/solactor/`. Keep accepted
 canonical inputs in place during parallel candidate work, with temporary activation/restoration
 only inside coordinated early-link windows, then integrate the complete ready wave sequentially.
@@ -480,3 +488,21 @@ does not accept any new function. The existing Sol watcher remains running.
 The pilot must now establish practical value through actual decomp work. No agent speedup or
 native throughput improvement is claimed yet. The 30-second focused-diff and 15-minute verifier
 goals remain open. Linux and broader worker pools remain outside this release.
+
+### Top-level worker correction (October 2 local time)
+
+Joe explicitly requested that the additional worker be a top-level chat monitored by Astra,
+so it does not send routine messages to Sol. The internal `/root/actor_158e4` helper stopped,
+preserved its completed baseline and untested next trial, and released `build/matching/actorhelper/`.
+Its successor is **Actor candidate worker — 002158E4**, chat
+`01a0ffcd-6210-7a03-a178-d7d2af7f1c3b`, in the existing local project on main. It retains the
+private root and evidence; a transport change alone requires no acceptance rerun.
+
+Astra's separate local stop/attention monitor lives at
+`C:/Users/Joe/.local/share/codex-thread-monitors/actor-worker-to-astra/`. It uses the existing
+tested monitor/bridge with worker-specific labels and fresh config/state. Its sole destination is
+the Director chat `01a0e07c-7b5f-7943-816d-7f7d4bdc013a`; Sol's existing monitor remains separate.
+Six transition/retry tests, a real delivery test and a live status poll passed. The worker's actual
+startup-hold completion also delivered a single stop event to Astra. No model calls
+occur during polling. Astra owns continuation and pause/drain coordination, and relays only
+integration-ready evidence or necessary shared-input coordination to Sol.

@@ -62,7 +62,9 @@ wave boundaries and when accumulated context obscures the current assignment. Re
 agents within a coherent assignment; preserve useful results and release source/build ownership
 before transferring work to a fresh agent.
 
-Use internal agents for this decomp program. Work on one matching family at a time on `main`,
+Use internal agents unless Joe assigns a top-level worker. Top-level candidate workers report to
+and are monitored by the Director; do not place them under the production writer or send that
+writer routine progress messages. Work on one matching family at a time on `main`,
 with one production source/build writer. Parent top-level task transport requirements do not apply.
 Independent read-only research/review and explicitly disjoint documentation work may run alongside that writer.
 
