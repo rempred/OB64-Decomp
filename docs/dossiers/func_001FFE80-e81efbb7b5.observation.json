@@ -1,0 +1,102 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "E81EFBB7B583C9638A99484653719D3ACC36E505900DEFC115C232AB2CF29282",
+  "observationId": "9BCB4E8EFACE1099B6E25EEDD858F8FB945082244529A995B31C6E326526D5B1",
+  "symbol": "func_001FFE80",
+  "authored": {
+    "context": "The complete original three-member context wave retained FFE80 as exact HYBRID_C and2013D0/201108 as accepted PURE_C. Corrected1D2 research has the accepted two-argument1F0E64 interface, full796-byte/199-instruction body,frame152 and54 relocations, but four linked register bytes reverse the entry and original-position copies. Current intake and complete disassembly were reconciled; the stored expanded input matches the historical source tokens. Old target-mismatched IDs remain references rather than fabricated parents.",
+    "effects": [
+      "compiler-compatibility",
+      "register-allocation",
+      "temporary-lifetime",
+      "exact-linked-bytes"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "5A84121DFE580F2E6F0BDB14B286E5162A29046585604811139360D308140C96",
+      "sourceSha256": "B77FDE9D3087A1C21CB55142FC2154925DB13EC44E2A5264E29459B45D968487"
+    },
+    "label": "real-short-reuse-across-disjoint-passes-restores-copy-allocation",
+    "observedEffect": "The actual129268 real temporary-reuse precedent informed Sol's new source hypothesis; GoldOx mail746 independently reproduced the form and pass mechanism. Sol freshly reproduces1D2 at796/frame152/54R/four native masked differences, then the shared-short form closes all199 native words with all five original calls. Recorded old local/global dumps show the separate short with4refs/life13 loses priority to the entry pointer4refs/life11; the real reuse aggregates10refs/life22 over two distinct ranges and changes allocation order without adding an instruction or runtime live range. The normal focused link proves PURE_C sole796-byte ownership, unchanged placement and all54 canonical relocations, with zero differing linked bytes/words; targetSHAF980232EFC52C2B199FE98013C63495EC8DF87303E18353FC34FB3E47F9C7402. A separate deletion of the existing unused24-byte automatic gives frame128 and16 native frame words different. The final source retains that pre-existing declaration unchanged from production, with original type/purpose explicitly unknown; this retry introduces no new reserve, access or semantic claim. Existing joined guards remain measured compiler workarounds. ONE normal combined verifier at2026-10-03T00:47:17.439Z accepts ALL three original members as PURE_C with sole executable ownership,placement,actual relocations,linked bytes,independent fresh compilation and full-ROM equality. CURRENTCA516CADFA6413B8EE05AAE56DDEC4369B8E8B582F0F4AB3733F20245F121F31; ROM41943040/SHA571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A.2013D0 preserves its accepted84-byte executable C prefix plus12-byte nonexecutable original-ASM padding. Ignored context-final-evidence.json binds all three sources, unchanged configuration and the canonical reports.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_001FFE80.s",
+        "sha256": "8BE95D72294E363DEA1C404DCAA0F6E63862EB24173C661594A45D8B58C01B6E"
+      },
+      {
+        "path": "docs/archive/matching-c-candidates/2026-09-29-func_001FFE80-1d2ef51fa2.c",
+        "sha256": "F8210F68675F474BEA19F3DDDB17C5EFAEE9B51E0B6275822554EE1EB78B139B"
+      },
+      {
+        "path": "docs/dossiers/func_001FFE80-e46c9e676d.md",
+        "sha256": "AA96079404EC94CE67067E5F2DCD70653C930A5C8ED68D7FDEFB7328EAED8216"
+      },
+      {
+        "path": "docs/Plans/task-logs/combat-context-retry-preparation-r1.md",
+        "sha256": "12660CEA27BB09C7A3169E08014F6CA7CD965C07ECAF9CD35A55598B6AE91638"
+      },
+      {
+        "path": "src/lib/func_00129268.c",
+        "sha256": "BAA7913C97FDF10C3531BC748ABAB0ACEDE5329348AA9B0F08237D4DE5E34B54"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "The complete context PURE_C wave is accepted. This does not resolve original C identities of unused stack slots, broader resource semantics,selector provenance or the remaining Actor/Combat modes/Shop/Animation and protected/deferred gates. A private physical-model native-call census refused to index the logical2013D0 target and supplies no proof; the actual normal link independently proves all five JALs at the exact original offsets/words. No shared-tool defect,bypass,assembler escape,new padding,synthetic use,volatile change,compiler switch or push. Joe-authorized parallel-worker tooling owns the next interval; Sol releases production/config/build/native-test resources at this boundary and keeps the watcher running. The entire five-member actor wave remains intact for a later two-candidate pilot.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Reuse one real signed short across the nonoverlapping primary-bound correction and secondary-original-position ranges, replacing the separate secondary short and naming the shared value original_short. Preserve every actual memory/call effect, existing late-joined conditions and the corrected two-argument helper. Explain the measured compiler workarounds and existing unknown automatic reserve near their source."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 7813,
+      "sha256": "5A84121DFE580F2E6F0BDB14B286E5162A29046585604811139360D308140C96"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "B77FDE9D3087A1C21CB55142FC2154925DB13EC44E2A5264E29459B45D968487"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-03-func_001FFE80-e81efbb7b5.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
