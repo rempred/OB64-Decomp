@@ -1,0 +1,108 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "7CB96BE950552FFF0D1D3135A56D2BF8F76221FFB01763FAED4E8C0BBB1A3D9D",
+  "observationId": "80490A94DE7254E37B6AE87654B29BF44E3F0599B44D80FC49742B978DDCAD7B",
+  "symbol": "func_0022D14C",
+  "authored": {
+    "context": "Immutable shared-entry719F/source379199E8 context; root owns main probability/helper arithmetic. Gold mail889 scheduling lead and mail891 tying prediction. E680 component remains protected; half tradeoff is parked and worker pockets are unchanged.",
+    "effects": [
+      "instruction-selection",
+      "register-allocation",
+      "real-local-reuse"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "B582DE5A661F443A9BB84DCB13B10D4595EF4FDF654EADAD9FE09DB6EFDA8B2F",
+      "sourceSha256": "04A48A9909D04855933743BDBA9EFA299EAED3A75578401CD956601B6F89AE2C"
+    },
+    "label": "d14c-main-reversed-comparison-restores-separate-quotient-and-local-remainder",
+    "observedEffect": "Source04A48A99/candidate7CB96BE9 is PURE_C6864/frame616 with177 text relocations,131 direct calls in retail address order and a native64-byte table with15 relocations and4-byte zero padding. Native text D7BAAE56. Main region59 arithmetic, registers and order match retail; its only five raw-word differences are four branch immediates and the external JAL relocation. Quarter region68 retains its instruction/register forms with three branch/JAL immediate differences. Helper spill484 retains six word accesses and two byte487 accesses; metadata500 retains19 word accesses. Authenticated probeB5FDE313: mix452 is single-set and receives scheduler birth priority7f000001 over reciprocal split4516 priority3. Quotient466 is local v1; fresh remainder475 ties numerator452 and both are local s0. Hit181 stays global and final native s2. In contrast, direct inline remainder in first comparison operand uses global hit181 as both quotient1918 and remainder1929 in probe44C3F918, while numerator452 is still local s0 and dies at subtract. Named remainder453 in probeE5982C20 has two deaths and cannot be locally allocated. Pinned expr.c9888 supplies subtarget only to arg0, not arg1; expmed.c2788 chooses a supplied target as quotient. Reversing the comparison removes that supplied destination and permits the measured local tie.",
+    "parentCandidateId": "E680CB1E67CE44BA2D4B0F82D6517D66AEF5A9A230D0DF082154FD1E8F102AA6",
+    "references": [
+      {
+        "path": "build/matching/solmode/d14c-main-reversed-remainder-watch.json",
+        "sha256": "C3B473A8BD25C8EE717DEDD16B6FE1D3C2360FB35DE15BA49FECA3BD21A95AEE"
+      },
+      {
+        "path": "build/matching/solmode/d14c-main-reversed-remainder-probe.json",
+        "sha256": "6B846809C8FE630A4456C841B3B71DA810AED70D4D1EAAFC9F4B7852BBDAC1C9"
+      },
+      {
+        "path": "build/matching/solmode/d14c-main-reversed-remainder-call-regions.json",
+        "sha256": "8232779C84381A25E1A50294E9271AE2D70B9A5585EE01C7F13B445113CB1E7A"
+      },
+      {
+        "path": "build/matching/solmode/d14c-main-reversed-remainder-table.json",
+        "sha256": "F5E44429831F69C23D5D2FF04CB822757B1405DEA43EF8EA598E77E8222AAB63"
+      },
+      {
+        "path": "build/matching/solmode/d14c-main-expression-remainder-probe.json",
+        "sha256": "F25F069A41ADC2C00A23E22784F92122A1A55C08B43A4474CB87D671B614D6D0"
+      },
+      {
+        "path": "build/matching/solmode/d14c-main-local-remainder-probe.json",
+        "sha256": "03B383B143EC1797DECC20E713E65A46BAAF96E29B089D01D7114516AA271C12"
+      }
+    ],
+    "relatedCandidateIds": [
+      "719F7CFC8611EA4084A46892951427C9BFDF76FE7DEA029F0935908DDAF0B21C",
+      "B1139CBD5D707DA00D1D06BAE631350C045251518143ADB66331F1574D17B4F3"
+    ],
+    "remainingFailure": "Full function is20 bytes longer than retail6844 and remains nonexact. Region branch destinations are still whole-function/candidate-bound; correspondence is not linked acceptance or original retail source provenance. No canonical activation, table approval, sole-owner placement proof, fresh final compilation or complete17 full-ROM verification has occurred for this source. Other worker pockets and the parked half tradeoff remain open; no compiler/tooling defect or exception.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Give the three-random-word mix one assignment in mixedRandomWord. Leave the quarter working variable separate. Evaluate the same unsigned test as probability > (mixedRandomWord % 100U), placing the remainder in the comparison second operand. All actual calls, loads, unsigned widths and resulting condition are preserved."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 41146,
+      "sha256": "B582DE5A661F443A9BB84DCB13B10D4595EF4FDF654EADAD9FE09DB6EFDA8B2F"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "04A48A9909D04855933743BDBA9EFA299EAED3A75578401CD956601B6F89AE2C"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-03-func_0022D14C-7cb96be950.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

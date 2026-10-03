@@ -1,0 +1,109 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "B1139CBD5D707DA00D1D06BAE631350C045251518143ADB66331F1574D17B4F3",
+  "observationId": "79DEDAFB3629E618A383EA363E23177E008EBB6CA1397AB7779F894B45DCA6FE",
+  "symbol": "func_0022D14C",
+  "authored": {
+    "context": "Root main probability/helper arithmetic region on immutable entry source 379199E8. Gold mail 889 scheduling lead; genuine source blocker only. Parked half tradeoff and worker pockets retained.",
+    "effects": [
+      "instruction-selection",
+      "register-allocation",
+      "real-local-reuse"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "8ED02F8E6B1ACF5A0B39A88A37523E4E2E613B0606FDFFCE5A2E055AF905D7C8",
+      "sourceSha256": "87D5A58B240DB64FE55AEA7C94F4A20142A814504EC673B9DCC44B43F165460D"
+    },
+    "label": "d14c-named-main-remainder-quotient-reuse-prevents-local-tie",
+    "observedEffect": "Source 87D5A58B / B1139CBD restores early a0 reciprocal, frame616 and probability s8; native D7DA596C is PURE_C6864 with177 text relocations and131 direct calls in retail order. The quotient and remainder both use named pseudo453 in authenticated probe E5982C20. It dies twice in block100, so pinned local-alloc.c eligibility at472 rejects it. Numerator452 is locally assigned s0 and dies at the subtract. Quotient and remainder instead receive a0; byte42 is hoisted. Single-set mix feeding old working variable130 (source43AF9E0F / D3820613, probe038F9B0B) emits CB582 native070B4B98 and regresses frame608/probability s7;130 is quotient as well as remainder and has three deaths. Inline expression sourceA946446C /33DB9DCA also emits a shared quotient/remainder destination, now s2, and early byte42. Authenticated probe44C3F918 proves actual hit pseudo181 becomes both quotient1918 and remainder1929; numerator452 remains local s0 and dies at1929, so the failure is the global destination, not a numerator death/liveness change. Pinned expr.c9888 passes subtarget into comparison arg0 and NULL_RTX into arg1; expmed.c2788 reuses supplied target as quotient. These results test the measured compiler mechanism, not original retail source provenance. Follow-up byte-sized actual remainder source71DD73B5 /6467E32E restores retail arithmetic through remainder s0 and byte42 timing, but adds andi s2,s0,255 before comparison and grows to6868/frame616; unselected.",
+    "parentCandidateId": "E680CB1E67CE44BA2D4B0F82D6517D66AEF5A9A230D0DF082154FD1E8F102AA6",
+    "references": [
+      {
+        "path": "build/matching/solmode/d14c-main-single-mix-c89-watch.json",
+        "sha256": "AE5F5B67CC450001CC88780B5AE31751702422568CA313DFBC68512D875AD12C"
+      },
+      {
+        "path": "build/matching/solmode/d14c-main-single-mix-c89-probe.json",
+        "sha256": "E98D7B8B4E5ECC5055B67AA74BFF94C2A4CEAB6ECE3521AB06D8627073D27D39"
+      },
+      {
+        "path": "build/matching/solmode/d14c-main-local-remainder-watch.json",
+        "sha256": "8CB53EDB48412EFEF0458DC54052330AC8003280DDC1BA72B8B15D3DFA07FFB2"
+      },
+      {
+        "path": "build/matching/solmode/d14c-main-local-remainder-probe.json",
+        "sha256": "03B383B143EC1797DECC20E713E65A46BAAF96E29B089D01D7114516AA271C12"
+      },
+      {
+        "path": "build/matching/solmode/d14c-main-expression-remainder-watch.json",
+        "sha256": "84BB29F239F996E2A6704F26826E1790E6634153E579DAA7CC4981F7C9EA0513"
+      },
+      {
+        "path": "build/matching/solmode/d14c-main-byte-remainder-watch.json",
+        "sha256": "04B29FA8A3A65708B41F8F34B02175B687131B9E24252CEF478626D360A46350"
+      },
+      {
+        "path": "build/matching/solmode/d14c-main-expression-remainder-probe.json",
+        "sha256": "F25F069A41ADC2C00A23E22784F92122A1A55C08B43A4474CB87D671B614D6D0"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Whole owner remains6864 versus retail6844. Main quotient/remainder homes and byte42 timing are nonexact. Sole ownership, linked target bytes, relocation/table activation, fresh compilation and complete17 full-ROM gates remain open. E680 component stays protected; no selected whole-function best, supported tooling defect or compiler exception.",
+    "role": "counterexample",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Keep the three-random-word mix single-set; compute its actual unsigned modulo-100 result in a separate named 32-bit local. Quarter working value retains its existing independent variable."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 41236,
+      "sha256": "8ED02F8E6B1ACF5A0B39A88A37523E4E2E613B0606FDFFCE5A2E055AF905D7C8"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "87D5A58B240DB64FE55AEA7C94F4A20142A814504EC673B9DCC44B43F165460D"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-03-func_0022D14C-b1139cbd5d.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
