@@ -70,7 +70,9 @@ Independent read-only research/review and explicitly disjoint documentation work
 
 The Director may assign independent targets within that same complete wave to private candidate
 workers. Each edits only its assigned ignored scratch root and uses the supported private workbench
-commands in `docs/WORKFLOW.md`. The production writer alone changes canonical sources, shared headers,
+commands in `docs/WORKFLOW.md`. Different private roots run candidate checks concurrently by default,
+without per-check permission or routine per-function integration pauses. Keep canonical inputs stable
+during the wave and batch production integration at the complete-wave boundary. The production writer alone changes canonical sources, shared headers,
 configuration and build outputs, integrates candidates and publishes shared research. Drain private
 checks before those shared inputs change or canonical linking/verification begins. A private result
 is diagnostic evidence, not matching acceptance. Keep coupled producers and their dependencies whole;

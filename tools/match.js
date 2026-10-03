@@ -99,8 +99,9 @@ Research:
 Private research commands accept --scratch-root build/matching/<worker>.
 This routes the database, source snapshots, compile artifacts and probes privately.
 Only intake/watch/classify/compare/inspect/history/best/observations/import/preserve/probe
-are supported. --native-concurrency serial|parallel requires --scratch-root; serial
-is the default. preserve is explicit Sol-owned tracked publication.
+are supported. --native-concurrency serial|parallel requires --scratch-root; parallel
+is the default across distinct roots. One command per root; serial is a host-contention
+fallback. preserve is explicit Sol-owned tracked publication.
 
 Routine generated outputs stay under build/matching; preserve is the explicit
 tracked candidate/dossier export. Add --json for structured output.
@@ -593,7 +594,7 @@ async function main(argv = process.argv.slice(2)) {
   comparisonQueryProvenanceCache = null;
   if (!parsed.options['scratch-root']) return executeCommand(command, parsed);
   const { resolvePrivateWorkspace, withPrivateWorkspace, assertPrivateWorkspace } = require('./lib/matching/private_workspace');
-  const workspace = resolvePrivateWorkspace({ root: ROOT, scratchRoot: parsed.options['scratch-root'], nativeConcurrency: parsed.options['native-concurrency'] || 'serial' });
+  const workspace = resolvePrivateWorkspace({ root: ROOT, scratchRoot: parsed.options['scratch-root'], nativeConcurrency: parsed.options['native-concurrency'] || 'parallel' });
   const outputs = [];
   await withPrivateWorkspace(workspace, { native: command === 'watch' || (command === 'probe' && parsed.positional[0] !== 'compare') }, async () => {
     const inputSeal = require('./lib/matching/private_inputs').capturePrivateInputs();
@@ -717,7 +718,7 @@ async function executeCommand(command, parsed, workspace = null, emit = print, a
       syncTargets: false,
     });
     print({...comparisonSummary(result),researchIntake:researchPresentation(target.symbol,{workbench,...researchOptions,...intakeRouting}),
-      ...(workspace ? { preprocessCache: routing.privatePreparation.preprocessCache, contextPreparation: routing.privatePreparation.contextPreparation } : {})}, options);
+      ...(workspace ? { nativeConcurrency: workspace.nativeConcurrency, preprocessCache: routing.privatePreparation.preprocessCache, contextPreparation: routing.privatePreparation.contextPreparation } : {})}, options);
     if (result.compile.status !== 'compiled') process.exitCode = 2;
     return;
   }
@@ -1022,7 +1023,7 @@ async function executeCommand(command, parsed, workspace = null, emit = print, a
     if (options['source-origin'] && !options.candidate) throw new Error('probe --source-origin is only for --candidate text');
     const passes = options.passes ? options.passes.split(',').map((item) => item.trim()).filter(Boolean) : null;
     const report = runProbe(workbench, target, sourceText, { ...routing, passes, sourcePath, sourceOrigin, researchCompiler: options['research-compiler'] });
-    print({ ...report, ...(workspace ? { preprocessCache: routing.privatePreparation.preprocessCache, contextPreparation: routing.privatePreparation.contextPreparation } : {}) }, options);
+    print({ ...report, ...(workspace ? { nativeConcurrency: workspace.nativeConcurrency, preprocessCache: routing.privatePreparation.preprocessCache, contextPreparation: routing.privatePreparation.contextPreparation } : {}) }, options);
     if (report.status !== 'complete') process.exitCode = 2;
     return;
   }

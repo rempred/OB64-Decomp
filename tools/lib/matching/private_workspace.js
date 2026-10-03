@@ -27,7 +27,7 @@ function inspectAncestors(file) {
   for (let p = path.resolve(file); ; p = path.dirname(p)) { ancestors.push(p); if (path.dirname(p) === p) break; }
   for (const p of ancestors.reverse()) inspectExisting(p);
 }
-function resolvePrivateWorkspace({ root, scratchRoot, nativeConcurrency = 'serial' }) {
+function resolvePrivateWorkspace({ root, scratchRoot, nativeConcurrency = 'parallel' }) {
   if (!root || typeof scratchRoot !== 'string' || !scratchRoot) throw new Error('scratch-root requires a repository-local path');
   if (!['serial', 'parallel'].includes(nativeConcurrency)) throw new Error('native-concurrency must be serial or parallel');
   if (/\\\\|(^|[\\/])\.\.?([\\/]|$)|:.*:|[ .]$/.test(scratchRoot)) throw new Error('scratch-root rejects aliases, traversal and device paths');

@@ -7,14 +7,17 @@ by Astra, with no routine worker messages to Sol. This supersedes the initial in
 transport below; the validated private-workbench implementation and acceptance gates are unchanged. Sol
 completed and committed his valid Combat context wave, then released shared resources for
 tooling validation. The checks below passed; Astra authorizes his explicit resumption after
-scoped local integration. Native checks remain serialized. The top-level worker uses a separate
+scoped local integration. Joe's October 3 correction supersedes the initial serial pilot: private
+checks run concurrently by default and canonical checks are batched at wave integration. The rollout
+and its measured validation are recorded below. The top-level worker uses a separate
 local stop monitor targeting Astra. No branch, worktree or scheduled heartbeat is needed.
 
 ## Intended result and boundaries
 
 Two workers can independently derive and test C for two dependency-ready targets in the
 same assigned family/wave, without changing each other's compiler inputs or canonical
-configuration. Sol owns coordinated early linked checks and sequential integration, then
+configuration. Workers use authenticated private linked checks throughout development. Sol owns
+the necessary canonical checks and sequential integration at the complete-wave boundary, then
 runs the normal verifier once when the complete assigned wave is ready. Scratch results
 remain provisional and explicitly distinguish raw-object from linked evidence.
 
@@ -173,16 +176,15 @@ canonical source, headers, config or CURRENT while a private check is in flight.
 temporary activation changes `phase8.targets` even if restored exactly later; it is allowed
 only inside a coordinated quiet period, never concurrently with a helper check.
 
-Retain the existing early linked-diff rule: after a first complete candidate and coverage
-check, Astra pauses the candidate worker's shared-input commands and confirms those in flight
-have drained, then coordinates with Sol to run the ordinary
-focused diff under his sole canonical ownership. Preserve its result and exactly restore any
-temporary activation before private checks resume. Repeat a coordinated linked check when
-evidence calls for it, including candidate readiness; it is not a full-ROM build. Authenticate
-fresh input context after every such period. Workers may continue local editing/reasoning,
-but shared-model intake/probes/compiles wait until the context is stable again. If the need
-for these windows becomes frequent, keep that target serial or propose the generic private
-linked-diff capability as a separate tooling task.
+An available authenticated private linked comparison satisfies the early linked development check.
+Do not schedule a canonical activation/quiet period for each provisional candidate. Both workers
+iterate concurrently against stable accepted inputs; Sol batches ordinary production focused checks
+at the complete-wave integration boundary. Inactive ASM and unsupported grouped/auxiliary owners
+retain explicit unavailable linked/full-owner evidence and need the existing canonical check before
+claims depending on that evidence. Batch necessary exception checks where practical. They do not
+justify relabeling symbolic comparison or bypassing ownership gates. All private native checks drain
+before combined canonical integration and remain stopped during the final verifier; private editing
+and reasoning can continue. Restore temporary inputs before resuming an unfinished wave's private work.
 
 For a shared tooling/header/structural change, stop starting affected checks, let in-flight
 commands finish, preserve candidates, make and validate the change, then resume. Hash-based
@@ -237,16 +239,17 @@ own authorization. Start the next pair only when dependencies and scratch eligib
 5. Knowledge round trip: save a useful private observation via existing commands, confirm
    normal intake can recover its source and evidence status, and confirm stale/foreign-target
    evidence still rejects. No bulk archive of every trial.
-6. Timings: repeat the same cold/warm serial and two-process workloads at least three times;
+6. Timings: repeat the same warm serial and two-process workloads at least three times;
    record total elapsed work, per-worker median/range, sample counts, resource use, waiting
-   and failures. Use a 25% total check-throughput improvement without doubling either worker's
-   median warm latency as the initial reason to enable native concurrency. This is not an
-   agent-pilot or acceptance gate. Two agents may reason/edit in parallel while native checks
-   serialize. Isolation and correct failure behavior are mandatory in either mode.
+   and failures. Parallel is the default on validated isolation grounds; report throughput rather
+   than requiring a 25% gain to enable it. Check whether either worker's warm median doubles as a
+   host-contention sanity check. Isolation and correct failure behavior are mandatory in either mode.
+   Record cold preparation separately when diagnosing startup. A full repeated cold-cache matrix
+   is not a release prerequisite and must not delay normal function iteration merely for profiling.
 
-Choose native concurrency only after these measurements. If the cold-run cost makes the full
-timing matrix impractical, record that limit, keep native serialization and run the distinct
-real parity/rejection cases; do not infer a throughput benefit from an incomplete benchmark.
+Do not infer a throughput benefit from incomplete measurements. Explicit serial mode remains a
+host-contention fallback, coordinated across all private workers; it cannot exclude a parallel-mode
+command. Correct independent checks, per-root exclusion and drift rejection establish safety.
 For serialization or duplicate-root
 exclusion, use a bounded process-owned mutex/handle around the complete check, released when
 its process exits; do not build a persistent scheduler or require mail for every compile.
@@ -506,3 +509,45 @@ Six transition/retry tests, a real delivery test and a live status poll passed. 
 startup-hold completion also delivered a single stop event to Astra. No model calls
 occur during polling. Astra owns continuation and pause/drain coordination, and relays only
 integration-ready evidence or necessary shared-input coordination to Sol.
+
+### Concurrent checks correction (October 3 local time)
+
+Joe explicitly requires simultaneous matching checks, rather than parallel reasoning with a
+serial testing queue. This supersedes the initial native-serialization rollout and the former
+per-candidate production-link windows recorded above. The CLI and private-workspace helper now
+default to the already-supported parallel mode. Explicit serial mode remains a host-contention
+fallback; every participating worker must select it because it cannot exclude parallel requests.
+One-command-per-root exclusion, Job Object cleanup, input seals, source policy and comparison
+algorithms remain unchanged. Private watch/probe outputs identify the current scheduling mode.
+
+An available authenticated isolated link supplies the normal early development comparison.
+Workers keep canonical inputs stable during a wave and iterate without routine permission.
+Sol batches canonical focused checks and final verification into the complete-wave integration
+period. Unsupported or unavailable linked/full-owner evidence still needs the canonical path;
+the scheduling change does not create relocation expectations or auxiliary ownership.
+
+GoldOx reviewed the bounded plan in mail 787, including why the native mutex was a contention
+choice rather than an isolation requirement. The changed scheduling files are outside canonical
+runtime/CURRENT implementation fingerprints, so no unchanged ROM audit is required. The focused
+private suite passed, including nine Windows process tests: two real CLI roots held concurrent
+native callbacks under the default, same-root use rejected, and explicit serial/cancellation
+behavior stayed intact. The required routine tooling runner then passed all 29 suites in 138.6 seconds.
+GoldOx closed implementation review in mail 790 with no blocking finding and independently passed
+routing, path and process tests. Astra accepts the scheduling/default change on this evidence plus
+the unchanged real concurrent comparison matrix; timing is not an additional release gate.
+The repeated exact/nonmatching comparison and timing harness is
+`build/parallel-implementation/concurrent-default/bench.js`; its measurements follow the current
+Actor wave's release of native checks and do not justify an unchanged full-ROM rerun.
+The bounded timing run reuses only Astra's existing validation roots, primes changed CURRENT inputs,
+then compares three fresh-compilation warm pairs per mode plus genuine inactive/short controls.
+The prior real six-fixture parity matrix remains valid for unchanged comparison algorithms. A repeated
+twelve-root cold matrix is deferred to avoid making startup profiling a new throughput bottleneck;
+its optional harness mode remains available and no cold-throughput conclusion is claimed.
+
+GoldOx mail 788 reports Joe changed Defender exclusions near this measurement boundary.
+The Director's unelevated `Get-MpPreference` reports that exclusions require administrator access,
+so their actual values were not independently visible; no security settings were changed here.
+Both serial and parallel timing baselines are measured afresh after that report. Earlier timings
+are not a comparable baseline. Timing intervals distinguish complete commands, context preparation
+and estimated compile/assemble/object-validation attempts; the latter do not establish individual
+compiler subprocess overlap or include subsequent diagnostic linking.

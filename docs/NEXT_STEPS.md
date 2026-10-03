@@ -69,12 +69,13 @@ throughput goals remain unfinished.
 
 **Implemented; initial pilot authorized:** Joe approved the
 [reviewed parallel-candidate plan](Plans/parallel-candidate-workers-20261002.md): two private
-candidate workers in the same checkout, Sol-only production integration, coordinated linked
+candidate workers in the same checkout, Sol-only production integration, parallel private linked
 checks and one final verifier per complete wave. Routine tests, independent review, the applicable
 audit and real accepted/nonmatching, rejection and knowledge-transfer checks passed. Astra
 coordinates the Actor pilot's top-level candidate worker; routine updates stay away from Sol.
-Native process parallelism is measured
-separately from concurrent agent reasoning; serial remains the default.
+Joe's October 3 correction makes simultaneous private checks the default, with explicit serial mode
+reserved for host contention. Batch production checks at wave integration instead of pausing per
+candidate. Measure native throughput separately from agent reasoning and retain all input/acceptance gates.
 **Still deferred until Joe decides:** a Linux toolchain host/CI.
 This queue does not authorize cached
 acceptance verdicts, antivirus exclusions, a new equivalence source class, or deletion

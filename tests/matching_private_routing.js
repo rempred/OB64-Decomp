@@ -8,7 +8,7 @@ const test = require('node:test');
 const ROOT = process.cwd();
 const PRIVATE = path.join(ROOT, 'build', 'matching', 'w1');
 const SOURCE = path.join(PRIVATE, 'candidate.c');
-const workspace = { root: ROOT, matchingRoot: PRIVATE, storeOptions: { database: path.join(PRIVATE, 'workbench.sqlite') }, nativeConcurrency: 'serial' };
+const workspace = { root: ROOT, matchingRoot: PRIVATE, storeOptions: { database: path.join(PRIVATE, 'workbench.sqlite') }, nativeConcurrency: 'parallel' };
 
 function fixture({ drift = false, guardDrift = false, entryArgs = null } = {}) {
   const calls = [], output = [], errors = [];
@@ -35,7 +35,7 @@ function fixture({ drift = false, guardDrift = false, entryArgs = null } = {}) {
     './lib/matching/probe': { runProbe: log('probe', { status: 'complete' }), compareProbes: log('probeCompare', {}) },
     './lib/matching/private_inputs': { capturePrivateInputs: log('inputSeal', () => ({ assertUnchanged: log('inputPostcheck', undefined) })) },
     './lib/matching/private_workspace': {
-      resolvePrivateWorkspace: log('resolveWorkspace', workspace),
+      resolvePrivateWorkspace: log('resolveWorkspace', options => ({...workspace, nativeConcurrency: options.nativeConcurrency})),
       withPrivateWorkspace: log('guard', async (_workspace, _options, callback) => { await callback(); if (guardDrift) throw Error('guard postcheck failed'); }),
       assertPrivateWorkspace: log('postcheck', () => { if (drift) throw Error('workspace drift'); }),
       assertPrivatePath: log('privatePath', (_workspace, file) => { if (!file.startsWith(PRIVATE + path.sep)) throw Error('outside private root'); return file; }),
@@ -67,6 +67,19 @@ test('direct CLI startup can query candidates before the module finishes exporti
 test('private options reject duplicate roots, unsupported commands and invalid native mode before model IO', async () => {
   for (const args of [ ['watch', '--scratch-root', 'a', '--scratch-root', 'b'], ['prepare', '--scratch-root', 'build/matching/w1'], ['watch', '--native-concurrency', 'serial'], ['watch', '--scratch-root', 'build/matching/w1', '--native-concurrency', 'unsafe'] ]) {
     const f = fixture(); await assert.rejects(f.cli.main(args)); assert.equal(f.calls.length, 0);
+  }
+});
+
+test('private watch and probe default to parallel and report explicit serial fallback', async () => {
+  for (const mode of [null, 'parallel', 'serial']) {
+    for (const command of ['watch', 'probe']) {
+      const f = fixture();
+      await f.cli.main([command, 'func_80000000', '--source', SOURCE, '--scratch-root', 'build/matching/w1',
+        ...(mode ? ['--native-concurrency', mode] : []), '--json']);
+      assert.equal(f.calls.find(x => x.name === 'resolveWorkspace').args[0].nativeConcurrency, mode || 'parallel');
+      assert.equal(JSON.parse(f.output[0]).nativeConcurrency, mode || 'parallel');
+      assert.equal(f.calls.find(x => x.name === 'guard').args[1].native, true);
+    }
   }
 });
 

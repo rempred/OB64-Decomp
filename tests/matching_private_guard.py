@@ -76,6 +76,36 @@ else:
         self.assertGreater(time.monotonic() - started, .3)
         self.assertEqual(a.wait(timeout=5), 0)
         self.assertEqual(b.wait(timeout=5), 0)
+    def test_cli_default_parallel_keeps_root_exclusion(self):
+        driver = self.root / 'parallel.js'
+        driver.write_text('''const fs=require('fs'),path=require('path');
+const api=require(%s);
+const name=process.argv[2];
+const w=api.resolvePrivateWorkspace({root:__dirname,scratchRoot:'build/matching/'+name});
+api.withPrivateWorkspace(w,{native:true,python:%s,guardPath:%s,waitMs:500},async()=>{
+  console.log(JSON.stringify({root:name,nativeConcurrency:w.nativeConcurrency}));
+  await new Promise(resolve=>{const timer=setInterval(()=>{
+    if(fs.existsSync(path.join(__dirname,'release-'+name))){clearInterval(timer);resolve();}
+  },20);});
+}).catch(e=>{console.error(e.message);process.exitCode=1;});
+''' % (json.dumps(str(GUARD_JS)), json.dumps(sys.executable), json.dumps(str(GUARD))))
+        def launch(name):
+            child = subprocess.Popen(['node', str(driver), name], stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+            self.children.append(child)
+            return child
+        a = launch('w1')
+        self.assertEqual(json.loads(a.stdout.readline())['nativeConcurrency'], 'parallel')
+        b = launch('w2')
+        self.assertEqual(json.loads(b.stdout.readline())['nativeConcurrency'], 'parallel')
+        self.assertIsNone(a.poll())
+        self.assertIsNone(b.poll())
+        duplicate = launch('w1')
+        _, err = duplicate.communicate(timeout=5)
+        self.assertNotEqual(duplicate.returncode, 0)
+        self.assertIn('busy', err)
+        for name in ('w1', 'w2'): (self.root / ('release-' + name)).write_text('release')
+        self.assertEqual(a.wait(timeout=5), 0)
+        self.assertEqual(b.wait(timeout=5), 0)
     def test_native_wait_is_bounded(self):
         a = self.start(arg='tree', native=True)
         json.loads(a.stdout.readline())

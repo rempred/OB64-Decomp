@@ -569,15 +569,20 @@ active producer and authored/snapshot candidate remain fresh. No classification 
 is cached. The first use is slower; changed shell environments can make it cold again. Watch/probe JSON
 includes `preprocessCache` counters and `contextPreparation` timings. The normal verifier remains fresh.
 
-`watch` and `probe` default to `--native-concurrency serial`. The OS-owned guard serializes those
-commands for this checkout, including cleanup after an interrupted command. Other private commands
-hold their root mutex and may preprocess inputs; the native mutex does not cover them. This is not a machine-wide
-compiler lock and does not coordinate another checkout or an ordinary `diff.js`/`verify.js` process.
-Waiting for another private native command is bounded to five minutes; a timeout preserves the candidate.
-Enable native `parallel` only after the Director accepts real isolation/parity and throughput evidence;
-agents can reason and edit concurrently while native checks serialize. An interrupted check retains
-the candidate and must not be reported as completed. Do not clear locks by PID/age or kill another
-worker's processes.
+`watch` and `probe` default to `--native-concurrency parallel`. Workers in different private roots
+can compile, probe and compare at the same time without permission for individual checks. Each root
+still permits only one live command; a second command in that root fails with `busy` and can be retried
+after the first finishes. Its OS-owned guard and Job Object retain process cleanup and containment.
+The returned `nativeConcurrency` describes the current command's scheduling mode, including when it
+reuses an authenticated cached object; it does not relabel the original compile's provenance.
+
+Use explicit `--native-concurrency serial` only as a coordinated fallback for host contention.
+All participating private workers must select it: serial commands wait on each other, but do not
+exclude parallel-mode commands, ordinary `diff.js`/`verify.js`, or another checkout. The serial wait
+is bounded to five minutes; parallel mode has no cross-worker queue. Input authentication, drift
+rejection and every comparison gate are identical in both modes. An interrupted or rejected check
+retains its candidate and supplies no completed verdict. Do not clear locks by PID/age or kill another
+worker's processes. Report actual timings; concurrency alone does not imply a speedup.
 
 Private handback identifies the source, run/artifacts, complete body/extent evidence, source class,
 actual relocations, expected-evidence availability and remaining mismatch. Keep `rawExactBytes`,
@@ -588,13 +593,19 @@ the linked comparison's top-level relocation availability may be false because l
 no relocation records.
 Null/unavailable evidence cannot become an exactness claim. Even an exact isolated link is provisional.
 
-Retain an early canonical linked check after the first complete candidate. The Director coordinates
-a quiet period with the production writer: stop new shared-input commands, drain those in flight,
-confirm the candidate worker is quiet, then the production writer activates the candidate,
-runs the normal focused diff, and restores any temporary activation before private checks resume.
-Use the same coordination for later integration and tooling/header/configuration changes. Workers may
-continue private editing and reasoning during these periods. Refresh affected input/comparison evidence
-afterward; no automatic rebase, full build or acceptance repeat is required for unchanged inputs.
+Use an available authenticated private linked comparison for the early linked-diff development check.
+Do not pause sibling workers for an ordinary provisional candidate or require a canonical activation
+after each function. Keep canonical inputs stable while both workers iterate, then batch the production
+focused checks into the complete-wave integration period. Where private linked/full-owner evidence is
+unavailable (including inactive ASM or unsupported grouped/auxiliary owners), report the partial verdict
+honestly and arrange the necessary canonical check before relying on the missing evidence; batch those
+exceptions where practical. Raw/masked equality never substitutes for linked bytes or full-owner coverage.
+
+For combined integration or a necessary shared tooling/header/configuration change, the Director stops
+new shared-input commands and drains those in flight before the production writer changes shared inputs.
+Workers may continue private edits and reasoning. Unexpected shared-input drift rejects the check;
+refresh affected context and retry after the inputs stabilize. No automatic rebase or unchanged
+acceptance repeat is needed. A shared-input failure is not evidence that the candidate C failed.
 
 Integrate candidates sequentially and check their actual production source/include context with the
 normal focused diff. After every member of the original assigned wave is ready, run the normal final
