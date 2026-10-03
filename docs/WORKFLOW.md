@@ -17,6 +17,9 @@ Route retrieval/data-seeking or parsing-only assignments to Sol High under the a
 Use [the sequential program](Plans/sequential-main-program.md) for current assignments and family order.
 Do not create or use concurrent development branches/worktrees. Preserve historical worktrees as read-only evidence.
 Independent read-only research/review and explicitly disjoint documentation work may proceed alongside the current family.
+Director-assigned private candidate workers may derive independent targets in that same complete
+wave under [the private workflow below](#private-candidate-workers). The production writer retains
+sole canonical integration and build ownership.
 Parent top-level task transport procedures do not apply to this decomp program.
 
 After the one-time local setup in [the repository README](../README.md):
@@ -524,6 +527,79 @@ it supplements rather than replaces `verify.js`.
 Run `node tools/status.js` after a valid verification state to derive current
 `PURE_C`, `HYBRID_C`, and remaining-owner counts. Do not copy changing counts
 into prose documents.
+
+## Private candidate workers
+
+The Director assigns each candidate worker one independent target and one short ignored directory
+under `build/matching/`. Keep the original complete wave and any coupled producer, required bodies,
+table ownership and dependency gates intact. Work in the same checkout on `main`; no worker branch,
+worktree or rebase is needed. The production writer alone integrates into `src/`, shared headers and
+configuration, publishes selected research, and runs canonical linking/verification.
+
+For an assigned root such as `build/matching/actorhelper`:
+
+```powershell
+node tools/match.js intake func_002158E4 --scratch-root build/matching/actorhelper
+node tools/match.js watch func_002158E4 --source build/matching/actorhelper/candidate.c --scratch-root build/matching/actorhelper --json
+node tools/match.js probe func_002158E4 --source build/matching/actorhelper/candidate.c --scratch-root build/matching/actorhelper --passes rtl,flow,global-allocation,delay-slots --json
+```
+
+Read current intake, the full disassembly and required-body coverage before tuning. Private source,
+observations, database, snapshots, compiler/probe outputs and reports stay in that assigned root.
+Supported commands are `intake`, `watch`, `classify`, `compare`, `inspect`, `history`, `best`,
+`observations`, `import`, `preserve` and `probe`; other commands reject `--scratch-root`. Preserve is
+an explicit tracked publication operation reserved to the production writer by assignment, not an
+automatic side effect of testing. Do not copy databases to share discoveries. Use the existing
+research commands and normal tracked intake for useful best sources, effects and counterexamples.
+
+Only approved repository `include/` dependencies are supported for private candidates. Do not copy
+or shadow headers inside the private root. Authored source and the compiled snapshot must expand to
+the same bytes with the same approved dependencies. Inputs are checked by content before and after
+the command; changing headers, configuration, tools or CURRENT invalidates the check. Each root has
+one live command; duplicate use rejects. Path aliases, reparse points and escaping paths reject.
+
+Private context preparation reuses eligible sibling preprocessing bytes in that root's `preprocess/`
+directory through the existing authenticated CPP cache. Classifications are recomputed; the requested
+active producer and authored/snapshot candidate remain fresh. No classification or acceptance verdict
+is cached. The first use is slower; changed shell environments can make it cold again. Watch/probe JSON
+includes `preprocessCache` counters and `contextPreparation` timings. The normal verifier remains fresh.
+
+`watch` and `probe` default to `--native-concurrency serial`. The OS-owned guard serializes those
+commands for this checkout, including cleanup after an interrupted command. Other private commands
+hold their root mutex and may preprocess inputs; the native mutex does not cover them. This is not a machine-wide
+compiler lock and does not coordinate another checkout or an ordinary `diff.js`/`verify.js` process.
+Waiting for another private native command is bounded to five minutes; a timeout preserves the candidate.
+Enable native `parallel` only after the Director accepts real isolation/parity and throughput evidence;
+agents can reason and edit concurrently while native checks serialize. An interrupted check retains
+the candidate and must not be reported as completed. Do not clear locks by PID/age or kill another
+worker's processes.
+
+Private handback identifies the source, run/artifacts, complete body/extent evidence, source class,
+actual relocations, expected-evidence availability and remaining mismatch. Keep `rawExactBytes`,
+`rawRelocationMaskedExact` and `diagnosticExactBytes` distinct. Only an available authenticated isolated
+link supplies private linked diagnostics; inactive ASM owners may have symbolic-object evidence only.
+Use `actualRelocations` and `rawObjectComparison.relocationEvidence` for the emitted relocation census;
+the linked comparison's top-level relocation availability may be false because linked bytes contain
+no relocation records.
+Null/unavailable evidence cannot become an exactness claim. Even an exact isolated link is provisional.
+
+Retain an early canonical linked check after the first complete candidate. The production writer
+coordinates a quiet period: stop new shared-input commands, drain those in flight, activate the candidate,
+run the normal focused diff, then restore any temporary activation before private checks resume.
+Use the same coordination for later integration and tooling/header/configuration changes. Workers may
+continue private editing and reasoning during these periods. Refresh affected input/comparison evidence
+afterward; no automatic rebase, full build or acceptance repeat is required for unchanged inputs.
+
+Integrate candidates sequentially and check their actual production source/include context with the
+normal focused diff. After every member of the original assigned wave is ready, run the normal final
+verifier once on the combined result, without a preceding redundant build. Private native commands
+remain stopped throughout that verifier. Unsupported grouped/auxiliary scratch targets stay serial;
+do not invent missing relocation expectations or controls to make a target eligible.
+
+Keep one compact current note per worker. A candidate-only helper keeps its note in its private root;
+the production writer incorporates relevant continuation state into the existing live cursor. The
+[parallel candidate plan](Plans/parallel-candidate-workers-20261002.md) records rollout evidence and
+limits; it adds no ordinary matching review or promotion protocol.
 
 ## Advanced linkage contracts
 

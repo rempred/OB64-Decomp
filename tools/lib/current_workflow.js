@@ -294,6 +294,18 @@ function completeCurrent(directory, phase8, sourcePolicy) {
       || !Array.isArray(report.targetReplacements) || report.targetReplacements.length !== phase8.targets.length) return false;
   let textLinkContext;
   try { textLinkContext = textContract.linkContext(directory, require('./phase8_matching_c').loadCanonicalBaserom(phase8)); } catch (_) { return false; }
+  let layout, manifestMembers, metadataInputs;
+  try {
+    metadataInputs = ['layout.json', 'objects/manifest.json'].map(relative =>
+      confinedArtifactContents(directory, relative, `CURRENT ${relative}`));
+    layout = JSON.parse(metadataInputs[0].contents);
+    const manifest = JSON.parse(metadataInputs[1].contents);
+    if (layout.schemaVersion !== 2 || manifest.schemaVersion !== 5) return false;
+    manifestMembers = compilationGroups.manifestMembers(manifest.linkedObjects, phase8);
+    // Retain identities, not a second copy of the large parsed inputs. Recheck
+    // exact contents at the end; this is only invocation-local parse reuse.
+    metadataInputs = metadataInputs.map(({ contents, ...identity }) => identity);
+  } catch (_) { return false; }
   for (const target of phase8.targets) {
     const record = report.targetReplacements.find((candidate) => candidate.symbol === target.symbol);
     const policyMatches = sourcePolicy.targets.filter((candidate) => candidate.symbol === target.symbol);
@@ -313,11 +325,8 @@ function completeCurrent(directory, phase8, sourcePolicy) {
       const proof = readJson(path.join(directory, record.sourceObjectProof.path));
       if (proof.schemaVersion !== 4) return false;
       textContract.validateRecords(proof, representation, 'CURRENT proof');
-      const layout = readJson(path.join(directory, 'layout.json'));
-      const manifest = readJson(path.join(directory, 'objects/manifest.json'));
-      if (layout.schemaVersion !== 2 || manifest.schemaVersion !== 5) return false;
       textContract.validateRecords(layout.phase8MatchingCTargets?.find((r) => r.symbol === target.symbol), representation, 'CURRENT layout');
-      textContract.validateRecords(compilationGroups.manifestMembers(manifest.linkedObjects, phase8).find((r) => r.targetSymbol === target.symbol && r.ownerKind === 'matching-c-target'),
+      textContract.validateRecords(manifestMembers.find((r) => r.targetSymbol === target.symbol && r.ownerKind === 'matching-c-target'),
         { textContract: representation.textContract, objectEvidence: representation.objectEvidence }, 'CURRENT manifest');
       const expectedInteriors = interiorRecords([target]);
       if (expectedInteriors.length > 0 || record.auxiliaryInteriors !== undefined) {
@@ -342,7 +351,14 @@ function completeCurrent(directory, phase8, sourcePolicy) {
       return false;
     }
   }
-  try { textContract.finishLinkContext(textLinkContext); } catch (_) { return false; }
+  try {
+    textContract.finishLinkContext(textLinkContext);
+    for (const expected of metadataInputs) {
+      const actual = confinedArtifactIdentity(directory, expected.path, `CURRENT ${expected.path}`);
+      if (actual.bytes !== expected.bytes || actual.sha256 !== expected.sha256) return false;
+    }
+    if (!required.every(relative => fs.existsSync(path.join(directory, ...relative.split('/'))))) return false;
+  } catch (_) { return false; }
   return true;
 }
 
@@ -405,6 +421,11 @@ function prepareContext(options = {}) {
   // Use that very object rather than parsing/authenticating a second copy.
   const model = phase8.model;
   const baseline = measure(profile, 'prepare.baseline-fingerprint', () => baselineFingerprint(phase8, baserom));
+  if (options.contextPreprocessFactory !== undefined && (typeof options.contextPreprocessFactory !== 'function'
+      || options.diffPreprocessSymbol !== undefined)) throw new Error('context preprocessing hook is invalid or conflicts with diff preprocessing');
+  const contextPreprocess = options.contextPreprocessFactory?.(phase8.targets);
+  if (options.contextPreprocessFactory && (!contextPreprocess || typeof contextPreprocess.preprocess !== 'function'
+      || typeof contextPreprocess.finish !== 'function')) throw new Error('context preprocessing hook requires preprocess and finish');
   let diffPreprocess = null;
   if (options.diffPreprocessSymbol !== undefined) {
     const requested = phase8.targets.filter(target => target.symbol.toLowerCase() === String(options.diffPreprocessSymbol).toLowerCase());
@@ -413,10 +434,17 @@ function prepareContext(options = {}) {
     // therefore stays fresh even when a nonleader member was requested.
     diffPreprocess = require('./diff_preprocess_cache').createDiffPreprocessCache({ requestedSources: [requested[0].source] });
   }
-  const sourcePolicy = classifyTargetSources(phase8.targets, {
-    profile: options.profile, preprocess: diffPreprocess?.preprocess,
-  });
-  const current = measure(profile, 'prepare.current-fingerprint', () => currentFingerprint(phase8, baseline, localTools, sourcePolicy));
+  let sourcePolicy, current;
+  try {
+    sourcePolicy = classifyTargetSources(phase8.targets, {
+      profile: options.profile, preprocess: contextPreprocess?.preprocess || diffPreprocess?.preprocess,
+    });
+    current = measure(profile, 'prepare.current-fingerprint', () => currentFingerprint(phase8, baseline, localTools, sourcePolicy));
+  } finally {
+    // Private research may reuse authenticated CPP bytes, never classifications.
+    // Seal their complete inputs before any prepared context escapes, on errors too.
+    contextPreprocess?.finish();
+  }
   return {
     baserom,
     baselineFingerprint: baseline,

@@ -80,6 +80,7 @@ function importResearch(workbench, target, sourceFile, observation, options = {}
   if(!Buffer.from(sourceText,'utf8').equals(bytes)) throw new Error('research source is not exact UTF-8');
   validateRelations(target,observation,options,candidateRecord(target,sourceText).candidateId);
   const classification=policy.classifySource(file);
+  if(options.privateWorkspace===true)require('./private_inputs').assertPrivateClassification(classification);
   authenticateClassification(classification,observation);
   const metadata={sourcePath:relative(file),research:{schemaVersion:1,authored:observation,
     authenticated:{sourceSha256:classification.sourceSha256,expanded:classification.compilationInput,

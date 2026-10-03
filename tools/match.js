@@ -44,14 +44,15 @@ const { validateOptions: validateKnowledgeOptions } = require('./lib/matching/kn
 const VALUE_OPTIONS = new Set([
   'limit', 'source', 'candidate', 'variant', 'm2c-root', 'set', 'max-size',
   'lane', 'note', 'research-compiler', 'passes', 'jobs', 'case-map', 'source-origin',
-  'actual-dispatch', 'actual-body', 'output', 'actual-tail', 'observation', 'effect', 'cross-limit', 'symptom',
+  'scratch-root', 'native-concurrency', 'actual-dispatch', 'actual-body', 'output', 'actual-tail', 'observation', 'effect', 'cross-limit', 'symptom',
 ]);
+const PRIVATE_COMMANDS = new Set(['intake', 'watch', 'classify', 'compare', 'inspect', 'history', 'best', 'observations', 'import', 'preserve', 'probe']);
 const REPEAT_OPTIONS = new Set(['variant', 'actual-tail']);
 let comparisonQueryProvenanceCache = null;
 
-function comparisonQueryProvenance() {
+function comparisonQueryProvenance(preparationOptions = {}) {
   if (!comparisonQueryProvenanceCache) {
-    const session = prepareCompilerSession();
+    const session = prepareCompilerSession(preparationOptions);
     comparisonQueryProvenanceCache = {
       comparisonAlgorithmId: comparisonAlgorithmIdentity(),
       diagnosticCurrentFingerprint: session.context.currentFingerprint,
@@ -95,6 +96,12 @@ Research:
   probe <symbol> [--source <file> | --candidate <id>] [--passes a,b] [--research-compiler <file>]
   probe compare <left-report.json> <right-report.json>
 
+Private research commands accept --scratch-root build/matching/<worker>.
+This routes the database, source snapshots, compile artifacts and probes privately.
+Only intake/watch/classify/compare/inspect/history/best/observations/import/preserve/probe
+are supported. --native-concurrency serial|parallel requires --scratch-root; serial
+is the default. preserve is explicit Sol-owned tracked publication.
+
 Routine generated outputs stay under build/matching; preserve is the explicit
 tracked candidate/dossier export. Add --json for structured output.
 Use explicit --include-details, --include-members, --include-context, or
@@ -123,7 +130,7 @@ function parseArgs(argv) {
         options[name] = options[name] || [];
         options[name].push(value);
       } else {
-        if (['case-map', 'actual-dispatch', 'actual-body', 'output'].includes(name)
+        if (['scratch-root', 'native-concurrency', 'case-map', 'actual-dispatch', 'actual-body', 'output'].includes(name)
             && Object.prototype.hasOwnProperty.call(options, name)) {
           throw new Error(`--${name} may not be repeated`);
         }
@@ -371,6 +378,8 @@ function compactDiagnosticEvidence(comparison) {
     fullOwnerComparison: comparison?.fullOwnerComparison || null,
     evidenceMode: comparison?.evidenceMode || null,
     acceptanceEligible: comparison?.acceptanceEligible === true,
+    rawExactBytes: comparison?.rawExactBytes ?? raw?.exactBytes ?? null,
+    rawRelocationMaskedExact: comparison?.rawRelocationMaskedExact ?? raw?.relocationMaskedExact ?? null,
     rawObjectExactBytes: comparison?.rawExactBytes ?? raw?.exactBytes ?? null,
     rawObjectRelocationMaskedExact: comparison?.rawRelocationMaskedExact
       ?? raw?.relocationMaskedExact ?? null,
@@ -426,6 +435,8 @@ function publicCandidateRecord(record, options = {}) {
       artifactDir: run.artifact_dir,
       createdAt: run.created_at,
       comparisonStale: Boolean(run.comparison_stale),
+      actualRelocationCount: Array.isArray(run.relocations) ? run.relocations.length : null,
+      ...(options.includeDetails ? { actualRelocations: run.relocations ?? null } : {}),
       ...(details ? compactMismatchEvidence(details) : {}),
       ...(details ? compactDiagnosticEvidence(details) : {}),
       ...(options.includeDetails ? { details, tool: run.tool, stderr: run.stderr } : {}),
@@ -471,8 +482,8 @@ function compactComparison(comparison, includeDetails = false) {
 }
 
 function initialize(workbench, options = {}) {
-  const store = initializeStore();
-  const targets = syncTargets(workbench, {}, { force: options.forceTargetSync === true });
+  const store = initializeStore(options.storeOptions || {});
+  const targets = syncTargets(workbench, options.storeOptions || {}, { force: options.forceTargetSync === true });
   return { store, targets };
 }
 
@@ -487,6 +498,8 @@ function comparisonSummary(result) {
     primaryClass: comparison?.primaryClass || result.comparison?.primary_class || null,
     score: comparison?.score ?? result.comparison?.score ?? null,
     exactScratchBytes: comparison?.exactBytes ?? Boolean(result.comparison?.exact_bytes),
+    ...compactDiagnosticEvidence(comparison),
+    actualRelocations: result.compile.relocations ?? null,
     diagnosticExactBytes: comparison?.diagnosticExactBytes ?? null,
     evidenceMode: comparison?.evidenceMode || null,
     rawObjectExactBytes: comparison?.rawExactBytes ?? comparison?.rawObjectComparison?.exactBytes ?? null,
@@ -507,22 +520,26 @@ function variantSelection(workbench, names) {
   return selected;
 }
 
-function latestCandidateRun(candidateId) {
-  const candidate = requestStore({ action: 'query', name: 'candidate', args: { candidateId } });
+function latestCandidateRun(candidateId, storeOptions = {}, preparationOptions = {}) {
+  const query = (request) => requestStore(request, storeOptions);
+  const candidate = query({ action: 'query', name: 'candidate', args: { candidateId } });
   if (!candidate) throw new Error(`candidate does not exist: ${candidateId}`);
-  const runs = requestStore({ action: 'query', name: 'candidate_runs', args: {
+  const privateTarget = preparationOptions.privateWorkbench
+    ? [...preparationOptions.privateWorkbench.targets, ...(preparationOptions.privateWorkbench.logicalTargets || [])]
+      .find(target => target.targetId === candidate.target_id) : undefined;
+  const runs = query({ action: 'query', name: 'candidate_runs', args: {
     candidateId,
     limit: 20,
-    ...comparisonQueryProvenance(),
+    ...comparisonQueryProvenance({ ...preparationOptions, privateTarget }),
   } });
-  const observations = requestStore({ action: 'query', name: 'candidate_observations', args: { candidateId, limit: 20 } });
+  const observations = query({ action: 'query', name: 'candidate_observations', args: { candidateId, limit: 20 } });
   return { candidate, observations, runs, run: runs.find((item) => item.status === 'compiled') || runs[0] || null };
 }
 
-function preserveCandidate(workbench, candidateId, note, observationId) {
-  if (observationId) return preserveResearch(workbench, candidateId, observationId, note);
+function preserveCandidate(workbench, candidateId, note, observationId, routing = {}) {
+  if (observationId) return preserveResearch(workbench, candidateId, observationId, note, routing);
   if (!note) throw new Error('preserve requires --note describing why the candidate is useful');
-  const { candidate, run } = latestCandidateRun(candidateId);
+  const { candidate, run } = latestCandidateRun(candidateId, routing.storeOptions, routing);
   const target = [...workbench.targets, ...(workbench.logicalTargets || [])].find((item) => item.targetId === candidate.target_id);
   if (!target) throw new Error('candidate belongs to a stale or unknown target model');
   const date = new Date().toISOString().slice(0, 10);
@@ -565,16 +582,50 @@ function preserveCandidate(workbench, candidateId, note, observationId) {
 }
 
 async function main(argv = process.argv.slice(2)) {
-  if (!argv.length || argv[0] === '--help' || argv[0] === '-h') { usage(); return; }
+  if (!argv.length) { usage(); return; }
+  if (argv[0] === '--help' || argv[0] === '-h') {
+    validatePrivateOptions('help', parseArgs(argv.slice(1)).options);
+    usage(); return;
+  }
   const command = argv[0];
   const parsed = parseArgs(argv.slice(1));
+  validatePrivateOptions(command, parsed.options);
+  comparisonQueryProvenanceCache = null;
+  if (!parsed.options['scratch-root']) return executeCommand(command, parsed);
+  const { resolvePrivateWorkspace, withPrivateWorkspace, assertPrivateWorkspace } = require('./lib/matching/private_workspace');
+  const workspace = resolvePrivateWorkspace({ root: ROOT, scratchRoot: parsed.options['scratch-root'], nativeConcurrency: parsed.options['native-concurrency'] || 'serial' });
+  const outputs = [];
+  await withPrivateWorkspace(workspace, { native: command === 'watch' || (command === 'probe' && parsed.positional[0] !== 'compare') }, async () => {
+    const inputSeal = require('./lib/matching/private_inputs').capturePrivateInputs();
+    await executeCommand(command, parsed, workspace, (value, options) => outputs.push([value, options]), () => inputSeal.assertUnchanged());
+    inputSeal.assertUnchanged();
+    assertPrivateWorkspace(workspace);
+  });
+  // Only the supervised child ran the callback. Publish after wrapper postchecks;
+  // the supervisor process has an empty buffer and only forwards child output.
+  for (const [value, options] of outputs) print(value, options);
+}
+
+function validatePrivateOptions(command, options) {
+  if (options['scratch-root'] && !PRIVATE_COMMANDS.has(command)) throw new Error('--scratch-root is unsupported for ' + command);
+  if (options['native-concurrency'] && !options['scratch-root']) throw new Error('--native-concurrency requires --scratch-root');
+  if (options['native-concurrency'] && !['serial', 'parallel'].includes(options['native-concurrency'])) throw new Error('--native-concurrency must be serial or parallel');
+}
+
+async function executeCommand(command, parsed, workspace = null, emit = print, assertPrivateInputs = undefined) {
   const { positional, options } = parsed;
+  const routing = workspace ? { matchingRoot: workspace.matchingRoot, storeOptions: workspace.storeOptions, privateWorkspace: true, privatePreparation: {}, assertPrivateInputs } : {};
+  const requestStore = (request) => require('./lib/matching/store').requestStore(request, routing.storeOptions || {});
+  const loadCandidateRun = (id) => latestCandidateRun(id, routing.storeOptions, { ...routing, privateWorkbench: workbench });
+  const print = emit;
+  const intakeRouting = workspace ? { database: workspace.storeOptions.database } : {};
+  const privateFile = (file) => workspace ? require('./lib/matching/private_workspace').assertPrivatePath(workspace, path.resolve(file), { mustExist: true, regularFile: true }) : path.resolve(file);
   const researchOptions=validateKnowledgeOptions({crossLimit:options['cross-limit']===undefined?0:nonnegativeInteger(options['cross-limit'],'--cross-limit'),
     ...(options.symptom===undefined?{}:{symptom:options.symptom})});
   if(command==='intake'){
     if(positional.length!==1)throw new Error('intake requires one symbol');
     const model=loadIntakeModel(),target=resolveTarget(model,positional[0]);
-    print(researchPresentation(target.symbol,{workbench:model,limit:numeric(options.limit,'--limit',20),...researchOptions}),options);return;
+    print(researchPresentation(target.symbol,{workbench:model,limit:numeric(options.limit,'--limit',20),...researchOptions,...intakeRouting}),options);return;
   }
   const workbench = loadWorkbenchModel();
   if (['prepare', 'watch', 'probe', 'import'].includes(command) && positional[0]
@@ -601,19 +652,19 @@ async function main(argv = process.argv.slice(2)) {
     }, options);
     return;
   }
-  initialize(workbench);
+  initialize(workbench, routing);
   if (command === 'import') {
     if (positional.length !== 1 || !options.source || !options.observation) throw new Error('import requires <symbol> --source <candidate.c> --observation <curated.json>');
     const target = resolveTarget(workbench, positional[0]);
-    const claims=JSON.parse(fs.readFileSync(path.resolve(options.observation),'utf8'));
-    const authored=options['capture-identities']?captureIdentities(path.resolve(options.source),claims):claims;
-    print(importResearch(workbench, target, path.resolve(options.source), authored, { syncTargets: false }), options);
+    const claims=JSON.parse(fs.readFileSync(privateFile(options.observation),'utf8'));
+    const authored=options['capture-identities']?captureIdentities(privateFile(options.source),claims):claims;
+    print(importResearch(workbench, target, privateFile(options.source), authored, { ...routing, syncTargets: false }), options);
     return;
   }
   if (command === 'observations') {
     if (positional.length !== 1) throw new Error('observations requires one symbol');
     const target = resolveTarget(workbench, positional[0]);
-    print({symbol:target.symbol, observations:researchObservations(target, options.effect, numeric(options.limit, '--limit', 20))}, options);
+    print({symbol:target.symbol, observations:researchObservations(target, options.effect, numeric(options.limit, '--limit', 20), routing)}, options);
     return;
   }
   if (command === 'inspect') {
@@ -625,7 +676,7 @@ async function main(argv = process.argv.slice(2)) {
       symbol: target.symbol,
       symbols: historicalSymbols(target),
       limit: 5,
-      ...comparisonQueryProvenance(),
+      ...comparisonQueryProvenance({ ...routing, privateTarget: target }),
     } });
     print({ target: publicTarget(target), metrics: targetMetrics(target.expectedBytes, target.vramStart), families, recentExperiments: history }, options);
     return;
@@ -639,7 +690,7 @@ async function main(argv = process.argv.slice(2)) {
       symbols: historicalSymbols(target),
       limit: numeric(options.limit, '--limit', 20),
       includeDetails: true,
-      ...comparisonQueryProvenance(),
+      ...comparisonQueryProvenance({ ...routing, privateTarget: target }),
     } });
     const rows = storedRows.map((row) => {
       if (!row.details) return row;
@@ -657,26 +708,29 @@ async function main(argv = process.argv.slice(2)) {
   if (command === 'watch') {
     if (positional.length !== 1 || !options.source) throw new Error('watch requires <symbol> --source <candidate.c>');
     const target = resolveTarget(workbench, positional[0]);
-    const sourceFile = path.resolve(options.source);
+    const sourceFile = privateFile(options.source);
     const result = compileCandidate(workbench, target, fs.readFileSync(sourceFile, 'utf8'), {
+      ...routing,
+      ...(workspace ? { sourcePath: sourceFile } : {}),
       origin: 'manual-watch',
       metadata: { sourcePath: portableSourcePath(sourceFile) },
       syncTargets: false,
     });
-    print({...comparisonSummary(result),researchIntake:researchPresentation(target.symbol,{workbench,...researchOptions})}, options);
+    print({...comparisonSummary(result),researchIntake:researchPresentation(target.symbol,{workbench,...researchOptions,...intakeRouting}),
+      ...(workspace ? { preprocessCache: routing.privatePreparation.preprocessCache, contextPreparation: routing.privatePreparation.contextPreparation } : {})}, options);
     if (result.compile.status !== 'compiled') process.exitCode = 2;
     return;
   }
   if (command === 'classify') {
     if (positional.length !== 1) throw new Error('classify requires one candidate id');
-    const record = latestCandidateRun(positional[0]);
+    const record = loadCandidateRun(positional[0]);
     print(publicCandidateRecord(record, { includeSource: options['include-source'], includeDetails: options['include-details'] }), options);
     return;
   }
   if (command === 'compare') {
     if (positional.length !== 2) throw new Error('compare requires two candidate ids');
-    const left = latestCandidateRun(positional[0]);
-    const right = latestCandidateRun(positional[1]);
+    const left = loadCandidateRun(positional[0]);
+    const right = loadCandidateRun(positional[1]);
     if (!left.run?.object_text || !right.run?.object_text) throw new Error('both candidates require successful object compilations');
     if (left.candidate.target_id !== right.candidate.target_id) throw new Error('candidate comparison requires the same exact target identity');
     const target = [...workbench.targets, ...(workbench.logicalTargets || [])].find((item) => item.targetId === left.candidate.target_id);
@@ -709,7 +763,7 @@ async function main(argv = process.argv.slice(2)) {
     if (options['actual-dispatch'] === undefined || options['actual-body'] === undefined) {
       throw new Error('case-cfg requires --actual-dispatch and --actual-body');
     }
-    const record = latestCandidateRun(positional[0]);
+    const record = loadCandidateRun(positional[0]);
     if (!record.run?.object_text) throw new Error('case-cfg requires a successfully compiled candidate');
     const target = [...workbench.targets, ...(workbench.logicalTargets || [])].find((item) => item.targetId === record.candidate.target_id);
     if (!target) throw new Error('case-cfg candidate target is stale or absent from the accepted model');
@@ -787,7 +841,7 @@ async function main(argv = process.argv.slice(2)) {
   }
   if (command === 'preserve') {
     if (positional.length !== 1) throw new Error('preserve requires one candidate id');
-    print(preserveCandidate(workbench, positional[0], options.note, options.observation), options);
+    print(preserveCandidate(workbench, positional[0], options.note, options.observation, { ...routing, privateWorkbench: workbench }), options);
     return;
   }
   if (command === 'prepare') {
@@ -933,7 +987,7 @@ async function main(argv = process.argv.slice(2)) {
   if (command === 'probe') {
     if (positional[0] === 'compare') {
       if (positional.length !== 3) throw new Error('probe compare requires two probe report paths');
-      print(compareProbes(positional[1], positional[2]), options);
+      print(compareProbes(privateFile(positional[1]), privateFile(positional[2])), options);
       return;
     }
     if (positional.length !== 1) throw new Error('probe requires one symbol');
@@ -941,10 +995,10 @@ async function main(argv = process.argv.slice(2)) {
     if (options.source && options.candidate) throw new Error('probe --source and --candidate cannot be combined');
     let sourceText, sourcePath, sourceOrigin;
     if (options.source) {
-      sourcePath = path.resolve(options.source);
+      sourcePath = privateFile(options.source);
       sourceText = fs.readFileSync(sourcePath, 'utf8');
     } else if (options.candidate) {
-      const record = latestCandidateRun(options.candidate);
+      const record = loadCandidateRun(options.candidate);
       if (record.candidate.target_id !== target.targetId) throw new Error('probe candidate belongs to a different target');
       sourceText = record.candidate.source_text;
       const origins = [...new Set([record.candidate.metadata?.sourcePath,
@@ -952,16 +1006,23 @@ async function main(argv = process.argv.slice(2)) {
         .filter(Boolean).map(item => path.dirname(path.resolve(ROOT, item))))];
       if (!options['source-origin'] && origins.length > 1) throw new Error('probe candidate has multiple source directories; specify --source-origin <original.c>');
       sourceOrigin = options['source-origin'] || (origins.length ? path.join(origins[0], 'candidate.c') : undefined);
-      if (sourceOrigin) sourceOrigin = path.resolve(ROOT, sourceOrigin);
-    } else if (target.activeMatchingSource) {
+      if (workspace && !options['source-origin']) {
+        const paths = [...new Set([record.candidate.metadata?.sourcePath,
+          ...record.observations.map(item => item.metadata?.sourcePath)].filter(Boolean))];
+        if (paths.length !== 1) throw new Error('private candidate probe needs one source path or explicit --source-origin');
+        sourceOrigin = paths[0];
+      }
+      if (sourceOrigin) sourceOrigin = privateFile(path.resolve(ROOT, sourceOrigin));
+      if (workspace && !sourceOrigin) throw new Error('private candidate probe requires an authenticated private source origin');
+    } else if (target.activeMatchingSource && !workspace) {
       sourcePath = path.join(ROOT, ...target.activeMatchingSource.split('/'));
       sourceText = fs.readFileSync(sourcePath, 'utf8');
     }
     else throw new Error('probe requires --source or --candidate for a target without active matching C');
     if (options['source-origin'] && !options.candidate) throw new Error('probe --source-origin is only for --candidate text');
     const passes = options.passes ? options.passes.split(',').map((item) => item.trim()).filter(Boolean) : null;
-    const report = runProbe(workbench, target, sourceText, { passes, sourcePath, sourceOrigin, researchCompiler: options['research-compiler'] });
-    print(report, options);
+    const report = runProbe(workbench, target, sourceText, { ...routing, passes, sourcePath, sourceOrigin, researchCompiler: options['research-compiler'] });
+    print({ ...report, ...(workspace ? { preprocessCache: routing.privatePreparation.preprocessCache, contextPreparation: routing.privatePreparation.contextPreparation } : {}) }, options);
     if (report.status !== 'complete') process.exitCode = 2;
     return;
   }
@@ -983,6 +1044,9 @@ module.exports = {
   compactRelocationEvidence,
   comparisonSummary,
   main,
+  executeCommand,
+  latestCandidateRun,
+  validatePrivateOptions,
   parseArgs,
   portableSourcePath,
   preserveCandidate,

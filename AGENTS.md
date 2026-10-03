@@ -66,6 +66,14 @@ Use internal agents for this decomp program. Work on one matching family at a ti
 with one production source/build writer. Parent top-level task transport requirements do not apply.
 Independent read-only research/review and explicitly disjoint documentation work may run alongside that writer.
 
+The Director may assign independent targets within that same complete wave to private candidate
+workers. Each edits only its assigned ignored scratch root and uses the supported private workbench
+commands in `docs/WORKFLOW.md`. The production writer alone changes canonical sources, shared headers,
+configuration and build outputs, integrates candidates and publishes shared research. Drain private
+checks before those shared inputs change or canonical linking/verification begins. A private result
+is diagnostic evidence, not matching acceptance. Keep coupled producers and their dependencies whole;
+parallel assignment does not reduce the original wave or add per-function full-ROM verification.
+
 Use the accepted structural owner as-is, reconstruct the function in C, and iterate with the linked diff.
 Run the final full-ROM build and normal verifier only after the complete assigned wave is ready.
 
@@ -247,6 +255,8 @@ Independently derive canonical source from the ROM and project evidence.
   work.
 - Do not update five documents merely because one more C function matched.
 - Each active worker has one live cursor under `docs/Plans/cursors/`, limited to 500 words.
+  A candidate-only helper keeps its cursor inside its assigned private root; the production
+  writer integrates relevant continuation state into the tracked live cursor.
   It identifies the active/parked work, recoverable best source, next experiment, applicable
   proof and blockers, with links to complete membership and evidence. Do not truncate an
   assignment to meet the limit or keep updating a superseded historical note.

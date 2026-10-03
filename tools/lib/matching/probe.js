@@ -211,7 +211,8 @@ function runProbe(workbench, target, sourceText, options = {}) {
   assertScratchCapability(workbench, target, options.context?.phase8?.targets);
   if (typeof sourceText !== 'string' || !sourceText.length || !/^[A-Za-z_][A-Za-z0-9_]*$/.test(target.symbol)
       || !isHash(target.targetId)) throw new Error('compiler probe source or target is malformed');
-  const context = options.context || prepareContext();
+  const context = options.context || (options.privateWorkspace === true
+    ? require('./private_preparation').preparePrivateContext({ ...options, privateTarget: target }) : prepareContext());
   assertScratchCapability(workbench, target, context.phase8?.targets);
   if (!strings(context.phase8.config.compiler.compileFlags, true)) throw new Error('probe compiler flags are malformed');
   const passes = selectedPasses(options.passes);
@@ -220,7 +221,9 @@ function runProbe(workbench, target, sourceText, options = {}) {
   const compilerIdentity = { path: compiler, sha256: sha256File(compiler), acceptanceCompiler: !options.researchCompiler };
   const flags = [...context.phase8.config.compiler.compileFlags];
   const bytes = Buffer.from(sourceText, 'utf8');
-  const base = ensureDirectory(path.join(MATCHING_ROOT, 'targets', target.symbol, 'probes'));
+  const matchingRoot = options.matchingRoot || MATCHING_ROOT;
+  if (options.matchingRoot) repositoryPath(matchingRoot, true);
+  const base = ensureDirectory(path.join(matchingRoot, 'targets', target.symbol, 'probes'));
   let sourceFile, sourceOrigin = null, snapshotDirectory = null;
   if (options.sourcePath) {
     sourceFile = repositoryPath(path.resolve(options.sourcePath));
@@ -250,6 +253,7 @@ function runProbe(workbench, target, sourceText, options = {}) {
     : preprocessor;
   const classification = classifySource(sourceFile, { preprocessor: effectivePreprocessor });
   if (!['PURE_C', 'HYBRID_C'].includes(classification.class)) throw new Error(`probe source classification is ${classification.class}: ${classification.error || ''}`);
+  if (options.privateWorkspace === true) require('./private_inputs').assertPrivateClassification(classification);
   verifyClassificationInputs(classification);
   if (classification.sourceSha256 !== digest(bytes)) throw new Error('probe authored source identity drift');
   const input = compilationInputBytes(classification);
@@ -257,6 +261,7 @@ function runProbe(workbench, target, sourceText, options = {}) {
     sourceOrigin, sourcePolicy: JSON.parse(JSON.stringify(classification)), runtimePreprocessor, compiler: compilerIdentity,
     flags, passes: passes.map(p => p.name), implementation: IMPLEMENTATIONS.map(file => ({ path: portable(file), sha256: sha256File(file) })) };
   const authenticateLive = () => {
+    if (options.privateWorkspace === true) options.assertPrivateInputs?.();
     authenticateSnapshot();
     verifyClassificationInputs(classification);
     if (sha256File(compiler) !== compilerIdentity.sha256 || !same(preprocessorIdentity(resolvePreprocessor()), runtimePreprocessor)
@@ -290,6 +295,7 @@ function runProbe(workbench, target, sourceText, options = {}) {
     stdout: String(result.stdout || ''), stderr: String(result.stderr || ''), durationMs: Date.now() - started,
     source: portable(path.join(directory, 'authored.c')), expandedSource: portable(path.join(directory, 'input.c')),
     assembly: portable(path.join(directory, 'output.s')), artifacts, dumps: artifacts.slice(3) };
+  if (options.privateWorkspace === true) options.assertPrivateInputs?.();
   report.reportSha256 = reportDigest(report);
   writeJson(reportFile, report);
   if (failure) return report;

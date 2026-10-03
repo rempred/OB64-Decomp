@@ -11,8 +11,10 @@ independent review; the complete four-consumer header wave at `a225669e` passed 
 verifier, including fresh compilation and full-ROM equality. Cross-target lookup remains
 opt-in because its usefulness thresholds were not met.
 
-Sol retains sole production source/build ownership and resumes `func_00041c20` within the
-full six-member Squad construction wave, then the remaining five-family program. Use the
+Sol retains sole production source/build ownership with one private candidate helper. The
+complete six-member Squad construction wave and three-member Combat context wave are accepted
+at `75990627` and `5accc882`; do not repeat their unchanged verification. Next is the complete
+five-member Combat Actor wave under the authorized parallel candidate pilot. Use the
 [current cursor](Plans/cursors/sol.md) for the best source, next experiment and all open gates.
 After ten ordinary target intakes, assess actual example use through existing handbacks;
 there is no scheduled maintenance task or extra ordinary-wave review gate.
@@ -35,6 +37,20 @@ object preparation. Local process concurrency requires its own producer-group,
 failure-cleanup and drift-check design. An isolated `ld -n` experiment did not
 reduce ELF size or layout; do not change pinned linker flags based on that hypothesis.
 
+The private-worker validation also identified repeated CURRENT validation work:
+`completeCurrent` read/parsed the whole layout and object manifest and projected manifest members
+inside each target iteration. The reviewed correction now captures/parses once per invocation,
+preserves existing lookups and every per-target gate, and checks the captured contents again
+before success. Its changed-input audit passed on October 3 UTC. Post-change private checks
+measured 60.087 seconds for a warm active control (previously 148.687) and 36.666 seconds for
+an inactive nonmatch; the 30-second goal remains open. See the private-worker plan for evidence.
+Measure remaining active/query overhead before another change; even inactive-target queries
+load the diagnostic environment. Coordinate related accepted throughput work to avoid a
+separate audit for every small edit.
+Bundle a bounded cache-publication failure reason with the next deliberate CPP-cache change:
+the existing write-failure count hides its cause, but changing that module alone would
+invalidate all of its content-keyed entries. Do not force a cold cache just for this diagnostic.
+
 After this priority is complete, continue the saved follow-up queue:
 
 1. Further verifier performance improvements toward 15 minutes, using measured phases.
@@ -50,9 +66,14 @@ The initial knowledge/declaration rollout above is complete. Broader consolidati
 archive cleanup and automatic-retrieval rollout remain bounded follow-up work; the
 throughput goals remain unfinished.
 
-**Deferred until Joe decides:** parallel decomp agents working on functions and a Linux
-toolchain host/CI. Joe clarified that bounded local compiler/preprocessor/tool-process concurrency
-is not part of the agent deferral; evaluate it under the usual tooling checks.
+**Implemented; initial pilot authorized:** Joe approved the
+[reviewed parallel-candidate plan](Plans/parallel-candidate-workers-20261002.md): two private
+candidate workers in the same checkout, Sol-only production integration, coordinated linked
+checks and one final verifier per complete wave. Routine tests, independent review, the applicable
+audit and real accepted/nonmatching, rejection and knowledge-transfer checks passed. Sol
+coordinates the Actor pilot and its one internal helper. Native process parallelism is measured
+separately from concurrent agent reasoning; serial remains the default.
+**Still deferred until Joe decides:** a Linux toolchain host/CI.
 This queue does not authorize cached
 acceptance verdicts, antivirus exclusions, a new equivalence source class, or deletion
 of useful research archives. After the explicitly selected work, later queue items must not

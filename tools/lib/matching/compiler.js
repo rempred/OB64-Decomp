@@ -127,7 +127,8 @@ function syncTargets(workbench, storeOptions = {}, options = {}) {
 }
 
 function prepareCompilerSession(options = {}) {
-  const context = options.context || prepareContext();
+  const context = options.context || (options.privateWorkspace === true
+    ? require('./private_preparation').preparePrivateContext(options) : prepareContext());
   const runtimeOptions = {
     powershellRuntimeRoot: context.localTools.powershellRuntimeRoot,
     splatPython: context.localTools.splatPython,
@@ -801,7 +802,7 @@ function compileCandidate(workbench, target, sourceText, options = {}) {
   const storeOptions = options.storeOptions || {};
   const storeRequest = options.storeRequest || requestStore;
   const { candidate, sourceFile } = recordCandidate(workbench, target, sourceText, options);
-  const session = options.session || prepareCompilerSession(options);
+  const session = options.session || prepareCompilerSession({ ...options, privateTarget: target });
   target = textContract.bindWorkbenchTarget(session, target);
   const targetForCompile = {
     symbol: target.symbol,
@@ -811,6 +812,24 @@ function compileCandidate(workbench, target, sourceText, options = {}) {
     sectionName: target.sectionName,
   };
   const classification = classifySource(targetForCompile.source, { preprocessor: session.preprocessor });
+  let authenticatePrivateSource = () => {};
+  if (options.privateWorkspace === true) {
+    const privateInputs = require('./private_inputs');
+    const authoredFile = privateInputs.regular(options.sourcePath);
+    const authored = classifySource(authoredFile, {preprocessor: session.preprocessor});
+    privateInputs.assertPrivateClassification(authored);
+    privateInputs.assertPrivateClassification(classification);
+    privateInputs.equalExpandedInputs(authored, classification, {compilationInputBytes});
+    authenticatePrivateSource = () => {
+      options.assertPrivateInputs?.();
+      verifyClassificationInputs(authored);
+      verifyClassificationInputs(classification);
+      if (!fs.readFileSync(authoredFile).equals(Buffer.from(sourceText, 'utf8'))) {
+        throw new Error('private authored source changed during the check');
+      }
+    };
+    authenticatePrivateSource();
+  }
   classification.symbol = target.symbol;
   classification.bytes = target.bytes;
   if (!['PURE_C', 'HYBRID_C'].includes(classification.class)) {
@@ -862,6 +881,7 @@ function compileCandidate(workbench, target, sourceText, options = {}) {
       candidateArtifact,
     );
     if (comparisonIsCurrent(storedComparison, candidatePrepared)) {
+      authenticatePrivateSource();
       return { candidate, compile: cached, comparison: storedComparison, cached: true, comparisonRefreshed: false };
     }
     const comparison = compareCandidateDiagnostic({
@@ -888,6 +908,7 @@ function compileCandidate(workbench, target, sourceText, options = {}) {
       compile: { runId: cached.run_id, cacheKey: cached.cache_key, reused: true },
       comparison,
     }, diagnosticReports);
+    authenticatePrivateSource();
     const refreshed = storeRequest({ action: 'replace_comparison', record: refreshedRecord }, storeOptions);
     return { candidate, compile: cached, comparison: refreshed, cached: true, comparisonRefreshed: true };
   }
@@ -932,6 +953,7 @@ function compileCandidate(workbench, target, sourceText, options = {}) {
       artifactDir,
       prepared: diagnosticPreparedForCandidate(preparedDiagnostic, candidateArtifact),
     });
+    authenticatePrivateSource();
     comparisonRecord = makeComparisonRecord(runId, comparison);
     writeJson(path.join(artifactDir, 'workbench-report.json'), {
       schemaVersion: 3,
@@ -967,6 +989,9 @@ function compileCandidate(workbench, target, sourceText, options = {}) {
       compile: compileRecord,
     });
   }
+  // Input drift is an invalid check, not a failed candidate. In particular the
+  // fresh-path catch must not publish a drift failure to the experiment history.
+  authenticatePrivateSource();
   const stored = storeRequest({
     action: 'put_compile_result',
     compile: compileRecord,
