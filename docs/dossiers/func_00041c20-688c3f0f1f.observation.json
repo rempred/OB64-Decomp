@@ -1,0 +1,98 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "688C3F0F1F9561C6DF24CB6C7F0F2B584175999B8BCFB22FE8054F720D7E5B57",
+  "observationId": "B6F9127B8BF53807A806A6620694608E3DD02B4DFE1D7FA66EF80F4309BED922",
+  "symbol": "func_00041c20",
+  "authored": {
+    "context": "The complete original six-member Squad construction wave had five unchanged ready PURE_C members and a608-byte/frame72 41c20 best with42 linked differing words/122bytes. The original owner is.ob64.r0821 atROM[41C20,41E80),RAM8016BD20; stale assembly comment672/decode800B1820 is not the accepted structural model. All eight calls and every body path are covered. C989 uses the actual consecutive three-word key copy and duplicate increments but leaves the mode-one constant inside the conditional second-scan preheader, shifting saved-register roles.2359 restores the early constant by adding a duplicate continuation test but emits612 bytes.",
+    "effects": [
+      "compiler-compatibility",
+      "loop-invariant-motion",
+      "register-allocation",
+      "exact-linked-bytes"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "4B0D1826A21F8B69DA84DBD45BF926B5EC73758073E8D7B6FA473CA129C8F4D6",
+      "sourceSha256": "3318736A0F5C88B8281C5585EC94D9ED619D9AA614581C6E0093383380E1A4A7"
+    },
+    "label": "word-selector-outside-nested-retry-hoists-real-mode-constant",
+    "observedEffect": "GoldOx mail735 proposed the source form from pinned loop-pass evidence. Sol independently reproduces PURE_C608 bytes/152instructions/frame72/28 relocations with zero native masked differences and all eight retail-ordered calls, then a normal focused link proves sole whole C ownership, exact original placement and zero raw linked word/byte differences; targetSHA5943839747D13752777F341AB173B91450A257E0EECA4221EBAB781C8F161207. The real selector copy removes mode zero-extension from the nested loop's movable census and permits the early mode-one constant; this mechanism is consistent with the pinned loop.c profitability threshold and cumulative previously-hoisted instruction penalty. An independently tested inner-loop-entry duplicate break also hoists the constant and retains608/frame72/28R but leaves nine native words different through guard/preheader placement and duplicate-set lowering, so it is not selected. Reversing2359 predicates swaps only two native tests; a real initial scan bound regresses632; function-scope duplicate and value-producing retry are byte-identical to C989. Old target-mismatched candidate identifiers are source-context references only, not fabricated parents. ONE normal combined final verifier at2026-10-03T00:02:54.920Z accepts ALL six original members as PURE_C with sole ownership,placement,actual relocation contracts,exact linked bytes,independent fresh compilation and full-ROM equality. CURRENTB25C8673EE016EF37496BA635A134750DC805115305D604E20C7B55F8D4A792F; ROM41943040/SHA571E83396BC81E70DA4C0A20313D82DBD7DFE685F2C37418C8E27F927E2CC67A. Ignored squad-w2-final-evidence.json binds the exact six source/configuration inputs and canonical reports.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_00041c20.s",
+        "sha256": "2BE1C683B49A8A41E827C4BA113568A6BE9B3382F57BEDDF54D664FB5944EF0E"
+      },
+      {
+        "path": "docs/archive/matching-c-candidates/2026-09-29-func_00041c20-8dc579b9d2.c",
+        "sha256": "B5F1DE0DF29F1354F083FDFDBA71507500F137849E58012CEA1747DF5EB2080C"
+      },
+      {
+        "path": "docs/archive/matching-c-candidates/2026-09-29-func_00041c20-c989943c82.c",
+        "sha256": "D0EC392C261DE6C65914362BB17A0AE0D8E9F99AC0E8DC8CF34536066C3FB78E"
+      },
+      {
+        "path": "docs/archive/matching-c-candidates/2026-09-29-func_00041c20-2359b5c63a.c",
+        "sha256": "EC13FA6A0ED3EC56679E0A9600982736DB1729AC32286E4D0BE6D934AC8EDE8B"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "The complete original six-member construction wave is accepted. This does not close the Squad family, infer data capacities or complete broader loader/DMA reconciliation. Preserve00129068 unnamed source-record return+0x18 and route flag0x00020000.00195D9C remains deferred until the loader interface freezes; placement/cross-owner/terrain/deferred-script and other five-family gates remain open. No asm injection, volatile change, dummy carrier, helper-contract change, shared-tool edit, structural ownership change or push. Cross-target lookup was consulted but supplied no demonstrated transfer for this blocker.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Copy the real u8 mode argument to one u32 selector after attempts=0x20 and before the retry do loop, then use that selector in both record scans. Keep record_index as the u8 parameter, the actual3u32 aggregate/key address, external duplicate gate, plain candidate<100 bounds, duplicate increments and retry mask unchanged. Explain the necessary compiler workaround near the copy."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 2836,
+      "sha256": "4B0D1826A21F8B69DA84DBD45BF926B5EC73758073E8D7B6FA473CA129C8F4D6"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "3318736A0F5C88B8281C5585EC94D9ED619D9AA614581C6E0093383380E1A4A7"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-03-func_00041c20-688c3f0f1f.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
