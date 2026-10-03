@@ -551,3 +551,43 @@ Both serial and parallel timing baselines are measured afresh after that report.
 are not a comparable baseline. Timing intervals distinguish complete commands, context preparation
 and estimated compile/assemble/object-validation attempts; the latter do not establish individual
 compiler subprocess overlap or include subsequent diagnostic linking.
+
+### Measured concurrent default and resumed W6 (October 3)
+
+After the complete Actor wave passed at `5cd26468`, the prepared bounded run completed all
+16 fresh candidate checks with no evidence disagreement or shared-input drift. Two seed checks
+primed the changed CURRENT/environment, then three warm pairs per mode alternated serial and
+default-parallel order. Every pair contained the accepted 129268 control and a genuine archived
+129268 nonmatch. Their linked results remained exact and 47 differing bytes, respectively;
+object bytes, actual relocations, expanded-source identities and comparison fields agreed across modes.
+The final simultaneous inactive B1F4 and short FFE80 checks remained nonexact. B1F4 retained
+symbolic-object evidence with unavailable linked diagnostics, rather than gaining a false match.
+
+| Warm measure | Serial | Default parallel |
+|---|---:|---:|
+| Two-check elapsed median | 62.369 s | 36.738 s |
+| Two-check elapsed range | 61.796–72.612 s | 35.582–37.446 s |
+| Accepted control latency median | 30.111 s | 35.988 s |
+| Genuine nonmatch latency median | 32.254 s | 35.342 s |
+
+Across all three pairs, total elapsed time fell from 196.777 to 109.766 seconds:
+1.793 times the throughput and 44.2% less elapsed time. Individual check latency rose about
+10–20%; simultaneous checks improved combined throughput rather than making each invocation
+faster. Complete command intervals overlapped for 35.165–35.745 seconds. The recorded attempt
+intervals are only the estimates described above, not individual compiler-process traces.
+The initial seed invocations took 102.708 and 94.462 seconds and are excluded from warm statistics.
+This measures private `match.js watch` checks, not canonical `diff.js`, cold-start throughput,
+whole-wave verification or agent productivity. The 30-second focused-check goal remains open.
+
+The ignored results are `build/parallel-implementation/concurrent-default/cdif-summary.json`
+with per-command records and the parity assertions in `bench.js`. Both modes were measured
+after the reported Defender change; no security settings were changed for this task.
+The timing hold is released: Sol works B1F4 in `build/matching/solmode/`, and the independent
+top-level worker works D14C in `build/matching/actorhelper/`. They use concurrent checks without
+routine permission. The complete 17-member W6 and D14C's separate table activation gate remain.
+
+The Actor source pairs also supplied two entries in the existing compiler-lesson index,
+including the null-predicate and first-site allocation counterexamples. The existing knowledge
+suite passed all 24 checks, including current observation authentication, with no code generation.
+These entries expose observed source effects and their limits; they do not assert an unmeasured
+compiler-pass mechanism or establish acceptance for a different target.
