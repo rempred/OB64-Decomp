@@ -1,0 +1,94 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "36F6096CE389A3924116ABE969336C12332B179E37B72741C9BAE2D064F99EA5",
+  "observationId": "B69EE0E32457293362B81A251F13D42CDA801677F19B7EE219D6D4697C605682",
+  "symbol": "func_0022B1F4",
+  "authored": {
+    "context": "Current complete natural-loop control2CD7356F is PURE_C3588/frame280/103R with full93-call retail address order. Its natural indexed loop derives next/current cursors while assigning record and next cursor opposite retail.",
+    "effects": [
+      "global-allocation",
+      "loop-strength-reduction",
+      "frame-allocation",
+      "pointer-lifetime"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "0F9BCC1E218FC5FAC8555F7D940B186BEE2F128D7C84D6CA133FD48002938704",
+      "sourceSha256": "19695B0A5F6E1BC14C4C724AD807F817B58E716C15F4725BBB4E312025EDCB22"
+    },
+    "label": "real-next-cursor-reuse-spills-loop-bound",
+    "observedEffect": "Current private run0C3C34632BF33AAB2B79BD3C07ADACBBA27CFCF3D2ACDA34AC2B050822D7D964 is PURE_C3588/frame288/103actualR,677 symbolic words/2036bytes different; all93 call addresses stay in original order. ProbeE59EED29 authenticates rtl/loop/flow/greg for exact source19695B0A. Flow merges the genuine pointer95 to14refs/live55; greg allocates95=s1,142=s3,101=s4,571=s0. It retains the initial count-minus-one bound in a new actual spill236 (storeUID2324, loop-footer reload2426), with dead USE2339 at244. Saved registers begin248 rather than240, yielding frame288. Exact upstream optimization desirability is unmeasured. Separate explicit next pointer and current byte cursor also yield3588/frame288/103R; grouped next-index3564/frame280 regresses. None is selected over the complete control.",
+    "parentCandidateId": "2CD7356F21F4E4682186B72F0587DD73FA58B760D630F51FDDB4EBE687D50C12",
+    "references": [
+      {
+        "path": "docs/archive/matching-c-candidates/2026-10-03-func_0022B1F4-2cd7356f21.c",
+        "sha256": "3EF610D4B180FF4C459322A563E350C870B8FE3B81F54F04470EA31BB12257F0"
+      },
+      {
+        "path": "docs/dossiers/func_0022B1F4-2cd7356f21.md",
+        "sha256": "94C360A68F11A57323253C720936ACA48E3DB9E6504FDCBB71286811F9B9D8B2"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_0022B1F4.s",
+        "sha256": "E95C054B2215FB0A8D8839B03555ED404DF386261BBAB6AA3C73BC039EB2233B"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Genuine reuse repairs the record hard register but swaps index/next roles and creates a bound spill; full function remains nonexact. This does not eliminate all real cursor or reuse hypotheses. No linked evidence, source ownership, relocation acceptance or whole-wave verification follows; all17 W6 and D14C table gate remain open.",
+    "role": "counterexample",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Reuse the earlier real sentinel-scan byte pointer for the next buffer entry: initialize to buffer+1, advance4 each iteration, and read the same next word through it. Keep the natural index bound and every other call/memory operation."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 19866,
+      "sha256": "0F9BCC1E218FC5FAC8555F7D940B186BEE2F128D7C84D6CA133FD48002938704"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "19695B0A5F6E1BC14C4C724AD807F817B58E716C15F4725BBB4E312025EDCB22"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-03-func_0022B1F4-36f6096ce3.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

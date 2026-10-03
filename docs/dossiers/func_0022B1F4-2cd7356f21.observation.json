@@ -1,0 +1,85 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "2CD7356F21F4E4682186B72F0587DD73FA58B760D630F51FDDB4EBE687D50C12",
+  "observationId": "009849AE6536066CD787EAE606702562A5E79CB335D3914D9C84B5F206280842",
+  "symbol": "func_0022B1F4",
+  "authored": {
+    "context": "Original complete17-member action-mode W6. Prior3EF610D4 complete source has stale target-binding records; rebind exact source/expanded input to current physical owner before experiments.",
+    "effects": [
+      "frame-allocation",
+      "global-allocation",
+      "loop-strength-reduction"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "C0EB736D44C853C270757653914BEF32DE1AA6312642124290171731903A433B",
+      "sourceSha256": "3EF610D4B180FF4C459322A563E350C870B8FE3B81F54F04470EA31BB12257F0"
+    },
+    "label": "current-complete-natural-loop-control",
+    "observedEffect": "Current private runD6DBD8DACA702C57B31C20432855C59AB870BE44D23BD5AD6BD155D67236CE58, candidate2CD7356F21F4E4682186B72F0587DD73FA58B760D630F51FDDB4EBE687D50C12, authenticates PURE_C3588/frame280/103actualR and source3EF610D4/expandedC0EB736D. Symbolic-object comparison639words/1893bytes different; all93 call-address sequence equals retail. No linked evidence is available for this inactive ASM owner. Source-matched retained2E21579E pass artifacts authenticate independently but have historical target-binding limits.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_0022B1F4.s",
+        "sha256": "E95C054B2215FB0A8D8839B03555ED404DF386261BBAB6AA3C73BC039EB2233B"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Nonexact current full-body control; no linked/ownership/relocation acceptance or full-ROM gate. Preserve it through real-pointer regressions; all17 members and D14C table activation gate remain open.",
+    "role": "pair-baseline",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "No source change. Run the preserved full3588-byte natural-index/inline-selector composition through current supported private watch."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 19820,
+      "sha256": "C0EB736D44C853C270757653914BEF32DE1AA6312642124290171731903A433B"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "3EF610D4B180FF4C459322A563E350C870B8FE3B81F54F04470EA31BB12257F0"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-03-func_0022B1F4-2cd7356f21.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

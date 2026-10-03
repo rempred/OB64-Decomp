@@ -1,0 +1,93 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "B814A63F144D5687EE306F761F29C22F2EA7B2CC9FF3CF75D58560B3955123B1",
+  "observationId": "D55B256E93C52793F160C26648DC32E0F93E7051A5D574E033BF7D2C1D5FA6D3",
+  "symbol": "func_0022B1F4",
+  "authored": {
+    "context": "Complete F5967A10/frame280 index-reuse best has two separate clamp-input temporaries, a0/v1 swaps in the join and a speculative a0 argument move replacing retail's first guarded-call NOP. GoldOx802 traced the current D06D9D0A delay dump and BAAC7F74 allocator inputs and proposed real input/result reuse at the two clamp sites.",
+    "effects": [
+      "variable-reuse",
+      "global-allocation",
+      "delay-slot-scheduling"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "32E83410F3ADBF5B3C7F6497BDE39938D0257D4311AB3CE9B62E9B5728ABCCCB",
+      "sourceSha256": "729D03CB3C16A58BFE87848C13FB939C312A36B96F9AD9F49AC24EF838F05A27"
+    },
+    "label": "real-clamp-input-output-reuse-restores-guard-nop-through-register-lifetime",
+    "observedEffect": "Current watchB814A63F/run4EFE5741 emits PURE_C3592/frame280/103 actual text relocations; all93 original call addresses remain ordered. Current probe477B6B10(rtl/lreg/greg/dbr), source729D03CB, shows the actual clamp input and result in pseudo121, GREG121=s6; join value145=v1 and record value104=a0. The default load writes s6 and subtraction writes s6; nor/sra now use v0. The first guarded2222C call retains a NOP after its beq and keeps move a0,s2 after the two argument loads. Call-anchored regions13 and15 reproduce those retail operation/register forms, apart from unresolved target addresses. Candidate765 symbolic words/2451bytes differ; the additional NOP makes3592 versus3588 and worsens the same-offset score, so it is an informative intermediate rather than the selected best.",
+    "parentCandidateId": "F5967A10650BA54ABCD9CFDB9FC72EA49115264AE793C80186F24871D2393FFD",
+    "references": [
+      {
+        "path": "docs/archive/matching-c-candidates/2026-10-03-func_0022B1F4-f5967a1065.c",
+        "sha256": "C0D8996C39758189C747820B6B1522CC9E642B14B939E97B5B2DD0A72C0FAAA2"
+      },
+      {
+        "path": "docs/dossiers/func_0022B1F4-f5967a1065.md",
+        "sha256": "33476E49E1D87D0210D9B9B7EAC7CBA6AEEC31003D506BE64822B80022F45AE6"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_0022B1F4.s",
+        "sha256": "E95C054B2215FB0A8D8839B03555ED404DF386261BBAB6AA3C73BC039EB2233B"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Local lifetime and delay-slot effect only, not linked/semantic/ownership acceptance. Five other call-anchored count deficits remain, including early duplicated publication stores, later missing load/move and copy-address extra move. Original17-member W6, inactive B1F4 ASM ownership, D14C table gate and all final gates stay open. No claim about unavailable original compiler intermediates or a tooling defect.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Use the existing temp_s6_230 for the actual load and subtraction feeding each clamp, then apply its unchanged mask to itself. Remove the two now-redundant input declarations. Preserve all reads, writes, callbacks, signed tests, earlier/main loops and required complete body."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 19719,
+      "sha256": "32E83410F3ADBF5B3C7F6497BDE39938D0257D4311AB3CE9B62E9B5728ABCCCB"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "729D03CB3C16A58BFE87848C13FB939C312A36B96F9AD9F49AC24EF838F05A27"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-03-func_0022B1F4-b814a63f14.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

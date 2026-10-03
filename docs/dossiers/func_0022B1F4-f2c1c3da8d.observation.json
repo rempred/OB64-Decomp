@@ -1,0 +1,100 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "F2C1C3DA8DDFF69C0D178024775DEE7C8FC56BE80F668B0F42130D3C01BBCDD0",
+  "observationId": "F8313FF7B3D5F255A3B47AACEF210212A00C62321A7373A889D099FE056B66B5",
+  "symbol": "func_0022B1F4",
+  "authored": {
+    "context": "B814A63F restores real clamp-input/output reuse and first guarded-call NOP but is3592 bytes because F596's early publication stores remain duplicated. Ordinary common return alone contracts to3576 and moves incoming output-pointer reloads into the common store. Retail instead reloads the actual publication address on each exit path.",
+    "effects": [
+      "variable-reuse",
+      "global-allocation",
+      "control-flow-shape",
+      "shared-publication"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "84B1A72439C7AE59945531950C48AB97B1BC416AA5A555D232965C8A0DB269FB",
+      "sourceSha256": "29400CE23863DACA0FE0BC7FFE98A0E64D5054B1A99E296FCB16456DD1A65DD7"
+    },
+    "label": "clamp-reuse-and-real-path-local-publication-compose-at-original-extent",
+    "observedEffect": "WatchF2C1C3DA/run621DF87D emits PURE_C3588/frame280/103 actual text relocations,531 symbolic words/1671bytes different versus F596603/1845. All93 original call addresses retain their order. Both early call-region3/11 instruction counts now match; first guard retains its retail NOP and clamp registers. Official probe86040519(rtl/lreg/greg/sched2/dbr), source29400CE2, expanded84B1A724, confirms actual separate short publication pointer81(4refs/live24), time138(4/10), status144(4/22), allocateda1/v0/a2. The final common store is followed by movev0,a2, unlike retail's early status inv0 and pointer reload int2/time ina0. Four remaining call-anchored count deficits:47missingload,70missingmove,86extramove,93extrareturnmove. Return reuse of late padding word, explicit final real additions and predecessor-bound staging do not improve this source. Identical full callback arms3616/frame280/104R regress; they are not selected.",
+    "parentCandidateId": "B814A63F144D5687EE306F761F29C22F2EA7B2CC9FF3CF75D58560B3955123B1",
+    "references": [
+      {
+        "path": "docs/archive/matching-c-candidates/2026-10-03-func_0022B1F4-b814a63f14.c",
+        "sha256": "729D03CB3C16A58BFE87848C13FB939C312A36B96F9AD9F49AC24EF838F05A27"
+      },
+      {
+        "path": "docs/dossiers/func_0022B1F4-b814a63f14.md",
+        "sha256": "997495956132BDB252950D0D792B7DCA2F5825BCA1E66CD57896DE9A9BE26D4C"
+      },
+      {
+        "path": "docs/archive/matching-c-candidates/2026-10-03-func_0022B1F4-f5967a1065.c",
+        "sha256": "C0D8996C39758189C747820B6B1522CC9E642B14B939E97B5B2DD0A72C0FAAA2"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_0022B1F4.s",
+        "sha256": "E95C054B2215FB0A8D8839B03555ED404DF386261BBAB6AA3C73BC039EB2233B"
+      }
+    ],
+    "relatedCandidateIds": [
+      "F5967A10650BA54ABCD9CFDB9FC72EA49115264AE793C80186F24871D2393FFD"
+    ],
+    "remainingFailure": "Selected research best at complete original extent/frame remains nonexact. Symbolic-object correspondence is not linked proof or dataflow/ownership acceptance; inactiveASM has no accepted-C relocation expectations. Original17-member W6, D14C table activation approval/audit/review and all final source/placement/relocation/target/whole-ROM gates remain open. Source-level common-return blocker sent to GoldOx with this exact current probe; no tooling defect alleged.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Give all three terminal predecessors one common output-time store and return. Each predecessor copies the actual sp8C output pointer to publishTo and sets its existing0/1 status; the shared write uses this actual address. Retain B814's two real clamp ties and F596's real disjoint loop-index reuse. No extra external access, callback, compiler mechanism or owner change."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 19865,
+      "sha256": "84B1A72439C7AE59945531950C48AB97B1BC416AA5A555D232965C8A0DB269FB"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "29400CE23863DACA0FE0BC7FFE98A0E64D5054B1A99E296FCB16456DD1A65DD7"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-03-func_0022B1F4-f2c1c3da8d.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
