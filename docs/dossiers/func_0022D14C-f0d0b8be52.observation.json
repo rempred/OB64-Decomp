@@ -1,0 +1,87 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "F0D0B8BE521B2A69394E84068DCE4CC5803467AA764C9547FA1F4B0D5A10ABB5",
+  "observationId": "0EC4F28CCED89AB6981D15D2015BF6C42A4454F8485AFB15F2EA1E2F14B874AA",
+  "symbol": "func_0022D14C",
+  "authored": {
+    "context": "Authentic probability/helper return mappings and complete required body reconciled; disjoint actual locals are reused without added carriers, qualifiers, ABI or compiler changes.",
+    "effects": [
+      "real-local-reuse",
+      "register-allocation",
+      "helper-spill"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "940F3253A142D2C7192C22C65D4055AA5492CE14AF6E555325215CE50F7B3529",
+      "sourceSha256": "3981BD2AA37E918080F865D15B40AC8F1BC15C36AEA372925F68E1968F67345D"
+    },
+    "label": "d14c-quarter-half-reuse-restores-probability-s8-helper-word484",
+    "observedEffect": "Authenticated probeF9FD71FC6BEF1A27367C5F61D9CFB354F6520B61C71398D372843F319B75894D: probability18610refs/live99/cross12/order101=s8; time13943refs/live704/order100=s7; helper9418refs/live249/cross23/order102 spills and both native helper paths store word484. Actual working local 131=s1 and mode1 global argument 170=s1. PURE_C6876/frame624/177textR; all131 original external call addresses ordered. Native table64B/alignment8/15 actual R_MIPS_32 plus zero word20; no sixteenth entry. Copy is a real use, not a fabricated conflict. Lower-byte/helper control semantics retained. Whole-owner remains nonexact.",
+    "parentCandidateId": "3F91C6ACA4612C025274E37FA1FC22E948406D52768F8AF522DAA7938FCFAAE5",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_0022D14C.s",
+        "sha256": "EF14D6581AE474F7ABA21C09568FDFA0C69AEBAC234C09A9EF90D573AE14A8D3"
+      }
+    ],
+    "relatedCandidateIds": [
+      "EAF0D068C63F357A1E664A3559A569DA701C631C58F0F793D15D70D91259513B"
+    ],
+    "remainingFailure": "Whole owner remains PURE_C6876/frame624 versus retail6844/frame616. No canonical linked target, sole ownership, placement, fresh/full-ROM proof; complete17 wave and approved D14C table gates remain open. Component is useful, not selected whole-owner best or accepted matching C.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Starting from the after-all-three-random copy control, remove the now-unused quarter working declaration and replace its four uses with existing disjoint u32 temp_s0_866. No other expression, call, condition, memory read or width changes."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 40241,
+      "sha256": "940F3253A142D2C7192C22C65D4055AA5492CE14AF6E555325215CE50F7B3529"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "3981BD2AA37E918080F865D15B40AC8F1BC15C36AEA372925F68E1968F67345D"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-03-func_0022D14C-f0d0b8be52.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

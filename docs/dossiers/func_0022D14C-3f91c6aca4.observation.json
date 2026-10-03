@@ -1,0 +1,85 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "3F91C6ACA4612C025274E37FA1FC22E948406D52768F8AF522DAA7938FCFAAE5",
+  "observationId": "DEB7986E96E9EC6EB800FCFDE711A0FA102C784A07BA063EC172D0B4CCE8B01E",
+  "symbol": "func_0022D14C",
+  "authored": {
+    "context": "Actual quarter input copy dies before second random-result birth in baseline. Investigate a real source-order/lifetime route, keeping the baseline immutable.",
+    "effects": [
+      "real-value-lifetime",
+      "source-order",
+      "register-allocation"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "98302A34A913D121DF70F4EE615339F0E38D74763EE221EA0CD3321548A36598",
+      "sourceSha256": "A8F011DA98AF1554F48E0A3D1E957A9BDFDBA23D8322509DEDC9AA9A84280076"
+    },
+    "label": "d14c-quarter-copy-after-all-random-calls-changes-global-disposition",
+    "observedEffect": "3F91C6AC/sourceA8F011DA emits PURE_C6876/frame616/177textR, all131 call addresses ordered. Probe1ACD2012: probability18610refs/live99/cross12/order101=s7; time13943refs/live704/order100=s5; helper9418/live249/order102=s8; second random1384/live12/cross1/order81=s1; working19010/live21/no call crossings/order36=a1. Timing of the actual source copy changes graph/allocation but does not give retail probabilitys8/helperword484. NativeDADDB79F unselected.",
+    "parentCandidateId": "EAF0D068C63F357A1E664A3559A569DA701C631C58F0F793D15D70D91259513B",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_0022D14C.s",
+        "sha256": "EF14D6581AE474F7ABA21C09568FDFA0C69AEBAC234C09A9EF90D573AE14A8D3"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Wrong working/random/time/helper disposition and extent; no canonical linked/sole ownership/fresh/full-ROM proof. The no-call-crossing working copy prevents treating this as the middle-position remedy. No original-stage causality inferred from this candidate alone; full17/table gates remain.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Move only the existing quarter input copy after all three rand calls and before the original signed bias. Calls, memory accesses, widths and conditions stay unchanged."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 40258,
+      "sha256": "98302A34A913D121DF70F4EE615339F0E38D74763EE221EA0CD3321548A36598"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "A8F011DA98AF1554F48E0A3D1E957A9BDFDBA23D8322509DEDC9AA9A84280076"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-03-func_0022D14C-3f91c6aca4.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
