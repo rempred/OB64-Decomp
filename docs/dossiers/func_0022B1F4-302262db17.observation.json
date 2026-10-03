@@ -1,0 +1,106 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "302262DB1746CDDED08AC4BC24A871BD1C0FCF4B2433BF7870702A1F91D33219",
+  "observationId": "23088722A77437C71D02B6A9FD8331576F76DB6A8AE9EED577EFF97E464134D0",
+  "symbol": "func_0022B1F4",
+  "authored": {
+    "context": "F9 initializes actual output zero after work-buffer/offset initialization, closing all native instruction forms. Full893 to 896 to 897 control/scheduling source pairs retained; production remains ASM until complete17-member batch.",
+    "effects": [
+      "readability",
+      "source-policy",
+      "source-coverage",
+      "dependency-authentication"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 219,
+          "path": "include/common/types.h",
+          "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+        }
+      ],
+      "expandedSha256": "8418CF49C5EDAA3E505A35A2C0D2AA4B5EA83791DE273EB401F372BD24F246E0",
+      "sourceSha256": "8D5E71EEDFAEC3DF091D6D7A779DB9A41AE604F352CC3BACBA3DEA9276A86460"
+    },
+    "label": "readable-complete-B1F4-symbolic-closure",
+    "observedEffect": "Readable302262DB/source8D5E71EE/expanded8418CF49 mechanically PURE_C with sole approved include/common/types.h dependency219bytes/SHA943133AA. Native object text14013121 is byte-identical F9:3588/frame280/103 actual textR, all93 call addresses ordered,897/897 unresolved-address instruction/register/order forms agree. F9 read-only comparison proves zero unrelocated-word mismatches and10 internal symbolic J targets; byte-identical readable object inherits those raw comparisons. Ordinary mechanical source/policy/private evidence only, not accepted linked source.",
+    "parentCandidateId": "F9E5B3B1DEBB34AE86FF5998577D02DBF5E1B14F73D89938B36262C71E2AA5B6",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_0022B1F4.s",
+        "sha256": "E95C054B2215FB0A8D8839B03555ED404DF386261BBAB6AA3C73BC039EB2233B"
+      },
+      {
+        "path": "src/lib/func_001F197C.c",
+        "sha256": "40370E8D97445A3CEE6641A31E494527CBE69DE39E7EA9B98B2D1EC81B727B39"
+      },
+      {
+        "path": "include/common/types.h",
+        "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "No source-body mismatch remains in symbolic diagnostics. Inactive ASM still lacks accepted-C relocation/linked/ownership proof; expected contract must be recorded from actual103R under supported production linking only at whole17 batch. D14C source remains nonexact; its table change needs Astra approval/structural audit/review. Fresh compilation/placement/sole ownership/linked/full-ROM gates remain open. No normal verifier or canonical mutation perfunction.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Use approved common/types.h; retain f32/unknown32-bit-word aliases, complete80+24-byte work object and every body. Remove13 genuinely unused scalar/pointer declarations; rename source/out/count/index views; explain real shared index, short-lived copy-tail base, distinct bound joins and initialization order. No data reserve, compiler directive, field meaning or ABI/qualifier change."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 219,
+        "path": "include/common/types.h",
+        "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+      }
+    ],
+    "expanded": {
+      "bytes": 20583,
+      "sha256": "8418CF49C5EDAA3E505A35A2C0D2AA4B5EA83791DE273EB401F372BD24F246E0"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "8D5E71EEDFAEC3DF091D6D7A779DB9A41AE604F352CC3BACBA3DEA9276A86460"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-03-func_0022B1F4-302262db17.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

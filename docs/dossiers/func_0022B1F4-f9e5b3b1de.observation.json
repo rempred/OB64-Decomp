@@ -1,0 +1,90 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "F9E5B3B1DEBB34AE86FF5998577D02DBF5E1B14F73D89938B36262C71E2AA5B6",
+  "observationId": "0685F314AF7C435B5D591F701AD07E96D19CA21083756437C5AA379562935D63",
+  "symbol": "func_0022B1F4",
+  "authored": {
+    "context": "04CD real hit/terminal bound joins restore full-body control, reload parity and publication stores, leaving only entry output-zero order. Source order877, declaration initializer9ABE and typed parameter/field views are unselected. GoldOx836 identifies backward scheduling/LUID load-shadow contest.",
+    "effects": [
+      "initialization-order",
+      "schedule1",
+      "delay-slot-scheduling",
+      "source-coverage"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "0529B09BA13F0A458BA431ED297C34B896304FE0B7AEA9E0C7DF211A9BD509F1",
+      "sourceSha256": "5988FEB8B3402BB5A40E8EC658D5B2AA63725E75622D68B1EC240F4CED93241D"
+    },
+    "label": "real-zero-initialization-position-closes-entry-scheduling",
+    "observedEffect": "F9E5B3B1/source5988FEB8 emits PURE_C3588/frame280/103R/all93 external calls ordered; all897 instruction/register/order forms agree with branch/call destinations unresolved. Native14013121. Read-only static-model comparison finds103 raw differing words, all at actualR sites; no other word differs, and10 internal J destinations plus93 external call addresses agree symbolically. Official probe4EF74AFA: sched1 output-zero43/offset-zero40/LI35 are priority1; atT-9 ready order43,40,35,33,16 andload19 launchedbefore40 atT-11. This measured new sequence replaces old877 offset-zero43/output-zero31 sequence; no original developer intent inferred.",
+    "parentCandidateId": "04CD3ADBE9E1A5E306F5A67B505A16DEF7EDF5EB7C9C63ECEE96310CF6F318CE",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_0022B1F4.s",
+        "sha256": "E95C054B2215FB0A8D8839B03555ED404DF386261BBAB6AA3C73BC039EB2233B"
+      },
+      {
+        "path": "src/lib/func_001F197C.c",
+        "sha256": "40370E8D97445A3CEE6641A31E494527CBE69DE39E7EA9B98B2D1EC81B727B39"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Symbolic-object closure only: inactive ASM has no accepted-C expected relocation/linked diagnostic contract. Actual103R census must be bound under normal production linking at complete17-member integration, followed by placement/sole owner/fresh/full-ROM gates. D14C remains nonexact with structural table gate. No verifier run or canonical activation per function.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Initialize actual spA4 zero after the real work-buffer clear and var_s8_30 zero, before initial lookup and every use. Keep all memory layout, body paths, callbacks, widths and flags unchanged."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 20165,
+      "sha256": "0529B09BA13F0A458BA431ED297C34B896304FE0B7AEA9E0C7DF211A9BD509F1"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "5988FEB8B3402BB5A40E8EC658D5B2AA63725E75622D68B1EC240F4CED93241D"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-03-func_0022B1F4-f9e5b3b1de.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

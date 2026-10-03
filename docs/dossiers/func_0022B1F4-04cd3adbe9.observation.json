@@ -1,0 +1,91 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "04CD3ADBE9E1A5E306F5A67B505A16DEF7EDF5EB7C9C63ECEE96310CF6F318CE",
+  "observationId": "A466E02C52C54A15A753072316222AA5853A9ED3EFBB5E254590137E887FC503",
+  "symbol": "func_0022B1F4",
+  "authored": {
+    "context": "Post-arm172F restores hidden reload parity, original extent/frame and one publication store, but leaves false bound-edge flowing into common149+4. GoldOx832 notes false edge must skip the common update. Scoped C1/base and actual next-entry local retained.",
+    "effects": [
+      "control-flow",
+      "reload-allocation",
+      "late-jump",
+      "delay-slot-scheduling",
+      "source-coverage"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "E6B07F6EE4742D86CBDAD7E4812221204CE295E211F9D6094A0A62FFFB88F589",
+      "sourceSha256": "1C7EB9F0745BBF91EFF4340BCCB72FAAA4C604127AF1FB0A110BC60C0F3B8DCA"
+    },
+    "label": "separate-real-hit-terminal-joins-restore-full-bound-branch",
+    "observedEffect": "04CD3ADB/source1C7EB9F0 emits PURE_C3588/frame280/103 actual text relocations/all93 original external call addresses ordered. NativeF240C176;106 raw symbolic words/318bytes different,896/897 unresolved-address text lines. Entire site82 branch order/targets now agree (internal J remains object relocation); late reload parity/early merged store remain. Official probeFD04546A/source1C7EB9F0/expandedE6B07F6E: GREG2499 reloadt2 fromSPB4 in hit-bound copy; jump2 removes it and jumps2134/common149; first-bound false remains2150/afterbound. No claim about unavailable retail compiler intermediates.",
+    "parentCandidateId": "172F2D8E15C5558732A19E7B4BB1A52F05CE6C506908837A11D6DA3279698692",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_0022B1F4.s",
+        "sha256": "E95C054B2215FB0A8D8839B03555ED404DF386261BBAB6AA3C73BC039EB2233B"
+      },
+      {
+        "path": "src/lib/func_001F197C.c",
+        "sha256": "40370E8D97445A3CEE6641A31E494527CBE69DE39E7EA9B98B2D1EC81B727B39"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "One entry scheduling site: zeroSP A4 store precedes record7Cload/LIa1 instead of following them. Raw symbolic objects have unresolved relocations and no available inactive-owner linked/accepted-C relocation contract. Source-order877 and real field/array views are native-identical; initializer9ABE moves earlier. Full seventeen-member W6, D14C separate table gate, sole-owner/placement/relocation/linked/fresh/full-ROM verification remain open.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Duplicate the genuine maximum-bound statements into hit and terminal paths. The hit join receives first-bound-store true and outer spD7-condition false; first-bound-store false skips the update as original. Terminal path retains its real update. This genuine second incoming path preserves the field re-read/max until reload; no fake barrier/use, extra local reserve, qualifier or flag."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 20165,
+      "sha256": "E6B07F6EE4742D86CBDAD7E4812221204CE295E211F9D6094A0A62FFFB88F589"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "1C7EB9F0745BBF91EFF4340BCCB72FAAA4C604127AF1FB0A110BC60C0F3B8DCA"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-03-func_0022B1F4-04cd3adbe9.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
