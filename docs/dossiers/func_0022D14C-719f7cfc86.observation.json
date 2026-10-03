@@ -1,0 +1,116 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "719F7CFC8611EA4084A46892951427C9BFDF76FE7DEA029F0935908DDAF0B21C",
+  "observationId": "644DF5EC7F8FB95D6A371A47006AA1B50C8739BF71783DDDB0569C922E2E2D08",
+  "symbol": "func_0022D14C",
+  "authored": {
+    "context": "Astra-directed early branch experiment after Sol876 identified an earlier hidden producer. No quarter tuning or compiler changes.",
+    "effects": [
+      "instruction-selection",
+      "real-lifetime"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "58C18A8D27A7B5DA47AB5432E7576664FBF8F250F055F65A95B55631130012BC",
+      "sourceSha256": "379199E8D4659CD042167A2AAF07B0F740B0AD9B2B120DA0AE23CB5B2C1FAB11"
+    },
+    "label": "d14c-entry-shared-case10-default-two",
+    "observedEffect": "PURE_C6864/frame616/177textR+64B15R,131ordered/eight events;20B over/11nonzero intervals. Four entry literal/store registers now match retail t4/t3/t4/t3; new source-bound RTL/GREG has4 producers/stores. Main MFHI t3, half/quarter MFHI t4 restored. Quarter interval68 all27 words agree except final external JAL relocation. Probabilitys8/helper484/487/metadata500/actors3 retained. Projection quotient MFLO nowt3 rather than retailt4;420 still seven direct accesses. Mechanism evidence remains scoped, not a universal parity claim.",
+    "parentCandidateId": "9056E64B35780F01835050A9032EBB81A37CAC742666E13A4E9D408904322752",
+    "references": [
+      {
+        "path": "build/matching/actorhelper/d14c-entry-merge-prep.json",
+        "sha256": "885BCD925C94DB0C19BAF6DFE5811ECB0567DD6ED4951C97E6C131C00DE53797"
+      },
+      {
+        "path": "build/matching/actorhelper/d14c-entry-pre-state.json",
+        "sha256": "78727B8FC213F371A1E801B25271FCD563598970CC87CCB6CB76C56D543D4250"
+      },
+      {
+        "path": "build/matching/actorhelper/d14c-entry-merge-watch.json",
+        "sha256": "BF917CC5D82723C273933EE5144F5E070D6314DEF1614F430981431127DA377E"
+      },
+      {
+        "path": "build/matching/actorhelper/d14c-entry-merge-probe.json",
+        "sha256": "41332157FF426A0CA5B37435BA05E24ACDC49FEE8BFEA407CA6C44C295795081"
+      },
+      {
+        "path": "build/matching/actorhelper/d14c-entry-merge-stages.json",
+        "sha256": "0C586AE9B0F4C128EFF45391924DCCD14BA31475039DF11ECC0E4F34A21C64B2"
+      },
+      {
+        "path": "build/matching/actorhelper/d14c-entry-merge-result.json",
+        "sha256": "7000B1ABF1E2DC371F85FB09436B09B04676B0459CA7E3DDADDB5F9CDA777FA5"
+      },
+      {
+        "path": "build/matching/actorhelper/d14c-entry-merge-native-evidence.json",
+        "sha256": "932E24D7447E6AE74B35D18883E5256EBCCF295AB8DDE1E44B361561D3DCA7BC"
+      },
+      {
+        "path": "build/matching/actorhelper/d14c-entry-merge-native-sp-census.json",
+        "sha256": "A285BA233932AE32BC0252B5D349C6F4967D1BC096D096FACEB7FC1EACD6183F"
+      },
+      {
+        "path": "build/matching/actorhelper/d14c-entry-merge-native-word-proof.txt",
+        "sha256": "287AC500905DED4A5A7FB889646E0FAC0B44FC8877F2B11DB2002E3B0D67B21A"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Symbolic-only private evidence; all exactness flags false. First-filter pointer homes/init order, compaction bases/destination bias, projection reload/order, main/half arithmetic and other words remain. Complete17/source-class/table gates unchanged; no matching acceptance.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Only entry switch duplicate case10 assignment2/break and its label are removed together; case10 label joins existing default2 assignment/break. Case10 never falls through to case11=3. Guard, other values, all real side effects and remainder of full function byte-identical."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 41096,
+      "sha256": "58C18A8D27A7B5DA47AB5432E7576664FBF8F250F055F65A95B55631130012BC"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "379199E8D4659CD042167A2AAF07B0F740B0AD9B2B120DA0AE23CB5B2C1FAB11"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-03-func_0022D14C-719f7cfc86.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

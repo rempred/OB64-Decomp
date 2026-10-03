@@ -1,0 +1,104 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "9056E64B35780F01835050A9032EBB81A37CAC742666E13A4E9D408904322752",
+  "observationId": "A4E4B493FC906AAFF11C623B8591948BB4E6BDE92C8FB55FEDF38887D5462178",
+  "symbol": "func_0022D14C",
+  "authored": {
+    "context": "Transfer only the measured direct parent D69DBCFA/9056E64B of entry-sharing719F. Reuse worker publication-step claims and referenced native evidence. Original worker historical parent785D4C48 is not imported as an implementation trial; this is the source-bound parent baseline for the sole entry sharing delta.",
+    "effects": [
+      "instruction-selection",
+      "real-lifetime"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "3D5891C26BCA0F863D2192E89BCDB24865FA4D80B5C727200A75B2FB2CE05F54",
+      "sourceSha256": "D69DBCFAAD2229E77C2D9698FEBD2DD1D50C912A7900B950667B2452A3DA4CEF"
+    },
+    "label": "d14c-entry-sharing-direct-parent-source-bound-transfer",
+    "observedEffect": "6864/frame616,177textR/table64B15R/131ordered/eight events. Recovers SP9C fixed base in quarter branch delay and after helper, base-first index ADDU and SB offset0. Earlier integer expression was neutral; this statement form measurably differs. Quarter/helper/actor roles preserved. Separate readonly lesson limitation on Sol baseline088D2602/probe5BDA1CB2: current exact706 T interval has70calls versus60 final; event16->6 withinT/outsideprob, substantial potentialsuffix52 includesrealTrefs. AtmostoneTuse disappears(def+21pre/def+20final), and sharedwholefamilies could lowerrefs aswellaslength. No prioritygain/retailoriginalsource claim; these old-context metrics do not certify D69 preallocation.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "build/matching/actorhelper/d14c-publication-step-watch.json",
+        "sha256": "F3DA5B88B84E60AFDA4E4BE21975CA243F1D2FCA120C86113699DE242E02B9A8"
+      },
+      {
+        "path": "build/matching/actorhelper/d14c-publication-step-evidence.json",
+        "sha256": "B2FDB305203DA6A4791C57E02956E3885D9580C123CB19CC7CD9B202B878CCB8"
+      },
+      {
+        "path": "build/matching/actorhelper/d14c-publication-step-word-proof.txt",
+        "sha256": "EF0C9023373C1011EC1A8E7EB6C5C1EC8584B6CF2D2F497F119278472E5EB5D1"
+      },
+      {
+        "path": "build/matching/actorhelper/d14c-publication-step-prep.json",
+        "sha256": "A9EB828BE0E567E3A1B2A554C463AFF6224A2A6B0F70A2BF74ABB350D2A59352"
+      },
+      {
+        "path": "build/matching/actorhelper/d14c-publication-step-observation.json",
+        "sha256": "07844C96DD5DBD9589F7795CBA9BB7BE8D52315D6E4142B6FF90BFD4872BAC00"
+      },
+      {
+        "path": "build/matching/solmode/d14c-T-late-call-merges.json",
+        "sha256": "53A0739395632579FDA897A7C78B128C8197E4DB7B2C4CFB593FD8760CC7271D"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Symbolic-only private evidence, exactness flags false; no linked/full-ROM acceptance. Full6844B/1711-word original owner, all required calls/eight events/separate table retained. Pointer homes,420 reload, compaction bias and other mismatches unresolved. No synthetic references, fabricated loads, qualifiers, padding or compiler change.",
+    "role": "pair-baseline",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Preserve direct-parent D69 publication-step source as-is for the entry-sharing pair. Its existing worker observation describes an actual fixed-field116 pointer advanced by the original index for one store. Sol makes no source changes or native replay."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 41140,
+      "sha256": "3D5891C26BCA0F863D2192E89BCDB24865FA4D80B5C727200A75B2FB2CE05F54"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "D69DBCFAAD2229E77C2D9698FEBD2DD1D50C912A7900B950667B2452A3DA4CEF"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-03-func_0022D14C-9056e64b35.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

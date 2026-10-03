@@ -1,0 +1,88 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "9E469C69ED819752FDC25737A509435EE5783C1FFD3EC1E69B2AD1825917C130",
+  "observationId": "9ED2EE67687514D275E55BDEB0F5E5E2D9AD31DD6B2F7324DA2BD1C2B91C19CD",
+  "symbol": "func_0022D14C",
+  "authored": {
+    "context": "Authenticated immutable source supplied by Astra868/871, copied byte-for-byte into solmode. Worker owns compaction/address/branch/read-order; Sol measures probability/helper and readonly reload correspondence.",
+    "effects": [
+      "actual-frame",
+      "real-local-reuse",
+      "register-allocation",
+      "reload-correspondence"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "83580B4A85EBA106524BA7C957163F47B0B9637DA996FF01884BB590B80E9C64",
+      "sourceSha256": "088D26022D1478545F03BCA412C65DD8EB3754B0D0719569D0837D07F5BC3224"
+    },
+    "label": "d14c-composed-context-retail-frame-and-allocation-with-entry-hidden-reload",
+    "observedEffect": "Source088D2602/candidate9E469C69 emits PURE_C6864/frame616/177textR/native0EB0CF98. Full1711-instruction original owner reconciled; all131 original external call addresses ordered,64B two-occurrence table15R retained. Authenticated ownprobe5BDA1CB2: actual365BC1881->SET1861883; helper37AF82439->SET942441 and3384->SET1413386->SET943389; T139plus79/82 actual definition1668. Probability18610/live99/cross12/order104=s8; T13943/live706/cross70/order103=s7; helper9418/live252/cross23/order105spill484. Native sixword484/twobyte487/nineteenword500 accesses. Quarterhighpart533 is allocatedHI64, with inserted4746 HI->t3 forshift2193; no unallocated-pseudo claim. FIRST native t3/t4 divergence is entry constant3 store22D228 beforeword420. Current GREG hasfive reload/store literal arms:111t4(2),118t3(3),125t4(4),133t3(1),140t4(2), but final hasfour constants3/4/1/2 because case10/default merge. Consistent hidden-reload lead, early branch source routed toAstra; original retail preallocation events not uniquely established. Existing FF context watch50B3FD83, already in flight before871, restores half order but probabilitys7; unselected, no followup stage replay. Half tradeoff parked.",
+    "parentCandidateId": "B17C1A64EC92F90CE2794E7768B5620E3050525FD61DA514DE8D6A9B13A47346",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_0022D14C.s",
+        "sha256": "EF14D6581AE474F7ABA21C09568FDFA0C69AEBAC234C09A9EF90D573AE14A8D3"
+      }
+    ],
+    "relatedCandidateIds": [
+      "29AA3E6B71CAE58ADEF1D40DB74718EF6FAE1BE460C88C0CB5E12B30E1C65D0D"
+    ],
+    "remainingFailure": "Whole6864 vsretail6844 remains nonexact: first-filter homes/read-order, main/half arithmetic and reload choices, publication address forms and other assigned residuals; no logical omitted-operation inference from native differences. No canonical linked sole ownership/placement/currentactual relocation/fresh/full-ROM acceptance; full17 plus approved D14C table structural gates open. Not best whole-owner selection, assembly-inherent finding, hybrid exception, tooling defect or weakened gate.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Compose worker real fixed-base/read-order/branch source changes with Sol completed-main-word and quarter-result local reuse. Retain source as supplied, no worker-pocket edits by Sol."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 40769,
+      "sha256": "83580B4A85EBA106524BA7C957163F47B0B9637DA996FF01884BB590B80E9C64"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "088D26022D1478545F03BCA412C65DD8EB3754B0D0719569D0837D07F5BC3224"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-03-func_0022D14C-9e469c69ed.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
