@@ -1,0 +1,113 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "11D5E7797E076636990242EB89352AB19E2078C19EEB9BF88CCAEF874A805766",
+  "observationId": "163C2604389EDBFF40E4469F19F88B514DEB22C800DEA507858AFAD9CAFEC2C1",
+  "symbol": "func_0022D14C",
+  "authored": {
+    "context": "Byte range and consumer width are static facts; original declarations and runtime behavior remain unproved. Ordinary private representation experiments only; shared types, compiler contract, configuration and ownership are unchanged. No fabricated arithmetic, dummy operation, forced storage or tooling defect.",
+    "effects": [
+      "real-lifetime",
+      "instruction-selection",
+      "register-allocation"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "5E3236646EA2D5750189A33CE1C1E3B283DAE201035608F8FB82845773512613",
+      "sourceSha256": "28D2EC1C900CC8A93CBB5B025CFE6D2E1BF5ECF475AE86A0BB242C25ECCBB7CD"
+    },
+    "label": "Explicit serialized selector width raises loop count but changes frame and code",
+    "observedEffect": "Source 28D2EC1C / candidate 11D5E779 is PURE_C: 6,852 bytes, frame 624, 177 relocations and 131 ordered calls. Region 52 gains two native words. Authenticated source-bound probe 00129CF1 has six artifacts/three dumps. Actor LOOP input rises to 870; literal 724 has life 4/savings 4 and still moves to 4638. Native differences are 1,156 words/3,958 bytes and the trial is unselected. Separate word-bit-field control 3733BE7A / 5EAA0EDD replaces only the four original +0x40 OR assignments with big-endian unsigned-int fields for existing bits 3/4/2/1. Whole native text/every relocation equal the integer helper control, so exact offsets, word widths and masks are retained. Its fresh contraction probe 2D75A1BC has five artifacts/two dumps: LOOP input 854, post-LOOP 826 and COMBINE 714 with 70 actor calls, identical counts to the integer helper. Thus those constant bit stores are already simplified by LOOP time; no gain. No unchanged acceptance proof or general bit-field conclusion.",
+    "parentCandidateId": "0BAEC83D930C73FDAF36F2D2AECA620291A2DD3D8F90F98741745079883D5191",
+    "references": [
+      {
+        "path": "build/matching/solmode/d14c-clean-entry-matched-explicit-packet-selector-width.c",
+        "sha256": "28D2EC1C900CC8A93CBB5B025CFE6D2E1BF5ECF475AE86A0BB242C25ECCBB7CD"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-entry-matched-explicit-packet-selector-width-watch.json",
+        "sha256": "5CD1DE1FE1F180786F646F2575B6E12326CCDEE675F46A79BE235E04F373ED0E"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-entry-matched-explicit-packet-selector-width-call-regions.json",
+        "sha256": "CD9EC96BF78D3B75D90647B0A3332A98773052D62E9B7101C69C58CD7BC95EEF"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-entry-matched-explicit-packet-selector-width-probe.json",
+        "sha256": "F79641119DFEA857295E36D02A76F1D7A4D6F8768F19311A50F3A18B6E7B0D20"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-entry-matched-existing-word-bit-fields.c",
+        "sha256": "3733BE7A642BFA4FFEF3BF165077998B3A136094790E81E2DEEAB8A2BC540639"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-entry-matched-existing-word-bit-fields-watch.json",
+        "sha256": "1188E67F7A9DFF10F22FDEC99A2D7C1A1A780697A9B195F3C6096AFB12A318A2"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-entry-matched-existing-word-bit-fields-probe.json",
+        "sha256": "309D89F1F0A1F6478CCD21B799BF7FED790CB3DC67CE49CA5426455A3B17F5DC"
+      },
+      {
+        "path": "src/battle/func_0021CBC4.c",
+        "sha256": "BD0D135630EE7B37F7C29BE3B74CA26F1C99BD3AD8A0DAE3CDAD21A6DF1F59A4"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "The selector cast changes frame/extent and other words. Four literals still hoist. Current recoverable source remains 6715F5D1; original code/table ASM remain production. No linked/full-ROM, table or complete W6 acceptance.",
+    "role": "counterexample",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Add a low-byte conversion only to the existing selector argument at its 16 original D334 source sites. Its sole definition is the zero-extended byte sp1C7; CBC4's accepted case 0x1F writes arg6 as a byte. Preserve the word cache, all other arguments and existing callees."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 40980,
+      "sha256": "5E3236646EA2D5750189A33CE1C1E3B283DAE201035608F8FB82845773512613"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "28D2EC1C900CC8A93CBB5B025CFE6D2E1BF5ECF475AE86A0BB242C25ECCBB7CD"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-04-func_0022D14C-11d5e7797e.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
