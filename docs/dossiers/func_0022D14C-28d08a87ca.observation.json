@@ -1,0 +1,133 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "28D08A87CABD7B908D677B6AF27910347F5036C810FF7DA0B70150CFCC0A026E",
+  "observationId": "F3B1A14AA351DA1E7E02A219E0856F772B572205C18E0C6672EEA3525DDC94AF",
+  "symbol": "func_0022D14C",
+  "authored": {
+    "context": "Clean real-mode-store E427 lineage; allD14C Solscope, canonical unchanged. Source9CDB counterexample1921 archived68f3ad62. One native command per solmode; no acceptance.",
+    "effects": [
+      "real-lifetime",
+      "register-allocation",
+      "instruction-selection"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "469874535AE7C309803A8B1EC6CC133F7B789BFFB190E96C3F491D00397DA366",
+      "sourceSha256": "E1F1254C1628E45AAC4319C5CA4C62B343CB0E4A87E5EEDEC108C50FCF5AA014"
+    },
+    "label": "Genuine two-path word advancement prevents offset-giv reduction",
+    "observedEffect": "E1F/28D08 native6824/frame616/177actualR/131ordered. Fresh94DB4ECC authenticatedRTL/loop/FLOW/LREG/GREG, PURE_C andsourceSHA: actual48-insnloop wordbiv99 increments312/329; two+16addressgivs231/285 combine but are not worthwhile0vs48, no reducedgiv. LREG99actualwordbase16refs/live50/order40, firstnativewordreadsS1+16 correct. Two nativeword++ remain atdifferentpositions, so finaltail not yet merged. D316 realbyte/word/indexcopies restorebyteSourceS2;6832/frame616,halfSourceS4/excludedS7 displace destinations, stillnonexact. Earlyexcluded94B/F62B makesexcludedspill butactualhalfSource101 nowfeedsdestination116/115,9refs/live50/order86, remainsS4. 4068 typedhalf-source variant is whole-native/actualrelocation-identical94B, not another measuredstage mechanism.",
+    "parentCandidateId": "4FC43A64371C72A26712C710ECD9D4330E1BABCA2297BF385AEBD48CA37778C0",
+    "references": [
+      {
+        "path": "build/matching/solmode/d14c-clean-filter-real-word-tail-copies-prep.json",
+        "sha256": "68869320B24A0C2DC9E44424D86AD1DC232187F494590934A04156EE732E1924"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-filter-real-word-tail-copies-watch.json",
+        "sha256": "5CF9C88502A3A6CAC29978FE2AF8ED1FB2A13A1947A35E133D9608FBFCED026B"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-filter-real-word-tail-copies-call-regions.json",
+        "sha256": "3E9AB4C49056DE57482BD58C7E88DE96F3FE1F394805DE0FEBDA969606F8672D"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-filter-real-word-tail-copies-probe.json",
+        "sha256": "03D58E49E6137E2688993A9CE060A9E41D333C7CB2B9F2468D1A82C40E10DC83"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-filter-real-word-tail-copies-loop-first-decision.txt",
+        "sha256": "5F999FE3F67ED7230DC6525645A76748EAD05531530C272E7AABF487BAC798D7"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-filter-real-word-tail-copies-first-filter-init.txt",
+        "sha256": "3C04B0651DF8430D462D25C02F77F03C42057BF0FA7FEDD942DC97C4CBCADDEA"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-filter-real-three-tail-copies-prep.json",
+        "sha256": "0CECAD34D74FDBD0BA2B4BA55AACF29DF424580675D7F14930F17A328D40E890"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-filter-real-three-tail-copies-watch.json",
+        "sha256": "7BFCCF938207F676FAD2A394F2118262C59D2B53A0B17AAD4E8FE827FA7C838B"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-filter-early-rejected-half-cursors-prep.json",
+        "sha256": "5F5EB0A8E812B72CF737D74EC85B7AD053A1CA2E76BE87E290D55E5F4B3B2F51"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-filter-early-rejected-half-cursors-watch.json",
+        "sha256": "2B4697A9A9342027B9BBB8324A916D402BA953D2904C993971B7263C7C8B6BEB"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-filter-early-rejected-half-cursors-probe.json",
+        "sha256": "10290AA376FC58335A8017299BD6D2E64E228A2FD9FDE0A778B0A2826498F68E"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-filter-early-rejected-half-cursors-first-filter-init.txt",
+        "sha256": "1D92E1A9B9D4679C169BB3E1BE517D985EC66A7F0F528C9AB4CC0BF78D1BF7D7"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-filter-typed-half-source-watch.json",
+        "sha256": "EE1F42A5D8DEB201C0A8AE6D14BE63D670CCA37D59D895F2AA92889345A03032"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Concrete profitability mechanism confirmed onexactsource; original-source-syntax inference and eventuallate-merge hypothesis remain separate. Nativewordcount/otherhomes stillwrong; no linked/ROM/wholebest claim. Realmode tailoring may temporarily regress; all complete17/tablegates remainopen.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Move single actual word-source++ into each retained/excluded arm. Every runtime path advances once; original callback/load/store/bound preserved. Other byte/index/half increments remain common; no fake references or extra runtime work."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 40874,
+      "sha256": "469874535AE7C309803A8B1EC6CC133F7B789BFFB190E96C3F491D00397DA366"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "E1F1254C1628E45AAC4319C5CA4C62B343CB0E4A87E5EEDEC108C50FCF5AA014"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-04-func_0022D14C-28d08a87ca.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

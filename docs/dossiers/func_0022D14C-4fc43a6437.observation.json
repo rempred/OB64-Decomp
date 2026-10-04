@@ -1,0 +1,101 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "4FC43A64371C72A26712C710ECD9D4330E1BABCA2297BF385AEBD48CA37778C0",
+  "observationId": "8FED8E58D45C3B5B1C03BC8071891EBED2CD460A773A6AE17E53DA0EB9354255",
+  "symbol": "func_0022D14C",
+  "authored": {
+    "context": "Clean real-mode-store E427 lineage; allD14C Solscope, canonical unchanged. Source9CDB counterexample1921 archived68f3ad62. One native command per solmode; no acceptance.",
+    "effects": [
+      "real-lifetime",
+      "register-allocation",
+      "instruction-selection"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "5D54DCAEDD53728E03A0C2944CE7BA37F1177E7CB5A04F799A06457E3DAF21DB",
+      "sourceSha256": "3A8554FD297A41FCC32AD4A754854146AE753FA9D6246F46384F7865F1DA757F"
+    },
+    "label": "Explicit source-copy order with single actual word advancement",
+    "observedEffect": "3A855/4FC43 native6816/frame616/177actualR/131ordered. Word reads still atzero fromfp56-derivedS1, firsthalf/byte/destinations wrong; real initial-source aliases and ordinarytail order alone insufficient. Source7624 byte-word-pointer/+4 variant is native7BC1 and all177actual-relocation-identical; no unchanged probe.",
+    "parentCandidateId": "1921B5EC8CB0B0E0BD21DC1FB018962C779BC5FEACE987F74E36485C4F722758",
+    "references": [
+      {
+        "path": "build/matching/solmode/d14c-clean-filter-real-source-copy-order-prep.json",
+        "sha256": "A3550A98FDD3695A2CD936487A8585C3A91BDA47799FB5DB3A4F64BED2DDEED2"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-filter-real-source-copy-order-watch.json",
+        "sha256": "79DA37D740F5176D2632B5590E32577B7AE0FEEFB0F9A06EDE3F9B6448ECEDC5"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-filter-real-source-copy-order-call-regions.json",
+        "sha256": "C252322C24F9085E3C7FAB3953199A6C80C6A3FF14795CFF6072F3606B65C7D0"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-filter-byte-word-cursor-watch.json",
+        "sha256": "AAB23289AD85F4438E97BDADD23415FA6C333C3850262C39B4C3BEB78C5C9706"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-filter-explicit-source-cursors-loop-probe.json",
+        "sha256": "911F542CBAE6461123FA43371C1ED338B5AE74093055D7C573AAC88714CB645F"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "No linked/ROM acceptance; source pair baseline only. Compared E1F real word-tail copies change loop decision; prior9CDBloop8BB2 confirms combined+16giv eliminatedisolatedwordbase. This source itself not freshly probed, no pseudo transfer.",
+    "role": "pair-baseline",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Byte/word source definitions, actual destinations/half-source initially copy saved source values, original byte/word/index/half advancement order. Offset16 word read spelling matches retained2A. Every actual pointer value/read/write/call preserved."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 40829,
+      "sha256": "5D54DCAEDD53728E03A0C2944CE7BA37F1177E7CB5A04F799A06457E3DAF21DB"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "3A8554FD297A41FCC32AD4A754854146AE753FA9D6246F46384F7865F1DA757F"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-04-func_0022D14C-4fc43a6437.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
