@@ -1,0 +1,101 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "E709AB21E2CA49BFB7AE3E9162C9295010C22C178B1A7B09B5F5F4F8D480A04B",
+  "observationId": "9E677F88421382A8F12664447C597C5DE56032338779E04947FC18AC27890BA3",
+  "symbol": "func_0022D14C",
+  "authored": {
+    "context": "Sol private solmode ordinary matching research. Current readable612BC017 remains recoverable and canonical ASM/table stay production. Original output stride/capacities/protected calls remain. The failed native hypothesis does not prove all expanded control flow incapable of matching.",
+    "effects": [
+      "real-lifetime",
+      "register-allocation",
+      "instruction-selection"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "EA42DA9AD299DBD736CE65A61736BC4BE875F79AD787D0C1C91E3632A28F524B",
+      "sourceSha256": "E6EE5820361C173701F4E495CB50FE344E57F793B6C8E17A3CEFB4C9CDCB301B"
+    },
+    "label": "Real coordinate alternatives do not stop literal13 hoisting",
+    "observedEffect": "SourceE6EE5820/candidateE709AB21 is mechanicallyPURE_C7056/frame616/178 relocations/132 physical calls/nine D334 sites, versus retail6844/177/131/eight. The call-region diagnostic correctly rejects132, and no131-aligned report is fabricated. Authenticated probe6DFE3607 actor loop1651..3982 contains914 real insns versus842 in the preserved control; constant725 has combined life4/savings4 and definition3043 is moved to4790. Thus these five real alternative call tails still do not stop constant13 hoisting. Joined helper/emission sourceF3CA63E9 is identical in whole native text and every actual relocation, so no unchanged probe is run.",
+    "parentCandidateId": "8EA0DEA85AE0D71B9FD88C81160A6DCA776B81DDB3BE0536978029FECA0C327B",
+    "references": [
+      {
+        "path": "build/matching/solmode/d14c-clean-indexed-loops-real-extra-argument-tails.c",
+        "sha256": "E6EE5820361C173701F4E495CB50FE344E57F793B6C8E17A3CEFB4C9CDCB301B"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-indexed-loops-real-extra-argument-tails-watch.json",
+        "sha256": "90D686EF251521AFD8B8966872AC95DE3C3F8F3F970489EEB2E9D8A49DDAC2BF"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-indexed-loops-real-extra-argument-tails-probe.json",
+        "sha256": "AE286637963D860329F3AFE5AFB011C62984F05B50A8B993DF53D7A0AA767477"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-indexed-loops-joined-real-extra-tails.c",
+        "sha256": "F3CA63E91E381CB510036D6F91D6856168A7F531D5C78B892D9DA1E1D911B7CF"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-indexed-loops-joined-real-extra-tails-watch.json",
+        "sha256": "EB36B3AE813A62D9EF6F18B5F5400233EE66D926E4D5A88350A04F8D80A2E529"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "The body is212 bytes over retail with one extra physical call and relocation, so both forms are unselected. No source-policy exception, linker contract change, fabricated byte or tooling defect is supported. No linked target/ROM/whole-best or complete17-wave acceptance.",
+    "role": "counterexample",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Express five genuine flag-dependent coordinate/zero extra-argument selections as separate full emission tails. Preserve the original conditions, helper calls, argument values and per-path call count. Then join each existing coordinate-helper condition with the matching emission condition as a readability control."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 42230,
+      "sha256": "EA42DA9AD299DBD736CE65A61736BC4BE875F79AD787D0C1C91E3632A28F524B"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "E6EE5820361C173701F4E495CB50FE344E57F793B6C8E17A3CEFB4C9CDCB301B"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-04-func_0022D14C-e709ab21e2.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
