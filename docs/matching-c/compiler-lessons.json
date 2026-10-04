@@ -2,6 +2,17 @@
   "schemaVersion": 1,
   "lessons": [
     {
+      "id": "comparison-spill-from-real-index-guard",
+      "symptoms": ["register-allocation", "branch-polarity"],
+      "applicability": "Equivalent real loop guards can retain different compiler comparison pseudos. In this clean nonmatching pair, index<count survives FLOW, becomes a USE in COMBINE and receives an eight-byte slot during allocation; count>0 loses it and shrinks the frame. Inspect source-bound stages before inferring a missing field. Preserve real index/bound producers, widths and zero-iteration behavior; never manufacture references or padding. Transfer and whole-function acceptance remain unproved.",
+      "note": "docs/dossiers/func_0022D14C-2f23666082.md#source-context",
+      "references": ["docs/dossiers/func_0022D14C-ebaf8896cf.md"],
+      "observations": [
+        {"symbol": "func_0022D14C", "path": "docs/dossiers/func_0022D14C-ebaf8896cf.observation.json"},
+        {"symbol": "func_0022D14C", "path": "docs/dossiers/func_0022D14C-2f23666082.observation.json"}
+      ]
+    },
+    {
       "id": "real-arithmetic-tails-merge-after-allocation",
       "symptoms": ["register-allocation", "scheduling-or-block-order"],
       "applicability": "A shared arithmetic result can inherit a spill register or let later loads move early. In this clean nonmatching example, real multiply/divide/store tails in alternative arms retained a join through allocation; late-jump then merged the tails while preserving the inserted reload. Compare the shared-quotient counterexample and source-bound dumps. Preserve executed operations and real conditions; this is local compiler evidence, not original-source proof or whole-function acceptance.",
