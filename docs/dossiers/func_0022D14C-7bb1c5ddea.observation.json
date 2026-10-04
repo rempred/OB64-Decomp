@@ -1,0 +1,101 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "7BB1C5DDEAFE4E4E829584BF60F28658BCBB09B9DD40FD5C91AB81467C2E48C6",
+  "observationId": "D5E74CF2796AF7CB41EBAFB61AA3A9AEE128A880D3AF76558A231B703E0979C6",
+  "symbol": "func_0022D14C",
+  "authored": {
+    "context": "Genuine predicate dataflow, with no dummy operations, identities, forced addressability, qualifiers, compiler flags or ownership changes. Primary loop.c supplies a profitability hypothesis; retail original declarations and exact pre-combine census remain inferred, not recovered facts. Source-bound dump IDs are never transplanted. Canonical sources/header/config/build are unchanged.",
+    "effects": [
+      "real-lifetime",
+      "instruction-selection",
+      "register-allocation"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "15A7BB80C65D795E9B02A807AB60AA8ED0AD517F97D25CA9B3BA7B4503BFF6B6",
+      "sourceSha256": "312BD4F91EE5142BBCD8D9F59A2A69655A0607FF3D3610F8E9823496A2EF3B3F"
+    },
+    "label": "Byte predicate helper retains conversions and grows the body",
+    "observedEffect": "Source 312BD4F9 / candidate 7BB1C5DD is PURE_C: 6,980 bytes, frame 616, 177 relocations and 131 ordered calls. All required query calls remain in the original order. Authenticated probe C83B044B has 12 artifacts and nine dumps. Its actor loop input has 882 instructions; literal 722 has life 4/savings 4 and still moves to 4637. Complete post-stage i-class counts between its notes 1651..3829 are RTL 948, LOOP 854, CSE2 851, FLOW 838 and COMBINE 750, with 70 actor-loop calls in every stage. These counts include /i inline flags as well as :HI/:QI annotations; the earlier exploratory regex omitted inline instructions and was corrected before publication. The final body grows 136 bytes and is unselected.",
+    "parentCandidateId": "6158763F742DB90282E915D320F6B1630C5FBE8A3B6C6180C5121EBDBC5C9931",
+    "references": [
+      {
+        "path": "build/matching/solmode/d14c-clean-entry-matched-real-byte-query-helper.c",
+        "sha256": "312BD4F91EE5142BBCD8D9F59A2A69655A0607FF3D3610F8E9823496A2EF3B3F"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-entry-matched-real-byte-query-helper-watch.json",
+        "sha256": "35469237C2AA86398B63E40080BEB7C9D2CE82EFD9966A095A13936D6951DA69"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-entry-matched-real-byte-query-helper-call-regions.json",
+        "sha256": "F47391E24D5606FB1308F92015942A55556F61653DF3924FE53EEDC82D0F75D0"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-entry-matched-real-byte-query-helper-probe.json",
+        "sha256": "3266EE8D2E28FA5A3DEF41500BEFBA90F98A5CD1D7880E6DEB4BCE853D6592BD"
+      },
+      {
+        "path": "build/sol-five-family/d14c-predicate-helper-complete-stage-census.json",
+        "sha256": "3E8BA8B0FB2B6B41FDF80F2BEEB5707A4F791641487F2B9852E76763FA47BEBE"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Both sources still hoist the four mode-F literals. Type-5 sum and output/terminal scratch remain nonexact. Current recoverable continuation remains 6715F5D1. No linked target, full-ROM, table or complete seventeen-member W6 acceptance.",
+    "role": "counterexample",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Use a private ordinary inline helper for the four existing short-circuit mode-F query sequences. It normalizes each existing result into a u8 condition, calls the next query only when false, and returns the actual condition. No calls or consumers are added."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 40834,
+      "sha256": "15A7BB80C65D795E9B02A807AB60AA8ED0AD517F97D25CA9B3BA7B4503BFF6B6"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "312BD4F91EE5142BBCD8D9F59A2A69655A0607FF3D3610F8E9823496A2EF3B3F"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-04-func_0022D14C-7bb1c5ddea.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

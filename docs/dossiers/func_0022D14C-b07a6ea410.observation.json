@@ -1,0 +1,105 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "B07A6EA41047C2688A497E232EC6FCCBF375ADC4139D2DE2029EC7451B693781",
+  "observationId": "5AB732C106510DD440FC35E8106926ECD8FA0E8EB3597A9E0A3449315D161875",
+  "symbol": "func_0022D14C",
+  "authored": {
+    "context": "Full original callee bodies and accepted mappings establish a static return-range fact, not behavioral naming, original C declarations or runtime reachability. ASM remains unchanged. No private or shared callee prototype change, compiler flag, dummy reference, forced storage or tooling defect. Canonical source/header/config/build inputs are unchanged.",
+    "effects": [
+      "real-lifetime",
+      "instruction-selection",
+      "register-allocation"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "F692B3DA192CD9D94771F219C40C297750B556E9AF901E596BD1285EE52D7857",
+      "sourceSha256": "0C89C0E8A6432A38C12D04AD8ADB46F9BE203D1CECAA0172D286FF6FB5584258"
+    },
+    "label": "Proven Boolean values allow byte flags but change frame and leave conversions",
+    "observedEffect": "Source 0C89C0E8 / candidate B07A6EA4 is PURE_C: 6,904 bytes, frame 608, 177 text relocations and 131 ordered calls. It is longer and its frame is smaller than retail, so remains unselected. Authenticated probe 353B29AD has 11 artifacts/eight dumps. Actor LOOP input is 875 instructions. Literal 733 has life 4/savings 4 and still moves to 4649. Complete source-bound post-stage i-class counts between notes 1651..3839 are RTL 954, LOOP 847, CSE2 844, FLOW 835 and COMBINE 733, with 70 calls throughout. Counts include inline flags and mode annotations; they differ from the LOOP input census. Original 379AC (332 bytes) and C3B4 (148 bytes) reference words were compared with the accepted target model/baserom and agree. Every 379AC return is 0 or 1: selected flag masks lead to the common zero/one tail; default selector arms return one. Caller flag producers are comparison results, those returns or copies. Thresholds themselves remain full-width and are not included in the narrowing claim.",
+    "parentCandidateId": "0BAEC83D930C73FDAF36F2D2AECA620291A2DD3D8F90F98741745079883D5191",
+    "references": [
+      {
+        "path": "build/matching/solmode/d14c-clean-entry-matched-byte-flags-wide-thresholds.c",
+        "sha256": "0C89C0E8A6432A38C12D04AD8ADB46F9BE203D1CECAA0172D286FF6FB5584258"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-entry-matched-byte-flags-wide-thresholds-watch.json",
+        "sha256": "0C37B506BAB718EEE6997FC3C0FE93E8DA22E1CD576631CA1EB729471DA497D1"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-entry-matched-byte-flags-wide-thresholds-call-regions.json",
+        "sha256": "C26A4AA359D220C04ABD33085B9A9E31733E582B6FD3D88665BC7738F6462DE9"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-entry-matched-byte-flags-wide-thresholds-probe.json",
+        "sha256": "7F24808D2E676157B3CA05D4AAE2E5F097F1099F7D31318CF0783BBB6174A6B1"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_002379AC.s",
+        "sha256": "1293B5B5BCB94CED93A2E37BE5F1BEADA23C56E601C47832BD3EFC05E4F58A95"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_0020C3B4.s",
+        "sha256": "E1E8FE4F06B93FF7B46BBC5EEF0715201828F7BEEA89AD6A1D2EF7B401D2B173"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Frame, target extent, conversion/reload code, mode-F hoisting and other words differ. Current recoverable source remains 6715F5D1. No linked/full-ROM, table or complete seventeen-member W6 acceptance.",
+    "role": "counterexample",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Declare only the two real caller flags as u8. Separate their real half/quarter comparison thresholds into full-width s32 locals before the comparisons, preserving signed division and unsigned comparison. Retain the integer predicate helper and all external declarations. No operations or consumers are invented."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 40964,
+      "sha256": "F692B3DA192CD9D94771F219C40C297750B556E9AF901E596BD1285EE52D7857"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "0C89C0E8A6432A38C12D04AD8ADB46F9BE203D1CECAA0172D286FF6FB5584258"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-04-func_0022D14C-b07a6ea410.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
