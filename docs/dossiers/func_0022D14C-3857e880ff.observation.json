@@ -1,0 +1,97 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "3857E880FFB326E9D9B26F3264A202C09E2DDAA3A0783EEC798F95CC12943FF9",
+  "observationId": "31288156E855497962BCCC3AF670F0C01ACF2462CD661C5637DEC7E7BF5FC7A9",
+  "symbol": "func_0022D14C",
+  "authored": {
+    "context": "All D14C owned by Sol in complete Combat17 wave, private solmode; canonicalASM/table and inputs unchanged. Source-level blocker analysis by GoldOx independently checked; no supported tooling defect.",
+    "effects": [
+      "real-lifetime",
+      "register-allocation",
+      "instruction-selection"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "F27CD2809DA94F0629E626B2B30877EB642D06393AE83CDBACB6F67FADE47764",
+      "sourceSha256": "AE3095D834F660AA2D7519BAF29C9812D576C2CB29F688A9824626B6DE75D9A3"
+    },
+    "label": "Real local offset before pointer restores main saved-register tie",
+    "observedEffect": "SourceAE3095D8/3857E880 native6852/frame616/177R/all131ordered. Fresh373FE507 authenticatesRTL/loop/cse2/FLOW/combine/LREG/GREG/allartifactSHA/PURE/source. Actual wordoffset443 thenwordpointer444 eachsixrefs/live25; global.c comparator priorityties and ascendingallocno/pseudobirth order now givesoffsetS0/wordS1. Firstentry/filter forms andretailspill234/23C preserved. Compaction54 movea0,S1 restored; remainingfirst1FC/1ECloadorder/t3/t4 initialization wrong.",
+    "parentCandidateId": "06FF2E875C71E56F137AFB510FB49C06C5BD6794DA6C79264499E4B6DA68B27A",
+    "references": [
+      {
+        "path": "build/matching/solmode/d14c-clean-first-givs-local-main-word-offset.c",
+        "sha256": "AE3095D834F660AA2D7519BAF29C9812D576C2CB29F688A9824626B6DE75D9A3"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-first-givs-local-main-word-offset-watch.json",
+        "sha256": "3F93DD1E1DC5BD2CEAEFCC111A634986FD77D5CA558B2760020EF8FCB9981581"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-first-givs-local-main-word-offset-probe.json",
+        "sha256": "4839A08A5A0B5689731E8C1BB43E75DE423C519E8BE9465D56875244DDCF835E"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-first-givs-local-main-word-offset-call-regions.json",
+        "sha256": "6D34A5ACE885C3035821A2CDDF1A7E6F9F50B66F3FFEEC11F49A194FC769320F"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Still+8B/nonexact overall; no linked/wholeROM acceptance or selectedwholebest. Shared field-initorder543F prepared tomeasure load-order effect; projection/mode/terminal failures persist.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Move actualmainword pointer to loop scope and declare the genuine scaledwordoffset first; use it for currentword and followingword compaction pointer expressions. No added operation or artificial reference."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 40535,
+      "sha256": "F27CD2809DA94F0629E626B2B30877EB642D06393AE83CDBACB6F67FADE47764"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "AE3095D834F660AA2D7519BAF29C9812D576C2CB29F688A9824626B6DE75D9A3"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-04-func_0022D14C-3857e880ff.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

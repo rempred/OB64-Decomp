@@ -1,0 +1,97 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "06FF2E875C71E56F137AFB510FB49C06C5BD6794DA6C79264499E4B6DA68B27A",
+  "observationId": "7F7E97FBFDD476A7F9F5FF74514BD6D9641FF4D641EAB6ED0E23D8A46653BE53",
+  "symbol": "func_0022D14C",
+  "authored": {
+    "context": "All D14C owned by Sol in complete Combat17 wave, private solmode; canonicalASM/table and inputs unchanged. Source-level blocker analysis by GoldOx independently checked; no supported tooling defect.",
+    "effects": [
+      "real-lifetime",
+      "register-allocation",
+      "instruction-selection"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "66C320315E17E2B30BD4881B694666754966187CF826B43FBE33D53AEBDA931D",
+      "sourceSha256": "85C302A4F2D6E410F076AE20FB514EEAE444E15080DBB5F2289F2CAEF1EF96F5"
+    },
+    "label": "Loop-scoped real word giv closes first filter forms",
+    "observedEffect": "Source85C302A4/06FF2E87 native6852/frame616/177R/131ordered. Fresh60B1D067 authenticates RTL/loop/cse2/FLOW/combine/LREG/GREG/allartifactSHA/PURE/source. First reggiv213 is replaceablelife36, reduced1124; its four CSE copies plus two real word reads give13refs/live44. By contrast outer54CF reusedmainvariable was nonreplaceablelife712 and profit-89712, emits6860/frame624. First entry region4 and filter/empty region9 all instruction forms correspond apart symbolic relocation fields, including actualsharedwordadvance/commonbeq. Firstword1124canonicalfourcopies; byte1122eightrefs/live45; half1123seven/live43; excluded1125seven/live42; destinations1126/27/28 seven/live41/40/39. Exactretail234/23Cslots. Genuineprelude/maincursor reuse6B313 produces whole-native59FCAA9E/every177actualR identical85C3.",
+    "parentCandidateId": "DA2BFC9ED5B0BA414F3EDAAB252963E3FBF80A4085624EB452AC864EE42CFA25",
+    "references": [
+      {
+        "path": "build/matching/solmode/d14c-clean-local-indexed-filter-word-source.c",
+        "sha256": "85C302A4F2D6E410F076AE20FB514EEAE444E15080DBB5F2289F2CAEF1EF96F5"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-local-indexed-filter-word-source-watch.json",
+        "sha256": "1D85EB4A55F3F6B3FE5AA5AA47C9D96958AA11C52C6BA2E5407262DD6A03045A"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-local-indexed-filter-word-source-probe.json",
+        "sha256": "AFE253BD718A8CBB3A857645C881DF15049425E67D1F500AAC48C5E15BD578AB"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-local-indexed-filter-word-source-call-regions.json",
+        "sha256": "4DBC3E975DF0F67CEFE02954B1A22DB64F1381D9891590845E3189C949925A92"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Still+8B/nonexact overall: mainword101/indexoffset443 tiesixrefs/live25 allocate reversedS0/S1; other projection/mode/scratch/terminal differences remain. No linked/ROM/wholebest claim.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Replace the actual twice-read first word source plus duplicated arm increments with one loop-scoped pointer derived from the genuine index. All existing accesses/callbacks unchanged."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 40510,
+      "sha256": "66C320315E17E2B30BD4881B694666754966187CF826B43FBE33D53AEBDA931D"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "85C302A4F2D6E410F076AE20FB514EEAE444E15080DBB5F2289F2CAEF1EF96F5"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-04-func_0022D14C-06ff2e875c.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
