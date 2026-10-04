@@ -1,0 +1,125 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "1921B5EC8CB0B0E0BD21DC1FB018962C779BC5FEACE987F74E36485C4F722758",
+  "observationId": "6757C7EC34F807C44AA62C96E465291EE43C9388D129645799EBED4AEF9444CE",
+  "symbol": "func_0022D14C",
+  "authored": {
+    "context": "All-D14C Sol scope; canonical source/header/config/build stable, actorhelper CLOSED. Clean structured real-mode stores and current E427 half-source cursor.",
+    "effects": [
+      "register-allocation",
+      "real-lifetime",
+      "instruction-selection"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "D6EC1BE0A73B30D6F5A10E741133E0FB81A771AC6493ED8928E2271DF8221C13",
+      "sourceSha256": "9CDB3E861177A8AEF38749193FAC1FD19665840C51F648C6F9435657D29A532B"
+    },
+    "label": "Explicit word cursor can be eliminated in favor of offset giv",
+    "observedEffect": "9CDB/1921 native6816/frame616/177actualR/131ordered, first validatorbeql returns, pointer homes wrong. Fresh source-bound64B25 LREG shows wordSrc99=fp40 dies copying halfDest116; destinations115/halfSource101/excluded102 copy116; actual word reads instead use new1103 initializedfp56. 116 tenrefs/live48/order79;1103 nine/live39/order77; byteSource100 eight/live51/order92. Measured native halfDestS2/wordReadS1/byteSourceS4. Prediction that explicit sources alone become the common bases was not confirmed: actual word cursor eliminated. Byte-offset16 source72F770/683C native2CB04AC6 and all177actual relocations identical; no unchanged probe. Fresh loop-inclusive8BB283F8 confirms first47-real-insn loop: two source99+16 address givs benefit2 each combine, reduce to1103 and eliminate99. Other singlebenefit2 offset addresses remain not worthwhile0vs47.",
+    "parentCandidateId": "E427C91EAFC17CA8849275F190B8660540783B7173A4BA2EB504382DEF48722C",
+    "references": [
+      {
+        "path": "build/matching/solmode/d14c-clean-shared-index-half-source-cursor-probe.json",
+        "sha256": "7E9E8FCBE904CB99E60AAFABF17A91DCD2541A7EE40F34E97DAE4F7FBC9ABFAD"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-filter-explicit-source-cursors-prep.json",
+        "sha256": "208D9A098230C3BA4A775CFB65A82620260979C8177B44BD6322908B387533D7"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-filter-explicit-source-cursors-watch.json",
+        "sha256": "80F981976C00CA60099FCDBC783CAD189B1992B90D661BED108360C4DF15068C"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-filter-explicit-source-cursors-call-regions.json",
+        "sha256": "920C155F44A056B192F1277138BA496641D3A8B829423647D4F3CE892D83B5AA"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-filter-explicit-source-cursors-probe.json",
+        "sha256": "E6539E9F54DDF657AC7AF411FF2DF943B164E0DD2BE0DB6C06028F81C8858A4C"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-filter-explicit-source-cursors-first-filter-lreg.txt",
+        "sha256": "CB0788D5185EC13C1AA70C025471B6C82F01CDA6FFCF104D29916E2FDA76B3AC"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-filter-explicit-source-cursors-first-filter-facts.json",
+        "sha256": "B61065ABA4F14B3EDE9F832945E111154015CE78B808086D73097970F77F682D"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-filter-explicit-word-offset-watch.json",
+        "sha256": "7617DD5E568720948DD30E4A7568C32099895EA3C6DB004D622314FBC82F936C"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-filter-real-source-copy-order-watch.json",
+        "sha256": "79DA37D740F5176D2632B5590E32577B7AE0FEEFB0F9A06EDE3F9B6448ECEDC5"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-filter-explicit-source-cursors-loop-probe.json",
+        "sha256": "911F542CBAE6461123FA43371C1ED338B5AE74093055D7C573AAC88714CB645F"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-filter-explicit-source-cursors-loop-first-decision.txt",
+        "sha256": "0C478951D3CC6061DE0C0C9716647C32457CB3B12BCD3DB9A5988E219F45EF7A"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "No linked/ROM acceptance. Pointer base priority mechanism remains grounded, but explicit-cursor predicted outcome does not follow in this context. Source copy/progression3A855 changes wrong destination homes without eliminating+16 giv. Readable control E427 retained; no universal source hypothesis rejection or supported tooling defect.",
+    "role": "counterexample",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Initialize actual explicit word/byte source cursors before existing five pointer inits; replace two word reads and one byte read in first filter only, and advance with original iteration. No additional work or artificial references."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 40806,
+      "sha256": "D6EC1BE0A73B30D6F5A10E741133E0FB81A771AC6493ED8928E2271DF8221C13"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "9CDB3E861177A8AEF38749193FAC1FD19665840C51F648C6F9435657D29A532B"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-04-func_0022D14C-1921b5ec8c.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
