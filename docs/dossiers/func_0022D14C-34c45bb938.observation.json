@@ -1,0 +1,109 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "34C45BB938027829B4679C39A90FEED4D28D2918875EED45AA0CDA38B1C4C90F",
+  "observationId": "B9A079002E113F10E02AC290210EABE722FA5DA28A7B41B1C47985161E82401A",
+  "symbol": "func_0022D14C",
+  "authored": {
+    "context": "Gold1020 and primary sched.c suggest independent ready-list LUID ordering. The statement-order effect and unchanged actual relocation pairs are measured; no unique original-source reconstruction is claimed. Canonical sources/config/header/build unchanged. No dummy references, paired identities, manual storage, flags/prototype experiment or tooling defect.",
+    "effects": [
+      "real-lifetime",
+      "instruction-selection",
+      "register-allocation"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "BAD3022F02E15F0D2D06A850F00B057318FDC1D2332CE35A7E26DCDD4928E943",
+      "sourceSha256": "F8A589AF67B5D5090431C6D1E52F012C586123D1BEEE17375D18FCE2FB463933"
+    },
+    "label": "Independent defaults last restore descriptor load-gap stores",
+    "observedEffect": "SourceF8A589AF/candidate34C45BB9 is PURE_C6844/frame616/177 actual relocations/131 ordered calls; raw differences improve317 words/842bytes to304/790 including symbolic relocations. All332 prior normalized forms remain. Descriptor region3 retains42 words and matches40 nonauxiliary instruction forms; its first .rodata HI/LO fields atC8/D0 and second pairC2C/C34 have identical actual relocation entries to405EF568, while linked table activation remains gated. The zero194/18C stores now fill the actor7C load gap, and zero184/1AC fill the descriptor-byte gap, followed by the correct1C7 store. Existing authenticated control probe421DA66D (11 artifacts/eight dumps) binds actual default83=0 UID69 and final actor+140 consumer4303: COMBINE keeps69 afterD94, firstSCHED moves it before0144/D94, LREG preserves, GREGslot404. Those IDs describe405 control only; they are not transplanted toF8A. Real selector preload710830AB is whole-native/everyR identical toF8A, so no unchanged probe repeats.",
+    "parentCandidateId": "34856F93D662A3BCC6DA1992FD7BD0A09A69272BD92BE9FE6D223B587780DD78",
+    "references": [
+      {
+        "path": "build/matching/solmode/d14c-clean-indexed-loops-four-defaults-last.c",
+        "sha256": "F8A589AF67B5D5090431C6D1E52F012C586123D1BEEE17375D18FCE2FB463933"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-indexed-loops-four-defaults-last-watch.json",
+        "sha256": "6C0D7D5019A5BCEF1573B6BBD0EDDC9495F8F501417FCDB8CAFB08D1449A17C8"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-indexed-loops-four-defaults-last-call-regions.json",
+        "sha256": "A8FBA3979F9B9A8FBD43D09A747B397A9E4F166EDE400BFD77B1CCBA5526F8A6"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-indexed-loops-evidence-backed-table-leaf-declarations-probe.json",
+        "sha256": "D2C8195DDD64040F68129E589A038A9D61F2351C8EE937A7B9ECEF5CBF38EDA2"
+      },
+      {
+        "path": "build/sol-five-family/d14c-four-defaults-retained-forms.txt",
+        "sha256": "2F89FB0F26507F8E4CC86C707514A5FB739CFCE8B104B5B406A10828C0973230"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-indexed-loops-defaults-last-real-entry-selector.c",
+        "sha256": "710830AB01A50B6A2F36D1B8936AF9299577CA54D1809C83C26CB0A8610BD786"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-indexed-loops-defaults-last-real-entry-selector-watch.json",
+        "sha256": "2BAB7E17E470A1F4E9513383C5E8F4BFEF57BAD7DB4EF828AEA6A6031755EA5B"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Entry two-instruction order remains swapped. Type5 sum result, mode13 hoist/argument setup and output/terminal scratch remain nonexact. This is the improved recoverable research context, not linked/ROM/whole-best/complete17 acceptance. Original ASM/table stay production.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Move only existing independent defaults sp194/sp18C/sp184/sp1AC to the end of the descriptor setup block, in that order, after its actual byte capture and actor-pointer default. Add no references, dependencies or arithmetic. Keep the truthful table-leaf declarations."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 40768,
+      "sha256": "BAD3022F02E15F0D2D06A850F00B057318FDC1D2332CE35A7E26DCDD4928E943"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "F8A589AF67B5D5090431C6D1E52F012C586123D1BEEE17375D18FCE2FB463933"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-04-func_0022D14C-34c45bb938.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
