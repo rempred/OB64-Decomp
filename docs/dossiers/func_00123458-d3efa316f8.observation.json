@@ -1,0 +1,101 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "D3EFA316F877F579CB6FBD9CE9385EB422E56BF658C398902BC8C3AF2C00E68B",
+  "observationId": "91E9C51F1DB61862A3D600308D167601A4B4106A40E6BEEB3CF9136812E538DE",
+  "symbol": "func_00123458",
+  "authored": {
+    "context": "Complete ten-member Squad W3 remains open, eight PURE_C siblings protected. Evaluator123458 and resolver1237F0 remain production ASM. Both complete bodies and required source paths are reconciled. The public s32 row/unit/evaluator interfaces, edge-only801DD2B0 call and mandatory reloads are preserved. All measurements are ordinary private diagnostics; no target activation or acceptance is claimed.",
+    "effects": [
+      "inline-parameter-width",
+      "float-allocation",
+      "result-lifetime",
+      "late-sharing",
+      "inline-template-census"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "065D4A39B856662E107B19EEA26BE8C706F055318E2544ADB5BDCAF9188AD79C",
+      "sourceSha256": "85A604F40291A150F6ACCA171A51718B72ED2942E056B6FE8FBD0CD6AAD13273"
+    },
+    "label": "inline-rectangle-return-preserves-float-homes",
+    "observedEffect": "D3EFA316 is PURE_C876/frame24/56 actual relocations, raw167 words/566 bytes different, one retained edge-only call, no emitted helper owner. Native X isF0 and SF cast scratchF2, but the result is returned through an A3-to-V0 copy. All nine artifacts of43FC16EA were authenticated. Function-scoped counts show4 divisions/4 casts from RTL through SCHED2,3/2 at JUMP2. Initial RTL also contains the unused rectangle_result template with2 casts; those are not target-body casts. FLOW zeros417/564 define result pseudos212/292 before casts. GREG classifies both globally, records hard2 conflicts and assigns hard7/A3. Native SI cast scratch operands are hard2 for both casts. Keeping useful float homes does not resolve default-result placement or late arithmetic sharing.",
+    "parentCandidateId": "3C0B9ABB616AF4C3D4C63D9253C47732903098E95D9B0131034B06613B5E966E",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_00123458.s",
+        "sha256": "B012FF2E6C61BD7209D10510A7F3D915BA93F1D02CA0F6CB39DCA53DA310C351"
+      },
+      {
+        "path": "build/matching/solsquad/squad-123458-inline-rectangle-result-watch.json",
+        "sha256": "77FF53276F505D705A8BBB176474807BF6C9FC87725DE533959598DFDD37C32E"
+      },
+      {
+        "path": "build/matching/solsquad/targets/func_00123458/probes/43FC16EA33DCDE7AA43CD6C94349ABA9B210141ADB506EE811A91D2B7E2FB18A/probe-report.json",
+        "sha256": "E67D909B7EE93A039F526CCA33FA3A1F36EB4901570238BA88318EA83308D5B1"
+      },
+      {
+        "path": "build/sol-five-family/squad-inline-template-census-20261004.json",
+        "sha256": "7A5116C1922CC91FD9D93497489BE7377939704F0E138131739857BF23FA950F"
+      }
+    ],
+    "relatedCandidateIds": [
+      "6186FDCE4CF501678798A401E3F7E0F40D8F1FC5EB6B79442DC583CAAC6F913A"
+    ],
+    "remainingFailure": "Retail requires two complete arithmetic producers and a shared join at the casts, full920-byte extent, scalar/float placement and exact actual linked/relocation/full-ROM gates. This helper remains44 bytes short and has a result copy; no supported compiler defect, hybrid exception or completed ten-member acceptance. Preserve the920-byte extent control and872-byte F0 expression effect.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Represent descriptor byte fields as existing10-byte strided rows, remove the redundant current/unit pointer alias, and move the shared rectangle predicate into a fully inlined helper taking computed Z/X floats, signed row, and captured byte bounds. A genuine result starts at0 before both casts, conditionally receives the Z-bound predicate after the X-bound test, then returns. Float operation order and descriptor captures are unchanged."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 4598,
+      "sha256": "065D4A39B856662E107B19EEA26BE8C706F055318E2544ADB5BDCAF9188AD79C"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "85A604F40291A150F6ACCA171A51718B72ED2942E056B6FE8FBD0CD6AAD13273"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-04-func_00123458-d3efa316f8.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
