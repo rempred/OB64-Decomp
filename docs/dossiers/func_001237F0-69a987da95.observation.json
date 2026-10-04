@@ -1,0 +1,100 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "69A987DA955AF933AEB04C339A2F8F28C6FD1724561B14A71F42B93564518F5A",
+  "observationId": "E058DE031F9CA2D9EEA361F090FBD367EBB341AAFC4C39786220CB0A4144B3D6",
+  "symbol": "func_001237F0",
+  "authored": {
+    "context": "MagentaTiger retains sole canonical source/build ownership on main. The complete ten-member Squad W3 remains open; eight PURE_C siblings are protected. Resolver func_001237F0 and evaluator func_00123458 remain ASM production. Full 1608-byte resolver coverage, descriptor reloads, all condition/error/self-loop paths and the s32 evaluator interface are preserved. Private object and compiler-stage observations are diagnostic, with actual address binding and full-wave ROM gates unproved.",
+    "effects": [
+      "body-coverage",
+      "inline-parameter-width",
+      "register-copy",
+      "terminal-control-flow"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "F44A44EA67EFCDF8EBD541D2ABEBE94F054473067D54C98BCCB43A8A0EEB1714",
+      "sourceSha256": "C9F77E427F3ACD7C06AF2A00AF82AA8898DE6C03BAB10F8634CF2F1E74DAC013"
+    },
+    "label": "byte-terminal-operation-removes-inline-copies",
+    "observedEffect": "Watch69A987DA is PURE_C1608/frame48/97 actual relocations, raw105 words/281 bytes different, seven evaluator/40 total final calls and no emitted helper owner. B156CF55 authenticates nine artifacts/six dumps:15/57 in RTL,13/55 from FLOW through SCHED2,7/40 at JUMP2. The two operation-byte copies to A1 vanish, with descriptor operations kept in V1; native operation comparisons retain the required branch-likely delay-slot constant. Under masks for every actual R_MIPS_26/HI16/LO16 relocation, the whole body has eight differing instruction words, four in each later terminal chain. The first1200 bytes have no masked differences. This is a component-only census: internal jump addends and all symbol/address/linked bindings remain unproved.",
+    "parentCandidateId": "A3F5E6D13A2D836E35FA2D8F29E1FC6F320762D6A2DCEAE7461E749BDAFDB70A",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_001237F0.s",
+        "sha256": "2AF2AE9A346C4E4118368FB30BE56D688EB79FFF8189C0106D8981D0D24F82C2"
+      },
+      {
+        "path": "build/matching/solsquad/squad-1237f0-inline-terminal-byte-operation-watch.json",
+        "sha256": "EE7D8E32B195A20A3585AEE0EFF79C9DC9F65C96E904184E507E30A82D8CE528"
+      },
+      {
+        "path": "build/matching/solsquad/targets/func_001237F0/probes/B156CF55F194982CEE56E0A57102CA3108823AB5317F612F8AD036D58C303BA2/probe-report.json",
+        "sha256": "23DE7401CC7E8DA2605A759D2B55E8521BEDBED30310606F1D117DB4E750A0B4"
+      },
+      {
+        "path": "build/matching/solsquad/squad-1237f0-inline-terminal-byte-operation-component.json",
+        "sha256": "19B4B39F0728E52A6D8B6E2E401922011622A9126B0881CD190D747BFD4B2AF2"
+      }
+    ],
+    "relatedCandidateIds": [
+      "457BF323DED70C18F6AB7BD87786F2B2F52E72AD31304D95AC52BD4D2C9EB533"
+    ],
+    "remainingFailure": "The terminal operation-2 false and unrecognized-operation exits still jump to the shared post-evaluator result check instead of directly to the zero epilogue. Operation-3 true exits carry the accumulator through that result check rather than branching directly to the fallback qualification. Eight ordinary instruction words remain different in the two later levels in the byte-parameter source, and relocation masks do not prove internal jump targets or symbol/addend/address bindings. No supported tooling defect, hybrid exception or completed-wave acceptance is claimed.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Change only the terminal helper operation parameter from s32 to u8, matching its actual descriptor-byte producer. Keep the helper raw s32 result and all truth consumers, evaluator declaration, data reloads, control/error paths and other source bytes unchanged."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 7023,
+      "sha256": "F44A44EA67EFCDF8EBD541D2ABEBE94F054473067D54C98BCCB43A8A0EEB1714"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "C9F77E427F3ACD7C06AF2A00AF82AA8898DE6C03BAB10F8634CF2F1E74DAC013"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-04-func_001237F0-69a987da95.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

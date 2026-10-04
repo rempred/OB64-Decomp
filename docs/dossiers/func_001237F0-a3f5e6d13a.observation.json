@@ -1,0 +1,98 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "A3F5E6D13A2D836E35FA2D8F29E1FC6F320762D6A2DCEAE7461E749BDAFDB70A",
+  "observationId": "6D2A4E6E994EE82D49539FC940F392D7887F94CC6D3C71A9CCB919A71A07B2FD",
+  "symbol": "func_001237F0",
+  "authored": {
+    "context": "MagentaTiger retains sole canonical source/build ownership on main. The complete ten-member Squad W3 remains open; eight PURE_C siblings are protected. Resolver func_001237F0 and evaluator func_00123458 remain ASM production. Full 1608-byte resolver coverage, descriptor reloads, all condition/error/self-loop paths and the s32 evaluator interface are preserved. Private object and compiler-stage observations are diagnostic, with actual address binding and full-wave ROM gates unproved.",
+    "effects": [
+      "body-coverage",
+      "inline-parameter-width",
+      "register-copy",
+      "terminal-control-flow"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "E6FA60BA911131ABC90CB5093C1243B406BD3E2FCB5C01CB16535FE5E837513A",
+      "sourceSha256": "4BE761B1C91B642CB4580EB41878340A4CC20B2692D259543ED001282335B08B"
+    },
+    "label": "raw-terminal-result-inline-counter",
+    "observedEffect": "Watch A3F5E6D1 is PURE_C 1616 bytes/frame48/97 actual relocations, raw161 words/442 bytes different, seven evaluator and40 total final calls; no helper owner remains. Authenticated C39F030F probe covers nine artifacts/six dumps:15 evaluator/57 total sites in initial RTL,13/55 from FLOW through SCHED2,7/40 at JUMP2. FLOW nodes1079/1239 copy temporary operation pseudos242/267 into parameter pseudos243/268. GREG assigns the latter hard5/A1, leaving two copies from hard3/V1; SCHED2 retains both and they occupy operation-branch delay slots. These source-specific identities do not transfer to another probe. This expands terminal chains but keeps redundant result checks and is nonselected.",
+    "parentCandidateId": "457BF323DED70C18F6AB7BD87786F2B2F52E72AD31304D95AC52BD4D2C9EB533",
+    "references": [
+      {
+        "path": "asm/original/rev0/lib/func_001237F0.s",
+        "sha256": "2AF2AE9A346C4E4118368FB30BE56D688EB79FFF8189C0106D8981D0D24F82C2"
+      },
+      {
+        "path": "build/matching/solsquad/squad-1237f0-inline-terminal-value-watch.json",
+        "sha256": "EE5EB58FFF6E41E9B7240601B1752B5D3B568629CAD03889591367431A156EBD"
+      },
+      {
+        "path": "build/matching/solsquad/targets/func_001237F0/probes/C39F030F62C5EB16E0B3A3BC9C17075CF14115C9FFAD40B29C862663737E5957/probe-report.json",
+        "sha256": "8CC9B901F710D327745A060F8C56F1835E8E8C372F6155287CC3377A067932D4"
+      },
+      {
+        "path": "build/matching/solsquad/squad-1237f0-inline-terminal-value-component.json",
+        "sha256": "672E829F3E91A5B32140A87F04D2281A143AA3041693B32786D75386DF4810B1"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "The terminal operation-2 false and unrecognized-operation exits still jump to the shared post-evaluator result check instead of directly to the zero epilogue. Operation-3 true exits carry the accumulator through that result check rather than branching directly to the fallback qualification. Eight ordinary instruction words remain different in the two later levels in the byte-parameter source, and relocation masks do not prove internal jump targets or symbol/addend/address bindings. No supported tooling defect, hybrid exception or completed-wave acceptance is claimed.",
+    "role": "counterexample",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Represent the last two terminal operation checks with a fully inlined helper. Return raw evaluator values and the actual accumulated value on its OR shortcut, with zero on false/unknown operations. Its only consumers test truth, preserving arbitrary s32 evaluator returns and short-circuit behavior. The operation parameter is initially s32; no extra data reads, arithmetic, storage, calls, aliases or external interface changes are authored."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 7024,
+      "sha256": "E6FA60BA911131ABC90CB5093C1243B406BD3E2FCB5C01CB16535FE5E837513A"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "4BE761B1C91B642CB4580EB41878340A4CC20B2692D259543ED001282335B08B"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-04-func_001237F0-a3f5e6d13a.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
