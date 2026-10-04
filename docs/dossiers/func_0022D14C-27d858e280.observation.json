@@ -1,0 +1,100 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "27D858E280B7700274F6789D4CF27F30E5B7A5AD6C472B2309B842C11AB5349E",
+  "observationId": "242CB7B51FF035CDDCF0F93764B3594759320A2EF48C165184AC7129B4A359DD",
+  "symbol": "func_0022D14C",
+  "authored": {
+    "context": "All D14C regions assigned to Sol/private solmode. Canonical ASM/table and accepted inputs unchanged. Output119 single-stride correction mandatory and retained. Stage of index motion was not probed; placement is observed directly in native code.",
+    "effects": [
+      "real-lifetime",
+      "instruction-selection"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "5ED3C6318763639F2FF9CAE72D3EA306D9955E94E75010205B7D7758979D13CF",
+      "sourceSha256": "4206C923348DCF0C04CB601996BCC51C3BE84C3975A04BF2B48954D3663F75BC"
+    },
+    "label": "Real mode-3 index advance fills the callback-result branch delay",
+    "observedEffect": "Source4206C923/candidate27D858E2 is6848 bytes/frame616/177R/131 calls in retail order. Regions107/108 now have3+11 retail instruction forms, with index advancement in the callback-result conditional branch delay. This removes four bytes from the previous6852-byte control. First/filter+compaction+scan+mode3 total201 forms correspond symbolically. Grouped coordinate-pair B229421B trial produces6836/frame608 and still wrong projection registers/stack layout; it is unselected and does not disprove the coordinate relationship.",
+    "parentCandidateId": "CF36D3DE05CAE8C8869F6F31F37E5641CE3A2043B395BF6E76FCDB147D5D2778",
+    "references": [
+      {
+        "path": "build/matching/solmode/d14c-clean-closed-scan-mode3-postbody-index.c",
+        "sha256": "4206C923348DCF0C04CB601996BCC51C3BE84C3975A04BF2B48954D3663F75BC"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-closed-scan-mode3-postbody-index-watch.json",
+        "sha256": "1E320A6502887D22E0088BC2B9ECD977448C7FC42A008B07A307D0D465AF15E4"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-closed-scan-mode3-postbody-index-call-regions.json",
+        "sha256": "6D2F037933A43A4098A793AA94FE672A79A18C244B338161AAD2180B082EBFDA"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-closed-scan-mode3-postbody-index-closed-forms.txt",
+        "sha256": "2B436DAF632DDED20D72C63FE0D7BB4C3F1F8DB0B9DA0A3E4FD424BC0460F61B"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-closed-scan-mode3-projection-pair-watch.json",
+        "sha256": "D735877E39D1E4F7158C6A2BBB3FF4F1F2014C91CD1B3BF53D564A034941819D"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Whole owner remains four bytes long and nonexact. Projection21, mode100/111 setup, output119 missing byte mask/scratch and terminal pointer differ. No linked/full-ROM/whole-best/complete17-wave acceptance.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Move the actual mode-3 iteration index advancement after the body callback and conditional owner-field copy. Retain the same callback arguments, iteration count and every store; explain the prior scan workaround near its C."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 40820,
+      "sha256": "5ED3C6318763639F2FF9CAE72D3EA306D9955E94E75010205B7D7758979D13CF"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "4206C923348DCF0C04CB601996BCC51C3BE84C3975A04BF2B48954D3663F75BC"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-04-func_0022D14C-27d858e280.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
