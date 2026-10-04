@@ -64,19 +64,27 @@ before transferring work to a fresh agent.
 
 Use internal agents unless Joe assigns a top-level worker. Top-level candidate workers report to
 and are monitored by the Director; do not place them under the production writer or send that
-writer routine progress messages. Work on one matching family at a time on `main`,
-with one production source/build writer. Parent top-level task transport requirements do not apply.
+writer routine progress messages. Work on `main` with one production source/build writer.
+The Director assigns workers separate complete waves, preferably from less-related families
+whose accepted inputs are stable. Each worker handles one target at a time; a function or
+coupled producer belongs to one source worker. Parent top-level task transport requirements do not apply.
 Independent read-only research/review and explicitly disjoint documentation work may run alongside that writer.
 
-The Director may assign independent targets within that same complete wave to private candidate
-workers. Each edits only its assigned ignored scratch root and uses the supported private workbench
+The Director may run independent candidate waves concurrently across families. Preserve each
+wave's full membership, coupled producers and real dependency gates; an unfinished unrelated wave
+does not block candidate work or acceptance of a complete, dependency-ready wave.
+Each private candidate worker edits only its assigned ignored scratch root and uses the supported private workbench
 commands in `docs/WORKFLOW.md`. Different private roots run candidate checks concurrently by default,
 without per-check permission or routine per-function integration pauses. Keep canonical inputs stable
-during the wave and batch production integration at the complete-wave boundary. The production writer alone changes canonical sources, shared headers,
+during candidate iteration and serialize production integration at complete-wave boundaries.
+The production writer alone changes canonical sources, shared headers,
 configuration and build outputs, integrates candidates and publishes shared research. Drain private
 checks before those shared inputs change or canonical linking/verification begins. A private result
 is diagnostic evidence, not matching acceptance. Keep coupled producers and their dependencies whole;
 parallel assignment does not reduce the original wave or add per-function full-ROM verification.
+The Director chooses the next dependency-ready complete wave for integration; the production writer
+integrates and verifies it, then resumes matching. Other workers may continue private edits and
+reasoning while native checks are drained, and refresh affected inputs before resuming those checks.
 
 Use the accepted structural owner as-is, reconstruct the function in C, and iterate with the linked diff.
 Run the final full-ROM build and normal verifier only after the complete assigned wave is ready.

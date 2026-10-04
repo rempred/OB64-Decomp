@@ -12,14 +12,16 @@ contract, stop using this ordinary workflow and follow
 
 ## The short path
 
-Use internal Astra Medium workers for matching implementation on `main`, with one active matching family and one production source/build writer.
+Use the agent guide's worker assignments on `main`, with one production source/build writer.
 Route retrieval/data-seeking or parsing-only assignments to Sol High under the agent guide's worker-model rule.
-Use [the sequential program](Plans/sequential-main-program.md) for current assignments and family order.
+Use [the active queue](NEXT_STEPS.md) for current worker assignments and the
+[program](Plans/sequential-main-program.md) for complete family scope and real dependencies.
 Do not create or use concurrent development branches/worktrees. Preserve historical worktrees as read-only evidence.
-Independent read-only research/review and explicitly disjoint documentation work may proceed alongside the current family.
-Director-assigned private candidate workers may derive independent targets in that same complete
-wave under [the private workflow below](#private-candidate-workers). The production writer retains
-sole canonical integration and build ownership.
+Independent read-only research/review and explicitly disjoint documentation work may proceed alongside matching.
+Assign source workers separate complete waves, preferably in less-related families, under
+[the private workflow below](#private-candidate-workers). Each works on one target at a time;
+do not divide one function or coupled producer between source workers. The production writer
+retains sole canonical integration and build ownership, with one completed wave integrated at a time.
 Parent top-level task transport procedures do not apply to this decomp program.
 
 After the one-time local setup in [the repository README](../README.md):
@@ -530,8 +532,9 @@ into prose documents.
 
 ## Private candidate workers
 
-The Director assigns each candidate worker one independent target and one short ignored directory
-under `build/matching/`. Keep the original complete wave and any coupled producer, required bodies,
+The Director assigns each candidate worker a separate complete wave and one short ignored directory
+under `build/matching/`, preferably using less-related families. Each worker owns one target at a time.
+Keep the original complete wave and any coupled producer, required bodies,
 table ownership and dependency gates intact. Work in the same checkout on `main`; no worker branch,
 worktree or rebase is needed. The production writer alone integrates into `src/`, shared headers and
 configuration, publishes selected research, and runs canonical linking/verification.
@@ -612,6 +615,13 @@ normal focused diff. After every member of the original assigned wave is ready, 
 verifier once on the combined result, without a preceding redundant build. Private native commands
 remain stopped throughout that verifier. Unsupported grouped/auxiliary scratch targets stay serial;
 do not invent missing relocation expectations or controls to make a target eligible.
+
+An unrelated unfinished wave does not delay a complete, dependency-ready wave. The Director schedules
+that ready wave with the sole production writer, who temporarily handles its integration and final
+verification before returning to matching. Keep unfinished candidates from other waves private.
+Real interface, table and structural dependencies must still be resolved before affected integration.
+When shared inputs stabilize, each worker refreshes only its affected context and resumes private checks;
+there is no per-function integration pause or requirement to rebase a Git worktree.
 
 Keep one compact current note per worker. A candidate-only helper keeps its note in its private root;
 the Director handles its continuation and relays integration-ready evidence. The production writer

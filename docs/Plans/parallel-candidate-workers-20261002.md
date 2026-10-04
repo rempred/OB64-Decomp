@@ -1,5 +1,12 @@
 # Parallel candidate workers: implementation and pilot
 
+Scheduling update, 2026-10-03 local: Joe now authorizes workers on separate, less-related complete
+waves. The [agent guide](../../AGENTS.md), [workflow](../WORKFLOW.md#private-candidate-workers)
+and [active queue](../NEXT_STEPS.md) supersede the initial same-family/wave restriction below.
+Sol owns Combat and sole production integration; the existing top-level candidate worker owns Shop.
+Private checks remain concurrent, with shared-input drains and sequential complete-wave integration.
+The implementation and recorded validation below are unchanged; no new tool capability is claimed.
+
 Status: implemented, independently reviewed by GoldOx and accepted by Astra for the initial
 two-worker pilot, 2026-10-03 UTC. Joe authorized implementation and rollout when ready. Joe's
 October 2 local-time correction assigns the additional worker to a top-level Codex chat monitored

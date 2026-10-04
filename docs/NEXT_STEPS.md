@@ -2,7 +2,41 @@
 
 This file is the active queue only. Changing counts belong in `node tools/status.js`, not here.
 
-## Matching continuation and completed knowledge rollout (2026-10-02)
+## Current independent waves (Joe's direction, 2026-10-03 local)
+
+Workers now own separate, less-related waves. This supersedes older same-wave, one-active-family
+and strictly sequential family scheduling language; complete membership, real dependencies and
+all acceptance gates remain. No new tooling or worktrees are needed.
+
+- **Sol / MagentaTiger:** complete Combat action-mode W6, all seventeen original members.
+  Sol owns all remaining D14C regions; B1F4's candidate remains parked for combined integration.
+  Reuse the [current Sol cursor](Plans/cursors/sol.md) and complete
+  [wave membership](Plans/prompts/combat-shared-mode-wave-r1.md).
+- **Shop inventory decomp worker:** top-level chat `01a0ffcd-6210-7a03-a178-d7d2af7f1c3b`,
+  coordinated and monitored by Astra. Own the complete inventory producer/splitter wave:
+  `func_0019BE40` (432-byte accepted PURE_C producer, protected control) and
+  `func_001977E0` (full 4,580-byte state machine/splitter, active target).
+  Use `build/matching/shopworker/` and its single live `cursor.md`; preserve the closed D14C
+  handback in `build/matching/actorhelper/cursor.md` as read-only evidence for Sol.
+
+For Shop, consult parent `docs/shops-items.md`, current research intake and full disassembly.
+Preserve the splitter's read-before-write preamble, all sixteen state destinations, full tick tail
+and separate switch-table ownership gate. Its saved full-body candidates are research leads, not
+linked acceptance. Preserve accepted producer and `func_0019BD14` price-helper interfaces.
+Astra handles the separate table-ownership task when its concrete current/native requirements are
+ready; the worker may continue supported private diagnostics without inventing missing linked evidence.
+After this wave, bound the complete downstream consumer waves before implementation; retain
+`001989C4`, `0019A294`, `001994B4`, `0019AF78`, `0019B800` and `0019BB34` in the family map,
+without treating these anchors as an exhaustive roster or evidence for increased capacities.
+
+Both workers run private checks concurrently and report material results/blockers to Astra.
+Claude/GoldOx advises only on specific genuine blockers. Sol remains the sole production writer
+and shared-research publisher. Integrate whichever complete wave is dependency-ready in a coordinated
+interval, draining private native checks and running one final complete-wave verifier; unrelated
+unfinished Combat work does not hold a ready Shop wave. Resume private checks after refreshing
+affected inputs. No per-function full-ROM builds, routine independent matching review, or push is added.
+
+## Accepted work and completed knowledge rollout
 
 The [knowledge-reuse plan](Plans/knowledge-reuse-workflow-20261002.md) is implemented:
 compact intake/current notes, an evidence-linked lesson index, scoped declaration checks
@@ -16,9 +50,9 @@ top-level chat monitored and coordinated by Astra. The
 complete six-member Squad construction wave and three-member Combat context wave are accepted
 at `75990627` and `5accc882`; do not repeat their unchanged verification. The complete
 [five-member Combat Actor wave](Plans/task-logs/sol-combat-actor-pure-wave-20261003.md)
-passed the normal combined verifier on October3 at13:21:11.919Z. Next is the complete
-seventeen-member action-mode W6, with Sol on B1F4 and Astra's top-level private worker on
-D14C after the bounded concurrency benchmark. Preserve D14C's separate table activation gate. Use the
+passed the normal combined verifier on October3 at13:21:11.919Z. Sol continues the complete
+seventeen-member action-mode W6 while the second worker handles Shop as assigned above.
+Preserve D14C's separate table activation gate. Use the
 [current cursor](Plans/cursors/sol.md) for the best source, next experiment and all open gates.
 After ten ordinary target intakes, assess actual example use through existing handbacks;
 there is no scheduled maintenance task or extra ordinary-wave review gate.
@@ -97,11 +131,12 @@ accepted assembly exception.
 
 ## Sequential main program
 
-Use [the sequential matching program](Plans/sequential-main-program.md) for current authority and execution order.
-Complete Combat, then Squad, then High Attack on `main`, using the currently assigned worker arrangement.
+Use [the matching program](Plans/sequential-main-program.md) for complete scope and dependencies;
+the independent assignments above control current scheduling. Preserve the Combat, Squad, High Attack,
+Scenario and Shop obligations while advancing dependency-ready waves on `main`.
 Matching implementation and research requiring reasoning use Astra Medium; retrieval/data-seeking or parsing-only work uses Sol High.
 Mixed assignments containing implementation or substantive research reasoning use Astra Medium.
-Keep one active matching family and one production source/build writer. Do not use concurrent development worktrees.
+Keep one production source/build writer and separate private candidate waves. Do not use concurrent development worktrees.
 Compilation-group implementation `45904b5` is accepted by [independent review](Plans/task-logs/compilation-groups-implementation-review-r1.md) at `31dc838`.
 Use the [accepted group workflow](WORKFLOW.md#compilation-group-workflow) for separately assigned source waves within its first-mode limits.
 Tooling acceptance and isolated group fixtures do not establish production source activation or completed-wave matching acceptance.

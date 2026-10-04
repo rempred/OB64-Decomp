@@ -1,5 +1,15 @@
 # Sequential matching program
 
+Scheduling update, 2026-10-03 local: Joe explicitly directs separate, less-related worker waves.
+Sol owns the complete Combat action-mode wave and all remaining D14C source work; the existing
+top-level private worker owns Shop, beginning with the complete producer/splitter wave.
+The [active queue](../NEXT_STEPS.md#current-independent-waves-joes-direction-2026-10-03-local)
+and [private workflow](../WORKFLOW.md#private-candidate-workers) control current execution.
+This supersedes older one-family/same-wave scheduling and the family order below, while retaining
+every original member, real dependency and acceptance gate. Sol alone integrates and verifies
+dependency-ready complete waves sequentially; an unfinished unrelated wave is not a prerequisite.
+Earlier reports below remain historical evidence, not current assignments.
+
 Current status, 2026-10-02: Joe's five-family resumption governs the order and sole
 Sol production ownership; it supersedes the pause and older queue below. The
 [complete eight-member completion/controller W5 and shared-table closure](task-logs/sol-combat-table-closure-20261002.md)
