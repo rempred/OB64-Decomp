@@ -1,0 +1,103 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "24DD5FE2504A4BFE08CB4157E8C6EFFAF6DA9612A7CE36425B9CEE826BA33BD4",
+  "observationId": "6A720D01DFC6B76F179AAB43EA67E25833DDDC6F5161606C00CDE7459CF1122E",
+  "symbol": "func_0022D14C",
+  "authored": {
+    "context": "Sol owns all D14C/private solmode. Canonical ASM/table remain production; source/config/build unchanged. No identity pair, fake use, manual slot/padding, flags/prototype change or supported tooling defect. Gold1010 suggested a primary loop.c690..724 multiple-nonconsecutive-set guard; all current identities/dumps were measured and authenticated before this claim.",
+    "effects": [
+      "real-lifetime",
+      "register-allocation",
+      "instruction-selection"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "DC1545E1B30B610FFB8A9D9047E5F4B21F34DF69A3E669CCA2C107E594CDF8C8",
+      "sourceSha256": "DF139817FEF8625DA9A3B6FD4D66058EBADC72564C8F4A588A425BD00963D8F8"
+    },
+    "label": "Four genuine argument definitions block literal13 loop hoisting",
+    "observedEffect": "SourceDF139817/candidate24DD5FE2 remains mechanicallyPURE_C6844/frame616/177 actual relocations/131 ordered calls. All332 previously corresponding forms remain. Authenticated probe295404B1 has13 named artifacts/ten dumps: RTL sets2952/3155/3360/3666 all target user pseudo76 with13; LOOP/FLOW preserve all four at those sites. GREG allocates76 toV1; sched2/jump2 preserve the four assignments. DBR duplicates those same definitions into the predicate-chain branch delay slots, yielding V1=13 where retail has A0=31. Native raw differences increase317/842 to323/852 including symbolic relocations. Thus the loop-hoisting blocker is resolved for this real argument representation, while allocation and delay scheduling remain nonexact. This is compatible compiler behavior, not a unique reconstruction of original source.",
+    "parentCandidateId": "8EA0DEA85AE0D71B9FD88C81160A6DCA776B81DDB3BE0536978029FECA0C327B",
+    "references": [
+      {
+        "path": "build/matching/solmode/d14c-clean-indexed-loops-shared-real-emission-extra.c",
+        "sha256": "DF139817FEF8625DA9A3B6FD4D66058EBADC72564C8F4A588A425BD00963D8F8"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-indexed-loops-shared-real-emission-extra-watch.json",
+        "sha256": "14160B10D86DF7CFD53E5E414CFA15BDC77A60C3F434B86C6E4D1EE10526491A"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-indexed-loops-shared-real-emission-extra-probe.json",
+        "sha256": "2CDC7F1E7C90BF68164E5BBC5B3A7919C2185689FD342083431E5E85A873E3D7"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-indexed-loops-shared-real-emission-extra-call-regions.json",
+        "sha256": "1F6786BC1985A2CCC5FB848771BE8D6B21E0E1A774A896390BC670E4AA5B733B"
+      },
+      {
+        "path": "build/sol-five-family/d14c-clean-indexed-loops-shared-real-emission-extra-retained-forms.txt",
+        "sha256": "2F89FB0F26507F8E4CC86C707514A5FB739CFCE8B104B5B406A10828C0973230"
+      }
+    ],
+    "relatedCandidateIds": [
+      "E709AB21E2CA49BFB7AE3E9162C9295010C22C178B1A7B09B5F5F4F8D480A04B"
+    ],
+    "remainingFailure": "F-path context byte remainsV0 rather thanV1, and extra13 remainsV1 rather thanV0. Initializer timing, type5 sum output, other scratch and table-linked contracts remain open. No linked target/full-ROM/selected whole-best or complete17-wave acceptance. Keep612BC017 recoverable through this informative regression.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Introduce one ordinary emissionExtra local, assigning its actual value13 separately in the four existing F emission paths and passing that local as their existing ninth argument. Keep mode selection, all calls, capacities and output-stride correction."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 41035,
+      "sha256": "DC1545E1B30B610FFB8A9D9047E5F4B21F34DF69A3E669CCA2C107E594CDF8C8"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "DF139817FEF8625DA9A3B6FD4D66058EBADC72564C8F4A588A425BD00963D8F8"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-04-func_0022D14C-24dd5fe250.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
