@@ -2,6 +2,16 @@
   "schemaVersion": 1,
   "lessons": [
     {
+      "id": "real-workword-phases-and-register-preferences",
+      "symptoms": ["register-allocation"],
+      "applicability": "At real read/value/reload boundaries, a typed local work word can carry successive cursor and numeric values without extra operations. In the documented 681A precursor, genuine helper-load and increment producers gave the work value A0/V1 preferences, leaving the tag in A1 and removing four instruction-field differences. Preserve every load/store and phase lifetime; never add fake uses. The trace belongs to this precursor, which still had an unrelated address bug, not the later accepted source.",
+      "note": "docs/dossiers/func_001977E0-70a68c829e.md#measured-precursor-cursorvalue-phases",
+      "references": ["docs/dossiers/func_001977E0-0fbeca6ab5.md"],
+      "observations": [
+        {"symbol": "func_001977E0", "path": "docs/dossiers/func_001977E0-70a68c829e.observation.json"}
+      ]
+    },
+    {
       "id": "minimum-operand-order-and-relocated-loads",
       "symptoms": ["register-allocation", "branch-polarity"],
       "applicability": "Equivalent minimum conditionals can preserve every relocation-masked instruction field while exchanging the external objects loaded. In this source pair, reversing the comparison and matching result arms restored actual address bindings without changing text extent or table bytes. Check real symbols and implicit addends; field agreement alone is insufficient. The earlier source remains a counterexample. This is bounded source evidence, not a general operand-order rule.",
