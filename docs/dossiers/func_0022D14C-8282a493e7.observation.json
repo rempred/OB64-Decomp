@@ -1,0 +1,97 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "8282A493E75E86CA351E6FA912F8B59CAE3431CFB059E7DE4FA24E5CA4D53BD1",
+  "observationId": "1A7C16D6132BF3054284C3D7AFAE1797DE10DA832ABD44DD9D2951F2EC660E7A",
+  "symbol": "func_0022D14C",
+  "authored": {
+    "context": "Genuine saved-value phase experiment plus full read-only producer reconciliation. Original ASM references were decoded under accepted VMA rather than stale comment addresses. Canonical source/header/config/build, protected dependencies and ownership remain unchanged. No fake lifetime, storage, qualifier, compiler flag or supported tooling defect.",
+    "effects": [
+      "real-lifetime",
+      "instruction-selection",
+      "register-allocation"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "3EE866405997C30D19ECFDA3505AA204A8AF5C0C3C04E26AFAE2D0F138B61316",
+      "sourceSha256": "F44585E156A7426B2065101B086F2DAA8C6E2C0F35B13D3AE1AC67CD91A5FFE8"
+    },
+    "label": "Later real saved-time copy shortens prelude but does not fix sum allocation",
+    "observedEffect": "Source F44585E1 / candidate8282A493 emits PURE_C: 6,840 bytes, frame616, 177 relocations and131 ordered calls. Region31 loses the original reload/store pair; region32 gains the relocated pair in place of a nop, shortening four bytes overall. Region34 still adds/stores the sum in T3 rather than retail V1, and the terminal scratch pattern remains nonexact. Raw differences are1,321 words/4,494 bytes; this is unselected. Separate dependency intake: the complete original D94 producer is1,444 bytes at accepted VMA801F5AC4; all reference words match the accepted target/baserom. It clears128 bytes, copies eight descriptor bytes, selects a route and appends entries. Its route selected by byte8==12 scans20 actor slots and increments packet+0x0C after filtered ID and halfword stores, without an explicit ten-entry count guard in that path. Those offsets do not establish a ten-entry array capacity. Other route helpers and runtime population constraints remain unproved; retain the current packet representation rather than invent a fixed capacity.",
+    "parentCandidateId": "8B76E39DD30954EC1D14C3D0147345DE6EE22A100759742602683228FD48790C",
+    "references": [
+      {
+        "path": "build/matching/solmode/d14c-clean-two-extra-saved-time-after-existing-event.c",
+        "sha256": "F44585E156A7426B2065101B086F2DAA8C6E2C0F35B13D3AE1AC67CD91A5FFE8"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-two-extra-saved-time-after-existing-event-watch.json",
+        "sha256": "F0C9B2B7D7C64AA6D7AFF0462490CF43AD8EC06C6BECB451FE32DE55AAE5A178"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-two-extra-saved-time-after-existing-event-call-regions.json",
+        "sha256": "D0F98B48A475A9B54BDF11CD58A27A6E0F8E74CAF61C403C05E7D4C50618122C"
+      },
+      {
+        "path": "asm/original/rev0/lib/func_00238D94.s",
+        "sha256": "580DBE9AEEAB398E7C4CD790109AC3BC91B0D4F5D1B4FC9D0BDA9D111E8D8919"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Original extent, type-5 sum and other words remain nonexact. The dependency read establishes no new boundary, C schema, semantic route reachability or runtime bound. Current recoverable source remains6715F5D1. No linked/ROM/table/complete seventeen-member W6 acceptance.",
+    "role": "counterexample",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Move only the existing sp174=sp16C copy after the existing opcode3E event call, before the following BFE4 query. Preserve its original captured base value, the later real type-5 update and every consumer. Add no reference or operation."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 40791,
+      "sha256": "3EE866405997C30D19ECFDA3505AA204A8AF5C0C3C04E26AFAE2D0F138B61316"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "F44585E156A7426B2065101B086F2DAA8C6E2C0F35B13D3AE1AC67CD91A5FFE8"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-04-func_0022D14C-8282a493e7.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
