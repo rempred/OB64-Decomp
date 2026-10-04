@@ -905,6 +905,10 @@
     {
       "symbol": "func_00041c20",
       "source": "src/lib/func_00041c20.c"
+    },
+    {
+      "symbol": "func_001977E0",
+      "source": "src/lib/func_001977E0.c"
     }
   ]
 }

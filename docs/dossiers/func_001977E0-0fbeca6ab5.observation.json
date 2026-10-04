@@ -1,0 +1,122 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "0FBECA6AB5A1FE5C063FAC37F41AF897356A66A5F49BD5F2FB122D5C0E48DE42",
+  "observationId": "44FE9273448E3822903B2E13BB566BA41E88AF62BA13CA97432024FB29005BBB",
+  "symbol": "func_001977E0",
+  "authored": {
+    "context": "Root integration check of the complete BE40+1977E0 wave after independent Shop readiness and drain. Preserve681A as the masked-closure counterexample. Use the full original1145-word body and native ELF; canonical activation remains provisional until the complete-wave audit and structural review.",
+    "effects": [
+      "register-allocation",
+      "instruction-selection"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 219,
+          "path": "include/common/types.h",
+          "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+        },
+        {
+          "bytes": 405,
+          "path": "include/game/scenario_source_record.h",
+          "sha256": "32C1B9F2C5C013955490F7E2C7A11EA914158D21927BCB6F20877927E0E1FD51"
+        }
+      ],
+      "expandedSha256": "344098F598607D23A5737F6377918447A3DC8B9124F6BDD82813F1455837CD4B",
+      "sourceSha256": "B4F90603BBEDF7242E07890117277FBC4445A4B6C0CC15485FE6E124BD911CF7"
+    },
+    "label": "Equivalent case9 minimum reversal restores actual Shop address bindings",
+    "observedEffect": "SourceB4F90603 emits PURE_C4580 bytes/frame112 with534 text relocations and all1145 instruction fields exact after masking actual relocation fields. Unlike681A, independent retail HI/LO and J/JAL minus actual implicit-addend derivation binds all72 external symbols consistently, agrees with existing accepted bindings, and authenticates31 missing bindings. State9 now reads80219F03 intoV0 and8021A123 intoV1. Native whole64-byte table alignment8/rawSHA045B5506 and sixteen R_MIPS_32 addends remain unchanged; each linked destination equals its original literal. No extra allocated payload, boundary, descriptor, shared header or tooling change.",
+    "parentCandidateId": "70A68C829EC86CAD831607F82B4069C7E169B088B703AF72A2D8E2A64360CC44",
+    "references": [
+      {
+        "path": "build/matching/solshop/shop-case9-maximum-default-watch.json",
+        "sha256": "09032DCC0C57F6ADDEDC699B637A2F0EF656BFBE83792A711E79BE5579EA5A2A"
+      },
+      {
+        "path": "build/sol-five-family/shop-wave-20261004-derived-integration.json",
+        "sha256": "79C60F88F3DF2FCEBBC598CECB330048D9EFAE221014EF9FFEAFD669F8EB992A"
+      },
+      {
+        "path": "build/sol-five-family/shop-1977e0-current-retail.txt",
+        "sha256": "671361AEEB305D493CD127212D6BEE789CCA226A8E2B62B540538AE1874FCEB7"
+      },
+      {
+        "path": "asm/original/rev0/lib/table_0019C5C0.s",
+        "sha256": "2EF3D03450BA37265BA662C304830B51024EE08638004793C0C7B08A094E3CFC"
+      },
+      {
+        "path": "build/matching/director-shop/table-ownership-preflight.md",
+        "sha256": "827DB492333A446FF53018E1B994796D01A8337133A8DAE41FD55084E7498F37"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Private symbolic evidence and successful binding derivation remain diagnostic. Canonical linked text/table, sole ownership, placement, relocation, fresh compilation and full-ROM gates must pass for both complete-wave members, followed by Astra's structural review of the whole existing r3095 activation.",
+    "role": "emitted-best",
+    "schemaVersion": 1,
+    "selectedBest": true,
+    "sourceChange": "Reverse only the state9 equivalent minimum conditional: test quantity against maximum, select quantity on the true arm and maximum on the false arm. All declarations, sixteen states, list work union phases and calls are unchanged."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 219,
+        "path": "include/common/types.h",
+        "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+      },
+      {
+        "bytes": 405,
+        "path": "include/game/scenario_source_record.h",
+        "sha256": "32C1B9F2C5C013955490F7E2C7A11EA914158D21927BCB6F20877927E0E1FD51"
+      }
+    ],
+    "expanded": {
+      "bytes": 23654,
+      "sha256": "344098F598607D23A5737F6377918447A3DC8B9124F6BDD82813F1455837CD4B"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "B4F90603BBEDF7242E07890117277FBC4445A4B6C0CC15485FE6E124BD911CF7"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-04-func_001977E0-0fbeca6ab5.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

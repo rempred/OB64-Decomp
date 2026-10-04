@@ -1,0 +1,118 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "70A68C829EC86CAD831607F82B4069C7E169B088B703AF72A2D8E2A64360CC44",
+  "observationId": "9E8C7D90E2B4E170EBDAA8A4D84C37D4CCF8A594F2BAAFAABD0B43FAB8BA3163",
+  "symbol": "func_001977E0",
+  "authored": {
+    "context": "Complete BE40+1977E0 producer/splitter wave. Independent Shop worker source681A retains all sixteen states, 4580 bytes/frame112, 534 text relocations and a separate native64-byte table. Original text/table fallbacks remain available. This source is a research counterexample, not linked acceptance.",
+    "effects": [
+      "register-allocation",
+      "instruction-selection"
+    ],
+    "expected": {
+      "dependencies": [
+        {
+          "bytes": 219,
+          "path": "include/common/types.h",
+          "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+        },
+        {
+          "bytes": 405,
+          "path": "include/game/scenario_source_record.h",
+          "sha256": "32C1B9F2C5C013955490F7E2C7A11EA914158D21927BCB6F20877927E0E1FD51"
+        }
+      ],
+      "expandedSha256": "0C7287201590FC90B13AE6CEFAF1CB096D6994D3C0B1C10CEFADE006B0AF2F39",
+      "sourceSha256": "681A007912DC3ECE866F51EA3D0E0FAA1DAA302B50835759F1971216EC94BE32"
+    },
+    "label": "Masked Shop closure retains exchanged case9 external addresses",
+    "observedEffect": "All1145 instruction fields match after masking only actual relocation fields, but deriving real symbol/addend bindings from the full retail body fails: native HI16@E4C/LO16@E50 uses D_8021A123 where retail reads80219F03; the following native D_80219F00+3 pair reads retail8021A123. These are two different bytes. A masked comparison cannot establish relocation compatibility or acceptance. The whole original table has sixteen correct destination offsets and is unaffected by this discrepancy.",
+    "parentCandidateId": null,
+    "references": [
+      {
+        "path": "build/matching/shopworker/shop-001977e0-list-counter-value-word-phases-watch.json",
+        "sha256": "5339BFC7A55930AD9AF6E46F8A1902CEF085467963957172AE0BBB2CE2F8C21B"
+      },
+      {
+        "path": "build/matching/shopworker/shop-be40-1977-source-ready-packet.json",
+        "sha256": "804DEC7197DC8D735ED8A8B78641DAD4AE9388EFCB6379593AF3EE1B3AB0FEAF"
+      },
+      {
+        "path": "build/sol-five-family/shop-1977e0-current-retail.txt",
+        "sha256": "671361AEEB305D493CD127212D6BEE789CCA226A8E2B62B540538AE1874FCEB7"
+      },
+      {
+        "path": "build/sol-five-family/shop-wave-20261004-derived-integration.json",
+        "sha256": "79C60F88F3DF2FCEBBC598CECB330048D9EFAE221014EF9FFEAFD669F8EB992A"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Two external-address loads are exchanged in state9. Preserve this source to distinguish symbolic field closure from actual linked closure; reverse the equivalent minimum conditional and derive every binding before activation. No tooling defect or source-policy exception is evidenced.",
+    "role": "counterexample",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Use the worker's final list-pointer/category-value/next-pointer union phases and the state9 minimum conditional with maximum tested against quantity."
+  },
+  "authenticated": {
+    "dependencies": [
+      {
+        "bytes": 219,
+        "path": "include/common/types.h",
+        "sha256": "943133AAE4A5A2DF5FC41F480D969DF1DAD701C2C238B70E2DB42E168C922AB7"
+      },
+      {
+        "bytes": 405,
+        "path": "include/game/scenario_source_record.h",
+        "sha256": "32C1B9F2C5C013955490F7E2C7A11EA914158D21927BCB6F20877927E0E1FD51"
+      }
+    ],
+    "expanded": {
+      "bytes": 23654,
+      "sha256": "0C7287201590FC90B13AE6CEFAF1CB096D6994D3C0B1C10CEFADE006B0AF2F39"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "681A007912DC3ECE866F51EA3D0E0FAA1DAA302B50835759F1971216EC94BE32"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-04-func_001977E0-70a68c829e.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
