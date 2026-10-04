@@ -1,0 +1,117 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "6158763F742DB90282E915D320F6B1630C5FBE8A3B6C6180C5121EBDBC5C9931",
+  "observationId": "4645F215E0B2FF8B8EB362D32147C28DEF1B7B7A42BA806708162B0B11B1B8B3",
+  "symbol": "func_0022D14C",
+  "authored": {
+    "context": "Gold1020/1022 and primary sched.c provide the independent ready-list order hypothesis. Source effect and first scheduling stage are measured. Canonical source/header/config/build unchanged. No fabricated dependency, paired identity, dummy reference, forced addressability, compiler flag/prototype exception or tooling defect.",
+    "effects": [
+      "real-lifetime",
+      "instruction-selection",
+      "register-allocation"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "AFB093B2DE7EF514F29F9F677F4885B8272D2B349078706F5603F627AAD3D7F3",
+      "sourceSha256": "7984B0DCDD691CA7FB7BC42B265A63C89A394B1AEE62D732746B9E6B78FF166C"
+    },
+    "label": "Real entry clears after selector restore load-gap order",
+    "observedEffect": "Source 7984B0DC / candidate 6158763F remains PURE_C, 6,844 bytes/frame 616/177 actual text relocations/131 ordered calls. Relative to F8A589AF, only native words at 0x54/0x58 change; every relocation is identical. All prior forms remain and entry region 1's four forms now correspond. Raw differences improve 304 words/790 bytes to 302/782 including symbolic relocations.\nAuthenticated new probe 065BBEEB075F584A4B1988DCE9A6EAEAC238562B35D934FC039303F72CAB3779 has nine artifacts/six dumps. COMBINE keeps selector load UID43, call45, return48, defaults51/54. First SCHED moves only those real defaults before call45, after load43; GREG maps them to sp+460 and sp+471; SCHED2 retains order, DBR places byte clear in the call delay slot. These UIDs refer only to this source.\nAuthenticated F8A probe AA5F8B30AD83C2C9DCDB598471E343A789A859EB3602C798493210682837A23A has twelve artifacts/nine dumps: its first SCHED orders descriptor load69, zeros88/91, shift72, byte79, zeros94/97, byte store82; GREG binds the real zeros to 404/396/388/428. It also establishes F8A's remaining wrong entry clear40 before load49. No stage ID transplant.\nReversing only the two entry clears (7F1D2100/E037C757) instead swaps the wrong delay filler and yields 305/792, so is unselected. Selector preload710830AB and wide low-word sumC1198306 are whole-native/every-relocation identical to F8A; no unchanged probes.",
+    "parentCandidateId": "34C45BB938027829B4679C39A90FEED4D28D2918875EED45AA0CDA38B1C4C90F",
+    "references": [
+      {
+        "path": "build/matching/solmode/d14c-clean-defaults-last-entry-clears-after-leaf.c",
+        "sha256": "7984B0DCDD691CA7FB7BC42B265A63C89A394B1AEE62D732746B9E6B78FF166C"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-defaults-last-entry-clears-after-leaf-watch.json",
+        "sha256": "281FC280E65F88B24A3BFC2F6895D6288F61583930778500F0CCEDF0F93B3531"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-defaults-last-entry-clears-after-leaf-call-regions.json",
+        "sha256": "B1A0D6C98F062BAF58C93D137919E7B228EA7392CFBE96CC79D09BBBEF4C0AA5"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-defaults-last-entry-clears-after-leaf-probe.json",
+        "sha256": "E432EF828B24C0C58B488972C144041964A31C4E9F960E8A4326A742D10FC607"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-indexed-loops-four-defaults-last-probe.json",
+        "sha256": "343BC5F478772CD4D4A74960C8BAB91DF7272B91ADF1107052859ACE19F6045E"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-defaults-last-entry-clear-order.c",
+        "sha256": "7F1D2100B89AFB977A6A648B01AFFCB8FED2D0FC7A374FA4AA40FAEFB3CAD697"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-defaults-last-entry-clear-order-watch.json",
+        "sha256": "177EE017DC74F42429D22E3A4D697D9D3D72A2A15065FC7E8A39A8F6DDC4B826"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-defaults-last-explicit-wide-low-word-sum.c",
+        "sha256": "C1198306DA0C08CAB7658214B5C3FF2E03D1F57533CAFD739DCC81E9666C153D"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-defaults-last-explicit-wide-low-word-sum-watch.json",
+        "sha256": "441150A5670DBE4AB13DB0CFD1594AFA35FD20644C43CB19DF36873019FA48D7"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Type-5 sum result, mode-13 hoisting/argument setup and output/terminal scratch remain nonexact. This is recoverable research, not linked target/ROM/complete seventeen-member W6 acceptance. Original function and table ASM remain production.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Move only existing sp1CC=0 and sp1D7=0 after the actual 0144 selector call and return capture, before D94. Neither local is address-exposed or read by either callee; preserve both real defaults, all later uses and descriptor-default order."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 40768,
+      "sha256": "AFB093B2DE7EF514F29F9F677F4885B8272D2B349078706F5603F627AAD3D7F3"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "7984B0DCDD691CA7FB7BC42B265A63C89A394B1AEE62D732746B9E6B78FF166C"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-04-func_0022D14C-6158763f74.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
