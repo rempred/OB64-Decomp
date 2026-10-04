@@ -51,7 +51,28 @@ Protect accepted B21C/B26C/BD14 and the complete BE40/1977E0 prerequisite. Keep 
 members in one final wave verification. B1B0's table r3097 and B800's tables r3098/r3099
 have separate ownership gates; derive actual native sections/relocations before proposing
 activation. Preserve the original zero words at ROM `0x0019C684` and `0x0019C6EC` without
-assuming their provenance or transferring r3095's approval. No tooling or boundary change is authorized.
+assuming their provenance or transferring r3095's approval. The source assignment authorizes no
+boundary change; the separate tooling decision below controls the bounded projection work.
+
+October 4 tooling decision for this wave: Astra approved a bounded, explicitly versioned
+fixed-row auxiliary-projection extension after independent agreement from GoldOx and
+MagentaTiger (Agent Mail 1047/1051, thread `ASTRA-SHOP-AUX-PROJECTION-20261004`).
+Current B800 native evidence has two 100-byte pointer tables at offsets 0 and 104 in a
+208-byte section. Existing r3098 owns 104 bytes, r3099 owns 100, and all 12 bytes of r3100
+must remain original ASM; only its first four bytes correspond to terminal native alignment.
+The extension must allow authenticated native alignment inside a complete payload row,
+distinguish pointer-entry intervals from whole ownership intervals, preserve the original
+section anchor/addends, reject every padding symbol/relocation/reference, and retain legacy
+version-1 semantics. Version the object evidence and reject the new mode through every
+unsupported composed/group path. Hashes bind native bytes; they do not alone establish
+copy provenance. Require native grammar, independent slice reconstruction, adversarial
+tests, accounting checks, applicable routine tests, independent review and changed-input audit.
+Implement in a coordinated interval when the complete four-member source wave is ready,
+then use its one combined wave/audit verifier. Both workers continue existing private checks
+until that interval; there is no current hold, boundary change or target activation approval.
+Read-only evidence is in `build/sol-five-family/b800-padded-row-readonly-assessment-20261004.md`
+and the Shop worker's current native artifacts. Final contracts require the selected source's
+actual labels, entries, padding, hashes and relocations, not trial identities.
 
 The later complete menu/state/entry wave retains `001989C4`, `001994B4`, `0019A1AC`,
 `0019A294`, `0019AA04`, `0019AB44`, `0019ADF0`, `0019AF78`, `0019B4C4`, `0019B63C`,
