@@ -1,0 +1,97 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "5B64A841FB0FED6FC8B8EE0B16103357A5521CD212D94B8271C88C3620941109",
+  "observationId": "93F46865006E81B51133D348E865D7E6D29075EDBEAFF1D472018C02E3F61850",
+  "symbol": "func_0022D14C",
+  "authored": {
+    "context": "Derived from ROM/current source and existing clean local observations. Primary loop.c matching/profitability and sched.c single-set birth rules inform questions; measured stages are authenticated independently per source. No unique original-source or runtime behavioral claim. Canonical source/header/config/build unchanged; no tooling defect, dummy references, identities, forced addressability or compiler exception.",
+    "effects": [
+      "real-lifetime",
+      "instruction-selection",
+      "register-allocation"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "2C832B447BB52AB130DDD4209803C50706F3BDEDB5D615EA7774F095CB9ABB7D",
+      "sourceSha256": "1DF22616E0CC7E3BA0EFF4DED6F8F318033FE933902B12581994FAB4EAECFA4A"
+    },
+    "label": "Two real extra definitions reduce the remaining constant hoisting group",
+    "observedEffect": "Source 1DF22616 / candidate 5B64A841 restores 6,844 bytes/frame 616/177 relocations/131 ordered calls; raw differences are 312 words/832 bytes, unselected. Authenticated probe 8FF59694 (12 artifacts/nine dumps) reports an 842-instruction actor loop. Shared user76 definitions2959/3164 and separate literal definitions3377/reg780 and3682/reg825 survive RTL/LOOP/FLOW/COMBINE. The remaining literal group has life2/savings2 and is not desirable to hoist. GREG assigns the shared pair V1, the separate pair V0; the context bytes in the latter pair now use V1. Scheduling and four wrong 13 predicate fills remain. These UIDs belong only to this source.",
+    "parentCandidateId": "DA430AC669E21D1B88C02C27F661216EBFEFAB1B1BE102B13E6FAD168071DD7A",
+    "references": [
+      {
+        "path": "build/matching/solmode/d14c-clean-entry-matched-two-real-extra-definitions.c",
+        "sha256": "1DF22616E0CC7E3BA0EFF4DED6F8F318033FE933902B12581994FAB4EAECFA4A"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-entry-matched-two-real-extra-definitions-watch.json",
+        "sha256": "72B65F68FC8B779F80AD9B67AA1F06C1C6D929AA7061C1AA97519D0F573CBB48"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-entry-matched-two-real-extra-definitions-call-regions.json",
+        "sha256": "8AAB9C6FD31332F50D8D9AB895D038F181BE04793E5CABBE8FD5ACCF5FE9E2C1"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-entry-matched-two-real-extra-definitions-probe.json",
+        "sha256": "3AE59E3E72305DFF68B6600222E65949751C375337983DC1A058CDF7C15D85E6"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Type-5 sum, modes 8/10 argument registers/predicate fills, late merging and output/terminal scratch remain nonexact. Original function/table ASM remain production; complete seventeen-member W6 and approved structural table gates stay open.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Use one ordinary s32 mode8or10Extra for the existing ninth argument in modes 8 and 10. Set it to the required 13 in each of those paths; keep modes 4 and 3 as literal arguments. Retain all four actual context-byte captures. Add no consumer or operation beyond the real argument definitions."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 41043,
+      "sha256": "2C832B447BB52AB130DDD4209803C50706F3BDEDB5D615EA7774F095CB9ABB7D"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "1DF22616E0CC7E3BA0EFF4DED6F8F318033FE933902B12581994FAB4EAECFA4A"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-04-func_0022D14C-5b64a841fb.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}

@@ -1,0 +1,101 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "DA430AC669E21D1B88C02C27F661216EBFEFAB1B1BE102B13E6FAD168071DD7A",
+  "observationId": "BF12296C3181ECA327D8BD4C2C88876F8CAD4FAF39866B6442216EA6D1DE9DE2",
+  "symbol": "func_0022D14C",
+  "authored": {
+    "context": "Derived from ROM/current source and existing clean local observations. Primary loop.c matching/profitability and sched.c single-set birth rules inform questions; measured stages are authenticated independently per source. No unique original-source or runtime behavioral claim. Canonical source/header/config/build unchanged; no tooling defect, dummy references, identities, forced addressability or compiler exception.",
+    "effects": [
+      "real-lifetime",
+      "instruction-selection",
+      "register-allocation"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "84A7D764879E4A2FBE67A5D420A45D6039A91A2735B6E3EAD0CFE483034AE45E",
+      "sourceSha256": "5D4D9D30A32B67C6D5D5CA98D59A82563723F88AB74D93DA7C55818359697122"
+    },
+    "label": "Local context-byte captures restore four predicate delay slots but shorten body",
+    "observedEffect": "Source 5D4D9D30 / candidate DA430AC669 emits PURE_C 6,836 bytes/frame 616/177 relocations/131 ordered calls. Regions 89/90/94/95 restore four opcode-31 predicate delay fills. Regions 91/96 are each one native word shorter: a context argument store is merged into a later tail, rather than silently treating a missing call as covered. All 131 calls retain address order. Raw differences are 719 words/2,443 bytes. This is unselected despite the local improvement. Four scoped real extra locals (separate producer at each call) are whole-native/every-relocation identical to this source; no unchanged probe.",
+    "parentCandidateId": "6158763F742DB90282E915D320F6B1630C5FBE8A3B6C6180C5121EBDBC5C9931",
+    "references": [
+      {
+        "path": "build/matching/solmode/d14c-clean-entry-matched-four-local-context-bytes.c",
+        "sha256": "5D4D9D30A32B67C6D5D5CA98D59A82563723F88AB74D93DA7C55818359697122"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-entry-matched-four-local-context-bytes-watch.json",
+        "sha256": "164701322EAE3AF1A79DBB5B26C78FA86E934095A27EF66A862049242A6BE6D7"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-entry-matched-four-local-context-bytes-call-regions.json",
+        "sha256": "01A408ED9379D3E8D804B4D22C02D7D8A19AEF88E7C291D21DEFFB08FE8EDD87"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-entry-matched-four-scoped-real-extra-locals.c",
+        "sha256": "2407720272C343B72C79153082990F229F982378BB1FB9C90E45253E8B937292"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-entry-matched-four-scoped-real-extra-locals-watch.json",
+        "sha256": "C9B4695773A536F0298A3CFDF14D623960E93B461DB115D9AE9B10F7EDA2FE07"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Type-5 sum, modes 8/10 argument registers/predicate fills, late merging and output/terminal scratch remain nonexact. Original function/table ASM remain production; complete seventeen-member W6 and approved structural table gates stay open.",
+    "role": "counterexample",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Replace only the two remaining inline context-byte arguments with genuine scoped u8 locals, following the two existing captures. Each performs the existing load once and feeds the existing call; preserve conditions and all other operations."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 40894,
+      "sha256": "84A7D764879E4A2FBE67A5D420A45D6039A91A2735B6E3EAD0CFE483034AE45E"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "5D4D9D30A32B67C6D5D5CA98D59A82563723F88AB74D93DA7C55818359697122"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-04-func_0022D14C-da430ac669.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
