@@ -11,6 +11,10 @@ contracts. This mode additionally requires an `auxiliary` object with exactly
 member; `sections` uses complete-row auxiliary contracts; `projection` uses the
 [fixed-row read-only census](AUXILIARY_PROJECTION.md). Ordinary group and standalone
 auxiliary contracts retain their existing meanings and rejection rules.
+This composition supports projection schema version 1 only. Version 2's owned
+native padding is rejected by registry, binding, grammar, object, projection,
+conservation and proof entry points; standalone support does not extend group
+composition implicitly.
 
 The native assembler input equals the compiler output byte-for-byte. Grammar
 validation checks every complete compiler occurrence without using its temporary

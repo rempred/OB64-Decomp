@@ -2371,14 +2371,16 @@ function validateSourceObjectProofBytes(actualBytes, expectedBytes) {
   compilationGroups.validateComposedProof(actual);
   const projected = actual.target.auxiliaryProjection;
   const projectionEvidence = actual.objectEvidence.auxiliaryProjection;
-  if (projected || projectionEvidence || actual.assemblyContract.auxiliaryProjection || actual.objectEvidence.schemaVersion === 4) {
+  if (projected || projectionEvidence || actual.assemblyContract.auxiliaryProjection || [4, 6].includes(actual.objectEvidence.schemaVersion)) {
+    const paddedProjection = projected?.schemaVersion === 2;
     const projectionKeys = ['schemaVersion', 'contract', 'retained', 'implementationSha256',
       'nativeSections', 'nativeSymbols', 'nativeRelocationSections', 'nativeObjectSha256',
       'projectedObjectSha256', 'nativeSectionSha256', 'nativeRelocations', 'references',
-      'payloadBytes', 'checkOnlyBytes'];
+      'payloadBytes', 'checkOnlyBytes', ...(paddedProjection ? ['payloadSlices'] : [])];
     const projectionHashes = ['implementationSha256', 'nativeObjectSha256', 'projectedObjectSha256', 'nativeSectionSha256'];
-    if (!projected || actual.assemblyContract.auxiliaryProjection !== true || actual.objectEvidence.schemaVersion !== 4
-        || !textContract.exactKeys(projectionEvidence, projectionKeys) || projectionEvidence.schemaVersion !== 1
+    if (!projected || ![1, 2].includes(projected.schemaVersion) || actual.assemblyContract.auxiliaryProjection !== true
+        || actual.objectEvidence.schemaVersion !== (paddedProjection ? 6 : 4)
+        || !textContract.exactKeys(projectionEvidence, projectionKeys) || projectionEvidence.schemaVersion !== projected.schemaVersion
         || projectionHashes.some(key => typeof projectionEvidence[key] !== 'string' || !/^[0-9A-F]{64}$/.test(projectionEvidence[key]))
         || !isDeepStrictEqual(projected, projectionEvidence.contract)
         || !Array.isArray(projectionEvidence.nativeRelocations) || !Array.isArray(projectionEvidence.references)
@@ -2395,6 +2397,28 @@ function validateSourceObjectProofBytes(actualBytes, expectedBytes) {
         || projectionEvidence.payloadBytes !== actual.finalObject.auxiliarySections.reduce((sum, row) => sum + row.objectBytes, 0)
         || projectionEvidence.payloadBytes + projectionEvidence.checkOnlyBytes !== projected.bytes) {
       fail('source-to-object auxiliary projection evidence schema drift');
+    }
+    if (paddedProjection) {
+      const rows = actual.finalObject.auxiliarySections;
+      const tables = projected.segments.filter(segment => segment.kind === 'payload');
+      const slices = projectionEvidence.payloadSlices;
+      if (!Array.isArray(slices) || slices.length !== tables.length || slices.length !== rows.length) fail('padded projection slice census');
+      for (const [index, slice] of slices.entries()) {
+        const row = rows[index], table = tables[index];
+        if (!textContract.exactKeys(slice, ['outputSection', 'offset', 'bytes', 'entryBytes', 'paddingBytes', 'nativeSha256', 'paddingSha256'])
+            || slice.outputSection !== table.outputSection || slice.outputSection !== row.outputSection
+            || slice.offset !== table.offset || slice.bytes !== table.bytes || slice.bytes !== row.objectBytes
+            || !Number.isSafeInteger(slice.entryBytes) || slice.entryBytes <= 0 || slice.entryBytes % 4
+            || slice.entryBytes !== row.entryBytes || slice.paddingBytes !== row.trailingPaddingBytes
+            || slice.bytes !== slice.entryBytes + slice.paddingBytes || !Number.isSafeInteger(slice.paddingBytes) || slice.paddingBytes < 0
+            || slice.paddingBytes >= projected.alignment
+            || (slice.paddingBytes && slice.paddingBytes !== (projected.alignment - slice.entryBytes % projected.alignment) % projected.alignment)
+            || (index === slices.length - 1 && slice.paddingBytes !== 0)
+            || slice.nativeSha256 !== row.objectSha256 || slice.nativeSha256 !== row.acceptedObjectSha256
+            || !/^[0-9A-F]{64}$/.test(slice.nativeSha256)
+            || slice.paddingSha256 !== sha256Buffer(Buffer.alloc(slice.paddingBytes))
+            || slice.paddingSha256 !== row.trailingPaddingSha256 || slice.paddingSha256 !== row.acceptedTrailingPaddingSha256) fail('padded projection native slice binding');
+      }
     }
   }
   const selectedAuxiliary = actual.finalObject.auxiliarySections.filter((record) => (

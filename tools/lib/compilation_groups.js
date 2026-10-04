@@ -15,6 +15,9 @@ function fail(message) { throw new Error('compilation group: ' + message); }
 function requireKeys(value, keys, label) { if (!exactKeys(value, keys)) fail(label + ' schema'); }
 function integer(value, min = 0) { return Number.isSafeInteger(value) && value >= min; }
 function power(value) { return integer(value, 4) && value <= 0x10000 && (value & (value - 1)) === 0; }
+function auxiliaryMode(group) {
+  if (auxiliary.composed(group) || Object.prototype.hasOwnProperty.call(group, 'auxiliary')) auxiliary.groupContract(group);
+}
 function alignment(group, offset) { let value = group.text.alignment; while (offset % value) value /= 2; return value; }
 function stem(target) { return target.compilationGroup ? 'groups/' + target.compilationGroup.id : target.symbol; }
 function objectPath(target, suffix = '.o') { return 'objects/c/' + stem(target) + suffix; }
@@ -33,7 +36,7 @@ function registry(config, profile) {
       if (!group.members.some(member => member.symbol === group.auxiliary.memberSymbol)) fail('auxiliary attribution');
       const sections = require('./active_targets').normalizeAuxiliarySectionContracts(group.auxiliary.sections,
         group.auxiliary.memberSymbol, 'group auxiliary', group.auxiliary.projection);
-      auxiliary.normalize(group.auxiliary.projection, sections);
+      auxiliary.groupContract({ ...group, auxiliary: { ...group.auxiliary, sections } });
     }
     if (!SAFE_ID.test(group.id) || ids.has(group.id) || (!auxiliary.composed(group) && group.mode !== 'native-text-owner-projection')
         || typeof group.source !== 'string' || !group.source.endsWith('.c') || sources.has(group.source)
@@ -76,6 +79,7 @@ function registry(config, profile) {
 function bind(groups, targets, context = {}) {
   const assigned = new Set();
   for (const group of groups) {
+    auxiliaryMode(group);
     const selected = group.members.map(member => {
       const matches = targets.filter(target => target.symbol === member.symbol && target.compilationGroupId === group.id);
       if (matches.length !== 1) fail('indivisible member activation');
@@ -220,6 +224,7 @@ function census(elf, group, stage) {
   return { bytes: bytes.length, sha256: sha256Buffer(bytes), functions, relocations: records };
 }
 function validateObject(elf, group, stage) {
+  auxiliaryMode(group);
   if (![...['raw', 'projected', 'stripped'], ...(auxiliary.composed(group) ? ['text-projected'] : [])].includes(stage) || elf.header.type !== 1 || elf.header.machine !== 8
       || elf.header.entry !== 0 || elf.header.phoff !== 0 || elf.header.phnum !== 0) fail('relocatable object header/stage');
   return { schemaVersion: 1, stage, groupSha256: hash(group), objectFlags: elf.header.flags,
@@ -262,6 +267,7 @@ function expectedMemberRelocations(target) {
       symbolValue: rel.symbolValue, symbolSection: rel.symbolSection, word: rel.word }));
 }
 function contract(target) {
+  auxiliaryMode(target.compilationGroup);
   const tc = require('./text_contract'), group = target.compilationGroup, owner = group.owners[target.groupMemberIndex];
   const ordinary = tc.resolveTextContract({ ...target, compilationGroup: null });
   return { ...ordinary, schemaVersion: auxiliary.composed(group) ? 3 : 2, mode: group.mode, producer: group,
@@ -272,6 +278,7 @@ function contract(target) {
 }
 function evidence(target, root, files = null) {
   const tc = require('./text_contract'), group = target.compilationGroup;
+  auxiliaryMode(group);
   const artifact = (role, relative) => files ? { ...tc.artifact(path.dirname(files[role]), path.basename(files[role])), path: relative } : tc.artifact(root, relative);
   const artifacts = { compilationInput: artifact('compilationInput', target.source),
     compilerAssembly: artifact('compilerAssembly', assemblyPath(target)), assemblerInput: artifact('assemblerInput', assemblyPath(target, '.s')),
@@ -322,6 +329,7 @@ function evidence(target, root, files = null) {
 }
 const compiledProducers = new Map();
 function compile(phase8, target, output, compiler, assembler, objcopy, options) {
+  auxiliaryMode(target.compilationGroup);
   const p7 = require('./phase7_conventional'), policy = require('./source_policy'), p8 = require('./phase8_matching_c');
   const classification = p8.validateTargetClassification(target, options.classification);
   const key = path.resolve(output) + '\0' + target.compilationGroup.id;
@@ -421,8 +429,10 @@ Object.assign(module.exports, { collapseManifest, manifestMembers });
 
 function validateComposedProof(proof) {
   const object = proof.objectEvidence, text = proof.textContract;
+  if (text?.producer) auxiliaryMode(text.producer);
   if (!auxiliary.composed(text?.producer) && object?.schemaVersion !== 5 && !object?.composition) return;
   const group = text?.producer, value = object?.composition, artifacts = object?.artifacts;
+  if (auxiliary.composed(group)) auxiliary.groupContract(group);
   const compositionKeys = ['schemaVersion', 'groupSha256', 'nativeObjectSha256', 'textProjectedObjectSha256',
     'projectedObjectSha256', 'strippedObjectSha256', 'implementationSha256', 'auxiliaryContract',
     'conservedTextProjection', 'conservedFinalProjection'];

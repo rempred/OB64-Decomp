@@ -329,7 +329,7 @@ function deriveObjectEvidenceFromSnapshot(target, snapshot) {
   const loadSections = new Set([...contract.owners.map((owner) => '.rel' + owner.inputSection), ...(target.auxiliarySections || []).map((section) => '.rel' + section.outputSection)]);
   const tail = tailEvidence(contract, rawOwners, normalizedRelocations);
   tailEvidence(contract, strippedOwners, normalizedRelocations);
-  const evidence = { schemaVersion: projectionEvidence ? 4 : native ? 2 : 1, ...(native ? { allocation } : {}),
+  const evidence = { schemaVersion: projectionEvidence ? (projectionEvidence.schemaVersion === 2 ? 6 : 4) : native ? 2 : 1, ...(native ? { allocation } : {}),
     ...(projectionEvidence ? { auxiliaryProjection: projectionEvidence } : {}), textContractSha256: hash(contract), artifacts,
     rawOwners: rawOwners.map((r) => r.record), strippedOwners: strippedOwners.map((r) => r.record), rawFunctions, strippedFunctions,
     rawRelocations: rawRelocations.filter((r) => loadSections.has(r.section)), normalizedRelocations,

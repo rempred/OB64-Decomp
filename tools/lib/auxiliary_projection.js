@@ -1,7 +1,7 @@
 'use strict';
 
 // This mode conserves one native read-only section. It does not repartition
-// accepted owners: complete payload rows replace ASM, padding remains ASM.
+// accepted owners: complete payload rows replace ASM; v2 can include native padding.
 const fs = require('fs');
 const path = require('path');
 const { isDeepStrictEqual: same } = require('util');
@@ -17,10 +17,17 @@ function keys(value, expected) {
 function integer(value, min = 0) { return Number.isSafeInteger(value) && value >= min && value <= 0xffffffff; }
 function alignment(value) { return integer(value, 4) && value <= 16 && (value & (value - 1)) === 0; }
 function payloads(contract) { return contract.segments.filter(segment => segment.kind === 'payload'); }
+function entryBytes(segment, auxiliaries) {
+  return auxiliaries.find(value => value.outputSection === segment.outputSection).entries * 4;
+}
+function groupContract(group) {
+  if (!composed(group) || group.auxiliary?.projection?.schemaVersion !== 1) fail('group projection requires version 1');
+  return normalize(group.auxiliary.projection, group.auxiliary.sections);
+}
 function normalize(contract, auxiliaries) {
   if (contract === undefined) return null;
   if (!keys(contract, ['schemaVersion', 'mode', 'compilerSection', 'bytes', 'alignment', 'expectedObjectSha256', 'segments'])
-      || contract.schemaVersion !== 1 || contract.mode !== 'fixed-row-readonly-projection'
+      || ![1, 2].includes(contract.schemaVersion) || contract.mode !== 'fixed-row-readonly-projection'
       || contract.compilerSection !== '.rodata' || !integer(contract.bytes, 4)
       || !alignment(contract.alignment) || contract.bytes % contract.alignment
       || !SHA.test(contract.expectedObjectSha256) || !Array.isArray(contract.segments)
@@ -40,13 +47,19 @@ function normalize(contract, auxiliaries) {
           || !Array.isArray(segment.alignmentDirectives) || !segment.alignmentDirectives.length
           || segment.alignmentDirectives.some(value => !integer(value) || value > 4)
           || !auxiliary || auxiliary.outputSection !== segment.outputSection || auxiliary.bytes !== segment.bytes
-          || auxiliary.compilerSection !== contract.compilerSection || auxiliary.entries * 4 !== segment.bytes
+          || auxiliary.compilerSection !== contract.compilerSection || !integer(auxiliary.entries, 1)
+          || auxiliary.entries * 4 + (contract.schemaVersion === 2 ? (auxiliary.trailingPaddingBytes || 0) : 0) !== segment.bytes
           || auxiliary.preservedTail !== null || auxiliary.preservedPrefix || auxiliary.preservedInteriorBefore
-          || auxiliary.compilerOccurrences || auxiliary.sourceObjectPrefix || auxiliary.trailingPaddingBytes
+          || auxiliary.compilerOccurrences || auxiliary.sourceObjectPrefix || (contract.schemaVersion === 1 && auxiliary.trailingPaddingBytes)
           || (count === 1 && segment.offset !== 0)) fail('payload occurrence or complete-row contract');
       const occurrenceAlignment = Math.max(...segment.alignmentDirectives.map(value => 2 ** value));
       if (occurrenceAlignment !== contract.alignment || segment.offset % occurrenceAlignment
           || auxiliary.alignment !== occurrenceAlignment) fail('payload alignment');
+      if (contract.schemaVersion === 2) {
+        const padding = auxiliary.trailingPaddingBytes || 0;
+        if (!integer(padding) || padding % 4 || (padding && padding !== (occurrenceAlignment - auxiliary.entries * 4 % occurrenceAlignment) % occurrenceAlignment)
+            || auxiliary.expectedTrailingPaddingSha256 !== hash(Buffer.alloc(padding))) fail('payload native padding contract');
+      }
       sections.add(segment.outputSection); labels.add(segment.label);
     } else if (segment.kind !== 'zero' || !SECTION.test(segment.ownerSection)
         || !integer(segment.ownerOffset) || segment.ownerOffset % 4 || !integer(segment.ownerBytes, 4)
@@ -58,10 +71,13 @@ function normalize(contract, auxiliaries) {
       || contract.segments.some(segment => segment.kind === 'zero' && sections.has(segment.ownerSection))) fail('payload/zero census');
   const tables = payloads(contract);
   for (let i = 0; i < tables.length; i++) {
-    const previousEnd = i ? tables[i - 1].offset + tables[i - 1].bytes : 0;
+    const previousEnd = i ? tables[i - 1].offset + entryBytes(tables[i - 1], auxiliaries) : 0;
     if (tables[i].offset !== Math.ceil(previousEnd / contract.alignment) * contract.alignment) fail('non-native inter-occurrence padding');
   }
   const last = tables[tables.length - 1];
+  // Terminal padding stays check-only in v2. Supporting an owned terminal pad
+  // requires a separate reviewed extension, never dual C/ASM ownership.
+  if (contract.schemaVersion === 2 && last.bytes !== entryBytes(last, auxiliaries)) fail('owned terminal padding unsupported');
   if (contract.bytes !== Math.ceil((last.offset + last.bytes) / contract.alignment) * contract.alignment) fail('non-native terminal padding');
   return structuredClone(contract);
 }
@@ -77,6 +93,7 @@ function checkTarget(target) {
         || auxiliary.vramStartNumber - first.vramStartNumber !== segment.offset
         || auxiliary.ownerSectionBytes !== segment.bytes || auxiliary.ownerPrefixBytes
         || auxiliary.ownerTailBytes || auxiliary.ownerRomStartNumber !== auxiliary.romStartNumber
+        || (contract.schemaVersion === 2 && auxiliary.ownerTailBytes !== 0)
         || auxiliary.ownerRomEndNumber !== auxiliary.romEndNumber
         || auxiliary.ownerVramStartNumber !== auxiliary.vramStartNumber
         || auxiliary.ownerVramEndNumber !== auxiliary.vramEndNumber) fail('fixed payload row or ROM/RAM spacing');
@@ -84,7 +101,8 @@ function checkTarget(target) {
   return contract;
 }
 function retainedBindings(target, model, baserom) {
-  const contract = composed(target.compilationGroup) ? normalize(target.compilationGroup.auxiliary.projection, target.compilationGroup.auxiliary.sections) : checkTarget(target);
+  if (target.compilationGroup?.auxiliary) groupContract(target.compilationGroup);
+  const contract = composed(target.compilationGroup) ? groupContract(target.compilationGroup) : checkTarget(target);
   if (!contract) return [];
   const sections = composed(target.compilationGroup) ? target.compilationGroup.auxiliary.sections : target.auxiliarySections;
   const first = sections[0];
@@ -126,8 +144,9 @@ function validateBindings(target, model, baserom) {
   return derived;
 }
 function validateCensus(targets) {
+  for (const target of targets) if (target.compilationGroup?.auxiliary) groupContract(target.compilationGroup);
   for (const target of targets.filter(value => value.auxiliaryProjection || composed(value.compilationGroup))) {
-    const contract = composed(target.compilationGroup) ? target.compilationGroup.auxiliary.projection : checkTarget(target);
+    const contract = composed(target.compilationGroup) ? groupContract(target.compilationGroup) : checkTarget(target);
     if (composed(target.compilationGroup) && !same(target.auxiliarySections,
       target.symbol === target.compilationGroup.auxiliary.memberSymbol ? target.compilationGroup.auxiliary.sections : [])) fail('group auxiliary attribution census');
     for (const zero of contract.segments.filter(segment => segment.kind === 'zero')) {
@@ -143,11 +162,12 @@ function assembly(compiler, target, adjust) {
   // No payload is emitted here and no instruction or operand is rewritten.
   let end = 0;
   const occurrences = tables.map((segment, index) => {
-    const record = { label: segment.label, offset: hex(segment.offset), bytes: segment.bytes, entries: segment.bytes / 4,
+    const bytes = entryBytes(segment, target.auxiliarySections);
+    const record = { label: segment.label, offset: hex(segment.offset), bytes, entries: bytes / 4,
       alignment: contract.alignment, alignmentDirectives: segment.alignmentDirectives,
       ...(segment.offset > end ? { paddingBefore: { offset: hex(end), bytes: segment.offset - end,
         expectedSha256: hash(Buffer.alloc(segment.offset - end)) } } : {}) };
-    end = segment.offset + segment.bytes;
+    end = segment.offset + bytes;
     return record;
   });
   return adjust(compiler, target.sectionName, { auxiliarySections: [{ compilerSection: contract.compilerSection,
@@ -211,6 +231,7 @@ function project(input, target) {
   if (symbols.some(symbol => symbol.sectionIndex === 0xfff2)) fail('COMMON symbols are unsupported');
   for (const segment of contract.segments) {
     if (segment.kind === 'zero' && !raw.subarray(segment.offset, segment.offset + segment.bytes).equals(Buffer.alloc(segment.bytes))) fail('nonzero native padding');
+    if (segment.kind === 'payload' && !raw.subarray(segment.offset + entryBytes(segment, target.auxiliarySections), segment.offset + segment.bytes).every(byte => byte === 0)) fail('nonzero owned native padding');
   }
   const relocationSections = parsed.sections.filter(section => section.info === source.index && section.type === 9);
   if (relocationSections.length !== 1) fail('raw relocation census');
@@ -222,7 +243,7 @@ function project(input, target) {
   for (let cursor = 0; cursor < relocation.size; cursor += 8) {
     const entry = Buffer.from(input.subarray(relocation.offset + cursor, relocation.offset + cursor + 8));
     const place = entry.readUInt32BE(0), info = entry.readUInt32BE(4), symbol = symbols[info >>> 8];
-    const segment = tables.find(value => place >= value.offset && place + 4 <= value.offset + value.bytes);
+    const segment = tables.find(value => place >= value.offset && place + 4 <= value.offset + entryBytes(value, target.auxiliarySections));
     if (!segment || place % 4 || seen.has(place) || (info & 255) !== 2 || !symbol
         || symbol.symbolType !== 3 || symbol.sectionIndex !== text[0].index || symbol.value !== 0
         || symbol.binding !== 0 || symbol.size !== 0 || symbol.visibility !== 0) fail('unmapped, crossing, duplicate or unsupported raw relocation');
@@ -234,7 +255,7 @@ function project(input, target) {
     entry.writeUInt32BE(place - segment.offset, 0);
     groups.get(segment.outputSection).push(entry);
   }
-  if (seen.size !== tables.reduce((sum, segment) => sum + segment.bytes / 4, 0)) fail('missing payload relocation');
+  if (seen.size !== tables.reduce((sum, segment) => sum + entryBytes(segment, target.auxiliarySections) / 4, 0)) fail('missing payload relocation');
   // Inspect every relocation section, including discarded metadata. References to
   // the raw anchor must resolve into payloads using the unchanged encoded addend.
   const references = [];
@@ -257,7 +278,7 @@ function project(input, target) {
       const low = (word << 16) >> 16;
       for (const high of pending) {
         const addend = ((high.immediate << 16) + low) >>> 0;
-        if (!tables.some(segment => addend >= segment.offset && addend + 4 <= segment.offset + segment.bytes)) fail('reference into padding or outside native payloads');
+        if (!tables.some(segment => addend >= segment.offset && addend + 4 <= segment.offset + entryBytes(segment, target.auxiliarySections))) fail('reference into padding or outside native payloads');
         references.push({ highPlace: high.place, highInfo: high.info, lowPlace: place, lowInfo: info, addend });
       }
       pending = [];
@@ -278,7 +299,12 @@ function project(input, target) {
     const section = projected.sections.find(value => value.name === segment.outputSection);
     if (!section || !Buffer.from(elfSectionBytes(projected, section)).equals(raw.subarray(segment.offset, segment.offset + segment.bytes))) fail('projection changed payload');
   }
-  return { buffer, evidence: { schemaVersion: 1, contract, retained: target.auxiliaryProjectionRetained,
+  return { buffer, evidence: { schemaVersion: contract.schemaVersion, contract, retained: target.auxiliaryProjectionRetained,
+    ...(contract.schemaVersion === 2 ? { payloadSlices: tables.map(segment => ({ outputSection: segment.outputSection,
+      offset: segment.offset, bytes: segment.bytes, entryBytes: entryBytes(segment, target.auxiliarySections),
+      paddingBytes: segment.bytes - entryBytes(segment, target.auxiliarySections),
+      nativeSha256: hash(raw.subarray(segment.offset, segment.offset + segment.bytes)),
+      paddingSha256: hash(raw.subarray(segment.offset + entryBytes(segment, target.auxiliarySections), segment.offset + segment.bytes)) })) } : {}),
     implementationSha256: sha256File(__filename),
     nativeSections: parsed.sections.map(section => ({ name: section.name, type: section.type, flags: section.flags,
       bytes: section.size, alignment: section.alignment, entrySize: section.entrySize, link: section.link, info: section.info,
@@ -333,7 +359,7 @@ module.exports = { normalize, checkTarget, retainedBindings, validateBindings, v
 function composed(group) { return group?.mode === 'native-text-readonly-owner-projection'; }
 function assertCompleteGroupRows(group) {
   if (!composed(group)) fail('group mode');
-  const contract = normalize(group.auxiliary.projection, group.auxiliary.sections);
+  const contract = groupContract(group);
   const first = group.auxiliary.sections[0];
   for (const [index, table] of payloads(contract).entries()) {
     const section = group.auxiliary.sections[index];
@@ -346,7 +372,7 @@ function assertCompleteGroupRows(group) {
 }
 function groupGrammar(compiler, group, adjust) {
   if (!composed(group)) fail('missing composed producer mode');
-  const contract = normalize(group.auxiliary.projection, group.auxiliary.sections);
+  const contract = groupContract(group);
   let end = 0;
   const occurrences = payloads(contract).map(segment => {
     const occurrence = { label: segment.label, offset: hex(segment.offset), bytes: segment.bytes, entries: segment.bytes / 4,
@@ -362,11 +388,12 @@ function groupGrammar(compiler, group, adjust) {
     outputSection: payloads(contract)[0].outputSection, bytes: end, compilerOccurrences: occurrences }] });
 }
 function groupReadonlyNames(group, stage) {
+  groupContract(group);
   return ['raw', 'text-projected'].includes(stage) ? ['.rodata'] : group.auxiliary.sections.map(value => value.outputSection);
 }
 function groupCensus(elf, group, stage) {
   if (!composed(group)) fail('missing composed producer');
-  const contract = normalize(group.auxiliary.projection, group.auxiliary.sections);
+  const contract = groupContract(group);
   assertCompleteGroupRows(group);
   if (contract.bytes > elf.buffer.length) fail('group read-only footprint exceeds object');
   const zeroSegments = contract.segments.filter(value => value.kind === 'zero');
@@ -480,6 +507,7 @@ function groupCensus(elf, group, stage) {
 // Relocation r_info values, symbols and encoded words are conserved; only section
 // indices and file offsets may change as the section table grows.
 function conservedOutsideReadonly(elf, group) {
+  groupContract(group);
   const omitted = new Set(['.rodata', '.rel.rodata', '.shstrtab', ...group.auxiliary.sections.flatMap(value => [value.outputSection, '.rel' + value.outputSection])]);
   const sectionName = index => index > 0 && index < 0xff00 ? elf.sections[index]?.name : index;
   const symbols = elf.symbols.map(symbol => ({ ...symbol, symbolTableIndex: sectionName(symbol.symbolTableIndex),
@@ -491,6 +519,7 @@ function conservedOutsideReadonly(elf, group) {
   return { flags: elf.header.flags, sections, symbols };
 }
 function projectGroupReadonly(input, group) {
+  groupContract(group);
   const before = parseElf32BigEndian(input);
   require('./compilation_groups').validateObject(before, group, 'text-projected');
   const parsed = elfTools.parseRelocatable(input), source = parsed.sections.find(section => section.name === '.rodata');
@@ -525,4 +554,4 @@ function completeObjectCensus(elf) {
       place: relocation.place, type: relocation.type, symbol: relocation.symbol,
       word: elf.buffer.readUInt32BE(relocation.owner.offset + relocation.place) })) };
 }
-Object.assign(module.exports, { composed, assertCompleteGroupRows, groupGrammar, groupReadonlyNames, groupCensus, projectGroupReadonly, conservedOutsideReadonly, completeObjectCensus });
+Object.assign(module.exports, { composed, groupContract, assertCompleteGroupRows, groupGrammar, groupReadonlyNames, groupCensus, projectGroupReadonly, conservedOutsideReadonly, completeObjectCensus });

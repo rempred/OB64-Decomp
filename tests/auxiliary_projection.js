@@ -17,6 +17,7 @@ const phase8 = active.loadActiveTargetModel();
 const local = JSON.parse(fs.readFileSync(path.join(ROOT, 'config/local-tools.json')));
 const verifiedCompiler = p8.verifyCompiler(phase8, local.compiler);
 const tools = assertToolchainAvailable(loadToolchainConfig());
+function exercise(version) {
 fs.mkdirSync(path.join(ROOT, 'build/tests'), { recursive: true });
 const root = fs.mkdtempSync(path.join(ROOT, 'build/tests/auxiliary-projection-'));
 const file = path.join(root, 'fixture.c');
@@ -55,7 +56,12 @@ for (const [index, block] of blocks.entries()) {
 assert(rodata.size > cursor, 'fixture terminal padding');
 segments.push({ kind: 'zero', offset: cursor, bytes: rodata.size - cursor, ownerSection: '.ob64.r0005', ownerOffset: 0,
   ownerBytes: rodata.size - cursor + 8, expectedOwnerSha256: hash(Buffer.alloc(rodata.size - cursor + 8)) });
-const contract = { schemaVersion: 1, mode: 'fixed-row-readonly-projection', compilerSection: '.rodata',
+const firstPaddingOffset = segments.find(segment => segment.kind === 'zero').offset;
+if (version === 2) {
+  segments[0].bytes += segments[1].bytes;
+  segments.splice(1, 1);
+}
+const contract = { schemaVersion: version, mode: 'fixed-row-readonly-projection', compilerSection: '.rodata',
   bytes: rodata.size, alignment: rodata.alignment, expectedObjectSha256: hash(rawData), segments };
 const base = 0x80230000, tableBase = 0x80240000, tableRom = 0x1000;
 fs.writeFileSync(path.join(root, 'native.ld'), 'SECTIONS { .ob64.r0001 ' + hex(base) + ' : { *(.ob64.r0001) }\n .ob64.r0002 '
@@ -69,10 +75,11 @@ const auxContracts = segments.filter(segment => segment.kind === 'payload').map(
   sectionType: 'SHT_PROGBITS', sectionFlags: ['SHF_ALLOC'], alignment: rodata.alignment,
   romStart: hex(tableRom + segment.offset), romEndExclusive: hex(tableRom + segment.offset + segment.bytes),
   vramStart: hex(tableBase + segment.offset), vramEndExclusive: hex(tableBase + segment.offset + segment.bytes),
-  bytes: segment.bytes, entries: segment.bytes / 4,
+  bytes: segment.bytes, entries: (segment.offset === 0 ? 20 : 28) / 4,
+  ...(version === 2 && segment.offset === 0 ? { trailingPaddingBytes: 4, expectedTrailingPaddingSha256: hash(Buffer.alloc(4)) } : {}),
   expectedObjectSha256: hash(rawData.subarray(segment.offset, segment.offset + segment.bytes)),
   expectedLinkedSha256: hash(linkedData.subarray(segment.offset, segment.offset + segment.bytes)), preservedTail: null,
-  expectedRelocations: Array.from({ length: segment.bytes / 4 }, (_, index) => ({ offset: hex(index * 4), type: 'R_MIPS_32',
+  expectedRelocations: Array.from({ length: (segment.offset === 0 ? 20 : 28) / 4 }, (_, index) => ({ offset: hex(index * 4), type: 'R_MIPS_32',
     symbol: '.text', addend: hex(rawData.readUInt32BE(segment.offset + index * 4)), section: '.rel.rodata' })),
 }));
 const normalized = active.normalizeAuxiliarySectionContracts(auxContracts, 'projection_fixture', 'fixture', contract);
@@ -119,10 +126,10 @@ const rejected = [];
 function reject(name, callback) { assert.throws(callback, undefined, name); rejected.push(name); }
 function contractReject(name, change) { const copy = structuredClone(target); change(copy); reject(name, () => projection.project(raw.buffer, copy)); }
 for (const [name, mutate] of [
-  ['huge owner extent', value => value.auxiliaryProjection.segments[1].ownerBytes = 0xfffffffc],
+  ['huge owner extent', value => value.auxiliaryProjection.segments.find(segment => segment.kind === 'zero').ownerBytes = 0xfffffffc],
   ['missing segment', value => value.auxiliaryProjection.segments.pop()],
   ['reordered segments', value => value.auxiliaryProjection.segments.reverse()],
-  ['duplicate payload', value => value.auxiliaryProjection.segments[2].outputSection = '.ob64.r0002'],
+  ['duplicate payload', value => value.auxiliaryProjection.segments.find(segment => segment.outputSection === '.ob64.r0004').outputSection = '.ob64.r0002'],
   ['truncated payload', value => value.auxiliaryProjection.segments[0].bytes -= 4],
   ['wrong ROM spacing', value => value.auxiliarySections[1].romStartNumber += 4],
   ['wrong RAM spacing', value => value.auxiliarySections[1].vramStartNumber += 4],
@@ -132,6 +139,59 @@ for (const [name, mutate] of [
   ['group producer', value => value.compilationGroup = {}],
   ['stale raw hash', value => value.auxiliaryProjection.expectedObjectSha256 = '0'.repeat(64)],
 ]) contractReject(name, mutate);
+if (version === 2) {
+  for (const [name, mutate] of [
+    ['v1 rejects owned padding', value => value.auxiliaryProjection.schemaVersion = 1],
+    ['wrong entry count', value => value.auxiliarySections[0].entries++],
+    ['wrong owned pad amount', value => value.auxiliarySections[0].trailingPaddingBytes = 8],
+    ['wrong owned pad hash', value => value.auxiliarySections[0].expectedTrailingPaddingSha256 = '0'.repeat(64)],
+    ['missing explicit zero tail', value => delete value.auxiliarySections[0].ownerTailBytes],
+    ['exterior tail on padded row', value => value.auxiliarySections[0].ownerTailBytes = 4],
+    ['wrong complete row size', value => value.auxiliarySections[0].ownerSectionBytes -= 4],
+    ['non-native next offset', value => value.auxiliaryProjection.segments[1].offset += 4],
+    ['extra owned padding segment', value => value.auxiliaryProjection.segments.splice(1, 0, { kind: 'zero', offset: 20, bytes: 4,
+      ownerSection: '.ob64.r0002', ownerOffset: 20, ownerBytes: 24, expectedOwnerSha256: hash(Buffer.alloc(24)) })],
+  ]) contractReject(name, mutate);
+  const terminalOwned = structuredClone(target);
+  const terminalTable = terminalOwned.auxiliarySections[1];
+  terminalTable.bytes += 4; terminalTable.trailingPaddingBytes = 4;
+  terminalTable.expectedTrailingPaddingSha256 = hash(Buffer.alloc(4));
+  terminalOwned.auxiliaryProjection.segments[1].bytes += 4;
+  terminalOwned.auxiliaryProjection.segments.pop();
+  reject('explicit unsupported owned terminal pad', () => projection.normalize(terminalOwned.auxiliaryProjection, terminalOwned.auxiliarySections));
+  const grammarReject = (name, changed) => reject(name, () => tc.assemblerInput(Buffer.from(changed), target, p8.adjustSectionAssembly));
+  const firstLabel = segments[0].label + ':';
+  grammarReject('injected zero masquerading as native pad', compiler.toString().replace(firstLabel, '.word 0\n' + firstLabel));
+  grammarReject('extra native pointer entry', compiler.toString().replace(firstLabel, firstLabel + '\n.word .L1'));
+  grammarReject('missing native pointer entry', compiler.toString().replace(/\.word\s+\.L\d+/, ''));
+  grammarReject('changed native alignment', compiler.toString().replace(/\.align\s+3/, '.align 2'));
+  grammarReject('literal padding directive', compiler.toString().replace(firstLabel, '.space 4\n' + firstLabel));
+  const composed = { mode: 'native-text-readonly-owner-projection', auxiliary: { projection: contract, sections: target.auxiliarySections,
+    memberSymbol: target.symbol }, members: [{ symbol: target.symbol }], functions: [] };
+  const groupTarget = { ...target, compilationGroup: composed };
+  const cg = require('../tools/lib/compilation_groups');
+  for (const [name, callback] of [
+    ['retained binding', () => projection.retainedBindings(groupTarget, model, rom)],
+    ['census', () => projection.validateCensus([groupTarget])],
+    ['whole group rows', () => projection.assertCompleteGroupRows(composed)],
+    ['grammar', () => projection.groupGrammar(compiler, composed, p8.adjustSectionAssembly)],
+    ['section names', () => projection.groupReadonlyNames(composed, 'raw')],
+    ['object census', () => projection.groupCensus(raw, composed, 'raw')],
+    ['projection', () => projection.projectGroupReadonly(raw.buffer, composed)],
+    ['conservation', () => projection.conservedOutsideReadonly(raw, composed)],
+    ['group validate object', () => cg.validateObject(raw, composed, 'raw')],
+    ['group project', () => cg.project(raw.buffer, composed)],
+    ['group binding', () => cg.bind([composed], [])],
+    ['proof', () => cg.validateComposedProof({ textContract: { producer: composed } })],
+    ['registry', () => cg.registry({ schemaVersion: 1, profile: 'fixture', groups: [{ ...composed,
+      id: 'fixture', source: relative, text: {}, tail: {}, relocations: [] }] }, 'fixture')],
+  ]) {
+    reject('v2 composed rejection: ' + name, callback);
+    composed.mode = 'native-text-owner-projection';
+    reject('stray v2 on ordinary group: ' + name, callback);
+    composed.mode = 'native-text-readonly-owner-projection';
+  }
+}
 for (const [name, change] of [
   ['missing explicit mode', value => delete value.targets[0].auxiliaryProjection],
   ['null explicit mode', value => value.targets[0].auxiliaryProjection = null],
@@ -142,7 +202,7 @@ const badModel = structuredClone(model); badModel.rows.find(value => value.index
 reject('same spacing different overlay', () => projection.retainedBindings(target, badModel, rom));
 const corruptRom = Buffer.from(rom); corruptRom[corruptRom.length - 1] = 1;
 reject('unproduced final eight original bytes', () => projection.retainedBindings(target, model, corruptRom));
-reject('dual C/ASM row', () => projection.validateCensus([target, { auxiliarySections: [{ outputSection: '.ob64.r0003' }] }]));
+reject('dual C/ASM row', () => projection.validateCensus([target, { auxiliarySections: [{ outputSection: '.ob64.r0005' }] }]));
 const rel = raw.sections.find(section => section.name === '.rel.ob64.r0002');
 const symtab = raw.sections.find(section => section.type === 2);
 const anchor = raw.symbols.find(symbol => symbol.sectionIndex === rodata.index);
@@ -151,8 +211,11 @@ function rawReject(name, mutate, rehash = false) {
   if (rehash) copy.auxiliaryProjection.expectedObjectSha256 = hash(bytes.subarray(rodata.offset, rodata.offset + rodata.size));
   reject(name, () => projection.project(bytes, copy));
 }
-rawReject('nonzero padding even with updated hash', bytes => bytes[rodata.offset + segments[1].offset] = 1, true);
-rawReject('relocation in padding', bytes => bytes.writeUInt32BE(segments[1].offset, rel.offset));
+rawReject('nonzero padding even with updated hash', bytes => bytes[rodata.offset + firstPaddingOffset] = 1, true);
+rawReject('nonzero terminal native pad with updated hash', bytes => bytes[rodata.offset + 52] = 1, true);
+rawReject('terminal pad relocation', bytes => bytes.writeUInt32BE(52, rel.offset));
+rawReject('padding section symbol value', bytes => bytes.writeUInt32BE(firstPaddingOffset, symtab.offset + anchor.symbolIndex * 16 + 4));
+rawReject('relocation in padding', bytes => bytes.writeUInt32BE(firstPaddingOffset, rel.offset));
 rawReject('crossing relocation', bytes => bytes.writeUInt32BE(segments[0].bytes - 2, rel.offset));
 rawReject('unmapped relocation', bytes => bytes.writeUInt32BE(rodata.size, rel.offset));
 rawReject('duplicate relocation', bytes => bytes.writeUInt32BE(4, rel.offset));
@@ -160,10 +223,18 @@ rawReject('wrong relocation type', bytes => bytes.writeUInt32BE((bytes.readUInt3
 rawReject('wrong section anchor value', bytes => bytes.writeUInt32BE(4, symtab.offset + anchor.symbolIndex * 16 + 4));
 rawReject('allocated named symbol', bytes => bytes[symtab.offset + anchor.symbolIndex * 16 + 12] = 0x11);
 rawReject('changed payload addend despite rehash', bytes => bytes.writeUInt32BE(0, rodata.offset), true);
+reject('truncated native artifact', () => projection.project(raw.buffer.subarray(0, raw.buffer.length - 1), target));
+rawReject('reordered native pointer bytes despite rehash', bytes => {
+  const first = bytes.readUInt32BE(rodata.offset);
+  const other = Array.from({ length: 5 }, (_, index) => index * 4).find(offset => bytes.readUInt32BE(rodata.offset + offset) !== first);
+  assert.notEqual(other, undefined);
+  bytes.writeUInt32BE(bytes.readUInt32BE(rodata.offset + other), rodata.offset);
+  bytes.writeUInt32BE(first, rodata.offset + other);
+}, true);
 const secondReference = projected.evidence.references.find(reference => reference.addend > 0);
 rawReject('text reference into padding', bytes => {
   const offset = text.offset + secondReference.lowPlace;
-  bytes.writeUInt32BE(((bytes.readUInt32BE(offset) & 0xffff0000) | segments[1].offset) >>> 0, offset);
+  bytes.writeUInt32BE(((bytes.readUInt32BE(offset) & 0xffff0000) | firstPaddingOffset) >>> 0, offset);
 });
 const marker = raw.symbols.find(symbol => symbol.name === 'gcc2_compiled.');
 for (const [name, offset, value] of [['value',4,4],['size',8,4]]) rawReject('compiler marker ' + name,
@@ -202,9 +273,27 @@ assert(p7.elfSectionBytes(linkedElf, linkedElf.sections.find(section => section.
 for (const auxiliary of target.auxiliarySections) assert(p8.compareLinkedAuxiliaryBytes(target, auxiliary, linkedElf, rom).rawBytesExact);
 const linkContext = tc.linkContext(output, rom, linkedElf);
 const retainedLink = projection.linkedEvidence(target, output, linkContext);
-assert.equal(retainedLink.reduce((sum, value) => sum + value.ownerBytes, 0), 16);
+assert.equal(retainedLink.reduce((sum, value) => sum + value.ownerBytes, 0), version === 2 ? 12 : 16);
 const proof = p8.deriveSourceObjectProof(phase8, target, output, classified, linkedElf, rom);
 p8.validateSourceObjectProofBytes(proof.proofBytes, proof.proofBytes);
+if (version === 2) {
+  assert.equal(proof.proof.objectEvidence.schemaVersion, 6);
+  assert.deepEqual(projected.evidence.payloadSlices.map(slice => [slice.entryBytes, slice.paddingBytes]), [[20, 4], [28, 0]]);
+  const proofReject = (name, change) => { const copy = structuredClone(proof.proof); change(copy);
+    const forged = Buffer.from(JSON.stringify(copy)); reject(name, () => p8.validateSourceObjectProofBytes(forged, forged)); };
+  proofReject('v2 stale object evidence version', value => value.objectEvidence.schemaVersion = 4);
+  proofReject('v2 stale projection evidence version', value => value.objectEvidence.auxiliaryProjection.schemaVersion = 1);
+  proofReject('v1 cannot carry v2 evidence fields', value => { value.target.auxiliaryProjection.schemaVersion = 1;
+    value.objectEvidence.schemaVersion = 4; value.objectEvidence.auxiliaryProjection.schemaVersion = 1;
+    value.objectEvidence.auxiliaryProjection.contract.schemaVersion = 1; });
+  proofReject('missing native slice census', value => delete value.objectEvidence.auxiliaryProjection.payloadSlices);
+  proofReject('extra native slice', value => value.objectEvidence.auxiliaryProjection.payloadSlices.push(value.objectEvidence.auxiliaryProjection.payloadSlices[0]));
+  proofReject('reordered native slices', value => value.objectEvidence.auxiliaryProjection.payloadSlices.reverse());
+  for (const field of Object.keys(projected.evidence.payloadSlices[0])) {
+    proofReject('omitted native slice ' + field, value => delete value.objectEvidence.auxiliaryProjection.payloadSlices[0][field]);
+    proofReject('changed native slice ' + field, value => value.objectEvidence.auxiliaryProjection.payloadSlices[0][field] = null);
+  }
+}
 for (const field of ['nativeRelocations', 'references', 'retained', 'contract', 'nativeSections', 'nativeSymbols', 'nativeRelocationSections', 'implementationSha256']) {
   const copy = structuredClone(proof.proof); delete copy.objectEvidence.auxiliaryProjection[field];
   const forged = Buffer.from(JSON.stringify(copy));
@@ -232,9 +321,9 @@ for (const role of ['unsplitAssemblerObject', 'rawObject']) {
   reject('self-compared inconsistent projection artifact ' + role, () => p8.validateSourceObjectProofBytes(forged, forged));
 }
 const accounting = require('../tools/lib/status_accounting').summarizeAcceptedOwnership(model, [target]);
-assert.equal(accounting.assembly.bytes, 16);
-assert.equal(accounting.replacements.bytes, text.size + 48);
-const retainedLine = linkContext.mapText.split(/\r?\n/).find(line => line.trim().startsWith('.ob64.r0003 ') && line.includes('objects/assembly/'));
+assert.equal(accounting.assembly.bytes, version === 2 ? 12 : 16);
+assert.equal(accounting.replacements.bytes, text.size + (version === 2 ? 52 : 48));
+const retainedLine = linkContext.mapText.split(/\r?\n/).find(line => line.trim().startsWith('.ob64.r0005 ') && line.includes('objects/assembly/'));
 assert(retainedLine);
 reject('duplicate retained map ownership', () => projection.linkedEvidence(target, output,
   { ...linkContext, mapText: linkContext.mapText.replace(retainedLine, retainedLine + '\n' + retainedLine) }));
@@ -276,10 +365,36 @@ try {
   const damaged = Buffer.from(saved); damaged[rodata.offset] ^= 1; fs.writeFileSync(files['assembler-object.o'], damaged);
   reject('raw object tamper independent of reported evidence', () => cache.inspectCompiledTargetArtifacts({ phase8, target, classification: classified, files }));
 } finally { fs.writeFileSync(files['assembler-object.o'], saved); }
-const report = { sourceClass: classified.class, payloadBytes: projected.evidence.payloadBytes,
+if (version === 2) {
+  // Recompile real changed C with the same table layout and independently link it.
+  // A valid projection must not turn a text nonmatch into accepted evidence.
+  const nonmatchRoot = path.join(root, 'nonmatch'); fs.mkdirSync(nonmatchRoot);
+  try {
+    fs.writeFileSync(file, source.replace('external_call(11)', 'external_call(12)'));
+    const changed = { ...target, sourceSha256: p7.sha256File(file) };
+    const changedClass = policy.classifyTargetSources([changed]).targets[0];
+    assert.equal(changedClass.class, 'PURE_C');
+    p8.compileTarget(phase8, changed, nonmatchRoot, local.compiler, tools.assemblerAbs, tools.objcopyAbs, { classification: changedClass });
+    fs.mkdirSync(path.join(nonmatchRoot, 'objects/assembly'), { recursive: true });
+    fs.copyFileSync(path.join(output, 'objects/assembly/chunk_000.o'), path.join(nonmatchRoot, 'objects/assembly/chunk_000.o'));
+    fs.copyFileSync(path.join(output, 'fixture.ld'), path.join(nonmatchRoot, 'fixture.ld'));
+    runTool(tools.toolsAbs.linker, ['-T', 'fixture.ld', '-Map', 'phase8.map', '-o', 'phase8.elf',
+      'objects/c/projection_fixture.o', 'objects/assembly/chunk_000.o'], { cwd: nonmatchRoot });
+    const changedElf = p7.parseElfFile(path.join(nonmatchRoot, 'phase8.elf'));
+    const changedComparison = p8.compareLinkedTargetBytes(changed, changedElf, rom);
+    assert.equal(changedComparison.rawBytesExact, false);
+    const changedProof = p8.deriveSourceObjectProof(phase8, changed, nonmatchRoot, changedClass, changedElf, rom);
+    assert.equal(changedProof.proof.finalTarget.rawBytesExact, false);
+    reject('genuine nonmatching PURE_C cannot reproduce exact source proof', () => p8.validateSourceObjectProofBytes(changedProof.proofBytes, proof.proofBytes));
+  } finally { fs.writeFileSync(file, source); }
+}
+const report = { projectionVersion: version, sourceClass: classified.class, payloadBytes: projected.evidence.payloadBytes,
   nativeBytes: rodata.size, checkOnlyBytes: projected.evidence.checkOnlyBytes,
   retainedOriginalBytes: target.auxiliaryProjectionRetained.reduce((sum, value) => sum + value.ownerBytes, 0),
   actualRelocations: projected.evidence.nativeRelocations.length, textAnchorReferences: projected.evidence.references,
   rejections: rejected, output: path.relative(ROOT, root).replace(/\\/g, '/') };
 fs.writeFileSync(path.join(root, 'report.json'), JSON.stringify(report, null, 2) + '\n');
 console.log(JSON.stringify(report, null, 2));
+}
+exercise(1);
+exercise(2);
