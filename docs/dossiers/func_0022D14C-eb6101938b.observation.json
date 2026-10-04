@@ -1,0 +1,100 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "EB6101938B278CA08BB172AD46D9B49B61C8B5B8285D081E98B58C8231CBE902",
+  "observationId": "1761ACAA1C5F9BB959BBD1D6EABC65D4EBC7080CB0B31CB16B7AC424A91ABE28",
+  "symbol": "func_0022D14C",
+  "authored": {
+    "context": "All D14C owned by Sol/private solmode. Canonical ASM/table and accepted inputs unchanged. All14 named artifacts/11 dumps, source and PURE_C identities authenticated. Mandatory output119 single destination advance retained. Accepted D334 emitter source confirms nine int arguments; no prototype change made.",
+    "effects": [
+      "real-lifetime",
+      "instruction-selection"
+    ],
+    "expected": {
+      "dependencies": [],
+      "expandedSha256": "C7E9BE3976ABEF82B6368D01DA18F46ED22953FD4931AE567E72EC7467B77F8B",
+      "sourceSha256": "C5B44E464CA1F44849CC090EAB064C6AB5A21CA27F951342C5FA4F17050E8A20"
+    },
+    "label": "Actual context-byte temporary moves the mode opcode initialization to the delay slot",
+    "observedEffect": "SourceC5B44E46/candidateEB610193/probeF9B97C1C:6840/frame616/177R/131 calls in retail order. Both100/111 regions regain retail23/34-word extents and constant31 in the callback-result branch delay. The prior245 instruction forms remain. Authenticated sched2 places opcode set3360 before the first context load3338; dbr puts3360 into branch3329 sequence5606. Exact causal contribution of the temporary beyond this observed ordering was not isolated. Widening temporary9BE2 and actual base-word pre-readF322 produce entire native text/every177 actual relocation identical; no unchanged probes. Pointer-only041D regresses6848 and loses the delay fill. Repeated true predicate tailsF09B remain6848/nonexact, unselected.",
+    "parentCandidateId": "40C20971A1D5B57C2CE5747ACACB9CDEF2B4B10CDC161F1E7ADEB3C69DD6B141",
+    "references": [
+      {
+        "path": "build/matching/solmode/d14c-clean-closed-projection-mode-context-byte.c",
+        "sha256": "C5B44E464CA1F44849CC090EAB064C6AB5A21CA27F951342C5FA4F17050E8A20"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-closed-projection-mode-context-byte-watch.json",
+        "sha256": "B9ACD69464F8753F8B908EACE47C7B5AFD86DA16DB7326AEB68B2C6B8D20B6D2"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-closed-projection-mode-context-byte-probe.json",
+        "sha256": "A60C42FE198D7CA1AB78ED860FE8977289BF18497998D1DA25EE22C4CDCA2D4F"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-closed-projection-mode-context-byte-call-regions.json",
+        "sha256": "ECCF9498FF0D8C32CC2FA130276E7C45918D6AF137BF3BBCFB0FA7F7023CD805"
+      },
+      {
+        "path": "build/matching/solmode/d14c-clean-closed-projection-mode-context-byte-closed-forms.txt",
+        "sha256": "7443F3FCF0E3DA1F6685FA6B8D05DC83533DF52BECA570BEF8F0B91B07F95D7B"
+      }
+    ],
+    "relatedCandidateIds": [],
+    "remainingFailure": "Whole owner is four bytes shorter and nonexact. Setup memory/store order and context/extra scratch homes differ;111 fallback load usesT3 versusT4. Output119 missing byte mask/scratch, entry store timing and terminal cursor/register differences remain. No linked/ROM/whole-best/complete17-wave acceptance.",
+    "role": "effect-example",
+    "schemaVersion": 1,
+    "selectedBest": false,
+    "sourceChange": "Cache the actual context byte at global context+0x823 in the two mode4/3 emission blocks before passing it as the existing eighth argument. Keep all short-circuit callbacks, emission choices and original capacities; explain measured projection workaround in C."
+  },
+  "authenticated": {
+    "dependencies": [],
+    "expanded": {
+      "bytes": 40602,
+      "sha256": "C7E9BE3976ABEF82B6368D01DA18F46ED22953FD4931AE567E72EC7467B77F8B"
+    },
+    "preprocessor": {
+      "config": {
+        "bytes": 1364,
+        "path": "config/source-policy.json",
+        "sha256": "DDE42407BF4DE59078977D1A81C9C72246DB0D5C082EE3829AD8778FB3ACB2C3"
+      },
+      "dependencyMode": "authenticated-depfile",
+      "dependencyRoot": ".",
+      "dependencyTarget": "ob64-compilation-input",
+      "executables": [
+        {
+          "bytes": 1225728,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/bin/mips64-elf-cpp.exe",
+          "role": "driver",
+          "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+          "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+        },
+        {
+          "bytes": 21875200,
+          "path": ".toolchains/gcc-toolchain-mips64-win64/libexec/gcc/mips64-elf/12.2.0/cc1.exe",
+          "role": "preprocessing-engine",
+          "sha256": "40B1F1C1A2476FD1E286EDAFDEF6E352C188A722CF6E4AD9D58ED80C96F50A84"
+        }
+      ],
+      "flags": [
+        "-P",
+        "-undef",
+        "-nostdinc"
+      ],
+      "includeDirectories": [
+        "include"
+      ],
+      "matchingCompiler": {
+        "executableSha256": "F3F1C99A322F5B3D8C108C2A44AF1D6D084DD27575C5D60BF0F0D33FFF34B1C6",
+        "manifestSha256": "98C8ACC06A8FBF40DADBD25AE20C2539E8765E14EA12895158C37CC413D06C26",
+        "preprocessingMode": "authenticated-external-companion"
+      },
+      "sha256": "56D276AE66F2F499FAD2454663E8B5B82B20D5D7C44A4116349C096780FFF927",
+      "version": "mips64-elf-cpp.exe (GCC) 12.2.0"
+    },
+    "sourceClass": "PURE_C",
+    "sourceSha256": "C5B44E464CA1F44849CC090EAB064C6AB5A21CA27F951342C5FA4F17050E8A20"
+  },
+  "source": "docs/archive/matching-c-candidates/2026-10-04-func_0022D14C-eb6101938b.c",
+  "boundary": "Curated research observations; hashes authenticate inputs, not the authored effect claims or matching acceptance."
+}
